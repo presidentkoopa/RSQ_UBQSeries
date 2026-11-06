@@ -1,9 +1,0 @@
-// RSQ Laser Sight -- Beam Look: PCVR (owner 2026-11-06, BUGS_1.0 #42: "kickass lasers"). The living beam: a material
-// shader on the PCVR segment's own skin (MODELDEF RSQLS_ArcSegPC), Unreal 1's rippled liquid with a scrolling caustic
-// sheet (models/rsqls/rsqls_beam.fp; the skin from tools/gen_pcvr_beam.py). Today's beam (Beam Look: Quest) never
-// wears this skin, so it is untouched.
-HardwareShader "models/rsqls/rslspcva.png"
-{
-	Shader "models/rsqls/rsqls_beam.fp"
-	Speed 1.0
-}

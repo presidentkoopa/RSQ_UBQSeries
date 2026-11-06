@@ -39,18 +39,34 @@ class RSQLS_Beams : StaticEventHandler
 	const LAYER_MAIN = 2140;
 	const LAYER_OFF = 1000140;
 	const TINTS = 32;
+	// Beam Type: Glow (owner 2026-11-06): the halo rod is drawn on its own layer just after the core.
+	const HALO_MAIN = 2141;
+	const HALO_OFF = 1000141;
+	// The Glow look (the numbers of the 2026-11-06 glow test frames): core colour 60% toward
+	// white, x1.5 brightness, quadratic fade to the fade length; halo beam colour x1.0, linear fade.
+	const GLOW_WHITE = 0.6;
+	const GLOW_CORE = 1.5;
+	const GLOW_HALO = 1.0;
 
 	private bool built;
 	private Array<String> cname;
 	private Array<int> cplace, cmirror, cfirst, ccount;
 	private Array<int> rkeys;        // sprite index * 64 + frame, ready-pose frames, per class
 	private Array<int> sprIdx;       // the rods' sprite indices
+	private Array<int> haloIdx;      // the halo rods' sprite indices (Beam Type: Glow)
 	private State beamState;
 
 	// Translation cache: (colour, fade cm, brightness step) -> id
 	private int tKey[TINTS], tFade[TINTS];
 	private TranslationID tId[TINTS];
 	private int tN, tNext;
+	// Beam Type: Glow: the same bounded cache for the core and halo translations
+	private int cKey[TINTS], cFade[TINTS];
+	private TranslationID cId[TINTS];
+	private int cN, cNext;
+	private int hKey[TINTS], hFade[TINTS];
+	private TranslationID hId[TINTS];
+	private int hN, hNext;
 
 	private void Build()
 	{
@@ -73,6 +89,8 @@ class RSQLS_Beams : StaticEventHandler
 		}
 		for (int i = 0; i < RSQLS_Muzzles.SPRITES.Size(); i++)
 			sprIdx.Push(Actor.GetSpriteIndex(RSQLS_Muzzles.SPRITES[i]));
+		for (int i = 0; i < RSQLS_HaloSprites.SPRITES.Size(); i++)
+			haloIdx.Push(Actor.GetSpriteIndex(RSQLS_HaloSprites.SPRITES[i]));
 		let d = GetDefaultByType("RSQLS_BeamLayer");
 		beamState = d ? d.FindState("Beam") : null;
 	}
@@ -160,9 +178,9 @@ class RSQLS_Beams : StaticEventHandler
 	}
 
 	// Put the beam layer on hand h's gun: placement pi, rod k, tint, following gun layer gp.
-	void Show(PlayerInfo p, int h, Weapon w, int ci, PSprite gp, int k, TranslationID tint)
+	void Show(PlayerInfo p, int h, Weapon w, int ci, PSprite gp, int k, TranslationID tint, bool halo = false)
 	{
-		int id = (h == 0) ? LAYER_MAIN : LAYER_OFF;
+		int id = halo ? ((h == 0) ? HALO_MAIN : HALO_OFF) : ((h == 0) ? LAYER_MAIN : LAYER_OFF);
 		let psp = p.FindPSprite(id);
 		if (!psp || psp.Caller != w)
 		{
@@ -185,8 +203,8 @@ class RSQLS_Beams : StaticEventHandler
 		}
 		int pi = cplace[ci];
 		int g = pi * RSQLS_Muzzles.NLEN + k;
-		int si = sprIdx[g / 26];
-		if (si < 0) return;
+		int si = halo ? ((g / 26 < haloIdx.Size()) ? haloIdx[g / 26] : -1) : sprIdx[g / 26];
+		if (si < 0) { if (halo) p.SetPsprite(id, null); return; }
 		psp.Sprite = si;
 		psp.Frame = g % 26;
 		psp.Translation = tint;
@@ -204,5 +222,86 @@ class RSQLS_Beams : StaticEventHandler
 	{
 		int id = (h == 0) ? LAYER_MAIN : LAYER_OFF;
 		if (p.FindPSprite(id)) p.SetPsprite(id, null);
+		HideHalo(p, h);
+	}
+
+	// Beam Type: Standard draws no halo layer: one left over from Glow goes.
+	static void HideHalo(PlayerInfo p, int h)
+	{
+		int id = (h == 0) ? HALO_MAIN : HALO_OFF;
+		if (p.FindPSprite(id)) p.SetPsprite(id, null);
+	}
+
+	// ---- Beam Type: Glow, core + halo -------------------------------------------------------------
+	// The core: today's rod, its colour pushed GLOW_WHITE toward white, brightness a x GLOW_CORE,
+	// fading (quadratic: holds bright longer, then goes) over the fade length. The halo: the
+	// hollow 8-arm rod around it (tools: gen_halo.py), beam colour, brightness a x GLOW_HALO x
+	// ring falloff, linear fade over the fade length. Both caches bounded like Tint().
+	TranslationID CoreTint(int rgb, double a, double fadeCm)
+	{
+		int step = int(clamp(a * GLOW_CORE, 0.0, 1.0) * 32 + 0.5);
+		int fc = int(clamp(fadeCm, 10.0, RSQLS_Muzzles.FADE_MAX));
+		int key = (rgb & 0xFFFFFF) | (step << 24);
+		for (int k = 0; k < cN; k++)
+			if (cKey[k] == key && cFade[k] == fc) return cId[k];
+		double wf = int(GLOW_WHITE * 16 + 0.5) / 16.0;
+		double cr = ((rgb >> 16) & 255) * (1 - wf) + 255 * wf;
+		double cg = ((rgb >> 8) & 255) * (1 - wf) + 255 * wf;
+		double cb = (rgb & 255) * (1 - wf) + 255 * wf;
+		double b0 = step / 32.0;
+		Translation t;
+		t.colors[0] = Color(255, 0, 0, 0);
+		t.colors[255] = Color(255, 0, 0, 0);
+		for (int i = 1; i < 255; i++)
+		{
+			double d = (i - 0.5) / 254.0 * RSQLS_Muzzles.FADE_MAX;
+			double u = d / fc;
+			double b = (u < 1.0) ? b0 * (1.0 - u * u) : 0.0;
+			t.colors[i] = Color(255, int(min(255, cr * b)), int(min(255, cg * b)), int(min(255, cb * b)));
+		}
+		TranslationID id = t.AddTranslation();
+		int slot;
+		if (cN < TINTS) slot = cN++;
+		else { slot = cNext; cNext = (cNext + 1) % TINTS; }
+		cKey[slot] = key; cFade[slot] = fc; cId[slot] = id;
+		return id;
+	}
+
+	TranslationID HaloTint(int rgb, double a, double fadeCm)
+	{
+		int step = int(clamp(a * GLOW_HALO, 0.0, 1.0) * 32 + 0.5);
+		int fc = int(clamp(fadeCm, 10.0, RSQLS_Muzzles.FADE_MAX));
+		int key = (rgb & 0xFFFFFF) | (step << 24);
+		for (int k = 0; k < hN; k++)
+			if (hKey[k] == key && hFade[k] == fc) return hId[k];
+		int cr = (rgb >> 16) & 255, cg = (rgb >> 8) & 255, cb = rgb & 255;
+		double b0 = step / 32.0;
+		static const double FALL[] = { 1.0, 0.55, 0.28, 0.10 };
+		Translation t;
+		t.colors[0] = Color(255, 0, 0, 0);
+		t.colors[255] = Color(255, 0, 0, 0);
+		for (int i = 1; i < 255; i++)
+		{
+			// halo palette index = 1 + (ring - 1) * DB + distance bin (gen_halo.py)
+			int r = (i - 1) / RSQLS_HaloSprites.DB, bin = (i - 1) % RSQLS_HaloSprites.DB;
+			if (r >= RSQLS_HaloSprites.RINGS) { t.colors[i] = Color(255, 0, 0, 0); continue; }
+			double d = (bin + 0.5) / RSQLS_HaloSprites.DB * RSQLS_Muzzles.FADE_MAX;
+			double u = d / fc;
+			double b = (u < 1.0) ? b0 * (1.0 - u) * FALL[r] : 0.0;
+			t.colors[i] = Color(255, int(cr * b), int(cg * b), int(cb * b));
+		}
+		TranslationID id = t.AddTranslation();
+		int slot;
+		if (hN < TINTS) slot = hN++;
+		else { slot = hNext; hNext = (hNext + 1) % TINTS; }
+		hKey[slot] = key; hFade[slot] = fc; hId[slot] = id;
+		return id;
+	}
+
+	// The beam with the glow: the core on the beam layer, the halo on the layer after it.
+	void ShowGlow(PlayerInfo p, int h, Weapon w, int ci, PSprite gp, int k, int rgb, double a, double fadeCm)
+	{
+		Show(p, h, w, ci, gp, k, CoreTint(rgb, a, fadeCm));
+		Show(p, h, w, ci, gp, k, HaloTint(rgb, a, fadeCm), true);
 	}
 }

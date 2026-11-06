@@ -62,9 +62,9 @@ class RSQLS_ArcSeg : Actor
 	}
 	States { Spawn: RSLV A -1 Bright; Stop; }
 }
-// Beam Look: PCVR (owner 2026-11-06, BUGS_1.0 #42): the same segment wearing the living-beam skin, which GLDEFS gives a
-// material shader (models/rsqls/rsqls_beam.fp: Unreal 1's rippled liquid and scrolling caustic). Quest keeps RSQLS_ArcSeg.
-class RSQLS_ArcSegPC : RSQLS_ArcSeg {}
+// Beam Type: Glow (owner 2026-11-06) on the arc: the halo around a segment, a wider segment on the same mesh wearing the
+// halo skin (MODELDEF RSQLS_ArcHalo, tools/gen_assets.py): the straight beam's halo rod in cross-section.
+class RSQLS_ArcHalo : RSQLS_ArcSeg {}
 class RSQLS_Ring : RSQLS_Spot
 {
 	States { Spawn: RSLR A -1 Bright; Stop; }
@@ -181,6 +181,8 @@ class RSQLS_Sight : EventHandler
 	const SEG_N = 64;          // the most segments of the beam bent along an arc, per hand
 	const SEG_LEN = 8.0;       // map units a segment covers at most (shorter arcs: fewer segments)
 	private Actor arcSeg[128]; // SEG_N per hand
+	private Actor arcHalo[128];// SEG_N per hand: Beam Type Glow's halo around each segment
+	const HALO_W = 2.8;        // the arc halo's width, map units (the halo skin is 28 px at 0.1 unit; gen_assets.py)
 	private bool  segShown[2];
 	private Actor ring[2];
 	private Actor readout;
@@ -254,7 +256,7 @@ class RSQLS_Sight : EventHandler
 	private void HideArcBeam(int h)
 	{
 		if (!segShown[h]) return;
-		for (int i = 0; i < SEG_N; i++) Hide(arcSeg[h * SEG_N + i]);
+		for (int i = 0; i < SEG_N; i++) { Hide(arcSeg[h * SEG_N + i]); Hide(arcHalo[h * SEG_N + i]); }
 		segShown[h] = false;
 	}
 	private void HideHand(int h) { HideBeam(h); HideSpot(h); HideArc(h); HideArcBeam(h); Hide(ring[h]); rangeM[h] = 0; muzzlePrimed[h] = false; }
@@ -637,7 +639,7 @@ class RSQLS_Sight : EventHandler
 			Sector bs = Level.PointInSector(muzzle.xy);
 			double blit = bs ? clamp(bs.lightlevel / 255.0, 0.0, 1.0) : 0.5;
 			double ba = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35)) * blit);
-			LayArcBeam(h, RSQLS_Colors.Tint(beamRgb), clamp(ba, 0.05, 1.0), p);
+			LayArcBeam(h, beamRgb, clamp(ba, 0.05, 1.0), p);
 		}
 		else HideArcBeam(h);
 
@@ -661,7 +663,10 @@ class RSQLS_Sight : EventHandler
 				double litFade = RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35);
 				double a = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - litFade) * lit);
 				if (hostile && Lock(p)) a *= 1.35;
-				bt.Show(p, h, w, row, gp, k, bt.Tint(beamRgb, a, fadeCm));
+				// BEAM TYPE (owner 2026-11-06): Standard is the plain beam (no halo layer), Glow the whiter core inside its
+				// halo (beam.zs ShowGlow). One server setting, so both hands always match.
+				if (RSQLS_Hand.Opt("rsqls_beam_type", p, 0) == 1) bt.ShowGlow(p, h, w, row, gp, k, beamRgb, a, fadeCm);
+				else { bt.Show(p, h, w, row, gp, k, bt.Tint(beamRgb, a, fadeCm)); RSQLS_Beams.HideHalo(p, h); }
 				beamOn = true;
 			}
 		}
@@ -866,50 +871,90 @@ class RSQLS_Sight : EventHandler
 	}
 
 	// THE BEAM ALONG THE ARC: the simulated path cut into equal segments (at most SEG_LEN map units, at most SEG_N), each
-	// a thin crossed-quad rod laid from one point to the next (Scale.Y its length, Scale.X its thickness; pitch 90 turns
-	// the model's +Z onto the level, then up or down by the segment's own climb).
-	private void LayArcBeam(int h, TranslationID tint, double alpha, PlayerInfo p)
+	// a thin crossed-quad rod (Scale.Y its length, Scale.X its thickness; pitch 90 turns the model's +Z onto the level,
+	// then up or down by the segment's own climb).
+	// CONTINUOUS (owner 2026-11-06: it drew as a dashed line): every segment reaches half a segment past both of its ends,
+	// so each point of the path is covered by exactly two segments (one at the very start and end), at half the
+	// brightness each: one even line with no gaps between segments.
+	// BEAM TYPE (owner 2026-11-06), the same look as the straight beam: Standard is the plain segment in the beam colour.
+	// Glow is the core (the colour pushed RSQLS_Beams.GLOW_WHITE toward white, brightness x GLOW_CORE) inside a halo
+	// segment (RSQLS_ArcHalo, beam colour, brightness x GLOW_HALO, the halo rod's rings).
+	private void LayArcBeam(int h, int rgb, double alpha, PlayerInfo p)
 	{
 		int n = arcX.Size();
 		if (n < 2) { HideArcBeam(h); return; }
-		double total = 0;
-		for (int i = 1; i < n; i++) total += (ArcAt(i) - ArcAt(i - 1)).Length();
+		Array<double> cum;
+		cum.Push(0);
+		for (int i = 1; i < n; i++) cum.Push(cum[i - 1] + (ArcAt(i) - ArcAt(i - 1)).Length());
+		double total = cum[n - 1];
 		if (total < 1) { HideArcBeam(h); return; }
 		int segs = clamp(int(ceil(total / SEG_LEN)), 1, SEG_N);
+		double step = total / segs;
 		double thick = 0.5 * RSQLS_A11y.Cue();
-		// Beam Look: Quest draws today's segment, PCVR the living one; a segment of the other look is swapped out
-		Class<Actor> segCls = RSQLS_Hand.Opt("rsqls_beam_look", p, 0) == 1 ? "RSQLS_ArcSegPC" : "RSQLS_ArcSeg";
-		int seg = 1;
-		double segStart = 0, segLen = (ArcAt(1) - ArcAt(0)).Length();
-		Vector3 prev = ArcAt(0);
+		bool glow = RSQLS_Hand.Opt("rsqls_beam_type", p, 0) == 1;
+		TranslationID coreTint, haloTint;
+		double coreA, haloA;
+		if (glow)
+		{
+			double wf = int(RSQLS_Beams.GLOW_WHITE * 16 + 0.5) / 16.0;
+			int cr = int(((rgb >> 16) & 255) * (1 - wf) + 255 * wf);
+			int cg = int(((rgb >> 8) & 255) * (1 - wf) + 255 * wf);
+			int cb = int((rgb & 255) * (1 - wf) + 255 * wf);
+			coreTint = RSQLS_Colors.Tint((cr << 16) | (cg << 8) | cb);
+			coreA = clamp(alpha * RSQLS_Beams.GLOW_CORE, 0.0, 1.0);
+			haloTint = RSQLS_Colors.Tint(rgb);
+			haloA = clamp(alpha * RSQLS_Beams.GLOW_HALO, 0.0, 1.0);
+		}
+		else { coreTint = RSQLS_Colors.Tint(rgb); coreA = alpha; }
 		for (int k = 0; k < SEG_N; k++)
 		{
 			int slot = h * SEG_N + k;
-			if (k >= segs) { Hide(arcSeg[slot]); continue; }
-			double want = total * (k + 1) / segs;
-			while (seg < n - 1 && segStart + segLen < want)
-			{
-				segStart += segLen;
-				seg++;
-				segLen = (ArcAt(seg) - ArcAt(seg - 1)).Length();
-			}
-			double f = segLen > 0.001 ? clamp((want - segStart) / segLen, 0.0, 1.0) : 0.0;
-			Vector3 at = ArcAt(seg - 1) + (ArcAt(seg) - ArcAt(seg - 1)) * f;
-			Vector3 d = at - prev;
+			if (k >= segs) { Hide(arcSeg[slot]); Hide(arcHalo[slot]); continue; }
+			Vector3 from = PathAt(cum, max(0.0, step * (k - 0.5)));
+			Vector3 to = PathAt(cum, min(total, step * (k + 1.5)));
+			Vector3 d = to - from;
 			double len = d.Length();
-			if (arcSeg[slot] && arcSeg[slot].GetClass() != segCls) { arcSeg[slot].Destroy(); arcSeg[slot] = null; }
-			arcSeg[slot] = Ensure(arcSeg[slot], segCls);
+			double ang = VectorAngle(d.x, d.y);
+			double pit = 90 - atan2(d.z, d.xy.Length());
+			arcSeg[slot] = Ensure(arcSeg[slot], "RSQLS_ArcSeg");
 			let a = arcSeg[slot];
-			if (!a) { prev = at; continue; }
-			Put(a, segShown[h], prev);
-			a.Angle = VectorAngle(d.x, d.y);
-			a.Pitch = 90 - atan2(d.z, d.xy.Length());
-			a.Scale = (thick, max(len, 0.01));
-			a.Alpha = alpha;
-			a.Translation = tint;
-			prev = at;
+			if (a)
+			{
+				Put(a, segShown[h] && !a.bINVISIBLE, from);
+				a.Angle = ang;
+				a.Pitch = pit;
+				a.Scale = (thick, max(len, 0.01));
+				a.Alpha = coreA * 0.5;
+				a.Translation = coreTint;
+			}
+			if (!glow) { Hide(arcHalo[slot]); continue; }
+			arcHalo[slot] = Ensure(arcHalo[slot], "RSQLS_ArcHalo");
+			let o = arcHalo[slot];
+			if (!o) continue;
+			Put(o, segShown[h] && !o.bINVISIBLE, from);
+			o.Angle = ang;
+			o.Pitch = pit;
+			o.Scale = (HALO_W * RSQLS_A11y.Cue(), max(len, 0.01));
+			o.Alpha = haloA * 0.5;
+			o.Translation = haloTint;
 		}
 		segShown[h] = true;
+	}
+
+	// The point `dist` map units along the arc's path (cum: the path's running length at each point).
+	private Vector3 PathAt(Array<double> cum, double dist)
+	{
+		int n = cum.Size();
+		for (int i = 1; i < n; i++)
+		{
+			if (cum[i] >= dist || i == n - 1)
+			{
+				double sl = cum[i] - cum[i - 1];
+				double f = sl > 0.001 ? clamp((dist - cum[i - 1]) / sl, 0.0, 1.0) : 0.0;
+				return ArcAt(i - 1) + (ArcAt(i) - ArcAt(i - 1)) * f;
+			}
+		}
+		return ArcAt(0);
 	}
 
 	// The ring: the widest spread this gun has shown, drawn at the spot as an
