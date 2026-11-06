@@ -173,6 +173,7 @@ class RSQFF_Torches : EventHandler
 	bool gripDown[MAXPLAYERS];
 	int ddzWait[MAXPLAYERS];
 	RSQFF_TorchSpot spot[MAXPLAYERS];
+	RSQFF_TorchSpill spill[MAXPLAYERS];   // Light Style DarkDoomZ, Fancy: its spill light (ddzlight.zs)
 	RSQFF_TorchCone cone[MAXPLAYERS];
 	RSQFF_TorchHot hot[MAXPLAYERS];
 	Vector3 lastLens[MAXPLAYERS];     // the lens a tic ago (the cone is moved a tic ahead of the hand)
@@ -326,6 +327,8 @@ class RSQFF_Torches : EventHandler
 	private void LightsOff(int n)
 	{
 		if (spot[n]) spot[n].Destroy();
+		if (spill[n]) spill[n].Destroy();
+		spill[n] = null;
 		if (cone[n]) cone[n].Destroy();
 		if (hot[n]) hot[n].Destroy();
 		spot[n] = null; cone[n] = null; hot[n] = null;
@@ -405,6 +408,14 @@ class RSQFF_Torches : EventHandler
 		int range = Range();
 		int c = SInt("rsqff_fl_color", 20);
 		Color col = Shade(c == RANDOM_COL ? pick[n] : c);
+		// LIGHT STYLE DARKDOOMZ (owner 11-06, item 9; ddzlight.zs, a zlib rewrite of DarkDoomZ's flashlight): its type's
+		// colour, angles and radius, its spill light, from our lens
+		RSQFF_DdzType ddz = null;
+		if (RSQFF_DdzLight.On())
+		{
+			ddz = RSQFF_DdzLight.Get();
+			RSQFF_DdzLight.Main(ddz, col, inner, outer, range);
+		}
 
 		// the light
 		if (!spot[n]) spot[n] = RSQFF_TorchSpot(Actor.Spawn("RSQFF_TorchSpot", lens, NO_REPLACE));
@@ -421,6 +432,12 @@ class RSQFF_Torches : EventHandler
 			s.SpotInnerAngle = inner;
 			s.SpotOuterAngle = outer;
 		}
+		if (ddz && RSQFF_DdzLight.Spill())
+		{
+			if (!spill[n]) spill[n] = RSQFF_TorchSpill(Actor.Spawn("RSQFF_TorchSpill", lens, NO_REPLACE));
+			if (spill[n]) RSQFF_DdzLight.PlaceSpill(spill[n], ddz, lens, yaw, mapPitch);
+		}
+		else if (spill[n]) { spill[n].Destroy(); spill[n] = null; }
 
 		// the trace: every tic (PCVR, High) or every 2nd (Quest); what the beam meets first, a wall or a monster
 		int every = q == 0 ? 2 : 1;
@@ -442,6 +459,13 @@ class RSQFF_Torches : EventHandler
 		lastLens[n] = lens;
 		lastLensOk[n] = true;
 		double half = (inner + outer) * 0.5;
+		// SHOW CONE (owner 11-06: "our tapered cone as an optional visual"): off, no cone and no dust; the light stays
+		if (SInt("rsqff_fl_cone", 1) <= 0)
+		{
+			if (cone[n]) { cone[n].Destroy(); cone[n] = null; }
+		}
+		else
+		{
 		if (!cone[n]) cone[n] = RSQFF_TorchCone(Actor.Spawn("RSQFF_TorchCone", lens, NO_REPLACE));
 		let k = cone[n];
 		if (k)
@@ -469,6 +493,7 @@ class RSQFF_Torches : EventHandler
 			k.alpha = q == 0 ? 0.30 : (q == 1 ? 0.34 : 0.38);
 			// dust: motes drifting in the beam (PCVR one every 3rd tic, High one a tic)
 			if (q > 0 && (q == 2 || level.maptime % 3 == 0)) Dust(pmo, lens, rd, len, half, col, ps);
+		}
 		}
 
 		// the hotspot where it lands: sized by the distance, fainter on a glancing wall; it reaches past the light (to 2.5 x its

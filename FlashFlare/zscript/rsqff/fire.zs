@@ -10,15 +10,16 @@
 //   THE BURN, BRUTAL DOOM ONLY (found by name: BDWeaponSpawner / BrutalPistol): Brutal Doom's own burning is its damage
 //     type "Fire" (BD22 Flamethrower.dec: FlamethrowerProjectileNew "damagetype fire"), so the monster's own Fire pain and
 //     burning death are Brutal Doom's. The flare's hit is a Fire hit, and a monster that may burn carries RSQFF_OnFire for
-//     BURN_TICS (4 s): BURN_DMG (2) Fire damage every BURN_EVERY (10) tics, flame off its body. Without Brutal Doom: the
+//     BURN_TICS (5 s): BURN_DMG (3) Fire damage every BURN_EVERY (6) tics, 90 in all (owner 11-06: "More": the burn alone
+//     kills an imp -- Brutal Doom's has 80 health, rig 11-06), flame off its body. Without Brutal Doom: the
 //     hit's damage only, no burn.
 // No hard reference to Brutal Doom, LegenDoom or Champions: every name is looked up as a String at run time.
 class RSQFF_Fire play
 {
 	const HIT_DMG = 4;
-	const BURN_TICS = 140;
-	const BURN_EVERY = 10;
-	const BURN_DMG = 2;
+	const BURN_TICS = 175;
+	const BURN_EVERY = 6;
+	const BURN_DMG = 3;
 
 	static bool Named(String n) { class<Object> c = n; return c != null; }
 

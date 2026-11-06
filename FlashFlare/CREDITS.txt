@@ -49,3 +49,10 @@ IDEAS AND NUMBERS FROM
 SHARING
 Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
 people's work in this pack is the project owner's decision.
+
+- DarkDoomZ by Caligari87 (Sterling Parker), github.com/caligari87/darkdoomz, zlib licence. The flashlight's
+  "DarkDoomZ" Light Style (zscript/rsqff/ddzlight.zs) is an ALTERED rewrite of DarkDoomZ's flashlight code
+  (DarkDoomZ_Flashlight / DarkDoomZ_Spotlight): its four flashlight types with their colours, angles and radii, and its
+  beam + spill spot lights, placed on this pack's flashlight lens. Its licence notice is kept in that file. DarkDoomZ's
+  credits.md also names: Kinsie, Gutawer, FishyClockwork, phantombeta, Marisa Kirisame, Accensus (code); Fort of Hard
+  Knox, a1337spy, Orange Bomb (testing); mshahen ("Flashlight On/Off Clicks", CC BY 3.0 -- not used in this pack).

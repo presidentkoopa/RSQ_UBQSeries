@@ -11,8 +11,7 @@
 //      the flare hand's TRIGGER is your hold on it. Squeeze it (the squeeze that lit it counts), swing, and LET GO while
 //      the hand moves faster than rsqff_swing (2 m/s): it leaves at the hand's own speed and direction (RSQ Grenade
 //      hand.zs's release, measure and launch, copied here), tumbles, bounces and lies burning. Let go with the hand still:
-//      it stays in your hand. The grip does nothing while the trigger holds it (11-06); without the trigger, a grip
-//      let go mid-swing throws too, and a grip let go with the hand still (away from the pocket) DROPS it, burning.
+//      it stays in your hand. The grip does nothing to a lit flare (owner 11-06: "Trigger only"): no throw, no drop.
 //   5. It burns rsqff_burn seconds (60) in the hand or on the floor, then dies away; burnt out in the hand, the hand lets
 //      the spent flare fall.
 // Put away any other way (another mod or key takes the off hand, death, a new level): an unlit flare goes back in the
@@ -51,7 +50,7 @@ class RSQFF_Handler : EventHandler
 	int lightsPeak;
 
 	// ---- the console player's hands (local) ----
-	private transient bool gripPrev, trigPrev, gripTrig;
+	private transient bool gripPrev, trigPrev;
 	private transient int waitUntil, strikeQuiet, strikeAt, trigKeySeen, refusedAt;
 	private transient double myBodyYaw;
 	private transient bool bodyPrimed;
@@ -381,9 +380,6 @@ class RSQFF_Handler : EventHandler
 		trigKeySeen = trigKeyTic[n];
 		if (tkey && !trigEdge && trigPrev) tkey = false;  // the command or the key already held it: the same press
 		trigEdge = trigEdge || tkey;
-		// the trigger held at any time during this grip (the PH_LIT grip below does nothing then)
-		if (gripEdge) gripTrig = trig;
-		else if (grip && trig) gripTrig = true;
 		if (!RSQFF_Geo.InVR(pmo) || pmo.health <= 0) return;
 		if (level.maptime < waitUntil) return;
 		bool dbg = Debug(p);
@@ -470,49 +466,11 @@ class RSQFF_Handler : EventHandler
 			}
 			return;
 		}
-		// THE GRIP NEVER ACTS ON ITS PRESS (owner 11-06 04:07, "STILL CANNOT THROW FLARE. Please have it use the controls
-		// and mechanics of the grenade to throw"). THE CAUSE, rig 11-06: a hand closing round the flare to wind up a throw
-		// squeezes the grip with the trigger, and until now a grip PRESS with the hand still DROPPED the flare at your
-		// feet that tic (rig: "thrown t117 ... 0.00 m/s", the trigger still held), so the trigger's let-go never got a
-		// flare to throw. RSQ Grenade's grip does nothing to the grenade in that hand; here, as there, the TRIGGER is the
-		// hold: while it is held (or was, during this grip) the grip does nothing. A grip alone acts on its LET-GO only:
-		// let go while swinging, thrown; let go with the hand still, dropped at your feet (away from the pocket).
-		// A LIT FLARE IS NEVER HOLSTERED (owner 11-05: "A lit flare should not be holstered"): at the chest pocket or in any of
-		// RSQ Tactical Rig's places a grip let go with the hand still, or a fast reach mostly DOWN into it, leaves the flare in
-		// the hand (a short buzz); it only leaves by a throw, a drop away from them, burning out, or something else taking the
-		// hand (death, a new level, another off-hand weapon: it falls burning).
-		if (!gripUp) return;
-		if (gripTrig || trig)
-		{
-			gripTrig = false;
-			if (dbg) Console.Printf("RSQFF grip let go t%d: the trigger holds the flare, the grip does nothing", level.maptime);
-			return;
-		}
-		bool released = ms >= need;
-		// a fast move mostly DOWN is a reach to the hip, never a grip throw, wherever it ends (rig 11-05: the rig's place is
-		// known a tic after the hand arrives, so a 5.3 m/s reach into the flare holster was thrown at the floor)
-		double downMs = -v.z * RSQFF_Geo.Ps(pmo) / RSQFF_Geo.Vu() * TICRATE;
-		if ((nearPocket || inRig) || (ms >= need && downMs >= 0.75 * ms))
-		{
-			if (ms < need || downMs >= 0.5 * ms)
-			{
-				if (level.maptime - refusedAt > 10) RSQFF_Buzzer.Start(pmo, 1, 0.12, 2);
-				refusedAt = level.maptime;
-				if (dbg) Console.Printf("RSQFF lit t%d: stays in the hand (%s, %.2f m/s, %.2f down): a lit flare is never put away", level.maptime, inRig ? "a Tactical Rig place" : (nearPocket ? "the pocket" : "a reach down"), ms, downMs);
-				return;
-			}
-		}
-		if (released)
-		{
-			SendThrow(at, LaunchVel(pmo, v), ms);
-			Wait(6);
-			if (dbg) Console.Printf("RSQFF throw t%d: %.2f m/s on the grip let go", level.maptime, ms);
-		}
-		else if (!atPocket)
-		{
-			SendThrow(at, pmo.vel + v * 0.5, 0);
-			Wait(6);
-		}
+		// THE TRIGGER ONLY (owner 11-06: "Trigger only", exactly like the grenade): the grip does nothing to a lit flare --
+		// no throw, no drop. Until 11-06 a grip press with the hand still dropped it at your feet, and a hand closing round
+		// the flare to wind up does exactly that, so the trigger's let-go never had a flare to throw. A lit flare leaves
+		// the hand by a throw, burning out, or something else taking the hand (death, a new level, another off-hand
+		// weapon: it falls burning). It is never put away (owner 11-05).
 	}
 
 	// WHAT LEAVES THE HAND for a hand velocity v (map units a tic): RSQ Grenade hand.zs LaunchVel (RS_Grenade's flight),

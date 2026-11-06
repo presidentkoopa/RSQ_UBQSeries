@@ -51,6 +51,10 @@ OptionMenu "RSQFF_Options"
 	Option "Beam Quality", "rsqff_fl_quality", "RSQFF_BeamQuality"
 	Slider "Beam Length (m)", "rsqff_fl_cone_m", 1, 15, 1, 0
 	Option "Beam Hotspot", "rsqff_fl_hot", "OnOff"
+	Option "Show Cone", "rsqff_fl_cone", "OnOff"
+	Option "Light Style", "rsqff_fl_style", "RSQFF_LightStyle"
+	Option "DarkDoomZ Type", "rsqff_fl_ddz_type", "RSQFF_DdzType"
+	Option "DarkDoomZ Spill Light", "rsqff_fl_ddz_spill", "OnOff"
 	Option "Turn Off DarkDoomz Light", "rsqff_fl_ddz", "OnOff"
 	Option "DarkDoomZ Flashlight Takes Over", "rsqff_fl_ddz_take", "OnOff"
 	StaticText " "
@@ -133,4 +137,18 @@ OptionValue "RSQFF_LightBy"
 	0, "Strike"
 	1, "Trigger"
 	2, "Either"
+}
+
+OptionValue "RSQFF_LightStyle"
+{
+	0, "FnF"
+	1, "DarkDoomZ"
+}
+
+OptionValue "RSQFF_DdzType"
+{
+	0, "Incandescent"
+	1, "Halogen"
+	2, "LED"
+	3, "Red Filter"
 }
