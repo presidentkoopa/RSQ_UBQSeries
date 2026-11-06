@@ -26,3 +26,4 @@ gen RSQML  Melee/zscript/rsqml/rsmenu.zs
 gen RSQFF  FlashFlare/zscript/rsqff/rsmenu.zs
 gen RSQGD  GlowInTheDark/zscript/rsqgd/rsmenu.zs
 gen RSQA   Accessibility/zscript/rsqa_rsmenu.zs
+gen RSQGY  Graveyard/zscript/rsqgy/rsmenu.zs

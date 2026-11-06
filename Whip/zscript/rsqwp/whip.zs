@@ -1901,6 +1901,10 @@ class RSQWP_Whip : EventHandler
 		// QUICK MARK (Gun Bonsai VR): pickups and switches marked 2 m further a level
 		double range = LockRange();
 		double prio = range + 68.0 * max(0, Gb(pmo, G_QUICK));   // the one reach (LockRange), and Quick Mark's 2 m a level past it
+		// SWITCHES FIRST (rsqwp_whip_first, on; owner 11-06: "toggle in options. switches and shit first for default"): on,
+		// switches, keys and powerups in the wide cone are marked before anything else (nearest first); off, they still
+		// count, but after every monster and pickup along the hand -- a monster you point at wins over a switch
+		double lateK = RSQWP_Util.Flag("rsqwp_whip_first", true) ? 0.0 : 200000.0;
 		cA.Clear(); cL.Clear(); cPx.Clear(); cPy.Clear(); cPz.Clear(); cK.Clear();
 		let it = BlockThingsIterator.CreateFromPos(org.x, org.y, org.z, 64, prio, false);
 		while (it.Next())
@@ -1922,7 +1926,7 @@ class RSQWP_Whip : EventHandler
 			if (!first && d > range) continue;
 			if (!first && ang > MARK_CONE) continue;
 			if (!pmo.CheckSight(a, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
-			AddCand(a, null, c, first ? d : 100000 + d);
+			AddCand(a, null, c, first ? lateK + d : 100000 + d);
 		}
 		if (prio > 0 && RSQWP_Util.Flag("rsqwp_whip_lines", true))
 		{
@@ -1960,7 +1964,7 @@ class RSQWP_Whip : EventHandler
 				Vector3 u = to / d;
 				if (tr.Trace(org, level.PointInSector(org.xy), u, d + 4, 0, RSQWP_Tracer.WALLMASK, true, pmo)
 					&& tr.Results.HitType != TRACE_HitNone && tr.Results.HitLine != l && tr.Results.Distance < d - 2) continue;
-				AddCand(null, l, p - u * 2, d);
+				AddCand(null, l, p - u * 2, lateK + d);
 			}
 		}
 		int n = cK.Size();

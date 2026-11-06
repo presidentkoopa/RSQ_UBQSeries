@@ -131,6 +131,13 @@ done
 zip -q -r -X "$OUT/RSQ_FnF.pk3" $F
 echo "built pk3/RSQ_FnF.pk3"
 
+# Graveyard: m8f's Graveyards (GPLv3), RSQ Edition (presidentkoopa's changes); the whole folder ships, its licence
+# (copying.txt), credits.txt and Readme.md included.
+cd "$HUB/Graveyard"
+rm -f "$OUT/RSQ_Graveyard.pk3"
+zip -q -r -X "$OUT/RSQ_Graveyard.pk3" . -x '.gitignore'
+echo "built pk3/RSQ_Graveyard.pk3"
+
 # RSQ_GunBonsaiVR (the Gun Bonsai Offhand VR patch): everything but the build script, notes, the old readme.txt, tools and git files (its build.ps1).
 # Needs Gun Bonsai 0.10.6 (ToxicFrog, not included) loaded just before it.
 cd "$HUB/GunBonsaiOffhandVR"

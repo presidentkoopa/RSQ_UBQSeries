@@ -1,0 +1,22 @@
+[enu default]
+
+GY_TITLE = "Graveyards";
+
+GY_REMOVE_ALL  = "Remove all gravestones";
+GY_REMOVE_MAP  = "Remove gravestones on this map";
+
+GY_REMOVE_ALL_MESSAGE  = "All gravestones are removed.";
+GY_REMOVE_MAP_MESSAGE  = "Gravestones on this map are removed.";
+
+GY_MENU_ANIMATION     = "Animation";
+GY_MENU_ANIM_ENABLED  = "Animate gravestones";
+GY_MENU_POPIN         = "Pop in on spawn";
+GY_MENU_AMOUNT        = "Bounce amount";
+GY_MENU_SPEED         = "Bounce speed";
+
+GY_MENU_LIGHT         = "Grave light";
+GY_MENU_LIGHT_ENABLED = "Grave light";
+GY_MENU_FLICKER       = "Candle flicker";
+GY_MENU_RADIUS        = "Light radius";
+GY_MENU_BRIGHT        = "Light brightness";
+GY_MENU_CULL          = "Light cull distance";

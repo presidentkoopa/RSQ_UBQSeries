@@ -1,0 +1,67 @@
+# Graveyards [RSQ Edition]
+
+<a href="https://github.com/mmaulwurff/graveyard/releases" alt="Downloads">
+  <img src="https://img.shields.io/github/downloads/mmaulwurff/graveyard/total" />
+</a>
+
+Graveyards is a minimod for GZDoom that places gravestones where you die.
+Gravestones are carried over play sessions, so:
+
+1. You die.
+2. You start a new game, or load the savegame.
+3. You see a gravestone where you died.
+
+[Demonstration](https://youtu.be/t3X0r8QXwRA)
+
+## Features
+
+- keys to remove gravestones on this map or all gravestones.
+- doesn't affect gameplay.
+- netgame compatible (players see other player's gravestones).
+
+### Local additions
+
+Options > Radiant Silvergun Options > RSQ Graveyards, or the cvars directly:
+
+- gravestones pop in when they spawn and keep a slow idle squash & stretch
+  (`gy_anim_enabled`, `gy_popin_enabled`, `gy_bounce_amount`,
+  `gy_bounce_speed` - speed is degrees per tic, so 1.5 is about a 7 second
+  breath).
+- a warm candle light on each grave, faded in and out by distance and culled
+  entirely past `gy_light_cull` (`gy_light_enabled`, `gy_light_flicker`,
+  `gy_light_radius`, `gy_light_bright`).
+
+Both are cosmetic and read only from the local player's cvars.
+
+- boss markers: an animated terminal, `gy_BossSmall` (45x40 map units) and
+  `gy_BossBig` (161x143, taller than a standard 128 ceiling so it only fits
+  outdoors). Summon either to look at one.
+
+Boss marker frames are imported from a GIF with
+`E:\Tools\msdfgen\Import-GifSprite.ps1`, which extracts every frame, writes the
+patches, and emits the TEXTURES and a ready-made state line.
+
+### RSQ Edition changes (presidentkoopa)
+
+- the animated gravestones and the grave light above.
+- the options page lives under Options > Radiant Silvergun Options >
+  RSQ Graveyards (the RSQ series' shared menu), with the same settings as
+  before plus the two keys (Remove Gravestones on This Map, Remove All
+  Gravestones) and a Reset All. Graveyard's own "Graveyards" row in the
+  Options menu is gone. The keys are still in Customize Controls too.
+- source: the `Graveyard/` folder of RSQ_UBQSeries, built to
+  `RSQ_Graveyard.pk3`.
+
+## Acknowledgments
+
+- Thanks to Captain J for gravestone sprites.
+- Thanks to Dr_Cosmobyte for feature suggestions.
+- Thanks to mamaluigisbagel and Colerx for bug reports.
+- Thanks to 3saster for implementing real time access in GZDoom.
+- PresidentKoopa for RSQ changes: animated tombstone, fading lights.
+## Other Info
+
+Author: m8f
+License: GPLv3
+
+This mod is a part of [m8f's toolbox](https://mmaulwurff.github.io/pages/toolbox).

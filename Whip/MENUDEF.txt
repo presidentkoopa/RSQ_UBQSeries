@@ -41,6 +41,7 @@ OptionMenu "RSQWP_Options"
 	Option "Whip Style", "rsqwp_whip_mode", "RSQWP_WhipModes"
 	Option "Whip Aim", "rsqwp_whip_aim", "RSQWP_WhipAims"
 	Slider "Whip Reach (m)", "rsqwp_target_reach", 3, 60, 0.5, 1
+	Option "Switches First", "rsqwp_whip_first", "OnOff"
 	StaticText " "
 	StaticText "Crack", "Gold"
 	Option "Stun", "rsqwp_whip_stun", "OnOff"

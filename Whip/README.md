@@ -114,6 +114,7 @@ turn it off.
 | Whip Style | Real | Real (hold, crack it yourself) or Assist (press, it cracks for you) |
 | Whip Aim | Assist | Free, Assist, or Lock (other hand points, alt fire holds) |
 | Whip Reach (m) | 20 | One reach for marks, locks and the aimed swing (3-60) |
+| Switches First | On | Switches, keys and powerups are marked before monsters (off: a monster you point at wins) |
 | **Crack** | | |
 | Stun | On | A crack breaks off a monster's attack |
 | Knockback | Off | A crack knocks the monster about |

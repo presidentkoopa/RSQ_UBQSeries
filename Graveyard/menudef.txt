@@ -1,0 +1,49 @@
+// RSQ Graveyards -- MENUDEF (RSQ Edition, presidentkoopa). The settings are Graveyard's own options page, moved under
+// Radiant Silvergun Options -> RSQ Graveyards (owner 11-06, BUGS_1.0 item 7). Graveyard's own "Graveyards" row in the
+// main Options menu is gone: this page is the only way in. The two keys (keyconf.txt) also stay in Customize Controls.
+// Reset All (RSQGYResetAll, tools/rsmenu) resets every setting a row on this page names; key binds are kept.
+
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQGY_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQGYRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Graveyards", "RSQGY_Options"
+}
+// ----------------------------------------------------------------------------------------------------
+
+OptionMenu "RSQGY_Options"
+{
+	Title "RSQ GRAVEYARDS"
+	StaticText "Animation", "Gold"
+	Option "Animate Gravestones", "gy_anim_enabled", "OnOff"
+	Option "Pop In on Spawn", "gy_popin_enabled", "OnOff"
+	Slider "Bounce Amount", "gy_bounce_amount", 0.0, 0.25, 0.01, 2
+	Slider "Bounce Speed", "gy_bounce_speed", 0.2, 8.0, 0.1, 1
+	StaticText " "
+	StaticText "Grave Light", "Gold"
+	Option "Grave Light", "gy_light_enabled", "OnOff"
+	Option "Candle Flicker", "gy_light_flicker", "OnOff"
+	Slider "Light Radius", "gy_light_radius", 16, 256, 8, 0
+	Slider "Light Brightness", "gy_light_bright", 32, 255, 8, 0
+	Slider "Light Cull Distance", "gy_light_cull", 128, 2048, 64, 0
+	StaticText " "
+	StaticText "Controls", "Gold"
+	Control "Remove Gravestones on This Map", "gy_remove_map"
+	Control "Remove All Gravestones", "gy_remove_all"
+	StaticText " "
+	RSQGYResetAll "Reset All", "Reset all RSQ Graveyards settings?"
+}

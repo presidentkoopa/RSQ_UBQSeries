@@ -1,0 +1,388 @@
+sprite gy_ta0, 33, 49
+{
+  patch gy_tomb1, 0, 0
+  offset 16, 49
+  xScale 1.5
+  yScale 1.8
+}
+
+sprite gy_tb0, 33, 49
+{
+  patch gy_tomb2, 0, 0
+  offset 16, 49
+  xScale 1.5
+  yScale 1.8
+}
+
+sprite gy_tc0, 32, 30
+{
+  patch gy_tomb3, 0, 0
+  offset 16, 30
+  xScale 1.1
+  yScale 1.32
+}
+
+sprite gy_td0, 38, 34
+{
+  patch gy_tomb4, 0, 0
+  offset 19, 34
+  xScale 1.1
+  yScale 1.32
+}
+
+// --- boss marker: testfig.gif, 22 frames, two world scales ---
+// gy_b: renders 45 x 40 map units
+
+sprite gy_ba0, 484, 430
+{
+  patch gy_bs00, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bb0, 484, 430
+{
+  patch gy_bs01, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bc0, 484, 430
+{
+  patch gy_bs02, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bd0, 484, 430
+{
+  patch gy_bs03, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_be0, 484, 430
+{
+  patch gy_bs04, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bf0, 484, 430
+{
+  patch gy_bs05, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bg0, 484, 430
+{
+  patch gy_bs06, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bh0, 484, 430
+{
+  patch gy_bs07, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bi0, 484, 430
+{
+  patch gy_bs08, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bj0, 484, 430
+{
+  patch gy_bs09, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bk0, 484, 430
+{
+  patch gy_bs10, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bl0, 484, 430
+{
+  patch gy_bs11, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bm0, 484, 430
+{
+  patch gy_bs12, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bn0, 484, 430
+{
+  patch gy_bs13, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bo0, 484, 430
+{
+  patch gy_bs14, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bp0, 484, 430
+{
+  patch gy_bs15, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bq0, 484, 430
+{
+  patch gy_bs16, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_br0, 484, 430
+{
+  patch gy_bs17, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bs0, 484, 430
+{
+  patch gy_bs18, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bt0, 484, 430
+{
+  patch gy_bs19, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bu0, 484, 430
+{
+  patch gy_bs20, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+
+sprite gy_bv0, 484, 430
+{
+  patch gy_bs21, 0, 0
+  offset 242, 430
+  xScale 10.75
+  yScale 10.75
+}
+// gy_k: renders 161 x 143 map units
+
+sprite gy_ka0, 484, 430
+{
+  patch gy_bs00, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kb0, 484, 430
+{
+  patch gy_bs01, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kc0, 484, 430
+{
+  patch gy_bs02, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kd0, 484, 430
+{
+  patch gy_bs03, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_ke0, 484, 430
+{
+  patch gy_bs04, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kf0, 484, 430
+{
+  patch gy_bs05, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kg0, 484, 430
+{
+  patch gy_bs06, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kh0, 484, 430
+{
+  patch gy_bs07, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_ki0, 484, 430
+{
+  patch gy_bs08, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kj0, 484, 430
+{
+  patch gy_bs09, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kk0, 484, 430
+{
+  patch gy_bs10, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kl0, 484, 430
+{
+  patch gy_bs11, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_km0, 484, 430
+{
+  patch gy_bs12, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kn0, 484, 430
+{
+  patch gy_bs13, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_ko0, 484, 430
+{
+  patch gy_bs14, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kp0, 484, 430
+{
+  patch gy_bs15, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kq0, 484, 430
+{
+  patch gy_bs16, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kr0, 484, 430
+{
+  patch gy_bs17, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_ks0, 484, 430
+{
+  patch gy_bs18, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kt0, 484, 430
+{
+  patch gy_bs19, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_ku0, 484, 430
+{
+  patch gy_bs20, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+
+sprite gy_kv0, 484, 430
+{
+  patch gy_bs21, 0, 0
+  offset 242, 430
+  xScale 3
+  yScale 3
+}
+

@@ -1,0 +1,16 @@
+nosave string gy_hashes = "";
+nosave string gy_locations = "";
+nosave string gy_obituaries = "";
+
+// --- gravestone animation ---
+user bool  gy_anim_enabled  = true;
+user bool  gy_popin_enabled = true;
+user float gy_bounce_amount = 0.05; // squash depth, 0 = perfectly still
+user float gy_bounce_speed  = 1.5;  // degrees per tic: 1.5 is a ~7 second breath
+
+// --- grave light ---
+user bool  gy_light_enabled = true;
+user bool  gy_light_flicker = true;
+user int   gy_light_radius  = 72;
+user int   gy_light_bright  = 210; // 0-255
+user int   gy_light_cull    = 640; // map units; no light exists past this
