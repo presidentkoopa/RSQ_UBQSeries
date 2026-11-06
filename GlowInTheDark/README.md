@@ -72,6 +72,7 @@ room, not per pixel: one colour for a sector's floor glow and one for its ceilin
 |---|---|---|
 | Change the look | Options → RSQ Glow In The Dark → Profile | Left and right step through every profile |
 | New colours now | Shuffle Profile Now | |
+| A look nobody made | Randomize Current Look | Every Custom Profile setting drawn at random, applied now |
 | Everything else | Plays on its own | No buttons, no gestures |
 
 ## Menu
@@ -83,6 +84,7 @@ Options → Radiant Silvergun Options → RSQ Glow In The Dark: one page, with T
 | Glow In The Dark | On | The whole mod |
 | Profile | Classic (1.1) | Custom, Random Profile, or one of 35 named looks |
 | Shuffle Profile Now | | New colours (and a new profile on Random) |
+| Randomize Current Look | | A truly random look now: every Custom Profile row (both glow modes, colours, palette, pulse, strength, balance, liquids) drawn at random within the named profiles' ranges (nothing flashes), Profile set to Custom, colours re-rolled. It overwrites your Custom Profile rows. |
 | Use DarkDoomZ Pairing | | Sets DarkDoomZ's mode and preset to the profile's (greyed without DarkDoomZ) |
 | Re-roll Colours | Every Map | Never, Every Map, On Each Death, On Each Level-Up, Every N Minutes |
 | Re-roll Every (min) | 5 | For Every N Minutes |
@@ -154,6 +156,10 @@ Runs alone, with any map set. It finds the others by name:
 - **ColorfulMaps** by Solid_Head, and NightFright's "Lite" offshoot of it, which 1.1's wall glow was built from. No
   ACS ships here; the ZScript is new.
 - **GlowingLiquids** by Finder153, which 1.1's liquid glow was built on.
+- **More Lights** by Jakie (SnakieJakie, https://github.com/SnakieJakie/More-Lights), discontinued in August 2023:
+  Glow In The Dark changed when the owner added it. Licence: the author gives "full permission to use More Lights for
+  any projects" and lets anyone "build off of my work, even without credit" (its README); credited anyway. No More
+  Lights file ships in this pk3 (see CREDITS.txt).
 - The Subdued light style is the idea of the Subdued Lights mod (double radius, half brightness); nothing of that mod
   is used.
 - **DarkDoomZ** by Caligari87 (Dark Doom concept by Josh771): played with, not bundled or changed.

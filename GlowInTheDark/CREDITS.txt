@@ -19,6 +19,19 @@ GLOWING LIQUIDS -- after GlowingLiquids
   1.1's liquid glow was "built off of GlowingLiquids by Finder153"
   (https://forum.zdoom.org/viewtopic.php?f=46&t=69911); its GLDEFS list was extensively added to by the owner.
 
+MORE LIGHTS -- Jakie (GitHub: SnakieJakie)
+  https://github.com/SnakieJakie/More-Lights (ZDoom forum: https://forum.zdoom.org/viewtopic.php?f=46&t=72206).
+  Glowing flats and dynamic lights for GZDoom/Zandronum; discontinued by its author on 18 August 2023 (abandoned).
+  The owner: Glow In The Dark changed because he added More Lights to it. 1.1's own readme says More Lights 2.3
+  "shares a lot of commonalities with this" and recommends playing them together.
+  Licence (the repo's README, as of 2026-11-06): "I (Jakie) is giving you full permission to use More Lights for any
+  projects. No need to ask me. Have fun!" and "Anyone is free to download the last version and build off of my
+  work, even without credit." (Its earlier "Jakie License" (c) 2022 Jakie -- use, copy, modify, merge, publish,
+  distribute and sublicense, but not sell -- was deleted by the author on 2023-08-19.) Credited here all the same.
+  Checked 2026-11-06 against the repo (Src/filter/doom.id, doom.freedoom): this pk3 ships no More Lights file, no
+  dynamic lights and none of its own glowing-flat entries (light panels, computer flats, teleporters); the 54 flat
+  names both lists share are Doom's stock liquids.
+
 RS RADIANCE -- presidentkoopa
   The owner's later direction for this concept (UZDXREMA): colour policies in a seeded window, seamless rooms,
   waves, looks, reactive lighting. Ideas carried over where QuestZDoom 17.3 allows; no code copied.
@@ -33,4 +46,4 @@ PLAYS WELL WITH (not bundled, not changed)
   DarkDoomZ by Caligari87 (Dark Doom concept by Josh771). This mod writes glow colours, not what DarkDoomZ owns
   (light levels, fog, its flashlight); during a miniboss it lowers DarkDoomZ's own Post-Gain setting and puts it
   back, and a menu row can apply a profile's DarkDoomZ Mode/Preset.
-  1.1's readme also recommended MoreLights, Lights2.wad, Subtle Lights and SynthDoom Vol4.
+  1.1's readme also recommended More Lights (above), Lights2.wad, Subtle Lights and SynthDoom Vol4.

@@ -69,6 +69,7 @@ class RSQGD_Handler : EventHandler
 	bool darkDoomZ;
 	double mapCx, mapCy;
 	int lastRollTic;
+	int randomizeAt;    // Randomize Current Look: the tic its new settings are read (a cvar set here lands a tic later)
 	int deathsSeen;
 	int lightSig;
 	transient bool live;                   // false straight after a savegame load
@@ -540,6 +541,7 @@ class RSQGD_Handler : EventHandler
 		int now = Level.maptime;
 		writesTic = writes;
 		if (!live) { live = true; CacheSettings(); AfterLoad(); }
+		if (randomizeAt > 0 && now >= randomizeAt) RandomizeApply();
 
 		if (now % 35 == 17) Second();
 		if (now % 10 == 3) { PollMiniboss(); PollBonsai(); }
@@ -717,6 +719,7 @@ class RSQGD_Handler : EventHandler
 			Reroll();
 			return;
 		}
+		if (e.Name ~== "rsqgd_randomize") { RandomizeLook(); return; }
 		// TEST TRIGGERS (console, for the rig and for trying the reactions without the other mods):
 		//   netevent rsqgd_test_mb 1|0     a miniboss is alive / gone
 		//   netevent rsqgd_test_wave       a level-up wave from the player
@@ -732,6 +735,48 @@ class RSQGD_Handler : EventHandler
 		else if (e.Name ~== "rsqgd_test_flare" && mo) Flare(mo.CurSector.Index(), 0xC0C0C0, 35);
 		else if (e.Name ~== "rsqgd_test_reroll") Reroll();
 	}
+
+	// RANDOMIZE CURRENT LOOK (owner 1.0 #23, 11-06: "a truly random option"): not one of the named profiles (that is
+	// Shuffle Profile Now) but a new look of its own: every Custom Profile setting drawn at random within the ranges the
+	// named profiles use (so it is never harsher than they are: nothing flashes), the profile set to Custom, and the
+	// colours re-rolled now. The result stays on the Custom Profile rows, where it can be kept or changed.
+	void RandomizeLook()
+	{
+		SetI("rsqgd_c_floor_mode", random[RSQGDLook](0, 2));
+		SetI("rsqgd_c_ceil_mode", random[RSQGDLook](0, 2));
+		SetI("rsqgd_c_palette", random[RSQGDLook](RSQGD_Profiles.FIRST_NAMED, RSQGD_Profiles.Count() - 1));
+		SetI("rsqgd_floor_r", random[RSQGDLook](25, 255)); SetI("rsqgd_floor_g", random[RSQGDLook](25, 255)); SetI("rsqgd_floor_b", random[RSQGDLook](25, 255));
+		SetI("rsqgd_ceil_r", random[RSQGDLook](25, 255)); SetI("rsqgd_ceil_g", random[RSQGDLook](25, 255)); SetI("rsqgd_ceil_b", random[RSQGDLook](25, 255));
+		SetF("rsqgd_c_jitter", frandom[RSQGDLook](0.0, 0.3));
+		SetF("rsqgd_c_strength", frandom[RSQGDLook](0.8, 1.6));
+		SetF("rsqgd_c_floor_gain", frandom[RSQGDLook](0.3, 1.5));
+		SetF("rsqgd_c_ceil_gain", frandom[RSQGDLook](0.3, 1.5));
+		int shape = random[RSQGDLook](0, 5);
+		SetI("rsqgd_c_shape", shape);
+		// each pulse shape's rate within the named profiles' own range for it (cycles a minute)
+		static const int RLO[] = { 0, 3, 40, 20, 1, 5 };
+		static const int RHI[] = { 0, 30, 60, 90, 6, 20 };
+		SetF("rsqgd_c_rate", shape == 0 ? 10.0 : double(random[RSQGDLook](RLO[shape], RHI[shape])));
+		SetF("rsqgd_c_depth", shape == 0 ? 0.3 : frandom[RSQGDLook](0.2, 0.6));
+		SetI("rsqgd_c_liquid", random[RSQGDLook](0, 2));
+		SetI("rsqgd_profile", 0);
+		// the cvars written here are read back from the next tics on: the new look is built then (WorldTick)
+		randomizeAt = Level.maptime + 2;
+	}
+	void RandomizeApply()
+	{
+		randomizeAt = 0;
+		CacheSettings();
+		Reroll();
+		if (I("rsqgd_debug", 0) > 0)
+			Console.Printf("[RSQGD] randomized look (tic %d): profile %d floor mode %d ceil mode %d palette %d floor %02X%02X%02X ceil %02X%02X%02X shape %d rate %.0f depth %.2f strength %.2f gains %.2f/%.2f jitter %.2f liquid %d",
+				Level.maptime, I("rsqgd_profile", 2), I("rsqgd_c_floor_mode", 0), I("rsqgd_c_ceil_mode", 0), I("rsqgd_c_palette", 4),
+				I("rsqgd_floor_r", 0), I("rsqgd_floor_g", 0), I("rsqgd_floor_b", 0), I("rsqgd_ceil_r", 0), I("rsqgd_ceil_g", 0), I("rsqgd_ceil_b", 0),
+				I("rsqgd_c_shape", 0), F("rsqgd_c_rate", 10), F("rsqgd_c_depth", 0.3), F("rsqgd_c_strength", 1),
+				F("rsqgd_c_floor_gain", 1), F("rsqgd_c_ceil_gain", 1), F("rsqgd_c_jitter", 0), I("rsqgd_c_liquid", 0));
+	}
+	static void SetI(String n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); }
+	static void SetF(String n, double v) { let c = CVar.FindCVar(n); if (c) c.SetFloat(v); }
 
 	void LevelUp(Actor who, String from = "")
 	{

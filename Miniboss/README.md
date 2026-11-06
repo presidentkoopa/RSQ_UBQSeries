@@ -81,7 +81,8 @@ Then the set piece itself:
 - **Effects**: the original Minibosses!' art, in each set piece's own colour: a BFG ball over each thrall, plasma beads
   along its link, BFG and plasma bursts when a link breaks, life orbs circling the boss (the last one swells with its
   health), flames while it is invulnerable; red sparks over enraged monsters. The IWAD's sprites drawn by a small pooled
-  set of VisualThinkers (Effects Density sets the beads, flames and the cap), only within 4000 units of you.
+  set of VisualThinkers, only within 4000 units of you. Each link is the original's own trail: 30 plasma beads from
+  thrall to miniboss, moved every tic, at every density (Effects Density sets the flames and the cap).
 - Sounds are Doom's own: a BFG burst for a lost life, a fireball pop for a thrall, the Icon of Sin's roar for the rage.
 
 **Counts as a boss** (each on its own switch; the engine's boss flag is never set)
@@ -132,7 +133,7 @@ Then the set piece itself:
 | Bossfight Kill Gives a Life | On | Killing a Bossfight's miniboss gives you one RSQ Score extra life (needs RSQ Score). |
 | Call It In: Watch Check + Use | On | Off: a full meter's fight only comes by itself. |
 | Effects | On | Links, orbs, flames, teleport fog and sparks. Per player. |
-| Effects Density | Low | Low (Quest-safe), Medium, High: beads a link, flames, and the cap on effects drawn. Per player. |
+| Effects Density | Low | Low (Quest-safe), Medium, High: flames and the cap on effects drawn (links always use the original's 30 beads). Per player. |
 | *Fight* | | |
 | Thralls | 3 | Thralls per miniboss, 1 to 8. |
 | Lives | 3 | Lives in all. |

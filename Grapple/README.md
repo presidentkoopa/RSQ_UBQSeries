@@ -12,7 +12,7 @@ All of it is ZScript on stock QuestZDoom 17.3. No engine changes.
 
 ## Standout feature: climbing the rope hand over hand
 
-Set the wall hook to Rope (or turn on Swing and Momentum), fire at a high ledge and hang. Reach up with an empty
+Turn on Swing and Momentum, fire at a high ledge and hang. Reach up with an empty
 hand, hold Grab Rope and pull down. Your body rises by exactly how far your hand moved. Let go, reach up with the
 other hand, take hold, pull again. Push down to lower yourself. Both hands can hold the rope at once, and the climb
 follows their average, so it stays smooth. Only an empty hand takes hold: a climb never takes a gun out of your
@@ -26,14 +26,14 @@ mantle up and over.
   your eye instead.
 - **OG wall hook (default):** jpalomo's fling. The claw bites and throws you toward it in one burst; your momentum
   carries you on.
-- **Rope wall hook:** the rope pulls you straight to the claw and you stop there, hanging if you are in the air.
-  Hold to reel in, tap to let go.
+- **Rope wall hook:** the rope pulls you straight to the claw at jp_grapple's speed (the distance / 12 map units a tic,
+  so any gap takes about a third of a second) and lets go the moment you arrive. None of the pull's speed is kept.
 - **Swing and Momentum (optional, off):** a real pendulum. Hang, swing, pump with the stick, keep your speed when
   you let go or land.
 - Fire a second time while the claw is still flying to call it back.
 - **Hook Thump:** a thump in your hand when the claw bites or the rope catches you.
 
-**On the rope (Rope mode or Swing on)**
+**On the rope (Swing on; Wraps Corners also in Rope mode)**
 - **Climb hand over hand** with a free hand on Grab Rope. Both hands at once.
 - **Mantle:** hanging under a lip, push the stick forward to go up and over.
 - **Rope wraps corners:** swing past a corner and the rope bends round it instead of snapping.
@@ -67,9 +67,9 @@ mantle up and over.
 2. **First swing (OG):** point at a wall across a gap and press Fire Hook. The claw bites and flings you toward
    it. Aim a little high to clear the gap.
 3. **Pull monsters:** fire at an imp. It is thrown to your feet. Heavy monsters pull you to them instead.
-4. **Try the rope:** set Wall Hook to Rope. Fire at a ledge above you. The rope pulls you up and you hang. Hold
-   the button to reel in, tap it to drop. Reach up with an empty hand, hold Grab Rope and pull down to climb.
-   Push the stick forward under the lip to mantle.
+4. **Try the rope:** set Wall Hook to Rope. Fire at a ledge above you. The rope pulls you up fast and lets go when
+   you get there. To hang, turn on Swing and Momentum: hold the button to reel in, tap it to drop, reach up with an
+   empty hand, hold Grab Rope and pull down to climb, push the stick forward under the lip to mantle.
 5. **Master the swing:** turn on Swing and Momentum. Fire at a ceiling, step off a ledge and lean into the swing
    with the stick. Let go at the top of the arc to fly. Pull the stick back to calm it down.
 
@@ -79,8 +79,8 @@ mantle up and over.
 |---|---|---|
 | Fire hook | Fire Hook (Main) or Fire Hook (Off) | Fires from that controller along where it points. No default bind. |
 | Recall a miss | Press again while the claw is flying | |
-| Reel in | Hold the fire bind while latched | Rope or Swing mode. Holding from the shot reels at once. |
-| Let go | Tap the fire bind (release within 8 tics) while latched | Rope or Swing mode. |
+| Reel in | Hold the fire bind while latched | Swing mode. Holding from the shot reels at once. |
+| Let go | Tap the fire bind (release within 8 tics) while latched | Swing mode (or Rope mode, before you arrive; it lets go by itself on arrival). |
 | Climb | Hold Grab Rope with an empty hand touching the rope, pull down; push up to lower | Within 16 map units of the rope. Distance Grab's binds also work. |
 | Pump a swing | Movement stick | Swing mode, in the air. |
 | Calm a swing | Stick pulled back past half | |
@@ -94,9 +94,9 @@ Grab Rope (Off). Left-handed play works: the engine's left-handed scheme swaps w
 ## Menu
 
 Options → Radiant Silvergun Options → RSQ Grapple. One page; the raw numbers are on **Test and Debug**; **Reset All**
-at the foot resets both. Greyed rows keep their setting but do nothing in the current mode: the Rope rows need Wall
-Hook "Rope" or Swing and Momentum on (OG makes no rope); Calm Swing, Slack Rope Lets Go and Keep Momentum need Swing
-and Momentum; the Monsters rows need their Monster Hook mode; the Whip rows need Whip Instead of Hook. With RSQ Gun
+at the foot resets both. Greyed rows keep their setting but do nothing in the current mode: Wraps Corners needs Wall
+Hook "Rope" or Swing and Momentum on (OG makes no rope); the climbing rows, Mantle, Calm Swing, Slack Rope Lets Go and
+Keep Momentum need Swing and Momentum (the Rope wall hook lets go on arrival, so it is never hung from); the Monsters rows need their Monster Hook mode; the Whip rows need Whip Instead of Hook. With RSQ Gun
 Bonsai VR loaded the page's top line reads "GunBonsaiOVR detected. Mod features unlocked via upgrades." and Grapple
 and Swing and Momentum stay greyed until their nodes (Grapple, Momentum) are learned. Learning one turns its row on;
 the row can still turn it off.
@@ -104,7 +104,7 @@ the row can still turn it off.
 | Row | Default | What it does |
 |---|---|---|
 | Grapple | On | The hook is available. With Gun Bonsai VR: once its Grapple node is learned. |
-| Wall Hook | OG | OG: a one-off fling toward the claw. Rope: pulled to the claw, then hang. |
+| Wall Hook | OG | OG: a one-off fling toward the claw. Rope: pulled to the claw at jp_grapple's speed, let go on arrival. |
 | Swing and Momentum | Off | The swinging rope that keeps your speed, whatever Wall Hook says. With Gun Bonsai VR: once its Momentum node is learned. |
 | Range | 780 | How far the claw reaches, map units. |
 | Hook Thump | On | A thump in the hand on a bite or a catch. |

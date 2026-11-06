@@ -13,10 +13,10 @@
 //     of our own (the IWAD's sprites are looked up as textures). They sit on a NON-TICKING statnum: the engine never
 //     ticks them; one driver after every actor has moved places them, setting Prev and Pos itself (glyphs.zs' fixed
 //     Put: the parameter is not named "prev", or it hides the field).
+//   - The tethers are the original's in full (30 beads a link, every tic): owner 1.0 #3 (11-06).
 //   - A small pool, capped by Effects Density, spawned once per map and reused: nothing is spawned or destroyed per tic.
 //     The cap is the hard cap on effects drawn in the map. A free slot is Alpha 0 (the renderer skips it).
-//   - Trail beads are placed only every few tics (Prev = Pos: they never interpolate); balls, orbs and flames that move
-//     every tic are placed every tic. A frame's texture is written only when the frame changes.
+//   - Everything shown is placed every tic, interpolated. A frame's texture is written only when the frame changes.
 //   - Only set pieces within Effects Range of you are drawn.
 //   - The pool's sprites are thinkers, so a savegame carries them (at most the cap); after a load they are adopted
 //     again, not leaked.
@@ -68,11 +68,13 @@ class RSQMB_FxPool play
 	static const int    TICS[] = { 5, 5, 5, 2, 5, 5, 5, 2 };
 	static const int    LOOP[] = { 1, 1, 1, 0, 0, 0, 0, 0 };
 
-	// Effects Density: Low (Quest-safe, the default) / Medium / High
-	static const int BEADS[] = { 4, 8, 14 };       // beads per link (the original: 30)
+	// The tether is the ORIGINAL's at every density (owner 1.0 #3, 11-06: "use the miniboss art from the OG mod, not
+	// the weak ass dotted tethers"): mbos_thralldensity 30 APLS beads a link, boss to thrall, placed every tic and
+	// interpolated (the original's WARPF_INTERPOLATE), so it reads as a solid chain, never a few dots.
+	const BEADS = 30;
+	// Effects Density: Low (Quest-safe, the default) / Medium / High: the flames and the cap only
 	static const int FLAMES[] = { 6, 10, 16 };     // invulnerability flames (the original: 20)
-	static const int CAP[] = { 80, 140, 220 };     // most effects drawn in the map at once
-	static const int EVERY[] = { 4, 3, 2 };        // beads placed every n tics
+	static const int CAP[] = { 280, 320, 380 };    // most effects drawn in the map at once (8 thralls x 30 beads fit at Low)
 
 	Array<RSQMB_Fx> pool;
 	Array<RSQMB_FxShot> shots;
@@ -202,6 +204,14 @@ extend class RSQMB_Handler
 		return a.pos + (cos(ang) * r, sin(ang) * r, 0);
 	}
 
+	// Bead j of n on a link, exactly where the original warped it: from the boss's middle (j = 0) toward the thrall's
+	// feet plus the boss's half height, in n even steps (minibosscontroller.txt: incr = (thrall.pos - a.pos) / n).
+	static Vector3 BeadPos(Actor boss, Actor th, int j, int n)
+	{
+		Vector3 d = level.Vec3Diff(boss.pos, th.pos) / double(max(1, n));
+		return boss.pos + (0, 0, boss.height * 0.5) + d * j;
+	}
+
 	// ---- the events (boss.zs, handler.zs call these) ---------------------------------------------
 	void FxBreak(RSQMB_Boss b, Actor th)
 	{
@@ -209,10 +219,8 @@ extend class RSQMB_Handler
 		if (!b.mb || !UseSprites()) { if (b.mb) b.Shatter(RSQMB_Boss.Mid(th), RSQMB_Boss.Mid(b.mb)); return; }
 		int cap = RSQMB_FxPool.CAP[fxDensity];
 		fxp.Shot(th.pos + (0, 0, th.height), RSQMB_FxPool.SQ_BREAK, b.col, (0.5, 0.5), 0.5, cap);
-		Vector3 a = RSQMB_Boss.Mid(th);
-		Vector3 d = level.Vec3Diff(a, RSQMB_Boss.Mid(b.mb));
-		int nb = RSQMB_FxPool.BEADS[fxDensity];
-		for (int j = 1; j <= nb; j++) fxp.Shot(a + d * (j / double(nb + 1)), RSQMB_FxPool.SQ_BEADX, b.col, (1, 1), 0.3, cap);
+		int nb = RSQMB_FxPool.BEADS;
+		for (int j = 0; j < nb; j++) fxp.Shot(BeadPos(b.mb, th, j, nb), RSQMB_FxPool.SQ_BEADX, b.col, (1, 1), 0.3, cap);
 	}
 
 	void FxLifeLost(RSQMB_Boss b)
@@ -257,8 +265,7 @@ extend class RSQMB_Handler
 		let view = players[consoleplayer].mo;
 		if (fxOn && view)
 		{
-			int d = fxDensity, cap = RSQMB_FxPool.CAP[d], nb = RSQMB_FxPool.BEADS[d], nf = RSQMB_FxPool.FLAMES[d];
-			int every = RSQMB_FxPool.EVERY[d];
+			int d = fxDensity, cap = RSQMB_FxPool.CAP[d], nb = RSQMB_FxPool.BEADS, nf = RSQMB_FxPool.FLAMES[d];
 			int t = level.maptime;
 			for (int bi = 0; bi < bosses.Size(); bi++)
 			{
@@ -275,16 +282,9 @@ extend class RSQMB_Handler
 					if (!th || b.thrState[i] != RSQMB_Boss.ST_ALIVE) continue;
 					int ki = kb | (i << 10);
 					fxp.Show(self, ki, th.pos + (0, 0, th.height + 4 + 4 * sin(t * 8.0)), true, true, RSQMB_FxPool.SQ_BALL, t, b.col, (0.5, 0.5), 0.5, cap);
-					Vector3 a = RSQMB_Boss.Mid(th);
-					Vector3 dl = level.Vec3Diff(a, bm);
-					bool due = (t + i) % every == 0;
-					for (int j = 1; j <= nb; j++)
-					{
-						// not due and no new frame: the bead stays as it is, untouched (no call at all)
-						int bk = ki | (nb << 5) | j;
-						if (!due && t % 5 != 0 && fxp.used < fxp.pool.Size() && fxp.pool[fxp.used].key == bk) { fxp.used++; continue; }
-						fxp.Show(self, bk, a + dl * (j / double(nb + 1)), false, due, RSQMB_FxPool.SQ_BEAD, t, b.col, (1, 1), 0.3, cap);
-					}
+					// the original's trail: 30 APLS beads (scale 1, alpha 0.3), every tic, interpolated
+					for (int j = 0; j < nb; j++)
+						fxp.Show(self, ki | (1 << 9) | j, BeadPos(b.mb, th, j, nb), true, true, RSQMB_FxPool.SQ_BEAD, t, b.col, (1, 1), 0.3, cap);
 				}
 				// lives: one orb a life, circling; the last one full and swelling with the boss's health (as the original)
 				for (int l = 0; l < b.lives && l < 31; l++)

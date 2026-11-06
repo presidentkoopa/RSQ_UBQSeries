@@ -464,8 +464,13 @@ class RSQGR_Core : EventHandler
 			let o = hooks[pmo.PlayerNumber() * 2 + (1 - h.hand)];
 			if (o && o != h && o.phase == RSQGR_Hook.PH_LATCH && !o.heavy) LetGo(o, false);
 		}
+		// THE PULL'S SPEED IS JP'S (owner 1.0 #27, 11-06: "it needs to be faster, like its inspiration mod"): his
+		// Hook_HitWall thrusts the player distance / 12 units a tic at once (ThrustThing f_Distance / 12, no clamp),
+		// so he crosses any gap in about 12 tics. The rope pulls at that speed from the first tic, straight at the claw.
+		h.pullTop = max(1.0, h.ropeLen / 12.0 * RSQGR_Perks.Factor(pmo, 'reel'));
+		h.pullSpeed = h.pullTop;
 		h.SetPhase(RSQGR_Hook.PH_LATCH);
-		Log(h, "latch");
+		Log(h, String.Format("latch %.1f from the claw: pull %.1f u/tic", h.ropeLen, h.pullTop));
 	}
 
 	// ---- THE OG: jpalomo's jp_grapple, number for number ---------------------------------
@@ -911,16 +916,16 @@ class RSQGR_Core : EventHandler
 	// ---- the pull (Swing and Momentum off, the default) ---------------------------
 	//
 	// THE OG HOOK: fire, bite, and the rope reels you straight to where it bit. No pendulum, no slack, no
-	// speed kept after it. Each tic the rope SETS his velocity (never adds to it), straight at the claw,
-	// building up by PULL_ACCEL a tic to the reel's own top (rsqgr_reel_speed x 1.5, the cap a held reel
-	// already had; Swing Feel and Fast Reel scale it) and slowing into the stop, so the engine's own move
-	// carries it out with its own collision, and the stick does nothing meanwhile.
+	// speed kept after it. Each tic the rope SETS his velocity (never adds to it), straight at the claw, at
+	// jp_grapple's own speed from the first tic (owner 1.0 #27, 11-06): the distance at the bite / 12 units a
+	// tic, his Hook_HitWall thrust, so any gap takes about 12 tics (Fast Reel scales it); it slows only into the
+	// stop, so the engine's own move carries it out with its own collision, and the stick does nothing meanwhile.
+	// (Until 11-06: building up by 3 a tic to rsqgr_reel_speed x 1.5 = 18 u/tic, then hanging at the claw.)
 	// It stops when the rope's body point is rsqgr_min_len from the claw, or when he can get no closer
-	// (a wall face, a monster's body, a floor): PULL_STALL tics without PULL_GAIN units nearer. Stopped on a
-	// floor, the rope lets go by itself; stopped in the air, he HANGS there on a rope of that length, still,
-	// until a tap lets go (with the ledge hop near a wall's top, as ever). Hanging, a held press takes the
-	// rope in and a hand on the rope climbs it, along the rope's line (no swing).
-	const PULL_ACCEL = 3.0;
+	// (a wall face, a monster's body, a floor): PULL_STALL tics without PULL_GAIN units nearer. Stopped, the
+	// rope LETS GO by itself, in the air or on a floor (owner 1.0 #27: "let go as soon as i get to where i've
+	// hooked into"), keeping none of the pull's speed (LetGo, as before). The code below the arrival (hanging,
+	// reel, climb, mantle on a pull rope) is only reached again if that is ever made an option.
 	const PULL_STALL = 4;
 	const PULL_GAIN = 0.5;
 
@@ -985,11 +990,17 @@ class RSQGR_Core : EventHandler
 				h.arrived = true;
 				h.ropeLen = clamp(d, minLen, maxLen);
 				h.pullSpeed = 0;
-				Log(h, String.Format("arrive %.1f from the claw%s", d, grounded ? ", on the floor: lets go" : ", hangs"));
-				if (grounded) LetGo(h, false);
+				// ARRIVED: the rope lets go at once, in the air or on the floor (owner 1.0 #27, 11-06: "i want to let go
+				// as soon as i get to where i've hooked into"). LetGo keeps today's rule for a rope without Swing and
+				// Momentum: none of the pull's speed is kept. Hanging, climbing and the mantle are Swing and Momentum's.
+				Log(h, String.Format("arrive %.1f from the claw at t%d%s: lets go", d, level.maptime, grounded ? ", on the floor" : ", in the air"));
+				LetGo(h, false);
 				return true, (0, 0, 0);
 			}
-			h.pullSpeed = min(h.pullSpeed + PULL_ACCEL, top);
+			// jp's speed (Latch) from the first tic; Twin Lines 2's fling may raise it
+			double ptop = h.pullTop > 0 ? h.pullTop : top;
+			if (level.maptime < h.slingUntil) ptop = max(ptop, top);
+			h.pullSpeed = ptop;
 			double s = min(h.pullSpeed, d - minLen);
 			if (h.phaseAge % 2 == 0) Log(h, "pull");
 			return true, n * s;

@@ -39,7 +39,8 @@ OptionValue "RSQGR_RopeStyles"
 
 // Rope-only rows are RSQGRWhen rows (zscript/rsqgr/menurows.zs): greyed while Wall Hook is OG and Swing and
 // Momentum is off, the only case in which no rope is ever made (0.99a bug 19). Monster rows grey the same way
-// outside the Monster Hook mode they belong to.
+// outside the Monster Hook mode they belong to. Since 11-06 (owner 1.0 #27) the Rope wall hook lets go when it arrives,
+// so only the swing rope is ever hung from: climbing and mantle rows grey without Swing and Momentum.
 OptionMenu "RSQGR_Options"
 {
 	Title "RSQ GRAPPLE"
@@ -55,12 +56,12 @@ OptionMenu "RSQGR_Options"
 	Option "Score Stunts", "rsqgr_score", "OnOff"
 	StaticText " "
 	StaticText "Rope", 1
-	RSQGRWhen "Rope Climbing", "rsqgr_climb", "OnOff", "rope"
-	RSQGRWhen "Two Hands on Rope", "rsqgr_two_hands", "OnOff", "rope"
-	RSQGRWhen "Empty Hand Only", "rsqgr_climb_free_only", "OnOff", "rope"
-	RSQGRWhen "Grab Keys Hold Rope", "rsqgr_grab_dg", "OnOff", "rope"
+	RSQGRWhen "Rope Climbing", "rsqgr_climb", "OnOff", "swing"
+	RSQGRWhen "Two Hands on Rope", "rsqgr_two_hands", "OnOff", "swing"
+	RSQGRWhen "Empty Hand Only", "rsqgr_climb_free_only", "OnOff", "swing"
+	RSQGRWhen "Grab Keys Hold Rope", "rsqgr_grab_dg", "OnOff", "swing"
 	RSQGRWhen "Wraps Corners", "rsqgr_wrap", "OnOff", "rope"
-	RSQGRWhen "Mantle Over Ledges", "rsqgr_mantle", "OnOff", "rope"
+	RSQGRWhen "Mantle Over Ledges", "rsqgr_mantle", "OnOff", "swing"
 	RSQGRWhen "Calm Swing", "rsqgr_calm", "OnOff", "swing"
 	RSQGRWhen "Slack Rope Lets Go", "rsqgr_slack_letgo", "OnOff", "swing"
 	RSQGRWhen "Keep Momentum", "rsqgr_momentum", "OnOff", "swing"
