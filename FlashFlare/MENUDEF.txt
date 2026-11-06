@@ -46,15 +46,15 @@ OptionMenu "RSQFF_Options"
 	StaticText "Flashlight", "Gold"
 	Option "Flashlight", "rsqff_fl_on", "OnOff"
 	Option "Show Flashlight", "rsqff_show_torch", "OnOff"
-	Option "Beam Size", "rsqff_fl_size", "RSQFF_BeamSize"
-	Option "Beam Colour", "rsqff_fl_color", "RSQFF_BeamColour"
+	Option "Beam Size", "rsqff_fl_size", "RSQFF_BeamSize", "rsqff_fl_style", 0, 1
+	Option "Beam Colour", "rsqff_fl_color", "RSQFF_BeamColour", "rsqff_fl_style", 0, 1
 	Option "Beam Quality", "rsqff_fl_quality", "RSQFF_BeamQuality"
 	Slider "Beam Length (m)", "rsqff_fl_cone_m", 1, 15, 1, 0
 	Option "Beam Hotspot", "rsqff_fl_hot", "OnOff"
 	Option "Show Cone", "rsqff_fl_cone", "OnOff"
 	Option "Light Style", "rsqff_fl_style", "RSQFF_LightStyle"
-	Option "DarkDoomZ Type", "rsqff_fl_ddz_type", "RSQFF_DdzType"
-	Option "DarkDoomZ Spill Light", "rsqff_fl_ddz_spill", "OnOff"
+	Option "DarkDoomZ Type", "rsqff_fl_ddz_type", "RSQFF_DdzType", "rsqff_fl_style", 0, 0
+	Option "DarkDoomZ Spill Light", "rsqff_fl_ddz_spill", "OnOff", "rsqff_fl_style", 0, 0
 	Option "Turn Off DarkDoomz Light", "rsqff_fl_ddz", "OnOff"
 	Option "DarkDoomZ Flashlight Takes Over", "rsqff_fl_ddz_take", "OnOff"
 	StaticText " "
