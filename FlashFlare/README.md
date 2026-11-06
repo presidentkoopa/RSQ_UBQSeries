@@ -7,6 +7,10 @@ Status: 0.99 — played and confirmed working in the headset; refinement and bug
 
 New since the headset pass (tested on the rig, headset check pending): the flashlight, the RSQ Tactical Rig flare holster, the voxel flare box.
 
+New on 11-06 (rig only, not headset-confirmed): the trigger-only grenade-style throw; flares that hurt and burn
+monsters; lying flares for RSQ Distance Grab; Shoot Out Flares; the DarkDoomZ Light Style and DarkDoomZ Flashlight
+Takes Over.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes.
 
 **Dynamic lights must be on** in the engine's video settings. The flare's and the flashlight's light are real dynamic
@@ -35,8 +39,7 @@ and the throw is measured against your body, so walking and turning never count 
 - Burns 60 seconds by default, in your hand or on the floor, and dies away over its last two seconds.
 - Burnt out in your hand, the spent flare drops. A spent flare lies dark for 10 seconds, then is gone.
 - Thrown like RSQ Grenade: hold the off-hand trigger, swing, let go. Let go with the hand still and it stays in your hand.
-  The grip does nothing to a lit flare (trigger only, as the grenade). Until 11-06 a grip press dropped it at your
-  feet mid wind-up: that was why it could not be thrown.
+  The grip does nothing to a lit flare (trigger only, as the grenade).
 - Thrown flares bounce off floors, walls and monsters, then lie burning. A flying flare that hits a monster does a little
   damage (4). With Brutal Doom loaded it also sets the monster on fire with Brutal Doom's own Fire damage (3 every 6 tics
   for 5 s, 90 in all: the burn alone kills an imp, Brutal Doom's 80-health one too, so Brutal Doom plays its own burning pain and death): zombiemen, shotgunners, chaingunners, SS, imps and their
@@ -142,11 +145,11 @@ here is a Gun Bonsai VR upgrade.
 | Beam Colour | Warm White | Warm White, the series' 17 colours, or Random (a new one each time you switch it on) |
 | Beam Quality | Quest | Quest: range 448, one-layer beam, trace every 2nd tic. PCVR: 640, two layers, a little dust. High: 896, more dust |
 | Beam Length (m) | 4 | How far the visible cone reaches before it fades out (1-15). The light itself still reaches the whole range. |
-| Show Cone | On | The visible tapered cone (and its dust); off, the light alone |
-| Light Style | FnF | FnF: the rows above. DarkDoomZ: DarkDoomZ's flashlight light, rewritten to come from our flashlight's lens (its types and spill light; the Beam Size / Colour rows then do nothing) |
-| DarkDoomZ Type | Halogen | Incandescent, Halogen, LED or Red Filter: DarkDoomZ's own colours, angles and reach |
-| DarkDoomZ Spill Light | On | On: DarkDoomZ's Fancy (a beam light plus a wider, dimmer spill light). Off: its Simple (one light) |
 | Beam Hotspot | Off | A soft glow sprite where the beam lands. Off: the spot light alone shows it. |
+| Show Cone | On | The visible tapered cone (and its dust); off, the light alone |
+| Light Style | FnF | FnF: the rows above. DarkDoomZ: DarkDoomZ's flashlight light, rewritten to come from our flashlight's lens (its types and spill light; Beam Size and Beam Colour grey out) |
+| DarkDoomZ Type | Halogen | Incandescent, Halogen, LED or Red Filter: DarkDoomZ's own colours, angles and reach (greyed on FnF) |
+| DarkDoomZ Spill Light | On | On: DarkDoomZ's Fancy (a beam light plus a wider, dimmer spill light). Off: its Simple (one light) (greyed on FnF) |
 | Turn Off DarkDoomz Light | On | While yours is on, DarkDoomz's flashlight is switched off with its own toggle |
 | DarkDoomZ Flashlight Takes Over | Off | With DarkDoomZ loaded, our flashlight stands down (no clip, nothing to take, one in your hand goes back) and DarkDoomZ's own flashlight is the only one. Without DarkDoomZ it changes nothing |
 | Reset All | | Every setting on both pages back to default |
@@ -172,7 +175,7 @@ Runs alone. It finds the others by name:
   torch with its beam), shown wherever those mods picture the item in your hand (Gun Bonsai VR's status screen; the
   Wheel's card, when a mod puts them in a weapon slot). Seen on the status screen on the rig only, not
   headset-confirmed; the Wheel card not seen.
-- **DarkDoomz**: its flashlight is switched off with its own toggle while yours is on (Stands Down row). Its darkness
+- **DarkDoomz**: its flashlight is switched off with its own toggle while yours is on (Turn Off DarkDoomz Light). Its darkness
   is left alone. With "DarkDoomZ Flashlight Takes Over" on, ours stands down instead and DarkDoomZ's works as it ships
   (found by its item's name; DarkDoomZ itself is never changed). Rig only (with a stand-in for DarkDoomZ's item): the real
   DarkDoomZ was not loaded here.

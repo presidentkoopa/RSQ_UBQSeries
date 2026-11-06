@@ -5,6 +5,8 @@ headset, and monsters that burst into health, armour and ammo when they die.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New on 11-06 (rig only, not headset-confirmed): Bits Vanish As (Blink Out / Fade Out).
+
 Flat-screen damage numbers and HUD banners smear across your lenses in VR. Everything here is placed in the world
 instead: at the monster, at your wrist, or standing in front of you like a sign. All on stock QuestZDoom 17.3, in
 ZScript alone. No engine changes.

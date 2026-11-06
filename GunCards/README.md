@@ -4,6 +4,10 @@ Holographic ammo cards that live on your guns, and a status card on your wrist w
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New on 11-06 (rig only, not headset-confirmed): a card on every weapon; No Background; Card Glow; wider small-card
+sliders; the looser watch check (RSQ Accessibility's Watch Check Twist, 35 degrees). Per-gun card spots: boots clean, not
+rig-tested.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. Everything here is ZScript and data. No engine
 changes.
 
@@ -53,7 +57,7 @@ built as a voxel with its place on the wrist baked in.
 - Ermac's Force Unleashed holo panels, each gun its own colour by weapon slot.
 - Or one colour for every card, or colour by ammo type: bullets gold, shells red, rockets orange, cells cyan, fuel
   green.
-- Glass, glow or solid.
+- Glass, glow, solid, or no background (only the text). Card Glow keeps the cards lit in the dark (off by default).
 - Key icons from BD_VoxelPack's own key models when it is loaded.
 - Text Quality: Quest (lighter) or PCVR (full resolution).
 

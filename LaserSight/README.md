@@ -4,6 +4,9 @@ A laser on every gun in both hands. The beam comes out of the gun's own barrel, 
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New on 11-06 (rig only, not headset-confirmed): Dot Only on Enemies; the beam bent along the grenade arc (Arc With
+Beam, on); Beam Look (PCVR's living beam on the arc).
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. Everything here is ZScript and data. No engine
 changes.
 
@@ -38,9 +41,11 @@ the exact spot it will land.
 - Glow: a soft bloom, a real dynamic light, or both.
 - Swims on water, slime, lava and blood; glints on metal.
 - With BD22 VR Reloaded: traced down that mod's own bore line, so it matches where its guns really fire.
+- Optional (off): Dot Only on Enemies, the dot shown only on a live hostile monster.
 
 **Learned from each gun**
-- Grenade arc: once a gun has thrown a gravity projectile, it shows the flight path and the landing spot.
+- Grenade arc: once a gun has thrown a gravity projectile, it shows the flight path and the landing spot, with the beam
+  bent along it (Arc With Beam, on).
 - Spread ring (optional, off by default): an ellipse at the dot showing where this gun's shots land, learned from
   its own shots.
 - Range readout (optional, off by default): the distance to what you are aiming at, by the gun or at the dot, in
@@ -130,7 +135,7 @@ A colour row is greyed while the switch it belongs to is off.
 | Headshot Pulse | On | The headshot colour pulses rather than holding. |
 | **Extras** | | |
 | Grenade Arc | On | Guns that throw a projectile show its arc once they have fired. |
-| Arc With Beam | On | The beam as well as the arc's dots, bent along the arc (since 11-06; it was a straight line). On by default since 11-06. |
+| Arc With Beam | On | The beam as well as the arc's dots, bent along the arc (since 11-06; it was a straight line). |
 | Spread Ring | Off | A ring at the dot showing this gun's learned spread. |
 | Show Range | Off | Off, By the Gun, or At the Dot. |
 | Range Units | Metres | Metres, Feet or Map Units. |

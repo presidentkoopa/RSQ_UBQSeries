@@ -6,6 +6,12 @@ Status: 0.99 — played and confirmed working in the headset; refinement and bug
 
 New since the headset pass (tested on the rig, headset check pending): the whip and flare holsters, the ammo pouch, the items always shown on the body and in the mirror, the torso following room turns.
 
+New on 11-05 (code only, not rig-tested, not headset-confirmed): the cigarette's slow motion at full speed, its 5-30 s
+slider, cigarettes earned by RSQ Score points, minibosses refilling the pocket.
+
+New on 11-06 (rig only, not headset-confirmed): the keyring appears with your first key; Keys Open Doors by off-hand
+trigger or a raise; Holster Lock with RSQ Wheel.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. Built on
 Ermac's idea, his Virtual Tactical Vest for Doom VR, with new code that reads your real controller poses.
 
@@ -92,7 +98,8 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 
 **Ermac's cigarette** (optional tribute, off by default)
 - A pocket of cigarettes on your chest. Put one in your mouth, light it with the Zippo in your off hand, smoke,
-  flick it away, and the world drops into slow motion (with RSQ SlowMo loaded).
+  flick it away, and the world drops into slow motion (with RSQ SlowMo loaded) while you move at full speed.
+- With RSQ Score, every N points can earn a cigarette; with RSQ Miniboss, killing a miniboss refills the pocket.
 
 ## How To Play
 
@@ -194,7 +201,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Recenter Torso | | Bind the recenter key |
 | **Cigarettes** | | |
 | Cigarettes | Off | Ermac's cigarette pocket |
-| Smoke Slows Time | On | RSQ SlowMo when the cigarette is flicked (its Real-Time Countdown bar shows how long is left) |
+| Smoke Slows Time | On | RSQ SlowMo when the cigarette is flicked (with SlowMo's Adrenaline off, its countdown bar shows how long is left) |
 | Smoke Slow-Mo Time (s) | 6 | How long that slow motion lasts (5-30 s) |
 | Move at Full Speed While Smoking | On | You are not slowed in the smoke's slow motion (needs this RSQ SlowMo or newer) |
 | Cigarette Every N Score (0 Off) | 0 | With RSQ Score, every this many points earns one cigarette, up to the Pack Size |

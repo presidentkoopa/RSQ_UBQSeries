@@ -6,6 +6,10 @@ teleport in where you can see them, and you choose how to take them apart.
 Status: 0.99 — the set piece was played and confirmed working in the headset; the **Bossfight** (called-in fights,
 11-05) is new and **rig only, not headset-confirmed**.
 
+New on 11-06 (rig only, not headset-confirmed): the original Minibosses! tether trail (30 plasma beads a link, at about
+half the old cost); Ignore Spawn Restrictions. Since 11-05 (code only, not rig-tested): a
+killed miniboss refills RSQ Tactical Rig's cigarettes.
+
 RSQ is a series of VR mods for stock QuestZDoom 17.3, built in ZScript alone with no engine changes. RSQ Miniboss is a
 rebuild of Tartlman's Minibosses! with new rules, and it reads monsters by their health, never their class name, so it
 works the same on Doom's monsters, Brutal Doom's and most monster packs.
@@ -15,11 +19,11 @@ works the same on Doom's monsters, Brutal Doom's and most monster packs.
 No miniboss is picked when a level loads any more. You earn it.
 
 - **The meter** sits under RSQ Score's bar, smaller than Score and centred under its bar (never wider than it, at any Text
-  Size or screen shape), above RSQ SlowMo's countdown bar and Score's combo rows. It fills most from
+  Size or screen shape), above RSQ SlowMo's two bars and Score's combo rows. It fills most from
   RSQ Score's style points (style bonuses and combos), then kill chains (kills within 3 seconds), Gun Bonsai XP, and
   slowly from time spent pushing into the map. Without RSQ Score each kill counts for more. It is kept from map to map.
-- **How it looks**: coldcite's Top HP Bars block bar lying down, the same rim, well and size as RSQ SlowMo's countdown bar
-  (which takes the meter's size and place while both show, its hourglass straight under the skull) and the side gauges' style, with a crowned skull at its left. Red while it fills (the skull lights up from the jaw as it does),
+- **How it looks**: coldcite's Top HP Bars block bar lying down, the same rim and well as RSQ SlowMo's countdown bar
+  (SlowMo's bars span the meter's row while both show) and the side gauges' style, with a crowned skull at its left. Red while it fills (the skull lights up from the jaw as it does),
   with a band of light running through it.
 - **Full**, it tells you without words: a sting, the bar turns gold and comes alive (the band runs gold, the bar and the
   skull swell with a slow beat, a glint crosses it every few seconds), and (with RSQ Glow In The Dark) the map's glow
@@ -180,7 +184,7 @@ Then the set piece itself:
 | Gun Bonsai XP Fill | 0.20 | Meter points per Gun Bonsai XP point. |
 | Score Per Tier | 4000 | This map's score that raises the tier by one. |
 | Show Meter | On | The meter on the HUD. Per player. |
-| Meter Size | 1.5 | Its size. Per player. RSQ SlowMo's countdown bar under it takes the same size while the meter shows. |
+| Meter Size | 1.5 | Its size. Per player. RSQ SlowMo's two bars under it span the meter's row while the meter shows. |
 | *Classic* | | |
 | Classic Pick at Level Load | Off | The old way: a miniboss chosen from the level's monsters at the start. |
 | Per Map | 1 | Classic: minibosses per level, 0 to 4. |
@@ -207,7 +211,8 @@ Then the set piece itself:
   greed rule and chains).
 - **RSQ Score**: its style points fill the meter most (unless Fills From is Gun Bonsai); the meter sits under its bar and its combo rows go below; Thrall
   Slow Kill, Miniboss, Greedy and Bossfight rows; a Bossfight's miniboss killed gives one extra life.
-- **RSQ SlowMo**: the landing and each thrall kill slow the world; its countdown bar sits under the meter.
+- **RSQ SlowMo**: the landing and each thrall kill slow the world; its two bars sit under the meter. A heavy hit from a
+  miniboss or thrall can set off SlowMo's Heavy Hit Slowdown (every heavy hit during a Bossfight).
 - **RSQ Glow In The Dark**: the heartbeat while the meter is full; the map's glow takes the miniboss's colour while it lives.
 - **RSQ Gun Bonsai VR** (with Gun Bonsai): XP fills the meter (unless Fills From is Score); the player level raises the tier.
 - **RSQ Accessibility (Gestures), RSQ Gun Cards**: their watch-check reader is used first when loaded.

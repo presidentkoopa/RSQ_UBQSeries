@@ -5,6 +5,8 @@ into combos.
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New on 11-06 (rig only, not headset-confirmed): Letters (Uniform / Wave / Chaos), replacing Letter Wave.
+
 RSQ Score is ijon's *Dakka* point system rebuilt in ZScript for stock QuestZDoom 17.3, then grown to fit what
 your hands can do in VR. It watches the whole RSQ series: the saber, the ShieldSaw, the whip, the grappling
 hook, Distance Grab, the gloves, the grenades, the holsters and slow motion. Nothing links to anything. Score
@@ -192,8 +194,8 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
   shares of the kill's base (Thrall Slow Kill, Miniboss, Greedy, and **Bossfight**, 2 x, for a called-in miniboss). RSQ
   Miniboss's Bossfight meter reads each kill's style points and sits under the bar; the bonus list goes below it.
 - **RSQ SlowMo:** big moments and the optional hit-stop use its slow motion. Slow motion you started pays the
-  full Stretched Second share. Automatic slow motion pays half, and Score's own pays none. SlowMo's Real-Time
-  Countdown bar sits under Score's bar, and the breakdown moves down to make room.
+  full Stretched Second share. Automatic slow motion pays half, and Score's own pays none. SlowMo's two bars
+  (stored slow-mo and countdown) sit under Score's bar, and the breakdown moves down to make room.
 - **RSQ Accessibility:** Text Size scales the whole display and the wrist digits. Colour-blind play swaps each
   family to colours made for that vision and adds the family's letter (E, S, D, M, C) beside each row. The
   reward bar also shows a life pip when a life is next. Photosensitive Mode dims flashes to 40%, limits them to 2.5 a second and holds the label still.

@@ -6,6 +6,9 @@ The world slows down. You don't. Enemy bullets turn into rounds you can watch co
 
 New since the headset pass (tested on the rig, headset check pending): the Real-Time Countdown bar.
 
+New on 11-06 (rig only, not headset-confirmed): the two bars (stored slow-mo and countdown) with the cause line under
+the countdown; Heavy Hit Slowdown; the Grenade Blast and Over-Under Blast triggers; Reload When.
+
 Stock QuestZDoom 17.3 has no world clock that a mod can slow. This mod builds one in ZScript. Every monster,
 missile, gib and sound near you is time-dilated, not frozen. Each one still moves every frame, just by less,
 so slow motion stays smooth in a headset instead of stuttering. Your head and hands always run in real time.
@@ -48,7 +51,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 - An optional 4-second burst on the wrist cross instead of a toggle.
 - Other mods can start it: opening the RSQ Wheel, a Melee shove, the Tactical Rig cigarette, a Saber perfect parry, a ShieldSaw perfect block, Score's big kills, Miniboss's slow window and Gun Bonsai VR perks.
 - Every trigger has its own on/off switch. Automatic triggers wait out a 25-second cooldown so they don't fire all the time. The ones you start yourself are never held back.
-- More automatic triggers, each off by default (owner 11-06): **Grenade Blast** (Brutal Doom's hand grenade or RSQ Grenade's, yours; 3 seconds), **Over-Under Blast** (the 40 mm under BD22 VR's Rifle and Machinegun, `ShortGrenade`; the same Blast Time), and **Reload When: Always / Low Health** (Low Health At, 25 by default). (The Low Health trigger added the same morning is gone, owner 11-06.)
+- More automatic triggers, each off by default (owner 11-06): **Grenade Blast** (Brutal Doom's hand grenade or RSQ Grenade's, yours; 3 seconds), **Over-Under Blast** (the 40 mm under BD22 VR's Rifle and Machinegun, `ShortGrenade`; the same Blast Time), and **Reload When: Always / Low Health** (Low Health At, 25 by default).
 - **Heavy Hit Slowdown** (on, owner 11-06; rig only, not headset-confirmed). One hit (everything you take in one tic) of at least Heavy Hit Size (75% of your max health by default) slows the world for 3 seconds, you with it. It fires when the hit came from a LegenDoom legendary, a Champions champion, RSQ Miniboss's miniboss or one of its thralls, a boss (Doom's BOSS flag) or a big demon (Cyberdemon, Spider Mastermind, Baron of Hell, Hell Knight, Mancubus, Arch-Vile, Revenant, and Brutal Doom's and XMVE's versions of them). Or, whatever hit you, when one of four extras is true (each its own row, on): **Arch-Vile Blast** (an Arch-Vile's flame attack), **Blasted Off Your Feet** (the hit throws you up: your vertical speed rises by 10 map units a tic or more; a jump is about 7.4), **Hit From Behind** (the attacker is more than 60 degrees off where your head faces) and **Armour Broken** (the hit takes your last armour). Never on a hit that kills you. Its cooldown: Once per 20 s, Once per 60 s, Use Shared (the automatic cooldown the other triggers share) or No Limit (default); during a Bossfight every heavy hit fires.
 - Optional and off by default: **Close-Call** (a rocket or fireball about to hit you up close sets off a short slow) and **Reload Slowdown** (a reload buys a moment of slow motion).
 
@@ -58,8 +61,8 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 - With too little in the meter you get a short buzz and the player "oof".
 
 **On the HUD**
-- **Two bars (2026-11-06; rig only, not headset-confirmed).** Under Score (and under Miniboss's Bossfight meter) sit two bars side by side. LEFT, the **stored slow-mo bar** (the old charge bar, back): with Adrenaline on, it is the meter, filling as you earn and draining while you spend; dim below Adrenaline: To Start (a white tick marks that line). Its hourglass has black trim. RIGHT, the **countdown bar**, now shown ONLY while the game slowed time by itself (an automatic trigger: Miniboss, Score, Gun Bonsai VR, close call, reload, grenade blast, over-under blast, heavy hit, other mods); its hourglass has brown trim. **Under it, one short line says what caused it** (owner 11-06; Miniboss's wait-line look), and goes with the bar: HEAVY HIT: <the monster's name> (e.g. HEAVY HIT: CYBERDEMON), ARCH-VILE BLAST, BLASTED, HIT FROM BEHIND, ARMOUR BROKEN, GRENADE BLAST, OVER-UNDER BLAST, RELOAD, CLOSE CALL, MINIBOSS, SCORE, GUN BONSAI, OTHER MOD, or another mod's own name when it uses the named door. **With Adrenaline off, your own slow motion shows the countdown bar and its line too** (owner 11-06): SLOW MOTION (your key or the Accessibility button), WRIST CROSS, WHEEL, SHOOTDODGE, BURST, CIGARETTE, SHOVE, PARRY, BLOCK, BOSSFIGHT (Miniboss's landing). With Adrenaline on, your own slow motion spends the stored bar instead and shows no countdown. One bar alone is centred; when the other appears the pair glides so both are centred. The pair is never wider than Score's bar; while the Bossfight meter shows, the pair spans exactly its row. With Adrenaline on, your own slow motion (key, wrist cross, Wheel, shootdodge, cigarette, shove, parry, block) shows no countdown.
-- **Countdown Bar (before 11-06).** A horizontal bar, green by default, for every slow motion, whatever started it: your key, wrist cross, burst, Wheel or shootdodge, a kill moment or shove, the cigarette, a parry, Miniboss's Bossfight landing or window, a close call, any other mod. It starts full and drains over that slow motion's real seconds, reaching zero just as time catches up (the ease out included). A burst lasts its 4 s (longer with Gun Bonsai VR's Longer); another mod's slow motion lasts what it asked for. Held on with Adrenaline on, it shows the time the meter has left, so it is also your adrenaline readout while held; held on with Adrenaline off, it drains over your Slow Motion Length (6 s by default). A shootdodge without Adrenaline has no set length (it ends when you land), so the bar sits full until then. A new or longer slow motion refills it smoothly with a glint. It sits under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded), smaller than Score and centred under it, with a pixel-art hourglass at its left; while Miniboss's meter shows, the two bars line up. Without Score, it goes where Score's bar would be.
+- **Two bars (2026-11-06; rig only, not headset-confirmed).** Under Score (and under Miniboss's Bossfight meter) sit two bars side by side. LEFT, the **stored slow-mo bar** (the old charge bar, back): with Adrenaline on, it is the meter, filling as you earn and draining while you spend; dim below Adrenaline: To Start (a white tick marks that line). Its hourglass has black trim. RIGHT, the **countdown bar**, shown while the game slowed time by itself (an automatic trigger: Miniboss, Score, Gun Bonsai VR, close call, reload, grenade blast, over-under blast, heavy hit, other mods); its hourglass has brown trim. **Under it, one short line says what caused it** (owner 11-06; Miniboss's wait-line look), and goes with the bar: HEAVY HIT: <the monster's name> (e.g. HEAVY HIT: CYBERDEMON), ARCH-VILE BLAST, BLASTED, HIT FROM BEHIND, ARMOUR BROKEN, GRENADE BLAST, OVER-UNDER BLAST, RELOAD, CLOSE CALL, MINIBOSS, SCORE, GUN BONSAI, OTHER MOD, or another mod's own name when it uses the named door. **With Adrenaline off, your own slow motion shows the countdown bar and its line too** (owner 11-06): SLOW MOTION (your key or the Accessibility button), WRIST CROSS, WHEEL, SHOOTDODGE, BURST, CIGARETTE, SHOVE, PARRY, BLOCK, BOSSFIGHT (Miniboss's landing). With Adrenaline on, your own slow motion (key, wrist cross, Wheel, shootdodge, cigarette, shove, parry, block) spends the stored bar instead and shows no countdown. One bar alone is centred; when the other appears the pair glides so both are centred. The pair is never wider than Score's bar; while the Bossfight meter shows, the pair spans exactly its row.
+- **How the countdown runs.** Green by default. It starts full and drains over that slow motion's real seconds, reaching zero just as time catches up (the ease out included). A burst lasts its 4 s (longer with Gun Bonsai VR's Longer); another mod's slow motion lasts what it asked for. Your own slow motion held on (Adrenaline off) drains over your Slow Motion Length (6 s by default). A shootdodge has no set length (it ends when you land), so the bar sits full until then. A new or longer slow motion refills it smoothly with a glint. The bars sit under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded), each with a pixel-art hourglass at its left. Without Score, they go where Score's bar would be.
 - **Color Drain** (optional, off by default). Colours fade out while time is slowed.
 
 ## How To Play
@@ -115,7 +118,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Shot Trails | On | Your shots leave a fading trail in slow motion. |
 | Missile Wakes | On | Slowed missiles leave a faint wake. |
 | Stored Slow-Mo Bar | On | The adrenaline meter as a bar left of the countdown (needs Adrenaline on). |
-| Countdown Bar | On | The bar that counts down an automatic slow motion to real time. |
+| Countdown Bar | On | The bar that counts down an automatic slow motion to real time (your own too, with Adrenaline off), with the cause line under it. |
 | Bar Animation | On | The bar's sweeping band, breathing edge and refill glint. |
 | Bar Colour | Green | 17 colours, or Random (a new one each time it appears). |
 | **Your Triggers** (a switch only stops a start, never a stop) | | |
@@ -180,7 +183,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Smooth Range | 1024 | Map units from you that walkers are smoothed. |
 | Smooth Walkers | 12 | How many of the nearest walkers are smoothed. |
 | Colour Drain Amount | 0.35 | How much colour goes at full depth. |
-| Bar Size | 1.5 | Size of the countdown bar (never wider than Score's bar). While RSQ Miniboss's meter shows, the bar matches the meter's size instead. |
+| Bar Size | 1.5 | Size of the two bars (the pair never wider than Score's bar). While RSQ Miniboss's meter shows, the pair spans the meter's row instead. |
 | Debug Log | Off | Print every trigger to the console: its name, when, and what happened. |
 
 ## Works with
@@ -189,7 +192,7 @@ RSQ SlowMo runs on its own. It finds the other mods by name at run time and link
 
 - **RSQ Score:** a big kill can ask for a short slow-motion moment, or an optional hit-stop. Score pays a
   share of a kill's style when it lands in slow motion (full for slow motion you started, half for automatic,
-  none for Score's own). The countdown bar slots in under Score's bar (and under RSQ Miniboss's Bossfight meter) and moves Score's bonus list below it.
+  none for Score's own). The two slow-mo bars slot in under Score's bar (and under RSQ Miniboss's Bossfight meter) and move Score's bonus list below them.
 - **RSQ Wheel:** opening the Wheel slows time while you pick.
 - **RSQ Melee, RSQ Tactical Rig, RSQ Saber, RSQ ShieldSaw, RSQ Miniboss:** the shove, the cigarette, the
   perfect parry, the perfect block and the miniboss window each start slow motion, each with its own switch.

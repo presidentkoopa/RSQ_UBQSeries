@@ -4,7 +4,10 @@ Turn your palm out at anything across the room, flick your wrist, and it flies i
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
-New since the headset pass (tested on the rig, headset check pending): throws that follow through and never drop at your feet, FnF flares can be grabbed, off-hand guns equipped every time (D40); Kill Rewards bits are never grabbed; the throw measured against the frame your headset drew, so walking and stairs are no throw.
+New since the headset pass (tested on the rig, headset check pending): Kill Rewards bits are never grabbed; the throw measured against the frame your headset drew, so walking and stairs are no throw.
+
+New on 11-06 (rig only, not headset-confirmed): throws that follow through, never drop at your feet while walking and
+never go backwards; RSQ FnF flares can be grabbed; a gun caught in the off hand is equipped there every time.
 
 Gravity-glove grabbing for Doom in VR, built on stock QuestZDoom 17.3 in ZScript alone. No buttons in the
 gesture: your palm is the trigger. Pull ammo, health, keys and guns to you, catch them out of the air, carry a

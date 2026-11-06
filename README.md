@@ -3,8 +3,9 @@
 Nineteen VR mods for Doom on stock QuestZDoom 17.3 PCVR or Mobile: holsters on your body, a real lightsaber, a simulated bullwhip, a
 grenade you pin with your teeth, a world you can slow down, and a dozen more, all built in ZScript alone.
 
-Status: 0.99 — every mod played and confirmed working in the headset; the newest additions are tested on the rig with a
-headset check pending (each mod's README lists them). A full headset pass takes the series to 1.0.
+Status: 0.99 — every mod played and confirmed working in the headset. The newer additions, the 1.0 round of 11-06
+included, are rig only, not headset-confirmed (each mod's README lists them). A full headset pass takes the series to
+1.0.
 
 Project directed and coordinated by presidentkoopa, with ideas and assets from Ermac and the people credited below.
 
@@ -67,6 +68,10 @@ which); nothing breaks without it.
 
 Every mod's settings live in **Options → Radiant Silvergun Options**, one page per mod. No console commands needed.
 
+Also in [pk3/](pk3/): `RSQ_Graveyard.pk3`, presidentkoopa's RSQ Edition of m8f's Graveyards (GPLv3): a gravestone
+where you died, kept between sessions, animated and candle-lit. Its settings are under Radiant Silvergun Options →
+RSQ Graveyards. It is not one of the nineteen and needs none of them.
+
 ## The mods
 
 **[RSQ Tactical Rig](TacticalRig/README.md)** (RSQ_TacticalRig.pk3)
@@ -98,7 +103,8 @@ catches a beam so you can swing across the room.
 
 **[RSQ Grenade](Grenade/README.md)** (RSQ_Grenade.pk3)
 A hand grenade you work like a real one: pull the pin with your other hand or your teeth, cook it, throw it with your
-own arm. Eight grenade types. Shoot it out of the air. (With BD22 VR Reloaded, its own grenade takes over.)
+own arm. Eight grenade types. Shoot it out of the air. (With BD22 VR Reloaded, its own grenade takes over, unless Replace
+Brutal Doom's Grenade is on.)
 
 **[RSQ FnF (Flash and Flare)](FlashFlare/README.md)** (RSQ_FnF.pk3)
 A road flare you pull from your chest and strike with a flick of the wrist, and a flashlight clipped to your chest
@@ -161,7 +167,9 @@ more than 170 new upgrades built around what you do with your body. Needs ToxicF
 - **JohnnyDoom**'s UAC Survival Pack (with Froon, Saegiru, Pa1nki113r, and saegiru's Emergency Flare): the grenade's
   and the flare's sounds, sprites and rules.
 - **Moses C. Nah, MIT Newman Lab**: the whip model's numbers (BSD 3-Clause).
-- **Caligari87**'s DarkDoomZ, which Glow In The Dark and the flashlight work alongside; **Bullet Time X** (Xortts),
+- **Caligari87**'s DarkDoomZ (zlib), which Glow In The Dark works alongside and whose flashlight FnF's DarkDoomZ light
+  style is rewritten from; **m8f**'s Graveyards (GPLv3), carried in its RSQ Edition; **Jakie** (SnakieJakie)'s More
+  Lights, merged into Glow In The Dark's glowing flats; **Bullet Time X** (Xortts),
   which SlowMo only recognises by name so the two don't compound; **li-gnrcwpn** (the saber remote's beep); the
   ColorfulMaps and GlowingLiquids authors behind Glow In The Dark 1.1; and every author named in each mod's README
   and CREDITS file.

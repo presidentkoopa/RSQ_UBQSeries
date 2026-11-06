@@ -5,6 +5,8 @@ more than 170 new upgrades built around what you do with your body.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New on 11-06 (not boot-checked: Gun Bonsai isn't on the test rig; not headset-confirmed): HUD Colour Cycle per hand.
+
 Gun Bonsai (by ToxicFrog) levels up your weapons as you use them. It was made for one gun at a time. In VR you hold two,
 throw punches, swing sabers, throw grenades and grab monsters by the throat. This patch teaches Gun Bonsai all of that,
 on stock QuestZDoom 17.3, in ZScript alone. No engine changes.

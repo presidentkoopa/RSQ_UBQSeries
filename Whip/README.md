@@ -5,7 +5,10 @@ pulls them to you, and catches a beam so you can swing across the room.
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
-New since the headset pass (tested on the rig, headset check pending): Hand on the Handle, the coiled whip in RSQ Tactical Rig's whip holster, Whip Swing Reach up to 60 m.
+New since the headset pass (tested on the rig, headset check pending): Hand on the Handle, the coiled whip in RSQ Tactical Rig's whip holster, the aimed swing's reach up to 60 m.
+
+New on 11-06 (rig only, not headset-confirmed): one Whip Reach for everything (20 m by default); Switches First; the
+crack, an edge snag and a swing latch work switches and doors.
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes.
 
@@ -25,7 +28,7 @@ let go at the top with all your speed.
 
 **The whip weapon** (slot 1, in either hand)
 - Always out while it is in your hand: swing it and it cracks.
-- Hold the trigger and point: a mark shows the target, switches, keys and powerups nearby first. Crack, and the whip
+- Hold the trigger and point: a mark shows the target, switches, keys and powerups first (Switches First, on). Crack, and the whip
   flies out to it. Alt fire moves the mark to the next target. Lift the hand for the crack and the mark stays.
 - Wrapped round a monster, it swings with your arm at the rope's length and smashes the monster into others (keep the
   trigger held). Pull back hard and you yank it: light monsters fly to you, heavier ones stagger, and past a certain
@@ -79,7 +82,7 @@ let go at the top with all your speed.
 | Action | How (VR) | Notes |
 |---|---|---|
 | Crack | Snap the forearm or flick the wrist | The tip must pass the crack speed |
-| Mark a target | Hold the whip hand's trigger and point | Switches, keys and powerups within Whip Reach first |
+| Mark a target | Hold the whip hand's trigger and point | Within Whip Reach; switches, keys and powerups first while Switches First is on |
 | Next target | Whip hand's alt fire | |
 | Send the whip to the mark | Crack while marked | |
 | Swing a wrapped monster | Keep the trigger held and swing your arm | |

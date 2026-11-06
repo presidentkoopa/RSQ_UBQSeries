@@ -4,6 +4,9 @@ One menu that makes the whole Radiant Silvergun Quest series playable your way: 
 
 Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
 
+New since the headset pass (rig only, not headset-confirmed): the gesture reader folded in from RSQ Gestures (11-05);
+the looser watch check, Watch Check Twist 35 degrees (11-06, was 45).
+
 RSQ is a series of VR mods for stock QuestZDoom 17.3, built in ZScript alone with no engine changes. This pk3 holds
 the settings every series mod reads. Each mod keeps its own behaviour when this pk3 is absent, and nothing changes until
 you change a setting here.
@@ -135,7 +138,7 @@ you read. Left and right hands are mirrored correctly.
 
 **One hand**
 - **Punch:** jab, hook or uppercut, named from how an empty hand travelled against the way you face.
-- **Shove:** the same swing with a gun in hand, one hand or two. Never counted as a punch.
+- **Shove:** the same swing with a gun in hand, one hand or two (named "gun-butt shove" on screen). Never counted as a punch.
 - A swing with a blade (axe, sword, chainsaw) is neither. A braced two-hand gun or both hands driving the same
   way together is never a punch.
 

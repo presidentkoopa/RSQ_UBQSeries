@@ -7,6 +7,8 @@ Status: 0.99 — played and confirmed working in the headset; refinement and bug
 
 New since the headset pass (tested on the rig, headset check pending): shooting thrown grenades and the Shot Grenade Reach slider, the teeth pin pull measured from your real eyes, grenade types without Gun Bonsai.
 
+New on 11-06 (rig only, not headset-confirmed; not yet tried with BD22 VR): Replace Brutal Doom's Grenade (off).
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. On plain Doom 2
 it adds its own grenade. With Brutal Doom 22 VR Reloaded loaded it stands down completely and BD22 VR's own grenade
 takes over, unless Replace Brutal Doom's Grenade is on.
@@ -63,7 +65,7 @@ Changed your mind before cooking it? Take the ring again with your other hand an
 ## How To Play
 
 1. Add RSQ_Grenade.pk3 to your load order and play in VR. Skip it if you play with BD22 VR Reloaded: its grenade does
-   all of this already.
+   all of this already (or turn on Replace Brutal Doom's Grenade to use this one instead).
 2. Select the grenade from slot 9 (or grab it from the RSQ Tactical Rig's belt spot).
 3. Hold your main trigger. Bring your off hand to the top of the grenade, pull the off-hand trigger, and draw the hand
    away. You feel the pin go.
@@ -101,7 +103,7 @@ the types you have learned, Frag Only the frag alone).
 |---|---|---|
 | **Grenades** | | |
 | Grenades | On | The whole mod (it stands down with BD22 VR Reloaded unless the next row is on) |
-| Replace Brutal Doom's Grenade | Off | With BD22 VR Reloaded loaded, this grenade stays and BD22 VR's own stands down (needs the BD22 VR side's matching switch, which reads this setting by name) |
+| Replace Brutal Doom's Grenade | Off | With BD22 VR Reloaded loaded, this grenade stays and BD22 VR's own stands down (BD22 VR 2.0.3y reads this setting by name; its own "Use RSQ Grenade Instead" row does the same) |
 | Start With | 3 | Grenades at a new game, or after dying (0-8) |
 | Grenades in Levels | On | Grenades beside each map's items |
 | Singles a Map | 4 | Most singles a map |
@@ -131,7 +133,7 @@ Runs alone on plain Doom 2. It finds the others by name:
   there, and glows in the colour of the type in your hand.
 - **RSQ SlowMo**: thrown grenades slow with the world (unless SlowMo is set to leave your own missiles in real time);
   Only in Slow Motion and Faster Grenades in Slow Motion read it.
-- **RSQ Weapon Wheel** fans out the types you own; **RSQ Gun Cards** shows the fuse count with the Cook Sense upgrade;
+- **RSQ Wheel** fans out the types you own; **RSQ Gun Cards** shows the fuse count with the Cook Sense upgrade;
   **RSQ Score** scores teeth pulls, shot grenades and impact bursts.
 - **Gun Bonsai + RSQ Gun Bonsai VR**: the grenade levels like a weapon, with its own tree: the types, Short Fuse, Cook
   Sense, Teeth, Strong Arm, Flat Arc, Bounce, Sticky, Skeet, Skeet Window, Big Bang, Cluster, Bandolier and Scavenger.

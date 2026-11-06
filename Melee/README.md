@@ -7,6 +7,9 @@ Status: 0.99 — played and confirmed working in the headset; refinement and bug
 
 New since the headset pass (tested on the rig, headset check pending): the hands measured against the frame your headset drew, so walking and strafing never swing a punch, a shove or a guard.
 
+New on 11-06 (rig only, not headset-confirmed): punches and the shove work switches and doors; Uppercut Kicks Barrels;
+the new hit sparks (the Capcom vs. SNK 2 sparks are gone).
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It needs no
 other mod and works on plain Doom 2.
 
@@ -151,8 +154,9 @@ Runs alone. It finds the others by name:
 - **BD22 VR Reloaded**: the shove stands down for BD22 VR's own butt strike (the slow-mo beat still follows its hits);
   Melee Hands use its FBX hand and skin tone. Its fists punch (main hand, and the off hand while it is free). With
   BD22 VR's own VR Punching on, its blow does the damage and Melee adds the rest (which punch, the knock, the
-  uppercut's lift, the Headlock's moves), so a swing never hits twice. With a Brutal Doom fist, the trigger tap that
-  opens your palm also throws that fist's own trigger punch.
+  uppercut's lift, the Headlock's moves), so a swing never hits twice. BD22 VR's No Trigger Punch (on by default,
+  2.0.3y) means the trigger tap that opens your palm throws no canned punch; with it off, or with Brutal Doom without
+  BD22 VR, the tap also throws that fist's own trigger punch.
 - **Brutal Doom**: the shove plays Brutal Doom's swing and kick sounds, and its monsters react to the kick themselves.
 - **RSQ Distance Grab**: a monster thrown out of the Headlock flies through its throw code; the two share the grip.
 - **RSQ Accessibility (its gesture reader)**: reads both hands for Ground Pound and Clear Out when it is loaded; without it Melee reads them with its own copy of that two-hand reader (the same moves and numbers).
@@ -160,7 +164,7 @@ Runs alone. It finds the others by name:
 - **RSQ Score**: the Headlock combo, the F.E.A.R. Effect award, returned missiles.
 - **RSQ Tactical Rig**: the Headlock waits while your off hand is in a holster.
 - **RSQ Accessibility**: rumble strength, seated play and the Off-Hand Modifier apply.
-- **RSQ Grapple, RSQ Weapon Wheel**: the shove stays quiet on the rope or with the wheel open.
+- **RSQ Grapple, RSQ Wheel**: the shove stays quiet on the rope or with the wheel open.
 - **RSQ Wheel, RSQ Gun Bonsai VR**: the gloves have their own icon (a red boxing glove) on the Wheel's card and Gun
   Bonsai VR's status screen, whichever look the hands wear (not yet seen on the rig or in the headset).
 

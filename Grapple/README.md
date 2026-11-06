@@ -5,8 +5,11 @@ to your feet.
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New on 11-06 (rig only, not headset-confirmed): the Rope wall hook pulls at jp_grapple's speed and lets go when you
+arrive; hanging, climbing and mantling are Swing and Momentum's.
+
 Two hooks, one per controller, each fired along the exact line your hand points. Out of the box it plays like
-jpalomo's classic jp_grapple, rebuilt number for number. Switch modes and it becomes a full rope: hang from it,
+jpalomo's classic jp_grapple, rebuilt number for number. Turn on Swing and Momentum and it becomes a full rope: hang from it,
 swing on it, pump it with the stick, climb it hand over hand, wrap it round corners and mantle over ledges.
 All of it is ZScript on stock QuestZDoom 17.3. No engine changes.
 

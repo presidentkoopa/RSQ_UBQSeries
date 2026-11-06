@@ -7,6 +7,8 @@ Status: 0.99 — played and confirmed working in the headset; refinement and bug
 
 New since the headset pass (tested on the rig, headset check pending): the whole rewrite: everything on this page.
 
+New on 11-06 (rig only, not headset-confirmed): Randomize Current Look; More Lights' glowing flats merged in.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It is the
 owner's Glow In The Dark 1.1 (2021), rebuilt from scratch in ZScript and taken as far as the stock engine goes.
 
