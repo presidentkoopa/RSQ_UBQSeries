@@ -243,6 +243,8 @@ Runs alone on any load order. It finds the rest by name:
   empty off hand gets BD22 VR's hands; off-hand draws use its off-hand gun copies.
 - **RSQ Grenade**: without Brutal Doom's grenade, the spot hands out RSQ Grenade's, and glows in the colour of the
   kind in your hand.
+- **RSQ SlowMo** (new on 11-06, rig only, not headset-confirmed): getting up from DOWN (REVIVE) puts one cigarette
+  back in the pocket, up to the Pack Size, while Cigarettes is on.
 - **RSQ Saber**: the two saber spots appear, and holster and draw both hilts.
 - **RSQ ShieldSaw**: its shield hangs on this torso and turns with it; its Recenter key recenters both. The off
   shoulder is left to the stowed shield.

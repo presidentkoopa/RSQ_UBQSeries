@@ -1,0 +1,187 @@
+version "4.14"
+// TEST ONLY. Never ships. RSQ SlowMo's DOWN / REVIVE (owner's approved design, design/NEAR_DEATH.md) on the rig, the full
+// load order, in ONE run (dn_mode 1). Every line starts T_ for grep. It links the RSQ classes it reads (test only: it is
+// loaded with all of them). The timeline (tics from the start, real time):
+//   A  t40 lethal hit -> DOWN; t45 a lethal hit in the grace; t60 / t90 / t110 three kills -> REVIVE (medkit at t64, touched t80)
+//   B  t190 a Score life; t200 a lethal hit in DOWN's cooldown -> no DOWN, the Score life is spent
+//   C  t320 Repeat Without Limit (after Score's 95-tic revival guard); t322 a Score life; t335 lethal -> DOWN; no kills ->
+//      the window ends -> the Score life
+//   D  t700 lethal -> DOWN (no lives); t750 a lethal hit after the grace -> DOWN fails -> dead
+// For legible 480 frames (test only): vr_hud_scale 0.55 (the rig's 0.25 draws the HUD ~190 px wide) and Number Size 4.
+class RSQSMD_Probe : EventHandler
+{
+	Array<Actor> z;
+	int t0;
+	bool started;
+	Actor medkit;
+	static clearscope int Mode() { let c = CVar.FindCVar("dn_mode"); return c ? c.GetInt() : 0; }
+	static void SetF(String n, double v) { let c = CVar.FindCVar(n); if (c) c.SetFloat(v); else Console.Printf("T_NOCVAR %s", n); }
+	static void SetI(String n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); else Console.Printf("T_NOCVAR %s", n); }
+
+	Actor Near(Vector3 at)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a, best;
+		double bd = 1e9;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bISMONSTER || !a.bCOUNTKILL || a.health <= 0 || a.player || z.Find(a) < z.Size()) continue;
+			double d = (a.pos.xy - at.xy).Length();
+			if (d < bd) { bd = d; best = a; }
+		}
+		return best;
+	}
+	Service Svc(String n)
+	{
+		let it = ServiceIterator.Find(n);
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == n) return s;
+		return null;
+	}
+	void Report(int t, String why)
+	{
+		let pmo = players[consoleplayer].mo;
+		let d = RSQSM_Down.Get();
+		let c = RSQSM_Clock.Get();
+		let sc = Svc("RS_ScoreService");
+		int n = consoleplayer;
+		Console.Printf("T_STATE t%d (maptime %d) %s: health %d, DOWN %d (kills %d/%d, %d tics left, cooldown %d tics), buddha flag %d cheat %d, world scale %.2f target %.2f, his speed x%.2f, Score lives %d",
+			t, level.maptime, why, pmo.health, d.downOn[n], d.kills[n], d.need[n], d.Left(n), max(0, d.coolUntil[n] - level.maptime),
+			pmo.bBUDDHA, (players[n].cheats & CF_BUDDHA) ? 1 : 0, c.scale, c.target, c.meK[n], sc ? sc.GetInt("lives", "", 0, 0, pmo) : -9);
+	}
+	void Hit(int t, Actor src, int hp, int dmg, String why)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (hp > 0) pmo.A_SetHealth(hp);
+		Console.Printf("T_HIT t%d %s: health %d, %d from %s", t, why, pmo.health, dmg, src ? String.Format("%s", src.GetClassName()) : "nothing");
+		pmo.DamageMobj(src, src, dmg, 'None');
+		Console.Printf("T_AFTER t%d health %d", t, pmo.health);
+	}
+	void Kill(int t, int i)
+	{
+		let pmo = players[consoleplayer].mo;
+		Actor a = i < z.Size() ? z[i] : null;
+		if (!a) { Console.Printf("T_KILL t%d monster %d: none", t, i); return; }
+		Console.Printf("T_KILL t%d monster %d: %s \"%s\" health %d, by the player", t, i, a.GetClassName(), a.GetTag(), a.health);
+		a.DamageMobj(pmo, pmo, a.health + 50, 'None');
+		Console.Printf("T_KILLED t%d health now %d", t, a.health);
+	}
+	void Inv(int t, String why)
+	{
+		let pmo = players[consoleplayer].mo;
+		static const String names[] = { "RifleAmmo", "Clip2", "BDPistolAmmo", "Clip1", "ShotgunAmmo", "AmmoShell", "RSQTR_CigPack", "GrenadeAmmo", "RSQGN_Ammo" };
+		String s = "";
+		for (int i = 0; i < names.Size(); i++)
+		{
+			class<Inventory> ic = names[i];
+			let it = ic ? pmo.FindInventory(ic) : null;
+			s = s .. String.Format(" %s=%s", names[i], it ? String.Format("%d/%d", it.Amount, it.MaxAmount) : "-");
+		}
+		String w = "";
+		for (let it = pmo.Inv; it; it = it.Inv) if (it is "Weapon") w = w .. " " .. it.GetClassName();
+		Console.Printf("T_INV t%d %s:%s | weapons:%s", t, why, s, w);
+	}
+	void Rows(int t)
+	{
+		let pmo = players[consoleplayer].mo;
+		let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
+		let tr = RS_ScoreTracker(pmo.FindInventory("RS_ScoreTracker"));
+		if (!h || !tr) { Console.Printf("T_ROWS t%d no Score", t); return; }
+		String s = "";
+		for (int r = 0; r < h.rowName.Size(); r++)
+			if ((h.rowName[r] ~== "Down" || h.rowName[r] ~== "Revive" || r == 0) && r < tr.rowValue.Size())
+				s = s .. String.Format(" [%d %s = %d, tic %d]", r, h.rowName[r], tr.rowValue[r], r < tr.rowTic.Size() ? tr.rowTic[r] : -1);
+		Console.Printf("T_ROWS t%d score %d:%s", t, tr.displayScore, s);
+	}
+	void SetAmmo(String n, int v) { let pmo = players[consoleplayer].mo; class<Inventory> c = n; if (c) pmo.SetInventory(c, v); }
+
+	ui int frames;
+	override void RenderOverlay(RenderEvent e)
+	{
+		frames++;
+		if (Mode() != 0) Console.Printf("T_FRAME %d maptime %d", frames, level.maptime);
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		let pmo = p.mo;
+		if (Mode() != 1) return;
+		if (!started) { started = true; t0 = level.maptime; Console.Printf("T_START maptime %d", t0); }
+		int t = level.maptime - t0 + 1;
+		Vector2 fwd = (cos(pmo.angle), sin(pmo.angle));
+		if (t == 5)
+		{
+			SetI("rsqsm_debug", 1); SetI("rs_score_debug", 1); SetI("rsqgd_debug", 1);
+			SetI("rsqsm_down", 1); SetI("rsqsm_down_kills", 3); SetI("rsqsm_down_window", 6); SetI("rsqsm_down_cool", 60);
+			SetI("rsqsm_down_repeat", 0); SetI("rsqsm_down_redmap", 1); SetI("rsqsm_down_drops", 1);
+			SetI("rsqtr_cig", 1); SetI("rsqthp_dmg", 1); SetI("rsqthp_dmg_gains", 1); SetI("rsqsm_cdbar", 1);
+			SetF("rsqthp_dn_size", 4.0);   // (vr_hud_scale 0.55 comes from dn.sh: an engine setting cannot be set from play code)
+		}
+		Vector2 side = (fwd.y, -fwd.x);
+		static const double SD[] = { 150, 150, 150, 150, 230, 230 };
+		static const double SL[] = { -105, -35, 35, 105, -50, 50 };
+		if (t == 8)
+			for (int i = 0; i < 6; i++) Actor.Spawn("ZombieMan", (pmo.pos.xy + fwd * SD[i] + side * SL[i], pmo.floorz), ALLOW_REPLACE);
+		if (t == 30)
+		{
+			Console.Printf("T_PLAYER at %.0f %.0f angle %.0f", pmo.pos.x, pmo.pos.y, pmo.angle);
+			for (int i = 0; i < 6; i++)
+			{
+				let a = Near((pmo.pos.xy + fwd * SD[i] + side * SL[i], 0));
+				z.Push(a);
+				Console.Printf("T_SPAWN monster %d: %s at %.0f %.0f health %d", i, a ? String.Format("%s", a.GetClassName()) : "none", a ? a.pos.x : 0, a ? a.pos.y : 0, a ? a.health : 0);
+			}
+		}
+		if (t == 34)
+		{
+			String sgn = "Shot_Gun"; class<Inventory> sgc = sgn; if (sgc) pmo.GiveInventory(sgc, 1);
+			SetAmmo("RifleAmmo", 5); SetAmmo("BDPistolAmmo", 2); SetAmmo("ShotgunAmmo", 1); SetAmmo("AmmoShell", 20);
+			SetAmmo("RSQTR_CigPack", 1); SetAmmo("GrenadeAmmo", 1);
+			Inv(t, "before DOWN (magazines emptied, 1 cigarette, 1 grenade)");
+			Report(t, "before");
+		}
+		// ---- A: DOWN, the grace, three kills, the medkit, REVIVE
+		if (t == 40) { Hit(t, z[0], 40, 100, "A: a lethal hit"); Report(t, "A: after the lethal hit"); }
+		if (t == 45) { Hit(t, z[0], 0, 60, "A: a lethal hit in the 1 s grace"); Report(t, "A: after the grace hit"); }
+		if (t == 55) Report(t, "A: DOWN running");
+		if (t == 60) { Kill(t, 1); Report(t, "A: kill 1"); }
+		if (t == 64)
+		{
+			let it = ThinkerIterator.Create("RSQVR_DownMedkit");
+			medkit = Actor(it.Next());
+			if (medkit)
+			{
+				Console.Printf("T_MEDKIT t%d found %s at %.0f %.0f %.0f, sprite %s frame %d, translation %d -- moved 60 ahead of the player", t, medkit.GetClassName(),
+					medkit.pos.x, medkit.pos.y, medkit.pos.z, medkit.sprite == Actor.GetSpriteIndex('PSTR') ? "PSTR" : "other", medkit.frame, medkit.Translation);
+				medkit.SetOrigin((pmo.pos.xy + fwd * 60, pmo.floorz + 20), false);
+				medkit.vel = (0, 0, 0);
+			}
+			else Console.Printf("T_MEDKIT t%d none found", t);
+		}
+		if (t == 80 && medkit)
+		{
+			Console.Printf("T_MEDKIT t%d touched: health %d", t, pmo.health);
+			medkit.Touch(pmo);
+			Console.Printf("T_MEDKIT t%d after the touch: health %d, medkit %s", t, pmo.health, medkit && !medkit.bDestroyed ? "still there" : "gone");
+		}
+		if (t == 90) { Kill(t, 2); Report(t, "A: kill 2"); }
+		if (t == 110) { Kill(t, 3); Report(t, "A: kill 3"); }
+		if (t == 113) { Report(t, "A: after REVIVE"); Inv(t, "after REVIVE"); Rows(t); }
+		if (t == 130) Report(t, "A: easing back");
+		// ---- B: DOWN's cooldown; a Score life catches the lethal hit instead
+		if (t == 190) { let sc = Svc("RS_ScoreService"); Console.Printf("T_LIFE t%d givelife -> %d", t, sc ? sc.GetInt("givelife", "", 1, 0, pmo) : -9); }
+		if (t == 200) { Hit(t, z[4], 100, 150, "B: a lethal hit in DOWN's cooldown, one Score life held"); Report(t, "B: just after"); }
+		if (t == 204) Report(t, "B: after Score's tic");
+		// ---- C: Repeat Without Limit; DOWN fails at the window's end; a Score life catches the killing blow
+		if (t == 320) SetI("rsqsm_down_repeat", 1);
+		if (t == 322) { let sc = Svc("RS_ScoreService"); Console.Printf("T_LIFE t%d Repeat Without Limit on; givelife -> %d", t, sc ? sc.GetInt("givelife", "", 1, 0, pmo) : -9); }
+		if (t == 335) { Hit(t, z[4], 100, 150, "C: a lethal hit in the 60 s cooldown, Repeat Without Limit on, one Score life held"); Report(t, "C: just after"); }
+		if (t == 360 || t == 450 || t == 540) Report(t, "C: DOWN, no kills");
+		if (t == 548 || t == 552) Report(t, "C: after the window");
+		// ---- D: DOWN again (no lives); a lethal hit after the grace ends it: dead
+		if (t == 700) { Hit(t, z[4], 100, 150, "D: a lethal hit, no Score life"); Report(t, "D: just after"); }
+		if (t == 750) { Hit(t, z[4], 0, 60, "D: a lethal hit 50 tics into DOWN (after the grace)"); Report(t, "D: just after"); }
+		if (t == 755) Report(t, "D: after");
+	}
+}

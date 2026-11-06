@@ -78,6 +78,8 @@ class RSQGD_Handler : EventHandler
 	double mbMix;  int mbColour, mbLive, mbN;   // miniboss tint (mbN: RSQ Miniboss's own count)
 	int tintUntil, tintColour;             // another mod's tint (service "event.tint")
 	double smMix;                          // slow motion
+	const DOWN_RED = 0x8A0000;             // deep blood red
+	double dnMix;                          // RSQ SlowMo's DOWN: the map deep blood red (react.zs PollSlowMo)
 	double combo; int comboN, comboTic; Array<int> lastSerial;
 	Array<String> gbWeap; Array<int> gbLvl; // per player*2 + hand
 	bool darkened; int ddzSaved, restoreAt;
@@ -359,7 +361,7 @@ class RSQGD_Handler : EventHandler
 	// ---- one plane -------------------------------------------------------------------------------------
 	bool Touched(int i)
 	{
-		if (mbMix > 0.001 || smMix > 0.001 || combo > 0.001 || flareUntil[i] > Level.maptime) return true;
+		if (mbMix > 0.001 || smMix > 0.001 || dnMix > 0.001 || combo > 0.001 || flareUntil[i] > Level.maptime) return true;
 		return waveOn && abs(wdist[i] - waveR) < WAVE_W;
 	}
 
@@ -471,6 +473,13 @@ class RSQGD_Handler : EventHandler
 			hh += mbMix * (24 + 64 * beat);
 		}
 		if (tintUntil > Level.maptime) c = Mix(c, tintColour, 0.7);
+		if (dnMix > 0)
+		{
+			// DOWN (RSQ SlowMo, owner 11-06): every room deep blood red, beating like a slow heart, the glow climbing the walls
+			double beat = Wave01(2, t * 60 / 60.0);
+			c = Mix(c, Scale(DOWN_RED, 0.55 + 0.6 * beat), dnMix);
+			hh += dnMix * (48 + 72 * beat);
+		}
 		if (waveOn)
 		{
 			double dw = abs(wdist[i] - waveR);
@@ -508,7 +517,7 @@ class RSQGD_Handler : EventHandler
 
 	bool Animating()
 	{
-		return (look && look.shape > 0) || mbMix > 0.001 || smMix > 0.001 || combo > 0.001 || tintUntil > Level.maptime - 2
+		return (look && look.shape > 0) || mbMix > 0.001 || smMix > 0.001 || dnMix > 0.001 || combo > 0.001 || tintUntil > Level.maptime - 2
 			|| (cSecrets && specials.Size() > 0);
 	}
 

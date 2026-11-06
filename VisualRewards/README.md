@@ -181,6 +181,11 @@ with Test and Debug and Reset All at its foot.
   magnet and bonus bursts on critical, Finisher and big-Score kills.
 - **Brutal Doom / BD22**: HEADSHOT on its head hits. Its invisible helper monsters never get a bar, a number or bits,
   and neither do the dying bodies a monster leaves (crawling, burning, slumped, last stand): one monster pays once.
+- **RSQ SlowMo's DOWN** (new on 11-06, rig only, not headset-confirmed): each kill that counts drops a medkit (+25
+  health): BD_VoxelPack's Berserk pack turned white with a red cross, or the stock Medikit without BD_VoxelPack. The
+  kill pops a count ("1/3", "2/3", "3/3", climbing from yellow to crimson), the medkit's "+25" flies to your wrist in
+  pink, and REVIVE flies past on the level-up band in the numbers' font, in cyan. The medkits need SlowMo's
+  Power-Up Drops row; the count and the +25 follow Damage Numbers (and Gains on You).
 - **RSQ Grapple, RSQ ShieldSaw, RSQ QuestSaber, RSQ Whip, RSQ Miniboss**: their hooked, stunned, locked, gripped,
   whipped, miniboss (with its Bossfight's tier) and thrall markers on the bars. An older RSQ Whip shows the hook, as it
   used to.

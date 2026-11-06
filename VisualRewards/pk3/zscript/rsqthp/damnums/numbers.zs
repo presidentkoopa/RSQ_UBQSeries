@@ -8,7 +8,7 @@
 // letters in, each one flashing white on arrival).
 class RSQTHP_DnNum play
 {
-	enum EKind { K_HIT, K_TOTAL, K_GAIN, K_BANNER, K_TAG }
+	enum EKind { K_HIT, K_TOTAL, K_GAIN, K_BANNER, K_TAG, K_SEQ }   // K_SEQ: RSQ SlowMo's DOWN kill count "1/3" (rsqvr/down.zs)
 	enum EState { S_LIVE, S_KILL, S_FLY, S_LAND, S_DONE }
 	enum EWord { W_HEAD = 1, W_OVERKILL = 2 }
 	enum EPart { P_DIG, P_COMBO, P_WORD, P_SUB1, P_SUB2, P_BG, P_BORDER, P_NAME, P_LV, P_NEW }
@@ -38,7 +38,9 @@ class RSQTHP_DnNum play
 	int hand;                   // a gain / a tag: the hand
 	bool landOnCards;           // a gain: RSQ Gun Cards is loaded and shows its own +N there
 	int level;                  // a banner / a tag: the level reached
-	String label;               // a tag: the gun's name
+	String label;               // a tag: the gun's name; a DOWN kill count: "1/3"; a banner: "REVIVE" (RSQ SlowMo's DOWN), else LEVEL UP
+	bool special;               // RSQ SlowMo's DOWN (the kill count, the medkit's +25): the headshot's life (flash, colour cycling,
+	                            // bobbing letters) and your time, not the world's (DOWN slows the world to 5%)
 	bool slowSent;              // a banner: its slow-motion pulse has gone out
 	bool jet;                   // a normal hit: launched as a little fountain jet (events.zs PlaceJet)
 	Vector3 vel, jetPos;        // ... its velocity and where it is (map units, per tic)
@@ -156,8 +158,21 @@ class RSQTHP_DnNum play
 			if (hs >= 2) comboW = AddText(hnd, String.Format("X%d", hs), font, 0, 0, comboH, P_COMBO);
 			if (words & W_OVERKILL) AddWord(hnd, "OVERKILL", H / 2 + H * 0.12, H, 5);
 			break;
+		case K_SEQ:
+			// RSQ SlowMo's DOWN kill count: "1/3" in the numbers' font
+			width = AddText(hnd, label, font, 0, 0, H, P_DIG);
+			height = H;
+			break;
 		case K_BANNER:
 		{
+			if (label == "REVIVE")
+			{
+				// RSQ SlowMo's REVIVE (owner 11-06): the level-up band, the word in the damage numbers' font (JFO), its own colour
+				Add(0, 0, 0, 0, 14, P_BG, -2, -1, T_BAND, 1.0);
+				AddText(hnd, "REVIVE", RSQTHP_DnFonts.F_JFO, 0, 0.4, 7.0, P_DIG);
+				width = 40; height = 14;
+				break;
+			}
 			// at 64 map units from the eyes, Word Size 1 (LEVEL UP 4.5 degrees tall, the lines under it 2 and 1.7); Draw
 			// scales it with its real distance (kept out of walls) and Word Size
 			Add(0, 0, 0, 0, 14, P_BG, -2, -1, T_BAND, 1.0);   // the band: width filled in by Draw (the view's width)

@@ -14,6 +14,8 @@ class RS_AwardSeed play
 		into.Push("RS_Award_Miniboss");
 		into.Push("RS_Award_Greedy");
 		into.Push("RS_Award_Bossfight");
+		into.Push("RS_Award_Down");
+		into.Push("RS_Award_Revive");
 		// RS_Award_FEAR went 11-03: F.E.A.R. Effect is the combo "shove > gun.shotgun@slow" (combo.zs), paid on the kill
 	}
 }
@@ -63,6 +65,21 @@ class RS_Award_Bossfight : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Bossfight"; }
+}
+
+// RSQ SlowMo's DOWN (owner 11-06, design/NEAR_DEATH.md 8): "Down" for each kill inside the DOWN window, "Revive" for
+// getting up. SlowMo sends them from the killing blow, before this mod records that kill: they wait for it (AwardExternal)
+// and pay a share of its base, 0.5 and 2.0.
+class RS_Award_Down : RS_ScoreBonus
+{
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Down"; }
+}
+
+class RS_Award_Revive : RS_ScoreBonus
+{
+	override int Family() const { return FAM_DARING; }
+	override String DisplayName() const { return "Revive"; }
 }
 
 // The door for other mods: GetInt("award", label, points, 0, playerPawn). See RS_ScoreHandler.AwardExternal.

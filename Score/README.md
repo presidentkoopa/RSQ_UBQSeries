@@ -196,6 +196,9 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
 - **RSQ SlowMo:** big moments and the optional hit-stop use its slow motion. Slow motion you started pays the
   full Stretched Second share. Automatic slow motion pays half, and Score's own pays none. SlowMo's two bars
   (stored slow-mo and countdown) sit under Score's bar, and the breakdown moves down to make room.
+  New on 11-06 (rig only, not headset-confirmed): SlowMo's **DOWN** comes before a Score life. While DOWN holds you
+  at 1 HP no life is spent; a life is spent only if DOWN fails. Each kill inside DOWN pays a **Down** row (half the
+  kill's base) and getting up pays a **Revive** row (twice the reviving kill's base).
 - **RSQ Accessibility:** Text Size scales the whole display and the wrist digits. Colour-blind play swaps each
   family to colours made for that vision and adds the family's letter (E, S, D, M, C) beside each row. The
   reward bar also shows a life pip when a life is next. Photosensitive Mode dims flashes to 40%, limits them to 2.5 a second and holds the label still.

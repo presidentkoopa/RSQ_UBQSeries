@@ -132,7 +132,9 @@ Runs alone on plain Doom 2. It finds the others by name:
 - **RSQ Tactical Rig**: without BD22 VR, the Rig's belt-buckle grenade spot hands out this grenade, shows it hanging
   there, and glows in the colour of the type in your hand.
 - **RSQ SlowMo**: thrown grenades slow with the world (unless SlowMo is set to leave your own missiles in real time);
-  Only in Slow Motion and Faster Grenades in Slow Motion read it.
+  Only in Slow Motion and Faster Grenades in Slow Motion read it. New on 11-06 (rig only, not headset-confirmed):
+  getting up from DOWN (REVIVE) gives one grenade, up to your carry; with BD22 VR's grenade in use, one of Brutal
+  Doom's.
 - **RSQ Wheel** fans out the types you own; **RSQ Gun Cards** shows the fuse count with the Cook Sense upgrade;
   **RSQ Score** scores teeth pulls, shot grenades and impact bursts.
 - **Gun Bonsai + RSQ Gun Bonsai VR**: the grenade levels like a weapon, with its own tree: the types, Short Fuse, Cook

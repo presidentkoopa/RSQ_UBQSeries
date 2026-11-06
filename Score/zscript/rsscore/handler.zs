@@ -770,10 +770,21 @@ class RS_ScoreHandler : EventHandler
 		else if (label ~== "Miniboss") mult = 1.0;
 		else if (label ~== "Greedy") mult = 1.5;
 		else if (label ~== "Bossfight") mult = 2.0;     // the called-in miniboss (owner 11-05), on top of Miniboss's 1.0
+		// RSQ SLOWMO'S DOWN (owner 11-06): a kill inside the window, and getting up on the last one. Sent from the killing
+		// blow, before that kill is recorded here: always waits for it (a kill already recorded this tic is another one),
+		// then pays 0.5 / 2.0 of its base; with no kill by the next tic, the flat 50 / 500.
+		bool waits = false;
+		if (label ~== "Down") { mult = 0.5; waits = true; points = 50; }
+		else if (label ~== "Revive") { mult = 2.0; waits = true; points = 500; }
 		if (mult > 0)
 		{
 			int pn = who.PlayerNumber();
 			int k = KillIndex(LastKill(pn));
+			if (waits)
+			{
+				pendWho.Push(who); pendLabel.Push(label); pendMult.Push(mult); pendFlat.Push(points); pendTic.Push(level.maptime);
+				return points;
+			}
 			if (k >= 0 && kTic[k] == level.maptime) points = max(1, int(round(kBase[k] * mult)));
 			// MINIBOSS AND GREEDY COME BEFORE THEIR KILL IS RECORDED (owner 11-05): RSQ Miniboss pays them as the
 			// miniboss dies, before Score's WorldThingDied records that kill, so there was no base yet and they paid
@@ -1050,6 +1061,15 @@ class RS_ScoreHandler : EventHandler
 		tr.regenTimer -= 1;
 	}
 
+	// RSQ SlowMo's DOWN holds this player now (RSQSM_Service "down.hold", by name; 0 without SlowMo)
+	static bool DownHolds(Actor mo)
+	{
+		let it = ServiceIterator.Find("RSQSM_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQSM_Service') return s.GetInt("down.hold", "", mo.PlayerNumber()) == 1;
+		return false;
+	}
+
 	// Extra lives hold the player in buddha and catch them at 1 hp. A life spent plays the original's revival:
 	// the blast and the column of fire, from a fixed pool (revive.zs, owner 11-05).
 	private void RunExtraLives(Actor mo, RS_ScoreTracker tr)
@@ -1087,6 +1107,16 @@ class RS_ScoreHandler : EventHandler
 
 				return;
 			}
+
+			// RSQ SLOWMO'S DOWN COMES FIRST (owner 11-06): while it holds this player at 1 HP, no life is spent; a life
+			// is spent only when DOWN fails (its killing blow is held at 1 HP by the hold above, and caught here)
+			if (mo.health == 1 && DownHolds(mo))
+			{
+				if (DebugOn() && !tr.downNoted) Console.Printf("RS_Score: at 1 HP while RSQ SlowMo's DOWN holds him -- no life spent (%d held)", tr.extraLives);
+				tr.downNoted = true;
+				return;
+			}
+			tr.downNoted = false;
 
 			if (mo.health == 1)
 			{

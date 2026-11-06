@@ -130,3 +130,29 @@ class RSQTR_RigService : Service
 		return (n >= 0 && n < MAXPLAYERS) ? rig.drawClass[n * 2 + (intArg & 1)] : "";
 	}
 }
+
+// RSQ SLOWMO'S DOWN (owner 11-06, design/NEAR_DEATH.md 4): getting up (REVIVE) puts one cigarette back in the pocket, up to
+// its normal carry (Pack Size, rsqtr_cig_count, plus Gun Bonsai VR's Chain Smoker), while Cigarettes is on. SlowMo tells
+// every service named "...RSQDownJoin" by name (its down.zs Tell); nothing links.
+class RSQTR_RSQDownJoin : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request != "down.revive") return 0;
+		let pmo = PlayerPawn(objectArg);
+		if (!pmo || !pmo.player) return 0;
+		let p = pmo.player;
+		let dc = CVar.FindCVar("rsqsm_debug");     // RSQ SlowMo's debug log
+		bool msg = dc && dc.GetBool();
+		if (!RSQTR_Rig.Flag("rsqtr_cig", p, false))
+		{
+			if (msg) Console.Printf("RSQ Tactical Rig: REVIVE: Cigarettes is off, no cigarette");
+			return 0;
+		}
+		int cap = RSQTR_Rig.Opt("rsqtr_cig_count", p, 3) + max(RSQTR_Rig.Gb(p, 'ChainSmoker'), 0);
+		int had = RSQTR_Cig.Packs(pmo);
+		if (had < cap) pmo.SetInventory("RSQTR_CigPack", had + 1);
+		if (msg) Console.Printf("RSQ Tactical Rig: REVIVE: cigarettes %d -> %d (carry %d)", had, RSQTR_Cig.Packs(pmo), cap);
+		return 1;
+	}
+}

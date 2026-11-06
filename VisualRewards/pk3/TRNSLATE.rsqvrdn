@@ -1,0 +1,5 @@
+// RSQ VisualRewards -- RSQ SlowMo's DOWN medkit (rsqvr/down.zs): BD_VoxelPack's Berserk pack voxel (PSTRA.kvx, a black box
+// with a red cross) turned white with a red cross, so it reads as a medkit and never as a berserk. Its KVX colours, matched
+// to the Doom palette (measured: 11 colours, 2026-11-06), are the greys 101-111, 5-8 and black 0 / 247, and the reds 184-187.
+// The greys become whites (their shading kept), the reds a brighter red.
+RSQVR_DownMedkit = "96:111=[255,255,255]:[215,215,215]", "1:8=[215,215,215]:[170,170,170]", "0:0=[165,165,165]:[165,165,165]", "247:247=[165,165,165]:[165,165,165]", "176:191=[255,60,60]:[170,0,0]"

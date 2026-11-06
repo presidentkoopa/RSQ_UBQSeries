@@ -146,7 +146,8 @@ Runs alone, with any map set. It finds the others by name:
 - **RSQ Miniboss**: the miniboss tint, in the miniboss's own colour.
 - **Gun Bonsai** (ToxicFrog's): the level-up wave, from Gun Bonsai alone; with RSQ Gun Bonsai VR, for each hand's gun.
 - **RSQ Score**: the combo glow.
-- **RSQ SlowMo**: the slow-motion drain.
+- **RSQ SlowMo**: the slow-motion drain. New on 11-06 (rig only, not headset-confirmed): while you are DOWN, the whole
+  map turns deep blood red and beats slowly (SlowMo's Red Map row).
 - **Brutal Doom**: its splash flats are in the liquid list.
 
 ## Credits and licence

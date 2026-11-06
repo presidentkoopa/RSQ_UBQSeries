@@ -173,3 +173,35 @@ class RSQGN_Service : Service
 		return 0;
 	}
 }
+
+// RSQ SLOWMO'S DOWN (owner 11-06, design/NEAR_DEATH.md 4): getting up (REVIVE) gives one grenade, up to its normal carry.
+// This pack's own grenade while it runs (RSQGN_Ammo: 8, a backpack 16, Gun Bonsai VR's Bandolier); with Brutal Doom VR
+// Reloaded's own grenade in charge (this pack standing down for it, RSQGN_Handler.Active), Brutal Doom's GrenadeAmmo, by
+// name, up to its own MaxAmount (BD's Ammo.dec: 5, a backpack more). SlowMo tells every service named "...RSQDownJoin"
+// by name (its down.zs Tell); nothing links.
+class RSQGN_RSQDownJoin : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request != "down.revive") return 0;
+		let pmo = PlayerPawn(objectArg);
+		if (!pmo || !pmo.player) return 0;
+		let dc = CVar.FindCVar("rsqsm_debug");     // RSQ SlowMo's debug log
+		bool msg = dc && dc.GetBool();
+		String an = "RSQGN_Ammo";
+		if (!RSQGN_Handler.Active())
+		{
+			if (!RSQGN_Handler.BDVR()) { if (msg) Console.Printf("RSQ Grenade: REVIVE: the grenade is switched off, no grenade"); return 0; }
+			an = "GrenadeAmmo";
+		}
+		class<Inventory> ac = an;
+		if (!ac) return 0;
+		if (an == "RSQGN_Ammo") RSQGN_Handler.Carry(pmo);
+		let am = pmo.FindInventory(ac);
+		int had = am ? am.Amount : 0;
+		pmo.GiveInventory(ac, 1);
+		am = pmo.FindInventory(ac);
+		if (msg) Console.Printf("RSQ Grenade: REVIVE: %s %d -> %d (carry %d)", an, had, am ? am.Amount : 0, am ? am.MaxAmount : -1);
+		return 1;
+	}
+}

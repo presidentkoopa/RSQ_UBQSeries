@@ -842,6 +842,8 @@ class RSQSM_Clock : EventHandler
 				else if (CvWho("rsqsm_me", n, 1) != 0 && ratio > 0) k = scale ** ratio;
 			}
 			if (level.maptime < freeUntil[n]) k = 1.0;   // smoking: full speed (Tactical Rig asked, above)
+			let dn = RSQSM_Down.Get();
+			if (dn && dn.IsDown(n)) k = 1.0;            // DOWN: you keep full speed (you need to fight; down.zs)
 			double was = (meK[n] <= 0 || meK[n] > 1) ? 1.0 : meK[n];
 			if (k >= 0.9999)
 			{
@@ -967,6 +969,9 @@ class RSQSM_Clock : EventHandler
 		// a shootdodge in flight pulls the clock to its own depth, under whatever else asks
 		Dodges();
 		if (DodgeOn()) target = min(target, DodgeDepth());
+		// DOWN (down.zs, owner 11-06): while any player is DOWN the world goes to the deepest speed, under whatever else asks
+		let dn = RSQSM_Down.Get();
+		if (dn && dn.AnyOn()) target = min(target, RSQSM_Down.DEPTH);
 
 		// Ease, never snap: each ramp is the time to cross the whole way.
 		if (scale != target)
@@ -1510,7 +1515,7 @@ class RSQSM_Clock : EventHandler
 	//   HIT FROM BEHIND  the attacker's middle was over HH_VIEW (60) degrees off where his head faced (yaw and pitch: in VR
 	//                    the pawn's angle and pitch are the headset's), so outside his view (Score's No-Look uses 60 too)
 	//   ARMOUR BROKEN    he had armour before the tic and has none after it
-	// NEVER on a hit that kills him (a future "Second Wind" owns those). ITS COOLDOWN (rsqsm_heavy_cool): Once per 20 s, Once
+	// NEVER on a hit that kills him, nor while he is DOWN (down.zs owns those). ITS COOLDOWN (rsqsm_heavy_cool): Once per 20 s, Once
 	// per 60 s (from the last heavy-hit slowdown's start), Use Shared (the Auto Cooldown every automatic trigger shares), No
 	// Limit (default). While RSQ Miniboss's Bossfight is on (RSQMB_Service "bossfight": arriving, or its miniboss alive) every
 	// heavy hit fires, whatever the row says. The cause line names it: ARCH-VILE BLAST, HEAVY HIT: <the monster's tag>,
@@ -1613,6 +1618,8 @@ class RSQSM_Clock : EventHandler
 			double pct = clamp(Cv("rsqsm_heavy_pct", 75), 1, 1000);
 			double need = maxHp * pct / 100.0;
 			if (p.health <= 0 || pmo.health <= 0) { Log("heavyhit", String.Format("not fired: %d this tic killed player %d (Second Wind's, not ours)", dmg, n)); continue; }
+			let dn = RSQSM_Down.Get();
+			if (dn && dn.IsDown(n)) { Log("heavyhit", String.Format("not fired: player %d is DOWN (a lethal hit is DOWN's)", n)); continue; }
 			if (dmg < need) { Log("heavyhit", String.Format("not fired: %d this tic is under %.0f%% of max health %d (%.1f needed)", dmg, pct, maxHp, need)); continue; }
 			double rise = pmo.vel.z - hhVz[n];
 			if (p.jumpTics == -1) rise -= pmo.JumpZ;
@@ -1814,6 +1821,27 @@ class RSQSM_Service : Service
 			return c.Start(stringArg.Length() ? stringArg : "service", intArg, doubleArg, request ~== "start.auto") ? 1 : 0;
 		// THE COUNTDOWN (countdown.zs): tics of real time until full speed while any slow motion runs, -1 when none
 		if (request ~== "countdown") return c.cdOn ? int(ceil(c.cdLeft)) : -1;
+		// DOWN (down.zs): "down" / "down.hold" intArg player -> 1 while he is DOWN (RSQ Score leaves its lives alone then),
+		// "down.any" any player, "down.redmap" 1 while the console player is DOWN with his Red Map row on (RSQ Glow In The
+		// Dark), "down.left" real tics left (-1 not DOWN), "down.kills" / "down.need" his count and what he needs
+		if (request.Left(4) ~== "down") return DownAsk(request, intArg);
+		return -1;
+	}
+	static clearscope int DownAsk(String request, int n)
+	{
+		let d = RSQSM_Down(EventHandler.Find("RSQSM_Down"));
+		if (!d) return -1;
+		if (request ~== "down" || request ~== "down.hold") return d.IsDown(n) ? 1 : 0;
+		if (request ~== "down.any") return d.AnyOn() ? 1 : 0;
+		if (request ~== "down.redmap")
+		{
+			if (!playeringame[consoleplayer] || !d.IsDown(consoleplayer)) return 0;
+			let cv = CVar.GetCVar("rsqsm_down_redmap", players[consoleplayer]);
+			return (!cv || cv.GetBool()) ? 1 : 0;
+		}
+		if (request ~== "down.left") return d.Left(n);
+		if (request ~== "down.kills") return d.IsDown(n) ? d.kills[n] : 0;
+		if (request ~== "down.need") return d.IsDown(n) ? d.need[n] : 0;
 		return -1;
 	}
 	// FROM A HUD (ui scope). "countdown": as above. "countdown.bottom": the screen pixel row just under the countdown bar's
@@ -1822,9 +1850,10 @@ class RSQSM_Service : Service
 	{
 		let c = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
 		if (request ~== "countdown") return (c && c.cdOn) ? int(ceil(c.cdLeft)) : -1;
+		if (request.Left(4) ~== "down") return DownAsk(request, intArg);
 		if (request ~== "countdown.bottom")
 		{
-			if (!c || (c.rival && RSQSM_Countdown.SCv("rsm_yield", 1) != 0) || !RSQSM_Countdown.AnyOn()) return -1;
+			if (!c || (c.rival && RSQSM_Countdown.SCv("rsm_yield", 1) != 0) || (!RSQSM_Countdown.AnyOn() && !RSQSM_Countdown.DownShown())) return -1;
 			return RSQSM_Countdown.Bottom();
 		}
 		// THE MENU: "menu.locked", "LeanDodge" -> 1 while the Gun Bonsai VR patch is loaded and the console player has

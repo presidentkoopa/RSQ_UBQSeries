@@ -17,3 +17,5 @@ version "4.14"
 #include "zscript/rsqthp/damnums/events.zs"
 // Kill Rewards: SoM's Universal(ish?) Kill Rewards v1.0 (moved here from RSQ Gun Bonsai VR on 2026-11-03; same classes and cvars).
 #include "zscript/rsqvr/killrewards.zs"
+// RSQ SlowMo's DOWN (2026-11-06): the medkit drop and the damage numbers' tie-ins, joined by name.
+#include "zscript/rsqvr/down.zs"

@@ -11,4 +11,5 @@ version "4.14"
 #include "zscript/rsqsm/round.zs"
 #include "zscript/rsqsm/body.zs"
 #include "zscript/rsqsm/smooth.zs"
+#include "zscript/rsqsm/down.zs"        // DOWN and REVIVE (owner 2026-11-06, design/NEAR_DEATH.md)
 #include "zscript/rsqsm/countdown.zs"   // the countdown bar: every slow motion's real time left (2026-11-03; all slow motion 11-05)

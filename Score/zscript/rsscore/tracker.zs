@@ -152,6 +152,7 @@ class RS_ScoreTracker : Inventory
 	int rewardLifeTic;   // the tic the delayed extra-life cue is due on
 	int pendingLives;    // how many lives that cue is announcing
 	int reviveTic;
+	bool downNoted;          // the debug line "at 1 HP while RSQ SlowMo's DOWN holds him" printed (handler.zs RunExtraLives)
 
 	Default
 	{

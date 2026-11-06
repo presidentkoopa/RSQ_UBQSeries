@@ -102,3 +102,12 @@ server bool  rsqsm_heavy_blasted = true;  // Blasted Off Your Feet: the hit thro
 server bool  rsqsm_heavy_behind  = true;  // Hit From Behind: the attacker over 60 degrees off where your head faces
 server bool  rsqsm_heavy_armour  = true;  // Armour Broken: the hit takes your last armour
 server int   rsqsm_heavy_cool    = 3;     // its cooldown: 0 Once per 20 s, 1 Once per 60 s, 2 Use Shared, 3 No Limit
+
+// ---- DOWN (owner 2026-11-06 17:48, approved design/NEAR_DEATH.md; down.zs): a lethal hit holds you at 1 HP --------------
+server bool  rsqsm_down          = true;  // DOWN: a hit that would kill you holds you at 1 HP; the world at its slowest; kills to REVIVE
+server int   rsqsm_down_kills    = 3;     // Kills Needed inside the window to REVIVE (1-10)
+server int   rsqsm_down_window   = 6;     // Window (s, real time) to get them (2-30)
+server int   rsqsm_down_cool     = 60;    // Cooldown (s) after DOWN ends, pass or fail, before it can trigger again (0-300)
+server bool  rsqsm_down_repeat   = false; // Repeat Without Limit: no cooldown at all
+user bool    rsqsm_down_redmap   = true;  // Red Map: RSQ Glow In The Dark turns the map deep blood red while you are DOWN
+server bool  rsqsm_down_drops    = true;  // Power-Up Drops: each counted kill drops RSQ VisualRewards' medkit (+25)

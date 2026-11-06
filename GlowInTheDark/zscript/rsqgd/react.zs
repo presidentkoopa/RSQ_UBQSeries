@@ -5,6 +5,7 @@
 //                 GetObject("boss", n), "colour" on it              -> the live miniboss's own colour (its tethers' and
 //                                                                      life orbs'); else blood red
 //   RSQ SlowMo    RSQSM_Service "active", "scale"                   -> the glow drains toward a cold grey
+//                 RSQSM_Service "down.redmap"                       -> the map deep blood red while you are DOWN
 //   RSQ Score     RS_ScoreService "kill.serial" per player          -> each scored kill within 4 s climbs the chain
 //   Gun Bonsai VR RSQGB_Service "level", "xp.permille", "name"     -> a gold wave rolls out from the player
 //   Gun Bonsai    its own netevent "bonsai-level-up" (args 1, level) -> the same wave, when the VR patch is absent
@@ -146,6 +147,14 @@ extend class RSQGD_Handler
 		double was = smMix;
 		smMix = smMix < target ? min(target, smMix + 0.08) : max(target, smMix - 0.05);
 		if (was > 0 && smMix == 0) dirty = true;
+		// DOWN (owner 11-06, design/NEAR_DEATH.md 2): while the console player is DOWN with RSQ SlowMo's Red Map row on
+		// ("down.redmap"), the whole map turns deep blood red; it comes in fast and drains back over about a second
+		let s = FindSvc("RSQSM_Service");
+		double dt = (s && s.GetInt("down.redmap") == 1) ? 0.92 : 0.0;
+		double dw = dnMix;
+		dnMix = dnMix < dt ? min(dt, dnMix + 0.25) : max(dt, dnMix - 0.12);
+		if (dw != dnMix && I("rsqgd_debug", 0) > 0) Console.Printf("[RSQGD] DOWN red map %.2f", dnMix);
+		if (dw > 0 && dnMix == 0) dirty = true;
 	}
 
 	// ---- RSQ Score ----

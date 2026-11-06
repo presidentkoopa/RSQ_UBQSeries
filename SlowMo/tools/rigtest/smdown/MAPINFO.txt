@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "RSQSMD_Probe" }
