@@ -180,6 +180,10 @@ BURNING = ('burning', (255, 95, 20), [
 LEGENDARY = ('legendary', (255, 95, 210), [
     '....#....', '...#o#...', '..#ooo#..', '.#oo#oo#.', '#oo#.#oo#', '.#oo#oo#.', '..#ooo#..', '...#o#...', '....#....'])
 TIER_PIP = ((255, 200, 40), ['.###.', '#ooo#', '#ooo#', '#ooo#', '.###.'])
+# DOWN MARK (2026-11-06, RSQ SlowMo's DOWN v2, design/NEAR_DEATH.md 3): a skull over the marked monster's bar, DOWN red.
+# Sprite RSYJ: A where the crown goes (no crown / gem), B one icon higher (above the crown or gem).
+DOWNMARK = ((235, 30, 30), [
+    '..#####..', '.#ooooo#.', '#ooooooo#', '#o##o##o#', '#o##o##o#', '#ooo#ooo#', '.#ooooo#.', '..#o#o#..', '..#####..'])
 
 # FRIENDLY (owner's QoL pick HP2, an option): coldcite's Red set (B) with red and blue swapped, so allies read blue
 # with his block texture and border kept. Sprite RSYG, frames as the main sets.
@@ -279,6 +283,11 @@ def main():
         if gem: tex += ['\tPatch "RQB3", 0, 0']
         tex += ['\tPatch "RQB4", %d, 3' % (20 + 6 * i) for i in range(pips)]
         tex += ['}']
+    # the DOWN mark's skull: the crown's place (offset as RSYI's centre icon: x 4 of 9, bottom 10 icon px above the origin),
+    # and B 11 icon px higher for a bar that already has a crown / link / gem above it
+    icon(DOWNMARK[1], DOWNMARK[0]).save(os.path.join(OUT, 'RQB5.png'))
+    tex += ['Sprite "RSYJA0", 9, 9', '{', '\tOffset 4, 19', '\tPatch "RQB5", 0, 0', '}']
+    tex += ['Sprite "RSYJB0", 9, 9', '{', '\tOffset 4, 30', '\tPatch "RQB5", 0, 0', '}']
     # friendly set (HP2): coldcite's B with R and B swapped
     for fi, lvl in enumerate(LEVELS):
         lump = 'RQMF%s' % lvl

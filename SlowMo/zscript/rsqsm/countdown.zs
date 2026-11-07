@@ -125,8 +125,8 @@ class RSQSM_Countdown : StaticEventHandler
 		return int(ceil(bot));
 	}
 
-	// THE DOWN BAR (owner 2026-11-06, design/NEAR_DEATH.md 3: "a bar under the SlowMo bars counts it down", cause line
-	// "DOWN"): one row, centred under the pair's slot (and under the countdown's cause line), the same size as the pair's
+	// THE DOWN BAR (owner 2026-11-06, design/NEAR_DEATH.md 4: "a countdown bar under the SlowMo bars", cause line
+	// "DOWN", then "REVENGE" once the mark is killed): one row, centred under the pair's slot (and under the countdown's cause line), the same size as the pair's
 	// rows, deep red (RSQ Accessibility's colour-blind "could" colour instead), its hourglass at its left, "DOWN" under it.
 	// It starts full when the console player goes DOWN and empties evenly to the window's end (real time); it breathes
 	// with the heartbeat (held still in Photosensitive Mode); it fades when DOWN ends. Drawn whatever the bar rows say:
@@ -155,7 +155,8 @@ class RSQSM_Countdown : StaticEventHandler
 		double alpha, frac;
 		if (d.downOn[n])
 		{
-			double total = max(1, d.downEnd[n] - d.downStart[n]);
+			// the dynamic clock (v2): time left against Max Window, so each hit's added time shows as the bar growing
+			double total = max(1, d.downMax[n]);
 			frac = clamp((d.downEnd[n] - t) / total, 0.0, 1.0);
 			alpha = clamp((t - d.downStart[n]) / FADE_IN, 0.0, 1.0);
 		}
@@ -182,7 +183,7 @@ class RSQSM_Countdown : StaticEventHandler
 		double beat = photo ? 1.0 : 0.82 + 0.18 * sin(t * 13.0);
 		Draw(te, tw, x, y, w, h, frac, lo, mid, hi, alpha * beat, UCv("rsqsm_cdbar_anim", 1) != 0, photo, 0, t, alpha);
 		DrawGlass("RSQSMHG", x, y, h, 0.95 * alpha);
-		DrawCause("DOWN", x, y, w, h, alpha);
+		DrawCause(d.markDone[n] ? "REVENGE" : "DOWN", x, y, w, h, alpha);
 	}
 
 	// THE CAUSE LINE (owner 2026-11-06: "under the right-hand automatic countdown bar, while it runs, one short line naming

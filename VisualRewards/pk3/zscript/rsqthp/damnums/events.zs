@@ -88,7 +88,6 @@ class RSQTHP_DamNumHandler : EventHandler
 	Array<int> gAmmoN;
 	Vector3 pickPos;
 	int pickTic;
-	bool pickDown;                  // the pickup that vanished was RSQ SlowMo's DOWN medkit (rsqvr/down.zs)
 
 	// ---- settings, every 8 tics ---------------------------------------------------------------------------------------
 	int face, q, slowMode, maxN;
@@ -198,7 +197,6 @@ class RSQTHP_DamNumHandler : EventHandler
 		if (!pmo || pmo.Distance3D(inv) > 160) return;
 		pickPos = inv.Pos + (0, 0, max(8.0, inv.Height * 0.5));
 		pickTic = level.maptime;
-		pickDown = inv is "RSQVR_DownMedkit";
 	}
 
 	// ---- the crit hook: RSQTHP_DnService "crit" marks a monster's hits for a few tics (nothing is drawn for it yet) ----
@@ -787,10 +785,10 @@ class RSQTHP_DamNumHandler : EventHandler
 	// the wrist: a hand's position, a little back along its aim
 	static Vector3 WristOf(PlayerPawn pmo, int hand) { return HandPos(pmo, hand) - HandDir(pmo, hand) * 5.0; }
 
-	void Gain(int kind, int amount, PlayerPawn pmo, Vector3 src0, int hand, bool special = false)
+	void Gain(int kind, int amount, PlayerPawn pmo, Vector3 src0, int hand)
 	{
 		if (amount <= 0) return;
-		for (int i = 0; i < nums.Size() && !special; i++)
+		for (int i = 0; i < nums.Size(); i++)
 		{
 			let n = nums[i];
 			if (n && n.kind == RSQTHP_DnNum.K_GAIN && n.gainKind == kind && n.hand == hand && n.st == RSQTHP_DnNum.S_LIVE && n.t < 6)
@@ -801,67 +799,68 @@ class RSQTHP_DamNumHandler : EventHandler
 		n.fam = kind == 0 ? 15 : (kind == 1 ? 12 : 3);     // health green, armour sky, ammo gold
 		n.size = 1;
 		n.landOnCards = gunCards && kind == 2;     // Gun Cards shows +N for ammo only
-		// RSQ SlowMo's DOWN medkit: its own colour (pink, never the green of a plain health pickup), the headshot's life
-		if (special)
-		{
-			n.special = true; n.fam = DOWN_GAIN_COL; madeDown++;
-			let dc = CVar.FindCVar("rsqsm_debug");
-			if (dc && dc.GetBool()) Console.Printf("RSQ VisualRewards: DOWN medkit gain \"+%d\" (colour %d) to the wrist", amount, n.fam);
-		}
 		madeGains++;
 	}
 
 	// ===================================================================================================================
-	// RSQ SLOWMO'S DOWN (owner 11-06, design/NEAR_DEATH.md, "Damage numbers during DOWN"; rsqvr/down.zs tells these)
-	// THE KILL COUNT: "k/N" pops where the counted kill fell (its standing height, out in front of it on your side), on
-	// your time, climbing a colour sequence (yellow, gold, orange, red, crimson; RSQ Accessibility's colour-blind combo
-	// ramp instead), the last one bigger. THE REVIVE BAND: the level-up band with REVIVE in JFO, cyan.
-	const DOWN_GAIN_COL = 7;        // pink
+	// RSQ SLOWMO'S DOWN v2 (owner-approved 11-06 19:51, design/NEAR_DEATH.md 12; rsqvr/down.zs tells these)
+	// TIME ADDED: each hit that adds time to the DOWN clock pops "+0.5s" at the monster hit (its standing height, out in
+	// front of it on your side), on your time (DOWN slows the world to 5%), in the DOWN colour (crimson; RSQ
+	// Accessibility's colour-blind combo ramp's last colour instead). THE WORDS: REVENGE (the mark killed), REVIVE (the
+	// crate taken) and RAGE (its 5 s) fly past on the level-up band in the numbers' font (JFO), each its own colour.
+	const TIME_COL = 6;             // crimson: DOWN's colour
+	const REVENGE_COL = 8;          // magenta
 	const REVIVE_COL = 13;          // cyan
+	const RAGE_COL = 4;             // orange
 	int madeDown;
-	void DownCount(Actor body, int k, int need)
+	void DownTime(Actor mon, String label)
 	{
-		if (!rsqthp_dmg || !body || k <= 0) return;
+		if (!rsqthp_dmg || !mon) return;
 		if (!fonts) fonts = new("RSQTHP_DnFonts");
 		ReadSettings();
-		Vector3 p = body.pos + (0, 0, GetDefaultByType(body.GetClass()).Height * 0.9);
+		Vector3 p = mon.pos + (0, 0, mon.Height * 0.9);
 		let pm = players[consoleplayer].mo;
 		if (pm)
 		{
-			Vector2 to = pm.Pos.xy - body.pos.xy;
+			Vector2 to = pm.Pos.xy - mon.pos.xy;
 			double tl = to.Length();
-			if (tl > 1) p.xy += to / tl * min(body.radius + 6, tl * 0.5);
+			if (tl > 1) p.xy += to / tl * min(mon.radius + 6, tl * 0.5);
 		}
-		let n = NewNum(RSQTHP_DnNum.K_SEQ, body, p);
-		n.label = String.Format("%d/%d", k, max(k, need));
+		let n = NewNum(RSQTHP_DnNum.K_SEQ, mon, p);
+		n.label = label;
 		n.special = true;
-		static const int SEQ[] = { 2, 3, 4, 5, 6 };    // yellow, gold, orange, red, crimson
-		int idx = need <= 1 ? 4 : int(round(4.0 * (k - 1) / double(need - 1)));
-		n.fam = SEQ[clamp(idx, 0, 4)];
-		if (cb != 0)
-		{
-			Array<int> r;
-			RampOf(0, r);
-			n.fam = r[clamp(int(round(3.0 * (k - 1) / max(1.0, double(need - 1)))), 0, 3)];
-		}
-		n.size = k >= need ? 1.8 : 1.35;
+		n.fam = TIME_COL;
+		if (cb != 0) { Array<int> r; RampOf(0, r); n.fam = r[r.Size() - 1]; }
+		n.size = 1.35;
 		madeDown++;
 		let dc = CVar.FindCVar("rsqsm_debug");
-		if (dc && dc.GetBool()) Console.Printf("RSQ VisualRewards: DOWN kill count \"%s\" (colour %d, size %.2f) at %.0f %.0f %.0f", n.label, n.fam, n.size, p.x, p.y, p.z);
+		if (dc && dc.GetBool()) Console.Printf("RSQ VisualRewards: DOWN time \"%s\" (colour %d) at %.0f %.0f %.0f over %s", n.label, n.fam, p.x, p.y, p.z, mon.GetClassName());
 	}
-	void ReviveBanner(PlayerPawn pmo)
+	// one word at a time: REVIVE and RAGE come on the same tic, so a word asked while another DOWN word is still on the
+	// band waits for it (WorldTick)
+	Array<String> qWord;
+	Array<int> qCol;
+	bool DownWordShowing()
 	{
+		for (int i = 0; i < nums.Size(); i++) if (nums[i] && nums[i].kind == RSQTHP_DnNum.K_BANNER && nums[i].special) return true;
+		return false;
+	}
+	void DownWord(PlayerPawn pmo, String word, int col, bool queued = false)
+	{
+		if (!queued && (DownWordShowing() || qWord.Size() > 0)) { qWord.Push(word); qCol.Push(col); return; }
 		if (!fonts) fonts = new("RSQTHP_DnFonts");
 		ReadSettings();
 		for (int i = 0; i < nums.Size(); i++) if (nums[i] && nums[i].kind == RSQTHP_DnNum.K_BANNER) nums[i].Free(self);
 		let n = NewNum(RSQTHP_DnNum.K_BANNER, pmo, pmo.Pos);
-		n.label = "REVIVE";
+		n.label = word;
 		n.special = true;
-		n.slowSent = true;          // never the level-up band's slow-motion pulse: time is coming back
-		n.fam = REVIVE_COL;
+		n.slowSent = true;          // never the level-up band's slow-motion pulse
+		n.fam = col;
 		n.famWord = Pick(bandCol);
 		n.alpha = 0;
 		madeBanners++;
+		let dc = CVar.FindCVar("rsqsm_debug");
+		if (dc && dc.GetBool()) Console.Printf("RSQ VisualRewards: DOWN word %s (colour %d) on the band", word, col);
 	}
 
 	void TrackGains()
@@ -880,7 +879,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		// between Brutal Doom's ammo items, a script's health change: no number)
 		if (gInit && picked)
 		{
-			if (hp > gHealth) Gain(0, hp - gHealth, pmo, here, 1, pickDown);
+			if (hp > gHealth) Gain(0, hp - gHealth, pmo, here, 1);
 			if (ar > gArmor) Gain(1, ar - gArmor, pmo, here, 1);
 		}
 		for (let it = pmo.Inv; it; it = it.Inv)
@@ -928,7 +927,16 @@ class RSQTHP_DamNumHandler : EventHandler
 		driver.h = self;
 		driver.ChangeStatNum(125);        // after the actors (STAT_DEFAULT 100) and HP Bars' bars
 	}
-	override void WorldTick() { EnsureDriver(); }
+	override void WorldTick()
+	{
+		EnsureDriver();
+		if (qWord.Size() > 0 && !DownWordShowing() && players[consoleplayer].mo)
+		{
+			String w = qWord[0]; int c = qCol[0];
+			qWord.Delete(0); qCol.Delete(0);
+			DownWord(players[consoleplayer].mo, w, c, true);
+		}
+	}
 
 	Vector3 eye;
 	Vector3 aimO0, aimD0, aimO1, aimD1;
@@ -985,7 +993,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		double dt = n.drawn ? dtWorld : 0.0;      // its first tic is drawn at clock 0 (the pop's small start)
 		// the level-up displays run on your time (a slow-motion pulse never drags them out), and stand still in a menu
 		if (n.kind == RSQTHP_DnNum.K_BANNER || n.kind == RSQTHP_DnNum.K_TAG) dt = (n.drawn && !levelFrozen) ? 1.0 : 0.0;
-		// RSQ SlowMo's DOWN: the kill count and the medkit's +25 on your time (DOWN slows the world to 5%)
+		// RSQ SlowMo's DOWN: the time added on your time (DOWN slows the world to 5%)
 		if (n.special) dt = (n.drawn && !levelFrozen) ? 1.0 : 0.0;
 		if (n.frozen)
 		{
@@ -1085,7 +1093,7 @@ class RSQTHP_DamNumHandler : EventHandler
 			break;
 
 		case RSQTHP_DnNum.K_SEQ:
-			// the DOWN kill count: pops, holds, drifts up, fades (1.7 s)
+			// RSQ SlowMo's DOWN time added ("+0.5s"): pops, holds, drifts up, fades (1.7 s)
 			n.scaleNow = n.size * PopCurve(t, 0.35);
 			n.rise = max(0.0, t - 8) * 0.22;
 			n.alpha = t < 44 ? 1.0 : 1.0 - (t - 44) / 16.0;

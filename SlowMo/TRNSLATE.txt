@@ -1,0 +1,8 @@
+// RSQ SlowMo -- DOWN (zscript/rsqsm/down.zs).
+// RSQSM_DownCrate: BD_VoxelPack's Berserk pack voxel (PSTRA.kvx, a black box with a red cross) turned white with a red cross, so
+// it reads as a medkit crate and never as a berserk. Its KVX colours, matched to the Doom palette (measured 2026-11-06: 11
+// colours), are the greys 101-111, 5-8 and black 0 / 247, and the reds 184-187. The greys become whites (shading kept), the
+// reds a brighter red. (Moved here from RSQ VisualRewards' v1 medkit: the crate is DOWN's own, so it exists without it.)
+RSQSM_DownCrate = "96:111=[255,255,255]:[215,215,215]", "1:8=[215,215,215]:[170,170,170]", "0:0=[165,165,165]:[165,165,165]", "247:247=[165,165,165]:[165,165,165]", "176:191=[255,60,60]:[170,0,0]"
+// RSQSM_DownMark: the marked monster tinted DOWN red (every colour kept as its brightness, in red).
+RSQSM_DownMark = "0:255=%[0.0,0.0,0.0]:[2.0,0.25,0.25]"

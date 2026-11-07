@@ -843,7 +843,7 @@ class RSQSM_Clock : EventHandler
 			}
 			if (level.maptime < freeUntil[n]) k = 1.0;   // smoking: full speed (Tactical Rig asked, above)
 			let dn = RSQSM_Down.Get();
-			if (dn && dn.IsDown(n)) k = 1.0;            // DOWN: you keep full speed (you need to fight; down.zs)
+			if (dn && dn.IsDown(n)) k = 1.0;            // DOWN: never slowed by the clock; the crawl is its own (down.zs Crawl)
 			double was = (meK[n] <= 0 || meK[n] > 1) ? 1.0 : meK[n];
 			if (k >= 0.9999)
 			{
@@ -1823,11 +1823,12 @@ class RSQSM_Service : Service
 		if (request ~== "countdown") return c.cdOn ? int(ceil(c.cdLeft)) : -1;
 		// DOWN (down.zs): "down" / "down.hold" intArg player -> 1 while he is DOWN (RSQ Score leaves its lives alone then),
 		// "down.any" any player, "down.redmap" 1 while the console player is DOWN with his Red Map row on (RSQ Glow In The
-		// Dark), "down.left" real tics left (-1 not DOWN), "down.kills" / "down.need" his count and what he needs
-		if (request.Left(4) ~== "down") return DownAsk(request, intArg);
+		// Dark), "down.left" real tics left (-1 not DOWN), "down.rage" 1 while he is in RAGE, "down.mark" objectArg a
+		// monster -> 1 while it carries a DOWN mark (RSQ VisualRewards' skull)
+		if (request.Left(4) ~== "down") return DownAsk(request, intArg, objectArg);
 		return -1;
 	}
-	static clearscope int DownAsk(String request, int n)
+	static clearscope int DownAsk(String request, int n, Object o = null)
 	{
 		let d = RSQSM_Down(EventHandler.Find("RSQSM_Down"));
 		if (!d) return -1;
@@ -1840,8 +1841,8 @@ class RSQSM_Service : Service
 			return (!cv || cv.GetBool()) ? 1 : 0;
 		}
 		if (request ~== "down.left") return d.Left(n);
-		if (request ~== "down.kills") return d.IsDown(n) ? d.kills[n] : 0;
-		if (request ~== "down.need") return d.IsDown(n) ? d.need[n] : 0;
+		if (request ~== "down.rage") return d.Raging(n) ? 1 : 0;
+		if (request ~== "down.mark") return d.IsMarked(Actor(o)) ? 1 : 0;
 		return -1;
 	}
 	// FROM A HUD (ui scope). "countdown": as above. "countdown.bottom": the screen pixel row just under the countdown bar's
@@ -1850,7 +1851,7 @@ class RSQSM_Service : Service
 	{
 		let c = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
 		if (request ~== "countdown") return (c && c.cdOn) ? int(ceil(c.cdLeft)) : -1;
-		if (request.Left(4) ~== "down") return DownAsk(request, intArg);
+		if (request.Left(4) ~== "down") return DownAsk(request, intArg, objectArg);
 		if (request ~== "countdown.bottom")
 		{
 			if (!c || (c.rival && RSQSM_Countdown.SCv("rsm_yield", 1) != 0) || (!RSQSM_Countdown.AnyOn() && !RSQSM_Countdown.DownShown())) return -1;

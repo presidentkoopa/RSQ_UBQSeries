@@ -56,7 +56,7 @@ class RSQTHP_Bar : Actor
 {
 	Actor who;
 	RSQTHP_Handler h;
-	RSQTHP_Part over, mark, stat, boss;
+	RSQTHP_Part over, mark, stat, boss, dmark;   // dmark: RSQ SlowMo's DOWN mark, a skull (RSYJ)
 	int lastHp, lastMax, lastVer;
 	bool lastInv, built;
 	int lastSpr, lastFrm;
@@ -64,7 +64,7 @@ class RSQTHP_Bar : Actor
 	double top, topTarget;
 	bool haveTop;
 	bool low;               // in the low band of a colour-blind set: pulses
-	int markPhase, markBits, bossBits;
+	int markPhase, markBits, bossBits, dmarkBits;
 	int statNow, lastFt;    // frozen / held icon (1 frozen, 2 held), and the freezetics seen last tic
 	int aimTic;             // Aimed Only: the last tic a hand's gun pointed at this bar's monster
 	bool aimMade;           // made only because it was aimed at (full health): goes when the aim has left
@@ -135,6 +135,7 @@ class RSQTHP_Bar : Actor
 		if (mark) mark.Destroy();
 		if (stat) stat.Destroy();
 		if (boss) boss.Destroy();
+		if (dmark) dmark.Destroy();
 		if (chunkP) chunkP.Destroy();
 		Super.OnDestroy();
 	}
@@ -322,6 +323,16 @@ class RSQTHP_Bar : Actor
 				if (!bb && boss) { boss.Destroy(); boss = null; }
 				if (boss) { boss.sprite = h.sprBoss; boss.frame = bb - 1; }
 			}
+			// RSQ SlowMo's DOWN mark (v2, 11-06): a DOWN-red skull over the marked monster's bar (RSQSM_Service "down.mark",
+			// by name); above the crown / gem when there is one (frame B)
+			int db = (h.markers && h.DownMarked(who)) ? (bb ? 2 : 1) : 0;
+			if (db != dmarkBits)
+			{
+				dmarkBits = db;
+				if (db && !dmark) dmark = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
+				if (!db && dmark) { dmark.Destroy(); dmark = null; }
+				if (dmark) { dmark.sprite = h.sprDown; dmark.frame = db - 1; }
+			}
 		}
 		SyncParts();
 	}
@@ -414,6 +425,7 @@ class RSQTHP_Bar : Actor
 		if (mark) { SyncPart(mark, rt * -ext); mark.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }   // icons at twice the bar's scale: readable (x RSQ_Accessibility's Cue Size)
 		if (stat) { SyncPart(stat, rt * ext); stat.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
 		if (boss) { SyncPart(boss); boss.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
+		if (dmark) { SyncPart(dmark); dmark.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); dmark.bBright = true; }
 		if (chunkP)
 		{
 			SyncPart(chunkP, rt * ((chunkX0 - 56) * sy * lenK));
@@ -492,7 +504,7 @@ class RSQTHP_SpriteNames : Actor
 		RS30 A 0; RS31 A 0; RS32 A 0; RS33 A 0; RS34 A 0;
 		RS40 A 0; RS41 A 0; RS42 A 0; RS43 A 0; RS44 A 0;
 		RS50 A 0; RS51 A 0; RS52 A 0; RS53 A 0; RS54 A 0;
-		RSYI A 0;
+		RSYI A 0; RSYJ A 0;
 		Stop;
 	}
 }

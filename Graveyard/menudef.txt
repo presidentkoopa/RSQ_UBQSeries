@@ -25,6 +25,13 @@ AddOptionMenu "RSQ_RSOptions"
 }
 // ----------------------------------------------------------------------------------------------------
 
+OptionValue "RSQGY_LivingModes"
+{
+	0, "Uniform"
+	1, "Wave"
+	2, "Chaos"
+}
+
 OptionMenu "RSQGY_Options"
 {
 	Title "RSQ GRAVEYARDS"
@@ -40,6 +47,8 @@ OptionMenu "RSQGY_Options"
 	Slider "Light Radius", "gy_light_radius", 16, 256, 8, 0
 	Slider "Light Brightness", "gy_light_bright", 32, 255, 8, 0
 	Slider "Light Cull Distance", "gy_light_cull", 128, 2048, 64, 0
+	Option "Living Stones", "gy_living", "OnOff"
+	Option "Living Stones Mode", "gy_living_mode", "RSQGY_LivingModes", "gy_living"
 	StaticText " "
 	StaticText "Controls", "Gold"
 	Control "Remove Gravestones on This Map", "gy_remove_map"

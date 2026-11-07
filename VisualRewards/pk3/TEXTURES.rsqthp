@@ -4499,6 +4499,16 @@ Sprite "RSYIM0", 43, 9
 	Patch "RQB4", 32, 3
 	Patch "RQB4", 38, 3
 }
+Sprite "RSYJA0", 9, 9
+{
+	Offset 4, 19
+	Patch "RQB5", 0, 0
+}
+Sprite "RSYJB0", 9, 9
+{
+	Offset 4, 30
+	Patch "RQB5", 0, 0
+}
 Sprite "RSYGA0", 112, 11
 {
 	Offset 56, 11

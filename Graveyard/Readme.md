@@ -49,6 +49,19 @@ patches, and emits the TEXTURES and a ready-made state line.
   before plus the two keys (Remove Gravestones on This Map, Remove All
   Gravestones) and a Reset All. Graveyard's own "Graveyards" row in the
   Options menu is gone. The keys are still in Customize Controls too.
+- two kinds of stone (2026-11-06, rig only, not headset-confirmed): a real
+  death is the stone as always (grey, warm flickering candle); an RSQ Score
+  life spent (RSQ Score asks by name, service `gy_RSQService`) is the same
+  stone tinted gold, with a steadier gold light and a slightly larger light
+  radius. The kind is kept in the stored stones (a 4th field in
+  `gy_locations`; stones stored before load as a death). Without RSQ Score
+  every stone is a death stone. SlowMo's DOWN places no stone.
+- Living Stones (off, `gy_living`; Living Stones Mode `gy_living_mode`:
+  Uniform / Wave / Chaos): each stone's light colour and tint breathe like
+  RSQ Score's "Score:" label (calm blue to warm yellow every 2 s; gold
+  stones within a gold range). Uniform: all together; Wave: a sequence by
+  distance from you; Chaos: each stone its own pace. Held still in RSQ
+  Accessibility's Photosensitive Mode. The same one light per stone.
 - source: the `Graveyard/` folder of RSQ_UBQSeries, built to
   `RSQ_Graveyard.pk3`.
 

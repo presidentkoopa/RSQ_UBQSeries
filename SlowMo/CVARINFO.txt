@@ -103,11 +103,15 @@ server bool  rsqsm_heavy_behind  = true;  // Hit From Behind: the attacker over 
 server bool  rsqsm_heavy_armour  = true;  // Armour Broken: the hit takes your last armour
 server int   rsqsm_heavy_cool    = 3;     // its cooldown: 0 Once per 20 s, 1 Once per 60 s, 2 Use Shared, 3 No Limit
 
-// ---- DOWN (owner 2026-11-06 17:48, approved design/NEAR_DEATH.md; down.zs): a lethal hit holds you at 1 HP --------------
-server bool  rsqsm_down          = true;  // DOWN: a hit that would kill you holds you at 1 HP; the world at its slowest; kills to REVIVE
-server int   rsqsm_down_kills    = 3;     // Kills Needed inside the window to REVIVE (1-10)
-server int   rsqsm_down_window   = 6;     // Window (s, real time) to get them (2-30)
-server int   rsqsm_down_cool     = 60;    // Cooldown (s) after DOWN ends, pass or fail, before it can trigger again (0-300)
+// ---- DOWN v2 (owner-approved 2026-11-06 19:51, design/NEAR_DEATH.md; down.zs): DOWN -> REVENGE -> REVIVE -> RAGE ---------
+server bool  rsqsm_down          = true;  // DOWN: a hit that would kill you holds you at 1 HP; kill the marked monster, take its crate
+server int   rsqsm_down_window   = 6;     // Window (s, real time): the clock's start (2-30)
+server float rsqsm_down_hit      = 0.5;   // Time per Hit (s): added for each hit you land (0-3)
+server int   rsqsm_down_max      = 12;    // Max Window (s): never more than this left (2-30)
+server int   rsqsm_down_rage     = 5;     // Rage Length (s) after REVIVE: x2 damage, no ammo used (0-30)
+server bool  rsqsm_down_scar     = true;  // Scar: each DOWN costs max health until the next map
+server int   rsqsm_down_scar_hp  = 10;    // Scar (max health per DOWN)
+server int   rsqsm_down_cool     = 60;    // Cooldown (s) after DOWN ends, pass or fail (0-300)
 server bool  rsqsm_down_repeat   = false; // Repeat Without Limit: no cooldown at all
 user bool    rsqsm_down_redmap   = true;  // Red Map: RSQ Glow In The Dark turns the map deep blood red while you are DOWN
-server bool  rsqsm_down_drops    = true;  // Power-Up Drops: each counted kill drops RSQ VisualRewards' medkit (+25)
+user bool    rsqsm_down_lowview  = true;  // Lower View When Down (comfort): off = no view drop (the crawl stays)

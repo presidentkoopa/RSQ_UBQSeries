@@ -1,0 +1,3 @@
+// TEST ONLY: a stand-in for the Champions mod (not here): its class name, so DOWN takes its "LegenDoom AND Champions" path.
+version "4.14"
+class champion_Token : Inventory {}

@@ -36,15 +36,6 @@ class RSQTHP_Voxels : StaticEventHandler
 		return me.Resolve(a.sprite * 32 + 31);
 	}
 
-	// a voxel draws this sprite frame (RSQ SlowMo's DOWN medkit: BD_VoxelPack's Berserk pack, PSTR A, or the stock medikit)
-	static bool HasVoxel(int sprite, int frame)
-	{
-		let me = RSQTHP_Voxels(StaticEventHandler.Find("RSQTHP_Voxels"));
-		if (!me || sprite <= 0) return false;
-		if (!me.built) me.Build();
-		return me.lumpOf.CheckKey(sprite * 32 + frame) || me.lumpOf.CheckKey(sprite * 32 + 31);
-	}
-
 	private double Resolve(int key)
 	{
 		bool ok;

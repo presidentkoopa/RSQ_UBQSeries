@@ -41,8 +41,10 @@ class gy_Storage
     Array<String> lc;
     _locations.At(i).Split(lc, ":");
     Vector3 location = (lc[0].ToDouble(), lc[1].ToDouble(), lc[2].ToDouble());
+    // RSQ Edition: a 4th field is the stone's kind (2 = a Score life spent). Stones stored before have 3: kind 1.
+    int kind = (lc.Size() > 3) ? lc[3].ToInt() : 1;
 
-    return gy_Death.of(location, _obituaries.At(i));
+    return gy_Death.of(location, _obituaries.At(i)).setKind(kind);
   }
 
   void registerDeath(gy_Death death)
@@ -51,7 +53,9 @@ class gy_Storage
     let    l = death.GetLocation();
 
     _hashes    .Insert(i, Level.GetChecksum());
-    _locations .Insert(i, String.Format("%f:%f:%f", l.x, l.y, l.z));
+    // RSQ Edition: kind 1 is stored exactly as before; kind 2 adds a 4th field (older readers ignore it)
+    _locations .Insert(i, death.getKind() > 1 ? String.Format("%f:%f:%f:%d", l.x, l.y, l.z, death.getKind())
+                                               : String.Format("%f:%f:%f", l.x, l.y, l.z));
     _obituaries.Insert(i, death.getObituary());
 
     write();

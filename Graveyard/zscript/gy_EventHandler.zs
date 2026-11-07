@@ -34,7 +34,7 @@ class gy_EventHandler : EventHandler
     gy_Death death;
     while (death = storage.next())
     {
-      sendNetworkEvent("gy_spawn" .. death.toString());
+      sendNetworkEvent(spawnEventName(death));
     }
   }
 
@@ -63,20 +63,18 @@ class gy_EventHandler : EventHandler
     let death   = gy_Death.of(event.thing.pos, obituary);
     storage.registerDeath(death);
 
-    if (multiplayer) { sendNetworkEvent("gy_spawn" .. death.toString()); }
+    if (multiplayer) { sendNetworkEvent(spawnEventName(death)); }
   }
 
   override
   void networkProcess(ConsoleEvent event)
   {
-    if (event.name.left(8) == "gy_spawn")
+    // RSQ Edition: "gy_spawk" is the same event for a gold stone (kind 2, an RSQ Score life spent)
+    if (event.name.left(8) == "gy_spawn" || event.name.left(8) == "gy_spawk")
     {
       let death = gy_Death.fromString(event.name.mid(8));
-      let pos   = death.getLocation();
-      int i     = abs(int(pos.x + pos.y + pos.z)) % 4;
-      let c     = String.format("gy_Stone%d", i);
-      let stone = gy_Stone(Actor.spawn(c, death.getLocation(), ALLOW_REPLACE));
-      stone.setObituary(death.getObituary());
+      death.setKind(event.name.left(8) == "gy_spawk" ? 2 : 1);
+      spawnStone(death);
     }
     else if (event.name == "gy_remove_all")
     {
@@ -102,6 +100,28 @@ class gy_EventHandler : EventHandler
     {
       setNow(second, SystemTime.Now());
     }
+  }
+
+  // The one place a stone is made (the original's spawn, moved here unchanged so the RSQ service below uses it too).
+  static
+  gy_Stone spawnStone(gy_Death death)
+  {
+    let pos   = death.getLocation();
+    int i     = abs(int(pos.x + pos.y + pos.z)) % 4;
+    let c     = String.format("gy_Stone%d", i);
+    let stone = gy_Stone(Actor.spawn(c, death.getLocation(), ALLOW_REPLACE));
+    if (stone)
+    {
+      stone.setObituary(death.getObituary());
+      stone.setKind(death.getKind());
+    }
+    return stone;
+  }
+
+  static
+  String spawnEventName(gy_Death death)
+  {
+    return (death.getKind() > 1 ? "gy_spawk" : "gy_spawn") .. death.toString();
   }
 
 // private: ////////////////////////////////////////////////////////////////////////////////////////
@@ -137,3 +157,38 @@ class gy_EventHandler : EventHandler
   private int _now;
 
 } // class gy_EventHandler
+
+// RSQ EDITION (2026-11-06, owner 19:58 / 19:59): AN RSQ SCORE LIFE SPENT IS A DEATH. RSQ Score asks this service by name
+// when a life catches a killing blow: GetInt("stone.life", "", player number, 0, his pawn). The stone is recorded in the
+// storage as kind 2 (it comes back with the map like every stone) and spawned now, on every machine, by the same spawn the
+// death event uses (Score calls this from synced play code, so no network event is sent). It is the gold stone:
+// gy_Stone.setKind. Without RSQ Score nothing asks, and every stone is kind 1.
+class gy_RSQService : Service
+{
+  override
+  int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+  {
+    if (request != "stone.life") { return 0; }
+    let mo = Actor(objectArg);
+    if (mo == NULL || mo.player == NULL) { return 0; }
+
+    String name = mo.player.getUserName();
+    String obituaryPart;
+    if (mo.target != NULL && mo.target != mo)
+    {
+      String killerName = (mo.target.player != NULL) ? mo.target.player.getUserName() : mo.target.getTag();
+      obituaryPart = ", killed by " .. killerName;
+    }
+    String obituary = String.format( "Here %s lost a life%s.\n%s"
+                                   , name
+                                   , obituaryPart
+                                   , level.TimeFormatted()
+                                   );
+    let death = gy_Death.of(mo.pos, obituary).setKind(2);
+    gy_Storage.of().registerDeath(death);
+    let stone = gy_EventHandler.spawnStone(death);
+    let dc = CVar.FindCVar("rs_score_debug");
+    if (dc && dc.GetBool()) { Console.Printf("RSQ Graveyard: a Score life spent: gold tombstone (kind 2) at %.0f %.0f %.0f", mo.pos.x, mo.pos.y, mo.pos.z); }
+    return stone ? 1 : 0;
+  }
+}

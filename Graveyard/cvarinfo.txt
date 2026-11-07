@@ -14,3 +14,8 @@ user bool  gy_light_flicker = true;
 user int   gy_light_radius  = 72;
 user int   gy_light_bright  = 210; // 0-255
 user int   gy_light_cull    = 640; // map units; no light exists past this
+
+// --- RSQ Edition (2026-11-06 20:06): Living Stones ---
+user bool  gy_living        = false; // Living Stones: each stone's light and tint breathe like RSQ Score's label
+user int   gy_living_mode   = 0;     // 0 Uniform, 1 Wave (by distance), 2 Chaos (each its own pace)
+user int   gy_living_debug  = 0;     // TEST ONLY: log the breathing colour (not in the menu)

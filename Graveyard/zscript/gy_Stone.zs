@@ -32,6 +32,15 @@ class gy_Stone : Actor
     _obituary = obituary;
   }
 
+  // RSQ Edition (2026-11-06, owner 19:59): kind 2 = an RSQ Score life spent: the same stone tinted gold (TRNSLATE
+  // gy_gold), its light gold, steadier (a third of the flicker) and slightly larger (x1.25). Kind 1 is the stone as it was.
+  void setKind(int kind)
+  {
+    _kind = kind;
+    _tintNow = -1;
+    _lastRadius = -1;
+  }
+
   override
   void PostBeginPlay()
   {
@@ -85,6 +94,7 @@ class gy_Stone : Actor
     }
 
     updateLight();
+    updateTint();
   }
 
   override
@@ -165,16 +175,18 @@ class gy_Stone : Actor
       return;
     }
 
-    int radius = int(_cfgRadius * _lightFade * flicker());
+    int radius = int(_cfgRadius * (_kind == 2 ? GOLD_RADIUS : 1.0) * _lightFade * flicker());
     if (radius < 1) { radius = 1; }
 
+    Color lc = lightColor();
     // Re-attaching the same light id overwrites it, which is how the fade
     // animates - but skip the call on tics where nothing actually moved.
-    if (_hasLight && radius == _lastRadius) { return; }
+    if (_hasLight && radius == _lastRadius && lc == _lastColor) { return; }
+    _lastColor = lc;
 
     A_AttachLight( 'gy_grave_light'
                  , DynamicLight.PointLight
-                 , lightColor()
+                 , lc
                  , radius
                  , 0
                  , DynamicLight.LF_ATTENUATE
@@ -193,14 +205,90 @@ class gy_Stone : Actor
     if (!_cfgFlicker) { return 1.0; }
 
     double t = level.time + _phaseOffset;
-    return 1.0 + 0.08 * (0.6 * sin(t * 13.0) + 0.4 * sin(t * 29.0 + 47.0));
+    double amp = (_kind == 2) ? 0.08 * GOLD_FLICKER : 0.08;
+    return 1.0 + amp * (0.6 * sin(t * 13.0) + 0.4 * sin(t * 29.0 + 47.0));
   }
 
   private
   Color lightColor() const
   {
     int b = clamp(_cfgBright, 0, 255);
+    if (_cfgLiving)
+    {
+      Vector3 c = livingRgb();
+      return Color(255, int(c.x * b / 255.0), int(c.y * b / 255.0), int(c.z * b / 255.0));
+    }
+    if (_kind == 2) { return Color(255, b, int(b * 0.80), int(b * 0.15)); } // RSQ Edition: gold
     return Color(255, b, int(b * 0.72), int(b * 0.42)); // warm candle tone
+  }
+
+  // ---- RSQ Edition (owner 2026-11-06 20:06): LIVING STONES (gy_living, off) -------------------------------------------
+  // Each stone's light colour and its tint breathe like RSQ Score's "Score:" label (its hud.zs LabelColor, copied here so
+  // nothing depends on Score being loaded): pulse = 0.5 + 0.5 * sin(ms * 0.18 deg), one breath every 2 s, from calm blue
+  // (110,170,230) to warm (250,240,140). A gold stone (an RSQ Score life spent) breathes inside its own gold range, deep
+  // (200,135,25) to bright (255,230,110), so the two kinds stay apart. "Living Stones Mode" (gy_living_mode): Uniform,
+  // every stone together; Wave, a sequence across the stones by their distance from you (a breath per 512 map units);
+  // Chaos, each stone its own pace (0.55x to 1.6x) and starting point (Score's per-letter hash, seeded by the stone's
+  // place). RSQ Accessibility's Photosensitive Mode (rsqa_photosafe, by name): held still at the breath's middle. The
+  // light stays the one candle light (only its colour changes); the tint is one of 8 steps per kind (trnslate.txt
+  // gy_lb0..7 / gy_lg0..7), set only when the step changes.
+  private
+  double livingPulse() const
+  {
+    if (photoSafe()) { return 0.5; }
+    double ms    = level.time * (1000.0 / 35.0);
+    double phase = 0.0;
+    double rate  = 1.0;
+    if (_cfgLivingMode == 1)
+    {
+      let pmo = players[consolePlayer].mo;
+      if (pmo != NULL) { phase = -Distance2D(pmo) * (360.0 / 512.0); }
+    }
+    else if (_cfgLivingMode == 2)
+    {
+      int idx = abs(int(pos.x * 3 + pos.y * 7 + pos.z * 11)) % 1000;
+      double v1 = sin(idx * 78.233 + 12.9898) * 43758.5453, v2 = sin(idx * 39.346 + 11.135) * 24634.6345;
+      rate  = 0.55 + 1.05 * (v1 - floor(v1));
+      phase = 360.0 * (v2 - floor(v2));
+    }
+    return 0.5 + 0.5 * sin(ms * 0.18 * rate + phase);
+  }
+
+  private
+  Vector3 livingRgb() const
+  {
+    double p = livingPulse();
+    if (_kind == 2) { return (200 + 55 * p, 135 + 95 * p, 25 + 85 * p); }
+    return (110 + 140 * p, 170 + 70 * p, 230 - 90 * p);
+  }
+
+  static
+  bool photoSafe()
+  {
+    Name an = "RSQA_Menu";
+    class<Object> ac = an;
+    if (!ac) { return false; }
+    let c = CVar.FindCVar("rsqa_photosafe");
+    return c != NULL && c.GetInt() != 0;
+  }
+
+  private
+  void updateTint()
+  {
+    int want = 0;                                        // 0 none, 1 gold, 10..17 living blue, 20..27 living gold
+    if (_cfgLiving) { want = (_kind == 2 ? 20 : 10) + clamp(int(livingPulse() * 8), 0, 7); }
+    else if (_kind == 2) { want = 1; }
+    if (_cfgLiving && intCvar("gy_living_debug", 0) != 0 && (level.time % 10) == 0)
+    {
+      Color lc = lightColor();
+      Console.Printf("RSQ Graveyard: living stone kind %d mode %d t%d pulse %.2f tint step %d light %d %d %d",
+        _kind == 2 ? 2 : 1, _cfgLivingMode, level.time, livingPulse(), want % 10, lc.r, lc.g, lc.b);
+    }
+    if (want == _tintNow) { return; }
+    _tintNow = want;
+    if (want == 0)      { Translation = Default.Translation; }
+    else if (want == 1) { A_SetTranslation('gy_gold'); }
+    else                { A_SetTranslation(String.Format("gy_l%s%d", want >= 20 ? "g" : "b", want % 10)); }
   }
 
   private
@@ -215,6 +303,8 @@ class gy_Stone : Actor
     _cfgRadius  = intCvar  ("gy_light_radius" , 72);
     _cfgBright  = intCvar  ("gy_light_bright" , 210);
     _cfgCull    = intCvar  ("gy_light_cull"   , 640);
+    _cfgLiving     = boolCvar("gy_living", false);
+    _cfgLivingMode = intCvar ("gy_living_mode", 0);
 
     // stagger the next refresh so the graves don't all re-read on one tic
     _cfgTimer = 17 + (_phaseOffset % 13);
@@ -249,6 +339,13 @@ class gy_Stone : Actor
   const FADE_STEP  = 0.05; // ~0.7s from dark to full
 
   private String _obituary;
+  private int    _kind;      // RSQ Edition: 0/1 a death, 2 a Score life spent (gold)
+  private int    _tintNow;   // the tint set (updateTint); -1 none chosen yet
+  private Color  _lastColor;
+  private bool   _cfgLiving;
+  private int    _cfgLivingMode;
+  const GOLD_RADIUS  = 1.25;
+  const GOLD_FLICKER = 0.33;
 
   private int    _spawnTime;
   private int    _phaseOffset;

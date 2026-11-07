@@ -14,7 +14,7 @@ class RS_AwardSeed play
 		into.Push("RS_Award_Miniboss");
 		into.Push("RS_Award_Greedy");
 		into.Push("RS_Award_Bossfight");
-		into.Push("RS_Award_Down");
+		into.Push("RS_Award_Revenge");
 		into.Push("RS_Award_Revive");
 		// RS_Award_FEAR went 11-03: F.E.A.R. Effect is the combo "shove > gun.shotgun@slow" (combo.zs), paid on the kill
 	}
@@ -67,13 +67,13 @@ class RS_Award_Bossfight : RS_ScoreBonus
 	override String DisplayName() const { return "Bossfight"; }
 }
 
-// RSQ SlowMo's DOWN (owner 11-06, design/NEAR_DEATH.md 8): "Down" for each kill inside the DOWN window, "Revive" for
-// getting up. SlowMo sends them from the killing blow, before this mod records that kill: they wait for it (AwardExternal)
-// and pay a share of its base, 0.5 and 2.0.
-class RS_Award_Down : RS_ScoreBonus
+// RSQ SlowMo's DOWN v2 (owner-approved 11-06 19:51, design/NEAR_DEATH.md 11): "Revenge" for killing the monster that downed
+// you (1x that kill's base: SlowMo sends it from the killing blow, before this mod records the kill, so it waits for it,
+// AwardExternal) and "Revive" for taking the crate it dropped (3x the base of that marked kill, remembered per player).
+class RS_Award_Revenge : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Down"; }
+	override String DisplayName() const { return "Revenge"; }
 }
 
 class RS_Award_Revive : RS_ScoreBonus

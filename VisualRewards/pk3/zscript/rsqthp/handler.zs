@@ -102,6 +102,7 @@ class RSQTHP_Handler : EventHandler
 	transient int sprAlly;           // RSYG: the friendly bar (HP2)
 	transient int sprChunk;          // RSYH: the damage chunk (HP1)
 	transient int sprBoss;           // RSYI: crown / chain link / gem, tier pips (TEXTURES.rsqthp)
+	transient int sprDown;           // RSYJ: RSQ SlowMo's DOWN mark, a skull
 	transient int sprWhip;           // RSYW: whipped + the other four markers
 	const BURN_STREAM = 1;           // BD22 VR's flamethrower stream: one FlamethrowerProjectileNew* a tic
 	const BURN_GROUND = 26;          // BD's FlamethrowerBurningStuff: one A_Explode every 26 tics
@@ -202,6 +203,7 @@ class RSQTHP_Handler : EventHandler
 		sprAlly = Actor.GetSpriteIndex('RSYG');
 		sprChunk = Actor.GetSpriteIndex('RSYH');
 		sprBoss = Actor.GetSpriteIndex('RSYI');
+		sprDown = Actor.GetSpriteIndex('RSYJ');
 		sprWhip = Actor.GetSpriteIndex('RSYW');
 	}
 
@@ -585,6 +587,22 @@ class RSQTHP_Handler : EventHandler
 	//   1 crown, 2 link, 3 gem, 4 crown + gem, 5 link + gem, 6..9 crown + 1..4 pips, 10..13 crown + 1..4 pips + gem.
 	// Tier (RSQMB_Service "tier", 0..4, -1 when not a Bossfight's or an older RSQ_Miniboss) = pips, one per tier (owner
 	// 11-05): tier 0 the bare crown, tier 4 four pips; -1 the crown alone.
+	// RSQ SlowMo's DOWN v2 (11-06): this monster carries a DOWN mark (RSQSM_Service "down.mark", by name; false without SlowMo)
+	transient bool smFound;
+	transient Service smSvc;
+	bool DownMarked(Actor a)
+	{
+		if (!a) return false;
+		if (!smFound)
+		{
+			smFound = true;
+			let it = ServiceIterator.Find("RSQSM_Service");
+			Service s;
+			while (s = it.Next()) if (s.GetClassName() == 'RSQSM_Service') { smSvc = s; break; }
+		}
+		return smSvc && smSvc.GetInt("down.mark", "", 0, 0, a) == 1;
+	}
+
 	transient bool mbFound;
 	transient Service mbSvc;
 	int BossMarkOf(Actor a)

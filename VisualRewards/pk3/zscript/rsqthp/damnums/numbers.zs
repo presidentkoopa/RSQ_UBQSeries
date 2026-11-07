@@ -8,7 +8,7 @@
 // letters in, each one flashing white on arrival).
 class RSQTHP_DnNum play
 {
-	enum EKind { K_HIT, K_TOTAL, K_GAIN, K_BANNER, K_TAG, K_SEQ }   // K_SEQ: RSQ SlowMo's DOWN kill count "1/3" (rsqvr/down.zs)
+	enum EKind { K_HIT, K_TOTAL, K_GAIN, K_BANNER, K_TAG, K_SEQ }   // K_SEQ: RSQ SlowMo's DOWN time added "+0.5s" (rsqvr/down.zs)
 	enum EState { S_LIVE, S_KILL, S_FLY, S_LAND, S_DONE }
 	enum EWord { W_HEAD = 1, W_OVERKILL = 2 }
 	enum EPart { P_DIG, P_COMBO, P_WORD, P_SUB1, P_SUB2, P_BG, P_BORDER, P_NAME, P_LV, P_NEW }
@@ -38,8 +38,8 @@ class RSQTHP_DnNum play
 	int hand;                   // a gain / a tag: the hand
 	bool landOnCards;           // a gain: RSQ Gun Cards is loaded and shows its own +N there
 	int level;                  // a banner / a tag: the level reached
-	String label;               // a tag: the gun's name; a DOWN kill count: "1/3"; a banner: "REVIVE" (RSQ SlowMo's DOWN), else LEVEL UP
-	bool special;               // RSQ SlowMo's DOWN (the kill count, the medkit's +25): the headshot's life (flash, colour cycling,
+	String label;               // a tag: the gun's name; DOWN's time added: "+0.5s"; a banner: REVENGE / REVIVE / RAGE (RSQ SlowMo's DOWN), else LEVEL UP
+	bool special;               // RSQ SlowMo's DOWN (the time added, the words): the headshot's life (flash, colour cycling,
 	                            // bobbing letters) and your time, not the world's (DOWN slows the world to 5%)
 	bool slowSent;              // a banner: its slow-motion pulse has gone out
 	bool jet;                   // a normal hit: launched as a little fountain jet (events.zs PlaceJet)
@@ -91,6 +91,25 @@ class RSQTHP_DnNum play
 	{
 		gCode.Push(c); gFont.Push(f); gX.Push(x); gY.Push(y); gH.Push(hh); gPart.Push(part); gFam.Push(fm); gT0.Push(t0);
 		gTex.Push(tex); gW.Push(w);
+	}
+
+	// AddText's width for a string, nothing added (its glyph fallbacks the same)
+	double Measure(RSQTHP_DamNumHandler hnd, String s, int font, double H)
+	{
+		double tot = 0;
+		for (int i = 0; i < int(s.Length()); i++)
+		{
+			int c = s.ByteAt(i);
+			if (c >= 97 && c <= 122) c -= 32;
+			int f = font;
+			double w, gh;
+			TextureID tx = hnd.fonts.Glyph(f, hnd.q, c, w, gh);
+			if ((!tx.IsValid() || gh <= 0) && f != RSQTHP_DnFonts.F_JFO) { f = RSQTHP_DnFonts.F_JFO; tx = hnd.fonts.Glyph(f, hnd.q, c, w, gh); }
+			if ((!tx.IsValid() || gh <= 0) && f != RSQTHP_DnFonts.F_SMALL) { f = RSQTHP_DnFonts.F_SMALL; tx = hnd.fonts.Glyph(f, hnd.q, c, w, gh); }
+			double ww = (tx.IsValid() && gh > 0) ? w * (H / gh) : 0;
+			tot += ww > 0 ? ww * RSQTHP_DnFonts.ADV[f] : H * 0.45;
+		}
+		return tot;
 	}
 
 	// one line of text centred on (cx, y): returns its width. step > 0 types it in, one letter every `step` tics from t0.
@@ -159,18 +178,30 @@ class RSQTHP_DnNum play
 			if (words & W_OVERKILL) AddWord(hnd, "OVERKILL", H / 2 + H * 0.12, H, 5);
 			break;
 		case K_SEQ:
-			// RSQ SlowMo's DOWN kill count: "1/3" in the numbers' font
-			width = AddText(hnd, label, font, 0, 0, H, P_DIG);
+			// RSQ SlowMo's DOWN time added: "+0.5s" in the numbers' font; the unit "s" set small on the baseline (the
+			// fonts have capitals only: a full-height S read as a 5 on the rig)
+			if (label.Length() > 1 && label.Mid(label.Length() - 1, 1) == "s")
+			{
+				String num = label.Left(label.Length() - 1);
+				double hs = H * 0.6;
+				double w1 = Measure(hnd, num, font, H), w2 = Measure(hnd, "S", font, hs);
+				double tot = w1 + w2;
+				AddText(hnd, num, font, -tot / 2 + w1 / 2, 0, H, P_DIG);
+				AddText(hnd, "S", font, tot / 2 - w2 / 2, -(H - hs) / 2, hs, P_DIG);
+				width = tot;
+			}
+			else width = AddText(hnd, label, font, 0, 0, H, P_DIG);
 			height = H;
 			break;
 		case K_BANNER:
 		{
-			if (label == "REVIVE")
+			if (label == "REVIVE" || label == "REVENGE" || label == "RAGE")
 			{
-				// RSQ SlowMo's REVIVE (owner 11-06): the level-up band, the word in the damage numbers' font (JFO), its own colour
+				// RSQ SlowMo's DOWN words (owner 11-06 v2): the level-up band, the word in the damage numbers' font (JFO),
+				// each its own colour (events.zs DownWord)
 				Add(0, 0, 0, 0, 14, P_BG, -2, -1, T_BAND, 1.0);
-				AddText(hnd, "REVIVE", RSQTHP_DnFonts.F_JFO, 0, 0.4, 7.0, P_DIG);
-				width = 40; height = 14;
+				AddText(hnd, label, RSQTHP_DnFonts.F_JFO, 0, 0.4, 7.0, P_DIG);
+				width = max(24, 40 * label.Length() / 6); height = 14;
 				break;
 			}
 			// at 64 map units from the eyes, Word Size 1 (LEVEL UP 4.5 degrees tall, the lines under it 2 and 1.7); Draw

@@ -9,15 +9,20 @@ New since the headset pass (tested on the rig, headset check pending): the Real-
 New on 11-06 (rig only, not headset-confirmed): the two bars (stored slow-mo and countdown) with the cause line under
 the countdown; Heavy Hit Slowdown; the Grenade Blast and Over-Under Blast triggers; Reload When.
 
-New on 11-06 (rig only, not headset-confirmed): **DOWN**. A hit that would kill you holds you at 1 HP instead. The world
-drops to its slowest (5%) for 6 s while you keep full speed, a heartbeat plays (Brutal Doom's own; stock Doom's lift
-thud pitched down without it), and a red bar under the slow-mo bars counts the window down with "DOWN" under it. No
-single hit can finish you in the first second. Get 3 kills before it runs out and you **REVIVE**: time comes back,
-health goes to 50 (or stays, if already higher), every gun's magazine is filled from its reserve, plus one cigarette
-(RSQ Tactical Rig) and one grenade (RSQ Grenade, or Brutal Doom's). Run out of time, or take a killing hit after the
-first second, and you die, unless an RSQ Score life catches you: DOWN always comes before a Score life. Then DOWN rests
-60 s. Joins by name: RSQ Glow In The Dark turns the map blood red, RSQ VisualRewards drops medkits (+25) from the kills
-and shows the kill count and the REVIVE word, RSQ Score pays "Down" and "Revive".
+New on 11-06, reworked to v2 the same evening (rig only, not headset-confirmed): **DOWN -> REVENGE -> REVIVE -> RAGE**.
+A hit that would kill you holds you at 1 HP instead (before any RSQ Score life); no hit can finish you in the first
+second. You drop into a crouch (view and hitbox to 40% of standing, 60% lower, eased over half a second, in both crouch
+modes) and crawl at a third of your speed; both hands work as normal. The world goes to its slowest (5%), RSQ Glow In
+The Dark turns the map red, a heartbeat plays. The monster that downed you is marked (if it is gone, the strongest
+monster in sight): it glows DOWN red, full-bright, a little larger, +50% health, with a skull over its HP bar (RSQ
+VisualRewards); with LegenDoom and Champions both loaded it is made a LegenDoom legendary by LegenDoom's own pickup
+(Champions offers no outside way to make a champion, so our boost stands in for that part). The clock starts at 6 s and
+every hit you land adds 0.5 s (one per monster per tic), never more than 12 s left; the bar under the slow-mo bars
+reads DOWN, then REVENGE once the mark is dead. Killing it drops a white crate with a red cross where it fell: crawl to
+it, or pull it with RSQ Distance Grab (it never moves to you). Touching it is **REVIVE**: time comes back, the view
+rises, health 50 (or kept if higher), magazines filled from reserve, +1 cigarette, +1 grenade. Then **RAGE** for 5 s:
+double damage and no ammo used. Each DOWN costs 10 max health until the next map (the Scar). Run out of time, or take a
+killing hit after the first second, and you die, unless a Score life catches you. Then DOWN rests 60 s.
 
 Stock QuestZDoom 17.3 has no world clock that a mod can slow. This mod builds one in ZScript. Every monster,
 missile, gib and sound near you is time-dilated, not frozen. Each one still moves every frame, just by less,
@@ -156,13 +161,17 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | **Heavy Hit Slowdown** | | |
 | Heavy Hit Slowdown | On | A heavy hit from a legendary, champion, miniboss or thrall, boss or big demon slows time 3 s (you too). Never on a hit that kills you, never while you are DOWN. |
 | *DOWN* | | |
-| DOWN | On | A hit that would kill you holds you at 1 HP: the world at its slowest, a window to get kills and REVIVE. |
-| Kills Needed | 3 | Kills inside the window to REVIVE (1 to 10). |
-| Window (s) | 6 | Real seconds to get them (2 to 30). |
+| DOWN | On | A hit that would kill you holds you at 1 HP: crouched, crawling, the world at its slowest; kill the marked monster and take its crate to REVIVE. |
+| Window (s) | 6 | The clock's start (2 to 30). |
+| Time per Hit (s) | 0.5 | Added for each hit you land (one per monster per tic). |
+| Max Window (s) | 12 | Never more than this left. |
+| Rage Length (s) | 5 | After REVIVE: double damage, no ammo used. |
+| Scar | On | Each DOWN costs max health until the next map. |
+| Scar (max health) | 10 | How much. |
 | Cooldown (s) | 60 | After DOWN ends, pass or fail, it can't trigger again for this long (0 to 300). |
 | Repeat Without Limit | Off | No cooldown at all. |
 | Red Map | On | RSQ Glow In The Dark turns the map deep blood red while you are DOWN. |
-| Power-Up Drops | On | Each kill that counts drops RSQ VisualRewards' medkit (+25 health). Needs RSQ VisualRewards. |
+| Lower View When Down | On | Comfort: off = no view drop (the crawl stays). |
 | Heavy Hit Size (% of max health) | 75 | What one tic's damage must add up to. |
 | Arch-Vile Blast | On | Also on any heavy hit that is an Arch-Vile's flame attack. |
 | Blasted Off Your Feet | On | Also on any heavy hit that throws you up (vertical speed up 10+ map units a tic). |

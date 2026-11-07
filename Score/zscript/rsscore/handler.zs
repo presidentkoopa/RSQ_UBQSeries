@@ -770,12 +770,19 @@ class RS_ScoreHandler : EventHandler
 		else if (label ~== "Miniboss") mult = 1.0;
 		else if (label ~== "Greedy") mult = 1.5;
 		else if (label ~== "Bossfight") mult = 2.0;     // the called-in miniboss (owner 11-05), on top of Miniboss's 1.0
-		// RSQ SLOWMO'S DOWN (owner 11-06): a kill inside the window, and getting up on the last one. Sent from the killing
-		// blow, before that kill is recorded here: always waits for it (a kill already recorded this tic is another one),
-		// then pays 0.5 / 2.0 of its base; with no kill by the next tic, the flat 50 / 500.
+		// RSQ SLOWMO'S DOWN v2 (owner 11-06 19:51): "Revenge", the marked monster killed, is sent from its killing blow,
+		// before that kill is recorded here: it waits for it (a kill already recorded this tic is another one) and pays
+		// 1x its base (flat 100 with no kill by the next tic); that base is remembered for the player. "Revive", the
+		// crate taken (seconds later, no kill of its own), pays 3x that remembered base (flat 300 without one).
 		bool waits = false;
-		if (label ~== "Down") { mult = 0.5; waits = true; points = 50; }
-		else if (label ~== "Revive") { mult = 2.0; waits = true; points = 500; }
+		if (label ~== "Revenge") { mult = 1.0; waits = true; points = 100; }
+		else if (label ~== "Revive")
+		{
+			int rp = who.PlayerNumber();
+			int rb = (rp >= 0 && rp < MAXPLAYERS) ? revengeBase[rp] : 0;
+			if (rp >= 0 && rp < MAXPLAYERS) revengeBase[rp] = 0;
+			return PayLabel(who, label, rb > 0 ? 3 * rb : 300);
+		}
 		if (mult > 0)
 		{
 			int pn = who.PlayerNumber();
@@ -814,6 +821,7 @@ class RS_ScoreHandler : EventHandler
 	}
 
 	// awards waiting for their kill (Miniboss, Greedy: AwardExternal)
+	int revengeBase[MAXPLAYERS];   // RSQ SlowMo's DOWN: the base of this player's last "Revenge" kill ("Revive" pays 3x it)
 	Array<Actor> pendWho;
 	Array<String> pendLabel;
 	Array<double> pendMult;
@@ -831,6 +839,7 @@ class RS_ScoreHandler : EventHandler
 			if (!mine && !stale) continue;
 			int points = mine ? max(1, int(round(base * pendMult[i]))) : pendFlat[i];
 			String label = pendLabel[i];
+			if (label ~== "Revenge" && who && who.player) revengeBase[who.PlayerNumber()] = mine ? max(1, base) : 100;
 			pendWho.Delete(i); pendLabel.Delete(i); pendMult.Delete(i); pendFlat.Delete(i); pendTic.Delete(i);
 			if (who && who.player) PayLabel(who, label, points);
 		}
@@ -1061,6 +1070,20 @@ class RS_ScoreHandler : EventHandler
 		tr.regenTimer -= 1;
 	}
 
+	// A LIFE SPENT IS A DEATH (owner 11-06 19:58 / 19:59): RSQ Graveyard (by name, its service) places its gold tombstone
+	// where this player stood. Play scope, on every machine on the same tic (the stone is spawned, not sent).
+	static void TellGraveyard(Actor mo)
+	{
+		let it = ServiceIterator.Find("gy_RSQService");
+		Service s;
+		while (s = it.Next())
+		{
+			if (s.GetClassName() != 'gy_RSQService') continue;
+			int r = s.GetInt("stone.life", "", mo.PlayerNumber(), 0, mo);
+			if (DebugOn()) Console.Printf("RS_Score: a life spent -- RSQ Graveyard's gold tombstone: %d", r);
+		}
+	}
+
 	// RSQ SlowMo's DOWN holds this player now (RSQSM_Service "down.hold", by name; 0 without SlowMo)
 	static bool DownHolds(Actor mo)
 	{
@@ -1145,6 +1168,7 @@ class RS_ScoreHandler : EventHandler
 					Console.Printf("RS_Score: REVIVED at tic %d -- health %d, %d lives left",
 						level.maptime, mo.health, tr.extraLives);
 				}
+				TellGraveyard(mo);
 
 				if (tr.extraLives <= 0)
 				{

@@ -48,7 +48,13 @@ class gy_Death
   Vector3 getLocation() const { return _location;   }
   String  getObituary() const { return _obituary;   }
 
+  // RSQ Edition (2026-11-06): what kind of stone. 1 a real death (the stone as it always was), 2 an RSQ Score life spent
+  // (the gold stone). Not part of toString(): the spawn event's name carries it (gy_EventHandler).
+  int     getKind()     const { return _kind > 0 ? _kind : 1; }
+  gy_Death setKind(int kind) { _kind = kind; return self; }
+
   private Vector3 _location;
   private String  _obituary;
+  private int     _kind;
 
 } // class gy_Death
