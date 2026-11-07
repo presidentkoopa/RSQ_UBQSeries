@@ -4,3 +4,4 @@
   tracked down. Instead of removing them, make points along the outer beam sparkle gently, almost
   imperceptibly. Likely route: a few tiny additive sparks at random points on the beam's outer shell, fading in
   and out (VOXELDEF frames cannot be swapped by a cvar, and extra voxel frames cost Quest memory).
+  A toggle option for preference (owner 05:49), off by default.
