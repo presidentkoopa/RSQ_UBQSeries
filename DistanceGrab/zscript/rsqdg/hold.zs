@@ -364,7 +364,19 @@ class RSQDG_Hold : EventHandler
 		// A thrown pickup stays uncollectable for a moment, or walking after
 		// your own throw picks it straight back up on the same tic.
 		Restore(hand, a, thrown ? 10 : 0);
-		if (thrown && p.mo) v = Assist(p, a, v - body) + body;
+		// BARREL LOCK-ON (lockon.zs): a barrel thrown with a lock goes to the locked monster, steered in flight, at the
+		// swing's speed across the ground (at least the lob that reaches); the body's run is not added (it must land).
+		// Anything else, or no lock: the aim assist.
+		if (thrown && p.mo)
+		{
+			let lo = RSQDG_LockOn.Get();
+			bool sent = false;
+			Vector3 lv;
+			Vector3 va = v - body;
+			if (lo) { [sent, lv] = lo.Send(p, a, va.xy.Length(), false); }
+			if (sent) { v = lv; body = (0, 0, 0); }
+			else v = Assist(p, a, v - body) + body;
+		}
 		a.Vel = v;
 
 		// INTO THE AIR, EVERY RELEASE: thrown or set down, it falls at the one

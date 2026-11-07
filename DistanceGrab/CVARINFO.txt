@@ -196,6 +196,7 @@ user float rsqdg_throw_spin  = 1.0;    // how fast a thrown thing turns in the a
 user bool  rsqdg_trail       = true;   // a faint trail behind a pulled thing
 user bool  rsqdg_dust        = true;   // a hard landing kicks up dust
 user float rsqdg_throw_assist = 12.0;  // degrees: a throw within this of a monster bends to hit it (0 = off)
+user bool  rsqdg_lockon = true;        // Barrel Lock-On (owner 11-07, ON): a free palm locks a monster; barrels thrown or uppercut (RSQ Melee) go to it
 user bool  rsqdg_swing        = true;   // a held thing swung into a monster hits it (by its weight and the swing's speed)
 user float rsqdg_swing_mps    = 3.0;    // m/s of the held thing's own travel below which a swing is not a hit
 user int   rsqdg_hitstop      = 0;      // OPTION: tics a monster a thrown thing hits freezes for (0 = off; 3 tap, 4, 6 heavy)

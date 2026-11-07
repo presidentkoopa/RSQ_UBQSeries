@@ -69,7 +69,7 @@
   (as in Move Holsters by Hand: your front, the real holster spots, the guns' own models) in the web, with the rings
   on the real holster spots; Marine is today's view. Default Marine (new options default to the existing behaviour).
 
-## Barrel lock-on (owner 2026-11-07 10:41-10:50; approved to build)
+## Barrel lock-on (owner 2026-11-07 10:41-10:50; approved to build; BUILT 11-07, rig only, not headset-confirmed)
 - Lock a monster by turning a free palm at it (works with a gun in that hand: turn the wrist sideways). Distance
   Grab's cone/beam, which normally finds items, finds a monster for this. Lock look: Distance Grab's green glow.
 - Sticky: locking needs the 12-degree cone; keeping it needs about twice that. Putting the palm on another monster
@@ -79,3 +79,24 @@
   always land on the locked monster: the arc is solved to reach it; the swing sets how hard it hits (harder = flatter,
   faster, more impact). Without a lock: the throw's existing aim assist; the uppercut as now.
 - Option row "Barrel Lock-On", ON by default (owner's call).
+- Lock-on answers (owner 11:1x): one lock per player, set by either free palm, used by either hand. The palm cone
+  picks the MONSTER over an item when the other hand holds a barrel or you stand within punching reach of a barrel;
+  otherwise items as now. A moving locked monster: the barrel STEERS in flight after it (homing). With a lock it
+  always lands (decided earlier); a still release still sets it down. Steering applies to BARRELS only. An uppercut
+  barrel that reaches the lock hits and explodes like a thrown one (impact, stagger, blast). Barrel Lock-On on also
+  turns on Melee's uppercut barrel kick. An uppercut barrel goes to the lock only if the lock is roughly ahead;
+  otherwise it flies where you punched.
+- BUILDER'S CHOICES (11-07, pending the owner's look; DistanceGrab/zscript/rsqdg/lockon.zs): "punching reach" is Doom's
+  own punch range, MELEERANGE 64 map units from the body to the barrel's side; "roughly ahead" is within 60 degrees of
+  the kick's way (the throw's own forward gate); the lock shows no glow in the 0.5 s grace; the softest locked throw is
+  the 45-degree lob that just reaches; an arc that would meet a lower ceiling on the way is thrown flatter (faster), and
+  in flight the pull's Duck Under Doors caps its climb; a steered barrel that stops against its monster lands its blow
+  there (a glancing stop is otherwise no impact). Anything shootable flagged a monster can be locked, e.g. Champions'
+  dark-red shootable corpse (rig run).
+
+## BD22 VR dual wield and assigned holsters (owner 11:04-11:06)
+- Dual-wielding an assigned gun G (the off hand holds G's off-hand copy, which the Rig counts as G):
+  A. Holstering the off-hand copy at G's own holster: G goes home, both hands go to fists.
+  B. Holstering the off-hand copy at a holster assigned to another gun X (X in it): the off hand goes to its fist,
+     G goes home to its own holster, and the main hand takes X out of that holster.
+  At an unassigned empty holster: as A (an assigned gun only enters its own holster).

@@ -25,7 +25,7 @@ class RSQDG_Tell : EventHandler
 	private TranslationID litWas[2];
 
 	// The glow twins, one per hand (glow.zs).
-	private RSQDG_Glow    glw[2];
+	private RSQDG_Glow    glw[3];   // [2]: the Barrel Lock-On's monster (lockon.zs), green as "have"
 
 	const COULD_COLOR = 0xFFB030;
 	const HAVE_COLOR  = 0x40FF70;
@@ -39,8 +39,8 @@ class RSQDG_Tell : EventHandler
 			&& RSQDG_Reach.Flag("rsqdg_on", p, true)
 			&& RSQDG_Reach.Flag("rsqdg_glow", p, true);
 
-		Actor want[2];
-		bool have[2];
+		Actor want[3];
+		bool have[3];
 		let aim  = RSQDG_Aim.Get();
 		let grab = RSQDG_Grab.Get();
 		let fl   = RSQDG_Flight.Get();
@@ -59,11 +59,15 @@ class RSQDG_Tell : EventHandler
 			have[0] = have[0] || have[1];
 			want[1] = null;
 		}
+		// BARREL LOCK-ON: the locked monster wears the grab's green "have" glow while the lock holds
+		let lo = RSQDG_LockOn.Get();
+		want[2] = (on && lo) ? lo.Shown() : null; have[2] = true;
+		if (want[2] && (want[2] == want[0] || want[2] == want[1])) want[2] = null;
 
 		Vector3 eye = p && p.mo ? (p.mo.Pos.x, p.mo.Pos.y, p.viewz) : (0, 0, 0);
 		double t = level.maptime;
 		double gain = clamp(RSQDG_Reach.Num("rsqdg_glow_a", p, 1.0), 0.0, 2.0);
-		for (int h = 0; h < 2; h++)
+		for (int h = 0; h < 3; h++)
 		{
 			Actor a = want[h];
 			// A host with no sprite to wear (TNT1, or invisible) gets no glow; nor a
@@ -254,7 +258,7 @@ class RSQDG_Tell : EventHandler
 		if (e.IsSaveGame) return;
 		litActor[0] = null; litActor[1] = null;
 		litWas[0] = 0; litWas[1] = 0;
-		glw[0] = null; glw[1] = null;
+		glw[0] = null; glw[1] = null; glw[2] = null;
 		// A hub snapshot may have kept twins from an older visit.
 		let it = ThinkerIterator.Create("RSQDG_Glow");
 		Actor old;
@@ -267,7 +271,7 @@ class RSQDG_Tell : EventHandler
 		// an object left recoloured -- or a twin left glowing, frozen, its Tick
 		// waiting for a host -- would greet the player on the way back.
 		ClearMark(0); ClearMark(1);
-		for (int h = 0; h < 2; h++)
+		for (int h = 0; h < 3; h++)
 		{
 			if (glw[h]) glw[h].Destroy();
 			glw[h] = null;

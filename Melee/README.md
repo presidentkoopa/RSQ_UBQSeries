@@ -10,6 +10,10 @@ New since the headset pass (tested on the rig, headset check pending): the hands
 New on 11-06 (rig only, not headset-confirmed): punches and the shove work switches and doors; Uppercut Kicks Barrels;
 the new hit sparks (the Capcom vs. SNK 2 sparks are gone).
 
+New on 11-07 (rig only, not headset-confirmed): with RSQ Distance Grab's Barrel Lock-On, an uppercut barrel flies to the
+monster you locked, if it is roughly ahead, and hits and goes off like a thrown barrel. Barrel Lock-On on also turns
+the uppercut barrel kick on.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It needs no
 other mod and works on plain Doom 2.
 
@@ -38,6 +42,8 @@ drew, so only your arms throw punches.
 - Uppercuts launch, capped at 3 m of air.
 - Any punch that meets a switch or a door works it, like pressing Use on it (the line's special decides, so a WAD's own switch textures work the same). The gun-butt shove does too.
 - Optional (off): Uppercut Kicks Barrels. An uppercut into a barrel does no damage and kicks it up and away in an arc, like Brutal Doom's kick.
+  RSQ Distance Grab's Barrel Lock-On (on by default there) turns the kick on too, and with a lock roughly ahead (within
+  60 degrees of the kick) the barrel flies to the locked monster and hits and goes off like a thrown one.
 - Open-palm swat: a palm swung at 1.5 m/s or more through a monster's missile knocks it aside.
 - Fists and palms meet bullets: a monster's bullet met by your hand is knocked away (or returned with the Hadouken).
 - Hit sparks on every blow, with an adjustable size: orange for jabs and hooks, violet for uppercuts and the Hadouken, blue
@@ -119,7 +125,7 @@ row off turns them off on the gloves too).
 | Slappers Only | Off | Gloves only, guns put away |
 | Open-Palm Swat | On | Palms knock missiles aside |
 | Swat Bullets | On | Hands meet monsters' bullets too |
-| Uppercut Kicks Barrels | Off | An uppercut kicks a barrel up and away, no damage |
+| Uppercut Kicks Barrels | Off | An uppercut kicks a barrel up and away, no damage (also on while Distance Grab's Barrel Lock-On is on) |
 | Hit Spark Size | 1.0 | Size of the hit sparks |
 | **Gun Butt Shove** | | |
 | Gun Butt Shove | On | The stock strike |
@@ -159,6 +165,7 @@ Runs alone. It finds the others by name:
   BD22 VR, the tap also throws that fist's own trigger punch.
 - **Brutal Doom**: the shove plays Brutal Doom's swing and kick sounds, and its monsters react to the kick themselves.
 - **RSQ Distance Grab**: a monster thrown out of the Headlock flies through its throw code; the two share the grip.
+  Its Barrel Lock-On sends an uppercut barrel to the locked monster (asked by name; Melee still loads alone).
 - **RSQ Accessibility (its gesture reader)**: reads both hands for Ground Pound and Clear Out when it is loaded; without it Melee reads them with its own copy of that two-hand reader (the same moves and numbers).
 - **RSQ SlowMo**: the beat after a shove, and the F.E.A.R. window.
 - **RSQ Score**: the Headlock combo, the F.E.A.R. Effect award, returned missiles.

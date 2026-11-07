@@ -12,6 +12,10 @@ never go backwards; RSQ FnF flares can be grabbed; a gun caught in the off hand 
 New on 11-07 (rig only, not headset-confirmed): release to throw. A carried thing never lets go by itself; squeeze
 the grip on a thing you caught and it stays in your hand until you let the grip go, then flies at your hand's speed.
 
+New on 11-07 (rig only, not headset-confirmed): Barrel Lock-On. With a barrel in your other hand, or a barrel within
+punching reach, turn a free palm at a monster: it glows green and is locked. A barrel you throw, or uppercut with RSQ
+Melee, flies to it, follows it if it moves, and hits and goes off.
+
 Gravity-glove grabbing for Doom in VR, built on stock QuestZDoom 17.3 in ZScript alone. No buttons in the
 gesture: your palm is the trigger. Pull ammo, health, keys and guns to you, catch them out of the air, carry a
 barrel in one hand, throw it at an imp and watch it go off. Lift doors by hand. Everything has weight: a keycard
@@ -53,6 +57,22 @@ the catch.
 - **Club with it:** swing what you carry into a monster to hit it.
 - **Body shield:** a held barrel or corpse stops bullets and fireballs. A barrel goes off when it is hit.
 - **Heavy slows you:** carrying 120 kg halves your speed.
+
+**Barrel Lock-On** (on by default)
+- **One lock per player.** Either free palm sets it (a gun hand turned sideways counts); either hand's barrel uses it.
+- **The palm picks the monster over an item** while your other hand holds a barrel, or you stand within punching reach
+  of a barrel (Doom's punch range, 64 map units from your body to the barrel's side). Otherwise the palm finds items
+  as before. The locked monster wears the grab's green glow.
+- **Sticky:** locking needs the 12-degree cone (Aim Width); keeping it needs twice that. Your palm on another monster
+  takes the lock at once. With no palm on it the lock holds 3 seconds, then for half a second more (no glow) a
+  throw or an uppercut still goes to that monster, or where it last was.
+- **A thrown barrel always lands on the lock:** its arc is solved to reach it and it steers after the monster in
+  flight. The swing sets how hard it hits (harder is flatter, faster, more impact); the softest is the lob that just
+  reaches. An arc that would meet a lower ceiling on the way (a window's or a door's top) is thrown flatter. Letting go
+  with the hand still sets it down, as always. Only barrels steer; anything else keeps the throw's aim assist.
+- **RSQ Melee's uppercut barrel** goes to the lock when the lock is roughly ahead (within 60 degrees of the kick), and
+  hits and goes off like a thrown barrel. Otherwise it flies where you punched. Barrel Lock-On on also turns Melee's
+  uppercut barrel kick on.
 
 **Up close**
 - **Walk-up grab:** grip with your palm on a pickup or barrel (or a corpse, if switched on) to take it straight
@@ -134,6 +154,7 @@ off (the door rows under Lift Doors, the rumbles under Haptics, the two key rows
 | Hit With What You Hold | On | A held thing swung into a monster hits it. |
 | Body Shield | On | A held corpse or barrel stops shots and fireballs. |
 | Hit-Stop | Off | A monster hit by a thrown thing freezes for a beat: Off, Tap, Beat, Heavy. |
+| Barrel Lock-On | On | A free palm locks a monster; barrels thrown, or uppercut with RSQ Melee, go to it (above). |
 | Sounds | On | Whoosh on a throw, thud on a catch and a landing. |
 | Landing Dust | On | A hard landing kicks up dust. |
 | **What You Can Grab** | | |
@@ -223,7 +244,7 @@ Living monsters are never pulled.
 | Glow Brightness / Pulse Period | 1.0 / 24 tics | |
 | Rumble Strength / Locked Rumble | 1.0 / 0.15 | |
 | Door Commit Point / Door Lift Gain | 0.40 / 2.5 | Let go past this much open and the door finishes; door travel per hand travel. |
-| Report Actions / Report Refusals | Off | Log what the grab does / why it refused. |
+| Report Actions / Report Refusals | Off | Log what the grab does / why it refused (the Barrel Lock-On's too). |
 
 ## Works with
 
@@ -236,7 +257,7 @@ RSQ Distance Grab runs alone. It finds the other mods by name, so load order amo
   rig.
 - **RSQ Melee:** a gloved hand, or one that just punched, does not reach. The off-hand Headlock takes a grip
   press when a monster is nearer than anything to grab, and a monster thrown from the Headlock flies with Distance
-  Grab's throw.
+  Grab's throw. Melee's uppercut barrel goes to the Barrel Lock-On's lock (asked by name).
 - **RSQ Saber** and **RSQ ShieldSaw:** a lit saber or a ShieldSaw hand stands down.
 - **RSQ Grapple** and **RSQ Whip:** the grab binds take hold of their ropes.
 - **RSQ Score:** a kill with a swung object scores as Clubbed, and thrown objects feed its scoring.

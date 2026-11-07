@@ -496,8 +496,9 @@ class RSQML_Gloves : StaticEventHandler
 		if (dbg) { String vn = "nothing"; if (victim) vn = victim.GetClassName(); Console.Printf("RSQML punch %s swing %.2f m/s avg -> %s", h ? "L" : "R", avg, vn); }
 		if (!victim)
 		{
-			// UPPERCUT KICKS BARRELS (option, off): an uppercut into a barrel lifts it up and away, no damage
-			bool used = RSQML.SVI("rsqml_uppercut_barrels", 0) != 0 && KickBarrel(pmo, g, h, st, avg, gr);
+			// UPPERCUT KICKS BARRELS (option, off): an uppercut into a barrel lifts it up and away, no damage. RSQ Distance
+			// Grab's Barrel Lock-On (on by default there) turns the kick on too (owner 11-07, design/PARKED.md).
+			bool used = (RSQML.SVI("rsqml_uppercut_barrels", 0) != 0 || LockOnKicks(pmo)) && KickBarrel(pmo, g, h, st, avg, gr);
 			// A SWITCH OR A DOOR the fist meets this tic (any punch: jab, hook, uppercut): worked as a Use press
 			// (core.zs UseLineAlong). Not when BD22 VR's own punching deals this fist's blow: its punch works the line itself
 			// (its fists.zs PunchUse), and two would flip a repeatable switch twice.
@@ -572,13 +573,30 @@ class RSQML_Gloves : StaticEventHandler
 		double up = 5.0 + 4.0 * power;
 		double capM = RSQML.SV("rsqml_punch_lift_cap", 3.0);
 		if (capM > 0) up = min(up, sqrt(2.0 * capM * RSQML.UnitsPerMetre() / RSQML.Stretch()));
-		b.vel.z = max(b.vel.z, up);
-		b.vel.xy += toB * up;
+		// BARREL LOCK-ON (RSQ Distance Grab, asked by name): with a lock roughly ahead, Distance Grab sends the barrel to
+		// the locked monster at this kick's forward speed (or the lob that reaches it) and watches it as a throw -- it hits
+		// and goes off like a thrown one. Otherwise, or without Distance Grab, the kick as before.
+		let dg = RSQML.Svc("RSQDG_ThrowService");
+		bool locked = dg && dg.GetInt("lockon.kick", "", pmo.PlayerNumber(), up, b) == 1;
+		if (!locked)
+		{
+			b.vel.z = max(b.vel.z, up);
+			b.vel.xy += toB * up;
+		}
 		b.target = pmo;
 		RSQML_Spark.Dust(b.pos + (0, 0, 4));
 		pmo.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 1.0);
-		if (RSQML.Debug() > 0) Console.Printf("RSQML uppercut kicks %s: up %.1f, forward %.1f, no damage (health %d)", b.GetClassName(), up, up, b.health);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML uppercut kicks %s: %s, up %.1f, forward %.1f, no damage (health %d)", b.GetClassName(),
+			locked ? "to Distance Grab's lock" : "where you punched", up, up, b.health);
 		return true;
+	}
+
+	// RSQ Distance Grab's Barrel Lock-On is on for this player (asked by name; absent: no)
+	static bool LockOnKicks(PlayerPawn pmo)
+	{
+		if (!pmo) return false;
+		let dg = RSQML.Svc("RSQDG_ThrowService");
+		return dg && dg.GetInt("lockon.on", "", pmo.PlayerNumber()) == 1;
 	}
 
 	static Actor Contact(PlayerPawn pmo, Vector3 a, Vector3 b, double gr, bool barrels = false)

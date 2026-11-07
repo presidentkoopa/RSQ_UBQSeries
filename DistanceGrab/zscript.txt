@@ -28,3 +28,4 @@ version "4.14"
 #include "zscript/rsqdg/feel.zs"
 #include "zscript/rsqdg/door.zs"
 #include "zscript/rsqdg/near.zs"
+#include "zscript/rsqdg/lockon.zs"   // Barrel Lock-On (owner 11-07, design/PARKED.md)

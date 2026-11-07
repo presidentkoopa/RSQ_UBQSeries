@@ -31,6 +31,12 @@ class RSQDG_Aim : EventHandler
 		return (hand == 0 || hand == 1) ? target[hand] : null;
 	}
 
+	// BARREL LOCK-ON (lockon.zs): a palm the lock-on finds on a monster has no item pick this tic (the monster wins)
+	void Suppress(int hand)
+	{
+		if (hand == 0 || hand == 1) target[hand] = null;
+	}
+
 	// Whether the pose is trustworthy this tic. Published rather than re-derived
 	// so the lock and the carry cannot disagree with the drawing about it.
 	private bool poseTrusted;

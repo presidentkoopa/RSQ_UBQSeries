@@ -1198,7 +1198,7 @@ class RSQDG_Flight : EventHandler
 	// not mirrored -- stepping up is already the engine's. rsqdg_flight_duck 0 off.
 	const DUCK_AHEAD = 4;       // tics of flight looked along
 	const DUCK_MARGIN = 2.0;    // units kept under the ceiling
-	private static void Duck(Actor a, PlayerInfo p)
+	static void Duck(Actor a, PlayerInfo p)   // also the Barrel Lock-On's steered barrel (lockon.zs)
 	{
 		if (!RSQDG_Reach.Flag("rsqdg_flight_duck", p, true)) return;
 		double sp = a.Vel.XY.Length();

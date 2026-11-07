@@ -641,6 +641,24 @@ class RSQDG_Throw : EventHandler
 		}
 	}
 
+	// BARREL LOCK-ON (lockon.zs): a steered barrel that met its locked monster lands its blow now, as a stop would --
+	// a solid barrel glancing off a body's side loses less than half its speed and the stop test above would miss it
+	// (rig 11-07: the grace uppercut's barrel slid down the imp's side and away, no blow). The speed is the faster of
+	// this tic's and last tic's. false: it was not being watched.
+	bool ImpactNow(Actor a)
+	{
+		let p = players[consoleplayer];
+		if (!a || !p) return false;
+		for (int i = 0; i < MAX_WATCH; i++)
+		{
+			if (wa[i] != a) continue;
+			Impact(i, max(wLastMps[i], ImpactMps(a, a.Vel, wBody[i])), p);
+			Forget(i);
+			return true;
+		}
+		return false;
+	}
+
 	override void WorldTick()
 	{
 		let p = players[consoleplayer];
@@ -797,6 +815,13 @@ class RSQDG_Throw : EventHandler
 //                                              boost, aim assist, the body's run -- then watched to its impact (same
 //                                              blow as before the move). 1 done.
 //   GetInt("headlock.caught", "", playerNumber, 0, monster)  the catch's thud and tick in the off hand. 1 done.
+// FOR RSQ MELEE'S UPPERCUT BARREL (Barrel Lock-On, lockon.zs; owner 11-07), asked by name:
+//   GetInt("lockon.on",   "", playerNumber)       1 while that player's Distance Grab and Barrel Lock-On are on (Melee's
+//                                                 uppercut barrel kick is on with it)
+//   GetInt("lockon.kick", "", playerNumber, forward, barrel)  the barrel Melee's uppercut just met; `forward` is Melee's
+//                                                 own forward kick, map units a tic. With a lock roughly ahead the barrel
+//                                                 is sent to the locked monster, steered, and watched as a throw (impact,
+//                                                 stagger, blast): 1. 0: no lock, or not ahead -- Melee kicks it itself.
 // A throw is remembered for ten seconds after the release. The hands, like the rest
 // of the grab, are the console player's own (hold.full is 0 for anyone else).
 class RSQDG_ThrowService : Service play
@@ -817,6 +842,14 @@ class RSQDG_ThrowService : Service play
 			return int(RSQDG_Near.NearDist(who, intArg & 1));
 		}
 		if (request ~== "headlock.throw") return HeadlockThrow(intArg, doubleArg, Actor(objectArg)) ? 1 : 0;
+		if (request ~== "lockon.on")
+			return (intArg >= 0 && intArg < MAXPLAYERS && playeringame[intArg] && RSQDG_LockOn.On(players[intArg])) ? 1 : 0;
+		if (request ~== "lockon.kick")
+		{
+			let lo = RSQDG_LockOn.Get();
+			if (!lo || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return 0;
+			return lo.Kick(players[intArg], Actor(objectArg), doubleArg) ? 1 : 0;
+		}
 		if (request ~== "headlock.caught")
 		{
 			let a = Actor(objectArg);
