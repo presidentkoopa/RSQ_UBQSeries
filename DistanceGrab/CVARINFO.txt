@@ -191,7 +191,6 @@ user bool rsqdg_catch_takes = true;
 // this engine, so the peak of a short window is differenced from the pose.
 user float rsqdg_throw_scale = 1.0;
 user float rsqdg_throw_boost = 2.5;    // the throw's speed is multiplied by this (after weight divides it): chuck a barrel
-user float rsqdg_auto_throw  = 2.5;    // m/s: an arm swung past this lets go by itself as it slows (0 = only the palm lets go)
 user float rsqdg_throw_stun  = 20.0;   // damage from a thrown thing that knocks a monster into its pain and shoves it
 user float rsqdg_throw_spin  = 1.0;    // how fast a thrown thing turns in the air (0 = none)
 user bool  rsqdg_trail       = true;   // a faint trail behind a pulled thing

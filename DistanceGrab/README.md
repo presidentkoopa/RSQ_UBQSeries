@@ -9,6 +9,9 @@ New since the headset pass (tested on the rig, headset check pending): Kill Rewa
 New on 11-06 (rig only, not headset-confirmed): throws that follow through, never drop at your feet while walking and
 never go backwards; RSQ FnF flares can be grabbed; a gun caught in the off hand is equipped there every time.
 
+New on 11-07 (rig only, not headset-confirmed): release to throw. A carried thing never lets go by itself; squeeze
+the grip on a thing you caught and it stays in your hand until you let the grip go, then flies at your hand's speed.
+
 Gravity-glove grabbing for Doom in VR, built on stock QuestZDoom 17.3 in ZScript alone. No buttons in the
 gesture: your palm is the trigger. Pull ammo, health, keys and guns to you, catch them out of the air, carry a
 barrel in one hand, throw it at an imp and watch it go off. Lift doors by hand. Everything has weight: a keycard
@@ -42,8 +45,9 @@ the catch.
 - **Carry:** a barrel (or a corpse, if switched on) stays in your hand on a spring. Heavy things trail, sag and
   tip with your wrist. Walls stop it.
 - **Two-hand lift:** lay your other empty palm on what you carry and it handles twice as light.
-- **Throw:** swing your arm and it lets go by itself as the swing peaks. A barrel thrown hard explodes where it
-  lands.
+- **Release to throw:** a carried thing never lets go by itself. Squeeze the grip on what you caught and it is the
+  grip's: swing as hard as you like, it stays. Let the grip go mid-swing and it flies at your hand's speed and
+  direction; let go gently and it is set down. A barrel thrown hard explodes where it lands.
 - **Impacts hurt:** thrown things deal damage from their speed and weight, stagger what they hit hard enough,
   and a light aim assist bends a throw onto a nearby monster.
 - **Club with it:** swing what you carry into a monster to hit it.
@@ -70,8 +74,9 @@ the catch.
 2. **Pull:** flick your wrist up sharply as you roll your palm back. The thing flies to you. Turn your palm out
    again before it arrives to catch it.
 3. **Change your mind:** roll your palm back slowly, with no flick. The lock lets go and nothing moves.
-4. **Carry and throw a barrel:** pull a barrel and catch it. It stays in your hand. Swing your arm toward a
-   monster to throw it. Roll your palm back with the hand still to set it down.
+4. **Carry and throw a barrel:** pull a barrel and catch it, then squeeze the grip: now it is held by the grip and
+   your palm can turn freely. Swing toward a monster and let the grip go to throw it. Let go with the hand still to
+   set it down. (Before you squeeze, the palm holds it and rolling the palm back lets go, the same way.)
 5. **Up close:** walk to an item, put your palm near it and squeeze the grip. For a door, lay a hand on it, grip,
    and lift.
 
@@ -84,8 +89,9 @@ the catch.
 | Pull | Flick the wrist up (5° per tic or faster) as you roll the palm back | |
 | Let go of a lock | Roll the palm back slowly | |
 | Catch | Palm out when the object reaches your hand | A miss drops it at your feet. |
-| Throw | Swing the arm forward past 2.5 m/s while carrying | Lets go as the swing slows, at the speed of the forward swing (never the wind-up's). Walking and frame hitches are no swing. Rolling the palm back mid-swing throws too. |
-| Set down | Roll the palm back with the hand still | |
+| Hold a caught thing | Squeeze the grip while carrying it | The grip owns it now, as a walk-up grab: the palm can roll freely. It never lets go by itself. |
+| Throw | Let the grip go mid-swing | Flies at the forward stroke's speed and direction (never the wind-up's). Walking is no swing. Before the grip is squeezed, rolling the palm back mid-swing throws the same way. |
+| Set down | Let go (grip, or palm before the grip) with the hand still | |
 | Two-hand lift | Other palm on the carried object, that hand empty | |
 | Walk-up grab | Grip with the palm within 0.30 m of a pickup or barrel | Release the grip to drop; release while moving to throw. |
 | Lift a door | Hand on the door, then grip, Use or palm out, and lift | Ordinary manual doors, from the front. |
@@ -199,7 +205,6 @@ Living monsters are never pulled.
 | Two-Hand Lift | 2.0 | The other palm on a held thing makes it this many times lighter. |
 | **Throw** | | |
 | Throw Boost | 2.5 | A throw's speed multiplier. |
-| Swing Lets Go (m/s) | 2.5 | An arm swung past this lets go by itself (0 = only the palm). |
 | Throw Aim Assist (deg) | 12 | A throw within this of a monster bends to hit it. |
 | Throw Spin | 1.0 | How fast a thrown thing turns. |
 | Throw Gravity | 0.27 | Share of Doom's gravity a thrown thing falls at. |

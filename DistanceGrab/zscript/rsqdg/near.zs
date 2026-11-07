@@ -9,6 +9,8 @@
 //   WALK-UP GRAB the grip with the palm within rsqdg_near_m of a thing takes it straight into the
 //                hand: a pickup is used (as a caught pull is, rsqdg_catch_takes), a barrel or corpse
 //                is carried until the grip is let go (moving: thrown), a door is lifted (door.zs).
+//   GRIP TAKES A CARRY (owner 11-07) the grip squeezed while the hand carries a thing the palm caught makes
+//                it the grip's, as a walk-up grab: held until the grip is let go (moving: thrown).
 //   (HEADLOCK, the off hand's grip on a living monster, moved to RSQ Melee on 2026-11-01: its headlock.zs.
 //                ONE MOD DECIDES each off-grip press: Melee takes it when a holdable monster is nearer the palm
 //                than anything this grab would take and this hand is not already ours. We ask Melee
@@ -208,7 +210,9 @@ class RSQDG_Near : EventHandler
 			// what is next to it. A grip already held, or a hand already carrying, keeps what it has.
 			if (two && !gripDown[k] && (!hold || !hold.HandIsFull(h))) continue;
 			// a press RSQ Melee's Headlock takes is not ours (one mod decides; see the header)
+			// a pulled carry the palm caught: the grip takes it over (owner 11-07)
 			ready[h] = gripDown[k]
+				|| (hold && hold.HandIsFull(h) && !owns[k])
 				|| (!MeleeClaims(pmo, h) && ((door && On("rsqdg_door_grip", p, true) && door.Touching(h))
 				|| ((!hold || !hold.HandIsFull(h)) && FindNear(pmo, p, h) != null)));
 		}
@@ -236,9 +240,18 @@ class RSQDG_Near : EventHandler
 		}
 		gripDown[k] = true;
 		if (pmo.health <= 0) return;
+		// A CARRY THE PALM CAUGHT IS TAKEN OVER BY THE GRIP (owner 2026-11-07): squeeze while a pulled thing is in
+		// this hand and the grip owns it, exactly as a walk-up grab: the palm no longer matters (grab.zs skips a
+		// hand we own), and letting the grip go throws it at the hand's speed or, gently, sets it down.
+		if (hold && hold.HandIsFull(h))
+		{
+			if (!owns[k] && RSQDG_Reach.Flag("rsqdg_debug", p, false))
+				Console.Printf("[RSQDG] t%d hand %d: the grip takes over the carry", level.maptime, h);
+			owns[k] = true;
+			return;
+		}
 		let door = RSQDG_Door.Get();
 		if (door && n == consoleplayer && door.Touching(h)) return;   // door.zs takes the grip
-		if (hold && hold.HandIsFull(h)) return;
 		let a = FindNear(pmo, p, h);
 		if (!a) return;
 		let feel = RSQDG_Feel.Get();

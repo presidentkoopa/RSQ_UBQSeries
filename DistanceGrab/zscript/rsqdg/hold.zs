@@ -112,8 +112,6 @@ class RSQDG_Hold : EventHandler
 	// away from where it is stuck. Let go of it there, rather than tow it
 	// through the geometry or keep it straining for ever.
 	const BREAK_TICS = 18;
-	private double armPeak[2];      // the arm's recent top speed, m/s (the throw lets go after it)
-	private int staleRun[2];        // tics running with no new hand pose (D40)
 
 	// A palm that moves further than this in one tic did not move, it was
 	// moved -- a teleport, a level-start pose. No feed-forward from that.
@@ -306,8 +304,6 @@ class RSQDG_Hold : EventHandler
 	private void Forget(int hand)
 	{
 		held[hand] = null;
-		armPeak[hand] = 0;
-		staleRun[hand] = 0;
 		SwingForget(hand);
 		two[hand] = false;
 		turnOn[hand] = false;
@@ -525,43 +521,10 @@ class RSQDG_Hold : EventHandler
 			lastBody[h] = pmo.Pos;
 			havePalm[h] = true;
 
-			// THROWING NEEDS NO SECOND GESTURE (owner 2026-10-31: "throwing right now doesn't work, everything just
-			// instantly falls"). Letting go was the palm rolled back, and by the time a player has thrown AND rolled
-			// the palm the throw's speed has left the window it is read from, so it dropped at the feet. Now the
-			// throw lets go by itself: the arm past rsqdg_auto_throw m/s, and then slowing (its peak passed, as a
-			// real throw lets go) -- released with the peak's speed. 0 is the old way (the palm decides).
-			double autoMps = RSQDG_Reach.Num("rsqdg_auto_throw", p, 2.5);
-			// ONLY A SWING AWAY FROM YOU (rig 2026-10-31: the wind-up was read as the throw, peak and all, and the
-			// barrel went over your shoulder). The arm's speed counts while it moves within 60 degrees of where you
-			// face, across the ground; a wind-up, a pull to the chest or a drop straight down never lets go.
-			// D40 (owner 11-06: "Throwing is still off, sometimes it doesn't follow through, or it drops at my feet"). The
-			// arm's speed here was the RAW palm differenced against the pawn, one tic apart. A tic with no new frame
-			// (the hands are written only when a frame renders: a heavy load, a hitch, PCVR's eye-hung hands) read as
-			// the hand STOPPING -- the "slowing" that lets go -- in the middle of the swing (no follow-through), and the
-			// frame after it as a double step; walking forward that double step alone (the pawn's 4.75 units a tic) read
-			// as an outward swing past 2.5 m/s, and the next tic let go of a thing the arm never threw: at your feet.
-			// Now: the hand as aim.zs reads it (carried to the body by the frame it was drawn in, the body's motion out),
-			// a tic with no new pose skipped (one; two running is a real stop), the step after it shared over the tics it
-			// covers. And what leaves the hand is the forward stroke's peak (aim.zs ThrowVelocity), never the wind-up's.
-			Vector3 step = aim.StepWorld(h);
-			bool fresh = aim.StepFresh(h);
-			bool judge = true;
-			if (fresh) { step /= (1 + staleRun[h]); staleRun[h] = 0; }
-			else if (++staleRun[h] < 2) judge = false;
-			double nowMps = RSQDG_Reach.Metres(step) * TICRATE;
-			Vector2 face = (cos(pmo.Angle), sin(pmo.Angle));
-			double across = step.xy.Length();
-			bool outward = across > 0.001 && (step.xy dot face) > 0.5 * across;
-			if (!outward) nowMps = 0;
-			if (judge) armPeak[h] = max(armPeak[h] * 0.85, nowMps);
-			if (judge && autoMps > 0 && armPeak[h] >= autoMps && nowMps < armPeak[h] * 0.6)
-			{
-				if (RSQDG_Reach.Flag("rsqdg_debug", p, false)) Console.Printf("[RSQDG] t%d hand %d: the throw lets go (arm peak %.1f m/s, now %.1f)", level.maptime, h, armPeak[h], nowMps);
-				armPeak[h] = 0;
-				Release(h, p);
-				continue;
-			}
-
+			// NO AUTO-RELEASE (owner 2026-11-07 10:38/10:4x: "it drops out of his hand most of the time and barely ever
+			// throws"). The old rsqdg_auto_throw let go by itself as a swing peaked; removed with its row. A carried thing
+			// stays in the hand until the hand lets go: the grip (near.zs, a walk-up or a pulled carry the grip took over)
+			// or the palm rolled back (a pulled carry the grip never took). Release() throws at the stroke's peak.
 			bool wasTwo = two[h];
 			two[h] = BothHands(pmo, p, h, a);
 			if (two[h] && !wasTwo) RSQDG_Feel.Thud(a, p, RSQDG_Mass.Heft(a), 0.3);   // the second hand takes hold
