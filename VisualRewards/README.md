@@ -193,11 +193,12 @@ with Test and Debug and Reset All at its foot.
   magnet and bonus bursts on critical, Finisher and big-Score kills.
 - **Brutal Doom / BD22**: HEADSHOT on its head hits. Its invisible helper monsters never get a bar, a number or bits,
   and neither do the dying bodies a monster leaves (crawling, burning, slumped, last stand): one monster pays once.
-- **RSQ SlowMo's DOWN** (new on 11-06, v2 the same evening; rig only, not headset-confirmed): each hit that adds time
-  to the DOWN clock pops "+0.5s" at the monster in DOWN's crimson (Damage Numbers row); REVENGE (magenta), REVIVE (cyan)
-  and RAGE (orange) fly past on the level-up band in the numbers' JFO font, one after another; the marked monster wears
-  a red skull over its HP bar (Markers row). The v1 medkit drops and the "1/3" kill count are gone (the crate is SlowMo's
-  own now).
+- **RSQ SlowMo's DOWN** (new on 11-06, v3 on 11-07; rig only, not headset-confirmed): each hit that adds time to the
+  DOWN clock pops the time it bought (e.g. "+0.4s") at the monster in DOWN's crimson (Damage Numbers row); REVENGE
+  (magenta, a target you kill) and REVIVE (cyan, every time you get up, bigger and longer at the better tier) fly past
+  on the level-up band in the numbers' JFO font; a DOWN target's HP bar shows even if you never hit it, and SlowMo
+  draws the target's icon over it. Kills within 3x your Bits Fly to Me reach bank their bits for the revive (above).
+  The RAGE word and the red skull are gone.
 - **RSQ Grapple, RSQ ShieldSaw, RSQ QuestSaber, RSQ Whip, RSQ Miniboss**: their hooked, stunned, locked, gripped,
   whipped, miniboss (with its Bossfight's tier) and thrall markers on the bars. An older RSQ Whip shows the hook, as it
   used to.

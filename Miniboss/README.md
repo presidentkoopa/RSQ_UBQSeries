@@ -163,6 +163,10 @@ Then the set piece itself:
 | *Fight* | | |
 | Thralls | 3 | Thralls per miniboss, 1 to 8. |
 | Lives | 3 | Lives in all. |
+| Tier From | Whichever Is Larger | Set, Gun Bonsai VR Level, Score Lives or Whichever Is Larger: what sets a Bossfight's tier (above). |
+| Graves Rise (Legion of Bones) | Off | With Legion of Bones and RSQ Graveyards, a Bossfight landing raises undead from the tombstones, no cap (above). |
+| Graves Area | Map | Map (every tombstone) or Radius. |
+| Graves Radius | 1024 | Map units from where the Bossfight landed, for Radius (32 = 1 m). |
 | *Rules* | | |
 | Legendary Thralls (LegenDoom) | On | With LegenDoom (Lite or 3.0), every thrall is made legendary. |
 | Revive Thralls | On | Dead thralls rise when its invulnerability ends. |

@@ -134,7 +134,7 @@ Runs alone on plain Doom 2. It finds the others by name:
 - **RSQ SlowMo**: thrown grenades slow with the world (unless SlowMo is set to leave your own missiles in real time);
   Only in Slow Motion and Faster Grenades in Slow Motion read it. New on 11-06 (rig only, not headset-confirmed):
   getting up from DOWN (REVIVE) gives one grenade, up to your carry; with BD22 VR's grenade in use, one of Brutal
-  Doom's.
+  Doom's. Since DOWN v3 (11-07, rig only, not headset-confirmed): only when you get up on the reward bar's top step.
 - **RSQ Wheel** fans out the types you own; **RSQ Gun Cards** shows the fuse count with the Cook Sense upgrade;
   **RSQ Score** scores teeth pulls, shot grenades and impact bursts.
 - **Gun Bonsai + RSQ Gun Bonsai VR**: the grenade levels like a weapon, with its own tree: the types, Short Fuse, Cook

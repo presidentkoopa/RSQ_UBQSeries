@@ -198,8 +198,6 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Score | On | RSQ Score's big moments and hit-stop. |
 | Gun Bonsai VR | On | Gun Bonsai VR's Adrenaline, Showdown and Time Dilation perks. |
 | Other Mods | On | Any other mod that asks for slow motion. |
-| **Heavy Hit Slowdown** | | |
-| Heavy Hit Slowdown | On | A heavy hit from a legendary, champion, miniboss or thrall, boss or big demon slows time 3 s (you too). Never on a hit that kills you, never while you are DOWN. |
 | *DOWN* | | |
 | DOWN | Off | A monster's killing hit holds you at 1 HP: crouched, crawling, the world at its slowest; kill your targets before DEATH IN runs out to get up. |
 | Clock (s) | 9 | DEATH IN, real seconds; it never goes above this. |
@@ -218,6 +216,8 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Lower View When Down | On | Comfort: off = no view drop (the crawl stays). |
 | Panel Size | 1.00 | Scales the DOWN panel and the edge arrows together (1 = half the view, 0.5 to 1.8). Code only, not shown on the rig. |
 | Target Lines | Icon | Each Target line: Icon = "TARGET:" and that target's own crosshair icon in its colour; Name = "TARGET:" and its name (Score's words). Rig only, not headset-confirmed. |
+| **Heavy Hit Slowdown** | | |
+| Heavy Hit Slowdown | On | A heavy hit from a legendary, champion, miniboss or thrall, boss or big demon slows time 3 s (you too). Never on a hit that kills you, never while you are DOWN. |
 | Heavy Hit Size (% of max health) | 75 | What one tic's damage must add up to. |
 | Arch-Vile Blast | On | Also on any heavy hit that is an Arch-Vile's flame attack. |
 | Blasted Off Your Feet | On | Also on any heavy hit that throws you up (vertical speed up 10+ map units a tic). |

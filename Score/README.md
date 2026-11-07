@@ -205,7 +205,8 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
   (stored slow-mo and countdown) sit under Score's bar, and the breakdown moves down to make room.
   New on 11-06 (rig only, not headset-confirmed): SlowMo's **DOWN** comes before a Score life. While DOWN holds you
   at 1 HP no life is spent; a life is spent only if DOWN fails. Killing the monster that downed you pays a **Revenge**
-  row (1x that kill's base) and taking its crate pays a **Revive** row (3x that same base). The readout looks as before.
+  row (1x that kill's base; since v3, 11-07, one for each DOWN target you kill). The **Revive** row is gone (v3, 11-07).
+  The readout looks as before.
 - **RSQ Graveyard** (new on 11-06, rig only, not headset-confirmed): a Score life spent counts as a death: Graveyard
   places its gold tombstone where it caught you (asked by name).
 - **RSQ Accessibility:** Text Size scales the whole display and the wrist digits. Colour-blind play swaps each
