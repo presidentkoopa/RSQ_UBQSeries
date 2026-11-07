@@ -76,8 +76,7 @@ Home: RSQ SlowMo owns the mode and its options; others join by name and every mo
 | Bottom (thin step, or bar empty) | 33% / 33% | no | 5 s |
 No revive spends a Score life (only failing does).
 
-**Open:** the icon art (owner sending); what happens after you are up, RAGE included (to be talked through);
-bar step lengths in seconds.
+**Open:** the icon art (owner sending).
 
 ## v3 repeats (owner, 2026-11-07 05:14-05:20)
 - The clock starts at 9 s and never goes above 9 s. (Correction 05:20: the earlier note here said a flat clock
@@ -101,3 +100,16 @@ bar step lengths in seconds.
   healing, and the bank is paid as health and armour on revive. Health on revive comes only from the bank.
 - The bar step when you get up gives invulnerability 5 / 3 / 1 s, plus the top tier's Score fire burst and the
   slow-mo 3 / 1.5 / 5 s. (Supersedes the 100/66/33 health split above.)
+
+## v3 getting up, and the life crate (owner, 2026-11-07 05:35-05:50)
+- Time per monster: Lost Souls 0.5 s. Modded monsters (BD, XMVE...) count as what they replace.
+- Killing the last marked target gets you up at once (no crate step). RAGE is dropped: getting up gives the bar
+  step's invulnerability / burst / slow-mo, the bits bank as health and armour, and both held guns reloaded
+  for free (not taken from reserve).
+- Scar and Cooldown are dropped (the growing kill count is the cost).
+- The white crate becomes a Score life pickup (lives in RSQ Score; other mods only spawn it when Score is
+  loaded). Look: gold, in Score's colours, with a beam of light into the sky.
+- A Bossfight win no longer adds the extra life outright: the miniboss drops the life crate where it died. It
+  lasts 10 s; in its last 5 s it breathes and fades red, faster and faster. It stays where it fell, reachable
+  or not (Distance Grab can pull it).
+- Owner-noted risk (05:45, my objection, his call): a crate over a pit or ledge is lost.
