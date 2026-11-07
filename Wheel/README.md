@@ -8,6 +8,15 @@ New since the headset pass (tested on the rig, headset check pending): the fist,
 
 New on 11-06 (rig only, not headset-confirmed): the text in JFO with proportional spacing; one fist card; one card per gun (BD22 VR's off-hand versions); the shield, saber, whip and grenade from either hand to their own hand; alt-fire locks a gun to its Tactical Rig holster; Freeze Time While Open.
 
+New on 11-07 (rig only, not headset-confirmed): the **holster web** (design/PARKED.md). Main-hand alt-fire on a card
+opens it: your marine with RSQ Tactical Rig's six holsters as numbered rings fitted to his body from your active profile.
+Point at a ring and pull the trigger: the gun's sprite flies into it, the ring flashes, the controller kicks, the gun goes
+into that holster, and the Wheel stays open. Off-hand alt-fire puts a card in or out of the next/prev rotation (a light
+runs round a card in the rotation; a holstered card sits back with an outline; a plain card is Wheel only); on a
+holstered card it gives a dull tick. next/prev skip Wheel-only and holstered guns. Shown on the rig: all of that. Without
+RSQ Tactical Rig: main-hand alt-fire is a dull tick, the rotation and next/prev work alone (shown in the log). The marine centred on his body between each pair of rings: shown on the rig. Not shown:
+the fly-in mid-flight (too fast for the rig's frames).
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. This is presidentkoopa's weapon wheel from his
 own engine, rebuilt in ZScript alone so it runs on the stock engine. No engine changes.
 

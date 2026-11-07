@@ -61,8 +61,6 @@ OptionMenu "RSQTR_Options"
 	Option "Holster Rings", "rsqtr_markers", "RSQTR_Markers"
 	Slider "Holster Reach", "rsqtr_reach", 0.5, 2.0, 0.05, 2
 	Option "Quick Swap", "rsqtr_quickswap", "OnOff"
-	Option "New Guns to Holsters", "rsqtr_autoholster", "OnOff"
-	Option "Holster Lock (Wheel Alt-Fire)", "rsqtr_holster_lock", "OnOff"
 	Option "Keep Between Levels", "rsqtr_keep", "OnOff"
 	Option "Move Gun at Watch", "rsqtr_watch_move", "OnOff"
 	Option "Hang From Neck", "rsqtr_neck", "OnOff"

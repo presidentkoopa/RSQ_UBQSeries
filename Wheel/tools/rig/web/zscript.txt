@@ -1,0 +1,232 @@
+version "4.10"
+// TEST ONLY (never ships). RSQ Wheel's holster web on the QZD 17.3 rig (owner 2026-11-07).
+//   wt_roles (netevent): picks six guns from the slots in next / prev order: X W H N (four in a row) and A B (two more)
+//   wt_use k (netevent): the main hand switches to role k (0 X, 1 W, 2 H, 3 N, 4 A, 5 B)
+//   wt_tgt_r / wt_tgt_l: what each hand points at: "" (the console's own qz_ pose), "away", a role letter (its card;
+//     its slot's card first while its fan is shut), "ring:k" (the web's holster ring k, 0..5), "clear"
+//   aims by closing the loop on the Wheel's own aim (wr_Rig.aimPos / aimDir) through the rig's qzt_rhand / qzt_lhand
+//   logs: WT_ roles, state every 10 tics, every rumble (amplitude), frame -> gametic every 10 frames
+class wrw_Probe : EventHandler
+{
+	String roles[6];
+
+	static clearscope String CS(Name n) { let c = CVar.FindCVar(n); return c ? c.GetString() : ""; }
+
+	static int RoleOf(String s)
+	{
+		static const String L[] = { "X", "W", "H", "N", "A", "B" };
+		for (int i = 0; i < 6; i++) if (s == L[i]) return i;
+		return -1;
+	}
+
+	bool Eligible(Weapon w)
+	{
+		if (!w || !w.Ammo1 || w.bOffhandWeapon) return false;
+		if (wr_Rig.isFistClass(w.GetClass()) || wr_Rig.homeHandOf(w.GetClass()) >= 0) return false;
+		String n = w.GetClassName(); n = n.MakeLower();
+		if (n.IndexOf("dual") >= 0 || n.IndexOf("grenade") >= 0) return false;
+		return true;
+	}
+
+	void PickRoles(PlayerPawn pmo)
+	{
+		let p = pmo.player;
+		Array<Weapon> list;
+		for (int sl = 0; sl < 10; sl++)
+			for (int ix = 0; ix < p.weapons.SlotSize(sl); ix++)
+			{
+				let t = p.weapons.GetWeapon(sl, ix);
+				let w = t ? Weapon(pmo.FindInventory(t)) : null;
+				if (!w || list.Find(w) != list.Size()) continue;
+				if (!w.CheckAmmo(Weapon.EitherFire, false) || w.bOffhandWeapon) continue;
+				list.Push(w);
+			}
+		String all = "";
+		for (int i = 0; i < list.Size(); i++) all = all .. " " .. list[i].GetClassName() .. (Eligible(list[i]) ? "" : "(-)");
+		Console.Printf("WT_SLOTLIST%s", all);
+		int at = -1;
+		for (int i = 1; i + 3 < list.Size() && at < 0; i++)
+			if (Eligible(list[i]) && Eligible(list[i + 1]) && Eligible(list[i + 2]) && Eligible(list[i + 3])) at = i;
+		if (at < 0) { Console.Printf("WT_ROLES none"); return; }
+		for (int k = 0; k < 4; k++) roles[k] = list[at + k].GetClassName();
+		int got = 4;
+		for (int i = 0; i < list.Size() && got < 6; i++)
+		{
+			if (i >= at && i < at + 4) continue;
+			if (Eligible(list[i])) roles[got++] = list[i].GetClassName();
+		}
+		Console.Printf("WT_ROLES X=%s W=%s H=%s N=%s A=%s B=%s", roles[0], roles[1], roles[2], roles[3], roles[4], roles[5]);
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let pmo = players[e.Player].mo; if (!pmo) return;
+		if (e.Name == "wt_roles") PickRoles(pmo);
+		else if (e.Name == "wt_cal") calT = level.maptime;
+		else if (e.Name == "wt_use")
+		{
+			int k = e.Args[0];
+			if (k < 0 || k > 5 || roles[k] == "") return;
+			Class<Weapon> c = roles[k];
+			let w = c ? Weapon(pmo.FindInventory(c)) : null;
+			if (w) { pmo.player.PendingWeapon = w; Console.Printf("WT_USE t%d %s", level.maptime, roles[k]); }
+		}
+		else if (e.Name == "wt_mark") Console.Printf("WT_MARK t%d g%d %d", level.maptime, gametic, e.Args[0]);
+	}
+
+	// the point a hand is to point at, or false
+	bool, Vector3 Target(wr_Rig rig, PlayerPawn pmo, String spec)
+	{
+		if (!rig || !rig.mOpen) return false, (0, 0, 0);
+		if (spec.Left(5) == "ring:")
+		{
+			int k = spec.Mid(5).ToInt();
+			if (k < 0 || k >= rig.mWebRing.Size()) return false, (0, 0, 0);
+			// (a two-value call passed straight to return hands back only its first value: the point came back as
+			// (0, 0, 0), the map's origin, so the hand aimed there; 2026-11-07 fix)
+			bool rok; Vector3 rp;
+			[rok, rp] = BBPos(rig.mWebRing[k]);
+			return rok, rp;
+		}
+		if (spec == "clear") { bool cok; Vector3 cp; [cok, cp] = BBPos(rig.mWebClear); return cok, cp; }
+		int r = RoleOf(spec);
+		if (r < 0 || roles[r] == "") return false, (0, 0, 0);
+		Class<Weapon> c = roles[r];
+		for (int i = 0; i < rig.mSubTypes.Size() && i < rig.mSubX.Size(); i++)
+			if (rig.webKey(rig.mSubTypes[i]) == c) return true, (rig.mSubX[i], rig.mSubY[i], rig.mSubZ[i]);
+		for (int i = 0; i < rig.mTypes.Size() && i < rig.mCardX.Size(); i++)
+			if (rig.webKey(rig.mTypes[i]) == c) return true, (rig.mCardX[i], rig.mCardY[i], rig.mCardZ[i]);
+		// in a shut fan: its slot's card (resting there opens the fan)
+		bool found; int sl, ix;
+		[found, sl, ix] = pmo.player.weapons.LocateWeapon(c);
+		if (!found) return false, (0, 0, 0);
+		for (int i = 0; i < rig.mCardSlots.Size() && i < rig.mCardX.Size(); i++)
+			if (rig.mCardSlots[i] == sl) return true, (rig.mCardX[i], rig.mCardY[i], rig.mCardZ[i]);
+		return false, (0, 0, 0);
+	}
+
+	bool, Vector3 BBPos(int id)
+	{
+		let b = wr_BB.Get();
+		if (!b || id <= 0 || !b.mRecs.CheckKey(id)) return false, (0, 0, 0);
+		return true, b.mRecs.Get(id).pos;
+	}
+
+	static double Wrap(double a) { while (a > 180) a -= 360; while (a < -180) a += 360; return a; }
+
+	// CALIBRATION ("wt_cal"): each hand is posed at two known commands and the Wheel's own aim read back, so the aim is
+	// solved straight from the target's direction (no running correction: Steady Hands' smoothing made that diverge).
+	int calT;
+	double offY[2], offP[2], gY[2], gP[2], m0Y[2], m0P[2];
+	bool calOk;
+
+	String Base(int h) { return h == 0 ? "0.12 1.35 -0.30" : "-0.12 1.35 -0.30"; }
+
+	void AimRead(PlayerPawn pmo, int h, out double y, out double pt)
+	{
+		Vector3 d = wr_Rig.aimDir(pmo, h);
+		y = Wrap(atan2(d.y, d.x) - pmo.angle); pt = atan2(d.z, d.xy.Length());
+	}
+
+	void CalTick(PlayerPawn pmo)
+	{
+		int t = level.maptime - calT;
+		for (int h = 0; h < 2; h++)
+		{
+			let cv = CVar.FindCVar(h == 0 ? 'qzt_rhand' : 'qzt_lhand');
+			if (t < 15) cv.SetString(String.Format("%s 30 0 0", Base(h)));
+			else cv.SetString(String.Format("%s 50 20 0", Base(h)));
+			double y, pt;
+			if (t == 14) { AimRead(pmo, h, y, pt); m0Y[h] = y; m0P[h] = pt; }
+			if (t == 30)
+			{
+				AimRead(pmo, h, y, pt);
+				gY[h] = (y - m0Y[h]) / 20.0; gP[h] = (pt - m0P[h]) / 20.0;
+				if (abs(gY[h]) < 0.2) gY[h] = 1; if (abs(gP[h]) < 0.2) gP[h] = 1;
+				offY[h] = m0Y[h]; offP[h] = m0P[h] - gP[h] * 30;
+				Console.Printf("WT_CAL hand %d: yaw gain %.2f offset %.1f, pitch gain %.2f offset %.1f", h, gY[h], offY[h], gP[h], offP[h]);
+			}
+		}
+		if (t >= 30) { calT = 0; calOk = true; }
+	}
+
+	void Aim(wr_Rig rig, PlayerPawn pmo, int h)
+	{
+		String spec = CS(h == 0 ? 'wt_tgt_r' : 'wt_tgt_l');
+		let cv = CVar.FindCVar(h == 0 ? 'qzt_rhand' : 'qzt_lhand');
+		if (!cv) return;
+		if (spec == "") { cv.SetString(""); return; }
+		double cy = 0, cp = 30;
+		if (spec == "away") { cy = h == 0 ? -70.0 : 70.0; cp = -10; }
+		else
+		{
+			bool ok; Vector3 tp;
+			[ok, tp] = Target(rig, pmo, spec);
+			if (!ok || !calOk) { cv.SetString(String.Format("%s 30 0 0", Base(h))); return; }
+			Vector3 u = tp - wr_Rig.aimPos(pmo, h);
+			double needY = Wrap(atan2(u.y, u.x) - pmo.angle), needP = atan2(u.z, u.xy.Length());
+			cy = (needY - offY[h]) / gY[h];
+			cp = (needP - offP[h]) / gP[h];
+			if (level.maptime % 10 == 0)
+			{
+				double ay, ap; AimRead(pmo, h, ay, ap);
+				Console.Printf("WT_AIM t%d hand %d %s need %.1f/%.1f now %.1f/%.1f at (%.1f %.1f %.1f)", level.maptime, h, spec, needY, needP, ay, ap, tp.x, tp.y, tp.z);
+				if (spec.Left(5) == "ring:")
+				{
+					int rk = spec.Mid(5).ToInt();
+					let bb = wr_BB.Get();
+					if (bb && rk >= 0 && rk < rig.mWebRing.Size() && bb.mRecs.CheckKey(rig.mWebRing[rk]))
+					{
+						Vector3 lp = bb.mRecs.Get(rig.mWebRing[rk]).pos;
+						Console.Printf("WT_RINGPOS t%d ring %d live (%.1f %.1f %.1f) aimed-at (%.1f %.1f %.1f)", level.maptime, rk + 1, lp.x, lp.y, lp.z, tp.x, tp.y, tp.z);
+					}
+				}
+			}
+		}
+		cv.SetString(String.Format("%s %.2f %.2f 0", Base(h), cp, cy));
+	}
+
+	override bool InputProcess(InputEvent e)
+	{
+		if (e.Type == InputEvent.Type_KeyDown) Console.Printf("WT_KEY %d \"%s\"", e.KeyScan, Bindings.GetBinding(e.KeyScan));
+		return false;
+	}
+
+	String HoverName(wr_Rig rig)
+	{
+		if (!rig.mOpen || rig.mHovered == 0) return "none";
+		int n = rig.webNode(rig.mHovered);
+		if (n >= 0) return n < 6 ? String.Format("web-ring%d", n + 1) : (n == 6 ? "web-clear" : "web-panel");
+		let c = rig.HoveredClass();
+		return c ? String.Format("%s", c.GetClassName()) : "other";
+	}
+
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo; if (!pmo) return;
+		let rig = wr_Rig(EventHandler.Find("wr_Rig"));
+		if (calT > 0) CalTick(pmo);
+		else { Aim(rig, pmo, 0); Aim(rig, pmo, 1); }
+		// every rumble the Wheel sent this tic (the quake route), with its strength and length
+		let ti = ThinkerIterator.Create("wr_Buzz");
+		wr_Buzz q;
+		while (q = wr_Buzz(ti.Next())) if (q.special1 == 0) { q.special1 = 1; Console.Printf("WT_BUZZ t%d %s hand amp %.2f tics %d", level.maptime, q.left ? "left" : "right", q.amp, q.total); }
+		if (level.maptime % 10 || !rig || roles[0] == "") return;
+		let sv = ServiceIterator.Find("RSQTR_RigService").Next();
+		String st = "";
+		static const String L[] = { "X", "W", "H", "N", "A", "B" };
+		for (int k = 0; k < 6; k++)
+		{
+			Class<Weapon> c = roles[k];
+			int s = rig.webState(c);
+			int hin = sv ? sv.GetInt("rig.holster", roles[k], 0, 0, pmo) : -9;
+			st = st .. String.Format(" %s:%s%s", L[k], s == 2 ? "HOLSTER" : (s == 1 ? "ROT" : (s == 0 ? "PLAIN" : "?")), hin >= 0 ? String.Format("@in%d", hin) : "");
+		}
+		let rw = pmo.player.ReadyWeapon;
+		Console.Printf("WT t%d open=%d web=%d(%s) hover=%s ready=%s%s", level.maptime, rig.mOpen, rig.mWebOpen,
+			rig.mWebCls ? rig.mWebCls.GetClassName() : 'none', HoverName(rig), rw ? rw.GetClassName() : 'none', st);
+	}
+
+	ui int frames;
+	override void RenderOverlay(RenderEvent e) { frames++; if (frames % 10 == 0) Console.Printf("WT_F %d g%d", frames, gametic); }
+}

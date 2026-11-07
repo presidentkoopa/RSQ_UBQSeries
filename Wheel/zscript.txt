@@ -41,5 +41,6 @@ version "4.10"
 #include "zscript/wheel/wr_stattracker.zs"
 #include "zscript/wheel/zscript.zs"
 #include "zscript/wheel/wr_q_gunlook.zs"   // RSQ: the Colour by Gun look (owner's pick 2026-11-02)
+#include "zscript/wheel/wr_web.zs"      // RSQ: the holster web and the shared next / prev rotation (owner 2026-11-07)
 #include "zscript/wheel/wr_q_watch.zs"
 // The cards on the guns moved to their own mod, RSQ Gun Cards (GunCards/, RSQ_GunCards.pk3), 2026-10-31.

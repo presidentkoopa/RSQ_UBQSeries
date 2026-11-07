@@ -1,0 +1,4 @@
+user string qzt_rhand = "";
+user string qzt_lhand = "";
+user string wt_tgt_r = "";
+user string wt_tgt_l = "";

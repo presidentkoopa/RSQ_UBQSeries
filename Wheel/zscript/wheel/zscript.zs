@@ -798,31 +798,9 @@ class wr_Rig : EventHandler
 			return;
 		}
 
-		if (e.Name ~== "wr_lock")
-		{
-			let pmo = players[consoleplayer].mo;
-			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: alt-fire on a card (open %d, hovered %d)", mOpen, mHovered);
-			if (pmo == null || !mOpen || mHovered == 0 || mPage != PAGE_WEAPONS) return;
-			Class<Weapon> c = HoveredClass();
-			if (c == null) return;
-			let sv = ServiceIterator.Find("RSQTR_RigService").Next();
-			if (!sv) return;
-			// the holster it is in (the rig keeps a gun under the name it holstered it as: its own, or its gun's for a
-			// BD22 VR off-hand version), and whether that holster takes locks at all ("rig.lockable": Holster Lock on)
-			int r = sv.GetInt("rig.holster", c.GetClassName(), 0, 0, pmo);
-			int lk = sv.GetInt("rig.locked", c.GetClassName(), 0, 0, pmo);
-			if (lk >= 0) r = lk;
-			if (r < 0 || sv.GetInt("rig.lockable", "", r, 0, pmo) <= 0)
-			{
-				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: lock %s: in no holster (or Holster Lock off): nothing", c.GetClassName());
-				return;
-			}
-			EventHandler.SendNetworkEvent("rsqtr_lock", r);
-			feedback(Sound("wristrig/lock"), 0.4, 50);
-			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: %s %s holster %d", lk >= 0 ? "unlock" : "lock", c.GetClassName(), r);
-			mRebuildTics = 2;   // the padlock follows once the rig has done it (its event lands next tic)
-			return;
-		}
+		// RSQ HOLSTER WEB (owner 2026-11-07; replaces 11-06's alt-fire padlock): alt-fire on a card, a pick on the web,
+		// next / prev by the shared rotation. wr_web.zs.
+		if (webNetwork(e)) return;
 
 		if (e.Name ~== "wr_grab")
 		{
@@ -908,6 +886,8 @@ class wr_Rig : EventHandler
 	// under the hand. Any wider and opening the rig would deaden your trigger.
 	override bool InputProcess(InputEvent e)
 	{
+		// RSQ HOLSTER WEB (11-07): next / prev weapon (either hand's bind) follow the shared rotation (wr_web.zs)
+		if (webCycleKey(e)) return true;
 		// RSQ WH7: a trigger let go while a fan is up ends a drag. Sent whenever a fan is up, not only while a drag
 		// is known here: a press and its release can both land before the press's event has been processed.
 		// NetworkProcess ignores it when nothing is held. Not consumed: the press may not have been ours.
@@ -962,13 +942,10 @@ class wr_Rig : EventHandler
 			return false;
 		}
 
-		// RSQ HOLSTER LOCK (owner 2026-11-06): alt-fire on a gun's card locks it to the holster it is in, or unlocks it
-		// (RSQ Tactical Rig's, by its "rsqtr_lock" event; a gun in no holster: nothing happens). Consumed: it never fires.
-		if (alt && mPage == PAGE_WEAPONS)
-		{
-			EventHandler.SendNetworkEvent("wr_lock");
-			return true;
-		}
+		// RSQ HOLSTER WEB (owner 2026-11-07): a press on the web (a holster ring, Clear, or the panel itself), and alt-fire
+		// on a card -- the main hand's opens the web, the off hand's puts the card in or out of next / prev. Consumed:
+		// neither ever fires. wr_web.zs.
+		if (webInput(e, fire, alt)) return true;
 
 		if (!fire && !(mTouching && wr_Keybind.isKeyFor(e.KeyScan, "+use"))) return false;
 
@@ -1390,6 +1367,7 @@ class wr_Rig : EventHandler
 			}
 			if (mFanGroup != 0)    wr_BB.AnimateBillboardGroup(mFanGroup,    1.0, 0.0, CLOSE_TICS);
 			glFold();   // RSQ GL
+			webClose(); webDecorClear(false); webDecorClear(true);   // RSQ HOLSTER WEB: not in the cards' groups, gone at once
 
 			mClosingTics = CLOSE_TICS;
 
@@ -3235,6 +3213,7 @@ class wr_Rig : EventHandler
 	private void clearPanels()
 	{
 		glClear();   // RSQ GL
+		webClose(); webDecorClear(false); webDecorClear(true);   // RSQ HOLSTER WEB
 		clearSheet();
 		clearStars();
 		clearCompare();
@@ -4361,6 +4340,7 @@ class wr_Rig : EventHandler
 
 	private void collapseSlot()
 	{
+		webDecorClear(true);   // RSQ HOLSTER WEB: the fan cards' borders and outlines
 		// The constellation's lines, freed the same as everything else the
 		// expansion owns. Empty in fan mode, so this costs nothing there.
 		for (int i = 0; i < mSubLines.Size(); ++i)
@@ -4776,6 +4756,10 @@ class wr_Rig : EventHandler
 			Vector3 pos = cardPos
 			            + viewRight * (cos(a) * reach)
 			            + (0, 0, sin(a) * reach);
+			// RSQ HOLSTER WEB (11-07): a holster-assigned gun's card sits back (wr_web.zs)
+			int wst = (mPage == PAGE_WEAPONS && i < mSubTypes.Size()) ? webState(mSubTypes[i]) : -1;
+			Vector3 subEye = players[consoleplayer].mo ? players[consoleplayer].mo.Pos + (0, 0, players[consoleplayer].viewheight) : pos;
+			if (wst == WST_HOLSTER) pos = webSitBack(pos, subEye, cv("wr_scale", 1.0));
 
 			if (i < mSubX.Size()) { mSubX[i] = pos.X; mSubY[i] = pos.Y; mSubZ[i] = pos.Z; }
 
@@ -4842,6 +4826,7 @@ class wr_Rig : EventHandler
 			double subAlpha = 1.0;
 			if (mHovered != 0 && !slit) subAlpha = clamp(hSubDim, 0.05, 1.0);
 			subAlpha *= subWarnFrac;
+			if (wst == WST_HOLSTER) { spulse *= WEB_SHRINK; subAlpha *= WEB_FADE; }   // RSQ HOLSTER WEB
 
 			// The take-confirmation flip is applied in WorldTick, not here
 			// -- same reason as the main ring's own version of this note.
@@ -4985,6 +4970,7 @@ class wr_Rig : EventHandler
 			if (i < mSubAmmos.Size())   fade(mSubAmmos[i], subAlpha);
 			if (i < mSubGauges.Size())  fade(mSubGauges[i], subAlpha);
 			if (i < mSubMarks.Size())   fade(mSubMarks[i], subAlpha);
+			webDecorCard(true, i, mSubIds[i], pos, faceYaw, tilt, subRoll, panelW * spulse, panelH * spulse, subAlpha, wst);   // RSQ HOLSTER WEB
 		}
 	}
 
@@ -6381,17 +6367,9 @@ class wr_Rig : EventHandler
 			}
 			mMarks.Push(mid);
 
-			// RSQ HOLSTER LOCK (owner 2026-11-06, BUGS_1.0 item 18): a padlock on the card while RSQ Tactical Rig has
-			// this gun locked to its holster (asked by name: RSQTR_RigService "rig.locked"; nothing without the rig).
+			// RSQ: the 11-06 holster padlock is gone (owner 2026-11-07: holster assignment replaces it; the card's own
+			// state shows it, wr_web.zs). The slot stays so the arrays keep their shape.
 			int lkid = 0;
-			if (wcls && mPage == PAGE_WEAPONS && lockedRegion(wcls) >= 0)
-			{
-				lkid = wr_BB.AddBillboardPersistent(
-					(0, 0, 0), 0.6, 0.6, 0, 0,
-					wr_BB.BBF_FIXED, wr_BB.BB_TEXTURE, 0,
-					0xFFFFFF, wr_BB.BBFL_NOHIT, 0, "WRILOCK");
-				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: %s is locked to holster %d: padlock on its card", wcls.GetClassName(), lockedRegion(wcls));
-			}
 			mLockMarks.Push(lkid);
 
 			// THE SLOT NUMBER, in the corner opposite the marker.
@@ -6995,6 +6973,9 @@ class wr_Rig : EventHandler
 				Vector3 toEye = eye - pos;
 				if (toEye.Length() > 0.01) pos += toEye.Unit() * cv("wr_pop", 1.5);
 			}
+			// RSQ HOLSTER WEB (11-07): a holster-assigned gun's card sits back on the ring (wr_web.zs)
+			int wst = (mPage == PAGE_WEAPONS) ? webState(mTypes[i]) : -1;
+			if (wst == WST_HOLSTER) pos = webSitBack(pos, eye, sc);
 
 			// EVERY CARD LOOKS AT YOU INDIVIDUALLY.
 			//
@@ -7097,6 +7078,7 @@ class wr_Rig : EventHandler
 			double cardAlpha = 1.0;
 			if (mHovered != 0 && !lit) cardAlpha = clamp(hDim, 0.05, 1.0);
 			cardAlpha *= warnFrac;
+			if (wst == WST_HOLSTER) { pulse *= WEB_SHRINK; cardAlpha *= WEB_FADE; }   // RSQ HOLSTER WEB: smaller, a little faded
 
 			// The shadow sits BEHIND the plate -- pushed away from the viewer
 			// rather than toward them -- and offset down and to the side so it
@@ -7363,6 +7345,7 @@ class wr_Rig : EventHandler
 			// The fan hangs off whichever card opened it, so it is placed here
 			// where that card's position has just been worked out.
 			glCard(i, pos, viewRight, faceYaw, tilt, roll, lift, panelW, panelH, pulse, lit, cardAlpha);   // RSQ GL
+			if (i < mPlates.Size()) webDecorCard(false, i, mPlates[i], pos, faceYaw, tilt, roll, panelW * pulse, panelH * pulse, cardAlpha, wst);   // RSQ HOLSTER WEB
 
 			if (i == mExpanded)
 			{
@@ -7371,6 +7354,7 @@ class wr_Rig : EventHandler
 			}
 		}
 		glRing(origin, viewRight, viewYaw, ringR, ringCount, handRoll, panelW, panelH, grow, eye);   // RSQ GL
+		webLayout(pmo, wrist, viewYaw, tilt, rise, ringR, panelW, panelH, eye);   // RSQ HOLSTER WEB (wr_web.zs)
 	}
 
 	// AttackPos/OffhandPos are only written while OverrideAttackPosDir is set.
@@ -8478,6 +8462,7 @@ class wr_Rig : EventHandler
 	override void WorldTick()
 	{
 		stampUse();   // RSQ WH4
+		webCycleTick();   // RSQ HOLSTER WEB: next / prev hold to the rotation's pick (wr_web.zs)
 
 		if (mWantAutoOpen)
 		{
@@ -9751,7 +9736,7 @@ class wr_Rig : EventHandler
 		// wobble that settles into a genuine dwell on the wrong card (hit ==
 		// mHovered, the early-return branch) has to keep counting too, not
 		// just the tic the laser first arrived there.
-		if (mExpanded >= 0 && hit != 0 && !belongsToExpansion(hit))
+		if (mExpanded >= 0 && hit != 0 && !belongsToExpansion(hit) && webNode(hit) < 0)   // RSQ: the web is not another card
 		{
 			if (++mCollapseGrace >= int(cv("wr_subcards_grace", 6.0)))
 			{
@@ -9804,7 +9789,7 @@ class wr_Rig : EventHandler
 			// expand FROM -- every one of its siblings is already its own
 			// card on the ring, not folded behind this one.
 			if (mDwellTics == DWELL_TO_EXPAND && !belongsToExpansion(hit)
-			    && mFansEnabled)
+			    && mFansEnabled && webNode(hit) < 0)   // RSQ: resting on the holster web opens no fan
 			{
 				let pmo = players[consoleplayer].mo;
 				if (pmo != null)
@@ -10077,15 +10062,6 @@ class wr_Rig : EventHandler
 		}
 		commitAs(pmo);
 		mPickCls = null;
-	}
-
-	// RSQ HOLSTER LOCK: the holster RSQ Tactical Rig has this gun locked to, or -1 (no lock, no rig, Holster Lock off).
-	private int lockedRegion(Class<Weapon> c)
-	{
-		if (!c) return -1;
-		let sv = ServiceIterator.Find("RSQTR_RigService").Next();
-		if (!sv) return -1;
-		return sv.GetInt("rig.locked", c.GetClassName(), 0, 0, players[consoleplayer].mo);
 	}
 
 	Class<Weapon> mPickCls;   // RSQ: what this pick equips (commit: resolvePick); null = the card's own class

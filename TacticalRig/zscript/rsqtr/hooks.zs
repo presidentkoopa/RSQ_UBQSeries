@@ -106,6 +106,13 @@ class RSQTR_RigService : Service
 			if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return 0;
 			return (RSQTR_Rig.LockOn(players[n]) && RSQTR_Rig.IsGunRegion(intArg)) ? 1 : 0;
 		}
+		// THE HOLSTER WEB (RSQ Wheel, 11-07): the active holster profile (1..4, its ring colour)
+		if (request == "rig.profile")
+		{
+			int n = who ? who.PlayerNumber() : consoleplayer;
+			if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return 1;
+			return clamp(RSQTR_Rig.Opt("rsqtr_profile_active", players[n], 1), 1, 4);
+		}
 		if (request == "rig.holster")
 		{
 			int n = who ? who.PlayerNumber() : consoleplayer;
@@ -123,6 +130,15 @@ class RSQTR_RigService : Service
 	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request == "rig.regionname") return (intArg >= 0 && intArg < RSQTR_Region.N) ? RSQTR_Region.NAMES[intArg] : "";
+		// THE HOLSTER WEB (11-07): the gun gun holster intArg is assigned to ("" none)
+		if (request == "rig.owner")
+		{
+			let rg = RSQTR_Rig.Get();
+			let pw = PlayerPawn(objectArg);
+			int n = pw ? pw.PlayerNumber() : consoleplayer;
+			if (!rg || n < 0 || n >= MAXPLAYERS || intArg < 0 || intArg >= RSQTR_Region.N) return "";
+			return rg.lockCls[n * RSQTR_Region.N + intArg];
+		}
 		let rig = RSQTR_Rig.Get();
 		let who = PlayerPawn(objectArg);
 		if (!rig || !who || request != "rig.drawn") return "";

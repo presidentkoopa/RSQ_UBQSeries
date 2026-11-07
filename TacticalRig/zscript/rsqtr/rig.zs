@@ -86,10 +86,13 @@ class RSQTR_Rig : EventHandler
 	bool   gripDown[MAXPLAYERS * 2];
 	String lastPut[MAXPLAYERS * RSQTR_Region.N];   // the weapon last holstered there (its icon)
 	bool lastPair[MAXPLAYERS * RSQTR_Region.N];    // ...and it went away as a PAIR (one in each hand)
-	// HOLSTER LOCK (owner 2026-11-06, BUGS_1.0 item 18; rsqtr_holster_lock, on): the gun locked to each gun holster ("" none).
-	// Set and cleared by "rsqtr_lock" (RSQ Wheel's alt-fire on a card). A locked gun always goes back to its own holster
-	// (Holster / HolsterOff), New Guns to Holsters never fills a holster locked to another gun, and every unlocked gun
-	// behaves as before.
+	// HOLSTER ASSIGNMENT (owner 2026-11-07 07:36-07:47, design/PARKED.md "Wheel holster web"; replaces 11-06's Holster
+	// Lock and its option row): the gun each gun holster is ASSIGNED to ("" unassigned). A gun put by hand into an
+	// unassigned, empty holster is assigned to it; RSQ Wheel's holster web assigns ("rsqtr_assign:<gun>", taking the
+	// holster over from another gun) and clears ("rsqtr_unassign:<gun>"). An assigned holster is its gun's whether the gun
+	// is in it or in a hand: no other gun goes in. An assigned gun put at any other holster goes to its own, and a full
+	// holster's gun comes out to the hand (Quick Swap, LockedHome); an unassigned gun at a full or another gun's holster:
+	// nothing happens.
 	String lockCls[MAXPLAYERS * RSQTR_Region.N];
 	String offNext[MAXPLAYERS];                     // the off-hand weapon to raise once the main hand has switched
 	int offWait[MAXPLAYERS];
@@ -559,7 +562,9 @@ class RSQTR_Rig : EventHandler
 		if (!pmo || pmo.health <= 0) return;
 		if (e.Name == "rsqtr_whip") { WhipApply(pmo, e.Args[0] & 1, e.Args[1] != 0); return; }
 		if (e.Name == "rsqtr_holster_off") { HolsterOff(pmo, e.Args[0]); return; }
-		if (e.Name == "rsqtr_lock") { ToggleLock(pmo, e.Args[0]); return; }
+		// RSQ Wheel's holster web (11-07): the gun's name rides in the event's name
+		if (e.Name.Left(13) == "rsqtr_assign:") { WebAssign(pmo, e.Name.Mid(13), e.Args[0]); return; }
+		if (e.Name.Left(15) == "rsqtr_unassign:") { WebUnassign(pmo, e.Name.Mid(15)); return; }
 		if (e.Name == "rsqtr_draw_off") { DrawOff(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
 		else if (e.Name == "rsqtr_draw") Draw(pmo, e.Args[0], e.Args[1]);
@@ -638,34 +643,78 @@ class RSQTR_Rig : EventHandler
 	// swap: that one comes out); grip a full holster with your hand empty and you draw it; an
 	// empty holster with an empty hand does nothing.
 	static bool IsGunRegion(int r) { return r == 0 || r == 1 || r == 4 || r == 5 || r == 6 || r == 7; }
-	static bool LockOn(PlayerInfo p) { return Flag("rsqtr_holster_lock", p, true); }
-	// the gun holster cls is locked to, or -1 (none, or Holster Lock off)
+	static bool LockOn(PlayerInfo p) { return true; }   // assignment is always on (the option row is removed, 11-07)
+	// the gun holster cls is assigned to, or -1
 	int LockedTo(int n, String cls)
 	{
 		if (n < 0 || n >= MAXPLAYERS || cls == "" || !playeringame[n] || !LockOn(players[n])) return -1;
 		for (int r = 0; r < RSQTR_Region.N; r++) if (lockCls[n * RSQTR_Region.N + r] ~== cls) return r;
 		return -1;
 	}
-	// alt-fire on the Wheel: lock the gun in holster r to it, or unlock the holster
-	private void ToggleLock(PlayerPawn pmo, int r)
+	// May gun cls (unassigned) go into gun holster r by hand? Only an unassigned, empty one (owner 07:44-07:46).
+	bool MayEnter(PlayerPawn pmo, String cls, int r)
 	{
+		int k = pmo.PlayerNumber() * RSQTR_Region.N + r;
+		if (lockCls[k] != "" && !(lockCls[k] ~== cls)) return false;
+		String c = Content(pmo, r);
+		return c == "" || c ~== cls;
+	}
+	// cls is assigned to gun holster r (and to no other)
+	void Assign(int n, String cls, int r)
+	{
+		if (n < 0 || n >= MAXPLAYERS || cls == "" || !IsGunRegion(r)) return;
+		for (int j = 0; j < RSQTR_Region.N; j++) if (lockCls[n * RSQTR_Region.N + j] ~== cls) lockCls[n * RSQTR_Region.N + j] = "";
+		lockCls[n * RSQTR_Region.N + r] = cls;
+	}
+	// a press at a holster the gun may not enter: nothing happens but a dull tick in that hand
+	private void Refused(PlayerPawn pmo, int h, String cls, int r)
+	{
+		if (pmo.PlayerNumber() == consoleplayer) RSQTR_Buzzer.Start(pmo, h, 0.15, 2);
+		if (Flag("rsqtr_messages", pmo.player, false))
+			Console.Printf("T_ASSIGN t%d: %s may not go into %s (assigned to %s, holding %s)", level.maptime, cls, RSQTR_Region.NAMES[r],
+				lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r], Content(pmo, r));
+	}
+	// THE HOLSTER WEB (RSQ Wheel, "rsqtr_assign:<gun>", Args[0] the holster): the gun is assigned to holster r and goes
+	// into it at once -- out of the hand that holds it (that hand goes empty), out of any other holster. A gun r held
+	// or was assigned to loses its assignment and leaves the holster (it stays in your inventory).
+	private void WebAssign(PlayerPawn pmo, String cls, int r)
+	{
+		if (!IsGunRegion(r) || cls == "") return;
+		class<Weapon> wc = cls;
+		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
+		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w) || HomeWhip(w) || w == EmptyHand(pmo)) return;
 		let p = pmo.player;
-		if (!LockOn(p) || !IsGunRegion(r)) return;
 		int n = pmo.PlayerNumber();
-		int k = n * RSQTR_Region.N + r;
-		if (lockCls[k] != "")
+		int base = n * RSQTR_Region.N;
+		String was = lockCls[base + r];
+		if (was != "" && !(was ~== cls)) lockCls[base + r] = "";
+		if (lastPut[base + r] != "" && !(lastPut[base + r] ~== cls)) { lastPut[base + r] = ""; lastPair[base + r] = false; }
+		for (int k = 0; k < RSQTR_Region.N; k++) if (k != r && lastPut[base + k] ~== cls) { lastPut[base + k] = ""; lastPair[base + k] = false; }
+		Assign(n, cls, r);
+		lastPut[base + r] = cls; lastPair[base + r] = false;
+		// out of the hands
+		if (p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== cls)
 		{
-			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_LOCK t%d: %s unlocked from %s", level.maptime, lockCls[k], RSQTR_Region.NAMES[r]);
-			lockCls[k] = "";
-			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.5);
-			return;
+			let empty = EmptyHand(pmo);
+			if (empty && empty != p.ReadyWeapon) p.PendingWeapon = empty;
 		}
-		String c = lastPut[k];
-		if (c == "") return;      // a gun in no holster: nothing (the owner's rule)
-		for (int j = 0; j < RSQTR_Region.N; j++) if (lockCls[n * RSQTR_Region.N + j] ~== c) lockCls[n * RSQTR_Region.N + j] = "";
-		lockCls[k] = c;
-		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.5);
-		if (Flag("rsqtr_messages", p, false)) Console.Printf("T_LOCK t%d: %s locked to %s", level.maptime, c, RSQTR_Region.NAMES[r]);
+		if (p.OffhandWeapon && MainOf(p.OffhandWeapon.GetClassName()) ~== cls) EmptyOff(pmo);
+		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+		if (Flag("rsqtr_messages", p, false))
+			Console.Printf("T_ASSIGN t%d: web: %s assigned to %s and holstered there%s", level.maptime, cls, RSQTR_Region.NAMES[r],
+				(was != "" && !(was ~== cls)) ? String.Format(" (%s loses it)", was) : "");
+	}
+	// THE WEB'S CLEAR ("rsqtr_unassign:<gun>"): no holster is assigned to the gun, and it is in none (inventory only)
+	private void WebUnassign(PlayerPawn pmo, String cls)
+	{
+		if (cls == "") return;
+		int base = pmo.PlayerNumber() * RSQTR_Region.N;
+		for (int k = 0; k < RSQTR_Region.N; k++)
+		{
+			if (lockCls[base + k] ~== cls) lockCls[base + k] = "";
+			if (IsGunRegion(k) && lastPut[base + k] ~== cls) { lastPut[base + k] = ""; lastPair[base + k] = false; }
+		}
+		if (Flag("rsqtr_messages", pmo.player, false)) Console.Printf("T_ASSIGN t%d: web: %s cleared (no holster)", level.maptime, cls);
 	}
 	// A LOCKED GUN GOES HOME. The hand holding gun cls at gun holster r, cls locked to holster home (not r): cls goes into
 	// home, and r's gun (if any) comes out to that hand as a draw. A gun someone put in home meanwhile goes into r, so no
@@ -1064,6 +1113,7 @@ class RSQTR_Rig : EventHandler
 		int n = pmo.PlayerNumber();
 		String cls = MainOf(w.GetClassName());     // BD22 VR's off-hand version goes in under its gun's name
 		int lockHome = LockedTo(n, cls);
+		if (lockHome < 0 && !MayEnter(pmo, cls, r)) { Refused(pmo, 1, cls, r); return; }
 		if (lockHome >= 0 && lockHome != r)
 		{
 			let outW = LockedHome(pmo, cls, r, lockHome);
@@ -1077,6 +1127,7 @@ class RSQTR_Rig : EventHandler
 			if (k != r && lastPut[n * RSQTR_Region.N + k] == cls) lastPut[n * RSQTR_Region.N + k] = "";
 		lastPut[n * RSQTR_Region.N + r] = cls;
 		lastPair[n * RSQTR_Region.N + r] = false;
+		Assign(n, cls, r);
 		class<Weapon> ic = was;
 		let incoming = (was != "" && was != cls && ic) ? Weapon(pmo.FindInventory(ic)) : null;
 		if (incoming && incoming != p.ReadyWeapon)
@@ -1284,6 +1335,8 @@ class RSQTR_Rig : EventHandler
 			}
 		}
 		int lockHome = IsGunRegion(r) && HoldsGun(pmo) ? LockedTo(n, cls) : -1;
+		// ASSIGNMENT (11-07): an unassigned gun enters only an unassigned, empty holster (and is assigned to it)
+		if (lockHome < 0 && IsGunRegion(r) && HoldsGun(pmo) && !MayEnter(pmo, cls, r)) { Refused(pmo, 0, cls, r); return; }
 		if (lockHome >= 0 && lockHome != r)
 		{
 			incoming = LockedHome(pmo, cls, r, lockHome);
@@ -1324,6 +1377,7 @@ class RSQTR_Rig : EventHandler
 		}
 		int slot = n * RSQTR_Region.N + r;
 		lastPut[slot] = cls;
+		if (IsGunRegion(r)) Assign(n, cls, r);
 		// ONE GUN IN, ONE GUN OUT (11-02; Dual is its own key, the owner 10-27): the off hand is never touched here. Its
 		// copy of the gun (BD22 VR's RSQ_Off_<gun>) stays in the off hand if it is there.
 		let off = p.OffhandWeapon;
@@ -2505,10 +2559,8 @@ class RSQTR_Rig : EventHandler
 	// it back. A holster shows a gun only while you own it (Content), so after a death or a pistol start a
 	// holster is empty until you have that gun again -- then it is back where you kept it.
 	//
-	// NEW GUNS GO TO A HOLSTER (rsqtr_autoholster, off by default): a gun you did not have before goes into the
-	// first empty gun holster (hips, chest, shoulders) instead of only into the slots. Playsim, every player, from
-	// the same inventory everywhere, so netplay agrees.
-	static const int AUTO_ORDER[] = { 0, 1, 6, 7, 4, 5 };
+	// NEW GUNS TO HOLSTERS (rsqtr_autoholster) is REMOVED (owner 2026-11-07 07:36): holstering by hand is the main way,
+	// RSQ Wheel's holster web the remote. The guns each player has are still noted (known), for anything that asks.
 	String known[MAXPLAYERS];      // "|class|class|": the guns each player had, to spot a new one
 	bool knownSet[MAXPLAYERS];
 
@@ -2547,7 +2599,6 @@ class RSQTR_Rig : EventHandler
 			let p = players[n];
 			bool seed = !knownSet[n];
 			knownSet[n] = true;
-			bool autoOn = Flag("rsqtr_autoholster", p, false);
 			let empty = EmptyHand(pmo);
 			for (let it = pmo.Inv; it; it = it.Inv)
 			{
@@ -2559,26 +2610,6 @@ class RSQTR_Rig : EventHandler
 				String tag = "|" .. cls .. "|";
 				if (known[n].IndexOf(tag) >= 0) continue;
 				known[n] = known[n] .. tag;
-				if (seed || !autoOn) continue;
-				bool placed = false;
-				for (int k = 0; k < RSQTR_Region.N; k++) if (lastPut[n * RSQTR_Region.N + k] == cls) placed = true;
-				if (placed) continue;
-				for (int j = 0; j < AUTO_ORDER.Size(); j++)
-				{
-					int r = AUTO_ORDER[j];
-					if (Content(pmo, r) != "") continue;
-					// HOLSTER LOCK: never into a holster locked to another gun
-					String lk = lastLock(n, r);
-					if (lk != "" && !(lk ~== cls)) continue;
-					lastPut[n * RSQTR_Region.N + r] = cls;
-					lastPair[n * RSQTR_Region.N + r] = false;
-					if (n == consoleplayer)
-					{
-						pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.6);
-						if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: %s", RSQTR_Region.NAMES[r], w.GetTag()), 0, RSQTR_A11y.PrintFont());
-					}
-					break;
-				}
 			}
 		}
 	}

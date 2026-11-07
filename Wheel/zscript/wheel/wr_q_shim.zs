@@ -131,7 +131,11 @@ class wr_BB : EventHandler
 		BBFL_HANDOFF = 256, BBFL_FLIPU = 512, BBFL_STEREO = 1024, BBFL_AGED = 2048, BBFL_STEADY = 4096,
 		// RSQ GL: a glow -- drawn AddShaded in the billboard's colour (the texture's grey is its strength, so a
 		// soft edge stays soft and a colour change costs no translation)
-		BBFL_SHADED = 8192
+		BBFL_SHADED = 8192,
+		// RSQ Wheel web (2026-11-07): BRIGHT, lit at full strength whatever the room's light; SOLID, drawn in the
+		// opaque pass (STYLE_Normal, alpha-tested), so it hides what is behind it whatever the translucent sort does
+		BBFL_BRIGHT = 16384,
+		BBFL_SOLID = 32768
 	}
 
 	const STRIP_CELLS = 24;
@@ -746,13 +750,13 @@ class wr_BB : EventHandler
 		{
 			// REMA passes TextureID.GetIndex() in data; the ring's call sites here pass the
 			// texture's NAME in text as well, since an index cannot be turned back into one.
-			let a = newPart(r, "wr_BBQuad", 0, 0, 1, 1, 0);
+			let a = newPart(r, (r.flags & BBFL_BRIGHT) ? "wr_BBGlow" : "wr_BBQuad", 0, 0, 1, 1, 0);
 			if (a && r.text != "") setSkin(a, r.text);
 			break;
 		}
 		case BB_SKIN:
 		{
-			let a = newPart(r, (r.flags & BBFL_SHADED) ? "wr_BBGlow" : "wr_BBQuad", 0, 0, 1, 1, 0);
+			let a = newPart(r, (r.flags & (BBFL_SHADED | BBFL_BRIGHT)) ? "wr_BBGlow" : "wr_BBQuad", 0, 0, 1, 1, 0);
 			if (a && r.text != "") setSkin(a, r.text);
 			break;
 		}
@@ -825,7 +829,8 @@ class wr_BB : EventHandler
 			a.bInvisible = false;
 			color pc = r.col;
 			if (r.payload == BB_BAR && p == 0) pc = color(r.col.r / 4, r.col.g / 4, r.col.b / 4);
-			if (shaded)
+			if (r.flags & BBFL_SOLID) a.A_SetRenderStyle(1.0, STYLE_Normal);
+			else if (shaded)
 			{
 				a.A_SetRenderStyle(r.alpha, STYLE_AddShaded);
 				a.SetShade(wr_Look.Col(pc));
