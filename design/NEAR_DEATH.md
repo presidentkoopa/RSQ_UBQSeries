@@ -113,3 +113,10 @@ No revive spends a Score life (only failing does).
   lasts 10 s; in its last 5 s it breathes and fades red, faster and faster. It stays where it fell, reachable
   or not (Distance Grab can pull it).
 - Owner-noted risk (05:45, my objection, his call): a crate over a pit or ledge is lost.
+
+## v3 while down (owner, 2026-11-07 05:38-05:41)
+- Hits cannot kill you while DOWN: only the clock ends it (then Score is asked for a life, or you die).
+- The world may be slowed as deep as SlowMo goes, but DEATH IN counts 9 real seconds, and your own shots fly
+  at normal speed (SlowMo's "your own rockets slow too" forced off while DOWN).
+- No bits bank (VisualRewards not loaded or Kill Rewards off): you get up with the tier split 100/66/33 of
+  health and armour. The bank pays up to max health and 250 armour.
