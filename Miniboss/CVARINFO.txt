@@ -19,6 +19,10 @@ server float  rsqmb_bf_xp         = 0.2;    // meter points a Gun Bonsai XP poin
 server int    rsqmb_bf_from       = 2;      // Bossfight Meter Fills From: 0 Score (style), 1 Gun Bonsai (XP), 2 Both; kills, chains and time always (owner 11-05)
 server bool   rsqmb_bf_life       = true;   // Bossfight Kill Gives a Life: its miniboss killed gives one RSQ Score extra life (owner 11-05)
 server int    rsqmb_bf_tier_score = 4000;   // this map's RSQ Score points a tier
+server int    rsqmb_bf_tier_from  = 3;      // Tier From (owner 11-06): 0 Set (Gun Bonsai level / 2 + map score / Score Per Tier + won / 2), 1 Gun Bonsai VR Level, 2 Score Lives, 3 Whichever Is Larger (bossfight.zs Tier)
+server bool   rsqmb_bf_graves     = false;  // Graves Rise (owner 11-06): with Legion of Bones + RSQ Graveyards, a Bossfight calling in wakes the tombstones (bossfight.zs Graves)
+server int    rsqmb_bf_graves_area = 0;     // ...where: 0 Map (every tombstone), 1 Radius (within rsqmb_bf_graves_radius of the fight's spawn)
+server float  rsqmb_bf_graves_radius = 1024; // ...that radius, map units (32 = 1 m)
 user   bool   rsqmb_bf_hud        = true;   // the meter on the HUD
 user   float  rsqmb_bf_hud_size   = 1.5;    // its size
 server bool   rsqmb_classic       = false;  // the old pick at level load (rsqmb_per_map, rsqmb_map_chance), off: Bossfights are called in

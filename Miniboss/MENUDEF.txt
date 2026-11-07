@@ -30,6 +30,20 @@ OptionValue "RSQMB_FillFrom"
 	2, "Both"
 }
 
+OptionValue "RSQMB_TierFrom"
+{
+	0, "Set"
+	1, "Gun Bonsai VR Level"
+	2, "Score Lives"
+	3, "Whichever Is Larger"
+}
+
+OptionValue "RSQMB_GraveArea"
+{
+	0, "Map"
+	1, "Radius"
+}
+
 OptionValue "RSQMB_Density"
 {
 	0, "Low"
@@ -54,6 +68,10 @@ OptionMenu "RSQMB_Options"
 	StaticText "Fight", 1
 	Slider "Thralls", "rsqmb_thralls", 1, 8, 1, 0
 	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
+	Option "Tier From", "rsqmb_bf_tier_from", "RSQMB_TierFrom"
+	Option "Graves Rise (Legion of Bones)", "rsqmb_bf_graves", "OnOff"
+	Option "Graves Area", "rsqmb_bf_graves_area", "RSQMB_GraveArea", "rsqmb_bf_graves"
+	Slider "Graves Radius", "rsqmb_bf_graves_radius", 256, 4096, 128, 0
 	StaticText " "
 	StaticText "Rules", 1
 	Option "Legendary Thralls (LegenDoom)", "rsqmb_legend_thralls", "OnOff"

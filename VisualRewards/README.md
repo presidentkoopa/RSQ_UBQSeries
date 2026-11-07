@@ -11,6 +11,10 @@ Flat-screen damage numbers and HUD banners smear across your lenses in VR. Every
 instead: at the monster, at your wrist, or standing in front of you like a sign. All on stock QuestZDoom 17.3, in
 ZScript alone. No engine changes.
 
+New on 11-06 (rig only, not headset-confirmed): a **battery bit** (yellow) for RSQ FnF's "Bones Drop Battery Bits":
+FnF asks for them when a Legion of Bones monster dies; they act like every Kill Rewards bit and refill 15% of the
+flashlight battery of whoever picks one up. Nothing here drops one by itself.
+
 ## Standout feature: every hit answers you, in the room
 
 Shoot an imp. A small number pops on the side of the imp facing you, flashes white, snaps out and arcs away. Hit it

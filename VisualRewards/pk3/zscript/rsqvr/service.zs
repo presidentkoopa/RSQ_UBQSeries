@@ -10,6 +10,9 @@
 //                        Bits Fly to Me row, whichever is further; 0 = off)
 //   GetInt "helper"      objectArg = an actor: 1 when it is one of Brutal Doom's helpers (head hitbox, boot smearer ...) that
 //                        never gets a bar, a number or bits (rsqvr/helpers.zs), 0 not
+//   GetInt "kr.battery"  (play) intArg = how many, objectArg = the body: that many battery bits burst out of it (RSQ FnF's "Bones
+//                        Drop Battery Bits", rsqvr/batterybit.zs; each refills 15% of the toucher's flashlight battery through
+//                        FnF). Returns how many came out. Asked whether or not Kill Rewards is on (FnF's own row decides).
 // The damage numbers' own hook stays where it was: RSQTHP_DnService "crit" (damnums/events.zs).
 class RSQVR_Service : Service
 {
@@ -20,6 +23,7 @@ class RSQVR_Service : Service
 		if (request == "kr.on") return RSQ_KRHandler.SVB("rsqgb_kr_enabled", true) ? 1 : 0;
 		if (request == "kr.perk") return RSQ_KRHandler.Perk(Actor(objectArg), stringArg);
 		if (request == "helper") return RSQVR_Helpers.IsHelper(Actor(objectArg)) ? 1 : 0;
+		if (request == "kr.battery") return RSQ_KRBatteryBit.Burst(Actor(objectArg), clamp(intArg, 0, 32));
 		return 0;
 	}
 

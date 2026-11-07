@@ -308,8 +308,8 @@ extend class RSQMB_Handler
 			if (!BfBusy())
 			{
 				int ph = (now - m.readyAt) % HEART;
-				if (ph == 0) Glow(0xFF1810, 0.25);
-				else if (ph == 9) Glow(0xC01008, 0.2);
+				if (ph == 0) HeartBeat(0xFF1810, 0.25);
+				else if (ph == 9) HeartBeat(0xC01008, 0.2);
 			}
 			if (pn == consoleplayer && !m.called && CI('rsqmb_bf_callin', 1)) CallInput(p, m);
 		}
@@ -465,8 +465,26 @@ extend class RSQMB_Handler
 		return w == "" ? " nothing" : w;
 	}
 
+	// WHAT SETS THE TIER (owner 2026-11-06, rsqmb_bf_tier_from; his ask: "consider GBOVR player level or RS Score lives
+	// remaining, whichever is larger"): 0 Set (the sum below, as it was), 1 Gun Bonsai VR Level (RSQGB_Service "player.level"),
+	// 2 Score Lives (RS_ScoreService "lives", the extra lives held), 3 Whichever Is Larger (the default) of those two. Each
+	// source is asked by name; a mod not loaded (or no record yet) counts 0. The number IS the tier, 0..4 (a level or a life
+	// count past 4 is tier 4).
 	int Tier(PlayerPawn p, RSQMB_Meter m)
 	{
+		int from = clamp(CI('rsqmb_bf_tier_from', 3), 0, 3);
+		if (from > 0)
+		{
+			if (!svcChecked) FindServices();
+			int gl = GbSvc() ? max(0, gbService.GetInt("player.level", "", 0, 0, p)) : 0;
+			int lv = scoreSvc ? max(0, scoreSvc.GetInt("lives", "", 0, 0, p)) : 0;
+			int v = from == 1 ? gl : (from == 2 ? lv : max(gl, lv));
+			int tt = clamp(v, 0, 4);
+			if (debug) Console.Printf("RSQMB bossfight tier %d from %s (Gun Bonsai VR level %d%s, Score lives %d%s)", tt,
+				from == 1 ? "Gun Bonsai VR Level" : (from == 2 ? "Score Lives" : "Whichever Is Larger"),
+				gl, GbSvc() ? "" : " (not loaded)", lv, scoreSvc ? "" : " (not loaded)");
+			return tt;
+		}
 		int t = 0;
 		int gl = GbSvc() ? gbService.GetInt("player.level", "", 0, 0, p) : -1;
 		if (gl > 0) t += gl / 2;
@@ -714,6 +732,53 @@ extend class RSQMB_Handler
 		if (debug) Console.Printf("RSQMB BOSSFIGHT ARRIVING: tier %d, %s + %d thralls, SlowMo %s", tier, arrCls[0], arrX.Size() - 1, smSvc ? "asked" : "absent");
 	}
 
+	// GRAVES RISE (owner 2026-11-06, rsqmb_bf_graves, off): with Legion of Bones and RSQ Graveyards loaded, a Bossfight calling
+	// in wakes the tombstones, in the whole map (rsqmb_bf_graves_area 0) or within rsqmb_bf_graves_radius of the fight's spawn
+	// (1): they raise Legion of Bones undead, Graveyard's way (gy_RSQService "bones.graves", by name; Graveyard needs LoB and
+	// answers 0 without it). WHEN: the moment the Bossfight lands (its fog is over and its miniboss and thralls stand): a riser
+	// on a stone by the landing spot during the fog could block the miniboss's landing (rig 11-06: "failed to land", and the
+	// next try woke the graves a second time), so they wake once, when it has landed. HOW MANY: thralls + tier undead in all
+	// (3 thralls at tier 2: 5), every stone in range at least one (more stones than that: one each), spread over the stones
+	// nearest the spawn first, at most 24 (Graveyard's cap). WHICH: each thrall type's own undead (Graveyard maps the type, the
+	// Bones Bridge's table), in turn; Skull Zombies when none maps.
+	transient Service graveSvc;
+	transient bool graveChecked;
+	Service GySvc()
+	{
+		if (!graveChecked)
+		{
+			graveChecked = true;
+			let it = ServiceIterator.Find("gy_RSQService");
+			Service s;
+			while (s = it.Next()) if (s.GetClassName() == 'gy_RSQService') { graveSvc = s; break; }
+		}
+		return graveSvc;
+	}
+
+	void Graves(int tier, Actor spot, int thralls)
+	{
+		if (!CI('rsqmb_bf_graves', 0) || !spot || arrCls.Size() < 1) return;
+		let g = GySvc();
+		if (!g) { if (debug) Console.Printf("RSQMB graves: RSQ Graveyards not loaded"); return; }
+		int budget = clamp(thralls + tier, 1, 999);
+		String cls = "";
+		for (int i = 1; i < arrCls.Size(); i++) cls = cls .. (i > 1 ? "," : "") .. arrCls[i];
+		double radius = CI('rsqmb_bf_graves_area', 0) == 1 ? max(64.0, CF('rsqmb_bf_graves_radius', 1024)) : 0;
+		int n = g.GetInt("bones.graves", cls, arrPn * 1000 + budget, radius, spot);
+		if (debug) Console.Printf("RSQMB graves: %d thralls + tier %d = %d undead asked (%s of the spawn at %.0f %.0f), %d rising", thralls, tier, budget,
+			radius > 0 ? String.Format("within %.0f", radius) : "whole map", spot.pos.x, spot.pos.y, n);
+	}
+
+	// THE STONES BEAT WITH THE GLOW (owner 2026-11-06): each heartbeat of the ready meter is sent to RSQ Graveyards too
+	// (gy_RSQService "stones.pulse", by name): every tombstone's candle beats with the map's glow. Graveyard holds them steady
+	// in RSQ Accessibility's Photosensitive Mode.
+	void HeartBeat(int col, double secs)
+	{
+		Glow(col, secs);
+		let g = GySvc();
+		if (g) g.GetInt("stones.pulse", "", col, secs);
+	}
+
 	void ArrivalStep()
 	{
 		int age = level.maptime - arrTic;
@@ -757,6 +822,7 @@ extend class RSQMB_Handler
 		let b = bosses[bosses.Size() - 1];
 		b.called = true;
 		b.tier = arrTier;
+		Graves(arrTier, mb, th.Size());
 		bfBoss = b;
 		bfCount++;
 		bfAny = true;

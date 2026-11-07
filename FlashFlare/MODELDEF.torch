@@ -44,6 +44,109 @@ Model RSQFF_Torch
 	FrameIndex QFFT D 0 0
 }
 
+// THE BATTERY METER (owner 2026-11-06; battery.zs; tools/gen_torch.py --meter): a thin panel on top of the body in the same
+// placement as the flashlight in the hand, the overlay layer RSQFF_Torch.METER, drawn full bright. QFFM A..K = 0..10 segments
+// lit (meter0..10.png, our own art after Ermac's 10-step meter; A is also the dark half of the blink at step 1).
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter0.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM A 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter1.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM B 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter2.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM C 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter3.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM D 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter4.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM E 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter5.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM F 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter6.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM G 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter7.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM H 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter8.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM I 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter9.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM J 0 0
+}
+Model RSQFF_Torch
+{
+	Path "models/rsqff"
+	Model 0 "torch_meter.md3"
+	Skin 0 "meter10.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex QFFM K 0 0
+}
+
 // THE VISIBLE BEAM (RSQFF_TorchCone): along model +Z, turned by the actor's pitch (pitch + 90), drawn in real proportions
 // (CORRECTPIXELSTRETCH: the beam's real direction), both faces (seen from inside too). Frame = length (A-Z). QFFC: the Quest
 // cone (one layer); QFFK: two layers (PCVR, High). Skin: white with the fade in its alpha; the actor's AddStencil shade is

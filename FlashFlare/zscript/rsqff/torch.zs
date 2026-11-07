@@ -41,6 +41,7 @@
 class RSQFF_Torch : Weapon
 {
 	const GLOW = 7312;       // the overlay layer of the glowing lens
+	const METER = 7313;      // the overlay layer of the battery meter on the body (QFFM A-K: 0-10 steps lit; battery.zs)
 
 	Default
 	{
@@ -70,6 +71,15 @@ class RSQFF_Torch : Weapon
 		let gl = player.FindPSprite(GLOW);
 		if (on && !gl) A_Overlay(GLOW, "Glow");
 		else if (!on && gl) player.SetPSprite(GLOW, null);
+		// THE BATTERY METER on the flashlight's body (battery.zs), while the battery is in use: its frame is the steps lit
+		int step = RSQFF_Battery.Shown(n);
+		let mt = player.FindPSprite(METER);
+		if (step < 0) { if (mt) player.SetPSprite(METER, null); }
+		else
+		{
+			if (!mt) { A_Overlay(METER, "Meter"); mt = player.FindPSprite(METER); }
+			if (mt) mt.Frame = step;
+		}
 	}
 
 	States
@@ -92,8 +102,12 @@ class RSQFF_Torch : Weapon
 	Glow:
 		QFFT D 1 Bright;
 		Loop;
+	Meter:
+		QFFM A -1 Bright;
+		Stop;
 	Frames:
 		QFFT BC 0;
+		QFFM ABCDEFGHIJK 0;
 		Stop;
 	}
 }
@@ -164,6 +178,7 @@ class RSQFF_Torches : EventHandler
 	const T_OFF = 1;
 	const T_ON = 2;
 	const RANDOM_COL = 98;
+	const WARM_WHITE = 20;
 
 	// ---- synced ----
 	int phase[MAXPLAYERS];
@@ -177,6 +192,14 @@ class RSQFF_Torches : EventHandler
 	RSQFF_TorchCone cone[MAXPLAYERS];
 	RSQFF_TorchHot hot[MAXPLAYERS];
 	Vector3 lastLens[MAXPLAYERS];     // the lens a tic ago (the cone is moved a tic ahead of the hand)
+	Vector3 beamLens[MAXPLAYERS], beamDir[MAXPLAYERS];   // the beam this tic (map units; battery.zs: a kill in the beam)
+	int beamRange[MAXPLAYERS];
+	double beamOuter[MAXPLAYERS];
+	// the battery (battery.zs): charge 0..1, primed on a player's first tic; the low-battery dim and its countdown
+	double charge[MAXPLAYERS];
+	bool battOk[MAXPLAYERS];
+	int flick[MAXPLAYERS];
+	double dimI[MAXPLAYERS], dimIn[MAXPLAYERS], dimOut[MAXPLAYERS];
 	bool lastLensOk[MAXPLAYERS];
 	double hitDist[MAXPLAYERS];       // map units along the beam to what it meets (0: nothing in reach)
 	Vector3 hitPos[MAXPLAYERS], hitNorm[MAXPLAYERS];
@@ -221,14 +244,46 @@ class RSQFF_Torches : EventHandler
 	static int Quality() { return clamp(SInt("rsqff_fl_quality", 0), 0, 2); }
 	static int Range() { int q = Quality(); return q == 0 ? 448 : (q == 1 ? 640 : 896); }
 
-	// the series' palette (VisualRewards tools/gen_dn_art.py PALETTE) and a warm white, the default
-	static Color Shade(int c)
+	// BEAM COLOUR: SIX (owner 2026-11-06: "Warm White, White, and the four Bossfight colours", no special powers): 20 Warm White
+	// (the default), 0 White, and RSQ Miniboss's PALETTE (handler.zs): 21 Pink FF3CC8, 22 Cyan 40E0FF, 23 Amber FFB020, 24 Violet
+	// A060FF. 98 Random draws one of the six at each switch-on. Any other value (the 18-colour list's 1-16, saved before) is read
+	// as the nearest of the six by its old RGB (Nearest; handler.zs Migrate moves the saved value once, settings version 3).
+	static int Six(int i) { static const int SIX[] = { 20, 0, 21, 22, 23, 24 }; return SIX[clamp(i, 0, 5)]; }
+	static int Rgb(int c)
 	{
-		static const int pal[] = {
+		switch (c)
+		{
+			case 0: return 0xFFFFFF;
+			case 21: return 0xFF3CC8;
+			case 22: return 0x40E0FF;
+			case 23: return 0xFFB020;
+			case 24: return 0xA060FF;
+		}
+		return 0xFFDCA8;   // 20: Warm White
+	}
+	// the nearest of the six to a value of the old 18-colour list (its palette: VisualRewards tools/gen_dn_art.py PALETTE)
+	static int Nearest(int c)
+	{
+		for (int i = 0; i < 6; i++) if (c == Six(i)) return c;
+		if (c == RANDOM_COL) return c;
+		static const int OLD[] = {
 			0xFFFFFF, 0xB3BDD1, 0xFFEB38, 0xFFBD2E, 0xFF7A14, 0xFF291A, 0xDB0A42, 0xFF80C2, 0xFF2EF2,
 			0xC299FF, 0x943DFF, 0x3D66FF, 0x70C2FF, 0x14F2FF, 0x14CCA3, 0x33FF4D, 0xB8FF24 };
-		if (c >= 0 && c <= 16) return Color(255, (pal[c] >> 16) & 255, (pal[c] >> 8) & 255, pal[c] & 255);
-		return Color(255, 255, 220, 168);   // 20: Warm White
+		if (c < 0 || c >= OLD.Size()) return WARM_WHITE;
+		int o = OLD[c], best = WARM_WHITE, bd = 0x7FFFFFFF;
+		for (int i = 0; i < 6; i++)
+		{
+			int s = Rgb(Six(i));
+			int dr = ((o >> 16) & 255) - ((s >> 16) & 255), dg = ((o >> 8) & 255) - ((s >> 8) & 255), db = (o & 255) - (s & 255);
+			int d = dr * dr + dg * dg + db * db;
+			if (d < bd) { bd = d; best = Six(i); }
+		}
+		return best;
+	}
+	static Color Shade(int c)
+	{
+		int rgb = Rgb(Nearest(c));
+		return Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
 	}
 
 	// ---------------------------------------------------------------- events
@@ -286,11 +341,19 @@ class RSQFF_Torches : EventHandler
 		if (Debug(pmo.player)) Console.Printf("RSQFF torch back t%d: on the clip again", level.maptime);
 	}
 
-	private void SetOn(PlayerPawn pmo, int n, bool on)
+	void SetOn(PlayerPawn pmo, int n, bool on)
 	{
 		if (phase[n] == T_NONE) return;
+		// THE BATTERY (battery.zs): an empty one does not switch on (the click, and it stays off)
+		if (on && RSQFF_Battery.Empty(n))
+		{
+			pmo.A_StartSound("rsqff/click", CHAN_AUTO, CHANF_LOCAL, 0.6);
+			if (Debug(pmo.player)) Console.Printf("RSQFF torch t%d: the battery is empty: it stays off", level.maptime);
+			on = false;
+			if (phase[n] == T_OFF) return;
+		}
 		phase[n] = on ? T_ON : T_OFF;
-		if (on && SInt("rsqff_fl_color", 20) == RANDOM_COL) pick[n] = random[rsqff_torch](0, 16);
+		if (on && SInt("rsqff_fl_color", 20) == RANDOM_COL) pick[n] = Six(random[rsqff_torch](0, 5));
 		if (!on) LightsOff(n);
 		traceAt[n] = 0;
 		pmo.A_StartSound("rsqff/click", CHAN_AUTO, CHANF_LOCAL, 0.6);
@@ -334,7 +397,10 @@ class RSQFF_Torches : EventHandler
 		spot[n] = null; cone[n] = null; hot[n] = null;
 		lastLensOk[n] = false;
 		hitDist[n] = 0;
+		beamRange[n] = 0;
 	}
+
+	override void WorldThingDied(WorldEvent e) { RSQFF_Battery.Died(self, e); }
 
 	// ---------------------------------------------------------------- every tic
 	override void WorldTick()
@@ -344,6 +410,7 @@ class RSQFF_Torches : EventHandler
 		{
 			if (!playeringame[n] || !players[n].mo) { if (phase[n] != T_NONE) { phase[n] = T_NONE; LightsOff(n); } continue; }
 			Keep(players[n].mo, n);
+			RSQFF_Battery.Tick(self, players[n].mo, n);
 			if (spot[n]) live++;
 		}
 		lightsPeak = max(lightsPeak, live);
@@ -406,6 +473,8 @@ class RSQFF_Torches : EventHandler
 		double inner, outer; SizeAngles(inner, outer);
 		int q = Quality();
 		int range = Range();
+		beamDir[n] = dir;
+		beamLens[n] = lens;
 		int c = SInt("rsqff_fl_color", 20);
 		Color col = Shade(c == RANDOM_COL ? pick[n] : c);
 		// LIGHT STYLE DARKDOOMZ (owner 11-06, item 9; ddzlight.zs, a zlib rewrite of DarkDoomZ's flashlight): its type's
@@ -416,6 +485,14 @@ class RSQFF_Torches : EventHandler
 			ddz = RSQFF_DdzLight.Get();
 			RSQFF_DdzLight.Main(ddz, col, inner, outer, range);
 		}
+		// LOW BATTERY (battery.zs, Ermac's dim and flicker): the light's reach and the spot's angles, the cone fainter with it
+		double dimI = 1.0, dimIn = 1.0, dimOut = 1.0;
+		[dimI, dimIn, dimOut] = RSQFF_Battery.Dim(n);
+		range = max(16, int(ceil(range * dimI)));
+		inner *= dimIn;
+		outer *= dimOut;
+		beamRange[n] = range;
+		beamOuter[n] = outer;
 
 		// the light
 		if (!spot[n]) spot[n] = RSQFF_TorchSpot(Actor.Spawn("RSQFF_TorchSpot", lens, NO_REPLACE));
@@ -490,7 +567,7 @@ class RSQFF_Torches : EventHandler
 			k.Scale.Y = coneLen / 64.0;                        // the full length (the frame folds it shorter)
 			k.Scale.X = k.Scale.Y * tan(half) / tan(20.0);     // across: the same stretch, at the beam's own angle
 			k.SetShade(col);
-			k.alpha = q == 0 ? 0.30 : (q == 1 ? 0.34 : 0.38);
+			k.alpha = (q == 0 ? 0.30 : (q == 1 ? 0.34 : 0.38)) * dimI;
 			// dust: motes drifting in the beam (PCVR one every 3rd tic, High one a tic)
 			if (q > 0 && (q == 2 || level.maptime % 3 == 0)) Dust(pmo, lens, rd, len, half, col, ps);
 		}
@@ -682,6 +759,14 @@ class RSQFF_TorchService : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// THE BATTERY (battery.zs): "battery" permille charged (-1: no battery in use); "battery.add" doubleArg = the share of a
+		// full battery to add (RSQ VisualRewards' battery bit: 0.15), returns the new permille
+		if (request == "battery" || request == "battery.add")
+		{
+			if (intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return -1;
+			if (request == "battery.add") RSQFF_Battery.Add(intArg, doubleArg, "a battery bit");
+			return RSQFF_Battery.Permille(intArg);
+		}
 		if (request != "torch.phase") return -1;
 		if (intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return -1;
 		let h = RSQFF_Torches.Get();

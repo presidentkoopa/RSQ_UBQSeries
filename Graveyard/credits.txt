@@ -4,3 +4,7 @@ gy_tomb1.png: Captain J, minor edits by m8f
 gy_tomb2.png: mirrored from gy_tomb1.png by m8f
 gy_tomb3.png: Captain J, minor edits by m8f
 gy_tomb4.png: Captain J
+
+RSQ Edition, the Bones (2026-11-06): Legion of Bones by SpacemanStrife (LOB_v1.05) is used by name only (its rising
+actors, its fire, its Respawn Delay cvar); nothing of it ships here. The Brutal Doom / XMVE table is generated from
+brutal22test6 (Sergeant Mark IV) and XV117's Monster Expansion's DECORATE by tools/gen_bones_table.py.

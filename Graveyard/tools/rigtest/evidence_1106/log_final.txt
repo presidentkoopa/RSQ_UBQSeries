@@ -1,0 +1,219 @@
+# 2026-11-06 Bones / battery / colours / tier: key lines of the final batched rig run (run_batch.sh; rig only, not headset-confirmed)
+S_Init: Setting up sound.
+S_InitData: Load sound definitions.
+RSQ FnF: Beam Colour 12 is now 22 (the nearest of the six)
+S_SETUP
+BP t41: Spawn(ZombieMan) with replacement gives ZombiemanSpawner@06_XMVE_MonsterExpansion_Doom2.pk3@decorate.txt
+BP t41: the map's monsters: Imp ShotgunGuy1 BullDemon Labgal
+BP t41: map monsters 4, Legion of Bones classes among them 0; player at 200 768 angle 0
+BP t43: Spawn(ZombieMan) with replacement gives SkullZombieSpawner
+BP t43: the map's monsters: Imp ShotgunGuy1 BullDemon Labgal
+BP t43: map monsters 4, Legion of Bones classes among them 0; player at 200 768 angle 0
+S_STONES
+BP t45: tombstone 0 at 760 560
+BP t45: tombstone 1 at 800 768
+BP t45: tombstone 2 at 760 976
+BP t45: tombstone 3 at 1100 690
+BP t45: tombstone 4 at 1120 860
+BP t45: tombstone 5 at 400 1400
+BP t45: tombstone 6 at 330 690
+BP t45: tombstone 7 at 345 768
+BP t45: tombstone 8 at 330 846
+RSQFF torch take t45: the flashlight in the off hand (had rsq_hands)
+RSQFF torch t45: on (size 1: 10/22 deg, quality 0: range 448, colour 22)
+S_ROW
+BP t55: spawned RifleZombie at 500 600
+BP t55: spawned Imp at 500 666
+BP t55: spawned ChainsawZombie at 500 732
+BP t55: spawned NightmareImp at 500 798
+BP t55: spawned TehLostSoul at 500 864
+BP t55: spawned ShotgunGuy1 at 500 930
+BP t72: kill Imp
+RSQFF battery t72: Imp killed outside the beam (305 units, 37.8 deg off the axis; beam 448 units, 22.0 deg)
+RSQ Graveyard bones t72: Imp died at 500 666: rises as SkeletonImpSpawn in 195 tics (LOB_Respawn 1)
+BP t72: kill ChainsawZombie
+RSQFF battery t72: ChainsawZombie killed outside the beam (289 units, 27.2 deg off the axis; beam 448 units, 22.0 deg)
+RSQ Graveyard bones t72: ChainsawZombie died at 500 732: rises as SkullZombieSpawn in 195 tics (LOB_Respawn 1)
+BP t72: kill NightmareImp
+RSQFF battery t72: player 0 +5% (a kill in the beam: NightmareImp): 98.7% -> 100.0%
+RSQ Graveyard bones t72: NightmareImp died at 500 798: rises as SkeletonImpSpawn in 195 tics (LOB_Respawn 1)
+BP t72: kill TehLostSoul
+RSQFF battery t72: player 0 +5% (a kill in the beam: TehLostSoul): 100.0% -> 100.0%
+RSQ Graveyard bones t72: TehLostSoul died: not one LoB raises, stays dead
+BP t72: kill ShotgunGuy1
+RSQFF battery t72: player 0 +5% (a kill in the beam: ShotgunGuy1): 100.0% -> 100.0%
+RSQ Graveyard bones t72: ShotgunGuy1 died at 500 930: rises as SkullShotgunnerSpawn in 195 tics (LOB_Respawn 1)
+RSQFF battery t75: RifleZombie killed outside the beam (570 units, 44.4 deg off the axis; beam 448 units, 22.0 deg)
+RSQ Graveyard bones t75: RifleZombie died at 520 1250: rises as SkullZombieSpawn in 195 tics (LOB_Respawn 1)
+BP t75: block test corpse RifleZombie at 520 1250
+RSQ Graveyard bones t82: BootSmearerRed died: not one LoB raises, stays dead
+BP t85: a solid block stands on the RifleZombie corpse at 520 1250
+RSQ Graveyard bones: Legion of Bones' replacement of DeadShotgunGuy handed back to DeadShotgunguy1
+RSQ Graveyard bones t100: BootSmearerRed died: not one LoB raises, stays dead
+RSQ Graveyard bones t111: BootSmearerRed died: not one LoB raises, stays dead
+RSQ Graveyard bones t117: BootSmearerRed died: not one LoB raises, stays dead
+S_REP1
+RSQ Graveyard bones t200: Dying_Headshot died: not one LoB raises, stays dead
+RSQ Graveyard bones t239: ZombieScientistDyingGuts died: not one LoB raises, stays dead
+RSQ Graveyard bones t240: Dying_Headshot died: not one LoB raises, stays dead
+RSQ Graveyard bones t267: SkullShotgunnerSpawn RISES at 500 930 from ShotgunGuy1 (target BDoomer)
+RSQ Graveyard bones t267: SkeletonImpSpawn RISES at 500 798 from NightmareImp (target BDoomer)
+RSQ Graveyard bones t267: SkullZombieSpawn RISES at 500 732 from a corpse gone (target BDoomer)
+RSQ Graveyard bones t267: SkeletonImpSpawn RISES at 500 666 from a corpse gone (target BDoomer)
+RSQFF battery t281: player 0 90.0% (draining): meter step 9
+BP t296: the block is taken off the corpse
+RSQ Graveyard bones: Legion of Bones' replacement of DoomImpBall handed back to FireBall_
+RSQ Graveyard bones t435: ShotgunGuy1 died at 1318 764: rises as SkullShotgunnerSpawn in 195 tics (LOB_Respawn 1)
+RSQ Graveyard bones t440: SkullZombieSpawn RISES at 520 1250 from RifleZombie (target BDoomer), after 1 hold
+RSQ Graveyard bones t447: Imp died at 1029 773: rises as SkeletonImpSpawn in 195 tics (LOB_Respawn 1)
+S_EMPTY
+BP t477: battery set to 0.0% (meter frame 1, phase 2)
+RSQFF battery t477: player 0 EMPTY: the flashlight switches itself off
+RSQFF torch t477: off (size 1: 10/22 deg, quality 0: range 448, colour 22)
+RSQFF torch t481: the battery is empty: it stays off
+RSQ Graveyard bones t483: BurningZombieMan died: not one LoB raises, stays dead
+BP t490: battery set to 50.0% (meter frame 5, phase 1)
+RSQFF battery t490: player 0 50.0% (charging): meter step 6
+RSQFF torch t494: on (size 1: 10/22 deg, quality 0: range 448, colour 22)
+RSQFF battery t497: player 0 50.0% (draining): meter step 5
+S_BEAM
+BP t506: battery set to 30.0% (meter frame 3, phase 2)
+BP t511: beam kill: Imp 150 units along the beam
+RSQFF battery t511: player 0 +5% (a kill in the beam: Imp): 29.8% -> 34.8%
+RSQ Graveyard bones t511: Imp died at 355 807: rises as SkeletonImpSpawn in 195 tics (LOB_Respawn 1)
+BP t511: off-beam kill: Imp far to the right
+RSQFF battery t511: Imp killed outside the beam (443 units, 80.7 deg off the axis; beam 404 units, 22.0 deg)
+RSQ Graveyard bones t511: Imp died at 400 368: rises as SkeletonImpSpawn in 195 tics (LOB_Respawn 1)
+S_LOB
+BP t519: cleared 13 monsters from the test area (removed, no death)
+BP t519: battery set to 20.0% (meter frame 2, phase 2)
+RSQFF battery t519: player 0 +5% (a kill in the beam: SkullZombie): 20.0% -> 25.0%
+RSQFF battery t519: player 0 +5% (a kill in the beam: SkullZombie): 25.0% -> 30.0%
+RSQFF battery t519: player 0 +5% (a kill in the beam: SkullZombie): 30.0% -> 35.0%
+RSQFF battery t519: Legion of Bones kill SkullZombie: 1 battery bit (rolled 1, RSQ VisualRewards)
+RSQFF battery t519: player 0 +5% (a kill in the beam: SkullZombie): 35.0% -> 40.0%
+RSQFF battery t519: player 0 +5% (a kill in the beam: SkullZombie): 40.0% -> 45.0%
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RSQFF battery t519: Legion of Bones kill SkullZombie: 1 battery bit (rolled 1, RSQ VisualRewards)
+RSQFF battery t519: Legion of Bones kill SkullZombie: 1 battery bit (rolled 1, RSQ VisualRewards)
+RSQFF battery t519: player 0 +5% (a kill in the beam: SkullZombie): 45.0% -> 50.0%
+BP t519: killed 40 Legion of Bones Skull Zombies round the player
+RSQ Graveyard t519: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+RSQFF battery t524: player 0 +15% (a battery bit): 49.7% -> 64.7%
+RSQ Graveyard t528: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+RSQFF battery t536: player 0 +15% (a battery bit): 64.1% -> 79.1%
+RSQ Graveyard t564: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+RSQ Graveyard t573: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+BP t599: RSQVR_Service kr.battery 2 asked directly: 2 bits
+RSQFF battery t602: player 0 +15% (a battery bit): 76.0% -> 91.0%
+RSQFF battery t604: player 0 +15% (a battery bit): 90.9% -> 100.0%
+RSQ Graveyard t609: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+RSQ Graveyard t618: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+RSQ Graveyard bones t630: SkullShotgunnerSpawn RISES at 1318 764 from a corpse gone (target none)
+RSQ Graveyard bones t642: SkeletonImpSpawn RISES at 1029 773 from Imp (target Imp)
+RSQ Graveyard t654: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+S_RISE
+BP t660: cleared 3 monsters from the test area (removed, no death)
+BP t660: spawned RifleZombie at 420 600
+BP t660: spawned Imp at 420 666
+BP t660: spawned ChainsawZombie at 420 732
+BP t660: spawned NightmareImp at 420 798
+BP t660: spawned ShotgunGuy1 at 420 930
+RSQ Graveyard t663: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+BP t674: kill Imp
+RSQFF battery t674: Imp killed outside the beam (232 units, 44.3 deg off the axis; beam 448 units, 22.0 deg)
+RSQ Graveyard bones t674: Imp died at 420 666: rises as SkeletonImpSpawn in 25 tics (LOB_Respawn 0)
+BP t674: kill ChainsawZombie
+RSQFF battery t674: ChainsawZombie killed outside the beam (209 units, 29.4 deg off the axis; beam 448 units, 22.0 deg)
+RSQ Graveyard bones t674: ChainsawZombie died at 420 732: rises as SkullZombieSpawn in 25 tics (LOB_Respawn 0)
+BP t674: kill NightmareImp
+RSQFF battery t674: player 0 +5% (a kill in the beam: NightmareImp): 96.7% -> 100.0%
+RSQ Graveyard bones t674: NightmareImp died at 420 798: rises as SkeletonImpSpawn in 25 tics (LOB_Respawn 0)
+BP t674: kill ShotgunGuy1
+RSQFF battery t674: player 0 +5% (a kill in the beam: ShotgunGuy1): 100.0% -> 100.0%
+RSQ Graveyard bones t674: ShotgunGuy1 died at 420 930: rises as SkullShotgunnerSpawn in 25 tics (LOB_Respawn 0)
+RSQ Graveyard bones t699: SkullShotgunnerSpawn RISES at 420 930 from ShotgunGuy1 (target BDoomer)
+RSQ Graveyard bones t699: SkeletonImpSpawn RISES at 420 798 from NightmareImp (target BDoomer)
+RSQ Graveyard bones t699: SkullZombieSpawn RISES at 420 732 from a corpse gone (target BDoomer)
+RSQ Graveyard bones t699: SkeletonImpSpawn RISES at 420 666 from Imp (target BDoomer)
+RSQ Graveyard t699: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+RSQ Graveyard bones t699: BootSmearerRed died: not one LoB raises, stays dead
+RSQ Graveyard bones t706: SkeletonImpSpawn RISES at 400 368 from a corpse gone (target BDoomer)
+RSQ Graveyard bones t706: SkeletonImpSpawn RISES at 355 807 from a corpse gone (target BDoomer)
+RSQ Graveyard t708: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+RSQ Graveyard t744: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+RSQ Graveyard t753: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+S_TIER
+BP t766: RSQ Score lives now 2
+RSQMB bossfight tier 0 (Gun Bonsai level -1, map score 3227, won 0)
+BP t766: Tier From 0 -> tier 0
+RSQMB bossfight tier 0 from Gun Bonsai VR Level (Gun Bonsai VR level 0 (not loaded), Score lives 2)
+BP t771: Tier From 1 -> tier 0
+S_BEAT
+RSQMB bossfight tier 2 from Score Lives (Gun Bonsai VR level 0 (not loaded), Score lives 2)
+BP t777: Tier From 2 -> tier 2
+RSQMB bossfight tier 2 from Whichever Is Larger (Gun Bonsai VR level 0 (not loaded), Score lives 2)
+BP t777: Tier From 3 -> tier 2
+BP t777: cleared 9 monsters from the test area (removed, no death)
+RSQMB BOSSFIGHT READY (auto in 60 s)
+BP t777: the Bossfight meter set full (ready)
+RSQ Graveyard t777: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+RSQ Graveyard t786: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+RSQ Graveyard t822: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+RSQ Graveyard t831: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+RSQ Graveyard t867: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+RSQ Graveyard t876: Bossfight heartbeat c01008 0.20 s: 9 stones pulse
+RSQFF battery t883: player 0 90.0% (draining): meter step 9
+RSQ Graveyard t912: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse
+S_PHOTO
+RSQ Graveyard t921: Bossfight heartbeat c01008 0.20 s: 9 stones pulse (Photosensitive Mode: held steady)
+RSQ Graveyard t957: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse (Photosensitive Mode: held steady)
+RSQ Graveyard t966: Bossfight heartbeat c01008 0.20 s: 9 stones pulse (Photosensitive Mode: held steady)
+RSQ Graveyard t1002: Bossfight heartbeat ff1810 0.25 s: 9 stones pulse (Photosensitive Mode: held steady)
+RSQ Graveyard t1011: Bossfight heartbeat c01008 0.20 s: 9 stones pulse (Photosensitive Mode: held steady)
+S_CALLIN
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RSQMB bossfight tier 2 from Whichever Is Larger (Gun Bonsai VR level 0 (not loaded), Score lives 2)
+RSQMB BOSSFIGHT ARRIVING: tier 2, Imp + 3 thralls, SlowMo asked
+RSQ Graveyard bones t1047: a Bossfight wakes 5 tombstones (within 640): 5 undead (budget 4, cap 24)
+RSQMB graves: 2 thralls + tier 2 = 4 undead asked (within 640 of the spawn at 856 1244), 5 rising
+RSQMB BOSSFIGHT LANDED: boss 0 Imp hp 80, 2 thralls, map count 1
+RSQ Graveyard bones t1048: SkullShotgunnerSpawn RISES at 760 976 from a tombstone (target BDoomer)
+RSQ Graveyard bones t1051: SkullZombieSpawn RISES at 1120 860 from a tombstone (target BDoomer)
+RSQ Graveyard bones t1055: SkullShotgunnerSpawn RISES at 800 768 from a tombstone (target BDoomer)
+RSQ Graveyard bones t1059: SkullShotgunnerSpawn RISES at 400 1400 from a tombstone (target BDoomer)
+RSQ Graveyard bones t1063: SkullZombieSpawn RISES at 1100 690 from a tombstone (target BDoomer)
+RSQFF battery t1093: player 0 80.0% (draining): meter step 8
+S_MAPGRAVES
+RSQ Graveyard bones t1237: a Bossfight wakes 9 tombstones (the whole map): 9 undead (budget 3, cap 24)
+BP t1237: gy_RSQService bones.graves (Map, budget 3, Imp + RifleZombie) asked directly: 9 rising
+RSQ Graveyard bones t1237: a grave riser at 800 768 did not fit: tries again
+RSQ Graveyard bones t1241: a grave riser at 1100 690 did not fit: tries again
+RSQ Graveyard bones t1245: a grave riser at 1120 860 did not fit: tries again
+RSQ Graveyard bones t1249: SkullZombieSpawn RISES at 760 560 from a tombstone (target BDoomer)
+RSQ Graveyard bones t1250: ShotgunGuy1 died at 818 1190: rises as SkullShotgunnerSpawn in 25 tics (LOB_Respawn 0)
+RSQ Graveyard bones t1253: a grave riser at 760 976 did not fit: tries again
+RSQ Graveyard bones t1257: SkullZombieSpawn RISES at 345 768 from a tombstone (target BDoomer)
+RSQ Graveyard bones t1261: SkeletonImpSpawn RISES at 330 690 from a tombstone (target BDoomer)
+RSQ Graveyard bones t1265: SkullZombieSpawn RISES at 330 846 from a tombstone (target BDoomer)
+RSQ Graveyard bones t1269: a grave riser at 400 1400 did not fit: tries again
+RSQ Graveyard bones t1272: a grave riser at 800 768 did not fit: tries again
+RSQ Graveyard bones t1275: SkullShotgunnerSpawn RISES at 817 1185 from ShotgunGuy1 (target Imp)
+RSQ Graveyard bones t1276: a grave riser at 1100 690 did not fit: tries again
+RSQ Graveyard bones t1280: a grave riser at 1120 860 did not fit: tries again
+RSQ Graveyard bones t1288: a grave riser at 760 976 did not fit: tries again
+RSQFF battery t1303: player 0 70.0% (draining): meter step 7
+RSQ Graveyard bones t1304: a grave riser at 400 1400 did not fit: tries again
+RSQ Graveyard bones t1307: a grave riser at 800 768 did not fit: tries again
+RSQ Graveyard bones t1311: a grave riser at 1100 690 did not fit: tries again
+RSQ Graveyard bones t1315: a grave riser at 1120 860 did not fit: tries again
+RSQ Graveyard bones t1323: a grave riser at 760 976 did not fit: tries again
+RSQ Graveyard bones t1339: a grave riser at 400 1400 did not fit: tries again
+RSQ Graveyard bones t1342: a grave riser at 800 768 did not fit: tries again
+RSQ Graveyard bones t1346: a grave riser at 1100 690 did not fit: tries again
+RSQ Graveyard bones t1350: a grave riser at 1120 860 did not fit: tries again
+S_END
+# script errors (not BD_VoxelPack's voxeldef): 0
+# low battery dim lines (final run, then the third run; the first run (log not kept) logged step 1: light x0.36-0.54, inner x0.21-0.39, outer x0.80-0.89):
+RSQFF battery t503: player 0 low (step 5): light x0.90, inner x1.00, outer x1.00
+RSQFF battery t503: player 0 low (step 5): light x0.90, inner x1.00, outer x1.00

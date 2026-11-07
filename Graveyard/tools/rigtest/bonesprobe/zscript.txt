@@ -1,0 +1,219 @@
+version "4.14"
+// TEST ONLY (never ships; Graveyard/tools is left out of RSQ_Graveyard.pk3): the 2026-11-06 Bones / battery / colours / tier
+// round's one batched rig check. Driven by console netevents (run.sh). Names other mods' classes directly: load it last, with
+// RSQ Graveyard, Miniboss, FnF, VisualRewards and Score loaded.
+class BP_Block : Actor
+{
+	Default { +SOLID; Radius 20; Height 56; }
+	States { Spawn: TNT1 A -1; Stop; }
+}
+class BP_Probe : EventHandler
+{
+	Array<Actor> mine;
+	Actor blockBody, block;
+	int blockAt;
+	// f ahead, l to the left of the player, pulled in to 48 short of a wall in that direction (the map is not known)
+	Vector3 Ahead(PlayerPawn p, double f, double l)
+	{
+		double d = sqrt(f * f + l * l);
+		double a = p.angle + atan2(l, f);
+		FLineTraceData t;
+		p.LineTrace(a, d + 48, 0, TRF_THRUACTORS, 24, data: t);
+		if (t.HitType != TRACE_HitNone && t.Distance - 48 < d) d = max(32.0, t.Distance - 48);
+		return p.Vec3Offset(cos(a) * d, sin(a) * d, 0);
+	}
+	Actor Put(String cls, Vector3 at, bool test = true)
+	{
+		class<Actor> c = cls;
+		if (!c) { Console.Printf("BP spawn %s: no such class", cls); return null; }
+		let a = Actor.Spawn(c, at, NO_REPLACE);
+		if (a && test && !a.TestMobjLocation()) Console.Printf("BP spawn %s at %.0f %.0f: does not fit (kept)", cls, at.x, at.y);
+		return a;
+	}
+	void Kill(Actor a, PlayerPawn p)
+	{
+		if (!a || a.health <= 0) return;
+		a.DamageMobj(null, p, a.health + 1, 'None', DMG_FORCED | DMG_NO_ARMOR);
+	}
+	override void WorldTick()
+	{
+		if (blockBody && !block && level.maptime == blockAt)
+		{
+			block = Actor.Spawn("BP_Block", blockBody.pos);
+			Console.Printf("BP t%d: a solid block stands on the %s corpse at %.0f %.0f", level.maptime, blockBody.GetClassName(), blockBody.pos.x, blockBody.pos.y);
+		}
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[0].mo;
+		if (!p || e.Name.Left(3) != "bp_") return;
+		int now = level.maptime;
+		if (e.Name == "bp_setup")
+		{
+			// LoB's plain-load replacers must lose to Brutal Doom's (LoB loads before brutal22test6)
+			let z = Actor.Spawn("ZombieMan", Ahead(p, -2000, 0), ALLOW_REPLACE);
+			Console.Printf("BP t%d: Spawn(ZombieMan) with replacement gives %s", now, z ? String.Format("%s", z.GetClassName()) : "nothing");
+			if (z) { z.ClearCounters(); z.Destroy(); }
+			int lob = 0, all = 0;
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			String names = "";
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { all++; String cn = a.GetClassName(); names = names .. " " .. cn; if (cn.Left(3) ~== "LOB" || cn.Left(5) ~== "Skull" || cn.Left(8) ~== "Skeleton") lob++; }
+			Console.Printf("BP t%d: the map's monsters:%s", now, names);
+			Console.Printf("BP t%d: map monsters %d, Legion of Bones classes among them %d; player at %.0f %.0f angle %.0f", now, all, lob, p.pos.x, p.pos.y, p.angle);
+			return;
+		}
+		if (e.Name == "bp_row")
+		{
+			static const String ROW[] = { "RifleZombie", "Imp", "ChainsawZombie", "NightmareImp", "TehLostSoul", "ShotgunGuy1" };
+			double rx = e.Args[0] > 0 ? e.Args[0] : 500;
+			for (int i = 0; i < ROW.Size(); i++)
+			{
+				if (e.Args[1] == 1 && i == 4) continue;   // the frames' row: no lost soul flying at the camera
+				let a = Put(ROW[i], (rx, 600 + 66 * i, 0));
+				if (a) { a.bDormant = true; a.bFriendly = false; mine.Push(a); Console.Printf("BP t%d: spawned %s at %.0f %.0f", now, a.GetClassName(), a.pos.x, a.pos.y); }
+			}
+			return;
+		}
+		if (e.Name == "bp_kill")
+		{
+			for (int i = 0; i < mine.Size(); i++) if (mine[i] && mine[i].health > 0) { Console.Printf("BP t%d: kill %s", now, mine[i].GetClassName()); Kill(mine[i], p); }
+			mine.Clear();
+			return;
+		}
+		if (e.Name == "bp_block")
+		{
+			blockBody = Put("RifleZombie", (520, 1250, 0));
+			if (blockBody) { Kill(blockBody, p); blockAt = now + 10; Console.Printf("BP t%d: block test corpse %s at %.0f %.0f", now, blockBody.GetClassName(), blockBody.pos.x, blockBody.pos.y); }
+			return;
+		}
+		if (e.Name == "bp_unblock")
+		{
+			if (block) { block.Destroy(); Console.Printf("BP t%d: the block is taken off the corpse", now); }
+			return;
+		}
+		if (e.Name == "bp_stones")
+		{
+			static const double SX[] = { 760, 800, 760, 1100, 1120, 400, 330, 345, 330 };
+			static const double SY[] = { 560, 768, 976, 690, 860, 1400, 690, 768, 846 };
+			for (int i = 0; i < 9; i++)
+			{
+				let s = Put(String.Format("gy_Stone%d", i % 4), (SX[i], SY[i], 0), false);
+				if (s) Console.Printf("BP t%d: tombstone %d at %.0f %.0f", now, i, s.pos.x, s.pos.y);
+			}
+			return;
+		}
+		if (e.Name == "bp_charge")
+		{
+			let h = RSQFF_Torches.Get();
+			if (h) { h.battOk[0] = true; h.charge[0] = e.Args[0] / 1000.0; Console.Printf("BP t%d: battery set to %.1f%% (meter frame %d, phase %d)", now, h.charge[0] * 100, RSQFF_Battery.Shown(0), h.phase[0]); }
+			return;
+		}
+		if (e.Name == "bp_beamkill")
+		{
+			let h = RSQFF_Torches.Get();
+			if (!h || h.phase[0] != RSQFF_Torches.T_ON) { Console.Printf("BP t%d: beam kill: the flashlight is not on", now); return; }
+			Vector3 at = h.beamLens[0] + h.beamDir[0] * 150;
+			let a = Put("Imp", at, false);
+			if (a) { a.bNoGravity = true; a.SetOrigin(at - (0, 0, a.height * 0.5), false); Console.Printf("BP t%d: beam kill: %s 150 units along the beam", now, a.GetClassName()); Kill(a, p); }
+			let b = Put("Imp", Ahead(p, 200, -400), false);
+			if (b) { b.bNoGravity = true; Console.Printf("BP t%d: off-beam kill: %s far to the right", now, b.GetClassName()); Kill(b, p); }
+			return;
+		}
+		if (e.Name == "bp_lobkill")
+		{
+			int n = e.Args[0];
+			for (int i = 0; i < n; i++)
+			{
+				double ang = i * 360.0 / n;
+				let a = Put("SkullZombie", p.Vec3Offset(cos(ang) * 56, sin(ang) * 56, 0), false);
+				if (a) Kill(a, p);
+			}
+			Console.Printf("BP t%d: killed %d Legion of Bones Skull Zombies round the player", now, n);
+			return;
+		}
+		if (e.Name == "bp_bitdirect")
+		{
+			let it = ServiceIterator.Find("RSQVR_Service");
+			let s = it.Next();
+			let a = Put("BP_Block", Ahead(p, 40, 0), false);
+			if (a) a.bSolid = false;
+			int n = (s && a) ? s.GetInt("kr.battery", "", 2, 0, a) : -1;
+			Console.Printf("BP t%d: RSQVR_Service kr.battery 2 asked directly: %d bits", now, n);
+			if (a) a.Destroy();
+			return;
+		}
+		if (e.Name == "bp_ready")
+		{
+			let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
+			let m = h ? RSQMB_Handler.MeterOf(p, true) : null;
+			if (m) { m.fill = 1000; h.Ready(m); Console.Printf("BP t%d: the Bossfight meter set full (ready)", now); }
+			return;
+		}
+		if (e.Name == "bp_tier1")
+		{
+			let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
+			let m = h ? RSQMB_Handler.MeterOf(p, true) : null;
+			if (m) Console.Printf("BP t%d: Tier From %d -> tier %d", now, CVar.FindCVar("rsqmb_bf_tier_from").GetInt(), h.Tier(p, m));
+			return;
+		}
+		if (e.Name == "bp_clearundead")
+		{
+			int n = 0;
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next()))
+			{
+				String cn = a.GetClassName();
+				if (a.bIsMonster && a.health > 0 && a.pos.x < 1700 && !a.player) { a.ClearCounters(); a.Destroy(); n++; }
+			}
+			Console.Printf("BP t%d: cleared %d monsters from the test area (removed, no death)", now, n);
+			return;
+		}
+		if (e.Name == "bp_tier")
+		{
+			let h = RSQMB_Handler(EventHandler.Find("RSQMB_Handler"));
+			let m = h ? RSQMB_Handler.MeterOf(p, true) : null;
+			let c = CVar.FindCVar("rsqmb_bf_tier_from");
+			if (!m || !c) return;
+			int keep = c.GetInt();
+			for (int v = 0; v < 4; v++) { c.SetInt(v); Console.Printf("BP t%d: Tier From %d -> tier %d", now, v, h.Tier(p, m)); }
+			c.SetInt(keep);
+			return;
+		}
+		if (e.Name == "bp_lives")
+		{
+			let s = ServiceIterator.Find("RS_ScoreService").Next();
+			int l = s ? s.GetInt("givelife", "", e.Args[0], 0, p) : -1;
+			Console.Printf("BP t%d: RSQ Score lives now %d", now, l);
+			return;
+		}
+		if (e.Name == "bp_graves_map")
+		{
+			let s = ServiceIterator.Find("gy_RSQService").Next();
+			let a = Put("BP_Block", (900, 768, 0), false);
+			if (a) a.bSolid = false;
+			int n = (s && a) ? s.GetInt("bones.graves", "Imp,RifleZombie", 0 * 1000 + 3, 0, a) : -1;
+			Console.Printf("BP t%d: gy_RSQService bones.graves (Map, budget 3, Imp + RifleZombie) asked directly: %d rising", now, n);
+			if (a) a.Destroy();
+			return;
+		}
+		if (e.Name == "bp_rep")
+		{
+			let h = RSQFF_Torches.Get();
+			int und = 0, risen = 0, bits = 0, stones = 0;
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next()))
+			{
+				String cn = a.GetClassName();
+				if (a.bIsMonster && a.health > 0 && (cn.Left(5) ~== "Skull" || cn.Left(8) ~== "Skeleton" || cn ~== "CacoLich" || cn ~== "SlayerKnight" || cn ~== "Balrog" || cn ~== "GhostSpectre" || cn ~== "PhantomRevenant" || cn ~== "Abhorrent" || cn ~== "Arachnobone" || cn ~== "Reaper")) { und++; if (risen < 8) Console.Printf("BP t%d:   undead alive: %s at %.0f %.0f", now, cn, a.pos.x, a.pos.y); risen++; }
+				if (cn ~== "RSQ_KRBatteryBit" && Inventory(a) && !Inventory(a).Owner) bits++;
+				if (a is "gy_Stone") stones++;
+			}
+			Console.Printf("BP t%d: REPORT undead alive %d, battery bits lying %d, tombstones %d, battery %.1f%% (phase %d, meter frame %d), Beam Colour %d",
+				now, und, bits, stones, h ? h.charge[0] * 100 : -1, h ? h.phase[0] : -1, RSQFF_Battery.Shown(0), CVar.FindCVar("rsqff_fl_color").GetInt());
+			return;
+		}
+	}
+}

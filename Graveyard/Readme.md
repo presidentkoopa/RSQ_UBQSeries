@@ -62,6 +62,30 @@ patches, and emits the TEXTURES and a ready-made state line.
   stones within a gold range). Uniform: all together; Wave: a sequence by
   distance from you; Chaos: each stone its own pace. Held still in RSQ
   Accessibility's Photosensitive Mode. The same one light per stone.
+- the Bones (2026-11-06, rig only, not headset-confirmed), with Legion of Bones
+  (SpacemanStrife, LOB_v1.05) loaded; nothing without it:
+  - **Bones Bridge** (off, `gy_bones`): Brutal Doom's monsters stay. A few
+    seconds after a Brutal Doom / XMVE monster dies, its Legion of Bones undead
+    rises from the corpse, LoB's way: LoB's Respawn Delay (its own menu), its
+    fire burst, its rising animation, and it comes for whoever killed it. The
+    13 kinds LoB raises (zombieman, shotgunner, chaingunner, imp, demon,
+    spectre, cacodemon, hell knight, baron, revenant, mancubus, arachnotron,
+    arch-vile) follow what each BD / XMVE monster replaces
+    (`tools/gen_bones_table.py`); lost souls, pain elementals, the Cyberdemon
+    and the Mastermind stay dead. **What Stops a Rise** (`gy_bones_block`):
+    Something On It (LoB's rule: if something stands on the corpse when the
+    wait ends, the wait starts again) or Nothing.
+  - **Load order**: Legion of Bones goes AFTER Brutal Doom and XMVE, before
+    the RSQ pk3s. (Loaded before Brutal Doom, its own Tracer / MonsterTracer
+    replace Brutal Doom's and BD's monsters shoot LoB's weaker bullet.) Loaded
+    after, LoB would turn every monster into a skeleton from the start; with
+    the Bones Bridge on, Graveyard hands those spawns back to Brutal Doom /
+    XMVE. Bridge off: LoB as it ships. (LoB's skeletons then fire Brutal
+    Doom's tracer.)
+  - RSQ Miniboss can wake the tombstones in a Bossfight (its Graves Rise row),
+    and while a Bossfight waits every stone's candle and stone beat with the
+    map's red heartbeat (held steady in RSQ Accessibility's Photosensitive
+    Mode).
 - source: the `Graveyard/` folder of RSQ_UBQSeries, built to
   `RSQ_Graveyard.pk3`.
 

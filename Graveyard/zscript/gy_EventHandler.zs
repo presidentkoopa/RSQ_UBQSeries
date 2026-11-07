@@ -168,6 +168,9 @@ class gy_RSQService : Service
   override
   int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
   {
+    // RSQ Edition (owner 2026-11-06): the Bossfight's two asks (zscript/rsqgy/bones.zs)
+    if (request == "bones.graves") { return gy_Bones.GravesAsked(stringArg, intArg, doubleArg, Actor(objectArg)); }
+    if (request == "stones.pulse") { return gy_Stone.PulseAll(intArg, doubleArg); }
     if (request != "stone.life") { return 0; }
     let mo = Actor(objectArg);
     if (mo == NULL || mo.player == NULL) { return 0; }

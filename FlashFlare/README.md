@@ -82,6 +82,24 @@ and the throw is measured against your body, so walking and turning never count 
   "FLARE" on its sides; his box sprite with voxels off). A single flare lying about is his lying-flare sprite (with models on, three flares in a bundle).
 - Optional: the pocket tops up at each new level (off by default).
 
+### New on 11-06 (rig only, not headset-confirmed)
+- **Battery** (Ermac's VR-Flashlight model): the flashlight drains while on and recharges while off (in the hand or on its
+  clip), at the same rate. **Battery (min)** sets the capacity (3, Ermac's default; 0 = never drains). Empty, it clicks
+  off by itself; with under a second of light left it won't switch on. Below 50% it dims and flickers like Ermac's (the
+  cone fades with it).
+- **The meter is on the flashlight**: 10 segments and a round LED on top of the body, behind the head. Green, yellow,
+  orange, red as it empties; the LED blinks at the last step. Hidden when the battery is off (0 or Never Drains).
+  Rig frames: docs/rig/11_battery_meter.jpg.
+- **Kills in the beam** refill it: a monster you kill while it is inside your lit beam gives back **5%** of a full battery.
+- **Battery Never Drains** (off): no drain, no meter.
+- **Bones Drop Battery Bits** (off): with Legion of Bones loaded, each Legion of Bones monster you kill drops a yellow
+  battery bit 8% of the time (a LegenDoom legendary or Champions champion always drops 3). They are RSQ VisualRewards'
+  Kill Rewards bits (need VisualRewards), fly to you like the others, and each refills **15%**.
+- **Beam Colour: six** (was 18): Warm White, White, and the four Bossfight colours (Pink, Cyan, Amber, Violet, RSQ
+  Miniboss's own), plus Random of the six. No special powers. A saved colour from the old list moves to the nearest of the
+  six once (Silver -> Warm White; Yellow, Gold, Orange, Red, Lime -> Amber; Crimson, Pink, Magenta -> Pink; Lavender,
+  Purple, Blue -> Violet; Sky, Cyan, Teal, Green -> Cyan).
+
 ## How To Play
 
 1. Add RSQ_FnF.pk3 to your load order. Make sure dynamic lights are on. Play in VR: the flare is taken by hand only.

@@ -52,6 +52,9 @@ OptionMenu "RSQFF_Options"
 	Slider "Beam Length (m)", "rsqff_fl_cone_m", 1, 15, 1, 0
 	Option "Beam Hotspot", "rsqff_fl_hot", "OnOff"
 	Option "Show Cone", "rsqff_fl_cone", "OnOff"
+	Slider "Battery (min)", "rsqff_fl_batt", 0, 60, 1, 0
+	Option "Battery Never Drains", "rsqff_fl_batt_inf", "OnOff"
+	Option "Bones Drop Battery Bits", "rsqff_fl_bits", "OnOff"
 	Option "Light Style", "rsqff_fl_style", "RSQFF_LightStyle"
 	Option "DarkDoomZ Type", "rsqff_fl_ddz_type", "RSQFF_DdzType", "rsqff_fl_style", 0, 0
 	Option "DarkDoomZ Spill Light", "rsqff_fl_ddz_spill", "OnOff", "rsqff_fl_style", 0, 0
@@ -108,27 +111,15 @@ OptionValue "RSQFF_BeamQuality"
 	2, "High"
 }
 
-// the series' colour list (VisualRewards RSQTHP_Col) with a warm white first, the default
+// six (owner 11-06): Warm White, White and RSQ Miniboss's four Bossfight colours; Random draws one of the six
 OptionValue "RSQFF_BeamColour"
 {
 	20, "Warm White"
 	0, "White"
-	1, "Silver"
-	2, "Yellow"
-	3, "Gold"
-	4, "Orange"
-	5, "Red"
-	6, "Crimson"
-	7, "Pink"
-	8, "Magenta"
-	9, "Lavender"
-	10, "Purple"
-	11, "Blue"
-	12, "Sky"
-	13, "Cyan"
-	14, "Teal"
-	15, "Green"
-	16, "Lime"
+	21, "Pink"
+	22, "Cyan"
+	23, "Amber"
+	24, "Violet"
 	98, "Random"
 }
 

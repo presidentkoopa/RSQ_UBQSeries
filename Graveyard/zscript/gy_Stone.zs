@@ -95,6 +95,7 @@ class gy_Stone : Actor
 
     updateLight();
     updateTint();
+    bBright = pulseEnv() > 0.35;   // RSQ Edition: the stone itself lights on the Bossfight's beat (seen past the light's cull)
   }
 
   override
@@ -175,10 +176,17 @@ class gy_Stone : Actor
       return;
     }
 
-    int radius = int(_cfgRadius * (_kind == 2 ? GOLD_RADIUS : 1.0) * _lightFade * flicker());
+    double env = pulseEnv();
+    int radius = int(_cfgRadius * (_kind == 2 ? GOLD_RADIUS : 1.0) * _lightFade * flicker() * (1.0 + PULSE_GROW * env));
     if (radius < 1) { radius = 1; }
 
     Color lc = lightColor();
+    if (env > 0)
+    {
+      // the beat leans the candle to the Bossfight's colour, at full brightness on the beat
+      double w = PULSE_MIX * env;
+      lc = Color(255, int(lc.r + (_pulseCol.r - lc.r) * w), int(lc.g + (_pulseCol.g - lc.g) * w), int(lc.b + (_pulseCol.b - lc.b) * w));
+    }
     // Re-attaching the same light id overwrites it, which is how the fade
     // animates - but skip the call on tics where nothing actually moved.
     if (_hasLight && radius == _lastRadius && lc == _lastColor) { return; }
@@ -195,6 +203,40 @@ class gy_Stone : Actor
 
     _hasLight   = true;
     _lastRadius = radius;
+  }
+
+  // ---- RSQ Edition (owner 2026-11-06): THE BOSSFIGHT'S HEARTBEAT --------------------------------------------------------
+  // While a Bossfight waits to be called in, RSQ Miniboss beats RSQ Glow In The Dark's map glow red (lub-dub, every 45 tics)
+  // and asks gy_RSQService "stones.pulse" on each beat with the same colour and length: every stone's candle swells (radius up
+  // to x1.6) and leans to that colour (85% at the beat), fading over the beat's length, as the map's glow does. RSQ
+  // Accessibility's Photosensitive Mode: no beat; the candle holds a steady half lean while the beats keep coming.
+  static int PulseAll(int rgb, double secs)
+  {
+    int n = 0;
+    let it = ThinkerIterator.Create("gy_Stone");
+    gy_Stone s;
+    while (s = gy_Stone(it.Next())) { s.pulse(rgb, secs); n++; }
+    let dc = CVar.FindCVar("gy_bones_debug");
+    if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard t%d: Bossfight heartbeat %06x %.2f s: %d stone%s pulse%s", level.maptime, rgb & 0xFFFFFF, secs, n, n == 1 ? "" : "s", photoSafe() ? " (Photosensitive Mode: held steady)" : ""); }
+    return n;
+  }
+
+  void pulse(int rgb, double secs)
+  {
+    _pulseCol = Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
+    _pulseAt  = level.time;
+    _pulseLen = max(1, int((secs > 0 ? secs : 0.25) * 35));
+  }
+
+  private
+  double pulseEnv() const
+  {
+    if (_pulseLen <= 0) { return 0.0; }
+    int age = level.time - _pulseAt;
+    if (photoSafe()) { return (age >= 0 && age < PULSE_HOLD) ? 0.5 : 0.0; }
+    if (age < 0 || age >= _pulseLen) { return 0.0; }
+    double t = 1.0 - double(age) / _pulseLen;
+    return t * t;
   }
 
   // Two out-of-step sines instead of random(): a candle wobble rather than
@@ -337,6 +379,13 @@ class gy_Stone : Actor
   const POPIN_TICS = 24.0;
   const MIN_SCALE  = 0.05;
   const FADE_STEP  = 0.05; // ~0.7s from dark to full
+
+  const PULSE_GROW = 0.6;
+  const PULSE_MIX  = 0.85;
+  const PULSE_HOLD = 60;     // Photosensitive Mode: tics the steady lean lasts after a beat (the beats come every 45)
+  private Color  _pulseCol;
+  private int    _pulseAt;
+  private int    _pulseLen;
 
   private String _obituary;
   private int    _kind;      // RSQ Edition: 0/1 a death, 2 a Score life spent (gold)

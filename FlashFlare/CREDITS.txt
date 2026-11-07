@@ -32,7 +32,11 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   its skin fbx_hand.png, drawn in BD22 VR's own off-hand MODELDEF placement. The flashlight itself, its beam cones, their
   skins and the hotspot sprite are generated for this pack. Ideas from Ermac's VR-Flashlight (github.com/iAmErmac,
   base code SuaveSteve's "Steve's Flashlight": a spot light that follows the controller) and DarkDoomz (Caligari87,
-  zlib: a spot light's look); none of their code or assets is used.
+  zlib: a spot light's look). The flashlight's BATTERY (2026-11-06, zscript/rsqff/battery.zs) follows Ermac's model as
+  his zscript/flashlight.txt has it (read, rewritten here, no code copied): capacity in minutes (his default 3, 0 = never
+  drains), drain while on and recharge while off at the same rate, his 10-step level with a blinking LED at the last step,
+  and his low-battery dim and flicker numbers. The meter's art (models/rsqff/meter0..10.png, torch_meter.md3; tools/
+  gen_torch.py --meter) is our own, drawn after his battery_0..10.png meter; none of his assets is used.
 - Sounds otherwise: stock Doom sounds by their own names (SNDINFO.txt aliases): the platform stop (landing), the item
   pickup (pocket), the switch (the flashlight's click).
 

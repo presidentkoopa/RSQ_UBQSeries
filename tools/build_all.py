@@ -53,7 +53,7 @@ MODS = {
     'FlashFlare':   ('RSQ_FnF.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sprites', 'graphics',
                      'VOXELDEF.txt', 'voxels', 'sounds', 'MODELDEF.torch']),
-    'Graveyard':    ('RSQ_Graveyard.pk3', 'all', ['.gitignore']),   # m8f's Graveyard (GPLv3), RSQ Edition: the whole folder ships (copying.txt, credits.txt, Readme.md included)
+    'Graveyard':    ('RSQ_Graveyard.pk3', 'all', ['.gitignore', 'tools/*']),   # m8f's Graveyard (GPLv3), RSQ Edition: the whole folder ships (copying.txt, credits.txt, Readme.md included)
     'GunBonsaiOffhandVR': ('RSQ_GunBonsaiVR.pk3', 'all', ['.git*', 'build.ps1', 'NOTES.md', 'readme.txt', 'tools/*', 'docs/*', '*.pk3']),  # readme.txt: the old pre-README notes (0.99a item 30), not shipped
 }
 

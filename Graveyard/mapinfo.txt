@@ -1,4 +1,4 @@
 gameinfo
 {
-  AddEventHandlers = "gy_EventHandler", "gy_VmAbortHandler"
+  AddEventHandlers = "gy_EventHandler", "gy_VmAbortHandler", "gy_BonesHandler", "gy_BonesReplacer"
 }

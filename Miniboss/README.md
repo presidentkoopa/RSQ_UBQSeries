@@ -10,6 +10,16 @@ New on 11-06 (rig only, not headset-confirmed): the original Minibosses! tether 
 half the old cost); Ignore Spawn Restrictions. Since 11-05 (code only, not rig-tested): a
 killed miniboss refills RSQ Tactical Rig's cigarettes.
 
+New on 11-06 (rig only, not headset-confirmed): **Tier From** (Set / Gun Bonsai VR Level / Score Lives / Whichever Is
+Larger, the default): what sets a Bossfight's tier (0-4). Set is the old sum (Gun Bonsai level / 2 + this map's score /
+Score Per Tier + Bossfights won / 2); the others use your Gun Bonsai VR player level or your RSQ Score extra lives as the
+tier itself (over 4 counts 4), or the larger of the two; a mod not loaded counts 0. **Graves Rise (Legion of Bones)**
+(off; Graves Area: Map / Radius, Graves Radius): with Legion of Bones and RSQ Graveyards loaded, when a Bossfight lands
+the tombstones in the map (or within the radius of where it landed) raise Legion of Bones undead: thralls + tier of them
+in all (3 thralls at tier 2 = 5), at least one per stone (more stones: one each), nearest stones first, at most 24; each
+thrall's type rises as its own undead. And while a Bossfight waits to be called in, every tombstone's candle beats with the
+map's red heartbeat (held steady in Photosensitive Mode).
+
 RSQ is a series of VR mods for stock QuestZDoom 17.3, built in ZScript alone with no engine changes. RSQ Miniboss is a
 rebuild of Tartlman's Minibosses! with new rules, and it reads monsters by their health, never their class name, so it
 works the same on Doom's monsters, Brutal Doom's and most monster packs.

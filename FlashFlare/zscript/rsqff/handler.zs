@@ -634,7 +634,9 @@ class RSQFF_Handler : EventHandler
 	//   1 (owner 11-03 20:26: "start with 2"): Start With 4 -> 2.
 	//   2 (owner 11-05 05:14: "needs to throw like grenade does"): RSQ Grenade's throw numbers, Throw Strength 1.25 -> 1.0,
 	//     Arc 0.25 -> 0.35.
-	const CFG_VERSION = 2;
+	//   3 (owner 11-06: the flashlight's colours cut to six): a saved Beam Colour of the old list's 1-16 is moved to the nearest
+	//     of the six by its RGB (RSQFF_Torches.Nearest).
+	const CFG_VERSION = 3;
 	private transient bool migrated;
 	private void Migrate()
 	{
@@ -653,6 +655,15 @@ class RSQFF_Handler : EventHandler
 			if (th && abs(th.GetFloat() - 1.25) < 0.001) th.SetFloat(1.0);
 			let li = CVar.FindCVar("rsqff_lift");
 			if (li && abs(li.GetFloat() - 0.25) < 0.001) li.SetFloat(0.35);
+		}
+		if (ver.GetInt() < 3)
+		{
+			let fc = CVar.FindCVar("rsqff_fl_color");
+			if (fc)
+			{
+				int was = fc.GetInt(), to = RSQFF_Torches.Nearest(was);
+				if (to != was) { fc.SetInt(to); Console.Printf("RSQ FnF: Beam Colour %d is now %d (the nearest of the six)", was, to); }
+			}
 		}
 		ver.SetInt(CFG_VERSION);
 	}

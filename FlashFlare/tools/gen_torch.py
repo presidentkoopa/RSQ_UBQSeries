@@ -139,13 +139,62 @@ def stowed():
     Image.new('RGBA', (4, 4), (0, 0, 0, 0)).save(os.path.join(S, 'QFFTE0.png'))   # its model-only sprite (RSQFF_TorchStowed)
 
 
+# THE BATTERY METER (owner 2026-11-06; zscript/rsqff/battery.zs): a thin curved panel on top of the body, 0.08 cm proud of it,
+# from METER_X0 to METER_X1 along the torch (tail to head) and +-METER_ARC degrees round the top (torch +z), where the pump
+# hold leaves the body bare (tools/preview_md3.py). Our own art after Ermac's 10-step LED meter (iAmErmac/VR-Flashlight
+# battery_0..10.png): a dark panel with a light rim, a round power LED at the tail end and 10 segments toward the head, lit
+# from the LED out. meterK.png = K segments lit (K = 0..10): green 7-10, yellow 5-6, orange 3-4, red 1-2; the LED in the
+# same colour (dark at 0: the blink's dark half at step 1).
+METER_X0, METER_X1, METER_ARC, METER_R = -7.0, 0.0, 32.0, 2.38
+METER_COL = {10: (40, 235, 70), 9: (40, 235, 70), 8: (40, 235, 70), 7: (40, 235, 70), 6: (250, 230, 40), 5: (250, 230, 40),
+             4: (255, 150, 20), 3: (255, 150, 20), 2: (240, 40, 30), 1: (240, 40, 30)}
+
+
+def meter():
+    x = unit(PUMP_AX); y = unit(cross((0, 0, 1), x)); z = cross(x, y)
+    def rot(p): return tuple(x[k] * p[0] + y[k] * p[1] + z[k] * p[2] for k in range(3))
+    def xf(p): r = rot(p); return tuple(GRIP_C[k] + r[k] for k in range(3))
+    NA = 6
+    verts, uvs, tris = [], [], []
+    for i, xx in enumerate((METER_X0, METER_X1)):
+        for sgm in range(NA + 1):
+            a = math.radians(90 - METER_ARC + 2 * METER_ARC * sgm / NA)
+            verts.append((xf((xx, METER_R * math.cos(a), METER_R * math.sin(a))), rot((0, math.cos(a), math.sin(a)))))
+            uvs.append((float(i), sgm / NA))
+    for sgm in range(NA):
+        a = sgm; b = sgm + 1; c = sgm + NA + 1; d = c + 1
+        tris += [(a, c, b), (b, c, d)]
+    write_md3(os.path.join(M, 'torch_meter.md3'), [dict(name='meter', shader='meter10.png', verts=verts, uvs=uvs, tris=tris)])
+    W, H = 256, 64
+    from PIL import ImageDraw
+    for k in range(11):
+        im = Image.new('RGB', (W, H), (22, 22, 26)); d = ImageDraw.Draw(im)
+        d.rectangle([1, 1, W - 2, H - 2], outline=(150, 150, 155), width=3)
+        col = METER_COL.get(k, (60, 60, 64))
+        led = col if k > 0 else (55, 55, 58)
+        d.ellipse([12, 18, 40, 46], fill=led, outline=(110, 110, 115), width=2)
+        x0, x1 = 52, W - 10
+        sw = (x1 - x0) / 10.0
+        for j in range(10):
+            lit = j < k
+            d.rectangle([int(x0 + j * sw + 3), 14, int(x0 + (j + 1) * sw - 3), H - 15], fill=col if lit else (42, 42, 46))
+        im.save(os.path.join(M, 'meter%d.png' % k))
+    for c in 'ABCDEFGHIJK':
+        Image.new('RGBA', (4, 4), (0, 0, 0, 0)).save(os.path.join(S, 'QFFM%s0.png' % c))
+    print('torch_meter.md3: x %.1f..%.1f cm, +-%.0f deg round the top, r %.2f; meter0..10.png, QFFM A-K placeholders' % (METER_X0, METER_X1, METER_ARC, METER_R))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--bd')
     ap.add_argument('--stowed', action='store_true', help='write only torch.md3 (the flashlight on its clip)')
+    ap.add_argument('--meter', action='store_true', help='write only the battery meter (torch_meter.md3, meter0..10.png)')
     a = ap.parse_args()
     if a.stowed:
         stowed()
+        return
+    if a.meter:
+        meter()
         return
     psrc = os.path.join(SRC, 'fbx_s192_L.md3')
     if a.bd:

@@ -32,6 +32,12 @@ OptionValue "RSQGY_LivingModes"
 	2, "Chaos"
 }
 
+OptionValue "RSQGY_BonesBlock"
+{
+	0, "Something On It (LoB)"
+	1, "Nothing"
+}
+
 OptionMenu "RSQGY_Options"
 {
 	Title "RSQ GRAVEYARDS"
@@ -49,6 +55,10 @@ OptionMenu "RSQGY_Options"
 	Slider "Light Cull Distance", "gy_light_cull", 128, 2048, 64, 0
 	Option "Living Stones", "gy_living", "OnOff"
 	Option "Living Stones Mode", "gy_living_mode", "RSQGY_LivingModes", "gy_living"
+	StaticText " "
+	StaticText "Bones (Legion of Bones)", "Gold"
+	Option "Bones Bridge", "gy_bones", "OnOff"
+	Option "What Stops a Rise", "gy_bones_block", "RSQGY_BonesBlock", "gy_bones"
 	StaticText " "
 	StaticText "Controls", "Gold"
 	Control "Remove Gravestones on This Map", "gy_remove_map"

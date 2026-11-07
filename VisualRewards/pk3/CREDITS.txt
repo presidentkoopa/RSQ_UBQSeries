@@ -97,3 +97,6 @@ Not included, credited for the record:
 
 Code: ZScript written for the Ultra Badass Quest series (presidentkoopa), for stock QuestZDoom 17.3
 by Emawind84 and Team Beef. No engine change.
+
+2026-11-06: the battery bit's sprite (sprites/rsqkr/KRBBA0.png) is SoM's health orb recoloured yellow by
+tools/gen_battery_bit.py.
