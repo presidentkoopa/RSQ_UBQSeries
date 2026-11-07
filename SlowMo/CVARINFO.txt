@@ -103,15 +103,25 @@ server bool  rsqsm_heavy_behind  = true;  // Hit From Behind: the attacker over 
 server bool  rsqsm_heavy_armour  = true;  // Armour Broken: the hit takes your last armour
 server int   rsqsm_heavy_cool    = 3;     // its cooldown: 0 Once per 20 s, 1 Once per 60 s, 2 Use Shared, 3 No Limit
 
-// ---- DOWN v2 (owner-approved 2026-11-06 19:51, design/NEAR_DEATH.md; down.zs): DOWN -> REVENGE -> REVIVE -> RAGE ---------
-server bool  rsqsm_down          = true;  // DOWN: a hit that would kill you holds you at 1 HP; kill the marked monster, take its crate
-server int   rsqsm_down_window   = 6;     // Window (s, real time): the clock's start (2-30)
-server float rsqsm_down_hit      = 0.5;   // Time per Hit (s): added for each hit you land (0-3)
-server int   rsqsm_down_max      = 12;    // Max Window (s): never more than this left (2-30)
-server int   rsqsm_down_rage     = 5;     // Rage Length (s) after REVIVE: x2 damage, no ammo used (0-30)
-server bool  rsqsm_down_scar     = true;  // Scar: each DOWN costs max health until the next map
-server int   rsqsm_down_scar_hp  = 10;    // Scar (max health per DOWN)
-server int   rsqsm_down_cool     = 60;    // Cooldown (s) after DOWN ends, pass or fail (0-300)
-server bool  rsqsm_down_repeat   = false; // Repeat Without Limit: no cooldown at all
+// ---- DOWN v3 (owner-approved 2026-11-07, design/NEAR_DEATH.md; down.zs, plate.zs): the doc's numbers are the defaults -----
+server bool  rsqsm_down          = false; // DOWN (off by default, owner 11-07): a monster's killing hit holds you at 1 HP; kill your targets to get up
+server float rsqsm_down_clock    = 9;     // Clock (s, real time): DEATH IN starts here and never goes above it
+server float rsqsm_down_step     = 3;     // Bar Step (s): each of the reward bar's three steps
+server float rsqsm_down_drain    = 0.25;  // Slowest Clock Drain: bought time pours in, the clock still drains at this speed at best
+server float rsqsm_down_t_small  = 1;     // Time: a whole humanoid / Imp / Pinky's worth of damage buys this (s)
+server float rsqsm_down_t_soul   = 0.5;   // Time: a whole Lost Soul
+server float rsqsm_down_t_big    = 2;     // Time: a whole monster above them
+server float rsqsm_down_t_boss   = 10;    // Time: a whole Cyberdemon / Spider Mastermind
+server float rsqsm_down_inv_top  = 5;     // Invulnerable after getting up, by the bar step: top / middle / bottom (s)
+server float rsqsm_down_inv_mid  = 3;
+server float rsqsm_down_inv_low  = 1;
+server float rsqsm_down_slow_top = 3;     // Slow motion after getting up: top / middle / bottom (s)
+server float rsqsm_down_slow_mid = 1.5;
+server float rsqsm_down_slow_low = 5;
+server int   rsqsm_down_split_top = 100;  // No bits bank: health and armour % by tier
+server int   rsqsm_down_split_mid = 66;
+server int   rsqsm_down_split_low = 33;
+server int   rsqsm_down_bank_armor = 250; // the bank pays armour up to this
+user int     rsqsm_down_marker   = 2;     // Turn Marker: 0 Framed Triangle, 1 Framed Fat Arrow, 2 Triple Chevron, 3 Triangle With Afterimages
 user bool    rsqsm_down_redmap   = true;  // Red Map: RSQ Glow In The Dark turns the map deep blood red while you are DOWN
 user bool    rsqsm_down_lowview  = true;  // Lower View When Down (comfort): off = no view drop (the crawl stays)

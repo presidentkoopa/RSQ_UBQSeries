@@ -1,0 +1,5 @@
+// RSQ Score -- the life crate (zscript/rsscore/lifecrate.zs): every colour kept as its brightness, in Score's gold
+// (TEXTCOLO RSScore_Gold, #FFD030 at the top), then ember, then red for its last seconds.
+RSQSC_LifeGold  = "0:255=%[0.0,0.0,0.0]:[2.0,1.63,0.38]"
+RSQSC_LifeEmber = "0:255=%[0.0,0.0,0.0]:[2.0,0.9,0.2]"
+RSQSC_LifeRed   = "0:255=%[0.0,0.0,0.0]:[2.0,0.25,0.15]"

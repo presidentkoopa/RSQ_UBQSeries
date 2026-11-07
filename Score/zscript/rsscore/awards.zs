@@ -92,6 +92,18 @@ class RS_ScoreService : Service
 			let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
 			return h ? h.AwardExternal(Actor(objectArg), stringArg, intArg) : -1;
 		}
+		// RSQ SLOWMO'S DOWN v3 (owner 11-07, design/NEAR_DEATH.md): the TOP tier's getting up fires Score's Revival Fire --
+		//   "revivefire"  objectArg the player's pawn -> 1: the revival's sound, its blast and (Revival Fire row on) its
+		//   column of fire (revive.zs), no life spent, no other change
+		if (request == "revivefire")
+		{
+			let pawn = Actor(objectArg);
+			if (!pawn || !pawn.player) return -1;
+			pawn.A_StartSound("rsscore/revive", CHAN_VOICE, CHANF_LOCAL, 1.0, ATTN_NONE);
+			RS_ScoreReviveFire.Begin(pawn, RS_ScoreHandler.ReviveFire(pawn));
+			if (RS_ScoreHandler.DebugOn()) Console.Printf("RS_Score: Revival Fire for RSQ SlowMo's DOWN (top tier), player %d", pawn.PlayerNumber());
+			return 1;
+		}
 		// A LIFE GIVEN BY ANOTHER MOD (owner 11-05: "can we have killing a miniboss give a Score life?"):
 		//   "givelife"  intArg how many (0 or less: 1), objectArg the player's pawn -> the lives now held, -1 no score
 		// Added the way an earned life is (CheckRewards: extraLives += 1, no cap; LIVES_MAX only caps the pips drawn), with

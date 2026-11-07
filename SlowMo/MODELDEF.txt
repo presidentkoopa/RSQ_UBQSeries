@@ -8,3 +8,40 @@ Model RSQSM_Round
 	USEACTORPITCH
 	FrameIndex RSQR A 0 0
 }
+
+// THE DOWN PLATE (down.zs / plate.zs, owner 2026-11-07, design/NEAR_DEATH.md v3): drawn the RSQ Wheel's way on stock
+// QuestZDoom 17.3 -- unit quad models and glyph strips placed in the world each tic, skinned per surface (the Wheel's
+// wr_q_shim.zs technique, copied; our own geometry: tools/plate/gen_plate_art.py). Colour comes from the Shaded style.
+Model RSQSM_PQuad
+{
+	Path "models/rsqsm/plate"
+	Model 0 "quad.obj"
+	Skin 0 "RSPWHT"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RSPQ A 0 0
+}
+Model RSQSM_PStrip8
+{
+	Path "models/rsqsm/plate"
+	Model 0 "strip8.obj"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RSPQ A 0 0
+}
+Model RSQSM_PStrip12
+{
+	Path "models/rsqsm/plate"
+	Model 0 "strip12.obj"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RSPQ A 0 0
+}
+Model RSQSM_PStrip24
+{
+	Path "models/rsqsm/plate"
+	Model 0 "strip24.obj"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RSPQ A 0 0
+}

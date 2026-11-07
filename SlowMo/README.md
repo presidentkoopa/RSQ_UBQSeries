@@ -9,20 +9,27 @@ New since the headset pass (tested on the rig, headset check pending): the Real-
 New on 11-06 (rig only, not headset-confirmed): the two bars (stored slow-mo and countdown) with the cause line under
 the countdown; Heavy Hit Slowdown; the Grenade Blast and Over-Under Blast triggers; Reload When.
 
-New on 11-06, reworked to v2 the same evening (rig only, not headset-confirmed): **DOWN -> REVENGE -> REVIVE -> RAGE**.
-A hit that would kill you holds you at 1 HP instead (before any RSQ Score life); no hit can finish you in the first
-second. You drop into a crouch (view and hitbox to 40% of standing, 60% lower, eased over half a second, in both crouch
-modes) and crawl at a third of your speed; both hands work as normal. The world goes to its slowest (5%), RSQ Glow In
-The Dark turns the map red, a heartbeat plays. The monster that downed you is marked (if it is gone, the strongest
-monster in sight): it glows DOWN red, full-bright, a little larger, +50% health, with a skull over its HP bar (RSQ
-VisualRewards); with LegenDoom and Champions both loaded it is made a LegenDoom legendary by LegenDoom's own pickup
-(Champions offers no outside way to make a champion, so our boost stands in for that part). The clock starts at 6 s and
-every hit you land adds 0.5 s (one per monster per tic), never more than 12 s left; the bar under the slow-mo bars
-reads DOWN, then REVENGE once the mark is dead. Killing it drops a white crate with a red cross where it fell: crawl to
-it, or pull it with RSQ Distance Grab (it never moves to you). Touching it is **REVIVE**: time comes back, the view
-rises, health 50 (or kept if higher), magazines filled from reserve, +1 cigarette, +1 grenade. Then **RAGE** for 5 s:
-double damage and no ammo used. Each DOWN costs 10 max health until the next map (the Scar). Run out of time, or take a
-killing hit after the first second, and you die, unless a Score life catches you. Then DOWN rests 60 s.
+New on 11-07, **DOWN v3** (design/NEAR_DEATH.md; rig only, not headset-confirmed: the rig run showed the hold, crouch, crawl,
+slowed world, plate, target icons, turn markers (all four styles, left and right), the three tiers, the failure with a Score
+life and the bits flying into the plate. Fixed after that run and NOT shown: the bank paying out, the Revenge award, a
+target straight behind drawn at the bottom; never needed in the run: the out-of-view spawn). Off by default (DOWN row). A monster's killing hit holds you at 1 HP instead (before any RSQ Score
+life); a barrel nobody set off, a crusher, a fall or your own shot is a normal death. While DOWN no hit can kill you: you
+drop into a crouch, crawl at a third of your speed, the world slows to its deepest, RSQ Glow In The Dark turns the map
+red, a heartbeat plays, and your own shots fly at normal speed. A plate low in front of you (drawn the RSQ Wheel's way:
+model quads in the world) shows **DOWN!**, **REVENGE: <monster>**, one icon per kill you owe, the reward bar (three 3 s
+steps, the tall one first; each breaks off and falls with a clunk and a rumble) and **DEATH IN:** with a seven-segment
+SS:hh clock of 9 real seconds. Damage you deal buys clock time (a whole monster's worth: 1 s for zombies, Imps, Pinkies;
+0.5 s a Lost Soul; 2 s bigger; 10 s a Cyberdemon or Spider Mastermind), never above 9 s, the clock never slower than a
+quarter speed. You owe 1 kill, then 2, then 3... (back to 1 when a Score life is spent): the monster that downed you if it
+is in your fight, else a boosted copy of it spawned in view, and fresh boosted copies for the rest. Each target has its
+own icon, assembled over it as it is marked; a target out of view shows its icon on a ring round your gaze with a turn
+marker pointing the way (Turn Marker: Framed Triangle, Framed Fat Arrow, Triple Chevron (default), Triangle With
+Afterimages). Kill them all to get up at once: REVIVE, and by the bar's step: invulnerable 5 / 3 / 1 s, slow motion 3 /
+1.5 / 5 s; the top step also Score's Revival Fire, +1 cigarette, +1 grenade. Health and armour come from the bits your
+kills dropped while DOWN (RSQ VisualRewards' Kill Rewards fly them into the plate), up to max health and 250 armour;
+without that bank, 100 / 66 / 33 %. Both held guns' magazines are filled for free. The clock at zero: a Score life (the
+spawned targets vanish in teleport fog, the map's own monster loses its boost), or death. The v2 RAGE, Scar, Cooldown,
+crate and the DOWN bar under the SlowMo bars are gone. Every number is a row on the DOWN part of the page (Reset All).
 
 Stock QuestZDoom 17.3 has no world clock that a mod can slow. This mod builds one in ZScript. Every monster,
 missile, gib and sound near you is time-dilated, not frozen. Each one still moves every frame, just by less,
@@ -161,15 +168,19 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | **Heavy Hit Slowdown** | | |
 | Heavy Hit Slowdown | On | A heavy hit from a legendary, champion, miniboss or thrall, boss or big demon slows time 3 s (you too). Never on a hit that kills you, never while you are DOWN. |
 | *DOWN* | | |
-| DOWN | On | A hit that would kill you holds you at 1 HP: crouched, crawling, the world at its slowest; kill the marked monster and take its crate to REVIVE. |
-| Window (s) | 6 | The clock's start (2 to 30). |
-| Time per Hit (s) | 0.5 | Added for each hit you land (one per monster per tic). |
-| Max Window (s) | 12 | Never more than this left. |
-| Rage Length (s) | 5 | After REVIVE: double damage, no ammo used. |
-| Scar | On | Each DOWN costs max health until the next map. |
-| Scar (max health) | 10 | How much. |
-| Cooldown (s) | 60 | After DOWN ends, pass or fail, it can't trigger again for this long (0 to 300). |
-| Repeat Without Limit | Off | No cooldown at all. |
+| DOWN | Off | A monster's killing hit holds you at 1 HP: crouched, crawling, the world at its slowest; kill your targets before DEATH IN runs out to get up. |
+| Clock (s) | 9 | DEATH IN, real seconds; it never goes above this. |
+| Bar Step (s) | 3 | Each of the reward bar's three steps. |
+| Slowest Clock Drain | 0.25 | Bought time pours in; the clock still drains at least this fast. |
+| Time: Small Monster (s) | 1 | What a whole zombie / Imp / Pinky's worth of your damage buys. |
+| Time: Lost Soul (s) | 0.5 | A whole Lost Soul. |
+| Time: Big Monster (s) | 2 | A whole monster above them. |
+| Time: Cyberdemon / Mastermind (s) | 10 | A whole Cyberdemon or Spider Mastermind. |
+| Invulnerable: Top / Middle / Bottom (s) | 5 / 3 / 1 | After getting up, by the bar's step. |
+| Slow-Mo After: Top / Middle / Bottom (s) | 3 / 1.5 / 5 | After getting up, by the bar's step. |
+| No Bank: Top / Middle / Bottom (%) | 100 / 66 / 33 | Health and armour when there is no bits bank (VisualRewards' Kill Rewards not loaded or off). |
+| Bank Armour Cap | 250 | The bank pays armour up to this. |
+| Turn Marker | Triple Chevron | The off-view marker: Framed Triangle, Framed Fat Arrow, Triple Chevron, Triangle With Afterimages. |
 | Red Map | On | RSQ Glow In The Dark turns the map deep blood red while you are DOWN. |
 | Lower View When Down | On | Comfort: off = no view drop (the crawl stays). |
 | Heavy Hit Size (% of max health) | 75 | What one tic's damage must add up to. |

@@ -125,66 +125,11 @@ class RSQSM_Countdown : StaticEventHandler
 		return int(ceil(bot));
 	}
 
-	// THE DOWN BAR (owner 2026-11-06, design/NEAR_DEATH.md 4: "a countdown bar under the SlowMo bars", cause line
-	// "DOWN", then "REVENGE" once the mark is killed): one row, centred under the pair's slot (and under the countdown's cause line), the same size as the pair's
-	// rows, deep red (RSQ Accessibility's colour-blind "could" colour instead), its hourglass at its left, "DOWN" under it.
-	// It starts full when the console player goes DOWN and empties evenly to the window's end (real time); it breathes
-	// with the heartbeat (held still in Photosensitive Mode); it fades when DOWN ends. Drawn whatever the bar rows say:
-	// it is DOWN's own.
-	const DOWN_GAP = 0.45;    // between the pair's rows (or the countdown's cause line) and the DOWN row, in bar thicknesses
-	static ui bool DownShown()
-	{
-		let d = RSQSM_Down(EventHandler.Find("RSQSM_Down"));
-		if (!d || !playeringame[consoleplayer]) return false;
-		int n = consoleplayer;
-		if (d.downOn[n]) return true;
-		double age = level.maptime - d.endTic[n];
-		return d.endTic[n] > 0 && age >= 0 && age < FADE_OUT;
-	}
-	static ui double DownY(double y, double h)
-	{
-		double bot = y + h * (1.0 + (GLASS - 1.0) * 0.5);
-		if (CauseShown() != "") bot += h * (CAUSE_GAP + CAUSE_H);
-		return bot + h * DOWN_GAP + h * (GLASS - 1.0) * 0.5;
-	}
-	ui void DrawDown(double t)
-	{
-		let d = RSQSM_Down(EventHandler.Find("RSQSM_Down"));
-		if (!d || !playeringame[consoleplayer]) return;
-		int n = consoleplayer;
-		double alpha, frac;
-		if (d.downOn[n])
-		{
-			// the dynamic clock (v2): time left against Max Window, so each hit's added time shows as the bar growing
-			double total = max(1, d.downMax[n]);
-			frac = clamp((d.downEnd[n] - t) / total, 0.0, 1.0);
-			alpha = clamp((t - d.downStart[n]) / FADE_IN, 0.0, 1.0);
-		}
-		else
-		{
-			double age = t - d.endTic[n];
-			if (d.endTic[n] <= 0 || age < 0 || age >= FADE_OUT) return;
-			alpha = 1.0 - age / FADE_OUT;
-			frac = 0;
-		}
-		TextureID te = TexMan.CheckForTexture("RSQSMHE", TexMan.Type_Any);
-		TextureID tw = TexMan.CheckForTexture("RSQSMHW", TexMan.Type_Any);
-		if (!te.IsValid() || !tw.IsValid()) return;
-		double cx, y, h, x, w;
-		[cx, y, h] = Slot();
-		y = DownY(y, h);
-		[x, y, w, h] = RowRect(cx, y, h, 0.0);
-		bool photo = RSQSM_A11y.Photo();
-		Color mid = Color(255, 200, 12, 12);
-		int cb = RSQSM_CB.Mode();
-		if (cb) { int v = RSQSM_CB.Rgb(RSQSM_CB.CB_COULD, cb); mid = Color(255, (v >> 16) & 255, (v >> 8) & 255, v & 255); }
-		Color lo = Color(255, int(mid.r * 0.30), int(mid.g * 0.30), int(mid.b * 0.30));
-		Color hi = RSQSM_BarLife.Mix(mid, Color(255, 255, 255, 255), 0.55);
-		double beat = photo ? 1.0 : 0.82 + 0.18 * sin(t * 13.0);
-		Draw(te, tw, x, y, w, h, frac, lo, mid, hi, alpha * beat, UCv("rsqsm_cdbar_anim", 1) != 0, photo, 0, t, alpha);
-		DrawGlass("RSQSMHG", x, y, h, 0.95 * alpha);
-		DrawCause(d.markDone[n] ? "REVENGE" : "DOWN", x, y, w, h, alpha);
-	}
+	// THE DOWN BAR (v2) IS GONE (v3, owner 2026-11-07): DOWN's clock and reward bar are on the plate in the world (down.zs /
+	// plate.zs). These stay as no-ops so the callers below need no change.
+	static ui bool DownShown() { return false; }
+	static ui double DownY(double y, double h) { return y; }
+	ui void DrawDown(double t) {}
 
 	// THE CAUSE LINE (owner 2026-11-06: "under the right-hand automatic countdown bar, while it runs, one short line naming
 	// what caused it ... in the same style as Miniboss's blocker text under its bar"): RSQ Miniboss's wait line's look

@@ -284,9 +284,9 @@ class gy_BonesHandler : EventHandler
 
 	// ---- GRAVES RISE (RSQ Miniboss, "bones.graves"): the tombstones in range, nearest the spot first -----------------------
 	// budget: how many undead in all (Miniboss's formula); radius 0: the whole map. Each stone in range raises at least one,
-	// the budget is spread over them (round robin, nearest first), at most MAX_GRAVE_RISERS in all. A stone's risers stand in a
-	// ring round it and rise one after another (GRAVE_STAGGER tics apart), the stones a few tics apart.
-	const MAX_GRAVE_RISERS = 24;
+	// the budget is spread over them (round robin, nearest first). NO CAP (owner 2026-11-07, design/NEAR_DEATH.md: every
+	// tombstone raises undead; the old cap of 24 is gone). A stone's risers stand in a ring round it and rise one after another
+	// (GRAVE_STAGGER tics apart), the stones a few tics apart.
 	const GRAVE_STAGGER = 12;
 	int RaiseGraves(Vector3 spot, double radius, int budget, Array<int> kinds, Actor target)
 	{
@@ -305,7 +305,7 @@ class gy_BonesHandler : EventHandler
 		}
 		int n = st.Size();
 		if (n == 0 || kinds.Size() == 0) return 0;
-		int total = min(max(budget, n), MAX_GRAVE_RISERS);
+		int total = max(budget, n);
 		int now = level.maptime, made = 0;
 		Array<int> per;
 		for (int i = 0; i < n; i++) per.Push(0);
@@ -324,8 +324,8 @@ class gy_BonesHandler : EventHandler
 			}
 		}
 		if (gy_Bones.Debug())
-			Console.Printf("RSQ Graveyard bones t%d: a Bossfight wakes %d tombstone%s (%s): %d undead (budget %d, cap %d)", now, n, n == 1 ? "" : "s",
-				radius > 0 ? String.Format("within %.0f", radius) : "the whole map", made, budget, MAX_GRAVE_RISERS);
+			Console.Printf("RSQ Graveyard bones t%d: a Bossfight wakes %d tombstone%s (%s): %d undead (budget %d, no cap)", now, n, n == 1 ? "" : "s",
+				radius > 0 ? String.Format("within %.0f", radius) : "the whole map", made, budget);
 		return made;
 	}
 }

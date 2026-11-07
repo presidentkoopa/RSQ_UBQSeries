@@ -25,6 +25,7 @@ version "4.14"
 #include "zscript/rsscore/combos.zs"   // the signature combos, as data (11-03)
 #include "zscript/rsscore/rows.zs"     // the sheet's kept bonuses (11-03)
 #include "zscript/rsscore/revive.zs"   // the revival's blast and column of fire (owner 11-05)
+#include "zscript/rsscore/lifecrate.zs" // the life crate (owner 11-07: a Bossfight win drops it; RSQ SlowMo DOWN v3)
 #include "zscript/rsscore/handler.zs"
 #include "zscript/rsscore/hud.zs"
 #include "zscript/rsscore/wrist.zs"   // the score on the wrist (pick 58, option)

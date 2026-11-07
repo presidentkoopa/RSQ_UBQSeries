@@ -10,13 +10,18 @@ New on 11-06 (rig only, not headset-confirmed): the original Minibosses! tether 
 half the old cost); Ignore Spawn Restrictions. Since 11-05 (code only, not rig-tested): a
 killed miniboss refills RSQ Tactical Rig's cigarettes.
 
+New on 11-07 (rig only, not headset-confirmed: shown on the rig -- the crate dropped by the Bossfight payoff; Graves Rise
+with 31 tombstones raising 31 undead): a Bossfight win drops
+RSQ Score's life crate where the miniboss died instead of adding the life outright (Bossfight Kill Drops a Life Crate);
+Graves Rise has no cap (every tombstone raises undead; the old cap of 24 is gone).
+
 New on 11-06 (rig only, not headset-confirmed): **Tier From** (Set / Gun Bonsai VR Level / Score Lives / Whichever Is
 Larger, the default): what sets a Bossfight's tier (0-4). Set is the old sum (Gun Bonsai level / 2 + this map's score /
 Score Per Tier + Bossfights won / 2); the others use your Gun Bonsai VR player level or your RSQ Score extra lives as the
 tier itself (over 4 counts 4), or the larger of the two; a mod not loaded counts 0. **Graves Rise (Legion of Bones)**
 (off; Graves Area: Map / Radius, Graves Radius): with Legion of Bones and RSQ Graveyards loaded, when a Bossfight lands
 the tombstones in the map (or within the radius of where it landed) raise Legion of Bones undead: thralls + tier of them
-in all (3 thralls at tier 2 = 5), at least one per stone (more stones: one each), nearest stones first, at most 24; each
+in all (3 thralls at tier 2 = 5), at least one per stone (more stones: one each), nearest stones first, no cap (11-07); each
 thrall's type rises as its own undead. And while a Bossfight waits to be called in, every tombstone's candle beats with the
 map's red heartbeat (held steady in Photosensitive Mode).
 
@@ -56,7 +61,7 @@ No miniboss is picked when a level loads any more. You earn it.
 - **Kill its miniboss** for a guaranteed drop (a gun from this map's types that you don't have yet; under Brutal Doom,
   whose map guns are not guns until touched, one from your weapon slots no higher than one above your best; else a power-up),
   three times the boss bits from RSQ VisualRewards' Kill Rewards, Champions' own loot for the powers it inherited,
-  RSQ Score's Miniboss and Bossfight rows, and one RSQ Score extra life.
+  RSQ Score's Miniboss and Bossfight rows, and RSQ Score's life crate where it died (11-07; touch it: +1 life).
 
 Then the set piece itself:
 
@@ -150,7 +155,7 @@ Then the set piece itself:
 | Bossfights | On | The meter fills and called-in fights come. |
 | Meter Speed | 1.00 | How fast the meter fills (0.25 to 4). |
 | Bossfight Meter Fills From | Both | Score (its style points), Gun Bonsai (Gun Bonsai VR's XP) or Both. Kills, chains and time always fill it. A choice whose mod is not loaded uses the other one if that is loaded, else kills and time alone. |
-| Bossfight Kill Gives a Life | On | Killing a Bossfight's miniboss gives you one RSQ Score extra life (needs RSQ Score). |
+| Bossfight Kill Drops a Life Crate | On | A Bossfight's miniboss drops RSQ Score's gold life crate where it died: 10 s to touch it (or pull it with RSQ Distance Grab) for one extra life (needs RSQ Score). |
 | Call It In: Watch Check + Use | On | Off: a full meter's fight only comes by itself. |
 | Ignore Spawn Restrictions | Off | A due Bossfight comes regardless of Too Early, Near Exit, Low Health, Too Busy and No Room. Cooldown and Per Map Cap still apply. |
 | Effects | On | Links, orbs, flames, teleport fog and sparks. Per player. |
@@ -220,7 +225,7 @@ Then the set piece itself:
   own copy, and the set piece runs in full. Without RSQ SlowMo there is no slow motion (the window still times the
   greed rule and chains).
 - **RSQ Score**: its style points fill the meter most (unless Fills From is Gun Bonsai); the meter sits under its bar and its combo rows go below; Thrall
-  Slow Kill, Miniboss, Greedy and Bossfight rows; a Bossfight's miniboss killed gives one extra life.
+  Slow Kill, Miniboss, Greedy and Bossfight rows; a Bossfight's miniboss killed drops Score's life crate (one extra life when touched).
 - **RSQ SlowMo**: the landing and each thrall kill slow the world; its two bars sit under the meter. A heavy hit from a
   miniboss or thrall can set off SlowMo's Heavy Hit Slowdown (every heavy hit during a Bossfight).
 - **RSQ Glow In The Dark**: the heartbeat while the meter is full; the map's glow takes the miniboss's colour while it lives.

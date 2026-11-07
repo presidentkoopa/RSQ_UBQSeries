@@ -204,7 +204,13 @@ class RSQ_KRHandler : EventHandler
 		if (scav > 0) num = int(round(num * (1.0 + 0.25 * scav)));
 		if (num <= 0) return;
 		int nh, na, nm;
+		// RSQ SLOWMO'S DOWN v3 (owner 11-07, design/NEAR_DEATH.md "clock and bank"): a kill by a player who is DOWN still
+		// bursts into bits, but they fly into his DOWN plate and BANK (paid on his revive as health and armour; ammo bits
+		// give their ammo as they arrive -- my reading, the bank pays health and armour only). By name: RSQSM_Service.
+		bankFor = (killer && DownNow(killer.PlayerNumber())) ? killer.PlayerNumber() + 1 : 0;
 		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss);
+		if (bankFor && SVB("rsqgb_kr_debug", false)) Console.Printf("RSQ KR t%d: player %d is DOWN: these bits fly to his plate and bank", level.maptime, bankFor - 1);
+		bankFor = 0;
 		// LUCKY KILL: decided next tic (RSQ Score calls a big moment in its own WorldThingDied, which may run after this one)
 		int lucky = Perk(killer, "LuckyKill");
 		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); }
@@ -212,6 +218,21 @@ class RSQ_KRHandler : EventHandler
 		if (SVB("rsqgb_kr_debug", false))
 			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo", level.maptime, cn, a.SpawnHealth(),
 				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : ""), nh + na + nm, num, nh, na, nm);
+	}
+
+	// RSQ SlowMo's DOWN (by name): this player is DOWN now
+	int bankFor;                     // set around a Burst: player + 1 whose bits bank, 0 none
+	static Service SlowMo()
+	{
+		let it = ServiceIterator.Find("RSQSM_Service");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RSQSM_Service') return s;
+		return null;
+	}
+	static bool DownNow(int pn)
+	{
+		let s = SlowMo();
+		return s && pn >= 0 && s.GetInt("down", "", pn) == 1;
 	}
 
 	// num bits out of a body, SoM's throw; Rich Bits (the killer's) draws them glowing (additive) a level
@@ -236,6 +257,7 @@ class RSQ_KRHandler : EventHandler
 			[ok, bit] = a.A_SpawnItemEx(cls, 0, 0, 32, random[RSQKR](1, 6), 0, random[RSQKR](1, 6), random[RSQKR](0, 360));
 			// RICH BITS' LOOK (owner 11-02: "emissive", no lights): drawn additive, brighter and a little bigger a level
 			if (bit && rich > 0) { bit.A_SetRenderStyle(min(1.0, 0.7 + 0.1 * rich), STYLE_Add); bit.scale *= 1.0 + 0.1 * rich; }
+			if (bit && bankFor > 0) BankBit(bit, bankFor);
 		}
 		return nh, na, nm;
 	}
@@ -277,12 +299,88 @@ class RSQ_KRHandler : EventHandler
 		let s = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
 		return s ? s.GetString("kr.lucky", "", died, 0, a) : "";
 	}
+
+	// a bit bound for a DOWN plate: not picked up by touch, no gravity, through walls
+	static void BankBit(Actor bit, int forPn)
+	{
+		if (bit is "RSQ_KRHealthBit") RSQ_KRHealthBit(bit).bankFor = forPn;
+		else if (bit is "RSQ_KRArmorBit") RSQ_KRArmorBit(bit).bankFor = forPn;
+		else if (bit is "RSQ_KRAmmoBit") RSQ_KRAmmoBit(bit).bankFor = forPn;
+		else return;
+		bit.bSpecial = false;
+		bit.bNoGravity = true;
+		bit.bNoClip = true;
+		bit.bBright = true;
+	}
 }
 
 // What every bit shares: SoM's size, the optional lifetime, the magnet.
 mixin class RSQ_KRBit
 {
 	int bitLife;
+	int bankFor;          // RSQ SlowMo's DOWN: player + 1 whose plate this bit flies to and banks in (0: an ordinary bit)
+	int bankAge;
+
+	// THE FLIGHT INTO THE PLATE (DOWN v3): a short burst out of the body first (SoM's throw, 6 tics), then straight to the
+	// plate (RSQSM_Service GetObject "down.plate", by name), faster and faster; there it banks (RSQSM_Service "down.bank")
+	// -- health and armour by what the bit is worth to that player (Rich Bits counted); an ammo bit gives its ammo instead.
+	// No plate (DOWN over, or not the console player's) or 6 s: it gives itself to the player as an ordinary bit would.
+	void BankTick()
+	{
+		Actor pmo = null;
+		if (bankFor > 0 && bankFor <= MAXPLAYERS && playeringame[bankFor - 1]) pmo = players[bankFor - 1].mo;
+		if (!pmo) { Destroy(); return; }
+		bankAge++;
+		let sv = RSQ_KRHandler.SlowMo();
+		Actor plate = null;
+		bool downNow = false;
+		if (sv)
+		{
+			plate = Actor(sv.GetObject("down.plate", "", bankFor - 1));
+			downNow = sv.GetInt("down", "", bankFor - 1) == 1;
+		}
+		if (!downNow || bankAge > 210)
+		{
+			// DOWN ended before it arrived: an ordinary bit, given now
+			bSpecial = true;
+			bool ok; Actor tg;
+			[ok, tg] = CallTryPickup(pmo);
+			if (!ok) Destroy();
+			return;
+		}
+		if (bankAge < 6) { vel *= 0.85; return; }
+		Vector3 goal = pmo.pos + (0, 0, pmo.height * 0.5);
+		if (plate) goal = plate.pos;
+		Vector3 to = goal - pos;
+		double l = to.Length();
+		if (l < 6 || (!plate && l < pmo.radius + 8))
+		{
+			Arrive(pmo, sv);
+			return;
+		}
+		vel = to / l * min(l, 4.0 + bankAge * 0.6);
+	}
+	void Arrive(Actor pmo, Service sv)
+	{
+		int pn = bankFor - 1;
+		int lv = RSQ_KRHandler.Perk(pmo, "RichBits");
+		String kind = "";
+		double amt = 0;
+		if (self is "RSQ_KRHealthBit") { kind = "health"; amt = 25 * (1 + lv); }
+		else if (self is "RSQ_KRArmorBit") { kind = "armor"; amt = 10 * (1 + lv); }
+		if (kind != "")
+		{
+			int r = 0;
+			if (sv) r = sv.GetInt("down.bank", kind, pn, amt);
+			if (RSQ_KRHandler.SVB("rsqgb_kr_debug", false)) Console.Printf("RSQ KR t%d: a %s bit flew into player %d's DOWN plate: +%.0f banked (%d)", level.maptime, kind, pn, amt, r);
+			Destroy();
+			return;
+		}
+		bSpecial = true;
+		bool ok; Actor tg;
+		[ok, tg] = CallTryPickup(pmo);          // the ammo bit: its ammo now
+		if (!ok) Destroy();
+	}
 	// HOW A BIT GOES (owner 2026-11-06, BUGS_1.0 #37: "Nice fade-out: or flash fullbright a few tics, faster and faster,
 	// then blink out"; he chose both, a menu choice, Blink Out the default): rsqgb_kr_vanish 0 BLINK OUT, its last BLINK_T
 	// tics it flashes fullbright (a 2-tic flash, additive and full, then its own look), the gaps shrinking from 12 tics to
@@ -326,6 +424,7 @@ mixin class RSQ_KRBit
 		// nor flies, and is never touched again -- the engine only touches SPECIAL things. Found on the rig 2026-11-03 (the
 		// merge's proof; the old Gun Bonsai VR pk3 did the same): an armour bit picked up with Magnet on was "touched" once
 		// more inside Magnet's reach -> VM abort, "tried to write to address zero" in AddInventory.
+		if (bankFor > 0 && !Owner) { BankTick(); return; }
 		if (Owner || !bSpecial) return;
 		int life = RSQ_KRHandler.SVI("rsqgb_kr_life", 7);
 		if (life > 0 && ++bitLife >= life * TICRATE) { Destroy(); return; }

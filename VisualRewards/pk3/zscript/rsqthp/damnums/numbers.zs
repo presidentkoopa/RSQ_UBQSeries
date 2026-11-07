@@ -27,7 +27,8 @@ class RSQTHP_DnNum play
 	int famWord;                // a hit's word (HEADSHOT gold, OVERKILL red)
 	Array<int> ramp;            // a total: its combo colour ramp (4 steps), picked when the chain starts
 	Name trans;                 // damnums' colours (Hit Colours "damnums'") and the gains: a translation by name
-	double size;                // a hit: 1, x1.35 for a headshot (x Size by Hit)
+	double size;                // a hit: 1, x1.35 for a headshot (x Size by Hit); RSQ SlowMo's DOWN REVIVE word: its tier's size
+	int dur;                    // a banner's life in tics (0: BANNER_DUR); RSQ SlowMo's DOWN REVIVE word: its tier's life
 	double t;                   // its own clock, tics (world or your time in slow motion; stands still in a hit-stop)
 	double stT;                 // the clock when its state began
 	int born, lastHit;          // level tics: when made, a total's last hit (its chain window)
@@ -195,9 +196,9 @@ class RSQTHP_DnNum play
 			break;
 		case K_BANNER:
 		{
-			if (label == "REVIVE" || label == "REVENGE" || label == "RAGE")
+			if (label == "REVIVE" || label == "REVENGE")
 			{
-				// RSQ SlowMo's DOWN words (owner 11-06 v2): the level-up band, the word in the damage numbers' font (JFO),
+				// RSQ SlowMo's DOWN words (owner 11-06 v2; v3 11-07: REVIVE every time, sized by tier; no RAGE): the level-up band, the word in the damage numbers' font (JFO),
 				// each its own colour (events.zs DownWord)
 				Add(0, 0, 0, 0, 14, P_BG, -2, -1, T_BAND, 1.0);
 				AddText(hnd, label, RSQTHP_DnFonts.F_JFO, 0, 0.4, 7.0, P_DIG);

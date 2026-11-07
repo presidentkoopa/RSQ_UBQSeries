@@ -163,7 +163,7 @@ class RSQTHP_Bar : Actor
 		if (aimMade)
 		{
 			if (who.health < h.FullOf(who, peak)) aimMade = false;
-			else if (!h.aimedOnly || level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER) { Destroy(); return; }
+			else if ((!h.aimedOnly || level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER) && !h.DownMarked(who)) { Destroy(); return; }
 		}
 		Update();
 	}
@@ -222,7 +222,8 @@ class RSQTHP_Bar : Actor
 		if (who.player && who == players[consoleplayer].mo && players[consoleplayer].camera == who && !(who.player.cheats & CF_CHASECAM))
 			hide = true;
 		// Aimed Only: only while a hand's gun points at it, and AIM_LINGER tics after
-		if (h.aimedOnly && level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER) hide = true;
+		// (never a DOWN target's: RSQ SlowMo's DOWN v3 keeps its bar up, hit or not -- RSQSM_Service "down.mark", by name)
+		if (h.aimedOnly && level.maptime - aimTic > RSQTHP_Handler.AIM_LINGER && !h.DownMarked(who)) hide = true;
 		if (culled) hide = true;                                    // HP3 Nearest 24
 		if (h.limit && cam && camD > h.limitDist) hide = true;      // HP4 Distance Limit
 		bInvisible = hide;
@@ -323,9 +324,8 @@ class RSQTHP_Bar : Actor
 				if (!bb && boss) { boss.Destroy(); boss = null; }
 				if (boss) { boss.sprite = h.sprBoss; boss.frame = bb - 1; }
 			}
-			// RSQ SlowMo's DOWN mark (v2, 11-06): a DOWN-red skull over the marked monster's bar (RSQSM_Service "down.mark",
-			// by name); above the crown / gem when there is one (frame B)
-			int db = (h.markers && h.DownMarked(who)) ? (bb ? 2 : 1) : 0;
+			// RSQ SlowMo's DOWN mark: the v2 skull is gone (v3, owner 11-07): SlowMo draws the target's own icon over the bar
+			int db = 0;
 			if (db != dmarkBits)
 			{
 				dmarkBits = db;

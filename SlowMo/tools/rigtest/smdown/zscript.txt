@@ -1,26 +1,29 @@
 version "4.14"
-// TEST ONLY. Never ships. RSQ SlowMo's DOWN v2 (design/NEAR_DEATH.md: DOWN -> REVENGE -> REVIVE -> RAGE) on the rig, the
-// full load order, in ONE run (dn_mode 1), plus the LegenDoom run (dn_mode 2). Every line starts T_ for grep. It links the
-// RSQ / Graveyard classes it reads (test only: it is loaded with all of them). Timeline (tics from the start, MAP01):
-//   A  t20-27 left stick forward (qz_lstick, standing speed sample, from dn.sh's console line); t40 lethal hit by z0 -> DOWN, z0 marked; t45 a
-//      lethal hit in the grace; t60 z1 hit twice in one tic + z2 once (time added: 2 hits); t70-77 left stick forward (crawl sample);
-//      t100 the mark killed by the player -> REVENGE, crate; t104 Distance Grab's rule asked; crate shown 70 ahead;
-//      t130 the crate taken through CallTryPickup (the call Distance Grab's catch makes) -> REVIVE; t135 RAGE x2 test;
-//      t137 a magazine round taken -> put back
-//   B  t340 Repeat Without Limit, window 2 s; a Score life; t350 lethal -> DOWN, no hits -> the clock runs out -> the
-//      Score life -> Graveyard's gold stone; t430 the gold stone moved 90 ahead and a kind-1 stone
-//      spawned beside it (test only, for the frame); t440 Living Stones on (Uniform), t520 Wave, t600 Chaos
-//   C  (dn.sh sets vr_crouch_use_button 0 at ~t650) t700 lethal -> DOWN in the head-height crouch mode; t740 Lower View
-//      off -> rises; t760 back on; t820 level.ChangeLevel MAP02, no intermission (DOWN still running)
-//   M2 (MAP02) t30 the heights and max health after the map change; t60 lethal -> DOWN; t120 lethal after the grace, no
-//      life -> dead
+// TEST ONLY. Never ships. RSQ SlowMo's DOWN v3 (design/NEAR_DEATH.md) + RSQ Score's life crate + Graves Rise's cap, on the
+// rig, the full load order, in ONE run (dn_mode 1), in god mode (god is dropped only for the probe's own lethal hits).
+// Every line starts T_ for grep. It links the RSQ classes it reads (test only: loaded with all of them).
+// Timeline (tics from the start, MAP01):
+//   A  t40 lethal by z0 (in the fight) -> DOWN, owed 1, z0 the target; t50 z1 hit (time bought); t58 a monster hit on
+//      the downed player (held at 1 HP); t62 z1 killed (bits fly into the plate and bank); t80 z0 killed -> TOP tier:
+//      bank, invulnerable 5 s, slow-mo 3 s, Revival Fire, +1 cigarette, +1 grenade, magazines free
+//   B  t270 lethal by z2 (after the top tier's 5 s invulnerability) -> DOWN 2, owed 2: z2 + a spawned copy in view; t340
+//      the spawned one killed (cracked slot); t375 the tall step breaks; t430 z2 killed -> MIDDLE tier
+//   C  t540 z3 moved behind the player, t545 lethal by z3 (behind) -> DOWN 3, owed 3: z3 behind (turn marker,
+//      U-turn), two spawned in view; t600 z3 moved to his left, t640 in front (the icon flies on and assembles); t700 / t720 the
+//      spawned ones killed, t775 z3 killed -> BOTTOM tier
+//   D  t900 a Score life given; t905 lethal by z4 -> DOWN 4, owed 4; t960 every target moved off view (right, left, behind): marker styles A t965,
+//      B t990, D t1015, C t1040; nobody killed: the clock runs out ~t1220 -> the Score life -> spawned targets despawn in
+//      teleport fog, z4 loses its boost, the count goes back
+//   E  t1260 a Bossfight payoff (RSQ Miniboss's own BfPayoff) -> the life crate where the boss stood, moved 80 ahead for the
+//      frame; Distance Grab's rule asked; t1450 breathing red; t1612 it runs out; t1620 a second crate taken (+1 life)
+//   F  t1640 Graves Rise: 30 tombstones, Graveyard's RaiseGraves with a budget of 5 (no cap: 30 risers, Legion of Bones
+//      loaded); the Bones Bridge (gy_bones on from t5): the BD monsters killed above rise as LoB undead after LoB's delay
 class RSQSMD_Probe : EventHandler
 {
 	Array<Actor> z;
 	int t0;
 	bool started;
-	Actor crate;
-	Vector2 lastXY;
+	Actor crate, crate2;
 	static clearscope int Mode() { let c = CVar.FindCVar("dn_mode"); return c ? c.GetInt() : 0; }
 	static void SetF(String n, double v) { let c = CVar.FindCVar(n); if (c) c.SetFloat(v); else Console.Printf("T_NOCVAR %s", n); }
 	static void SetI(String n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); else Console.Printf("T_NOCVAR %s", n); }
@@ -53,27 +56,51 @@ class RSQSMD_Probe : EventHandler
 		let c = RSQSM_Clock.Get();
 		let sc = Svc("RS_ScoreService");
 		int n = consoleplayer;
-		Console.Printf("T_STATE t%d (maptime %d) %s: health %d/%d, DOWN %d (%d tics left of max %d, mark %s%s), rage %d, buddha %d, world %.2f, view %.1f height %.1f (ViewHeight %.1f FullHeight %.1f crouchfactor %.2f), crawl x%.2f, Score lives %d",
-			t, level.maptime, why, pmo.health, pmo.GetMaxHealth(true), d.downOn[n], d.Left(n), d.downMax[n], d.mark[n] ? String.Format("%s", d.mark[n].GetClassName()) : "none",
-			d.markDone[n] ? " (dead: REVENGE)" : "", d.Raging(n), pmo.bBUDDHA, c.scale, p.viewheight, pmo.Height, pmo.ViewHeight, pmo.FullHeight, p.crouchfactor,
-			d.Crawl(n), sc ? sc.GetInt("lives", "", 0, 0, pmo) : -9);
+		let ar = BasicArmor(pmo.FindInventory("BasicArmor"));
+		let w = RSQSM_DownWatch(pmo.FindInventory("RSQSM_DownWatch"));
+		String tg = "";
+		for (int i = 0; i < d.tMon.Size(); i++)
+			if (d.tPn[i] == n) tg = tg .. String.Format(" [%s icon %d col %06X %s%s]", d.tMon[i] ? String.Format("%s", d.tMon[i].GetClassName()) : "gone", d.tIcon[i], d.tCol[i],
+				(d.tDead[i] != 0) ? "dead" : "alive", (d.tSpawned[i] != 0) ? " spawned" : "");
+		Console.Printf("T_STATE t%d (maptime %d) %s: health %d/%d armour %d, DOWN %d (clock %.2f s, pool %.2f s, bar %.2f s, owed %d, downs %d, bank %.0f/%.0f), invul %d, buddha %d, world %.2f, view %.1f, crawl x%.2f, Score lives %d, targets:%s",
+			t, level.maptime, why, pmo.health, pmo.GetMaxHealth(true), ar ? ar.Amount : 0, d.downOn[n], d.clk[n] / 35.0, d.pool[n] / 35.0, d.Elapsed(n) / 35.0, d.owed[n],
+			w ? w.downs : -1, d.bankHp[n], d.bankAr[n], d.Invul(n), pmo.bBUDDHA, c.scale, p.viewheight, d.Crawl(n), sc ? sc.GetInt("lives", "", 0, 0, pmo) : -9, tg);
+	}
+	void God(bool on)
+	{
+		let p = players[consoleplayer];
+		if (on) p.cheats |= CF_GODMODE; else p.cheats &= ~CF_GODMODE;
 	}
 	void Hit(int t, Actor src, int hp, int dmg, String why)
 	{
 		let pmo = players[consoleplayer].mo;
 		if (hp > 0) pmo.A_SetHealth(hp);
+		God(false);
 		Console.Printf("T_HIT t%d %s: health %d, %d from %s", t, why, pmo.health, dmg, src ? String.Format("%s", src.GetClassName()) : "nothing");
 		pmo.DamageMobj(src, src, dmg, 'None');
 		Console.Printf("T_AFTER t%d health %d", t, pmo.health);
+		God(true);
 	}
-	void Shoot(int t, int i, int dmg, String why)
+	void Shoot(int t, Actor a, int dmg, String why)
 	{
 		let pmo = players[consoleplayer].mo;
-		Actor a = i < z.Size() ? z[i] : null;
-		if (!a) { Console.Printf("T_SHOOT t%d monster %d: none", t, i); return; }
+		if (!a) { Console.Printf("T_SHOOT t%d %s: none", t, why); return; }
 		int was = a.health;
 		a.DamageMobj(pmo, pmo, dmg, 'None');
-		Console.Printf("T_SHOOT t%d %s: monster %d %s health %d -> %d (%d asked)", t, why, i, a.GetClassName(), was, a.health, dmg);
+		Console.Printf("T_SHOOT t%d %s: %s health %d -> %d (%d asked)", t, why, a.GetClassName(), was, a.health, dmg);
+	}
+	Actor Target(int k, bool spawnedOnly)
+	{
+		let d = RSQSM_Down.Get();
+		int j = 0;
+		for (int i = 0; i < d.tMon.Size(); i++)
+		{
+			if (d.tPn[i] != consoleplayer || d.tDead[i] != 0 || !d.tMon[i]) continue;
+			if (spawnedOnly && (d.tSpawned[i] == 0)) continue;
+			if (j == k) return d.tMon[i];
+			j++;
+		}
+		return null;
 	}
 	void Inv(int t, String why)
 	{
@@ -87,29 +114,21 @@ class RSQSMD_Probe : EventHandler
 			let it = ic ? pmo.FindInventory(ic) : null;
 			s = s .. String.Format(" %s=%s", names[i], it ? String.Format("%d/%d", it.Amount, it.MaxAmount) : "-");
 		}
-		Console.Printf("T_INV t%d %s:%s", t, why, s);
-	}
-	void Rows(int t)
-	{
-		let pmo = players[consoleplayer].mo;
-		let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
-		let tr = RS_ScoreTracker(pmo.FindInventory("RS_ScoreTracker"));
-		if (!h || !tr) { Console.Printf("T_ROWS t%d no Score", t); return; }
-		String s = "";
-		for (int r = 0; r < h.rowName.Size(); r++)
-			if ((h.rowName[r] ~== "Revenge" || h.rowName[r] ~== "Revive" || r == 0) && r < tr.rowValue.Size())
-				s = s .. String.Format(" [%d %s = %d]", r, h.rowName[r], tr.rowValue[r]);
-		Console.Printf("T_ROWS t%d score %d:%s", t, tr.displayScore, s);
+		let p = players[consoleplayer];
+		Console.Printf("T_INV t%d %s:%s; ready %s offhand %s", t, why, s, p.ReadyWeapon ? String.Format("%s", p.ReadyWeapon.GetClassName()) : "-",
+			p.OffhandWeapon ? String.Format("%s", p.OffhandWeapon.GetClassName()) : "-");
 	}
 	void SetAmmo(String n, int v) { let pmo = players[consoleplayer].mo; Name nm = n; class<Inventory> c = nm; if (c) pmo.SetInventory(c, v); }
-	Actor Stones(int t)
+	// the view is the rig's head (its yaw may be put back each frame), so the MONSTER is moved round the player instead
+	void Place(int t, Actor a, double ang, double dist, String why)
 	{
-		let it = ThinkerIterator.Create("gy_Stone");
-		Actor a, last;
-		int k = 0;
-		while (a = Actor(it.Next())) { k++; last = a; Console.Printf("T_STONE t%d %s at %.0f %.0f %.0f translation %d", t, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.Translation); }
-		Console.Printf("T_STONES t%d: %d (gy_locations \"%s\")", t, k, CVar.FindCVar("gy_locations") ? CVar.FindCVar("gy_locations").GetString() : "?");
-		return last;
+		let pmo = players[consoleplayer].mo;
+		if (!a) { Console.Printf("T_PLACE t%d %s: none", t, why); return; }
+		double aa = pmo.angle + ang;
+		Vector2 xy = pmo.pos.xy + (cos(aa), sin(aa)) * dist;
+		a.SetOrigin((xy, pmo.floorz), false);
+		a.angle = a.AngleTo(pmo);
+		Console.Printf("T_PLACE t%d %s: %s moved to %.0f degrees off the view, %.0f units (fits %d)", t, why, a.GetClassName(), ang, dist, a.TestMobjLocation());
 	}
 
 	ui int frames;
@@ -118,152 +137,144 @@ class RSQSMD_Probe : EventHandler
 		frames++;
 		if (Mode() != 0) Console.Printf("T_FRAME %d maptime %d", frames, level.maptime);
 	}
-	override void WorldLoaded(WorldEvent e)
-	{
-		if (Mode() == 0) return;
-		let pmo = players[consoleplayer].mo;
-		if (pmo) Console.Printf("T_MAP %s: loaded; ViewHeight %.1f FullHeight %.1f max health %d (field %d)", level.mapname, pmo.ViewHeight, pmo.FullHeight, pmo.GetMaxHealth(false), pmo.MaxHealth);
-	}
 	override void WorldTick()
 	{
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
-		int mode = Mode();
-		if (mode == 0) return;
-		if (!started) { started = true; t0 = level.maptime; lastXY = pmo.pos.xy; Console.Printf("T_START %s maptime %d", level.mapname, t0); }
+		if (Mode() == 0) return;
+		if (!started) { started = true; t0 = level.maptime; Console.Printf("T_START %s maptime %d", level.mapname, t0); }
 		int t = level.maptime - t0 + 1;
-		// the speed samples: every tic a movement key is held, the step taken
-		if (p.cmd.forwardmove != 0)
-			Console.Printf("T_MOVE t%d forwardmove %d step %.2f (DOWN %d, crawl x%.2f, crouchfactor %.2f)", t, p.cmd.forwardmove, (pmo.pos.xy - lastXY).Length(), RSQSM_Down.Get().downOn[consoleplayer], RSQSM_Down.Get().Crawl(consoleplayer), p.crouchfactor);
-		lastXY = pmo.pos.xy;
 		Vector2 fwd = (cos(pmo.angle), sin(pmo.angle));
 		Vector2 side = (fwd.y, -fwd.x);
-		if (level.mapname ~== "MAP02") { Map2(t, pmo); return; }
 		if (t == 5)
 		{
-			SetI("rsqsm_debug", 1); SetI("rs_score_debug", 1); SetI("rsqgd_debug", 1);
-			SetI("rsqsm_down", 1); SetI("rsqsm_down_window", 6); SetF("rsqsm_down_hit", 0.5); SetI("rsqsm_down_max", 12);
-			SetI("rsqsm_down_rage", 5); SetI("rsqsm_down_scar", 1); SetI("rsqsm_down_scar_hp", 10); SetI("rsqsm_down_cool", 60);
-			SetI("rsqsm_down_repeat", 0); SetI("rsqsm_down_redmap", 1); SetI("rsqsm_down_lowview", 1);
-			SetI("rsqtr_cig", 1); SetI("rsqthp_dmg", 1); SetI("rsqsm_cdbar", 1); SetI("gy_living", 0);
-			SetF("rsqthp_dn_size", 4.0);
+			God(true);
+			SetI("rsqsm_debug", 1); SetI("rs_score_debug", 1); SetI("rsqgb_kr_debug", 1); SetI("rsqmb_debug", 1); SetI("gy_bones_debug", 1); SetI("gy_bones", 1);
+			SetI("rsqsm_down", 1); SetI("rsqsm_down_redmap", 1); SetI("rsqsm_down_lowview", 1); SetI("rsqsm_down_marker", 2);
+			SetI("rsqgb_kr_enabled", 1); SetI("rsqgb_kr_chance", 100); SetI("rsqgb_kr_magnet", 0);
+			SetI("rsqtr_cig", 1); SetI("rsqthp_dmg", 1);
 		}
-		static const double SD[] = { 150, 150, 150, 150, 230, 230 };
-		static const double SL[] = { -50, -105, 35, 105, -50, 50 };
+		static const double SD[] = { 150, 260, 200, 170, 230, 230 };
+		static const double SL[] = { -40, 60, 40, 0, -50, 50 };
 		if (t == 8)
-			for (int i = 0; i < 6; i++) Actor.Spawn("ZombieMan", (pmo.pos.xy + fwd * SD[i] + side * SL[i], pmo.floorz), ALLOW_REPLACE);
+			for (int i = 0; i < 6; i++) Actor.Spawn(i == 1 ? "DoomImp" : "ZombieMan", (pmo.pos.xy + fwd * SD[i] + side * SL[i], pmo.floorz), ALLOW_REPLACE);
 		if (t == 30)
 		{
-			Console.Printf("T_PLAYER at %.0f %.0f angle %.0f, vr_crouch_use_button %d", pmo.pos.x, pmo.pos.y, pmo.angle, CVar.FindCVar("vr_crouch_use_button").GetInt());
+			Console.Printf("T_PLAYER at %.0f %.0f angle %.0f", pmo.pos.x, pmo.pos.y, pmo.angle);
 			for (int i = 0; i < 6; i++)
 			{
 				let a = Near((pmo.pos.xy + fwd * SD[i] + side * SL[i], 0));
 				z.Push(a);
+				if (a) { a.A_ClearTarget(); a.bFRIENDLY = false; }
 				Console.Printf("T_SPAWN monster %d: %s health %d", i, a ? String.Format("%s", a.GetClassName()) : "none", a ? a.health : 0);
 			}
 		}
-		if (mode == 2) { LDRun(t, pmo); return; }
+		if (z.Size() < 6) return;
 		if (t == 34)
 		{
 			SetAmmo("RifleAmmo", 5); SetAmmo("BDPistolAmmo", 2); SetAmmo("RSQTR_CigPack", 1); SetAmmo("GrenadeAmmo", 1);
 			Inv(t, "before DOWN (magazines low, 1 cigarette, 1 grenade)");
 			Report(t, "before");
 		}
-		// ---- A
+		// ---- A: top tier
 		if (t == 40) { Hit(t, z[0], 40, 100, "A: a lethal hit by z0"); Report(t, "A: after the lethal hit"); }
-		if (t == 45) { Hit(t, z[0], 0, 60, "A: a lethal hit in the 1 s grace"); Report(t, "A: after the grace hit"); }
-		if (t == 58) Report(t, "A: crouched?");
-		if (t == 60) { Shoot(t, 1, 5, "A: hit 1 of 2 in one tic"); Shoot(t, 1, 5, "A: hit 2 of 2 in one tic"); Shoot(t, 2, 5, "A: another monster, same tic"); Report(t, "A: after 3 hits on 2 monsters"); }
-		if (t == 90) Report(t, "A: DOWN running");
-		if (t == 100) { Shoot(t, 0, 5000, "A: the mark killed"); Report(t, "A: REVENGE"); }
-		if (t == 104)
+		if (t == 50) { Shoot(t, z[1], 20, "A: z1 hit (an Imp: time bought)"); Report(t, "A: after a hit"); }
+		if (t == 58) { Hit(t, z[3], 0, 80, "A: a monster hit while DOWN"); Report(t, "A: held"); }
+		if (t == 62) { Shoot(t, z[1], 5000, "A: z1 killed (not a target: its bits bank)"); }
+		if (t == 76) Report(t, "A: bits banked?");
+		// test only: the top tier's Revival Fire blast (384 at 256 units) would kill the test monsters the later steps need
+		if (t == 78) for (int i = 2; i < 6; i++) if (z[i]) z[i].bINVULNERABLE = true;
+		if (t == 80) { Shoot(t, z[0], 5000, "A: the target killed"); }
+		if (t == 95) for (int i = 2; i < 6; i++) if (z[i]) z[i].bINVULNERABLE = false;
+		if (t == 82) { Report(t, "A: UP (top)"); Inv(t, "after UP (top)"); }
+		if (t == 100) Report(t, "A: invulnerable");
+		if (t == 110) { Hit(t, z[3], 0, 30, "A: a hit while invulnerable"); }
+		// ---- B: middle tier, two owed
+		if (t == 270) { Hit(t, z[2], 30, 100, "B: a lethal hit by z2 (DOWN 2)"); Report(t, "B: after the lethal hit"); }
+		if (t == 290) Report(t, "B: two targets");
+		if (t == 340) { Shoot(t, Target(0, true), 5000, "B: the spawned target killed"); Report(t, "B: one left"); }
+		if (t == 380) Report(t, "B: the tall step broke");
+		if (t == 430) { Shoot(t, z[2], 5000, "B: z2 killed"); }
+		if (t == 432) { Report(t, "B: UP (middle)"); Inv(t, "after UP (middle)"); }
+		// ---- C: bottom tier, three owed, the killer behind
+		if (t == 540) Place(t, z[3], 180, 170, "C: z3 behind the player");
+		if (t == 545) { Hit(t, z[3], 30, 100, "C: a lethal hit by z3, now behind (DOWN 3)"); Report(t, "C: after the lethal hit"); }
+		if (t == 560) Report(t, "C: z3 behind, two spawned");
+		if (t == 600) Place(t, z[3], 90, 170, "C: z3 to the player's left");
+		if (t == 640) Place(t, z[3], 0, 170, "C: z3 in front (in view)");
+		if (t == 700) { Shoot(t, Target(0, true), 5000, "C: a spawned target killed"); }
+		if (t == 720) { Shoot(t, Target(0, true), 5000, "C: the other spawned target killed"); Report(t, "C: z3 left"); }
+		if (t == 775) { Shoot(t, z[3], 5000, "C: z3 killed"); }
+		if (t == 777) { Report(t, "C: UP (bottom)"); Inv(t, "after UP (bottom)"); }
+		// ---- D: fail with a Score life, the marker styles
+		if (t == 900) { let sc = Svc("RS_ScoreService"); Console.Printf("T_LIFE t%d givelife -> %d", t, sc ? sc.GetInt("givelife", "", 1, 0, pmo) : -9); }
+		if (t == 905) { Hit(t, z[4], 30, 100, "D: a lethal hit by z4 (DOWN 4), one Score life held"); Report(t, "D: after the lethal hit"); }
+		if (t == 930) Report(t, "D: four targets");
+		if (t == 960) { Place(t, z[4], -100, 200, "D: z4 to the right"); Place(t, Target(0, true), 140, 220, "D: spawned 1 behind-left"); Place(t, Target(1, true), 75, 220, "D: spawned 2 left"); Place(t, Target(2, true), 180, 220, "D: spawned 3 behind"); }
+		if (t == 965) { SetI("rsqsm_down_marker", 0); Console.Printf("T_MARKER t%d A Framed Triangle", t); }
+		if (t == 990) { SetI("rsqsm_down_marker", 1); Console.Printf("T_MARKER t%d B Framed Fat Arrow", t); }
+		if (t == 1015) { SetI("rsqsm_down_marker", 3); Console.Printf("T_MARKER t%d D Triangle With Afterimages", t); }
+		if (t == 1040) { SetI("rsqsm_down_marker", 2); Console.Printf("T_MARKER t%d C Triple Chevron", t); }
+		if (t == 1100) { Place(t, Target(0, true), 0, 260, "D: spawned 1 back in view"); }
+		if (t == 1200 || t == 1230) Report(t, "D: the clock");
+		if (t == 1240) Report(t, "D: after the fail");
+		// ---- E: the Bossfight's life crate
+		if (t == 1260)
 		{
-			let it = ThinkerIterator.Create("RSQSM_DownCrate");
+			let h = RSQMB_Handler.Get();
+			let b = RSQMB_Boss(new("RSQMB_Boss"));
+			b.mb = z[5];
+			if (h && b.mb) { Console.Printf("T_BOSS t%d a Bossfight payoff for %s (Miniboss's BfPayoff)", t, b.mb.GetClassName()); h.BfPayoff(b, pmo); }
+			else Console.Printf("T_BOSS t%d no Miniboss handler", t);
+			b.Destroy();
+		}
+		if (t == 1262)
+		{
+			let it = ThinkerIterator.Create("RSQ_ScoreLifeCrate");
 			crate = Actor(it.Next());
 			if (crate)
 			{
-				Console.Printf("T_CRATE t%d at %.0f %.0f %.0f, voxel %d translation %d sprite %s", t, crate.pos.x, crate.pos.y, crate.pos.z, RSQSM_DownCrate(crate).voxel, crate.Translation, crate.sprite == Actor.GetSpriteIndex('PSTR') ? "PSTR" : "MEDI");
+				Console.Printf("T_CRATE t%d at %.0f %.0f %.0f translation %d", t, crate.pos.x, crate.pos.y, crate.pos.z, crate.Translation);
 				let pol = RSQDG_Policy.Get();
-				if (pol) { let r = pol.Decide(crate, pmo, p); Console.Printf("T_GRAB t%d Distance Grab's rule for the crate: %s (%s, weight %.1f)", t, r ? "ALLOWED" : "refused", r ? r.why : pol.WhyNot(crate, pmo, p), r ? r.weight : 0); }
-				crate.SetOrigin((pmo.pos.xy + fwd * 70, pmo.floorz), false);
+				if (pol) { let r = pol.Decide(crate, pmo, p); Console.Printf("T_GRAB t%d Distance Grab's rule for the crate: %s (%s)", t, r ? "ALLOWED" : "refused", r ? r.why : pol.WhyNot(crate, pmo, p)); }
+				crate.SetOrigin((pmo.pos.xy + fwd * 80, pmo.floorz), false);
 				crate.vel = (0, 0, 0);
-				Console.Printf("T_CRATE t%d moved 70 ahead of the player for the frames (test only)", t);
+				Console.Printf("T_CRATE t%d moved 80 ahead of the player for the frames (test only)", t);
 			}
 			else Console.Printf("T_CRATE t%d none", t);
 		}
-		if (t == 120 && crate) Console.Printf("T_CRATE t%d at %.0f %.0f %.0f (still where it was put: it does not move to the player at %.0f %.0f)", t, crate.pos.x, crate.pos.y, crate.pos.z, pmo.pos.x, pmo.pos.y);
-		if (t == 130 && crate)
+		if (t == 1400 || t == 1500 || t == 1600) Console.Printf("T_CRATE t%d %s alpha %.2f", t, crate ? "there" : "gone", crate ? crate.alpha : 0);
+		if (t == 1615) Console.Printf("T_CRATE t%d %s", t, crate ? "STILL THERE" : "gone (10 s)");
+		if (t == 1618)
 		{
+			crate2 = Actor.Spawn("RSQ_ScoreLifeCrate", (pmo.pos.xy + fwd * 60, pmo.floorz), NO_REPLACE);
+			let sc = Svc("RS_ScoreService");
+			int was = sc ? sc.GetInt("lives", "", 0, 0, pmo) : -9;
 			bool took; Actor res;
-			[took, res] = Inventory(crate).CallTryPickup(pmo);
-			Console.Printf("T_CRATE t%d CallTryPickup by the player: %d", t, took);
+			if (crate2) [took, res] = Inventory(crate2).CallTryPickup(pmo);
+			Console.Printf("T_CRATE2 t%d taken %d: Score lives %d -> %d", t, took, was, sc ? sc.GetInt("lives", "", 0, 0, pmo) : -9);
 		}
-		if (t == 133) { Report(t, "A: after REVIVE"); Inv(t, "after REVIVE"); Rows(t); }
-		if (t == 135) { Shoot(t, 3, 10, "A: RAGE, 10 asked"); }
-		if (t == 137)
+		// ---- F: Graves Rise without a cap
+		if (t == 1640)
 		{
-			let w = p.ReadyWeapon;
-			Inventory mag = w ? (w.Ammo2 ? w.Ammo2 : w.Ammo1) : null;
-			if (mag) { int was = mag.Amount; mag.Amount -= 1; Console.Printf("T_RAGEAMMO t%d %s %s %d -> %d (a round spent)", t, w.GetClassName(), mag.GetClassName(), was, mag.Amount); }
-			else Console.Printf("T_RAGEAMMO t%d no ready weapon ammo", t);
+			for (int i = 0; i < 30; i++)
+			{
+				let dth = gy_Death.of((pmo.pos.xy + fwd * (300 + (i / 6) * 40) + side * ((i % 6) * 40 - 100), pmo.floorz), "test stone").setKind(1);
+				gy_EventHandler.spawnStone(dth);
+			}
+			let gh = gy_BonesHandler(EventHandler.Find("gy_BonesHandler"));
+			Array<int> kinds; kinds.Push(0);
+			int made = gh ? gh.RaiseGraves(pmo.pos, 0, 5, kinds, pmo) : -1;
+			Console.Printf("T_GRAVES t%d 30 stones, budget 5: %d risers planned (the old cap was 24), Legion of Bones loaded %d", t, made, gy_Bones.LobLoaded() ? 1 : 0);
 		}
-		if (t == 138)
+		if (t == 1700 || t == 1790)
 		{
-			let w = p.ReadyWeapon;
-			Inventory mag = w ? (w.Ammo2 ? w.Ammo2 : w.Ammo1) : null;
-			if (mag) Console.Printf("T_RAGEAMMO t%d %s now %d", t, mag.GetClassName(), mag.Amount);
-		}
-		// the test monsters stop fighting (they had the player as their target after his hits; notarget does not clear that)
-		if (t == 139) for (int i = 1; i < z.Size(); i++) if (z[i] && z[i].health > 0) { z[i].A_ClearTarget(); z[i].Deactivate(pmo); }
-		if (t == 320) { Report(t, "A: RAGE over"); Rows(t); }
-		// ---- B
-		if (t == 340)
-		{
-			SetI("rsqsm_down_repeat", 1); SetI("rsqsm_down_window", 2); SetI("rsqsm_down_max", 2);
-			let sc = Svc("RS_ScoreService"); Console.Printf("T_LIFE t%d givelife -> %d", t, sc ? sc.GetInt("givelife", "", 1, 0, pmo) : -9);
-		}
-		if (t == 350) { Hit(t, z[4], 100, 150, "B: lethal, one Score life held"); Report(t, "B: DOWN"); }
-		if (t == 425) { Report(t, "B: after the clock ran out"); Stones(t); }
-		if (t == 430)
-		{
-			// test only, for the frame: the gold stone (Graveyard put it where the player stood) moved 90 ahead, left; a kind-1
-			// stone spawned 90 ahead, right (the VR view follows the head's yaw, so the stones come to the view)
-			let it = ThinkerIterator.Create("gy_Stone");
-			Actor g = Actor(it.Next());
-			if (g) g.SetOrigin((pmo.pos.xy + fwd * 90 + side * 22, pmo.floorz), false);
-			let d = gy_Death.of((pmo.pos.xy + fwd * 90 - side * 22, pmo.floorz), "Here lies a test stone (kind 1).").setKind(1);
-			gy_EventHandler.spawnStone(d);
-			Console.Printf("T_STONE t%d the gold stone moved 90 ahead (left), a kind-1 stone spawned 90 ahead (right), for the frame", t);
-			Stones(t);
-		}
-		if (t == 440) { SetI("gy_living", 1); SetI("gy_living_mode", 0); SetI("gy_living_debug", 1); Console.Printf("T_LIVING t%d Uniform", t); }
-		if (t == 520) { SetI("gy_living_mode", 1); Console.Printf("T_LIVING t%d Wave", t); }
-		if (t == 600) { SetI("gy_living_mode", 2); Console.Printf("T_LIVING t%d Chaos", t); }
-		if (t == 680) { SetI("gy_living_debug", 0); SetI("gy_living", 0); SetI("rsqsm_down_window", 6); SetI("rsqsm_down_max", 12); }
-		// ---- C (vr_crouch_use_button 0 from dn.sh)
-		if (t == 700) { Console.Printf("T_PLAYER t%d vr_crouch_use_button %d", t, CVar.FindCVar("vr_crouch_use_button").GetInt()); Hit(t, z[5], 100, 150, "C: lethal, head-height crouch mode"); Report(t, "C: DOWN"); }
-		if (t == 725) Report(t, "C: crouched (head-height mode)");
-		if (t == 740) { SetI("rsqsm_down_lowview", 0); Console.Printf("T_LOWVIEW t%d off", t); }
-		if (t == 765) { Report(t, "C: Lower View off: risen, crawl stays"); SetI("rsqsm_down_lowview", 1); }
-		if (t == 790) Report(t, "C: Lower View back on");
-		if (t == 820) { Console.Printf("T_CHANGE t%d to MAP02 (no intermission), DOWN still running", t); level.ChangeLevel("MAP02", 0, CHANGELEVEL_NOINTERMISSION); }
-	}
-	void Map2(int t, PlayerPawn pmo)
-	{
-		if (t == 30) Report(t, "MAP02 after the map change");
-		if (t == 60) { Hit(t, null, 100, 150, "MAP02: lethal (no source)"); Report(t, "MAP02 DOWN"); }
-		if (t == 120) { Hit(t, null, 0, 60, "MAP02: lethal after the grace, no life"); Report(t, "MAP02 after"); }
-	}
-	void LDRun(int t, PlayerPawn pmo)
-	{
-		if (t == 40) { Hit(t, z[0], 40, 100, "LD: a lethal hit by z0"); }
-		if (t == 41 || t == 50 || t == 90)
-		{
-			let m = z[0];
-			String tk = "";
-			for (let i = m.Inv; i; i = i.Inv) { String n = i.GetClassName(); if (n.Left(2) == "LD" || n.Left(9) == "champion_") tk = tk .. " " .. n; }
-			Console.Printf("T_LD t%d mark %s health %d (spawn %d) bright %d scale %.2f tokens:%s", t, m.GetClassName(), m.health, m.GetSpawnHealth(), m.bBRIGHT, m.Scale.X, tk);
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			int k = 0;
+			while (a = Actor(it.Next())) if (a.bISMONSTER && a.health > 0) { String cn = a.GetClassName(); if (cn.IndexOf("Skull") >= 0 || cn.IndexOf("Skeleton") >= 0 || cn.IndexOf("Undead") >= 0) k++; }
+			Console.Printf("T_UNDEAD t%d living Legion of Bones undead (Skull / Skeleton / Undead in the name): %d", t, k);
 		}
 	}
 }

@@ -1035,8 +1035,16 @@ class RSQSM_Clock : EventHandler
 			byClass.Insert(cn, known);
 		}
 		if (known == 1) return true;
-		// Your own missiles, when that is switched off.
-		if (a.bMISSILE && a.target && a.target.player && !cvSlowOwn) return true;
+		// Your own missiles, when that is switched off -- and ALWAYS while you are DOWN (v3, owner 11-07: "your own shots fly at
+		// normal speed", SlowMo's own-rockets-slow forced off for the downed player). Every player projectile whose shooter
+		// (target) is the downed player: rockets, plasma, and Brutal Doom's own bullet tracers (its DecorativeTracer beside the
+		// rifle's hitscan; a hitscan is instant anyway).
+		if (a.bMISSILE && a.target && a.target.player)
+		{
+			if (!cvSlowOwn) return true;
+			let dn = RSQSM_Down.Get();
+			if (dn && dn.IsDown(a.target.PlayerNumber())) return true;
+		}
 		return false;
 	}
 
@@ -1821,12 +1829,22 @@ class RSQSM_Service : Service
 			return c.Start(stringArg.Length() ? stringArg : "service", intArg, doubleArg, request ~== "start.auto") ? 1 : 0;
 		// THE COUNTDOWN (countdown.zs): tics of real time until full speed while any slow motion runs, -1 when none
 		if (request ~== "countdown") return c.cdOn ? int(ceil(c.cdLeft)) : -1;
-		// DOWN (down.zs): "down" / "down.hold" intArg player -> 1 while he is DOWN (RSQ Score leaves its lives alone then),
+		// DOWN (down.zs, v3): "down" / "down.hold" intArg player -> 1 while he is DOWN (RSQ Score leaves its lives alone then),
 		// "down.any" any player, "down.redmap" 1 while the console player is DOWN with his Red Map row on (RSQ Glow In The
-		// Dark), "down.left" real tics left (-1 not DOWN), "down.rage" 1 while he is in RAGE, "down.mark" objectArg a
-		// monster -> 1 while it carries a DOWN mark (RSQ VisualRewards' skull)
+		// Dark), "down.left" real tics left on DEATH IN (-1 not DOWN), "down.mark" / "down.target" objectArg a monster -> 1
+		// while it is a living DOWN target (RSQ VisualRewards keeps its bar up), "down.bank" (stringArg "health" / "armor",
+		// intArg player, doubleArg amount -> 1 banked: RSQ VisualRewards' bits flown into the plate)
+		if (request ~== "down.bank") { let d = RSQSM_Down.Get(); return (d && d.Bank(intArg, stringArg, doubleArg)) ? 1 : 0; }
 		if (request.Left(4) ~== "down") return DownAsk(request, intArg, objectArg);
 		return -1;
+	}
+	// "down.plate" intArg player -> the plate's anchor (its backdrop quad; the console player's plate only), null without one
+	override Object GetObject(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "down.plate")) return null;
+		let d = RSQSM_Down.Get();
+		if (!d || !d.plate || intArg != d.plate.pn || !d.IsDown(intArg)) return null;
+		return d.plate.back;
 	}
 	static clearscope int DownAsk(String request, int n, Object o = null)
 	{
@@ -1841,8 +1859,7 @@ class RSQSM_Service : Service
 			return (!cv || cv.GetBool()) ? 1 : 0;
 		}
 		if (request ~== "down.left") return d.Left(n);
-		if (request ~== "down.rage") return d.Raging(n) ? 1 : 0;
-		if (request ~== "down.mark") return d.IsMarked(Actor(o)) ? 1 : 0;
+		if (request ~== "down.mark" || request ~== "down.target") return d.IsTarget(Actor(o)) ? 1 : 0;
 		return -1;
 	}
 	// FROM A HUD (ui scope). "countdown": as above. "countdown.bottom": the screen pixel row just under the countdown bar's

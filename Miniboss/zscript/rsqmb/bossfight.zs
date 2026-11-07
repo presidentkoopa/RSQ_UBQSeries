@@ -739,7 +739,7 @@ extend class RSQMB_Handler
 	// on a stone by the landing spot during the fog could block the miniboss's landing (rig 11-06: "failed to land", and the
 	// next try woke the graves a second time), so they wake once, when it has landed. HOW MANY: thralls + tier undead in all
 	// (3 thralls at tier 2: 5), every stone in range at least one (more stones than that: one each), spread over the stones
-	// nearest the spawn first, at most 24 (Graveyard's cap). WHICH: each thrall type's own undead (Graveyard maps the type, the
+	// nearest the spawn first, every stone at least one, NO cap (owner 2026-11-07: the old 24 is gone). WHICH: each thrall type's own undead (Graveyard maps the type, the
 	// Bones Bridge's table), in turn; Skull Zombies when none maps.
 	transient Service graveSvc;
 	transient bool graveChecked;
@@ -879,16 +879,20 @@ extend class RSQMB_Handler
 			let m = MeterOf(killer, true);
 			if (m) m.beaten++;
 		}
-		// A SCORE LIFE (owner 11-05: "can we have killing a miniboss give a Score life?"): one RSQ Score extra life to the
-		// player who killed it (else the console player), through RS_ScoreService "givelife", by name; Score plays its own
-		// life cue. Bossfight Kill Gives a Life (rsqmb_bf_life, on). Without Score nothing happens.
-		Actor lifeTo = (killer && killer.player) ? killer : who;
-		if (lifeTo && lifeTo.player && CI('rsqmb_bf_life', 1))
+		// A SCORE LIFE CRATE (owner 2026-11-07, design/NEAR_DEATH.md "v3 getting up, and the life crate"; it replaces 11-05's
+		// life added outright): the miniboss drops RSQ Score's gold life crate where it died (RSQ_ScoreLifeCrate, spawned BY NAME
+		// only when Score is loaded: Score owns it, its 10 s, its beam, its fade). Touching it is +1 Score life. Bossfight Kill
+		// Drops a Life Crate (rsqmb_bf_life, on). Without Score nothing happens.
+		if (CI('rsqmb_bf_life', 1))
 		{
-			if (!svcChecked) FindServices();
-			int lives = scoreSvc ? scoreSvc.GetInt("givelife", "", 1, 0, lifeTo) : -1;
-			if (debug) Console.Printf("RSQMB bossfight: a Score life for player %d -> %s", lifeTo.PlayerNumber(),
-				lives >= 0 ? String.Format("%d extra lives held", lives) : (scoreSvc ? "Score has no score for this player" : "no RSQ Score loaded"));
+			Name cn = 'RSQ_ScoreLifeCrate';
+			class<Actor> cc = cn;
+			Actor from = b.mb ? b.mb : who;
+			Vector3 cp = (0, 0, 0);
+			if (from) cp = from.pos;
+			Actor cr = null;
+			if (cc && from) cr = Actor.Spawn(cc, cp + (0, 0, 8), NO_REPLACE);
+			if (debug) Console.Printf("RSQMB bossfight: %s", cr ? String.Format("RSQ Score's life crate dropped at %.0f %.0f %.0f", cp.x, cp.y, cp.z) : "no RSQ Score loaded: no life crate");
 		}
 		Actor at = b.mb ? b.mb : who;
 		if (at) Drop(at, who);

@@ -7,6 +7,13 @@ into combos.
 
 New on 11-06 (rig only, not headset-confirmed): Letters (Uniform / Wave / Chaos), replacing Letter Wave.
 
+New on 11-07 (rig only, not headset-confirmed: shown on the rig -- the crate dropped by a Bossfight payoff, its gold look
+and beam, the red breathing fade, gone at 10 s, +1 life on touch, Distance Grab's rule; the top tier's Revival Fire): **the life crate**. A Bossfight win (RSQ Miniboss) no longer adds a life outright: the miniboss
+drops a gold Score life crate with a beam of light into the sky where it died. It lasts 10 s; in the last 5 s it breathes
+and fades red, faster and faster (a steady fade in RSQ Accessibility's Photosensitive Mode). It stays where it fell; RSQ
+Distance Grab can pull it. Touch it: +1 life. RSQ SlowMo's DOWN v3 asks for the Revival Fire on its top tier; DOWN no
+longer sends "Revive" ("Revenge" stays, one for each DOWN target you kill). The readout is unchanged.
+
 RSQ Score is ijon's *Dakka* point system rebuilt in ZScript for stock QuestZDoom 17.3, then grown to fit what
 your hands can do in VR. It watches the whole RSQ series: the saber, the ShieldSaw, the whip, the grappling
 hook, Distance Grab, the gloves, the grenades, the holsters and slow motion. Nothing links to anything. Score

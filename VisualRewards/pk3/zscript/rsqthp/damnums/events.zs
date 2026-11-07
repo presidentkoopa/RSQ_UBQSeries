@@ -542,7 +542,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		let n = new("RSQTHP_DnNum");
 		n.kind = kind; n.who = a; n.p0 = p; n.at = p; n.atPrev = p;
 		n.born = level.maptime; n.lastHit = level.maptime;
-		n.alpha = 1; n.scaleNow = 1; n.size = 1; n.popFrom = 0.45; n.comboSide = 1;
+		n.alpha = 1; n.scaleNow = 1; n.size = 1; n.dur = 0; n.popFrom = 0.45; n.comboSide = 1;
 		nums.Push(n);
 		return n;
 	}
@@ -811,7 +811,6 @@ class RSQTHP_DamNumHandler : EventHandler
 	const TIME_COL = 6;             // crimson: DOWN's colour
 	const REVENGE_COL = 8;          // magenta
 	const REVIVE_COL = 13;          // cyan
-	const RAGE_COL = 4;             // orange
 	int madeDown;
 	void DownTime(Actor mon, String label)
 	{
@@ -840,14 +839,16 @@ class RSQTHP_DamNumHandler : EventHandler
 	// band waits for it (WorldTick)
 	Array<String> qWord;
 	Array<int> qCol;
+	Array<double> qSize;
 	bool DownWordShowing()
 	{
 		for (int i = 0; i < nums.Size(); i++) if (nums[i] && nums[i].kind == RSQTHP_DnNum.K_BANNER && nums[i].special) return true;
 		return false;
 	}
-	void DownWord(PlayerPawn pmo, String word, int col, bool queued = false)
+	// size (v3, owner 11-07): REVIVE's size, life and rise scale with the tier (top 1.5, middle 1.15, bottom 0.85)
+	void DownWord(PlayerPawn pmo, String word, int col, bool queued = false, double size = 1.0)
 	{
-		if (!queued && (DownWordShowing() || qWord.Size() > 0)) { qWord.Push(word); qCol.Push(col); return; }
+		if (!queued && (DownWordShowing() || qWord.Size() > 0)) { qWord.Push(word); qCol.Push(col); qSize.Push(size); return; }
 		if (!fonts) fonts = new("RSQTHP_DnFonts");
 		ReadSettings();
 		for (int i = 0; i < nums.Size(); i++) if (nums[i] && nums[i].kind == RSQTHP_DnNum.K_BANNER) nums[i].Free(self);
@@ -858,9 +859,11 @@ class RSQTHP_DamNumHandler : EventHandler
 		n.fam = col;
 		n.famWord = Pick(bandCol);
 		n.alpha = 0;
+		n.size = size;
+		n.dur = int(BANNER_DUR * size);
 		madeBanners++;
 		let dc = CVar.FindCVar("rsqsm_debug");
-		if (dc && dc.GetBool()) Console.Printf("RSQ VisualRewards: DOWN word %s (colour %d) on the band", word, col);
+		if (dc && dc.GetBool()) Console.Printf("RSQ VisualRewards: DOWN word %s (colour %d, size x%.2f, %d tics) on the band", word, col, size, n.dur);
 	}
 
 	void TrackGains()
@@ -932,9 +935,9 @@ class RSQTHP_DamNumHandler : EventHandler
 		EnsureDriver();
 		if (qWord.Size() > 0 && !DownWordShowing() && players[consoleplayer].mo)
 		{
-			String w = qWord[0]; int c = qCol[0];
-			qWord.Delete(0); qCol.Delete(0);
-			DownWord(players[consoleplayer].mo, w, c, true);
+			String w = qWord[0]; int c = qCol[0]; double z = qSize.Size() > 0 ? qSize[0] : 1.0;
+			qWord.Delete(0); qCol.Delete(0); if (qSize.Size() > 0) qSize.Delete(0);
+			DownWord(players[consoleplayer].mo, w, c, true, z);
 		}
 	}
 
@@ -1077,15 +1080,18 @@ class RSQTHP_DamNumHandler : EventHandler
 			break;
 
 		case RSQTHP_DnNum.K_BANNER:
-			n.alpha = clamp(min(t / 5.0, (BANNER_DUR - t) / 6.0), 0.0, 1.0);
+		{
+			int bdur = n.dur > 0 ? n.dur : BANNER_DUR;
+			n.alpha = clamp(min(t / 5.0, (bdur - t) / 6.0), 0.0, 1.0);
 			// the slow-motion pulse, through the readable part (RSQ SlowMo's door, by name: rsm_pulse <ms> <depth %>)
 			if (lvlSlow && !n.slowSent && t >= BANNER_DUR / 2 - 8)
 			{
 				n.slowSent = true;
 				EventHandler.SendNetworkEvent("rsm_pulse", 500, 30);
 			}
-			if (t >= BANNER_DUR) n.Free(self);
+			if (t >= bdur) n.Free(self);
 			break;
+		}
 
 		case RSQTHP_DnNum.K_TAG:
 			n.alpha = clamp(min(t / 4.0, (TAG_DUR - t) / 8.0), 0.0, 1.0);
@@ -1238,8 +1244,10 @@ class RSQTHP_DamNumHandler : EventHandler
 			double tt = min(1.0, n.t / 10.0);
 			double c1 = 1.70158, c3 = c1 + 1;
 			double eob = 1 + c3 * (tt - 1) ** 3 + c1 * (tt - 1) ** 2;
-			at = n.p0 + (0, 0, 5.0 * eob);
-			base = 0.6 * wordSize;     // RSQ Gun Cards' sizes: the name as its title (0.84), LV n as its big digits (1.68)
+			// RSQ SlowMo's DOWN REVIVE (v3): its tier's size, and a bigger rise with it
+			double dk = (n.special && n.size > 0) ? n.size : 1.0;
+			at = n.p0 + (0, 0, 5.0 * eob * dk);
+			base = 0.6 * wordSize * dk;     // RSQ Gun Cards' sizes: the name as its title (0.84), LV n as its big digits (1.68)
 			break;
 		}
 		}
@@ -1313,7 +1321,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		double a = clamp(n.alpha, 0.0, 1.0);
 		Vector3 toEye = n.dist > 0.01 ? (at - eye) / n.dist : (0, 0, 0);
 		// the banner's lines scroll: in very fast, slow through the middle, fast out (x = K u^3, u from 1 to -1)
-		double u = 1.0 - 2.0 * n.t / BANNER_DUR;
+		double u = 1.0 - 2.0 * n.t / (n.dur > 0 ? n.dur : BANNER_DUR);
 		double u3 = u * u * u;
 		int ng = min(n.gl.Size(), n.gCode.Size());
 		for (int i = 0; i < ng; i++)
