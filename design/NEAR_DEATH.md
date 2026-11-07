@@ -44,3 +44,37 @@ Home: RSQ SlowMo owns the mode and its options; others join by name and every mo
     Rage Length (5 s), Scar (on, 10), Cooldown (60 s), Repeat Without Limit (off), Red Map (on), Lower View When
     Down (on).
 14. Gun Bonsai VR upgrades: in the GBOVR pass. Netplay: each player's own DOWN; world slow-down per SlowMo's rule.
+
+## v3 presentation and tiers (owner, 2026-11-07 04:20-04:55; agreed from in-chat mockups, not built yet)
+
+**The plate (drawn the Wheel way: a canvas painted every frame on a quad in the world, low in view)**
+- Big line "DOWN!". Job line under it naming the target ("Revenge: <monster>").
+- Right-hand tab: small "DEATH IN:" above a seven-segment readout (SS:hh, unlit segments faintly visible,
+  blinking colon). The readout is the total time left; at zero a Score life is spent (or you die).
+- The bar is the reward gauge, not a second clock. It drains smoothly (no segments), faster than the clock,
+  in three fixed-second steps of different heights (tall at the end that drains first, then normal, then thin).
+  Each step breaks off and falls when it runs out (shake, clunk, rumble). Extra clock time for a far mark goes
+  to the clock only; the steps do not stretch. No tier labels under the bar.
+- Bar colour = the target's colour, a moving gradient with variety but mostly that colour: a Champion's colour,
+  a LegenDoom legendary's own glow colour (LD without Champions), or red for our own mark.
+- A target icon (owner's own art, to come) on our bar and on the target's health bar; the target's health bar
+  is drawn even if you never hit it.
+
+**Who is the target**
+- The monster that downed you, if it is in your fight.
+- Downed from range by a monster outside your fight: a boosted copy of the killer's type spawns in view, at
+  range: a boosted legendary Champion when Champions x LD is loaded (GBOVR or Miniboss), otherwise our own
+  boosted enemy (red).
+- Barrel set off by a monster: the monster is credited (DOWN, it is the target).
+- Barrel nobody set off, crusher, fall: no DOWN; Score handles it as a normal death.
+
+**Getting up: the word is REVIVE every time; its size, life and animation scale with the tier**
+| Tier (step when you kill) | Health / armour | Score fire burst | Slow-mo |
+|---|---|---|---|
+| Top (tall step) | 100% / 100% | yes | 3 s |
+| Middle | 66% / 66% | no | 1.5 s |
+| Bottom (thin step, or bar empty) | 33% / 33% | no | 5 s |
+No revive spends a Score life (only failing does).
+
+**Open:** the icon art (owner sending); what happens after you are up, RAGE included (to be talked through);
+bar step lengths in seconds.
