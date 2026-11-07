@@ -80,7 +80,9 @@ No revive spends a Score life (only failing does).
 bar step lengths in seconds.
 
 ## v3 repeats (owner, 2026-11-07 05:14-05:20)
-- Flat clock of 9 s, replacing the dynamic clock (no extra time for a far mark; targets spawn in view).
+- The clock starts at 9 s and never goes above 9 s. (Correction 05:20: the earlier note here said a flat clock
+  replaced the dynamic clock; that came from my wrong description of the dynamic clock. The owner chose: hits
+  still add time to the clock only, see "v3 clock and bank" below.)
 - The bar steps are 3 s / 3 s / 3 s, so the bar and the clock end together: the bottom tier is the last 3 s,
   and the bar empty means death (a Score life spent).
 - Each time you go down you owe one more kill: 1, then 2, then 3... with no cap. The first target is the
@@ -88,3 +90,14 @@ bar step lengths in seconds.
   Champion / LD / Champion / our own, by what is loaded). One icon per kill owed on the plate, each cracked or
   filled as it dies. The tier is judged at the last kill.
 - The count goes back to 1 when a Score life is spent.
+
+## v3 clock and bank (owner, 2026-11-07 05:20-05:35)
+- Damage you deal (to the mark too) adds time to the DEATH IN clock only; the reward bar keeps draining 3/3/3.
+  Damage is counted as a share of the monster's spawn health, so modded guns cannot cheese it. A whole
+  monster's worth buys: 1 s for humanoids, Imps and Pinkies; 2 s for anything above them; 10 s for the
+  Cyberdemon and the Spider Mastermind. Time bought can never exceed 9 s left, and at best the clock still
+  drains at quarter speed.
+- Bits bank: kills while DOWN still drop VisualRewards bits; they fly into the plate and bank instead of
+  healing, and the bank is paid as health and armour on revive. Health on revive comes only from the bank.
+- The bar step when you get up gives invulnerability 5 / 3 / 1 s, plus the top tier's Score fire burst and the
+  slow-mo 3 / 1.5 / 5 s. (Supersedes the 100/66/33 health split above.)
