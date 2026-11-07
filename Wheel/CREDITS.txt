@@ -43,3 +43,9 @@ owner's decision (2026-11-04). Characters JFO does not have (. , ( ) ' ! ? % and
 DoomFont glyphs, by lump name.
 
 The holster padlock (graphics/WRILOCK.png, owner 2026-11-06) is the series' own, drawn by tools/gen_lock_icon.py.
+
+The holster web's ring numbers with RSQ Score loaded (graphics/WRSC048-057.png, owner 2026-11-07) are the digits of RSQ
+Score's breakdown (combo) font, RSSCFN2, unpacked from Score/RSSCFN2.fon2 by tools/gen_web_digits.py, as RSQ SlowMo
+unpacks it. RSQ Score carries it from ijon's Dakka, whose credits give the breakdown font to Jimmy (Score/CREDITS.md:
+"They come with Dakka, a public repository, and are carried here with that credit"). Without Score the numbers are
+JFO's big digits (above).

@@ -16,6 +16,7 @@ runs round a card in the rotation; a holstered card sits back with an outline; a
 holstered card it gives a dull tick. next/prev skip Wheel-only and holstered guns. Shown on the rig: all of that. Without
 RSQ Tactical Rig: main-hand alt-fire is a dull tick, the rotation and next/prev work alone (shown in the log). The marine centred on his body between each pair of rings: shown on the rig. Not shown:
 the fly-in mid-flight (too fast for the rig's frames).
+The web's ring numbers (11-07, rig only, not headset-confirmed): big, in RSQ Score's combo font when Score is loaded (shown on the rig), else in JFO, bigger (not shown).
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. This is presidentkoopa's weapon wheel from his
 own engine, rebuilt in ZScript alone so it runs on the stock engine. No engine changes.

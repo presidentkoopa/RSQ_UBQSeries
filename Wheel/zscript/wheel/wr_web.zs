@@ -66,6 +66,13 @@ extend class wr_Rig
 	const WEB_ON_LINE = 0.35;
 	const WEB_ON_RING = 0.45;
 	const WEB_ON_TEXT = 0.6;
+	// THE RING NUMBERS (owner 2026-11-07 10:29): RSQ Score's combo font (RSSCFN2; the Wheel's own copies WRSCnnn,
+	// tools/gen_web_digits.py) when RSQ Score is loaded, else JFO's big digits (WRJBnnn), bigger. The ring (WREWRING,
+	// tools/gen_web_art.py) peaks at 0.78 of its half size and is half strength at 0.71: its clear inside is 0.71 of the
+	// ring across. A digit's picture is this many rings tall, its width by its own proportions: RSSCFN2's are cut to
+	// their ink (6 x 6 font pixels), JFO's are 64 x 64 cells with the ink in about 60 x 60 of them.
+	const WEB_NUM_SCORE = 0.52;
+	const WEB_NUM_JFO = 0.56;
 	// THE MARINE'S BODY, measured on BD's PLAYA1 (41 x 56, offset 18 / 51, the load order's marine): the shoulder line
 	// at row 10 and the hip line at row 29 of the 51 rows from the top of the picture to his feet; his chest 27 px across
 	// and his hips 18 px. The ring spots come from the active profile FITTED to these (owner 09:5x).
@@ -88,6 +95,7 @@ extend class wr_Rig
 
 	// ---- state of the web ---------------------------------------------------------------------------------
 	bool mWebOpen;
+	bool mWebNumScore;                           // the ring numbers are in RSQ Score's font (Score is loaded)
 	Class<Weapon> mWebCls;
 	int mWebPanel, mWebMarine, mWebClear, mWebClearText;
 	Array<int> mWebRing, mWebNum, mWebName, mWebLine;
@@ -625,6 +633,7 @@ extend class wr_Rig
 		mWebT0 = level.maptime;
 		mWebCloseAt = 0;
 		color pc = webProfCol();
+		mWebNumScore = ServiceIterator.Find("RS_ScoreService").Next() != null;
 		// the panel and the marine are SOLID (the opaque pass: nothing behind the panel shows through it) and BRIGHT (the
 		// panel's own teal and the marine's own colours, whatever the room's light)
 		mWebPanel = webBB(wr_BB.BB_TEXTURE, 0, 0xFFFFFF, "WREWPAN", true, 0, wr_BB.BBFL_SOLID | wr_BB.BBFL_BRIGHT);
@@ -640,13 +649,19 @@ extend class wr_Rig
 			int rid = wr_BB.AddBillboardPersistent((0, 0, 0), 1, 1, 0, 0, wr_BB.BBF_FIXED, wr_BB.BB_SKIN, 0, pc, wr_BB.BBFL_SHADED, 0, "WREWRING");
 			if (rid) wr_BB.SetBillboardLayer(rid, 4);
 			mWebRing.Push(rid);
-			mWebNum.Push(webBB(wr_BB.BB_DIGITS, k + 1, 0xFFFFFF, "", false, 6));
+			mWebNum.Push(webBB(wr_BB.BB_TEXTURE, 0, 0xFFFFFF, webNumTex(k + 1), false, 6, wr_BB.BBFL_BRIGHT));
 			mWebName.Push(0); mWebNameTxt.Push("");
 			mWebSpr.Push(0); mWebSprCls.Push("");
 		}
 		for (int k = 0; k < 3; k++) mWebBorder.Push(webGlow("WRESPARK", wr_GunLook.Rgb(WEB_COL_ROT), 7));
 		mWebClear = webBB(wr_BB.BB_PANEL, 0, 0x1C4F58, "", true, 4);
 		mWebClearText = webBB(wr_BB.BB_TEXT, 0, 0xE6F4F6, "CLEAR", false, 6);
+	}
+
+	// a ring number's picture: RSQ Score's font with Score loaded, else JFO's (mWebNumScore, set as the web opens)
+	private String webNumTex(int d)
+	{
+		return String.Format(mWebNumScore ? "WRSC%03d" : "WRJB%03d", 48 + d);
 	}
 
 	void webClose()
@@ -834,7 +849,13 @@ extend class wr_Rig
 			// (text is laid out in its box's proportions when first built: its box is never sized to nothing, it is hidden
 			// by its alpha instead)
 			double tp = max(pop, 0.05);
-			webPlace(mWebNum[n], at + wF * WEB_ON_TEXT, D * 0.50 * tp, D * 0.58 * tp, yaw, tilt);
+			{
+				// the number as big as its ring allows (WEB_NUM_*), centred in it, its picture's own proportions
+				int tw, th;
+				[tw, th] = TexMan.GetSize(TexMan.CheckForTexture(webNumTex(n + 1), TexMan.Type_Any));
+				double nh = max(rs, D * 0.05) * (mWebNumScore ? WEB_NUM_SCORE : WEB_NUM_JFO);
+				webPlace(mWebNum[n], at + wF * WEB_ON_TEXT, nh * (th > 0 ? double(tw) / th : 1.0), nh, yaw, tilt);
+			}
 			wr_BB.SetBillboardAlpha(mWebNum[n], (pop > 0.0 && !mWebSpr[n]) ? 1.0 : 0.0);
 
 			// the owner's name under the ring, never wider than two rings
