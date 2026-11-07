@@ -120,3 +120,13 @@ No revive spends a Score life (only failing does).
   at normal speed (SlowMo's "your own rockets slow too" forced off while DOWN).
 - No bits bank (VisualRewards not loaded or Kill Rewards off): you get up with the tier split 100/66/33 of
   health and armour. The bank pays up to max health and 250 armour.
+
+## v3 last answers (owner, 2026-11-07 05:45)
+- +1 cigarette and +1 grenade on revive: top tier only.
+- Score's "Revive" award is dropped ("Revenge" stays). Score's readout is untouched.
+- You get up only once every target is dead, so none are left. Failing with a Score life: the spawned targets
+  despawn (teleport fog). The map's own monster that downed you loses its mark and boost and stays (my reading:
+  removing a map monster would break the map's kill count). Failing with no life: you are dead.
+- The top tier's fire burst is Score's Revival Fire.
+- DOWN stays off by default; tonight's numbers get option rows on the RSQ SlowMo page with these values as
+  defaults (Reset All).
