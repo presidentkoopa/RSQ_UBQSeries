@@ -42,6 +42,11 @@ class RSQDG_LockOn : EventHandler
 	private int     sAge[MAX_STEER];
 	private bool    sKick[MAX_STEER];
 
+	// barrels whose steering ended on their locked monster (TickSteer "met"), the newest MAX_STEER, for RSQDG_ThrowService
+	// "lockon.met" (RSQ SlowMo's Locked Barrel cue asks by name when a barrel goes off)
+	private Actor   metBar[MAX_STEER];
+	private int     metNext;
+
 	static RSQDG_LockOn Get()
 	{
 		return RSQDG_LockOn(EventHandler.Find("RSQDG_LockOn"));
@@ -365,9 +370,19 @@ class RSQDG_LockOn : EventHandler
 						a.GetClassName(), why, met ? " on " .. t.GetClassName() : "", sAge[i], t ? t.GetClassName() : 'its_last_spot',
 						t ? (t.Pos.xy - a.Pos.xy).Length() : (sPos[i].xy - a.Pos.xy).Length(), a.Radius, t ? t.Radius : 0.0);
 				sA[i] = null; sT[i] = null;
+				// remembered BEFORE the blow: the blow may set it off at once (a death another mod asks about then)
+				if (met) { metBar[metNext] = a; metNext = (metNext + 1) % MAX_STEER; }
 				if (met && th) th.ImpactNow(a);
 			}
 		}
+	}
+
+	// did this barrel's steering end on its locked monster? (RSQDG_ThrowService "lockon.met")
+	bool Met(Actor b) const
+	{
+		if (!b) return false;
+		for (int i = 0; i < MAX_STEER; i++) if (metBar[i] == b) return true;
+		return false;
 	}
 
 	// the barrel's body against the monster's, 8 units of slack (the throw's own pass-through pad is 0..16). Doom's bodies
@@ -419,12 +434,12 @@ class RSQDG_LockOn : EventHandler
 	{
 		if (e.IsSaveGame) return;
 		mon = null; lastPos = (0, 0, 0); offTics = 0;
-		for (int i = 0; i < MAX_STEER; i++) { sA[i] = null; sT[i] = null; }
+		for (int i = 0; i < MAX_STEER; i++) { sA[i] = null; sT[i] = null; metBar[i] = null; }
 	}
 
 	override void WorldUnloaded(WorldEvent e)
 	{
 		mon = null; lastPos = (0, 0, 0); offTics = 0;
-		for (int i = 0; i < MAX_STEER; i++) { sA[i] = null; sT[i] = null; }
+		for (int i = 0; i < MAX_STEER; i++) { sA[i] = null; sT[i] = null; metBar[i] = null; }
 	}
 }

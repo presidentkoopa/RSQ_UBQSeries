@@ -822,6 +822,10 @@ class RSQDG_Throw : EventHandler
 //                                                 own forward kick, map units a tic. With a lock roughly ahead the barrel
 //                                                 is sent to the locked monster, steered, and watched as a throw (impact,
 //                                                 stagger, blast): 1. 0: no lock, or not ahead -- Melee kicks it itself.
+// FOR RSQ SLOWMO'S LOCKED BARREL CUE (design/SLOWMO_BARRELS.md cue 1; owner 11-07), asked by name:
+//   GetInt("lockon.met",  "", 0, 0, barrel)       1 once that barrel's steering (a locked throw or uppercut) ended on its
+//                                                 locked monster (lockon.zs TickSteer "met", set just before its blow
+//                                                 lands); 0 otherwise. The newest eight are remembered.
 // A throw is remembered for ten seconds after the release. The hands, like the rest
 // of the grab, are the console player's own (hold.full is 0 for anyone else).
 class RSQDG_ThrowService : Service play
@@ -849,6 +853,11 @@ class RSQDG_ThrowService : Service play
 			let lo = RSQDG_LockOn.Get();
 			if (!lo || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return 0;
 			return lo.Kick(players[intArg], Actor(objectArg), doubleArg) ? 1 : 0;
+		}
+		if (request ~== "lockon.met")
+		{
+			let lo = RSQDG_LockOn.Get();
+			return (lo && lo.Met(Actor(objectArg))) ? 1 : 0;
 		}
 		if (request ~== "headlock.caught")
 		{

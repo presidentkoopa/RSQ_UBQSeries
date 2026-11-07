@@ -1626,13 +1626,16 @@ class RSQSM_Clock : EventHandler
 			if (Trigger(src[i], cat[i], BlastMs(), Depth(), true, bcWho[i])) return;
 		}
 	}
-	// CUE 1: was this barrel thrown or uppercut at a locked monster, and did it land on it? NOT BUILT YET (2026-11-07): RSQ
-	// Distance Grab's Barrel Lock-On (bb48e459) keeps its steered barrels private (lockon.zs sA/sT) and answers nothing by
-	// name about them (RSQDG_ThrowService has lockon.on and lockon.kick only), so SlowMo cannot tell a locked barrel from any
-	// thrown one without linking to it. It waits for a by-name answer from Distance Grab; until then, never (and no row).
+	// CUE 1: was this barrel thrown or uppercut at a locked monster, and did it land on it? Asked by name of RSQ Distance
+	// Grab's Barrel Lock-On (RSQDG_ThrowService "lockon.met": 1 once that barrel's steering ended on its locked monster,
+	// set just before its blow lands). Without Distance Grab: never.
+	private transient Service dgSvc;
+	private transient bool dgLooked;
 	bool LockedBarrel(Actor b)
 	{
-		return false;
+		if (!b) return false;
+		if (!dgLooked) { dgLooked = true; dgSvc = ServiceIterator.Find("RSQDG_ThrowService").Next(); }
+		return dgSvc && dgSvc.GetInt("lockon.met", "", 0, 0, b) == 1;
 	}
 
 	// Low Health At (Reload When = Low Health)

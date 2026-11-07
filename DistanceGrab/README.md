@@ -73,6 +73,8 @@ the catch.
 - **RSQ Melee's uppercut barrel** goes to the lock when the lock is roughly ahead (within 60 degrees of the kick), and
   hits and goes off like a thrown barrel. Otherwise it flies where you punched. Barrel Lock-On on also turns Melee's
   uppercut barrel kick on.
+- **For RSQ SlowMo's Locked Barrel cue:** Distance Grab answers by name which barrel's steering ended on its locked
+  monster (the newest eight). Built, loads clean, NOT shown on the rig.
 
 **Up close**
 - **Walk-up grab:** grip with your palm on a pickup or barrel (or a corpse, if switched on) to take it straight
@@ -258,6 +260,8 @@ RSQ Distance Grab runs alone. It finds the other mods by name, so load order amo
 - **RSQ Melee:** a gloved hand, or one that just punched, does not reach. The off-hand Headlock takes a grip
   press when a monster is nearer than anything to grab, and a monster thrown from the Headlock flies with Distance
   Grab's throw. Melee's uppercut barrel goes to the Barrel Lock-On's lock (asked by name).
+- **RSQ SlowMo:** its Locked Barrel cue asks by name whether a barrel met its lock (built, loads clean, NOT shown on
+  the rig).
 - **RSQ Saber** and **RSQ ShieldSaw:** a lit saber or a ShieldSaw hand stands down.
 - **RSQ Grapple** and **RSQ Whip:** the grab binds take hold of their ropes.
 - **RSQ Score:** a kill with a swung object scores as Clubbed, and thrown objects feed its scoring.
