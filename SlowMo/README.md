@@ -41,7 +41,8 @@ Score's Revival Fire, +1 cigarette, +1 grenade. Health and armour come from the 
 VisualRewards' Kill Rewards: kills within 3x your Bits Fly to Me reach fly to you quickly and bank), up to max health
 and 250 armour; without that bank, 100 / 66 / 33 %. Both held guns' magazines are filled for free. The clock at zero: a
 Score life (the spawned targets vanish in teleport fog, the map's own monster loses its boost), or death. Every number
-is a row on the DOWN part of the page (Reset All).
+is a row on the DOWN part of the page (Reset All). Panel Size (default 1 = half the view) scales the panel and the edge
+arrows together: code only, not shown on the rig.
 
 Stock QuestZDoom 17.3 has no world clock that a mod can slow. This mod builds one in ZScript. Every monster,
 missile, gib and sound near you is time-dilated, not frozen. Each one still moves every frame, just by less,
@@ -195,6 +196,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Turn Marker | Triple Chevron | The off-view marker: Framed Triangle, Framed Fat Arrow, Triple Chevron, Triangle With Afterimages. |
 | Red Map | On | RSQ Glow In The Dark turns the map deep blood red while you are DOWN. |
 | Lower View When Down | On | Comfort: off = no view drop (the crawl stays). |
+| Panel Size | 1.00 | Scales the DOWN panel and the edge arrows together (1 = half the view, 0.5 to 1.8). Code only, not shown on the rig. |
 | Heavy Hit Size (% of max health) | 75 | What one tic's damage must add up to. |
 | Arch-Vile Blast | On | Also on any heavy hit that is an Arch-Vile's flame attack. |
 | Blasted Off Your Feet | On | Also on any heavy hit that throws you up (vertical speed up 10+ map units a tic). |

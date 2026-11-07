@@ -179,6 +179,9 @@ class RSQSM_DownHud ui
 		return cx;
 	}
 
+	// Panel Size (owner 2026-11-07 08:00): one user number that scales the panel and the edge arrows together (1 = half the view)
+	static double PanelSize() { return clamp(RSQSM_Countdown.UCv("rsqsm_down_panelsize", 1.0), 0.5, 1.8); }
+
 	// RSQSM_Down.RenderOverlay calls this every frame
 	void Draw(RSQSM_Down d, RenderEvent e)
 	{
@@ -216,7 +219,7 @@ class RSQSM_DownHud ui
 		// half the eye's width, centred under the gaze, its foot where the mockup's is; clear of the status bar; shrunk if
 		// it would rise past the gaze
 		EyeMap();
-		double k = EYE_TAN / MW;               // tangent a panel px (the panel is EYE_TAN wide: half the eye)
+		double k = EYE_TAN / MW * PanelSize(); // tangent a panel px (the panel is EYE_TAN wide: half the eye, x Panel Size)
 		sx = k * ptx; sy = k * pty; s = sx;
 		fx = gx;
 		fy = gy + (MFOOT - 250.0) * (2 * EYE_TAN / 1312.0) * pty;   // the mockup's foot: 335 of its 1312 view px under the gaze
@@ -354,8 +357,8 @@ class RSQSM_DownHud ui
 		// the mockup's view is the whole eye (2 x EYE_TAN across its 1312 px), round the gaze; scaled with the panel (owner
 		// 07:55: "the edge arrows with it"), so a mockup px is the same size in the eye as the panel's (x 1312/1034 x 1/2)
 		EyeMap();
-		double q = 2 * EYE_TAN / VIEW_MW * ptx * (VIEW_MW * 0.5 / MW);
-		double qy = 2 * EYE_TAN / VIEW_MW * pty * (VIEW_MW * 0.5 / MW);
+		double q = 2 * EYE_TAN / VIEW_MW * ptx * (VIEW_MW * 0.5 / MW) * PanelSize();
+		double qy = 2 * EYE_TAN / VIEW_MW * pty * (VIEW_MW * 0.5 / MW) * PanelSize();
 		double cx = gx, cy = gy;
 		let cv = CVar.GetCVar("rsqsm_down_marker", players[pn]);
 		int style = cv ? clamp(cv.GetInt(), 0, 3) : 2;

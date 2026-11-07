@@ -221,3 +221,4 @@ and goes to him; no more readings)
 - "Half the view" means half of what you actually see in the headset, whatever the HUD scale. The panel arrives
   by slamming up from the bottom edge with a slight overshoot, the bar filling left to right as it lands, with a
   heavy controller thump (owner 07:55).
+- Panel Size slider (DOWN options, 0.5-1.8, 1 = half the view) scales the panel and edge arrows together (owner 08:00).
