@@ -83,8 +83,12 @@ Load order, as the owner plays it:
 
 1. doom2.wad
 2. The Brutal Doom stack: brutal22test6.pk3, BD_VoxelPack, Brutal Doom 22 VR Reloaded (03_*), XMVE Monster Expansion
-3. Gun Bonsai (ToxicFrog's, not included), if you use RSQ Gun Bonsai VR
-4. The RSQ pk3s, in any order
+3. Enemy mods, after XMVE: Legion of Bones (LOB_v1.05; after BD and XMVE, so BD's monsters keep BD's bullets and
+   RSQ Graveyard's Bones Bridge works), then LegenDoom Lite, then Champions (mk-champions)
+4. Gun Bonsai (ToxicFrog's, not included), if you use RSQ Gun Bonsai VR
+5. The RSQ pk3s, in any order
+
+With BD22 VR's own LegenDoom mode, LegenDoom 3.0 loads first instead, before brutal22test6 (see BD22 VR's README).
 
 Plain Doom 2 with RSQ mods and nothing else works too. A few features need their partner loaded (each README says
 which); nothing breaks without it.
