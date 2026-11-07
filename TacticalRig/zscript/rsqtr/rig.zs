@@ -1136,6 +1136,48 @@ class RSQTR_Rig : EventHandler
 		if (r == RSQTR_Hooks.ShieldHolster(pmo)) { Refused(pmo, 1, cls, r); return; }   // the ShieldSaw's shoulder
 		int lockHome = LockedTo(n, cls);
 		if (lockHome < 0 && !MayEnter(pmo, cls, r)) { Refused(pmo, 1, cls, r); return; }
+		// BD22 VR DUAL WIELD AND ASSIGNED HOLSTERS (owner 11-04-11:06, design/PARKED.md): the off hand holds assigned gun G's
+		// off-hand copy (RSQ_Off_<gun>, filed as G by MainOf) while the main hand holds G itself. Put away, the copy takes G
+		// with it: G goes home to its own holster, and
+		//   A. at G's own holster (or an empty one: an assigned gun only enters its own): both hands go to their fists;
+		//   B. at a holster assigned to another gun X with X in it: the off hand goes to its fist and the MAIN hand takes X.
+		// Without BD22 VR there is no off-hand copy (MainOf answers the class itself) and this never fires.
+		String offCn = w.GetClassName();
+		bool dual = lockHome >= 0 && !(cls ~== offCn) && p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== cls;
+		if (dual)
+		{
+			String before = DualHands(pmo);
+			Weapon outW = null;
+			if (lockHome != r) outW = LockedHome(pmo, cls, r, lockHome);
+			else
+			{
+				for (int k = 0; k < RSQTR_Region.N; k++)
+					if (k != r && lastPut[n * RSQTR_Region.N + k] ~== cls) { lastPut[n * RSQTR_Region.N + k] = ""; lastPair[n * RSQTR_Region.N + k] = false; }
+				lastPut[n * RSQTR_Region.N + r] = cls;
+				lastPair[n * RSQTR_Region.N + r] = false;
+			}
+			EmptyOff(pmo);
+			if (outW && outW != p.ReadyWeapon)
+			{
+				outW.bOffhandWeapon = false;
+				p.PendingWeapon = outW;
+				drawTic[n * 2] = level.maptime + 1;
+				drawClass[n * 2] = outW.GetClassName();
+				pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			}
+			else
+			{
+				let empty = EmptyHand(pmo);
+				if (empty && empty != p.ReadyWeapon) p.PendingWeapon = empty;
+			}
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			if (Flag("rsqtr_messages", p, false))
+				Console.Printf("T_DUAL t%d: off-hand %s at %s: %s home to %s; hands before %s; main -> %s, off -> %s; %s",
+					level.maptime, w.GetClassName(), RSQTR_Region.NAMES[r], cls, RSQTR_Region.NAMES[lockHome], before,
+					p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon ? p.PendingWeapon.GetClassName() : 'unchanged',
+					offNext[n] != "" ? offNext[n] : "(nothing)", HolsterList(pmo));
+			return;
+		}
 		if (lockHome >= 0 && lockHome != r)
 		{
 			let outW = LockedHome(pmo, cls, r, lockHome);
@@ -1159,6 +1201,26 @@ class RSQTR_Rig : EventHandler
 		}
 		else EmptyOff(pmo);
 		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+	}
+
+	// for the T_DUAL log line: "main / off"
+	static String DualHands(PlayerPawn pmo)
+	{
+		let p = pmo.player;
+		return String.Format("%s / %s", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none');
+	}
+	// for the T_DUAL / T_HANDS log lines: every gun holster's gun and its assignment, "Name=gun(assigned) ..."
+	String HolsterList(PlayerPawn pmo)
+	{
+		String s = "";
+		int base = pmo.PlayerNumber() * RSQTR_Region.N;
+		for (int r = 0; r < RSQTR_Region.N; r++)
+		{
+			if (!IsGunRegion(r)) continue;
+			String c = Content(pmo, r);
+			s = s .. String.Format("[%s=%s a:%s] ", RSQTR_Region.NAMES[r], c == "" ? "-" : c, lockCls[base + r] == "" ? "-" : lockCls[base + r]);
+		}
+		return s;
 	}
 
 	// Holster r's gun into the OFF hand.

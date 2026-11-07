@@ -1,0 +1,138 @@
+TRD region 0 Left hip at 0.00 forward 0.18 left -0.70 up from the eyes (eyes 1.55 m over the floor), radius 0.14
+TRD region 1 Right hip at 0.00 forward -0.18 left -0.70 up from the eyes (eyes 1.55 m over the floor), radius 0.14
+TRD_F 10 g38
+RSQ offhand rule t41: Super shotgun picked up: its off-hand version comes with it
+TRD_F 20 g62
+TRD_F 30 g82
+TRD_F 40 g101
+TRD_F 50 g119
+TRD_F 60 g133
+TRD_F 70 g151
+TRD_F 80 g165
+TRD_F 90 g184
+TRD_PUT_G_RIGHT_HIP
+TRD_F 100 g200
+TRD_F 110 g211
+TRD_F 120 g223
+TRD_F 130 g235
+TRD_F 140 g246
+TRD_F 150 g257
+TRD_F 160 g268
+TRD_F 170 g278
+TRD_F 180 g290
+TRD_F 190 g303
+TRD_F 200 g314
+TRD_F 210 g325
+TRD_F 220 g336
+TRD_F 230 g352
+TRD_F 240 g369
+TRD_F 250 g383
+TRD_F 260 g402
+TRD_F 270 g421
+TRD_F 280 g441
+TRD_F 290 g457
+TRD_F 300 g472
+TRD_PUT_X_LEFT_HIP
+TRD_F 310 g488
+TRD_F 320 g500
+TRD_F 330 g512
+TRD_F 340 g525
+TRD_F 350 g540
+TRD_F 360 g551
+TRD_F 370 g562
+TRD_F 380 g576
+TRD_F 390 g586
+TRD_F 400 g598
+TRD_F 410 g608
+TRD_F 420 g619
+TRD_DRAW_G
+TRD_F 430 g632
+TRD_F 440 g644
+TRD_F 450 g659
+TRD_F 460 g674
+TRD_F 470 g691
+TRD_F 480 g714
+TRD_F 490 g734
+TRD_F 500 g756
+TRD_F 510 g778
+TRD_F 520 g800
+TRD_F 530 g821
+TRD_DUAL
+TRD t829 hover -1/-1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=SSG a:SSG] [Right hip=- a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_F 540 g843
+TRD_F 550 g870
+TRD_F 560 g899
+TRD_F 570 g924
+TRD_F 580 g956
+TRD_A
+TRD_F 590 g986
+TRD t986 hover -1/1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=SSG a:SSG] [Right hip=- a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_DUAL t1004: off-hand RSQ_Off_Rifle at Right hip: Rifle home to Right hip; hands before Rifle / RSQ_Off_Rifle; main -> Melee_Attacks, off -> RSQ_Hands; [Left hip=SSG a:SSG] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t1004 hover -1/1 | main Melee_Attacks off RSQ_Off_Rifle pend rsq_hands offq - | [Left hip=SSG a:SSG] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t1005 hover -1/1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=SSG a:SSG] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_F 600 g1006
+TRD_F 610 g1021
+TRD_F 620 g1032
+TRD t1037 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=SSG a:SSG] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_F 630 g1043
+TRD_F 640 g1054
+TRD_F 650 g1065
+TRD_F 660 g1075
+TRD_F 670 g1086
+TRD_F 680 g1097
+TRD_F 690 g1107
+TRD_F 700 g1118
+TRD_F 710 g1129
+TRD_F 720 g1140
+TRD_F 730 g1150
+TRD_F 740 g1162
+TRD_F 750 g1177
+TRD_F 760 g1192
+TRD_F 770 g1205
+TRD_F 780 g1217
+TRD_F 790 g1229
+TRD_F 800 g1242
+TRD_DRAW_G2
+TRD_F 810 g1255
+TRD_F 820 g1267
+TRD_F 830 g1282
+TRD_F 840 g1299
+TRD_F 850 g1321
+TRD_F 860 g1340
+TRD_F 870 g1360
+TRD_F 880 g1381
+TRD_F 890 g1403
+TRD_F 900 g1427
+TRD_DUAL
+TRD_F 910 g1448
+TRD t1449 hover -1/-1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=SSG a:SSG] [Right hip=- a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_F 920 g1476
+TRD_F 930 g1501
+TRD_F 940 g1528
+TRD_F 950 g1554
+TRD_F 960 g1585
+TRD_B
+TRD t1607 hover -1/0 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=SSG a:SSG] [Right hip=- a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_F 970 g1615
+T_LOCK t1625: Rifle is locked to Right hip: it goes there, not to Left hip (SSG comes out)
+T_DUAL t1625: off-hand RSQ_Off_Rifle at Left hip: Rifle home to Right hip; hands before Rifle / RSQ_Off_Rifle; main -> SSG, off -> RSQ_Hands; [Left hip=- a:SSG] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t1625 hover -1/0 | main SSG off RSQ_Off_Rifle pend rsq_hands offq - | [Left hip=- a:SSG] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t1626 hover -1/0 | main SSG off rsq_hands pend nc offq - | [Left hip=- a:SSG] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_F 980 g1637
+TRD_F 990 g1656
+TRD t1659 hover -1/-1 | main SSG off rsq_hands pend nc offq - | [Left hip=- a:SSG] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_F 1000 g1677
+TRD_F 1010 g1696
+TRD_F 1020 g1711
+TRD_F 1030 g1728
+TRD_F 1040 g1744
+TRD_F 1050 g1760
+TRD_F 1060 g1777
+TRD_F 1070 g1794
+TRD_F 1080 g1810
+TRD_F 1090 g1829
+TRD_F 1100 g1845
+TRD_F 1110 g1860
+TRD_F 1120 g1875
+TRD_F 1130 g1893
+TRD_END

@@ -25,6 +25,12 @@ Wheel's holster web (shown on the rig). With RSQ ShieldSaw's Take It From set to
 holster is the ShieldSaw's, whether the shield is there or in your hand: a gun put there by hand gets a dull tick and
 stays in your hand (shown on the rig: the main hand), the web cannot assign it, and a gun that had it loses it (not shown).
 
+Also 11-07 (rig only, not headset-confirmed): Brutal Doom 22 VR's dual wield with an assigned gun. Holding the same gun in
+both hands, put the off hand's copy in a holster and the gun goes home to its own holster, from both hands. At its own
+holster (or an empty unassigned one) both hands go empty; at another gun's holster with that gun in it, the off hand goes
+empty and your main hand takes that gun. Shown on the rig with dual Rifles on the full Brutal Doom order (its own holster
+and another gun's; an empty unassigned holster not shown).
+
 ## Standout feature: a holster rig you work with your hands
 
 Six gun holsters hang on your body: both hips, both sides of the chest and both shoulders. Put your hand in one and
