@@ -497,7 +497,8 @@ class RSQSM_Clock : EventHandler
 	// ONE SWITCH PER TRIGGER (the Triggers page). User switches (the player's own inputs) are read for the
 	// player who sent it; server ones are the world's.
 	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS, CAT_KEY, CAT_WRIST, CAT_BURST, CAT_WHEEL,
-		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_HEAVY }
+		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_HEAVY,
+		CAT_BLOCKON, CAT_BMULTI, CAT_BCHAIN, CAT_BNEAR }
 	static double CvWho(String n, int who, double d)
 	{
 		return (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? CvP(n, players[who], d) : Cv(n, d);
@@ -525,6 +526,10 @@ class RSQSM_Clock : EventHandler
 		case CAT_GRENADE:   return Cv("rsqsm_trig_grenade", 0) != 0;
 		case CAT_OU:        return Cv("rsqsm_trig_ou", 0) != 0;
 		case CAT_HEAVY:     return Cv("rsqsm_trig_heavy", 1) != 0;
+		case CAT_BLOCKON:   return Cv("rsqsm_trig_barrel_lock", 1) != 0;
+		case CAT_BMULTI:    return Cv("rsqsm_trig_barrel_multi", 1) != 0;
+		case CAT_BCHAIN:    return Cv("rsqsm_trig_barrel_chain", 1) != 0;
+		case CAT_BNEAR:     return Cv("rsqsm_trig_barrel_near", 1) != 0;
 		}
 		return true;
 	}
@@ -533,7 +538,7 @@ class RSQSM_Clock : EventHandler
 		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
 			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
 			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Shootdodge", "Grenade Blast", "Over-Under Blast",
-			"Heavy Hit Slowdown" };
+			"Heavy Hit Slowdown", "Locked Barrel", "Barrel Multi-Kill", "Chain Reaction", "Barrel Near You" };
 		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
 	}
 	double Cooldown() { return clamp(Cv("rsqsm_auto_cooldown", 25), 0.0, 120.0); }
@@ -585,10 +590,10 @@ class RSQSM_Clock : EventHandler
 	{
 		static const String keys[] = { "grenade", "overunder", "reload", "closecall", "miniboss", "score", "gunbonsai", "othermod",
 			"smoke", "melee.shove", "saber.parry", "shieldsaw.block", "parry.or.block", "wristcross.burst", "bossfight", "heavyhit",
-			"key", "wristcross", "wheel", "a11y.button", "shootdodge" };
+			"key", "wristcross", "wheel", "a11y.button", "shootdodge", "barrel.lockon", "barrel.multikill", "barrel.chain", "barrel.near" };
 		static const String words[] = { "GRENADE BLAST", "OVER-UNDER BLAST", "RELOAD", "CLOSE CALL", "MINIBOSS", "SCORE", "GUN BONSAI", "OTHER MOD",
 			"CIGARETTE", "SHOVE", "PARRY", "BLOCK", "PARRY", "BURST", "BOSSFIGHT", "HEAVY HIT",
-			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "SHOOTDODGE" };
+			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "SHOOTDODGE", "LOCKED BARREL", "BARREL MULTI-KILL", "CHAIN REACTION", "BARREL BLAST" };
 		for (int i = 0; i < keys.Size(); i++) if (src ~== keys[i]) return words[i];
 		String w = src;
 		w.Replace(".", " ");
@@ -989,6 +994,7 @@ class RSQSM_Clock : EventHandler
 		Adrenaline();
 		Reloads();
 		Blasts();
+		BarrelCues();
 		SlowMe();
 		CountdownTick();
 		HeavySnap();             // his vertical speed and armour now, for the next tic's hits
@@ -1382,6 +1388,7 @@ class RSQSM_Clock : EventHandler
 	private transient Actor lastKilled;
 	override void WorldThingDied(WorldEvent e)
 	{
+		if (e.Thing && !StoodDown()) BarrelDeath(e);
 		if (!e.Thing || !e.Thing.bISMONSTER || e.Thing == lastKilled) return;
 		Actor src = e.Inflictor;
 		if (src && !src.player) src = src.target;
@@ -1504,6 +1511,130 @@ class RSQSM_Clock : EventHandler
 		Trigger(src, k == BL_GRENADE ? CAT_GRENADE : CAT_OU, BlastMs(), Depth(), true, who);
 	}
 	int BlastMs() { return int(clamp(Cv("rsqsm_blast_ms", 3000), 100, 5000)); }
+	// ---- BARREL CUES (owner 2026-11-07 11:25-11:27, design/SLOWMO_BARRELS.md, approved): four automatic triggers, each its
+	// own row, all ON by default, each with its own cause line; the cooldown, the World Speed slider's speed and the hold
+	// from Blast Time (Trigger), like the grenade's blast.
+	//   1 LOCKED BARREL      a locked barrel throw or uppercut barrel lands on its locked monster and goes off (RSQ
+	//                        Distance Grab's Barrel Lock-On, asked by name: LockedBarrel below)
+	//   2 BARREL MULTI-KILL  one barrel's blast kills 2 or more monsters (the kills of one blast land in one tic)
+	//   3 CHAIN REACTION     a barrel's blast sets off another barrel
+	//   4 BARREL BLAST       any barrel goes off within 2 m of a player (BARREL_NEAR_M; the series' 34 map units a metre,
+	//                        heights x1.2: Metres), from the barrel's middle to the nearest point of his body
+	// A BARREL is Doom's ExplosiveBarrel or anything that replaces it (Brutal Doom's ExplosiveBarrel1 replaces it with no
+	// parent, so the replacement chain is walked, as RSQ Melee's IsBarrel and Distance Grab's StandsFor do). A barrel GOES
+	// OFF when it dies (its death is its explosion: Doom's and Brutal Doom's barrels both explode from Death). ITS BLAST is
+	// what killed with it: the barrel itself (Doom's A_Explode) or a thing the dead barrel spawned (Brutal Doom's
+	// BarrelExplosionDamage, its target the barrel: A_SpawnItemEx). The deaths of a tic are gathered and the cue is picked
+	// the next tic, so one blast that is several cues at once shows the first of 1, 2, 3, 4 (the others are in the log).
+	const BARREL_NEAR_M = 2.0;
+	enum EBarrelCue { BC_LOCK = 1, BC_MULTI = 2, BC_CHAIN = 4, BC_NEAR = 8 }
+	private transient int bcTic;              // the tic the deaths below belong to
+	private transient int bcPend;             // the cues seen that tic (EBarrelCue bits)
+	private transient int bcWho[4];           // the player each cue is for (-1 none known)
+	private transient Array<Actor> bcBarrel;  // barrels whose blast killed a monster that tic ...
+	private transient Array<int> bcKills;     // ... and how many
+	private transient Array<Actor> bcVictim;  // the monsters counted (each once)
+	static bool BarrelClass(Actor a)
+	{
+		if (!a || a.player || a.bISMONSTER) return false;
+		Class<Actor> c = a.GetClass();
+		for (int d = 0; c && d <= 4; d++)
+		{
+			for (class<Object> p = c; p; p = p.GetParentClass()) if (p.GetClassName() == 'ExplosiveBarrel') return true;
+			Class<Actor> r = Actor.GetReplacee(c);
+			if (!r || r == c) break;
+			c = r;
+		}
+		return false;
+	}
+	// the gone-off barrel whose blast this inflictor is, or null
+	static Actor BlastBarrel(Actor inf)
+	{
+		if (!inf) return null;
+		if (BarrelClass(inf)) return inf.health <= 0 ? inf : null;
+		if (inf.target && BarrelClass(inf.target) && inf.target.health <= 0) return inf.target;
+		return null;
+	}
+	// the player who set it off, if one did (a barrel's target is what killed it)
+	static int BarrelOwner(Actor b)
+	{
+		if (!b) return -1;
+		Actor t = b.target;
+		for (int i = 0; i < 4 && t && !t.player; i++) t = BarrelClass(t) ? t.target : null;   // up a chain
+		return (t && t.player) ? t.PlayerNumber() : -1;
+	}
+	// the nearest living player within BARREL_NEAR_M of this barrel's middle, or -1
+	static int BarrelNear(Actor b)
+	{
+		Vector3 m = b.Pos + (0, 0, b.Height * 0.5);
+		int best = -1;
+		double bestM = BARREL_NEAR_M;
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo || players[n].mo.health <= 0) continue;
+			let pmo = players[n].mo;
+			double z = clamp(m.z, pmo.Pos.z, pmo.Pos.z + pmo.Height);
+			double d = Metres((m.x - pmo.Pos.x, m.y - pmo.Pos.y, m.z - z));
+			if (d <= bestM) { bestM = d; best = n; }
+		}
+		return best;
+	}
+	private void BarrelPend(int cue, int who, String what)
+	{
+		int i = cue == BC_LOCK ? 0 : cue == BC_MULTI ? 1 : cue == BC_CHAIN ? 2 : 3;
+		if (!(bcPend & cue)) bcWho[i] = who;
+		bcPend |= cue;
+		Log(i == 0 ? "barrel.lockon" : i == 1 ? "barrel.multikill" : i == 2 ? "barrel.chain" : "barrel.near", "seen: " .. what);
+	}
+	private void BarrelDeath(WorldEvent e)
+	{
+		if (!CatOn(CAT_BLOCKON) && !CatOn(CAT_BMULTI) && !CatOn(CAT_BCHAIN) && !CatOn(CAT_BNEAR)) return;
+		if (bcTic != level.maptime)
+		{
+			bcTic = level.maptime;
+			bcBarrel.Clear(); bcKills.Clear(); bcVictim.Clear();
+		}
+		Actor t = e.Thing;
+		Actor b = BlastBarrel(e.Inflictor);
+		if (BarrelClass(t))
+		{
+			int who = BarrelOwner(t);
+			if (LockedBarrel(t)) BarrelPend(BC_LOCK, who, String.Format("%s landed on its locked monster and went off", t.GetClassName()));
+			if (b && b != t) BarrelPend(BC_CHAIN, who, String.Format("%s set off by another barrel's blast (%s)", t.GetClassName(), e.Inflictor.GetClassName()));
+			int n = BarrelNear(t);
+			if (n >= 0) BarrelPend(BC_NEAR, n, String.Format("%s went off within %.1f m of player %d", t.GetClassName(), BARREL_NEAR_M, n));
+			return;
+		}
+		if (!b || !t.bISMONSTER || t.player || bcVictim.Find(t) < bcVictim.Size()) return;
+		bcVictim.Push(t);
+		int k = bcBarrel.Find(b);
+		if (k >= bcBarrel.Size()) { bcBarrel.Push(b); bcKills.Push(0); }
+		bcKills[k]++;
+		if (bcKills[k] == 2) BarrelPend(BC_MULTI, BarrelOwner(b), String.Format("%s's blast killed 2 monsters (%s)", b.GetClassName(), t.GetClassName()));
+	}
+	private void BarrelCues()
+	{
+		if (!bcPend || bcTic >= level.maptime) return;
+		static const int cue[] = { BC_LOCK, BC_MULTI, BC_CHAIN, BC_NEAR };
+		static const int cat[] = { CAT_BLOCKON, CAT_BMULTI, CAT_BCHAIN, CAT_BNEAR };
+		static const String src[] = { "barrel.lockon", "barrel.multikill", "barrel.chain", "barrel.near" };
+		int pend = bcPend;
+		bcPend = 0;
+		for (int i = 0; i < 4; i++)
+		{
+			if (!(pend & cue[i])) continue;
+			if (Trigger(src[i], cat[i], BlastMs(), Depth(), true, bcWho[i])) return;
+		}
+	}
+	// CUE 1: was this barrel thrown or uppercut at a locked monster, and did it land on it? NOT BUILT YET (2026-11-07): RSQ
+	// Distance Grab's Barrel Lock-On (bb48e459) keeps its steered barrels private (lockon.zs sA/sT) and answers nothing by
+	// name about them (RSQDG_ThrowService has lockon.on and lockon.kick only), so SlowMo cannot tell a locked barrel from any
+	// thrown one without linking to it. It waits for a by-name answer from Distance Grab; until then, never (and no row).
+	bool LockedBarrel(Actor b)
+	{
+		return false;
+	}
+
 	// Low Health At (Reload When = Low Health)
 	static int LowAt() { return int(clamp(Cv("rsqsm_lowhp_at", 25), 1, 100)); }
 

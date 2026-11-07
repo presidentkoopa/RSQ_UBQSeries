@@ -1,0 +1,80 @@
+version "4.14"
+// TEST ONLY. Never ships. SlowMo's barrel cues (design/SLOWMO_BARRELS.md) on the rig: every line starts T_ for grep.
+// Spawns barrels and monsters ahead of the player and sets the barrels off as the player's shot would (DamageMobj, the
+// player the source), one set-up per cue, spaced past the slow motion and its cooldown (Auto Cooldown 0 for the run):
+//   t 40   NEAR    one barrel 40 map units ahead (about 1.2 m): BARREL BLAST
+//   t 300  MULTI   one barrel 230 ahead with two zombies against it: BARREL MULTI-KILL
+//   t 560  CHAIN   two barrels 300 ahead, 40 apart, nothing else near: CHAIN REACTION
+class RSQSMB_Probe : EventHandler
+{
+	int t0;
+	bool started;
+	Array<Actor> mine;
+	static void SetI(String n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); }
+	Actor Put(Class<Actor> c, Vector2 at, String what)
+	{
+		let pmo = players[consoleplayer].mo;
+		let a = Actor.Spawn(c, (at, pmo.floorz), ALLOW_REPLACE);
+		if (a) { a.vel = (0, 0, 0); if (a.bISMONSTER) a.bDORMANT = false; }
+		Console.Printf("T_SPAWN t%d %s: %s at %.0f %.0f (%.0f from him)", level.maptime, what, a ? String.Format("%s", a.GetClassName()) : "none",
+			at.x, at.y, (at - pmo.pos.xy).Length());
+		return a;
+	}
+	void Boom(Actor b, String what)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!b) { Console.Printf("T_BOOM t%d %s: no barrel", level.maptime, what); return; }
+		Console.Printf("T_BOOM t%d %s: %s health %d, shot by the player", level.maptime, what, b.GetClassName(), b.health);
+		b.DamageMobj(pmo, pmo, 100, 'Bullet');
+	}
+	void Clk()
+	{
+		let c = RSQSM_Clock.Get();
+		if (c) Console.Printf("T_CLK t%d scale %.2f target %.2f pulseUntil %d cdOn %d cdAuto %d cause \"%s\" src %s", level.maptime, c.scale, c.target,
+			c.pulseUntil, c.cdOn, c.cdAuto, c.cdCause, c.pulseSrc);
+	}
+	ui int frames;
+	override void RenderOverlay(RenderEvent e)
+	{
+		frames++;
+		// the tic stamp on every frame (the dumps' own numbers are not the overlay's frame count)
+		Screen.DrawText(bigfont, Font.CR_YELLOW, 40, Screen.GetHeight() / 2 + 120, String.Format("T%d", level.maptime), DTA_ScaleX, 2.0, DTA_ScaleY, 2.0);
+		if (frames % 3 == 0)
+		{
+			double cx, y, h;
+			[cx, y, h] = RSQSM_Countdown.Slot();
+			let c = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
+			Console.Printf("T_FRAME %d maptime %d screen %dx%d slot %.0f %.0f %.1f cdOn %d auto %d", frames, level.maptime, Screen.GetWidth(), Screen.GetHeight(), cx, y, h, c && c.cdOn, c && c.cdAuto);
+		}
+	}
+	Actor zA, zB, bM, bC1, bC2, bN;
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing && (e.Thing.bISMONSTER || RSQSM_Clock.BarrelClass(e.Thing)))
+			Console.Printf("T_DIED t%d %s by %s (its target %s)", level.maptime, e.Thing.GetClassName(), e.Inflictor ? String.Format("%s", e.Inflictor.GetClassName()) : "-",
+				(e.Inflictor && e.Inflictor.target) ? String.Format("%s", e.Inflictor.target.GetClassName()) : "-");
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p || !p.mo) return;
+		let pmo = p.mo;
+		if (!started) { started = true; t0 = level.maptime; Console.Printf("T_START maptime %d", t0); }
+		int t = level.maptime - t0 + 1;
+		Vector2 fwd = (cos(pmo.angle), sin(pmo.angle));
+		Vector2 side = (fwd.y, -fwd.x);
+		Vector2 o = pmo.pos.xy;
+		if (t == 5)
+		{
+			SetI("rsqsm_debug", 1); SetI("rsqsm_auto_cooldown", 0); SetI("rsqsm_cdbar", 1); SetI("rsqsm_blast_ms", 3000);
+			SetI("rsqsm_trig_barrel_multi", 1); SetI("rsqsm_trig_barrel_chain", 1); SetI("rsqsm_trig_barrel_near", 1);
+		}
+		if (t == 30) bN = Put("ExplosiveBarrel", o + fwd * 40, "near barrel");
+		if (t == 40) Boom(bN, "NEAR");
+		if (t == 290) { bM = Put("ExplosiveBarrel", o + fwd * 230, "multi barrel"); zA = Put("ZombieMan", o + fwd * 230 + side * 40, "zombie A"); zB = Put("ZombieMan", o + fwd * 230 - side * 40, "zombie B"); }
+		if (t == 300) Boom(bM, "MULTI");
+		if (t == 550) { bC1 = Put("ExplosiveBarrel", o + fwd * 300 + side * 20, "chain barrel 1"); bC2 = Put("ExplosiveBarrel", o + fwd * 300 - side * 20, "chain barrel 2"); }
+		if (t == 560) Boom(bC1, "CHAIN");
+		if (t % 5 == 0) Clk();
+	}
+}

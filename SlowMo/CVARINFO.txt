@@ -92,6 +92,12 @@ server bool  rsqsm_trig_grenade  = false; // a grenade's blast (Brutal Doom's ha
 server bool  rsqsm_trig_ou       = false; // the blast of BD22 VR's over-under 40 mm (Rifle, Machinegun secondary fire)
 server int   rsqsm_lowhp_at      = 25;    // Low Health At: the health line for Reload When = Low Health
 server int   rsqsm_blast_ms      = 3000;  // Blast Time (ms): a blast's slow motion (owner 11-06: 3 s, was 1000 ms)
+
+// ---- BARREL CUES (owner 2026-11-07, design/SLOWMO_BARRELS.md; clock.zs BarrelCues): automatic triggers, ON -----------
+// (cue 1, Locked Barrel, has no row yet: RSQ Distance Grab's Barrel Lock-On does not yet say by name which barrel met its lock)
+server bool  rsqsm_trig_barrel_multi = true; // Barrel Multi-Kill: one barrel's blast kills 2 or more monsters
+server bool  rsqsm_trig_barrel_chain = true; // Chain Reaction: a barrel's blast sets off another barrel
+server bool  rsqsm_trig_barrel_near  = true; // Barrel Near You: any barrel goes off within 2 m of you
 // (owner 11-06: the Low Health trigger is removed: rsqsm_trig_lowhp and rsqsm_lowhp_ms are gone)
 
 // ---- HEAVY HIT SLOWDOWN (owner 2026-11-06, approved spec; clock.zs HeavyHits): an automatic trigger, ON -----------
