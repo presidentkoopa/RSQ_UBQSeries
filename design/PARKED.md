@@ -59,3 +59,23 @@
   reaches it (owner 09:5x). Ring spots come from the active profile FITTED to the marine's body (the profile's
   highest holsters land on his shoulders, the lowest on his hips, scaled between), so the default profiles look
   like the owner's picture: shoulders beside the head, chest, hips (owner 09:5x).
+- ShieldSaw on the shoulder (owner 10:31): with RSQ ShieldSaw loaded and its "Take It From" set to Over the (Off)
+  Shoulder, the off-shoulder gun holster is the ShieldSaw's: ring 1 for a right-handed player (ring 2 if
+  left-handed; the off shoulder follows handedness), shown with the ShieldSaw's own art in the ring. No gun can be
+  assigned there, and Clear cannot free it; only changing ShieldSaw's own option moves it.
+- Later (owner 10:31): the web could have used RSQ Tactical Rig's own mirror (the real body, the real holster spots
+  and the guns' own models) instead of the marine sprite. Not now.
+- Build now (owner 10:32): a Wheel option "Web View: Marine / Mirror". Mirror shows RSQ Tactical Rig's own mirror
+  (as in Move Holsters by Hand: your front, the real holster spots, the guns' own models) in the web, with the rings
+  on the real holster spots; Marine is today's view. Default Marine (new options default to the existing behaviour).
+
+## Barrel lock-on (owner 2026-11-07 10:41-10:50; approved to build)
+- Lock a monster by turning a free palm at it (works with a gun in that hand: turn the wrist sideways). Distance
+  Grab's cone/beam, which normally finds items, finds a monster for this. Lock look: Distance Grab's green glow.
+- Sticky: locking needs the 12-degree cone; keeping it needs about twice that. Putting the palm on another monster
+  takes the lock at once. With the palm on nothing, the lock holds 3 s, then a 0.5 s grace window in which a throw or
+  uppercut still goes to that monster (or where it last was).
+- With a lock, a thrown barrel (Distance Grab) and an uppercut barrel (RSQ Melee, asking Distance Grab by name)
+  always land on the locked monster: the arc is solved to reach it; the swing sets how hard it hits (harder = flatter,
+  faster, more impact). Without a lock: the throw's existing aim assist; the uppercut as now.
+- Option row "Barrel Lock-On", ON by default (owner's call).

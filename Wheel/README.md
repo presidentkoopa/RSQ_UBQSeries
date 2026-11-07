@@ -17,6 +17,14 @@ holstered card it gives a dull tick. next/prev skip Wheel-only and holstered gun
 RSQ Tactical Rig: main-hand alt-fire is a dull tick, the rotation and next/prev work alone (shown in the log). The marine centred on his body between each pair of rings: shown on the rig. Not shown:
 the fly-in mid-flight (too fast for the rig's frames).
 The web's ring numbers (11-07, rig only, not headset-confirmed): big, in RSQ Score's combo font when Score is loaded (shown on the rig), else in JFO, bigger (not shown).
+Web View (11-07, rig only, not headset-confirmed): **Marine** (default, as above) or **Mirror**: the web shows RSQ
+Tactical Rig's own mirror of you (the one Move Holsters by Hand shows), small, with the six rings on the real holster
+spots as the mirror shows them (your left on your left). Shown on the rig with the Rig's torso on: the mirror on the
+panel with all six rings on it, a ring picked by pointing, the gun flying in and its sprite in the ring. With RSQ
+ShieldSaw's Take It From set to Over the Shoulder, the off-shoulder ring (1 right-handed) is the ShieldSaw's: it shows
+the ShieldSaw's card art and its name, and a gun picked onto it gets only a dull tick (shown on the rig, Mirror view).
+Not shown: Marine view with the ShieldSaw's ring, ring 2 for a left-handed player, the Rig off (the web falls back to
+Marine).
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. This is presidentkoopa's weapon wheel from his
 own engine, rebuilt in ZScript alone so it runs on the stock engine. No engine changes.
@@ -158,6 +166,7 @@ Options → Radiant Silvergun Options → RSQ Wheel (one page; Test and Debug an
 | Font | JFO | The ring's text: JFO (words spaced by their letters' own widths, JFO's big digits), or the older sets (Ermac's digits, DoomFont, the status bar's numerals). |
 | Ring Plates | Its own (Ermac style) | Or the status bar's stone. |
 | Card Look | Colour by Gun | Or Classic. |
+| Web View | Marine | Or Mirror: RSQ Tactical Rig's mirror of you on the holster web. |
 | Gun Models on Cards | On | The gun's pickup voxel on its card. |
 | Ammo Counts | On | Counts and gauges on the cards. |
 | Ammo Readout | LED segments | Or LCD, punched out, or Lozenge badge. |

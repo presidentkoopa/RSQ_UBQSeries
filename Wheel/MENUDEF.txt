@@ -98,6 +98,12 @@ OptionValue wr_Readouts
 	2, "Lozenge badge"
 }
 
+OptionValue wr_WebView
+{
+	0, "Marine"
+	1, "Mirror"
+}
+
 OptionValue wr_CardLook
 {
 	1, "Colour by Gun"
@@ -153,6 +159,8 @@ OptionMenu wr_Options
 	// a light round the ring. Classic: the ring as it was. Colour Blind Mode (RSQ Accessibility): cards neutral,
 	// only the hovered one coloured.
 	Option "Card Look",                 "wr_look2",        "wr_CardLook"
+	// The holster web (main-hand alt-fire on a card): the marine, or RSQ Tactical Rig's mirror of you.
+	Option "Web View",                  "wr_web_view",     "wr_WebView"
 	// The gun's pickup voxel (BD_VoxelPack) turning on its card; a gun without one keeps its icon.
 	Option "Gun Models on Cards",       "wr_models",       "OnOff"
 	Option "Ammo Counts",               "wr_ammo",         "OnOff"

@@ -191,7 +191,9 @@ gone (the owner, 11-04: no presets); each number they set is a row.
   Monsters adjusts the hit tiers.
 - **RSQ Tactical Rig**: with **Turn With the Tactical Rig** on (default), the shield hangs on the rig's body, so shield
   and holsters always turn together, and the Recenter Torso key recenters the rig. A hand inside one of the rig's
-  holsters is the rig's press, never the shield's.
+  holsters is the rig's press, never the shield's. With **Take It From** set to Over the Shoulder, the rig's off-shoulder
+  gun holster is the ShieldSaw's: no gun goes in by hand (a dull tick) or from RSQ Wheel's holster web, whose ring there
+  shows the ShieldSaw (11-07, rig only, not headset-confirmed).
 - **RSQ Saber**: Saber Over Shield.
 - **RSQ SlowMo**: Perfect Block Slow-Mo.
 - **RSQ Score**: disc kills, bashes, grinds, turned shots and kills after a block or perfect block earn their own bonuses.

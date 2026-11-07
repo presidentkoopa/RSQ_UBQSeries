@@ -5,7 +5,8 @@ version "4.10"
 //   wt_tgt_r / wt_tgt_l: what each hand points at: "" (the console's own qz_ pose), "away", a role letter (its card;
 //     its slot's card first while its fan is shut), "ring:k" (the web's holster ring k, 0..5), "clear"
 //   aims by closing the loop on the Wheel's own aim (wr_Rig.aimPos / aimDir) through the rig's qzt_rhand / qzt_lhand
-//   logs: WT_ roles, state every 10 tics, every rumble (amplitude), frame -> gametic every 10 frames
+//   logs: WT_ roles, state every 10 tics (with the Mirror view, the main hand's Rig place and the Rig's claims on the
+//   shoulders), every rumble (amplitude; the Rig's too), frame -> gametic every 10 frames
 class wrw_Probe : EventHandler
 {
 	String roles[6];
@@ -211,6 +212,15 @@ class wrw_Probe : EventHandler
 		let ti = ThinkerIterator.Create("wr_Buzz");
 		wr_Buzz q;
 		while (q = wr_Buzz(ti.Next())) if (q.special1 == 0) { q.special1 = 1; Console.Printf("WT_BUZZ t%d %s hand amp %.2f tics %d", level.maptime, q.left ? "left" : "right", q.amp, q.total); }
+		// every rumble RSQ Tactical Rig sent this tic (its RSQTR_Buzzer, by name: the probe also loads without the Rig)
+		String rbn = "RSQTR_Buzzer";
+		Class<Actor> rbc = rbn;
+		if (rbc)
+		{
+			let ri = ThinkerIterator.Create(rbc);
+			Actor rb;
+			while (rb = Actor(ri.Next())) if (rb.special1 == 0) { rb.special1 = 1; Console.Printf("WT_RIGBUZZ t%d (Tactical Rig rumble)", level.maptime); }
+		}
 		if (level.maptime % 10 || !rig || roles[0] == "") return;
 		let sv = ServiceIterator.Find("RSQTR_RigService").Next();
 		String st = "";
@@ -223,8 +233,9 @@ class wrw_Probe : EventHandler
 			st = st .. String.Format(" %s:%s%s", L[k], s == 2 ? "HOLSTER" : (s == 1 ? "ROT" : (s == 0 ? "PLAIN" : "?")), hin >= 0 ? String.Format("@in%d", hin) : "");
 		}
 		let rw = pmo.player.ReadyWeapon;
-		Console.Printf("WT t%d open=%d web=%d(%s) hover=%s ready=%s%s", level.maptime, rig.mOpen, rig.mWebOpen,
-			rig.mWebCls ? rig.mWebCls.GetClassName() : 'none', HoverName(rig), rw ? rw.GetClassName() : 'none', st);
+		Console.Printf("WT t%d open=%d web=%d(%s) hover=%s ready=%s%s mirror=%d rhand-region=%d claim4=%s claim5=%s", level.maptime, rig.mOpen, rig.mWebOpen,
+			rig.mWebCls ? rig.mWebCls.GetClassName() : 'none', HoverName(rig), rw ? rw.GetClassName() : 'none', st, rig.mWebMirrorLive,
+			sv ? sv.GetInt("rig.region", "", 0, 0, pmo) : -9, sv ? sv.GetString("rig.claim", "", 4, 0, pmo) : "?", sv ? sv.GetString("rig.claim", "", 5, 0, pmo) : "?");
 	}
 
 	ui int frames;

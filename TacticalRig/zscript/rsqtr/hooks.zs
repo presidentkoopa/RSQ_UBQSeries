@@ -37,6 +37,23 @@ class RSQTR_Hooks play
 		return false;
 	}
 
+	// THE SHIELDSAW'S HOLSTER (owner 2026-11-07 10:31): with RSQ ShieldSaw loaded and its "Take It From" set to Over the
+	// (Off) Shoulder (ssq_mount_spot 0, that player's own setting), the off-shoulder gun holster is the ShieldSaw's -- the
+	// left shoulder (4) for a right-handed player, the right (5) left-handed, as the ShieldSaw follows handedness (the
+	// engine's vr_control_scheme, which RSQ Accessibility's Handedness sets). No gun goes in it by hand or by RSQ Wheel's
+	// web, whether the shield is on the shoulder or in the hand; only the ShieldSaw's own option moves it. -1: none.
+	// By name only: no ShieldSaw, no claim.
+	static int ShieldHolster(PlayerPawn pmo)
+	{
+		if (!pmo || !pmo.player) return -1;
+		String cn = "SSQ_ShieldSaw";
+		class<Inventory> c = cn;
+		if (!c) return -1;
+		let sp = CVar.GetCVar("ssq_mount_spot", pmo.player);
+		if (!sp || sp.GetInt() != 0) return -1;
+		return RSQTR_Body.LeftHanded() ? 5 : 4;
+	}
+
 	static bool ShieldOnShoulder(PlayerPawn pmo)
 	{
 		String cn = "SSQ_ShieldSaw";      // a run-time lookup: null when the ShieldSaw is not loaded
@@ -138,6 +155,25 @@ class RSQTR_RigService : Service
 			int n = pw ? pw.PlayerNumber() : consoleplayer;
 			if (!rg || n < 0 || n >= MAXPLAYERS || intArg < 0 || intArg >= RSQTR_Region.N) return "";
 			return rg.lockCls[n * RSQTR_Region.N + intArg];
+		}
+		// THE HOLSTER WEB (11-07 10:31): the item another mod holds gun holster intArg with ("SSQ_ShieldSaw": RSQ ShieldSaw's
+		// shoulder, ShieldHolster), "" none
+		if (request == "rig.claim")
+		{
+			let pw = PlayerPawn(objectArg);
+			if (!pw) pw = players[consoleplayer].mo;
+			return (intArg >= 0 && intArg == RSQTR_Hooks.ShieldHolster(pw)) ? "SSQ_ShieldSaw" : "";
+		}
+		// THE HOLSTER WEB'S MIRROR VIEW (RSQ Wheel's "Web View: Mirror", 11-07 10:32): this mirror (mirror.zs) drawn small
+		// on the web's panel. stringArg "cx cy cz yaw tilt top bottom" (the panel's middle, its turn, and where on it, up
+		// from its middle, the highest and the lowest gun holster go); intArg 1 show (every tic it is wanted), 0 hide.
+		// Answers "back x y z s x y z s ..." (how far behind the panel's middle the mirror reaches, then every place's spot in
+		// the copy by place index, s 1 when the copy shows that place's item), or "" when the mirror cannot be shown.
+		if (request == "mirror.web")
+		{
+			let mh = RSQTR_Mirror(EventHandler.Find("RSQTR_Mirror"));
+			if (!mh) return "";
+			return mh.WebShow(stringArg, intArg != 0);
 		}
 		let rig = RSQTR_Rig.Get();
 		let who = PlayerPawn(objectArg);

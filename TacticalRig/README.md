@@ -20,6 +20,11 @@ or picked for one in RSQ Wheel's holster web, owns it, in the holster or in your
 reassigns it; no other gun goes in. Holding an assigned gun at another gun's full holster sends yours home and brings
 that one to your hand. Holster Lock and New Guns to Holsters are gone (assignment replaces them). Shown on the rig.
 
+Also 11-07 (rig only, not headset-confirmed): RSQ Wheel's Web View: Mirror draws this mod's own mirror, small, on the
+Wheel's holster web (shown on the rig). With RSQ ShieldSaw's Take It From set to Over the Shoulder, the off-shoulder gun
+holster is the ShieldSaw's, whether the shield is there or in your hand: a gun put there by hand gets a dull tick and
+stays in your hand (shown on the rig: the main hand), the web cannot assign it, and a gun that had it loses it (not shown).
+
 ## Standout feature: a holster rig you work with your hands
 
 Six gun holsters hang on your body: both hips, both sides of the chest and both shoulders. Put your hand in one and

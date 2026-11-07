@@ -27,6 +27,17 @@
 //
 // Without RSQ Tactical Rig (asked by name, RSQTR_RigService) there are no holsters: main-hand alt-fire gives the dull
 // tick, and the rotation works alone. Nothing here names a Rig class.
+//
+// WEB VIEW (wr_web_view, owner 2026-11-07 10:32): Marine (0, the default: the marine above) or Mirror (1): RSQ Tactical
+// Rig's own mirror, the one Move Holsters by Hand shows (your front, the real holster spots, the guns' own models), drawn
+// small on the panel by the Rig itself (its "mirror.web", asked by name), and the rings on the real holster spots as the
+// mirror shows them (you see your left on your left). The rings show what they show in Marine; pointing and assigning are
+// as in Marine. The panel steps back behind the copy (it is solid),
+// so the rings stay where Marine has them. Without an answer from the Rig (it is off, or out of VR) the web is Marine.
+//
+// THE SHIELDSAW'S SHOULDER (owner 10:31): with RSQ ShieldSaw set to Over the (Off) Shoulder, the Rig answers that the
+// off-shoulder holster is the ShieldSaw's ("rig.claim"): that ring shows the ShieldSaw's own card art (the Wheel's
+// WRISSAW, as its card), no gun can be assigned there (a dull tick), and Clear cannot free it.
 
 // The guns taken out of the rotation, carried on the player (so it lives through levels and saves, and a new game
 // starts empty: every gun in).
@@ -96,6 +107,8 @@ extend class wr_Rig
 	// ---- state of the web ---------------------------------------------------------------------------------
 	bool mWebOpen;
 	bool mWebNumScore;                           // the ring numbers are in RSQ Score's font (Score is loaded)
+	bool mWebMirror;                             // Web View: Mirror (set as the web opens)
+	bool mWebMirrorLive;                         // ...and the Rig drew its mirror this tic
 	Class<Weapon> mWebCls;
 	int mWebPanel, mWebMarine, mWebClear, mWebClearText;
 	Array<int> mWebRing, mWebNum, mWebName, mWebLine;
@@ -133,6 +146,14 @@ extend class wr_Rig
 		let sv = webSvc();
 		if (!sv) return "";
 		return sv.GetString("rig.owner", "", r, 0, players[consoleplayer].mo);
+	}
+
+	// the item another mod holds gun holster place r with ("SSQ_ShieldSaw"), "" none
+	String webClaim(int r)
+	{
+		let sv = webSvc();
+		if (!sv) return "";
+		return sv.GetString("rig.claim", "", r, 0, players[consoleplayer].mo);
 	}
 
 	int webProfile()
@@ -368,6 +389,13 @@ extend class wr_Rig
 		if (node >= 0 && node < 6)
 		{
 			int r = WEB_REGION[node];
+			String claim = webClaim(r);
+			if (claim != "")
+			{
+				webTick(h, true);
+				if (dbg) Console.Printf("RSQ Wheel web: %s -> holster %d refused: it is the %s's (a dull tick)", cn, node + 1, claim);
+				return;
+			}
 			String was = webOwner(r);
 			if (was != "" && !(was ~== cn))
 			{
@@ -634,6 +662,8 @@ extend class wr_Rig
 		mWebCloseAt = 0;
 		color pc = webProfCol();
 		mWebNumScore = ServiceIterator.Find("RS_ScoreService").Next() != null;
+		mWebMirror = cv("wr_web_view", 0.0) >= 0.5 && webSvc() != null;
+		mWebMirrorLive = false;
 		// the panel and the marine are SOLID (the opaque pass: nothing behind the panel shows through it) and BRIGHT (the
 		// panel's own teal and the marine's own colours, whatever the room's light)
 		mWebPanel = webBB(wr_BB.BB_TEXTURE, 0, 0xFFFFFF, "WREWPAN", true, 0, wr_BB.BBFL_SOLID | wr_BB.BBFL_BRIGHT);
@@ -666,6 +696,8 @@ extend class wr_Rig
 
 	void webClose()
 	{
+		if (mWebMirror) { let sv = webSvc(); if (sv) sv.GetString("mirror.web", "", 0, 0, null); }
+		mWebMirror = mWebMirrorLive = false;
 		if (mWebPanel) wr_BB.RemoveBillboard(mWebPanel);
 		if (mWebMarine) wr_BB.RemoveBillboard(mWebMarine);
 		if (mWebClear) wr_BB.RemoveBillboard(mWebClear);
@@ -768,7 +800,6 @@ extend class wr_Rig
 		// THE PANEL: inside the ring, in front of the data sheet
 		double PW = max(ringR * 1.0, panelW * 2.0) * WEB_SIZE;
 		double PH = PW * 1.25;
-		webPlace(mWebPanel, wC + wR * ox + wU * oy, PW * s, PH * s, yaw, tilt);
 
 		// THE MARINE: the load order's PLAYA1, its own proportions, placed by its own OFFSET (the point the engine
 		// stands on the floor: his body's middle and his feet), not by the picture's box, which takes in the rifle
@@ -791,7 +822,43 @@ extend class wr_Rig
 		double mTop = PH * 0.5 - PH * 0.08;
 		double bodyH = soy * k;           // the top of the picture to his feet
 		double mx = (sw * 0.5 - sox) * k; // the picture's middle, from his body's
-		webPlace(mWebMarine, wC + wR * (ox + s * mx) + wU * (oy + s * (mTop - MH * 0.5)) + wF * WEB_ON_MARINE, MW * s, MH * s, yaw, tilt);
+		double yShoulder = mTop - bodyH * WEB_SHOULDER_Y, yHip = mTop - bodyH * WEB_HIP_Y;
+
+		// WEB VIEW: MIRROR. The Rig draws its mirror on the panel, its highest gun holster on the marine's shoulder line and
+		// its lowest on his hip line, and answers how far behind the panel's middle it reaches and where each place is.
+		Array<double> mSpot;
+		bool mirror = false;
+		double back = 0;
+		if (mWebMirror)
+		{
+			let sv = webSvc();
+			Vector3 mc = wC + wR * ox + wU * oy;
+			String ans = "";
+			if (sv) ans = sv.GetString("mirror.web", String.Format("%.3f %.3f %.3f %.3f %.3f %.3f %.3f",
+				mc.x, mc.y, mc.z, yaw, tilt, s * yShoulder, s * yHip), 1, 0, null);
+			Array<String> tk;
+			ans.Split(tk, " ", TOK_SKIPEMPTY);
+			if (tk.Size() >= 1 + 4 * 14)
+			{
+				mirror = true;
+				back = tk[0].ToDouble();
+				for (int q = 1; q < tk.Size(); q++) mSpot.Push(tk[q].ToDouble());
+			}
+			if (mirror != mWebMirrorLive && cvBool("wr_debug", false))
+				Console.Printf("RSQ Wheel web: Mirror view %s", mirror ? String.Format("drawn by RSQ Tactical Rig (reaches %.1f behind the panel)", back) : "not drawn by RSQ Tactical Rig: Marine");
+			mWebMirrorLive = mirror;
+		}
+		// the panel is solid: with the mirror it steps back behind it, grown so it covers what it covered
+		double pBack = mirror ? back + 0.3 : 0;
+		double pGrow = 1.0;
+		if (mirror)
+		{
+			double dE = wF dot (eye - wC);
+			if (dE > 1.0) pGrow = (dE + pBack) / dE;
+		}
+		webPlace(mWebPanel, wC + (wR * ox + wU * oy) * pGrow - wF * pBack, PW * s * pGrow, PH * s * pGrow, yaw, tilt);
+		if (mirror) webPlace(mWebMarine, wC, 0, 0, yaw, tilt);
+		else webPlace(mWebMarine, wC + wR * (ox + s * mx) + wU * (oy + s * (mTop - MH * 0.5)) + wF * WEB_ON_MARINE, MW * s, MH * s, yaw, tilt);
 
 		// THE HOLSTERS on him: a front view (he faces you, so his left is on your right).
 		// the profile FITTED to him: its highest holsters on his shoulder line, its lowest on his hip line, the rest
@@ -803,7 +870,6 @@ extend class wr_Rig
 			double uq = webCv(String.Format("rsqtr_r%d_u", rq), 0), lq = webCv(String.Format("rsqtr_r%d_l", rq), 0);
 			uHi = max(uHi, uq); uLo = min(uLo, uq); lMax = max(lMax, abs(lq));
 		}
-		double yShoulder = mTop - bodyH * WEB_SHOULDER_Y, yHip = mTop - bodyH * WEB_HIP_Y;
 		double halfW = sw * WEB_HALF_W * k;
 		double D = MH * 0.13;
 		color pc = webProfCol();
@@ -818,6 +884,18 @@ extend class wr_Rig
 			double fu = (uHi - uLo) > 0.01 ? (u - uLo) / (uHi - uLo) : 0.5;
 			double fl = lMax > 0.01 ? l / lMax : 0.0;
 			double px = ox + s * (fl * halfW), py = oy + s * (yHip + fu * (yShoulder - yHip));
+			if (mirror)
+			{
+				// the real holster spot in the mirror, seen from your eyes on the panel's middle plane
+				Vector3 sp = (mSpot[r * 4], mSpot[r * 4 + 1], mSpot[r * 4 + 2]);
+				Vector3 dq = sp - eye;
+				double den = wF dot dq;
+				if (abs(den) > 1e-6)
+				{
+					Vector3 pp = eye + dq * ((wF dot (wC - eye)) / den) - wC;
+					px = pp dot wR; py = pp dot wU;
+				}
+			}
 			Vector3 at = wC + wR * px + wU * py;
 			bool lit = mWebRing[n] == mHovered;
 			String owner = webOwner(r);
@@ -836,9 +914,17 @@ extend class wr_Rig
 			wr_BB.SetBillboardAlpha(mWebRing[n], 1.0);
 			wr_BB.UpdateBillboard(mWebRing[n], 0, lit ? pcLit : pc);
 
-			// a taken ring shows its gun's own pickup sprite; an empty one its number
+			// a taken ring shows its gun's own pickup sprite (in both views: the mirror's chest guns hang mostly inside its
+			// torso, rig frames 2026-11-07); the ShieldSaw's shoulder its card art; an empty one its number
+			String claim = webClaim(r);
+			if (claim != "") owner = claim;
 			Class<Actor> oca = owner;
 			String want = (owner != "" && oca) ? webPickupName(oca) : "";
+			if (claim != "" && oca)
+			{
+				TextureID ct = ownIconOf(oca);
+				if (ct.IsValid()) want = TexMan.GetName(ct);
+			}
 			if (n < mWebSpr.Size() && !(want ~== mWebSprCls[n]))
 			{
 				if (mWebSpr[n]) wr_BB.RemoveBillboard(mWebSpr[n]);

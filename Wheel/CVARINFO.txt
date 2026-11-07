@@ -111,6 +111,9 @@ user string wr_slot_order = "";
 // wr_edge_sweep (option, off since 2026-11-03, owner: "there is an animated square that runs around the cards,
 // I'd like that out"): a spark (a small square quad, WRESPARK) runs round each card's edge.
 user bool wr_look2 = true;
+// THE HOLSTER WEB'S VIEW (owner 2026-11-07 10:32): 0 Marine (the load order's marine sprite, the holsters fitted to him),
+// 1 Mirror (RSQ Tactical Rig's own mirror on the web: your front, the real holster spots, the guns' own models).
+user int wr_web_view = 0;
 user bool wr_breathe = false;
 user bool wr_edge_sweep = false;
 

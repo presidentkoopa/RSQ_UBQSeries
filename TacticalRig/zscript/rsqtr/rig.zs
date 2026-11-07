@@ -684,6 +684,11 @@ class RSQTR_Rig : EventHandler
 		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
 		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w) || HomeWhip(w) || w == EmptyHand(pmo)) return;
 		let p = pmo.player;
+		if (r == RSQTR_Hooks.ShieldHolster(pmo))
+		{
+			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_ASSIGN t%d: web: %s refused, %s is the ShieldSaw's", level.maptime, cls, RSQTR_Region.NAMES[r]);
+			return;
+		}
 		int n = pmo.PlayerNumber();
 		int base = n * RSQTR_Region.N;
 		String was = lockCls[base + r];
@@ -703,6 +708,22 @@ class RSQTR_Rig : EventHandler
 		if (Flag("rsqtr_messages", p, false))
 			Console.Printf("T_ASSIGN t%d: web: %s assigned to %s and holstered there%s", level.maptime, cls, RSQTR_Region.NAMES[r],
 				(was != "" && !(was ~== cls)) ? String.Format(" (%s loses it)", was) : "");
+	}
+	// THE SHIELDSAW'S SHOULDER IS NO GUN'S (owner 11-07 10:31, hooks.zs ShieldHolster): set Over the Shoulder, a gun
+	// assigned to or holstered in that holster loses it (it stays in the inventory), as a gun whose holster is taken over.
+	private void ShieldTick()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo) continue;
+			int r = RSQTR_Hooks.ShieldHolster(players[n].mo);
+			if (r < 0) continue;
+			int k = n * RSQTR_Region.N + r;
+			if (lockCls[k] == "" && lastPut[k] == "") continue;
+			if (Flag("rsqtr_messages", players[n], false))
+				Console.Printf("T_ASSIGN t%d: %s is the ShieldSaw's: %s loses it", level.maptime, RSQTR_Region.NAMES[r], lockCls[k] != "" ? lockCls[k] : lastPut[k]);
+			lockCls[k] = ""; lastPut[k] = ""; lastPair[k] = false;
+		}
 	}
 	// THE WEB'S CLEAR ("rsqtr_unassign:<gun>"): no holster is assigned to the gun, and it is in none (inventory only)
 	private void WebUnassign(PlayerPawn pmo, String cls)
@@ -1112,6 +1133,7 @@ class RSQTR_Rig : EventHandler
 		if (!IsMovedGun(w)) return;
 		int n = pmo.PlayerNumber();
 		String cls = MainOf(w.GetClassName());     // BD22 VR's off-hand version goes in under its gun's name
+		if (r == RSQTR_Hooks.ShieldHolster(pmo)) { Refused(pmo, 1, cls, r); return; }   // the ShieldSaw's shoulder
 		int lockHome = LockedTo(n, cls);
 		if (lockHome < 0 && !MayEnter(pmo, cls, r)) { Refused(pmo, 1, cls, r); return; }
 		if (lockHome >= 0 && lockHome != r)
@@ -1334,6 +1356,7 @@ class RSQTR_Rig : EventHandler
 				}
 			}
 		}
+		if (IsGunRegion(r) && HoldsGun(pmo) && r == RSQTR_Hooks.ShieldHolster(pmo)) { Refused(pmo, 0, cls, r); return; }   // the ShieldSaw's shoulder
 		int lockHome = IsGunRegion(r) && HoldsGun(pmo) ? LockedTo(n, cls) : -1;
 		// ASSIGNMENT (11-07): an unassigned gun enters only an unassigned, empty holster (and is assigned to it)
 		if (lockHome < 0 && IsGunRegion(r) && HoldsGun(pmo) && !MayEnter(pmo, cls, r)) { Refused(pmo, 0, cls, r); return; }
@@ -1567,6 +1590,7 @@ class RSQTR_Rig : EventHandler
 		TickLoadout();
 		if (afterLoad) { afterLoad = false; ClearLocalMarks(); }
 		if (!migrated) { migrated = true; MigratePlaces(); }
+		ShieldTick();
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
@@ -1596,7 +1620,9 @@ class RSQTR_Rig : EventHandler
 			double best = 1e9;
 			for (int i = 0; i < RSQTR_Region.N; i++)
 			{
-				if (!RegionLive(pmo, i)) continue;
+				// (the ShieldSaw's shoulder, left to its own Use while the shield is stowed there, still answers a main hand
+				// holding a gun: Press refuses it with a dull tick, owner 11-07 10:31)
+				if (!RegionLive(pmo, i) && !(h == 0 && i == RSQTR_Hooks.ShieldHolster(pmo) && HoldsGun(pmo))) continue;
 				// THE KEYRING IS NO HOLSTER: a hand there is the rig's only to carry it in edit mode. Its grip
 				// (keys to a door) is keyring.zs's own, as before it was a place.
 				if (i == RSQTR_Region.KEYRING && !editing) continue;
@@ -1906,6 +1932,13 @@ class RSQTR_Rig : EventHandler
 		{
 			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
 			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG t%d: %s refused, a lit flare is in the off hand", level.maptime, RSQTR_Region.NAMES[r]);
+			return;
+		}
+		// THE SHIELDSAW'S SHOULDER (owner 11-07 10:31, hooks.zs ShieldHolster): a gun put there by hand is refused, a dull tick
+		if (IsGunRegion(r) && r == RSQTR_Hooks.ShieldHolster(pmo) && (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)))
+		{
+			let hw = h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
+			Refused(pmo, h, hw ? MainOf(HeldAs(pmo, hw)) : "", r);
 			return;
 		}
 		if (r == RSQTR_Region.POUCH) return;     // the pouch is Brutal Doom VR's: its reload reads "pouch.at" (no rig action here)
