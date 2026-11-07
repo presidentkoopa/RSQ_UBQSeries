@@ -230,3 +230,10 @@ and goes to him; no more readings)
   to make one), so a spawned target is the first of hidden copies on its spot that Champions itself makes a champion
   (rig: PersistentInfo, colour token, its icon and fire, e.g. Orange / Dark Green / Cyan). The map's own monster that
   downed you is not respawned: a champion already stays one, else it keeps the colour token by name (open question).
+- Icon mode: drop the round slot icon at the left of each line; each line is "TARGET:" + its icon only (owner 11:1x).
+- The monster that downed you, if already on the map and not a champion: with Champions loaded it is swapped for a
+  real Champion copy of it (it vanishes in teleport fog, the champion copy appears where it stood) (owner 11:1x).
+- As built (11-07, rig only, not headset-confirmed): Icon lines draw no slot; the killer in his fight, not a champion,
+  with Champions loaded: gone in teleport fog the tic after the hit, a copy rolled on by Champions (hidden candidates)
+  appears on its spot as the target (rig: plain SkullZombie -> Bronze champion, 0 units from where it stood). Its map tid
+  and special go to the copy; with a Score life after a failed DOWN it counts as the map's own (loses its mark, stays).

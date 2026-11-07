@@ -29,8 +29,8 @@
 //            Champion made by Champions itself (owner 11-07 11:0x): Champions makes champions only as monsters spawn (its
 //            handler's WorldThingSpawned: its own chance, colour weights, mutations), so hidden candidates are spawned on the
 //            spot and the first it makes a champion is the target (Placed / ChampRoll). The map's own monster that downed
-//            you is never respawned: a champion already stays one; else a Champions colour token given by name (as RSQ
-//            Miniboss does), Champions having no way to make an existing monster a champion. All of them: a light in their colour, full-bright, 15% larger, +50% health (not with
+//            you, in his fight: a champion already stays one; else (owner 11-07 11:1x) it vanishes in teleport fog and a
+//            REAL Champion copy of it, made the same way, appears where it stood (SwapKiller; its tid and special go with it). All of them: a light in their colour, full-bright, 15% larger, +50% health (not with
 //            LegenDoom: it sets a legendary's health). Each target gets one of ten icons (random, never twice in a DOWN).
 //  UP        the last target dead: up at once. REVIVE every time (VisualRewards, sized by tier). Tier top / middle / bottom:
 //            invulnerable 5 / 3 / 1 s, slow motion 3 / 1.5 / 5 s; top: Score's Revival Fire, +1 cigarette (Tactical Rig),
@@ -102,6 +102,10 @@ class RSQSM_Down : EventHandler
 	Array<Actor> cdMon;
 	Array<int>   cdId;
 	Array<int>   tChWait;                                 // 1: a real champion whose colour token Champions has not given yet
+	// the killer swapped for a real Champion copy (owner 11-07 11:1x): the map's monster that downed him (not a champion,
+	// Champions loaded), its map tid and special handed to the copy; spSwapK 1 for such a spawn (it stands for the map's own)
+	Array<Actor> spSwap;
+	Array<int>   spSwapK, spTid, spSpec, spArg;           // spArg: five a spawn
 	// the crouch
 	bool   cOn[MAXPLAYERS];
 	double cK[MAXPLAYERS], cVH[MAXPLAYERS], cFH[MAXPLAYERS];
@@ -177,6 +181,7 @@ class RSQSM_Down : EventHandler
 		bMon.Clear(); bSX.Clear(); bSY.Clear(); bHp.Clear(); bBright.Clear(); bOwn.Clear();
 		spPn.Clear(); spTries.Clear(); spIcon.Clear(); spCls.Clear();
 		spId.Clear(); spHave.Clear(); spRolls.Clear(); spX.Clear(); spY.Clear(); spZ.Clear(); spAng.Clear(); spWhy.Clear();
+		spSwap.Clear(); spSwapK.Clear(); spTid.Clear(); spSpec.Clear(); spArg.Clear();
 		cdMon.Clear(); cdId.Clear(); tChWait.Clear();
 	}
 
@@ -559,7 +564,18 @@ class RSQSM_Down : EventHandler
 		bool seen = src.CheckSight(pmo, SF_IGNOREVISIBILITY);
 		bool inFight = src.health > 0 && (d <= FIGHT_NEAR || (seen && d <= FIGHT_FAR));
 		String cls = src.GetClassName();
-		if (inFight) AddTarget(n, src, false, String.Format("the monster that downed him (%.0f units%s)", d, seen ? ", in sight" : ""));
+		if (inFight && ChampionsOn() && !IsChampion(src))
+		{
+			// NOT A CHAMPION, CHAMPIONS LOADED (owner 11-07 11:1x): swapped for a REAL Champion copy of it, next tic (not inside
+			// the hit that downed him): it vanishes in teleport fog and the copy Champions makes appears where it stood
+			Log(String.Format("player %d: %s downed him in his fight (%.0f units%s), not a champion: it is swapped for a REAL Champion copy",
+				n, cls, d, seen ? ", in sight" : ""));
+			QueueSpawn(n, cls);
+			int q = spPn.Size() - 1;
+			spSwap[q] = src;
+			spWhy[q] = String.Format("the monster that downed him (%.0f units%s), swapped for a copy", d, seen ? ", in sight" : "");
+		}
+		else if (inFight) AddTarget(n, src, false, String.Format("the monster that downed him (%.0f units%s)", d, seen ? ", in sight" : ""));
 		else
 		{
 			Log(String.Format("player %d: %s downed him from outside his fight (%s, %.0f units%s): a boosted copy spawns in view", n, cls,
@@ -601,6 +617,7 @@ class RSQSM_Down : EventHandler
 	{
 		spPn.Push(n); spCls.Push(cls); spTries.Push(0); spIcon.Push(icon > 0 ? icon : DealIcon(n));
 		spId.Push(++spNextId); spHave.Push(0); spRolls.Push(0); spX.Push(0); spY.Push(0); spZ.Push(0); spAng.Push(0); spWhy.Push("");
+		spSwap.Push(null); spSwapK.Push(0); spTid.Push(0); spSpec.Push(0); for (int a = 0; a < 5; a++) spArg.Push(0);
 	}
 	int Count(int n) { int k = 0; for (int i = 0; i < tPn.Size(); i++) if (tPn[i] == n) k++; return k; }
 	int Killed(int n) { int k = 0; for (int i = 0; i < tPn.Size(); i++) if (tPn[i] == n && tDead[i] != 0) k++; return k; }
@@ -619,6 +636,12 @@ class RSQSM_Down : EventHandler
 			class<Actor> c = cnm;
 			// WITH CHAMPIONS: the spot is found; Champions rolls on hidden candidates there until it makes one a champion
 			if (spHave[i] != 0) { ChampRoll(i, pmo, c); continue; }
+			// THE KILLER SWAPPED (a tic after the hit that downed him)
+			if (spSwap[i])
+			{
+				if (level.maptime <= downStart[n]) continue;
+				if (SwapKiller(i, pmo, c)) continue;
+			}
 			Actor m = c ? SpawnInView(pmo, c, spTries[i]) : null;
 			if (m)
 			{
@@ -663,6 +686,42 @@ class RSQSM_Down : EventHandler
 		for (int k = 1; k < CH_PER_TIC; k++) Candidate(i, c);
 		spRolls[i] += CH_PER_TIC;
 		ChampRoll(i, pmo, c, true);
+	}
+	// the killer vanishes in teleport fog; Champions rolls on hidden copies where it stood (as Placed). It died or went
+	// first: no swap, a copy spawns in view as for a killer outside his fight (false: the normal search goes on)
+	private bool SwapKiller(int i, PlayerPawn pmo, class<Actor> c)
+	{
+		let k = spSwap[i];
+		spSwap[i] = null;
+		int n = spPn[i];
+		if (!k || k.health <= 0 || !c)
+		{
+			Log(String.Format("player %d: the monster that downed him died or went before its swap: a copy spawns in view instead", n));
+			spWhy[i] = "";
+			return false;
+		}
+		Vector3 p = k.pos;
+		double ang = k.angle;
+		spSwapK[i] = 1; spTid[i] = k.tid; spSpec[i] = k.special;
+		for (int a = 0; a < 5; a++) spArg[i * 5 + a] = k.args[a];
+		String why = spWhy[i];
+		Actor.Spawn("TeleportFog", p, ALLOW_REPLACE);
+		Log(String.Format("player %d: %s (health %d) vanishes in teleport fog at (%.0f, %.0f, %.0f) (tid %d, special %d)", n, k.GetClassName(), k.health, p.x, p.y, p.z, k.tid, k.special));
+		k.ClearCounters();
+		k.Destroy();
+		let m = Actor.Spawn(c, p, ALLOW_REPLACE);
+		if (!m) { Log(String.Format("player %d: no copy of %s could spawn where it stood", n, c.GetClassName())); spSwapK[i] = 0; return false; }
+		m.angle = ang;
+		Placed(i, pmo, m, why);
+		return true;
+	}
+	// the swapped killer's map tid and special go to its copy
+	private void Inherit(int i, Actor m)
+	{
+		if (!m || spSwapK[i] == 0) return;
+		if (spTid[i] != 0) m.ChangeTid(spTid[i]);
+		m.special = spSpec[i];
+		for (int a = 0; a < 5; a++) m.args[a] = spArg[i * 5 + a];
 	}
 	const CH_PER_TIC = 6;       // candidates Champions rolls on a tic (my number: on Hurt Me Plenty its chance is 72 in 256 each)
 	const CH_ROLLS = 300;       // candidates before giving up (Champions set to make none: its chance or weights at 0)
@@ -713,7 +772,8 @@ class RSQSM_Down : EventHandler
 		{
 			DropCandidates(id, win);
 			Reveal(win, true);
-			AddTarget(n, win, true, String.Format("%s; a REAL Champion made by Champions itself (one of %d candidates it rolled on)", spWhy[i], spRolls[i]), spIcon[i]);
+			Inherit(i, win);
+			AddTarget(n, win, spSwapK[i] == 0, String.Format("%s; a REAL Champion made by Champions itself (one of %d candidates it rolled on)", spWhy[i], spRolls[i]), spIcon[i]);
 			DropSpawn(i);
 			return;
 		}
@@ -724,7 +784,7 @@ class RSQSM_Down : EventHandler
 			// Champions made none of them (its chance or weights set to 0): a plain copy, its colour token by name as before
 			Log(String.Format("player %d: Champions made none of %d candidates champions (its chance or colour weights at 0?): a plain copy with a colour token", n, spRolls[i]));
 			let m = Actor.Spawn(c, (spX[i], spY[i], spZ[i]), ALLOW_REPLACE);
-			if (m) { m.angle = spAng[i]; Reveal(m, false); AddTarget(n, m, true, spWhy[i] .. "; Champions made none", spIcon[i]); }
+			if (m) { m.angle = spAng[i]; Reveal(m, false); Inherit(i, m); AddTarget(n, m, spSwapK[i] == 0, spWhy[i] .. "; Champions made none", spIcon[i]); }
 			DropSpawn(i);
 			return;
 		}
@@ -750,6 +810,7 @@ class RSQSM_Down : EventHandler
 		DropCandidates(spId[i], null);
 		spPn.Delete(i); spCls.Delete(i); spTries.Delete(i); spIcon.Delete(i);
 		spId.Delete(i); spHave.Delete(i); spRolls.Delete(i); spX.Delete(i); spY.Delete(i); spZ.Delete(i); spAng.Delete(i); spWhy.Delete(i);
+		spSwap.Delete(i); spSwapK.Delete(i); spTid.Delete(i); spSpec.Delete(i); spArg.Delete(i * 5, 5);
 	}
 	private Actor SpawnInView(PlayerPawn pmo, class<Actor> c, int tryNo)
 	{

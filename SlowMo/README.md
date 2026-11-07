@@ -21,9 +21,9 @@ shot is a normal death. While DOWN no hit can kill you: you drop into a crouch, 
 slows to its deepest, RSQ Glow In The Dark turns the map red, a heartbeat plays, and your own shots fly at normal speed.
 THE PANEL is on the HUD layer (like RSQ Score's readout), so the gun, a wall or the floor never hides it: half the view
 wide, low and centred, clear of the status bar; it slams up from the bottom edge with a slight overshoot and a heavy
-thump in both hands, the bar filling left to right as it lands. It shows one line per target, stacked (its own icon on
-a dark slot, then, by the **Target Lines** row: **Icon** (default) **TARGET:** and that target's own crosshair icon in its
-colour, no name; **Name** **TARGET: <name>**: the monster's name with RSQ Score's tier words in front when it has them,
+thump in both hands, the bar filling left to right as it lands. It shows one line per target, stacked, by the **Target
+Lines** row: **Icon** (default) **TARGET:** and that target's own crosshair icon in its colour only, no name and no slot
+icon at the left (rig only, not headset-confirmed); **Name** its icon on a dark slot, then **TARGET: <name>**: the monster's name with RSQ Score's tier words in front when it has them,
 e.g. LEGENDARY ORANGE CHAMPION ZOMBIE; a target that dies keeps its line, dimmed with a thin strike-through, its icon
 cracked), the reward bar
 (three 3 s steps, the tall one first, in the target's colour, draining smoothly) and **DEATH IN:** with a seven-segment
@@ -37,9 +37,11 @@ With Champions loaded, every spawned copy is a REAL Champion made by Champions i
 mutation chance, by its own settings): Champions only makes champions as monsters spawn, so SlowMo spawns hidden copies
 on the spot until Champions makes one a champion and keeps that one (rig only, not headset-confirmed: shown on the full
 load order with LegenDoom 3.0 and Champions, e.g. an Orange and a Dark Green champion with Champions' icons, and the
-Name lines reading LEGENDARY ORANGE CHAMPION ZOMBIE). The monster that downed you is never replaced: if it is already a
-champion it stays one; if not, it only gets a Champions colour token (Champions has no way to make an existing monster
-a champion). If Champions is set never to make one, after 300 tries the copy gets a colour token instead. Each
+Name lines reading LEGENDARY ORANGE CHAMPION ZOMBIE). The monster that downed you, if it is in your fight: already a
+champion, it stays as it is; not a champion, it vanishes in teleport fog and a REAL Champion copy of its class, made by
+Champions the same way, appears where it stood and is the target (its map tid and special go with it) (rig only, not
+headset-confirmed: shown on the same load order, a plain zombie swapped for a Bronze champion on its spot). Without
+Champions it stays as it is. If Champions is set never to make one, after 300 tries the copy gets a colour token instead. Each
 target has its own crosshair (ten, never repeated in one DOWN). A target more than about 75 degrees from your view shows
 EDGE ARROWS on the HUD (Turn Marker: Framed Triangle, Framed Fat Arrow, Triple Chevron (default), Triangle With
 Afterimages) with its icon, pointing the way to turn and swinging round with an easing as you turn. Closer than that, a

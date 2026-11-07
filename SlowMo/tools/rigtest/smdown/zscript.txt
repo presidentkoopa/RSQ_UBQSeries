@@ -189,6 +189,7 @@ class RSQSMD_Probe : EventHandler
 		if (Mode() == 2) { V3d(t, pmo); return; }
 		if (Mode() == 3) { V3e(t, pmo); return; }
 		if (Mode() == 4) { V3e(t, pmo); V3f(t, pmo); return; }
+		if (Mode() == 5) { V3h(t, pmo); V3e(t, pmo); V3f(t, pmo); return; }
 		// ---- A: top tier
 		if (t == 40) { Hit(t, z[0], 40, 100, "A: a lethal hit by z0"); Report(t, "A: after the lethal hit"); }
 		if (t == 50) { Shoot(t, z[1], 20, "A: z1 hit (an Imp: time bought)"); Report(t, "A: after a hit"); }
@@ -407,6 +408,42 @@ class RSQSMD_Probe : EventHandler
 		if (t == 100) { SetI("rsqsm_down_lines", 1); Champs(t, "Target Lines: Name"); }
 		if (t == 130 || t == 180) Champs(t, "Name");
 		if (t == 200) { SetI("rsqsm_down_lines", 0); Champs(t, "Target Lines: Icon"); }
+	}
+	// ---- dn_mode 5 (owner 11-07 11:1x): dn_mode 4, with the monster that downs him (z2) NOT a champion, so it is swapped
+	//   for a REAL Champion copy: t36 if Champions made z2 one, a plain one of its class among the others takes its place in z (test
+	//   only); t41..t44 where z2 stood, whether it is gone, and target 1 (class, Champions inventory, where it stands)
+	Vector3 swPos;
+	Actor swOld;
+	void V3h(int t, PlayerPawn pmo)
+	{
+		if (t == 36)
+		{
+			Name pn = "champion_PersistentInfo";
+			class<Inventory> pc = pn;
+			for (int k = 0; k < z.Size() && pc && z[2] && z[2].FindInventory(pc); k++)
+				if (k != 2 && z[k] && z[k].GetClass() == z[2].GetClass() && !z[k].FindInventory(pc)) { let o = z[2]; z[2] = z[k]; z[k] = o; Console.Printf("T_SWAPZ t%d z2 was a champion: z%d (plain) is z2 now", t, k); }
+			swOld = z[2];
+			if (swOld) swPos = swOld.pos;
+			Console.Printf("T_KILLER t%d z2 %s at (%.0f, %.0f, %.0f), %s", t, swOld ? String.Format("%s", swOld.GetClassName()) : "none", swPos.x, swPos.y, swPos.z,
+				(swOld && pc && swOld.FindInventory(pc)) ? "a champion" : "NOT a champion");
+		}
+		if (t >= 40 && t <= 44)
+		{
+			let d = RSQSM_Down.Get();
+			String s = "";
+			for (int i = 0; i < d.tMon.Size(); i++)
+			{
+				let m = d.tMon[i];
+				if (d.tPn[i] != consoleplayer || !m || d.tSpawned[i] != 0) continue;
+				s = s .. String.Format(" [map's target %s at (%.0f, %.0f, %.0f), %.0f units from where z2 stood; %s; invisible %d solid %d shootable %d]", m.GetClassName(),
+					m.pos.x, m.pos.y, m.pos.z, (m.pos - swPos).Length(), RSQSM_Down.ChampWhat(m), m.bINVISIBLE, m.bSOLID, m.bSHOOTABLE);
+			}
+			int fogs = 0;
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next())) if (a is "TeleportFog" && (a.pos.xy - swPos.xy).Length() < 2) fogs++;
+			Console.Printf("T_SWAP t%d the old z2 %s; teleport fog where it stood %d;%s", t, swOld ? "still there" : "GONE", fogs, s != "" ? s : " no map's target yet");
+		}
 	}
 	// ---- dn_mode 3 (v3e) ------------------------------------------------------------------------------------------------
 	void Marks(int t, String why)

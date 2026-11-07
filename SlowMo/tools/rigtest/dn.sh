@@ -1,7 +1,7 @@
 #!/bin/bash
 # TEST ONLY (never ships). RSQ SlowMo's DOWN v3 + Score's life crate + Graves Rise, ONE batched run on the full order:
 # doom2 -> brutal22test6 -> BD_VoxelPack -> BD22 VR -> XMVE 04-07 -> Legion of Bones 1.05 -> every RSQ pk3 except GunBonsaiVR -> smdown.
-#   dn.sh <name> <secs> [dump-every] [dn_mode: 1 v3c, 2 v3d, 3 v3e] [console wait tics]
+#   dn.sh <name> <secs> [dump-every] [dn_mode: 1 v3c, 2 v3d, 3 v3e, 4 v3f, 5 v3f + killer swap] [console wait tics]
 #   DN_EXTRA="-singletics" (one tic a rendered frame: every tic captured)
 #   DN_LD=<LegenDoom pk3>   loaded FIRST (before brutal22test6); DN_CHAMP=<Champions pk3> after Legion of Bones
 #   DN_RSQ=<dir>            the RSQ pk3s from there instead of pk3/ (e.g. the last commit's, while other lanes rebuild)

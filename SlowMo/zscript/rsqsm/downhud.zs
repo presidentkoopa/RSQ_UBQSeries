@@ -24,9 +24,10 @@
 //             (hsl(H +- 9, 95%, 50 +- 12%)) of the first living target's colour, draining smoothly; no step breaks off
 //             (owner 07:07). THE REFILL (a kill with targets left, down.zs BarReset): a bright edge running left to right
 //             over REFILL_TICS (owner 07:50: "a bright moving edge"), the fill full behind it.
-//   lines     one a target, stacked up from the bar: a dark round slot (r 27) at x 150, the target's icon (r 21), then
-//             Target Lines (owner 11-07 11:0x) Icon, the default: "TARGET:" and the target's own crosshair icon tinted its
-//             colour, no name; Name: "TARGET: <name>" (Score's monster.name: with Champions, Champions' own colour words).
+//   lines     one a target, stacked up from the bar. Target Lines (owner 11-07 11:0x) Icon, the default: "TARGET:" and the
+//             target's own crosshair icon tinted its colour, no name, no slot at the left (owner 11:1x); Name: a dark round
+//             slot (r 27) at x 150 with the target's icon (r 21), then "TARGET: <name>" (Score's monster.name: with
+//             Champions, Champions' own colour words).
 //             The text in a light tint of its colour (the mockup's hsl(H, 80%, 75%)). Dead: the
 //             line stays, its text dimmed with a thin strike-through so it stays readable (owner 07:50), its icon dimmed
 //             and cracked (the mockup's crack). Owed and not spawned yet: faint.
@@ -306,11 +307,15 @@ class RSQSM_DownHud ui
 		{
 			double ly = LINE0 - i * LPITCH;
 			int stt = lnState[i];
-			BoxC("RSPSLOT", 150, ly, 54, 54);
 			String ic = String.Format("RSPI%02dF", lnIcon[i]);
-			if (stt == 1) BoxC(ic, 150, ly, 42, 42, Mix(lnCol[i], 0x0B0B0D, 0.65));
-			else BoxC(ic, 150, ly, 42, 42, lnCol[i], stt == 0 ? 1.0 : 0.45);
-			if (stt == 1) BoxC("RSPCRK", 150, ly, 54, 54);
+			// the round slot icon at the left: Name only (owner 11-07 11:1x: Icon lines are "TARGET:" + its icon only)
+			if (!iconLines)
+			{
+				BoxC("RSPSLOT", 150, ly, 54, 54);
+				if (stt == 1) BoxC(ic, 150, ly, 42, 42, Mix(lnCol[i], 0x0B0B0D, 0.65));
+				else BoxC(ic, 150, ly, 42, 42, lnCol[i], stt == 0 ? 1.0 : 0.45);
+				if (stt == 1) BoxC("RSPCRK", 150, ly, 54, 54);
+			}
 			double ta = stt == 0 ? 1.0 : (stt == 1 ? 0.5 : 0.45);
 			double right;
 			if (iconLines)
