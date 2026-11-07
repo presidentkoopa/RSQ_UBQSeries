@@ -4,8 +4,31 @@ Nineteen VR mods for Doom on stock QuestZDoom 17.3 PCVR or Mobile: holsters on y
 grenade you pin with your teeth, a world you can slow down, and a dozen more, all built in ZScript alone.
 
 Status: 0.99 — every mod played and confirmed working in the headset. The newer additions, the 1.0 round of 11-06
-included, are rig only, not headset-confirmed (each mod's README lists them). A full headset pass takes the series to
-1.0.
+and the 11-07 additions included, are rig only, not headset-confirmed (each mod's README lists them, and says where
+something is built but not yet shown on the rig). A full headset pass takes the series to 1.0.
+
+## DOWN: the arcade revive
+
+New on 11-07 in RSQ SlowMo (rig only, not headset-confirmed; off by default: the DOWN row on RSQ SlowMo's page).
+When a monster's killing hit lands, you are not dead yet: it holds you at 1 HP, before any RSQ Score life is spent.
+You drop into a crouch and crawl, and the world slows to its deepest while your own shots fly at normal speed. A panel
+low in your view shows a **DEATH IN** clock of 9 real seconds, a line for each target, and the reward bar.
+
+- **Targets to kill:** the monster that downed you (or a boosted copy of it spawned in view), and one more each time you
+  go down (1, then 2, then 3...; back to 1 when a Score life is spent). Each target has its own crosshair; arrows at the
+  edge of your view and a trail at eye level lead you to it. While DOWN no hit can kill you: only the clock can.
+- **The clock:** damage you deal buys time, never above 9 seconds.
+- **The reward bar:** three 3-second steps, the tall one first, draining. Killing a target while others remain fills it
+  again. The step you are in at the last kill is your tier.
+- **REVIVE:** kill them all and you get up at once. By the tier: invulnerable 5 / 3 / 1 s and slow motion 3 / 1.5 / 5 s;
+  the top tier also gives Score's Revival Fire, +1 cigarette and +1 grenade. Health and armour come from the bits your
+  kills banked while DOWN (without a bank: 100 / 66 / 33 %), and both held guns' magazines are filled for free.
+- **The clock at zero:** a Score life is spent, or you die.
+
+It draws on RSQ Score (lives, Revival Fire, the Revenge row, target names and font), RSQ VisualRewards (the bits bank,
+REVENGE and REVIVE, target HP bars), RSQ Glow In The Dark (the red map), RSQ Tactical Rig (the cigarette), RSQ Grenade
+(the grenade), and Champions and LegenDoom (targets made real Champions, and their colours) when they are loaded. RSQ
+SlowMo still loads alone. Details: [SlowMo's README](SlowMo/README.md) and [design/NEAR_DEATH.md](design/NEAR_DEATH.md).
 
 Project directed and coordinated by presidentkoopa, with ideas and assets from Ermac and the people credited below.
 
@@ -122,7 +145,8 @@ air.
 A laser on every gun in both hands, out of the gun's own barrel, with the dot where the shot will land.
 
 **[RSQ SlowMo](SlowMo/README.md)** (RSQ_SlowMo.pk3)
-The world slows down. You don't. Watch enemy rounds coming and lean out of their way.
+The world slows down. You don't. Watch enemy rounds coming and lean out of their way. DOWN, the arcade revive
+(above), lives here too, off by default.
 
 **[RSQ Score](Score/README.md)** (RSQ_Score.pk3)
 An arcade scorer for VR Doom. Every kill pays for how you pulled it off, and every tool in the series chains into
