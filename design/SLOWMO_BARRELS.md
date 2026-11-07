@@ -1,5 +1,8 @@
 # SlowMo barrel cues (owner 2026-11-07 11:25-11:27; approved to build)
 
+Status (2026-11-07): BUILT. Cues 2-4 rig only, not headset-confirmed; cue 1 (Locked Barrel) built, loads clean, NOT
+shown on the rig.
+
 Four new automatic slow-motion cues in RSQ SlowMo, each its own on/off row, all ON by default, each with its own
 cause line under the countdown bar like the other cues:
 1. A locked barrel throw or uppercut barrel lands on its locked monster and goes off (RSQ Distance Grab's Barrel

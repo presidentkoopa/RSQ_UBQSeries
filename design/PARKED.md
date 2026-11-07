@@ -9,7 +9,7 @@
 - DOWN's player-facing name (owner 2026-11-07 06:31): "Be Quick or Be Dead", with some of its letters breathing
   in size. Player-facing only (menu and plate); the code keeps the name DOWN. Later.
 
-## Wheel holster web (owner 2026-11-07 06:50-07:22; approved to build, not built yet)
+## Wheel holster web (owner 2026-11-07 06:50-07:22; approved to build; BUILT 11-07, rig only, not headset-confirmed)
 - Alt-fire on a Wheel card opens a web on a nearer layer in its own colour: the Doom marine sprite (the IWAD's
   own player sprite) with the six gun holsters placed where the player's ACTIVE Tactical Rig profile puts them
   (2D projection), each with a small number in its middle, consistent everywhere; plus Rotation and Clear.
@@ -94,7 +94,7 @@
   there (a glancing stop is otherwise no impact). Anything shootable flagged a monster can be locked, e.g. Champions'
   dark-red shootable corpse (rig run).
 
-## BD22 VR dual wield and assigned holsters (owner 11:04-11:06)
+## BD22 VR dual wield and assigned holsters (owner 11:04-11:06; BUILT 11-07, rig only, not headset-confirmed)
 - Dual-wielding an assigned gun G (the off hand holds G's off-hand copy, which the Rig counts as G):
   A. Holstering the off-hand copy at G's own holster: G goes home, both hands go to fists.
   B. Holstering the off-hand copy at a holster assigned to another gun X (X in it): the off hand goes to its fist,

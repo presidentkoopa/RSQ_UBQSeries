@@ -1,6 +1,7 @@
 # Death, bones, flashlight: the owner's decisions (2026-11-06)
 
-Read with IDEAS_DEATH_BONES_A.md and _B.md. Nothing here is built yet.
+Read with IDEAS_DEATH_BONES_A.md and _B.md. Built since (rig only, not headset-confirmed): 3, the battery (RSQ FnF,
+11-06), and 4, near-death first (RSQ SlowMo's DOWN, design/NEAR_DEATH.md). The rest is not built.
 
 1. **Bones Bridge: BD monsters, then bones.** Brutal Doom's monsters stay. One of our existing mods raises a Legion
    of Bones undead from a BD corpse a few seconds after it dies (which mod: open).

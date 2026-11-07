@@ -26,7 +26,7 @@ quit cleanly. Script errors: only BD_VoxelPack's 4 voxeldef lines. Warnings from
 | Wheel spacing / font | JFO font, proportional spacing | aa1beb39 |
 | Wheel: one fist | One fist card, the picking hand gets its own fist | aa1beb39 |
 | ShieldSaw next/prev, blood | Option (off); revving throws the monster's own blood | 0ef1ee17 |
-| Holsters | Holster lock: Wheel alt-fire locks a holstered gun; a locked gun always goes home (on) | aa1beb39 |
+| Holsters | Holster lock: Wheel alt-fire locks a holstered gun; a locked gun always goes home (on). Replaced 11-07 by holster assignment and the Wheel's holster web (see below) | aa1beb39 |
 | Gun Cards | Wider small-card sliders, No Background, Card Glow Off/Quest/PCVR, a card on every weapon (Always On already existed) | 4c14bd40 |
 | Distance Grab throws | No drop at your feet while walking; no backwards throws | 31e0307a |
 | Our grenade replaces BD22's | Option on both sides (off) | 0ef1ee17, BD22 |
@@ -46,13 +46,28 @@ quit cleanly. Script errors: only BD_VoxelPack's 4 voxeldef lines. Warnings from
 | Melee sprites | CvS2 and Random Sprite Rips out; your kiddolink bursts + the shezzor sheet in KOF colours | 0ef1ee17 |
 | Silvergun ammo (added 11-06) | Picked-up Silvergun arrives loaded; +18 pistol rounds at start | BD22 71b8b3c |
 
+## Since this list (to 2026-11-07; rig only, not headset-confirmed unless it says otherwise)
+- Holster Lock and New Guns to Holsters are gone: holsters are assigned (Tactical Rig), set from RSQ Wheel's holster web
+  (Marine / Mirror view), with BD22 VR dual-wield rules (93aad009, 9ad66b96, 71299f7b, 62b48935).
+- Near-death is built: RSQ SlowMo's DOWN v3 (off by default; design/NEAR_DEATH.md), with RSQ Score's life crate from
+  Bossfights and Graves Rise with no cap (121e6a57, b7fb0732, 77318218, 81be3a21, 28e68a0f).
+- Distance Grab: release to throw (Swing Lets Go removed) and Barrel Lock-On; Melee's uppercut barrel goes to the lock
+  (dbdcd6bc, bb48e459). SlowMo barrel cues: Barrel Multi-Kill, Chain Reaction, Barrel Near You (df790f99); Locked Barrel
+  built, loads clean, NOT shown on the rig (7f0e8c95).
+- The flashlight battery and its meter are built (RSQ FnF, 11-06).
+- BD22 VR is now 2.0.4c. Load-only boot (11-07) on the full order (doom2 -> brutal22test6 -> LOB 1.05 -> BD_VoxelPack ->
+  BD22 VR 2.0.4c -> XMVE 04-07 -> Champions -> every RSQ pk3 but Gun Bonsai VR): no script error from an RSQ pk3
+  (BD_VoxelPack's 4 voxeldef lines; Miniboss's 2 old warnings). The rig's doom2.wad is a Freedoom 2 copy.
+
 ## Held for a talk (not built)
-Second Wind / near-death mode, Graveyard + tombstone ideas, Legion of Bones in GBOVR, flashlight batteries (Ermac's
+(near-death and the battery have been built since: see above) Second Wind / near-death mode, Graveyard + tombstone ideas, Legion of Bones in GBOVR, flashlight batteries (Ermac's
 iAmErmac/VR-Flashlight) and a battery bar, Miniboss tier from GBOVR level / Score lives, the GBOVR and Score tree
 passes, the Chainsmoker card and builds, life in the GBOVR XP bars, LegenDoom x BD22 power hooks (on hold).
 
 ## Open questions left by the lanes
 - Gun Cards: more small-card control beyond the wider sliders (forward/back needs re-baked voxels)?
-- SlowMo: your own timed slow-mo (cigarette, shove, parry) shows no bar unless Adrenaline is on. Want that?
+- SlowMo: your own timed slow-mo (cigarette, shove, parry) shows no bar unless Adrenaline is on. Want that? (Answered
+  11-06: with Adrenaline off it shows the countdown bar and its line.)
 - Laser: should the bent beam (Arc With Beam) be on by default?
-- Numbers the HUD lane picked: Blast slow-mo 1000 ms, Low Health slow-mo 2000 ms at 25 health.
+- Numbers the HUD lane picked: Blast slow-mo 1000 ms, Low Health slow-mo 2000 ms at 25 health. (Blast Time is 3000 ms
+  since the owner's 11-06 call.)

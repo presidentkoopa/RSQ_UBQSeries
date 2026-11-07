@@ -1,5 +1,8 @@
 # Near-death mode v2: DOWN -> REVENGE -> REVIVE -> RAGE (owner-approved 2026-11-06 19:51)
 
+Status (2026-11-07): v3 below is what is built (RSQ SlowMo's DOWN; rig only, not headset-confirmed). Later sections
+win: v3 drops v2's crate step, RAGE, Scar, Cooldown, Score's Revive award and the headline.
+
 Replaces v1 (3 kills to get up, kill-drop medkits). Built v1 code (commit a2ba3cde) is reworked into this.
 Home: RSQ SlowMo owns the mode and its options; others join by name and every mod still loads alone.
 
@@ -45,7 +48,7 @@ Home: RSQ SlowMo owns the mode and its options; others join by name and every mo
     Down (on).
 14. Gun Bonsai VR upgrades: in the GBOVR pass. Netplay: each player's own DOWN; world slow-down per SlowMo's rule.
 
-## v3 presentation and tiers (owner, 2026-11-07 04:20-04:55; agreed from in-chat mockups, not built yet)
+## v3 presentation and tiers (owner, 2026-11-07 04:20-04:55; agreed from in-chat mockups; built 11-07, see the later sections)
 
 **The plate (drawn the Wheel way: a canvas painted every frame on a quad in the world, low in view)**
 - Big line "DOWN!". Job line under it naming the target ("Revenge: <monster>").
