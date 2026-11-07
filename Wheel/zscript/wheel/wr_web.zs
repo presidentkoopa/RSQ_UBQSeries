@@ -90,6 +90,15 @@ extend class wr_Rig
 	const WEB_SHOULDER_Y = 10.0 / 51.0;
 	const WEB_HIP_Y = 29.0 / 51.0;
 	const WEB_HALF_W = 9.0 / 41.0;   // the widest holster's distance from his middle, of the picture's width
+	// WEB VIEW: MIRROR, BIG (owner 2026-11-07 11:01: "lots of empty space there tho, can we be bigger?"): the mirror and
+	// its rings fill the panel, centred, nothing over its edge. Where the highest and the lowest gun holster rings are
+	// seen on the panel (from your eyes, on the panel's middle plane, as the rings are placed; of the panel's height PH).
+	// Measured on the rig (frames, 1024 px; the panel 202 px tall, 165 wide). Asked for 0.247 / -0.217: the rings 114 px
+	// apart, the copy 205 x 181 px, over the panel's edges. Asked for 0.199 / -0.202 (scaled by 0.863): the rings 101 px
+	// apart, the copy (with what hangs on it) 182 x 152 px, 0.90 of the panel's height and 0.91 of its width, but 12 px
+	// low (its middle 0.052 PH below the panel's, in these units). Moved up by that: these.
+	const WEB_MIR_TOP = 0.251;
+	const WEB_MIR_LOW = -0.150;
 	const WEB_UNFOLD = 10;        // tics: the panel growing out of the card
 	const WEB_LINE_GAP = 3;       // tics between one line starting to draw and the next
 	const WEB_LINE_TICS = 5;      // tics a line takes to draw out
@@ -109,6 +118,8 @@ extend class wr_Rig
 	bool mWebNumScore;                           // the ring numbers are in RSQ Score's font (Score is loaded)
 	bool mWebMirror;                             // Web View: Mirror (set as the web opens)
 	bool mWebMirrorLive;                         // ...and the Rig drew its mirror this tic
+	double mWebMirT, mWebMirB;                   // where the Rig is asked to put the highest / lowest gun holster (of s),
+	                                             // corrected every tic so they land where WEB_MIR_TOP / LOW want them seen
 	Class<Weapon> mWebCls;
 	int mWebPanel, mWebMarine, mWebClear, mWebClearText;
 	Array<int> mWebRing, mWebNum, mWebName, mWebLine;
@@ -664,6 +675,7 @@ extend class wr_Rig
 		mWebNumScore = ServiceIterator.Find("RS_ScoreService").Next() != null;
 		mWebMirror = cv("wr_web_view", 0.0) >= 0.5 && webSvc() != null;
 		mWebMirrorLive = false;
+		mWebMirT = mWebMirB = 0;
 		// the panel and the marine are SOLID (the opaque pass: nothing behind the panel shows through it) and BRIGHT (the
 		// panel's own teal and the marine's own colours, whatever the room's light)
 		mWebPanel = webBB(wr_BB.BB_TEXTURE, 0, 0xFFFFFF, "WREWPAN", true, 0, wr_BB.BBFL_SOLID | wr_BB.BBFL_BRIGHT);
@@ -826,16 +838,19 @@ extend class wr_Rig
 
 		// WEB VIEW: MIRROR. The Rig draws its mirror on the panel, its highest gun holster on the marine's shoulder line and
 		// its lowest on his hip line, and answers how far behind the panel's middle it reaches and where each place is.
+		// (big: WEB_MIR_TOP / LOW; the highest and lowest gun holsters as seen on the panel, from the panel's middle)
 		Array<double> mSpot;
 		bool mirror = false;
 		double back = 0;
+		double mWantT = PH * WEB_MIR_TOP, mWantB = PH * WEB_MIR_LOW, mSpread = mWantT - mWantB;
 		if (mWebMirror)
 		{
 			let sv = webSvc();
 			Vector3 mc = wC + wR * ox + wU * oy;
+			if (mWebMirT <= mWebMirB) { mWebMirT = mWantT; mWebMirB = mWantB; }
 			String ans = "";
 			if (sv) ans = sv.GetString("mirror.web", String.Format("%.3f %.3f %.3f %.3f %.3f %.3f %.3f",
-				mc.x, mc.y, mc.z, yaw, tilt, s * yShoulder, s * yHip), 1, 0, null);
+				mc.x, mc.y, mc.z, yaw, tilt, s * mWebMirT, s * mWebMirB), 1, 0, null);
 			Array<String> tk;
 			ans.Split(tk, " ", TOK_SKIPEMPTY);
 			if (tk.Size() >= 1 + 4 * 14)
@@ -843,6 +858,24 @@ extend class wr_Rig
 				mirror = true;
 				back = tk[0].ToDouble();
 				for (int q = 1; q < tk.Size(); q++) mSpot.Push(tk[q].ToDouble());
+				// seen from your eyes the copy stands behind the panel: where its highest and lowest gun holsters land
+				// on it, and the ask for the next tic moved by what is missing
+				double seenT = -1e9, seenB = 1e9;
+				for (int q = 0; q < 6; q++)
+				{
+					int rq = WEB_REGION[q];
+					Vector3 dq = (mSpot[rq * 4], mSpot[rq * 4 + 1], mSpot[rq * 4 + 2]) - eye;
+					double den = wF dot dq;
+					if (abs(den) < 1e-6) continue;
+					double yq = (eye + dq * ((wF dot (wC - eye)) / den) - mc) dot wU;
+					seenT = max(seenT, yq); seenB = min(seenB, yq);
+				}
+				if (s > 0.05 && seenT > seenB)
+				{
+					mWebMirT += mWantT - seenT / s;
+					mWebMirB += mWantB - seenB / s;
+					if (mWebMirT <= mWebMirB + PH * 0.05) { mWebMirT = mWantT; mWebMirB = mWantB; }
+				}
 			}
 			if (mirror != mWebMirrorLive && cvBool("wr_debug", false))
 				Console.Printf("RSQ Wheel web: Mirror view %s", mirror ? String.Format("drawn by RSQ Tactical Rig (reaches %.1f behind the panel)", back) : "not drawn by RSQ Tactical Rig: Marine");
@@ -856,7 +889,10 @@ extend class wr_Rig
 			double dE = wF dot (eye - wC);
 			if (dE > 1.0) pGrow = (dE + pBack) / dE;
 		}
-		webPlace(mWebPanel, wC + (wR * ox + wU * oy) * pGrow - wF * pBack, PW * s * pGrow, PH * s * pGrow, yaw, tilt);
+		// (grown about your eyes, so its middle is seen where it was)
+		Vector3 pAt = wC + wR * ox + wU * oy;
+		if (mirror) pAt = eye + (pAt - eye) * pGrow;
+		webPlace(mWebPanel, pAt, PW * s * pGrow, PH * s * pGrow, yaw, tilt);
 		if (mirror) webPlace(mWebMarine, wC, 0, 0, yaw, tilt);
 		else webPlace(mWebMarine, wC + wR * (ox + s * mx) + wU * (oy + s * (mTop - MH * 0.5)) + wF * WEB_ON_MARINE, MW * s, MH * s, yaw, tilt);
 
@@ -872,6 +908,7 @@ extend class wr_Rig
 		}
 		double halfW = sw * WEB_HALF_W * k;
 		double D = MH * 0.13;
+		if (mirror) D *= mSpread / (yShoulder - yHip);   // the rings grow with the mirror
 		color pc = webProfCol();
 		color pcLit = color(min(255, pc.r / 2 + 128), min(255, pc.g / 2 + 128), min(255, pc.b / 2 + 128));
 		String wcn = mWebCls.GetClassName();

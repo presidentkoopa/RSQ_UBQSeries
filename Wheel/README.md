@@ -18,11 +18,13 @@ RSQ Tactical Rig: main-hand alt-fire is a dull tick, the rotation and next/prev 
 the fly-in mid-flight (too fast for the rig's frames).
 The web's ring numbers (11-07, rig only, not headset-confirmed): big, in RSQ Score's combo font when Score is loaded (shown on the rig), else in JFO, bigger (not shown).
 Web View (11-07, rig only, not headset-confirmed): **Marine** (default, as above) or **Mirror**: the web shows RSQ
-Tactical Rig's own mirror of you (the one Move Holsters by Hand shows), small, with the six rings on the real holster
+Tactical Rig's own mirror of you (the one Move Holsters by Hand shows), filling the panel, with the six rings on the real holster
 spots as the mirror shows them (your left on your left). Shown on the rig with the Rig's torso on: the mirror on the
 panel with all six rings on it, a ring picked by pointing, the gun flying in and its sprite in the ring. With RSQ
 ShieldSaw's Take It From set to Over the Shoulder, the off-shoulder ring (1 right-handed) is the ShieldSaw's: it shows
 the ShieldSaw's card art and its name, and a gun picked onto it gets only a dull tick (shown on the rig, Mirror view).
+Mirror big (11-07, rig only, not headset-confirmed): the mirror and its rings (grown with it) take about 90% of the
+panel's height and 91% of its width, centred, nothing over its edges, Clear still below (shown on the rig).
 Not shown: Marine view with the ShieldSaw's ring, ring 2 for a left-handed player, the Rig off (the web falls back to
 Marine).
 
