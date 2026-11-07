@@ -1838,13 +1838,11 @@ class RSQSM_Service : Service
 		if (request.Left(4) ~== "down") return DownAsk(request, intArg, objectArg);
 		return -1;
 	}
-	// "down.plate" intArg player -> the plate's anchor (its backdrop quad; the console player's plate only), null without one
+	// "down.plate": the DOWN panel's anchor in the world -- none since 11-07 07:50 (the panel is on the HUD layer): null, so
+	// VisualRewards' banking bits fly to the player himself
 	override Object GetObject(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
-		if (!(request ~== "down.plate")) return null;
-		let d = RSQSM_Down.Get();
-		if (!d || !d.plate || intArg != d.plate.pn || !d.IsDown(intArg)) return null;
-		return d.plate.back;
+		return null;
 	}
 	static clearscope int DownAsk(String request, int n, Object o = null)
 	{

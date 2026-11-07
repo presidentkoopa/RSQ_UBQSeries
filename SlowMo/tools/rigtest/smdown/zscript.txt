@@ -18,8 +18,17 @@ version "4.14"
 //      frame; Distance Grab's rule asked; t1450 breathing red; t1612 it runs out; t1620 a second crate taken (+1 life)
 //   F  t1640 Graves Rise: 30 tombstones, Graveyard's RaiseGraves with a budget of 5 (no cap: 30 risers, Legion of Bones
 //      loaded); the Bones Bridge (gy_bones on from t5): the BD monsters killed above rise as LoB undead after LoB's delay
+// dn_mode 3 = v3e (owner 11-07 06:55-07:15: the mockup's panel, baked crosshairs, edge arrows -> world trail, bits fly
+// quickly within 3x the reach), see V3e below.
+// dn_mode 2 = v3d (owner 11-07 06:35-06:4x: stacked Target lines, the bar reset, the plate's font), see V3d below.
+class RSQSMD_Blocker : Actor
+{
+	Default { Radius 40; Height 160; +SOLID; +NOTONAUTOMAP; +DONTSPLASH; }
+	States { Spawn: TNT1 A -1; Stop; }
+}
 class RSQSMD_Probe : EventHandler
 {
+	Array<Actor> blk;
 	Array<Actor> z;
 	int t0;
 	bool started;
@@ -177,6 +186,8 @@ class RSQSMD_Probe : EventHandler
 			Inv(t, "before DOWN (magazines low, 1 cigarette, 1 grenade)");
 			Report(t, "before");
 		}
+		if (Mode() == 2) { V3d(t, pmo); return; }
+		if (Mode() == 3) { V3e(t, pmo); return; }
 		// ---- A: top tier
 		if (t == 40) { Hit(t, z[0], 40, 100, "A: a lethal hit by z0"); Report(t, "A: after the lethal hit"); }
 		if (t == 50) { Shoot(t, z[1], 20, "A: z1 hit (an Imp: time bought)"); Report(t, "A: after a hit"); }
@@ -276,5 +287,144 @@ class RSQSMD_Probe : EventHandler
 			while (a = Actor(it.Next())) if (a.bISMONSTER && a.health > 0) { String cn = a.GetClassName(); if (cn.IndexOf("Skull") >= 0 || cn.IndexOf("Skeleton") >= 0 || cn.IndexOf("Undead") >= 0) k++; }
 			Console.Printf("T_UNDEAD t%d living Legion of Bones undead (Skull / Skeleton / Undead in the name): %d", t, k);
 		}
+	}
+
+	// ================================================================================================================
+	// v3d (dn_mode 2), ONE run:
+	//   A  t40 lethal by z0 -> DOWN 1 (owed 1); t62 z1 killed (bits bank); t80 z0 killed by him -> Revenge award, TOP tier,
+	//      the BANK PAYS OUT (health from 1)
+	//   B  t260 every in-view spawn spot blocked (test blockers on the grid SpawnInView tries, and the +-30 ring spots);
+	//      t270 lethal by z2 -> DOWN 2 (owed 2): z2 + a copy that finds no room in view for 70 tics -> OUT OF VIEW nearby;
+	//      t346 blockers gone; t350 the copy moved straight BEHIND (the turn marker at the bottom of the ring); t375 the
+	//      tall step breaks; t395 the copy killed by him (its line struck, icon cracked; the BAR RESET sweep, the tall
+	//      step snapping back with a clunk; Revenge); t470 z2 killed -> UP (tier at the last kill)
+	//   C  t660 lethal by z3 -> DOWN 3 (owed 3): z3 + two copies in view (three stacked lines); t705 one copy killed (reset);
+	//      t760 the other (reset); t800 z3 killed -> UP
+	void Lines(int t, String why)
+	{
+		let d = RSQSM_Down.Get();
+		int n = consoleplayer;
+		String s = "";
+		for (int i = 0; i < d.tMon.Size(); i++)
+			if (d.tPn[i] == n) s = s .. String.Format(" [\"%s\" icon %d %s]", d.tName[i], d.tIcon[i], d.tDead[i] == 0 ? "alive" : (d.tDead[i] == 1 ? "DEAD" : "gone"));
+		for (int i = 0; i < d.spPn.Size(); i++) if (d.spPn[i] == n) s = s .. String.Format(" [waiting %s icon %d]", d.spCls[i], d.spIcon[i]);
+		String pl = " (HUD: drawn by downhud.zs from these)";
+		Console.Printf("T_LINES t%d %s: targets%s; plate lines%s; bar elapsed %.2f s, refill at %d (sweep %d tics), clock %.2f s",
+			t, why, s, pl, d.Elapsed(n) / 35.0, d.refillTic[n], RSQSM_Down.REFILL_TICS, d.clk[n] / 35.0);
+	}
+	void Block(int t, bool on)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!on) { int k = blk.Size(); for (int i = 0; i < blk.Size(); i++) if (blk[i]) blk[i].Destroy(); blk.Clear(); Console.Printf("T_BLOCK t%d %d blockers removed", t, k); return; }
+		static const double DISTS[] = { 640, 512, 384, 288, 192 };
+		static const double ANGS[] = { 0, 12, -12, 24, -24, 36, -36, 48, -48, 60, -60, 30, -30 };
+		for (int i = 0; i < DISTS.Size(); i++)
+			for (int j = 0; j < ANGS.Size(); j++)
+			{
+				double aa = pmo.angle + ANGS[j];
+				Vector2 xy = pmo.pos.xy + (cos(aa), sin(aa)) * DISTS[i];
+				let b = Actor.Spawn("RSQSMD_Blocker", (xy, Actor.ONFLOORZ), NO_REPLACE);
+				if (b) blk.Push(b);
+			}
+		Console.Printf("T_BLOCK t%d %d blockers on every in-view spawn spot (angle %.0f)", t, blk.Size(), pmo.angle);
+	}
+	void Invul(int from, int to, bool on) { for (int i = from; i <= to; i++) if (z[i]) z[i].bINVULNERABLE = on; }
+	void V3d(int t, PlayerPawn pmo)
+	{
+		// ---- A
+		if (t == 40) { Hit(t, z[0], 40, 100, "A: a lethal hit by z0 (DOWN 1)"); Report(t, "A: after the lethal hit"); Lines(t, "A"); }
+		if (t == 50) Shoot(t, z[1], 20, "A: z1 hit (time bought)");
+		if (t == 62) Shoot(t, z[1], 5000, "A: z1 killed (not a target: its bits bank)");
+		if (t == 76) Report(t, "A: bits banked?");
+		if (t == 78) Invul(2, 5, true);
+		if (t == 80) { Console.Printf("T_PREUP t80 health %d armour %d", pmo.health, BasicArmor(pmo.FindInventory("BasicArmor")) ? BasicArmor(pmo.FindInventory("BasicArmor")).Amount : 0); Shoot(t, z[0], 5000, "A: the target killed by him"); }
+		if (t == 82) { Report(t, "A: UP"); Inv(t, "after UP (A)"); }
+		if (t == 95) Invul(2, 5, false);
+		// ---- B
+		if (t == 260) Block(t, true);
+		if (t == 270) { Hit(t, z[2], 30, 100, "B: a lethal hit by z2 (DOWN 2)"); Report(t, "B: after the lethal hit"); Lines(t, "B: one target, one waiting"); }
+		if (t == 300 || t == 330) Lines(t, "B: the copy still finds no room in view");
+		if (t >= 336 && t <= 346 && (t % 2) == 0) Lines(t, "B: the out-of-view spawn");
+		if (t == 346) Block(t, false);
+		if (t == 350) { Place(t, Target(0, true), 180, 220, "B: the copy straight behind"); }
+		if (t == 352 || t == 370) Lines(t, "B: the copy behind");
+		if (t == 380) Lines(t, "B: the tall step broke");
+		if (t == 395) { Lines(t, "B: before the kill"); Shoot(t, Target(0, true), 5000, "B: the copy killed by him"); }
+		if (t >= 396 && t <= 410) Lines(t, "B: the reset sweep");
+		if (t == 430) Lines(t, "B: z2 left");
+		if (t == 466) Invul(3, 5, true);
+		if (t == 470) { Console.Printf("T_PREUP t470 health %d", pmo.health); Shoot(t, z[2], 5000, "B: z2 killed by him"); }
+		if (t == 472) { Report(t, "B: UP"); Lines(t, "B: UP"); }
+		if (t == 490) Invul(3, 5, false);
+		// ---- C
+		if (t == 660) { Hit(t, z[3], 30, 100, "C: a lethal hit by z3 (DOWN 3)"); Report(t, "C: after the lethal hit"); }
+		if (t == 700) Lines(t, "C: three targets");
+		if (t == 705) Shoot(t, Target(0, true), 5000, "C: a copy killed by him");
+		if (t == 706 || t == 712 || t == 740) Lines(t, "C: one struck, two left");
+		if (t == 760) Shoot(t, Target(0, true), 5000, "C: the other copy killed by him");
+		if (t == 762 || t == 790) Lines(t, "C: two struck, one left");
+		if (t == 796) Invul(4, 5, true);
+		if (t == 800) { Console.Printf("T_PREUP t800 health %d", pmo.health); Shoot(t, z[3], 5000, "C: z3 killed by him"); }
+		if (t == 802) { Report(t, "C: UP"); Lines(t, "C: UP"); }
+	}
+	// ---- dn_mode 3 (v3e) ------------------------------------------------------------------------------------------------
+	void Marks(int t, String why)
+	{
+		let d = RSQSM_Down.Get();
+		String s = "";
+		if (d.plate)
+			for (int i = 0; i < d.plate.marks.Size(); i++)
+			{
+				let m = d.plate.marks[i];
+				if (!m || !m.mon) continue;
+				int tv = 0;
+				double tal = 0;
+				for (int k = 0; k < 6; k++) if (m.tC[k] && !m.tC[k].bInvisible) { tv++; tal = m.tC[k].alpha; }
+				double off = 0;
+				let pmo = players[consoleplayer].mo;
+				Vector3 to = m.mon.pos + (0, 0, m.mon.height * 0.5) - (pmo.pos + (0, 0, players[consoleplayer].viewheight));
+				Vector3 gz = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
+				off = acos(clamp((to / max(1.0, to.Length())) dot gz, -1.0, 1.0));
+				s = s .. String.Format(" [%s icon %d %.0f deg off: mode %d (%s), edge direction %.0f, trail %d of 6 drawn (alpha %.2f), crosshair %s frame %d]", m.mon.GetClassName(), m.icon, off,
+					m.mode, m.mode == 1 ? "edge arrows (HUD)" : (m.mode == 2 ? "trail" : "none"), m.eAng, tv, tal,
+					(m.xhair && !m.xhair.bInvisible) ? "drawn" : "hidden", min(16, level.maptime - m.lockTic));
+			}
+		Console.Printf("T_MARKS t%d %s:%s", t, why, s);
+	}
+	void V3e(int t, PlayerPawn pmo)
+	{
+		if (t == 34)
+		{
+			// bits (V3e runs from t34: an earlier tic never reaches it): Bits Fly to Me at its 2 m default (3x = 204 units), health-rich so the bank pays health
+			SetF("rsqgb_kr_magnet", 2.0); SetI("rsqgb_kr_mix", 4); SetI("rsqgb_kr_ratio_health", 80); SetI("rsqgb_kr_ratio_armor", 20); SetI("rsqgb_kr_ratio_ammo", 0);
+		}
+		if (t == 36)
+		{
+			// three kills owed: the DOWNs since a Score life set to 2 before this one (test only)
+			let w = RSQSM_DownWatch(pmo.FindInventory("RSQSM_DownWatch"));
+			if (w) w.downs = 2;
+			Console.Printf("T_OWED t%d downs set to %d (this DOWN owes 3)", t, w ? w.downs : -1);
+		}
+		if (t == 40) { Hit(t, z[2], 30, 100, "a lethal hit by z2 (DOWN, owed 3)"); Report(t, "after the lethal hit"); Lines(t, "DOWN"); }
+		if (t == 60 || t == 70) { Lines(t, "three stacked lines?"); Marks(t, "three targets"); }
+		if (t == 72) { Console.Printf("T_DIST t72 z3 %.0f units, z0 %.0f units", pmo.Distance3D(z[3]), pmo.Distance3D(z[0])); Shoot(t, z[3], 5000, "z3 killed (not a target, in reach: its bits fly and bank)"); }
+		if (t == 80 || t == 86) Report(t, "bits banked?");
+		if (t == 92) { Lines(t, "before the first kill"); Shoot(t, Target(0, true), 5000, "a copy killed by him (refill sweep)"); }
+		if (t >= 93 && t <= 104) Lines(t, "the refill sweep");
+		if (t == 110) Place(t, Target(0, true), 180, 200, "the other copy straight behind");
+		if (t >= 112 && t <= 140 && (t % 4) == 0) { Place(t, Target(0, true), 180, 200, "held behind"); Marks(t, "behind: edge arrows"); }
+		if (t == 142) Place(t, Target(0, true), 105, 200, "the copy at 105 degrees (left)");
+		if (t >= 144 && t <= 160 && (t % 4) == 0) { Place(t, Target(0, true), 105, 200, "held at 105"); Marks(t, "105: edge arrows"); }
+		if (t == 162) Place(t, Target(0, true), 55, 220, "the copy at 55 degrees (left)");
+		if (t >= 164 && t <= 184 && (t % 4) == 0) { Place(t, Target(0, true), 55, 220, "held at 55"); Marks(t, "55: the trail"); }
+		if (t == 186) Place(t, Target(0, true), 18, 230, "the copy at 18 degrees (in view)");
+		if (t >= 188 && t <= 214 && (t % 2) == 0) { Place(t, Target(0, true), 18, 230, "held at 18"); Marks(t, "18: crosshair assembling, trail"); }
+		if (t == 216) { Console.Printf("T_DIST t216 z0 %.0f units", pmo.Distance3D(z[0])); Shoot(t, z[0], 5000, "z0 killed (not a target, in reach: bits bank)"); }
+		if (t == 226) Report(t, "bank before the kills");
+		if (t == 228) { Shoot(t, Target(0, true), 5000, "the second copy killed by him (refill sweep)"); }
+		if (t == 230 || t == 236) Lines(t, "two struck, one left");
+		if (t == 244) Invul(4, 5, true);
+		if (t == 248) { Console.Printf("T_PREUP t248 health %d", pmo.health); Report(t, "before revive"); Shoot(t, z[2], 5000, "z2 killed by him (REVIVE)"); }
+		if (t == 250 || t == 270) { Report(t, "after REVIVE"); Lines(t, "after REVIVE"); }
 	}
 }

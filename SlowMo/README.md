@@ -9,27 +9,39 @@ New since the headset pass (tested on the rig, headset check pending): the Real-
 New on 11-06 (rig only, not headset-confirmed): the two bars (stored slow-mo and countdown) with the cause line under
 the countdown; Heavy Hit Slowdown; the Grenade Blast and Over-Under Blast triggers; Reload When.
 
-New on 11-07, **DOWN v3** (design/NEAR_DEATH.md; rig only, not headset-confirmed: the rig run showed the hold, crouch, crawl,
-slowed world, plate, target icons, turn markers (all four styles, left and right), the three tiers, the failure with a Score
-life and the bits flying into the plate. Fixed after that run and NOT shown: the bank paying out, the Revenge award, a
-target straight behind drawn at the bottom; never needed in the run: the out-of-view spawn). Off by default (DOWN row). A monster's killing hit holds you at 1 HP instead (before any RSQ Score
-life); a barrel nobody set off, a crusher, a fall or your own shot is a normal death. While DOWN no hit can kill you: you
-drop into a crouch, crawl at a third of your speed, the world slows to its deepest, RSQ Glow In The Dark turns the map
-red, a heartbeat plays, and your own shots fly at normal speed. A plate low in front of you (drawn the RSQ Wheel's way:
-model quads in the world) shows **DOWN!**, **REVENGE: <monster>**, one icon per kill you owe, the reward bar (three 3 s
-steps, the tall one first; each breaks off and falls with a clunk and a rumble) and **DEATH IN:** with a seven-segment
-SS:hh clock of 9 real seconds. Damage you deal buys clock time (a whole monster's worth: 1 s for zombies, Imps, Pinkies;
-0.5 s a Lost Soul; 2 s bigger; 10 s a Cyberdemon or Spider Mastermind), never above 9 s, the clock never slower than a
-quarter speed. You owe 1 kill, then 2, then 3... (back to 1 when a Score life is spent): the monster that downed you if it
-is in your fight, else a boosted copy of it spawned in view, and fresh boosted copies for the rest. Each target has its
-own icon, assembled over it as it is marked; a target out of view shows its icon on a ring round your gaze with a turn
-marker pointing the way (Turn Marker: Framed Triangle, Framed Fat Arrow, Triple Chevron (default), Triangle With
-Afterimages). Kill them all to get up at once: REVIVE, and by the bar's step: invulnerable 5 / 3 / 1 s, slow motion 3 /
-1.5 / 5 s; the top step also Score's Revival Fire, +1 cigarette, +1 grenade. Health and armour come from the bits your
-kills dropped while DOWN (RSQ VisualRewards' Kill Rewards fly them into the plate), up to max health and 250 armour;
-without that bank, 100 / 66 / 33 %. Both held guns' magazines are filled for free. The clock at zero: a Score life (the
-spawned targets vanish in teleport fog, the map's own monster loses its boost), or death. The v2 RAGE, Scar, Cooldown,
-crate and the DOWN bar under the SlowMo bars are gone. Every number is a row on the DOWN part of the page (Reset All).
+New on 11-07, **DOWN v3** (design/NEAR_DEATH.md; the look is design/mockups/down_v3_full_view_mockup.html). Status: rig only,
+not headset-confirmed. The last rig run (v3g) showed: the panel slamming up and the bar filling as it lands, the panel
+half the eye wide, three stacked target lines, a kill with the refill edge and a struck line, the edge arrows (Triple
+Chevron) behind and to the left, the eye-level trail, a crosshair assembling and the trail fading, bits banking and
+paying health and armour on the revive. Not shown: the other Turn Marker styles, the JFO font, a crosshair hidden by a
+wall, Photosensitive Mode, a Score life spent, netplay. The panel's size uses the rig eye's measured width (an ~85
+degree eye); a headset with a wider or narrower eye shows it in proportion. Off by default (DOWN row). A monster's
+killing hit holds you at 1 HP instead (before any RSQ Score life); a barrel nobody set off, a crusher, a fall or your own
+shot is a normal death. While DOWN no hit can kill you: you drop into a crouch, crawl at a third of your speed, the world
+slows to its deepest, RSQ Glow In The Dark turns the map red, a heartbeat plays, and your own shots fly at normal speed.
+THE PANEL is on the HUD layer (like RSQ Score's readout), so the gun, a wall or the floor never hides it: half the view
+wide, low and centred, clear of the status bar; it slams up from the bottom edge with a slight overshoot and a heavy
+thump in both hands, the bar filling left to right as it lands. It shows one line per target, stacked (its own icon on
+a dark slot, then **TARGET: <name>**: the monster's name with RSQ Score's tier words in front when it has them, e.g. DARK
+RED CHAMPION IMP; a target that dies keeps its line, dimmed with a thin strike-through, its icon cracked), the reward bar
+(three 3 s steps, the tall one first, in the target's colour, draining smoothly) and **DEATH IN:** with a seven-segment
+SS:hh clock of 9 real seconds. Its words are in RSQ Score's combo font when Score is loaded, else in JFO. Killing a target
+while others remain refills the bar with a bright edge running left to right (the DEATH IN clock is not reset; the tier
+is the step you are in at the last kill). Damage you deal buys clock time (a whole monster's worth: 1 s for zombies,
+Imps, Pinkies; 0.5 s a Lost Soul; 2 s bigger; 10 s a Cyberdemon or Spider Mastermind), never above 9 s, the clock never
+slower than a quarter speed. You owe 1 kill, then 2, then 3... (back to 1 when a Score life is spent): the monster that
+downed you if it is in your fight, else a boosted copy of it spawned in view, and fresh boosted copies for the rest. Each
+target has its own crosshair (ten, never repeated in one DOWN). A target more than about 75 degrees from your view shows
+EDGE ARROWS on the HUD (Turn Marker: Framed Triangle, Framed Fat Arrow, Triple Chevron (default), Triangle With
+Afterimages) with its icon, pointing the way to turn and swinging round with an easing as you turn. Closer than that, a
+TRAIL of six chevrons fixed in the world at eye level runs from just ahead of you to it, a brightness wave chasing toward
+it; in view, its crosshair assembles on it and the trail fades out. Neither is placed behind a wall. Kill them all to
+get up at once: REVIVE, and by the bar's step: invulnerable 5 / 3 / 1 s, slow motion 3 / 1.5 / 5 s; the top step also
+Score's Revival Fire, +1 cigarette, +1 grenade. Health and armour come from the bits your kills dropped while DOWN (RSQ
+VisualRewards' Kill Rewards: kills within 3x your Bits Fly to Me reach fly to you quickly and bank), up to max health
+and 250 armour; without that bank, 100 / 66 / 33 %. Both held guns' magazines are filled for free. The clock at zero: a
+Score life (the spawned targets vanish in teleport fog, the map's own monster loses its boost), or death. Every number
+is a row on the DOWN part of the page (Reset All).
 
 Stock QuestZDoom 17.3 has no world clock that a mod can slow. This mod builds one in ZScript. Every monster,
 missile, gib and sound near you is time-dilated, not frozen. Each one still moves every frame, just by less,

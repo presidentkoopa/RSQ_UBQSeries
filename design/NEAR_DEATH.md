@@ -177,3 +177,47 @@ and goes to him; no more readings)
 - LegenDoom without Champions: the legendary's glow colour is read at run time from a stencil-drawn actor bound to it; gold
   until found. Champions: a colour token given by name (Yellow / White / Dark Green / Cyan, as RSQ Miniboss gives them).
 - The v2 DOWN bar under the SlowMo bars is removed (the plate replaces it).
+
+## v3 targets on the plate, the bar reset, the plate's font (owner, 2026-11-07 06:35-06:4x; approved to build)
+- The job line says "Target:" (was "Revenge:"). More than one target: one line per target, stacked vertically,
+  "Target: <name>". The name: the game's own monster name (its tag, the class name when it has none) with RSQ Score's
+  tier words in front when the target has them ("Dark Red Champion Imp", "Legendary Imp"): SlowMo asks Score by
+  name (RS_ScoreService GetString "monster.name"); without Score, just the game name. Score's readout is untouched;
+  Score's award keeps the name "Revenge".
+- Each line carries its target's own crosshair icon. When a target dies its icon cracks and its line dims with a
+  strike-through, and the line STAYS.
+- Killing one target while others remain RESETS the reward bar to full with a fast refill sweep; the broken-off steps
+  snap back on with a clunk (stock Doom/BD sound). The DEATH IN clock is NOT reset; damage still buys time as before.
+  The tier is judged at the last kill.
+- DOWN's ini value is left alone (no forced-off migration).
+- The plate's TEXT ("DOWN!", the Target lines, "DEATH IN:") uses RSQ Score's combo font (RSSCFN2, the breakdown
+  font) when Score is loaded, else JFO. SlowMo still loads alone, so it carries both: RSSCFN2's letters unpacked to PNGs
+  by a committed tool (SlowMo/tools/plate/gen_plate_font.py; RSSCFN2 is capitals only, fine: owner), and JFO's letters
+  under SlowMo's own names, its gaps (! . , ' ( ) ? ...) filled with the IWAD's DoomFont letters exactly as the RSQ Wheel
+  does (Wheel/tools/gen_jfo.py). Credits carried (Jimmy / Dakka for RSSCFN2; Zedas and Blackmore1014 for JFO). The
+  seven-segment DEATH IN readout stays exactly as it is.
+
+## v3 answers after the v3d run (owner, 2026-11-07 06:55-07:05)
+- The plate shows no headline: no "DOWN!", no "BE QUICK OR BE DEAD" (that name is dropped). The clock, the
+  Target lines and the bar are enough.
+- Bits from monsters killed while DOWN fly to you quickly if they are within 3x your Bits Fly to Me reach.
+- Fix the panel's see-through background covering and dimming its letters (owner: "fix it").
+- The built bar does not match the approved mockups (owner 07:05). Rebuild the panel to the mockup's proportions.
+- The bar's steps no longer break off and fall as they drain: the bar just drains smoothly (owner 07:07).
+- The approved look is design/mockups/down_v3_full_view_mockup.html, with: no DOWN headline, "Target:" lines
+  stacked one per target, each target a different icon, the assembling crosshairs, the animated turn arrows.
+- Turn arrows, both kinds (owner 07:12): the view-edge arrows (as built, momentum loop) give the rough direction;
+  once you have turned roughly toward the target they hand off to arrows FIXED IN THE WORLD that point precisely
+  at it, for exact acquisition, ending at its assembling crosshair.
+  The world arrows: a short trail of chevrons at eye level, from in front of you to the target, chasing toward it.
+- The trail and the crosshairs do NOT show through walls (owner 07:15).
+- The arrows' and crosshairs' motion is baked into animation frames on panels that stay still (owner 07:15), not
+  done by moving or scaling the panels.
+- LAYERS (owner 07:50, correcting the build): the panel (Target lines, bar, DEATH IN clock) and the edge arrows are
+  on the sprite/HUD layer, like Score's readout and SlowMo's bars, so the clock can never be missed, hidden by the
+  gun or clipped by a wall. Only the eye-level trail arrows and the crosshairs on the targets are in the world.
+- The panel is half the view wide (owner 07:3x). The eye-level trail fades out once the target's crosshair has
+  assembled on it (owner 07:47).
+- "Half the view" means half of what you actually see in the headset, whatever the HUD scale. The panel arrives
+  by slamming up from the bottom edge with a slight overshoot, the bar filling left to right as it lands, with a
+  heavy controller thump (owner 07:55).

@@ -223,6 +223,8 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
   `GetInt("givelife", "", n, 0, pawn)` (n 0 or less gives 1; returns the lives now held, -1 without a score): added like
   an earned life, with an earned life's cue (owner 11-05: "can we have killing a miniboss give a Score life?"). Add your own bonus by
   subclassing `RS_ScoreBonus` and registering it with `RS_ScoreRegistry.RegisterBonus`.
+  Ask a monster's name with Score's tier words in front (`GetString("monster.name", "", 0, 0, monster)`: "Dark Red
+  Champion Imp", "Legendary Imp", or just its own name): RSQ SlowMo's DOWN plate uses it (11-07).
 
 ## Credits and licence
 

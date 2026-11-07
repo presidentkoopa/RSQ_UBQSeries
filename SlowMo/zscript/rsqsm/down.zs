@@ -16,7 +16,10 @@
 //            at a quarter speed at best (Slowest Drain); clock + pool never over 9 s. At zero: Score is asked for a life
 //            (its buddha catches the killing blow), else you die.
 //  BAR       the reward gauge, not a second clock: three steps of 3 s (Bar Step), tall (right end, drains first), normal,
-//            thin. Bought time never stretches it. The step you are in when the LAST target dies is the tier.
+//            thin. It drains smoothly; no step breaks off (owner 11-07 07:07). Bought time never stretches it. The step
+//            you are in when the LAST target dies is the tier. Killing one target while others remain RESETS the bar to
+//            full (owner 11-07 06:35): a fast bright refill sweep left to right (REFILL_TICS); the bar drains again once
+//            the sweep is done. The DEATH IN clock is not reset.
 //  TARGETS   kills owed = 1 + the DOWNs since the last Score life spent (RSQSM_DownWatch.downs travels with you; the count
 //            goes back when Score's life count drops). Target 1: the monster that downed you if it is in your fight
 //            (alive, and within FIGHT_NEAR, or in sight within FIGHT_FAR), else a boosted copy of its type spawned in view at
@@ -33,8 +36,9 @@
 //            Cooldown, no crate, no "Revive" award ("Revenge" stays: each target you kill).
 //  FAIL      the clock at zero. With a Score life: the spawned targets go in teleport fog, the map's own monster loses its
 //            mark and boost and stays. Without: dead.
-//  PLATE     plate.zs: the canvas-like plate drawn the RSQ Wheel's way (model quads in the world), the target icons over
-//            the monsters, the off-view turn markers. Console player only.
+//  PANEL     downhud.zs: the panel (Target lines, bar, DEATH IN) and the edge arrows on the HUD layer (owner 07:50), to the
+//            approved mockup (design/mockups); plate.zs: the crosshairs on the targets and the eye-level trail, in the
+//            world. Console player only.
 //  NETPLAY   each player has his own DOWN; the world's slow-down is the clock's, shared as every slow motion is.
 //
 // JOINING (by name): every Service whose class name contains "RSQDownJoin" is told GetInt(event, stringArg, player, 0,
@@ -43,7 +47,7 @@
 // "down.revive" (pawn; TOP tier only: Tactical Rig's cigarette and Grenade's grenade answer it), "down.fail" (pawn; why).
 // RSQSM_Service answers "down" / "down.hold" / "down.any" / "down.redmap" / "down.left" (intArg player), "down.mark"
 // (objectArg a monster: 1 while it is a living DOWN target), "down.bank" (play: stringArg "health" / "armor", intArg
-// player, doubleArg amount -> 1 banked) and GetObject "down.plate" (intArg player -> the plate's anchor actor, or null).
+// player, doubleArg amount -> 1 banked) and GetObject "down.plate" (intArg player -> null since 11-07 07:50: the panel is HUD, the bits fly to the player).
 class RSQSM_Down : EventHandler
 {
 	const DEPTH = 0.05;        // the world's speed while DOWN: the deepest SlowMo has
@@ -56,19 +60,19 @@ class RSQSM_Down : EventHandler
 	const FIGHT_NEAR = 1024;
 	const FIGHT_FAR = 2048;
 	const SPAWN_TRIES = 70;    // tics a spawn keeps looking for a spot in view before it is dropped (logged)
+	const REFILL_TICS = 10;    // the bar's refill sweep after a kill with targets left ("fast": my number, ~0.3 s)
 
 	// ---- synced (in the save) ----------------------------------------------------------------------------------------
 	bool   downOn[MAXPLAYERS];
 	int    downStart[MAXPLAYERS];                        // maptime (real time: never slowed)
+	int    barStart[MAXPLAYERS];                         // maptime the bar (re)starts draining: the DOWN, or a reset's end
+	int    refillTic[MAXPLAYERS], refillOldE[MAXPLAYERS];   // the last reset: when, and how far the bar had drained
 	double clk[MAXPLAYERS], pool[MAXPLAYERS];           // DEATH IN, and the bought time still to pour in (tics)
 	int    owed[MAXPLAYERS];
 	int    beatNext[MAXPLAYERS], beatN[MAXPLAYERS];
 	bool   held[MAXPLAYERS];
 	int    endTic[MAXPLAYERS], endHow[MAXPLAYERS];       // 1 revived, 2 failed
 	int    lastKill[MAXPLAYERS];
-	int    stepsGone[MAXPLAYERS];                        // bar steps that have broken off (bits 0 tall, 1 normal, 2 thin)
-	int    stepTic[24];                            // maptime each step broke off (the plate's falling piece)
-	int    shakeTic[MAXPLAYERS];
 	double bankHp[MAXPLAYERS], bankAr[MAXPLAYERS];
 	int    invulUntil[MAXPLAYERS];
 	int    livesSeen[MAXPLAYERS];
@@ -76,7 +80,8 @@ class RSQSM_Down : EventHandler
 	int    tierShown[MAXPLAYERS];
 	// the targets (all players, in parallel)
 	Array<Actor> tMon;
-	Array<int>   tPn, tIcon, tSpawned, tDead, tCol, tBorn, tDeadTic;
+	Array<int>   tPn, tIcon, tSpawned, tDead, tCol, tBorn, tDeadTic;   // tDead 1 died, 2 gone without dying (no line)
+	Array<String> tName;                                  // the plate's name for it (RSQ Score's "monster.name", else its tag)
 	// the boosts (to take back from a map monster when a DOWN fails with a Score life)
 	Array<Actor> bMon;
 	Array<double> bSX, bSY;
@@ -92,7 +97,13 @@ class RSQSM_Down : EventHandler
 
 	// ---- this tic ----------------------------------------------------------------------------------------------------
 	private transient int hpSeen[MAXPLAYERS];
-	transient RSQSM_Plate plate;                          // the console player's plate (plate.zs); rebuilt after a load
+	transient RSQSM_Plate plate;                          // the console player's crosshairs and trail (plate.zs); rebuilt after a load
+	transient ui RSQSM_DownHud hud;                       // the panel and the edge arrows on the HUD layer (downhud.zs)
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (!hud) hud = new("RSQSM_DownHud");
+		hud.Draw(self, e);
+	}
 
 	static RSQSM_Down Get() { return RSQSM_Down(EventHandler.Find("RSQSM_Down")); }
 	static clearscope double Cv(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
@@ -121,7 +132,7 @@ class RSQSM_Down : EventHandler
 	}
 	clearscope bool IsMarked(Actor a) { return IsTarget(a); }
 	// the bar: elapsed real tics into this DOWN, and the tier it stands at (0 top, 1 middle, 2 bottom)
-	clearscope int Elapsed(int n) { return IsDown(n) ? level.maptime - downStart[n] : 0; }
+	clearscope int Elapsed(int n) { return IsDown(n) ? max(0, level.maptime - barStart[n]) : 0; }
 	clearscope int TierAt(int e) { double s = StepTics(); return e < s ? 0 : (e < 2 * s ? 1 : 2); }
 	double Crawl(int n)
 	{
@@ -149,7 +160,7 @@ class RSQSM_Down : EventHandler
 			downOn[n] = false; downStart[n] = 0; clk[n] = 0; pool[n] = 0; owed[n] = 0; beatNext[n] = 0; beatN[n] = 0; held[n] = false;
 			endTic[n] = 0; endHow[n] = 0; cOn[n] = false; invulUntil[n] = 0; bankHp[n] = 0; bankAr[n] = 0; livesSeen[n] = -1;
 		}
-		tMon.Clear(); tPn.Clear(); tIcon.Clear(); tSpawned.Clear(); tDead.Clear(); tCol.Clear(); tBorn.Clear(); tDeadTic.Clear();
+		tMon.Clear(); tPn.Clear(); tIcon.Clear(); tSpawned.Clear(); tDead.Clear(); tCol.Clear(); tBorn.Clear(); tDeadTic.Clear(); tName.Clear();
 		bMon.Clear(); bSX.Clear(); bSY.Clear(); bHp.Clear(); bBright.Clear(); bOwn.Clear();
 		spPn.Clear(); spTries.Clear(); spIcon.Clear(); spCls.Clear();
 	}
@@ -207,7 +218,17 @@ class RSQSM_Down : EventHandler
 				{
 					ClockTick(n);
 					if (clk[n] <= 0) Fail(n, String.Format("the clock ran out (%d of %d targets dead)", Killed(n), OwedOf(n)));
-					else { Heartbeat(n); WatchTargets(n); BarSteps(n, pmo); }
+					else
+					{
+						Heartbeat(n); WatchTargets(n);
+						// THE PANEL LANDS (owner 07:55: it slams up, "a heavy controller thump"): both hands, full, as it lands
+						if (level.maptime - downStart[n] == RSQSM_DownHud.SLAM)
+						{
+							RSQSM_Buzz.Start(pmo, 0, 1.0, 7);
+							RSQSM_Buzz.Start(pmo, 1, 1.0, 7);
+							Log(String.Format("player %d: the panel landed (thump: both hands, 1.0, 7 tics)", n));
+						}
+					}
 				}
 			}
 			if (pmo.health <= 0 || players[n].playerstate == PST_DEAD) CrouchRestore(n, "he is dead");
@@ -263,24 +284,16 @@ class RSQSM_Down : EventHandler
 		clk[n] = min(ClockTics(), clk[n] - 1.0 + pour);
 	}
 
-	// THE BAR'S STEPS: each breaks off as it runs out (shake, clunk, rumble)
-	private void BarSteps(int n, PlayerPawn pmo)
+	// THE RESET (owner 11-07 06:35): a target killed while others remain -- the bar back to full with a fast bright refill
+	// sweep (plate.zs draws it); it drains again from full once the sweep is done. No step ever breaks off (owner 07:07).
+	private void BarReset(int n)
 	{
 		int e = Elapsed(n);
-		double s = StepTics();
-		for (int k = 0; k < 3; k++)
-		{
-			if ((stepsGone[n] & (1 << k)) != 0) continue;
-			if (e < s * (k + 1)) continue;
-			stepsGone[n] |= 1 << k;
-			stepTic[n * 3 + k] = level.maptime;
-			shakeTic[n] = level.maptime;
-			pmo.A_StartSound("plats/pt1_stop", CHAN_AUTO, CHANF_LOCAL, 1.0, ATTN_NONE);
-			RSQSM_Buzz.Start(pmo, 0, 0.9, 8);
-			RSQSM_Buzz.Start(pmo, 1, 0.9, 8);
-			Log(String.Format("player %d bar: the %s step broke off at %.2f s (clunk plats/pt1_stop, rumble); tier now %s", n,
-				k == 0 ? "tall" : (k == 1 ? "normal" : "thin"), e / double(TICRATE), TierName(min(2, k + 1))));
-		}
+		refillTic[n] = level.maptime;
+		refillOldE[n] = e;
+		barStart[n] = level.maptime + REFILL_TICS;
+		Log(String.Format("player %d bar RESET to full (a target killed, %d of %d owed): it had drained %.2f s (%s step); refill sweep %d tics; DEATH IN not reset (%.2f s)",
+			n, Killed(n), owed[n], e / double(TICRATE), TierName(TierAt(e)), REFILL_TICS, clk[n] / TICRATE));
 	}
 	static clearscope String TierName(int t) { return t == 0 ? "top" : (t == 1 ? "middle" : "bottom"); }
 
@@ -510,17 +523,16 @@ class RSQSM_Down : EventHandler
 		if (w) { w.downs++; downs = w.downs; }
 		downOn[n] = true;
 		downStart[n] = level.maptime;
+		barStart[n] = level.maptime;
+		refillTic[n] = -1000; refillOldE[n] = 0;
 		clk[n] = ClockTics();
 		pool[n] = 0;
 		owed[n] = downs;
 		beatNext[n] = level.maptime;
 		beatN[n] = 0;
 		lastKill[n] = 0;
-		stepsGone[n] = 0;
-		shakeTic[n] = -100;
 		bankHp[n] = 0; bankAr[n] = 0;
 		iconsUsed[n] = 0;
-		for (int k = 0; k < 3; k++) stepTic[n * 3 + k] = 0;
 		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since a Score life), world to %d%%",
 			n, dmg, pre, from, pmo.health, ClockTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, owed[n], downs, int(DEPTH * 100 + 0.5)));
 		pmo.A_StartSound("rsqsm/in", CHAN_AUTO, CHANF_LOCAL, 1.0);
@@ -561,12 +573,12 @@ class RSQSM_Down : EventHandler
 		String how;
 		[col, how] = Boost(m);
 		tMon.Push(m); tPn.Push(n); tIcon.Push(icon); tSpawned.Push(spawned ? 1 : 0); tDead.Push(0); tCol.Push(col);
-		tBorn.Push(level.maptime); tDeadTic.Push(0);
+		tBorn.Push(level.maptime); tDeadTic.Push(0); tName.Push(NameOf(m));
 		m.target = players[n].mo;
 		m.LastHeard = players[n].mo;
 		m.bAMBUSH = false;
-		Log(String.Format("player %d TARGET %d/%d: %s \"%s\" (%s): icon %d, colour %06X, %s; health %d of %d", n, Count(n), owed[n],
-			m.GetClassName(), m.GetTag(), why, icon, col, how, m.health, m.GetSpawnHealth()));
+		Log(String.Format("player %d TARGET %d/%d: %s \"%s\" (%s): icon %d, colour %06X, %s; health %d of %d; plate name \"%s\"", n, Count(n), owed[n],
+			m.GetClassName(), m.GetTag(), why, icon, col, how, m.health, m.GetSpawnHealth(), tName[tName.Size() - 1]));
 		Tell("down.target", n, String.Format("%06X", col), m);
 	}
 	private void QueueSpawn(int n, String cls) { spPn.Push(n); spCls.Push(cls); spTries.Push(0); spIcon.Push(DealIcon(n)); }
@@ -759,10 +771,16 @@ class RSQSM_Down : EventHandler
 			if (tPn[i] != n || tDead[i] != 0) continue;
 			let m = tMon[i];
 			if (m && tCol[i] == LD_GOLD && level.maptime - tBorn[i] < 35 && (level.maptime & 3) == 0) LegendColour(i, m);
+			if (m && m.health > 0 && ((level.maptime - tBorn[i]) % 35) == 34)
+			{
+				// its tier words can come later (a champion sets itself up after it is given its token)
+				String nm = NameOf(m);
+				if (nm != tName[i]) { Log(String.Format("target %s's plate name now \"%s\" (was \"%s\")", m.GetClassName(), nm, tName[i])); tName[i] = nm; }
+			}
 			if (m && m.health > 0) continue;
 			if (m && m.health <= 0) { TargetDown(i, false); continue; }
 			Log(String.Format("player %d: target %d is gone without dying: a fresh one in its place", n, i));
-			tDead[i] = 1; tDeadTic[i] = level.maptime - 100;
+			tDead[i] = 2; tDeadTic[i] = level.maptime - 100;
 			owed[n]++;     // the gone one is not a kill: one more owed, its place taken by the fresh one
 			String cls = "";
 			for (int j = 0; j < tMon.Size(); j++) if (tPn[j] == n && tMon[j]) { cls = tMon[j].GetClassName(); break; }
@@ -797,15 +815,16 @@ class RSQSM_Down : EventHandler
 		lastKill[n] = level.maptime;
 		let m = tMon[i];
 		let pmo = players[n].mo;
-		int e = level.maptime - downStart[n];
+		int e = Elapsed(n);
 		Log(String.Format("player %d target %s died%s at %.2f s into the bar (%s step): %d of %d owed", n, m ? String.Format("%s", m.GetClassName()) : "?",
 			byHim ? " by his hand" : " (not by his hand: no Revenge award)", e / double(TICRATE), TierName(TierAt(e)), Killed(n), owed[n]));
 		if (byHim) { Tell("down.revenge", n, "", m); Award(pmo, "Revenge"); }
 		if (downOn[n] && Killed(n) >= owed[n] && spPnCount(n) == 0) Revive(n);
+		else if (downOn[n] && pmo) BarReset(n);
 	}
 	private void DropTarget(int i)
 	{
-		tMon.Delete(i); tPn.Delete(i); tIcon.Delete(i); tSpawned.Delete(i); tDead.Delete(i); tCol.Delete(i); tBorn.Delete(i); tDeadTic.Delete(i);
+		tMon.Delete(i); tPn.Delete(i); tIcon.Delete(i); tSpawned.Delete(i); tDead.Delete(i); tCol.Delete(i); tBorn.Delete(i); tDeadTic.Delete(i); tName.Delete(i);
 	}
 
 	// ---- THE BANK (VisualRewards' bits, "down.bank") -------------------------------------------------------------------
@@ -829,7 +848,7 @@ class RSQSM_Down : EventHandler
 	{
 		let pmo = players[n].mo;
 		if (!pmo) return;
-		int e = (lastKill[n] > 0 ? lastKill[n] : level.maptime) - downStart[n];
+		int e = max(0, (lastKill[n] > 0 ? lastKill[n] : level.maptime) - barStart[n]);
 		int tier = TierAt(e);
 		tierShown[n] = tier;
 		End(n, true);
@@ -986,6 +1005,21 @@ class RSQSM_Down : EventHandler
 		int k = 0;
 		while (sv = it.Next()) { sv.GetInt(what, s, n, 0, a); k++; }
 		if (what != "down.time") Log(String.Format("told %d joined mod(s): %s %s", k, what, s));
+	}
+	// THE PLATE'S NAME FOR A TARGET (owner 11-07): RSQ Score's "monster.name" (the game's name with Score's tier words in
+	// front), asked by name; without Score, the game's own name (its tag; the class name when it has none)
+	static String NameOf(Actor m)
+	{
+		if (!m) return "";
+		let it = ServiceIterator.Find("RS_ScoreService");
+		Service sv;
+		while (sv = it.Next())
+		{
+			if (sv.GetClassName() != 'RS_ScoreService') continue;
+			String s = sv.GetString("monster.name", "", 0, 0, m);
+			if (s != "") return s;
+		}
+		return m.GetTag();
 	}
 	static void Award(Actor who, String label)
 	{

@@ -64,3 +64,29 @@ Graphic "RSPG092", 9, 7 { Patch "STCFN092", 1, 0 }
 Graphic "RSPG093", 9, 7 { Patch "STCFN093", 1, 0 }
 Graphic "RSPG094", 9, 7 { Patch "STCFN094", 1, 0 }
 Graphic "RSPG095", 9, 7 { Patch "STCFN095", 1, 0 }
+
+// >>> RSPJFILL (tools/plate/gen_plate_font.py)
+// JFO's gaps on the plate: the IWAD's DoomFont letters, as the RSQ Wheel fills them (its gen_jfo.py)
+Graphic "RSPJ033", 4, 7 { Patch "STCFN033", 0, 0 }
+Graphic "RSPJ034", 7, 7 { Patch "STCFN034", 0, 0 }
+Graphic "RSPJ035", 9, 7 { Patch "STCFN035", 0, 0 }
+Graphic "RSPJ036", 7, 7 { Patch "STCFN036", 0, 0 }
+Graphic "RSPJ037", 9, 7 { Patch "STCFN037", 0, 0 }
+Graphic "RSPJ038", 8, 7 { Patch "STCFN038", 0, 0 }
+Graphic "RSPJ039", 4, 7 { Patch "STCFN039", 0, 0 }
+Graphic "RSPJ040", 6, 7 { Patch "STCFN040", 0, 0 }
+Graphic "RSPJ041", 6, 7 { Patch "STCFN041", 0, 0 }
+Graphic "RSPJ042", 8, 7 { Patch "STCFN042", 0, 0 }
+Graphic "RSPJ044", 4, 7 { Patch "STCFN044", 0, 0 }
+Graphic "RSPJ046", 4, 7 { Patch "STCFN046", 0, 0 }
+Graphic "RSPJ059", 4, 7 { Patch "STCFN059", 0, 0 }
+Graphic "RSPJ060", 6, 7 { Patch "STCFN060", 0, 0 }
+Graphic "RSPJ062", 6, 7 { Patch "STCFN062", 0, 0 }
+Graphic "RSPJ063", 7, 7 { Patch "STCFN063", 0, 0 }
+Graphic "RSPJ064", 9, 7 { Patch "STCFN064", 0, 0 }
+Graphic "RSPJ091", 6, 7 { Patch "STCFN091", 0, 0 }
+Graphic "RSPJ092", 7, 7 { Patch "STCFN092", 0, 0 }
+Graphic "RSPJ093", 6, 7 { Patch "STCFN093", 0, 0 }
+Graphic "RSPJ094", 7, 7 { Patch "STCFN094", 0, 0 }
+Graphic "RSPJ095", 7, 7 { Patch "STCFN095", 0, 0 }
+// <<< RSPJFILL

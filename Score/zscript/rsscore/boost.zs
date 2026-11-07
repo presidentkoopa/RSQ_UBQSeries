@@ -138,6 +138,43 @@ class RS_Boost play
 		return ChampActive(v) && Has(v, "champion_" .. filter .. "Token");
 	}
 
+	// A MONSTER'S NAME WITH SCORE'S TIER WORDS (owner 11-07, for RSQ SlowMo's DOWN plate, "monster.name"): the words of
+	// the tier rows its kill would name, in front of the game's own name (its tag; the class name when it has none):
+	// "Legendary" for a LegenDoom legendary, then its champion colour row's words while its champion powers are on
+	// ("Dark Red Champion"; a hybrid's two colours: the row that wins, as on a kill). Mutations are not tier words.
+	static String NameOf(Actor v)
+	{
+		if (!v) return "";
+		String w = "";
+		if (Legendary(v)) w = RowWords("RS_Bonus_Legendary");
+		if (ChampActive(v))
+		{
+			static const String COLS[] = { "DarkRed", "Red", "Orange", "Yellow", "DarkGreen", "Green", "Cyan", "Blue", "Indigo",
+				"Violet", "Pink", "Black", "Grey", "White", "Bronze", "Silver", "Gold" };
+			String best = "";
+			double bm = -1;
+			for (int i = 0; i < COLS.Size(); i++)
+			{
+				if (!Has(v, "champion_" .. COLS[i] .. "Token")) continue;
+				Name rn = "RS_Bonus_Champ" .. COLS[i];
+				class<RS_ScoreTierRow> rc = rn;
+				if (!rc) continue;
+				let r = RS_ScoreTierRow(new(rc));
+				if (r.Mult() > bm) { bm = r.Mult(); best = r.DisplayName(); }
+			}
+			if (best != "") w = w .. (w != "" ? " " : "") .. best;
+		}
+		String tag = v.GetTag();
+		return w != "" ? w .. " " .. tag : tag;
+	}
+	static String RowWords(Name cls)
+	{
+		class<RS_ScoreBonus> c = cls;
+		if (!c) return "";
+		let r = RS_ScoreBonus(new(c));
+		return r ? r.DisplayName() : "";
+	}
+
 	// Marks noted when something else dies first (RS_ScoreHandler.WorldThingDied -> NoteDeath): an
 	// Undying champion's heart names its master, and the heart is gone by the time the master dies.
 	static void NoteDeath(RS_ScoreHandler h, Actor dead)

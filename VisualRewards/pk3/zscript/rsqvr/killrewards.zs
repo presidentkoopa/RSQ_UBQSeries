@@ -207,7 +207,12 @@ class RSQ_KRHandler : EventHandler
 		// RSQ SLOWMO'S DOWN v3 (owner 11-07, design/NEAR_DEATH.md "clock and bank"): a kill by a player who is DOWN still
 		// bursts into bits, but they fly into his DOWN plate and BANK (paid on his revive as health and armour; ammo bits
 		// give their ammo as they arrive -- my reading, the bank pays health and armour only). By name: RSQSM_Service.
-		bankFor = (killer && DownNow(killer.PlayerNumber())) ? killer.PlayerNumber() + 1 : 0;
+		// Only from a kill within 3x his Bits Fly to Me reach (owner 11-07 06:55): those fly to him quickly, so they bank
+		// before he gets up; a kill farther off drops ordinary bits.
+		bankFor = (killer && DownNow(killer.PlayerNumber()) && a.Distance3D(killer) <= 3.0 * MagnetM(killer) * 34.0) ? killer.PlayerNumber() + 1 : 0;
+		if (killer && !bankFor && DownNow(killer.PlayerNumber()) && SVB("rsqgb_kr_debug", false))
+			Console.Printf("RSQ KR t%d: player %d is DOWN but %s died %.0f units away (3x Bits Fly to Me: %.0f): ordinary bits", level.maptime,
+				killer.PlayerNumber(), cn, a.Distance3D(killer), 3.0 * MagnetM(killer) * 34.0);
 		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss);
 		if (bankFor && SVB("rsqgb_kr_debug", false)) Console.Printf("RSQ KR t%d: player %d is DOWN: these bits fly to his plate and bank", level.maptime, bankFor - 1);
 		bankFor = 0;
@@ -321,8 +326,9 @@ mixin class RSQ_KRBit
 	int bankFor;          // RSQ SlowMo's DOWN: player + 1 whose plate this bit flies to and banks in (0: an ordinary bit)
 	int bankAge;
 
-	// THE FLIGHT INTO THE PLATE (DOWN v3): a short burst out of the body first (SoM's throw, 6 tics), then straight to the
-	// plate (RSQSM_Service GetObject "down.plate", by name), faster and faster; there it banks (RSQSM_Service "down.bank")
+	// THE FLIGHT INTO THE PLATE (DOWN v3): a short burst out of the body first (SoM's throw, 3 tics), then straight to the
+	// plate (RSQSM_Service GetObject "down.plate", by name), QUICKLY (owner 11-07 06:55: 12 units a tic, +3 a tic, so a bit at
+	// 3x the 2 m reach is there in about 8 tics); there it banks (RSQSM_Service "down.bank")
 	// -- health and armour by what the bit is worth to that player (Rich Bits counted); an ammo bit gives its ammo instead.
 	// No plate (DOWN over, or not the console player's) or 6 s: it gives itself to the player as an ordinary bit would.
 	void BankTick()
@@ -348,7 +354,7 @@ mixin class RSQ_KRBit
 			if (!ok) Destroy();
 			return;
 		}
-		if (bankAge < 6) { vel *= 0.85; return; }
+		if (bankAge < 3) { vel *= 0.85; return; }
 		Vector3 goal = pmo.pos + (0, 0, pmo.height * 0.5);
 		if (plate) goal = plate.pos;
 		Vector3 to = goal - pos;
@@ -358,7 +364,7 @@ mixin class RSQ_KRBit
 			Arrive(pmo, sv);
 			return;
 		}
-		vel = to / l * min(l, 4.0 + bankAge * 0.6);
+		vel = to / l * min(l, 12.0 + bankAge * 3.0);
 	}
 	void Arrive(Actor pmo, Service sv)
 	{

@@ -7,11 +7,12 @@ Status: 0.99 — played and confirmed working in the headset; refinement and bug
 
 New on 11-06 (rig only, not headset-confirmed): Bits Vanish As (Blink Out / Fade Out).
 
-New on 11-07 for RSQ SlowMo's DOWN v3 (rig only, not headset-confirmed: shown on the rig -- the REVIVE word at three sizes,
-the time-bought pops, armour bits flying into the plate and banking, a target's bar with its icon; the bank's payout was
-fixed after the run in SlowMo and is not shown): a kill you make while DOWN still bursts into bits, but they fly into your DOWN plate and bank (health
-and armour, paid when you get up; an ammo bit gives its ammo as it arrives). REVIVE is shown every time you get up, bigger
-and longer at the better tier; the RAGE word and the DOWN skull are gone (SlowMo draws each target's icon over its HP bar);
+New on 11-07 for RSQ SlowMo's DOWN v3 (rig only, not headset-confirmed: the last rig run showed bits from kills within
+reach flying to the downed player in about 8 tics, banking health and armour, and the bank paid on the revive; kills
+farther off dropping ordinary bits): a kill you make while DOWN within 3x your Bits Fly to Me reach still bursts into
+bits, but they fly to you quickly and bank (health and armour, paid when you get up; an ammo bit gives its ammo as it
+arrives); a kill farther off drops ordinary bits (Bits Fly to Me at 0: none bank). REVIVE is shown every time you get
+up, bigger and longer at the better tier; the RAGE word and the DOWN skull are gone (SlowMo draws each target's icon over its HP bar);
 a DOWN target's HP bar shows even if you never hit it.
 
 Flat-screen damage numbers and HUD banners smear across your lenses in VR. Everything here is placed in the world

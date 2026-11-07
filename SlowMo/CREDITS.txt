@@ -17,6 +17,17 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       The slow-motion countdown bar (graphics/RSQSMHE empty, RSQSMHW the fill in white that the HUD tints) is his
       style-A health bar left lying as he drew it, with the series' bar rim and well (VisualRewards/tools/gen_gauges.py in the
       series repo).
+  THE DOWN PLATE'S TEXT (owner 2026-11-07: RSQ Score's combo font when Score is loaded, else JFO)
+      graphics/rsqsmp/RSPCnnn.png: the letters of RSQ Score's breakdown (combo) font, RSSCFN2, unpacked from
+      Score/RSSCFN2.fon2 by tools/plate/gen_plate_font.py. RSQ Score carries it from ijon's Dakka, whose credits give the
+      breakdown font to Jimmy (Score/CREDITS.md: "They come with Dakka, a public repository, and are carried here with
+      that credit").
+      graphics/rsqsmp/RSPJnnn.png: JFO, the JDUI font by Zedas, in the edit "JDUI Brutal Doom Ultimate Edition" by
+      Blackmore1014 (ModDB: https://www.moddb.com/addons/jdui-brutal-doom-ultimate-edition), the same glyph files RSQ Gun
+      Cards, RSQ VisualRewards and the RSQ Wheel ship, copied unchanged from GunCards/tools/card_art/jfo/small (JFO.pk3's
+      Hires/SmallFont/stcfnNNN.png) by tools/plate/gen_plate_font.py. JFO ships with credit to Zedas and Blackmore1014,
+      by the owner's decision (2026-11-04). Characters JFO does not have (. , ( ) ' ! ? % and the like) are the IWAD's own
+      DoomFont glyphs, by lump name (TEXTURES.txt, as the RSQ Wheel does).
   id Software (Doom), played by name from the IWAD, NOT shipped
       The clock's cues: DSGETPOW (slowing), DSPSTOP (back to speed), DSITEMUP (meter full),
       DSNOWAY (not enough adrenaline). See SNDINFO.txt.

@@ -172,8 +172,11 @@ class RS_ScoreService : Service
 	}
 
 	// "kill.chain": intArg player, doubleArg serial -> "gun>whip>shield.bash" (finishing blow last), "" not kept
+	// "monster.name": objectArg a monster -> its name with Score's tier words in front when it has them ("Dark Red
+	//   Champion Imp", "Legendary Imp"; RS_Boost.NameOf). RSQ SlowMo's DOWN plate asks it (owner 11-07). "" no monster.
 	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		if (request == "monster.name") return RS_Boost.NameOf(Actor(objectArg));
 		if (request != "kill.chain") return "";
 		let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
 		if (!h) return "";
