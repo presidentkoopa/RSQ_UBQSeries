@@ -22,15 +22,24 @@ slows to its deepest, RSQ Glow In The Dark turns the map red, a heartbeat plays,
 THE PANEL is on the HUD layer (like RSQ Score's readout), so the gun, a wall or the floor never hides it: half the view
 wide, low and centred, clear of the status bar; it slams up from the bottom edge with a slight overshoot and a heavy
 thump in both hands, the bar filling left to right as it lands. It shows one line per target, stacked (its own icon on
-a dark slot, then **TARGET: <name>**: the monster's name with RSQ Score's tier words in front when it has them, e.g. DARK
-RED CHAMPION IMP; a target that dies keeps its line, dimmed with a thin strike-through, its icon cracked), the reward bar
+a dark slot, then, by the **Target Lines** row: **Icon** (default) **TARGET:** and that target's own crosshair icon in its
+colour, no name; **Name** **TARGET: <name>**: the monster's name with RSQ Score's tier words in front when it has them,
+e.g. LEGENDARY ORANGE CHAMPION ZOMBIE; a target that dies keeps its line, dimmed with a thin strike-through, its icon
+cracked), the reward bar
 (three 3 s steps, the tall one first, in the target's colour, draining smoothly) and **DEATH IN:** with a seven-segment
 SS:hh clock of 9 real seconds. Its words are in RSQ Score's combo font when Score is loaded, else in JFO. Killing a target
 while others remain refills the bar with a bright edge running left to right (the DEATH IN clock is not reset; the tier
 is the step you are in at the last kill). Damage you deal buys clock time (a whole monster's worth: 1 s for zombies,
 Imps, Pinkies; 0.5 s a Lost Soul; 2 s bigger; 10 s a Cyberdemon or Spider Mastermind), never above 9 s, the clock never
 slower than a quarter speed. You owe 1 kill, then 2, then 3... (back to 1 when a Score life is spent): the monster that
-downed you if it is in your fight, else a boosted copy of it spawned in view, and fresh boosted copies for the rest. Each
+downed you if it is in your fight, else a boosted copy of it spawned in view, and fresh boosted copies for the rest.
+With Champions loaded, every spawned copy is a REAL Champion made by Champions itself (its own colour, powers, icon and
+mutation chance, by its own settings): Champions only makes champions as monsters spawn, so SlowMo spawns hidden copies
+on the spot until Champions makes one a champion and keeps that one (rig only, not headset-confirmed: shown on the full
+load order with LegenDoom 3.0 and Champions, e.g. an Orange and a Dark Green champion with Champions' icons, and the
+Name lines reading LEGENDARY ORANGE CHAMPION ZOMBIE). The monster that downed you is never replaced: if it is already a
+champion it stays one; if not, it only gets a Champions colour token (Champions has no way to make an existing monster
+a champion). If Champions is set never to make one, after 300 tries the copy gets a colour token instead. Each
 target has its own crosshair (ten, never repeated in one DOWN). A target more than about 75 degrees from your view shows
 EDGE ARROWS on the HUD (Turn Marker: Framed Triangle, Framed Fat Arrow, Triple Chevron (default), Triangle With
 Afterimages) with its icon, pointing the way to turn and swinging round with an easing as you turn. Closer than that, a
@@ -197,6 +206,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Red Map | On | RSQ Glow In The Dark turns the map deep blood red while you are DOWN. |
 | Lower View When Down | On | Comfort: off = no view drop (the crawl stays). |
 | Panel Size | 1.00 | Scales the DOWN panel and the edge arrows together (1 = half the view, 0.5 to 1.8). Code only, not shown on the rig. |
+| Target Lines | Icon | Each Target line: Icon = "TARGET:" and that target's own crosshair icon in its colour; Name = "TARGET:" and its name (Score's words). Rig only, not headset-confirmed. |
 | Heavy Hit Size (% of max health) | 75 | What one tic's damage must add up to. |
 | Arch-Vile Blast | On | Also on any heavy hit that is an Arch-Vile's flame attack. |
 | Blasted Off Your Feet | On | Also on any heavy hit that throws you up (vertical speed up 10+ map units a tic). |

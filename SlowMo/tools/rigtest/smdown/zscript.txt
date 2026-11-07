@@ -188,6 +188,7 @@ class RSQSMD_Probe : EventHandler
 		}
 		if (Mode() == 2) { V3d(t, pmo); return; }
 		if (Mode() == 3) { V3e(t, pmo); return; }
+		if (Mode() == 4) { V3e(t, pmo); V3f(t, pmo); return; }
 		// ---- A: top tier
 		if (t == 40) { Hit(t, z[0], 40, 100, "A: a lethal hit by z0"); Report(t, "A: after the lethal hit"); }
 		if (t == 50) { Shoot(t, z[1], 20, "A: z1 hit (an Imp: time bought)"); Report(t, "A: after a hit"); }
@@ -366,6 +367,46 @@ class RSQSMD_Probe : EventHandler
 		if (t == 796) Invul(4, 5, true);
 		if (t == 800) { Console.Printf("T_PREUP t800 health %d", pmo.health); Shoot(t, z[3], 5000, "C: z3 killed by him"); }
 		if (t == 802) { Report(t, "C: UP"); Lines(t, "C: UP"); }
+	}
+	// ---- dn_mode 4 (owner 11-07 11:0x): v3e's timeline, plus Target Lines Icon / Name and REAL Champions (Champions loaded).
+	//   t5 Target Lines Icon (the default); t40 DOWN (owed 3: z2 + two spawned copies); t44..t70 what Champions made of each
+	//   target (its PersistentInfo, colour and mutation tokens, its icon actor and Archvile fire: its controller's setup);
+	//   t100 Target Lines Name (the lines show Score's monster.name: Champions' colour words); t200 back to Icon
+	void Champs(int t, String why)
+	{
+		let d = RSQSM_Down.Get();
+		String s = "";
+		for (int i = 0; i < d.tMon.Size(); i++)
+		{
+			let m = d.tMon[i];
+			if (d.tPn[i] != consoleplayer || !m) continue;
+			int icons = 0, fires = 0;
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next()))
+			{
+				String cn = a.GetClassName();
+				if (a.master == m && cn ~== "champion_Icon") icons++;
+				if (cn ~== "champion_ArchvileFire" && (a.pos.xy - m.pos.xy).Length() < 4) fires++;
+			}
+			s = s .. String.Format(" [%s%s: %s; health %d (spawn %d), translation %d, champion_Icon %d, champion_ArchvileFire %d, colour %06X, name \"%s\"]",
+				m.GetClassName(), d.tSpawned[i] ? " spawned" : " map's", RSQSM_Down.ChampWhat(m) != "" ? RSQSM_Down.ChampWhat(m) : "no Champions inventory",
+				m.health, m.GetSpawnHealth(), m.Translation, icons, fires, d.tCol[i], d.tName[i]);
+		}
+		int hid = 0;
+		let it2 = ThinkerIterator.Create("Actor");
+		Actor b;
+		while (b = Actor(it2.Next())) if (b.bISMONSTER && b.bINVISIBLE && b.health > 0) hid++;
+		Console.Printf("T_CHAMP t%d %s:%s; hidden living monsters left %d; candidates waiting %d; Target Lines %d", t, why, s, hid, d.cdMon.Size(),
+			CVar.GetCVar("rsqsm_down_lines", players[consoleplayer]).GetInt());
+	}
+	void V3f(int t, PlayerPawn pmo)
+	{
+		if (t == 5) SetI("rsqsm_down_lines", 0);
+		if (t == 41 || t == 42 || t == 44 || t == 48 || t == 60 || t == 70 || t == 90) Champs(t, "what Champions made");
+		if (t == 100) { SetI("rsqsm_down_lines", 1); Champs(t, "Target Lines: Name"); }
+		if (t == 130 || t == 180) Champs(t, "Name");
+		if (t == 200) { SetI("rsqsm_down_lines", 0); Champs(t, "Target Lines: Icon"); }
 	}
 	// ---- dn_mode 3 (v3e) ------------------------------------------------------------------------------------------------
 	void Marks(int t, String why)

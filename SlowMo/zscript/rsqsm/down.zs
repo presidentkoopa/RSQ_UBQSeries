@@ -24,9 +24,13 @@
 //            goes back when Score's life count drops). Target 1: the monster that downed you if it is in your fight
 //            (alive, and within FIGHT_NEAR, or in sight within FIGHT_FAR), else a boosted copy of its type spawned in view at
 //            range. Every extra target: a fresh boosted copy of that type spawned in view. Boost by what is loaded:
-//            LegenDoom + Champions: a legendary (LegenDoom's own guaranteed pickup) champion (a Champions colour token,
-//            given by name as RSQ Miniboss does); LegenDoom alone: legendary; Champions alone: a champion; neither: our
-//            own (DOWN red tint). All of them: a light in their colour, full-bright, 15% larger, +50% health (not with
+//            LegenDoom + Champions: a legendary (LegenDoom's own guaranteed pickup) champion; LegenDoom alone: legendary;
+//            Champions alone: a champion; neither: our own (DOWN red tint). A SPAWNED target with Champions is a REAL
+//            Champion made by Champions itself (owner 11-07 11:0x): Champions makes champions only as monsters spawn (its
+//            handler's WorldThingSpawned: its own chance, colour weights, mutations), so hidden candidates are spawned on the
+//            spot and the first it makes a champion is the target (Placed / ChampRoll). The map's own monster that downed
+//            you is never respawned: a champion already stays one; else a Champions colour token given by name (as RSQ
+//            Miniboss does), Champions having no way to make an existing monster a champion. All of them: a light in their colour, full-bright, 15% larger, +50% health (not with
 //            LegenDoom: it sets a legendary's health). Each target gets one of ten icons (random, never twice in a DOWN).
 //  UP        the last target dead: up at once. REVIVE every time (VisualRewards, sized by tier). Tier top / middle / bottom:
 //            invulnerable 5 / 3 / 1 s, slow motion 3 / 1.5 / 5 s; top: Score's Revival Fire, +1 cigarette (Tactical Rig),
@@ -89,6 +93,15 @@ class RSQSM_Down : EventHandler
 	// spawns still looking for a spot
 	Array<int>   spPn, spTries, spIcon;
 	Array<String> spCls;
+	// with Champions loaded (owner 11-07 11:0x: REAL Champions, made by Champions itself): the spot a spawn found, and the
+	// hidden candidates Champions rolls on as new spawns (Champions' own handler, WorldThingSpawned)
+	Array<int>   spId, spHave, spRolls;
+	Array<double> spX, spY, spZ, spAng;
+	Array<String> spWhy;
+	int          spNextId;
+	Array<Actor> cdMon;
+	Array<int>   cdId;
+	Array<int>   tChWait;                                 // 1: a real champion whose colour token Champions has not given yet
 	// the crouch
 	bool   cOn[MAXPLAYERS];
 	double cK[MAXPLAYERS], cVH[MAXPLAYERS], cFH[MAXPLAYERS];
@@ -163,6 +176,8 @@ class RSQSM_Down : EventHandler
 		tMon.Clear(); tPn.Clear(); tIcon.Clear(); tSpawned.Clear(); tDead.Clear(); tCol.Clear(); tBorn.Clear(); tDeadTic.Clear(); tName.Clear();
 		bMon.Clear(); bSX.Clear(); bSY.Clear(); bHp.Clear(); bBright.Clear(); bOwn.Clear();
 		spPn.Clear(); spTries.Clear(); spIcon.Clear(); spCls.Clear();
+		spId.Clear(); spHave.Clear(); spRolls.Clear(); spX.Clear(); spY.Clear(); spZ.Clear(); spAng.Clear(); spWhy.Clear();
+		cdMon.Clear(); cdId.Clear(); tChWait.Clear();
 	}
 
 	override void WorldUnloaded(WorldEvent e)
@@ -571,9 +586,10 @@ class RSQSM_Down : EventHandler
 		if (icon <= 0) icon = DealIcon(n);
 		int col;
 		String how;
-		[col, how] = Boost(m);
+		bool wait;
+		[col, how, wait] = Boost(m);
 		tMon.Push(m); tPn.Push(n); tIcon.Push(icon); tSpawned.Push(spawned ? 1 : 0); tDead.Push(0); tCol.Push(col);
-		tBorn.Push(level.maptime); tDeadTic.Push(0); tName.Push(NameOf(m));
+		tBorn.Push(level.maptime); tDeadTic.Push(0); tName.Push(NameOf(m)); tChWait.Push(wait ? 1 : 0);
 		m.target = players[n].mo;
 		m.LastHeard = players[n].mo;
 		m.bAMBUSH = false;
@@ -581,7 +597,11 @@ class RSQSM_Down : EventHandler
 			m.GetClassName(), m.GetTag(), why, icon, col, how, m.health, m.GetSpawnHealth(), tName[tName.Size() - 1]));
 		Tell("down.target", n, String.Format("%06X", col), m);
 	}
-	private void QueueSpawn(int n, String cls) { spPn.Push(n); spCls.Push(cls); spTries.Push(0); spIcon.Push(DealIcon(n)); }
+	private void QueueSpawn(int n, String cls, int icon = 0)
+	{
+		spPn.Push(n); spCls.Push(cls); spTries.Push(0); spIcon.Push(icon > 0 ? icon : DealIcon(n));
+		spId.Push(++spNextId); spHave.Push(0); spRolls.Push(0); spX.Push(0); spY.Push(0); spZ.Push(0); spAng.Push(0); spWhy.Push("");
+	}
 	int Count(int n) { int k = 0; for (int i = 0; i < tPn.Size(); i++) if (tPn[i] == n) k++; return k; }
 	int Killed(int n) { int k = 0; for (int i = 0; i < tPn.Size(); i++) if (tPn[i] == n && tDead[i] != 0) k++; return k; }
 	int OwedOf(int n) { return owed[n]; }
@@ -597,13 +617,12 @@ class RSQSM_Down : EventHandler
 			let pmo = players[n].mo;
 			Name cnm = spCls[i];
 			class<Actor> c = cnm;
+			// WITH CHAMPIONS: the spot is found; Champions rolls on hidden candidates there until it makes one a champion
+			if (spHave[i] != 0) { ChampRoll(i, pmo, c); continue; }
 			Actor m = c ? SpawnInView(pmo, c, spTries[i]) : null;
 			if (m)
 			{
-				Actor.Spawn("TeleportFog", m.pos, ALLOW_REPLACE);
-				AddTarget(n, m, true, String.Format("a boosted copy spawned in view, %.0f units away", pmo.Distance2D(m)), spIcon[i]);
-				if (m.SeeState) m.SetState(m.SeeState);
-				DropSpawn(i);
+				Placed(i, pmo, m, String.Format("a boosted copy spawned in view, %.0f units away", pmo.Distance2D(m)));
 				continue;
 			}
 			if (!c)
@@ -618,15 +637,120 @@ class RSQSM_Down : EventHandler
 			{
 				m = SpawnNearby(pmo, c, spTries[i] - SPAWN_TRIES);
 				if (!m) continue;
-				Actor.Spawn("TeleportFog", m.pos, ALLOW_REPLACE);
-				AddTarget(n, m, true, String.Format("no room in view after %d tics: spawned out of view nearby, %.0f units away", SPAWN_TRIES, pmo.Distance2D(m)), spIcon[i]);
-				if (m.SeeState) m.SetState(m.SeeState);
-				DropSpawn(i);
+				Placed(i, pmo, m, String.Format("no room in view after %d tics: spawned out of view nearby, %.0f units away", SPAWN_TRIES, pmo.Distance2D(m)));
 			}
 		}
 	}
+	// a spawn found its spot (m stands there). Without Champions: m is the target (as before). With Champions (owner 11-07
+	// 11:0x: a REAL Champion, made by Champions itself): Champions decides at each new monster's spawn (its handler's
+	// WorldThingSpawned: its own chance, colour weights and mutations) and offers no other way to make one, so m and more
+	// copies are its candidates there, hidden; the first it makes a champion is the target, the rest are taken back
+	private void Placed(int i, PlayerPawn pmo, Actor m, String why)
+	{
+		int n = spPn[i];
+		if (!ChampionsOn())
+		{
+			Reveal(m, false);
+			AddTarget(n, m, true, why, spIcon[i]);
+			DropSpawn(i);
+			return;
+		}
+		spHave[i] = 1; spX[i] = m.pos.x; spY[i] = m.pos.y; spZ[i] = m.pos.z; spAng[i] = m.angle; spWhy[i] = why;
+		Hide(m);
+		cdMon.Push(m); cdId.Push(spId[i]);
+		Name cnm = spCls[i];
+		class<Actor> c = cnm;
+		for (int k = 1; k < CH_PER_TIC; k++) Candidate(i, c);
+		spRolls[i] += CH_PER_TIC;
+		ChampRoll(i, pmo, c, true);
+	}
+	const CH_PER_TIC = 6;       // candidates Champions rolls on a tic (my number: on Hurt Me Plenty its chance is 72 in 256 each)
+	const CH_ROLLS = 300;       // candidates before giving up (Champions set to make none: its chance or weights at 0)
+	// what Champions made it, for the log: its colour and mutation tokens (Champions' own classes, by name)
+	static String ChampWhat(Actor m)
+	{
+		if (!m) return "";
+		String s = "";
+		for (let it = m.Inv; it; it = it.Inv)
+		{
+			String cn = it.GetClassName();
+			if (cn.Left(9) ~== "champion_" && (cn.IndexOf("Token") >= 0 || cn ~== "champion_PersistentInfo"))
+				s = s .. (s != "" ? ", " : "") .. String.Format("%s x%d", cn, it.Amount);
+		}
+		return s;
+	}
+	static bool ChampionsOn() { Name hn = "champion_Handler"; class<StaticEventHandler> hc = hn; return hc && EventHandler.Find(hc) != null; }
+	static bool IsChampion(Actor m) { if (!m) return false; Name pn = "champion_PersistentInfo"; class<Inventory> pc = pn; return pc && m.FindInventory(pc); }
+	private Actor Candidate(int i, class<Actor> c)
+	{
+		if (!c) return null;
+		let m = Actor.Spawn(c, (spX[i], spY[i], spZ[i]), ALLOW_REPLACE);
+		if (!m) return null;
+		m.angle = spAng[i];
+		Hide(m);
+		cdMon.Push(m); cdId.Push(spId[i]);
+		return m;
+	}
+	// a candidate: not seen, not solid, not hit, out of the blockmap, until Champions has made it one
+	static void Hide(Actor m) { m.bINVISIBLE = true; m.bSOLID = false; m.bSHOOTABLE = false; m.A_ChangeLinkFlags(1); }
+	static void Reveal(Actor m, bool hidden)
+	{
+		if (hidden)
+		{
+			let d = GetDefaultByType(m.GetClass());
+			m.bINVISIBLE = d.bINVISIBLE; m.bSOLID = d.bSOLID; m.bSHOOTABLE = d.bSHOOTABLE;
+			m.A_ChangeLinkFlags(d.bNOBLOCKMAP ? 1 : 0);
+		}
+		Actor.Spawn("TeleportFog", m.pos, ALLOW_REPLACE);
+		if (m.SeeState) m.SetState(m.SeeState);
+	}
+	private void ChampRoll(int i, PlayerPawn pmo, class<Actor> c, bool first = false)
+	{
+		int n = spPn[i], id = spId[i];
+		Actor win = null;
+		for (int k = 0; k < cdMon.Size() && !win; k++) if (cdId[k] == id && IsChampion(cdMon[k])) win = cdMon[k];
+		if (win)
+		{
+			DropCandidates(id, win);
+			Reveal(win, true);
+			AddTarget(n, win, true, String.Format("%s; a REAL Champion made by Champions itself (one of %d candidates it rolled on)", spWhy[i], spRolls[i]), spIcon[i]);
+			DropSpawn(i);
+			return;
+		}
+		if (first) return;        // Champions rolls on a new monster as it starts (its first tic): looked at next tic
+		DropCandidates(id, null);
+		if (spRolls[i] >= CH_ROLLS)
+		{
+			// Champions made none of them (its chance or weights set to 0): a plain copy, its colour token by name as before
+			Log(String.Format("player %d: Champions made none of %d candidates champions (its chance or colour weights at 0?): a plain copy with a colour token", n, spRolls[i]));
+			let m = Actor.Spawn(c, (spX[i], spY[i], spZ[i]), ALLOW_REPLACE);
+			if (m) { m.angle = spAng[i]; Reveal(m, false); AddTarget(n, m, true, spWhy[i] .. "; Champions made none", spIcon[i]); }
+			DropSpawn(i);
+			return;
+		}
+		for (int k = 0; k < CH_PER_TIC; k++) Candidate(i, c);
+		spRolls[i] += CH_PER_TIC;
+	}
+	// the candidates of a spawn taken back (all but keep): never counted, never seen
+	private void DropCandidates(int id, Actor keep)
+	{
+		for (int k = cdMon.Size() - 1; k >= 0; k--)
+		{
+			if (cdId[k] != id) continue;
+			let m = cdMon[k];
+			cdMon.Delete(k); cdId.Delete(k);
+			if (!m || m == keep) continue;
+			m.ClearCounters();
+			m.Destroy();
+		}
+	}
 	private int spPnCount(int n) { int k = 0; for (int i = 0; i < spPn.Size(); i++) if (spPn[i] == n) k++; return k; }
-	private void DropSpawn(int i) { spPn.Delete(i); spCls.Delete(i); spTries.Delete(i); spIcon.Delete(i); }
+	private void DropSpawn(int i)
+	{
+		DropCandidates(spId[i], null);
+		spPn.Delete(i); spCls.Delete(i); spTries.Delete(i); spIcon.Delete(i);
+		spId.Delete(i); spHave.Delete(i); spRolls.Delete(i); spX.Delete(i); spY.Delete(i); spZ.Delete(i); spAng.Delete(i); spWhy.Delete(i);
+	}
 	private Actor SpawnInView(PlayerPawn pmo, class<Actor> c, int tryNo)
 	{
 		static const double DISTS[] = { 640, 512, 384, 288, 192 };
@@ -700,8 +824,10 @@ class RSQSM_Down : EventHandler
 		}
 		return -1;
 	}
-	private int, String Boost(Actor m)
+	// the third answer: a REAL Champion whose colour token its controller has not given yet (WatchTargets takes it then)
+	private int, String, bool Boost(Actor m)
 	{
+		bool wait = false;
 		bool ld = ClassLoaded("LDLegendaryMonsterPickupGuaranteed"), ch = ClassLoaded("champion_Token");
 		int col = DOWN_RED;
 		String how;
@@ -717,7 +843,13 @@ class RSQSM_Down : EventHandler
 		if (ch)
 		{
 			int cc = ChampColour(m);
-			if (cc < 0)
+			if (cc < 0 && IsChampion(m))
+			{
+				// a REAL Champion (Champions' PersistentInfo): its colour token comes from its own controller in a tic or two
+				wait = true;
+				how = how .. (how != "" ? " + " : "") .. "a REAL Champions champion (Champions' own PersistentInfo and controller; colour token pending)";
+			}
+			else if (cc < 0)
 			{
 				// a champion by a Champions colour token given by name (the ones Champions' own handler acts on by itself:
 				// RSQ Miniboss's reading of its code); one at random
@@ -729,7 +861,7 @@ class RSQSM_Down : EventHandler
 				cc = ChampColour(m);
 			}
 			if (cc >= 0) col = cc;
-			how = how .. (how != "" ? " + " : "") .. "Champions champion";
+			if (!wait) how = how .. (how != "" ? " + " : "") .. (IsChampion(m) ? "a REAL Champions champion (Champions' own PersistentInfo and controller)" : "Champions champion (a colour token by name)");
 		}
 		if (own) how = "our own boost (neither LegenDoom nor Champions loaded): DOWN red";
 		// what every target gets: its colour's light, full-bright, larger, +50% (not with LegenDoom: it sets the health)
@@ -746,7 +878,7 @@ class RSQSM_Down : EventHandler
 			m.health += add;
 			how = how .. String.Format("; light, full-bright, x%.2f size, +%d health", MARK_SCALE, add);
 		}
-		return col, how;
+		return col, how, wait;
 	}
 	// the map's own monster loses its mark and boost (a failed DOWN with a Score life)
 	private void Unboost(Actor m)
@@ -770,7 +902,20 @@ class RSQSM_Down : EventHandler
 		{
 			if (tPn[i] != n || tDead[i] != 0) continue;
 			let m = tMon[i];
-			if (m && tCol[i] == LD_GOLD && level.maptime - tBorn[i] < 35 && (level.maptime & 3) == 0) LegendColour(i, m);
+			if (m && tChWait[i] != 0)
+			{
+				// a REAL Champion's colour: its own token, once its controller has given it
+				int cc = ChampColour(m);
+				if (cc >= 0)
+				{
+					tCol[i] = cc; tChWait[i] = 0;
+					tName[i] = NameOf(m);      // its colour words (RSQ Score's monster.name) come with the token
+					m.A_AttachLight('RSQSM_DownMark', DynamicLight.PointLight, Color(255, (cc >> 16) & 255, (cc >> 8) & 255, cc & 255),
+						int(max(64, m.radius * 3)), 0, 0, (0, 0, m.Height * 0.6));
+					Log(String.Format("target %s: Champions gave its colour %06X (%s), %d tics after it became a target; plate name \"%s\"", m.GetClassName(), cc, ChampWhat(m), level.maptime - tBorn[i], tName[i]));
+				}
+			}
+			else if (m && tCol[i] == LD_GOLD && level.maptime - tBorn[i] < 35 && (level.maptime & 3) == 0) LegendColour(i, m);
 			if (m && m.health > 0 && ((level.maptime - tBorn[i]) % 35) == 34)
 			{
 				// its tier words can come later (a champion sets itself up after it is given its token)
@@ -785,7 +930,7 @@ class RSQSM_Down : EventHandler
 			String cls = "";
 			for (int j = 0; j < tMon.Size(); j++) if (tPn[j] == n && tMon[j]) { cls = tMon[j].GetClassName(); break; }
 			if (cls == "") cls = "DoomImp";     // my reading: nothing left to copy -- an Imp
-			spPn.Push(n); spCls.Push(cls); spTries.Push(0); spIcon.Push(tIcon[i]);
+			QueueSpawn(n, cls, tIcon[i]);
 		}
 	}
 	// A LEGENDOOM LEGENDARY'S OWN GLOW COLOUR (LegenDoom without Champions): the colour of a stencil-drawn effect actor bound
@@ -824,7 +969,7 @@ class RSQSM_Down : EventHandler
 	}
 	private void DropTarget(int i)
 	{
-		tMon.Delete(i); tPn.Delete(i); tIcon.Delete(i); tSpawned.Delete(i); tDead.Delete(i); tCol.Delete(i); tBorn.Delete(i); tDeadTic.Delete(i); tName.Delete(i);
+		tMon.Delete(i); tPn.Delete(i); tIcon.Delete(i); tSpawned.Delete(i); tDead.Delete(i); tCol.Delete(i); tBorn.Delete(i); tDeadTic.Delete(i); tName.Delete(i); tChWait.Delete(i);
 	}
 
 	// ---- THE BANK (VisualRewards' bits, "down.bank") -------------------------------------------------------------------

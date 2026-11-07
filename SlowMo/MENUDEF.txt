@@ -102,6 +102,7 @@ OptionMenu "RSQSM_Options"
 	Option "Red Map", "rsqsm_down_redmap", "OnOff", "rsqsm_down"
 	Option "Lower View When Down", "rsqsm_down_lowview", "OnOff", "rsqsm_down"
 	Slider "Panel Size", "rsqsm_down_panelsize", 0.5, 1.8, 0.05, 2, "rsqsm_down"
+	Option "Target Lines", "rsqsm_down_lines", "RSQSM_TargetLines", "rsqsm_down"
 	StaticText " "
 	StaticText "Heavy Hit Slowdown", 1
 	Option "Heavy Hit Slowdown", "rsqsm_trig_heavy", "OnOff"
@@ -197,6 +198,13 @@ OptionValue "RSQSM_ReloadWhen"
 {
 	0, "Always"
 	1, "Low Health"
+}
+
+// DOWN's Target lines (owner 2026-11-07 11:0x): Icon (the default) or Name
+OptionValue "RSQSM_TargetLines"
+{
+	0, "Icon"
+	1, "Name"
 }
 
 // DOWN's off-view turn marker (owner 2026-11-07 05:58): four styles, C the default

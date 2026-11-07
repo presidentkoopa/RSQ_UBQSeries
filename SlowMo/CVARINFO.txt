@@ -126,3 +126,4 @@ user int     rsqsm_down_marker   = 2;     // Turn Marker: 0 Framed Triangle, 1 F
 user bool    rsqsm_down_redmap   = true;  // Red Map: RSQ Glow In The Dark turns the map deep blood red while you are DOWN
 user bool    rsqsm_down_lowview  = true;  // Lower View When Down (comfort): off = no view drop (the crawl stays)
 user float   rsqsm_down_panelsize = 1.0;  // Panel Size (owner 11-07 08:00): multiplies the panel and the edge arrows together (1 = half the view)
+user int     rsqsm_down_lines    = 0;     // Target Lines (owner 11-07 11:0x): 0 Icon ("TARGET:" + its own crosshair icon in its colour), 1 Name (the monster's name)

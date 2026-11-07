@@ -25,7 +25,9 @@
 //             (owner 07:07). THE REFILL (a kill with targets left, down.zs BarReset): a bright edge running left to right
 //             over REFILL_TICS (owner 07:50: "a bright moving edge"), the fill full behind it.
 //   lines     one a target, stacked up from the bar: a dark round slot (r 27) at x 150, the target's icon (r 21), then
-//             "TARGET: <name>" (Score's monster.name) in a light tint of its colour (the mockup's hsl(H, 80%, 75%)). Dead: the
+//             Target Lines (owner 11-07 11:0x) Icon, the default: "TARGET:" and the target's own crosshair icon tinted its
+//             colour, no name; Name: "TARGET: <name>" (Score's monster.name: with Champions, Champions' own colour words).
+//             The text in a light tint of its colour (the mockup's hsl(H, 80%, 75%)). Dead: the
 //             line stays, its text dimmed with a thin strike-through so it stays readable (owner 07:50), its icon dimmed
 //             and cracked (the mockup's crack). Owed and not spawned yet: faint.
 //   the tab   x 900..1150, y 415..585 (#0b0b0d round #170708): "DEATH IN:" small, the seven-segment SS:hh readout (its look
@@ -181,6 +183,9 @@ class RSQSM_DownHud ui
 
 	// Panel Size (owner 2026-11-07 08:00): one user number that scales the panel and the edge arrows together (1 = half the view)
 	static double PanelSize() { return clamp(RSQSM_Countdown.UCv("rsqsm_down_panelsize", 1.0), 0.5, 1.8); }
+	// Target Lines (owner 2026-11-07 11:0x): 0 Icon (the default), 1 Name
+	static int TargetLines() { return int(RSQSM_Countdown.UCv("rsqsm_down_lines", 0)) != 0 ? 1 : 0; }
+	const LICON = 40.0;     // the icon after "TARGET:" (mockup px; the slot's icon is 42 in a 62 px line pitch)
 
 	// RSQSM_Down.RenderOverlay calls this every frame
 	void Draw(RSQSM_Down d, RenderEvent e)
@@ -296,6 +301,7 @@ class RSQSM_DownHud ui
 		}
 
 		// ---- THE TARGET LINES ------------------------------------------------------------------------------------------
+		bool iconLines = TargetLines() == 0;
 		for (int i = 0; i < lnName.Size(); i++)
 		{
 			double ly = LINE0 - i * LPITCH;
@@ -306,7 +312,18 @@ class RSQSM_DownHud ui
 			else BoxC(ic, 150, ly, 42, 42, lnCol[i], stt == 0 ? 1.0 : 0.45);
 			if (stt == 1) BoxC("RSPCRK", 150, ly, 54, 54);
 			double ta = stt == 0 ? 1.0 : (stt == 1 ? 0.5 : 0.45);
-			double right = Text("TARGET: " .. lnName[i], TXT_X, ly, 18, TXT_W, Light(lnCol[i]), ta);
+			double right;
+			if (iconLines)
+			{
+				// Target Lines: Icon (the default): "TARGET:" then the target's own crosshair icon in its colour, no name
+				right = Text("TARGET:", TXT_X, ly, 18, TXT_W, Light(lnCol[i]), ta);
+				double icx = right + 8 + LICON * 0.5;
+				if (stt == 1) BoxC(ic, icx, ly, LICON, LICON, Mix(lnCol[i], 0x0B0B0D, 0.65));
+				else BoxC(ic, icx, ly, LICON, LICON, lnCol[i], stt == 0 ? 1.0 : 0.45);
+				if (stt == 1) BoxC("RSPCRK", icx, ly, LICON * 54.0 / 42.0, LICON * 54.0 / 42.0);
+				right = icx + LICON * 0.5;
+			}
+			else right = Text("TARGET: " .. lnName[i], TXT_X, ly, 18, TXT_W, Light(lnCol[i]), ta);
 			// dead: a thin strike-through (1.5 mockup px, at least a screen pixel), so the dimmed name stays readable
 			double sth = max(1.5, 1.0 / sy);
 			if (stt == 1) Box("RSPKDD", TXT_X - 2, ly - sth * 0.5, right + 2, ly + sth * 0.5, -1, 0.75);

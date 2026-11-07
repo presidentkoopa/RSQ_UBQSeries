@@ -222,3 +222,11 @@ and goes to him; no more readings)
   by slamming up from the bottom edge with a slight overshoot, the bar filling left to right as it lands, with a
   heavy controller thump (owner 07:55).
 - Panel Size slider (DOWN options, 0.5-1.8, 1 = half the view) scales the panel and edge arrows together (owner 08:00).
+- Target lines (owner 11:0x): an option "Target Lines: Icon / Name", default Icon: "TARGET:" followed by that
+  target's crosshair icon tinted its colour, no monster name. Name shows today's names.
+- With Champions loaded, DOWN's spawned targets become REAL Champions (made by Champions itself, with their
+  powers), not just a colour token (owner 11:0x). The Name option then shows Champions' words.
+- As built (11-07): Champions makes champions only as monsters spawn (its handler's WorldThingSpawned; it has no call
+  to make one), so a spawned target is the first of hidden copies on its spot that Champions itself makes a champion
+  (rig: PersistentInfo, colour token, its icon and fire, e.g. Orange / Dark Green / Cyan). The map's own monster that
+  downed you is not respawned: a champion already stays one, else it keeps the colour token by name (open question).
