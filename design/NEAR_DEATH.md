@@ -78,3 +78,13 @@ No revive spends a Score life (only failing does).
 
 **Open:** the icon art (owner sending); what happens after you are up, RAGE included (to be talked through);
 bar step lengths in seconds.
+
+## v3 repeats (owner, 2026-11-07 05:14-05:20)
+- Flat clock of 9 s, replacing the dynamic clock (no extra time for a far mark; targets spawn in view).
+- The bar steps are 3 s / 3 s / 3 s, so the bar and the clock end together: the bottom tier is the last 3 s,
+  and the bar empty means death (a Score life spent).
+- Each time you go down you owe one more kill: 1, then 2, then 3... with no cap. The first target is the
+  monster that downed you (or its spawned copy); every extra target is a fresh boosted spawn in view (LD
+  Champion / LD / Champion / our own, by what is loaded). One icon per kill owed on the plate, each cracked or
+  filled as it dies. The tier is judged at the last kill.
+- The count goes back to 1 when a Score life is spent.
