@@ -6,7 +6,7 @@ A weapon ring that hangs in the air in front of you. Point at a gun with either 
 
 New since the headset pass (tested on the rig, headset check pending): the fist, lightsaber and whip card icons; the fist always on the ring.
 
-New on 11-06 (rig only, not headset-confirmed): the text in JFO with proportional spacing; one fist card; one card per gun (BD22 VR's off-hand versions); the shield, saber, whip and grenade from either hand to their own hand; alt-fire locks a gun to its Tactical Rig holster; Freeze Time While Open.
+New on 11-06 (rig only, not headset-confirmed): the text in JFO with proportional spacing; one fist card; one card per gun (BD22 VR's off-hand versions); the shield, saber, whip and grenade from either hand to their own hand; alt-fire locks a gun to its Tactical Rig holster (replaced 11-07 by the holster web, below); Freeze Time While Open.
 
 New on 11-07 (rig only, not headset-confirmed): the **holster web** (design/PARKED.md). Main-hand alt-fire on a card
 opens it: your marine with RSQ Tactical Rig's six holsters as numbered rings fitted to his body from your active profile.
@@ -65,9 +65,9 @@ BFG with a long heavy thud. After a while you can find a gun by feel.
   version (the off hand the off-hand copy, the main hand the gun).
 - Either hand can take RSQ ShieldSaw's shield, RSQ Saber's saber, RSQ Whip's whip and RSQ Grenade's grenade: the
   shield always ends up in the off hand (drawn by ShieldSaw itself), the others always in the main hand.
-- Alt-fire on a gun's card while that gun sits in an RSQ Tactical Rig holster locks it to that holster (a brass
-  padlock on the card); alt-fire again unlocks it. A locked gun always goes back to its own holster. Alt-fire on a
-  gun in no holster does nothing. The switch is the Rig's "Holster Lock (Wheel Alt-Fire)", on.
+- Main-hand alt-fire on a gun's card opens the holster web (above; needs RSQ Tactical Rig): a trigger on a ring
+  assigns the gun to that holster, Clear unassigns it. Off-hand alt-fire puts a card in or out of the next/prev
+  rotation. (Rig only, not headset-confirmed.)
 - The fist, the lightsaber, the whip and the ShieldSaw have their own icons: LegenDoom's brass knuckles, a pixel-art
   lightsaber, a coiled whip and a round saw-shield (credits in CREDITS.txt; the ShieldSaw's rig only, not
   headset-confirmed). So do RSQ Melee's gloves (a red boxing glove), and, when a mod puts them in a weapon slot, RSQ
@@ -114,7 +114,8 @@ that hand shows a small card.
 | Back to your last gun | Double tap the left thumbstick click | Second press within 10 tics. |
 | Take the card you point at | Trigger or off-hand trigger | Any distance. The press never reaches your gun. |
 | Take the card your hand is in | Use | With your hand inside the card. |
-| Lock a gun to its holster | Alt-fire on its card | Needs RSQ Tactical Rig and the gun in one of its holsters. Again unlocks. |
+| Holster web | Main-hand alt-fire on a card | Needs RSQ Tactical Rig. Trigger on a ring assigns the gun to that holster; Clear unassigns it. Alt-fire on the same card again closes the web. |
+| Rotation in / out | Off-hand alt-fire on a card | next/prev step through the guns in the rotation. On a holstered card: a dull tick. |
 | Pull a gun out | Hand inside a card, snap it back toward you | Faster than about 1.5 m/s. |
 | Put a gun away | Snap the hand holding it toward the ring, not at a card | Faster than about 2.6 m/s. The hand goes back to its fist. |
 | Pick for both hands | One hand on each of two cards, release the button | Each hand takes its own gun. |

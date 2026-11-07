@@ -10,7 +10,7 @@ New on 11-05 (code only, not rig-tested, not headset-confirmed): the cigarette's
 slider, cigarettes earned by RSQ Score points, minibosses refilling the pocket.
 
 New on 11-06 (rig only, not headset-confirmed): the keyring appears with your first key; Keys Open Doors by off-hand
-trigger or a raise; Holster Lock with RSQ Wheel.
+trigger or a raise; Holster Lock with RSQ Wheel (replaced 11-07 by holster assignment, below).
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. Built on
 Ermac's idea, his Virtual Tactical Vest for Doom VR, with new code that reads your real controller poses.
@@ -58,11 +58,10 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 - Each holster's ring fades in as a hand comes near and turns green with the hand inside.
 - Holsters keep their guns from level to level. After a death or pistol start a holster stays empty until you
   own that gun again, then it is back where you kept it.
-- Optional: new guns you pick up go straight into the first empty holster (off by default).
-- Holster Lock (on): with RSQ Wheel, alt-fire on a holstered gun's card locks it to that holster (a padlock on the
-  card); alt-fire again unlocks it. A locked gun always goes back to its own holster: holster it anywhere else, or
-  hold it at another full holster, and it goes home while that holster's gun comes out to your hand. New Guns to
-  Holsters never fills a holster locked to another gun. Unlocked guns work as before. (Rig only, not headset-confirmed.)
+- Assigned holsters: a gun put by hand into an unassigned holster, or picked for one in RSQ Wheel's holster web, owns
+  it until the Wheel unassigns or reassigns it; no other gun goes in. Holding an assigned gun at another gun's full
+  holster sends yours home and brings that one to your hand. Brutal Doom 22 VR's dual wield follows the same rules
+  (above). (Rig only, not headset-confirmed.)
 - Optional: each full holster shows its round count as small digits above the ring (off by default).
 - Brutal Doom's two-gun weapons (dual pistols and the like) go in as one gun, so a draw gives you one.
 
@@ -180,8 +179,6 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Holster Rings | Hand Nearby | Never, Hand Nearby, Always. Gun holsters blue (profile colour), other spots magenta |
 | Holster Reach | 1.00 | Holster size (0.5 to 2) |
 | Quick Swap | On | A full holster swaps without the press delay |
-| New Guns to Holsters | Off | A new gun fills the first empty holster (never one locked to another gun) |
-| Holster Lock (Wheel Alt-Fire) | On | RSQ Wheel's alt-fire on a holstered gun's card locks it to that holster; a locked gun always goes home |
 | Keep Between Levels | On | Holsters keep their guns |
 | Move Gun at Watch | Off | Use during the watch check moves that hand's gun across (not while a Bossfight is ready to call: the press is its call-in) |
 | Hang From Neck | On | A nod does not slide the rig |
@@ -193,7 +190,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Flare Holster | On | RSQ FnF's flares have their own holster on the off-hand hip |
 | Ammo Pouch | On | A pouch left of the belt buckle (off-hand side): with Brutal Doom 22 VR, hand reloads take magazines, shells and rounds from it only. Off: they take ammo from anywhere |
 | Show Ammo Pouch | On | The pouch on the belt, its light the reserve of the gun in your hand (green, yellow, red) |
-| Shoulder to ShieldSaw | On | Off shoulder is the shield's while it is stowed there |
+| Shoulder to ShieldSaw | On | Off shoulder is the shield's while it is stowed there. With RSQ ShieldSaw's Take It From set to Over the Shoulder, the off-shoulder gun holster is the ShieldSaw's either way (11-07, rig only, not headset-confirmed) |
 | Keyring | On | Keys on your belt |
 | Keys Open Doors | Off | Take the keys to locked doors: off-hand trigger opens, off-hand alt-fire held and a raise lifts; the main hand opens by touch |
 | **Stored Guns** | | |
@@ -262,7 +259,8 @@ Runs alone on any load order. It finds the rest by name:
 - **RSQ Grenade**: without Brutal Doom's grenade, the spot hands out RSQ Grenade's, and glows in the colour of the
   kind in your hand.
 - **RSQ SlowMo** (new on 11-06, rig only, not headset-confirmed): getting up from DOWN (REVIVE) puts one cigarette
-  back in the pocket, up to the Pack Size, while Cigarettes is on.
+  back in the pocket, up to the Pack Size, while Cigarettes is on. Since DOWN v3 (11-07, rig only, not
+  headset-confirmed): only when you get up on the reward bar's top step.
 - **RSQ Saber**: the two saber spots appear, and holster and draw both hilts.
 - **RSQ ShieldSaw**: its shield hangs on this torso and turns with it; its Recenter key recenters both. The off
   shoulder is left to the stowed shield.
@@ -277,7 +275,7 @@ Runs alone on any load order. It finds the rest by name:
 - **RSQ Distance Grab** lifts a locked door held by the off hand's keys (its own door events, by name);
 - **RSQ Distance Grab** leaves a hand alone while it is in a holster or holds the cigarette or Zippo; **RSQ Melee**'s
   Headlock waits while your off hand is in a holster.
-- **RSQ Wheel** marks where a gun is holstered, and its alt-fire locks a gun to its holster (Holster Lock); **RSQ Score** reads holster draws for its quick-draw bonus; and the hand reloads of **BD22 VR
+- **RSQ Wheel** marks where a gun is holstered, and its holster web assigns a gun to a holster or clears it (Web View Mirror draws this mod's mirror there); **RSQ Score** reads holster draws for its quick-draw bonus; and the hand reloads of **BD22 VR
   Reloaded** take ammo from the pouch when its pouch-only setting is on.
 - **Gun Bonsai + RSQ Gun Bonsai VR**: Gun Toss makes thrown guns hit harder and stagger longer; Boomerang Gun flies a
   thrown gun back to its holster, or to your hand at level 2 (both offered only while Throw Guns is on); Smoker lengthens the smoke's slow motion and makes you

@@ -9,6 +9,9 @@ New since the headset pass (tested on the rig, headset check pending): the hand 
 New on 11-06 (rig only, not headset-confirmed): Next/Prev Offhand Weapon (off); grinding throws the monster's own
 blood.
 
+New on 11-07 (rig only, not headset-confirmed): with **Take It From** set to Over the Shoulder, RSQ Tactical Rig's
+off-shoulder gun holster is the ShieldSaw's (no gun goes in; RSQ Wheel's holster web shows the ShieldSaw there).
+
 RSQ is a series of VR mods for stock QuestZDoom 17.3, built in ZScript alone with no engine changes. ShieldSaw is a full
 physical shield: the plate that blocks is measured off the same mesh you see in your hand, every throw is launched from
 your real arm speed, and the disc flies a path, ricochets and comes home on its own.
