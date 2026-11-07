@@ -4,6 +4,7 @@
 # hip by hand (assigned there), SSG (X) in the left hip (assigned there).
 #   TRD_A: G drawn, Dual (+user3) puts RSQ_Off_Rifle in the off hand; the off hand grips G's own holster (right hip).
 #   TRD_B: G drawn and dual again; the off hand grips X's holster (left hip, SSG in it).
+#   TRD_C (script_c.txt): see the end.
 # Presses held 30 tics. Poses: qz_*hand "x(right) y(up from the floor) z(back) pitch yaw roll", room metres; the hips from
 # RSQTR_Region's defaults on the eye the probe measures.
 E = 1.55   # BD22 order: "TRD region ... eyes 1.55 m over the floor" (this probe, t30)
@@ -21,3 +22,9 @@ b += 'echo TRD_A; ' + grip('l', HIP_R, RL) + 'wait 120; '
 b += 'echo TRD_DRAW_G2; ' + grip('r', HIP_R, RR) + 'wait 60; ' + dual()
 b += 'echo TRD_B; ' + grip('l', HIP_L, RL) + 'wait 150; echo TRD_END; quit'
 open(__import__('os').path.join(__import__('os').path.dirname(__import__('os').path.abspath(__file__)), 'script.txt'), 'w').write(b + '\n')
+# TRD_C (design/PARKED.md "Dual edge cases", owner 11:3x): Rifle never holstered (unassigned), dual; the off hand grips the
+# free, unassigned right hip: that holster becomes the Rifle's, the Rifle goes in, both hands go to fists. -> script_c.txt
+c = ('wait 40; vr_control_scheme 0; vr_secondary_button_mappings 0; set rsqtr_messages 1; set rsq_switch_log 1; set rsq_dual_rifle 1; god; '
+     + RR + '; ' + RL + '; give Rifle; wait 5; use Rifle; wait 150; ' + dual())
+c += 'echo TRD_C; ' + grip('l', HIP_R, RL) + 'wait 150; echo TRD_END; quit'
+open(__import__('os').path.join(__import__('os').path.dirname(__import__('os').path.abspath(__file__)), 'script_c.txt'), 'w').write(c + '\n')

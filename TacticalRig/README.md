@@ -30,6 +30,8 @@ both hands, put the off hand's copy in a holster and the gun goes home to its ow
 holster (or an empty unassigned one) both hands go empty; at another gun's holster with that gun in it, the off hand goes
 empty and your main hand takes that gun. Shown on the rig with dual Rifles on the full Brutal Doom order (its own holster
 and another gun's; an empty unassigned holster not shown).
+A gun with no holster yet, held in both hands: put the off hand's copy in a free holster with no gun assigned and that
+holster becomes the gun's, the gun goes in, and both hands go empty (shown on the rig, dual Rifles, full order).
 
 ## Standout feature: a holster rig you work with your hands
 

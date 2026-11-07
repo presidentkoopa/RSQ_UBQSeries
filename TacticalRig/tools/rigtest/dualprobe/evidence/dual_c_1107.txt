@@ -1,0 +1,35 @@
+TRD region 0 Left hip at 0.00 forward 0.18 left -0.70 up from the eyes (eyes 1.55 m over the floor), radius 0.14
+TRD region 1 Right hip at 0.00 forward -0.18 left -0.70 up from the eyes (eyes 1.55 m over the floor), radius 0.14
+TRD t35 hover -1/-1 | main Rifle off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+God mode on.
+TRD t70 hover -1/-1 | main Rifle off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t105 hover -1/-1 | main Rifle off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t140 hover -1/-1 | main Rifle off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t175 hover -1/-1 | main Rifle off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_DUAL
+RSQ switch t196: Rifle -> None: 96 deselect frames, the old weapon never lowered; left to the engine
+TRD t196 hover -1/-1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t210 hover -1/-1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t245 hover -1/-1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t280 hover -1/-1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t315 hover -1/-1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t350 hover -1/-1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_C
+TRD t355 hover -1/1 | main Rifle off RSQ_Off_Rifle pend nc offq - | [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+rsr key down 443 (»)
+T_DUAL t371: off-hand RSQ_Off_Rifle at Right hip: Rifle home to Right hip (was unassigned: assigned there now); hands before Rifle / RSQ_Off_Rifle; main -> Melee_Attacks, off -> RSQ_Hands; [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+RSQ switch t371: Rifle -> Melee_Attacks: 4 deselect frames, ready after 4 select frames
+TRD t371 hover -1/1 | main Melee_Attacks off RSQ_Off_Rifle pend rsq_hands offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+RSQ switch t372: Melee_Attacks -> None: 96 deselect frames, the old weapon never lowered; left to the engine
+TRD t372 hover -1/1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t385 hover -1/1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+rsr key up 443 (»)
+TRD t404 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t420 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t455 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t490 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t525 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t560 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t595 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD t630 hover -1/-1 | main Melee_Attacks off rsq_hands pend nc offq - | [Left hip=- a:-] [Right hip=Rifle a:Rifle] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+TRD_END

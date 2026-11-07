@@ -100,3 +100,6 @@
   B. Holstering the off-hand copy at a holster assigned to another gun X (X in it): the off hand goes to its fist,
      G goes home to its own holster, and the main hand takes X out of that holster.
   At an unassigned empty holster: as A (an assigned gun only enters its own holster).
+- Dual edge cases (owner 11:3x): an UNASSIGNED gun dual-wielded, off-hand copy into a free unassigned holster: the
+  holster becomes the gun's and the gun goes in, both hands to fists (like A). The copy into a holster assigned to X
+  while X is not there: like A (the gun goes home, both hands to fists) (as built).

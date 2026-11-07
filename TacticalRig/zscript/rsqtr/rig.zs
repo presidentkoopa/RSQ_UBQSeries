@@ -1142,8 +1142,13 @@ class RSQTR_Rig : EventHandler
 		//   A. at G's own holster (or an empty one: an assigned gun only enters its own): both hands go to their fists;
 		//   B. at a holster assigned to another gun X with X in it: the off hand goes to its fist and the MAIN hand takes X.
 		// Without BD22 VR there is no off-hand copy (MainOf answers the class itself) and this never fires.
+		// AN UNASSIGNED G (owner 11-07 11:3x, design/PARKED.md "Dual edge cases"): its copy at a free unassigned holster
+		// (MayEnter passed above): that holster becomes G's, G goes in, both hands go to their fists (as A).
 		String offCn = w.GetClassName();
-		bool dual = lockHome >= 0 && !(cls ~== offCn) && p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== cls;
+		bool dualCopy = !(cls ~== offCn) && p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== cls;
+		bool fresh = false;
+		if (dualCopy && lockHome < 0) { Assign(n, cls, r); lockHome = r; fresh = true; }
+		bool dual = lockHome >= 0 && dualCopy;
 		if (dual)
 		{
 			String before = DualHands(pmo);
@@ -1172,8 +1177,9 @@ class RSQTR_Rig : EventHandler
 			}
 			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
 			if (Flag("rsqtr_messages", p, false))
-				Console.Printf("T_DUAL t%d: off-hand %s at %s: %s home to %s; hands before %s; main -> %s, off -> %s; %s",
-					level.maptime, w.GetClassName(), RSQTR_Region.NAMES[r], cls, RSQTR_Region.NAMES[lockHome], before,
+				Console.Printf("T_DUAL t%d: off-hand %s at %s: %s home to %s%s; hands before %s; main -> %s, off -> %s; %s",
+					level.maptime, w.GetClassName(), RSQTR_Region.NAMES[r], cls, RSQTR_Region.NAMES[lockHome],
+					fresh ? " (was unassigned: assigned there now)" : "", before,
 					p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon ? p.PendingWeapon.GetClassName() : 'unchanged',
 					offNext[n] != "" ? offNext[n] : "(nothing)", HolsterList(pmo));
 			return;
