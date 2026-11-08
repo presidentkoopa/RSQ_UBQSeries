@@ -47,8 +47,8 @@ Read in this order:
    **conductor**: one piece deciding who tiers/buffs which monster and who speaks, so Champions, LegenDoom,
    Corruption Cards, RS Monsters and Score don't stack on one monster or shout at once.
 
-The DoorCard mockup (offered / in progress / cleared) was shown inline in chat, not saved; redraw it from the
-description above if you need it.
+The DoorCard concept mockup (offered / in progress / cleared; general layout, not yet in Doom's look) is
+`design/mockups/doorcard_concept.png` (the owner's screenshot). It predates the "each row prints its stake" decision.
 
 ## 4. Research already done (use it; don't redo it)
 | File | What it gives you |
