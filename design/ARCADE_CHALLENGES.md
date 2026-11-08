@@ -22,6 +22,7 @@ be disastrous."
 | Win | what ends it well |
 | Fail | what ends it badly; never death by itself |
 | Pays | Score rows, bits, an item |
+| Stake | what failing costs: a life, a weapon level, or the next challenge harder (printed on the card) |
 | Shows | which mockup panels it uses (1-8, design/ARCADE_LOOP.md) |
 | Doom flavour | why it is Doom and not generic |
 
@@ -39,6 +40,7 @@ Bit Rush (Collect)
 ## DoorCard decisions (owner, 2026-11-08 18:46; mockup: three states, offered / in progress / cleared)
 - **Choosing:** the card's rows are shootable, punchable or touchable: hit a row to select that challenge.
 - **The keyring** (RSQ Tactical Rig) might be repurposed here. Idea only; how is open.
-- **Failing a challenge** could cost a Score life, drop a weapon level (GBOVR), or affect the next challenge. Which
-  (or how it is chosen) is open.
+- **Failing a challenge** could cost a Score life, drop a weapon level (GBOVR), or affect the next challenge.
+  **Decided (18:47): each row prints its own stake**, e.g. "Time trial  +400  lose: 1 life" beside "Barrels in  +250
+  lose: next challenge harder". The player sees the risk before choosing: push-your-luck at the door.
 - **Return visits:** no, for now. A cleared arena does not re-offer its challenges.
