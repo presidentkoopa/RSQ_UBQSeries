@@ -1,0 +1,4 @@
+server string am_spawn = "";
+server string am_pos = "";
+server int am_atk = -1;
+server int am_god = 1;

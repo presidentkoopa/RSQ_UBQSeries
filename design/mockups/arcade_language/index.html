@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doom Arcade VR: in-world arcade language (mockups)</title>
+<style>
+  body { margin: 0; padding: 24px 28px 60px; background: #0e0e12; color: #e2e2e6; font: 16px/1.45 system-ui, sans-serif; }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #ffe7b0; }
+  p.lead { margin: 0 0 22px; color: #a8a9b6; max-width: 1100px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(620px, 1fr)); gap: 28px; }
+  figure { margin: 0; }
+  figure a img { width: 100%; display: block; border-radius: 10px; }
+  figcaption { margin-top: 8px; color: #d6d6dc; }
+  figcaption b { color: #ffd88a; font-weight: 600; }
+  .foot { margin-top: 30px; color: #8c8d99; font-size: 14px; max-width: 1100px; }
+</style></head><body>
+<h1>Doom Arcade VR: the world talks back</h1>
+<p class="lead">Eight mockups, one per pattern. Each is a real rig frame (QuestZDoom 17.3, left eye, Brutal Doom 22 monsters, Doom II maps)
+with the overlay drawn where it would sit in the world. Only the series' own fonts and Doom palette colours; glows and outlines, no boxes.
+Each panel says its font, colours and size in metres. Mockups only: no mod code was changed. Click a panel for full size.</p>
+<div class="grid">
+<figure><a href="p1_lockon_ring.png"><img src="p1_lockon_ring.png" alt="Lock-on ring"></a>
+<figcaption><b>1. Lock-on ring.</b> A ring closes on the monster that is about to shoot you, on the monster itself: green when he starts the attack, yellow while he winds up, red just before he fires.</figcaption></figure>
+<figure><a href="p2_danger_flash.png"><img src="p2_danger_flash.png" alt="Danger flash"></a>
+<figcaption><b>2. Danger flash.</b> Of all the shots in the air, only the one that will hit you flashes red (halo, ripple and "!") while it flies, so you know which one to dodge.</figcaption></figure>
+<figure><a href="p3_shot_words.png"><img src="p3_shot_words.png" alt="Shot-quality words"></a>
+<figcaption><b>3. Shot-quality words.</b> Each headshot in a row puts a louder word on the head it hit (GOOD, GREAT, AMAZING, PERFECT) the instant it lands; a miss starts again at GOOD.</figcaption></figure>
+<figure><a href="p4_hit_number_combo.png"><img src="p4_hit_number_combo.png" alt="Hit number and combo name"></a>
+<figcaption><b>4. Hit number and combo name.</b> Where the kill lands, its points pop out as one number, Score's combo name (TRAP SHOOTER) stamps above it and the rows that paid list under it.</figcaption></figure>
+<figure><a href="p5_lit_target.png"><img src="p5_lit_target.png" alt="Lit target"></a>
+<figcaption><b>5. The level lights the next target.</b> Like a pinball insert, one barrel or monster glows in its value colour with "+500" over it; shoot it to collect and the next one lights.</figcaption></figure>
+<figure><a href="p6_room_timer.png"><img src="p6_room_timer.png" alt="Room timer"></a>
+<figcaption><b>6. Room timer and time bonus.</b> A clock over the room's exit counts down while monsters are left; kill the last one and it shouts ROOM CLEAR, pays a TIME BONUS and refills.</figcaption></figure>
+<figure><a href="p7_level_end_grade.png"><img src="p7_level_end_grade.png" alt="Level end tally and grade"></a>
+<figcaption><b>7. Level end: tally and grade.</b> At the exit the level hangs its tally in the air: kills, items and secrets count up into BONUS points, then the letter grade slams in (S at the top).</figcaption></figure>
+<figure><a href="p8_jackpot_frenzy.png"><img src="p8_jackpot_frenzy.png" alt="Jackpot and frenzy"></a>
+<figcaption><b>8. Jackpot and frenzy.</b> FRENZY starts a 10 s clock over the fight; every bit banks double, and at 00:00 the bits bank pays out in one JACKPOT shout over the kill zone.</figcaption></figure>
+</div>
+<p class="foot">All eight are design mockups: nothing here is built, nothing is rig- or headset-tested as a feature.
+The backgrounds are frames from the test rig (doom2 &rarr; brutal22test6 &rarr; BD_VoxelPack &rarr; BD22 VR, plus RSQ VisualRewards for the bits in panel 8),
+frozen with the freeze cheat. Sizes in metres assume 32 map units per metre. Contact sheet: <a style="color:#ffd88a" href="contact_sheet.png">contact_sheet.png</a>.
+Rebuild: <code>python3 -I src/panels.py p1 p2 p3 p4 p5 p6 p7 p8</code>.</p>
+</body></html>

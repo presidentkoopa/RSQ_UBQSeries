@@ -1,0 +1,82 @@
+version "4.14"
+// TEST ONLY (mockup backgrounds, never ships): place the player and spawn monsters at offsets, log positions.
+class AMProbe : EventHandler
+{
+	Array<Actor> made;
+	override void WorldTick()
+	{
+		let p = players[0]; let mo = p.mo; if (!mo) return;
+		if (level.maptime == 2)
+		{
+			if (CVar.FindCVar("am_god").GetInt()) p.cheats |= CF_GODMODE;
+			Array<String> q; CVar.FindCVar("am_pos").GetString().Split(q, " ", TOK_SKIPEMPTY);
+			if (q.Size() >= 3) { mo.SetOrigin((q[0].ToDouble(), q[1].ToDouble(), 0), false); mo.SetZ(mo.floorz); mo.angle = q[2].ToDouble(); }
+			Console.Printf("AM player %.0f %.0f %.0f ang %.0f", mo.pos.x, mo.pos.y, mo.pos.z, mo.angle);
+		}
+		if (level.maptime == 4)
+		{
+			Array<String> items; CVar.FindCVar("am_spawn").GetString().Split(items, ";", TOK_SKIPEMPTY);
+			for (int i = 0; i < items.Size(); i++)
+			{
+				Array<String> f; items[i].Split(f, " ", TOK_SKIPEMPTY); if (f.Size() < 3) continue;
+				class<Actor> c = f[0]; if (!c) { Console.Printf("AM no class %s", f[0]); continue; }
+				double fw = f[1].ToDouble(), lf = f[2].ToDouble(), up = f.Size() > 3 ? f[3].ToDouble() : 0;
+				Vector2 d = Actor.AngleToVector(mo.angle, fw) + Actor.AngleToVector(mo.angle + 90, lf);
+				let a = Actor.Spawn(c, (mo.pos.xy + d, mo.floorz + up), ALLOW_REPLACE);
+				if (!a) continue;
+				if (up == 0) a.SetZ(a.floorz);
+				a.angle = a.AngleTo(mo); a.target = mo;
+				made.Push(a);
+				Console.Printf("AM spawned %s as %s at %.0f %.0f %.0f", f[0], a.GetClassName(), a.pos.x, a.pos.y, a.pos.z);
+			}
+		}
+		int at = CVar.FindCVar("am_atk").GetInt();
+		if (at >= 0 && level.maptime == at)
+			for (int i = 0; i < min(1, made.Size()); i++) if (made[i] && made[i].bISMONSTER && made[i].MissileState) { made[i].target = mo; made[i].SetState(made[i].MissileState); }
+		if (level.maptime % 35 == 0) Console.Printf("AM t%d", level.maptime);
+	}
+	// netevent am_mask <k> <rgb>: k >= 0 the k-th spawned actor, -1 the missile nearest the player, -2 every missile;
+	// painted a flat bright stencil so a frozen frame pair gives its exact silhouette.  am_unmask restores.
+	Array<Actor> painted;
+	Actor hidden;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let mo = players[0].mo;
+		if (e.Name == "am_mask")
+		{
+			Array<Actor> pick;
+			if (e.Args[0] >= 0) { if (e.Args[0] < made.Size() && made[e.Args[0]]) pick.Push(made[e.Args[0]]); }
+			else
+			{
+				let it = ThinkerIterator.Create("Actor"); Actor a, best; double bd = 1e9;
+				while (a = Actor(it.Next())) if (a.bMISSILE && a.target != mo) { if (e.Args[0] == -2) pick.Push(a); else { double d = a.Distance3D(mo); if (d < bd) { bd = d; best = a; } } }
+				if (best) pick.Push(best);
+			}
+			for (int i = 0; i < pick.Size(); i++)
+			{
+				let a = pick[i]; a.A_SetRenderStyle(1.0, STYLE_Stencil); a.SetShade(e.Args[1]); a.bBRIGHT = true; painted.Push(a);
+				Console.Printf("AM mask %s at %.0f %.0f %.0f dist %.0f", a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.Distance3D(mo));
+			}
+		}
+		if (e.Name == "am_hide")
+		{
+			Actor a = null;
+			if (e.Args[0] >= 0) { if (e.Args[0] < made.Size()) a = made[e.Args[0]]; }
+			else if (hidden) a = hidden;
+			else
+			{
+				let it = ThinkerIterator.Create("Actor"); Actor b; double bd = 1e9;
+				while (b = Actor(it.Next())) if (b.bMISSILE && b.target && b.target != mo && b.target.bISMONSTER) { double dd = b.Distance3D(mo); if (dd < bd) { bd = dd; a = b; } }
+			}
+			if (a) { a.bINVISIBLE = !a.bINVISIBLE; hidden = a.bINVISIBLE ? a : null; Console.Printf("AM hide %s %d at %.0f %.0f %.0f dist %.0f", a.GetClassName(), a.bINVISIBLE, a.pos.x, a.pos.y, a.pos.z, a.Distance3D(mo)); }
+			else Console.Printf("AM hide: nothing");
+		}
+		if (e.Name == "am_turn") { mo.angle = e.Args[0]; mo.player.cheats |= CF_GODMODE; }
+		if (e.Name == "am_go") { mo.SetOrigin((e.Args[0], e.Args[1], 0), false); mo.SetZ(mo.floorz); mo.angle = e.Args[2]; Console.Printf("AM go %d %d %d", e.Args[0], e.Args[1], e.Args[2]); }
+		if (e.Name == "am_unmask")
+		{
+			for (int i = 0; i < painted.Size(); i++) if (painted[i]) { painted[i].A_SetRenderStyle(1.0, STYLE_Normal); painted[i].bBRIGHT = false; }
+			painted.Clear();
+		}
+	}
+}
