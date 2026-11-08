@@ -42,7 +42,7 @@ class RSQTRUxProbe : EventHandler
 			let m = rg.marker[r];
 			if (m && !m.bINVISIBLE) vis = vis .. String.Format(" ring%d:%s:%d:%.2f:%.1f", r, m.GetClassName() == 'RSQTR_ItemMarker' ? "diamond" : "sphere", m.frame, m.Alpha, m.Scale.X);
 			let q = rg.rulePic[r];
-			if (q) { let b = rg.rulePicBack[r]; vis = vis .. String.Format(" pic%d:%s=%s:%.2f:w%.1f:h%.1f:dz%.1f:dxy%.1f:ang%.0f:pit%.0f:roll%.0f:back%d:head%.0f/%.0f", r, q.wearing, TexMan.GetName(q.tex), q.Alpha, q.Scale.X, q.Scale.Y, q.pos.z - (rg.marker[r] ? rg.marker[r].pos.z : 0), (q.pos.xy - (rg.marker[r] ? rg.marker[r].pos.xy : q.pos.xy)).Length(), q.angle, q.pitch, q.roll, b ? b.frame : -1, mo.angle, mo.pitch); }
+			if (q) { int gn = 0; Actor g0 = null; for (int k = 0; k < rg.GLOW_N && rg.ruleGlow.Size() > (r + 1) * rg.GLOW_N - 1; k++) { let g = rg.ruleGlow[r * rg.GLOW_N + k]; if (g && !g.bINVISIBLE) { gn++; if (!g0) g0 = g; } } vis = vis .. String.Format(" pic%d:%s=%s:%.2f:w%.1f:h%.1f:dz%.1f:dxy%.1f:ang%.0f:pit%.0f:roll%.0f:glow%d:style%d:fill%06x:ga%.3f:head%.0f/%.0f", r, q.wearing, TexMan.GetName(q.tex), q.Alpha, q.Scale.X, q.Scale.Y, q.pos.z - (rg.marker[r] ? rg.marker[r].pos.z : 0), (q.pos.xy - (rg.marker[r] ? rg.marker[r].pos.xy : q.pos.xy)).Length(), q.angle, q.pitch, q.roll, gn, g0 ? int(g0.GetRenderStyle()) : -1, g0 ? int(g0.fillcolor) & 0xFFFFFF : 0, g0 ? g0.Alpha : 0, mo.angle, mo.pitch); }
 			let a = rg.pip[r];
 			if (a && !a.bINVISIBLE) vis = vis .. String.Format(" pip%d:%d:%.2f", r, a.frame, a.Alpha);
 		}

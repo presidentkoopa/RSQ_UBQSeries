@@ -69,7 +69,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
   holster sends yours home and brings that one to your hand. Brutal Doom 22 VR's dual wield follows the same rules
   (above). (Rig only, not headset-confirmed.)
 - You see the rules as they happen (rig only, not headset-confirmed): a holster that becomes a gun's flashes bright with
-  the gun's picture just above it (above the ring as you see it, turned to your eyes, on a card in the flash's colour);
+  the gun's picture just above it (above the ring as you see it, turned to your eyes, with a soft glow in the flash's colour round the gun's own outline, no card);
   a gun that may not go in gets a red flash with the picture of the gun that owns that holster; a gun sent home to its own holster draws a short streak of light from your hand to it.
 - Free a holster by hand (rig only, not headset-confirmed): put your empty hand in an empty holster that belongs to a
   gun and hold grip for about a second. The holster is free again (the same as RSQ Wheel's Clear); it flashes white with

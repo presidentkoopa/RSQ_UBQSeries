@@ -760,17 +760,38 @@ class RSQTR_Rig : EventHandler
 	}
 	// THE PICTURE (owner 11-08, "the gun picture is not readable"): ABOVE the ring's centre, on a card the rig turns to your
 	// EYES every tic (the headset's place, not the body's yaw: a sprite's billboard turned to the view's yaw stood ~70 degrees
-	// off), fullbright, RULE_PIC_W ring radii wide, on a backing card in the ring flash's own colour (bright, red, white) so
-	// a dark gun reads over a dark floor. Both are models (RSQTR_RulePic, RSQTR_RulePicBack; MODELDEF): a voxel pack never
-	// swaps them, and the rig, not the engine, faces them.
+	// off), fullbright, RULE_PIC_W ring radii wide. Both it and its glow are models (RSQTR_RulePic, RSQTR_RulePicGlow;
+	// MODELDEF): a voxel pack never swaps them, and the rig, not the engine, faces them.
+	// THE GLOW (owner 11-08, mockup option A: "no card, no hard edges"): a soft light in the flash's own colour (bright,
+	// red, white) hugging the gun's OWN outline, so a dark gun reads over a dark floor. Built here from the gun's own sprite,
+	// so it fits any gun a mod adds: GLOW_DIRS copies of the picture on each of the GLOW_PX rings, each drawn behind it as a
+	// solid fill of the flash colour (AddStencil: the sprite's shape, its colour replaced, added to the scene), shifted in the
+	// card's plane by the ring's radius in sprite pixels and faint (GLOW_A), so together they read as a halo that is
+	// brightest at the outline and fades outward (CSS drop-shadow 3 + 8 + 14 px in the mockup).
 	const RULE_PIC_W = 3.0;        // the picture's width, in ring radii (the owner: 2-3x)
-	const RULE_PIC_PAD = 0.012;    // the backing's margin round the picture, metres
 	const RULE_ROLL_SIGN = 1;      // the model roll's sense against the turn about the face (rig frames 11-08)
-	transient RSQTR_RulePicBack rulePicBack[RSQTR_Region.N];
+	const GLOW_DIRS = 8;           // copies on each ring
+	const GLOW_RINGS = 3;
+	static const double GLOW_PX[] = { 1.0, 2.4, 4.2 };      // each ring's shift, in the picture's own pixels
+	static const double GLOW_A[] = { 0.30, 0.14, 0.06 };    // each copy's strength on that ring, at full show
+	const GLOW_N = GLOW_DIRS * GLOW_RINGS;
+	const GLOW_BACK = 0.04;        // metres the glow sits behind the picture, at least
+	const GLOW_FADE = 6;           // tics into the picture's fade the glow is gone
+	transient Array<RSQTR_RulePicGlow> ruleGlow;           // [r * GLOW_N + k]
 	void ClearRulePic(int r)
 	{
 		if (rulePic[r]) { rulePic[r].Destroy(); rulePic[r] = null; }
-		if (rulePicBack[r]) { rulePicBack[r].Destroy(); rulePicBack[r] = null; }
+		if (ruleGlow.Size() < RSQTR_Region.N * GLOW_N) return;
+		for (int k = 0; k < GLOW_N; k++)
+			if (ruleGlow[r * GLOW_N + k]) { ruleGlow[r * GLOW_N + k].Destroy(); ruleGlow[r * GLOW_N + k] = null; }
+	}
+	// the flash's colour as the ring shows it (the skins of its MODELDEF frame: rtwireht/rtwcb*0, rtwirerd, rtwirewh)
+	static int RuleColour(int kind)
+	{
+		static const int BRIGHT[] = { 0x6EFF78, 0x3090FF, 0x3090FF, 0x00E0E0, 0xFF40FF };
+		if (kind == RULE_REFUSE) return 0xFF463C;
+		if (kind == RULE_FREE) return 0xFFFFFF;
+		return BRIGHT[clamp(RSQTR_CB.Mode(), 0, 4)];
 	}
 	private void DrawRulePic(PlayerPawn pmo, int r, Vector3 at, double rad, double f)
 	{
@@ -778,12 +799,12 @@ class RSQTR_Rig : EventHandler
 		TextureID tx; double pm;
 		[tx, pm] = RSQTR_RulePic.PicOf(ruleCls[r]);
 		if (!tx.IsValid()) { ClearRulePic(r); return; }
-		if (!rulePic[r]) rulePic[r] = RSQTR_RulePic(Actor.Spawn("RSQTR_RulePic", at));
-		if (!rulePicBack[r]) rulePicBack[r] = RSQTR_RulePicBack(Actor.Spawn("RSQTR_RulePicBack", at));
+		bool fresh = !rulePic[r];
+		if (fresh) rulePic[r] = RSQTR_RulePic(Actor.Spawn("RSQTR_RulePic", at));
 		let q = rulePic[r];
-		let b = rulePicBack[r];
-		if (!q || !b) { ClearRulePic(r); return; }
+		if (!q) { ClearRulePic(r); return; }
 		q.Wear(tx, ruleCls[r]);
+		if (ruleGlow.Size() < RSQTR_Region.N * GLOW_N) ruleGlow.Resize(RSQTR_Region.N * GLOW_N);
 		double u = RSQTR_Body.Upm(), ps = RSQTR_Body.Ps();
 		double wm = RULE_PIC_W * rad;                          // metres across
 		double hm = wm * q.picH / max(1.0, q.picW);            // metres tall (the sprite's own proportions)
@@ -800,8 +821,7 @@ class RSQTR_Rig : EventHandler
 		double yaw = atan2(d.y, d.x);
 		double pit = -atan2(d.z * ps, max(0.001, d.xy.Length()));   // looking up at the eyes: a negative pitch
 		Vector3 dir = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), -sin(pit) / ps);
-		q.SetOrigin(c + dir * 0.4, true);                      // the picture just in front of its backing
-		b.SetOrigin(c, true);
+		q.SetOrigin(c + dir * 0.4, true);                      // the picture just in front of its glow
 		// UPRIGHT AS YOU SEE IT: turned about its face so its top is toward the top of your view (the head's own up, from its
 		// yaw and pitch), not the world's up -- looking down at a hip the world's up leaned the picture on its side
 		Vector3 n = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), -sin(pit));
@@ -809,16 +829,50 @@ class RSQTR_Rig : EventHandler
 		Vector3 up = hu - n * (hu dot n);
 		double rl = 0;
 		if (up.Length() > 0.01) { up = up.Unit(); rl = RULE_ROLL_SIGN * atan2((u0 cross up) dot n, u0 dot up); }
+		else up = u0;
+		Vector3 side = up cross n;                             // the card's sideways (the rings are symmetric: its sense does not matter)
 		q.angle = yaw; q.pitch = pit; q.roll = rl;
-		b.angle = yaw; b.pitch = pit; b.roll = rl;
+		if (fresh) q.ClearInterpolation();                     // a new one is not drawn sliding in from the ring
 		q.Scale = (wm * u, hm * u);
-		double pad = 2 * RULE_PIC_PAD;
-		b.Scale = ((wm + pad) * u, (hm + pad) * u);
-		b.frame = ruleKind[r] == RULE_REFUSE ? FRAME_RED : ruleKind[r] == RULE_FREE ? FRAME_WHITE : MarkerFrame(true, 1);
 		double al = clamp(f, 0.0, 1.0);
 		q.Alpha = al;
-		b.Alpha = al * 0.85;
-		q.bINVISIBLE = false; b.bINVISIBLE = false;
+		q.bINVISIBLE = false;
+		// the glow: the same picture, shifted round each ring in the card's plane. BEHIND the picture by GLOW_BACK (and more
+		// than its widest shift): the engine draws the translucent cards far to near with no depth between them, and a glow
+		// copy sorted nearer than the picture washed the gun itself in the colour (rig frames 11-08). Grown by the distance it
+		// was pushed back, so from the eyes it lies exactly round the gun.
+		int col = RuleColour(ruleKind[r]);
+		double pxm = wm / max(1.0, q.picW);                    // metres per sprite pixel
+		double back = max(GLOW_BACK, 3.0 * GLOW_PX[GLOW_RINGS - 1] * pxm);
+		double dm = max(0.05, (d.x, d.y, d.z * ps).Length() / u);   // metres from the eyes to the picture
+		double gk = (dm + back) / dm;
+		Vector3 gc = c - dir * (back * u);
+		// it lasts the hold and is gone GLOW_FADE tics into the picture's fade: the copies overlap UNDER the gun, and while
+		// the picture fades they showed through it at their summed strength, a gun washed in the colour (rig frames 11-08,
+		// fading with the picture or with its cube)
+		double ga = clamp(1.0 - (1.0 - al) * (RULE_TICS - RULE_HOLD) / GLOW_FADE, 0.0, 1.0);
+		ga *= ga;
+		for (int i = 0; i < GLOW_RINGS; i++)
+		{
+			for (int j = 0; j < GLOW_DIRS; j++)
+			{
+				int k = r * GLOW_N + i * GLOW_DIRS + j;
+				let g = ruleGlow[k];
+				bool gnew = !g;
+				if (gnew) { g = RSQTR_RulePicGlow(Actor.Spawn("RSQTR_RulePicGlow", c)); ruleGlow[k] = g; }
+				if (!g) continue;
+				g.Wear(tx, ruleCls[r]);
+				double t = 360.0 * (j + 0.5 * (i & 1)) / GLOW_DIRS;     // every other ring turned half a step: rounder
+				Vector3 o = (side * cos(t) + up * sin(t)) * (GLOW_PX[i] * pxm * gk);
+				g.SetOrigin(gc + (o.x * u, o.y * u, o.z * u / ps), true);
+				g.angle = yaw; g.pitch = pit; g.roll = rl;
+				g.Scale = q.Scale * gk;
+				if (gnew) g.ClearInterpolation();                    // a new one is not drawn sliding in from its spawn spot
+				g.SetShade(col);
+				g.Alpha = ga * GLOW_A[i];
+				g.bINVISIBLE = false;
+			}
+		}
 	}
 
 	// THE STREAK HOME: from where the hand was to the home holster (followed as the body moves), STREAK_TICS long, a bright
@@ -3268,10 +3322,12 @@ class RSQTR_RulePic : RSQTR_Marker
 		return tx, max(w, h);
 	}
 }
-// its backing card, in the ring flash's colour (the ring's frames and skins, MODELDEF RSQTR_RulePicBack)
-class RSQTR_RulePicBack : RSQTR_Marker
+// ITS GLOW (rig.zs DrawRulePic): a copy of the picture drawn as a solid fill of the flash's colour (AddStencil, SetShade),
+// added to the scene behind it; many, shifted round the gun's outline, make the soft halo. Its own MODELDEF entry (a model
+// definition binds to the class exactly), the same card.
+class RSQTR_RulePicGlow : RSQTR_RulePic
 {
-	Default { RenderStyle "Translucent"; }
+	Default { RenderStyle "AddStencil"; }
 }
 
 // A weapon shown by its own pickup sprite: the frame its Spawn state starts on.

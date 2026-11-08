@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Writes models/rsqtr/rtquad.obj: the flat card the RULE PICTURE is drawn on (owner 2026-11-08, "rules shown as they
-happen"; rig.zs DrawRulePic, MODELDEF RSQTR_RulePic / RSQTR_RulePicBack). One square, 1.0 across, centred on the model's
+happen"; rig.zs DrawRulePic, MODELDEF RSQTR_RulePic / RSQTR_RulePicGlow). One square, 1.0 across, centred on the model's
 origin, standing in the model's side-up plane with its face toward the model's forward, so an actor's angle and pitch turn
 it to the eyes (a sprite or visual thinker is turned by the engine, to the view's yaw, not the head). UVs 0..1 so a skin is
-drawn once across it: the gun's own pickup sprite (A_ChangeModel by texture name) or a flat 8x8 colour skin for the backing.
+drawn once across it: the gun's own pickup sprite (A_ChangeModel by texture name) on the picture and on its glow copies.
 Both windings, so it is never culled.
 
     python3 tools/gen_rule_quad.py           # from TacticalRig/
