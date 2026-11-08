@@ -28,3 +28,15 @@ Doom has no rooms, only sectors and lines. Candidate ways to find "rooms" at map
   NoMo. These are Doom's own "modes".
 - Doom's own words and sounds: "You got the...", the secret-found sound, the item-pickup flash, the berserk red, the
   invulnerability inverse, the Doomguy face.
+
+## Owner, 2026-11-08 18:07
+- Rooms: sound-blocking lines are clever; mapper fights are "brilliant". Idea: show him maps top-down and he draws
+  squares on rooms. Maps: Doom, Doom II, MapsOfChaos, maybe one or two others. (tools/mapview/ being built.)
+- What the mockups say to him: CONTEXTUAL TRIGGERED CHALLENGES, maybe triggered by a run of shot-quality bonuses or
+  RS Score conditions; bits might be tied exclusively to these challenges, which would happen fairly often.
+- Also for miniboss fights: our teleport-in mechanic could drop dozens of monsters over a timed event. Concept (not
+  this exact idea): find and kill one marked monster among many within x seconds.
+- Look up existing Doom arcade mods: Reelism 2, DOOM Roguelike, Vandomizer. They may offer little; no need to take
+  anything from them.
+- Assume Corruption Cards is loaded often.
+- When RS Monsters' EX tier comes in, "we can have some real creative fun".
