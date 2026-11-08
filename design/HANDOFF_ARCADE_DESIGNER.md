@@ -11,7 +11,7 @@ until the owner says so ("building now would be disastrous", 18:39). Read this f
 - **His load** (18:13): Brutal Doom 22, BD_VoxelPack, BD22 VR weapons, Champions, LegenDoom or LegenDoom Lite,
   Corruption Cards (often), RS Monsters with three sets (later), and the UBQ Series.
 - **Target WAD: Maps of Chaos OVERKILL** (`WADs/MapsOfChaos_OVERKILL.wad`; owner 18:49). It holds 59 maps:
-  E1M1-E3M9 (27 Doom-style) and MAP01-MAP32 (32 Doom II-style). Which IWAD he runs it on: ask him.
+  E1M1-E3M9 (27 Doom-style) and MAP01-MAP32 (32 Doom II-style). He plays it on both IWADs (Doom and Doom II).
 
 ## 2. How to work with him (learned the hard way)
 - **One question at a time.** He has said "STOP ... TOO MUCH HAPPENING" and "we're doing too much right now". Don't
@@ -89,7 +89,7 @@ The DoorCard concept mockup (offered / in progress / cleared; general layout, no
 2. What triggers a challenge besides opening a door: a run of good shots (Score), or only doors?
 3. The keyring: what role, if any?
 4. Bits: tie them only to challenges (owner floated this), and how the jackpot pays.
-5. Which IWAD Maps of Chaos is played on, and which of its maps to draw arenas on first.
+5. Which Maps of Chaos maps to draw arenas on first (he plays it on both Doom and Doom II).
 6. Co-op: who owns a challenge.
 7. Where panels 1-2 (lock-on, danger flash) are allowed.
 
