@@ -110,3 +110,10 @@ Owner: "im not saying we should change anything, but ... this looks like a LOT g
 2. One ring at a time: the nearest ring full, the rest faint until reached toward.
 3. Shrink RSQ FnF's pocket/clip diamonds to holster-ring size, or show them only when the off hand is near.
 4. "Always show" rings only while moving holsters (setup), else near-hand only.
+
+## Wheel mod support on stock 17.3 (found 2026-11-08) — parked
+About half the Wheel's compat files (Lithium, Doom Infinite, Doomablo, Pandemonia + Anarchy/Insurrection, BorderDoom,
+Guncaster, Model Swapper) read nothing on stock QZD 17.3: they use REMA's field reflection, stubbed to "no field"
+(Wheel/zscript/wheel/wr_q_shim.zs:873-886). LegenDoom, DRLA, Combined Arms, Final Doomer, MetaDoom Demon Keys work.
+Owner: "either get it working or we will drop support". Ways: read public items/cvars/events by name, or one small
+bridge pk3 per mod. Needs from the owner: which mods to keep, and their pk3s. See design/WHEEL_MODS_PEEK.md.
