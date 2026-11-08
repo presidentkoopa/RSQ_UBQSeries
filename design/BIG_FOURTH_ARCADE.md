@@ -40,3 +40,14 @@ Doom has no rooms, only sectors and lines. Candidate ways to find "rooms" at map
   anything from them.
 - Assume Corruption Cards is loaded often.
 - When RS Monsters' EX tier comes in, "we can have some real creative fun".
+
+## The mosaic (2026-11-08 18:13-18:14; the owner: "I think it's coming together, yeah")
+His load: Corruption Cards, LegenDoom, Brutal Doom, RS Monsters (three sets), Champions, the UBQ Series.
+The picture as I put it to him (Doom as one arcade cabinet):
+- Map = playfield (rooms from sound-blocking lines and the mapper's fights; the classics for time attack).
+- Corruption Cards = this game's rule card. RS Monsters = the targets (three rosters, called in on the fly); BD = their bodies and gore.
+- Champions and LegenDoom = the rare targets. Score = the scoreboard; the arcade language = the machine talking.
+- Challenges = modes and multiball (triggered by how well you play; bits are the jackpot). Miniboss = boss mode. DOWN = the continue screen.
+- GBOVR = what carries over between credits. The rest of UBQS = the controls (hands, rig, Wheel, weapons).
+- Missing piece: a CONDUCTOR that decides who tiers/buffs which monster and who gets to speak, so five systems don't
+  stack on one monster or shout at once. A challenge director, grown from Miniboss's Bossfight shape, could become it.
