@@ -103,3 +103,10 @@
 - Dual edge cases (owner 11:3x): an UNASSIGNED gun dual-wielded, off-hand copy into a free unassigned holster: the
   holster becomes the gun's and the gun goes in, both hands to fists (like A). The copy into a holster assigned to X
   while X is not there: like A (the gun goes home, both hands to fists) (as built).
+
+## Rig clutter ("a lot going on", owner 2026-11-08 17:31) — parked, not built
+Owner: "im not saying we should change anything, but ... this looks like a LOT going on". My four suggestions (he asked "all of them?"; parked 17:40):
+1. Show only what the hand can use: a gun hand sees gun holsters; an empty hand sees spots with something in them; spots of mods not loaded never show.
+2. One ring at a time: the nearest ring full, the rest faint until reached toward.
+3. Shrink RSQ FnF's pocket/clip diamonds to holster-ring size, or show them only when the off hand is near.
+4. "Always show" rings only while moving holsters (setup), else near-hand only.
