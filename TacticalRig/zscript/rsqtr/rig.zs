@@ -564,7 +564,7 @@ class RSQTR_Rig : EventHandler
 		if (e.Name == "rsqtr_holster_off") { HolsterOff(pmo, e.Args[0]); return; }
 		// RSQ Wheel's holster web (11-07): the gun's name rides in the event's name
 		if (e.Name.Left(13) == "rsqtr_assign:") { WebAssign(pmo, e.Name.Mid(13), e.Args[0]); return; }
-		if (e.Name.Left(15) == "rsqtr_unassign:") { WebUnassign(pmo, e.Name.Mid(15)); return; }
+		if (e.Name.Left(15) == "rsqtr_unassign:") { WebUnassign(pmo, e.Name.Mid(15), e.Args[0] == 1); return; }
 		if (e.Name == "rsqtr_draw_off") { DrawOff(pmo, e.Args[0]); return; }
 		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
 		else if (e.Name == "rsqtr_draw") Draw(pmo, e.Args[0], e.Args[1]);
@@ -659,21 +659,211 @@ class RSQTR_Rig : EventHandler
 		String c = Content(pmo, r);
 		return c == "" || c ~== cls;
 	}
-	// cls is assigned to gun holster r (and to no other)
-	void Assign(int n, String cls, int r)
+	// cls is assigned to gun holster r (and to no other). A holster that was unassigned shows it (RULES SHOWN, 11-08: the
+	// ring flashes and the gun's picture appears above it, on this machine only).
+	void Assign(int n, String cls, int r, bool show = true)
 	{
 		if (n < 0 || n >= MAXPLAYERS || cls == "" || !IsGunRegion(r)) return;
+		if (show && lockCls[n * RSQTR_Region.N + r] == "" && players[n].mo) ShowRule(players[n].mo, r, RULE_ASSIGN, cls);
 		for (int j = 0; j < RSQTR_Region.N; j++) if (lockCls[n * RSQTR_Region.N + j] ~== cls) lockCls[n * RSQTR_Region.N + j] = "";
 		lockCls[n * RSQTR_Region.N + r] = cls;
 	}
-	// a press at a holster the gun may not enter: nothing happens but a dull tick in that hand
+	// a press at a holster the gun may not enter: nothing happens but the refusal (RefuseFeel: the double pulse and Doom's
+	// use-fail sound), and (RULES SHOWN, 11-08) the ring flashes red with the picture of the gun that owns the holster --
+	// or the ShieldSaw's, on its shoulder -- above it. All on this machine only.
 	private void Refused(PlayerPawn pmo, int h, String cls, int r)
 	{
-		if (pmo.PlayerNumber() == consoleplayer) RSQTR_Buzzer.Start(pmo, h, 0.15, 2);
+		RefuseFeel(pmo, h);
+		String owner = r == RSQTR_Hooks.ShieldHolster(pmo) ? "SSQ_ShieldSaw" : lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r];
+		if (owner == "") owner = Content(pmo, r);
+		ShowRule(pmo, r, RULE_REFUSE, owner);
 		if (Flag("rsqtr_messages", pmo.player, false))
 			Console.Printf("T_ASSIGN t%d: %s may not go into %s (assigned to %s, holding %s)", level.maptime, cls, RSQTR_Region.NAMES[r],
 				lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r], Content(pmo, r));
 	}
+	// ---- SOUND AND BUZZ VOCABULARY (owner 2026-11-08) ---------------------------------------------------------------
+	// One feel per thing that happens at a holster, the same everywhere: a hand ENTERING a ring one short light pulse; a
+	// STORE one pulse; a DRAW one pulse; a REFUSED press (nothing happens: an assigned holster, an empty one, the other
+	// hand's spot, no grenades left, a lit flare) the ONLY double pulse (RSQTR_Buzzer.Refuse), with Doom's own use-fail
+	// sound ("*usefail"). All on the pressing machine only. (The watch move, cigarette, recenter, throw and Move Holsters
+	// by Hand keep their own buzzes.)
+	const ENTER_AMP = 0.18;
+	const ENTER_TICS = 3;
+	void StoreDrawFeel(PlayerPawn pmo, int h, bool draw)
+	{
+		if (draw) RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+		else RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+	}
+	void RefuseFeel(PlayerPawn pmo, int h)
+	{
+		if (!pmo || pmo.player != players[consoleplayer]) return;
+		RSQTR_Buzzer.Refuse(pmo, h);
+		pmo.A_StartSound("*usefail", CHAN_AUTO, CHANF_LOCAL, 0.8);
+		if (Flag("rsqtr_messages", pmo.player, false)) Console.Printf("T_REFUSE t%d hand %d: double pulse and *usefail", level.maptime, h);
+	}
+	// The gun the hand holds would be refused at gun holster r (Holster / HolsterOff's own tests, run where the press is
+	// made): its class, or "" when it may go in.
+	String WouldRefuse(PlayerPawn pmo, int h, int r)
+	{
+		let p = pmo.player;
+		String cls;
+		if (h == 0)
+		{
+			if (!p.ReadyWeapon) return "";
+			cls = HeldAs(pmo, p.ReadyWeapon);
+			String single = SingleOf(pmo, cls);       // Brutal Doom's two-gun weapon goes in as one gun (Holster)
+			if (single != "" && single != cls) { class<Weapon> sc = single; if (sc) cls = single; }
+		}
+		else
+		{
+			if (!p.OffhandWeapon) return "";
+			cls = MainOf(p.OffhandWeapon.GetClassName());
+		}
+		if (r == RSQTR_Hooks.ShieldHolster(pmo)) return cls;
+		if (LockedTo(pmo.PlayerNumber(), cls) < 0 && !MayEnter(pmo, cls, r)) return cls;
+		return "";
+	}
+
+	// ---- RULES SHOWN AS THEY HAPPEN (owner 2026-11-08; all on this machine only, about a second, fading) ---------------
+	//   ASSIGN: an unassigned gun holster becomes a gun's (Assign): the ring flashes bright (the "hand inside" colour) and
+	//     the gun's own pickup picture appears just above it.
+	//   REFUSE: a gun refused at a holster (Refused): the ring flashes red and the picture of the gun that owns the holster
+	//     (or the ShieldSaw's, on its shoulder) appears above it.
+	//   FREE: a holster freed by hand (FreeTick): the ring flashes white and the former owner's picture appears and fades.
+	//   HOME: a gun sent home to its own holster from another (LockedHome): a streak of light runs from the hand to the home
+	//     holster (StreakTick, particles, STREAK_TICS).
+	// The ring flash follows Holster Rings (none while it is Never); the picture always shows.
+	const RULE_ASSIGN = 1;
+	const RULE_REFUSE = 2;
+	const RULE_FREE = 3;
+	const RULE_TICS = 35;          // the whole show, tics (1 s)
+	const RULE_HOLD = 8;           // tics at full strength before it fades
+	private transient int ruleTic[RSQTR_Region.N];       // level.maptime + 1 when it started, 0 none
+	private transient int ruleKind[RSQTR_Region.N];
+	private transient String ruleCls[RSQTR_Region.N];
+	transient RSQTR_RulePic rulePic[RSQTR_Region.N];
+	void ShowRule(PlayerPawn pmo, int r, int kind, String cls)
+	{
+		if (!pmo || pmo.player != players[consoleplayer] || r < 0 || r >= RSQTR_Region.N) return;
+		ruleTic[r] = level.maptime + 1; ruleKind[r] = kind; ruleCls[r] = cls;
+		if (Flag("rsqtr_messages", pmo.player, false))
+			Console.Printf("T_RULE t%d %s at %s, picture %s", level.maptime, kind == RULE_ASSIGN ? "assign (bright)" : kind == RULE_REFUSE ? "refuse (red)" : "free (white)",
+				RSQTR_Region.NAMES[r], cls == "" ? "(none)" : cls);
+	}
+	// how strong the show at r is now: 1 at the start, fading to 0 over RULE_TICS (0 none)
+	double RuleFade(int r)
+	{
+		if (ruleTic[r] <= 0) return 0;
+		int age = level.maptime + 1 - ruleTic[r];
+		if (age < 0 || age >= RULE_TICS) { ruleTic[r] = 0; return 0; }
+		return age < RULE_HOLD ? 1.0 : 1.0 - double(age - RULE_HOLD) / (RULE_TICS - RULE_HOLD);
+	}
+	// THE PICTURE (owner 11-08, "the gun picture is not readable"): ABOVE the ring's centre, on a card the rig turns to your
+	// EYES every tic (the headset's place, not the body's yaw: a sprite's billboard turned to the view's yaw stood ~70 degrees
+	// off), fullbright, RULE_PIC_W ring radii wide, on a backing card in the ring flash's own colour (bright, red, white) so
+	// a dark gun reads over a dark floor. Both are models (RSQTR_RulePic, RSQTR_RulePicBack; MODELDEF): a voxel pack never
+	// swaps them, and the rig, not the engine, faces them.
+	const RULE_PIC_W = 3.0;        // the picture's width, in ring radii (the owner: 2-3x)
+	const RULE_PIC_PAD = 0.012;    // the backing's margin round the picture, metres
+	const RULE_ROLL_SIGN = 1;      // the model roll's sense against the turn about the face (rig frames 11-08)
+	transient RSQTR_RulePicBack rulePicBack[RSQTR_Region.N];
+	void ClearRulePic(int r)
+	{
+		if (rulePic[r]) { rulePic[r].Destroy(); rulePic[r] = null; }
+		if (rulePicBack[r]) { rulePicBack[r].Destroy(); rulePicBack[r] = null; }
+	}
+	private void DrawRulePic(PlayerPawn pmo, int r, Vector3 at, double rad, double f)
+	{
+		if (f <= 0 || ruleCls[r] == "") { ClearRulePic(r); return; }
+		TextureID tx; double pm;
+		[tx, pm] = RSQTR_RulePic.PicOf(ruleCls[r]);
+		if (!tx.IsValid()) { ClearRulePic(r); return; }
+		if (!rulePic[r]) rulePic[r] = RSQTR_RulePic(Actor.Spawn("RSQTR_RulePic", at));
+		if (!rulePicBack[r]) rulePicBack[r] = RSQTR_RulePicBack(Actor.Spawn("RSQTR_RulePicBack", at));
+		let q = rulePic[r];
+		let b = rulePicBack[r];
+		if (!q || !b) { ClearRulePic(r); return; }
+		q.Wear(tx, ruleCls[r]);
+		double u = RSQTR_Body.Upm(), ps = RSQTR_Body.Ps();
+		double wm = RULE_PIC_W * rad;                          // metres across
+		double hm = wm * q.picH / max(1.0, q.picW);            // metres tall (the sprite's own proportions)
+		// the eyes: the headset's height when the engine gives it (the hands are placed from it), else the view height
+		Vector3 eye = (pmo.pos.xy, pmo.HmdPosition.y > 0.3 ? RSQTR_Body.RoomFloor(pmo) + RSQTR_Body.EyeUnits(pmo, pmo.HmdPosition.y) : pmo.player.viewz);
+		// ABOVE THE RING'S CENTRE AS YOU SEE IT: along the head's own up (the top of your view), its foot clear of the ring's
+		// top (swollen by the flash). Straight up in the world is not above it in your view: looking down at a hip from over
+		// the body, a point straight over the hip sits out beside it (rig frames 11-08).
+		double ha = pmo.angle, hp = pmo.pitch;
+		Vector3 hu = (sin(hp) * cos(ha), sin(hp) * sin(ha), cos(hp));     // the head's up, room metres
+		double lift = rad * 1.3 + 0.015 + hm * 0.5;                         // metres from the ring's centre to the picture's
+		Vector3 c = at + (hu.x * lift * u, hu.y * lift * u, hu.z * lift * u / ps);
+		Vector3 d = eye - c;
+		double yaw = atan2(d.y, d.x);
+		double pit = -atan2(d.z * ps, max(0.001, d.xy.Length()));   // looking up at the eyes: a negative pitch
+		Vector3 dir = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), -sin(pit) / ps);
+		q.SetOrigin(c + dir * 0.4, true);                      // the picture just in front of its backing
+		b.SetOrigin(c, true);
+		// UPRIGHT AS YOU SEE IT: turned about its face so its top is toward the top of your view (the head's own up, from its
+		// yaw and pitch), not the world's up -- looking down at a hip the world's up leaned the picture on its side
+		Vector3 n = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), -sin(pit));
+		Vector3 u0 = (sin(pit) * cos(yaw), sin(pit) * sin(yaw), cos(pit));
+		Vector3 up = hu - n * (hu dot n);
+		double rl = 0;
+		if (up.Length() > 0.01) { up = up.Unit(); rl = RULE_ROLL_SIGN * atan2((u0 cross up) dot n, u0 dot up); }
+		q.angle = yaw; q.pitch = pit; q.roll = rl;
+		b.angle = yaw; b.pitch = pit; b.roll = rl;
+		q.Scale = (wm * u, hm * u);
+		double pad = 2 * RULE_PIC_PAD;
+		b.Scale = ((wm + pad) * u, (hm + pad) * u);
+		b.frame = ruleKind[r] == RULE_REFUSE ? FRAME_RED : ruleKind[r] == RULE_FREE ? FRAME_WHITE : MarkerFrame(true, 1);
+		double al = clamp(f, 0.0, 1.0);
+		q.Alpha = al;
+		b.Alpha = al * 0.85;
+		q.bINVISIBLE = false; b.bINVISIBLE = false;
+	}
+
+	// THE STREAK HOME: from where the hand was to the home holster (followed as the body moves), STREAK_TICS long, a bright
+	// head of particles with a short fading tail.
+	const STREAK_TICS = 14;        // 0.4 s
+	private transient int streakTic, streakTo;
+	private transient Vector3 streakFrom, streakLast;
+	void StartStreak(PlayerPawn pmo, int h, int home)
+	{
+		if (!pmo || pmo.player != players[consoleplayer] || home < 0) return;
+		streakTic = level.maptime + 1;
+		streakTo = home;
+		streakFrom = RSQTR_Body.Hand(pmo, h & 1);
+		streakLast = streakFrom;
+		if (Flag("rsqtr_messages", pmo.player, false))
+			Console.Printf("T_STREAK t%d from the %s hand (%.0f %.0f %.0f) to %s", level.maptime, h ? "off" : "main", streakFrom.x, streakFrom.y, streakFrom.z, RSQTR_Region.NAMES[home]);
+	}
+	private void StreakTick(PlayerPawn pmo)
+	{
+		if (streakTic <= 0) return;
+		int age = level.maptime + 1 - streakTic;
+		if (age < 0 || age > STREAK_TICS) { streakTic = 0; return; }
+		Vector3 to = RegionAt(pmo, streakTo);
+		Vector3 head = streakFrom + (to - streakFrom) * (double(age) / STREAK_TICS);
+		FSpawnParticleParams pp;
+		pp.color1 = 0xFFFFF0B0;
+		pp.style = STYLE_Add;
+		pp.flags = SPF_FULLBRIGHT;
+		pp.lifetime = 9;
+		pp.size = 2.5;
+		pp.sizestep = -0.15;
+		pp.startalpha = 1.0;
+		pp.fadestep = -1;
+		pp.vel = (0, 0, 0);
+		pp.accel = (0, 0, 0);
+		for (int k = 0; k < 5; k++)
+		{
+			pp.pos = streakLast + (head - streakLast) * (k / 4.0);
+			level.SpawnParticle(pp);
+		}
+		streakLast = head;
+		if (age == STREAK_TICS && Flag("rsqtr_messages", pmo.player, false))
+			Console.Printf("T_STREAK t%d arrived at %s (%.0f %.0f %.0f)", level.maptime, RSQTR_Region.NAMES[streakTo], to.x, to.y, to.z);
+	}
+
 	// THE HOLSTER WEB (RSQ Wheel, "rsqtr_assign:<gun>", Args[0] the holster): the gun is assigned to holster r and goes
 	// into it at once -- out of the hand that holds it (that hand goes empty), out of any other holster. A gun r held
 	// or was assigned to loses its assignment and leaves the holster (it stays in your inventory).
@@ -695,7 +885,7 @@ class RSQTR_Rig : EventHandler
 		if (was != "" && !(was ~== cls)) lockCls[base + r] = "";
 		if (lastPut[base + r] != "" && !(lastPut[base + r] ~== cls)) { lastPut[base + r] = ""; lastPair[base + r] = false; }
 		for (int k = 0; k < RSQTR_Region.N; k++) if (k != r && lastPut[base + k] ~== cls) { lastPut[base + k] = ""; lastPair[base + k] = false; }
-		Assign(n, cls, r);
+		Assign(n, cls, r, was == "");
 		lastPut[base + r] = cls; lastPair[base + r] = false;
 		// out of the hands
 		if (p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== cls)
@@ -726,7 +916,7 @@ class RSQTR_Rig : EventHandler
 		}
 	}
 	// THE WEB'S CLEAR ("rsqtr_unassign:<gun>"): no holster is assigned to the gun, and it is in none (inventory only)
-	private void WebUnassign(PlayerPawn pmo, String cls)
+	private void WebUnassign(PlayerPawn pmo, String cls, bool byHand = false)
 	{
 		if (cls == "") return;
 		int base = pmo.PlayerNumber() * RSQTR_Region.N;
@@ -735,14 +925,16 @@ class RSQTR_Rig : EventHandler
 			if (lockCls[base + k] ~== cls) lockCls[base + k] = "";
 			if (IsGunRegion(k) && lastPut[base + k] ~== cls) { lastPut[base + k] = ""; lastPair[base + k] = false; }
 		}
-		if (Flag("rsqtr_messages", pmo.player, false)) Console.Printf("T_ASSIGN t%d: web: %s cleared (no holster)", level.maptime, cls);
+		if (Flag("rsqtr_messages", pmo.player, false)) Console.Printf("T_ASSIGN t%d: %s: %s cleared (no holster)", level.maptime, byHand ? "by hand" : "web", cls);
 	}
 	// A LOCKED GUN GOES HOME. The hand holding gun cls at gun holster r, cls locked to holster home (not r): cls goes into
 	// home, and r's gun (if any) comes out to that hand as a draw. A gun someone put in home meanwhile goes into r, so no
 	// holstered gun is lost. Returns the gun that comes out to the hand (or null).
-	private Weapon LockedHome(PlayerPawn pmo, String cls, int r, int home)
+	// (RULES SHOWN, 11-08: a streak of light runs from the hand to the home holster, on this machine only.)
+	private Weapon LockedHome(PlayerPawn pmo, String cls, int r, int home, int h)
 	{
 		int n = pmo.PlayerNumber();
+		StartStreak(pmo, h, home);
 		int base = n * RSQTR_Region.N;
 		String atR = Content(pmo, r);
 		String atHome = lastPut[base + home];
@@ -1153,7 +1345,7 @@ class RSQTR_Rig : EventHandler
 		{
 			String before = DualHands(pmo);
 			Weapon outW = null;
-			if (lockHome != r) outW = LockedHome(pmo, cls, r, lockHome);
+			if (lockHome != r) outW = LockedHome(pmo, cls, r, lockHome, 1);
 			else
 			{
 				for (int k = 0; k < RSQTR_Region.N; k++)
@@ -1186,7 +1378,7 @@ class RSQTR_Rig : EventHandler
 		}
 		if (lockHome >= 0 && lockHome != r)
 		{
-			let outW = LockedHome(pmo, cls, r, lockHome);
+			let outW = LockedHome(pmo, cls, r, lockHome, 1);
 			if (outW && outW != p.ReadyWeapon) { outW.bOffhandWeapon = true; QueueOff(n, outW.GetClassName()); }
 			else EmptyOff(pmo);
 			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
@@ -1430,7 +1622,7 @@ class RSQTR_Rig : EventHandler
 		if (lockHome < 0 && IsGunRegion(r) && HoldsGun(pmo) && !MayEnter(pmo, cls, r)) { Refused(pmo, 0, cls, r); return; }
 		if (lockHome >= 0 && lockHome != r)
 		{
-			incoming = LockedHome(pmo, cls, r, lockHome);
+			incoming = LockedHome(pmo, cls, r, lockHome, 0);
 			if (incoming && incoming != w)
 			{
 				if (IsMovedGun(incoming)) incoming.bOffhandWeapon = false;
@@ -1686,6 +1878,13 @@ class RSQTR_Rig : EventHandler
 			Vector3 hp = RSQTR_Body.Hand(pmo, h);
 			int r = -1;
 			double best = 1e9;
+			// OVERLAP PRIORITY (owner 11-08): a hand inside two or more places at once takes, of those, one it can use -- a
+			// hand holding a gun a gun holster, an empty hand a place with something in it (SpotHolds) -- and the nearest
+			// centre among them; ties and every other case, the nearest centre as before. Not while moving holsters by hand.
+			int kind = editing ? 2 : (h == 0 ? (HoldsGun(pmo) ? 1 : HandKind(pmo, 0)) : HandKind(pmo, 1));
+			int bestRank = -1, nIn = 0, nearR = -1;
+			double nearD = 1e9;
+			String inList = "";
 			for (int i = 0; i < RSQTR_Region.N; i++)
 			{
 				// (the ShieldSaw's shoulder, left to its own Use while the shield is stowed there, still answers a main hand
@@ -1695,15 +1894,24 @@ class RSQTR_Rig : EventHandler
 				// (keys to a door) is keyring.zs's own, as before it was a place.
 				if (i == RSQTR_Region.KEYRING && !editing) continue;
 				double d = RSQTR_Body.RoomMetres(hp, RegionAt(pmo, i));
-				if (d <= RegionRadius(p, i) && d < best) { best = d; r = i; }
+				if (d > RegionRadius(p, i)) continue;
+				int rank = kind == 1 ? (IsGunRegion(i) ? 1 : 0) : kind == 0 ? (SpotHolds(pmo, p, i) ? 1 : 0) : 0;
+				nIn++;
+				inList = inList .. String.Format(" %s(%.3f%s)", RSQTR_Region.NAMES[i], d, rank ? ",preferred" : "");
+				if (d < nearD) { nearD = d; nearR = i; }
+				if (rank > bestRank || (rank == bestRank && d < best)) { bestRank = rank; best = d; r = i; }
 			}
+			if (nIn >= 2 && inList != overlapSaid[h] && Flag("rsqtr_messages", p, false))
+				Console.Printf("T_OVERLAP t%d %s hand (%s) inside%s -> %s (nearest centre %s)", level.maptime, h ? "off" : "main",
+					kind == 1 ? "a gun" : kind == 0 ? "empty" : "other", inList, RSQTR_Region.NAMES[r], RSQTR_Region.NAMES[nearR]);
+			overlapSaid[h] = nIn >= 2 ? inList : "";
 			// A HAND GRIPPING IN A HOLSTER COMES FIRST (the owner, 10-29: "when hands are gripping in
 			// holsters they should take precedent over everything"). Until 10-29 an off hand within
 			// half a metre of the gun with grip held was read as the engine's two-hand steadying and
 			// the holster was ignored; now the holster wins. Other mods yield through "rig.busy".
 			if (r != hoverR[h])
 			{
-				if (r >= 0 && buzzCool[h] <= 0) { RSQTR_Buzzer.Start(pmo, h, 0.18, 3); buzzCool[h] = 10; }
+				if (r >= 0 && buzzCool[h] <= 0) { RSQTR_Buzzer.Start(pmo, h, ENTER_AMP, ENTER_TICS); buzzCool[h] = 10; }
 				hoverR[h] = r;
 				hoverT[h] = 0;
 				pendPress[h] = false;
@@ -1760,6 +1968,12 @@ class RSQTR_Rig : EventHandler
 			}
 			else if (editHand >= 0) editHand = -1;
 
+			// FREE A HOLSTER BY HAND (owner 11-08): an empty hand pressed in an empty, assigned gun holster and held there
+			// FREE_TICS frees it (FreeTick)
+			if (edge && r >= 0) { freeR[h] = r; freeT[h] = 0; }
+			if (!pressNow || r != freeR[h]) freeR[h] = -1;
+			else if (freeR[h] >= 0 && ++freeT[h] >= FREE_TICS) { FreeTick(pmo, p, h, r); freeR[h] = -1; }
+
 			// A hand passing through a region does not act on it: the press counts once
 			// the hand has been there rsqtr_dwell tics (a press a moment early waits).
 			int dwell = Opt("rsqtr_dwell", p, 3);
@@ -1770,11 +1984,106 @@ class RSQTR_Rig : EventHandler
 			if (!pressNow) pendPress[h] = false;
 			if (pendPress[h] && r >= 0 && hoverT[h] >= dwell) { pendPress[h] = false; Press(pmo, p, h, r, hp); }
 		}
+		AutoHeight(pmo, p);
+		RecentreTip(pmo, p);
 		// after the holsters: a Use press with a hand in a holster was the holster's (WatchMove stands down)
 		WatchMove(pmo, p, useEdge);
 		useWas = useDown;
 		RecenterTick(pmo, p, n);
 		DrawMarkers(pmo, p);
+	}
+
+	// ---- OVERLAP PRIORITY (owner 11-08): does place r hold something an empty hand would take? A full gun holster; the
+	// grenade spot with a grenade not in a hand; a saber spot with its saber not in a hand; the whip holster with the whip
+	// home; the flare holster with a flare carried; the ammo pouch while the gun in the main hand has reserve (what a reload
+	// takes there). The keyring is no holster outside Move Holsters by Hand.
+	private transient String overlapSaid[2];
+	bool SpotHolds(PlayerPawn pmo, PlayerInfo p, int r)
+	{
+		if (IsGunRegion(r)) return Content(pmo, r) != "";
+		if (IsGrenadeRegion(r)) return Grenades(pmo) > 0 && !NadeInHand(p);
+		if (IsSaberRegion(r))
+		{
+			Array<String> own;
+			Owned(pmo, r, own);
+			for (int k = 0; k < own.Size(); k++)
+			{
+				let sw = Weapon(pmo.FindInventory(own[k]));
+				if (sw && sw != p.ReadyWeapon && sw != p.OffhandWeapon) return true;
+			}
+			return false;
+		}
+		if (r == RSQTR_Region.WHIP) return WhipOf(pmo) && !WhipInHand(pmo);
+		if (r == RSQTR_Region.FLARE) return FlareAsk("flare.count", pmo) > 0;
+		if (r == RSQTR_Region.POUCH) { int st = ReserveState(p.ReadyWeapon); return st == 0 || st == 1; }
+		return false;
+	}
+
+	// ---- FREE A HOLSTER WITHOUT THE WHEEL (owner 11-08) ----------------------------------------------------------------
+	// An EMPTY hand (its empty-hand weapon, HandKind 0) pressed (grip, or Use as every holster press) inside an EMPTY gun
+	// holster that is ASSIGNED to a gun, and held there FREE_TICS: the holster is unassigned, through the very event RSQ
+	// Wheel's Clear sends ("rsqtr_unassign:<gun>", WebUnassign), so the Rig and the Wheel agree. The former owner's picture
+	// appears and fades over the ring, which flashes white, with the store pulse. Never in Move Holsters by Hand (that grip
+	// carries the ring: edit mode never reaches here), never on the ShieldSaw's shoulder (it is no gun's).
+	const FREE_TICS = 35;          // 1 s
+	private transient int freeR[2], freeT[2];
+	private void FreeTick(PlayerPawn pmo, PlayerInfo p, int h, int r)
+	{
+		if (!IsGunRegion(r) || r == RSQTR_Hooks.ShieldHolster(pmo)) return;
+		String owner = lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r];
+		bool dbg = Flag("rsqtr_messages", p, false);
+		if (owner == "" || Content(pmo, r) != "" || HandKind(pmo, h) != 0)
+		{
+			if (dbg) Console.Printf("T_FREE t%d %s hand held 1 s at %s: nothing to free (assigned %s, holding %s, hand %d)", level.maptime, h ? "off" : "main",
+				RSQTR_Region.NAMES[r], owner == "" ? "-" : owner, Content(pmo, r) == "" ? "-" : Content(pmo, r), HandKind(pmo, h));
+			return;
+		}
+		EventHandler.SendNetworkEvent("rsqtr_unassign:" .. owner, 1);
+		ShowRule(pmo, r, RULE_FREE, owner);
+		StoreDrawFeel(pmo, h, false);
+		if (dbg) Console.Printf("T_FREE t%d %s hand held 1 s at the empty %s: freed, it was %s's", level.maptime, h ? "off" : "main", RSQTR_Region.NAMES[r], owner);
+	}
+
+	// ---- AUTO HEIGHT (owner 11-08) -------------------------------------------------------------------------------------
+	// Eye height never measured (rsqtr_eye_m 0) and standing (profile Standing A or B, Seated off here and in RSQ
+	// Accessibility): the first time the head stays within STILL_M for STILL_TICS, Measure My Height is done for you -- the
+	// same "rsqtr_calib" event the menu sends, so the same reading, range check, setting and note. Once: a set value is
+	// never overwritten.
+	const STILL_M = 0.02;
+	const STILL_TICS = 70;         // 2 s
+	private transient bool heightDone;
+	private transient int stillFor;
+	private transient Vector3 stillAt;
+	private void AutoHeight(PlayerPawn pmo, PlayerInfo p)
+	{
+		if (heightDone) return;
+		let ec = CVar.FindCVar("rsqtr_eye_m");
+		if (!ec || ec.GetFloat() != 0) { heightDone = true; return; }
+		bool seated = Flag("rsqtr_seated", p, false) || RSQTR_A11y.Seated(pmo);
+		if (Opt("rsqtr_profile_active", p, 1) > 2 || seated) { stillFor = 0; return; }
+		Vector3 hmd = pmo.HmdPosition;
+		if (hmd.y <= 0.8 || hmd.y >= 2.3) { stillFor = 0; return; }     // the range Measure My Height accepts
+		if (stillFor == 0 || (hmd - stillAt).Length() > STILL_M) { stillAt = hmd; stillFor = 1; return; }
+		if (++stillFor < STILL_TICS) return;
+		heightDone = true;
+		Console.Printf("T_HEIGHT t%d: eye height unset, standing, head still %d tics within %.2f m at %.3f m: Measure My Height", level.maptime, STILL_TICS, STILL_M, hmd.y);
+		EventHandler.SendNetworkEvent("rsqtr_calib");
+	}
+
+	// ---- THE RECENTRE TIP (owner 11-08): once ever (rsqtr_tip_recentre), about 10 s into the first map the rig runs, a
+	// 5 s note on how to bring the holsters back. Only while the hands' recenter is on (it is the gesture it tells of).
+	const TIP_TIC = 350;
+	private transient bool tipDone;
+	private void RecentreTip(PlayerPawn pmo, PlayerInfo p)
+	{
+		if (tipDone) return;
+		let tc = CVar.FindCVar("rsqtr_tip_recentre");
+		if (!tc || tc.GetBool()) { tipDone = true; return; }
+		if (level.maptime < TIP_TIC || !Flag("rsqtr_recenter_hands", p, true)) return;
+		tipDone = true;
+		tc.SetBool(true);
+		pmo.A_Print("Holsters in the wrong place? Bring both hands to your chest.", 5, RSQTR_A11y.PrintFont());
+		Console.Printf("T_TIP t%d: the recentre tip shown (once ever)", level.maptime);
 	}
 
 	// ---- RECENTER (the owner's choice, 11-03 18:56: "Stick turns + recenter") ---------------------------------------
@@ -1985,10 +2294,10 @@ class RSQTR_Rig : EventHandler
 		{
 			String nw = NadeWeapon();
 			bool inHand = p.ReadyWeapon && nw != "" && p.ReadyWeapon.GetClassName() == Name(nw);
-			if (inHand || Grenades(pmo) > 0) { EventHandler.SendNetworkEvent("rsqtr_nade"); RSQTR_Buzzer.Start(pmo, h, 0.55, 5); }
+			if (inHand || Grenades(pmo) > 0) { EventHandler.SendNetworkEvent("rsqtr_nade"); StoreDrawFeel(pmo, h, !inHand); }
 			else
 			{
-				RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+				RefuseFeel(pmo, h);
 				if (Flag("rsqtr_messages", p, false)) pmo.A_Print("Grenades: none", 0, RSQTR_A11y.PrintFont());
 			}
 			return;
@@ -1998,7 +2307,7 @@ class RSQTR_Rig : EventHandler
 		// and let it fall, nothing put away. FnF keeps it in the hand there too; it leaves by a throw or a drop elsewhere.
 		if (h == 1 && FlareAsk("flare.phase", pmo) == 2)
 		{
-			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			RefuseFeel(pmo, h);
 			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG t%d: %s refused, a lit flare is in the off hand", level.maptime, RSQTR_Region.NAMES[r]);
 			return;
 		}
@@ -2023,13 +2332,13 @@ class RSQTR_Rig : EventHandler
 			if (HomeWhip(hw))
 			{
 				EventHandler.SendNetworkEvent("rsqtr_whip", h, 0);
-				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				StoreDrawFeel(pmo, h, false);
 				return;
 			}
 			if (h == 1 && FlareHolsterOn(p) && FlareAsk("flare.phase", pmo) == 1)
 			{
 				EventHandler.SendNetworkEvent("rsqff_back");
-				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				StoreDrawFeel(pmo, h, false);
 				return;
 			}
 		}
@@ -2044,7 +2353,7 @@ class RSQTR_Rig : EventHandler
 		{
 			EventHandler.SendNetworkEvent("ubqs_dual_in");
 			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
-			RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+			StoreDrawFeel(pmo, h, false);
 			return;
 		}
 		let mainW = p.ReadyWeapon;
@@ -2055,7 +2364,7 @@ class RSQTR_Rig : EventHandler
 			if (!itsOwn && spotEmpty)
 			{
 				EventHandler.SendNetworkEvent("rsqtr_holster", home);
-				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				StoreDrawFeel(pmo, h, false);
 				return;
 			}
 		}
@@ -2064,7 +2373,7 @@ class RSQTR_Rig : EventHandler
 		// the main hand only, the second saber's the off hand only; the other hand there does nothing.
 		if (IsSaberRegion(r) && ((r == SaberHome() && h != 0) || (r == SaberAway() && h != 1)))
 		{
-			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			RefuseFeel(pmo, h);
 			return;
 		}
 		// THE SECOND SABER'S HOLSTER: the saber itself takes it out to the off hand or puts it
@@ -2079,26 +2388,33 @@ class RSQTR_Rig : EventHandler
 				bool inHand = p.OffhandWeapon == sw;
 				EventHandler.SendNetworkEvent(inHand ? "ubqs_dual_in" : "ubqs_dual_out");
 				pmo.A_StartSound(inHand ? "rsqtr/holster" : "rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
-				RSQTR_Buzzer.Start(pmo, h, inHand ? 0.55 : 0.65, inHand ? 5 : 6);
+				StoreDrawFeel(pmo, h, !inHand);
 				return;
 			}
 		}
 		// EACH HAND ITS OWN GUN (the owner, 10-27: guns move between hands with the engine's own
 		// switchhand button). The off hand puts the gun it holds on a holster, or draws a holster's
 		// gun into itself; the main hand does the same for itself.
+		// A GUN THAT MAY NOT GO IN IS REFUSED HERE, on the pressing machine (sound and buzz vocabulary, 11-08: a refused
+		// press is only the refusal, never a store pulse first); Holster / HolsterOff keep their own check
+		if (IsGunRegion(r) && (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo)))
+		{
+			String rc = WouldRefuse(pmo, h, r);
+			if (rc != "") { Refused(pmo, h, rc, r); return; }
+		}
 		if (h == 1 && IsGunRegion(r))
 		{
 			if (OffHoldsGun(pmo))
 			{
 				EventHandler.SendNetworkEvent("rsqtr_holster_off", r);
-				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				StoreDrawFeel(pmo, h, false);
 			}
 			else if (Content(pmo, r) != "")
 			{
 				EventHandler.SendNetworkEvent("rsqtr_draw_off", r);
-				RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+				StoreDrawFeel(pmo, h, true);
 			}
-			else RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			else RefuseFeel(pmo, h);
 			return;
 		}
 		if (IsGunRegion(r))
@@ -2107,16 +2423,16 @@ class RSQTR_Rig : EventHandler
 			if (HoldsGun(pmo))
 			{
 				EventHandler.SendNetworkEvent("rsqtr_holster", r);
-				RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+				StoreDrawFeel(pmo, h, false);
 			}
 			else if (Content(pmo, r) != "")
 			{
 				EventHandler.SendNetworkEvent("rsqtr_draw", r, 0);
-				RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+				StoreDrawFeel(pmo, h, true);
 			}
 			else
 			{
-				RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+				RefuseFeel(pmo, h);
 				if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: empty", RSQTR_Region.NAMES[r]), 0, RSQTR_A11y.PrintFont());
 			}
 			return;
@@ -2125,18 +2441,18 @@ class RSQTR_Rig : EventHandler
 		if (cur != "" && own.Find(cur) < own.Size())
 		{
 			EventHandler.SendNetworkEvent("rsqtr_holster", r);
-			RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+			StoreDrawFeel(pmo, h, false);
 			return;
 		}
 		if (own.Size() == 0)
 		{
-			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			RefuseFeel(pmo, h);
 			if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: nothing here", RSQTR_Region.NAMES[r]), 0, RSQTR_A11y.PrintFont());
 			return;
 		}
 		// a saber spot lists one saber at most (Owned): draw it
 		EventHandler.SendNetworkEvent("rsqtr_draw", r, 0);
-		RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+		StoreDrawFeel(pmo, h, true);
 	}
 
 	// THE WHIP HOLSTER: the whip's own hand (WhipHand) puts it away or draws it; a gun in that hand stays in the inventory
@@ -2147,13 +2463,13 @@ class RSQTR_Rig : EventHandler
 		bool dbg = Flag("rsqtr_messages", p, false);
 		if (!w || h != WhipHand(pmo))
 		{
-			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			RefuseFeel(pmo, h);
 			if (dbg) pmo.A_Print(!w ? "Whip: none" : "Whip: the other hand's", 0, RSQTR_A11y.PrintFont());
 			return;
 		}
 		bool inHand = (h == 0 ? p.ReadyWeapon : p.OffhandWeapon) == w;
 		EventHandler.SendNetworkEvent("rsqtr_whip", h, inHand ? 0 : 1);
-		RSQTR_Buzzer.Start(pmo, h, inHand ? 0.55 : 0.65, inHand ? 5 : 6);
+		StoreDrawFeel(pmo, h, !inHand);
 	}
 
 	// THE FLARE HOLSTER: the off hand only (the flare is RSQ FnF's off-hand weapon). Empty of a flare: one comes up, unlit
@@ -2164,25 +2480,25 @@ class RSQTR_Rig : EventHandler
 		int ph = FlareAsk("flare.phase", pmo);
 		if (h != 1 || ph < 0 || ph == 2)
 		{
-			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			RefuseFeel(pmo, h);
 			if (dbg) Console.Printf("T_RIG flare holster t%d: refused (hand %d, flare %d)", level.maptime, h, ph);
 			return;
 		}
 		if (ph == 1)
 		{
 			EventHandler.SendNetworkEvent("rsqff_back");
-			RSQTR_Buzzer.Start(pmo, h, 0.55, 5);
+			StoreDrawFeel(pmo, h, false);
 			if (dbg) Console.Printf("T_RIG flare holster t%d: the unlit flare goes back", level.maptime);
 			return;
 		}
 		if (FlareAsk("flare.count", pmo) <= 0)
 		{
-			RSQTR_Buzzer.Start(pmo, h, 0.12, 2);
+			RefuseFeel(pmo, h);
 			pmo.A_Print("No flares left", 1);
 			return;
 		}
 		EventHandler.SendNetworkEvent("rsqff_take");
-		RSQTR_Buzzer.Start(pmo, h, 0.65, 6);
+		StoreDrawFeel(pmo, h, true);
 		if (dbg) Console.Printf("T_RIG flare holster t%d: a flare drawn into the off hand", level.maptime);
 	}
 
@@ -2211,6 +2527,13 @@ class RSQTR_Rig : EventHandler
 	// pick a sixth colour for their palette by the same rule (gen_cb_skins.py): protan/deutan 33FF99, tritan CC33CC, high
 	// contrast CC3300. A hand inside is the same "inside" colour as a gun holster's. Frames U (20), V W X (21-23).
 	const STOWED_SPHERE = 0.4;
+	// the rules' ring flashes (MODELDEF RSQTR_Marker / RSQTR_ItemMarker frames Y, Z): red (refused), white (freed)
+	const FRAME_RED = 24;
+	const FRAME_WHITE = 25;
+	// THE EMPTY LIGHT PULSES SLOWLY (owner 11-08, not colour alone): the red "empty" ammo light (a holster's, the pouch's)
+	// swells and fades once a second (smooth, never off: 0.25 .. 1 of its alpha), where it blinked on and off every 8 tics.
+	const PULSE_TICS = 35;
+	static double EmptyPulse() { return 0.625 + 0.375 * cos(level.maptime * 360.0 / PULSE_TICS); }
 	static int MarkerFrame(bool inside, int prof, bool util = false)
 	{
 		static const int IDLE[] = { 0, 2, 3, 4 };
@@ -2254,9 +2577,18 @@ class RSQTR_Rig : EventHandler
 			// (not the pouch: its 0.10 sphere is far larger than the 10 cm pouch and is meant to be seen)
 			bool holds = r != RSQTR_Region.POUCH && ((icon[r] && !icon[r].bINVISIBLE) || (IsGrenadeRegion(r) && nadeShow && !nadeShow.bINVISIBLE));
 			if (holds) a *= STOWED_SPHERE;
+			// RULES SHOWN (11-08): a first fit, a refusal or a freed holster flashes the ring (with Holster Rings on) and
+			// shows a gun's picture above it
+			double rf = RuleFade(r);
+			bool ringFlash = rf > 0 && mode > 0;
+			if (ringFlash) a = max(a, rf);
+			DrawRulePic(pmo, r, at, rad, rf);
+			// NOT BY COLOUR ALONE (11-08): an item spot is a wire diamond (RSQTR_ItemMarker), a gun holster the wire sphere
+			String mk = IsGunRegion(r) ? "RSQTR_Marker" : "RSQTR_ItemMarker";
+			if (marker[r] && marker[r].GetClassName() != Name(mk)) { marker[r].Destroy(); marker[r] = null; }
 			if (a > 0.01)
 			{
-				if (!marker[r]) marker[r] = Actor.Spawn("RSQTR_Marker", at);
+				if (!marker[r]) marker[r] = Actor.Spawn(mk, at);
 				let m = marker[r];
 				if (m)
 				{
@@ -2267,8 +2599,13 @@ class RSQTR_Rig : EventHandler
 					// purple or yellow for profiles 1-4, green with a hand inside. Not by colour
 					// alone: a sphere with a hand in it is also brighter and a size larger.
 					double s = rad * RSQTR_Body.Upm() * (inside ? 1.15 : 1.0);   // the wireframe sphere has radius 1.0
-					m.Scale = (s, s);
 					m.frame = MarkerFrame(inside, Opt("rsqtr_profile_active", p, 1), !IsGunRegion(r));
+					if (ringFlash)
+					{
+						s *= 1.0 + 0.25 * rf;
+						m.frame = ruleKind[r] == RULE_REFUSE ? FRAME_RED : ruleKind[r] == RULE_FREE ? FRAME_WHITE : MarkerFrame(true, 1);
+					}
+					m.Scale = (s, s);
 				}
 			}
 			else if (marker[r]) marker[r].bINVISIBLE = true;
@@ -2291,8 +2628,9 @@ class RSQTR_Rig : EventHandler
 					q.frame = st;
 					double ps = rad * RSQTR_Body.Upm() * (st == 2 ? 0.18 : 0.26);
 					q.Scale = (ps, ps);
-					q.bINVISIBLE = st == 2 && (level.maptime / 8) % 2 == 1;
+					q.bINVISIBLE = false;
 					q.Alpha = clamp(a + 0.2, 0.0, 1.0);
+					if (st == 2) q.Alpha *= EmptyPulse();
 					// THE KIND'S COLOUR (owner 11-02): with RSQ Grenade's kind in hand not the frag, the grenade spot glows in
 					// its colour; the count still reads -- empty is the small blinking light, one left pulses slowly
 					int kc = nades >= 0 ? KindColour(pmo) : -1;
@@ -2359,6 +2697,7 @@ class RSQTR_Rig : EventHandler
 			if (IsGrenadeRegion(r)) DrawNade(pmo, p, at, live);
 		}
 		DrawFnFMarkers(pmo, p, mode);
+		StreakTick(pmo);
 	}
 
 	// EVERY GRAB ZONE ON THE BODY SHOWS THE SPHERE (owner 11-04 19:07: "I would expect all of my holsters to have that
@@ -2393,7 +2732,7 @@ class RSQTR_Rig : EventHandler
 					else if (near < rad * 2.5) a = inside ? 0.7 : 0.35 * (1.0 - (near - rad) / (rad * 1.5));
 					if (a > 0.01)
 					{
-						if (!fnfMark[k]) fnfMark[k] = Actor.Spawn("RSQTR_Marker", at);
+						if (!fnfMark[k]) fnfMark[k] = Actor.Spawn("RSQTR_ItemMarker", at);   // an item spot: a wire diamond (11-08)
 						let m = fnfMark[k];
 						if (m)
 						{
@@ -2494,9 +2833,9 @@ class RSQTR_Rig : EventHandler
 		q.frame = st;
 		double ps = POUCH_LIGHT_M * u;      // (red is told apart by its blink, not by a smaller size: on the belt it vanished)
 		q.Scale = (ps, ps);
-		q.Alpha = 0.95;
+		q.Alpha = 0.95 * (st == 2 ? EmptyPulse() : 1.0);
 		if (q.GetRenderStyle() != STYLE_Add) q.A_SetRenderStyle(q.Alpha, STYLE_Add);
-		q.bINVISIBLE = st == 2 && (level.maptime / 8) % 2 == 1;
+		q.bINVISIBLE = false;
 	}
 
 	// ---- THE GRENADE IN ITS HOLSTER (owner 2026-11-03 17:10: "When I have a grenade in my inventory I should see it in
@@ -2585,6 +2924,7 @@ class RSQTR_Rig : EventHandler
 			if (marker[r]) marker[r].bINVISIBLE = true;
 			if (icon[r]) icon[r].bINVISIBLE = true;
 			if (pip[r]) pip[r].bINVISIBLE = true;
+			ClearRulePic(r);
 		}
 		for (int k = 0; k < 2; k++) if (fnfMark[k]) fnfMark[k].bINVISIBLE = true;
 		if (nadeShow) nadeShow.bINVISIBLE = true;
@@ -2733,6 +3073,7 @@ class RSQTR_Rig : EventHandler
 	override void OnRegister()
 	{
 		editHand = -1; editRegion = -1;
+		freeR[0] = -1; freeR[1] = -1;
 		hoverR[0] = -1; hoverR[1] = -1;
 		afterLoad = true;
 		if (body) body.primed = false;     // a loaded save: the torso starts facing where the head faces (RECENTER)
@@ -2881,6 +3222,56 @@ class RSQTR_Marker : Actor
 		Radius 1; Height 1;
 	}
 	States { Spawn: RSTM A -1 Bright; Stop; }
+}
+
+// AN ITEM SPOT'S MARKER (owner 11-08, not colour alone): the grenade spot, keyring, saber spots, whip, flare and pouch are a
+// wire DIAMOND (an octahedron, models/rsqtr/rtwoct.obj from tools/gen_octawire.py, radius 1.0 as rtwire.obj), the gun
+// holsters the wire sphere. Same frames and skins as RSQTR_Marker (MODELDEF).
+class RSQTR_ItemMarker : RSQTR_Marker {}
+
+// RULES SHOWN (rig.zs ShowRule, DrawRulePic): a gun's own pickup picture -- the texture of the first visible frame of its
+// Spawn state, as RSQTR_Icon finds it -- worn by a flat card MODEL (MODELDEF RSQTR_RulePic, models/rsqtr/rtquad.obj) that the
+// rig turns to the eyes, fading. A model: a voxel pack (BD_VoxelPack's Voxels/Weapons/RIFLA0.kvx) turns an actor SHOWING that
+// sprite frame into its voxel, and a visual thinker's billboard is turned by the engine to the view's yaw (11-08: ~70 degrees
+// off the head). The card shows sprite RSTM A (its own MODELDEF frame); the gun's texture is its skin, by name. A subclass of
+// RSQTR_Marker, so a load clears it with the rings (ClearLocalMarks). Local, never in play.
+class RSQTR_RulePic : RSQTR_Marker
+{
+	String wearing;
+	TextureID tex;
+	double picMax, picW, picH;     // the picture's longest side, width, height, pixels
+	Default { RenderStyle "Translucent"; }
+	void Wear(TextureID tx, String cls)
+	{
+		wearing = cls;
+		if (tx == tex) return;
+		tex = tx;
+		int w, h;
+		[w, h] = TexMan.GetSize(tx);
+		picW = max(1, w); picH = max(1, h); picMax = max(picW, picH);
+		A_ChangeModel(GetClassName(), 0, "", "", 0, "", Name(TexMan.GetName(tx)));
+	}
+	static TextureID, double PicOf(String cls)
+	{
+		TextureID none;
+		class<Actor> c = cls;
+		let d = c ? GetDefaultByType(c) : null;
+		State st = d ? d.SpawnState : null;
+		int tnt = Actor.GetSpriteIndex('TNT1');
+		for (int i = 0; i < 16 && st && st.sprite == tnt; i++) st = st.NextState;
+		if (!st || st.sprite == tnt) return none, 0;
+		TextureID tx = st.GetSpriteTexture(0);
+		if (!tx.IsValid()) return none, 0;
+		int w, h;
+		[w, h] = TexMan.GetSize(tx);
+		if (w <= 0 || h <= 0) return none, 0;
+		return tx, max(w, h);
+	}
+}
+// its backing card, in the ring flash's colour (the ring's frames and skins, MODELDEF RSQTR_RulePicBack)
+class RSQTR_RulePicBack : RSQTR_Marker
+{
+	Default { RenderStyle "Translucent"; }
 }
 
 // A weapon shown by its own pickup sprite: the frame its Spawn state starts on.

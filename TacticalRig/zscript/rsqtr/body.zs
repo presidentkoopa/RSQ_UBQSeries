@@ -763,13 +763,25 @@ class RSQTR_Buzzer : Actor
 	bool left;
 	double amp;
 	int total, tleft;
+	int delay;      // tics before this pulse starts (the second pulse of Refuse's double)
 
 	Default
 	{
 		+NOINTERACTION +NOBLOCKMAP +NOSECTOR +DONTSPLASH
 	}
 
-	static void Start(Actor who, int hand, double strength, int tics)
+	// THE HOLSTERS' FEEL (owner 2026-11-08, "sound and buzz vocabulary"): a hand entering a holster, a store and a draw are
+	// each ONE pulse (Start); a refused press is the only DOUBLE pulse: two short pulses with a gap (Refuse).
+	const REFUSE_AMP = 0.3;
+	const REFUSE_TICS = 3;
+	const REFUSE_GAP = 4;      // tics of quiet between the two pulses
+	static void Refuse(Actor who, int hand)
+	{
+		Start(who, hand, REFUSE_AMP, REFUSE_TICS);
+		Start(who, hand, REFUSE_AMP, REFUSE_TICS, REFUSE_TICS + REFUSE_GAP);
+	}
+
+	static void Start(Actor who, int hand, double strength, int tics, int after = 0)
 	{
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
 		let cv = CVar.GetCVar("rsqtr_haptics", who.player);
@@ -787,6 +799,7 @@ class RSQTR_Buzzer : Actor
 		q.amp = clamp(strength, 0.05, 1.0);
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
+		q.delay = clamp(after, 0, 16);
 	}
 
 	override void Tick()
@@ -795,11 +808,14 @@ class RSQTR_Buzzer : Actor
 		if (bDestroyed) return;
 		if (!feels) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
+		if (delay > 0) { delay--; return; }
 		if (tleft <= 0) return;
+		if (tleft == total && feels.player && RSQTR_Rig.Flag("rsqtr_messages", feels.player, false))
+			Console.Printf("T_BUZZ t%d %s hand %.2f for %d tics", level.maptime, left ? "left" : "right", amp, total);
 		double a = amp * tleft / double(total) / 3.2;
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
 	}
 
-	States { Spawn: TNT1 A 20; Stop; }
+	States { Spawn: TNT1 A 40; Stop; }
 }

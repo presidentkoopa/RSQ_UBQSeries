@@ -1,0 +1,47 @@
+version "4.14"
+// TEST ONLY (never ships). Item 3 of 11-08: does a held gun fire on a main-hand grip press at a hip? Rig-version-free (it
+// names nothing of the Rig's), so the same probe runs on git HEAD's pk3 and the new build. Per tic, one TRF line when
+// anything moves: the buttons (attack, altattack, use, reload, zoom, user1-4), the weapon, its ammo and magazine counts,
+// whether the weapon layer is in its Fire / AltFire sequence, and the weapon layer's state (sprite+frame) on a change.
+class RSQTRFireProbe : EventHandler
+{
+	String last; int shots;
+	override void WorldTick()
+	{
+		let p = players[0];
+		if (!p.mo) return;
+		let w = p.ReadyWeapon;
+		int b = p.cmd.buttons;
+		String bs = "";
+		if (b & BT_ATTACK) bs = bs .. "A";
+		if (b & BT_ALTATTACK) bs = bs .. "a";
+		if (b & BT_USE) bs = bs .. "U";
+		if (b & BT_RELOAD) bs = bs .. "R";
+		if (b & BT_ZOOM) bs = bs .. "Z";
+		if (b & BT_USER1) bs = bs .. "1";
+		if (b & BT_USER2) bs = bs .. "2";
+		if (b & BT_USER3) bs = bs .. "3";
+		if (b & BT_USER4) bs = bs .. "4";
+		String fs = "-", st = "-";
+		int a1 = -1, a2 = -1;
+		if (w)
+		{
+			if (w.Ammo1) a1 = w.Ammo1.Amount;
+			if (w.Ammo2) a2 = w.Ammo2.Amount;
+			let psp = p.FindPSprite(PSP_WEAPON);
+			if (psp && psp.CurState)
+			{
+				st = TexMan.GetName(psp.CurState.GetSpriteTexture(0));
+				State f = w.FindState("Fire"), af = w.FindState("AltFire");
+				if (f && w.InStateSequence(psp.CurState, f)) fs = "FIRE";
+				else if (af && w.InStateSequence(psp.CurState, af)) fs = "ALTFIRE";
+			}
+		}
+		String now = String.Format("btn[%s] %s ammo %d/%d %s %s", bs, w ? String.Format("%s", w.GetClassName()) : "none", a1, a2, fs, st);
+		if (now != last)
+		{
+			Console.Printf("TRF t%d %s", level.maptime, now);
+			last = now;
+		}
+	}
+}

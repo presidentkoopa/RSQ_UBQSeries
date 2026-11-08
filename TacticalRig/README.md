@@ -33,6 +33,11 @@ and another gun's; an empty unassigned holster not shown).
 A gun with no holster yet, held in both hands: put the off hand's copy in a free holster with no gun assigned and that
 holster becomes the gun's, the gun goes in, and both hands go empty (shown on the rig, dual Rifles, full order).
 
+New on 11-08, for new players (rig only, not headset-confirmed): the holster rules show as they happen (a flash, the
+gun's picture, a streak home), a holster freed by hand, one feel per action (a refusal is the only double buzz), a full
+holster preferred where two overlap, your height measured for you, a one-time recentre tip, and item spots drawn as
+diamonds. Details below.
+
 ## Standout feature: a holster rig you work with your hands
 
 Six gun holsters hang on your body: both hips, both sides of the chest and both shoulders. Put your hand in one and
@@ -44,8 +49,8 @@ hand while the rifle stays in your main hand.
 With Brutal Doom's weapons, and with vanilla Doom's Pistol, Shotgun, Super Shotgun, Chaingun, Rocket Launcher, Plasma Rifle,
 BFG9000 and Chainsaw (drawn in Brutal Doom's matching held models, carried in this pk3), the stored gun hangs where you put it, drawn with the 3D model you hold in your hand:
 muzzle down at the hips, butt toward the middle on the chest, slung across your back from the shoulders. Look down and you see your loadout.
-A small light in each full holster shows its ammo: green, yellow when low or needing a reload, red and blinking
-when empty.
+A small light in each full holster shows its ammo: green, yellow when low or needing a reload, red and slowly
+pulsing when empty.
 
 None of this exists in QuestZDoom. The engine gives scripts your hand positions and nothing more. Everything else
 here (the body, the holsters, the torso that follows your turns) is worked out in ZScript, every tic.
@@ -53,15 +58,26 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 ## Features
 
 **Holsters**
-- Six gun holsters, one gun each, any gun. A gun put in one holster leaves any other it was in.
+- Six gun holsters, one gun each, any gun. The first gun you put in an empty holster makes it that gun's own holster:
+  that gun always goes back there, and no other gun goes in until you free it.
 - Quick Swap: a gun in your hand at a full holster swaps at once, no wait.
 - Each holster's ring fades in as a hand comes near and turns green with the hand inside.
 - Holsters keep their guns from level to level. After a death or pistol start a holster stays empty until you
   own that gun again, then it is back where you kept it.
 - Assigned holsters: a gun put by hand into an unassigned holster, or picked for one in RSQ Wheel's holster web, owns
-  it until the Wheel unassigns or reassigns it; no other gun goes in. Holding an assigned gun at another gun's full
+  it until the Wheel unassigns or reassigns it, or you free it by hand (below); no other gun goes in. Holding an assigned gun at another gun's full
   holster sends yours home and brings that one to your hand. Brutal Doom 22 VR's dual wield follows the same rules
   (above). (Rig only, not headset-confirmed.)
+- You see the rules as they happen (rig only, not headset-confirmed): a holster that becomes a gun's flashes bright with
+  the gun's picture just above it (above the ring as you see it, turned to your eyes, on a card in the flash's colour);
+  a gun that may not go in gets a red flash with the picture of the gun that owns that holster; a gun sent home to its own holster draws a short streak of light from your hand to it.
+- Free a holster by hand (rig only, not headset-confirmed): put your empty hand in an empty holster that belongs to a
+  gun and hold grip for about a second. The holster is free again (the same as RSQ Wheel's Clear); it flashes white with
+  that gun's picture.
+- Where two holsters overlap (rig only, not headset-confirmed): a hand holding a gun takes the gun holster, an empty hand
+  takes the one with something in it; otherwise the nearest one.
+- One feel per action (rig only, not headset-confirmed): a short tick when your hand enters a ring, one buzz when a gun
+  goes in or comes out, and a double buzz with Doom's "no" sound when nothing happens.
 - Optional: each full holster shows its round count as small digits above the ring (off by default).
 - Brutal Doom's two-gun weapons (dual pistols and the like) go in as one gun, so a draw gives you one.
 
@@ -98,6 +114,8 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
   Ammo Pouch off: BD22 VR takes ammo from anywhere again.
 - Holster rings: gun holsters (hips, chest, shoulders) are blue (or their profile's colour); every other spot (grenade,
   keyring, sabers, whip, flare, pouch, FnF's pocket and clip, the cigarette pocket) is magenta; green with a hand inside.
+- Not by colour alone (rig only, not headset-confirmed): gun holsters are wire spheres, the grenade, keyring, saber,
+  whip, flare and pouch spots, FnF's pocket and clip and the cigarette pocket are wire diamonds.
   A ring with its item in it is drawn faint, so the item shows solid.
 - The cigarettes left in your pocket stand in it on your chest, and the mirror shows your grenade, cigarettes and
   RSQ ShieldSaw's shield along with your holsters.
@@ -107,7 +125,10 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 - A thrown gun that hits a monster hurts and staggers it. Heavier guns and harder throws hit harder.
 
 **Fit it to you**
-- Measure My Height scales the whole rig to your body.
+- Measure My Height scales the whole rig to your body. Never measured? Standing, the rig measures you itself the first
+  time you hold your head still for about 2 seconds, once (rig only, not headset-confirmed).
+- Once, about 10 seconds into your first map, a tip shows: "Holsters in the wrong place? Bring both hands to your
+  chest." (rig only, not headset-confirmed)
 - Seated play: the rig hangs from your seated eyes.
 - Move Holsters by Hand: grab any holster, carry it where you want, let go. A mirror in front of you shows your front
   and back while you do it.
@@ -139,6 +160,7 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 |---|---|---|
 | Holster a gun | Hand with a gun inside a holster ring, then grip (or Use) | A full holster swaps: its gun comes out to that hand |
 | Draw a gun | Empty hand inside a full holster, then grip (or Use) | Each hand draws into itself |
+| Free a holster | Empty hand inside an empty holster that belongs to a gun, hold grip (or Use) about 1 s | The holster takes any gun again. Not while Move Holsters by Hand is on (rig only, not headset-confirmed) |
 | Throw a gun | Throw Guns on: swing the hand fast (2.5 m/s) outside every holster, then grip, or Use with the main hand (Throw With Use) | Lands as a pickup you can take again |
 | Grenade | Either hand at the belt buckle, grip | Again with the grenade in hand: your gun comes back |
 | Saber | Main hand at the main-side saber spot, off hand at the other | Needs RSQ Saber; a saber put on any empty holster goes to its own spot |

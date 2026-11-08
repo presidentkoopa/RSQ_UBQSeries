@@ -1,0 +1,77 @@
+version "4.14"
+// TEST ONLY (never ships). The 11-08 new-player changes: a TRX line on every change (and once a second): each hand's
+// region and weapon, every gun holster's gun and assignment, and every shown ring (class, frame, alpha, scale), rule picture
+// (sprite, alpha) and ammo light (frame, alpha). TRX_F <frame> g<gametic> every 10 frames, to match the frame dumps. The
+// places' positions from the eyes at t30.
+class RSQTRUxProbe : EventHandler
+{
+	String last;
+	override void WorldTick()
+	{
+		let p = players[0];
+		let mo = p.mo;
+		if (!mo) return;
+		let rg = RSQTR_Rig.Get();
+		if (!rg) return;
+		if (CVar.FindCVar("trx_picshow").GetBool() && level.maptime >= 100 && level.maptime % 30 == 0) rg.ShowRule(mo, 1, 1, "Rifle");
+		if (level.maptime == 30)
+			for (int k = 0; k < RSQTR_Region.N; k++)
+			{
+				if (RSQTR_Region.Retired(k)) continue;
+				double f, l, u;
+				rg.BodyOffsets(mo, rg.RegionAt(mo, k), f, l, u);
+				Console.Printf("TRX region %d %s at %.3f forward %.3f left %.3f up from the eyes (eyes %.2f m over the floor), radius %.3f", k, RSQTR_Region.NAMES[k], f, l, u, (p.viewz - mo.floorz) * RSQTR_Body.Ps() / RSQTR_Body.Upm(), rg.RegionRadius(p, k));
+			}
+		if (level.maptime % 70 == 0 && CVar.FindCVar("trx_marks") && CVar.FindCVar("trx_marks").GetBool())
+		{
+			let it = ThinkerIterator.Create("RSQTR_Marker");
+			Actor a; String ms = "";
+			while (a = Actor(it.Next()))
+			{
+				if (a.bINVISIBLE) continue;
+				double f, l, u;
+				rg.BodyOffsets(mo, a.pos, f, l, u);
+				ms = ms .. String.Format(" %s(f%.2f l%.2f u%.2f a%.2f sc%.1f)", a.GetClassName(), f, l, u, a.Alpha, a.Scale.X);
+			}
+			for (int k = 0; k < 2; k++) if (rg.fnfMark[k]) ms = ms .. String.Format(" fnf%d=%s%s", k, rg.fnfMark[k].GetClassName(), rg.fnfMark[k].bINVISIBLE ? "(hidden)" : "");
+			Console.Printf("TRX marks t%d%s", level.maptime, ms);
+		}
+		String vis = "";
+		for (int r = 0; r < RSQTR_Region.N; r++)
+		{
+			let m = rg.marker[r];
+			if (m && !m.bINVISIBLE) vis = vis .. String.Format(" ring%d:%s:%d:%.2f:%.1f", r, m.GetClassName() == 'RSQTR_ItemMarker' ? "diamond" : "sphere", m.frame, m.Alpha, m.Scale.X);
+			let q = rg.rulePic[r];
+			if (q) { let b = rg.rulePicBack[r]; vis = vis .. String.Format(" pic%d:%s=%s:%.2f:w%.1f:h%.1f:dz%.1f:dxy%.1f:ang%.0f:pit%.0f:roll%.0f:back%d:head%.0f/%.0f", r, q.wearing, TexMan.GetName(q.tex), q.Alpha, q.Scale.X, q.Scale.Y, q.pos.z - (rg.marker[r] ? rg.marker[r].pos.z : 0), (q.pos.xy - (rg.marker[r] ? rg.marker[r].pos.xy : q.pos.xy)).Length(), q.angle, q.pitch, q.roll, b ? b.frame : -1, mo.angle, mo.pitch); }
+			let a = rg.pip[r];
+			if (a && !a.bINVISIBLE) vis = vis .. String.Format(" pip%d:%d:%.2f", r, a.frame, a.Alpha);
+		}
+		String now = String.Format("hover %d/%d | main %s off %s | eye %.2f | %s|%s",
+			rg.HoverRegion(0), rg.HoverRegion(1), p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none',
+			p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', CVar.FindCVar("rsqtr_eye_m").GetFloat(), rg.HolsterList(mo), vis);
+		if (now != last || level.maptime % 35 == 0)
+		{
+			Console.Printf("TRX t%d %s", level.maptime, now);
+			last = now;
+		}
+	}
+	static String PicTex(String cls)
+	{
+		class<Actor> c = cls;
+		let d = c ? GetDefaultByType(c) : null;
+		State st = d ? d.SpawnState : null;
+		int tnt = Actor.GetSpriteIndex('TNT1');
+		for (int i = 0; i < 16 && st && st.sprite == tnt; i++) st = st.NextState;
+		if (!st) return "?";
+		TextureID tx = st.GetSpriteTexture(0);
+		return TexMan.GetName(tx);
+	}
+	ui int frames;
+	override void RenderOverlay(RenderEvent e) { frames++; if (frames % 10 == 0) Console.Printf("TRX_F %d g%d", frames, gametic); }
+}
+
+class RSQTRProbeSpr : Actor
+{
+	Default { +NOINTERACTION +NOGRAVITY +BRIGHT +FORCEXYBILLBOARD Scale 0.3; }
+	States { Spawn: SHOT A -1; Stop; }
+}

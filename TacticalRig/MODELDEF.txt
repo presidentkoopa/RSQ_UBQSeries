@@ -72,6 +72,159 @@ Model RSQTR_Marker
 	FrameIndex RSTM W 0 0
 	Skin 0 "rtwcbhu.png"
 	FrameIndex RSTM X 0 0
+	// the rules' ring flashes (owner 11-08, rig.zs ShowRule): red, a refused gun; white, a holster freed by hand
+	Skin 0 "rtwirerd.png"
+	FrameIndex RSTM Y 0 0
+	Skin 0 "rtwirewh.png"
+	FrameIndex RSTM Z 0 0
+}
+
+// THE RULE PICTURE (owner 11-08, rig.zs DrawRulePic): a flat card (tools/gen_rule_quad.py) the rig turns to your eyes each
+// tic (angle and pitch), wearing the gun's own pickup sprite by texture name (A_ChangeModel): a model, so a voxel pack does
+// not turn it into a voxel, and turned by the rig, not by the engine's sprite billboard (which faces the view's yaw).
+Model RSQTR_RulePic
+{
+	Path "models/rsqtr"
+	Model 0 "rtquad.obj"
+	Skin 0 "rtwirewh.png"
+	Scale 1.0 1.0 1.0
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RSTM A 0 0
+}
+
+// ITS BACKING: the same card behind it in the ring flash's own colour (the ring's frame: the same skins as RSQTR_Marker),
+// so a dark gun reads on a dark floor.
+Model RSQTR_RulePicBack
+{
+	Path "models/rsqtr"
+	Model 0 "rtquad.obj"
+	USEACTORPITCH
+	USEACTORROLL
+	Skin 0 "rtwireid.png"
+	Scale 1.0 1.0 1.0
+	FrameIndex RSTM A 0 0
+	Skin 0 "rtwireht.png"
+	FrameIndex RSTM B 0 0
+	// the holster profiles' idle colours (profile 1 blue above): 2 orange, 3 purple, 4 yellow
+	Skin 0 "rtwireor.png"
+	FrameIndex RSTM C 0 0
+	Skin 0 "rtwirepu.png"
+	FrameIndex RSTM D 0 0
+	Skin 0 "rtwireye.png"
+	FrameIndex RSTM E 0 0
+	// colour-blind play (rsqa_colorblind; tools/gen_cb_skins.py): hand inside, then profiles 1-4,
+	// F-J protanopia/deuteranopia, K-O tritanopia, P-T high contrast
+	Skin 0 "rtwcbp0.png"
+	FrameIndex RSTM F 0 0
+	Skin 0 "rtwcbp1.png"
+	FrameIndex RSTM G 0 0
+	Skin 0 "rtwcbp2.png"
+	FrameIndex RSTM H 0 0
+	Skin 0 "rtwcbp3.png"
+	FrameIndex RSTM I 0 0
+	Skin 0 "rtwcbp4.png"
+	FrameIndex RSTM J 0 0
+	Skin 0 "rtwcbt0.png"
+	FrameIndex RSTM K 0 0
+	Skin 0 "rtwcbt1.png"
+	FrameIndex RSTM L 0 0
+	Skin 0 "rtwcbt2.png"
+	FrameIndex RSTM M 0 0
+	Skin 0 "rtwcbt3.png"
+	FrameIndex RSTM N 0 0
+	Skin 0 "rtwcbt4.png"
+	FrameIndex RSTM O 0 0
+	Skin 0 "rtwcbh0.png"
+	FrameIndex RSTM P 0 0
+	Skin 0 "rtwcbh1.png"
+	FrameIndex RSTM Q 0 0
+	Skin 0 "rtwcbh2.png"
+	FrameIndex RSTM R 0 0
+	Skin 0 "rtwcbh3.png"
+	FrameIndex RSTM S 0 0
+	Skin 0 "rtwcbh4.png"
+	FrameIndex RSTM T 0 0
+	// utility places (owner 11-05; rig.zs MarkerFrame): magenta, then the colour-blind palettes' sixth colour (p, t, h)
+	Skin 0 "rtwireut.png"
+	FrameIndex RSTM U 0 0
+	Skin 0 "rtwcbpu.png"
+	FrameIndex RSTM V 0 0
+	Skin 0 "rtwcbtu.png"
+	FrameIndex RSTM W 0 0
+	Skin 0 "rtwcbhu.png"
+	FrameIndex RSTM X 0 0
+	// the rules' ring flashes (owner 11-08, rig.zs ShowRule): red, a refused gun; white, a holster freed by hand
+	Skin 0 "rtwirerd.png"
+	FrameIndex RSTM Y 0 0
+	Skin 0 "rtwirewh.png"
+	FrameIndex RSTM Z 0 0
+}
+
+// AN ITEM SPOT (owner 11-08, not colour alone; rig.zs RSQTR_ItemMarker): grenade spot, keyring, saber spots, whip, flare and
+// pouch draw a wire DIAMOND (tools/gen_octawire.py, radius 1.0 as rtwire.obj) with the same frames and skins.
+Model RSQTR_ItemMarker
+{
+	Path "models/rsqtr"
+	Model 0 "rtwoct.obj"
+	Skin 0 "rtwireid.png"
+	Scale 1.0 1.0 1.0
+	FrameIndex RSTM A 0 0
+	Skin 0 "rtwireht.png"
+	FrameIndex RSTM B 0 0
+	// the holster profiles' idle colours (profile 1 blue above): 2 orange, 3 purple, 4 yellow
+	Skin 0 "rtwireor.png"
+	FrameIndex RSTM C 0 0
+	Skin 0 "rtwirepu.png"
+	FrameIndex RSTM D 0 0
+	Skin 0 "rtwireye.png"
+	FrameIndex RSTM E 0 0
+	// colour-blind play (rsqa_colorblind; tools/gen_cb_skins.py): hand inside, then profiles 1-4,
+	// F-J protanopia/deuteranopia, K-O tritanopia, P-T high contrast
+	Skin 0 "rtwcbp0.png"
+	FrameIndex RSTM F 0 0
+	Skin 0 "rtwcbp1.png"
+	FrameIndex RSTM G 0 0
+	Skin 0 "rtwcbp2.png"
+	FrameIndex RSTM H 0 0
+	Skin 0 "rtwcbp3.png"
+	FrameIndex RSTM I 0 0
+	Skin 0 "rtwcbp4.png"
+	FrameIndex RSTM J 0 0
+	Skin 0 "rtwcbt0.png"
+	FrameIndex RSTM K 0 0
+	Skin 0 "rtwcbt1.png"
+	FrameIndex RSTM L 0 0
+	Skin 0 "rtwcbt2.png"
+	FrameIndex RSTM M 0 0
+	Skin 0 "rtwcbt3.png"
+	FrameIndex RSTM N 0 0
+	Skin 0 "rtwcbt4.png"
+	FrameIndex RSTM O 0 0
+	Skin 0 "rtwcbh0.png"
+	FrameIndex RSTM P 0 0
+	Skin 0 "rtwcbh1.png"
+	FrameIndex RSTM Q 0 0
+	Skin 0 "rtwcbh2.png"
+	FrameIndex RSTM R 0 0
+	Skin 0 "rtwcbh3.png"
+	FrameIndex RSTM S 0 0
+	Skin 0 "rtwcbh4.png"
+	FrameIndex RSTM T 0 0
+	// utility places (owner 11-05; rig.zs MarkerFrame): magenta, then the colour-blind palettes' sixth colour (p, t, h)
+	Skin 0 "rtwireut.png"
+	FrameIndex RSTM U 0 0
+	Skin 0 "rtwcbpu.png"
+	FrameIndex RSTM V 0 0
+	Skin 0 "rtwcbtu.png"
+	FrameIndex RSTM W 0 0
+	Skin 0 "rtwcbhu.png"
+	FrameIndex RSTM X 0 0
+	// the rules' ring flashes (owner 11-08, rig.zs ShowRule): red, a refused gun; white, a holster freed by hand
+	Skin 0 "rtwirerd.png"
+	FrameIndex RSTM Y 0 0
+	Skin 0 "rtwirewh.png"
+	FrameIndex RSTM Z 0 0
 }
 
 // Ermac's cigarette (his Virtual Tactical Vest) and his voxel Zippo (ZBlood-VR), held in the hand.

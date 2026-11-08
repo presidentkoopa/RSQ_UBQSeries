@@ -1,0 +1,1 @@
+set trx_pictest 0; set trx_picshow 1; set rsqtr_eye_m 1.62; set rsqtr_tip_recentre 1; set rsqtr_messages 1; qz_hmd "0 1.6 0 -62 -22 0"; wait 60; wait 140; echo UX_END; quit

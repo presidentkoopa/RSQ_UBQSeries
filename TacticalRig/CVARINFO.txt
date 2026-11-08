@@ -18,6 +18,7 @@ user bool   rsqtr_messages    = false;
 user float  rsqtr_reach       = 1.0;     // scales every region's radius
 user bool   rsqtr_yield_shield = true;   // leave the off shoulder to RS_ShieldSawQ while its shield is stowed there
 user float  rsqtr_eye_m       = 0;       // your eye height in metres ("Measure my height"; 0 = the 1.62 m the defaults are made for)
+nosave bool rsqtr_tip_recentre = false;  // the one-time recentre tip has been shown (owner 11-08; rig.zs RecentreTip): this machine only, kept
 user int    rsqtr_pairs       = 0;       // retired 2026-11-02 (a holster draw is always one gun; Dual is its own key). Kept so old ini lines load.
 user bool   rsqtr_edit        = false;   // move the regions with your hands: grip in one, carry it, let go
 user int    rsqtr_mirror      = 1;       // a mirror in front of you: 0 off, 1 while moving the regions, 2 always

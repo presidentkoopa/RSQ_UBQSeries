@@ -547,7 +547,7 @@ class RSQTR_Cig : EventHandler
 		int mode = RSQTR_Rig.Opt("rsqtr_markers", p, 1);
 		bool show = mode == 2 || (mode == 1 && nearest < 0.30);
 		if (!show) { HideMark(); return; }
-		if (!pocketMark) pocketMark = Actor.Spawn("RSQTR_Marker", at);
+		if (!pocketMark) pocketMark = Actor.Spawn("RSQTR_ItemMarker", at);   // an item spot: a wire diamond (rig.zs, 11-08)
 		if (!pocketMark) return;
 		pocketMark.SetOrigin(at, true);
 		pocketMark.bINVISIBLE = false;
