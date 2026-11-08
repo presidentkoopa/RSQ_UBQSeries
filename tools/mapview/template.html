@@ -1,0 +1,267 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>%%TITLE%%</title>
+<style>
+html,body{margin:0;height:100%;font:13px system-ui,Segoe UI,sans-serif;background:#f4f1ea;color:#111;overflow:hidden}
+#wrap{display:flex;height:100%}
+#side{width:270px;flex:none;overflow-y:auto;padding:8px 10px;background:#e9e5da;border-right:1px solid #bbb;box-sizing:border-box}
+#main{flex:1;position:relative}
+#map{width:100%;height:100%;display:block;background:#f4f1ea;cursor:crosshair;--u:1}
+body.pan #map{cursor:grab}
+h1{font-size:15px;margin:2px 0 6px}
+h2{font-size:12px;margin:10px 0 4px;text-transform:uppercase;letter-spacing:.05em;color:#555}
+label{display:flex;align-items:center;gap:6px;margin:2px 0;cursor:pointer}
+.sw{display:inline-block;width:22px;height:10px;border:1px solid #0006;flex:none}
+button{font:inherit;padding:3px 8px;margin:2px 2px 2px 0;cursor:pointer}
+button.on{background:#333;color:#fff}
+#status{position:absolute;left:0;right:0;bottom:0;background:#000c;color:#fff;padding:3px 8px;font:12px monospace;pointer-events:none;white-space:pre}
+#help{color:#444;font-size:12px;line-height:1.35}
+.rrow{display:flex;gap:4px;align-items:center;margin:3px 0;padding:2px;border-radius:3px}
+.rrow.sel{background:#fff6a8}
+.rrow input{flex:1;min-width:0;font:inherit}
+.rrow small{color:#555;width:62px;text-align:right}
+.meta{font-size:12px;color:#333}
+/* SVG */
+#map *{vector-effect:non-scaling-stroke}
+#map defs path{stroke:none}
+#L_two{fill:none;stroke:#6d6a63;stroke-width:.7px}
+#L_one{fill:none;stroke:#111;stroke-width:1.8px;stroke-linecap:round}
+#L_areas{opacity:.5}
+#L_secret{fill:#b040ff;opacity:.5}
+#L_door .secs{fill:#ff8c00;opacity:.6}
+#L_door .secs.lift{fill:#00a8ff}
+#L_doorlines .dl path{stroke:#e85d00;stroke-width:3.5px;fill:none}
+#L_doorlines .ll path{stroke:#0077d6;stroke-width:3.5px;fill:none}
+#L_trig path{stroke:#009a20;stroke-width:3px;fill:none}
+#L_trig path.walk{stroke-dasharray:7 4}
+#L_trig path.shoot{stroke-dasharray:2 3}
+#L_sound{fill:none;stroke:#ff00c8;stroke-width:4px;stroke-linecap:round}
+#L_exit path{stroke:#ffc400;stroke-width:6px;fill:none}
+#L_exit .tele path{stroke:#00c8b4;stroke-width:3px}
+#L_alabels text{font-size:calc(var(--u) * 15px);font-weight:700;fill:#000;stroke:#fff;stroke-width:3px;paint-order:stroke;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+.th{stroke:#fff;stroke-width:1px}
+.mon{r:max(calc(var(--u) * 3.5px), 12px)}
+.mon.t1{fill:#d0201a}.mon.t2{fill:#b0009a}.mon.t3{fill:#5a00c8}.mon.t4{fill:#000}
+.key{r:max(calc(var(--u) * 6px), 18px);stroke:#000;stroke-width:2px}
+.startmark{fill:#00c000;stroke:#000;stroke-width:1.5px;transform:scale(calc(var(--u) * 9))}
+.mpthing{display:none}
+.skilloff{display:none}
+#rects rect{fill:#2050ff22;stroke:#1030ff;stroke-width:2.5px;cursor:move}
+#rects rect.sel{fill:#ffe60033;stroke:#d09000;stroke-width:3.5px}
+#rects text{font-size:calc(var(--u) * 14px);font-weight:700;fill:#1030ff;stroke:#fff;stroke-width:3px;paint-order:stroke;pointer-events:none}
+#rects text.sel{fill:#a06000}
+#drag{fill:#2050ff22;stroke:#1030ff;stroke-dasharray:5 3;stroke-width:2px;pointer-events:none}
+body.off-floor #L_floor use{fill:#ddd}
+body.off-areas #L_areas,body.off-areas #L_alabels,body.off-sound #L_sound,body.off-door #L_door,body.off-door #L_doorlines,
+body.off-trig #L_trig,body.off-secret #L_secret,body.off-exit #L_exit,body.off-mon .mon,body.off-keys .key,body.off-keys .start,
+body.off-two #L_two,body.off-rects #rects{display:none}
+</style></head>
+<body>
+<div id="wrap">
+<div id="side">
+<h1 id="title"></h1>
+<div class="meta" id="meta"></div>
+<h2>Tool</h2>
+<button id="tDraw" class="on">Draw (D)</button><button id="tPan">Pan (P)</button><button id="tFit">Fit (F)</button>
+<label>Snap <select id="snap"><option>1</option><option>8</option><option selected>16</option><option>32</option><option>64</option></select> map units</label>
+<h2>Layers</h2>
+<div id="layers"></div>
+<label>Skill <select id="skill"><option value="1">1-2 easy</option><option value="3">3 medium</option><option value="4" selected>4-5 hard (UV)</option></select></label>
+<label><input type="checkbox" id="mp"> show multiplayer-only things</label>
+<h2>Rooms (<span id="rcount">0</span>)</h2>
+<div id="rlist"></div>
+<button id="bExport">Export JSON</button><button id="bImport">Import JSON</button><button id="bClear">Delete all</button>
+<input type="file" id="file" accept=".json,application/json" style="display:none">
+<h2>Help</h2>
+<div id="help">Left-drag on the map: draw a room. Drag a room: move it. Click a room: select it; Delete key removes it.
+Wheel: zoom. Right/middle drag, or hold Space: pan. Rooms are saved in this browser automatically; Export to keep or share them.
+Hover lines, things and sectors for details. Areas: sectors joined across two-sided lines, cut at door/lift sectors and at sound-blocking lines.</div>
+</div>
+<div id="main">
+%%SVG%%
+<div id="status">hover the map for coordinates and sector info</div>
+</div>
+</div>
+<script>
+const META=%%META%%;
+const SECT=%%SECTORS%%;
+const AREAS=%%AREAS%%;
+const NS="http://www.w3.org/2000/svg";
+const svg=document.getElementById("map");
+const rg=document.getElementById("rects");
+const status=document.getElementById("status");
+const KEY="mapview:"+META.wad+":"+META.map;
+document.getElementById("title").textContent=META.wad+"  "+META.map;
+const C=META.counts;
+document.getElementById("meta").textContent=`${META.fmt} format. ${C.sectors} sectors, ${C.lines} lines, ${C.monsters} monsters, ${C.areas} areas, ${C.soundlines} sound-block lines, ${C.doorsecs} door / ${C.liftsecs} lift sectors, ${C.secrets} secrets.`;
+
+// ---------- layers
+const LAYERS=[["floor","Floor height shade (light = high)","linear-gradient(90deg,#969691,#f0f0e8)",1],
+["two","Two-sided lines (thin)","#6d6a63",1],
+["areas","Areas (tint + number)","linear-gradient(90deg,#f66,#6f6,#66f)",0],
+["sound","Sound-blocking lines","#ff00c8",1],
+["door","Doors (orange) / lifts (blue)","linear-gradient(90deg,#ff8c00 50%,#00a8ff 50%)",1],
+["trig","Trigger lines: dashed walk, solid switch, dotted shoot","#009a20",1],
+["secret","Secret sectors","#b040ff",1],
+["exit","Exits (yellow) / teleports (teal)","linear-gradient(90deg,#ffc400 50%,#00c8b4 50%)",1],
+["mon","Monsters (red, magenta, purple, black = tougher)","#d0201a",1],
+["keys","Keys and player starts","linear-gradient(90deg,#1f5bff,#e8c300,#e01010,#00c000)",1],
+["rects","My rooms","#2050ff55",1]];
+const saved=JSON.parse(localStorage.getItem("mapview:layers")||"{}");
+const ld=document.getElementById("layers");
+for(const [id,txt,col,def] of LAYERS){
+  const on=(id in saved)?saved[id]:!!def;
+  const l=document.createElement("label");
+  l.innerHTML=`<input type="checkbox" ${on?"checked":""}><span class="sw" style="background:${col}"></span>${txt}`;
+  const cb=l.querySelector("input");
+  const apply=()=>{document.body.classList.toggle("off-"+id,!cb.checked);saved[id]=cb.checked;localStorage.setItem("mapview:layers",JSON.stringify(saved));};
+  cb.onchange=apply;apply();ld.appendChild(l);
+}
+// URL ?layers=areas,sound turns exactly those optional layers on (for screenshots / links)
+const qp=new URLSearchParams(location.search);
+if(qp.has("layers")){const want=qp.get("layers").split(",");
+  ld.querySelectorAll("input").forEach((cb,i)=>{const id=LAYERS[i][0];cb.checked=want.includes(id)||id==="floor"||id==="two"||id==="rects";document.body.classList.toggle("off-"+id,!cb.checked);});}
+
+function applySkill(){
+  const sk=document.getElementById("skill").value, mp=document.getElementById("mp").checked;
+  svg.querySelectorAll(".th").forEach(e=>{
+    const k=e.dataset.k||"";
+    e.classList.toggle("skilloff",!k.includes(sk));
+    e.classList.toggle("mpthing",!mp&&e.dataset.mp==="1");
+  });
+}
+document.getElementById("skill").onchange=applySkill;
+document.getElementById("mp").onchange=applySkill;
+applySkill();
+
+// ---------- view
+const vb0=svg.getAttribute("viewBox").split(" ").map(Number);
+let view={x:vb0[0],y:vb0[1],w:vb0[2],h:vb0[3]};
+function setView(){
+  const r=svg.getBoundingClientRect();
+  // keep aspect: expand to the window shape
+  const a=r.width/r.height;
+  if(view.w/view.h<a){const nw=view.h*a;view.x-=(nw-view.w)/2;view.w=nw;}else{const nh=view.w/a;view.y-=(nh-view.h)/2;view.h=nh;}
+  svg.setAttribute("viewBox",`${view.x} ${view.y} ${view.w} ${view.h}`);
+  const u=view.w/r.width;
+  svg.style.setProperty("--u",u);
+  // hide numbers of areas too small to read at this zoom (e.g. thin strips between two sound-blocking lines)
+  for(const t of alabels)t.style.display=(+t.dataset.z/u<28)?"none":"";
+}
+const alabels=[...document.querySelectorAll("#L_alabels text")];
+function fit(){view={x:vb0[0],y:vb0[1],w:vb0[2],h:vb0[3]};setView();}
+window.addEventListener("resize",setView);
+fit();
+function toMap(ev){const r=svg.getBoundingClientRect();return {x:view.x+(ev.clientX-r.left)/r.width*view.w,y:view.y+(ev.clientY-r.top)/r.height*view.h};}
+svg.addEventListener("wheel",ev=>{ev.preventDefault();const p=toMap(ev);const f=Math.pow(1.0015,ev.deltaY);
+  view.x=p.x-(p.x-view.x)*f;view.y=p.y-(p.y-view.y)*f;view.w*=f;view.h*=f;setView();},{passive:false});
+
+// ---------- rooms
+let rooms=[];   // {name,x1,y1,x2,y2} in map units (y up)
+let sel=-1;
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&s.rects)rooms=s.rects;}catch(e){}
+function save(){localStorage.setItem(KEY,JSON.stringify({rects:rooms}));}
+function snap(v){const s=+document.getElementById("snap").value;return Math.round(v/s)*s;}
+function draw(){
+  rg.textContent="";
+  rooms.forEach((r,i)=>{
+    const e=document.createElementNS(NS,"rect");
+    e.setAttribute("x",r.x1);e.setAttribute("y",-r.y2);e.setAttribute("width",r.x2-r.x1);e.setAttribute("height",r.y2-r.y1);
+    e.dataset.r=i;if(i===sel)e.classList.add("sel");rg.appendChild(e);
+    const t=document.createElementNS(NS,"text");t.setAttribute("x",r.x1);t.setAttribute("y",-r.y2);
+    t.setAttribute("dx","0.3em");t.setAttribute("dy","1.1em");t.textContent=r.name;if(i===sel)t.classList.add("sel");rg.appendChild(t);
+  });
+  const l=document.getElementById("rlist");l.textContent="";
+  document.getElementById("rcount").textContent=rooms.length;
+  rooms.forEach((r,i)=>{
+    const d=document.createElement("div");d.className="rrow"+(i===sel?" sel":"");
+    d.innerHTML=`<input value=""><small>${r.x2-r.x1}x${r.y2-r.y1}</small><button title="delete">x</button>`;
+    const inp=d.querySelector("input");inp.value=r.name;
+    inp.oninput=()=>{r.name=inp.value;save();const t=rg.querySelectorAll("text")[i];if(t)t.textContent=r.name;};
+    inp.onfocus=()=>{if(sel!==i){sel=i;draw();d.querySelector&&document.querySelectorAll(".rrow input")[i].focus();}};
+    d.querySelector("button").onclick=()=>{rooms.splice(i,1);sel=-1;save();draw();};
+    l.appendChild(d);
+  });
+}
+draw();
+
+let tool="draw",space=false,drag=null;
+function setTool(t){tool=t;document.getElementById("tDraw").classList.toggle("on",t==="draw");document.getElementById("tPan").classList.toggle("on",t==="pan");document.body.classList.toggle("pan",t==="pan");}
+document.getElementById("tDraw").onclick=()=>setTool("draw");
+document.getElementById("tPan").onclick=()=>setTool("pan");
+document.getElementById("tFit").onclick=fit;
+svg.addEventListener("contextmenu",e=>e.preventDefault());
+svg.addEventListener("pointerdown",ev=>{
+  svg.setPointerCapture(ev.pointerId);
+  const p=toMap(ev);
+  if(ev.button===1||ev.button===2||space||tool==="pan"){drag={mode:"pan",sx:ev.clientX,sy:ev.clientY,v:{...view}};return;}
+  if(ev.button!==0)return;
+  const ri=ev.target.dataset&&ev.target.dataset.r;
+  if(ri!==undefined){sel=+ri;draw();const r=rooms[sel];drag={mode:"move",p0:p,r0:{...r}};return;}
+  const x=snap(p.x),y=snap(-p.y);
+  const e=document.createElementNS(NS,"rect");e.id="drag";svg.appendChild(e);
+  drag={mode:"new",x0:x,y0:y,x1:x,y1:y,el:e};
+});
+svg.addEventListener("pointermove",ev=>{
+  const p=toMap(ev);
+  showStatus(ev,p);
+  if(!drag)return;
+  if(drag.mode==="pan"){const r=svg.getBoundingClientRect();view.x=drag.v.x-(ev.clientX-drag.sx)/r.width*view.w;view.y=drag.v.y-(ev.clientY-drag.sy)/r.height*view.h;setView();}
+  else if(drag.mode==="move"){const r=rooms[sel],dx=snap(p.x-drag.p0.x),dy=snap(-(p.y-drag.p0.y));
+    r.x1=drag.r0.x1+dx;r.x2=drag.r0.x2+dx;r.y1=drag.r0.y1+dy;r.y2=drag.r0.y2+dy;
+    const e=rg.querySelector(`rect[data-r="${sel}"]`);e.setAttribute("x",r.x1);e.setAttribute("y",-r.y2);
+    const t=rg.querySelectorAll("text")[sel];t.setAttribute("x",r.x1);t.setAttribute("y",-r.y2);}
+  else if(drag.mode==="new"){drag.x1=snap(p.x);drag.y1=snap(-p.y);
+    const x=Math.min(drag.x0,drag.x1),y=Math.max(drag.y0,drag.y1);
+    drag.el.setAttribute("x",x);drag.el.setAttribute("y",-y);drag.el.setAttribute("width",Math.abs(drag.x1-drag.x0));drag.el.setAttribute("height",Math.abs(drag.y1-drag.y0));}
+});
+svg.addEventListener("pointerup",ev=>{
+  if(!drag)return;
+  if(drag.mode==="new"){drag.el.remove();
+    const x1=Math.min(drag.x0,drag.x1),x2=Math.max(drag.x0,drag.x1),y1=Math.min(drag.y0,drag.y1),y2=Math.max(drag.y0,drag.y1);
+    if(x2-x1>=8&&y2-y1>=8){rooms.push({name:"Room "+(rooms.length+1),x1,y1,x2,y2});sel=rooms.length-1;save();draw();
+      const ins=document.querySelectorAll(".rrow input");ins[sel].focus();ins[sel].select();}
+    else{sel=-1;draw();}}
+  else if(drag.mode==="move"){save();draw();}
+  drag=null;
+});
+window.addEventListener("keydown",ev=>{
+  const typing=document.activeElement&&document.activeElement.tagName==="INPUT"&&document.activeElement.type!=="checkbox";
+  if(ev.key==="Enter"&&typing){document.activeElement.blur();return;}
+  if(typing)return;
+  if(ev.key===" "){space=true;document.body.classList.add("pan");ev.preventDefault();}
+  else if((ev.key==="Delete"||ev.key==="Backspace")&&sel>=0){rooms.splice(sel,1);sel=-1;save();draw();}
+  else if(ev.key==="Escape"){sel=-1;draw();}
+  else if(ev.key==="f"||ev.key==="F")fit();
+  else if(ev.key==="d"||ev.key==="D")setTool("draw");
+  else if(ev.key==="p"||ev.key==="P")setTool("pan");
+});
+window.addEventListener("keyup",ev=>{if(ev.key===" "){space=false;document.body.classList.toggle("pan",tool==="pan");}});
+
+function showStatus(ev,p){
+  let s=`x ${Math.round(p.x)}  y ${Math.round(-p.y)}`;
+  const t=ev.target;
+  if(t&&t.dataset&&t.dataset.s!==undefined){const i=+t.dataset.s,q=SECT[i];
+    s+=`   sector ${i}  floor ${q[0]}  ceil ${q[1]}  light ${q[2]}  special ${q[3]}  tag ${q[4]}  `+(q[5]>=0?`area ${q[5]} (${AREAS[q[5]].n} sectors)`:"door/lift sector");}
+  status.textContent=s;
+}
+
+// ---------- export / import
+document.getElementById("bExport").onclick=()=>{
+  const out={format:"mapview-rooms-1",wad:META.wad,map:META.map,units:"map units, y up (as in Doom editors)",
+    rects:rooms.map(r=>({name:r.name,x1:r.x1,y1:r.y1,x2:r.x2,y2:r.y2}))};
+  const b=new Blob([JSON.stringify(out,null,1)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(b);
+  a.download=META.wad.replace(/\.[^.]*$/,"")+"_"+META.map+"_rooms.json";document.body.appendChild(a);a.click();a.remove();
+};
+const fi=document.getElementById("file");
+document.getElementById("bImport").onclick=()=>fi.click();
+fi.onchange=()=>{const f=fi.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{
+  try{const j=JSON.parse(rd.result);const list=Array.isArray(j)?j:j.rects;
+    if(!Array.isArray(list))throw "no rects";
+    if(j.map&&j.map!==META.map&&!confirm(`This file is for ${j.map}, this page is ${META.map}. Import anyway?`))return;
+    const add=rooms.length&&confirm("OK = add to the rooms here, Cancel = replace them")?rooms:[];
+    for(const r of list){add.push({name:String(r.name||"Room"),x1:Math.min(r.x1,r.x2),y1:Math.min(r.y1,r.y2),x2:Math.max(r.x1,r.x2),y2:Math.max(r.y1,r.y2)});}
+    rooms=add;sel=-1;save();draw();}catch(e){alert("Not a rooms JSON file: "+e);} };rd.readAsText(f);fi.value="";};
+document.getElementById("bClear").onclick=()=>{if(rooms.length&&confirm("Delete all rooms on this map?")){rooms=[];sel=-1;save();draw();}};
+</script>
+</body></html>
