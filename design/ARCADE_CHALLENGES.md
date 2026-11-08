@@ -35,3 +35,10 @@ be disastrous."
 ## First cards (names only, from the owner's list; fields to be filled together)
 Time Trial (Speed) · Clear the Room (Speed) · Find the Marked One (Hunt) · Miniboss (Hunt) · Barrels In (Collect) ·
 Bit Rush (Collect)
+
+## DoorCard decisions (owner, 2026-11-08 18:46; mockup: three states, offered / in progress / cleared)
+- **Choosing:** the card's rows are shootable, punchable or touchable: hit a row to select that challenge.
+- **The keyring** (RSQ Tactical Rig) might be repurposed here. Idea only; how is open.
+- **Failing a challenge** could cost a Score life, drop a weapon level (GBOVR), or affect the next challenge. Which
+  (or how it is chosen) is open.
+- **Return visits:** no, for now. A cleared arena does not re-offer its challenges.
