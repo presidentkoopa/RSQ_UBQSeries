@@ -38,7 +38,8 @@ flies where you threw it. Changed your mind? Press the trigger again mid-flight 
 
 **Carrying it**
 - Everyone spawns with it. It lives on your body, not your head: take it from the **small of your back** (default),
-  **behind your neck**, either, or **over your off shoulder**.
+  **behind your neck**, either, or **over your off shoulder**. Stowed, it lies flat along your back, outer face out,
+  like a plate on a backpack, at every spot (11-08, rig only, not headset-confirmed).
 - The mount turns with your snap and smooth turns. After turning your real body in the room, hold **both hands to your
   chest** for a moment to recenter it, or press the Recenter Torso key.
 - Seated? With RSQ Accessibility's Seated Play, the mount drops with you.

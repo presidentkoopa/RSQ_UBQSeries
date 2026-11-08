@@ -556,10 +556,19 @@ class SSQ_Handler : EventHandler
 
 	// the prop's own angles for that frame. models.cpp RenderModel composes
 	// rotate(-angle,Y) . rotate(-pitch,Z) . rotate(-roll,X) on a vertex swizzled to
-	// (mx, mz, my), so model +x is the actor's forward and model +y its left: pitch -90
-	// stands the handle up, and roll 180 turns the mesh's +y (its +L side) forward.
+	// (mx, mz, my), so model +x is the actor's forward and model +y its left, applied roll
+	// first, then pitch, then yaw. The mesh's face normal is its y (shieldsaw.md3 is 8 units
+	// thick in y and 58 across in x and z, measured), the handle on +y.
+	// FLAT ON THE BACK (owner 2026-11-08: "flat along the back, face out like a plate on a
+	// backpack", every spot): pitch -90 (shoulder, neck) or +90 (back) stands the forearm
+	// axis up or down, and yaw -90 off the body turns the mesh's +y (handle side) FORWARD
+	// into your back, so the outer face looks behind you and the disc lies in the back's
+	// plane -- exactly MountPlateCentre/Normal's frame (Fh, Lh forward, Uh = Fh x Lh).
+	// Until 11-08 this was yaw 0, roll 180, which put the mesh's +y to the body's RIGHT:
+	// the disc stood edge-on off the back, a fin, while the guard plate faced behind.
+	static clearscope double MountPropYaw() { return -90.0; }
 	static clearscope double MountPropPitch() { return -90.0; }
-	static clearscope double MountPropRoll() { return 180.0; }
+	static clearscope double MountPropRoll() { return 0.0; }
 
 	// THE LOCK/THROW TRIGGER, and why it is not just the alt button any more.
 	//
@@ -1318,8 +1327,9 @@ class SSQ_Handler : EventHandler
 		// are the same object. The mesh origin is the grip, which is why the actor sits at
 		// the grab point itself and the disc falls below it on its own -- no drop fudge.
 		// Model +x is the actor's forward and +y its left (models.cpp RenderModel over the
-		// (mx, mz, my) swizzle), so pitch -90 stands the forearm axis up and roll 180 turns
-		// the plate's +L side -- the side your arm is on -- forward into your back.
+		// (mx, mz, my) swizzle), so pitch -90 stands the forearm axis up and yaw -90 off the
+		// body turns the plate's +L side -- the side your arm is on -- forward into your back:
+		// flat on the back, face out (MountPropYaw, 11-08).
 		if (mState[i] == SS_STOWED)
 		{
 			// SHOW SHIELDSAW (ssq_show, on; owner 11-04: "Always show ... saw. Toggle show ___ on/off in each mod's options"):
@@ -1328,7 +1338,7 @@ class SSQ_Handler : EventHandler
 			// Rig (ssq_stow_rig) on 11-04.
 			prop.bInvisible = UVI(p, 'ssq_show', 1) == 0;
 			prop.SetOrigin(mount, true);
-			prop.angle = BodyYaw(mo) + UV(p, 'ssq_mount_yaw', 0);
+			prop.angle = BodyYaw(mo) + MountPropYaw() + UV(p, 'ssq_mount_yaw', 0);
 			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_mount_pitch', 0);
 			prop.roll  = MountPropRoll()  + UV(p, 'ssq_mount_roll', 0);
 			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0) * SSQ_Guard.Scale(mo.PlayerNumber()));
