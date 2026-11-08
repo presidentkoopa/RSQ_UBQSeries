@@ -79,6 +79,9 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 - One feel per action (rig only, not headset-confirmed): a short tick when your hand enters a ring, one buzz when a gun
   goes in or comes out, and a double buzz with Doom's "no" sound when nothing happens.
 - Optional: each full holster shows its round count as small digits above the ring (off by default).
+- Ammo arc (rig only, not headset-confirmed): round each full gun holster's ammo light, a thin arc in the light's colour
+  shows how full the gun is (its magazine, or its ammo for a gun without one), in twelfths: no arc empty, a closed
+  circle full. It turns to your eyes and shows exactly when the light does.
 - Brutal Doom's two-gun weapons (dual pistols and the like) go in as one gun, so a draw gives you one.
 
 **The torso**
@@ -129,10 +132,20 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
   time you hold your head still for about 2 seconds, once (rig only, not headset-confirmed).
 - Once, about 10 seconds into your first map, a tip shows: "Holsters in the wrong place? Bring both hands to your
   chest." (rig only, not headset-confirmed)
+- Help after repeated misses (rig only, not headset-confirmed): a hand that goes into the same holster or spot and out
+  again three times in 6 s without a grip or Use there makes that ring show fully (even with Holster Rings set to
+  Never) and "Grip inside the ring" shows for 3 s. At most 3 a map, never the same ring twice in 30 s; not while
+  Move Holsters by Hand is on.
+- Holster tip (rig only, not headset-confirmed): until you first holster a gun by hand, holding a gun for 2 s shows a
+  faint ghost hand looping from your hand to an empty holster (your main-hand hip if it is free), its ring lit. Needs
+  Brutal Doom 22 VR Reloaded's hand mesh; without it only the ring lights.
 - Seated play: the rig hangs from your seated eyes.
 - Move Holsters by Hand: grab any holster, carry it where you want, let go. A mirror in front of you shows your front
   and back while you do it.
 - Four holster profiles (two standing, two seated), each with its own ring colour.
+- In Seated A and Seated B, the hips and the low belt spots (grenade, keyring, pouch, sabers, whip, flare) you have
+  not moved sit higher and forward, on the front of your lap and lower belly, clear of armrests; a spot you moved keeps
+  its place. A one-time note says so. (rig only, not headset-confirmed)
 
 **Ermac's cigarette** (optional tribute, off by default)
 - A pocket of cigarettes on your chest. Put one in your mouth, light it with the Zippo in your off hand, smoke,
@@ -181,6 +194,10 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
   the engine sends it as a key (its secondary button mappings off); Use always works. The grip keys can be changed
   under Test and Debug.
 - A hand must rest in a holster for 3 tics before a press counts, so a hand passing through does nothing.
+- Shoulder grace (rig only, not headset-confirmed): reaching behind your head can take the controller out of the
+  headset cameras' view. At the two shoulder holsters only, a press counts if your hand was in that shoulder's ring
+  (its 3 tics met) in the last 10 tics, and a hand whose position stops updating is held where it last was for up to
+  10 tics. Even so, keep the guns you draw least on the shoulders, and the ones you need fast at the hips and chest.
 - On PC (SteamVR), an off-hand draw made while the engine is steadying a two-handed gun arrives when you let go of
   the grip.
 - Left-handed: the engine's left-handed setting swaps main and off hand, the saber spots and the shield's shoulder.

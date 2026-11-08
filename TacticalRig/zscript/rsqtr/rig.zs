@@ -76,6 +76,18 @@ class RSQTR_Region
 	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.14 };
 	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.62 };
 	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.08,  0.09,  0.10 };
+	// SEATED DEFAULTS (Report rec 8, 11-08; rig only, not headset-confirmed): in the two seated profiles (Seated A / B,
+	// rsqtr_profile_active 3 / 4) the hips and the low belt spots (SeatedMoves) that still sit at their standing default
+	// (never moved by hand, by slider or by a profile) are put here instead: up and forward onto the front of the lap and
+	// the lower belly, inboard of the hips' outer side (clear of armrests). Same "left" conventions and radii as above.
+	// Measured, tools/seated_layout.py: seated, the frame hangs from the seated eyes; ANSUR II 50th percentile (men /
+	// women, scaled to REF_EYE) puts the seat 0.794 / 0.799 under them, the top of the thighs 0.616 / 0.621, an armrest's
+	// top 0.551 / 0.550, the hips' outer side 0.170 / 0.189 out. Hips 0.124 / 0.129 over the seat, 0.27 forward of the
+	// hip joint (the standing hips' f 0); every low spot no lower than the hips. No overlap worse than standing's.
+	static const double SDF[] = {  0.27,  0.27, 0,  0.13, -0.08, -0.08,  0.10,  0.10,  0.45,  0.45,  0.45,  0.07,  0.07,  0.32 };
+	static const double SDL[] = {  0.12, -0.12, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.00,  0.11, -0.11,  0.15,  0.15,  0.02 };
+	static const double SDU[] = { -0.67, -0.67, 0, -0.59, -0.10, -0.10, -0.46, -0.46, -0.55, -0.62, -0.62, -0.66, -0.66, -0.55 };
+	static bool SeatedMoves(int r) { return r == 0 || r == 1 || r == 3 || r >= 8; }
 }
 
 class RSQTR_Rig : EventHandler
@@ -145,7 +157,10 @@ class RSQTR_Rig : EventHandler
 	transient Actor fnfMark[2];               // RSQ FlashFlare's flare pocket and flashlight clip (DrawFnFMarkers), read by the mirror too
 	transient Actor icon[RSQTR_Region.N];
 	transient Actor pip[RSQTR_Region.N];      // the ammo light in a full holster
+	transient Actor ammoArc[RSQTR_Region.N];  // the arc round it: how full the gun is (DrawAmmoArc)
+	transient int ammoArcLog[RSQTR_Region.N]; // the arc last logged: step + 1 (0 hidden or not yet logged)
 	transient Actor nadeShow;                 // the grenade at the grenade spot (DrawNade)
+	transient RSQTR_Ghost ghost;              // the holster tip's ghost hand (ghost.zs), this machine's
 	private transient int  buzzCool[2];
 	private transient bool offHeldSaid[MAXPLAYERS];   // said once per hold, why the off-hand raise is waiting (TickPairs)
 	private transient int  hoverT[2];          // tics the hand has been in its region
@@ -232,6 +247,7 @@ class RSQTR_Rig : EventHandler
 			cU[r] = Num(String.Format("rsqtr_r%d_u", r), p, RSQTR_Region.DU[r]);
 			cR[r] = Num(String.Format("rsqtr_r%d_rad", r), p, RSQTR_Region.DR[r]) * reach;
 		}
+		SeatedDefaults(p);
 		// the keyring's "left" is toward the off hand (RSQTR_Region.DL's note)
 		if (RSQTR_Body.LayoutLeft()) cL[RSQTR_Region.KEYRING] = -cL[RSQTR_Region.KEYRING];
 		// the whip's "left" is toward the main hand, the flare's toward the off hand (RSQTR_Region.DL's note)
@@ -239,6 +255,36 @@ class RSQTR_Rig : EventHandler
 		if (!lh) cL[RSQTR_Region.WHIP] = -cL[RSQTR_Region.WHIP];
 		if (lh) cL[RSQTR_Region.FLARE] = -cL[RSQTR_Region.FLARE];
 		if (lh) cL[RSQTR_Region.POUCH] = -cL[RSQTR_Region.POUCH];
+	}
+
+	// SEATED DEFAULTS (Report rec 8, 11-08): in a seated profile, a place of RSQTR_Region.SeatedMoves still at its
+	// standing default (all three of f, l, u) takes the seated default (SDF / SDL / SDU); a place moved by hand keeps its
+	// own. Standing profiles: nothing changes. Before Settings' "toward a hand" flips, as the cvars are.
+	private transient String seatSaid;
+	private void SeatedDefaults(PlayerInfo p)
+	{
+		bool seatedProf = Opt("rsqtr_profile_active", p, 1) >= 3;
+		bool dbg = p && p == players[consoleplayer] && Flag("rsqtr_messages", p, false);
+		String moved = "", kept = "";
+		if (seatedProf)
+		{
+			for (int r = 0; r < RSQTR_Region.N; r++)
+			{
+				if (!RSQTR_Region.SeatedMoves(r)) continue;
+				if (abs(cF[r] - RSQTR_Region.DF[r]) < 0.0005 && abs(cL[r] - RSQTR_Region.DL[r]) < 0.0005 && abs(cU[r] - RSQTR_Region.DU[r]) < 0.0005)
+				{
+					cF[r] = RSQTR_Region.SDF[r]; cL[r] = RSQTR_Region.SDL[r]; cU[r] = RSQTR_Region.SDU[r];
+					if (dbg) moved = moved .. String.Format(" %s(%.2f %.2f %.2f)", RSQTR_Region.NAMES[r], cF[r], cL[r], cU[r]);
+				}
+				else if (dbg) kept = kept .. String.Format(" %s(%.2f %.2f %.2f)", RSQTR_Region.NAMES[r], cF[r], cL[r], cU[r]);
+			}
+		}
+		if (!dbg) return;
+		String said = seatedProf ? String.Format("profile %d: seated defaults (f l u, x%.2f):%s; kept as moved by hand:%s", Opt("rsqtr_profile_active", p, 1),
+			BodyScale(p), moved == "" ? " none" : moved, kept == "" ? " none" : kept) : "standing profile: standing defaults";
+		if (said == seatSaid || (seatSaid == "" && !seatedProf)) return;
+		seatSaid = said;
+		Console.Printf("T_SEATED t%d %s", level.maptime, said);
 	}
 
 	// Where region r is, in the world, for this player.
@@ -561,12 +607,12 @@ class RSQTR_Rig : EventHandler
 		}
 		if (!pmo || pmo.health <= 0) return;
 		if (e.Name == "rsqtr_whip") { WhipApply(pmo, e.Args[0] & 1, e.Args[1] != 0); return; }
-		if (e.Name == "rsqtr_holster_off") { HolsterOff(pmo, e.Args[0]); return; }
+		if (e.Name == "rsqtr_holster_off") { String gw = RSQTR_Ghost.Snap(self, n); bool gg = OffHoldsGun(pmo); HolsterOff(pmo, e.Args[0]); RSQTR_Ghost.ByHand(self, pmo, gw, gg, 1); return; }   // (ghost.zs: the holster tip ends)
 		// RSQ Wheel's holster web (11-07): the gun's name rides in the event's name
 		if (e.Name.Left(13) == "rsqtr_assign:") { WebAssign(pmo, e.Name.Mid(13), e.Args[0]); return; }
 		if (e.Name.Left(15) == "rsqtr_unassign:") { WebUnassign(pmo, e.Name.Mid(15), e.Args[0] == 1); return; }
 		if (e.Name == "rsqtr_draw_off") { DrawOff(pmo, e.Args[0]); return; }
-		if (e.Name == "rsqtr_holster") Holster(pmo, e.Args[0]);
+		if (e.Name == "rsqtr_holster") { String gw = RSQTR_Ghost.Snap(self, n); bool gg = HoldsGun(pmo); Holster(pmo, e.Args[0]); RSQTR_Ghost.ByHand(self, pmo, gw, gg, 0); }
 		else if (e.Name == "rsqtr_draw") Draw(pmo, e.Args[0], e.Args[1]);
 		else if (e.Name == "rsqtr_nade") Nade(pmo);
 		else if (e.Name == "rsqtr_throwat") throwAt[n] = (e.Args[0], e.Args[1], e.Args[2]) / 8.0;
@@ -1939,6 +1985,11 @@ class RSQTR_Rig : EventHandler
 			int bestRank = -1, nIn = 0, nearR = -1;
 			double nearD = 1e9;
 			String inList = "";
+			// SHOULDER GRACE (b) (Report rec 10): rawHand is still last tic's here (SwingPeak, below, updates it)
+			bool shStale = hp == rawHand[h];
+			shStaleN[h] = shStale ? shStaleN[h] + 1 : 0;
+			bool shHold = shStale && shStaleN[h] <= SH_GRACE;
+			shHeldIn[h] = false;
 			for (int i = 0; i < RSQTR_Region.N; i++)
 			{
 				// (the ShieldSaw's shoulder, left to its own Use while the shield is stowed there, still answers a main hand
@@ -1948,6 +1999,12 @@ class RSQTR_Rig : EventHandler
 				// (keys to a door) is keyring.zs's own, as before it was a place.
 				if (i == RSQTR_Region.KEYRING && !editing) continue;
 				double d = RSQTR_Body.RoomMetres(hp, RegionAt(pmo, i));
+				if (i == 4 || i == 5)
+				{
+					int si = h * 2 + i - 4;
+					if (shHold && shFreshOk[si]) { if (d > RegionRadius(p, i) && shFreshD[si] <= RegionRadius(p, i)) shHeldIn[h] = true; d = shFreshD[si]; }
+					else { shFreshD[si] = d; shFreshOk[si] = true; }
+				}
 				if (d > RegionRadius(p, i)) continue;
 				int rank = kind == 1 ? (IsGunRegion(i) ? 1 : 0) : kind == 0 ? (SpotHolds(pmo, p, i) ? 1 : 0) : 0;
 				nIn++;
@@ -1965,16 +2022,20 @@ class RSQTR_Rig : EventHandler
 			// the holster was ignored; now the holster wins. Other mods yield through "rig.busy".
 			if (r != hoverR[h])
 			{
+				StruggleMove(pmo, p, h, hoverR[h], r, editing);
 				if (r >= 0 && buzzCool[h] <= 0) { RSQTR_Buzzer.Start(pmo, h, ENTER_AMP, ENTER_TICS); buzzCool[h] = 10; }
 				hoverR[h] = r;
 				hoverT[h] = 0;
 				pendPress[h] = false;
 			}
 			else if (r >= 0) hoverT[h]++;
+			if (r == 4 || r == 5) { shLastR[h] = r; shLastTic[h] = level.maptime; shLastT[h] = hoverT[h]; }
+			if (r != 4 && r != 5) shHeldIn[h] = false;
 
 			bool gripNow = gripOk && gripDown[n * 2 + h];
 			bool pressNow = gripNow || (usePress && useDown && (h == 0 || hoverR[0] < 0));
 			bool edge = pressNow && !pressWas[h] && (gripNow || useEdge);
+			if (edge && r >= 0) StrugglePress(p, h);
 			// THROW THE GUN: the grip pressed (not Use) with the hand swinging fast, outside every holster
 			// THE ARM'S OWN SWING, NOT THE BODY'S (Quest teardown 00 1.3 / gotcha 6; the ShieldSaw's pose.zs fix): the
 			// hand differenced in the body's frame -- relative to the pawn, turned back by its yaw -- so walking, running
@@ -2034,17 +2095,52 @@ class RSQTR_Rig : EventHandler
 			// QUICK SWAP (owner 2026-10-31): a gun in the hand at a full holster swaps at once, no wait
 			if (r >= 0 && IsGunRegion(r) && Flag("rsqtr_quickswap", p, true) && Content(pmo, r) != ""
 				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo))) dwell = 0;
+			if (edge && r < 0) ShoulderGrace(pmo, p, h, hp);
 			if (edge && r >= 0) pendPress[h] = true;
 			if (!pressNow) pendPress[h] = false;
+			if (pendPress[h] && r >= 0 && hoverT[h] >= dwell && shHeldIn[h] && Flag("rsqtr_messages", p, false))
+				Console.Printf("T_SHOULDER t%d %s hand: press at %s accepted on the stale hand's last fresh place (stale %d tics)", level.maptime, h ? "off" : "main", RSQTR_Region.NAMES[r], shStaleN[h]);
 			if (pendPress[h] && r >= 0 && hoverT[h] >= dwell) { pendPress[h] = false; Press(pmo, p, h, r, hp); }
 		}
 		AutoHeight(pmo, p);
 		RecentreTip(pmo, p);
+		SeatedTip(pmo, p);
 		// after the holsters: a Use press with a hand in a holster was the holster's (WatchMove stands down)
 		WatchMove(pmo, p, useEdge);
 		useWas = useDown;
 		RecenterTick(pmo, p, n);
 		DrawMarkers(pmo, p);
+		if (!ghost) ghost = new("RSQTR_Ghost");
+		ghost.Tick(self, pmo, p);      // the holster tip's ghost hand (ghost.zs), after the rings
+	}
+
+	// ---- SHOULDER GRACE (Report rec 10): on the Quest a hand reaching behind the head can leave the headset cameras' view,
+	// so a shoulder grab can miss. The engine gives ZScript no tracking flag: QuestZDoom 17.3 computes one
+	// (TrackedController.Active, OpenXrInput.cpp) but never uses it, and writes AttackPos / OffhandPos from whatever pose
+	// the runtime reports (hw_openxrdevice.cpp), so a lost hand reads as frozen, drifting or jumped. For the two SHOULDER
+	// gun holsters only: (a) a grip / Use press with the hand in no place counts at the shoulder ring it was in (its press
+	// delay met) at any point in the last SH_GRACE tics; (b) while the hand is stale (the same position as last tic) it is
+	// measured against the shoulder rings where it was last fresh, for up to SH_GRACE tics (WorldTick). A press in another
+	// place is that place's, as before.
+	const SH_GRACE = 10;
+	private transient int shStaleN[2], shLastR[2], shLastTic[2], shLastT[2];
+	private transient bool shHeldIn[2];
+	private transient double shFreshD[4];
+	private transient bool shFreshOk[4];
+	private void ShoulderGrace(PlayerPawn pmo, PlayerInfo p, int h, Vector3 hp)
+	{
+		int sr = shLastR[h];
+		int ago = level.maptime - shLastTic[h];
+		if ((sr != 4 && sr != 5) || ago < 0 || ago > SH_GRACE) return;
+		int dwell = Opt("rsqtr_dwell", p, 3);
+		if (IsGunRegion(sr) && Flag("rsqtr_quickswap", p, true) && Content(pmo, sr) != ""
+			&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo))) dwell = 0;
+		if (shLastT[h] < dwell) return;
+		shLastR[h] = -1;
+		if (Flag("rsqtr_messages", p, false))
+			Console.Printf("T_SHOULDER t%d %s hand: press %d tics after leaving %s accepted (hand now %.2f m from its centre, radius %.2f, stale %d tics)",
+				level.maptime, h ? "off" : "main", ago, RSQTR_Region.NAMES[sr], RSQTR_Body.RoomMetres(hp, RegionAt(pmo, sr)), RegionRadius(p, sr), shStaleN[h]);
+		Press(pmo, p, h, sr, hp);
 	}
 
 	// ---- OVERLAP PRIORITY (owner 11-08): does place r hold something an empty hand would take? A full gun holster; the
@@ -2138,6 +2234,121 @@ class RSQTR_Rig : EventHandler
 		tc.SetBool(true);
 		pmo.A_Print("Holsters in the wrong place? Bring both hands to your chest.", 5, RSQTR_A11y.PrintFont());
 		Console.Printf("T_TIP t%d: the recentre tip shown (once ever)", level.maptime);
+	}
+
+	// ---- HELP AFTER REPEATED FAILURE (Report rec 9, 11-08) ---------------------------------------------------------------
+	// Per hand: a hand that ENTERS a Rig place (a gun holster or an item spot, the places hovered in WorldTick) and LEAVES it
+	// again with no press inside (grip, or Use as every holster press) is one miss on that place. STRUGGLE_N misses on the
+	// same place within STRUGGLE_WIN tics: that ring shows at full strength (even with Holster Rings on Never) and "Grip
+	// inside the ring" prints for STRUGGLE_SHOW tics, the same print as the recentre tip. A press inside, or entering another
+	// place, starts that hand's count again; a hand resting inside is no miss until it leaves. Never while Move Holsters by
+	// Hand is on. At most STRUGGLE_MAP hints a map, and never on the same place twice within STRUGGLE_AGAIN tics. Not kept:
+	// every player gets it. Local only (the print and the ring are this machine's).
+	const STRUGGLE_N = 3;
+	const STRUGGLE_WIN = 210;      // 6 s
+	const STRUGGLE_SHOW = 105;     // 3 s
+	const STRUGGLE_MAP = 3;
+	const STRUGGLE_AGAIN = 1050;   // 30 s
+	private transient int stgR[2];                       // the place each hand's count is on, -1 none
+	private transient int stgT[2 * STRUGGLE_N];          // per hand, the tics of its last misses there (0 unused)
+	private transient bool stgPressed[2];                // a press during this stay
+	private transient int stgUntil[RSQTR_Region.N];      // the ring shows full until this tic
+	private transient int stgLast[RSQTR_Region.N];       // the tic of that place's last hint (0 none)
+	private transient int stgHints;
+	private transient String stgMap;
+
+	private void StruggleReset(int h)
+	{
+		stgR[h] = -1;
+		for (int k = 0; k < STRUGGLE_N; k++) stgT[h * STRUGGLE_N + k] = 0;
+	}
+
+	// a hand changes place: from (-1 none) to (-1 none)
+	private void StruggleMove(PlayerPawn pmo, PlayerInfo p, int h, int from, int to, bool editing)
+	{
+		if (stgMap != level.MapName)
+		{
+			stgMap = level.MapName; stgHints = 0;
+			for (int i = 0; i < RSQTR_Region.N; i++) { stgUntil[i] = 0; stgLast[i] = 0; }
+			StruggleReset(0); StruggleReset(1);
+		}
+		bool dbg = Flag("rsqtr_messages", p, false);
+		if (editing) { StruggleReset(h); stgPressed[h] = false; return; }
+		if (from >= 0 && !stgPressed[h] && stgR[h] == from)
+		{
+			// one miss: keep the misses within the window, newest last
+			int base = h * STRUGGLE_N, c = 0;
+			for (int k = 0; k < STRUGGLE_N; k++)
+			{
+				int t = stgT[base + k];
+				if (t > 0 && level.maptime - t < STRUGGLE_WIN) stgT[base + c++] = t;
+			}
+			if (c >= STRUGGLE_N) { for (int k = 1; k < STRUGGLE_N; k++) stgT[base + k - 1] = stgT[base + k]; c = STRUGGLE_N - 1; }
+			stgT[base + c++] = level.maptime + 1;           // + 1: tic 0 is a real tic, 0 means unused
+			for (int k = c; k < STRUGGLE_N; k++) stgT[base + k] = 0;
+			if (dbg) Console.Printf("T_STRUGGLE t%d %s hand left %s without a press: count %d/%d in %d s", level.maptime, h ? "off" : "main",
+				RSQTR_Region.NAMES[from], c, STRUGGLE_N, STRUGGLE_WIN / TICRATE);
+			if (c >= STRUGGLE_N)
+			{
+				String why = "";
+				if (stgHints >= STRUGGLE_MAP) why = String.Format("capped, %d hints this map", stgHints);
+				else if (stgLast[from] > 0 && level.maptime - stgLast[from] < STRUGGLE_AGAIN)
+					why = String.Format("capped, this ring's hint %d s ago", (level.maptime - stgLast[from]) / TICRATE);
+				if (why == "")
+				{
+					stgHints++;
+					stgLast[from] = level.maptime;
+					stgUntil[from] = level.maptime + STRUGGLE_SHOW;
+					pmo.A_Print("Grip inside the ring", STRUGGLE_SHOW / TICRATE, RSQTR_A11y.PrintFont());
+				}
+				if (dbg) Console.Printf("T_STRUGGLE t%d %s hand %s: %s", level.maptime, h ? "off" : "main", RSQTR_Region.NAMES[from],
+					why == "" ? String.Format("shown (ring full and \"Grip inside the ring\" for 3 s; hint %d/%d this map)", stgHints, STRUGGLE_MAP) : why);
+				StruggleReset(h);
+				stgR[h] = from;
+			}
+		}
+		stgPressed[h] = false;
+		if (to >= 0 && to != stgR[h])
+		{
+			if (dbg && stgR[h] >= 0 && stgT[h * STRUGGLE_N] > 0)
+				Console.Printf("T_STRUGGLE t%d %s hand entered %s: count reset (was on %s)", level.maptime, h ? "off" : "main",
+					RSQTR_Region.NAMES[to], RSQTR_Region.NAMES[stgR[h]]);
+			StruggleReset(h);
+			stgR[h] = to;
+		}
+	}
+
+	// a press (grip or Use) inside a place: that hand's count starts again
+	private void StrugglePress(PlayerInfo p, int h)
+	{
+		if (!stgPressed[h] && stgT[h * STRUGGLE_N] > 0 && Flag("rsqtr_messages", p, false))
+			Console.Printf("T_STRUGGLE t%d %s hand pressed inside %s: count reset", level.maptime, h ? "off" : "main", RSQTR_Region.NAMES[max(stgR[h], 0)]);
+		stgPressed[h] = true;
+		int r = stgR[h];
+		StruggleReset(h);
+		stgR[h] = r;
+	}
+
+	bool StruggleShows(int r) { return stgMap == level.MapName && stgUntil[r] > level.maptime; }
+
+
+	// ---- THE SEATED NOTE (Report rec 8, 11-08): once ever (rsqtr_tip_seated), the first time a seated profile (Seated A /
+	// B) is active, a 5 s note that the hip and belt spots sit higher and forward (SeatedDefaults). The same HUD print as
+	// the recentre tip; held back while that tip is due or showing, so neither cuts the other short.
+	private transient bool seatTipDone, recentreDue;
+	private void SeatedTip(PlayerPawn pmo, PlayerInfo p)
+	{
+		if (seatTipDone) return;
+		let tc = CVar.FindCVar("rsqtr_tip_seated");
+		if (!tc || tc.GetBool()) { seatTipDone = true; return; }
+		let rc = CVar.FindCVar("rsqtr_tip_recentre");
+		if (rc && !rc.GetBool() && Flag("rsqtr_recenter_hands", p, true)) recentreDue = true;   // shown (or to be shown) this run
+		if (Opt("rsqtr_profile_active", p, 1) < 3) return;
+		if (recentreDue && level.maptime >= TIP_TIC - 175 && level.maptime < TIP_TIC + 175) return;
+		seatTipDone = true;
+		tc.SetBool(true);
+		pmo.A_Print("Seated: your hip and belt spots sit higher and forward.", 5, RSQTR_A11y.PrintFont());
+		if (Flag("rsqtr_messages", p, false)) Console.Printf("T_SEATED t%d: the seated note shown (once ever), profile %d", level.maptime, Opt("rsqtr_profile_active", p, 1));
 	}
 
 	// ---- RECENTER (the owner's choice, 11-03 18:56: "Stick turns + recenter") ---------------------------------------
@@ -2588,6 +2799,73 @@ class RSQTR_Rig : EventHandler
 	// swells and fades once a second (smooth, never off: 0.25 .. 1 of its alpha), where it blinked on and off every 8 tics.
 	const PULSE_TICS = 35;
 	static double EmptyPulse() { return 0.625 + 0.375 * cos(level.maptime * 360.0 / PULSE_TICS); }
+
+	// THE AMMO ARC (Report rec 7, not colour alone): a thin wire arc round a full gun holster's ammo light, its length how
+	// full the gun is, in the light's own colour. The measure is AmmoState's: the magazine (Ammo2) for a gun that has one,
+	// else Ammo1, against its MaxAmount -- green is half or more of it, yellow less. 12 steps (models/rsqtr/rtarc01..12.obj,
+	// tools/gen_ammoarc.py): 0 only when empty (no arc), 12 (the closed circle) only when full, else the nearest twelfth.
+	// It shows exactly when a gun holster's light shows (pip[r] visible, so Holster Rings and Ammo Light rule it), at its
+	// alpha, and is turned to the eyes as the rule picture is (DrawRulePic). Local, never in play. (rig only, not
+	// headset-confirmed)
+	const ARC_R = 0.40;            // the arc's radius, in holster radii (the light is 0.26, the holster's ring 1.0)
+	const ARC_STEPS = 12;
+	static double AmmoFrac(Weapon w)
+	{
+		if (!w || !w.Ammo1) return -1;
+		bool mag = w.Ammo2 && w.Ammo2 != w.Ammo1;
+		let lo = mag ? w.Ammo2 : w.Ammo1;
+		return clamp(double(lo.Amount) / max(1, lo.MaxAmount), 0.0, 1.0);
+	}
+	static int ArcStep(double f)
+	{
+		if (f <= 0) return 0;
+		if (f >= 1) return ARC_STEPS;
+		return clamp(int(round(f * ARC_STEPS)), 1, ARC_STEPS - 1);
+	}
+	private void DrawAmmoArc(PlayerPawn pmo, PlayerInfo p, int r, Vector3 at, double rad, Weapon pw)
+	{
+		let q = pip[r];
+		double f = (pw && q && !q.bINVISIBLE) ? AmmoFrac(pw) : -1;
+		int step = f >= 0 ? ArcStep(f) : 0;
+		bool show = f >= 0 && step > 0 && (q.frame == 0 || q.frame == 1);
+		if (Flag("rsqtr_messages", p, false))
+		{
+			int lg = f >= 0 ? step + 1 : 0;
+			if (lg != ammoArcLog[r])
+			{
+				if (f >= 0) Console.Printf("T_AMMOARC t%d %s: %s fraction %.3f step %d/%d %s", level.maptime, RSQTR_Region.NAMES[r], pw.GetClassName(), f, step, ARC_STEPS,
+					!show ? "(no arc)" : q.frame == 0 ? "green" : "yellow");
+				else Console.Printf("T_AMMOARC t%d %s: hidden", level.maptime, RSQTR_Region.NAMES[r]);
+			}
+			ammoArcLog[r] = lg;
+		}
+		if (!show) { if (ammoArc[r]) ammoArc[r].bINVISIBLE = true; return; }
+		bool fresh = !ammoArc[r];
+		if (fresh) ammoArc[r] = Actor.Spawn("RSQTR_AmmoArc", at);
+		let c = ammoArc[r];
+		if (!c) return;
+		// turned to the eyes, upright as you see them: DrawRulePic's eye, yaw, pitch and roll (rig frames 11-08)
+		double u = RSQTR_Body.Upm(), ps = RSQTR_Body.Ps();
+		Vector3 eye = (pmo.pos.xy, pmo.HmdPosition.y > 0.3 ? RSQTR_Body.RoomFloor(pmo) + RSQTR_Body.EyeUnits(pmo, pmo.HmdPosition.y) : pmo.player.viewz);
+		double ha = pmo.angle, hp = pmo.pitch;
+		Vector3 hu = (sin(hp) * cos(ha), sin(hp) * sin(ha), cos(hp));
+		Vector3 d = eye - at;
+		double yaw = atan2(d.y, d.x);
+		double pit = -atan2(d.z * ps, max(0.001, d.xy.Length()));
+		Vector3 n = (cos(pit) * cos(yaw), cos(pit) * sin(yaw), -sin(pit));
+		Vector3 u0 = (sin(pit) * cos(yaw), sin(pit) * sin(yaw), cos(pit));
+		Vector3 up = hu - n * (hu dot n);
+		double rl = 0;
+		if (up.Length() > 0.01) { up = up.Unit(); rl = RULE_ROLL_SIGN * atan2((u0 cross up) dot n, u0 dot up); }
+		c.SetOrigin(at, true);
+		c.angle = yaw; c.pitch = pit; c.roll = rl;
+		if (fresh) c.ClearInterpolation();
+		c.frame = (q.frame == 1 ? ARC_STEPS : 0) + step - 1;   // MODELDEF: A-L green, M-X yellow
+		double s = ARC_R * rad * u;
+		c.Scale = (s, s);
+		c.Alpha = q.Alpha;
+		c.bINVISIBLE = false;
+	}
 	static int MarkerFrame(bool inside, int prof, bool util = false)
 	{
 		static const int IDLE[] = { 0, 2, 3, 4 };
@@ -2636,6 +2914,7 @@ class RSQTR_Rig : EventHandler
 			double rf = RuleFade(r);
 			bool ringFlash = rf > 0 && mode > 0;
 			if (ringFlash) a = max(a, rf);
+			if (live && StruggleShows(r)) a = 1.0;      // HELP AFTER REPEATED FAILURE (11-08): full, even with Holster Rings Never
 			DrawRulePic(pmo, r, at, rad, rf);
 			// NOT BY COLOUR ALONE (11-08): an item spot is a wire diamond (RSQTR_ItemMarker), a gun holster the wire sphere
 			String mk = IsGunRegion(r) ? "RSQTR_Marker" : "RSQTR_ItemMarker";
@@ -2698,6 +2977,7 @@ class RSQTR_Rig : EventHandler
 				}
 			}
 			else if (pip[r]) pip[r].bINVISIBLE = true;
+			DrawAmmoArc(pmo, p, r, at, rad, pw);
 			AmmoCount(pmo, p, r, at, rad, a, pw);
 
 			// WHAT IS STORED THERE: exactly what you put there, nothing chosen for you (the owner,
@@ -2978,6 +3258,7 @@ class RSQTR_Rig : EventHandler
 			if (marker[r]) marker[r].bINVISIBLE = true;
 			if (icon[r]) icon[r].bINVISIBLE = true;
 			if (pip[r]) pip[r].bINVISIBLE = true;
+			if (ammoArc[r]) ammoArc[r].bINVISIBLE = true;
 			ClearRulePic(r);
 		}
 		for (int k = 0; k < 2; k++) if (fnfMark[k]) fnfMark[k].bINVISIBLE = true;
@@ -3250,6 +3531,10 @@ class RSQTR_AmmoPip : Actor
 	}
 	States { Spawn: RSTM A -1; Stop; }
 }
+
+// THE AMMO ARC (rig.zs DrawAmmoArc; MODELDEF RSQTR_AmmoArc): frames A-L green, M-X yellow, fill steps 1-12. A subclass of
+// RSQTR_Marker (additive, bright), so a load clears it with the rings (ClearLocalMarks). Local, never in play.
+class RSQTR_AmmoArc : RSQTR_Marker {}
 
 // THE LOADOUT BETWEEN LEVELS: a static handler outlives the level, so the rig keeps a copy of every holster
 // here each tic and a new level takes it back (rig.zs RestoreLoadout). Cleared on a new game.

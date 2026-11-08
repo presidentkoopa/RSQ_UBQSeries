@@ -15,6 +15,35 @@ Model RSQTR_AmmoPip
 	FrameIndex RSTM C 0 0
 }
 
+// THE AMMO ARC (Report rec 7, not colour alone; rig.zs DrawMarkers, RSQTR_AmmoArc): a thin wire arc round a full holster's
+// ammo light, k/12 of a circle for fill step k (tools/gen_ammoarc.py, radius 1.0 as rtwire.obj), in the pip's own skins:
+// A-L green steps 1-12, M-X yellow steps 1-12 (an empty gun has no arc). Turned to the eyes by the actor's angle, pitch, roll.
+// One block per frame (a block's model is fixed; the series' RSQFF_Held does the same).
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc01.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM A 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc02.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM B 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc03.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM C 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc04.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM D 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc05.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM E 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc06.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM F 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc07.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM G 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc08.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM H 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc09.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM I 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc10.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM J 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc11.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM K 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc12.obj" Skin 0 "rtwireht.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM L 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc01.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM M 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc02.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM N 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc03.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM O 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc04.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM P 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc05.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM Q 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc06.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM R 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc07.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM S 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc08.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM T 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc09.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM U 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc10.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM V 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc11.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM W 0 0 }
+Model RSQTR_AmmoArc { Path "models/rsqtr" Model 0 "rtarc12.obj" Skin 0 "rtwireye.png" Scale 1.0 1.0 1.0 USEACTORPITCH USEACTORROLL FrameIndex RSTM X 0 0 }
+
 Model RSQTR_Marker
 {
 	Path "models/rsqtr"
@@ -398,6 +427,20 @@ Model RSQTR_NadeShow
 	Offset -28.53 0.02 1.28
 	NoInterpolation
 	FrameIndex RTGN A 0 2
+}
+
+// THE HOLSTER TIP'S GHOST HAND (ghost.zs RSQTR_GhostHand; 11-08, rig only, not headset-confirmed). A carrier only, as
+// RSQTR_NadeShow: the wire sphere with the invisible skin; the ghost swaps in Brutal Doom VR's FBX hand by path
+// (models/rsq/fbx/fbx_oh_free_R.md3, fbx_hand.png) with A_ChangeModel. Frame 1: the fist BD's own RSQ_GunSide RQGF draws.
+// Scale and Offset are BD's hand block's (RSQTRLAY: -1 1 1 / 0 -24 -10), the numbers RSQTR_GhostHand.Pose solves with.
+Model RSQTR_GhostHand
+{
+	Path "models/rsqtr"
+	Model 0 "rtwire.obj"
+	Skin 0 "rtinvis.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RSTM A 0 1
 }
 
 // THE AMMO POUCH on the belt (RSQTR_PouchShow, rig.zs DrawPouch): tools/gen_pouch.py, map units at scale 1 (5 x 8 x 10 cm),
