@@ -529,7 +529,7 @@ class RSQGN_BarrelFX : Actor
 	}
 
 	// a sequence at `at` for `b`; kk its scale; bendIt: the room bends it (the blast's own sequence, not an overlay)
-	static RSQGN_BarrelFX Play(Vector3 at, int s, RSQGN_Boom b, double kk = 1.0, bool bendIt = false)
+	static RSQGN_BarrelFX PlayFX(Vector3 at, int s, RSQGN_Boom b, double kk = 1.0, bool bendIt = false)
 	{
 		if (s < 0 || s >= RSQGN_BarrelData.SEQS) return null;
 		let fx = RSQGN_BarrelFX(Actor.Spawn("RSQGN_BarrelFX", at));

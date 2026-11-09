@@ -292,14 +292,14 @@ class RSQGN_Boom : Actor
 		else s = air ? RSQGN_BarrelData.G_AIR : RSQGN_BarrelData.G_FLOOR;
 		if (waterOn) s = isBarrel ? RSQGN_BarrelData.X_WATER_B : RSQGN_BarrelData.X_WATER_G;   // the underwater swap: no fire
 		mainSeq = s;
-		RSQGN_BarrelFX.Play(pos, s, self, k, !waterOn);
+		RSQGN_BarrelFX.PlayFX(pos, s, self, k, !waterOn);
 		if (!waterOn)
 		{
-			if (skeet) RSQGN_BarrelFX.Play(pos, RSQGN_BarrelData.G_SKEET, self, 1.0);
-			if (ceilOn) RSQGN_BarrelFX.Play((pos.x, pos.y, ceilingz), RSQGN_BarrelData.X_CEILING, self, k * ko);
-			if (skyOn) RSQGN_BarrelFX.Play(pos, RSQGN_BarrelData.X_SKY, self, k * ko);
-			if (wallOn) RSQGN_BarrelFX.Play(pos, RSQGN_BarrelData.X_WALLRUN, self, k * (isBarrel ? 1.0 : 0.8));
-			if (liquid > 0) RSQGN_BarrelFX.Play((pos.x, pos.y, floorz), RSQGN_BarrelData.X_NUKAGE + liquid - 1, self, k * (isBarrel ? 1.0 : 0.8));
+			if (skeet) RSQGN_BarrelFX.PlayFX(pos, RSQGN_BarrelData.G_SKEET, self, 1.0);
+			if (ceilOn) RSQGN_BarrelFX.PlayFX((pos.x, pos.y, ceilingz), RSQGN_BarrelData.X_CEILING, self, k * ko);
+			if (skyOn) RSQGN_BarrelFX.PlayFX(pos, RSQGN_BarrelData.X_SKY, self, k * ko);
+			if (wallOn) RSQGN_BarrelFX.PlayFX(pos, RSQGN_BarrelData.X_WALLRUN, self, k * (isBarrel ? 1.0 : 0.8));
+			if (liquid > 0) RSQGN_BarrelFX.PlayFX((pos.x, pos.y, floorz), RSQGN_BarrelData.X_NUKAGE + liquid - 1, self, k * (isBarrel ? 1.0 : 0.8));
 			if (wallOn) Scorch(zc);
 		}
 		if (waterOn) Bubbles(zc);
@@ -414,7 +414,7 @@ class RSQGN_Boom : Actor
 	{
 		if (!v) return;
 		double h = GetDefaultByType(v.GetClass()).Height;
-		RSQGN_BarrelFX.Play(v.pos + (0, 0, h * 0.55), RSQGN_BarrelData.X_GIB, self);
+		RSQGN_BarrelFX.PlayFX(v.pos + (0, 0, h * 0.55), RSQGN_BarrelData.X_GIB, self);
 		let f = Actor.Spawn("RSQGN_GibFlash", v.pos);
 		if (f)
 		{
@@ -683,7 +683,7 @@ class RSQGN_Boom : Actor
 					Vector2 n = (shWNX[i], shWNY[i]);
 					Vector2 h = v.xy - n * 2 * (v.xy dot n);
 					v = (h.x * 0.4, h.y * 0.4, v.z * 0.7);
-					Cross(p, 0xFFF0B4);
+					SparkCross(p, 0xFFF0B4);
 					Pix(p + (n.x * 0.5, n.y * 0.5, 0), 0x100E0D, 1.6, 70, (0, 0, 0), (0, 0, 0), false, 0.9);   // the pock
 					shX[i] = p.x; shY[i] = p.y; shZ[i] = p.z; shVX[i] = v.x; shVY[i] = v.y; shVZ[i] = v.z;
 					TraceAhead(i);
@@ -695,7 +695,7 @@ class RSQGN_Boom : Actor
 					if (shHit[i] == 0)
 					{
 						shHit[i] = 1;
-						Cross(p + (0, 0, 1), 0xFFFAC8);
+						SparkCross(p + (0, 0, 1), 0xFFFAC8);
 						Pix(p + (0, 0, 0.5), Tinted(0xFFD76E), 2.4, 9, (0, 0, 0), (0, 0, 0), true, 1.0);                                     // hot, cooling
 						Pix(p + (0, 0, 0.4), 0x2C221E, 1.2, 70, (0, 0, 0), (0, 0, 0), false, 0.9);          // the speck that stays
 					}
@@ -728,7 +728,7 @@ class RSQGN_Boom : Actor
 	}
 
 	// a ricochet's spark: a tiny hard cross, 2 tics
-	void Cross(Vector3 p, int col)
+	void SparkCross(Vector3 p, int col)
 	{
 		col = Tinted(col);
 		Pix(p, col, 1.6, 2, (0, 0, 0), (0, 0, 0), true, 1.0);

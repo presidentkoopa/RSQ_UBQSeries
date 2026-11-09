@@ -305,7 +305,7 @@ class RSQVR_Beam : Actor
 		if (released) return;
 		released = true;
 		if (!mon || mon.bDestroyed) return;
-		if (silOn) { mon.A_SetRenderStyle(keptAlpha, keptStyle); mon.fillcolor = keptFill; silOn = false; }
+		if (silOn) { mon.A_SetRenderStyle(keptAlpha, keptStyle); mon.SetShade(keptFill); silOn = false; }
 		if (hidden) { mon.bInvisible = wasInvisible; hidden = false; }
 	}
 

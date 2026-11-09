@@ -30,7 +30,7 @@ HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))     # Minibos
 HUB = os.path.dirname(HERE)
 ZS = os.path.join(HERE, 'zscript', 'rsqmb')
 
-KEYWORDS = {'in', 'out', 'default', 'until', 'class', 'struct', 'enum', 'const', 'static', 'native', 'action', 'state',
+KEYWORDS = {'play', 'ui', 'cross', 'dot', 'clearscope', 'virtualscope', 'in', 'out', 'default', 'until', 'class', 'struct', 'enum', 'const', 'static', 'native', 'action', 'state',
             'states', 'property', 'flagdef', 'meta', 'mixin', 'extend', 'readonly', 'internal', 'transient', 'abstract',
             'final', 'override', 'virtual', 'virtualscope', 'clearscope', 'play', 'ui', 'deprecated', 'version', 'vararg',
             'latent', 'sealed', 'goto', 'stop', 'loop', 'wait', 'fail', 'super', 'self', 'null', 'true', 'false', 'sizeof',

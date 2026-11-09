@@ -32,7 +32,7 @@ ZS = os.path.join(GREN, 'zscript', 'rsqgn', 'barrel.zs')
 DATA = os.path.join(GREN, 'zscript', 'rsqgn', 'barrel_data.zs')
 EXPL = os.path.join(GREN, 'zscript', 'rsqgn', 'explosions.zs')
 KINDS = os.path.join(GREN, 'zscript', 'rsqgn', 'kinds.zs')
-KEYWORDS = {'until', 'in', 'out', 'default', 'class', 'struct', 'enum', 'const', 'static', 'native', 'action', 'readonly',
+KEYWORDS = {'play', 'ui', 'cross', 'dot', 'clearscope', 'virtualscope', 'until', 'in', 'out', 'default', 'class', 'struct', 'enum', 'const', 'static', 'native', 'action', 'readonly',
             'internal', 'version', 'property', 'flagdef', 'mixin', 'extend', 'replaces', 'abstract', 'ui', 'play',
             'clearscope', 'virtualscope', 'transient', 'meta', 'final', 'virtual', 'override', 'private', 'protected',
             'sizeof', 'alignof', 'is', 'let', 'auto', 'map', 'array', 'states', 'loop', 'stop', 'wait', 'fail', 'goto',
