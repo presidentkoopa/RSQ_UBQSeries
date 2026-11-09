@@ -78,14 +78,15 @@ OptionMenu "RSQMN_Options"
 	Option "Tier Icons", "rsq_mg_tier_icon", "OnOff"
 	Option "Optimized Effects", "rsq_mg_optimized_fx", "OnOff"
 	Slider "Gore Bits per Kill", "rsq_mg_gore_budget", 0, 16, 1, 0
-}
 
-AddOptionMenu "OptionsMenu"
-{
 	StaticText ""
-	Submenu "RS Monsters", "RS_MonsterOptions"
 	Submenu "Monster Diagnostics", "RS_MonsterDebugMenu"
 }
+
+// RS Monsters' own top-level "RS Monsters" and "Monster Diagnostics" entries are gone from the Options menu (owner
+// 2026-11-09 17:36: "RS Monsters has too many options menus, we only want ours. Although Monster Diagnostics could be
+// interesting: fold that into RSQ Monsters"). Diagnostics is a row on the RSQ Monsters page; RS_MonsterOptions stays
+// defined (its cvars still work) but has no entry.
 
 OptionMenu "RS_MonsterDebug"
 {

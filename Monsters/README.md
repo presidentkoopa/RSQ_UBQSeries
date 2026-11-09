@@ -6,6 +6,8 @@ engine hook exists only on UZDXREMA; on 17.3 nothing calls it). Loads with 0 scr
 brutal22test6; imp, shotgunner, demon and cacodemon shown spawning, moving and dying on the rig (rig only, not
 headset-confirmed). Built as `pk3/RSQ_Monsters.pk3` by `python3 tools/build_all.py Monsters`.
 
+**Menus (11-09):** only RS Options > RSQ Monsters. RS Monsters' own "RS Monsters" and "Monster Diagnostics" entries are off the Options menu; Monster Diagnostics is now a row at the bottom of the RSQ Monsters page.
+
 ## How To Play
 
 1. Load `RSQ_Monsters.pk3` with the other RSQ pk3s (after Brutal Doom if you use it).
