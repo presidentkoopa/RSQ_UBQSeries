@@ -40,3 +40,16 @@ RS Combat FX (the owner's), Reactorcore explosion minipack (CC0 by page comment 
 not necessary", credited anyway), and fx_sheet_2 (domes and fire ring in #6, source unknown) — see
 `design/assets/fx_sheets/README.md`. The barrel in the renders is the project's BAR1A voxel; the grenade shown is a
 stand-in (the UAC Survival Pack's thrown sprite).
+
+## Contexts (the blast changes with where it goes off)
+
+`contexts/`: modifiers on the approved blasts, never new blasts. Owner: "i want them all".
+- `C_wall_barrel_*` (#5 base), `C_wall_grenade_*`: the blast folds flat against the wall and fans along it; sparks and
+  shrapnel bounce back; a scorch stays. Detected by short side traces (a hit within ~40 units).
+- `C_ceiling_barrel_*` (#6 base): fire spreads flat along a low ceiling, smoke pools under it, a soot band stays.
+  Detected when floor-to-ceiling is under ~96 units and not sky.
+- `C_sky_barrel_*` (#7 base): the column climbs out of sight and leaves a tall smoke column. Detected when the ceiling
+  above is sky.
+- `C_water_barrel_*` (#6 base), `C_water_grenade_*`: a white flash, no fire, a bubble dome rising to a surface splash,
+  silt. Detected when the blast point is under the sector's water.
+- `C1_contact.png`: key frames, one row per shot.
