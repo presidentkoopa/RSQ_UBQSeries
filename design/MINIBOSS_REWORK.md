@@ -85,3 +85,4 @@ Agent researching a real head-shot solution from the engine survey (RSQ_QuestEng
   Randomize Colours Key (unbound; also under Controls > RSQ Glow In The Dark). New colours now, same look; it stands down
   while a miniboss tint, DOWN's red map or another mod's timed tint runs.
 - GITD heartbeat speeding up with the miniboss's health: NO. Secret rooms shimmering after a win: NO (owner 08:49).
+- GITD loot beacon: NO. Exits/doors dead red while it lives: NO (owner 08:53).
