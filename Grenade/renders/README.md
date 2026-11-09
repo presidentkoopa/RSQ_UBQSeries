@@ -84,6 +84,8 @@ lift, break up, dust. 108 tics. `MEGA2_vs_MS.png` compares it with the Metal Slu
 
 `rocket/`: the rocket launcher's blast, into a wall (`R_wall_*`), the floor (`R_floor_*`) and a cacodemon mid-air
 (`R_air_*`), `R_contact.png`. A churning block of fire (not a mushroom). Its signature beat is the flashback: fire lashes
-back up the incoming line and burns back along the smoke trail in clumps, leaving soot hanging where the trail was.
+back up the incoming line and burns back along the smoke trail in clumps, leaving soot hanging where the trail was. Owner: "i love all of them but the explosion fire running back down the rocket
+trail is confusing": the flashback is removed in the current GIFs (the trail stays plain smoke); `rocket/v1_flashback/`
+keeps the first version.
 Sources: RS Combat FX (rocket, trail bits, embers), the Monsters cacodemon, Reactorcore (CC0 by page comment), Rufaswan
 (credit anyway), the rest drawn in code.
