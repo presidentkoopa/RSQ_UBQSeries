@@ -6,6 +6,19 @@ engine hook exists only on UZDXREMA; on 17.3 nothing calls it). Loads with 0 scr
 brutal22test6; imp, shotgunner, demon and cacodemon shown spawning, moving and dying on the rig (rig only, not
 headset-confirmed). Built as `pk3/RSQ_Monsters.pk3` by `python3 tools/build_all.py Monsters`.
 
+## How To Play
+
+1. Load `RSQ_Monsters.pk3` with the other RSQ pk3s (after Brutal Doom if you use it).
+2. Options > Radiant Silvergun Options > RSQ Monsters > **Select Monster Set**: ColorfulHell (the default), MeatGrinder,
+   BD22 or Vanilla. Start a new map: the set applies to monsters as they spawn.
+3. Play. With ColorfulHell or MeatGrinder a monster's colour is its tier, from Common (grey) up through Green, Blue,
+   Purple, Yellow, Red, FireBlu, Gray, Abyss, Black, White and Cyan to Brown: the higher, the tougher, faster and keener
+   to shoot. A monster that changes tier blinks white first (black when it becomes White), then is the new colour.
+4. **On tier change** picks what a tier change does to its health. The MeatGrinder rows switch its reactive deaths,
+   head-pops, the Abyss split, the tier icons, cheaper effects and the gore budget.
+5. With RSQ Miniboss loaded: **Bossfight** > **Miniboss From** / **Thralls From** pick which set a Bossfight's monsters
+   come from (below).
+
 ## Monster Set option
 
 Radiant Silvergun Options > RSQ Monsters > **Select Monster Set** (server cvar `rsq_monster_set`) decides what the stock
@@ -68,12 +81,15 @@ MG blood leaves the owner's HF wall and floor decals (`DECALDEF.txt`, every name
 `graphics/meatgrinder/decals/`). The enemy tracer is the owner's streak model (`MODELDEF.txt`,
 `models/meatgrinder/tracer/`).
 
-## What RSQ Miniboss asks (11-09, code only: not compiled, not rig-tested)
+## What RSQ Miniboss asks (11-09; rig 11-09: QuestZDoom 17.3 Linux rig on Freedoom 2, no Brutal Doom; rig only, not headset-confirmed)
 
 RSQ Miniboss's reworked fight (design/MINIBOSS_REWORK.md) asks the same service by name: `"tier"` for each monster's
 ladder colour, and `GetInt("retier", "", tier, instant, monster)` (new) to tier a monster up after a missed window or a
 lost life: `RS_Retier.Request`, the same path as `rs_retier`, with the tier flash (instant, no flash: its hub reset).
 1 asked, 0 not a ladder monster. A CH swap is a new actor: Miniboss finds it by `"tier.ago"` where the old one stood.
+Rig shown 11-09: a missed window tiered 11 monsters up +3 (CH bodies swapped to Purple and followed, the MG miniboss
+changed in place), a lost life +1 each time. Fixed from the rig: a Common CH monster carries no tier token, so `"tier"` and
+`"set"` read it as not on the ladder; both now fall back to its class's ladder tier.
 
 ## What RSQ Score reads (11-09)
 

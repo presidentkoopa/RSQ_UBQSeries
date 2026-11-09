@@ -6,6 +6,10 @@ Status: 0.99 — played and confirmed working in the headset; refinement and bug
 
 New since the headset pass (tested on the rig, headset check pending): the hand measured against the frame your headset drew, so walking never swings the shield or saw; Shield on the Rig (the stowed shield drawn on RSQ Tactical Rig).
 
+New on 11-09 (shown flat in the engine at the back and shoulder spots): Back Yaw, Back Pitch and Back Roll were reset
+(their settings were renamed), so an old saved tweak no longer tips the stowed shield off your back. Set them again if
+you had changed them.
+
 New on 11-06 (rig only, not headset-confirmed): Next/Prev Offhand Weapon (off); grinding throws the monster's own
 blood.
 

@@ -6,6 +6,9 @@ The world slows down. You don't. Enemy bullets turn into rounds you can watch co
 
 New since the headset pass (tested on the rig, headset check pending): the Real-Time Countdown bar.
 
+New on 11-09 (rig only, not headset-confirmed): the Bossfight landing slow-mo (the countdown bar always shows it) and edge
+arrows other mods can put up (RSQ Miniboss points at its arriving monsters with them); see Works with.
+
 New on 11-06 (rig only, not headset-confirmed): the two bars (stored slow-mo and countdown) with the cause line under
 the countdown; Heavy Hit Slowdown; the Grenade Blast and Over-Under Blast triggers; Reload When.
 
@@ -287,7 +290,12 @@ RSQ SlowMo runs on its own. It finds the other mods by name at run time and link
 - **For modders:** start slow motion with `netevent rsqsm_start:<name> <ms> <speed %> <flags>`, or with
   `RSQSM_Service` `GetInt("start", ...)` from synced play code. RS_SlowMo's `rsm_toggle`, `rsm_on`, `rsm_off` and
   `rsm_pulse` also work.
-- **Edge arrows for other mods** (2026-11-09; code only, not run on the rig): from synced play code,
+- **The Bossfight landing** (2026-11-09; rig only, not headset-confirmed): `RSQSM_Service`
+  `GetInt("start.bossfight", "bossfight", ms, depth)` starts the slow-mo for RSQ Miniboss's arrival as an automatic event:
+  it runs even with Adrenaline on, so the countdown bar always shows it, and it doesn't touch the shared cooldown (owner:
+  "the bar is always visible when the game contextual slomo is active, so player knows when time is coming back").
+- **Edge arrows for other mods** (2026-11-09; rig only, not headset-confirmed: called by the Bossfight arrival on the rig
+  with no errors; their look is not yet seen): from synced play code,
   `RSQSM_Service` `GetInt("arrow.add", key, 0xRRGGBB, size, actor)` puts DOWN's edge arrow (your Turn Marker, Panel Size,
   the same 75-degree rule, straight behind = at the bottom) on your HUD in that colour, pointing at the actor while it is
   out of view; size 1 normal, 1.5 big. `GetInt("arrow.clear", key, 0, 0, actor)` takes it off (no actor: every arrow with

@@ -4,11 +4,13 @@ A hand grenade you work like a real one: pull the pin with your other hand or yo
 and throw it with your own arm.
 
 Status: 0.99. The grenade was played and confirmed working in the headset; refinement and bug fixing ongoing. The
-barrels and the explosions (11-09) are **built but not yet run in the engine**. The pk3 is `pk3/RSQ_Grenade.pk3`
+barrels and the explosions (11-09) were run on the rig the same day (QuestZDoom 17.3 Linux rig on Freedoom 2, no Brutal
+Doom; **rig only, not headset-confirmed**): 11 compile errors fixed (two names were ZScript keywords); barrels go off and
+chain at the stock pace; both Barrel Sound choices play. The look of the six explosions in the engine is not yet seen. The pk3 is `pk3/RSQ_Grenade.pk3`
 (rebuilt 11-09).
 
 **What's new**
-- **11-09** (built, not yet run in the engine):
+- **11-09** (rig only):
   - **Barrels**: six new barrel explosions, picked at random (below).
   - **Explosions**: a new grenade blast and options for both: colour, lights, debris and seven room contexts (below).
   - **Barrel Sound**: Combat FX, or the owner's Test Candidate (below).

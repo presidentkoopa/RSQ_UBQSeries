@@ -41,6 +41,16 @@ Boss marker frames are imported from a GIF with
 `E:\Tools\msdfgen\Import-GifSprite.ps1`, which extracts every frame, writes the
 patches, and emits the TEXTURES and a ready-made state line.
 
+### How To Play (RSQ Edition)
+
+1. Load `RSQ_Graveyard.pk3` with the other RSQ pk3s.
+2. Play. Where you die, a gravestone stands the next time you play that map (new game or a loaded save). With RSQ Score,
+   a life you spend leaves a gold stone instead.
+3. Options > Radiant Silvergun Options > RSQ Graveyards: the settings, Living Stones, and the two keys (Remove Gravestones
+   on This Map, Remove All Gravestones; also in Customize Controls).
+4. With RSQ Miniboss and Legion of Bones: Graves Rise raises undead from the stones when a Bossfight lands (RSQ Miniboss's
+   option, off by default).
+
 ### RSQ Edition changes (presidentkoopa)
 
 - the animated gravestones and the grave light above.

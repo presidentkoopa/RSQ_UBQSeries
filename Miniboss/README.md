@@ -3,8 +3,12 @@
 Fill the Bossfight meter with stylish kills, check your watch, and call the fight in: a miniboss and its thralls
 teleport in where you can see them, and you choose how to take them apart.
 
-Status: 0.99. The original set piece was played and confirmed working in the headset. Everything below marked 11-09 is
-**code only: not compiled, not rig-tested, not headset-confirmed**. The pk3 is `pk3/RSQ_Miniboss.pk3` (rebuilt 11-09).
+Status: 0.99. The original set piece was played and confirmed working in the headset. The 11-09 rework was run on the
+rig the same day (QuestZDoom 17.3 Linux rig on Freedoom 2, no Brutal Doom; **rig only, not headset-confirmed**): loads
+with no script errors with every RSQ pk3; a Bossfight from arrival to death with the map's own monsters, and again with
+Miniboss From MeatGrinder / Thralls From ColorfulHell (shield, missed window and tier-up, broken window, lives, death,
+drop). Not yet seen: the look of the beams, words and HUD stack; the watch check (the rig can't pose a wrist roll).
+Logs and the test kit: `TestRig/bossfight_rig/`. The pk3 is `pk3/RSQ_Miniboss.pk3` (rebuilt 11-09).
 
 **What's new**
 - **11-09, the fight reworked** (the owner's design, design/MINIBOSS_REWORK.md; mockups design/mockups/miniboss/):
@@ -17,6 +21,10 @@ Status: 0.99. The original set piece was played and confirmed working in the hea
   - **Miniboss From / Thralls From** (on RSQ Monsters' page, under Bossfight): pick the miniboss and its thralls from
     ColorfulHell, MeatGrinder or a mix instead of the map's own monsters (below);
   - **head shots** on the 1.25x miniboss are judged on its grown body by RSQ Score's head check.
+  - fixed from the rig: a miniboss or thrall on the move is followed into its new body after a ColorfulHell tier change
+    (it was lost, and a miniboss lost that way counted as dead); a landing that fails takes back the thralls that
+    already came (they were left behind and the retry overlapped them); a thrall standing in the miniboss's spot is
+    moved aside.
 - **11-07** (rig only): a Bossfight win drops RSQ Score's life crate where the miniboss died; Graves Rise has no cap.
 - **11-06** (rig only): Tier From; Graves Rise (Legion of Bones); the original tether trail at about half the old cost;
   Ignore Spawn Restrictions.

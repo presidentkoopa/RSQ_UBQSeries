@@ -4,11 +4,14 @@ HP bars over every monster, damage numbers that live in the room with you, level
 headset, and monsters that burst into health, armour and ammo when they die.
 
 Status: 0.99. Played and confirmed working in the headset; refinement and bug fixing ongoing. The arrival beams, words
-and pops (11-09) are **code and art only, not yet run in the engine**. The pk3 is `pk3/RSQ_VisualRewards.pk3` (rebuilt
+and pops (11-09) were run on the rig the same day (QuestZDoom 17.3 Linux rig on Freedoom 2; **rig only, not
+headset-confirmed**): each kind hides its monster and shows it on time, the role sounds play, words, held words, clears
+and pops answer; one compile error fixed (a monster's fill colour is read-only: put back with SetShade). Their look is
+not yet seen. The pk3 is `pk3/RSQ_VisualRewards.pk3` (rebuilt
 11-09).
 
 **What's new**
-- **11-09** (not yet run): **arrival beams** V1-V4 for monsters other mods bring in, with their own sounds for a
+- **11-09** (rig only): **arrival beams** V1-V4 for monsters other mods bring in, with their own sounds for a
   miniboss, a thrall and a chump; **words** over monsters in RS Score's font (TARGET!, GUARD!); a **pop** in a colour
   (below). Built for RSQ Miniboss's Bossfight; any mod can ask for them by name.
 - **11-07** for RSQ SlowMo's DOWN v3 (rig only): a kill you make while DOWN within 3x your Bits Fly to Me reach still
