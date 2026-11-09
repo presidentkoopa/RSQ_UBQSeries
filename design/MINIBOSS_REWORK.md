@@ -17,6 +17,13 @@ Owner's words, then where we landed.
   one second per thrall the miniboss came with (3 thralls = 3 s).
   Window closes with the segment unfinished (06:46): "the MB and its thralls tier-up (let's say the thralls are CH, and
   the MB is MG) by a factor of 1 - 3." (A retier with the tier flash: CH thralls swap class, the MG miniboss changes in place.)
+  **The window bar (07:12-07:13):** DOWN's reward bar repurposed for the HUD, right under the thrall segments: one step per
+  thrall, one second each, draining tallest first; the step you break the segment in sets Score's pay (first = most).
+  Drained to zero with the segment unbroken = tier-up by how much segment was left: a sliver +1, about half +2,
+  untouched +3 (owner: "I think so"). DOWN's bar is drawn on its world plate today: it needs a HUD-style redraw.
+  **Option: the tier-up hits every monster on the map** (owner: "successive miniboss fights could cause a player to
+  leave a map with tier 9 enemies, lol"). **Miniboss-induced tiers reset on a map change**; tiering from RSQ Score or
+  Gun Bonsai VR (their own, later) is unaffected.
 - **HUD bar stack** (owner: "i love the idea of an on-HUD hp bar, i will look for something"):
   - top: the THRALL bar, "if 3 thralls, then three segments", grey with a large shield icon while immune;
   - then its own bar: "thralls = number of segments you have to whittle down before it's one-on-one with the miniboss
