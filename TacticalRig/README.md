@@ -38,6 +38,27 @@ and another gun's; an empty unassigned holster not shown).
 A gun with no holster yet, held in both hands: put the off hand's copy in a free holster with no gun assigned and that
 holster becomes the gun's, the gun goes in, and both hands go empty (shown on the rig, dual Rifles, full order).
 
+New on 11-09 (rig only, not headset-confirmed): **Brutal Doom's Dual key with a gun in your off hand only.** With a gun
+in your OFF hand and your MAIN hand empty (its fists), pressing Brutal Doom's Dual key now gives your main hand the same gun,
+so you hold one in each hand; before, the key took the off hand's gun away. Everything else about the key is as before (a
+gun in the main hand: Dual puts its copy in the off hand; a gun in each hand: Dual empties the off hand). Holding the key
+does not flip it back. The gun keeps its holster. It works for Brutal Doom 22 VR Reloaded's guns that have an off-hand
+version (the guns that dual wield). With a gun whose Dual Options row is off (one hand at a time), BD22 VR moves it to your
+main hand and your off hand goes empty, by its own rule. NOT shown working yet: on the first rig run the press was caught (the log shows it), but that build
+asked BD22 VR for an ordinary weapon switch and the main hand never changed; it now puts the gun in your main hand at once,
+as BD22 VR itself does when it swaps a gun's versions. Built and loads clean; waits for the next rig session.
+
+Also 11-09 (rig only, not headset-confirmed): **the ammo pouch is bigger than the grenade spot and a little further toward
+your off hand**, and it **reaches for your hand.** Measured (tools/measure_pouch.py, the rig's own rule: inside a spot's
+radius, the nearest centre wins where two overlap): the pouch was 10 cm and won 4.1 litres of space, against the grenade
+spot's 2.1 litres. Now it is 11 cm, 4 cm further toward your off hand, 2 cm forward and 2 cm down, and wins 5.5 litres
+(2.6 times the grenade spot's). It touches the off hip holster no more than before (2.2 cm of overlap, was 2.1) and is
+now clear of the grenade spot and the off-side chest holster, which it used to overlap. A 12 cm pouch could not be fitted
+without overlapping the off hip by 3-5 cm. On top of that, as your off hand comes near, the pouch glides up to 3.5 cm
+toward it (Pouch Reaches for Your Hand, on): measured, that makes the space where a reach finds it 9.6 litres; it takes
+about 3% of the off hip holster's space, from the off hand only. Shown on the rig: the off hand coming in, the pouch
+gliding 3.5 cm toward it over 7 tics, and back as the hand left.
+
 New on 11-08, for new players (rig only, not headset-confirmed): the holster rules show as they happen (a flash, the
 gun's picture, a streak home), a holster freed by hand, one feel per action (a refusal is the only double buzz), a full
 holster preferred where two overlap, your height measured for you, a one-time recentre tip, and item spots drawn as
@@ -128,8 +149,10 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
 - A flare holster on your off-hand hip for RSQ FnF, sharing its chest pocket's flares, with a flare hanging there
   while you carry one.
 - An ammo pouch just left of the buckle for Brutal Doom 22 VR's hand reloads: reach into it for the magazine, shell
-  or round (a 10 cm reach since 11-05). Its light shows the reserve of the gun in your hand (green, yellow, red).
-  Ammo Pouch off: BD22 VR takes ammo from anywhere again.
+  or round (an 11 cm reach since 11-09, a little further toward your off hand). Its light shows the reserve of the gun in
+  your hand (green, yellow, red). Ammo Pouch off: BD22 VR takes ammo from anywhere again.
+- **Pouch Reaches for Your Hand** (on): as your off hand comes within 6 cm of the pouch, the pouch (its grab zone, its
+  ring and the pouch you see) glides up to 3.5 cm toward the hand, and back when the hand leaves.
 - Holster rings: gun holsters (hips, chest, shoulders) are blue (or their profile's colour); every other spot (grenade,
   keyring, sabers, whip, flare, pouch, FnF's pocket and clip, the cigarette pocket) is magenta; green with a hand inside.
 - Not by colour alone (rig only, not headset-confirmed): gun holsters are wire spheres, the grenade, keyring, saber,
@@ -243,6 +266,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Whip Holster | On | RSQ Whip's whip has its own holster on the main-hand hip |
 | Flare Holster | On | RSQ FnF's flares have their own holster on the off-hand hip |
 | Ammo Pouch | On | A pouch left of the belt buckle (off-hand side): with Brutal Doom 22 VR, hand reloads take magazines, shells and rounds from it only. Off: they take ammo from anywhere |
+| Pouch Reaches for Your Hand | On | The pouch glides up to 3.5 cm toward your off hand as it comes near, and back after |
 | Show Ammo Pouch | On | The pouch on the belt, its light the reserve of the gun in your hand (green, yellow, red) |
 | Shoulder to ShieldSaw | On | Off shoulder is the shield's while it is stowed there. With RSQ ShieldSaw's Take It From set to Over the Shoulder, the off-shoulder gun holster is the ShieldSaw's either way (11-07, rig only, not headset-confirmed) |
 | Keyring | On | Keys on your belt |
@@ -301,7 +325,7 @@ Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Unlit Goes Away Afte
 Holster Positions: forward, left, up and size in metres from your eyes for every holster, the grenade spot, the
 keyring, both saber spots, the whip and flare holsters and the ammo pouch (hips 0.70 m down, 0.18 m out; chest 0.46
 down, 0.12 out, 0.10 forward; shoulders 0.10 down, 0.18 out, 0.08 back; whip and flare 0.84 down, 0.30 out, 0.06
-back, whip 0.08 size; pouch 0.62 down, 0.14 toward the off hand, 0.20 forward, 0.10 size; cigarette pocket 0.08). Debug:
+back, whip 0.08 size; pouch 0.64 down, 0.18 toward the off hand, 0.22 forward, 0.11 size; cigarette pocket 0.08). Debug:
 Throw Debug Log (Off).
 
 ## Works with

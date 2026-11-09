@@ -13,6 +13,7 @@ version "4.14"
 #include "zscript/rsqtr/fit.zs"
 #include "zscript/rsqtr/vanilla.zs"
 #include "zscript/rsqtr/rig.zs"
+#include "zscript/rsqtr/dualkey.zs"   // Brutal Doom's Dual key with a gun in the off hand only: the main hand gets it too (11-09)
 #include "zscript/rsqtr/ghost.zs"    // the holster tip's ghost hand (11-08)
 #include "zscript/rsqtr/hooks.zs"
 #include "zscript/rsqtr/cig.zs"
