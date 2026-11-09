@@ -159,10 +159,10 @@ class RSQVR_Beam : Actor
 		if (r == 'chump') return 3;
 		return k >= 3 ? 1 : 2;
 	}
-	// the sound the beam starts with, one per beam (owner 18:38): V1 ONPARE8, V2 ONPARE2, V3 PL00_U, V4 PL01_U
+	// the sound the beam starts with, one per beam (owner 18:50, SNDINFO.txt): V1 / V2 / V4 the locked RVQB sounds, V3 PL00_U
 	static String SoundOf(int k)
 	{
-		static const String T[] = { "rsqvr/beam/chump", "rsqvr/beam/thrall1", "rsqvr/beam/rise", "rsqvr/beam/thrall2" };
+		static const String T[] = { "rsqvr/beam/v1", "rsqvr/beam/v2", "rsqvr/beam/rise", "rsqvr/beam/v4" };
 		return T[clamp(k, 1, 4) - 1];
 	}
 	static int KindOf(String s)
