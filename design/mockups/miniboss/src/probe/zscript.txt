@@ -1,0 +1,267 @@
+version "4.14"
+// TEST ONLY (never ships): RSQ Score head-shot proof scenes + RSQ Miniboss mockup backgrounds, one rig run.
+class HSProbe : EventHandler
+{
+	int scene, sceneStart, shots, killTic, nextShot;
+	Actor cur;
+	Vector3 spot;
+	double startAngle;
+	bool overlay;
+	int mbT0;
+	Actor mb;
+	Array<Actor> thr;
+	int phase;   // 0 head-shot scenes, 1 miniboss, 2 done
+	int frzUntil;
+
+	static const String SC_CLS[] = { "Imp", "RifleZombie", "RifleZombie", "Imp", "Imp", "BaronofHell2", "BaronofHell2", "Imp", "Imp", "Imp", "BaronofHell2", "RS_CommonImp", "RS_CommonImp", "RS_MGImp", "RS_MGImp" };
+	static const double SC_SCALE[] = { 1, 1, 1, 1, 1, 1, 1, 1.25, 1.25, 1.25, 1.25, 1, 1, 1, 1 };
+	static const int SC_SIZE[] = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1 };
+	static const double SC_UP[] = { 52, 52, 34, 52, 34, 72, 36, 52, 64, 52, 90, 52, 34, 52, 34 };
+	static const int SC_DMG[] = { 12, 12, 12, 12, 12, 200, 200, 12, 12, 12, 200, 12, 12, 12, 12 };
+	static const int SC_HS[] = { 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+	static const String SC_DESC[] = { "BD imp head, check OFF (Brutal Doom's own)", "BD zombie head", "BD zombie chest", "BD imp head", "BD imp chest",
+		"BD baron head (sensor)", "BD baron body", "1.25x imp (scale + A_SetSize) at 52 (BD would: head)", "1.25x imp (scale + A_SetSize) at 64",
+		"1.25x imp scale ONLY (box not grown) at 52", "1.25x baron head (scaled sensor)", "CH imp head", "CH imp chest", "MG imp head", "MG imp chest" };
+
+	void Say(String s) { Console.Printf("PROBE t%d %s", level.maptime, s); }
+	void SetI(String n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); else Say("no cvar " .. n); }
+
+	void Clean(Vector3 at, double r)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a;
+		Array<Actor> kill;
+		while (a = Actor(it.Next()))
+		{
+			if (a.player || (a is "Inventory" && Inventory(a).owner)) continue;
+			if (a == players[0].mo) continue;
+			if ((a.pos.xy - at.xy).Length() > r) continue;
+			if (a.bIsMonster || a.bCorpse || a.bMissile) kill.Push(a);
+		}
+		for (int i = 0; i < kill.Size(); i++) if (kill[i]) { kill[i].ClearCounters(); kill[i].Destroy(); }
+	}
+	void ClearMonsters()
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a; Array<Actor> kill;
+		while (a = Actor(it.Next())) if (a.bIsMonster && !a.player) kill.Push(a);
+		for (int i = 0; i < kill.Size(); i++) if (kill[i]) { kill[i].ClearCounters(); kill[i].Destroy(); }
+		Say(String.Format("cleared %d monsters", kill.Size()));
+	}
+
+	Actor Place(String cls, double fw, double lf, double s, bool size)
+	{
+		let mo = players[0].mo;
+		class<Actor> c = cls;
+		if (!c) { Say("no class " .. cls); return null; }
+		Vector2 d = Actor.AngleToVector(startAngle, fw) + Actor.AngleToVector(startAngle + 90, lf);
+		let a = Actor.Spawn(c, (mo.pos.xy + d, mo.floorz), NO_REPLACE);
+		if (!a) return null;
+		a.SetZ(a.floorz);
+		a.angle = a.AngleTo(mo);
+		if (s != 1)
+		{
+			a.scale = a.default.scale * s;
+			if (size) a.A_SetSize(a.default.radius * s, a.default.height * s);
+		}
+		return a;
+	}
+
+	void Shoot(Actor v, double up, int dmg)
+	{
+		let mo = players[0].mo;
+		double ez = mo.pos.z + 41;
+		double tz = v.pos.z + up;
+		double dist = max(8, mo.Distance2D(v) - v.radius);
+		double pit = -atan2(tz - ez, dist);
+		FLineTraceData d;
+		// a real trace; its aim is corrected (up to 4 tries) until it meets the body at the height asked
+		for (int it = 0; it < 4; it++)
+		{
+			mo.LineTrace(mo.AngleTo(v), 2048, pit, 0, 41, 0, 0, d);
+			if (d.HitType != TRACE_HitActor || !d.HitActor) break;
+			double got = d.HitLocation.z - v.pos.z;
+			if (abs(got - up) < 0.6) break;
+			double hd = max(8, (d.HitLocation.xy - mo.pos.xy).Length());
+			pit = -atan2(tz - ez, hd);
+		}
+		if (d.HitType != TRACE_HitActor || !d.HitActor) { Say(String.Format("shot %d aim up %.1f: the trace met no actor (type %d)", shots, up, d.HitType)); return; }
+		let hit = d.HitActor;
+		Vector3 hp = d.HitLocation;
+		double hd = mo.AngleTo(hit);
+		let puff = mo.SpawnPuff("BulletPuff", hp, hd, hd - 90, 2, PF_HITTHING | PF_NORANDOMZ, hit);
+		int before = v.health;
+		let hh = v.FindInventory("HitHead");
+		int nd = hit.DamageMobj(puff, mo, dmg, 'Bullet', DMG_INFLICTOR_IS_PUFF | DMG_PLAYERATTACK | DMG_USEANGLE, hit.AngleTo(mo));
+		hit.SpawnLineAttackBlood(mo, hp, hit.AngleTo(mo), dmg, nd);
+		hh = v ? v.FindInventory("HitHead") : null;
+		Say(String.Format("shot %d %d dmg aim up %.1f: real trace met %s at up %.1f over %s's feet (its H %.1f); %s hp %d -> %d, HitHead %d",
+			shots, dmg, up, hit.GetClassName(), hp.z - v.pos.z, v.GetClassName(), v.height, v.GetClassName(), before, v.health, hh ? hh.Amount : 0));
+	}
+
+	override void WorldTick()
+	{
+		let p = players[0]; let mo = p.mo; if (!mo) return;
+		int t = level.maptime;
+		if (t == 2)
+		{
+			p.cheats |= CF_GODMODE | CF_NOTARGET;
+			// (not moved: the first launches showed the VR view does not follow a script's SetOrigin / angle; Doom II MAP02's
+			// own start looks down an open hall, the arcade mockups' R2 frames)
+			startAngle = mo.angle;
+			overlay = true;
+			Say(String.Format("player %.0f %.0f %.0f ang %.0f", mo.pos.x, mo.pos.y, mo.pos.z, mo.angle));
+		}
+		if (t == 4 || t == 20 || t == 36) ClearMonsters();
+		if (t == 38) { startAngle = mo.angle; Say(String.Format("view yaw now %.0f at %.0f %.0f %.0f", mo.angle, mo.pos.x, mo.pos.y, mo.pos.z)); }
+		if (frzUntil > 0 && t >= frzUntil) { level.setFrozen(false); frzUntil = 0; }
+		if (phase == 0 && t >= 40) Scenes(t);
+		else if (phase == 1) Miniboss(t);
+	}
+
+	void Freeze(int n) { level.setFrozen(true); frzUntil = level.maptime + n; Say(String.Format("hold %d", n)); }
+
+	void Scenes(int t)
+	{
+		let mo = players[0].mo;
+		if (frzUntil > 0) return;
+		if (!sceneStart)
+		{
+			if (scene >= SC_CLS.Size()) { phase = 1; mbT0 = t + 10; overlay = false; Say("head-shot scenes done"); return; }
+			SetI("rs_score_hs", SC_HS[scene]);
+			cur = Place(SC_CLS[scene], 160, 0, SC_SCALE[scene], SC_SIZE[scene] != 0);
+			if (!cur) { scene++; return; }
+			spot = cur.pos; sceneStart = t; shots = 0; killTic = 0; nextShot = t + 24;
+			let d = GetDefaultByType(cur.GetClass());
+			Say(String.Format("SCENE %d: %s -- %s H %.1f (def %.1f) R %.1f scale %.2f health %d, check %d", scene, SC_DESC[scene], cur.GetClassName(), cur.height, d.height, cur.radius, cur.scale.y / d.scale.y, cur.health, SC_HS[scene]));
+			return;
+		}
+		// BD swaps some monsters for a variant as they spawn: take the one standing on the spot
+		if (!cur && !killTic && shots == 0)
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (a.bIsMonster && !a.player && a.health > 0 && (a.pos.xy - spot.xy).Length() < 48 && !(a is "RS_ScoreHeadSensor")) { cur = a; Say("SCENE took the variant " .. a.GetClassName()); break; }
+		}
+		if (!killTic)
+		{
+			if (!cur || cur.health <= 0) { killTic = t; Say(String.Format("SCENE %d killed after %d shots", scene, shots)); return; }
+			if (t >= nextShot)
+			{
+				if (shots >= 12) { Say(String.Format("SCENE %d: still alive after 12 shots (health %d), removed", scene, cur.health)); killTic = t - 80; return; }
+				shots++; Shoot(cur, SC_UP[scene], SC_DMG[scene]);
+				nextShot = t + 7;
+			}
+			return;
+		}
+		int k = t - killTic;
+		if (k == 5) { Freeze(26); return; }
+		if (k == 36) { Freeze(26); return; }
+		if (k >= 66)
+		{
+			Clean(spot, 420);
+			scene++; sceneStart = 0; cur = null;
+		}
+	}
+
+	// ---------------------------------------------------------------- the miniboss mockup backgrounds
+	Service gitdSvc;
+	void Gitd(String req, Actor a, int col, double secs = 0)
+	{
+		if (!gitdSvc) { let it = ServiceIterator.Find("RSQGD_Service"); gitdSvc = it ? it.Next() : null; }
+		if (!gitdSvc) { Say("no GITD"); return; }
+		int r = gitdSvc.GetInt(req, "", col, secs, a);
+		Say(String.Format("GITD %s %06x %.1f -> %d", req, col, secs, r));
+	}
+	void Fog(Actor a) { if (a) Actor.Spawn("TeleportFog", a.pos, ALLOW_REPLACE); }
+	void KeepBig()
+	{
+		if (!mb || mb.health <= 0) return;
+		double s = 1.25;
+		mb.scale = mb.default.scale * s;
+		if (abs(mb.height - mb.default.height * s) > 0.1 || abs(mb.radius - mb.default.radius * s) > 0.1) mb.A_SetSize(mb.default.radius * s, mb.default.height * s);
+	}
+	void Live(out Array<Actor> r)
+	{
+		r.Clear();
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next())) if (a.bIsMonster && !a.player && a.health > 0 && a != mb && !(a is "RS_ScoreHeadSensor")) r.Push(a);
+	}
+	void KillLive()
+	{
+		let mo = players[0].mo;
+		let it = ThinkerIterator.Create("Actor"); Actor a; Array<Actor> l;
+		while (a = Actor(it.Next())) if (a.bIsMonster && !a.player && a.health > 0 && a != mb && a.Distance2D(mo) < 900 && !(a is "RS_ScoreHeadSensor")) l.Push(a);
+		for (int i = 0; i < l.Size(); i++) if (l[i]) { Say("kill thrall " .. l[i].GetClassName()); l[i].DamageMobj(null, mo, l[i].health, 'Bullet'); }
+	}
+	void Retier(Actor a, int tier, bool instant)
+	{
+		if (!a) return;
+		RS_Retier.Request(a, tier, instant);
+		Say(String.Format("retier %s -> %d%s", a.GetClassName(), tier, instant ? " (instant)" : " (flash)"));
+	}
+
+	void Miniboss(int t)
+	{
+		let mo = players[0].mo;
+		KeepBig();
+		int k = t - mbT0;
+		if (k == 0)
+		{
+			Clean(mo.pos, 1400);
+			SetI("rsqthp_on", 0); SetI("rsqthp_dmg", 0); SetI("rs_score_hide", 1);
+			Say("MINIBOSS backgrounds");
+		}
+		if (k == 10)
+		{
+			mb = Place("RS_MGBaron", 340, 20, 1.25, true);
+			if (mb) Retier(mb, 4, true);
+			static const String TC[] = { "RS_GreenImp", "RS_BlueImp", "RS_BlueImp" };
+			static const double TF[] = { 260, 300, 280 };
+			static const double TL[] = { -60, 150, -200 };
+			thr.Clear();
+			for (int i = 0; i < 3; i++) { let a = Place(TC[i], TF[i], TL[i], 1, false); if (a) { thr.Push(a); Fog(a); } }
+			Fog(mb);
+			if (mb) Gitd("event.wave", mb, 0xA040FF);
+			if (mb) Say(String.Format("MB %s H %.1f R %.1f scale %.2f tier 4; thralls %d", mb.GetClassName(), mb.height, mb.radius, mb.scale.y / mb.default.scale.y, thr.Size()));
+		}
+		if (k == 15) Freeze(30);          // ARRIVAL (fog, wave)
+		if (k == 60) Gitd("event.tint", null, 0x8A93A6, 12);
+		if (k == 80) Freeze(30);          // SHIELD UP (cold grey)
+		if (k == 125)
+		{
+			if (thr.Size() > 0 && thr[0]) { Gitd("event.wave", thr[0], 0xFF8020); Say("kill thrall 0 " .. thr[0].GetClassName()); thr[0].DamageMobj(null, mo, thr[0].health, 'Bullet'); }
+			Gitd("event.tint", null, 0xFFC830, 8);
+		}
+		if (k == 131) Freeze(30);         // THRALL KILLED (gold)
+		if (k == 175)
+		{
+			Retier(mb, 6, false);
+			Array<Actor> l; Live(l);
+			for (int i = 0; i < l.Size(); i++) Retier(l[i], 4 + i, false);
+		}
+		// frames roll through the flash (RS_RetierJob: 45..105 tics wait + 5..25 flash)
+		if (k == 330) { KillLive(); Gitd("event.tint", null, 0xFF2020, 10); }
+		if (k == 350) Freeze(30);         // ONE-ON-ONE
+		if (k == 395) Retier(mb, 7, false);
+		if (k == 540) Gitd("event.tint", null, 0x30A0FF, 10);
+		if (k == 556) Freeze(30);         // LIFE LOST (new colour)
+		if (k == 600)
+		{
+			if (mb) { Gitd("event.wave", mb, 0x30A0FF); Say("kill MB"); Vector3 at = mb.pos; mb.DamageMobj(null, mo, mb.health, 'Bullet');
+				Actor.Spawn("RSQ_ScoreLifeCrate", at + (Actor.AngleToVector(startAngle + 180, 40), 0), ALLOW_REPLACE);
+				Actor.Spawn("Megasphere", at + (Actor.AngleToVector(startAngle + 90, 50), 0), ALLOW_REPLACE);
+				Actor.Spawn("Soulsphere", at + (Actor.AngleToVector(startAngle - 90, 50), 0), ALLOW_REPLACE); }
+		}
+		if (k == 610) Freeze(30);         // DEATH
+		if (k == 660) Freeze(30);
+		if (k == 700) { phase = 2; Say("ALL DONE"); }
+		if (k > 0 && (k % 35) == 0) Say(String.Format("mb k%d", k));
+	}
+
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (!overlay) return;
+		String s = String.Format("S%d T%d", scene, level.maptime);
+		Screen.DrawText(BigFont, Font.CR_GREEN, 40, 40, s, DTA_VirtualWidth, 640, DTA_VirtualHeight, 400);
+	}
+}
