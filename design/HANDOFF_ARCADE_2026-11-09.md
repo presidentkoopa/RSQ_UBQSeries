@@ -337,6 +337,7 @@ challenge sheet. Then, only when he says build, build it as a test in **one** Ma
 ## 10. File index
 | File | What |
 |---|---|
+| `design/ARCADE_IDEAS_2026-11-09.md` | nine ideas kept 11-09 for the stew (four owner's/Claude's, the circle and its modes) and the shelf of outside mods supplied that day |
 | `design/ARCADE_MECHANICS_DECK.md` | every game: Claude's read, the owner's take, where we landed; SuperPunchOut's gloves |
 | `design/ARCADE_LOOP.md` | the eight panels as gameplay; the loop |
 | `design/mockups/arcade_language/` | contact sheet + panels p1-p8 + index.html |
