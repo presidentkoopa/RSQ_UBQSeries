@@ -53,6 +53,16 @@ stand-in (the UAC Survival Pack's thrown sprite).
 - `C_water_barrel_*` (#6 base), `C_water_grenade_*`: a white flash, no fire, a bubble dome rising to a surface splash,
   silt. Detected when the blast point is under the sector's water.
 - `C1_contact.png`: key frames, one row per shot.
+- `C_liquid_{nukage,lava,blood}_*` (#6 base): a crown of liquid spikes, ripple rings, drops falling back, a stain that
+  stays, the light tinted to the liquid. Detected from the floor texture.
+- `C_chain_*`: five barrels, each set off by the last, each bigger (#5, #5 x1.25, #6, #6 x1.2, then a mega finale; this
+  render's finale is the Metal Slug example, which cannot ship — the own-material mega in `mega/` is its replacement).
+  Detected when a barrel's killer is another barrel's blast.
+- `C_crowd_*` (#6 base): imps killed by the blast gib, with a beat of held frames (slow motion) and a flat tint.
+  Detected from the kills of one blast in the same tic (3+ suggested).
+- `C_colour_room_*`: the blast in the complement of the room's GlowInTheDark colour. `C_colour_kill_*`: the blast takes
+  the tier colour of what it killed (the tier colours here are the designer's picks; the ladder has no colour values).
+- `C2_contact.png`: key frames for these seven.
 
 ## Mega blast (our own material)
 
