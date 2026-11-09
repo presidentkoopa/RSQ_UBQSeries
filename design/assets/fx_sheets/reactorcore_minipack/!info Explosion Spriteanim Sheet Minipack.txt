@@ -1,0 +1,18 @@
+Hello and welcome!
+
+Includes 10 spritesheets for snappy explosion animations. Each has 16 frames in a 4x4 grid. If you need individual images instead of a sheet, google a "spritesheet cutter tool" to separate them apart automatically.
+
+Format: 
+PNG with transparency
+
+Image Sizes: 
+128px - aka 32x32px per frame
+or 
+256px - aka 64x64px per frame
+
+Use them with particle effects, sprite animations, cartoons, game projects, generative art or any other artistic endeavours!
+
+--
+
+Compiled by: Reactorcore
+http://www.reactorcoregames.com
