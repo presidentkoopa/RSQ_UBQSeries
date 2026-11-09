@@ -46,3 +46,4 @@ gains features when another is loaded.
 | Upgrade levels and their numbers (`RSQ_MeleeUpgradeService`) | Gun Bonsai VR addon | Melee, Saber, ShieldSaw, Distance Grab, Grapple, Wheel, Gun Cards |
 | The last punch, the Guard, which mod takes an off-grip press (`RSQML_Service`) | Melee | Gun Bonsai VR (glove upgrades), Distance Grab |
 | Monster markers | VisualRewards (the HP bars) | reads the others |
+| Arrival beams (a monster another mod brings in arrives on a beam, hidden until its reveal) and monster words (GUARD!, TARGET!: one-off and held words over a monster in RS Score's font) and pops (`RSQVR_Service` "beam", "word", "word.hold", "word.clear", "pop") | VisualRewards (rsqvr/beams.zs, words.zs) | Miniboss (the Bossfight's arrival, its words and thrall-kill pops) |

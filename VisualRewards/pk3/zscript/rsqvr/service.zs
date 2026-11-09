@@ -13,6 +13,32 @@
 //   GetInt "kr.battery"  (play) intArg = how many, objectArg = the body: that many battery bits burst out of it (RSQ FnF's "Bones
 //                        Drop Battery Bits", rsqvr/batterybit.zs; each refills 15% of the toucher's flashlight battery through
 //                        FnF). Returns how many came out. Asked whether or not Kill Rewards is on (FnF's own row decides).
+//
+// THE BOSSFIGHT REWORK'S REQUESTS (2026-11-09; the shared contract, design/MINIBOSS_REWORK.md "The arrival, the HUD and the
+// beams"). All from synced play code; each answer depends only on the request and the server's Arrival Beams row, never
+// on a player's own settings (netplay):
+//   GetInt "beam"        stringArg "v1" | "v2" | "v3" | "v4", intArg 0xRRGGBB, doubleArg size (1.0 = sized to the monster's
+//                        own height; 0 = 1.0), objectArg the monster, ALREADY SPAWNED at its spot. Plays that arrival beam
+//                        (rsqvr/beams.zs: V1 the beam opens around it; V2 floor ring, slam, rings, white -> colour -> real;
+//                        V3 the column that hides it, indoor or outdoor picked from the ceiling above; V4 six beams spiral
+//                        in, a skull pillar) with its own sound, and HIDES the monster until the reveal (it does not freeze
+//                        it: the caller keeps it from acting). Returns the tics from the call until the monster is shown
+//                        again (> 0: V1 7, V2 12, V3 19, V4 31, at every size), or 0 when it did not play (Arrival Beams
+//                        off, no / dead monster, an unknown kind, a beam already on that monster). Game tics: the beam
+//                        does not slow with RSQ SlowMo's world (a Bossfight's arrival plays inside its landing slow).
+//                        nameArg (optional) the role, for its sound: 'miniboss' (a riser as it starts, a hit on the reveal
+//                        tic), 'thrall' (one of two as it starts), 'chump' (summoned low tier, or any other monster: a short
+//                        one). None: V3 / V4 play as a miniboss, V1 / V2 as a thrall.
+//   GetInt "word"        stringArg the word, intArg 0xRRGGBB, doubleArg seconds (0 = 1 s), objectArg the actor: a one-off word
+//                        over it in RS Score's font (rsqvr/words.zs): pops, flickers to white, drifts up, holds, fades.
+//                        Returns 1 (0: no actor).
+//   GetInt "word.hold"   stringArg the word, intArg 0xRRGGBB, doubleArg size (1 normal, 2 large and pulsing, 0.6 small; 0 = 1),
+//                        objectArg the actor: kept over it until "word.clear" with the same text or it dies; asked again
+//                        with the same text, its colour and size change in place. Returns 1 (0: no actor).
+//   GetInt "word.clear"  stringArg the word, objectArg the actor: that held word fades. Returns 1.
+//   GetInt "pop"         intArg 0xRRGGBB, doubleArg size (0 = 1), objectArg the actor: a pixel ring and star burst at its
+//                        middle in that colour. Returns 1 (0: no actor).
+// Photosensitive Mode (RSQ Accessibility rsqa_photosafe) is respected by all of them (no fast flicker, flashes dimmed).
 // The damage numbers' own hook stays where it was: RSQTHP_DnService "crit" (damnums/events.zs).
 class RSQVR_Service : Service
 {
@@ -24,6 +50,16 @@ class RSQVR_Service : Service
 		if (request == "kr.perk") return RSQ_KRHandler.Perk(Actor(objectArg), stringArg);
 		if (request == "helper") return RSQVR_Helpers.IsHelper(Actor(objectArg)) ? 1 : 0;
 		if (request == "kr.battery") return RSQ_KRBatteryBit.Burst(Actor(objectArg), clamp(intArg, 0, 32));
+		if (request == "beam") return RSQVR_Beam.StartBeam(stringArg, intArg, doubleArg, Actor(objectArg), nameArg);
+		if (request == "word" || request == "word.hold" || request == "word.clear" || request == "pop")
+		{
+			let h = RSQVR_FxHandler.Get();
+			if (!h) return 0;
+			if (request == "word") return h.WordOnce(stringArg, intArg, doubleArg, Actor(objectArg));
+			if (request == "word.hold") return h.WordHold(stringArg, intArg, doubleArg, Actor(objectArg));
+			if (request == "word.clear") return h.ClearWord(stringArg, Actor(objectArg));
+			return h.PopAt(intArg, doubleArg, Actor(objectArg));
+		}
 		return 0;
 	}
 

@@ -73,6 +73,27 @@ about a metre from your eyes, and pushed off the aim line of both your guns.
 - Bigger monsters drop more, and bosses drop a fountain (an RSQ Miniboss Bossfight's miniboss: x3 more, its own setting).
 - A plain-words menu with presets, and SoM's raw numbers kept underneath.
 
+**Arrival beams, monster words and pops** (new on 11-09, for RSQ Miniboss's Bossfight; code and art only, NOT YET RUN in
+an engine)
+- A monster another mod brings into the fight arrives on a beam, in the colour it asks for, sized to the monster: **V1**
+  the beam opens around it and rings drop down it; **V2** a floor ring flash, the beam slams down, rings ride up it, the
+  monster white, then its colour, then itself; **V3** a column that hides it completely, cut at the real ceiling indoors
+  (the splash hangs from it, sparks drop) or climbing out of sight under the sky (a stepped taper, flames trailing up),
+  picked by the ceiling above; **V4** for a boss: six beams spiral in, merge, a skull pillar, the monster arrives. The
+  monster is not drawn at all until its reveal. Each has its sound: a miniboss's beam starts on a riser and lands a hit
+  on the reveal, a thrall's is one of two, a summoned chump's a short one.
+- Words over a monster in RS Score's font, in the room like the damage numbers: a one-off word pops, flickers to white,
+  drifts up, holds about a second and fades (GUARD! in silver on a shielded miniboss); a held word stays until it is
+  cleared or the monster dies (TARGET!, big and pulsing on the miniboss once its shield is down).
+- A pop: a small pixel ring and star burst at a monster, in a colour (a thrall's kill, the colour of the power lost).
+- Pixel art throughout, four flat bands of the colour. Photosensitive Mode: no white silhouette, no white flicker, the
+  white flashes at 40%.
+- Nothing here plays by itself: another mod asks for it by name (below).
+- To run on the rig first: it compiles; each kind on an imp, a cacodemon and a 1.25x miniboss (sizes, the reveal tic
+  matches the answer); V3 under a low ceiling, a high one and the sky; the colours (a Black-tier colour too); a monster
+  killed and one removed mid-beam (shown again, nothing left hidden); a save and load mid-beam and with a held word
+  up; the words' size and reading distance in the headset, and both eyes; Photosensitive Mode; the sounds' reach.
+
 ## How To Play
 
 1. Load the pack. HP bars, damage numbers and Kill Rewards work at once. The level-up displays need Gun Bonsai.
@@ -164,6 +185,10 @@ with Test and Debug and Reset All at its foot.
 | Text Colour | Gold | "LEVEL UP" colour, or Random. |
 | Weapon Level-Up | On | The tag that rises off the gun. |
 | Weapon Tag Colour | Gold | The tag's border colour, or Random. |
+| *Arrivals and Words* | | |
+| Arrival Beams | On | Monsters another mod brings in arrive on a beam (server setting). Off: they simply appear. |
+| Monster Words | On | Words another mod puts over a monster (GUARD!, TARGET!). Follows Word Size and Far Size. |
+| Pops | On | The small ring and star burst another mod asks for at a monster. |
 | Reset All | | Every setting on both pages back to its default. |
 
 **Test and Debug**
@@ -216,6 +241,18 @@ with Test and Debug and Reset All at its foot.
 - **Champions**: the bar sits just above a champion's tier icon.
 - **coldcite's Top HP Bars**: if it is loaded too, this pack takes over so you never see two bars, and his menu entry
   opens this one.
+- **RSQ Miniboss** (11-09, the Bossfight rework; asked by name, nothing links): its arrival beams, its words (GUARD!,
+  TARGET!) and its thrall-kill pops, through `RSQVR_Service`:
+
+  | Request | Arguments | Answer |
+  |---|---|---|
+  | `GetInt("beam", kind, rgb, size, monster, role)` | kind "v1" "v2" "v3" "v4"; rgb 0xRRGGBB; size (1.0 = the monster's own height; 0 = 1.0); the monster, already spawned at its spot; role (nameArg, optional) 'miniboss', 'thrall' or 'chump' for its sound (none: V3 / V4 a miniboss, V1 / V2 a thrall) | tics until the monster is shown (V1 7, V2 12, V3 19, V4 31), or 0 when it did not play (Arrival Beams off, no or dead monster, unknown kind, a beam already on it). It hides the monster but does not freeze it. Game tics: it does not slow with SlowMo's world. |
+  | `GetInt("word", text, rgb, seconds, actor)` | seconds 0 = 1 s | 1 (0: no actor) |
+  | `GetInt("word.hold", text, rgb, size, actor)` | size 1 normal, 2 large and pulsing, 0.6 small; again with the same text: new colour / size | 1 (0: no actor) |
+  | `GetInt("word.clear", text, 0, 0, actor)` | | 1 |
+  | `GetInt("pop", "", rgb, size, actor)` | | 1 (0: no actor) |
+
+  The answers never depend on a player's own settings (netplay); Monster Words and Pops off only stop the drawing.
 - Load order: anywhere among the RSQ packs.
 
 ## Credits and licence
@@ -232,5 +269,11 @@ with Test and Debug and Reset All at its foot.
   use anything in this mod for yourself ... I don't need credit, unless you wanted to." We do.
 - Lossvoise's high-visibility retexture is not included. Champions and LegenDoom Lite are read by name; nothing of
   either is bundled.
+- **Arrival beams**: our own pixel art (the beam, rings, sparks, licks, flames, the pop), End of Starchild's death pillar
+  as a motion reference only. **V3's column and bursts and V4's skull pillar are frames cut from the Z-Fighter effects
+  sheet, posterized: a rip that asks for credit. Credit it or redraw them before release.** The words use RS Score's
+  font (Blue Shadow, via Dakka). The arrival sounds were supplied by the owner (presidentkoopa), 2026-11-09; source not
+  stated. The art is exported by `tools/gen_beams.py` from the approved mockups in `tools/beam_spec/` (needs Pillow,
+  numpy, scipy); `tools/beam_check.py` checks it all without an engine.
 - Full licence texts are in `pk3/CREDITS.txt`.
 - Code: presidentkoopa, for stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine changes.

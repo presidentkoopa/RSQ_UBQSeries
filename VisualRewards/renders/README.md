@@ -23,3 +23,6 @@ speed. Nothing here goes into the pk3 (build_all.sh packs VisualRewards from its
 
 Sources: our own art drawn in code; V3 and V4 use frames cut from the Z-Fighter effects sheet (a rip; it asks for credit),
 posterized to our bands — credit or redraw before release. Monster sprites are the project's.
+
+Built into the pk3 on 11-09 (V1 v2, V2 v2, V3 v3 indoor + outdoor, V4 v2): `tools/gen_beams.py` exports the art from these
+mockups (copied to `tools/beam_spec/`), `pk3/zscript/rsqvr/beams.zs` plays them (RSQVR_Service "beam").

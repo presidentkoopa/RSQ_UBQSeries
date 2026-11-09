@@ -1,3 +1,6 @@
 RSQ_HPBars.pk3
 RSQ_VisualRewards.pk3
 tools/__pycache__/
+tools/beam_preview/
+tools/beam_spec/__pycache__/
+tools/beam_spec/out/

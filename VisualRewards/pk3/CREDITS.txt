@@ -100,3 +100,18 @@ by Emawind84 and Team Beef. No engine change.
 
 2026-11-06: the battery bit's sprite (sprites/rsqkr/KRBBA0.png) is SoM's health orb recoloured yellow by
 tools/gen_battery_bit.py.
+
+
+ARRIVAL BEAMS, MONSTER WORDS AND POPS (2026-11-09: zscript/rsqvr/beams.zs, words.zs; art exported by tools/gen_beams.py
+from the owner's approved mockups, tools/beam_spec/)
+  - Our own art, drawn in code: the beam and its three shimmer frames, the floor rings and discs, the sparks, the licks
+    and flames, the pop's ring and star. End of Starchild's death pillar is a MOTION reference only (V1's growth and
+    narrowing); none of its art is used.
+  - *** RIPPED, NOT CLEARED: Z-FIGHTER EFFECTS SHEET *** V3's dome, splash, burst and three columns (sprites QVZD, QVC2,
+    QVC1, QVC0) and V4's skull pillar (QVSK, 19 frames) are frames CUT FROM THE Z-FIGHTER EFFECTS SHEET the owner picked,
+    posterized to our four flat bands (the cuts: tools/beam_spec/cut/). The sheet is a rip and asks for credit. Before
+    any release: credit its maker (and the game it was ripped from) properly, or redraw these frames.
+  - RS Score's score-line font, RSSCFON (Blue Shadow, as credited in ijon's Dakka; RSQ Score ships it with that credit),
+    as textures QVW032-QVW096: the monster words.
+  - The arrival sounds (sounds/rsqvr/RVQRISE, RVQHIT, RVQTHR1, RVQTHR2, RVQCHMP): arrival sounds supplied by the owner
+    (presidentkoopa), 2026-11-09; source not stated.
