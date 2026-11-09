@@ -61,8 +61,9 @@ nosave float rsqtr_r12_f = -0.06; nosave float rsqtr_r12_l = 0.30; nosave float 
 user bool   rsqtr_whip_holster = true;   // RSQ Whip's whip has its own holster on the main hand's hip (and never goes into a gun holster)
 user bool   rsqtr_flare_holster = true;  // RSQ FnF's flares have their own holster on the off hand's hip (the same flares as its pocket)
 // 13 the ammo pouch (owner 11-03 20:46), left of the buckle (toward the off hand): BD22 VR's reloads take from it only
-nosave float rsqtr_r13_f = 0.20; nosave float rsqtr_r13_l = 0.14; nosave float rsqtr_r13_u = -0.62; nosave float rsqtr_r13_rad = 0.10;
+nosave float rsqtr_r13_f = 0.22; nosave float rsqtr_r13_l = 0.18; nosave float rsqtr_r13_u = -0.64; nosave float rsqtr_r13_rad = 0.11;   // 11-09: x2.6 the grenade spot's zone (tools/measure_pouch.py)
 user bool   rsqtr_pouch       = true;    // the ammo pouch: Brutal Doom 22 VR's hand reloads take magazines, shells and rounds from it only
+nosave bool rsqtr_pouch_reach = true;    // Pouch Reaches for Your Hand (owner 11-09): the pouch eases up to 3.5 cm toward the off hand as it comes near (rig.zs PouchReach)
 nosave bool rsqtr_pouch_show  = true;    // the pouch drawn on the belt, with a light for the gun in hand's reserve
 
 user int    rsqtr_profile_active = 1;     // the holster profile in use: its colour on the spheres (1 blue, 2 orange, 3 purple, 4 yellow)

@@ -72,10 +72,19 @@ class RSQTR_Region
 	// rsqwp_coil.md3 thong measured) plus a centimetre. The grenade (mesh 0.069 m from its centre: 0.08 already), keyring
 	// (keys hang 0.11 m below the ring), flare and sabers (meshes longer than their spheres: 0.116 and 0.125 m half-length,
 	// a hand in the sphere is already on the mesh) keep theirs.
-	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06,  0.20 };
-	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.14 };
-	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.62 };
-	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.08,  0.09,  0.10 };
+	// BIGGER THAN THE GRENADE SPOT, NUDGED TOWARD THE OFF HAND (owner 11-09 17:26 "ammo pouch holster has to be reasonably
+	// bigger than the grenade holster, maybe moved just a little to the left"): MEASURED (tools/measure_pouch.py, the hover
+	// loop's rule, every place, worst case all equal so the nearest centre wins): the 11-05 pouch (0.20, 0.14, -0.62, 0.10)
+	// won 4.1 L against the grenade spot's 2.1 L (x1.9) and overlapped the off hip (0.021), the grenade spot (0.019) and the
+	// off chest holster (0.020). Now (0.22, 0.18, -0.64), radius 0.11: it wins 5.5 L (x2.6 the grenade spot's), 4 cm further
+	// toward the off hand, 2 cm forward and 2 cm down; the off hip overlap stays 0.022 (as before), and it is clear of the
+	// grenade spot (+0.017), the off chest (+0.004), the off saber spot (+0.074) and the flare holster (+0.164). A 0.12 sphere
+	// (x3.4) overlapped the off hip by 0.03-0.05 at every spot tried: not taken. The reach assist (PouchReach) adds up to
+	// 3.5 cm toward the off hand on top.
+	static const double DF[] = {  0.00,  0.00, 0,  0.12, -0.08, -0.08,  0.10,  0.10,  0.14,  0.02,  0.02, -0.06, -0.06,  0.22 };
+	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.18 };
+	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.64 };
+	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.08,  0.09,  0.11 };
 	// SEATED DEFAULTS (Report rec 8, 11-08; rig only, not headset-confirmed): in the two seated profiles (Seated A / B,
 	// rsqtr_profile_active 3 / 4) the hips and the low belt spots (SeatedMoves) that still sit at their standing default
 	// (never moved by hand, by slider or by a profile) are put here instead: up and forward onto the front of the lap and
@@ -293,7 +302,69 @@ class RSQTR_Rig : EventHandler
 		let p = pmo.player;
 		if (editHand >= 0 && editRegion == r && pmo.player == players[consoleplayer]) return editAt;
 		Settings(p);
-		return BodyPoint(pmo, cF[r], cL[r], cU[r]);
+		Vector3 at = BodyPoint(pmo, cF[r], cL[r], cU[r]);
+		if (r == RSQTR_Region.POUCH && pouchShift > 0 && pmo.player == players[consoleplayer]) at += pouchDir * pouchShift;
+		return at;
+	}
+
+	// ---- THE POUCH REACHES FOR YOUR HAND (owner 11-09 17:26: "We could even consider letting the ammo pouch move to the
+	// player's hand a few cm"; Pouch Reaches for Your Hand, rsqtr_pouch_reach, on; rig only, not headset-confirmed) ---------
+	// While the OFF hand (the reload hand) is within the pouch's radius + POUCH_REACH_BAND of its own place, the pouch's
+	// centre eases toward the hand, by at most POUCH_REACH_M (never more than half the way to the hand), and eases back as
+	// the hand leaves: full at the sphere's edge and inside it, nothing POUCH_REACH_BAND further out. The grab zone, its
+	// ring and the drawn pouch with its light all move with it (RegionAt). At most POUCH_REACH_STEP a tic each way, so it
+	// glides (3.5 cm in 7 tics). Worked out where the hover is, for the console player's own hands (as every rig hover:
+	// QuestZDoom 17.3 has the controller poses on the hand's own machine only; the actions it leads to go out as events).
+	const POUCH_REACH_M = 0.035;      // metres the pouch may come toward the hand
+	const POUCH_REACH_BAND = 0.06;    // metres outside its sphere where it starts to come
+	const POUCH_REACH_STEP = 0.005;   // metres a tic it moves (each way)
+	private transient double pouchShift;      // map units the centre is moved now, along pouchDir
+	private transient Vector3 pouchDir;       // unit vector, map units, from the pouch's own place toward the off hand
+	private transient double pouchSaidShift;
+	private void PouchReach(PlayerPawn pmo, PlayerInfo p)
+	{
+		double want = 0;
+		Vector3 base = (0, 0, 0);
+		double dm = -1;
+		if (Flag("rsqtr_pouch_reach", p, true) && RegionLive(pmo, RSQTR_Region.POUCH) && !Flag("rsqtr_edit", p, false))
+		{
+			double keep = pouchShift;
+			pouchShift = 0;
+			base = RegionAt(pmo, RSQTR_Region.POUCH);
+			pouchShift = keep;
+			Vector3 hp = RSQTR_Body.Hand(pmo, 1);
+			dm = RSQTR_Body.RoomMetres(hp, base);
+			double rad = RegionRadius(p, RSQTR_Region.POUCH);
+			double ease = clamp((rad + POUCH_REACH_BAND - dm) / POUCH_REACH_BAND, 0.0, 1.0);
+			double wantM = min(POUCH_REACH_M * ease, dm * 0.5);
+			Vector3 d = hp - base;
+			double len = d.Length();
+			if (wantM > 0 && dm > 0.001 && len > 0.001)
+			{
+				pouchDir = d / len;
+				want = len * wantM / dm;       // the same fraction of the way, in map units
+			}
+		}
+		double step = len3m(pmo) * POUCH_REACH_STEP;
+		if (pouchShift < want) pouchShift = min(want, pouchShift + step);
+		else if (pouchShift > want) pouchShift = max(want, pouchShift - step);
+		if (Flag("rsqtr_messages", p, false) && abs(pouchShift - pouchSaidShift) > 0.0001)
+		{
+			pouchSaidShift = pouchShift;
+			double f, l, u;
+			BodyOffsets(pmo, RegionAt(pmo, RSQTR_Region.POUCH), f, l, u);
+			if (RSQTR_Body.LeftHanded()) l = -l;
+			Console.Printf("T_POUCH t%d off hand %.3f m from the pouch's place; pouch moved %.3f m toward it; zone centre %.3f forward %.3f toward the off hand %.3f up, radius %.3f",
+				level.maptime, dm, pouchShift / len3m(pmo), f, l, u, RegionRadius(p, RSQTR_Region.POUCH));
+		}
+	}
+	// map units in one metre along the hand's line (RoomMetres' metric: the vertical is stretched by Ps)
+	private double len3m(PlayerPawn pmo)
+	{
+		if (pouchShift <= 0 && pouchDir == (0, 0, 0)) return RSQTR_Body.Upm();
+		Vector3 d = pouchDir;
+		double m = (d.x, d.y, d.z * RSQTR_Body.Ps()).Length();
+		return m > 0.0001 ? RSQTR_Body.Upm() / m : RSQTR_Body.Upm();
 	}
 
 	// Any point on the body (metres, body frame): the cigarette pocket uses it too.
@@ -1974,6 +2045,8 @@ class RSQTR_Rig : EventHandler
 		if (afterLoad) { afterLoad = false; ClearLocalMarks(); }
 		if (!migrated) { migrated = true; MigratePlaces(); }
 		ShieldTick();
+		if (level.maptime % 35 == 1) RSQTR_DualCatch.Ensure();     // dualkey.zs: Brutal Doom's Dual key with a gun in the off hand only
+		RSQTR_DualCatch.Apply();
 		let p = players[consoleplayer];
 		if (!p || !p.mo) return;
 		let pmo = p.mo;
@@ -1985,8 +2058,9 @@ class RSQTR_Rig : EventHandler
 		// standing every other mod's grip down with it.
 		bool on = pmo.health > 0 && Flag("rsqtr_on", p, true) && pmo.OverrideAttackPosDir;
 		rigLive = on;
-		if (!on) { HideAll(); return; }
+		if (!on) { HideAll(); pouchShift = 0; return; }
 
+		PouchReach(pmo, p);
 		int n = consoleplayer;
 		bool useDown = (p.cmd.buttons & BT_USE) != 0;
 		bool useEdge = useDown && !useWas;
