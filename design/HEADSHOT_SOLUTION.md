@@ -1,3 +1,7 @@
+> **Owner rulings, 2026-11-09 08:08:** RSQ Score's Headshot must see Brutal Doom's head shots. ColorfulHell monsters need
+> head shots. MeatGrinder monsters need head shots. MK Crits is not the answer ("it is actor heavy"). The agent's seven
+> open questions (end of this file) wait until the Miniboss questions now in progress are done.
+
 # A real head-shot check for the RSQ UBQ Series (design only; nothing built)
 
 Written 2026-11-09 for the owner (presidentkoopa), after "we will need a real headshot fix" (design/MINIBOSS_REWORK.md:7-10).
