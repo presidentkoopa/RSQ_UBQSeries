@@ -117,3 +117,7 @@ Guncaster, Model Swapper) read nothing on stock QZD 17.3: they use REMA's field 
 (Wheel/zscript/wheel/wr_q_shim.zs:873-886). LegenDoom, DRLA, Combined Arms, Final Doomer, MetaDoom Demon Keys work.
 Owner: "either get it working or we will drop support". Ways: read public items/cvars/events by name, or one small
 bridge pk3 per mod. Needs from the owner: which mods to keep, and their pk3s. See design/WHEEL_MODS_PEEK.md.
+
+## Kill-reward bits from Hackfraud: Condition (CND) and Gold (owner, 2026-11-08 23:57)
+"Those Condition bits and Gold bits might be an interesting idea." Weapon degradation (which CND bits repair) is
+tabled for now. Source: Hackfraud `hf_killrewards.zs` (HF_KRCNDBit, HF_KRGoldBit + HF_GoldCurrency). Nothing built.
