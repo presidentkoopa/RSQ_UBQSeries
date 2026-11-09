@@ -86,3 +86,5 @@ Agent researching a real head-shot solution from the engine survey (RSQ_QuestEng
   while a miniboss tint, DOWN's red map or another mod's timed tint runs.
 - GITD heartbeat speeding up with the miniboss's health: NO. Secret rooms shimmering after a win: NO (owner 08:49).
 - GITD loot beacon: NO. Exits/doors dead red while it lives: NO (owner 08:53).
+- GITD arrival wave in its colour from where it lands: YES. On a life lost and tier-up, the fight room's glow takes the
+  new colour: YES (owner 08:53).
