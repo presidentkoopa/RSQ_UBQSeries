@@ -15,6 +15,8 @@ Owner's words, then where we landed.
   thralls shrinks." The shield drops "for either a period of time, or a set amount of damage is done": Claude suggested
   whichever comes first, the damage cap being one segment. **Owner 06:42: whichever comes first.** Window length (06:43): "three seconds if 3, four if 4, five if 5":
   one second per thrall the miniboss came with (3 thralls = 3 s).
+  Window closes with the segment unfinished (06:46): "the MB and its thralls tier-up (let's say the thralls are CH, and
+  the MB is MG) by a factor of 1 - 3." (A retier with the tier flash: CH thralls swap class, the MG miniboss changes in place.)
 - **HUD bar stack** (owner: "i love the idea of an on-HUD hp bar, i will look for something"):
   - top: the THRALL bar, "if 3 thralls, then three segments", grey with a large shield icon while immune;
   - then its own bar: "thralls = number of segments you have to whittle down before it's one-on-one with the miniboss
