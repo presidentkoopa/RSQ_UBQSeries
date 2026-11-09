@@ -853,9 +853,10 @@ class RS_RetierJob : Thinker
 		if (timer <= 0)
 		{
 			mo.Translation = origTrans;
+			int was = RS_Retier.TierNowOf(mo);   // RSQ Score read-out (RS_ScoreReadout.zs): the tier it leaves
 			let mg = RS_MGMonster(mo);
-			if (mg) mg.MG_ApplyTierNow(targetTier);   // its new tint comes with it
-			else    RS_Retier.Swap(mo, targetTier);
+			if (mg) { mg.MG_ApplyTierNow(targetTier); RS_TierStamp.Put(mg, was); }   // its new tint comes with it
+			else    RS_TierStamp.Put(RS_Retier.Swap(mo, targetTier), was);          // RSQ Score read-out: stamp the new body
 			Destroy();
 		}
 	}

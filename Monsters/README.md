@@ -42,7 +42,7 @@ An MG tier also sets the monster's spawn health (`StartHealth`) to the tier's he
 White imp pays 1200, not 60) and an Arch-vile raise or a heal stops at the tier's health. When a body gibs does not
 change: that still uses the creature's own health. A CH colour change makes a new actor; it now tells RSQ Score (by
 name) to pass the old body's full pay to the new one. MG head shots can be read by other mods through
-`RSQMON_Service` `GetInt("headshot", "", 0, 0, monster)` (RSQ Score's Headshot row uses it).
+`RSQMN_RosterService` `GetInt("headshot", "", 0, 0, monster)` (RSQ Score's Headshot row uses it).
 (11-09, code only, not rig-tested, not headset-confirmed.)
 
 Also carried from the owner's HF monster template, because the MG monsters used them there (`RS_MGReactions.zs`,
@@ -58,3 +58,13 @@ RSQ Monsters menu > MeatGrinder):
 MG blood leaves the owner's HF wall and floor decals (`DECALDEF.txt`, every name `MG_`, pictures
 `graphics/meatgrinder/decals/`). The enemy tracer is the owner's streak model (`MODELDEF.txt`,
 `models/meatgrinder/tracer/`).
+
+## What RSQ Score reads (11-09)
+
+RSQ Score's roster rows ask one service by name, `RSQMN_RosterService` (`zscript/monsters/RS_ScoreReadout.zs`); nothing
+links either way, and each mod still loads alone. It answers, for a monster: its set (CH or MG), its ladder tier, whether
+it is an EX form, how rare its CH colour roll was (the family's dial with the menu's gates applied), the tier a running
+tier-change flash will give it, how long ago it last changed tier and from what, an MG monster's reactive death and its
+tier's aggression, and its Abyss death-split group. Two plain inventory stamps carry the last two facts that were not on
+the monster: `RS_TierStamp` (put after a flashed tier change, `RS_RetierJob.Tick`) and `RS_SplitStamp` (put on an Abyss
+MG monster and the two lost souls it splits into, `MG_DeathSplit`). Code only, not run.

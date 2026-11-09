@@ -10,7 +10,7 @@
 
 class RS_Svc play
 {
-	enum EWhich { GRAPPLE, SHIELD, SABER, GRAB, RIG, SLOWMO, WHIP, MELEE, GRENADE, MINIBOSS, MONSTERS, NUM }   // MONSTERS: RSQ Monsters (11-09, combo.zs CondOf)
+	enum EWhich { GRAPPLE, SHIELD, SABER, GRAB, RIG, SLOWMO, WHIP, MELEE, GRENADE, MINIBOSS, MONSTERS, NUM }   // MONSTERS: RSQ Monsters' one read-out (roster rows rows_roster.zs + MG head shots combo.zs CondOf, 11-09)
 
 	static String NameOf(int w)
 	{
@@ -26,7 +26,7 @@ class RS_Svc play
 		case MELEE:    return "RSQML_Service";
 		case GRENADE:  return "RSQGN_Service";
 		case MINIBOSS: return "RSQMB_Service";
-		case MONSTERS: return "RSQMON_Service";   // RSQ Monsters (RS_MGReactions.zs): the MeatGrinder set's head shots
+		case MONSTERS: return "RSQMN_RosterService";   // RSQ Monsters' read-out for the roster rows (11-09)
 		}
 		return "";
 	}

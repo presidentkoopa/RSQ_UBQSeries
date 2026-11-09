@@ -297,24 +297,4 @@ class MG_TierIcon : Actor
 	void A_MGTierIconShow() { frame = tierFrame; }
 }
 
-// ---- RSQ MONSTERS' SERVICE: what another mod may ask about our monsters, BY NAME (nothing links). ----
-// First reader (owner 11-09, design/SCORE_EXPANSION.md A3): RSQ Score's Headshot row. Score reads a head shot off
-// BD22's damage types (Head / MinorHead); the MeatGrinder set finds one by where the blow landed (DamageMobj above:
-// the inflictor's Z against the head band), which no damage type carries. Score asks this on each player blow.
-//   "headshot"  objectArg a monster -> 1 the blow being dealt now (or the last one a player dealt) landed in the head,
-//               0 it did not, -1 not a MeatGrinder monster.
-// mgLastWasHeadshot is set BEFORE Super.DamageMobj, and the engine fires WorldThingDamaged from inside that call,
-// before Die (p_interaction.cpp:1612-1615, 1633 of QZD 17.3), so a reader in WorldThingDamaged sees this blow's answer.
-class RSQMON_Service : Service
-{
-	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
-	{
-		if (request == "headshot")
-		{
-			let mg = RS_MGMonster(objectArg);
-			if (!mg) return -1;
-			return mg.mgLastWasHeadshot ? 1 : 0;
-		}
-		return -1;
-	}
-}
+// (RSQMON_Service, the MG head-shot read-out, was folded into RSQMN_RosterService in RS_ScoreReadout.zs at merge, 11-09.)

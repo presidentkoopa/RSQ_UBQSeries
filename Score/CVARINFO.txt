@@ -98,3 +98,38 @@ user int  rs_score_y            = 10;
 // THE SCORE ON THE WRIST (owner's pick 58, off): the running total in small gold digits above the off-hand controller
 // (wrist.zs). VR only.
 user bool rs_score_wrist        = false;
+
+// ---- RSQ Monsters' roster rows (11-09, rows_roster.zs): one switch per row, on. "I want a big tree to prune":
+// a row off pays nothing; the switches are the pruning before any row is deleted. Server: they change what a kill pays.
+server bool rs_score_rr_green = true;
+server bool rs_score_rr_blue = true;
+server bool rs_score_rr_cyan = true;
+server bool rs_score_rr_purple = true;
+server bool rs_score_rr_yellow = true;
+server bool rs_score_rr_fireblu = true;
+server bool rs_score_rr_abyss = true;
+server bool rs_score_rr_brown = true;
+server bool rs_score_rr_gray = true;
+server bool rs_score_rr_red = true;
+server bool rs_score_rr_black = true;
+server bool rs_score_rr_white = true;
+server bool rs_score_rr_ex = true;
+server bool rs_score_rr_rarity = true;
+server bool rs_score_rr_spectrum = true;
+server bool rs_score_rr_chain = true;
+server bool rs_score_rr_keepchange = true;
+server bool rs_score_rr_freshpaint = true;
+server bool rs_score_rr_upset = true;
+server bool rs_score_rr_tierslayer = true;
+server bool rs_score_rr_gangwar = true;
+server bool rs_score_rr_mixedbag = true;
+server bool rs_score_rr_headhunter = true;
+server bool rs_score_rr_mgburn = true;
+server bool rs_score_rr_mgfreeze = true;
+server bool rs_score_rr_mgshock = true;
+server bool rs_score_rr_mgpop = true;
+server bool rs_score_rr_mgcleaved = true;
+server bool rs_score_rr_mgpinata = true;
+server bool rs_score_rr_meltdown = true;
+server bool rs_score_rr_splitter = true;
+server bool rs_score_rr_cutshort = true;

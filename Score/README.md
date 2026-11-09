@@ -47,6 +47,26 @@ a slow-motion moment, all in the breakdown under your score.
   never pay. Its renamed monsters still do. A monster that wasn't on the map at the start (raised by an
   Arch-vile, spat by a Pain Elemental) can be set to pay less, and each body only ever pays once.
 
+**The monster roster** (new on 11-09: code only, nothing run; pays only with RSQ Monsters loaded, asked by name)
+- Each row has its own switch on the RSQ Score page (Monster Roster Rows), all on: the tree is built to be pruned.
+- **Green / Blue / Cyan / Purple / Yellow / FireBlu / Abyss / Brown / Gray / Red Tier** (orange): you killed a CH or MeatGrinder monster of that colour. +10% to +40% of base, rarer and stronger pays more. Common has no row.
+- **Black Boss / White Boss** (orange): you killed a Black (+75%) or White (+100%) tier. A big moment.
+- **EX Boss** (orange): you killed CH's EX boss form. +50%, on top of its Black or White row.
+- **Rarity** (orange): the CH colour roll was rare, 1 in 20 or rarer (by the family's spawn dial and your gate settings). +10% per doubling past 1 in 10, up to +100%.
+- **Full Spectrum** (orange): you killed all 13 ladder colours in one map. +200%, once.
+- **Colour Chain** (green): the same colour (not Common) three or more times in a row. +15% per step from the third, up to +75%.
+- **Keep the Change** (red): killed while it flashed, before its tier change up landed. +30%, +50% if it was becoming a boss.
+- **Fresh Paint** (green): killed within 3 seconds of tiering up. +25%.
+- **Upset** (red): a Common, Green or Blue monster killed a Black, White or EX one. +75% to everyone, like Infighter.
+- **Tier Slayer** (orange): you killed a Black, White or EX monster with a pistol, fists, gloves, a kick or the gun-butt shove. +50%.
+- **Gang War** (red): a CH monster killed a MeatGrinder monster, or the reverse. +30% to everyone.
+- **Mixed Bag** (green): you killed a CH and a MeatGrinder monster within 3 seconds. +30%.
+- **Headhunter** (orange): a MeatGrinder head-pop. +15%, +10% for each head-pop before it in a row (5 s apart at most), up to +65%.
+- **Barbecue, Ice Breaker, Live Wire, Pop!, Cleaved, Pinata** (their own colours and pay): a MeatGrinder monster's burn, freeze, shock, exploding head, gib by melee, or gib of a coloured tier now pays the row of that name.
+- **Meltdown** (green): a MeatGrinder monster melted. +25%.
+- **Splitter** (orange): you killed an Abyss MeatGrinder monster and both lost souls it split into. +75% on the second soul.
+- **Cut Short** (orange): you killed a Yellow, Red, Black or White MeatGrinder monster in the middle of its attack. +40%.
+
 **Five bonus families, five colours**
 - **Efficiency** (red): fighting fast and clean. Spree, Untouchable, Infighter.
 - **Style** (green): how it looked. Air, Curveball, Switcharoo, Skeet, Off-hand, Two Guns, Multi-Kill, the Combo Chain.
@@ -169,6 +189,7 @@ the debug log are on **Test and Debug**; **Reset All** at the foot resets both. 
 | Screen Flash | On | The switch for the two whole-view flashes below. Off stops both. |
 | Reward Screen Flash | Off | The old whole-view colour flash on a reward, on top of the bar's glow. It needs Screen Flash on. |
 | Revival Screen Flash | Off | A warm whole-view flash when a life is used. It needs Screen Flash on; never in Photosensitive Mode. |
+| **Monster Roster Rows** | On | One switch for each roster row above (Tiers, The Roster, MeatGrinder). Off, that row pays nothing. |
 | Test and Debug | | The page below. |
 | Reset All | | Every setting on both pages back to its default. |
 
@@ -215,6 +236,8 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
 - **Gun Bonsai:** Score adds what you earn to the engine's standard score field. Gun Bonsai can turn rises in that field into weapon XP.
 - **RSQ Gun Bonsai VR:** its "XP Source: Style" reads what each kill earned in style, and Lucky Kill reads Score's big moments.
   While its ShieldSaw gauge is on, the score display moves down to clear it.
+- **RSQ Monsters** (new on 11-09, code only, not run): its colour tiers, EX bosses, spawn dial, tier-change flash and
+  MeatGrinder deaths pay the roster rows. Score asks its service `RSQMN_RosterService` by name; neither mod links the other.
 - **Champions and LegenDoom Lite:** a champion kill names its colour and mutation. Legendaries, denied legendaries and
   legendary champions get their own rows.
 - **RSQ Monsters** (11-09, code only, not rig-tested, not headset-confirmed): a MeatGrinder monster pays its tier's
