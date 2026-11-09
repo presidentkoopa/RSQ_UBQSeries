@@ -14,3 +14,5 @@ https://www.vecteezy.com/vector-art/8873207-printexplosion-pixel-art-video-game-
 by saju dey; Free License, attribution required. Owner: "not as interested in the mushroom cloud". Licence note:
 Vecteezy's agreement forbids redistributing the content even for free and letting end users extract it; a pk3 is an
 open zip, so shipping it in one conflicts with that unless a Pro licence or the author's permission covers it.
+
+Owner, 2026-11-08 23:55: keep all three sheets above; the Vecteezy sheet is the one we can't use (never saved here).
