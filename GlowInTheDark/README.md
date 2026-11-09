@@ -178,3 +178,5 @@ Runs alone, with any map set. It finds the others by name:
   pk3; its own contributors (Kinsie, Gutawer, FishyClockwork, phantombeta, Marisa Kirisame, Accensus, mshahen's
   flashlight clicks under CC BY 3.0, and its testers) are listed in CREDITS.txt.
 - All ZScript written for this pack.
+
+**One flashlight (11-09):** the built-in DarkDoomZ no longer gives its own flashlight or its key; RSQ FnF is the flashlight (its Beam Look row offers DarkDoomZ's beam types).

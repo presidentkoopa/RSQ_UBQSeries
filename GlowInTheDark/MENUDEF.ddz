@@ -63,7 +63,7 @@ OptionMenu "RSQGD_DDZ_Settings" {
 
 	Submenu "Advanced Settings", "RSQGD_DDZ_Advanced_Settings"
 	Submenu "Fog Settings", "RSQGD_DDZ_Fog_Settings"
-	Submenu "Flashlight Settings", "RSQGD_DDZ_Flashlight_Settings"
+	// "Flashlight Settings" removed 11-09: one flashlight, RSQ FnF's (its Light Style row offers DarkDoomZ's beam types)
 	StaticText " "
 
 	StaticText "The three DarkDoom modes", "darkgrey"

@@ -55,11 +55,12 @@ OptionMenu "RSQFF_Options"
 	Slider "Battery (min)", "rsqff_fl_batt", 0, 60, 1, 0
 	Option "Battery Never Drains", "rsqff_fl_batt_inf", "OnOff"
 	Option "Bones Drop Battery Bits", "rsqff_fl_bits", "OnOff"
-	Option "Light Style", "rsqff_fl_style", "RSQFF_LightStyle"
-	Option "DarkDoomZ Type", "rsqff_fl_ddz_type", "RSQFF_DdzType", "rsqff_fl_style", 0, 0
+	// 11-09 (owner: organise the flashlight options): DarkDoomZ is built into RSQ Glow In The Dark without its own
+	// flashlight, so "Turn Off DarkDoomz Light" and "DarkDoomZ Flashlight Takes Over" (which managed that second light) are
+	// gone. The beam look choice stays: FnF's own, or DarkDoomZ's types.
+	Option "Beam Look", "rsqff_fl_style", "RSQFF_LightStyle"
+	Option "DarkDoomZ Beam Type", "rsqff_fl_ddz_type", "RSQFF_DdzType", "rsqff_fl_style", 0, 0
 	Option "DarkDoomZ Spill Light", "rsqff_fl_ddz_spill", "OnOff", "rsqff_fl_style", 0, 0
-	Option "Turn Off DarkDoomz Light", "rsqff_fl_ddz", "OnOff"
-	Option "DarkDoomZ Flashlight Takes Over", "rsqff_fl_ddz_take", "OnOff"
 	StaticText " "
 	Submenu "Test and Debug", "RSQFF_Test"
 	RSQFFResetAll "Reset All", "Reset all RSQ FnF settings?"

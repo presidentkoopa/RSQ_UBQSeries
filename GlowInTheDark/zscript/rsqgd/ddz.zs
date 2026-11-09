@@ -49,7 +49,11 @@ class RSQGD_DDZ_Handler : EventHandler {
 		}
 	}
 
+	// ONE FLASHLIGHT (owner 2026-11-09 18:12: "our flashlight options, we need to organize them, they have a few conflicting
+	// options for this DDZ stuff"): RSQ FnF is the series' flashlight and already draws DarkDoomZ's beam types (its Light
+	// Style: DarkDoomZ, ddzlight.zs). So the built-in DarkDoomZ flashlight item is no longer given (its class is kept).
 	override void PlayerSpawned(PlayerEvent e) {
+		return;
 		if (StandDown) { return; }
 		PlayerInfo player = players[e.PlayerNumber];
 		let FlashlightClass = (class<Inventory>)(Actor.GetReplacement("RSQGD_DDZ_Flashlight"));

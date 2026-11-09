@@ -166,11 +166,9 @@ here is a Gun Bonsai VR upgrade.
 | Beam Length (m) | 4 | How far the visible cone reaches before it fades out (1-15). The light itself still reaches the whole range. |
 | Beam Hotspot | Off | A soft glow sprite where the beam lands. Off: the spot light alone shows it. |
 | Show Cone | On | The visible tapered cone (and its dust); off, the light alone |
-| Light Style | FnF | FnF: the rows above. DarkDoomZ: DarkDoomZ's flashlight light, rewritten to come from our flashlight's lens (its types and spill light; Beam Size and Beam Colour grey out) |
+| Beam Look | FnF | FnF: the rows above. DarkDoomZ: DarkDoomZ's flashlight light, rewritten to come from our flashlight's lens (its types and spill light; Beam Size and Beam Colour grey out) |
 | DarkDoomZ Type | Halogen | Incandescent, Halogen, LED or Red Filter: DarkDoomZ's own colours, angles and reach (greyed on FnF) |
 | DarkDoomZ Spill Light | On | On: DarkDoomZ's Fancy (a beam light plus a wider, dimmer spill light). Off: its Simple (one light) (greyed on FnF) |
-| Turn Off DarkDoomz Light | On | While yours is on, DarkDoomz's flashlight is switched off with its own toggle |
-| DarkDoomZ Flashlight Takes Over | Off | With DarkDoomZ loaded, our flashlight stands down (no clip, nothing to take, one in your hand goes back) and DarkDoomZ's own flashlight is the only one. Without DarkDoomZ it changes nothing |
 | Reset All | | Every setting on both pages back to default |
 
 **Test and Debug**: Light Radius (140; the old Quest preset, PCVR was 220), Most Lit at Once (3; PCVR 6), Flicker Step (4
@@ -194,7 +192,8 @@ Runs alone. It finds the others by name:
   torch with its beam), shown wherever those mods picture the item in your hand (Gun Bonsai VR's status screen; the
   Wheel's card, when a mod puts them in a weapon slot). Seen on the status screen on the rig only, not
   headset-confirmed; the Wheel card not seen.
-- **DarkDoomz**: its flashlight is switched off with its own toggle while yours is on (Turn Off DarkDoomz Light). Its darkness
+- **DarkDoomZ** (built into RSQ Glow In The Dark since 11-09, without its own flashlight: this is the only flashlight; the
+  two rows that managed DarkDoomZ's separate flashlight are gone). Formerly: its flashlight was switched off while yours was on. Its darkness
   is left alone. With "DarkDoomZ Flashlight Takes Over" on, ours stands down instead and DarkDoomZ's works as it ships
   (found by its item's name; DarkDoomZ itself is never changed). Rig only (with a stand-in for DarkDoomZ's item): the real
   DarkDoomZ was not loaded here.
