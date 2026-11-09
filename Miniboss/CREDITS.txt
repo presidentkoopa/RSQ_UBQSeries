@@ -20,6 +20,10 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       Bonsai XP and time; the watch check + Use call-in; arrival in view at a distance in slow motion; what
       arrives scaling with progress; the payoff (a gun or power-up, extra bits, the Bossfight score row); legendary
       weapons only from Bossfights with LegenDoom + Champions.
+      The fight reworked (2026-11-09, design/MINIBOSS_REWORK.md): the staggered arrival on arrival beams, Boosted
+      Legendary Champions, the 1.25x miniboss, the HUD bar stack, immunity while thralls live, "Guard!" and "Target!",
+      the window and its step bar, the tier-ups, powers lost with their thrall, no thralls rising, Glow In The Dark's
+      part in the fight.
   Joshua Hard (Dynamic Enemy Reinforcements v3, MIT; a fork of AID)
       The idea the Bossfight's arrival borrows: a map's own monster start spots are places a monster fits, so
       reinforcements are spawned there (as new actors of the map's own types, tested for room, in teleport fog).
@@ -32,15 +36,23 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   Written for this pack
       All code (zscript/rsqmb), including the pooled VisualThinker drawing of those effects. No sprites
       or sounds are shipped: the sprites are the IWAD's, looked up by name, and the cues use the IWAD's
-      own sounds by name (weapons/bfgx, imp/shotx, brain/sight, vile/raise; the Bossfight's brain/spit sting,
-      misc/teleport, misc/chat, misc/w_pkup). The arrival's teleport fog is the original's BFE1 / APBX art. Engine particles stand in
-      only if an IWAD sprite can't be found.
+      own sounds by name (weapons/bfgx, imp/shotx, brain/sight; the Bossfight's brain/spit sting,
+      misc/teleport, misc/chat, misc/w_pkup; a window opening, misc/p_pkup). The arrival's teleport fog (without RSQ
+      VisualRewards' beams) is the original's BFE1 / APBX art. Engine particles stand in only if an IWAD sprite can't be
+      found. The grey X bouncing off the shielded miniboss is the IWAD's own small-font X (STCFN088), looked up by name.
+  The HUD (graphics/)
+      RSQMBHE / RSQMBHW: coldcite's Top HP Bars bar (via VisualRewards/tools/gen_gauges.py; the same art as RSQ SlowMo's
+      RSQSMHE / RSQSMHW). RSQMBSK0 / RSQMBSK1: the crowned skull, original pixel art for this pack. RSQMBWH (a white box)
+      and RSQMBSH (the shield icon: PLACEHOLDER art from the rework's mockup, the series has no shield art yet): made by
+      tools/gen_hudart.py for this pack.
 
 NOT SHIPPED, ONLY RECOGNISED BY NAME (nothing links)
   Champions (its champion_* tokens and cvars), LegenDoom Lite (its LDLegendaryMonster* tokens and
-  LDLegendaryMonsterPickupGuaranteed), RSQ_SlowMo (rsm_pulse, RSQSM_Service "start"), RSQ_Score
+  LDLegendaryMonsterPickupGuaranteed), RSQ_SlowMo (rsm_pulse, RSQSM_Service "start", "start.bossfight", "arrow.add",
+  "arrow.clear"), RSQ VisualRewards (RSQVR_Service "beam", "word", "word.hold", "word.clear", "pop"), RSQ Monsters
+  (RSQMN_RosterService "tier", "tier.next", "tier.ago", "retier"), RSQ_Score
   (RS_ScoreService "award", "kill.serial", "kill.style", "score", "hud.cx"), RSQ Glow In The Dark (RSQGD_Service
-  "event.tint"), RSQ Gun Bonsai VR (RSQGB_Service "xp", "player.level"), RSQ Gestures / RSQ Gun Cards (the watch
+  "event.tint", "event.wave", "event.reroll"), RSQ Gun Bonsai VR (RSQGB_Service "xp", "player.level"), RSQ Gestures / RSQ Gun Cards (the watch
   check: RSQG_Service, RSQGC_GCopyService; gestcopy.zs is this mod's own copy of Gestures' reader, tools/gestcopy).
   QuestZDoom: Emawind and Team Beef.
 

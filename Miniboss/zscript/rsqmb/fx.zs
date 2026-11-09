@@ -14,6 +14,9 @@
 //     ticks them; one driver after every actor has moved places them, setting Prev and Pos itself (glyphs.zs' fixed
 //     Put: the parameter is not named "prev", or it hides the field).
 //   - The tethers are the original's in full (30 beads a link, every tic): owner 1.0 #3 (11-06).
+//   - THE SPHERES ARE GONE (the rework, 2026-11-09, design/MINIBOSS_REWORK.md "Spheres"): no life orbs circling it (the HUD's
+//     thin life bars replace them: "the spheres get lost in the tether art", owner) and no BFG ball over each thrall
+//     ("TARGET!" over it replaces it). A lost life and its death burst in the original's BFE1 instead of BAL2.
 //   - A small pool, capped by Effects Density, spawned once per map and reused: nothing is spawned or destroyed per tic.
 //     The cap is the hard cap on effects drawn in the map. A free slot is Alpha 0 (the renderer skips it).
 //   - Everything shown is placed every tic, interpolated. A frame's texture is written only when the frame changes.
@@ -274,16 +277,16 @@ extend class RSQMB_Handler
 	{
 		if (!fxOn || !b || !b.mb) return;
 		if (!UseSprites()) { RSQMB_Boss.Burst(RSQMB_Boss.Mid(b.mb), b.col, 40, 6.0, 9); return; }
-		// the orb that went: the one that was last (lives already counted down)
-		fxp.Shot(OrbPos(b, b.lives, b.lives + 1, level.maptime), RSQMB_FxPool.SQ_ORBX, b.col, (1, 1), 1.0, RSQMB_FxPool.CAP[fxDensity]);
+		// a BFG burst over its head (the life orb that used to go there is gone since the rework)
+		fxp.Shot(b.mb.pos + (0, 0, b.mb.height * 0.9), RSQMB_FxPool.SQ_BREAK, b.col, (0.8, 0.8), 0.9, RSQMB_FxPool.CAP[fxDensity]);
 	}
 
 	void FxBossDied(RSQMB_Boss b)
 	{
 		if (!fxOn || !b || !b.mb) return;
 		if (!UseSprites()) { RSQMB_Boss.Burst(RSQMB_Boss.Mid(b.mb), b.col, 48, 7.0, 10); return; }
-		int n = max(1, b.lives);
-		for (int i = 0; i < n; i++) fxp.Shot(OrbPos(b, i, n, level.maptime), RSQMB_FxPool.SQ_ORBX, b.col, (1, 1), 1.0, RSQMB_FxPool.CAP[fxDensity]);
+		fxp.Shot(RSQMB_Boss.Mid(b.mb), RSQMB_FxPool.SQ_BREAK, b.col, (1.2, 1.2), 0.9, RSQMB_FxPool.CAP[fxDensity]);
+		fxp.Shot(b.mb.pos + (0, 0, b.mb.height), RSQMB_FxPool.SQ_BREAK, b.col, (0.7, 0.7), 0.7, RSQMB_FxPool.CAP[fxDensity]);
 	}
 
 	void FxInvulEnd(RSQMB_Boss b)
@@ -322,25 +325,17 @@ extend class RSQMB_Handler
 				Vector3 dv = level.Vec3Diff(view.pos, bm);
 				if (dv dot dv > fxRange2) continue;
 				int kb = bi << 16;    // a boss's keys: group << 10 (thrall 0-13, 14 flames, 15 orbs), then the item
-				// each living thrall: the BFG ball over its head (bobbing), and its trail of beads to the boss
+				// each living thrall: its trail of beads to the boss (no BFG ball over it since the rework: "TARGET!" is there)
 				for (int i = 0; i < b.thr.Size() && i < 14; i++)
 				{
 					let th = b.thr[i];
 					if (!th || b.thrState[i] != RSQMB_Boss.ST_ALIVE) continue;
 					int ki = kb | (i << 10);
-					fxp.Show(self, ki, th.pos + (0, 0, th.height + 4 + 4 * sin(t * 8.0)), true, true, RSQMB_FxPool.SQ_BALL, t, b.col, (0.5, 0.5), 0.5, cap);
 					// the original's trail: 30 APLS beads (scale 1, alpha 0.3), every tic, interpolated; BeadPos's spots,
 					// worked out once a link (BeadLink)
 					fxp.BeadLink(self, ki | (1 << 9), b.mb.pos + (0, 0, b.mb.height * 0.5), level.Vec3Diff(b.mb.pos, th.pos) / double(nb), nb, t, b.col, cap);
 				}
-				// lives: one orb a life, circling; the last one full and swelling with the boss's health (as the original)
-				for (int l = 0; l < b.lives && l < 31; l++)
-				{
-					bool cur = (l == b.lives - 1);
-					double s = 1.0;
-					if (cur) s = 0.5 + 0.5 * clamp(b.mb.health / double(max(1, b.mb.SpawnHealth())), 0.0, 3.0);
-					fxp.Show(self, kb | (15 << 10) | (min(b.lives, 31) << 5) | l, OrbPos(b, l, b.lives, t), true, true, RSQMB_FxPool.SQ_ORB, t, b.col, (s, s), cur ? 1.0 : 0.3, cap);
-				}
+				// (no life orbs since the rework: the HUD's thin life bars)
 				// invulnerable: the flames circling it, lit from the moment it lost the life
 				if (b.Invulnerable())
 				{

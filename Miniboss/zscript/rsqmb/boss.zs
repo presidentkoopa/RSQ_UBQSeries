@@ -1,11 +1,18 @@
 // ============================================================================
 // RSQ_Miniboss -- one miniboss and its thralls (a Thinker: saved with the level).
 //
-// Lives: the miniboss holds BUDDHA while it has a life to spare; the tic it sits at 1 hp it loses a
-// life, refills to the most health it has had (so Champions' and LegenDoom Lite's own boosts count),
-// and is invulnerable for rsqmb_invuln s + rsqmb_invuln_bonus s per LIVING thrall. When that ends,
-// its dead thralls rise again (A_RaiseSelf, the engine's own raise: Champions re-dresses a revived
-// champion itself). On its last life BUDDHA goes back to what the monster had.
+// THE REWORK (owner + Claude 2026-11-09, design/MINIBOSS_REWORK.md; the rules in fight.zs):
+//   SEGMENTS  one a thrall it came with, each a share of its health (its health at the bind / the thralls): the thrall bar.
+//             Damage goes into the open segment first (items.zs RSQMB_Ward), then, every segment broken, its own bar.
+//   SHIELD    while a thrall lives and a segment is left and no window is open, it takes NO damage (grey Xs, "GUARD!").
+//   WINDOW    a thrall killed opens one on the first unbroken segment: 1 s x the thralls it came with, or until that
+//             segment breaks; missed, everything tiers up (fight.zs).
+//   POWERS    each thrall's Champions power is LOST with that thrall (StripPowers).
+//   LIVES     it holds BUDDHA while it has a life to spare; the tic it sits at 1 hp it loses a life, refills to the most
+//             health it has had (so Champions' and LegenDoom's own boosts count), is invulnerable for rsqmb_invuln s (the
+//             flames), and (Tier Up Each Life) tiers up one with RSQ Monsters' flash. On its last life BUDDHA goes back to
+//             what the monster had. NO THRALLS RISE (owner 08:14: the original Minibosses!' revive is gone).
+//   A NEW BODY RSQ Monsters' CH tier change swaps the class (a new actor): fight.zs Follow finds it, Rebody dresses it.
 //
 // The FX are the original's IWAD sprites drawn as a pooled set of VisualThinkers (fx.zs); these particles are only
 // the fallback when a sprite can't be found. The original's link trails were 30 ACTORS a thrall warped every tic.
@@ -15,15 +22,17 @@ class RSQMB_Boss : Thinker
 {
 	Actor mb;
 	Array<Actor> thr;
-	Array<int>   thrState;       // ST_ALIVE / ST_DEAD (will rise) / ST_LOST (gone for good)
-	int    total;                // thralls bound at the start (the shield's denominator)
+	Array<int>   thrState;       // ST_ALIVE / ST_DEAD / ST_LOST (gone for good)
+	int    total;                // thralls bound at the start (the segments, the window's seconds)
 	int    lives;                // lives left, the current one included
 	int    maxHP;
 	bool   ownBuddha;            // the monster's own BUDDHA before we took it
-	int    invulUntil, reviveUntil;
+	int    invulUntil;
 	int    invulFrom;            // the tic it last lost a life (the flames light from it)
 	double toughness, outMult;   // inherited: damage taken / toughness, damage dealt x outMult
 	Array<String> powers;        // what it inherited, for the service and the log
+	Array<int>    powerFrom;     // the thrall each power came from (-1: legendary, from them all)
+	Array<int>    powerAdd;      // what it added: 1 a token given / a life added / the stat applied, 0 nothing (already its own, capped)
 	bool   legendary;            // inherited LegenDoom Lite's legendary status
 	Color  col;
 	int    idx;
@@ -33,6 +42,20 @@ class RSQMB_Boss : Thinker
 	int    diedAt;               // the tic it died (Boss Kill Rewards counts a just-killed miniboss)
 	bool   called;               // a Bossfight (called in, bossfight.zs), not the classic pick
 	int    tier;                 // the Bossfight's tier, 0..4
+
+	// THE THRALL BAR AND THE WINDOW (fight.zs)
+	Array<double> segHP;         // what is left of each segment
+	double segMax;               // a segment's size: its health at the bind / total (re-sized while untouched, LegenDoom
+	                             // sets a legendary's health a tic or two later)
+	bool   segTouched;
+	int    winSeg;               // the open segment, -1 none
+	int    winStart, winEnd;     // the window's tics
+	int    winCredits;           // thrall kills waiting for a window
+	int    lifeLostAt;           // the tic it last lost a life (the room's red, the HUD's refill)
+	int    wordState;            // the words shown (fight.zs WordsStep), -9 re-send
+	int    glowSent, glowTic;    // the room's glow sent last (fight.zs RoomGlow)
+	int    guardTic, xTic;       // the last "GUARD!" word, the last grey X
+	double carry;                // a fraction of a point carried to the next blow (items.zs)
 
 	// COUNTS AS A BOSS (owner 2026-11-03): never the engine's BOSS flag; only the systems the owner picked, each on
 	// its own switch. The two flag-borne ones are written only while their switch is on, and put back after.
@@ -48,7 +71,7 @@ class RSQMB_Boss : Thinker
 	private transient RSQMB_Handler hnd;
 	RSQMB_Handler H() { if (!hnd) hnd = RSQMB_Handler.Get(); return hnd; }
 
-	// ---- the rules, read by the ward ------------------------------------------------------------
+	// ---- the rules, read by the ward (items.zs), the HUD (hud.zs) and the service -------------------------------------------
 	clearscope bool Invulnerable() const { return !done && level.maptime < invulUntil; }
 
 	clearscope int Living() const
@@ -57,23 +80,32 @@ class RSQMB_Boss : Thinker
 		for (int i = 0; i < thr.Size(); i++) if (thrState[i] == ST_ALIVE) n++;
 		return n;
 	}
-
-	double ShieldFactor()
+	clearscope int SegsLeft() const
 	{
-		if (total <= 0) return 1.0;
-		let h = H();
-		double cut = h ? h.shield : 0.8;
-		return 1.0 - cut * Living() / double(total);
+		int n = 0;
+		for (int i = 0; i < segHP.Size(); i++) if (segHP[i] > 0) n++;
+		return n;
 	}
-
-	double TakeFactor() { return ShieldFactor() / max(1.0, toughness); }
-
-	// The same, readable from ui / data scope (the service): the setting read directly.
+	// the first unbroken segment (the thrall bar drains left to right), -1 none
+	clearscope int OpenSeg() const
+	{
+		for (int i = 0; i < segHP.Size(); i++) if (segHP[i] > 0) return i;
+		return -1;
+	}
+	// SHIELD UP: a thrall stands, a segment is left, no window is open: no damage at all
+	clearscope bool ShieldUp() const { return !done && winSeg < 0 && SegsLeft() > 0 && Living() > 0; }
+	// 0 shield up, 1 a window, 2 one-on-one (no segment left, or no thrall standing: its segments take damage freely)
+	clearscope int FightState() const
+	{
+		if (winSeg >= 0) return 1;
+		if (SegsLeft() == 0 || Living() == 0) return 2;
+		return 0;
+	}
+	// the damage it takes now, as a share (the service's "shield"): 0 shielded or invulnerable
 	clearscope double TakeFactorData() const
 	{
-		double cut = total > 0 ? clamp(RSQMB_Handler.CI('rsqmb_shield', 80), 0, 95) / 100.0 : 0;
-		double sh = total > 0 ? 1.0 - cut * Living() / double(total) : 1.0;
-		return sh / max(1.0, toughness);
+		if (Invulnerable() || ShieldUp()) return 0;
+		return 1.0 / max(1.0, toughness);
 	}
 
 	void NoteStruck() { let h = H(); if (h) h.NoteGreed(self); }
@@ -95,32 +127,43 @@ class RSQMB_Boss : Thinker
 
 	private void Step(RSQMB_Handler h)
 	{
+		// its body swapped by an RSQ Monsters tier change this tic: not a death (fight.zs Follow finds the new one)
+		if ((!mb || mb.bDestroyed) && h && h.Following(self, -1)) return;
 		if (!mb || mb.bDestroyed || mb.health <= 0) { if (h) h.BossDied(self, null); else done = true; return; }
 
 		if (ldShPending) LDHealthDone(h);
 		if (mb.health > maxHP) maxHP = mb.health;
+		// the segments follow its health until the first blow lands (LegenDoom sets a legendary's health a tic or two late)
+		if (!segTouched && total > 0 && maxHP / double(total) > segMax)
+		{
+			segMax = maxHP / double(total);
+			for (int i = 0; i < segHP.Size(); i++) segHP[i] = segMax;
+		}
 		if (h) Flags(h.roarOn, h.noMorphOn, h.debug);
+		if (h && level.maptime % 10 == idx % 10) col = h.ColourOf(mb, idx) | 0xFF000000;
+		// a MeatGrinder tier change in place puts its speed and attack chance back to the tier's (RS_MGMonsters.zs ApplyTier):
+		// a Bossfight's miniboss is made extra aggressive and fast again
+		if (called && mb.MissileChanceMult > RSQMB_Handler.MB_MISSILE + 0.000001) RSQMB_Handler.Aggressive(mb);
 
 		// A life lost: BUDDHA held it at 1 hp.
 		if (lives > 1 && mb.health <= 1) LoseLife(h);
 
-		// Thralls: alive, dead (will rise), or gone (destroyed, gibbed away).
+		// Thralls: alive, dead, or gone (destroyed, gibbed away). Dead ones stay dead (no revive since the rework).
 		for (int i = 0; i < thr.Size(); i++)
 		{
 			let t = thr[i];
-			if (!t || t.bDestroyed) { thrState[i] = ST_LOST; continue; }
-			if (thrState[i] == ST_ALIVE && t.health <= 0) thrState[i] = ST_DEAD;          // died without the event (A_Die, scripts)
+			if (!t || t.bDestroyed)
+			{
+				if (h && h.Following(self, i)) continue;      // its body is being swapped (a tier change)
+				if (thrState[i] == ST_ALIVE && h) h.ThrallGone(self, i);
+				thrState[i] = ST_LOST;
+				continue;
+			}
+			if (thrState[i] == ST_ALIVE && t.health <= 0) { thrState[i] = ST_DEAD; if (h) h.ThrallKilled(self, i, t, null); }   // died without the event
 			else if (thrState[i] == ST_DEAD && t.health > 0) thrState[i] = ST_ALIVE;      // raised by someone else (an Arch-vile)
 		}
 
-		// Invulnerability over: the dead rise (tried for a few seconds: a corpse must finish falling,
-		// and have room).
-		if (invulUntil > 0 && level.maptime == invulUntil)
-		{
-			if (h && h.revive) reviveUntil = level.maptime + 5 * TICRATE;
-			if (h) h.FxInvulEnd(self);
-		}
-		if (level.maptime < reviveUntil) Revive();
+		if (invulUntil > 0 && level.maptime == invulUntil && h) h.FxInvulEnd(self);
 
 		if (h && h.fxOn && !h.UseSprites()) FX(h);   // the particle fallback; the sprites are fx.zs
 	}
@@ -129,33 +172,96 @@ class RSQMB_Boss : Thinker
 	{
 		lives--;
 		mb.health = max(maxHP, 1);
-		double secs = h ? h.invulSecs + h.invulBonus * Living() : 5.0;
+		double secs = h ? h.invulSecs : 5.0;
 		invulFrom = level.maptime;
 		invulUntil = level.maptime + max(1, int(secs * TICRATE));
+		lifeLostAt = level.maptime;
+		glowSent = -1;
 		if (lives <= 1) mb.bBUDDHA = ownBuddha;
 		mb.A_StartSound("weapons/bfgx", CHAN_AUTO, 0, 1.0, 0.5);
 		if (h) h.FxLifeLost(self);
-		if (h && h.debug) Console.Printf("RSQMB life lost: boss %d lives %d hp %d invuln %d tics living %d", idx, lives, mb.health, invulUntil - level.maptime, Living());
+		// TIER UP EACH LIFE (owner 07:28, rsqmb_tier_life): one step up the ladder, with RSQ Monsters' flash
+		bool up = h && h.tierLife && h.RetierBy(mb, 1, self, -1);
+		if (h && h.debug) Console.Printf("RSQMB life lost: boss %d lives %d hp %d invuln %d tics%s", idx, lives, mb.health, invulUntil - level.maptime, up ? ", tier +1 asked" : "");
 	}
 
-	private void Revive()
+	// ---- powers lost with their thrall (owner 06:42: "LOSE") -------------------------------------------------------------
+	// Each power the miniboss inherited came from one thrall (powerFrom); that thrall killed, it goes: a token given is
+	// taken back, a life it added is taken (never its last), Black's damage and the toughness come off. Returns the first
+	// lost power's colour (the pop's), -1 none.
+	int StripPowers(int ti, RSQMB_Handler h)
 	{
-		bool any = false;
-		for (int i = 0; i < thr.Size(); i++)
+		int rgb = -1;
+		for (int k = powers.Size() - 1; k >= 0; k--)
 		{
-			if (thrState[i] != ST_DEAD) continue;
-			let t = thr[i];
-			if (!t || t.health > 0) continue;
-			any = true;
-			if (t.A_RaiseSelf(0))
+			if (k >= powerFrom.Size() || powerFrom[k] != ti) continue;
+			String n = powers[k];
+			bool added = k < powerAdd.Size() && powerAdd[k] != 0;
+			if (added && mb)
 			{
-				thrState[i] = ST_ALIVE;
-				let h = H();
-				if (h && h.fxOn && !h.UseSprites()) Burst(Mid(t), col, 24, 4.0, 7);
-				if (h && h.debug) Console.Printf("RSQMB thrall %d of boss %d rose (hp %d)", i, idx, t.health);
+				if (n == "Yellow" || n == "White" || n == "DarkGreen" || n == "Cyan" || n == "Titan")
+				{
+					let tc = RSQMB_Handler.InvClass("champion_" .. n .. "Token");
+					if (tc) mb.TakeInventory(tc, 999);
+				}
+				else if (n == "DarkRed" || n == "Undying") { if (lives > 1) lives--; if (lives <= 1) mb.bBUDDHA = ownBuddha; }
+				else if (n == "Black") outMult = max(1.0, outMult / 1.5);
+				else toughness = max(1.0, toughness - 0.5);
+			}
+			int c = RSQMB_Handler.PowerRGB(n);
+			if (c >= 0) rgb = c;
+			if (h && h.debug) Console.Printf("RSQMB power lost: boss %d loses %s with thrall %d%s", idx, n, ti, added ? "" : " (it had added nothing)");
+			powers.Delete(k); powerFrom.Delete(k);
+			if (k < powerAdd.Size()) powerAdd.Delete(k);
+		}
+		return rgb;
+	}
+
+	// ---- a new body (fight.zs Follow: RSQ Monsters' CH tier change swapped the class) -------------------------------------
+	// role -1 the miniboss, else thrall `role`. The set piece's own tokens and what this mod did to it are given again.
+	void Rebody(int role, Actor a, RSQMB_Handler h)
+	{
+		if (!a) return;
+		a.GiveInventoryType("RSQMB_Called");
+		if (role < 0)
+		{
+			mb = a;
+			let w = RSQMB_Ward(a.GiveInventoryType("RSQMB_Ward"));
+			if (w) w.boss = self;
+			ownBuddha = a.bBUDDHA;
+			ownFullSee = a.bFULLVOLSEE; ownFullDeath = a.bFULLVOLDEATH; ownDontMorph = a.bDONTMORPH;
+			roarSet = false; noMorphSet = false;
+			if (lives > 1) a.bBUDDHA = true;
+			if (called)
+			{
+				a.A_SetScale(a.Scale.X * RSQMB_Handler.MB_SCALE, a.Scale.Y * RSQMB_Handler.MB_SCALE);
+				a.A_SetSize(a.radius * RSQMB_Handler.MB_SCALE, a.height * RSQMB_Handler.MB_SCALE, false);
+				RSQMB_Handler.Aggressive(a);
+			}
+			maxHP = max(1, a.health);
+			for (int k = 0; k < powers.Size(); k++)
+			{
+				String n = powers[k];
+				if (k < powerAdd.Size() && powerAdd[k] != 0 && (n == "Yellow" || n == "White" || n == "DarkGreen" || n == "Cyan" || n == "Titan"))
+					RSQMB_Handler.Give(a, "champion_" .. n .. "Token");
 			}
 		}
-		if (!any) reviveUntil = 0;
+		else if (role < thr.Size())
+		{
+			thr[role] = a;
+			let tok = RSQMB_Thrall(a.GiveInventoryType("RSQMB_Thrall"));
+			if (tok) tok.boss = self;
+			if (called) a.A_SetScale(a.Scale.X * RSQMB_Handler.TH_SCALE, a.Scale.Y * RSQMB_Handler.TH_SCALE);
+		}
+		if (called)
+		{
+			int rgb = h ? h.ColourOf(a, idx) : (int(col) & 0xFFFFFF);
+			a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255),
+				int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
+			a.bBRIGHT = true;
+		}
+		wordState = -9;
+		glowSent = -1;
 	}
 
 	// ---- counts as a boss: the flag-borne switches ---------------------------------------------
@@ -280,46 +386,26 @@ class RSQMB_Boss : Thinker
 		if (dv dot dv > h.fxRange2) return;
 		int t = level.maptime;
 
-		// Links: a dotted line from each living thrall, with beads running INTO the miniboss (who
-		// feeds whom, readable at a glance). A dead thrall that will rise keeps a faint grey line.
+		// Links: a dotted line from each living thrall, with beads running INTO the miniboss (who feeds whom, readable at a
+		// glance). No life orbs and no ball over each thrall since the rework (the HUD's life bars and "TARGET!" replace them).
 		for (int i = 0; i < thr.Size(); i++)
 		{
 			let th = thr[i];
-			if (!th || thrState[i] == ST_LOST) continue;
+			if (!th || thrState[i] != ST_ALIVE) continue;
 			Vector3 a = Mid(th);
 			Vector3 d = level.Vec3Diff(a, bm);
 			double len = d.Length();
 			if (len < 1) continue;
-			if (thrState[i] == ST_ALIVE)
+			if ((t + i) % 3 == 0)
 			{
-				if ((t + i) % 3 == 0)
-				{
-					int n = clamp(int(len / 48), 2, 28);
-					for (int k = 1; k < n; k++) P(a + d * (k / double(n)), col, 4, 4, 0.55, (0, 0, 0), h);
-				}
-				for (int b = 0; b < 2; b++)
-				{
-					double s = ((t * 20.0 + b * len * 0.5) % len) / len;
-					P(a + d * s, Color(255, 255, 255, 255), 9, 2, 0.9, (0, 0, 0), h);
-				}
-				if ((t + i) % 4 == 0) P(th.pos + (0, 0, th.height + 10), col, 8, 5, 0.9, (0, 0, 0), h);
+				int n = clamp(int(len / 48), 2, 28);
+				for (int k = 1; k < n; k++) P(a + d * (k / double(n)), col, 4, 4, 0.55, (0, 0, 0), h);
 			}
-			else if (t % 8 == i % 8 && level.maptime < invulUntil + 5 * TICRATE + 1)
+			for (int b = 0; b < 2; b++)
 			{
-				int n = clamp(int(len / 64), 2, 20);
-				for (int k = 1; k < n; k++) P(a + d * (k / double(n)), Color(255, 144, 144, 144), 3, 9, 0.25, (0, 0, 0), h);
+				double s = ((t * 20.0 + b * len * 0.5) % len) / len;
+				P(a + d * s, Color(255, 255, 255, 255), 9, 2, 0.9, (0, 0, 0), h);
 			}
-		}
-
-		// Lives: one orb per life left, circling above its head; the last one burns red.
-		double r = max(16.0, mb.radius) * 1.2;
-		double z = mb.height + 12;
-		for (int i = 0; i < lives; i++)
-		{
-			double ang = t * 4.0 + i * 360.0 / lives;
-			Color c = (lives == 1) ? Color(255, 255, 40, 40) : col;
-			double sz = (lives == 1) ? 8 + 3 * sin(t * 12.0) : 8;
-			P(mb.pos + (cos(ang) * r, sin(ang) * r, z), c, sz, 2, 0.95, (0, 0, 0), h);
 		}
 
 		// Invulnerable: a gold ring turning the other way, at chest height.

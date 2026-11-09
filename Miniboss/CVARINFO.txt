@@ -12,7 +12,7 @@ server bool   rsqmb_bf_ignore     = false;  // Ignore Spawn Restrictions (owner 
 server float  rsqmb_bf_near       = 384;    // the arrival spot: at least this far from you (map units; 32 = 1 m)
 server float  rsqmb_bf_far        = 1024;   // and at most this far
 server float  rsqmb_bf_exit       = 768;    // it waits within this of an exit line
-server float  rsqmb_bf_slow       = 3.0;    // seconds of RSQ SlowMo for the landing (0: none)
+server float  rsqmb_bf_slow       = 4.0;    // seconds of RSQ SlowMo for the landing (0: none; at most 5). 4 since the staggered arrival (2026-11-09: the thralls one by one, then the miniboss, all inside it)
 server int    rsqmb_bf_bits       = 3;      // x more RSQ VisualRewards boss bits for a Bossfight's miniboss
 server float  rsqmb_bf_style      = 0.25;   // meter points a RSQ Score style point
 server float  rsqmb_bf_xp         = 0.2;    // meter points a Gun Bonsai XP point
@@ -30,18 +30,17 @@ server int    rsqmb_per_map       = 1;      // classic pick: minibosses chosen p
 server int    rsqmb_map_chance    = 100;    // classic pick: % chance a level gets any
 server int    rsqmb_thralls       = 3;      // thralls per miniboss (1-8)
 server int    rsqmb_radius        = 1024;   // how far from the miniboss a thrall may stand (map units)
-server bool   rsqmb_legend_thralls = true;  // with LegenDoom Lite: every thrall is made legendary
+server bool   rsqmb_legend_thralls = true;  // with LegenDoom Lite: every thrall is made legendary (the classic pick; a Bossfight's monsters always arrive legendary since the rework)
 server bool   rsqmb_inherit       = true;   // the miniboss inherits its thralls' powers
 server int    rsqmb_inherit_max   = 4;      // most distinct powers inherited (legendary not counted)
 server int    rsqmb_lives         = 3;      // lives in all (3 = it dies on the third)
-server int    rsqmb_shield        = 80;     // % of damage the miniboss shrugs off with every thrall alive (linear per thrall)
-server float  rsqmb_invuln        = 5.0;    // seconds invulnerable after a lost life
-server float  rsqmb_invuln_bonus  = 1.0;    // + seconds per living thrall
-server bool   rsqmb_revive        = true;   // dead thralls rise when the invulnerability ends
-server float  rsqmb_slow          = 4.0;    // seconds of slow time a thrall's death buys
-server float  rsqmb_slow_chain    = 3.0;    // + seconds for another thrall killed in the window
-server float  rsqmb_slow_max      = 12.0;   // the window's longest
-server int    rsqmb_slow_depth    = -1;     // world speed % in the window; -1 = RSQ_SlowMo's own (rsm_depth)
+// THE FIGHT, REWORKED (owner 2026-11-09, design/MINIBOSS_REWORK.md; fight.zs). Gone with it: rsqmb_shield (the shield is
+// immunity now), rsqmb_invuln_bonus (no thralls stand by then), rsqmb_revive (owner 08:14: no thralls rise), rsqmb_slow,
+// rsqmb_slow_chain, rsqmb_slow_max (the window is 1 s per thrall it came with, owner 06:43).
+server float  rsqmb_invuln        = 5.0;    // seconds invulnerable after a lost life (the flames)
+server int    rsqmb_slow_depth    = -1;     // world speed % in a thrall kill's window; -1 = RSQ_SlowMo's own (rsm_depth)
+server bool   rsqmb_tier_mapwide  = true;   // Tier-Up Hits the Whole Map (owner 07:15, ON): a missed window tiers up every monster on the map RSQ Monsters can tier, not just the miniboss and its thralls (reset on a map change)
+server bool   rsqmb_tier_life     = true;   // Tier Up Each Life (owner 07:28): the miniboss tiers up one (RSQ Monsters' flash) each time a life bar empties
 server bool   rsqmb_greed         = true;   // the greed rule
 server float  rsqmb_rage_speed    = 2.0;    // enraged monsters' speed multiplier
 server bool   rsqmb_score         = true;   // push awards to RSQ_Score

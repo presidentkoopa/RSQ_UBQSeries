@@ -16,7 +16,8 @@
 // alive: the band runs gold, the fill and the skull swell with a slow beat, and a glint crosses the bar every few seconds.
 // No words on the bar; when a due Bossfight has to wait, one small line under it: "No Miniboss: " and the reason (bfWhy).
 // HIDDEN while a Bossfight runs (owner 11-05), from its arrival until its miniboss is dead or done: it shows only while it
-// fills, when full, and full and waiting with its line. PHOTOSENSITIVE MODE (RSQ_Accessibility, by name: RSQMB_A11y): no glint, the edge
+// fills, when full, and full and waiting with its line. In its place while a Bossfight runs: THE FIGHT'S HUD STACK (2026-11-09,
+// DrawStack below). PHOTOSENSITIVE MODE (RSQ_Accessibility, by name: RSQMB_A11y): no glint, the edge
 // held still, the beat at most 2.5 a second and dimmed, the band dimmer (as RSQ SlowMo's countdown bar does).
 // VR: every piece is a quad cropped from the SOURCE (DTA_SrcX / DTA_SrcY) or a thick line: no clip rectangle and no
 // Screen.Dim (neither shows on the projected HUD in VR). Rig only, not headset-confirmed.
@@ -112,7 +113,10 @@ extend class RSQMB_Handler
 	// bar; under the wait line while one shows), -1 when it is off
 	static ui int MeterBottom()
 	{
-		if (gamestate != GS_LEVEL || !MeterShown()) return -1;
+		if (gamestate != GS_LEVEL) return -1;
+		// the fight's stack in its place: its bottom (RSQ SlowMo's countdown and Score's combo rows go under it)
+		if (StackShown()) { double sx, sy, sw, sh, sb; [sx, sy, sw, sh, sb] = StackRect(); return int(ceil(sb)); }
+		if (!MeterShown()) return -1;
 		double x, y, w, h;
 		[x, y, w, h] = MeterRect();
 		double kx, ky, ks;
@@ -163,7 +167,9 @@ extend class RSQMB_Handler
 	override void RenderOverlay(RenderEvent e)
 	{
 		if (gamestate != GS_LEVEL || !playeringame[consoleplayer] || !players[consoleplayer].mo) return;
-		if (screenblocks > 11 || automapactive || !MeterShown()) return;
+		if (screenblocks > 11 || automapactive) return;
+		if (StackShown()) { DrawStack(e); return; }
+		if (!MeterShown()) return;
 		TextureID te = TexMan.CheckForTexture("RSQMBHE", TexMan.Type_Any);
 		TextureID tw = TexMan.CheckForTexture("RSQMBHW", TexMan.Type_Any);
 		if (!te.IsValid() || !tw.IsValid()) return;
@@ -266,6 +272,228 @@ extend class RSQMB_Handler
 			double tx = (gl + (gw - tw2) * 0.5) / s, ty = (max(y + h, ky + ks) + h * WAIT_GAP) / s;
 			Screen.DrawText(fnt, Font.CR_BLACK, tx + 1, ty + 1, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, 0.8);
 			Screen.DrawText(fnt, Font.CR_WHITE, tx, ty, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
+		}
+	}
+
+	// ============================================================================
+	// THE FIGHT'S HUD STACK (owner + Claude 2026-11-09, design/MINIBOSS_REWORK.md "HUD bar stack", "The arrival, the HUD and
+	// the beams"; mockups design/mockups/miniboss/p1..p7). It REPLACES the hidden meter while a Bossfight runs, in the meter's
+	// place (centred under RSQ Score's bar, its width: MeterRect), top to bottom:
+	//   THE THRALL BAR  one segment a thrall it came with, each a share of the miniboss's health (fight.zs): grey under a
+	//                   large shield icon while it is immune, its colour when open (a window, or no thrall standing), empty
+	//                   once broken. Gone one-on-one. During the landing each thrall's segment slots in, in its colour.
+	//   THE WINDOW BAR  while a window is open: RSQ SlowMo DOWN's reward bar redrawn for the HUD (downhud.zs's look: steps
+	//                   thin to tall, a #0b0b0d border round a #202024 track, a moving gold fill), one step a thrall, 1 s
+	//                   each, draining from the tall end.
+	//   ITS BAR         the crowned skull (RSQMBSK1) and its own bar in its colour (its RSQ ladder colour): health / the
+	//                   most it has had. A life lost: the bar refills from empty, white into its colour.
+	//   ITS LIVES       thin bars under it, one a life to spare (they replace the life orbs).
+	// Every bar is coldcite's (RSQMBHE / RSQMBHW, the same art as RSQ SlowMo's RSQSMHE / RSQSMHW: VisualRewards/tools/
+	// gen_gauges.py); the boxes and the shield icon are this mod's (graphics/RSQMBWH, RSQMBSH: tools/gen_hudart.py; the
+	// shield is the mockup's PLACEHOLDER art, the series has none yet). The words over the monsters are RSQ VisualRewards'
+	// (fight.zs), not drawn here.
+	// VR: quads cropped from the source and boxes only (no clip rectangle, no Screen.Dim). PHOTOSENSITIVE MODE: no shimmer on
+	// the window's fill, the shield icon held still. RSQ SlowMo's countdown and RSQ Score's combo rows go under the stack
+	// ("meter.bottom"); the countdown lines up with its bar ("meter.x" / "meter.w" / "meter.h").
+	// Code only: not compiled here, not rig-tested.
+	// ============================================================================
+	const TH_K = 0.85;      // the thrall row's thickness, x the bar's
+	const WIN_K = 1.0;      // the window bar's tallest step
+	const LIFE_K = 0.32;    // a life bar
+	const LIFE_GAP = 0.18;
+	const ROW_GAP = 0.35;
+	const SEG_GAP = 0.35;   // between segments
+	const REFILL = 20;      // tics a lost life's refill takes
+
+	static ui RSQMB_Handler HD() { return RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); }
+
+	// the Bossfight being fought now (landing or bound), for the stack
+	static ui bool StackShown()
+	{
+		if (!BfOn() || UCv("rsqmb_bf_hud", 1) == 0) return false;
+		let hd = HD();
+		if (!hd) return false;
+		if (hd.arrPhase != 0)
+		{
+			for (int i = 0; i < hd.arrState.Size(); i++) if (hd.arrState[i] == 2) return true;
+			return false;
+		}
+		return hd.bfBoss && !hd.bfBoss.done && hd.bfBoss.mb;
+	}
+
+	// what the stack holds now: segments shown (planned count), the window open, spare lives
+	static ui int, bool, int StackParts(RSQMB_Handler hd)
+	{
+		if (hd.arrPhase != 0)
+		{
+			int lv = (hd.arrState.Size() && hd.arrState[0] == 2) ? max(0, CI('rsqmb_lives', 3) - 1) : 0;
+			return max(0, hd.arrState.Size() - 1), false, lv;
+		}
+		let b = hd.bfBoss;
+		if (!b) return 0, false, 0;
+		int segs = (b.SegsLeft() > 0) ? b.total : 0;
+		return segs, b.winSeg >= 0, max(0, b.lives - 1);
+	}
+
+	// the rows' tops: the thrall row, the window, its bar; the first life bar's top; the stack's bottom (screen pixels)
+	static ui double, double, double, double, double StackRows(double y, double h, int segs, bool win, int lives)
+	{
+		double cur = y;
+		double thrY = cur;
+		if (segs > 0) cur += h * (TH_K + ROW_GAP);
+		double winY = cur;
+		if (win) cur += h * (WIN_K + ROW_GAP);
+		double mainY = cur + ((segs > 0 || win) ? h * (SKULL - 1.0) * 0.5 : 0);
+		double lifeY = mainY + h + h * LIFE_GAP * 2;
+		double bot = max(mainY + h * (1.0 + (SKULL - 1.0) * 0.5), lifeY + lives * h * (LIFE_K + LIFE_GAP));
+		return thrY, winY, mainY, lifeY, bot;
+	}
+
+	// the stack's bar rect (x, y, w, h: the main bar) and its bottom
+	static ui double, double, double, double, double StackRect()
+	{
+		double x, y, w, h;
+		[x, y, w, h] = MeterRect();
+		let hd = HD();
+		int segs = 0, lives = 0;
+		bool win = false;
+		if (hd) { [segs, win, lives] = StackParts(hd); }
+		double thrY, winY, mainY, lifeY, bot;
+		[thrY, winY, mainY, lifeY, bot] = StackRows(y, h, segs, win, lives);
+		return x, mainY, w, h, bot;
+	}
+
+	// a box in one colour (graphics/RSQMBWH, white: DTA_Color tints it)
+	static ui void Box(TextureID wh, double x, double y, double w, double h, Color c, double alpha = 1.0)
+	{
+		if (w <= 0 || h <= 0) return;
+		Screen.DrawTexture(wh, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Color, c, DTA_Alpha, alpha);
+	}
+	// coldcite's bar: empty, then the white fill tinted c up to frac from the left
+	static ui void Bar(TextureID te, TextureID tw, double x, double y, double w, double h, double frac, Color c, double alpha = 1.0)
+	{
+		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9 * alpha);
+		if (frac > 0.001) Slab(tw, x, y, w, h, x, x + w * clamp(frac, 0.0, 1.0), c, alpha, false);
+	}
+	static ui Color RGBc(int rgb) { return Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255); }
+
+	ui void DrawStack(RenderEvent e)
+	{
+		TextureID te = TexMan.CheckForTexture("RSQMBHE", TexMan.Type_Any);
+		TextureID tw = TexMan.CheckForTexture("RSQMBHW", TexMan.Type_Any);
+		TextureID wh = TexMan.CheckForTexture("RSQMBWH", TexMan.Type_Any);
+		if (!te.IsValid() || !tw.IsValid()) return;
+		let hd = HD();
+		if (!hd) return;
+		double t = level.maptime + e.FracTic;
+		int now = level.maptime;
+		bool photo = RSQMB_A11y.Photo();
+		double x, y, w, h;
+		[x, y, w, h] = MeterRect();
+		int segs, lives;
+		bool win;
+		[segs, win, lives] = StackParts(hd);
+		double thrY, winY, mainY, lifeY, bot;
+		[thrY, winY, mainY, lifeY, bot] = StackRows(y, h, segs, win, lives);
+		double kx, ky, ks;
+		[kx, ky, ks] = SkullRect(x, mainY, h);
+		double gx = kx, gw = x + w - kx;     // the full rows: from the skull's left to the bar's right end
+		RSQMB_Boss b = null;
+		if (hd.arrPhase == 0) b = hd.bfBoss;
+		Color grey = Color(255, 125, 128, 135);
+
+		// ---- the thrall bar ----
+		if (segs > 0)
+		{
+			double th = h * TH_K;
+			double sg = h * SEG_GAP;
+			double sw = (gw - sg * (segs - 1)) / segs;
+			for (int i = 0; i < segs; i++)
+			{
+				double sx = gx + i * (sw + sg);
+				if (!b)
+				{
+					// the landing: each thrall's segment slots in as it lands (its beam reveals it), in its colour
+					if (i + 1 < hd.arrState.Size() && hd.arrState[i + 1] == 2)
+						Bar(te, tw, sx, thrY, sw, th, 1.0, RGBc(hd.arrCol[i + 1]));
+					continue;
+				}
+				double f = (i < b.segHP.Size() && b.segMax > 0) ? b.segHP[i] / b.segMax : 0;
+				Bar(te, tw, sx, thrY, sw, th, f, b.ShieldUp() ? grey : b.col);
+			}
+			// the shield icon over it while it is immune (PLACEHOLDER art, the mockup's)
+			TextureID sh = TexMan.CheckForTexture("RSQMBSH", TexMan.Type_Any);
+			if (b && b.ShieldUp() && sh.IsValid())
+			{
+				double s = th * 2.4;
+				double cx = gx + gw * 0.5, cy = thrY + th * 0.5;
+				Screen.DrawTexture(sh, false, cx - s * 0.5, cy - s * 0.5, DTA_DestWidthF, s, DTA_DestHeightF, s, DTA_Alpha, 0.95);
+				if (!photo)
+					Screen.DrawTexture(sh, false, cx - s * 0.5, cy - s * 0.5, DTA_DestWidthF, s, DTA_DestHeightF, s, DTA_Alpha,
+						0.12 + 0.12 * sin(t * 6.0), DTA_LegacyRenderStyle, STYLE_Add);
+			}
+		}
+
+		// ---- the window bar: DOWN's reward bar, one step a thrall, the tall end draining first ----
+		if (win && b && wh.IsValid())
+		{
+			int n = max(1, b.total);
+			double winH = h * WIN_K;
+			double sg = h * 0.15, bd = max(1.0, h * 0.12);
+			double sw = (gw - sg * (n - 1)) / n;
+			double total = n * double(TICRATE);
+			double frac = clamp((b.winEnd - t) / total, 0.0, 1.0);
+			double fx = gx + gw * frac;
+			for (int k = 0; k < n; k++)
+			{
+				double hk = n > 1 ? winH * (0.35 + 0.65 * k / double(n - 1)) : winH;
+				double sx = gx + k * (sw + sg), top = winY + winH - hk;
+				Box(wh, sx, top, sw, hk, Color(255, 0x0B, 0x0B, 0x0D), 0.95);
+				Box(wh, sx + bd, top + bd, sw - 2 * bd, hk - 2 * bd, Color(255, 0x20, 0x20, 0x24), 0.95);
+				double il = sx + bd, ir = min(sx + sw - bd, fx), iw = sw - 2 * bd;
+				int slices = 4;
+				for (int q = 0; q < slices && ir > il; q++)
+				{
+					double a0 = il + iw * q / slices;
+					double a1 = min(il + iw * (q + 1) / slices, ir);
+					if (a1 <= a0) break;
+					double k01 = photo ? 0.0 : sin(t * 7.0 - (k * slices + q) * 25.0);
+					double lk = 0.85 + 0.15 * k01;
+					Box(wh, a0, top + bd, a1 - a0, hk - 2 * bd, Color(255, int(255 * lk), int(200 * lk), int(60 * lk)));
+				}
+			}
+		}
+
+		// ---- its bar and the crowned skull: they rise with the miniboss ----
+		bool mbIn = b != null || (hd.arrState.Size() && hd.arrState[0] == 2);
+		if (mbIn)
+		{
+			double f = 1.0;
+			Color c;
+			if (b)
+			{
+				c = b.col;
+				f = b.mb ? clamp(b.mb.health / double(max(1, b.maxHP)), 0.0, 1.0) : 0.0;
+				int since = now - b.lifeLostAt;
+				if (b.lifeLostAt > 0 && since < REFILL)
+				{
+					// a life lost: the next life bar rises into it, white into its colour
+					double k = (since + e.FracTic) / REFILL;
+					f = min(f, k);
+					c = Mix(Color(255, 255, 255, 255), b.col, k);
+				}
+			}
+			else
+			{
+				c = RGBc(hd.arrCol[0]);
+				f = clamp((t - hd.arrReveal[0]) / REFILL, 0.0, 1.0);
+			}
+			Bar(te, tw, x, mainY, w, h, f, c);
+			TextureID k1 = TexMan.CheckForTexture("RSQMBSK1", TexMan.Type_Any);
+			if (k1.IsValid()) Screen.DrawTexture(k1, false, kx, ky, DTA_DestWidthF, ks, DTA_DestHeightF, ks, DTA_Alpha, 0.95);
+			// ---- its lives: thin bars, one a life to spare ----
+			for (int l = 0; l < lives; l++)
+				Bar(te, tw, x, lifeY + l * h * (LIFE_K + LIFE_GAP), w, h * LIFE_K, 1.0, c);
 		}
 	}
 }
