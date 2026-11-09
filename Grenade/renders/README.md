@@ -43,7 +43,7 @@ stand-in (the UAC Survival Pack's thrown sprite).
 
 ## Contexts (the blast changes with where it goes off)
 
-`contexts/`: modifiers on the approved blasts, never new blasts. Owner: "i want them all".
+`contexts/`: modifiers on the approved blasts, never new blasts. Owner: "i want them all"; these four greenlit 2026-11-09.
 - `C_wall_barrel_*` (#5 base), `C_wall_grenade_*`: the blast folds flat against the wall and fans along it; sparks and
   shrapnel bounce back; a scorch stays. Detected by short side traces (a hit within ~40 units).
 - `C_ceiling_barrel_*` (#6 base): fire spreads flat along a low ceiling, smoke pools under it, a soot band stays.
