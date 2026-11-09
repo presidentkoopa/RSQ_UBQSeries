@@ -38,9 +38,9 @@ Read in this order:
    - **each row prints its own stake** (lose a life / a weapon level / next challenge harder): push-your-luck;
    - **no return visits** for now;
    - the **keyring** (Tactical Rig) might be repurposed (open);
-   - every challenge is written as **one card with fixed fields** (Name, Family, Goal, Clock, Spawns, Win, Fail,
+   - every challenge is written up as **one challenge sheet with fixed fields** (a design note; "card" means only the in-game DoorCard) (Name, Family, Goal, Clock, Spawns, Win, Fail,
      Pays, Stake, Shows, Doom flavour), in four **families** (Speed, Hunt, Collect, Skill);
-   - the owner sorts cards **KEEP / LATER / NO**; only KEEP gets built, one at a time.
+   - the owner sorts sheets **KEEP / LATER / NO**; only KEEP gets built, one at a time.
    - First cards (names only): Time Trial, Clear the Room, Find the Marked One (his "Where's Waldo" concept, not that
      exact idea), Miniboss, Barrels In, Bit Rush.
 4. `design/BIG_FOURTH_ARCADE.md` — his notes in order, the "mosaic" (Doom as one arcade cabinet), and the missing
@@ -85,7 +85,7 @@ The DoorCard concept mockup (offered / in progress / cleared; general layout, no
 - Commits: author presidentkoopa, explicit paths, never `git add -A`.
 
 ## 7. Open questions (ask one at a time)
-1. Fill one challenge card together, field by field (Time Trial suggested), to prove the card format.
+1. Write one challenge sheet together, field by field (Time Trial suggested), to prove the format.
 2. What triggers a challenge besides opening a door: a run of good shots (Score), or only doors?
 3. The keyring: what role, if any?
 4. Bits: tie them only to challenges (owner floated this), and how the jackpot pays.

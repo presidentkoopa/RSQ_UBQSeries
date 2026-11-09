@@ -10,7 +10,7 @@ be disastrous."
    Nothing happens outside an arena.
 2. **The DoorCard is the menu.** The door into an arena shows a card naming what is on offer. Opening the door is
    saying yes. It reads like a Gun Card, so it is already the series' language.
-3. **Every challenge is written as one card, same fields**, so ideas can be compared and sorted, not piled up:
+3. **Every challenge is written up as one challenge sheet (a design note, not an in-game card), same fields**, so ideas can be compared and sorted, not piled up:
 
 | Field | Meaning |
 |---|---|
@@ -22,7 +22,7 @@ be disastrous."
 | Win | what ends it well |
 | Fail | what ends it badly; never death by itself |
 | Pays | Score rows, bits, an item |
-| Stake | what failing costs: a life, a weapon level, or the next challenge harder (printed on the card) |
+| Stake | what failing costs: a life, a weapon level, or the next challenge harder (printed on the DoorCard) |
 | Shows | which mockup panels it uses (1-8, design/ARCADE_LOOP.md) |
 | Doom flavour | why it is Doom and not generic |
 
@@ -31,9 +31,9 @@ be disastrous."
    - **Hunt:** find and kill the marked one among many (the Waldo concept), miniboss.
    - **Collect:** bit collection, barrels spawn in.
    - **Skill:** shot ladder, style.
-5. **Sort before building:** each card goes to KEEP / LATER / NO by the owner. Only KEEP cards get built, one at a time.
+5. **Sort before building:** each sheet goes to KEEP / LATER / NO by the owner. Only KEEP sheets get built, one at a time.
 
-## First cards (names only, from the owner's list; fields to be filled together)
+## First challenge sheets (names only, from the owner's list; fields to be filled together)
 Time Trial (Speed) · Clear the Room (Speed) · Find the Marked One (Hunt) · Miniboss (Hunt) · Barrels In (Collect) ·
 Bit Rush (Collect)
 
