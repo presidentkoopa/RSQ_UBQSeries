@@ -256,7 +256,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Smooth Range | 1024 | Map units from you that walkers are smoothed. |
 | Smooth Walkers | 12 | How many of the nearest walkers are smoothed. |
 | Colour Drain Amount | 0.35 | How much colour goes at full depth. |
-| Bar Size | 1.5 | Size of the two bars (the pair never wider than Score's bar). While RSQ Miniboss's meter shows, the pair spans the meter's row instead. |
+| Bar Size | 1.5 | Size of the two bars when RSQ Miniboss isn't loaded. With Miniboss, each bar is exactly the size of its Bossfight meter (owner 11-09: the adrenaline bar, the world slow-mo bar and the Miniboss bar the same size), one alone centred under the meter, two side by side centred under it; Miniboss's Meter Size sets all three. Code only, not run on the rig. |
 | Debug Log | Off | Print every trigger to the console: its name, when, and what happened. |
 
 ## Works with

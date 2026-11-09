@@ -60,14 +60,23 @@ class RSQSM_Countdown : StaticEventHandler
 	// Size and screen shape. Clear of the side gauges' lanes (RSQ Gun Bonsai VR's Berserk gauges stand 2.5 to 3.5 gauge
 	// widths in from each side; 4 kept clear): where Score sits near one, the pair shrinks rather than leaving Score's centre.
 	// LINED UP WITH THE BOSSFIGHT METER (owner 11-05: "always line up, whatever Meter Size and Bar Size are set to"): while
-	// RSQ Miniboss's meter shows above (RSQMB_Service "meter.x" / "meter.w" / "meter.h", ui, by name), the pair spans the
-	// meter's row exactly: the left hourglass starts under the skull, the right bar ends where the meter ends.
+	// RSQ Miniboss's meter shows above (RSQMB_Service "meter.x" / "meter.w" / "meter.h", ui, by name), each row is the
+	// meter's row's size and the row (or pair) is centred under it (owner 11-09, Slot below; before, the pair spanned it).
 	const GLASS = 1.6;       // the hourglass: a square GLASS x the bar's thickness (the skull's size) ...
 	const KGAP = 0.3;        // ... KGAP left of its bar
 	const ROWK = 0.8;        // the bar's thickness against Score's bar (8 of 120): smaller than Score
 	const PGAP = 1.2;        // the gap between the two rows, in bar thicknesses
 	const PER = 112.0 / 11.0 + 1.6 + 0.3;   // one row's width per pixel of bar thickness (bar + GLASS + KGAP)
 	// the slot: the pair's centre x, the bars' top y, their thickness h
+	// SAME SIZE AS THE BOSSFIGHT METER (owner 2026-11-09 04:49: "our adrenaline bar, the world slomo bar, and the miniboss
+	// bar need to be the same size, and the two timer bars live next to each other, centered under the miniboss bar (when
+	// both are drawn); otherwise we only ever see the miniboss bar and our adrenaline bar"). Each row (hourglass + bar) is
+	// now exactly the meter's row (skull + bar): the same thickness and bar width. One row alone sits centred under the
+	// meter's row; two sit side by side, the pair centred under it (the pair is wider than the meter: that is the point,
+	// each bar the meter's size). Was (11-05/11-06): the PAIR spanned the meter's row, so each bar was half its size.
+	// While the meter hides (RSQ Miniboss off, or its Bossfight running), the rows keep the size the meter's own
+	// formula gives (hud.zs MeterRect: Score's bar x ROWK x Meter Size / 1.5, clear of the side lanes), so nothing
+	// jumps when the meter comes back. Bar Size (rsqsm_cdbar_size) only applies without RSQ Miniboss.
 	static ui double, double, double Slot()
 	{
 		double sw = Screen.GetWidth(), sh = Screen.GetHeight();
@@ -75,7 +84,6 @@ class RSQSM_Countdown : StaticEventHandler
 		double sx = sw * f, sy = sh * f, aw = sw * (1 - 2 * f), ah = sh * (1 - 2 * f);
 		double cx, below, sbw;
 		[cx, below, sbw] = ScoreSpot();
-		double pairK = 2.0 * PER + PGAP;
 		let mb = ServiceIterator.Find("RSQMB_Service").Next();
 		if (mb)
 		{
@@ -84,18 +92,21 @@ class RSQSM_Countdown : StaticEventHandler
 			double mh = mb.GetDoubleUI("meter.h", "", 0, 0, null);
 			if (mw > 0 && mh > 0 && mx >= 0)
 			{
-				double left = mx - mh * (GLASS + KGAP), span = mx + mw - left;
-				double h = span / pairK;
-				return left + span * 0.5, clamp(below + h * (0.3 + 0.25), sy, sy + ah - h), h;
+				double left = mx - mh * (GLASS + KGAP);
+				return left + (mx + mw - left) * 0.5, clamp(below + mh * (0.3 + 0.25), sy, sy + ah - mh), mh;
 			}
 		}
-		double h = sbw * 8.0 / 120.0 * ROWK * clamp(UCv("rsqsm_cdbar_size", 1.5), 0.5, 2.5) / 1.5;
-		double pw = min(h * pairK, sbw);
+		// the meter's own formula (Miniboss hud.zs MeterRect), with its Meter Size when RSQ Miniboss is loaded
+		let ms = CVar.GetCVar("rsqmb_bf_hud_size", players[consoleplayer]);
+		double size = ms ? ms.GetFloat() : UCv("rsqsm_cdbar_size", 1.5);
+		double h = sbw * 8.0 / 120.0 * ROWK * clamp(size, 0.5, 2.5) / 1.5;
+		double gw = min(h * PER, sbw);
 		double lane = ah * 0.32 * clamp(SCv("rsq_ui_hud_scale", 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
 		double room = 2.0 * min(cx - (sx + lane), sx + aw - lane - cx);
-		if (room >= pw * 0.5) pw = min(pw, room);
-		pw = min(pw, aw);
-		h = pw / pairK;
+		if (room >= gw * 0.5) gw = min(gw, room);
+		gw = min(gw, aw);
+		h = gw / PER;
+		double pw = h * (2.0 * PER + PGAP);
 		cx = clamp(cx, sx + pw * 0.5, max(sx + pw * 0.5, sx + aw - pw * 0.5));
 		return cx, clamp(below + h * (0.3 + 0.25), sy, sy + ah - h), h;
 	}

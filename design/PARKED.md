@@ -121,3 +121,8 @@ bridge pk3 per mod. Needs from the owner: which mods to keep, and their pk3s. Se
 
 ## Condition bits, Gold bits, weapon wear -> Big Arcade (owner 2026-11-09 02:56)
 "Condition and gold go into Big Arcade; same for weapon wear, that is condition."
+
+## A boss bar next to the Bossfight meter (owner 2026-11-09 04:49)
+"Consider spinning up another bar next to the Miniboss one that we will use for Boss fights, EX tier monsters. Just note
+that for now." A second meter-sized bar beside RSQ Miniboss's Bossfight meter, for boss fights and EX-tier monsters
+(their health, presumably; not designed). Nothing built. Same size as the meter, like the two SlowMo bars (11-09).
