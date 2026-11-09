@@ -292,6 +292,11 @@ class RS_Tool play
 		if (!shot && RS_Grapple.Ask("hook.dealing", src) == 1) return "hook.bite";
 		// a hooked barrel's blast (sheet B S23): RSQ_Grapple keeps a record for any actor its claw bit
 		if (inf && inf != src && !shot && !inf.bIsMonster && RS_Grapple.Ask("hooked", inf) >= 0 && RS_Grapple.Ask("hooked.by", inf) == pn) return "hook.keg";
+		// A PUNCH OF RSQ MELEE'S, read first (11-09): a glove (RSQ_Glove / RSQ_GloveOff) is a Weapon dealing 'Melee' with
+		// itself as the inflictor, which the thrown-gun test below also matches, so until 11-09 every glove punch was read
+		// as a thrown gun and the punch rows (Shoryuken, Textbook, Knockdown...) never saw one. Since 11-09 any other
+		// fist's punch (Brutal Doom's, Doom's Fist, an empty hand) lands through Melee's RSQ_GloveFist, read here the same.
+		if (RS_Melee.IsGlove(inf)) return GloveKind(inf);
 		// a gun thrown by hand (sheet C7): the Tactical Rig's flight, or a floor gun thrown with Distance Grab, strikes
 		// as 'Melee' with the weapon itself as the inflictor -- no punch
 		if (dt == 'Melee' && inf && inf != src && inf is "Weapon") return "throw.gun";
@@ -301,7 +306,6 @@ class RS_Tool play
 		if (dt == 'Melee' && !inf && RS_Physical.AskGrab("throw.by", v) == pn) return "headlock.throw";   // its own landing, Distance Grab carrying it
 		// a thing thrown with Distance Grab (an object)
 		if (inf && inf != src && !inf.bIsPuff && RS_Physical.AskGrab("throw.by", inf) == pn) return "grab.throw";
-		if (RS_Melee.IsGlove(inf)) return GloveKind(inf);
 		// a shot sent back: turned by the shield (a fresh puff or missile of the shield's), or a monster's missile now
 		// yours (the saber, the Force; a Hadouken or Swat is narrowed by Melee's "returned.by" when it answers)
 		if (shot && inf != src && (RS_Melee.AskShield("returned", inf) >= 0 || RS_Melee.AskShield("returned", v) >= 0)) return "shield.return";

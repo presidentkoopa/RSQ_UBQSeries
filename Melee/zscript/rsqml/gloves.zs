@@ -195,6 +195,31 @@ class RSQ_PunchHand play
 	bool lastBody, lastCounter, lastStar;
 }
 
+// THE BLOW OF A FIST THAT IS NOT ONE OF THE GLOVES (11-09; RSQML_Gloves.FistInflictor): Brutal Doom's fists, BD22 VR's free
+// off fist, Doom's Fist, an empty hand. The damage's inflictor, carrying that hand's last punch under the gloves' own field
+// names, so RSQML_Service answers "punch.*" for it as it does for a glove. Its NAME starts "RSQ_Glove" on purpose: RSQ
+// Score knows a glove's blow by that name (Score melee.zs RS_Melee.IsGlove) and then asks Melee which punch it was, so the
+// punch rows pay these fists with no change to how Score finds a glove. It is not a Weapon (never held, never picked up,
+// never levelled by Gun Bonsai under its own name: it is paid to the fist weapon it stands for, payTo). It draws nothing
+// and touches nothing; it goes after IDLE_TICS without a punch (a save keeps it; the next punch after a load makes a new one).
+class RSQ_GloveFist : Actor
+{
+	double lastPower, lastSpeed;
+	int lastKind, lastChain, lastHand, lastHeight, lastKinds, lastRun;
+	bool lastBody, lastCounter, lastStar;
+	int hand, usedTic;
+	Weapon payTo;
+	const IDLE_TICS = 105;   // 3 s: well past One-Two's 17 tics and the Dempsey's 21, so a run keeps one helper per hand
+	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +NOGRAVITY +DONTSPLASH +NOTONAUTOMAP +NOTELEPORT RenderStyle "None"; }
+	override void Tick()
+	{
+		Super.Tick();
+		if (bDestroyed) return;
+		if (level.maptime < usedTic || level.maptime - usedTic > IDLE_TICS) Destroy();
+	}
+	States { Spawn: TNT1 A -1; Stop; }
+}
+
 class RSQML_Gloves : StaticEventHandler
 {
 	enum EKind { PK_JAB, PK_HOOK, PK_UPPER }
@@ -282,7 +307,9 @@ class RSQML_Gloves : StaticEventHandler
 	// punches whenever it holds any fist (by class name, so nothing is linked):
 	//   Melee's gloves and SuperPunchOut's (RSQ_Glove*, SPO_Glove*)
 	//   Doom's Fist and anything made from it (plain Doom 2)
-	//   Brutal Doom's fists, Melee_Attacks (brutal22test6 actors/Weapons/Melee.dec: "Replaces Fist", not a subclass)
+	//   Brutal Doom's fists, Melee_Attacks (brutal22test6 actors/Weapons/Melee.dec: "Replaces Fist", not a subclass), and
+	//     since 11-09 anything made from it or put in its place (IsBDFistClass); these and RSQ_Hands below only while
+	//     Punch With Brutal Doom's Fists is on (rsqml_bdfists, on)
 	//   BD22 VR's off hand, RSQ_Hands, while it is BD22 VR's free fist: its free-hand layer (2200, hands.zs
 	//     RSQ_Layers.FREEHAND) on its "AmmoH" state, the closed hand -- BD22 VR's own OffFist() test, read off the psprite
 	//     because its freeFist field cannot be read without linking. Not while it supports a gun, reloads or is hidden.
@@ -301,21 +328,82 @@ class RSQML_Gloves : StaticEventHandler
 	{
 		if (!w) return true;
 		String n = w.GetClassName();
-		if (RSQML.IsGloveName(n) || w is "Fist" || n ~== "Melee_Attacks") return true;
+		if (RSQML.IsGloveName(n) || w is "Fist") return true;
+		// BRUTAL DOOM'S FISTS (and BD22 VR's free off fist): only while Punch With Brutal Doom's Fists is on (11-09)
+		Class<Actor> wc = w.GetClass();   // as IsBarrel takes it
+		if (IsBDFistClass(wc)) return BDFistsOn();
 		if (n ~== "RSQ_Hands")
 		{
+			if (!BDFistsOn()) return false;
 			let psp = pmo.player.FindPSprite(BD22_FREEHAND);
 			State closed = w.FindState("AmmoH");
 			return psp && psp.Caller == w && closed && psp.CurState == closed;
 		}
 		return false;
 	}
-	// WHO DEALS THE BLOW: the fist weapon itself (as the gloves always were: Gun Bonsai credits a weapon naming itself),
-	// or the player for an empty hand and BD22 VR's free hand (an off-hand helper, never a weapon you level).
-	static Actor FistInflictor(PlayerPawn pmo, Weapon w)
+
+	// ---- BRUTAL DOOM'S FISTS, BY NAME (owner 11-09: "we need some kind of patch for that in BD22, or in RSQ Melee probably
+	// since it loads after"). Brutal Doom stays as it ships; nothing here links to it, and without it nothing here acts.
+	// Its only fists weapon is Melee_Attacks (brutal22test6 actors/Weapons/Melee.dec:1 "ACTOR Melee_Attacks : BrutalWeapon
+	// Replaces Fist"; no other class in that pk3 replaces Fist or derives from Melee_Attacks). It PUNCHES ON A BUTTON, never
+	// on a swing: Fire -> Jab fires MeleeStrikeNormal (10) as a FastProjectile from the view (Melee.dec:491-561), AltFire
+	// -> Cross fires MeleeStrike2 (20) (Melee.dec:528, :620); Berserk swaps in MeleeStrike1Fatality / MeleeStrike1Smash.
+	// Swinging the controller deals nothing of Brutal Doom's own. So Melee's reader DEALS the swing's blow (one blow per
+	// swing: Brutal Doom has none for it) and leaves Brutal Doom's button punch exactly as it is (it stays Brutal Doom's
+	// own blow, which RSQ Score reads as a plain punch). BD22 VR Reloaded's No Trigger Punch (on by default,
+	// fists.zs:252-297) already stops that button punch in VR. BD22 VR's own VR Punching: BD22Punches below.
+	// Punch With Brutal Doom's Fists (rsqml_bdfists, on) switches this: off, Melee leaves Brutal Doom's fists and BD22 VR's
+	// free off fist alone (no punch reader, swat, Hadouken or bullet catch on them), and Brutal Doom punches as it ships.
+	static bool BDFistsOn() { return RSQML.SVI("rsqml_bdfists", 1) != 0; }
+	// Melee_Attacks, anything made from it, or a weapon another mod puts in its place ("replaces Melee_Attacks"), followed
+	// up the replacement chain the way IsBarrel does. Without Brutal Doom no class has that name: always false.
+	static bool IsBDFistClass(Class<Actor> c)
 	{
-		if (!w || w.GetClassName() == 'RSQ_Hands') return pmo;
-		return w;
+		for (int d = 0; c && d <= 4; d++)
+		{
+			for (class<Object> p = c; p; p = p.GetParentClass()) if (p.GetClassName() == 'Melee_Attacks') return true;
+			Class<Actor> r = Actor.GetReplacee(c);
+			if (!r || r == c) break;
+			c = r;
+		}
+		return false;
+	}
+
+	// WHO DEALS THE BLOW. One of the gloves: the glove itself (Gun Bonsai credits a weapon naming itself, and its glove
+	// upgrades read the punch off it). ANY OTHER FIST (11-09): that hand's RSQ_GloveFist (below), which carries the punch's
+	// record exactly as a glove does, so RSQ Score reads which punch it was ("punch.*", service.zs) and pays its punch rows.
+	// Until 11-09 such a blow named the fist weapon itself (Brutal Doom's Melee_Attacks, Doom's Fist), which RSQ Score read
+	// as a thrown gun (Score tools.zs: 'Melee' damage from a Weapon inflictor), or the player (an empty hand, BD22 VR's free
+	// hand), a plain punch: either way no jab, hook or uppercut. The helper is paid to the fist weapon it stands for through
+	// Gun Bonsai's "claim" (as RSQML.Blow's helpers are), so Gun Bonsai credits the same weapon it did; BD22 VR's free hand
+	// and an empty hand are paid to nothing, as before (Gun Bonsai reads the swinging hand, as it did for the player).
+	// One helper per player per hand, kept while that hand keeps punching: RSQ Score tells a left-right run (Flurry) by
+	// the blow's inflictor, as it does the two gloves.
+	Actor fistBlow[MAXPLAYERS * 2];
+	Actor FistInflictor(PlayerPawn pmo, Weapon w, int h, RSQ_PunchHand r, Vector3 at)
+	{
+		if (w && RSQML.IsGloveName(w.GetClassName())) return w;
+		int i = pmo.PlayerNumber() * 2 + h;
+		if (i < 0 || i >= MAXPLAYERS * 2) return (!w || w.GetClassName() == 'RSQ_Hands') ? Actor(pmo) : Actor(w);
+		Weapon pay = (w && w.GetClassName() != 'RSQ_Hands') ? w : null;
+		let b = RSQ_GloveFist(fistBlow[i]);
+		// another fist weapon in that hand now: a fresh helper, so Gun Bonsai never splits one helper between two weapons
+		if (b && b.payTo != pay) { b.Destroy(); b = null; }
+		if (!b)
+		{
+			b = RSQ_GloveFist(Actor.Spawn("RSQ_GloveFist", at, NO_REPLACE));
+			if (!b) return (!w || w.GetClassName() == 'RSQ_Hands') ? Actor(pmo) : Actor(w);
+			b.payTo = pay;
+			b.hand = h;
+			fistBlow[i] = b;
+		}
+		b.SetOrigin(at, false);   // where the fist met the body
+		b.usedTic = level.maptime;
+		if (pay) RSQML.Claim(b, pay);   // Gun Bonsai VR only; nothing without it
+		b.lastHand = r.lastHand; b.lastSpeed = r.lastSpeed; b.lastPower = r.lastPower; b.lastKind = r.lastKind;
+		b.lastKinds = r.lastKinds; b.lastRun = r.lastRun; b.lastBody = r.lastBody; b.lastHeight = r.lastHeight;
+		b.lastCounter = r.lastCounter; b.lastChain = r.lastChain; b.lastStar = r.lastStar;
+		return b;
 	}
 	// ONE BLOW PER SWING. BD22 VR has its own VR punching (rsq_punch, a user setting, OFF by default: src/CVARINFO.rsq;
 	// zscript/rsq/fists.zs RSQ_FistHand reads the swing and spawns BD22's MeleeStrikeNormal, 10, from the hand; hands.zs
@@ -324,6 +412,15 @@ class RSQML_Gloves : StaticEventHandler
 	// Heavy Hands, Wall Splat, the Headlock's Uppercut and RSQ Score's hooks -- and no damage of its own. With it OFF
 	// (the default), BD22 deals nothing for a swing and Melee's punch is the blow. The swat, the Hadouken and meeting
 	// bullets are never damage on a body, so they work either way.
+	// The names stay EXACT here (not IsBDFistClass): BD22 VR's own reader punches only for the class Melee_Attacks itself
+	// (fists.zs:115-129, FindInventory of that exact class) and RSQ_Hands, so a descendant or replacement of Melee_Attacks
+	// gets no BD22 VR punch and Melee's punch is its blow.
+	// WITH VR PUNCHING ON, RSQ Score cannot read which punch killed: the killing blow is BD22 VR's MeleeStrikeNormal, not
+	// a helper of Melee's, and BD22 VR's strike should usually reach the body before Melee's fist does (it flies 16 units
+	// a tic for 2 tics ahead of the hand, fists.zs:158, :245; Melee's fist must touch the body), so the kind is not known
+	// when the kill is scored (read from the code, not measured). Melee does not take the
+	// blow from BD22 VR to fix that (it would fight BD22 VR's own setting); with VR Punching off (its default) every BD fist
+	// punch is Melee's and is read.
 	static bool BD22Punches(PlayerPawn pmo, Weapon w)
 	{
 		if (!w || !pmo || !pmo.player) return false;
@@ -1235,9 +1332,9 @@ class RSQML_Gloves : StaticEventHandler
 		if (!bdBlow)
 		{
 			victim.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
-			victim.DamageMobj(FistInflictor(pmo, g), pmo, dmg, 'Melee', DMG_THRUSTLESS);
+			victim.DamageMobj(FistInflictor(pmo, g, h, r, at), pmo, dmg, 'Melee', DMG_THRUSTLESS);
 		}
-		if (RSQML.Debug() > 0) { String fn = g ? String.Format("%s", g.GetClassName()) : "an empty hand"; Console.Printf("RSQML punch by %s: %s", fn, bdBlow ? "BD22 VR's punching deals the damage (rsq_punch on), Melee adds the rest" : String.Format("%d damage", dmg)); }
+		if (RSQML.Debug() > 0) { String fn = g ? String.Format("%s", g.GetClassName()) : "an empty hand"; Console.Printf("RSQML punch by %s: %s", fn, bdBlow ? "BD22 VR's punching deals the damage (rsq_punch on), Melee adds the rest" : String.Format("%d damage%s", dmg, (g && RSQML.IsGloveName(g.GetClassName())) ? "" : " (through its RSQ_GloveFist, so RSQ Score reads the punch)")); }
 		pmo.A_StartSound(r.lastStar ? "rsqml/star" : "rsqml/punch", CHAN_AUTO, 0, 1.0);
 		RSQ_Buzz.Start(pmo, h, 0.5 + 0.5 * r.lastPower + (r.lastStar ? 0.5 : 0.0), r.lastStar ? 10 : 5);
 		// HEAVY HANDS (pick 52): the punch stops it for a beat and throws it further. With Gun Bonsai VR: once that glove

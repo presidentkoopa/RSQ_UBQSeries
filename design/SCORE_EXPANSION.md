@@ -9,7 +9,16 @@ Monsters' 13 colour tiers and EX tier)": subclass `RS_ScoreTierRow`; nothing fil
 
 Names (owner, 2026-11-09 02:37): the 11-09 row names are placeholders; "I'll rename them all soon."
 
-Open: Melee's punch reader (jab/hook/uppercut, Star Punch...) only reads Melee's own hands, never Brutal Doom's fists, so the owner (who plays BD) has never had those rows. Planned: a patch in RSQ Melee that runs the reader on BD's fist weapon by name.
+Was open, done 11-09 (code only, not run): "Melee's punch reader only reads Melee's own hands, never Brutal Doom's fists".
+Found by reading: Melee's reader HAS read Brutal Doom's fists (Melee_Attacks) and BD22 VR's free off fist since 11-04
+(gloves.zs IsFist). What never reached Score was WHICH punch: such a blow named the fist weapon (Score read 'Melee'
+damage from a Weapon as a thrown gun, tools.zs) or the player (a plain punch), and Melee answered "punch.*" for its
+own RSQ_Glove only. Worse, the same thrown-gun test caught Melee's own gloves (a Weapon too), so no punch-kind row paid
+for anyone. Now: any non-glove fist's punch lands through RSQ Melee's RSQ_GloveFist (one per hand, named so Score's
+glove test accepts it, answering "punch.*"); Score reads a glove before the thrown-gun test; Flurry counts the helper;
+Liver Shot also asks "punch.body". Melee's new row Punch With Brutal Doom's Fists (on) switches the BD fist reading.
+Limits: Star Punch, Juggle, Launcher, Meteor stay glove-only (Gun Bonsai VR nodes); with BD22 VR's VR Punching on
+(off by default) BD22 VR's strike is the killing blow and the kind is not known in time, so those kills stay plain punches.
 
 ## A. Wrong today (bugs, found by reading the code)
 1. **MG tiers pay Common money.** Base = `victim.GetSpawnHealth()` (`event.zs:83`), the class default. MG tiers set
@@ -72,8 +81,8 @@ plays) against the Score rows that pay it. Paths are `Score/zscript/rsscore/`. N
 
 | Melee move | What pays it today (file:line) | 11-09 |
 |---|---|---|
-| Jab / hook / uppercut (gloves) | Shoryuken rows.zs:114, Liver Shot :123, Glass Jaw :132, Textbook :141, Triple Threat :150, Dempsey Roll :161, Flurry melee.zs:836, Knockdown melee.zs:822, Counter melee.zs:806, Combo melee.zs:464, Weapon Master rows.zs:289, Giant Slayer rows.zs:322 | NEW Star Punch (the Star Punch node) |
-| Punch with a NON-glove fist (Doom's Fist, Brutal Doom's fists, an empty hand) | only the generic fist rows (Knockdown, Counter, Combo, Giant Slayer): its tool is "punch", so Shoryuken and the punch-kind rows never fire, and Melee's punch tags land after the killing blow | gap, not changed (needs Melee to name the punch kind before the blow) |
+| Jab / hook / uppercut (gloves; 11-09: these never paid before, a glove punch read as "throw.gun", fixed) | Shoryuken rows.zs:114, Liver Shot :123, Glass Jaw :132, Textbook :141, Triple Threat :150, Dempsey Roll :161, Flurry melee.zs:836, Knockdown melee.zs:822, Counter melee.zs:806, Combo melee.zs:464, Weapon Master rows.zs:289, Giant Slayer rows.zs:322 | NEW Star Punch (the Star Punch node) |
+| Punch with a NON-glove fist (Doom's Fist, Brutal Doom's fists, an empty hand) | was: a fist WEAPON's blow read as "throw.gun" (tools.zs, Weapon inflictor), the player's as "punch"; no punch kind. Now (11-09, code only): Melee's RSQ_GloveFist is the inflictor, so the glove rows above pay (Shoryuken, Liver Shot, Glass Jaw, Textbook, Triple Threat, Dempsey Roll, Flurry, Air Combo, Knockdown, Counter, Combo); not Star Punch, Juggle, Meteor (glove-only GB nodes); not with BD22 VR's VR Punching on | FIXED in Melee (gloves.zs FistInflictor, service.zs) + Score (tools.zs glove before thrown gun, melee.zs Flurry, rows.zs Liver Shot) |
 | Uppercut launch, Juggle node | Air Combo rows.zs:176, Juggle melee.zs:622 | NEW Meteor (the Meteor node: the launched body lands on another) |
 | Open-palm swat (missile knocked ASIDE) | read as a saber return: Return to Sender melee.zs:443 under the wrong tool | NEW Swatted (replaces Return to Sender for it); Melee now lists it, `returned.by` 3; tools.zs names it swat.aside |
 | Swat Back / Hadouken (missiles) | Return to Sender melee.zs:443 (PUNCH 0.6), Poetic Justice :506, Misdirection rows.zs:373, Rally melee.zs:685; combos Street Fighter, Shoto, Neo, Return Fire combos.zs:51-54 | - |

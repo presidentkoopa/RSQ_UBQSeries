@@ -298,7 +298,9 @@ class RS_Melee play
 	}
 
 	// One of the boxing gloves (the Gun Bonsai VR patch's RSQ_Glove / RSQ_GloveOff, SuperPunchOut's
-	// SPO_Glove) dealt the blow: a glove is its own inflictor (RSQ_GloveHandler.Deliver).
+	// SPO_Glove) dealt the blow: a glove is its own inflictor (RSQ_GloveHandler.Deliver). Since 11-09 also
+	// RSQ Melee's RSQ_GloveFist, the inflictor of any other fist's punch (Brutal Doom's fists, BD22 VR's free off
+	// fist, Doom's Fist, an empty hand), which Melee answers "punch.*" for as it does a glove.
 	static bool IsGlove(Actor inf)
 	{
 		if (!inf) return false;
@@ -917,7 +919,7 @@ class RS_ScoreShots : EventHandler
 	// loaded). EVERY ACTOR THAT SPAWNS passes through WorldThingSpawned -- Brutal Doom spawns blood,
 	// casings and smoke by the hundred -- so the test there is a pointer compare, not a string one.
 	transient bool clsReady;
-	transient class<Actor> cDisc, cThrown, cMark, cGlove, cSpoGlove, cSw1, cSw2, cSw3, cSw4;
+	transient class<Actor> cDisc, cThrown, cMark, cGlove, cSpoGlove, cGloveFist, cSw1, cSw2, cSw3, cSw4;
 	private void Classes()
 	{
 		if (clsReady) return;
@@ -928,6 +930,7 @@ class RS_ScoreShots : EventHandler
 		n = "SSQ_LockMark";         cMark = n;
 		n = "RSQ_Glove";            cGlove = n;
 		n = "SPO_Glove";            cSpoGlove = n;
+		n = "RSQ_GloveFist";        cGloveFist = n;   // RSQ Melee's blow of any other fist (11-09): one per hand, so Flurry reads left-right as for the gloves
 		n = "AxeAttack";            cSw1 = n;
 		n = "AxeAttackNoDecal";     cSw2 = n;
 		n = "MeleeStrikeNormal";    cSw3 = n;
@@ -942,7 +945,7 @@ class RS_ScoreShots : EventHandler
 	}
 	private bool IsGloveHit(Actor a)
 	{
-		return a && ((cGlove && a is cGlove) || (cSpoGlove && a is cSpoGlove));
+		return a && ((cGlove && a is cGlove) || (cSpoGlove && a is cSpoGlove) || (cGloveFist && a is cGloveFist));
 	}
 
 	// WorldThingSpawned runs from PostBeginPlay, on the actor's first tic -- after the spawner

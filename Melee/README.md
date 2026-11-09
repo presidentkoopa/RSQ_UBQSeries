@@ -14,6 +14,18 @@ New on 11-07 (rig only, not headset-confirmed): with RSQ Distance Grab's Barrel 
 monster you locked, if it is roughly ahead, and hits and goes off like a thrown barrel. Barrel Lock-On on also turns
 the uppercut barrel kick on.
 
+New on 11-09 (code only: not run on the rig, not headset-confirmed): **Brutal Doom's fists count as real punches in
+RSQ Score.** Melee has read a swing of Brutal Doom's fists (and BD22 VR's free off fist) since 11-04, exactly as it reads
+its own hands: jab, hook or uppercut, the uppercut's launch, the knock, Heavy Hands, Wall Splat, Hadouken. What is new:
+RSQ Score now knows which punch it was, so Shoryuken, Liver Shot, Glass Jaw, Textbook, Triple Threat, Dempsey Roll, Flurry, Air Combo,
+Knockdown and the punch combos pay for Brutal Doom's fists too (and for Doom's Fist and an empty hand). Until now those
+punches reached Score as a thrown gun or a plain punch. Brutal Doom itself is not changed: its trigger punch is still
+its own. One punch per swing: Brutal Doom has no swing punch of its own, so Melee's punch is the blow. The new row
+**Punch With Brutal Doom's Fists** (on) turns Melee's punching with Brutal Doom's fists off altogether. Not for these
+fists: Star Punch, Juggle, Launcher and Meteor (Gun Bonsai VR teaches them to Melee's hands only); and with BD22 VR's
+VR Punching on, Score still cannot tell which punch it was (see Works with). Also fixed in RSQ Score: a punch from Melee's own hands was read as a thrown gun,
+so those rows never paid for them either.
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It needs no
 other mod and works on plain Doom 2.
 
@@ -39,6 +51,7 @@ drew, so only your arms throw punches.
 - Optional boxing gloves (off by default): always fists, no open palm.
 - Fist or open palm per hand: tap that hand's trigger to switch.
 - Jab, hook and uppercut, read from the swing. Damage scales with speed, from 10 at 2 m/s up to 20 at 7 m/s.
+- Brutal Doom's fists punch the same way (Punch With Brutal Doom's Fists, on), and RSQ Score reads which punch it was.
 - Uppercuts launch, capped at 3 m of air.
 - Any punch that meets a switch or a door works it, like pressing Use on it (the line's special decides, so a WAD's own switch textures work the same). The gun-butt shove does too.
 - Optional (off): Uppercut Kicks Barrels. An uppercut into a barrel does no damage and kicks it up and away in an arc, like Brutal Doom's kick.
@@ -125,6 +138,7 @@ row off turns them off on the gloves too).
 |---|---|---|
 | **Hands** | | |
 | Start With Melee Hands | Off | The hands at each level start, up in both hands |
+| Punch With Brutal Doom's Fists | On | Brutal Doom's fists (and BD22 VR's free off fist) punch with Melee's punch reader. Off: Melee leaves them alone and Brutal Doom punches as it ships. Does nothing without Brutal Doom |
 | Hand Model | Auto | Auto (FBX with BD22 VR), Ermac, or FBX (BD22 VR) |
 | Boxing Gloves | Off | The hands wear boxing gloves (always fists) |
 | Slappers Only | Off | Gloves only, guns put away |
@@ -170,11 +184,17 @@ Runs alone. It finds the others by name:
   2.0.3y) means the trigger tap that opens your palm throws no canned punch; with it off, or with Brutal Doom without
   BD22 VR, the tap also throws that fist's own trigger punch.
 - **Brutal Doom**: the shove plays Brutal Doom's swing and kick sounds, and its monsters react to the kick themselves.
+  Its fists (Melee_Attacks, found by name, and anything made from it or put in its place) punch with Melee's reader
+  while Punch With Brutal Doom's Fists is on. Brutal Doom only punches when you press the trigger, never when you swing,
+  so a swing's punch is Melee's and lands once. Its trigger punch is left as it is.
+- **BD22 VR Reloaded's VR Punching** (its own option, off by default): with it on, BD22 VR's punch does the damage,
+  as before, and Melee adds the rest. RSQ Score then cannot tell which punch it was (BD22 VR's blow lands first), so
+  the punch rows only pay with VR Punching off.
 - **RSQ Distance Grab**: a monster thrown out of the Headlock flies through its throw code; the two share the grip.
   Its Barrel Lock-On sends an uppercut barrel to the locked monster (asked by name; Melee still loads alone).
 - **RSQ Accessibility (its gesture reader)**: reads both hands for Ground Pound and Clear Out when it is loaded; without it Melee reads them with its own copy of that two-hand reader (the same moves and numbers).
 - **RSQ SlowMo**: the beat after a shove, and the F.E.A.R. window.
-- **RSQ Score**: the Headlock combo, the F.E.A.R. Effect, returned missiles and bullets; since 11-09 Melee also tells it
+- **RSQ Score**: which punch you threw (jab, hook, uppercut, body or head, the combo), for any fist; the Headlock combo, the F.E.A.R. Effect, returned missiles and bullets; since 11-09 Melee also tells it
   which monsters your Guard soaked, which barrels your uppercut kicked, who your Headlock holds (and whether as a Human
   Shield), and whether your F.E.A.R. window is open (Rope-a-Dope, Field Goal, Meat Shield, Human Shield, Red Mist).
 - **RSQ Tactical Rig**: the Headlock waits while your off hand is in a holster.

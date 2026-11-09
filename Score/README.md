@@ -26,6 +26,11 @@ New on 11-09 (code only: not run on the rig, not headset-confirmed): sixteen mor
   **Bare Knuckle** (a glove kill in Slappers Only) and **Red Mist** (a shotgun kill in the shove's slow motion on a
   monster you did not shove).
 - A bullet your hand sends back now pays Return to Sender (it read as your own gun shot before).
+- The punch rows (Shoryuken, Liver Shot, Glass Jaw, Textbook, Triple Threat, Dempsey Roll, Flurry, Air Combo, Knockdown,
+  Counter, Star Punch) were not paying for any punch: RSQ Melee's hands read as a thrown gun. Fixed. All but Star Punch
+  now also pay for Brutal Doom's fists, BD22 VR's free off fist, Doom's Fist and an empty hand, when RSQ Melee reads the swing (its
+  Punch With Brutal Doom's Fists, on). With BD22 VR's own VR Punching on, Brutal Doom's punches still pay as plain punches.
+  Liver Shot also reads Melee's answer for the killing punch (Melee's body tag came after the blow).
 
 RSQ Score is ijon's *Dakka* point system rebuilt in ZScript for stock QuestZDoom 17.3, then grown to fit what
 your hands can do in VR. It watches the whole RSQ series: the saber, the ShieldSaw, the whip, the grappling

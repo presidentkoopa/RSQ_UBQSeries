@@ -4,6 +4,8 @@
 //
 //   GetInt "loaded"           1
 //   GetInt "punch.glove"      objectArg = a damage inflictor: 1 when it is one of the boxing gloves (a punch), else 0
+//   (11-09) every "punch.*" below but punch.glove also answers for an RSQ_GloveFist, the blow of any other fist (Brutal
+//   Doom's fists, BD22 VR's free off fist, Doom's Fist, an empty hand: gloves.zs FistInflictor), with the same record
 //   GetInt "punch.kind"       the glove's last punch: 0 jab, 1 hook, 2 uppercut; -1 not a glove
 //   GetInt "punch.body"       1 landed below the chest            GetInt "punch.counter"  1 into an attack wind-up
 //   GetInt "punch.star"       1 a Star Punch                       GetInt "punch.chain"    One-Two: alternating hits in a row
@@ -63,17 +65,35 @@ class RSQML_Service : Service
 		if (request.Left(6) == "punch.")
 		{
 			let g = RSQ_Glove(objectArg);
+			// "punch.glove" stays the GLOVES only: Gun Bonsai VR applies its glove upgrades on it (up_gloves.zs IsGlove),
+			// and those are learned by the gloves alone
 			if (request == "punch.glove") return g ? 1 : 0;
-			if (!g) return -1;
-			if (request == "punch.kind") return g.lastKind;
-			if (request == "punch.body") return g.lastBody ? 1 : 0;
-			if (request == "punch.counter") return g.lastCounter ? 1 : 0;
-			if (request == "punch.star") return g.lastStar ? 1 : 0;
-			if (request == "punch.chain") return g.lastChain;
-			if (request == "punch.hand") return g.lastHand;
-			if (request == "punch.kinds") return g.lastKinds;
-			if (request == "punch.height") return g.lastHeight;
-			if (request == "punch.run") return g.lastRun;
+			if (g)
+			{
+				if (request == "punch.kind") return g.lastKind;
+				if (request == "punch.body") return g.lastBody ? 1 : 0;
+				if (request == "punch.counter") return g.lastCounter ? 1 : 0;
+				if (request == "punch.star") return g.lastStar ? 1 : 0;
+				if (request == "punch.chain") return g.lastChain;
+				if (request == "punch.hand") return g.lastHand;
+				if (request == "punch.kinds") return g.lastKinds;
+				if (request == "punch.height") return g.lastHeight;
+				if (request == "punch.run") return g.lastRun;
+				return -1;
+			}
+			// any other fist's blow (11-09: Brutal Doom's fists, BD22 VR's free off fist, Doom's Fist, an empty hand):
+			// its RSQ_GloveFist carries the same record (gloves.zs FistInflictor)
+			let f = RSQ_GloveFist(objectArg);
+			if (!f) return -1;
+			if (request == "punch.kind") return f.lastKind;
+			if (request == "punch.body") return f.lastBody ? 1 : 0;
+			if (request == "punch.counter") return f.lastCounter ? 1 : 0;
+			if (request == "punch.star") return f.lastStar ? 1 : 0;
+			if (request == "punch.chain") return f.lastChain;
+			if (request == "punch.hand") return f.lastHand;
+			if (request == "punch.kinds") return f.lastKinds;
+			if (request == "punch.height") return f.lastHeight;
+			if (request == "punch.run") return f.lastRun;
 			return -1;
 		}
 		// "autopunch": objectArg = a monster, intArg = a player number, doubleArg = the damage share: that player's empty fist
@@ -150,8 +170,9 @@ class RSQML_Service : Service
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		let g = RSQ_Glove(objectArg);
-		if (request == "punch.power") return g ? g.lastPower : -1;
-		if (request == "punch.speed") return g ? g.lastSpeed : -1;
+		let f = RSQ_GloveFist(objectArg);
+		if (request == "punch.power") return g ? g.lastPower : (f ? f.lastPower : -1.0);
+		if (request == "punch.speed") return g ? g.lastSpeed : (f ? f.lastSpeed : -1.0);
 		return 0;
 	}
 }

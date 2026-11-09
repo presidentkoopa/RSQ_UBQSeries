@@ -10,6 +10,10 @@ server int   rsqml_gloves = 0;
 user int     rsqml_hands_model = 0;
 // Boxing Gloves: Melee's hands wear SuperPunchOut's boxing gloves (always fists: no open palm). Slappers Only wears them too.
 server bool  rsqml_boxing = false;
+// Punch With Brutal Doom's Fists (11-09): on, a hand holding Brutal Doom's fists (Melee_Attacks, or anything made from it
+// or put in its place) or BD22 VR's free off fist punches with Melee's punch reader (jab, hook, uppercut, read by RSQ
+// Score); off, Melee leaves those fists alone and Brutal Doom punches as it ships. Does nothing without Brutal Doom.
+server bool  rsqml_bdfists = true;
 // Open-Palm Swat: an open hand (tap that hand's fire) swung through a monster's missile knocks it aside.
 server bool  rsqml_swat = true;
 server bool  rsqml_bullets = true;      // a monster's BULLET met by the hand: the open-palm swat knocks it away, the Hadouken sends it back (gloves.zs WorldHitscanPreFired)

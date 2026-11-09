@@ -119,13 +119,18 @@ class RS_Row_Shoryuken : RS_ScoreBonus
 	override double Evaluate(RS_ScoreEvent ev) { return RS_Rows.Tool(ev) == "glove.upper" ? MULT : 0.0; }
 }
 
-// M3 Liver Shot: a punch landed below the chest kills it (Melee's hit.body tag).
+// M3 Liver Shot: a punch landed below the chest kills it (Melee's hit.body tag, or -- 11-09 -- Melee's own answer for the
+// killing punch, "punch.body": Melee sends the hit.body tag after its blow lands, too late for the kill that blow makes).
 class RS_Row_LiverShot : RS_ScoreBonus
 {
 	const MULT = 0.2;
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Liver Shot"; }
-	override double Evaluate(RS_ScoreEvent ev) { return (RS_Rows.GloveKill(ev) && RS_Melee.Tagged(ev, "hit.body")) ? MULT : 0.0; }
+	override double Evaluate(RS_ScoreEvent ev)
+	{
+		if (!RS_Rows.GloveKill(ev)) return 0.0;
+		return (RS_Melee.Tagged(ev, "hit.body") || RS_Rows.Punch(ev, "punch.body") == 1) ? MULT : 0.0;
+	}
 }
 
 // M4 Glass Jaw: a punch to the head (the top fifth of the body) kills it (RSQML_Service "punch.height", permille).
