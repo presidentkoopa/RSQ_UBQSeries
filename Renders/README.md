@@ -8,3 +8,4 @@ Every render made in the cloud test rig during the 2026-10-27 sessions (the owne
 - `session/`: the agents' frame dumps (`frames/<run>` HP bars and grapple, `f/` colour-blind, `shots/`, `mock/` the shelved first screens attempt, `dump*` and others).
 - `agents/`: evidence images committed in the agents' worktrees (`test/evidence/`).
 - Identical images are kept once. Raw PPM frame dumps (about 9.5 GB) are not included.
+- `fx_mockups/`: explosion and arrival-effect mockups composited in Python (2026-11-09), kept as examples; never shipped (see its README).
