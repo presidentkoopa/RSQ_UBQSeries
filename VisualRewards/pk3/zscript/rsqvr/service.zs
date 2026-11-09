@@ -50,6 +50,12 @@ class RSQVR_Service : Service
 		if (request == "kr.perk") return RSQ_KRHandler.Perk(Actor(objectArg), stringArg);
 		if (request == "helper") return RSQVR_Helpers.IsHelper(Actor(objectArg)) ? 1 : 0;
 		if (request == "kr.battery") return RSQ_KRBatteryBit.Burst(Actor(objectArg), clamp(intArg, 0, 32));
+		if (request == "scene.push" || request == "scene.pop")
+		{
+			let sc = RSQVR_Scenes.Get();
+			if (!sc) return 0;
+			return request == "scene.push" ? sc.Push(stringArg, intArg, nameArg) : sc.Pop(stringArg);
+		}
 		if (request == "beam") return RSQVR_Beam.StartBeam(stringArg, intArg, doubleArg, Actor(objectArg), nameArg);
 		if (request == "word" || request == "word.hold" || request == "word.clear" || request == "pop")
 		{

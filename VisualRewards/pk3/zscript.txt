@@ -26,3 +26,5 @@ version "4.14"
 #include "zscript/rsqvr/beam_data.zs"
 #include "zscript/rsqvr/beams.zs"
 #include "zscript/rsqvr/words.zs"
+// Scenes (2026-11-09, the start of the arcade brain): RSQVR_Service "scene.push" / "scene.pop"; music for now
+#include "zscript/rsqvr/scenes.zs"

@@ -11,6 +11,10 @@ not yet seen. The pk3 is `pk3/RSQ_VisualRewards.pk3` (rebuilt
 11-09).
 
 **What's new**
+- **11-09 evening, scene music** (rig only, not heard): the start of the arcade brain (design/ARCADE_BRAIN.md). Other
+  mods report a scene by name (`RSQVR_Service` "scene.push" / "scene.pop"); its track crossfades over the level music,
+  and when it ends the level music crossfades back in where it has got to. A Bossfight plays the owner's track.
+  **Scene Music** (Arrivals and Words, on) turns it off for you.
 - **11-09** (rig only): **arrival beams** V1-V4 for monsters other mods bring in, with their own sounds for a
   miniboss, a thrall and a chump; **words** over monsters in RS Score's font (TARGET!, GUARD!); a **pop** in a colour
   (below). Built for RSQ Miniboss's Bossfight; any mod can ask for them by name.

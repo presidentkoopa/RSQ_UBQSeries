@@ -768,6 +768,7 @@ extend class RSQMB_Handler
 		}
 		arrBeamSet = random[rsqmbbf](0, 1);
 		bfWhy = "";
+		SceneMusic(true);   // the Bossfight scene: the owner's track crossfades in (RSQ VisualRewards, by name)
 		// the landing in slow motion: RSQ SlowMo's "start.bossfight" (by name; owner 2026-11-09: the countdown bar always shows
 		// during a game slow). A game slow: SlowMo shows its countdown bar and the BOSSFIGHT line (Adrenaline on or off), under
 		// its Triggers page's "Miniboss" switch, and it neither waits out nor starts SlowMo's shared cooldown, so the thrall
@@ -901,6 +902,19 @@ extend class RSQMB_Handler
 		}
 		arrPhase = 0;
 		if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
+		SceneMusic(false);   // the retry pushes it again; a quick pop and push only dips the music
+	}
+
+	// THE BOSSFIGHT SCENE (owner 2026-11-09: "the music change to my selection for a miniboss fight ... when the fight is over
+	// the regular music crossfades back in where it left off"). RSQ VisualRewards owns the scenes (scenes.zs); without it,
+	// nothing changes.
+	const SCENE_PRIO = 50;
+	void SceneMusic(bool on)
+	{
+		let vr = VrService();
+		if (!vr) return;
+		if (on) vr.GetInt("scene.push", "bossfight", SCENE_PRIO, 0, null, 'rsqvr/music/boss1');
+		else vr.GetInt("scene.pop", "bossfight");
 	}
 
 	// ONE LANDS: spawned where PlanArrival found room, boosted (SlowMo DOWN's boost: Champions, LegenDoom, its light,

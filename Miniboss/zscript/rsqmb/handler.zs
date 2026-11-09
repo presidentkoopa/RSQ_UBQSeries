@@ -488,6 +488,7 @@ class RSQMB_Handler : EventHandler
 		FightDeath(b);     // fight.zs: the map-wide wave in its colour, then the re-roll
 		if (b.enraged) EndRage(b);
 		if (b.called) BfPayoff(b, killer);
+		if (b.called) SceneMusic(false);   // the fight is over: the level music crossfades back (bossfight.zs)
 		if (killer)
 		{
 			Award(killer, "Miniboss", 500);

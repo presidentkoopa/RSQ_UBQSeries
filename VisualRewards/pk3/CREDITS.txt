@@ -115,3 +115,6 @@ from the owner's approved mockups, tools/beam_spec/)
     as textures QVW032-QVW096: the monster words.
   - The arrival sounds (sounds/rsqvr/RVQRISE, RVQHIT, RVQTHR1, RVQTHR2, RVQCHMP): arrival sounds supplied by the owner
     (presidentkoopa), 2026-11-09; source not stated.
+
+- Scene music (2026-11-09): the Bossfight track "20 organic beat", supplied by the owner (presidentkoopa); cut to loop
+  at 2:02.97 with a 0.5 s crossfade (sounds/rsqvr/RVQMUS1.ogg). Its source to record before release.

@@ -18,3 +18,7 @@ $rolloff rsqvr/beam/hit      400 1800
 $rolloff rsqvr/beam/thrall1  400 1800
 $rolloff rsqvr/beam/thrall2  400 1800
 $rolloff rsqvr/beam/chump    400 1800
+
+// Scene music (2026-11-09): the owner's Bossfight track ("20 organic beat"), cut to loop at 2:02.97 with a 0.5 s
+// crossfade baked in (LOOP_START 22050 / LOOP_END 5422827 in its Vorbis tags; TestRig/music_test)
+rsqvr/music/boss1   sounds/rsqvr/RVQMUS1.ogg

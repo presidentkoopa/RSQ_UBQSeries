@@ -11,6 +11,9 @@ drop). Not yet seen: the look of the beams, words and HUD stack; the watch check
 Logs and the test kit: `TestRig/bossfight_rig/`. The pk3 is `pk3/RSQ_Miniboss.pk3` (rebuilt 11-09).
 
 **What's new**
+- **11-09 evening** (rig only, not heard): a Bossfight has its own music. The owner's track crossfades in when it's
+  called in and the level music crossfades back when the miniboss dies (RSQ VisualRewards' scene music; without it,
+  nothing changes).
 - **11-09, the fight reworked** (the owner's design, design/MINIBOSS_REWORK.md; mockups design/mockups/miniboss/):
   - a staggered arrival on RSQ VisualRewards' arrival beams, inside RSQ SlowMo's landing slow, with SlowMo's edge arrows
     pointing to any landing out of view;
