@@ -64,8 +64,8 @@ class RSQFF_Shown : EventHandler
 	}
 }
 
-// THE FLASHLIGHT ON ITS CLIP: torch.md3 (tools/gen_torch.py --stowed), the flashlight alone, lens +x, centred, at the
-// held light's scale (MODELDEF.torch). Never in play.
+// THE FLASHLIGHT ON ITS CLIP: torch.md3 (tools/gen_torch.py --stowed), the flashlight alone, lens +x, centred, a
+// 12 cm pocket light (MODELDEF.torch, Scale 0.21). Never in play.
 class RSQFF_TorchStowed : Actor
 {
 	Default

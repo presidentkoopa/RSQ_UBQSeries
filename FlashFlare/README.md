@@ -66,6 +66,7 @@ and the throw is measured against your body, so walking and turning never count 
 **The flashlight**
 - On a clip on your chest, on your off hand's own side. Grip there with the off hand: it comes out switched on. That
   hand's trigger turns it off and on. Grip at the clip again to put it back.
+- On the clip it is a small pocket light, about 12 cm long, lens up (11-08; not yet seen in-engine).
 - Held in Brutal Doom 22 VR Reloaded's shotgun-pump support hand, drawn where your off hand is.
 - One real spot light from the lens, plus a beam you can see in the air. The beam stops where it meets a wall or a
   monster, and a soft spot shows where it lands, even past the light's reach. Monsters stay visible through the beam
