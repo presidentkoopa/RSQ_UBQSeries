@@ -17,6 +17,9 @@ speed. Nothing here goes into the pk3 (build_all.sh packs VisualRewards from its
 - `arrival_beams/v1/`: first pass, with `beam_tiers_contact.png` (the beam in all 13 tiers).
 - `arrival_beams/v2/`: more frames, V1's reveal and rings, V3 with more life. Owner: all four greenlit; V3 to come in an
   indoor (hits the ceiling) and an outdoor (climbs out of sight) version.
+- `arrival_beams/v3/`: V3 indoor (the column is cut at the real ceiling, the splash hangs from it, sparks drop) and
+  outdoor (no cap; a stepped taper climbs out of sight into the sky). In game: sky or a ceiling above the column's reach
+  (~166 units) picks outdoor, otherwise indoor at that ceiling's height. 34 tics each.
 
 Sources: our own art drawn in code; V3 and V4 use frames cut from the Z-Fighter effects sheet (a rip; it asks for credit),
 posterized to our bands — credit or redraw before release. Monster sprites are the project's.
