@@ -186,7 +186,7 @@ the debug log are on **Test and Debug**; **Reset All** at the foot resets both. 
 | Most Monsters | 800 | And at most this. |
 | Round To | 5000 | The target is rounded to this many points (and never below it). |
 | Ammo Refill (%) | 40 | An ammo reward refills this share of each ammo type's maximum. |
-| Raised Monster Pay (%) | 100 | Percent of base paid for monsters that weren't on the map at the start (raised, spawned). |
+| Raised Monster Pay (%) | 100 | Percent of base paid for monsters that weren't on the map at the start (raised, spawned). The map's monsters are counted again after its first tic, so monsters a map spawner makes on load (RSQ Monsters' ColorfulHell colours) count as the map's. |
 | Slow Motion: Cooldown (s) | 6 | Seconds between slow-motion moments. |
 | Slow Motion: Style Share (%) | 50 | Percent of a kill's style, daring and melee bonuses that Stretched Second adds in slow motion. |
 | Debug Log | Off | Logs the scoring to the console. |
@@ -217,6 +217,10 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
   While its ShieldSaw gauge is on, the score display moves down to clear it.
 - **Champions and LegenDoom Lite:** a champion kill names its colour and mutation. Legendaries, denied legendaries and
   legendary champions get their own rows.
+- **RSQ Monsters** (11-09, code only, not rig-tested, not headset-confirmed): a MeatGrinder monster pays its tier's
+  health as base (a White imp pays 1200, not 60). A MeatGrinder head shot (found by where the shot hit) pays
+  **Headshot** and counts as a head hit in combos. A ColorfulHell monster that changes colour keeps its full pay if
+  it had it; it does not become a "raised" monster.
 - **Brutal Doom / BD22 VR Reloaded:** Brutal Doom's executions pay **Fatality**, its cuts and boots feed the melee family, and
   BD22 VR's Super Shotgun fired point-blank pays **Coach Gun**.
 - **For modders:** pay a labelled award with `RS_ScoreService` `GetInt("award", "<row>", points, 0, pawn)`. Add a
@@ -224,6 +228,11 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
   `GetInt("givelife", "", n, 0, pawn)` (n 0 or less gives 1; returns the lives now held, -1 without a score): added like
   an earned life, with an earned life's cue (owner 11-05: "can we have killing a miniboss give a Score life?"). Add your own bonus by
   subclassing `RS_ScoreBonus` and registering it with `RS_ScoreRegistry.RegisterBonus`.
+  Mark a monster you spawned as one that pays its full base (an encounter's monsters, not a farm) with
+  `GetInt("census.add", "", 0, 0, monster)` (1 added, 0 already on, -1 refused: dead, already paid in full, or not a
+  monster Score pays for). It still pays only once. When you swap a monster for a new actor, call
+  `GetInt("census.take", "", 0, 0, oldBody)` first and, only if it answers 1, `census.add` the new body: the full pay
+  moves with it and nothing new is made.
   Ask a monster's name with Score's tier words in front (`GetString("monster.name", "", 0, 0, monster)`: "Dark Red
   Champion Imp", "Legendary Imp", or just its own name): RSQ SlowMo's DOWN plate uses it (11-07).
 

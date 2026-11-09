@@ -150,6 +150,15 @@ class RS_MGMonster : RS_MonsterMaster abstract
 				health = clamp(int(newMax * double(health) / oldMax), 1, newMax);
 		}
 		TierMaxHealth = newMax;
+		// THE TIER'S SPAWN HEALTH, for everything that reads it (owner 11-09, design/SCORE_EXPANSION.md A1).
+		// GetSpawnHealth() is `StartHealth ? StartHealth : Default.Health`, times the skill's monster health
+		// (AActor::SpawnHealth, p_mobj.cpp:7895-7911 of QZD 17.3; StartHealth is a writable, saved Actor field,
+		// actor.zs:160, p_mobj.cpp:282). Without this a White imp (1200) still reported its class's 60, and RSQ
+		// Score, which pays a kill's base from GetSpawnHealth (event.zs:83), paid it as a Common one. Set here,
+		// Score needs no change and CH is untouched (its colours are classes with their own Health). The engine
+		// reads it too, and that is the tier's real maximum: an Arch-vile raise (AActor::Revive) and HealThing
+		// now stop at the tier's health. The two GORE reads stay on the class number (MG_ClassSpawnHealth).
+		StartHealth   = newMax;
 		Speed         = def.Speed * r.spdMul;
 		PainChance    = r.painChance;
 		TierDamageMul  = r.dmgMul;
@@ -171,6 +180,26 @@ class RS_MGMonster : RS_MonsterMaster abstract
 		if (behave == 2) bMISSILEMORE = true;
 		if (behave >= 3) bMISSILEEVENMORE = true;
 		RS_ApplyTint();
+	}
+
+	// THE CLASS'S SPAWN HEALTH, as it read before ApplyTier wrote StartHealth: what the gore keeps measuring
+	// against, so a tier changes the score and the health but not when a body gibs. Clearing StartHealth for
+	// the one call is exact (same skill and friendly rules, AActor::SpawnHealth) and changes nothing else.
+	int MG_ClassSpawnHealth()
+	{
+		int keep = StartHealth;
+		StartHealth = 0;
+		int h = GetSpawnHealth();
+		StartHealth = keep;
+		return h;
+	}
+
+	// The engine's gib line (XDeath) is -GetSpawnHealth() * gibfactor unless GibHealth is set (actor.zs
+	// GetGibHealth, read through the virtual by AActor::GetGibHealth, p_mobj.cpp:7993). Kept on the class number.
+	override int GetGibHealth()
+	{
+		if (GibHealth != int.min) return -abs(GibHealth);
+		return -int(MG_ClassSpawnHealth() * gameinfo.gibfactor);
 	}
 
 	override void RS_ApplyTint() { MG_Tint(Tier); }

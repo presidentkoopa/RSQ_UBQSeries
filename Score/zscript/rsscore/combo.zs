@@ -148,6 +148,10 @@ class RS_ComboLedger : EventHandler
 		if (RS_Melee.Airborne(v)) c |= C_AIR;
 		if (RS_ScoreEvent.MeasureEdgeGap(v, src) < RS_Bonus_PointBlank.DIST) c |= C_PB;
 		if (dt == 'Head' || dt == 'MinorHead' || dt == 'Headshot') c |= C_HEAD;
+		// RSQ Monsters' MeatGrinder set finds a head shot by where the blow landed, not by damage type (its
+		// RS_MGMonster.DamageMobj sets the answer before the engine fires this event), so it is asked by name
+		// (RSQMON_Service "headshot", 11-09, design/SCORE_EXPANSION.md A3). Without RSQ Monsters: -1, no head.
+		else if (RS_Svc.Int(RS_Svc.MONSTERS, "headshot", 0, v) == 1) c |= C_HEAD;
 		return c;
 	}
 

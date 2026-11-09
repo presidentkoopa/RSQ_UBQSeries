@@ -797,6 +797,12 @@ class RS_Retier play
 		if (nd && nd.Health > 0)
 			a.health = FullHealth(instant) ? nd.Health : max(1, int(nd.Health * frac));
 
+		// [11-09 score-fix] RSQ Score's census: the new body takes the old one's place (design/SCORE_EXPANSION.md
+		// A2). Score pays a full base only for a monster on its map census and the fraction for anything spawned
+		// later, and this IS a new actor -- so every CH colour change paid the fraction. Moved, not added: only a
+		// body that was counted passes it on, once. By name, so each mod still loads alone.
+		ScoreHandOver(mo, a);
+
 		// It was already awake and fighting -- do not make it re-notice.
 		if (mo.target && a.SeeState)
 			a.SetState(a.SeeState);
@@ -806,6 +812,16 @@ class RS_Retier play
 		mo.ClearCounters();
 		mo.Destroy();
 		return a;
+	}
+
+	// [11-09 score-fix] RS_ScoreService "census.take" then "census.add" (RSQ Score awards.zs). Nothing when Score
+	// is not loaded.
+	static void ScoreHandOver(Actor from, Actor to)
+	{
+		if (!from || !to) return;
+		let sc = ServiceIterator.Find("RS_ScoreService").Next();
+		if (sc && sc.GetInt("census.take", "", 0, 0, from) == 1)
+			sc.GetInt("census.add", "", 0, 0, to);
 	}
 }
 
