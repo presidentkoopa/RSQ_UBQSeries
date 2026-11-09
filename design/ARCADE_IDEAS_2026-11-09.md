@@ -100,12 +100,22 @@ it. You lure the boss in with Grapple, Whip, flares and noise, then throw everyt
 **Decision:** fight the boss where it is, or spend time herding it.
 **Uses:** idea 4; RSQ Grapple and RSQ Whip pulls; RSQ FnF flares as bait.
 
-## 10. Linked encounter idea (owner's)
+## 10. KEYMASTER (owner's pick)
 
 **Owner (08:45):** "https://forum.zdoom.org/viewtopic.php?t=56589 log this as another idea for our arcade encounter
 design"
-**Status:** logged only. The forum blocks automated reading and a search did not find the thread, so what it is has not
-been read yet.
+**What it is:** KEYMASTER by JP LeBreton (JPL), a small ZScript gameplay mod, 2017, GZDoom 2.5+; download
+https://jp.itch.io/doom-keymaster . Licence not stated in the forum post.
+**How it plays (from the author's readme in the thread):** on every level one random monster becomes THE KEYMASTER,
+tougher and faster than the rest. The exit won't work until you kill it and take its key. You can't damage it until
+you find THE ARROW OF SLAYING somewhere in the level. A HUD icon and a pulse sound that quickens as you get closer lead
+you to the arrow, then to the KEYMASTER. Holding the arrow, and then the key, multiplies your damage (both together
+give quad damage). Options: same picks every time on a level and skill (for competitive runs), or random each load.
+It changes no stock classes, so it sits alongside other mods.
+**Known trouble (from the thread):** maps with a one-way drop or a W1 line can strand you without the arrow or key;
+a telefrag can kill the KEYMASTER without the arrow; the HUD icon fights other mods' HUDs.
+**Sits next to:** idea 4 (a monster you can't hurt until you do something), idea 5 (a guide through the map to a
+target, here a pulse instead of a shape), and the key monster.
 
 ---
 
