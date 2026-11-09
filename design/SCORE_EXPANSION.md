@@ -22,7 +22,7 @@ Monsters' 13 colour tiers and EX tier)": subclass `RS_ScoreTierRow`; nothing fil
 - **Rarity**: pays by how rare the spawn roll was (a 1-in-1843 White).
 - **Full Spectrum**: all 13 colours killed in one map (Rainbow for our ladder).
 - **Colour Chain**: the same colour N times in a row (Radiant Silvergun).
-- **Nipped in the Bud**: killed while flashing, before it tiers up. **Fresh Paint**: killed just after it tiered up.
+- **Keep the Change** (owner's name, was "Nipped in the Bud"): killed while flashing, before it tiers up. **Fresh Paint**: killed just after it tiered up.
 - **Upset / tier Giant Slayer**: a low tier kills a top tier (infighting), or you kill a top tier with a weak weapon.
 - **Gang War**: a CH monster kills an MG monster or the reverse. **Mixed Bag**: both sets in one combo.
 
