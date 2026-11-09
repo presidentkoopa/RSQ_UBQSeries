@@ -1,0 +1,22 @@
+// =====================================================================
+// RS canvas textures.
+//
+// EMPTY ON PURPOSE. Everything that used to be declared here -- one
+// weapon-card canvas, nine in-world panel faces, and one shared drop
+// beam -- belonged to the card and billboard system, which is gone.
+// Verified before removal: not one of the eleven names was referenced
+// anywhere outside this file.
+//
+// ONE FINDING WORTH KEEPING, because it cost a day to establish and
+// would cost another to re-establish. A canvas texture applied to an
+// actor via picnum + RF_FLATSPRITE RENDERS NOTHING. Confirmed in the
+// running game 2026-08-08 by spawning two identical actors in the same
+// tic at the same spot, one on a canvas texture and one on the wall
+// texture BROWN1: the wall texture drew, the canvas did not, with a
+// valid picnum, alpha 1, bInvisible false, and the correct scaled size
+// all printed at spawn.
+//
+// So if in-world drawable surfaces are ever wanted again, canvases on
+// flat sprites are not the route -- that path was never visible, and
+// nothing built on it ever worked.
+// =====================================================================

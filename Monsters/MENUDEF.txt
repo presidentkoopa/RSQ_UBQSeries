@@ -1,0 +1,646 @@
+// RS_Monsters -- MENUDEF. The monster menus, followed transitively so no
+// Submenu points at a menu that is not here. Rows whose cvar or netevent this
+// pack does not provide are dropped.
+
+AddOptionMenu "OptionsMenu"
+{
+	StaticText ""
+	Submenu "RS Monsters", "RS_MonsterOptions"
+	Submenu "Monster Diagnostics", "RS_MonsterDebugMenu"
+}
+
+OptionMenu "RS_MonsterDebug"
+{
+	Title "Monster Debug"
+	StaticText " "
+	StaticText "Spawns lineups in front of you, facing you.", "DarkGray"
+	StaticText "One row per family, tier order, 100 units apart.", "DarkGray"
+	StaticText " "
+	Command "Spawn One Of Each Monster (all families)", "netevent rs_spawnall"
+	StaticText " "
+	Command "Spawn Zombieman Family", "netevent rs_spawnall_zombieman"
+	Command "Spawn Shotgunner Family", "netevent rs_spawnall_shotgunner"
+	Command "Spawn Chaingunner Family", "netevent rs_spawnall_chaingunner"
+	Command "Spawn Imp Family", "netevent rs_spawnall_imp"
+	Command "Spawn Demon Family", "netevent rs_spawnall_demon"
+	Command "Spawn Spectre Family", "netevent rs_spawnall_spectre"
+	Command "Spawn Lost Soul Family", "netevent rs_spawnall_lostsoul"
+	Command "Spawn Cacodemon Family", "netevent rs_spawnall_cacodemon"
+	Command "Spawn Pain Elemental Family", "netevent rs_spawnall_painelemental"
+	Command "Spawn Hell Knight Family", "netevent rs_spawnall_hellknight"
+	Command "Spawn Baron Family", "netevent rs_spawnall_baron"
+	Command "Spawn Revenant Family", "netevent rs_spawnall_revenant"
+	Command "Spawn Mancubus Family", "netevent rs_spawnall_fatso"
+	Command "Spawn Arachnotron Family", "netevent rs_spawnall_spider"
+	Command "Spawn Archvile Family", "netevent rs_spawnall_archvile"
+	Command "Spawn Cyberdemon Family", "netevent rs_spawnall_cyberdemon"
+	Command "Spawn Spider Mastermind Family", "netevent rs_spawnall_mastermind"
+	StaticText " "
+	StaticText "Reserve Squads -- these fire even while the system is off.", "DarkGray"
+	Command "Send One Reserve Wave", "netevent rs_reserve_fire"
+	Command "Show Arrival Spots (no monsters)", "netevent rs_reserve_markers"
+	Command "Reserve Status To Console", "netevent rs_reserve_status"
+	Command "Remove All Reserve Monsters", "netevent rs_reserve_clear"
+	StaticText " "
+	// Elite summons -- handled by RS_EliteHandler (zscript/systems/
+	// monster/RS_Elite.zs). Aim at a monster BEFORE opening the menu;
+	// the crosshair target is where the mark lands. Console form takes a
+	// forced type: netevent rs_elite <1-17> (order: DarkRed Red Orange
+	// Yellow DarkGreen Green Cyan Blue Indigo Violet Pink Black Grey
+	// White Bronze Silver Gold).
+	StaticText "Elites: aim at a monster first, then use.", "DarkGray"
+	Command "Elite-ify Aimed Monster (random type)", "netevent rs_elite"
+	Command "Elite-ify Aimed Monster + Reveal Now", "netevent rs_elite 0 1"
+	Command "Elite-ify Every Monster In Map", "netevent rs_elite_all"
+	Command "Reveal Aimed Elite Now", "netevent rs_elite_reveal"
+}
+
+OptionMenu "RS_MonsterControl"
+{
+	Title "Monster Control Center"
+	StaticText " "
+	StaticText "Everything about what the creatures are, how they read,", "DarkGray"
+	StaticText "and what arrives to help them.", "DarkGray"
+	StaticText " "
+
+	StaticText "At A Glance", "Cyan"
+	Option "Tier Icons Above Monsters", "rs_ch_colorblind", "RS_CH_OffOn"
+	StaticText "Floats the tier's own symbol over each monster, so the", "DarkGray"
+	StaticText "ladder reads as a shape and not only as a colour.", "DarkGray"
+	Option "Monster Health Bars", "rs_hpbar_enable", "OnOff"
+	StaticText " "
+
+	StaticText "Systems", "Cyan"
+	Submenu "Starting Roster...", "RS_RosterOptions"
+	StaticText "Caps each family's tier ladder. Defaults to Common only,", "DarkGray"
+	StaticText "so a new game opens at roughly vanilla footing.", "DarkGray"
+	Submenu "Monster Tiers...", "RS_CHMonsterOptions"
+	StaticText "Which of the thirteen tiers may appear, how their bosses", "DarkGray"
+	StaticText "behave, and what they leave behind.", "DarkGray"
+	Submenu "Elites...", "RS_EliteOptions"
+	StaticText "Hidden champions that reveal at half health.", "DarkGray"
+	StaticText "What elites drop, and the card you read it on.", "DarkGray"
+	Submenu "Reserve Squads...", "RS_ReserveOptions"
+	StaticText "Reinforcements that walk in from elsewhere on the map.", "DarkGray"
+	Submenu "Health Bar Detail...", "RS_HPBarOptions"
+	StaticText " "
+
+	StaticText "Testing", "Cyan"
+	Submenu "Spawn Lineups & Elites...", "RS_MonsterDebug"
+	StaticText " "
+
+	StaticText "Notes", "Cyan"
+	StaticText "Spawn settings only affect monsters that have not spawned", "DarkGray"
+	StaticText "yet -- start a new map to see them take effect.", "DarkGray"
+	StaticText "Drop and behaviour settings apply straight away.", "DarkGray"
+
+	StaticText " "
+	StaticText "No More Hitscans", "Gold"
+	StaticText "  Monster bullets become visible, dodgeable projectiles", "DarkGray"
+	StaticText "  instead of instant hits. ON by default -- it changes how", "DarkGray"
+	StaticText "  every hitscanner in the game fights you.", "DarkGray"
+	Option "Convert Monster Hitscans", "rs_nohitscan_enabled", "OnOff"
+	Slider "Projectile Speed",         "rs_nohitscan_speed", 20, 200, 5, 0
+	StaticText "  Lower = more dodgeable, and less like a bullet.", "DarkGray"
+	Slider "Projectile Visibility",    "rs_nohitscan_alpha", 0.0, 1.0, 0.05, 2
+	StaticText "  0 = invisible (instant-hit feel, still travels).", "DarkGray"
+}
+
+OptionMenu "RS_EliteOptions"
+{
+	Title "Elites"
+	StaticText " "
+	StaticText "Hidden champions. They look ordinary until half health,", "DarkGray"
+	StaticText "then reveal -- healed, angrier, and carrying a power.", "DarkGray"
+	StaticText "Kill one before it reveals and it pays nothing.", "DarkGray"
+	StaticText " "
+
+	StaticText "How Often", "Cyan"
+	Slider "Chance Per Monster (%)", "rs_elite_chance", 0, 100, 1, 0
+	StaticText "0 turns elites off entirely.", "DarkGray"
+	StaticText " "
+
+	StaticText "How Strong", "Cyan"
+	Slider "Health (% of normal)", "rs_elite_healthmult", 100, 1000, 25, 0
+	Slider "Damage After Reveal (x)", "rs_elite_damagemult", 1.0, 5.0, 0.1, 1
+	StaticText "Bosses are tuned separately -- they start strong.", "DarkGray"
+	Slider "Boss Health (%)", "rs_elite_healthmult_boss", 100, 1000, 25, 0
+	Slider "Boss Damage (x)", "rs_elite_damagemult_boss", 1.0, 5.0, 0.1, 1
+	StaticText " "
+
+	StaticText "How Aggressive", "Cyan"
+	// LOWER IS MORE AGGRESSIVE -- it multiplies the chance the monster
+	// HOLDS fire. Clamped 0.05..1.0 by the reader (RS_Elite.zs:436), and
+	// the slider matches that: below 0.05 an elite passes its fire check
+	// on nearly every chase decision, never takes a step, and turrets on
+	// the spot. That is what 0.0625 used to do here.
+	Slider "Hold-Fire Multiplier", "rs_elite_missilechance", 0.05, 1.0, 0.05, 2
+	StaticText "LOWER IS MORE AGGRESSIVE. 1.0 fires like an ordinary", "DarkGray"
+	StaticText "monster; 0.5 is noticeably pushier and still walks.", "DarkGray"
+	StaticText "Very low values plant the elite and make it turret.", "DarkGray"
+	StaticText " "
+
+	StaticText "Reveal", "Cyan"
+	Option "Reveal Fires The Type's Power", "rs_elite_booster", "OnOff"
+	StaticText "Off leaves the stat boost but drops the signature move.", "DarkGray"
+	StaticText " "
+
+	StaticText "Look", "Cyan"
+	Option "Aura Particles", "rs_elite_particles", "OnOff"
+	Option "Body Tint", "rs_elite_colortint", "OnOff"
+	Option "Creep Lies Flat On Floors", "rs_elite_flatcreep", "OnOff"
+	Option "Projectiles Drip Creep", "rs_elite_missilecreep", "OnOff"
+	StaticText " "
+
+	Submenu "Which Types Appear...", "RS_EliteWeights"
+}
+
+OptionMenu "RS_EliteWeights"
+{
+	Title "Elite Types"
+	StaticText " "
+	StaticText "Relative weights, not percentages. A type at 10 is twice", "DarkGray"
+	StaticText "as likely as one at 5. Set a type to 0 to remove it.", "DarkGray"
+	StaticText " "
+
+	Slider "Dark Red -- returns unless remains destroyed", "rs_elite_weight_e01", 0, 50, 1, 0
+	Slider "Red -- double health", "rs_elite_weight_e02", 0, 50, 1, 0
+	Slider "Orange -- explodes on death", "rs_elite_weight_e03", 0, 50, 1, 0
+	Slider "Yellow -- faster body and shots", "rs_elite_weight_e04", 0, 50, 1, 0
+	Slider "Dark Green -- toxic creep trail", "rs_elite_weight_e05", 0, 50, 1, 0
+	Slider "Green -- teleports in combat", "rs_elite_weight_e06", 0, 50, 1, 0
+	Slider "Cyan -- wind push", "rs_elite_weight_e07", 0, 50, 1, 0
+	Slider "Blue -- fireball bursts", "rs_elite_weight_e08", 0, 50, 1, 0
+	Slider "Indigo -- splits into clones", "rs_elite_weight_e09", 0, 50, 1, 0
+	Slider "Violet -- seeker volleys", "rs_elite_weight_e10", 0, 50, 1, 0
+	Slider "Pink -- raises corpses at a price", "rs_elite_weight_e11", 0, 50, 1, 0
+	Slider "Black -- deals double, takes double", "rs_elite_weight_e12", 0, 50, 1, 0
+	Slider "Grey -- lunges, leaves afterimages", "rs_elite_weight_e13", 0, 50, 1, 0
+	Slider "White -- slowing creep", "rs_elite_weight_e14", 0, 50, 1, 0
+	StaticText " "
+	StaticText "Rare by default -- the loudest powers.", "DarkGray"
+	Slider "Bronze -- painless immovable tank", "rs_elite_weight_e15", 0, 50, 1, 0
+	Slider "Silver -- magnetic pull", "rs_elite_weight_e16", 0, 50, 1, 0
+	Slider "Gold -- gilds nearby monsters", "rs_elite_weight_e17", 0, 50, 1, 0
+}
+
+OptionMenu "RS_ReserveOptions"
+{
+	Title "Reserve Squads"
+	StaticText " "
+	StaticText "Reinforcements arrive from spots elsewhere on the map,", "DarkGray"
+	StaticText "not out of thin air beside you.", "DarkGray"
+	StaticText " "
+
+	Option "Enable", "rs_reserve_enabled", "OnOff"
+	StaticText "Off by default. Testing buttons still work while off.", "DarkGray"
+	StaticText " "
+
+	StaticText "Pressure", "Cyan"
+	Slider "Intensity (%)", "rs_reserve_intensity", 10, 400, 10, 0
+	StaticText "One dial: raises wave size and shortens the gap together.", "DarkGray"
+	Slider "Shortest Gap (seconds)", "rs_reserve_interval_min", 5, 300, 5, 0
+	Slider "Longest Gap (seconds)", "rs_reserve_interval_max", 5, 600, 5, 0
+	Slider "Most Alive At Once", "rs_reserve_max_alive", 0, 100, 1, 0
+	StaticText "0 removes the cap entirely.", "DarkGray"
+	StaticText " "
+
+	StaticText "Squad Size", "Cyan"
+	Slider "Fewest Groups Per Wave", "rs_reserve_groups_min", 1, 8, 1, 0
+	Slider "Most Groups Per Wave", "rs_reserve_groups_max", 1, 8, 1, 0
+	Slider "Fewest Per Group", "rs_reserve_pergroup_min", 1, 12, 1, 0
+	Slider "Most Per Group", "rs_reserve_pergroup_max", 1, 12, 1, 0
+	Slider "Scatter Within A Group", "rs_reserve_spread", 0, 256, 8, 0
+	StaticText " "
+
+	StaticText "Distance", "Cyan"
+	Slider "No Closer Than", "rs_reserve_dist_min", 0, 2048, 64, 0
+	Slider "No Further Than", "rs_reserve_dist_max", 128, 4096, 64, 0
+	StaticText " "
+
+	StaticText "Who Arrives", "Cyan"
+	Option "Roster", "rs_reserve_roster", "RS_Reserve_Roster"
+	StaticText "Common sends the plainest monsters -- a player cannot tell", "DarkGray"
+	StaticText "them from ordinary ones. Map Bestiary matches whatever the", "DarkGray"
+	StaticText "level was built from, so theme and difficulty follow it.", "DarkGray"
+	Slider "Lowest Tier", "rs_reserve_tier_min", 0, 13, 1, 0
+	Slider "Highest Tier", "rs_reserve_tier_max", 0, 13, 1, 0
+	StaticText "A band with nothing in it sends nothing -- that is intended.", "DarkGray"
+	Slider "Waves Before Escalating", "rs_reserve_escalate_waves", 1, 20, 1, 0
+	StaticText "Escalating roster only. How long before the band creeps up.", "DarkGray"
+	Option "Allow Bosses", "rs_reserve_allow_boss", "OnOff"
+	StaticText "Off by default -- a boss arriving unannounced ends runs.", "DarkGray"
+	StaticText " "
+
+	StaticText "Arrival", "Cyan"
+	Option "How They Appear", "rs_reserve_arrival", "RS_Reserve_Arrival"
+	Option "Warning", "rs_reserve_telegraph", "RS_Reserve_Telegraph"
+	StaticText "None is the no-warning original. Expect to jump.", "DarkGray"
+	Slider "Warning Lead Time (tics)", "rs_reserve_telegraph_time", 0, 140, 5, 0
+	StaticText " "
+
+	StaticText "Champions", "Cyan"
+	Option "Around Elites", "rs_reserve_elite_mode", "RS_Reserve_Elite"
+	StaticText "Suppress keeps two big moments from colliding.", "DarkGray"
+}
+
+OptionMenu "RS_HPBarOptions"
+{
+	Title "Monster Health Bars"
+	StaticText " "
+
+	Option "Show Health Bars", "rs_hpbar_enable", "OnOff"
+	StaticText "Off is also the cheapest setting -- untouched", "DarkGray"
+	StaticText "monsters cost nothing at all.", "DarkGray"
+	Option "Only Once Damaged", "rs_hpbar_onlydamaged", "OnOff"
+	StaticText " "
+
+	Option "Style", "rs_hpbar_style", "RS_HPBarStyles"
+	Slider "Bar Size", "rs_hpbar_scale", 0.01, 1.0, 0.01, 2
+	Slider "Height Above Monster", "rs_hpbar_offset", -0.5, 0.5, 0.01, 2
+	StaticText " "
+
+	Option "Ignore Sector Lighting", "rs_hpbar_fullbright", "OnOff"
+	StaticText "A spectre's bar fades with the spectre.", "DarkGray"
+	Option "Match Monster Transparency", "rs_hpbar_stealth", "OnOff"
+	StaticText " "
+
+	StaticText "Chip Damage", "GOLD"
+	StaticText "Trailing bar showing where health just was.", "DarkGray"
+	StaticText "Layered reads better; Underline cannot flicker.", "DarkGray"
+	Option "Chip Damage", "rs_hpbar_chip", "RS_HPBarChipModes"
+	Slider "Chip Drain Speed -- % Per Second", "rs_hpbar_chip_speed", 5, 300, 5, 0
+	Slider "Chip Hold Before Draining -- Tics", "rs_hpbar_chip_hold", 0, 70, 1, 0
+	StaticText " "
+
+	StaticText "Phase Gates", "GOLD"
+	StaticText "Gold tick showing where a monster next enrages.", "DarkGray"
+	StaticText "LEARNED: the first of a kind teaches it, the rest show it.", "DarkGray"
+	Option "Threshold Marks", "rs_hpbar_marks", "OnOff"
+	StaticText " "
+
+	StaticText "Boss Bracket", "GOLD"
+	StaticText "Marks a long fight, so a slow drain doesn't read as stuck.", "DarkGray"
+	Option "Boss Bracket", "rs_hpbar_bossframe", "RS_HPBarFrameModes"
+	Slider "Counts As Big -- Max Health", "rs_hpbar_boss_hp", 100, 5000, 100, 0
+}
+
+OptionMenu "RS_RosterOptions"
+{
+	Title "Starting Roster"
+	StaticText " "
+	StaticText "Every family spawns across thirteen colour tiers. This caps", "DarkGray"
+	StaticText "how far up that ladder each one may roll.", "DarkGray"
+	StaticText "1 is Common only -- close to vanilla. 13 is the full set.", "DarkGray"
+	StaticText " "
+
+	Option "Enable Roster Caps", "rs_roster_enable", "OnOff"
+	StaticText "Off hands every family back to its own dial.", "DarkGray"
+	StaticText " "
+
+	StaticText "Which Roster", "Cyan"
+	Option "Monster Pack", "rs_roster_pack", "RS_RosterSet"
+	StaticText "Vanilla: stock Doom, every replacement cancelled.", "DarkGray"
+	StaticText "RS_MG:   gory dismemberment deaths. Covers Zombieman and", "DarkGray"
+	StaticText "         Shotgunner so far; the rest fall to RS_Mon.", "DarkGray"
+	StaticText "RS_Mon:  the thirteen colour tiers, capped per family below.", "DarkGray"
+	StaticText "Takes effect on the next map.", "DarkGray"
+	StaticText " "
+
+	StaticText "Ladder", "Cyan"
+	StaticText "1 Common  2 Green  3 Blue  4 Purple  5 Yellow  6 Red", "DarkGray"
+	StaticText "7 FireBlu  8 Gray  9 Abyss  10 Black  11 White", "DarkGray"
+	StaticText "12 Cyan  13 Brown", "DarkGray"
+	StaticText " "
+
+	StaticText "Per Family", "Cyan"
+	Slider "Zombieman",       "rs_roster_zombieman",     1, 13, 1, 0
+	Slider "Shotgunner",      "rs_roster_shotgunner",    1, 13, 1, 0
+	Slider "Chaingunner",     "rs_roster_chaingunner",   1, 13, 1, 0
+	Slider "Imp",             "rs_roster_imp",           1, 13, 1, 0
+	Slider "Demon",           "rs_roster_demon",         1, 13, 1, 0
+	Slider "Spectre",         "rs_roster_spectre",       1, 13, 1, 0
+	Slider "Cacodemon",       "rs_roster_cacodemon",     1, 13, 1, 0
+	Slider "Lost Soul",       "rs_roster_lostsoul",      1, 13, 1, 0
+	Slider "Pain Elemental",  "rs_roster_painelemental", 1, 13, 1, 0
+	Slider "Hell Knight",     "rs_roster_hellknight",    1, 13, 1, 0
+	Slider "Baron of Hell",   "rs_roster_baron",         1, 13, 1, 0
+	Slider "Revenant",        "rs_roster_revenant",      1, 13, 1, 0
+	Slider "Mancubus",        "rs_roster_fatso",         1, 13, 1, 0
+	Slider "Arachnotron",     "rs_roster_arachnotron",   1, 13, 1, 0
+	Slider "Arch-Vile",       "rs_roster_archvile",      1, 13, 1, 0
+	Slider "Cyberdemon",      "rs_roster_cyberdemon",    1, 13, 1, 0
+	Slider "Spider Mastermind","rs_roster_mastermind",   1, 13, 1, 0
+	StaticText " "
+
+	StaticText "Applies to monsters that have not spawned yet.", "DarkGray"
+	StaticText "Start a new map to see a change take effect.", "DarkGray"
+}
+
+OptionMenu "RS_CHMonsterOptions"
+{
+	Title "Monster Tiers"
+	StaticText " "
+	StaticText "Every creature family spawns as one of thirteen tiers.", "DarkGray"
+	StaticText "These pages decide which tiers may appear, how their", "DarkGray"
+	StaticText "bosses behave, and what they leave behind.", "DarkGray"
+	StaticText " "
+
+	StaticText "Readability", "Cyan"
+	Option "Tier Icons Above Monsters", "rs_ch_colorblind", "RS_CH_OffOn"
+	StaticText "Floats the tier's own symbol over each monster, so the", "DarkGray"
+	StaticText "ladder reads as a shape and not only as a colour.", "DarkGray"
+	Submenu "Tier Legend", "RS_CHTierLegend"
+	StaticText " "
+
+	StaticText "Settings", "Cyan"
+	Submenu "Extra Challenge Tiers", "RS_CHTierOptions"
+	Submenu "Boss & Special Forms", "RS_CHBossOptions"
+	Submenu "Monster Drops", "RS_CHDropOptions"
+	Submenu "Combat Behaviour", "RS_CHBehaviourOptions"
+	// A further section (e.g. ambush / random encounter events) appends
+	// HERE -- one more Submenu line under this same "Settings" header,
+	// with its page defined after RS_CHBehaviourOptions below. Nothing
+	// on this page needs to move for that.
+	StaticText " "
+
+	StaticText "Notes", "Cyan"
+	StaticText "Spawn settings only affect monsters that have not spawned", "DarkGray"
+	StaticText "yet -- start a new map to see them take effect.", "DarkGray"
+	StaticText "Drop and behaviour settings apply straight away.", "DarkGray"
+	StaticText "Some monsters carry fixed drops of their own that none of", "DarkGray"
+	StaticText "these settings gate.", "DarkGray"
+}
+
+OptionMenu "RS_CHTierOptions"
+{
+	Title "Extra Challenge Tiers"
+	StaticText " "
+	StaticText "Five tiers that sit outside the ordinary ladder. Each has", "DarkGray"
+	StaticText "its own combat role rather than simply more health.", "DarkGray"
+	StaticText "Turning one off re-rolls that spawn into the normal set.", "DarkGray"
+	StaticText " "
+
+	Option "Tier 7 -- FireBlue", "rs_ch_fireblu", "RS_CH_TierGateSimple"
+	StaticText "Area damage. Fights the ground you stand on.", "DarkGray"
+	StaticText " "
+
+	Option "Tier 8 -- Gray", "rs_ch_gray", "RS_CH_TierGateSimple"
+	StaticText "Awareness. Hard to flank, hard to lose.", "DarkGray"
+	StaticText " "
+
+	Option "Tier 9 -- Abyss", "rs_ch_abyss", "RS_CH_TierGate"
+	StaticText "The heaviest of the five. Expect a long fight.", "DarkGray"
+	StaticText " "
+
+	Option "Tier 12 -- Cyan", "rs_ch_cyan", "RS_CH_TierGate"
+	StaticText "Ice and evasion. Slippery, and rarely where you aimed.", "DarkGray"
+	StaticText " "
+
+	Option "Tier 13 -- Brown", "rs_ch_brown", "RS_CH_TierGate"
+	StaticText "Support and disruption. Makes the rest of the room worse.", "DarkGray"
+	StaticText " "
+
+	StaticText "Applies to monsters that have not spawned yet.", "DarkGray"
+	StaticText "Start a new map to see a change take effect.", "DarkGray"
+}
+
+OptionMenu "RS_CHBossOptions"
+{
+	Title "Boss & Special Forms"
+	StaticText " "
+	StaticText "Boss tiers are about one spawn in eight hundred. The", "DarkGray"
+	StaticText "rarity is the point -- it is the moment a run changes.", "DarkGray"
+	StaticText " "
+
+	StaticText "Boss Tiers", "Cyan"
+	Option "Tier 10 -- Black Boss", "rs_ch_blackboss", "RS_CH_BlackBoss"
+	StaticText "Off does not remove the spawn, it demotes it to Tier 6.", "DarkGray"
+	StaticText " "
+
+	Option "Tier 11 -- White Boss", "rs_ch_whiteboss", "RS_CH_WhiteBoss"
+	StaticText "Off demotes it to a Tier 10 roll, which then answers to", "DarkGray"
+	StaticText "the setting above.", "DarkGray"
+	StaticText " "
+
+	Option "Enhanced Boss Form", "rs_ch_exboss", "RS_CH_ExBoss"
+	StaticText "A rarer, nastier build of the Tier 10 boss. Only reachable", "DarkGray"
+	StaticText "while Tier 10 bosses are on.", "DarkGray"
+	StaticText " "
+
+	StaticText "Special Forms", "Cyan"
+	Option "Tier 6 Red Special Form", "rs_ch_nerfredboss", "RS_CH_RedForm"
+	StaticText "Affects the Tier 6 Archvile and Baron only. The stronger", "DarkGray"
+	StaticText "form is a genuine step up from the plain one.", "DarkGray"
+	StaticText " "
+
+	Option "Tier 5 Orange Revenant", "rs_ch_yellowrev", "RS_CH_OrangeRevenant"
+	StaticText "Phasing ignores walls and brings an escort; Solid collides", "DarkGray"
+	StaticText "normally and is the kinder choice on crowded maps.", "DarkGray"
+	StaticText " "
+
+	StaticText "All five apply to monsters that have not spawned yet.", "DarkGray"
+	StaticText "Start a new map to see a change take effect.", "DarkGray"
+}
+
+OptionMenu "RS_CHDropOptions"
+{
+	Title "Monster Drops"
+	StaticText " "
+	StaticText "How generous the bundles are that monsters scatter on", "DarkGray"
+	StaticText "death. These take effect immediately.", "DarkGray"
+	StaticText " "
+
+	Option "Health & Armour Bundles", "rs_ch_healthdrops", "RS_CH_BonusBundles"
+	StaticText "One setting drives both bundles. Standard is a dozen", "DarkGray"
+	StaticText "bonuses on sliding odds; Fully Random rolls each one.", "DarkGray"
+	StaticText " "
+
+	Option "Backpack Bundles", "rs_ch_backpackdrops", "RS_CH_BackpackBundles"
+	StaticText "Bosses and other heavy monsters. Random averages about", "DarkGray"
+	StaticText "the same as Standard with a far wilder spread.", "DarkGray"
+	StaticText " "
+
+	Option "Extra Ammo Drops", "rs_ch_ammodrops", "RS_CH_AmmoDrops"
+	StaticText "Bullets, shells, cells and rockets. Mostly affects the", "DarkGray"
+	StaticText "non-humanoid monsters.", "DarkGray"
+	StaticText " "
+
+	StaticText " "
+	StaticText "Loot", "Cyan"
+	StaticText "Split out so each kind can be tuned on its own.", "DarkGray"
+	StaticText " "
+
+	Option "Weapon Drops", "rs_ch_weapondrops", "RS_CH_CategoryDrops"
+	StaticText "Chainsaws, super shotguns, plasma rifles, rocket", "DarkGray"
+	StaticText "launchers and BFGs left behind by the tougher kills.", "DarkGray"
+	StaticText " "
+
+	Option "Power-Up Drops", "rs_ch_powerupdrops", "RS_CH_CategoryDrops"
+	StaticText "Berserk, soulspheres, megaspheres and blurspheres.", "DarkGray"
+	StaticText " "
+
+	Option "Armour Drops", "rs_ch_armordrops", "RS_CH_CategoryDrops"
+	StaticText "Green and blue armour left as loot.", "DarkGray"
+	StaticText " "
+
+	Option "Other Bonus Drops", "rs_ch_extradrops", "RS_CH_ExtraDrops"
+	StaticText "Everything else in that family -- medikits and the like.", "DarkGray"
+	StaticText " "
+
+	StaticText "Monsters that carry a drop directly, rather than through", "DarkGray"
+	StaticText "one of these bundles, are not affected by any of it.", "DarkGray"
+}
+
+OptionMenu "RS_CHBehaviourOptions"
+{
+	Title "Combat Behaviour"
+	StaticText " "
+	StaticText "How monsters fight, rather than which ones show up.", "DarkGray"
+	StaticText "Everything here applies immediately.", "DarkGray"
+	StaticText " "
+
+	StaticText "Aim", "Cyan"
+	Option "Leading Shots", "rs_ch_intercept", "RS_CH_LeadShots"
+	StaticText "Whether the big projectile monsters solve for where you", "DarkGray"
+	StaticText "are going instead of where you are. Affects the Hell", "DarkGray"
+	StaticText "Knight, the Baron and the Cyberdemon.", "DarkGray"
+	StaticText " "
+
+	StaticText "Movement", "Cyan"
+	Option "Tier 12 Evasive Hop", "rs_ch_cyanbounce", "RS_CH_EvasiveHop"
+	StaticText "The vertical leap in the Cyan dodge. Reduced keeps the", "DarkGray"
+	StaticText "side-step and drops the hop, which is calmer to track", "DarkGray"
+	StaticText "in a crowded room.", "DarkGray"
+	StaticText " "
+
+	StaticText "Damage & Readability", "Cyan"
+	Option "Cyberdemon Rocket Damage Type", "rs_ch_rawket", "RS_CH_RocketDamage"
+	StaticText "Normal is the safe choice. Its own type only helps if", "DarkGray"
+	StaticText "your armour or weapons actually read damage types.", "DarkGray"
+	StaticText " "
+
+	Option "Tier 9 Shot Markers", "rs_ch_abyssmark", "RS_CH_OffOn"
+	StaticText "Extra markers on Abyss projectiles, so they are easier", "DarkGray"
+	StaticText "to pick out of a busy screen.", "DarkGray"
+	StaticText " "
+
+	Option "Tier Icons Above Monsters", "rs_ch_colorblind", "RS_CH_OffOn"
+	Submenu "Tier Legend", "RS_CHTierLegend"
+}
+
+OptionMenu "RS_CHTierLegend"
+{
+	Title "Tier Legend"
+	StaticText " "
+	StaticText "The symbol that floats over a monster when tier icons", "DarkGray"
+	StaticText "are switched on.", "DarkGray"
+	StaticText " "
+
+	StaticText "Ordinary Ladder", "Cyan"
+	StaticText "    I      Tier 1   -- Common"
+	StaticText "    II     Tier 2   -- Green"
+	StaticText "    III    Tier 3   -- Blue"
+	StaticText "    IV     Tier 4   -- Purple"
+	StaticText "    V      Tier 5   -- Orange"
+	StaticText "    VI     Tier 6   -- Red"
+	StaticText " "
+
+	StaticText "Extra Challenge Tiers", "Cyan"
+	StaticText "    FB     Tier 7   -- FireBlue"
+	StaticText "    G      Tier 8   -- Gray"
+	StaticText "    A      Tier 9   -- Abyss"
+	StaticText "    C      Tier 12  -- Cyan"
+	StaticText "    B      Tier 13  -- Brown"
+	StaticText " "
+
+	StaticText "Boss Tiers", "Cyan"
+	StaticText "    Skull          Tier 10  -- Black"
+	StaticText "    Horned Skull   Tier 11  -- White"
+	StaticText " "
+
+	StaticText "The five extra challenge tiers can each be switched off", "DarkGray"
+	StaticText "on the Extra Challenge Tiers page.", "DarkGray"
+}
+
+OptionMenu "RS_MonsterOptions"
+{
+	Title "RS Monster Options"
+	StaticText " "
+
+	StaticText "Tier Changes", 1
+	Option "Keep health fraction on retier", "rs_mon_retier_preserve_fraction", "OnOff"
+	Option "Staggered transform (flash + delay)",  "rs_mon_transform_tell", "OnOff"
+
+	StaticText " "
+	StaticText "Spawn Bands", 1
+	// Which creatures a map spawn is allowed to become. CH gates seven
+	// individual colours; these are the same thing as role bands, which
+	// mean the same in every family where a colour does not.
+	Option "Optional tiers",    "rs_mon_band_optional", "OnOff"
+	StaticText "CH's 'extra challenge' set. CH ships these off; we don't.", 2
+	Option "Boss tiers",        "rs_mon_band_boss",     "OnOff"
+	StaticText "Roughly one per eight hundred. The rarity is the point.", 2
+
+	StaticText " "
+	StaticText "Readability", 1
+	// Colourful Hell's own colourblind aid, rebuilt. CH encodes its whole
+	// difficulty ladder as a palette tint, so a player who cannot separate
+	// the colours cannot read how dangerous an approaching monster is.
+	// This shows the tier as a SHAPE instead. Off by default, exactly as
+	// CH ships it. See zscript/monsters/chaingunner/RS_ColorTierIcon.zs.
+	Option "Tier icons over monsters", "rs_mon_tiericons", "OnOff"
+
+	StaticText " "
+	StaticText "Aggression", 1
+	// 0.0625 is CH's own value where it stacks both missile flags, and
+	// it makes a monster stand still and hose. 0 = raw CHP.
+	Slider "Missile-rate floor (0 = raw CHP)", "rs_mon_missilechance_floor", 0.0, 1.0, 0.0625, 4
+
+	StaticText " "
+	StaticText "No More Hitscans", 1
+	Option "Monster bullets travel", "rs_nohitscan_enabled", "OnOff"
+	Slider "Bullet speed", "rs_nohitscan_speed", 8, 1024, 8, 0
+	Slider "Bullet opacity", "rs_nohitscan_alpha", 0.0, 1.0, 0.1, 1
+}
+
+OptionMenu "RS_MonsterDebugMenu"
+{
+	Title "Monster Diagnostics"
+	StaticText " "
+	StaticText "Colourful Hell -- Chaingunner (family 04)", 1
+	StaticText "The only family ported from CH. This menu grows when 05 lands.", 2
+	StaticText " "
+
+	Command "God Mode (toggle)", "god"
+	Option  "Spawn hostile (they fight back)", "rs_mon_dbg_hostile", "OnOff"
+	StaticText " "
+
+	StaticText "Spawn one", 1
+	Command "Former Captain                         C0001", "netevent rs_cg_spawn 0"
+	Command "Green Chaingunner                      T0001", "netevent rs_cg_spawn 1"
+	Command "Blue Chaingunner                       T0002", "netevent rs_cg_spawn 2"
+	Command "Purple Chaingunner                     T0004", "netevent rs_cg_spawn 3"
+	Command "Yellow Chaingunner                     T0005", "netevent rs_cg_spawn 4"
+	Command "Red Chaingunner                        T0010", "netevent rs_cg_spawn 5"
+	Command "Jetpack Larry                          T0003", "netevent rs_cg_spawn 6"
+	Command "Gray Chaingunner                       T0007", "netevent rs_cg_spawn 7"
+	Command "Brown Chaingunner                      T0006", "netevent rs_cg_spawn 8"
+	Command "Abyss Chaingunner                      T0008", "netevent rs_cg_spawn 9"
+	Command "Fireblu Chaingunner                    T0009", "netevent rs_cg_spawn 10"
+	Command "The General  (boss, 4500)              B0001", "netevent rs_cg_spawn 11"
+	Command "The crazy lady scientist  (boss, 7777) B0002", "netevent rs_cg_spawn 12"
+	Command "Black ChainGunner EX  (8999)           X0001", "netevent rs_cg_spawn 13"
+	StaticText " "
+
+	Command "SPAWN ALL FOURTEEN", "netevent rs_cg_line"
+	Command "Remove them all", "netevent rs_cg_clear"
+	StaticText " "
+
+	StaticText "Read the console (~) after pressing", 1
+	Command "DIAG -- what is alive, and what it really is", "netevent rs_cg_diag"
+	Command "WAKE -- make them hostile and target you", "netevent rs_cg_wake"
+	StaticText " "
+	StaticText "DIAG reads the LIVE actor, not a table. A table can agree", 2
+	StaticText "with itself while the game disagrees with both.", 2
+}

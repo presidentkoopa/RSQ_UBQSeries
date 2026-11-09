@@ -1,0 +1,1836 @@
+// =====================================================================
+// RS_Main SNDINFO
+// ---------------------------------------------------------------------
+// Layout follows the project asset directive (docs/DIRECTIVE_GNRC_REIMPORT.md
+// section 1): a path answers "does one weapon own this, or is it shared?"
+//
+//   sounds/rs_weapon/vr_<weapon>/     main arsenal, one folder per weapon
+//   sounds/combatfx/<category>/       SHARED effects -- owned by no weapon
+//        casings/ ricochet/ impact/ magdrops/ explosions/
+//        foley/ melee/ altfire/
+//   sounds/hq_vanilla/                the HQ vanilla alternate pack (see
+//                                     below -- currently inert, nothing
+//                                     reads rs_fx_hqvanillasounds)
+//
+// A per-weapon folder holds ONLY that weapon's own fire/reload/handling
+// audio. Anything both sets can consume -- casings, ricochets, impacts,
+// magazine drops, explosions, foley -- lives under combatfx/ instead,
+// mirroring the sprites/combatfx/ tree category-for-category: the same
+// effect is found under the same category name on both sides, so
+// "explosions" means sprites/combatfx/explosions AND
+// sounds/combatfx/explosions. That one-name-two-places rule is what lets
+// the affix system assemble an effect's visual and audio together,
+// rather than hunting through whichever weapon folder an asset happened
+// to land in first.
+//
+// sounds/rs_vp_weapon/ no longer exists -- the Vanilla+ WEAPON CLASSES it
+// belonged to were removed in an earlier pass ("Vanilla+" now means
+// RS_GH_Weaponset, which uses the GH sound set instead). Nothing in the
+// current codebase references any rs_vp_ logical name. Rather than
+// delete real, unique audio, its files were re-homed into combatfx/ by
+// content type (foley/explosions/melee/altfire -- see the block below)
+// and their SNDINFO paths updated to match, so they stay real, loadable,
+// reusable sounds -- available to PACK or a future weapon -- instead of
+// orphaned dead weight or broken references.
+//
+// sounds/UNUSED/ (pre-reorg originals) was fully deleted, not just
+// flagged redundant -- every one of its 60 files was individually
+// verified to already have a real duplicate properly filed elsewhere
+// (rs_weapon/, combatfx/, etc.) before removal. No unique content lost.
+//
+// Every entry below is verified against what each weapon's own .zs code
+// actually calls (A_PlaySound/A_StartSound), not against what a folder
+// happens to contain.
+//
+// Paths use the lowercase folder names that actually exist on disk
+// (vr_pistol, not VR_Pistol) -- avoids the exact case-sensitivity trap
+// already found and fixed in the Revolver MODELDEF earlier in this
+// project; a case mismatch here is silently fine on Windows but breaks
+// on any case-sensitive packaging.
+// =====================================================================
+
+// --- Shared ---
+// Deliberately shared across all ten weapons (backfire + empty-click).
+rs_fx_weapon_empty        Sounds/combatfx/foley/AKEMPT
+
+// --- Pistol ---
+9mmshoot      Sounds/rs_weapon/vr_pistol/9mmshoot.wav
+9mmclip1      Sounds/rs_weapon/vr_pistol/9mmclip1.wav
+9mmclip2      Sounds/rs_weapon/vr_pistol/9mmclip2.wav
+9mmslide      Sounds/rs_weapon/vr_pistol/9mmslide.wav
+
+// --- Revolver ---
+// Fire sound switched to REVOFIR1 (one of four takes found on disk --
+// revolver.wav, REVOFIR2, REVOFIR3 are all copied into vr_revolver/ too,
+// reserved for a future altfire/random-variant pass, not wired here).
+// Reload reuses the Pistol's 9mm family -- genuinely shared, confirmed
+// real from the old reference files, not a lazy substitution.
+revolver      Sounds/rs_weapon/vr_revolver/REVOFIR1.ogg
+
+// Alternate takes for the Weapon Sound Assignment options menu (see
+// RS_Catalog.SND_Revolver_Resolve, MENUDEF's RS_WeaponSoundOptions).
+// Files already existed on disk, staged but never given their own
+// logical name -- this is that.
+rs_revolver_alt1  Sounds/rs_weapon/vr_revolver/revolver.wav
+rs_revolver_alt2  Sounds/rs_weapon/vr_revolver/REVOFIR2.ogg
+rs_revolver_alt3  Sounds/rs_weapon/vr_revolver/REVOFIR3.ogg
+
+// --- Rifle ---
+// Reload reuses the Pistol's 9mm family. Checked the entire sounds/
+// tree for a dedicated rifle reload sound -- none exists anywhere. An
+// earlier pass invented fake m16clip1/m16clip2/m16slide names with no
+// real audio behind them; this is the genuine, verified answer, not
+// laziness.
+m16shoot      Sounds/rs_weapon/vr_rifle/m16shoot.wav
+
+// --- SMG ---
+// smgclip reuses the Pistol's 9mmclip2 (the "new mag clicks in" sound)
+// as its single reload cue -- SMG's reload is one sound call, not
+// Pistol's three-stage sequence, so one representative moment covers it.
+smgfire       Sounds/rs_weapon/vr_smg/SMGFIRE.ogg
+smgclip       Sounds/rs_weapon/vr_smg/smgclip.wav
+
+// --- Shotgun ---
+// shotgf/shotcycle were completely missing from the project; these are
+// name-matched from previously-unsorted loose files (DSSHOTGN.wav,
+// DSSGCOCK.wav) but not verified by ear -- flagged as possibly too loud,
+// swap the files later if they're wrong. shotpump/shotload/shotload2
+// were already correctly present.
+shotgf        Sounds/rs_weapon/vr_shotgun/shotgf.wav
+shotpump      Sounds/rs_weapon/vr_shotgun/shotpump.mp3
+shotcycle     Sounds/rs_weapon/vr_shotgun/shotcycle.wav
+shotload      Sounds/rs_weapon/vr_shotgun/SHOTLOAD1.ogg
+shotload2     Sounds/rs_weapon/vr_shotgun/SHOTLOAD2.ogg
+
+// --- Super Shotgun ---
+// shotgun2.wav was previously misplaced inside the Shotgun's folder --
+// this is genuinely the SuperShotgun's fire sound, moved to its own
+// folder. Reload uses built-in GZDoom actions (A_OpenShotgun2/
+// A_LoadShotgun2/A_CloseShotgun2), which play their own internal sounds
+// -- no custom reload sound names needed.
+wpn/shotgun2  Sounds/rs_weapon/vr_supershotgun/shotgun2.wav
+
+// --- Chaingun ---
+// Real vanilla Doom behavior: the Chaingun has no distinct fire sound
+// of its own -- A_FireCGun plays the Pistol's sound effect (sfx_pistol)
+// in the original engine. Now defaults to the HQ vanilla pack's DSPISTOL
+// (see "HQ Vanilla alternate pack" section below) rather than the
+// earlier plain copy. No reload exists for this weapon (belt-fed).
+chngun        Sounds/hq_vanilla/DSPISTOL
+
+// --- Chainsaw (main arsenal) ---
+// Distinct from the Vanilla+ set's rs_vp_saw_* -- this is the new
+// VR_Chainsaw's own dedicated set, staged under rs_weapon/vr_saw/
+// already (5 files, all present) but never registered until now.
+sawdraw       Sounds/rs_weapon/vr_saw/CSAWDRAW
+sawloop       Sounds/rs_weapon/vr_saw/CSAWLOOP
+sawredy       Sounds/rs_weapon/vr_saw/CSAWREDY
+sawstop       Sounds/rs_weapon/vr_saw/CSAWSTOP
+sawstrt       Sounds/rs_weapon/vr_saw/CSAWSTRT
+
+// --- Rocket Launcher ---
+// Defaults to the HQ vanilla pack's DSRLAUNC.
+rocklf        Sounds/hq_vanilla/DSRLAUNC
+
+// --- Plasma Rifle ---
+// NOT switched to HQ vanilla -- you explicitly replaced this with
+// PLFIRE2.ogg earlier because the original made you want to throw up.
+// Reverting to DSPLASMA would undo that on purpose; left alone.
+weapons/plasma/fire  Sounds/rs_weapon/vr_plasmarifle/fire.ogg
+
+// --- BFG9000 ---
+// Defaults to the HQ vanilla pack's DSBFG.
+bfgf          Sounds/hq_vanilla/DSBFG
+
+// --- Ballistic projectile impact ---
+// 10 real takes, previously unused. RS_BallisticFired's Death state
+// played no sound at all before this.
+$random rs_fx_impact_bullet { impact0 impact1 impact2 impact3 impact4 impact5 impact6 impact7 impact8 impact9 }
+impact0  Sounds/combatfx/impact/impact0.wav
+impact1  Sounds/combatfx/impact/impact1.wav
+impact2  Sounds/combatfx/impact/impact2.wav
+impact3  Sounds/combatfx/impact/impact3.wav
+impact4  Sounds/combatfx/impact/impact4.wav
+impact5  Sounds/combatfx/impact/impact5.wav
+impact6  Sounds/combatfx/impact/impact6.wav
+impact7  Sounds/combatfx/impact/impact7.wav
+impact8  Sounds/combatfx/impact/impact8.wav
+impact9  Sounds/combatfx/impact/impact9.mp3
+
+// =====================================================================
+// PER-MATERIAL IMPACT SOUNDS -- added 2026-08-07 with RS_Material.
+// ---------------------------------------------------------------------
+// RS_Material.ImpactSound() returns one of these logical names, and the
+// puff plays it. Before this, every impact in the game played a ricochet
+// regardless of what was hit; these are what it plays instead.
+//
+// THESE ARE PLACEHOLDER MAPPINGS. There are ten generic impact lumps on
+// disk and ten materials, so the groups below are subsets chosen to at
+// least sound DIFFERENT from each other -- they are not authored
+// per-material sets. Replacing any one of these groups with real audio
+// is a pure SNDINFO edit; no code changes with it.
+//
+// A logical name with no lump behind it is completely silent and
+// produces no error, so an unfinished group costs nothing but silence.
+// =====================================================================
+
+$random rs_impact/stone      { impact0 impact1 impact2 }
+$random rs_impact/metal      { impact3 impact4 }
+$random rs_impact/wood       { impact5 impact6 }
+$random rs_impact/dirt       { impact7 impact8 }
+$random rs_impact/glass      { impact9 impact3 }
+$random rs_impact/liquid     { impact8 impact7 }
+
+// Bodies. Organic leans on the wetter end of the set; armored and
+// mechanical borrow the harder hits; energy has no good stand-in in the
+// current library and is deliberately left pointing at the quietest one
+// until something better is authored.
+$random rs_impact/flesh      { impact5 impact8 }
+$random rs_impact/armored    { impact2 impact3 }
+$random rs_impact/mechanical { impact3 impact4 }
+$random rs_impact/energy     { impact9 }
+
+$volume rs_impact/stone      0.55
+$volume rs_impact/metal      0.60
+$volume rs_impact/wood       0.55
+$volume rs_impact/dirt       0.45
+$volume rs_impact/glass      0.60
+$volume rs_impact/liquid     0.50
+$volume rs_impact/flesh      0.50
+$volume rs_impact/armored    0.55
+$volume rs_impact/mechanical 0.60
+$volume rs_impact/energy     0.50
+
+// The repair tick -- plays when ten Grey Bits convert into one point of
+// Condition on your equipped weapons (RS_Bits.zs, RS_Bit_Grey.TryRepair).
+// It is the ONLY feedback that the automatic repair happened, since the
+// owner ruled out a spend menu, so it wants to be a distinct little
+// noise rather than another pickup blip. Placeholder points at the
+// all-clear tone until something is authored for it.
+$alias  rs_bit_repair  rs_allclear_ready
+$volume rs_bit_repair  0.6
+
+// --- Enhanced FX: bullets (casings, ricochet) ---
+// Staged here with the assets already copied in; not yet called by any
+// code -- these are consumed once the Enhanced Weapon FX effects system
+// (RS_EnhancedFX.zs) exists. Logical names kept distinct from every
+// per-weapon section above so nothing here can collide with them.
+$random rs_fx_casing_chaingun { rs_fx_chgncas1 rs_fx_chgncas2 rs_fx_chgncas3 }
+rs_fx_chgncas1  Sounds/combatfx/casings/CHGNCAS1
+rs_fx_chgncas2  Sounds/combatfx/casings/CHGNCAS2
+rs_fx_chgncas3  Sounds/combatfx/casings/CHGNCAS3
+
+$random rs_fx_casing_pistol { rs_fx_dscasin1 rs_fx_dscasin2 rs_fx_dscasin3 }
+rs_fx_dscasin1  Sounds/combatfx/casings/DSCASIN1
+rs_fx_dscasin2  Sounds/combatfx/casings/DSCASIN2
+rs_fx_dscasin3  Sounds/combatfx/casings/DSCASIN3
+
+$random rs_fx_casing_shell { rs_fx_dsshell1 rs_fx_dsshell2 rs_fx_dsshell3 }
+rs_fx_dsshell1  Sounds/combatfx/casings/DSSHELL1
+rs_fx_dsshell2  Sounds/combatfx/casings/DSSHELL2
+rs_fx_dsshell3  Sounds/combatfx/casings/DSSHELL3
+
+$random rs_fx_ricochet { rs_fx_rico1 rs_fx_rico2 rs_fx_rico3 rs_fx_rico4 rs_fx_rico5 rs_fx_rico6 rs_fx_rico7 }
+rs_fx_rico1  Sounds/combatfx/ricochet/RICO1
+rs_fx_rico2  Sounds/combatfx/ricochet/RICO2
+rs_fx_rico3  Sounds/combatfx/ricochet/RICO3
+rs_fx_rico4  Sounds/combatfx/ricochet/RICO4
+rs_fx_rico5  Sounds/combatfx/ricochet/RICO5
+rs_fx_rico6  Sounds/combatfx/ricochet/RICO6
+rs_fx_rico7  Sounds/combatfx/ricochet/RICO7
+
+// =====================================================================
+// Originally: Vanilla+ set (rs_vp_weapon) -- its own real per-weapon
+// sounds, wired to weapon classes that have since been removed from the
+// project (see the top-of-file note). Nothing currently plays these.
+// Kept and re-homed into combatfx/ (by content type: fire sounds in
+// altfire/, handling in foley/, rocket hits in explosions/, chainsaw and
+// fist attacks in melee/) rather than deleted, because the audio itself
+// is real and unique, not because anything still calls it.
+//
+// Logical names are still rs_vp_-prefixed (unchanged, so nothing that
+// might reference one by name later breaks) even though the files
+// physically live under combatfx/ now. The original source used bare
+// paths like "weapons/pistol/fire", which is exactly the kind of name
+// that collides when two mods are co-loaded -- the same anti-collision
+// rule the prefix was chosen for still applies.
+//
+// $random groups where the source had them: multiple fire/punch takes
+// cycling is a lot of the character of this pack, and flattening them to
+// one take would lose it.
+// =====================================================================
+
+// --- Vanilla+ Pistol (Beretta) ---
+$random rs_vp_pistol_fire { rs_vp_pfire1 rs_vp_pfire2 rs_vp_pfire3 }
+rs_vp_pfire1        Sounds/combatfx/altfire/PFIRE01.ogg
+rs_vp_pfire2        Sounds/combatfx/altfire/PFIRE02.ogg
+rs_vp_pfire3        Sounds/combatfx/altfire/PFIRE03.ogg
+rs_vp_pistol_cout   Sounds/combatfx/foley/PCOUT.ogg
+rs_vp_pistol_cin    Sounds/combatfx/foley/PCIN.ogg
+rs_vp_pistol_slide  Sounds/combatfx/foley/PSLID.ogg
+rs_vp_pistol_snap   Sounds/combatfx/foley/PSNAP.ogg
+rs_vp_pistol_equip  Sounds/combatfx/foley/PEQUP
+rs_vp_pistol_holster Sounds/combatfx/foley/PHOLS
+$volume rs_vp_pistol_slide 0.85
+$volume rs_vp_pistol_cout 0.8
+$volume rs_vp_pistol_cin 0.8
+$volume rs_vp_pistol_snap 0.8
+
+// --- Vanilla+ Assault Rifle ---
+$random rs_vp_arifle_fire { rs_vp_rifire1 rs_vp_rifire2 rs_vp_rifire3 }
+rs_vp_rifire1       Sounds/combatfx/altfire/RIFIRE1.ogg
+rs_vp_rifire2       Sounds/combatfx/altfire/RIFIRE2.ogg
+rs_vp_rifire3       Sounds/combatfx/altfire/RIFIRE3.ogg
+rs_vp_arifle_cout   Sounds/combatfx/foley/RCOUT.ogg
+rs_vp_arifle_cin    Sounds/combatfx/foley/RCIN.ogg
+rs_vp_arifle_slap   Sounds/combatfx/foley/RSLAP.ogg
+rs_vp_arifle_click  Sounds/combatfx/foley/RCLCK.ogg
+rs_vp_arifle_equip  Sounds/combatfx/foley/REQUP.ogg
+rs_vp_arifle_deselect Sounds/combatfx/foley/RDSLCT.ogg
+rs_vp_arifle_foley  Sounds/combatfx/foley/RFLEY1.ogg
+rs_vp_arifle_pickup Sounds/combatfx/foley/RPKUP.ogg
+rs_vp_arifle_ready  Sounds/combatfx/foley/RRDY.ogg
+$volume rs_vp_arifle_cout 0.9
+$volume rs_vp_arifle_cin 0.9
+$volume rs_vp_arifle_slap 0.7
+$volume rs_vp_arifle_click 0.9
+
+// --- Vanilla+ Riot Shotgun ---
+$random rs_vp_shotgun_fire { rs_vp_rfire1 rs_vp_rfire2 rs_vp_rfire3 }
+rs_vp_rfire1        Sounds/combatfx/altfire/RFIRE1.ogg
+rs_vp_rfire2        Sounds/combatfx/altfire/RFIRE2.ogg
+rs_vp_rfire3        Sounds/combatfx/altfire/RFIRE3.ogg
+rs_vp_shotgun_pump  Sounds/combatfx/foley/RCOCK.ogg
+$random rs_vp_shotgun_load { rs_vp_sgs1 rs_vp_sgs2 rs_vp_sgs3 }
+rs_vp_sgs1          Sounds/combatfx/foley/SGS1.ogg
+rs_vp_sgs2          Sounds/combatfx/foley/SGS2.ogg
+rs_vp_sgs3          Sounds/combatfx/foley/SGS3.ogg
+rs_vp_shotgun_bck   Sounds/combatfx/foley/RCKBCK.ogg
+rs_vp_shotgun_fwd   Sounds/combatfx/foley/RCKFWD.ogg
+rs_vp_shotgun_select   Sounds/combatfx/foley/RSELCT.ogg
+rs_vp_shotgun_deselect Sounds/combatfx/foley/RDESLCT.ogg
+$volume rs_vp_shotgun_pump 0.75
+$volume rs_vp_shotgun_load 0.45
+$volume rs_vp_shotgun_bck 0.875
+$volume rs_vp_shotgun_fwd 0.875
+
+// --- Vanilla+ Double-Barrel Shotgun ---
+// Two real firing modes, two real sound sets: the "kapow" pair for the
+// both-barrels alt-fire, the quieter SINGLE pair for one barrel. The
+// single takes were imported but unused while this weapon could only
+// fire both at once.
+$random rs_vp_ssg_single { rs_vp_single1 rs_vp_single2 }
+rs_vp_single1       Sounds/combatfx/altfire/SINGLE1.ogg
+rs_vp_single2       Sounds/combatfx/altfire/SINGLE2.ogg
+$random rs_vp_ssg_fire { rs_vp_double1 rs_vp_double2 }
+rs_vp_double1       Sounds/combatfx/altfire/DOUBLE1.ogg
+rs_vp_double2       Sounds/combatfx/altfire/DOUBLE2.ogg
+rs_vp_ssg_opn       Sounds/combatfx/foley/DBOPN.ogg
+rs_vp_ssg_load      Sounds/combatfx/foley/DBLOD.ogg
+rs_vp_ssg_cls       Sounds/combatfx/foley/DBCLS.ogg
+$volume rs_vp_ssg_opn 0.6
+$volume rs_vp_ssg_load 0.6
+$volume rs_vp_ssg_cls 0.6
+
+// --- Vanilla+ Minigun ---
+// Finally has its own fire sound instead of borrowing the pistol's.
+rs_vp_minigun_fire   Sounds/combatfx/altfire/MGFIRE.ogg
+rs_vp_minigun_reload Sounds/combatfx/foley/MGLOAD.ogg
+rs_vp_minigun_chain  Sounds/combatfx/foley/MGCHAIN.ogg
+rs_vp_minigun_down   Sounds/combatfx/foley/MGDOWN.ogg
+rs_vp_minigun_start  Sounds/combatfx/foley/MGSTRT.ogg
+rs_vp_minigun_spin   Sounds/combatfx/foley/MGSPIN.ogg
+rs_vp_minigun_stop   Sounds/combatfx/foley/MGSTOP.ogg
+rs_vp_minigun_equip  Sounds/combatfx/foley/MGEQUP
+rs_vp_minigun_pickup Sounds/combatfx/foley/MGPKUP
+$volume rs_vp_minigun_chain 0.6
+
+// --- Vanilla+ Rocket Launcher ---
+rs_vp_rocket_fire   Sounds/combatfx/altfire/RLFIRE.ogg
+rs_vp_rocket_cycle  Sounds/combatfx/foley/RLCYCL.ogg
+rs_vp_rocket_cin    Sounds/combatfx/foley/RLCIN.ogg
+rs_vp_rocket_cout   Sounds/combatfx/foley/RLCOUT.ogg
+rs_vp_rocket_equip  Sounds/combatfx/foley/RLSELCT.ogg
+rs_vp_rocket_deselect Sounds/combatfx/foley/RLDSLCT.ogg
+rs_vp_rocket_pickup Sounds/combatfx/foley/RLPKUP.ogg
+$random rs_vp_rocket_hit { rs_vp_rexp1 rs_vp_rexp2 }
+rs_vp_rexp1         Sounds/combatfx/explosions/REXP01.ogg
+rs_vp_rexp2         Sounds/combatfx/explosions/REXP02.ogg
+
+// --- Vanilla+ Plasma Rifle ---
+$random rs_vp_plasma_fire { rs_vp_plfire1 rs_vp_plfire2 rs_vp_plfire3 }
+rs_vp_plfire1       Sounds/combatfx/altfire/PLFIRE1.ogg
+rs_vp_plfire2       Sounds/combatfx/altfire/PLFIRE2.ogg
+rs_vp_plfire3       Sounds/combatfx/altfire/PLFIRE3.ogg
+rs_vp_plasma_cout   Sounds/combatfx/foley/PLCOUT.ogg
+rs_vp_plasma_cin    Sounds/combatfx/foley/PLCIN.ogg
+rs_vp_plasma_chrg   Sounds/combatfx/foley/PLCHRG.ogg
+rs_vp_plasma_charge Sounds/combatfx/foley/PLCHRG.ogg
+rs_vp_plasma_beep   Sounds/combatfx/foley/PLBEEP.ogg
+// Rail beam alt-fire -- imported with the set, called by nothing until
+// the alt-fire was restored.
+rs_vp_plasma_altfire Sounds/combatfx/foley/PLALTF.ogg
+rs_vp_plasma_equip  Sounds/combatfx/foley/PLEQUP.ogg
+rs_vp_plasma_holster Sounds/combatfx/foley/PLHOLSTR.ogg
+rs_vp_plasma_pickup Sounds/combatfx/foley/PLPKUP.ogg
+
+// --- Vanilla+ BFG9000 ---
+rs_vp_bfg_fire      Sounds/combatfx/altfire/BFGFIRE.ogg
+rs_vp_bfg_prefire   Sounds/combatfx/foley/BFGPFR.ogg
+rs_vp_bfg_charge    Sounds/combatfx/foley/BFGCHRG.ogg
+rs_vp_bfg_opn       Sounds/combatfx/foley/BFGOPN.ogg
+rs_vp_bfg_cout      Sounds/combatfx/foley/BFGCOUT.ogg
+rs_vp_bfg_cls       Sounds/combatfx/foley/BFGCLS.ogg
+rs_vp_bfg_overcharge Sounds/combatfx/foley/BFGOCHG.ogg
+rs_vp_bfg_up        Sounds/combatfx/foley/BFGUP.ogg
+rs_vp_bfg_pickup    Sounds/combatfx/foley/BFGPU.ogg
+$volume rs_vp_bfg_prefire 0.85
+
+// --- Vanilla+ Brass Knuckle ---
+$random rs_vp_fist_punch { rs_vp_fistpun1 rs_vp_fistpun2 rs_vp_fistpun3 }
+rs_vp_fistpun1      Sounds/combatfx/melee/FISTPUN1.ogg
+rs_vp_fistpun2      Sounds/combatfx/melee/FISTPUN2.ogg
+rs_vp_fistpun3      Sounds/combatfx/melee/FISTPUN3.ogg
+$random rs_vp_fist_swing { rs_vp_fistsw1 rs_vp_fistsw2 }
+rs_vp_fistsw1       Sounds/combatfx/melee/FISTSW1.ogg
+rs_vp_fistsw2       Sounds/combatfx/melee/FISTSW2.ogg
+rs_vp_fist_bsrk     Sounds/combatfx/melee/BFISTSW.ogg
+$random rs_vp_fist_smash { rs_vp_smash1 rs_vp_smash2 rs_vp_smash3 }
+rs_vp_smash1        Sounds/combatfx/melee/smash1.ogg
+rs_vp_smash2        Sounds/combatfx/melee/smash2.ogg
+rs_vp_smash3        Sounds/combatfx/melee/smash3.ogg
+
+// --- Vanilla+ Chainsaw ---
+rs_vp_saw_start     Sounds/combatfx/foley/CSTRT.ogg
+rs_vp_saw_idle      Sounds/combatfx/foley/CSIDLE.ogg
+rs_vp_saw_loop      Sounds/combatfx/foley/CSLOOP.ogg
+rs_vp_saw_stop      Sounds/combatfx/foley/CSTOP.ogg
+rs_vp_saw_off       Sounds/combatfx/foley/CSOFF.ogg
+rs_vp_saw_zip       Sounds/combatfx/foley/CSZIP.ogg
+rs_vp_saw_equip     Sounds/combatfx/foley/CSEQUP.ogg
+rs_vp_saw_get       Sounds/combatfx/foley/CSGET
+rs_vp_saw_low       Sounds/combatfx/foley/CSLOW
+// The actual starter-cord pull. Salvaged out of sounds/UNUSED, where it
+// was the only copy in the project -- the Rev state was making do with
+// generic foley before this.
+rs_vp_saw_cord      Sounds/combatfx/foley/SAWCORD.wav
+$random rs_vp_saw_flesh { rs_vp_sawhit1 rs_vp_sawhit2 rs_vp_sawhit3 }
+rs_vp_sawhit1       Sounds/combatfx/melee/CSHIT1.ogg
+rs_vp_sawhit2       Sounds/combatfx/melee/CSHIT2.ogg
+rs_vp_sawhit3       Sounds/combatfx/melee/CSHIT3.ogg
+$random rs_vp_saw_wall { rs_vp_sawwal1 rs_vp_sawwal2 rs_vp_sawwal3 }
+rs_vp_sawwal1       Sounds/combatfx/melee/CSWAL1.ogg
+rs_vp_sawwal2       Sounds/combatfx/melee/CSWAL2.ogg
+rs_vp_sawwal3       Sounds/combatfx/melee/CSWAL3.ogg
+$volume rs_vp_saw_idle 0.6
+$volume rs_vp_saw_loop 0.6
+$volume rs_vp_saw_stop 0.6
+$volume rs_vp_saw_flesh 0.8
+$volume rs_vp_saw_wall 0.6
+
+// --- Magazine drops (set-agnostic) ---
+// RS_MagDrop had no sound at all until now. Small/large clip and BFG clip
+// variants, so a dropped pistol mag and a dropped BFG cell don't sound
+// identical. Lives outside the per-weapon sections because RS_HiFiFX.MagDrop
+// is called by both weapon sets.
+$random rs_fx_magdrop_small { rs_fx_magsm1 rs_fx_magsm2 rs_fx_magsm3 }
+rs_fx_magsm1        Sounds/combatfx/magdrops/DSBOUNC1.ogg
+rs_fx_magsm2        Sounds/combatfx/magdrops/DSBOUNC2.ogg
+rs_fx_magsm3        Sounds/combatfx/magdrops/DSBOUNC3.ogg
+$random rs_fx_magdrop_large { rs_fx_maglg1 rs_fx_maglg2 rs_fx_maglg3 }
+rs_fx_maglg1        Sounds/combatfx/magdrops/DSAOUNC1.ogg
+rs_fx_maglg2        Sounds/combatfx/magdrops/DSAOUNC2.ogg
+rs_fx_maglg3        Sounds/combatfx/magdrops/DSAOUNC3.ogg
+$random rs_fx_magdrop_bfg { rs_fx_magbfg1 rs_fx_magbfg2 rs_fx_magbfg3 }
+rs_fx_magbfg1       Sounds/combatfx/magdrops/BFGCLI01.ogg
+rs_fx_magbfg2       Sounds/combatfx/magdrops/BFGCLI02.ogg
+rs_fx_magbfg3       Sounds/combatfx/magdrops/BFGCLI03.ogg
+$volume rs_fx_magdrop_small 0.75
+$volume rs_fx_magdrop_large 0.65
+$volume rs_fx_magdrop_bfg 0.7
+
+// --- Chainsaw-on-wall (set-agnostic) ---
+// RS_ChainsawPuff lives in the shared FX library, so it gets its own
+// rs_fx_ name rather than borrowing the Vanilla+ chainsaw's -- if another
+// chainsaw is ever imported, the shared puff shouldn't point at one set's
+// sounds. Same three files as rs_vp_saw_wall, different logical name.
+$random rs_fx_saw_wall { rs_fx_sawwal1 rs_fx_sawwal2 rs_fx_sawwal3 }
+rs_fx_sawwal1       Sounds/combatfx/melee/CSWAL1.ogg
+rs_fx_sawwal2       Sounds/combatfx/melee/CSWAL2.ogg
+rs_fx_sawwal3       Sounds/combatfx/melee/CSWAL3.ogg
+$volume rs_fx_saw_wall 0.6
+
+// --- HQ Vanilla alternate pack ---
+// Full set staged for the rs_fx_hqvanillasounds toggle (any weapon can
+// opt into this pack once that system exists). chngun/rocklf/bfgf above
+// already point directly at three of these as their new *default* --
+// the entries below cover the rest of the set for completeness and for
+// weapons that stay on their current sounds unless the toggle is used.
+hq_dsbfg      Sounds/hq_vanilla/DSBFG
+hq_dsdbcls    Sounds/hq_vanilla/DSDBCLS
+hq_dsdbload   Sounds/hq_vanilla/DSDBLOAD
+hq_dsdbopn    Sounds/hq_vanilla/DSDBOPN
+hq_dsdshtgn   Sounds/hq_vanilla/DSDSHTGN
+hq_dsfirsht   Sounds/hq_vanilla/DSFIRSHT
+hq_dsnoway    Sounds/hq_vanilla/DSNOWAY
+hq_dsoof      Sounds/hq_vanilla/DSOOF
+hq_dspdiehi   Sounds/hq_vanilla/DSPDIEHI
+hq_dspistol   Sounds/hq_vanilla/DSPISTOL
+hq_dsplasma   Sounds/hq_vanilla/DSPLASMA
+hq_dspldeth   Sounds/hq_vanilla/DSPLDETH
+hq_dsplpain   Sounds/hq_vanilla/DSPLPAIN
+hq_dspunch    Sounds/hq_vanilla/DSPUNCH
+hq_dsrlaunc   Sounds/hq_vanilla/DSRLAUNC
+hq_dsrxplod   Sounds/hq_vanilla/DSRXPLOD
+hq_dssawful   Sounds/hq_vanilla/DSSAWFUL
+hq_dssawhit   Sounds/hq_vanilla/DSSAWHIT
+hq_dssawidl   Sounds/hq_vanilla/DSSAWIDL
+hq_dssawup    Sounds/hq_vanilla/DSSAWUP
+hq_dssgcock   Sounds/hq_vanilla/DSSGCOCK
+hq_dsshotgn   Sounds/hq_vanilla/DSSHOTGN
+hq_dsvilatk   Sounds/hq_vanilla/DSVILATK
+hq_dswpnup    Sounds/hq_vanilla/DSWPNUP
+
+// =====================================================================
+// GunBonsai (zscript/GunBonsai/) -- weapon leveling/upgrade system.
+// sounds/GunBonsai/, untouched from upstream.
+// =====================================================================
+// Fixed 2026-08-06: the path was written without its extension, so the logical
+// name registered but bound to no lump -- and an unresolved sound in GZDoom is
+// completely inert (no error, no warning, no log line), which is why the
+// level-up sound was silent rather than failing loudly. The file on disk is
+// and always was win_loud.mp3.
+bonsai/gunlevelup Sounds/GunBonsai/win_loud.mp3
+$alias bonsai/smallboom imp/shotx
+
+// =====================================================================
+// Shared weapon FX -- sounds/combatfx/, owned by no single weapon.
+// Imported alongside the GNRC re-import; registered here so they are
+// addressable, wired into states per-weapon as each weapon is rebuilt.
+// =====================================================================
+
+// --- Foley / handling (source called this "weapons/foley") ---
+// Used throughout EVERY weapon's reload and select/deselect sequence in
+// the source. Five takes, randomized, exactly as the source had it.
+$random rs_fx_foley { rs_fx_foley1 rs_fx_foley2 rs_fx_foley3 rs_fx_foley4 rs_fx_foley5 }
+rs_fx_foley1   Sounds/combatfx/foley/FOLEY1.ogg
+rs_fx_foley2   Sounds/combatfx/foley/FOLEY2.ogg
+rs_fx_foley3   Sounds/combatfx/foley/FOLEY3.ogg
+rs_fx_foley4   Sounds/combatfx/foley/FOLEY4.ogg
+rs_fx_foley5   Sounds/combatfx/foley/FOLEY5.ogg
+$volume rs_fx_foley 0.7
+
+$random rs_fx_holster { rs_fx_holstr1 rs_fx_holstr2 rs_fx_holstr3 }
+rs_fx_holstr1  Sounds/combatfx/foley/HOLSTR
+rs_fx_holstr2  Sounds/combatfx/foley/HOLSTR2.ogg
+rs_fx_holstr3  Sounds/combatfx/foley/HOLSTR3.ogg
+rs_fx_weaponup Sounds/combatfx/foley/WEQUP
+rs_fx_weapdraw Sounds/combatfx/foley/WEAPDRAW
+
+// --- Explosions (shared: rockets, BFG, barrels, affix blasts) ---
+$random rs_fx_explode_near { rs_fx_baexp1 rs_fx_baexp2 rs_fx_baexp3 }
+rs_fx_baexp1   Sounds/combatfx/explosions/BA_EXP01.ogg
+rs_fx_baexp2   Sounds/combatfx/explosions/BA_EXP02
+rs_fx_baexp3   Sounds/combatfx/explosions/BA_EXP03
+$random rs_fx_explode_dist { rs_fx_dexp1 rs_fx_dexp2 rs_fx_dexp3 rs_fx_dexp4 rs_fx_dexp5 }
+rs_fx_dexp1    Sounds/combatfx/explosions/DISTEXP1
+rs_fx_dexp2    Sounds/combatfx/explosions/DISTEXP2
+rs_fx_dexp3    Sounds/combatfx/explosions/DISTEXP3
+rs_fx_dexp4    Sounds/combatfx/explosions/DISTEXP4
+rs_fx_dexp5    Sounds/combatfx/explosions/DISTEXP5
+$random rs_fx_plasma_explode { rs_fx_plexp1 rs_fx_plexp2 rs_fx_plexp3 }
+rs_fx_plexp1   Sounds/combatfx/explosions/PLEXP1
+rs_fx_plexp2   Sounds/combatfx/explosions/PLEXP2
+rs_fx_plexp3   Sounds/combatfx/explosions/PLEXP3
+$random rs_fx_bfg_explode { rs_fx_bfgx1 rs_fx_bfgx2 rs_fx_bfgx3 rs_fx_bfgx4 }
+rs_fx_bfgx1    Sounds/combatfx/explosions/BFGEXPL1
+rs_fx_bfgx2    Sounds/combatfx/explosions/BFGEXPL2
+rs_fx_bfgx3    Sounds/combatfx/explosions/BFGEXPL3
+rs_fx_bfgx4    Sounds/combatfx/explosions/BFGEXPL4
+rs_fx_rocket_explode Sounds/combatfx/explosions/RLANEXPL
+
+// --- Casings: rifle takes + extra shell takes (source had 3 and 7) ---
+$random rs_fx_casing_rifle { rs_fx_riflc1 rs_fx_riflc2 rs_fx_riflc3 }
+rs_fx_riflc1   Sounds/combatfx/casings/DSRIFLC1.ogg
+rs_fx_riflc2   Sounds/combatfx/casings/DSRIFLC2.ogg
+rs_fx_riflc3   Sounds/combatfx/casings/DSRIFLC3.ogg
+
+// =====================================================================
+// GunstarHeroes set (rs_gh_weapon) -- imported from the HB arsenal.
+// Catalogued: RS_Catalog.SND_GH_* returns these logical names, weapons
+// never reference the lump path directly.
+// =====================================================================
+$random rs_gh/machinegun_fire { rs_gh_mgfire1 rs_gh_mgfire2 }
+rs_gh_mgfire1  Sounds/rs_gh_weapon/gh_machinegun/HMGFIRE.ogg
+rs_gh_mgfire2  Sounds/rs_gh_weapon/gh_machinegun/HMGFIRE2.ogg
+rs_gh/grenade_launch   Sounds/rs_gh_weapon/gh_grenade/GLAUNCH.ogg
+rs_gh/grenade_bounce   Sounds/rs_gh_weapon/gh_grenade/GRNBNCE
+
+// --- GunstarHeroes set: per-weapon fire sounds. Logical names only;
+// weapons reach these through RS_Catalog.SND_GH_*, never by lump path.
+rs_gh/fist_fire   Sounds/rs_gh_weapon/gh_fist/DSSAWHIT
+rs_gh/chainsaw_fire   Sounds/rs_gh_weapon/gh_chainsaw/CSAWFUL.ogg
+rs_gh/pistol_fire   Sounds/rs_gh_weapon/gh_pistol/DSPISTOL.ogg
+rs_gh/revolver_fire   Sounds/rs_gh_weapon/gh_revolver/REVOFIR.ogg
+rs_gh/pumpshotgun_fire   Sounds/rs_gh_weapon/gh_pumpshotgun/SGFIRE.ogg
+rs_gh/assaultshotgun_fire   Sounds/rs_gh_weapon/gh_assaultshotgun/SGFIRE2.ogg
+rs_gh/ssg_fire   Sounds/rs_gh_weapon/gh_ssg/SSHFIRE.ogg
+rs_gh/minigun_fire   Sounds/rs_gh_weapon/gh_minigun/MINIGN1.ogg
+rs_gh/rifle_fire   Sounds/rs_gh_weapon/gh_rifle/DSRFIRE.ogg
+rs_gh/smg_fire   Sounds/rs_gh_weapon/gh_smg/SMGFIRE.ogg
+rs_gh/mp40_fire   Sounds/rs_gh_weapon/gh_mp40/MP40.ogg
+rs_gh/rocketlauncher_fire   Sounds/rs_gh_weapon/gh_rocketlauncher/RLFIRE.ogg
+rs_gh/grenadelauncher_fire   Sounds/rs_gh_weapon/gh_grenadelauncher/GLAUNCH.ogg
+rs_gh/handgrenade_fire   Sounds/rs_gh_weapon/gh_handgrenade/GRNTOSS
+rs_gh/plasma_fire   Sounds/rs_gh_weapon/gh_plasma/PFIRE.ogg
+rs_gh/railgun_fire   Sounds/rs_gh_weapon/gh_railgun/RAILF1
+rs_gh/bfg9000_fire   Sounds/rs_gh_weapon/gh_bfg9000/BFGFIRE.ogg
+rs_gh/bfg10k_fire   Sounds/rs_gh_weapon/gh_bfg10k/10KFIRE
+rs_gh/unmaker_fire   Sounds/rs_gh_weapon/gh_unmaker/UNMLOP.ogg
+rs_gh/flamethrower_fire   Sounds/rs_gh_weapon/gh_flamethrower/FLAMER
+rs_gh/machinegun_fire   Sounds/rs_gh_weapon/gh_machinegun/HMGFIRE.ogg
+
+// --- Ice family (Cryo affix) -----------------------------------------
+// Imported from ART SOURCE/CH (originals: ICECAST/ICEI/FROSTNN/VORTEX),
+// re-homed per the one-name-two-places rule: sounds/combatfx/ice/
+// mirrors sprites/combatfx/ice/ (the imported ICEY shard art).
+rs_fx_ice_cast     Sounds/combatfx/ice/ice_cast.ogg
+rs_fx_ice_hit      Sounds/combatfx/ice/ice_hit.ogg
+rs_fx_ice_shatter  Sounds/combatfx/ice/ice_shatter.ogg
+rs_fx_ice_fly      Sounds/combatfx/ice/ice_fly.ogg
+
+// =====================================================================
+// MONSTER VOICES -- Colourful Hell color-variant voices for the RS
+// monster set (rebuild spec: docs/rs_09_monster_rebuild_spec.txt).
+// Real lumps live in sounds/monsters/ (ripped from CH via ART SOURCE);
+// anything CH itself never shipped a lump for is aliased to a vanilla
+// voice, exactly as the proven HF SNDINFO did. Vanilla logical names
+// (imp/sight, grunt/attack, baron/*...) come from the IWAD -- never
+// redefine those here.
+// =====================================================================
+
+// ----- Black Imp (Agaures) voice -----
+$random agaures/sight  { agaures/sight1 agaures/sight2 }
+agaures/sight1      AGURSIT1
+agaures/sight2      AGURSIT2
+agaures/pain        AGURPAIN
+$random agaures/death  { agaures/death1 agaures/death2 }
+agaures/death1      AGURDTH1
+agaures/death2      AGURDTH2
+agaures/active      AGURACTV
+agaures/scratch     AGURHITS
+agaures/swing       AGURSWNG
+
+// ----- Red Imp (Doom 64) voice -----
+imp2/see            D64IMPS2
+imp2/hurt           D64IMP2
+imp2/die            D64IMPD
+imp2/active         D64IMPS
+
+// ----- Deep One (white spectre line) -----
+$random deepone/active     { deepone/groan1 deepone/groan2 }
+deepone/groan1      DEEPSTTH
+deepone/groan2      DEEPGN2
+$random deepone/meleegrowl { deepone/attack1 deepone/attack2 }
+deepone/attack1     DEEPAK1
+deepone/attack2     DEEPAK2
+deepone/sight       YOGG1
+deepone/death       YOGG2
+$random deepone/pain       { deepone/hurt1 deepone/hurt2 }
+deepone/hurt1       YOGG3
+deepone/hurt2       DEEPSTTH
+$alias deepone/melee       demon/melee
+
+// ----- Butcher demon -----
+butcher/melee       BCHRHIT
+
+// ----- Misc color-variant effects -----
+fiend/bomb          DSFBOMB
+moloch/nailhitbleed DSNAIIMP
+prox/beep           DSIGPRXB
+slimeworm/melee     DSWORMAT
+arachnophyte/engine DSAPHENG
+
+// ----- Bruiser (brown baron line) -----
+monster/brudth      DSBRUDTH
+monster/brusit      DSBRUSIT
+monster/bruwlk      DSBRUWLK
+$alias monster/bruact      baron/active
+$alias monster/brupai      baron/pain
+
+// ----- Dark Knight (revenant line) -----
+monster/dknact      DSDKNACT
+monster/dkndrt      DSDKNDRT
+monster/dknmsl      DSDKNMSL
+
+// ----- Hammer / Hell warrior (knight line) -----
+monster/hamhit      DSHAMHIT
+monster/hamswg      DSHAMSWG
+monster/helsit      DSHELSIT
+$random monster/helact     { monster/helac1 monster/helac2 }
+monster/helac1      DSHELAC1
+monster/helac2      DSHELAC2
+$alias monster/kntswg      skeleton/swing
+$alias monster/fihoof      cyber/hoof
+
+// ----- Queen (mastermind line) -----
+queen/sight         QUESIT
+queen/fire          QBFGFIRE
+
+// ----- Shotgunner line (CHP family 02) -----
+// The colour shotgunners each carry their own voice in CHP; without
+// these the cyan/yellow/abyss/fireblu/gray/black tiers are mute.
+// Lumps ripped from ART SOURCE/CH/sounds into sounds/monsters/.
+$random zspecops/sight  { zspecops/sight1 zspecops/sight2 zspecops/sight3 }
+zspecops/sight1     ZSPCSIG1
+zspecops/sight2     ZSPCSIG2
+zspecops/sight3     ZSPCSIG3
+$random zspecops/pain   { zspecops/pain1 zspecops/pain2 zspecops/pain3 }
+zspecops/pain1      ZSPCPAI1
+zspecops/pain2      ZSPCPAI2
+zspecops/pain3      ZSPCPAI3
+$random zspecops/death  { zspecops/death1 zspecops/death2 zspecops/death3 zspecops/death4 }
+zspecops/death1     ZSPCDEA1
+zspecops/death2     ZSPCDEA2
+zspecops/death3     ZSPCDEA3
+zspecops/death4     ZSPCDEA4
+sguy2/see           D64FORM2
+form2/hurt          D64FORP
+sguy2/die           D64FORD2
+ssguner/sight       DSGPOSIT
+ssguner/ssg         DSSGGATK
+ssguner/death       DSGPODTH
+ssguner/idle        DSGPOACT
+asgguy/asgfir       DSASGFIR
+asgguy/asgld1       DSASGLD1
+asgguy/asgout       DSASGOUT
+asgguy/asgin        DSASGIN
+snprfire            SNPRFIRE
+gas/gas1            GLBHISS1
+fire/fire4          FELFIREI
+fire/fire5          HOTHOT
+weapons/firex4      DSFIREX4
+ice/hit2            ICEI
+// Benellus (T12) plays these by raw lump name in CHP; logical names are
+// spelled the same so the state code stays verbatim.
+bene/song           BENEFARE
+dsdbload            DSDBLOAD
+dsdbcls             DSDBCLS
+dsdshtgn            DSDSHTGN
+dssgcock            DSSGCOCK
+
+// ----- Zombieman line (CHP family 01) -----
+// CHP's colour zombiemen each carry their own voice; without these the
+// blue/cyan/purple/yellow/abyss/brown/gray/red/white tiers are mute.
+// Lump names and $random groups copied verbatim from CH SNDINFO.txt /
+// CHP SNDINFO.txt so the state code needs no renaming.
+zom2/see            D64FORM3
+zom2/die            D64FORD1
+form2/active        D64FORA
+lady/aggro          SUCAGGRO
+lady/hurt           SUCHURT
+lady/die            SUCDIE
+lady/active         SUCHA
+jam/jamd            CORK
+zombie/unmaker      DSUNMKER
+zombie/unpower      DSUNMKPO
+spell/spellcast1    KORATK
+under/see           WZMHI
+under/die           WZMDED
+under/goodie        WZMGDI
+
+// Family 01 (Zombieman), imported 2026-08-04 from CH/sounds/. Both were
+// called by CHP and resolved to nothing, for the SAME reason twice: CHP's
+// own SNDINFO defines only COLOUR-SUFFIXED variants (AbyssForm/G, /B, /P
+// ...; HEHEEENH/A, /B, /BR ...) and never the plain token its Common-tier
+// actors actually call. CH defines the plain AbyssForm at SNDINFO.txt:203;
+// nothing anywhere defines a plain HEHEEENH. So in CHP itself the Abyss
+// conversion is silent unless CH is loaded under it, and Player X's laugh
+// is silent always.
+// We define the plain tokens, so both play here.
+AbyssForm           Sounds/monsters/AbyssForm.ogg   // the T06 abyss conversion, Pain.AbyssPE
+HEHEEENH            HEHEEENH       // Player X's gloat, Missile.TEX.Taunt
+$random skelpai { gethit1 gethit2 gethit3 gethit4 gethit5 gethit6 gethit7 }
+gethit1             GETHIT1
+gethit2             GETHIT2
+gethit3             GETHIT3
+gethit4             GETHIT4
+gethit5             GETHIT5
+gethit6             GETHIT6
+gethit7             GETHIT7
+$random undergib { undergb1 undergb2 }
+undergb1            UNDERGB1
+undergb2            UNDERGB2
+
+// ----- Aliased-only voices (CH shipped no lump; HF aliased these) -----
+$alias hellhound/melee     demon/melee
+$alias hellsmith/laugh     vile/sight
+// CHP's per-colour gib sound for the Common tier is the vanilla gib.
+$alias misc/gibbed/c       misc/gibbed
+
+// --- AllClear (rs_11): ready-to-fire cadence beep ---------------------
+// Source: li-gnrcwpn plasma altfire beep (PLBEEP), imported. ONE lump;
+// per-archetype identity comes from pitch at play time
+// (RS_Weapon.AllClearPitch), not from separate sounds.
+// Fixed 2026-08-06: pointed at Sounds/combatfx/tells/, a directory that does
+// not exist -- the lump lives in allclear/. Same silent-failure class as the
+// bonsai/gunlevelup line above. This is the cadence "ready to fire" beep
+// (RS_Weapon.zs:202), i.e. the Plasma Rifle prototype for the arsenal-wide
+// cadence tell, so it has been inaudible since it was written.
+rs_allclear_ready  Sounds/combatfx/allclear/READYBP
+$volume rs_allclear_ready 0.65
+
+// --- Handling foley (rs_14 section 2A) --------------------------------
+// Deliberate manipulation sounds -- equips, cycles, swings -- as
+// distinct from the incidental rattle in combatfx/foley/. Imported from
+// the li-gnrcwpn library per the ICEY discipline: verified present,
+// categorized, registered. AllClear's quiet siblings.
+rs_foley_shotgun_rattle1     Sounds/combatfx/handling/RIRON1.ogg
+rs_foley_shotgun_rattle2     Sounds/combatfx/handling/RIRON2.ogg
+$random rs_foley_shotgun_rattle { rs_foley_shotgun_rattle1 rs_foley_shotgun_rattle2 }
+
+rs_foley_launcher_grencycle  Sounds/combatfx/handling/RLGCY.ogg
+
+// Per-archetype equip identity.
+rs_foley_rifle_equip         Sounds/combatfx/handling/RFLEQUP.ogg
+rs_foley_shotgun_equip       Sounds/combatfx/handling/SGEQUP.ogg
+rs_foley_launcher_equip      Sounds/combatfx/handling/RLEQUP.ogg
+rs_foley_chaingun_equip      Sounds/combatfx/handling/MGUPSN.ogg
+rs_foley_energy_equip        Sounds/combatfx/handling/PLSUSND.ogg
+// Off-hand chainsaw equip -- the dual-wield hand cue.
+rs_foley_melee_equip_off     Sounds/combatfx/handling/CSOEQUP.ogg
+
+// Melee whoosh vocabulary.
+rs_foley_swing1              Sounds/combatfx/handling/SWING1
+rs_foley_swing2              Sounds/combatfx/handling/SWING2
+rs_foley_swing3              Sounds/combatfx/handling/SWING3
+rs_foley_swing4              Sounds/combatfx/handling/SWING4
+rs_foley_swing5              Sounds/combatfx/handling/SWING5
+rs_foley_swing6              Sounds/combatfx/handling/SWING6
+$random rs_foley_swing { rs_foley_swing1 rs_foley_swing2 rs_foley_swing3 rs_foley_swing4 rs_foley_swing5 rs_foley_swing6 }
+
+rs_foley_fist_straight1      Sounds/combatfx/handling/FISTSTR1.ogg
+rs_foley_fist_straight2      Sounds/combatfx/handling/FISTSTR2.ogg
+rs_foley_fist_straight3      Sounds/combatfx/handling/FISTSTR3.ogg
+$random rs_foley_fist_straight { rs_foley_fist_straight1 rs_foley_fist_straight2 rs_foley_fist_straight3 }
+
+$volume rs_foley_shotgun_rattle 0.7
+$volume rs_foley_swing 0.8
+
+// =====================================================================
+// PLACEHOLDER ASSETS, to be replaced once the calls are confirmed firing
+// in game. $limit 0 = unlimited simultaneous instances; the boss sting
+// gets no random pitch variation so it always lands the same.
+// =====================================================================
+
+// =====================================================================
+// MeatGrinder set (RS_PS_) -- logical names referenced by RS_Catalog's
+// SND_PS_* entries. The pack shipped five fire sounds for nine weapons,
+// so several share one; that sharing is the source's own, not a shortcut.
+// =====================================================================
+rs_ps/fist_fire            STGPUMP
+rs_ps/chainsaw_fire        MINIGUN
+rs_ps/machinegun_fire      MGFIRE
+rs_ps/autoshotgun_fire     SGFIRE
+rs_ps/ssg_fire             SSGFIRE
+rs_ps/chaingun_fire        MINIGUN
+rs_ps/rocketlauncher_fire  SGFIRE
+rs_ps/plasma_fire          MGFIRE
+rs_ps/bfg_fire             SSGFIRE
+rs_ps/shotgun_pump         STGPUMP
+
+$volume rs_ps/ssg_fire 0.5
+$volume rs_ps/bfg_fire 0.5
+
+// =====================================================================
+// Streak set (RS_ST_) -- logical names referenced by RS_Catalog's
+// SND_ST_* entries. Imported as PACK resources only: sounds + sprites,
+// no weapon code. Assets live in sounds/rs_st_weapon/.
+// The flame trio (start/loop/stop) is a three-beat set -- a sustained
+// flame attack plays start once, loops the middle, and plays stop on
+// release. $limit 1 on the loops so a held trigger can't stack them.
+// =====================================================================
+rs_st/bfg_fire             Sounds/rs_st_weapon/BFGFIRE.ogg
+rs_st/bfg_altfire          Sounds/rs_st_weapon/BFGALT.ogg
+rs_st/bfg_explode          Sounds/rs_st_weapon/BFGEXPL.ogg
+rs_st/bfg_loop             Sounds/rs_st_weapon/BFGLOOP.ogg
+rs_st/chaingun_fire        Sounds/rs_st_weapon/CGFIRE.ogg
+rs_st/chaingun_altfire     Sounds/rs_st_weapon/CGALT.ogg
+rs_st/chaingun_detonate    Sounds/rs_st_weapon/CGDET.ogg
+rs_st/explode              Sounds/rs_st_weapon/EXPLODE.ogg
+rs_st/rocket_fire          Sounds/rs_st_weapon/RKTFIRE.ogg
+rs_st/rocket_altfire       Sounds/rs_st_weapon/RKTALT.ogg
+rs_st/rocket_fly           Sounds/rs_st_weapon/RKTFLY.ogg
+rs_st/rocket_explode1      Sounds/rs_st_weapon/RKTEXP1.ogg
+rs_st/rocket_explode2      Sounds/rs_st_weapon/RKTEXP2.ogg
+rs_st/rocket_explode3      Sounds/rs_st_weapon/RKTEXP3.ogg
+rs_st/minigun_fast         Sounds/rs_st_weapon/MGFAST.ogg
+rs_st/minigun_slow         Sounds/rs_st_weapon/MGSLOW.ogg
+rs_st/minigun_spinup       Sounds/rs_st_weapon/MGSPINU.ogg
+rs_st/minigun_spindown     Sounds/rs_st_weapon/MGSPIND.ogg
+rs_st/minigun_firepuff     Sounds/rs_st_weapon/MGPUFF.ogg
+rs_st/flame_start          Sounds/rs_st_weapon/FLMSTRT.ogg
+rs_st/flame_loop           Sounds/rs_st_weapon/FLMLOOP.ogg
+rs_st/flame_stop           Sounds/rs_st_weapon/FLMSTOP.ogg
+rs_st/pistol_fire          Sounds/rs_st_weapon/PISFIRE.ogg
+rs_st/pistol_altfire       Sounds/rs_st_weapon/PISALT.ogg
+rs_st/plasma_fire          Sounds/rs_st_weapon/PLSFIRE.ogg
+rs_st/plasma_altfire       Sounds/rs_st_weapon/PLSALT.ogg
+rs_st/plasma_explode       Sounds/rs_st_weapon/PLSEXPL.ogg
+rs_st/arc_fire1            Sounds/rs_st_weapon/ARCFIR1.ogg
+rs_st/arc_fire2            Sounds/rs_st_weapon/ARCFIR2.ogg
+rs_st/arc_fire3            Sounds/rs_st_weapon/ARCFIR3.ogg
+rs_st/arc_fire4            Sounds/rs_st_weapon/ARCFIR4.ogg
+rs_st/arc_charge           Sounds/rs_st_weapon/ARCCHRG.ogg
+rs_st/arc_altfire          Sounds/rs_st_weapon/ARCALT.ogg
+rs_st/arc_fry1             Sounds/rs_st_weapon/ARCFRY1.ogg
+rs_st/arc_fry2             Sounds/rs_st_weapon/ARCFRY2.ogg
+rs_st/arc_fry3             Sounds/rs_st_weapon/ARCFRY3.ogg
+rs_st/shotgun_fire1        Sounds/rs_st_weapon/SGFIRE1.ogg
+rs_st/shotgun_fire2        Sounds/rs_st_weapon/SGFIRE2.ogg
+rs_st/shotgun_fire3        Sounds/rs_st_weapon/SGFIRE3.ogg
+rs_st/shotgun_grenade      Sounds/rs_st_weapon/SGGREN.ogg
+rs_st/ssg_fire1            Sounds/rs_st_weapon/SSGFIR1.ogg
+rs_st/ssg_fire2            Sounds/rs_st_weapon/SSGFIR2.ogg
+rs_st/ssg_altfire          Sounds/rs_st_weapon/SSGALT.ogg
+rs_st/gyrojet_fire         Sounds/rs_st_weapon/GYROFIR.ogg
+rs_st/gyrojet_explode      Sounds/rs_st_weapon/GYROEXP.ogg
+rs_st/punch                Sounds/rs_st_weapon/PUNCH.ogg
+rs_st/fist_wall            Sounds/rs_st_weapon/FISTWAL.ogg
+rs_st/hammer_wall          Sounds/rs_st_weapon/HAMRWAL.ogg
+
+$limit rs_st/flame_loop 1
+$limit rs_st/bfg_loop   1
+$random rs_st/rocket_explode { rs_st/rocket_explode1 rs_st/rocket_explode2 rs_st/rocket_explode3 }
+$random rs_st/shotgun_fire   { rs_st/shotgun_fire1 rs_st/shotgun_fire2 rs_st/shotgun_fire3 }
+$random rs_st/arc_fire       { rs_st/arc_fire1 rs_st/arc_fire2 rs_st/arc_fire3 rs_st/arc_fire4 }
+$random rs_st/arc_fry        { rs_st/arc_fry1 rs_st/arc_fry2 rs_st/arc_fry3 }
+
+
+// =====================================================================
+// COLOURFUL HELL SOUND IMPORT -- 2026-08-05
+// ---------------------------------------------------------------------
+// 716 sound definitions transcribed from CH's own SNDINFO.txt
+//   (E:\New folder\ART SOURCE\CH\SNDINFO.txt)
+// with their 693 lumps copied to sounds/ch/.
+//
+// WHY THIS WAS MISSING FOR EIGHT PORT ATTEMPTS: an unresolved sound name
+// in ZScript/DECORATE is INERT. No error, no warning, no log line -- the
+// monster is simply silent. Every pass transcribed CH's sound STRINGS
+// onto the actors faithfully, and none imported the lumps or these
+// definitions, because nothing in the engine or in this tree can report
+// the difference. The only detector was a human noticing a monster made
+// no noise, which requires already knowing what it should sound like.
+//
+// Entries already defined above are NOT repeated -- 92 of CH's lumps
+// were already in sounds/ and their definitions already present. This
+// block is only what was absent, APPENDED rather than merged, so the
+// diff stays readable and nothing another lane added is disturbed.
+// =====================================================================
+STALR1	VSTALRT1
+STALR2	VSTALRT2
+STATK1	VSTATCK1
+STATK2	VSTATCK2
+STATK3	VSTATCK3
+STDIE1	VSTDETH1
+STDIE2	VSTDETH2
+STIDL1	VSTIDLE1
+STIDL2	VSTIDLE2
+STMEL1	VSTMELE1
+STMEL2	VSTMELE2
+STPAI1	VSTPAIN1
+STPAI2	VSTPAIN2
+STPAI4	VSTPAIN3
+STPAI3	VSTPAIN4
+STSWI1	VSTSWIP1
+STSWI2	VSTSWIP2
+STMIS1	VSTMISS1
+STMIS2	VSTMISS2
+STMIS3	VSTMISS3
+STMIS4	VSTMISS4
+STBAL1	VSTBALL1
+STBAL2	VSTBALL2
+STBAL3	VSTBALL3
+STBAL4	VSTBALL4
+STRPD1	VSTRAPD1
+STRPD2	VSTRAPD2
+STRPS1	VSTRAPS1
+STRPS2	VSTRAPS2
+slgmsee		slgmsee
+slgmdie		slgmdie
+slgmbite	slgmbite
+BROCYBDD	BROCYBDD
+BROCYBA1	BROCYBA1
+BROCYBA2	BROCYBA2
+BROCYBHU	BROCYBHU
+BROCYBHI	BROCYBHI
+CRAWLST1	CRAWLST1
+CRAWLST2	CRAWLST2
+CRAWLST3	CRAWLST3
+SWOOP001	SWOOP001
+SHARPST1	SHARPST1
+DEEPSHO1	DEEPSHO1
+DEEPSHO2	DEEPSHO2
+DEEPSHO3	DEEPSHO3
+WMINDAGR	WMINDAGR
+WMINDSE1	WMINDSE1
+WMINDSE2	WMINDSE2
+WMINDSE3	WMINDSE3
+WMINDSE4	WMINDSE4
+WMINDSE5	WMINDSE5
+WMINDDED	WMINDDED
+monster/incsit                dsincsit
+monster/incdth                dsincdth
+monster/incexp                dsincexp
+monster/incact                dsincact
+monster/incatk                dsincatk
+monster/inchit                dsinchit
+monster/hadsit                dshadsit
+monster/haddth                dshaddth
+monster/hadexp                dshadexp
+monster/hadtel                dshadtel
+monster/hadwlk                dshadwlk
+midstep1	midstep1
+midstep2	midstep2
+midstep3	midstep3
+ICKSTEP1	ICKSTEP1
+ICKSTEP2	ICKSTEP2
+CUCHUM01	CUCHUM01
+MEATIMPB	MEATIMPB
+BONEBR3K	BONEBR3K
+ECHOIMPB	ECHOIMPB
+HEAVIMPB	HEAVIMPB
+PUSHBMIN	PUSHBMIN
+BR0SPIDA	BR0SPIDA
+BR0SPDED	BR0SPDED
+BR0SPS1 	BR0SPS1
+BR0SPS2		BR0SPS2
+BR0SPS3		BR0SPS3
+BR0SPOW1	BR0SPOW1
+BR0SPOW2	BR0SPOW2
+BR0SPOW3	BR0SPOW3
+BBARO002	BBARO002
+BBARO003	BBARO003
+BPinky/Death BPDEATH
+BPinky/Pain BPPAIN
+BPinky/Bite BPBITE
+BPinky/Sight BPSEE
+BPinky/Idle BPGRUMBL
+BPBark	BPBark
+BPBark2 BPBark2
+COCONUTT	COCONUTT
+ELECFATT	ELECFATT
+BASSFFAT	BASSFFAT
+ICKYPEBR	ICKYPEBR
+BLUMINS1	BLUMINS1
+BLUMINS2	BLUMINS2
+BLUMINS3	BLUMINS3
+BLUMINS4	BLUMINS4
+monster/wiksit                  dswiksit
+monster/wikac1                  dswikac1
+monster/wikac2                  dswikac2
+monster/wikatk                  dswikatk
+monster/wikpai                  dswikpai
+monster/wikdth                  dswikdth
+weapons/firmfi                  dsfirmfi
+weapons/firex5                  dsfirex5
+monster/tenpn1                  dstenpn1
+monster/tenpn2                  dstenpn2
+flesh/sight		flspnsit
+flesh/melee		flspnatk
+flesh/pain		flspnhit
+flesh/death		flspndth
+flesh/active		flspnact
+VILEBOI1	VILEBOI1
+ROCKHIT1	ROCKHIT1
+CASTBROW	CASTBROW
+MUFFLE01	MUFFLE01
+MUFFLE02	MUFFLE02
+ATKBROWV	ATKBROWV
+grell/sight     dsgresit
+grell/active    dsgreact
+grell/attack    dsgreatk
+grell/pain      dsgrepai
+grell/death     dsgredth
+grell/thud      dsgrethd
+grell/projhit   dsvulhit
+AUTOBOT1	AUTOBOT1
+AUTOBOT2	AUTOBOT2
+AUTOBOT3	AUTOBOT3
+AUTOBOT4	AUTOBOT4
+BKFuKINV	BKFuKINV
+ELECTRO7	ELECTRO7
+ELECTRO8	ELECTRO8
+FLICKER3	FLICKER3
+AHeadSee	AHeadSee
+AHEADDED	AHEADDED
+HEALSIEL	HEALSIEL
+ROACSIG1	ROACSIG1
+ROACSIG2	ROACSIG2
+ROACSIG3	ROACSIG3
+ROACACT1	ROACACT1
+ROACACT2	ROACACT2
+Roach/Fire	ROACFIRE
+Roach/Hit	ROACHIT
+ROACPAI1	ROACPAI1
+ROACPAI2	ROACPAI2
+Roach/Death	ROACDEAT
+ZQuTag00	ZQuTag00
+ZQuTag01	ZQuTag01
+LICHVOID	LICHVOID
+LICHLMAO	LICHLMAO
+LICHDEAD	LICHDEAD
+LICHENDU	LICHENDU
+LICHPRAY	LICHPRAY
+LICHESCA	LICHESCA
+GRALSEE1	GRALSEE1
+GRALSEE2	GRALSEE2
+GRALHONO	GRALHONO
+GRALWEAK	GRALWEAK
+GRALPITY	GRALPITY
+GRALDEAD	GRALDEAD
+GRALPAI1	GRALPAI1
+GRALPAI2	GRALPAI2
+ROMEBADS	ROMEBADS
+ROMEBITH	ROMEBITH
+ROMEDOOM	ROMEDOOM
+ROMEMOWS	ROMEMOWS
+ROMEATAR	ROMEATAR
+ROMEISSU	ROMEISSU
+ROMERUNF	ROMERUNF
+ROMESORC	ROMESORC
+ROMSTIME	ROMSTIME
+ROMTHISW	ROMTHISW
+ROMENOPE	ROMENOPE
+ROMERHIT	ROMERHIT
+ROMERGOD	ROMERGOD
+ROMSANIT	ROMSANIT
+ROMESHOW	ROMESHOW
+ROMEDSIM	ROMEDSIM
+ROMNAILT	ROMNAILT
+ROMBURNT	ROMBURNT
+ROMETAKT	ROMETAKT
+ROMEHERE	ROMEHERE
+ROMEFUND	ROMEFUND
+ROMDEST0	ROMDEST0
+ROMENUKE	ROMENUKE
+ROMELAFF	ROMELAFF
+ROMSSHOT	ROMSSHOT
+ROMTHATL	ROMTHATL
+ROMKICKS	ROMKICKS
+AHEDATK1	AHEDATK1
+AHEDATK2	AHEDATK2
+AHEDACT1	AHEDACT1
+AHEDACT2	AHEDACT2
+AHEDACT3	AHEDACT3
+AHEDACT4	AHEDACT4
+AHEDPAI1	AHEDPAI1
+AHEDPAI2	AHEDPAI2
+AHEDPAI3	AHEDPAI3
+BETLEOW1	BETLEOW1
+BETLEOW2	BETLEOW2
+BETLEDED	BETLEDED
+BETLEACT	BETLEACT
+BETLESEE	BETLESEE
+BETLEAT1	BETLEAT1
+BETLEAT2	BETLEAT2
+AbyDogSe	AbyDogSe
+abydogac	abydogac
+abydogde	abydogde
+abydoghu	abydoghu
+eatiidle	eatiidle
+eatidown	eatidown
+eatipain	eatipain
+eatirun1	eatirun1
+eatirun2	eatirun2
+eatirun3	eatirun3
+BHKEXSTP	BHKEXSTP
+BLCKHKEX	BLCKHKEX
+STEPACY1	STEPACY1
+STEPACY2	STEPACY2
+STEPACY3	STEPACY3
+STEPACY4	STEPACY4
+STEPACY5	STEPACY5
+ABCYPAI1	ABCYPAI1
+ABCYPAI2	ABCYPAI2
+ABYCYAC1	ABYCYAC1
+ABYCYAC2	ABYCYAC2
+ABYCYAC3	ABYCYAC3
+ABCYATK1	ABCYATK1
+ABCYATK2	ABCYATK2
+ABCYATK3	ABCYATK3
+ABYCYSEE	ABYCYSEE
+ABYCYDIE	ABYCYDIE
+WFATAGRO 	WFATAGRO
+WFATDEAD	WFATDEAD
+WarpHKEX	WarpHKEX
+SYNTPORT	SYNTPORT
+brnaby1		barnaby1
+brnaby2		barnaby2
+brnaby3 	barnaby3
+brnaby4 	barnaby4
+SpidHigh	SpidHigh
+WFATATK1	WFATATK1
+WFATATK2	WFATATK2
+WFATATK3	WFATATK3
+WFATACT1	WFATACT1
+WFATACT2	WFATACT2
+WFATHIT1 	WFATHIT1
+WFATHIT2	WFATHIT2
+WFATHIT3	WFATHIT3
+WFATCRI1	WFATCRI1
+WFATCRI2	WFATCRI2
+WFATCRI3	WFATCRI3
+WFATCRI4	WFATCRI4
+WFATCRI5	WFATCRI5
+ARCAZAP7	ARCAZAP7
+NETHERDE	NETHERDE
+ILLSHEA1	ILLSHEA1
+ILLSHEA2	ILLSHEA2
+PRIEINF1	PRIEINF1
+PRIEINF2	PRIEINF2
+PRIEINF3	PRIEINF3
+CybLow		CybLow
+BWorm/Sight B_SIGHT
+BWorm/Flinch B_FLINCH
+BWorm/Idle B_IDLE
+BWorm/Bite B_BITE
+TWorm/Sight T_SIGHT
+TWorm/Flinch T_FLINCH
+TWorm/Idle T_IDLE
+TWorm/Bite T_BITE
+AWorm/Sight A_SIGHT
+AWorm/Flinch A_FLINCH
+AWorm/Idle A_IDLE
+AWorm/Bite A_BITE
+EWorm/Sight E_SIGHT
+EWorm/Flinch E_FLINCH
+EWorm/Idle E_IDLE
+EWorm/Bite E_BITE
+Worm/Death DEATH
+Worm/Hurt HIT
+Worm/Burrow BURROW
+Worm/Digging DIGGIN
+Worm/Splat SPLAT
+Worm/Rock dspunch
+cacobaldsee  BALDS
+cacobalddeath  BALDD
+cacobaldpain  BALDP
+cacobaldidle1 BALDI
+cacobaldidle2 BALDI2
+cacobaldidle3 BALDI3
+ResistCH	ResistCH
+BEDsee		BEDsee
+BEDpain		BEDpain
+BEDded		BEDded
+WHPEACT		WHPEACT
+WHPEPAIN	WHPEPAIN
+WHPESEE		WHPESEE
+bloodsplat1 dsblud01
+bloodsplat2 dsblud02
+bloodsplat3 dsblud03
+wizard/tele1                    dwiztel1
+wizard/tele2                    dwiztel2
+wizard/pain                     dwizpain
+wizard/sight                    dwizact
+wizard/death                    dwizdth
+Wvile/scream 		            WVILESC2
+WVILEID1 WVILEID1
+wvileid2 wvileid2
+wvileid3 wvileid3
+WVILESC2 WVILESC2
+Bvile/Air1 AirDED
+Bvile/Air2 AirAtkb
+Bvile/Air3 AirAg
+Bvile/Air4 AirHur1
+Bvile/Air5 AirHur2
+Bvile/Air6 AirAg2
+Bvile/Air7 AirHur3
+DSJUGDI1	DSJUGDI1
+DSJUGDI2	DSJUGDI2
+DSJUGDI3	DSJUGDI3
+DSJUGDI4	DSJUGDI4
+DSJUGDI5	DSJUGDI5
+DSJUGPN1	DSJUGPN1
+DSJUGPN2	DSJUGPN2
+DSJUGPN3	DSJUGPN3
+DSJUGPN4	DSJUGPN4
+DSJUGPN5	DSJUGPN5
+DSJUGPN6	DSJUGPN6
+Juggernaut/Thud		DSJUGTHD
+Juggernaut/Attack	DSJUGATK
+Juggernaut/Hit		DSJUGHIT
+Juggernaut/Sight	DSJUGSEE
+Juggernaut/Step	DSJUGSTP
+raiseske	raiseske
+sklsrs1		sklsrs1
+sklsrs2		sklsrs2
+attack1		attack1
+attack2		attack2
+attack3		attack3
+attack4		attack4
+attack5		attack5
+attack6		attack6
+death1 		death1
+death2		death2
+death3		death3
+death4		death4
+death5		death5
+sklsrd1		sklsrd1
+sklsrd2		sklsrd2
+sword1		sword1
+sword2		sword2
+sword3		sword3
+sword4		sword4
+sword5		sword5
+sword6		sword6
+queen/pain quepain
+queen/death quedie
+queen/active queact
+queen/scream bqegg1a
+electricplasma/shoot		PZAPSEE
+electricplasma/hit		PZAPHIT
+queen/hit		qbfghit
+queen/melee		quebit
+monster/tensit                  dstensit
+monster/tenact                  dstenact
+monster/tenatk                  dstenatk
+monster/tenpn1                  dstenpn1
+monster/tenpn2                  dstenpn2
+monster/tenpn3                  dstenpn3
+monster/tendth                  dstendth
+deepone/hurt3  	Yogg3
+deepone/hurt4 	DEEPSTTH
+deepone/melee		DSCLAW
+deepone/stealth		DEEPSTTH
+deepone/fire 	DEEPFIRE
+deepone/firehit 	DEEPFHIT
+Bomb/Bounce  BOUNCE2
+Ratata/Rata1 GNOMEAT
+Bomb/boom SORBLEXP
+Spit/spit SPIT6
+Spit/spit2 CNTSHLD4
+Holy3/holy3 HOLY3
+Holy2/holy2 BISHDTH1
+Bite/bite4 BITE4
+Litn/litn2 LIGTN2
+Litn/litn3 LIGTN3
+monster/hlnsit                  dshlnsit
+monster/hlnact                  dshlnact
+monster/hlnpai                  dshlnpai
+monster/hlndth                  dshlndth
+monster/hlnatk                  dshlnatk
+monster/hlnexp                  dshlnexp
+WSOUL/hurt GEO
+WSOUL/death DARGO
+WSOUL/Sight KRAKK
+WSOUL/form CONSM
+Kawai/death PUMP2
+Kawai/hurt PUMP1
+Kawai/sight PUMP3
+Kawai/active SPIDD
+weapons/devexp                dsdevexp
+weapons/devzap                dsdevzap
+monster/ovlsit                  dsovlsit
+monster/ovlact                  dsovlact
+monster/ovlpai                  dsovlpai
+monster/ovldth                  dsovldth
+monster/hadsit                dshadsit
+monster/haddth                dshaddth
+monster/hadexp                dshadexp
+monster/hadtel                dshadtel
+monster/hadwlk                dshadwlk
+monster/heltel                  dsheltel
+caco/melee                    dsdembit
+weapons/gntidl                dsgntidl
+weapons/chaofi                dschaofi
+weapons/shock                 dsshock
+weapons/hellfi		      dshellfi
+weapons/hellex	              dshellex
+weapons/firex3                dsfirex3
+weapons/suldth                dssuldth
+weapons/diasht                dsdiasht
+weapons/bigbrn                dsbigbrn
+monster/smiths                dssmiths
+monster/smitha                dssmitha
+monster/smitht                dssmitht
+monster/smithp                dssmithp
+monster/smithd                dssmithd
+monster/smithr                dssmithr
+monster/smithw                dssmithw
+monster/hamflr                dshamflr
+monster/hamsht                dshamsht
+monster/dash                  dshdash
+Bcyb/Aggro                   niba1
+weapons/devzap                dsdevzap
+monster/hadsit                dshadsit
+monster/haddth                dshaddth
+monster/hadexp                dshadexp
+monster/hadtel                dshadtel
+monster/hadwlk                dshadwlk
+monster/helpai                dshelpai
+monster/heldth                dsheldth
+monster/heltel                dsheltel
+caco/melee                    dsdembit
+act1			SHDACT1
+act2			SHDACT2
+pain1			SHDPAIN1
+pain2			SHDPAIN2
+Shadow/attack		SHDATTAK
+Shadow/death		SHDDEATH
+Gen/Hurt MALE2
+Gen/huh MALE4
+Gen/See BRUTE3
+DSVOMIT1	DSVOMIT1
+DSVOMIT2	DSVOMIT2
+DSVOMIT3	DSVOMIT2
+SlimeBall/Splat	DSSICKEX
+DSWORMP1	DSWORMP1
+DSWORMP2	DSWORMP2
+slimeworm/sight		DSWORMSE
+slimeworm/death		DSWORMDI
+slimeworm/active	DSWORMID
+Science/Enuff   SCIENU
+Science/Devi   SCISDE
+Sci/atk1   SCIAT1
+Sci/atk2   SCIAT2
+Sci/Hu1   SCIHU1
+Sci/Hu2   SCIHU2
+Science/Die SCIDIE
+BabyCaco/Sight CACOBSIT
+BabyCaco/Pain CACOBPAI
+BabyCaco/Death CACOBDTH
+BabyCaco/Active BABYACT
+BabyCaco/Melee	BABYBITE
+arachnobaron/death dsabrdth
+shadowbeast/attack	BDMATK1
+shadowbeast/death	BDMDTH1
+shadowbeast/idle1	BDMIDL1
+shadowbeast/idle2	BDMIDL2
+shadowbeast/pain	BDMPAN1
+shadowbeast/sight	BDMSIT1
+shadowbeast/pr1death	BDPD1
+shadowbeast/pr1sight	BDPS1
+shadowbeast/pr2death	BDPD2
+shadowbeast/pr2sight	BDPS2
+shadowbeast/spread	BDPSPR
+shadowbeast/spiritsit	BDSPR2
+shadowbeast/spiritdth	BDSPR1
+phantom/spirit1 DSSPIRT1
+phantom/death BUILD
+phantom/bomb FIREBALL
+phantom/explode DSCMTEXP
+GENTLES1	GENTLES1
+monster/brufir dsbrufir
+weapons/hellex dshellex
+monster/dogsit dsdogsit
+monster/dogatk dsdogatk
+monster/dogbit dsdogbit
+monster/dogpai dsdogpai
+monster/dogdt1 dsdogdt1
+monster/dogdt2 dsdogdt2
+monster/dogact dsdogact
+weapons/bigbrn dsbigbrn
+monster/dogsht dsdogsht
+monster/doghit dsdoghit
+WASPDIE1	WASPDIE1
+WASPDIE2	WASPDIE2
+WASPDIE3	WASPDIE3
+WASPDIE4	WASPDIE4
+Hornet/Fly		WASPFLY
+Hornet/Splat	WASPSPLT
+Butcher/Sight	BCHRSIGH
+Butcher/Active	BCHRACTI
+BCHRSTP1	BCHRSTP1
+BCHRSTP2	BCHRSTP2
+BCHRSTP3	BCHRSTP3
+BCHRSTP4	BCHRSTP4
+Butcher/Miss	BCHRMISS
+Butcher/Pain	BCHRPAIN
+Butcher/Death	BCHRDEAT
+Butcher/Explode	BCHREXPL
+BK/Pass BKpass
+BK/Invi BKInvi
+BK/Phase2 BKBones
+BK/die BKdie
+monster/dknhit dsdknhit
+monster/dknsit dsdknsit
+monster/dknpai dsdknpai
+monster/dkndth dsdkndth
+monster/dknswg dsdknswg
+weapons/firex2 dsfirex2
+weapons/boom1 dsboom1
+weapons/boltfi dsboltfi
+weapons/scorch dsscorch
+ZSPCSIG1	ZSPCSIG1
+ZSPCSIG2	ZSPCSIG2
+ZSPCSIG3	ZSPCSIG3
+ZSPCMGN1	ZSPCMGN1
+ZSPCMGN2	ZSPCMGN2
+ZSPCMGN3	ZSPCMGN3
+ZSPCPAI1	ZSPCPAI1
+ZSPCPAI2	ZSPCPAI2
+ZSPCPAI3	ZSPCPAI3
+ZSPCDEA1	ZSPCDEA1
+ZSPCDEA2	ZSPCDEA2
+ZSPCDEA3	ZSPCDEA3
+ZSPCDEA4	ZSPCDEA4
+moloch/grenade dsmolgrn
+moloch/grenexp dsgrexpl
+moloch/scorch dsswoosh
+moloch/scorchhit dsscrexp
+moloch/wraith dswrasee
+moloch/wraithdie dswradth
+moloch/emberexp dsembexp
+moloch/thunder dsmobolt
+moloch/thundercrash dsbolhit
+moloch/flash dsmolfls
+moloch/flashhit dsflshit
+moloch/death dsmoldth
+moloch/thud dsmothud
+moloch/step dsmstep1
+moloch/wraith dsmolwra
+moloch/wraithdie dswradie
+moloch/nail dsmonail
+moloch/wraithattack dswrtchg
+moloch/wraithmelle dswrtatt
+ricochet1 dsnailr1
+ricochet2 dsnailr2
+msight3 dsmolsi3
+mact1 dsmolac1
+mact2 dsmolac2
+mact3 dsmolac3
+mact4 dsmolac4
+mpain1 dsmolpa1
+mpain2 dsmolpa2
+mpain3 dsmolpa3
+mattack2 dsmolat2
+mattack3 dsmolat3
+mattack4 dsmolat4
+moloch/phase2 dsmolat3
+arachnophyte/sight dsaphsit
+arachnophyte/pain1 dsaphpn1
+arachnophyte/pain2 dsaphpn2
+arachnophyte/pain3 dsaphpn3
+arachnophyte/death dsaphdth
+monster/falsit DRAGSIT1
+monster/falpai dsfalpai
+monster/faldth dsfaldth
+monster/falact dsfalact
+monster/falwng dsfalwng
+weapons/firmfi dsfirmfi
+weapons/firex5 dsfirex5
+monster/ar2sit dsar2sit
+monster/ar2dth dsar2dth
+weapons/firbfi dsfirbfi
+weapons/hellex dshellex
+horn/sight		dshrnsit
+horn/attack		woosh3
+horn/shotx		strike1
+horn/death		dshrndie
+cracko/see s_cracko
+cracko/pain p_cracko
+crack/see cracksee
+crack/death crackdth
+fiend/hover		  DSHOVER
+fiend/see		  DSFIEND
+fiend/bfg		  DSFBFG1
+fiend/bfg2		  DSFBFG2
+prox/fire		  DSIGPRXF
+bomb/beep DSBEEEP
+superdemon/death	DSSUPDTH
+superdemon/snarl	DSSUPSNA
+superdemon/crash	DSSUPLND
+aracnorb/sight		dsaracst
+aracnorb/death		dsaracdt
+aracnorb/attack		dsaracfr
+aracnorb/melee		dsaracml
+monster/infsit dsinfsit
+monster/infpai dsinfpai
+monster/infdth dsinfdth
+caco/melee2 dsdembit
+weapons/firmfi dsfirmfi
+weapons/firex3 dsfirex3
+monster/diasit dsdiasit
+monster/diapai dsdiapai
+monster/diadth dsdiadth
+monster/diaact dsdiaact
+weapons/firbfi dsfirbfi
+weapons/firmfi dsfirmfi
+weapons/diasht dsdiasht
+weapons/firex3 dsfirex3
+PE2/Die  D64PED1
+PE2/Hurt  D64PEHU
+PE2/See  D64PESE
+ClericFlameFire         dshellfi
+ClericFlameExplode      dshellex
+ClericFlameCircle       dsfirex5
+blooddemon/sight DSBLDSIT
+blooddemon/pain DSBLDPAI
+blooddemon/death DSBLDDTH
+blooddemon/active DSBLDACT
+blooddemon/melee DSBLDATK
+blooddemon/walk DSBLDWAL
+superbaron/scream dssbsit
+superbaron/pain dssbpain
+superbaron/death dssbdth
+superbaron/act dssbact
+Fire/fire1 FIREBFL
+Fire/fire2 FIERR
+Fire/fire3 FIERFLY
+monster/demsit dsdemsit
+Spell/Impact1 FUNGL1
+Spell/Lightn GNTACT1
+Frost/frost 1FROSTY2
+Wraith/Wraith1 RAITH3
+Wraith/Wraith2 RAITH5A
+Wraith/Wraith4 RAITH4A
+Wraith/Wraith3 RAITH1B
+Wraith/Wraith5 RATHDTH2
+CacoFlame/Attack LICHFLAM
+CacoLich/Sight INSSIT
+CacoLich/Active DSTRTACT
+CacoLich/Pain NESSPN
+CacoLich/Death DSDMDETH
+CGUY2/See D64FORME
+CGuy2/Die D64FORD3
+SGuy2/See2 D64FORMS
+HK2/Die  D64BAROD
+HK2/See  D64BAROS
+HK2/hurt D64BAROH
+Ice/Fly VORTEX
+Ice/Cast ICECAST
+Ice/inhale ETH
+Ice/Breath ETH2
+Ice/Splode FROSTNN
+FRGOATK1	FRGOATK1
+FRGOATK2	FRGOATK2
+FRGOATK3	FRGOATK3
+FRGOACT1	FRGOACT1
+FRGOACT2	FRGOACT2
+FRGOACT3	FRGOACT3
+FRGOACT4	FRGOACT4
+FRGOPAI1	FRGOPAI1
+FRGOPAI2	FRGOPAI2
+FRGOPAI3	FRGOPAI3
+FRGODEA1	FRGODEA1
+FRGODEA2	FRGODEA2
+FRGODEA3	FRGODEA3
+incubus/sight			Sounds/ch/DSINCSIT2.ogg
+incubus/attack1			dsincat1
+incubus/attack2			dsincat2
+incubus/pain			dsincpai
+incubus/death			Sounds/ch/DSINCDTH2.ogg
+incubus/active			Sounds/ch/DSINCACT2.ogg
+incubus/shot			dsincsht
+incubus/hit			Sounds/ch/DSINCHIT2.ogg
+weapons/hominglaunch		dshomlnc
+weapons/homingexplode		dshomxpl
+dsinwlk1	dsinwlk1
+dsinwlk2	dsinwlk2
+dsinwlk3	dsinwlk3
+dsinwlk4	dsinwlk4
+incubus2/sight			dsgicsit
+incubus2/attack1	        dsgicat1
+incubus2/attack2		dsgicat2
+incubus2/pain			dsgicpai
+incubus2/death			dsgicdth
+incubus2/active			dsgicact
+dsgiwlk1	dsgiwlk1
+dsgiwlk2	dsgiwlk2
+dsgiwlk3	dsgiwlk3
+dsgiwlk4	dsgiwlk4
+dsflbxp1        dsflbxp1
+dsflbxp2        dsflbxp2
+dsflbxp3        dsflbxp3
+
+// --- CH $-directives ($random / $alias / $limit / $pitchshift) ---
+// 88 of them. MISSED BY THE FIRST PASS OF THIS IMPORT: the filter
+// skipped every line beginning with $, which is exactly how CH
+// declares its multi-take sound sets. $random Foo { A B } DEFINES
+// the name Foo -- dropping these left names like genEx/see and
+// Science/Atk unresolved even though their lumps had been copied.
+$random	Obsidian/Alert { STALR1 STALR2 }
+$random	Obsidian/Attack { STATK1 STATK2 STATK2 }
+$random Obsidian/Death { STDIE1 STDIE2 }
+$random Obsidian/Idle { STIDL1 STIDL2 }
+$random Obsidian/Melee { STMEL1 STMEL2 }
+$random Obsidian/Pain { STPAI1 STPAI2 STPAI3 STPAI4 }
+$random Obsidian/Swipe { STSWI1 STSWI2 }
+$random Obsidian/Missile { STMIS1 STMIS2 STMIS3 STMIS4 }
+$random Obsidian/Impact { STBAL1 STBAL2 STBAL3 STBAL4 }
+$random Obsidian/TrapDeath { STRPD1 STRPD2 }
+$random Obsidian/TrapSpawn { STRPS1 STRPS2 }
+$random  brownCybie/step { CRAWLST1 CRAWLST2 CRAWLST3 }
+$random  brownCybie/DeepShot { DEEPSHO1 DEEPSHO2 DEEPSHO3 }
+$random  WMIND/IDLE { WMINDSE1 WMINDSE2 WMINDSE3 WMINDSE4 WMINDSE5 }
+$random  brownBaron/step { midstep1 midstep2 midstep3 }
+$random  brownMind/step { ICKSTEP1 ICKSTEP2}
+$random  brownMind/Angry { BR0SPS1 BR0SPS2 BR0SPS3 }
+$random  brownMind/ouch { BR0SPOW1 BR0SPOW2 BR0SPOW3 }
+$random Barks { BPBark BPBark2 }
+$random  bluemind/step { BLUMINS1 BLUMINS2 BLUMINS3 BLUMINS4 }
+$random monster/wikact		{ monster/wikac1    monster/wikac2 }
+$Random BrownDemon/Step { AUTOBOT1 AUTOBOT2 AUTOBOT3 AUTOBOT4 }
+$Random Roach/Sight { ROACSIG1 ROACSIG2 ROACSIG3 }
+$Random Roach/Active { ROACACT1 ROACACT2 }
+$Random Roach/Pain { ROACPAI1 ROACPAI2 }
+$random Lich/Cast { LICHENDU LICHPRAY LICHESCA }
+$random GenEx/See { GRALSEE1 GRALSEE2 }
+$random GenEx/pain { GRALPAI1 GRALPAI2 }
+$random Rome/see { ROMEBADS ROMEBITH }
+$random Rome/Act { ROMEDOOM  ROMEMOWS  ROMEATAR  ROMEISSU  ROMERUNF }
+$random Rome/Ded { ROMESORC ROMSTIME  }
+$random Rome/PH2 { ROMENOPE ROMERHIT ROMTHISW }
+$random Rome/PH3 { ROMERGOD ROMSANIT }
+$random Rome/ATK1 { ROMESHOW ROMEDSIM ROMNAILT ROMBURNT ROMETAKT ROMEHERE ROMEFUND }
+$random Rome/ATK2 { ROMDESTO ROMENUKE ROMELAFF ROMSSHOT ROMTHAIL ROMKICKS  }
+$random Ahead/at { AHEDATK1 AHEDATK2 }
+$random Ahead/ac { AHEDACT1 AHEDACT2 AHEDACT3 AHEDACT4 }
+$random Ahead/ow { AHEDPAI1 AHEDPAI2 AHEDPAI3 }
+$random beetl/ow { BETLEOW1 BETLEOW2 }
+$random eati/run { eatirun1 eatirun2 eatirun3 }
+$random AbyCyb/step { STEPACY1 STEPACY2 STEPACY3 STEPACY4 STEPACY5 }
+$random  AbyCyb/Pain { ABCYPAI1 ABCYPAI2 }
+$random  AbyCyb/Act { ABYCYAC1 ABYCYAC2 ABYCYAC3 }
+$random  AbyCyb/Atk { ABCYATK1 ABCYATK2 ABCYATK3 }
+$random WFATATTACK { WFATATK1 WFATATK2 WFATATK3 }
+$random WFATACTI { WFATACT1 WFATACT2 }
+$random WFATHURT { WFATHIT1 WFATHIT2 WFATHIT3 }
+$random WFATCRIT { WFATCRI1 WFATCRI2 WFATCRI3 WFATCRI4 WFATCRI5 }
+$random ILLSHEAR { ILLSHEA1 ILLSHEA2 }
+$random prieinfu { PRIEINF1 PRIEINF2 PRIEINF3 }
+$RANDOM cacobaldidle { cacobaldidle1 cacobaldidle2 cacobaldidle3 }
+$random bloodsplat { bloodsplat1 bloodsplat2 bloodsplat3 }
+$limit bloodsplat 1
+$random wizard/tele 		{ wizard/tele1  wizard/tele2 }
+$random wizard/active        { dwizact  WVILEID1 wvileid2 wvileid3 }
+$random Juggernaut/Death	{ DSJUGDI1 DSJUGDI2 DSJUGDI3 DSJUGDI4 DSJUGDI5 }
+$random Juggernaut/Pain	{ DSJUGPN1 DSJUGPN2 DSJUGPN3 DSJUGPN4 DSJUGPN5 DSJUGPN6 }
+$random skelsit { raiseske sklsrs1 sklsrs2 }
+$random skelatt { attack1 attack2 attack3 attack4 attack5 attack6 }
+$random skeldth { death1 death2 death3 death4 death5 sklsrd1 sklsrd2 }
+$random swordhit { sword1 sword2 sword3 sword4 sword5 sword6 }
+$random monster/tenpai	{ monster/tenpn1 monster/tenpn2 monster/tenpn3 }
+$random Shadow/active { act1 act2 }
+$random Shadow/pain { pain1 pain2 }
+$random SlimeBall/Shoot		{ DSVOMIT1 DSVOMIT2 DSVOMIT3 }
+$random slimeworm/pain		{ DSWORMP1 DSWORMP2 }
+$random Science/Atk {Sci/atk1 Sci/Atk2}
+$Random Science/Pain {Sci/Hu1 Sci/hu2}
+$random shadowbeast/active { shadowbeast/idle2 shadowbeast/idle1 }
+$RANDOM monster/dogdth { monster/dogdt1 monster/dogdt2 }
+$random Hornet/Death	{ WASPDIE1 WASPDIE2 WASPDIE3 WASPDIE4 }
+$Random Butcher/Step { BCHRSTP1 BCHRSTP2 BCHRSTP3 BCHRSTP4 }
+$Random ZSpecOps/MGun	{ ZSPCMGN1 ZSPCMGN2 ZSPCMGN3 }
+$Limit ZSpecOps/MGun	0
+$RANDOM moloch/nailhit { ricochet1 ricochet2 }
+$RANDOM moloch/sight { msight3 }
+$RANDOM moloch/active { mact1 mact2 mact3 mact4 }
+$RANDOM moloch/pain { mpain1 mpain2 mpain3 }
+$RANDOM moloch/attack {mattack2 mattack4 }
+$RANDOM arachnophyte/pain { arachnophyte/pain1 arachnophyte/pain2 arachnophyte/pain3 }
+$Random Forgotten/Attack { FRGOATK1 FRGOATK2 FRGOATK3 }
+$Random Forgotten/Active { FRGOACT1 FRGOACT2 FRGOACT3 }
+$Random Forgotten/Pain { FRGOPAI1 FRGOPAI2 FRGOPAI3 }
+$Random Forgotten/Death { FRGODEA1 FRGODEA2 FRGODEA3 }
+$limit weapons/rocklf     32
+$random incubus/walk	{ dsinwlk1 dsinwlk2 dsinwlk3 dsinwlk4 }
+$random incubus2/walk	{ dsgiwlk1 dsgiwlk2 dsgiwlk3 dsgiwlk4 }
+$random weapons/flameballexplode { dsflbxp1 dsflbxp2 dsflbxp3 }
+
+// --- RS_Elite (zscript/systems/monster/RS_Elite.zs) ------------------
+// The reveal's three layers: loop rides channel 6 until death, reveal
+// sting on 7, boss layer on 5. Lumps in sounds/monsters/RSEL*.ogg.
+rs/elite/loop		RSELLOOP
+rs/elite/reveal		RSELTRAN
+$limit rs/elite/reveal	0
+rs/elite/boss		RSELBOSS
+$limit rs/elite/boss	0
+$pitchshift rs/elite/boss	0
+
+// --- CH Demon family (2026-08-05): playback modifiers CH declares for
+// names the 693-lump import already defined; the import carried the
+// definitions but not these. (CH SNDINFO.txt:558, 874, 770, 771.)
+$limit Juggernaut/Step 0
+$volume Butcher/melee 0.7
+$limit SlimeBall/Splat 0
+$volume SlimeBall/Splat 0.7
+
+// --- CH Lost Soul family (2026-08-05): playback modifiers CH declares
+// for names the whole-SNDINFO import already defined, same shape as the
+// demon block above. (CH SNDINFO.txt:853-854.)
+$limit Hornet/Fly 0
+$volume Hornet/fly 0.5
+
+
+// =====================================================================
+// RS_Grenade. Lumps in sounds/rs_grenade/, imported with the actor.
+//
+// NOTE: these files have NO EXTENSION on disk, so the path form below is
+// the complete filename and is correct. Do not add .ogg -- that is how a
+// working sound gets made silent.
+// =====================================================================
+rs_gren/pin      Sounds/rs_grenade/DSGRPIN
+rs_gren/toss     Sounds/rs_grenade/DSGRTOSS
+rs_gren/bounce   Sounds/rs_grenade/GBOUNCE
+rs_gren/farexpl  Sounds/rs_grenade/FAREXPL
+
+$random rs_gren/explode { rs_gren_bang1 rs_gren_bang2 rs_gren_bang3 rs_gren_bang4 rs_gren_bang5 rs_gren_bang6 rs_gren_bang7 rs_gren_bang8 }
+rs_gren_bang1    Sounds/rs_grenade/GBANG1
+rs_gren_bang2    Sounds/rs_grenade/GBANG2
+rs_gren_bang3    Sounds/rs_grenade/GBANG3
+rs_gren_bang4    Sounds/rs_grenade/GBANG4
+rs_gren_bang5    Sounds/rs_grenade/GBANG5
+rs_gren_bang6    Sounds/rs_grenade/GBANG6
+rs_gren_bang7    Sounds/rs_grenade/GBANG7
+rs_gren_bang8    Sounds/rs_grenade/GBANG8
+
+$rolloff rs_gren/explode 1100 1600
+$rolloff rs_gren/farexpl 3200 5400
+$volume  rs_gren/farexpl 0.5
+$volume  rs_gren/bounce  0.8
+
+// RS_Hook -- REMOVED 2026-08-07, owner's order. Lumps deleted from
+// Sounds/rs_hook/ along with it.
+
+// =====================================================================
+// `loud` -- the tinnitus ring (RS_Curses.zs).
+//
+// Layers ON TOP of the weapon's own fire sound rather than replacing it,
+// and masks by being loud rather than by ducking anything -- there is no
+// listener volume in ZScript to duck with.
+//
+// Asset: owner-supplied 28s tone, trimmed to 4s with an 8ms attack (so
+// it lands ON the gunshot, not after it) and a 1.2s decay. Downsampled
+// 48k -> 22050 mono 16-bit.
+//
+// NO $limit: this is deliberately allowed to retrigger, because
+// re-firing before the ring fades is what extends it.
+// =====================================================================
+rs_curse/tinnitus  Sounds/rs_curse/RSTINNIT.wav
+
+// =====================================================================
+// RS_MG monster set -- zscript/rs_mg/. Lumps in sounds/rs_mg/.
+//
+// PATH FORM MUST BEGIN "Sounds/". This file already carries 48 lines that
+// omit it and are therefore inaudible with no error; do not add a 49th.
+//
+// mgun2 and enemysg are ALIASES in the source SNDINFO, not lumps --
+// mgun2 -> MGFIRE, enemysg -> SGFIRE. Kept as the same indirection so the
+// monster states read verbatim against the original.
+// Rolloff/volume/limit values are the source's own tuning.
+// =====================================================================
+enemygun   Sounds/rs_mg/ENEMYGUN.ogg
+mgun2      Sounds/rs_mg/MGFIRE.ogg
+enemysg    Sounds/rs_mg/SGFIRE.ogg
+stgpump    Sounds/rs_mg/STGPUMP.lmp
+
+$rolloff enemygun 800 3000
+$rolloff mgun2 200 3000
+$rolloff enemysg 800 3000
+$volume enemygun 0.7
+$volume mgun2 0.5
+$volume enemysg 0.7
+$limit enemygun 4
+$limit enemysg 4

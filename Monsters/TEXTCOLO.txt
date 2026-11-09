@@ -1,0 +1,70 @@
+// =====================================================================
+// TEXTCOLO -- font colour translations.
+// ---------------------------------------------------------------------
+// RSScore_* are the arcade score readout's palette. They are gradients,
+// not flat colours: a dark low end and a bright high end, which is what
+// keeps the bonus stack readable over a bright floor.
+//
+// This lump exists because the stock console colours are NOT these
+// colours. An earlier pass mapped the four flavours onto the nearest
+// CR_* constants -- CR_BRICK / CR_GREEN / CR_ORANGE / CR_WHITE. Three
+// were merely in the right hue family; the fourth was simply wrong, and
+// the base line rendered white when it is meant to be gold. Do not
+// "simplify" these back to CR_ names.
+//
+// Flavour meanings, matching RS_ScoreDefs.RS_SF_*:
+//   Base        the kill itself
+//   Efficiency  Spree, Untouchable, Infighter
+//   Style       Switcharoo, Scrapping, Telefragged, Curveball, Darwin, Air
+//   Daring      Redline, Swan Song, Point-Blank, Brawler, Giant Slayer
+// =====================================================================
+
+RSScore_White
+{
+    #404040 #606060 0  24
+    #C0C0C0 #FFFFFF 25 255
+}
+
+RSScore_WhiteFlash
+{
+    #707070 #A0A0A0 0  24
+    #FFFFFF #FFFFFF 25 255
+}
+
+RSScore_Gold
+{
+    #403010 #604020 0  24
+    #C0B020 #FFD030 25 255
+}
+
+RSScore_GoldFlash
+{
+    #807540 #BFB75F 0  24
+    #FFF8B3 #FFF7CC 25 255
+}
+
+// Base is gold -- deliberately the same ramp as RSScore_Gold, so the
+// base line and the score number read as one object.
+RSScore_Base
+{
+    #403010 #604020 0  24
+    #C0B020 #FFD030 25 255
+}
+
+RSScore_Efficiency
+{
+    #402020 #603030 0  24
+    #C09090 #FF8080 25 255
+}
+
+RSScore_Style
+{
+    #204010 #286014 0  24
+    #90C020 #B8FF30 25 255
+}
+
+RSScore_Daring
+{
+    #402008 #603010 0  24
+    #C06020 #FF8030 25 255
+}

@@ -1,0 +1,433 @@
+// =====================================================================
+// TEXTURES -- monster health bar sprites (zscript/systems/monster/RS_HealthBars.zs)
+// ---------------------------------------------------------------------
+// Ported from coldcite's "Top HP Bars" 1.04. Two styles, 22 frames each:
+// XX = invulnerable, 99 = full, then 95..00 in 5% steps. The art is
+// unchanged from upstream -- 112x11, origin bottom-centre (56,11).
+//
+// The FILLED region of each frame is fully opaque; the EMPTY region is
+// hollow (alpha 0 through the interior, only the 1px top/bottom frame
+// rows are solid). That is load-bearing: it means a second bar actor
+// rendered behind shows through the empty part, which is how a chip-
+// damage layer can be built without any new art. Do not fill the empty
+// region in when editing these.
+//
+// Sprite names are HA__/HB__ -- nothing else in this project uses those
+// two prefixes.
+// =====================================================================
+
+// --- Style A ---
+
+Sprite "HAXXA0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_XX", 0, 0
+}
+
+Sprite "HA99A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_99", 0, 0
+}
+
+Sprite "HA95A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_95", 0, 0
+}
+
+Sprite "HA90A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_90", 0, 0
+}
+
+Sprite "HA85A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_85", 0, 0
+}
+
+Sprite "HA80A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_80", 0, 0
+}
+
+Sprite "HA75A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_75", 0, 0
+}
+
+Sprite "HA70A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_70", 0, 0
+}
+
+Sprite "HA65A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_65", 0, 0
+}
+
+Sprite "HA60A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_60", 0, 0
+}
+
+Sprite "HA55A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_55", 0, 0
+}
+
+Sprite "HA50A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_50", 0, 0
+}
+
+Sprite "HA45A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_45", 0, 0
+}
+
+Sprite "HA40A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_40", 0, 0
+}
+
+Sprite "HA35A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_35", 0, 0
+}
+
+Sprite "HA30A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_30", 0, 0
+}
+
+Sprite "HA25A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_25", 0, 0
+}
+
+Sprite "HA20A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_20", 0, 0
+}
+
+Sprite "HA15A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_15", 0, 0
+}
+
+Sprite "HA10A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_10", 0, 0
+}
+
+Sprite "HA05A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_05", 0, 0
+}
+
+Sprite "HA00A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_A_00", 0, 0
+}
+
+// --- Style B ---
+
+Sprite "HBXXA0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_XX", 0, 0
+}
+
+Sprite "HB99A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_99", 0, 0
+}
+
+Sprite "HB95A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_95", 0, 0
+}
+
+Sprite "HB90A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_90", 0, 0
+}
+
+Sprite "HB85A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_85", 0, 0
+}
+
+Sprite "HB80A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_80", 0, 0
+}
+
+Sprite "HB75A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_75", 0, 0
+}
+
+Sprite "HB70A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_70", 0, 0
+}
+
+Sprite "HB65A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_65", 0, 0
+}
+
+Sprite "HB60A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_60", 0, 0
+}
+
+Sprite "HB55A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_55", 0, 0
+}
+
+Sprite "HB50A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_50", 0, 0
+}
+
+Sprite "HB45A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_45", 0, 0
+}
+
+Sprite "HB40A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_40", 0, 0
+}
+
+Sprite "HB35A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_35", 0, 0
+}
+
+Sprite "HB30A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_30", 0, 0
+}
+
+Sprite "HB25A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_25", 0, 0
+}
+
+Sprite "HB20A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_20", 0, 0
+}
+
+Sprite "HB15A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_15", 0, 0
+}
+
+Sprite "HB10A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_10", 0, 0
+}
+
+Sprite "HB05A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_05", 0, 0
+}
+
+Sprite "HB00A0", 112, 11
+{
+	Offset 56, 11
+	Patch "HP_B_00", 0, 0
+}
+
+// ---------------------------------------------------------------------
+// Threshold marks (HM__) -- a small gold tick sitting just ABOVE the bar
+// at the point where a monster's next phase gate fires.
+//
+// One sprite per 5% position, because the tick's horizontal placement is
+// BAKED INTO THE CANVAS. Same reason the bar itself is 21 pre-rendered
+// frames: a world-space billboard cannot be nudged sideways at runtime,
+// since 'sideways' is view-relative and changes as you walk around the
+// monster. Generated art, not hand-drawn -- see the commit that added it.
+// ---------------------------------------------------------------------
+
+Sprite "HM00A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_00", 0, 0
+}
+
+Sprite "HM05A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_05", 0, 0
+}
+
+Sprite "HM10A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_10", 0, 0
+}
+
+Sprite "HM15A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_15", 0, 0
+}
+
+Sprite "HM20A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_20", 0, 0
+}
+
+Sprite "HM25A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_25", 0, 0
+}
+
+Sprite "HM30A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_30", 0, 0
+}
+
+Sprite "HM35A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_35", 0, 0
+}
+
+Sprite "HM40A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_40", 0, 0
+}
+
+Sprite "HM45A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_45", 0, 0
+}
+
+Sprite "HM50A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_50", 0, 0
+}
+
+Sprite "HM55A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_55", 0, 0
+}
+
+Sprite "HM60A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_60", 0, 0
+}
+
+Sprite "HM65A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_65", 0, 0
+}
+
+Sprite "HM70A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_70", 0, 0
+}
+
+Sprite "HM75A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_75", 0, 0
+}
+
+Sprite "HM80A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_80", 0, 0
+}
+
+Sprite "HM85A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_85", 0, 0
+}
+
+Sprite "HM90A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_90", 0, 0
+}
+
+Sprite "HM95A0", 112, 8
+{
+	Offset 56, 8
+	Patch "HP_M_95", 0, 0
+}
+
+// ---------------------------------------------------------------------
+// Boss bracket (HFRM) -- corner pieces around the bar for high-health
+// monsters, so a long fight announces itself before the slow drain reads
+// as a stuck bar.
+//
+// Deliberately HOLLOW: rows 5-15 are fully transparent, which is exactly
+// where the 112x11 bar sits when both are centred. The two are coplanar
+// but never both opaque at the same pixel, so they cannot z-fight.
+// Keep it that way if you redraw it.
+// ---------------------------------------------------------------------
+
+Sprite "HFRMA0", 124, 21
+{
+	Offset 62, 21
+	Patch "HP_FRAME", 0, 0
+}

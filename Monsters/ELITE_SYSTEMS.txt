@@ -1,0 +1,23 @@
+Two elite systems exist in the source tree.
+
+ACTIVE  zscript/monsters/RS_Elite.zs + RS_EliteColors.zs + RS_EliteFX.zs
+        17 elite types (RS_EliteE01..E17). Compiles, loads, runs.
+
+PRESENT BUT NOT INCLUDED
+        zscript/systems/RS_Elites.zs, RS_EliteShared.zs and the five
+        RS_EliteProfiles_*.zs files.
+
+Why not included: this older system does not compile. The engine reports about
+a hundred errors in it -- "Expression must be a modifiable value" (40),
+"Return type mismatch" (24), "Can't call play function A_SpawnItemEx from data
+context" (10) -- and it also reaches for RS_Keywords and RS_Catalog, which are
+weapon-side systems that have no place in a monster pack.
+
+This is not new and was not caused by extracting the pack. RS_Main's own
+include file carried a note saying these six files were disabled with "114
+script errors".
+
+The files are here, unchanged apart from two renamed class names (see the
+headers in them), so the code is not lost. Fixing them is a real job: the
+"data context" errors mean play-scope calls sitting in const/data functions,
+which is a rewrite of how the profiles are invoked, not a typo hunt.

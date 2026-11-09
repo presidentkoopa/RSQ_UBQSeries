@@ -1,0 +1,59 @@
+version "4.14"
+
+// RS_Monsters -- only zscript/monsters. Nothing else.
+// FX file first in each family, then the monsters: the monsters name their
+// family's support classes. Family order matters -- spectre needs demon,
+// lostsoul needs cacodemon, spider needs baron/revenant/fatso.
+
+#include "zscript/monsters/support/RS_Keywords.zs"
+#include "zscript/monsters/support/RS_Catalog.zs"
+#include "zscript/monsters/attack/RS_AttackProfile.zs"
+#include "zscript/monsters/attack/RS_FoodBonus.zs"
+// RS_MonsterMaster calls RS_MonsterAim.GetLeadAngle and casts to
+// RS_MonsterSatellite (which lives in RS_MonsterCatalog.zs). Both from RS_Main.
+#include "zscript/monsters/support/RS_MonsterAim.zs"
+#include "zscript/monsters/support/RS_MonsterCatalog.zs"
+#include "zscript/monsters/RS_MonsterMaster.zs"
+// #include "zscript/monsters/RS_MonsterCommands.zs"
+//   NOT LOADED. It defines RS_BrownImpCommand and RS_RevSpeedBuff, which
+//   imp/RS_ImpFX.zs and revenant/RS_RevenantFX.zs also define -- the family
+//   rebuilds absorbed them. Two definitions of one class will not load.
+//   RS_Main did not load this file either. The file is untouched on disk.
+#include "zscript/monsters/zombieman/RS_ZombiemanFX.zs"
+#include "zscript/monsters/zombieman/RS_Zombieman.zs"
+#include "zscript/monsters/shotgunner/RS_ShotgunnerFX.zs"
+#include "zscript/monsters/shotgunner/RS_Shotgunner.zs"
+#include "zscript/monsters/chaingunner/RS_ChaingunnerFX.zs"
+#include "zscript/monsters/chaingunner/RS_Chaingunner.zs"
+#include "zscript/monsters/imp/RS_ImpFX.zs"
+#include "zscript/monsters/imp/RS_Imp.zs"
+#include "zscript/monsters/demon/RS_DemonFX.zs"
+#include "zscript/monsters/demon/RS_Demon.zs"
+#include "zscript/monsters/spectre/RS_SpectreFX.zs"
+#include "zscript/monsters/spectre/RS_Spectre.zs"
+#include "zscript/monsters/cacodemon/RS_CacodemonFX.zs"
+#include "zscript/monsters/cacodemon/RS_Cacodemon.zs"
+#include "zscript/monsters/lostsoul/RS_LostSoulFX.zs"
+#include "zscript/monsters/lostsoul/RS_LostSoul.zs"
+#include "zscript/monsters/painelemental/RS_PainElementalFX.zs"
+#include "zscript/monsters/painelemental/RS_PainElemental.zs"
+#include "zscript/monsters/hellknight/RS_HellKnightFX.zs"
+#include "zscript/monsters/hellknight/RS_HellKnight.zs"
+#include "zscript/monsters/baron/RS_BaronFX.zs"
+#include "zscript/monsters/baron/RS_Baron.zs"
+#include "zscript/monsters/revenant/RS_RevenantFX.zs"
+#include "zscript/monsters/revenant/RS_Revenant.zs"
+#include "zscript/monsters/fatso/RS_FatsoFX.zs"
+#include "zscript/monsters/fatso/RS_Fatso.zs"
+#include "zscript/monsters/spider/RS_SpiderFX.zs"
+#include "zscript/monsters/spider/RS_Spider.zs"
+#include "zscript/monsters/archvile/RS_ArchvileFX.zs"
+#include "zscript/monsters/archvile/RS_Archvile.zs"
+#include "zscript/monsters/cyberdemon/RS_CyberdemonFX.zs"
+#include "zscript/monsters/cyberdemon/RS_Cyberdemon.zs"
+#include "zscript/monsters/mastermind/RS_MastermindFX.zs"
+#include "zscript/monsters/mastermind/RS_Mastermind.zs"
+#include "zscript/monsters/chshared/RS_CHShared.zs"
+#include "zscript/monsters/chshared/RS_MonEvents.zs"
+#include "zscript/monsters/RS_Roster.zs"
+#include "zscript/monsters/RS_Retier.zs"

@@ -1,0 +1,278 @@
+// everything always faces right i guess ---------------------------------------
+
+
+bpaka = "bpaka" {AngleOffset = 270}
+ammoa = "ammoa" {AngleOffset = 270}
+broka = "broka" {AngleOffset = 270}
+cella = "cella" {AngleOffset = 270}
+cellz = "cellz" {AngleOffset = 270}
+celpa = "celpa" {AngleOffset = 270}
+celpz = "celpz" {AngleOffset = 270}
+clipa = "clipa" {AngleOffset = 270}
+sboxa = "sboxa" {AngleOffset = 270}
+shela = "shela" {AngleOffset = 270}
+rocka = "rocka" {AngleOffset = 270}
+
+arm1a = "arm1a" {AngleOffset = 270}
+arm1b = "arm1b" {AngleOffset = 270}
+arm2a = "arm2a" {AngleOffset = 270}
+arm2b = "arm2b" {AngleOffset = 270}
+
+col5a = "col5a" {AngleOffset = 270}
+col5b = "col5b" {AngleOffset = 270}
+col6a = "col6a" {AngleOffset = 270}
+
+media = "media" {AngleOffset = 270}
+mediz = "mediz" {AngleOffset = 270}
+stima = "stima" {AngleOffset = 270}
+stimz = "stimz" {AngleOffset = 270}
+
+brs1a = "brs1a" {AngleOffset = 270}
+pob1a = "pob1a" {AngleOffset = 270}
+pob2a = "pob2a" {AngleOffset = 270}
+pol4a = "pol4a" {AngleOffset = 270}
+pol5a = "pol5a" {AngleOffset = 270}
+
+// spinners --------------------------------------------------------------------
+
+//spawn cube
+bosf = "bosf"
+{
+	spin = 268
+}
+
+// floaters --------------------------------------------------------------------
+
+megaw = "megaw"
+{
+	spin = 92
+}
+megax = "megax"
+{
+	spin = 92
+}
+megay = "megay"
+{
+	spin = 92
+}
+megaz = "megaz"
+{
+	spin = 92
+}
+
+pinsw = "pinsw"
+{
+	spin = 327
+	scale = 1.0
+}
+pinsx = "pinsw"
+{
+	spin = -327
+	scale = 0.95
+}
+pinsy = "pinsw"
+{
+	spin = -327
+	scale = 0.9
+}
+pinsz = "pinsw"
+{
+	spin = 327
+	scale = 0.85
+}
+
+
+pinvw = "pinvw"
+{
+	spin = 92
+	scale = 1.0
+}
+pinvx = "pinvw"
+{
+	spin = 92
+	scale = 0.9
+}
+pinvy = "pinvw"
+{
+	spin = 92
+	scale = 0.8
+}
+pinvz = "pinvw"
+{
+	spin = 92
+	scale = 0.7
+}
+
+soulw = "soulw"
+{
+	spin = 92
+	scale = 1.0
+}
+soulx = "soulw"
+{
+	spin = 92
+	scale = 0.98
+}
+souly = "soulw"
+{
+	spin = 92
+	scale = 0.96
+}
+soulz = "soulw"
+{
+	spin = 92
+	scale = 0.94
+}
+
+
+// keys ------------------------------------------------------------------------
+
+bkeya = "bkeya"
+{
+	spin = 92
+}
+bkeyb = "bkeyb"
+{
+	spin = 92
+}
+
+bskua = "bskua"
+{
+	spin = 92
+}
+bskub = "bskub"
+{
+	spin = 92
+}
+
+rkeya = "rkeya"
+{
+	spin = 92
+}
+rkeyb = "rkeyb"
+{
+	spin = 92
+}
+
+rskua = "rskua"
+{
+	spin = 92
+}
+rskub = "rskub"
+{
+	spin = 92
+}
+
+ykeya = "ykeya"
+{
+	spin = 92
+}
+ykeyb = "ykeyb"
+{
+	spin = 92
+}
+
+yskua = "yskua"
+{
+	spin = 92
+}
+yskub = "yskub"
+{
+	spin = 92
+}
+
+suita = "suita"
+{
+	spin = 92
+}
+
+// bonuses ---------------------------------------------------------------------
+
+bon1a = "bon1a"
+{
+	spin = 92
+}
+bon1b = "bon1b"
+{
+	spin = 92
+}
+bon1c = "bon1c"
+{
+	spin = 92
+}
+bon1d = "bon1d"
+{
+	spin = 92
+}
+
+bon2a = "bon2a"
+{
+	spin = 92
+}
+bon2b = "bon2b"
+{
+	spin = 92
+}
+bon2c = "bon2c"
+{
+	spin = 92
+}
+bon2d = "bon2d"
+{
+	spin = 92
+}
+bon2z = "bon2z"
+{
+	spin = 92
+}
+
+
+// weapons ---------------------------------------------------------------------
+
+csawa = "csawa"
+{
+	AngleOffset = 270
+	droppedspin = 92
+}
+
+pista = "pista"
+{
+	AngleOffset = 270
+	droppedspin = 92
+}
+
+shota = "shota"
+{
+	AngleOffset = 270
+	droppedspin = 92
+}
+
+sgn2a = "sgn2a"
+{
+	AngleOffset = 270
+	droppedspin = 92
+}
+
+mguna = "mguna"
+{
+	AngleOffset = 270
+	droppedspin = 92
+}
+
+launa = "launa"
+{
+	AngleOffset = 270
+	droppedspin = 92
+}
+
+plasa = "plasa"
+{
+	AngleOffset = 270
+	droppedspin = 92
+}
+
+bfuga = "bfugz"
+{
+	AngleOffset = 270
+	droppedspin = 92
+}

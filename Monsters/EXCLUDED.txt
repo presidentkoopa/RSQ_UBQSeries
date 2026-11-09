@@ -1,0 +1,46 @@
+Files present in this pack but NOT in the include list, because they do not
+compile. Nothing was deleted -- uncomment the include once the cause is fixed.
+
+zscript/monsters/RS_MonsterMaster.zs        (7 errors)
+    Unknown identifier 'RS_Catalog'    - a WEAPON-side system
+    Unknown identifier 'RS_Keywords'   - a WEAPON-side system
+    Unknown identifier 'v'             - a bug in the file itself
+    Note: RS_SystemsMaster.zs, which IS active in this pack, says in its own
+    header that it replaced RS_MonsterMaster.zs.
+
+zscript/systems/RS_MonsterCatalog.zs       (3 errors)
+    Unknown class name 'RS_ArachnotronPlasma'
+    Unknown class name 'RS_CacoBallBase'
+    Unknown class name 'RS_WVileBolt2'
+    These three were defined in zscript/monsters/monsterfx/, which is no longer
+    present in the source tree, so there is nothing to point them at.
+
+zscript/systems/RS_Elites.zs + RS_EliteShared.zs + the five RS_EliteProfiles_*
+    About a hundred errors. See ELITE_SYSTEMS.txt.
+
+The chaingunner per-colour cluster -- excluded because every one of these
+overrides a virtual that lives on RS_MonsterMaster (TierData, MaxTier,
+SpawnRosterCount/Pick/Weight, GetBaseKeywords, MinionsDieWithMe), and
+RS_MonsterMaster does not compile. The chaingunner family still works:
+chaingunner/RS_Chaingunner.zs provides the dial and RS_CommonCGuy..
+RS_WhiteCGuy, which is what the dial actually spawns.
+
+    zscript/monsters/chaingunner/rs_chaingunner_b0001_black.zs
+    zscript/monsters/chaingunner/rs_chaingunner_b0002_white.zs
+    zscript/monsters/chaingunner/rs_chaingunner_c0001_common.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0001_green.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0002_blue.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0003_cyan.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0004_purple.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0005_yellow.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0006_brown.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0007_gray.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0008_abyss.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0009_fireblu.zs
+    zscript/monsters/chaingunner/rs_chaingunner_t0010_red.zs
+    zscript/monsters/chaingunner/rs_chaingunner_x0001_blackex.zs
+    zscript/monsters/rs_chaingunner.zs
+
+zscript/systems/RS_MonsterDebug.zs
+    Unknown identifier 'it' (x3) -- a bug in the file. The working debug
+    handler, zscript/monsters/RS_MonsterDebug.zs, IS active.
