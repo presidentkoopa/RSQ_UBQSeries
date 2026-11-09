@@ -84,3 +84,4 @@ Agent researching a real head-shot solution from the engine survey (RSQ_QuestEng
 - GITD "Randomize Colours" key (owner 08:44): BUILT (code only, loads clean, not run): RSQ Glow In The Dark menu,
   Randomize Colours Key (unbound; also under Controls > RSQ Glow In The Dark). New colours now, same look; it stands down
   while a miniboss tint, DOWN's red map or another mod's timed tint runs.
+- GITD heartbeat speeding up with the miniboss's health: NO. Secret rooms shimmering after a win: NO (owner 08:49).
