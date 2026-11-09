@@ -198,8 +198,11 @@ class RSQGN_Boom : Actor
 	static RSQGN_Boom ForBarrel(Actor barrel)
 	{
 		// the two layered blasts (EoS layers two: the second low and pitched down) and the distant one on its own channel
-		barrel.A_StartSound("rsqgn/barrel/near", CHAN_AUTO);
-		barrel.A_StartSound("rsqgn/barrel/near", CHAN_6, CHANF_OVERLAP, 0.6, ATTN_NORM, 0.7);
+		Sound nearSnd = "rsqgn/barrel/near";
+		let sc = CVar.FindCVar("rsqgn_barrel_sound");
+		if (sc && sc.GetInt() == 1) nearSnd = "rsqgn/barrel/test";   // owner 11-09 test candidate
+		barrel.A_StartSound(nearSnd, CHAN_AUTO);
+		barrel.A_StartSound(nearSnd, CHAN_6, CHANF_OVERLAP, 0.6, ATTN_NORM, 0.7);
 		barrel.A_StartSound("rsqgn/barrel/far", CHAN_7);
 		let b = RSQGN_Boom(Actor.Spawn("RSQGN_Boom", barrel.pos));
 		if (!b) return null;

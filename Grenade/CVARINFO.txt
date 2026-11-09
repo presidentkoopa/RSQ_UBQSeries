@@ -38,6 +38,7 @@ server int    rsqgn_barrel_kind = 0;      // 0 Random (one of the six each time)
 // Replace Brutal Doom's Barrels: off, with Brutal Doom loaded (its ExplosiveBarrel1) its barrels stay its own and ours stand
 // down; on, ours replace both ExplosiveBarrel and BD's ExplosiveBarrel1 (barrel.zs RSQGN_BarrelSwap says how and the limits)
 server bool   rsqgn_barrel_replace_bd = false;
+server int    rsqgn_barrel_sound = 0;     // 0 Combat FX (QGBX1-3), 1 Test Candidate (owner 11-09, ST0E_U0_00001 with a fade-out, QGBT1)
 server float  rsqgn_barrel_debris = 1.0;  // how much of each blast's debris is thrown (0 none to 1 all the design has): barrels, the new grenade blast, the contexts
 server int    rsqgn_barrel_cap  = 600;    // most explosion effect actors alive at once, barrels and grenades together (Quest: a long chain reaction stays cheap); past it a blast shows its first tic only
 // THE EXPLOSIONS (explosions.zs; owner 11-09: "options for explosion customization like colors and reactivity and context").

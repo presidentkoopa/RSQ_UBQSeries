@@ -46,6 +46,7 @@ OptionMenu "RSQGN_Options"
 	StaticText "Barrels", "Gold"
 	Option "Barrels", "rsqgn_barrel_on", "OnOff"
 	Option "Explosion", "rsqgn_barrel_kind", "RSQGN_BarrelKind"
+	Option "Barrel Sound", "rsqgn_barrel_sound", "RSQGN_BarrelSound"
 	Option "Replace Brutal Doom's Barrels", "rsqgn_barrel_replace_bd", "OnOff"
 	StaticText " "
 	StaticText "Explosions", "Gold"
@@ -127,6 +128,12 @@ OptionValue "RSQGN_BarrelKind"
 	8, "#8 Groundbreaker"
 	9, "#9 Slag Column"
 	10, "#10 Neon Crescent"
+}
+
+OptionValue "RSQGN_BarrelSound"
+{
+	0, "Combat FX"
+	1, "Test Candidate"
 }
 
 OptionValue "RSQGN_BlastStyle"

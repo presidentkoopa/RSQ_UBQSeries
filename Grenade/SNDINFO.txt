@@ -55,6 +55,9 @@ rsqgn/barrel/near2  QGBX2     // ... BA_EXP02
 rsqgn/barrel/near3  QGBX3     // ... BA_EXP03
 $rolloff rsqgn/barrel/near 1100 1600
 $limit rsqgn/barrel/near 6
+rsqgn/barrel/test   QGBT1     // owner 11-09 test candidate (ST0E_U0_00001.wav, last 0.35 s faded out); Barrel Sound = Test Candidate
+$rolloff rsqgn/barrel/test 1100 1600
+$limit rsqgn/barrel/test 6
 $random rsqgn/barrel/far { rsqgn/barrel/far1 rsqgn/barrel/far2 rsqgn/barrel/far3 rsqgn/barrel/far4 rsqgn/barrel/far5 }
 rsqgn/barrel/far1   QGBD1     // RS Combat FX sounds/combatfx/explosions/DISTEXP1 (distant explosions)
 rsqgn/barrel/far2   QGBD2     // ... DISTEXP2
