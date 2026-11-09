@@ -86,7 +86,7 @@ class RS_ScoreReadout play
 	static bool IsEX(Actor mo)
 	{
 		String n = mo.GetClassName();
-		return n.Length() > 2 && n.Right(2) == "EX";
+		return n.Length() > 2 && n.Mid(n.Length() - 2) == "EX";
 	}
 
 	// The ladder family of a CH body. EX forms are not in the ladder tables: their

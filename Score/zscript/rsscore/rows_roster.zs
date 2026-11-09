@@ -108,8 +108,8 @@ class RS_Roster play
 	{
 		String t = RS_Rows.Tool(ev);
 		if (t == "") return false;
-		int dot = t.IndexOf(".");
-		String pre = dot >= 0 ? t.Left(dot) : t;
+		int dotAt = t.IndexOf(".");
+		String pre = dotAt >= 0 ? t.Left(dotAt) : t;
 		return t == "gun.pistol" || t == "punch" || t == "kick" || t == "shove" || pre == "glove";
 	}
 
@@ -158,9 +158,9 @@ class RS_RosterBook : Thinker
 // A roster row with its own switch. Subclasses answer Ask; the switch is checked here.
 class RS_RosterRow : RS_ScoreBonus
 {
-	virtual Name Switch() const { return 'None'; }
+	virtual Name RowCvar() const { return 'None'; }
 	virtual double Ask(RS_ScoreEvent ev) { return 0.0; }
-	override double Evaluate(RS_ScoreEvent ev) { return RS_Roster.On(Switch()) ? Ask(ev) : 0.0; }
+	override double Evaluate(RS_ScoreEvent ev) { return RS_Roster.On(RowCvar()) ? Ask(ev) : 0.0; }
 }
 
 // ================================================================================ the tier rows (the hook)
@@ -170,30 +170,30 @@ class RS_RosterRow : RS_ScoreBonus
 class RS_RosterTierRow : RS_ScoreTierRow
 {
 	virtual int TierNo() const { return 0; }
-	virtual Name Switch() const { return 'None'; }
+	virtual Name RowCvar() const { return 'None'; }
 	override Name Group() const { return 'rsqtier'; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
-		if (!ev.killer || !ev.victim || !RS_Roster.On(Switch())) return 0.0;
+		if (!ev.killer || !ev.victim || !RS_Roster.On(RowCvar())) return 0.0;
 		return RS_Roster.Tier(ev.victim) == TierNo() ? Mult() : 0.0;
 	}
 }
 
-class RS_RR_TierGreen   : RS_RosterTierRow { override int TierNo() const { return 2; }  override Name Switch() const { return 'rs_score_rr_green'; }   override String DisplayName() const { return "Green Tier"; }   override double Mult() const { return 0.1; } }
-class RS_RR_TierBlue    : RS_RosterTierRow { override int TierNo() const { return 3; }  override Name Switch() const { return 'rs_score_rr_blue'; }    override String DisplayName() const { return "Blue Tier"; }    override double Mult() const { return 0.15; } }
-class RS_RR_TierCyan    : RS_RosterTierRow { override int TierNo() const { return 12; } override Name Switch() const { return 'rs_score_rr_cyan'; }    override String DisplayName() const { return "Cyan Tier"; }    override double Mult() const { return 0.2; } }
-class RS_RR_TierPurple  : RS_RosterTierRow { override int TierNo() const { return 4; }  override Name Switch() const { return 'rs_score_rr_purple'; }  override String DisplayName() const { return "Purple Tier"; }  override double Mult() const { return 0.25; } }
-class RS_RR_TierYellow  : RS_RosterTierRow { override int TierNo() const { return 5; }  override Name Switch() const { return 'rs_score_rr_yellow'; }  override String DisplayName() const { return "Yellow Tier"; }  override double Mult() const { return 0.25; } }
-class RS_RR_TierFireBlu : RS_RosterTierRow { override int TierNo() const { return 7; }  override Name Switch() const { return 'rs_score_rr_fireblu'; } override String DisplayName() const { return "FireBlu Tier"; } override double Mult() const { return 0.3; } }
-class RS_RR_TierAbyss   : RS_RosterTierRow { override int TierNo() const { return 9; }  override Name Switch() const { return 'rs_score_rr_abyss'; }   override String DisplayName() const { return "Abyss Tier"; }   override double Mult() const { return 0.3; } }
-class RS_RR_TierBrown   : RS_RosterTierRow { override int TierNo() const { return 13; } override Name Switch() const { return 'rs_score_rr_brown'; }   override String DisplayName() const { return "Brown Tier"; }   override double Mult() const { return 0.35; } }
-class RS_RR_TierGray    : RS_RosterTierRow { override int TierNo() const { return 8; }  override Name Switch() const { return 'rs_score_rr_gray'; }    override String DisplayName() const { return "Gray Tier"; }    override double Mult() const { return 0.35; } }
-class RS_RR_TierRed     : RS_RosterTierRow { override int TierNo() const { return 6; }  override Name Switch() const { return 'rs_score_rr_red'; }     override String DisplayName() const { return "Red Tier"; }     override double Mult() const { return 0.4; } }
+class RS_RR_TierGreen   : RS_RosterTierRow { override int TierNo() const { return 2; }  override Name RowCvar() const { return 'rs_score_rr_green'; }   override String DisplayName() const { return "Green Tier"; }   override double Mult() const { return 0.1; } }
+class RS_RR_TierBlue    : RS_RosterTierRow { override int TierNo() const { return 3; }  override Name RowCvar() const { return 'rs_score_rr_blue'; }    override String DisplayName() const { return "Blue Tier"; }    override double Mult() const { return 0.15; } }
+class RS_RR_TierCyan    : RS_RosterTierRow { override int TierNo() const { return 12; } override Name RowCvar() const { return 'rs_score_rr_cyan'; }    override String DisplayName() const { return "Cyan Tier"; }    override double Mult() const { return 0.2; } }
+class RS_RR_TierPurple  : RS_RosterTierRow { override int TierNo() const { return 4; }  override Name RowCvar() const { return 'rs_score_rr_purple'; }  override String DisplayName() const { return "Purple Tier"; }  override double Mult() const { return 0.25; } }
+class RS_RR_TierYellow  : RS_RosterTierRow { override int TierNo() const { return 5; }  override Name RowCvar() const { return 'rs_score_rr_yellow'; }  override String DisplayName() const { return "Yellow Tier"; }  override double Mult() const { return 0.25; } }
+class RS_RR_TierFireBlu : RS_RosterTierRow { override int TierNo() const { return 7; }  override Name RowCvar() const { return 'rs_score_rr_fireblu'; } override String DisplayName() const { return "FireBlu Tier"; } override double Mult() const { return 0.3; } }
+class RS_RR_TierAbyss   : RS_RosterTierRow { override int TierNo() const { return 9; }  override Name RowCvar() const { return 'rs_score_rr_abyss'; }   override String DisplayName() const { return "Abyss Tier"; }   override double Mult() const { return 0.3; } }
+class RS_RR_TierBrown   : RS_RosterTierRow { override int TierNo() const { return 13; } override Name RowCvar() const { return 'rs_score_rr_brown'; }   override String DisplayName() const { return "Brown Tier"; }   override double Mult() const { return 0.35; } }
+class RS_RR_TierGray    : RS_RosterTierRow { override int TierNo() const { return 8; }  override Name RowCvar() const { return 'rs_score_rr_gray'; }    override String DisplayName() const { return "Gray Tier"; }    override double Mult() const { return 0.35; } }
+class RS_RR_TierRed     : RS_RosterTierRow { override int TierNo() const { return 6; }  override Name RowCvar() const { return 'rs_score_rr_red'; }     override String DisplayName() const { return "Red Tier"; }     override double Mult() const { return 0.4; } }
 // the boss tiers (Monsters' "Boss & Special Forms": about one spawn in eight hundred)
 class RS_RR_TierBlack   : RS_RosterTierRow
 {
 	override int TierNo() const { return 10; }
-	override Name Switch() const { return 'rs_score_rr_black'; }
+	override Name RowCvar() const { return 'rs_score_rr_black'; }
 	override String DisplayName() const { return "Black Boss"; }
 	override double Mult() const { return 0.75; }
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
@@ -201,7 +201,7 @@ class RS_RR_TierBlack   : RS_RosterTierRow
 class RS_RR_TierWhite   : RS_RosterTierRow
 {
 	override int TierNo() const { return 11; }
-	override Name Switch() const { return 'rs_score_rr_white'; }
+	override Name RowCvar() const { return 'rs_score_rr_white'; }
 	override String DisplayName() const { return "White Boss"; }
 	override double Mult() const { return 1.0; }
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
@@ -211,13 +211,13 @@ class RS_RR_TierWhite   : RS_RosterTierRow
 class RS_RR_EXBoss : RS_RosterTierRow
 {
 	override Name Group() const { return 'rsqex'; }
-	override Name Switch() const { return 'rs_score_rr_ex'; }
+	override Name RowCvar() const { return 'rs_score_rr_ex'; }
 	override String DisplayName() const { return "EX Boss"; }
 	override double Mult() const { return 0.5; }
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
 	override double Evaluate(RS_ScoreEvent ev)
 	{
-		if (!ev.killer || !ev.victim || !RS_Roster.On(Switch())) return 0.0;
+		if (!ev.killer || !ev.victim || !RS_Roster.On(RowCvar())) return 0.0;
 		return RS_Roster.EX(ev.victim) ? Mult() : 0.0;
 	}
 }
@@ -231,7 +231,7 @@ class RS_RR_Rarity : RS_RosterRow
 {
 	const FROM = 20;
 	const MAXMULT = 1.0;
-	override Name Switch() const { return 'rs_score_rr_rarity'; }
+	override Name RowCvar() const { return 'rs_score_rr_rarity'; }
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Rarity"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -250,7 +250,7 @@ class RS_RR_FullSpectrum : RS_RosterRow
 {
 	const ALL = 0x1FFF;
 	const MULT = 2.0;
-	override Name Switch() const { return 'rs_score_rr_spectrum'; }
+	override Name RowCvar() const { return 'rs_score_rr_spectrum'; }
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Full Spectrum"; }
 	static int Bit(RS_ScoreEvent ev) { int t = RS_Roster.Tier(ev.victim); return (t >= 1 && t <= 13) ? 1 << (t - 1) : 0; }
@@ -282,7 +282,7 @@ class RS_RR_ColourChain : RS_RosterRow
 {
 	const PER = 0.15;
 	const MAXMULT = 0.75;
-	override Name Switch() const { return 'rs_score_rr_chain'; }
+	override Name RowCvar() const { return 'rs_score_rr_chain'; }
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Colour Chain"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -313,7 +313,7 @@ class RS_RR_KeepTheChange : RS_RosterRow
 {
 	const MULT = 0.3;
 	const BOSS = 0.5;
-	override Name Switch() const { return 'rs_score_rr_keepchange'; }
+	override Name RowCvar() const { return 'rs_score_rr_keepchange'; }
 	override int Family() const { return FAM_EFFICIENCY; }
 	override String DisplayName() const { return "Keep the Change"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -332,7 +332,7 @@ class RS_RR_FreshPaint : RS_RosterRow
 {
 	const MULT = 0.25;
 	const WINDOW = 105;
-	override Name Switch() const { return 'rs_score_rr_freshpaint'; }
+	override Name RowCvar() const { return 'rs_score_rr_freshpaint'; }
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Fresh Paint"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -350,7 +350,7 @@ class RS_RR_FreshPaint : RS_RosterRow
 class RS_RR_Upset : RS_RosterRow
 {
 	const MULT = 0.75;
-	override Name Switch() const { return 'rs_score_rr_upset'; }
+	override Name RowCvar() const { return 'rs_score_rr_upset'; }
 	override int Family() const { return FAM_EFFICIENCY; }
 	override String DisplayName() const { return "Upset"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -367,7 +367,7 @@ class RS_RR_Upset : RS_RosterRow
 class RS_RR_TierSlayer : RS_RosterRow
 {
 	const MULT = 0.5;
-	override Name Switch() const { return 'rs_score_rr_tierslayer'; }
+	override Name RowCvar() const { return 'rs_score_rr_tierslayer'; }
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Tier Slayer"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -383,7 +383,7 @@ class RS_RR_TierSlayer : RS_RosterRow
 class RS_RR_GangWar : RS_RosterRow
 {
 	const MULT = 0.3;
-	override Name Switch() const { return 'rs_score_rr_gangwar'; }
+	override Name RowCvar() const { return 'rs_score_rr_gangwar'; }
 	override int Family() const { return FAM_EFFICIENCY; }
 	override String DisplayName() const { return "Gang War"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -402,7 +402,7 @@ class RS_RR_MixedBag : RS_RosterRow
 {
 	const MULT = 0.3;
 	const WINDOW = 105;
-	override Name Switch() const { return 'rs_score_rr_mixedbag'; }
+	override Name RowCvar() const { return 'rs_score_rr_mixedbag'; }
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Mixed Bag"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -436,7 +436,7 @@ class RS_RR_Headhunter : RS_RosterRow
 	const PER = 0.1;
 	const MAXMULT = 0.65;
 	const WINDOW = 175;
-	override Name Switch() const { return 'rs_score_rr_headhunter'; }
+	override Name RowCvar() const { return 'rs_score_rr_headhunter'; }
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Headhunter"; }
 	static bool Popped(RS_ScoreEvent ev)
@@ -498,7 +498,7 @@ class RS_RosterFeedRow : RS_RosterRow
 
 class RS_RR_MGBarbecue : RS_RosterFeedRow
 {
-	override Name Switch() const { return 'rs_score_rr_mgburn'; }
+	override Name RowCvar() const { return 'rs_score_rr_mgburn'; }
 	override Name Original() const { return 'RS_Row_Barbecue'; }
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Barbecue"; }
@@ -508,7 +508,7 @@ class RS_RR_MGBarbecue : RS_RosterFeedRow
 
 class RS_RR_MGIceBreaker : RS_RosterFeedRow
 {
-	override Name Switch() const { return 'rs_score_rr_mgfreeze'; }
+	override Name RowCvar() const { return 'rs_score_rr_mgfreeze'; }
 	override Name Original() const { return 'RS_Row_IceBreaker'; }
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Ice Breaker"; }
@@ -518,7 +518,7 @@ class RS_RR_MGIceBreaker : RS_RosterFeedRow
 
 class RS_RR_MGLiveWire : RS_RosterFeedRow
 {
-	override Name Switch() const { return 'rs_score_rr_mgshock'; }
+	override Name RowCvar() const { return 'rs_score_rr_mgshock'; }
 	override Name Original() const { return 'RS_Row_LiveWire'; }
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Live Wire"; }
@@ -529,7 +529,7 @@ class RS_RR_MGLiveWire : RS_RosterFeedRow
 // the exploding head (a head-pop from a heavy hit, Monsters' "explode heads")
 class RS_RR_MGPop : RS_RosterFeedRow
 {
-	override Name Switch() const { return 'rs_score_rr_mgpop'; }
+	override Name RowCvar() const { return 'rs_score_rr_mgpop'; }
 	override Name Original() const { return 'RS_Row_Pop'; }
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Pop!"; }
@@ -540,7 +540,7 @@ class RS_RR_MGPop : RS_RosterFeedRow
 // an MG gib by a melee blow: Cleaved's kill (the same melee kinds Cleaved counts)
 class RS_RR_MGCleaved : RS_RosterFeedRow
 {
-	override Name Switch() const { return 'rs_score_rr_mgcleaved'; }
+	override Name RowCvar() const { return 'rs_score_rr_mgcleaved'; }
 	override Name Original() const { return 'RS_Bonus_Cleaved'; }
 	override int Family() const { return FAM_MELEE; }
 	override String DisplayName() const { return "Cleaved"; }
@@ -556,7 +556,7 @@ class RS_RR_MGCleaved : RS_RosterFeedRow
 // an MG gib of a coloured tier by anything else: Pinata's kill (the roster's coloured tiers are its champions)
 class RS_RR_MGPinata : RS_RosterFeedRow
 {
-	override Name Switch() const { return 'rs_score_rr_mgpinata'; }
+	override Name RowCvar() const { return 'rs_score_rr_mgpinata'; }
 	override Name Original() const { return 'RS_Row_Pinata'; }
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Pinata"; }
@@ -573,7 +573,7 @@ class RS_RR_MGPinata : RS_RosterFeedRow
 class RS_RR_Meltdown : RS_RosterFeedRow
 {
 	const MULT = 0.25;
-	override Name Switch() const { return 'rs_score_rr_meltdown'; }
+	override Name RowCvar() const { return 'rs_score_rr_meltdown'; }
 	override int Family() const { return FAM_STYLE; }
 	override String DisplayName() const { return "Meltdown"; }
 	override double Pay() const { return MULT; }
@@ -584,7 +584,7 @@ class RS_RR_Meltdown : RS_RosterFeedRow
 class RS_RR_Splitter : RS_RosterRow
 {
 	const MULT = 0.75;
-	override Name Switch() const { return 'rs_score_rr_splitter'; }
+	override Name RowCvar() const { return 'rs_score_rr_splitter'; }
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Splitter"; }
 	override double Ask(RS_ScoreEvent ev)
@@ -618,7 +618,7 @@ class RS_RR_Splitter : RS_RosterRow
 class RS_RR_CutShort : RS_RosterRow
 {
 	const MULT = 0.4;
-	override Name Switch() const { return 'rs_score_rr_cutshort'; }
+	override Name RowCvar() const { return 'rs_score_rr_cutshort'; }
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Cut Short"; }
 	override double Ask(RS_ScoreEvent ev)
