@@ -1,0 +1,1930 @@
+Log started: 2026-11-09 18:48:09
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/gamedata/doom2.wad, 2919 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/gamedata/brutal22test6.pk3, 22264 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/gamedata/BD_VoxelPack.pk3, 257 lumps
+adding /home/claude/rs_brutal22weaponsq/pk3/03_BD22_VR-Reloaded_2.0.4e.pk3, 836 lumps
+adding /home/claude/gamedata/LOB_v1.05.pk3, 2999 lumps
+adding /home/claude/gamedata/mk-champions20210309.pk3, 140 lumps
+adding /home/claude/gamedata/GunBonsai-0.10.6.pk3, 284 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Accessibility.pk3, 18 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_DistanceGrab.pk3, 88 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 28 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 58 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Graveyard.pk3, 47 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1326 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunBonsaiVR.pk3, 63 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 32929 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_LaserSight.pk3, 14719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Melee.pk3, 273 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Miniboss.pk3, 24 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Monsters.pk3, 22940 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10942 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 56 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 259 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 749 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 166 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 728 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 275 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 49 lumps
+adding /home/claude/scratch/bigrig/a3/brp.pk3, 3 lumps
+S_Init: Setting up sound.
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.4 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.10GHz
+  Family 6, Model 207, Stepping 2
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+Invalid data encountered for texture GunBonsai-0.10.6.pk3:sprites/ui/.gitignore
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 428: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 527: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 655: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1059: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1186: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1333: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1507: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1850: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2065: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2459: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 967: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 968: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 361: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 494: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 626: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 745: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1293: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1435: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1564: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1700: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1951: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1952: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2085: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2086: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1228: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1229: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1292: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1293: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1368: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1369: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 216: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 359: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 504: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 505: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 629: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 630: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 778: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1343: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1344: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1522: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1654: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1797: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1909: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 218: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 373: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 536: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 664: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 779: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1092: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1207: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1331: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1458: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1586: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1587: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1766: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1767: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1908: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1947: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1986: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2025: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2064: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2117: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2118: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 493: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 494: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 871: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 872: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1668: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1902: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs, line 1335: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1236: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1237: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 232: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 359: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 490: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 629: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 742: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 743: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1046: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1162: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1294: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1441: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1593: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1778: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2005: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2176: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 832: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 833: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1866: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1867: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 249: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 250: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 349: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 350: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 441: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 442: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 630: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 631: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 712: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 713: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 781: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 782: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 835: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 836: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 909: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 910: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 997: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 998: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1170: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1171: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1290: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1413: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1720: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1934: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 767: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 770: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 1855: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 215: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 368: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 476: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 477: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 736: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 737: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1194: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1279: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1280: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1406: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknightfx.zs, line 633: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 257: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 391: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 392: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 552: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 723: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 834: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1162: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1280: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1411: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1535: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1715: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1893: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 2202: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 257: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 381: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 652: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 653: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 844: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 845: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 987: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1226: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1358: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1481: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1624: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1777: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1939: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2091: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2279: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2451: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2677: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2678: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 235: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 236: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 352: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 353: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 490: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 634: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 640: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 777: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 898: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1026: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1161: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1327: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1328: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1508: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1509: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1595: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1812: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1978: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2144: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2145: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2266: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2482: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2571: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2715: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 404: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 542: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 654: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1534: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1677: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1934: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 2152: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 330: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 446: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 559: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 668: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 821: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 823: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 944: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1074: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1208: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1360: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1517: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1738: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1740: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1894: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1896: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2190: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2498: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2499: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2606: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2607: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2693: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2694: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2763: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2764: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 140: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 141: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1248: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1828: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2734: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2735: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 465: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1672: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1801: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 331: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 500: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 652: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 853: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 974: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1104: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1203: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1293: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1430: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1474: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1634: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1772: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2004: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2081: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2420: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 466: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 695: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 896: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1155: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1321: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1445: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1568: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1688: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1689: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1741: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1906: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2108: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2361: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2639: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2688: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2960: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 1169: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 2119: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 2208: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+259 warnings while compiling RSQ_Monsters.pk3:zscript.txt
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 1:
+Tried to define class 'Tracer' more than once. Renaming class to 'Tracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 28:
+Tried to define class 'MonsterTracer' more than once. Renaming class to 'MonsterTracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "RSQ_Miniboss.pk3:zscript/rsqmb/fx.zs" line 98:
+Comparison between signed and unsigned value
+Script warning, "RSQ_Miniboss.pk3:zscript/rsqmb/fx.zs" line 114:
+Comparison between signed and unsigned value
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs" line 180:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs" line 181:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 2596:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 546:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 548:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 550:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 552:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1093:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1094:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1095:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1727:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1728:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1740:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1741:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1870:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1888:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1889:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1131:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1138:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1387:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1390:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1393:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1398:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1401:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1404:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1409:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1412:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1415:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1696:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1519:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 1608:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1538:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1677:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1872:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 2242:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1643:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1964:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 1882:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2017:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2389:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs" line 1903:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 1619:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2014:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2016:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2018:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2020:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2022:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2024:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2277:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2280:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2281:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2858:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2859:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2860:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2861:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2862:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2863:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2864:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2865:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 1905:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2233:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2246:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 736:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 916:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1697:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1894:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 2170:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1965:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2202:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2208:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2235:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2455:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2912:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2913:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs" line 1398:
+Accessing deprecated member variable ScaleX - deprecated since 2.3.0, Use Scale.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs" line 1398:
+Accessing deprecated member variable ScaleY - deprecated since 2.3.0, Use Scale.Y instead
+Script warning, "BD_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+179 warnings while parsing scripts
+Undefined drop item class TreasureChest referenced from actor LOBSpiderMastermind
+Undefined drop item class TomeSpawner referenced from actor LOBArchvile
+Undefined drop item class AmplifierGiver referenced from actor LOBArchvile
+Undefined drop item class Sapphire referenced from actor LOBArchvile
+Undefined drop item class Ruby referenced from actor LOBArachnotron
+Undefined drop item class Amber referenced from actor LOBArachnotron
+Undefined drop item class Ruby referenced from actor LOBRevenant
+Undefined drop item class Amber referenced from actor LOBCacodemon
+Undefined drop item class Emerald referenced from actor LOBBaronOfHell
+Undefined drop item class Ruby referenced from actor LOBHellKnight
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh10 referenced from actor LOBSpectre
+Undefined drop item class Dosh5 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh10 referenced from actor LOBDemon
+Undefined drop item class Dosh5 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh10 referenced from actor LOBDoomImp
+Undefined drop item class Dosh5 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh25 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh5 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh5 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh5 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class TreasureChest referenced from actor Conqueror
+Undefined drop item class TomeSpawner referenced from actor Reaper
+Undefined drop item class AmplifierGiver referenced from actor Reaper
+Undefined drop item class Sapphire referenced from actor Reaper
+Undefined drop item class Ruby referenced from actor Arachnobone
+Undefined drop item class Amber referenced from actor Arachnobone
+Undefined drop item class Ruby referenced from actor PhantomRevenant
+Undefined drop item class Emerald referenced from actor Painbringer
+Undefined drop item class Amber referenced from actor CacoLich
+Undefined drop item class Emerald referenced from actor Balrog
+Undefined drop item class Ruby referenced from actor SlayerKnight
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh10 referenced from actor GhostSpectre
+Undefined drop item class Dosh5 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh10 referenced from actor SkeletonDemon
+Undefined drop item class Dosh5 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh25 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkullChaingunner
+Undefined drop item class Dosh5 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkeletonImp
+Undefined drop item class Dosh5 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh10 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh5 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+Undefined drop item class LewdLabCoat referenced from actor RS_WhiteCguy2
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombie1
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombieEX
+script parsing took 3045.96 ms
+Initializing Gun Bonsai v0.10.5+185ae19d...
+Couldn't find Legendoom, LD-specific features in Gun Bonsai disabled.
+[BONSAIRC] Registered TFLV_Upgrade_AmmoLeech
+[BONSAIRC] Registered TFLV_Upgrade_ArmourLeech
+[BONSAIRC] Registered TFLV_Upgrade_Bandoliers
+[BONSAIRC] Registered TFLV_Upgrade_BlastShaping
+[BONSAIRC] Registered TFLV_Upgrade_ECM
+[BONSAIRC] Registered TFLV_Upgrade_HazardSuit
+[BONSAIRC] Registered TFLV_Upgrade_Intuition
+[BONSAIRC] Registered TFLV_Upgrade_Juggler
+[BONSAIRC] Registered TFLV_Upgrade_LifeLeech
+[BONSAIRC] Registered TFLV_Upgrade_PlayerDamage
+[BONSAIRC] Registered TFLV_Upgrade_Thorns
+[BONSAIRC] Registered TFLV_Upgrade_ToughAsNails
+[BONSAIRC] Registered TFLV_Upgrade_AggressiveDefence
+[BONSAIRC] Registered TFLV_Upgrade_BouncyShots
+[BONSAIRC] Registered TFLV_Upgrade_Cleave
+[BONSAIRC] Registered TFLV_Upgrade_DarkHarvest
+[BONSAIRC] Registered TFLV_Upgrade_DecoyFlares
+[BONSAIRC] Registered TFLV_Upgrade_ExplosiveDeath
+[BONSAIRC] Registered TFLV_Upgrade_ExplosiveShots
+[BONSAIRC] Registered TFLV_Upgrade_FastShots
+[BONSAIRC] Registered TFLV_Upgrade_FragmentationShots
+[BONSAIRC] Registered TFLV_Upgrade_HomingShots
+[BONSAIRC] Registered TFLV_Upgrade_PiercingShots
+[BONSAIRC] Registered TFLV_Upgrade_RapidFire
+[BONSAIRC] Registered TFLV_Upgrade_Shield
+[BONSAIRC] Registered TFLV_Upgrade_Submunitions
+[BONSAIRC] Registered TFLV_Upgrade_Sweep
+[BONSAIRC] Registered TFLV_Upgrade_Swiftness
+[BONSAIRC] Registered TFLV_Upgrade_WeaponDamage
+[BONSAIRC] Registered TFLV_Upgrade_IncendiaryShots
+[BONSAIRC] Registered TFLV_Upgrade_BurningTerror
+[BONSAIRC] Registered TFLV_Upgrade_Conflagration
+[BONSAIRC] Registered TFLV_Upgrade_InfernalKiln
+[BONSAIRC] Registered TFLV_Upgrade_PoisonShots
+[BONSAIRC] Registered TFLV_Upgrade_Weakness
+[BONSAIRC] Registered TFLV_Upgrade_Putrefaction
+[BONSAIRC] Registered TFLV_Upgrade_Hallucinogens
+[BONSAIRC] Registered TFLV_Upgrade_CorrosiveShots
+[BONSAIRC] Registered TFLV_Upgrade_ConcentratedAcid
+[BONSAIRC] Registered TFLV_Upgrade_AcidSpray
+[BONSAIRC] Registered TFLV_Upgrade_Embrittlement
+[BONSAIRC] Registered TFLV_Upgrade_ShockingInscription
+[BONSAIRC] Registered TFLV_Upgrade_Revivification
+[BONSAIRC] Registered TFLV_Upgrade_ChainLightning
+[BONSAIRC] Registered TFLV_Upgrade_Thunderbolt
+[BONSAIRC] Registered TFLV_Upgrade_ElementalBeam
+[BONSAIRC] Registered TFLV_Upgrade_ElementalBlast
+[BONSAIRC] Registered TFLV_Upgrade_ElementalWave
+[BONSAIRC] Activating configuration for class GoldWand.
+[BONSAIRC] Forcing type 0x106 for: Staff
+[BONSAIRC] Forcing type 0x104 for: GoldWand
+[BONSAIRC] Activating configuration for class MWeapWand.
+[BONSAIRC] Forcing type 0x02 for: FWeapFist FWeapAxe CWeapMace
+[BONSAIRC] Forcing type 0x68 for: MWeapLightning
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_HomingShots TFLV_Upgrade_PiercingShots TFLV_Upgrade_FragmentationShots
+           On weapons: MWeapLightning
+[BONSAIRC] Forcing type 0x68 for: MWeapBloodscourge
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_BouncyShots
+           On weapons: CWeapWraithverge
+[BONSAIRC] Activating configuration for class StrifeWeapon.
+[BONSAIRC] Forcing type 0x02 for: PunchDagger
+[BONSAIRC] Registered RSQ_Upgrade_Haymaker
+[BONSAIRC] Registered RSQ_Upgrade_OneTwo
+[BONSAIRC] Registered RSQ_Upgrade_StarPunch
+[BONSAIRC] Registered RSQ_Upgrade_Counterpunch
+[BONSAIRC] Registered RSQ_Upgrade_BodyBlow
+[BONSAIRC] Registered RSQ_Upgrade_Knockdown
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHands
+[BONSAIRC] Registered RSQ_Upgrade_ReturnFire
+[BONSAIRC] Registered RSQ_Upgrade_WallSplat
+[BONSAIRC] Registered RSQ_Upgrade_Guard
+[BONSAIRC] Registered RSQ_Upgrade_Lunge
+[BONSAIRC] Registered RSQ_Upgrade_Executioner
+[BONSAIRC] Registered RSQ_Upgrade_Adrenaline
+[BONSAIRC] Registered RSQ_Upgrade_Momentum
+[BONSAIRC] Registered RSQ_Upgrade_RiposteEdge
+[BONSAIRC] Registered RSQ_Upgrade_PiercingReturn
+[BONSAIRC] Registered RSQ_Upgrade_SaberThrow
+[BONSAIRC] Registered RSQ_Upgrade_ChainChoke
+[BONSAIRC] Registered RSQ_Upgrade_DualHarmony
+[BONSAIRC] Registered RSQ_Upgrade_ForcePush
+[BONSAIRC] Registered RSQ_Upgrade_ForcePull
+[BONSAIRC] Registered RSQ_Upgrade_ForceChoke
+[BONSAIRC] Registered RSQ_Upgrade_ForceJump
+[BONSAIRC] Registered RSQ_Upgrade_Ricochet
+[BONSAIRC] Registered RSQ_Upgrade_MeatGrinder
+[BONSAIRC] Registered RSQ_Upgrade_HuntersReturn
+[BONSAIRC] Registered RSQ_Upgrade_Bulwark
+[BONSAIRC] Registered RSQ_Upgrade_Rebound
+[BONSAIRC] Registered RSQ_Upgrade_BatteringRam
+[BONSAIRC] Registered RSQ_Upgrade_Broadening
+[BONSAIRC] Registered RSQ_Upgrade_Lockstep
+[BONSAIRC] Registered RSQ_Upgrade_Deflector
+[BONSAIRC] Registered RSQ_Upgrade_WallBounces
+[BONSAIRC] Registered RSQ_Upgrade_Cleaver
+[BONSAIRC] Registered RSQ_Upgrade_BackPlate
+[BONSAIRC] Registered RSQ_Upgrade_ShieldWall
+[BONSAIRC] Registered RSQ_Upgrade_Reflect
+[BONSAIRC] Registered RSQ_Upgrade_WallSlam
+[BONSAIRC] Registered RSQ_Upgrade_BashHitStop
+[BONSAIRC] Registered RSQ_Upgrade_Charge
+[BONSAIRC] Registered RSQ_Upgrade_ShieldSize
+[BONSAIRC] Registered RSQ_Upgrade_ShieldDash
+[BONSAIRC] Registered RSQ_Upgrade_HungryBlades
+[BONSAIRC] Registered RSQ_Upgrade_RevShield
+[BONSAIRC] Registered RSQ_Upgrade_BuzzsawReturn
+[BONSAIRC] Registered RSQ_Upgrade_Spartan
+[BONSAIRC] Registered RSQ_Upgrade_Bandolier
+[BONSAIRC] Registered RSQ_Upgrade_Scavenger
+[BONSAIRC] Registered RSQ_Upgrade_StrongArm
+[BONSAIRC] Registered RSQ_Upgrade_FlatArc
+[BONSAIRC] Registered RSQ_Upgrade_Bounce
+[BONSAIRC] Registered RSQ_Upgrade_CookSense
+[BONSAIRC] Registered RSQ_Upgrade_ShortFuse
+[BONSAIRC] Registered RSQ_Upgrade_BigBang
+[BONSAIRC] Registered RSQ_Upgrade_Frag
+[BONSAIRC] Registered RSQ_Upgrade_Cluster
+[BONSAIRC] Registered RSQ_Upgrade_Sticky
+[BONSAIRC] Registered RSQ_Upgrade_Teeth
+[BONSAIRC] Registered RSQ_Upgrade_Skeet
+[BONSAIRC] Registered RSQ_Upgrade_SkeetWindow
+[BONSAIRC] Registered RSQ_Upgrade_SlowBurn
+[BONSAIRC] Registered RSQ_Upgrade_Impact
+[BONSAIRC] Registered RSQ_Upgrade_Incendiary
+[BONSAIRC] Registered RSQ_Upgrade_Freeze
+[BONSAIRC] Registered RSQ_Upgrade_Stun
+[BONSAIRC] Registered RSQ_Upgrade_Smoke
+[BONSAIRC] Registered RSQ_Upgrade_Flash
+[BONSAIRC] Registered RSQ_Upgrade_Charm
+[BONSAIRC] Registered RSQ_Upgrade_Infight
+[BONSAIRC] Registered RSQ_Upgrade_Grapple
+[BONSAIRC] Registered RSQ_Upgrade_SwingMomentum
+[BONSAIRC] Registered RSQ_Upgrade_ZipKick
+[BONSAIRC] Registered RSQ_Upgrade_Scorpion
+[BONSAIRC] Registered RSQ_Upgrade_TwinLines
+[BONSAIRC] Registered RSQ_Upgrade_DeadEye
+[BONSAIRC] Registered RSQ_Upgrade_HeavyLift
+[BONSAIRC] Registered RSQ_Upgrade_StraightPull
+[BONSAIRC] Registered RSQ_Upgrade_BodyShield
+[BONSAIRC] Registered RSQ_Upgrade_AmmoReadout
+[BONSAIRC] Registered RSQ_Upgrade_GunToss
+[BONSAIRC] Registered RSQ_Upgrade_BoomerangGun
+[BONSAIRC] Registered RSQ_Upgrade_KeysByHand
+[BONSAIRC] Registered RSQ_Upgrade_Smoker
+[BONSAIRC] Registered RSQ_Upgrade_ChainSmoker
+[BONSAIRC] Registered RSQ_Upgrade_TargetLock
+[BONSAIRC] Registered RSQ_Upgrade_HeadshotReaction
+[BONSAIRC] Registered RSQ_Upgrade_SlowMotion
+[BONSAIRC] Registered RSQ_Upgrade_Longer
+[BONSAIRC] Registered RSQ_Upgrade_Deeper
+[BONSAIRC] Registered RSQ_Upgrade_Cheaper
+[BONSAIRC] Registered RSQ_Upgrade_LeanDodge
+[BONSAIRC] Registered RSQ_Upgrade_Matrix
+[BONSAIRC] Registered RSQ_Upgrade_LongArm
+[BONSAIRC] Registered RSQ_Upgrade_IronGrip
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHitter
+[BONSAIRC] Registered RSQ_Upgrade_AirCatch
+[BONSAIRC] Registered RSQ_Upgrade_PowderKeg
+[BONSAIRC] Registered RSQ_Upgrade_QuickDraw
+[BONSAIRC] Registered RSQ_Upgrade_PairDraw
+[BONSAIRC] Registered RSQ_Upgrade_Showdown
+[BONSAIRC] Registered RSQ_Upgrade_Marksman
+[BONSAIRC] Registered RSQ_Upgrade_Dodger
+[BONSAIRC] Registered RSQ_Upgrade_SecondWind
+[BONSAIRC] Registered RSQ_Upgrade_TimeDilation
+[BONSAIRC] Registered RSQ_Upgrade_Akimbo
+[BONSAIRC] Registered RSQ_Upgrade_Crossfire
+[BONSAIRC] Registered RSQ_Upgrade_Alternator
+[BONSAIRC] Registered RSQ_Upgrade_Evasion
+[BONSAIRC] Registered RSQ_Upgrade_Southpaw
+[BONSAIRC] Registered RSQ_Upgrade_SteadyAim
+[BONSAIRC] Registered RSQ_Upgrade_LongLine
+[BONSAIRC] Registered RSQ_Upgrade_FastReel
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHaul
+[BONSAIRC] Registered RSQ_Upgrade_GetOverHere
+[BONSAIRC] Registered RSQ_Upgrade_Bowling
+[BONSAIRC] Registered RSQ_Upgrade_BarbedClaw
+[BONSAIRC] Registered RSQ_Upgrade_Slingshot
+[BONSAIRC] Registered RSQ_Upgrade_SteadyLine
+[BONSAIRC] Registered RSQ_Upgrade_DoubleHook
+[BONSAIRC] Registered RSQ_Upgrade_Uppercut
+[BONSAIRC] Registered RSQ_Upgrade_Launcher
+[BONSAIRC] Registered RSQ_Upgrade_Juggle
+[BONSAIRC] Registered RSQ_Upgrade_Meteor
+[BONSAIRC] Registered RSQ_Upgrade_GroundPound
+[BONSAIRC] Registered RSQ_Upgrade_ClearOut
+[BONSAIRC] Registered RSQ_Upgrade_ExplosiveFist
+[BONSAIRC] Registered RSQ_Upgrade_FrostFist
+[BONSAIRC] Registered RSQ_Upgrade_ShockFist
+[BONSAIRC] Registered RSQ_Upgrade_FireFist
+[BONSAIRC] Registered RSQ_Upgrade_ThreeHit
+[BONSAIRC] Registered RSQ_Upgrade_Dempsey
+[BONSAIRC] Registered RSQ_Upgrade_Finisher
+[BONSAIRC] Registered RSQ_Upgrade_SwatBack
+[BONSAIRC] Registered RSQ_Upgrade_Parry
+[BONSAIRC] Registered RSQ_Upgrade_ReflectGuard
+[BONSAIRC] Registered RSQ_Upgrade_AbsorbRelease
+[BONSAIRC] Registered RSQ_Upgrade_Catch
+[BONSAIRC] Registered RSQ_Upgrade_BulletTimeFists
+[BONSAIRC] Registered RSQ_Upgrade_HumanShield
+[BONSAIRC] Registered RSQ_Upgrade_HeadlockUppercut
+[BONSAIRC] Registered RSQ_Upgrade_HeavierHeadlock
+[BONSAIRC] Registered RSQ_Upgrade_Slam
+[BONSAIRC] Registered RSQ_Upgrade_ThrowInto
+[BONSAIRC] Registered RSQ_Upgrade_Chokehold
+[BONSAIRC] Registered RSQ_Upgrade_Rage
+[BONSAIRC] Registered RSQ_Upgrade_BloodRush
+[BONSAIRC] Registered RSQ_Upgrade_BerserkMeter
+[BONSAIRC] Registered RSQ_Upgrade_PistolWhip
+[BONSAIRC] Registered RSQ_Upgrade_RifleButt
+[BONSAIRC] Registered RSQ_Upgrade_Taunt
+[BONSAIRC] Registered RSQ_Upgrade_CriticalHits
+[BONSAIRC] Registered RSQ_Upgrade_Headshot
+[BONSAIRC] Registered RSQ_Upgrade_Backstab
+[BONSAIRC] Registered RSQ_Upgrade_BitScavenger
+[BONSAIRC] Registered RSQ_Upgrade_RichBits
+[BONSAIRC] Registered RSQ_Upgrade_Magnet
+[BONSAIRC] Registered RSQ_Upgrade_LuckyKill
+[BONSAIRC] Registered RSQ_Upgrade_Sting
+[BONSAIRC] Registered RSQ_Upgrade_WhipStun
+[BONSAIRC] Registered RSQ_Upgrade_CrackShot
+[BONSAIRC] Registered RSQ_Upgrade_ReturnCrack
+[BONSAIRC] Registered RSQ_Upgrade_WhipStrikeTrue
+[BONSAIRC] Registered RSQ_Upgrade_LongThong
+[BONSAIRC] Registered RSQ_Upgrade_QuickMark
+[BONSAIRC] Registered RSQ_Upgrade_HeavyYank
+[BONSAIRC] Registered RSQ_Upgrade_PullAndPunch
+[BONSAIRC] Registered RSQ_Upgrade_Lasso
+[BONSAIRC] Registered RSQ_Upgrade_Bola
+[BONSAIRC] Registered RSQ_Upgrade_Snag
+[BONSAIRC] Registered RSQ_Upgrade_Mantle
+[BONSAIRC] Registered RSQ_Upgrade_WhipMomentum
+[BONSAIRC] Registered RSQ_Upgrade_Tarzan
+[BONSAIRC] Registered RSQ_Upgrade_BattleMeditation
+[BONSAIRC] Registered RSQ_Upgrade_SaberBarrage
+[BONSAIRC] Registered RSQ_Upgrade_ReturningBlade
+[BONSAIRC] Registered RSQ_Upgrade_StrikeTrue
+[BONSAIRC] Registered RSQ_Upgrade_KyberAttunement
+[BONSAIRC] Registered RSQ_Upgrade_HighGround
+[BONSAIRC] Registered RSQ_Upgrade_PointTaken
+[BONSAIRC] Registered RSQ_Upgrade_RunThrough
+[BONSAIRC] Registered RSQ_Upgrade_ReturnToSender
+[BONSAIRC] Registered RSQ_Upgrade_GuidedReturn
+[BONSAIRC] Registered RSQ_Upgrade_Precognition
+[BONSAIRC] Registered RSQ_Upgrade_TwoSabers
+[BONSAIRC] Registered RSQ_Upgrade_DoubleBladed
+[BONSAIRC] Registered RSQ_Upgrade_CrossGuard
+[BONSAIRC] Registered RSQ_Upgrade_Clash
+[BONSAIRC] Registered RSQ_Upgrade_ForceSensitive
+[BONSAIRC] Registered RSQ_Upgrade_ForceSpeed
+[BONSAIRC] Registered RSQ_Upgrade_ForceLightning
+[BONSAIRC] Forcing type 0x02 for: RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_RapidFire TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+           On weapons: RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw
+[BONSAIRC] Activating configuration for class RSQWP_WhipWeapon.
+[BONSAIRC] Forcing type 0x02 for: RSQWP_WhipWeapon
+Gun Bonsai VR/offhand patch active: two hands, two HUDs, provenance-based XP.
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+M_Init: Init menus.
+P_Init: Init Playloop state.
+R_InstallSpriteLump: Bad frame characters in lump PENTAHUD
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Entryway
+
+BRP LOADED MAP01 maptime 0 savegame 0 reopen 0
+BRP STATS t0 MAP01 on load: 59 sectors, desaturated 0, light colour not white 0; ddz_mode 2 rsqsm_ddz_saved -9999; DOWN 0 gwN 0 mix 0.00
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+
+----------------------------------------
+TIP 44: Express yourself! Switching genders in the options menu will reflect that in gameplay via the player mugshot and voice. So watch out, Doomguy...there's another Slayer in Hell.
+----------------------------------------
+BRP R 1 maptime 1 gametic 1
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 0
+BRP R 2 maptime 18 gametic 18
+BRP MENU Optionsmenu [0] "Info & Credits" -> InfoAndCreditsMenu (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [1] "Quick Menu" -> QuickMenu (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [2] "VR Options" -> VROptionsMenu (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [3] " " -> None (OptionMenuItemStaticText)
+BRP MENU Optionsmenu [4] "$OPTMNU_CONTROLS" -> CustomizeControls (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [5] " " -> None (OptionMenuItemStaticText)
+BRP MENU Optionsmenu [6] "$OPTMNU_PLAYER" -> NewPlayerMenu (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [7] "$OPTMNU_GAMEPLAY" -> GameplayOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [8] "$OPTMNU_COMPATIBILITY" -> CompatibilityOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [9] "$OPTMNU_AUTOMAP" -> AutomapOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [10] "$OPTMNU_HUD" -> HUDOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [11] "$OPTMNU_MISCELLANEOUS" -> MiscOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [12] "$OPTMNU_NETWORK" -> NetworkOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [13] "$OPTMNU_SOUND" -> SoundOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [14] "$OPTMNU_DISPLAY" -> VideoOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [15] "$OPTMNU_VIDEO" -> VideoModeMenu (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [16] " " -> None (OptionMenuItemStaticText)
+BRP MENU Optionsmenu [17] "$OS_TITLE" -> os_Menu (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [18] "$OPTMNU_SIMPLEON" -> m_simpleoptions (OptionMenuItemOption)
+BRP MENU Optionsmenu [19] "Active profile" -> CommandLineProfileMenu (OptionMenuItemLabeledSubmenu)
+BRP MENU Optionsmenu [20] " " -> None (OptionMenuItemStaticText)
+BRP MENU Optionsmenu [21] "$OPTMNU_DEFAULTS" -> reset2defaults (OptionMenuItemSafeCommand)
+BRP MENU Optionsmenu [22] "$OPTMNU_RESETTOSAVED" -> reset2saved (OptionMenuItemSafeCommand)
+BRP MENU Optionsmenu [23] "$OPTMNU_WRITEINI" -> writeini (OptionMenuItemSafeCommand)
+BRP MENU Optionsmenu [24] "$OPTMNU_CONSOLE" -> menuconsole (OptionMenuItemCommand)
+BRP MENU Optionsmenu [25] " " -> None (OptionMenuItemStaticText)
+BRP MENU Optionsmenu [26] "BD22 VR Weapons" -> RSQ_Options (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [27] " " -> None (OptionMenuItemStaticText)
+BRP MENU Optionsmenu [28] "Legion of Bones Settings" -> Legion of Bones (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [29] "" -> None (OptionMenuItemStaticText)
+BRP MENU Optionsmenu [30] "Champion Options" -> mk_ChampionMenu (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [31] "$TFLV_OPT_TITLE" -> GunBonsaiOptions (OptionMenuItemSubmenu)
+BRP MENU Optionsmenu [32] "Radiant Silvergun Options" -> RSQ_RSOptions (OptionMenuItemRSQWPRSLink)
+BRP MENU   RSQ_RSOptions [0] "Accessibility" -> RSQA_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [1] "RSQ Distance Grab" -> RSQDG_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [2] "RSQ FnF (Flash and Flare)" -> RSQFF_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [3] "RSQ Glow In The Dark" -> RSQGD_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQGD_Options [0] "Glow In The Dark" -> rsqgd_enabled (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [1] "Profile" -> rsqgd_profile (OptionMenuItemRSQGDProfile)
+BRP MENU   RSQGD_Options [2] "Shuffle Profile Now" -> netevent rsqgd_shuffle (OptionMenuItemCommand)
+BRP MENU   RSQGD_Options [3] "Randomize Colours Key" -> rsqgd_recolour (OptionMenuItemControl)
+BRP MENU   RSQGD_Options [4] "Randomize Current Look" -> netevent rsqgd_randomize (OptionMenuItemCommand)
+BRP MENU   RSQGD_Options [5] "Darkness (DarkDoomZ)" -> RSQGD_DDZ_Settings (OptionMenuItemSubmenu)
+BRP MENU   RSQGD_Options [6] "Use DarkDoomZ Pairing" -> None (OptionMenuItemRSQGDPairing)
+BRP MENU   RSQGD_Options [7] "Re-roll Colours" -> rsqgd_reroll (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [8] "Re-roll Every (min)" -> rsqgd_reroll_min (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [9] "Strength" -> rsqgd_strength (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [10] "Glow Height" -> rsqgd_height (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [11] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [12] "Glow Types" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [13] "Floor and Ceiling Glow" -> rsqgd_planes (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [14] "Liquids Glow" -> rsqgd_liquids (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [15] "Liquid Colour" -> rsqgd_liquid_own (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [16] "Living Liquids" -> rsqgd_living (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [17] "Splash Flares" -> rsqgd_splash (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [18] "Guess Liquids by Name" -> rsqgd_guess (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [19] "Hurt Floors Throb Red" -> rsqgd_hazards (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [20] "Secret Rooms Shimmer" -> rsqgd_secrets (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [21] "Stronger in the Dark" -> rsqgd_darkboost (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [22] "One Colour Per" -> rsqgd_groupby (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [23] "Blend Rooms" -> rsqgd_blend (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [24] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [25] "Things That Matter" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [26] "Switches, Exits, Locks" -> rsqgd_things (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [27] "Ordinary Doors Too" -> rsqgd_things_doors (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [28] "Things Strength" -> rsqgd_things_strength (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [29] "Keys and Pickups" -> rsqgd_items (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [30] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [31] "Reactions" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [32] "Miniboss Tint (Miniboss)" -> rsqgd_mb (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [33] "Tint Colour" -> rsqgd_mb_colour (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [34] "Custom Tint" -> rsqgd_mb_custom (OptionMenuItemColorPicker)
+BRP MENU   RSQGD_Options [35] "Darken the Map" -> rsqgd_mb_darken (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [36] "Darken By" -> rsqgd_mb_dark (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [37] "Level-Up Wave (Gun Bonsai)" -> rsqgd_wave (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [38] "Wave Colour" -> rsqgd_wave_color (OptionMenuItemColorPicker)
+BRP MENU   RSQGD_Options [39] "Combo Glow (RSQ Score)" -> rsqgd_combo (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [40] "SlowMo Drain (RSQ SlowMo)" -> rsqgd_slowmo (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [41] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [42] "Custom Profile" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [43] "Floor Glow" -> rsqgd_c_floor_mode (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [44] "Ceiling Glow" -> rsqgd_c_ceil_mode (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [45] "Colours From" -> rsqgd_c_palette (OptionMenuItemRSQGDProfile)
+BRP MENU   RSQGD_Options [46] "Floor Red" -> rsqgd_floor_r (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [47] "Floor Green" -> rsqgd_floor_g (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [48] "Floor Blue" -> rsqgd_floor_b (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [49] "Ceiling Red" -> rsqgd_ceil_r (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [50] "Ceiling Green" -> rsqgd_ceil_g (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [51] "Ceiling Blue" -> rsqgd_ceil_b (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [52] "Custom Strength" -> rsqgd_c_strength (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [53] "Pulse" -> rsqgd_c_shape (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [54] "Custom Liquids" -> rsqgd_c_liquid (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [55] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [56] "Dynamic Lights" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [57] "Light Style" -> rsqgd_light_style (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [58] "Lights Over Pools" -> rsqgd_liq_lights (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [59] "Lights on Items" -> rsqgd_item_lights (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [60] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [61] "Test and Debug" -> RSQGD_Test (OptionMenuItemSubmenu)
+BRP MENU   RSQGD_Options [62] "Reset All" -> None (OptionMenuItemRSQGDResetAll)
+BRP MENU   RSQ_RSOptions [4] "RSQ Grapple" -> RSQGR_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [5] "RSQ Graveyards" -> RSQGY_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [6] "RSQ Grenade" -> RSQGN_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [7] "RSQ Gun Bonsai VR" -> RSQ_MeleeOptions (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [8] "RSQ Gun Cards" -> RSQGC_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [9] "RSQ Laser Sight" -> RSQLS_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [10] "RSQ Melee" -> RSQML_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [11] "RSQ Miniboss" -> RSQMB_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [12] "RSQ Monsters" -> RSQMN_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [13] "RSQ Saber" -> UBQS_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [14] "RSQ Score" -> RSQSC_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [15] "RSQ ShieldSaw" -> SSQ_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [16] "RSQ SlowMo" -> RSQSM_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [17] "RSQ Tactical Rig" -> RSQTR_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [18] "RSQ VisualRewards" -> RSQTHP_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [19] "RSQ Wheel" -> wr_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [20] "RSQ Whip" -> RSQWP_Options (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [0] "Info & Credits" -> InfoAndCreditsMenu (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [1] "Quick Menu" -> QuickMenu (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [2] "VR Options" -> VROptionsMenu (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [3] " " -> None (OptionMenuItemStaticText)
+BRP MENU OptionsmenuSimple [4] "$OPTMNU_CONTROLS" -> CustomizeControls (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [5] "$OPTMNU_MOUSE" -> MouseOptionsSimple (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [6] "$OPTMNU_JOYSTICK" -> JoystickOptions (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [7] " " -> None (OptionMenuItemStaticText)
+BRP MENU OptionsmenuSimple [8] "$OPTMNU_PLAYER" -> NewPlayerMenu (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [9] " " -> None (OptionMenuItemStaticText)
+BRP MENU OptionsmenuSimple [10] "$OPTMNU_SOUND" -> SoundOptionsSimple (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [11] "$OPTMNU_DISPLAY" -> VideoOptionsSimple (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [12] "$HUDMNU_SCALEOPT" -> ScalingOptionsSimple (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [13] " " -> None (OptionMenuItemStaticText)
+BRP MENU OptionsmenuSimple [14] "$OPTMNU_MISCELLANEOUS" -> MiscOptionsSimple (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [15] " " -> None (OptionMenuItemStaticText)
+BRP MENU OptionsmenuSimple [16] "$OS_TITLE" -> os_Menu (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [17] " " -> None (OptionMenuItemStaticText)
+BRP MENU OptionsmenuSimple [18] "Radiant Silvergun Options" -> RSQ_RSOptions (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [0] "Accessibility" -> RSQA_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [1] "RSQ Distance Grab" -> RSQDG_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [2] "RSQ FnF (Flash and Flare)" -> RSQFF_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [3] "RSQ Glow In The Dark" -> RSQGD_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQGD_Options [0] "Glow In The Dark" -> rsqgd_enabled (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [1] "Profile" -> rsqgd_profile (OptionMenuItemRSQGDProfile)
+BRP MENU   RSQGD_Options [2] "Shuffle Profile Now" -> netevent rsqgd_shuffle (OptionMenuItemCommand)
+BRP MENU   RSQGD_Options [3] "Randomize Colours Key" -> rsqgd_recolour (OptionMenuItemControl)
+BRP MENU   RSQGD_Options [4] "Randomize Current Look" -> netevent rsqgd_randomize (OptionMenuItemCommand)
+BRP MENU   RSQGD_Options [5] "Darkness (DarkDoomZ)" -> RSQGD_DDZ_Settings (OptionMenuItemSubmenu)
+BRP MENU   RSQGD_Options [6] "Use DarkDoomZ Pairing" -> None (OptionMenuItemRSQGDPairing)
+BRP MENU   RSQGD_Options [7] "Re-roll Colours" -> rsqgd_reroll (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [8] "Re-roll Every (min)" -> rsqgd_reroll_min (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [9] "Strength" -> rsqgd_strength (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [10] "Glow Height" -> rsqgd_height (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [11] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [12] "Glow Types" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [13] "Floor and Ceiling Glow" -> rsqgd_planes (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [14] "Liquids Glow" -> rsqgd_liquids (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [15] "Liquid Colour" -> rsqgd_liquid_own (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [16] "Living Liquids" -> rsqgd_living (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [17] "Splash Flares" -> rsqgd_splash (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [18] "Guess Liquids by Name" -> rsqgd_guess (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [19] "Hurt Floors Throb Red" -> rsqgd_hazards (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [20] "Secret Rooms Shimmer" -> rsqgd_secrets (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [21] "Stronger in the Dark" -> rsqgd_darkboost (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [22] "One Colour Per" -> rsqgd_groupby (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [23] "Blend Rooms" -> rsqgd_blend (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [24] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [25] "Things That Matter" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [26] "Switches, Exits, Locks" -> rsqgd_things (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [27] "Ordinary Doors Too" -> rsqgd_things_doors (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [28] "Things Strength" -> rsqgd_things_strength (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [29] "Keys and Pickups" -> rsqgd_items (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [30] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [31] "Reactions" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [32] "Miniboss Tint (Miniboss)" -> rsqgd_mb (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [33] "Tint Colour" -> rsqgd_mb_colour (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [34] "Custom Tint" -> rsqgd_mb_custom (OptionMenuItemColorPicker)
+BRP MENU   RSQGD_Options [35] "Darken the Map" -> rsqgd_mb_darken (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [36] "Darken By" -> rsqgd_mb_dark (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [37] "Level-Up Wave (Gun Bonsai)" -> rsqgd_wave (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [38] "Wave Colour" -> rsqgd_wave_color (OptionMenuItemColorPicker)
+BRP MENU   RSQGD_Options [39] "Combo Glow (RSQ Score)" -> rsqgd_combo (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [40] "SlowMo Drain (RSQ SlowMo)" -> rsqgd_slowmo (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [41] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [42] "Custom Profile" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [43] "Floor Glow" -> rsqgd_c_floor_mode (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [44] "Ceiling Glow" -> rsqgd_c_ceil_mode (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [45] "Colours From" -> rsqgd_c_palette (OptionMenuItemRSQGDProfile)
+BRP MENU   RSQGD_Options [46] "Floor Red" -> rsqgd_floor_r (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [47] "Floor Green" -> rsqgd_floor_g (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [48] "Floor Blue" -> rsqgd_floor_b (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [49] "Ceiling Red" -> rsqgd_ceil_r (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [50] "Ceiling Green" -> rsqgd_ceil_g (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [51] "Ceiling Blue" -> rsqgd_ceil_b (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [52] "Custom Strength" -> rsqgd_c_strength (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [53] "Pulse" -> rsqgd_c_shape (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [54] "Custom Liquids" -> rsqgd_c_liquid (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [55] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [56] "Dynamic Lights" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [57] "Light Style" -> rsqgd_light_style (OptionMenuItemOption)
+BRP MENU   RSQGD_Options [58] "Lights Over Pools" -> rsqgd_liq_lights (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [59] "Lights on Items" -> rsqgd_item_lights (OptionMenuItemSlider)
+BRP MENU   RSQGD_Options [60] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQGD_Options [61] "Test and Debug" -> RSQGD_Test (OptionMenuItemSubmenu)
+BRP MENU   RSQGD_Options [62] "Reset All" -> None (OptionMenuItemRSQGDResetAll)
+BRP MENU   RSQ_RSOptions [4] "RSQ Grapple" -> RSQGR_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [5] "RSQ Graveyards" -> RSQGY_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [6] "RSQ Grenade" -> RSQGN_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [7] "RSQ Gun Bonsai VR" -> RSQ_MeleeOptions (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [8] "RSQ Gun Cards" -> RSQGC_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [9] "RSQ Laser Sight" -> RSQLS_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [10] "RSQ Melee" -> RSQML_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [11] "RSQ Miniboss" -> RSQMB_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [12] "RSQ Monsters" -> RSQMN_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [13] "RSQ Saber" -> UBQS_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [14] "RSQ Score" -> RSQSC_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [15] "RSQ ShieldSaw" -> SSQ_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [16] "RSQ SlowMo" -> RSQSM_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [17] "RSQ Tactical Rig" -> RSQTR_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [18] "RSQ VisualRewards" -> RSQTHP_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [19] "RSQ Wheel" -> wr_Options (OptionMenuItemSubmenu)
+BRP MENU   RSQ_RSOptions [20] "RSQ Whip" -> RSQWP_Options (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [19] " " -> None (OptionMenuItemStaticText)
+BRP MENU OptionsmenuSimple [20] "$OPTMNU_FULLOPTIONS" -> OptionsmenuFull (OptionMenuItemSubmenu)
+BRP MENU OptionsmenuSimple [21] " " -> None (OptionMenuItemStaticText)
+BRP MENU OptionsmenuSimple [22] "$OPTMNU_DEFAULTS" -> reset2defaults (OptionMenuItemSafeCommand)
+BRP MENU OptionsmenuSimple [23] "$OPTMNU_RESETTOSAVED" -> reset2saved (OptionMenuItemSafeCommand)
+BRP MENU OptionsmenuSimple [24] "$OPTMNU_WRITEINI" -> writeini (OptionMenuItemSafeCommand)
+BRP MENU OptionsmenuSimple [25] "$OPTMNU_CONSOLE" -> menuconsole (OptionMenuItemCommand)
+BRP MENU OptionsmenuSimple [26] " " -> None (OptionMenuItemStaticText)
+BRP R 3 maptime 28 gametic 28
+BRP R 4 maptime 33 gametic 33
+BRP R 5 maptime 37 gametic 37
+BR_A_SETUP
+BRP R 6 maptime 40 gametic 40
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+BRP R 7 maptime 45 gametic 45
+RSQGN t45: standing down for Brutal Doom VR (Replace Brutal Doom's Grenade off), but this grenade is in your hand: it works
+BRP R 8 maptime 49 gametic 49
+BRP R 9 maptime 53 gametic 53
+BRP R 10 maptime 56 gametic 56
+BRP R 11 maptime 59 gametic 59
+BRP R 12 maptime 62 gametic 62
+BRP R 13 maptime 65 gametic 65
+BRP R 14 maptime 67 gametic 67
+BRP R 15 maptime 69 gametic 69
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+BRP R 16 maptime 71 gametic 71
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+BRP R 17 maptime 74 gametic 74
+BRP R 18 maptime 76 gametic 76
+BRP R 19 maptime 78 gametic 78
+BRP R 20 maptime 81 gametic 81
+BRP R 21 maptime 84 gametic 84
+BRP R 22 maptime 86 gametic 86
+BRP R 23 maptime 89 gametic 89
+BRP R 24 maptime 92 gametic 92
+BRP R 25 maptime 94 gametic 94
+BRP R 26 maptime 96 gametic 96
+BRP R 27 maptime 98 gametic 98
+BRP R 28 maptime 100 gametic 100
+BRP R 29 maptime 103 gametic 103
+BRP R 30 maptime 107 gametic 107
+BRP R 31 maptime 110 gametic 110
+BRP R 32 maptime 113 gametic 113
+BRP R 33 maptime 116 gametic 116
+BRP R 34 maptime 119 gametic 119
+BRP R 35 maptime 122 gametic 122
+BRP R 36 maptime 125 gametic 125
+BRP R 37 maptime 128 gametic 128
+BRP R 38 maptime 131 gametic 131
+BR_A3_COOK_RBD0
+BRP R 39 maptime 135 gametic 135
+BRP SCENE 3 start t135
+BRP G3 u0 t135 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u1 t136 angle 90.0 set R (0.250 1.300 -0.300) L (-0.200 1.306 -0.304) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u2 t137 angle 90.0 set R (0.250 1.300 -0.300) L (-0.150 1.311 -0.308) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 40 maptime 138 gametic 138
+BRP G3 u3 t138 angle 90.0 set R (0.250 1.300 -0.300) L (-0.100 1.317 -0.312) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u4 t139 angle 90.0 set R (0.250 1.300 -0.300) L (-0.051 1.322 -0.315) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u5 t140 angle 90.0 set R (0.250 1.300 -0.300) L (-0.001 1.328 -0.319) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 41 maptime 141 gametic 141
+BRP G3 u6 t141 angle 90.0 set R (0.250 1.300 -0.300) L (0.049 1.334 -0.323) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u7 t142 angle 90.0 set R (0.250 1.300 -0.300) L (0.099 1.339 -0.327) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 42 maptime 143 gametic 143
+BRP G3 u8 t143 angle 90.0 set R (0.250 1.300 -0.300) L (0.149 1.345 -0.331) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u9 t144 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u10 t145 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 43 maptime 146 gametic 146
+BRP G3 u11 t146 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G ring check u12 t147: off hand 0.0 cm from the ring (right 0.000 fwd -0.000 up 0.000 m)
+BRP G3 u12 t147 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u13 t148 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 44 maptime 149 gametic 149
+BRP G3 u14 t149 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G ring check u15 t150: off hand 0.0 cm from the ring (right 0.000 fwd -0.000 up 0.000 m)
+BRP G3 u15 t150 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 45 maptime 151 gametic 151
+BRP G3 u16 t151 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 1 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u17 t152 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 1 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u18 t153 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 1 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 46 maptime 154 gametic 154
+rsr key down 42 (*)
+BRP G3 u19 t154 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN ring taken t154 (other hand 0.0 cm from it)
+BRP G3 u20 t155 angle 90.0 set R (0.250 1.300 -0.300) L (0.149 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 47 maptime 156 gametic 156
+BRP G3 u21 t156 angle 90.0 set R (0.250 1.300 -0.300) L (0.099 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u22 t157 angle 90.0 set R (0.250 1.300 -0.300) L (0.049 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u23 t158 angle 90.0 set R (0.250 1.300 -0.300) L (-0.001 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 48 maptime 159 gametic 159
+BRP G3 u24 t159 angle 90.0 set R (0.250 1.300 -0.300) L (-0.051 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u25 t160 angle 90.0 set R (0.250 1.300 -0.300) L (-0.101 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u26 t161 angle 90.0 set R (0.250 1.300 -0.300) L (-0.151 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 49 maptime 162 gametic 162
+BRP G3 u27 t162 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN ring pulled t162 (35.0 cm)
+BRP G3 u28 t163 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u29 t164 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 50 maptime 165 gametic 165
+RSQGN pin out p0 t165 by ring (hand 0)
+BRP G3 u30 t165 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u31 t166 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 51 maptime 167 gametic 167
+BRP G3 u32 t167 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u33 t168 angle 90.0 set R (0.250 1.300 -0.300) L (-0.208 1.343 -0.330) rt 0 lt 0 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u34 t169 angle 90.0 set R (0.250 1.300 -0.300) L (-0.215 1.336 -0.325) rt 1 lt 0 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 52 maptime 170 gametic 170
+rsr key down 447 (¿)
+rsr key up 42 (*)
+BRP G3 u35 t170 angle 90.0 set R (0.250 1.300 -0.300) L (-0.222 1.329 -0.320) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u36 t171 angle 90.0 set R (0.250 1.300 -0.300) L (-0.229 1.322 -0.315) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN squeeze t171: hand 0 trigger 1 alt 0, swing 0.00 m/s
+BRP R 53 maptime 172 gametic 172
+BRP G3 u37 t172 angle 90.0 set R (0.250 1.300 -0.300) L (-0.236 1.314 -0.310) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u38 t173 angle 90.0 set R (0.250 1.300 -0.300) L (-0.243 1.307 -0.305) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u39 t174 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN squeeze t174: hand 0 trigger 1 alt 0, swing 0.00 m/s
+BRP R 54 maptime 175 gametic 175
+BRP G3 u40 t175 angle 93.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u41 t176 angle 93.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u42 t177 angle 93.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN squeeze t177: hand 0 trigger 1 alt 0, swing 0.72 m/s
+BRP R 55 maptime 178 gametic 178
+rsr key up 447 (¿)
+BRP G3 u43 t178 angle 96.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN release t178: swing 0.72 m/s (throws from 2.50)
+BRP G3 u44 t179 angle 96.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 56 maptime 180 gametic 180
+RSQGN spoon off p0 t180: cooking (swing was 0.71 m/s)
+BRP G3 u45 t180 angle 98.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN flash hand t180 period 16 left 105
+BRP G3 u46 t181 angle 98.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u47 t182 angle 98.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 57 maptime 183 gametic 183
+BRP G3 u48 t183 angle 101.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u49 t184 angle 101.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u50 t185 angle 101.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u51 t186 angle 101.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 58 maptime 187 gametic 187
+rsr key down 447 (¿)
+BRP G3 u52 t187 angle 105.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u53 t188 angle 105.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u54 t189 angle 105.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u55 t190 angle 105.0 set R (0.255 1.315 -0.262) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 59 maptime 191 gametic 191
+BRP G3 u56 t191 angle 109.0 set R (0.260 1.330 -0.224) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u57 t192 angle 109.0 set R (0.265 1.345 -0.186) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u58 t193 angle 109.0 set R (0.270 1.360 -0.148) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 60 maptime 194 gametic 194
+BRP G3 u59 t194 angle 108.0 set R (0.275 1.375 -0.110) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u60 t195 angle 108.0 set R (0.280 1.390 -0.072) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u61 t196 angle 108.0 set R (0.285 1.405 -0.034) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN flash hand t196 period 14 left 89
+BRP R 61 maptime 197 gametic 197
+BRP G3 u62 t197 angle 105.0 set R (0.290 1.420 0.004) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u63 t198 angle 105.0 set R (0.295 1.435 0.042) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u64 t199 angle 105.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 62 maptime 200 gametic 200
+BRP G3 u65 t200 angle 102.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u66 t201 angle 102.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 63 maptime 202 gametic 202
+BRP G3 u67 t202 angle 100.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u68 t203 angle 100.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u69 t204 angle 100.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 64 maptime 205 gametic 205
+BRP G3 u70 t205 angle 97.0 set R (0.287 1.442 -0.033) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u71 t206 angle 97.0 set R (0.273 1.433 -0.147) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 65 maptime 207 gametic 207
+BRP G3 u72 t207 angle 95.0 set R (0.260 1.425 -0.260) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u73 t208 angle 95.0 set R (0.247 1.417 -0.373) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u74 t209 angle 95.0 set R (0.233 1.408 -0.487) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 66 maptime 210 gametic 210
+rsr key up 447 (¿)
+BRP G3 u75 t210 angle 92.0 set R (0.220 1.400 -0.600) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+RSQGN flash hand t210 period 12 left 75
+RSQGN release t210 (cooking): swing 6.36 m/s, thrown
+BRP G3 u76 t211 angle 92.0 set R (0.220 1.400 -0.600) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP G3 u77 t212 angle 92.0 set R (0.222 1.394 -0.583) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 8
+BRP R 67 maptime 213 gametic 213
+RSQGN thrown p0 t213 hand 0 swing 6.36 m/s, leaves at 6.4 u/tic (6.72 m/s) from (-90 802 95), fuse 72 of 105 (cooked)
+BRP G3 u78 t213 angle 90.0 set R (0.223 1.389 -0.567) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN flash thrown t213 period 11 left 71 at (-92 808 97)
+BRP G3 u79 t214 angle 90.0 set R (0.225 1.383 -0.550) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t214 pos (-92 808 97) vel (-1.2 6.0 1.5) 6.3 u/tic, 48 units from the player
+BRP G3 u80 t215 angle 90.0 set R (0.227 1.378 -0.533) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 68 maptime 216 gametic 216
+BRP G3 u81 t216 angle 90.0 set R (0.228 1.372 -0.517) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t216 pos (-94 820 100) vel (-1.2 6.0 1.0) 6.2 u/tic, 57 units from the player
+BRP G3 u82 t217 angle 90.0 set R (0.230 1.367 -0.500) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u83 t218 angle 90.0 set R (0.232 1.361 -0.483) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t218 pos (-96 832 102) vel (-1.2 6.0 0.4) 6.2 u/tic, 66 units from the player
+BRP R 69 maptime 219 gametic 219
+BRP G3 u84 t219 angle 90.0 set R (0.233 1.356 -0.467) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u85 t220 angle 90.0 set R (0.235 1.350 -0.450) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t220 pos (-98 844 102) vel (-1.2 6.0 -0.1) 6.2 u/tic, 76 units from the player
+BRP G3 u86 t221 angle 90.0 set R (0.237 1.344 -0.433) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 70 maptime 222 gametic 222
+BRP G3 u87 t222 angle 90.0 set R (0.238 1.339 -0.417) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t222 pos (-101 856 102) vel (-1.2 6.0 -0.6) 6.2 u/tic, 86 units from the player
+BRP G3 u88 t223 angle 90.0 set R (0.240 1.333 -0.400) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u89 t224 angle 90.0 set R (0.242 1.328 -0.383) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t224 pos (-103 868 100) vel (-1.2 6.0 -1.2) 6.3 u/tic, 96 units from the player
+RSQGN flash thrown t224 period 10 left 60 at (-104 874 99)
+BRP R 71 maptime 225 gametic 225
+BRP G3 u90 t225 angle 90.0 set R (0.243 1.322 -0.367) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u91 t226 angle 90.0 set R (0.245 1.317 -0.350) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t226 pos (-105 881 98) vel (-1.2 6.0 -1.7) 6.4 u/tic, 106 units from the player
+BRP G3 u92 t227 angle 90.0 set R (0.247 1.311 -0.333) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 72 maptime 228 gametic 228
+BRP G3 u93 t228 angle 90.0 set R (0.248 1.306 -0.317) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t228 pos (-108 893 94) vel (-1.2 6.0 -2.3) 6.6 u/tic, 116 units from the player
+BRP G3 u94 t229 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 73 maptime 230 gametic 230
+BRP G3 u95 t230 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t230 pos (-110 905 89) vel (-1.2 6.0 -2.8) 6.8 u/tic, 126 units from the player
+BRP G3 u96 t231 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u97 t232 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t232 pos (-112 917 83) vel (-1.2 6.0 -3.3) 7.0 u/tic, 137 units from the player
+BRP R 74 maptime 233 gametic 233
+BRP G3 u98 t233 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u99 t234 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP NADE t234 pos (-115 929 76) vel (-1.2 6.0 -3.9) 7.3 u/tic, 148 units from the player
+RSQGN flash thrown t234 period 9 left 50 at (-116 935 72)
+BRP SCENE 3 end t235
+BRP R 75 maptime 236 gametic 236
+BRP NADE t236 pos (-117 941 68) vel (-1.2 6.0 -4.4) 7.6 u/tic, 159 units from the player
+BRP NADE t238 pos (-119 953 59) vel (-1.2 6.0 -5.0) 7.9 u/tic, 171 units from the player
+BRP R 76 maptime 239 gametic 239
+BRP NADE t240 pos (-122 965 49) vel (-1.2 6.0 -5.5) 8.3 u/tic, 183 units from the player
+BRP R 77 maptime 242 gametic 242
+BRP NADE t242 pos (-124 977 38) vel (-1.2 6.0 -6.0) 8.6 u/tic, 196 units from the player
+RSQGN flash thrown t243 period 7 left 41 at (-126 989 25)
+BRP NADE t244 pos (-126 989 25) vel (-1.2 6.0 -6.6) 9.0 u/tic, 210 units from the player
+BRP R 78 maptime 245 gametic 245
+BRP NADE t246 pos (-129 1002 12) vel (-1.2 6.0 -7.1) 9.4 u/tic, 224 units from the player
+BRP R 79 maptime 247 gametic 247
+BRP NADE t248 pos (-130 1010 12) vel (-0.5 2.5 3.3) 4.1 u/tic, 233 units from the player
+BRP R 80 maptime 249 gametic 249
+BRP NADE t250 pos (-131 1015 18) vel (-0.5 2.5 2.7) 3.7 u/tic, 237 units from the player
+RSQGN flash thrown t250 period 7 left 34 at (-132 1017 21)
+BRP R 81 maptime 251 gametic 251
+BRP NADE t252 pos (-132 1020 23) vel (-0.5 2.5 2.2) 3.4 u/tic, 241 units from the player
+BRP R 82 maptime 254 gametic 254
+BRP NADE t254 pos (-133 1025 27) vel (-0.5 2.5 1.7) 3.0 u/tic, 245 units from the player
+BRP R 83 maptime 256 gametic 256
+BRP NADE t256 pos (-134 1030 30) vel (-0.5 2.5 1.1) 2.8 u/tic, 250 units from the player
+RSQGN flash thrown t257 period 6 left 27 at (-135 1035 32)
+BRP R 84 maptime 258 gametic 258
+BRP NADE t258 pos (-135 1035 32) vel (-0.5 2.5 0.6) 2.6 u/tic, 255 units from the player
+BRP R 85 maptime 260 gametic 260
+BRP NADE t260 pos (-136 1040 33) vel (-0.5 2.5 0.0) 2.5 u/tic, 260 units from the player
+BRP NADE t262 pos (-137 1045 33) vel (-0.5 2.5 -0.5) 2.6 u/tic, 265 units from the player
+BRP R 86 maptime 263 gametic 263
+RSQGN flash thrown t263 period 5 left 21 at (-138 1050 32)
+BRP NADE t264 pos (-138 1050 32) vel (-0.5 2.5 -1.0) 2.7 u/tic, 270 units from the player
+BRP R 87 maptime 266 gametic 266
+BRP NADE t266 pos (-139 1055 29) vel (-0.5 2.5 -1.6) 3.0 u/tic, 275 units from the player
+BRP NADE t268 pos (-140 1060 26) vel (-0.5 2.5 -2.1) 3.3 u/tic, 281 units from the player
+RSQGN flash thrown t268 period 4 left 16 at (-140 1062 24)
+BRP R 88 maptime 269 gametic 269
+BRP NADE t270 pos (-141 1065 21) vel (-0.5 2.5 -2.7) 3.7 u/tic, 286 units from the player
+BRP R 89 maptime 271 gametic 271
+BRP NADE t272 pos (-142 1070 16) vel (-0.5 2.5 -3.2) 4.1 u/tic, 292 units from the player
+RSQGN flash thrown t272 period 4 left 12 at (-142 1072 13)
+BRP R 90 maptime 273 gametic 273
+BRP NADE t274 pos (-143 1075 8) vel (-0.2 1.0 1.7) 2.0 u/tic, 298 units from the player
+BRP R 91 maptime 275 gametic 275
+BRP NADE t276 pos (-143 1076 8) vel (-0.1 0.6 1.7) 1.8 u/tic, 300 units from the player
+RSQGN flash thrown t276 period 3 left 8 at (-143 1077 8) resting
+BRP R 92 maptime 278 gametic 278
+BRP NADE t278 pos (-143 1077 8) vel (-0.1 0.3 1.7) 1.8 u/tic, 301 units from the player
+RSQGN flash thrown t279 period 3 left 5 at (-143 1078 8) resting
+BRP NADE t280 pos (-143 1078 8) vel (-0.0 0.2 1.7) 1.7 u/tic, 301 units from the player
+BRP R 93 maptime 281 gametic 281
+BRP NADE t282 pos (-143 1078 8) vel (0.0 0.0 1.7) 1.7 u/tic, 302 units from the player
+RSQGN flash thrown t282 period 2 left 2 at (-143 1078 8) resting
+BRP R 94 maptime 284 gametic 284
+BRP NADE t284 pos (-143 1078 8) vel (0.0 0.0 1.7) 1.7 u/tic, 302 units from the player
+RSQGN flash thrown t284 period 2 left 0 at (-143 1078 8) resting
+RSQGN boom thrown t285 at (-143 1078 8)
+BRP NADE t286 pos (-143 1078 8) vel (0.0 0.0 0.0) 0.0 u/tic, 302 units from the player
+BRP R 95 maptime 287 gametic 287
+BRP R 96 maptime 291 gametic 291
+BRP R 97 maptime 295 gametic 295
+BRP R 98 maptime 298 gametic 298
+BRP R 99 maptime 301 gametic 301
+BRP R 100 maptime 304 gametic 304
+BRP R 101 maptime 307 gametic 307
+BRP R 102 maptime 310 gametic 310
+BRP R 103 maptime 312 gametic 312
+BRP R 104 maptime 315 gametic 315
+BRP R 105 maptime 318 gametic 318
+BRP R 106 maptime 320 gametic 320
+BRP R 107 maptime 323 gametic 323
+BRP R 108 maptime 326 gametic 326
+BRP R 109 maptime 329 gametic 329
+BRP R 110 maptime 331 gametic 331
+BRP R 111 maptime 334 gametic 334
+BRP R 112 maptime 337 gametic 337
+BRP R 113 maptime 340 gametic 340
+BRP R 114 maptime 343 gametic 343
+BRP R 115 maptime 346 gametic 346
+BRP R 116 maptime 349 gametic 349
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+BRP R 117 maptime 351 gametic 351
+BR_A_RBD1
+BRP R 118 maptime 354 gametic 354
+BRP R 119 maptime 356 gametic 356
+BRP R 120 maptime 358 gametic 358
+BRP R 121 maptime 360 gametic 360
+BRP R 122 maptime 362 gametic 362
+BRP R 123 maptime 364 gametic 364
+BRP R 124 maptime 366 gametic 366
+BRP R 125 maptime 369 gametic 369
+BRP R 126 maptime 371 gametic 371
+BRP R 127 maptime 373 gametic 373
+BRP R 128 maptime 376 gametic 376
+BRP R 129 maptime 378 gametic 378
+BRP R 130 maptime 381 gametic 381
+BRP R 131 maptime 385 gametic 385
+BRP R 132 maptime 387 gametic 387
+BRP R 133 maptime 390 gametic 390
+BRP R 134 maptime 393 gametic 393
+BRP R 135 maptime 395 gametic 395
+BRP R 136 maptime 398 gametic 398
+BRP R 137 maptime 401 gametic 401
+BRP R 138 maptime 403 gametic 403
+BRP R 139 maptime 406 gametic 406
+BRP R 140 maptime 409 gametic 409
+BRP R 141 maptime 411 gametic 411
+BRP R 142 maptime 414 gametic 414
+BRP R 143 maptime 417 gametic 417
+BRP R 144 maptime 419 gametic 419
+BRP R 145 maptime 422 gametic 422
+BRP R 146 maptime 425 gametic 425
+BRP R 147 maptime 428 gametic 428
+BRP R 148 maptime 431 gametic 431
+BR_A6_COOK_RBD1
+BRP R 149 maptime 433 gametic 433
+BRP SCENE 3 start t433
+BRP G3 u0 t433 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u1 t434 angle 90.0 set R (0.250 1.300 -0.300) L (-0.200 1.306 -0.304) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u2 t435 angle 90.0 set R (0.250 1.300 -0.300) L (-0.150 1.311 -0.308) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 150 maptime 436 gametic 436
+BRP G3 u3 t436 angle 90.0 set R (0.250 1.300 -0.300) L (-0.100 1.317 -0.312) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u4 t437 angle 90.0 set R (0.250 1.300 -0.300) L (-0.051 1.322 -0.315) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u5 t438 angle 90.0 set R (0.250 1.300 -0.300) L (-0.001 1.328 -0.319) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 151 maptime 439 gametic 439
+BRP G3 u6 t439 angle 90.0 set R (0.250 1.300 -0.300) L (0.049 1.334 -0.323) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u7 t440 angle 90.0 set R (0.250 1.300 -0.300) L (0.099 1.339 -0.327) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u8 t441 angle 90.0 set R (0.250 1.300 -0.300) L (0.149 1.345 -0.331) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 152 maptime 442 gametic 442
+BRP G3 u9 t442 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u10 t443 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 153 maptime 444 gametic 444
+BRP G3 u11 t444 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G ring check u12 t445: off hand 0.0 cm from the ring (right 0.000 fwd -0.000 up 0.000 m)
+BRP G3 u12 t445 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u13 t446 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 154 maptime 447 gametic 447
+BRP G3 u14 t447 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G ring check u15 t448: off hand 0.0 cm from the ring (right 0.000 fwd -0.000 up 0.000 m)
+BRP G3 u15 t448 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u16 t449 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 1 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 155 maptime 450 gametic 450
+rsr key down 42 (*)
+BRP G3 u17 t450 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN ring taken t450 (other hand 0.0 cm from it)
+BRP G3 u18 t451 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 156 maptime 452 gametic 452
+BRP G3 u19 t452 angle 90.0 set R (0.250 1.300 -0.300) L (0.199 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u20 t453 angle 90.0 set R (0.250 1.300 -0.300) L (0.149 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u21 t454 angle 90.0 set R (0.250 1.300 -0.300) L (0.099 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 157 maptime 455 gametic 455
+BRP G3 u22 t455 angle 90.0 set R (0.250 1.300 -0.300) L (0.049 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u23 t456 angle 90.0 set R (0.250 1.300 -0.300) L (-0.001 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u24 t457 angle 90.0 set R (0.250 1.300 -0.300) L (-0.051 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 158 maptime 458 gametic 458
+BRP G3 u25 t458 angle 90.0 set R (0.250 1.300 -0.300) L (-0.101 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN ring pulled t458 (25.0 cm)
+BRP G3 u26 t459 angle 90.0 set R (0.250 1.300 -0.300) L (-0.151 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u27 t460 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 159 maptime 461 gametic 461
+RSQGN pin out p0 t461 by ring (hand 0)
+BRP G3 u28 t461 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u29 t462 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 160 maptime 463 gametic 463
+BRP G3 u30 t463 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u31 t464 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u32 t465 angle 90.0 set R (0.250 1.300 -0.300) L (-0.201 1.351 -0.335) rt 0 lt 1 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 161 maptime 466 gametic 466
+BRP G3 u33 t466 angle 90.0 set R (0.250 1.300 -0.300) L (-0.208 1.343 -0.330) rt 0 lt 0 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u34 t467 angle 90.0 set R (0.250 1.300 -0.300) L (-0.215 1.336 -0.325) rt 1 lt 0 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u35 t468 angle 90.0 set R (0.250 1.300 -0.300) L (-0.222 1.329 -0.320) rt 1 lt 0 rg 0 | cmd --O- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 162 maptime 469 gametic 469
+rsr key down 447 (¿)
+rsr key up 42 (*)
+BRP G3 u36 t469 angle 90.0 set R (0.250 1.300 -0.300) L (-0.229 1.322 -0.315) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u37 t470 angle 90.0 set R (0.250 1.300 -0.300) L (-0.236 1.314 -0.310) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u38 t471 angle 90.0 set R (0.250 1.300 -0.300) L (-0.243 1.307 -0.305) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN squeeze t471: hand 0 trigger 1 alt 0, swing 0.00 m/s
+BRP R 163 maptime 472 gametic 472
+BRP G3 u39 t472 angle 92.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u40 t473 angle 92.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u41 t474 angle 92.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN squeeze t474: hand 0 trigger 1 alt 0, swing 0.48 m/s
+BRP R 164 maptime 475 gametic 475
+rsr key up 447 (¿)
+BRP G3 u42 t475 angle 95.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN release t475: swing 0.48 m/s (throws from 2.50)
+BRP G3 u43 t476 angle 95.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 165 maptime 477 gametic 477
+RSQGN spoon off p0 t477: cooking (swing was 0.47 m/s)
+BRP G3 u44 t477 angle 97.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN flash hand t477 period 16 left 105
+BRP G3 u45 t478 angle 97.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u46 t479 angle 97.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 166 maptime 480 gametic 480
+BRP G3 u47 t480 angle 100.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u48 t481 angle 100.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u49 t482 angle 100.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 167 maptime 483 gametic 483
+BRP G3 u50 t483 angle 103.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u51 t484 angle 103.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u52 t485 angle 103.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 168 maptime 486 gametic 486
+rsr key down 447 (¿)
+BRP G3 u53 t486 angle 106.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u54 t487 angle 106.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u55 t488 angle 106.0 set R (0.255 1.315 -0.262) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 169 maptime 489 gametic 489
+BRP G3 u56 t489 angle 109.0 set R (0.260 1.330 -0.224) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u57 t490 angle 109.0 set R (0.265 1.345 -0.186) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 170 maptime 491 gametic 491
+BRP G3 u58 t491 angle 109.0 set R (0.270 1.360 -0.148) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u59 t492 angle 109.0 set R (0.275 1.375 -0.110) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 171 maptime 493 gametic 493
+BRP G3 u60 t493 angle 107.0 set R (0.280 1.390 -0.072) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN flash hand t493 period 14 left 89
+BRP G3 u61 t494 angle 107.0 set R (0.285 1.405 -0.034) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 172 maptime 495 gametic 495
+BRP G3 u62 t495 angle 105.0 set R (0.290 1.420 0.004) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u63 t496 angle 105.0 set R (0.295 1.435 0.042) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 173 maptime 497 gametic 497
+BRP G3 u64 t497 angle 103.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u65 t498 angle 103.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 174 maptime 499 gametic 499
+BRP G3 u66 t499 angle 101.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u67 t500 angle 101.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 175 maptime 501 gametic 501
+BRP G3 u68 t501 angle 99.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u69 t502 angle 99.0 set R (0.300 1.450 0.080) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 176 maptime 503 gametic 503
+BRP G3 u70 t503 angle 97.0 set R (0.287 1.442 -0.033) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u71 t504 angle 97.0 set R (0.273 1.433 -0.147) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 177 maptime 505 gametic 505
+BRP G3 u72 t505 angle 95.0 set R (0.260 1.425 -0.260) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP G3 u73 t506 angle 95.0 set R (0.247 1.417 -0.373) L (-0.250 1.300 -0.300) rt 1 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 178 maptime 507 gametic 507
+BRP G3 u74 t507 angle 93.0 set R (0.233 1.408 -0.487) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN flash hand t507 period 12 left 75
+BRP G3 u75 t508 angle 93.0 set R (0.220 1.400 -0.600) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd A--- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 179 maptime 509 gametic 509
+rsr key up 447 (¿)
+BRP G3 u76 t509 angle 91.0 set R (0.220 1.400 -0.600) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+RSQGN release t509 (cooking): swing 4.19 m/s, thrown
+BRP G3 u77 t510 angle 91.0 set R (0.222 1.394 -0.583) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 7
+BRP R 180 maptime 511 gametic 511
+RSQGN thrown p0 t511 hand 0 swing 4.18 m/s, leaves at 4.2 u/tic (4.42 m/s) from (-91 806 95), fuse 71 of 105 (cooked)
+BRP G3 u78 t511 angle 90.0 set R (0.223 1.389 -0.567) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+RSQGN flash thrown t511 period 11 left 70 at (-91 809 96)
+BRP G3 u79 t512 angle 90.0 set R (0.225 1.383 -0.550) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t512 pos (-91 809 96) vel (-0.8 4.0 0.9) 4.2 u/tic, 48 units from the player
+BRP R 181 maptime 513 gametic 513
+BRP G3 u80 t513 angle 90.0 set R (0.227 1.378 -0.533) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP G3 u81 t514 angle 90.0 set R (0.228 1.372 -0.517) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t514 pos (-93 817 98) vel (-0.8 4.0 0.4) 4.1 u/tic, 54 units from the player
+BRP G3 u82 t515 angle 90.0 set R (0.230 1.367 -0.500) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP R 182 maptime 516 gametic 516
+BRP G3 u83 t516 angle 90.0 set R (0.232 1.361 -0.483) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t516 pos (-95 825 98) vel (-0.8 4.0 -0.2) 4.1 u/tic, 59 units from the player
+BRP G3 u84 t517 angle 90.0 set R (0.233 1.356 -0.467) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP R 183 maptime 518 gametic 518
+BRP G3 u85 t518 angle 90.0 set R (0.235 1.350 -0.450) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t518 pos (-96 833 98) vel (-0.8 4.0 -0.7) 4.1 u/tic, 64 units from the player
+BRP G3 u86 t519 angle 90.0 set R (0.237 1.344 -0.433) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP R 184 maptime 520 gametic 520
+BRP G3 u87 t520 angle 90.0 set R (0.238 1.339 -0.417) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t520 pos (-98 841 96) vel (-0.8 4.0 -1.3) 4.2 u/tic, 70 units from the player
+BRP G3 u88 t521 angle 90.0 set R (0.240 1.333 -0.400) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP G3 u89 t522 angle 90.0 set R (0.242 1.328 -0.383) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t522 pos (-100 849 93) vel (-0.8 4.0 -1.8) 4.4 u/tic, 75 units from the player
+RSQGN flash thrown t522 period 10 left 59 at (-100 853 91)
+BRP R 185 maptime 523 gametic 523
+BRP G3 u90 t523 angle 90.0 set R (0.243 1.322 -0.367) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP G3 u91 t524 angle 90.0 set R (0.245 1.317 -0.350) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t524 pos (-101 857 89) vel (-0.8 4.0 -2.3) 4.7 u/tic, 80 units from the player
+BRP R 186 maptime 525 gametic 525
+BRP G3 u92 t525 angle 90.0 set R (0.247 1.311 -0.333) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP G3 u93 t526 angle 90.0 set R (0.248 1.306 -0.317) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t526 pos (-103 865 84) vel (-0.8 4.0 -2.9) 5.0 u/tic, 86 units from the player
+BRP G3 u94 t527 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP R 187 maptime 528 gametic 528
+BRP G3 u95 t528 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t528 pos (-104 873 78) vel (-0.8 4.0 -3.4) 5.3 u/tic, 92 units from the player
+BRP G3 u96 t529 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP G3 u97 t530 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t530 pos (-106 881 71) vel (-0.8 4.0 -4.0) 5.7 u/tic, 99 units from the player
+BRP G3 u98 t531 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP R 188 maptime 532 gametic 532
+BRP G3 u99 t532 angle 90.0 set R (0.250 1.300 -0.300) L (-0.250 1.300 -0.300) rt 0 lt 0 rg 0 | cmd ---- | ready RSQGN_Grenade off rsq_hands ammo 6
+BRP NADE t532 pos (-108 889 63) vel (-0.8 4.0 -4.5) 6.0 u/tic, 106 units from the player
+RSQGN flash thrown t532 period 9 left 49 at (-108 893 59)
+BRP SCENE 3 end t533
+BRP NADE t534 pos (-109 897 54) vel (-0.8 4.0 -5.0) 6.5 u/tic, 114 units from the player
+BRP R 189 maptime 535 gametic 535
+BRP NADE t536 pos (-111 905 43) vel (-0.8 4.0 -5.6) 6.9 u/tic, 122 units from the player
+BRP NADE t538 pos (-112 913 32) vel (-0.8 4.0 -6.1) 7.3 u/tic, 132 units from the player
+BRP R 190 maptime 539 gametic 539
+BRP NADE t540 pos (-114 921 20) vel (-0.8 4.0 -6.7) 7.8 u/tic, 143 units from the player
+RSQGN flash thrown t541 period 7 left 40 at (-116 929 8)
+BRP R 191 maptime 542 gametic 542
+BRP NADE t542 pos (-116 929 8) vel (-0.3 1.6 3.5) 3.8 u/tic, 154 units from the player
+BRP NADE t544 pos (-116 932 15) vel (-0.3 1.6 2.9) 3.4 u/tic, 155 units from the player
+BRP R 192 maptime 545 gametic 545
+BRP NADE t546 pos (-117 935 20) vel (-0.3 1.6 2.4) 2.9 u/tic, 157 units from the player
+BRP R 193 maptime 548 gametic 548
+BRP NADE t548 pos (-118 938 25) vel (-0.3 1.6 1.8) 2.5 u/tic, 159 units from the player
+RSQGN flash thrown t548 period 6 left 33 at (-118 940 27)
+BRP NADE t550 pos (-118 942 28) vel (-0.3 1.6 1.3) 2.1 u/tic, 162 units from the player
+BRP R 194 maptime 551 gametic 551
+BRP NADE t552 pos (-119 945 30) vel (-0.3 1.6 0.8) 1.8 u/tic, 164 units from the player
+BRP R 195 maptime 554 gametic 554
+BRP NADE t554 pos (-120 948 32) vel (-0.3 1.6 0.2) 1.7 u/tic, 168 units from the player
+RSQGN flash thrown t554 period 6 left 27 at (-120 950 32)
+BRP NADE t556 pos (-120 951 32) vel (-0.3 1.6 -0.3) 1.7 u/tic, 171 units from the player
+BRP R 196 maptime 557 gametic 557
+BRP NADE t558 pos (-121 955 31) vel (-0.3 1.6 -0.9) 1.9 u/tic, 174 units from the player
+BRP R 197 maptime 559 gametic 559
+BRP NADE t560 pos (-122 958 29) vel (-0.3 1.6 -1.4) 2.2 u/tic, 178 units from the player
+RSQGN flash thrown t560 period 5 left 21 at (-122 959 28)
+BRP R 198 maptime 562 gametic 562
+BRP NADE t562 pos (-122 961 26) vel (-0.3 1.6 -1.9) 2.6 u/tic, 182 units from the player
+BRP NADE t564 pos (-123 964 22) vel (-0.3 1.6 -2.5) 3.0 u/tic, 186 units from the player
+RSQGN flash thrown t565 period 4 left 16 at (-124 968 17)
+BRP R 199 maptime 566 gametic 566
+BRP NADE t566 pos (-124 968 17) vel (-0.3 1.6 -3.0) 3.4 u/tic, 190 units from the player
+BRP NADE t568 pos (-124 971 10) vel (-0.3 1.6 -3.6) 3.9 u/tic, 194 units from the player
+RSQGN flash thrown t569 period 4 left 12 at (-125 973 8) resting
+BRP R 200 maptime 570 gametic 570
+BRP NADE t570 pos (-125 973 8) vel (-0.1 0.5 1.8) 1.9 u/tic, 197 units from the player
+BRP R 201 maptime 572 gametic 572
+BRP NADE t572 pos (-125 974 8) vel (-0.1 0.3 1.8) 1.8 u/tic, 198 units from the player
+RSQGN flash thrown t573 period 3 left 8 at (-125 975 8) resting
+BRP NADE t574 pos (-125 975 8) vel (-0.0 0.2 1.8) 1.8 u/tic, 199 units from the player
+BRP R 202 maptime 575 gametic 575
+BRP NADE t576 pos (-125 975 8) vel (0.0 0.0 1.8) 1.8 u/tic, 199 units from the player
+RSQGN flash thrown t576 period 3 left 5 at (-125 975 8) resting
+BRP R 203 maptime 578 gametic 578
+BRP NADE t578 pos (-125 975 8) vel (0.0 0.0 1.8) 1.8 u/tic, 199 units from the player
+RSQGN flash thrown t579 period 2 left 2 at (-125 975 8) resting
+BRP NADE t580 pos (-125 975 8) vel (0.0 0.0 1.8) 1.8 u/tic, 199 units from the player
+BRP R 204 maptime 581 gametic 581
+RSQGN flash thrown t581 period 2 left 0 at (-125 975 8) resting
+BRP NADE t582 pos (-125 975 8) vel (0.0 0.0 1.8) 1.8 u/tic, 199 units from the player
+RSQGN boom thrown t582 at (-125 975 8)
+BRP R 205 maptime 584 gametic 584
+BRP NADE t584 pos (-125 975 8) vel (0.0 0.0 0.0) 0.0 u/tic, 199 units from the player
+BRP R 206 maptime 587 gametic 587
+BRP R 207 maptime 590 gametic 590
+BRP R 208 maptime 593 gametic 593
+BRP R 209 maptime 596 gametic 596
+BRP R 210 maptime 599 gametic 599
+BRP R 211 maptime 603 gametic 603
+BRP R 212 maptime 606 gametic 606
+BRP R 213 maptime 609 gametic 609
+BRP R 214 maptime 611 gametic 611
+BRP R 215 maptime 614 gametic 614
+BRP R 216 maptime 617 gametic 617
+BRP R 217 maptime 620 gametic 620
+BRP R 218 maptime 622 gametic 622
+BRP R 219 maptime 625 gametic 625
+BRP R 220 maptime 628 gametic 628
+BRP R 221 maptime 630 gametic 630
+BRP R 222 maptime 633 gametic 633
+BRP R 223 maptime 636 gametic 636
+BRP R 224 maptime 639 gametic 639
+BRP R 225 maptime 641 gametic 641
+BRP R 226 maptime 644 gametic 644
+BRP R 227 maptime 647 gametic 647
+BRP R 228 maptime 650 gametic 650
+BRP R 229 maptime 653 gametic 653
+BRP R 230 maptime 656 gametic 656
+BRP R 231 maptime 658 gametic 658
+BRP R 232 maptime 660 gametic 660
+BRP R 233 maptime 663 gametic 663
+BRP R 234 maptime 665 gametic 665
+BRP R 235 maptime 668 gametic 668
+BRP R 236 maptime 670 gametic 670
+BRP R 237 maptime 672 gametic 672
+BRP R 238 maptime 675 gametic 675
+BRP R 239 maptime 678 gametic 678
+BRP R 240 maptime 681 gametic 681
+BRP R 241 maptime 683 gametic 683
+BRP R 242 maptime 685 gametic 685
+BRP R 243 maptime 688 gametic 688
+BRP R 244 maptime 692 gametic 692
+BRP R 245 maptime 696 gametic 696
+BRP R 246 maptime 699 gametic 699
+BRP R 247 maptime 701 gametic 701
+BRP R 248 maptime 704 gametic 704
+BRP R 249 maptime 707 gametic 707
+BRP R 250 maptime 709 gametic 709
+BR_A_END
