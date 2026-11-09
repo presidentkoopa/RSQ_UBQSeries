@@ -24,3 +24,8 @@ Known gates (from design/RSMONSTERS_SCORE_GBOVR_STUDY.md and design/UNIFY_STUDY.
 program for right now." First: make RS Monsters Quest-friendly (study: design/RSMONSTERS_QUEST_STUDY.md). Then he
 points us to the MeatGrinder set, folded into RS Monsters, so we can design against monsters close to stock and BD
 (MeatGrinder) as well as Colourful Hell's big changes.
+
+## HF = Hackfraud (owner, 2026-11-08 23:54)
+"HF stands for Hackfraud. It was my first attempt to make a VR Doom game. That outdated HF master is mine."
+(E:\oldshit\outdatedHFmaster). All of its code is the owner's: take from it whatever the MeatGrinder set (or anything
+we fold in) needs; just stay focused on what is needed.
