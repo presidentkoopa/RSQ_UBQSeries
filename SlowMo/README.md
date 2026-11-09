@@ -62,6 +62,25 @@ Score life (the spawned targets vanish in teleport fog, the map's own monster lo
 is a row on the DOWN part of the page (Reset All). Panel Size (default 1 = half the view) scales the panel and the edge
 arrows together: code only, not shown on the rig.
 
+New on 11-09, **DOWN's look** (owner 17:42-17:45). Status: **code only, not run** (it loads with no script errors; nothing of
+it has been seen on the rig or in the headset yet). Going down is now a slow-motion moment: **Slow Fall** eases your view
+down over about a second instead of dropping it, and slows you yourself through the fall. The world goes **black and
+white** with a **blood-red tint**, fading in as you go down and back to colour when you get up or die (**Fade**). Only your
+own view goes grey: in co-op the other players see their world as usual. The monsters you must kill stay in colour where
+the engine allows it: a target standing in a small room keeps that room in colour (**Targets' Room in Colour**), and its
+crosshair and the chevron trail are drawn in full colour on top of the grey. In a big room the target itself is grey,
+but full-bright and untinted against the dark red world. The engine has no way to keep one monster in colour in a grey
+room. The sky stays as it is. Every room gets its own colour back exactly when DOWN ends, when the map ends, and after
+a save made mid-DOWN is loaded. With DarkDoomZ loaded, **DarkDoomZ When Down** drops it to DarkDoom Black while you are
+DOWN and puts your own setting back after (single player only: DarkDoomZ's darkness is everyone's). In DarkDoom Black
+the rooms are dark, so the red tint has little light to colour; DarkDoom Classic keeps more of it. RSQ Glow In The Dark's
+Red Map keeps working: under the grey its glow shows as a beating band of light, and the red comes from the tint.
+**Death In Entrance**: the panel and a big DOWN appear in the middle of your view, hold for the fall, then glide down to
+their place (**Middle Then Sink**, the default); or **Bottom Only**, at their place from the start; or **Slam Up**, as
+before. **Sounds** (our own, made for this pack): a heavy hit and a ringing in your ears as you go down, a heartbeat that
+gets faster as DEATH IN runs down, and a relief when you get up. If you load LiveReverb, its own low-health effect will
+also play while you are DOWN, because you are held at 1 HP. Nothing here needs it.
+
 Stock QuestZDoom 17.3 has no world clock that a mod can slow. This mod builds one in ZScript. Every monster,
 missile, gib and sound near you is time-dilated, not frozen. Each one still moves every frame, just by less,
 so slow motion stays smooth in a headset instead of stuttering. Your head and hands always run in real time.
@@ -219,6 +238,14 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Lower View When Down | On | Comfort: off = no view drop (the crawl stays). |
 | Panel Size | 1.00 | Scales the DOWN panel and the edge arrows together (1 = half the view, 0.5 to 1.8). Code only, not shown on the rig. |
 | Target Lines | Icon | Each Target line: Icon = "TARGET:" and that target's own crosshair icon in its colour; Name = "TARGET:" and its name (Score's words). Rig only, not headset-confirmed. |
+| Death In Entrance | Middle Then Sink | Where the DOWN panel starts: Middle Then Sink (big in the middle with DOWN over it, then down to its place), Bottom Only, Slam Up (from the bottom edge). Code only, not run. |
+| Slow Fall | On | You go down in slow motion: about a second, your view easing down. Code only, not run. |
+| Black and White World | On | While you are DOWN your world goes black and white (your view only). Code only, not run. |
+| Fade (s) | 1.00 | How long the grey takes to come in, and to go back to colour. Code only, not run. |
+| Blood Red Tint | 0.60 | 0 = plain grey, 1 = deep red over the grey. Code only, not run. |
+| Targets' Room in Colour | Small Rooms | A target's room stays in colour: Off, Small Rooms, Always. Code only, not run. |
+| DarkDoomZ When Down | DarkDoom Black | With DarkDoomZ: Off, DarkDoom Black, DarkDoom Classic while you are DOWN; your setting comes back after. Single player only. Code only, not run. |
+| Sounds | On | DOWN's own sounds: a hit and ringing, a heartbeat, a relief. Code only, not run. |
 | **Heavy Hit Slowdown** | | |
 | Heavy Hit Slowdown | On | A heavy hit from a legendary, champion, miniboss or thrall, boss or big demon slows time 3 s (you too). Never on a hit that kills you, never while you are DOWN. |
 | Heavy Hit Size (% of max health) | 75 | What one tic's damage must add up to. |

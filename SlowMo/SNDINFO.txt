@@ -15,3 +15,9 @@ rsqsm/crack2  smcrak2
 $alias rsqsm/in    misc/p_pkup
 $alias rsqsm/out   plats/pt1_stop
 $alias rsqsm/ready misc/i_pkup
+// DOWN's own sounds (owner 2026-11-09 17:45: "we will need some kind of audio cues"): made for this pack by
+// tools/down_audio/gen_down_sounds.py (synthesized, no samples), played only with the DOWN page's Sounds row on
+rsqsm/dnhit    smdnhit
+rsqsm/dnring   smdnring
+rsqsm/dnbeat   smdnbeat
+rsqsm/dnrelief smdnrlf

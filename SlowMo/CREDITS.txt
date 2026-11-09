@@ -13,6 +13,8 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       and crack recordings (sounds/rsqsm/smwhiz1-4, smcrak1-2): his RS_Ballistics library.
   Generated for this pack
       The round's placeholder sprite (sprites/rsqsm/RSQRA0.png).
+      DOWN's sounds (sounds/rsqsm/smdnhit, smdnring, smdnbeat, smdnrlf): synthesized from sine waves and seeded noise by
+      tools/down_audio/gen_down_sounds.py, no samples (2026-11-09).
   coldcite (Top HP Bars 1.04, 2017: "Feel free to use this in your mods. You don't have to ask my permission!")
       The slow-motion countdown bar (graphics/RSQSMHE empty, RSQSMHW the fill in white that the HUD tints) is his
       style-A health bar left lying as he drew it, with the series' bar rim and well (VisualRewards/tools/gen_gauges.py in the

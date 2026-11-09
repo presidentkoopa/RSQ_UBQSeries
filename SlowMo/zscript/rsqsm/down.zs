@@ -44,6 +44,13 @@
 //            approved mockup (design/mockups); plate.zs: the crosshairs on the targets and the eye-level trail, in the
 //            world. Console player only.
 //  NETPLAY   each player has his own DOWN; the world's slow-down is the clock's, shared as every slow motion is.
+//  THE LOOK  (owner 2026-11-09 17:42-17:45; downlook.zs) going down is a slow-mo moment: the view eases down over DROP_TICS
+//            (an ease in and out, not a snap) and the player himself is slowed through it (clock.zs SlowMe asks DropK);
+//            the world goes black and white with a blood-red tint (each sector's own light colour and desaturation,
+//            eased; console player only), the targets' small rooms stay in colour, the crosshairs and trail are drawn
+//            as full-bright particles while the world is grey (the engine never desaturates those); DarkDoomZ drops to
+//            DarkDoom Black (single player); our own sounds: a heavy hit and a ringing, a heartbeat, a relief on getting
+//            up. The DEATH IN panel appears big in the middle of the view and sinks to its place (downhud.zs).
 //
 // JOINING (by name): every Service whose class name contains "RSQDownJoin" is told GetInt(event, stringArg, player, 0,
 // actor): "down.start" (pawn), "down.target" (a target monster; stringArg its colour "RRGGBB"), "down.time" (the monster
@@ -65,6 +72,11 @@ class RSQSM_Down : EventHandler
 	const FIGHT_FAR = 2048;
 	const SPAWN_TRIES = 70;    // tics a spawn keeps looking for a spot in view before it is dropped (logged)
 	const REFILL_TICS = 10;    // the bar's refill sweep after a kill with targets left ("fast": my number, ~0.3 s)
+	const DROP_TICS = 35;      // going down (owner 11-09 17:44: "a slow-mo moment", ~1 s real): the view's ease and the slow fall
+	const DROP_SLOW = 0.2;     // the player's own speed at the start of the fall, easing back to full (my number)
+	const ENTRY_HOLD = 35;     // Death In Entrance, Middle Then Sink: tics it holds big in the middle (~1 s, the drop)
+	const ENTRY_GLIDE = 14;    // then tics it takes to glide down to its place (my number, ~0.4 s)
+	const RING_SLOT = 7101;    // the ringing's own sound slot (stopped when you get up)
 
 	// ---- synced (in the save) ----------------------------------------------------------------------------------------
 	bool   downOn[MAXPLAYERS];
@@ -111,6 +123,17 @@ class RSQSM_Down : EventHandler
 	double cK[MAXPLAYERS], cVH[MAXPLAYERS], cFH[MAXPLAYERS];
 	Actor  cPawn[MAXPLAYERS];
 	int    cLogged[MAXPLAYERS];
+	// THE BLACK AND WHITE WORLD (downlook.zs): the CONSOLE PLAYER's view only, so these differ machine to machine by design
+	// (nothing the game reads: a sector's light colour and desaturation are drawn, never simulated). Saved with the game so
+	// a save made mid-DOWN still puts every sector's own colour back exactly.
+	double gwMix;                                         // 0 colour .. 1 grey (eased)
+	int    gwN;                                           // sectors held (0: none)
+	int    gwQ;                                           // the last step written
+	Array<int> gwCol, gwDes, gwLastCol, gwLastDes;        // each sector's own light colour and desaturation; what we last wrote
+	Array<double> gwIsl;                                  // each sector: 0 grey .. 1 a target's room kept in colour
+	Array<int> gwIslOn;                                   // the sectors with an island now
+	bool   ddzOn; int ddzHeld;                            // DarkDoomZ's own ddz_mode while DOWN holds it at DarkDoom Black
+	transient Array<double> gwSize;                       // each sector's widest side (its lines' box), for Small Rooms
 
 	// ---- this tic ----------------------------------------------------------------------------------------------------
 	private transient int hpSeen[MAXPLAYERS];
@@ -159,6 +182,30 @@ class RSQSM_Down : EventHandler
 		return CRAWL_K / eng;
 	}
 	clearscope bool Invul(int n) { return n >= 0 && n < MAXPLAYERS && invulUntil[n] > level.maptime; }
+	// GOING DOWN (owner 11-09 17:44): how far into the fall, 0..1 eased in and out (1 once it is over)
+	clearscope double DropEase(int n)
+	{
+		if (!IsDown(n)) return 1.0;
+		double p = clamp((level.maptime - downStart[n]) / double(DROP_TICS), 0.0, 1.0);
+		return p * p * (3.0 - 2.0 * p);
+	}
+	// the player's own speed through the fall (clock.zs SlowMe): DROP_SLOW easing back to full; full once it is over or
+	// with the Slow Fall row off. Synced numbers only: the same on every machine.
+	double DropK(int n)
+	{
+		if (!IsDown(n) || Cv("rsqsm_down_slowfall", 1) == 0) return 1.0;
+		if (level.maptime - downStart[n] >= DROP_TICS) return 1.0;
+		return DROP_SLOW + (1.0 - DROP_SLOW) * DropEase(n);
+	}
+	// the tic after going down when the panel comes to rest (the thump in both hands): Death In Entrance 0 Middle Then
+	// Sink, 1 Bottom Only, 2 Slam Up
+	static clearscope int LandTic(int entry)
+	{
+		if (entry == 1) return 1;
+		if (entry == 2) return RSQSM_DownHud.SLAM;
+		return ENTRY_HOLD + ENTRY_GLIDE;
+	}
+	static clearscope bool AudioOn(int n) { return CvP("rsqsm_down_audio", n, 1) != 0; }
 
 	override void WorldLoaded(WorldEvent e)
 	{
@@ -183,6 +230,10 @@ class RSQSM_Down : EventHandler
 		spId.Clear(); spHave.Clear(); spRolls.Clear(); spX.Clear(); spY.Clear(); spZ.Clear(); spAng.Clear(); spWhy.Clear();
 		spSwap.Clear(); spSwapK.Clear(); spTid.Clear(); spSpec.Clear(); spArg.Clear();
 		cdMon.Clear(); cdId.Clear(); tChWait.Clear();
+		// the look: a new map starts in its own colours (the last map gave every sector back as it ended); a DarkDoomZ
+		// darkness left behind by a quit or crash mid-DOWN goes back
+		GreyForget();
+		DdzRecover();
 	}
 
 	override void WorldUnloaded(WorldEvent e)
@@ -194,7 +245,10 @@ class RSQSM_Down : EventHandler
 			downOn[n] = false;
 		}
 		if (plate) { plate.Clear(); plate = null; }
-		gone = true;      // the level is over: no tic of this handler may touch the travelling pawn again
+		// the look: every sector's own colour back exactly (before a hub keeps the map), DarkDoomZ's own mode back
+		GreyRelease("the map ends");
+		DdzLet("the map ends");
+		gone = true;     // the level is over: no tic of this handler may touch the travelling pawn again
 	}
 	private transient bool gone;
 
@@ -242,7 +296,7 @@ class RSQSM_Down : EventHandler
 					{
 						Heartbeat(n); WatchTargets(n);
 						// THE PANEL LANDS (owner 07:55: it slams up, "a heavy controller thump"): both hands, full, as it lands
-						if (level.maptime - downStart[n] == RSQSM_DownHud.SLAM)
+						if (level.maptime - downStart[n] == LandTic(int(CvP("rsqsm_down_entry", n, 0))))
 						{
 							RSQSM_Buzz.Start(pmo, 0, 1.0, 7);
 							RSQSM_Buzz.Start(pmo, 1, 1.0, 7);
@@ -267,6 +321,8 @@ class RSQSM_Down : EventHandler
 			if (!want || !playeringame[cp] || !players[cp].mo) { plate.Clear(); plate = null; }
 			else plate.Tick(self);
 		}
+		// THE LOOK (downlook.zs): the console player's grey world and DarkDoomZ
+		LookTick();
 		// targets of a DOWN that ended are forgotten once their icon is done
 		for (int i = tMon.Size() - 1; i >= 0; i--)
 		{
@@ -324,8 +380,18 @@ class RSQSM_Down : EventHandler
 		double l = clk[n] / max(1.0, ClockTics());
 		beatNext[n] = level.maptime + int(12 + 14 * clamp(l, 0.0, 1.0));
 		beatN[n]++;
+		// OUR OWN HEARTBEAT (owner 11-09 17:45, Audio Cues): a lub-dub (tools/down_audio), faster as DEATH IN runs down (the
+		// gap above) and a little higher and louder too
+		if (AudioOn(n))
+		{
+			double u = 1.0 - clamp(l, 0.0, 1.0);
+			pmo.A_StartSound("rsqsm/dnbeat", CHAN_AUTO, CHANF_LOCAL, 0.7 + 0.3 * u, ATTN_NONE, 1.0 + 0.15 * u);
+			RSQSM_Buzz.Start(pmo, 0, 0.35, 3);
+			RSQSM_Buzz.Start(pmo, 1, 0.35, 3);
+			return;
+		}
 		bool bd = S_GetLength("heartbeat1") > 0;
-		if (bd) pmo.A_StartSound((beatN[n] & 1) ? "heartbeat1" : "heartbeat2", CHAN_AUTO, CHANF_LOCAL, 1.0, ATTN_NONE);
+		if (bd)pmo.A_StartSound((beatN[n] & 1) ? "heartbeat1" : "heartbeat2", CHAN_AUTO, CHANF_LOCAL, 1.0, ATTN_NONE);
 		else pmo.A_StartSound("plats/pt1_stop", CHAN_AUTO, CHANF_LOCAL, 0.9, ATTN_NONE, 0.55);
 		RSQSM_Buzz.Start(pmo, 0, 0.35, 3);
 		RSQSM_Buzz.Start(pmo, 1, 0.35, 3);
@@ -363,6 +429,10 @@ class RSQSM_Down : EventHandler
 		double step = (1.0 - CROUCH_K) / CROUCH_TICS;
 		double k = cK[n];
 		double nk = k < target ? min(target, k + step) : max(target, k - step);
+		// GOING DOWN (owner 11-09 17:44: "it just shock-drops me"): the fall eases in and out over DROP_TICS (~1 s real),
+		// not a straight 0.5 s line; rising stays as it was
+		if (down && target < 1.0 && level.maptime - downStart[n] <= DROP_TICS)
+			nk = min(k, max(target, 1.0 - (1.0 - CROUCH_K) * DropEase(n)));
 		if (nk > k)
 		{
 			// rising: only when the taller pawn fits under the ceiling here
@@ -555,7 +625,14 @@ class RSQSM_Down : EventHandler
 		iconsUsed[n] = 0;
 		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since a Score life), world to %d%%",
 			n, dmg, pre, from, pmo.health, ClockTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, owed[n], downs, int(DEPTH * 100 + 0.5)));
-		pmo.A_StartSound("rsqsm/in", CHAN_AUTO, CHANF_LOCAL, 1.0);
+		if (AudioOn(n))
+		{
+			// THE DROP'S SOUND (owner 11-09 17:45): a heavy hit, then a ringing in the ears that fades (its own slot: it stops
+			// when you get up)
+			pmo.A_StartSound("rsqsm/dnhit", CHAN_AUTO, CHANF_LOCAL, 1.0, ATTN_NONE);
+			pmo.A_StartSound("rsqsm/dnring", RING_SLOT, CHANF_LOCAL, 0.55, ATTN_NONE);
+		}
+		else pmo.A_StartSound("rsqsm/in", CHAN_AUTO, CHANF_LOCAL, 1.0);
 		RSQSM_Buzz.Start(pmo, 0, 0.8, 10);
 		RSQSM_Buzz.Start(pmo, 1, 0.8, 10);
 		Tell("down.start", n, "", pmo);
@@ -1093,6 +1170,7 @@ class RSQSM_Down : EventHandler
 			n, tn, e / double(TICRATE), invS, sloS, hp0, pmo.health, mx, ar0, ar ? ar.Amount : 0, src, rl));
 		pmo.A_StartSound("rsqsm/out", CHAN_AUTO, CHANF_LOCAL, 1.0);
 		pmo.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_LOCAL, 1.0);
+		if (AudioOn(n)) pmo.A_StartSound("rsqsm/dnrelief", CHAN_AUTO, CHANF_LOCAL, 0.9, ATTN_NONE);   // the relief (owner 11-09 17:45)
 		RSQSM_Buzz.Start(pmo, 0, 0.7, 8);
 		RSQSM_Buzz.Start(pmo, 1, 0.7, 8);
 		Tell("down.up", n, tn, pmo);
@@ -1159,6 +1237,7 @@ class RSQSM_Down : EventHandler
 		endTic[n] = level.maptime;
 		endHow[n] = revived ? 1 : 2;
 		Hold(n, false);
+		if (players[n].mo) players[n].mo.A_StopSound(RING_SLOT);
 		let c = RSQSM_Clock.Get();
 		if (c) c.freeUntil[n] = max(c.freeUntil[n], level.maptime + int(c.RampOut() * TICRATE) + 2);
 	}

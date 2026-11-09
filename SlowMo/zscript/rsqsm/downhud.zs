@@ -34,6 +34,11 @@
 //   the tab   x 900..1150, y 415..585 (#0b0b0d round #170708): "DEATH IN:" small, the seven-segment SS:hh readout (its look
 //             as built, sized to sit inside the tab).
 //   text      RSQ Score's combo font (RSSCFN2) when Score is loaded, else JFO (platefont.zs).
+// THE ENTRANCE, MIDDLE THEN SINK (owner 2026-11-09 17:45, the default; Death In Entrance row): the moment you go down the
+// whole panel (bar, lines, DEATH IN) and a big "DOWN" over it appear in the MIDDLE of the view at 1.6x, hold through the
+// slow-mo fall (RSQSM_Down.ENTRY_HOLD, ~1 s), then glide down and shrink to their place (ENTRY_GLIDE), the label fading as
+// it goes; the thump lands as it comes to rest. Bottom Only: at its place from the first frame. Slam Up: the slam below.
+// Code only, not run on the rig.
 // THE EDGE ARROWS: a target farther than 75 degrees from your view (plate.zs decides, and eases the direction after your
 // gaze): the chosen Turn Marker (default Triple Chevron) in its baked momentum frames, pointing the way to turn, with the
 // target's icon on a dark slot on its inner side, round the middle of the view at the mockup's distances (icon 110 px, the
@@ -186,6 +191,20 @@ class RSQSM_DownHud ui
 	static double PanelSize() { return clamp(RSQSM_Countdown.UCv("rsqsm_down_panelsize", 1.0), 0.5, 1.8); }
 	// Target Lines (owner 2026-11-07 11:0x): 0 Icon (the default), 1 Name
 	static int TargetLines() { return int(RSQSM_Countdown.UCv("rsqsm_down_lines", 0)) != 0 ? 1 : 0; }
+	// Death In Entrance (owner 2026-11-09 17:45): 0 Middle Then Sink (the default), 1 Bottom Only, 2 Slam Up (as before)
+	static int Entry() { return clamp(int(RSQSM_Countdown.UCv("rsqsm_down_entry", 0)), 0, 2); }
+	const BIG = 1.6;        // the panel's size in the middle, x its resting size (my number)
+	// a line of the plate's font: its width at this cap height
+	double TextW(String txt, double cap)
+	{
+		txt = txt.MakeUpper();
+		Name sn = 'RS_ScoreService';
+		class<Object> sc = sn;
+		bool sf = sc != null;
+		double tot = 0;
+		for (int k = 0; k < int(txt.Length()); k++) tot += RSQSM_PlateFont.Adv(sf, txt.ByteAt(k));
+		return tot * cap / RSQSM_PlateFont.Cap(sf);
+	}
 	const LICON = 40.0;     // the icon after "TARGET:" (mockup px; the slot's icon is 42 in a 62 px line pitch)
 
 	// RSQSM_Down.RenderOverlay calls this every frame
@@ -233,9 +252,27 @@ class RSQSM_DownHud ui
 		if (StatusBar && screenblocks <= 10) floorY = min(floorY, StatusBar.GetTopOfStatusBar() - 2.0);
 		fy = min(fy, floorY);
 		if ((MFOOT - top) * sy > fy - gy && fy > gy) { double kk = (fy - gy) / ((MFOOT - top) * sy); sx *= kk; sy *= kk; s = sx; }
-		// THE SLAM: up from below the bottom edge, a slight overshoot
 		double st = t - d.downStart[pn];
-		if (st < SLAM && !RSQSM_A11y.Photo())
+		int entry = Entry();
+		double label = 0;
+		if (entry == 0)
+		{
+			// MIDDLE THEN SINK: big, its middle on the gaze; holds, then glides to its place (eased in and out)
+			double bsx = sx * BIG, bsy = sy * BIG;
+			if (MW * bsx > sw * 0.94) { double kk = sw * 0.94 / (MW * bsx); bsx *= kk; bsy *= kk; }
+			double bfy = gy + (MFOOT - (top + MFOOT) * 0.5) * bsy;
+			double g = clamp((st - RSQSM_Down.ENTRY_HOLD) / double(RSQSM_Down.ENTRY_GLIDE), 0.0, 1.0);
+			g = g * g * (3.0 - 2.0 * g);
+			// its first few tics: a quick pop up to size (no overshoot with Photosensitive Mode)
+			double pop = RSQSM_A11y.Photo() ? 1.0 : clamp(st / 5.0, 0.0, 1.0);
+			pop = 0.7 + 0.3 * (1.0 - (1.0 - pop) * (1.0 - pop));
+			bsx *= pop; bsy *= pop;
+			sx = bsx + (sx - bsx) * g; sy = bsy + (sy - bsy) * g; s = sx;
+			fy = bfy + (fy - bfy) * g;
+			label = 1.0 - g;
+		}
+		// THE SLAM (Slam Up): up from below the bottom edge, a slight overshoot
+		if (entry == 2 && st < SLAM && !RSQSM_A11y.Photo())
 		{
 			double x = clamp(st / SLAM, 0.0, 1.0) - 1.0;
 			double p = 1.0 + (SLAM_BACK + 1.0) * x * x * x + SLAM_BACK * x * x;
@@ -244,6 +281,13 @@ class RSQSM_DownHud ui
 		}
 		bool calm = RSQSM_A11y.Photo();
 		double tt = calm ? 0.0 : t / TICRATE;
+		// the "DOWN" over the panel while it is in the middle (Middle Then Sink), fading as it sinks
+		if (label > 0.01)
+		{
+			double cap = 64.0;
+			double lw = TextW("DOWN", cap);
+			Text("DOWN", MCX - lw * 0.5, top - 30.0 - cap * 0.5, cap, 9999.0, 0xFF3A2A, label);
+		}
 
 		// ---- THE BAR --------------------------------------------------------------------------------------------------
 		static const double HT[] = { 14, 30, 52 };

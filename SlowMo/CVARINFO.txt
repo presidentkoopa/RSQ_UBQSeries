@@ -133,3 +133,13 @@ user bool    rsqsm_down_redmap   = true;  // Red Map: RSQ Glow In The Dark turns
 user bool    rsqsm_down_lowview  = true;  // Lower View When Down (comfort): off = no view drop (the crawl stays)
 user float   rsqsm_down_panelsize = 1.0;  // Panel Size (owner 11-07 08:00): multiplies the panel and the edge arrows together (1 = half the view)
 user int     rsqsm_down_lines    = 0;     // Target Lines (owner 11-07 11:0x): 0 Icon ("TARGET:" + its own crosshair icon in its colour), 1 Name (the monster's name)
+// DOWN's look (owner 2026-11-09 17:42-17:45; downlook.zs, downhud.zs): code only, not run on the rig
+user bool    rsqsm_down_bw       = true;  // Black and White World: the world goes grey (your view only) while you are DOWN
+user float   rsqsm_down_bw_fade  = 1.0;   // Fade (s): how long the grey takes to come in, and to go back to colour
+user float   rsqsm_down_bw_red   = 0.6;   // Blood Red Tint: 0 plain grey .. 1 deep red over the grey
+user int     rsqsm_down_bw_room  = 1;     // Targets' Room in Colour: 0 Off, 1 Small Rooms, 2 Always
+server int   rsqsm_down_ddz      = 1;     // DarkDoomZ When Down: 0 Off, 1 DarkDoom Black, 2 DarkDoom Classic (single player)
+server int   rsqsm_ddz_saved     = -9999; // DarkDoomZ's own mode while DOWN holds it (put back after a quit mid-DOWN)
+server bool  rsqsm_down_slowfall = true;  // Slow Fall: you go down in slow motion (~1 s), the view easing down
+user int     rsqsm_down_entry    = 0;     // Death In Entrance: 0 Middle Then Sink, 1 Bottom Only, 2 Slam Up
+user bool    rsqsm_down_audio    = true;  // Sounds: a heavy hit and ringing as you go down, a heartbeat, a relief when you get up

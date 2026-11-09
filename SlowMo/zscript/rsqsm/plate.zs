@@ -10,6 +10,12 @@
 //                  at eye level, from 40 units ahead of you to the target, a brightness wave running toward it (baked
 //                  frames, tools/plate/gen_chevron.py); none placed behind a wall; it fades out once that target's crosshair
 //                  has assembled (owner 07:47).
+// WHILE THE WORLD IS GREY (downlook.zs, owner 11-09 17:42: DOWN's markers stay in colour): the engine greys every quad in a
+// greyed sector (a full-bright Shaded quad too: hw_sprites.cpp:1251-1257, main.fp:251-254), but never a FULL-BRIGHT
+// PARTICLE (hw_sprites.cpp:1492-1496), so the crosshair and the trail's colour layers are drawn as full-bright particles
+// with the same textures (one tic each, spawned after the particles have thought: p_tick.cpp:164 then :171) and the quads
+// hide. A particle is a square facing the eye (hw_sprites.cpp:1600-1614): the trail's 16x22 chevron is drawn square there.
+// Code only, not run on the rig.
 // Drawn the RSQ Wheel's way on stock QuestZDoom 17.3 (its wr_q_shim.zs, copied, nothing linked): unit quad models placed in
 // the world every tic, facing the eye, coloured with the Shaded style. No panel moves or scales to animate (owner 07:15).
 class RSQSM_PQuad : Actor
@@ -112,7 +118,33 @@ class RSQSM_Plate play
 		a.angle = pYaw; a.pitch = -pTilt; a.roll = roll;
 		a.scale = (max(w, 0.0001), max(h, 0.0001));
 	}
-	void Tick(RSQSM_Down d) { if (players[pn].mo) MarksTick(d); }
+	void Tick(RSQSM_Down d) { grey = d.gwMix > 0.02; if (players[pn].mo) MarksTick(d); }
+	bool grey;                 // the world is grey (downlook.zs): the colour layers go as particles
+
+	// a full-bright particle for one tic: tex centred at p, w wide in the world (a particle's half-size is size x 2.5 / 7:
+	// hw_sprites.cpp:1597-1600), turned roll degrees, in rgb (Shaded, or AddShaded)
+	static void Part(String tex, Vector3 p, double w, double roll, int rgb, double alpha, bool add = false)
+	{
+		TextureID t = TexMan.CheckForTexture(tex, TexMan.Type_Any);
+		if (!t.IsValid() || alpha <= 0.002 || w <= 0) return;
+		FSpawnParticleParams pp;
+		pp.color1 = Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
+		pp.texture = t;
+		pp.style = add ? STYLE_AddShaded : STYLE_Shaded;
+		pp.flags = SPF_FULLBRIGHT | SPF_NOTIMEFREEZE | SPF_ROLL;
+		pp.lifetime = 1;
+		pp.size = w * 7.0 / 5.0;
+		pp.sizestep = 0;
+		pp.pos = p;
+		pp.vel = (0, 0, 0);
+		pp.accel = (0, 0, 0);
+		pp.startalpha = clamp(alpha, 0.0, 1.0);
+		pp.fadestep = 0;
+		pp.startroll = roll;
+		pp.rollvel = 0;
+		pp.rollacc = 0;
+		Level.SpawnParticle(pp);
+	}
 
 	// ---- THE CROSSHAIRS, THE EDGE ARROWS, THE TRAIL ------------------------------------------------------------------
 	const VIEW_DEG = 38.0;     // in view: within this of the gaze, and in sight
@@ -194,11 +226,13 @@ class RSQSM_Plate play
 		m.xhair = Need(m.xhair);
 		int f = min(ASM_LAST, level.maptime - m.lockTic);
 		if (RSQSM_A11y.Photo() && f >= 11) f = ASM_LAST;     // Photosensitive Mode: no flash ring
-		Skin(m.xhair, String.Format("RSPA%02d%02d", m.icon, f));
+		String tex = String.Format("RSPA%02d%02d", m.icon, f);
+		Skin(m.xhair, tex);
 		// the icon 3/4 of the monster's height across, the frame twice the icon; a fixed size in the world
 		double sz = max(40.0, m.mon.height * 0.75) * 2.0;
 		Vector3 p = ctr - dir * (m.mon.radius + 4);
 		PutAt(m.xhair, p, sz, sz, 0);
+		if (grey) { Off(m.xhair); Part(tex, p, sz, 0, m.col, clamp(fade, 0.0, 1.0)); return; }
 		Shade(m.xhair, m.col, clamp(fade, 0.0, 1.0));
 	}
 
@@ -247,8 +281,14 @@ class RSQSM_Plate play
 			m.tF[i] = Need(m.tF[i], "RSPTRF"); m.tC[i] = Need(m.tC[i]); m.tL[i] = Need(m.tL[i]);
 			Skin(m.tC[i], String.Format("RSPTC%02d", f)); Skin(m.tL[i], String.Format("RSPTL%02d", f));
 			PutAt(m.tF[i], p, w, TRAIL_H, roll, 0); Plain(m.tF[i], alpha);
-			PutAt(m.tC[i], p, w, TRAIL_H, roll, 1); Shade(m.tC[i], m.col, alpha);
-			PutAt(m.tL[i], p, w, TRAIL_H, roll, 2); Shade(m.tL[i], Light(m.col), alpha, true);
+			PutAt(m.tC[i], p, w, TRAIL_H, roll, 1); PutAt(m.tL[i], p, w, TRAIL_H, roll, 2);
+			if (grey)
+			{
+				Off(m.tC[i]); Off(m.tL[i]);
+				Part(String.Format("RSPTC%02d", f), p, TRAIL_H, roll, m.col, alpha);
+				Part(String.Format("RSPTL%02d", f), p, TRAIL_H, roll, Light(m.col), alpha, true);
+			}
+			else { Shade(m.tC[i], m.col, alpha); Shade(m.tL[i], Light(m.col), alpha, true); }
 		}
 	}
 	void HideTrail(RSQSM_TMark m) { for (int i = 0; i < 6; i++) { Off(m.tF[i]); Off(m.tC[i]); Off(m.tL[i]); } }
