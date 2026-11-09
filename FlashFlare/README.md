@@ -8,8 +8,7 @@ Status: 0.99 — played and confirmed working in the headset; refinement and bug
 New since the headset pass (tested on the rig, headset check pending): the flashlight, the RSQ Tactical Rig flare holster, the voxel flare box.
 
 New on 11-06 (rig only, not headset-confirmed): the trigger-only grenade-style throw; flares that hurt and burn
-monsters; lying flares for RSQ Distance Grab; Shoot Out Flares; the DarkDoomZ Light Style and DarkDoomZ Flashlight
-Takes Over.
+monsters; lying flares for RSQ Distance Grab; Shoot Out Flares; and the DarkDoomZ Beam Look.
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes.
 
@@ -192,11 +191,8 @@ Runs alone. It finds the others by name:
   torch with its beam), shown wherever those mods picture the item in your hand (Gun Bonsai VR's status screen; the
   Wheel's card, when a mod puts them in a weapon slot). Seen on the status screen on the rig only, not
   headset-confirmed; the Wheel card not seen.
-- **DarkDoomZ** (built into RSQ Glow In The Dark since 11-09, without its own flashlight: this is the only flashlight; the
-  two rows that managed DarkDoomZ's separate flashlight are gone). Formerly: its flashlight was switched off while yours was on. Its darkness
-  is left alone. With "DarkDoomZ Flashlight Takes Over" on, ours stands down instead and DarkDoomZ's works as it ships
-  (found by its item's name; DarkDoomZ itself is never changed). Rig only (with a stand-in for DarkDoomZ's item): the real
-  DarkDoomZ was not loaded here.
+- **DarkDoomZ** (built into RSQ Glow In The Dark since 11-09) no longer has a flashlight of its own: this is the only
+  flashlight. Its darkness is left alone. Beam Look can borrow DarkDoomZ's beam types and spill light.
 - **RSQ Distance Grab**: lying flares are things it can pull, catch, carry and throw (its "Flares" switch).
 - **Brutal Doom, LegenDoom, Champions**: found by name for the flare's burn (above). The flashlight clip also hangs on RSQ Tactical Rig's body, and a Rig holster can take it by name.
 
