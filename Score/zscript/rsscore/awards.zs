@@ -92,6 +92,19 @@ class RS_ScoreService : Service
 			let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
 			return h ? h.AwardExternal(Actor(objectArg), stringArg, intArg) : -1;
 		}
+		// [11-09 score-fix] THE MAP'S CENSUS (handler.zs TakeFromCensus / AddToCensus; design/SCORE_EXPANSION.md A2).
+		// A monster on it pays its full base once; one that is not pays rs_score_farmpercent (anti-farming).
+		//   "census.take"  objectArg a monster -> 1 it was on the census and is now off it, 0 it was not, -1 no score
+		//   "census.add"   objectArg a monster -> 1 it will pay its full base once, 0 it already would, -1 refused
+		//                  (dead, already paid in full once, or not a monster Score pays for)
+		// A body swap (RSQ Monsters' retier): "census.take" the old body, and only if that answered 1, "census.add"
+		// the new one -- the slot moves, nothing is made. An encounter's own monsters: "census.add" each as it spawns.
+		if (request == "census.take" || request == "census.add")
+		{
+			let h = RS_ScoreHandler(EventHandler.Find("RS_ScoreHandler"));
+			if (!h) return -1;
+			return request == "census.take" ? h.TakeFromCensus(Actor(objectArg)) : h.AddToCensus(Actor(objectArg));
+		}
 		// RSQ SLOWMO'S DOWN v3 (owner 11-07, design/NEAR_DEATH.md): the TOP tier's getting up fires Score's Revival Fire --
 		//   "revivefire"  objectArg the player's pawn -> 1: the revival's sound, its blast and (Revival Fire row on) its
 		//   column of fire (revive.zs), no life spent, no other change

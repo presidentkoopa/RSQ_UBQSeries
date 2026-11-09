@@ -38,6 +38,12 @@ retiers them in place with the owner's per-colour table: health, speed, pain cha
 archvile tints are CH's own recipes for those two families plus three taken from HF's TRNSLATE). A tier change on any RSQ
 monster, CH or MG, first blinks white for 5..25 tics (black when the target tier is White). This is the owner's HF
 tier-change flash, in `RS_Retier.zs`. RSQ Monsters > "On tier change" picks the health rule for CH and MG.
+An MG tier also sets the monster's spawn health (`StartHealth`) to the tier's health, so RSQ Score pays the tier (a
+White imp pays 1200, not 60) and an Arch-vile raise or a heal stops at the tier's health. When a body gibs does not
+change: that still uses the creature's own health. A CH colour change makes a new actor; it now tells RSQ Score (by
+name) to pass the old body's full pay to the new one. MG head shots can be read by other mods through
+`RSQMON_Service` `GetInt("headshot", "", 0, 0, monster)` (RSQ Score's Headshot row uses it).
+(11-09, code only, not rig-tested, not headset-confirmed.)
 
 Also carried from the owner's HF monster template, because the MG monsters used them there (`RS_MGReactions.zs`,
 RSQ Monsters menu > MeatGrinder):

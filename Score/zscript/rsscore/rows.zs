@@ -994,6 +994,7 @@ class RS_Row_HandCannon : RS_ScoreBonus
 // D Headshot: the killing blow was a headshot (its damage type, BD22's Head / MinorHead: the ledger's +head). The
 // Ruger and the Moonlight pay more. The damage type names were checked against brutal22test6's own files (its
 // headshot damage types are Head and MinorHead, re-checked 2026-11-04; SCORE_SWARM_HANDOFF.md).
+// [11-09 score-fix] RSQ Monsters' MeatGrinder head shots set the same +head, asked by name (combo.zs CondOf).
 class RS_Row_Headshot : RS_ScoreBonus
 {
 	const MULT = 0.25;

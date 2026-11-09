@@ -49,6 +49,7 @@ class RS_ScoreHandler : EventHandler
 
 		Census();
 		ComputeThreshold();
+		m_censusAgain = true;   // and once more after the first tic (CensusAfterFirstTic)
 
 		// Score_CalcMapPoints' tail: rescale each player's progress against the new
 		// map's threshold, so 40% of the way there stays 40% of the way there even
@@ -129,6 +130,81 @@ class RS_ScoreHandler : EventHandler
 			totalPoints   += a.GetSpawnHealth();
 			m_counted.Push(a);
 		}
+	}
+
+	// [11-09 score-fix] THE CENSUS AGAIN, AFTER THE MAP'S FIRST TIC (design/SCORE_EXPANSION.md A2). WorldLoaded runs
+	// before any thinker has ticked (QZD 17.3's own source, tag qzd17.3: g_level.cpp:1455 P_SetupLevel, then
+	// :1525-1527 WorldLoaded; the first P_Ticker comes after). A map thing that is a RandomSpawner only makes its
+	// monster in PostBeginPlay (randomspawner.zs:153-183), and PostBeginPlay runs on the first RunThinkers
+	// (dthinker.cpp:602-610) -- so every RSQ Monsters ColorfulHell map spawn (RS_<Fam>Colourset, a RandomSpawner,
+	// RS_Roster.zs CHDial) and every rare-colour stub (RS_BrownImp etc.: a plain Actor whose first states
+	// A_SpawnItemEx the colourset or the real class) was missing from the census, so every CH kill paid
+	// rs_score_farmpercent (Raised Monster Pay: full at its default 100, the fraction once lowered) and the map's
+	// threshold was worked out from almost no monsters. Children spawned during that first RunThinkers are ticked
+	// in the same call (the FreshThinkers loop, dthinker.cpp:152-160), so by the WorldTick of maptime 1 (P_Ticker:
+	// WorldTick, then RunThinkers, then maptime++, p_tick.cpp:171-183) the map's monsters all stand. The census is taken
+	// again there, whole, which is O(monsters) and stays exact: anything that died in tic 0 was already taken off.
+	// What this also counts: monsters an ACS OPEN script spawned in that first tic (map population, not farming).
+	private bool m_censusAgain;
+	private void CensusAfterFirstTic()
+	{
+		if (!m_censusAgain || level.maptime < 1) return;
+		m_censusAgain = false;
+		int before = threshold;
+		// (a monster another mod added in tic 0 is alive and scorable, so the new census has it too)
+		Census();
+		ComputeThreshold();
+		// the same rescale WorldLoaded does: the share of the way to the next reward is kept, not the number
+		if (threshold != before)
+		{
+			for (int i = 0; i < MAXPLAYERS; i++)
+			{
+				if (!playeringame[i] || !players[i].mo) { continue; }
+				let tr = GetTracker(players[i].mo);
+				if (tr) tr.score = int(threshold * tr.scorePercent);
+			}
+		}
+		if (DebugOn())
+		{
+			Console.Printf("RS_Score: census after the first tic: %d monsters, %d points, threshold %d (UT %d kills / %d hp)",
+				totalMonsters, totalPoints, threshold, utKillsNeeded, utHPNeeded);
+		}
+	}
+
+	// [11-09 score-fix] THE CENSUS FROM OUTSIDE (RS_ScoreService "census.take" / "census.add", awards.zs).
+	// A monster on this list pays its full base ONCE (it comes off when it dies, WorldThingDied); anything else
+	// pays rs_score_farmpercent. Two uses:
+	//   a RETIER that swaps the body for a new actor (RSQ Monsters' RS_Retier.Swap): "census.take" the old body
+	//     (1 = it was counted, and it is off the list now), then, only on 1, "census.add" the new one. One slot moves,
+	//     so a monster counted at load still pays in full after a colour change, and one that was not still pays the
+	//     fraction: no new payout is made.
+	//   an ENCOUNTER / set piece that spawns monsters meant to be fought (not farmed): "census.add" each one.
+	//     The map's threshold is not changed by it.
+	private Array<Actor> m_paidFull;   // bodies that came off the census by dying (this map)
+	private int FindCounted(Actor a)
+	{
+		// by hand, not Array.Find: see WorldThingDied's note on Find and object references
+		for (int i = 0; i < m_counted.Size(); i++) if (m_counted[i] == a) return i;
+		return -1;
+	}
+	int TakeFromCensus(Actor a)
+	{
+		if (!a) return -1;
+		int at = FindCounted(a);
+		if (at < 0) return 0;
+		m_counted.Delete(at);
+		return 1;
+	}
+	int AddToCensus(Actor a)
+	{
+		if (!a || a.health <= 0 || !IsScorable(a)) return -1;
+		// ONE FULL PAYOUT PER MONSTER: a body that already paid in full (then was raised) is refused
+		for (int i = 0; i < m_paidFull.Size(); i++) if (m_paidFull[i] == a) return -1;
+		// a destroyed body leaves a null behind (the retier's old one, when nobody took it): dropped as we go
+		for (int i = m_counted.Size() - 1; i >= 0; i--) if (!m_counted[i]) m_counted.Delete(i);
+		if (FindCounted(a) >= 0) return 0;
+		m_counted.Push(a);
+		return 1;
 	}
 
 	// The formula, from score_levelstart.h. The average monster is worth the
@@ -360,6 +436,7 @@ class RS_ScoreHandler : EventHandler
 		else
 		{
 			m_counted.Delete(at);
+			m_paidFull.Push(victim);   // [11-09 score-fix] so "census.add" cannot put it back (AddToCensus)
 		}
 
 		if (selfKill || monsterOn)
@@ -985,6 +1062,7 @@ class RS_ScoreHandler : EventHandler
 
 	override void WorldTick()
 	{
+		CensusAfterFirstTic();   // [11-09 score-fix] once, at maptime 1, before the percentage below is re-read
 		if (pendWho.Size() > 0) SettleAwards(-1, 0);
 		for (int i = 0; i < MAXPLAYERS; i++)
 		{
