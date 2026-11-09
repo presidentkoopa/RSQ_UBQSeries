@@ -24,6 +24,17 @@
 //   GetInt "autopunch"        objectArg = a monster, intArg = a player number, doubleArg = a damage share: that player's
 //                             empty fist punches it now, full power, as a counter (1 done, 0 no empty fist; RSQ Grapple's
 //                             Scorpion)
+//   GetInt "returned.by" 3     (11-09) an open palm's plain swat knocked that missile ASIDE (not back at its shooter)
+// THE 11-09 ANSWERS (RSQ Score's melee rows, design/SCORE_EXPANSION.md E). 0 MEANS NO, so an older Melee (which answers 0
+// to any request it does not know) can never be read as a yes:
+//   GetInt "guarded"          objectArg = a monster, intArg = a player number: tics + 1 since that player's Guard soaked
+//                             a blow of its (within 3 s), 0 none (Rope-a-Dope)
+//   GetInt "barrel.kicked"    objectArg = a barrel, intArg = a player number: tics + 1 since that player's uppercut kicked
+//                             it (within 5 s), 0 none (Field Goal)
+//   GetInt "headlock.by"      objectArg = a monster: player number + 1 of the Headlock holding it, 0 none (Meat Shield)
+//   GetInt "headlock.shield"  objectArg = the pawn: 2 holding a monster as a Human Shield, 1 holding one (no shield),
+//                             0 holding nothing (Human Shield)
+//   GetInt "fear"             objectArg = the pawn: 1 while that player's F.E.A.R. window is open, 0 not (Red Mist)
 // RSQ Gun Bonsai VR's glove upgrades read "punch.*" in ModifyDamageDealt (the glove is the inflictor there).
 class RSQML_Service : Service
 {
@@ -94,6 +105,39 @@ class RSQML_Service : Service
 			let gl = RSQML_Gloves.Get();
 			let m = Actor(objectArg);
 			return (gl && m) ? gl.ReturnedHow(m) : -1;
+		}
+		// ---- 11-09, RSQ Score's melee rows: 0 is always "no" ----
+		if (request == "guarded")
+		{
+			let gd = RSQML_Guard.Get();
+			int t = gd ? gd.GuardedAge(Actor(objectArg), intArg) : -1;
+			return t >= 0 ? t + 1 : 0;
+		}
+		if (request == "barrel.kicked")
+		{
+			let gl = RSQML_Gloves.Get();
+			int t = gl ? gl.KickedAge(Actor(objectArg), intArg) : -1;
+			return t >= 0 ? t + 1 : 0;
+		}
+		if (request == "headlock.by")
+		{
+			let hl = RSQML_Headlock.Get();
+			int n = hl ? hl.HolderOf(Actor(objectArg)) : -1;
+			return n >= 0 ? n + 1 : 0;
+		}
+		if (request == "headlock.shield")
+		{
+			let pmo = PlayerPawn(objectArg);
+			let hl = RSQML_Headlock.Get();
+			if (!pmo || !hl || !pmo.player) return 0;
+			int pn = pmo.PlayerNumber();
+			if (!hl.HoldsAny(pn) || !hl.collar[pn] || hl.collar[pn].health <= 0) return 0;
+			return RSQML_Headlock.ShieldOn(pmo) ? 2 : 1;
+		}
+		if (request == "fear")
+		{
+			let sh = RSQML_Shove.Get();
+			return (sh && sh.FearOn(Actor(objectArg))) ? 1 : 0;
 		}
 		if (request == "headlock.holding")
 		{

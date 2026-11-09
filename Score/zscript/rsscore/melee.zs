@@ -1213,6 +1213,10 @@ class RS_ScoreShots : EventHandler
 			let by = RS_Grapple.AskActor("hooked.by", v);
 			if (by && by.player) return by;
 		}
+		// [11-09 melee expansion] RSQ Melee's Headlock holds it: what kills it in your hold (another monster's shot, the
+		// Human Shield's blows taken for you) is yours (Meat Shield, rows_melee2.zs). Melee answers player number + 1, 0 none.
+		int hb = RS_Svc.Int(RS_Svc.MELEE, "headlock.by", 0, v);
+		if (hb >= 1 && hb <= MAXPLAYERS && playeringame[hb - 1] && players[hb - 1].mo) return players[hb - 1].mo;
 		// RSQ Whip's wrap or yank let go of it lately (sheet S18)
 		t = RS_Whip.Ask("wrapped", v);
 		if (t < 0) t = RS_Whip.Ask("yanked", v);

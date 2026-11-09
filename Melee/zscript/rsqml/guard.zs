@@ -42,7 +42,28 @@ class RSQML_Guard : StaticEventHandler
 
 	static RSQML_Guard Get() { return RSQML_Guard(StaticEventHandler.Find("RSQML_Guard")); }
 
-	override void WorldLoaded(WorldEvent e) { for (int i = 0; i < MAXPLAYERS; i++) { guardTics[i] = 0; guardBrokenUntil[i] = 0; pushTic[i] = -1000; charge[i] = 0; pushOk[i * 2] = false; pushOk[i * 2 + 1] = false; } }
+	// RSQ SCORE'S ROPE-A-DOPE (11-09): the monsters whose blow a player's Guard soaked, and when (RSQML_Service "guarded";
+	// the Guard's own touch, "guard", is a tag that lands on no blow, so Score cannot keep it itself). The last 16.
+	Array<Actor> gdV;
+	Array<int> gdPn, gdTic;
+	const GUARDED_KEEP = 105;   // 3 s, Score's chain gap
+	void NoteGuarded(Actor m, int pn)
+	{
+		if (!m) return;
+		for (int i = gdV.Size() - 1; i >= 0; i--)
+			if (!gdV[i] || (gdV[i] == m && gdPn[i] == pn) || level.maptime - gdTic[i] > GUARDED_KEEP) { gdV.Delete(i); gdPn.Delete(i); gdTic.Delete(i); }
+		if (gdV.Size() >= 16) { gdV.Delete(0); gdPn.Delete(0); gdTic.Delete(0); }
+		gdV.Push(m); gdPn.Push(pn); gdTic.Push(level.maptime);
+	}
+	// tics since player pn's Guard soaked a blow of m's, -1 none (or older than GUARDED_KEEP)
+	int GuardedAge(Actor m, int pn)
+	{
+		for (int i = gdV.Size() - 1; i >= 0; i--)
+			if (gdV[i] == m && gdPn[i] == pn && level.maptime - gdTic[i] <= GUARDED_KEEP) return level.maptime - gdTic[i];
+		return -1;
+	}
+
+	override void WorldLoaded(WorldEvent e) { gdV.Clear(); gdPn.Clear(); gdTic.Clear(); for (int i = 0; i < MAXPLAYERS; i++) { guardTics[i] = 0; guardBrokenUntil[i] = 0; pushTic[i] = -1000; charge[i] = 0; pushOk[i * 2] = false; pushOk[i * 2 + 1] = false; } }
 
 	// THE GUARD'S LEVEL: Gun Bonsai VR's (the player's), or the Guard row's level 1 without it; with Gun Bonsai VR and
 	// Start With Guard on, level 1 until it is learned
@@ -246,6 +267,7 @@ class RSQML_Guard : StaticEventHandler
 		if (absLv > 0) AddCharge(pn, absLv, damage - left);
 		if (dbg) Console.Printf("RSQML guard: soaked %d -> %d from %s", damage, left, from.GetClassName());
 		RSQML.Touch("guard", pawn, source);
+		if (source && source != pawn && !source.player) NoteGuarded(source, pn);   // RSQ Score's Rope-a-Dope (11-09)
 		return left;
 	}
 

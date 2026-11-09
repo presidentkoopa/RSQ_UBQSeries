@@ -64,8 +64,13 @@ drew, so only your arms throw punches.
 **The gun-butt shove** (on by default)
 - Swing the gun in your main hand forward at a monster, hard (3.6 m/s), and the stock hits like Brutal Doom's kick,
   knocking it back.
-- A landed shove asks RSQ SlowMo for a short slow-motion beat. Inside it, the F.E.A.R. Effect: every shotgun hit
-  bleeds twice.
+- Every landed shove slows time (Always Slow Time on Shove, on), for 1 second by default (Slow Time Length). Inside
+  it, the F.E.A.R. Effect: every shotgun hit bleeds twice.
+- New on 11-09 (code only: not run on the rig, not headset-confirmed): **F.E.A.R. Blood Mist** (on). A shotgun kill
+  inside that slow motion is the monster's gib death and it bursts into a cloud of blood mist: Brutal Doom's own mist,
+  in the monster's blood colour, when Brutal Doom is loaded; the monster's own blood without it.
+- The slow motion was 0.3 s until 11-09: with the ease in and out it slowed the world for about 0.6 s, only 0.2 s of
+  it at full depth, too short to bring the gun back and fire. Now 1 s (about 1.3 s slowed, 0.9 s at full depth).
 
 **The Headlock** (on by default)
 - Your off hand's grip on a living monster within 0.30 m holds it frozen in front of you for 3 seconds, so your main
@@ -129,7 +134,8 @@ row off turns them off on the gloves too).
 | Hit Spark Size | 1.0 | Size of the hit sparks |
 | **Gun Butt Shove** | | |
 | Gun Butt Shove | On | The stock strike |
-| Slow-Mo After Shove | On | A short RSQ SlowMo beat and the F.E.A.R. Effect |
+| Always Slow Time on Shove | On | Every landed shove slows time (RSQ SlowMo; its Melee Gun Butt Shove trigger must be on too), and the F.E.A.R. Effect runs inside it |
+| F.E.A.R. Blood Mist | On | A shotgun kill in the shove's slow motion bursts the monster into blood mist |
 | **Headlock** | | |
 | Headlock | On | Off-hand grip holds a monster |
 | Human Shield (GB) | Off | Held while you grip, facing away |
@@ -145,7 +151,7 @@ row off turns them off on the gloves too).
 | Reset All | | Every setting on both pages back to default |
 
 **Test and Debug**: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise
-(0.50), Lift Cap (3.0 m), Extra Reach (4); Shove Speed (3.6 m/s), Slow-Mo Length (300 ms); Headlock Reach (0.30 m),
+(0.50), Lift Cap (3.0 m), Extra Reach (4); Shove Speed (3.6 m/s), Slow Time Length (1000 ms, up to 2000); Headlock Reach (0.30 m),
 Heaviest (400), Seconds (3.0), Throw At (3.0 m/s, 0 never), Throw Weight % (30), Off Grip Keys (443 436); Debug Log
 (Off); Reset All.
 
@@ -168,7 +174,9 @@ Runs alone. It finds the others by name:
   Its Barrel Lock-On sends an uppercut barrel to the locked monster (asked by name; Melee still loads alone).
 - **RSQ Accessibility (its gesture reader)**: reads both hands for Ground Pound and Clear Out when it is loaded; without it Melee reads them with its own copy of that two-hand reader (the same moves and numbers).
 - **RSQ SlowMo**: the beat after a shove, and the F.E.A.R. window.
-- **RSQ Score**: the Headlock combo, the F.E.A.R. Effect award, returned missiles.
+- **RSQ Score**: the Headlock combo, the F.E.A.R. Effect, returned missiles and bullets; since 11-09 Melee also tells it
+  which monsters your Guard soaked, which barrels your uppercut kicked, who your Headlock holds (and whether as a Human
+  Shield), and whether your F.E.A.R. window is open (Rope-a-Dope, Field Goal, Meat Shield, Human Shield, Red Mist).
 - **RSQ Tactical Rig**: the Headlock waits while your off hand is in a holster.
 - **RSQ Accessibility**: rumble strength, seated play and the Off-Hand Modifier apply.
 - **RSQ Grapple, RSQ Wheel**: the shove stays quiet on the rope or with the wheel open.
