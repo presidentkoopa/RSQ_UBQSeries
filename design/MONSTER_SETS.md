@@ -18,3 +18,9 @@ Known gates (from design/RSMONSTERS_SCORE_GBOVR_STUDY.md and design/UNIFY_STUDY.
 - Its `replaces` would push BD22's monsters out; "called up or in on the fly" means a spawner, not blanket replacement.
 - Size: its source is about 142 MB; the series' combined size is ~91 MB today.
 - Champions and LegenDoom also change monsters at runtime; they must not double-tier the same monster.
+
+## Restart point (owner, 2026-11-08 23:18)
+"Let's start by assuming we have no ideas and no gamemodes; we have these conceptual images and a robust miniboss
+program for right now." First: make RS Monsters Quest-friendly (study: design/RSMONSTERS_QUEST_STUDY.md). Then he
+points us to the MeatGrinder set, folded into RS Monsters, so we can design against monsters close to stock and BD
+(MeatGrinder) as well as Colourful Hell's big changes.
