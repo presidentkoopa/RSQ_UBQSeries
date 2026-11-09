@@ -7,6 +7,10 @@ it, but I want a big tree to prune, lol." / "I want us to expand score, so we wi
 Score today: ~190 rows (`Score/zscript/rsscore/`). `boost.zs:40` already has the hook "for a later monster set (RS
 Monsters' 13 colour tiers and EX tier)": subclass `RS_ScoreTierRow`; nothing fills it yet.
 
+Names (owner, 2026-11-09 02:37): the 11-09 row names are placeholders; "I'll rename them all soon."
+
+Open: Melee's punch reader (jab/hook/uppercut, Star Punch...) only reads Melee's own hands, never Brutal Doom's fists, so the owner (who plays BD) has never had those rows. Planned: a patch in RSQ Melee that runs the reader on BD's fist weapon by name.
+
 ## A. Wrong today (bugs, found by reading the code)
 1. **MG tiers pay Common money.** Base = `victim.GetSpawnHealth()` (`event.zs:83`), the class default. MG tiers set
    health on the live monster (`RS_MGMonster.ApplyTier`, `TierMaxHealth`), so a White MG imp (1200 hp) pays 60.
