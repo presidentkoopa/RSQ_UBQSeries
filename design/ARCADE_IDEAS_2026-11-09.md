@@ -1,6 +1,6 @@
 # Arcade ideas, 2026-11-09
 
-Nine ideas kept by the owner on 2026-11-09, for a stew ("we want to try and cook up a stew with these"). Nothing here is built or designed to the end. Each one: what the player
+Ideas kept by the owner on 2026-11-09, for a stew ("we want to try and cook up a stew with these"). Nothing here is built or designed to the end. Each one: what the player
 sees and does, the decision it makes, what it uses from the series, what would have to be made, and what is open.
 
 ---
@@ -99,6 +99,13 @@ while the others clear.
 it. You lure the boss in with Grapple, Whip, flares and noise, then throw everything you have.
 **Decision:** fight the boss where it is, or spend time herding it.
 **Uses:** idea 4; RSQ Grapple and RSQ Whip pulls; RSQ FnF flares as bait.
+
+## 10. Linked encounter idea (owner's)
+
+**Owner (08:45):** "https://forum.zdoom.org/viewtopic.php?t=56589 log this as another idea for our arcade encounter
+design"
+**Status:** logged only. The forum blocks automated reading and a search did not find the thread, so what it is has not
+been read yet.
 
 ---
 
