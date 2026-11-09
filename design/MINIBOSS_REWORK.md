@@ -22,8 +22,8 @@ Owner's words, then where we landed.
     they replace the orbs circling its head. Empty the main bar, the next life refills it, the flames come up, the
     thralls rise, a new segmented thrall bar appears.
   - Words near the bars in the RS Score font, one word each: "Immune!", "Target!" (owner: "damnums can be used here").
-- **Powers (open):** keep all inherited Champion powers to the end, or lose each thrall's power when it dies (Claude
-  recommends losing them: each kill is a visible reward and a choice). Owner hasn't decided.
+- **Powers: LOSE** (owner 06:42). Each thrall carries the Champion power it gave the miniboss; killing that thrall
+  strips that power from the miniboss.
 - **Names:** the mockup's "IMP OVERLORD": owner: "overlord is cool. I like miniboss but we should keep overlord for
   something."
 - Mockups: shown in chat 06:31 (three states: shielded, shield down after a thrall kill, one-on-one).
