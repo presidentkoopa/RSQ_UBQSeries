@@ -248,6 +248,11 @@ OptionMenu "RSQTHP_Options"
 	Option "Weapon Level-Up", "rsqthp_lvl_wpn", "OnOff"
 	Option "Weapon Tag Colour", "rsqthp_lvl_tagcol", "RSQTHP_Col"
 	StaticText " "
+	StaticText "Arrivals and Words", 1
+	Option "Arrival Beams", "rsqvr_beams", "OnOff"
+	Option "Monster Words", "rsqvr_words", "OnOff"
+	Option "Pops", "rsqvr_pops", "OnOff"
+	StaticText " "
 	Submenu "Test and Debug", "RSQTHP_Test"
 	RSQTHPResetAll "Reset All", "Reset every RSQ VisualRewards setting?"
 }

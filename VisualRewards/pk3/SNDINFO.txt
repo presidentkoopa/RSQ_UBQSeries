@@ -1,0 +1,20 @@
+// RSQ VisualRewards -- the arrival beams' sounds (2026-11-09, rsqvr/beams.zs). Supplied by the owner (presidentkoopa),
+// 2026-11-09, source not stated; the coordinator's assignment by role (RSQVR_Service "beam", nameArg):
+//   miniboss (V3 / V4 by default)  two layers: the RISER when the beam starts, the HIT on the reveal tic
+//   thrall   (V1 / V2 by default)  one of two at random when the beam starts
+//   chump    (summoned low tier; any other monster)  the short one when the beam starts
+// Files (22 kHz mono 16-bit): RVQRISE PL00_U_00028 (1.05 s, swells to 0.66 s), RVQHIT ONPARE6_00004 (0.97 s, darkest and
+// loudest), RVQTHR1 ONPARE2_00008 (0.76 s), RVQTHR2 PL01_U_00021 (1.16 s), RVQCHMP ONPARE8_00004 (0.66 s).
+// THE REACH: arrivals land 12-32 m away (34 map units a metre: 400-1100 units). Full volume to 400 units, gone at 1800
+// (about 53 m), so the far end of the range still hears them clearly (Doom's own default fades out by 1200).
+rsqvr/beam/rise     sounds/rsqvr/RVQRISE.wav
+rsqvr/beam/hit      sounds/rsqvr/RVQHIT.wav
+rsqvr/beam/thrall1  sounds/rsqvr/RVQTHR1.wav
+rsqvr/beam/thrall2  sounds/rsqvr/RVQTHR2.wav
+rsqvr/beam/chump    sounds/rsqvr/RVQCHMP.wav
+$random rsqvr/beam/thrall { rsqvr/beam/thrall1 rsqvr/beam/thrall2 }
+$rolloff rsqvr/beam/rise     400 1800
+$rolloff rsqvr/beam/hit      400 1800
+$rolloff rsqvr/beam/thrall1  400 1800
+$rolloff rsqvr/beam/thrall2  400 1800
+$rolloff rsqvr/beam/chump    400 1800
