@@ -6,6 +6,13 @@ The world slows down. You don't. Enemy bullets turn into rounds you can watch co
 
 New since the headset pass (tested on the rig, headset check pending): the Real-Time Countdown bar.
 
+New on 11-09 (rig only, not headset-confirmed): **Reload Length** and **Reload Hands**, two rows under Reload. Reload Length
+says how long a reload's slow motion lasts: **Fixed Time** (Reload Time (ms), as before), **Until the Reload Ends** (the slow
+motion lasts exactly as long as the reload, 10 seconds at most), or **Until It Ends, at Most the Fixed Time** (it ends with the
+reload, or at Reload Time if the reload takes longer). Reload Hands says whose reload counts, for Brutal Doom 22 VR Reloaded's
+dual wield: **Either Hand**, **Main Hand Only**, **Off Hand Only**, or **Both Hands at Once** (the second hand starts reloading
+while the first still is; the slow motion then lasts until both are done). Details under Ways in.
+
 New on 11-09 (rig only, not headset-confirmed): the Bossfight landing slow-mo (the countdown bar always shows it) and edge
 arrows other mods can put up (RSQ Miniboss points at its arriving monsters with them); see Works with.
 
@@ -108,6 +115,7 @@ dodgeable speed. Your shield and saber stop the rounds like any other projectile
 - **Heavy Hit Slowdown** (on, owner 11-06; rig only, not headset-confirmed). One hit (everything you take in one tic) of at least Heavy Hit Size (75% of your max health by default) slows the world for 3 seconds, you with it. It fires when the hit came from a LegenDoom legendary, a Champions champion, RSQ Miniboss's miniboss or one of its thralls, a boss (Doom's BOSS flag) or a big demon (Cyberdemon, Spider Mastermind, Baron of Hell, Hell Knight, Mancubus, Arch-Vile, Revenant, and Brutal Doom's and XMVE's versions of them). Or, whatever hit you, when one of four extras is true (each its own row, on): **Arch-Vile Blast** (an Arch-Vile's flame attack), **Blasted Off Your Feet** (the hit throws you up: your vertical speed rises by 10 map units a tic or more; a jump is about 7.4), **Hit From Behind** (the attacker is more than 60 degrees off where your head faces) and **Armour Broken** (the hit takes your last armour). Never on a hit that kills you. Its cooldown: Once per 20 s, Once per 60 s, Use Shared (the automatic cooldown the other triggers share) or No Limit (default); during a Bossfight every heavy hit fires.
 - **Barrel cues** (owner 11-07, design/SLOWMO_BARRELS.md; rig only, not headset-confirmed). Automatic triggers, each its own row, all on, the same Blast Time (3 s) and the shared cooldown: **Barrel Multi-Kill** (one barrel's blast kills 2 or more monsters), **Chain Reaction** (a barrel's blast sets off another barrel) and **Barrel Near You** (any barrel goes off within 2 m of you). The fourth, **Locked Barrel** (a barrel thrown or uppercut with RSQ Distance Grab's Barrel Lock-On lands on its locked monster and goes off; SlowMo asks Distance Grab by name, so without it, never): built, loads clean, NOT shown on the rig. A barrel is Doom's or anything that replaces it (Brutal Doom's, BD_VoxelPack's). One blast that is several cues at once shows the first of Locked Barrel, Multi-Kill, Chain Reaction, Near You.
 - Optional and off by default: **Close-Call** (a rocket or fireball about to hit you up close sets off a short slow) and **Reload Slowdown** (a reload buys a moment of slow motion).
+- **Reload Length and Reload Hands** (owner 11-09; rig only, not headset-confirmed). Each hand is watched on its own: the gun in your main hand and the gun in your off hand (Brutal Doom 22 VR Reloaded's dual wield; its off-hand gun reloads with the flick). A hand counts as reloading while its gun plays its reload animation (BD22's own, or BD22 VR Reloaded's), waits for a hand reload (your off hand fetching a magazine) or plays a flick reload. The reload ENDS when that gun is ready to fire again; also when that hand's gun changes (switched, put away, dropped, thrown) or you die, and a new map always starts at full speed. **Until the Reload Ends** can never leave the world slowed: it lasts 10 seconds at most (a hand reload left waiting ends there). Ending early only ends the reload's own slow motion: if another trigger's slow motion was already running, its time stays. With Until the Reload Ends, the countdown bar starts as if for 10 seconds and drops away when the reload ends. On the rig (11-09, BD order, BD22 VR's Rifle with its own reload, Real VR Reload off), main hand: a 40-tic reload gave Fixed Time 1200 ms its 42 tics; Until the Reload Ends ended on the tic the reload ended (40 tics, the 10 s cap cut); Until It Ends, at Most the Fixed Time with 3000 ms also ended with the reload (40 tics). NOT shown yet: the fixed time cutting a longer reload short, the off hand's reload (the test ran the reserve dry, so the off hand's flick had nothing to load), Both Hands at Once, Main Hand Only ignoring the off hand, and the 10-second cap on a waiting hand reload; they wait for the next rig session.
 
 **Adrenaline (optional, off by default)**
 - Slow motion costs a meter. You earn 12 per kill, 4 per near miss and half a point per point of damage you take.
@@ -192,6 +200,8 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Close Call | Off | A rocket or fireball about to hit you up close. |
 | Reload | Off | A reload buys a moment of slow motion. |
 | Reload When | Always | Always, or only at or under Low Health At. |
+| Reload Length | Fixed Time | Fixed Time (Reload Time (ms)); Until the Reload Ends (10 s at most); Until It Ends, at Most the Fixed Time. |
+| Reload Hands | Either Hand | Either Hand; Main Hand Only; Off Hand Only; Both Hands at Once (dual wield: the second starts while the first still reloads). |
 | Grenade Blast | Off | Your grenade's blast (Brutal Doom's or RSQ Grenade's). |
 | Over-Under Blast | Off | The blast of BD22 VR's Rifle / Machinegun 40 mm (secondary fire). |
 | Locked Barrel | On | A barrel thrown or uppercut at RSQ Distance Grab's Barrel Lock-On lands on its locked monster and goes off. Built, loads clean, NOT shown on the rig. |
@@ -246,7 +256,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Shootdodge: Hang | 0.5 | How much of the world's slowing your dive takes (1 = a jump hangs ten times as long at 10%). |
 | Wrist Gap (m) | 0.16 | How close the wrists must be. |
 | Wrist Hold (tics) | 12 | Tics to hold the wrist cross. |
-| Reload Time (ms) | 1200 | How long a reload's slow motion lasts. |
+| Reload Time (ms) | 1200 | How long a reload's slow motion lasts (Fixed Time), or its longest (Until It Ends, at Most the Fixed Time). |
 | Close Call Time (ms) | 700 | How long a close call's slow motion lasts. |
 | Blast Time (ms) | 3000 | A grenade, over-under or barrel blast's slow motion. |
 | Low Health At | 25 | The health line for Reload When = Low Health. |

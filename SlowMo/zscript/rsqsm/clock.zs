@@ -266,6 +266,7 @@ class RSQSM_Clock : EventHandler
 		heldUntil = 0; heldWho = -1;
 		cdOn = false; cdLeft = 0; cdTotal = 0; cdEndAt = 0; cdStartTic = 0; cdRefillTic = 0; cdEndTic = 0;
 		cdAuto = false; cdAutoTic = 0; cdCause = ""; hhLast = 0;
+		rsWho = -1; for (int i = 0; i < MAXPLAYERS * 2; i++) { rlActive[i] = false; rlW[i] = null; }
 		ClearAll();
 		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; freeUntil[i] = 0; }
 		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
@@ -1415,37 +1416,168 @@ class RSQSM_Clock : EventHandler
 	// playing on from "Reload" (measured: BD22 Rifle, magazine 20 -> 31, reserve 30 ->
 	// 19, while the Reload sequence check saw nothing). An automatic trigger: its option, the
 	// cooldown, and the World Speed slider's speed (Trigger).
-	private transient bool wasReloading[MAXPLAYERS];
-	private transient int  lastA1[MAXPLAYERS], lastA2[MAXPLAYERS];
-	private transient Weapon lastW[MAXPLAYERS];
+	//
+	// EACH HAND, AND HOW LONG (owner 2026-11-09 17:24: "slomo needs context options for player reloading, single weapon or
+	// both, either say that reloading triggers a flat X tics of slomo, or, reload slomo is indefinite until reload is
+	// complete (or both?)"; rig only, not headset-confirmed). Both hands are watched the same way: the main hand's weapon
+	// (PSP_WEAPON) and the off hand's (PSP_OFFHANDWEAPON: Brutal Doom 22 VR Reloaded's dual wield, whose off gun reloads by
+	// its flick into the gun's own Reload). A hand is RELOADING while its weapon plays its reload (Reload, BD22 VR Reloaded's RSR_Stock,
+	// FinishReloading), waits for a hand reload (RSR_Wait: the off hand fetching a magazine; RSB_Wait: a break-open gun held
+	// open) or plays its flick reload (RSQ_FlickReload); all found by state NAME on the weapon itself, nothing linked.
+	//   Reload Hands (rsqsm_reload_hand): 0 Either Hand, 1 Main Hand Only, 2 Off Hand Only, 3 Both Hands at Once (the second
+	//     hand starts while the first is still reloading).
+	//   Reload Length (rsqsm_reload_len): 0 Fixed Time (Reload Time (ms), as before); 1 Until the Reload Ends; 2 Until It
+	//     Ends, at Most the Fixed Time.
+	// A RELOAD ENDS when the hand's weapon is ready to fire again (its own A_WeaponReady: the engine's ready flag for that
+	// hand, which every state change clears) or back in its Ready sequence, and no longer reloading; or when that hand's
+	// weapon changes (switched, put away, dropped, thrown), or the player dies; a new map starts at full speed. Until the
+	// reload ends lasts while ANY hand that counts is still reloading (with Both Hands: until both are done). It can never
+	// stay slowed: Until the Reload Ends asks for RELOAD_CAP_MS at most (a hand reload left waiting ends there), the other
+	// for Reload Time. Ending early only cuts the reload's own part: another trigger's time that was running stays.
+	const RELOAD_CAP_MS = 10000;
+	private transient bool reloadBusy[MAXPLAYERS * 2];         // last tic: the hand was reloading (the start's edge)
+	private transient int  lastA1[MAXPLAYERS * 2], lastA2[MAXPLAYERS * 2];
+	private transient Weapon lastW[MAXPLAYERS * 2];
+	// a hand's reload running now (synced: every machine works it out from the same play state)
+	bool   rlActive[MAXPLAYERS * 2];
+	Weapon rlW[MAXPLAYERS * 2];
+	int    rlTic[MAXPLAYERS * 2];
+	// the reload slow motion being tracked to its end (Until the Reload Ends / at most the fixed time)
+	int    rsWho;          // the player, -1 none
+	int    rsHands;        // hand mask that counts (1 main, 2 off)
+	int    rsPrevUntil;    // pulseUntil before the reload's own was let in (another trigger's time, kept on a cut)
+	int    rsPrevReady;    // autoReady likewise
+	int    rsTic;          // maptime it was let in
+
+	static clearscope String HandWord(int h) { return h == 0 ? "main" : "off"; }
+
+	// the hand is reloading now, and how it shows (for the log)
+	static bool, String HandReloading(PlayerInfo p, int h)
+	{
+		let w = h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
+		let ps = p.GetPSprite(h == 0 ? PSP_WEAPON : PSP_OFFHANDWEAPON);
+		if (!w || !ps || !ps.CurState || ps.Caller != w) return false, "";
+		State cs = ps.CurState;
+		// the reload's own animation: BD22's Reload; BD22 VR Reloaded moves it under RSR_Stock (measured on the rig 11-09: the
+		// Rifle's stock reload plays from RSR_Stock, never seen from "Reload", and its magazine fills 25 tics in) and its
+		// last part under FinishReloading (BD22's own label: the bolt, A_WeaponReady without fire); a full magazine's Inspect
+		// is no reload
+		// (FindState takes a label written out: a Name from an array does not convert)
+		State st = w.FindState("Reload");
+		if (st && Actor.InStateSequence(cs, st)) return true, "Reload";
+		st = w.FindState("RSR_Stock");
+		if (st && Actor.InStateSequence(cs, st)) return true, "RSR_Stock";
+		st = w.FindState("FinishReloading");
+		if (st && Actor.InStateSequence(cs, st)) return true, "FinishReloading";
+		st = w.FindState("RSQ_FlickReload");
+		if (st && Actor.InStateSequence(cs, st)) return true, "RSQ_FlickReload";
+		State hw = w.FindState("RSR_Wait");
+		if (hw && cs == hw) return true, "RSR_Wait";
+		State bw = w.FindState("RSB_Wait");
+		if (bw && cs == bw) return true, "RSB_Wait";
+		return false, "";
+	}
+	// the hand's weapon is ready to fire again (its own A_WeaponReady this state) or back in its Ready sequence
+	static bool HandReady(PlayerInfo p, int h)
+	{
+		let w = h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
+		if (!w) return false;
+		if (p.WeaponState & (h == 0 ? WF_WEAPONREADY : WF_OFFHANDREADY)) return true;
+		let ps = p.GetPSprite(h == 0 ? PSP_WEAPON : PSP_OFFHANDWEAPON);
+		State rd = w.FindState("Ready");
+		return ps && ps.CurState && rd && Actor.InStateSequence(ps.CurState, rd);
+	}
+
 	private void Reloads()
 	{
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
-			if (!playeringame[n]) continue;
+			if (!playeringame[n]) { for (int h = 0; h < 2; h++) rlActive[n * 2 + h] = false; continue; }
 			let p = players[n];
-			let w = p.ReadyWeapon;
-			bool wanted = w && CvP("rsqsm_reload", p, 0) != 0;
+			bool alive = p.mo && p.health > 0 && p.playerstate == PST_LIVE;
+			bool wanted = alive && CvP("rsqsm_reload", p, 0) != 0;
 			// RELOAD: ALWAYS, OR ONLY UNDER LOW HEALTH (owner 11-06, BUGS_1.0 #10): Reload When = Low Health asks his health
 			// to be at or under Low Health At
 			if (wanted && CvP("rsqsm_reload_when", p, 0) == 1 && !(p.mo && p.health > 0 && p.health <= LowAt())) wanted = false;
-			bool r = false, moved = false;
-			int a1 = (w && w.Ammo1) ? w.Ammo1.Amount : 0;
-			int a2 = (w && w.Ammo2) ? w.Ammo2.Amount : 0;
-			if (wanted)
+			int hm = int(CvP("rsqsm_reload_hand", p, 0));
+			int counts = hm == 1 ? 1 : hm == 2 ? 2 : 3;
+			int startMask = 0;
+			for (int h = 0; h < 2; h++)
 			{
-				State rs = w.FindState("Reload");
-				let ps = p.GetPSprite(PSP_WEAPON);
-				r = rs && ps && ps.CurState && Actor.InStateSequence(ps.CurState, rs);
-				if (w == lastW[n] && w.Ammo1 && w.Ammo2 && w.Ammo1 != w.Ammo2)
-					moved = (a2 > lastA2[n] && a1 < lastA1[n]) || (a1 > lastA1[n] && a2 < lastA2[n]);
+				int k = n * 2 + h;
+				let w = h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
+				bool r; String how;
+				[r, how] = HandReloading(p, h);
+				bool moved = false;
+				int a1 = (w && w.Ammo1) ? w.Ammo1.Amount : 0;
+				int a2 = (w && w.Ammo2) ? w.Ammo2.Amount : 0;
+				if (w && w == lastW[k] && w.Ammo1 && w.Ammo2 && w.Ammo1 != w.Ammo2)
+					moved = (a2 > lastA2[k] && a1 < lastA1[k]) || (a1 > lastA1[k] && a2 < lastA2[k]);
+				bool began = reloadPrimed && alive && ((r && !reloadBusy[k]) || moved);
+				// the hand's reload, start to end (watched whatever the options: it is the slow motion's end)
+				if (rlActive[k])
+				{
+					String why = "";
+					if (!alive) why = "player dead";
+					else if (w != rlW[k]) why = "weapon changed";
+					else if (!r && HandReady(p, h)) why = "reload done";
+					if (why != "")
+					{
+						rlActive[k] = false;
+						Log("reload", String.Format("%s hand %s reload ends (%s) after %d tics", HandWord(h), rlW[k] ? rlW[k].GetClassName() : 'none', why, level.maptime - rlTic[k]));
+					}
+				}
+				if (began && !rlActive[k])
+				{
+					rlActive[k] = true; rlW[k] = w; rlTic[k] = level.maptime;
+					if (w) Log("reload", String.Format("%s hand %s reload starts (%s)", HandWord(h), w.GetClassName(), moved && !r ? "ammo moved" : how));
+					if (counts & (1 << h)) startMask |= 1 << h;
+				}
+				reloadBusy[k] = r;
+				lastW[k] = w; lastA1[k] = a1; lastA2[k] = a2;
 			}
-			if (reloadPrimed && ((r && !wasReloading[n]) || moved))
-				Trigger("reload", CAT_RELOAD, int(CvP("rsqsm_reload_ms", p, 1200)), Depth(), true, n);
-			wasReloading[n] = r;
-			lastW[n] = w; lastA1[n] = a1; lastA2[n] = a2;
+			int activeMask = (rlActive[n * 2] ? 1 : 0) | (rlActive[n * 2 + 1] ? 2 : 0);
+			bool go = wanted && startMask != 0 && (hm != 3 || activeMask == 3);
+			if (go)
+			{
+				int lm = int(CvP("rsqsm_reload_len", p, 0));
+				int fixedMs = int(CvP("rsqsm_reload_ms", p, 1200));
+				int ms = lm == 1 ? RELOAD_CAP_MS : fixedMs;
+				int prevUntil = (pulseUntil > level.maptime) ? pulseUntil : 0;
+				int prevReady = autoReady;
+				if (Trigger("reload", CAT_RELOAD, ms, Depth(), true, n) && lm != 0)
+				{
+					if (rsWho != n || pulseSrc != "reload") { rsPrevUntil = prevUntil; rsPrevReady = prevReady; }
+					rsWho = n; rsHands = hm == 3 ? 3 : counts; rsTic = level.maptime;
+					Log("reload", String.Format("held until the reload ends (%s; %s), at most %d ms", lm == 1 ? "Until the Reload Ends" : "at most the fixed time",
+						hm == 0 ? "either hand" : hm == 1 ? "main hand" : hm == 2 ? "off hand" : "both hands", ms));
+				}
+			}
 		}
 		reloadPrimed = true;     // the first tic after a load only looks
+		ReloadEnd();
+	}
+
+	// the tracked reload slow motion: cut when no hand that counts is still reloading, or stop tracking when something else
+	// took the pulse over (held on, another trigger let in after it) or it ran out (the cap or the fixed time)
+	private void ReloadEnd()
+	{
+		if (rsWho < 0) return;
+		int n = rsWho;
+		if (on || pulseUntil <= level.maptime || !(pulseSrc ~== "reload"))
+		{
+			Log("reload", on ? "tracking stops: slow motion held on" : pulseUntil <= level.maptime ? String.Format("ends at its time limit after %d tics", level.maptime - rsTic) : "tracking stops: another trigger took the slow motion over");
+			rsWho = -1;
+			return;
+		}
+		bool still = false;
+		for (int h = 0; h < 2; h++) if ((rsHands & (1 << h)) && rlActive[n * 2 + h]) still = true;
+		if (still) return;
+		int cut = max(level.maptime, rsPrevUntil);
+		pulseUntil = cut;
+		autoReady = max(rsPrevReady, cut + int(Cooldown() * TICRATE));
+		Log("reload", String.Format("ends with the reload after %d tics (pulse now until t%d)", level.maptime - rsTic, cut));
+		rsWho = -1;
 	}
 
 	// ---- BLASTS (owner 2026-11-06, BUGS_1.0 #10: "grenade blast, over-under rifle or machinegun secondary blast"; the Low

@@ -73,6 +73,8 @@ OptionMenu "RSQSM_Options"
 	Option "Close Call", "rsqsm_closecall", "OnOff"
 	Option "Reload", "rsqsm_reload", "OnOff"
 	Option "Reload When", "rsqsm_reload_when", "RSQSM_ReloadWhen", "rsqsm_reload"
+	Option "Reload Length", "rsqsm_reload_len", "RSQSM_ReloadLen", "rsqsm_reload"
+	Option "Reload Hands", "rsqsm_reload_hand", "RSQSM_ReloadHand", "rsqsm_reload"
 	Option "Grenade Blast", "rsqsm_trig_grenade", "OnOff"
 	Option "Over-Under Blast", "rsqsm_trig_ou", "OnOff"
 	Option "Locked Barrel", "rsqsm_trig_barrel_lock", "OnOff"
@@ -196,6 +198,23 @@ OptionValue "RSQSM_HeavyCool"
 	1, "Once per 60 s"
 	2, "Use Shared"
 	3, "No Limit"
+}
+
+// Reload Length (owner 11-09): how long a reload's slow motion lasts
+OptionValue "RSQSM_ReloadLen"
+{
+	0, "Fixed Time"
+	1, "Until the Reload Ends"
+	2, "Until It Ends, at Most the Fixed Time"
+}
+
+// Reload Hands (owner 11-09): whose reload counts (Brutal Doom 22 VR's dual wield reloads each hand)
+OptionValue "RSQSM_ReloadHand"
+{
+	0, "Either Hand"
+	1, "Main Hand Only"
+	2, "Off Hand Only"
+	3, "Both Hands at Once"
 }
 
 OptionValue "RSQSM_ReloadWhen"

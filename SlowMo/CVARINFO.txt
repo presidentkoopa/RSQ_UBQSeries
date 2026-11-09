@@ -32,6 +32,8 @@ user int   rsqsm_gesture_hold   = 12;    // tics to hold the pose
 user bool  rsqsm_reload         = false; // a reload buys a moment of slow motion (automatic: the cooldown applies)
 user int   rsqsm_reload_ms      = 1200;
 user int   rsqsm_reload_when    = 0;     // Reload When: 0 Always, 1 only at or under Low Health At (owner 11-06)
+user int   rsqsm_reload_len     = 0;     // Reload Length (owner 11-09): 0 Fixed Time (Reload Time (ms)), 1 Until the Reload Ends (10 s at most), 2 Until It Ends, at Most the Fixed Time
+user int   rsqsm_reload_hand    = 0;     // Reload Hands (owner 11-09): 0 Either Hand, 1 Main Hand Only, 2 Off Hand Only, 3 Both Hands at Once
 user bool  rsqsm_haptics        = true;
 
 // ---- the owner's picks from the Quest teardown (2026-10-31): the body in slow motion (body.zs, smooth.zs)

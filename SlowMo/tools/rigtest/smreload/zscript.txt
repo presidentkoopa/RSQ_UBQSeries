@@ -1,0 +1,33 @@
+version "4.14"
+// TEST ONLY (never ships). RSQ SlowMo's reload options (11-09) and RSQ Tactical Rig's Dual-to-main and pouch reach, on the
+// QZD 17.3 rig: one RLP line whenever something it watches changes -- both hands' weapons and the one being raised, the
+// engine's ready flag for each hand, the slow-motion clock (speed, pulse end, the trigger that set it), and the off hand's
+// hover and distance to the pouch's zone centre (RSQTR_Rig.RegionAt: the reach assist included).
+class RSQSMReloadProbe : EventHandler
+{
+	String last;
+	override void WorldTick()
+	{
+		let p = players[0];
+		let mo = p.mo;
+		if (!mo) return;
+		let c = RSQSM_Clock.Get();
+		let rg = RSQTR_Rig.Get();
+		String clock = c ? String.Format("speed %.2f pulse %s%s", c.scale, c.pulseUntil > 0 ? String.Format("until t%d ", c.pulseUntil) : "none ", c.pulseSrc) : "no clock";
+		String pouch = "";
+		if (rg)
+		{
+			double d = RSQTR_Body.RoomMetres(RSQTR_Body.Hand(mo, 1), rg.RegionAt(mo, RSQTR_Region.POUCH));
+			pouch = String.Format(" | off hover %d pouch %.2f", rg.HoverRegion(1), d);
+		}
+		String now = String.Format("main %s off %s pend %s ready %d/%d | %s%s",
+			p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+			(p.PendingWeapon && p.PendingWeapon != WP_NOCHANGE) ? p.PendingWeapon.GetClassName() : 'nc',
+			(p.WeaponState & WF_WEAPONREADY) ? 1 : 0, (p.WeaponState & WF_OFFHANDREADY) ? 1 : 0, clock, pouch);
+		if (now != last)
+		{
+			Console.Printf("RLP t%d %s", level.maptime, now);
+			last = now;
+		}
+	}
+}
