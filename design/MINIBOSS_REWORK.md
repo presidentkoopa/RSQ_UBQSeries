@@ -88,3 +88,5 @@ Agent researching a real head-shot solution from the engine survey (RSQ_QuestEng
 - GITD loot beacon: NO. Exits/doors dead red while it lives: NO (owner 08:53).
 - GITD arrival wave in its colour from where it lands: YES. On a life lost and tier-up, the fight room's glow takes the
   new colour: YES (owner 08:53).
+- Owner 08:57: "ensure our minibosses are extra aggressive and 'fast'"; the 1.25x scale includes the hitbox.
+  Claude's default unless told otherwise: the strongest attack-more flag (MISSILEEVENMORE) and x1.25 speed.

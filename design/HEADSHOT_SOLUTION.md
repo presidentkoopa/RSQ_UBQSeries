@@ -2,6 +2,8 @@
 > head shots. MeatGrinder monsters need head shots. MK Crits is not the answer ("it is actor heavy"). The agent's seven
 > open questions (end of this file) wait until the Miniboss questions now in progress are done.
 > Q1 (scope) is read from these rulings as **every monster** (BD, CH and MG all need it).
+> Q2 (08:57): **head-shot damage for all** ("headshots for all"): CH, MG and other packs get the head bonus too.
+> Q3 (08:57): a 1.25x monster's HITBOX scales with it.
 
 # A real head-shot check for the RSQ UBQ Series (design only; nothing built)
 
