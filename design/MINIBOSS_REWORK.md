@@ -90,3 +90,29 @@ Agent researching a real head-shot solution from the engine survey (RSQ_QuestEng
   new colour: YES (owner 08:53).
 - Owner 08:57: "ensure our minibosses are extra aggressive and 'fast'"; the 1.25x scale includes the hitbox.
   Claude's default unless told otherwise: the strongest attack-more flag (MISSILEEVENMORE) and x1.25 speed.
+
+## The arrival, the HUD and the beams (owner + Claude, 2026-11-09 10:50-11:20)
+
+- **The arrival (owner):** the world AND the player slow (RSQ SlowMo; the contextual slow-mo bar shows BOSSFIGHT,
+  Adrenaline on or off: fixed 11:00, `start.bossfight`). The thralls arrive one at a time, a few tics apart, each on an
+  arrival beam with its sound; then the miniboss's entrance; the fight room's glow changes; all inside the one slow-mo
+  window. HUD arrows point to them when the landing is not in view (DOWN's edge arrows: SlowMo needs a service for
+  another mod to ask for them).
+- **Timeline (Claude's, offered):** slow starts 0.0 s; thralls land about 0.3 s apart; the miniboss's entrance from about
+  1.3 s; the landing slow raised to about 4 s (cap 5). The HUD stack fills as each lands: each thrall's segment slots into
+  the thrall bar in its colour; the skull, main bar and life bars rise with the miniboss; segments go grey with the shield.
+- **The beams (VisualRewards' arrival beams; renders in VisualRewards/renders/arrival_beams/):** two sets, picked at
+  random per Bossfight (owner 11:20): **V1 thralls + V3 miniboss**, or **V2 thralls + V4 miniboss**. V3 has indoor (hits
+  the ceiling) and outdoor (climbs out of sight) versions, chosen by the ceiling above.
+- **Watch check + Use** is the call-in. Tactical Rig's Move Gun at Watch is off by default and stands aside while a
+  Bossfight can be called (TacticalRig/zscript/rsqtr/rig.zs:1629-1631): nothing to change.
+- **Spheres (Claude's proposal):** drop the life orbs (the life bars replace them) and the BFG ball over each thrall
+  ("Target!" replaces it); the thrall-kill pop stays as a beat, drawn as one of our pixel pops in the lost power's colour.
+
+## Summoning (owner 11:20; parked, NOT in the first build)
+
+"maybe thralls can summon, they get a dynamic crosshair and if we dont drop them during their Summon countdown then in
+come the low tier chumps to distract you from the Miniboss. maybe all thralls summon along with the miniboss to bring in
+an EX tier." A thrall starts "Summoning! 3... 2... 1..." with a crosshair on it; kill it before the count ends or about a
+dozen low-tier chumps arrive (on V1 beams). All thralls plus the miniboss summoning together could bring in an EX.
+Owner: "apart from this summon stuff, I think we are ready to build this into Minibosses".
