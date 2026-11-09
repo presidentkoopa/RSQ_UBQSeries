@@ -9,7 +9,8 @@
 >   0.80 only for monsters with no data.
 > - Q5 big BD monsters: ONE verdict everywhere: our check always, BD's head hitbox actors switched off on them, BD's
 >   own outcome (HitHead, double damage) applied from our verdict.
-> - Q6 home: its own small pk3 (works with or without RSQ Monsters; Score, Melee, Miniboss read it by name).
+> - Q6 home: **inside RSQ Score** (owner 09:06: "there is no headshot pk3, it needs to be part of RS Score"). RSQ Monsters,
+>   Melee and Miniboss ask Score by name (RS_ScoreService); without Score, BD's own fixed heights apply.
 > - Q7 MG: folded in: MG's own head band retires; MG asks the shared verdict.
 
 # A real head-shot check for the RSQ UBQ Series (design only; nothing built)
