@@ -1,0 +1,121 @@
+// Altered for RSQ Glow In The Dark (2026-11-09): DarkDoomZ's own Options entry removed (its settings are reached from
+//   Options > Radiant Silvergun Options > RSQ Glow In The Dark > Darkness (DarkDoomZ)); menus, option lists and the
+//   menu class renamed DarkDoomZ_* / Nice_* -> RSQGD_DDZ_* so nothing can clash; titles and a few labels in plainer
+//   words ("Darkness Mode", "Darkness Level", "Flashlight Key"); the "-- OpenGL only --" line dropped (QuestZDoom
+//   17.3 is GL). Every setting, value and range is DarkDoomZ's own.
+// Original: DarkDoomZ (C) 2018 Sterling Parker (Caligari87), zlib licence (DarkDoomZ/license.md in this pk3).
+
+OptionValue "RSQGD_DDZ_Modes" {
+	0, "Disable"
+	1, "Subtract"
+	2, "Compress"
+	3, "Clamp"
+	4, "Crush"
+	10, "DarkDoom Lite"
+	11, "DarkDoom Classic"
+	12, "DarkDoom Black"
+}
+
+OptionValue "RSQGD_DDZ_Levels" {
+	0, "Disable"
+	1, "Dim"
+	2, "Murky"
+	3, "Dismal"
+	4, "Oppressive"
+	5, "Inky"
+	6, "Stygian"
+	7, "Pitch"
+	8, "Pure"
+}
+
+OptionValue "RSQGD_DDZ_Flashlight_Quality" {
+	0, "Simple"
+	1, "Fancy"
+}
+
+OptionValue "RSQGD_DDZ_Flashlight_Type" {
+	0, "Incandescent"
+	1, "Halogen"
+	2, "LED"
+	3, "Red Filter"
+}
+
+OptionValue "RSQGD_DDZ_Flashlight_Position" {
+	0, "Handheld"
+	1, "Left Shoulder"
+	2, "Right Shoulder"
+	3, "Helmet"
+}
+
+OptionValue "RSQGD_DDZ_Sector_Effects" {
+	0, "Remove"
+	1, "Keep"
+}
+
+OptionMenu "RSQGD_DDZ_Settings" {
+	Class "RSQGD_DDZ_OptionMenu"
+	Title "DARKNESS (DARKDOOMZ)"
+	StaticText " "
+
+	Option "Darkness Mode","ddz_mode","RSQGD_DDZ_Modes"
+	Option "Darkness Level","ddz_preset", "RSQGD_DDZ_Levels"
+	StaticText " "
+
+	Submenu "Advanced Settings", "RSQGD_DDZ_Advanced_Settings"
+	Submenu "Fog Settings", "RSQGD_DDZ_Fog_Settings"
+	Submenu "Flashlight Settings", "RSQGD_DDZ_Flashlight_Settings"
+	StaticText " "
+
+	StaticText "The three DarkDoom modes", "darkgrey"
+	StaticText "ignore Darkness Level.", "darkgrey"
+	StaticText " "
+	StaticText "DarkDoomZ by Caligari87 (zlib licence),", "darkgrey"
+	StaticText "built into Glow In The Dark.", "darkgrey"
+}
+
+OptionMenu "RSQGD_DDZ_Advanced_Settings" {
+	Class "RSQGD_DDZ_OptionMenu"
+	Title "DARKNESS: ADVANCED"
+	StaticText " "
+
+	Slider "Pre-Gain","ddz_pregain",-255,255,1,0
+	Slider "Post-Gain","ddz_postgain",-255,255,1,0
+	StaticText "Adjust initial and final light levels.", "darkgrey"
+	StaticText " "
+
+	Slider "Min. Lightlevel","ddz_minlight",0,16,1,0
+	StaticText "Clamps darkest lightlevel to this minimum.", "darkgrey"
+	StaticText " "
+
+	Slider "Sky Sectors","ddz_skymode", 0.0, 1.0, 0.1, 1
+	StaticText "Specifies whether adjustment applies", "darkgrey"
+	StaticText "to sky sectors. Note certain skyboxes", "darkgrey"
+	StaticText "may still be affected.", "darkgrey"
+	StaticText " "
+
+	Option "Sector Light Effects", "ddz_lighting", "RSQGD_DDZ_Sector_Effects"
+	StaticText "Enables or disables sector light effects", "darkgrey"
+	StaticText "such as flickering or pulsing. Requires", "darkgrey"
+	StaticText "reloading the game or map.", "darkgrey"
+
+}
+
+OptionMenu "RSQGD_DDZ_Fog_Settings" {
+	Class "RSQGD_DDZ_OptionMenu"
+	Title "DARKNESS: FOG"
+	StaticText " "
+
+	Option "$GLPREFMNU_FOGMODE", gl_fogmode, "FogMode"
+	Slider "Fog Density", ddz_fog, 0,512,8,0
+}
+
+OptionMenu "RSQGD_DDZ_Flashlight_Settings" {
+	Class "RSQGD_DDZ_OptionMenu"
+	Title "DARKNESS: FLASHLIGHT"
+	StaticText " "
+
+	Option "Quality","ddz_fl_quality", "RSQGD_DDZ_Flashlight_Quality"
+	Option "Type","ddz_fl_type", "RSQGD_DDZ_Flashlight_Type"
+	Option "Position","ddz_fl_pos", "RSQGD_DDZ_Flashlight_Position"
+	Control "Flashlight Key", "ddz_toggleflashlight"
+}

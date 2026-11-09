@@ -247,9 +247,9 @@ class RSQGD_Handler : EventHandler
 			darkDelta.Push(0);
 		}
 
-		String ddz = "DarkDoomZ_Handler";      // a variable: a literal would be resolved (and fail) at compile time
-		class<Object> cls = ddz;
-		darkDoomZ = cls != null;
+		// DarkDoomZ is built in now (zscript/rsqgd/ddz.zs, RSQGD_DDZ_Handler), so its cvars and its re-lighting are
+		// always there: either our copy does it, or the original pk3 does while ours stands down.
+		darkDoomZ = true;
 
 		// the colour seed (see ChooseSeed) and the look
 		let ses = RSQGD_Session(StaticEventHandler.Find("RSQGD_Session"));
