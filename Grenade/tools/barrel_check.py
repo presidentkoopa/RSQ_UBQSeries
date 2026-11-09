@@ -12,6 +12,15 @@ exists (layer tracks, ember frames A-D, each debris option's palette steps) and 
 sprites/rsqgn/barrel/ goes unused; no sprite name is used by another mod of the series; every sound played is
 defined in SNDINFO.txt and its lump is in sounds/; every cvar read is declared in CVARINFO.txt, and every MENUDEF row's
 cvar too; the translation named is in TRNSLATE.txt; the data's parallel arrays have equal lengths.
+
+THE EXPLOSIONS (explosions.zs, the new sequences; added 11-09 after the barrel pass's four compile errors a reviewer
+caught): the same checks over explosions.zs and kinds.zs, and the ones a compiler would make that a text check can --
+every tint name the code can build (RSQGN_K1-8, T01-13, H00-11) and every literal translation is in TRNSLATE.txt; every
+decal sprayed is in DECALDEF.txt and its picture in graphics/; every RSQGN_BarrelData.X used is a table or constant the
+data has; T_W is 0/1 and L_FLAT 0-3; no class-level static const array (they do not resolve on this build); no
+identifier that is a ZScript keyword; no field and method of one class with the same name in any case (names are case-
+insensitive); no member named like an Actor member or a global the code also uses (players, Default, ...); every flag in
+a Default block of these files is one the engine has (a fixed list of the ones this pack uses).
 """
 import os, re, sys, glob, struct
 from collections import defaultdict
@@ -21,7 +30,25 @@ GREN = os.path.dirname(HERE)
 HUB = os.path.dirname(GREN)
 ZS = os.path.join(GREN, 'zscript', 'rsqgn', 'barrel.zs')
 DATA = os.path.join(GREN, 'zscript', 'rsqgn', 'barrel_data.zs')
+EXPL = os.path.join(GREN, 'zscript', 'rsqgn', 'explosions.zs')
+KINDS = os.path.join(GREN, 'zscript', 'rsqgn', 'kinds.zs')
+KEYWORDS = {'until', 'in', 'out', 'default', 'class', 'struct', 'enum', 'const', 'static', 'native', 'action', 'readonly',
+            'internal', 'version', 'property', 'flagdef', 'mixin', 'extend', 'replaces', 'abstract', 'ui', 'play',
+            'clearscope', 'virtualscope', 'transient', 'meta', 'final', 'virtual', 'override', 'private', 'protected',
+            'sizeof', 'alignof', 'is', 'let', 'auto', 'map', 'array', 'states', 'loop', 'stop', 'wait', 'fail', 'goto',
+            'do', 'while', 'for', 'foreach', 'if', 'else', 'switch', 'case', 'return', 'break', 'continue', 'super', 'self',
+            'true', 'false', 'null', 'cross', 'dot', 'color', 'sound', 'state', 'name', 'string', 'vector2', 'vector3',
+            'bright', 'fast', 'slow', 'nodelay', 'offset', 'light', 'latent', 'deprecated', 'var'}
+# members of Actor / globals a member must not be named after (a clash the compiler refuses or that silently shadows)
+RESERVED = {'players', 'level', 'default', 'pos', 'vel', 'angle', 'pitch', 'roll', 'scale', 'alpha', 'target', 'master',
+            'tracer', 'health', 'height', 'radius', 'speed', 'gravity', 'translation', 'sprite', 'frame', 'tics', 'age_',
+            'floorz', 'ceilingz', 'waterlevel', 'cursector', 'special', 'args', 'score', 'mass', 'damage', 'flags',
+            'tid', 'friction', 'bouncefactor', 'renderstyle', 'stencilcolor', 'fillcolor', 'kind_', 'consoleplayer'}
+FLAGS_OK = {'NOBLOCKMAP', 'NOTELEPORT', 'DONTSPLASH', 'THRUACTORS', 'NOTRIGGER', 'CLIENTSIDEONLY', 'NOTONAUTOMAP',
+            'FORCEXYBILLBOARD', 'ROLLSPRITE', 'NOINTERACTION', 'NOGRAVITY', 'BRIGHT', 'DROPOFF', 'MISSILE',
+            'BLOODLESSIMPACT', 'GHOST', 'WALLSPRITE', 'FLATSPRITE'}
 SPR = os.path.join(GREN, 'sprites', 'rsqgn', 'barrel')
+SPR_NEW = os.path.join(GREN, 'sprites', 'rsqgn', 'blast')
 ENGINE_SPRITES = {'TNT1', 'BAR1', 'BEXP'}
 problems = []
 
@@ -89,14 +116,14 @@ def grab(path):
 
 
 def main():
-    for p in (ZS, DATA): balance(p)
+    for p in (ZS, DATA, EXPL, KINDS): balance(p)
     A = arrays(DATA)
     groups = defaultdict(list)
     for k, v in A.items():
         if '_' in k: groups[k.split('_')[0]].append((k, len(v)))
     for g, ks in groups.items():
         if g in ('Q', 'L', 'T', 'E', 'D', 'O') and len({n for _, n in ks}) > 1: bad(f'array lengths differ in {g}_: {ks}')
-    files = {os.path.basename(f)[:-4].upper(): f for f in glob.glob(os.path.join(SPR, '*.png'))}
+    files = {os.path.basename(f)[:-4].upper(): f for f in glob.glob(os.path.join(SPR, '*.png')) + glob.glob(os.path.join(SPR_NEW, '*.png'))}
     used = set()
     spr = A['SPR']
 
@@ -122,7 +149,7 @@ def main():
     # sprite names clash with nothing else in the series
     ours = {s.upper() for s in spr}
     for f in glob.glob(os.path.join(HUB, '*', '**', 'sprites', '**', '*'), recursive=True):
-        if os.path.isdir(f) or os.path.dirname(f).startswith(SPR): continue
+        if os.path.isdir(f) or os.path.dirname(f).startswith(SPR) or os.path.dirname(f).startswith(SPR_NEW): continue
         nm = os.path.basename(f)[:4].upper()
         if nm in ours: bad(f'sprite name {nm} also in {os.path.relpath(f, HUB)}')
     # sounds
@@ -131,7 +158,7 @@ def main():
     for m in re.finditer(r'^\s*([a-z][\w/]+)\s+([A-Z]\w+)', snd, re.M):
         lump = m.group(2)
         if not glob.glob(os.path.join(GREN, 'sounds', '**', lump + '*'), recursive=True): bad(f'SNDINFO lump {lump} has no file')
-    src = open(ZS).read()
+    src = open(ZS).read() + open(EXPL).read()
     for s in re.findall(r'A_StartSound\("([^"]+)"', src):
         if s not in defined: bad(f'sound {s} not in SNDINFO')
     # cvars
@@ -154,9 +181,77 @@ def main():
     mi = open(os.path.join(GREN, 'MAPINFO.txt')).read()
     for c in ('RSQGN_BarrelSwap', 'RSQGN_BarrelBook'):
         if c not in mi: bad(f'{c} not in MAPINFO AddEventHandlers')
+    explosions_checks(A, trn, menu, declared)
     print(f'{len(files)} sprite files, {len(spr)} sprite names, {len(used)} frames reachable')
     print('\n'.join(problems) if problems else 'OK: no problems found')
     return A, files
+
+
+def explosions_checks(A, trn, menu, declared):
+    ex = open(EXPL).read()
+    code_all = {p: strip_code(open(p).read()) for p in (ZS, EXPL, KINDS, DATA)}
+    # the tints the code can build, and literal ones
+    names = {f'RSQGN_K{i}' for i in range(1, 9)} | {f'RSQGN_T{i:02d}' for i in range(1, 14)} | {f'RSQGN_H{i:02d}' for i in range(12)}
+    for t in names:
+        if not re.search(r'^\s*' + t + r'\s*=', trn, re.M): bad(f'tint {t} not in TRNSLATE.txt')
+    for c in ('RSQGN_K%d', 'RSQGN_T%02d', 'RSQGN_H%02d'):
+        if f'"{c}"' not in ex: bad(f'explosions.zs no longer builds {c} (the tint list above is out of step)')
+    # decals
+    dd = open(os.path.join(GREN, 'DECALDEF.txt')).read()
+    for d in re.findall(r'A_SprayDecal\("([^"]+)"', ex):
+        m = re.search(r'^decal\s+' + d + r'\s*\{(.*?)\}', dd, re.M | re.S)
+        if not m: bad(f'decal {d} not in DECALDEF.txt'); continue
+        pic = re.search(r'pic\s+(\w+)', m.group(1)).group(1)
+        if not glob.glob(os.path.join(GREN, 'graphics', '**', pic + '.png'), recursive=True): bad(f'decal picture {pic} not in graphics/')
+    for an in re.findall(r'animator\s+(\w+)', dd):
+        if not re.search(r'^(fader|stretcher|slider|colorchanger|combiner)\s+' + an + r'\b', dd, re.M): bad(f'DECALDEF animator {an} undefined')
+    # the data's names used by the code
+    data = open(DATA).read()
+    consts = set(re.findall(r'^\tconst (\w+) =', data, re.M)) | set(A.keys())
+    for p, code in code_all.items():
+        for nm in re.findall(r'RSQGN_BarrelData\.(\w+)', code):
+            if nm not in consts: bad(f'{os.path.basename(p)}: RSQGN_BarrelData.{nm} does not exist')
+    if any(v not in (0, 1) for v in A['T_W']): bad('T_W holds something other than 0/1')
+    if any(v not in (0, 1, 2, 3) for v in A['L_FLAT']): bad('L_FLAT outside 0-3')
+    if any(v not in (0, 1) for v in A['L_NOTINT']): bad('L_NOTINT holds something other than 0/1')
+    for p in (ZS, EXPL, KINDS):
+        code = code_all[p]; fn = os.path.basename(p)
+        # class-level static const arrays (one tab in from the class)
+        for m in re.finditer(r'^\tstatic const \w+ \w+\[\]', code, re.M): bad(f'{fn}: class-level static const array: {m.group(0).strip()}')
+        # keyword identifiers in declarations
+        for m in re.finditer(r'\b(?:int|double|bool|float|String|Name|Vector2|Vector3|Actor|let)\s+(\w+)\s*[=;,)\[]', code):
+            if m.group(1).lower() in KEYWORDS: bad(f'{fn}: identifier "{m.group(1)}" is a ZScript keyword')
+        for m in re.finditer(r'^\s*(?:int|double|bool|float|String|Name)\s+([^;(]+);', code, re.M):   # name lists: int a, b, c;
+            for f in m.group(1).split(','):
+                f = re.sub(r'\[.*', '', f.split('=')[0]).strip()
+                if f.lower() in KEYWORDS: bad(f'{fn}: identifier "{f}" is a ZScript keyword')
+        # per class: fields vs methods, case-insensitive; reserved member names
+        for cm in re.finditer(r'^class (\w+)[^\n]*\n\{(.*?)^\}', code, re.M | re.S):
+            cls, body = cm.group(1), cm.group(2)
+            fields, methods = set(), set()
+            for line in body.split('\n'):
+                if not line.startswith('\t') or line.startswith('\t\t'): continue
+                m = re.match(r'\t(?:transient\s+|private\s+)*(?:int|double|bool|float|String|Name|Vector2|Vector3|TranslationID|Array<\w+>|RSQGN_\w+|Actor)\s+([^(;]+);', line)
+                if m:
+                    for f in m.group(1).split(','):
+                        f = re.sub(r'\[.*', '', f.split('=')[0]).strip()
+                        if f: fields.add(f.lower())
+                m = re.match(r'\t(?:static\s+|override\s+|virtual\s+|clearscope\s+|action\s+)*\w[\w<>]*\s+(\w+)\s*\(', line)
+                if m: methods.add(m.group(1).lower())
+            for c in fields & methods: bad(f'{fn} {cls}: "{c}" is both a field and a method (names are case-insensitive)')
+            for c in fields & RESERVED: bad(f'{fn} {cls}: field "{c}" clashes with an Actor member or a global')
+        # flags in Default blocks
+        for blk in re.findall(r'Default\s*\{(.*?)\}', code, re.S):
+            for f in re.findall(r'[+-]([A-Za-z]+)\b', blk):
+                if f.upper() not in FLAGS_OK and not f.upper().startswith('INVENTORY'): bad(f'{fn}: flag {f} not in the known list (check it is real)')
+    # menu rows of the Explosions section
+    for c in ('rsqgn_blast_style', 'rsqgn_fx_colour', 'rsqgn_fx_lights', 'rsqgn_ctx', 'rsqgn_ctx_wall', 'rsqgn_ctx_ceiling',
+              'rsqgn_ctx_sky', 'rsqgn_ctx_water', 'rsqgn_ctx_liquid', 'rsqgn_ctx_chain', 'rsqgn_ctx_crowd',
+              'rsqgn_chain_escalate', 'rsqgn_chain_kick'):
+        if c not in declared: bad(f'cvar {c} not declared')
+        if f'"{c}"' not in menu: bad(f'cvar {c} has no menu row')
+    for c in re.findall(r'RSQGN_Fx\.(?:B|N|Ctx)\("([^"]+)"', ex):
+        if c.startswith('rsqgn_') and c not in declared: bad(f'explosions.zs reads cvar {c}, not declared')
 
 
 def preview(A, files):
@@ -165,7 +260,6 @@ def preview(A, files):
     from PIL import Image
     out = os.path.join(HERE, 'barrel_preview')
     os.makedirs(out, exist_ok=True)
-    U = 1.6; W = H = 240; FL = 200; BX = 120
     spr = A['SPR']
     cache = {}
 
@@ -174,6 +268,8 @@ def preview(A, files):
             im = Image.open(files[name]); cache[name] = (im.convert('RGBA'), grab(files[name]))
         return cache[name]
     for q in range(len(A['Q_L0'])):
+        big = q >= A.get('BARRELS', [6])[0] if isinstance(A.get('BARRELS'), list) else q >= 6
+        U = 0.9 if big else 1.6; W = H = 420 if big else 240; FL = H - 40; BX = W // 2
         tics = list(range(0, 44, 2))
         sheet = Image.new('RGB', (W * 11, H * 2), (10, 10, 14))
         for n, tic in enumerate(tics):

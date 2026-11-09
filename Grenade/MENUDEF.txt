@@ -47,7 +47,23 @@ OptionMenu "RSQGN_Options"
 	Option "Barrels", "rsqgn_barrel_on", "OnOff"
 	Option "Explosion", "rsqgn_barrel_kind", "RSQGN_BarrelKind"
 	Option "Replace Brutal Doom's Barrels", "rsqgn_barrel_replace_bd", "OnOff"
+	StaticText " "
+	StaticText "Explosions", "Gold"
+	Option "Grenade Explosion", "rsqgn_blast_style", "RSQGN_BlastStyle"
+	Option "Explosion Colour", "rsqgn_fx_colour", "RSQGN_FxColour"
+	Option "Explosion Lights", "rsqgn_fx_lights", "RSQGN_FxLights"
 	Slider "Debris", "rsqgn_barrel_debris", 0.0, 1.0, 0.1, 1
+	Option "Contexts", "rsqgn_ctx", "OnOff"
+	Option "Wall", "rsqgn_ctx_wall", "OnOff"
+	Option "Low Ceiling", "rsqgn_ctx_ceiling", "OnOff"
+	Option "Open Sky", "rsqgn_ctx_sky", "OnOff"
+	Option "Water", "rsqgn_ctx_water", "OnOff"
+	Option "Liquid Floors", "rsqgn_ctx_liquid", "OnOff"
+	Option "Chain", "rsqgn_ctx_chain", "OnOff"
+	Option "Crowd", "rsqgn_ctx_crowd", "OnOff"
+	Option "Chain Escalation", "rsqgn_chain_escalate", "OnOff"
+	Option "Screen Kick on Chains", "rsqgn_chain_kick", "OnOff"
+	StaticText "Crowd slow motion: RSQ SlowMo's Barrel Multi-Kill"
 	StaticText " "
 	StaticText "Shooting", "Gold"
 	Option "Shoot Thrown Grenades", "rsqgn_shoot", "OnOff"
@@ -81,7 +97,7 @@ OptionMenu "RSQGN_Test"
 	Slider "Again Beyond (m)", "rsqgn_face_far", 0.30, 1.50, 0.01, 2
 	Slider "Hold (tics)", "rsqgn_face_hold", 2, 40, 1, 0
 	StaticText " "
-	StaticText "Barrels", "Gold"
+	StaticText "Explosions", "Gold"
 	Slider "Effects Cap", "rsqgn_barrel_cap", 100, 2000, 50, 0
 	StaticText " "
 	Option "Debug Log", "rsqgn_debug", "OnOff"
@@ -111,4 +127,25 @@ OptionValue "RSQGN_BarrelKind"
 	8, "#8 Groundbreaker"
 	9, "#9 Slag Column"
 	10, "#10 Neon Crescent"
+}
+
+OptionValue "RSQGN_BlastStyle"
+{
+	1, "New"
+	0, "Original"
+}
+
+OptionValue "RSQGN_FxColour"
+{
+	0, "Normal"
+	1, "Room Complement"
+	2, "Kill Colour"
+	3, "Grenade Kind"
+}
+
+OptionValue "RSQGN_FxLights"
+{
+	0, "Off"
+	1, "Simple"
+	2, "Full"
 }

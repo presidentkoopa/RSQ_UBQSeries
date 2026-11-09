@@ -35,14 +35,34 @@
 // =====================================================================================================================
 // THE BARREL
 // =====================================================================================================================
+// CHAIN (owner 11-09, "i approve all barrel designs": /tmp/fx_ctx2 chain.py). A barrel set off by ANOTHER BARREL'S
+// blast is one link further down the chain than that barrel (rsqgnDepth = its depth + 1; set off by anything else: 0).
+// Die is where the engine tells us who did it (the barrel's A_Explode is its own inflictor, so the killer of a chained
+// barrel is the parent barrel itself). What the depth changes -- THE LOOK ONLY (the time is RSQ SlowMo's: its Chain
+// Reaction cue, clock.zs BarrelDeath, which still sees this barrel: it walks the parent chain to ExplosiveBarrel):
+//   - each link blows bigger (explosions.zs RSQGN_Boom.Begin);
+//   - the blink is shorter (chain.py LINKS: 10, 8, 6, 6, 4 tics at depth 0, 1, 2, 3, 4+) -- the barrel STANDS longer
+//     before it, so A_Explode stays on stock's tic 15 at every depth (no gameplay timing moves).
+// Both under Contexts > Chain and Chain Escalation (rsqgn_ctx_chain, rsqgn_chain_escalate).
 class RSQGN_Barrel : ExplosiveBarrel
 {
 	TranslationID rsqgnTrans;   // the barrel's own translation before a blink (restored after each lit frame)
+	int rsqgnDepth;             // its link in a chain (0: set off by anything but a barrel)
+	int rsqgnBlink;             // the blink's length in tics (10 stock; Chain Escalation shortens it down the chain, the stand grows)
 
 	override void PostBeginPlay()
 	{
 		Super.PostBeginPlay();
 		rsqgnTrans = Translation;
+		rsqgnBlink = 10;
+	}
+
+	override void Die(Actor source, Actor inflictor, int dmgflags, Name MeansOfDeath)
+	{
+		let parent = RSQGN_Barrel(inflictor);
+		rsqgnDepth = parent ? parent.rsqgnDepth + 1 : 0;
+		rsqgnBlink = RSQGN_Fx.BlinkFor(rsqgnDepth);
+		Super.Die(source, inflictor, dmgflags, MeansOfDeath);
 	}
 
 	// the blink: lit = fullbright through RSQGN_BarrelHot; unlit = its own translation back
@@ -52,12 +72,13 @@ class RSQGN_Barrel : ExplosiveBarrel
 		else invoker.Translation = invoker.rsqgnTrans;
 	}
 
-	// the stock blast, on the stock tic; then the look and the sound
+	// the look and the sound FIRST (the blast's director must exist when A_Explode's kills arrive: Kill Colour and Crowd
+	// read them, explosions.zs RSQGN_BarrelBook.WorldThingDied), then the stock blast, on the same tic
 	action void A_RSQGN_Blast()
 	{
 		invoker.Translation = invoker.rsqgnTrans;
+		RSQGN_Boom.ForBarrel(invoker);
 		A_Explode();   // ExplosiveBarrel's own call: default damage and radius (128 / 128), XF_HURTSOURCE
-		RSQGN_BarrelFX.Go(invoker);
 	}
 
 	States
@@ -66,12 +87,35 @@ class RSQGN_Barrel : ExplosiveBarrel
 		// Barrels switched off while this one stood (the row reads at death): the stock death, frame for frame.
 		TNT1 A 0 A_JumpIf(!RSQGN_BarrelSwap.On(), "StockDeath");
 		BAR1 A 5;                                // 0-4: it stands (the hit)
-		BAR1 A 2 Bright A_RSQGN_Lit(true);       // 5-6:  lit
-		BAR1 A 2 A_RSQGN_Lit(false);             // 7-8:  unlit
-		BAR1 A 2 Bright A_RSQGN_Lit(true);       // 9-10: lit
-		BAR1 A 2 A_RSQGN_Lit(false);             // 11-12: unlit
-		BAR1 A 2 Bright A_RSQGN_Lit(true);       // 13-14: lit
-		TNT1 A 15 A_RSQGN_Blast();               // 15: GONE -- stock's A_Explode tic (BEXP A+B+C = 15); BEXP D's 5 + E's 10 tics
+		TNT1 A 0 A_JumpIf(rsqgnBlink <= 4, "Blink4");
+		TNT1 A 0 A_JumpIf(rsqgnBlink <= 6, "Blink6");
+		TNT1 A 0 A_JumpIf(rsqgnBlink <= 8, "Blink8");
+		// 10 tics (stock): lit, unlit, lit, unlit, lit -- 5-14; the blast at 15 (stock's A_Explode tic, BEXP A+B+C = 15)
+		BAR1 A 2 Bright A_RSQGN_Lit(true);
+		BAR1 A 2 A_RSQGN_Lit(false);
+		BAR1 A 2 Bright A_RSQGN_Lit(true);
+		BAR1 A 2 A_RSQGN_Lit(false);
+		BAR1 A 2 Bright A_RSQGN_Lit(true);
+		Goto Blast;
+	Blink8:                                      // depth 1: stands 2 more, then lit, unlit, lit, unlit (still 15 in all)
+		BAR1 A 2;
+		BAR1 A 2 Bright A_RSQGN_Lit(true);
+		BAR1 A 2 A_RSQGN_Lit(false);
+		BAR1 A 2 Bright A_RSQGN_Lit(true);
+		BAR1 A 2 A_RSQGN_Lit(false);
+		Goto Blast;
+	Blink6:                                      // depth 2-3: stands 4 more, then lit, unlit, lit
+		BAR1 A 4;
+		BAR1 A 2 Bright A_RSQGN_Lit(true);
+		BAR1 A 2 A_RSQGN_Lit(false);
+		BAR1 A 2 Bright A_RSQGN_Lit(true);
+		Goto Blast;
+	Blink4:                                      // depth 4 and on: stands 6 more, then lit, unlit
+		BAR1 A 6;
+		BAR1 A 2 Bright A_RSQGN_Lit(true);
+		BAR1 A 2 A_RSQGN_Lit(false);
+	Blast:
+		TNT1 A 15 A_RSQGN_Blast();               // GONE; BEXP D's 5 + E's 10 tics
 		TNT1 A 1050 A_BarrelDestroy;             // stock from here (ExplosiveBarrel's Death)
 		TNT1 A 5 A_Respawn;
 		Wait;
@@ -136,12 +180,15 @@ class RSQGN_BarrelSwap : StaticEventHandler
 }
 
 // =====================================================================================================================
-// THE BOOK: the live effect actors (for the cap) and the sprite numbers (looked up once). A level handler, so the count
-// is saved with the level the effect actors are saved in.
+// THE BOOK: the live effect actors (for the cap), the sprite numbers (looked up once), the blasts running now (their
+// kills, for Kill Colour and Crowd) and the explosion lights alive (their cap). A level handler, so the counts are saved
+// with the level the effect actors are saved in.
 // =====================================================================================================================
 class RSQGN_BarrelBook : EventHandler
 {
 	int live;
+	int lights;                    // explosion lights alive (RSQGN_Boom.Light; at most RSQGN_Fx.LIGHT_CAP)
+	Array<RSQGN_Boom> booms;       // the blasts still running (each takes itself out when it ends)
 	transient Array<int> sprIdx;  // SPR(i) -> sprite number (GetSpriteIndex searches every sprite: done once)
 
 	static RSQGN_BarrelBook Get() { return RSQGN_BarrelBook(EventHandler.Find("RSQGN_BarrelBook")); }
@@ -157,12 +204,29 @@ class RSQGN_BarrelBook : EventHandler
 	}
 
 	bool Room() { return live < RSQGN_BarrelSwap.Cap(); }
+
+	// A KILL BY A BLAST. A_Explode's inflictor is the actor that called it: the barrel, the thrown grenade, the grenade
+	// that went off in the hand -- each blast's director keeps that actor (src). The blast is told; it decides (Kill
+	// Colour, Crowd: explosions.zs RSQGN_Boom.OnKill). A barrel's chain link is not set here (RSQGN_Barrel.Die).
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (!e.Thing || !e.Inflictor || booms.Size() == 0) return;
+		for (int i = booms.Size() - 1; i >= 0; i--)
+		{
+			let b = booms[i];
+			if (!b || b.bDestroyed) { booms.Delete(i); continue; }
+			if (b.src == e.Inflictor) { b.OnKill(e.Thing); return; }
+		}
+	}
 }
 
-// the counted effect actors' base: +1 when the conductor spawns one, -1 when it goes
+// the counted effect actors' base: +1 when the player spawns one, -1 when it goes
 class RSQGN_BarrelBit : Actor
 {
 	bool counted;
+	TranslationID baseTrans;   // its own translation (none), put back when a tint lets go
+	bool noTint;               // this one keeps its colours (water, liquids, gore, the smoke left standing)
+	Name tintNow;              // the tint it wears ('None': its own colours)
 	Default
 	{
 		+NOBLOCKMAP
@@ -177,7 +241,16 @@ class RSQGN_BarrelBit : Actor
 		Radius 1;
 		Height 1;
 	}
-	void RSQCount(RSQGN_BarrelBook b) { if (b) { b.live++; counted = true; } }
+	void RSQCount(RSQGN_BarrelBook b) { baseTrans = Translation; if (b) { b.live++; counted = true; } }
+	// THE TINT (Explosion Colour, explosions.zs RSQGN_Tint): a TRNSLATE translation by name, or its own colours back
+	void TintTo(Name t)
+	{
+		if (noTint) t = 'None';
+		if (t == tintNow) return;
+		tintNow = t;
+		if (t == 'None') Translation = baseTrans;
+		else A_SetTranslation(t);
+	}
 	override void OnDestroy()
 	{
 		if (counted)
@@ -197,13 +270,17 @@ class RSQGN_BarrelBit : Actor
 }
 
 // =====================================================================================================================
-// A LAYER: one billboard (Add or Translucent, rolled) or one floor ring (+FLATSPRITE), playing its track
+// A LAYER: one billboard (Add or Translucent, rolled), one flat (+FLATSPRITE on the floor or under the ceiling) or one
+// wall sprite (+WALLSPRITE flush on a wall), playing its track
 // =====================================================================================================================
 class RSQGN_BarrelLayer : RSQGN_BarrelBit
 {
-	int idx, age;
-	Vector3 base;     // the barrel's foot (flats: the floor under it)
-	Vector2 axis;     // the sequence's "across": the GIF's x axis, laid along a random direction
+	int idx, age, place;
+	bool add, sheet;
+	double k;          // the player's scale (a chain link's x1.25, a grenade's x0.7 on a barrel overlay)
+	Vector3 base;      // the sequence's base (flats: the floor / ceiling under it; wall sprites: the wall)
+	Vector2 axis;      // the sequence's "across": the GIF's x axis, laid along a random direction (along a wall, near one)
+	RSQGN_BarrelFX fx; // its player: the tint, and the blast's context bends (fx.boss)
 	Default
 	{
 		+NOINTERACTION
@@ -211,16 +288,28 @@ class RSQGN_BarrelLayer : RSQGN_BarrelBit
 		RenderStyle "Add";
 	}
 
-	void Setup(int i, Vector3 foot, Vector2 ax, double rollDeg, double yaw)
+	// asSheet: WALL's sheet (ctx_a / ctx_g "the SHEET: the whole sprite pressed flat on the wall face and fanned out
+	// along it"): a copy of a fire layer as a wall sprite on the wall itself
+	void Setup(int i, RSQGN_BarrelFX f, Vector3 foot, Vector2 ax, double rollDeg, double yaw, bool asSheet = false)
 	{
-		idx = i; base = foot; axis = ax; age = 0;
-		bool add = RSQGN_BarrelData.L_ADD(i) != 0;
+		idx = i; fx = f; base = foot; axis = ax; age = 0; sheet = asSheet;
+		k = f ? f.k : 1.0;
+		noTint = RSQGN_BarrelData.L_NOTINT(i) != 0 || (f && !f.tintable);
+		place = asSheet ? 3 : RSQGN_BarrelData.L_FLAT(i);
+		add = RSQGN_BarrelData.L_ADD(i) != 0;
 		A_SetRenderStyle(1.0, add ? STYLE_Add : STYLE_Translucent);
 		bBright = add;                                     // fire is light; smoke is lit by the room
-		if (RSQGN_BarrelData.L_FLAT(i) != 0)
+		if (place == 1 || place == 2)
 		{
 			bFlatSprite = true; bForceXYBillboard = false; bRollSprite = false;
 			angle = yaw;
+		}
+		else if (place == 3)
+		{
+			// flush on the wall: a wall sprite faces along its angle, so it takes the wall's normal (out of the wall)
+			bWallSprite = true; bForceXYBillboard = false;
+			angle = (f && f.boss) ? f.boss.wallAng : yaw;
+			roll = asSheet ? 0 : rollDeg;
 		}
 		else roll = rollDeg;
 		Apply(false);
@@ -239,10 +328,50 @@ class RSQGN_BarrelLayer : RSQGN_BarrelBit
 			frame = RSQGN_BarrelData.T_FRM(t);
 			bInvisible = false;
 		}
-		scale = (RSQGN_BarrelData.T_SX(t) * 0.001, RSQGN_BarrelData.T_SY(t) * 0.001);
-		alpha = RSQGN_BarrelData.T_A(t) * 0.001;
-		double x = RSQGN_BarrelData.T_X(t) * 0.01;
-		Vector3 p = base + (axis.x * x, axis.y * x, RSQGN_BarrelData.T_Z(t) * 0.01);
+		// the tint: the blast's, except on a white flash frame (owner: the white flash stays white in every mode)
+		TintTo((RSQGN_BarrelData.T_W(t) != 0 || !fx) ? 'None' : fx.TintName());
+		double sx = RSQGN_BarrelData.T_SX(t) * 0.001 * k, sy = RSQGN_BarrelData.T_SY(t) * 0.001 * k;
+		double a = RSQGN_BarrelData.T_A(t) * 0.001;
+		double x = RSQGN_BarrelData.T_X(t) * 0.01 * k;
+		Vector3 p = base + (axis.x * x, axis.y * x, RSQGN_BarrelData.T_Z(t) * 0.01 * k);
+		let boss = fx ? fx.boss : null;
+		if (boss && place == 0 && fx.bend)
+		{
+			double g = age / double(max(1, RSQGN_BarrelData.L_TLEN(idx) - 1));
+			// WALL (ctx_a Wall.xform): fire pushed a little off the wall, smoke drifting away from it
+			if (boss.wallOn)
+			{
+				Vector2 off = boss.wallN * (add ? 4.0 : 0.6 * age);
+				p.x += off.x; p.y += off.y;
+			}
+			// LOW CEILING (ctx_a Ceiling.xform, its fold_y): nothing rises through the ceiling -- what would is held under
+			// it, pressed flat and spread along it (fire 0.45 high and 1.4-2.6 wide; smoke 0.6 high, 1.6-3.2 wide)
+			if (boss.ceilOn)
+			{
+				double top = boss.ceilZ - (add ? 8 : 16);
+				if (p.z > top)
+				{
+					p.z = top;
+					if (add) { sx *= 1.4 + 1.2 * g; sy *= 0.45; }
+					else { sx *= 1.6 + 1.6 * g; sy *= 0.6; }
+				}
+			}
+		}
+		if (sheet && boss)
+		{
+			// the sheet: on the wall at the layer's height, along the wall; taller and wider as it ages, a little dimmer
+			double g = age / double(max(1, RSQGN_BarrelData.L_TLEN(idx) - 1));
+			p.x = boss.wallP.x + boss.wallN.x * 0.6 + axis.x * x;
+			p.y = boss.wallP.y + boss.wallN.y * 0.6 + axis.y * x;
+			sx *= 1.6 + 1.0 * g; sy *= 1.5 + 0.9 * g; a *= 0.8;
+		}
+		else if (place == 3 && boss)
+		{
+			p.x = boss.wallP.x + boss.wallN.x * 0.5 + axis.x * x;
+			p.y = boss.wallP.y + boss.wallN.y * 0.5 + axis.y * x;
+		}
+		scale = (sx, sy);
+		alpha = a;
 		SetOrigin(p, moving);
 	}
 
@@ -289,8 +418,8 @@ class RSQGN_BarrelEmber : RSQGN_BarrelBit
 		{
 			int acc = 0; f = 3;
 			for (int i = 0; i < 4; i++) { acc += ftic[i]; if (age < acc) { f = i; break; } }
-			double k = age / double(max(1, life - 1));
-			alpha = k > 0.6 ? max(0.0, 1.0 - (k - 0.6) / 0.4) : 1.0;
+			double q = age / double(max(1, life - 1));
+			alpha = q > 0.6 ? max(0.0, 1.0 - (q - 0.6) / 0.4) : 1.0;
 		}
 		frame = f;
 	}
@@ -302,6 +431,7 @@ class RSQGN_BarrelEmber : RSQGN_BarrelBit
 // walls, the real floor); the bounce is the design's own rule, applied here on landing, because the engine's
 // BounceType ends a bounce at 3 map units a tic up (AutoOff), which would kill every bounce the design has
 // (debris_v3 _sim: bounce while |vz| x bounce > 1.3 x gravity, at most 4 times; else stop and skid, x0.45 a tic).
+// A wall stops it (the engine's own wall check); the mockups' wall bounce (ctx_a _sim: back off it at -0.45) is not done.
 // =====================================================================================================================
 class RSQGN_BarrelDebris : RSQGN_BarrelBit
 {
@@ -366,14 +496,19 @@ class RSQGN_BarrelDebris : RSQGN_BarrelBit
 }
 
 // =====================================================================================================================
-// THE CONDUCTOR: one per barrel blast. Plays sequence `seq` from RSQGN_BarrelData, tic by tic.
+// THE PLAYER: plays ONE sequence `seq` from RSQGN_BarrelData, tic by tic, for a blast's director (explosions.zs
+// RSQGN_Boom: which sequences, where, how big, what tint, what the room bends). A blast may run several at once (the
+// grenade's air blast and its skeet overlay; a barrel and its sky column; ...). The LIGHT is not here: one light a
+// blast, on the director (RSQGN_Boom.Light).
 // =====================================================================================================================
 class RSQGN_BarrelFX : Actor
 {
-	int seq, age, lightStep, popAng;
+	int seq, age, popAng, sheets;
 	Vector2 axis;
-	double yaw, dbAmt;
-	bool onFloor, anyDebris, full;
+	double yaw, dbAmt, k;
+	bool onFloor, anyDebris, full, bend, tintable;
+	RSQGN_Boom boss;
+	Array<RSQGN_BarrelBit> kids;   // what it spawned that wears a tint (embers, debris): retinted when the tint changes
 	Default
 	{
 		+NOINTERACTION
@@ -393,29 +528,43 @@ class RSQGN_BarrelFX : Actor
 		Stop;
 	}
 
-	// the barrel goes off: sounds on the barrel (it stays 1050 tics), the sequence from a conductor at its foot
-	static void Go(Actor barrel)
+	// a sequence at `at` for `b`; kk its scale; bendIt: the room bends it (the blast's own sequence, not an overlay)
+	static RSQGN_BarrelFX Play(Vector3 at, int s, RSQGN_Boom b, double kk = 1.0, bool bendIt = false)
 	{
-		// the two layered blasts (EoS layers two: the second low and pitched down) and the distant one on its own channel
-		barrel.A_StartSound("rsqgn/barrel/near", CHAN_AUTO);
-		barrel.A_StartSound("rsqgn/barrel/near", CHAN_6, CHANF_OVERLAP, 0.6, ATTN_NORM, 0.7);
-		barrel.A_StartSound("rsqgn/barrel/far", CHAN_7);
-		let fx = RSQGN_BarrelFX(Actor.Spawn("RSQGN_BarrelFX", barrel.pos));
-		if (fx) fx.Begin();
+		if (s < 0 || s >= RSQGN_BarrelData.SEQS) return null;
+		let fx = RSQGN_BarrelFX(Actor.Spawn("RSQGN_BarrelFX", at));
+		if (!fx) return null;
+		fx.Begin(s, b, kk, bendIt);
+		if (b) b.fxs.Push(fx);
+		return fx;
 	}
 
-	void Begin()
+	// the tint this sequence's art wears now ('None': its own colours)
+	Name TintName() { return (tintable && boss) ? boss.tintName : 'None'; }
+
+	// the tint changed (Kill Colour): the embers and debris take it now; the layers take it on their next tic (Apply)
+	void Retint()
 	{
-		int k = RSQGN_BarrelSwap.Kind();
-		seq = (k >= 5 && k <= 10) ? k - 5 : random[RSQGNBarrel](0, RSQGN_BarrelData.SEQS - 1);
-		yaw = frandom[RSQGNBarrel](0, 360);
-		axis = (cos(yaw), sin(yaw));
+		Name t = TintName();
+		for (int i = kids.Size() - 1; i >= 0; i--)
+		{
+			if (!kids[i] || kids[i].bDestroyed) { kids.Delete(i); continue; }
+			kids[i].TintTo(t);
+		}
+	}
+
+	void Begin(int s, RSQGN_Boom b, double kk, bool bendIt)
+	{
+		seq = s; boss = b; k = kk; bend = bendIt;
+		tintable = RSQGN_Fx.Tintable(seq);
+		yaw = b ? b.yaw : frandom[RSQGNBarrel](0, 360);
+		axis = b ? b.axis : (cos(yaw), sin(yaw));
 		popAng = random[RSQGNBarrel](0, 359);
 		dbAmt = RSQGN_BarrelSwap.Debris();
 		onFloor = pos.z - floorz < 4;                 // floor rings only on (or just over) a floor
-		let b = RSQGN_BarrelBook.Get();
-		full = !b || b.Room();                        // past the cap: only the first tic's layers (the blast itself)
-		age = 0; lightStep = 0;
+		let bk = RSQGN_BarrelBook.Get();
+		full = !bk || bk.Room();                      // past the cap: only the first tic's layers (the blast itself)
+		age = 0;
 		Step();
 	}
 
@@ -423,7 +572,7 @@ class RSQGN_BarrelFX : Actor
 	{
 		if (IsFrozen()) return;
 		age++;
-		if (age >= RSQGN_BarrelData.Q_LEN(seq)) { A_RemoveLight('RSQGNBarrel'); Destroy(); return; }
+		if (age >= RSQGN_BarrelData.Q_LEN(seq)) { Destroy(); return; }
 		Step();
 	}
 
@@ -435,8 +584,9 @@ class RSQGN_BarrelFX : Actor
 		for (int i = l0; i < l0 + ln; i++)
 		{
 			if (RSQGN_BarrelData.L_START(i) != age) continue;
-			bool flat = RSQGN_BarrelData.L_FLAT(i) != 0;
-			if (flat && !onFloor) continue;
+			int place = RSQGN_BarrelData.L_FLAT(i);
+			if (place == 1 && !onFloor) continue;
+			if (place == 3 && (!boss || !boss.wallOn)) continue;
 			if (age > 0 && (!full || (b && !b.Room()))) continue;
 			double r;
 			switch (RSQGN_BarrelData.L_RMODE(i))
@@ -447,36 +597,31 @@ class RSQGN_BarrelFX : Actor
 			default: r = RSQGN_BarrelData.L_ROLL(i); break;
 			}
 			Vector3 foot = pos;
-			if (flat) foot = (pos.x, pos.y, floorz + 0.3 + 0.05 * (i - l0));   // stacked a hair apart: no z-fighting
-			let ly = RSQGN_BarrelLayer(Spawn("RSQGN_BarrelLayer", foot));
-			if (!ly) continue;
-			ly.RSQCount(b);
-			ly.Setup(i, foot, axis, r, yaw + frandom[RSQGNBarrel](0, 360));
+			if (place == 1) foot = (pos.x, pos.y, floorz + 0.3 + 0.05 * (i - l0));          // stacked a hair apart: no z-fighting
+			else if (place == 2) foot = (pos.x, pos.y, ceilingz - 0.3 - 0.05 * (i - l0));
+			SpawnLayer(b, i, foot, r, false);
+			// WALL: the blast's first fire layers also pressed onto the wall as sheets (at most 4)
+			if (bend && boss && boss.wallOn && place == 0 && RSQGN_BarrelData.L_ADD(i) != 0 && age <= 3 && sheets < 4)
+			{
+				sheets++;
+				SpawnLayer(b, i, foot, r, true);
+			}
 		}
 		if (full)
 		{
 			Embers(b);
 			if (dbAmt > 0) Debris(b);
 		}
-		// the floor light: banded (stepped) strength, re-attached only when the step changes
-		if (age < RSQGN_BarrelData.Q_LLEN(seq))
-		{
-			int v = RSQGN_BarrelData.G_LIGHT(RSQGN_BarrelData.Q_LOFS(seq) + age);
-			if (v != lightStep)
-			{
-				lightStep = v;
-				if (v <= 0) A_RemoveLight('RSQGNBarrel');
-				else
-				{
-					int c = RSQGN_BarrelData.Q_LCOL(seq);
-					Color col = Color(255, ((c >> 16) & 255) * v / 100, ((c >> 8) & 255) * v / 100, (c & 255) * v / 100);
-					A_AttachLight('RSQGNBarrel', DynamicLight.PointLight, col, RSQGN_BarrelData.Q_LRAD(seq), 0, 0, (0, 0, 16));
-				}
-			}
-		}
-		else if (lightStep != 0) { lightStep = 0; A_RemoveLight('RSQGNBarrel'); }
 		// the clatter: when the first piece of debris lands
 		if (anyDebris && age == RSQGN_BarrelData.Q_CLATTER(seq)) A_StartSound("rsqgn/barrel/clatter", CHAN_AUTO, 0, 0.6);
+	}
+
+	void SpawnLayer(RSQGN_BarrelBook b, int i, Vector3 foot, double r, bool sheet)
+	{
+		let ly = RSQGN_BarrelLayer(Spawn("RSQGN_BarrelLayer", foot));
+		if (!ly) return;
+		ly.RSQCount(b);
+		ly.Setup(i, self, foot, axis, r, yaw + frandom[RSQGNBarrel](0, 360), sheet);
 	}
 
 	void Embers(RSQGN_BarrelBook b)
@@ -512,8 +657,8 @@ class RSQGN_BarrelFX : Actor
 	void Ember(RSQGN_BarrelBook b, int g, Vector2 off, Vector2 v)
 	{
 		if (b && !b.Room()) return;
-		double z = frandom[RSQGNBarrel](RSQGN_BarrelData.E_Z0(g), RSQGN_BarrelData.E_Z1(g)) * 0.001;
-		let e = RSQGN_BarrelEmber(Spawn("RSQGN_BarrelEmber", pos + (off.x, off.y, z)));
+		double z = frandom[RSQGNBarrel](RSQGN_BarrelData.E_Z0(g), RSQGN_BarrelData.E_Z1(g)) * 0.001 * k;
+		let e = RSQGN_BarrelEmber(Spawn("RSQGN_BarrelEmber", pos + (off.x * k, off.y * k, z)));
 		if (!e) return;
 		e.RSQCount(b);
 		e.kind = RSQGN_BarrelData.E_KIND(g);
@@ -530,6 +675,9 @@ class RSQGN_BarrelFX : Actor
 			for (int i = 0; i < 4; i++) { e.ftic[i] = random[RSQGNBarrel](2, 3); e.life += e.ftic[i]; }
 			e.roll = 90 * random[RSQGNBarrel](0, 3);
 		}
+		e.noTint = !tintable;
+		e.TintTo(TintName());
+		kids.Push(e);
 	}
 
 	void Debris(RSQGN_BarrelBook b)
@@ -554,8 +702,8 @@ class RSQGN_BarrelFX : Actor
 	{
 		double ang = frandom[RSQGNBarrel](RSQGN_BarrelData.D_AN0(g), RSQGN_BarrelData.D_AN1(g)) * 0.001;
 		double v = frandom[RSQGNBarrel](RSQGN_BarrelData.D_SP0(g), RSQGN_BarrelData.D_SP1(g)) * 0.001;
-		double z = frandom[RSQGNBarrel](RSQGN_BarrelData.D_Z0(g), RSQGN_BarrelData.D_Z1(g)) * 0.001;
-		double xo = frandom[RSQGNBarrel](RSQGN_BarrelData.D_X0(g), RSQGN_BarrelData.D_X1(g)) * 0.001;
+		double z = frandom[RSQGNBarrel](RSQGN_BarrelData.D_Z0(g), RSQGN_BarrelData.D_Z1(g)) * 0.001 * k;
+		double xo = frandom[RSQGNBarrel](RSQGN_BarrelData.D_X0(g), RSQGN_BarrelData.D_X1(g)) * 0.001 * k;
 		double dir = frandom[RSQGNBarrel](0, 360);
 		double bb = frandom[RSQGNBarrel](RSQGN_BarrelData.D_B0(g), RSQGN_BarrelData.D_B1(g)) * 0.001;
 		int hold = random[RSQGNBarrel](RSQGN_BarrelData.D_HOLD0(g), RSQGN_BarrelData.D_HOLD1(g));
@@ -591,6 +739,9 @@ class RSQGN_BarrelFX : Actor
 			p.hold = hold; p.cool = cool; p.ph = ph; p.cap = cap;
 			p.twinkle = RSQGN_BarrelData.D_TWINK(g);
 			p.tw0 = p.twinkle > 0 ? random[RSQGNBarrel](0, p.twinkle - 1) : 0;
+			p.noTint = !tintable;
+			p.TintTo(TintName());
+			kids.Push(p);
 		}
 	}
 

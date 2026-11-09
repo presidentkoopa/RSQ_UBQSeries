@@ -58,15 +58,22 @@ class RSQGN_Kind play
 		return (k >= 0 && k < COUNT) ? C[k] : -1;
 	}
 
-	// THE LOOK AND THE SOUND of a blast, by kind (the thrown grenade's Boom and the one in the hand)
+	// THE LOOK AND THE SOUND of a blast, by kind (the thrown grenade's Boom and the one in the hand).
+	// GRENADE EXPLOSION (rsqgn_blast_style, owner 11-09): New -- the approved pixel-art blast (explosions.zs RSQGN_Boom:
+	// its sequences, contexts, colour, light) -- or Original, the UAC Survival Pack's (blast.zs RSQGN_Blast). The look
+	// only: the damage is thrown.zs Blast either way. The new blast plays where the kind has a fireball today (frag,
+	// impact, incendiary); with Explosion Colour: Grenade Kind it plays on every kind, in the kind's colour, beside the
+	// kind's own effect.
 	static void Look(Actor at, int k, Actor by = null)
 	{
 		at.A_AlertMonsters();
+		bool newBlast = RSQGN_Fx.NewGrenade();
+		if (newBlast && (Fireball(k) || RSQGN_Fx.ColourMode() == 3)) RSQGN_Boom.ForGrenade(at, k);
 		if (Fireball(k))
 		{
 			at.A_StartSound("rsqgn/explode", CHAN_AUTO);
 			at.A_StartSound("rsqgn/farexpl", CHAN_7);
-			at.A_SpawnItemEx("RSQGN_Blast", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
+			if (!newBlast) at.A_SpawnItemEx("RSQGN_Blast", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			// BIG BANG: a bigger fireball over the frag's, and the blast's low end (RS Combat FX RSI9, RS Ballistics big1)
 			int bb = RSQGN_Upg.Lv(by, "BigBang");
 			if (bb > 0)

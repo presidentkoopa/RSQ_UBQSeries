@@ -89,9 +89,9 @@ nearest-neighbour. A clatter plays when the first debris lands.
 explosion on its own channel and a small metal clatter.
 
 **Options** (on the main page, under Barrels): **Barrels** (On; Off = the stock barrel, untouched), **Explosion**
-(Random, or always one of the six), **Replace Brutal Doom's Barrels** (Off), **Debris** (1.0 = all of it, down to 0).
-Test and Debug: **Effects Cap** (600 effect pieces alive at once; past it a barrel shows only its first-tic flash, so a
-long chain reaction stays cheap on Quest).
+(Random, or always one of the six), **Replace Brutal Doom's Barrels** (Off). Debris, colour, lights and the room's
+contexts are under Explosions (below). Test and Debug: **Effects Cap** (600 effect pieces alive at once, barrels and
+grenades together; past it a blast shows only its first-tic flash, so a long chain reaction stays cheap on Quest).
 
 **With Brutal Doom** (BD22 VR Reloaded or any Brutal Doom with its `ExplosiveBarrel1`): by default these barrels stand
 down and Brutal Doom's barrels are its own. With Replace Brutal Doom's Barrels on, ours take over both Doom's barrel
@@ -101,6 +101,76 @@ barrels as they spawn: change them, then start a map (Barrels Off also turns sta
 
 Other series mods keep seeing these as barrels (Melee's barrel kicks, SlowMo's barrel cues, Distance Grab's barrel
 grab): the barrel is a subclass of Doom's.
+
+## Explosions
+
+Every barrel and every grenade blast (owner, 11-09: "options for explosion customization like colors and reactivity
+and context"). The look only: no option here changes damage, radius or timing.
+
+**The new grenade blast** (the owner's approved design, "very pleased with all four grenade tosses"). A white 8-point
+crack star, then the same star as a 2-tic solid white silhouette, opening into a white ball and ring; the star's eight
+points flung out as hard lines; 44 hard pixel shrapnel streaks out to 200-255 units in about five tics (white-hot
+heads, stepping to orange as they slow), each that hits the floor leaving a spark and a hot pepper mark that cools to
+a dark speck, and ricocheting off any wall in its way; two shock rings at 200 and 255 units (the reach of the
+grenade's two damage parts), flat on the floor when it went off on the floor, upright in the air; a second, smaller
+crack at tic 6; three small fast child bursts; pixel embers; hot debris that bounces, settles and cools; blocky smoke.
+**Shot out of the air** it adds the gold reward beat: a gold crosshair ring locking on, a gold fireball ring and gold
+embers raining down. **Impact** and **Incendiary** grenades show it in their own colour (the other kinds keep their
+own look, unless Explosion Colour is Grenade Kind).
+
+**Explosion Colour** (barrels and grenades): **Normal** (fire; the Impact and Incendiary grenades in their colour),
+**Room Complement** (the colour opposite the room's RSQ Glow In The Dark glow, read from the floor's glow at the blast;
+Normal without Glow In The Dark or in a room with no glow), **Kill Colour** (the blast turns the tier colour of the
+highest-tier monster it kills, the moment the kill lands; RSQ Monsters' ladder; Normal without RSQ Monsters),
+**Grenade Kind** (every grenade kind shows the new blast in its colour, beside its own effect). The white flash stays
+white in every mode.
+
+**Explosion Lights**: **Full** (stepped beats: a white-yellow punch on the flash, then the fire's colour while the
+blast burns, then a dim red glow while the embers fall, then off; the colour follows Explosion Colour and the room:
+pale cold blue under water, the liquid's colour over nukage, lava or blood), **Simple** (the punch only), **Off**.
+One light a blast, at most 8 at once, no shadow maps.
+
+**Debris**: how much of each blast's debris is thrown (1.0 all, down to 0).
+
+**Contexts** (a master switch, then a row each). The room bends the blast it is in; each is a change to the blast,
+never a different blast.
+- **Wall** (a wall within 40 units of the blast): the blast fans out along the wall, its fire pushed off the face
+  with a sheet of fire pressed flat on the wall, hot runs up and down the face (barrels), smoke drifting away, and a
+  scorch that glows and then stays as soot. Shrapnel ricochets off walls whatever this row says.
+- **Low Ceiling** (floor to ceiling under 96 units, not sky): fire and smoke can't rise through it: they flatten and
+  spread under it, fire rolls along it, smoke pools under it, soot is left on it.
+- **Open Sky**: the column keeps climbing and a column of dark smoke stays standing.
+- **Water** (the blast fully under water): a white flash and no fire; gas bubbles and a gas dome rising, a muffled
+  pressure ring, silt kicked off the floor, murk; the grenade's shrapnel stopped short in pale streaks trailing bubbles.
+- **Liquid Floors** (nukage, lava, blood, by the floor's flat): a crown of drops and a tall spout of the liquid, crest
+  waves running out, blobs that plop and sink, a stain left on the floor; the light in the liquid's colour.
+- **Chain**: a barrel set off by another barrel's blast is one link further down the chain.
+- **Crowd**: a blast that kills 3 or more monsters -- each of those deaths gets a gib burst (a blood burst, chunks and
+  bits, the body's one-tic white pop). Its slow motion is RSQ SlowMo's own (its Barrel Multi-Kill and Grenade Blast
+  cues); this row starts none.
+
+**Chain Escalation**: down a chain each barrel blows bigger (#5, #5 x1.25, #6, #6 x1.2, then a finale: for now the
+biggest of the six x1.4, until the owner's mega blast is exported) and blinks shorter (10, 8, 6, 6, 4 tics). It stands
+longer instead, so every barrel still goes off on the stock tic. **Screen Kick on Chains**: a small, short quake from
+the third link on; never with RSQ Accessibility's Photosensitive Mode or a Comfort Vignette.
+
+**Grenade Explosion: New / Original**: Original brings back the UAC Survival Pack blast the grenade had before.
+
+**What the game draws differently from the approved mockups** (each the nearest honest equivalent):
+- The shock rings, the star rays, the liquid's crest waves, its stain and the ceiling soot are drawn once per tic into
+  sprites at 2 map units a pixel (the mockups' are 0.8): a 1-pixel ring 200 units out would vanish in a headset.
+- Shrapnel, the floor pepper, the ricochet sparks and the bubbles are particles: square only if your Particle Style
+  is Square. A floor ring is a circle lying flat on the floor, not the GIF's squashed oval.
+- Debris stops at a wall instead of bouncing back off it.
+- Wall: the blast is not folded pixel by pixel at the wall plane: it fans along the wall, its fire is pushed off the
+  face and copies of its first fire layers lie flat on the wall (wall sprites); the scorch is two decals (a hot glow
+  that fades, the soot that stays).
+- Low Ceiling: a layer that would rise into the ceiling is held under it, flattened and widened; it is not folded.
+- Water: no surface splash and no bubble pops at the surface (stock calls cannot find the surface above a blast).
+- Liquid Floors: the four fat jets are not drawn (the late spout stands in for them).
+- Crowd: the corpse stays (the gib is drawn over it); its bits are blood red only (the monster's own colours would
+  need its sprite's pixels); no held-frame slow motion or flat flash here (RSQ SlowMo owns the time).
+- The barrel overlays (ceiling, sky, wall runs, liquids) were designed on barrels; on a grenade they play smaller.
 
 ## How To Play
 
@@ -157,7 +227,21 @@ the types you have learned, Frag Only the frag alone).
 | Barrels | On | Our barrel: the blink and the six explosions (Off: the stock barrel) |
 | Explosion | Random | Random, or always #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column, #10 Neon Crescent |
 | Replace Brutal Doom's Barrels | Off | With Brutal Doom loaded, ours replace its barrels (off: its barrels stay its own) |
-| Debris | 1.0 | How much of each blast's debris is thrown |
+| **Explosions** | | |
+| Grenade Explosion | New | New (the approved pixel-art blast) or Original (the UAC Survival Pack's) |
+| Explosion Colour | Normal | Normal, Room Complement (RSQ Glow In The Dark), Kill Colour (RSQ Monsters), Grenade Kind |
+| Explosion Lights | Full | Full (stepped), Simple (one flash), Off |
+| Debris | 1.0 | How much of each blast's debris is thrown, barrels and grenades |
+| Contexts | On | The room bends the blast (the seven rows below); Off: every blast as in the open |
+| Wall | On | Fans along a near wall, a fire sheet on it, a scorch |
+| Low Ceiling | On | Held and spread under a low ceiling, soot |
+| Open Sky | On | A taller column, smoke that stays |
+| Water | On | Under water: a white flash, bubbles, no fire |
+| Liquid Floors | On | Nukage, lava, blood: drops, waves, a stain |
+| Chain | On | A barrel set off by another barrel is a chain link (the next two rows) |
+| Crowd | On | A blast that kills 3+: gib bursts (the slow motion is RSQ SlowMo's Barrel Multi-Kill) |
+| Chain Escalation | On | Each link bigger, its blink shorter (the blast keeps stock timing) |
+| Screen Kick on Chains | On | A small quake from the third link (never with Photosensitive Mode or a Comfort Vignette) |
 | **Shooting** | | |
 | Shoot Thrown Grenades | On | Shots set off thrown grenades |
 | Only in Slow-Mo | Off | ...only while RSQ SlowMo has the world slowed |
@@ -167,7 +251,7 @@ the types you have learned, Frag Only the frag alone).
 
 **Test and Debug**: Fuse (3.0 s), Throw Speed (2.5 m/s), Throw Strength (1.0), Arc (0.35); Gravity (0.27), Floor Bounce
 (0.5), Wall Bounce (0.25), Ground Drag (0.82), Shot Reach (0.35 m: 0.10 to 0.35, it only tightens), Slow-Mo Speed (0.5);
-Teeth Mouth Reach (0.15 m), Again Beyond (0.71 m), Hold (12 tics); Barrels Effects Cap (600); Debug Log (Off); Reset All.
+Teeth Mouth Reach (0.15 m), Again Beyond (0.71 m), Hold (12 tics); Explosions Effects Cap (600); Debug Log (Off); Reset All.
 
 ## Works with
 

@@ -24,6 +24,12 @@ THE SIX (the owner's numbers):
 A copy of the spec scripts and their cut source frames is kept in Grenade/tools/barrel_spec/ (restore_spec() puts
 them back under /tmp when /tmp was wiped, then the scripts run as they were written).
 
+THE NEW GRENADE BLAST AND THE EXPLOSION CONTEXTS (owner 11-09) are collected by the sibling blast_export.py (its
+collectors run here as children: `collect G|CA|CG|C2`) and written into the SAME tables after the six, so one player
+(barrel.zs RSQGN_BarrelFX) plays everything. Their frames go to sprites/rsqgn/blast/ under QE** names (the six keep
+their QB** / QX** names and files byte for byte: each set has its own pool), the tints to TRNSLATE.txt (a generated
+block), the wall scorch's two pictures to graphics/rsqgn/.
+
 WHAT A GAME CANNOT DO THE WAY THE GIF DOES (each is the nearest faithful equivalent; listed in README/CREDITS too):
   - A colour that cools DURING a held frame (set B `cool`) is baked once per frame, at the middle tic of that frame.
   - The floor rings' squash is the GIF's perspective of a circle on the floor: in game they are +FLATSPRITE circles
@@ -41,6 +47,9 @@ GREN = os.path.dirname(HERE)
 SPEC_A = '/tmp/fx_agentA'
 SPEC_B = '/tmp/fx_agentB'
 SPR_OUT = os.path.join(GREN, 'sprites', 'rsqgn', 'barrel')
+SPR_NEW = os.path.join(GREN, 'sprites', 'rsqgn', 'blast')       # the new sets' sprites (QE**)
+GFX_OUT = os.path.join(GREN, 'graphics', 'rsqgn')               # decal pictures
+TRN = os.path.join(GREN, 'TRNSLATE.txt')
 ZS_OUT = os.path.join(GREN, 'zscript', 'rsqgn', 'barrel_data.zs')
 SPEC_COPY = os.path.join(HERE, 'barrel_spec')
 
@@ -347,7 +356,8 @@ def b_layer(l, U, BX, FLOOR, fx_v3):
 # =====================================================================================================================
 def restore_spec():
     """put the archived spec back under /tmp when it is missing (the scripts carry absolute /tmp paths)"""
-    for name, dst in (('fx_agentA', SPEC_A), ('fx_agentB', SPEC_B), ('eosfr', '/tmp/eosfr')):
+    for name, dst in (('fx_agentA', SPEC_A), ('fx_agentB', SPEC_B), ('eosfr', '/tmp/eosfr'), ('fx_agentG', '/tmp/fx_agentG'),
+                      ('fx_ctx1', '/tmp/fx_ctx1'), ('fx_ctx2', '/tmp/fx_ctx2')):
         src = os.path.join(SPEC_COPY, name)
         if not os.path.exists(dst) and os.path.exists(src):
             shutil.copytree(src, dst)
@@ -357,12 +367,15 @@ def archive_spec():
     """keep a copy of the spec scripts and their cut frames with the tool (small; tools/ never ships)"""
     import glob
     for name, src, pats in (('fx_agentA', SPEC_A, ['*.py']), ('fx_agentB', SPEC_B, ['*.py', 'cut']),
-                            ('eosfr', '/tmp/eosfr', ['*'])):
+                            ('eosfr', '/tmp/eosfr', ['*']), ('fx_agentG', '/tmp/fx_agentG', ['*.py', 'src']),
+                            ('fx_ctx1', '/tmp/fx_ctx1', ['*.py', 'a/*.py', 'g/*.py']),
+                            ('fx_ctx2', '/tmp/fx_ctx2', ['*.py', 'lib/*.py'])):
         dst = os.path.join(SPEC_COPY, name)
         os.makedirs(dst, exist_ok=True)
         for pat in pats:
             for p in glob.glob(os.path.join(src, pat)):
-                q = os.path.join(dst, os.path.basename(p))
+                q = os.path.join(dst, os.path.relpath(p, src))
+                os.makedirs(os.path.dirname(q), exist_ok=True)
                 if os.path.isdir(p):
                     if os.path.exists(q): shutil.rmtree(q)
                     shutil.copytree(p, q)
@@ -391,56 +404,94 @@ SHAPES = {'dot': [[1]], 'bar': [[1, 1]], 'vbar': [[1], [1]], 'sq': [[1, 1], [1, 
           'shard': [[1, 1, 1], [0, 1, 0]], 'chunk': [[0, 1, 1], [1, 1, 1], [1, 1, 0]], 'slab': [[1, 1, 1], [1, 1, 1]],
           'tri': [[1, 0, 0], [1, 1, 0], [1, 1, 1]]}
 SHAPE_ORDER = ['dot', 'bar', 'vbar', 'sq', 'L', 'shard', 'chunk', 'slab', 'tri']
+import blast_export
+SHAPES.update(blast_export.EXTRA_SHAPES)
+
+
+class Namer:
+    """the new sets' sprite names: QE00, QE01, ... (base 36), one allocator for every kind of frame, so nothing clashes"""
+    def __init__(s): s.n = 0
+    def next(s):
+        nm = 'QE' + B36[s.n // 36] + B36[s.n % 36]; s.n += 1
+        return nm
+
+
+def is_white(c):
+    """a frame drawn all white (a flash silhouette): never tinted (owner: the white flash stays white in every mode)"""
+    al = c[..., 3] > 0
+    return bool(al.any()) and int(c[..., :3][al].min()) >= 235
 B36 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 LETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+
+BARREL_NUMS = {n for n, _, _, _ in SEQS}
 
 
 def main():
     restore_spec()
     data = {}
-    for st in 'AB':
+    extra = {}
+    for st in ('A', 'B', 'G', 'CA', 'CG', 'C2'):
         tmp = f'/tmp/rsqgn_barrel_collect_{st}.pkl'
         subprocess.run([sys.executable, os.path.abspath(__file__), 'collect', st, tmp], check=True)
-        data.update(pickle.load(open(tmp, 'rb')))
+        got = pickle.load(open(tmp, 'rb'))
+        for k in [k for k in got if isinstance(k, str)]: extra[k] = got.pop(k)
+        data.update(got)
     archive_spec()
-    if os.path.isdir(SPR_OUT): shutil.rmtree(SPR_OUT)
-    os.makedirs(SPR_OUT)
-
-    # ---- layer frames: global dedupe, packed 26 to a QB name -----------------------------------------------
-    uniq = {}        # hash -> global index
-    ulist = []       # (rgba, gx, gy)
-    for num in sorted(data):
-        for L in data[num]['layers']:
-            L['fmap'] = []
-            for fr in L['frames']:
-                t = trim(fr)
-                if t is None: L['fmap'].append(-1); continue
-                c, gx, gy = t
-                h = hashlib.sha1(c.tobytes() + struct.pack('>iiii', gx, gy, *c.shape[:2])).hexdigest()
-                if h not in uniq:
-                    uniq[h] = len(ulist); ulist.append((c, gx, gy))
-                L['fmap'].append(uniq[h])
-    names = []
-    n = 0
-    while len(names) * 26 < len(ulist):
-        nm = 'QB' + B36[n // 36] + B36[n % 36]; n += 1
-        if nm.startswith('QBF'): continue      # QBFG* is RS Monsters' sound lump (QBFGFIRE, QBFGHIT): keep clear
-        names.append(nm)
+    for d in (SPR_OUT, SPR_NEW):
+        if os.path.isdir(d): shutil.rmtree(d)
+        os.makedirs(d)
+    namer = Namer()
     spr_names = []        # every sprite name the data refers to, in order (index = the data's sprite number)
-    for nm in names: spr_names.append(nm)
-    for gi, (c, gx, gy) in enumerate(ulist):
-        nm = names[gi // 26]; fl = LETTERS[gi % 26]
-        save_png(os.path.join(SPR_OUT, f'{nm}{fl}0.png'), c, gx, gy)
+    spr_dir = {}          # name -> the folder its files are in
 
-    # ---- embers: RSS0 A-D, raw or through the sequence's ramp (QXE*) -------------------------------------------
+    def add_name(nm, new):
+        spr_names.append(nm); spr_dir[nm] = SPR_NEW if new else SPR_OUT
+        return len(spr_names) - 1
+
+    # ---- layer frames: dedupe per pool (the six: QB names, as before; the new sets: QE names), 26 to a name ----------
+    for pool_new in (False, True):
+        uniq = {}; ulist = []
+        for num in sorted(data):
+            if (num not in BARREL_NUMS) != pool_new: continue
+            for L in data[num]['layers']:
+                L['fmap'] = []; L['white'] = []
+                for fr in L['frames']:
+                    t = trim(fr)
+                    if t is None: L['fmap'].append(None); L['white'].append(0); continue
+                    c, gx, gy = t
+                    L['white'].append(1 if is_white(c) else 0)
+                    h = hashlib.sha1(c.tobytes() + struct.pack('>iiii', gx, gy, *c.shape[:2])).hexdigest()
+                    if h not in uniq:
+                        uniq[h] = len(ulist); ulist.append((c, gx, gy))
+                    L['fmap'].append(uniq[h])
+        names = []
+        n = 0
+        while len(names) * 26 < len(ulist):
+            if pool_new: nm = namer.next()
+            else:
+                nm = 'QB' + B36[n // 36] + B36[n % 36]; n += 1
+                if nm.startswith('QBF'): continue      # QBFG* is RS Monsters' sound lump (QBFGFIRE, QBFGHIT): keep clear
+            names.append(nm)
+        idx = [add_name(nm, pool_new) for nm in names]
+        for gi, (c, gx, gy) in enumerate(ulist):
+            nm = names[gi // 26]
+            save_png(os.path.join(spr_dir[nm], f'{nm}{LETTERS[gi % 26]}0.png'), c, gx, gy)
+        for num in sorted(data):
+            if (num not in BARREL_NUMS) != pool_new: continue
+            for L in data[num]['layers']:
+                L['fmap'] = [None if g is None else (idx[g // 26], g % 26) for g in L['fmap']]
+
+    # ---- embers: RSS0 A-D, raw or through the sequence's ramp (QXE* for the six; a QE name for a new set's ramp) ------
     emb_variants = {}
     for num in sorted(data):
         for e in data[num]['embers']:
             key = 'raw' if e['ramp'] is None else hashlib.sha1(np.asarray(e['ramp']).tobytes() + struct.pack('>d', e['gain'])).hexdigest()
             if key not in emb_variants:
-                nm = 'QXE' + LETTERS[len(emb_variants)]
+                new = num not in BARREL_NUMS
+                nm = namer.next() if new else 'QXE' + LETTERS[len([v for v in emb_variants.values() if v.startswith('QXE')])]
                 emb_variants[key] = nm
-                spr_names.append(nm)
+                add_name(nm, new)
                 for i, f in enumerate(e['frames'][:4]):
                     a = np.asarray(f).astype(float)
                     if e['ramp'] is not None:
@@ -449,28 +500,41 @@ def main():
                         rgb = a[..., :3]
                     al = np.where(a[..., 3] > 127, 255, 0)
                     t = trim(frame_rec(np.dstack([rgb, al]), a.shape[1] / 2, a.shape[0] / 2))
-                    save_png(os.path.join(SPR_OUT, f'{nm}{LETTERS[i]}0.png'), *t)
+                    save_png(os.path.join(spr_dir[nm], f'{nm}{LETTERS[i]}0.png'), *t)
             e['spr'] = spr_names.index(emb_variants[key])
 
-    # ---- debris: one QX name per (shape, palette), a frame per palette step ---------------------------------
+    # ---- debris: one name per (shape, palette), a frame per palette step; or one name per picture (imgs) ------------
     pal_names = {}
     deb_spr = {}
     for num in sorted(data):
+        new = num not in BARREL_NUMS
         for d in data[num]['debris']:
             d['opts'] = []
+            if d.get('imgs') is not None:          # pictures (the crowd's chunks): one sprite each, one frame
+                for im in d['imgs']:
+                    a = np.asarray(im).copy(); a[..., 3] = np.where(a[..., 3] > 127, 255, 0)
+                    key = ('img', hashlib.sha1(a.tobytes()).hexdigest())
+                    if key not in deb_spr:
+                        nm = namer.next(); deb_spr[key] = nm; add_name(nm, True)
+                        t = trim(frame_rec(a, a.shape[1] / 2, a.shape[0] / 2))
+                        c, gx, gy = t
+                        save_png(os.path.join(spr_dir[nm], f'{nm}A0.png'), c, c.shape[1] // 2, c.shape[0])
+                    d['opts'].append((spr_names.index(deb_spr[key]), 1, 1 / len(d['imgs']), 0))
+                continue
             pw = sum(w for w, _ in d['palettes'])
             shapes = list(d['shapes'])
             sw = d.get('shape_w') or [1] * len(shapes)
             for w, pal in d['palettes']:
                 pk = tuple(tuple(c) for c in pal)
-                if pk not in pal_names: pal_names[pk] = LETTERS[len(pal_names)]
-                for s, swt in zip(shapes, sw):
-                    key = (s, pk, round(d['shade'], 3))
+                if pk not in pal_names: pal_names[pk] = LETTERS[len(pal_names)] if not new else None
+                for s_, swt in zip(shapes, sw):
+                    key = (s_, pk, round(d['shade'], 3))
                     if key not in deb_spr:
-                        nm = 'QX' + str(SHAPE_ORDER.index(s)) + pal_names[pk]
+                        if new or pal_names[pk] is None or s_ not in SHAPE_ORDER: nm = namer.next()
+                        else: nm = 'QX' + str(SHAPE_ORDER.index(s_)) + pal_names[pk]
                         assert nm not in spr_names, nm
-                        deb_spr[key] = nm; spr_names.append(nm)
-                        shp = np.array(SHAPES[s], bool); hh, ww = shp.shape
+                        deb_spr[key] = nm; add_name(nm, nm.startswith('QE'))
+                        shp = np.array(SHAPES[s_], bool); hh, ww = shp.shape
                         for ci, col in enumerate(pal):
                             img = np.zeros((hh, ww, 4), np.uint8)
                             for yy in range(hh):
@@ -478,22 +542,43 @@ def main():
                                     if not shp[yy, xx]: continue
                                     cc = np.array(col, float) * (d['shade'] if (hh > 1 and yy == hh - 1 and ww > 1) else 1)
                                     img[yy, xx, :3] = np.clip(np.round(cc), 0, 255); img[yy, xx, 3] = 255
-                            save_png(os.path.join(SPR_OUT, f'{nm}{LETTERS[ci]}0.png'), img, ww // 2, hh)
+                            save_png(os.path.join(spr_dir[nm], f'{nm}{LETTERS[ci]}0.png'), img, ww // 2, hh)
                     d['opts'].append((spr_names.index(deb_spr[key]), len(pal), (w / pw) * (swt / sum(sw)),
                                       1 if max(pal[0]) >= 200 else 0))   # bright: the hot palettes start near white/yellow
 
     write_zs(data, spr_names)
-    total = sum(os.path.getsize(os.path.join(SPR_OUT, f)) for f in os.listdir(SPR_OUT))
-    print(f'sprites: {len(os.listdir(SPR_OUT))} files, {total / 1024:.1f} KiB, {len(spr_names)} names; '
-          f'layer frames {len(ulist)} unique')
+    write_trn()
+    if '_scorch' in extra:
+        os.makedirs(GFX_OUT, exist_ok=True)
+        hot, soot, (gx, gy) = extra['_scorch']
+        save_png(os.path.join(GFX_OUT, 'QESCRHOT.png'), hot, gx, gy)
+        save_png(os.path.join(GFX_OUT, 'QESCRSOT.png'), soot, gx, gy)
+    for d, what in ((SPR_OUT, 'barrel'), (SPR_NEW, 'blast')):
+        total = sum(os.path.getsize(os.path.join(d, f)) for f in os.listdir(d))
+        print(f'{what} sprites: {len(os.listdir(d))} files, {total / 1024:.1f} KiB')
+    print(f'{len(spr_names)} sprite names; sequences {len(data)}')
+
+
+def write_trn():
+    """the tints' generated block in TRNSLATE.txt (replaced whole each run)"""
+    src = open(TRN).read()
+    blk = blast_export.trnslate_block()
+    a = src.find('// ---- GENERATED by Grenade/tools/blast_export.py')
+    if a >= 0:
+        b = src.find('// ---- end of the generated block ----', a)
+        b = src.find('\n', b) + 1 if b >= 0 else len(src)
+        src = src[:a] + blk + '\n' + src[b:]
+    else:
+        src = src.rstrip('\n') + '\n\n' + blk + '\n'
+    open(TRN, 'w').write(src)
 
 
 def I(v, s=1000): return int(round(v * s))
 
 
 def write_zs(data, spr_names):
-    S = {k: [] for k in ('L_SEQ', 'L_START', 'L_FLAT', 'L_ADD', 'L_RMODE', 'L_ROLL', 'L_TOFS', 'L_TLEN',
-                         'T_SPR', 'T_FRM', 'T_SX', 'T_SY', 'T_A', 'T_X', 'T_Z',
+    S = {k: [] for k in ('L_SEQ', 'L_START', 'L_FLAT', 'L_ADD', 'L_RMODE', 'L_ROLL', 'L_TOFS', 'L_TLEN', 'L_NOTINT',
+                         'T_SPR', 'T_FRM', 'T_SX', 'T_SY', 'T_A', 'T_X', 'T_Z', 'T_W',
                          'E_SEQ', 'E_KIND', 'E_START', 'E_TICS', 'E_PER', 'E_SPR', 'E_SCALE', 'E_GRAV', 'E_VZ0', 'E_VZ1',
                          'E_Z0', 'E_Z1', 'E_R0', 'E_R1', 'E_XMIN', 'E_VX', 'E_LIFE0', 'E_LIFE1',
                          'D_SEQ', 'D_START', 'D_N', 'D_Z0', 'D_Z1', 'D_X0', 'D_X1', 'D_SP0', 'D_SP1', 'D_AN0', 'D_AN1',
@@ -510,12 +595,14 @@ def write_zs(data, spr_names):
         S['Q_D0'].append(len(S['D_SEQ'])); S['Q_DN'].append(len(D['debris']))
         for L in D['layers']:
             S['L_SEQ'].append(si); S['L_START'].append(L['start']); S['L_FLAT'].append(int(L['flat']))
+            S['L_NOTINT'].append(int(bool(L.get('notint', False))))
             S['L_ADD'].append(int(L['add'])); S['L_RMODE'].append(L['rollmode']); S['L_ROLL'].append(I(L['roll'], 1))
             S['L_TOFS'].append(len(S['T_SPR'])); S['L_TLEN'].append(len(L['track']))
             for (fi, sx, sy, a, x, z) in L['track']:
                 g = L['fmap'][fi]
-                S['T_SPR'].append(-1 if g < 0 else g // 26); S['T_FRM'].append(-1 if g < 0 else g % 26)
-                S['T_SX'].append(I(sx)); S['T_SY'].append(I(sy)); S['T_A'].append(I(a) if g >= 0 else 0)
+                S['T_SPR'].append(-1 if g is None else g[0]); S['T_FRM'].append(-1 if g is None else g[1])
+                S['T_SX'].append(I(sx)); S['T_SY'].append(I(sy)); S['T_A'].append(I(a) if g is not None else 0)
+                S['T_W'].append(L['white'][fi])
                 S['T_X'].append(I(x, 100)); S['T_Z'].append(I(z, 100))
             end = max(end, L['start'] + len(L['track']))
         for e in D['embers']:
@@ -574,11 +661,13 @@ def write_zs(data, spr_names):
                 + '\n'.join(lines) + f'\n\t\t}};\n\t\treturn {name}_T[i];\n\t}}\n')
 
     doc = {
-        'L_': 'LAYERS (a billboard or floor flat each): its sequence (0 = #5 ... 5 = #10), first tic after the blast, '
-              'flat (1 = +FLATSPRITE on the floor), Add (1) or Translucent (0), roll mode (0 fixed, 1 random, 2 the '
-              'three pops 90-130 deg apart, 3 a random right angle), fixed roll (deg), and its track (offset, tics)',
+        'L_': 'LAYERS: its sequence, first tic after the blast, placement (0 billboard, 1 +FLATSPRITE on the floor, 2 '
+              '+FLATSPRITE under the ceiling, 3 +WALLSPRITE on the wall), Add (1) or Translucent (0), roll mode (0 fixed, '
+              '1 random, 2 the three pops 90-130 deg apart, 3 a random right angle), fixed roll (deg), its track (offset, '
+              'tics), and 1 = never tinted (water, liquids, gore, smoke left standing: their own colours)',
         'T_': 'TRACKS, one entry a tic: sprite (index into SPR, -1 = nothing drawn), frame (0 = A), x and y scale '
-              '(map units a sprite pixel, x1000), alpha (x1000), x and z offset from the barrel\'s foot (map units x100)',
+              '(map units a sprite pixel, x1000), alpha (x1000), x and z offset from the sequence\'s base (map units x100), '
+              'and 1 = a white flash frame (never tinted: owner, the white flash stays white in every mode)',
         'E_': 'EMBERS (EoS BarrelFire, RS Combat FX RSS0 pixel embers): kind (0 set A: n a tic anywhere in a disc; 1 set '
               'B: mirrored pairs), first tic, tics, a tic, sprite, scale x1000, gravity x1000, up speed, height, radius '
               '(x1000), vx (x1000), life',
@@ -589,12 +678,30 @@ def write_zs(data, spr_names):
         'Q_': 'SEQUENCES: their first layer / ember group / debris group and how many, floor light colour (0xRRGGBB), radius, its stepped track in G_LIGHT (0-100 a tic), '
               'how long the sequence runs (tics), the tic the first debris lands (the clatter)',
     }
-    out = ['// RSQ Grenade -- THE BARREL EXPLOSIONS\' DATA. GENERATED by Grenade/tools/barrel_export.py from the approved',
-           '// Python sequences (/tmp/fx_agentA seqB_v3.py, /tmp/fx_agentB seqs_v3.py and seqs_v2.py; archived in',
-           '// Grenade/tools/barrel_spec/). DO NOT EDIT BY HAND: change the sequence, run the exporter. barrel.zs plays it.',
-           '// Sequences in order: ' + ', '.join(f'{i} = #{n} {m}' for i, (n, m, _, _) in enumerate(SEQS)) + '.',
-           '', 'class RSQGN_BarrelData', '{',
-           f'\tconst SEQS = {len(seqs)};',
+    names = {n: f'#{n} {m}' for n, m, _, _ in SEQS}
+    names.update({n: m for n, m, _ in blast_export.SEQS})
+    import textwrap
+    out = ['// RSQ Grenade -- THE EXPLOSIONS\' DATA (the six barrels, the new grenade blast, the context overlays). GENERATED by',
+           '// Grenade/tools/barrel_export.py (+ blast_export.py) from the approved Python mockups (/tmp/fx_agentA, fx_agentB,',
+           '// fx_agentG, fx_ctx1, fx_ctx2; archived in Grenade/tools/barrel_spec/). DO NOT EDIT BY HAND: change the mockup,',
+           '// run the exporter. barrel.zs RSQGN_BarrelFX plays it; explosions.zs decides what plays.']
+    out += ['// ' + ln for ln in textwrap.wrap('Sequences in order: ' + ', '.join(f'{i} = {names[n]}' for i, n in enumerate(seqs)) + '.', 112)]
+    # the biggest of the six (the chain finale until the mega blast exists): the widest layer frame drawn, in map units
+    big, bigw = 0, 0
+    for si, num in enumerate(seqs):
+        if num not in BARREL_NUMS: continue
+        for L in data[num]['layers']:
+            for (fi, sx, sy, a, x, z) in L['track']:
+                fr = L['frames'][fi]
+                w = fr['rgba'].shape[1] * sx
+                if w > bigw: bigw, big = w, si
+    out += ['', 'class RSQGN_BarrelData', '{',
+            f'\tconst SEQS = {len(seqs)};',
+            f'\tconst BARRELS = {len(BARREL_NUMS)};   // the six are 0 .. BARRELS - 1, in the owner\'s order (#5 .. #10)',
+            f'\tconst BIGGEST = {big};   // the six\'s widest ({bigw:.0f} map units): the chain finale for now (explosions.zs)']
+    for si, num in enumerate(seqs):
+        if num in blast_export.CONST: out.append(f'\tconst {blast_export.CONST[num]} = {si};   // {names[num]}')
+    out += [
            f'\tconst NSPR = {len(spr_names)};   // SPR\'s length (a constant: no .Size() asked across classes)',
            '\t// Every table is a function: TABLE(i) is its i-th entry (function-local arrays: see barrel_export.py arr).',
            arr('SPR', 'String', [f'"{n}"' for n in spr_names])]
@@ -602,7 +709,6 @@ def write_zs(data, spr_names):
     for k in S:
         pre = k.split('_')[0] + '_'
         if pre != last and pre in doc:
-            import textwrap
             out += ['\t// ' + ln for ln in textwrap.wrap(doc[pre], 112)]; last = pre
         out.append(arr(k, 'int', S[k]))
     out.append('}')
@@ -624,9 +730,15 @@ def write_zs(data, spr_names):
 
 if __name__ == '__main__':
     if len(sys.argv) > 1 and sys.argv[1] == 'collect':
-        res = collect_A() if sys.argv[2] == 'A' else collect_B()
+        st = sys.argv[2]
+        if st == 'A': res = collect_A()
+        elif st == 'B': res = collect_B()
+        else:
+            res = blast_export.COLLECT[st]()
+            if st == 'CA': res['_scorch'] = blast_export.scorch_pics()
         # numpy ramps / PIL images to plain arrays for the pickle
         for num, D in res.items():
+            if isinstance(num, str): continue
             for e in D['embers']:
                 e['frames'] = [np.asarray(f) for f in e['frames']]
                 if e['ramp'] is not None: e['ramp'] = np.asarray(e['ramp'])
