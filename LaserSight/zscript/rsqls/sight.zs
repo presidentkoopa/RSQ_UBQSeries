@@ -205,6 +205,10 @@ class RSQLS_Sight : EventHandler
 	private Vector3 lastMuzzle[2], lastHit[2];
 	private bool    muzzlePrimed[2], hitPrimed[2];
 
+	// The last measured pose each hand's gun was drawn in, and that gun (DrawHand: the beam holds it between shots).
+	private int    heldRow[2];
+	private Weapon heldGun[2];
+
 	// Toggle edge detection, for the haptic tick.
 	private bool wasOn[2];
 	private bool togglePrimed;
@@ -483,6 +487,16 @@ class RSQLS_Sight : EventHandler
 		// The pose the gun is drawn in right now (-1: none measured -- no beam), and the
 		// placement the dot is traced from: that pose's, or the class's first while none shows.
 		int row = (ci >= 0) ? bt.PoseRow(ci, gp) : -1;
+		// THE BEAM STAYS ON BETWEEN SHOTS (owner 2026-11-09: "PCVR laser sight disappears between shots. not good."). A
+		// frame no measurement names -- the fire and recovery frames between two shots, a frame a newer weapon pack added
+		// -- used to give -1 here, and -1 took the beam away (below) until the gun came back to a measured frame: it
+		// blinked off on every shot. Now the gun keeps the last pose it was measured in while it stays in that hand; the
+		// beam layer still follows every turn and kick the gun layer's offset gives it (beam.zs, PSPF_ADDWEAPON).
+		if (ci >= 0)
+		{
+			if (row >= 0) { heldRow[h] = row; heldGun[h] = w; }
+			else if (heldGun[h] == w && heldRow[h] >= ci) row = heldRow[h];
+		}
 		int pi = (row >= 0) ? bt.Place(row) : ((ci >= 0) ? bt.Place(ci) : -1);
 
 		// ---- the muzzle and the barrel -------------------------------------------
@@ -647,10 +661,9 @@ class RSQLS_Sight : EventHandler
 		Sector sec = Level.PointInSector(muzzle.xy);
 		double lit = sec ? clamp(sec.lightlevel / 255.0, 0.0, 1.0) : 0.5;
 
-		// ---- the beam: on the gun, in its ready pose, as far as the hit -----------
-		// Only while the gun layer shows a frame that draws the gun in the pose its
-		// muzzle was measured in: on any other frame (a reload, a kick in the mesh) the
-		// mesh has moved and the rod would not be on the barrel.
+		// ---- the beam: on the gun, as far as the hit -------------------------------
+		// From the pose its muzzle was measured in: the frame shown, or (between shots, any
+		// frame not measured) the last measured one this gun showed in this hand (row, above).
 		bool beamOn = false;
 		if (wantBeam && row >= 0)
 		{

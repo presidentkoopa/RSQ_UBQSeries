@@ -4,6 +4,11 @@ A laser on every gun in both hands. The beam comes out of the gun's own barrel, 
 
 **Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
 
+New on 11-09 (not headset-confirmed): the beam no longer disappears between shots. It went out on every gun frame
+that was never measured, and the pistol's and pump shotgun's fire and pump frames are such frames. Now the beam holds
+the gun's last measured pose until the gun is back in one. On the rig the beam stayed up on every tic of a long rifle
+burst; the pistol and shotgun themselves are not yet shown on the rig or in the headset.
+
 New on 11-06 (rig only, not headset-confirmed): Dot Only on Enemies; the beam bent along the grenade arc (Arc With
 Beam, on, now one continuous line); Laser (Quest / PC VR).
 
@@ -30,7 +35,8 @@ the exact spot it will land.
 - Starts at the real muzzle of each gun model and runs down its barrel. The muzzles were measured from the meshes.
 - Stops where it hits, so it never shows through a wall.
 - Brighter in the dark, softer in full light, as a real laser looks.
-- Shown while the gun is in its ready pose; a reload or a kick in the animation hides it for that moment.
+- Stays on while you fire: between shots it holds the gun's last measured pose (not headset-confirmed). It used to
+  blink off during the fire and pump frames that were never measured.
 - Laser (Quest / PC VR): PC VR draws a whiter core inside a soft halo of the beam colour, on every beam (the
   straight one and the one bent along a grenade arc), both hands the same. Rig only, not headset-confirmed. PC VR's halo
   rods make the pk3 about 16 MB bigger (about 26 MB) and are loaded at startup whichever type is picked, so they cost

@@ -20,7 +20,8 @@
 //   RSQGN_Fx      the settings (CVARINFO.txt: rsqgn_blast_style, rsqgn_fx_*, rsqgn_ctx*, rsqgn_chain_*, rsqgn_crowd_*)
 //   RSQGN_Tint    Explosion Colour: the tint names (TRNSLATE.txt, generated) and colours
 //   RSQGN_Boom    the director
-//   RSQGN_Sprayer, RSQGN_GibFlash   two one-tic helpers
+//   RSQGN_ScorchMark   the wall scorch's decal shooter
+//   RSQGN_GibFlash     a one-tic helper
 
 // =====================================================================================================================
 // THE SETTINGS (read when a blast starts; server cvars)
@@ -471,16 +472,17 @@ class RSQGN_Boom : Actor
 		return 0;
 	}
 
-	// WALL: the scorch on the wall (ctx_g WallG.fg: hot bands, then soot that stays) -- two decals (DECALDEF.txt)
+	// WALL: the scorch on the wall (ctx_g WallG.fg: hot bands, then soot) -- two decals (DECALDEF.txt), both FADING out
+	// on their own faders. Owner 11-09: "its scorch marks need to fade away, not just cut out." They used to be sprayed
+	// with A_SprayDecal, which makes engine IMPACT decals: those share one pool with every bullet hole and blood splat,
+	// capped by cl_maxdecals (20 on QuestZDoom 17.3), and when the pool is full the engine DESTROYS the oldest one at
+	// once (a_decals.cpp DImpactDecal::CheckMax) -- the soot cut out as soon as BD22 sprayed a few more blood decals.
+	// Now they are shot the way a map's Decal thing shoots its decal (Decal.SpawnDecal -> ShootDecal(..., permanent)):
+	// outside that pool, so nothing cuts them, and the DECALDEF fader fades each one to nothing and removes it.
 	void Scorch(double zc)
 	{
-		let sp = Actor.Spawn("RSQGN_Sprayer", pos + (0, 0, zc));
-		if (!sp) return;
-		sp.angle = wallAng + 180;
-		sp.pitch = 0;
-		sp.A_SprayDecal("RSQGNScorch", 64);
-		sp.A_SprayDecal("RSQGNScorchHot", 64);
-		sp.Destroy();
+		RSQGN_ScorchMark.Shoot(pos + (0, 0, zc), wallAng, RSQGN_ScorchMark.ID_SOOT);
+		RSQGN_ScorchMark.Shoot(pos + (0, 0, zc), wallAng, RSQGN_ScorchMark.ID_HOT);
 	}
 
 	// =================================================================================================================
@@ -786,10 +788,30 @@ class RSQGN_Boom : Actor
 }
 
 // the scorch's sprayer: stands where the blast's heart is, faces the wall, sprays, and is gone the same tic
-class RSQGN_Sprayer : Actor
+// the scorch's decal shooter: the engine's Decal thing (decal.zs), which shoots a PERMANENT decal (not counted against
+// cl_maxdecals, never cut out by it) at the wall 64 units behind it. Its decal is picked by the DECALDEF number in
+// args[0] + args[1] * 256; the engine's own BeginPlay shoots before Spawn returns (args still 0), so this one waits
+// for Shoot() to set them.
+class RSQGN_ScorchMark : Decal
 {
+	const ID_SOOT = 30471;   // DECALDEF.txt RSQGNScorch
+	const ID_HOT = 30472;    // DECALDEF.txt RSQGNScorchHot
+
 	Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY +DONTSPLASH Radius 1; Height 1; }
-	States { Spawn: TNT1 A 1; Stop; }
+
+	override void BeginPlay() { }
+
+	// at: a point in front of the wall; facing: the wall's outward normal angle (the decal is shot at facing + 180)
+	static void Shoot(Vector3 at, double facing, int id)
+	{
+		let d = RSQGN_ScorchMark(Actor.Spawn("RSQGN_ScorchMark", at));
+		if (!d) return;
+		d.angle = facing;
+		d.args[0] = id & 255;
+		d.args[1] = id >> 8;
+		d.SpawnDecal();
+		d.Destroy();
+	}
 }
 
 // the crowd's pop (crowd.py: "the body pops: white flash of its shape"): the monster's own frame, drawn white, 1 tic
