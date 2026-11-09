@@ -10,7 +10,7 @@
 
 class RS_Svc play
 {
-	enum EWhich { GRAPPLE, SHIELD, SABER, GRAB, RIG, SLOWMO, WHIP, MELEE, GRENADE, MINIBOSS, NUM }
+	enum EWhich { GRAPPLE, SHIELD, SABER, GRAB, RIG, SLOWMO, WHIP, MELEE, GRENADE, MINIBOSS, MONSTERS, NUM }   // MONSTERS: roster rows (rows_roster.zs, 11-09)
 
 	static String NameOf(int w)
 	{
@@ -26,6 +26,7 @@ class RS_Svc play
 		case MELEE:    return "RSQML_Service";
 		case GRENADE:  return "RSQGN_Service";
 		case MINIBOSS: return "RSQMB_Service";
+		case MONSTERS: return "RSQMN_RosterService";   // RSQ Monsters' read-out for the roster rows (11-09)
 		}
 		return "";
 	}

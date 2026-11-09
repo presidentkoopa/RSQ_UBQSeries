@@ -61,6 +61,7 @@ class RS_BoostSeed play
 			"RS_Bonus_Legendary", "RS_Bonus_LegendDenied", "RS_Bonus_LegendChampion"
 		};
 		for (int i = 0; i < rows.Size(); i++) into.Push(rows[i]);
+		RS_RosterSeed.Names(into);   // THE HOOK, FILLED (11-09): RSQ Monsters' roster rows (rows_roster.zs)
 	}
 }
 
