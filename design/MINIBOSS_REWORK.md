@@ -29,3 +29,11 @@ Owner's words, then where we landed.
 - Mockups: shown in chat 06:31 (three states: shielded, shield down after a thrall kill, one-on-one).
 - **Glow In The Dark:** "the whole thing needs more feedback from GITD." Proposals still to bring.
 - **Boss bar** (PARKED.md): a second bar beside the Bossfight meter for boss fights and EX-tier monsters.
+
+## Wiring Miniboss into RSQ Monsters (06:34-06:36)
+Owner: "we need to wire miniboss into RSQ Monsters." Claude proposed: pick the miniboss and thralls from the roster by name;
+the Bossfight tier picks the colour (the miniboss always a step above its thralls; the top an EX, the "Overlord");
+each lost life = the tier flash and one colour higher; Score pays full (census.add); without RSQ Monsters, as now.
+Owner on mixing sets: "mixing sets is a cool idea. although the BD monsters are the ones I use the most. why not? it could
+make for fun mixups. maybe some options for this in RSQ Monster options." Open: what a Bossfight uses when the Monster Set
+is BD22 (BD's monsters have no colour ladder).
