@@ -1,0 +1,70 @@
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RTP t24 AUTO armed
+RSQMB Miniboss From 2 / Thralls From 1: RS_MGDemon
+RSQMB BOSSFIGHT ARRIVING: tier 0, RS_MGDemon + 3 thralls, beams V2 thralls + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB arrival: thrall 1 RS_CommonImp lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+RSQMB arrival: thrall 2 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+RSQMB arrival: thrall 3 RS_CommonImp lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+RSQMB arrival: miniboss 0 RS_MGDemon lands (colour 3CDC46, tier 2), beam v4, revealed in 31 tics
+RSQMB BOSSFIGHT LANDED: boss 0 RS_MGDemon hp 240, 3 thralls, 3 segments of 80, lives 3, map count 1
+RTP t119 S1 LANDED: boss RS_MGDemon hp 240, 3 thralls [RS_CommonImp,RS_CommonZombie,RS_CommonImp], segs 3, shielded 1, window 0, lives 3
+RTP t119 S1 shield hit 40: hp 240 -> 240
+RSQMB window OPEN: boss 0 segment 0 (80 of 80) for 3 s
+RTP t140 S2 thrall killed, now boss RS_MGDemon hp 240, 3 thralls [RS_CommonImp,RS_CommonZombie,RS_CommonImp], segs 3, shielded 1, window 0, lives 3
+RSQMB window MISSED: boss 0 segment 0 left 100%: tier +3, 11 monsters asked (map-wide)
+RTP t245 S3 window over unbroken (missed): boss RS_MGDemon hp 240, 2 thralls [RS_CommonZombie,RS_CommonImp], segs 3, shielded 1, window 0, lives 3
+RSQMB tier swap followed: RS_PurpleZombie (thrall 1) at -127 -403, tokens again []
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at -470 -400, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at -470 -180, tokens again []
+RSQMB tier swap followed: RS_PurpleSG (a map monster) at -470 -290, tokens again []
+RSQMB tier swap followed: RS_PurpleCaco (a map monster) at -470 150, tokens again []
+RSQMB tier swap followed: RS_PurpleBaron (a map monster) at -470 370, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (thrall 2) at -188 -107, tokens again []
+RSQMB tier swap followed: RS_PurpleDemon (a map monster) at -470 40, tokens again []
+RSQMB tier swap followed: RS_PurpleHK (a map monster) at -470 260, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at -470 -70, tokens again []
+RTP t316 S4 after the miss: boss RS_MGDemon hp 450, 2 thralls [RS_PurpleZombie,RS_PurpleImp], segs 3, shielded 1, window 0, lives 3
+RSQMB window OPEN: boss 0 segment 0 (150 of 150) for 3 s
+RTP t320 S5 hit in the window: segs 3 -> 2, boss RS_MGDemon hp 450, 1 thralls [RS_PurpleImp], segs 3, shielded 0, window 101, lives 3
+RTP t381 S6 kill every thrall: boss RS_MGDemon hp 450, 1 thralls [RS_PurpleImp], segs 2, shielded 1, window 0, lives 3
+RSQMB window OPEN: boss 0 segment 1 (150 of 150) for 3 s
+RTP t393 S7 hammer: hp 450 -> 450, lives 3, segs 2, 0 thralls
+RTP t405 S7 hammer: hp 450 -> 450, lives 3, segs 1, 0 thralls
+RTP t417 S7 hammer: hp 450 -> 1, lives 3, segs 0, 0 thralls
+RSQMB life lost: boss 0 lives 2 hp 450 invuln 175 tics, tier +1 asked
+RTP t429 S7 hammer: hp 450 -> 450, lives 2, segs 0, 0 thralls
+RTP t441 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t453 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t465 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t477 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t489 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t501 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t513 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t525 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t537 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t549 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t561 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t573 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t585 S7 hammer: hp 750 -> 750, lives 2, segs 0, 0 thralls
+RTP t597 S7 hammer: hp 750 -> 1, lives 2, segs 0, 0 thralls
+RSQMB life lost: boss 0 lives 1 hp 750 invuln 175 tics, tier +1 asked
+RTP t609 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t621 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t633 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t645 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t657 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t669 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t681 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t693 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t705 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t717 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t729 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t741 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t753 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RTP t765 S7 hammer: hp 375 -> 375, lives 1, segs 0, 0 thralls
+RSQMB bossfight drop: gun Chaingun (1 guns not owned of 1 map types)
+RSQMB boss 0 died (killer player) rage 0
+RTP t777 S7 hammer: hp 375 -> -1625, lives 1, segs 0, 0 thralls
+RTP t778 S7 MINIBOSS DEAD
+RTP t849 S8 DONE

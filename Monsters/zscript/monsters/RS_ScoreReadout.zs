@@ -151,7 +151,7 @@ class RS_ScoreReadout play
 	{
 		if (!mo) return -1;
 		if (RS_MGMonster(mo)) return 2;
-		return RS_Zom.GetTier(mo) > 0 ? 1 : -1;
+		return TierOf(mo) > 0 ? 1 : -1;
 	}
 
 	static int TierOf(Actor mo)
@@ -159,6 +159,7 @@ class RS_ScoreReadout play
 		let m = RS_MGMonster(mo);
 		if (m) return m.Tier;
 		int t = RS_Zom.GetTier(mo);
+		if (t <= 0) t = RS_TierLadder.TierOf(mo.GetClassName());   // (rig 11-09) a Common CH body carries no tier token
 		return t > 0 ? t : -1;
 	}
 

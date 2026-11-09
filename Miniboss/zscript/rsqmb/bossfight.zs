@@ -888,14 +888,16 @@ extend class RSQMB_Handler
 	void ArrivalFailed(String why)
 	{
 		if (debug) Console.Printf("RSQMB bossfight failed to land (%s): tries again", why);
-		let p = players[arrPn].mo;
+		// (rig 11-09) whoever already came is taken back out, uncounted: left behind, each failed try piled boosted
+		// legendary champions on the map and the next try's arrival overlapped them
 		for (int i = 0; i < arrMon.Size(); i++)
 		{
 			let a = arrMon[i];
+			arrMon[i] = null;
 			if (!a) continue;
-			a.TakeInventory("RSQMB_Called", 1);
 			ArrowClear(a);
-			if (arrState[i] == 1) Reveal(i, p);
+			a.ClearCounters();
+			a.Destroy();
 		}
 		arrPhase = 0;
 		if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
@@ -910,7 +912,24 @@ extend class RSQMB_Handler
 		Actor a = c ? Actor.Spawn(c, (arrX[i], arrY[i], arrZ[i]), ALLOW_REPLACE) : null;
 		if (a && i == 0) { a.A_SetScale(a.Scale.X * MB_SCALE, a.Scale.Y * MB_SCALE); a.A_SetSize(a.radius * MB_SCALE, a.height * MB_SCALE, false); }
 		if (a) FromTier(a);   // a MeatGrinder pick from Miniboss From / Thralls From takes its colour in place
-		if (a && !arrForce && !a.TestMobjLocation()) { a.ClearCounters(); a.Destroy(); a = null; }
+		// (rig 11-09) its own thralls land first and walk; one may have stepped into the miniboss's spot: move it aside
+		for (int tries = 0; a && i == 0 && tries < 4 && !a.TestMobjLocation(); tries++)
+		{
+			let bk = a.BlockingMobj;
+			if (!bk || arrMon.Find(bk) == arrMon.Size()) break;
+			Vector2 d = bk.pos.xy - a.pos.xy;
+			if (d.Length() < 1) d = (1, 0);
+			Vector3 old = bk.pos;
+			bk.SetOrigin((a.pos.xy + d.Unit() * (a.radius + bk.radius + 8), bk.pos.z), false);
+			if (!bk.TestMobjLocation()) { bk.SetOrigin(old, false); break; }
+			if (debug) Console.Printf("RSQMB arrival: thrall %s moved aside for the miniboss", bk.GetClassName());
+		}
+		if (a && !arrForce && !a.TestMobjLocation())
+		{
+			if (debug) Console.Printf("RSQMB arrival: %s %d blocked by %s (r %.0f h %.0f at %.0f %.0f %.0f)", i ? "thrall" : "miniboss", i,
+				a.BlockingMobj ? a.BlockingMobj.GetClassName() : (a.BlockingLine ? 'a wall' : 'the floor or ceiling'), a.radius, a.height, a.pos.x, a.pos.y, a.pos.z);
+			a.ClearCounters(); a.Destroy(); a = null;
+		}
 		arrMon[i] = a;
 		arrBorn[i] = level.maptime;
 		if (!a) { arrState[i] = 3; if (debug) Console.Printf("RSQMB arrival: %s %d did not fit", i ? "thrall" : "miniboss", i); return; }

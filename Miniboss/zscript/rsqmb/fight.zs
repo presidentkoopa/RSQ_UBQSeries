@@ -311,16 +311,20 @@ extend class RSQMB_Handler
 			let s = MnService();
 			if (!s) continue;
 			let bi = BlockThingsIterator.CreateFromPos(tfX[k], tfY[k], tfZ[k], 64, 32, false);
+			// (rig 11-09) the new body stands where the old one was on the swap tic, and a monster on the move covers up to its
+			// speed (x1.25 for a miniboss) in the tic between: the nearest freshly swapped monster within 48 units, not 1
 			Actor got = null;
+			double best = 48.0;
 			while (bi.Next())
 			{
 				let c = bi.thing;
 				if (!c || c.health <= 0 || !c.bISMONSTER || c.player || tfMon.Find(c) < tfMon.Size()) continue;
-				if (abs(c.pos.x - tfX[k]) > 1 || abs(c.pos.y - tfY[k]) > 1) continue;
+				double d = (c.pos.xy - (tfX[k], tfY[k])).Length();
+				if (d > best) continue;
 				int ago = s.GetInt("tier.ago", "", 0, 0, c);
 				if (ago < 0 || ago > 2) continue;
 				got = c;
-				break;
+				best = d;
 			}
 			if (!got) continue;
 			tfMon[k] = got;
