@@ -88,8 +88,8 @@ an engine)
   monster white, then its colour, then itself; **V3** a column that hides it completely, cut at the real ceiling indoors
   (the splash hangs from it, sparks drop) or climbing out of sight under the sky (a stepped taper, flames trailing up),
   picked by the ceiling above; **V4** for a boss: six beams spiral in, merge, a skull pillar, the monster arrives. The
-  monster is not drawn at all until its reveal. Each has its sound: a miniboss's beam starts on a riser and lands a hit
-  on the reveal, a thrall's is one of two, a summoned chump's a short one.
+  monster is not drawn at all until its reveal. Each beam has its own sound on its first tic (owner signed off 11-09):
+  V1 ONPARE8, V2 ONPARE2, V3 PL00_U; V4 PL01_U for now (a longer boss sound is coming). No sound on the reveal.
 - Words over a monster in RS Score's font, in the room like the damage numbers: a one-off word pops, flickers to white,
   drifts up, holds about a second and fades (GUARD! in silver on a shielded miniboss); a held word stays until it is
   cleared or the monster dies (TARGET!, big and pulsing on the miniboss once its shield is down).

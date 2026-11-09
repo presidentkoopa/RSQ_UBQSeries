@@ -23,9 +23,10 @@
 //
 // TIME. The beams run on game tics, not the world's slowed time: a Bossfight's arrival plays inside RSQ SlowMo's
 // landing slow, and the returned reveal (tics from the call) is in the same tics the caller counts with level.maptime.
-// SOUND (the owner's arrival sounds, SNDINFO.txt), by role, nameArg 'miniboss' | 'thrall' | 'chump' (none: V3 / V4 a
-// miniboss, V1 / V2 a thrall): a miniboss's beam starts on the riser and its hit lands on the reveal tic; a thrall's
-// starts on one of two at random; a chump's (summoned low tier, or any other monster) on the short one. Full volume to
+// SOUND (the owner's arrival sounds, SNDINFO.txt), one per beam (owner 2026-11-09 18:38-18:40; nameArg no longer picks
+// it): V1 ONPARE8, V2 ONPARE2, V3 PL00_U (the riser), V4 PL01_U (stand-in: the owner is sourcing a longer boss sound),
+// each on the beam's first tic. No hit on the reveal: ONPARE6 (rsqvr/beam/hit) is the miniboss fight's segment-break
+// sound. Full volume to
 // 400 units, silent at 1800 (arrivals land 12-32 m away).
 // It holds while the level is frozen (the time-freeze sphere). Nothing it does is random but for named RNG in the
 // director (synced); every piece it draws is a CLIENTSIDEONLY actor (as RSQ Grenade's blast layers).
@@ -109,7 +110,7 @@ class RSQVR_Beam : Actor
 
 	Actor mon;
 	int bKind;               // 1..4
-	int role;                // 1 miniboss, 2 thrall, 3 chump (its sounds)
+	int role;                // 1 miniboss, 2 thrall, 3 chump (kept for callers; sounds now go by beam)
 	int rgb;
 	double sz;               // map units per mockup unit
 	int clock, startTic, reveal, total;
@@ -158,12 +159,11 @@ class RSQVR_Beam : Actor
 		if (r == 'chump') return 3;
 		return k >= 3 ? 1 : 2;
 	}
-	// the sound the beam starts with (SNDINFO.txt: the owner's arrival sounds): a miniboss's riser, a thrall's one of two,
-	// a chump's short one; a miniboss's hit lands on the reveal tic (BeamStep)
-	static String SoundOf(int r)
+	// the sound the beam starts with, one per beam (owner 18:38): V1 ONPARE8, V2 ONPARE2, V3 PL00_U, V4 PL01_U
+	static String SoundOf(int k)
 	{
-		static const String T[] = { "rsqvr/beam/rise", "rsqvr/beam/thrall", "rsqvr/beam/chump" };
-		return T[clamp(r, 1, 3) - 1];
+		static const String T[] = { "rsqvr/beam/chump", "rsqvr/beam/thrall1", "rsqvr/beam/rise", "rsqvr/beam/thrall2" };
+		return T[clamp(k, 1, 4) - 1];
 	}
 	static int KindOf(String s)
 	{
@@ -212,7 +212,7 @@ class RSQVR_Beam : Actor
 			indoor = !sky && room <= RSQVR_BeamData.COL_H * sz;
 			ceilU = max(8.0, room / sz);
 		}
-		A_StartSound(SoundOf(role), CHAN_AUTO, CHANF_DEFAULT, 1.0, ATTN_NORM);
+		A_StartSound(SoundOf(bKind), CHAN_AUTO, CHANF_DEFAULT, 1.0, ATTN_NORM);
 		MonHide();
 		clock = 0;
 		BeamStep();
@@ -263,7 +263,6 @@ class RSQVR_Beam : Actor
 		case 3: V3(clock); break;
 		default: V4(clock); break;
 		}
-		if (clock == reveal && role == 1) A_StartSound("rsqvr/beam/hit", CHAN_AUTO, CHANF_DEFAULT, 1.0, ATTN_NORM);
 		if (clock >= reveal) MonReal();
 		for (int i = 0; i < slots.Size(); i++)
 			if (slots[i] && slots[i].shownAt != clock) slots[i].bInvisible = true;

@@ -3,6 +3,9 @@
 //   miniboss (V3 / V4 by default)  two layers: the RISER when the beam starts, the HIT on the reveal tic
 //   thrall   (V1 / V2 by default)  one of two at random when the beam starts
 //   chump    (summoned low tier; any other monster)  the short one when the beam starts
+// 11-09 18:38 (owner): ONE SOUND PER BEAM, on its first tic: V1 chump (ONPARE8), V2 thrall1 (ONPARE2), V3 rise (PL00_U),
+// V4 thrall2 (PL01_U, a stand-in until the owner's boss sound). rsqvr/beam/hit (ONPARE6) is no longer an arrival sound: it is
+// the miniboss fight's segment-break sound. The role lines above are the older layout.
 // Files (22 kHz mono 16-bit): RVQRISE PL00_U_00028 (1.05 s, swells to 0.66 s), RVQHIT ONPARE6_00004 (0.97 s, darkest and
 // loudest), RVQTHR1 ONPARE2_00008 (0.76 s), RVQTHR2 PL01_U_00021 (1.16 s), RVQCHMP ONPARE8_00004 (0.66 s).
 // THE REACH: arrivals land 12-32 m away (34 map units a metre: 400-1100 units). Full volume to 400 units, gone at 1800

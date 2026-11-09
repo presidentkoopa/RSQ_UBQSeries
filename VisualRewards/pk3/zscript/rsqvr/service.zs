@@ -26,9 +26,8 @@
 //                        again (> 0: V1 7, V2 12, V3 19, V4 31, at every size), or 0 when it did not play (Arrival Beams
 //                        off, no / dead monster, an unknown kind, a beam already on that monster). Game tics: the beam
 //                        does not slow with RSQ SlowMo's world (a Bossfight's arrival plays inside its landing slow).
-//                        nameArg (optional) the role, for its sound: 'miniboss' (a riser as it starts, a hit on the reveal
-//                        tic), 'thrall' (one of two as it starts), 'chump' (summoned low tier, or any other monster: a short
-//                        one). None: V3 / V4 play as a miniboss, V1 / V2 as a thrall.
+//                        nameArg (optional) the role ('miniboss' | 'thrall' | 'chump'): accepted, no longer used for the
+//                        sound (owner 11-09 18:38: one sound per beam, V1 ONPARE8, V2 ONPARE2, V3 PL00_U, V4 PL01_U).
 //   GetInt "word"        stringArg the word, intArg 0xRRGGBB, doubleArg seconds (0 = 1 s), objectArg the actor: a one-off word
 //                        over it in RS Score's font (rsqvr/words.zs): pops, flickers to white, drifts up, holds, fades.
 //                        Returns 1 (0: no actor).
