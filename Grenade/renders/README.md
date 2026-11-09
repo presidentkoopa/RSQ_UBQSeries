@@ -53,3 +53,11 @@ stand-in (the UAC Survival Pack's thrown sprite).
 - `C_water_barrel_*` (#6 base), `C_water_grenade_*`: a white flash, no fire, a bubble dome rising to a surface splash,
   silt. Detected when the blast point is under the sector's water.
 - `C1_contact.png`: key frames, one row per shot.
+
+## Mega blast (our own material)
+
+`mega/`: the big-barrel / chain-finale blast rebuilt from our material only (owner's choice after the Metal Slug example
+in `Renders/fx_mockups/`): a pillar stem and a domed mushroom cap of Reactorcore fireballs and fire puffs, a dome slam with
+a second floor ring, the cloud darkening with fire veins, lifting, then dust falling and settling. No Metal Slug pixels
+(it was used for timing and silhouette only); `MEGA_vs_MS.png` puts the two side by side. 108 tics (20 barrel + 88 blast).
+Sources: Reactorcore (CC0 by page comment), Rufaswan (credit anyway), RS Combat FX embers, the rest drawn in code.
