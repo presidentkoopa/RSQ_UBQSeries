@@ -73,3 +73,9 @@ in `Renders/fx_mockups/`): a pillar stem and a domed mushroom cap of Reactorcore
 a second floor ring, the cloud darkening with fire veins, lifting, then dust falling and settling. No Metal Slug pixels
 (it was used for timing and silhouette only); `MEGA_vs_MS.png` puts the two side by side. 108 tics (20 barrel + 88 blast).
 Sources: Reactorcore (CC0 by page comment), Rufaswan (credit anyway), RS Combat FX embers, the rest drawn in code.
+
+## Mega blast, non-mushroom (the owner's preferred look)
+
+`mega2/`: the mega blast rebuilt as a wide boiling block (no stem, no cap), from our material only, after the owner
+preferred the Metal Slug example's non-mushroom look. Swell, climb, boil with re-igniting fireballs, brown with red veins,
+lift, break up, dust. 108 tics. `MEGA2_vs_MS.png` compares it with the Metal Slug example. No Metal Slug pixels.
