@@ -325,6 +325,7 @@ class RS_MGMonster : RS_MonsterMaster abstract
 		Array<string> picks;
 		roster.Split(picks, " ");
 		if (picks.Size() == 0) return;
+		int splitGroup = RS_SplitStamp.Mark(self, 0);   // RSQ Score read-out (RS_ScoreReadout.zs): the parent's group
 		for (int i = 0; i < count; i++)
 		{
 			string pick = picks[random(0, picks.Size() - 1)];
@@ -332,6 +333,7 @@ class RS_MGMonster : RS_MonsterMaster abstract
 			vector3 spot = Vec3Angle(frandom(16, 40), ang, 8);
 			Actor a = Actor.Spawn(pick, spot, ALLOW_REPLACE);
 			if (!a) continue;
+			RS_SplitStamp.Mark(a, splitGroup);   // RSQ Score read-out: a child of that split
 			let mon = RS_MGMonster(a);
 			if (mon)
 			{

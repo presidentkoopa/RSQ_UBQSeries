@@ -52,3 +52,13 @@ RSQ Monsters menu > MeatGrinder):
 MG blood leaves the owner's HF wall and floor decals (`DECALDEF.txt`, every name `MG_`, pictures
 `graphics/meatgrinder/decals/`). The enemy tracer is the owner's streak model (`MODELDEF.txt`,
 `models/meatgrinder/tracer/`).
+
+## What RSQ Score reads (11-09)
+
+RSQ Score's roster rows ask one service by name, `RSQMN_RosterService` (`zscript/monsters/RS_ScoreReadout.zs`); nothing
+links either way, and each mod still loads alone. It answers, for a monster: its set (CH or MG), its ladder tier, whether
+it is an EX form, how rare its CH colour roll was (the family's dial with the menu's gates applied), the tier a running
+tier-change flash will give it, how long ago it last changed tier and from what, an MG monster's reactive death and its
+tier's aggression, and its Abyss death-split group. Two plain inventory stamps carry the last two facts that were not on
+the monster: `RS_TierStamp` (put after a flashed tier change, `RS_RetierJob.Tick`) and `RS_SplitStamp` (put on an Abyss
+MG monster and the two lost souls it splits into, `MG_DeathSplit`). Code only, not run.
