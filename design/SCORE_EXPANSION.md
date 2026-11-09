@@ -10,12 +10,15 @@ Monsters' 13 colour tiers and EX tier)": subclass `RS_ScoreTierRow`; nothing fil
 ## A. Wrong today (bugs, found by reading the code)
 1. **MG tiers pay Common money.** Base = `victim.GetSpawnHealth()` (`event.zs:83`), the class default. MG tiers set
    health on the live monster (`RS_MGMonster.ApplyTier`, `TierMaxHealth`), so a White MG imp (1200 hp) pays 60.
-2. **CH tier changes pay 25%.** Anti-farming (`handler.zs:342-361`): a monster not on the map at load pays
+2. **CH tier changes pay the raised-monster rate.** (Correction 11-09: `rs_score_farmpercent` defaults to **100** (Score/CVARINFO.txt:40); 25 is only the code fallback, so at default settings this cut nothing. The census bug below was real at any setting: CH map spawns were never in the census, so each CH map's reward threshold fell to its 5000 floor and Untouchable's targets to their minimums. Fixed.)
+   Was titled: CH tier changes pay 25%. Anti-farming (`handler.zs:342-361`): a monster not on the map at load pays
    `rs_score_farmpercent` (25%). A CH retier swaps in a NEW actor (`RS_Retier.Swap`), so the new colour pays 25%.
    Encounter spawns hit the same rule. To check: whether CH map spawns (via the Colourset RandomSpawner, and the rare
    colours' stub -> `A_SpawnItemEx`) are in the load census at all, or are all paying 25%.
 3. **MG head shots are invisible.** `RS_Row_Headshot` reads BD22 damage types (Head / MinorHead). MG detects head
    shots by hit height (`RS_MGMonster.mgLastWasHeadshot`), which Score never sees.
+
+Owner, 2026-11-09 02:16: MG monsters gib at normal-monster damage at every tier ("gib at normal, I don't see that an issue"): the gib threshold stays at the class health while base pay uses the tier health.
 
 ## B. New rows: the roster
 - **Tier rows** for the RSQ ladder (13 colours), EX and boss variants, via the `RS_ScoreTierRow` hook. Rarer pays more.
