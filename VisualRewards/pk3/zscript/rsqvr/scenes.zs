@@ -21,7 +21,6 @@ class RSQVR_Scene play
 class RSQVR_Scenes : EventHandler
 {
 	const CH = 32765;             // a sound channel nothing else in the series uses
-	const FADE_TICS = 70;         // the crossfade, 2 s
 
 	Array<RSQVR_Scene> stack;
 	String playing;               // the track on the channel ("": none)
@@ -31,6 +30,9 @@ class RSQVR_Scenes : EventHandler
 	bool full;       // after a load the channel is empty: start the track again
 
 	static RSQVR_Scenes Get() { return RSQVR_Scenes(EventHandler.Find("RSQVR_Scenes")); }
+
+	static double CF(Name n, double def) { let c = CVar.GetCVar(n, players[consoleplayer]); return c ? c.GetFloat() : def; }
+	static double Step() { return 1.0 / max(1.0, CF('rsqvr_scene_fade', 2.0) * TICRATE); }
 
 	static bool MusicOn()
 	{
@@ -89,15 +91,15 @@ class RSQVR_Scenes : EventHandler
 		if (target != "" && playing != target)
 		{
 			// a different track: fade the old one out first, then the new one in
-			if (playing != "" && level > 0) { level = max(0.0, level - 1.0 / FADE_TICS); Apply(ear); return; }
+			if (playing != "" && level > 0) { level = max(0.0, level - Step()); Apply(ear); return; }
 			if (playing != "") ear.A_StopSound(CH);
 			playing = target;
 			ear.A_StartSound(playing, CH, CHANF_LOOP | CHANF_UI | CHANF_NOPAUSE | CHANF_NOSTOP, 0.001, ATTN_NONE);
 			Dbg(String.Format("scene track %s fading in", playing));
 		}
 		double goal = target != "" ? 1.0 : 0.0;
-		if (level < goal) level = min(goal, level + 1.0 / FADE_TICS);
-		else if (level > goal) level = max(goal, level - 1.0 / FADE_TICS);
+		if (level < goal) level = min(goal, level + Step());
+		else if (level > goal) level = max(goal, level - Step());
 		Apply(ear);
 		if (level <= 0 && playing != "" && target == "") { ear.A_StopSound(CH); Dbg(String.Format("scene track %s out, level music back", playing)); playing = ""; }
 		if (level >= 1 && !full && playing != "") { full = true; Dbg(String.Format("scene track %s in, level music silent", playing)); }
@@ -108,7 +110,7 @@ class RSQVR_Scenes : EventHandler
 
 	void Apply(Actor ear)
 	{
-		if (playing != "") ear.A_SoundVolume(CH, max(0.001, level));
+		if (playing != "") ear.A_SoundVolume(CH, max(0.001, level * clamp(CF('rsqvr_scene_volume', 1.0), 0.0, 1.0)));
 		SetMusicVolume(1.0 - level);
 	}
 }

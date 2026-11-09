@@ -40,6 +40,7 @@ server int    rsqmb_lives         = 3;      // lives in all (3 = it dies on the 
 server float  rsqmb_invuln        = 5.0;    // seconds invulnerable after a lost life (the flames)
 server int    rsqmb_slow_depth    = -1;     // world speed % in a thrall kill's window; -1 = RSQ_SlowMo's own (rsm_depth)
 server bool   rsqmb_tier_mapwide  = true;   // Tier-Up Hits the Whole Map (owner 07:15, ON): a missed window tiers up every monster on the map RSQ Monsters can tier, not just the miniboss and its thralls (reset on a map change)
+server bool   rsqmb_bf_music      = true;   // Bossfight Music (2026-11-09): the owner's track over the fight (RSQ VisualRewards' scene music; its Scene Music row turns it off per player)
 server bool   rsqmb_tier_life     = true;   // Tier Up Each Life (owner 07:28): the miniboss tiers up one (RSQ Monsters' flash) each time a life bar empties
 server bool   rsqmb_greed         = true;   // the greed rule
 server float  rsqmb_rage_speed    = 2.0;    // enraged monsters' speed multiplier

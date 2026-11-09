@@ -253,6 +253,8 @@ OptionMenu "RSQTHP_Options"
 	Option "Monster Words", "rsqvr_words", "OnOff"
 	Option "Pops", "rsqvr_pops", "OnOff"
 	Option "Scene Music", "rsqvr_scene_music", "OnOff"
+	Slider "Scene Music Volume", "rsqvr_scene_volume", 0.1, 1.0, 0.05, 2
+	Slider "Scene Crossfade (s)", "rsqvr_scene_fade", 0.5, 5.0, 0.5, 1
 	StaticText " "
 	Submenu "Test and Debug", "RSQTHP_Test"
 	RSQTHPResetAll "Reset All", "Reset every RSQ VisualRewards setting?"

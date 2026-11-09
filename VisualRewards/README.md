@@ -197,6 +197,9 @@ with Test and Debug and Reset All at its foot.
 | Arrival Beams | On | Monsters another mod brings in arrive on a beam (server setting). Off: they simply appear. |
 | Monster Words | On | Words another mod puts over a monster (GUARD!, TARGET!). Follows Word Size and Far Size. |
 | Pops | On | The small ring and star burst another mod asks for at a monster. |
+| Scene Music | On | A scene's own track (a Bossfight's) crossfades over the level music; off, you keep the level music. |
+| Scene Music Volume | 1.00 | How loud the scene track plays. |
+| Scene Crossfade (s) | 2.0 | How long the scene track takes to come in and to go. |
 | Reset All | | Every setting on both pages back to its default. |
 
 **Test and Debug**

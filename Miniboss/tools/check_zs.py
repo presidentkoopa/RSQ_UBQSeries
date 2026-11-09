@@ -50,10 +50,10 @@ FOREIGN = {'champion_Token', 'champion_PersistentInfo', 'champion_DarkRedToken',
            'Weapon', 'Actor', 'Inventory', 'RSQMB_Probe'}
 # requests each foreign service answers (the shared contract 2026-11-09 and the services' own files)
 SVC_REQ = {
-    'RSQVR_Service': {'beam', 'word', 'word.hold', 'word.clear', 'pop', 'loaded'},
+    'RSQVR_Service': {'beam', 'word', 'word.hold', 'word.clear', 'pop', 'loaded', 'scene.push', 'scene.pop'},
     'RSQSM_Service': {'arrow.add', 'arrow.clear', 'start.bossfight', 'start', 'start.auto', 'countdown'},
     'RSQGD_Service': {'event.tint', 'event.wave', 'event.reroll', 'event.flare', 'enabled'},
-    'RSQMN_RosterService': {'tier', 'tier.next', 'tier.ago', 'tier.from', 'retier', 'set'},
+    'RSQMN_RosterService': {'tier', 'tier.next', 'tier.ago', 'tier.from', 'retier', 'set', 'class.set', 'class.tier'},
 }
 SVC_FIELD = {'vrSvc': 'RSQVR_Service', 'VrService()': 'RSQVR_Service', 'vr': 'RSQVR_Service', 'smSvc': 'RSQSM_Service',
              'gdSvc': 'RSQGD_Service', 'GdService()': 'RSQGD_Service', 'MnService()': 'RSQMN_RosterService',

@@ -239,6 +239,7 @@ Where a Bossfight's monsters come from (Miniboss From, Thralls From) is on RSQ M
 | Farthest Arrival | 1024 | Its greatest distance. |
 | Exit Distance | 768 | It waits within this of an exit. |
 | Landing Slow Motion (s) | 4.0 | RSQ SlowMo for the landing (0: none; at most 5): the staggered arrival fits inside it. |
+| Bossfight Music | On | The owner's track over the fight, from the call-in until the miniboss dies; then the level music crossfades back. Needs RSQ VisualRewards (its Scene Music rows set it per player). |
 | Bits Multiplier | 3 | Times more Kill Rewards boss bits for a Bossfight's miniboss. |
 | Score Style Fill | 0.25 | Meter points per Score style point. |
 | Gun Bonsai XP Fill | 0.20 | Meter points per Gun Bonsai XP point. |

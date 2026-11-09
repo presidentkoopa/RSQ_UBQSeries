@@ -913,8 +913,8 @@ extend class RSQMB_Handler
 	{
 		let vr = VrService();
 		if (!vr) return;
-		if (on) vr.GetInt("scene.push", "bossfight", SCENE_PRIO, 0, null, 'rsqvr/music/boss1');
-		else vr.GetInt("scene.pop", "bossfight");
+		if (on && CI('rsqmb_bf_music', 1)) vr.GetInt("scene.push", "bossfight", SCENE_PRIO, 0, null, 'rsqvr/music/boss1');
+		else if (!on) vr.GetInt("scene.pop", "bossfight");
 	}
 
 	// ONE LANDS: spawned where PlanArrival found room, boosted (SlowMo DOWN's boost: Champions, LegenDoom, its light,
