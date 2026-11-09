@@ -2353,6 +2353,7 @@ class RSQTR_Rig : EventHandler
 	private transient int stgLast[RSQTR_Region.N];       // the tic of that place's last hint (0 none)
 	private transient int stgHints;
 	private transient String stgMap;
+	private transient int stgTwoHand;                    // last tic the engine's two-hand steadying was on (0 never)
 
 	private void StruggleReset(int h)
 	{
@@ -2371,6 +2372,11 @@ class RSQTR_Rig : EventHandler
 		}
 		bool dbg = Flag("rsqtr_messages", p, false);
 		if (editing) { StruggleReset(h); stgPressed[h] = false; return; }
+		// TWO-HANDING IS NO MISS (owner 2026-11-09 17:52: seated, right-handed, two-handing a rifle with the support hand near
+		// the shoulders, "Grip inside the ring" printed in firefights): while the engine steadies the gun with the off hand
+		// (WF_TWOHANDSTABILIZED) and for 2 s after, a hand passing through a holster's sphere is not counting toward the hint.
+		if ((p.WeaponState & WF_TWOHANDSTABILIZED) != 0) stgTwoHand = level.maptime;
+		if (stgTwoHand > 0 && level.maptime - stgTwoHand < 70) { StruggleReset(h); stgPressed[h] = false; return; }
 		if (from >= 0 && !stgPressed[h] && stgR[h] == from)
 		{
 			// one miss: keep the misses within the window, newest last
