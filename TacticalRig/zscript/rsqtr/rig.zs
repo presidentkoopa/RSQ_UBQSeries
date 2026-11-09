@@ -698,8 +698,22 @@ class RSQTR_Rig : EventHandler
 		return -1;
 	}
 	// May gun cls (unassigned) go into gun holster r by hand? Only an unassigned, empty one (owner 07:44-07:46).
+	// THINGS WITH THEIR OWN HOME NEVER TAKE A GUN HOLSTER (owner 2026-11-09 12:15: "flare, grenade, cigarette, flashlight,
+	// whip, saber, shieldsaw should not be assigned a holster, they have their own"): RSQ FnF's flashlight and held flare
+	// (RSQFF_*), RSQ Grenade's grenade (RSQGN_* / RSQ_Grenade*), the cigarette and Zippo (RSQTR_CigWeapon / ZippoWeapon),
+	// RSQ Whip's whip, the saber (UBQS_Saber*), RSQ ShieldSaw (SSQ_*). By name, so any of them may be missing. Never assigned
+	// (Assign, WebAssign); put by hand into a gun holster, refused (MayEnter) -- except the whip and the saber, which keep
+	// their "put anywhere, it goes home" rule, handled before this.
+	static bool OwnHome(String cls)
+	{
+		String n = cls.MakeLower();
+		return n.IndexOf("rsqff_") == 0 || n.IndexOf("rsqgn_") == 0 || n.IndexOf("rsq_grenade") == 0
+			|| n == "rsqtr_cigweapon" || n == "rsqtr_zippoweapon" || n == "rsqwp_whipweapon"
+			|| n.IndexOf("ubqs_saber") == 0 || n.IndexOf("ssq_") == 0;
+	}
 	bool MayEnter(PlayerPawn pmo, String cls, int r)
 	{
+		if (OwnHome(cls)) return false;
 		int k = pmo.PlayerNumber() * RSQTR_Region.N + r;
 		if (lockCls[k] != "" && !(lockCls[k] ~== cls)) return false;
 		String c = Content(pmo, r);
@@ -709,7 +723,7 @@ class RSQTR_Rig : EventHandler
 	// ring flashes and the gun's picture appears above it, on this machine only).
 	void Assign(int n, String cls, int r, bool show = true)
 	{
-		if (n < 0 || n >= MAXPLAYERS || cls == "" || !IsGunRegion(r)) return;
+		if (n < 0 || n >= MAXPLAYERS || cls == "" || !IsGunRegion(r) || OwnHome(cls)) return;
 		if (show && lockCls[n * RSQTR_Region.N + r] == "" && players[n].mo) ShowRule(players[n].mo, r, RULE_ASSIGN, cls);
 		for (int j = 0; j < RSQTR_Region.N; j++) if (lockCls[n * RSQTR_Region.N + j] ~== cls) lockCls[n * RSQTR_Region.N + j] = "";
 		lockCls[n * RSQTR_Region.N + r] = cls;
@@ -973,6 +987,12 @@ class RSQTR_Rig : EventHandler
 		class<Weapon> wc = cls;
 		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
 		if (!w || IsSaber(w) || RSQTR_Cig.IsProp(w) || HomeWhip(w) || w == EmptyHand(pmo)) return;
+		if (OwnHome(cls))
+		{
+			if (Flag("rsqtr_messages", pmo.player, false)) Console.Printf("T_ASSIGN t%d: web: %s refused, it has its own home", level.maptime, cls);
+			RefuseFeel(pmo, 0);
+			return;
+		}
 		let p = pmo.player;
 		if (r == RSQTR_Hooks.ShieldHolster(pmo))
 		{
@@ -1006,6 +1026,9 @@ class RSQTR_Rig : EventHandler
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			if (!playeringame[n] || !players[n].mo) continue;
+			// an assignment saved before 11-09 for something with its own home (OwnHome) is dropped
+			for (int j = 0; j < RSQTR_Region.N; j++)
+				if (lockCls[n * RSQTR_Region.N + j] != "" && OwnHome(lockCls[n * RSQTR_Region.N + j])) lockCls[n * RSQTR_Region.N + j] = "";
 			int r = RSQTR_Hooks.ShieldHolster(players[n].mo);
 			if (r < 0) continue;
 			int k = n * RSQTR_Region.N + r;

@@ -15,6 +15,11 @@ trigger or a raise; Holster Lock with RSQ Wheel (replaced 11-07 by holster assig
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. Built on
 Ermac's idea, his Virtual Tactical Vest for Doom VR, with new code that reads your real controller poses.
 
+New on 11-09 (code only, loads clean, not run): things with their own home never take a gun holster: the flare and
+flashlight (RSQ FnF), the grenade, the cigarette and Zippo, the whip, the saber and the ShieldSaw. The Wheel's web refuses
+to assign them (a double pulse), a hand putting one into a gun holster is refused (the whip and saber still go home), and
+an old saved assignment for one is dropped.
+
 New on 11-07 (rig only, not headset-confirmed): holsters are **assigned**. A gun put by hand into an unassigned holster,
 or picked for one in RSQ Wheel's holster web, owns it, in the holster or in your hand, until the Wheel unassigns or
 reassigns it; no other gun goes in. Holding an assigned gun at another gun's full holster sends yours home and brings
