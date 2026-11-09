@@ -48,7 +48,7 @@ OptionValue "RSQTR_Markers"
 {
 	0, "Never"
 	1, "Hand Nearby"
-	2, "Always"
+	2, "Always While Moving Holsters"
 }
 
 OptionMenu "RSQTR_Options"

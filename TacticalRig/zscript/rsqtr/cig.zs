@@ -541,20 +541,27 @@ class RSQTR_Cig : EventHandler
 	}
 	private void HidePack() { for (int k = 0; k < PACK_SHOWN; k++) if (packShow[k]) packShow[k].bINVISIBLE = true; }
 
+	// RIG CLUTTER (owner 11-08): the pocket's ring follows every ring's rules (rig.zs RingAlpha): Holster Rings as drawn
+	// (RingMode: "Always" only while moving holsters), the Hand Nearby fade at POCKET_R, shown only to a hand that can act
+	// here (the main hand: take one, or put the one in it back) and faint unless it is that hand's nearest ring. Its own
+	// 0.30 m / 0.9 / 0.35 rule before 11-08 is gone.
 	private void ShowMark(Vector3 at, double nearest)
 	{
 		let p = players[consoleplayer];
-		int mode = RSQTR_Rig.Opt("rsqtr_markers", p, 1);
-		bool show = mode == 2 || (mode == 1 && nearest < 0.30);
-		if (!show) { HideMark(); return; }
+		let rig = RSQTR_Rig.Get();
+		if (!rig || !p.mo) { HideMark(); return; }
+		int inMask = 0;
+		for (int h = 0; h < 2; h++) if (RSQTR_Body.RoomMetres(RSQTR_Body.Hand(p.mo, h), at) < POCKET_R) inMask |= 1 << h;
+		double a = rig.RingAlpha(p.mo, RSQTR_Rig.RingMode(p), RSQTR_Rig.RK_CIG, at, POCKET_R, inMask);
+		if (packShow[0] && !packShow[0].bINVISIBLE) a *= RSQTR_Rig.STOWED_SPHERE;   // not drawn through the cigarettes (11-05)
+		if (a <= 0.01) { HideMark(); return; }
 		if (!pocketMark) pocketMark = Actor.Spawn("RSQTR_ItemMarker", at);   // an item spot: a wire diamond (rig.zs, 11-08)
 		if (!pocketMark) return;
 		pocketMark.SetOrigin(at, true);
 		pocketMark.bINVISIBLE = false;
-		pocketMark.Alpha = nearest < POCKET_R ? 0.9 : 0.35;
-		if (packShow[0] && !packShow[0].bINVISIBLE) pocketMark.Alpha *= RSQTR_Rig.STOWED_SPHERE;   // not drawn through the cigarettes (11-05)
+		pocketMark.Alpha = clamp(a, 0.0, 1.0);
 		pocketMark.Scale = (POCKET_R * RSQTR_Body.Upm(), POCKET_R * RSQTR_Body.Upm());   // the wireframe sphere: radius 1.0
-		pocketMark.frame = RSQTR_Rig.MarkerFrame(nearest < POCKET_R, RSQTR_Rig.Opt("rsqtr_profile_active", p, 1), true);   // a utility place's colour (11-05)
+		pocketMark.frame = RSQTR_Rig.MarkerFrame(inMask != 0, RSQTR_Rig.Opt("rsqtr_profile_active", p, 1), true);   // a utility place's colour (11-05)
 	}
 	private void HideMark() { if (pocketMark) pocketMark.bINVISIBLE = true; }
 

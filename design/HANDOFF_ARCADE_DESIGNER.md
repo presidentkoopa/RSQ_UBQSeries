@@ -3,6 +3,15 @@
 For a designer starting fresh on the series' **arcade layer** (the "Big Fourth"). This is design only: **no building**
 until the owner says so ("building now would be disastrous", 18:39). Read this first, then the files it points to.
 
+## 0. The honest state (owner, 19:06)
+"All we have are disconnected ideas and a framework which would support it if they were better designed."
+- There are **no concrete arenas, challenges or gameplay designs yet.** No map has been designed for this.
+- What exists: eight mockups of feedback styles, a list of loose challenge names, and a framework (arenas, DoorCards,
+  stakes, families, sheets) that could hold real designs.
+- The designer's real job is the missing middle: turn the loose ideas into **actual, connected gameplay**, designed
+  well, Doom-flavoured, playable in VR. Don't treat the framework as the design, and don't fill in templates as if
+  that were designing. Bring the owner real gameplay ideas to react to, one at a time.
+
 ## 1. Who and what
 - **Owner:** presidentkoopa. Makes VR Doom mods: **RSQ UBQ Series** (this repo) and BD22 VR weapons, on stock
   **QuestZDoom 17.3** (Quest standalone; gzdoom 4.14 base; no engine changes; ZScript/DECORATE/MODELDEF/data only).
@@ -25,7 +34,7 @@ until the owner says so ("building now would be disastrous", 18:39). Read this f
 - **Every claim checked.** Facts come from a source you opened or the repo (file:line). Label inference. No
   "mountain of hallucination trash".
 
-## 3. Where the design stands
+## 3. What exists so far (ideas and framework, not designs)
 Read in this order:
 1. `design/ARCADE_LOOP.md` — what each of the eight mockup panels stands for as gameplay, and the loop:
    **shot → fight → level**, with the **peak** earned across them. Panels 1-2 (lock-on ring, danger flash) are for set

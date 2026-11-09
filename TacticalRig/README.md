@@ -38,6 +38,10 @@ gun's picture, a streak home), a holster freed by hand, one feel per action (a r
 holster preferred where two overlap, your height measured for you, a one-time recentre tip, and item spots drawn as
 diamonds. Details below.
 
+Also 11-08, less on the body at once (rig only, not headset-confirmed): a hand's rings show only where its grip would do
+something, its nearest ring full and the rest faint, FnF's diamonds no bigger than a holster ring, and "Always" rings only
+while moving holsters. Details below.
+
 ## Standout feature: a holster rig you work with your hands
 
 Six gun holsters hang on your body: both hips, both sides of the chest and both shoulders. Put your hand in one and
@@ -62,6 +66,12 @@ here (the body, the holsters, the torso that follows your turns) is worked out i
   that gun always goes back there, and no other gun goes in until you free it.
 - Quick Swap: a gun in your hand at a full holster swaps at once, no wait.
 - Each holster's ring fades in as a hand comes near and turns green with the hand inside.
+- Only what that hand can use (rig only, not headset-confirmed): a ring shows to a hand only where its grip or Use would do
+  something now: holster, draw, swap, take or put back an item, free a holster. A gun hand sees the gun holsters it may use
+  plus the grenade spot, its whip, the main saber spot and the cigarette pocket; an empty hand sees full spots and holsters
+  it can free. A refusal does not count. Mods not loaded show nothing.
+- One ring at a time (rig only, not headset-confirmed): of a hand's rings, the nearest shows as before, the rest at 35%.
+- Move Holsters by Hand shows every ring as before; the rule flashes, the help ring and the holster tip's ring still show.
 - Holsters keep their guns from level to level. After a death or pistol start a holster stays empty until you
   own that gun again, then it is back where you kept it.
 - Assigned holsters: a gun put by hand into an unassigned holster, or picked for one in RSQ Wheel's holster web, owns
@@ -215,7 +225,7 @@ what the rows already do: Smoker, Chain Smoker, Gun Toss, Boomerang Gun).
 | Tactical Rig | On | The whole rig |
 | Grip Holsters | On | Grips holster and draw |
 | Use Holsters | On | Use holsters and draws too |
-| Holster Rings | Hand Nearby | Never, Hand Nearby, Always. Gun holsters blue (profile colour), other spots magenta |
+| Holster Rings | Hand Nearby | Never, Hand Nearby, Always While Moving Holsters (otherwise as Hand Nearby; rig only, not headset-confirmed). Gun holsters blue (profile colour), other spots magenta |
 | Holster Reach | 1.00 | Holster size (0.5 to 2) |
 | Quick Swap | On | A full holster swaps without the press delay |
 | Keep Between Levels | On | Holsters keep their guns |
@@ -305,7 +315,8 @@ Runs alone on any load order. It finds the rest by name:
   shoulder is left to the stowed shield.
 - **RSQ Whip**: its whip holster and the coiled whip shown there. **RSQ FnF**: its flare holster, sharing the
   pocket's flares, and its pocket hangs on this torso. FnF's chest pocket and flashlight clip show the same fading
-  holster sphere as the Rig's own places (Holster Markers), at FnF's own size.
+  holster sphere as the Rig's own places (Holster Markers), never drawn bigger than the largest gun holster's ring (their
+  reach is FnF's own; rig only, not headset-confirmed).
 - **RSQ Accessibility (its gesture reader)**: the watch-check gun move.
 - **RSQ SlowMo**: the slow motion after a smoke.
 - **RSQ Miniboss**: while its Bossfight is ready to call, the watch check + Use calls it in and Move Gun at Watch skips
