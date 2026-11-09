@@ -67,3 +67,12 @@ shield down. (Drops "Immune!" and "Defend!".)
 
 ## Head shots
 Agent researching a real head-shot solution from the engine survey (RSQ_QuestEngineSurvey): design/HEADSHOT_SOLUTION.md.
+
+## The fight, as decided (summary for the owner, 08:12-08:14)
+1. Arrives 1.25x with its thralls, all Boosted Legendary Champions.
+2. Shield up: shots bounce off (grey Xs, "Guard!"); thralls show "Target!".
+3. Kill a thrall: slow-mo, the miniboss loses that thrall's power, the shield drops for 1 s per thrall.
+4. Break one segment in time, or everything tiers up 1-3 by how much segment was left (map-wide option, on).
+5. All segments gone: one-on-one with its main bar.
+6. Main bar empties: it uses a life (thin bars) and tiers up (option). **No thralls rise: it fights its last lives alone**
+   (owner 08:14: "I think B?", tentative). This drops the original Minibosses! rule that dead thralls rise again.
