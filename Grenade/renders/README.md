@@ -64,6 +64,8 @@ stand-in (the UAC Survival Pack's thrown sprite).
   the tier colour of what it killed (the tier colours here are the designer's picks; the ladder has no colour values).
 - `C2_contact.png`: key frames for these seven.
 
+Owner, 2026-11-09 10:24: "i approve all barrel designs" (the six, the eight contexts, the mega blast).
+
 ## Mega blast (our own material)
 
 `mega/`: the big-barrel / chain-finale blast rebuilt from our material only (owner's choice after the Metal Slug example
