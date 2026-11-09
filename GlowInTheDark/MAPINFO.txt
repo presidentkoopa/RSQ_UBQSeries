@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "RSQGD_Session", "RSQGD_Handler"
+	AddEventHandlers = "RSQGD_Session", "RSQGD_DDZ_Handler", "RSQGD_Handler"   // RSQGD_DDZ_Handler: the built-in DarkDoomZ (zscript/rsqgd/ddz.zs)
 }

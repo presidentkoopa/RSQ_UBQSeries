@@ -9,6 +9,9 @@ New since the headset pass (tested on the rig, headset check pending): the whole
 
 New on 11-06 (rig only, not headset-confirmed): Randomize Current Look; More Lights' glowing flats merged in.
 
+New on 11-09 (code and load check only, not run on the rig): DarkDoomZ built in, with its settings under Darkness
+(DarkDoomZ).
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It is the
 owner's Glow In The Dark 1.1 (2021), rebuilt from scratch in ZScript and taken as far as the stock engine goes.
 
@@ -65,8 +68,10 @@ room, not per pixel: one colour for a sector's floor glow and one for its ceilin
    Lights Over Pools 4 and Lights on Items 6.
 3. Step through Profile with left and right.
 4. Start a map. Try a few profiles in the same room to see them change.
-5. Playing with DarkDoomZ? Pick a profile and press Use DarkDoomZ Pairing: it sets DarkDoomZ's mode and preset
-   to the ones that profile was made for.
+5. DarkDoomZ is built in (the map is darkened by it out of the box: Compress, Dismal, its own defaults). Change it
+   under Darkness (DarkDoomZ), or pick a profile and press Use DarkDoomZ Pairing: it sets DarkDoomZ's mode and
+   preset to the ones that profile was made for. Remove any separate darkdoomz.pk3 from your load order: with both
+   loaded the game stops at start-up ("cvar 'ddz_mode' already exists").
 
 ## Controls
 
@@ -88,7 +93,8 @@ Options → Radiant Silvergun Options → RSQ Glow In The Dark: one page, with T
 | Shuffle Profile Now | | New colours (and a new profile on Random) |
 | Randomize Colours Key | unbound | A key for new colours now (same look). Does nothing while a Bossfight's miniboss tint, DOWN's red map or another mod's glow sequence is running (owner 11-09). Code only, not run. |
 | Randomize Current Look | | A truly random look now: every Custom Profile row (both glow modes, colours, palette, pulse, strength, balance, liquids) drawn at random within the named profiles' ranges (nothing flashes), Profile set to Custom, colours re-rolled. It overwrites your Custom Profile rows. |
-| Use DarkDoomZ Pairing | | Sets DarkDoomZ's mode and preset to the profile's (greyed without DarkDoomZ) |
+| Darkness (DarkDoomZ) | | DarkDoomZ's own settings page (built in): Darkness Mode (Compress), Darkness Level (Dismal), and its Advanced, Fog and Flashlight pages (Flashlight Key: F). Same settings and names (ddz_*) as the separate DarkDoomZ |
+| Use DarkDoomZ Pairing | | Sets DarkDoomZ's mode and preset to the profile's |
 | Re-roll Colours | Every Map | Never, Every Map, On Each Death, On Each Level-Up, Every N Minutes |
 | Re-roll Every (min) | 5 | For Every N Minutes |
 | Strength | 1.0 | Overall glow strength |
@@ -141,9 +147,9 @@ Depth (0.3), Debug Log (Off, One Line per Map, + Every Second).
 ## Works with
 
 Runs alone, with any map set. It finds the others by name:
-- **DarkDoomZ** (Caligari87): the two pair naturally; each profile names a DarkDoomZ setting to go with it. During a
-  miniboss it lowers DarkDoomZ's own brightness setting and puts it back afterwards, even after a quit mid-fight.
-  Without DarkDoomZ the map's own light is lowered and given back exactly.
+- **DarkDoomZ** (Caligari87): built in since 11-09 (code only, not run on the rig yet). Each profile names a
+  DarkDoomZ setting to go with it. During a miniboss it lowers DarkDoomZ's own brightness setting and puts it back
+  afterwards, even after a quit mid-fight. Do not also load the separate darkdoomz.pk3 (the game stops at start-up).
 - **RSQ Miniboss**: the miniboss tint, in the miniboss's own colour.
 - **Gun Bonsai** (ToxicFrog's): the level-up wave, from Gun Bonsai alone; with RSQ Gun Bonsai VR, for each hand's gun.
 - **RSQ Score**: the combo glow.
@@ -166,5 +172,9 @@ Runs alone, with any map set. It finds the others by name:
   is merged into this pack's GLDEFS.txt (see CREDITS.txt).
 - The Subdued light style is the idea of the Subdued Lights mod (double radius, half brightness); nothing of that mod
   is used.
-- **DarkDoomZ** by Caligari87 (Dark Doom concept by Josh771): played with, not bundled or changed.
+- **DarkDoomZ** (C) 2018 Sterling Parker (Caligari87), zlib licence, built in by the owner's choice (11-09) with full
+  credit: an ALTERED version (classes and names renamed, its menu moved under this mod's page; each altered file says
+  so at its top). Dark Doom concept by Josh771. Its licence, credits and readme ship unchanged in DarkDoomZ/ inside the
+  pk3; its own contributors (Kinsie, Gutawer, FishyClockwork, phantombeta, Marisa Kirisame, Accensus, mshahen's
+  flashlight clicks under CC BY 3.0, and its testers) are listed in CREDITS.txt.
 - All ZScript written for this pack.

@@ -50,7 +50,8 @@ MODS = {
     'Melee':        ('RSQ_Melee.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
                      'SNDINFO.txt', 'LANGUAGE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds', 'sprites', 'credits']),
     'GlowInTheDark': ('RSQ_GlowInTheDark.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt', 'GLDEFS.txt',
-                     'CREDITS.txt', 'README.md', 'zscript']),
+                     'CREDITS.txt', 'README.md', 'zscript',
+                     'CVARINFO.ddz', 'MENUDEF.ddz', 'SNDINFO.ddz', 'sounds', 'graphics', 'DarkDoomZ']),   # DarkDoomZ (Caligari87, zlib) built in
     'FlashFlare':   ('RSQ_FnF.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sprites', 'graphics',
                      'VOXELDEF.txt', 'voxels', 'sounds', 'MODELDEF.torch']),

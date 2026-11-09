@@ -8,3 +8,4 @@
 #include "zscript/rsqgd/things.zs"     // doors, switches, exits, items, the few lights
 #include "zscript/rsqgd/service.zs"    // RSQGD_Service
 #include "zscript/rsqgd/menu.zs"       // menu rows that read the profile table
+#include "zscript/rsqgd/ddz.zs"        // DarkDoomZ (Caligari87, zlib), built in: altered copy, see its header
