@@ -43,6 +43,12 @@ OptionMenu "RSQGN_Options"
 	RSQGNGbOption "Grenade Types", "rsqgn_kinds_free", "RSQGN_KindsFree", "RSQGN_Service", "KindsFree"
 	Option "Your Fire Burns You", "rsqgn_fire_self", "RSQGN_FireSelf"
 	StaticText " "
+	StaticText "Barrels", "Gold"
+	Option "Barrels", "rsqgn_barrel_on", "OnOff"
+	Option "Explosion", "rsqgn_barrel_kind", "RSQGN_BarrelKind"
+	Option "Replace Brutal Doom's Barrels", "rsqgn_barrel_replace_bd", "OnOff"
+	Slider "Debris", "rsqgn_barrel_debris", 0.0, 1.0, 0.1, 1
+	StaticText " "
 	StaticText "Shooting", "Gold"
 	Option "Shoot Thrown Grenades", "rsqgn_shoot", "OnOff"
 	Option "Only in Slow-Mo", "rsqgn_shoot_slowmo", "OnOff"
@@ -75,6 +81,9 @@ OptionMenu "RSQGN_Test"
 	Slider "Again Beyond (m)", "rsqgn_face_far", 0.30, 1.50, 0.01, 2
 	Slider "Hold (tics)", "rsqgn_face_hold", 2, 40, 1, 0
 	StaticText " "
+	StaticText "Barrels", "Gold"
+	Slider "Effects Cap", "rsqgn_barrel_cap", 100, 2000, 50, 0
+	StaticText " "
 	Option "Debug Log", "rsqgn_debug", "OnOff"
 	StaticText " "
 	RSQGNResetAll "Reset All", "Reset all RSQ Grenade settings?"
@@ -91,4 +100,15 @@ OptionValue "RSQGN_KindsFree"
 {
 	1, "All Types"
 	0, "Frag Only"
+}
+
+OptionValue "RSQGN_BarrelKind"
+{
+	0, "Random"
+	5, "#5 Snap"
+	6, "#6 Heavy"
+	7, "#7 Pillar"
+	8, "#8 Groundbreaker"
+	9, "#9 Slag Column"
+	10, "#10 Neon Crescent"
 }

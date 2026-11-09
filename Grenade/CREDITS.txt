@@ -44,6 +44,39 @@ THE GRENADE TREE'S EFFECTS AND SOUNDS (Gun Bonsai VR patch, 2026-11-02)
   Grenade/tools/fxpull.py is the record of each pull (the well and the path); sounds converted to mono 44.1 kHz.
   The kinds' skins (models/rsqgn/nade_<kind>.png) are Gomuz's nade.png recoloured by tools/gen_kinds.py.
 
+THE BARRELS (barrel.zs, 2026-11-09): six barrel explosions, from the owner's approved Python designs (the record of
+every layer: Grenade/tools/barrel_spec/, exported by tools/barrel_export.py into sprites/rsqgn/barrel/ QB** and QX**
+and zscript/rsqgn/barrel_data.zs). Every sprite is the source art recoloured, re-centred and trimmed, at its own pixel
+size; nothing is smoothed.
+  Sources and their terms:
+  - RS Combat FX (presidentkoopa, the owner's own pack): the pixel embers RSS0A0-D0 (Monsters/sprites/combatfx/
+    sparks), raw (#5 #6 #7 #8), through the dirty-fire ramp (#9), through the neon ramp (#10): QXEA, QXEB, QXEC. And
+    every barrel sound (sounds/rsqgn/barrel/, copied unchanged from RS Monsters' copy): explosions/BA_EXP01-03 ->
+    QGBX1-3 (the blast), explosions/DISTEXP1-5 -> QGBD1-5 (the distant blast), magdrops/DSBOUNC1-6 -> QGBC1-6 (the
+    debris clatter).
+  - Reactorcore, "Explosion Spriteanim Sheet Minipack" (https://reactorcore.itch.io/explosion-spriteanim-sheet-minipack,
+    design/assets/fx_sheets/reactorcore_minipack): CC0 BY A PAGE COMMENT ONLY -- the pack's own info file states no
+    licence; the author answered "CC0" in a comment on its page. Get it in writing (or a licence file) to be sure.
+    Used: the ring flash (#5 main, #8 children), sheet 4 fireballs (#5 #6 #7 children, #7 column; #9 brown
+    fireballs), the red fireball to smoke (#6 body, #7 top, #9 bottom child), the grey puff (the smoke and soot of all
+    six; #10's through a purple ramp), sheet 10 (#9 main blast), sheet 3 crescents (#10).
+  - Rufaswan's rips, sheet by Magma MK-II (design/assets/fx_sheets/fx_sheet_rufaswan_magma.png). On the sheet:
+    "Credits not necessary." Credited anyway. Used: the yellow flash ring (#5 #7 floor rings, #7 main, #8 main and
+    shock ring, #10 gold ring), the fire ring (#6 child, #7 crown, #8 ember scorch), the streak flare (the three pops
+    of all six), the pastel ring (#6 cap rings), the bubble burst (#6 child, #10 floor ring), the yellow puffs (#7),
+    the dust ring (#8 #9), the yellow flash (#8 child, #10), the star pops and the cluster ring (#10).
+  - fx_sheet_2.png (design/assets/fx_sheets): *** SOURCE UNKNOWN *** -- the owner kept it (fx_sheets/README.md:
+    "ask the owner before shipping"). Used ONLY in #6 Heavy: its main blast (the flash domes, gradient-mapped to
+    fire: sprites QB01X-Z, QB02A-B) and its floor ring (f2ring: QB02H), as exported on 11-09. If this sheet
+    cannot ship, #6 needs a new main blast and floor ring; the other five do not use it.
+  - End of Starchild: STRUCTURE REFERENCE ONLY, no art, no sound, no code: its barrel death's timing and layout (the
+    barrel blinking lit / unlit 5 x 2 tics, one main blast 24 units up with a random roll -- 1 tic, then a 2-tic solid
+    silhouette -- child bursts one a tic within 12 units, three flat pops at the base, embers 2 a tic for 7 tics, two
+    layered blast sounds).
+  - Generated for this pack (tools/barrel_export.py from debris_v3.py's shapes and palettes): the debris bits QX0A-QX8K
+    (1-9 pixel shapes, one colour step a frame) and #9's dust.
+  - The lit blink is the stock BAR1 sprite (or whatever BAR1 is loaded) through TRNSLATE.txt's RSQGN_BarrelHot.
+
 SHARING
 Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
 people's work in this pack is the project owner's decision.

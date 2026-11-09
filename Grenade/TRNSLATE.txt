@@ -1,0 +1,5 @@
+// RSQ Grenade -- translations. RSQGN_BarrelHot: the barrel's LIT blink before it goes off (barrel.zs, End of
+// Starchild's lit / unlit x5): every colour kept as its brightness, from a dark ember red up to a white-hot yellow
+// (the design's lit barrel: its colours x1.35 + (150, 55, 0), fx_v2.draw_barrel). A translation, so it colours the
+// stock BAR1 sprite and RS Monsters' BAR1 voxels alike.
+RSQGN_BarrelHot = "0:255=%[0.35,0.10,0.0]:[2.0,1.75,1.1]"
