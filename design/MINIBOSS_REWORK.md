@@ -78,3 +78,9 @@ Agent researching a real head-shot solution from the engine survey (RSQ_QuestEng
    (owner 08:14: "I think B?", tentative). This drops the original Minibosses! rule that dead thralls rise again.
 - GITD "thrall rooms glow their colour": DROPPED (owner 08:43: thralls spawn in the same room as the miniboss, so it tells
   you nothing).
+- GITD in the fight (owner 08:44, yes and yes): the fight room glows steady cold grey while the shield is up and turns
+  gold, pulsing with "Target!", when it drops; on the miniboss's death a map-wide wave in its colour, then a colour
+  reroll. Not built.
+- GITD "Randomize Colours" key (owner 08:44): BUILT (code only, loads clean, not run): RSQ Glow In The Dark menu,
+  Randomize Colours Key (unbound; also under Controls > RSQ Glow In The Dark). New colours now, same look; it stands down
+  while a miniboss tint, DOWN's red map or another mod's timed tint runs.
