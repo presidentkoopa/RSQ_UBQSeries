@@ -289,7 +289,7 @@ def main():
     cvi = open(os.path.join(HERE, 'CVARINFO.txt'), encoding='utf-8').read()
     declared = set(re.findall(r'^\s*(?:server|user|nosave|noarchive|\s)*\s*(?:bool|int|float|string|color)\s+(\w+)', cvi, re.M))
     known_foreign_cv = {'rsm_depth', 'rsq_ui_inset', 'rsq_ui_hud_scale', 'LD_legendarymonsters', 'LD_legendaryhealth',
-                        'LD_legendaryhealthboss'}
+                        'LD_legendaryhealthboss', 'rsq_mon_bf_boss', 'rsq_mon_bf_thralls'}   # last two: RSQ Monsters' Bossfight rows
     for f, s in nc.items():
         for m in re.finditer(r"""(?:\bCI|\bCF|FindCVar|GetCVar|\bUCv|\bCLocal|\bCv|\bI|\bF)\s*\(\s*['"](\w+)['"]""", s):
             v = m.group(1)

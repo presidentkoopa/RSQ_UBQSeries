@@ -44,7 +44,7 @@ MODS = {
     'GunCards':     ('RSQ_GunCards.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF.txt', 'MENUDEF.txt',
                      'MODELDEF.txt', 'TEXTURES.txt', 'VOXELDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models',
                      'sprites', 'graphics', 'voxels']),
-    'Grenade':      ('RSQ_Grenade.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
+    'Grenade':      ('RSQ_Grenade.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'MODELDEF.kinds.txt',
                      'SNDINFO.txt', 'TRNSLATE.txt', 'DECALDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds',
                      'sprites', 'graphics']),   # DECALDEF + graphics/: the explosions' wall scorch (11-09)
     'Melee':        ('RSQ_Melee.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',

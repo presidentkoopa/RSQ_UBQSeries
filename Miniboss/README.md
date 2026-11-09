@@ -3,34 +3,24 @@
 Fill the Bossfight meter with stylish kills, check your watch, and call the fight in: a miniboss and its thralls
 teleport in where you can see them, and you choose how to take them apart.
 
-Status: 0.99 — the set piece was played and confirmed working in the headset; the **Bossfight** (called-in fights,
-11-05) is new and **rig only, not headset-confirmed**.
+Status: 0.99. The original set piece was played and confirmed working in the headset. Everything below marked 11-09 is
+**code only: not compiled, not rig-tested, not headset-confirmed**. The pk3 is `pk3/RSQ_Miniboss.pk3` (rebuilt 11-09).
 
-New on 11-09 (**code only: not compiled, not rig-tested, not headset-confirmed**): **the fight reworked** (the owner's
-design, design/MINIBOSS_REWORK.md, mockups design/mockups/miniboss/): a staggered arrival on RSQ VisualRewards' arrival
-beams, every monster a Boosted Legendary Champion, the miniboss 1.25x (its hitbox too), faster and keener to shoot; a HUD
-bar stack in the meter's place (thrall bar, window bar, its bar, its life bars); the thralls make it immune; a thrall
-killed opens a short window to break one segment, missed and everything tiers up; no thralls rise; RSQ Glow In The Dark
-follows the fight. The pk3 in this folder (RSQ_Miniboss.pk3, 10-27) is STALE: rebuild with build.sh.
-
-New on 11-06 (rig only, not headset-confirmed): the original Minibosses! tether trail (30 plasma beads a link, at about
-half the old cost); Ignore Spawn Restrictions. Since 11-05 (code only, not rig-tested): a
-killed miniboss refills RSQ Tactical Rig's cigarettes.
-
-New on 11-07 (rig only, not headset-confirmed: shown on the rig -- the crate dropped by the Bossfight payoff; Graves Rise
-with 31 tombstones raising 31 undead): a Bossfight win drops
-RSQ Score's life crate where the miniboss died instead of adding the life outright (Bossfight Kill Drops a Life Crate);
-Graves Rise has no cap (every tombstone raises undead; the old cap of 24 is gone).
-
-New on 11-06 (rig only, not headset-confirmed): **Tier From** (Set / Gun Bonsai VR Level / Score Lives / Whichever Is
-Larger, the default): what sets a Bossfight's tier (0-4). Set is the old sum (Gun Bonsai level / 2 + this map's score /
-Score Per Tier + Bossfights won / 2); the others use your Gun Bonsai VR player level or your RSQ Score extra lives as the
-tier itself (over 4 counts 4), or the larger of the two; a mod not loaded counts 0. **Graves Rise (Legion of Bones)**
-(off; Graves Area: Map / Radius, Graves Radius): with Legion of Bones and RSQ Graveyards loaded, when a Bossfight lands
-the tombstones in the map (or within the radius of where it landed) raise Legion of Bones undead: thralls + tier of them
-in all (3 thralls at tier 2 = 5), at least one per stone (more stones: one each), nearest stones first, no cap (11-07); each
-thrall's type rises as its own undead. And while a Bossfight waits to be called in, every tombstone's candle beats with the
-map's red heartbeat (held steady in Photosensitive Mode).
+**What's new**
+- **11-09, the fight reworked** (the owner's design, design/MINIBOSS_REWORK.md; mockups design/mockups/miniboss/):
+  - a staggered arrival on RSQ VisualRewards' arrival beams, inside RSQ SlowMo's landing slow, with SlowMo's edge arrows
+    pointing to any landing out of view;
+  - every monster a Boosted Legendary Champion; the miniboss 1.25x (its hitbox too), faster and keener to shoot;
+  - a HUD bar stack in the meter's place: thrall bar, window bar, its bar, its life bars;
+  - the thralls make it immune; a thrall killed opens a short window to break one segment; a missed window tiers
+    everything up; no thralls rise; RSQ Glow In The Dark follows the fight;
+  - **Miniboss From / Thralls From** (on RSQ Monsters' page, under Bossfight): pick the miniboss and its thralls from
+    ColorfulHell, MeatGrinder or a mix instead of the map's own monsters (below);
+  - **head shots** on the 1.25x miniboss are judged on its grown body by RSQ Score's head check.
+- **11-07** (rig only): a Bossfight win drops RSQ Score's life crate where the miniboss died; Graves Rise has no cap.
+- **11-06** (rig only): Tier From; Graves Rise (Legion of Bones); the original tether trail at about half the old cost;
+  Ignore Spawn Restrictions.
+- **11-05** (code only): a killed miniboss refills RSQ Tactical Rig's cigarettes.
 
 RSQ is a series of VR mods for stock QuestZDoom 17.3, built in ZScript alone with no engine changes. RSQ Miniboss is a
 rebuild of Tartlman's Minibosses! with new rules, and it reads monsters by their health, never their class name, so it
@@ -64,6 +54,12 @@ No miniboss is picked when a level loads any more. You earn it.
   VisualRewards: the original Minibosses! teleport fog.
 - **Who comes scales with you**: the monster types already in this map, stronger ones as your Gun Bonsai level, this
   map's score and your Bossfights won climb.
+- **Where they come from** (RSQ Monsters > Bossfight, 11-09): **Miniboss From** Same as Monster Set (the map's own
+  monsters, as above), ColorfulHell, MeatGrinder or Mixed; **Thralls From** Same as Miniboss, ColorfulHell, MeatGrinder,
+  Mixed or Map's Own Monsters. A pick keeps its family (an imp stays an imp) and is taken from the chosen set. A thrall
+  keeps the colour it had on the map (Common when it had none); a miniboss from a set stands at least one colour above
+  its strongest thrall. Same as Miniboss with a Brutal Doom or Vanilla miniboss gives ColorfulHell thralls (Brutal Doom's
+  monsters have no colour ladder). A family the MeatGrinder set lacks comes from ColorfulHell.
 - **It waits** (and says why on the bar) during a map's first minute, near the exit, while your health is low, while
   more than 3 awake monsters are after you, when there is no room in view, during the cooldown, and after 2 a map.
 - **Ignore Spawn Restrictions** (off; owner 11-06; rig only, not headset-confirmed): a due Bossfight comes anyway during the
@@ -181,6 +177,8 @@ Then the set piece itself:
 
 **Options → Radiant Silvergun Options → RSQ Miniboss**
 
+Where a Bossfight's monsters come from (Miniboss From, Thralls From) is on RSQ Monsters' page, under Bossfight.
+
 | Row | Default | What it does |
 |---|---|---|
 | Bossfights | On | The meter fills and called-in fights come. |
@@ -254,7 +252,7 @@ Then the set piece itself:
 - **Alone**: the whole Bossfight works: the meter fills from kills, chains and time, the watch check is read by this mod's
   own copy, and the set piece runs in full. Without RSQ SlowMo there is no slow motion (the window still times the
   greed rule and chains).
-- **RSQ Score**: its style points fill the meter most (unless Fills From is Gun Bonsai); the meter sits under its bar and its combo rows go below; Thrall
+- **RSQ Score**: head shots on every monster, the 1.25x miniboss judged on its grown body; its style points fill the meter most (unless Fills From is Gun Bonsai); the meter sits under its bar and its combo rows go below; Thrall
   Slow Kill, Miniboss, Greedy and Bossfight rows; a Bossfight's miniboss killed drops Score's life crate (one extra life when touched).
 - **RSQ SlowMo**: the landing (4 s) and each thrall kill's window slow the world; its edge arrows point to each landing
   out of view (RSQSM_Service "arrow.add"); its two bars sit under the meter (under the fight's HUD stack while one runs). A heavy hit from a
@@ -263,7 +261,8 @@ Then the set piece itself:
   the fight (11-09): an arrival wave in its colour, a steady cold grey while it is shielded, gold pulsing in a window
   (steady in Photosensitive Mode), red then its new colour on a lost life, a map-wide wave and a colour re-roll on its death.
 - **RSQ Monsters**: its ladder colours (each monster's bar, beam and glow colour) and its tier changes with the tier flash
-  (RSQMN_RosterService "tier", "retier"; a CH colour change swaps the body and this mod follows it).
+  (RSQMN_RosterService "tier", "retier"; a CH colour change swaps the body and this mod follows it); its Bossfight rows,
+  Miniboss From and Thralls From ("set.class", "class.set", "class.tier"). Without it, the map's own monsters.
 - **RSQ Gun Bonsai VR** (with Gun Bonsai): XP fills the meter (unless Fills From is Score); the player level raises the tier.
 - **RSQ Accessibility (Gestures), RSQ Gun Cards**: their watch-check reader is used first when loaded.
 - **RSQ VisualRewards**: the arrival beams (V1-V4), the words over the monsters ("TARGET!", "GUARD!" in RS Score's font)
@@ -289,8 +288,10 @@ Then the set piece itself:
 - The arrival's idea of spawning at the map's own monster start spots: Dynamic Enemy Reinforcements v3 by Joshua Hard
   (MIT). Its code is not copied.
 - Effects design (the IWAD sprites BFS1, APLS, BFE1, APBX, BAL2, FIRE in AddStencil): Tartlman's Minibosses!.
-- Code: written for this pack. No sprites or sounds are shipped (the IWAD's own sprites and sounds are used by name).
-- Recognised by name, not shipped: Champions, LegenDoom Lite, LegenDoom 3.0, RSQ SlowMo, RSQ Score, RSQ Glow In The Dark, RSQ Gun Bonsai VR, RSQ Accessibility (Gestures), RSQ Gun Cards.
+- Code: written for this pack. No sprites or sounds are shipped (the IWAD's own sprites and sounds are used by name); the HUD graphics are the only art.
+- HUD art: the white box and the placeholder shield icon (graphics/RSQMBWH, RSQMBSH) are generated for this pack by
+  tools/gen_hudart.py (the shield from the owner's mockup).
+- Recognised by name, not shipped: Champions, LegenDoom Lite, LegenDoom 3.0, RSQ SlowMo, RSQ Score, RSQ Glow In The Dark, RSQ Gun Bonsai VR, RSQ Accessibility (Gestures), RSQ Gun Cards, RSQ VisualRewards, RSQ Monsters.
 - QuestZDoom: Emawind and Team Beef.
 
 Free to share as part of the Radiant Silvergun Quest series.

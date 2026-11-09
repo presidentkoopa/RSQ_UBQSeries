@@ -54,6 +54,8 @@ size; nothing is smoothed.
     every barrel sound (sounds/rsqgn/barrel/, copied unchanged from RS Monsters' copy): explosions/BA_EXP01-03 ->
     QGBX1-3 (the blast), explosions/DISTEXP1-5 -> QGBD1-5 (the distant blast), magdrops/DSBOUNC1-6 -> QGBC1-6 (the
     debris clatter).
+  - The owner's barrel test candidate (11-09, supplied as ST0E_U0_00001.wav; source to record before release):
+    sounds/rsqgn/barrel/QGBT1.ogg, its last 0.35 s faded out (Barrel Sound = Test Candidate).
   - Reactorcore, "Explosion Spriteanim Sheet Minipack" (https://reactorcore.itch.io/explosion-spriteanim-sheet-minipack,
     design/assets/fx_sheets/reactorcore_minipack): CC0 BY A PAGE COMMENT ONLY -- the pack's own info file states no
     licence; the author answered "CC0" in a comment on its page. Get it in writing (or a licence file) to be sure.

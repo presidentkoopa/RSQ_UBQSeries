@@ -444,3 +444,81 @@ extend class RSQMB_Handler
 		if (x) xfx.Push(x);
 	}
 }
+
+// =====================================================================================================================
+// RSQ MONSTERS > BOSSFIGHT: MINIBOSS FROM / THRALLS FROM (owner 2026-11-09 07:45, "your rules are good"; owner 06:39:
+// a Brutal Doom miniboss gets tiered ColorfulHell thralls). The picks are made from the map's own monsters as before,
+// then each is turned into the same family from the chosen set (RSQMN_RosterService "set.class"). Picked from a set,
+// a thrall keeps the colour it had on the map (Common when it had none) and the miniboss stands at least one colour
+// above its strongest thrall (Claude's rule from 06:34, the owner's "your rules are good"). Without RSQ Monsters, or
+// on Same as Monster Set / Map's Own Monsters, nothing changes.
+// =====================================================================================================================
+extend class RSQMB_Handler
+{
+	Array<String> fromMgCls;   // MeatGrinder picks: their class and the tier Land gives them in place
+	Array<int>    fromMgTier;
+
+	// 1 ColorfulHell, 2 MeatGrinder, -1 neither (by type)
+	int ClassSet(Service s, String cls) { return s.GetInt("class.set", cls); }
+
+	// one pick into a set (RSQ Monsters' numbering: 3 ColorfulHell, 2 MeatGrinder) at a tier; the pick itself when
+	// that set has nothing for its family
+	String IntoSet(Service s, String cls, int set, int tier)
+	{
+		String n = s.GetString("set.class", cls, set, tier);
+		if (n == "" && set == 2) { set = 3; n = s.GetString("set.class", cls, 3, tier); }   // MG lacks it: CH's
+		if (n == "") return cls;
+		if (set == 2 && tier > 1) { int k = fromMgCls.Find(n); if (k == fromMgCls.Size()) { fromMgCls.Push(n); fromMgTier.Push(tier); } else fromMgTier[k] = max(fromMgTier[k], tier); }
+		return n;
+	}
+
+	// the menu value into a set: 1 CH -> 3, 2 MG -> 2, 3 Mixed -> either, per pick
+	static int SetOfMenu(int v) { return v == 1 ? 3 : (v == 2 ? 2 : (v == 3 ? (random[rsqmbbf](0, 1) ? 3 : 2) : 0)); }
+
+	class<Actor> ApplyFrom(class<Actor> bc, Array<String> tc)
+	{
+		fromMgCls.Clear(); fromMgTier.Clear();
+		let s = MnService();
+		if (!s || !bc) return bc;
+		int bfv = clamp(CI('rsq_mon_bf_boss', 0), 0, 3), tfv = clamp(CI('rsq_mon_bf_thralls', 0), 0, 4);
+		String bn = bc.GetClassName();
+		int bSet = SetOfMenu(bfv);   // 0: the map's own
+		// Same as Miniboss: the miniboss's set; one from Brutal Doom or Vanilla (no ladder) gets ColorfulHell thralls
+		int tMode = tfv;
+		if (tfv == 0)
+		{
+			if (bfv == 3) tMode = 3;
+			else if (bSet == 3 || bSet == 2) tMode = bSet == 3 ? 1 : 2;
+			else tMode = ClassSet(s, bn) > 0 ? 4 : 1;
+		}
+		int topThrall = 0;
+		if (tMode != 4)
+		{
+			for (int i = 0; i < tc.Size(); i++)
+			{
+				int tt = max(1, s.GetInt("class.tier", tc[i]));
+				tc[i] = IntoSet(s, tc[i], SetOfMenu(tMode), tt);
+				topThrall = max(topThrall, tt);
+			}
+		}
+		if (bSet > 0)
+		{
+			int bt = max(1, s.GetInt("class.tier", bn));
+			if (topThrall > 0) bt = max(bt, topThrall + 1);
+			bn = IntoSet(s, bn, bSet, min(13, bt));
+		}
+		class<Actor> nc = bn;
+		if (debug) Console.Printf("RSQMB Miniboss From %d / Thralls From %d: %s", bfv, tfv, nc ? bn : "(none)");
+		return nc ? nc : bc;
+	}
+
+	// at the landing: a MeatGrinder pick is retiered in place to the colour its pick asked for (CH picks are already
+	// the right class; a CH body swap here would lose the held monster)
+	void FromTier(Actor a)
+	{
+		int k = fromMgCls.Find(a.GetClassName());
+		if (k == fromMgCls.Size()) return;
+		let s = MnService();
+		if (s) s.GetInt("retier", "", fromMgTier[k], 1, a);
+	}
+}

@@ -79,7 +79,7 @@ echo "built pk3/RSQ_Score.pk3"
 # Miniboss: its explicit include list (original/ is Tartlman's mod, source material only).
 cd "$HUB/Miniboss"
 rm -f "$OUT/RSQ_Miniboss.pk3"
-zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt README.md zscript
+zip -q -r -X "$OUT/RSQ_Miniboss.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt CREDITS.txt README.md zscript graphics
 echo "built pk3/RSQ_Miniboss.pk3"
 
 # Whip: a simulated bullwhip; its explicit include list (tools/ stays out).
@@ -106,7 +106,7 @@ echo "built pk3/RSQ_GunCards.pk3"
 # (TRNSLATE.txt: the barrel's hot blink; sprites/rsqgn/barrel/ goes in with sprites, recursively); tools/ stays out.
 cd "$HUB/Grenade"
 rm -f "$OUT/RSQ_Grenade.pk3"
-zip -q -r -X "$OUT/RSQ_Grenade.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt SNDINFO.txt TRNSLATE.txt CREDITS.txt README.md zscript models sounds sprites
+zip -q -r -X "$OUT/RSQ_Grenade.pk3" zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt MODELDEF.kinds.txt SNDINFO.txt TRNSLATE.txt DECALDEF.txt CREDITS.txt README.md zscript models sounds sprites graphics
 echo "built pk3/RSQ_Grenade.pk3"
 
 # Melee: fighting with your body (the punch and gloves, Slappers Only, Guard, Hadouken, Wall Splat, Heavy Hands, the

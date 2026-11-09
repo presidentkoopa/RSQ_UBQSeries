@@ -3,13 +3,18 @@
 A hand grenade you work like a real one: pull the pin with your other hand or your teeth, squeeze the spoon, cook it,
 and throw it with your own arm.
 
-Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
+Status: 0.99. The grenade was played and confirmed working in the headset; refinement and bug fixing ongoing. The
+barrels and the explosions (11-09) are **built but not yet run in the engine**. The pk3 is `pk3/RSQ_Grenade.pk3`
+(rebuilt 11-09).
 
-New since the headset pass (tested on the rig, headset check pending): shooting thrown grenades and the Shot Grenade Reach slider, the teeth pin pull measured from your real eyes, grenade types without Gun Bonsai.
-
-New on 11-06 (rig only, not headset-confirmed; not yet tried with BD22 VR): Replace Brutal Doom's Grenade (off).
-
-New on 11-09 (built, not yet run in the engine): **Barrels**, six new barrel explosions (below).
+**What's new**
+- **11-09** (built, not yet run in the engine):
+  - **Barrels**: six new barrel explosions, picked at random (below).
+  - **Explosions**: a new grenade blast and options for both: colour, lights, debris and seven room contexts (below).
+  - **Barrel Sound**: Combat FX, or the owner's Test Candidate (below).
+- **11-06** (rig only, not headset-confirmed; not yet tried with BD22 VR): Replace Brutal Doom's Grenade (off).
+- **Since the headset pass** (rig-tested, headset check pending): shooting thrown grenades and the Shot Grenade Reach
+  slider, the teeth pin pull measured from your real eyes, grenade types without Gun Bonsai.
 
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. On plain Doom 2
 it adds its own grenade. With Brutal Doom 22 VR Reloaded loaded it stands down completely and BD22 VR's own grenade
@@ -86,10 +91,12 @@ nearest-neighbour. A clatter plays when the first debris lands.
 | 10 | Neon Crescent | Arcade neon: a pink star pop, two crescents (pink and gold) flying apart with after-images, star pops, purple soot; pink and gold bits that twinkle |
 
 **Sounds** (RS Combat FX): its three barrel explosions, layered with a low, pitched-down second copy, plus a distant
-explosion on its own channel and a small metal clatter.
+explosion on its own channel and a small metal clatter. **Barrel Sound: Test Candidate** swaps the three near blasts for
+the owner's test sound (ST0E_U0_00001, its last 0.35 s faded out), layered the same way; the distant blast and the
+clatter stay.
 
 **Options** (on the main page, under Barrels): **Barrels** (On; Off = the stock barrel, untouched), **Explosion**
-(Random, or always one of the six), **Replace Brutal Doom's Barrels** (Off). Debris, colour, lights and the room's
+(Random, or always one of the six), **Barrel Sound** (Combat FX / Test Candidate), **Replace Brutal Doom's Barrels** (Off). Debris, colour, lights and the room's
 contexts are under Explosions (below). Test and Debug: **Effects Cap** (600 effect pieces alive at once, barrels and
 grenades together; past it a blast shows only its first-tic flash, so a long chain reaction stays cheap on Quest).
 
@@ -226,6 +233,7 @@ the types you have learned, Frag Only the frag alone).
 | **Barrels** | | |
 | Barrels | On | Our barrel: the blink and the six explosions (Off: the stock barrel) |
 | Explosion | Random | Random, or always #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column, #10 Neon Crescent |
+| Barrel Sound | Combat FX | Combat FX (RS Combat FX's barrel blasts) or Test Candidate (the owner's test sound, faded out) |
 | Replace Brutal Doom's Barrels | Off | With Brutal Doom loaded, ours replace its barrels (off: its barrels stay its own) |
 | **Explosions** | | |
 | Grenade Explosion | New | New (the approved pixel-art blast) or Original (the UAC Survival Pack's) |
@@ -285,7 +293,7 @@ Runs alone on plain Doom 2. It finds the others by name:
   flight numbers, the blast damage and its port of the pack's explosion); the upgrade tree's effects and sounds from
   his RS Combat FX and RS Ballistics libraries.
 - **The barrel explosions**: art from the owner's RS Combat FX (embers), Reactorcore's Explosion Spriteanim Sheet
-  Minipack, Rufaswan's rips (sheet by Magma MK-II) and fx_sheet_2 (source unknown, #6 only); sounds from RS Combat FX;
+  Minipack, Rufaswan's rips (sheet by Magma MK-II) and fx_sheet_2 (source unknown, #6 only); sounds from RS Combat FX and the owner's test candidate (ST0E_U0_00001);
   the barrel-death structure after End of Starchild (none of its art). CREDITS.txt has every source per explosion.
 - Generated for this pack: transparent placeholder sprites; the barrel debris bits.
 - **QuestZDoom** (Emawind and Team Beef): the engine, and its off-hand weapon and hand-pose API.

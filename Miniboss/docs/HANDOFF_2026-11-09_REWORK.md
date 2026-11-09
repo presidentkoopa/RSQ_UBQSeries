@@ -56,8 +56,7 @@ RSQSM_Service "arrow.add" / "arrow.clear" / "start.bossfight"; RSQGD_Service "ev
 ## Not built
 
 - Summoning (parked by the owner).
-- RSQ Monsters > Bossfight: Miniboss From / Thralls From (approved 07:45): needs picking the miniboss and thralls by
-  family from a chosen set (CH / MG / Mixed / the map's own), not small.
-- Head shots: RSQ Score's (design/HEADSHOT_SOLUTION.md); only the 1.25x hitbox is here.
+- (Built later on 11-09: RSQ Monsters > Bossfight: Miniboss From / Thralls From, fight.zs ApplyFrom / FromTier and
+  Monsters RS_BossfightPick. Head shots were already RSQ Score's head check, judged on the grown 1.25x body.)
 - DOWN's full "real Champion" (hidden candidates until Champions picks one): a monster Champions did not pick gets a
   colour token by name (DOWN's own fallback).

@@ -44,6 +44,12 @@ change: that still uses the creature's own health. A CH colour change makes a ne
 name) to pass the old body's full pay to the new one. Head shots (11-09): with RSQ Score loaded, its head check decides
 them for every monster, MG included, and the MG reactive deaths (head-pop, exploding head) follow Score's verdict;
 MG's own head band (`rsq_mg_head_zone`) is only used without Score (or with Score's check set to Brutal Doom's Own).
+
+RSQ Monsters > **Bossfight** (11-09, for RSQ Miniboss; code only, not compiled): **Miniboss From** (Same as Monster Set /
+ColorfulHell / MeatGrinder / Mixed; `rsq_mon_bf_boss`) and **Thralls From** (Same as Miniboss / ColorfulHell / MeatGrinder /
+Mixed / Map's Own Monsters; `rsq_mon_bf_thralls`). RSQ Miniboss turns each pick into the same family from that set through
+`RSQMN_RosterService` `GetString("set.class", type, set, tier)` (set 3 CH at that tier, 2 MG), with `GetInt("class.set", type)`
+and `GetInt("class.tier", type)` to read a type without a monster (`RS_BossfightPick` in `RS_ScoreReadout.zs`).
 `RSQMN_RosterService` `GetInt("headshot", "", 0, 0, monster)` answers Score's verdict (any monster), else MG's band;
 `GetString("family", ...)` names an MG body's Doom family for Score. (11-09: rig shown for an MG imp's head and chest,
 RSQ Score's `tools/rigtest/evidence_headshot/`; not headset-confirmed.)

@@ -3,25 +3,26 @@
 HP bars over every monster, damage numbers that live in the room with you, level-up moments you can read in a
 headset, and monsters that burst into health, armour and ammo when they die.
 
-Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
+Status: 0.99. Played and confirmed working in the headset; refinement and bug fixing ongoing. The arrival beams, words
+and pops (11-09) are **code and art only, not yet run in the engine**. The pk3 is `pk3/RSQ_VisualRewards.pk3` (rebuilt
+11-09).
 
-New on 11-06 (rig only, not headset-confirmed): Bits Vanish As (Blink Out / Fade Out).
-
-New on 11-07 for RSQ SlowMo's DOWN v3 (rig only, not headset-confirmed: the last rig run showed bits from kills within
-reach flying to the downed player in about 8 tics, banking health and armour, and the bank paid on the revive; kills
-farther off dropping ordinary bits): a kill you make while DOWN within 3x your Bits Fly to Me reach still bursts into
-bits, but they fly to you quickly and bank (health and armour, paid when you get up; an ammo bit gives its ammo as it
-arrives); a kill farther off drops ordinary bits (Bits Fly to Me at 0: none bank). REVIVE is shown every time you get
-up, bigger and longer at the better tier; the RAGE word and the DOWN skull are gone (SlowMo draws each target's icon over its HP bar);
-a DOWN target's HP bar shows even if you never hit it.
+**What's new**
+- **11-09** (not yet run): **arrival beams** V1-V4 for monsters other mods bring in, with their own sounds for a
+  miniboss, a thrall and a chump; **words** over monsters in RS Score's font (TARGET!, GUARD!); a **pop** in a colour
+  (below). Built for RSQ Miniboss's Bossfight; any mod can ask for them by name.
+- **11-07** for RSQ SlowMo's DOWN v3 (rig only): a kill you make while DOWN within 3x your Bits Fly to Me reach still
+  bursts into bits, but they fly to you quickly and bank (health and armour, paid when you get up; an ammo bit gives its
+  ammo as it arrives); a kill farther off drops ordinary bits (Bits Fly to Me at 0: none bank). REVIVE is shown every
+  time you get up, bigger and longer at the better tier; the RAGE word and the DOWN skull are gone (SlowMo draws each
+  target's icon over its HP bar); a DOWN target's HP bar shows even if you never hit it.
+- **11-06** (rig only): Bits Vanish As (Blink Out / Fade Out); a yellow **battery bit** for RSQ FnF's "Bones Drop Battery
+  Bits" (it acts like every Kill Rewards bit and refills 15% of the flashlight battery of whoever picks one up; nothing
+  here drops one by itself).
 
 Flat-screen damage numbers and HUD banners smear across your lenses in VR. Everything here is placed in the world
 instead: at the monster, at your wrist, or standing in front of you like a sign. All on stock QuestZDoom 17.3, in
 ZScript alone. No engine changes.
-
-New on 11-06 (rig only, not headset-confirmed): a **battery bit** (yellow) for RSQ FnF's "Bones Drop Battery Bits":
-FnF asks for them when a Legion of Bones monster dies; they act like every Kill Rewards bit and refill 15% of the
-flashlight battery of whoever picks one up. Nothing here drops one by itself.
 
 ## Standout feature: every hit answers you, in the room
 

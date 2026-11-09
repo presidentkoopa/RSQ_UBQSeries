@@ -59,11 +59,26 @@ class RSQMN_RosterService : Service
 	override String GetString(String request, string stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request == "family") return RS_ScoreReadout.FamilyName(Actor(objectArg));
+		// "set.class" (11-09, RSQ Minibosses' Miniboss From / Thralls From): stringArg any monster type (vanilla,
+		// Brutal Doom's, CH, MG), intArg the set (2 MeatGrinder, 3 ColorfulHell), doubleArg the ladder tier (CH: the
+		// class at that colour; MG: its one class, the caller retiers it) -> the same family's class in that set, ""
+		// when the type has no Doom family or the set has none for it
+		if (request == "set.class") return RS_BossfightPick.SetClass(stringArg, intArg, int(doubleArg));
 		return "";
 	}
 
 	override int GetInt(String request, string stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// by type, no monster needed (11-09, RSQ Minibosses' Miniboss From / Thralls From): stringArg a class name ->
+		// "class.set" 1 ColorfulHell, 2 MeatGrinder, -1 neither; "class.tier" its CH ladder tier, 0 none
+		if (request == "class.set")
+		{
+			class<Actor> c = stringArg;
+			if (!c) return -1;
+			if ((class<RS_MGMonster>)(c)) return 2;
+			return RS_TierLadder.TierOf(stringArg) > 0 ? 1 : -1;
+		}
+		if (request == "class.tier") return RS_TierLadder.TierOf(stringArg);
 		let mo = Actor(objectArg);
 		if (!mo) return -1;
 		if (request == "set")         return RS_ScoreReadout.SetOf(mo);
@@ -318,5 +333,79 @@ class RS_SplitStamp : Inventory
 		let s = RS_SplitStamp(a.FindInventory("RS_SplitStamp"));
 		if (s) { s.group = grp; s.child = isChild; }
 		return grp;
+	}
+}
+
+// =====================================================================================================================
+// RSQ Monsters > Bossfight (owner 2026-11-09 07:45, "your rules are good"): Miniboss From / Thralls From. RSQ Minibosses
+// asks RSQMN_RosterService "set.class" for the same family in another set; nothing here spawns anything.
+// =====================================================================================================================
+class RS_BossfightPick play
+{
+	// the vanilla Doom class a monster type stands in for: up its parents (CH bodies are Doom classes), what it
+	// replaces (Brutal Doom's), or MeatGrinder's declared family; 'None' when it has none
+	static Name VanillaOf(class<Actor> c)
+	{
+		if (!c) return 'None';
+		let mg = (class<RS_MGMonster>)(c);
+		if (mg)
+		{
+			let md = GetDefaultByType(mg);
+			return md ? md.MG_Family : 'None';
+		}
+		for (class<Actor> k = c; k; k = (class<Actor>)(k.GetParentClass()))
+		{
+			Name kn = k.GetClassName();
+			if (RS_RosterHandler.FamilyId(kn) >= 0) return kn;
+			class<Actor> r = Actor.GetReplacee(k);
+			if (r && r != k)
+			{
+				Name rn = r.GetClassName();
+				if (RS_RosterHandler.FamilyId(rn) >= 0) return rn;
+			}
+		}
+		return 'None';
+	}
+
+	// the CH ladder family (RS_TierLadder's numbering) of a vanilla class, by the dial both tables share
+	static int LadderFam(Name v)
+	{
+		int id = RS_RosterHandler.FamilyId(v);
+		if (id < 0) return -1;
+		Name dial = RS_RosterHandler.CHDial(id);
+		for (int f = 0; f < RS_TierLadder.FamilyCount(); f++) if (RS_TierLadder.DialOf(f) == dial) return f;
+		return -1;
+	}
+
+	static String SetClass(String clsName, int set, int tier)
+	{
+		class<Actor> c = clsName;
+		Name v = VanillaOf(c);
+		if (v == 'None') return "";
+		if (set == 3)
+		{
+			int f = LadderFam(v);
+			if (f < 0) return "";
+			Name n = RS_TierLadder.ClassFor(f, clamp(tier, 1, RS_TierLadder.MaxTier()));
+			String ns = n;
+			class<Actor> nc = ns;
+			return nc ? ns : "";
+		}
+		if (set == 2)
+		{
+			// the family's own class (RS_MGZombieman, a direct child of RS_MGMonster) first, else any that claims it
+			String any = "";
+			for (int i = 0; i < AllActorClasses.Size(); i++)
+			{
+				let mg = (class<RS_MGMonster>)(AllActorClasses[i]);
+				if (!mg || mg == 'RS_MGMonster') continue;
+				let md = GetDefaultByType(mg);
+				if (!md || md.MG_Family != v) continue;
+				if (mg.GetParentClass().GetClassName() == 'RS_MGMonster') return mg.GetClassName();
+				if (any == "") any = mg.GetClassName();
+			}
+			return any;
+		}
+		return "";
 	}
 }

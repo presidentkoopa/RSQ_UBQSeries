@@ -531,6 +531,8 @@ extend class RSQMB_Handler
 		Array<String> tc;
 		int lo = int(bi * max(0.0, 0.25 + 0.1 * tier));
 		for (int i = 0; i < want; i++) tc.Push(rosterCls[bi > 0 ? random[rsqmbbf](min(lo, bi - 1), bi - 1) : 0]);
+		bc = ApplyFrom(bc, tc);   // RSQ Monsters > Bossfight: Miniboss From / Thralls From (fight.zs)
+		if (!bc) return false;
 
 		let pr = RSQMB_Probe(Actor.Spawn("RSQMB_Probe", p.pos));
 		if (!pr) return false;
@@ -907,6 +909,7 @@ extend class RSQMB_Handler
 		class<Actor> c = arrCls[i];
 		Actor a = c ? Actor.Spawn(c, (arrX[i], arrY[i], arrZ[i]), ALLOW_REPLACE) : null;
 		if (a && i == 0) { a.A_SetScale(a.Scale.X * MB_SCALE, a.Scale.Y * MB_SCALE); a.A_SetSize(a.radius * MB_SCALE, a.height * MB_SCALE, false); }
+		if (a) FromTier(a);   // a MeatGrinder pick from Miniboss From / Thralls From takes its colour in place
 		if (a && !arrForce && !a.TestMobjLocation()) { a.ClearCounters(); a.Destroy(); a = null; }
 		arrMon[i] = a;
 		arrBorn[i] = level.maptime;
