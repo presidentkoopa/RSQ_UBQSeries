@@ -7,7 +7,7 @@ it, but I want a big tree to prune, lol." / "I want us to expand score, so we wi
 Score today: ~190 rows (`Score/zscript/rsscore/`). `boost.zs:40` already has the hook "for a later monster set (RS
 Monsters' 13 colour tiers and EX tier)": subclass `RS_ScoreTierRow`; nothing fills it yet.
 
-Names (owner, 2026-11-09 02:37): the 11-09 row names are placeholders; "I'll rename them all soon."
+Names (owner, 2026-11-09 02:37): the 11-09 row names are placeholders; "I'll rename them all soon." Row names are part of Big Score (02:56).
 
 Was open, done 11-09 (code only, not run): "Melee's punch reader only reads Melee's own hands, never Brutal Doom's fists".
 Found by reading: Melee's reader HAS read Brutal Doom's fists (Melee_Attacks) and BD22 VR's free off fist since 11-04

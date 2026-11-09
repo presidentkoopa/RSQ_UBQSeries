@@ -45,7 +45,7 @@ class wr_CompatPandemoniaInsurrection
 
 	private static bool active(Weapon w)
 	{
-		return w && cv("wr_pand_compat", 1.0) > 0.0;
+		return w && (wr_ModSupport.Parked() ? 0.0 : cv("wr_pand_compat", 1.0)) > 0.0;
 	}
 
 	// FOUND, CURRENT, MAX. curaugs/maxaugs (BaseActors.txt:57-65) are the

@@ -70,7 +70,7 @@ class wr_CompatDRLA
 	static bool, int TierOf(Weapon w)
 	{
 		int none;
-		if (!w || cv("wr_drla_compat", 1.0) <= 0.0) return false, none;
+		if (!w || (wr_ModSupport.Parked() ? 0.0 : cv("wr_drla_compat", 1.0)) <= 0.0) return false, none;
 
 		class<Object> cls = (class<Object>)(Object.FindClass(Name(wr_Rig.familyRoot("" .. w.GetClassName()) .. "Pickup")));
 
@@ -164,7 +164,7 @@ class wr_CompatDRLA
 	// 2 or more sets both, so mask2 is always a subset of mask.
 	static int, int ModsOf(Weapon w)
 	{
-		if (!w || cv("wr_drla_compat", 1.0) <= 0.0 || cv("wr_drla_mods", 1.0) <= 0.0) return 0, 0;
+		if (!w || (wr_ModSupport.Parked() ? 0.0 : cv("wr_drla_compat", 1.0)) <= 0.0 || (wr_ModSupport.Parked() ? 0.0 : cv("wr_drla_mods", 1.0)) <= 0.0) return 0, 0;
 
 		string base = wr_Rig.familyRoot("" .. w.GetClassName());
 		int mask = 0, mask2 = 0;

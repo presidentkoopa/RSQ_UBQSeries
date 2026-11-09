@@ -195,19 +195,14 @@ Options → Radiant Silvergun Options → RSQ Wheel (one page; Test and Debug an
 | *Other Mods* | | |
 | LegenDoom Rarity | On | Reader for LegenDoom: the card in the rarity's colour, the rarity ("EPIC") on the sheet's top row and the legendary's name ("MURDEROUS SHOTGUN") on the row under it. With the LDL x BD22 VR patch (its 11-04 build), BD22 VR's guns too (rig only, not headset-confirmed). |
 | LegenDoom Effects | On | The power, in LegenDoom's own words, under it. |
-| DoomRL Arsenal Tier | On | Reader for DoomRL Arsenal. |
-| DoomRL Mod Upgrades | On |  |
-| Combined Arms Meters | On | Reader for Combined Arms. |
-| Final Doomer Set | On | Reader for Final Doomer. |
-| MetaDoom Demon Keys | On | Reader for MetaDoom. |
-| ModelSwapper | On | Reader for ModelSwapper; adds its models page. |
-| ModelSwapper: Main Hand | Unbound | Key bind: cycle the main-hand gun's ModelSwapper model. |
-| ModelSwapper: Off Hand | Unbound | Key bind: the same for the off hand. |
-| Lithium | On | Reader for Lithium. |
-| Lithium RPG Stats | On | Asks Lithium's own script for its RPG stats. |
 | Reset All | | Every setting back to its default (both pages, and the settings with no row). |
 
 Each Other Mods reader does nothing unless its mod is loaded.
+
+**Other mods parked (owner 2026-11-09):** only LegenDoom is read for now (and Gun Bonsai, above). The readers for DoomRL
+Arsenal, Doomablo, Pandemonia (+ Anarchy, Insurrection), Guncaster, MetaDoom, BorderDoom, Doom Infinite, Combined Arms,
+Final Doomer, ModelSwapper and Lithium are switched off and their rows hidden; about half of them read nothing on stock
+QuestZDoom 17.3 anyway (design/PARKED.md).
 
 **Test and Debug**
 

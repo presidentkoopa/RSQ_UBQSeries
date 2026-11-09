@@ -857,3 +857,7 @@ user bool  wr_stats_track = true;
 
 // The cards on the guns (wr_card_*) moved to RSQ Gun Cards (rsqgc_*), 2026-10-31.
 user int    wr_ring_art = 0;             // the ring's plates: 0 its own (Ermac style), 1 the status bar's stone
+
+// OTHER-MOD SUPPORT PARKED (owner 2026-11-09, wr_modsupport.zs): every compat reader but LegenDoom answers off.
+// No menu row; 1 brings them back for testing only.
+user bool  wr_unpark_mods = false;

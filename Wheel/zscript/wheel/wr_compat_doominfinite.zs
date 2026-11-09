@@ -89,7 +89,7 @@ class wr_CompatDoomInfinite
 	static bool Ready(Weapon w)
 	{
 		int setup;
-		if (!w || cv("wr_di_compat", 1.0) <= 0.0) return false;
+		if (!w || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false;
 		if (!wr_Field.GetFieldBool(w, "isSetup", setup)) return false;
 		return setup != 0;
 	}
@@ -616,7 +616,7 @@ class wr_CompatDoomInfinite
 	// FOUND, TEXT.
 	static bool, string PerkListOf(Weapon w, int maxShown)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, "";
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, "";
 
 		// Find the end of the ordered list first. Scanning forward and
 		// stopping at the first -1 is what makes this cheap -- the array is
@@ -665,7 +665,7 @@ class wr_CompatDoomInfinite
 	// FOUND, NAME, CHARGES, COOLDOWN, MAX COOLDOWN.
 	static bool, string, int, int, int ActiveOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, "", 0, 0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, "", 0, 0, 0;
 
 		int id;
 		if (!wr_Field.GetFieldInt(w.Owner, "pwrActiveID", id) || id <= 0) return false, "", 0, 0, 0;
@@ -694,7 +694,7 @@ class wr_CompatDoomInfinite
 	// FOUND, HEALTH, MAX HEALTH, REGEN.
 	static bool, int, int, int HealthOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, 0, 0, 0;
 
 		int mx;
 		if (!wr_Field.GetFieldInt(w.Owner, "user_statMaxHP", mx) || mx <= 0) return false, 0, 0, 0;
@@ -712,7 +712,7 @@ class wr_CompatDoomInfinite
 	// every DECORATE mod here needs. Only the CEILING is a player field.
 	static bool, int, int, int ArmorOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, 0, 0, 0;
 
 		int mx;
 		if (!wr_Field.GetFieldInt(w.Owner, "user_statMaxAP", mx) || mx <= 0) return false, 0, 0, 0;
@@ -740,7 +740,7 @@ class wr_CompatDoomInfinite
 	// FOUND, TEXT.
 	static bool, string BuffsOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, "";
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, "";
 
 		string s = "";
 		s = appendTimer(w.Owner, s, "user_timerInvulnerability", "INVULN");
@@ -765,7 +765,7 @@ class wr_CompatDoomInfinite
 	// FOUND, TEXT.
 	static bool, string DebuffsOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, "";
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, "";
 
 		string s = "";
 		s = appendDebuff(w.Owner, s, "user_dotPoison", "user_dotPoisonTimer", "POISON");
@@ -812,7 +812,7 @@ class wr_CompatDoomInfinite
 	// FOUND, KILLS THIS RUN, KILLS THIS MAP, SHOTS THIS RUN.
 	static bool, int, int, int TallyOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, 0, 0, 0;
 
 		int k;
 		if (!wr_Field.GetFieldInt(w.Owner, "histKilled", k)) return false, 0, 0, 0;
@@ -830,7 +830,7 @@ class wr_CompatDoomInfinite
 	// FOUND, KILLED, TOTAL.
 	static bool, int, int WaveOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, 0, 0;
 
 		int mx;
 		if (!wr_Field.GetFieldInt(w.Owner, "user_arenaWaveMonMax", mx) || mx <= 0) return false, 0, 0;
@@ -860,7 +860,7 @@ class wr_CompatDoomInfinite
 	// MENU_NONE = 0, GUIDE = 1, MOD = 2, SHOP = 3.
 	static bool Suppressed(PlayerPawn pmo)
 	{
-		if (!pmo || cv("wr_di_compat", 1.0) <= 0.0) return false;
+		if (!pmo || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false;
 
 		int menu;
 		if (wr_Field.GetFieldInt(pmo, "currentMenuID", menu) && menu != 0) return true;
@@ -879,7 +879,7 @@ class wr_CompatDoomInfinite
 	// FOUND, MAPS COMPLETED, LOOPS.
 	static bool, int, int RunOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, 0, 0;
 
 		int maps;
 		if (!wr_Field.GetFieldInt(w.Owner, "classicMapsCompleted", maps)) return false, 0, 0;
@@ -897,7 +897,7 @@ class wr_CompatDoomInfinite
 	// FOUND, DAMAGE %, SPEED %, LUCK.
 	static bool, int, int, int StatsOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0, 0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, 0, 0, 0;
 
 		int dmg;
 		if (!wr_Field.GetFieldInt(w.Owner, "user_statHudDamage", dmg)) return false, 0, 0, 0;
@@ -916,7 +916,7 @@ class wr_CompatDoomInfinite
 	// FOUND, COUNT.
 	static bool, int PerksOf(Weapon w)
 	{
-		if (!w || !w.Owner || cv("wr_di_compat", 1.0) <= 0.0) return false, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_di_compat", 1.0)) <= 0.0) return false, 0;
 
 		int n;
 		if (!wr_Field.GetFieldInt(w.Owner, "powerupsTotal", n)) return false, 0;

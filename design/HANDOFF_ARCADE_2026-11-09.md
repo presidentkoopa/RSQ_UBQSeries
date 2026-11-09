@@ -31,7 +31,8 @@ wordy, this is a big deal").
 - **Guiding statement** (repo CLAUDE.md): **"Doom Arcade VR."** His words only. Don't expand it into rules, palettes
   or features of your own. He also said: Doom-flavoured, not generic.
 - **His first VR Doom project was Hackfraud (HF)**, at `E:\oldshit\outdatedHFmaster` on his PC. All of its code is
-  his. Take from it whatever we need. Never treat it as someone else's code (this caused real anger on 11-08/09).
+  his. Take from it whatever we need. Never treat it as someone else's code (this caused real anger on 11-08/09). And don't get distracted in it
+  (owner 11-09: "I told you not to get distracted in HF, so DROP IT"): what MG needed is taken; leave the rest.
 - **Working style, learned the hard way:**
   - **One question at a time.** "STOP ... TOO MUCH HAPPENING." Finish the thread in hand.
   - **Plain words.** Say what the player sees. Explain any term the first time. ("What the fuck is a time trial
@@ -126,10 +127,7 @@ Status words: **headset** = played and confirmed by the owner; **rig** = shown o
   "It's how monsters change tier in real time." Built, not run. Commands: `netevent rs_retier N` (what you look at),
   `rs_retier_all N`, `rs_tierof`. Health on a tier change is a menu option (default: instant change = full health,
   live change = same fraction).
-- **Not brought from Hackfraud** (whole-game systems, owner's call later): the monster director (re-coloured rooms),
-  elites, captains, crits, its score and kill-reward bits, damage numbers, burn-on-hit, monster muzzle lights, its
-  gore-style blood dispatcher. Keywords were dropped on purpose (owner: "I don't need any of that keyword shit").
-- **Missing:** three decal pictures (in neither HF nor BD), `blooddrop2` without BD.
+- **Missing:** `blooddrop2` without BD.
 
 ### 3.2 Set-piece and feedback tools already in the series
 - **Miniboss** (headset for the set piece): the **Bossfight**: fill a meter with stylish kills, check your watch, call
@@ -164,8 +162,7 @@ clock running, so our timers must wait), plus his environment mods. Full list: `
 - FX sheets for explosions (grenades, barrels; Metal Slug / Neo Geo feel): `design/assets/fx_sheets/`. The three
   sheets are kept (two of unknown source: ask before shipping). The Reactorcore pack's only licence word is a "CC0"
   comment by the author: get it in writing before shipping. The Vecteezy sheet is excluded (licence forbids it).
-- Parked ideas from Hackfraud: Condition bits (weapon repair; weapon wear is tabled) and Gold bits (a currency).
-  `design/PARKED.md`.
+- Condition bits (weapon repair = weapon wear) and Gold bits (a currency) belong to the arcade (owner 11-09).
 
 ---
 

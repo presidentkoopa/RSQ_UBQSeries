@@ -22,7 +22,7 @@ class wr_CompatMetaDoom
 
 	private static bool active(Weapon w)
 	{
-		return w && cv("wr_meta_compat", 1.0) > 0.0;
+		return w && (wr_ModSupport.Parked() ? 0.0 : cv("wr_meta_compat", 1.0)) > 0.0;
 	}
 
 	// PLASMA RIFLE HEAT. heatlevel/shotsfired are plain fields declared

@@ -63,7 +63,7 @@ class wr_CompatDoomablo
 	static bool, int RarityOf(Weapon w)
 	{
 		int rarity;
-		if (!w || cv("wr_dbl_compat", 1.0) <= 0.0) return false, 0;
+		if (!w || (wr_ModSupport.Parked() ? 0.0 : cv("wr_dbl_compat", 1.0)) <= 0.0) return false, 0;
 		if (!wr_Field.GetFieldInt(w, "generatedRarity", rarity)) return false, 0;
 
 		// Range-checked against the seven tiers this file actually knows
@@ -163,7 +163,7 @@ class wr_CompatDoomablo
 	static bool, int, double, double, int LevelOf(Weapon w)
 	{
 		int none4; double noneD; int none2;
-		if (!w || !w.Owner || cv("wr_dbl_compat", 1.0) <= 0.0) return false, 0, 0.0, 0.0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_dbl_compat", 1.0)) <= 0.0) return false, 0, 0.0, 0.0, 0;
 
 		Object stats;
 		if (!wr_Field.GetFieldObject(w.Owner, "stats", stats) || stats == null)
@@ -185,7 +185,7 @@ class wr_CompatDoomablo
 	static bool, int InfernoLevelOf(Weapon w)
 	{
 		int inferno;
-		if (!w || !w.Owner || cv("wr_dbl_compat", 1.0) <= 0.0) return false, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_dbl_compat", 1.0)) <= 0.0) return false, 0;
 		if (!wr_Field.GetFieldInt(w.Owner, "infernoLevel", inferno)) return false, 0;
 		return true, inferno;
 	}
@@ -215,7 +215,7 @@ class wr_CompatDoomablo
 	static bool, int, int, int, int, int StatsOf(Weapon w)
 	{
 		int none;
-		if (!w || !w.Owner || cv("wr_dbl_compat", 1.0) <= 0.0) return false, 0, 0, 0, 0, 0;
+		if (!w || !w.Owner || (wr_ModSupport.Parked() ? 0.0 : cv("wr_dbl_compat", 1.0)) <= 0.0) return false, 0, 0, 0, 0, 0;
 
 		Object stats;
 		if (!wr_Field.GetFieldObject(w.Owner, "stats", stats) || stats == null)

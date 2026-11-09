@@ -30,7 +30,7 @@ class wr_CompatPandemoniaAnarchy
 
 	private static bool active(Weapon w)
 	{
-		return w && cv("wr_pand_compat", 1.0) > 0.0;
+		return w && (wr_ModSupport.Parked() ? 0.0 : cv("wr_pand_compat", 1.0)) > 0.0;
 	}
 
 	// FOUND, LEVEL, POINTS, POINTS-TO-NEXT, ON-COOLDOWN. alevel/points/

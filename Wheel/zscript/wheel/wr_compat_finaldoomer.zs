@@ -38,7 +38,7 @@ class wr_CompatFinalDoomer
 
 	private static bool active(Weapon w)
 	{
-		return w && cv("wr_fd_compat", 1.0) > 0.0;
+		return w && (wr_ModSupport.Parked() ? 0.0 : cv("wr_fd_compat", 1.0)) > 0.0;
 	}
 
 	// Same primitive as wr_compat_combinedarms.zs -- every value in this
@@ -78,7 +78,7 @@ class wr_CompatFinalDoomer
 	// FOUND, SET NAME.
 	static bool, string SetOf(Weapon w)
 	{
-		if (!w || cv("wr_fd_compat", 1.0) <= 0.0) return false, "";
+		if (!w || (wr_ModSupport.Parked() ? 0.0 : cv("wr_fd_compat", 1.0)) <= 0.0) return false, "";
 		string wc = "" .. w.GetClassName();
 
 		// FDAlienVendetta must be checked before FDAliens -- they share a

@@ -88,7 +88,7 @@ class wr_CompatBorderDoom
 	static bool, int, int, int, int, int, int StatsOf(Weapon w)
 	{
 		int none;
-		if (!w || cv("wr_bd_compat", 1.0) <= 0.0) return false, 0, 0, 0, 0, 0, 0;
+		if (!w || (wr_ModSupport.Parked() ? 0.0 : cv("wr_bd_compat", 1.0)) <= 0.0) return false, 0, 0, 0, 0, 0, 0;
 
 		int idx = slotIndexFor(w);
 		if (idx < 0) return false, 0, 0, 0, 0, 0, 0;

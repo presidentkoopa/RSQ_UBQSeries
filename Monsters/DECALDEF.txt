@@ -4,8 +4,8 @@
 // animators and their combiners), from the owner's HF DECALDEF.DOOM.txt, block text
 // verbatim except that every name gets MG_ and every picture is renamed MGDnnn
 // (graphics/meatgrinder/decals/, from HF graphics/BLOODECAL/). None clash with Brutal Doom.
-// Three pictures these decals name are NOT in the HF tree: BBSPLAT6S, GBSPLAT6S, GSSPLAT6.
-// Those decals keep the original picture name (Brutal Doom's, when it is loaded).
+// Three pictures these decals named were in neither the HF tree nor brutal22test6 (nor any pk3 on the build machine or
+// the owner's Desktop): BBSPLAT6S, GBSPLAT6S, GSSPLAT6. Since 11-09 those three decals use their 06X sibling's picture.
 
 stretcher MG_BloodStretcher01
 {
@@ -655,7 +655,7 @@ LowerDecal MG_BlueBrutalBloodSmear05X
 
 Decal MG_BlueBrutalBloodSmear06
 {
-	Pic BBSPLAT6S
+	Pic MGD038	// was BBSPLAT6S (in neither HF nor BD22): its 06X sibling's picture, drawn at this decal's smaller scale (11-09)
 	X-Scale 0.180
 	Y-Scale 0.180	
 	Animator MG_BloodSmearer06
@@ -1139,7 +1139,7 @@ LowerDecal MG_GreenBrutalBloodSmear05X
 
 Decal MG_GreenBrutalBloodSmear06
 {
-	Pic GBSPLAT6S
+	Pic MGD094	// was GBSPLAT6S (in neither HF nor BD22): its 06X sibling's picture (11-09)
 	X-Scale 0.180
 	Y-Scale 0.180	
 	Animator MG_BloodSmearer06
@@ -1147,7 +1147,7 @@ Decal MG_GreenBrutalBloodSmear06
 
 Decal MG_GreenBrutalBloodSplat06
 {
-	Pic GSSPLAT6
+	Pic MGD093	// was GSSPLAT6 (in neither HF nor BD22): its 06X sibling's picture (11-09)
 	X-Scale 0.180
 	Y-Scale 0.180
 	LowerDecal MG_GreenBrutalBloodSmear06

@@ -33,7 +33,7 @@ class wr_CompatModelSwapper
 
 	private static bool active()
 	{
-		return cv("wr_ms_compat", 1.0) > 0.0;
+		return (wr_ModSupport.Parked() ? 0.0 : cv("wr_ms_compat", 1.0)) > 0.0;
 	}
 
 	// StaticEventHandler.Find() takes a Class<StaticEventHandler>, not a

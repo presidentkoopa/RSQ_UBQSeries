@@ -49,6 +49,46 @@ struct RS_MGEventContext
 
 class RS_MGReactionHandler : EventHandler
 {
+	// MG KEEPS ITS OWN SHOTS (owner 2026-11-09: "have MG keep its own"). With Monster Set = ColorfulHell, RS_Roster's
+	// CheckReplacement swaps the stock projectiles for CH's (RS_Roster.zs CHProjectile: DoomImpBall -> RS_DoomImpBall2
+	// ...), and a replacement cannot see who fired. So an MG monster an encounter spawns into a CH level threw CH's
+	// fireballs. Undone here: WorldThingSpawned runs in CallPostBeginPlay (QZD 17.3 p_mobj.cpp:5148-5151), after
+	// P_SpawnMissileXYZ has set target (p_mobj.cpp:7097-7103) and before the missile's first move, so a CH missile whose
+	// shooter is an MG monster is swapped for the stock class spawned with NO_REPLACE, same place, motion and owner.
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let m = e.Thing;
+		if (!m || !m.bMissile || !RS_MGMonster(m.target)) return;
+		Name stock = MG_StockShot(m.GetClassName());
+		if (stock == 'None') return;
+		class<Actor> sc = stock;
+		if (!sc) return;
+		let s = Actor.Spawn(sc, m.pos, NO_REPLACE);
+		if (!s) return;
+		s.target = m.target;
+		s.tracer = m.tracer;   // the revenant's homing target, if any
+		s.angle  = m.angle;
+		s.pitch  = m.pitch;
+		// same direction, the STOCK shot's own speed (a CH ball may fly at another speed)
+		s.vel    = (m.vel.Length() > 0 && s.Speed > 0) ? m.vel.Unit() * s.Speed : m.vel;
+		m.Destroy();
+	}
+
+	// The reverse of RS_Roster.CHProjectile.
+	static Name MG_StockShot(Name ch)
+	{
+		switch (ch)
+		{
+			case 'RS_DoomImpBall2':       return 'DoomImpBall';
+			case 'RS_CacodemonBall2':     return 'CacodemonBall';
+			case 'RS_BaronBall2':         return 'BaronBall';
+			case 'RS_FatShot2':           return 'FatShot';
+			case 'RS_ArachnotronPlasma2': return 'ArachnotronPlasma';
+			case 'RS_Rocket2':            return 'Rocket';
+		}
+		return 'None';
+	}
+
 	override void WorldThingDied(WorldEvent e)
 	{
 		let m = RS_MGMonster(e.Thing);

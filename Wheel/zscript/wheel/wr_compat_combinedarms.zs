@@ -56,7 +56,7 @@ class wr_CompatCombinedArms
 
 	private static bool active(Weapon w)
 	{
-		return w && w.Owner && cv("wr_ca_compat", 1.0) > 0.0;
+		return w && w.Owner && (wr_ModSupport.Parked() ? 0.0 : cv("wr_ca_compat", 1.0)) > 0.0;
 	}
 
 	// THE ONE PRIMITIVE THIS WHOLE FILE IS BUILT ON. Walks the owner's

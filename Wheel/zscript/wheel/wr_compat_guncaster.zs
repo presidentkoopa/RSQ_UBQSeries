@@ -28,7 +28,7 @@ class wr_CompatGuncaster
 
 	private static bool active(Weapon w)
 	{
-		return w && w.Owner && cv("wr_gc_compat", 1.0) > 0.0;
+		return w && w.Owner && (wr_ModSupport.Parked() ? 0.0 : cv("wr_gc_compat", 1.0)) > 0.0;
 	}
 
 	// FOUND, SECONDS. spellDelay counts down in tics like every other

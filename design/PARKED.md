@@ -111,13 +111,13 @@ Owner: "im not saying we should change anything, but ... this looks like a LOT g
 3. Shrink RSQ FnF's pocket/clip diamonds to holster-ring size, or show them only when the off hand is near.
 4. "Always show" rings only while moving holsters (setup), else near-hand only.
 
-## Wheel mod support on stock 17.3 (found 2026-11-08) — parked
+## Wheel mod support on stock 17.3 (found 2026-11-08) — parked; DISABLED 2026-11-09
+Owner 02:56: "disable wheel mod support for now". Done: every reader but LegenDoom answers off (Wheel/zscript/wheel/wr_modsupport.zs), rows hidden.
 About half the Wheel's compat files (Lithium, Doom Infinite, Doomablo, Pandemonia + Anarchy/Insurrection, BorderDoom,
 Guncaster, Model Swapper) read nothing on stock QZD 17.3: they use REMA's field reflection, stubbed to "no field"
 (Wheel/zscript/wheel/wr_q_shim.zs:873-886). LegenDoom, DRLA, Combined Arms, Final Doomer, MetaDoom Demon Keys work.
 Owner: "either get it working or we will drop support". Ways: read public items/cvars/events by name, or one small
 bridge pk3 per mod. Needs from the owner: which mods to keep, and their pk3s. See design/WHEEL_MODS_PEEK.md.
 
-## Kill-reward bits from Hackfraud: Condition (CND) and Gold (owner, 2026-11-08 23:57)
-"Those Condition bits and Gold bits might be an interesting idea." Weapon degradation (which CND bits repair) is
-tabled for now. Source: Hackfraud `hf_killrewards.zs` (HF_KRCNDBit, HF_KRGoldBit + HF_GoldCurrency). Nothing built.
+## Condition bits, Gold bits, weapon wear -> Big Arcade (owner 2026-11-09 02:56)
+"Condition and gold go into Big Arcade; same for weapon wear, that is condition."

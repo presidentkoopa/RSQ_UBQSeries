@@ -55,7 +55,7 @@ class wr_CompatLithium
 
 	private static bool active(Weapon w)
 	{
-		return w && w.Owner && cv("wr_lith_compat", 1.0) > 0.0;
+		return w && w.Owner && (wr_ModSupport.Parked() ? 0.0 : cv("wr_lith_compat", 1.0)) > 0.0;
 	}
 
 	private static string clsOf(Object o)
@@ -225,7 +225,7 @@ class wr_CompatLithium
 	// FOUND (is a Lithium pickup), NAME ("" when this character gets nothing).
 	static bool, string PickupOf(Actor a, PlayerPawn who)
 	{
-		if (!a || !who || cv("wr_lith_compat", 1.0) <= 0.0) return false, "";
+		if (!a || !who || (wr_ModSupport.Parked() ? 0.0 : cv("wr_lith_compat", 1.0)) <= 0.0) return false, "";
 
 		bool isPickup = false;
 		for (Class<Object> c = a.GetClass(); c; c = c.GetParentClass())
@@ -989,7 +989,7 @@ class wr_CompatLithium
 	static bool AcsOpen(Weapon w)
 	{
 		if (!ready(w)) return false;
-		if (cv("wr_lith_acs", 0.0) <= 0.0) return false;   // OFF by default
+		if ((wr_ModSupport.Parked() ? 0.0 : cv("wr_lith_acs", 0.0)) <= 0.0) return false;   // OFF by default
 
 		// A canary failure earlier this session latches the door shut.
 		if (hasItem(w.Owner, "wr_LithAcsBlocked")) return false;
