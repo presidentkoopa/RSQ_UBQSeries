@@ -10,6 +10,9 @@ chain at the stock pace; both Barrel Sound choices play. The look of the six exp
 (rebuilt 11-09).
 
 **What's new**
+- **11-09, later** (rig only, not headset-confirmed): the wall scorch fades away instead of cutting out. It used to
+  share the engine's small decal limit with every bullet hole and blood splat (20 on QuestZDoom), so a few shots later
+  it vanished at once. Now it is outside that limit: the soot stays 8 seconds, then fades out smoothly over 6.
 - **11-09** (rig only):
   - **Barrels**: six new barrel explosions, picked at random (below).
   - **Explosions**: a new grenade blast and options for both: colour, lights, debris and seven room contexts (below).
@@ -145,7 +148,7 @@ One light a blast, at most 8 at once, no shadow maps.
 never a different blast.
 - **Wall** (a wall within 40 units of the blast): the blast fans out along the wall, its fire pushed off the face
   with a sheet of fire pressed flat on the wall, hot runs up and down the face (barrels), smoke drifting away, and a
-  scorch that glows and then stays as soot. Shrapnel ricochets off walls whatever this row says.
+  scorch that glows, cools to soot, and fades away after a few seconds. Shrapnel ricochets off walls whatever this row says.
 - **Low Ceiling** (floor to ceiling under 96 units, not sky): fire and smoke can't rise through it: they flatten and
   spread under it, fire rolls along it, smoke pools under it, soot is left on it.
 - **Open Sky**: the column keeps climbing and a column of dark smoke stays standing.
@@ -173,7 +176,7 @@ the third link on; never with RSQ Accessibility's Photosensitive Mode or a Comfo
 - Debris stops at a wall instead of bouncing back off it.
 - Wall: the blast is not folded pixel by pixel at the wall plane: it fans along the wall, its fire is pushed off the
   face and copies of its first fire layers lie flat on the wall (wall sprites); the scorch is two decals (a hot glow
-  that fades, the soot that stays).
+  that fades, the soot that stays 8 seconds and then fades out over 6).
 - Low Ceiling: a layer that would rise into the ceiling is held under it, flattened and widened; it is not folded.
 - Water: no surface splash and no bubble pops at the surface (stock calls cannot find the surface above a blast).
 - Liquid Floors: the four fat jets are not drawn (the late spout stands in for them).

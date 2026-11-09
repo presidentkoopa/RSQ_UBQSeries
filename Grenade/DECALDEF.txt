@@ -1,7 +1,11 @@
 // RSQ Grenade -- DECALDEF. The WALL context's scorch (explosions.zs RSQGN_Boom.Scorch; the mockup ctx_g.py WallG.fg: the
-// scorch "grows over 4 tics, glows (hot bands) then cools to soot; stays"). Two decals sprayed together on the wall:
-// the hot bands, additive and fullbright, fading out in about 10 tics (a decal cannot change colour, so the glow and the
-// soot are two pictures), and the soot under them, which stays (until the engine's decal limit takes it). Both pictures
+// scorch "grows over 4 tics, glows (hot bands) then cools to soot"). Two decals shot together on the wall: the hot
+// bands, additive and fullbright, fading out in about 10 tics (a decal cannot change colour, so the glow and the soot
+// are two pictures), and the soot under them, which stays 8 seconds and then FADES out over 6 seconds (owner 11-09:
+// "its scorch marks need to fade away, not just cut out"). Both are shot as permanent decals by their NUMBER (below;
+// explosions.zs RSQGN_ScorchMark), so the engine's cl_maxdecals limit never cuts them: only their faders end them.
+// The numbers 30471/30472 are used by nothing in the load order (checked: no decal number in BD22, BD_VoxelPack,
+// LOB, champions, GunBonsai, the engine or any RSQ pack). Both pictures
 // drawn by Grenade/tools/blast_export.py scorch_pics from ctx_a.make_scorch (flat bands on a 2-px grid), at the mockup's
 // 1.25 px a map unit: scaled 0.8 here. Pictures in graphics/rsqgn/ (QESCRHOT, QESCRSOT).
 
@@ -11,7 +15,14 @@ fader RSQGNScorchFade
 	DecayTime 0.2
 }
 
-decal RSQGNScorchHot
+// the soot: full for 8 s, then a linear fade to nothing over 6 s (the engine's fader sets its alpha every tic)
+fader RSQGNSootFade
+{
+	DecayStart 8
+	DecayTime 6
+}
+
+decal RSQGNScorchHot 30472
 {
 	pic QESCRHOT
 	add 1.0
@@ -21,9 +32,10 @@ decal RSQGNScorchHot
 	animator RSQGNScorchFade
 }
 
-decal RSQGNScorch
+decal RSQGNScorch 30471
 {
 	pic QESCRSOT
 	x-scale 0.8
 	y-scale 0.8
+	animator RSQGNSootFade
 }
