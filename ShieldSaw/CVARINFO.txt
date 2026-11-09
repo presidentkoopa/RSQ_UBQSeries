@@ -161,9 +161,11 @@ user int   ssq_rig_body         = 1;      // with RSQ TacticalRig loaded, the sh
 user int   ssq_show             = 1;      // Show ShieldSaw (owner 11-04: "Always show ... saw"): the stowed shield is drawn where it
                                           // hangs -- on RSQ TacticalRig's body when it is loaded, else at its mount on your back.
                                           // Replaced ssq_stow_world (off) and ssq_stow_rig (on) on 11-04
-user float ssq_mount_yaw        = 0.0;
-user float ssq_mount_pitch      = 0.0;
-user float ssq_mount_roll       = 0.0;
+// Back Yaw / Pitch / Roll: renamed from ssq_mount_* on 2026-11-09 so values saved during the old "fin" era (before the
+// shield lay flat, 11-08) stop tipping it off the back (owner: "flat along back on all of them"). Leave at 0.
+user float ssq_back_yaw        = 0.0;
+user float ssq_back_pitch      = 0.0;
+user float ssq_back_roll       = 0.0;
 user float ssq_mount_scale      = 1.0;
 user bool  ssq_shoulder_use     = true;   // Use at the shoulder draws and holsters; off: only the Draw key does (the shoulder is free for RSQ_TacticalRig)
 user bool  ssq_offhand_cycle    = false;  // Next / Prev Offhand Weapon (QuestZDoom's "weapnext 1" / "weapprev 1") reach the shield too, besides every other way to draw it (owner, BUGS_1.0 item 17)

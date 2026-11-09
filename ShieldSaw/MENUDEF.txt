@@ -256,9 +256,9 @@ OptionMenu "SSQ_Test"
 	Slider "Eyes to Neck", "ssq_neck_pivot", 0.0, 15.0, 1.0, 0
 	Slider "Grab Reach", "ssq_mount_reach", 10.0, 60.0, 1.0, 0
 	Slider "Grab Zone", "ssq_zone_scale", 1.0, 3.0, 0.1, 1
-	Slider "Back Yaw", "ssq_mount_yaw", -180.0, 180.0, 5.0, 0
-	Slider "Back Pitch", "ssq_mount_pitch", -90.0, 90.0, 5.0, 0
-	Slider "Back Roll", "ssq_mount_roll", -180.0, 180.0, 5.0, 0
+	Slider "Back Yaw", "ssq_back_yaw", -180.0, 180.0, 5.0, 0
+	Slider "Back Pitch", "ssq_back_pitch", -90.0, 90.0, 5.0, 0
+	Slider "Back Roll", "ssq_back_roll", -180.0, 180.0, 5.0, 0
 	Slider "Back Size", "ssq_mount_scale", 0.25, 2.0, 0.05, 2
 	StaticText " "
 	StaticText "In the Hand", "Gold"

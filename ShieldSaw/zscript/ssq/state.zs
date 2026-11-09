@@ -1338,9 +1338,9 @@ class SSQ_Handler : EventHandler
 			// Rig (ssq_stow_rig) on 11-04.
 			prop.bInvisible = UVI(p, 'ssq_show', 1) == 0;
 			prop.SetOrigin(mount, true);
-			prop.angle = BodyYaw(mo) + MountPropYaw() + UV(p, 'ssq_mount_yaw', 0);
-			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_mount_pitch', 0);
-			prop.roll  = MountPropRoll()  + UV(p, 'ssq_mount_roll', 0);
+			prop.angle = BodyYaw(mo) + MountPropYaw() + UV(p, 'ssq_back_yaw', 0);
+			prop.pitch = (OnBack(p) ? -MountPropPitch() : MountPropPitch()) + UV(p, 'ssq_back_pitch', 0);
+			prop.roll  = MountPropRoll()  + UV(p, 'ssq_back_roll', 0);
 			prop.A_SetScale(UV(p, 'ssq_mount_scale', 1.0) * SSQ_Guard.Scale(mo.PlayerNumber()));
 			prop.frame = 0;
 		}
