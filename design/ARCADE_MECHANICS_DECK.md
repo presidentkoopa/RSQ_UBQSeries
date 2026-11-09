@@ -73,6 +73,14 @@ height on its weapon side (a few placement numbers per family, measured once fro
 plays a swing on the model timed to the hit; knocked down, it drops that weapon as a pickup. Next: read how
 SuperPunch drew its gloves and reuse it.
 
+SuperPunchOut, read 2026-11-09 (src/zscript/spo/spo_liveglove.zs, src/MODELDEF.txt): the boxer's live 3D gloves
+are world actors, one per hand. Each sprite frame carries an authored `anchor` pixel (SPO_Frame.anchorX/Y in
+spo_data.zs); SPO_Picture.PointOn turns that pixel into a point on the sprite card, pushed toward the player's eye by
+a depth; a damped spring (3 Hz, zeta 0.45) carries the glove there each tic, so frames with no anchor just hold and a
+jump between frames glides instead of snapping. A punch hands off to a separate flying glove and the live glove
+springs back. For monster weapons: same pattern, a hand anchor on the attack and idle frames only (not every frame),
+the spring smooths the rest; the melee swing is the hand-off.
+
 **Gauntlet Legends.** Claude: generators spawn until destroyed; health drains over time ("Warrior needs food
 badly"); keys and shared loot. Owner: "We can easily spawn in monsters and Champions has a selection of food
 sprites. Or we could find others." -> Claude: Champions has no licence, so its food sprites can't ship; find or draw
@@ -121,7 +129,11 @@ reveals one trait of the hidden target).
 **Clue / Risk.** Claude: deduction by elimination; territory earns reinforcements. Owner: "I don't know about the
 other two." -> Claude: drop Risk; Clue's deduction can live inside Guess Who and Waldo.
 
+## Owner's own ideas (not from a listed game)
+
+**Tower of Power** (owner, 2026-11-09 01:28): "stacked enemies who can only be taken out from the bottom."
+
 ## Short list so far
 Bust-a-Move (colour crowd), weak-point giant boss (HotD2), Jurassic Run, Smash TV tokens -> EX bossfight, rescues
-(Rescued X/Y on the tally), Where's Waldo / Guess Who, monster melee weapons (Double Dragon), movement + constant
+(Rescued X/Y on the tally), Where's Waldo / Guess Who, monster melee weapons (Double Dragon), Tower of Power, movement + constant
 slow-mo set pieces (DDR), saber/Force + training drone (SWTA). Next to workshop: owner's pick.
