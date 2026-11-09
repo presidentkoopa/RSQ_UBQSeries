@@ -29,3 +29,8 @@ points us to the MeatGrinder set, folded into RS Monsters, so we can design agai
 "HF stands for Hackfraud. It was my first attempt to make a VR Doom game. That outdated HF master is mine."
 (E:\oldshit\outdatedHFmaster). All of its code is the owner's: take from it whatever the MeatGrinder set (or anything
 we fold in) needs; just stay focused on what is needed.
+
+## MeatGrinder tiering plan (owner, 2026-11-09 00:01)
+"Keep their stock attacks, and just increase their health, damage, and aggression. Definitely room to expand their
+attacks but we can do that later." Applied today: health, speed, pain chance (from HF's table), and damage via
+DamageMultiply (owner yes, 2026-11-08 23:58). Aggression beyond lower pain chance: not built yet.
