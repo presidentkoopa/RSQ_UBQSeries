@@ -1923,12 +1923,28 @@ class RSQSM_AdrToken : Inventory
 // (0 = the player's World Speed slider). Answers 1 let in, 0 refused. Call it from synced play code (the
 // same on every machine, e.g. a WorldTick or an actor's tic); from one machine's local code, send the
 // network event `rsqsm_start:<who> <ms> <speed %> <flags>` instead (flags 1 = automatic).
+// EDGE ARROWS (2026-11-09, arrows.zs; RSQ Miniboss points at its arriving thralls and the miniboss with them):
+// GetInt("arrow.add", key, rgb, size, actor) puts a DOWN-style HUD edge arrow (the Turn Marker art and row, the >75 degree
+// rule, behind you = at the bottom) on the console player's HUD, pointing at the actor in colour 0xRRGGBB, shown only while
+// the actor is more than 75 degrees off his view; size 1.0 normal, 1.5 big (0 = 1.0; 0.5..2). Several at once; the same key
+// on the same actor again recolours / resizes it in place. GetInt("arrow.clear", key, 0, 0, actor) takes it off (actor
+// null: every arrow with that key). An arrow also goes when its actor dies or is gone, and with the map. Hidden while the
+// console player is DOWN (DOWN's own arrows first). Answers 1; arrow.add answers 0 for no living actor or a full list (32).
+// From synced play code only.
 // -1: unknown request.
 // The Gun Bonsai VR patch's Adrenaline upgrade charges it on melee kills.
 class RSQSM_Service : Service
 {
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// EDGE ARROWS (arrows.zs): before the clock, they do not need it
+		if (request ~== "arrow.add" || request ~== "arrow.clear")
+		{
+			let ar = RSQSM_Arrows.Get();
+			if (!ar) return 0;
+			if (request ~== "arrow.add") return ar.AddArrow(stringArg, Actor(objectArg), intArg, doubleArg);
+			return ar.ClearArrows(stringArg, Actor(objectArg));
+		}
 		let c = RSQSM_Clock.Get();
 		if (!c) return -1;
 		if (request ~== "adrenaline.add") { c.AddAdrenaline(intArg); return int(c.adr); }

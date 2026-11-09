@@ -376,34 +376,51 @@ class RSQSM_DownHud ui
 	void DrawEdges(RSQSM_Down d, int pn)
 	{
 		if (!d.plate) return;
-		// the mockup's view is the whole eye (2 x EYE_TAN across its 1312 px), round the gaze; scaled with the panel (owner
-		// 07:55: "the edge arrows with it"), so a mockup px is the same size in the eye as the panel's (x 1312/1034 x 1/2)
-		EyeMap();
-		double q = 2 * EYE_TAN / VIEW_MW * ptx * (VIEW_MW * 0.5 / MW) * PanelSize();
-		double qy = 2 * EYE_TAN / VIEW_MW * pty * (VIEW_MW * 0.5 / MW) * PanelSize();
-		double cx = gx, cy = gy;
-		let cv = CVar.GetCVar("rsqsm_down_marker", players[pn]);
-		int style = cv ? clamp(cv.GetInt(), 0, 3) : 2;
-		String sh = style == 0 ? "A" : (style == 1 ? "B" : (style == 2 ? "C" : "D"));
-		// C's image: 38 x 24 cells of 4 px, its first cell 150 px out; A / B / D: 56 x 24 cells, a shape the chevrons' 88 px
-		// tall, the image from 150 px out
-		double w, h, rc;
-		if (style == 2) { w = 152; h = 96; rc = 142 + 76; }
-		else { double cpx = 88.0 / 24.0; w = 56 * cpx; h = 24 * cpx; rc = 150 + w * 0.5; }
+		EdgeSetup(pn);
 		for (int i = 0; i < d.plate.marks.Size(); i++)
 		{
 			let m = d.plate.marks[i];
 			if (!m || m.mode != 1 || m.dead) continue;
-			double a = m.eAng;
-			int fr = RSQSM_A11y.Photo() ? 0 : ((level.maptime - m.edgeTic) % 30 + 30) % 30;
-			double ax = cx + cos(a) * rc * q, ay = cy - sin(a) * rc * qy;
-			Rot(String.Format("RSPM%sF%02d", sh, fr), ax, ay, w * q, h * q, a, -1, false);
-			Rot(String.Format("RSPM%sC%02d", sh, fr), ax, ay, w * q, h * q, a, m.col, false);
-			Rot(String.Format("RSPM%sL%02d", sh, fr), ax, ay, w * q, h * q, a, Light(m.col), true);
-			double ix = cx + cos(a) * 110 * q, iy = cy - sin(a) * 110 * qy;
-			Rot("RSPSLOT", ix, iy, 52 * q, 52 * q, 0, -1, false);
-			Rot(String.Format("RSPI%02dF", m.icon), ix, iy, 40 * q, 40 * q, 0, m.col, false);
+			int fr = EdgeFrame(m.edgeTic);
+			EdgeArrow(m.eAng, fr, m.col, 1.0, m.icon);
 		}
+	}
+	// the momentum loop's frame (30 baked frames) from when the arrow came up; Photosensitive Mode: the first, held still
+	static int EdgeFrame(int since) { return RSQSM_A11y.Photo() ? 0 : ((level.maptime - since) % 30 + 30) % 30; }
+	// this frame's edge-arrow scale and style (shared with RSQSM_Arrows, arrows.zs: other mods' arrows look the same)
+	double eq, eqy;
+	int eStyle;
+	void EdgeSetup(int pn)
+	{
+		// the mockup's view is the whole eye (2 x EYE_TAN across its 1312 px), round the gaze; scaled with the panel (owner
+		// 07:55: "the edge arrows with it"), so a mockup px is the same size in the eye as the panel's (x 1312/1034 x 1/2)
+		EyeMap();
+		eq = 2 * EYE_TAN / VIEW_MW * ptx * (VIEW_MW * 0.5 / MW) * PanelSize();
+		eqy = 2 * EYE_TAN / VIEW_MW * pty * (VIEW_MW * 0.5 / MW) * PanelSize();
+		let cv = CVar.GetCVar("rsqsm_down_marker", players[pn]);
+		eStyle = cv ? clamp(cv.GetInt(), 0, 3) : 2;
+	}
+	// one edge arrow round the gaze (EdgeSetup first): direction a (degrees, 0 right, 90 up), its momentum frame fr, its
+	// colour, its size (1 = DOWN's; bigger grows outward, its inner end where DOWN's is) and the target's icon on a dark slot
+	// on its inner side (icon < 0: none)
+	void EdgeArrow(double a, int fr, int col, double size, int icon)
+	{
+		double q = eq, qy = eqy, cx = gx, cy = gy;
+		String sh = eStyle == 0 ? "A" : (eStyle == 1 ? "B" : (eStyle == 2 ? "C" : "D"));
+		// C's image: 38 x 24 cells of 4 px, its first cell 150 px out; A / B / D: 56 x 24 cells, a shape the chevrons' 88 px
+		// tall, the image from 150 px out
+		double w, h, rc;
+		if (eStyle == 2) { w = 152; h = 96; rc = 142 + 76; }
+		else { double cpx = 88.0 / 24.0; w = 56 * cpx; h = 24 * cpx; rc = 150 + w * 0.5; }
+		if (size > 0 && size != 1.0) { rc += w * (size - 1.0) * 0.5; w *= size; h *= size; }
+		double ax = cx + cos(a) * rc * q, ay = cy - sin(a) * rc * qy;
+		Rot(String.Format("RSPM%sF%02d", sh, fr), ax, ay, w * q, h * q, a, -1, false);
+		Rot(String.Format("RSPM%sC%02d", sh, fr), ax, ay, w * q, h * q, a, col, false);
+		Rot(String.Format("RSPM%sL%02d", sh, fr), ax, ay, w * q, h * q, a, Light(col), true);
+		if (icon < 0) return;
+		double ix = cx + cos(a) * 110 * q, iy = cy - sin(a) * 110 * qy;
+		Rot("RSPSLOT", ix, iy, 52 * q, 52 * q, 0, -1, false);
+		Rot(String.Format("RSPI%02dF", icon), ix, iy, 40 * q, 40 * q, 0, col, false);
 	}
 	// a texture centred at a screen point, turned ang degrees (counter-clockwise, 0 = as drawn: pointing right)
 	static void Rot(String tex, double x, double y, double w, double h, double ang, int rgb, bool add)

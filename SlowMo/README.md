@@ -287,6 +287,12 @@ RSQ SlowMo runs on its own. It finds the other mods by name at run time and link
 - **For modders:** start slow motion with `netevent rsqsm_start:<name> <ms> <speed %> <flags>`, or with
   `RSQSM_Service` `GetInt("start", ...)` from synced play code. RS_SlowMo's `rsm_toggle`, `rsm_on`, `rsm_off` and
   `rsm_pulse` also work.
+- **Edge arrows for other mods** (2026-11-09; code only, not run on the rig): from synced play code,
+  `RSQSM_Service` `GetInt("arrow.add", key, 0xRRGGBB, size, actor)` puts DOWN's edge arrow (your Turn Marker, Panel Size,
+  the same 75-degree rule, straight behind = at the bottom) on your HUD in that colour, pointing at the actor while it is
+  out of view; size 1 normal, 1.5 big. `GetInt("arrow.clear", key, 0, 0, actor)` takes it off (no actor: every arrow with
+  that key); it also goes when the actor dies and with the map. Several at once. Hidden while you are DOWN (DOWN's own
+  arrows first); Photosensitive Mode holds them still. RSQ Miniboss points at its arriving thralls and the miniboss with it.
 
 ## Credits and licence
 

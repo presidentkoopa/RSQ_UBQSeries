@@ -15,4 +15,5 @@ version "4.14"
 #include "zscript/rsqsm/platefont.zs"   // DOWN v3: the plate's font metrics (tools/plate/gen_plate_font.py)
 #include "zscript/rsqsm/plate.zs"       // DOWN v3: the crosshairs on the targets and the eye-level trail (in the world, the RSQ Wheel's way)
 #include "zscript/rsqsm/downhud.zs"     // DOWN v3: the panel and the edge arrows (HUD layer, owner 11-07 07:50)
+#include "zscript/rsqsm/arrows.zs"      // edge arrows for other mods (RSQSM_Service arrow.add / arrow.clear; 2026-11-09)
 #include "zscript/rsqsm/countdown.zs"   // the countdown bar: every slow motion's real time left (2026-11-03; all slow motion 11-05)
