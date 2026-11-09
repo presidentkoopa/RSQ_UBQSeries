@@ -91,6 +91,11 @@ Agent researching a real head-shot solution from the engine survey (RSQ_QuestEng
 - Owner 08:57: "ensure our minibosses are extra aggressive and 'fast'"; the 1.25x scale includes the hitbox.
   Claude's default unless told otherwise: the strongest attack-more flag (MISSILEEVENMORE) and x1.25 speed.
 
+## The segment-break sound (owner, 2026-11-09 18:32-18:34)
+ONPARE6_00004 (Visual Rewards' RVQHIT, `rsqvr/beam/hit`, 0.97 s) is a hit-impact sound, not a beam arrival. Owner: it plays
+**only when you break a thrall segment** in the shield window (not on head shots, not on emptied bars). It comes off the
+miniboss arrival's reveal tic. MK Crits' own sounds are not used (CoD / CS rips). What the arrival beams play instead: open.
+
 ## The arrival, the HUD and the beams (owner + Claude, 2026-11-09 10:50-11:20)
 
 - **The arrival (owner):** the world AND the player slow (RSQ SlowMo; the contextual slow-mo bar shows BOSSFIGHT,
