@@ -43,6 +43,15 @@ extend class RSQSM_Down
 	const GW_ISL_STEP = 0.1;      // a room's colour eases in or out over ~0.3 s
 	const RED_G = 40.0;           // the blood-red tint at full: the light colour's green and blue multiplied toward 40 / 30 of 255
 	const RED_B = 30.0;
+	// THE RED READS UNDER DARKDOOM BLACK (owner 2026-11-09 18:53, rig test: "DarkDoom Black buries the blood red ... make the
+	// read stronger or more intense"). The tint above multiplies the light, so in near-black rooms there is nothing left to
+	// tint. While DOWN's DarkDoomZ mode is on, two things change: the tint goes all the way to red (green and blue toward
+	// 0, not 40 / 30), and every sector's FADE colour (the colour its darkness fades to: Sector.SetFade, ColorMap.FadeColor)
+	// is pulled toward a deep blood red, so the darkness itself is red. Both scale with Blood Red Tint and ease with the grey;
+	// both are given back exactly as the light colour is.
+	const HAZE_R = 120;            // the fade colour at full (Blood Red Tint 1, DarkDoomZ on): a deep blood red (my number)
+	const HAZE_G = 0;
+	const HAZE_B = 4;
 
 	static clearscope bool BwOn(int n) { return CvP("rsqsm_down_bw", n, 1) != 0; }
 	static clearscope double BwFade(int n) { return clamp(CvP("rsqsm_down_bw_fade", n, 1.0), 0.0, 5.0); }
@@ -71,25 +80,37 @@ extend class RSQSM_Down
 	private void GreyCapture()
 	{
 		int n = Level.Sectors.Size();
-		gwCol.Clear(); gwDes.Clear(); gwLastCol.Clear(); gwLastDes.Clear(); gwIsl.Clear(); gwIslOn.Clear();
+		gwFade.Clear(); gwLastFade.Clear(); gwCol.Clear(); gwDes.Clear(); gwLastCol.Clear(); gwLastDes.Clear(); gwIsl.Clear(); gwIslOn.Clear();
 		for (int i = 0; i < n; i++)
 		{
 			Sector s = Level.Sectors[i];
 			int c = s.ColorMap.LightColor;
 			int d = s.ColorMap.Desaturation;
+			int f = s.ColorMap.FadeColor;
+			gwFade.Push(f); gwLastFade.Push(f);
 			gwCol.Push(c); gwDes.Push(d); gwLastCol.Push(c); gwLastDes.Push(d); gwIsl.Push(0);
 		}
 		gwN = n; gwQ = -1;
 		Log(String.Format("the grey world: %d sectors' own colours kept (console player %d)", n, consoleplayer));
 	}
 
+	// the fade colour pulled toward the haze, a 0..1
+	static int Haze(int f, double a)
+	{
+		if (a <= 0) return f;
+		int r = (f >> 16) & 255, g = (f >> 8) & 255, b = f & 255;
+		r = int(r + (HAZE_R - r) * a + 0.5); g = int(g + (HAZE_G - g) * a + 0.5); b = int(b + (HAZE_B - b) * a + 0.5);
+		return (f & 0xFF000000) | (r << 16) | (g << 8) | b;
+	}
+
 	// the light colour times the blood-red tint, a 0..1 (its alpha byte kept)
-	static int Tint(int c, double a)
+	static int Tint(int c, double a, bool deep = false)
 	{
 		if (a <= 0) return c;
 		int r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255;
-		g = int(g * (1.0 - a + a * RED_G / 255.0) + 0.5);
-		b = int(b * (1.0 - a + a * RED_B / 255.0) + 0.5);
+		double fg = deep ? 0.0 : RED_G / 255.0, fb = deep ? 0.0 : RED_B / 255.0;
+		g = int(g * (1.0 - a + a * fg) + 0.5);
+		b = int(b * (1.0 - a + a * fb) + 0.5);
 		return (c & 0xFF000000) | (r << 16) | (g << 8) | b;
 	}
 
@@ -98,6 +119,7 @@ extend class RSQSM_Down
 		double e = GreyEase();
 		gwQ = int(e * GW_STEPS + 0.5);
 		double red = clamp(CvP("rsqsm_down_bw_red", consoleplayer, 0.6), 0.0, 1.0);
+		bool deep = ddzOn;                // DOWN's DarkDoomZ mode is on: the deep tint and the red darkness
 		int n = min(gwN, Level.Sectors.Size());
 		int writes = 0;
 		for (int i = 0; i < n; i++)
@@ -109,9 +131,14 @@ extend class RSQSM_Down
 			if (cc != gwLastCol[i] || cd != gwLastDes[i]) { gwCol[i] = cc; gwDes[i] = cd; }
 			double k = int(e * (1.0 - gwIsl[i]) * GW_STEPS + 0.5) / GW_STEPS;
 			int d = gwDes[i] + int((255 - gwDes[i]) * k + 0.5);
-			int c = Tint(gwCol[i], k * red);
+			int c = Tint(gwCol[i], k * red, deep);
 			if (c != cc || d != cd) { s.SetColor(c, d); writes++; }
 			gwLastCol[i] = c; gwLastDes[i] = d;
+			int cf = s.ColorMap.FadeColor;
+			if (cf != gwLastFade[i]) gwFade[i] = cf;
+			int f = Haze(gwFade[i], deep ? k * red : 0.0);
+			if (f != cf) { s.SetFade(f); writes++; }
+			gwLastFade[i] = f;
 		}
 		if (writes > 0 && Cv("rsqsm_debug", 0) >= 2) Console.Printf("RSQ_SlowMo: DOWN t%d: grey world %.2f (step %d of 16): %d sectors written", level.maptime, e, gwQ, writes);
 	}
@@ -126,6 +153,8 @@ extend class RSQSM_Down
 			Sector s = Level.Sectors[i];
 			int cc = s.ColorMap.LightColor;
 			int cd = s.ColorMap.Desaturation;
+			int cf = s.ColorMap.FadeColor;
+			if (cf == gwLastFade[i] && cf != gwFade[i]) s.SetFade(gwFade[i]);
 			if (cc != gwLastCol[i] || cd != gwLastDes[i]) { theirs++; continue; }
 			if (cc != gwCol[i] || cd != gwDes[i]) { s.SetColor(gwCol[i], gwDes[i]); back++; }
 		}
@@ -135,7 +164,7 @@ extend class RSQSM_Down
 	void GreyForget()
 	{
 		gwMix = 0; gwN = 0; gwQ = -1;
-		gwCol.Clear(); gwDes.Clear(); gwLastCol.Clear(); gwLastDes.Clear(); gwIsl.Clear(); gwIslOn.Clear();
+		gwFade.Clear(); gwLastFade.Clear(); gwCol.Clear(); gwDes.Clear(); gwLastCol.Clear(); gwLastDes.Clear(); gwIsl.Clear(); gwIslOn.Clear();
 	}
 
 	// TARGETS' ROOM IN COLOUR: the sector each of the console player's living targets stands in eases back to colour

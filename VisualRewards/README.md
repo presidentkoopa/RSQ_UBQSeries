@@ -90,8 +90,8 @@ an engine)
   picked by the ceiling above; **V4** for a boss: six beams spiral in, merge, a skull pillar, the monster arrives. The
   monster is not drawn at all until its reveal. Each beam has its own sound on its first tic (owner signed off 11-09):
   V1 ONPARE8 and V2 ONPARE2, each with an octave-down copy mixed in at half volume and a small-room echo; V4 ONPARE2
-  as the pillars rise, then PL01_U lowered 15% on the merge (tic 18), with a hall echo (2.8 s); V3 PL00_U until blue is
-  picked. No sound on the reveal. Made from the owner's own files (pitch, layering, echo; nothing synthesized).
+  as the pillars rise, then PL01_U lowered 15% on the merge (tic 18), with a hall echo (2.8 s); V3 ONPARE3 with the same
+  octave layer and room echo, faded out to end with the beam (1.0 s). No sound on the reveal. Made from the owner's own files (pitch, layering, echo; nothing synthesized).
 - Words over a monster in RS Score's font, in the room like the damage numbers: a one-off word pops, flickers to white,
   drifts up, holds about a second and fades (GUARD! in silver on a shielded miniboss); a held word stays until it is
   cleared or the monster dies (TARGET!, big and pulsing on the miniboss once its shield is down).

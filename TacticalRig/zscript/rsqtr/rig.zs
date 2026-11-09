@@ -2354,6 +2354,16 @@ class RSQTR_Rig : EventHandler
 	private transient int stgHints;
 	private transient String stgMap;
 	private transient int stgTwoHand;                    // last tic the engine's two-hand steadying was on (0 never)
+	private transient int stgThrow[2];                   // per hand, last tic it held a grenade (0 never)
+
+	// the hand holds a grenade (RSQ Grenade's, by class name only: rsqgn_grenade / rsq_grenade*)
+	static bool HoldsGrenade(PlayerInfo p, int h)
+	{
+		let w = h ? p.OffhandWeapon : p.ReadyWeapon;
+		if (!w) return false;
+		String n = w.GetClassName(); n = n.MakeLower();
+		return n.IndexOf("rsqgn_grenade") == 0 || n.IndexOf("rsq_grenade") == 0;
+	}
 
 	private void StruggleReset(int h)
 	{
@@ -2377,6 +2387,10 @@ class RSQTR_Rig : EventHandler
 		// (WF_TWOHANDSTABILIZED) and for 2 s after, a hand passing through a holster's sphere is not counting toward the hint.
 		if ((p.WeaponState & WF_TWOHANDSTABILIZED) != 0) stgTwoHand = level.maptime;
 		if (stgTwoHand > 0 && level.maptime - stgTwoHand < 70) { StruggleReset(h); stgPressed[h] = false; return; }
+		// A THROW IS NO MISS (owner 2026-11-09 18:53, rig test: the grenade wind-up through the shoulder ring counted 2 of 3):
+		// while that hand holds a grenade and for 1 s after it leaves the hand (the follow-through), no count.
+		if (HoldsGrenade(p, h)) stgThrow[h] = level.maptime;
+		if (stgThrow[h] > 0 && level.maptime - stgThrow[h] < 35) { StruggleReset(h); stgPressed[h] = false; return; }
 		if (from >= 0 && !stgPressed[h] && stgR[h] == from)
 		{
 			// one miss: keep the misses within the window, newest last

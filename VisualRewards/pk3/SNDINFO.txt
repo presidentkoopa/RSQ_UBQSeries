@@ -13,12 +13,15 @@
 // 11-09 18:50 (owner, locked): the beams' own sounds. V1 RVQB1 = ONPARE8 + an octave-down copy, small-room echo; V2 RVQB2 =
 // ONPARE2 the same way; V4 RVQB4 = ONPARE2 as the pillars rise, then PL01_U lowered 15% on the merge (tic 18), hall echo
 // (the owner's "boss C"). Made from the owner's files only (pitch, layering, echo; nothing synthesized):
-// the recipe is in VisualRewards/README.md. V3 still RVQRISE until blue is picked.
+// the recipe is in VisualRewards/README.md. V3 RVQB3 (owner 18:53, "blue C") = ONPARE3 (the owner's, 11-09) + an octave-down
+// copy, small-room echo, faded out over its last 0.3 s so it ends with the beam (1.0 s).
 rsqvr/beam/v1       sounds/rsqvr/RVQB1.wav
 rsqvr/beam/v2       sounds/rsqvr/RVQB2.wav
+rsqvr/beam/v3       sounds/rsqvr/RVQB3.wav
 rsqvr/beam/v4       sounds/rsqvr/RVQB4.wav
 $rolloff rsqvr/beam/v1  400 1800
 $rolloff rsqvr/beam/v2  400 1800
+$rolloff rsqvr/beam/v3  400 1800
 $rolloff rsqvr/beam/v4  400 1800
 rsqvr/beam/rise     sounds/rsqvr/RVQRISE.wav
 rsqvr/beam/hit      sounds/rsqvr/RVQHIT.wav

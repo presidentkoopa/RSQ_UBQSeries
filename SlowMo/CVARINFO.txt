@@ -144,4 +144,5 @@ server int   rsqsm_down_ddz      = 1;     // DarkDoomZ When Down: 0 Off, 1 DarkD
 server int   rsqsm_ddz_saved     = -9999; // DarkDoomZ's own mode while DOWN holds it (put back after a quit mid-DOWN)
 server bool  rsqsm_down_slowfall = true;  // Slow Fall: you go down in slow motion (~1 s), the view easing down
 user int     rsqsm_down_entry    = 0;     // Death In Entrance: 0 Middle Then Sink, 1 Bottom Only, 2 Slam Up
+user float   rsqsm_down_entry_size = 1.6; // Entrance Size (owner 11-09 18:53): the panel's size in the middle, x its resting size (Middle Then Sink)
 user bool    rsqsm_down_audio    = true;  // Sounds: a heavy hit and ringing as you go down, a heartbeat, a relief when you get up

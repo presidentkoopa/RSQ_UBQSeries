@@ -113,7 +113,7 @@ from the owner's approved mockups, tools/beam_spec/)
     any release: credit its maker (and the game it was ripped from) properly, or redraw these frames.
   - RS Score's score-line font, RSSCFON (Blue Shadow, as credited in ijon's Dakka; RSQ Score ships it with that credit),
     as textures QVW032-QVW096: the monster words.
-  - The arrival sounds (sounds/rsqvr/RVQRISE, RVQHIT, RVQTHR1, RVQTHR2, RVQCHMP): arrival sounds supplied by the owner
+  - The arrival sounds (sounds/rsqvr/RVQRISE, RVQHIT, RVQTHR1, RVQTHR2, RVQCHMP, and RVQB1-4 made from them and ONPARE3): arrival sounds supplied by the owner
     (presidentkoopa), 2026-11-09; source not stated.
 
 - Scene music (2026-11-09): the Bossfight track "20 organic beat", supplied by the owner (presidentkoopa); cut to loop

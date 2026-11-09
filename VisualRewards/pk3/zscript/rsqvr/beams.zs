@@ -24,7 +24,7 @@
 // TIME. The beams run on game tics, not the world's slowed time: a Bossfight's arrival plays inside RSQ SlowMo's
 // landing slow, and the returned reveal (tics from the call) is in the same tics the caller counts with level.maptime.
 // SOUND (the owner's arrival sounds, SNDINFO.txt), one per beam (owner 2026-11-09 18:38-18:40; nameArg no longer picks
-// it): V1 ONPARE8, V2 ONPARE2, V3 PL00_U (the riser), V4 PL01_U (stand-in: the owner is sourcing a longer boss sound),
+// it; locked 18:50-18:53, SNDINFO.txt): V1 ONPARE8, V2 ONPARE2, V3 ONPARE3, V4 ONPARE2 then PL01_U on the merge,
 // each on the beam's first tic. No hit on the reveal: ONPARE6 (rsqvr/beam/hit) is the miniboss fight's segment-break
 // sound. Full volume to
 // 400 units, silent at 1800 (arrivals land 12-32 m away).
@@ -159,10 +159,10 @@ class RSQVR_Beam : Actor
 		if (r == 'chump') return 3;
 		return k >= 3 ? 1 : 2;
 	}
-	// the sound the beam starts with, one per beam (owner 18:50, SNDINFO.txt): V1 / V2 / V4 the locked RVQB sounds, V3 PL00_U
+	// the sound the beam starts with, one per beam (owner 18:50, SNDINFO.txt): the locked RVQB1-4 sounds
 	static String SoundOf(int k)
 	{
-		static const String T[] = { "rsqvr/beam/v1", "rsqvr/beam/v2", "rsqvr/beam/rise", "rsqvr/beam/v4" };
+		static const String T[] = { "rsqvr/beam/v1", "rsqvr/beam/v2", "rsqvr/beam/v3", "rsqvr/beam/v4" };
 		return T[clamp(k, 1, 4) - 1];
 	}
 	static int KindOf(String s)

@@ -193,7 +193,9 @@ class RSQSM_DownHud ui
 	static int TargetLines() { return int(RSQSM_Countdown.UCv("rsqsm_down_lines", 0)) != 0 ? 1 : 0; }
 	// Death In Entrance (owner 2026-11-09 17:45): 0 Middle Then Sink (the default), 1 Bottom Only, 2 Slam Up (as before)
 	static int Entry() { return clamp(int(RSQSM_Countdown.UCv("rsqsm_down_entry", 0)), 0, 2); }
-	const BIG = 1.6;        // the panel's size in the middle, x its resting size (my number)
+	// the panel's size in the middle, x its resting size: Entrance Size row (owner 2026-11-09 18:53, rig test: "let me scale
+	// the panel in a menu with a slider"; 1.6 was my number)
+	static double Big() { return clamp(RSQSM_Countdown.UCv("rsqsm_down_entry_size", 1.6), 1.0, 4.0); }
 	// a line of the plate's font: its width at this cap height
 	double TextW(String txt, double cap)
 	{
@@ -258,7 +260,7 @@ class RSQSM_DownHud ui
 		if (entry == 0)
 		{
 			// MIDDLE THEN SINK: big, its middle on the gaze; holds, then glides to its place (eased in and out)
-			double bsx = sx * BIG, bsy = sy * BIG;
+			double big = Big(), bsx = sx * big, bsy = sy * big;
 			if (MW * bsx > sw * 0.94) { double kk = sw * 0.94 / (MW * bsx); bsx *= kk; bsy *= kk; }
 			double bfy = gy + (MFOOT - (top + MFOOT) * 0.5) * bsy;
 			double g = clamp((st - RSQSM_Down.ENTRY_HOLD) / double(RSQSM_Down.ENTRY_GLIDE), 0.0, 1.0);

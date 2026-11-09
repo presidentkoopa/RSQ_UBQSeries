@@ -284,9 +284,13 @@ class RSQSM_Plate play
 			PutAt(m.tC[i], p, w, TRAIL_H, roll, 1); PutAt(m.tL[i], p, w, TRAIL_H, roll, 2);
 			if (grey)
 			{
+				// THE CHEVRONS' COLOUR (owner 2026-11-09 18:53, rig test: "trail chevrons look white"): the particles sat at the
+				// frame quad's own depth (p), so the frame (grey bevel, black under the fill) drew over them and only the bevel
+				// showed. The crosshair has no frame quad, so it kept its colour. The colour particles now sit in front of the
+				// frame, toward the eye (nrm, from Face above).
 				Off(m.tC[i]); Off(m.tL[i]);
-				Part(String.Format("RSPTC%02d", f), p, TRAIL_H, roll, m.col, alpha);
-				Part(String.Format("RSPTL%02d", f), p, TRAIL_H, roll, Light(m.col), alpha, true);
+				Part(String.Format("RSPTC%02d", f), p + nrm * 0.5, TRAIL_H, roll, m.col, alpha);
+				Part(String.Format("RSPTL%02d", f), p + nrm * 0.6, TRAIL_H, roll, Light(m.col), alpha, true);
 			}
 			else { Shade(m.tC[i], m.col, alpha); Shade(m.tL[i], Light(m.col), alpha, true); }
 		}
