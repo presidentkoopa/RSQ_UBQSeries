@@ -5,7 +5,7 @@
 // dismember deaths and sounds), as the owner recoloured and re-tiered them,
 // carried over from his old HF tree onto RS_MonsterMaster. Only the monsters
 // and what they need to run came across; the HF keywords (MonIdentity) and the HF
-// colour dial were dropped. HF's retier flash is kept (RS_Retier.zs, for all sets).
+// colour dial were not brought (owner, 2026-11-09: no keywords). HF's retier flash is kept (RS_Retier.zs, for all sets).
 //
 // RENAMES (none of these may clash with Brutal Doom or the rest of RSQ
 // Monsters): classes HF_MG* -> RS_MG*, base HF_MG_Monsters -> RS_MGMonster;
@@ -182,25 +182,6 @@ class RS_MGMonster : RS_MonsterMaster abstract
 	// cvars rsq_mg_*. RS_MGReactions.zs holds the event handler, the context
 	// struct and the FX actors.
 	// =================================================================
-
-	// ---- KEYWORDS: HF MonIdentity + the synced color:/tier: tokens, on
-	// RS_MonsterMaster's own keyword hook (same "key:value" token format).
-	virtual string MG_Identity() { return "class:unknown role:fodder faction:hell set:meatgrinder"; }
-	static string MG_ColourName(int t)
-	{
-		switch (t)
-		{
-			case 2:  return "green";   case 3:  return "blue";    case 4:  return "purple";
-			case 5:  return "yellow";  case 6:  return "red";     case 7:  return "fireblu";
-			case 8:  return "gray";    case 9:  return "abyss";   case 10: return "black";
-			case 11: return "white";   case 12: return "cyan";    case 13: return "brown";
-		}
-		return "neutral";
-	}
-	override string GetBaseKeywords()
-	{
-		return MG_Identity() .. " color:" .. MG_ColourName(Tier) .. " tier:" .. Tier;
-	}
 
 	// ---- SENSORS (HF_Monster fields + DamageMobj): how the player last hit me.
 	int  mgLastHitBy;        // MGHIT_* (RS_MGReactions.zs)
@@ -545,7 +526,6 @@ class RS_MGZombieman : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "zombie"; }
-	override string MG_Identity() { return "class:zombieman species:zombie role:fodder trait:hitscan faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -721,7 +701,6 @@ class RS_MGImp : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "imp"; }
-	override string MG_Identity() { return "class:imp species:imp role:skirmisher trait:projectile faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -887,7 +866,6 @@ class RS_MGDemon : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "demon"; }
-	override string MG_Identity() { return "class:demon species:demon role:bruiser trait:melee faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1025,7 +1003,6 @@ class RS_MGSpectre : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "spectre"; }
-	override string MG_Identity() { return "class:spectre species:demon role:bruiser trait:melee trait:stealth faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1167,7 +1144,6 @@ class RS_MGLostSoul : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "lostsoul"; }
-	override string MG_Identity() { return "class:lostsoul species:lostsoul role:charger trait:flying faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1231,7 +1207,6 @@ class RS_MGRevenant : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "rev"; }
-	override string MG_Identity() { return "class:revenant species:revenant role:skirmisher trait:projectile trait:homing faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1357,7 +1332,6 @@ class RS_MGCaco : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "caco"; }
-	override string MG_Identity() { return "class:cacodemon species:cacodemon role:bruiser trait:projectile trait:flying faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1466,7 +1440,6 @@ class RS_MGPainElemental : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "pe"; }
-	override string MG_Identity() { return "class:painelemental species:painelemental role:summoner trait:flying faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1538,7 +1511,6 @@ class RS_MGBaron : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "baron"; }
-	override string MG_Identity() { return "class:baron species:baron role:bruiser trait:projectile faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1646,7 +1618,6 @@ class RS_MGHellKnight : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "hk"; }
-	override string MG_Identity() { return "class:hellknight species:hellknight role:bruiser trait:projectile faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1756,7 +1727,6 @@ class RS_MGMancubus : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "manc"; }
-	override string MG_Identity() { return "class:mancubus species:mancubus role:artillery trait:projectile faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -1917,7 +1887,6 @@ class RS_MGArachnotron : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "spider"; }
-	override string MG_Identity() { return "class:arachnotron species:arachnotron role:artillery trait:projectile faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -2013,7 +1982,6 @@ class RS_MGArchvile : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "archvile"; }
-	override string MG_Identity() { return "class:archvile species:archvile role:support trait:fire faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -2131,7 +2099,6 @@ class RS_MGMastermind : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "spider"; }
-	override string MG_Identity() { return "class:spidermastermind species:spider role:boss trait:hitscan faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -2220,7 +2187,6 @@ class RS_MGCyberdemon : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "cyber"; }
-	override string MG_Identity() { return "class:cyberdemon species:cyberdemon role:boss trait:rocket faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -2302,7 +2268,6 @@ class RS_MGShotgunner : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "sg"; }
-	override string MG_Identity() { return "class:shotgunner species:zombie role:fodder trait:hitscan faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{
@@ -2480,7 +2445,6 @@ class RS_MGChaingunner : RS_MGMonster
 	}
 
 	override void BeginPlay() { Super.BeginPlay(); tintFam = "cg"; }
-	override string MG_Identity() { return "class:chaingunner species:zombie role:skirmisher trait:hitscan faction:hell set:meatgrinder"; }   // HF MonIdentity, verbatim
 
 	States
 	{

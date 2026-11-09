@@ -46,8 +46,6 @@ RSQ Monsters menu > MeatGrinder):
   Fire, ice, lightning and acid kills burn, freeze, shock or melt the body. HF's weapon-keyword inputs need HF's
   weapons, so the damage type decides here.
 - Abyss-tier MG monsters split into two lost souls when they die.
-- Keywords (`class:`, `species:`, `role:`, `trait:`, `set:meatgrinder`, plus `color:` and `tier:`) on RS_MonsterMaster's
-  own keyword hook.
 - The optional floating tier marker.
 - The gore governor.
 
