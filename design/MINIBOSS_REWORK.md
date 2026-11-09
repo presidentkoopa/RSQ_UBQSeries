@@ -4,7 +4,7 @@ Owner's words, then where we landed.
 
 - **Who arrives boosted:** "the miniboss and its thralls are the only monsters to arrive boosted legendary champions."
   (SlowMo's DOWN already spawns Boosted Legendary Champion copies via Champions itself: SlowMo/zscript/rsqsm/down.zs.)
-- **Scale:** "the miniboss should be scaled up some." BD22 decides head shots by a FIXED height above the floor per type
+- **Scale:** "the miniboss should be scaled up some." **1.25x** (owner 07:28). BD22 decides head shots by a FIXED height above the floor per type
   (brutal22test6 actors/Gore/BloodTypesMonsters.dec, e.g. `A_JumpIf((z - floorz) > 46, "HeadShot")`), so a scaled monster
   gets chest shots counted as head shots. Owner: **"we will need a real headshot fix"**: our own hit-height check against
   the monster's real (scaled) size, like MG's head band.
@@ -29,7 +29,8 @@ Owner's words, then where we landed.
   - then its own bar: "thralls = number of segments you have to whittle down before it's one-on-one with the miniboss
     itself, who has 1 full hp bar remaining";
   - thinner bars under it = its LIVES (Claude's suggestion, owner: "I think so, the spheres get lost in the tether art"):
-    they replace the orbs circling its head. Empty the main bar, the next life refills it, the flames come up, the
+    they replace the orbs circling its head. **Option (owner 07:28): it tiers up (with the flash) each time a life bar
+    empties.** Empty the main bar, the next life refills it, the flames come up, the
     thralls rise, a new segmented thrall bar appears.
   - Words near the bars in the RS Score font, one word each: "Immune!", "Target!" (owner: "damnums can be used here").
 - **Powers: LOSE** (owner 06:42). Each thrall carries the Champion power it gave the miniboss; killing that thrall
