@@ -10,6 +10,11 @@ chain at the stock pace; both Barrel Sound choices play. The look of the six exp
 (rebuilt 11-09).
 
 **What's new**
+- **11-09, evening** (code only: loads clean, not yet run on the rig, not headset-confirmed): the throw. Owner on PC VR:
+  "there is no way to throw grenades". Three fixes. Grip and trigger together (which the engine sends as alt fire) now
+  count as squeezing the spoon, so letting go of them cooks or throws. The swing speed is measured the way BD22 VR's
+  grenade and the ShieldSaw measure theirs; the old way went blind whenever your head turned during the throw. And a
+  grenade in your hand always works, even with Brutal Doom VR loaded and Replace Brutal Doom's Grenade off.
 - **11-09, later** (rig only, not headset-confirmed): the wall scorch fades away instead of cutting out. It used to
   share the engine's small decal limit with every bullet hole and blood splat (20 on QuestZDoom), so a few shots later
   it vanished at once. Now it is outside that limit: the soot stays 8 seconds, then fades out smoothly over 6.
@@ -195,24 +200,25 @@ the third link on; never with RSQ Accessibility's Photosensitive Mode or a Comfo
 5. Next one: pull the pin, then let go with your hand still. The spoon flies and it starts to flash. Count the ticks,
    then throw it with a squeeze and a swing. Cooked right, it bursts as it lands.
 6. Try the teeth: grenade to your mouth, squeeze, hold it there half a second.
-7. Tap your alt fire while holding it to try the other types.
+7. Tap your alt fire while holding it (pin in) to try the other types.
 
 ## Controls
 
 | Action | How (VR) | Notes |
 |---|---|---|
-| Squeeze the spoon | Holding hand's trigger, held | |
+| Squeeze the spoon | Holding hand's trigger, held (or grip and trigger together) | Let go of both to release |
 | Pull the pin (ring) | Other hand's trigger within 12 cm of the ring, then draw the hand 8 cm further away | A buzz in the pulling hand |
 | Pull the pin (teeth) | Squeeze (trigger, or alt fire) and hold the grenade at your mouth for 12 tics | Within 0.15 m of your mouth. After a pull, move it clear of your mouth or let go before the next |
 | Put the pin back | Other hand's trigger at the ring again, before the spoon flies | |
 | Throw | Let go of the trigger while swinging at 2.5 m/s or more | After cooking, any release throws |
 | Cook | Let go of the trigger with the hand still | The fuse (3 s) starts in your hand |
-| Change type | Holding hand's alt fire | Not at your mouth with the pin in (there it is the teeth's squeeze); not while cooking |
+| Change type | Holding hand's alt fire, pin in | Not at your mouth (there it is the teeth's squeeze); with the pin out alt fire is the squeeze |
 | Shoot a thrown grenade | Shoot it | Your shots and projectiles; never melee |
 
 - Holding hand means whichever hand has the grenade; the other hand pulls the ring. Fire and alt fire are read for
   each hand as the engine maps them (main trigger and off-hand trigger).
-- On QuestZDoom's default button mapping, grip plus trigger sends alt fire; the teeth accept that as a squeeze too.
+- On QuestZDoom's default button mapping, grip plus trigger sends alt fire. That counts as the squeeze everywhere: on
+  the spoon as well as for the teeth.
 
 ## Menu
 

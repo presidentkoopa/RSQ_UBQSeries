@@ -22,9 +22,10 @@
 // rsqgn_cook, rsqgn_at / rsqgn_v / rsqgn_throw). Everything that follows -- the pin state, the fuse, the cook-off,
 // the throw -- runs from those events on every machine alike.
 //
-// THE THROW IS THE HAND'S OWN MOTION, measured as the series does (RSQ Distance Grab aim.zs PalmVelocity, RSQ
-// Tactical Rig's gun throw): the hand relative to the pawn, in the tracking space's frame (so walking, snap turns
-// and head turns are no swing), the fastest 2-tic window of the last seven tics, turned back into the world.
+// THE THROW IS THE HAND'S OWN MOTION, measured the way the throws that work on the owner's PC VR measure it (BD22 VR
+// Reloaded rsg/grenade.zs Swing, RSQ ShieldSaw pose.zs ThrowVel; 2026-11-09, below at Sample): the hand relative to
+// the pawn, turned by the pawn's yaw into the body's frame (walking and turning are no swing), the fastest 2-tic
+// window of the last seven tics, turned back into the world.
 //
 // STANDS DOWN with Brutal Doom VR Reloaded (its RSG_Handler, looked up by a String at run time: a quoted class name
 // is resolved when the script compiles and would break this pack without Brutal Doom): then nothing here runs, and
@@ -160,15 +161,13 @@ class RSQGN_Handler : EventHandler
 	Vector3 throwAt[MAXPLAYERS], throwVel[MAXPLAYERS];
 
 	// ---- the console player's hands (local) ----
-	private transient bool ringHeld, grabPrev, trigPrev, faceReady, altPrev;
+	private transient bool ringHeld, grabPrev, trigPrev, faceReady, altPrev, squeezePrev, standNoted;
 	private transient int faceTic, faceMiss, lastHand, waitUntil;
 	private transient bool waitArmed, waitSpoon;
-	private transient Vector3 lastRel[2], rawHand[2];
-	private transient bool primed[2], framePrimed, wasSame;
-	private transient double frameYaw, lastAngle, lastHandYaw[2];
-	private transient int quietTics;
-	private transient Vector3 samples[2 * WIN];
-	private transient int sampleAt[2];
+	private transient bool wasSame;
+	private transient Vector3 relHist[2 * WIN];	// the hand in the body's frame, a tic each (Sample)
+	private transient bool relOk[2 * WIN];
+	private transient int histAt[2];
 
 	// SHOOT THROWN GRENADES: the live missiles that are not this mod's own (projectiles are not in the blockmap, so a
 	// grenade cannot find them by area); pruned each tic, kept only while a thrown grenade exists to be shot
@@ -216,6 +215,20 @@ class RSQGN_Handler : EventHandler
 		let cv = CVar.FindCVar("rsqgn_on");
 		return !cv || cv.GetBool();
 	}
+
+	// A GRENADE IN A HAND ALWAYS WORKS (owner 2026-11-09 17:41, PC VR with BD22 VR Reloaded: "there is no way to throw
+	// grenades. I have it in hand, I pull pin ... and I can't throw it"). Standing down for BD22 VR used to switch the
+	// WHOLE handling off -- the ring, the spoon, the throw (WorldTick and NetworkProcess returned at once) -- while a
+	// grenade already carried (from a run with Replace Brutal Doom's Grenade on, a save, a pickup) still went into the
+	// hand from slot 9: a dead grenade nothing could throw. Standing down now only means no grenades are handed out
+	// (Equip) and BD22 VR's grenade stays; a player holding this one gets its full handling.
+	static bool Held()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+			if (playeringame[n] && players[n].mo && HandOf(players[n]) >= 0) return true;
+		return false;
+	}
+	static bool Live() { return Active() || Held(); }
 
 	static bool PFlag(PlayerInfo p, String n, bool d) { let c = CVar.GetCVar(n, p); return c ? c.GetBool() : d; }
 	static double PNum(PlayerInfo p, String n, double d) { let c = CVar.GetCVar(n, p); return c ? c.GetFloat() : d; }
@@ -316,7 +329,7 @@ class RSQGN_Handler : EventHandler
 	override void WorldTick()
 	{
 		MenuRefresh();
-		if (!Active()) return;
+		if (!Live()) return;
 		// SHOOT THROWN GRENADES, projectiles: at the end of the tic every thing has moved, so each grenade's path this tic
 		// (Prev to Pos) is tested against each missile's (RSQGN_Thrown.ShotByMissile, swept)
 		{
@@ -439,7 +452,7 @@ class RSQGN_Handler : EventHandler
 	void ShotTest(WorldEvent e, String how)
 	{
 		let pmo = PlayerPawn(e.Thing);
-		if (!pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer || !Active()) return;
+		if (!pmo || !pmo.player || pmo.PlayerNumber() != consoleplayer || !Live()) return;
 		bool open = RSQGN_Slow.CanShoot();
 		if (!open && RSQGN_Upg.Lv(pmo, "Skeet") <= 0) return;
 		if (e.AttackDistance > 0 && e.AttackDistance <= 128) return;	// a punch, a bash: never
@@ -497,12 +510,13 @@ class RSQGN_Handler : EventHandler
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
-		if (e.IsManual || !Active()) return;
+		if (e.IsManual) return;
 		int n = e.Player;
 		if (n < 0 || n >= MAXPLAYERS || !playeringame[n]) return;
 		let p = players[n];
 		let pmo = p.mo;
 		if (!pmo || pmo.health <= 0) return;
+		if (!Active() && HandOf(p) < 0) return;		// standing down: only a grenade in a hand (Live)
 		if (e.Name == "rsqgn_kind")
 		{
 			if (spoon[n]) return;
@@ -649,7 +663,12 @@ class RSQGN_Handler : EventHandler
 		if (!RSQGN_Geo.InVR(pmo)) return;
 		Sample(pmo);
 		int h = HandOf(p);
-		if (h < 0 || pmo.health <= 0) { ringHeld = false; trigPrev = false; faceTic = 0; lastHand = -1; return; }
+		if (h < 0 || pmo.health <= 0) { ringHeld = false; trigPrev = false; squeezePrev = false; faceTic = 0; lastHand = -1; return; }
+		if (!Active() && !standNoted && Debug(p))
+		{
+			standNoted = true;
+			Console.Printf("RSQGN t%d: standing down for Brutal Doom VR (Replace Brutal Doom's Grenade off), but this grenade is in your hand: it works", level.maptime);
+		}
 		if (h != lastHand) { ringHeld = false; faceTic = 0; faceMiss = 0; faceReady = true; lastHand = h; }
 		int o = 1 - h;
 		int btn = p.cmd.buttons;
@@ -657,7 +676,6 @@ class RSQGN_Handler : EventHandler
 		bool grab = (btn & (o == 0 ? BT_ATTACK : BT_OFFHANDATTACK)) != 0;
 		bool grabPress = grab && !grabPrev;
 		grabPrev = grab;
-		bool trigUp = !trig && trigPrev;
 		trigPrev = trig;
 		// THE KINDS: the holding hand's alt trigger cycles the kinds you own (Gun Bonsai VR patch) or, without the patch,
 		// every kind (rsqgn_kinds_free, kinds.zs Owns), until the spoon flies. "Alt Fire Cycles Grenade Types"
@@ -666,10 +684,19 @@ class RSQGN_Handler : EventHandler
 		bool alt = (btn & (h == 0 ? BT_ALTATTACK : BT_OFFHANDALTATTACK)) != 0;
 		bool altPress = alt && !altPrev;
 		altPrev = alt;
+		// THE SQUEEZE ON THE SPOON IS THE TRIGGER OR THE GRIPPED TRIGGER (owner 2026-11-09: "can't throw it while
+		// holding trigger, can't throw it while holding altfire"). QuestZDoom's default vr_secondary_button_mappings
+		// makes the grip a shift key: a hand closed round the grenade (grip) and squeezing (trigger) sends ALT fire and
+		// no fire at all, so the spoon's let-go -- the fire button coming up -- never came, and nothing cooked or threw.
+		// Either one held is the squeeze; both up is the let-go. (Once the pin is out the alt trigger is the squeeze
+		// only: it cycles grenade kinds with the pin in, below.)
+		bool squeeze = trig || alt;
+		bool squeezeUp = !squeeze && squeezePrev;
+		squeezePrev = squeeze;
 		double mouth = MouthDist(pmo, h);
 		bool faceOn = PFlag(p, "rsqgn_face", true);
 		bool biting = faceOn && !armed[n] && mouth <= MouthReach(p);
-		if (altPress && !spoon[n])
+		if (altPress && !armed[n])
 		{
 			bool cyc = PFlag(p, "rsqgn_kind_alt", true);
 			int nk = RSQGN_Kind.Next(pmo, kind[n]);
@@ -718,7 +745,13 @@ class RSQGN_Handler : EventHandler
 				Wait(n);
 				return;
 			}
-			if (trigUp)
+			if (dbg && squeeze && level.maptime % 3 == 0)
+			{
+				double ms; Vector3 v;
+				[ms, v] = Peak(pmo, h);
+				Console.Printf("RSQGN squeeze t%d: hand %d trigger %d alt %d, swing %.2f m/s", level.maptime, h, trig, alt, ms);
+			}
+			if (squeezeUp)
 			{
 				double ms; Vector3 v;
 				[ms, v] = Peak(pmo, h);
@@ -730,10 +763,11 @@ class RSQGN_Handler : EventHandler
 			}
 			return;
 		}
-		if (trigUp)
+		if (squeezeUp)
 		{
 			double ms; Vector3 v;
 			[ms, v] = Peak(pmo, h);
+			if (dbg) Console.Printf("RSQGN release t%d (cooking): swing %.2f m/s, thrown", level.maptime, ms);
 			SendThrow(pmo, h, ms, v);
 			Wait(n);
 		}
@@ -816,74 +850,53 @@ class RSQGN_Handler : EventHandler
 		Send("rsqgn_throw", int(ms * 100));
 	}
 
-	// THE HAND'S SPEED (RSQ Distance Grab aim.zs, condensed): each tic the hand's step relative to the pawn, in the
-	// tracking space's frame. The tracking yaw is not exposed, so it is inferred: a snap or stick turn turns the pawn
-	// AND both hands' yaws by the same amount in one tic; a head turn turns the pawn alone (the hands stay where they
-	// are) and blinds the sampler for two tics (the engine builds the hand from the new head yaw for one tic). A
-	// collapsed pose (a menu or a save: both hands written to one point), a jump over a metre and a tic with no new
-	// frame (the hand repeated) are no motion.
+	// THE HAND'S SPEED (2026-11-09, owner on PC VR: no throw ever left the hand). It was RSQ Distance Grab's sampler: the
+	// tracking space's yaw INFERRED from tic to tic (a pawn turn that both hands' yaws followed was a stick turn, one
+	// they did not was a head turn), and every head turn faster than 0.5 degrees a tic BLINDED it for two tics, with
+	// every tic whose hand position repeated counted as no motion. A real throw turns the head and the body with the
+	// arm and twists the wrist, so the hand yaws never "follow": the throw's own tics were blinded, the peak read low,
+	// the release cooked instead of throwing, and a cooked throw left with the little speed that was left. The throws
+	// that do work for him measure it plainly -- BD22 VR Reloaded's grenade (rsg/grenade.zs Swing: the hand in the
+	// BODY's frame, the pawn's yaw) and RSQ ShieldSaw's disc (pose.zs Rel / VelAt / ThrowVel: the same, over a 2-tic
+	// window) -- and so does this now: each tic the hand relative to the pawn, turned by the pawn's own yaw. Kept: a
+	// collapsed pose (a menu or a save writes both hands to one point) and a jump over a metre in two tics are no motion.
 	private void Sample(PlayerPawn pmo)
 	{
 		bool same = pmo.AttackPos == pmo.OffhandPos && pmo.AttackAngle == pmo.OffhandAngle && pmo.AttackPitch == pmo.OffhandPitch;
 		bool collapsed = same && !wasSame;
 		wasSame = same;
-		double ang = pmo.Angle;
-		double hy0 = pmo.AttackAngle, hy1 = pmo.OffhandAngle;
-		if (framePrimed)
-		{
-			double dA = Actor.Normalize180(ang - lastAngle);
-			double d0 = Actor.Normalize180(hy0 - lastHandYaw[0]);
-			double d1 = Actor.Normalize180(hy1 - lastHandYaw[1]);
-			bool followed = abs(d0 - dA) < 1.5 && abs(d1 - dA) < 1.5;
-			if (abs(dA) > 0.01 && followed) frameYaw = Actor.Normalize180(frameYaw + dA);
-			if (abs(dA) > 0.5 && !followed) quietTics = 2;
-		}
-		else { frameYaw = ang; framePrimed = true; }
-		lastAngle = ang;
-		lastHandYaw[0] = hy0;
-		lastHandYaw[1] = hy1;
+		double c = cos(pmo.angle), sn = sin(pmo.angle);
 		for (int h = 0; h < 2; h++)
 		{
-			Vector3 now = RSQGN_Geo.Pos(pmo, h);
-			// a tic with no new frame repeats the hand (RSQ Tactical Rig): no motion that tic, and no step
-			// against the pawn, which may have moved on
-			bool stale = now == rawHand[h];
-			rawHand[h] = now;
-			if (stale && !collapsed)
-			{
-				samples[h * WIN + sampleAt[h]] = (0, 0, 0);
-				sampleAt[h] = (sampleAt[h] + 1) % WIN;
-				continue;
-			}
-			Vector3 off = now - pmo.Pos;
-			Vector2 flat = Actor.RotateVector(off.xy, -frameYaw);
-			Vector3 rel = (flat.x, flat.y, off.z);
-			Vector3 step = rel - lastRel[h];
-			bool good = primed[h] && !same && quietTics <= 0 && RSQGN_Geo.Metres(pmo, step) < 1.0;
-			samples[h * WIN + sampleAt[h]] = good ? step : (0, 0, 0);
-			sampleAt[h] = (sampleAt[h] + 1) % WIN;
-			lastRel[h] = rel;
-			primed[h] = !collapsed;
+			Vector3 off = RSQGN_Geo.Pos(pmo, h) - pmo.Pos;
+			int k = h * WIN + histAt[h];
+			relHist[k] = (off.x * c + off.y * sn, off.y * c - off.x * sn, off.z);
+			relOk[k] = !same && !collapsed;
+			histAt[h] = (histAt[h] + 1) % WIN;
 		}
-		if (quietTics > 0) quietTics--;
 	}
 
-	// The fastest 2-tic window (each pair of adjacent steps averaged) of hand h: real m/s, and that velocity in map
-	// units a tic, turned back into the world.
+	// where hand h's sample `back` tics ago (0: this tic) sits in relHist / relOk (an index: a Vector3 handed back
+	// through a multiple return is the kind of thing QZD 17.3's VM has dropped before -- ShieldSaw pose.zs)
+	private int Hist(int h, int back) { return h * WIN + (histAt[h] - 1 - back + 2 * WIN) % WIN; }
+
+	// The fastest 2-tic window of hand h over the last WIN tics: real m/s (the vertical squash taken out), and that
+	// velocity in map units a tic, turned back into the world by the pawn's yaw now.
 	private double, Vector3 Peak(PlayerPawn pmo, int h)
 	{
 		Vector3 best = (0, 0, 0);
 		double bestM = 0;
-		for (int i = 0; i < WIN; i++)
+		for (int i = 0; i + 2 < WIN; i++)
 		{
-			if (i == sampleAt[h]) continue;		// the oldest sample has no older partner in the window
-			int j = (i + WIN - 1) % WIN;
-			Vector3 v = (samples[h * WIN + i] + samples[h * WIN + j]) * 0.5;
+			int ka = Hist(h, i), kb = Hist(h, i + 2);
+			if (!relOk[ka] || !relOk[kb]) continue;
+			Vector3 v = (relHist[ka] - relHist[kb]) * 0.5;
 			double m = RSQGN_Geo.Metres(pmo, v);
+			if (m >= 0.5) continue;			// over a metre in two tics: a pose jump, not an arm
 			if (m > bestM) { bestM = m; best = v; }
 		}
-		Vector2 w = Actor.RotateVector(best.xy, frameYaw);
-		return bestM * TICRATE, (w.x, w.y, best.z);
+		double c = cos(pmo.angle), sn = sin(pmo.angle);
+		return bestM * TICRATE, (best.x * c - best.y * sn, best.x * sn + best.y * c, best.z);
 	}
 }
 
