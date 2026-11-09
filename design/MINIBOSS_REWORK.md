@@ -21,7 +21,7 @@ Owner's words, then where we landed.
   thrall, one second each, draining tallest first; the step you break the segment in sets Score's pay (first = most).
   Drained to zero with the segment unbroken = tier-up by how much segment was left: a sliver +1, about half +2,
   untouched +3 (owner: "I think so"). DOWN's bar is drawn on its world plate today: it needs a HUD-style redraw.
-  **Option: the tier-up hits every monster on the map** (owner: "successive miniboss fights could cause a player to
+  **Option: the tier-up hits every monster on the map** (ON by default, owner 07:15) (owner: "successive miniboss fights could cause a player to
   leave a map with tier 9 enemies, lol"). **Miniboss-induced tiers reset on a map change**; tiering from RSQ Score or
   Gun Bonsai VR (their own, later) is unaffected.
 - **HUD bar stack** (owner: "i love the idea of an on-HUD hp bar, i will look for something"):
