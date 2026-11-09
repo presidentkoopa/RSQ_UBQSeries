@@ -1,0 +1,224 @@
+# RSQ Score head-shot check: rig run 2026-11-09 (QuestZDoom 17.3 rig, Doom II MAP02, skill 3).
+# Load order: doom2 > brutal22test6 > BD_VoxelPack > BD22 VR-Reloaded 2.0.4c > LOB > Champions (chance 0) > Gun Bonsai > every RSQ pk3 > test probe (/tmp, not in the repo).
+# Script errors in the run: the 4 known BD_VoxelPack voxeldef lines, none from our pk3s.
+# Shots: a real engine trace (LineTrace, no VR override) from the player's eye at the height asked, then the engine's own hitscan order:
+# puff (SpawnPuff, no random z), DamageMobj(puff, player, Bullet), SpawnLineAttackBlood. Not a gun firing in a headset.
+# HS lines: Score's head check (rs_score_hs_log). 'up' = hit z over the monster's own feet; 'frac' = up / its current Height; 'lo' = its family's head fraction.
+# 'bonus' is dealt after the blow's other handlers (RS_ScoreHeadLate). 'kill ... Headshot row' = RS_Row_Headshot's own verdict on the kill.
+
+PROBE t2 player 1104 1984 -0 ang 270
+PROBE t38 view yaw now 270 at 1104 1984 -0
+PROBE t40 SCENE 0: BD imp head, check OFF (Brutal Doom's own) -- Imp H 56.0 (def 56.0) R 16.0 scale 1.00 health 80, check 0
+PROBE t64 shot 1 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 56.0); Imp hp 80 -> 29, HitHead 0
+HS t71 kill Imp: Score Headshot row does not pay
+PROBE t71 shot 2 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 4.0); Imp hp 29 -> -22, HitHead 1
+PROBE t72 SCENE 0 killed after 2 shots
+PROBE t139 SCENE 1: BD zombie head -- RifleZombie H 56.0 (def 56.0) R 16.0 scale 1.00 health 40, check 1
+HS t163 RifleZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 28
+HS t163 kill RifleZombie: Score Headshot row PAYS
+HS t163 blood RS_ScoreHB_Imp on RifleZombie: verdict already applied (BD's own check skipped)
+PROBE t163 shot 1 12 dmg aim up 52.0: real trace met RifleZombie at up 52.0 over RifleZombie's feet (its H 4.0); RifleZombie hp 40 -> -11, HitHead 1
+PROBE t164 SCENE 1 killed after 1 shots
+PROBE t231 SCENE 2: BD zombie chest -- RifleZombie H 56.0 (def 56.0) R 16.0 scale 1.00 health 40, check 1
+PROBE t234 SCENE took the variant PistolZombie
+HS t255 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 28
+HS t255 blood RS_ScoreHB_Imp on PistolZombie: verdict already applied (BD's own check skipped)
+PROBE t255 shot 1 12 dmg aim up 34.0: real trace met PistolZombie at up 34.0 over PistolZombie's feet (its H 56.0); PistolZombie hp 40 -> 28, HitHead 0
+HS t262 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 16
+HS t262 blood RS_ScoreHB_Imp on PistolZombie: verdict already applied (BD's own check skipped)
+PROBE t262 shot 2 12 dmg aim up 34.0: real trace met PistolZombie at up 34.0 over PistolZombie's feet (its H 56.0); PistolZombie hp 28 -> 16, HitHead 0
+HS t269 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 4
+HS t269 blood RS_ScoreHB_Imp on PistolZombie: verdict already applied (BD's own check skipped)
+PROBE t269 shot 3 12 dmg aim up 34.0: real trace met PistolZombie at up 34.0 over PistolZombie's feet (its H 56.0); PistolZombie hp 16 -> 4, HitHead 0
+HS t276 PistolZombie fam zombie H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -8
+HS t276 kill PistolZombie: Score Headshot row does not pay
+HS t276 blood RS_ScoreHB_Imp on PistolZombie: verdict already applied (BD's own check skipped)
+PROBE t276 shot 4 12 dmg aim up 34.0: real trace met PistolZombie at up 34.0 over PistolZombie's feet (its H 4.0); PistolZombie hp 4 -> -8, HitHead 0
+PROBE t277 SCENE 2 killed after 4 shots
+PROBE t344 SCENE 3: BD imp head -- Imp H 56.0 (def 56.0) R 16.0 scale 1.00 health 80, check 1
+HS t368 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 68
+HS t368 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t368 shot 1 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 56.0); Imp hp 80 -> 29, HitHead 0
+HS t375 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 17
+HS t375 kill Imp: Score Headshot row PAYS
+PROBE t375 shot 2 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 4.0); Imp hp 29 -> -22, HitHead 0
+PROBE t376 SCENE 3 killed after 2 shots
+PROBE t443 SCENE 4: BD imp chest -- Imp H 56.0 (def 56.0) R 16.0 scale 1.00 health 80, check 1
+HS t467 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 68
+HS t467 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t467 shot 1 12 dmg aim up 34.0: real trace met Imp at up 34.0 over Imp's feet (its H 56.0); Imp hp 80 -> 68, HitHead 0
+HS t474 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 56
+HS t474 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t474 shot 2 12 dmg aim up 34.0: real trace met Imp at up 34.0 over Imp's feet (its H 56.0); Imp hp 68 -> 56, HitHead 0
+HS t481 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 44
+HS t481 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t481 shot 3 12 dmg aim up 34.0: real trace met Imp at up 34.0 over Imp's feet (its H 56.0); Imp hp 56 -> 44, HitHead 0
+HS t488 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 32
+HS t488 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t488 shot 4 12 dmg aim up 34.0: real trace met Imp at up 34.0 over Imp's feet (its H 56.0); Imp hp 44 -> 32, HitHead 0
+HS t495 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -16.0 floor -16.0 hit 18.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 20
+HS t495 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t495 shot 5 12 dmg aim up 34.0: real trace met Imp at up 34.0 over Imp's feet (its H 56.0); Imp hp 32 -> 20, HitHead 0
+HS t502 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 34.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 8
+HS t502 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t502 shot 6 12 dmg aim up 34.0: real trace met Imp at up 34.0 over Imp's feet (its H 56.0); Imp hp 20 -> 8, HitHead 0
+HS t509 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.00 feet -0.0 floor -0.0 hit 34.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -4
+HS t509 kill Imp: Score Headshot row does not pay
+HS t509 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t509 shot 7 12 dmg aim up 34.0: real trace met Imp at up 34.0 over Imp's feet (its H 4.0); Imp hp 8 -> -4, HitHead 0
+PROBE t510 SCENE 4 killed after 7 shots
+PROBE t577 SCENE 5: BD baron head (sensor) -- BaronofHell2 H 60.0 (def 60.0) R 24.0 scale 1.00 health 1200, check 1
+HS t601 sensor RS_ScoreHS_Baron on BaronofHell2 (H 60.0) box r 18.0 h 24.0 at up 60.0: 200 x2 = 400 as head
+HS t601 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -24.0 floor -24.0 hit 47.8 up 71.8 frac 1.197 lo 1.000 verdict HEAD dt head src player route sensor bonus 0 (after the blow) tokens 0 hp 800
+PROBE t601 shot 1 200 dmg aim up 72.0: real trace met RS_ScoreHS_Baron at up 71.8 over BaronofHell2's feet (its H 60.0); BaronofHell2 hp 1200 -> 800, HitHead 0
+HS t608 sensor RS_ScoreHS_Baron on BaronofHell2 (H 60.0) box r 18.0 h 24.0 at up 60.0: 200 x2 = 400 as head
+HS t608 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -24.0 floor -24.0 hit 47.8 up 71.8 frac 1.197 lo 1.000 verdict HEAD dt head src player route sensor bonus 0 (after the blow) tokens 0 hp 400
+PROBE t608 shot 2 200 dmg aim up 72.0: real trace met RS_ScoreHS_Baron at up 71.8 over BaronofHell2's feet (its H 60.0); BaronofHell2 hp 800 -> 400, HitHead 1
+HS t615 sensor RS_ScoreHS_Baron on BaronofHell2 (H 60.0) box r 18.0 h 24.0 at up 60.0: 200 x2 = 400 as head
+HS t615 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -24.0 floor -24.0 hit 47.8 up 71.8 frac 1.197 lo 1.000 verdict HEAD dt head src player route sensor bonus 0 (after the blow) tokens 0 hp 0
+HS t615 kill BaronofHell2: Score Headshot row PAYS
+PROBE t615 shot 3 200 dmg aim up 72.0: real trace met RS_ScoreHS_Baron at up 71.8 over BaronofHell2's feet (its H 0.0); BaronofHell2 hp 400 -> 0, HitHead 2
+PROBE t616 SCENE 5 killed after 3 shots
+PROBE t683 SCENE 6: BD baron body -- BaronofHell2 H 60.0 (def 60.0) R 24.0 scale 1.00 health 1200, check 1
+HS t707 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -24.0 floor -24.0 hit 12.0 up 36.0 frac 0.600 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 1000
+PROBE t707 shot 1 200 dmg aim up 36.0: real trace met BaronofHell2 at up 36.0 over BaronofHell2's feet (its H 60.0); BaronofHell2 hp 1200 -> 1000, HitHead 0
+HS t714 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -24.0 floor -24.0 hit 12.0 up 36.0 frac 0.600 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 800
+PROBE t714 shot 2 200 dmg aim up 36.0: real trace met BaronofHell2 at up 36.0 over BaronofHell2's feet (its H 60.0); BaronofHell2 hp 1000 -> 800, HitHead 0
+HS t721 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -24.0 floor -24.0 hit 12.0 up 36.0 frac 0.600 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 600
+PROBE t721 shot 3 200 dmg aim up 36.0: real trace met BaronofHell2 at up 36.0 over BaronofHell2's feet (its H 60.0); BaronofHell2 hp 800 -> 600, HitHead 0
+HS t728 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -24.0 floor -24.0 hit 12.0 up 36.0 frac 0.600 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 400
+PROBE t728 shot 4 200 dmg aim up 36.0: real trace met BaronofHell2 at up 36.0 over BaronofHell2's feet (its H 60.0); BaronofHell2 hp 600 -> 400, HitHead 0
+HS t735 BaronofHell2 fam baron H 60.0 (def 60.0) R 24.0 scale 1.00 feet -24.0 floor -24.0 hit 12.1 up 36.1 frac 0.601 lo 1.000 verdict body dt Bullet src player route body+sensor bonus 0 (after the blow) tokens 1 hp 200
+PROBE t735 shot 5 200 dmg aim up 36.0: real trace met BaronofHell2 at up 36.1 over BaronofHell2's feet (its H 60.0); BaronofHell2 hp 400 -> 200, HitHead 0
+PROBE t742 shot 6 aim up 36.0: the trace met no actor (type 1)
+PROBE t749 shot 7 aim up 36.0: the trace met no actor (type 1)
+PROBE t756 shot 8 aim up 36.0: the trace met no actor (type 1)
+PROBE t763 shot 9 aim up 36.0: the trace met no actor (type 1)
+PROBE t770 shot 10 aim up 36.0: the trace met no actor (type 1)
+PROBE t777 shot 11 aim up 36.0: the trace met no actor (type 1)
+PROBE t784 shot 12 aim up 36.0: the trace met no actor (type 1)
+PROBE t791 SCENE 6: still alive after 12 shots (health 200), removed
+PROBE t793 SCENE 7: 1.25x imp (scale + A_SetSize) at 52 (BD would: head) -- Imp H 70.0 (def 56.0) R 20.0 scale 1.25 health 80, check 1
+HS t817 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.743 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 68
+HS t817 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t817 shot 1 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 70.0); Imp hp 80 -> 68, HitHead 0
+HS t824 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.743 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 56
+HS t824 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t824 shot 2 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 70.0); Imp hp 68 -> 56, HitHead 0
+HS t831 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.743 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 44
+HS t831 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t831 shot 3 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 70.0); Imp hp 56 -> 44, HitHead 0
+HS t838 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.743 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 32
+HS t838 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t838 shot 4 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 70.0); Imp hp 44 -> 32, HitHead 0
+HS t845 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.743 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 20
+HS t845 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t845 shot 5 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 70.0); Imp hp 32 -> 20, HitHead 0
+HS t852 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.743 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 8
+HS t852 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t852 shot 6 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 70.0); Imp hp 20 -> 8, HitHead 0
+HS t859 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.743 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp -4
+HS t859 kill Imp: Score Headshot row does not pay
+HS t859 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t859 shot 7 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 4.0); Imp hp 8 -> -4, HitHead 0
+PROBE t860 SCENE 7 killed after 7 shots
+PROBE t927 SCENE 8: 1.25x imp (scale + A_SetSize) at 64 -- Imp H 70.0 (def 56.0) R 20.0 scale 1.25 health 80, check 1
+HS t951 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 40.0 up 64.0 frac 0.914 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 68
+HS t951 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t951 shot 1 12 dmg aim up 64.0: real trace met Imp at up 64.0 over Imp's feet (its H 70.0); Imp hp 80 -> 29, HitHead 0
+HS t958 Imp fam imp H 70.0 (def 56.0) R 20.0 scale 1.25 feet -24.0 floor -24.0 hit 40.0 up 64.0 frac 0.914 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 17
+HS t958 kill Imp: Score Headshot row PAYS
+HS t958 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t958 shot 2 12 dmg aim up 64.0: real trace met Imp at up 64.0 over Imp's feet (its H 4.0); Imp hp 29 -> -22, HitHead 1
+PROBE t959 SCENE 8 killed after 2 shots
+PROBE t1026 SCENE 9: 1.25x imp scale ONLY (box not grown) at 52 -- Imp H 56.0 (def 56.0) R 16.0 scale 1.25 health 80, check 1
+HS warning: Imp is drawn 1.25x but its box is 1.00x (bullets meet the box, not the picture)
+HS t1050 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 68
+HS t1050 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t1050 shot 1 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 56.0); Imp hp 80 -> 29, HitHead 0
+HS warning: Imp is drawn 1.25x but its box is 1.00x (bullets meet the box, not the picture)
+HS t1057 Imp fam imp H 56.0 (def 56.0) R 16.0 scale 1.25 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 17
+HS t1057 kill Imp: Score Headshot row PAYS
+HS t1057 blood RS_ScoreHB_Imp on Imp: verdict already applied (BD's own check skipped)
+PROBE t1057 shot 2 12 dmg aim up 52.0: real trace met Imp at up 52.0 over Imp's feet (its H 4.0); Imp hp 29 -> -22, HitHead 1
+PROBE t1058 SCENE 9 killed after 2 shots
+PROBE t1125 SCENE 10: 1.25x baron head (scaled sensor) -- BaronofHell2 H 75.0 (def 60.0) R 30.0 scale 1.25 health 1200, check 1
+HS t1149 sensor RS_ScoreHS_Baron on BaronofHell2 (H 75.0) box r 22.5 h 30.0 at up 75.0: 200 x2 = 400 as head
+HS t1149 BaronofHell2 fam baron H 75.0 (def 60.0) R 30.0 scale 1.25 feet -24.0 floor -24.0 hit 66.0 up 90.0 frac 1.200 lo 1.000 verdict HEAD dt head src player route sensor bonus 0 (after the blow) tokens 0 hp 800
+PROBE t1149 shot 1 200 dmg aim up 90.0: real trace met RS_ScoreHS_Baron at up 90.0 over BaronofHell2's feet (its H 75.0); BaronofHell2 hp 1200 -> 800, HitHead 0
+HS t1156 sensor RS_ScoreHS_Baron on BaronofHell2 (H 75.0) box r 22.5 h 30.0 at up 75.0: 200 x2 = 400 as head
+HS t1156 BaronofHell2 fam baron H 75.0 (def 60.0) R 30.0 scale 1.25 feet -24.0 floor -24.0 hit 66.0 up 90.0 frac 1.200 lo 1.000 verdict HEAD dt head src player route sensor bonus 0 (after the blow) tokens 0 hp 400
+PROBE t1156 shot 2 200 dmg aim up 90.0: real trace met RS_ScoreHS_Baron at up 90.0 over BaronofHell2's feet (its H 75.0); BaronofHell2 hp 800 -> 400, HitHead 1
+HS t1163 sensor RS_ScoreHS_Baron on BaronofHell2 (H 75.0) box r 22.5 h 30.0 at up 75.0: 200 x2 = 400 as head
+HS t1163 BaronofHell2 fam baron H 75.0 (def 60.0) R 30.0 scale 1.25 feet -24.0 floor -24.0 hit 66.0 up 90.0 frac 1.200 lo 1.000 verdict HEAD dt head src player route sensor bonus 0 (after the blow) tokens 0 hp 0
+HS t1163 kill BaronofHell2: Score Headshot row PAYS
+PROBE t1163 shot 3 200 dmg aim up 90.0: real trace met RS_ScoreHS_Baron at up 90.0 over BaronofHell2's feet (its H 0.0); BaronofHell2 hp 400 -> 0, HitHead 2
+PROBE t1164 SCENE 10 killed after 3 shots
+PROBE t1231 SCENE 11: CH imp head -- RS_CommonImp H 56.0 (def 56.0) R 20.0 scale 1.00 health 60, check 1
+HS t1255 RS_CommonImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 48
+PROBE t1255 shot 1 12 dmg aim up 52.0: real trace met RS_CommonImp at up 52.0 over RS_CommonImp's feet (its H 56.0); RS_CommonImp hp 60 -> 18, HitHead 1
+HS t1262 RS_CommonImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 6
+HS t1262 kill RS_CommonImp: Score Headshot row PAYS
+PROBE t1262 shot 2 12 dmg aim up 52.0: real trace met RS_CommonImp at up 52.0 over RS_CommonImp's feet (its H 14.0); RS_CommonImp hp 18 -> -24, HitHead 2
+PROBE t1263 SCENE 11 killed after 2 shots
+PROBE t1330 SCENE 12: CH imp chest -- RS_CommonImp H 56.0 (def 56.0) R 20.0 scale 1.00 health 60, check 1
+HS t1354 RS_CommonImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 48
+PROBE t1354 shot 1 12 dmg aim up 34.0: real trace met RS_CommonImp at up 34.0 over RS_CommonImp's feet (its H 56.0); RS_CommonImp hp 60 -> 48, HitHead 0
+HS t1361 RS_CommonImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 36
+PROBE t1361 shot 2 12 dmg aim up 34.0: real trace met RS_CommonImp at up 34.0 over RS_CommonImp's feet (its H 56.0); RS_CommonImp hp 48 -> 36, HitHead 0
+HS t1368 RS_CommonImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 24
+PROBE t1368 shot 3 12 dmg aim up 34.0: real trace met RS_CommonImp at up 34.0 over RS_CommonImp's feet (its H 56.0); RS_CommonImp hp 36 -> 24, HitHead 0
+HS t1375 RS_CommonImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.608 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 12
+PROBE t1375 shot 4 12 dmg aim up 34.0: real trace met RS_CommonImp at up 34.0 over RS_CommonImp's feet (its H 56.0); RS_CommonImp hp 24 -> 12, HitHead 0
+HS t1382 RS_CommonImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.1 up 34.1 frac 0.608 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 0
+HS t1382 kill RS_CommonImp: Score Headshot row does not pay
+PROBE t1382 shot 5 12 dmg aim up 34.0: real trace met RS_CommonImp at up 34.1 over RS_CommonImp's feet (its H 14.0); RS_CommonImp hp 12 -> 0, HitHead 0
+PROBE t1383 SCENE 12 killed after 5 shots
+PROBE t1450 SCENE 13: MG imp head -- RS_MGImp H 56.0 (def 56.0) R 20.0 scale 1.00 health 60, check 1
+HS t1474 RS_MGImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 48
+PROBE t1474 shot 1 12 dmg aim up 52.0: real trace met RS_MGImp at up 52.0 over RS_MGImp's feet (its H 56.0); RS_MGImp hp 60 -> 18, HitHead 1
+HS t1481 RS_MGImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 28.0 up 52.0 frac 0.929 lo 0.821 verdict HEAD dt Bullet src player route blood bonus 30 (after the blow) tokens 1 hp 6
+HS t1481 kill RS_MGImp: Score Headshot row PAYS
+PROBE t1481 shot 2 12 dmg aim up 52.0: real trace met RS_MGImp at up 52.0 over RS_MGImp's feet (its H 14.0); RS_MGImp hp 18 -> -24, HitHead 2
+PROBE t1482 SCENE 13 killed after 2 shots
+PROBE t1549 SCENE 14: MG imp chest -- RS_MGImp H 56.0 (def 56.0) R 20.0 scale 1.00 health 60, check 1
+HS t1573 RS_MGImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 48
+PROBE t1573 shot 1 12 dmg aim up 34.0: real trace met RS_MGImp at up 34.0 over RS_MGImp's feet (its H 56.0); RS_MGImp hp 60 -> 48, HitHead 0
+HS t1580 RS_MGImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 36
+PROBE t1580 shot 2 12 dmg aim up 34.0: real trace met RS_MGImp at up 34.0 over RS_MGImp's feet (its H 56.0); RS_MGImp hp 48 -> 36, HitHead 0
+HS t1587 RS_MGImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 24
+PROBE t1587 shot 3 12 dmg aim up 34.0: real trace met RS_MGImp at up 34.0 over RS_MGImp's feet (its H 56.0); RS_MGImp hp 36 -> 24, HitHead 0
+HS t1594 RS_MGImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 12
+PROBE t1594 shot 4 12 dmg aim up 34.0: real trace met RS_MGImp at up 34.0 over RS_MGImp's feet (its H 56.0); RS_MGImp hp 24 -> 12, HitHead 0
+HS t1601 RS_MGImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -24.0 floor -24.0 hit 10.0 up 34.0 frac 0.607 lo 0.821 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 0
+HS t1601 kill RS_MGImp: Score Headshot row does not pay
+PROBE t1601 shot 5 12 dmg aim up 34.0: real trace met RS_MGImp at up 34.0 over RS_MGImp's feet (its H 14.0); RS_MGImp hp 12 -> 0, HitHead 0
+PROBE t1602 SCENE 14 killed after 5 shots
+PROBE t1669 head-shot scenes done
+PROBE t1679 MINIBOSS backgrounds
+PROBE t1689 retier RS_MGBaron -> 4 (instant)
+PROBE t1689 GITD event.wave a040ff 0.0 -> 1
+PROBE t1689 MB RS_MGBaron H 80.0 R 30.0 scale 1.25 tier 4; thralls 3
+PROBE t1739 GITD event.tint 8a93a6 12.0 -> 1
+PROBE t1804 GITD event.wave ff8020 0.0 -> 1
+PROBE t1804 kill thrall 0 RS_GreenImp
+HS t1804 RS_GreenImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -16.0 floor -16.0 hit 0.0 up 16.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 0
+HS t1804 kill RS_GreenImp: Score Headshot row does not pay
+PROBE t1804 GITD event.tint ffc830 8.0 -> 1
+PROBE t1854 retier RS_MGBaron -> 6 (flash)
+PROBE t1854 retier RS_BlueImp -> 4 (flash)
+PROBE t1854 retier RS_BlueImp -> 5 (flash)
+PROBE t2009 kill thrall RS_YellowImp
+HS t2009 RS_YellowImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 0
+HS t2009 kill RS_YellowImp: Score Headshot row does not pay
+PROBE t2009 kill thrall RS_PurpleImp
+HS t2009 RS_PurpleImp fam imp H 56.0 (def 56.0) R 20.0 scale 1.00 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route blood bonus 0 (after the blow) tokens 1 hp 0
+HS t2009 kill RS_PurpleImp: Score Headshot row does not pay
+PROBE t2009 GITD event.tint ff2020 10.0 -> 1
+PROBE t2074 retier RS_MGBaron -> 7 (flash)
+PROBE t2219 GITD event.tint 30a0ff 10.0 -> 1
+PROBE t2279 GITD event.wave 30a0ff 0.0 -> 1
+PROBE t2279 kill MB
+HS t2279 RS_MGBaron fam baron H 80.0 (def 64.0) R 30.0 scale 1.25 feet -0.0 floor -0.0 hit 0.0 up 0.0 frac -1.000 lo 0.000 verdict body dt Bullet src player route body bonus 0 (after the blow) tokens 1 hp 0
+HS t2279 kill RS_MGBaron: Score Headshot row does not pay
+PROBE t2379 ALL DONE

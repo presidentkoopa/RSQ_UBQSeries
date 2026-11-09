@@ -152,6 +152,21 @@ There are over 200 bonuses in all. Many belong to one mod and fire only when it'
 - **Score on the Wrist** (optional, off by default): your running total in small gold digits floating above
   your off-hand controller, like a watch. VR only.
 
+**Head shots (11-09)**
+- **One check for every monster.** A shot is a head shot when it lands in the top of that monster's own body: each kind
+  keeps Brutal Doom's own head size, turned into a share of its height (an imp's head is its top 18%), measured from its
+  own feet on its size now. A monster made bigger is judged on its bigger body; one on a ledge, on stairs or in the air
+  is judged from its own feet. Brutal Doom's head boxes on its big monsters (baron, knight, arch-vile, revenant,
+  mancubus, cyberdemon) are kept in place and grow with the monster.
+- **Brutal Doom's own result.** A head shot gives Brutal Doom's head gore and its head damage (+30, or double on its big
+  monsters), now from you: the kill is yours.
+- **Headshot pays everywhere.** Score's Headshot row and head-shot combos now see Brutal Doom's head shots (before, a
+  head shot kill on a Brutal Doom monster was the monster's own blow and never paid), and ColorfulHell's, MeatGrinder's
+  and other packs' monsters get head shots and head damage too.
+- Saws and axes keep Brutal Doom's own head check. A punch is not judged here (RSQ Melee's Glass Jaw row reads punches).
+- Rig shown (2026-11-09, `tools/rigtest/evidence_headshot/`): BD zombie and imp head vs chest, BD baron head vs body,
+  1.25x imp and baron, ColorfulHell and MeatGrinder imps. Rig only, not headset-confirmed.
+
 ## How To Play
 
 1. **Load it and play.** There's nothing to bind. The score sits top right and the breakdown appears under it as you kill.
@@ -207,6 +222,10 @@ the debug log are on **Test and Debug**; **Reset All** at the foot resets both. 
 | Screen Flash | On | The switch for the two whole-view flashes below. Off stops both. |
 | Reward Screen Flash | Off | The old whole-view colour flash on a reward, on top of the bar's glow. It needs Screen Flash on. |
 | Revival Screen Flash | Off | A warm whole-view flash when a life is used. It needs Screen Flash on; never in Photosensitive Mode. |
+| **Head Shots** | | |
+| Head Shot Check | Every Monster, by Its Size | Every Monster: one head-shot check for Brutal Doom's, ColorfulHell's, MeatGrinder's and any pack's monsters, measured on each monster's own size. Brutal Doom's Own: BD's fixed heights, as before. |
+| Head Shot Damage | On | A head shot hits harder on every monster (Brutal Doom's own +30, or double on its big monsters). |
+| Heads on Demons, Cacos and Spiders | On | The monsters Brutal Doom gives no head (demons, spectres, cacodemons, pain elementals, lost souls, spiders) have one too: the top fifth of the body. |
 | **Monster Roster Rows** | On | One switch for each roster row above (Tiers, The Roster, MeatGrinder). Off, that row pays nothing. |
 | Test and Debug | | The page below. |
 | Reset All | | Every setting on both pages back to its default. |
@@ -228,6 +247,8 @@ the debug log are on **Test and Debug**; **Reset All** at the foot resets both. 
 | Raised Monster Pay (%) | 100 | Percent of base paid for monsters that weren't on the map at the start (raised, spawned). The map's monsters are counted again after its first tic, so monsters a map spawner makes on load (RSQ Monsters' ColorfulHell colours) count as the map's. |
 | Slow Motion: Cooldown (s) | 6 | Seconds between slow-motion moments. |
 | Slow Motion: Style Share (%) | 50 | Percent of a kill's style, daring and melee bonuses that Stretched Second adds in slow motion. |
+| Unknown Monster's Head (% of Height) | 80 | The head of a monster of no known family: the top of its body from this share of its height up. |
+| Head Shot Log | Off | One console line per blow the head check judges (its height on the monster, the verdict, the bonus). |
 | Debug Log | Off | Logs the scoring to the console. |
 
 ## Works with
@@ -259,8 +280,10 @@ RSQ Score runs on its own: on plain Doom, every classic bonus works. Every other
 - **Champions and LegenDoom Lite:** a champion kill names its colour and mutation. Legendaries, denied legendaries and
   legendary champions get their own rows.
 - **RSQ Monsters** (11-09, code only, not rig-tested, not headset-confirmed): a MeatGrinder monster pays its tier's
-  health as base (a White imp pays 1200, not 60). A MeatGrinder head shot (found by where the shot hit) pays
-  **Headshot** and counts as a head hit in combos. A ColorfulHell monster that changes colour keeps its full pay if
+  health as base (a White imp pays 1200, not 60). A MeatGrinder head shot pays **Headshot** and counts as a head hit
+  in combos. Since 11-09 Score's own head check decides head shots for every monster; RSQ Monsters names the family of
+  its MeatGrinder bodies (`RSQMN_RosterService` `GetString("family")`) and asks Score's verdict back
+  (`RS_ScoreService` `GetInt("headshot", "", 0, 0, monster)`: 1 head, 0 not, -1 the check is off). A ColorfulHell monster that changes colour keeps its full pay if
   it had it; it does not become a "raised" monster.
 - **Brutal Doom / BD22 VR Reloaded:** Brutal Doom's executions pay **Fatality**, its cuts and boots feed the melee family, and
   BD22 VR's Super Shotgun fired point-blank pays **Coach Gun**.

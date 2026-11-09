@@ -124,10 +124,14 @@ class RS_ComboLedger : EventHandler
 		if (!v || !v.bIsMonster || v.player) return;
 		let src = e.DamageSource;
 		if (!src || !src.player) return;
+		// [11-09 head shots] the head check's own head-damage blow belongs to the blow that earned it (head.zs): it is
+		// not a blow of its own (it would split the run and count a second hit)
+		let hc = RS_ScoreHead.Get();
+		if (hc && hc.IsOwnBlow()) return;
 		int pn = src.PlayerNumber();
 		Poll(v, pn);
 		String tool = RS_Tool.Classify(v, e.Inflictor, src, e.DamageType, e.DamageFlags);
-		Touch(v, pn, tool, level.maptime, CondOf(v, src, e.DamageType));
+		Touch(v, pn, tool, level.maptime, CondOf(v, src, e.DamageType, e.Inflictor));
 		// a grenade's blast carries the throw's facts (RSQGN_Service, 11-03): tags on the run
 		if (RS_Tool.Prefix(tool) == "grenade" && e.Inflictor)
 		{
@@ -141,17 +145,24 @@ class RS_ComboLedger : EventHandler
 	}
 
 	// the facts about this blow a pattern step may ask for
-	int CondOf(Actor v, Actor src, Name dt)
+	int CondOf(Actor v, Actor src, Name dt, Actor inf = null)
 	{
 		int c = 0;
 		if (RS_Physical.SlowKind() == 1) c |= C_SLOW;                       // the player's own slow motion
 		if (RS_Melee.Airborne(v)) c |= C_AIR;
 		if (RS_ScoreEvent.MeasureEdgeGap(v, src) < RS_Bonus_PointBlank.DIST) c |= C_PB;
 		if (dt == 'Head' || dt == 'MinorHead' || dt == 'Headshot') c |= C_HEAD;
-		// RSQ Monsters' MeatGrinder set finds a head shot by where the blow landed, not by damage type (its
-		// RS_MGMonster.DamageMobj sets the answer before the engine fires this event), so it is asked by name
-		// (RSQ Monsters' RSQMN_RosterService "headshot", 11-09, design/SCORE_EXPANSION.md A3). Without RSQ Monsters: -1, no head.
-		else if (RS_Svc.Int(RS_Svc.MONSTERS, "headshot", 0, v) == 1) c |= C_HEAD;
+		else
+		{
+			// [11-09 head shots] Score's own head check (head.zs) judged this very blow just before (it runs first):
+			// every monster, BD, ColorfulHell, MeatGrinder or a pack's
+			let hc = RS_ScoreHead.Get();
+			int hv = hc ? hc.VerdictOf(v, inf) : -2;
+			if (hv == RS_ScoreHead.HV_HEAD) c |= C_HEAD;
+			// the check off (Brutal Doom's own): RSQ Monsters' MeatGrinder set still finds its own head shots by where the
+			// blow landed, asked by name (RSQMN_RosterService "headshot", 11-09, design/SCORE_EXPANSION.md A3)
+			else if (hv == -2 && RS_Svc.Int(RS_Svc.MONSTERS, "headshot", 0, v) == 1) c |= C_HEAD;
+		}
 		return c;
 	}
 

@@ -1,3 +1,11 @@
+> **BUILT 2026-11-09 (inside RSQ Score, per the rulings above):** `Score/zscript/rsscore/head.zs` (RS_ScoreHead, RS_ScoreHeadLate,
+> the blood copies RS_ScoreHB_*, the head sensors RS_ScoreHS_*), cvars `rs_score_hs`, `rs_score_hs_bonus`, `rs_score_hs_headless`,
+> `rs_score_hs_unknown`, `rs_score_hs_log`. Departures from the body below: the verdict's outcome (BD's tokens and head damage)
+> is applied at the blow by Score, and the blood copies only fall back to BD's own check when no blow was judged; BD's big
+> monsters keep head boxes (our scaled sensors in BD's hitboxes' place), because their heads sit ABOVE their collision box
+> (the baron's head box starts at 60 of its 60), so switching the boxes off would leave no head to hit. Rig shown:
+> `Score/tools/rigtest/evidence_headshot/` (rig only, not headset-confirmed).
+
 > **Owner rulings, 2026-11-09 08:08:** RSQ Score's Headshot must see Brutal Doom's head shots. ColorfulHell monsters need
 > head shots. MeatGrinder monsters need head shots. MK Crits is not the answer ("it is actor heavy"). The agent's seven
 > open questions (end of this file) wait until the Miniboss questions now in progress are done.

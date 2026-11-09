@@ -19,3 +19,10 @@ gameinfo
 {
     AddEventHandlers = "RS_ScorePanels"
 }
+
+// [11-09 head shots] the head-shot check (head.zs): its own block. It judges before the combo ledger (SetOrder -100);
+// its head bonus is dealt after every handler has heard the blow (RS_ScoreHeadLate, SetOrder 1000).
+gameinfo
+{
+    AddEventHandlers = "RS_ScoreHead", "RS_ScoreHeadLate"
+}

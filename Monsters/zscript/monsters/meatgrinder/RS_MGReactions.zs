@@ -122,7 +122,7 @@ class RS_MGReactionHandler : EventHandler
 		if (e.DamageSource)
 			ctx.range = e.DamageSource.Distance3D(e.Thing);
 		let mm = RS_MGMonster(e.Thing);
-		if (mm) ctx.isHeadshot = mm.mgLastWasHeadshot;
+		if (mm) ctx.isHeadshot = RS_ScoreReadout.Headshot(mm) == 1;   // [11-09] RSQ Score's head check when loaded, else MG's own band
 	}
 }
 

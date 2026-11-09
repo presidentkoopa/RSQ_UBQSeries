@@ -230,6 +230,8 @@ class RS_MGMonster : RS_MonsterMaster abstract
 		{
 			// HF: the inflictor (puff / missile) sits at the impact point; compare its Z
 			// with the head band. Melee carries no inflictor, so it is never a headshot.
+			// [11-09] RETIRED when RSQ Score is loaded with its head check on: the MG death router and the
+			// read-out ask Score's one verdict (RS_ScoreReadout.Headshot); this band is the fallback without it.
 			mgLastWasHeadshot = (inflictor &&
 			                     inflictor.pos.z >= pos.z + height * MG_HeadLo() &&
 			                     inflictor.pos.z <= pos.z + height * MG_HeadHi());
