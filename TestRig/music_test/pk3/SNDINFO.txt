@@ -1,0 +1,3 @@
+// TEST ONLY: the owner's "20 organic beat" (11-09), cut to loop at 2:02.97 with a 0.5 s crossfade baked in
+// (LOOP_START 22050 / LOOP_END 5422827 in its Vorbis tags)
+rsqmus/boss1 RSQMUS1
