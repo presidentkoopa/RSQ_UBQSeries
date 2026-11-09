@@ -849,7 +849,9 @@ class RSQSM_Clock : EventHandler
 			}
 			if (level.maptime < freeUntil[n]) k = 1.0;   // smoking: full speed (Tactical Rig asked, above)
 			let dn = RSQSM_Down.Get();
-			if (dn && dn.IsDown(n)) k = 1.0;            // DOWN: never slowed by the clock; the crawl is its own (down.zs Crawl)
+			// DOWN: never slowed by the clock (the crawl is its own, down.zs Crawl), EXCEPT the fall itself (owner 11-09 17:44:
+			// going down is a slow-mo moment): his own speed eases from a fifth back to full over the drop (down.zs DropK)
+			if (dn && dn.IsDown(n)) k = dn.DropK(n);
 			double was = (meK[n] <= 0 || meK[n] > 1) ? 1.0 : meK[n];
 			if (k >= 0.9999)
 			{

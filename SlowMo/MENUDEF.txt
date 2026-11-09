@@ -109,6 +109,14 @@ OptionMenu "RSQSM_Options"
 	Option "Lower View When Down", "rsqsm_down_lowview", "OnOff", "rsqsm_down"
 	Slider "Panel Size", "rsqsm_down_panelsize", 0.5, 1.8, 0.05, 2, "rsqsm_down"
 	Option "Target Lines", "rsqsm_down_lines", "RSQSM_TargetLines", "rsqsm_down"
+	Option "Death In Entrance", "rsqsm_down_entry", "RSQSM_DownEntry", "rsqsm_down"
+	Option "Slow Fall", "rsqsm_down_slowfall", "OnOff", "rsqsm_down"
+	Option "Black and White World", "rsqsm_down_bw", "OnOff", "rsqsm_down"
+	Slider "Fade (s)", "rsqsm_down_bw_fade", 0, 3, 0.25, 2, "rsqsm_down"
+	Slider "Blood Red Tint", "rsqsm_down_bw_red", 0, 1, 0.05, 2, "rsqsm_down"
+	Option "Targets' Room in Colour", "rsqsm_down_bw_room", "RSQSM_DownRoom", "rsqsm_down"
+	Option "DarkDoomZ When Down", "rsqsm_down_ddz", "RSQSM_DownDdz", "rsqsm_down"
+	Option "Sounds", "rsqsm_down_audio", "OnOff", "rsqsm_down"
 	StaticText " "
 	StaticText "Heavy Hit Slowdown", 1
 	Option "Heavy Hit Slowdown", "rsqsm_trig_heavy", "OnOff"
@@ -221,6 +229,26 @@ OptionValue "RSQSM_ReloadWhen"
 {
 	0, "Always"
 	1, "Low Health"
+}
+
+// DOWN's look (owner 2026-11-09 17:42-17:45)
+OptionValue "RSQSM_DownEntry"
+{
+	0, "Middle Then Sink"
+	1, "Bottom Only"
+	2, "Slam Up"
+}
+OptionValue "RSQSM_DownRoom"
+{
+	0, "Off"
+	1, "Small Rooms"
+	2, "Always"
+}
+OptionValue "RSQSM_DownDdz"
+{
+	0, "Off"
+	1, "DarkDoom Black"
+	2, "DarkDoom Classic"
 }
 
 // DOWN's Target lines (owner 2026-11-07 11:0x): Icon (the default) or Name
