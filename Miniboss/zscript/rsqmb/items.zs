@@ -17,35 +17,95 @@ class RSQMB_Token : Inventory
 // DamageFactor itself (a Titan's aura every tic, every champion's death), so a cut kept there would
 // be overwritten. ModifyDamage runs for each blow before the engine's DamageFactor and BUDDHA, so
 // this multiplies with whatever Champions, LegenDoom Lite and the monster's own factors do.
-//   taken (passive): 0 while invulnerable, else x shield (living thralls) x 1/toughness (inherited)
-//   dealt          : x the inherited damage power
-// A fraction of a point is carried to the next blow, so a pistol's 5 x 0.2 still lands 1 in 1.
+//   taken (passive), the rework (2026-11-09, fight.zs):
+//     invulnerable (a life just lost)                      -> 0
+//     SHIELD UP (a thrall stands, a segment left, no window) -> 0: grey Xs bounce off, "GUARD!" (fight.zs GuardHit)
+//     a segment left (a window open, or no thrall standing) -> the blow / toughness goes into the open segment and the
+//                                                             miniboss's own health is untouched; the segment broken: SegBroken
+//     every segment broken (one-on-one)                    -> the blow / toughness
+//   dealt: x the inherited damage power
+// A fraction of a point is carried to the next blow, so a pistol's 5 x 0.5 still lands.
 class RSQMB_Ward : RSQMB_Token
 {
 	RSQMB_Boss boss;
-	double carry;
 
 	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
 	{
 		if (!boss || boss.done || damage <= 0) return;
 		if (passive)
 		{
-			// Struck by a player while thralls live: the greedy play this set piece is built around.
 			Actor who = source;
 			if (who && !who.player && who.FriendPlayer > 0) who = players[who.FriendPlayer - 1].mo;
-			if (who && who.player) boss.NoteStruck();
+			let h = RSQMB_Handler.Get();
 			if (boss.Invulnerable()) { newdamage = 0; return; }
-			double f = boss.TakeFactor();
-			if (f >= 0.9999) return;
-			double d = damage * f + carry;
+			if (boss.ShieldUp())
+			{
+				// Struck by a player while thralls live: the greedy play this set piece is built around.
+				if (who && who.player) boss.NoteStruck();
+				newdamage = 0;
+				if (h) h.GuardHit(boss, inflictor, source);
+				return;
+			}
+			double d = damage / max(1.0, boss.toughness) + boss.carry;
+			int seg = boss.winSeg >= 0 ? boss.winSeg : boss.OpenSeg();
+			if (seg >= 0 && seg < boss.segHP.Size())
+			{
+				// the thrall bar takes it: the miniboss's own bar is untouched until every segment is broken
+				boss.carry = 0;
+				boss.segTouched = true;
+				boss.segHP[seg] -= d;
+				newdamage = 0;
+				if (boss.segHP[seg] <= 0)
+				{
+					boss.segHP[seg] = 0;
+					if (h) h.SegBroken(boss, seg, who);
+				}
+				return;
+			}
 			int nd = int(d + 1e-6);
-			carry = d - nd;
+			boss.carry = d - nd;
 			newdamage = nd;
 		}
 		else if (boss.outMult != 1.0)
 		{
 			newdamage = max(1, int(round(damage * boss.outMult)));
 		}
+	}
+}
+
+// THE GREY X (owner 06:3x: "any shots on it cause grey Xs to bounce off like our damage numbers"): Doom's own small-font X
+// (STCFN088, the IWAD's; RSQ VisualRewards' damage-number art has no X) drawn grey in the world where the blow hit, thrown
+// off the miniboss and falling, fading in LIFE tics. A VisualThinker (no states, no blockmap): it moves itself every tic.
+// At most 12 at once (fight.zs GuardHit). No texture: nothing drawn.
+class RSQMB_XFx : VisualThinker
+{
+	const LIFE = 24;
+	Vector3 bvel;
+	int age;
+
+	static RSQMB_XFx Make(Vector3 at, Vector3 v)
+	{
+		TextureID t = TexMan.CheckForTexture("STCFN088", TexMan.Type_Any);
+		if (!t.IsValid()) return null;
+		let x = RSQMB_XFx(VisualThinker.Spawn("RSQMB_XFx", t, at, (0, 0, 0), 0.95, SPF_FULLBRIGHT, 0, (2.2, 2.2), (0, 0), STYLE_Stencil));
+		if (!x) return null;
+		x.scolor = Color(255, 150, 150, 158);
+		x.bvel = v;
+		return x;
+	}
+
+	override void Tick()
+	{
+		if (level.isFrozen()) return;
+		age++;
+		Prev = Pos;
+		Pos += bvel;
+		bvel.z -= 0.45;
+		bvel.x *= 0.93;
+		bvel.y *= 0.93;
+		UpdateSector();
+		Alpha = 0.95 * clamp(1.0 - age / double(LIFE), 0.0, 1.0);
+		if (age >= LIFE) Destroy();
 	}
 }
 

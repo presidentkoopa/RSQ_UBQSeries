@@ -8,9 +8,12 @@
 //   enraged       1 enraged by the greed rule now, else 0            (none: 1 while any rage runs)
 //   lives         lives left, the current one included (miniboss), else 0
 //   invulnerable  1 while its lost-life invulnerability lasts
-//   shield        damage it takes now, permille (living thralls x inherited toughness; 0 invulnerable)
+//   shield        damage it takes now, permille (0 while its shield is up or it is invulnerable; else 1000 / inherited
+//                 toughness. Since the rework, 2026-11-09, the shield is immunity, not a cut)
+//   segments      its thrall bar's segments left (fight.zs; the miniboss or a thrall: its set piece's), 0 one-on-one
+//   shielded      1 while its shield is up (a thrall stands, a segment is left, no window open)
 //   greed         1 while its greed is armed (struck while thralls live; comes due with the window)
-//   window        tics left in the slow window (no object needed)
+//   window        tics left in its window (the miniboss or a thrall: its set piece's); no object: in any slow window
 //   living        its living thralls (miniboss or thrall: the set piece it belongs to)
 //   legendary     1 if it inherited legendary status
 //   colour        its set piece's colour, 0xRRGGBB (miniboss or thrall, dead or alive): the colour its own tethers,
@@ -40,7 +43,8 @@
 //                 CALL-IN'S then (owner 11-05: "Calling a Bossfight must never also move the gun"): RSQ Tactical Rig's
 //                 watch-check gun move asks this and leaves that Use press alone while it is 1
 //   meter.bottom  (ui) the screen pixel row just under the meter's slot while it is shown (RSQ SlowMo's countdown bar
-//                 and RSQ Score's combo rows go below it), -1 when it is off
+//                 and RSQ Score's combo rows go below it), -1 when it is off. While a Bossfight runs: under the fight's HUD
+//                 stack (hud.zs DrawStack), which takes the meter's place
 //   meter.x / meter.w / meter.h   (ui, GetDoubleUI; GetIntUI rounds) the meter's BAR in screen pixels while it is shown:
 //                 its left edge, width and thickness (the skull is 1.6 x the thickness, 0.3 x it left of the bar); -1 off.
 //                 RSQ SlowMo's countdown row under it takes these (owner 11-05: the meter and the countdown always line
@@ -87,7 +91,9 @@ class RSQMB_Service : Service
 			if (a) return (a.FindInventory("RSQMB_Rage") && a.health > 0) ? 1 : 0;
 			return h.rageCount > 0 ? 1 : 0;
 		}
-		if (request ~== "window") return max(0, h.windowEnd - level.maptime);
+		if (request ~== "window") return (b && !b.done) ? (b.winSeg >= 0 ? max(0, b.winEnd - level.maptime) : 0) : max(0, h.windowEnd - level.maptime);
+		if (request ~== "segments") return (b && !b.done) ? b.SegsLeft() : 0;
+		if (request ~== "shielded") return (isBoss && b.ShieldUp()) ? 1 : 0;
 		if (request ~== "lives") return isBoss ? b.lives : 0;
 		if (request ~== "invulnerable") return (isBoss && b.Invulnerable()) ? 1 : 0;
 		if (request ~== "shield") return isBoss ? (b.Invulnerable() ? 0 : int(b.TakeFactorData() * 1000)) : 1000;
@@ -137,12 +143,15 @@ class RSQMB_Service : Service
 		if (request ~== "meter.x" || request ~== "meter.w" || request ~== "meter.h") return MeterBar(request);
 		return GetIntUI(request, stringArg, intArg, doubleArg, objectArg, nameArg);
 	}
-	// the bar's rect (hud.zs MeterRect) while the meter is shown, else -1
+	// the bar's rect (hud.zs MeterRect) while the meter is shown; while a Bossfight runs, its stack's own bar (StackRect);
+	// else -1
 	static ui double MeterBar(String request)
 	{
-		if (gamestate != GS_LEVEL || !RSQMB_Handler.MeterShown()) return -1;
-		double x, y, w, h;
-		[x, y, w, h] = RSQMB_Handler.MeterRect();
+		if (gamestate != GS_LEVEL) return -1;
+		double x, y, w, h, bot;
+		if (RSQMB_Handler.StackShown()) { [x, y, w, h, bot] = RSQMB_Handler.StackRect(); }
+		else if (!RSQMB_Handler.MeterShown()) return -1;
+		else { [x, y, w, h] = RSQMB_Handler.MeterRect(); }
 		if (request ~== "meter.x") return x;
 		if (request ~== "meter.w") return w;
 		return h;

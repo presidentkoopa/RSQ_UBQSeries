@@ -40,6 +40,11 @@
 //   "headshot"     1 the newest blow was a head shot: RSQ Score's head check when loaded
 //                  and on (any monster), else the MeatGrinder set's own head band (MG only)
 //   GetString "family"  the Doom family class of a MeatGrinder body (RSQ Score's head check)
+//   "retier"       [11-09 miniboss rework] A TIER CHANGE ASKED BY ANOTHER MOD (RSQ Miniboss: a missed window, a
+//                  lost life; design/MINIBOSS_REWORK.md): intArg = the tier wanted (1..13), doubleArg > 0 = instant
+//                  (no flash: RSQ Miniboss's hub reset). RS_Retier.Request, the same path as the console's
+//                  rs_retier: the tier flash, then the CH class swap (a NEW actor: the asker finds it by
+//                  "tier.ago") or MG's in-place tier. 1 asked, 0 not a ladder monster (or dead).
 //
 // WHERE THE STAMPS ARE PUT (two lines each, marked "RSQ Score read-out"):
 //   RS_RetierJob.Tick (RS_Retier.zs), after the swap / in-place tier: RS_TierStamp.
@@ -66,6 +71,12 @@ class RSQMN_RosterService : Service
 		if (request == "ex")          return RS_ScoreReadout.SetOf(mo) == 1 ? (RS_ScoreReadout.IsEX(mo) ? 1 : 0) : -1;
 		if (request == "spawn.odds")  return RS_ScoreReadout.SpawnOdds(mo);
 		if (request == "tier.next")   { let j = RS_Retier.JobFor(mo); return j ? j.targetTier : -1; }
+		if (request == "retier")
+		{
+			if (mo.health <= 0 || RS_Retier.TierNowOf(mo) < 0) return 0;
+			RS_Retier.Request(mo, intArg, doubleArg > 0);
+			return 1;
+		}
 		if (request == "tier.ago")    { let s = RS_TierStamp(mo.FindInventory("RS_TierStamp")); return s ? level.maptime - s.tic : -1; }
 		if (request == "tier.from")   { let s = RS_TierStamp(mo.FindInventory("RS_TierStamp")); return s ? s.fromTier : -1; }
 		if (request == "mg.death")    return RS_ScoreReadout.MGDeath(mo, intArg);

@@ -6,6 +6,13 @@ teleport in where you can see them, and you choose how to take them apart.
 Status: 0.99 — the set piece was played and confirmed working in the headset; the **Bossfight** (called-in fights,
 11-05) is new and **rig only, not headset-confirmed**.
 
+New on 11-09 (**code only: not compiled, not rig-tested, not headset-confirmed**): **the fight reworked** (the owner's
+design, design/MINIBOSS_REWORK.md, mockups design/mockups/miniboss/): a staggered arrival on RSQ VisualRewards' arrival
+beams, every monster a Boosted Legendary Champion, the miniboss 1.25x (its hitbox too), faster and keener to shoot; a HUD
+bar stack in the meter's place (thrall bar, window bar, its bar, its life bars); the thralls make it immune; a thrall
+killed opens a short window to break one segment, missed and everything tiers up; no thralls rise; RSQ Glow In The Dark
+follows the fight. The pk3 in this folder (RSQ_Miniboss.pk3, 10-27) is STALE: rebuild with build.sh.
+
 New on 11-06 (rig only, not headset-confirmed): the original Minibosses! tether trail (30 plasma beads a link, at about
 half the old cost); Ignore Spawn Restrictions. Since 11-05 (code only, not rig-tested): a
 killed miniboss refills RSQ Tactical Rig's cigarettes.
@@ -48,8 +55,13 @@ No miniboss is picked when a level loads any more. You earn it.
   While a Bossfight runs (from its arrival until the miniboss is dead) the meter is hidden.
 - **Call it in**: hold the watch check (the wrist turned to your eyes) and press Use. Or wait: it comes by itself about
   a minute after the meter filled.
-- **It arrives in view, at a distance**: somewhere you can see, 12 to 32 m away, with room for the whole crew, in a
-  burst of the original Minibosses! teleport fog, and the world slows for the landing (with RSQ SlowMo).
+- **It arrives in view, at a distance**: somewhere you can see, 12 to 32 m away, with room for the whole crew. The world
+  and you slow (RSQ SlowMo, 4 s); the thralls land one at a time about 0.3 s apart, each on an RSQ VisualRewards arrival
+  beam in its own ladder colour, then the miniboss makes its entrance (beam sets, one picked at random per Bossfight: V1
+  thralls + V3 miniboss, or V2 thralls + V4 miniboss). RSQ SlowMo's edge arrows point to any landing out of view. Each one
+  arrives a Boosted Legendary Champion (as RSQ SlowMo's DOWN spawns them); the miniboss stands 1.25x (its hitbox too), moves
+  x1.25 and shoots far more often. The miniboss's landing sends an RSQ Glow In The Dark wave in its colour. Without
+  VisualRewards: the original Minibosses! teleport fog.
 - **Who comes scales with you**: the monster types already in this map, stronger ones as your Gun Bonsai level, this
   map's score and your Bossfights won climb.
 - **It waits** (and says why on the bar) during a map's first minute, near the exit, while your health is low, while
@@ -65,14 +77,28 @@ No miniboss is picked when a level loads any more. You earn it.
 
 Then the set piece itself:
 
-- While its thralls live, the miniboss shrugs off most of your damage (80% with all of them up, less for each one down).
-- It has three lives, shown as orbs circling its head. Knock one off and it refills, turns invulnerable behind a ring of
-  flames, and when they go out its dead thralls rise again.
-- Every thrall you kill **slows time** around you (with RSQ SlowMo loaded). Kill another inside the window and the window
-  stretches. Chain the whole crew in one long slow-motion sweep.
-- Hit the miniboss while its thralls still stand and you arm the **greed rule**. If the slow window runs out with the
-  miniboss and a thrall still alive, every monster on the map is enraged: twice as fast and far quicker to shoot, until
-  the miniboss dies. Kill it while its thralls still stand, before the rage comes, and RSQ Score pays a Greedy bonus.
+- **The HUD stack** (in the meter's place, under RSQ Score's bar): the THRALL BAR (one segment per thrall it came with,
+  each a share of its health), the WINDOW BAR when one is open, ITS BAR in its colour with the crowned skull, and thin
+  LIFE BARS under it (they replace the old orbs).
+- **Shield up**: while a thrall lives, shots on the miniboss do nothing. Grey Xs bounce off where they hit and "GUARD!"
+  pops over it in silver; "TARGET!" hangs over each thrall; the thrall bar is grey under a shield; the room glows a cold
+  grey.
+- **Kill a thrall**: the world slows, the power that thrall gave the miniboss pops out of it in its colour and is gone, and
+  the shield drops for 1 second per thrall it came with (3 thralls: 3 s), or until you break one segment, whichever comes
+  first. A big pulsing "TARGET!" over the miniboss; the window bar (one step per thrall, draining tallest first); the room
+  glows gold. The step you break it in sets RSQ Score's pay (the first, the most).
+- **Miss the window** (the segment survives): the miniboss and its thralls tier up with RSQ Monsters' tier flash by how
+  much was left (a sliver +1, about half +2, untouched +3), and by default every other monster on the map with them. Those
+  tiers are put back when you re-enter a hub level. The shield is back up.
+- **One-on-one**: every segment broken, no thrall bar; "TARGET!" over it; its bar drains as you hit it.
+- **A life lost**: its bar empties, the next life bar rises into it, it is invulnerable behind its flames for 5 s and tiers
+  up one with the flash (Tier Up Each Life); the room glows red, then its new colour. **No thralls rise.**
+- **Its death**: a map-wide RSQ Glow In The Dark wave in its colour, then the map's glow colours re-roll; the loot and
+  Score's Miniboss and Bossfight rows as before.
+- Hit the shielded miniboss while its thralls still stand and you arm the **greed rule**. If a window runs out (or one
+  window's length passes) with the miniboss and a thrall still alive, every monster on the map is enraged: twice as fast
+  and far quicker to shoot, until the miniboss dies. Kill it while its thralls still stand, before the rage comes, and RSQ
+  Score pays a Greedy bonus.
 
 ## Features
 
@@ -95,15 +121,21 @@ Then the set piece itself:
   monsters at the start.
 
 **The fight**
-- **Thrall Shield**: damage cut by up to 80%, shared out per living thrall.
-- **Lives**: 3 by default. Each lost life gives 5 seconds of invulnerability plus 1 second per living thrall.
-- **Revive Thralls**: dead thralls rise when that invulnerability ends.
-- **Slow window**: 4 seconds per thrall kill, +3 seconds for each chained kill, up to 12 seconds.
-- **Greed Enrages Monsters**: struck while thralls live, then the window ends with a thrall still up: map-wide rage until the
+- **Segments**: one per thrall it came with, each its health at the landing / the thralls; damage goes into the open
+  segment first, its own bar only once every segment is broken.
+- **Shield**: immune while a thrall lives, a segment is left and no window is open.
+- **Window**: 1 s per thrall it came with, opened by a thrall's death on the first unbroken segment, closed early by
+  breaking it. A kill while one is open waits its turn. Score pays 100 x the steps left ("Thrall Slow Kill" row).
+- **Missed window**: tier-up +1 / +2 / +3 by the segment left (RSQ Monsters' RS_Retier, asked by name); map-wide by option.
+- **Powers lost**: each thrall's Champions power goes with it (a token taken back, a life it added, Black's damage, the
+  toughness).
+- **Lives**: 3 by default. Each lost life gives 5 seconds of invulnerability; tier up one each (option). No revive.
+- **Greed Enrages Monsters**: struck while shielded, then the window ends with a thrall still up: map-wide rage until the
   miniboss dies. Everything enraged is put back exactly as it was afterwards.
-- **Effects**: the original Minibosses!' art, in each set piece's own colour: a BFG ball over each thrall, plasma beads
-  along its link, BFG and plasma bursts when a link breaks, life orbs circling the boss (the last one swells with its
-  health), flames while it is invulnerable; red sparks over enraged monsters. The IWAD's sprites drawn by a small pooled
+- **Effects**: the original Minibosses!' art, in each set piece's own colour: plasma beads along each link, BFG and plasma
+  bursts when a link breaks, a BFG burst for a lost life and its death, flames while it is invulnerable; red sparks over
+  enraged monsters. Since the rework no life orbs and no BFG ball over each thrall (the HUD's life bars and "TARGET!"
+  replace them); a thrall's death pops in its power's colour (RSQ VisualRewards' pop). The IWAD's sprites drawn by a small pooled
   set of VisualThinkers, only within 4000 units of you. Each link is the original's own trail: 30 plasma beads from
   thrall to miniboss, moved every tic, at every density (Effects Density sets the flames and the cap). Since 1.0 a
   link's 30 beads are placed in one pass (a bead that did not move is left alone): the same picture for less than half
@@ -128,23 +160,22 @@ Then the set piece itself:
 
 1. Add the pk3 to your load order. Fight as usual: stylish kills and quick chains fill the Bossfight meter under the score.
 2. When the bar turns gold and the skull lights up, find a spot you like, look out over open ground, check your watch and press Use.
-3. Watch them land. The beaded lines run from each thrall into the miniboss; the orbs over its head are its lives.
-4. The safe way: kill the thralls first. Each kill slows time, so line the next one up fast to chain the window. With
-   the crew down, the miniboss takes full damage.
-5. The greedy way: hit the miniboss early. If you cannot finish it or its crew before the slow window ends, the whole
-   map comes at you at double speed.
-6. When a life breaks, back off: the flames mean it cannot be hurt, and its fallen thralls are about to stand up.
-7. Kill it and grab the drop.
+3. Watch them land, one by one, then the miniboss. The beaded lines run from each thrall into it; "TARGET!" marks the thralls.
+4. Kill a thrall: the shield drops for a few seconds. Pour everything into the miniboss and break the open segment before
+   the window bar drains, or everything tiers up.
+5. Every segment broken: one-on-one. Each emptied bar costs it a life (and it climbs a colour); the flames mean it cannot
+   be hurt for a moment.
+6. Kill it and grab the drop.
 
 ## Controls
 
 | Action | How (VR) | Notes |
 |---|---|---|
 | Call a Bossfight in | Watch check + Use, with the meter full | Off with "Call It In": it then only comes by itself. |
-| Find the miniboss | Look for the lines and the circling orbs | Flames: invulnerable. Last orb swelling: last life. |
-| Start a slow window | Kill a thrall | Needs RSQ SlowMo for the slow motion itself. |
-| Chain the window | Kill another thrall before it ends | +3 s each, up to 12 s. |
-| Arm the greed rule | Hit the miniboss while a thrall lives | Clear every thrall in time to disarm it. |
+| Find the miniboss | Look for the lines and the big "TARGET!" | Flames: invulnerable. Its life bars are on the HUD. |
+| Drop its shield | Kill a thrall | A window of 1 s per thrall; RSQ SlowMo slows the world for it. |
+| Break a segment | Hit the miniboss in the window | The sooner, the more RSQ Score pays. Missed: everything tiers up. |
+| Arm the greed rule | Hit the shielded miniboss while a thrall lives | Clear every thrall in time to disarm it. |
 
 ## Menu
 
@@ -168,8 +199,9 @@ Then the set piece itself:
 | Graves Area | Map | Map (every tombstone) or Radius. |
 | Graves Radius | 1024 | Map units from where the Bossfight landed, for Radius (32 = 1 m). |
 | *Rules* | | |
-| Legendary Thralls (LegenDoom) | On | With LegenDoom (Lite or 3.0), every thrall is made legendary. |
-| Revive Thralls | On | Dead thralls rise when its invulnerability ends. |
+| Legendary Thralls (LegenDoom) | On | With LegenDoom (Lite or 3.0), every thrall of a Classic Pick is made legendary (a Bossfight's monsters always arrive legendary). |
+| Tier-Up Hits the Whole Map | On | A missed window tiers up every monster on the map RSQ Monsters can tier, not only the miniboss and its thralls (put back when a hub level is entered again). |
+| Tier Up Each Life | On | The miniboss tiers up one, with RSQ Monsters' flash, each time a life bar empties. |
 | Inherit Powers | On | The miniboss inherits its thralls' powers. |
 | Greed Enrages Monsters | On | The greed rule. |
 | Score Awards | On | Sends awards to RSQ Score. |
@@ -197,7 +229,7 @@ Then the set piece itself:
 | Nearest Arrival | 384 | The arrival spot's least distance (map units; 32 = 1 m). |
 | Farthest Arrival | 1024 | Its greatest distance. |
 | Exit Distance | 768 | It waits within this of an exit. |
-| Landing Slow Motion (s) | 3.0 | RSQ SlowMo for the landing (0: none). |
+| Landing Slow Motion (s) | 4.0 | RSQ SlowMo for the landing (0: none; at most 5): the staggered arrival fits inside it. |
 | Bits Multiplier | 3 | Times more Kill Rewards boss bits for a Bossfight's miniboss. |
 | Score Style Fill | 0.25 | Meter points per Score style point. |
 | Gun Bonsai XP Fill | 0.20 | Meter points per Gun Bonsai XP point. |
@@ -211,14 +243,8 @@ Then the set piece itself:
 | *Fight* | | |
 | Thrall Range | 1024 | Classic: how far from the miniboss a thrall may stand. |
 | Power Cap | 4 | Most distinct powers inherited (legendary not counted). |
-| Thrall Shield | 80 | % of damage shrugged off with every thrall alive. |
 | Invulnerable (s) | 5.0 | Seconds invulnerable after a lost life. |
-| Per Thrall (s) | 1.0 | Extra seconds per living thrall. |
-| *Slow Window* | | |
-| Window (s) | 4.0 | Seconds of slow time per thrall kill. |
-| Chain Bonus (s) | 3.0 | Extra seconds per chained kill. |
-| Window Cap (s) | 12 | The window's longest, seconds. |
-| Slow Depth | -1 | World speed % in the window; -1 uses RSQ SlowMo's own. |
+| Slow Depth | -1 | World speed % in a thrall kill's window; -1 uses RSQ SlowMo's own. |
 | Rage Speed | 2.00 | Enraged monsters' speed multiplier. |
 | Effects Range | 4000 | Effects drawn only within this distance of you. Per player. |
 | Debug Log | Off | Console lines for every rule as it fires. |
@@ -230,12 +256,19 @@ Then the set piece itself:
   greed rule and chains).
 - **RSQ Score**: its style points fill the meter most (unless Fills From is Gun Bonsai); the meter sits under its bar and its combo rows go below; Thrall
   Slow Kill, Miniboss, Greedy and Bossfight rows; a Bossfight's miniboss killed drops Score's life crate (one extra life when touched).
-- **RSQ SlowMo**: the landing and each thrall kill slow the world; its two bars sit under the meter. A heavy hit from a
+- **RSQ SlowMo**: the landing (4 s) and each thrall kill's window slow the world; its edge arrows point to each landing
+  out of view (RSQSM_Service "arrow.add"); its two bars sit under the meter (under the fight's HUD stack while one runs). A heavy hit from a
   miniboss or thrall can set off SlowMo's Heavy Hit Slowdown (every heavy hit during a Bossfight).
-- **RSQ Glow In The Dark**: the heartbeat while the meter is full; the map's glow takes the miniboss's colour while it lives.
+- **RSQ Glow In The Dark**: the heartbeat while the meter is full; the map's glow takes the miniboss's colour while it lives;
+  the fight (11-09): an arrival wave in its colour, a steady cold grey while it is shielded, gold pulsing in a window
+  (steady in Photosensitive Mode), red then its new colour on a lost life, a map-wide wave and a colour re-roll on its death.
+- **RSQ Monsters**: its ladder colours (each monster's bar, beam and glow colour) and its tier changes with the tier flash
+  (RSQMN_RosterService "tier", "retier"; a CH colour change swaps the body and this mod follows it).
 - **RSQ Gun Bonsai VR** (with Gun Bonsai): XP fills the meter (unless Fills From is Score); the player level raises the tier.
 - **RSQ Accessibility (Gestures), RSQ Gun Cards**: their watch-check reader is used first when loaded.
-- **RSQ VisualRewards**: HP bars mark the miniboss and its thralls (the crown carries one pip per Bossfight tier, none at tier 0 and 4 at tier 4); Kill Rewards treat it as a boss, a Bossfight's x3 more.
+- **RSQ VisualRewards**: the arrival beams (V1-V4), the words over the monsters ("TARGET!", "GUARD!" in RS Score's font)
+  and the thrall-kill pop (RSQVR_Service "beam", "word", "word.hold", "word.clear", "pop"; without them, the old fog and no
+  words). HP bars mark the miniboss and its thralls (the crown carries one pip per Bossfight tier, none at tier 0 and 4 at tier 4); Kill Rewards treat it as a boss, a Bossfight's x3 more.
 - **RSQ Grapple, RSQ Whip, RSQ Melee**: refuse to yank or headlock it (switches above).
 - **RSQ ShieldSaw and RSQ Gun Bonsai VR**: read its true legendary health when it was made legendary here.
 - **RSQ Tactical Rig**: its optional "watch check + Use moves the gun" uses the same press. While a Bossfight is ready to

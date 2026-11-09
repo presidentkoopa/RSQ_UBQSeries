@@ -62,6 +62,13 @@ MG blood leaves the owner's HF wall and floor decals (`DECALDEF.txt`, every name
 `graphics/meatgrinder/decals/`). The enemy tracer is the owner's streak model (`MODELDEF.txt`,
 `models/meatgrinder/tracer/`).
 
+## What RSQ Miniboss asks (11-09, code only: not compiled, not rig-tested)
+
+RSQ Miniboss's reworked fight (design/MINIBOSS_REWORK.md) asks the same service by name: `"tier"` for each monster's
+ladder colour, and `GetInt("retier", "", tier, instant, monster)` (new) to tier a monster up after a missed window or a
+lost life: `RS_Retier.Request`, the same path as `rs_retier`, with the tier flash (instant, no flash: its hub reset).
+1 asked, 0 not a ladder monster. A CH swap is a new actor: Miniboss finds it by `"tier.ago"` where the old one stood.
+
 ## What RSQ Score reads (11-09)
 
 RSQ Score's roster rows ask one service by name, `RSQMN_RosterService` (`zscript/monsters/RS_ScoreReadout.zs`); nothing

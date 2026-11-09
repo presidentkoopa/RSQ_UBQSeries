@@ -30,11 +30,15 @@
 //              sorted by spawn health. A tier 0..4 picks how strong: Gun Bonsai player level / 2 (RSQGB_Service
 //              "player.level") + this map's RSQ Score / rsqmb_bf_tier_score + Bossfights won / 2. Tier 0 sends a
 //              middling type, tier 4 the strongest; thralls are weaker types (the same type when none is).
-//   ARRIVAL    the original Minibosses!' art as teleport fog (BFE1 / APBX bursts in the set piece's colour, fx.zs),
-//              Doom's teleport sound, RSQ SlowMo slowing the world for the landing (rsm_pulse, by name). FOG_TICS later
-//              the monsters are spawned as new actors; BIND_TICS after that (Champions has dressed them) they are bound
-//              as a set piece (handler.zs Bind: shield, lives, revives, greed, colours, FX, Boss Kill Rewards,
-//              LegenDoom / Champions inheritance) and set on you.
+//   ARRIVAL    (reworked 2026-11-09, StartArrival below) STAGGERED: the thralls one at a time about 0.3 s apart, each on
+//              an RSQ VisualRewards arrival beam (V1 or V2, the miniboss V3 or V4: a set picked at random per Bossfight) in its
+//              ladder colour, held until its beam reveals it, RSQ SlowMo's edge arrows on each while out of view; then the
+//              miniboss's entrance; all inside the landing's slow motion (RSQ SlowMo "start.bossfight", 4 s). Each arrives a
+//              Boosted Legendary Champion (SlowMo DOWN's boost), the miniboss 1.25x with its hitbox, x1.25 speed and
+//              MISSILEEVENMORE's attack chance. Without VisualRewards' beams: the original Minibosses!' teleport fog (fx.zs art)
+//              and Doom's teleport sound. BIND_TICS after the last one landed (Champions has dressed them) they are bound
+//              as a set piece (handler.zs Bind: segments, shield, lives, greed, colours, FX, Boss Kill Rewards, LegenDoom /
+//              Champions inheritance; fight.zs runs the fight).
 //   PAYOFF     its miniboss killed: a guaranteed drop (a gun from this map's weapon types you don't have, else a power-up),
 //              RSQ VisualRewards' boss bits x rsqmb_bf_bits more (RSQMB_Service "bossfor" "rewards.x"), RSQ Score's
 //              "Bossfight" row and one RSQ Score extra life (RS_ScoreService "givelife", rsqmb_bf_life), Champions' own
@@ -84,8 +88,7 @@ class RSQMB_Probe : Actor
 
 extend class RSQMB_Handler
 {
-	const FOG_TICS = 24;          // fog before the monsters appear
-	const BIND_TICS = 6;          // spawned -> bound (Champions dresses a new monster within 3 tics)
+	const BIND_TICS = 6;          // the last one landed -> bound (Champions dresses a new monster within 3 tics)
 	const WATCH_GRACE = 8;        // tics after the watch check lets go that Use still calls it in
 	const CHAIN_TICS = 105;       // kills within 3 s chain
 	const HEART = 45;             // the glow's heartbeat period while full
@@ -103,11 +106,18 @@ extend class RSQMB_Handler
 	int    bfLastTic;             // the last one ended (or began) at
 	bool   bfAny;                 // one has run this map (the cooldown applies)
 	RSQMB_Boss bfBoss;            // the called set piece alive now
-	int    arrPhase;              // 0 none, 1 fog, 2 spawned (binding)
+	int    arrPhase;              // 0 none, 1 landing (StartArrival .. Bind)
 	int    arrTic, arrPn, arrTier;
 	Array<double> arrX, arrY, arrZ;
 	Array<String> arrCls;
-	Array<Actor>  arrMon;
+	Array<Actor>  arrMon;         // [0] the miniboss, then the thralls (null until landed)
+	Array<int>    arrAt;          // tics after arrTic each one lands
+	Array<int>    arrState;       // 0 waiting, 1 landed and held, 2 revealed, 3 did not land (ArrivalStep)
+	Array<int>    arrReveal;      // the tic its beam reveals it
+	Array<int>    arrCol;         // its colour, 0xRRGGBB (its ladder colour, else the set piece's palette)
+	Array<int>    arrTics;        // its state's tics when it was held (put back at the reveal)
+	Array<int>    arrBorn;        // the tic it landed
+	int    arrBeamSet;            // 0: V1 thralls + V3 miniboss, 1: V2 thralls + V4 miniboss (owner 11:20, random per Bossfight)
 	Actor  arrProbe;              // the arrival's sound source
 	bool   arrForce;              // Ignore Spawn Restrictions set this one down untested: the landing keeps what lands
 
@@ -194,7 +204,7 @@ extend class RSQMB_Handler
 		if (debug) Console.Printf("RSQMB BOSSFIGHT READY (auto in %d s)", CI('rsqmb_bf_auto', 60));
 	}
 
-	void Glow(int col, double secs)
+	Service GdService()
 	{
 		if (!gdChecked)
 		{
@@ -203,7 +213,12 @@ extend class RSQMB_Handler
 			Service s;
 			while (s = it.Next()) if (s.GetClassName() == 'RSQGD_Service') { gdSvc = s; break; }
 		}
-		if (gdSvc) gdSvc.GetInt("event.tint", "", col, secs);
+		return gdSvc;
+	}
+	void Glow(int col, double secs)
+	{
+		let g = GdService();
+		if (g) g.GetInt("event.tint", "", col, secs);
 	}
 
 	// WHAT FILLS THE METER besides kills, chains and time (rsqmb_bf_from: 0 Score, 1 Gun Bonsai, 2 Both): RSQ Score's style
@@ -551,12 +566,12 @@ extend class RSQMB_Handler
 		{
 			int i = (start + j) % nc;
 			tries++;
-			if (!Fits(pr, bc, cx[i], cy[i], cz[i])) continue;
+			if (!Fits(pr, bc, cx[i], cy[i], cz[i], MB_SCALE)) continue;
 			double bz = pr.pos.z;
 			if (!p.CheckSight(pr, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) continue;
 			arrX.Clear(); arrY.Clear(); arrZ.Clear(); arrCls.Clear();
 			arrX.Push(cx[i]); arrY.Push(cy[i]); arrZ.Push(bz); arrCls.Push(bc.GetClassName());
-			double br = GetDefaultByType(bc).radius;
+			double br = GetDefaultByType(bc).radius * MB_SCALE;
 			double base = VectorAngle(p.pos.x - cx[i], p.pos.y - cy[i]);
 			for (int t = 0; t < tc.Size(); t++)
 			{
@@ -622,11 +637,11 @@ extend class RSQMB_Handler
 				if (n2 > 0)
 				{
 					double x0 = useA ? ax[0] : cx[0], y0 = useA ? ay[0] : cy[0], z0 = useA ? az[0] : cz[0];
-					Fits(pr, bc, x0, y0, z0);
+					Fits(pr, bc, x0, y0, z0, MB_SCALE);
 					double bz = pr.pos.z;
 					arrX.Clear(); arrY.Clear(); arrZ.Clear(); arrCls.Clear();
 					arrX.Push(x0); arrY.Push(y0); arrZ.Push(bz); arrCls.Push(bc.GetClassName());
-					double br = GetDefaultByType(bc).radius;
+					double br = GetDefaultByType(bc).radius * MB_SCALE;
 					double base = VectorAngle(p.pos.x - x0, p.pos.y - y0);
 					for (int t = 0; t < tc.Size(); t++)
 					{
@@ -658,11 +673,12 @@ extend class RSQMB_Handler
 		return ok;
 	}
 
-	// The probe, the size of cls, on the floor at (x, y): room under the ceiling, nothing in the way.
-	static bool Fits(Actor pr, class<Actor> cls, double x, double y, double zHint)
+	// The probe, the size of cls (x k: the miniboss stands 1.25x, its hitbox too), on the floor at (x, y): room under the
+	// ceiling, nothing in the way.
+	static bool Fits(Actor pr, class<Actor> cls, double x, double y, double zHint, double k = 1.0)
 	{
 		let def = GetDefaultByType(cls);
-		double r = def.radius, h = def.height;
+		double r = def.radius * k, h = def.height * k;
 		pr.A_SetSize(r, h, false);
 		pr.SetOrigin((x, y, zHint + 8), false);
 		double fz = pr.floorz;
@@ -677,11 +693,11 @@ extend class RSQMB_Handler
 	{
 		for (int i = 0; i < cx.Size() && i < 48; i++)
 		{
-			if (!Fits(pr, bc, cx[i], cy[i], cz[i])) continue;
+			if (!Fits(pr, bc, cx[i], cy[i], cz[i], MB_SCALE)) continue;
 			double bz = pr.pos.z;
 			arrX.Clear(); arrY.Clear(); arrZ.Clear(); arrCls.Clear();
 			arrX.Push(cx[i]); arrY.Push(cy[i]); arrZ.Push(bz); arrCls.Push(bc.GetClassName());
-			double br = GetDefaultByType(bc).radius;
+			double br = GetDefaultByType(bc).radius * MB_SCALE;
 			double base = VectorAngle(p.pos.x - cx[i], p.pos.y - cy[i]);
 			for (int t = 0; t < tc.Size(); t++)
 			{
@@ -713,26 +729,55 @@ extend class RSQMB_Handler
 	}
 
 	// ---- the arrival ----------------------------------------------------------------------------------------------------
+	// THE ARRIVAL, STAGGERED (owner + Claude 2026-11-09 10:50-11:20, design/MINIBOSS_REWORK.md "The arrival, the HUD and the
+	// beams"): the world and the player slow (RSQ SlowMo "start.bossfight", Landing Slow Motion, 4 s by default, at most 5: all
+	// of it inside the one slow window); the thralls land one at a time THRALL_STEP tics apart, each on an arrival beam with its
+	// sound (RSQVR_Service "beam"); then the miniboss's entrance from MB_AT; the beam set is picked at random per Bossfight
+	// (owner 11:20): V1 thralls + V3 miniboss, or V2 thralls + V4 miniboss, each beam in that monster's ladder colour.
+	// VisualRewards hides each monster until its beam's reveal tic; until then it is HELD here (Hold: dormant, its state
+	// frozen: it neither moves, targets nor takes damage). RSQ SlowMo's edge arrows (RSQSM_Service "arrow.add") point to each
+	// one while it is out of view, cleared ARROW_HOLD tics after its reveal. The miniboss's reveal sends RSQ Glow In The Dark's
+	// arrival wave in its colour from where it lands. When all have landed: the bind (shield, lives, colour, powers: Bind).
+	// Without VisualRewards (or its beams off: "beam" answers 0) a monster lands in the original Minibosses! teleport fog
+	// (FxLand) with Doom's teleport sound and is revealed at once; without SlowMo no arrows and no slow.
+	const MB_SCALE = 1.25;       // the miniboss: 1.25x (owner 07:28), its hitbox too (owner 08:57)
+	const MB_SPEED = 1.25;       // ... and x1.25 speed, with MISSILEEVENMORE's attack chance (owner 08:57: "extra aggressive and fast")
+	const MB_MISSILE = 0.125;    // MissileChanceMult: what MISSILEEVENMORE sets (MISSILEMORE 0.5)
+	const TH_SCALE = 1.15;       // a thrall: DOWN's boost (SlowMo down.zs MARK_SCALE "slightly larger"), drawn only
+	const THRALL_STEP = 10;      // tics between thralls (~0.3 s)
+	const MB_AT = 46;            // the miniboss's entrance from ~1.3 s (or a step after the last thrall)
+	const ARROW_HOLD = 18;       // its arrow stays this long after its reveal (~0.5 s)
+	const HOLD_CAP = 210;        // the longest a beam may hold a monster hidden (6 s): past it, it is revealed anyway
+	const CHAMP_AT = 4;          // tics after its spawn: Champions has rolled on it (it dresses within 3)
+
 	void StartArrival(PlayerPawn p, RSQMB_Meter m, int tier)
 	{
 		arrPhase = 1;
 		arrTic = level.maptime;
 		arrPn = p.PlayerNumber();
 		arrTier = tier;
-		arrMon.Clear();
+		arrMon.Clear(); arrAt.Clear(); arrState.Clear(); arrReveal.Clear(); arrCol.Clear(); arrTics.Clear(); arrBorn.Clear();
+		int nth = arrX.Size() - 1;
+		for (int i = 0; i < arrX.Size(); i++)
+		{
+			arrMon.Push(null);
+			arrAt.Push(i == 0 ? max(MB_AT, nth * THRALL_STEP) : (i - 1) * THRALL_STEP);
+			arrState.Push(0); arrReveal.Push(0); arrCol.Push(0); arrTics.Push(1); arrBorn.Push(0);
+		}
+		arrBeamSet = random[rsqmbbf](0, 1);
 		bfWhy = "";
-		if (arrProbe) arrProbe.A_StartSound("misc/teleport", CHAN_AUTO, 0, 1.0, 0.4);
 		// the landing in slow motion: RSQ SlowMo's "start.bossfight" (by name; owner 2026-11-09: the countdown bar always shows
 		// during a game slow). A game slow: SlowMo shows its countdown bar and the BOSSFIGHT line (Adrenaline on or off), under
 		// its Triggers page's "Miniboss" switch, and it neither waits out nor starts SlowMo's shared cooldown, so the thrall
 		// windows that follow still get their slow motion (an rsm_pulse here made them wait 25 s: rig 11-05). An older SlowMo
-		// answers -1 to that request: then the deliberate "start" as before (no bar with Adrenaline on).
-		int slowMs = int(clamp(CF('rsqmb_bf_slow', 3.0), 0.0, 5.0) * 1000);
+		// answers -1 to that request: then the deliberate "start" as before (no bar with Adrenaline on). 4 s by default (the
+		// staggered landing fits inside it), at most 5.
+		if (!svcChecked) FindServices();
+		int slowMs = int(clamp(CF('rsqmb_bf_slow', 4.0), 0.0, 5.0) * 1000);
 		if (smSvc && slowMs > 0 && smSvc.GetInt("start.bossfight", "bossfight", slowMs, depthPct / 100.0) < 0)
 			smSvc.GetInt("start", "bossfight", slowMs, depthPct / 100.0);
-		Glow(int(PALETTE[bosses.Size() % PALETTE.Size()]) & 0xFFFFFF, 2.0);
-		FxArrive();
-		if (debug) Console.Printf("RSQMB BOSSFIGHT ARRIVING: tier %d, %s + %d thralls, SlowMo %s", tier, arrCls[0], arrX.Size() - 1, smSvc ? "asked" : "absent");
+		if (debug) Console.Printf("RSQMB BOSSFIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
+			arrBeamSet == 0 ? "V1 thralls + V3 miniboss" : "V2 thralls + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
 	}
 
 	// GRAVES RISE (owner 2026-11-06, rsqmb_bf_graves, off): with Legion of Bones and RSQ Graveyards loaded, a Bossfight calling
@@ -782,45 +827,44 @@ extend class RSQMB_Handler
 		if (g) g.GetInt("stones.pulse", "", col, secs);
 	}
 
+	// ---- the arrival, tic by tic ------------------------------------------------------------------------------------------
+	// arrState per monster: 0 not yet landed, 1 landed and held (hidden by its beam), 2 revealed, 3 did not land
 	void ArrivalStep()
 	{
-		int age = level.maptime - arrTic;
-		if (arrPhase == 1)
+		int now = level.maptime;
+		int age = now - arrTic;
+		let p = players[arrPn].mo;
+		bool allIn = true;
+		int lastBorn = 0, lastReveal = 0;
+		for (int i = 0; i < arrX.Size(); i++)
 		{
-			if (age == 12) FxArrive();
-			if (age < FOG_TICS) return;
-			let p = players[arrPn].mo;
-			for (int i = 0; i < arrX.Size(); i++)
+			if (arrState[i] == 0)
 			{
-				class<Actor> c = arrCls[i];
-				Actor a = c ? Actor.Spawn(c, (arrX[i], arrY[i], arrZ[i]), ALLOW_REPLACE) : null;
-				if (a && !arrForce && !a.TestMobjLocation()) { a.ClearCounters(); a.Destroy(); a = null; }
-				if (a)
-				{
-					if (p) a.angle = a.AngleTo(p);
-					a.GiveInventoryType("RSQMB_Called");
-				}
-				arrMon.Push(a);
+				if (age >= arrAt[i]) Land(i, p);
+				else { allIn = false; continue; }
 			}
-			FxArrive();
-			arrPhase = 2;
-			arrTic = level.maptime;
-			return;
+			let a = arrMon[i];
+			if (arrState[i] == 1)
+			{
+				if (!a || a.health <= 0) { arrState[i] = 3; continue; }
+				if (now - arrBorn[i] == CHAMP_AT) ChampionFallback(a);
+				if (now >= arrReveal[i]) Reveal(i, p);
+				else allIn = false;
+			}
+			if (arrState[i] == 2 && a && now == arrReveal[i] + ARROW_HOLD) ArrowClear(a);
+			if (arrState[i] == 2 && now - arrBorn[i] == CHAMP_AT) ChampionFallback(a);
+			if (arrState[i] != 3) { lastBorn = max(lastBorn, arrBorn[i]); lastReveal = max(lastReveal, arrReveal[i]); }
 		}
-		if (age < BIND_TICS) return;
+		// the miniboss did not land: whoever came stays a plain monster; the meter stays full and it tries again
+		if (arrState[0] == 3) { ArrivalFailed("the miniboss did not land"); return; }
+		// bound when all have landed, Champions has dressed the last (BIND_TICS) and the last arrow is cleared (ARROW_HOLD)
+		if (!allIn || now - lastBorn < BIND_TICS || now < lastReveal + ARROW_HOLD) return;
 		arrPhase = 0;
 		if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
-		Actor mb = arrMon.Size() ? arrMon[0] : null;
+		Actor mb = arrMon[0];
 		Array<Actor> th;
-		for (int i = 1; i < arrMon.Size(); i++) if (arrMon[i] && arrMon[i].health > 0) th.Push(arrMon[i]);
-		let p = players[arrPn].mo;
-		if (!mb || mb.health <= 0 || th.Size() == 0)
-		{
-			// it failed to land: whoever came stays a plain monster; the meter stays full and it tries again
-			if (debug) Console.Printf("RSQMB bossfight failed to land (miniboss %s, thralls %d): tries again", mb ? "ok" : "none", th.Size());
-			for (int i = 0; i < arrMon.Size(); i++) if (arrMon[i]) arrMon[i].TakeInventory("RSQMB_Called", 1);
-			return;
-		}
+		for (int i = 1; i < arrMon.Size(); i++) if (arrState[i] == 2 && arrMon[i] && arrMon[i].health > 0) th.Push(arrMon[i]);
+		if (!mb || mb.health <= 0 || th.Size() == 0) { arrPhase = 1; ArrivalFailed(String.Format("miniboss %s, thralls %d", mb ? "ok" : "none", th.Size())); return; }
 		Bind(mb, th);
 		let b = bosses[bosses.Size() - 1];
 		b.called = true;
@@ -832,41 +876,130 @@ extend class RSQMB_Handler
 		bfLastTic = level.maptime;
 		let m = MeterOf(p);
 		if (m) { m.fill = 0; m.ready = false; m.called = false; }
-		// set on you
+		// the shield is up: the room's glow goes cold grey, the words go up (fight.zs RoomGlow, WordsStep)
+		b.wordState = -9;
+		b.glowSent = -1;
+		if (debug) Console.Printf("RSQMB BOSSFIGHT LANDED: boss %d %s hp %d, %d thralls, %d segments of %.0f, lives %d, map count %d", b.idx, mb.GetClassName(), mb.health,
+			th.Size(), b.total, b.segMax, b.lives, bfCount);
+	}
+
+	void ArrivalFailed(String why)
+	{
+		if (debug) Console.Printf("RSQMB bossfight failed to land (%s): tries again", why);
+		let p = players[arrPn].mo;
 		for (int i = 0; i < arrMon.Size(); i++)
 		{
 			let a = arrMon[i];
-			if (!a || a.health <= 0 || !p) continue;
-			a.bAMBUSH = false;
-			a.target = p;
-			a.LastHeard = p;
-			if (a.SeeState) a.SetState(a.SeeState);
+			if (!a) continue;
+			a.TakeInventory("RSQMB_Called", 1);
+			ArrowClear(a);
+			if (arrState[i] == 1) Reveal(i, p);
 		}
-		if (debug) Console.Printf("RSQMB BOSSFIGHT LANDED: boss %d %s hp %d, %d thralls, map count %d", b.idx, mb.GetClassName(), mb.health, th.Size(), bfCount);
+		arrPhase = 0;
+		if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
 	}
 
-	// The teleport fog, the original's art (fx.zs): a BFG burst at chest and head, plasma bursts round the feet.
-	void FxArrive()
+	// ONE LANDS: spawned where PlanArrival found room, boosted (SlowMo DOWN's boost: Champions, LegenDoom, its light,
+	// full-bright, larger, +50% health without LegenDoom), the miniboss 1.25x with its hitbox and faster and keener to shoot,
+	// held, its beam (or the old fog), its arrow
+	void Land(int i, Actor p)
 	{
-		Color c = PALETTE[bosses.Size() % PALETTE.Size()];
-		for (int i = 0; i < arrX.Size(); i++)
+		class<Actor> c = arrCls[i];
+		Actor a = c ? Actor.Spawn(c, (arrX[i], arrY[i], arrZ[i]), ALLOW_REPLACE) : null;
+		if (a && i == 0) { a.A_SetScale(a.Scale.X * MB_SCALE, a.Scale.Y * MB_SCALE); a.A_SetSize(a.radius * MB_SCALE, a.height * MB_SCALE, false); }
+		if (a && !arrForce && !a.TestMobjLocation()) { a.ClearCounters(); a.Destroy(); a = null; }
+		arrMon[i] = a;
+		arrBorn[i] = level.maptime;
+		if (!a) { arrState[i] = 3; if (debug) Console.Printf("RSQMB arrival: %s %d did not fit", i ? "thrall" : "miniboss", i); return; }
+		arrState[i] = 1;
+		if (p) a.angle = a.AngleTo(p);
+		a.GiveInventoryType("RSQMB_Called");
+		int col = ColourOf(a, bosses.Size());
+		arrCol[i] = col;
+		Boost(a, i == 0, col);
+		Hold(i, a);
+		// the beam (VisualRewards hides it until its reveal) or the original's teleport fog
+		let vr = VrService();
+		String kind = i == 0 ? (arrBeamSet == 0 ? "v3" : "v4") : (arrBeamSet == 0 ? "v1" : "v2");
+		// nameArg role (contract addition 2026-11-09): 'miniboss' or 'thrall' picks the owner's arrival sound
+		Name role = i == 0 ? 'miniboss' : 'thrall';
+		int r = vr ? vr.GetInt("beam", kind, col, 1.0, a, role) : 0;
+		if (r > 0) arrReveal[i] = level.maptime + min(r, HOLD_CAP);
+		else
 		{
-			class<Actor> cl = arrCls[i];
-			double h = cl ? GetDefaultByType(cl).height : 56, r = cl ? GetDefaultByType(cl).radius : 20;
-			Vector3 at = (arrX[i], arrY[i], arrZ[i]);
-			if (!fxOn) continue;
-			if (!UseSprites()) { RSQMB_Boss.Burst(at + (0, 0, h * 0.5), c, 24, 4.0, 8); continue; }
-			int cap = RSQMB_FxPool.CAP[fxDensity] * 2;
-			fxp.Shot(at + (0, 0, h * 0.5), RSQMB_FxPool.SQ_BREAK, c, (1.0, 1.0), 0.8, cap);
-			fxp.Shot(at + (0, 0, h), RSQMB_FxPool.SQ_BREAK, c, (0.6, 0.6), 0.6, cap);
-			for (int k = 0; k < 4; k++)
-			{
-				double a = k * 90 + (level.maptime % 90);
-				fxp.Shot(at + (cos(a) * r, sin(a) * r, 8), RSQMB_FxPool.SQ_BEADX, c, (1, 1), 0.5, cap);
-			}
+			arrReveal[i] = level.maptime;
+			FxLand(i);
+			a.A_StartSound("misc/teleport", CHAN_AUTO, 0, 1.0, 0.4);
 		}
+		ArrowAdd(a, col, i == 0 ? 1.5 : 1.0);
+		if (debug) Console.Printf("RSQMB arrival: %s %d %s lands (colour %06X, tier %d), %s", i ? "thrall" : "miniboss", i, a.GetClassName(), col, TierOfMon(a),
+			r > 0 ? String.Format("beam %s, revealed in %d tics", kind, arrReveal[i] - level.maptime) : "teleport fog (no beam)");
 	}
 
+	void Boost(Actor a, bool isBoss, int col)
+	{
+		bool ld = Loaded("LDLegendaryMonsterPickupGuaranteed");
+		// legendary: the thralls now (LegenDoom's own guaranteed pickup); the miniboss at the bind (handler.zs Inherit: its
+		// Legendary Boss Health is asked for first)
+		if (ld && !isBoss && !Has(a, "LDLegendaryMonsterToken")) Give(a, "LDLegendaryMonsterPickupGuaranteed");
+		a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (col >> 16) & 255, (col >> 8) & 255, col & 255),
+			int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
+		a.bBRIGHT = true;
+		if (!isBoss) a.A_SetScale(a.Scale.X * TH_SCALE, a.Scale.Y * TH_SCALE);
+		if (!ld) a.health += max(1, a.GetSpawnHealth() / 2);
+		if (isBoss) Aggressive(a);
+	}
+	// extra aggressive and fast (owner 08:57): x1.25 speed, MISSILEEVENMORE's attack chance (the greed rule's rage keeps its
+	// own record of these and puts back only what it wrote)
+	static void Aggressive(Actor a)
+	{
+		a.Speed *= MB_SPEED;
+		a.MissileChanceMult = min(a.MissileChanceMult, MB_MISSILE);
+	}
+
+	// HELD until its reveal: dormant (no damage taken), its state frozen (it neither moves on its own, looks nor shoots)
+	void Hold(int i, Actor a)
+	{
+		arrTics[i] = a.tics;
+		a.bDORMANT = true;
+		a.tics = -1;
+		a.vel = (0, 0, a.vel.z);
+	}
+	void Reveal(int i, Actor p)
+	{
+		let a = arrMon[i];
+		arrState[i] = 2;
+		if (!a) return;
+		a.bDORMANT = false;
+		a.tics = arrTics[i] != 0 ? arrTics[i] : 1;
+		if (i == 0) Wave(a, arrCol[i]);     // RSQ Glow In The Dark's arrival wave in its colour from where it lands (owner 08:53)
+		if (!p || a.health <= 0) return;
+		a.bAMBUSH = false;
+		a.target = p;
+		a.LastHeard = p;
+		if (a.SeeState) a.SetState(a.SeeState);
+	}
+
+	// The original Minibosses!' teleport fog (fx.zs), for one landing without a beam: a BFG burst at chest and head, plasma
+	// bursts round the feet, in its colour.
+	void FxLand(int i)
+	{
+		if (!fxOn) return;
+		Color c = arrCol[i] | 0xFF000000;
+		class<Actor> cl = arrCls[i];
+		double k = i == 0 ? MB_SCALE : 1.0;
+		double h = (cl ? GetDefaultByType(cl).height : 56) * k, r = (cl ? GetDefaultByType(cl).radius : 20) * k;
+		Vector3 at = (arrX[i], arrY[i], arrZ[i]);
+		if (!UseSprites()) { RSQMB_Boss.Burst(at + (0, 0, h * 0.5), c, 24, 4.0, 8); return; }
+		int cap = RSQMB_FxPool.CAP[fxDensity] * 2;
+		fxp.Shot(at + (0, 0, h * 0.5), RSQMB_FxPool.SQ_BREAK, c, (1.0, 1.0), 0.8, cap);
+		fxp.Shot(at + (0, 0, h), RSQMB_FxPool.SQ_BREAK, c, (0.6, 0.6), 0.6, cap);
+		for (int k2 = 0; k2 < 4; k2++)
+		{
+			double a = k2 * 90 + (level.maptime % 90);
+			fxp.Shot(at + (cos(a) * r, sin(a) * r, 8), RSQMB_FxPool.SQ_BEADX, c, (1, 1), 0.5, cap);
+		}
+	}
 	// ---- the payoff -------------------------------------------------------------------------------------------------------
 	void BfPayoff(RSQMB_Boss b, Actor killer)
 	{
