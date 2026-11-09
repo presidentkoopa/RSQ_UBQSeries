@@ -13,7 +13,7 @@ Owner's words, then where we landed.
 - **Kill a thrall:** "a sphere pops and all movement slows (we need to figure out how fast we are allowed to move in certain
   kinds of slowmo)." "The shield icon goes away for a large, pulsing Target! above the MB while the Target over the
   thralls shrinks." The shield drops "for either a period of time, or a set amount of damage is done": Claude suggested
-  whichever comes first, the damage cap being one segment.
+  whichever comes first, the damage cap being one segment. **Owner 06:42: whichever comes first.**
 - **HUD bar stack** (owner: "i love the idea of an on-HUD hp bar, i will look for something"):
   - top: the THRALL bar, "if 3 thralls, then three segments", grey with a large shield icon while immune;
   - then its own bar: "thralls = number of segments you have to whittle down before it's one-on-one with the miniboss
