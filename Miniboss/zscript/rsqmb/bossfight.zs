@@ -722,11 +722,14 @@ extend class RSQMB_Handler
 		arrMon.Clear();
 		bfWhy = "";
 		if (arrProbe) arrProbe.A_StartSound("misc/teleport", CHAN_AUTO, 0, 1.0, 0.4);
-		// the landing in slow motion: RSQ SlowMo's named door (RSQSM_Service "start", by name), a deliberate start (you called
-		// it, or let it come): it neither waits out nor starts SlowMo's automatic cooldown, so the thrall windows that follow
-		// still get their slow motion (an rsm_pulse here was automatic and made them wait 25 s: rig 11-05)
+		// the landing in slow motion: RSQ SlowMo's "start.bossfight" (by name; owner 2026-11-09: the countdown bar always shows
+		// during a game slow). A game slow: SlowMo shows its countdown bar and the BOSSFIGHT line (Adrenaline on or off), under
+		// its Triggers page's "Miniboss" switch, and it neither waits out nor starts SlowMo's shared cooldown, so the thrall
+		// windows that follow still get their slow motion (an rsm_pulse here made them wait 25 s: rig 11-05). An older SlowMo
+		// answers -1 to that request: then the deliberate "start" as before (no bar with Adrenaline on).
 		int slowMs = int(clamp(CF('rsqmb_bf_slow', 3.0), 0.0, 5.0) * 1000);
-		if (smSvc && slowMs > 0) smSvc.GetInt("start", "bossfight", slowMs, depthPct / 100.0);
+		if (smSvc && slowMs > 0 && smSvc.GetInt("start.bossfight", "bossfight", slowMs, depthPct / 100.0) < 0)
+			smSvc.GetInt("start", "bossfight", slowMs, depthPct / 100.0);
 		Glow(int(PALETTE[bosses.Size() % PALETTE.Size()]) & 0xFFFFFF, 2.0);
 		FxArrive();
 		if (debug) Console.Printf("RSQMB BOSSFIGHT ARRIVING: tier %d, %s + %d thralls, SlowMo %s", tier, arrCls[0], arrX.Size() - 1, smSvc ? "asked" : "absent");

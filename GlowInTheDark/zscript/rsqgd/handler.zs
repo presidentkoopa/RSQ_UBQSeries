@@ -288,6 +288,9 @@ class RSQGD_Handler : EventHandler
 		return ses ? ses.seed : random[RSQGDSeed](1, 0x7FFFFFF);
 	}
 
+	// a sequence owns the glow (the Randomize Colours key stands down): miniboss tint, DOWN's red map, a timed tint
+	bool SequenceBusy() { return mbMix > 0.001 || dnMix > 0.001 || tintUntil > Level.maptime; }
+
 	void Reroll()
 	{
 		let ses = RSQGD_Session(StaticEventHandler.Find("RSQGD_Session"));
@@ -729,6 +732,20 @@ class RSQGD_Handler : EventHandler
 			return;
 		}
 		if (e.Name ~== "rsqgd_randomize") { RandomizeLook(); return; }
+		// RANDOMIZE COLOURS KEY (owner 2026-11-09 08:44: "GITD needs a keybind to randomize current colors, but stands down
+		// in favor of this sequence and maybe others"): new colours now (the same re-roll a death or level-up makes, the
+		// profile kept), unless a sequence owns the glow: a miniboss's tint (RSQ Miniboss), DOWN's red map (RSQ SlowMo), or
+		// another mod's timed tint (service "event.tint"). Then it does nothing and says so.
+		if (e.Name ~== "rsqgd_recolour")
+		{
+			if (SequenceBusy())
+			{
+				if (e.Player == consoleplayer) Console.Printf("Glow In The Dark: colours held during a Bossfight or sequence");
+				return;
+			}
+			Reroll();
+			return;
+		}
 		// TEST TRIGGERS (console, for the rig and for trying the reactions without the other mods):
 		//   netevent rsqgd_test_mb 1|0     a miniboss is alive / gone
 		//   netevent rsqgd_test_wave       a level-up wave from the player

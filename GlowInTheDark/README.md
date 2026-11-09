@@ -86,6 +86,7 @@ Options → Radiant Silvergun Options → RSQ Glow In The Dark: one page, with T
 | Glow In The Dark | On | The whole mod |
 | Profile | Classic (1.1) | Custom, Random Profile, or one of 35 named looks |
 | Shuffle Profile Now | | New colours (and a new profile on Random) |
+| Randomize Colours Key | unbound | A key for new colours now (same look). Does nothing while a Bossfight's miniboss tint, DOWN's red map or another mod's glow sequence is running (owner 11-09). Code only, not run. |
 | Randomize Current Look | | A truly random look now: every Custom Profile row (both glow modes, colours, palette, pulse, strength, balance, liquids) drawn at random within the named profiles' ranges (nothing flashes), Profile set to Custom, colours re-rolled. It overwrites your Custom Profile rows. |
 | Use DarkDoomZ Pairing | | Sets DarkDoomZ's mode and preset to the profile's (greyed without DarkDoomZ) |
 | Re-roll Colours | Every Map | Never, Every Map, On Each Death, On Each Level-Up, Every N Minutes |

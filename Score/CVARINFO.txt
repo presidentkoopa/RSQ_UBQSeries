@@ -133,3 +133,17 @@ server bool rs_score_rr_mgpinata = true;
 server bool rs_score_rr_meltdown = true;
 server bool rs_score_rr_splitter = true;
 server bool rs_score_rr_cutshort = true;
+
+// ---- [11-09] THE HEAD-SHOT CHECK (head.zs, design/HEADSHOT_SOLUTION.md). Server: every machine judges the same.
+//   rs_score_hs           0 Brutal Doom's own check (its fixed heights), 1 ours for every monster (head = the family's
+//                         own head fraction of the monster's current height, from its own feet)
+//   rs_score_hs_bonus     head-shot damage for every monster (BD's +30 Head / the blow again on its hitbox types)
+//   rs_score_hs_headless  demons, spectres, cacos, pain elementals, lost souls and spiders (BD gives them no head):
+//                         the top of the body counts as the head too (the unknown fraction below)
+//   rs_score_hs_unknown   head fraction for a monster of no known family, percent of its height from the feet
+//   rs_score_hs_log       one console line per judged blow (Test and Debug)
+server int  rs_score_hs = 1;
+server bool rs_score_hs_bonus = true;
+server bool rs_score_hs_headless = true;
+server int  rs_score_hs_unknown = 80;
+server noarchive bool rs_score_hs_log = false;

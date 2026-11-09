@@ -1,0 +1,3 @@
+alias rsqgd_recolour "netevent rsqgd_recolour"
+addkeysection "RSQ Glow In The Dark" RSQGlowInTheDark
+addmenukey "Randomize colours" rsqgd_recolour

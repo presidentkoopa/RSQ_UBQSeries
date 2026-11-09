@@ -41,9 +41,12 @@ tier-change flash, in `RS_Retier.zs`. RSQ Monsters > "On tier change" picks the 
 An MG tier also sets the monster's spawn health (`StartHealth`) to the tier's health, so RSQ Score pays the tier (a
 White imp pays 1200, not 60) and an Arch-vile raise or a heal stops at the tier's health. When a body gibs does not
 change: that still uses the creature's own health. A CH colour change makes a new actor; it now tells RSQ Score (by
-name) to pass the old body's full pay to the new one. MG head shots can be read by other mods through
-`RSQMN_RosterService` `GetInt("headshot", "", 0, 0, monster)` (RSQ Score's Headshot row uses it).
-(11-09, code only, not rig-tested, not headset-confirmed.)
+name) to pass the old body's full pay to the new one. Head shots (11-09): with RSQ Score loaded, its head check decides
+them for every monster, MG included, and the MG reactive deaths (head-pop, exploding head) follow Score's verdict;
+MG's own head band (`rsq_mg_head_zone`) is only used without Score (or with Score's check set to Brutal Doom's Own).
+`RSQMN_RosterService` `GetInt("headshot", "", 0, 0, monster)` answers Score's verdict (any monster), else MG's band;
+`GetString("family", ...)` names an MG body's Doom family for Score. (11-09: rig shown for an MG imp's head and chest,
+RSQ Score's `tools/rigtest/evidence_headshot/`; not headset-confirmed.)
 
 Also carried from the owner's HF monster template, because the MG monsters used them there (`RS_MGReactions.zs`,
 RSQ Monsters menu > MeatGrinder):

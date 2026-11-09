@@ -1917,7 +1917,8 @@ class RSQSM_AdrToken : Inventory
 // is slowed (held, a pulse, or easing), 0 when not or stood down -- RSQ_Score's slow-motion bonus and the
 // Gun Bonsai VR patch's slow-motion perks read it; GetInt("scale") is the world's speed in permille.
 // START SLOW MOTION (2026-11-02): GetInt("start", who, ms, speed) -- deliberate, never refused for time --
-// or GetInt("start.auto", who, ms, speed) -- automatic: waits out the cooldown. Both need the Triggers page's
+// or GetInt("start.auto", who, ms, speed) -- automatic: waits out the cooldown. GetInt("start.bossfight", "", ms, speed) is RSQ
+// Miniboss's landing only: automatic (the countdown bar shows), under the "Miniboss" switch, no shared cooldown. The first two need the Triggers page's
 // "Other / Unknown Mods" switch on (rsqsm_auto_other). who: a name for the trigger log; ms: the hold (0 = 4 s); speed: the world's speed 0.05..1
 // (0 = the player's World Speed slider). Answers 1 let in, 0 refused. Call it from synced play code (the
 // same on every machine, e.g. a WorldTick or an actor's tic); from one machine's local code, send the
@@ -1961,6 +1962,16 @@ class RSQSM_Service : Service
 		}
 		if (request ~== "start" || request ~== "start.auto")
 			return c.Start(stringArg.Length() ? stringArg : "service", intArg, doubleArg, request ~== "start.auto") ? 1 : 0;
+		// THE BOSSFIGHT LANDING (owner 2026-11-09: the countdown bar always shows during a game slow): RSQ Miniboss's arrival.
+		// A GAME slow (automatic: the countdown bar and its BOSSFIGHT line show, Adrenaline on or off) under the Triggers page's
+		// "Miniboss" switch, with no shared cooldown (it neither waits one out nor starts one), so the thrall windows that
+		// follow still get their slow motion. "start" was used before: deliberate, so with Adrenaline on no bar showed.
+		if (request ~== "start.bossfight")
+		{
+			int ms = intArg > 0 ? intArg : RSQSM_Clock.START_MS;
+			double depth = doubleArg > 0 ? clamp(doubleArg, 0.05, 1.0) : c.Depth();
+			return c.Trigger("bossfight", RSQSM_Clock.CAT_MINIBOSS, ms, depth, true, -1, "", false) ? 1 : 0;
+		}
 		// THE COUNTDOWN (countdown.zs): tics of real time until full speed while any slow motion runs, -1 when none
 		if (request ~== "countdown") return c.cdOn ? int(ceil(c.cdLeft)) : -1;
 		// DOWN (down.zs, v3): "down" / "down.hold" intArg player -> 1 while he is DOWN (RSQ Score leaves its lives alone then),

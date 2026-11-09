@@ -1000,6 +1000,7 @@ class RS_Row_HandCannon : RS_ScoreBonus
 // Ruger and the Moonlight pay more. The damage type names were checked against brutal22test6's own files (its
 // headshot damage types are Head and MinorHead, re-checked 2026-11-04; SCORE_SWARM_HANDOFF.md).
 // [11-09 score-fix] RSQ Monsters' MeatGrinder head shots set the same +head, asked by name (combo.zs CondOf).
+// [11-09 head shots] Score's own head check (head.zs) marks every monster's head shots +head (BD, CH, MG, packs).
 class RS_Row_Headshot : RS_ScoreBonus
 {
 	const MULT = 0.25;
@@ -1011,7 +1012,10 @@ class RS_Row_Headshot : RS_ScoreBonus
 		RS_Combo.ChainOf(ev);
 		let led = RS_ComboLedger.Get();
 		int n = ev.chainIdx.Size();
-		if (!led || n < 1 || !(led.CondAt(ev.chainIdx[n - 1]) & RS_ComboLedger.C_HEAD)) return 0.0;
+		bool head = led && n >= 1 && (led.CondAt(ev.chainIdx[n - 1]) & RS_ComboLedger.C_HEAD) != 0;
+		if (RS_ScoreHead.LogOn() && ev.victim)
+			Console.Printf("HS t%d kill %s: Score Headshot row %s", level.maptime, ev.victim.GetClassName(), head ? "PAYS" : "does not pay");
+		if (!head) return 0.0;
 		String g = RS_Rows.Gun(ev);
 		return (g ~== "Sniper" || g ~== "BrutalRevolver") ? SHARP : MULT;
 	}

@@ -1,0 +1,62 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doom Arcade VR: the Miniboss fight (mockups)</title>
+<style>
+  body { margin: 0; padding: 24px 28px 60px; background: #0e0e12; color: #e2e2e6; font: 16px/1.45 system-ui, sans-serif; }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 6px; color: #ffe7b0; }
+  h2 { font-size: 17px; font-weight: 600; margin: 28px 0 6px; color: #ffd88a; }
+  p.lead { margin: 0 0 22px; color: #a8a9b6; max-width: 1100px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(620px, 1fr)); gap: 28px; }
+  figure { margin: 0; }
+  figure a img { width: 100%; display: block; border-radius: 10px; }
+  figcaption { margin-top: 8px; color: #d6d6dc; }
+  figcaption b { color: #ffd88a; font-weight: 600; }
+  ul { color: #c8c9d2; max-width: 1100px; }
+  li { margin: 3px 0; }
+  .foot { margin-top: 30px; color: #8c8d99; font-size: 14px; max-width: 1100px; }
+  .ph { color: #ff9a6a; }
+</style></head><body>
+<h1>Doom Arcade VR: the Miniboss fight, beat by beat</h1>
+<p class="lead">Seven mockups, one per beat of the fight as decided (design/MINIBOSS_REWORK.md, "The fight, as decided"), made the
+way the arcade-language panels are: real rig frames (QuestZDoom 17.3, left eye, Doom II MAP02, the full load order) with the HUD and
+the words drawn where they would sit, in the series' own fonts and HUD art. <b>Nothing of the rework is built</b>: these are pictures.
+Click a panel for full size.</p>
+<div class="grid">
+<figure><a href="p1_arrival.png"><img src="p1_arrival.png" alt="Arrival"></a>
+<figcaption><b>1. Arrival.</b> The 1.25x miniboss and three thralls land in teleport fog; a Glow In The Dark wave of its colour rolls out; the HUD stack comes up.</figcaption></figure>
+<figure><a href="p2_shield_up.png"><img src="p2_shield_up.png" alt="Shield up"></a>
+<figcaption><b>2. Shield up.</b> Shots on it pop "Guard!" (silver flickering to white) and grey Xs bounce off; "Target!" over each thrall; the room glows cold grey.</figcaption></figure>
+<figure><a href="p3_thrall_killed.png"><img src="p3_thrall_killed.png" alt="Thrall killed"></a>
+<figcaption><b>3. Thrall killed.</b> Slow motion, its power pops out of the miniboss, the shield goes, a big pulsing "Target!"; the window step bar drains under the segments; the room turns gold.</figcaption></figure>
+<figure><a href="p4_window_missed.png"><img src="p4_window_missed.png" alt="Window missed"></a>
+<figcaption><b>4. Window missed.</b> The segment survived the window: the miniboss and its thralls blink (the tier flash) and come back a few colours higher; the shield is back.</figcaption></figure>
+<figure><a href="p5_one_on_one.png"><img src="p5_one_on_one.png" alt="One-on-one"></a>
+<figcaption><b>5. One-on-one.</b> Every segment broken: no thrall bar, its main bar in its colour draining, the thin life bars, "Target!".</figcaption></figure>
+<figure><a href="p6_life_lost.png"><img src="p6_life_lost.png" alt="Life lost"></a>
+<figcaption><b>6. Life lost.</b> The main bar empties, the next life refills it, the miniboss blinks up a colour and the room's glow takes the new colour.</figcaption></figure>
+<figure><a href="p7_death.png"><img src="p7_death.png" alt="Death"></a>
+<figcaption><b>7. Death.</b> A map-wide wave in its colour, the loot, and Score's Miniboss and Bossfight rows on the kill.</figcaption></figure>
+</div>
+
+<h2>What is real, what is drawn, what is placeholder</h2>
+<ul>
+<li><b>Real (in the rig frames):</b> the room, the 1.25x MeatGrinder baron (scale and hitbox) and the ColorfulHell imps, the teleport fogs,
+RSQ Monsters' own tier flash and colour changes (panels 4 and 6), RSQ Glow In The Dark's own events (the arrival wave, the red and blue room
+glows in panels 5 and 6), the deaths and gore, the loot (a megasphere and a soulsphere spawned for the shot), RSQ VisualRewards' Kill Rewards bits.</li>
+<li><b>Drawn with the series' own art:</b> every bar (coldcite's Top HP Bars art as RSQ SlowMo's bar, RSQSMHE/W, gen_gauges.py), the Bossfight
+skull (RSQMBSK1), SlowMo's countdown bar and hourglass (panel 3), DOWN's reward bar as the window (redrawn from downhud.zs's numbers),
+the words in RS Score's fonts (RSSCFON; the rows in RSSCFN2), the grey X (the damage-number X, VisualRewards dn_art, JFO small).</li>
+<li class="ph"><b>Placeholder art:</b> the silver shield icon (the series has no shield art yet; drawn on the skull's 16 x 16 grid);
+the sphere pop of a thrall's power (panel 3, an orange burst).</li>
+<li class="ph"><b>Graded in the mockup (not what the rig showed):</b> the cold grey room glow (panel 2: the rig's Glow In The Dark tint read olive on
+this room's brown walls) and the gold glow and slow-motion desaturation (panel 3).</li>
+<li class="ph"><b>Example values:</b> the points in panel 7 (+4000 Miniboss, +5000 Bossfight). Champions were off in this run, so the
+Boosted Legendary Champions' own colours and icons are not shown.</li>
+<li>The tier flash's white (rs_tier_flashwhite) reads grey in this room's light (panels 4 and 6).</li>
+</ul>
+<p class="foot">Backgrounds: one rig run, 2026-11-09 (the same run as RSQ Score's head-shot proof): doom2 &rarr; brutal22test6 &rarr;
+BD_VoxelPack &rarr; BD22 VR-Reloaded &rarr; LOB &rarr; Champions (chance 0) &rarr; Gun Bonsai &rarr; every RSQ pk3 &rarr; a test probe
+(src/probe, zipped into /tmp only). The monsters were spawned and killed by the probe; the glows are RSQ Glow In The Dark's own
+<code>event.wave</code> / <code>event.tint</code>. Contact sheet: <a style="color:#ffd88a" href="contact_sheet.png">contact_sheet.png</a>.
+Rebuild: <code>python3 -I src/panels.py p1 p2 p3 p4 p5 p6 p7 sheet</code>.</p>
+</body></html>

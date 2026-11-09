@@ -1,6 +1,6 @@
 // RSQ Grenade -- settings. What each does (the menu carries no notes). Server: they change the game for everyone
 // (what is given, scattered, how the grenade flies and burns). User: how YOUR hands are read.
-server bool   rsqgn_on          = true;   // the whole mod (with Brutal Doom VR Reloaded loaded it stands down, unless rsqgn_replace_bd)
+server bool   rsqgn_on          = true;   // the whole grenade (with Brutal Doom VR Reloaded loaded it stands down, unless rsqgn_replace_bd); the barrels have their own rsqgn_barrel_on
 // Replace Brutal Doom's Grenade (owner, BUGS_1.0 item 21, 2026-11-06): off, this pack stands down for BD22 VR Reloaded's own grenade (as
 // before). On, it does NOT stand down: RSQ Grenade runs with BD22 VR loaded. THE HANDSHAKE: BD22 VR Reloaded reads this cvar BY NAME
 // (CVar.FindCVar("rsqgn_replace_bd"): null when RSQ Grenade is not loaded) and stands its own grenade down while it is true.
@@ -31,3 +31,12 @@ server float  rsqgn_slowmo_speed = 0.5;   // ...this much of the way from the wo
 user   bool   rsqgn_skeet_window = true;  // Gun Bonsai VR's Skeet Window: its slow motion after a throw (nothing without the node)
 server int    rsqgn_fire_self   = 0;      // Incendiary's burning ground on players: 0 Auto (yes with Brutal Doom), 1 yes, 2 no
 user   bool   rsqgn_debug       = false;  // log the pin, the fuse, the flashes, the throw and the scatter to the console
+// THE BARRELS (barrel.zs; owner 11-09). All SERVER: the effects are spawned in the play simulation, so every machine in
+// a netgame must read the same values (a user setting here would let two machines' games differ).
+server bool   rsqgn_barrel_on   = true;   // our barrel: the blink and one of the six explosions (off: the stock barrel, untouched)
+server int    rsqgn_barrel_kind = 0;      // 0 Random (one of the six each time), or always 5 Snap, 6 Heavy, 7 Pillar, 8 Groundbreaker, 9 Slag Column, 10 Neon Crescent
+// Replace Brutal Doom's Barrels: off, with Brutal Doom loaded (its ExplosiveBarrel1) its barrels stay its own and ours stand
+// down; on, ours replace both ExplosiveBarrel and BD's ExplosiveBarrel1 (barrel.zs RSQGN_BarrelSwap says how and the limits)
+server bool   rsqgn_barrel_replace_bd = false;
+server float  rsqgn_barrel_debris = 1.0;  // how much of each blast's debris is thrown (0 none to 1 all the design has)
+server int    rsqgn_barrel_cap  = 600;    // most barrel effect actors alive at once (Quest: a long chain reaction stays cheap); past it a blast shows its first tic only

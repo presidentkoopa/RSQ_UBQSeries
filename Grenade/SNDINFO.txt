@@ -43,3 +43,34 @@ rsqgn/fx/smoke       QGSMOKE   // RS Ballistics sounds/rsb/flame/ft_lighthiss.og
 rsqgn/fx/flash       QGFLASH   // RS Ballistics sounds/rsb/blast/med1.ogg: Flash, the bang (played high)
 rsqgn/fx/stun        QGSTUN    // RS Combat FX sounds/melee/hammer/HAMRWAL.ogg: Stun, the dull thud
 rsqgn/fx/turn        QGCHARM   // RS Ballistics sounds/rsb/impact_electric/dsdevzap.ogg: Charm and Infight
+
+// THE BARRELS (barrel.zs; owner 11-09: "get some sounds from CombatFX"). RS Combat FX (the owner's own pack), copied
+// unchanged from RS Monsters' copy of it (Monsters/sounds/combatfx/, its SNDINFO:532-540 rs_fx_explode_near / _dist)
+// under QGB* lumps so no other mod's sounds are replaced. Played on the barrel at its blast: the near blast on an auto
+// channel, a SECOND copy of it low (pitch 0.7, volume 0.6) on CHAN_6 -- End of Starchild layers two sounds on its
+// barrel -- and the distant one on CHAN_7, like the grenade's rsqgn/explode + rsqgn/farexpl.
+$random rsqgn/barrel/near { rsqgn/barrel/near1 rsqgn/barrel/near2 rsqgn/barrel/near3 }
+rsqgn/barrel/near1  QGBX1     // RS Combat FX sounds/combatfx/explosions/BA_EXP01.ogg (its barrel explosions)
+rsqgn/barrel/near2  QGBX2     // ... BA_EXP02
+rsqgn/barrel/near3  QGBX3     // ... BA_EXP03
+$rolloff rsqgn/barrel/near 1100 1600
+$limit rsqgn/barrel/near 6
+$random rsqgn/barrel/far { rsqgn/barrel/far1 rsqgn/barrel/far2 rsqgn/barrel/far3 rsqgn/barrel/far4 rsqgn/barrel/far5 }
+rsqgn/barrel/far1   QGBD1     // RS Combat FX sounds/combatfx/explosions/DISTEXP1 (distant explosions)
+rsqgn/barrel/far2   QGBD2     // ... DISTEXP2
+rsqgn/barrel/far3   QGBD3     // ... DISTEXP3
+rsqgn/barrel/far4   QGBD4     // ... DISTEXP4
+rsqgn/barrel/far5   QGBD5     // ... DISTEXP5
+$volume rsqgn/barrel/far 0.5
+$rolloff rsqgn/barrel/far 3200 5400
+$limit rsqgn/barrel/far 3
+// the debris landing: RS Combat FX's small metal drop bounces (magdrops/DSBOUNC1-6, its rs_fx_magdrop_small), once a
+// blast when its first piece of debris lands
+$random rsqgn/barrel/clatter { rsqgn/barrel/clat1 rsqgn/barrel/clat2 rsqgn/barrel/clat3 rsqgn/barrel/clat4 rsqgn/barrel/clat5 rsqgn/barrel/clat6 }
+rsqgn/barrel/clat1  QGBC1     // RS Combat FX sounds/combatfx/magdrops/DSBOUNC1.ogg
+rsqgn/barrel/clat2  QGBC2     // ... DSBOUNC2.ogg
+rsqgn/barrel/clat3  QGBC3     // ... DSBOUNC3.ogg
+rsqgn/barrel/clat4  QGBC4     // ... DSBOUNC4.ogg
+rsqgn/barrel/clat5  QGBC5     // ... DSBOUNC5.ogg
+rsqgn/barrel/clat6  QGBC6     // ... DSBOUNC6.ogg
+$limit rsqgn/barrel/clatter 3

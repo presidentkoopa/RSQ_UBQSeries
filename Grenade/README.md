@@ -9,6 +9,8 @@ New since the headset pass (tested on the rig, headset check pending): shooting 
 
 New on 11-06 (rig only, not headset-confirmed; not yet tried with BD22 VR): Replace Brutal Doom's Grenade (off).
 
+New on 11-09 (built, not yet run in the engine): **Barrels**, six new barrel explosions (below).
+
 Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. On plain Doom 2
 it adds its own grenade. With Brutal Doom 22 VR Reloaded loaded it stands down completely and BD22 VR's own grenade
 takes over, unless Replace Brutal Doom's Grenade is on.
@@ -62,6 +64,44 @@ Changed your mind before cooking it? Take the ring again with your other hand an
 - You start with the grenade and 3 grenades. Carry 8, or 16 with a backpack.
 - Single grenades and packs of three are scattered beside each map's items, up to 4 singles and 2 packs a map.
 
+## Barrels
+
+Every barrel in the map is still Doom's barrel: same health, same blast damage and radius, and it goes off on the same
+tic after it is hit, so chain reactions run at the stock pace. Only the look and the sound change.
+
+**What you see.** Hit a barrel: it stands for a moment, then blinks white-hot five times (lit, dark, lit, dark, lit)
+and is gone in one of six explosions, each centred on the barrel: a big flash about 24 units up (a solid white frame,
+then the fireball, rolled at random), three flat light pops at its foot, three smaller bursts climbing the barrel one
+tic apart, pixel embers thrown up, debris that bounces, skids, settles and cools before it blinks out, a ring
+spreading flat across the floor, a floor light that steps down in bands, and blocky smoke. All pixel art, drawn
+nearest-neighbour. A clatter plays when the first debris lands.
+
+| # | Name | Its look |
+|---|---|---|
+| 5 | Snap | A quick ring flash, three yellow-brown fireballs, a light spray of hot bits that cool to charcoal |
+| 6 | Heavy | A huge circular fireball, a pastel cap ring, a red fireball choking to dark smoke; fat glowing chunks and dark barrel shrapnel that thud down |
+| 7 | Pillar | A yellow flash, then a column of blasts climbing above the barrel to a fire-ring crown and smoke; bits flung high that rain back |
+| 8 | Groundbreaker | A shock sphere and a shockwave running out flat with a dust ring and an ember scorch; grit skittering along the floor and rock chunks |
+| 9 | Slag Column | A dirty white blob choking to smoke, brown fireballs, heavy soot billowing up into a thin rising column; dust bits |
+| 10 | Neon Crescent | Arcade neon: a pink star pop, two crescents (pink and gold) flying apart with after-images, star pops, purple soot; pink and gold bits that twinkle |
+
+**Sounds** (RS Combat FX): its three barrel explosions, layered with a low, pitched-down second copy, plus a distant
+explosion on its own channel and a small metal clatter.
+
+**Options** (on the main page, under Barrels): **Barrels** (On; Off = the stock barrel, untouched), **Explosion**
+(Random, or always one of the six), **Replace Brutal Doom's Barrels** (Off), **Debris** (1.0 = all of it, down to 0).
+Test and Debug: **Effects Cap** (600 effect pieces alive at once; past it a barrel shows only its first-tic flash, so a
+long chain reaction stays cheap on Quest).
+
+**With Brutal Doom** (BD22 VR Reloaded or any Brutal Doom with its `ExplosiveBarrel1`): by default these barrels stand
+down and Brutal Doom's barrels are its own. With Replace Brutal Doom's Barrels on, ours take over both Doom's barrel
+and Brutal Doom's `ExplosiveBarrel1`; Brutal Doom's own barrel extras go with it (a replaced barrel is a stock barrel
+with our look), and any other barrel-like thing Brutal Doom spawns under another name stays its own. Both rows act on
+barrels as they spawn: change them, then start a map (Barrels Off also turns standing barrels back to the stock death).
+
+Other series mods keep seeing these as barrels (Melee's barrel kicks, SlowMo's barrel cues, Distance Grab's barrel
+grab): the barrel is a subclass of Doom's.
+
 ## How To Play
 
 1. Add RSQ_Grenade.pk3 to your load order and play in VR. Skip it if you play with BD22 VR Reloaded: its grenade does
@@ -102,7 +142,7 @@ the types you have learned, Frag Only the frag alone).
 | Row | Default | What it does |
 |---|---|---|
 | **Grenades** | | |
-| Grenades | On | The whole mod (it stands down with BD22 VR Reloaded unless the next row is on) |
+| Grenades | On | The grenade, all of it (it stands down with BD22 VR Reloaded unless the next row is on); the barrels have their own row |
 | Replace Brutal Doom's Grenade | Off | With BD22 VR Reloaded loaded, this grenade stays and BD22 VR's own stands down (BD22 VR 2.0.3y reads this setting by name; its own "Use RSQ Grenade Instead" row does the same) |
 | Start With | 3 | Grenades at a new game, or after dying (0-8) |
 | Grenades in Levels | On | Grenades beside each map's items |
@@ -113,6 +153,11 @@ the types you have learned, Frag Only the frag alone).
 | Alt Fire Changes Type | On | Alt fire cycles the grenade types |
 | Grenade Types | All Types | All Types or Frag Only (with Gun Bonsai VR, All Types = the types you have learned) |
 | Your Fire Burns You | Auto | Incendiary ground hurts you: Auto (Brutal Doom: yes), Yes, No |
+| **Barrels** | | |
+| Barrels | On | Our barrel: the blink and the six explosions (Off: the stock barrel) |
+| Explosion | Random | Random, or always #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column, #10 Neon Crescent |
+| Replace Brutal Doom's Barrels | Off | With Brutal Doom loaded, ours replace its barrels (off: its barrels stay its own) |
+| Debris | 1.0 | How much of each blast's debris is thrown |
 | **Shooting** | | |
 | Shoot Thrown Grenades | On | Shots set off thrown grenades |
 | Only in Slow-Mo | Off | ...only while RSQ SlowMo has the world slowed |
@@ -122,7 +167,7 @@ the types you have learned, Frag Only the frag alone).
 
 **Test and Debug**: Fuse (3.0 s), Throw Speed (2.5 m/s), Throw Strength (1.0), Arc (0.35); Gravity (0.27), Floor Bounce
 (0.5), Wall Bounce (0.25), Ground Drag (0.82), Shot Reach (0.35 m: 0.10 to 0.35, it only tightens), Slow-Mo Speed (0.5);
-Teeth Mouth Reach (0.15 m), Again Beyond (0.71 m), Hold (12 tics); Debug Log (Off); Reset All.
+Teeth Mouth Reach (0.15 m), Again Beyond (0.71 m), Hold (12 tics); Barrels Effects Cap (600); Debug Log (Off); Reset All.
 
 ## Works with
 
@@ -141,7 +186,8 @@ Runs alone on plain Doom 2. It finds the others by name:
   Sense, Teeth, Strong Arm, Flat Arc, Bounce, Sticky, Skeet, Skeet Window, Big Bang, Cluster, Bandolier and Scavenger.
   Freeze, Stun and Flash then use its freeze and stagger (a frozen monster shatters on the next hard hit); without it,
   this mod freezes and staggers on its own.
-- **Brutal Doom** (without BD22 VR): Incendiary's burning ground hurts you too, on Auto.
+- **Brutal Doom** (without BD22 VR): Incendiary's burning ground hurts you too, on Auto. Its barrels stay its own
+  unless Replace Brutal Doom's Barrels is on (with or without BD22 VR).
 
 ## Credits and licence
 
@@ -154,7 +200,10 @@ Runs alone on plain Doom 2. It finds the others by name:
   cook, cook-off; its held placement and measured ring point); his RS_Grenade (the teeth, the speeding red flash, the
   flight numbers, the blast damage and its port of the pack's explosion); the upgrade tree's effects and sounds from
   his RS Combat FX and RS Ballistics libraries.
-- Generated for this pack: transparent placeholder sprites.
+- **The barrel explosions**: art from the owner's RS Combat FX (embers), Reactorcore's Explosion Spriteanim Sheet
+  Minipack, Rufaswan's rips (sheet by Magma MK-II) and fx_sheet_2 (source unknown, #6 only); sounds from RS Combat FX;
+  the barrel-death structure after End of Starchild (none of its art). CREDITS.txt has every source per explosion.
+- Generated for this pack: transparent placeholder sprites; the barrel debris bits.
 - **QuestZDoom** (Emawind and Team Beef): the engine, and its off-hand weapon and hand-pose API.
 
 Every base sound is the UAC Survival Pack's own recording; nothing is synthesized.

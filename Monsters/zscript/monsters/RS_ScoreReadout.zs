@@ -37,6 +37,9 @@
 //   "split.group"  an Abyss death-split: the group number shared by the Abyss
 //                  monster that split and the lost souls it split into; 0 none
 //   "split.child"  1 a lost soul born of a death-split, else 0
+//   "headshot"     1 the newest blow was a head shot: RSQ Score's head check when loaded
+//                  and on (any monster), else the MeatGrinder set's own head band (MG only)
+//   GetString "family"  the Doom family class of a MeatGrinder body (RSQ Score's head check)
 //
 // WHERE THE STAMPS ARE PUT (two lines each, marked "RSQ Score read-out"):
 //   RS_RetierJob.Tick (RS_Retier.zs), after the swap / in-place tier: RS_TierStamp.
@@ -46,6 +49,14 @@
 
 class RSQMN_RosterService : Service
 {
+	// "family" (11-09, RSQ Score's head check): objectArg a monster -> its Doom family's class name for a MeatGrinder
+	// body ("DoomImp"), "" otherwise
+	override String GetString(String request, string stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "family") return RS_ScoreReadout.FamilyName(Actor(objectArg));
+		return "";
+	}
+
 	override int GetInt(String request, string stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		let mo = Actor(objectArg);
@@ -60,7 +71,9 @@ class RSQMN_RosterService : Service
 		if (request == "mg.death")    return RS_ScoreReadout.MGDeath(mo, intArg);
 		if (request == "mg.behave")   { let m = RS_MGMonster(mo); return m ? m.MGBehave(m.Tier) : -1; }
 		if (request == "split.group") { let s = RS_SplitStamp(mo.FindInventory("RS_SplitStamp")); return s ? s.group : 0; }
-		if (request == "headshot")    { let m = RS_MGMonster(mo); return m ? (m.mgLastWasHeadshot ? 1 : 0) : -1; }   // MG head-band hit (combo.zs CondOf; was RSQMON_Service, folded in at merge 11-09)
+		// [11-09 head shots] RSQ Score's head check answers for every monster when it is loaded and on (RS_ScoreService
+		// "headshot"); without it, the MeatGrinder set's own head band (RS_MGMonster.DamageMobj), MG only
+		if (request == "headshot")    return RS_ScoreReadout.Headshot(mo);
 		if (request == "split.child") { let s = RS_SplitStamp(mo.FindInventory("RS_SplitStamp")); return (s && s.child) ? 1 : 0; }
 		return -1;
 	}
@@ -68,6 +81,46 @@ class RSQMN_RosterService : Service
 
 class RS_ScoreReadout play
 {
+	// [11-09 head shots] the head-shot verdict: RSQ Score's (asked by name, nothing links), else MG's own band
+	static int Headshot(Actor mo)
+	{
+		if (!mo) return -1;
+		let it = ServiceIterator.Find("RS_ScoreService");
+		Service s;
+		while (s = it.Next())
+		{
+			int v = s.GetInt("headshot", "", 0, 0, mo);
+			if (v >= 0) return v;
+		}
+		let m = RS_MGMonster(mo);
+		return m ? (m.mgLastWasHeadshot ? 1 : 0) : -1;
+	}
+
+	// [11-09 head shots] the Doom family of a MeatGrinder body (it derives from no Doom class), for RSQ Score's head
+	// check (RSQMN_RosterService GetString "family"): the vanilla class name, "" not ours. CH bodies are Doom classes.
+	static String FamilyName(Actor mo)
+	{
+		if (!RS_MGMonster(mo)) return "";
+		if (mo is "RS_MGZombieman")     return "ZombieMan";
+		if (mo is "RS_MGShotgunner")    return "ShotgunGuy";
+		if (mo is "RS_MGChaingunner")   return "ChaingunGuy";
+		if (mo is "RS_MGImp")           return "DoomImp";
+		if (mo is "RS_MGDemon")         return "Demon";
+		if (mo is "RS_MGSpectre")       return "Spectre";
+		if (mo is "RS_MGLostSoul")      return "LostSoul";
+		if (mo is "RS_MGCaco")          return "Cacodemon";
+		if (mo is "RS_MGPainElemental") return "PainElemental";
+		if (mo is "RS_MGRevenant")      return "Revenant";
+		if (mo is "RS_MGBaron")         return "BaronOfHell";
+		if (mo is "RS_MGHellKnight")    return "HellKnight";
+		if (mo is "RS_MGMancubus")      return "Fatso";
+		if (mo is "RS_MGArachnotron")   return "Arachnotron";
+		if (mo is "RS_MGArchvile")      return "Archvile";
+		if (mo is "RS_MGMastermind")    return "SpiderMastermind";
+		if (mo is "RS_MGCyberdemon")    return "Cyberdemon";
+		return "";
+	}
+
 	static int SetOf(Actor mo)
 	{
 		if (!mo) return -1;
@@ -190,7 +243,7 @@ class RS_ScoreReadout play
 		if (dt == 'Fire')                          return 4;
 		if (dt == 'Ice')                           return 5;
 		if (dt == 'Explosive' || (damage >= 0 && damage >= m.SpawnHealth())) return 3;
-		if (m.mgLastWasHeadshot && (m.Tier <= 1 || RS_MGMonster.MG_DismemberTieredOn()))
+		if (Headshot(m) == 1 && (m.Tier <= 1 || RS_MGMonster.MG_DismemberTieredOn()))
 		{
 			let eh = CVar.FindCVar("rsq_mg_explodeheads");
 			bool ehOn = (!eh || eh.GetBool());
