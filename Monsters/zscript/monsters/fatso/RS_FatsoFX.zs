@@ -522,7 +522,7 @@ class RS_FatsoArmed : Actor   // CH Fatsos.txt:1265
 	}
 }
 
-class RS_FatShot2 : Actor replaces FatShot   // CH Fatsos.txt:1283
+class RS_FatShot2 : Actor   // RSQ: was "replaces FatShot"; RS_RosterHandler applies it when Monster Set = ColorfulHell |   // CH Fatsos.txt:1283
 {
 	Default
 	{

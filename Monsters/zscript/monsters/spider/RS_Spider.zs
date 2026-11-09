@@ -24,7 +24,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: Spiders.txt:1 -- Colourset9 replaces Arachnotron.
 // ---------------------------------------------------------------------------
-class RS_Colourset9 : RandomSpawner replaces Arachnotron   // CH Spiders.txt:1
+class RS_Colourset9 : RandomSpawner   // RSQ: was "replaces Arachnotron"; RS_RosterHandler applies it when Monster Set = ColorfulHell |   // CH Spiders.txt:1
 {
 	Default
 	{

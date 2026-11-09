@@ -1167,20 +1167,38 @@ server bool rs_summons_pay = false;
 // =====================================================================
 server bool rs_roster_enable = true;
 
-// MONSTER PACK SELECTOR. Three packs:
-//
-//   VANILLA  stock Doom monsters -- every replacement is cancelled
-//   RSMG     the MG set (zscript/rs_mg/), gory dismemberment deaths
-//   RSMON    the colour-tier roster (zscript/monsters/), 13 tiers/family
-//
-// RSMG and any future pack are matched against the RosterSet each monster
-// declares in its own Default block; there is no central list. A family
-// the active pack has no monster for falls through to RSMON, so a partial
-// pack never blanks a monster.
-//
-// Takes effect on the next map -- the registry and tier cache rebuild in
-// WorldLoaded.
-server string rs_roster_pack = "RSMG";
+// MONSTER SET (RSQ, owner 2026-11-08). Replaced the old string
+// rs_roster_pack (VANILLA/RSMG/RSMON). Read by RS_RosterHandler.CheckReplacement
+// (zscript/monsters/RS_Roster.zs) at every spawn; takes effect on map restart.
+//   0 Vanilla       the id monsters themselves, even with Brutal Doom loaded
+//   1 BD22          no RSQ replacement: Brutal Doom's own (Vanilla if BD is not loaded)
+//   2 MeatGrinder   the RS_MG* set
+//   3 ColorfulHell  the CH colour tiers, capped per family below (today's behaviour)
+// Menu: Radiant Silvergun Options > RSQ Monsters > Select Monster Set.
+server int rsq_monster_set = 3;
+
+// "On tier change" (RS_Retier.FullHealth): 0 keep health fraction, 1 full health on
+// an instant tier only (HF's rule), 2 always full health. CH and MeatGrinder.
+server int rsq_mon_retier_health = 1;
+
+// MeatGrinder set: HF_Monster's own options, renamed (HF CVARINFO defaults).
+//   rsq_mg_reactdeath        hf_reactdeath        reactive deaths (head-pop, gib, burn, freeze, shock, melt)
+//   rsq_mg_dismember_tiered  hf_dismember_tiered  head-pop on coloured tiers too
+//   rsq_mg_explodeheads      hf_explodeheads      heavy headshots burst the head
+//   rsq_mg_optimized_fx      hf_optimized_fx      ON = particles only (no smoke sprites / lights)
+//   rsq_mg_head_zone         hf_crit_head_zone    head band, fraction of height
+//   rsq_mg_gore_level        hf_gore_level        0 = gore bits off
+//   rsq_mg_gore_budget       hf_gore_budget       max gore bits per kill
+//   rsq_mg_deathsplit        hfmon_deathsplit     Abyss-tier MG monsters split into two lost souls
+server bool  rsq_mg_reactdeath = true;
+server bool  rsq_mg_dismember_tiered = true;
+server bool  rsq_mg_explodeheads = true;
+server bool  rsq_mg_optimized_fx = false;
+server float rsq_mg_head_zone = 0.22;
+server int   rsq_mg_gore_level = 3;   // HF had it user scope; server here because play code reads it
+server int   rsq_mg_gore_budget = 8;
+server bool  rsq_mg_deathsplit = true;
+server bool  rsq_mg_tier_icon = false;   // HF hfmon_tier_icon: the floating tier marker over coloured MG monsters
 
 server int rs_roster_zombieman = 1;
 server int rs_roster_shotgunner = 1;

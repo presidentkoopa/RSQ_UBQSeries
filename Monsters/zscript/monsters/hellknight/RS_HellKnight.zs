@@ -44,7 +44,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: Hellknights.txt:1 -- Colourset8 replaces HellKnight.
 // ---------------------------------------------------------------------------
-class RS_Colourset8 : RandomSpawner replaces HellKnight
+class RS_Colourset8 : RandomSpawner   // RSQ: was "replaces HellKnight"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

@@ -579,7 +579,7 @@ class RS_AbyssBallCH : Actor   // CH Imps.txt:674
 
 // CH: Imps.txt:961 -- CH replaces the VANILLA imp fireball with a
 // fire-damagetype version. Carried verbatim, replaces and all.
-class RS_DoomImpBall2 : Actor replaces DoomImpBall
+class RS_DoomImpBall2 : Actor   // RSQ: was "replaces DoomImpBall"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

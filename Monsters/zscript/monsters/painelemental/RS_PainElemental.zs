@@ -15,7 +15,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: thepains.txt:1 -- Colourset15 replaces PainElemental.
 // ---------------------------------------------------------------------------
-class RS_Colourset15 : RandomSpawner replaces PainElemental
+class RS_Colourset15 : RandomSpawner   // RSQ: was "replaces PainElemental"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

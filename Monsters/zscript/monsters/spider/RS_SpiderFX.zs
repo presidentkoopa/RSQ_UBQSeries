@@ -611,7 +611,7 @@ class RS_SpiderStoneRocket : Actor   // CH Spiders.txt:1399
 // ---------------------------------------------------------------------------
 // The vanilla arachnotron plasma replacement.  CH: Spiders.txt:1433.
 // ---------------------------------------------------------------------------
-class RS_ArachnotronPlasma2 : Actor replaces ArachnotronPlasma   // CH Spiders.txt:1433
+class RS_ArachnotronPlasma2 : Actor   // RSQ: was "replaces ArachnotronPlasma"; RS_RosterHandler applies it when Monster Set = ColorfulHell |   // CH Spiders.txt:1433
 {
 	Default
 	{

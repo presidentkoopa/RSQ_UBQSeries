@@ -24,7 +24,7 @@
 // The spawn dial.  CH: Zombies.txt:1 -- Colourset2 replaces ZombieMan.
 // Weights verbatim.
 // ---------------------------------------------------------------------------
-class RS_ZombieColourset : RandomSpawner replaces ZombieMan
+class RS_ZombieColourset : RandomSpawner   // RSQ: was "replaces ZombieMan"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

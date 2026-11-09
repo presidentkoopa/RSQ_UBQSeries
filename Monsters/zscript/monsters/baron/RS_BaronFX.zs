@@ -1184,7 +1184,7 @@ class RS_BluPowerBomb : Actor   // CH Barons.txt:1885
 	}
 }
 
-class RS_BaronBall2 : Actor replaces BaronBall   // CH Barons.txt:1921
+class RS_BaronBall2 : Actor   // RSQ: was "replaces BaronBall"; RS_RosterHandler applies it when Monster Set = ColorfulHell |   // CH Barons.txt:1921
 {
 	Default
 	{

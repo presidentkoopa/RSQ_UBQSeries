@@ -28,7 +28,7 @@
 // The spawn dial. CH: MASTERMINDS.txt:1 -- Colourset17 replaces
 // SpiderMastermind.
 // ---------------------------------------------------------------------------
-class RS_Colourset17 : RandomSpawner replaces SpiderMastermind
+class RS_Colourset17 : RandomSpawner   // RSQ: was "replaces SpiderMastermind"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

@@ -26,7 +26,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: Barons.txt:1 -- Colourset13 replaces BaronOfHell.
 // ---------------------------------------------------------------------------
-class RS_Colourset13 : RandomSpawner replaces BaronOfHell
+class RS_Colourset13 : RandomSpawner   // RSQ: was "replaces BaronOfHell"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

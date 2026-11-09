@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: Shotgunners.txt:1 -- Colourset4 replaces Shotgunguy.
 // ---------------------------------------------------------------------------
-class RS_ShotgunnerColourset : RandomSpawner replaces ShotgunGuy
+class RS_ShotgunnerColourset : RandomSpawner   // RSQ: was "replaces ShotgunGuy"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

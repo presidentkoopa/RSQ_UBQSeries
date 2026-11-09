@@ -1834,3 +1834,79 @@ $volume mgun2 0.5
 $volume enemysg 0.7
 $limit enemygun 4
 $limit enemysg 4
+
+// =====================================================================
+// MeatGrinder set -- zscript/monsters/meatgrinder/. Lumps in sounds/meatgrinder/.
+// From the owner's HF SNDINFO (its MG entries only), renamed mg/* and the lumps
+// MG*-prefixed so neither can clash with Brutal Doom or RS_MG's old block above.
+// HF:  enemygun enemygun / mgun2 MGFIRE / enemysg SGFIRE / STGPUMP STGPUMP /
+//      $random misc/xdeath2 { misc/xdeath2a .. f } and misc/xdeath4 { a .. c } (vol 0.7)
+// The xdeath lumps (DSXDTH2A..F, DSXDTH4A..C) are HF's sounds/hbgore/ ones, shipped
+// once as the mg/hb/gib set below; mg/xdeath2 and mg/xdeath4 (defined after that
+// set, at the end of this file) point at those files.
+// Referenced and not in the HF tree: blooddrop2 (LQDRIP4..7) and ricochet/hit (HF
+// never defined it). Those play Brutal Doom's when it is loaded.
+// =====================================================================
+mg/enemygun   Sounds/meatgrinder/MGENEGUN.ogg
+mg/mgun2      Sounds/meatgrinder/MGMGFIRE.ogg
+mg/enemysg    Sounds/meatgrinder/MGSGFIRE.ogg
+mg/stgpump    Sounds/meatgrinder/MGSTPUMP.ogg
+
+// ---------------------------------------------------------------------
+// MeatGrinder reactive deaths (RS_MGReactions.zs): HF SNDINFO's "HF_HB GORE
+// VARIETY" sets, verbatim membership, renamed hb/* -> mg/hb/* and the lumps
+// MGH* (sounds/meatgrinder/hb/). hb/burn's first member is ACIDMELT, which
+// HF also used alone as hb/brn1 for the melt death: here mg/hb/burn1.
+// ---------------------------------------------------------------------
+mg/hb/gib1       Sounds/meatgrinder/hb/MGHG01.lmp
+mg/hb/gib2       Sounds/meatgrinder/hb/MGHG02.lmp
+mg/hb/gib3       Sounds/meatgrinder/hb/MGHG03.lmp
+mg/hb/gib4       Sounds/meatgrinder/hb/MGHG04.lmp
+mg/hb/gib5       Sounds/meatgrinder/hb/MGHG05.lmp
+mg/hb/gib6       Sounds/meatgrinder/hb/MGHG06.lmp
+mg/hb/gib7       Sounds/meatgrinder/hb/MGHG07.ogg
+mg/hb/gib8       Sounds/meatgrinder/hb/MGHG08.ogg
+mg/hb/gib9       Sounds/meatgrinder/hb/MGHG09.lmp
+mg/hb/gib10      Sounds/meatgrinder/hb/MGHG10.lmp
+mg/hb/gib11      Sounds/meatgrinder/hb/MGHG11.lmp
+mg/hb/gib12      Sounds/meatgrinder/hb/MGHG12.ogg
+mg/hb/gib13      Sounds/meatgrinder/hb/MGHG13.lmp
+mg/hb/gib14      Sounds/meatgrinder/hb/MGHG14.lmp
+mg/hb/gib15      Sounds/meatgrinder/hb/MGHG15.lmp
+mg/hb/gib16      Sounds/meatgrinder/hb/MGHG16.lmp
+mg/hb/gib17      Sounds/meatgrinder/hb/MGHG17.lmp
+mg/hb/gib18      Sounds/meatgrinder/hb/MGHG18.lmp
+$random mg/hb/gib { mg/hb/gib1 mg/hb/gib2 mg/hb/gib3 mg/hb/gib4 mg/hb/gib5 mg/hb/gib6 mg/hb/gib7 mg/hb/gib8 mg/hb/gib9 mg/hb/gib10 mg/hb/gib11 mg/hb/gib12 mg/hb/gib13 mg/hb/gib14 mg/hb/gib15 mg/hb/gib16 mg/hb/gib17 mg/hb/gib18 }
+mg/hb/bone1      Sounds/meatgrinder/hb/MGHB01.ogg
+mg/hb/bone2      Sounds/meatgrinder/hb/MGHB02.ogg
+mg/hb/bone3      Sounds/meatgrinder/hb/MGHB03.ogg
+mg/hb/bone4      Sounds/meatgrinder/hb/MGHB04.ogg
+mg/hb/bone5      Sounds/meatgrinder/hb/MGHB05.ogg
+$random mg/hb/bone { mg/hb/bone1 mg/hb/bone2 mg/hb/bone3 mg/hb/bone4 mg/hb/bone5 }
+mg/hb/headpop1   Sounds/meatgrinder/hb/MGHP01.ogg
+mg/hb/headpop2   Sounds/meatgrinder/hb/MGHP02.ogg
+mg/hb/headpop3   Sounds/meatgrinder/hb/MGHP03.ogg
+mg/hb/headpop4   Sounds/meatgrinder/hb/MGHP04.ogg
+mg/hb/headpop5   Sounds/meatgrinder/hb/MGHP05.lmp
+$random mg/hb/headpop { mg/hb/headpop1 mg/hb/headpop2 mg/hb/headpop3 mg/hb/headpop4 mg/hb/headpop5 }
+mg/hb/spark1     Sounds/meatgrinder/hb/MGHS01.ogg
+mg/hb/spark2     Sounds/meatgrinder/hb/MGHS02.ogg
+mg/hb/spark3     Sounds/meatgrinder/hb/MGHS03.ogg
+mg/hb/spark4     Sounds/meatgrinder/hb/MGHS04.ogg
+$random mg/hb/spark { mg/hb/spark1 mg/hb/spark2 mg/hb/spark3 mg/hb/spark4 }
+mg/hb/ice1       Sounds/meatgrinder/hb/MGHI01.ogg
+mg/hb/ice2       Sounds/meatgrinder/hb/MGHI02.ogg
+$random mg/hb/ice { mg/hb/ice1 mg/hb/ice2 }
+mg/hb/burn1      Sounds/meatgrinder/hb/MGHR01.ogg
+mg/hb/burn2      Sounds/meatgrinder/hb/MGHR02.ogg
+mg/hb/burn3      Sounds/meatgrinder/hb/MGHR03.ogg
+$random mg/hb/burn { mg/hb/burn1 mg/hb/burn2 mg/hb/burn3 }
+mg/hb/slop1      Sounds/meatgrinder/hb/MGHL01.lmp
+mg/hb/slop2      Sounds/meatgrinder/hb/MGHL02.wav
+mg/hb/slop3      Sounds/meatgrinder/hb/MGHL03.wav
+mg/hb/slop4      Sounds/meatgrinder/hb/MGHL04.wav
+$random mg/hb/slop { mg/hb/slop1 mg/hb/slop2 mg/hb/slop3 mg/hb/slop4 }
+$random mg/xdeath2 { mg/hb/gib7 mg/hb/gib8 mg/hb/gib9 mg/hb/gib10 mg/hb/gib11 mg/hb/gib12 }
+$random mg/xdeath4 { mg/hb/gib16 mg/hb/gib17 mg/hb/gib18 }
+$volume mg/xdeath2 0.7
+$volume mg/xdeath4 0.7

@@ -1315,7 +1315,7 @@ class RS_FireBluCybMiss : Actor   // CH CYBIES.txt:2077
 // rocket". Carried verbatim, replaces and all, the same way earlier lanes
 // carried RS_DoomImpBall2 / RS_FatShot2 / RS_ArachnotronPlasma2.
 // ---------------------------------------------------------------------------
-class RS_Rocket2 : Actor replaces Rocket   // CH CYBIES.txt:2119
+class RS_Rocket2 : Actor   // RSQ: was "replaces Rocket"; RS_RosterHandler applies it when Monster Set = ColorfulHell |   // CH CYBIES.txt:2119
 {
 	Default
 	{

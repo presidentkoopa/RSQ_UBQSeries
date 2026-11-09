@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: lostsouls.txt:1 -- Colourset14 replaces Lostsoul.
 // ---------------------------------------------------------------------------
-class RS_Colourset14 : RandomSpawner replaces LostSoul
+class RS_Colourset14 : RandomSpawner   // RSQ: was "replaces LostSoul"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

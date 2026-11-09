@@ -94,7 +94,7 @@ class RS_RosterHandler : EventHandler
 	const FAM_COUNT = 17;
 	const TIER_MAX  = 13;
 
-	private CVar cvEnable, cvSet;
+	private CVar cvEnable;
 
 	// --- registered roster monsters, rebuilt per map ---
 	private Array<Class<Actor> > regClass;
@@ -127,13 +127,32 @@ class RS_RosterHandler : EventHandler
 
 	// One pass over every actor class in the game. Anything descending
 	// from RS_RosterMonster with a family declared joins the table.
+	private bool regBuilt;
+
 	private void BuildRegistry()
 	{
+		regBuilt = true;
 		regClass.Clear(); regFam.Clear(); regTier.Clear();
 		regWeight.Clear(); regSet.Clear();
 
 		for (int i = 0; i < AllActorClasses.Size(); i++)
 		{
+			// The MeatGrinder set registers the same way, through its own base
+			// (RS_MGMonster extends RS_MonsterMaster, so it cannot extend
+			// RS_RosterMonster): set 'MG', one monster per family.
+			Class<RS_MGMonster> mg = (class<RS_MGMonster>)(AllActorClasses[i]);
+			if (mg && mg != 'RS_MGMonster')
+			{
+				let md = GetDefaultByType(mg);
+				int mfam = md ? FamilyId(md.MG_Family) : -1;
+				if (mfam >= 0)
+				{
+					regClass.Push(mg); regFam.Push(mfam); regSet.Push('MG');
+					regTier.Push(1);   regWeight.Push(100);
+				}
+				continue;
+			}
+
 			Class<RS_RosterMonster> c = (class<RS_RosterMonster>)(AllActorClasses[i]);
 			if (!c) continue;
 
@@ -262,48 +281,138 @@ class RS_RosterHandler : EventHandler
 		famBuilt[fam] = true;
 	}
 
+	// =================================================================
+	// THE MONSTER SET (RSQ, 2026-11-08). One server cvar, rsq_monster_set,
+	// decides what the stock monster spawns become; it replaced the old
+	// string rs_roster_pack (VANILLA/RSMG/RSMON). Read at each spawn, so a
+	// change takes effect on the next map (or map restart).
+	//   0 Vanilla      the id classes themselves, even with Brutal Doom loaded
+	//   1 BD22         no RSQ replacement at all: whatever mod is loaded
+	//                  decides. Brutal Doom not loaded (no BD class found at
+	//                  runtime) = Vanilla.
+	//   2 MeatGrinder  the RS_MG* classes (each declares RS_MGMonster.Family)
+	//   3 ColorfulHell the CH dials, with the per-family tier caps as before
+	//                  (rs_roster_enable / rs_roster_<family>), plus CH's six
+	//                  projectile swaps. These used to be class-level
+	//                  `replaces` on the CH classes; they live here now so the
+	//                  set decides, and no other set gets them.
+	// =================================================================
+	const SET_VANILLA = 0;
+	const SET_BD22    = 1;
+	const SET_MG      = 2;
+	const SET_CH      = 3;
+
+	private CVar cvMonSet;
+	private int  bdState;    // 0 unknown, 1 yes, -1 no
+
+	// Brutal Doom, by class name only -- no hard link to it.
+	private bool BDLoaded()
+	{
+		if (bdState == 0)
+		{
+			// Names held in strings so they resolve at RUN time: a class
+			// literal is checked at compile time and fails without BD.
+			static const String BDCLS[] = { "BrutalWeapon", "Brutal_Blood", "BD_Token" };
+			bdState = -1;
+			for (int i = 0; i < BDCLS.Size(); i++)
+			{
+				Class<Actor> c = BDCLS[i];
+				if (c) { bdState = 1; break; }
+			}
+		}
+		return bdState > 0;
+	}
+
+	// CH's dial per family (was `class <dial> : RandomSpawner replaces <id>`).
+	static Name CHDial(int fam)
+	{
+		switch (fam)
+		{
+			case 0:  return 'RS_ZombieColourset';
+			case 1:  return 'RS_ShotgunnerColourset';
+			case 2:  return 'RS_ChaingunnerColourset';
+			case 3:  return 'RS_ImpColourset';
+			case 4:  return 'RS_Colourset5';
+			case 5:  return 'RS_SpectreColourset';
+			case 6:  return 'RS_Colourset7';
+			case 7:  return 'RS_Colourset14';
+			case 8:  return 'RS_Colourset15';
+			case 9:  return 'RS_Colourset8';
+			case 10: return 'RS_Colourset13';
+			case 11: return 'RS_Colourset1';
+			case 12: return 'RS_Colourset10';
+			case 13: return 'RS_Colourset9';
+			case 14: return 'RS_Colourset11';
+			case 15: return 'RS_Colourset16';
+			case 16: return 'RS_Colourset17';
+		}
+		return 'None';
+	}
+
+	// CH's projectile swaps (were `replaces` on the CH FX classes).
+	static Name CHProjectile(Name replacee)
+	{
+		switch (replacee)
+		{
+			case 'DoomImpBall':       return 'RS_DoomImpBall2';     // RS_ImpFX.zs
+			case 'CacodemonBall':     return 'RS_CacodemonBall2';   // RS_CacodemonFX.zs, CH Cacodemons.txt:1094
+			case 'BaronBall':         return 'RS_BaronBall2';       // RS_BaronFX.zs, CH Barons.txt:1921
+			case 'FatShot':           return 'RS_FatShot2';         // RS_FatsoFX.zs, CH Fatsos.txt:1283
+			case 'ArachnotronPlasma': return 'RS_ArachnotronPlasma2'; // RS_SpiderFX.zs, CH Spiders.txt:1433
+			case 'Rocket':            return 'RS_Rocket2';          // RS_CyberdemonFX.zs, CH CYBIES.txt:2119
+		}
+		return 'None';
+	}
+
 	override void CheckReplacement(ReplaceEvent e)
 	{
-		if (!cvEnable) cvEnable = CVar.FindCVar("rs_roster_enable");
-		if (!cvEnable || !cvEnable.GetBool()) return;
-		if (!e.Replacement || !e.Replacee) return;
+		if (!e.Replacee) return;
+		Name rn = e.Replacee.GetClassName();
+		int fam = FamilyId(rn);
+		Name proj = (fam < 0) ? CHProjectile(rn) : 'None';
+		if (fam < 0 && proj == 'None') return;   // not a class any set touches
 
-		int fam = FamilyId(e.Replacee.GetClassName());
-		if (fam < 0) return;
+		if (!cvMonSet) cvMonSet = CVar.FindCVar("rsq_monster_set");
+		int set = cvMonSet ? cvMonSet.GetInt() : SET_CH;
 
-		if (!cvSet) cvSet = CVar.FindCVar("rs_roster_pack");
-		Name active = cvSet ? Name(cvSet.GetString()) : 'RSMG';
-
-		// ---- 0. VANILLA -- cancel every replacement for this family -----
-		//
-		// Replacement = null, NOT = Replacee. The engine explicitly refuses
-		// to assign a replacement equal to the replacee (events.cpp:2360,
-		// the infinite-recursion guard), so writing the vanilla class back
-		// leaves the colourset in place and the flag does nothing. Null with
-		// IsFinal makes GetReplacement's `return Replacement ? Replacement
-		// : this` hand back the original class -- info.cpp:625.
-		if (active == 'VANILLA')
+		if (set == SET_BD22)
 		{
+			if (BDLoaded()) return;   // hand it to Brutal Doom untouched
+			set = SET_VANILLA;
+		}
+
+		// ---- VANILLA -- the id monster itself, whatever else is loaded ----
+		//
+		// Replacement = null, NOT = Replacee. The engine refuses a
+		// replacement equal to the replacee (the infinite-recursion guard
+		// in DStaticEventHandler::CheckReplacement), so writing the vanilla
+		// class back leaves the other mod's replacement in place. Null with
+		// IsFinal makes GetReplacement return the original class.
+		// Projectiles are left alone: Vanilla is about which MONSTERS spawn.
+		if (set == SET_VANILLA)
+		{
+			if (fam < 0) return;
 			e.Replacement = null;
 			e.IsFinal = true;
 			return;
 		}
 
-		// ---- 1. the active pack, if it covers this family ---------------
-		if (active != 'RSMON')
+		// ---- MEATGRINDER ----
+		if (set == SET_MG)
 		{
-			int cap = FamilyCap(fam);
+			if (fam < 0) return;   // MG fires the stock projectiles
+			// Map things spawn BEFORE WorldLoaded, so the registry is built
+			// here on first use as well.
+			if (!regBuilt) BuildRegistry();
 			int total = 0;
 			for (int i = 0; i < regClass.Size(); i++)
-				if (regFam[i] == fam && regSet[i] == active && regTier[i] <= cap)
-					total += regWeight[i];
-
+				if (regFam[i] == fam && regSet[i] == 'MG') total += regWeight[i];
 			if (total > 0)
 			{
 				int roll = random[RSRoster](0, total - 1);
 				for (int i = 0; i < regClass.Size(); i++)
 				{
-					if (regFam[i] != fam || regSet[i] != active || regTier[i] > cap) continue;
+					if (regFam[i] != fam || regSet[i] != 'MG') continue;
 					roll -= regWeight[i];
 					if (roll < 0)
 					{
@@ -313,37 +422,54 @@ class RS_RosterHandler : EventHandler
 					}
 				}
 			}
-			// Falls through deliberately: the active pack has no monster for
-			// this family, so RS_Mon covers it rather than the family
-			// vanishing. A pack is allowed to be partial.
+			// No MG monster for this family (cannot happen with all 17
+			// loaded): the id monster, not a silent CH fallback.
+			e.Replacement = null;
+			e.IsFinal = true;
+			return;
 		}
 
-		// ---- 2. RS_Mon (the colour tiers), tier-capped -------------------
-		int cap = FamilyCap(fam);
-		if (cap >= TIER_MAX) return;   // uncapped: hand it back to the dial untouched
-
-		if (!famBuilt[fam] || famCap[fam] != cap)
-			BuildCHFamily(fam, e.Replacement, cap);
-
-		if (famCount[fam] <= 0) return;
-
-		int start = famStart[fam];
-		int total = 0;
-		for (int i = 0; i < famCount[fam]; i++)
-			total += chWeight[start + i];
-		if (total <= 0) return;
-
-		int roll = random[RSRoster](0, total - 1);
-		for (int i = 0; i < famCount[fam]; i++)
+		// ---- COLORFUL HELL ----
+		if (proj != 'None')
 		{
-			roll -= chWeight[start + i];
-			if (roll < 0)
+			Class<Actor> pc = proj;
+			if (pc) { e.Replacement = pc; e.IsFinal = true; }
+			return;
+		}
+
+		Class<Actor> dial = CHDial(fam);
+		if (!dial) return;
+
+		if (!cvEnable) cvEnable = CVar.FindCVar("rs_roster_enable");
+		int cap = (cvEnable && cvEnable.GetBool()) ? FamilyCap(fam) : TIER_MAX;
+		if (cap < TIER_MAX)
+		{
+			if (!famBuilt[fam] || famCap[fam] != cap)
+				BuildCHFamily(fam, dial, cap);
+
+			int start = famStart[fam];
+			int total = 0;
+			for (int i = 0; i < famCount[fam]; i++)
+				total += chWeight[start + i];
+			if (total > 0)
 			{
-				e.Replacement = chName[start + i];
-				e.IsFinal = true;
-				return;
+				int roll = random[RSRoster](0, total - 1);
+				for (int i = 0; i < famCount[fam]; i++)
+				{
+					roll -= chWeight[start + i];
+					if (roll < 0)
+					{
+						Class<Actor> pick = chName[start + i];
+						if (pick) { e.Replacement = pick; e.IsFinal = true; return; }
+						break;
+					}
+				}
 			}
 		}
+		// Uncapped (or nothing under the cap): the family's own dial, which
+		// is what the class-level `replaces` used to hand back.
+		e.Replacement = dial;
+		e.IsFinal = true;
 	}
 
 	private int FamilyCap(int fam)

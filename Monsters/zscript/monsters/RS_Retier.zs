@@ -683,11 +683,14 @@ class RS_TierLadder
 // monster that flashes and THEN changes reads as deliberate where one that
 // snaps reads as a bug. Delay is random 45..105 tics, so a room ripples.
 //
-// THE TELL is a bBRIGHT flicker that accelerates into the swap. RS_MonsterMaster
-// describes an additive RenderStyle flash; that needs reading a monster's
-// current RenderStyle back, which nothing in this tree does, and getting it
-// wrong would quietly ruin the spectre and lost-soul families, whose
-// transparency IS their identity. A flag toggle cannot.
+// THE TELL is HF's tier-change flash (owner 2026-11-09: "flash is important,
+// it's how monsters change tier in real time"; it applies to ALL RSQ monsters),
+// ported from HF_Monster.zs SetTier/Tick: a random 5..25-tic wait, and every 3
+// tics the monster alternates between the flash translation (rs_tier_flashwhite,
+// or rs_tier_flashblack when the target tier is White, 11) and its ORIGINAL
+// translation, saved at job start and restored (some CH colours carry one).
+// Then the swap (CH) or the in-place tier (MeatGrinder). One flash, both sets.
+// It replaced a bBRIGHT flicker (45..105 tics).
 // ============================================================================
 class RS_Retier play
 {
@@ -704,12 +707,20 @@ class RS_Retier play
 	static void Request(Actor mo, int tier, bool instant = false)
 	{
 		if (!mo || mo.health <= 0) return;
-		int fam = RS_TierLadder.FamilyOf(mo.GetClassName());
-		if (fam < 0) return;                     // not one of ours
 		tier = clamp(tier, 1, RS_TierLadder.MaxTier());
-		if (RS_TierLadder.TierOf(mo.GetClassName()) == tier) return;
+		int fam = RS_TierLadder.FamilyOf(mo.GetClassName());
+		// Not on the CH ladder but a monster that tiers IN PLACE (the
+		// MeatGrinder set, RS_MGMonster). Same ladder numbers, same flash.
+		let mg = RS_MGMonster(mo);
+		if (fam < 0 && !mg) return;              // not one of ours
+		if (TierNowOf(mo) == tier && !JobFor(mo)) return;
 
-		if (instant) { Swap(mo, tier); return; }
+		if (instant)
+		{
+			if (mg) mg.MG_ApplyTierNow(tier, true);
+			else    Swap(mo, tier, true);
+			return;
+		}
 
 		// Already queued? Re-target instead of stacking a second job, so
 		// repeated calls cannot double-swap.
@@ -719,13 +730,35 @@ class RS_Retier play
 		let nj = RS_RetierJob(new("RS_RetierJob"));
 		nj.mo         = mo;
 		nj.targetTier = tier;
-		nj.deadline   = level.time + random(45, 105);
-		nj.nextBeat   = level.time;
-		nj.wasBright  = mo.bBRIGHT;
+		nj.timer      = random(5, 25);   // HF: load-balancer AND "charging" beat
+		nj.ticker     = 0;
+		nj.origTrans  = mo.Translation;
+	}
+
+	// RSQ Monsters > "On tier change" (rsq_mon_retier_health, owner 2026-11-09):
+	//   0 keep the health fraction already lost
+	//   1 full health on an INSTANT tier only, the fraction on a live one (HF's rule, default)
+	//   2 always full health
+	// Read by Swap (CH) and RS_MGMonster.ApplyTier (MeatGrinder).
+	static bool FullHealth(bool instant)
+	{
+		let cv = CVar.FindCVar("rsq_mon_retier_health");
+		int mode = cv ? cv.GetInt() : 1;
+		return mode >= 2 || (mode == 1 && instant);
+	}
+
+	// The tier an actor is on: CH by class, MeatGrinder by its own Tier.
+	static int TierNowOf(Actor mo)
+	{
+		if (!mo) return -1;
+		if (RS_TierLadder.FamilyOf(mo.GetClassName()) >= 0)
+			return RS_TierLadder.TierOf(mo.GetClassName());
+		let mg = RS_MGMonster(mo);
+		return mg ? mg.Tier : -1;
 	}
 
 	// The swap. Returns the new monster, or null if nothing changed.
-	static Actor Swap(Actor mo, int tier)
+	static Actor Swap(Actor mo, int tier, bool instant = false)
 	{
 		if (!mo) return null;
 		int fam = RS_TierLadder.FamilyOf(mo.GetClassName());
@@ -762,7 +795,7 @@ class RS_Retier play
 
 		let nd = GetDefaultByType(nc);
 		if (nd && nd.Health > 0)
-			a.health = max(1, int(nd.Health * frac));
+			a.health = FullHealth(instant) ? nd.Health : max(1, int(nd.Health * frac));
 
 		// It was already awake and fighting -- do not make it re-notice.
 		if (mo.target && a.SeeState)
@@ -779,34 +812,35 @@ class RS_Retier play
 class RS_RetierJob : Thinker
 {
 	Actor mo;
-	int   targetTier, deadline, nextBeat, phase;
-	bool  wasBright;
+	int   targetTier, timer, ticker;
+	TranslationID origTrans;   // the monster's own colour, restored between flashes
 
 	override void Tick()
 	{
 		if (!mo || mo.health <= 0)
 		{
-			if (mo) mo.bBRIGHT = wasBright;
+			if (mo) mo.Translation = origTrans;
 			Destroy();
 			return;
 		}
 		if (level.isFrozen()) return;
 
-		if (level.time >= deadline)
-		{
-			mo.bBRIGHT = wasBright;
-			RS_Retier.Swap(mo, targetTier);
-			Destroy();
-			return;
-		}
+		// HF_Monster.Tick, verbatim in shape: every 3 tics the target tier's
+		// flash colour, then the monster's own colour.
+		ticker++;
+		if ((ticker / 3) % 2 == 0)
+			mo.A_SetTranslation(targetTier == 11 ? "rs_tier_flashblack" : "rs_tier_flashwhite");
+		else
+			mo.Translation = origTrans;
 
-		// Beat length shrinks from ~10 tics to 1 as the deadline nears. The
-		// acceleration IS the signal that something is about to change.
-		if (level.time >= nextBeat)
+		if (timer > 0) timer--;
+		if (timer <= 0)
 		{
-			phase++;
-			mo.bBRIGHT = (phase & 1) ? true : wasBright;
-			nextBeat = level.time + clamp((deadline - level.time) / 6, 1, 10);
+			mo.Translation = origTrans;
+			let mg = RS_MGMonster(mo);
+			if (mg) mg.MG_ApplyTierNow(targetTier);   // its new tint comes with it
+			else    RS_Retier.Swap(mo, targetTier);
+			Destroy();
 		}
 	}
 }
@@ -836,9 +870,11 @@ class RS_RetierHandler : EventHandler
 			let a = AimedAt(e.Player);
 			if (!a) { Console.Printf("RETIER: nothing aimed at"); return; }
 			int f = RS_TierLadder.FamilyOf(a.GetClassName());
+			let mm = RS_MGMonster(a);
 			Console.Printf("RETIER: %s -- family %s, tier %d", a.GetClassName(),
-				f < 0 ? "not ours" : String.Format("%s", RS_TierLadder.DialOf(f)),
-				RS_TierLadder.TierOf(a.GetClassName()));
+				f >= 0 ? String.Format("%s", RS_TierLadder.DialOf(f))
+				       : (mm ? String.Format("MeatGrinder %s", mm.MG_Family) : "not ours"),
+				f >= 0 ? RS_TierLadder.TierOf(a.GetClassName()) : (mm ? mm.Tier : 0));
 			return;
 		}
 		if (e.Name ~== "rs_retier" || e.Name ~== "rs_retier_up")
@@ -846,7 +882,7 @@ class RS_RetierHandler : EventHandler
 			let a = AimedAt(e.Player);
 			if (!a) { Console.Printf("RETIER: nothing aimed at"); return; }
 			int t = (e.Name ~== "rs_retier_up")
-			      ? RS_TierLadder.TierOf(a.GetClassName()) + 1 : e.Args[0];
+			      ? RS_Retier.TierNowOf(a) + 1 : e.Args[0];
 			Console.Printf("RETIER: %s -> tier %d", a.GetClassName(), t);
 			RS_Retier.Request(a, t);
 			return;
@@ -858,7 +894,7 @@ class RS_RetierHandler : EventHandler
 			Actor a;
 			while (a = Actor(it.Next()))
 				if (a.bISMONSTER && a.health > 0
-				    && RS_TierLadder.FamilyOf(a.GetClassName()) >= 0)
+				    && RS_Retier.TierNowOf(a) >= 0)
 				{ RS_Retier.Request(a, e.Args[0]); n++; }
 			Console.Printf("RETIER: queued %d monsters for tier %d", n, e.Args[0]);
 			return;

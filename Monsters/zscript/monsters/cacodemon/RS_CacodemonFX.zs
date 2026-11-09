@@ -751,7 +751,7 @@ class RS_FireBluCacoBall2 : Actor   // CH Cacodemons.txt:1066 -- the fire it she
 	}
 }
 
-class RS_CacodemonBall2 : Actor replaces CacodemonBall   // CH Cacodemons.txt:1094 -- "CacodemonBall2 replaces Cacodemonball"
+class RS_CacodemonBall2 : Actor   // RSQ: was "replaces CacodemonBall"; RS_RosterHandler applies it when Monster Set = ColorfulHell |   // CH Cacodemons.txt:1094 -- "CacodemonBall2 replaces Cacodemonball"
 {
 	Default
 	{

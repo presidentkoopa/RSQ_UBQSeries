@@ -41,7 +41,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: Fatsos.txt:1 -- Colourset10 replaces Fatso.
 // ---------------------------------------------------------------------------
-class RS_Colourset10 : RandomSpawner replaces Fatso
+class RS_Colourset10 : RandomSpawner   // RSQ: was "replaces Fatso"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

@@ -20,7 +20,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: Cacodemons.txt:1 -- Colourset7 replaces Cacodemon.
 // ---------------------------------------------------------------------------
-class RS_Colourset7 : RandomSpawner replaces Cacodemon
+class RS_Colourset7 : RandomSpawner   // RSQ: was "replaces Cacodemon"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

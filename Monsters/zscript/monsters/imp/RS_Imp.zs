@@ -8,7 +8,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: Imps.txt:1 -- Colourset3 replaces DoomImp.
 // ---------------------------------------------------------------------------
-class RS_ImpColourset : RandomSpawner replaces DoomImp
+class RS_ImpColourset : RandomSpawner   // RSQ: was "replaces DoomImp"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

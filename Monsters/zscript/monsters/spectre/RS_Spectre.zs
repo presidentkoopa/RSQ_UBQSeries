@@ -56,7 +56,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: spectres.txt:1 -- Colourset6 replaces Spectre.
 // ---------------------------------------------------------------------------
-class RS_SpectreColourset : RandomSpawner replaces Spectre
+class RS_SpectreColourset : RandomSpawner   // RSQ: was "replaces Spectre"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

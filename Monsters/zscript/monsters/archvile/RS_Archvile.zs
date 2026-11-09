@@ -57,7 +57,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: Archviles.txt:1 -- Colourset11 replaces Archvile.
 // ---------------------------------------------------------------------------
-class RS_Colourset11 : RandomSpawner replaces Archvile
+class RS_Colourset11 : RandomSpawner   // RSQ: was "replaces Archvile"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

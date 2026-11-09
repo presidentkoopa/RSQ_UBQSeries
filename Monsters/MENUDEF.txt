@@ -2,6 +2,62 @@
 // Submenu points at a menu that is not here. Rows whose cvar or netevent this
 // pack does not provide are dropped.
 
+// ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
+// The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
+// parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
+// protected option menu instead of replacing it); the link row removes any earlier copy of itself,
+// so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionMenu "RSQ_RSOptions" protected
+{
+	Class "RSQMN_RSMenu"
+	Title "RADIANT SILVERGUN OPTIONS"
+}
+
+AddOptionMenu "OptionsMenu"
+{
+	RSQMNRSLink "Radiant Silvergun Options", "RSQ_RSOptions"
+}
+
+AddOptionMenu "RSQ_RSOptions"
+{
+	Submenu "RSQ Monsters", "RSQMN_Options"
+}
+// ----------------------------------------------------------------------------------------------------
+
+OptionValue "RSQMN_RetierHealth"
+{
+	0, "Keep health fraction"
+	1, "Full health (instant only, HF)"
+	2, "Always full health"
+}
+
+OptionValue "RSQMN_MonsterSet"
+{
+	0, "Vanilla"
+	1, "BD22"
+	2, "MeatGrinder"
+	3, "ColorfulHell"
+}
+
+// RSQ Monsters' page under Radiant Silvergun Options. Takes effect on map restart.
+OptionMenu "RSQMN_Options"
+{
+	Title "RSQ MONSTERS"
+	StaticText ""
+	Option "Select Monster Set", "rsq_monster_set", "RSQMN_MonsterSet"
+	Option "On tier change", "rsq_mon_retier_health", "RSQMN_RetierHealth"
+
+	StaticText ""
+	StaticText "MeatGrinder", "Gold"
+	Option "Reactive Deaths", "rsq_mg_reactdeath", "OnOff"
+	Option "Head-Pop on Coloured Tiers", "rsq_mg_dismember_tiered", "OnOff"
+	Option "Exploding Heads", "rsq_mg_explodeheads", "OnOff"
+	Option "Abyss Split", "rsq_mg_deathsplit", "OnOff"
+	Option "Tier Icons", "rsq_mg_tier_icon", "OnOff"
+	Option "Optimized Effects", "rsq_mg_optimized_fx", "OnOff"
+	Slider "Gore Bits per Kill", "rsq_mg_gore_budget", 0, 16, 1, 0
+}
+
 AddOptionMenu "OptionsMenu"
 {
 	StaticText ""
@@ -298,14 +354,9 @@ OptionMenu "RS_RosterOptions"
 	StaticText "Off hands every family back to its own dial.", "DarkGray"
 	StaticText " "
 
-	StaticText "Which Roster", "Cyan"
-	Option "Monster Pack", "rs_roster_pack", "RS_RosterSet"
-	StaticText "Vanilla: stock Doom, every replacement cancelled.", "DarkGray"
-	StaticText "RS_MG:   gory dismemberment deaths. Covers Zombieman and", "DarkGray"
-	StaticText "         Shotgunner so far; the rest fall to RS_Mon.", "DarkGray"
-	StaticText "RS_Mon:  the thirteen colour tiers, capped per family below.", "DarkGray"
-	StaticText "Takes effect on the next map.", "DarkGray"
-	StaticText " "
+	// "Which Roster" / "Monster Pack" (rs_roster_pack) removed 2026-11-08: the
+	// set is chosen by Select Monster Set on the RSQ Monsters page
+	// (rsq_monster_set). These caps apply when that set is ColorfulHell.
 
 	StaticText "Ladder", "Cyan"
 	StaticText "1 Common  2 Green  3 Blue  4 Purple  5 Yellow  6 Red", "DarkGray"

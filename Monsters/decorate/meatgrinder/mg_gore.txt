@@ -1,0 +1,1836 @@
+// RSQ Monsters -- MeatGrinder set: mg_gore.txt
+// From the owner's HF tree (Decorate/meatgrinder_gore.txt): Sergeant Mark IV's Meatgrinder. Only the actors the
+// seventeen RS_MG* monsters reach are kept; every actor name is MG_-prefixed and every sprite prefix
+// this set ships is renamed MGxx, so nothing here can clash with Brutal Doom or the rest of RSQ Monsters.
+
+Actor MG_FlyingBloodParticle
+{
+PROJECTILE
++MISSILE
++THRUACTORS
++CLIENTSIDEONLY
++BOUNCEONCEILINGS
+-NOGRAVITY
+Radius 2
+Height 2
+Gravity 0.7
+Speed 5
+Decal MG_BrutalBloodSuper
+States
+{
+	Spawn:
+	MGAH ABCDEFGHIJ 2
+	MGAH J 100
+	Stop
+	Death:
+	XDeath:
+	Crash:
+	MGBX FGHIJJKL 2
+	Stop
+	NoSpawn:
+	Splash:
+	TNT1 A 0
+	Stop
+}}
+
+Actor MG_FlyingBloodParticleFast: MG_FlyingBloodParticle
+{
+Speed 10
+-BOUNCEONWALLS
+Decal MG_BrutalBloodSuper
+}
+
+Actor MG_FlyingBloodParticleCrushed: MG_FlyingBloodParticleFast
+{
+Speed 2
++NOCLIP
++NOGRAVITY
+States
+{
+	Spawn:
+	MGAH ABCDEFGHIJ 2
+	Stop
+}}
+
+Actor MG_FlyingBloodParticleBig: MG_FlyingBloodParticle
+{
+Speed 8
+Gravity 0.5
+States
+{
+	Spawn:
+	MGAB ABCDEF 3
+	MGAH F 100
+	Stop
+	Death:
+	XDeath:
+	Crash:
+	MGBX FGHIJJKL 2
+	Stop
+}}
+
+Actor MG_FlyingBloodParticleHuge: MG_FlyingBloodParticleBig
+{
+Speed 14
+Scale 2.0
+Gravity 0.8
+}
+
+Actor MG_XDeathArm: MG_FlyingBloodParticle
+{
++BOUNCEONFLOORS
++MOVEWITHSECTOR
+BounceCount 2
+SeeSound "mg/xdeath4"
+States
+{
+	Spawn:
+	MGBS ABCDEFG 3
+	Loop
+
+	Death:
+	MGBS H 1
+	TNT1 A 0 A_QueueCorpse
+	MGBS H -1
+	Stop
+}}
+
+Actor MG_XDeathBlackArm: MG_FlyingBloodParticle
+{
+States
+{
+	Spawn:
+	MGAV ABCDEFG 3
+	Loop
+
+	Death:
+	MGAV E 1
+	TNT1 A 0 A_QueueCorpse
+	MGAV E -1
+	Stop
+}}
+
+Actor MG_XZombieManLeg: MG_XDeathArm
+{
+-BOUNCEONFLOORS
+States
+{
+	Spawn:
+	MGAY ABCDEFGH 4
+	Loop
+
+	Death:
+	TNT1 A 0 A_Jump(128, "Death2")
+	MGAY I 1
+	TNT1 A 0 A_QueueCorpse
+	MGAY I -1
+	Stop
+
+	Death2:
+	MGAY J 1
+	TNT1 A 0 A_QueueCorpse
+	MGAY J -1
+	Stop
+}}
+
+Actor MG_XShotgunnerLeg: MG_XDeathArm
+{
+-BOUNCEONFLOORS
+States
+{
+	Spawn:
+	MGAY ABCDEFGH 4
+	Loop
+
+	Death:
+	TNT1 A 0 A_Jump(128, "Death2")
+	MGAY I 1
+	TNT1 A 0 A_QueueCorpse
+	MGAY I -1
+	Stop
+
+	Death2:
+	MGAY J 1
+	TNT1 A 0 A_QueueCorpse
+	MGAY J -1
+	Stop
+}}
+
+Actor MG_XDeathImpArm: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAW ABCDEFGH 3
+	Loop
+
+	Death:
+	MGAW I 1
+	TNT1 A 0 A_QueueCorpse
+	MGAW I -1
+	Stop
+}}
+
+Actor MG_XDeathImpLeg: MG_XZombieManLeg
+{
+States
+{
+	Spawn:
+	MGAZ ABCDEFGH 4
+	Loop
+
+	Death:
+	TNT1 A 0 A_Jump(128, "Death2")
+	MGAZ I 1
+	TNT1 A 0 A_QueueCorpse
+	MGAZ I -1
+	Stop
+
+	Death2:
+	MGAZ I 1
+	TNT1 A 0 A_QueueCorpse
+	MGAZ I -1
+	Stop
+}}
+
+Actor MG_XDeathDemonArm: MG_XZombieManLeg
+{
+States
+{
+	Spawn:
+	MGAX ABCDEFGH 4
+	Loop
+
+	Death:
+	TNT1 A 0 A_Jump(128, "Death2")
+	MGAX I 1
+	TNT1 A 0 A_QueueCorpse
+	MGAX I -1
+	Stop
+
+	Death2:
+	MGAX I 1
+	TNT1 A 0 A_QueueCorpse
+	MGAX I -1
+	Stop
+}}
+
+Actor MG_XDeathSpiderLeg: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGBW ABCDEFGH 3
+	Loop
+
+	Death:
+	MGBW I 1
+	TNT1 A 0 A_QueueCorpse
+	MGBW I -1
+	Stop
+}}
+
+Actor MG_FatsoArm: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGA3 ABCDEFG 3
+	Loop
+
+	Death:
+	MGA3 H 1
+	TNT1 A 0 A_QueueCorpse
+	MGA3 H -1
+	Stop
+}}
+
+Actor MG_GibEyeball: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAG EFGH 4
+	Loop
+
+	Death:
+	MGAG E 1
+	TNT1 A 0 A_QueueCorpse
+	MGAG E -1
+	Stop
+}}
+
+Actor MG_GibTeeth: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAG ABCD 4
+	Loop
+
+	Death:
+	MGAG A 1
+	TNT1 A 0 A_QueueCorpse
+	MGAG A -1
+	Stop
+}}
+
+Actor MG_CyberGib1: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGB1 ABCDEFG 3
+	Loop
+
+	Death:
+	MGB1 H 1
+	TNT1 A 0 A_QueueCorpse
+	MGB1 H -1
+	Stop
+}}
+
+Actor MG_CyberGib2: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAQ ABCDEFG 3
+	Loop
+
+	Death:
+	MGAQ B 1
+	TNT1 A 0 A_QueueCorpse
+	MGAQ B -1
+	Stop
+}}
+
+Actor MG_CyberGib3: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAP ABCDEFG 3
+	Loop
+
+	Death:
+	MGAP E 1
+	TNT1 A 0 A_QueueCorpse
+	MGAP E -1
+	Stop
+}}
+
+Actor MG_CyberGib4: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAO ABCDEFG 3
+	Loop
+
+	Death:
+	MGAO E 1
+	TNT1 A 0 A_QueueCorpse
+	MGAO E -1
+	Stop
+}}
+
+Actor MG_RevenantGib1: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAE ABCDEFG 3
+	Loop
+
+	Death:
+	MGAD E 1
+	TNT1 A 0 A_QueueCorpse
+	MGAD E -1
+	Stop
+}}
+
+Actor MG_RevenantGib3: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAF ABCD 6
+	Loop
+
+	Death:
+	MGAF A 1
+	TNT1 A 0 A_QueueCorpse
+	MGAF A -1
+	Stop
+}}
+
+Actor MG_RevenantGib2: MG_XDeathArm
+{
+States
+{
+	Spawn:
+	MGAE ABCDEFG 3
+	Loop
+
+	Death:
+	MGAE E 1
+	TNT1 A 0 A_QueueCorpse
+	MGAE E -1
+	Stop
+}}
+
+ACTOR MG_XDeath1
+{
+    Radius 1
+    Height 1
+    Speed 0
+    Scale 0.6
+	Mass 1
+    +NOBLOCKMAP
+	+MISSILE
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +CLIENTSIDEONLY
+	-DONTSPLASH
+	+THRUGHOST
+	+THRUACTORS
+	+FLOORCLIP
+	Mass 1
+    States
+    {
+    Spawn:
+	    MGAB ABCDEFGHI 2
+        Stop
+    Death:
+		MGBX FF 3
+		TNT1 A 0 A_SpawnItem("MG_GreatBloodSpot")
+		Stop
+	Splash:
+	NoSpawn:
+		TNT1 A 0
+		Stop
+    }
+}
+
+ACTOR MG_XDeath1b: MG_XDeath1
+{
+    Speed 5
+	+BOUNCEONWALLS
+	States
+	{
+    Death:
+		MGBX FF 3
+		TNT1 A 0 A_SpawnItem("MG_GreatBloodSpot2")
+		Stop
+    }
+}
+
+ACTOR MG_CeilingBloodChecker: MG_FlyingBloodParticle
+{
+    Speed 12
+	Mass 1
+	-BOUNCEONCEILINGS
+    States
+    {
+    Spawn:
+	    TNT1 A 5
+        Stop
+    Death:
+		TNT1 A 0
+		TNT1 A 0 A_CheckCeiling("Ceiling")
+		Stop
+	Splash:
+	NoSpawn:
+		TNT1 A 0
+		Stop
+	Ceiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItem("MG_CeilBloodTinyBloodSpawnerSmall")
+		TNT1 A 0 A_SpawnItem("MG_CeilBloodSpot")
+		Stop
+    }
+}
+
+Actor MG_GreatBloodSpot
+{
++CLIENTSIDEONLY
++THRUACTORS
++DONTGIB
++NOCLIP
+XScale 1.0
+YScale 0.3
+Radius 1
+Height 1
+States
+{
+	Spawn:
+	MGAH C 1
+	TNT1 A 0 A_SetAngle(random (0, 360))
+	MGA5 A 0 A_Jump(255, "Spawn1", "Spawn2", "Spawn3", "Spawn4", "Spawn5", "Spawn6", "spawn7", "spawn8", "spawn9", "live")
+
+	Spawn1:
+	MGA5 A 0 A_SetScale(1.08, 0.38)
+	Goto Live
+
+	Spawn2:
+	MGA5 A 0 A_SetScale(1.06, 0.36)
+	Goto Live
+
+	Spawn3:
+	MGA5 A 0 A_SetScale(1.04, 0.34)
+	Goto Live
+
+	Spawn4:
+	MGA5 A 0 A_SetScale(1.02, 0.32)
+	Goto Live
+
+	Spawn5:
+	MGA5 A 0 A_SetScale(0.98, 0.28)
+	Goto Live
+
+	Spawn6:
+	MGA5 A 0 A_SetScale(0.96, 0.24)
+	Goto Live
+
+	Spawn7:
+	MGA5 A 0 A_SetScale(0.94, 0.22)
+	Goto Live
+
+	Spawn8:
+	MGA5 A 0 A_SetScale(0.92, 0.20)
+	Goto Live
+
+	Spawn9:
+	MGA5 A 0 A_SetScale(0.90, 0.18)
+	Goto Live
+
+	Live:
+	MGAH C 1 A_QueueCorpse
+	MGAH C -1
+	Stop
+}
+}
+
+Actor MG_GreatBloodSpot2: MG_GreatBloodSpot
+{
+Radius 1
+}
+
+Actor MG_CeilBloodSpot: MG_GreatBloodSpot2
+{
++NOGRAVITY
+XScale 0.6
+YScale 0.15
+Radius 1
+Gravity 0.0
+Height 1
+States
+{
+	Spawn:
+	MGAH C 1
+	TNT1 A 0 A_SetAngle(random (0, 360))
+	MGAH C 1 A_QueueCorpse
+	TNT1 A 0 A_SpawnItem ("MG_CeilBloodSpawner")
+	Live:
+	MGAH C 10 ThrustThingZ(0, 20, 0, 1)
+	Loop
+}
+}
+
+ACTOR MG_CeilBloodSpawner
+{
+	+NOGRAVITY
+	+THRUACTORS
+	+NOCLIP
+	Scale 0.5
+	 States
+		{
+		 Spawn:
+			  TNT1 A 0
+			  TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("MG_BloodDripingFromCeilingBig", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 10 A_SpawnItemEx ("MG_BloodDripingFromCeilingBig", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 15 A_SpawnItemEx ("MG_BloodDripingFromCeiling", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 20 A_SpawnItemEx ("MG_BloodDripingFromCeiling", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  stop 
+		}
+}
+
+ACTOR MG_CeilBloodTinyBloodSpawnerSmall: MG_CeilBloodSpawner
+{
+	 States
+		{
+		 Spawn:
+			  TNT1 A 0
+			  TNT1 AAAAAAAAAAAAAA 5 A_SpawnItemEx ("MG_BloodDripingFromCeiling", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 10 A_SpawnItemEx ("MG_BloodDripingFromCeiling", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 16 A_SpawnItemEx ("MG_BloodDripingFromCeiling", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 26 A_SpawnItem ("MG_BloodDripingFromCeiling")
+			  stop
+		}
+}
+
+ACTOR MG_BloodDripingFromCeiling: MG_FlyingBloodParticle
+{
+	+THRUACTORS
+	+CLIENTSIDEONLY
+	-FORCEXYBILLBOARD
+	+FORCEYBILLBOARD
+	+TOUCHY
+	Gravity 0.6
+	Radius 2
+	Height 1
+	XScale 0.1
+	YScale 0.2
+     States
+		{
+		 Spawn:
+		   TNT1 A 0
+		   TNT1 A 0 A_Jump(230, "NoSpawn")
+		   TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+		   MGAC Z 500
+		   Stop
+		   
+		  Death:
+			 TNT1 A 0
+			 TNT1 A 0 A_PlaySound("blooddrop2")
+			 TNT1 A 0 A_SetScale(1.0, 1.0)
+			 MGBX FFGHIJKL 2
+			 stop 
+		}
+}
+
+ACTOR MG_BloodDripingFromCeilingBig: MG_BloodDripingFromCeiling
+{
+	XScale 0.4
+	YScale 1.0
+	Gravity 0.8
+    States
+    {
+     Spawn:
+       TNT1 A 0
+	   TNT1 A 0 A_Jump(160, "NoSpawn")
+       TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+       MGAC Z 500
+       Stop
+	 Death:
+		 TNT1 A 0
+		 TNT1 A 0 A_PlaySound("blooddrop2")
+		 TNT1 A 0 A_SetScale(1.0, 1.0)
+		 MGBX FFGHIJKL 2
+		 stop 
+    }
+}
+
+ACTOR MG_XDeath2: MG_XDeath1
+{
+    +CLIENTSIDEONLY
+	+DONTSPLASH
+	Radius 2
+	Height 2
+	Gravity 0.4
+    DeathSound "mg/xdeath2"
+	SeeSound "mg/xdeath4"
+	Decal MG_BrutalBloodSuper
+	
+    Scale 1.1
+	Speed 8
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+        MGB2 ABCDEFGH 2
+        Loop
+    Death:
+		TNT1 A 0 A_CheckFloor("SpawnFloor")
+		TNT1 A 0 A_CheckCeiling("SpawnCeiling")
+		TNT1 A 0 A_SpawnItem("MG_SmearingXDeath2")
+		Stop
+		
+	SpawnFloor:
+	    MGB2 M 1
+		TNT1 A 0 A_QueueCorpse
+		MGB2 M -1
+		Stop
+		
+	SpawnCeiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilXDeath2", 0, 0, 8)
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilBloodSpot", 0, 0, 1)
+		Stop	
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+ACTOR MG_XDeath2b: MG_XDeath2 {	Speed 4 }
+
+ACTOR MG_SmearingXDeath2
+{
+    Radius 1
+    Height 1
+	Mass 1
+	Scale 1.0
+    +NOBLOCKMAP
+    +NOTELEPORT
+	+THRUGHOST
+	+CLIENTSIDEONLY
+    +DONTSPLASH
+    +MOVEWITHSECTOR
+	+FORCEXYBILLBOARD
+	+NOGRAVITY
+    States
+    {
+	Spawn:
+		MGB2 N 10
+		TNT1 A 0 ThrustThingZ(0, 1, 1, 1)
+		TNT1 A 0 A_Jump(255, "Spawn1", "Spawn2", "Spawn3", "Spawn4")
+
+	Spawn1:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn2:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn3:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn4:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Death:
+	    TNT1 A 0
+	    TNT1 A 0 A_SpawnItem("MG_XDeath2NoStick")
+        Stop
+		
+	Rest:
+		MGB2 M 1
+		TNT1 A 0 A_QueueCorpse
+		MGB2 M -1
+		Stop
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+actor MG_CeilXDeath2: MG_GreatBloodSpot
+{
+	PROJECTILE
+	+MISSILE
+	+SPAWNCEILING
+	+MOVEWITHSECTOR
+	+NOGRAVITY
+	+DontSplash
+	+CEILINGHUGGER
+	Renderstyle Normal 
+	Scale 1.1
+	states
+	{
+		Spawn:
+			TNT1 A 0
+			TNT1 A 0 A_JUmp (255, "Live1", "Live2", "Live3")
+			Goto Live1
+
+		  Live1:
+			  MGB2 IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live2:
+			  MGB2 IIIIIIIIIIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live3:
+			  MGB2 IIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		 Fall:
+			  MGB2 F 0
+			  MGB2 JJJKKLL 2
+			  TNT1 A 0 A_SpawnItemEx("MG_XDeath2NoStick", 0, 0, 0, 0, 0, -1)
+			  stop
+		 Splash:
+			  TNT1 A 0
+			  stop
+		}
+}
+
+ACTOR MG_XDeath2NoStick: MG_XDeath2
+{
+    Speed 0
+	Gravity 0.4
+    DeathSound "mg/xdeath2"
+	SeeSound "none"
+	Radius 1
+	Height 0
+    States
+    {
+    Spawn:
+		MGB2 FFFGGH 2
+	Live:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+		TNT1 A 0 A_CheckFloor("Death")
+		MGB2 ABCDEFGH 2
+        Loop
+    Death:XMT1 M 1
+		TNT1 A 0 A_QueueCorpse
+		MGB2 M 3
+		MGB2 M -1
+		Stop
+    }
+}
+
+ACTOR MG_XDeath3: MG_XDeath2
+{
+    DeathSound "mg/xdeath2"
+	SeeSound "mg/xdeath4"
+	Decal MG_BrutalBloodSuper
+	Scale 1.1
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+        MGB3 ABCDEFGH 2 
+       Loop
+    Death:
+		TNT1 A 0
+	    TNT1 A 0 A_CheckFloor("SpawnFloor")
+		TNT1 A 0 A_CheckCeiling("SpawnCeiling")
+		TNT1 A 0 A_SpawnItem("MG_SmearingXDeath3")
+		Stop
+		
+	SpawnFloor:
+	    MGB3 I 1
+		TNT1 A 0 A_QueueCorpse
+		MGB3 I -1
+		Stop
+		
+	SpawnCeiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilXDeath3", 0, 0, 8)
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilBloodSpot", 0, 0, 1)
+		Stop	
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+ACTOR MG_XDeath3b: MG_XDeath3 {	Speed 4 }
+
+ACTOR MG_SmearingXDeath3: MG_SmearingXDeath2
+{
+
+    States
+    {
+	Spawn:
+		MGB2 G 10
+		TNT1 A 0 ThrustThingZ(0, 1, 1, 1)
+		TNT1 A 0 A_Jump(255, "Spawn1", "Spawn2", "Spawn3", "Spawn4")
+
+	Spawn1:
+		MGB3 OOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn2:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn3:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn4:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Death:
+	    TNT1 A 0
+	    TNT1 A 0 A_SpawnItem("MG_XDeath3NoStick")
+        Stop
+		
+	Rest:
+		MGB3 I 1
+		TNT1 A 0 A_QueueCorpse
+		MGB3 I -1
+		Stop
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+actor MG_CeilXDeath3: MG_CeilXDeath2
+{
+	states
+	{
+		Spawn:
+			Goto Crash
+			Death:
+			Crash:
+			TNT1 A 0
+			TNT1 A 0 A_JUmp (255, "Live1", "Live2", "Live3")
+			Goto Live1
+
+		  Live1:
+			  MGB3 JJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live2:
+			  MGB3 JJJJJJJJJJJJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live3:
+			  MGB3 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		 Fall:
+			  MGB3 JJJJKKKLLM 2
+			  TNT1 A 0 A_SpawnItemEx("MG_XDeath3NoStick", 0, 0, 0, 0, 0, -1)
+			  MGB3 MMN 2
+			  stop
+		 Splash:
+			  TNT1 A 0
+			  stop
+		}
+}
+
+ACTOR MG_XDeath3NoStick: MG_XDeath2NoStick
+{
+
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+		TNT1 A 0 A_CheckFloor("Death")
+        MGB3 O 3
+        Loop
+    Death:
+        MGB3 I 1
+		TNT1 A 0 A_QueueCorpse
+		MGB3 I 3
+		MGB3 I -1
+		Stop
+    }
+}
+
+Actor MG_LostSoulGib1: MG_FlyingBloodParticle
+{
++DOOMBOUNCE
+BounceFactor 0.4
+Scale 0.8
+Speed 10
+States
+{
+	Spawn:
+	MGA0 ABCDEFG 3
+	Loop
+
+	Death:
+	TNT1 A 0
+	Stop
+}}
+
+Actor MG_LostSoulGib2: MG_LostSoulGib1
+{
+States
+{
+	Spawn:
+	MGA1 ABCDEFG 3
+	Loop
+}}
+
+Actor MG_LostSoulGib3: MG_LostSoulGib1
+{
+States
+{
+	Spawn:
+	MGA2 ABCDEFG 3
+	Loop
+}}
+
+Actor MG_GibHeadPiece: MG_XDeath2
+{
+Scale 0.5
+Speed 5
+Gravity 0.5
++BOUNCEONCEILINGS
++BOUNCEONWALLS
+}
+
+Actor MG_FlyingBloodParticleBigblue: MG_FlyingBloodParticleBig
+{
+translation "168:191=192:207","16:47=240:247"
+Decal "MG_blueBloodSplat"
+}
+
+Actor MG_FlyingBloodParticleCrushedBlue: MG_FlyingBloodParticleCrushed
+{
+translation "168:191=112:127", "16:47=123:127"
+}
+
+ACTOR MG_XDeath1blue
+{
+    Radius 1
+    Height 1
+    Speed 0
+    Scale 0.6
+	Mass 1
+	translation "168:191=192:207","16:47=240:247"
+	Decal "MG_blueBloodSplat"
+    +NOBLOCKMAP
+	+MISSILE
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +CLIENTSIDEONLY
+	-DONTSPLASH
+	+THRUGHOST
+	+THRUACTORS
+	+FLOORCLIP
+	Mass 1
+    States
+    {
+    Spawn:
+	    MGAB ABCDEFGHI 2
+        Stop
+    Death:
+		MGBX EF 3
+		TNT1 A 0 A_SpawnItem("MG_GreatBloodSpotblue")
+		Stop
+	Splash:
+	NoSpawn:
+		TNT1 A 0
+		Stop
+    }
+}
+
+ACTOR MG_XDeath1bblue: MG_XDeath1
+{
+translation "168:191=192:207","16:47=240:247"
+    Speed 5
+	+BOUNCEONWALLS
+	States
+	{
+    Death:
+		MGBX EF 3
+		TNT1 A 0 A_SpawnItem("MG_GreatBloodSpot2blue")
+		Stop
+    }
+}
+
+ACTOR MG_CeilingBloodCheckerblue: MG_FlyingBloodParticle
+{
+    Speed 12
+	Mass 1
+translation "168:191=192:207","16:47=240:247"
+	-BOUNCEONCEILINGS
+    States
+    {
+    Spawn:
+	    TNT1 A 5
+        Stop
+    Death:
+		TNT1 A 0
+		TNT1 A 0 A_CheckCeiling("Ceiling")
+		Stop
+	Splash:
+	NoSpawn:
+		TNT1 A 0
+		Stop
+	Ceiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItem("MG_CeilBloodTinyBloodSpawnerSmallblue")
+		TNT1 A 0 A_SpawnItem("MG_CeilBloodSpotblue")
+		Stop
+    }
+}
+
+Actor MG_GreatBloodSpotblue: MG_GreatBloodSpot
+{
+translation "168:191=192:207","16:47=240:247"
+}
+
+Actor MG_GreatBloodSpot2blue: MG_GreatBloodSpot2
+{
+translation "168:191=192:207","16:47=240:247"
+}
+
+Actor MG_CeilBloodSpotblue: MG_GreatBloodSpot2
+{
++NOGRAVITY
+XScale 0.6
+YScale 0.15
+Radius 1
+Gravity 0.0
+Height 1
+translation "168:191=192:207","16:47=240:247"
+States
+{
+	Spawn:
+	MGAH C 1
+	TNT1 A 0 A_SetAngle(random (0, 360))
+	MGAH C 1 A_QueueCorpse
+	TNT1 A 0 A_SpawnItem ("MG_CeilBloodSpawnerblue")
+	Live:
+	MGAH C 10 ThrustThingZ(0, 20, 0, 1)
+	Loop
+}
+}
+
+ACTOR MG_CeilBloodSpawnerblue
+{
+	+NOGRAVITY
+	+THRUACTORS
+	+NOCLIP
+	Scale 0.5
+	translation "168:191=192:207","16:47=240:247"
+	 States
+		{
+		 Spawn:
+			  TNT1 A 0
+			  TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("MG_BloodDripingFromCeilingBigblue", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 10 A_SpawnItemEx ("MG_BloodDripingFromCeilingBigblue", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 15 A_SpawnItemEx ("MG_BloodDripingFromCeilingblue", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 20 A_SpawnItemEx ("MG_BloodDripingFromCeilingblue", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  stop 
+		}
+}
+
+ACTOR MG_CeilBloodTinyBloodSpawnerSmallblue: MG_CeilBloodSpawner
+{
+translation "168:191=192:207","16:47=240:247"
+	 States
+		{
+		 Spawn:
+			  TNT1 A 0
+			  TNT1 AAAAAAAAAAAAAA 5 A_SpawnItemEx ("MG_BloodDripingFromCeilingblue", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 10 A_SpawnItemEx ("MG_BloodDripingFromCeilingblue", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 16 A_SpawnItemEx ("MG_BloodDripingFromCeilingblue", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 26 A_SpawnItem ("MG_BloodDripingFromCeilingblue")
+			  stop
+		}
+}
+
+ACTOR MG_BloodDripingFromCeilingblue: MG_BloodDripingFromCeiling
+{
+translation "168:191=192:207","16:47=240:247"
+}
+
+ACTOR MG_BloodDripingFromCeilingBigblue: MG_BloodDripingFromCeilingBig
+{
+translation "168:191=192:207","16:47=240:247"
+}
+
+ACTOR MG_XDeath2blue: MG_XDeath1blue
+{
+    +CLIENTSIDEONLY
+	+DONTSPLASH
+	Radius 2
+	Height 2
+	Gravity 0.4
+    DeathSound "mg/xdeath2"
+	SeeSound "mg/xdeath4"
+	Decal MG_blueBloodSuper
+	translation "168:191=192:207","16:47=240:247"
+    Scale 1.1
+	Speed 8
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+        MGB2 ABCDEFGH 2
+        Loop
+    Death:
+		TNT1 A 0 A_CheckFloor("SpawnFloor")
+		TNT1 A 0 A_CheckCeiling("SpawnCeiling")
+		TNT1 A 0 A_SpawnItem("MG_SmearingXDeath2blue")
+		Stop
+		
+	SpawnFloor:
+	    MGB2 M 1
+		TNT1 A 0 A_QueueCorpse
+		MGB2 M -1
+		Stop
+		
+	SpawnCeiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilXDeath2blue", 0, 0, 8)
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilBloodSpotblue", 0, 0, 1)
+		Stop	
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+ACTOR MG_XDeath2bblue: MG_XDeath2blue {	Speed 4 }
+
+ACTOR MG_SmearingXDeath2blue
+{
+    Radius 1
+    Height 1
+	Mass 1
+	Scale 1.0
+    +NOBLOCKMAP
+    +NOTELEPORT
+	+THRUGHOST
+	+CLIENTSIDEONLY
+    +DONTSPLASH
+    +MOVEWITHSECTOR
+	+FORCEXYBILLBOARD
+	+NOGRAVITY
+	translation "168:191=192:207","16:47=240:247"
+    States
+    {
+	Spawn:
+		MGB2 N 10
+		TNT1 A 0 ThrustThingZ(0, 1, 1, 1)
+		TNT1 A 0 A_Jump(255, "Spawn1", "Spawn2", "Spawn3", "Spawn4")
+
+	Spawn1:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn2:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn3:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn4:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Death:
+	    TNT1 A 0
+	    TNT1 A 0 A_SpawnItem("MG_XDeath2NoStickblue")
+        Stop
+		
+	Rest:
+		MGB2 M 1
+		TNT1 A 0 A_QueueCorpse
+		MGB2 M -1
+		Stop
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+actor MG_CeilXDeath2blue: MG_GreatBloodSpot
+{
+	PROJECTILE
+	+MISSILE
+	+SPAWNCEILING
+	+MOVEWITHSECTOR
+	+NOGRAVITY
+	+DontSplash
+	+CEILINGHUGGER
+	Renderstyle Normal 
+	Scale 1.1
+	translation "168:191=192:207","16:47=240:247"
+	states
+	{
+		Spawn:
+			TNT1 A 0
+			TNT1 A 0 A_JUmp (255, "Live1", "Live2", "Live3")
+			Goto Live1
+
+		  Live1:
+			  MGB2 IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live2:
+			  MGB2 IIIIIIIIIIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live3:
+			  MGB2 IIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		 Fall:
+			  MGB2 F 0
+			  MGB2 JJJKKLL 2
+			  TNT1 A 0 A_SpawnItemEx("MG_XDeath2NoStickblue", 0, 0, 0, 0, 0, -1)
+			  stop
+		 Splash:
+			  BLOD A 0
+			  stop
+		}
+}
+
+ACTOR MG_XDeath2NoStickblue: MG_XDeath2NoStick
+{
+	translation "168:191=192:207","16:47=240:247"
+}
+
+ACTOR MG_XDeath3blue: MG_XDeath2blue
+{
+    DeathSound "mg/xdeath2"
+	SeeSound "mg/xdeath4"
+	Decal MG_blueBloodSuper
+	Scale 1.1
+	translation "168:191=192:207","16:47=240:247"
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+        MGB3 ABCDEFGH 2 
+       Loop
+    Death:
+		TNT1 A 0
+	    TNT1 A 0 A_CheckFloor("SpawnFloor")
+		TNT1 A 0 A_CheckCeiling("SpawnCeiling")
+		TNT1 A 0 A_SpawnItem("MG_SmearingXDeath3blue")
+		Stop
+		
+	SpawnFloor:
+	    MGB3 I 1
+		TNT1 A 0 A_QueueCorpse
+		MGB3 I -1
+		Stop
+		
+	SpawnCeiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilXDeath3blue", 0, 0, 8)
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilBloodSpotblue", 0, 0, 1)
+		Stop	
+		
+	Vanish:
+	    TNT2 A 5
+		Stop
+    }
+}
+
+ACTOR MG_XDeath3bblue: MG_XDeath3blue {	Speed 4 }
+
+ACTOR MG_SmearingXDeath3blue: MG_SmearingXDeath2
+{
+	translation "168:191=192:207","16:47=240:247"
+    States
+    {
+	Spawn:
+		MGB3 G 10
+		TNT1 A 0 ThrustThingZ(0, 1, 1, 1)
+		TNT1 A 0 A_Jump(255, "Spawn1", "Spawn2", "Spawn3", "Spawn4")
+
+	Spawn1:
+		MGB3 OOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn2:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn3:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn4:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Death:
+	    TNT1 A 0
+	    TNT1 A 0 A_SpawnItem("MG_XDeath3NoStickblue")
+        Stop
+		
+	Rest:
+		MGB3 I 1
+		TNT1 A 0 A_QueueCorpse
+		MGB3 I -1
+		Stop
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+actor MG_CeilXDeath3blue: MG_CeilXDeath2blue
+{
+	translation "168:191=192:207","16:47=240:247"
+	states
+	{
+		Spawn:
+			Goto Crash
+			Death:
+			Crash:
+			TNT1 A 0
+			TNT1 A 0 A_JUmp (255, "Live1", "Live2", "Live3")
+			Goto Live1
+
+		  Live1:
+			  MGB3 JJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live2:
+			  MGB3 JJJJJJJJJJJJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live3:
+			  MGB3 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		 Fall:
+			  MGB3 JJJJKKKLLM 2
+			  TNT1 A 0 A_SpawnItemEx("MG_XDeath3NoStickblue", 0, 0, 0, 0, 0, -1)
+			  MGB3 MMN 2
+			  stop
+		 Splash:
+			  BLOD A 0
+			  stop
+		}
+}
+
+ACTOR MG_XDeath3NoStickblue: MG_XDeath3NoStick
+{
+translation "168:191=192:207","16:47=240:247"
+}
+
+Actor MG_FlyingBloodParticleBigGreen: MG_FlyingBloodParticleBig
+{
+translation "168:191=112:127", "16:47=123:127"
+Decal "MG_GreenBloodSplat"
+}
+
+Actor MG_FlyingBloodParticleCrushedGreen: MG_FlyingBloodParticleCrushed
+{
+translation "168:191=112:127", "16:47=123:127"
+}
+
+ACTOR MG_XDeath1Green
+{
+    Radius 1
+    Height 1
+    Speed 0
+    Scale 0.6
+	Mass 1
+	translation "168:191=112:127", "16:47=123:127"
+	Decal "MG_GreenBloodSplat"
+    +NOBLOCKMAP
+	+MISSILE
+    +NOTELEPORT
+    +MOVEWITHSECTOR
+    +CLIENTSIDEONLY
+	-DONTSPLASH
+	+THRUGHOST
+	+THRUACTORS
+	+FLOORCLIP
+	Mass 1
+    States
+    {
+    Spawn:
+	    MGAB ABCDEFGHI 2
+        Stop
+    Death:
+		MGBX EF 3
+		TNT1 A 0 A_SpawnItem("MG_GreatBloodSpotGreen")
+		Stop
+	Splash:
+	NoSpawn:
+		TNT1 A 0
+		Stop
+    }
+}
+
+ACTOR MG_XDeath1bGreen: MG_XDeath1
+{
+translation "168:191=112:127", "16:47=123:127"
+    Speed 5
+	+BOUNCEONWALLS
+	States
+	{
+    Death:
+		MGBX EF 3
+		TNT1 A 0 A_SpawnItem("MG_GreatBloodSpot2Green")
+		Stop
+    }
+}
+
+ACTOR MG_CeilingBloodCheckerGreen: MG_FlyingBloodParticle
+{
+    Speed 12
+	Mass 1
+translation "168:191=112:127", "16:47=123:127"
+	-BOUNCEONCEILINGS
+    States
+    {
+    Spawn:
+	    TNT1 A 5
+        Stop
+    Death:
+		TNT1 A 0
+		TNT1 A 0 A_CheckCeiling("Ceiling")
+		Stop
+	Splash:
+	NoSpawn:
+		TNT1 A 0
+		Stop
+	Ceiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItem("MG_CeilBloodTinyBloodSpawnerSmallGreen")
+		TNT1 A 0 A_SpawnItem("MG_CeilBloodSpotGreen")
+		Stop
+    }
+}
+
+Actor MG_GreatBloodSpotGreen: MG_GreatBloodSpot
+{
+translation "168:191=112:127", "16:47=123:127"
+}
+
+Actor MG_GreatBloodSpot2Green: MG_GreatBloodSpot2
+{
+translation "168:191=112:127", "16:47=123:127"
+}
+
+Actor MG_CeilBloodSpotGreen: MG_GreatBloodSpot2
+{
++NOGRAVITY
+XScale 0.6
+YScale 0.15
+Radius 1
+Gravity 0.0
+Height 1
+translation "168:191=112:127", "16:47=123:127"
+States
+{
+	Spawn:
+	MGAH C 1
+	TNT1 A 0 A_SetAngle(random (0, 360))
+	MGAH C 1 A_QueueCorpse
+	TNT1 A 0 A_SpawnItem ("MG_CeilBloodSpawnerGreen")
+	Live:
+	MGAH C 10 ThrustThingZ(0, 20, 0, 1)
+	Loop
+}
+}
+
+ACTOR MG_CeilBloodSpawnerGreen
+{
+	+NOGRAVITY
+	+THRUACTORS
+	+NOCLIP
+	Scale 0.5
+	translation "168:191=112:127", "16:47=123:127"
+	 States
+		{
+		 Spawn:
+			  TNT1 A 0
+			  TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 3 A_SpawnItemEx ("MG_BloodDripingFromCeilingBigGreen", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 10 A_SpawnItemEx ("MG_BloodDripingFromCeilingBigGreen", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 15 A_SpawnItemEx ("MG_BloodDripingFromCeilingGreen", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 20 A_SpawnItemEx ("MG_BloodDripingFromCeilingGreen", random (-10, 10), random (-10, 10), 0, 0, 0, -5)
+			  stop 
+		}
+}
+
+ACTOR MG_CeilBloodTinyBloodSpawnerSmallGreen: MG_CeilBloodSpawner
+{
+translation "168:191=112:127", "16:47=123:127"
+	 States
+		{
+		 Spawn:
+			  TNT1 A 0
+			  TNT1 AAAAAAAAAAAAAA 5 A_SpawnItemEx ("MG_BloodDripingFromCeilingGreen", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 10 A_SpawnItemEx ("MG_BloodDripingFromCeilingGreen", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 16 A_SpawnItemEx ("MG_BloodDripingFromCeilingGreen", random (-5, 5), random (-5, 5), 0, 0, 0, -5)
+			  TNT1 AAAAAAAAAAAAAA 26 A_SpawnItem ("MG_BloodDripingFromCeilingGreen")
+			  stop
+		}
+}
+
+ACTOR MG_BloodDripingFromCeilingGreen: MG_BloodDripingFromCeiling
+{
+translation "168:191=112:127", "16:47=123:127"
+}
+
+ACTOR MG_BloodDripingFromCeilingBigGreen: MG_BloodDripingFromCeilingBig
+{
+translation "168:191=112:127", "16:47=123:127"
+}
+
+ACTOR MG_XDeath2Green: MG_XDeath1Green
+{
+    +CLIENTSIDEONLY
+	+DONTSPLASH
+	Radius 2
+	Height 2
+	Gravity 0.4
+    DeathSound "mg/xdeath2"
+	SeeSound "mg/xdeath4"
+	Decal MG_GreenBloodSuper
+	translation "168:191=112:127", "16:47=123:127"
+    Scale 1.1
+	Speed 8
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+        MGB2 ABCDEFGH 2
+        Loop
+    Death:
+		TNT1 A 0 A_CheckFloor("SpawnFloor")
+		TNT1 A 0 A_CheckCeiling("SpawnCeiling")
+		TNT1 A 0 A_SpawnItem("MG_SmearingXDeath2Green")
+		Stop
+		
+	SpawnFloor:
+	    MGB2 M 1
+		TNT1 A 0 A_QueueCorpse
+		MGB2 M -1
+		Stop
+		
+	SpawnCeiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilXDeath2Green", 0, 0, 8)
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilBloodSpotGreen", 0, 0, 1)
+		Stop	
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+ACTOR MG_XDeath2bGreen: MG_XDeath2Green {	Speed 4 }
+
+ACTOR MG_SmearingXDeath2Green
+{
+    Radius 1
+    Height 1
+	Mass 1
+	Scale 1.0
+    +NOBLOCKMAP
+    +NOTELEPORT
+	+THRUGHOST
+	+CLIENTSIDEONLY
+    +DONTSPLASH
+    +MOVEWITHSECTOR
+	+FORCEXYBILLBOARD
+	+NOGRAVITY
+	translation "168:191=112:127", "16:47=123:127"
+    States
+    {
+	Spawn:
+		MGB2 N 10
+		TNT1 A 0 ThrustThingZ(0, 1, 1, 1)
+		TNT1 A 0 A_Jump(255, "Spawn1", "Spawn2", "Spawn3", "Spawn4")
+
+	Spawn1:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn2:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn3:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn4:
+		MGB2 NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Death:
+	    TNT1 A 0
+	    TNT1 A 0 A_SpawnItem("MG_XDeath2NoStickGreen")
+        Stop
+		
+	Rest:
+		MGB2 M 1
+		TNT1 A 0 A_QueueCorpse
+		MGB2 M -1
+		Stop
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+actor MG_CeilXDeath2Green: MG_GreatBloodSpot
+{
+	PROJECTILE
+	+MISSILE
+	+SPAWNCEILING
+	+MOVEWITHSECTOR
+	+NOGRAVITY
+	+DontSplash
+	+CEILINGHUGGER
+	Renderstyle Normal 
+	Scale 1.1
+	translation "168:191=112:127", "16:47=123:127"
+	states
+	{
+		Spawn:
+			TNT1 A 0
+			TNT1 A 0 A_JUmp (255, "Live1", "Live2", "Live3")
+			Goto Live1
+
+		  Live1:
+			  MGB2 IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live2:
+			  MGB2 IIIIIIIIIIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live3:
+			  MGB2 IIIIIIIIIIIIIIIII 5 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		 Fall:
+			  MGB2 F 0
+			  MGB2 JJJKKLL 2
+			  TNT1 A 0 A_SpawnItemEx("MG_XDeath2NoStickGreen", 0, 0, 0, 0, 0, -1)
+			  stop
+		 Splash:
+			  BLOD A 0
+			  stop
+		}
+}
+
+ACTOR MG_XDeath2NoStickGreen: MG_XDeath2NoStick
+{
+	translation "168:191=112:127", "16:47=123:127"
+}
+
+ACTOR MG_XDeath3Green: MG_XDeath2Green
+{
+    DeathSound "mg/xdeath2"
+	SeeSound "mg/xdeath4"
+	Decal MG_GreenBloodSuper
+	Scale 1.1
+	translation "168:191=112:127", "16:47=123:127"
+    States
+    {
+    Spawn:
+	    TNT1 A 0 A_JumpIf(waterlevel > 1, "Splash")
+        MGB3 ABCDEFGH 2 
+       Loop
+    Death:
+		TNT1 A 0
+	    TNT1 A 0 A_CheckFloor("SpawnFloor")
+		TNT1 A 0 A_CheckCeiling("SpawnCeiling")
+		TNT1 A 0 A_SpawnItem("MG_SmearingXDeath3Green")
+		Stop
+		
+	SpawnFloor:
+	    MGB3 I 1
+		TNT1 A 0 A_QueueCorpse
+		MGB3 I -1
+		Stop
+		
+	SpawnCeiling:
+		TNT1 A 0
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilXDeath3Green", 0, 0, 8)
+		TNT1 A 0 A_SpawnItemEx ("MG_CeilBloodSpotGreen", 0, 0, 1)
+		Stop	
+		
+	Vanish:
+	    TNT2 A 5
+		Stop
+    }
+}
+
+ACTOR MG_XDeath3bGreen: MG_XDeath3Green {	Speed 4 }
+
+ACTOR MG_SmearingXDeath3Green: MG_SmearingXDeath2
+{
+	translation "168:191=112:127", "16:47=123:127"
+    States
+    {
+	Spawn:
+		MGB3 G 10
+		TNT1 A 0 ThrustThingZ(0, 1, 1, 1)
+		TNT1 A 0 A_Jump(255, "Spawn1", "Spawn2", "Spawn3", "Spawn4")
+
+	Spawn1:
+		MGB3 OOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn2:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn3:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Spawn4:
+		MGB3 OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO 2 A_CheckFloor("Rest")
+		Goto Death
+	
+	Death:
+	    TNT1 A 0
+	    TNT1 A 0 A_SpawnItem("MG_XDeath3NoStickGreen")
+        Stop
+		
+	Rest:
+		MGB3 I 1
+		TNT1 A 0 A_QueueCorpse
+		MGB3 I -1
+		Stop
+		
+	Vanish:
+	    TNT1 A 5
+		Stop
+    }
+}
+
+actor MG_CeilXDeath3Green: MG_CeilXDeath2Green
+{
+	translation "168:191=112:127", "16:47=123:127"
+	states
+	{
+		Spawn:
+			Goto Crash
+			Death:
+			Crash:
+			TNT1 A 0
+			TNT1 A 0 A_JUmp (255, "Live1", "Live2", "Live3")
+			Goto Live1
+
+		  Live1:
+			  MGB3 JJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live2:
+			  MGB3 JJJJJJJJJJJJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		  Live3:
+			  MGB3 JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ 4 ThrustThingZ(0, 20, 0, 1)
+			  Goto Fall
+		  
+		 Fall:
+			  MGB3 JJJJKKKLLM 2
+			  TNT1 A 0 A_SpawnItemEx("MG_XDeath3NoStickGreen", 0, 0, 0, 0, 0, -1)
+			  MGB3 MMN 2
+			  stop
+		 Splash:
+			  BLOD A 0
+			  stop
+		}
+}
+
+ACTOR MG_XDeath3NoStickGreen: MG_XDeath3NoStick
+{
+translation "168:191=112:127", "16:47=123:127"
+}

@@ -22,7 +22,7 @@
 // ---------------------------------------------------------------------------
 // The spawn dial.  CH: CYBIES.txt:1 -- Colourset16 replaces CyberDemon.
 // ---------------------------------------------------------------------------
-class RS_Colourset16 : RandomSpawner replaces Cyberdemon
+class RS_Colourset16 : RandomSpawner   // RSQ: was "replaces Cyberdemon"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{

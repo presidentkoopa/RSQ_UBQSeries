@@ -1,0 +1,25 @@
+// RSQ Monsters -- MODELDEF. The MeatGrinder enemy tracer (decorate/meatgrinder/mg_effects.txt):
+// the owner's streak model (tracer.md3, 1 frame, 134.5 x 7 x 7 units along X) with its skin
+// (tracer.png, 128x32 RGB, the orange streak on black: the actor is RenderStyle Add + Bright).
+// Scale 0.3 makes the streak ~40 units long and ~2 thick: half the distance MG_EnemyBullet
+// (speed 80) covers in one tic, so it reads as a moving streak, not a beam. USEACTORPITCH
+// lays it along the shot. One entry per class: a MODELDEF entry does not pass to subclasses.
+Model MG_Bullet
+{
+	Path "models/meatgrinder/tracer"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer.png"
+	Scale 0.3 0.3 0.3
+	USEACTORPITCH
+	FrameIndex MGTR A 0 0
+}
+
+Model MG_EnemyBullet
+{
+	Path "models/meatgrinder/tracer"
+	Model 0 "tracer.md3"
+	Skin 0 "tracer.png"
+	Scale 0.3 0.3 0.3
+	USEACTORPITCH
+	FrameIndex MGTR A 0 0
+}

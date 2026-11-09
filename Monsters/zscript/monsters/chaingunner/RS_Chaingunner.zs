@@ -9,7 +9,7 @@
 // The spawn dial.  CH: Chaingunners.txt:1 -- Colourset12 replaces ChaingunGuy.
 // Green/Blue/Purple/Yellow/Red have no cvar stub in CH; they enter directly.
 // ---------------------------------------------------------------------------
-class RS_ChaingunnerColourset : RandomSpawner replaces ChaingunGuy
+class RS_ChaingunnerColourset : RandomSpawner   // RSQ: was "replaces ChaingunGuy"; RS_RosterHandler applies it when Monster Set = ColorfulHell
 {
 	Default
 	{
