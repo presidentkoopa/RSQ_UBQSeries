@@ -79,3 +79,11 @@ Sources: Reactorcore (CC0 by page comment), Rufaswan (credit anyway), RS Combat 
 `mega2/`: the mega blast rebuilt as a wide boiling block (no stem, no cap), from our material only, after the owner
 preferred the Metal Slug example's non-mushroom look. Swell, climb, boil with re-igniting fireballs, brown with red veins,
 lift, break up, dust. 108 tics. `MEGA2_vs_MS.png` compares it with the Metal Slug example. No Metal Slug pixels.
+
+## Rocket (RPG)
+
+`rocket/`: the rocket launcher's blast, into a wall (`R_wall_*`), the floor (`R_floor_*`) and a cacodemon mid-air
+(`R_air_*`), `R_contact.png`. A churning block of fire (not a mushroom). Its signature beat is the flashback: fire lashes
+back up the incoming line and burns back along the smoke trail in clumps, leaving soot hanging where the trail was.
+Sources: RS Combat FX (rocket, trail bits, embers), the Monsters cacodemon, Reactorcore (CC0 by page comment), Rufaswan
+(credit anyway), the rest drawn in code.
