@@ -1,5 +1,8 @@
 # The arcade loop (owner, 2026-11-08 18:36: "i think i like this, yes")
 
+Owner on the mockups (2026-11-08 22:37): "all of these fonts and shit are great, i really love all of this". The look
+of the eight panels (our real fonts, Doom colours, glow and outline, no boxes) is approved as the arcade look.
+
 From the eight mockups (design/mockups/arcade_language/). Each panel highlighted a different piece of gameplay. Panels
 3-8 are one loop at three timescales; panels 1-2 are tools for set pieces only.
 
