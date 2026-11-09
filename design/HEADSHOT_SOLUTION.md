@@ -4,6 +4,13 @@
 > Q1 (scope) is read from these rulings as **every monster** (BD, CH and MG all need it).
 > Q2 (08:57): **head-shot damage for all** ("headshots for all"): CH, MG and other packs get the head bonus too.
 > Q3 (08:57): a 1.25x monster's HITBOX scales with it.
+> Q4-Q7 (owner 09:03: "I want a robust solution, so whatever it takes"): Claude's calls on that brief:
+> - Q4 head size: each family's own head ratio (BD's numbers turned into fractions of height), scaled with the monster;
+>   0.80 only for monsters with no data.
+> - Q5 big BD monsters: ONE verdict everywhere: our check always, BD's head hitbox actors switched off on them, BD's
+>   own outcome (HitHead, double damage) applied from our verdict.
+> - Q6 home: its own small pk3 (works with or without RSQ Monsters; Score, Melee, Miniboss read it by name).
+> - Q7 MG: folded in: MG's own head band retires; MG asks the shared verdict.
 
 # A real head-shot check for the RSQ UBQ Series (design only; nothing built)
 
