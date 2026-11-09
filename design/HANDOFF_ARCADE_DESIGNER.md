@@ -1,3 +1,5 @@
+> **Superseded on 2026-11-09 by `design/HANDOFF_ARCADE_2026-11-09.md`.** Read that one.
+
 # Handoff: the arcade designer lane (2026-11-08)
 
 For a designer starting fresh on the series' **arcade layer** (the "Big Fourth"). This is design only: **no building**

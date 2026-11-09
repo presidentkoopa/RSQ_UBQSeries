@@ -33,4 +33,4 @@ we fold in) needs; just stay focused on what is needed.
 ## MeatGrinder tiering plan (owner, 2026-11-09 00:01)
 "Keep their stock attacks, and just increase their health, damage, and aggression. Definitely room to expand their
 attacks but we can do that later." Applied today: health, speed, pain chance (from HF's table), and damage via
-DamageMultiply (owner yes, 2026-11-08 23:58). Aggression beyond lower pain chance: not built yet.
+DamageMultiply (owner yes, 2026-11-08 23:58). Aggression: HF's own per-tier `behave` column (2 = attacks more, 3 = attacks most), applied 2026-11-09 (built, not run).
