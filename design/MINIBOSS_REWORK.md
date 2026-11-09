@@ -76,3 +76,5 @@ Agent researching a real head-shot solution from the engine survey (RSQ_QuestEng
 5. All segments gone: one-on-one with its main bar.
 6. Main bar empties: it uses a life (thin bars) and tiers up (option). **No thralls rise: it fights its last lives alone**
    (owner 08:14: "I think B?", tentative). This drops the original Minibosses! rule that dead thralls rise again.
+- GITD "thrall rooms glow their colour": DROPPED (owner 08:43: thralls spawn in the same room as the miniboss, so it tells
+  you nothing).
