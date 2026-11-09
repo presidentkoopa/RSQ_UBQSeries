@@ -56,3 +56,14 @@ is BD22 (BD's monsters have no colour ladder).
   abilities." First list (06:37): arrival wave in its ladder colour; shielded = its room steady cold grey; thrall kill =
   a wave in the colour of the power it carried; shield down = gold pulsing with Target!; life lost = red, then the new
   ladder colour; death = a map-wide wave then a reroll; optional flares for any RSQ tier-up, waves for Black/White/EX.
+
+## Words (07:40)
+Owner: "we already use Target!, I guess we could say Defend! in some animated life. Like the numbers here [Castlevania
+GIF: the damage number pops over the head, flickers between colours, drifts up, holds about a second], but our font, and
+the word Guard! in silver like the shield, with this kind of flashing and life to it." Claude recommends **Guard!**:
+shots on the shielded miniboss pop "Guard!" over it in RS Score's font, silver flickering to white like that GIF's
+number, drifting up and fading, with the grey Xs bouncing off. "Target!" stays for thralls and for the miniboss with its
+shield down. (Drops "Immune!" and "Defend!".)
+
+## Head shots
+Agent researching a real head-shot solution from the engine survey (RSQ_QuestEngineSurvey): design/HEADSHOT_SOLUTION.md.
