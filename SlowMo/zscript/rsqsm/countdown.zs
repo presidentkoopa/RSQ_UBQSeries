@@ -163,7 +163,7 @@ class RSQSM_Countdown : StaticEventHandler
 		if (why == "" || alpha <= 0.01) return;
 		double gx, gy, gs;
 		[gx, gy, gs] = GlassRect(x, y, h);
-		double gl = gx, gw = x + w - gx;     // the row: the hourglass to the bar's right end
+		double gl = x, gw = w;     // centred under the BAR itself (owner 11-09: "centered under the green bar"; was the whole row, hourglass included)
 		Font fnt = NewSmallFont;
 		double s = (h * CAUSE_H) / max(1, fnt.GetHeight());
 		double tw2 = fnt.StringWidth(why) * s;
