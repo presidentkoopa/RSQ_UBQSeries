@@ -48,7 +48,7 @@ MODS = {
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds', 'sprites']),
     'Melee':        ('RSQ_Melee.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
                      'SNDINFO.txt', 'LANGUAGE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds', 'sprites', 'credits']),
-    'GlowInTheDark': ('RSQ_GlowInTheDark.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'GLDEFS.txt',
+    'GlowInTheDark': ('RSQ_GlowInTheDark.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt', 'GLDEFS.txt',
                      'CREDITS.txt', 'README.md', 'zscript']),
     'FlashFlare':   ('RSQ_FnF.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sprites', 'graphics',
