@@ -40,5 +40,5 @@ for c in range(33, 96):
 T.append('Graphic "WREBLNK", 12, 12 { }')
 upsert(os.path.join(W, 'TEXTURES.txt'), '// >>> WRERMAC (tools/gen_ring_art.py)', '// <<< WRERMAC', '\n'.join(T))
 upsert(os.path.join(W, 'WRFONTS.txt'), '// >>> WRERMAC (tools/gen_ring_art.py)', '// <<< WRERMAC',
-       'fontset Ermac      { words WRG 9 7   numbers WRE 12 12 }   // DoomFont words, Ermac\'s digits (the default)')
+       'fontset Ermac      { words WRG 9 7   numbers WRE 12 12 }   // DoomFont words, Ermac\'s digits')
 print('ok')

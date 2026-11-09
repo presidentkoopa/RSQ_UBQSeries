@@ -49,3 +49,8 @@ Score's breakdown (combo) font, RSSCFN2, unpacked from Score/RSSCFN2.fon2 by too
 unpacks it. RSQ Score carries it from ijon's Dakka, whose credits give the breakdown font to Jimmy (Score/CREDITS.md:
 "They come with Dakka, a public repository, and are carried here with that credit"). Without Score the numbers are
 JFO's big digits (above).
+
+The ring's text from 11-09 (font sets Score and Combo; graphics/WRVS*.png and WRCS*.png) is RSQ Score's two fonts,
+unpacked from Score/RSSCFON.fon2 and Score/RSSCFN2.fon2 by tools/gen_score_font.py. RSQ Score carries them from ijon's
+Dakka, whose credits give the score-line BIGFONT (RSSCFON) to Blue Shadow and the breakdown font (RSSCFN2) to Jimmy
+(Score/CREDITS.md), with that credit.

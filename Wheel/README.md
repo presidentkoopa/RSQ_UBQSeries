@@ -16,6 +16,17 @@ runs round a card in the rotation; a holstered card sits back with an outline; a
 holstered card it gives a dull tick. next/prev skip Wheel-only and holstered guns. Shown on the rig: all of that. Without
 RSQ Tactical Rig: main-hand alt-fire is a dull tick, the rotation and next/prev work alone (shown in the log). The marine centred on his body between each pair of rings: shown on the rig. Not shown:
 the fly-in mid-flight (too fast for the rig's frames).
+New on 11-09 (rig only, not headset-confirmed): **the ring's text is in RSQ Score's font** (the one "SCORE:" is drawn
+in), because the owner's headset showed every word on the cards as a row of blobs. Why: the words were in JFO, whose
+letters are 32-pixel stone shapes. In the headset they were drawn about 6 pixels tall, and at that size JFO's gaps
+(1-3 pixels of 32 inside a letter, 2 between letters) are less than a pixel, so each letter smeared into a solid slab.
+Score's font is a 12-pixel block font with 2-pixel strokes and gaps and a dark outline, and the Wheel now keeps a pixel
+of air between its letters, so it holds together much smaller. Shown on the rig: the same card in JFO, Score's font,
+Score's combo font and DoomFont, next to each other (tools/rigshots/font_score_vs_jfo_1109.png). Score's font reads
+best, and it is the only one that still reads "WHIP" once the frame is blurred to look like the headset
+(font_score_vs_jfo_blur_1109.png). A config set to JFO (the old default) moves to Score's font once. The others,
+including JFO, are still in Look > Font. Very small text (the body of the info card) is still small: if it does not
+read in the headset, the size is the next thing to change, not the font.
 The web's ring numbers (11-07, rig only, not headset-confirmed): big, in RSQ Score's combo font when Score is loaded (shown on the rig), else in JFO, bigger (not shown).
 Web View (11-07, rig only, not headset-confirmed): **Marine** (default, as above) or **Mirror**: the web shows RSQ
 Tactical Rig's own mirror of you (the one Move Holsters by Hand shows), filling the panel, with the six rings on the real holster
@@ -166,7 +177,7 @@ Options → Radiant Silvergun Options → RSQ Wheel (one page; Test and Debug an
 | Feel Each Gun's Weight | 1.0 | 0 gives every card the same tick. |
 | *Look* | | |
 | Palette | Standard | Standard, Doom, Hell or Tech. |
-| Font | JFO | The ring's text: JFO (words spaced by their letters' own widths, JFO's big digits), or the older sets (Ermac's digits, DoomFont, the status bar's numerals). |
+| Font | RSQ Score's font | The ring's text: RSQ Score's font (the "SCORE:" font, the default from 11-09), RSQ Score's combo font, JFO, or the older sets (Ermac's digits, DoomFont, the status bar's numerals). |
 | Ring Plates | Its own (Ermac style) | Or the status bar's stone. |
 | Card Look | Colour by Gun | Or Classic. |
 | Web View | Marine | Or Mirror: RSQ Tactical Rig's mirror of you on the holster web. |
@@ -256,7 +267,7 @@ QuestZDoom 17.3 anyway (design/PARKED.md).
 | Wrist Card: Hold the Pose (tics) | 8 |  |
 | Wrist Card Size | 0.6 |  |
 | Palette by Name | Standard | A palette added by another pk3. |
-| Font Set by Name | JFO | A font set added by another pk3. |
+| Font Set by Name | Score | A font set added by another pk3. |
 | Debug Log | Off | Prints diagnostics when the ring opens. |
 
 ## Works with
@@ -283,7 +294,9 @@ Runs on its own with any weapon mod.
 - The art drawn from the IWAD is the IWAD's own, used by lump name and never copied: STBAR, STCFN033-095 (DoomFont),
   STTNUM0-9, STTMINUS, STTPRCNT.
 - The ring's plates and digits are drawn from Ermac's Force Unleashed holo HUD art, used with the owner's blessing.
-- The text is JFO, the JDUI font by Zedas, in Blackmore1014's edit "JDUI Brutal Doom Ultimate Edition", as RSQ Gun
+- The text is RSQ Score's two fonts (from ijon's Dakka: the score font by Blue Shadow, the combo font by Jimmy), as
+  RSQ Score carries them (CREDITS.txt).
+- The JFO font set is JFO, the JDUI font by Zedas, in Blackmore1014's edit "JDUI Brutal Doom Ultimate Edition", as RSQ Gun
   Cards and RSQ VisualRewards ship it, with credit to both (CREDITS.txt).
 - The lock-on mark is the series' own, from RSQ ShieldSaw. The glow art is drawn by this pack's tools; its gun colours
   are measured from RSQ Gun Cards' panel art.

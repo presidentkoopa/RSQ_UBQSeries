@@ -47,6 +47,8 @@ OptionString "wr_Palettes"
 
 OptionString "wr_FontSets"
 {
+	"Score",     "RSQ Score's font"
+	"Combo",     "RSQ Score's combo font"
 	"JFO",       "JFO"
 	"StatusBar", "Status bar numerals"
 	"SmallGold", "Small gold numerals"

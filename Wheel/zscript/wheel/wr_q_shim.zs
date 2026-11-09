@@ -613,7 +613,9 @@ class wr_BB : EventHandler
 	Map<int, int> mHalfN;
 	int halvesOf(string pfx, int ch)
 	{
-		if (ch < 33 || ch > 95) return 1;
+		// RSQ (11-09): a code no font set has cells for (a byte of a UTF-8 letter, { | } ~) is one BLANK half. It was
+		// "1", which made buildHalves skin the half with a cell name that does not exist (a missing texture).
+		if (ch < 33 || ch > 95) return 0;
 		int key = ch;
 		if (mHalfN.CheckKey(key)) return mHalfN.Get(key);
 		int n = 0;

@@ -12,9 +12,14 @@ fontset SmallGrey  { words WRG 9 7   numbers WRN 5 6 }     // the arms panel's s
 fontset DoomFont   { words WRG 9 7   numbers WRG 9 7 }     // DoomFont for everything
 
 // >>> WRERMAC (tools/gen_ring_art.py)
-fontset Ermac      { words WRG 9 7   numbers WRE 12 12 }   // DoomFont words, Ermac's digits (the default)
+fontset Ermac      { words WRG 9 7   numbers WRE 12 12 }   // DoomFont words, Ermac's digits
 // <<< WRERMAC
 
 // >>> WRJFO (tools/gen_jfo.py)
-fontset JFO        { halves WRJ 17 32   numbers WRK 1 1 }   // JFO words (proportional, half cells), JFO big digits (the default)
+fontset JFO        { halves WRJ 17 32   numbers WRK 1 1 }   // JFO words (proportional, half cells), JFO big digits
 // <<< WRJFO
+
+// >>> WRSCORE (tools/gen_score_font.py)
+fontset Score      { halves WRV 8 12   numbers WRU 12 12 }   // RSQ Score's "SCORE:" font (RSSCFON), proportional; its digits (the default)
+fontset Combo      { halves WRC 4 7   numbers WRH 7 7 }   // RSQ Score's combo font (RSSCFN2), proportional; its digits
+// <<< WRSCORE

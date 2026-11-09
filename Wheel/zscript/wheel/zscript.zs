@@ -3523,7 +3523,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 28;
+	const CFG_VERSION = 29;
 
 	private void migrateConfig()
 	{
@@ -3552,6 +3552,14 @@ class wr_Rig : EventHandler
 		{
 			let fs = CVar.FindCVar("wr_fontset");
 			if (fs && fs.GetString() ~== "Ermac") fs.SetString("JFO");
+		}
+		// Gen 29 (owner's headset 2026-11-09: "my weapon wheel is unreadable, why? we have all these fonts to pick from"):
+		// JFO's letters average into slabs at the ring's size in the headset; the text moves to RSQ Score's "SCORE:"
+		// font (font set Score, tools/gen_score_font.py). A config on JFO or the older default moves; another pick stays.
+		if (from < 29)
+		{
+			let fs = CVar.FindCVar("wr_fontset");
+			if (fs && (fs.GetString() ~== "JFO" || fs.GetString() ~== "Ermac")) fs.SetString("Score");
 		}
 		stamp.SetInt(CFG_VERSION);
 	}

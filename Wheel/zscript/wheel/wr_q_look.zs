@@ -91,7 +91,7 @@ class wr_LookState play
 		let pc = CVar.FindCVar('wr_palette');
 		let fc = CVar.FindCVar('wr_fontset');
 		string pn = pc ? pc.GetString() : "Standard";
-		string fn = fc ? fc.GetString() : "JFO";
+		string fn = fc ? fc.GetString() : "Score";
 		if (mBuilt && pn ~== mPalName && fn ~== mFontName) return;
 		mPalName = pn; mFontName = fn; mBuilt = true;
 		mFrom.Clear(); mTo.Clear();

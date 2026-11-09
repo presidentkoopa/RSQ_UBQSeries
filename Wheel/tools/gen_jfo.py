@@ -70,5 +70,5 @@ def upsert(path, start, end, body):
 
 upsert(os.path.join(W, 'TEXTURES.txt'), '// >>> WRJFO (tools/gen_jfo.py)', '// <<< WRJFO', '\n'.join(T))
 upsert(os.path.join(W, 'WRFONTS.txt'), '// >>> WRJFO (tools/gen_jfo.py)', '// <<< WRJFO',
-       'fontset JFO        { halves WRJ 17 32   numbers WRK 1 1 }   // JFO words (proportional, half cells), JFO big digits (the default)')
+       'fontset JFO        { halves WRJ 17 32   numbers WRK 1 1 }   // JFO words (proportional, half cells), JFO big digits')
 print('ok: %d small, %d big' % (len(small), len(big)))

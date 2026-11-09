@@ -93,7 +93,7 @@ user float wr_pull_speed = 1.5;
 user float wr_throw_speed = 2.6;
 user int   wr_watch_dwell = 8;
 user float wr_watch_scale = 0.6;
-user string wr_fontset = "JFO";
+user string wr_fontset = "Score";
 user int  wr_doubletap = 10;
 // RSQ QoL round (owner's picks, 2026-10-31). WH2-WH5 and WH7 are always on; these two are options, off by default.
 // WH6: the ring opens with the card of the gun this hand holds where the hand points, so the hand starts on it.
