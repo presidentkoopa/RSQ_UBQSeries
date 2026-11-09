@@ -38,5 +38,20 @@ server int    rsqgn_barrel_kind = 0;      // 0 Random (one of the six each time)
 // Replace Brutal Doom's Barrels: off, with Brutal Doom loaded (its ExplosiveBarrel1) its barrels stay its own and ours stand
 // down; on, ours replace both ExplosiveBarrel and BD's ExplosiveBarrel1 (barrel.zs RSQGN_BarrelSwap says how and the limits)
 server bool   rsqgn_barrel_replace_bd = false;
-server float  rsqgn_barrel_debris = 1.0;  // how much of each blast's debris is thrown (0 none to 1 all the design has)
-server int    rsqgn_barrel_cap  = 600;    // most barrel effect actors alive at once (Quest: a long chain reaction stays cheap); past it a blast shows its first tic only
+server float  rsqgn_barrel_debris = 1.0;  // how much of each blast's debris is thrown (0 none to 1 all the design has): barrels, the new grenade blast, the contexts
+server int    rsqgn_barrel_cap  = 600;    // most explosion effect actors alive at once, barrels and grenades together (Quest: a long chain reaction stays cheap); past it a blast shows its first tic only
+// THE EXPLOSIONS (explosions.zs; owner 11-09: "options for explosion customization like colors and reactivity and context").
+// All SERVER, as the barrels' (the effects are spawned in the play simulation).
+server int    rsqgn_blast_style = 1;      // Grenade Explosion: 1 New (the approved pixel-art blast, explosions.zs), 0 Original (the UAC Survival Pack's, blast.zs); the look only, the damage is the same
+server int    rsqgn_fx_colour   = 0;      // Explosion Colour, barrels and grenades: 0 Normal (fire; Impact and Incendiary in their kind's colour), 1 Room Complement (opposite the room's RSQ Glow In The Dark glow; Normal without it), 2 Kill Colour (the tier colour of the highest-tier monster it kills, RSQ Monsters; Normal without it), 3 Grenade Kind (every kind's blast in its colour). The white flash stays white in every mode
+server int    rsqgn_fx_lights   = 2;      // Explosion Lights: 0 Off, 1 Simple (one flash), 2 Full (stepped: the punch, the fire, the glow); one light a blast, at most 8 at once, no shadow maps
+server bool   rsqgn_ctx         = true;   // Contexts: the room changes a blast (the rows below); off: every blast as designed in the open
+server bool   rsqgn_ctx_wall    = true;   // ...Wall: within 40 units of a wall the blast fans along it, a sheet of fire on the wall, a scorch decal
+server bool   rsqgn_ctx_ceiling = true;   // ...Low Ceiling (under 96 units, not sky): fire and smoke held under it, fire rolling along it, soot
+server bool   rsqgn_ctx_sky     = true;   // ...Open Sky: a taller column and smoke that stays standing
+server bool   rsqgn_ctx_water   = true;   // ...Water (the blast fully under water): a white flash, no fire, bubbles, a gas dome, silt
+server bool   rsqgn_ctx_liquid  = true;   // ...Liquid Floors (nukage, lava, blood): a crown of drops, crest waves, a stain, the light in the liquid's colour
+server bool   rsqgn_ctx_chain   = true;   // ...Chain: a barrel set off by another barrel's blast is a link in a chain (the rows Chain Escalation and Screen Kick)
+server bool   rsqgn_ctx_crowd   = true;   // ...Crowd: a blast that kills 3 or more -- each of those deaths a gib burst (its slow motion is RSQ SlowMo's Barrel Multi-Kill / Grenade Blast)
+server bool   rsqgn_chain_escalate = true; // Chain Escalation: each link blows bigger (#5, #5 x1.25, #6, #6 x1.2, the finale) and blinks shorter (10 8 6 6 4 tics; it stands longer, the blast keeps stock's timing)
+server bool   rsqgn_chain_kick  = true;   // Screen Kick on Chains: a small short quake from the third link up (never with RSQ Accessibility's Photosensitive Mode or a Comfort Vignette)

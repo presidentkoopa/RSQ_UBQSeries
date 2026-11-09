@@ -1,0 +1,29 @@
+// RSQ Grenade -- DECALDEF. The WALL context's scorch (explosions.zs RSQGN_Boom.Scorch; the mockup ctx_g.py WallG.fg: the
+// scorch "grows over 4 tics, glows (hot bands) then cools to soot; stays"). Two decals sprayed together on the wall:
+// the hot bands, additive and fullbright, fading out in about 10 tics (a decal cannot change colour, so the glow and the
+// soot are two pictures), and the soot under them, which stays (until the engine's decal limit takes it). Both pictures
+// drawn by Grenade/tools/blast_export.py scorch_pics from ctx_a.make_scorch (flat bands on a 2-px grid), at the mockup's
+// 1.25 px a map unit: scaled 0.8 here. Pictures in graphics/rsqgn/ (QESCRHOT, QESCRSOT).
+
+fader RSQGNScorchFade
+{
+	DecayStart 0.08
+	DecayTime 0.2
+}
+
+decal RSQGNScorchHot
+{
+	pic QESCRHOT
+	add 1.0
+	fullbright
+	x-scale 0.8
+	y-scale 0.8
+	animator RSQGNScorchFade
+}
+
+decal RSQGNScorch
+{
+	pic QESCRSOT
+	x-scale 0.8
+	y-scale 0.8
+}

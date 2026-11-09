@@ -77,6 +77,35 @@ size; nothing is smoothed.
     (1-9 pixel shapes, one colour step a frame) and #9's dust.
   - The lit blink is the stock BAR1 sprite (or whatever BAR1 is loaded) through TRNSLATE.txt's RSQGN_BarrelHot.
 
+THE EXPLOSIONS (explosions.zs, 2026-11-09): the new grenade blast and the explosion contexts, from the owner's
+approved Python mockups (the record: Grenade/tools/barrel_spec/fx_agentG, fx_ctx1, fx_ctx2; exported by
+tools/blast_export.py through tools/barrel_export.py into sprites/rsqgn/blast/ QE** and graphics/rsqgn/). Every sprite
+is the source art recoloured, re-centred and trimmed at its own pixel size, or drawn by the exporter; nothing smoothed.
+  Sources and their terms:
+  - RS Combat FX (presidentkoopa, the owner's own pack): the pixel embers RSS0A0-D0 (the grenade's embers, raw; the
+    skeet's gold ember rain through a gold ramp).
+  - Reactorcore minipack (as above: CC0 BY A PAGE COMMENT ONLY -- get it in writing): the ring flash (the grenade's
+    three child bursts), the grey puff (the grenade's soot, the underwater murk and silt, the ceiling's smoke sheet,
+    the sky's standing smoke), sheet 4 fireballs (the ceiling's rolling fire, the sky column).
+  - Rufaswan's rips, sheet by Magma MK-II (as above: "Credits not necessary", credited): the star (the grenade's crack
+    star and its silhouette, the second crack, the underwater flash), the yellow flash (the white ball opening to a
+    ring), the streak flare (the three pops; the skeet's crosshair ring), the cluster ring (the skeet's gold fireball
+    ring), the dust ring (the grit puffs), the bubble burst (the underwater gas bubbles and dome), the yellow flash ring
+    (the barrel's underwater thump ring), the yellow puffs (the sky column).
+  - fx_sheet_2.png (design/assets/fx_sheets): *** SOURCE UNKNOWN *** (as above). Used ONLY as a SHAPE: the barrel's
+    underwater white flash is #6 Heavy's first dome frame drawn solid white (ctx_a.py water_barrel). If the sheet cannot
+    ship, that flash needs another shape.
+  - Sergeant Mark IV's Meatgrinder, via RS Monsters (Monsters/sprites/meatgrinder, MGAB A-H the blood burst, MGAG E-H
+    the chunks): *** LICENCE NOT STATED *** in RS Monsters' copy -- the Crowd gib burst uses them. Check Meatgrinder's
+    terms before sharing beyond the series.
+  - Drawn in code for this pack (ours): the grenade's shock rings and star rays (seqg.py PixRing / Rays), the liquids'
+    crest waves and stains (liquid.py Wave / Stain), the ceiling soot and the wall scorch decals (ctx_a.py make_scorch),
+    every debris bit, crown drop and blood bit (debris shapes and palettes), and the particles drawn at run time
+    (shrapnel, pepper marks, sparks, bubbles).
+  - End of Starchild: structure reference only (as above).
+  - The tints are TRNSLATE translations (no art): the kinds' colours (kinds.zs Colour), RSQ Monsters' tier ladder's
+    representative colours (RS_MonsterMaster.zs RS_TierForColour), 12 hues.
+
 SHARING
 Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
 people's work in this pack is the project owner's decision.

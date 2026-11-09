@@ -45,7 +45,8 @@ MODS = {
                      'MODELDEF.txt', 'TEXTURES.txt', 'VOXELDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models',
                      'sprites', 'graphics', 'voxels']),
     'Grenade':      ('RSQ_Grenade.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
-                     'SNDINFO.txt', 'TRNSLATE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds', 'sprites']),
+                     'SNDINFO.txt', 'TRNSLATE.txt', 'DECALDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds',
+                     'sprites', 'graphics']),   # DECALDEF + graphics/: the explosions' wall scorch (11-09)
     'Melee':        ('RSQ_Melee.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'MODELDEF.txt',
                      'SNDINFO.txt', 'LANGUAGE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds', 'sprites', 'credits']),
     'GlowInTheDark': ('RSQ_GlowInTheDark.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt', 'GLDEFS.txt',

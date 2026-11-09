@@ -31,6 +31,7 @@ gains features when another is loaded.
 | Holsters (guns, sabers, grenade spot), keyring, gun throw, cigarette | Tactical Rig |
 | The hand grenade on plain Doom (pin by ring or teeth, throw by hand, cook, red fuse, grenades scattered per map); stands down for Brutal Doom VR's own grenade | Grenade (own pk3, owner-approved 11-01) |
 | Barrels: how a barrel goes off (the lit blink, six explosions at random, their sounds); Doom's barrel gameplay kept; stands down for Brutal Doom's barrels unless Replace Brutal Doom's Barrels | Grenade (owner 11-09: "part of grenade?"; no new mod) |
+| Explosions' look, barrels and grenades: the new grenade blast (Original selectable), Explosion Colour (Normal / Room Complement / Kill Colour / Grenade Kind), the explosion light, the room's contexts (wall, low ceiling, open sky, water, liquid floors, chain, crowd gib) | Grenade (owner 11-09; explosions.zs). The look only: the slow motion of a barrel's or grenade's blast stays SlowMo's (Barrel Multi-Kill, Chain Reaction, Barrel Near You, Grenade Blast); Glow In The Dark's glow and Monsters' tiers are read by name |
 | Second saber's draw and stow | Tactical Rig holster + Saber (its dual on/off) |
 | Weapon picking by wheel | Wheel |
 | Ammo / status cards on the wrist | GunCards (watch check from Gestures) |
