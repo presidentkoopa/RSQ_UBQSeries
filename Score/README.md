@@ -14,6 +14,19 @@ and fades red, faster and faster (a steady fade in RSQ Accessibility's Photosens
 Distance Grab can pull it. Touch it: +1 life. RSQ SlowMo's DOWN v3 asks for the Revival Fire on its top tier; DOWN no
 longer sends "Revive" ("Revenge" stays, one for each DOWN target you kill). The readout is unchanged.
 
+New on 11-09 (code only: not run on the rig, not headset-confirmed): sixteen more bonuses.
+- **Justice Shot** (violet): your gun kills a monster in its attack wind-up, before its shot leaves it.
+- **Read It** (violet): a monster's shot at you passes within 1.5 m and misses, and you kill whoever fired it within 3 s.
+- From RSQ Melee: **Swatted** (a fireball your open palm knocked aside kills something), **Rope-a-Dope** (kill a
+  monster within 3 s of your Guard soaking its blow; more with your fists), **Seismic**, **Out of My Way** and **Full
+  Release** (one Ground Pound, Clear Out or Guard release kills two or more), **Meat Shield** (the monster in your
+  Headlock dies of another monster's shots: your kill), **Human Shield** (a kill while you hold one as a shield),
+  **Field Goal** (a barrel your uppercut kicked blows something up), **Seeing Stars** (kill a monster within 1 s of
+  Heavy Hands freezing it), **Meteor**, **Star Punch**, **Down for the Count** (a Rifle Butt knockdown finished),
+  **Bare Knuckle** (a glove kill in Slappers Only) and **Red Mist** (a shotgun kill in the shove's slow motion on a
+  monster you did not shove).
+- A bullet your hand sends back now pays Return to Sender (it read as your own gun shot before).
+
 RSQ Score is ijon's *Dakka* point system rebuilt in ZScript for stock QuestZDoom 17.3, then grown to fit what
 your hands can do in VR. It watches the whole RSQ series: the saber, the ShieldSaw, the whip, the grappling
 hook, Distance Grab, the gloves, the grenades, the holsters and slow motion. Nothing links to anything. Score
@@ -74,7 +87,7 @@ a slow-motion moment, all in the breakdown under your score.
 - **Melee** (steel blue): the hands' craft. Fatality, Cleaved, Hurled, Shoryuken, Giant Slayer, Wall Splat, Death from Above.
 - **Counterplay** (violet): defence turned into a kill. Riposte, Perfect Riposte, Return to Sender, Poetic Justice, Rally.
 
-There are nearly 190 bonuses in all. Many belong to one mod and fire only when it's loaded.
+There are over 200 bonuses in all. Many belong to one mod and fire only when it's loaded.
 
 **A taste of the bonuses**
 - **Swan Song:** the kill landed after you were already dead. Adds three times the base, the biggest single bonus.

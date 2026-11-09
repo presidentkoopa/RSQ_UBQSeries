@@ -65,6 +65,15 @@ class RSQML_Headlock : StaticEventHandler
 		return false;
 	}
 
+	// the player whose Headlock holds a, or -1 (RSQ Score, 11-09: "headlock.by", its Meat Shield and Ring Out). Asked as a
+	// held monster dies, on the tic of its death, before the hold lets go.
+	int HolderOf(Actor a)
+	{
+		if (!a) return -1;
+		for (int n = 0; n < MAXPLAYERS; n++) if (collar[n] == a) return n;
+		return -1;
+	}
+
 	// ---- input --------------------------------------------------------------------------------------------------
 	override bool InputProcess(InputEvent e)
 	{

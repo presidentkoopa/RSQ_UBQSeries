@@ -584,6 +584,11 @@ class RSQML_Gloves : StaticEventHandler
 			b.vel.xy += toB * up;
 		}
 		b.target = pmo;
+		// RSQ Score's Field Goal (11-09): this barrel, this player, now
+		for (int i = kickedBarrel.Size() - 1; i >= 0; i--)
+			if (!kickedBarrel[i] || kickedBarrel[i] == b || level.maptime - kickedTic[i] > KICK_KEEP) { kickedBarrel.Delete(i); kickedTic.Delete(i); kickedPn.Delete(i); }
+		if (kickedBarrel.Size() >= 16) { kickedBarrel.Delete(0); kickedTic.Delete(0); kickedPn.Delete(0); }
+		kickedBarrel.Push(b); kickedTic.Push(level.maptime); kickedPn.Push(pmo.PlayerNumber());
 		RSQML_Spark.Dust(b.pos + (0, 0, 4));
 		pmo.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 1.0);
 		if (RSQML.Debug() > 0) Console.Printf("RSQML uppercut kicks %s: %s, up %.1f, forward %.1f, no damage (health %d)", b.GetClassName(),
@@ -685,12 +690,25 @@ class RSQML_Gloves : StaticEventHandler
 	Array<Actor> returned;      // missiles sent back at their shooters (Hadouken, Swat Back, Reflect Guard), and what each hits for
 	Array<double> returnedMult;
 	Array<int> retHand;     // ... and which hand sent it: 0 a punch (Hadouken, a punched bullet, a catch), 1 Swat Back, 2 the Guard (RSQ Score reads it, "returned.by")
+	                        // 3 (11-09): an open palm's plain swat, knocked ASIDE (not sent back), so RSQ Score can name a kill by it
+	// UPPERCUT KICKS BARRELS (11-09, for RSQ Score's Field Goal): the barrels a player's uppercut kicked, when, and who
+	// (RSQML_Service "barrel.kicked"; a barrel is only a few dozen a map, the list keeps the last 16)
+	Array<Actor> kickedBarrel;
+	Array<int> kickedTic, kickedPn;
+	const KICK_KEEP = 175;   // 5 s: a kicked barrel that goes off later than this is no longer the kick's
+	int KickedAge(Actor b, int pn)
+	{
+		for (int i = kickedBarrel.Size() - 1; i >= 0; i--)
+			if (kickedBarrel[i] == b && kickedPn[i] == pn && level.maptime - kickedTic[i] <= KICK_KEEP) return level.maptime - kickedTic[i];
+		return -1;
+	}
 
 	// a new map, or a save loaded: the lists were the old level's (a static handler is never saved)
-	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); retHand.Clear(); rounds.Clear(); }
-	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); retHand.Clear(); rounds.Clear(); }
+	override void WorldLoaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); retHand.Clear(); rounds.Clear(); kickedBarrel.Clear(); kickedTic.Clear(); kickedPn.Clear(); }
+	override void WorldUnloaded(WorldEvent e) { missiles.Clear(); returned.Clear(); returnedMult.Clear(); retHand.Clear(); rounds.Clear(); kickedBarrel.Clear(); kickedTic.Clear(); kickedPn.Clear(); }
 
-	// which hand sent this missile back: 0 a punch, 1 Swat Back, 2 the Guard; -1 not one of ours (RSQML_Service "returned.by")
+	// which hand sent this missile back: 0 a punch, 1 Swat Back, 2 the Guard, 3 an open palm's swat that knocked it aside;
+	// -1 not one of ours (RSQML_Service "returned.by")
 	int ReturnedHow(Actor shot)
 	{
 		int k = returned.Find(shot);
@@ -923,7 +941,8 @@ class RSQML_Gloves : StaticEventHandler
 				if (RSQML.Debug() > 0) { String fn = from.GetClassName(); Console.Printf("RSQML bullet time fists: a round back at %s (met %.1f from the glove's path)", fn, miss); }
 			}
 		}
-		for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i]) { returned.Delete(i); returnedMult.Delete(i); }
+		// 11-09: retHand goes with them (it was left behind here, so every entry after a gone one read the wrong hand)
+		for (int i = returned.Size() - 1; i >= 0; i--) if (!returned[i]) { returned.Delete(i); returnedMult.Delete(i); retHand.Delete(i); }
 	}
 
 	// CATCH (Gun Bonsai VR, GBOVR_TREES.md 4.1 D, a glove's after Hadouken 2; owner 11-02: built on the open hand, the
@@ -1066,6 +1085,8 @@ class RSQML_Gloves : StaticEventHandler
 			m.angle = VectorAngle(dir.x, dir.y);
 			m.pitch = -asin(clamp(dir.z, -1.0, 1.0));
 			missiles.Delete(i);
+			// RSQ Score (11-09, its Swatted row): listed as knocked aside ("returned.by" 3), hitting for its own damage (x1.0)
+			returned.Push(m); returnedMult.Push(1.0); retHand.Push(3);
 			pmo.A_StartSound("rsqml/swat", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 			RSQ_Buzz.Start(pmo, h, 0.6, 5);
 			RSQML_Spark.Swat(st.hand);

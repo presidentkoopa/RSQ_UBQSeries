@@ -180,7 +180,7 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Burst | On | That 4 s burst. |
 | Wheel | On | Opening RSQ Wheel. |
 | Accessibility Button | On | RSQ Accessibility's slow-motion button. |
-| Melee Shove | On | RSQ Melee's gun-butt shove. |
+| Melee Gun Butt Shove | On | RSQ Melee's gun-butt shove: every landed shove slows time (its length is Melee's Slow Time Length, 1 s). Melee's own Always Slow Time on Shove must be on too. |
 | Cigarette | On | RSQ Tactical Rig's cigarette. With the Rig's Move at Full Speed While Smoking on, you are not slowed during it. |
 | Saber Parry | On | RSQ Saber's perfect parry. |
 | ShieldSaw Block | On | RSQ ShieldSaw's perfect block. |

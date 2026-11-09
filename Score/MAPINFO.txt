@@ -13,3 +13,9 @@ gameinfo
 {
     AddEventHandlers = "RS_ScoreRegistry", "RS_ScoreHandler", "RS_ScoreHUD", "RS_ScoreShots", "RS_ComboLedger", "RS_ScoreWrist"
 }
+
+// [11-09 melee expansion] the panel rows' watcher (rows_panels.zs): its own block, so the line above stays as it was
+gameinfo
+{
+    AddEventHandlers = "RS_ScorePanels"
+}

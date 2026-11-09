@@ -43,7 +43,8 @@ OptionMenu "RSQML_Options"
 	StaticText " "
 	StaticText "Gun Butt Shove", "Gold"
 	Option "Gun Butt Shove", "rsqml_shove", "OnOff"
-	Option "Slow-Mo After Shove", "rsqml_shove_slowmo", "OnOff"
+	Option "Always Slow Time on Shove", "rsqml_shove_slowmo", "OnOff"
+	Option "F.E.A.R. Blood Mist", "rsqml_fear_mist", "OnOff"
 	StaticText " "
 	StaticText "Headlock", "Gold"
 	Option "Headlock", "rsqml_headlock", "OnOff"
@@ -77,7 +78,7 @@ OptionMenu "RSQML_Test"
 	StaticText " "
 	StaticText "Gun Butt Shove", "Gold"
 	Slider "Shove Speed (m/s)", "rsqml_shove_mps", 1.0, 8.0, 0.1, 1
-	Slider "Slow-Mo Length (ms)", "rsqml_shove_slowmo_ms", 100, 1000, 50, 0
+	Slider "Slow Time Length (ms)", "rsqml_shove_slowmo_ms", 100, 2000, 50, 0
 	StaticText " "
 	StaticText "Headlock", "Gold"
 	Slider "Reach (m)", "rsqml_headlock_reach", 0.1, 0.6, 0.05, 2

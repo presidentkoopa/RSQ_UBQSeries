@@ -305,12 +305,21 @@ class RS_Tool play
 		// a shot sent back: turned by the shield (a fresh puff or missile of the shield's), or a monster's missile now
 		// yours (the saber, the Force; a Hadouken or Swat is narrowed by Melee's "returned.by" when it answers)
 		if (shot && inf != src && (RS_Melee.AskShield("returned", inf) >= 0 || RS_Melee.AskShield("returned", v) >= 0)) return "shield.return";
+		// [11-09 melee expansion] RSQ Melee's returned BULLET is a round of its own (RSQML_Round, fired as the player's), never
+		// born of a monster: it read as a gun shot. Melee names the hand that sent it back.
+		if (inf && inf.bMissile && icn ~== "RSQML_Round")
+		{
+			int rb = RS_Svc.Int(RS_Svc.MELEE, "returned.by", 0, inf);
+			if (rb == 0) return "hadouken";
+			if (rb == 1) return "swat";
+		}
 		if (inf && inf.bMissile && RS_ScoreShots.BornOfMonster(inf))
 		{
 			int by = RS_Svc.Int(RS_Svc.MELEE, "returned.by", 0, inf);
 			if (by == 0) return "hadouken";
 			if (by == 1) return "swat";
 			if (by == 2) return "guard.reflect";
+			if (by == 3) return "swat.aside";   // [11-09] an open palm knocked it aside (Melee's plain swat): Swatted (rows_melee2.zs)
 			if (RS_Svc.Int(RS_Svc.WHIP, "returned", 0, inf) >= 0) return "whip.return";
 			return "saber.return";
 		}

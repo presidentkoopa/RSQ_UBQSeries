@@ -30,8 +30,11 @@
 //   SLOW-MO      (on by default) a landed shove -- ours, or BD22 VR Reloaded's own with it loaded -- asks RSQ SlowMo for
 //                a short pulse (rsm_pulse <ms> 35). Nothing hears it without SlowMo.
 //   F.E.A.R.     while the slow motion that pulse started lasts, every shotgun hit of the shover's on a monster bleeds
-//                twice (the hit's own blood again: SpawnBlood + TraceBleed), and a kill by it pays RSQ Score's
-//                "F.E.A.R. Effect" award (RS_ScoreService "award", 200).
+//                twice (the hit's own blood again: SpawnBlood + TraceBleed), and a kill by it is RSQ Score's "F.E.A.R.
+//                Effect" (Score pays it itself as the combo "shove > gun.shotgun@slow"; the old 200-point award it is still
+//                sent is taken at 0). BLOOD MIST (11-09, owner: "kill monster, monster explodes into blood mist";
+//                rsqml_fear_mist, on): that kill is made the monster's extreme death (its XDeath: Brutal Doom's gib burst)
+//                and the body bursts into a cloud of blood mist (FearMist below).
 //
 // NETPLAY (QZD has none; do not make it worse): the swing is read on the machine with the hands and leaves as
 // rsqml_buttshove (arg0 two hands, arg1 hundredths of m/s, arg2 yaw x 1000 + pitch + 90), applied to e.Player.
@@ -345,7 +348,7 @@ class RSQML_Shove : StaticEventHandler
 	void Pulse(String why)
 	{
 		if (!Opt("rsqml_shove_slowmo", 1)) return;
-		int ms = clamp(Opt("rsqml_shove_slowmo_ms", 300), 30, 2000);
+		int ms = clamp(Opt("rsqml_shove_slowmo_ms", 1000), 30, 2000);
 		EventHandler.SendNetworkEvent("rsm_pulse", ms, PULSE_DEPTH);
 		// the F.E.A.R. window opens with it (synced: every machine keeps the same window)
 		EventHandler.SendNetworkEvent("rsqml_fear", int(ceil(ms * TICRATE / 1000.0)) + FEAR_CAP);
@@ -451,7 +454,23 @@ class RSQML_Shove : StaticEventHandler
 		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
 		fearPn = pn; fearFrom = gametic; fearTill = gametic + clamp(tics, 1, 175); fearSlow = false;
 		fearPaid.Clear();
+		MarkAround(players[pn].mo);
 		if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: F.E.A.R. window opens (t%d)", level.maptime);
+	}
+	// BLOOD MIST: every living monster within FEAR_REACH of the shover carries RSQML_FearMark for the window, so a shotgun
+	// blow of his that would kill it is made its extreme death before the engine picks a death state (below). Synced: the
+	// window opens from a network event on every machine.
+	const FEAR_REACH = 2048.0;
+	void MarkAround(PlayerPawn pmo)
+	{
+		if (!pmo || Opt("rsqml_fear_mist", 1) == 0) return;
+		let it = BlockThingsIterator.Create(pmo, FEAR_REACH);
+		while (it.Next())
+		{
+			let o = it.thing;
+			if (!o || !o.bIsMonster || o.player || o.health <= 0 || o.bFriendly) continue;
+			if (!o.FindInventory("RSQML_FearMark")) o.GiveInventoryType("RSQML_FearMark");
+		}
 	}
 	void FearClose(String why)
 	{
@@ -544,10 +563,63 @@ class RSQML_Shove : StaticEventHandler
 		if (Dbg() >= 2) Console.Printf("\c[Gold]rsqml: F.E.A.R. hit %s for %d, health %d (t%d)", t.GetClassName(), e.Damage, t.health, level.maptime);
 		if (t.health > 0 || fearPaid.Find(t) != fearPaid.Size()) return;
 		fearPaid.Push(t);
+		if (Opt("rsqml_fear_mist", 1) != 0) FearMist(t, pmo);
 		Service sc = RSQML.Svc("RS_ScoreService");
 		int got = sc ? sc.GetInt("award", FEAR_LABEL, FEAR_POINTS, 0, pmo) : -1;
 		if (fearPn == consoleplayer) { sayName = FEAR_LABEL; sayTic = gametic; }
 		if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: F.E.A.R. Effect, %s killed by %s -> RSQ Score %d (t%d)", t.GetClassName(), pmo.player.ReadyWeapon.GetClassName(), got, level.maptime);
+	}
+
+	// THE BLOOD MIST (owner 2026-11-09: "buttshove with shotgun, time slows, shoot with shotgun, kill monster, monster
+	// explodes into blood mist"). A cloud bursts out of the body's middle, drifting out and up; in the slow motion it hangs.
+	// WITH BRUTAL DOOM (brutal22test6 actors/Gore/Blood.dec, by name): its own mist, the colour of the monster's blood --
+	//   red    BloodmistXXBig (scale 3.0, speed 12, 2-tic frames GTXZ A-Y) and BloodmistExtraBig (scale 1.5, speed 5), the
+	//          puffs its gore groups throw (GoreGroups.dec ZombieXDeath, MuchMeatDeath: BloodMistExtraBig x6 to x14)
+	//   green  GreenBloodMistExtraBig, GreenBloodMistBig (GreenGore.dec: Green_Blood, the Baron and Hell Knight)
+	//   blue   BlueBloodMistExtraBig, BlueBloodMistBig (BlueGore.dec: Blue_Blood, the Cacodemon)
+	// WITHOUT IT (or a colour it does not have): the monster's own blood (GetBloodType), MIST_STOCK of it flung out.
+	// A monster with no blood (NOBLOOD: a Lost Soul) gets none. The extreme death (RSQML_FearMark) is separate: on stock
+	// Doom it is the XDeath of the zombies, the imp and the SS; a monster with no XDeath dies its normal death in the mist.
+	const MIST_BIG = 10;
+	const MIST_MID = 10;
+	const MIST_STOCK = 24;
+	static void FearMist(Actor t, Actor by)
+	{
+		if (!t || t.bNoBlood) return;
+		let def = GetDefaultByType(t.GetClass());
+		double tall = max(def.height, 16.0), wide = max(def.radius, 8.0);
+		Vector3 mid = t.pos + (0, 0, tall * 0.5);
+		class<Actor> blood = t.GetBloodType(0);
+		String bn = "";
+		if (blood) bn = blood.GetClassName();
+		String big = "BloodmistXXBig", small = "BloodmistExtraBig";
+		if (bn.IndexOf("Green") >= 0) { big = "GreenBloodMistExtraBig"; small = "GreenBloodMistBig"; }
+		else if (bn.IndexOf("Blue") >= 0) { big = "BlueBloodMistExtraBig"; small = "BlueBloodMistBig"; }
+		class<Actor> cBig = big, cSmall = small;
+		int n = 0;
+		if (cBig && cSmall)
+		{
+			n += MistOut(cBig, mid, wide, tall, MIST_BIG, 2.0, 5.0);
+			n += MistOut(cSmall, mid, wide, tall, MIST_MID, 1.0, 3.5);
+		}
+		else if (blood) n += MistOut(blood, mid, wide, tall, MIST_STOCK, 2.0, 6.0);
+		if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: F.E.A.R. blood mist: %s bursts, %d puffs of %s (t%d)", t.GetClassName(), n,
+			(cBig && cSmall) ? big : bn, level.maptime);
+	}
+	static int MistOut(class<Actor> c, Vector3 mid, double wide, double tall, int count, double vMin, double vMax)
+	{
+		int n = 0;
+		for (int i = 0; i < count; i++)
+		{
+			double a = frandom[RSQMLMist](0, 360);
+			Vector3 at = mid + (cos(a) * frandom[RSQMLMist](0, wide * 0.6), sin(a) * frandom[RSQMLMist](0, wide * 0.6), frandom[RSQMLMist](-tall * 0.3, tall * 0.3));
+			let m = Actor.Spawn(c, at, ALLOW_REPLACE);
+			if (!m) continue;
+			m.angle = a;
+			m.Vel3DFromAngle(frandom[RSQMLMist](vMin, vMax), a, -frandom[RSQMLMist](-10, 60));
+			n++;
+		}
+		return n;
 	}
 
 	// the award's name, small, grey, half-transparent, low in the view, fading over its last half second
@@ -560,5 +632,49 @@ class RSQML_Shove : StaticEventHandler
 		double vw = 640, vh = 400;
 		Screen.DrawText(SmallFont, Font.CR_GRAY, (vw - SmallFont.StringWidth(sayName)) / 2, vh * 0.72, sayName,
 			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, a);
+	}
+}
+
+// THE F.E.A.R. MARK (11-09, the blood mist; RSQML_Shove.MarkAround gives it for the window). On the monster: a blow from the
+// shover's shotgun inside the window that would kill it (with its own damage factor, as the engine applies it next) is
+// spent, and the monster takes in its place one blow of damage type 'Extreme' that takes it past its gib health -- the
+// engine's own extreme death (AActor::Die: 'Extreme' is always extreme and its damage type is cleared, so a monster's
+// Death.Shotgun cannot catch it: its XDeath runs; Brutal Doom's XDeath is its gib burst). The kill keeps the same
+// source and inflictor (the pellet's puff), so RSQ Score still reads a shotgun kill. Left alone: a blow whose inflictor
+// forces pain (FORCEPAIN: a dead body must never be sent into pain) or refuses extreme deaths (NOEXTREMEDEATH), and a
+// monster that cannot die of it (invulnerable, NODAMAGE, Buddha); those still get the mist, over their normal death.
+// The pattern is Melee's own Human Shield (guard.zs RSQML_Body): a blow passed on from inside ModifyDamage.
+class RSQML_FearMark : Inventory
+{
+	bool busy;
+	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.QUIET }
+
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		if (!passive || busy || damage <= 0 || damageType == 'Kick' || damageType == 'Extreme') return;
+		let mo = owner;
+		let pmo = PlayerPawn(source);
+		if (!mo || mo.health <= 0 || mo.player || !pmo || !pmo.player) return;
+		let sh = RSQML_Shove.Get();
+		if (!sh || !sh.FearOn(pmo) || !RSQML_Shove.IsShotgun(pmo.player.ReadyWeapon)) return;
+		if (RSQML.SVI("rsqml_fear_mist", 1) == 0) return;
+		if (inflictor && (inflictor.bForcePain || inflictor.bNoExtremeDeath)) return;
+		if (mo.bInvulnerable || mo.bNoDamage || mo.bBuddha || (flags & DMG_NO_FACTOR)) return;
+		int real = mo.ApplyDamageFactor(damageType, damage);
+		if (real < mo.health) return;
+		busy = true;
+		int over = max(real, mo.health - mo.GetGibHealth() + 1);
+		mo.DamageMobj(inflictor, source, over, 'Extreme', DMG_THRUSTLESS);
+		busy = false;
+		if (!mo || mo.health <= 0) newdamage = 0;   // it died of the extreme blow: this one is spent (the engine returns at 0)
+		if (RSQML.Debug() >= 1) Console.Printf("\c[Gold]rsqml: F.E.A.R. extreme death for %s (%d -> 'Extreme' %d) (t%d)",
+			mo ? mo.GetClassName() : 'gone', damage, over, level.maptime);
+	}
+
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		let sh = RSQML_Shove.Get();
+		if (!owner || owner.health <= 0 || !sh || sh.fearPn < 0) Destroy();
 	}
 }

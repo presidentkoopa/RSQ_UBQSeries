@@ -163,6 +163,8 @@ class RS_ScoreRegistry : StaticEventHandler
 		RS_BoostSeed.Names(more);       // boost.zs: what was killed -- Champions' tiers, LegenDoom's legendaries
 		RS_ComboSeed.Names(more);       // combo.zs: the chain of tools that led to the kill
 		RS_RowSeed.Names(more);         // rows.zs: the 11-03 rows (the sheet's kept bonuses)
+		RS_Melee2Seed.Names(more);      // [11-09] rows_melee2.zs: the melee audit's new rows (SCORE_EXPANSION.md E)
+		RS_PanelSeed.Names(more);       // [11-09] rows_panels.zs: Justice Shot, Read It (SCORE_EXPANSION.md D)
 		for (int k = 0; k < more.Size(); k++) Own(more[k]);
 		RS_ComboSeed.Combos(self);      // combo.zs: Score's own rows of the combo table
 	}
