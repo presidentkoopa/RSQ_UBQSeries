@@ -88,7 +88,7 @@ OptionMenu "RSQLS_Options"
 	StaticText " "
 	StaticText "Targets", 1
 	RSQLSGbOption "Target Lock", "rsqls_lock", "OnOff", "RSQLS_SightService", "TargetLock"
-	RSQLSGbOption "Colour on Target", "rsqls_target_recolor", "OnOff", "RSQLS_SightService", "TargetColour"
+	RSQLSGbOption "Colour on Target", "rsqls_target_recolor", "OnOff", "RSQLS_SightService", "TargetColour", "rsqls_lock"
 	ColorPicker "Target Colour", "rsqls_col_target", "rsqls_target_recolor"
 	RSQLSGbOption "Headshot Reaction", "rsqls_head", "OnOff", "RSQLS_SightService", "Headshot"
 	ColorPicker "Headshot Colour", "rsqls_col_head", "rsqls_head"

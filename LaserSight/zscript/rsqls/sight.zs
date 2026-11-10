@@ -115,6 +115,21 @@ class RSQLS_Sight : EventHandler
 	// card pick (owner 11-05: "use the gun's laser sight to select from the wheel"; RSQ Wheel does not read it yet).
 	// Valid while beamMask has the hand.
 	transient Vector3 lineAt[2], lineDir[2];
+	// A RELOAD OR A SWITCH (owner 11-10: "hide it until ready again"). The beam's kept pose (above) is for the frames
+	// between shots (11-09: "PCVR laser sight disappears between shots. not good."), so it holds for a second after
+	// any attack press, which covers the fire, recoil and pump frames of every gun; past that an unmeasured frame is a
+	// reload or a raise / lower and the beam hides until the gun is back on a measured frame. A pending switch hides
+	// the main hand's at once. (Frame labels are not read: Brutal Doom's fire jumps between labels freely.)
+	const KEEP_AFTER_FIRE = 35;
+	transient int lastFireTic;
+	bool Busy(PlayerInfo p, int h)
+	{
+		if (!p) return false;
+		if (p.cmd.buttons & (BT_ATTACK | BT_ALTATTACK)) lastFireTic = level.maptime;
+		if (h == 0 && p.PendingWeapon != WP_NOCHANGE) return true;
+		return level.maptime - lastFireTic > KEEP_AFTER_FIRE;
+	}
+
 	static bool, Vector3, Vector3 BeamLine(int h)
 	{
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
@@ -198,8 +213,10 @@ class RSQLS_Sight : EventHandler
 	private transient double mzF[2], mzU[2], mzS[2];
 	// What the readout shows: room metres to the hit (0 = nothing), its colour.
 	transient double rangeM[2];
+	transient double rangeU[2];   // the same, map units along the trace (the Map Units readout; owner 11-10)
 	transient int    rangeRgb[2];
 	transient double readM;
+	transient double readU;
 	transient int    readRgb;
 
 	// Leading (see header).
@@ -423,10 +440,11 @@ class RSQLS_Sight : EventHandler
 		GbRefresh(pmo);
 
 		// Toggle feedback first, whatever else is going on.
+		bool master = RSQLS_Hand.Flag("rsqls_on", p, true);
 		for (int h = 0; h < 2; h++)
 		{
 			bool on = RSQLS_Hand.Flag(h == 0 ? "rsqls_main" : "rsqls_off", p, true);
-			if (togglePrimed && on != wasOn[h]) Buzz(pmo, h);
+			if (togglePrimed && master && on != wasOn[h]) Buzz(pmo, h);   // (11-10) no buzz with Laser Sight off
 			wasOn[h] = on;
 		}
 		togglePrimed = true;
@@ -496,7 +514,7 @@ class RSQLS_Sight : EventHandler
 		if (ci >= 0)
 		{
 			if (row >= 0) { heldRow[h] = row; heldGun[h] = w; }
-			else if (heldGun[h] == w && heldRow[h] >= ci) row = heldRow[h];
+			else if (heldGun[h] == w && heldRow[h] >= ci && !Busy(p, h)) row = heldRow[h];
 		}
 		int pi = (row >= 0) ? bt.Place(row) : ((ci >= 0) ? bt.Place(ci) : -1);
 
@@ -610,6 +628,7 @@ class RSQLS_Sight : EventHandler
 			if (vc) vu = vc.GetFloat();
 			double roomM = (rd.x, rd.y, rd.z * RSQLS_Hand.Ps()).Length() / vu;
 			rangeM[h] = (hit && !sky) ? roomM : 0;
+			rangeU[h] = (hit && !sky) ? rd.Length() : 0;
 			if (hit && !sky && !arcOn) hitCm = roomM * 100.0;
 		}
 
@@ -795,9 +814,9 @@ class RSQLS_Sight : EventHandler
 
 		if (gmode >= 2)
 		{
-			int rad = int(clamp((10.0 + dist / 90.0) * gscale / 1.8, 6.0, 96.0));
-			// Intensity scales the light's colour: the only brightness a point
-			// light has.
+			// Intensity scales the light's colour (the only brightness a point light has) up to 1; past 1 (owner 11-10) the
+			// colour is full and the light reaches further by the rest, so the room brightens with the bloom
+			int rad = int(clamp((10.0 + dist / 90.0) * gscale / 1.8 * max(1.0, gint), 6.0, 160.0));
 			int lc = RSQLS_Colors.Mix(0, dotRgb, clamp(gint, 0.0, 1.0));
 			if (!lightOn[h] || lightColor[h] != lc || abs(lightRadius[h] - rad) > 2)
 			{
@@ -1065,6 +1084,7 @@ class RSQLS_Sight : EventHandler
 		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0) * RSQLS_A11y.Text();   // RSQ_Accessibility's Text Size
 		readout.Scale = (sc, sc);
 		readM = rangeM[h];
+		readU = rangeU[h];
 		readRgb = rangeRgb[h];
 	}
 
@@ -1078,7 +1098,7 @@ class RSQLS_Sight : EventHandler
 		int units = RSQLS_Hand.Opt("rsqls_readout_units", pp, 0);
 		String txt;
 		if (units == 1) txt = String.Format("%.0f ft", readM * 3.28084);
-		else if (units == 2) txt = String.Format("%.0f u", readM * RSQLS_Hand.Upm());
+		else if (units == 2) txt = String.Format("%.0f u", readU);   // the trace's own map units (11-10: room metres x 34 read short on steep shots)
 		else txt = readM < 10 ? String.Format("%.1f m", readM) : String.Format("%.0f m", readM);
 		double tw = SmallFont.StringWidth(txt) * 2.0;
 		cv.DrawText(SmallFont, Font.CR_WHITE, (128 - tw) * 0.5, 16 - SmallFont.GetHeight(), txt,
