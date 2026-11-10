@@ -166,6 +166,14 @@ DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
   only); the touch fallback being built and rig-tested by an agent. Was: OPEN BLOCKER (README agents, 11-10): ropes cannot be climbed out of the box. Grapple (input.zs:204) and Whip take the
   rope only through Distance Grab's grab keys, which have had no default bind since 11-10. KEYBINDS_PLAN says "grabbing
   the rope is the grip". Owner to decide.
-- Open from the agents: Wheel's Opens On and Re-centre Window rows do nothing with one key; Monsters' Tier Icons row
-  is unreachable (old pages with no entry); ShieldSaw a11y.zs HoldToggle() is dead; stale KEYCONF comments in Distance
-  Grab, Wheel, ShieldSaw, Whip MENUDEF, Grapple input.zs.
+- DONE (code only, not shown; loads clean) Open from the agents:
+  - Wheel's Opens On and Re-centre Window rows did nothing with one key: Opens On is now Main / Off hand for the Open
+    Wheel key (a saved "Whichever key" moves to Main hand, config generation 30); Re-centre Window and its cvar gone
+    (one key's quick second press is the double tap; Ring Follows Past re-centres). 82cc31a7
+  - Monsters' Tier Icons row was unreachable: now on the RSQ Monsters page (rs_ch_colorblind, still the only gate for
+    the floating gems). 5499d955
+  - ShieldSaw a11y.zs HoldToggle() was dead: removed, not wired (Hold to Toggle covers held keys; the lock is the
+    trigger). 1f6e2bbf
+  - Stale comments in Distance Grab, Wheel, ShieldSaw KEYCONF, Whip MENUDEF, Grapple input.zs / KEYCONF, Miniboss,
+    Melee and Tactical Rig fixed; Grapple's console Reset All alias covers rsqgr_key_hand and the grip keys. cf084db6
+    (Wheel's in 82cc31a7)
