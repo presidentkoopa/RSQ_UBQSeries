@@ -1,5 +1,18 @@
 # Planned projects (owner 2026-11-10 10:46: these are projects, not parked ideas)
 
+THE BIG FOUR (named 11-09, design/HANDOFF_SESSION_2026-11-09_evening.md): Score (its pruning, names too: the Score Big
+Pass), Gun Bonsai VR (its pruning: the GBOVR Big Pass), Monster Assembly (the RSQ Monsters rebuild below), and the
+Arcade (design/BIG_FOURTH_ARCADE.md, design/HANDOFF_ARCADE_2026-11-09.md).
+
+## The Arcade (the Big Fourth)
+The in-world arcade language: contextual challenges, arcade words and numbers in the world, a conductor, bits as
+jackpot, time attack. Design only so far: design/BIG_FOURTH_ARCADE.md, design/HANDOFF_ARCADE_DESIGNER.md.
+
+## Grapple 2.0 (owner 11-10: "planned project")
+jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
+arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
+See Grapple/ROADMAP.md (the banner at the top).
+
 ## Gun Bonsai VR's Big Pass
 "With GBOVR, it gates as much as it possibly can." A Vampire Survivors approach: design an enormous number of features
 per weapon (the lightsaber's dozen and more), then gate them behind weapon and player levels with branching paths.
@@ -34,7 +47,7 @@ Owner: "either get it working or we will drop support". Ways: read public items/
 bridge pk3 per mod. Needs from the owner: which mods to keep, and their pk3s. See design/WHEEL_MODS_PEEK.md.
 
 
-## RSQ Monsters rebuild (owner 11-10)
+## RSQ Monsters rebuild = Monster Assembly (owner 11-10)
 Stale comments, cvars and menus out; menus redone from scratch; Monster Diagnostics written up (its numbering is the
 key to the expanded coloured roster); Brutal Doom's own monsters tiered onto the colour ladder (health as CH: a Red
 zombieman is a Red zombieman); the tier icons back (design/icons, style B). MeatGrinder was removed 11-10.
