@@ -6,9 +6,9 @@
 // Doom. A census only ever sees your own packages.
 //
 // A KEYCONF action consumes NO usercmd bit, so contention is structurally
-// impossible however many mods are loaded. It is also what RSQ_Saber
-// uses for all of its non-trigger inputs, so there is shipping precedent on this
-// engine.
+// impossible however many mods are loaded. (RSQ_Saber used it for its non-trigger
+// inputs, the shipping precedent on this engine, until its keys went 11-10; its
+// training remote's Command row still runs a KEYCONF alias.)
 //
 // HOW THE PRESS AND THE RELEASE BOTH ARRIVE. `+name` is not a buttonMap action,
 // so it falls through to alias lookup; and key-up rewrites the leading `+` to a
@@ -37,14 +37,6 @@ alias "-rsqdg_main" "netevent rsqdg_release 0"
 alias "+rsqdg_off"  "netevent rsqdg_press 1"
 alias "-rsqdg_off"  "netevent rsqdg_release 1"
 
-// DESKTOP KEYS ONLY, and deliberately no controller default.
-//
-// `defaultbind` is used rather than `bind` because the owner's ini is read-only
-// and must not be written.
-//
-// The controller binds are left unset ON PURPOSE. Which key name a Quest
-// controller button posts is not discoverable from the engine tree -- the
-// Android layer that maps buttons to key names is not in it -- so a guessed
-// default would either silently bind nothing or steal a button that already
-// does something. These are the Grab Keys: they are only read with Grab Keys on. Bind them in Customize
-// Controls ("RSQ Distance Grab") or on its page (Controls).
+// NO DEFAULT BINDS (11-10, above): these are the Grab Keys, read only with Grab Keys on. Bind them in Customize
+// Controls ("RSQ Distance Grab") or on its page (Controls). The grip grabs without them (its key codes are read
+// directly, as RSQ Grapple's and RSQ Whip's ropes do).

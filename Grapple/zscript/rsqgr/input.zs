@@ -1,12 +1,13 @@
 // THE INPUT. One bind, Fire Hook, its hand a menu option (owner 11-10), and no usercmd bit.
 //
 // Brutal Doom Quest uses all four BT_USER bits, so the hook rides its own KEYCONF
-// aliases. `+rsqgr_main` is not a buttonMap action, so it falls through to alias
+// aliases. `+rsqgr_hook` is not a buttonMap action, so it falls through to alias
 // lookup, and key-up rewrites the leading `+` to `-`: a real press/release pair.
 //
-// TWO HOPS, ON PURPOSE. The alias runs `event rsqgr_press <hand>` -- a LOCAL
-// console event (events.cpp CCMD(event)), which reaches ConsoleProcess here in ui
-// scope on the machine that pressed. That is the only machine whose hand pose is
+// TWO HOPS, ON PURPOSE. The alias runs `event rsqgr_presskey` / `event rsqgr_releasekey`
+// -- a LOCAL console event (events.cpp CCMD(event)), which reaches ConsoleProcess here in
+// ui scope on the machine that pressed, and becomes rsqgr_press / rsqgr_release for the
+// Fire Hook From hand (rsqgr_key_hand). That is the only machine whose hand pose is
 // real: the VR fields are written for the camera player alone and hold defaults
 // for everyone else. So the pose is read HERE and packed into the network event
 // that follows (rsqgr_fire), and every machine fires the same hook from the same
@@ -60,7 +61,8 @@ class RSQGR_Input : EventHandler
 
 	// ONE KEY (owner 11-10, design/KEYBINDS_PLAN.md): "Fire Hook" (+rsqgr_hook) fires from the hand the menu's Fire Hook
 	// From row picks (rsqgr_key_hand: 0 main, 1 off); it becomes the per-hand press and release below. The rope is taken
-	// with RSQ Distance Grab's grips (rsqgr_grab_dg). The old per-hand and Grab Rope keys are gone.
+	// with the controller grips (GripKeys above), by touch (rsqgr_touch), or with RSQ Distance Grab's grab keys
+	// (rsqgr_grab_dg). The old per-hand and Grab Rope keys are gone.
 	override void ConsoleProcess(ConsoleEvent e)
 	{
 		String n = e.Name;

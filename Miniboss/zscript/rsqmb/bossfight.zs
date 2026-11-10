@@ -15,7 +15,7 @@
 //              kills and time alone (FillSources). A kill counts 4 while Score's style fills it, else the bigger plain value.
 //   FULL       telegraphed: a sting (the IWAD's DSBOSPIT), the meter turning gold and alive (hud.zs; no words, owner 11-05), and RSQ Glow In The Dark's
 //              map glow beating red (RSQGD_Service "event.tint", by name) while it waits.
-//   CALL IT IN the watch check + Use (the watch check from RSQ Gestures' RSQG_Service "inspect", else RSQ Gun Cards' copy
+//   CALL IT IN the watch check + Use (the watch check from RSQ Accessibility's RSQG_Service "inspect", else RSQ Gun Cards' copy
 //              RSQGC_GCopyService, else this mod's own copy, gestcopy.zs): Use is read only while a watch check is
 //              held (or let go WATCH_GRACE tics ago). Or it comes by itself rsqmb_bf_auto s after the meter filled.
 //   GUARDRAILS it waits (and says why under the bar) while: the first rsqmb_bf_first s of a map; within
@@ -369,7 +369,7 @@ extend class RSQMB_Handler
 		let it = ServiceIterator.Find("RSQG_Service");
 		Service s;
 		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
-		// no RSQ Gestures: RSQ Gun Cards' copy, then our own (-1 from either: it stands down, ask the next)
+		// no RSQ Accessibility: RSQ Gun Cards' copy, then our own (-1 from either: it stands down, ask the next)
 		it = ServiceIterator.Find("RSQGC_GCopyService");
 		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
 		let own = RSQMB_GCopy.Get();

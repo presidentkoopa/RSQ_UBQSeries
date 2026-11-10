@@ -1,8 +1,9 @@
 // addslotdefault appends: Fist and Chainsaw stay in slot 1 for every other mod
 addslotdefault 1 SSQ_ShieldSaw
 
-// the one key (owner 11-10): draw / put back / recall. ssq_throw and ssq_recenter stay as console commands (RSQ
-// Accessibility's buttons and the rig use them), with no key
+// the one key (owner 11-10): draw / put back / recall. ssq_throw and ssq_recenter stay as console commands (the
+// rig uses ssq_recenter, TacticalRig/tools/rigtest/turnprobe), with no key. RSQ Accessibility's Shield Throw button
+// does not use ssq_throw: it sends `rsqa_alt 6` (state.zs, the "rsqa_alt" branch).
 alias ssq_draw "netevent ssq-draw"
 alias ssq_throw "netevent ssq-throw"
 alias ssq_recenter "netevent ssq-recenter"

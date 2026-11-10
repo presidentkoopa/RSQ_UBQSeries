@@ -13,4 +13,4 @@ version "4.14"
 #include "zscript/rsqmb/fight.zs"       // THE FIGHT, REWORKED (2026-11-09): segments, shield, window, tier-ups, words, glow
 #include "zscript/rsqmb/hud.zs"         // the Bossfight meter under RSQ Score's bar; the fight's HUD stack in its place
 #include "zscript/rsqmb/handsync.zs"    // RSQMB_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
-#include "zscript/rsqmb/gestcopy.zs"    // RSQMB_GCopy: the watch check without RSQ Gestures or RSQ Gun Cards (tools/gestcopy)
+#include "zscript/rsqmb/gestcopy.zs"    // RSQMB_GCopy: the watch check without RSQ Accessibility or RSQ Gun Cards (tools/gestcopy)

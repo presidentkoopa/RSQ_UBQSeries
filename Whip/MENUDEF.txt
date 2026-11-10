@@ -1,5 +1,5 @@
 // RSQ Whip -- MENUDEF. The series' menu (MENU_PASS_BRIEF.md, owner 11-04): ONE page with every option under short
-// headers, On/Off first, the four binds as Control rows; ONE sub menu, "Test and Debug", with the numbers, the grip keys and
+// headers, On/Off first, no Control rows (no keys since 11-10: attack / alt attack); ONE sub menu, "Test and Debug", with the numbers, the grip keys and
 // the debug log. No help text. Rows the RSQ Gun Bonsai VR whip tree unlocks (Catch Edges = Snag, Lasso, Crack Fireballs =
 // Crack Shot, Mantle, Keep Momentum = Momentum, Hit-Stop = Strike True) are RSQWPGbOption rows: with Gun Bonsai VR loaded
 // each greys while its upgrade is not learned (RSQWP_Service "menu.locked", service.zs); learned, the row turns it on or

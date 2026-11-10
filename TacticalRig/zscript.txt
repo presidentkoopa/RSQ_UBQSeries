@@ -8,7 +8,7 @@ version "4.14"
 #include "zscript/rsqtr/cb.zs"
 #include "zscript/rsqtr/a11y.zs"
 #include "zscript/rsqtr/handsync.zs"   // RSQTR_HandSync: the hands where the last frame put them, carried to the body now (tools/handsync)
-#include "zscript/rsqtr/gestcopy.zs"   // RSQTR_GCopy: the watch check without RSQ Gestures or RSQ Gun Cards (tools/gestcopy)
+#include "zscript/rsqtr/gestcopy.zs"   // RSQTR_GCopy: the watch check without RSQ Accessibility or RSQ Gun Cards (tools/gestcopy)
 #include "zscript/rsqtr/body.zs"
 #include "zscript/rsqtr/fit.zs"
 #include "zscript/rsqtr/vanilla.zs"
