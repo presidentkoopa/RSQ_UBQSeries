@@ -7,15 +7,13 @@
 // and runs the same with or without it.
 //
 // One question per weapon per tic: the answers are cached for the tic they were asked in, so the
-// ring's sheet, the inspect card and the gun card can all ask without asking Gun Bonsai twice.
+// watch card drawn with the hand, the world watch card and their signatures can all ask without
+// asking Gun Bonsai twice.
 //
-// The API (play scope):
-//   RSQGC_Bonsai.Present()                        true when the service is loaded
-//   RSQGC_Bonsai.Level(pmo, w)                    the gun's Gun Bonsai level, -1 = no record / not loaded
-//   RSQGC_Bonsai.Progress(pmo, w)                 toward the next level, 0..1000 (thousandths)
-//   RSQGC_Bonsai.Upgrades(pmo, w, names, levels)  its upgrades in Gun Bonsai's order; returns how many
-//   RSQGC_Bonsai.UpgradesFull(pmo, w, names, levels, maxes, classes, on)   the same, every field
-//   RSQGC_Bonsai.Numeral(n)                       1 -> "I", 2 -> "II" ... 10 -> "X", past that "LV n"
+// The API (play scope; only what the cards use, 2026-11-10):
+//   RSQGC_Bonsai.Entry(pmo, w)    this tic's record: lvl (-1 = no record / not loaded), permille (toward
+//                                 the next level, 0..1000), names / levels / on / colours of its upgrades
+//   RSQGC_Bonsai.Numeral(n)       1 -> "I", 2 -> "II" ... 10 -> "X", past that "LV n"
 // pmo may be null; w is the weapon (either hand, or one in the backpack). With w null, pmo's main
 // hand is used.
 //
@@ -31,8 +29,6 @@ class RSQGC_Bonsai play
 		let it = ServiceIterator.Find(name);
 		return it.Next();
 	}
-
-	static bool Present() { return Svc("RSQGB_Service") != null || Svc("RSQ_MeleeUpgradeService") != null; }
 
 	// The cached record for w this tic (asked of the service on the first call in a tic).
 	static RSQGC_BonsaiEntry Entry(PlayerPawn pmo, Weapon w)
@@ -66,39 +62,6 @@ class RSQGC_Bonsai play
 		return e;
 	}
 
-	static int Level(PlayerPawn pmo, Weapon w)
-	{
-		let e = Entry(pmo, w);
-		return e ? e.lvl : -1;
-	}
-
-	static int Progress(PlayerPawn pmo, Weapon w)
-	{
-		let e = Entry(pmo, w);
-		return (e && e.lvl >= 0) ? e.permille : 0;
-	}
-
-	static int Upgrades(PlayerPawn pmo, Weapon w, out Array<String> names, out Array<int> levels)
-	{
-		names.Clear(); levels.Clear();
-		let e = Entry(pmo, w);
-		if (!e) return 0;
-		names.Copy(e.names);
-		levels.Copy(e.levels);
-		return names.Size();
-	}
-
-	static int UpgradesFull(PlayerPawn pmo, Weapon w, out Array<String> names, out Array<int> levels,
-	                        out Array<int> maxes, out Array<String> classes, out Array<bool> on)
-	{
-		names.Clear(); levels.Clear(); maxes.Clear(); classes.Clear(); on.Clear();
-		let e = Entry(pmo, w);
-		if (!e) return 0;
-		names.Copy(e.names); levels.Copy(e.levels); maxes.Copy(e.maxes);
-		classes.Copy(e.classes); on.Copy(e.on);
-		return names.Size();
-	}
-
 	static String Numeral(int n)
 	{
 		static const String R[] = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X" };
@@ -111,11 +74,11 @@ class RSQGC_BonsaiEntry play
 {
 	Weapon w;
 	int lvl, permille;
-	Array<String> names, classes, colours;   // colours: Gun Bonsai's colour code for the name (ORANGE ...), or ""
-	Array<int> levels, maxes;
+	Array<String> names, colours;   // colours: Gun Bonsai's colour code for the name (ORANGE ...), or ""
+	Array<int> levels;
 	Array<bool> on;
 
-	// "Name:level:max:Class:on|..." (RSQGB_Service "upgrades")
+	// "Name:level:max:Class:on:colour|..." (RSQGB_Service "upgrades"; max and Class are not shown, so not kept)
 	void Parse(String s)
 	{
 		if (s.Length() == 0) return;
@@ -128,8 +91,6 @@ class RSQGC_BonsaiEntry play
 			if (f.Size() < 2) continue;
 			names.Push(f[0]);
 			levels.Push(f[1].ToInt());
-			maxes.Push(f.Size() > 2 ? f[2].ToInt() : 0);
-			classes.Push(f.Size() > 3 ? f[3] : "");
 			on.Push(f.Size() > 4 ? f[4] != "0" : true);
 			colours.Push(f.Size() > 5 ? f[5] : "");
 		}

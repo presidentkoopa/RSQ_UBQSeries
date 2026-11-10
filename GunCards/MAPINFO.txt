@@ -1,7 +1,7 @@
 // RSQ Gun Cards -- MAPINFO
 // RSQGC_GunCard decides and draws the cards each tic; RSQGC_BB then lays out the world quads (rsqgc_world) in the
 // same tic, so a world card is where the hand is now (WorldTick runs front to back). RSQGC_HandSync and RSQGC_GCopy (the
-// watch check without RSQ Gestures, tools/gestcopy) go first: the hands carried to the body, then the pose read, before the cards.
+// watch check without RSQ Accessibility, tools/gestcopy) go first: the hands carried to the body, then the pose read, before the cards.
 GameInfo
 {
 	AddEventHandlers = "RSQGC_HandSync", "RSQGC_GCopy", "RSQGC_GunCard", "RSQGC_BB"

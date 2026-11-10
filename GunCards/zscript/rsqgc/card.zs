@@ -3,8 +3,9 @@
 // Two cards, in Ermac's Force Unleashed style and art (CREDITS.txt):
 //   the small card   beside the wrist stub, right of it on the main hand, left of it on the off hand: his panel,
 //                    his AMMO / MAGAZINE word, the rounds in the gun big and the reserve small (this file)
-//   the watch card   check your watch, the back of the wrist to your face (RSQ Gestures' inspect; without it, Gun Cards'
-//                    own copy of that reader, gestcopy.zs: the same pose) and the full card lies flat on the back-of-the-hand side of that wrist: the gun's name, MAGAZINE / RESERVE,
+//   the watch card   check your watch, the back of the wrist to your face (RSQ Accessibility's watch check, the reader that
+//                    was RSQ Gestures until it was folded in, 11-05; without it, Gun Cards' own copy of that reader,
+//                    gestcopy.zs: the same pose) and the full card lies flat on the back-of-the-hand side of that wrist: the gun's name, MAGAZINE / RESERVE,
 //                    Gun Bonsai level, XP and upgrades (side.zs)
 // Each gun has its own colour (by weapon slot), or one simple colour for every card (rsqgc_color).
 //
@@ -24,13 +25,14 @@
 // every piece has a mirrored twin and the card picks per hand. Left-handed (vr_control_scheme 10+) follows.
 //
 // NUDGE. A layer's x / y turn its model about the model origin, a quarter degree a unit (hw_weapon.cpp:108), about
-// a millimetre at the card: rsqgc_side / rsqgc_up move the small card, rsqgc_watch_up the watch card.
+// a millimetre at the card: rsqgc_side / rsqgc_up move the small card (or the gun's own spot, spots.zs), rsqgc_watch_up
+// the watch card. Watch Card Side moves only the world watch card: the hand-drawn one has one turn, its rows (side.zs).
 //
 // SEE-THROUGH. A layer's alpha and render style can only be set from a state of the layer's own chain
 // (A_OverlayFlags needs a calling layer, p_pspr.cpp:1011). RSQGC_CardItem keeps a hidden helper layer whose state
 // sets them on every card piece made since it last ran.
 //
-// Needs nothing else. The watch check is RSQ Gestures' inspect pose: asked of Gestures when it is loaded, else read by
+// Needs nothing else. The watch check is RSQ Accessibility's inspect pose: asked of it when it is loaded, else read by
 // Gun Cards' own copy of it (gestcopy.zs, RSQGC_GCopyService: RSQ Tactical Rig asks that by name too); with Gun Bonsai and RSQ Gun
 // Bonsai VR loaded the watch card shows levels and upgrades; with RSQ Wheel loaded the world cards follow its look.
 
@@ -271,7 +273,7 @@ class RSQGC_GunCard : EventHandler
 	const RESERVE_GOLD = 0xFFB820;
 	const RELOAD_FLIP = 52;   // tics between RELOAD and "0" on an empty magazine (1.5 s, owner 09:42)
 	int mEmptySince[2];       // 1 + the tic this hand's magazine emptied with rounds to load, 0 not empty
-	int mFlipWas[2];          // 1 + the phase shown last (0 RELOAD, 1 "0"), 0 none: for the debug log   // the small card's reserve count (owner 08:31)
+	int mFlipWas[2];          // 1 + the phase shown last (0 RELOAD, 1 "0"), 0 none: for the debug log
 	static int MagColour(Weapon w, int loaded)
 	{
 		if (!w || loaded < 0 || !ci("rsqgc_lowwarn", 1)) return -1;
@@ -353,7 +355,7 @@ class RSQGC_GunCard : EventHandler
 		bool was = t >= 3 ? mMapSkulls : mMapCards;
 		if (t >= 3) mMapSkulls = true; else mMapCards = true;
 		if (how == 0) mScanThings++; else if (how == 1) mScanDrops++;
-		if (ci("rsqgc_debug_log", 0) > 1) Console.Printf("rsqgc: key found %s (%s)", cn, how == 0 ? "in the level" : "a drop");
+		if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: key found %s (%s)", cn, how == 0 ? "in the level" : "a drop");
 		if (!was && mScanned && ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: keys: %s on this map from now (%s)", t >= 3 ? "skulls" : "keycards", cn);
 	}
 	private void NoteDrops(Actor a)
@@ -546,7 +548,8 @@ class RSQGC_GunCard : EventHandler
 		return Glance(pmo, hand);
 	}
 
-	// RSQ Gestures' answer for this hand, -1 when that mod is not loaded
+	// RSQ Accessibility's watch-check answer for this hand (RSQG_Service, the name it kept from RSQ Gestures), -1 when it
+	// is not loaded or its Watch Check is off
 	static int Inspect(PlayerPawn pmo, int hand)
 	{
 		let it = ServiceIterator.Find("RSQG_Service");
@@ -564,24 +567,24 @@ class RSQGC_GunCard : EventHandler
 		Vector3 to = hp - eye;
 		to.z *= level.pixelstretch;        // true proportions
 		double d = to.Length();
-		if (d < 4 || d > cv("rsqgc_glance_reach", 0.7) * 34) return false;
+		if (d < 4 || d > cv("rsqgc_glance_reach", 0.7) * cv("vr_vunits_per_meter", 34)) return false;
 		Vector3 look = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
 		return (to / d) dot look >= cos(cv("rsqgc_glance_cone", 30));
 	}
 
-	// Gun Cards' own copy of that inspect reader (gestcopy.zs), asked only while RSQ Gestures is absent: the same pose
-	// rules and numbers, the same answer (0 not, 1 entering, 2 held); -1 when Gestures is loaded or the copy is missing
+	// Gun Cards' own copy of that inspect reader (gestcopy.zs), asked only while RSQ Accessibility is absent: the same pose
+	// rules and numbers, the same answer (0 not, 1 entering, 2 held); -1 when Accessibility is loaded or the copy is missing
 	static int OwnInspect(PlayerPawn pmo, int hand)
 	{
 		let h = RSQGC_GCopy.Get();
 		return h ? h.Inspect(pmo.PlayerNumber(), hand) : -1;
 	}
 
-	// CHECKING YOUR WATCH with this hand: RSQ Gestures' inspect (the back of the wrist turned to the face). With RSQ
-	// Gestures loaded it is asked, as before; without it Gun Cards reads the same pose itself (owner 2026-11-04 19:45: the
-	// watch card is Gun Cards' standout and must not need another mod). The looser pose below (the forearm across the chest,
-	// the wrist 15-50 cm before the eyes) was the fallback without Gestures until then; now it runs only where it ran with
-	// Gestures loaded too: Gestures there with its watch-check pose switched off (its "inspect" -1), exactly as before.
+	// CHECKING YOUR WATCH with this hand: RSQ Accessibility's inspect (the back of the wrist turned to the face; RSQ Gestures
+	// until it was folded into Accessibility, 11-05). With Accessibility loaded it is asked; without it Gun Cards reads the
+	// same pose itself (owner 2026-11-04 19:45: the watch card is Gun Cards' standout and must not need another mod). The
+	// looser pose below (the forearm across the chest, the wrist 15-50 cm before the eyes) was the fallback without the
+	// reader until then; now it runs only with Accessibility loaded and its watch check switched off (its "inspect" -1).
 	private bool Watching(PlayerPawn pmo, int hand)
 	{
 		int g = Inspect(pmo, hand);
@@ -604,7 +607,7 @@ class RSQGC_GunCard : EventHandler
 		bool across = hd dot (cos(pmo.angle), sin(pmo.angle)) <= cos(55);
 		// THE BACK OF THE WRIST to the face, not the pulse (2026-11-02; before, any twist counted): the gun's top turned
 		// in toward the body at least 45 degrees, AttackRoll <= -45 on the physical right controller. The engine reports
-		// the mirrored twist with the opposite sign on the left one (RSQ Gestures' InspectPose, rig: right -90 / left +90
+		// the mirrored twist with the opposite sign on the left one (the reader's InspectPose, rig: right -90 / left +90
 		// for the back of the hand up), so it is flipped there.
 		let cs = CVar.FindCVar("vr_control_scheme");
 		bool left = (hand == 0) == (cs && cs.GetInt() >= 10);
@@ -713,7 +716,15 @@ class RSQGC_GunCard : EventHandler
 		s = s .. String.Format("body angle %.0f pitch %.0f  eye %.1f\n", pmo.angle, pmo.pitch, p.viewz - pmo.pos.z);
 		s = s .. String.Format("MAIN  %.1f %.1f %.1f  yaw %.0f pitch %.0f roll %.0f\n", m.x, m.y, m.z, pmo.AttackAngle, pmo.AttackPitch, pmo.AttackRoll);
 		s = s .. String.Format("OFF   %.1f %.1f %.1f  yaw %.0f pitch %.0f roll %.0f\n", o.x, o.y, o.z, pmo.OffhandAngle, pmo.OffhandPitch, pmo.OffhandRoll);
-		s = s .. String.Format("guns  %s / %s  inspect %d %d", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', Inspect(pmo, 0), Inspect(pmo, 1));
+		// the watch check as the cards read it: RSQ Accessibility's answer, else Gun Cards' own reader's (marked "own")
+		int i0 = Inspect(pmo, 0), i1 = Inspect(pmo, 1);
+		bool own = false;
+		if (i0 < 0 && i1 < 0)
+		{
+			int o0 = OwnInspect(pmo, 0), o1 = OwnInspect(pmo, 1);
+			if (o0 >= 0 || o1 >= 0) { i0 = o0; i1 = o1; own = true; }
+		}
+		s = s .. String.Format("guns  %s / %s  inspect %d %d%s", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', i0, i1, own ? " own" : "");
 		Console.MidPrint(null, s, true);
 	}
 
@@ -800,11 +811,7 @@ class RSQGC_GunCard : EventHandler
 			if (stat && mShow[hand] > 0 && ci("rsqgc_world", 0))
 			{
 				// GC5 in the world: the status card on the back of the wrist, where the watch card goes
-				ClearHand(p, hand); Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
-				let wc = World(hand);
-				if (!wc.Shown() || !wc.full || !wc.status) { wc.Show(pmo.pos, true); wc.status = true; }
-				wc.FillStatus(pmo, 0x8A8A8A, self);
-				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), WatchNudge(true), WatchNudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), 0);
+				WorldStatus(p, pmo, hand);
 				continue;
 			}
 			if (stat && mShow[hand] > 0 && owner && !ci("rsqgc_world", 0))
@@ -821,8 +828,13 @@ class RSQGC_GunCard : EventHandler
 				ClearHand(p, hand); Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
 				let wc = World(hand);
 				bool wantFull = full;
+				// Watch Card Shows in the world too (fixed 2026-11-10: the world watch card was always the Weapon card)
+				int shows = wantFull ? ci("rsqgc_watch_shows", 0) : 0;
+				if (shows == 1) { WorldStatus(p, pmo, hand); continue; }
 				if (!wc.Shown() || wc.full != wantFull || wc.status) wc.Show(pmo.pos, wantFull);
-				wc.Fill(pmo, w, CardColour(p, w), self);
+				// Both Guns on One Card: the other gun's rounds in the small number, as on the hand-drawn card (fixed
+				// 2026-11-10: in the world they showed nowhere)
+				wc.Fill(pmo, w, CardColour(p, w), self, other[hand], shows);
 				double sSide, sUp, sIn;
 				[sSide, sUp, sIn] = RSQGC_Spots.SpotFor(w.GetClassName());   // this gun's spot (spots.zs)
 				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : sUp, wantFull ? WatchNudge(false) : sSide, mShow[hand] * cv("rsqgc_alpha", 0.85), wantFull ? 0 : sIn);
@@ -862,6 +874,16 @@ class RSQGC_GunCard : EventHandler
 		return mWorld[hand];
 	}
 	override void WorldUnloaded(WorldEvent e) { for (int h = 0; h < 2; h++) if (mWorld[h]) mWorld[h].live = false; }
+	// the status card in the world, on the back of the wrist where the watch card goes (an empty or melee hand, or Watch
+	// Card Shows: Status Card)
+	private void WorldStatus(PlayerInfo p, PlayerPawn pmo, int hand)
+	{
+		ClearHand(p, hand); Side(hand).Remove(p); SideOf(hand, 1).Remove(p);
+		let wc = World(hand);
+		if (!wc.Shown() || !wc.full || !wc.status) { wc.Show(pmo.pos, true); wc.status = true; }
+		wc.FillStatus(pmo, 0x8A8A8A, self);
+		wc.Place(pmo, cv("rsqgc_world_scale", 1.4), WatchNudge(true), WatchNudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), 0);
+	}
 
 	// ---- the watch card ---------------------------------------------------------------------------------------
 	transient RSQGC_SideCard mSide[2], mSide2[2];
@@ -997,7 +1019,7 @@ class RSQGC_GunCard : EventHandler
 		int lab = HasMagazine(w) ? 1 : 0;
 		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_Glow.CPiece(1, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_LABEL + lab : q * RSQGC_CardStates.LABELS + lab), owner, alpha, tLabel);
 		else Kill(p, base + P_LABEL);
-		// the big number, right-aligned in three slots; GC3: RELOAD in its place on an empty magazine with rounds to
+		// the big number, centred in the five slots (Digits); GC3: RELOAD in its place on an empty magazine with rounds to
 		// load (Ermac's lettering, tools/gen_cards.py), in the empty colour
 		// RELOAD AND 0 IN TURN (owner 2026-11-03 09:42): an empty magazine with rounds to load shows RELOAD, then a red "0"
 		// (centred like any count), switching every RELOAD_FLIP tics from the tic it emptied; empty with nothing to load
@@ -1134,8 +1156,7 @@ class RSQGC_GunCard : EventHandler
 		let item = p.mo ? RSQGC_CardItem(p.mo.FindInventory("RSQGC_CardItem")) : null;
 		if (item) item.mPending.Push(id);
 	}
-	// the nudge sliders, degrees about the hand
-	double Nudge(bool up) { return cv(up ? "rsqgc_up" : "rsqgc_side", 0); }
+	// the watch card's sliders: degrees about the hand (drawn with it), cm (drawn in the world)
 	double WatchNudge(bool up) { return cv(up ? "rsqgc_watch_up" : "rsqgc_watch_side", 0); }
 	// IN AND OUT (owner 2026-10-31): rsqgc_in cm along the forearm, + toward you; the card is baked at
 	// RSQGC_CardStates.DEPTHS places DEPTH_STEP apart, and this picks the nearest

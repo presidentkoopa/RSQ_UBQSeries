@@ -25,7 +25,6 @@ class RSQGC_Look play
 		0x5DCAA5, 0xBE3E4E, 0x66DD66, 0xDD5555, 0xFF3030
 	};
 	const R_AMMO = 6;
-	const R_AMMO_DRY = 7;
 	const R_SHEET_ACCENT = 24;
 
 	private static RSQGC_LookState St()

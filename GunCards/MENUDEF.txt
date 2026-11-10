@@ -26,7 +26,7 @@ AddOptionMenu "RSQ_RSOptions"
 OptionMenu "RSQGC_Options"
 {
 	Title "RSQ GUN CARDS"
-	RSQGCShow "Show Cards", "rsqgc_card", "RSQGC_Show"
+	Option "Show Cards", "rsqgc_card", "RSQGC_Show"
 	Option "Watch Card", "rsqgc_watch", "RSQGC_WatchModes"
 	Option "Watch Card Shows", "rsqgc_watch_shows", "RSQGC_WatchShows"
 	Option "Gun Bonsai on Card", "rsqgc_watch_bonsai", "OnOff"
@@ -55,10 +55,12 @@ OptionMenu "RSQGC_Options"
 	Slider "Small Card Side", "rsqgc_side", -60, 60, 0.5, 1
 	Slider "Small Card In", "rsqgc_in", -6, 6, 1.5, 1
 	Slider "Watch Card Up", "rsqgc_watch_up", -30, 30, 0.5, 1
-	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1
+	// greyed unless Draw in the World is on: the hand-drawn watch card cannot move sideways (CVARINFO.txt)
+	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1, "rsqgc_world"
 	Slider "World Card Size", "rsqgc_world_scale", 0.5, 2.5, 0.05, 2
 	StaticText " "
 	StaticText "Advanced: This Gun's Small Card", 1
+	Option "Edit Spot For", "rsqgc_spot_hand", "RSQGC_SpotHand"
 	RSQGCSpotGun ""
 	RSQGCSpotSlider "Up (pitch)", 1, -60, 60, 0.5, 1
 	RSQGCSpotSlider "Side (yaw)", 0, -60, 60, 0.5, 1
@@ -152,6 +154,11 @@ OptionValue "RSQGC_Tints"
 {
 	0, "Ermac's"
 	1, "Wheel Palette"
+}
+OptionValue "RSQGC_SpotHand"
+{
+	0, "Main Hand Gun"
+	1, "Off-Hand Gun"
 }
 OptionValue "RSQGC_Inspect"
 {

@@ -240,15 +240,18 @@ class RSQGC_BB : EventHandler
 		let pp = players[consoleplayer];
 		if (!pp.mo) return;
 		Vector3 eye = (pp.mo.pos.xy, pp.viewz);
+		int st = RSQGC_Glow.WorldStyle();
 		for (int i = 0; i < mList.Size(); i++)
 		{
 			let r = mList[i];
 			if (r.lookDirty) build(r);
-			place(r, eye);
+			place(r, eye, st);
 		}
 	}
 
-	private void place(RSQGC_BBRec r, Vector3 eye)
+	// st: the render style Material gives the world quads (RSQGC_Glow.WorldStyle); STYLE_Normal is drawn solid, so its
+	// alpha is not used (as the hand-drawn cards' Solid, card.zs: their layers get no PSPF_ALPHA)
+	private void place(RSQGC_BBRec r, Vector3 eye, int st)
 	{
 		resolve(r, eye);
 		double hw = r.w * 0.5, hh = r.h * 0.5;
@@ -260,7 +263,7 @@ class RSQGC_BB : EventHandler
 			if (!a) continue;
 			if (hide) { a.bInvisible = true; continue; }
 			a.bInvisible = false;
-			a.A_SetRenderStyle(r.alpha, STYLE_Translucent);
+			a.A_SetRenderStyle(st == STYLE_Normal ? 1.0 : r.alpha, st);   // Material (fixed 2026-11-10: always Translucent)
 			a.bBright = RSQGC_Glow.Mode() > 0;     // Card Glow (owner 11-06): fullbright in the world too
 			a.Translation = TransFor(RSQGC_Look.Col(r.col));
 			Vector3 at = r.pos + mR * (r.pOX[p] * hw) + mU * (r.pOY[p] * hh) + lift;

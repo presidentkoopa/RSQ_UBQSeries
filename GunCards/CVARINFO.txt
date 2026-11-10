@@ -2,7 +2,7 @@
 // cards when they lived in RSQ Wheel (wr_card_*), so nothing looks different; the names are new (rsqgc_*).
 
 // ---- the front page
-user int    rsqgc_card = 1;            // the small card: 0 off, 1 always, 2 when you look at the gun, 3 inspect gesture (RSQ Gestures), 4 on reload (that hand's reload held, then rsqgc_linger)
+user int    rsqgc_card = 1;            // the small card: 0 off, 1 always, 2 when you look at the gun, 3 inspect gesture (RSQ Accessibility's watch check, else Gun Cards' own copy), 4 on reload (that hand's reload held, then rsqgc_linger)
 user int    rsqgc_color = 0;           // card colour: 0 each gun its own, 1 white 2 grey 3 red 4 gold 5 green 6 blue 7 cyan 8 purple 9 orange 10 pink, 11 by ammo type (QoL GC6)
 user int    rsqgc_watch = 1;           // the watch card, the full card on both sides of the wrist: 0 off, 1 when you check your watch, 2 always
 user int    rsqgc_watch_shows = 0;     // what the watch card shows with a gun (owner 2026-11-03): 0 the Weapon card, 1 the Status card, 2 both on one card (an empty hand always shows the Status card)
@@ -17,13 +17,15 @@ user int    rsqgc_tilt = 0;            // 1: the small card turns toward your ey
 user float  rsqgc_up = 0;              // the small card: up (+) or down, degrees about the hand (~0.45 cm a degree)
 user float  rsqgc_side = 0;            // the small card: sideways, degrees
 user float  rsqgc_in = 0;              // the small card: in (+, toward you along the forearm) or out, cm (baked every 1.5 cm, -6..6)
-user float  rsqgc_watch_up = 0;        // the watch card: up (+) or down, degrees
-user float  rsqgc_watch_side = 0;      // the watch card drawn in the world: sideways
+user float  rsqgc_watch_up = 0;        // the watch card: up (+) or down as it reads, degrees (drawn in the world: cm)
+user float  rsqgc_watch_side = 0;      // the watch card drawn in the world: sideways as it reads, cm (the hand-drawn one cannot
+                                       // move sideways: its pieces have one turn, used for the rows; side.zs, tools/gen_side.py)
 user float  rsqgc_world_scale = 1.4;   // size of the cards drawn in the world
 // the small card's spot per gun (owner 11-06, spots.zs): ";class=side,up,in;..." (lower-case class names, degrees,
 // degrees, cm). nosave: this machine only and out of the userinfo (whose size limit the Tactical Rig's profiles hit);
 // kept in the ini, so it survives saves, maps and sessions. Our cap: 4000 characters (~120 guns), oldest dropped.
 nosave string rsqgc_spots = "";
+nosave int  rsqgc_spot_hand = 0;       // which hand's gun the Advanced rows edit: 0 main, 1 off (2026-11-10)
 
 // ---- tuning
 user int    rsqgc_hands = 0;           // 1: both guns on the main hand's small card (the off hand's rounds in the small row)
@@ -45,5 +47,5 @@ user int    rsqgc_linger = 35;         // tics a card stays after the pose ends 
 user float  rsqgc_tilt_max = 20;       // Tilt to Your Eyes: the most it turns, degrees each way
 user float  rsqgc_eye_reach = 0.30;    // GC1: "at your eye" is the hand within this many metres of the eye, pointing where you look
 user int    rsqgc_plus_tics = 52;      // QoL GC2: tics the "+N" of a pickup stays in the reserve's place (35 = 1 s)
-user int    rsqgc_debug_log = 0;       // 1: log each kill the cards count (QoL GC7), for a test
+user int    rsqgc_debug_log = 0;       // 1: log for a test: kills counted (QoL GC7), keys found, the fuse count, RELOAD / 0, spots, the watch check
 user int    rsqgc_show_hands = 0;      // put what the engine says about the hands on screen (for a screenshot)

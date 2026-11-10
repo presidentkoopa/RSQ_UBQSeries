@@ -18,6 +18,7 @@ class RSQGC_WorldCard play
 	bool status;        // showing the status card (FillStatus), not a gun's
 	int plate, title, big, small;
 	int row[ROWS];
+	bool smallOn;       // the small number has something to say (Place gives it the card's alpha, else 0)
 	string sig;
 
 	bool Shown() { return live; }
@@ -44,22 +45,29 @@ class RSQGC_WorldCard play
 		live = false; sig = "";
 	}
 
-	// what it says (only when it changed)
-	void Fill(PlayerPawn pmo, Weapon w, int panelCol, RSQGC_GunCard gc)
+	// what it says (only when it changed). other: on a Both Guns on One Card small card, the other hand's gun, whose rounds
+	// take the small number (as card.zs Draw); shows: the watch card's Watch Card Shows (0 the Weapon card, 2 both on one
+	// card; 1, the Status card, is FillStatus)
+	void Fill(PlayerPawn pmo, Weapon w, int panelCol, RSQGC_GunCard gc, Weapon other = null, int shows = 0)
 	{
 		int loaded = RSQGC_GunCard.Loaded(w), reserve = RSQGC_GunCard.Reserve(w);
-		string s = RSQGC_GunCard.Signature(pmo, w, full ? 8 : 7, panelCol) .. gc.ExtraSig(pmo, hand, w);
+		bool both = other != null && !full;
+		int smallN = both ? RSQGC_GunCard.Loaded(other) : reserve;
+		bool bonsai = full && shows == 0 && RSQGC_GunCard.ci("rsqgc_watch_bonsai", 0);
+		string s = RSQGC_GunCard.Signature(pmo, w, full ? 8 : 7, panelCol) .. gc.ExtraSig(pmo, hand, w)
+			.. String.Format(" o%d v%d gb%d", both ? smallN : -9, shows, bonsai) .. (full && shows == 2 ? gc.StatusSig(pmo) : "");
 		bool reload = RSQGC_GunCard.HasMagazine(w) && loaded == 0 && reserve > 0;   // GC3
 		if (s == sig) return;
 		sig = s;
 		RSQGC_BB.Update(plate, 0, panelCol);
 		RSQGC_BB.Update(big, max(loaded, 0), loaded == 0 ? 0xFF5A46 : 0xFFFFFF);
-		RSQGC_BB.Update(small, max(reserve, 0), 0xC8C8C8);
-		RSQGC_BB.SetAlpha(small, reserve >= 0 ? 1.0 : 0.0);
+		RSQGC_BB.Update(small, max(smallN, 0), 0xC8C8C8);
+		smallOn = smallN >= 0;
 		if (!full)
 		{
-			// GC3 RELOAD and GC2 +N take the title here (the world cards' numbers are digits only)
-			int plus = gc.PlusNow(hand);
+			// GC3 RELOAD and GC2 +N take the title here (the world cards' numbers are digits only); on a both-guns card
+			// the small number is the other gun's, so no +N (as the hand-drawn card)
+			int plus = both ? 0 : gc.PlusNow(hand);
 			RSQGC_BB.SetText(title, reload ? "RELOAD" : plus > 0 ? String.Format("+%d", plus) : RSQGC_GunCard.HasMagazine(w) ? "MAG" : "AMMO");
 			RSQGC_BB.Update(title, 0, reload ? 0xFF5A46 : plus > 0 ? 0x80E040 : 0xF0F0F0);
 			return;
@@ -68,10 +76,20 @@ class RSQGC_WorldCard play
 		Array<string> txt; Array<int> col;
 		txt.Push((reload ? "RELOAD" : RSQGC_GunCard.HasMagazine(w) ? "MAGAZINE" : "AMMO") .. (reserve >= 0 ? "        RESERVE" : "")); col.Push(reload ? 0xFF5A46 : 0xC8C8C8);
 		if (gc.PlusNow(hand) > 0) { txt.Push(String.Format("PICKED UP +%d", gc.PlusNow(hand))); col.Push(0x80E040); }
+		if (shows == 2)
+		{
+			// BOTH ON ONE CARD (as side.zs Build): health (red at 25 or less) and armour, the map's keys, grenades
+			int hp = max(pmo.Health, 0);
+			txt.Push(String.Format("HEALTH %d   ARMOUR %d", clamp(hp, 0, 999), clamp(RSQGC_GunCard.ArmorOf(pmo), 0, 999))); col.Push(hp <= 25 ? 0xFF5A46 : 0xF0F0F0);
+			KeyRows(pmo, gc, txt, col);
+			SetRows(txt, col);
+			return;
+		}
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0) { txt.Push(String.Format("GRENADES %d", gren)); col.Push(0xC8C8C8); }
 		txt.Push(String.Format("KILLS %d", gc.KillsWith(w))); col.Push(0xC8C8C8);
-		let e = RSQGC_Bonsai.Entry(pmo, w);
+		// Gun Bonsai's rows only with Gun Bonsai on Card, as the hand-drawn card (fixed 2026-11-10: always shown here)
+		let e = bonsai ? RSQGC_Bonsai.Entry(pmo, w) : null;
 		if (e && e.lvl >= 0)
 		{
 			string bar = "";
@@ -86,6 +104,14 @@ class RSQGC_WorldCard play
 			}
 			if (e.names.Size() > shown) { txt.Push(String.Format("+%d MORE", e.names.Size() - shown)); col.Push(0x9A9A9A); }
 		}
+		SetRows(txt, col);
+	}
+	int rowsUsed;
+
+	// the rows' text and colours, as many as there are rows
+	private void SetRows(out Array<string> txt, out Array<int> col)
+	{
+		while (txt.Size() > ROWS) { txt.Pop(); col.Pop(); }
 		for (int i = 0; i < ROWS; i++)
 		{
 			RSQGC_BB.SetText(row[i], i < txt.Size() ? txt[i] : "");
@@ -93,24 +119,10 @@ class RSQGC_WorldCard play
 		}
 		rowsUsed = txt.Size();
 	}
-	int rowsUsed;
 
-	// GC5, the status card (what side.zs BuildStatus draws with the hand): HEALTH big (red at 25 or less), ARMOUR
-	// small in blue; one row per key kind this map has, a held key in its colour and a missing one grey; other keys
-	// as KEYS +N; grenades. Only when it changed.
-	void FillStatus(PlayerPawn pmo, int panelCol, RSQGC_GunCard gc)
+	// one row per key kind this map has, a held key in its colour and a missing one grey; other keys as KEYS +N; grenades
+	private void KeyRows(PlayerPawn pmo, RSQGC_GunCard gc, out Array<string> txt, out Array<int> col)
 	{
-		string s = "status" .. gc.StatusSig(pmo);
-		if (s == sig) return;
-		sig = s;
-		int hp = max(pmo.Health, 0), ar = RSQGC_GunCard.ArmorOf(pmo);
-		RSQGC_BB.Update(plate, 0, panelCol);
-		RSQGC_BB.SetText(title, "HEALTH        ARMOUR");
-		RSQGC_BB.Update(title, 0, 0xF0F0F0);
-		RSQGC_BB.Update(big, clamp(hp, 0, 999), hp <= 25 ? 0xFF5A46 : 0xFFFFFF);
-		RSQGC_BB.Update(small, clamp(ar, 0, 999), 0x6EA0FF);
-		RSQGC_BB.SetAlpha(small, 1.0);
-		Array<string> txt; Array<int> col;
 		bool cards, skulls;
 		[cards, skulls] = gc.MapKeys(pmo);
 		if (!RSQGC_GunCard.ci("rsqgc_keys", 1)) { cards = false; skulls = false; }
@@ -128,16 +140,30 @@ class RSQGC_WorldCard play
 		if (others > 0) { txt.Push(String.Format("KEYS +%d", others)); col.Push(0xC8C8C8); }
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0) { txt.Push(String.Format("GRENADES %d", gren)); col.Push(gren > 0 ? 0xFFB428 : 0x707070); }
-		while (txt.Size() > ROWS) { txt.Pop(); col.Pop(); }
-		for (int i = 0; i < ROWS; i++)
-		{
-			RSQGC_BB.SetText(row[i], i < txt.Size() ? txt[i] : "");
-			if (i < txt.Size()) RSQGC_BB.Update(row[i], 0, col[i]);
-		}
-		rowsUsed = txt.Size();
 	}
 
-	// Placed every tic at the hand, facing the eye. sc: rsqgc_world_scale. up / side: the placement sliders (cm).
+	// GC5, the status card (what side.zs BuildStatus draws with the hand): HEALTH big (red at 25 or less), ARMOUR
+	// small in blue; one row per key kind this map has, a held key in its colour and a missing one grey; other keys
+	// as KEYS +N; grenades. Only when it changed.
+	void FillStatus(PlayerPawn pmo, int panelCol, RSQGC_GunCard gc)
+	{
+		string s = "status" .. gc.StatusSig(pmo);
+		if (s == sig) return;
+		sig = s;
+		int hp = max(pmo.Health, 0), ar = RSQGC_GunCard.ArmorOf(pmo);
+		RSQGC_BB.Update(plate, 0, panelCol);
+		RSQGC_BB.SetText(title, "HEALTH        ARMOUR");
+		RSQGC_BB.Update(title, 0, 0xF0F0F0);
+		RSQGC_BB.Update(big, clamp(hp, 0, 999), hp <= 25 ? 0xFF5A46 : 0xFFFFFF);
+		RSQGC_BB.Update(small, clamp(ar, 0, 999), 0x6EA0FF);
+		smallOn = true;
+		Array<string> txt; Array<int> col;
+		KeyRows(pmo, gc, txt, col);
+		SetRows(txt, col);
+	}
+
+	// Placed every tic at the hand, facing the eye. sc: rsqgc_world_scale. up / side: the placement sliders (cm); on the
+	// watch card up and side as the card reads (its text's up and its line's right).
 	void Place(PlayerPawn pmo, double sc, double up, double side, double alpha, double inCm = 0)
 	{
 		Vector3 eye = (pmo.pos.xy, pmo.player.viewz);
@@ -145,8 +171,7 @@ class RSQGC_WorldCard play
 		Vector3 toEye = (eye - hp).Unit();
 		Vector3 right = (toEye.y, -toEye.x, 0);
 		if (right.Length() > 0.01) right = right.Unit();
-		double u = 1.0 / 2.54;   // ~ map units per cm at 34 u/m is 0.34; work in units: 1 unit ~ 2.9 cm
-		u = 0.34;
+		double u = RSQGC_GunCard.cv("vr_vunits_per_meter", 34) / 100.0;   // map units per cm (0.34 at QuestZDoom's 34 a metre)
 		if (!full)
 		{
 			// over the wrist: up from the hand, toward the eye a little
@@ -157,10 +182,10 @@ class RSQGC_WorldCard play
 			// rsqgc_in: + toward you along the forearm; Left / Right: across your view (fixed 2026-10-31: it moved the
 			// card along the forearm, the same as In / Out, and `right` went unused)
 			Vector3 c = hp - Fw * (9 + inCm) * u + right * side * u * sc + (0, 0, (3 + up) * u * sc) + toEye * 2 * u;
-						Put(plate, c, 5 * sc * u, 4 * sc * u, 0);
-			Put(title, c + (0, 0, 1.3 * sc * u), 4.2 * sc * u, 0.7 * sc * u, 0.05);
-			Put(big, c + (0, 0, -0.1 * sc * u), 3.6 * sc * u, 1.6 * sc * u, 0.05);
-			Put(small, c + (0, 0, -1.35 * sc * u), 2.2 * sc * u, 0.8 * sc * u, 0.05);
+			Put(plate, c, 5 * sc * u, 4 * sc * u);
+			Put(title, c + (0, 0, 1.3 * sc * u), 4.2 * sc * u, 0.7 * sc * u);
+			Put(big, c + (0, 0, -0.1 * sc * u), 3.6 * sc * u, 1.6 * sc * u);
+			Put(small, c + (0, 0, -1.35 * sc * u), 2.2 * sc * u, 0.8 * sc * u);
 		}
 		else
 		{
@@ -182,9 +207,11 @@ class RSQGC_WorldCard play
 			if (Upv dot toEye < 0) { Wv = -Wv; Upv = -Upv; }   // rig: the other way read upside down
 			double h = (3.0 + 0.85 * max(rowsUsed, 1)) * sc;
 			double w = 11 * sc;
-			// over the back of the wrist: behind the grip along the forearm, just off the skin
-			Vector3 c = hp - F * (4 + side) * u * sc + N * (2.5 + up) * u * sc;
-						double nyaw = atan2(N.y, N.x), ntilt = asin(clamp(N.z, -1, 1));
+			// over the back of the wrist: behind the grip along the forearm, just off the skin. Watch Card Side / Up move it
+			// in the card's own plane, along its line (Wv) and its text's up (Upv) (fixed 2026-11-10: Side slid it along
+			// the forearm, flipping with the card, and Up lifted it off the skin)
+			Vector3 c = hp - F * 4 * u * sc + N * 2.5 * u * sc + Wv * side * u * sc + Upv * up * u * sc;
+			double nyaw = atan2(N.y, N.x), ntilt = asin(clamp(N.z, -1, 1));
 			Vector3 Rb = (-sin(nyaw), cos(nyaw), 0);
 			Vector3 Ub = (-cos(nyaw) * sin(ntilt), -sin(nyaw) * sin(ntilt), cos(ntilt));
 			double roll = atan2(Wv dot Ub, Wv dot Rb);
@@ -198,6 +225,7 @@ class RSQGC_WorldCard play
 		}
 		RSQGC_BB.SetAlpha(plate, RSQGC_Glow.NoPanel() ? 0.0 : alpha);   // Material: No Background (owner 11-06)
 		RSQGC_BB.SetAlpha(title, alpha); RSQGC_BB.SetAlpha(big, alpha);
+		RSQGC_BB.SetAlpha(small, smallOn ? alpha : 0.0);   // Card Opacity and the fade, as the rest (fixed 2026-11-10)
 		for (int i = 0; i < ROWS; i++) if (row[i]) RSQGC_BB.SetAlpha(row[i], alpha);
 	}
 	// a piece on the flat card: (x, y) cm along W and Upv from the card centre, lifted off it by lift cm
@@ -208,7 +236,7 @@ class RSQGC_WorldCard play
 		RSQGC_BB.Move(id, c + Wv * x * u + Upv * y * u + N * lift);
 		RSQGC_BB.Resize(id, w * u, h * u);
 	}
-	private void Put(int id, Vector3 at, double w, double h, double fwd)
+	private void Put(int id, Vector3 at, double w, double h)
 	{
 		if (!id) return;
 		RSQGC_BB.Move(id, at);

@@ -11,6 +11,14 @@ class RSQGC_Glow play
 {
 	static clearscope int Mode() { let c = CVar.FindCVar("rsqgc_glow"); return c ? clamp(c.GetInt(), 0, 2) : 0; }
 	static clearscope bool NoPanel() { let c = CVar.FindCVar("rsqgc_look"); return c && c.GetInt() == 3; }
+	// MATERIAL ON THE WORLD CARDS (2026-11-10): the same choice card.zs makes for the hand-drawn layers: Solid drawn
+	// normally, Glass and No Background translucent, Glow additive
+	static clearscope int WorldStyle()
+	{
+		let c = CVar.FindCVar("rsqgc_look");
+		int look = c ? c.GetInt() : 1;
+		return look == 0 ? STYLE_Normal : look == 2 ? STYLE_Add : STYLE_Translucent;
+	}
 	// for the watch cards' signatures: a change rebuilds them with the other states
 	static clearscope string Sig() { return String.Format(" gl%d np%d", Mode() > 0, NoPanel()); }
 

@@ -5,7 +5,7 @@
 // THE OWNER'S DESIGN (2026-11-03, approved from the mockups gcmock/mock5.py cards 1, 3 and 4). No title row. Three cards,
 // chosen by Watch Card Shows (rsqgc_watch_shows); a watch check with an empty hand always shows the Status card:
 //   WEAPON  MAG / RESERVE small, the two counts big; GRENADES n (orange); KILLS n (red); Gun Bonsai's rows below only
-//           with Show Gun Bonsai on Card (rsqgc_watch_bonsai)
+//           with Gun Bonsai on Card (rsqgc_watch_bonsai)
 //   STATUS  H / A small; health (white, red at 25 or less) and armour (blue) big; the key icons, G:n (orange) right
 //   BOTH    MAG / RESERVE, the counts; "H 100" / "A 50" (blue); the key icons, G:n right
 // All text JFO (tools/jfo.py) at the Text Quality (rsqgc_text_q: 0 Quest, half-resolution glyphs; 1 PCVR). Text sits on
