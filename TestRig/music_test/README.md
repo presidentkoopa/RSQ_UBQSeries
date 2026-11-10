@@ -13,3 +13,8 @@ crossfades back in). Track: the owner's "20 organic beat" (OGG, 2:36, stereo 44.
 - Rig 11-09 (no audio on the rig): loads with no errors; the track starts on its own channel, crossfades in and out.
   Not yet heard.
 - Cost: held as a sound, the 2-minute stereo track is about 22 MB of memory once decoded.
+
+## DOWN's track (11-09 evening)
+The owner's "29 red alert" (55 s) repeats itself exactly at 22.4 s (sample 987829; envelope match 0.998): its first 22.4 s
+with a 0.1 s crossfade, tagged `LOOP_START=4410` `LOOP_END=987829` (VisualRewards `sounds/rsqvr/RVQMUS2.ogg`).
+`down_seam_preview.wav`: 6 s either side of the join.

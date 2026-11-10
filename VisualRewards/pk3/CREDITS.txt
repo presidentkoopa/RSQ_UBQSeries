@@ -118,3 +118,5 @@ from the owner's approved mockups, tools/beam_spec/)
 
 - Scene music (2026-11-09): the Bossfight track "20 organic beat", supplied by the owner (presidentkoopa); cut to loop
   at 2:02.97 with a 0.5 s crossfade (sounds/rsqvr/RVQMUS1.ogg). Its source to record before release.
+- DOWN's track (2026-11-09): "29 red alert", supplied by the owner; its first 22.4 s looped (sounds/rsqvr/RVQMUS2.ogg).
+  Its source to record before release.

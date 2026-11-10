@@ -2,8 +2,10 @@
 // SCENES (2026-11-09; the start of the arcade brain, design/ARCADE_BRAIN.md). Other mods report a scene starting and
 // ending by name; VisualRewards decides what the player hears. For now a scene carries music only.
 //
-//   RSQVR_Service GetInt("scene.push", key, priority, 0, null, music)   key: the scene ("bossfight"); music: a SNDINFO
-//                                                                          name ('rsqvr/music/boss1'); 1 taken, 0 not
+//   RSQVR_Service GetInt("scene.push", key, priority, owner, null, music)   key: the scene ("bossfight"); music: a
+//                                                                          SNDINFO name ('rsqvr/music/boss1'); owner: 0
+//                                                                          everyone, or a player's number + 1 (only that
+//                                                                          player hears it: "down" + n); 1 taken, 0 not
 //   RSQVR_Service GetInt("scene.pop",  key)                               1 removed, 0 it wasn't there
 //
 // Scenes stack: the highest priority (the latest among equals) is heard. Its track fades in as a looping sound while the
@@ -16,6 +18,7 @@ class RSQVR_Scene play
 	String key;
 	int prio;
 	String music;    // a SNDINFO name, "" none
+	int owner;       // -1 everyone, else the one player who hears it
 }
 
 class RSQVR_Scenes : EventHandler
@@ -24,7 +27,6 @@ class RSQVR_Scenes : EventHandler
 
 	Array<RSQVR_Scene> stack;
 	String playing;               // the track on the channel ("": none)
-	String want;                  // the track the top scene asks for
 	double level;                 // 0 the level music alone .. 1 the scene's track alone
 	transient bool restart;
 	bool full;       // after a load the channel is empty: start the track again
@@ -40,14 +42,14 @@ class RSQVR_Scenes : EventHandler
 		return !c || c.GetBool();
 	}
 
-	int Push(String key, int prio, Name music)
+	int Push(String key, int prio, Name music, int owner = -1)
 	{
 		if (key == "") return 0;
 		for (int i = 0; i < stack.Size(); i++) if (stack[i].key ~== key) { stack.Delete(i); break; }
 		let s = new("RSQVR_Scene");
 		String m = music;
 		if (music == 'None') m = "";
-		s.key = key; s.prio = prio; s.music = m;
+		s.key = key; s.prio = prio; s.music = m; s.owner = owner;
 		int at = stack.Size();
 		while (at > 0 && stack[at - 1].prio > prio) at--;
 		stack.Insert(at, s);
@@ -62,10 +64,15 @@ class RSQVR_Scenes : EventHandler
 		return 0;
 	}
 
-	void Pick()
+	void Pick() {}
+
+	// the track this machine's player hears: the top scene that is everyone's or his (worked out here, per machine:
+	// the stack is the same everywhere, only what each player hears differs)
+	String TopMusic()
 	{
-		want = "";
-		for (int i = stack.Size() - 1; i >= 0; i--) if (stack[i].music != "") { want = stack[i].music; break; }
+		for (int i = stack.Size() - 1; i >= 0; i--)
+			if (stack[i].music != "" && (stack[i].owner < 0 || stack[i].owner == consoleplayer)) return stack[i].music;
+		return "";
 	}
 
 	Actor Ear() { return players[consoleplayer].mo; }
@@ -73,7 +80,7 @@ class RSQVR_Scenes : EventHandler
 	override void WorldLoaded(WorldEvent e)
 	{
 		// a new map starts with the level music at full; a loaded save puts its scene's track back on the channel
-		if (!e.IsSaveGame) { stack.Clear(); want = ""; playing = ""; level = 0; SetMusicVolume(1.0); }
+		if (!e.IsSaveGame) { stack.Clear(); playing = ""; level = 0; SetMusicVolume(1.0); }
 		else restart = true;
 	}
 
@@ -82,7 +89,7 @@ class RSQVR_Scenes : EventHandler
 		let ear = Ear();
 		if (!ear) return;
 		bool on = MusicOn();
-		String target = on ? want : "";
+		String target = on ? TopMusic() : "";
 		if (restart)
 		{
 			restart = false;

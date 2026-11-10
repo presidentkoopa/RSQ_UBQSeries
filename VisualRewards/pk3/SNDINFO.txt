@@ -38,3 +38,6 @@ $rolloff rsqvr/beam/chump    400 1800
 // Scene music (2026-11-09): the owner's Bossfight track ("20 organic beat"), cut to loop at 2:02.97 with a 0.5 s
 // crossfade baked in (LOOP_START 22050 / LOOP_END 5422827 in its Vorbis tags; TestRig/music_test)
 rsqvr/music/boss1   sounds/rsqvr/RVQMUS1.ogg
+// DOWN's track (2026-11-09): the owner's "29 red alert", its first 22.4 s (it repeats itself there), looped with a 0.1 s
+// crossfade (LOOP_START 4410 / LOOP_END 987829)
+rsqvr/music/down    sounds/rsqvr/RVQMUS2.ogg

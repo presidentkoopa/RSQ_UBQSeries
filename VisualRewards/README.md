@@ -14,7 +14,10 @@ not yet seen. The pk3 is `pk3/RSQ_VisualRewards.pk3` (rebuilt
 - **11-09 evening, scene music** (rig only, not heard): the start of the arcade brain (design/ARCADE_BRAIN.md). Other
   mods report a scene by name (`RSQVR_Service` "scene.push" / "scene.pop"); its track crossfades over the level music,
   and when it ends the level music crossfades back in where it has got to. A Bossfight plays the owner's track.
-  **Scene Music** (Arrivals and Words, on) turns it off for you.
+  **Scene Music** (Arrivals and Words, on) turns it off for you. DOWN (RSQ SlowMo) plays the owner's "red alert" loop,
+  heard only by the player who is DOWN, over a Bossfight's track; after it the Bossfight track starts again from its top.
+- **11-09 evening, fixed from the rig:** a Kill Rewards bit banked while you were DOWN, still flying when you got up,
+  gave itself to you and then tried again the next tic, aborting the game ("tried to write to address zero").
 - **11-09** (rig only): **arrival beams** V1-V4 for monsters other mods bring in, with their own sounds for a
   miniboss, a thrall and a chump; **words** over monsters in RS Score's font (TARGET!, GUARD!); a **pop** in a colour
   (below). Built for RSQ Miniboss's Bossfight; any mod can ask for them by name.

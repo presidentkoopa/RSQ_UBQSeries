@@ -614,6 +614,7 @@ class RSQSM_Down : EventHandler
 		int downs = 1;
 		if (w) { w.downs++; downs = w.downs; }
 		downOn[n] = true;
+		DownMusic(n, true);
 		downStart[n] = level.maptime;
 		barStart[n] = level.maptime;
 		refillTic[n] = -1000; refillOldE[n] = 0;
@@ -1233,9 +1234,24 @@ class RSQSM_Down : EventHandler
 		for (int i = spPn.Size() - 1; i >= 0; i--) if (spPn[i] == n) DropSpawn(i);
 	}
 
+	// DOWN'S MUSIC (owner 2026-11-09: "when we are Down, I want this to play"). RSQ VisualRewards' scenes, by name: the
+	// "down" scene is that player's alone and stands above a Bossfight's (80 over 50); when he gets up (or doesn't) it goes
+	// and whatever was playing before crossfades back. Without VisualRewards, nothing changes.
+	const DOWN_SCENE_PRIO = 80;
+	private void DownMusic(int n, bool on)
+	{
+		let it = ServiceIterator.Find("RSQVR_Service");
+		let vr = it.Next();
+		if (!vr) return;
+		String key = String.Format("down%d", n);
+		if (on) { let c = CVar.FindCVar("rsqsm_down_music"); if (!c || c.GetBool()) vr.GetInt("scene.push", key, DOWN_SCENE_PRIO, n + 1, null, 'rsqvr/music/down'); }
+		else vr.GetInt("scene.pop", key);
+	}
+
 	private void End(int n, bool revived)
 	{
 		downOn[n] = false;
+		DownMusic(n, false);
 		endTic[n] = level.maptime;
 		endHow[n] = revived ? 1 : 2;
 		Hold(n, false);

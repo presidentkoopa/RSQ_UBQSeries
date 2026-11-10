@@ -325,6 +325,7 @@ mixin class RSQ_KRBit
 	int bitLife;
 	int bankFor;          // RSQ SlowMo's DOWN: player + 1 whose plate this bit flies to and banks in (0: an ordinary bit)
 	int bankAge;
+	bool bankGiven;
 
 	// THE FLIGHT INTO THE PLATE (DOWN v3): a short burst out of the body first (SoM's throw, 3 tics), then straight to the
 	// plate (RSQSM_Service GetObject "down.plate", by name), QUICKLY (owner 11-07 06:55: 12 units a tic, +3 a tic, so a bit at
@@ -349,6 +350,7 @@ mixin class RSQ_KRBit
 		{
 			// DOWN ended before it arrived: an ordinary bit, given now
 			bSpecial = true;
+			bankGiven = true;
 			bool ok; Actor tg;
 			[ok, tg] = CallTryPickup(pmo);
 			if (!ok) Destroy();
@@ -383,6 +385,7 @@ mixin class RSQ_KRBit
 			return;
 		}
 		bSpecial = true;
+		bankGiven = true;
 		bool ok; Actor tg;
 		[ok, tg] = CallTryPickup(pmo);          // the ammo bit: its ammo now
 		if (!ok) Destroy();
@@ -430,6 +433,9 @@ mixin class RSQ_KRBit
 		// nor flies, and is never touched again -- the engine only touches SPECIAL things. Found on the rig 2026-11-03 (the
 		// merge's proof; the old Gun Bonsai VR pk3 did the same): an armour bit picked up with Magnet on was "touched" once
 		// more inside Magnet's reach -> VM abort, "tried to write to address zero" in AddInventory.
+		// (rig 11-09, DOWN v3) a banked bit that has given itself (DOWN over before it arrived) is done: the next tic it is
+		// HoldAndDestroy, unowned and not SPECIAL, and giving it again aborted the VM in AddInventory
+		if (bankGiven) return;
 		if (bankFor > 0 && !Owner) { BankTick(); return; }
 		if (Owner || !bSpecial) return;
 		int life = RSQ_KRHandler.SVI("rsqgb_kr_life", 7);
@@ -468,7 +474,7 @@ class RSQ_KRHealthBit : Health
 		Inventory.PickupMessage "";
 		+INVENTORY.ALWAYSPICKUP;        // never left lying because you are full; it heals what it can
 	}
-	override void Tick() { Super.Tick(); BitTick(); }
+	override void Tick() { Super.Tick(); if (!bDestroyed) BitTick(); }
 	override bool TryPickup(in out Actor toucher)
 	{
 		// Rich Bits: worth 2, 3, 4 x at levels 1-3
@@ -490,7 +496,7 @@ class RSQ_KRArmorBit : BasicArmorBonus
 		Armor.SaveAmount 10;
 		Armor.MaxSaveAmount 250;
 	}
-	override void Tick() { Super.Tick(); BitTick(); }
+	override void Tick() { Super.Tick(); if (!bDestroyed) BitTick(); }
 	override bool TryPickup(in out Actor toucher)
 	{
 		int lv = RSQ_KRHandler.Perk(toucher, "RichBits");
@@ -515,7 +521,7 @@ class RSQ_KRAmmoBit : Inventory
 		Inventory.PickupMessage "";
 		+INVENTORY.ALWAYSPICKUP;
 	}
-	override void Tick() { Super.Tick(); BitTick(); }
+	override void Tick() { Super.Tick(); if (!bDestroyed) BitTick(); }
 
 	static void AmmoOf(Weapon w, Array<Class<Ammo> > list)
 	{

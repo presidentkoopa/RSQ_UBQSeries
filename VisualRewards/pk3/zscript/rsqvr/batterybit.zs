@@ -15,7 +15,7 @@ class RSQ_KRBatteryBit : Inventory
 		Inventory.PickupMessage "";
 		+INVENTORY.ALWAYSPICKUP;
 	}
-	override void Tick() { Super.Tick(); BitTick(); }
+	override void Tick() { Super.Tick(); if (!bDestroyed) BitTick(); }
 
 	override bool TryPickup(in out Actor toucher)
 	{

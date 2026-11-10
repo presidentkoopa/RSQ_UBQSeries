@@ -53,7 +53,7 @@ class RSQVR_Service : Service
 		{
 			let sc = RSQVR_Scenes.Get();
 			if (!sc) return 0;
-			return request == "scene.push" ? sc.Push(stringArg, intArg, nameArg) : sc.Pop(stringArg);
+			return request == "scene.push" ? sc.Push(stringArg, intArg, nameArg, int(doubleArg) - 1) : sc.Pop(stringArg);
 		}
 		if (request == "beam") return RSQVR_Beam.StartBeam(stringArg, intArg, doubleArg, Actor(objectArg), nameArg);
 		if (request == "word" || request == "word.hold" || request == "word.clear" || request == "pop")

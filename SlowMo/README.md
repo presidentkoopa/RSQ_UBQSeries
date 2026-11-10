@@ -13,6 +13,10 @@ reload, or at Reload Time if the reload takes longer). Reload Hands says whose r
 dual wield: **Either Hand**, **Main Hand Only**, **Off Hand Only**, or **Both Hands at Once** (the second hand starts reloading
 while the first still is; the slow motion then lasts until both are done). Details under Ways in.
 
+New on 11-09 evening (rig only, not heard): **DOWN Music** (DOWN rows, on): the owner's "red alert" loop plays while
+you are DOWN (yours alone in co-op), over a Bossfight's music; when you get up whatever was playing crossfades back
+(RSQ VisualRewards' scene music).
+
 New on 11-09 (rig only, not headset-confirmed): the Bossfight landing slow-mo (the countdown bar always shows it) and edge
 arrows other mods can put up (RSQ Miniboss points at its arriving monsters with them); see Works with.
 

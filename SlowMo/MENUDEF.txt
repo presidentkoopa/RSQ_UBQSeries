@@ -87,6 +87,7 @@ OptionMenu "RSQSM_Options"
 	StaticText " "
 	StaticText "DOWN", 1
 	Option "DOWN", "rsqsm_down", "OnOff"
+	Option "DOWN Music", "rsqsm_down_music", "OnOff", "rsqsm_down"
 	Slider "Clock (s)", "rsqsm_down_clock", 2, 30, 1, 0, "rsqsm_down"
 	Slider "Bar Step (s)", "rsqsm_down_step", 1, 10, 0.5, 1, "rsqsm_down"
 	Slider "Slowest Clock Drain", "rsqsm_down_drain", 0, 1, 0.05, 2, "rsqsm_down"
