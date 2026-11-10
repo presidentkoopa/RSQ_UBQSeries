@@ -13,15 +13,13 @@ server float  rsqmb_bf_near       = 384;    // the arrival spot: at least this f
 server float  rsqmb_bf_far        = 1024;   // and at most this far
 server float  rsqmb_bf_exit       = 768;    // it waits within this of an exit line
 server float  rsqmb_bf_slow       = 4.0;    // seconds of RSQ SlowMo for the landing (0: none; at most 5). 4 since the staggered arrival (2026-11-09: the thralls one by one, then the miniboss, all inside it)
-server int    rsqmb_bf_bits       = 3;      // x more RSQ VisualRewards boss bits for a Bossfight's miniboss
 server float  rsqmb_bf_style      = 0.25;   // meter points a RSQ Score style point
 server float  rsqmb_bf_xp         = 0.2;    // meter points a Gun Bonsai XP point
 server int    rsqmb_bf_from       = 2;      // Bossfight Meter Fills From: 0 Score (style), 1 Gun Bonsai (XP), 2 Both; kills, chains and time always (owner 11-05)
-server bool   rsqmb_bf_life       = true;   // Bossfight Kill Drops a Life Crate: its miniboss drops RSQ Score's life crate (owner 11-07; was a life outright, 11-05)
 server int    rsqmb_bf_tier_score = 4000;   // this map's RSQ Score points a tier
 server int    rsqmb_bf_tier_from  = 3;      // Tier From (owner 11-06): 0 Set (Gun Bonsai level / 2 + map score / Score Per Tier + won / 2), 1 Gun Bonsai VR Level, 2 Score Lives, 3 Whichever Is Larger (bossfight.zs Tier)
 server bool   rsqmb_bf_graves     = false;  // Graves Rise (owner 11-06): with Legion of Bones + RSQ Graveyards, a Bossfight calling in wakes the tombstones (bossfight.zs Graves)
-server int    rsqmb_bf_graves_area = 0;     // ...where: 0 Map (every tombstone), 1 Radius (within rsqmb_bf_graves_radius of the fight's spawn)
+server int    rsqmb_bf_graves_mode = 0;     // Graves Rise Mode (owner 11-10): 0 One Per Stone (map), 1 One Per Stone (radius), 2 Thralls Per Stone (map), 3 Thralls Per Stone (radius)
 server float  rsqmb_bf_graves_radius = 1024; // ...that radius, map units (32 = 1 m)
 user   bool   rsqmb_bf_hud        = true;   // the meter on the HUD
 user   float  rsqmb_bf_hud_size   = 1.5;    // its size

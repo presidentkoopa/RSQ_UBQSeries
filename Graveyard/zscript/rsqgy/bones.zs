@@ -106,7 +106,8 @@ class gy_Bones play
 	}
 
 	// RSQ Miniboss's "bones.graves" (gy_RSQService): stringArg the Bossfight's thrall classes, comma-separated (each raises
-	// the undead its kind maps to; none that LoB raises: Skull Zombies); intArg player * 1000 + how many undead in all;
+	// the undead its kind maps to; none that LoB raises: Skull Zombies); intArg player * 1000 + how many undead A TOMBSTONE
+	// (owner 11-10: one, or one for each thrall);
 	// doubleArg the radius round the spot (0 = the whole map); objectArg an actor at the fight's spawn. Returns how many.
 	static int GravesAsked(String classes, int packed, double radius, Actor spot)
 	{
@@ -122,9 +123,9 @@ class gy_Bones play
 			if (k >= 0) kinds.Push(k);
 		}
 		if (kinds.Size() == 0) kinds.Push(0);
-		int pn = packed / 1000, budget = packed % 1000;
+		int pn = packed / 1000, perStone = max(1, packed % 1000);
 		Actor tgt = (pn >= 0 && pn < MAXPLAYERS && playeringame[pn]) ? players[pn].mo : null;
-		return h.RaiseGraves(spot.pos, radius, budget, kinds, tgt);
+		return h.RaiseGraves(spot.pos, radius, perStone, kinds, tgt);
 	}
 
 	// LoB's rising at a place: the spawn actor first (the "is something on it" test, when asked), then the fire and the sound.
@@ -283,12 +284,11 @@ class gy_BonesHandler : EventHandler
 	}
 
 	// ---- GRAVES RISE (RSQ Miniboss, "bones.graves"): the tombstones in range, nearest the spot first -----------------------
-	// budget: how many undead in all (Miniboss's formula); radius 0: the whole map. Each stone in range raises at least one,
-	// the budget is spread over them (round robin, nearest first). NO CAP (owner 2026-11-07, design/NEAR_DEATH.md: every
-	// tombstone raises undead; the old cap of 24 is gone). A stone's risers stand in a ring round it and rise one after another
+	// perStone: how many undead each tombstone raises (Miniboss's Graves Rise Mode, owner 11-10: one, or one for each thrall);
+	// radius 0: the whole map. NO CAP (owner 2026-11-07: every tombstone raises undead; the old cap of 24 is gone). A stone's risers stand in a ring round it and rise one after another
 	// (GRAVE_STAGGER tics apart), the stones a few tics apart.
 	const GRAVE_STAGGER = 12;
-	int RaiseGraves(Vector3 spot, double radius, int budget, Array<int> kinds, Actor target)
+	int RaiseGraves(Vector3 spot, double radius, int perStone, Array<int> kinds, Actor target)
 	{
 		Array<Actor> st;
 		Array<double> sd;
@@ -305,18 +305,15 @@ class gy_BonesHandler : EventHandler
 		}
 		int n = st.Size();
 		if (n == 0 || kinds.Size() == 0) return 0;
-		int total = max(budget, n);
 		int now = level.maptime, made = 0;
-		Array<int> per;
-		for (int i = 0; i < n; i++) per.Push(0);
-		for (int j = 0; j < total; j++) per[j % n]++;
 		for (int i = 0; i < n; i++)
 		{
-			for (int j = 0; j < per[i]; j++)
+			for (int j = 0; j < perStone; j++)
 			{
-				int k = kinds[made % kinds.Size()];
-				double ring = per[i] > 1 ? 40.0 : 0.0;
-				double ang = j * 360.0 / max(1, per[i]) + i * 37;
+				// one a stone: the thralls' kinds in turn across the stones; one for each thrall: each stone raises every thrall's kind
+				int k = perStone > 1 ? kinds[j % kinds.Size()] : kinds[i % kinds.Size()];
+				double ring = perStone > 1 ? 40.0 : 0.0;
+				double ang = j * 360.0 / perStone + i * 37;
 				Vector3 at = st[i].pos + (cos(ang) * ring, sin(ang) * ring, 0);
 				at.z = st[i].pos.z;
 				Push(null, target, at, ang, k, now + i * 4 + j * GRAVE_STAGGER, true);
@@ -324,8 +321,8 @@ class gy_BonesHandler : EventHandler
 			}
 		}
 		if (gy_Bones.Debug())
-			Console.Printf("RSQ Graveyard bones t%d: a Bossfight wakes %d tombstone%s (%s): %d undead (budget %d, no cap)", now, n, n == 1 ? "" : "s",
-				radius > 0 ? String.Format("within %.0f", radius) : "the whole map", made, budget);
+			Console.Printf("RSQ Graveyard bones t%d: a Bossfight wakes %d tombstone%s (%s): %d undead (%d a stone, no cap)", now, n, n == 1 ? "" : "s",
+				radius > 0 ? String.Format("within %.0f", radius) : "the whole map", made, perStone);
 		return made;
 	}
 }

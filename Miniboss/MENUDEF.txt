@@ -38,10 +38,12 @@ OptionValue "RSQMB_TierFrom"
 	3, "Whichever Is Larger"
 }
 
-OptionValue "RSQMB_GraveArea"
+OptionValue "RSQMB_GraveMode"
 {
-	0, "Map"
-	1, "Radius"
+	0, "One Per Stone, Whole Map"
+	1, "One Per Stone, Within Radius"
+	2, "Thralls Per Stone, Whole Map"
+	3, "Thralls Per Stone, Within Radius"
 }
 
 OptionValue "RSQMB_Density"
@@ -59,7 +61,6 @@ OptionMenu "RSQMB_Options"
 	Option "Bossfights", "rsqmb_enabled", "OnOff"
 	Slider "Meter Speed", "rsqmb_bf_speed", 0.25, 4, 0.25, 2
 	Option "Bossfight Meter Fills From", "rsqmb_bf_from", "RSQMB_FillFrom"
-	Option "Bossfight Kill Drops a Life Crate", "rsqmb_bf_life", "OnOff"
 	Option "Call It In: Watch Check + Use", "rsqmb_bf_callin", "OnOff"
 	Option "Ignore Spawn Restrictions", "rsqmb_bf_ignore", "OnOff"
 	Option "Effects", "rsqmb_fx", "OnOff"
@@ -70,7 +71,7 @@ OptionMenu "RSQMB_Options"
 	Slider "Lives", "rsqmb_lives", 1, 9, 1, 0
 	Option "Tier From", "rsqmb_bf_tier_from", "RSQMB_TierFrom"
 	Option "Graves Rise (Legion of Bones)", "rsqmb_bf_graves", "OnOff"
-	Option "Graves Area", "rsqmb_bf_graves_area", "RSQMB_GraveArea", "rsqmb_bf_graves"
+	Option "Graves Rise Mode", "rsqmb_bf_graves_mode", "RSQMB_GraveMode", "rsqmb_bf_graves"
 	Slider "Graves Radius", "rsqmb_bf_graves_radius", 256, 4096, 128, 0
 	StaticText " "
 	StaticText "Rules", 1
@@ -110,7 +111,6 @@ OptionMenu "RSQMB_Test"
 	Option "Landing At Slowest", "rsqmb_bf_slowest", "OnOff"
 	Option "Landing In The Dark", "rsqmb_bf_dark", "OnOff"
 	Option "Bossfight Music", "rsqmb_bf_music", "OnOff"
-	Slider "Bits Multiplier", "rsqmb_bf_bits", 1, 10, 1, 0
 	Slider "Score Style Fill", "rsqmb_bf_style", 0, 2, 0.05, 2
 	Slider "Gun Bonsai XP Fill", "rsqmb_bf_xp", 0, 2, 0.05, 2
 	Slider "Score Per Tier", "rsqmb_bf_tier_score", 500, 20000, 500, 0

@@ -29,8 +29,6 @@
 //                               Miniboss made it legendary with spawn x max(LD_legendaryhealthboss, LD_legendaryhealth)
 //                               / 100 (the HIGHER of the two); stays 1 for that monster (dead or alive). A reader then
 //                               uses that max where it would use LD_legendaryhealth
-//                   "rewards.x" Bossfight bits (rsqmb_bf_bits, 3): how many times MORE Boss Kill Rewards bits this miniboss
-//                               is worth (a Bossfight's miniboss, under the same rule as "rewards"); 1 for any other
 //                 Cheap first test for callers: the monster carries "RSQMB_Ward" (by name); only then ask.
 //   bossfight     BOSSFIGHT (bossfight.zs): 1 when the monster came with a Bossfight (miniboss or thrall, dead or alive,
 //                 for good: it carries RSQMB_Called); no object: 1 while a Bossfight is arriving or its miniboss lives
@@ -121,8 +119,6 @@ class RSQMB_Service : Service
 		if (request ~== "bossfor")
 		{
 			if (!b || !a || b.mb != a) return 0;
-			if (stringArg ~== "rewards.x")
-				return (b.called && RSQMB_Handler.CI('rsqmb_boss_rewards', 1) && (!b.done || level.maptime - b.diedAt <= 1)) ? max(1, RSQMB_Handler.CI('rsqmb_bf_bits', 3)) : 1;
 			if (stringArg ~== "rewards") return (RSQMB_Handler.CI('rsqmb_boss_rewards', 1) && (!b.done || level.maptime - b.diedAt <= 1)) ? 1 : 0;
 			if (stringArg ~== "yank") return (RSQMB_Handler.CI('rsqmb_boss_noyank', 1) && isBoss) ? 1 : 0;
 			if (stringArg ~== "headlock") return (RSQMB_Handler.CI('rsqmb_boss_noheadlock', 1) && isBoss) ? 1 : 0;

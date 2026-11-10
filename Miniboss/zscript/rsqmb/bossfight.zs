@@ -41,8 +41,7 @@
 //              as a set piece (handler.zs Bind: segments, shield, lives, greed, colours, FX, Boss Kill Rewards, LegenDoom /
 //              Champions inheritance; fight.zs runs the fight).
 //   PAYOFF     its miniboss killed: a guaranteed drop (a gun from this map's weapon types you don't have, else a power-up),
-//              RSQ VisualRewards' boss bits x rsqmb_bf_bits more (RSQMB_Service "bossfor" "rewards.x"), RSQ Score's
-//              "Bossfight" row and RSQ Score's gold life crate where it died (rsqmb_bf_life; BfPayoff).
+//              RSQ VisualRewards' boss bits (it counts as a boss) and RSQ Score's "Bossfight" row (BfPayoff).
 // Rig only, not headset-confirmed.
 // ============================================================================
 
@@ -794,13 +793,12 @@ extend class RSQMB_Handler
 	}
 
 	// GRAVES RISE (owner 2026-11-06, rsqmb_bf_graves, off): with Legion of Bones and RSQ Graveyards loaded, a Bossfight calling
-	// in wakes the tombstones, in the whole map (rsqmb_bf_graves_area 0) or within rsqmb_bf_graves_radius of the fight's spawn
+	// in wakes the tombstones, in the whole map or within rsqmb_bf_graves_radius (rsqmb_bf_graves_mode) of the fight's spawn
 	// (1): they raise Legion of Bones undead, Graveyard's way (gy_RSQService "bones.graves", by name; Graveyard needs LoB and
 	// answers 0 without it). WHEN: the moment the Bossfight lands (its fog is over and its miniboss and thralls stand): a riser
 	// on a stone by the landing spot during the fog could block the miniboss's landing (rig 11-06: "failed to land", and the
-	// next try woke the graves a second time), so they wake once, when it has landed. HOW MANY: thralls + tier undead in all
-	// (3 thralls at tier 2: 5), every stone in range at least one (more stones than that: one each), spread over the stones
-	// nearest the spawn first, every stone at least one, NO cap (owner 2026-11-07: the old 24 is gone). WHICH: each thrall type's own undead (Graveyard maps the type, the
+	// next try woke the graves a second time), so they wake once, when it has landed. HOW MANY (owner 11-10, Graves Rise
+	// Mode): one undead a tombstone, or one for each thrall a tombstone, over the whole map or within the radius; no cap. WHICH: each thrall type's own undead (Graveyard maps the type, the
 	// Bones Bridge's table), in turn; Skull Zombies when none maps.
 	transient Service graveSvc;
 	transient bool graveChecked;
@@ -821,12 +819,15 @@ extend class RSQMB_Handler
 		if (!CI('rsqmb_bf_graves', 0) || !spot || arrCls.Size() < 1) return;
 		let g = GySvc();
 		if (!g) { if (debug) Console.Printf("RSQMB graves: RSQ Graveyards not loaded"); return; }
-		int budget = clamp(thralls + tier, 1, 999);
+		// owner 11-10: four modes. One Per Stone: every tombstone in range raises one. Thralls Per Stone: every tombstone in range
+		// raises one undead for each thrall the fight came with (five thralls: five a stone). Range: the whole map or the radius.
+		int mode = clamp(CI('rsqmb_bf_graves_mode', 0), 0, 3);
+		int perStone = mode >= 2 ? clamp(thralls, 1, 32) : 1;
 		String cls = "";
 		for (int i = 1; i < arrCls.Size(); i++) cls = cls .. (i > 1 ? "," : "") .. arrCls[i];
-		double radius = CI('rsqmb_bf_graves_area', 0) == 1 ? max(64.0, CF('rsqmb_bf_graves_radius', 1024)) : 0;
-		int n = g.GetInt("bones.graves", cls, arrPn * 1000 + budget, radius, spot);
-		if (debug) Console.Printf("RSQMB graves: %d thralls + tier %d = %d undead asked (%s of the spawn at %.0f %.0f), %d rising", thralls, tier, budget,
+		double radius = (mode == 1 || mode == 3) ? max(64.0, CF('rsqmb_bf_graves_radius', 1024)) : 0;
+		int n = g.GetInt("bones.graves", cls, arrPn * 1000 + perStone, radius, spot);
+		if (debug) Console.Printf("RSQMB graves: %d thralls, tier %d, %d a stone (%s of the spawn at %.0f %.0f), %d rising", thralls, tier, perStone,
 			radius > 0 ? String.Format("within %.0f", radius) : "whole map", spot.pos.x, spot.pos.y, n);
 	}
 
@@ -1063,21 +1064,7 @@ extend class RSQMB_Handler
 			let m = MeterOf(killer, true);
 			if (m) m.beaten++;
 		}
-		// A SCORE LIFE CRATE (owner 2026-11-07, design/NEAR_DEATH.md "v3 getting up, and the life crate"; it replaces 11-05's
-		// life added outright): the miniboss drops RSQ Score's gold life crate where it died (RSQ_ScoreLifeCrate, spawned BY NAME
-		// only when Score is loaded: Score owns it, its 10 s, its beam, its fade). Touching it is +1 Score life. Bossfight Kill
-		// Drops a Life Crate (rsqmb_bf_life, on). Without Score nothing happens.
-		if (CI('rsqmb_bf_life', 1))
-		{
-			Name cn = 'RSQ_ScoreLifeCrate';
-			class<Actor> cc = cn;
-			Actor from = b.mb ? b.mb : who;
-			Vector3 cp = (0, 0, 0);
-			if (from) cp = from.pos;
-			Actor cr = null;
-			if (cc && from) cr = Actor.Spawn(cc, cp + (0, 0, 8), NO_REPLACE);
-			if (debug) Console.Printf("RSQMB bossfight: %s", cr ? String.Format("RSQ Score's life crate dropped at %.0f %.0f %.0f", cp.x, cp.y, cp.z) : "no RSQ Score loaded: no life crate");
-		}
+		// (the x3 boss bits and Score's life crate went 11-10, owner: balanced later with the arcade systems)
 		Actor at = b.mb ? b.mb : who;
 		if (at) Drop(at, who);
 	}

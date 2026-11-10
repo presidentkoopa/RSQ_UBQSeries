@@ -32,7 +32,7 @@ gets stronger.
 - **Don't shoot it first.** Shoot it while its thralls live, and if a thrall is still standing a few seconds later, every
   monster on the map goes into a rage: twice as fast and twice as keen to attack, until the miniboss dies.
 - **When it dies.** A gun you don't have yet (or a power-up), a fountain of RSQ VisualRewards bits, RSQ Score's
-  Miniboss and Bossfight rows, and RSQ Score's gold life crate where it fell.
+  Miniboss and Bossfight rows.
 
 ---
 
@@ -48,7 +48,7 @@ gets stronger.
 | Kill a thrall | The shield drops: a window of 1 s for each thrall it came with |
 | Hit the miniboss inside the window | The open piece of the shield bar drains; break it before the window ends |
 | Break every piece | One-on-one: its own bar takes the damage, life by life |
-| Kill it | A gun or power-up, bits, Score rows and a life crate; the level's music comes back |
+| Kill it | A gun or power-up, bits and Score rows; the level's music comes back |
 
 **The watch check** comes from RSQ Gestures. Without Gestures, RSQ Gun Cards' copy or this mod's own copy does the same
 check, so the call-in always works.
@@ -209,11 +209,11 @@ or you leave the level, every monster is put back exactly as it was.
 - **A drop:** a gun from the guns lying in this map that you don't have yet. If there is none (Brutal Doom's map
   pickups are not guns until you touch them), a gun from your weapon slots no higher than one slot above your best;
   otherwise a Megasphere, Soulsphere, Berserk or Blur Sphere.
-- **RSQ VisualRewards' Kill Rewards:** it counts as a boss, so it always drops bits, a boss's fountain of them, and
-  three times that again (**Bits Multiplier**).
+- **RSQ VisualRewards' Kill Rewards:** it counts as a boss, so it always drops bits, a boss's fountain of them.
 - **RSQ Score:** the **Miniboss** row and the **Bossfight** row on top of the kill.
-- **RSQ Score's gold life crate** where it died (**Bossfight Kill Drops a Life Crate**): touch it for one more life.
 - **A win counted** (it adds to the tier under Tier From's "Set").
+
+*(The extra x3 bits and Score's life crate are gone for now: the drops will be balanced once the arcade systems are designed.)*
 
 **Any miniboss killed** scores RSQ Score's **Miniboss** row.
 
@@ -223,10 +223,17 @@ or you leave the level, every monster is put back exactly as it was.
 
 ## Graves Rise
 
-With **Graves Rise** on, Legion of Bones and RSQ Graveyard loaded, the moment a Bossfight has landed the tombstones wake:
-in the whole map, or within **Graves Radius** of the fight. They raise as many undead as the fight has thralls plus its
-tier (three thralls at tier 2: five), spread over the stones nearest the fight first, every stone at least one. Each is
-the undead of a thrall's own type, Skull Zombies when none fits. The tombstones' candles also beat with the full meter's
+With **Graves Rise** on, Legion of Bones and RSQ Graveyard loaded, the moment a Bossfight has landed the tombstones wake.
+**Graves Rise Mode** picks how many and where:
+
+| Mode | What rises |
+|---|---|
+| One Per Stone, Whole Map (default) | Every tombstone on the map raises one undead |
+| One Per Stone, Within Radius | Every tombstone within **Graves Radius** of the fight raises one |
+| Thralls Per Stone, Whole Map | Every tombstone raises one undead for each thrall the fight came with (five thralls: five a stone) |
+| Thralls Per Stone, Within Radius | The same, only the tombstones within **Graves Radius** |
+
+Each undead is a thrall's own type, Skull Zombies when none fits. The tombstones' candles also beat with the full meter's
 heartbeat.
 
 ---
@@ -252,13 +259,12 @@ happen.
   Miniboss sends it the **Miniboss**, **Bossfight** and **Thrall Slow Kill** rows; Score values the first two as a
   share of the miniboss kill's worth (1x, 2x). Score also reads Miniboss for its own rows: **Chain Gang** (thralls
   killed in one window), **Rage Quit**, **Riot Control**, and combos that ask for a thrall
-  or the miniboss. Miniboss drops Score's gold life crate after a Bossfight.
+  or the miniboss.
 - **RSQ Monsters:** the ladder colours, the tier-ups on a missed window and on each life lost (with its tier flash), the
   bodies it swaps on a tier change (Miniboss finds the new one and dresses it again), and **Miniboss From / Thralls
   From** on Monsters' page. Re-entering a hub level puts back every tier Miniboss gave.
 - **RSQ VisualRewards:** the arrival beams, "GUARD!", "TARGET!" and the pops; the Bossfight music scene (its Scene Music
-  row turns it off for you; **Bossfight Music** here turns it off for everyone); Kill Rewards' boss fountain times the
-  Bits Multiplier; Top HP Bars draws a crown over the miniboss's bar, with a pip for each tier, and a chain link over each
+  row turns it off for you; **Bossfight Music** here turns it off for everyone); Kill Rewards' boss fountain; Top HP Bars draws a crown over the miniboss's bar, with a pip for each tier, and a chain link over each
   thrall.
 - **RSQ Glow In The Dark:** the red heartbeat of a full meter, the landing in DarkDoom Black, the cold grey, gold and
   red of the fight room, the colour waves at the landing and the death, and the colour re-roll after. Its own **Miniboss
@@ -293,11 +299,11 @@ is the host's.
 
 | Section | Rows |
 |---|---|
-| Top | Bossfights · Meter Speed (1) · Bossfight Meter Fills From (Score, Gun Bonsai, Both) · Bossfight Kill Drops a Life Crate · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Effects Density (Low, Medium, High) |
-| Fight | Thralls (3) · Lives (3) · Tier From (Set, Gun Bonsai VR Level, Score Lives, Whichever Is Larger) · Graves Rise (Legion of Bones) (off) · Graves Area (Map, Radius) · Graves Radius (1024) |
+| Top | Bossfights · Meter Speed (1) · Bossfight Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Effects Density (Low, Medium, High) |
+| Fight | Thralls (3) · Lives (3) · Tier From (Set, Gun Bonsai VR Level, Score Lives, Whichever Is Larger) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
 | Rules | Legendary Thralls (LegenDoom) · Tier-Up Hits the Whole Map · Tier Up Each Life · Inherit Powers · Greed Enrages Monsters · Score Awards |
 | Counts as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
-| Test and Debug: Bossfight | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Bossfight Music · Bits Multiplier (3) · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Score Per Tier (4000) · Show Meter · Meter Size (1.5) |
+| Test and Debug: Bossfight | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Bossfight Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Score Per Tier (4000) · Show Meter · Meter Size (1.5) |
 | Test and Debug: Classic | Classic Pick at Level Load (off) · Per Map (1) · Map Chance (100) |
 | Test and Debug: Fight | Thrall Range (1024) · Power Cap (4) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own) · Rage Speed (2) · Effects Range (4000) |
 | Test and Debug | Debug Log (off) |
@@ -319,7 +325,7 @@ are in map units (32 to a metre).
 | **Shown on the rig** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up); the Bossfight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a Bossfight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a Bossfight runs |
 | **Shown on the rig before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page, among it: the HUD bars of the fight (seen only in the design mockups), "GUARD!", "TARGET!", the grey Xs and the pops, the slow motion and Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music, the life crate, Graves Rise, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the tethers and flames since the rework, the rage since the rework, the hub tier reset |
+| **Code only, not yet shown** | Everything else on this page, among it: the HUD bars of the fight (seen only in the design mockups), "GUARD!", "TARGET!", the grey Xs and the pops, the slow motion and Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music, Graves Rise, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the tethers and flames since the rework, the rage since the rework, the hub tier reset |
 
 ---
 
