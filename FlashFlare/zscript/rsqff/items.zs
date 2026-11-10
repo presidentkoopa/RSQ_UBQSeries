@@ -56,12 +56,13 @@ class RSQFF_Given : Inventory
 //   QFFH A  unlit, in the hand        QFFH B  lit (cap off), in the hand
 //   QFFH C  unlit, no hand drawn      QFFH D  lit, no hand drawn
 //   QFFH E  the glowing burning end, an overlay drawn full bright over B / D
-// The hand is Brutal Doom 22 VR Reloaded's FBX fist (its fbx_oh_free_R.md3 frame 1), with the flare baked into the fist's
-// grip hole (tools/gen_flare.py), drawn in the same MODELDEF block BD22 VR draws its off-hand fist in.
+// The hand is Brutal Doom 22 VR Reloaded's FBX holding hand (fbx_oh_hold_R.md3 frame 0, MODELDEF.txt), with the flare
+// baked in (tools/gen_flare.py), drawn in the same MODELDEF block BD22 VR draws its off-hand fist in.
 // Being an OFF-HAND weapon by its class, RSQ Tactical Rig never throws it or holsters it (rig.zs IsMovedGun).
 class RSQFF_Held : Weapon
 {
 	const EMBER = 7311;      // the overlay layer of the glowing end
+	bool burning;            // struck (the handler's state is per level; this rides the item to the next map)
 
 	Default
 	{

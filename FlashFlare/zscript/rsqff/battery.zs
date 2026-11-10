@@ -67,13 +67,32 @@ class RSQFF_Battery play
 		return st;
 	}
 
+	// THE CHARGE CARRIES OVER (owner 2026-11-09 20:23: "prevent battery from refilling every level"). The handler holding the
+	// charge is per level, so the charge also lives on the player as a token (RSQFF_BattKeep, permille + 1; 0 = never
+	// stored), which the inventory carries to the next map. A level starts from it; a new game (no token) starts full.
+	static double Stored(int n)
+	{
+		let pmo = playeringame[n] ? players[n].mo : null;
+		let k = pmo ? pmo.FindInventory("RSQFF_BattKeep") : null;
+		return (k && k.Amount > 0) ? clamp((k.Amount - 1) / 1000.0, 0.0, 1.0) : 1.0;
+	}
+	static void Store(int n, double c)
+	{
+		let pmo = playeringame[n] ? players[n].mo : null;
+		if (!pmo) return;
+		let k = pmo.FindInventory("RSQFF_BattKeep");
+		if (!k) k = pmo.GiveInventoryType("RSQFF_BattKeep");
+		if (k) k.Amount = 1 + int(round(clamp(c, 0.0, 1.0) * 1000));
+	}
+
 	static void Add(int n, double share, String why)
 	{
 		let h = RSQFF_Torches.Get();
 		if (!h || !InUse() || n < 0 || n >= MAXPLAYERS) return;
-		if (!h.battOk[n]) { h.battOk[n] = true; h.charge[n] = 1.0; }
+		if (!h.battOk[n]) { h.battOk[n] = true; h.charge[n] = Stored(n); }
 		double was = h.charge[n];
 		h.charge[n] = min(1.0, h.charge[n] + share);
+		Store(n, h.charge[n]);
 		let pmo = playeringame[n] ? players[n].mo : null;
 		if (pmo && RSQFF_Torches.Debug(pmo.player))
 			Console.Printf("RSQFF battery t%d: player %d +%.0f%% (%s): %.1f%% -> %.1f%%", level.maptime, n, share * 100, why, was * 100, h.charge[n] * 100);
@@ -87,12 +106,13 @@ class RSQFF_Battery play
 			h.dimI[n] = 1.0; h.dimIn[n] = 1.0; h.dimOut[n] = 1.0;
 			return;
 		}
-		if (!h.battOk[n]) { h.battOk[n] = true; h.charge[n] = 1.0; }
+		if (!h.battOk[n]) { h.battOk[n] = true; h.charge[n] = Stored(n); }
 		double step = 1.0 / CapTics();
 		bool on = h.phase[n] == RSQFF_Torches.T_ON;
 		int was = Step(h.charge[n]);
 		if (on) h.charge[n] = max(0.0, h.charge[n] - step);
 		else h.charge[n] = min(1.0, h.charge[n] + step);
+		Store(n, h.charge[n]);
 		bool dbg = RSQFF_Torches.Debug(pmo.player);
 		int now = Step(h.charge[n]);
 		if (dbg && now != was) Console.Printf("RSQFF battery t%d: player %d %.1f%% (%s): meter step %d", level.maptime, n, h.charge[n] * 100, on ? "draining" : "charging", now);
@@ -182,4 +202,10 @@ class RSQFF_Battery play
 		if (dbg) Console.Printf("RSQFF battery t%d: Legion of Bones kill %s%s: %d battery bit%s (rolled %d, %s)", level.maptime, a.GetClassName(),
 			boosted ? " (legendary / champion)" : "", made, made == 1 ? "" : "s", num, vr ? "RSQ VisualRewards" : "no RSQ VisualRewards: none");
 	}
+}
+
+// the battery's charge on the player, carried from level to level (RSQFF_Battery.Store / Stored)
+class RSQFF_BattKeep : Inventory
+{
+	Default { Inventory.MaxAmount 1001; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE; }
 }

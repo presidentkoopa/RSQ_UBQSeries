@@ -2,10 +2,10 @@
 // possible with the dynamic light"):
 //   * ONE point light per flare (A_AttachLight on the flare itself), no shadow map (LF_NOSHADOWMAP), never a spot light.
 //   * The flicker is not a pulse light re-sized every frame: the size and the colour change every rsqff_flicker tics
-//     (4 on the Quest preset, 3 on PCVR), a random step within a few percent; while it sputters, every 2 tics.
-//   * A HARD CAP on lit flares (rsqff_cap: 3 Quest, 6 PCVR), the held one counted: when one more is lit, the oldest
+//     (4), a random step within a few percent; while it sputters, every 2 tics.
+//   * A HARD CAP on lit flares (rsqff_cap, 3), the held one counted: when one more is lit, the oldest
 //     lying flare goes dark over half a second and burns on as flame and sparks only (RSQFF_Handler.Budget).
-//   * Its radius is small-ish (rsqff_radius: 140 Quest, 220 PCVR; saegiru's pulse light was 386-392); "Subdued" doubles
+//   * Its radius is small-ish (rsqff_radius, 140; saegiru's pulse light was 386-392); "Subdued" doubles
 //     it at half the brightness (the soft look the owner liked).
 //   * The flame, sparks and smoke are particles (no actors), drawn additive and full bright.
 // Saegiru's flare (GLDEFS.flares REDFLARE: colour 1 0.3 0, pulsing 386-392 every 0.1 s, raised 35 units) gave the colour
@@ -127,7 +127,7 @@ class RSQFF_Burner : Actor
 		texSmoke = TexMan.CheckForTexture("RQFSMOK", TexMan.Type_Any);
 	}
 
-	// THE FLAME AND SPARKS: particles at the burning end (no actors). Fewer on the Quest preset's slower flicker.
+	// THE FLAME AND SPARKS: particles at the burning end (no actors).
 	void Particles()
 	{
 		Tex();
@@ -189,7 +189,7 @@ class RSQFF_HeldLight : RSQFF_Burner
 // THROWN, DROPPED, LYING. The flight is RSQ Grenade's (thrown.zs, the owner's RS_Grenade numbers; 11-05 05:14 "needs to
 // throw like grenade does"): its gravity 0.27 and its lazy tumble (3.5 degrees a tic, the second axis 0.43 of it); the
 // bounces stay a flare's, lighter. A projectile that bounces off floors, walls and monsters, then lies down and slides to a
-// stop, still burning. It hurts nothing. Burnt out, it lies dark for HUSK seconds (10, fixed) and goes.
+// stop, still burning. A hit on the way does a little damage (fire.zs). Burnt out, it lies dark for HUSK seconds (10, fixed) and goes.
 class RSQFF_Flare : RSQFF_Burner
 {
 	const HALF = 3.9;          // map units from the centre to the burning end (11.5 cm x 0.34; models/rsqff/flare.md3)

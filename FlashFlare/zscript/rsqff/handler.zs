@@ -4,7 +4,7 @@
 //   1. TAKE: reach the OFF hand across to the pocket on your chest (main-hand side) and grip: a flare is in that hand,
 //      unlit, cap on. The main hand keeps its gun. Grip there again with an unlit flare: it goes back in the pocket.
 //   2. STRIKE: flick the flare hand sharply DOWN (rsqff_strike m/s, 1.4), as you would strike the cap on a road flare; or
-//      pull that hand's trigger (rsqff_light_by: Strike / Trigger / Strike or Trigger). It catches with a burst of sparks,
+//      pull that hand's trigger (rsqff_light_by: Strike / Trigger / Either). It catches with a burst of sparks,
 //      sputters for about two-thirds of a second, then burns.
 //   3. HOLD it up to light the way. Its light follows the burning end you see.
 //   4. THROW, AS RSQ GRENADE THROWS (owner 11-05 05:14: "still cannot throw flare, needs to throw like grenade does"):
@@ -14,8 +14,9 @@
 //      it stays in your hand. The grip does nothing to a lit flare (owner 11-06: "Trigger only"): no throw, no drop.
 //   5. It burns rsqff_burn seconds (60) in the hand or on the floor, then dies away; burnt out in the hand, the hand lets
 //      the spent flare fall.
-// Put away any other way (another mod or key takes the off hand, death, a new level): an unlit flare goes back in the
-// pocket; a lit one falls where the hand was, still burning.
+// Put away any other way (another mod or key takes the off hand, death): an unlit flare goes back in the pocket; a lit
+// one falls where the hand was, still burning. AT A LEVEL EXIT (owner 2026-11-09 20:23, "fix free flare") an unlit flare
+// in the hand goes back in the pocket on the new map; a lit one is used up (it used to come back as a fresh flare).
 //
 // THE OTHER MODS, BY NAME (nothing here links against them):
 //   RSQ Tactical Rig: the pocket hangs on its body ("body.yaw", RSQTR_BodyService) so it turns with its holsters; while
@@ -159,6 +160,7 @@ class RSQFF_Handler : EventHandler
 		if (!w) return;
 		RaiseOff(p, w);
 		phase[n] = PH_UNLIT;
+		RSQFF_Held(w).burning = false;
 		takeTic[n] = level.maptime;
 		pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);
 		RSQFF_Buzzer.Start(pmo, 1, 0.25, 3);
@@ -180,6 +182,8 @@ class RSQFF_Handler : EventHandler
 	{
 		if (phase[n] != PH_UNLIT) return;
 		phase[n] = PH_LIT;
+		let hw = RSQFF_Held(pmo.FindInventory("RSQFF_Held"));
+		if (hw) hw.burning = true;
 		let c = RSQFF_HeldLight(Actor.Spawn("RSQFF_HeldLight", RSQFF_Geo.Tip(pmo)));
 		if (c)
 		{
@@ -294,8 +298,14 @@ class RSQFF_Handler : EventHandler
 		}
 		if (phase[n] == PH_NONE)
 		{
-			// a flare left in the off hand with no state (a level change, a load from before): out of the hand, refunded
-			if (p.OffhandWeapon is "RSQFF_Held") { phase[n] = PH_UNLIT; Back(pmo, n, false); }
+			// a flare left in the off hand with no state (a level change, a load from before): an unlit one goes back in the
+			// pocket; a lit one is used up, no refund
+			let hw = RSQFF_Held(p.OffhandWeapon);
+			if (hw)
+			{
+				if (hw.burning) { hw.burning = false; OffBack(pmo, n); if (Debug(p)) Console.Printf("RSQFF t%d: the lit flare carried over a level change is used up", level.maptime); }
+				else { phase[n] = PH_UNLIT; Back(pmo, n, false); }
+			}
 			return;
 		}
 		bool inHand = p.OffhandWeapon is "RSQFF_Held";
@@ -469,8 +479,8 @@ class RSQFF_Handler : EventHandler
 		// THE TRIGGER ONLY (owner 11-06: "Trigger only", exactly like the grenade): the grip does nothing to a lit flare --
 		// no throw, no drop. Until 11-06 a grip press with the hand still dropped it at your feet, and a hand closing round
 		// the flare to wind up does exactly that, so the trigger's let-go never had a flare to throw. A lit flare leaves
-		// the hand by a throw, burning out, or something else taking the hand (death, a new level, another off-hand
-		// weapon: it falls burning). It is never put away (owner 11-05).
+		// the hand by a throw, burning out, or something else taking the hand (death, another off-hand weapon: it falls
+		// burning); at a level exit it is used up (Keep). It is never put away (owner 11-05).
 	}
 
 	// WHAT LEAVES THE HAND for a hand velocity v (map units a tic): RSQ Grenade hand.zs LaunchVel (RS_Grenade's flight),

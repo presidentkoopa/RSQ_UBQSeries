@@ -31,9 +31,9 @@
 //   RSQ Tactical Rig: the clip hangs on its body ("body.yaw"); while the off hand is in one of its places the grip is the
 //     rig's. A holster of the rig's can take and put back the flashlight with the network events "rsqff_fl_take" /
 //     "rsqff_fl_back", and ask "torch.phase" (RSQFF_TorchService, below), as its flare holster does with the flare.
-//   DarkDoomz (Caligari87): "DarkDoomz Flashlight Stands Down" (on): while ours is on, a DarkDoomZ_Spotlight following you
-//     is switched off the way its own key does it: its own item is used once (UseInventory on DarkDoomZ_Flashlight). Its
-//     lights and item are never deleted; nothing here breaks without it.
+//   RSQ Glow In The Dark: carries DarkDoomZ (Caligari87) without its own flashlight, so this is the only flashlight; its
+//     Beam Look row can borrow DarkDoomZ's beam (ddzlight.zs). (The old stand-down of a second, DarkDoomZ flashlight was
+//     removed 2026-11-09.)
 //
 // NETPLAY, the series' way: the hands are read on the console player's machine; take, put back and the switch travel as
 // network events. The beam follows each player's synced hand on every machine.
@@ -186,7 +186,6 @@ class RSQFF_Torches : EventHandler
 	String prevOff[MAXPLAYERS];
 	int pick[MAXPLAYERS];             // the colour picked at the last switch-on (Random)
 	bool gripDown[MAXPLAYERS];
-	int ddzWait[MAXPLAYERS];
 	RSQFF_TorchSpot spot[MAXPLAYERS];
 	RSQFF_TorchSpill spill[MAXPLAYERS];   // Light Style DarkDoomZ, Fancy: its spill light (ddzlight.zs)
 	RSQFF_TorchCone cone[MAXPLAYERS];
@@ -213,13 +212,7 @@ class RSQFF_Torches : EventHandler
 	private transient double myBodyYaw;
 
 	static RSQFF_Torches Get() { return RSQFF_Torches(EventHandler.Find("RSQFF_Torches")); }
-	static bool FlOn() { let c = CVar.FindCVar("rsqff_fl_on"); return (!c || c.GetBool()) && !DdzTakesOver(); }
-	// DARKDOOMZ FLASHLIGHT TAKES OVER (owner 11-06, BUGS_1.0 item 9; rsqff_fl_ddz_take, off): with DarkDoomZ loaded (found
-	// by its flashlight item's name, DarkDoomZ_Flashlight; Caligari87's mod is never touched) OUR flashlight stands down
-	// whole -- no clip, nothing to take, one in the hand goes back, "Turn Off DarkDoomz Light" does nothing -- so
-	// DarkDoomZ's own flashlight (its item, its key, its spot light) is the only one and works as it ships.
-	static bool DdzLoaded() { String n = "DarkDoomZ_Flashlight"; class<Object> c = n; return c != null; }
-	static bool DdzTakesOver() { let c = CVar.FindCVar("rsqff_fl_ddz_take"); return c && c.GetBool() && DdzLoaded(); }
+	static bool FlOn() { let c = CVar.FindCVar("rsqff_fl_on"); return !c || c.GetBool(); }
 	static int SInt(String n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
 	static double SFloat(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static double LNum(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
@@ -596,8 +589,6 @@ class RSQFF_Torches : EventHandler
 		}
 		else if (hot[n]) hot[n].bInvisible = true;
 
-		// DarkDoomz's flashlight stands down while ours is on
-		if (SInt("rsqff_fl_ddz", 1) > 0 && level.maptime >= ddzWait[n] && level.maptime % 10 == 0) StandDown(pmo, n);
 	}
 
 	private void Trace(PlayerPawn pmo, int n, Vector3 lens, double yaw, double pitch, double dist)
@@ -642,25 +633,6 @@ class RSQFF_Torches : EventHandler
 			0, 0, 0, 0.55, -1);
 	}
 
-	private void StandDown(PlayerPawn pmo, int n)
-	{
-		String snm = "DarkDoomZ_Spotlight";
-		class<Actor> sc = snm;
-		if (!sc) { ddzWait[n] = level.maptime + 350; return; }     // no DarkDoomz loaded
-		let it = ThinkerIterator.Create(sc);
-		Actor a;
-		bool found = false;
-		while (a = Actor(it.Next())) if (a.Distance3D(pmo) < 160) { found = true; break; }
-		if (!found) return;
-		String inm = "DarkDoomZ_Flashlight";
-		class<Inventory> ic = inm;
-		let item = ic ? pmo.FindInventory(ic) : null;
-		ddzWait[n] = level.maptime + 35;
-		if (!item) return;
-		pmo.UseInventory(item);
-		if (Debug(pmo.player)) Console.Printf("RSQFF torch t%d: DarkDoomz's flashlight was on: switched off with its own item", level.maptime);
-	}
-
 	// ---------------------------------------------------------------- the console player's hands
 	private void Hands(PlayerPawn pmo)
 	{
@@ -701,6 +673,9 @@ class RSQFF_Torches : EventHandler
 
 	// THE CLIP: on the chest, on the OFF hand's own side (the flare pocket's mirror), hung from the neck and turned by the
 	// body's yaw, as the pocket is (RSQFF_Geo.Pocket)
+	// TODO NETPLAY (owner 2026-11-09 20:23: "mark netplay bug for later fix"): the clip offsets are read with LNum, this
+	// machine's user cvars, not the pawn's own player's (Pocket uses CVar.GetCVar(n, p)). In a netgame every other player's
+	// flashlight clip is drawn at YOUR offsets (stowed.zs) and RSQFF_Service "clip.*" answers with yours. Visual only.
 	static Vector3 Clip(PlayerPawn pmo, double bodyYaw)
 	{
 		double f = LNum("rsqff_fl_clip_f", 0.10);

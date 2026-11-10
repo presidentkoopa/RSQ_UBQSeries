@@ -1,9 +1,9 @@
 // RSQ FlashFlare -- settings. What each does (the menu carries no notes). Server: what the flares do for everyone (light,
 // burn, ammo). User: how YOUR hands are read and where your pocket is.
-server bool   rsqff_on          = true;   // the whole mod
-server int    rsqff_radius      = 140;    // the light's radius, map units (Quest preset 140, PCVR 220)
-server int    rsqff_cap         = 3;      // at most this many lit flares give light at once; the oldest goes dark (Quest 3, PCVR 6)
-server int    rsqff_flicker     = 4;      // tics between flicker steps: the light's size and colour change this often (Quest 4, PCVR 3)
+server bool   rsqff_on          = true;   // the flares (the pocket, the boxes, Show Flare); the flashlight has its own switch, rsqff_fl_on
+server int    rsqff_radius      = 140;    // the light's radius, map units
+server int    rsqff_cap         = 3;      // at most this many lit flares give light at once; the oldest goes dark
+server int    rsqff_flicker     = 4;      // tics between flicker steps: the light's size and colour change this often
 server bool   rsqff_subdued     = false;  // Subdued: double radius, half brightness (the soft look)
 server int    rsqff_burn        = 60;     // seconds a flare burns (saegiru's burned 180)
 server bool   rsqff_sparks      = true;   // sparks off the burning end
@@ -40,11 +40,9 @@ server int    rsqff_fl_style    = 0;      // Light Style: 0 FnF (Beam Size / Col
 server int    rsqff_fl_ddz_type = 1;      // DarkDoomZ Type: 0 Incandescent, 1 Halogen (DarkDoomZ's default), 2 LED, 3 Red Filter
 server bool   rsqff_fl_ddz_spill = true;  // DarkDoomZ Spill Light: on, its Fancy quality (a beam light plus a spill light); off, its Simple (one light)
 server bool   rsqff_fl_cone     = true;   // Show Cone: the visible tapered cone (and its dust); off, the light alone
-server bool   rsqff_fl_ddz_take = false;  // DarkDoomZ Flashlight Takes Over (owner 11-06, BUGS_1.0 item 9): with DarkDoomZ loaded, ours stands down and DarkDoomZ's flashlight works
 server int    rsqff_fl_batt     = 3;      // Battery (min): minutes of light from full, Ermac's default 3; 0 = never drains (battery.zs)
 server bool   rsqff_fl_batt_inf = false;  // Battery Never Drains (owner 11-06): no drain, no meter
 server bool   rsqff_fl_bits     = false;  // Bones Drop Battery Bits (owner 11-06): Legion of Bones kills drop RSQ VisualRewards battery bits (8%; legendary / champion 3), each +15%
-server bool   rsqff_fl_ddz      = true;   // DarkDoomz Flashlight Stands Down: while ours is on, DarkDoomz's is switched off with its own item
 user   float  rsqff_fl_clip_f   = 0.10;   // m: the flashlight clip, forward of the chest line (body frame)
 user   float  rsqff_fl_clip_l   = 0.17;   // m: ...toward your OFF hand's side (the flare pocket's mirror)
 user   float  rsqff_fl_clip_u   = -0.22;  // m: ...under the eyes
