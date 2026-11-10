@@ -50,12 +50,6 @@ OptionValue "RSQSC_Letters"
 	2, "Chaos"
 }
 
-OptionValue "RSQSC_HeadCheck"
-{
-	0, "Brutal Doom's Own"
-	1, "Every Monster, by Its Size"
-}
-
 OptionMenu "RSQSC_Options"
 {
 	Title "RSQ SCORE"
@@ -81,7 +75,6 @@ OptionMenu "RSQSC_Options"
 	// ---- [11-09] the head-shot check (head.zs) ----
 	StaticText " "
 	StaticText "Head Shots", 1
-	Option "Head Shot Check", "rs_score_hs", "RSQSC_HeadCheck"
 	Option "Head Shot Damage", "rs_score_hs_bonus", "OnOff"
 	Option "Heads on Demons, Cacos and Spiders", "rs_score_hs_headless", "OnOff"
 	// ---- RSQ Monsters' roster rows (11-09, rows_roster.zs): each row's switch; pays only with RSQ Monsters loaded ----

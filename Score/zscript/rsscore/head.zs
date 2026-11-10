@@ -18,7 +18,7 @@
 // clamped into the box. Never AttackPos / HmdPosition (renderer-written), never random. Cvars are server cvars.
 // So every machine in a network game gets the same verdict.
 //
-// WHAT THE VERDICT DOES (rs_score_hs 1; 0 = Brutal Doom's own check, untouched):
+// WHAT THE VERDICT DOES (always on since 11-09; Brutal Doom's own check as an option was removed):
 //   - BRUTAL DOOM'S OWN OUTCOME, applied from it: the HitHead / HitLeg tokens BD's death states read (taken and given
 //     as BD's bloods do), and BD's head damage: +30 of type Head on its blood-checked families (ACS Head_Shot's own
 //     number; the monster's DamageFactor "Head" applies), the blow again (double) on its hitbox families.
@@ -136,7 +136,9 @@ class RS_ScoreHead : EventHandler
 	}
 
 	// ---------------------------------------------------------------- cvars (server: the same on every machine)
-	static bool On()        { let c = CVar.FindCVar("rs_score_hs"); return c && c.GetInt() > 0; }
+	// ALWAYS ON (owner 2026-11-09 22:27: "remove it"): "Brutal Doom's Own" (rs_score_hs 0) is gone; on the rig its BD head
+	// kills did not pay Headshot. rs_score_hs is kept only so a saved 0 cannot switch the check off.
+	static bool On()        { return true; }
 	static bool BonusOn()   { let c = CVar.FindCVar("rs_score_hs_bonus"); return !c || c.GetBool(); }
 	static bool HeadlessOn(){ let c = CVar.FindCVar("rs_score_hs_headless"); return !c || c.GetBool(); }
 	static double Unknown() { let c = CVar.FindCVar("rs_score_hs_unknown"); return c ? clamp(c.GetInt(), 50, 98) / 100.0 : 0.80; }
