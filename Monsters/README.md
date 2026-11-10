@@ -77,6 +77,8 @@ A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight,
 - **Health on a tier change** (*On tier change*): by default an instant change (one with no flash) brings full
   health, and a change with the flash keeps the share of health already lost, so a hurt Common imp turns into an
   equally hurt Red one. You can keep the share always, or give full health always.
+- **Tier Icons Above Monsters** (off by default, as Colourful Hell ships it): the tier's gem floats up off each
+  ColorfulHell monster, so the ladder reads as a shape and not only as a colour (Colourful Hell's colour-blind aid).
 
 ### Colourful Hell's own surprises
 
@@ -182,7 +184,7 @@ next monster that needs them.
 
 | Section | Rows |
 |---|---|
-| Top | Select Monster Set (Vanilla, BD22, **ColorfulHell**) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) |
+| Top | Select Monster Set (Vanilla, BD22, **ColorfulHell**) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) · Tier Icons Above Monsters (**Off**, On) |
 | Miniboss | Miniboss From (**Same as Monster Set**, ColorfulHell) · Thralls From (**Same as Miniboss**, ColorfulHell, Map's Own Monsters) |
 | Monster Diagnostics | A test page. Today only God Mode works: Spawn hostile, the fourteen chaingunner buttons, Spawn All Fourteen, Remove them all, DIAG and WAKE are on the page but nothing answers them |
 
@@ -204,8 +206,8 @@ Defaults are in bold.
 | **code only, not shown** | MeatGrinder removed (11-10), and a saved MeatGrinder pick reading as ColorfulHell. Everything else on this page: the look of the flash, On tier change, the Vanilla and BD22 sets, Brutal Doom's load order, Colourful Hell's extra colours, bosses and EX forms, its fireball swaps, old saved settings reading as ColorfulHell |
 | **not yet run** | R1 of the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): a Monster Set saved as 2 reading as ColorfulHell, and a retier. The 11-09 tier-change log has not been run again since MeatGrinder was removed |
 
-Tier Icons Above Monsters has no row on the RSQ Monsters page: the row is only on RS Monsters' old pages, which have no
-entry since 11-09. It is set with `rs_ch_colorblind 1` for now.
+**Tier Icons Above Monsters** (`rs_ch_colorblind`) is on the RSQ Monsters page since 11-10 (code only, not shown from the
+menu; the gems themselves were shown on the rig with the cvar set from the console, above).
 
 ---
 
@@ -224,7 +226,7 @@ entry since 11-09. It is set with `rs_ch_colorblind 1` for now.
   `rs_ch_fireblu`, `rs_ch_gray`, `rs_ch_abyss`, `rs_ch_cyan`, `rs_ch_brown` (1 = off, the default), `rs_ch_blackboss`,
   `rs_ch_whiteboss` (1 = on), `rs_ch_exboss` (1 = the 24-in-256 EX share), `rs_ch_nerfredboss`, `rs_ch_yellowrev`,
   `rs_ch_intercept`, `rs_ch_cyanbounce`, `rs_ch_rawket`, `rs_ch_abyssmark`, `rs_ch_colorblind` (tier icons: the series'
-  tier gems floating up off a monster, a colour-blind aid; on the menu as Tier Icons Above Monsters), and the drop
+  tier gems floating up off a monster, a colour-blind aid; the RSQ Monsters page's Tier Icons Above Monsters row), and the drop
   settings `rs_ch_healthdrops`, `rs_ch_backpackdrops`, `rs_ch_ammodrops`, `rs_ch_extradrops`, `rs_ch_weapondrops`,
   `rs_ch_powerupdrops`, `rs_ch_armordrops`.
 - **The six projectile swaps** (imp fireball, Cacodemon ball, Baron ball, Mancubus shot, Arachnotron plasma, rocket)

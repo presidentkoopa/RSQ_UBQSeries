@@ -58,6 +58,10 @@ OptionMenu "RSQMN_Options"
 	StaticText ""
 	Option "Select Monster Set", "rsq_monster_set", "RSQMN_MonsterSet"
 	Option "On tier change", "rsq_mon_retier_health", "RSQMN_RetierHealth"
+	// Colourful Hell's colourblind aid: the tier's gem (TI3R) floats over each ColorfulHell monster
+	// (RS_ZombiemanFX.zs, the one gate rs_ch_colorblind). Off by default, as CH ships it. (11-10: moved here from RS
+	// Monsters' old pages, which have no entry; their RS_CH_OffOn was never defined, so "OnOff".)
+	Option "Tier Icons Above Monsters", "rs_ch_colorblind", "OnOff"
 
 	StaticText ""
 	StaticText "Miniboss", "Gold"
