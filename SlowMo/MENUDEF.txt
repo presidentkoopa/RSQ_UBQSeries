@@ -31,7 +31,7 @@ OptionMenu "RSQSM_Options"
 	RSQSMGbLine ""
 	StaticText " "
 	Control "Slow Motion Key", "rsqsm_toggle"
-	Control "Shootdodge Key", "rsqsm_dodge"
+	Control "Crisis Dive Key", "rsqsm_dodge"
 	Slider "World Speed", "rsm_depth", 0.05, 0.95, 0.05, 2
 	Slider "Slow Motion Length", "rsqsm_length", 1, 30, 1, 0, "rsqsm_adrenaline", 1
 	StaticText " "
@@ -57,7 +57,7 @@ OptionMenu "RSQSM_Options"
 	StaticText " "
 	StaticText "Your Triggers", 1
 	Option "Slow Motion Key", "rsqsm_trig_key", "OnOff"
-	Option "Shootdodge", "rsqsm_trig_dodge", "OnOff"
+	Option "Crisis Dive", "rsqsm_trig_dodge", "OnOff"
 	Option "Wrist Cross", "rsqsm_gesture", "OnOff"
 	Option "Wrist Cross Bursts", "rsqsm_gesture_burst", "OnOff", "rsqsm_gesture"
 	Option "Burst", "rsqsm_trig_burst", "OnOff", "rsqsm_gesture_burst"
@@ -149,7 +149,7 @@ OptionMenu "RSQSM_Test"
 	Slider "Slow Me Too Strength", "rsqsm_me_ratio", 0.0, 1.0, 0.1, 1
 	Slider "Auto Cooldown (s)", "rsqsm_auto_cooldown", 0, 60, 5, 0
 	StaticText " "
-	StaticText "Shootdodge", 1
+	StaticText "Crisis Dive", 1
 	Slider "World Speed", "rsqsm_dodge_depth", 0.05, 0.95, 0.05, 2
 	Slider "Leap", "rsqsm_dodge_leap", 0, 40, 2, 0
 	Slider "Hang", "rsqsm_dodge_me", 0.0, 1.0, 0.1, 1

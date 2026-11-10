@@ -7,6 +7,12 @@
 // parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
 // protected option menu instead of replacing it); the link row removes any earlier copy of itself,
 // so Options shows one row however many series pk3s load. Each mod then adds its own row only.
+OptionValue "RSQGR_KeyHand"
+{
+	0, "Main Hand"
+	1, "Off Hand"
+}
+
 OptionMenu "RSQ_RSOptions" protected
 {
 	Class "RSQGR_RSMenu"
@@ -81,10 +87,8 @@ OptionMenu "RSQGR_Options"
 	Option "Whip Snag", "rsqgr_whip_snag", "OnOff", "rsqgr_whip"
 	StaticText " "
 	StaticText "Controls", 1
-	Control "Fire Hook: Main", "+rsqgr_main"
-	Control "Fire Hook: Off", "+rsqgr_off"
-	Control "Grab Rope: Main", "+rsqgr_grip_main"
-	Control "Grab Rope: Off", "+rsqgr_grip_off"
+	Control "Fire Hook", "+rsqgr_hook"
+	Option "Fire Hook From", "rsqgr_key_hand", "RSQGR_KeyHand"
 	StaticText " "
 	Submenu "Test and Debug", "RSQGR_Test"
 	RSQGRResetAll "Reset All", "Reset all RSQ Grapple settings?"

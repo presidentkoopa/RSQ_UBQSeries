@@ -71,9 +71,8 @@ OptionValue "SSQ_LockButton"
 
 OptionValue "SSQ_LockInput"
 {
+	2, "Hold the Trigger"
 	0, "Use"
-	1, "Lock Key"
-	2, "Throw Button"
 }
 
 OptionValue "SSQ_YieldOff"
@@ -159,10 +158,7 @@ OptionMenu "SSQ_Options"
 	Option "Spin Direction", "ssq_roll_sign", "SSQ_RollSign"
 	StaticText " "
 	StaticText "Controls", "Gold"
-	Control "Draw / Put Back", "ssq_draw"
-	Control "Throw Along Aim", "ssq_throw"
-	Control "Lock On (Hold)", "+ssq_lock"
-	Control "Recenter Torso", "ssq_recenter"
+	Control "Draw / Put Back", "ssq_draw"    // the one key (owner 11-10: throw is the swing, lock is the trigger, recenter the Rig's)
 	StaticText " "
 	Submenu "Test and Debug", "SSQ_Test"
 	SSQResetAll "Reset All", "Reset all RSQ ShieldSaw settings?"

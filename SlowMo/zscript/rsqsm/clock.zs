@@ -568,7 +568,7 @@ class RSQSM_Clock : EventHandler
 	{
 		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
 			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
-			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Shootdodge", "Grenade Blast", "Over-Under Blast",
+			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Crisis Dive", "Grenade Blast", "Over-Under Blast",
 			"Heavy Hit Slowdown", "Locked Barrel", "Barrel Multi-Kill", "Chain Reaction", "Barrel Near You", "Quick Grenade", "Training Remote" };
 		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
 	}
@@ -624,7 +624,7 @@ class RSQSM_Clock : EventHandler
 			"key", "wristcross", "wheel", "a11y.button", "shootdodge", "barrel.lockon", "barrel.multikill", "barrel.chain", "barrel.near" };
 		static const String words[] = { "GRENADE BLAST", "OVER-UNDER BLAST", "RELOAD", "CLOSE CALL", "MINIBOSS", "SCORE", "GUN BONSAI", "OTHER MOD",
 			"CIGARETTE", "SHOVE", "PARRY", "BLOCK", "PARRY", "BURST", "MINIBOSS INCOMING", "HEAVY HIT",
-			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "SHOOTDODGE", "LOCKED BARREL", "BARREL MULTI-KILL", "CHAIN REACTION", "BARREL BLAST" };
+			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "CRISIS DIVE", "LOCKED BARREL", "BARREL MULTI-KILL", "CHAIN REACTION", "BARREL BLAST" };
 		for (int i = 0; i < keys.Size(); i++) if (src ~== keys[i]) return words[i];
 		String w = src;
 		w.Replace(".", " ");

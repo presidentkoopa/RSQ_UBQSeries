@@ -29,7 +29,7 @@ falls and signs glow alongside the liquids, and **DarkDoomZ**'s darkness, so the
 - **The map reacts.** A miniboss turns the whole map its colour and beats like a heart. A level-up sends a gold wave
   rolling out from you. A kill chain makes the glow climb. Slow motion drains it grey, and going down turns every room
   blood red.
-- **One button for new colours.** Bind Randomize Colours and reshuffle the map's colours whenever you like.
+- **One button for new colours.** **Randomize Colours Now** on this pack's page reshuffles the map's colours.
 
 ---
 
@@ -41,17 +41,16 @@ There is nothing to hold or wear: load it and play. The rest is choices.
 |---|---|
 | Start a map | Every room gets its colours (with the default Classic (1.1) profile, any colour, one per group of rooms) |
 | Finish the map | The next one gets new colours (Re-roll Colours: Every Map) |
-| Press your Randomize Colours key | New colours now, same profile. During a miniboss's tint, the Red Map or another mod's timed tint, it does nothing and says "Glow In The Dark: colours held during a miniboss fight or sequence" |
+| Press **Randomize Colours Now** on the menu | New colours now, same profile. During a miniboss's tint, the Red Map or another mod's timed tint, it does nothing and says "Glow In The Dark: colours held during a miniboss fight or sequence" |
 | Step the **Profile** row left or right | A different named look |
 | **Shuffle Profile Now** | Another named profile, picked at random, with new colours |
 | **Randomize Current Look** | A look of its own, made at random and kept on the Custom Profile rows |
 | **Use DarkDoomZ Pairing** | The darkness is set to the profile's own pairing |
 | **Darkness (DarkDoomZ)** | How dark the maps are |
 
-The Randomize Colours key is unbound at first. Bind it on this pack's page (**Randomize Colours Key**) or under
-Customize Controls, in the **RSQ Glow In The Dark** section ("Randomize colours").
+It is a button on this pack's page, not a key (owner 11-10: keys are precious in VR).
 
-*[GIF to come: a room's glow changing colour when the Randomize Colours key is pressed]*
+*[GIF to come: a room's glow changing colour when Randomize Colours Now is pressed]*
 
 ---
 
@@ -208,7 +207,7 @@ Depth) are under Test and Debug.
 
 ---
 
-## The Randomize Colours key
+## Randomize Colours Now
 
 One press, new colours for the whole map, the profile kept. With Re-roll Colours on Never, the new seed is written to
 Colour Seed, so it stays. With Random Profile, a new seed also draws a new profile.
@@ -315,7 +314,7 @@ or slower.
 ## Plays well with
 
 - **RSQ Miniboss:** the tint in its colour and the darkening while it lives; its Landing In The Dark asks this pack for
-  DarkDoom Black; its fight colours, its death wave and the re-roll after. The Randomize Colours key waits while its
+  DarkDoom Black; its fight colours, its death wave and the re-roll after. Randomize Colours Now waits while its
   colours are on.
 - **RSQ SlowMo:** the grey drain in slow motion; the Red Map while you are down; its DarkDoomZ When Down uses this
   pack's darkness. If a miniboss landing is holding the darkness at Black when you go down, SlowMo asks this pack for
@@ -340,7 +339,7 @@ below it. Defaults in brackets.
 
 | Section | Rows |
 |---|---|
-| (top) | Glow In The Dark (On) · Profile (Classic (1.1)) · Shuffle Profile Now · Randomize Colours Key (unbound) · Randomize Current Look · Darkness (DarkDoomZ) · Use DarkDoomZ Pairing · Re-roll Colours (Every Map; Never, On Each Death, On Each Level-Up, Every N Minutes) · Re-roll Every (5 min) · Strength (1.00) · Glow Height (64) |
+| (top) | Glow In The Dark (On) · Profile (Classic (1.1)) · Shuffle Profile Now · Randomize Colours Now (a button) · Randomize Current Look · Darkness (DarkDoomZ) · Use DarkDoomZ Pairing · Re-roll Colours (Every Map; Never, On Each Death, On Each Level-Up, Every N Minutes) · Re-roll Every (5 min) · Strength (1.00) · Glow Height (64) |
 | Glow Types | Floor and Ceiling Glow (On) · Liquids Glow (On) · Liquid Colour (Profile Decides; Room Colour, Always Their Own) · Living Liquids (On) · Splash Flares (On) · Guess Liquids by Name (On) · Hurt Floors Throb Red (On) · Secret Rooms Shimmer (Off) · Stronger in the Dark (On) · One Colour Per (Profile Decides; Tag Group, Each Room) · Blend Rooms (Off) |
 | Things That Matter | Switches, Exits, Locks (On) · Ordinary Doors Too (On) · Things Strength (1.0) · Keys and Pickups (Keys and Powerups; Off, + Health and Armour, + Ammo and Weapons) |
 | Reactions | Miniboss Tint (Miniboss) (On) · Tint Colour (The Miniboss's Own; Blood Red, Custom) · Custom Tint (red) · Darken the Map (On) · Darken By (48) · Level-Up Wave (Gun Bonsai) (On) · Wave Colour (gold) · Combo Glow (RSQ Score) (On) · SlowMo Drain (RSQ SlowMo) (On) |
@@ -362,8 +361,8 @@ All the settings are the host's (one setting for everyone in netplay), except De
 |---|---|
 | **Shown on the rig** (2026-11-09) | The built-in DarkDoomZ: MAP01 darker from the start at its defaults (58 of 59 sectors, average light 173 to 108); Darkness Mode switched live to DarkDoom Black (every sector 0), to Disable (every sector back to its own light) and back to the default (108 again) without a reload; no DarkDoomZ flashlight or spotlight in the game. Darkness (DarkDoomZ) on this pack's page, under Radiant Silvergun Options (the menu as loaded, row by row). The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series. That run was on the build of 18:49; the core, reactions and service code and CVARINFO.txt have changed since (19:40), and the current build has not been run on the rig |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | The 11-09 evening changes: the darkness switching off with Glow In The Dark, and the Randomize Colours key deciding the same way on every machine in netplay. |
-| **Also code only** | Everything else on this page: the glow, the liquids, the things that matter, the profiles and re-rolls, the Randomize Colours key and its stand-down, the pairing, the reactions (miniboss, landing darkness, Red Map, wave, combo, slow motion), the lights, Reset All |
+| **Code only, not yet shown** | The 11-09 evening changes: the darkness switching off with Glow In The Dark, and Randomize Colours deciding the same way on every machine in netplay. |
+| **Also code only** | Everything else on this page: the glow, the liquids, the things that matter, the profiles and re-rolls, Randomize Colours Now and its stand-down, the pairing, the reactions (miniboss, landing darkness, Red Map, wave, combo, slow motion), the lights, Reset All |
 
 The frames on this page from 2026-11-06 are pictures of what an earlier build did. They are not proof of the current
 build.

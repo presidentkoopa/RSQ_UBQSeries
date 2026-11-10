@@ -55,9 +55,8 @@ captures from the headset.*
 | Main saber's alt | Force push (or, with Force Push on Alt off, its second blade on and off) |
 | Off hand: thrust out, yank back, or hold still on an enemy (alt on a second saber or a fist; either trigger on the bare Force hand) | Push, pull, grip |
 | Hold jump with a saber or the Force hand out | A Force jump: higher, and a floating fall while jump is held |
-| **Second Blade** key | The second blade out of the pommel, or back in. With it lit, the saber twirls in your hand when idle |
-| **Blade On / Off** key | Douse the blades or light them again |
-| **Training Remote** key | Summon the remote, or send it away |
+| Twist the wrist of a saber hand, quickly, hand still | That saber's second blade out of the pommel, or back in. With it lit, the saber twirls in your hand when idle |
+| **Training Remote: Summon / Send Away** (on the menu) | Summon the remote, or send it away (with a saber in hand) |
 
 The three keys are unbound at first. Bind them on this pack's page or under Customize Controls, in the **RSQ Saber**
 section.
@@ -138,7 +137,8 @@ A turned shot is yours: its kill is yours, and a homing shot homes on the one th
 
 ### The second blade and the staff
 
-The **Second Blade** key lights a blade out of the pommel of the sabers in your hands, and puts it out again. With RSQ
+A quick twist of the wrist (a roll of 75° or more in a fifth of a second, the hand held still) lights a blade out of
+the pommel of that hand's saber, and puts it out again (code only, not shown yet). With RSQ
 Gun Bonsai VR loaded, the second blade needs its **Double-Bladed** upgrade.
 
 The spinning staff is not a button of its own. With the second blade lit, the saber **twirls in your hand** when idle:
@@ -274,7 +274,7 @@ and 12. Not captures from the headset.*
 
 ## The training remote
 
-The **Training Remote** key summons the little drone about 3.3 m in front of you. It circles all the way round you,
+The **Training Remote** button on the menu summons the little drone about 3.3 m in front of you. It circles all the way round you,
 from about 3 m out, nearer and further, high and low, beeps, glows for a moment and stings (2 damage). Bat its bolts
 back into it:
 
@@ -346,7 +346,7 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
 | Blades | Main Colour (Blue) · Main Length (76 cm; 54 to 99) · Off Colour (Red) · Off Length (Same as Main) · Blade Light (Low; Off, Medium, High) · Off Blade Light (On) · Saber Sound (Graflex; Vader, Rogue Rebel) |
 | Fighting | Damage (30; 15 to 60) · Swing to Cut (8.0; 3 to 20) · Turned Shots Go (Where I Look; At the Shooter, Mirrored) · Hit-Stop (Off; Light, Medium, Heavy) · Perfect Parry Slow-Mo (Off) · Lock-On Targets (5; 1 to 5) · Rumble (On) |
 | The Force | The Force (On) · Force Push on Alt (On) · Force Jump (On) · Force Only With Saber (On) · Force Hand (Our Hand; Original) · Lightning Beam (Gun Bonsai VR) (On) |
-| Controls | Second Blade · Blade On / Off · Training Remote (all unbound) |
+| Controls | Training Remote: Summon / Send Away (a button). No keys: the second blade is a wrist twist |
 | Test and Debug | Block Width (1.5) · Shot Lookahead (3 tics) · Throw Speed (m/s) (2.5) · Swing Hum Boost (1.1) · Gesture Sharpness (2.0) · Gesture Straightness (0.55) · Remote Start Level (2) · Rumble Hand (Auto; Right, Left) · Debug View (Off; Blade Line, Glow Readout) |
 
 - **The host's:** Sabers, Start With Saber, Dual Sabers, Second Saber Starts, Sword Becomes Saber, Damage, Swing to
@@ -410,7 +410,7 @@ earlier build did; the code has changed since.
 - **For other mods: UBQS_SaberService**, found by name. It answers `saber.lit` (is the saber in this hand lit, doused
   or thrown), `gripped` (is this monster in a Force grip), `blocked`, `perfect` and `pulled` (how long since the saber
   did that to this monster) and `thrown.leg`, and `menu.locked` for the menu's Gun Bonsai VR rows.
-- **Netevents:** `ubqs_blade2`, `ubqs_ignite`, `ubqs_remote` (the three keys), `ubqs_dual_out` and `ubqs_dual_in` (the
+- **Netevents:** `ubqs_twist` (the wrist twist: the second blade of that hand), `ubqs_blade2` and `ubqs_ignite` (console only, no key), `ubqs_remote` (the menu button), `ubqs_dual_out` and `ubqs_dual_in` (the
   Tactical Rig holster), and `rsqa_alt` (RSQ Accessibility's gesture buttons). Sent, by name: `rsm_pulse` (RSQ
   SlowMo's slow) and `ubqs_remoteslowmo` (marks a training remote slow for SlowMo's Training Remote trigger).
 - **Console-only settings** (in CVARINFO, not on the menu): `ubqs_world_saber` (draw the hilt as a world model; it is

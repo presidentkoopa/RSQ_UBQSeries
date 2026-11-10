@@ -64,8 +64,8 @@ mantle up and over.
 ## How To Play
 
 1. **Bind the hooks.** There are no default binds. Open Options → Customize Controls, find the **RSQ Grapple**
-   section and bind Fire Hook (Main) and Fire Hook (Off). Stick clicks work well. Bind Grab Rope (Main) and
-   Grab Rope (Off) to your grips if you want to climb (or use RSQ Distance Grab's grab binds, which also take
+   section and bind Fire Hook (one key since 11-10; **Fire Hook From** on the page picks the hand). Stick clicks work
+   well. To climb, take the rope with RSQ Distance Grab's grips (Grapple's own Grab Rope keys went 11-10; they also take
    hold of the rope).
 2. **First swing (OG):** point at a wall across a gap and press Fire Hook. The claw bites and flings you toward
    it. Aim a little high to clear the gap.
@@ -80,7 +80,7 @@ mantle up and over.
 
 | Action | How (VR) | Notes |
 |---|---|---|
-| Fire hook | Fire Hook (Main) or Fire Hook (Off) | Fires from that controller along where it points. No default bind. |
+| Fire hook | Fire Hook (the hand set by Fire Hook From, off hand by default) | Fires from that controller along where it points. No default bind. |
 | Recall a miss | Press again while the claw is flying | |
 | Reel in | Hold the fire bind while latched | Swing mode. Holding from the shot reels at once. |
 | Let go | Tap the fire bind (release within 8 tics) while latched | Swing mode (or Rope mode, before you arrive; it lets go by itself on arrival). |
@@ -91,8 +91,7 @@ mantle up and over.
 | Lasso flick | A hard flick of the arm (3 m/s) | Lasso mode. Throws the held monster that way. |
 | Whip | Fire binds | Only with Whip on. |
 
-Key binds (Options → Customize Controls → RSQ Grapple): Fire Hook (Main), Fire Hook (Off), Grab Rope (Main),
-Grab Rope (Off). Left-handed play works: the engine's left-handed scheme swaps which controller is main.
+Key binds (Options → Customize Controls → RSQ Grapple): Fire Hook, one key (owner 11-10). Left-handed play works: the engine's left-handed scheme swaps which controller is main.
 
 ## Menu
 

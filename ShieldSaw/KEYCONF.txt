@@ -1,14 +1,10 @@
 // addslotdefault appends: Fist and Chainsaw stay in slot 1 for every other mod
 addslotdefault 1 SSQ_ShieldSaw
 
-// the desktop route, and a backup for a headset: draw / put back / recall, and throw along the aim
+// the one key (owner 11-10): draw / put back / recall. ssq_throw and ssq_recenter stay as console commands (RSQ
+// Accessibility's buttons and the rig use them), with no key
 alias ssq_draw "netevent ssq-draw"
 alias ssq_throw "netevent ssq-throw"
-alias +ssq_lock "netevent ssq-lock 1"
-alias -ssq_lock "netevent ssq-lock 0"
 alias ssq_recenter "netevent ssq-recenter"
 addkeysection "RSQ ShieldSaw" ssq_keys
 addmenukey "$SSQ_KEY_DRAW" ssq_draw
-addmenukey "$SSQ_KEY_THROW" ssq_throw
-addmenukey "$SSQ_KEY_LOCK" +ssq_lock
-addmenukey "$SSQ_KEY_RECENTER" ssq_recenter

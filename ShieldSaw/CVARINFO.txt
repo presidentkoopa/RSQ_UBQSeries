@@ -171,7 +171,7 @@ user float ssq_back_roll       = 0.0;
 user float ssq_mount_scale      = 1.0;
 user bool  ssq_shoulder_use     = true;   // Use at the shoulder draws and holsters; off: only the Draw key does (the shoulder is free for RSQ_TacticalRig)
 user bool  ssq_offhand_cycle    = false;  // Next / Prev Offhand Weapon (QuestZDoom's "weapnext 1" / "weapprev 1") reach the shield too, besides every other way to draw it (owner, BUGS_1.0 item 17)
-user int   ssq_lock_input       = 0;      // what locks on: 0 Use (away from the shoulder), 1 the ShieldSaw lock key (bind the off grip to it), 2 the throw button too (the old way)
+user int   ssq_lock_input       = 2;      // what locks on: 0 Use (away from the shoulder), 2 hold the trigger (the throw button paints too; default, owner 11-10). 1, the lock key, is gone
 user int   ssq_marker           = 1;      // 0 never, 1 while it matters, 2 always
 
 // the held shield's placement: read live by the hook every frame (cm and degrees)

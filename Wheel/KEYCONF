@@ -27,18 +27,15 @@ addkeysection "RSQ Wheel" RSQWheel
 // already bound is never overwritten).
 alias +wr_wheel "netevent wr_press 1"
 alias -wr_wheel "netevent wr_press 0"
-addmenukey "Wheel: hold, point, release" +wr_wheel
+// ONE KEY (owner 11-10, design/KEYBINDS_PLAN.md): Open Wheel (hold, point, release). The toggles below stay as console
+// commands (the rig's probes use them) with no key and no menu row.
+addmenukey "Open Wheel (hold, point, release)" +wr_wheel
 defaultbind LThumb +wr_wheel
 
 // RSQ: one button for the ring both hands pick from (wr_either_hand), tap to open, tap to close.
 alias wr_toggle_any  "netevent wr_toggle_any"
-addmenukey "Wheel: open"  wr_toggle_any
 alias wr_toggle_off  "netevent wr_toggle_off"
 alias wr_toggle_main "netevent wr_toggle_main"
-addmenukey "Wheel: off hand"  wr_toggle_off
-addmenukey "Wheel: main hand" wr_toggle_main
-defaultbind ] wr_toggle_off
-defaultbind [ wr_toggle_main
 
 // Legacy spelling, kept so an already-written config that binds wr_toggle
 // still works. It fires wr_toggle_off, exactly as it did in the source file --

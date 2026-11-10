@@ -1,5 +1,5 @@
 # RSQ SlowMo
-### Doom Arcade VR · the world slows, you don't: dodgeable bullets, a shootdodge, and one last stand when you go DOWN
+### Doom Arcade VR · the world slows, you don't: dodgeable bullets, a crisis dive, and one last stand when you go DOWN
 
 Press a key, cross your wrists or leap sideways and the world drops to a quarter speed while your head and hands stay
 on real time. Enemy bullets become rounds you can see, lean away from and hear whiz past. The rest of the series slows
@@ -19,7 +19,7 @@ your revenge.
   the same damage. Step or lean out of its way and it misses. A close one whizzes or cracks past your ear and buzzes
   both hands.
 - **Lean out of it.** Move your head across a round's path and it passes you by, the way you would dodge in a room.
-- **Shootdodge.** One key throws you into a sideways leap and drops the world to a tenth of its speed until you land.
+- **Crisis Dive** (the shootdodge, renamed 11-10). One key throws you into a sideways leap and drops the world to a tenth of its speed until you land.
   Your own dive hangs in the air too.
 - **The game slows time for you.** A perfect parry, a gun-butt shove, the cigarette, a barrel chain, a heavy hit from a
   boss: each can slow the world for a moment. Every one has its own on/off switch.
@@ -36,12 +36,12 @@ your revenge.
 |---|---|
 | Press your **Slow Motion Key** (bind it under *Customize Controls → RSQ SlowMo*) | The world eases down to the World Speed (a quarter by default). Press again to end it |
 | Cross your wrists in front of your face and hold them there a moment | The same as the key. With **Wrist Cross Bursts** on, a 4-second burst instead |
-| Press your **Shootdodge Key** while standing | You jump and leap the way your stick points (forward if it is centred); the world drops to a tenth until you land |
+| Press your **Crisis Dive Key** while standing | You jump and leap the way your stick points (forward if it is centred); the world drops to a tenth until you land |
 | Lean your head sideways as a round comes at you | It passes on the side you leaned away from |
 | Open the RSQ Wheel | The world slows for as long as the wheel is open |
 
 **How long it lasts.** With Adrenaline off (the default) your held slow motion lets go by itself after **Slow Motion
-Length** (6 real seconds); pressing again ends it sooner. A shootdodge lasts until you land, 6 seconds at most.
+Length** (6 real seconds); pressing again ends it sooner. A crisis dive lasts until you land, 6 seconds at most.
 
 **Nothing to bind?** The keys have no default binding. The wrist cross works without one.
 
@@ -61,13 +61,13 @@ Off by default. Turn on **Adrenaline** and your own slow motion is no longer fre
 
 - **Earn it.** A kill gives 12, a round that only just misses you gives 4, and damage you take gives half its amount.
   Other mods can add to it (RSQ Gun Bonsai VR's melee Adrenaline and Second Wind do).
-- **Spend it.** Your held slow motion and a shootdodge in the air drain it: a full meter lasts 10 seconds. A wrist-cross
+- **Spend it.** Your held slow motion and a crisis dive in the air drain it: a full meter lasts 10 seconds. A wrist-cross
   burst pays its 4 seconds up front.
 - **You need 25 to start.** Below that you get a low buzz and Doom's "oof" instead.
 - **A full meter** plays the item pickup sound. With **Keep Adrenaline** on the meter goes with you to the next level.
 
 Only your held slow motion (the key, the wrist cross, the Wheel, the Accessibility button), the burst and the
-shootdodge spend it. Slow motion started any other way (a parry, the cigarette, a blast, a heavy hit) never does.
+crisis dive spend it. Slow motion started any other way (a parry, the cigarette, a blast, a heavy hit) never does.
 
 ---
 
@@ -79,7 +79,7 @@ Score's bar would be.
 | Bar | When | What it shows |
 |---|---|---|
 | **Stored slow-mo** (left) | Adrenaline on | Your adrenaline meter. Deep blue when low, cyan at half, nearly white when full. Dim below the line you need to start (a white tick marks it), and it pulses while you spend it |
-| **Countdown** (right) | While the world is slowed | The real time left until full speed, draining evenly through the ease back out. A short line underneath says what slowed the world: SLOW MOTION, SHOOTDODGE, RELOAD, CHAIN REACTION, HEAVY HIT: BARON OF HELL and so on |
+| **Countdown** (right) | While the world is slowed | The real time left until full speed, draining evenly through the ease back out. A short line underneath says what slowed the world: SLOW MOTION, CRISIS DIVE, RELOAD, CHAIN REACTION, HEAVY HIT: BARON OF HELL and so on |
 
 With Adrenaline off the countdown shows for every slow motion. With Adrenaline on it shows only when the game slowed time
 for you (your own spends the stored bar instead). When the countdown appears beside the stored bar, the stored bar glides
@@ -103,7 +103,7 @@ Each trigger has its own switch on the options page. There are two kinds.
 
 | Trigger | From |
 |---|---|
-| Slow Motion Key, Wrist Cross, Burst, Shootdodge | This mod |
+| Slow Motion Key, Wrist Cross, Burst, Crisis Dive | This mod |
 | Wheel | Opening the RSQ Wheel |
 | Accessibility Button | RSQ Accessibility's slow-motion button |
 | Melee Gun Butt Shove | A shove that lands (RSQ Melee) |
@@ -278,14 +278,14 @@ the bars and DOWN's look are yours.
 
 | Section | Rows |
 |---|---|
-| Top | Slow Motion Key · Shootdodge Key · World Speed (0.25) · Slow Motion Length (6 s; greyed with Adrenaline on) |
+| Top | Slow Motion Key · Crisis Dive Key · World Speed (0.25) · Slow Motion Length (6 s; greyed with Adrenaline on) |
 | Slow Motion | Dodgeable Bullets · Lean Out of Bullets · Slow Me Too · Slow My Shots · Smooth Walkers · Adrenaline (off) · Keep Adrenaline · Haptics · Yield to Other Mods |
 | Look | Colour Drain (off) · Shot Trails · Missile Wakes · Stored Slow-Mo Bar · Countdown Bar · Bar Animation · Bar Colour (Green; 17 colours or Random) |
-| Your Triggers | Slow Motion Key · Shootdodge · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block · Quick Grenade · Training Remote |
+| Your Triggers | Slow Motion Key · Crisis Dive · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block · Quick Grenade · Training Remote |
 | Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Score · Gun Bonsai VR · Other Mods |
 | Be Quick or Be Dead | Be Quick or Be Dead (off) · Music · Clock (9 s) · Bar Step (3 s) · Slowest Clock Drain (0.25) · Time: Small Monster (1 s), Lost Soul (0.5 s), Big Monster (2 s), Cyberdemon / Mastermind (10 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
 | Heavy Hit Slowdown | Heavy Hit Slowdown · Heavy Hit Size (75% of max health) · Arch-Vile Blast · Blasted Off Your Feet · Hit From Behind · Armour Broken · Cooldown (No Limit; Once per 20 s, Once per 60 s, Use Shared) |
-| Test and Debug | Ease In (0.15 s) · Ease Out (0.4 s) · Range (3000) · Sound Follows (1.0) · Round Speed (14) · Slow Me Too Strength (1.0) · Auto Cooldown (25 s) · Shootdodge World Speed (0.10), Leap (12), Hang (0.5) · Wrist Gap (0.16 m) · Wrist Hold (12 tics) · Reload Time (1200 ms) · Close Call Time (700 ms) · Blast Time (3000 ms) · Low Health At (25) · Adrenaline To Start (25), Full Meter (10 s), Per Kill (12), Per Near Miss (4) · Lean Needed (0.06 m) · Lean Baseline (2 s) · Smooth Range (1024) · Smooth Walkers (12) · Colour Drain Amount (0.35) · Bar Size (1.5; only without RSQ Miniboss) · Debug Log |
+| Test and Debug | Ease In (0.15 s) · Ease Out (0.4 s) · Range (3000) · Sound Follows (1.0) · Round Speed (14) · Slow Me Too Strength (1.0) · Auto Cooldown (25 s) · Crisis Dive World Speed (0.10), Leap (12), Hang (0.5) · Wrist Gap (0.16 m) · Wrist Hold (12 tics) · Reload Time (1200 ms) · Close Call Time (700 ms) · Blast Time (3000 ms) · Low Health At (25) · Adrenaline To Start (25), Full Meter (10 s), Per Kill (12), Per Near Miss (4) · Lean Needed (0.06 m) · Lean Baseline (2 s) · Smooth Range (1024) · Smooth Walkers (12) · Colour Drain Amount (0.35) · Bar Size (1.5; only without RSQ Miniboss) · Debug Log |
 
 Rows not marked (off) are on by default. With RSQ Gun Bonsai VR loaded, a gold line at the top says so and Lean Out of
 Bullets is greyed until you learn Lean Dodge.
@@ -298,7 +298,7 @@ Bullets is greyed until you learn Lean Dodge.
 |---|---|
 | **Shown on the rig** (2026-11-09, frames and logs) | DOWN from start to finish: a monster's killing hit held at 1 HP, the world to 5%, the slow fall to 40% view height, the crawl, targets (the killer swapped for a real Champions copy, extra copies spawned in view), the grey world with its blood-red tint and the target's small room in colour, DarkDoomZ to DarkDoom Black and back, the panel's Middle Then Sink entrance and the chevron trail (both in their earlier form: see below), hits buying time, the bar refilling on a kill with targets left, getting up on the top, middle and bottom tiers with their slow motion, Score's Revenge and Revival Fire, a save and load mid-DOWN, and a map change mid-DOWN letting the grey world and DarkDoomZ go (log; the next map not seen) (the kills were made by the test probe). The Reload trigger on the main hand, the off hand and both hands, with Fixed Time and Until the Reload Ends, the world easing to a quarter speed and back (log) |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | The three fixes made after the rig run: Entrance Size (the rig showed one fixed size whatever the setting), the chevrons in the target's colour while the world is grey (the rig showed them white), and Fog Colour. Everything else on this page: the key, the wrist cross, the burst, the shootdodge, Slow Me Too, the dodgeable rounds and leaning out of them, Smooth Walkers, Colour Drain, the adrenaline meter, how the two bars look, every other trigger, Heavy Hit Slowdown, the edge arrows, the crosshairs assembling, and DOWN's sounds and music |
+| **Code only, not yet shown** | The three fixes made after the rig run: Entrance Size (the rig showed one fixed size whatever the setting), the chevrons in the target's colour while the world is grey (the rig showed them white), and Fog Colour. Everything else on this page: the key, the wrist cross, the burst, the crisis dive, Slow Me Too, the dodgeable rounds and leaning out of them, Smooth Walkers, Colour Drain, the adrenaline meter, how the two bars look, every other trigger, Heavy Hit Slowdown, the edge arrows, the crosshairs assembling, and DOWN's sounds and music |
 
 ---
 

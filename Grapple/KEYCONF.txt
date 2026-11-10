@@ -1,24 +1,14 @@
-// Two binds, one per hand, as their own commands -- never +user1-4 (Brutal Doom
+// One bind, Fire Hook, as its own command (owner 11-10; its hand: rsqgr_key_hand) -- never +user1-4 (Brutal Doom
 // Quest uses all four). `+name` falls through to alias lookup and key-up sends
-// `-name`, so each bind gives a press and a release. The press goes through a
+// `-name`, so the bind gives a press and a release. The press goes through a
 // local `event` first so the firing hand's pose can be read on the machine that
 // owns it and packed into the network event (zscript/rsqgr/input.zs).
 // No default controller binds: the owner binds the stick clicks himself.
 addkeysection "RSQ Grapple" RSQGrapple
-addmenukey "Fire Hook (Main)" "+rsqgr_main"
-addmenukey "Fire Hook (Off)"  "+rsqgr_off"
-addmenukey "Grab Rope (Main)" "+rsqgr_grip_main"
-addmenukey "Grab Rope (Off)"  "+rsqgr_grip_off"
-alias "+rsqgr_main" "event rsqgr_press 0"
-alias "-rsqgr_main" "event rsqgr_release 0"
-alias "+rsqgr_off"  "event rsqgr_press 1"
-alias "-rsqgr_off"  "event rsqgr_release 1"
-// Grab Rope: hold to take hold of the rope with that hand (a free hand, touching it).
-// RSQ_DistanceGrab's grab binds take hold too (rsqgr_grab_dg), so grips bound there work.
-alias "+rsqgr_grip_main" "event rsqgr_grip 0"
-alias "-rsqgr_grip_main" "event rsqgr_ungrip 0"
-alias "+rsqgr_grip_off"  "event rsqgr_grip 1"
-alias "-rsqgr_grip_off"  "event rsqgr_ungrip 1"
+addmenukey "Fire Hook" "+rsqgr_hook"
+alias "+rsqgr_hook" "event rsqgr_presskey"
+alias "-rsqgr_hook" "event rsqgr_releasekey"
+// The rope is taken with RSQ Distance Grab's grips (rsqgr_grab_dg); Grapple's own Grab Rope keys went 11-10.
 
 // Reset All (generated from CVARINFO's defaults)
 // Reset All: core's defaults, then the monster side's

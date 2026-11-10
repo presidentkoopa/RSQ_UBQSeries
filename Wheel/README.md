@@ -49,8 +49,8 @@ gun you are pointing at.
 | Turn more than 45° away from the ring | It swings round to sit in front of you again |
 | Leave it alone | After 4 seconds with nothing pointed at, it fades, ticks once, and folds away |
 
-`[` opens the ring for your main hand and `]` for your off hand, where those keys are free. **Open or Close** is a
-second, unbound key that does the same as `[`.
+One key opens the wheel: **Open Wheel** (hold, point, release; the left thumbstick click by default). The old `[`, `]`
+and Open or Close keys went on 11-10 (owner: keys are precious in VR).
 
 ---
 
@@ -222,7 +222,7 @@ now (the owner, 2026-11-09) and their options are hidden. Only Gun Bonsai and Le
 | Section | Rows |
 |---|---|
 | (top) | Weapon Wheel (On) · Either Hand Picks (On) · Opens On (Whichever key you press / Main hand / Off hand) · Sound (On) · Controller Rumble (1.0) · Size (1.0) |
-| Controls | Hold, Point, Release (left thumbstick click) · Open or Close (unbound) · Main Hand Wheel (`[`) · Off Hand Wheel (`]`) |
+| Controls | Open Wheel (hold, point, release; left thumbstick click) |
 | Picking | Two Hands Compare (Off) · Open on Your Gun (Off) · Wrist Card (Off) · Open at Level Start (Off) · Slow Time While Open (On) · Closing Ends SlowMo (Off) · Freeze Without SlowMo (Off) · Freeze Time While Open (Off) · Pull a Card Out (1.5) · Throw a Gun Back (2.6) · Reach In (7) · Feel Each Gun's Weight (1.0) |
 | Look | Palette (Standard, Doom, Hell, Tech) · Font (Score, Combo, JFO, Status bar numerals, Small gold numerals, Small grey numerals, DoomFont only, Ermac's digits; Score) · Ring Plates (Its own (Ermac style) / Status bar stone) · Card Look (Colour by Gun / Classic) · Web View (Marine / Mirror) · Gun Models on Cards (On) · Ammo Counts (On) · Ammo Readout (LED segments / LCD, punched out / Lozenge badge) · Rarity Colours (On) · Mark Guns You Hold (On) · Slot Numbers (On) · Cards Face You (On) · Hover Halo Breathes (Off) · Edge Sweep (Off) · Flash on Pick (On) · Spark Colour (Slot colour / White hot / Rainbow) · Hover Lights the Room (On) · Background Stars (0) |
 | Data Sheet | Show Data Sheet (On) · Weapon Stats (On) · Track Kills and Accuracy (On) · This Level's Kills (Off) · Gun Bonsai Rows (On) · Point at a Gun (On) · Compare With Yours (Off) |

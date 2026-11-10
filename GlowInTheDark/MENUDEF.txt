@@ -96,7 +96,7 @@ OptionMenu "RSQGD_Options"
 	Option "Glow In The Dark", "rsqgd_enabled", "OnOff"
 	RSQGDProfile "Profile", "rsqgd_profile"
 	Command "Shuffle Profile Now", "netevent rsqgd_shuffle"
-	Control "Randomize Colours Key", "rsqgd_recolour"
+	Command "Randomize Colours Now", "rsqgd_recolour"    // a menu button, not a key (owner 11-10)
 	Command "Randomize Current Look", "netevent rsqgd_randomize"
 	Submenu "Darkness (DarkDoomZ)", "RSQGD_DDZ_Settings"   // DarkDoomZ, built in (MENUDEF.ddz)
 	RSQGDPairing "Use DarkDoomZ Pairing"

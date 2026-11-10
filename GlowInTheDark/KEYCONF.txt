@@ -1,5 +1,4 @@
+// Randomize Colours is a menu button (owner 11-10: no key); the menu's Command row runs this
 alias rsqgd_recolour "netevent rsqgd_recolour"
-addkeysection "RSQ Glow In The Dark" RSQGlowInTheDark
-addmenukey "Randomize colours" rsqgd_recolour
 
 // (DarkDoomZ's flashlight key is not here: its flashlight was removed, 2026-11-09. The darkness has no key.)

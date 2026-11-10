@@ -11,9 +11,8 @@
 //   off hand AT THE MOUNT (ssq_mount_spot; the small of the back by default) + USE
 //                                                     -> the shield is in the hand (whatever was
 //                                                        there steps aside and comes back after)
-//   USE held away from the mount                      -> lock-on: rings over what you aim at
-//                                                        (ssq_lock_input 0; 1 the ShieldSaw lock key,
-//                                                        2 the throw trigger too: LockHeld)
+//   the off TRIGGER held (or Use away from the mount) -> lock-on: rings over what you aim at
+//                                                        (ssq_lock_input 2, the default; 0 Use: LockHeld)
 //   off TRIGGER held                                  -> the saw revs (always the off trigger)
 //   the throw button (ssq_lock_button: off trigger,  -> let go with the arm moving: the throw
 //     off alt, or either; SecHeld)
@@ -52,7 +51,6 @@ class SSQ_Handler : EventHandler
 	Array<int>   mLockMiss[MAXPLAYERS];	// tics each lock has been out of the keep cone or out of sight
 	int   mLastPaint[MAXPLAYERS];	// the tic the last target was painted: they go on one at a time
 	int   mKeepMarks[MAXPLAYERS];	// let go for less than this long and your marks are still there
-	bool  mLockKey[MAXPLAYERS];	// the ShieldSaw Lock key is down (netevent ssq-lock, ssq_lock_input 1)
 	bool  mLockWas[MAXPLAYERS];	// the lock input last tic
 	bool  mMigrated;
 	SSQ_ScoreMemory score;		// what a scorer may ask about blocks and turned shots (score.zs)
@@ -644,15 +642,14 @@ class SSQ_Handler : EventHandler
 	// lock on fades off after a few tics so I still can't hit shit"). Holding the trigger used to
 	// rev, paint and throw at once. Now the trigger revs (and throws on release), and locking is
 	// a separate hold, picked per player in ssq_lock_input:
-	//   0  Use, held away from the shoulder mount (no binding needed)        <- default
-	//   1  the "ShieldSaw: lock on (hold)" key -- bind the off grip or any key to it
-	//   2  the old way: the throw button paints too
+	//   0  Use, held away from the shoulder mount (no binding needed)
+	//   2  hold the trigger: the throw button paints too, let go with a swing to throw  <- default (owner 11-10)
+	// (1, the "lock on (hold)" key, went 11-10: no keys for what attack / alt attack can do)
 	bool LockHeld(int i)
 	{
 		let p = players[i];
-		int mode = UVI(p, 'ssq_lock_input', 0);
-		if (mode == 1) return mLockKey[i];
-		if (mode == 2) return SecHeld(p);
+		int mode = UVI(p, 'ssq_lock_input', 2);
+		if (mode != 0) return SecHeld(p);
 		if ((p.cmd.buttons & BT_USE) == 0) return false;
 		// Use at the mount is the draw / holster, not a lock
 		let pose = mPose[i];
@@ -673,7 +670,16 @@ class SSQ_Handler : EventHandler
 	static void Migrate()
 	{
 		let ver = CVar.FindCVar('ssq_cfgver');
-		if (!ver || ver.GetInt() >= 4) return;
+		if (!ver || ver.GetInt() >= 5) return;
+		MigrateTo4(ver);
+		// 5 (2026-11-10, owner, design/KEYBINDS_PLAN.md): the Lock key is gone; locking is "hold the trigger", like the whip
+		// and the saber: Lock On With moves to Hold the Trigger (2) whatever was saved (Use stays a choice on the menu)
+		let li = CVar.FindCVar('ssq_lock_input'); if (li) li.SetInt(2);
+		ver.SetInt(5);
+	}
+	static void MigrateTo4(CVar ver)
+	{
+		if (ver.GetInt() >= 4) return;
 		int from = ver.GetInt();
 		// 4 (2026-11-03 18:56, "Stick turns + recenter"): the body never guesses a turn from the head or hands, so
 		// "Body Turns With Head and Hands" goes off (it was on from 11-03 13:00) whatever was saved
@@ -1562,12 +1568,6 @@ class SSQ_Handler : EventHandler
 				mo.A_StartSound("ssq/stow", CHAN_6);
 				if (UVI(players[i], 'ssq_debug', 0)) Console.Printf("ssq: p%d cycle %s while drawn: shield to the mount, %s to the off hand", i, e.Args[0] > 0 ? "next" : "prev", pick.GetClassName());
 			}
-		}
-		else if (e.Name == "ssq-lock")
-		{
-			// RSQ_Accessibility's Hold to Toggle: a press latches the lock key, the next lets it go
-			if (SSQ_A11y.HoldToggle()) { if (e.Args[0]) mLockKey[i] = !mLockKey[i]; }
-			else mLockKey[i] = e.Args[0] != 0;
 		}
 		else if (e.Name == "ssq-brace")
 		{

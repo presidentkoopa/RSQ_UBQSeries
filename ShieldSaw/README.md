@@ -47,7 +47,7 @@ arm forward, and the saw goes round the room cutting through them, then comes ho
 | Push the plate into a shot or a claw as it lands | A perfect block |
 | Shove the plate into a monster | A bash |
 | Hold the **off trigger** | The saw revs: blades out, grinding |
-| Hold **Use** with the hand away from your back, sweep across targets | A ring on each target (up to 5). **Lock On With** can move this to the lock key or the throw button |
+| Hold the **off trigger**, sweep across targets (or Use away from your back, with Lock On With: Use) | A ring on each target (up to 5) |
 | Let go of the throw button (the **off trigger** by default) while snapping your arm forward | Thrown, at the ringed targets in order (or into a cone along the throw) |
 | Let go with the arm still | Nothing: it stays in your hand, and your rings stay 5 seconds |
 | Press the throw button while it flies | Called back |
@@ -55,8 +55,8 @@ arm forward, and the saw goes round the room cutting through them, then comes ho
 | Both hands to your chest for half a second | The body the shield hangs on turns to where you face |
 | Flick the gun in your main hand down | That gun reloads (with Brutal Doom VR's guns) |
 
-No key needs binding. For a desktop or a backup, bind **Draw / Put Back**, **Throw Along Aim**, **Lock On (Hold)** and
-**Recenter Torso** on this mod's page or under Customize Controls ("RSQ ShieldSaw").
+No key needs binding. For a desktop or a backup there is one, **Draw / Put Back**, on this mod's page or under
+Customize Controls ("RSQ ShieldSaw").
 
 You start every game with it on your back. Turn on **Start in Hand** to start holding it.
 
@@ -76,7 +76,7 @@ from. A small diamond marks the grab, brighter as your hand gets close.
 
 **It hangs on your body, not your head.** Look around and the shield stays where your back is. Snap turns and smooth
 turns carry it round with you. A real turn in your room does not: put it back in front of you with both hands to your
-chest (half a second), or the **Recenter Torso** key. It also faces you again on its own at a map start, a respawn, a
+chest (half a second), or RSQ Tactical Rig's **Recenter Torso** key. It also faces you again on its own at a map start, a respawn, a
 level change and a loaded save. Two older guesses (the body turning when your head and both hands turn together, and
 the body slowly catching up with a head held round) are still there as options, both off.
 
@@ -224,11 +224,10 @@ pitch climbs. Let go and it winds down.
 
 Locking on is its own choice, **Lock On With**:
 
-- **Use** (default): hold Use with your hand away from the shoulder mount and sweep the shield across the room to paint
-  rings. Use at the mount is still the draw and the put-back.
-- **Lock Key:** hold the ShieldSaw **Lock On** key (bind the off grip or any key to it).
-- **Throw Button:** hold the off trigger to rev AND paint at once (with Throw Button on Off Trigger), then let go to
-  throw.
+- **Hold the Trigger** (default since 11-10): hold the off trigger to rev AND paint at once (with Throw Button on Off
+  Trigger), then swing and let go to throw, like the whip and the saber.
+- **Use:** hold Use with your hand away from the shoulder mount and sweep the shield across the room to paint rings.
+  Use at the mount is still the draw and the put-back.
 
 Every 3 tics the target nearest your hand's line gets a ring, so
 you sweep across a crowd and feel each one land, with a click and a tick in your hand.
@@ -342,10 +341,10 @@ brackets.
 | Shield | Start With Shield (On) · Start in Hand (Off) · Show ShieldSaw (On) · Take It From (Small of the Back; Over the Shoulder, Behind the Neck, Back or Neck) · Draw With Use (On) · Next/Prev Offhand Weapon (Off) · Mount Marker (When Needed; Never, Always) · Shield Size (1.0, up to 1.5) |
 | Block | Shield Blocks (On) · Block While Holstered (Off) · Double Block Size (Off) · Blocked Shots (Returned; Cancelled) · Turned Shots Go (Off the Face and My Swing; To Shooter, Where I Look, Off the Face) · Turn Shots Early (On) · Muzzle Block (On) · Return Bullets (On) · Perfect Block (On) · Perfect Block Slow-Mo (Off) · Saber Over Shield (On) · Blocked Melee (Stun and Shove; Stun, Nothing) |
 | Bash | Shield Bash (On) · Bash Needs Sight (On) · Wall Slam (On) · Hit-Stop (Off) |
-| Throw | Lock On With (Use; Lock Key, Throw Button) · Throw Button (Off Trigger; Off Alt, Either) · Max Locks (5) · Catch on Return (On) · Hit Tiers (On) · BD22 Monsters (Off) |
+| Throw | Lock On With (Hold the Trigger; Use) · Throw Button (Off Trigger; Off Alt, Either) · Max Locks (5) · Catch on Return (On) · Hit Tiers (On) · BD22 Monsters (Off) |
 | Hands and Body | On Manual Store (Fist; Previously Held Weapon) · Off-Hand Switch (Keep Shield; Allow Switch) · Recenter: Hands to Chest (On) · Turn With the Rig (On) · Body Turns With Hands (Off) · Body Catches Up (Off) |
 | Look and Sound | Block Feedback (On: sparks, flashes, block sounds and rumble) · Positional Sound (On) · Others See Shield (Netgame Only; Only Me, Everyone) · Spin Direction (Normal; Flipped) |
-| Controls | Draw / Put Back (also recalls a thrown shield) · Throw Along Aim (a flat throw where you look) · Lock On (Hold) · Recenter Torso. All unbound |
+| Controls | Draw / Put Back (also recalls a thrown shield). Unbound |
 | Test and Debug | Debug Log (Off) · Show Block Area (Off: the blocking disc drawn as dots). **Damage:** Throw Damage (1.0) · Bash Damage (1.0) · Grind Damage (6) · Wall Slam Damage (1.0) · Bullet Return Damage (1.0). **Shield Fit:** Disc Forward (-15.4) · Disc Side (-7.5) · Disc Up (-5.0) · Block Radius (29.2 cm) · Block Depth (4 cm). **Throw and Disc:** Throw Hand Speed (m/s) (2.5) · Throw Speed (1.6) · Arm or Aim (0.70) · Aim Forward (0.35) · Slowest Throw (12) · Disc Weight (5.0) · Disc Wind-Up (0.05) · Disc Top Speed (34) · Return Speed (22) · Return Patience (105 tics) · Catch Radius (24) · Breadcrumb Gap (4) · Bisect Limit (70) · Embed Limit (600) · Glance Damage (0.40) · Embed Damage (3) · Embed Time (21) · Rev Time (21) · Grind Gap (4) · Rev Throw Bonus (0.6) · Revved Blade Reach (6.0) · Wall Bounces (3). **Lock-On:** Lock Cone (25°) · Lock Range (1200) · Lock Keep Angle (60°) · Out of Sight Grace (105 tics) · Lock Gap (3) · Rings Kept (175 tics) · Ring Size (1.00). **Block and Bash:** Deflect Assist (14°) · Swing Steers Shots (3.00) · Guard Margin (0 cm) · Early Turn Lookahead (1.0) · Turned Shot Speed (1.00) · Melee Shove (12) · Perfect Block Speed (25) · Bash Speed (45) · Bash Reach (1.20) · Leaned Bash (0.6) · Bash Knockback (1.35) · Bash Lift (2.5) · Wall Slam Bump (3.0) · Wall Slam Stun (8) · Hit-Stop Tics (4) · Brace Block Size (1.30) · Brace Gap (15 cm). **Mount:** Shoulder Forward (-27) · Shoulder Side (12) · Shoulder Up (-30) · Small of Back: Behind (-30), Side (10), Down (-62), Reach (30) · Neck: Behind (-22), Side (8), Down (-18), Reach (26) · Eyes to Neck (9) · Grab Reach (30) · Grab Zone (1.6) · Back Yaw, Pitch, Roll (0) · Back Size (1.00). **In the Hand:** Held X, Y, Z (0) · Held Yaw, Pitch, Roll (0) |
 
 Speeds on Test and Debug are map units a second (about 34 to the metre) for the hand, map units a tic for the disc.

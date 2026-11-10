@@ -905,6 +905,30 @@ class UBQS_SaberBase : Weapon abstract
 		locks.Clear();
 		UBQS_LockMark.ClearAll(self);
 	}
+	// ---- THE WRIST TWIST (owner 11-10, design/KEYBINDS_PLAN.md: no keys; "twist the wrist" lights the second blade) -----------
+	// A quick roll of THIS hand's wrist, TWIST_DEG or more within TWIST_TICS, with the hand nearly still (a twist in place,
+	// not a slash that rolls the wrist on its way), lights or douses this saber's second blade (ToggleBack, Gun Bonsai VR's
+	// Double-Bladed gate included). The hand's pose is this machine's only (HandLive), so the twist is read here, on the
+	// owner's machine, and sent as a netevent (ubqs_twist, the hand): every machine toggles the same saber.
+	const TWIST_DEG = 75.0;
+	const TWIST_TICS = 7;
+	const TWIST_STILL = 1.2;     // map units a tic of hand travel: over it, the roll belongs to a swing
+	const TWIST_GAP = 21;        // tics before another twist counts
+	double twRoll[TWIST_TICS + 1];
+	int twAt, twLast;
+	void TwistTick()
+	{
+		if (!owner || !owner.player || owner.player != players[consoleplayer] || !InHand() || thrown || !HandLive()) return;
+		double r = HR();
+		twRoll[twAt] = r;
+		int old = (twAt + 1) % (TWIST_TICS + 1);
+		twAt = old;
+		if (level.maptime - twLast < TWIST_GAP || HandVel().Length() > TWIST_STILL) return;
+		if (abs(DeltaAngle(twRoll[old], r)) < TWIST_DEG) return;
+		twLast = level.maptime;
+		EventHandler.SendNetworkEvent("ubqs_twist", bOffhandWeapon ? 1 : 0);
+	}
+
 	void ToggleBack()
 	{
 		// DOUBLE-BLADED (Gun Bonsai VR): the second blade is an unlock under the patch
@@ -1249,6 +1273,7 @@ class UBQS_SaberBase : Weapon abstract
 		}
 		if (snapQuiet > 0) { snapQuiet--; lastOk = false; h1 = h0; h2 = h0; h3 = h0; }
 		ThrowSample();     // ONE THROW's sampler (ThrowRelease)
+		TwistTick();       // the wrist twist: the second blade (owner 11-10)
 		if (keepMarksUntil > 0 && level.maptime > keepMarksUntil) { keepMarksUntil = 0; ClearLocks(); }
 		if (flashTics > 0 && --flashTics == 0 && flash) flash.Dark();
 		if (burnQuiet > 0) burnQuiet--;
@@ -6661,6 +6686,16 @@ class UBQS_Bridge : EventHandler
 				if (!sb || !sb.InHand() || sb.thrown) continue;
 				if (ign) { if (!anyDark || sb.doused) sb.Flick(); }
 				else sb.ToggleBack();
+			}
+			return;
+		}
+		if (e.Name ~== "ubqs_twist")    // the wrist twist (UBQS_SaberBase.TwistTick): that hand's saber's second blade
+		{
+			if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player] || !players[e.Player].mo) return;
+			for (let item = players[e.Player].mo.Inv; item; item = item.Inv)
+			{
+				let sb = UBQS_SaberBase(item);
+				if (sb && sb.InHand() && !sb.thrown && (sb.bOffhandWeapon ? 1 : 0) == e.Args[0]) { sb.ToggleBack(); break; }
 			}
 			return;
 		}

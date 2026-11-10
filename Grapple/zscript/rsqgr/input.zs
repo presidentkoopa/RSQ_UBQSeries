@@ -1,4 +1,4 @@
-// THE INPUT. Two binds, one per hand, and no usercmd bit.
+// THE INPUT. One bind, Fire Hook, its hand a menu option (owner 11-10), and no usercmd bit.
 //
 // Brutal Doom Quest uses all four BT_USER bits, so the hook rides its own KEYCONF
 // aliases. `+rsqgr_main` is not a buttonMap action, so it falls through to alias
@@ -25,21 +25,36 @@ class RSQGR_Input : EventHandler
 	// press lets go of the rope, as ever). Releases are ignored. This machine's side only.
 	ui bool tog[2];
 
+	// ONE KEY (owner 11-10, design/KEYBINDS_PLAN.md): "Fire Hook" (+rsqgr_hook) fires from the hand the menu's Fire Hook
+	// From row picks (rsqgr_key_hand: 0 main, 1 off); it becomes the per-hand press and release below. The rope is taken
+	// with RSQ Distance Grab's grips (rsqgr_grab_dg). The old per-hand and Grab Rope keys are gone.
 	override void ConsoleProcess(ConsoleEvent e)
 	{
-		if ((e.Name ~== "rsqgr_press" || e.Name ~== "rsqgr_release") && RSQGR_A11y.HoldToggle())
+		String n = e.Name;
+		int a = e.Args[0];
+		if (n ~== "rsqgr_presskey" || n ~== "rsqgr_releasekey")
 		{
-			int th = e.Args[0] ? 1 : 0;
-			if (e.Name ~== "rsqgr_release") return;
+			let cv = CVar.GetCVar("rsqgr_key_hand", players[consoleplayer]);
+			a = (cv && cv.GetInt() == 1) ? 1 : 0;
+			n = (n ~== "rsqgr_presskey") ? "rsqgr_press" : "rsqgr_release";
+		}
+		Process(n, a);
+	}
+	ui void Process(String name, int arg0)
+	{
+		if ((name ~== "rsqgr_press" || name ~== "rsqgr_release") && RSQGR_A11y.HoldToggle())
+		{
+			int th = arg0 ? 1 : 0;
+			if (name ~== "rsqgr_release") return;
 			// a latch whose hook is gone (it came back by itself) is not on any more
 			let pp = players[consoleplayer];
 			if (tog[th] && pp && pp.mo && !RSQGR_Core.HookOf(pp.mo, th)) tog[th] = false;
 			tog[th] = !tog[th];
 			if (!tog[th]) { EventHandler.SendNetworkEvent("rsqgr_up", th); return; }
 		}
-		if (e.Name ~== "rsqgr_press")
+		if (name ~== "rsqgr_press")
 		{
-			int hand = e.Args[0] ? 1 : 0;
+			int hand = arg0 ? 1 : 0;
 			let p = players[consoleplayer];
 			if (!p || !p.mo) return;
 			// THE COLLAPSED POSE: in VR, but both hands written to one point (a menu just closed, a level just
@@ -49,16 +64,12 @@ class RSQGR_Input : EventHandler
 			if (Collapsed(p.mo)) { waitTic[hand] = gametic; waitUp[hand] = false; return; }
 			SendPress(p.mo, hand);
 		}
-		else if (e.Name ~== "rsqgr_release")
+		else if (name ~== "rsqgr_release")
 		{
-			int hand = e.Args[0] ? 1 : 0;
+			int hand = arg0 ? 1 : 0;
 			if (waitTic[hand] > 0) { waitUp[hand] = true; return; }   // a tap while held back: fire, then let go
 			EventHandler.SendNetworkEvent("rsqgr_up", hand);
 		}
-		else if (e.Name ~== "rsqgr_grip")
-			EventHandler.SendNetworkEvent("rsqgr_grab", e.Args[0] ? 1 : 0, 1);
-		else if (e.Name ~== "rsqgr_ungrip")
-			EventHandler.SendNetworkEvent("rsqgr_grab", e.Args[0] ? 1 : 0, 0);
 	}
 
 	const WAIT_TICS = 10;

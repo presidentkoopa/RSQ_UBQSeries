@@ -1033,7 +1033,7 @@ class RSQGR_Core : EventHandler
 
 	// ---- hand over hand (climb.zs says which hand may and where it is) -------------
 
-	bool grabHeld[NHOOK];     // the grab bind is down (rsqgr_grip, or RSQ_DistanceGrab's grips)
+	bool grabHeld[NHOOK];     // the grab is down (RSQ_DistanceGrab's grips; Grapple's own Grab Rope keys went 11-10)
 	bool wantGrip[NHOOK];     // a press not yet turned into a hold (the hand may still be reaching)
 	Vector3 poseOff[NHOOK];   // netgame: the hand's offset from the pawn, streamed (rsqgr_pose)
 	int poseTic[NHOOK];

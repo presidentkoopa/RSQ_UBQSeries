@@ -127,10 +127,7 @@ OptionMenu wr_Options
 	StaticText " "
 	StaticText "Controls", 1
 	// Hold, point either hand at a card, let go (left thumbstick click by default). Tap: stays up.
-	Control "Hold, Point, Release",     "+wr_wheel"
-	Control "Open or Close",            "wr_toggle_any"
-	Control "Main Hand Wheel",          "wr_toggle_main"
-	Control "Off Hand Wheel",           "wr_toggle_off"
+	Control "Open Wheel",               "+wr_wheel"    // hold, point, release (owner 11-10: one key; the toggles went)
 	StaticText " "
 	StaticText "Picking", 1
 	Option "Two Hands Compare",         "wr_twohand_compare", "OnOff"

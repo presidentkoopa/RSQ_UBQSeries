@@ -72,3 +72,5 @@ server bool   rsqgr_whip_snag     = true;   // the tip wraps round something abo
 server float  rsqgr_whip_above    = 16;     // how far above the hand the tip must hit to snag
 server int    rsqgr_looks         = 0;      // 0 JP, 1 Combat FX, 2 Ballistics
 // ==== end monster side ====
+
+user   int    rsqgr_key_hand        = 1;     // (owner 11-10) the one Fire Hook key fires from: 0 the main hand, 1 the off hand

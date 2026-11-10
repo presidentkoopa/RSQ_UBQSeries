@@ -1,14 +1,6 @@
 AddSlotDefault 1 UBQS_Saber
-// THE SECOND BLADE AND THE DOUSE ARE THE ONLY INPUTS THIS MOD HAS THAT ARE NOT THE TRIGGER, and they
-// shipped reachable only from the mod's own submenu -- so on a clean profile the staff twirl (which
-// ships at Fast, with ten md3 frames and forty V*X lumps baked for it) could never happen at all.
-// addmenukey needs a single token, which is why these are aliases, exactly as the remote is.
+// NO KEYS (owner 11-10, design/KEYBINDS_PLAN.md): the second blade is a twist of the wrist (TwistTick), the blade
+// stays lit, and the training remote is a button on the menu (this alias is its Command row).
 // NO SECOND SABER KEY (the owner, 11-01): the second saber is an off-hand weapon, on or off from the menu,
 // put away and drawn at its RSQ Tactical Rig holster. Its old alias ubqs_dual_toggle is gone with it.
 alias ubqs_remote_toggle "netevent ubqs_remote"
-alias ubqs_blade2_toggle "netevent ubqs_blade2"
-alias ubqs_ignite_toggle "netevent ubqs_ignite"
-addkeysection "RSQ Saber" ubqs_keys
-addmenukey "Second blade on / off" ubqs_blade2_toggle
-addmenukey "Blade on / off (douse it)" ubqs_ignite_toggle
-addmenukey "Summon / dismiss training remote" ubqs_remote_toggle
