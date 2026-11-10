@@ -71,7 +71,13 @@ class RSQGN_Kind play
 		if (newBlast && (Fireball(k) || RSQGN_Fx.ColourMode() == 3)) RSQGN_Boom.ForGrenade(at, k);
 		if (Fireball(k))
 		{
-			at.A_StartSound("rsqgn/explode", CHAN_AUTO);
+			if (RSQGN_Fx.Kinetic(false))
+			{
+				// Kinetic (owner 11-10): a boom pitched a touch up (the grenade is smaller than a barrel), and two pops
+				at.A_StartSound("rsqgn/k/boom", CHAN_AUTO, 0, 1.0, ATTN_NORM, 1.08);
+				RSQGN_Pops.Go(at.pos, 2, 2, 3, 0.75);
+			}
+			else at.A_StartSound("rsqgn/explode", CHAN_AUTO);
 			at.A_StartSound("rsqgn/farexpl", CHAN_7);
 			if (!newBlast) at.A_SpawnItemEx("RSQGN_Blast", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 			// BIG BANG: a bigger fireball over the frag's, and the blast's low end (RS Combat FX RSI9, RS Ballistics big1)

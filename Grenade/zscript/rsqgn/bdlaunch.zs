@@ -52,7 +52,16 @@ class RSQGN_BDLaunchers : EventHandler
 			if (s.Distance3D(a) > NEAR) continue;
 			Name sn = s.GetClassName();
 			if (sn == 'Rocket2' || sn == 'Rocket2Fast' || sn == 'RocketDM')
-				RSQGN_Flip.PlayAt(s.pos, s.pos.z - s.floorz < 24 ? RSQGN_FlipData.ROCKET_FLOOR : RSQGN_FlipData.ROCKET_AIR);
+			{
+				let fb = RSQGN_Flip.PlayAt(s.pos, s.pos.z - s.floorz < 24 ? RSQGN_FlipData.ROCKET_FLOOR : RSQGN_FlipData.ROCKET_AIR);
+				// the rocket's own boom (the owner's mapwpn005) and the spray's pops, over Brutal Doom's own sound; on the
+				// flipbook, which lives as long as the blast (the actor that told us is removed this tic)
+				if (fb && RSQGN_Fx.Kinetic(false))
+				{
+					fb.A_StartSound("rsqgn/k/rocket", CHAN_AUTO, CHANF_OVERLAP, 0.9, ATTN_NORM);
+					RSQGN_Pops.Go(s.pos, 3, 2, 3, 0.8);
+				}
+			}
 			else
 				RSQGN_Boom.ForGrenade(s, 0);
 			let dbg = CVar.FindCVar("rsqgn_debug");

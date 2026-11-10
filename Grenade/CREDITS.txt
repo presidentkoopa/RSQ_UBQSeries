@@ -111,3 +111,6 @@ is the source art recoloured, re-centred and trimmed at its own pixel size, or d
 SHARING
 Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
 people's work in this pack is the project owner's decision.
+  - The Kinetic explosion sounds (2026-11-10): the owner's set (supplied as Desktop\explosions: 1, 3, 10, 27, 28, 35, 37, 39,
+    40, 42, 58, SFX00, Merge Clip 1-174/175/186/189, mapwpn005.acx_001), sound-engineered for this pack
+    (tools/sound_engineer.py) into sounds/rsqgn/kinetic/QGK*.ogg. Their sources to record before release.

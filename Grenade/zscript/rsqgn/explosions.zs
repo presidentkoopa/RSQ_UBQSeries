@@ -45,6 +45,14 @@ class RSQGN_Fx play
 	// CHAIN ESCALATION (chain.py LINKS): the blink before a chained barrel goes off, 10 8 6 6 4 tics down the chain
 	// (the look only: the barrel stands longer, the blast keeps stock's tic, barrel.zs Death)
 	static bool Escalates() { return Ctx("rsqgn_ctx_chain") && B("rsqgn_chain_escalate", true); }
+	// the Kinetic sound: a barrel's (Barrel Sound, default Kinetic) or a grenade's (Grenade Sound, default Kinetic)
+	static bool Kinetic(bool barrel)
+	{
+		let c = CVar.FindCVar(barrel ? "rsqgn_barrel_sound" : "rsqgn_grenade_sound");
+		if (!c) return true;
+		return barrel ? c.GetInt() == 2 : c.GetInt() == 0;
+	}
+
 	// Chain Mega Every / Chain Mushroom Every (0: never)
 	static int ChainEvery(Name cv, int def) { let c = CVar.FindCVar(cv); return c ? max(0, c.GetInt()) : def; }
 
@@ -213,9 +221,17 @@ class RSQGN_Boom : Actor
 		// the two layered blasts (EoS layers two: the second low and pitched down) and the distant one on its own channel
 		Sound nearSnd = "rsqgn/barrel/near";
 		let sc = CVar.FindCVar("rsqgn_barrel_sound");
-		if (sc && sc.GetInt() == 1) nearSnd = "rsqgn/barrel/test";   // owner 11-09 test candidate
+		int sm = sc ? sc.GetInt() : 2;
+		if (sm == 1) nearSnd = "rsqgn/barrel/test";        // owner 11-09 test candidate
+		else if (sm == 2) nearSnd = "rsqgn/k/boom";        // Kinetic (owner 11-10): his boom, then pops on the child bursts
 		barrel.A_StartSound(nearSnd, CHAN_AUTO);
 		barrel.A_StartSound(nearSnd, CHAN_6, CHANF_OVERLAP, 0.6, ATTN_NORM, 0.7);
+		if (sm == 2)
+		{
+			let rb = RSQGN_Barrel(barrel);
+			int dep = rb ? rb.rsqgnDepth : 0;
+			RSQGN_Pops.Go(barrel.pos, 2 + min(dep, 3), 2, 3);   // two pops, one more for each link down a chain (to five)
+		}
 		barrel.A_StartSound("rsqgn/barrel/far", CHAN_7);
 		let b = RSQGN_Boom(Actor.Spawn("RSQGN_Boom", barrel.pos));
 		if (!b) return null;
@@ -313,7 +329,16 @@ class RSQGN_Boom : Actor
 		else s = air ? RSQGN_BarrelData.G_AIR : RSQGN_BarrelData.G_FLOOR;
 		if (waterOn) s = isBarrel ? RSQGN_BarrelData.X_WATER_B : RSQGN_BarrelData.X_WATER_G;   // the underwater swap: no fire
 		mainSeq = s;
-		if (finale && !waterOn) RSQGN_Flip.PlayAt(pos, flipSeq, flipK);
+		if (finale && !waterOn)
+		{
+			RSQGN_Flip.PlayAt(pos, flipSeq, flipK);
+			if (RSQGN_Fx.Kinetic(true))
+			{
+				// the mega's long roll over the barrel's boom, and the boil's pops
+				A_StartSound(flipSeq == RSQGN_FlipData.MUSH ? "rsqgn/k/mush" : "rsqgn/k/mega", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM);
+				RSQGN_Pops.Go(pos, flipSeq == RSQGN_FlipData.MUSH ? 7 : 6, 3, 4);
+			}
+		}
 		else RSQGN_BarrelFX.PlayFX(pos, s, self, k, !waterOn);
 		if (!waterOn)
 		{

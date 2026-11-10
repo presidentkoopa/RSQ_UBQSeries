@@ -53,6 +53,7 @@ OptionMenu "RSQGN_Options"
 	StaticText " "
 	StaticText "Explosions", "Gold"
 	Option "Grenade Explosion", "rsqgn_blast_style", "RSQGN_BlastStyle"
+	Option "Grenade Sound", "rsqgn_grenade_sound", "RSQGN_GrenadeSound"
 	Option "Explosion Colour", "rsqgn_fx_colour", "RSQGN_FxColour"
 	Option "Explosion Lights", "rsqgn_fx_lights", "RSQGN_FxLights"
 	Option "Brutal Doom's Launchers", "rsqgn_bd_launchers", "OnOff"
@@ -137,8 +138,15 @@ OptionValue "RSQGN_BarrelKind"
 
 OptionValue "RSQGN_BarrelSound"
 {
+	2, "Kinetic"
 	0, "Combat FX"
 	1, "Test Candidate"
+}
+
+OptionValue "RSQGN_GrenadeSound"
+{
+	0, "Kinetic"
+	1, "Original"
 }
 
 OptionValue "RSQGN_BlastStyle"
