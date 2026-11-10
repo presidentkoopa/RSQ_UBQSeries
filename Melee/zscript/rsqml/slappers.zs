@@ -5,9 +5,9 @@
 // WHAT THE TOGGLE DOES:
 //   ON   at once (no need to wait for the next level): you are handed the boxing gloves and they
 //        are put on both hands; every gun you carry is put away in a stash; gun pickups become
-//        nothing while it lasts, and a gun handed to you later is stashed within a quarter second.
-//        You keep the suite's melee (gloves, sabers, ShieldSaw, Force hand) and whatever the loaded
-//        game itself calls melee (RSQML.IsSlapperClass: no list of one mod's names). Ammo stays.
+//        nothing while it lasts, and a weapon handed to you later is stashed within a quarter second.
+//        You keep only the gloves and the base game's bare fist (owner 11-10, GoldenEye: fists only;
+//        sabers, the ShieldSaw and every other melee weapon are stashed too). Ammo stays.
 //        At each level start the same is done again.
 //   OFF  at once: the stashed guns come back -- with no free ammo (what you had is what you have)
 //        -- and the gun that was in your main hand goes back into it. The gloves stay in your
@@ -51,10 +51,16 @@ class RSQML_Slappers : StaticEventHandler
 		e.IsFinal = true;
 	}
 
+	// SLAPPERS ONLY IS SLAPPERS ONLY (owner 2026-11-10, GoldenEye): every weapon goes but the gloves and the base game's own
+	// bare fist (Doom's Fist, Brutal Doom's Melee_Attacks, BD22 VR's off-hand RSQ_Hands: the game falls back on them);
+	// the sabers, the ShieldSaw, axes and every other melee weapon are stashed with the guns
 	static bool IsGun(Class<Actor> c, Actor pawn = null)
 	{
 		let w = (Class<Weapon>)(c);
-		return w && !RSQML.IsSlapperClass(c, pawn);
+		if (!w) return false;
+		String n = c.GetClassName();
+		if (RSQML.IsGloveName(n)) return false;
+		return !(n ~== "Fist" || n ~== "Melee_Attacks" || n ~== "RSQ_Hands");
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -131,11 +137,7 @@ class RSQML_Slappers : StaticEventHandler
 
 	static void GiveKit(PlayerPawn pmo)
 	{
-		GiveGloves(pmo);
-		// the suite's sabers, by name: each only if its mod is loaded. The base game's own melee
-		// stays as it was (it is never taken); the ShieldSaw is handed out by its own mod.
-		Give(pmo, "UBQS_Saber");
-		Give(pmo, "UBQS_SaberOff");
+		GiveGloves(pmo);     // the gloves only (11-10: no sabers handed out; Slappers Only is fists only)
 	}
 
 	// PUT THE GLOVES ON: the main hand first, then the off hand once the main has switched (an

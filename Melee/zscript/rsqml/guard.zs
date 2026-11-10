@@ -152,12 +152,14 @@ class RSQML_Guard : StaticEventHandler
 			Console.Printf("RSQML guard: %s at t%d", up ? "UP" : "down", level.maptime);
 	}
 
+	// GUARD IS THE BOXING GLOVES' (owner 2026-11-10): both hands must be Melee's hands wearing the boxing gloves (Boxing
+	// Gloves or Slappers Only); bare hands, Brutal Doom's fists or a saber no longer guard
 	static bool GuardHands(PlayerPawn pmo)
 	{
 		let p = pmo.player;
-		if (!p) return false;
-		if (p.ReadyWeapon && !RSQML.IsSlapperClass(p.ReadyWeapon.GetClass(), pmo)) return false;
-		if (p.OffhandWeapon && !RSQML.IsSlapperClass(p.OffhandWeapon.GetClass(), pmo)) return false;
+		if (!p || !RSQML_HandLook.Gloved()) return false;
+		if (!p.ReadyWeapon || !RSQML.IsGloveName(p.ReadyWeapon.GetClassName())) return false;
+		if (p.OffhandWeapon && !RSQML.IsGloveName(p.OffhandWeapon.GetClassName())) return false;
 		return true;
 	}
 
