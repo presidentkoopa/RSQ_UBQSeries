@@ -6050,6 +6050,10 @@ class UBQS_Remote : Actor
 	const HITS_TO_DOWN = 4;
 	const BACK_AFTER = 105;		// tics it lies there
 	int streak, best, round, roundHits, points, downUntil;
+	// THE ROUND'S CLOCK (owner 11-10): 30 s a round. Held while it is down; it runs from :30 again when it rises. At :00
+	// before the fourth hit the training is over (owner 11-10: "Training over"): the remote leaves and says how you did.
+	const ROUND_TICS = 30 * TICRATE;
+	int roundEnd;    // the tic this round's clock runs out; 0 while held
 
 	Default
 	{
@@ -6105,11 +6109,150 @@ class UBQS_Remote : Actor
 		A_StartSound("ubqs/rsad", CHAN_VOICE, 0, 1.0);
 		UBQS_FX.Fx(pos + (0, 0, height * 0.5), 'UXRE', 1, 3, 0.14, 1.0);
 		downUntil = level.maptime + BACK_AFTER;
+		roundEnd = 0;     // the clock is held while it lies there
+		Panel();
 		bNoGravity = false;
 		windup = 0;
 		frame = 0;
 		round++;
 		roundHits = 0;
+	}
+	void TrainingOver()
+	{
+		if (trainee) trainee.A_Print(String.Format("TRAINING OVER\nrounds cleared %d   best streak %d   points %d", round, best, points), 4.0, UBQS_A11y.PrintFont());
+		if (trainee) trainee.A_StartSound("ubqs/rbeep", CHAN_VOICE, CHANF_OVERLAP, 1.0);
+		Destroy();
+	}
+	override void OnDestroy()
+	{
+		for (int i = 0; i < pg.Size(); i++) if (pg[i]) pg[i].Destroy();
+		if (trainee) trainee.TakeInventory("UBQS_RemoteOut", 1);
+		Super.OnDestroy();
+	}
+
+	// ---- THE WRIST PANEL (owner 11-10: layout B, design/mockups/saber_remote/panel_B.png) ---------------------------------
+	// Over the off-hand controller, in Score's place (owner: "Panel replaces Score"; Score hides its digits while the
+	// trainee carries UBQS_RemoteOut). The round's clock big on top in JFO digits, the four hit pips under it (red: a hit
+	// you've landed), and below, the round (blue) and the deflect streak (gold) in the series' QVW letters. No backing:
+	// QZD 17.3 draws a canvas black in VR, so like Score's wrist digits each glyph is a billboard actor whose picture is
+	// set through picnum (graphics/remote, copied from RSQ VisualRewards' fonts, each centred by its grAb), drawn
+	// AddShaded in its colour, two layers deep. Shown only with a VR off hand; out of VR Report's print stands in.
+	const PANEL_N = 14;
+	const PANEL_LAYERS = 2;
+	Array<Actor> pg;
+	transient TextureID texV[13], texJ[10], texPip[2];
+	transient bool texFound;
+	Array<int> qTex, qCol;          // the glyphs this tic: picture (index into Tex), colour
+	Array<double> qX, qZ, qH;       // across (m, centred later per row), up from the hand (m), height (m)
+
+	private void FindTex()
+	{
+		texFound = true;
+		String v = "0123456789:RX";
+		for (int i = 0; i < 13; i++) texV[i] = TexMan.CheckForTexture(String.Format("UBQV%03d", v.ByteAt(i)), TexMan.Type_Any);
+		for (int i = 0; i < 10; i++) texJ[i] = TexMan.CheckForTexture(String.Format("UBQJ%03d", 48 + i), TexMan.Type_Any);
+		texPip[0] = TexMan.CheckForTexture("UBQPIP0", TexMan.Type_Any);
+		texPip[1] = TexMan.CheckForTexture("UBQPIP1", TexMan.Type_Any);
+	}
+	// 0-12 the QVW letters "0123456789:RX", 20-29 JFO digits, 40/41 the empty/lit pip
+	private TextureID Tex(int k)
+	{
+		if (k >= 40) return texPip[clamp(k - 40, 0, 1)];
+		if (k >= 20) return texJ[clamp(k - 20, 0, 9)];
+		return texV[clamp(k, 0, 12)];
+	}
+	bool PanelCan()
+	{
+		let pmo = PlayerPawn(trainee);
+		return pmo && pmo.player && pmo.health > 0 && pmo.OverrideAttackPosDir && pmo.player.PlayInVR && pmo.AttackPos != pmo.OffhandPos;
+	}
+	// one row of glyphs at height z, centred: each glyph as wide as its picture at that height, plus a gap
+	private void Row(Array<int> ks, Array<int> cols, double z, double h, double gap)
+	{
+		double w = 0;
+		Array<double> ws;
+		for (int i = 0; i < ks.Size(); i++)
+		{
+			Vector2 sz = TexMan.GetScaledSize(Tex(ks[i]));
+			double gw = sz.y > 0 ? h * sz.x / sz.y : h;
+			ws.Push(gw); w += gw + (i > 0 ? gap : 0);
+		}
+		double x = -w * 0.5;
+		for (int i = 0; i < ks.Size(); i++)
+		{
+			qTex.Push(ks[i]); qCol.Push(cols[i]); qX.Push(x + ws[i] * 0.5); qZ.Push(z); qH.Push(h);
+			x += ws[i] + gap;
+		}
+	}
+	private void Word(String t, int col, Array<int> ks, Array<int> cols)
+	{
+		String v = "0123456789:RX";
+		for (int i = 0; i < t.Length(); i++) { int k = v.IndexOf(t.Mid(i, 1)); if (k >= 0) { ks.Push(k); cols.Push(col); } }
+	}
+	void Panel()
+	{
+		if (!texFound) FindTex();
+		let pmo = PlayerPawn(trainee);
+		bool can = PanelCan();
+		qTex.Clear(); qCol.Clear(); qX.Clear(); qZ.Clear(); qH.Clear();
+		if (can)
+		{
+			double T = UBQS_A11y.Text();
+			int GOLD = 0xFFD040, BLUE = 0x5AAAFF, RED = 0xFF4632, DIM = 0x50505F;
+			// the clock: ":30" while held, else the seconds left, rounded up
+			int left = roundEnd > 0 ? max(0, roundEnd - level.maptime) : ROUND_TICS;
+			int secs = min(30, (left + TICRATE - 1) / TICRATE);
+			Array<int> ks; Array<int> cs;
+			ks.Push(10); cs.Push(GOLD);
+			ks.Push(20 + secs / 10); cs.Push(GOLD);
+			ks.Push(20 + secs % 10); cs.Push(GOLD);
+			Row(ks, cs, 0.100 * T, 0.030 * T, 0.002 * T);
+			ks.Clear(); cs.Clear();
+			for (int i = 0; i < HITS_TO_DOWN; i++) { ks.Push(i < roundHits ? 41 : 40); cs.Push(i < roundHits ? RED : DIM); }
+			Row(ks, cs, 0.074 * T, 0.012 * T, 0.005 * T);
+			ks.Clear(); cs.Clear();
+			Word(String.Format("R%d", min(round + 1, 99)), BLUE, ks, cs);
+			int r = ks.Size();
+			Word(String.Format("X%d", min(streak, 99)), GOLD, ks, cs);
+			// round and streak sit apart, either side of the middle: two rows of one word each
+			Array<int> k1; Array<int> c1; Array<int> k2; Array<int> c2;
+			for (int i = 0; i < ks.Size(); i++) { if (i < r) { k1.Push(ks[i]); c1.Push(cs[i]); } else { k2.Push(ks[i]); c2.Push(cs[i]); } }
+			int a0 = qTex.Size();
+			Row(k1, c1, 0.052 * T, 0.012 * T, 0.001 * T);
+			for (int i = a0; i < qTex.Size(); i++) qX[i] -= 0.022 * T;
+			a0 = qTex.Size();
+			Row(k2, c2, 0.052 * T, 0.012 * T, 0.001 * T);
+			for (int i = a0; i < qTex.Size(); i++) qX[i] += 0.022 * T;
+		}
+		int n = min(qTex.Size(), PANEL_N);
+		if (pg.Size() < PANEL_N * PANEL_LAYERS) pg.Resize(PANEL_N * PANEL_LAYERS);
+		if (!can || n == 0) { for (int i = 0; i < pg.Size(); i++) if (pg[i]) pg[i].bINVISIBLE = true; return; }
+		Vector3 hand = pmo.OffhandPos;
+		let c = CVar.FindCVar("vr_vunits_per_meter");
+		double upm = (c && c.GetFloat() >= 1.0 && !multiplayer) ? c.GetFloat() : 34.0;
+		double ps = level.pixelstretch > 0.1 ? level.pixelstretch : 1.2;
+		Vector2 v = hand.xy - pmo.pos.xy;
+		double vl = v.Length();
+		Vector2 right = vl > 0.5 ? (v.y, -v.x) / vl : (sin(pmo.angle), -cos(pmo.angle));
+		double alpha = UBQS_A11y.Dim(1.0);
+		for (int i = 0; i < PANEL_N * PANEL_LAYERS; i++)
+		{
+			int g = i / PANEL_LAYERS;
+			if (g >= n) { if (pg[i]) pg[i].bINVISIBLE = true; continue; }
+			Vector3 at = hand + (right.x * qX[g] * upm, right.y * qX[g] * upm, qZ[g] * upm / ps);
+			if (!pg[i]) pg[i] = Actor.Spawn("UBQS_PanelGlyph", at, NO_REPLACE);
+			let q = pg[i];
+			if (!q) continue;
+			q.SetOrigin(at, true);
+			TextureID t = Tex(qTex[g]);
+			Vector2 sz = TexMan.GetScaledSize(t);
+			double sc = sz.y > 0 ? qH[g] * upm / sz.y : 1.0;
+			q.picnum = t;
+			q.Scale = (sc, sc);
+			if (q.Alpha != alpha) q.A_SetRenderStyle(alpha, STYLE_AddShaded);
+			q.SetShade(qCol[g]);
+			q.bINVISIBLE = !t.IsValid();
+		}
 	}
 	override void PostBeginPlay()
 	{
@@ -6123,6 +6266,7 @@ class UBQS_Remote : Actor
 	}
 	void Report()
 	{
+		if (PanelCan()) return;   // the wrist panel shows it (owner 11-10); this print is the flat-screen fallback
 		if (trainee) trainee.A_Print(String.Format("TRAINING REMOTE   round %d   streak %d (x%.1f)\nhits %d/%d   deflected %d   stung %d   points %d",
 			round + 1, streak, Mult(), roundHits, HITS_TO_DOWN, deflects, stung, points), 2.0);
 	}
@@ -6134,7 +6278,7 @@ class UBQS_Remote : Actor
 		// KNOCKED DOWN: it falls, lies there a moment, and rises for the next round
 		if (downUntil > 0)
 		{
-			if (level.maptime < downUntil) return;
+			if (level.maptime < downUntil) { Panel(); return; }
 			downUntil = 0;
 			bNoGravity = true;
 			vel = (0, 0, 2);
@@ -6142,6 +6286,10 @@ class UBQS_Remote : Actor
 			if (trainee) trainee.A_Print(String.Format("TRAINING REMOTE: round %d", round + 1), 2.0, UBQS_A11y.PrintFont());
 			A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
 		}
+		if (roundEnd == 0) roundEnd = level.maptime + ROUND_TICS;
+		if (!trainee.FindInventory("UBQS_RemoteOut")) trainee.GiveInventory("UBQS_RemoteOut", 1);
+		if (level.maptime >= roundEnd) { TrainingOver(); return; }
+		Panel();
 		// THE DANCE: round you, out in front, drifting in and out and up and down
 		if (level.maptime >= omUntil)
 		{
@@ -6266,6 +6414,23 @@ class UBQS_Remote : Actor
 		UBRM B -1;
 		Stop;
 	}
+}
+
+// the wrist panel's glyph (UBQS_Remote.Panel): a billboard whose picture is set through picnum
+class UBQS_PanelGlyph : Actor
+{
+	Default
+	{
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP +BRIGHT +NOTIMEFREEZE
+		RenderStyle "AddShaded";
+		Radius 1; Height 1;
+	}
+	States { Spawn: TNT1 A -1 Bright; Stop; }
+}
+// carried while your training remote is out: RSQ Score's wrist digits step aside for the panel (looked up by name)
+class UBQS_RemoteOut : Inventory
+{
+	Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.QUIET Inventory.MaxAmount 1; }
 }
 
 class UBQS_RemoteBolt : UBQS_Bolt

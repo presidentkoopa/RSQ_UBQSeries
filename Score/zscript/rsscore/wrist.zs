@@ -25,9 +25,13 @@ class RS_ScoreWrist : EventHandler
 	transient TextureID glyph[10];
 	transient bool glyphsFound;
 
+	transient class<Inventory> remoteOut;    // RSQ Saber's UBQS_RemoteOut, by name (null without the Saber)
+
 	private void FindGlyphs()
 	{
 		glyphsFound = true;
+		String rn = "UBQS_RemoteOut";
+		remoteOut = rn;
 		for (int i = 0; i < 10; i++) glyph[i] = TexMan.CheckForTexture(String.Format("STCFN%03d", 48 + i), TexMan.Type_Any);
 	}
 
@@ -49,6 +53,8 @@ class RS_ScoreWrist : EventHandler
 		let hid = CVar.GetCVar("rs_score_hide", players[pn]);
 		let tr = RS_ScoreTracker(pmo.FindInventory("RS_ScoreTracker"));
 		if (!on || !on.GetBool() || (hid && hid.GetBool()) || !tr || pmo.health <= 0) { Hide(pn); return; }
+		// RSQ Saber's training remote panel takes this spot while the remote is out (owner 11-10: "Panel replaces Score")
+		if (remoteOut && pmo.FindInventory(remoteOut)) { Hide(pn); return; }
 		Vector3 hand;
 		if (!pmo.OverrideAttackPosDir || !players[pn].PlayInVR || pmo.AttackPos == pmo.OffhandPos) { Hide(pn); return; }
 		hand = pmo.OffhandPos;

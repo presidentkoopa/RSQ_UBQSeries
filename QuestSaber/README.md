@@ -284,10 +284,16 @@ back into it:
   again one round harder: faster bolts, then shorter gaps between them, for as long as you last.
 - **With RSQ SlowMo** and its **Training Remote** trigger on, the world slows for 0.3 s on every bolt you send back and
   for 1.5 s when the remote goes down.
-- It keeps score on screen in plain lines of text, and pays into RSQ Score when that is loaded. **Remote Start Level**
-  (Test and Debug) sets how hard it starts. Press the key again to send it away.
+- **A round lasts 30 seconds.** Land four hits before the clock runs out or the training is over: the remote leaves and
+  tells you the rounds you cleared, your best streak and your points. The clock stops while the remote is down and
+  starts again from :30 when it rises.
+- **On your off-hand wrist** (in VR): the round's clock big on top, four pips under it that light red for each hit you
+  land, and the round (blue) and your streak (gold) below. While the remote is out it takes the place of RSQ Score's
+  wrist digits. Out of VR it keeps score in lines of text on screen instead.
+- It pays into RSQ Score when that is loaded. **Remote Start Level** (Test and Debug) sets how hard it starts. Press the
+  key again to send it away.
 
-*[GIF to come: the remote circling, a bolt batted back into it, "REMOTE DOWN!"]*
+*[GIF to come: the remote circling, a bolt batted back into it, the wrist panel lighting a pip, "REMOTE DOWN!"]*
 
 ---
 
@@ -368,7 +374,7 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
 
 The 2026-11-10 changes are all code only, not shown on the rig: the second saber lighting whenever it is drawn, the
 Two Sabers and Double-Bladed gates under Gun Bonsai VR, the twirl's Double-Bladed 3 cut, Force Pull's gates, the
-holster draw's ignition, and the training remote's distance, its 25 health and its RSQ SlowMo trigger.
+holster draw's ignition, and the training remote's distance, its 25 health, its RSQ SlowMo trigger, its 30-second round and its wrist panel.
 
 A blade turning an imp fireball is recorded only as one line in the header of the test probe TestRig/saberprobe
 (2026-11-03); the log itself is not in the repo, so it is listed as code only. The 2026-11-03 frames show what an

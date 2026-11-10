@@ -812,7 +812,7 @@ Text Size makes it bigger still).
   show, and the whole display moves down while RSQ Gun Bonsai VR's ShieldSaw gauge is on. It hides on the automap and
   with the full-screen no-HUD view.
 - **On your wrist** (**Score on the Wrist**, off): your total in small gold digits above the off-hand controller, in
-  VR only.
+  VR only. While RSQ Saber's training remote is out, its panel takes this spot and the digits step aside.
 
 **Screen flashes are off.** A reward and a revival light the bar and the pips instead of tinting your whole view
 (**Reward Screen Flash** and **Revival Screen Flash** bring the old tints back, under the **Screen Flash** switch).
