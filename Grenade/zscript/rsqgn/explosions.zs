@@ -274,6 +274,7 @@ class RSQGN_Boom : Actor
 
 		// ---- WHAT PLAYS ----
 		int s;
+		bool finale = false;          // a chain's last barrel: the mega blast (flip.zs)
 		double ko = isBarrel ? 1.0 : 0.7;            // a barrel overlay on a grenade (no grenade version was designed): smaller
 		if (isBarrel)
 		{
@@ -285,15 +286,16 @@ class RSQGN_Boom : Actor
 				if (depth == 1) { s = 0; k = 1.25; }
 				else if (depth == 2) { s = 1; k = 1.0; }
 				else if (depth == 3) { s = 1; k = 1.2; }
-				// TODO the finale is the owner's own-material mega blast (/tmp/fx_mega2, the non-mushroom design): it was
-				// not finished when this was built (no output). Until it is exported, the biggest of the six, scaled up.
-				else { s = RSQGN_BarrelData.BIGGEST; k = 1.4; }
+				// the finale: the owner's own-material mega blast (MEGA2, the non-mushroom design; flip.zs). Its place in the
+				// barrel tables (cap, debris, light) stays the biggest of the six, which no longer plays
+				else { s = RSQGN_BarrelData.BIGGEST; k = 1.4; finale = true; }
 			}
 		}
 		else s = air ? RSQGN_BarrelData.G_AIR : RSQGN_BarrelData.G_FLOOR;
 		if (waterOn) s = isBarrel ? RSQGN_BarrelData.X_WATER_B : RSQGN_BarrelData.X_WATER_G;   // the underwater swap: no fire
 		mainSeq = s;
-		RSQGN_BarrelFX.PlayFX(pos, s, self, k, !waterOn);
+		if (finale && !waterOn) RSQGN_Flip.Play(pos, RSQGN_FlipData.MEGA);
+		else RSQGN_BarrelFX.PlayFX(pos, s, self, k, !waterOn);
 		if (!waterOn)
 		{
 			if (skeet) RSQGN_BarrelFX.PlayFX(pos, RSQGN_BarrelData.G_SKEET, self, 1.0);

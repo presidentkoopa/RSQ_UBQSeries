@@ -13,7 +13,12 @@ chain at the stock pace; both Barrel Sound choices play. The look of the six exp
 - **11-09 evening** (rig, with brutal22test6 + BD22 VR Reloaded 2.0.4e + XMVE): **Brutal Doom's Launchers** (Explosions,
   on): BD's rocket launcher (Rocket2, Rocket2Fast, RocketDM) and grenade launcher (GrenadeMissile, ShortGrenade2) shots
   go off with our blast; BD's drawing-only explosion actors there are removed, its damage, sounds, quake and craters
-  stay. Rockets use the grenade's blast until the approved rocket blast (renders/rocket) is built.
+  stay. Rockets play **the rocket blast** (renders/rocket, approved without the flashback): the floor version within 24
+  units of the floor, the air version otherwise (a wall hit too); grenades play the grenade's.
+- **11-09 evening, built from the approved mockups** (not yet loaded in the engine): **the rocket blast** and **the mega
+  blast** (MEGA2, the non-mushroom design), exported frame by frame (tools/flip_export.py) and played as one full-bright
+  pixel billboard with a light that follows the mockup's glow. A **chain's finale** (the fifth barrel down a chain, with
+  Chain Escalation) is now the mega blast.
 - **11-09, evening** (code only: loads clean, not yet run on the rig, not headset-confirmed): the throw. Owner on PC VR:
   "there is no way to throw grenades". Three fixes. Grip and trigger together (which the engine sends as alt fire) now
   count as squeezing the spoon, so letting go of them cooks or throws. The swing speed is measured the way BD22 VR's
@@ -170,8 +175,8 @@ never a different blast.
   bits, the body's one-tic white pop). Its slow motion is RSQ SlowMo's own (its Barrel Multi-Kill and Grenade Blast
   cues); this row starts none.
 
-**Chain Escalation**: down a chain each barrel blows bigger (#5, #5 x1.25, #6, #6 x1.2, then a finale: for now the
-biggest of the six x1.4, until the owner's mega blast is exported) and blinks shorter (10, 8, 6, 6, 4 tics). It stands
+**Chain Escalation**: down a chain each barrel blows bigger (#5, #5 x1.25, #6, #6 x1.2, then the finale: the
+owner's mega blast, MEGA2) and blinks shorter (10, 8, 6, 6, 4 tics). It stands
 longer instead, so every barrel still goes off on the stock tic. **Screen Kick on Chains**: a small, short quake from
 the third link on; never with RSQ Accessibility's Photosensitive Mode or a Comfort Vignette.
 

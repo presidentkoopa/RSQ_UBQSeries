@@ -6,7 +6,8 @@
 // nothing matches): when one of those shots goes off, our blast (explosions.zs, the grenade's) plays where it went off
 // and the drawing-only actors its explosion spawns there are removed. Brutal Doom's damage, sounds, quake, craters and
 // scorch stay as they are. Option: Explosions > Brutal Doom's Launchers (rsqgn_bd_launchers, on).
-// The approved rocket blast (Grenade/renders/rocket) is not built yet: rockets use the grenade's blast for now.
+// Rockets play the approved rocket blast (renders/rocket; flip.zs: floor within 24 units of the floor, else air; a wall
+// hit plays the air one), grenades the grenade's.
 // =====================================================================================================================
 class RSQGN_BDLaunchers : EventHandler
 {
@@ -49,7 +50,11 @@ class RSQGN_BDLaunchers : EventHandler
 			if (!s) { shots.Delete(i); continue; }
 			if (s.bMissile && s.InStateSequence(s.CurState, s.SpawnState)) continue;   // still flying (its trail)
 			if (s.Distance3D(a) > NEAR) continue;
-			RSQGN_Boom.ForGrenade(s, 0);
+			Name sn = s.GetClassName();
+			if (sn == 'Rocket2' || sn == 'Rocket2Fast' || sn == 'RocketDM')
+				RSQGN_Flip.Play(s.pos, s.pos.z - s.floorz < 24 ? RSQGN_FlipData.ROCKET_FLOOR : RSQGN_FlipData.ROCKET_AIR);
+			else
+				RSQGN_Boom.ForGrenade(s, 0);
 			let dbg = CVar.FindCVar("rsqgn_debug");
 			if (dbg && dbg.GetInt() > 0) Console.Printf("RSQGN BD launcher: %s went off, our blast", s.GetClassName());
 			bx.Push(s.pos.x); by.Push(s.pos.y); bz.Push(s.pos.z); bUntil.Push(level.maptime + HOLD);
