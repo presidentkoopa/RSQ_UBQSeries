@@ -28,6 +28,9 @@ A real score / timer panel for the training remote in the series' fonts, to be d
 (design/mockups/saber_remote/remote_hud_mock.png) was made without him; treat it as a talking point only.
 Co-design so far (owner 11-10): on the OFF WRIST, like Score's wrist digits. It shows the 4 hit pips (hits toward the
 knock-down), the deflect streak, the round number and a 30-second round timer (:30 counting down).
+Layout picked (owner 11-10 11:0x): **B, stacked** (design/mockups/saber_remote/panel_B.png): the timer big on top, the 4
+pips under it, round (blue) and streak (gold) below. A lit red pip is a hit you've LANDED (fills toward the knock-down).
+No backing: billboard glyphs like Score's wrist digits (a canvas draws black in VR). Fonts: QVW words, JFO timer digits.
 
 ## One throw (owner 2026-11-10): "hold trigger, swing, let go" for everything thrown
 Audit 11-10: RSQ Grenade (trigger or alt held, swing, release), RSQ Saber (release fire as the hand snaps forward),
