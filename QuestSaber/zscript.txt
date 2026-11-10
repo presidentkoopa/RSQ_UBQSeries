@@ -6116,6 +6116,8 @@ class UBQS_Remote : Actor
 	{
 		int bonus = int(300 * Level() * (1.0 + 0.5 * round));
 		Pay("Remote Down", bonus);
+		// FOUR HITS HEAL (owner 11-10: "four successful hits on the training droid restore 25 health, because why not?")
+		if (trainee && trainee.health > 0) trainee.GiveBody(25);
 		if (trainee) trainee.A_Print(String.Format("REMOTE DOWN!  +%d\nround %d cleared -- best streak %d", bonus, round + 1, best), 3.0, UBQS_A11y.PrintFont());
 		A_StartSound("ubqs/rsad", CHAN_VOICE, 0, 1.0);
 		UBQS_FX.Fx(pos + (0, 0, height * 0.5), 'UXRE', 1, 3, 0.14, 1.0);
@@ -6131,7 +6133,7 @@ class UBQS_Remote : Actor
 		Super.PostBeginPlay();
 		th = 0;
 		om = 1.6;
-		rad = 72;
+		rad = 104;   // (owner 11-10: a little further away; was 72)
 		hgt = 0;
 		nextShot = level.maptime + 70;
 		nextChirp = level.maptime + 35;
@@ -6164,7 +6166,7 @@ class UBQS_Remote : Actor
 			omUntil = level.maptime + random[UBQSRem](25, 70);
 			// a new place to be, re-rolled with the new direction: somewhere between in your face and
 			// the far side of the room, at any height from your knees to above your head
-			radWant = frandom[UBQSRem](72.0, 300.0);
+			radWant = frandom[UBQSRem](104.0, 300.0);
 			hgtWant = frandom[UBQSRem](-26.0, 42.0);
 		}
 		// ALL THE WAY ROUND. It used to bounce off +-70 degrees, so it never left the arc in front of
@@ -6174,7 +6176,7 @@ class UBQS_Remote : Actor
 		if (th < 0.0) th += 360.0;
 		// IN AND OUT. Easing toward a target reads as the remote deciding to close or back off; the old
 		// +-1.5 a tic inside a 44-unit band was a wobble you could not see.
-		if (radWant <= 0) { radWant = frandom[UBQSRem](72.0, 300.0); hgtWant = frandom[UBQSRem](-26.0, 42.0); }
+		if (radWant <= 0) { radWant = frandom[UBQSRem](104.0, 300.0); hgtWant = frandom[UBQSRem](-26.0, 42.0); }
 		rad = clamp(rad + clamp(radWant - rad, -3.5, 3.5), 56.0, 300.0);
 		hgt = clamp(hgt + clamp(hgtWant - hgt, -1.6, 1.6), -26.0, 42.0);
 		double a = trainee.angle + th;
@@ -6472,7 +6474,7 @@ class UBQS_Bridge : EventHandler
 			had = true;
 		}
 		if (had) { mo.A_Print("Training remote dismissed", 1.5, UBQS_A11y.PrintFont()); return; }
-		let nr = UBQS_Remote(Actor.Spawn("UBQS_Remote", mo.Vec3Angle(64, mo.angle, mo.player.viewheight - 6.0)));
+		let nr = UBQS_Remote(Actor.Spawn("UBQS_Remote", mo.Vec3Angle(112, mo.angle, mo.player.viewheight - 6.0)));   // (11-10: was 64)
 		if (nr)
 		{
 			nr.trainee = mo;
