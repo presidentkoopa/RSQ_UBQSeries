@@ -1,0 +1,29 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+L6_SCORE_WRIST_BEFORE
+L6_REMOTE_ON
+L6_HIT_1
+R10 REMOTE t167 round 0 hits 0 streak 0 best 0 points 0 roundEnd in 965
+R10 REMOTEHIT t167 bolt sent
+L6_HIT_2
+R10 REMOTE t200 round 0 hits 1 streak 0 best 0 points 100 roundEnd in 932
+R10 REMOTEHIT t200 bolt sent
+L6_HIT_3
+R10 REMOTE t243 round 0 hits 2 streak 0 best 0 points 200 roundEnd in 889
+R10 REMOTEHIT t243 bolt sent
+L6_HIT_4
+R10 REMOTE t281 round 0 hits 3 streak 0 best 0 points 300 roundEnd in 851
+REMOTE DOWN!  +600
+R10 REMOTEHIT t281 bolt sent
+L6_AFTER_DOWN
+R10 REMOTE t327 round 1 hits 0 streak 0 best 0 points 1000 roundEnd in -327
+TRAINING REMOTE: round 2
+L6_WAIT_CLOCK
+R10 REMOTE t463 round 1 hits 0 streak 0 best 0 points 1000 roundEnd in 973
+R10 REMOTE t766 round 1 hits 0 streak 0 best 0 points 1000 roundEnd in 670
+L6_SCORE_WRIST_AFTER
+R10 REMOTE t826 round 1 hits 0 streak 0 best 0 points 1000 roundEnd in 610
+L6_END

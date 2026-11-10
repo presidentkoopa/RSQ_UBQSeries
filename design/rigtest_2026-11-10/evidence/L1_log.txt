@@ -1,0 +1,1117 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+L1_A_SUMMON
+R10 HURT t105 11 monsters by 5
+RSQMB meter +13.8 (Gun Bonsai XP 69) -> 14
+RS_Score[everyone]: RS_CommonZombie spawnhp 20 base 20 counted 8 | spree n=0 exp=0 t=126 | ut k=0 hp=0 st=0
+RS_Score: +24 -> 24 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: Read It armed: RS_CommonCaco's shot dodged by player 0
+RS_Score: Read It armed: RS_CommonBaron's shot dodged by player 0
+L1_A_MARKERS_OFF_CHECK
+RS_Score[everyone]: RS_CommonDemon spawnhp 150 base 150 counted 8 | spree n=0 exp=0 t=172 | ut k=0 hp=0 st=0
+RS_Score: +180 -> 204 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+R10 MON tag 1 t173 RS_YellowZombie hp 135/140 tier 5 champKind none tokens [] at -342 -452
+R10 MON tag 1 t173 RS_BlueImp hp 78/83 tier 3 champKind none tokens [] at -475 -73
+R10 MON tag 1 t173 RS_CommonCaco hp 395/400 tier 1 champKind none tokens [] at -471 151
+R10 MON tag 1 t173 RS_GreenHK hp 595/600 tier 2 champKind none tokens [] at -470 260
+R10 MON tag 1 t173 RS_GreenSG hp 40/45 tier 2 champKind none tokens [] at -473 -295
+R10 MON tag 1 t173 RS_GreenImp hp 65/70 tier 2 champKind 12/-1 tokens [GreyToken PersistentInfo ] at -474 -185
+R10 MON tag 1 t173 RS_GreenDemon hp 165/170 tier 2 champKind none tokens [] at -471 40
+R10 MON tag 1 t173 RS_CommonBaron hp 995/1000 tier 1 champKind none tokens [] at -470 370
+R10 MON tag 1 t173 RS_GreenImp hp 65/70 tier 2 champKind 5/-1 tokens [GreenToken PersistentInfo ] at -376 -0
+RS_Score: Read It armed: RS_CommonCaco's shot dodged by player 0
+RS_Score: Read It armed: RS_CommonBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenImp's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+L1_A_OPTION_OFF
+RS_Score: Read It armed: RS_CommonCaco's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenImp's shot dodged by player 0
+R10 MON tag 2 t273 RS_YellowZombie hp 135/140 tier 5 champKind none tokens [] at -342 -452
+R10 MON tag 2 t273 RS_BlueImp hp 78/83 tier 3 champKind none tokens [] at -475 -73
+R10 MON tag 2 t273 RS_CommonCaco hp 395/400 tier 1 champKind none tokens [] at -471 151
+R10 MON tag 2 t273 RS_GreenHK hp 595/600 tier 2 champKind none tokens [] at -470 260
+R10 MON tag 2 t273 RS_GreenSG hp 40/45 tier 2 champKind none tokens [] at -473 -295
+R10 MON tag 2 t273 RS_GreenImp hp 65/70 tier 2 champKind 12/-1 tokens [GreyToken PersistentInfo ] at -474 -185
+R10 MON tag 2 t273 RS_GreenDemon hp 165/170 tier 2 champKind none tokens [] at -471 40
+R10 MON tag 2 t273 RS_CommonBaron hp 995/1000 tier 1 champKind none tokens [] at -470 370
+R10 MON tag 2 t273 RS_GreenImp hp 56/70 tier 2 champKind 5/-1 tokens [GreenToken PersistentInfo ] at -380 0
+RS_Score: Read It armed: RS_CommonCaco's shot dodged by player 0
+RS_Score: Read It armed: RS_CommonBaron's shot dodged by player 0
+L1_B_CALLIN
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenSG's shot dodged by player 0
+RSQMB watch check: main 0 off 0 (main hand body -0.30 0.25 -0.30 roll -0 pitch 0)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RTP t317 AUTO armed
+RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for:  Too Early Too Busy
+RSQMB bossfight tier 0 from Whichever Is Larger (Gun Bonsai VR level 0, Score lives 0)
+RSQMB Miniboss From 0 / Thralls From 0: RS_YellowZombie
+RSQMB bossfight spot (Ignore Spawn Restrictions): RS_YellowZombie at 427 units with 3 thralls, past the usual tests
+RSQMB bossfight spot: found after 0 of 0 candidates (near 384 far 1024): RS_YellowZombie at 427 units with 3 thralls
+RSQ_SlowMo: trigger bossfight t317: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger bossfight t317: started 4000 ms at 5% (automatic, own cooldown), pulse until t457, cause line "MINIBOSS INCOMING"
+RSQMB BOSSFIGHT ARRIVING: tier 0, RS_YellowZombie + 3 thralls, beams V1 thralls + V3 miniboss, SlowMo asked, VisualRewards asked
+RSQVR scene track rsqvr/music/boss1 started on channel 32765
+RSQMB arrival: thrall 1 RS_GreenSG lands (colour 3CDC46, tier 2), beam v1, revealed in 7 tics
+RS_Score: Read It armed: RS_CommonBaron's shot dodged by player 0
+RSQMB arrival: thrall 2 RS_BlueImp lands (colour 3C78FF, tier 3), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 3 blocked by RS_BlueImp (r 20 h 56 at -414 -421 0)
+RSQMB arrival: thrall 3 did not fit
+RSQMB arrival: thrall RS_GreenSG moved aside for the miniboss
+RSQMB arrival: miniboss 0 RS_YellowZombie lands (colour FFC828, tier 5), beam v3, revealed in 19 tics
+RSQVR scene track rsqvr/music/boss1 in
+RSQMB bound: boss 0 RS_YellowZombie hp 210 lives 3 thralls 2 powers [Cyan, Grey] tough 1.50 out 1.00
+RSQMB BOSSFIGHT LANDED: boss 0 RS_YellowZombie hp 210, 2 thralls, 2 segments of 105, lives 3, map count 1
+RTP t400 S1 LANDED: boss RS_YellowZombie hp 210, 2 thralls [RS_GreenSG,RS_BlueImp], segs 2, shielded 1, window 0, lives 3
+RSQMB greed armed on boss 0: due in 70 tics
+RTP t400 S1 shield hit 40: hp 210 -> 210
+RSQMB power lost: boss 0 loses Cyan with thrall 0
+RSQMB window OPEN: boss 0 segment 0 (105 of 105) for 2 s
+RSQMB thrall 0 of boss 0 killed: power colour 30E8E8, segments left 2, window open, credits 0
+RSQMB thrall 0 of boss 0 died (killer player) living 1
+RS_Score[killer]: RS_GreenSG spawnhp 67 base 67 counted 8 | spree n=0 exp=0 t=421 | ut k=0 hp=0 st=0 | Stretched Second 0.431 | Cyan Champion 0.250 | Balloon 0.250 | No-Look 0.300 | Green Tier 0.100 | Pinata 0.250
+RS_Score: +174 -> 378 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #1 p0 base 67 style 107 chain gun.rifle
+RTP t421 S2 thrall killed, now boss RS_YellowZombie hp 210, 2 thralls [RS_GreenSG,RS_BlueImp], segs 2, shielded 1, window 0, lives 3
+RSQ_SlowMo: trigger miniboss t424: merged 1971 ms at 25% (automatic), pulse until t493, cause line "MINIBOSS"
+RSQ_SlowMo: trigger miniboss t424: countdown bar: refilled, 2.3 s to real time
+RSQ_SlowMo: trigger miniboss t459: merged 971 ms at 25% (automatic), pulse until t493, cause line "MINIBOSS"
+RSQMB rage start: 6.072 ms (once)
+RSQMB GREED: boss 0 enraged, 11 monsters x2.0 speed
+RSQMB window MISSED: boss 0 segment 0 left 100%: tier +3, 11 monsters asked (map-wide)
+RTP t491 S3 window over unbroken (missed): boss RS_YellowZombie hp 210, 1 thralls [RS_BlueImp], segs 2, shielded 1, window 0, lives 3
+RS_Score: Read It armed: RS_YellowZombie's shot dodged by player 0
+RS_Score: Read It armed: RS_CommonCaco's shot dodged by player 0
+RS_Score: Read It armed: RS_GreenImp's shot dodged by player 0
+RSQ_SlowMo: trigger countdown t504: countdown bar: gone (real time)
+RSQMB tier swap followed: RS_YellowSG (a map monster) at -473 -295, tokens again []
+RSQMB tier swap followed: RS_PurpleBaron (a map monster) at -470 370, tokens again []
+RSQMB tier swap followed: RS_YellowHK (a map monster) at -470 260, tokens again []
+RSQMB tier swap followed: RS_YellowImp (a map monster) at -474 -52, tokens again []
+RSQMB tier swap followed: RS_GrayZombie2 (a map monster) at -26 -488, tokens again []
+RSQMB tier swap followed: RS_GrayZombie2 (the miniboss) at -305 -339, tokens again []
+RSQMB tier swap followed: RS_RedImp (thrall 1) at -180 -435, tokens again []
+RSQMB tier swap followed: RS_YellowDemon (a map monster) at -471 40, tokens again []
+RSQMB tier swap followed: RS_RedImp (a map monster) at -477 -12, tokens again []
+RSQMB tier swap followed: RS_PurpleCaco (a map monster) at -471 151, tokens again []
+RSQMB tier swap followed: RS_YellowImp (a map monster) at -380 0, tokens again []
+RS_Score: Read It armed: RS_YellowImp's shot dodged by player 0
+RS_Score: Read It armed: RS_GrayZombie2's shot dodged by player 0
+RS_Score: Read It armed: RS_GrayZombie2's shot dodged by player 0
+RS_Score: Read It armed: RS_GrayZombie2's shot dodged by player 0
+RTP t562 S4 after the miss: boss RS_GrayZombie2 hp 110, 1 thralls [RS_RedImp], segs 2, shielded 1, window 0, lives 3
+RSQMB power lost: boss 0 loses Grey with thrall 1
+RSQMB window OPEN: boss 0 segment 0 (105 of 105) for 2 s
+RSQMB thrall 1 of boss 0 killed: power colour B0B0B0, segments left 2, window open, credits 0
+RSQMB thrall 1 of boss 0 died (killer player) living 0
+RS_Score[killer]: RS_RedImp spawnhp 200 base 200 counted 8 | spree n=1 exp=493 t=562 | ut k=1 hp=67 st=0 | White Champion 0.250 | No-Look 0.300 | Fresh Paint 0.250 | Red Tier 0.400 | Justice Shot 0.400 | Chain Gang 0.400 | Champion Streak 0.100 | Riot Control 0.150
+RS_Score: +650 -> 1028 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #2 p0 base 200 style 450 chain gun.rifle
+RSQ_SlowMo: trigger miniboss t566: refused: automatic cooldown, 22.9 s left
+RS_Score: +200 -> 1228 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: award Thrall Slow Kill paid 200
+RSQMB award "Thrall Slow Kill" 200 -> RS_ScoreService
+RSQMB segment 0 BROKEN in the window, step 1 of 2 (2 left): pays 200
+RTP t566 S5 hit in the window: segs 2 -> 1, boss RS_GrayZombie2 hp 110, 0 thralls [], segs 2, shielded 0, window 66, lives 3
+RS_Score: Read It armed: RS_YellowImp's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleCaco's shot dodged by player 0
+RS_Score[everyone]: RS_RedImp spawnhp 187 base 187 counted 7 | spree n=1 exp=634 t=616 | ut k=2 hp=267 st=0
+RS_Score: +229 -> 1457 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RTP t627 S6 kill every thrall: boss RS_GrayZombie2 hp 110, 0 thralls [], segs 1, shielded 0, window 0, lives 3
+RSQMB segment 1 broken (no window: no thrall stands)
+RTP t639 S7 hammer: hp 110 -> 110, lives 3, segs 1, 0 thralls
+RTP t651 S7 hammer: hp 110 -> 1, lives 3, segs 0, 0 thralls
+RSQMB life lost: boss 0 lives 2 hp 110 invuln 175 tics, tier +1 asked
+RS_Score: Read It armed: RS_PurpleCaco's shot dodged by player 0
+RS_Score[everyone]: RS_YellowImp spawnhp 113 base 113 counted 7 | spree n=1 exp=634 t=659 | ut k=2 hp=267 st=0
+RS_Score: +136 -> 1593 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RTP t663 S7 hammer: hp 110 -> 110, lives 2, segs 0, 0 thralls
+RSQMB tier swap followed: RS_AbyssZombie2 (the miniboss) at -228 -487, tokens again []
+RTP t675 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RTP t687 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score[everyone]: RS_YellowSG spawnhp 75 base 75 counted 6 | spree n=1 exp=634 t=687 | ut k=2 hp=267 st=0
+RS_Score: +90 -> 1683 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RTP t699 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score: Read It armed: RS_AbyssZombie2's shot dodged by player 0
+RTP t711 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score: Read It armed: RS_AbyssZombie2's shot dodged by player 0
+RTP t723 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score[everyone]: RS_YellowImp spawnhp 134 base 134 counted 5 | spree n=1 exp=634 t=731 | ut k=2 hp=267 st=0
+RS_Score: +161 -> 1844 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RTP t735 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_GrayZombie2's shot dodged by player 0
+RS_Score: Read It armed: RS_GrayZombie2's shot dodged by player 0
+RS_Score: Read It armed: RS_GrayZombie2's shot dodged by player 0
+RTP t747 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score: Read It armed: RS_AbyssZombie2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssZombie2's shot dodged by player 0
+RTP t759 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RTP t771 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RTP t783 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RTP t795 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score[everyone]: RS_PurpleCaco spawnhp 521 base 521 counted 4 | spree n=1 exp=634 t=800 | ut k=2 hp=267 st=0
+RS_Score: +625 -> 2469 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RTP t807 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RTP t819 S7 hammer: hp 200 -> 200, lives 2, segs 0, 0 thralls
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RTP t831 S7 hammer: hp 200 -> 1, lives 2, segs 0, 0 thralls
+RSQMB life lost: boss 0 lives 1 hp 200 invuln 175 tics, tier +1 asked
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RSQMB tier swap followed: RS_BlackZombie1 (the miniboss) at -433 -19, tokens again [champion_WhiteToken,]
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RTP t843 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score[everyone]: RS_YellowDemon spawnhp 315 base 315 counted 3 | spree n=1 exp=634 t=854 | ut k=2 hp=267 st=0
+RS_Score: +378 -> 2847 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RTP t855 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RTP t867 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RTP t879 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RTP t891 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RTP t903 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RTP t915 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RTP t927 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RTP t939 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RTP t951 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RTP t963 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RTP t975 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RTP t987 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RTP t999 S7 hammer: hp 5000 -> 5000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RTP t1011 S7 hammer: hp 5000 -> 4000, lives 1, segs 0, 0 thralls
+RTP t1023 S7 hammer: hp 4000 -> 3000, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RTP t1035 S7 hammer: hp 2993 -> 1993, lives 1, segs 0, 0 thralls
+RTP t1047 S7 hammer: hp 1990 -> 990, lives 1, segs 0, 0 thralls
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RSQMB flags at death: boss 0 RS_BlackZombie1 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 1 BOSS 1 (roar 0 nomorph 0; own 0 0 1)
+RSQMB bossfight drop: gun MG42 (16 guns not owned of 0 map types)
+RSQMB award "Miniboss Called" 1500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RS_Score[killer]: RS_BlackZombie1 spawnhp 5000 base 5000 counted 3 | spree n=1 exp=634 t=1059 | ut k=2 hp=267 st=0 | Bronze Champion 0.500 | Hybrid 0.250 | No-Look 0.300 | Point-Blank 0.100 | Black Boss 0.750
+RS_Score: +14500 -> 17347 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #3 p0 base 5000 style 9500 chain gun.rifle
+RS_Score: +15000 -> 32347 (threshold 20000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: award Miniboss paid 15000
+RS_Score: big moment (Black Boss) -> slow-motion pulse 600 ms at 35%
+RTP t1059 S7 hammer: hp 986 -> -14, lives 1, segs 0, 0 thralls
+RS_Score: buddha ON (1 lives held)
+RTP t1060 S7 MINIBOSS DEAD
+RSQMB meter +40.0 (Gun Bonsai XP 2661) -> 40
+RSQ_SlowMo: trigger score t1065: refused: automatic cooldown, 8.7 s left
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RSQMB death: Glow In The Dark colours re-rolled
+RSQVR scene track rsqvr/music/boss1 out
+RTP t1131 S8 DONE
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_PurpleBaron's shot dodged by player 0
+RS_Score: Read It armed: RS_YellowHK's shot dodged by player 0
+L1_C_CHANGEMAP
+R10 MON tag 3 t2916 RS_PurpleBaron hp 1302/1492 tier 4 champKind 13/-1 tokens [WhiteToken PersistentInfo ] at -375 13
+R10 MON tag 3 t2916 RS_YellowHK hp 920/990 tier 5 champKind 5/-1 tokens [GreenToken PersistentInfo ] at -63 -70
+L1_END

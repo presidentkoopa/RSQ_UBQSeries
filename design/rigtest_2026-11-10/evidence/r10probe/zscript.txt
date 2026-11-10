@@ -1,0 +1,104 @@
+version "4.10"
+// TEST ONLY (scratch, rig1110): small doors for the 2026-11-10 batch. Everything by name.
+class R10_Probe : EventHandler
+{
+	PlayerPawn P() { return players[consoleplayer].mo; }
+	ui int rframe;
+	override void RenderOverlay(RenderEvent e) { Console.Printf("R10 R %d maptime %d", rframe++, level.maptime); }
+	Array<Actor> held;
+	bool holdAll, bring;
+	String lastWords;
+	override void WorldTick()
+	{
+		let fh = RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler"));
+		if (fh && level.maptime % 3 == 0)
+		{
+			String ws = "";
+			for (int i = 0; i < fh.words.Size(); i++) { let w = fh.words[i]; if (w) ws = ws .. String.Format("[%s %s%s on %s] ", w.text, w.held ? "held" : "once", w.clearing ? " clearing" : "", w.who ? w.who.GetClassName() : 'none'); }
+			if (ws != lastWords) { Console.Printf("R10 WORDS t%d %s", level.maptime, ws == "" ? "(none)" : ws); lastWords = ws; }
+		}
+		if (bring && P())
+		{
+			let mb = ServiceIterator.Find("RSQMB_Service").Next();
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			let p = P();
+			while (mb && (a = Actor(it.Next()))) if (a.bIsMonster && a.health > 0 && mb.GetInt("miniboss", "", 0, 0, a) == 1)
+			{ a.SetOrigin(p.Vec3Offset(cos(p.angle) * 200, sin(p.angle) * 200, 0), true); a.vel = (0, 0, 0); a.angle = a.AngleTo(p); a.A_ClearTarget(); }
+		}
+		for (int i = held.Size() - 1; i >= 0; i--) { let a = held[i]; if (!a || a.health <= 0) { held.Delete(i); continue; } a.vel = (0, 0, a.vel.z); a.A_ClearTarget(); a.ReactionTime = 9999; }
+		if (holdAll && level.maptime % 5 == 0) { let it = ThinkerIterator.Create("Actor"); Actor a; while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0 && held.Find(a) == held.Size()) held.Push(a); }
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = P();
+		if (!p) return;
+		if (e.Name ~== "r10_hurt")      // every monster within Args[1] (default 1024) loses Args[0] health (never killed)
+		{
+			double r = e.Args[1] > 0 ? e.Args[1] : 1024;
+			let it = ThinkerIterator.Create("Actor"); Actor a; int n = 0;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0 && p.Distance3D(a) < r)
+			{ int d = min(e.Args[0], a.health - 1); if (d > 0) { a.DamageMobj(p, p, d, 'None'); n++; } }
+			Console.Printf("R10 HURT t%d %d monsters by %d", level.maptime, n, e.Args[0]);
+		}
+		else if (e.Name ~== "r10_mon") Mons(e.Args[0]);
+		else if (e.Name ~== "r10_hitme")   // the nearest monster hits the player for Args[0]
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a, best; double bd = 1e9;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { double d = p.Distance3D(a); if (d < bd) { bd = d; best = a; } }
+			if (best) { Console.Printf("R10 HITME t%d by %s for %d (hp %d)", level.maptime, best.GetClassName(), e.Args[0], p.health); p.DamageMobj(best, best, e.Args[0], 'None'); Console.Printf("R10 HITME after: hp %d", p.health); }
+		}
+		else if (e.Name ~== "r10_remotehit")   // a bolt the player sent back, flown into his training remote
+		{
+			let it = ThinkerIterator.Create("UBQS_Remote"); let r = Actor(it.Next());
+			if (!r) { Console.Printf("R10 REMOTEHIT t%d: no remote", level.maptime); return; }
+			Vector3 from = r.pos + (0, 0, r.height * 0.5) + (r.pos - p.pos).Unit() * -24.0;
+			let b = UBQS_RemoteBolt(Actor.Spawn("UBQS_RemoteBolt", from));
+			if (b) { b.target = p; b.home = UBQS_Remote(r); b.vel = (0, 0, 0); r.DamageMobj(b, p, 1, 'None'); b.Destroy(); }
+			Console.Printf("R10 REMOTEHIT t%d bolt %s", level.maptime, b ? "sent" : "none");
+		}
+		else if (e.Name ~== "r10_remote")
+		{
+			let it = ThinkerIterator.Create("UBQS_Remote"); let r = UBQS_Remote(it.Next());
+			if (r) Console.Printf("R10 REMOTE t%d round %d hits %d streak %d best %d points %d roundEnd in %d", level.maptime, r.round, r.roundHits, r.streak, r.best, r.points, r.roundEnd - level.maptime);
+			else Console.Printf("R10 REMOTE t%d: none", level.maptime);
+		}
+		else if (e.Name ~== "r10_bring") bring = e.Args[0] != 0;
+		else if (e.Name ~== "r10_holdall") holdAll = e.Args[0] != 0;
+		else if (e.Name.Left(10) ~== "r10_spawn:")   // r10_spawn:<class> dist sideways(+left)
+		{
+			String cn = e.Name.Mid(10);
+			Vector3 at = p.Vec3Offset(cos(p.angle) * e.Args[0] - sin(p.angle) * e.Args[1], sin(p.angle) * e.Args[0] + cos(p.angle) * e.Args[1], 0);
+			let a = Actor.Spawn(cn, at, ALLOW_REPLACE);
+			if (a) { a.angle = a.AngleTo(p); held.Push(a); }
+			Console.Printf("R10 SPAWN t%d %s -> %s at %.0f %.0f", level.maptime, cn, a ? String.Format("%s", a.GetClassName()) : "none", at.x, at.y);
+		}
+		else if (e.Name ~== "r10_killnear")   // the nearest monster, killed by the player
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a, best; double bd = 1e9;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { double d = p.Distance3D(a); if (d < bd) { bd = d; best = a; } }
+			if (best) { Console.Printf("R10 KILL t%d %s", level.maptime, best.GetClassName()); best.DamageMobj(p, p, best.health + 50, 'None'); }
+		}
+		else if (e.Name ~== "r10_hold")  // monsters stand still and do not attack
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { a.Speed = 0; a.A_ClearTarget(); a.bFRIGHTENED = false; a.ReactionTime = 9999; }
+		}
+		else if (e.Name ~== "r10_inv") { String s = ""; for (let i = p.Inv; i; i = i.Inv) s = s .. i.GetClassName() .. ":" .. i.Amount .. " "; Console.Printf("R10 INV t%d %s", level.maptime, s); }
+	}
+	void Mons(int tag)
+	{
+		let p = P();
+		let roster = ServiceIterator.Find("RSQMN_RosterService").Next();
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0)
+		{
+			String champ = "";
+			let k = RSQTHP_ChampKind(a.FindInventory("RSQTHP_ChampKind"));
+			String toks = "";
+			for (let i = a.Inv; i; i = i.Inv) { String n = i.GetClassName(); if (n.Left(9) == "champion_") toks = toks .. n.Mid(9) .. " "; }
+			int tier = roster ? roster.GetInt("tier", "", 0, 0, a) : -9;
+			Console.Printf("R10 MON tag %d t%d %s hp %d/%d tier %d champKind %s tokens [%s] at %.0f %.0f", tag, level.maptime, a.GetClassName(), a.health, a.SpawnHealth(), tier,
+				k ? String.Format("%d/%d", k.first, k.second) : "none", toks, a.pos.x, a.pos.y);
+		}
+	}
+}

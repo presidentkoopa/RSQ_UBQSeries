@@ -1,0 +1,27 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+L4_DOWN_SETUP
+R10 SPAWN t41 DoomImp -> RS_ImpColourset at -96 944
+L4_DOWN_HIT
+R10 HITME t71 by RS_PurpleImp for 500 (hp 100)
+RSQ_SlowMo: trigger heavyhit t71: player 0 took 500 (ordinary from RS_PurpleImp "pImp" via RS_PurpleImp, type None), 500 this tic
+RSQ_SlowMo: DOWN t71: player 0 went DOWN: a lethal hit (500 at 100 HP from RS_PurpleImp) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since a Score life), world to 5%
+RSQ_SlowMo: DOWN t71: told 3 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t71: player 0: RS_PurpleImp downed him in his fight (167 units, in sight), not a champion: it is swapped for a REAL Champion copy
+R10 HITME after: hp 1
+RSQ_SlowMo: trigger heavyhit t71: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t71: player 0 crouch: down to 40% of standing over 17 tics (ViewHeight 44.0 FullHeight 56.0 saved; crouchfactor 1.00, vr_crouch_use_button 1)
+RSQ_SlowMo: DOWN t71: player 0 crouch restored (risen): ViewHeight 44.0 FullHeight 56.0, view 44.0, height 56.0
+RSQ_SlowMo: DOWN t71: the grey world: 59 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t71: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+RSQ_SlowMo: DOWN t72: player 0 crouch: down to 40% of standing over 17 tics (ViewHeight 44.0 FullHeight 56.0 saved; crouchfactor 1.00, vr_crouch_use_button 1)
+RSQ_SlowMo: DOWN t72: player 0: RS_PurpleImp (health 105) vanishes in teleport fog at (-96, 944, 8) (tid 0, special 0)
+RSQ_SlowMo: DOWN t73: player 0 TARGET 1/1: RS_PurpleImp "pImp" (the monster that downed him (167 units, in sight), swapped for a copy; a REAL Champion made by Champions itself (one of 6 candidates it rolled on)): icon 4, colour 707070, a REAL Champions champion (Champions' own PersistentInfo and controller); light, full-bright, x1.15 size, +52 health; health 157 of 105; plate name "Black Champion pImp"
+RSQ_SlowMo: DOWN t73: told 3 joined mod(s): down.target 707070
+RSQ_SlowMo: DOWN t106: player 0 crouch held: view 17.6 of 44.0 standing, height 22.4 of 56.0 (crouchfactor 1.00 x heights 0.40), crawl x0.33
+RSQ_SlowMo: DOWN t120: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+L4_PHOTO
+L4_END

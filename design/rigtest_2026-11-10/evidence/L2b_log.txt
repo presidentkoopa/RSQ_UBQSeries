@@ -1,0 +1,134 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+RSQMB bossfight scan: 7 types [RS_BlueSG 55, RS_GreenImp 70, RS_YellowZombie 140, RS_PurpleDemon 260, RS_BlueCaco 480, RS_BlueHK 666, RS_CommonBaron 1000], 8 spots, 0 exits, 0 weapon types
+RSQMB meter fills from: kills, chains, time, Score style, Gun Bonsai XP (chosen Both; Score loaded, Gun Bonsai VR loaded)
+R10 SPAWN t49 DoomImp -> RS_ImpColourset at -401 -108
+R10 SPAWN t53 ShotgunGuy -> RS_ShotgunnerColourset at -398 -33
+R10 KILL t94 RS_YellowImp
+RSQMB meter +4.0 (kill) -> 4
+RS_Score[killer]: RS_YellowImp spawnhp 145 base 145 counted 8 | spree n=0 exp=0 t=94 | ut k=0 hp=0 st=0 | White Champion 0.250 | Yellow Tier 0.250
+RS_Score: +217 -> 217 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #1 p0 base 145 style 72 chain gun.rifle
+RSQMB meter +18.0 (Score style 72) -> 22
+RSQMB meter +33.6 (Gun Bonsai XP 168) -> 56
+R10 KILL t117 RS_CommonSG
+RSQMB meter +10.0 (kill, chain 2) -> 66
+RS_Score[killer]: RS_CommonSG spawnhp 30 base 30 counted 8 | spree n=1 exp=166 t=117 | ut k=1 hp=145 st=0 | Indigo Champion 0.250 | Spree 0.025 | Champion Streak 0.100 | Pinata 0.250
+RS_Score: +50 -> 267 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #2 p0 base 30 style 20 chain gun.rifle
+RSQMB meter +5.0 (Score style 20) -> 71
+RSQMB meter +6.0 (Gun Bonsai XP 30) -> 77
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RTP t183 AUTO armed
+RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for:  Too Early
+RSQMB bossfight tier 0 from Whichever Is Larger (Gun Bonsai VR level 0, Score lives 0)
+RSQMB Miniboss From 0 / Thralls From 0: RS_PurpleDemon
+RSQMB bossfight spot (Ignore Spawn Restrictions): RS_PurpleDemon at 384 units with 3 thralls, past the usual tests
+RSQMB bossfight spot: found after 0 of 0 candidates (near 384 far 1024): RS_PurpleDemon at 384 units with 3 thralls
+RSQMB BOSSFIGHT ARRIVING: tier 0, RS_PurpleDemon + 3 thralls, beams V2 thralls + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB arrival: thrall 1 RS_BlueSG lands (colour 3C78FF, tier 3), beam v2, revealed in 12 tics
+RSQMB arrival: thrall 2 RS_GreenImp lands (colour 3CDC46, tier 2), beam v2, revealed in 12 tics
+RSQMB arrival: thrall 3 RS_BlueSG lands (colour 3C78FF, tier 3), beam v2, revealed in 12 tics
+RSQMB arrival: miniboss 0 RS_PurpleDemon lands (colour AA46E6, tier 4), beam v4, revealed in 31 tics
+RSQMB bound: boss 0 RS_PurpleDemon hp 390 lives 3 thralls 3 powers [Yellow, Black, Grey] tough 1.50 out 1.50
+RSQMB BOSSFIGHT LANDED: boss 0 RS_PurpleDemon hp 390, 3 thralls, 3 segments of 130, lives 3, map count 1
+RTP t278 S1 LANDED: boss RS_PurpleDemon hp 390, 3 thralls [RS_BlueSG,RS_GreenImp,RS_BlueSG], segs 3, shielded 1, window 0, lives 3
+RSQMB greed armed on boss 0: due in 105 tics
+RTP t278 S1 shield hit 40: hp 390 -> 390
+RSQMB power lost: boss 0 loses Yellow with thrall 0
+RSQMB window OPEN: boss 0 segment 0 (130 of 130) for 3 s
+RSQMB thrall 0 of boss 0 killed: power colour FFE030, segments left 3, window open, credits 0
+RSQMB thrall 0 of boss 0 died (killer player) living 2
+RS_Score[killer]: RS_BlueSG spawnhp 82 base 82 counted 8 | spree n=2 exp=189 t=299 | ut k=2 hp=175 st=0 | Stretched Second 0.319 | Yellow Champion 0.250 | Curveball 0.200 | Blue Tier 0.150 | Pinata 0.250
+RS_Score: +178 -> 445 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #3 p0 base 82 style 96 chain gun.rifle
+RTP t299 S2 thrall killed, now boss RS_PurpleDemon hp 390, 3 thralls [RS_BlueSG,RS_GreenImp,RS_BlueSG], segs 3, shielded 1, window 0, lives 3
+RSQMB rage start: 6.458 ms (once)
+RSQMB GREED: boss 0 enraged, 13 monsters x2.0 speed
+RSQMB window MISSED: boss 0 segment 0 left 100%: tier +3, 13 monsters asked (map-wide)
+RTP t404 S3 window over unbroken (missed): boss RS_PurpleDemon hp 390, 2 thralls [RS_GreenImp,RS_BlueSG], segs 3, shielded 1, window 0, lives 3
+RSQMB tier swap followed: RS_GrayZombie2 (a map monster) at -470 -400, tokens again []
+RSQMB tier swap followed: RS_PurpleBaron (a map monster) at -470 370, tokens again []
+RSQMB tier swap followed: RS_RedHK (a map monster) at -470 260, tokens again [champion_CyanToken,]
+RSQMB tier swap followed: RS_YellowImp (a map monster) at -470 -137, tokens again []
+RSQMB tier swap followed: RS_FireBluDemon2 (a map monster) at -470 1, tokens again []
+RSQMB tier swap followed: RS_YellowImp (a map monster) at -470 -180, tokens again []
+RSQMB tier swap followed: RS_FireBluDemon2 (the miniboss) at -635 -88, tokens again []
+RSQMB tier swap followed: RS_RedCaco (a map monster) at -470 83, tokens again []
+RSQMB tier swap followed: RS_RedSG (a map monster) at -470 -290, tokens again []
+RSQMB tier swap followed: RS_PurpleSG (a map monster) at -387 -89, tokens again []
+RSQMB tier swap followed: RS_PurpleSG (a map monster) at -403 -97, tokens again []
+RTP t475 S4 after the miss: boss RS_FireBluDemon2 hp 205, 0 thralls [], segs 3, shielded 1, window 0, lives 3
+RTP t536 S6 kill every thrall: boss RS_FireBluDemon2 hp 205, 0 thralls [], segs 3, shielded 1, window 0, lives 3
+RSQMB thrall 1 of boss 0 gone without dying: counted as killed
+RSQMB power lost: boss 0 loses Black with thrall 1
+RSQMB window OPEN: boss 0 segment 0 (130 of 130) for 3 s
+RSQMB thrall 1 of boss 0 killed: power colour 707070, segments left 3, window open, credits 0
+RSQMB thrall 2 of boss 0 gone without dying: counted as killed
+RSQMB power lost: boss 0 loses Grey with thrall 2
+RSQMB thrall 2 of boss 0 killed: power colour B0B0B0, segments left 3, window open, credits 1
+RS_Score: +300 -> 745 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: award Thrall Slow Kill paid 300
+RSQMB award "Thrall Slow Kill" 300 -> RS_ScoreService
+RSQMB segment 0 BROKEN in the window, step 1 of 3 (3 left): pays 300
+RTP t548 S7 hammer: hp 205 -> 205, lives 3, segs 3, 0 thralls
+RSQMB window OPEN: boss 0 segment 1 (130 of 130) for 3 s
+RS_Score: +300 -> 1045 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: award Thrall Slow Kill paid 300
+RSQMB award "Thrall Slow Kill" 300 -> RS_ScoreService
+RSQMB segment 1 BROKEN in the window, step 1 of 3 (3 left): pays 300
+RTP t560 S7 hammer: hp 205 -> 205, lives 3, segs 2, 0 thralls
+RSQMB segment 2 broken (no window: no thrall stands)
+RTP t572 S7 hammer: hp 205 -> 205, lives 3, segs 1, 0 thralls
+RTP t584 S7 hammer: hp 205 -> 1, lives 3, segs 0, 0 thralls
+RSQMB life lost: boss 0 lives 2 hp 205 invuln 175 tics, tier +1 asked
+RTP t596 S7 hammer: hp 205 -> 205, lives 2, segs 0, 0 thralls
+RSQMB tier swap followed: RS_GreyDemon2 (the miniboss) at -635 -88, tokens again []
+RTP t608 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t620 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t632 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t644 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t656 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t668 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t680 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t692 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t704 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t716 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t728 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t740 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t752 S7 hammer: hp 700 -> 700, lives 2, segs 0, 0 thralls
+RTP t764 S7 hammer: hp 700 -> 1, lives 2, segs 0, 0 thralls
+RSQMB life lost: boss 0 lives 1 hp 700 invuln 175 tics, tier +1 asked
+RTP t776 S7 hammer: hp 700 -> 700, lives 1, segs 0, 0 thralls
+RSQMB tier swap followed: RS_AbyssDemon2 (the miniboss) at -635 -88, tokens again [champion_YellowToken,]
+RTP t788 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t800 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t812 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t824 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t836 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t848 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t860 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t872 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t884 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t896 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t908 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t920 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RTP t932 S7 hammer: hp 600 -> 600, lives 1, segs 0, 0 thralls
+RSQMB flags at death: boss 0 RS_AbyssDemon2 FULLVOLSEE 0 FULLVOLDEATH 0 DONTMORPH 0 BOSS 0 (roar 0 nomorph 0; own 0 0 0)
+RSQMB bossfight drop: gun SSG (16 guns not owned of 0 map types)
+RSQMB award "Miniboss Called" 1500 -> RS_ScoreService
+RSQMB boss 0 died (killer player) rage 0
+RS_Score[killer]: RS_AbyssDemon2 spawnhp 600 base 600 counted 8 | spree n=1 exp=371 t=944 | ut k=3 hp=257 st=0 | Pink Champion 0.250 | Curveball 0.200 | Hybrid 0.250 | Abyss Tier 0.300 | Pinata 0.250
+RS_Score: +1350 -> 2395 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #4 p0 base 600 style 750 chain gun.rifle
+RS_Score: +1800 -> 4195 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: award Miniboss paid 1800
+RTP t944 S7 hammer: hp 600 -> -1400, lives 1, segs 0, 0 thralls
+RTP t945 S7 MINIBOSS DEAD
+RSQMB meter +40.0 (Gun Bonsai XP 1066) -> 40
+RSQMB death: Glow In The Dark colours re-rolled
+RTP t1016 S8 DONE

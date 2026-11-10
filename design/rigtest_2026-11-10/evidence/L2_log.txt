@@ -1,0 +1,118 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+RS_Score: census after the first tic: 8 monsters, 2859 points, threshold 25000 (UT 20 kills / 2000 hp)
+RSQMB bossfight scan: 7 types [RS_CommonZombie 20, RS_BlueSG 55, RS_GreenImp 70, RS_CommonDemon 150, RS_GreenCaco 450, RS_YellowHK 999, RS_CommonBaron 1000], 7 spots, 0 exits, 0 weapon types
+RSQMB meter fills from: kills, chains, time, Score style, Gun Bonsai XP (chosen Both; Score loaded, Gun Bonsai VR loaded)
+L2_A_SPAWN
+R10 SPAWN t60 DoomImp -> RS_ImpColourset at -393 -112
+R10 SPAWN t63 ShotgunGuy -> RS_ShotgunnerColourset at -387 27
+R10 SPAWN t66 HellKnight -> RS_Colourset8 at -452 -45
+RSQMB meter +2.0 (time) -> 2
+R10 HURT t106 7 monsters by 5
+L2_A_ICONS_ON
+R10 MON tag 1 t110 RS_CommonZombie hp 20/20 tier 1 champKind 2/-1 tokens [OrangeToken PersistentInfo ] at -470 -400
+R10 MON tag 1 t110 RS_BlueSG hp 110/110 tier 3 champKind 1/-1 tokens [RedToken PersistentInfo ] at -470 -342
+R10 MON tag 1 t110 RS_CommonImp hp 55/60 tier 1 champKind 0/-1 tokens [DarkRedToken PersistentInfo ] at -462 -299
+R10 MON tag 1 t110 RS_CommonDemon hp 145/150 tier 1 champKind 6/-1 tokens [CyanToken PersistentInfo ] at -463 33
+R10 MON tag 1 t110 RS_GreenCaco hp 440/450 tier 2 champKind 11/-1 tokens [BlackToken PersistentInfo ] at -464 202
+R10 MON tag 1 t110 RS_YellowHK hp 999/999 tier 5 champKind 5/-1 tokens [GreenToken PersistentInfo ] at -470 262
+R10 MON tag 1 t110 RS_CommonBaron hp 1000/1000 tier 1 champKind 8/-1 tokens [IndigoToken PersistentInfo ] at -470 393
+R10 MON tag 1 t110 RS_GreenImp hp 65/70 tier 2 champKind 5/-1 tokens [GreenToken PersistentInfo ] at -470 -259
+R10 MON tag 1 t110 RS_CommonImp hp 55/60 tier 1 champKind 3/-1 tokens [YellowToken PersistentInfo ] at -371 -137
+R10 MON tag 1 t110 RS_GreenSG hp 85/90 tier 2 champKind 1/-1 tokens [RedToken PersistentInfo ] at -347 14
+R10 MON tag 1 t110 RS_BlueHK hp 661/666 tier 3 champKind 10/-1 tokens [PinkToken PersistentInfo ] at -441 -49
+RSQMB meter +10.2 (Gun Bonsai XP 51) -> 12
+L2_A_ICONS_OFF
+L2_A_ICONS_BACK
+L2_B_SCOREKILL
+R10 KILL t410 RS_GreenSG
+RSQMB meter +4.0 (kill) -> 16
+RS_Score[killer]: RS_GreenSG spawnhp 90 base 90 counted 8 | spree n=0 exp=0 t=410 | ut k=0 hp=0 st=0 | Red Champion 0.250 | Point-Blank 0.100 | Green Tier 0.100
+RS_Score: +131 -> 131 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #1 p0 base 90 style 41 chain gun.rifle
+RSQMB meter +10.3 (Score style 41) -> 26
+RSQMB meter +17.0 (Gun Bonsai XP 85) -> 43
+R10 KILL t482 RS_GreenImp
+RSQMB meter +10.0 (kill, chain 2) -> 53
+RS_Score[killer]: RS_GreenImp spawnhp 70 base 70 counted 7 | spree n=1 exp=482 t=482 | ut k=1 hp=90 st=0 | Green Champion 0.250 | No-Look 0.300 | Spree 0.025 | Green Tier 0.100 | Champion Streak 0.100
+RS_Score: +125 -> 256 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #2 p0 base 70 style 55 chain gun.rifle
+RSQMB meter +13.8 (Score style 55) -> 67
+RSQMB meter +13.0 (Gun Bonsai XP 65) -> 80
+L2_C_CALLIN
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RTP t555 AUTO armed
+RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for:  Too Early
+RSQMB bossfight tier 0 from Whichever Is Larger (Gun Bonsai VR level 0, Score lives 0)
+RSQMB Miniboss From 0 / Thralls From 0: RS_CommonDemon
+RSQMB bossfight spot: found after 2 of 17 candidates (near 384 far 1024): RS_CommonDemon at 439 units with 3 thralls
+RSQ_SlowMo: trigger bossfight t555: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger bossfight t555: started 4000 ms at 5% (automatic, own cooldown), pulse until t695, cause line "MINIBOSS INCOMING"
+RSQMB BOSSFIGHT ARRIVING: tier 0, RS_CommonDemon + 3 thralls, beams V1 thralls + V3 miniboss, SlowMo asked, VisualRewards asked
+RSQMB arrival: thrall 1 RS_GreenImp lands (colour 3CDC46, tier 2), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 2 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 3 RS_BlueSG lands (colour 3C78FF, tier 3), beam v1, revealed in 7 tics
+RSQMB arrival: miniboss 0 blocked by RS_GreenImp (r 38 h 70 at -396 -391 0)
+RSQMB arrival: miniboss 0 did not fit
+RSQMB bossfight failed to land (the miniboss did not land): tries again
+RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for:  Too Early
+RSQMB bossfight tier 0 from Whichever Is Larger (Gun Bonsai VR level 0, Score lives 0)
+RSQMB Miniboss From 0 / Thralls From 0: RS_CommonDemon
+RSQMB bossfight spot: found after 9 of 17 candidates (near 384 far 1024): RS_CommonDemon at 446 units with 3 thralls
+RSQMB BOSSFIGHT ARRIVING: tier 0, RS_CommonDemon + 3 thralls, beams V1 thralls + V3 miniboss, SlowMo asked, VisualRewards asked
+RSQMB arrival: thrall 1 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 2 RS_GreenImp lands (colour 3CDC46, tier 2), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 3 RS_BlueSG lands (colour 3C78FF, tier 3), beam v1, revealed in 7 tics
+RSQMB arrival: miniboss 0 blocked by RS_BlueSG (r 38 h 70 at -401 287 -0)
+RSQMB arrival: miniboss 0 did not fit
+RSQMB bossfight failed to land (the miniboss did not land): tries again
+RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for:  Too Early
+RSQMB bossfight tier 0 from Whichever Is Larger (Gun Bonsai VR level 0, Score lives 0)
+RSQMB Miniboss From 0 / Thralls From 0: RS_GreenImp
+RSQMB bossfight spot: found after 13 of 17 candidates (near 384 far 1024): RS_GreenImp at 508 units with 3 thralls
+RSQMB BOSSFIGHT ARRIVING: tier 0, RS_GreenImp + 3 thralls, beams V1 thralls + V3 miniboss, SlowMo asked, VisualRewards asked
+RSQMB arrival: thrall 1 RS_BlueSG lands (colour 3C78FF, tier 3), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 2 RS_BlueSG lands (colour 3C78FF, tier 3), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 3 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v1, revealed in 7 tics
+RSQMB arrival: miniboss 0 RS_GreenImp lands (colour 3CDC46, tier 2), beam v3, revealed in 19 tics
+RSQ_SlowMo: trigger countdown t708: countdown bar: gone (real time)
+RSQMB bound: boss 0 RS_GreenImp hp 105 lives 3 thralls 3 powers [Violet, White, Green] tough 2.00 out 1.00
+RSQMB BOSSFIGHT LANDED: boss 0 RS_GreenImp hp 105, 3 thralls, 3 segments of 35, lives 3, map count 1
+RTP t732 S1 LANDED: boss RS_GreenImp hp 105, 3 thralls [RS_BlueSG,RS_BlueSG,RS_CommonZombie], segs 3, shielded 1, window 0, lives 3
+RSQMB greed armed on boss 0: due in 105 tics
+RTP t732 S1 shield hit 40: hp 105 -> 105
+RSQMB power lost: boss 0 loses Violet with thrall 0
+RSQMB window OPEN: boss 0 segment 0 (35 of 35) for 3 s
+RSQMB thrall 0 of boss 0 killed: power colour B050F0, segments left 3, window open, credits 0
+RSQMB thrall 0 of boss 0 died (killer player) living 2
+RS_Score[killer]: RS_BlueSG spawnhp 82 base 82 counted 7 | spree n=2 exp=554 t=753 | ut k=2 hp=160 st=0 | Violet Champion 0.250 | Blue Tier 0.150 | Pinata 0.250
+RS_Score: +136 -> 392 (threshold 25000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #3 p0 base 82 style 54 chain gun.rifle
+RTP t753 S2 thrall killed, now boss RS_GreenImp hp 105, 3 thralls [RS_BlueSG,RS_BlueSG,RS_CommonZombie], segs 3, shielded 1, window 0, lives 3
+RSQ_SlowMo: trigger miniboss t758: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger miniboss t758: started 2971 ms at 25% (automatic), pulse until t862, cause line "MINIBOSS"
+RSQ_SlowMo: trigger miniboss t790: merged 1971 ms at 25% (automatic), pulse until t859, cause line "MINIBOSS"
+RSQ_SlowMo: trigger miniboss t828: merged 971 ms at 25% (automatic), pulse until t862, cause line "MINIBOSS"
+RSQMB rage start: 7.875 ms (once)
+RSQMB GREED: boss 0 enraged, 12 monsters x2.0 speed
+RSQMB window MISSED: boss 0 segment 0 left 100%: tier +3, 12 monsters asked (map-wide)
+RTP t858 S3 window over unbroken (missed): boss RS_GreenImp hp 105, 2 thralls [RS_BlueSG,RS_CommonZombie], segs 3, shielded 1, window 0, lives 3
+RSQMB tier swap followed: RS_PurpleZombie (thrall 2) at -363 364, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at -268 -326, tokens again [champion_YellowToken,]
+RSQ_SlowMo: trigger countdown t868: countdown bar: gone (real time)
+RSQMB tier swap followed: RS_RedSG (thrall 1) at -384 324, tokens again [champion_WhiteToken,]
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at -470 -400, tokens again []
+RSQMB tier swap followed: RS_RedSG (a map monster) at -470 -342, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at -462 -299, tokens again []
+RSQMB tier swap followed: RS_PurpleBaron (a map monster) at -470 393, tokens again []
+RSQMB tier swap followed: RS_YellowImp (the miniboss) at -440 344, tokens again [champion_WhiteToken,]
+RSQMB tier swap followed: RS_GrayHK2 (a map monster) at -470 262, tokens again []
+RSQMB tier swap followed: RS_PurpleDemon (a map monster) at -463 33, tokens again [champion_CyanToken,]
+RSQMB tier swap followed: RS_YellowCaco (a map monster) at -464 202, tokens again []
+RSQMB tier swap followed: RS_RedHK (a map monster) at -426 -104, tokens again []
+RTP t929 S4 after the miss: boss RS_YellowImp hp 145, 2 thralls [RS_PurpleZombie,RS_RedSG], segs 3, shielded 1, window 0, lives 3
+L2_END

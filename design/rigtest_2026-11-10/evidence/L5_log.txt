@@ -1,0 +1,106 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+L5_CALLIN
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RTP t35 AUTO armed
+RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for:  Too Early
+RSQMB bossfight tier 0 from Whichever Is Larger (Gun Bonsai VR level 0, Score lives 0)
+RSQMB Miniboss From 0 / Thralls From 0: RS_GreenDemon
+RSQMB bossfight spot (Ignore Spawn Restrictions): RS_GreenDemon at 253 units with 3 thralls, past the usual tests
+RSQMB bossfight spot: found after 0 of 0 candidates (near 384 far 1024): RS_GreenDemon at 253 units with 3 thralls
+RSQMB BOSSFIGHT ARRIVING: tier 0, RS_GreenDemon + 3 thralls, beams V1 thralls + V3 miniboss, SlowMo asked, VisualRewards asked
+RSQMB arrival: thrall 1 RS_GreenImp lands (colour 3CDC46, tier 2), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 2 RS_CommonImp lands (colour C8C8C8, tier 1), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 3 RS_GreenImp lands (colour 3CDC46, tier 2), beam v1, revealed in 7 tics
+RSQMB arrival: thrall RS_CommonImp moved aside for the miniboss
+RSQMB arrival: miniboss 0 RS_GreenDemon lands (colour 3CDC46, tier 2), beam v3, revealed in 19 tics
+RSQMB bound: boss 0 RS_GreenDemon hp 255 lives 3 thralls 3 powers [Green, DarkGreen, Yellow] tough 1.50 out 1.00
+RSQMB BOSSFIGHT LANDED: boss 0 RS_GreenDemon hp 255, 3 thralls, 3 segments of 85, lives 3, map count 1
+RTP t118 S1 LANDED: boss RS_GreenDemon hp 255, 3 thralls [RS_GreenImp,RS_CommonImp,RS_GreenImp], segs 3, shielded 1, window 0, lives 3
+RSQMB greed armed on boss 0: due in 105 tics
+RTP t118 S1 shield hit 40: hp 255 -> 255
+R10 WORDS t120 [TARGET! held on RS_GreenImp] [TARGET! held on RS_CommonImp] [TARGET! held on RS_GreenImp] [GUARD! once on RS_GreenDemon] 
+RSQMB power lost: boss 0 loses Green with thrall 0
+RSQMB window OPEN: boss 0 segment 0 (85 of 85) for 3 s
+RSQMB thrall 0 of boss 0 killed: power colour 40F040, segments left 3, window open, credits 0
+RSQMB thrall 0 of boss 0 died (killer player) living 2
+RTP t139 S2 thrall killed, now boss RS_GreenDemon hp 255, 3 thralls [RS_GreenImp,RS_CommonImp,RS_GreenImp], segs 3, shielded 1, window 0, lives 3
+R10 WORDS t141 [TARGET! held clearing on RS_GreenImp] [TARGET! held on RS_CommonImp] [TARGET! held on RS_GreenImp] [GUARD! once on RS_GreenDemon] [TARGET! held on RS_GreenDemon] 
+R10 WORDS t147 [TARGET! held on RS_CommonImp] [TARGET! held on RS_GreenImp] [GUARD! once on RS_GreenDemon] [TARGET! held on RS_GreenDemon] 
+R10 WORDS t165 [TARGET! held on RS_CommonImp] [TARGET! held on RS_GreenImp] [TARGET! held on RS_GreenDemon] 
+RSQMB rage start: 7.624 ms (once)
+RSQMB GREED: boss 0 enraged, 18 monsters x2.0 speed
+RSQMB window MISSED: boss 0 segment 0 left 100%: tier +3, 11 monsters asked (map-wide)
+RTP t244 S3 window over unbroken (missed): boss RS_GreenDemon hp 255, 2 thralls [RS_CommonImp,RS_GreenImp], segs 3, shielded 1, window 0, lives 3
+R10 WORDS t246 [TARGET! held on RS_CommonImp] [TARGET! held on RS_GreenImp] [TARGET! held clearing on RS_GreenDemon] 
+RSQMB tier swap followed: RS_YellowDemon (the miniboss) at -458 -9, tokens again [champion_YellowToken,champion_DarkGreenToken,]
+R10 WORDS t249 [TARGET! held on RS_CommonImp] [TARGET! held on RS_GreenImp] [TARGET! held clearing on None] 
+RSQMB tier swap followed: RS_YellowImp (thrall 2) at -355 -103, tokens again [champion_YellowToken,]
+RSQMB tier swap followed: RS_AbyssHK2 (a map monster) at -470 260, tokens again [champion_CyanToken,]
+R10 WORDS t252 [TARGET! held on RS_CommonImp] [TARGET! held clearing on None] [TARGET! held on RS_YellowImp] 
+RSQMB tier swap followed: RS_YellowImp (a map monster) at -470 -25, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at -470 -66, tokens again []
+R10 WORDS t255 [TARGET! held on RS_CommonImp] [TARGET! held on RS_YellowImp] 
+RSQMB tier swap followed: RS_YellowDemon (a map monster) at -470 25, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (thrall 1) at -492 -198, tokens again [champion_DarkGreenToken,]
+R10 WORDS t258 [TARGET! held clearing on None] [TARGET! held on RS_YellowImp] [TARGET! held on RS_PurpleImp] 
+RSQMB tier swap followed: RS_YellowSG (a map monster) at -470 -290, tokens again [champion_CyanToken,]
+RSQMB tier swap followed: RS_PurpleCaco (a map monster) at -470 101, tokens again []
+RSQMB tier swap followed: RS_RedBaron3 (a map monster) at -470 370, tokens again []
+R10 WORDS t264 [TARGET! held on RS_YellowImp] [TARGET! held on RS_PurpleImp] 
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at -470 -492, tokens again []
+RTP t315 S4 after the miss: boss RS_YellowDemon hp 325, 2 thralls [RS_YellowImp,RS_PurpleImp], segs 3, shielded 1, window 0, lives 3
+RSQMB power lost: boss 0 loses Yellow with thrall 2 (it had added nothing)
+RSQMB window OPEN: boss 0 segment 0 (108 of 108) for 3 s
+RSQMB thrall 2 of boss 0 killed: power colour FFE030, segments left 3, window open, credits 0
+RSQMB thrall 2 of boss 0 died (killer player) living 1
+R10 WORDS t318 [TARGET! held clearing on RS_YellowImp] [TARGET! held on RS_PurpleImp] [TARGET! held on RS_YellowDemon] 
+RSQMB award "Thrall Slow Kill" 300 -> RS_ScoreService
+RSQMB segment 0 BROKEN in the window, step 1 of 3 (3 left): pays 300
+RTP t319 S5 hit in the window: segs 3 -> 2, boss RS_YellowDemon hp 325, 1 thralls [RS_PurpleImp], segs 3, shielded 0, window 101, lives 3
+R10 WORDS t321 [TARGET! held on RS_PurpleImp] [TARGET! held clearing on RS_YellowDemon] 
+R10 WORDS t327 [TARGET! held on RS_PurpleImp] 
+RTP t380 S6 kill every thrall: boss RS_YellowDemon hp 325, 1 thralls [RS_PurpleImp], segs 2, shielded 1, window 0, lives 3
+RSQMB power lost: boss 0 loses DarkGreen with thrall 1
+RSQMB window OPEN: boss 0 segment 1 (108 of 108) for 3 s
+RSQMB thrall 1 of boss 0 killed: power colour 20A030, segments left 2, window open, credits 0
+RSQMB thrall 1 of boss 0 died (killer player) living 0
+R10 WORDS t381 [TARGET! held clearing on RS_PurpleImp] [TARGET! held on RS_YellowDemon] 
+R10 WORDS t387 [TARGET! held on RS_YellowDemon] 
+RSQMB award "Thrall Slow Kill" 300 -> RS_ScoreService
+RSQMB segment 1 BROKEN in the window, step 1 of 3 (3 left): pays 300
+RTP t392 S7 hammer: hp 325 -> 325, lives 3, segs 2, 0 thralls
+RSQMB segment 2 broken (no window: no thrall stands)
+RTP t404 S7 hammer: hp 325 -> 325, lives 3, segs 1, 0 thralls
+RTP t416 S7 hammer: hp 325 -> 1, lives 3, segs 0, 0 thralls
+RSQMB life lost: boss 0 lives 2 hp 325 invuln 175 tics, tier +1 asked
+R10 WORDS t417 [TARGET! held clearing on RS_YellowDemon] 
+RSQMB tier swap followed: RS_RedDemon (the miniboss) at -458 -9, tokens again [champion_YellowToken,]
+R10 WORDS t423 (none)
+RTP t428 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+R10 WORDS t429 [GUARD! once on RS_RedDemon] 
+RTP t440 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t452 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t464 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t476 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t488 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t500 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t512 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t524 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t536 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t548 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t560 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t572 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+RTP t584 S7 hammer: hp 400 -> 400, lives 2, segs 0, 0 thralls
+R10 WORDS t591 [GUARD! once on RS_RedDemon] [TARGET! held on RS_RedDemon] 
+RTP t596 S7 hammer: hp 400 -> 1, lives 2, segs 0, 0 thralls
+RSQMB life lost: boss 0 lives 1 hp 400 invuln 175 tics, tier +1 asked
+R10 WORDS t597 [GUARD! once on RS_RedDemon] [TARGET! held clearing on RS_RedDemon] 
+R10 WORDS t603 [GUARD! once on RS_RedDemon] 
+RTP t608 S7 hammer: hp 400 -> 400, lives 1, segs 0, 0 thralls
+R10 WORDS t609 [GUARD! once on RS_RedDemon] [GUARD! once on RS_RedDemon] 
+L5_END
