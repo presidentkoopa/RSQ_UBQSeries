@@ -20,6 +20,8 @@
 // P_PlayerThink -- earlier than WorldTick, so better timing than reading a bit.
 // It is replicated and it names the player who pressed it.
 
+// (no default binds since 11-10: G is Brutal Doom's Toss Grenade, which RSQ Grenade's quick throw reads; owner: keys
+// are precious in VR)
 addkeysection "RSQ Distance Grab" RSQDG
 addmenukey "Grab / pull (main hand)" "+rsqdg_main"
 addmenukey "Grab / pull (off hand)"  "+rsqdg_off"
@@ -46,5 +48,3 @@ alias "-rsqdg_off"  "netevent rsqdg_release 1"
 // default would either silently bind nothing or steal a button that already
 // does something. These are the Grab Keys: they are only read with Grab Keys on. Bind them in Customize
 // Controls ("RSQ Distance Grab") or on its page (Controls).
-defaultbind g "+rsqdg_main"
-defaultbind h "+rsqdg_off"

@@ -56,13 +56,16 @@ class RSQ_Upgrade_LongThong : RSQ_Upgrade_WhipMarker
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("m", String.Format("%.2f", 1.8 * (1.0 + 0.25 * level))); }
 }
 // QUICK MARK (after Long Thong 1): pickups and switches marked 2 m further a level; 3: a second pickup marked too, the
-// crack fetching both.
+// crack fetching both. The reach it adds to is RSQ Whip's Whip Reach (rsqwp_target_reach, 3..60 m, 20 by default; read by
+// name), as the whip's code does (whip.zs Mark: LockRange + 2 m a level). Until 11-10 the tooltip said a fixed 8 + 2 lv m.
 class RSQ_Upgrade_QuickMark : RSQ_Upgrade_WhipMarker
 {
 	override String Parent() { return "LongThong"; }
 	override void GetTooltipFields(Dictionary fields, uint level)
 	{
-		fields.Insert("m", String.Format("%d", 8 + 2 * level));
+		let cv = CVar.FindCVar("rsqwp_target_reach");
+		double reach = cv ? clamp(cv.GetFloat(), 3.0, 60.0) : 20.0;
+		fields.Insert("m", String.Format("%g", reach + 2 * level));
 		fields.Insert("two", level >= 3 ? " Two pickups are marked at once and one crack fetches both." : "");
 	}
 }

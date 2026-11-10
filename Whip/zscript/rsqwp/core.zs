@@ -14,9 +14,9 @@
 class RSQWP_Core : EventHandler
 {
 	const NHOOK = MAXPLAYERS * 2;
-	const TAP_TICS = 8;
-	const TAKEUP = 10.0;
-	const PAYOUT = 8.0;       // an aimed swing's launch: the length it followed him in, given back a tic on the way down      // an aimed swing's rope taken up on its own, map units a tic (swing.zs; the reel is 12)   // RSQ_Accessibility's Slower Taps widens it x1.5 where it is read (RSQWP_A11y.Tap; a server setting)
+	const TAP_TICS = 8;       // a press this short is a tap, not a reel; RSQ_Accessibility's Slower Taps widens it x1.5 where it is read (RSQWP_A11y.Tap; a server setting)
+	const TAKEUP = 10.0;      // an aimed swing's rope taken up on its own, map units a tic (swing.zs)
+	const PAYOUT = 8.0;       // an aimed swing's launch: the length it followed him in, given back a tic on the way down
 
 	RSQWP_Hook hooks[NHOOK];
 	bool held[NHOOK];
@@ -65,7 +65,7 @@ class RSQWP_Core : EventHandler
 		let h = hooks[i];
 		if (h && h.phase != RSQWP_Hook.PH_RETRACT && h.phase != RSQWP_Hook.PH_HOLD)
 		{
-			if (h.phase == RSQWP_Hook.PH_FLY) LetGo(h, false);   // recall a miss
+			if (h.phase == RSQWP_Hook.PH_FLY) LetGo(h, false);   // recall a claw in flight: nothing makes one (design/WHIP_DEAD_FEATURES.md, Fly)
 			// latched / biting: this press is a tap (let go) or a hold (reel)
 			return;
 		}
@@ -88,7 +88,8 @@ class RSQWP_Core : EventHandler
 
 	// ---- fire -------------------------------------------------------------------
 
-	// No claw in this mod: a press with no line out starts the whip in that hand (whip.zs).
+	// No claw in this mod: a bind press with no line out starts the whip in that hand (whip.zs). The binds have had no
+	// keys since 11-10 (design/WHIP_DEAD_FEATURES.md, the bind whip).
 	void Fire(PlayerPawn pmo, int pn, int hand, Vector3 org, Vector3 dir)
 	{
 		let w = RSQWP_Whip.Get();
@@ -100,7 +101,7 @@ class RSQWP_Core : EventHandler
 	void LetGo(RSQWP_Hook h, bool byPlayer)
 	{
 		if (!h) return;
-		RSQWP_Perks.OnLetGo(h, byPlayer);   // Barbed Claw's tear, Slingshot (perks.zs)
+		RSQWP_Perks.OnLetGo(h, byPlayer);   // a stub (fx.zs; design/WHIP_DEAD_FEATURES.md, RSQWP_Perks)
 		if (h.phase == RSQWP_Hook.PH_BITE && h.victim && h.owner && !h.heavy)
 			RSQWP_Monster.OnRelease(h.victim, h.owner, h.hand);
 		// A hop off the top: let go within reach of a wall's latch while reeling and the
@@ -215,8 +216,8 @@ class RSQWP_Core : EventHandler
 		tickMs = MSTimeF() - t0;
 	}
 
-	// RSQ_Accessibility's Comfort Vignette: a swing in the air, a reel, a climb or a yank is a
-	// comfort moment, as strong as the body is moving fast (0.35 at rest on the rope, full at
+	// RSQ_Accessibility's Comfort Vignette: a swing in the air, a reel or a climb is a comfort moment (and PH_HOLD,
+	// the yank nothing starts: design/WHIP_DEAD_FEATURES.md), as strong as the body is moving fast (0.35 at rest on the rope, full at
 	// rsqwp_max_speed). Standing on the ground with the rope slack is not.
 	void Comfort(PlayerPawn pmo, int pn)
 	{
@@ -236,6 +237,8 @@ class RSQWP_Core : EventHandler
 
 	// ---- flight -----------------------------------------------------------------
 
+	// A CLAW IN FLIGHT (RSQ Grapple's, forked). Nothing in this mod makes one: every RSQWP_Hook is built latched or
+	// bitten (whip.zs Snag / Leash, swing.zs). Kept for the owner's choice: design/WHIP_DEAD_FEATURES.md, Fly.
 	void Fly(RSQWP_Hook h, int i)
 	{
 		double step = min(h.speed, h.range - h.traveled);
@@ -283,7 +286,7 @@ class RSQWP_Core : EventHandler
 				Log(h, "bite");
 			}
 			RSQWP_Events.Bitten(h.owner, v, h.hand, h.heavy);   // service.zs: for other mods to read
-			RSQWP_Perks.OnBite(h, v);   // perks.zs: Gun Bonsai patch upgrades + XP ledger
+			RSQWP_Perks.OnBite(h, v);   // a stub (fx.zs; design/WHIP_DEAD_FEATURES.md, RSQWP_Perks)
 			return;
 		}
 
@@ -310,6 +313,8 @@ class RSQWP_Core : EventHandler
 		Vector3 b = AttachPoint(pmo);
 		h.ropeLen = (h.anchor - b).Length();
 		h.losBad = 0;
+		// THE PH_HOLD YANK: rsqwp_geo_mode is not defined, so this never runs. Kept for the owner's choice:
+		// design/WHIP_DEAD_FEATURES.md, the PH_HOLD yank.
 		if (RSQWP_Util.Opt("rsqwp_geo_mode", 0) == 1)
 		{
 			// JP's yank, parsed from hook.acs Hook_HitWall + function.acs: ThrustThing
@@ -334,7 +339,7 @@ class RSQWP_Core : EventHandler
 	// too heavy to come: an anchor instead (at the bite, and re-asked every tic of the pull)
 	static bool TooHeavy(RSQWP_Hook h, Actor v)
 	{
-		double mmax = RSQWP_Util.Num("rsqwp_mass_max", 1000) * RSQWP_Perks.Factor(h.owner, 'mass');   // Heavy Haul
+		double mmax = RSQWP_Util.Num("rsqwp_mass_max", 1000) * RSQWP_Perks.Factor(h.owner, 'mass');   // Factor: a stub, 1 (fx.zs)
 		// an RSQ Miniboss miniboss with Miniboss's "Can't Be Yanked" on: an anchor, as a boss is
 		return v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT || RSQWP_Util.MinibossAs(v, "yank");
 	}
@@ -616,7 +621,7 @@ class RSQWP_Core : EventHandler
 				if (st > 0)
 				{
 					double k = clamp(RSQWP_Util.Num("rsqwp_drag", 0.002), 0.0, 0.2);
-					k = min(k + RSQWP_Perks.SteadyDrag(pmo, k, fwd == 0 && side == 0), 0.2);   // Steady Line
+					k = min(k + RSQWP_Perks.SteadyDrag(pmo, k, fwd == 0 && side == 0), 0.2);   // SteadyDrag: a stub, 0 (fx.zs)
 					double f = max(0.0, RSQWP_Util.Num("rsqwp_rope_friction", 0.025));
 					double ns = max(0.0, st * (1.0 - k) - f);
 					double ang = acos(clamp(-n.z, -1.0, 1.0));   // from hanging straight down

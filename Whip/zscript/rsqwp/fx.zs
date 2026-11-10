@@ -1,6 +1,7 @@
-// RSQWP_Looks / RSQWP_Perks / RSQWP_Events -- what the tether code (forked from RSQ_Grapple's core)
-// asks of the hook's look sets, the Gun Bonsai patch and the service. RSQ_Whip has none of those:
-// its own sounds and a spark of particles; no upgrades (factor 1); nothing to report.
+// RSQWP_Looks / RSQWP_Perks -- what the rope code (forked from RSQ_Grapple's core) asks of the hook's look sets and of
+// Grapple's perks. RSQ Whip has no look sets (its own sounds and a spark of particles) and no rope perks: RSQWP_Perks'
+// hooks are stubs (factor 1, nothing done; what they could be: design/WHIP_DEAD_FEATURES.md, RSQWP_Perks), except Hurt,
+// which every point the whip deals goes through. The service is service.zs.
 class RSQWP_Looks
 {
 	static String Sound(Name what)

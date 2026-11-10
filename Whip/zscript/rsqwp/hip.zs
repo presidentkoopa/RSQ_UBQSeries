@@ -1,8 +1,12 @@
-// RSQ Whip -- SHOW WHIP WITHOUT THE RIG (owner 11-04: "Give them a spot without the Rig"). Rig only, not headset-confirmed.
-// With Show Whip on (rsqwp_show, each player's own) and RSQ Tactical Rig NOT loaded (no RSQTR_RigService), the whip, while
-// you own it and it is in neither hand (nor being raised), hangs coiled at the main hand's hip exactly where, and as, the
-// Rig hangs it in its whip holster. With the Rig loaded this draws nothing: the Rig draws it (rig.zs DrawStowed reads
-// rsqwp_show).
+// RSQ Whip -- SHOW WHIP ON THE HIP (owner 11-04: "Give them a spot without the Rig"). The 11-03 build was shown on the test
+// rig (not headset-confirmed); the 11-10 change below is code only, not shown.
+// With Show Whip on (rsqwp_show, each player's own), the whip, while you own it and it is in neither hand (nor being
+// raised), hangs coiled at the main hand's hip exactly where, and as, RSQ Tactical Rig hangs it in its whip holster.
+// It stands down only while THE RIG DRAWS IT (owner 11-10: "Close the smaller gaps"; until then it stood down whenever the
+// Rig was loaded, so with the Rig's Whip Holster row off, out of VR or the Rig switched off no coil showed anywhere).
+// The Rig draws it (rig.zs DrawStowed) for the console player only, with the Rig on (rsqtr_on), in VR (OverrideAttackPosDir)
+// and its whip holster holding it: RSQTR_RigService "rig.holster" for the whip answers RIG_WHIP. All asked by name.
+// The coil is spawned the same on every machine; only its visibility follows the local Rig.
 // THE RIG'S NUMBERS, copied (TacticalRig rig.zs RSQTR_Region place 11 and DrawStowed; body.zs At(), NeckShift()):
 //   0.06 m back, 0.30 m out toward the MAIN hand (a little behind and outside the saber spot, 0.02 / 0.21), 0.84 m under
 //   the eyes, in the body's frame -- no rig torso here, so the player's yaw -- hung from player.viewz with the Rig's neck
@@ -18,11 +22,22 @@ class RSQWP_HipShow : EventHandler
 	const NECK_BACK = 0.10;
 	const NECK_DOWN = 0.10;
 
+	const RIG_WHIP = 11;        // TacticalRig rig.zs RSQTR_Region.WHIP, the whip holster's place
+
 	Actor shown[MAXPLAYERS];
+
+	// the Rig is drawing player n's whip this tic (see the top)
+	static bool RigDraws(Service rig, int n, PlayerPawn pmo)
+	{
+		if (!rig || n != consoleplayer || !pmo.OverrideAttackPosDir) return false;
+		let on = CVar.GetCVar("rsqtr_on", players[n]);
+		if (on && !on.GetBool()) return false;
+		return rig.GetInt("rig.holster", "RSQWP_WhipWeapon", 0, 0, pmo) == RIG_WHIP;
+	}
 
 	override void WorldTick()
 	{
-		bool rig = ServiceIterator.Find("RSQTR_RigService").Next() != null;
+		Service rig = ServiceIterator.Find("RSQTR_RigService").Next();
 		let cs = CVar.FindCVar("vr_control_scheme");
 		bool lh = cs && cs.GetInt() >= 10;
 		let uc = CVar.FindCVar("vr_vunits_per_meter");
@@ -30,7 +45,7 @@ class RSQWP_HipShow : EventHandler
 		double ps = level.pixelstretch > 0 ? level.pixelstretch : 1.2;
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
-			PlayerPawn pmo = (!rig && playeringame[n] && players[n].mo) ? PlayerPawn(players[n].mo) : null;
+			PlayerPawn pmo = (playeringame[n] && players[n].mo) ? PlayerPawn(players[n].mo) : null;
 			bool want = pmo && pmo.health > 0 && players[n].playerstate == PST_LIVE;
 			if (want) { let c = CVar.GetCVar("rsqwp_show", players[n]); want = !c || c.GetBool(); }
 			Weapon w = want ? Weapon(pmo.FindInventory("RSQWP_WhipWeapon")) : null;
@@ -51,7 +66,7 @@ class RSQWP_HipShow : EventHandler
 			a.angle = yaw;
 			a.pitch = 0;
 			a.roll = lh ? -ROLL : ROLL;                   // the Rig's -side * STOW_WHIP_ROLL (side -1 on the right hip)
-			a.bINVISIBLE = false;
+			a.bINVISIBLE = RigDraws(rig, n, pmo);
 		}
 	}
 }

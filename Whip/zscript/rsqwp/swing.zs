@@ -2,7 +2,7 @@
 //
 // While the whip weapon is in hand, the OTHER hand's alt-fire (the off hand's, with the whip in the main hand) casts
 // an aim ray from that hand: a thin dotted line and the series' diamond where the whip would anchor -- gold when it
-// may (a wall or a ceiling within Whip Swing Reach), red when it may not (out of reach, sky, a floor, a portal, a
+// may (a wall or a ceiling within Whip Reach, rsqwp_target_reach), red when it may not (out of reach, sky, a floor, a portal, a
 // 3D middle texture, a polyobject). With the ray on a valid spot, the whip hand's own deliberate crack (wind-up and
 // swing, unchanged) sends the whip there: it stretches out to the spot as a marked crack flies (Reach), latches,
 // waits for its start if you are standing (grip or jump, below; both off: the old small hop), and from then it is the rope every snag becomes (core.zs: pendulum, reel,
@@ -102,15 +102,13 @@ extend class RSQWP_Whip
 	RSQWP_LockRing aimRing[NW];
 	RSQWP_LockCentre aimCen[NW];
 
-	// Whip Swing Reach, as map units of straight-line distance (34 room units a metre; RSQWP_Util.Metres)
-	// WHIP SWING REACH, the rangefinder's and the aimed swing's reach (rsqwp_swing_reach, 9 m; slider 3..MAX_REACH). The
-	// cap (owner 11-03 20:14: "a range slider so it can be extended ... max generous"): measured on SWINGTST with the reach
-	// at 60, the rangefinder gold on B's east wall 56.3 m off, the crack cast there (8 tics) and latched, a 1907-unit rope
-	// (the hook's range and the rope follow the reach: Latch sets h.range from it, so nothing else caps it); at the default
-	// 9 the same wall reads "out of reach (9.0 m)". So 60 m, the longest sightline measured.
+	// WHIP REACH (rsqwp_target_reach, 20 m; slider 3..MAX_REACH; owner 11-06, BUGS_1.0 item 30: one reach for everything):
+	// the rangefinder's and the aimed swing's reach AND every mark's and lock's (whip.zs LockRange), in metres. The cap
+	// (owner 11-03 20:14: "a range slider so it can be extended ... max generous"): measured on SWINGTST (11-03, on the
+	// reach row of then) at 60, the rangefinder gold on B's east wall 56.3 m off, the crack cast there (8 tics) and
+	// latched, a 1907-unit rope (the hook's range follows the reach where the cast builds it, SwingLatch, so nothing else
+	// caps it). So 60 m, the longest sightline measured.
 	const MAX_REACH = 60.0;
-	// 11-06 (owner, BUGS_1.0 item 30: one reach for everything, a little longer): Whip Reach (rsqwp_target_reach, 20 m) is the
-	// aimed swing's reach AND every mark's and lock's (whip.zs LockRange). The old rsqwp_swing_reach (9 m) is no longer read.
 	static double SwingReachM() { return clamp(RSQWP_Util.Num("rsqwp_target_reach", 20), 3.0, MAX_REACH); }
 
 	// An EMPTY OFF HAND, as the series tests it (see the top): nothing in it, or a fist of any of the parents'.
@@ -373,8 +371,8 @@ extend class RSQWP_Whip
 		h.owner = pmo;
 		h.hand = hand;
 		h.dir = ldir;
-		h.speed = max(4.0, RSQWP_Util.Num("rsqwp_speed", 40));
-		h.range = max(max(64.0, RSQWP_Util.Num("rsqwp_range", 1024)), SwingReachM() * 34.0);
+		h.speed = 40;                // read by core.zs Fly only (a claw in flight; none in this mod). rsqwp_speed was never defined (11-10)
+		h.range = max(1024.0, SwingReachM() * 34.0);   // 1024 the default the never-defined rsqwp_range fell back to (11-10); a longer Whip Reach wins
 		h.angle = atan2(ldir.y, ldir.x);
 		h.traveled = (at - hand0).Length();
 		h.anchor = at;

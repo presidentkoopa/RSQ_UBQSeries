@@ -224,24 +224,14 @@ lay a free hand on the lip with Grab, and you are lifted just over it and carrie
 
 ---
 
-## The whip on a bind
+## The whip on a bind (not in the game)
 
-*(11-10: the binds below went with every Whip key; this bind whip has no input left and goes in the Whip clean-up.)* The **Whip (Main)** and **Whip (Off)** binds bring a whip out of that hand without selecting the weapon (for example with
-a gun in your main hand). This bind whip is a little different from the slot-1 whip:
-
-- **Whip Style: Real** (default): hold the bind and the whip uncoils from that hand; let go and it rolls up. With RSQ
-  Accessibility's Hold to Toggle, a press brings it out and the next puts it away.
-- **Whip Style: Assist**: a press throws a lash for you, over the shoulder and down, along where the hand points, to the
-  monster nearest that line (within 15° and about 4 m), else to full length or the wall. It cracks there, then rolls up.
-- **Whip Aim: Lock**: hold your alt-fire and point the other hand: the nearest monster, pickup or switch within 7° is
-  locked (the diamond) and stays locked for 1 s after you let go. The next crack flies to it.
-- **Leash** (on): a locked or Assist crack that lands on a monster while the bind is still held catches it on a line,
-  and it slides to you along the floor (**Leash Pull**, 10, stopping **Leash Stops At**, 16, from you). Heavier than
-  **Heaviest Leashed** (1000), a boss or a Can't Be Yanked miniboss: it is an anchor you swing from instead.
-- **On a rope:** hold the bind to reel, tap it (within 8 tics) to let go.
-
-These three rows (Whip Style, Lock, Leash) only change the bind whip. The slot-1 whip is always Real, marks with its
-trigger and wraps instead of leashing.
+The old **Whip (Main)** / **Whip (Off)** binds brought a whip out of a hand without selecting slot 1. Their keys went on
+11-10 (no keys: the whip is attack and alt attack), so this bind whip has no input. Its three rows went from the menu
+on 11-10 too (owner: "three rows do nothing.. do we need them to? i think i like the behavior right now"): **Whip
+Style** (the slot-1 whip is always Real), **Whip Aim: Lock** (the slot-1 whip marks with its trigger) and **Leash**
+(the slot-1 whip wraps instead), with Leash's three Test and Debug sliders. Its code is kept for the owner to choose
+from, with the rest of the whip's unused code: `design/WHIP_DEAD_FEATURES.md`.
 
 ---
 
@@ -252,11 +242,11 @@ trigger and wraps instead of leashing.
 - **Hand on the Handle** (on, your own setting): Brutal Doom VR's FBX hand, in its magazine hold, round the handle, toned
   by BD22 VR's Hand Skin Tone. Off: no hand; the simulated handle is drawn on its own.
 - **Show Whip** (on, your own setting): while you own the whip and it is in neither hand, it hangs coiled on your
-  main hand's hip (0.06 m back, 0.30 m out, 0.84 m under your eyes; the left hip for a left-handed setup). With RSQ
-  Tactical Rig loaded the Rig draws it in its whip holster instead.
+  main hand's hip (0.06 m back, 0.30 m out, 0.84 m under your eyes; the left hip for a left-handed setup). While RSQ
+  Tactical Rig draws it in its whip holster (the Rig on, in VR, its **Whip Holster** row on) this coil stands down; with
+  the Whip Holster off, the coil still shows.
 - **Whip in Slot 1** (on): every player is given the whip (checked once a second). You are never switched to it.
-- **Whip** (on): the master switch. Off, no whip comes out of the weapon or the binds, any whip out is put away, and
-  nobody is given the whip.
+- **Whip** (on): the master switch. Off, no whip comes out, any whip out is put away, and nobody is given the whip.
 
 ![The coiled whip on the hip, rig](tools/rigtest/evidence_1103_holster/rig_all_worn_whip_coil_righthanded.png)
 
@@ -271,7 +261,7 @@ Simulated headset, not a capture from a real headset.*
   crack damage a level), **Stun** (the crack's pain held 10 + 10 a level tics), **Crack Shot** (cracked missiles blow up;
   2 and 3 also hurt what stands within 2 m / 2.5 m), **Return Crack** (a cracked missile goes back at its shooter, its
   damage +25% a level), **Strike True** (hit-stop of 3 / 4 / 6 tics). Reach: **Long Thong** (the thong ×1.25 / 1.5 / 1.75),
-  **Quick Mark** (pickups and switches marked 2 m further a level; level 3 marks a second pickup and one crack fetches
+  **Quick Mark** (pickups and switches marked 2 m a level past Whip Reach; level 3 marks a second pickup and one crack fetches
   both). Wrap: **Heavy Yank** (the light mass 400 → 600 / 800 / 1000), **Pull and Punch** (offered only with RSQ Melee
   loaded: a yanked monster arrives staggered for your free hand's punch). Lasso: **Lasso** (level 2: held 50% longer), **Bola** (one more
   light monster within 2.5 m a level, tied to the first and yanked with it). Rope: **Snag** (level 2: edges from your hand's height up),
@@ -282,20 +272,20 @@ Simulated headset, not a capture from a real headset.*
   (Snag), **Mantle**, **Keep Momentum** (Momentum). Learned, the row turns it on and off. **Cracked Fireballs** is always
   greyed with Gun Bonsai VR: Crack Shot and Return Crack decide.
 - **RSQ Score:** the whip tells Score what it did. A crack kill pays **Lashed** (more for a crack in the top half of the
-  whip's range). Swinging a monster into another pays **Wrecking Ball**; Tarzan's blow pays **Tarzan**; **Stun Lock**
+  whip's range). Swinging a monster into another pays **Wrecking Ball**; Tarzan's blow pays **Tarzan**; a marked crack
+  that kills from 6 m or more pays **Snap Kill** (the whip names the marked crack before it lands, 11-10); **Stun Lock**
   (a Stun crack, another tool kills), **Heavy Haul** (a Heavy Yank) and **Chain Swing** (the second and later swings of a
   chain) read it too, as do the rope rows (**Swinging**, **Hanging Shot**, **Dismount**) and Score's whip combos
   (Ringmaster, Frontier, High Noon, Zorro, Tetherball, Rope-a-Dope, Get Over Here!, Jungle Law and the rest on Score's
-  page). See *Status* for the rows that can't pay yet.
+  page). With RSQ Grapple loaded too, Score asks both ropes (11-10), so a whip swing still pays the rope rows.
 - **RSQ Tactical Rig:** the whip has its own holster on the main hand's hip (the Rig's **Whip Holster** row). It is
   there whenever you own the whip and it is in neither hand; draw it into your Whip In hand, put it back at the hip or at
   an empty gun holster. It never goes into a gun holster. The Rig draws the coil there (Show Whip decides).
 - **RSQ VisualRewards:** a monster the whip has wrapped, lassoed or tied (Bola) wears the **whipped** marker (a coiled
   lash) by its health bar. A hit-stop shows as its frozen marker.
 - **RSQ Melee:** Gun Bonsai VR offers Pull and Punch only while Melee is loaded.
-- **RSQ Miniboss:** its **Can't Be Yanked** row (on): a miniboss is treated as heavy (a yank pulls you to it, a leash
-  makes it an anchor).
-- **RSQ SlowMo:** you and the whip run at full speed; a leashed monster slides at the world's slowed pace.
+- **RSQ Miniboss:** its **Can't Be Yanked** row (on): a miniboss is treated as heavy (a yank pulls you to it).
+- **RSQ SlowMo:** you and the whip run at full speed.
 - **RSQ Distance Grab:** its grab binds grip the rope and the lasso (**Grab Keys Grip Rope**), and its grip keys are the
   default **Off Grip Keys** (443 436).
 - **RSQ Saber** and **RSQ Melee:** Saber's bare Force hand and Melee's gloves count as an empty off hand for the aim
@@ -304,9 +294,9 @@ Simulated headset, not a capture from a real headset.*
 - **RSQ Wheel:** the whip has its own icon there and goes to the main hand (Whip In then moves it if you chose the off
   hand).
 - **RSQ Grapple:** its rope code is where the whip's rope came from. The two are separate mods and load together.
-- **RSQ Accessibility:** Rumble Strength scales every whip rumble. Steady Hands smooths the marking, the lock and the aim
-  ray (never the whip itself). Gesture Ease widens the rope's Grab Reach. Slower Taps lengthens the bind's tap. The
-  Off-Hand Modifier lets the main controller play the off hand. Hold to Toggle works the binds. Comfort Vignette eases
+- **RSQ Accessibility:** Rumble Strength scales every whip rumble. Steady Hands smooths the marking and the aim
+  ray (never the whip itself). Gesture Ease widens the rope's Grab Reach. The
+  Off-Hand Modifier lets the main controller play the off hand. Comfort Vignette eases
   in while you swing, reel or climb. Cue Size scales the diamonds; the colour-blind palette recolours them
   and the aim ray, and High Contrast lights the rope at full brightness.
 - **Brutal Doom VR (BD22 VR):** its FBX hand and Hand Skin Tone are Hand on the Handle. Its empty off hand counts as free
@@ -321,16 +311,16 @@ resets every Whip setting; the console alias `rsqwp_reset` does the same.
 
 | Section | Rows |
 |---|---|
-| Whip | Whip (On) · Whip in Slot 1 (On) · Whip In (Main Hand / Off Hand; Main Hand) · Show Whip (On) · Hand on the Handle (On) · Whip Style (Real / Assist; Real) · Whip Aim (Free / Assist / Lock; Assist) · Whip Reach (m) (20; 3 to 60) · Switches First (On) |
+| Whip | Whip (On) · Whip in Slot 1 (On) · Whip In (Main Hand / Off Hand; Main Hand) · Show Whip (On) · Hand on the Handle (On) · Whip Aim (Free / Assist; Assist) · Whip Reach (m) (20; 3 to 60) · Switches First (On) |
 | Crack | Stun (On) · Knockback (Off) · Hit-Stop (Off) · Throws Switches (On) · Fetches Pickups (On) · Crack Fireballs (Off) · Cracked Fireballs (Explode There / Knocked Away; Explode There) |
-| Monsters | Leash (On) · Lasso (On) · Flail (On) · Keep the Mark (On) · Yank Grace (Off) |
+| Monsters | Lasso (On) · Flail (On) · Keep the Mark (On) · Yank Grace (Off) |
 | Swinging | Catch Edges (On) · Aimed Swing (On) · Aim With Off Hand (On) · Beam Beats Lock-On (On) · Off Hand Stays Free (On) · Grip Starts Swing (On) · Swing Assist: Grab Snag (On) · Jump Starts Swing (On) · Mantle (On) · Keep Momentum (On) |
 | Climbing | Rope Climbing (On) · Free Hand Only (On) · Grab Keys Grip Rope (On) |
 | Controls | none (owner 11-10) |
 | Test and Debug: Crack | Crack Speed (20) · Damage (12) · Hardest Crack Speed (43) · Aim Reach (40) · Pulled Up To (mass) (400) · Too Heavy From (mass) (1000) · Lasso Reach (m) (0.30) |
-| Test and Debug: Thong | Thickness (1.0) · Stiffness (1.00) · Damping (1.00) · Air Drag (1.00) · Hand Smoothing (tics) (0.8) · Draw Pieces (12) · Let-Go Return Speed (64) |
-| Test and Debug: Rope | Reel Speed (3) · Shortest Rope (32) · Top Speed (30) · Stick Lean (0.25) · Arm Pump (0.12) · Swing Air Drag (0.0020) · Rope Friction (0.025) · Ledge Hop (6) · Snag Edge Height (16) · Rope Meets Body (0.60) · Jump Lift (10) · Jump Push (8) · Assist Lift (8) · Assist Speed (10) |
-| Test and Debug: Climbing and Leash | Grab Reach (16) · Climb Speed Cap (8) · Heaviest Leashed (1000) · Leash Pull (10) · Leash Stops At (16) · Off Grip Keys (443 436) · Debug Log (Off / Events / Every Tic / Cost / Snags and Grip Keys / Aim Ray Every Tic; Off) |
+| Test and Debug: Thong | Thickness (1.0) · Stiffness (1.00) · Damping (1.00) · Air Drag (1.00) · Hand Smoothing (tics) (0.8) |
+| Test and Debug: Rope | Reel Speed (3) · Shortest Rope (32) · Top Speed (30) · Stick Lean (0.25) · Arm Pump (0.12) · Swing Air Drag (0.0020) · Rope Friction (0.025) · Ledge Hop (6) · Snag Edge Height (16) · Rope Meets Body (0.60) · Jump Lift (10) · Jump Push (8) · Assist Lift (8) · Assist Speed (10) · Slack Rope Pieces (12: most pieces a slack rope is drawn in) · Let-Go Rope Return Speed (64: a let-go rope coming back to the hand) |
+| Test and Debug: Climbing | Grab Reach (16) · Climb Speed Cap (8) · Off Grip Keys (443 436) · Debug Log (Off / Events / Every Tic / Cost / Snags and Grip Keys / Aim Ray Every Tic; Off) |
 
 Speeds are map units a tic unless a row says otherwise. Whip In, Hand on the Handle, Show Whip and Off Grip Keys are
 your own settings; every other row is a server setting.
@@ -343,11 +333,12 @@ your own settings; every other row is a server setting.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, the current pk3) | The pack loads on the full series order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, LOB, Champions, Gun Bonsai and the RSQ pk3s) with no script error of its own (the only script errors in that log are BD_VoxelPack's voxeldef.txt); its page is listed under Radiant Silvergun Options; Gun Bonsai VR registers the whip tree's upgrades on the whip weapon; RSQ Tactical Rig lists the Whip holster among the main hand's holsters (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`). No whip move was exercised in that run |
+| **Shown on the rig** (2026-11-10, the clean-up build) | Load check only: the pack, with RSQ Score and RSQ Gun Bonsai VR rebuilt beside it, loads on the series order (doom2, brutal22test6, BD_VoxelPack, LOB, Champions, Gun Bonsai and the RSQ pk3s) with no script error or warning of its own; the only script errors in that log are BD_VoxelPack's (sphere.txt, voxeldef.txt). The log is not kept in the repo. No whip move was exercised |
+| **Shown on the rig** (2026-11-09, an earlier build) | The pack loads on the full series order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, LOB, Champions, Gun Bonsai and the RSQ pk3s) with no script error of its own (the only script errors in that log are BD_VoxelPack's voxeldef.txt); its page is listed under Radiant Silvergun Options; Gun Bonsai VR registers the whip tree's upgrades on the whip weapon; RSQ Tactical Rig lists the Whip holster among the main hand's holsters (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`). No whip move was exercised in that run |
 | **Shown on the rig** (2026-11-03, an earlier build) | The mark skipping Kill Rewards bits and marking a Clip, keeping the mark with the hand pointed away, the wind-up → pay-out → swing → release → crack sequence, the locked crack flying 215 units to the Clip and the Clip taken; a plain crack fetching a Stimpack and leaving the bits; the aim ray refusing a 9.0 m wall at a 9 m reach and an ordinary crack instead, and at a 60 m reach a wall 56.3 m off read gold, the crack cast there in 8 tics and latched, waiting for its start (`tools/rigtest/evidence_1103_holster/bits_and_range.txt`); the Rig's whip holster drawing the whip and putting it home, and the coil on the hip right- and left-handed (same folder); Hand on the Handle, left-handed, Whip In: Off Hand and Hand Skin Tone (`tools/rigtest/hand_1103/sheet.png`). Since then the reach settings were replaced by Whip Reach (11-06) and the holster draw re-seat was added (11-05), so these are not re-shown on the current build. Rig only, not headset-confirmed |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page: the swing itself after the latch (no log of a pendulum swing is in the repo), the reel, climbing, the mantle, the jump and grip starts and Swing Assist, letting go with the speed kept, chain swings, edge snags (Catch Edges), the lasso and the whirl, the wrap, the flail and the smash, the yank, the leash, Crack Fireballs, Hit-Stop, Yank Grace, Switches First, the one Whip Reach, the re-seat on a holster draw, Show Whip without the Rig, the bind whip and Assist / Lock, every Gun Bonsai VR node, the Score rows, the VisualRewards marker |
-| **Known not to work (from reading the code)** | Score's **Snap Kill** row can't pay: it waits for a "crack.marked" tag the whip never sends. With **RSQ Grapple** loaded, Score asks Grapple first, Grapple answers "not swinging", and a whip swing never pays **Swinging** or **Hanging Shot** (Dismount's in-air test is Grapple's too). **Whip Style**, **Whip Aim: Lock** and **Leash** do nothing for the slot-1 whip (see *The whip on a bind*) |
+| **Code only, not yet shown** | Everything else on this page: the swing itself after the latch (no log of a pendulum swing is in the repo), the reel, climbing, the mantle, the jump and grip starts and Swing Assist, letting go with the speed kept, chain swings, edge snags (Catch Edges), the lasso and the whirl, the wrap, the flail and the smash, the yank, Crack Fireballs, Hit-Stop, Yank Grace, Switches First, the one Whip Reach, the re-seat on a holster draw, Show Whip without the Rig, every Gun Bonsai VR node, the Score rows, the VisualRewards marker. And everything changed 11-10: the marked crack naming itself to Score (Snap Kill), Score asking both ropes (Swinging, Hanging Shot, Dismount with RSQ Grapple loaded), Crack Fireballs noting missiles already in flight when it turns on, the hip coil showing whenever the Rig is not drawing it, Gun Bonsai VR's Quick Mark tooltip reading Whip Reach |
+| **Not in the game (from reading the code)** | The bind whip (no input since 11-10), and the unused rope code (a thrown hook, the zip, the chain look, the rope perks, the bite ledger): kept for the owner's choice, `design/WHIP_DEAD_FEATURES.md` |
 
 ---
 
@@ -367,11 +358,11 @@ your own settings; every other row is a server setting.
   the frame's eye in all three axes.
 - **The rope** is RSQ Grapple's core, forked (`RSQWP_Core`, `RSQWP_Hook`): solved on the velocity the engine is about to
   move you by, so the engine's own collision moves you and a rope can't put you in a wall.
-- **Handlers:** `RSQWP_Core` (the rope), `RSQWP_Input` (the binds), `RSQWP_Whip` (the whip), `RSQWP_Events` (the ledger
-  for other mods), `RSQWP_HipShow` (Show Whip without the Rig). The weapon is `RSQWP_WhipWeapon` (slot 1 through
+- **Handlers:** `RSQWP_Core` (the rope), `RSQWP_Input` (the bind whip's console events, no keys), `RSQWP_Whip` (the whip), `RSQWP_Events` (the ledger
+  for other mods), `RSQWP_HipShow` (Show Whip's hip coil, when the Rig is not drawing it). The weapon is `RSQWP_WhipWeapon` (slot 1 through
   KEYCONF's `addslotdefault`, so Brutal Doom's player class keeps it); the hip coil is `RSQWP_Stowed`.
-- **Network events:** `rsqwp_fire`, `rsqwp_up` (the whip binds, the hand's pose packed in), `rsqwp_grab` (Grab Whip),
-  `rsqwp_pose` (the climbing hand), `rsqwp_lock` (Lock's button), `rsqwp_aimkey` (the eaten aim keys), `rsqwp_ogrip`
+- **Network events:** `rsqwp_fire`, `rsqwp_up` (the bind whip, no keys since 11-10; the hand's pose packed in),
+  `rsqwp_grab` (the old Grab Whip, no keys), `rsqwp_pose` (the climbing hand), `rsqwp_lock` (the bind whip's Lock), `rsqwp_aimkey` (the eaten aim keys), `rsqwp_ogrip`
   (the off grip key, read by scan code from **Off Grip Keys**), `rsqwp_hp0` / `rsqwp_hp1`. It also hears Distance
   Grab's `rsqdg_press` / `rsqdg_release`. The mark and the aim ray read the hand in play: single player is exact.
   QuestZDoom has no netplay.
@@ -382,9 +373,9 @@ your own settings; every other row is a server setting.
   Gun Bonsai VR rows. `RSQTHP_MarkerWhip` answers VisualRewards' `whipped`.
 - **What it asks:** `RSQ_MeleeUpgradeService` (Gun Bonsai VR's node levels once a second, its XP bracket, `stagger`,
   `knockdown`), `RS_ScoreService` (`touch`), `RSQSM_Service` (`scale`), `RSQA_Service`, `RSQMB_Service` (`bossfor`
-  `yank`), and whether `RSQTR_RigService` exists.
+  `yank`), and `RSQTR_RigService` (`rig.holster` for the whip: whether the Rig draws the coil).
 - **Damage type** `Whip`, so Brutal Doom's "Melee" stealth kill never triggers.
-- **Saves:** after a load no bind reads as held, no hand holds the rope, and the rope table is rebuilt from the hooks
+- **Saves:** after a load no rope reads as held, no hand holds the rope, and the rope table is rebuilt from the hooks
   in the level.
 - **Debug Log** prints `T_WP` (the rope) and `T_WPW` (the whip) lines: wind-up, swing, release, crack, mark, cast,
   latch, start, yank and the rest.

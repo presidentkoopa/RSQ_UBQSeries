@@ -14,4 +14,5 @@
 | SlowMo | Slow Motion (Adrenaline / Player Slows Time) and Crisis Dive | Shootdodge renamed Crisis Dive (owner: same move) |
 | Tactical Rig | Recenter Torso | no holster keys (the grip holsters both hands by default) |
 | Glow In The Dark | none | Randomize Colours becomes a menu button |
+| Distance Grab | Grab / pull (main, off): optional, read only with its Grab Keys row on; also how RSQ Grapple's and RSQ Whip's ropes are gripped through it | no default binds (11-10: its G default fought Brutal Doom's Toss Grenade) |
 | Accessibility | its 9 gesture-replacement buttons | kept: they are how a one-handed or seated player does the gestures |

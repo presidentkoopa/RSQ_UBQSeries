@@ -94,7 +94,8 @@ class RSQWP_Events : EventHandler
 
 	// ======================================================== the calls from the whip (play)
 
-	// kept for the core's calls (the Whip's line is a fork of Grapple's; its bite is a snag, not a hook's claw)
+	// The line bit a monster (core.zs Fly, whip.zs Leash: the bind whip only). Empty: nothing is noted, so RSQWP_Service has no
+	// "hooked" / "hooked.by" / "hooked.heavy" answers as Grapple's has. What it could answer: design/WHIP_DEAD_FEATURES.md, Bitten.
 	static void Bitten(PlayerPawn by, Actor v, int hand, bool heavy) {}
 
 	// The crack (or a flail's smash) is about to hit it (whip.zs Crack / Flail). k: the crack's weight 0..1, -1 not a crack.

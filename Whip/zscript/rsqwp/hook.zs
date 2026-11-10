@@ -1,5 +1,5 @@
-// THE CLAW AND ITS ROPE. The claw is a visual and a container for one hand's hook
-// state; RSQWP_Core decides everything in WorldTick. This actor's own Tick only
+// THE CLAW AND ITS ROPE (RSQ Grapple's, forked). In the whip the claw is never seen (DrawRope sets it invisible: the
+// whip's tip is wrapped round the thing) and is a container for one hand's hook state; RSQWP_Core decides everything in WorldTick. This actor's own Tick only
 // DRAWS -- and that is why it is an actor at all: thinkers run in statnum order
 // (STAT_PLAYER 33 before STAT_DEFAULT 100), and WorldTick runs before both
 // (p_tick.cpp), so the player has already moved this tic by the time the claw's
@@ -151,21 +151,9 @@ class RSQWP_Hook : Actor
 		DrawRope();
 	}
 
-	// THE ROPE, two looks (rsqwp_rope_style):
-	//
-	//   0 CHAIN (default, jpalomo's look). His hook is a FastProjectile with
-	//     MissileType LoreShot2: the engine's Strife chain trail, a plain TEND A sprite
-	//     (normal style, scale 1, 20 tics) that jp_grapple's tenda0 replaces -- 5 x 5
-	//     units (the 40 px hires drawn at the 5 px size). FastProjectile.Effect drops
-	//     one every sub-step: radius 10, speed 40 -> 8 sub-steps -> a link every 5 units.
-	//     Measured with his own pk3 in the rig: links every 5.0 units, the nearest 15.0
-	//     units out from the hand (the missile starts a radius ahead), at most 152 at
-	//     once. This draws the same links at the same size and spacing, from 15 units
-	//     out, along the live rope (his trail is only the flight path and fades in 20
-	//     tics; ours stays while the rope does). The first cut here drew 8-unit links
-	//     starting 3 units from the controller: 1.6x his size, five times closer to
-	//     the eye -- the "fat white balls in the face".
-	//   1 CABLE: tube segments (models/rsqwp/rsqrope.md3); one piece when taut.
+	// THE ROPE after a snag or an aimed swing's latch: tube segments (models/rsqwp/rsqrope.md3, PlaceCable), one piece
+	// when taut, up to Slack Rope Pieces (rsqwp_rope_segs) when slack. RSQ Grapple's chain look (PlaceChain, jpalomo's
+	// links) is kept but never drawn (the `if (true)` below): design/WHIP_DEAD_FEATURES.md, PlaceChain.
 	//
 	// The line: from the firing hand, through the hand that has the rope if another
 	// hand is climbing it (a tail hangs between them), to the claw; it sags in a

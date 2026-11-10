@@ -4,7 +4,7 @@
 //   * ALWAYS OUT while it is the weapon in the hand: swing it and it cracks.
 //   * TRIGGER held: point the whip hand, a mark shows the target; let go and the mark is lost. A crack while
 //     something is marked sends the whip out to it (whip.zs Mark / Crack / Reach). Switches, keys and powerups
-//     within rsqwp_whip_prio of you are marked first.
+//     within Whip Reach (rsqwp_target_reach, 20 m) are marked first (Switches First, rsqwp_whip_first).
 //   * ALT-FIRE moves the mark to the next nearest target.
 //   * WRAPPED, it swings with your arm at the rope's length and smashes into the monsters it meets (keep the
 //     trigger held to keep hold of it).

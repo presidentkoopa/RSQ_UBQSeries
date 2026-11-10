@@ -192,14 +192,44 @@ class RS_Bonus_FlyBall : RS_ScoreBonus
 }
 
 // THE ROPE UNDER YOU: RSQ_Grapple's line or RSQ Whip's (its own fork of the line, answering the same request names,
-// 11-03: sheet S17, W11). The first that answers wins.
+// 11-03: sheet S17, W11). BOTH ARE ASKED (owner 11-10: "[Score] needs to reward for the two things its missing"): a loaded
+// Grapple answers "swinging" 0 and "airborne" 0 for a player on the WHIP's rope, so "the first that answers" never asked
+// the Whip and a whip swing paid no Swinging, Hanging Shot or Dismount with Grapple loaded. Now, by the request:
+//   a yes/no about the player ("swinging", "airborne"): 1 if either rope says 1;
+//   "rope.speed": the rope that is swinging him (Grapple's first);
+//   "released", "landed": the more recent of the two (the fewer tics); "released.speed": the speed of that same let-go;
+//   anything else: the first that answers, as before.
 class RS_Rope play
 {
 	static int Ask(String request, Actor who)
 	{
+		if (request == "swinging" || request == "airborne")
+		{
+			int g = RS_Grapple.Ask(request, who);
+			if (g == 1) return 1;
+			int w = RS_Whip.Ask(request, who);
+			return w == 1 ? 1 : max(g, w);
+		}
+		if (request == "rope.speed")
+			return RS_Grapple.Ask("swinging", who) == 1 ? RS_Grapple.Ask(request, who) : RS_Whip.Ask(request, who);
+		if (request == "released" || request == "landed") return Recent(RS_Grapple.Ask(request, who), RS_Whip.Ask(request, who));
+		if (request == "released.speed")
+		{
+			int g = RS_Grapple.Ask("released", who), w = RS_Whip.Ask("released", who);
+			if (g < 0 && w < 0) return -1;
+			return (w < 0 || (g >= 0 && g <= w)) ? RS_Grapple.Ask(request, who) : RS_Whip.Ask(request, who);
+		}
 		int v = RS_Grapple.Ask(request, who);
 		if (v >= 0) return v;
 		return RS_Whip.Ask(request, who);
+	}
+
+	// the fewer tics of two "tics since" answers, -1 meaning none
+	static int Recent(int a, int b)
+	{
+		if (a < 0) return b;
+		if (b < 0) return a;
+		return min(a, b);
 	}
 }
 

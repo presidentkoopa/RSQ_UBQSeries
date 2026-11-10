@@ -6,6 +6,9 @@
 // off (owner 11-04). Cracked Fireballs greys whenever Gun Bonsai VR is loaded: Crack Shot / Return Crack decide there
 // ("PatchDecides"). Reset All (RSQWPResetAll) resets every row on both
 // pages; KEYCONF's rsqwp_reset alias (tools/gen_reset.py) does the same from the console.
+// 11-10 (owner: "three rows do nothing.. do we need them to? i think i like the behavior right now"): Whip Style, Whip Aim's
+// Lock and Leash (with its three Test sliders) went: they changed only the bind whip, which has no input since its keys
+// went (design/WHIP_DEAD_FEATURES.md). Their cvars stay, read by that bind code only.
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
 // parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
@@ -38,7 +41,6 @@ OptionMenu "RSQWP_Options"
 	Option "Whip In", "rsqwp_whip_hand", "RSQWP_WhipHand"
 	Option "Show Whip", "rsqwp_show", "OnOff"
 	Option "Hand on the Handle", "rsqwp_hand_handle", "OnOff"
-	Option "Whip Style", "rsqwp_whip_mode", "RSQWP_WhipModes"
 	Option "Whip Aim", "rsqwp_whip_aim", "RSQWP_WhipAims"
 	Slider "Whip Reach (m)", "rsqwp_target_reach", 3, 60, 0.5, 1
 	Option "Switches First", "rsqwp_whip_first", "OnOff"
@@ -53,7 +55,6 @@ OptionMenu "RSQWP_Options"
 	RSQWPGbOption "Cracked Fireballs", "rsqwp_whip_fireball_knock", "RSQWP_Knock", "RSQWP_Service", "PatchDecides"
 	StaticText " "
 	StaticText "Monsters", "Gold"
-	Option "Leash", "rsqwp_whip_leash", "OnOff"
 	RSQWPGbOption "Lasso", "rsqwp_whip_lasso", "OnOff", "RSQWP_Service", "Lasso"
 	Option "Flail", "rsqwp_whip_flail", "OnOff"
 	Option "Keep the Mark", "rsqwp_whip_marklock", "OnOff"
@@ -100,8 +101,6 @@ OptionMenu "RSQWP_Test"
 	Slider "Damping", "rsqwp_whip_bend_damp", 0.0, 4.0, 0.25, 2
 	Slider "Air Drag", "rsqwp_whip_drag", 0.0, 4.0, 0.25, 2
 	Slider "Hand Smoothing (tics)", "rsqwp_whip_smooth", 0.0, 2.0, 0.1, 1
-	Slider "Draw Pieces", "rsqwp_rope_segs", 2, 32, 1, 0
-	Slider "Let-Go Return Speed", "rsqwp_retract_speed", 8, 160, 8, 0
 	StaticText " "
 	StaticText "Rope", "Gold"
 	Slider "Reel Speed", "rsqwp_reel_climb", 1, 30, 1, 0
@@ -118,13 +117,13 @@ OptionMenu "RSQWP_Test"
 	Slider "Jump Push", "rsqwp_swing_jumppush", 0, 20, 1, 0
 	Slider "Assist Lift", "rsqwp_swing_assistlift", 0, 20, 1, 0
 	Slider "Assist Speed", "rsqwp_swing_assistspeed", 0, 30, 1, 0
+	// the rope after a snag (hook.zs DrawRope / Tick), not the thong: under Rope since 11-10 (owner: "Close the smaller gaps")
+	Slider "Slack Rope Pieces", "rsqwp_rope_segs", 2, 32, 1, 0
+	Slider "Let-Go Rope Return Speed", "rsqwp_retract_speed", 8, 160, 8, 0
 	StaticText " "
-	StaticText "Climbing and Leash", "Gold"
+	StaticText "Climbing", "Gold"
 	Slider "Grab Reach", "rsqwp_grab_reach", 4, 40, 2, 0
 	Slider "Climb Speed Cap", "rsqwp_climb_cap", 2, 20, 1, 0
-	Slider "Heaviest Leashed", "rsqwp_mass_max", 100, 5000, 100, 0
-	Slider "Leash Pull", "rsqwp_slide_speed", 2, 30, 1, 0
-	Slider "Leash Stops At", "rsqwp_slide_gap", 0, 64, 2, 0
 	TextField "Off Grip Keys", "rsqwp_keys_off"
 	StaticText " "
 	Option "Debug Log", "rsqwp_debug", "RSQWP_Debug"
@@ -137,16 +136,10 @@ OptionValue "RSQWP_WhipHand"
 	0, "Main Hand"
 	1, "Off Hand"
 }
-OptionValue "RSQWP_WhipModes"
-{
-	0, "Real"
-	1, "Assist"
-}
 OptionValue "RSQWP_WhipAims"
 {
 	0, "Free"
 	1, "Assist"
-	2, "Lock"
 }
 OptionValue "RSQWP_Knock"
 {

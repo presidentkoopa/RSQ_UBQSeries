@@ -1,4 +1,4 @@
-// THE WHIP (PROJECT WHIP, 2026-10-30). rsqwp_whip 1 turns the hook binds into a bullwhip.
+// THE WHIP (PROJECT WHIP, 2026-10-30): a bullwhip, the slot-1 weapon (weapon.zs, owner 2026-10-31: "whip is a weapon").
 //
 // A REAL WHIP, SIMULATED (rebuilt 11-02 on a validated research whip: Moses C. Nah, MIT Newman Lab, "Whip Project --
 // Targeting with a Whip", github MosesAndLily/whip-project-targeting, BSD-3; its numbers are used, see the constants).
@@ -20,19 +20,13 @@
 //     flicks a loose pickup to you. A fast tip that meets something ABOVE the hand wraps round
 //     it and becomes core's rope: swing, reel and let go are core's own.
 //
-// THE BINDS (the hook's two). Real (rsqwp_whip_mode 0): hold the bind and the whip uncoils
-// from that hand; it hangs from the hand and does what your hand does; let go and it rolls up.
-// Assist (1): a press throws a lash for you (the same simulated whip, the handle driven over
-// the shoulder and snapped down) and it rolls up after. With RSQ_Accessibility's Hold to
-// Toggle, Real is press-out, press-in.
+// THE WEAPON starts its whip Real (weapon.zs: mode 0): it hangs from the hand and does what your hand does. The bind
+// whip's Assist (wmode 1: a lash thrown for you) and Lock are kept but have no input since the Whip keys went (owner
+// 11-10, design/KEYBINDS_PLAN.md; what they would take: design/WHIP_DEAD_FEATURES.md).
 //
 // ROOM SPACE. The engine squashes map Z by pixelstretch (1.2), so the chain is simulated in
 // room units (map z x 1.2), where lengths and speeds mean the same in every direction, and
 // put back into map space to draw and to trace.
-//
-// NO EDIT TO CORE'S INPUT. This handler runs after core's on the same network event
-// (registered after RSQWP_Input in MAPINFO): when the whip is on, the claw core just fired
-// (phase FLY, age 0) is taken back before it moves a unit.
 class RSQWP_Whip : EventHandler
 {
 	const NW = MAXPLAYERS * 2;
@@ -100,13 +94,14 @@ class RSQWP_Whip : EventHandler
 	int     lashUntil[NW];       // the crack's lash: the thong still lands as hard as the crack for a few tics
 	// LOCK (rsqwp_whip_aim 2): the other hand points, the whip hand's alt-fire holds the lock
 	bool    lockHeld[NW];
-	bool    byWeapon[NW];        // this whip is the RSQWP_WhipWeapon's (weapon.zs): alt-fire locks, its model holds the handle
+	bool    byWeapon[NW];        // this whip is the RSQWP_WhipWeapon's (weapon.zs): the trigger marks (Mark), its model holds the handle
 	int     lockLeft[NW];        // tics the lock lasts after the button is let go
 	Actor   lockOn[NW];          // the locked monster or pickup, or
 	Vector3 lockAt[NW];          // the point on a locked switch line
 	bool    lockLine[NW];
 	int     reachTic[NW];        // a locked crack's flight: tics left to reach the target
 	Actor   reachFor[NW];
+	bool    reachMarked[NW];     // the flight under way is a marked crack's (Crack's LOCK branch): RSQ Score's Snap Kill (Reach)
 	Vector3 reachPt[NW];
 	double  baseLen[NW];
 	Vector3 pumpOff[NW];         // the whip hand's offset from the body last tic (the arm pump)
@@ -643,9 +638,27 @@ class RSQWP_Whip : EventHandler
 
 	// Crack Fireballs: every missile is noted as it is spawned (a PROJECTILE is NOBLOCKMAP, so no
 	// BlockThingsIterator ever returns one); the list is pruned as they explode (MF_MISSILE cleared).
+	bool FireballsOn() { return (!gbOn || GbAny(G_CRACKSHOT)) && RSQWP_Util.Flag("rsqwp_whip_fireball", false); }
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (e.Thing && e.Thing.bMISSILE && (!gbOn || GbAny(G_CRACKSHOT)) && RSQWP_Util.Flag("rsqwp_whip_fireball", false)) missiles.Push(e.Thing);
+		if (e.Thing && e.Thing.bMISSILE && FireballsOn()) missiles.Push(e.Thing);
+	}
+	// TURNED ON MID-LEVEL (the row, or Crack Shot learned; owner 11-10: "Close the smaller gaps"): the missiles already in
+	// flight were spawned while nobody noted them, so on the tic it turns on they are collected once from the thinkers
+	bool fbWas;
+	void FireballsWatch()
+	{
+		bool on = FireballsOn();
+		if (on && !fbWas)
+		{
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			int n = 0;
+			while (a = Actor(it.Next()))
+				if (a.bMISSILE && missiles.Find(a) == missiles.Size()) { missiles.Push(a); n++; }
+			if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW t%d Crack Fireballs on: %d missile(s) already in flight noted", level.maptime, n);
+		}
+		fbWas = on;
 	}
 
 	void WorldTick2()
@@ -657,6 +670,7 @@ class RSQWP_Whip : EventHandler
 		}
 		if (knocked.Size()) KnockedTick();
 		if (fetchItem.Size()) FetchTick();
+		FireballsWatch();
 		if (missiles.Size() && level.maptime % 8 == 0)
 			for (int k = missiles.Size() - 1; k >= 0; k--)
 				if (!missiles[k] || missiles[k].bDestroyed || !missiles[k].bMISSILE) missiles.Delete(k);
@@ -1793,9 +1807,9 @@ class RSQWP_Whip : EventHandler
 	const LOCK_CONE = 7.0;       // degrees round the pointing hand
 	const REACH_TICS = 5;
 
-	// LOCK: while the whip hand's alt-fire is held, the OTHER hand points; the nearest monster,
-	// loose pickup or switch along that ray (within LOCK_CONE degrees, in sight) is locked, marked
-	// with a small ring of sparks, and a tick in the pointing hand says so. The lock lasts a second
+	// LOCK (the bind whip only; no input since 11-10): while the whip hand's alt-fire is held, the OTHER hand points; the
+	// nearest monster, loose pickup or switch along that ray (within LOCK_CONE degrees, in sight) is locked, marked
+	// with the series' lock diamond (UpdateMark), and a tick in the pointing hand says so. The lock lasts a second
 	// after the button is let go. The next crack goes to it (Crack, Reach).
 	void Lock(int i, PlayerPawn pmo, int hand)
 	{
@@ -2436,6 +2450,7 @@ class RSQWP_Whip : EventHandler
 			best = null;
 		}
 		reachFor[i] = best;
+		reachMarked[i] = false;
 		reachPt[i] = best ? best.pos + (0, 0, best.height * 0.6) : org + dir * (wlen[i] / RSQWP_Util.PS());
 		reachTic[i] = REACH_TICS;
 		lassoed[i] = true;           // Lasso 2 and Bola read it on arrival (Reach)
@@ -2449,14 +2464,14 @@ class RSQWP_Whip : EventHandler
 	}
 
 	// THE LASSO'S CATCH REACH (owner 11-02): tied to the whip's length at 4x -- 7.2 m for MIT's 1.8 m, more with a
-	// longer whip -- under the lock's range (15 m). It was 2x, which halved to 3.6 m when the whip became 1.8 m.
+	// longer whip -- under Whip Reach (LockRange, 20 m by default). It was 2x, which halved to 3.6 m when the whip became 1.8 m.
 	const LASSO_REACH_K = 4.0;
 	double LassoReach(int i) { return min(LockRange(), wlen[i] * LASSO_REACH_K); }
 
 	// A locked crack's flight: the thong pays out to the target over REACH_TICS (its length grows
 	// to the distance and the outer links are drawn along the line to it, the physics doing the
-	// rest), and strikes there: a monster takes the full crack (and, with the whip bind still
-	// held and Whip Leash on, is caught on core's line and pulled), a pickup is flicked to you, a
+	// rest), and strikes there: a monster takes the full crack and the weapon's whip wraps round it (the bind whip's
+	// Leash, core's line pulling it in, has no input since 11-10), a pickup is flicked to you, a
 	// switch is thrown. Then the thong comes back to its own length.
 	void Reach(int i, PlayerPawn pmo, int hand)
 	{
@@ -2492,6 +2507,8 @@ class RSQWP_Whip : EventHandler
 		Vector3 at = reachPt[i];
 		let v = reachFor[i];
 		reachFor[i] = null;
+		bool marked = reachMarked[i];
+		reachMarked[i] = false;
 		if (!v && !lockLine[i] && wmode[i] == 1)
 		{
 			// Assist's lash into the air: an ordinary crack at the end of it
@@ -2513,6 +2530,10 @@ class RSQWP_Whip : EventHandler
 		}
 		else if (v && v.Health > 0)
 		{
+			// SNAP KILL (RSQ Score's W15, owner 11-10: "[Score] needs to reward for the two things its missing"): a marked
+			// crack landing on a monster is named "crack.marked" BEFORE the blow (Score's contract: a kill is scored inside
+			// DamageMobj), so a kill by it pays Snap Kill from 6 m or more (Score reads the distance)
+			if (marked && v.bISMONSTER) Touch("crack.marked", pmo, v);
 			// it strikes as hard as the crack that sent it (a lasso's throw: as fast as its tip was going)
 			Hit(i, pmo, hand, v, at, max(crackV[i], RSQWP_Util.Num("rsqwp_whip_crack", 20)), true);
 			if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER)
@@ -2557,6 +2578,7 @@ class RSQWP_Whip : EventHandler
 			best = a; bestA = ang;
 		}
 		reachFor[i] = best;
+		reachMarked[i] = false;
 		if (best) reachPt[i] = best.pos + (0, 0, best.height * 0.6);
 		else
 		{
@@ -2591,8 +2613,8 @@ class RSQWP_Whip : EventHandler
 		Vector3 hand0 = RSQWP_Util.HandPos(pmo, hand);
 		Vector3 ldir = (at - hand0).Unit();
 		h.owner = pmo; h.hand = hand; h.dir = ldir;
-		h.speed = max(4.0, RSQWP_Util.Num("rsqwp_speed", 40));
-		h.range = max(64.0, RSQWP_Util.Num("rsqwp_range", 1024));
+		h.speed = 40;                // read by core.zs Fly only (a claw in flight; none in this mod). rsqwp_speed was never defined (11-10)
+		h.range = 1024;              // core.zs: the longest rope (x1.25) and a leashed monster's range (x1.5). rsqwp_range was never defined (11-10)
 		h.angle = atan2(ldir.y, ldir.x);
 		h.traveled = (at - hand0).Length();
 		h.whipped = true;
@@ -3132,6 +3154,7 @@ class RSQWP_Whip : EventHandler
 			// LOCK: the crack sends the thong out to the target, however far (up to the lock's
 			// range): it pays out over REACH_TICS and strikes on arrival (Reach)
 			reachFor[i] = lockOn[i];
+			reachMarked[i] = true;
 			reachPt[i] = lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height * 0.6) : lockAt[i];
 			reachTic[i] = REACH_TICS;
 			Noise(pmo, 'crack', at, i);
@@ -3306,8 +3329,8 @@ class RSQWP_Whip : EventHandler
 		h.owner = pmo;
 		h.hand = hand;
 		h.dir = ldir;
-		h.speed = max(4.0, RSQWP_Util.Num("rsqwp_speed", 40));
-		h.range = max(64.0, RSQWP_Util.Num("rsqwp_range", 1024));
+		h.speed = 40;                // read by core.zs Fly only (a claw in flight; none in this mod). rsqwp_speed was never defined (11-10)
+		h.range = 1024;              // core.zs: the longest rope (x1.25) and a leashed monster's range (x1.5). rsqwp_range was never defined (11-10)
 		h.angle = atan2(ldir.y, ldir.x);
 		h.traveled = (at - hand0).Length();
 		h.anchor = at - (dir.xy.Length() > 0.01 ? (dir.xy.Unit() * 0.5, 0) : (0, 0, 0));   // on the corner, a hair on the near side
@@ -3405,7 +3428,7 @@ class RSQWP_Whip : EventHandler
 		byWeapon[i] = false; lassoOn[i] = false; lassoWas[i] = false; markHeld[i] = false; markLine[i] = null;
 		lw[i] = 0; lcHad[i] = false; lvw[i] = 0;
 		wby[i] = null;
-		lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; lockHeld[i] = false; lock2[i] = null; reach2[i] = null; reachTic[i] = 0; reachFor[i] = null;
+		lockOn[i] = null; lockLine[i] = false; lockLeft[i] = 0; lockHeld[i] = false; lock2[i] = null; reach2[i] = null; reachTic[i] = 0; reachFor[i] = null; reachMarked[i] = false;
 		casting[i] = false;
 		stiff[i] = 0; swinging[i] = false; windTics[i] = 0; stuckTics[i] = 0; bodyHad[i] = false;
 		ClearMark(i);

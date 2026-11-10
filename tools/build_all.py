@@ -28,7 +28,7 @@ MODS = {
     'QuestSaber':   ('RSQ_Saber.pk3', 'all', ['docs/*', '.gitignore', 'README_draft.md']),
     'LaserSight':   ('RSQ_LaserSight.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt',
                      'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'VOXELDEF.txt', 'VOXELDEF.halo', 'ANIMDEFS.txt', 'zscript', 'sprites', 'models/rsqls']),
-    'Grapple':      ('RSQ_Grapple.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt',
+    'Grapple':      ('RSQ_Grapple.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'MODELDEF.txt', 'zscript', 'sprites', 'sounds', 'models']),
     'VisualRewards': ('RSQ_VisualRewards.pk3', 'sub', ('pk3', ['README.md'])),   # HP bars + damage numbers + Kill Rewards (was TopHPBars / RSQ_HPBars.pk3)
     'Accessibility': ('RSQ_Accessibility.pk3', 'list', ['zscript.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
@@ -36,7 +36,7 @@ MODS = {
     'Score':        ('RSQ_Score.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'SNDINFO.txt', 'TEXTCOLO.txt', 'TRNSLATE.txt',
                      'MENUDEF.txt', 'RSSCFON.fon2', 'RSSCFN2.fon2', 'CREDITS.md', 'README.md', 'zscript', 'sounds', 'graphics']),
     'Miniboss':     ('RSQ_Miniboss.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'graphics']),
-    'Whip':         ('RSQ_Whip.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt',
+    'Whip':         ('RSQ_Whip.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'SNDINFO.txt', 'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sounds', 'models', 'sprites']),
     'Wheel':        ('RSQ_Wheel.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'KEYCONF', 'MENUDEF.txt',
                      'SNDINFO.txt', 'MODELDEF.txt', 'TEXTURES.txt', 'WRPALS.txt', 'WRFONTS.txt', 'CREDITS.txt', 'README.md',

@@ -1,10 +1,8 @@
-// THE INPUT. Two binds, one per hand, and no usercmd bit.
+// THE INPUT of the bind whip and the grip: console events, no usercmd bit. Since 11-10 (owner, design/KEYBINDS_PLAN.md:
+// the whip is attack and alt attack) no KEYCONF alias or key sends them; typed at the console (`event rsqwp_press 0`,
+// `event rsqwp_release 0`) they still work. What the bind whip would take: design/WHIP_DEAD_FEATURES.md.
 //
-// Brutal Doom Quest uses all four BT_USER bits, so the hook rides its own KEYCONF
-// aliases. `+rsqwp_main` is not a buttonMap action, so it falls through to alias
-// lookup, and key-up rewrites the leading `+` to `-`: a real press/release pair.
-//
-// TWO HOPS, ON PURPOSE. The alias runs `event rsqwp_press <hand>` -- a LOCAL
+// TWO HOPS, ON PURPOSE. `event rsqwp_press <hand>` is a LOCAL
 // console event (events.cpp CCMD(event)), which reaches ConsoleProcess here in ui
 // scope on the machine that pressed. That is the only machine whose hand pose is
 // real: the VR fields are written for the camera player alone and hold defaults
