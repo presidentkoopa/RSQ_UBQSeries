@@ -194,6 +194,48 @@ class RSQSM_DownHud ui
 		return cx;
 	}
 
+	// BE QUICK OR BE DEAD (owner 2026-11-07 06:31, built 11-10): DOWN's player-facing name, with some of its letters
+	// breathing in size (the Q, the K and both D's of DEAD, each on its own beat). The code keeps the name DOWN.
+	// Breathing letters keep their place (the advance is the plain one); in Photosensitive Mode none breathe.
+	const BQ_NAME = "BE QUICK OR BE DEAD";
+	const BQ_AMP = 0.16;      // how much a breathing letter grows (my number)
+	const BQ_HZ = 0.6;        // its beat, a second (my number)
+	static double BreathOf(int k, double secs)
+	{
+		static const int AT[] = { 3, 7, 15, 18 };
+		for (int i = 0; i < 4; i++)
+			if (AT[i] == k) return 1.0 + BQ_AMP * (0.5 + 0.5 * sin(secs * 360.0 * BQ_HZ + i * 97.0));
+		return 1.0;
+	}
+	double BreathText(String txt, double x, double y, double cap, double maxW, int rgb, double alpha, double secs)
+	{
+		txt = txt.MakeUpper();
+		Name sn = 'RS_ScoreService';
+		class<Object> sc = sn;
+		bool sf = sc != null;
+		double tot = 0;
+		for (int k = 0; k < int(txt.Length()); k++) tot += RSQSM_PlateFont.Adv(sf, txt.ByteAt(k));
+		double k0 = cap / RSQSM_PlateFont.Cap(sf);
+		if (tot * k0 > maxW && tot > 0) k0 = maxW / tot;
+		bool calm = RSQSM_A11y.Photo();
+		double cx = x;
+		for (int k = 0; k < int(txt.Length()); k++)
+		{
+			int c = txt.ByteAt(k);
+			if (c < RSQSM_PlateFont.LO || c > RSQSM_PlateFont.HI) c = 32;
+			double b = calm ? 1.0 : BreathOf(k, secs);
+			double adv = RSQSM_PlateFont.Adv(sf, c) * k0, w = RSQSM_PlateFont.Wid(sf, c) * k0 * b, h = RSQSM_PlateFont.Hgt(sf, c) * k0 * b;
+			if (c != 32 && w > 0)
+			{
+				String tn = String.Format(sf ? "RSPC%03d" : "RSPJ%03d", c);
+				if (!sf && !TexMan.CheckForTexture(tn, TexMan.Type_Any).IsValid()) tn = String.Format("RSPG%03d", c);
+				BoxC(tn, cx + adv * 0.5, y, w, h, rgb, alpha);
+			}
+			cx += adv;
+		}
+		return cx;
+	}
+
 	// Panel Size (owner 2026-11-07 08:00): one user number that scales the panel and the edge arrows together (1 = half the view)
 	static double PanelSize() { return clamp(RSQSM_Countdown.UCv("rsqsm_down_panelsize", 1.0), 0.5, 1.8); }
 	// Target Lines (owner 2026-11-07 11:0x): 0 Icon (the default), 1 Name
@@ -294,12 +336,12 @@ class RSQSM_DownHud ui
 		}
 		bool calm = RSQSM_A11y.Photo();
 		double tt = calm ? 0.0 : t / TICRATE;
-		// the "DOWN" over the panel while it is in the middle (Middle Then Sink), fading as it sinks
+		// the name over the panel while it is in the middle (Be Quick or Be Dead, BreathText) (Middle Then Sink), fading as it sinks
 		if (label > 0.01)
 		{
 			double cap = 64.0;
-			double lw = TextW("DOWN", cap);
-			Text("DOWN", MCX - lw * 0.5, top - 30.0 - cap * 0.5, cap, 9999.0, 0xFF3A2A, label);
+			double lw = min(TextW(BQ_NAME, cap), MW);
+			BreathText(BQ_NAME, MCX - lw * 0.5, top - 30.0 - cap * 0.5, cap, MW, 0xFF3A2A, label, t / double(TICRATE));
 		}
 
 		// ---- THE BAR --------------------------------------------------------------------------------------------------

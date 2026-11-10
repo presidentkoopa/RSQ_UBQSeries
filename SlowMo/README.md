@@ -152,9 +152,10 @@ It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** 
 
 ---
 
-## DOWN
+## Be Quick or Be Dead (DOWN)
 
-Off by default. Turn on **DOWN** and the killing blow from a monster holds you at 1 HP instead. A fall, a crusher, your
+Its name on the menu and the panel is **Be Quick or Be Dead** (code only, not shown yet), with the Q, the K and both D's of DEAD breathing in
+size (still in Photosensitive Mode); this page calls it DOWN for short. Off by default. Turn it on and the killing blow from a monster holds you at 1 HP instead. A fall, a crusher, your
 own shot, a barrel nobody set off or a hazard still kills you as normal.
 
 ![Going down: the colour drains, the DOWN panel appears big in the middle and sinks to its place (rig frames)](docs/readme/down_going_down.jpg)
@@ -199,7 +200,7 @@ hit and a ringing in your ears as you fall, a heartbeat that quickens as the clo
 up. Both controllers thump when the panel lands.
 
 **The panel.** The reward bar, a line for each target, and the DEATH IN clock in red seven-segment digits. By default it
-appears big in the middle of your view with the word DOWN over it, then sinks to its place under your gaze.
+appears big in the middle of your view with BE QUICK OR BE DEAD over it, then sinks to its place under your gaze.
 
 ![Outdoors while DOWN under DarkDoom Black: the blood-red world, the bar and DEATH IN (rig frame)](docs/readme/down_courtyard.jpg)
 ![Up again: the colour comes back, and RSQ VisualRewards says REVIVE (rig frame)](docs/readme/down_revive.jpg)
@@ -282,7 +283,7 @@ the bars and DOWN's look are yours.
 | Look | Colour Drain (off) · Shot Trails · Missile Wakes · Stored Slow-Mo Bar · Countdown Bar · Bar Animation · Bar Colour (Green; 17 colours or Random) |
 | Your Triggers | Slow Motion Key · Shootdodge · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block · Quick Grenade · Training Remote |
 | Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Score · Gun Bonsai VR · Other Mods |
-| DOWN | DOWN (off) · DOWN Music · Clock (9 s) · Bar Step (3 s) · Slowest Clock Drain (0.25) · Time: Small Monster (1 s), Lost Soul (0.5 s), Big Monster (2 s), Cyberdemon / Mastermind (10 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
+| Be Quick or Be Dead | Be Quick or Be Dead (off) · Music · Clock (9 s) · Bar Step (3 s) · Slowest Clock Drain (0.25) · Time: Small Monster (1 s), Lost Soul (0.5 s), Big Monster (2 s), Cyberdemon / Mastermind (10 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
 | Heavy Hit Slowdown | Heavy Hit Slowdown · Heavy Hit Size (75% of max health) · Arch-Vile Blast · Blasted Off Your Feet · Hit From Behind · Armour Broken · Cooldown (No Limit; Once per 20 s, Once per 60 s, Use Shared) |
 | Test and Debug | Ease In (0.15 s) · Ease Out (0.4 s) · Range (3000) · Sound Follows (1.0) · Round Speed (14) · Slow Me Too Strength (1.0) · Auto Cooldown (25 s) · Shootdodge World Speed (0.10), Leap (12), Hang (0.5) · Wrist Gap (0.16 m) · Wrist Hold (12 tics) · Reload Time (1200 ms) · Close Call Time (700 ms) · Blast Time (3000 ms) · Low Health At (25) · Adrenaline To Start (25), Full Meter (10 s), Per Kill (12), Per Near Miss (4) · Lean Needed (0.06 m) · Lean Baseline (2 s) · Smooth Range (1024) · Smooth Walkers (12) · Colour Drain Amount (0.35) · Bar Size (1.5; only without RSQ Miniboss) · Debug Log |
 

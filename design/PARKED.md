@@ -10,7 +10,8 @@ to design/PLANNED_PROJECTS.md.
   A toggle option for preference (owner 05:49), off by default. BUILT 11-10 (sight.zs Sparkle; Beam Sparkle (Quest), off). Code only.
 
 - DOWN's player-facing name (owner 2026-11-07 06:31): "Be Quick or Be Dead", with some of its letters breathing
-  in size. Player-facing only (menu and plate); the code keeps the name DOWN. Later.
+  in size. Player-facing only (menu and plate); the code keeps the name DOWN. BUILT 11-10 (downhud.zs BreathText,
+  menutitle.zs): the Q, K and both D's breathe. Code only.
 
 ## Rig clutter ("a lot going on", owner 2026-11-08 17:31) — DONE 11-10: owner picked 3 and 4
 Owner: "im not saying we should change anything, but ... this looks like a LOT going on". My four suggestions (he asked "all of them?"; parked 17:40):
