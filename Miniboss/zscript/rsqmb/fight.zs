@@ -182,6 +182,14 @@ extend class RSQMB_Handler
 		if (debug) Console.Printf("RSQMB window OPEN: boss %d segment %d (%.0f of %.0f) for %d s", b.idx, seg, b.segHP[seg], b.segMax, b.total);
 	}
 
+	// the latest open window of any miniboss (0 none): what SlowMo is told is left (service "window", Tick2's pulse)
+	void WindowEndNow()
+	{
+		int e = 0;
+		for (int i = 0; i < bosses.Size(); i++) { let o = bosses[i]; if (o && !o.done && o.winSeg >= 0) e = max(e, o.winEnd); }
+		windowEnd = e;
+	}
+
 	void WindowStep(RSQMB_Boss b)
 	{
 		if (b.winSeg < 0)
@@ -197,6 +205,7 @@ extend class RSQMB_Handler
 		b.winSeg = -1;
 		b.wordState = -9;
 		b.glowSent = -1;
+		WindowEndNow();
 		int n = TierUp(b, by);
 		if (debug) Console.Printf("RSQMB window MISSED: boss %d segment %d left %.0f%%: tier +%d, %d monsters asked%s", b.idx, seg, f * 100, by, n,
 			tierMapWide ? " (map-wide)" : "");
@@ -213,6 +222,7 @@ extend class RSQMB_Handler
 			Actor p = PlayerOf(who);
 			if (p) Award(p, "Thrall Slow Kill", 100 * left);
 			b.winSeg = -1;
+			WindowEndNow();     // the window closed early: SlowMo's slow and its bar end with it (owner 11-10)
 			if (debug) Console.Printf("RSQMB segment %d BROKEN in the window, step %d of %d (%d left): pays %d", seg, b.total - left + 1, b.total, left, 100 * left);
 		}
 		else if (debug) Console.Printf("RSQMB segment %d broken (no window: no thrall stands)", seg);

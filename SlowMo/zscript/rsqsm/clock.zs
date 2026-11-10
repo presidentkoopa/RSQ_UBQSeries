@@ -984,6 +984,9 @@ class RSQSM_Clock : EventHandler
 
 		// SLOW MOTION LENGTH: with Adrenaline off, the held slow motion lets go by itself when its time is up
 		if (on && heldUntil > 0 && Cv("rsqsm_adrenaline", 0) == 0 && level.maptime >= heldUntil) Aim(false, heldWho, "length");
+		// THE MINIBOSS WINDOW ENDS WHEN IT ENDS (owner 11-10: the bar must be honest): its pulse never outlasts what RSQ
+		// Miniboss says is left, so a segment broken early ends the slow (and the countdown bar) with the window
+		if (pulseUntil > level.maptime && pulseSrc == "miniboss") pulseUntil = min(pulseUntil, level.maptime + MinibossWindow());
 		// Where the clock is heading: the toggle, then a pulse, then full speed.
 		if (on) target = Depth();
 		else if (pulseUntil > 0)

@@ -484,6 +484,7 @@ class RSQMB_Handler : EventHandler
 		if (b.done) return;
 		bool greedy = b.Living() > 0 && !b.enraged;
 		b.Finish();
+		WindowEndNow();    // its window (if open) ends with it: SlowMo's slow and bar too (fight.zs)
 		FxBossDied(b);
 		FightDeath(b);     // fight.zs: the map-wide wave in its colour, then the re-roll
 		if (b.enraged) EndRage(b);
