@@ -13,6 +13,15 @@ jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. It
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
 
+Held for Grapple 2.0 (owner 11-10 "Hold all for Grapple 2.0"), from the 11-10 code read (Grapple/README_draft.md):
+the Whip-Instead-of-Hook snag flings you toward the map origin with the defaults (whip.zs:168-196 never sets ogPoint;
+core.zs:454-456); Score's Indiana Jones / Swinging / Dismount never pay with the default OG wall hook (service.zs:326-331,
+348 count only PH_LATCH; the fling is PH_HOLD); climbing needs RSQ Distance Grab's grab keys since the Grab Rope keys went
+11-10 (the rsqgr_grab netevent is dead); the Rope-mode arrived branch of Pull is unreachable (core.zs:1009-1031); Grab
+Reach / Climb Speed Cap / Reel Speed rows do nothing in Rope mode; the dead 'swish' sound; Keep Momentum also changing
+Split Pull; stale comments (CVARINFO.txt:1, 4, 22; input.zs:4, 7; whip.zs:1) and credits (CREDITS.txt:7-8); the unused
+rsqgr_reset alias; dead fields gripLastOff / gripPending; Gun Bonsai VR's up_hook.zs:81 range fallback 1024 vs 780.
+
 ## Gun Bonsai VR's Big Pass
 "With GBOVR, it gates as much as it possibly can." A Vampire Survivors approach: design an enormous number of features
 per weapon (the lightsaber's dozen and more), then gate them behind weapon and player levels with branching paths.
