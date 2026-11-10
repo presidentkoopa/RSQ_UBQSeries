@@ -144,9 +144,9 @@ class RSQGN_Barrel : ExplosiveBarrel
 // BDVR: a class looked up from a String at run time, because a quoted class name is resolved when the script
 // compiles and would break this pack without that mod) -- here the class looked up is BD's barrel itself,
 // "ExplosiveBarrel1", since that is the thing we would be taking over (plain Brutal Doom without the VR pack has it too).
-//   - default (Replace Brutal Doom's Barrels off): with ExplosiveBarrel1 present we STAND DOWN -- the replacement
+//   - Replace Brutal Doom's Barrels off: with ExplosiveBarrel1 present we STAND DOWN -- the replacement
 //     is left as Brutal Doom made it, and its barrels are its own;
-//   - Replace Brutal Doom's Barrels on: CheckReplacement hands back RSQGN_Barrel both for ExplosiveBarrel (the map's
+//   - Replace Brutal Doom's Barrels on (the default since 11-10, owner): CheckReplacement hands back RSQGN_Barrel both for ExplosiveBarrel (the map's
 //     barrels, which BD would turn into ExplosiveBarrel1) AND for ExplosiveBarrel1 itself (anything that spawns BD's
 //     barrel by name).
 // The event handler runs BEFORE the DECORATE replacement chain is followed (GetReplacement asks the handlers first,
@@ -171,6 +171,17 @@ class RSQGN_BarrelSwap : StaticEventHandler
 	static int Kind()         { let c = CVar.FindCVar("rsqgn_barrel_kind"); return c ? c.GetInt() : 0; }
 	static double Debris()    { let c = CVar.FindCVar("rsqgn_barrel_debris"); return c ? clamp(c.GetFloat(), 0.0, 1.0) : 1.0; }
 	static int Cap()          { let c = CVar.FindCVar("rsqgn_barrel_cap"); return c ? clamp(c.GetInt(), 50, 4000) : 600; }
+
+	// SETTINGS GENERATION 1 (owner 11-10): Replace Brutal Doom's Barrels turns on once on a machine that ran an older build
+	// (the config keeps every value, so the new default alone would never reach it)
+	override void OnRegister()
+	{
+		let v = CVar.FindCVar("rsqgn_cfgver");
+		if (!v || v.GetInt() >= 1) return;
+		let r = CVar.FindCVar("rsqgn_barrel_replace_bd");
+		if (r) r.SetBool(true);
+		v.SetInt(1);
+	}
 
 	override void CheckReplacement(ReplaceEvent e)
 	{

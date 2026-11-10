@@ -125,7 +125,7 @@ headset.*
 |---|---|
 | Grenades | Grenades on/off · Replace Brutal Doom's Grenade · Start With (3) · Grenades in Levels · Singles a Map (4) · Packs of Three a Map (2) |
 | Throwing | Pin With Your Teeth · Alt Fire Changes Type · Grenade Types (All / Frag Only) · Your Fire Burns You (Auto: yes with Brutal Doom) |
-| Barrels | Barrels on/off · Explosion (Random, or #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column, #10 Neon Crescent) · Barrel Sound · Replace Brutal Doom's Barrels |
+| Barrels | Barrels on/off · Explosion (Random, or #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column, #10 Neon Crescent) · Barrel Sound · Replace Brutal Doom's Barrels (on) |
 | Explosions | Grenade Explosion (New / Original) · Brutal Doom's Launchers · Explosion Colour (Normal, Room Complement, Kill Colour, Grenade Kind) · Explosion Lights (Off, Simple, Full) · Debris · Contexts: Wall, Low Ceiling, Open Sky, Water, Liquid Floors, Chain, Crowd · Chain Escalation · Chain Mega Every (3) · Chain Mushroom Every (5) · Screen Kick on Chains |
 | Shooting | Shoot Thrown Grenades · Only in Slow-Mo · Faster in Slow-Mo · Skeet Slow-Mo (Gun Bonsai VR) |
 | Test and Debug | Fuse (3 s) · Throw Speed · Throw Strength · Arc · Gravity · Floor and Wall Bounce · Ground Drag · Shot Reach · Slow-Mo Speed · the teeth's reach and hold · Effects Cap · Debug Log |
