@@ -1,7 +1,7 @@
 // ============================================================================
 // THE ROSTER ROWS (owner 2026-11-09, design/SCORE_EXPANSION.md B and C): what was killed, from RSQ Monsters' roster --
-// the 13-colour RSQ ladder (CH colour tiers and MeatGrinder in-place tiers), the EX boss forms, the CH spawn dial, the
-// tier-change flash, and MeatGrinder's reactive deaths and Abyss split. "I want a big tree to prune": every row is
+// the 13-colour RSQ ladder (ColorfulHell's colour tiers), the EX boss forms, the CH spawn dial and the tier-change
+// flash (MeatGrinder's rows, Gang War and Mixed Bag went with MeatGrinder, 11-10). "I want a big tree to prune": every row is
 // built, and every row has its own on/off switch (server cvar rs_score_rr_*, on by default; Score's page, "Monster
 // Roster Rows"), so pruning is a menu choice before it is a deletion.
 //
@@ -11,18 +11,16 @@
 //
 // THE HOOK (boost.zs, "THE HOOK FOR A LATER MONSTER SET"): the tier rows ARE RS_ScoreTierRow subclasses -- one group
 // per kill, the higher Mult wins. One difference, and why: the hook expects one inventory token per tier; the roster
-// carries ONE token whose amount is the tier (CH, RS_ZomTierToken) or a field (MG, Tier). So each tier row answers its
+// carries ONE token whose amount is the tier (RS_ZomTierToken). So each tier row answers its
 // tier number and asks the service, instead of answering Token(). EX is its own group, so a Black Boss EX pays both.
 // The rows are seeded through boost.zs's seed list (one line), like the champion rows.
 //
 // WHAT THE BASE ALREADY PAYS. A CH colour is its own class with its own Health, so a CH tier's health is in the base;
 // these rows pay for its powers and rarity, the way the champion colour rows do (0.25 each, Bronze/Silver 0.5,
-// Gold 0.75, a risen Legendary 1.5). A MeatGrinder tier sets health on the live body, so today its base is the
-// Common's (SCORE_EXPANSION.md A1, the other lane's fix); the rows do not try to make that up.
+// Gold 0.75, a risen Legendary 1.5).
 //
 // THE LADDER'S ORDER IS NOT ITS STRENGTH. Tier 12 Cyan and 13 Brown are not stronger than 6 Red (CH weights: Cyan 120,
-// Brown 65, Red 55 of the imp's 1843; MG health x1.8, x3.0, x5.0). So the rows rank a colour by the CH dial's rarity and
-// MG's health curve together: Common 1, Green 2, Blue 3, Cyan 4, Purple 5, Yellow 6, FireBlu 7, Abyss 7, Brown 8,
+// Brown 65, Red 55 of the imp's 1843). So the rows rank a colour by the CH dial's rarity: Common 1, Green 2, Blue 3, Cyan 4, Purple 5, Yellow 6, FireBlu 7, Abyss 7, Brown 8,
 // Gray 8, Red 9, Black 10, White 11. "Top" is rank 10+ (the Black and White bosses) or an EX form; "low" is rank 3 or less.
 //
 // Pay, per row, is a share of the kill's base like every bonus, charged against the family caps and the kill cap.
@@ -38,9 +36,7 @@ class RS_RosterSeed play
 			"RS_RR_TierFireBlu", "RS_RR_TierAbyss", "RS_RR_TierBrown", "RS_RR_TierGray", "RS_RR_TierRed",
 			"RS_RR_TierBlack", "RS_RR_TierWhite", "RS_RR_EXBoss",
 			"RS_RR_Rarity", "RS_RR_FullSpectrum", "RS_RR_ColourChain", "RS_RR_KeepTheChange", "RS_RR_FreshPaint",
-			"RS_RR_Upset", "RS_RR_TierSlayer", "RS_RR_GangWar", "RS_RR_MixedBag",
-			"RS_RR_Headhunter", "RS_RR_MGBarbecue", "RS_RR_MGIceBreaker", "RS_RR_MGLiveWire", "RS_RR_MGPop",
-			"RS_RR_MGCleaved", "RS_RR_MGPinata", "RS_RR_Meltdown", "RS_RR_Splitter", "RS_RR_CutShort"
+			"RS_RR_Upset", "RS_RR_TierSlayer"
 		};
 		for (int i = 0; i < rows.Size(); i++) into.Push(rows[i]);
 	}
@@ -49,11 +45,8 @@ class RS_RosterSeed play
 // ---- the readers --------------------------------------------------------------------------------------------
 class RS_Roster play
 {
-	// MG reactive deaths (RSQMN_RosterService "mg.death")
-	enum EMGDeath { MGD_NONE, MGD_HEAD, MGD_HEADBURST, MGD_GIB, MGD_BURN, MGD_FREEZE, MGD_SHOCK, MGD_MELT }
-
 	static int Ask(String req, Actor v, int arg = 0) { return v ? RS_Svc.Int(RS_Svc.MONSTERS, req, arg, v) : -1; }
-	static int SetOf(Actor v) { return Ask("set", v); }    // 1 CH, 2 MG, -1 not the roster
+	static int SetOf(Actor v) { return Ask("set", v); }    // 1 CH, -1 not the roster
 	static int Tier(Actor v) { return Ask("tier", v); }   // 1..13, -1
 	static bool EX(Actor v)  { return Ask("ex", v) == 1; }
 
@@ -113,14 +106,6 @@ class RS_Roster play
 		return t == "gun.pistol" || t == "punch" || t == "kick" || t == "shove" || pre == "glove";
 	}
 
-	// the MG reactive death this kill brings (the killing blow's damage: health before it, less health after)
-	static int MGDeath(RS_ScoreEvent ev)
-	{
-		if (!ev.victim) return -1;
-		int dmg = ev.healthBefore >= 0 ? ev.healthBefore - ev.victim.health : -1;
-		return Ask("mg.death", ev.victim, dmg);
-	}
-	static bool MGKill(RS_ScoreEvent ev) { return ev.killer && SetOf(ev.victim) == 2; }
 }
 
 // The rows' memory for this map (one per level, saved with it; gone at the next map, as "in one map" asks).
@@ -132,11 +117,6 @@ class RS_RosterBook : Thinker
 	int chainCount[MAXPLAYERS];
 	int specMask[MAXPLAYERS];      // Full Spectrum: bit (tier - 1)
 	bool specPaid[MAXPLAYERS];
-	int headRun[MAXPLAYERS];       // Headhunter: head-pops in a row, and the last one's tic
-	int headTic[MAXPLAYERS];
-	int lastSet[MAXPLAYERS];       // Mixed Bag: the set of your last roster kill, and when
-	int lastSetTic[MAXPLAYERS];
-	Array<int> spGroup, spKiller, spSouls;                // Splitter: an Abyss split's group, who killed the parent, souls since
 
 	static RS_RosterBook Get()
 	{
@@ -146,12 +126,6 @@ class RS_RosterBook : Thinker
 		b = new("RS_RosterBook");
 		b.ChangeStatNum(STATNUM);
 		return b;
-	}
-
-	int SplitAt(int g)
-	{
-		for (int i = 0; i < spGroup.Size(); i++) if (spGroup[i] == g) return i;
-		return -1;
 	}
 }
 
@@ -165,8 +139,8 @@ class RS_RosterRow : RS_ScoreBonus
 
 // ================================================================================ the tier rows (the hook)
 
-// One colour of the ladder, on a player's kill (CH or MG). Common has no row: it is the ordinary spawn (630 of the
-// imp's 1843, every MG map spawn), and a row on it would pay most kills for nothing.
+// One colour of the ladder, on a player's kill. Common has no row: it is the ordinary spawn (630 of the
+// imp's 1843), and a row on it would pay most kills for nothing.
 class RS_RosterTierRow : RS_ScoreTierRow
 {
 	virtual int TierNo() const { return 0; }
@@ -226,7 +200,7 @@ class RS_RR_EXBoss : RS_RosterTierRow
 
 // Rarity: how rare the CH spawn roll was ("spawn.odds", 1 in N, the family's dial with the menu's gates). Pays from
 // 1 in 20: 0.1 per doubling past 1 in 10, at most 1.0 (1 in 34 Red imp 0.18, 1 in 721 Black 0.62, 1 in 1443 White
-// 0.72, an EX Black 0.94; the imp's dial with the default gates). Never for MG (never rolled) or a body that changed tier.
+// 0.72, an EX Black 0.94; the imp's dial with the default gates). Never for a body that changed tier.
 class RS_RR_Rarity : RS_RosterRow
 {
 	const FROM = 20;
@@ -244,7 +218,7 @@ class RS_RR_Rarity : RS_RosterRow
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid >= 0.5; }
 }
 
-// Full Spectrum: all 13 ladder colours (Common included) killed by you in one map, CH or MG. Paid once, on the kill that
+// Full Spectrum: all 13 ladder colours (Common included) killed by you in one map. Paid once, on the kill that
 // completes it (Rainbow's top pay for our ladder).
 class RS_RR_FullSpectrum : RS_RosterRow
 {
@@ -277,7 +251,7 @@ class RS_RR_FullSpectrum : RS_RosterRow
 }
 
 // Colour Chain (Radiant Silvergun): the same colour killed N times in a row. Any other kill breaks it; Common does not
-// chain (every MG map spawn is Common). Pays from the third: 0.15 each step, at most 0.75.
+// chain. Pays from the third: 0.15 each step, at most 0.75.
 class RS_RR_ColourChain : RS_RosterRow
 {
 	const PER = 0.15;
@@ -307,7 +281,7 @@ class RS_RR_ColourChain : RS_RosterRow
 	}
 }
 
-// Keep the Change (owner's name): killed while it flashes, before the tier change lands (RS_Retier's job, CH and MG).
+// Keep the Change (owner's name): killed while it flashes, before the tier change lands (RS_Retier's job).
 // Only a change UP (by rank); 0.5 when it was becoming a boss.
 class RS_RR_KeepTheChange : RS_RosterRow
 {
@@ -376,254 +350,4 @@ class RS_RR_TierSlayer : RS_RosterRow
 		return (RS_Roster.Top(ev.victim) && RS_Roster.WeakTool(ev)) ? MULT : 0.0;
 	}
 	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
-}
-
-// Gang War: a CH monster kills an MG monster, or the reverse. Paid like Infighter, to every player (or to you, for a
-// monster your grenade turned).
-class RS_RR_GangWar : RS_RosterRow
-{
-	const MULT = 0.3;
-	override Name RowCvar() const { return 'rs_score_rr_gangwar'; }
-	override int Family() const { return FAM_EFFICIENCY; }
-	override String DisplayName() const { return "Gang War"; }
-	override double Ask(RS_ScoreEvent ev)
-	{
-		if (!ev.monsterOnMonster && !ev.turncoat) return 0.0;
-		let k = RS_Roster.MonsterKiller(ev);
-		if (!k) return 0.0;
-		int a = RS_Roster.SetOf(k), b = RS_Roster.SetOf(ev.victim);
-		return (a > 0 && b > 0 && a != b) ? MULT : 0.0;
-	}
-}
-
-// Mixed Bag: both sets in one combo -- this kill and your kill of the other set (CH / MG) within 3 s (the combo chain's
-// window).
-class RS_RR_MixedBag : RS_RosterRow
-{
-	const MULT = 0.3;
-	const WINDOW = 105;
-	override Name RowCvar() const { return 'rs_score_rr_mixedbag'; }
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Mixed Bag"; }
-	override double Ask(RS_ScoreEvent ev)
-	{
-		int p = ev.killerNum;
-		if (!ev.killer || p < 0) return 0.0;
-		int s = RS_Roster.SetOf(ev.victim);
-		let b = RS_RosterBook.Get();
-		if (s < 1 || b.lastSet[p] < 1 || b.lastSet[p] == s) return 0.0;
-		return level.maptime - b.lastSetTic[p] <= WINDOW ? MULT : 0.0;
-	}
-	override void Commit(RS_ScoreEvent ev)
-	{
-		int p = ev.killerNum;
-		if (!ev.killer || p < 0) return;
-		int s = RS_Roster.SetOf(ev.victim);
-		if (s < 1) return;
-		let b = RS_RosterBook.Get();
-		b.lastSet[p] = s;
-		b.lastSetTic[p] = level.maptime;
-	}
-}
-
-// ================================================================================ MeatGrinder
-
-// Headhunter: an MG head-pop (its reactive head death, burst or not), and a streak of them: 0.15, +0.1 for each
-// head-pop before it in a row (each within 5 s, any other kill breaks it), at most 0.65.
-class RS_RR_Headhunter : RS_RosterRow
-{
-	const MULT = 0.15;
-	const PER = 0.1;
-	const MAXMULT = 0.65;
-	const WINDOW = 175;
-	override Name RowCvar() const { return 'rs_score_rr_headhunter'; }
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Headhunter"; }
-	static bool Popped(RS_ScoreEvent ev)
-	{
-		if (!RS_Roster.MGKill(ev)) return false;
-		int d = RS_Roster.MGDeath(ev);
-		return d == RS_Roster.MGD_HEAD || d == RS_Roster.MGD_HEADBURST;
-	}
-	static int Earlier(RS_ScoreEvent ev)
-	{
-		let b = RS_RosterBook.Get();
-		int p = ev.killerNum;
-		return (b.headRun[p] > 0 && level.maptime - b.headTic[p] <= WINDOW) ? b.headRun[p] : 0;
-	}
-	override double Ask(RS_ScoreEvent ev)
-	{
-		if (ev.killerNum < 0 || !Popped(ev)) return 0.0;
-		return min(MAXMULT, MULT + PER * Earlier(ev));
-	}
-	override void Commit(RS_ScoreEvent ev)
-	{
-		int p = ev.killerNum;
-		if (!ev.killer || p < 0) return;
-		let b = RS_RosterBook.Get();
-		if (Popped(ev)) { b.headRun[p] = Earlier(ev) + 1; b.headTic[p] = level.maptime; }
-		else b.headRun[p] = 0;
-	}
-}
-
-// THE REACTIVE DEATHS FEED THE ROWS SCORE ALREADY HAS. An MG monster's burn, freeze, shock, exploding head and gib
-// are its own death states, not the facts those rows read (a tool, a tag, a champion's token, the gib threshold), so
-// they went unseen. Each row below shows the SAME NAME, family and pay as the row it feeds, fires only on an MG kill
-// with that death, and stands down when the original row fires on the same kill (it asks it), so a kill never shows
-// the name twice. Melt has no row of its own yet: Meltdown is new.
-class RS_RosterFeedRow : RS_RosterRow
-{
-	transient RS_ScoreBonus orig;
-	virtual Name Original() const { return 'None'; }
-	virtual bool Matches(RS_ScoreEvent ev, int death) { return false; }
-	virtual double Pay() const { return 0.0; }
-	bool OriginalFires(RS_ScoreEvent ev)
-	{
-		if (Original() == 'None') return false;
-		if (!orig)
-		{
-			class<RS_ScoreBonus> c = Original();
-			if (c) orig = RS_ScoreBonus(new(c));
-		}
-		return orig && orig.Evaluate(ev) > 0.0;
-	}
-	override double Ask(RS_ScoreEvent ev)
-	{
-		if (!RS_Roster.MGKill(ev)) return 0.0;
-		int d = RS_Roster.MGDeath(ev);
-		if (d <= 0 || !Matches(ev, d) || OriginalFires(ev)) return 0.0;
-		return Pay();
-	}
-}
-
-class RS_RR_MGBarbecue : RS_RosterFeedRow
-{
-	override Name RowCvar() const { return 'rs_score_rr_mgburn'; }
-	override Name Original() const { return 'RS_Row_Barbecue'; }
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Barbecue"; }
-	override double Pay() const { return RS_Row_Barbecue.MULT; }
-	override bool Matches(RS_ScoreEvent ev, int death) { return death == RS_Roster.MGD_BURN; }
-}
-
-class RS_RR_MGIceBreaker : RS_RosterFeedRow
-{
-	override Name RowCvar() const { return 'rs_score_rr_mgfreeze'; }
-	override Name Original() const { return 'RS_Row_IceBreaker'; }
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Ice Breaker"; }
-	override double Pay() const { return RS_Row_IceBreaker.MULT; }
-	override bool Matches(RS_ScoreEvent ev, int death) { return death == RS_Roster.MGD_FREEZE; }
-}
-
-class RS_RR_MGLiveWire : RS_RosterFeedRow
-{
-	override Name RowCvar() const { return 'rs_score_rr_mgshock'; }
-	override Name Original() const { return 'RS_Row_LiveWire'; }
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Live Wire"; }
-	override double Pay() const { return RS_Row_LiveWire.MULT; }
-	override bool Matches(RS_ScoreEvent ev, int death) { return death == RS_Roster.MGD_SHOCK; }
-}
-
-// the exploding head (a head-pop from a heavy hit, Monsters' "explode heads")
-class RS_RR_MGPop : RS_RosterFeedRow
-{
-	override Name RowCvar() const { return 'rs_score_rr_mgpop'; }
-	override Name Original() const { return 'RS_Row_Pop'; }
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Pop!"; }
-	override double Pay() const { return RS_Row_Pop.MULT; }
-	override bool Matches(RS_ScoreEvent ev, int death) { return death == RS_Roster.MGD_HEADBURST; }
-}
-
-// an MG gib by a melee blow: Cleaved's kill (the same melee kinds Cleaved counts)
-class RS_RR_MGCleaved : RS_RosterFeedRow
-{
-	override Name RowCvar() const { return 'rs_score_rr_mgcleaved'; }
-	override Name Original() const { return 'RS_Bonus_Cleaved'; }
-	override int Family() const { return FAM_MELEE; }
-	override String DisplayName() const { return "Cleaved"; }
-	override double Pay() const { return RS_Bonus_Cleaved.MULT; }
-	override bool Matches(RS_ScoreEvent ev, int death)
-	{
-		if (death != RS_Roster.MGD_GIB) return false;
-		int k = RS_Melee.Kind(ev);
-		return !(k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH || k == RS_Melee.MK_HOOK || k == RS_Melee.MK_GRENADE || k == RS_Melee.MK_THROW);
-	}
-}
-
-// an MG gib of a coloured tier by anything else: Pinata's kill (the roster's coloured tiers are its champions)
-class RS_RR_MGPinata : RS_RosterFeedRow
-{
-	override Name RowCvar() const { return 'rs_score_rr_mgpinata'; }
-	override Name Original() const { return 'RS_Row_Pinata'; }
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Pinata"; }
-	override double Pay() const { return RS_Row_Pinata.MULT; }
-	override bool Matches(RS_ScoreEvent ev, int death)
-	{
-		if (death != RS_Roster.MGD_GIB || RS_Roster.Tier(ev.victim) < 2) return false;
-		int k = RS_Melee.Kind(ev);
-		return k == RS_Melee.MK_NONE || k == RS_Melee.MK_FINISH || k == RS_Melee.MK_HOOK || k == RS_Melee.MK_GRENADE || k == RS_Melee.MK_THROW;
-	}
-}
-
-// Meltdown (new): an MG monster melted (acid / melt damage). Barbecue's pay.
-class RS_RR_Meltdown : RS_RosterFeedRow
-{
-	const MULT = 0.25;
-	override Name RowCvar() const { return 'rs_score_rr_meltdown'; }
-	override int Family() const { return FAM_STYLE; }
-	override String DisplayName() const { return "Meltdown"; }
-	override double Pay() const { return MULT; }
-	override bool Matches(RS_ScoreEvent ev, int death) { return death == RS_Roster.MGD_MELT; }
-}
-
-// Splitter: you kill an Abyss MG monster and both lost souls it split into (paid on the second soul).
-class RS_RR_Splitter : RS_RosterRow
-{
-	const MULT = 0.75;
-	override Name RowCvar() const { return 'rs_score_rr_splitter'; }
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Splitter"; }
-	override double Ask(RS_ScoreEvent ev)
-	{
-		if (!ev.killer || ev.killerNum < 0) return 0.0;
-		int g = RS_Roster.Ask("split.group", ev.victim);
-		if (g <= 0 || RS_Roster.Ask("split.child", ev.victim) != 1) return 0.0;
-		let b = RS_RosterBook.Get();
-		int at = b.SplitAt(g);
-		return (at >= 0 && b.spKiller[at] == ev.killerNum && b.spSouls[at] == 1) ? MULT : 0.0;
-	}
-	override void Commit(RS_ScoreEvent ev)
-	{
-		if (!ev.killer || ev.killerNum < 0) return;
-		int g = RS_Roster.Ask("split.group", ev.victim);
-		if (g <= 0) return;
-		let b = RS_RosterBook.Get();
-		int at = b.SplitAt(g);
-		if (RS_Roster.Ask("split.child", ev.victim) != 1)
-		{
-			if (at < 0) { b.spGroup.Push(g); b.spKiller.Push(ev.killerNum); b.spSouls.Push(0); }
-			return;
-		}
-		if (at >= 0 && b.spKiller[at] == ev.killerNum) b.spSouls[at]++;
-	}
-	override bool BigMoment(RS_ScoreEvent ev, double paid) const { return paid > 0; }
-}
-
-// Cut Short: you kill a top-aggression MG monster (its tier fires +MISSILEEVENMORE: Yellow, Red, Black, White) while it
-// is in its own attack (its Missile or Melee sequence; RS_Melee.InAttack, the state before Die changes it).
-class RS_RR_CutShort : RS_RosterRow
-{
-	const MULT = 0.4;
-	override Name RowCvar() const { return 'rs_score_rr_cutshort'; }
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Cut Short"; }
-	override double Ask(RS_ScoreEvent ev)
-	{
-		if (!RS_Roster.MGKill(ev)) return 0.0;
-		return (RS_Roster.Ask("mg.behave", ev.victim) >= 3 && RS_Melee.InAttack(ev.victim)) ? MULT : 0.0;
-	}
 }

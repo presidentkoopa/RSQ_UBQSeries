@@ -11,58 +11,36 @@
 //
 // THE REQUESTS (objectArg is the monster; every answer is -1 for "not ours" /
 // "unknown"):
-//   "set"          1 a CH colour-tier monster (it carries RS_ZomTierToken),
-//                  2 a MeatGrinder monster (RS_MGMonster)
-//   "tier"         its RSQ ladder tier, 1 Common .. 13 Brown (CH: the token's
-//                  amount; MG: its Tier field)
+//   "set"          1 a CH colour-tier monster (it carries RS_ZomTierToken)
+//   "tier"         its RSQ ladder tier, 1 Common .. 13 Brown (the token's amount)
 //   "ex"           1 a CH EX boss form (class name ends "EX"), else 0
 //   "spawn.odds"   N for "1 in N": how rare the CH colour dial's roll was for this
 //                  colour in its family, with the menu's gates applied the way the
 //                  stubs apply them (off = re-roll, half = half re-roll, Black Boss
-//                  off -> Red, White Boss off -> Black, the EX share). -1 for MG
-//                  (never rolled) and for a body that got its colour from a tier
+//                  off -> Red, White Boss off -> Black, the EX share). -1 for a body that got its colour from a tier
 //                  change (stamped), or a class not on the ladder.
 //   "tier.next"    the tier a running tier-change flash (RS_RetierJob) will give
 //                  it, or -1 when it is not flashing
 //   "tier.ago"     tics since its last live tier change (the flash path), or -1
 //   "tier.from"    the tier it had before that change, or -1
-//   "mg.death"     MG only: the reactive death it takes. intArg = the killing
-//                  blow's damage. 0 its own death, 1 head-pop, 2 exploding head,
-//                  3 gib, 4 burn, 5 freeze, 6 shock, 7 melt. The router's own
-//                  answer when it has already run (mgPendingDeathSeq); otherwise
-//                  the router's rule (MG_AssignDeathReaction) asked the same way,
-//                  because which event handler hears a death first is not fixed.
-//   "mg.behave"    MG only: the tier's aggression (MGBehave: 0..1 none,
-//                  2 +MISSILEMORE, 3 +MISSILEEVENMORE)
-//   "split.group"  an Abyss death-split: the group number shared by the Abyss
-//                  monster that split and the lost souls it split into; 0 none
-//   "split.child"  1 a lost soul born of a death-split, else 0
-//   "headshot"     1 the newest blow was a head shot: RSQ Score's head check when loaded
-//                  and on (any monster), else the MeatGrinder set's own head band (MG only)
-//   GetString "family"  the Doom family class of a MeatGrinder body (RSQ Score's head check)
+//   "headshot"     1 the newest blow was a head shot (RSQ Score's head check, when loaded and on)
 //   "retier"       [11-09 miniboss rework] A TIER CHANGE ASKED BY ANOTHER MOD (RSQ Miniboss: a missed window, a
 //                  lost life; design/MINIBOSS_REWORK.md): intArg = the tier wanted (1..13), doubleArg > 0 = instant
 //                  (no flash: RSQ Miniboss's hub reset). RS_Retier.Request, the same path as the console's
 //                  rs_retier: the tier flash, then the CH class swap (a NEW actor: the asker finds it by
-//                  "tier.ago") or MG's in-place tier. 1 asked, 0 not a ladder monster (or dead).
+//                  "tier.ago"). 1 asked, 0 not a ladder monster (or dead).
+// (MeatGrinder went 11-10, owner: "mg.death", "mg.behave", the Abyss split and "family" are no longer answered (-1, "").)
 //
-// WHERE THE STAMPS ARE PUT (two lines each, marked "RSQ Score read-out"):
-//   RS_RetierJob.Tick (RS_Retier.zs), after the swap / in-place tier: RS_TierStamp.
-//   RS_MGMonster.MG_DeathSplit (RS_MGMonsters.zs): RS_SplitStamp on the parent and
-//   each lost soul.
+// WHERE THE STAMP IS PUT: RS_RetierJob.Tick (RS_Retier.zs), after the swap: RS_TierStamp.
 // ============================================================================
 
 class RSQMN_RosterService : Service
 {
-	// "family" (11-09, RSQ Score's head check): objectArg a monster -> its Doom family's class name for a MeatGrinder
-	// body ("DoomImp"), "" otherwise
 	override String GetString(String request, string stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
-		if (request == "family") return RS_ScoreReadout.FamilyName(Actor(objectArg));
 		// "set.class" (11-09, RSQ Minibosses' Miniboss From / Thralls From): stringArg any monster type (vanilla,
-		// Brutal Doom's, CH, MG), intArg the set (2 MeatGrinder, 3 ColorfulHell), doubleArg the ladder tier (CH: the
-		// class at that colour; MG: its one class, the caller retiers it) -> the same family's class in that set, ""
-		// when the type has no Doom family or the set has none for it
+		// Brutal Doom's, CH), intArg the set (3 ColorfulHell), doubleArg the ladder tier -> the same family's class at
+		// that colour, "" when the type has no Doom family or the set has none for it
 		if (request == "set.class") return RS_BossfightPick.SetClass(stringArg, intArg, int(doubleArg));
 		return "";
 	}
@@ -70,12 +48,11 @@ class RSQMN_RosterService : Service
 	override int GetInt(String request, string stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		// by type, no monster needed (11-09, RSQ Minibosses' Miniboss From / Thralls From): stringArg a class name ->
-		// "class.set" 1 ColorfulHell, 2 MeatGrinder, -1 neither; "class.tier" its CH ladder tier, 0 none
+		// "class.set" 1 ColorfulHell, -1 not on the ladder; "class.tier" its CH ladder tier, 0 none
 		if (request == "class.set")
 		{
 			class<Actor> c = stringArg;
 			if (!c) return -1;
-			if ((class<RS_MGMonster>)(c)) return 2;
 			return RS_TierLadder.TierOf(stringArg) > 0 ? 1 : -1;
 		}
 		if (request == "class.tier") return RS_TierLadder.TierOf(stringArg);
@@ -94,20 +71,15 @@ class RSQMN_RosterService : Service
 		}
 		if (request == "tier.ago")    { let s = RS_TierStamp(mo.FindInventory("RS_TierStamp")); return s ? level.maptime - s.tic : -1; }
 		if (request == "tier.from")   { let s = RS_TierStamp(mo.FindInventory("RS_TierStamp")); return s ? s.fromTier : -1; }
-		if (request == "mg.death")    return RS_ScoreReadout.MGDeath(mo, intArg);
-		if (request == "mg.behave")   { let m = RS_MGMonster(mo); return m ? m.MGBehave(m.Tier) : -1; }
-		if (request == "split.group") { let s = RS_SplitStamp(mo.FindInventory("RS_SplitStamp")); return s ? s.group : 0; }
-		// [11-09 head shots] RSQ Score's head check answers for every monster when it is loaded and on (RS_ScoreService
-		// "headshot"); without it, the MeatGrinder set's own head band (RS_MGMonster.DamageMobj), MG only
+		// [11-09 head shots] RSQ Score's head check answers for every monster when it is loaded and on (RS_ScoreService)
 		if (request == "headshot")    return RS_ScoreReadout.Headshot(mo);
-		if (request == "split.child") { let s = RS_SplitStamp(mo.FindInventory("RS_SplitStamp")); return (s && s.child) ? 1 : 0; }
 		return -1;
 	}
 }
 
 class RS_ScoreReadout play
 {
-	// [11-09 head shots] the head-shot verdict: RSQ Score's (asked by name, nothing links), else MG's own band
+	// [11-09 head shots] the head-shot verdict: RSQ Score's (asked by name, nothing links)
 	static int Headshot(Actor mo)
 	{
 		if (!mo) return -1;
@@ -118,46 +90,17 @@ class RS_ScoreReadout play
 			int v = s.GetInt("headshot", "", 0, 0, mo);
 			if (v >= 0) return v;
 		}
-		let m = RS_MGMonster(mo);
-		return m ? (m.mgLastWasHeadshot ? 1 : 0) : -1;
-	}
-
-	// [11-09 head shots] the Doom family of a MeatGrinder body (it derives from no Doom class), for RSQ Score's head
-	// check (RSQMN_RosterService GetString "family"): the vanilla class name, "" not ours. CH bodies are Doom classes.
-	static String FamilyName(Actor mo)
-	{
-		if (!RS_MGMonster(mo)) return "";
-		if (mo is "RS_MGZombieman")     return "ZombieMan";
-		if (mo is "RS_MGShotgunner")    return "ShotgunGuy";
-		if (mo is "RS_MGChaingunner")   return "ChaingunGuy";
-		if (mo is "RS_MGImp")           return "DoomImp";
-		if (mo is "RS_MGDemon")         return "Demon";
-		if (mo is "RS_MGSpectre")       return "Spectre";
-		if (mo is "RS_MGLostSoul")      return "LostSoul";
-		if (mo is "RS_MGCaco")          return "Cacodemon";
-		if (mo is "RS_MGPainElemental") return "PainElemental";
-		if (mo is "RS_MGRevenant")      return "Revenant";
-		if (mo is "RS_MGBaron")         return "BaronOfHell";
-		if (mo is "RS_MGHellKnight")    return "HellKnight";
-		if (mo is "RS_MGMancubus")      return "Fatso";
-		if (mo is "RS_MGArachnotron")   return "Arachnotron";
-		if (mo is "RS_MGArchvile")      return "Archvile";
-		if (mo is "RS_MGMastermind")    return "SpiderMastermind";
-		if (mo is "RS_MGCyberdemon")    return "Cyberdemon";
-		return "";
+		return -1;
 	}
 
 	static int SetOf(Actor mo)
 	{
 		if (!mo) return -1;
-		if (RS_MGMonster(mo)) return 2;
 		return TierOf(mo) > 0 ? 1 : -1;
 	}
 
 	static int TierOf(Actor mo)
 	{
-		let m = RS_MGMonster(mo);
-		if (m) return m.Tier;
 		int t = RS_Zom.GetTier(mo);
 		if (t <= 0) t = RS_TierLadder.TierOf(mo.GetClassName());   // (rig 11-09) a Common CH body carries no tier token
 		return t > 0 ? t : -1;
@@ -246,38 +189,6 @@ class RS_ScoreReadout play
 		return max(1, int(round(1.0 / p)));
 	}
 
-	// The MG reactive death (RS_MGMonster.MG_AssignDeathReaction's rule, read-only).
-	static int MGDeath(Actor mo, int damage)
-	{
-		let m = RS_MGMonster(mo);
-		if (!m) return -1;
-		let rd = CVar.FindCVar("rsq_mg_reactdeath");
-		if (rd && !rd.GetBool()) return 0;
-		String p = m.mgPendingDeathSeq;
-		if (p != "")
-		{
-			if (p == "DeathSeq_Head")   return m.mgHeadExplode ? 2 : 1;
-			if (p == "DeathSeq_Gib")    return 3;
-			if (p == "DeathSeq_Burn")   return 4;
-			if (p == "DeathSeq_Freeze") return 5;
-			if (p == "DeathSeq_Shock")  return 6;
-			if (p == "DeathSeq_Melt")   return 7;
-			return 0;
-		}
-		Name dt = m.DamageTypeReceived;
-		if (dt == 'Lightning' || dt == 'Electric') return 6;
-		if (dt == 'Melt' || dt == 'Acid')          return 7;
-		if (dt == 'Fire')                          return 4;
-		if (dt == 'Ice')                           return 5;
-		if (dt == 'Explosive' || (damage >= 0 && damage >= m.SpawnHealth())) return 3;
-		if (Headshot(m) == 1 && (m.Tier <= 1 || RS_MGMonster.MG_DismemberTieredOn()))
-		{
-			let eh = CVar.FindCVar("rsq_mg_explodeheads");
-			bool ehOn = (!eh || eh.GetBool());
-			return (ehOn && damage >= 60) ? 2 : 1;
-		}
-		return 0;
-	}
 }
 
 // A live tier change (the flash path), on the body that came out of it.
@@ -292,7 +203,7 @@ class RS_TierStamp : Inventory
 		+INVENTORY.UNTOSSABLE
 	}
 
-	// `a` is the body after the change (CH: the swapped-in class; MG: itself), `from` the tier before.
+	// `a` is the body after the change (the swapped-in class), `from` the tier before.
 	static void Put(Actor a, int from)
 	{
 		if (!a || a.health <= 0) return;
@@ -311,32 +222,6 @@ class RS_TierStamp : Inventory
 	}
 }
 
-// An Abyss death-split: the monster that split and the lost souls it split into share a group.
-class RS_SplitStamp : Inventory
-{
-	int group;
-	bool child;
-
-	Default
-	{
-		Inventory.MaxAmount 1;
-		+INVENTORY.UNDROPPABLE
-		+INVENTORY.UNTOSSABLE
-	}
-
-	// grp 0: a new group for the parent (returned); otherwise `a` is a child of grp.
-	static int Mark(Actor a, int grp)
-	{
-		if (!a) return 0;
-		bool isChild = grp > 0;
-		if (!isChild) grp = random[RSQSplit](1, 0x3FFFFFFF);
-		a.GiveInventory("RS_SplitStamp", 1);
-		let s = RS_SplitStamp(a.FindInventory("RS_SplitStamp"));
-		if (s) { s.group = grp; s.child = isChild; }
-		return grp;
-	}
-}
-
 // =====================================================================================================================
 // RSQ Monsters > Bossfight (owner 2026-11-09 07:45, "your rules are good"): Miniboss From / Thralls From. RSQ Minibosses
 // asks RSQMN_RosterService "set.class" for the same family in another set; nothing here spawns anything.
@@ -344,16 +229,10 @@ class RS_SplitStamp : Inventory
 class RS_BossfightPick play
 {
 	// the vanilla Doom class a monster type stands in for: up its parents (CH bodies are Doom classes), what it
-	// replaces (Brutal Doom's), or MeatGrinder's declared family; 'None' when it has none
+	// replaces (Brutal Doom's); 'None' when it has none
 	static Name VanillaOf(class<Actor> c)
 	{
 		if (!c) return 'None';
-		let mg = (class<RS_MGMonster>)(c);
-		if (mg)
-		{
-			let md = GetDefaultByType(mg);
-			return md ? md.MG_Family : 'None';
-		}
 		for (class<Actor> k = c; k; k = (class<Actor>)(k.GetParentClass()))
 		{
 			Name kn = k.GetClassName();
@@ -391,21 +270,6 @@ class RS_BossfightPick play
 			String ns = n;
 			class<Actor> nc = ns;
 			return nc ? ns : "";
-		}
-		if (set == 2)
-		{
-			// the family's own class (RS_MGZombieman, a direct child of RS_MGMonster) first, else any that claims it
-			String any = "";
-			for (int i = 0; i < AllActorClasses.Size(); i++)
-			{
-				let mg = (class<RS_MGMonster>)(AllActorClasses[i]);
-				if (!mg || mg == 'RS_MGMonster') continue;
-				let md = GetDefaultByType(mg);
-				if (!md || md.MG_Family != v) continue;
-				if (mg.GetParentClass().GetClassName() == 'RS_MGMonster') return mg.GetClassName();
-				if (any == "") any = mg.GetClassName();
-			}
-			return any;
 		}
 		return "";
 	}

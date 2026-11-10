@@ -5,15 +5,8 @@ version "4.14"
 // family's support classes. Family order matters -- spectre needs demon,
 // lostsoul needs cacodemon, spider needs baron/revenant/fatso.
 
-#include "zscript/monsters/support/RS_Keywords.zs"
-#include "zscript/monsters/support/RS_Catalog.zs"
-#include "zscript/monsters/attack/RS_AttackProfile.zs"
-#include "zscript/monsters/attack/RS_FoodBonus.zs"
 // RS_MonsterMaster calls RS_MonsterAim.GetLeadAngle and casts to
 // RS_MonsterSatellite (which lives in RS_MonsterCatalog.zs). Both from RS_Main.
-#include "zscript/monsters/support/RS_MonsterAim.zs"
-#include "zscript/monsters/support/RS_MonsterCatalog.zs"
-#include "zscript/monsters/RS_MonsterMaster.zs"
 // #include "zscript/monsters/RS_MonsterCommands.zs"
 //   NOT LOADED. It defines RS_BrownImpCommand and RS_RevSpeedBuff, which
 //   imp/RS_ImpFX.zs and revenant/RS_RevenantFX.zs also define -- the family
@@ -55,9 +48,6 @@ version "4.14"
 #include "zscript/monsters/mastermind/RS_Mastermind.zs"
 #include "zscript/monsters/chshared/RS_CHShared.zs"
 #include "zscript/monsters/chshared/RS_MonEvents.zs"
-// MeatGrinder set (its gore/effect actors are DECORATE: decorate/meatgrinder/).
-#include "zscript/monsters/meatgrinder/RS_MGReactions.zs"
-#include "zscript/monsters/meatgrinder/RS_MGMonsters.zs"
 #include "zscript/monsters/RS_Roster.zs"
 #include "zscript/monsters/RS_Retier.zs"
 #include "zscript/monsters/RS_ScoreReadout.zs"   // what RSQ Score reads by name (RSQMN_RosterService), 11-09

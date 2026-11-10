@@ -10,7 +10,7 @@
 
 class RS_Svc play
 {
-	enum EWhich { GRAPPLE, SHIELD, SABER, GRAB, RIG, SLOWMO, WHIP, MELEE, GRENADE, MINIBOSS, MONSTERS, NUM }   // MONSTERS: RSQ Monsters' one read-out (roster rows rows_roster.zs + MG head shots combo.zs CondOf, 11-09)
+	enum EWhich { GRAPPLE, SHIELD, SABER, GRAB, RIG, SLOWMO, WHIP, MELEE, GRENADE, MINIBOSS, MONSTERS, NUM }   // MONSTERS: RSQ Monsters' one read-out (roster rows rows_roster.zs, 11-09)
 
 	static String NameOf(int w)
 	{

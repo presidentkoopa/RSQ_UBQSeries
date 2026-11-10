@@ -7,7 +7,7 @@
 //   READ IT       (Counterplay) a monster's shot flew at you and missed you by a little, and you kill whoever fired it
 //                 within 3 s
 //
-// HOW "WINDING UP" IS READ, for every monster set (stock Doom, Brutal Doom, RSQ Monsters' CH and MG sets), from what the
+// HOW "WINDING UP" IS READ, for every monster set (stock Doom, Brutal Doom, RSQ Monsters' CH set), from what the
 // engine itself does, not from state names:
 //   IN AN ATTACK  the engine's own flag JUSTATTACKED: A_Chase sets it when it sends the monster into its missile
 //                 attack and clears it at the next A_Chase (p_enemy.cpp A_DoChase), so it is true from the moment the
@@ -15,8 +15,7 @@
 //                 monsters leave "Missile" for their own attack states at once (melee.zs Counter's note, measured on
 //                 the rig), and CH monsters jump to their own labels too (Monsters/zscript/monsters/imp RS_Imp.zs:
 //                 Missile -> IceWeave, HM, Missile2). A melee attack sets no flag, so the stock test is kept beside it:
-//                 the monster's state is inside its Missile or Melee sequence (RS_Melee.InAttack). MG monsters are
-//                 stock-shaped (RS_MGMonsters.zs: Missile / Melee with A_FaceTarget, A_Chase), both tests see them.
+//                 the monster's state is inside its Missile or Melee sequence (RS_Melee.InAttack).
 //   NOT YET FIRED no shot has left it in the last FIRED tics: no missile that can hurt (GetMissileDamage > 0: Brutal
 //                 Doom's fireball trails and wind-up sparks deal nothing and are not shots), no RSQ SlowMo round (its
 //                 slowed bullets, RSQSM_Round, which carry their own damage), and no hitscan (WorldHitscanPreFired,

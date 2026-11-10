@@ -128,8 +128,8 @@ class RS_ScoreService : Service
 			tr.rewardLifeTic  = max(1, level.maptime);
 			return tr.extraLives;
 		}
-		// THE HEAD-SHOT CHECK (head.zs, owner 11-09), for any mod that asks by name (RSQ Monsters' MeatGrinder death router,
-		// its RSQMN_RosterService "headshot"):
+		// THE HEAD-SHOT CHECK (head.zs, owner 11-09), for any mod that asks by name (RSQ Monsters' RSQMN_RosterService
+		// "headshot" passes it on):
 		//   "headshot"  objectArg a monster -> 1 its newest blow (this tic or the last) was a head shot, 0 it was not or it
 		//               took none, -1 the check is off (Brutal Doom's own) or the monster is not judged (then use your own)
 		if (request == "headshot")

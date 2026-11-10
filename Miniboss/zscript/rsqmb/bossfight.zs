@@ -937,7 +937,6 @@ extend class RSQMB_Handler
 		class<Actor> c = arrCls[i];
 		Actor a = c ? Actor.Spawn(c, (arrX[i], arrY[i], arrZ[i]), ALLOW_REPLACE) : null;
 		if (a && i == 0) { a.A_SetScale(a.Scale.X * MB_SCALE, a.Scale.Y * MB_SCALE); a.A_SetSize(a.radius * MB_SCALE, a.height * MB_SCALE, false); }
-		if (a) FromTier(a);   // a MeatGrinder pick from Miniboss From / Thralls From takes its colour in place
 		// (rig 11-09) its own thralls land first and walk; one may have stepped into the miniboss's spot: move it aside
 		for (int tries = 0; a && i == 0 && tries < 4 && !a.TestMobjLocation(); tries++)
 		{

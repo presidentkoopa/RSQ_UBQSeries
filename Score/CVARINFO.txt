@@ -121,18 +121,6 @@ server bool rs_score_rr_keepchange = true;
 server bool rs_score_rr_freshpaint = true;
 server bool rs_score_rr_upset = true;
 server bool rs_score_rr_tierslayer = true;
-server bool rs_score_rr_gangwar = true;
-server bool rs_score_rr_mixedbag = true;
-server bool rs_score_rr_headhunter = true;
-server bool rs_score_rr_mgburn = true;
-server bool rs_score_rr_mgfreeze = true;
-server bool rs_score_rr_mgshock = true;
-server bool rs_score_rr_mgpop = true;
-server bool rs_score_rr_mgcleaved = true;
-server bool rs_score_rr_mgpinata = true;
-server bool rs_score_rr_meltdown = true;
-server bool rs_score_rr_splitter = true;
-server bool rs_score_rr_cutshort = true;
 
 // ---- [11-09] THE HEAD-SHOT CHECK (head.zs, design/HEADSHOT_SOLUTION.md). Server: every machine judges the same.
 //   rs_score_hs           (no longer read: the check is always ours, 11-09) was 0 Brutal Doom's own, 1 ours for every monster (head = the family's

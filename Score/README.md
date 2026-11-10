@@ -463,7 +463,7 @@ Every bonus row belongs to one of five families. The family gives its colour in 
 
 | Family | Colour | What it is for |
 |---|---|---|
-| **Efficiency** | Red | Killing fast and clean: Spree, Untouchable, Infighter, Civil War, Hand Cannon, the roster's Upset and Gang War |
+| **Efficiency** | Red | Killing fast and clean: Spree, Untouchable, Infighter, Civil War, Hand Cannon, the roster's Upset |
 | **Style** | Green | How it looked: Air, Curveball, Skeet, Thrown, Multi-Kill, the combo chain |
 | **Daring** | Orange | The risk you took: Point-Blank, Redline, Swan Song, the champion and legendary rows, Headshot |
 | **Melee** | Steel blue | Your hands and blades: Fatality, Boot, Juggle, the fists, the saber, the shield, the whip |
@@ -760,16 +760,7 @@ All Melee family.
 - **Fresh Paint** (Style): killed within 3 s of moving up a tier. ×0.25.
 - **Upset** (Efficiency): a Common, Green or Blue monster killed a boss tier or an EX. Paid to every player. ×0.75, a big moment.
 - **Tier Slayer** (Daring): a boss tier or EX killed with a pistol, fists, a kick or the shove. ×0.5, a big moment.
-- **Gang War** (Efficiency): a ColorfulHell monster killed a MeatGrinder one, or the reverse. Paid to every player. ×0.3.
-- **Mixed Bag** (Style): a kill from each of the two sets within 3 s. ×0.3.
 
-**MeatGrinder's deaths:**
-
-- **Headhunter** (Daring): a head-pop, and a streak of them each within 5 s. ×0.15, +0.1 each, at most ×0.65.
-- **Barbecue**, **Ice Breaker**, **Live Wire**, **Pop!**, **Cleaved**, **Pinata**: a MeatGrinder burn, freeze, shock, exploding head, melee gib and other gib pay the row of the same name, at its pay, when that row does not already fire.
-- **Meltdown** (Style): a MeatGrinder monster melted. ×0.25.
-- **Splitter** (Daring): you killed an Abyss monster and both Lost Souls it split into. ×0.75, a big moment.
-- **Cut Short** (Daring): a top-aggression MeatGrinder monster killed in its own attack. ×0.4.
 
 </details>
 
@@ -871,11 +862,10 @@ without the mod they read.
 - **RSQ Grenade:** every kind, cooked, skeeted, pulled with your teeth, Impact, Cluster, Sticky, and the monsters its
   Infight and Charm grenades turn.
 - **RSQ Miniboss:** its thralls, the miniboss, its rage and slow window. It pays Thrall Slow Kill, Miniboss and
-  Bossfight, gives a life or drops the life crate on a Bossfight win, reads each kill's style points and your lives for
+  Bossfight, reads each kill's style points and your lives for
   its own scoring, and its Bossfight meter sits under Score's bar.
-- **RSQ Monsters:** the 32 roster rows. When a monster changes tier, Monsters moves its place in the map's count so it
-  still pays once. Monsters tells Score which Doom family its own monsters belong to, and its MeatGrinder deaths use
-  Score's head-shot check.
+- **RSQ Monsters:** the roster rows. When a monster changes tier, Monsters moves its place in the map's count so it
+  still pays once.
 - **RSQ Gun Bonsai VR:** its fist, shove and hook upgrades are tags Score reads (Finisher, Shatter, Shock Fist,
   Explosive Fist, Scorpion, Meteor...). Its "XP Source: Style" pays weapon XP from each kill's style points and combo
   chain, and its Lucky Kill reads Score's big moments. Its own HUD hides Score's line while it is on, and its ShieldSaw
@@ -905,8 +895,7 @@ score looks is yours.
 | Big Moments | Slow Motion Moments · Hit-Stop on Big Kills (off) · Revival Fire · Bar Flash · Screen Flash · Reward Screen Flash (off) · Revival Screen Flash (off) |
 | Head Shots | Head Shot Damage · Heads on Demons, Cacos and Spiders |
 | Monster Roster Rows: Tiers | Green, Blue, Cyan, Purple, Yellow, FireBlu, Abyss, Brown, Gray, Red Tier · Black Boss · White Boss · EX Boss |
-| Monster Roster Rows: The Roster | Rarity · Full Spectrum · Colour Chain · Keep the Change · Fresh Paint · Upset · Tier Slayer · Gang War · Mixed Bag |
-| Monster Roster Rows: MeatGrinder | Headhunter · Barbecue (MG Burn) · Ice Breaker (MG Freeze) · Live Wire (MG Shock) · Pop! (MG Exploding Head) · Cleaved (MG Gib, Melee) · Pinata (MG Gib) · Meltdown · Splitter · Cut Short |
+| Monster Roster Rows: The Roster | Rarity · Full Spectrum · Colour Chain · Keep the Change · Fresh Paint · Upset · Tier Slayer |
 | Test and Debug: Display | Across (85) · Down (10) · Bonus Time (35 tics; 0 hides the breakdown) |
 | Test and Debug: Bonus Caps | Kill Bonus Cap (300%) · Efficiency, Style, Daring, Melee and Counterplay Caps (0, none) |
 | Test and Debug: Reward Target | Target Size (50%) · Fewest Monsters (140) · Most Monsters (800) · Round To (5,000) · Ammo Refill (40%) · Raised Monster Pay (100%) |
@@ -924,7 +913,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, logs and frames) | The head-shot check, with the Headshot row paying on head kills and not on chest kills: Brutal Doom zombies and imps (head and chest), a Brutal Doom Baron's head through Score's own head target, an imp and a Baron grown to 1.25x judged on their grown size (and a 1.25x imp that was only drawn bigger judged on its real box), RSQ Monsters' ColorfulHell and MeatGrinder imps; the +30 head damage, and the Baron's head shot doubled. The same run showed that Brutal Doom's own check did not pay the Headshot row on a Brutal Doom head kill, so that option was removed (the check is always Score's own now). The Revival Fire's ring of flames, fired by RSQ SlowMo's DOWN top tier, and the Revenge award reaching Score from DOWN (SlowMo's log; the points paid were not logged) |
+| **Shown on the rig** (2026-11-09, logs and frames) | The head-shot check, with the Headshot row paying on head kills and not on chest kills: Brutal Doom zombies and imps (head and chest), a Brutal Doom Baron's head through Score's own head target, an imp and a Baron grown to 1.25x judged on their grown size (and a 1.25x imp that was only drawn bigger judged on its real box), RSQ Monsters' ColorfulHell and (since removed) MeatGrinder imps; the +30 head damage, and the Baron's head shot doubled. The same run showed that Brutal Doom's own check did not pay the Headshot row on a Brutal Doom head kill, so that option was removed (the check is always Score's own now). The Revival Fire's ring of flames, fired by RSQ SlowMo's DOWN top tier, and the Revenge award reaching Score from DOWN (SlowMo's log; the points paid were not logged) |
 | **Headset-confirmed** | Nothing yet |
 | **Code only, not yet shown** | The 11-09 evening fixes: Headshot pays only when the killing blow itself hit the head (a head hit then a body-shot kill no longer pays), and Hot Seat, Aftershock and Demolition can fire (a barrel thrown with Distance Grab now counts as a thrown keg). Also:  Everything else on this page: the base and every other bonus row, the combo chain and its named combos, the target and the rewards, lives and Score's own revival on a spent life, the life crate, the breakdown, the breathing word, the wrist, the big moments and the hit-stop, the roster rows |
 

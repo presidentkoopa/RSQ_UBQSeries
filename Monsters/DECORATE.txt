@@ -1,4 +1,0 @@
-// RSQ Monsters -- DECORATE. Only the MeatGrinder set's gore and effect actors
-// (zscript/monsters/meatgrinder/RS_MGMonsters.zs spawns them by name).
-#include "decorate/meatgrinder/mg_effects.txt"
-#include "decorate/meatgrinder/mg_gore.txt"

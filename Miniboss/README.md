@@ -98,8 +98,8 @@ thralls are weaker types (the same type when there is nothing weaker). From tier
 From** can also use only the Gun Bonsai VR level, only Score's lives, or the old sum (half your Gun Bonsai level, plus
 one for every 4,000 Score points this map, plus half the Bossfights you have won).
 
-**Miniboss From and Thralls From** (on RSQ Monsters' own page) turn the picks into ColorfulHell or MeatGrinder monsters
-of the same family, or a mix. Picked from a set, the miniboss stands at least one colour above its strongest thrall.
+**Miniboss From and Thralls From** (on RSQ Monsters' own page) turn the picks into ColorfulHell monsters of the same
+family. Picked from a set, the miniboss stands at least one colour above its strongest thrall.
 With RSQ Monsters loaded and both left at their defaults, a miniboss from Brutal Doom or plain Doom gets ColorfulHell
 thralls.
 
@@ -321,7 +321,7 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, logs and a frame sheet from a test probe: TestRig/bossfight_rig/evidence_2026-11-09) | The reworked fight, called in, with RSQ Monsters: three thralls landing one by one on V2 beams and the miniboss on a V4 beam; three segments; a shot on the shield doing no damage; a thrall kill opening a three-second window; the window missed and +3 tiers asked on 11 monsters map-wide, with the swapped bodies found again; a hit in the window breaking a segment; two lives lost, each refilled with five seconds of invulnerability and +1 tier; the death and its drop. Run twice: ColorfulHell monsters, and a MeatGrinder miniboss with ColorfulHell thralls through Miniboss From / Thralls From. The same day the reworked pack loaded on the series' load order with no script error from it (Bossfights off in those runs) |
+| **Shown on the rig** (2026-11-09, logs and a frame sheet from a test probe: TestRig/bossfight_rig/evidence_2026-11-09) | The reworked fight, called in, with RSQ Monsters: three thralls landing one by one on V2 beams and the miniboss on a V4 beam; three segments; a shot on the shield doing no damage; a thrall kill opening a three-second window; the window missed and +3 tiers asked on 11 monsters map-wide, with the swapped bodies found again; a hit in the window breaking a segment; two lives lost, each refilled with five seconds of invulnerability and +1 tier; the death and its drop. Run twice: ColorfulHell monsters, and (since removed) a MeatGrinder miniboss with ColorfulHell thralls through Miniboss From / Thralls From. The same day the reworked pack loaded on the series' load order with no script error from it (Bossfights off in those runs) |
 | **Shown on the rig** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up); the Bossfight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a Bossfight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a Bossfight runs |
 | **Shown on the rig before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
 | **Headset-confirmed** | Nothing yet |

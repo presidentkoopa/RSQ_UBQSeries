@@ -3,7 +3,7 @@
 //
 // TWO JOBS:
 //   1. SET SELECTION. Several rosters cover the same seventeen Doom
-//      families (MG, the CH colour tiers, whatever comes next). One set
+//      families (the CH colour tiers, whatever comes next). One set
 //      is active; a family the active set does not cover falls through
 //      to the CH dial instead of spawning nothing.
 //   2. TIER CAP. Within the CH fallback, how far up that family's colour
@@ -137,22 +137,6 @@ class RS_RosterHandler : EventHandler
 
 		for (int i = 0; i < AllActorClasses.Size(); i++)
 		{
-			// The MeatGrinder set registers the same way, through its own base
-			// (RS_MGMonster extends RS_MonsterMaster, so it cannot extend
-			// RS_RosterMonster): set 'MG', one monster per family.
-			Class<RS_MGMonster> mg = (class<RS_MGMonster>)(AllActorClasses[i]);
-			if (mg && mg != 'RS_MGMonster')
-			{
-				let md = GetDefaultByType(mg);
-				int mfam = md ? FamilyId(md.MG_Family) : -1;
-				if (mfam >= 0)
-				{
-					regClass.Push(mg); regFam.Push(mfam); regSet.Push('MG');
-					regTier.Push(1);   regWeight.Push(100);
-				}
-				continue;
-			}
-
 			Class<RS_RosterMonster> c = (class<RS_RosterMonster>)(AllActorClasses[i]);
 			if (!c) continue;
 
@@ -290,7 +274,7 @@ class RS_RosterHandler : EventHandler
 	//   1 BD22         no RSQ replacement at all: whatever mod is loaded
 	//                  decides. Brutal Doom not loaded (no BD class found at
 	//                  runtime) = Vanilla.
-	//   2 MeatGrinder  the RS_MG* classes (each declares RS_MGMonster.Family)
+	//   2 (MeatGrinder, removed 2026-11-10: read as ColorfulHell)
 	//   3 ColorfulHell the CH dials, with the per-family tier caps as before
 	//                  (rs_roster_enable / rs_roster_<family>), plus CH's six
 	//                  projectile swaps. These used to be class-level
@@ -299,7 +283,7 @@ class RS_RosterHandler : EventHandler
 	// =================================================================
 	const SET_VANILLA = 0;
 	const SET_BD22    = 1;
-	const SET_MG      = 2;
+	const SET_MG_GONE = 2;   // MeatGrinder, removed 2026-11-10 (owner); the number stays free
 	const SET_CH      = 3;
 
 	private CVar cvMonSet;
@@ -397,37 +381,8 @@ class RS_RosterHandler : EventHandler
 			return;
 		}
 
-		// ---- MEATGRINDER ----
-		if (set == SET_MG)
-		{
-			if (fam < 0) return;   // MG fires the stock projectiles
-			// Map things spawn BEFORE WorldLoaded, so the registry is built
-			// here on first use as well.
-			if (!regBuilt) BuildRegistry();
-			int total = 0;
-			for (int i = 0; i < regClass.Size(); i++)
-				if (regFam[i] == fam && regSet[i] == 'MG') total += regWeight[i];
-			if (total > 0)
-			{
-				int roll = random[RSRoster](0, total - 1);
-				for (int i = 0; i < regClass.Size(); i++)
-				{
-					if (regFam[i] != fam || regSet[i] != 'MG') continue;
-					roll -= regWeight[i];
-					if (roll < 0)
-					{
-						e.Replacement = regClass[i];
-						e.IsFinal = true;
-						return;
-					}
-				}
-			}
-			// No MG monster for this family (cannot happen with all 17
-			// loaded): the id monster, not a silent CH fallback.
-			e.Replacement = null;
-			e.IsFinal = true;
-			return;
-		}
+		// (2, MeatGrinder, went 11-10, owner: a saved 2 reads as ColorfulHell)
+		if (set == SET_MG_GONE) set = SET_CH;
 
 		// ---- COLORFUL HELL ----
 		if (proj != 'None')

@@ -3,7 +3,7 @@
 // Design and the owner's rulings: design/HEADSHOT_SOLUTION.md (the rulings block at its top wins).
 //
 // ONE VERDICT PER BLOW, decided here, at the moment of damage (WorldThingDamaged), for EVERY monster: Brutal Doom's,
-// ColorfulHell's, MeatGrinder's and any pack's.
+// ColorfulHell's and any pack's.
 //
 //   head  when the hit point is at or above  feet + f x Height,  where `feet` is the monster's own pos.z (never the
 //         floor under the blood) and Height its CURRENT collision box (a 1.25x monster grown with A_SetSize is
@@ -33,13 +33,12 @@
 //     with the monster's current Height (a 1.25x baron's head box is 1.25x), the same damage factors. A shot that
 //     meets a sensor is a head shot; BD's outcome (the damage x2, typed as BD types it) is applied to the monster
 //     from the player, here.
-//   - HEAD-SHOT DAMAGE FOR ALL (owner 11-09 08:57, rs_score_hs_bonus): ColorfulHell, MeatGrinder and pack monsters
+//   - HEAD-SHOT DAMAGE FOR ALL (owner 11-09 08:57, rs_score_hs_bonus): ColorfulHell and pack monsters
 //     get the bonus of their family (a zombie-, imp-, sergeant-, chaingunner- or SS-type: +30 Head; a baron-, knight-,
 //     vile-, revenant-, mancubus- or cyberdemon-type: the blow again); a monster of no known family: whichever of
 //     the two is more.
 //   - SCORE: the blow is marked +head in the combo ledger (combo.zs CondOf), so the Headshot row and +head combos
-//     see BD, CH, MG and pack head shots alike. RS_ScoreService "headshot" answers any mod (RSQ Monsters' MeatGrinder
-//     death router, its RSQMN_RosterService).
+//     see BD, CH and pack head shots alike. RS_ScoreService "headshot" answers any mod that asks by name.
 //
 // Saws and axes (a weapon with AXEBLOOD) keep BD's own saw bloods and their fixed numbers: no tokens and no bonus
 // from here (BD's saw bloods give no Head damage either); Score still reads the verdict. Blood_Bones (the Vanilla
@@ -207,9 +206,6 @@ class RS_ScoreHead : EventHandler
 	}
 	private int Resolve(Actor v)
 	{
-		// RSQ Monsters names the Doom family of its own bodies (its MeatGrinder set derives from no Doom class), by name
-		String fn = RS_Svc.Str(RS_Svc.MONSTERS, "family", v);
-		if (fn != "") { int f = ByName(fn); if (f >= 0) return f; }
 		// the class and its parents, and what each one replaces (BD's Imp replaces DoomImp; CH's RS_CommonImp is a DoomImp)
 		for (class<Actor> c = v.GetClass(); c; c = (class<Actor>)(c.GetParentClass()))
 		{
@@ -235,7 +231,7 @@ class RS_ScoreHead : EventHandler
 		if (rt == 3) return HeadlessOn() ? Unknown() : 99.0;
 		double r = BdHeadZ(f) / BdHeight(f);
 		// a hitbox family's head is BD's box ABOVE the body box (the baron's starts at its top, 60 of 60): on a body that
-		// carries our sensor it stays there; on a body with no sensor (a ColorfulHell or MeatGrinder baron) the top tenth
+		// carries our sensor it stays there; on a body with no sensor (a ColorfulHell baron) the top tenth
 		if (rt == 2 && r > 0.9 && !HasSensor(v)) r = 0.9;
 		return r;
 	}

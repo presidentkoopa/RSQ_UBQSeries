@@ -1,16 +1,7 @@
 // ============================================================================
 // RS_Retier -- tier changes at runtime for the CH-rebuild monster families.
 //
-// WHY. RS_MonsterMaster owns a Tier field and rescales a monster in place, and
-// its own header records the problem: "NOTHING HAS EVER ASSIGNED A SPAWN TIER
-// ... the ONLY way anyone has ever seen any of it is the debug menu", and
-// "Under the CH rebuild each creature is its own class, so the dial picks a
-// CLASS, not a ladder position."
-//
-// Exactly one class ever inherited RS_MonsterMaster (RS_Chaingunner), so the
-// two sites that retier -- RS_MonsterCatalog's portal and RS_Elites -- cast to
-// RS_MonsterMaster, get null for every rebuilt monster, and skip the retier in
-// silence. Nothing errors; nothing happens.
+// WHY. Every ColorfulHell colour is its own class, so a tier change SWAPS THE CLASS.
 //
 // So a retier here SWAPS THE CLASS rather than rescaling a field, because that
 // is what a tier already means in the rebuilt design: tier 4 of the zombieman
@@ -678,10 +669,10 @@ class RS_TierLadder
 //   RS_Retier.Request(mo, tier)         staggered, with a flash tell
 //   RS_Retier.Request(mo, tier, true)   immediate
 //
-// STAGGERED BY DEFAULT, for the two reasons RS_MonsterMaster gives: it spreads
+// STAGGERED BY DEFAULT, for two reasons: it spreads
 // a roomful of retiers over many tics instead of spiking one frame, and a
 // monster that flashes and THEN changes reads as deliberate where one that
-// snaps reads as a bug. Delay is random 45..105 tics, so a room ripples.
+// snaps reads as a bug. Delay is random 5..25 tics, so a room ripples.
 //
 // THE TELL is HF's tier-change flash (owner 2026-11-09: "flash is important,
 // it's how monsters change tier in real time"; it applies to ALL RSQ monsters),
@@ -689,7 +680,7 @@ class RS_TierLadder
 // tics the monster alternates between the flash translation (rs_tier_flashwhite,
 // or rs_tier_flashblack when the target tier is White, 11) and its ORIGINAL
 // translation, saved at job start and restored (some CH colours carry one).
-// Then the swap (CH) or the in-place tier (MeatGrinder). One flash, both sets.
+// Then the swap.
 // It replaced a bBRIGHT flicker (45..105 tics).
 // ============================================================================
 class RS_Retier play
@@ -709,16 +700,12 @@ class RS_Retier play
 		if (!mo || mo.health <= 0) return;
 		tier = clamp(tier, 1, RS_TierLadder.MaxTier());
 		int fam = RS_TierLadder.FamilyOf(mo.GetClassName());
-		// Not on the CH ladder but a monster that tiers IN PLACE (the
-		// MeatGrinder set, RS_MGMonster). Same ladder numbers, same flash.
-		let mg = RS_MGMonster(mo);
-		if (fam < 0 && !mg) return;              // not one of ours
+		if (fam < 0) return;              // not one of ours (the ColorfulHell ladder)
 		if (TierNowOf(mo) == tier && !JobFor(mo)) return;
 
 		if (instant)
 		{
-			if (mg) mg.MG_ApplyTierNow(tier, true);
-			else    Swap(mo, tier, true);
+			Swap(mo, tier, true);
 			return;
 		}
 
@@ -739,7 +726,7 @@ class RS_Retier play
 	//   0 keep the health fraction already lost
 	//   1 full health on an INSTANT tier only, the fraction on a live one (HF's rule, default)
 	//   2 always full health
-	// Read by Swap (CH) and RS_MGMonster.ApplyTier (MeatGrinder).
+	// Read by Swap.
 	static bool FullHealth(bool instant)
 	{
 		let cv = CVar.FindCVar("rsq_mon_retier_health");
@@ -747,14 +734,13 @@ class RS_Retier play
 		return mode >= 2 || (mode == 1 && instant);
 	}
 
-	// The tier an actor is on: CH by class, MeatGrinder by its own Tier.
+	// The tier an actor is on: its ColorfulHell class's place on the ladder.
 	static int TierNowOf(Actor mo)
 	{
 		if (!mo) return -1;
 		if (RS_TierLadder.FamilyOf(mo.GetClassName()) >= 0)
 			return RS_TierLadder.TierOf(mo.GetClassName());
-		let mg = RS_MGMonster(mo);
-		return mg ? mg.Tier : -1;
+		return -1;
 	}
 
 	// The swap. Returns the new monster, or null if nothing changed.
@@ -854,9 +840,7 @@ class RS_RetierJob : Thinker
 		{
 			mo.Translation = origTrans;
 			int was = RS_Retier.TierNowOf(mo);   // RSQ Score read-out (RS_ScoreReadout.zs): the tier it leaves
-			let mg = RS_MGMonster(mo);
-			if (mg) { mg.MG_ApplyTierNow(targetTier); RS_TierStamp.Put(mg, was); }   // its new tint comes with it
-			else    RS_TierStamp.Put(RS_Retier.Swap(mo, targetTier), was);          // RSQ Score read-out: stamp the new body
+			RS_TierStamp.Put(RS_Retier.Swap(mo, targetTier), was);          // RSQ Score read-out: stamp the new body
 			Destroy();
 		}
 	}
@@ -887,11 +871,9 @@ class RS_RetierHandler : EventHandler
 			let a = AimedAt(e.Player);
 			if (!a) { Console.Printf("RETIER: nothing aimed at"); return; }
 			int f = RS_TierLadder.FamilyOf(a.GetClassName());
-			let mm = RS_MGMonster(a);
 			Console.Printf("RETIER: %s -- family %s, tier %d", a.GetClassName(),
-				f >= 0 ? String.Format("%s", RS_TierLadder.DialOf(f))
-				       : (mm ? String.Format("MeatGrinder %s", mm.MG_Family) : "not ours"),
-				f >= 0 ? RS_TierLadder.TierOf(a.GetClassName()) : (mm ? mm.Tier : 0));
+				f >= 0 ? String.Format("%s", RS_TierLadder.DialOf(f)) : "not ours",
+				f >= 0 ? RS_TierLadder.TierOf(a.GetClassName()) : 0);
 			return;
 		}
 		if (e.Name ~== "rs_retier" || e.Name ~== "rs_retier_up")

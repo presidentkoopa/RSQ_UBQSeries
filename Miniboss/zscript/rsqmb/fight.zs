@@ -77,7 +77,7 @@ extend class RSQMB_Handler
 			0x828282, 0x46146E, 0x505058, 0xFFFFFF, 0x3CF0F0, 0x8C5A28 };
 		return (t >= 1 && t <= 13) ? RGB[t - 1] : -1;
 	}
-	// a monster's RSQ ladder tier (RSQMN_RosterService "tier"; CH or MG), -1 not on the ladder or RSQ Monsters absent
+	// a monster's RSQ ladder tier (RSQMN_RosterService "tier"; ColorfulHell), -1 not on the ladder or RSQ Monsters absent
 	int TierOfMon(Actor a)
 	{
 		let s = MnService();
@@ -469,29 +469,22 @@ extend class RSQMB_Handler
 // =====================================================================================================================
 extend class RSQMB_Handler
 {
-	Array<String> fromMgCls;   // MeatGrinder picks: their class and the tier Land gives them in place
-	Array<int>    fromMgTier;
-
-	// 1 ColorfulHell, 2 MeatGrinder, -1 neither (by type)
+	// 1 ColorfulHell, -1 not on the ladder (by type)
 	int ClassSet(Service s, String cls) { return s.GetInt("class.set", cls); }
 
-	// one pick into a set (RSQ Monsters' numbering: 3 ColorfulHell, 2 MeatGrinder) at a tier; the pick itself when
-	// that set has nothing for its family
+	// one pick into ColorfulHell (RSQ Monsters' set 3) at a tier; the pick itself when CH has nothing for its family
 	String IntoSet(Service s, String cls, int set, int tier)
 	{
 		String n = s.GetString("set.class", cls, set, tier);
-		if (n == "" && set == 2) { set = 3; n = s.GetString("set.class", cls, 3, tier); }   // MG lacks it: CH's
-		if (n == "") return cls;
-		if (set == 2 && tier > 1) { int k = fromMgCls.Find(n); if (k == fromMgCls.Size()) { fromMgCls.Push(n); fromMgTier.Push(tier); } else fromMgTier[k] = max(fromMgTier[k], tier); }
-		return n;
+		return n == "" ? cls : n;
 	}
 
-	// the menu value into a set: 1 CH -> 3, 2 MG -> 2, 3 Mixed -> either, per pick
-	static int SetOfMenu(int v) { return v == 1 ? 3 : (v == 2 ? 2 : (v == 3 ? (random[rsqmbbf](0, 1) ? 3 : 2) : 0)); }
+	// the menu value into a set: anything but Same As / Map's Own is ColorfulHell (MeatGrinder went 11-10, owner; the
+	// old MeatGrinder (2) and Mixed (3) values read as ColorfulHell)
+	static int SetOfMenu(int v) { return (v >= 1 && v <= 3) ? 3 : 0; }
 
 	class<Actor> ApplyFrom(class<Actor> bc, Array<String> tc)
 	{
-		fromMgCls.Clear(); fromMgTier.Clear();
 		let s = MnService();
 		if (!s || !bc) return bc;
 		int bfv = clamp(CI('rsq_mon_bf_boss', 0), 0, 3), tfv = clamp(CI('rsq_mon_bf_thralls', 0), 0, 4);
@@ -501,8 +494,7 @@ extend class RSQMB_Handler
 		int tMode = tfv;
 		if (tfv == 0)
 		{
-			if (bfv == 3) tMode = 3;
-			else if (bSet == 3 || bSet == 2) tMode = bSet == 3 ? 1 : 2;
+			if (bSet == 3) tMode = 1;
 			else tMode = ClassSet(s, bn) > 0 ? 4 : 1;
 		}
 		int topThrall = 0;
@@ -526,13 +518,4 @@ extend class RSQMB_Handler
 		return nc ? nc : bc;
 	}
 
-	// at the landing: a MeatGrinder pick is retiered in place to the colour its pick asked for (CH picks are already
-	// the right class; a CH body swap here would lose the held monster)
-	void FromTier(Actor a)
-	{
-		int k = fromMgCls.Find(a.GetClassName());
-		if (k == fromMgCls.Size()) return;
-		let s = MnService();
-		if (s) s.GetInt("retier", "", fromMgTier[k], 1, a);
-	}
 }

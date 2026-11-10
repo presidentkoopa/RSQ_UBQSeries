@@ -159,13 +159,10 @@ class RS_ComboLedger : EventHandler
 		else
 		{
 			// [11-09 head shots] Score's own head check (head.zs) judged this very blow just before (it runs first):
-			// every monster, BD, ColorfulHell, MeatGrinder or a pack's
+			// every monster, BD, ColorfulHell or a pack's
 			let hc = RS_ScoreHead.Get();
 			int hv = hc ? hc.VerdictOf(v, inf) : -2;
 			if (hv == RS_ScoreHead.HV_HEAD) c |= C_HEAD;
-			// the check off (Brutal Doom's own): RSQ Monsters' MeatGrinder set still finds its own head shots by where the
-			// blow landed, asked by name (RSQMN_RosterService "headshot", 11-09, design/SCORE_EXPANSION.md A3)
-			else if (hv == -2 && RS_Svc.Int(RS_Svc.MONSTERS, "headshot", 0, v) == 1) c |= C_HEAD;
 		}
 		return c;
 	}

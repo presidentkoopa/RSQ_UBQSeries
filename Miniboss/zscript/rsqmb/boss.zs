@@ -140,9 +140,6 @@ class RSQMB_Boss : Thinker
 		}
 		if (h) Flags(h.roarOn, h.noMorphOn, h.debug);
 		if (h && level.maptime % 10 == idx % 10) col = h.ColourOf(mb, idx) | 0xFF000000;
-		// a MeatGrinder tier change in place puts its speed and attack chance back to the tier's (RS_MGMonsters.zs ApplyTier):
-		// a Bossfight's miniboss is made extra aggressive and fast again
-		if (called && mb.MissileChanceMult > RSQMB_Handler.MB_MISSILE + 0.000001) RSQMB_Handler.Aggressive(mb);
 
 		// A life lost: BUDDHA held it at 1 hp.
 		if (lives > 1 && mb.health <= 1) LoseLife(h);
