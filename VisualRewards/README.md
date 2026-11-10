@@ -1,297 +1,351 @@
-# RSQ VisualRewards
+# RSQ Visual Rewards
+### Doom Arcade VR · health bars, damage numbers that fly, kill bits, level-up banners and monsters that arrive on a beam of light
 
-HP bars over every monster, damage numbers that live in the room with you, level-up moments you can read in a
-headset, and monsters that burst into health, armour and ammo when they die.
+Every monster you hurt gets a health bar over its head. Every hit throws a little number into the air, a chain of
+hits rolls up into a total that punches when the monster dies, and the monster bursts into bits of health, armour and
+ammo that fly to you. When another mod calls monsters in, they arrive on one of four beams of light, each with its own
+sound.
 
-Status: 0.99. Played and confirmed working in the headset; refinement and bug fixing ongoing. The arrival beams, words
-and pops (11-09) were run on the rig the same day (QuestZDoom 17.3 Linux rig on Freedoom 2; **rig only, not
-headset-confirmed**): each kind hides its monster and shows it on time, the role sounds play, words, held words, clears
-and pops answer; one compile error fixed (a monster's fill colour is read-only: put back with SetShade). Their look is
-not yet seen. The pk3 is `pk3/RSQ_VisualRewards.pk3` (rebuilt
-11-09).
+![The four arrival beams, playing side by side](docs/readme/beams_hero.gif)
 
-**What's new**
-- **11-09 evening, scene music** (rig only, not heard): the start of the arcade brain (design/ARCADE_BRAIN.md). Other
-  mods report a scene by name (`RSQVR_Service` "scene.push" / "scene.pop"); its track crossfades over the level music,
-  and when it ends the level music crossfades back in where it has got to. A Bossfight plays the owner's track.
-  **Scene Music** (Arrivals and Words, on) turns it off for you. DOWN (RSQ SlowMo) plays the owner's "red alert" loop,
-  heard only by the player who is DOWN, over a Bossfight's track; the Bossfight track keeps playing silently under it and
-  comes back where it has got to (rig 11-09: never restarted). A miniboss that dies while you are DOWN takes its track
-  with it: getting up brings the level music.
-- **11-09 evening, fixed from the rig:** a Kill Rewards bit banked while you were DOWN, still flying when you got up,
-  gave itself to you and then tried again the next tic, aborting the game ("tried to write to address zero").
-- **11-09** (rig only): **arrival beams** V1-V4 for monsters other mods bring in, with their own sounds for a
-  miniboss, a thrall and a chump; **words** over monsters in RS Score's font (TARGET!, GUARD!); a **pop** in a colour
-  (below). Built for RSQ Miniboss's Bossfight; any mod can ask for them by name.
-- **11-07** for RSQ SlowMo's DOWN v3 (rig only): a kill you make while DOWN within 3x your Bits Fly to Me reach still
-  bursts into bits, but they fly to you quickly and bank (health and armour, paid when you get up; an ammo bit gives its
-  ammo as it arrives); a kill farther off drops ordinary bits (Bits Fly to Me at 0: none bank). REVIVE is shown every
-  time you get up, bigger and longer at the better tier; the RAGE word and the DOWN skull are gone (SlowMo draws each
-  target's icon over its HP bar); a DOWN target's HP bar shows even if you never hit it.
-- **11-06** (rig only): Bits Vanish As (Blink Out / Fade Out); a yellow **battery bit** for RSQ FnF's "Bones Drop Battery
-  Bits" (it acts like every Kill Rewards bit and refills 15% of the flashlight battery of whoever picks one up; nothing
-  here drops one by itself).
+*Design render: the four arrival beams playing side by side (V1, V2, V3 indoors, V4), drawn by the mockup tools the
+game's beams were built from. Not a capture from the game or the headset.*
 
-Flat-screen damage numbers and HUD banners smear across your lenses in VR. Everything here is placed in the world
-instead: at the monster, at your wrist, or standing in front of you like a sign. All on stock QuestZDoom 17.3, in
-ZScript alone. No engine changes.
+---
 
-## Standout feature: every hit answers you, in the room
+## What it feels like
 
-Shoot an imp. A small number pops on the side of the imp facing you, flashes white, snaps out and arcs away. Hit it
-again and the next number steps out the other side, so they never stack. From the second hit, a running total rolls
-up like a counter above its HP bar, with an "x2", "x3" combo beside it that heats from white to yellow to orange to
-red. Kill it and the total punches once, holds and fades. Overdo it and OVERKILL stamps above. Land a Brutal Doom
-head hit and HEADSHOT flashes in gold over a bigger number.
+- **See how hurt it is.** A bar over every monster you have hurt, longer for tougher monsters, flashing white the
+  moment your hit lands.
+- **Watch your hits fly.** Each hit pops a small number out of the spot you hit. It jets up and over, spinning a
+  little, and is gone in about two thirds of a second.
+- **Build a combo.** From the second hit on the same monster a running total sits over its bar, counting up like an
+  arcade counter, with "x2", "x3" ... beside it. It warms from white to red as the chain grows, shakes from x5, and
+  cools down if you stop for three seconds.
+- **The kill lands.** The total punches once and holds. A headshot gets a gold HEADSHOT over a bigger number.
+- **Bits, everywhere.** A monster bursts into glowing bits of health, armour and ammo. Stand still and they fly to you.
+- **What you picked up, on your wrist.** "+25" health, "+10" armour, "+5" ammo rise from the pickup and fly to your
+  wrist.
+- **Level up in style.** With Gun Bonsai, a gold LEVEL UP band sweeps past in front of you; a gun's level-up rises off
+  the gun as a little tag.
+- **Monsters arrive like an arcade boss stage.** Called-in monsters land on a beam of light in their own colour, hidden
+  until the beam reveals them, with words over them ("GUARD!", "TARGET!") and the boss fight's own music.
 
-None of it gets in your way. Each number is traced clear of walls and the ceiling before it shows, kept at least
-about a metre from your eyes, and pushed off the aim line of both your guns.
+---
 
-## Features
+## How to play
 
-**HP bars** (coldcite's Top HP Bars, rebuilt)
-- A bar appears over a monster the moment it is hurt, and follows it exactly, even when it is yanked, thrown or
-  teleported.
-- Tougher monsters get longer bars: a zombieman's is short, a Cyberdemon's nearly twice an imp's.
-- Bars grow with distance so they stay readable across a room, and are unchanged up close.
-- Overheal: health above full shows as a thin strip above the bar, with pips for each extra lap.
-- A white flash the moment your hit lands. An up arrow on a monster that was raised from the dead.
-- Markers beside the bar: hooked, whipped, stunned, locked on and Force-gripped on the left; ally (a heart, so an
-  ally doesn't rely on colour alone), raised, frozen or held, and burning (a flame while it is in fire, gone once the fire stops landing) on
-  the right.
-- Above the bar: a crown or chain for RSQ Miniboss's miniboss and its thralls, one gold pip per Bossfight tier beside
-  its miniboss's crown (tier 0: the crown alone, up to four pips at tier 4), and a pink gem on a LegenDoom legendary once
-  it has turned (left of the crown when it is both). LegenDoom is optional: without it there is simply no gem.
-- Eight colour sets, including three colour-blind sets and High Contrast, which add patterns as well as colour.
-- LegenDoom's chosen monsters do not give themselves away before they turn.
+There is nothing to hold: load it and play.
 
-**Damage numbers** (Xaser Acheron's damnums, redrawn for VR)
-- Coloured by damage type: fire orange, plasma cyan, explosions gold, and so on, with a slow colour shimmer.
-- Running total, combo counter, kill slam, OVERKILL and HEADSHOT words, each on its own switch.
-- Never on Brutal Doom's invisible helpers or on corpses, and never more than the health the monster really had left.
-- Gains on you: +health and +armour rise from the pickup and fly to your off-hand wrist; +ammo flies to the wrist of
-  the hand whose gun uses it.
-- Numbers hold still while a monster is in hit-stop, and slow down with the world in slow motion.
-- Four number fonts and a Quest or PCVR quality setting.
+| Do this | What happens |
+|---|---|
+| Shoot a monster | Its bar appears; a number jets off where you hit it |
+| Keep hitting it within 3 seconds | A running total and "xN" combo over its bar |
+| Kill it | The total punches; the monster bursts into bits |
+| Stand near the bits (2 m) | They fly to you and are picked up |
+| Walk over a pickup | "+N" rises from it and flies to your wrist |
+| Level up (Gun Bonsai) | The LEVEL UP band, or the gun's tag |
+| A miniboss fight starts (RSQ Miniboss) | Its monsters arrive on beams; its music crossfades in |
 
-**Level-up displays** (for Gun Bonsai)
-- Player level-up: a band with LEVEL UP sweeping across it, then your new level and "+1 UPGRADE". It stands about
-  2 m in front of you, follows your gaze lazily and faces you, so both eyes see it at one depth.
-- Weapon level-up: a small tag rises off the gun. Its name types in letter by letter, the level stamps in, and NEW
-  UPGRADE flickers green.
+Everything is on one options page, **RSQ VisualRewards**, and every part can be switched off on its own.
 
-**Kill Rewards** (SoM's Universal(ish?) Kill Rewards)
-- Monsters burst into bits when they die, from the first kill: health (25), armour (+10, up to 250) and ammo (5
-  rounds for a gun you carry).
-- Bigger monsters drop more, and bosses drop a fountain (an RSQ Miniboss Bossfight's miniboss: x3 more, its own setting).
-- A plain-words menu with presets, and SoM's raw numbers kept underneath.
+---
 
-**Arrival beams, monster words and pops** (new on 11-09, for RSQ Miniboss's Bossfight; code and art only, NOT YET RUN in
-an engine)
-- A monster another mod brings into the fight arrives on a beam, in the colour it asks for, sized to the monster: **V1**
-  the beam opens around it and rings drop down it; **V2** a floor ring flash, the beam slams down, rings ride up it, the
-  monster white, then its colour, then itself; **V3** a column that hides it completely, cut at the real ceiling indoors
-  (the splash hangs from it, sparks drop) or climbing out of sight under the sky (a stepped taper, flames trailing up),
-  picked by the ceiling above; **V4** for a boss: six beams spiral in, merge, a skull pillar, the monster arrives. The
-  monster is not drawn at all until its reveal. Each beam has its own sound on its first tic (owner signed off 11-09):
-  V1 ONPARE8 and V2 ONPARE2, each with an octave-down copy mixed in at half volume and a small-room echo; V4 ONPARE2
-  as the pillars rise, then PL01_U lowered 15% on the merge (tic 18), with a hall echo (2.8 s); V3 ONPARE3 with the same
-  octave layer and room echo, faded out to end with the beam (1.0 s). No sound on the reveal. Made from the owner's own files (pitch, layering, echo; nothing synthesized).
-- Words over a monster in RS Score's font, in the room like the damage numbers: a one-off word pops, flickers to white,
-  drifts up, holds about a second and fades (GUARD! in silver on a shielded miniboss); a held word stays until it is
-  cleared or the monster dies (TARGET!, big and pulsing on the miniboss once its shield is down).
-- A pop: a small pixel ring and star burst at a monster, in a colour (a thrall's kill, the colour of the power lost).
-- Pixel art throughout, four flat bands of the colour. Photosensitive Mode: no white silhouette, no white flicker, the
-  white flashes at 40%.
-- Nothing here plays by itself: another mod asks for it by name (below).
-- To run on the rig first: it compiles; each kind on an imp, a cacodemon and a 1.25x miniboss (sizes, the reveal tic
-  matches the answer); V3 under a low ceiling, a high one and the sky; the colours (a Black-tier colour too); a monster
-  killed and one removed mid-beam (shown again, nothing left hidden); a save and load mid-beam and with a held word
-  up; the words' size and reading distance in the headset, and both eyes; Photosensitive Mode; the sounds' reach.
+## HP bars
 
-## How To Play
+![The original bar art draining, both styles](docs/readme/hp_bar_original.gif)
 
-1. Load the pack. HP bars, damage numbers and Kill Rewards work at once. The level-up displays need Gun Bonsai.
-2. Hurt something. Its bar appears and the numbers start.
-3. Keep hitting the same monster to build the combo. The chain cools off after about three seconds without a hit.
-4. Bits a monster drops within 2 m fly to you and are collected, even standing still; walk over the rest. They
-   vanish after 7 seconds. **Bits Fly to Me** sets the reach (0 turns it off, also with Magnet); the Magnet node in RSQ
-   Gun Bonsai VR reaches further.
-5. If the screen feels busy, try **Only Where I Aim** (a bar only on what your guns point at), **Nearest 24 Only**, or
-   lower **Most Numbers**.
+*The bar art from Visual Rewards' starting point (original 1.04, `original_1.04/graphics`), styles A and B, drained
+from full to empty, enlarged 5x. Assembled from the image files, not a capture from the game.*
 
-## Controls
+![Every bar colour set, with markers](docs/readme/bar_schemes.jpg)
 
-VisualRewards reads no buttons. It reacts to what you do.
+*Rig frames from an earlier build (committed by 2026-11-05): the bar colour sets at several health levels, with test
+markers. Not captures from the headset.*
 
-| Action | How (VR) | Notes |
-|---|---|---|
-| See a monster's bar | Hurt it | With Only Where I Aim on: point either hand's gun at it. The bar stays half a second after you look away. |
-| Build a combo | Keep hitting the same monster | About 3 seconds without a hit ends the chain. |
-| Collect bits | Stand near them, or walk into them | Bits within Bits Fly to Me (2 m) or Magnet's reach fly to you and are collected without moving. |
-| Gains on your wrist | Pick something up | Health and armour land on your off-hand wrist, ammo on the wrist of the hand that uses it. |
-| Left-handed play | Nothing to set | Positions follow your actual hands. |
+The bars are coldcite's Top HP Bars, rebuilt for VR.
 
-## Menu
+- **Only on what is hurt.** A monster gets its bar the moment it is hurt (or when its health changes another way, such
+  as a healer's), never before.
+- **Longer for tougher monsters.** An imp's bar is coldcite's size; a baron's is about 1.6 times longer, a Cyberdemon's
+  nearly twice.
+- **Hit flash.** The tic after your hit lands the bar flashes white.
+- **Overheal.** Health above full shows as a thin strip above the bar; laps beyond the strip show as pips, up to four.
+- **Readable across a room.** Bars grow with distance (Far Size, up to twice as big at range) and sit on the sprite's
+  real top, voxels included.
+- **Colours.** Classic (coldcite's green), Red, three colour-blind sets (Protanopia, Deuteranopia, Tritanopia), High
+  Contrast, Cyan / Lavender / Orange, and Random (each bar picks its own). The colour-blind and high-contrast sets also
+  hatch and pulse the low band, so they do not rely on colour alone.
+- **Markers beside the bar.** Hooked, stunned, locked on, gripped and whipped (from the series' mods), frozen in a
+  hit-stop, held in a headlock, brought back by an Arch-Vile, burning, and a heart on allies. Above the bar: a crown on a
+  miniboss (with its tier pips), a chain link on its thralls, a gem on a LegenDoom legendary.
+- **Choices:** only the monster your gun points at, a lit chunk showing what your hit took off, blue bars for allies,
+  only the 24 nearest, and a distance limit.
 
-Options → Radiant Silvergun Options → RSQ VisualRewards: one page (HP Bars, Damage Numbers, Kill Rewards, Level-Up),
-with Test and Debug and Reset All at its foot.
+*[GIF to come: a bar appearing on a hit, flashing, the chunk draining, the overheal strip on a legendary]*
 
-| Row | Default | What it does |
-|---|---|---|
-| *HP Bars* | | |
-| HP Bars | On | Bars over hurt monsters. |
-| Bar Colours | Classic | Classic, Red, Protanopia, Deuteranopia, Tritanopia, High Contrast, Cyan Lavender Orange, Random. RSQ Accessibility's colour-blind setting overrides this. |
-| Bar Size | 0.30 | Bar size (0.05 to 1). |
-| Full Bright | Off | Bars ignore sector light. |
-| Fade With Stealth | On | A see-through monster's bar is see-through too. |
-| Overheal Strip | On | The strip for health above full. |
-| Status Markers | On | Hooked, whipped, stunned, locked, gripped, ally, raised, frozen, held, burning, miniboss (with Bossfight tier) and legendary icons. |
-| Only Where I Aim | Off | A bar only over the monster either hand's gun points at, even at full health. |
-| Damage Chunk | Off | The health your hit took off stays lit for half a second, then drains. |
-| Blue Bars for Allies | Off | Friendly monsters, such as Brutal Doom's marines, get a blue bar. |
-| Nearest 24 Only | Off | Only the 24 nearest bars are drawn. |
-| Distance Limit | Off | No bars beyond Limit Distance. |
-| *Damage Numbers* | | |
-| Damage Numbers | On | Numbers on hits. |
-| Numbers For | Monsters Only | Or All Shootable (never your own body). |
-| Number Font | JFO Metal | JFO Metal, Ermac, Classic Doom, Classic Doom (small). |
-| Number Size | 1.00 | Digit size. |
-| Word Size | 1.00 | Size of the words, the combo and the level-up text. |
-| Text Quality | Quest | Quest (half-resolution glyphs) or PCVR. |
-| Hit Colours | By Damage Type | By Damage Type, By Hit Strength, Classic (the two Classic rows below), a fixed colour, or Random. |
-| Classic Colour | Default | Colour used when Hit Colours is Classic. |
-| Classic Type Colours | On | Colour by damage type, when Hit Colours is Classic. |
-| Total Colours | Follow Combo | The total's colour: follows the combo ramp, a fixed colour, or Random. |
-| Combo Colours | White Yellow Orange Red | Six colour ramps, or Random (a fresh ramp each chain). |
-| Headshot Colour | Gold | Any palette colour, or Random. |
-| Pop and Settle | On | White flash, snap out, arc away, fade. |
-| Motion Without Pop | Toss | Toss or Float, when Pop and Settle is off. |
-| Size by Hit | Off | Bigger hits draw a little bigger. |
-| Grow with Distance | Off | Hit numbers grow with distance like the bars. |
-| Running Total | On | A chain's hits roll up in one total above the bar. |
-| Kill Slam | On | The total punches once on the kill. |
-| Combo Counter | On | The "xN" beside the bar. |
-| Combo Shake | On | The total and combo shake a little from x5. |
-| Overkill Word | Off | OVERKILL when the last hit went well past zero. |
-| Headshot Word | On | HEADSHOT over Brutal Doom's head hits. |
-| Headshot Flash | On | A headshot's number starts white for a few tics. Never with Photosensitive Mode. |
-| Headshot Cycling | On | A shimmer and bobbing letters on headshots. |
-| Shotgun Spray | Off | One number per pellet instead of one per target per tic. |
-| Gains on You | On | +health, +armour and +ammo fly to your wrist. |
-| Freeze in Hit-Stop | On | A number on a frozen monster holds until it moves again. |
-| Numbers in Slow-Mo | World Time | Slow with the world, or move at your own speed. |
-| Out of Your Face | On | Numbers stay about a metre away and off both guns' aim lines. |
-| Clear of Walls | On | Numbers are traced clear of walls and ceilings. |
-| Most Numbers | 12 | Only this many of the nearest numbers show (6, 12, 24, 48). |
-| *Kill Rewards* | | |
-| Kill Rewards | On | Monsters burst into bits when they die. |
-| Bits per Kill | Standard (1 per 10) | Few (1 per 20 health), Standard (1 per 10), Many (1 per 5), or Custom (Health per Bit on Test and Debug). |
-| Boss Fountain | x3 | Bits multiplier for bosses (x1, x3, x5). |
-| What Drops | Custom (Test and Debug) | Even Mix, Mostly Health, Mostly Armour, Mostly Ammo, or Custom (the mix on Test and Debug). |
-| Bits Vanish After | 7 s | 7 s, 15 s, 30 s, 1 min or Never. |
-| Bits Vanish As | Blink Out | Blink Out: fullbright flashes, faster and faster, then gone (its last 2 s). Fade Out: a smooth fade over its last second. Photosensitive Mode always fades. |
-| Ammo Bits Give | Any Gun I Carry | Or The Gun in Hand. |
-| Bits Fly to Me (m) | 2 | Metres from which bits fly to you (0 off). |
-| *Level-Up* | | |
-| Player Level-Up | On | The LEVEL UP band. |
-| Level-Up Slow-Mo | Off | A short slow-motion pulse while the band is readable. Needs RSQ SlowMo. |
-| Band Colour | Gold | Band colour, or Random. |
-| Text Colour | Gold | "LEVEL UP" colour, or Random. |
-| Weapon Level-Up | On | The tag that rises off the gun. |
-| Weapon Tag Colour | Gold | The tag's border colour, or Random. |
-| *Arrivals and Words* | | |
-| Arrival Beams | On | Monsters another mod brings in arrive on a beam (server setting). Off: they simply appear. |
-| Monster Words | On | Words another mod puts over a monster (GUARD!, TARGET!). Follows Word Size and Far Size. |
-| Pops | On | The small ring and star burst another mod asks for at a monster. |
-| Scene Music | On | A scene's own track (a Bossfight's) crossfades over the level music; off, you keep the level music. |
-| Scene Music Volume | 1.00 | How loud the scene track plays. |
-| Scene Crossfade (s) | 2.0 | How long the scene track takes to come in and to go. |
-| Reset All | | Every setting on both pages back to its default. |
+---
 
-**Test and Debug**
+## Damage numbers
 
-| Row | Default | What it does |
-|---|---|---|
-| *HP Bars* | | |
-| Far Size | 2.00 | How much bars grow at range (1 = off). |
-| Height | 0.10 | Bar height above the sprite, as a share of its height. |
-| Limit Distance | 1536 | The distance used by Distance Limit, in map units. |
-| *Kill Rewards* | | |
-| Drop Mode | By Health | By Health, or Range (a random count between the two Range rows). |
-| Health per Bit | 10 | Health per bit when Bits per Kill is Custom. |
-| Drop Chance | 50 | Chance each bit drops. A boss always drops every bit. |
-| Mix: Health / Armour / Ammo | 15 / 20 / 65 | Weights for the custom mix. |
-| Ammo Type 1 Counts | On | A gun's main ammo can drop. |
-| Ammo Type 2 Counts | Off | A gun's second ammo type can drop too (clip mods). |
-| Range: Fewest / Most | 1 / 3 | The Range mode's limits. |
-| Range: Random | On | Range mode picks a random count. |
-| Debug Log | Off | One console line per kill. |
+![Hit numbers jetting off a monster, the total and combo over its bar](docs/readme/numbers_jets.jpg)
 
-## Works with
+*Rig frames from an earlier build (committed by 2026-11-05): hit numbers jetting and spinning off a monster while the
+total counts up over its bar. Not captures from the headset.*
 
-- **Runs alone.** Bars, numbers and Kill Rewards need nothing else.
-- **Gun Bonsai**: drives both level-up displays. With **RSQ Gun Bonsai VR**, the weapon tag knows which hand's gun
-  levelled, and its Kill Rewards tree (Gastropub, Rich Bits, Magnet, Lucky Kill) adds more bits, richer bits, a
-  magnet and bonus bursts on critical, Finisher and big-Score kills.
-- **Brutal Doom / BD22**: HEADSHOT on its head hits. Its invisible helper monsters never get a bar, a number or bits,
-  and neither do the dying bodies a monster leaves (crawling, burning, slumped, last stand): one monster pays once.
-- **RSQ SlowMo's DOWN** (new on 11-06, v3 on 11-07; rig only, not headset-confirmed): each hit that adds time to the
-  DOWN clock pops the time it bought (e.g. "+0.4s") at the monster in DOWN's crimson (Damage Numbers row); REVENGE
-  (magenta, a target you kill) and REVIVE (cyan, every time you get up, bigger and longer at the better tier) fly past
-  on the level-up band in the numbers' JFO font; a DOWN target's HP bar shows even if you never hit it, and SlowMo
-  draws the target's icon over it. Kills within 3x your Bits Fly to Me reach bank their bits for the revive (above).
-  The RAGE word and the red skull are gone.
-- **RSQ Grapple, RSQ ShieldSaw, RSQ QuestSaber, RSQ Whip, RSQ Miniboss**: their hooked, stunned, locked, gripped,
-  whipped, miniboss (with its Bossfight's tier) and thrall markers on the bars. An older RSQ Whip shows the hook, as it
-  used to.
-- **LegenDoom (3.0 or Lite)**: the gem on a legendary once it turns, never on a monster it has only picked.
-- **Burning**: any fire damage lights the flame (BD22's flamethrower and burning ground, RSQ Grenade's Incendiary,
-  RSQ Gun Bonsai VR's burn). Brutal Doom has no afterburn on a living monster, so the flame shows while it is in fire:
-  it goes out once that fire's own interval passes with no new hit (flamethrower stream 1 tic, burning ground 26,
-  Incendiary 7, anything else the gap between its hits, up to 26), checked every 4th tic. RSQ FnF's flare sets
-  nothing on fire, so it never shows the flame.
-- **RSQ SlowMo**: the optional level-up pulse, and numbers that slow with the world.
-- **RSQ Gun Cards**: +ammo gains land on the gun's card.
-- **RSQ Grenade**: with its Scavenger node at level 3, one ammo bit in four is a grenade.
-- **RSQ Accessibility**: its colour-blind palette overrides the bar colours and the default combo ramp. Photosensitive
-  Mode dims flashes and limits how often they come.
-- **Champions**: the bar sits just above a champion's tier icon.
-- **coldcite's Top HP Bars**: if it is loaded too, this pack takes over so you never see two bars, and his menu entry
-  opens this one.
-- **RSQ Miniboss** (11-09, the Bossfight rework; asked by name, nothing links): its arrival beams, its words (GUARD!,
-  TARGET!) and its thrall-kill pops, through `RSQVR_Service`:
+The numbers are Xaser Acheron's damnums, redrawn for VR.
 
-  | Request | Arguments | Answer |
-  |---|---|---|
-  | `GetInt("beam", kind, rgb, size, monster, role)` | kind "v1" "v2" "v3" "v4"; rgb 0xRRGGBB; size (1.0 = the monster's own height; 0 = 1.0); the monster, already spawned at its spot; role (nameArg, optional) 'miniboss', 'thrall' or 'chump' for its sound (none: V3 / V4 a miniboss, V1 / V2 a thrall) | tics until the monster is shown (V1 7, V2 12, V3 19, V4 31), or 0 when it did not play (Arrival Beams off, no or dead monster, unknown kind, a beam already on it). It hides the monster but does not freeze it. Game tics: it does not slow with SlowMo's world. |
-  | `GetInt("word", text, rgb, seconds, actor)` | seconds 0 = 1 s | 1 (0: no actor) |
-  | `GetInt("word.hold", text, rgb, size, actor)` | size 1 normal, 2 large and pulsing, 0.6 small; again with the same text: new colour / size | 1 (0: no actor) |
-  | `GetInt("word.clear", text, 0, 0, actor)` | | 1 |
-  | `GetInt("pop", "", rgb, size, actor)` | | 1 (0: no actor) |
+- **Small, and where you hit.** Each number starts at the spot your shot struck, a little in front of the monster on
+  your side, and is about 7 cm tall (it never fills more than a small part of your view, however near).
+- **Little jets.** Each hit jets out at a slightly different angle and speed, spins a little (some a lot) and fades.
+  Shotgun pellets landing together make one number, unless Shotgun Spray is on.
+- **The running total and combo.** From the chain's second hit, centred over the bar, counting up, bouncing on each
+  hit. It moves beside the bar under a low ceiling, and the combo moves to the other side when a wall is in the way.
+- **The kill.** The total punches once, holds and fades. **Overkill Word** (off by default) adds OVERKILL when the last
+  hit went well past zero.
+- **Headshots** (Brutal Doom's head hits): a gold HEADSHOT over a number a third bigger, a jolt, a slow gold shimmer,
+  letters bobbing.
+- **Colour by damage type** (the default): bullets white, shells yellow, fire orange, plasma cyan, explosives red, BFG
+  lime, rail blue, melee pink, saws crimson, the series' Saber sky blue and Force lavender. Or by hit strength, one
+  colour, Random, or damnums' own classic colours.
+- **Out of your face.** Numbers stay at least about a metre from your eyes and slide off either gun's aim line, and
+  they are traced clear of walls and ceilings. Only the 12 nearest show (Most Numbers).
+- **Hit-stop and slow motion.** A number on a monster frozen in a hit-stop waits with it. In RSQ SlowMo's slow motion,
+  numbers slow with the world, or keep your own time.
+- **Four fonts.** JFO metal (the default), Ermac's digits, Classic Doom and Classic Doom (small), each in a Quest or a
+  PCVR quality.
 
-  The answers never depend on a player's own settings (netplay); Monster Words and Pops off only stop the drawing.
-- Load order: anywhere among the RSQ packs.
+### Gains on you
 
-## Credits and licence
+![A "+10" rising from a pickup; a weapon level-up tag](docs/readme/weapon_tag_gain.jpg)
 
-- **HP bars**: Top HP Bars 1.04 by coldcite (2017). His layout, bar art and idea; Classic and Red are his images, the
-  other sets his art recoloured. His words: "Feel free to use this in your mods. You don't have to ask my
-  permission!" Top HP Bars was based on SpriteShadow by Nash Muhandes (MIT, © 2021); no SpriteShadow code is copied.
-- **Damage numbers**: damnums v1.0.2 by Xaser Acheron, with contributions by Major Cooke and thanks to Marrub and
-  Zombie. MIT licence, © 2017 Xaser Acheron. Its idea, digit art, colour translations, damage-type colours and motion
-  are his.
-- **Fonts**: JFO, the JDUI font by Zedas, in Blackmore1014's "JDUI Brutal Doom Ultimate Edition". It ships with credit
-  to Zedas and Blackmore1014 (owner's decision). Ermac's digits: iamErmac's Force Unleashed holo HUD digits.
-- **Kill Rewards**: SoM's Universal(ish?) Kill Rewards v1.0, its bits, orb sprites and drop rules. SoM: "Feel free to
-  use anything in this mod for yourself ... I don't need credit, unless you wanted to." We do.
-- Lossvoise's high-visibility retexture is not included. Champions and LegenDoom Lite are read by name; nothing of
-  either is bundled.
-- **Arrival beams**: our own pixel art (the beam, rings, sparks, licks, flames, the pop), End of Starchild's death pillar
-  as a motion reference only. **V3's column and bursts and V4's skull pillar are frames cut from the Z-Fighter effects
-  sheet, posterized: a rip that asks for credit. Credit it or redraw them before release.** The words use RS Score's
-  font (Blue Shadow, via Dakka). The arrival sounds were supplied by the owner (presidentkoopa), 2026-11-09; source not
-  stated. The art is exported by `tools/gen_beams.py` from the approved mockups in `tools/beam_spec/` (needs Pillow,
-  numpy, scipy); `tools/beam_check.py` checks it all without an engine.
-- Full licence texts are in `pk3/CREDITS.txt`.
-- Code: presidentkoopa, for stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine changes.
+*Rig frames from an earlier build (committed by 2026-11-05): top, "+10" rising from a pickup; bottom, a pistol's level-up
+tag. Not captures from the headset.*
+
+Health, armour and ammo you pick up rise as "+N" from the pickup and fly to your wrist: health green and armour sky
+blue to your off hand, ammo gold to the hand whose gun uses it. With RSQ Gun Cards the ammo number fades into the
+card's own "+N".
+
+---
+
+## Kill Rewards
+
+Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a plain menu.
+
+- **How many:** one bit for every 10 of the monster's health at Standard (an imp rolls 6), Few (per 20) or Many (per 5).
+  Each bit drops half the time. A boss always drops every bit, three times as many by default (Boss Fountain).
+- **What:** health (25), armour (10, up to 250) or ammo (5 rounds for one of the guns you carry), by default mostly
+  ammo (15 health, 20 armour, 65 ammo).
+- **They come to you.** Bits within 2 m fly to you and are picked up, so you never have to walk into them.
+- **They don't wait.** After 7 seconds a bit is gone: it blinks, faster and faster, over its last two seconds, or fades over its last second (your choice).
+- **One monster pays once.** Brutal Doom's invisible helpers and its crawling, burning or slumped dying bodies never
+  drop bits.
+
+*[GIF to come: a baron bursting into a fountain of bits that fly to the player]*
+
+---
+
+## Level-ups (Gun Bonsai)
+
+![The LEVEL UP band scrolling past](docs/readme/levelup_band.jpg)
+
+*Rig frames from an earlier build (committed by 2026-11-05): the player level-up band. Not captures from the headset.*
+
+- **Player level-up:** a gold band across your view, LEVEL UP scrolling in fast, slowing through the middle so you can
+  read it, and out fast, with "PLAYER LV n" and "+1 UPGRADE" trailing. In VR it stands about 2 m in front of you, faces
+  you and follows your gaze lazily, so it reads like a sign. **Level-Up Slow-Mo** (off) adds a short RSQ SlowMo pulse
+  while it is readable.
+- **Weapon level-up:** a small tag rises off the gun: its name types in letter by letter, "LV n" stamps in, NEW UPGRADE
+  flickers green, then it fades. With RSQ Gun Bonsai VR it rises off the hand whose gun levelled.
+
+---
+
+## Arrivals: the four beams
+
+When another mod brings a monster in (today, RSQ Miniboss's Bossfight), the monster arrives on a beam in a colour the
+caller picks. It is hidden until the beam reveals it, and every beam has its own sound, starting the moment the beam
+does: full volume out to about 12 m, fading to nothing at about 53 m.
+
+| | |
+|---|---|
+| **V1:** a beam opens around the monster and narrows; rings drop down it and land on the floor. Revealed on the 7th tic (0.2 s) | ![V1](docs/readme/beam_v1.gif) |
+| **V2 (arcade):** a ring flashes on the floor, the beam slams down, rings ride up it, and the monster goes white, then its colour, then itself (revealed at 0.34 s) | ![V2](docs/readme/beam_v2.gif) |
+| **V3 indoors:** a column bursts up and is cut at the real ceiling, splashing along it, sparks dropping, then narrows to reveal the monster (at 0.54 s) | ![V3 indoors](docs/readme/beam_v3_indoor.gif) |
+| **V3 outdoors:** under the sky (or a ceiling out of reach) the column climbs out of sight, flames trailing upward | ![V3 outdoors](docs/readme/beam_v3_outdoor.gif) |
+| **V4 (boss):** six beams appear on a ring, spin faster and faster, close in and merge, then a skull pillar, and the monster arrives (at 0.89 s) | ![V4](docs/readme/beam_v4.gif) |
+
+*Design renders, drawn by the same mockup tools the game's beams follow tic by tic. Not captures from the game or the
+headset.*
+
+![The same beam in thirteen colours](docs/readme/beam_colours.jpg)
+
+*Design render: V1 in thirteen tier colours. A very dark colour is drawn see-through instead of glowing.*
+
+![The four arrival beams, frame by frame](docs/readme/beams_contact.jpg)
+
+*Design render: the four beams tic by tic (top to bottom: V1, V2, an earlier draft of V3, V4).*
+
+![V1, V3 and V4 on the rig](docs/readme/rig_beams.jpg)
+
+*Rig frames, 2026-11-09, MAP01's courtyard: V1, V3 (outdoors) and V4 called on a zombie by a test script. Not captures
+from the headset.*
+
+- The beams are sized to the monster (a baron's beam is taller than an imp's).
+- A monster that dies mid-beam is shown at once; the beam never leaves a monster hidden.
+- The beams run at full speed even while RSQ SlowMo has slowed the world, and stand still while time is frozen.
+- **Arrival Beams** off: the caller's own arrival plays instead (RSQ Miniboss's teleport fog).
+
+### Words and pops
+
+Another mod can put a word over a monster in RSQ Score's score-line font: a one-off word that pops, flickers to white,
+drifts up and fades, or a word held over it until it is cleared (normal, small, or large and pulsing). RSQ Miniboss uses
+GUARD! (silver) when its shield turns a shot, and TARGET! (gold) over what you should shoot. A **pop** is a pixel ring and
+star burst in a colour, at the monster's middle (RSQ Miniboss: a thrall's death).
+
+*[GIF to come: GUARD! popping over a shielded miniboss, TARGET! held over its thralls, a pop as a thrall dies]*
+
+---
+
+## Scene music
+
+Other mods can tell this one a scene has started, and the scene's own track crossfades in over the level music (the
+level music fades to silent under it). When the scene ends, the track fades out and the level music fades back in
+where it has got to.
+
+- **The Bossfight** (RSQ Miniboss): the owner's track "20 organic beat", for everyone.
+- **DOWN** (RSQ SlowMo): the owner's "29 red alert", heard only by the player who is down. It stands above a Bossfight's
+  track, which carries on silently underneath and comes back when you get up (unless the fight ended meanwhile).
+- **Scene Music Volume** sets the scene track's loudness; **Scene Crossfade** how long the fades take (2 s).
+
+---
+
+## RSQ SlowMo's DOWN
+
+While you are DOWN in RSQ SlowMo:
+
+- Each hit that buys you time shows "+0.5s" (or however much) at the monster, in DOWN's crimson.
+- REVENGE flies past on the band when you kill your mark, and REVIVE every time you get up, bigger for a better tier.
+- A DOWN target gets its bar at once and keeps it, hit or not.
+- Bits from your kills within three times your Bits Fly to Me reach fly into your DOWN plate and are banked (paid as
+  health and armour when you revive); ammo bits give their ammo as they arrive.
+
+*[GIF to come: "+0.5s" popping off a monster while DOWN, then REVIVE on the band]*
+
+---
+
+## Plays well with
+
+- **RSQ Miniboss:** its Bossfight calls the arrival beams (V1 thralls with a V3 miniboss, or V2 thralls with V4, picked
+  per fight, each in its monster's tier colour), the GUARD! and TARGET! words, the pops, and the Bossfight scene music
+  (its **Bossfight Music** row). Here: a crown with tier pips over the miniboss's bar and a chain link over its thralls;
+  with its **Boss Kill Rewards** row on, a miniboss counts as a boss for Kill Rewards, and a Bossfight miniboss's fountain
+  is multiplied again. Without this pack, its monsters land in teleport fog.
+- **RSQ SlowMo:** the DOWN tie-ins above, and its DOWN Music (its **DOWN Music** row). Here: Numbers in Slow-Mo, and the
+  optional level-up slow-motion pulse.
+- **RSQ Gun Bonsai VR** and **Gun Bonsai:** the level-up band and the weapon tag (with Gun Bonsai VR, the gun's name and
+  which hand). Gun Bonsai VR's Kill Rewards path works through this pack, and is offered only while it is loaded: Bit
+  Scavenger (+25% bits a level), Rich Bits (bits worth 2x to 4x, drawn glowing), Magnet (bits fly from 2, 3, 4 m) and
+  Lucky Kill (double or more on a critical, a Finisher or a big moment). Its stunned marker shows on the bars.
+- **RSQ Gun Cards:** an ammo gain lands in the card's own "+N", and the wrist number is sized to the card's digits.
+- **RSQ FnF:** with its **Bones Drop Battery Bits** row, Legion of Bones monsters drop yellow battery bits here; each
+  refills 15% of your flashlight.
+- **RSQ Grenade:** with Gun Bonsai VR's Scavenger at level 3, one ammo bit in four is a grenade. Its Incendiary fire
+  lights the burning marker.
+- **RSQ Grapple, RSQ ShieldSaw, RSQ Saber, RSQ Whip, RSQ DistanceGrab:** their hooked, stunned, locked, gripped, whipped
+  and held markers on the bars. RSQ Whip leaves Kill Rewards bits alone.
+- **RSQ Score:** the words use its font, and the combo's 3-second window is the same as its chain's.
+- **RSQ Accessibility:** Photosensitive Mode dims the bars', pops' and beams' flashes to 40%, slows the shimmer, stops the words' white flicker,
+  makes bits fade instead of blink, and draws the beams' white silhouettes in a light colour. Its colour-blind palette
+  overrides the bar colours and swaps the default combo colours for a safe set.
+- **Brutal Doom:** its head hits are HEADSHOTs, its damage types colour the numbers, its helpers and dying bodies get no
+  bar, number or bits.
+- **LegenDoom and Champions:** a LegenDoom candidate does not give itself away with an overheal before it turns; a turned
+  legendary wears a gem. Over a champion the bar sits above Champions' icon.
+- **coldcite's Top HP Bars:** loaded too, this pack takes over (one set of bars), and his HUD Options entry opens this
+  menu when his pk3 loads first.
+- **Mods written for damnums:** their damage-type colours are read too.
+- **Voxels** (BD_VoxelPack, Voxel Doom II): bars sit on the voxel's real top.
+
+---
+
+## Options
+
+*Options → Radiant Silvergun Options → RSQ VisualRewards.* One page, with Test and Debug below it. Defaults in brackets.
+
+| Section | Rows |
+|---|---|
+| HP Bars | HP Bars (On) · Bar Colours (Classic; Red, Protanopia, Deuteranopia, Tritanopia, High Contrast, Cyan Lavender Orange, Random) · Bar Size (0.30) · Full Bright (Off) · Fade With Stealth (On) · Overheal Strip (On) · Status Markers (On) · Only Where I Aim (Off) · Damage Chunk (Off) · Blue Bars for Allies (Off) · Nearest 24 Only (Off) · Distance Limit (Off) |
+| Damage Numbers | Damage Numbers (On) · Numbers For (Monsters Only; All Shootable) · Number Font (JFO Metal; Ermac, Classic Doom, Classic Doom (small)) · Number Size (1.00) · Word Size (1.00) · Text Quality (Quest; PCVR) · Hit Colours (By Damage Type; By Hit Strength, Classic (below), 17 colours, Random) · Classic Colour (Default, and damnums' 21 colours) · Classic Type Colours (On) · Total Colours (Follow Combo; 17 colours, Random) · Combo Colours (White Yellow Orange Red; five more ramps, Random) · Headshot Colour (Gold) · Pop and Settle (On) · Motion Without Pop (Toss; Float) · Size by Hit (Off) · Grow with Distance (Off) · Running Total (On) · Kill Slam (On) · Combo Counter (On) · Combo Shake (On) · Overkill Word (Off) · Headshot Word (On) · Headshot Flash (On) · Headshot Cycling (On) · Shotgun Spray (Off) · Gains on You (On) · Freeze in Hit-Stop (On) · Numbers in Slow-Mo (World Time; Your Time) · Out of Your Face (On) · Clear of Walls (On) · Most Numbers (12; 6, 24, 48) |
+| Kill Rewards | Kill Rewards (On) · Bits per Kill (Standard (1 per 10); Few (1 per 20 health), Many (1 per 5), Custom (Test and Debug)) · Boss Fountain (x3; x1, x5) · What Drops (Custom (Test and Debug); Even Mix, Mostly Health, Mostly Armour, Mostly Ammo) · Bits Vanish After (7 s; Never, 15 s, 30 s, 1 min) · Bits Vanish As (Blink Out; Fade Out) · Ammo Bits Give (Any Gun I Carry; The Gun in Hand) · Bits Fly to Me (2.0 m, 0 to 4) |
+| Level-Up | Player Level-Up (On) · Level-Up Slow-Mo (Off) · Band Colour (Gold) · Text Colour (Gold) · Weapon Level-Up (On) · Weapon Tag Colour (Gold) |
+| Arrivals and Words | Arrival Beams (On) · Monster Words (On) · Pops (On) · Scene Music (On) · Scene Music Volume (1.00) · Scene Crossfade (2.0 s) |
+| Test and Debug | HP Bars: Far Size (2.00) · Height (0.10) · Limit Distance (1536). Kill Rewards: Drop Mode (By Health; Range) · Health per Bit (10) · Drop Chance (50) · Mix: Health (15) · Mix: Armour (20) · Mix: Ammo (65) · Ammo Type 1 Counts (On) · Ammo Type 2 Counts (Off) · Range: Fewest (1) · Range: Most (3) · Range: Random (On) · Debug Log (Off) |
+
+The page ends with **Reset All**: every setting named on this page and on Test and Debug goes back to its default.
+
+The HP bars, Kill Rewards and Arrival Beams rows, and Damage Numbers, Numbers For and Shotgun Spray, are the host's
+(one setting for everyone in netplay). The rest of the damage-number rows and the level-up, words, pops and scene music
+rows are each player's own.
+
+---
+
+## Status
+
+| | |
+|---|---|
+| **Shown on the rig** (2026-11-09, 19:04 run) | The four arrival beams on the rig's full series load order (doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded, then the series): each called on a monster with its own sound starting on the beam's first tic (V1 1.16 s, V2 1.26 s, V3 1.00 s, V4 2.78 s) and the monster revealed on tic 7, 12, 19 and 31; frames of V1, V3 outdoors and V4 (above). In the same run: the DOWN tie-ins logged ("+1.5s" and "+0.5s", REVENGE, REVIVE at the middle and top tier sizes), HP bars drawn over monsters in the frames, and no script error from this pack. That build was the one before the evening's changes (scene music rewritten for DOWN, DOWN's track, the Kill Rewards banked-bit fix); those are code only |
+| **Shown on the rig, earlier builds** (committed by 2026-11-05) | HP bar colour sets and markers, damage-number jets, totals, combo, kill and overkill, headshots, the level-up band, the weapon tag, gains flying to the wrist, Kill Rewards after its move into this pack (frames and logs in test/evidence). The code has changed since; they are not proof of the current build |
+| **Headset-confirmed** | Nothing yet |
+| **Code only, not yet shown** | Monster words and pops; V2's frames and V3 indoors; the scene music (Bossfight and DOWN); battery bits; bits banking into the DOWN plate; Photosensitive Mode's versions of everything; netplay; everything else on this page not listed above |
+
+---
+
+## Under the hood
+
+- **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
+- **No hard links.** Every other mod is found by name while the game runs; the pack loads and plays alone.
+- **Light on Quest.** The numbers and words are VisualThinkers drawn from textures: no sprite frames, no actors, never
+  ticked by the engine; one driver places them all after every actor has moved. Caps: 200 number glyphs, 160 word
+  glyphs, 24 words, 12 pops, and Most Numbers. Bars rebuild their frame only when something changed and are polled
+  1/16 of the list a tic.
+- **Stereo.** A number's quad is built once from the centre eye, so both eyes see it at one depth.
+- **Netplay.** Bars, bits and beams are play-side and run the same on every machine (named random numbers in the beams);
+  every beam piece, number, word and pop is local to each player's view. Only the console player's own DOWN words and
+  level-ups show on his screen.
+- **The beams** hide the monster with its render flag only: it still thinks and can be hit, so the caller keeps it from
+  acting. Everything it changed on the monster is put back exactly at the reveal, if the beam is removed early, or after
+  a save and load mid-beam. A second beam on the same monster is refused.
+- **For other mods: RSQVR_Service**, found by name. It answers `loaded`, `kr.loaded`, `kr.on`, `kr.perk`, `kr.magnet`,
+  `helper` (is this one of Brutal Doom's helpers), and takes `kr.battery` (battery bits from a body), `beam` (kind
+  `v1`..`v4`, a colour, a size, the monster; answers the tics until the reveal, 0 when it did not play), `word`,
+  `word.hold`, `word.clear`, `pop`, `scene.push` (key, priority, owner, music) and `scene.pop`. **RSQTHP_DnService**
+  `crit` marks a monster's hits as crits (nothing is drawn for a crit yet). **RSQVR_RSQDownJoin** takes RSQ SlowMo's
+  `down.time`, `down.revenge`, `down.up` and `down.target`. Bars ask every service whose name contains `RSQTHP_Marker`
+  for `hooked`, `stunned`, `locked`, `gripped`, `whipped`.
+- **Saved settings carry over.** Kill Rewards keeps Gun Bonsai VR's old setting names, so old settings and saves still
+  work.
+- **Tools** (VisualRewards/tools, never shipped): `gen_art.py` (the bar art and TEXTURES), `cvd_check.py` (colour-blind
+  distances), `gen_dn_art.py` and `gen_dn_dot.py` (the number glyphs), `gen_beams.py` (the beam, word and pop art and
+  tables), `beam_spec/` (the approved beam mockups and their renders), `beam_check.py` (checks the beam code without an
+  engine), `beam_sounds/gen_beam_sounds.py` (RVQB1-4), `gen_battery_bit.py`, `gen_gauges.py` (the series' HUD bars).
+- **The beam sounds** are made from the owner's own files only (pitch, layering, echo; nothing synthesized):
+  V1 ONPARE8 with an octave-down copy and a small-room echo; V2 ONPARE2 the same way; V3 ONPARE3 the same way, faded out
+  to end with the beam; V4 ONPARE2 as the beams rise, then PL01_U lowered 15% on the merge, with a hall echo. The
+  owner's "hit" sound (ONPARE6) is kept for the miniboss fight's segment break, not yet built.
+
+## Credits
+
+The full list, with every file and licence, is in **CREDITS.txt**.
+
+- **coldcite:** Top HP Bars 1.04, the bars' layout, art and idea (itself based on Nash Muhandes' SpriteShadow, MIT).
+- **Xaser Acheron** (with Major Cooke; thanks to Marrub and Zombie): damnums 1.0.2 (MIT), the damage numbers' idea,
+  Doom digit art, colours and motion.
+- **SoM:** Universal(ish?) Kill Rewards 1.0, the bits, their orbs and the drop rules.
+- **Zedas** and **Blackmore1014:** the JFO font (JDUI Brutal Doom Ultimate Edition), the default number font.
+- **iamErmac:** the Force Unleashed holo digits (Ermac font).
+- **Blue Shadow:** RS Score's score-line font (via ijon's Dakka), the monster words.
+- **presidentkoopa:** the design, the arrival sounds and the two music tracks (sources to be recorded before release).
+- **End of Starchild:** V1's growth and narrowing, as a motion reference only.
+- **Not yet cleared:** V3's dome, splash, burst and columns and V4's skull pillar are frames cut from a ripped
+  "Z-Fighter effects" sheet. Before any release they must be credited properly or redrawn.
+- **QuestZDoom** (Emawind and Team Beef): the engine.
