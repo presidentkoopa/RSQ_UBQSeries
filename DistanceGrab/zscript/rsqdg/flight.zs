@@ -407,6 +407,26 @@ class RSQDG_Flight : EventHandler
 			return true;
 		}
 
+		// A GUN YOU ALREADY CARRY WITH ITS AMMO FULL (owner 11-10: "it's easy to lose track of ammo ... you'd want to be
+		// trying to pick up guns just out of habit"). It stays targetable; the catch refuses it as the floor would, so
+		// "AMMO FULL" floats over it for a second (RSQ VisualRewards' "word", by name; a short print without it), the hand
+		// gets a soft buzz, and it drops at your feet, there for when you are low. The flight ends here.
+		let fw = Weapon(a);
+		if (fw && pmo.FindInventory(fw.GetClass()))
+		{
+			Restore(hand);
+			a.SetOrigin(pmo.Vec3Angle(pmo.radius + 12, pmo.angle, 0), false);
+			a.Vel = (0, 0, 0);
+			let vsvc = ServiceIterator.Find("RSQVR_Service").Next();
+			int said = vsvc ? vsvc.GetInt("word", "AMMO FULL", 0xFFD040, 1.0, a) : 0;
+			if (!said && p == players[consoleplayer]) pmo.A_Print("Ammo full", 1.0);
+			let feel = RSQDG_Feel.Get();
+			if (feel) { feel.Spike(hand, 0.35, 4); feel.OnDrop(hand, a, p, "pull.full"); }
+			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
+				Console.Printf("[RSQDG] hand %d: %s carried, ammo full: AMMO FULL, dropped at the feet", hand, a.GetClassName());
+			return false;
+		}
+
 		// REFUSED, so it keeps flying rather than being dropped on the floor by
 		// a hand that could not take it. Flight's own flags go back ON -- and
 		// that includes THRUACTORS, or the rest of the approach runs into the

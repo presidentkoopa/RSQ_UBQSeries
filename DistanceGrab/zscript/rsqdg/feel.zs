@@ -667,6 +667,7 @@ class RSQDG_Feel : EventHandler
 //   pull.caught    the hand took it out of the air (thing is null if it was
 //                  used up on the way in)
 //   pull.refused   the hand could not take it; it keeps flying
+//   pull.full      a gun you already carry, ammo full: AMMO FULL over it, dropped at your feet (11-10)
 //   pull.missed    it arrived and the hand was not there; it drops
 //   pull.blocked   it could not get there in time; it drops where it is
 //   pull.aborted   called off -- switched off, the player died, the level changed

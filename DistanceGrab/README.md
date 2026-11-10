@@ -298,8 +298,9 @@ the server's settings; everything else is each player's own.
 
 ## Known concerns
 
-- **A gun you already carry with full ammo can't be picked up.** Pull one in and the catch refuses it, the same way
-  walking over it would leave it on the floor. Noted by the owner (2026-11-09); not changed yet.
+- (Fixed 11-10, code only, not run.) A gun you already carry with full ammo still can't be taken, as walking over it
+  leaves it on the floor; now **AMMO FULL** floats over it for a second (with RSQ VisualRewards; a short line on screen
+  without it), your hand gets a soft buzz, and it drops at your feet for when you're low.
 
 ## Status
 

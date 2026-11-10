@@ -24,6 +24,7 @@ out. 3 now also shows FnF's diamonds only with the OFF hand near. Load-checked, 
 ## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25)
 A gun you already carry, with full ammo, cannot be picked up with Distance Grab (the catch is refused, like walking
 over it). Marked as a concern; not changed. Listed in DistanceGrab/README.md "Known concerns".
+DONE 11-10 (owner): stays targetable; AMMO FULL over it (VisualRewards' word), a soft buzz, dropped at your feet.
 
 ## Saber's training remote HUD (owner 2026-11-10: "I would have liked to co-design that. Table it for now.")
 A real score / timer panel for the training remote in the series' fonts, to be designed WITH the owner. A first mockup
