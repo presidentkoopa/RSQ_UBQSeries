@@ -1,0 +1,21 @@
+L8_SABER
+L8_TWIST
+R10 SABER t140 tag 0 [UBQS_Saber inhand 1 back 0 thrown 0]  ready UBQS_Saber
+R10 SABER t152 tag 1 [UBQS_Saber inhand 1 back 0 thrown 0]  ready UBQS_Saber
+L8_TWIST_BACK
+R10 SABER t182 tag 2 [UBQS_Saber inhand 1 back 0 thrown 0]  ready UBQS_Saber
+R10 SABER t194 tag 3 [UBQS_Saber inhand 1 back 0 thrown 0]  ready UBQS_Saber
+L8_SABER_THROW_20
+UBQS throw release t251: hand 2.06 m/s (needs 2.50)
+R10 SABER t255 tag 20 [UBQS_Saber inhand 1 back 0 thrown 0]  ready UBQS_Saber
+R10 SABER t316 tag 21 [UBQS_Saber inhand 1 back 0 thrown 0]  ready UBQS_Saber
+L8_SABER_THROW_30
+R10 SABER t396 tag 30 [UBQS_Saber inhand 1 back 0 thrown 1]  ready UBQS_Saber
+R10 SABER t456 tag 31 [UBQS_Saber inhand 1 back 0 thrown 0]  ready UBQS_Saber
+L8_SSQ
+L8_SSQ_THROW_20
+ssq: release p0 speed 2.06 m/s, 1 locked, forward 1
+L8_SSQ_THROW_30
+ssq: release p0 speed 3.09 m/s, 1 locked, forward 1
+L8_GRAPPLE
+L8_END

@@ -43,6 +43,11 @@ swing, let go, "like the grenade") already share the gesture. They differ in how
 their thresholds (Saber's Throw Needs, ShieldSaw's ssq_throw_min, the grenade's body-frame sampler of 11-09). Next:
 one sampler (the grenade's) and one threshold for all of them. Not built.
 
+## After the rig tests: every README's controls (owner 2026-11-10 12:59)
+"all readmes need to be updated with controls and shit once this is over": every README's How to play and Controls rows to
+match the 11-10 keys pass (design/KEYBINDS_PLAN.md) and each mod's inputs as built. Whip, Gun Cards and Accessibility
+READMEs: approved pending their fixes (owner 12:59).
+
 # Built (moved here 11-10; kept for the record)
 
 ## Wheel holster web (owner 2026-11-07 06:50-07:22; approved to build; BUILT 11-07, rig only, not headset-confirmed)

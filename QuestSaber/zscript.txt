@@ -1003,6 +1003,7 @@ class UBQS_SaberBase : Weapon abstract
 		ThrowPeak();
 		Vector3 hv = tPeakV;
 		double sp = hv.Length();
+		if (owner && UBQS_Data.I(owner, "ubqs_diag", 0) > 0) Console.Printf("UBQS throw release t%d: hand %.2f m/s (needs %.2f)", level.maptime, tPeakMs, UBQS_A11y.Low(thr));
 		if (sp <= 0 || tPeakMs < UBQS_A11y.Low(thr)) return false;   // RSQ_Accessibility's Gesture Ease: x1..x0.5
 		double p = owner.pitch, a = owner.angle;
 		Vector3 fwd = (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
