@@ -746,7 +746,7 @@ class RSQGD_Handler : EventHandler
 		{
 			if (SequenceBusySynced())
 			{
-				if (e.Player == consoleplayer) Console.Printf("Glow In The Dark: colours held during a Bossfight or sequence");
+				if (e.Player == consoleplayer) Console.Printf("Glow In The Dark: colours held during a miniboss fight or sequence");
 				return;
 			}
 			Reroll();

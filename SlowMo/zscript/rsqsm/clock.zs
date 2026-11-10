@@ -623,7 +623,7 @@ class RSQSM_Clock : EventHandler
 			"smoke", "melee.shove", "saber.parry", "shieldsaw.block", "parry.or.block", "wristcross.burst", "bossfight", "heavyhit",
 			"key", "wristcross", "wheel", "a11y.button", "shootdodge", "barrel.lockon", "barrel.multikill", "barrel.chain", "barrel.near" };
 		static const String words[] = { "GRENADE BLAST", "OVER-UNDER BLAST", "RELOAD", "CLOSE CALL", "MINIBOSS", "SCORE", "GUN BONSAI", "OTHER MOD",
-			"CIGARETTE", "SHOVE", "PARRY", "BLOCK", "PARRY", "BURST", "BOSSFIGHT", "HEAVY HIT",
+			"CIGARETTE", "SHOVE", "PARRY", "BLOCK", "PARRY", "BURST", "MINIBOSS INCOMING", "HEAVY HIT",
 			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "SHOOTDODGE", "LOCKED BARREL", "BARREL MULTI-KILL", "CHAIN REACTION", "BARREL BLAST" };
 		for (int i = 0; i < keys.Size(); i++) if (src ~== keys[i]) return words[i];
 		String w = src;

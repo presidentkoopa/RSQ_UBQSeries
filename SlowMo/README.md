@@ -87,7 +87,7 @@ aside so the pair stays centred.
 
 If something stretches the slow motion, the countdown refills with a glint. **Bar Animation** adds a light band sweeping
 along the fill and a breathing edge. **Bar Colour** picks one of 17 colours or Random (a new one each time). With RSQ
-Miniboss loaded, both bars take the size of its Bossfight meter and sit centred under it.
+Miniboss loaded, both bars take the size of its Miniboss meter and sit centred under it.
 
 *[GIF to come: the adrenaline meter filling and the countdown bars draining]*
 
@@ -114,11 +114,11 @@ Each trigger has its own switch on the options page. There are two kinds.
 | Training Remote | RSQ Saber's training remote: each bolt you deflect (0.3 s), and the remote knocked down (1.5 s) |
 
 **Automatic triggers** happen to you. After one ends, the next automatic one waits 25 seconds (**Auto Cooldown**), so
-the game is not slowing all the time. Heavy Hit Slowdown and the Bossfight landing keep out of that shared wait.
+the game is not slowing all the time. Heavy Hit Slowdown and the miniboss fight landing keep out of that shared wait.
 
 | Trigger | Default | What sets it off |
 |---|---|---|
-| **Miniboss** | On | RSQ Miniboss's slow window, and the Bossfight landing (the landing skips the cooldown) |
+| **Miniboss** | On | RSQ Miniboss's slow window, and the miniboss fight landing (the landing skips the cooldown) |
 | **Close Call** | Off | A rocket or fireball about to hit you up close: 0.7 s to step aside |
 | **Reload** | Off | Your reload. **Reload When**: always, or only at 25 health or less. **Reload Length**: a fixed 1.2 s, until the reload ends (10 s at most), or until it ends but no longer than the fixed time. **Reload Hands**: either hand, main hand only, off hand only, or both hands at once (Brutal Doom VR's dual wield) |
 | **Grenade Blast** | Off | Your own grenade going off (Brutal Doom's hand grenade, RSQ Grenade's) |
@@ -148,7 +148,7 @@ its thralls. Any attacker counts when one of these is true:
 - **Armour Broken:** it took your last armour.
 
 It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** row: No Limit (the default), once per
-20 s, once per 60 s, or the shared Auto Cooldown. During an RSQ Miniboss Bossfight every heavy hit fires.
+20 s, once per 60 s, or the shared Auto Cooldown. During an RSQ Miniboss fight every heavy hit fires.
 
 ---
 
@@ -238,10 +238,10 @@ SlowMo talks to most of the series, always by name: every mod still loads and pl
   Dodger work while it is slowed, and Bullet Time Fists (with RSQ Melee) punch the slowed rounds back.
 - **RSQ Melee:** a landed gun-butt shove slows the world, and while that lasts the shotgun's F.E.A.R. Effect is on.
   Fireballs you punch back keep the speed you sent them with.
-- **RSQ Miniboss:** its slow windows and its Bossfight landing slow the world (the landing shows BOSSFIGHT under the
+- **RSQ Miniboss:** its slow windows and its miniboss fight landing slow the world (the landing shows MINIBOSS INCOMING under the
   countdown and leaves the cooldown alone, so the windows after it still slow). Its miniboss and thralls count for Heavy
-  Hit Slowdown, and a Bossfight lifts that cooldown. Its arrows to arriving monsters are SlowMo's edge arrows. The bars
-  line up under its Bossfight meter.
+  Hit Slowdown, and a miniboss fight lifts that cooldown. Its arrows to arriving monsters are SlowMo's edge arrows. The bars
+  line up under its Miniboss meter.
 - **RSQ Saber and RSQ ShieldSaw:** a perfect parry or a perfect block slows the world for half a second.
 - **RSQ Score:** its big moments and hit-stop slow the world, and it reads SlowMo back for its own slow-motion bonuses
   (a claw dodged by leaning, with Lean Dodge 2, is reported to it too). Its combo rows move down to make room for the countdown bar. With DOWN: no Score life

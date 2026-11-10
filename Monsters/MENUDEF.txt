@@ -60,7 +60,7 @@ OptionMenu "RSQMN_Options"
 	Option "On tier change", "rsq_mon_retier_health", "RSQMN_RetierHealth"
 
 	StaticText ""
-	StaticText "Bossfight", "Gold"
+	StaticText "Miniboss", "Gold"
 	Option "Miniboss From", "rsq_mon_bf_boss", "RSQMN_BfBoss"
 	Option "Thralls From", "rsq_mon_bf_thralls", "RSQMN_BfThralls"
 

@@ -48,7 +48,7 @@ patches, and emits the TEXTURES and a ready-made state line.
    a life you spend leaves a gold stone instead.
 3. Options > Radiant Silvergun Options > RSQ Graveyards: the settings, Living Stones, and the two keys (Remove Gravestones
    on This Map, Remove All Gravestones; also in Customize Controls).
-4. With RSQ Miniboss and Legion of Bones: Graves Rise raises undead from the stones when a Bossfight lands (RSQ Miniboss's
+4. With RSQ Miniboss and Legion of Bones: Graves Rise raises undead from the stones when a miniboss fight lands (RSQ Miniboss's
    option, off by default).
 
 ### RSQ Edition changes (presidentkoopa)
@@ -92,10 +92,10 @@ patches, and emits the TEXTURES and a ready-made state line.
     the Bones Bridge on, Graveyard hands those spawns back to Brutal Doom /
     XMVE. Bridge off: LoB as it ships. (LoB's skeletons then fire Brutal
     Doom's tracer.)
-  - RSQ Miniboss can wake the tombstones in a Bossfight (its Graves Rise row):
+  - RSQ Miniboss can wake the tombstones in a miniboss fight (its Graves Rise row):
     every tombstone in range raises undead, with no cap (2026-11-07; the old
     cap of 24 is gone; rig only, not headset-confirmed: 31 stones raised 31
-    Legion of Bones undead on the rig), and while a Bossfight waits every stone's candle and stone beat with the
+    Legion of Bones undead on the rig), and while a miniboss fight waits every stone's candle and stone beat with the
     map's red heartbeat (held steady in RSQ Accessibility's Photosensitive
     Mode).
 - source: the `Graveyard/` folder of RSQ_UBQSeries, built to

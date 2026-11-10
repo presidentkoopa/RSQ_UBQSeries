@@ -513,7 +513,8 @@ class RSQMB_Handler : EventHandler
 		if (b.called) SceneMusic(false);   // the fight is over: the level music crossfades back (bossfight.zs)
 		if (killer)
 		{
-			Award(killer, "Miniboss", 500);     // (Greedy, the kill with a thrall standing, retired 11-10: the rework can't reach it)
+			// one row, "Miniboss": 3x the kill for the called-in one, 1x for a map miniboss (owner 11-10: "one reward")
+			Award(killer, b.called ? "Miniboss Called" : "Miniboss", b.called ? 1500 : 500);
 		}
 		if (debug) Console.Printf("RSQMB boss %d died (killer %s)%s rage %d", b.idx, killer ? "player" : "none", "", rageCount);
 	}

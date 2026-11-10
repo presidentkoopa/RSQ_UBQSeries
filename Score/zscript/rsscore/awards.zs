@@ -12,7 +12,6 @@ class RS_AwardSeed play
 		into.Push("RS_Award_IndianaJones");
 		into.Push("RS_Award_ThrallSlowKill");
 		into.Push("RS_Award_Miniboss");
-		into.Push("RS_Award_Bossfight");
 		into.Push("RS_Award_Revenge");
 		into.Push("RS_Award_Revive");
 		// RS_Award_FEAR went 11-03: F.E.A.R. Effect is the combo "shove > gun.shotgun@slow" (combo.zs), paid on the kill
@@ -51,13 +50,6 @@ class RS_Award_Miniboss : RS_ScoreBonus
 {
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Miniboss"; }
-}
-
-// RSQ_Miniboss's Bossfight (owner 11-05): the called-in miniboss killed (its bossfight.zs BfPayoff), on top of "Miniboss".
-class RS_Award_Bossfight : RS_ScoreBonus
-{
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Bossfight"; }
 }
 
 // RSQ SlowMo's DOWN v2 (owner-approved 11-06 19:51, design/NEAR_DEATH.md 11): "Revenge" for killing the monster that downed

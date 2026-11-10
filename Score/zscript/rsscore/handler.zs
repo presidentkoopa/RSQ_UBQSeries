@@ -845,7 +845,8 @@ class RS_ScoreHandler : EventHandler
 		double mult = 0;
 		if (label ~== "Thrall Slow Kill") mult = 0.3;
 		else if (label ~== "Miniboss") mult = 1.0;
-		else if (label ~== "Bossfight") mult = 2.0;     // the called-in miniboss (owner 11-05), on top of Miniboss's 1.0
+		// the called-in miniboss: ONE row, "Miniboss", at 3x (owner 11-10: "one reward"; was Miniboss 1x + Bossfight 2x)
+		else if (label ~== "Miniboss Called") { mult = 3.0; label = "Miniboss"; }
 		// RSQ SLOWMO'S DOWN v2 (owner 11-06 19:51): "Revenge", the marked monster killed, is sent from its killing blow,
 		// before that kill is recorded here: it waits for it (a kill already recorded this tic is another one) and pays
 		// 1x its base (flat 100 with no kill by the next tic); that base is remembered for the player. "Revive", the
@@ -872,7 +873,7 @@ class RS_ScoreHandler : EventHandler
 			// MINIBOSS COMES BEFORE ITS KILL IS RECORDED (owner 11-05): RSQ Miniboss pays them as the
 			// miniboss dies, before Score's WorldThingDied records that kill, so there was no base yet and they paid
 			// a flat 500 / 1000 on any monster. They wait now for the kill this tic (RecordKill: that kill's base
-			// times 1.0 / 1.5, like every other award); with no kill recorded by the next tic, the flat points.
+			// times 1.0, or 3.0 for the called-in one, like every other award); with no kill recorded by the next tic, the flat points.
 			else if (label ~== "Miniboss")
 			{
 				pendWho.Push(who); pendLabel.Push(label); pendMult.Push(mult); pendFlat.Push(points); pendTic.Push(level.maptime);

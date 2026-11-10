@@ -58,9 +58,9 @@ OptionValue "RSQMB_Density"
 OptionMenu "RSQMB_Options"
 {
 	Title "RSQ MINIBOSS"
-	Option "Bossfights", "rsqmb_enabled", "OnOff"
+	Option "Minibosses", "rsqmb_enabled", "OnOff"
 	Slider "Meter Speed", "rsqmb_bf_speed", 0.25, 4, 0.25, 2
-	Option "Bossfight Meter Fills From", "rsqmb_bf_from", "RSQMB_FillFrom"
+	Option "Miniboss Meter Fills From", "rsqmb_bf_from", "RSQMB_FillFrom"
 	Option "Call It In: Watch Check + Use", "rsqmb_bf_callin", "OnOff"
 	Option "Ignore Spawn Restrictions", "rsqmb_bf_ignore", "OnOff"
 	Option "Effects", "rsqmb_fx", "OnOff"
@@ -82,7 +82,7 @@ OptionMenu "RSQMB_Options"
 	Option "Greed Enrages Monsters", "rsqmb_greed", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
 	StaticText " "
-	StaticText "Counts as a Boss", 1
+	StaticText "Other Mods Treat It as a Boss", 1
 	Option "Boss Kill Rewards", "rsqmb_boss_rewards", "OnOff"
 	Option "Legendary Boss Health", "rsqmb_boss_ldhealth", "OnOff"
 	Option "Can't Be Yanked", "rsqmb_boss_noyank", "OnOff"
@@ -97,7 +97,7 @@ OptionMenu "RSQMB_Options"
 OptionMenu "RSQMB_Test"
 {
 	Title "RSQ MINIBOSS: TEST AND DEBUG"
-	StaticText "Bossfight", 1
+	StaticText "Miniboss", 1
 	Slider "Arrives By Itself (s)", "rsqmb_bf_auto", 0, 300, 10, 0
 	Slider "Map Start Wait (s)", "rsqmb_bf_first", 0, 300, 10, 0
 	Slider "Cooldown (s)", "rsqmb_bf_cooldown", 0, 600, 10, 0
@@ -110,7 +110,7 @@ OptionMenu "RSQMB_Test"
 	Slider "Landing Slow Motion (s)", "rsqmb_bf_slow", 0, 5, 0.5, 1
 	Option "Landing At Slowest", "rsqmb_bf_slowest", "OnOff"
 	Option "Landing In The Dark", "rsqmb_bf_dark", "OnOff"
-	Option "Bossfight Music", "rsqmb_bf_music", "OnOff"
+	Option "Miniboss Music", "rsqmb_bf_music", "OnOff"
 	Slider "Score Style Fill", "rsqmb_bf_style", 0, 2, 0.05, 2
 	Slider "Gun Bonsai XP Fill", "rsqmb_bf_xp", 0, 2, 0.05, 2
 	Slider "Score Per Tier", "rsqmb_bf_tier_score", 500, 20000, 500, 0

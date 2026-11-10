@@ -29,7 +29,7 @@ game's beams were built from. Not a capture from the game or the headset.*
 - **Level up in style.** With Gun Bonsai, a gold LEVEL UP band sweeps past in front of you; a gun's level-up rises off
   the gun as a little tag.
 - **Monsters arrive like an arcade boss stage.** Called-in monsters land on a beam of light in their own colour, hidden
-  until the beam reveals them, with words over them ("GUARD!", "TARGET!") and the boss fight's own music.
+  until the beam reveals them, with words over them ("GUARD!", "TARGET!") and the miniboss fight's own music.
 
 ---
 
@@ -162,7 +162,7 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
 
 ## Arrivals: the four beams
 
-When another mod brings a monster in (today, RSQ Miniboss's Bossfight), the monster arrives on a beam in a colour the
+When another mod brings a monster in (today, RSQ Miniboss's miniboss fight), the monster arrives on a beam in a colour the
 caller picks. It is hidden until the beam reveals it, and every beam has its own sound, starting the moment the beam
 does: full volume out to about 12 m, fading to nothing at about 53 m.
 
@@ -212,8 +212,8 @@ Other mods can tell this one a scene has started, and the scene's own track cros
 level music fades to silent under it). When the scene ends, the track fades out and the level music fades back in
 where it has got to.
 
-- **The Bossfight** (RSQ Miniboss): the owner's track "20 organic beat", for everyone.
-- **DOWN** (RSQ SlowMo): the owner's "29 red alert", heard only by the player who is down. It stands above a Bossfight's
+- **The miniboss fight** (RSQ Miniboss): the owner's track "20 organic beat", for everyone.
+- **DOWN** (RSQ SlowMo): the owner's "29 red alert", heard only by the player who is down. It stands above a miniboss fight's
   track, which carries on silently underneath and comes back when you get up (unless the fight ended meanwhile).
 - **Scene Music Volume** sets the scene track's loudness; **Scene Crossfade** how long the fades take (2 s).
 
@@ -235,9 +235,9 @@ While you are DOWN in RSQ SlowMo:
 
 ## Plays well with
 
-- **RSQ Miniboss:** its Bossfight calls the arrival beams (V1 thralls with a V3 miniboss, or V2 thralls with V4, picked
-  per fight, each in its monster's tier colour), the GUARD! and TARGET! words, the pops, and the Bossfight scene music
-  (its **Bossfight Music** row). Here: a crown with tier pips over the miniboss's bar and a chain link over its thralls;
+- **RSQ Miniboss:** its miniboss fight calls the arrival beams (V1 thralls with a V3 miniboss, or V2 thralls with V4, picked
+  per fight, each in its monster's tier colour), the GUARD! and TARGET! words, the pops, and the miniboss fight scene music
+  (its **Miniboss Music** row). Here: a crown with tier pips over the miniboss's bar and a chain link over its thralls;
   with its **Boss Kill Rewards** row on, a miniboss counts as a boss for Kill Rewards (its boss fountain). Without this pack, its monsters land in teleport fog.
 - **RSQ SlowMo:** the DOWN tie-ins above, and its DOWN Music (its **DOWN Music** row). Here: Numbers in Slow-Mo, and the
   optional level-up slow-motion pulse.
@@ -295,7 +295,7 @@ rows are each player's own.
 | **Shown on the rig** (2026-11-09, 19:04 run) | The four arrival beams on the rig's full series load order (doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded, then the series): each called on a monster with its own sound starting on the beam's first tic (V1 1.16 s, V2 1.26 s, V3 1.00 s, V4 2.78 s) and the monster revealed on tic 7, 12, 19 and 31; frames of V1, V3 outdoors and V4 (above). In the same run: the DOWN tie-ins logged ("+1.5s" and "+0.5s", REVENGE, REVIVE at the middle and top tier sizes), HP bars drawn over monsters in the frames, and no script error from this pack. That build was the one before the evening's changes (scene music rewritten for DOWN, DOWN's track, the Kill Rewards banked-bit fix); those are code only |
 | **Shown on the rig, earlier builds** (committed by 2026-11-05) | HP bar colour sets and markers, damage-number jets, totals, combo, kill and overkill, headshots, the level-up band, the weapon tag, gains flying to the wrist, Kill Rewards after its move into this pack (frames and logs in test/evidence). The code has changed since; they are not proof of the current build |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Monster words and pops; V2's frames and V3 indoors; the scene music (Bossfight and DOWN); battery bits; bits banking into the DOWN plate; Photosensitive Mode's versions of everything; netplay; everything else on this page not listed above |
+| **Code only, not yet shown** | Monster words and pops; V2's frames and V3 indoors; the scene music (miniboss fight and DOWN); battery bits; bits banking into the DOWN plate; Photosensitive Mode's versions of everything; netplay; everything else on this page not listed above |
 
 ---
 

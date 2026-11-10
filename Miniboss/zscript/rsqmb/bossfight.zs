@@ -1057,9 +1057,7 @@ extend class RSQMB_Handler
 		if (!who) who = players[consoleplayer].mo;
 		if (killer)
 		{
-			// Score pays it as 2 x the kill's base (RSQ Score's handler.zs AwardExternal) when the kill is already recorded this tic; the
-			// miniboss dies in WorldThingDamaged, before Score's WorldThingDied, so the same number is sent: 2 x its spawn health
-			Award(killer, "Bossfight", max(1, 2 * (b.mb ? b.mb.SpawnHealth() : 500)));
+			// (its Score row is the one "Miniboss" row at 3x, sent by BossDied: owner 11-10, "one reward")
 			let m = MeterOf(killer, true);
 			if (m) m.beaten++;
 		}

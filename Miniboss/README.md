@@ -7,14 +7,14 @@ lands in front of you in slow motion with its thralls around it, each one arrivi
 thralls stand it cannot be hurt: kill one, and for a few seconds its shield is down. Break it in time, or everything
 gets stronger.
 
-*[GIF to come: a Bossfight landing, the thralls one by one on their beams, then the miniboss, in slow motion]*
+*[GIF to come: a miniboss fight landing, the thralls one by one on their beams, then the miniboss, in slow motion]*
 
 ---
 
 ## What it feels like
 
 - **Your play fills the meter.** Kills, quick kill chains, style points from RSQ Score, weapon XP from RSQ Gun Bonsai VR and
-  simply pushing on through the map fill the Bossfight meter.
+  simply pushing on through the map fill the Miniboss meter.
 - **You call it in.** When the meter is full it turns gold and beats like a heart, and the room's light beats red with
   it. Look at your watch and press Use, and it comes. Or wait, and it comes by itself a minute later.
 - **It arrives where you can see it.** A few metres ahead of you, in your view, never on top of you. The world drops
@@ -32,7 +32,7 @@ gets stronger.
 - **Don't shoot it first.** Shoot it while its thralls live, and if a thrall is still standing a few seconds later, every
   monster on the map goes into a rage: twice as fast and twice as keen to attack, until the miniboss dies.
 - **When it dies.** A gun you don't have yet (or a power-up), a fountain of RSQ VisualRewards bits, RSQ Score's
-  Miniboss and Bossfight rows.
+  Miniboss row.
 
 ---
 
@@ -42,7 +42,7 @@ gets stronger.
 |---|---|
 | Kill monsters, chain kills, play with style, keep moving | The meter under your score fills (red) |
 | Fill it | A sting, the meter turns gold and beats, the room's light beats red |
-| Hold a watch check and press Use (or just wait 60 s) | The Bossfight is called in |
+| Hold a watch check and press Use (or just wait 60 s) | The miniboss fight is called in |
 | Look ahead | It lands in view, 12 to 32 metres away, in slow motion |
 | Shoot the miniboss while its thralls live | "GUARD!", grey Xs, no damage, and its greed is armed |
 | Kill a thrall | The shield drops: a window of 1 s for each thrall it came with |
@@ -76,13 +76,13 @@ The meter goes from empty to full and stays with you from map to map, and in you
 - **Score's style points** add a quarter of each kill's style (at most 120 a kill).
 - **Gun Bonsai VR's weapon XP** adds a fifth of the XP your gun earns.
 - **Moving on** adds 2 every two seconds in which you covered 3 metres.
-- Everything is times **Meter Speed**. The meter stands still while a Bossfight arrives or is being fought, and the
-  Bossfight's own monsters never fill it.
+- Everything is times **Meter Speed**. The meter stands still while a miniboss fight arrives or is being fought, and the
+  miniboss fight's own monsters never fill it.
 
-**Bossfight Meter Fills From** picks Score, Gun Bonsai or Both. Kills, chains and time always count. If the mod you
+**Miniboss Meter Fills From** picks Score, Gun Bonsai or Both. Kills, chains and time always count. If the mod you
 picked is not loaded, the other one is used; with neither, kills, chains and time fill it alone.
 
-While a Bossfight runs the meter hides, and the fight's own bars take its place.
+While a miniboss fight runs the meter hides, and the fight's own bars take its place.
 
 ---
 
@@ -96,7 +96,7 @@ that rise again (Dark Red, Undying) are never sent.
 you hold, whichever is larger (past 4 counts as 4). Tier 0 sends a middling type, tier 4 the strongest in the map. The
 thralls are weaker types (the same type when there is nothing weaker). From tier 3 there is one more thrall. **Tier
 From** can also use only the Gun Bonsai VR level, only Score's lives, or the old sum (half your Gun Bonsai level, plus
-one for every 4,000 Score points this map, plus half the Bossfights you have won).
+one for every 4,000 Score points this map, plus half the miniboss fights you have won).
 
 **Miniboss From and Thralls From** (on RSQ Monsters' own page) turn the picks into ColorfulHell monsters of the same
 family. Picked from a set, the miniboss stands at least one colour above its strongest thrall.
@@ -204,13 +204,13 @@ or you leave the level, every monster is put back exactly as it was.
 
 ## The rewards
 
-**A Bossfight's miniboss killed:**
+**A miniboss fight's miniboss killed:**
 
 - **A drop:** a gun from the guns lying in this map that you don't have yet. If there is none (Brutal Doom's map
   pickups are not guns until you touch them), a gun from your weapon slots no higher than one slot above your best;
   otherwise a Megasphere, Soulsphere, Berserk or Blur Sphere.
 - **RSQ VisualRewards' Kill Rewards:** it counts as a boss, so it always drops bits, a boss's fountain of them.
-- **RSQ Score:** the **Miniboss** row and the **Bossfight** row on top of the kill.
+- **RSQ Score:** the **Miniboss** row at 3x the kill (a miniboss in the map pays it at 1x): one row, one reward.
 - **A win counted** (it adds to the tier under Tier From's "Set").
 
 *(The extra x3 bits and Score's life crate are gone for now: the drops will be balanced once the arcade systems are designed.)*
@@ -223,7 +223,7 @@ or you leave the level, every monster is put back exactly as it was.
 
 ## Graves Rise
 
-With **Graves Rise** on, Legion of Bones and RSQ Graveyard loaded, the moment a Bossfight has landed the tombstones wake.
+With **Graves Rise** on, Legion of Bones and RSQ Graveyard loaded, the moment a miniboss fight has landed the tombstones wake.
 **Graves Rise Mode** picks how many and where:
 
 | Mode | What rises |
@@ -246,7 +246,7 @@ monsters, favouring the toughest, with up to **Thralls** monsters within **Thral
 Champions first, then legendaries, then the nearest. With LegenDoom and **Legendary Thralls** on, its thralls are made
 legendary. A classic miniboss fights by the same rules (the shield, the windows, the lives, greed, the tethers, the
 words) and shows the same HUD bars (the nearest one, when there are several), but it does not arrive boosted, has no
-room glow and none of the Bossfight's extra drops.
+room glow and none of the miniboss fight's extra drops.
 
 ---
 
@@ -256,30 +256,30 @@ Everything is asked by name: every mod still loads and plays alone, and the part
 happen.
 
 - **RSQ Score:** its style points fill the meter, its lives can set the tier, and the meter sits centred under its bar.
-  Miniboss sends it the **Miniboss**, **Bossfight** and **Thrall Slow Kill** rows; Score values the first two as a
-  share of the miniboss kill's worth (1x, 2x). Score also reads Miniboss for its own rows: **Chain Gang** (thralls
+  Miniboss sends it the **Miniboss** and **Thrall Slow Kill** rows; Score values Miniboss as a share of the miniboss
+  kill's worth (3x for the one you called in, 1x for one in the map). Score also reads Miniboss for its own rows: **Chain Gang** (thralls
   killed in one window), **Rage Quit**, **Riot Control**, and combos that ask for a thrall
   or the miniboss.
 - **RSQ Monsters:** the ladder colours, the tier-ups on a missed window and on each life lost (with its tier flash), the
   bodies it swaps on a tier change (Miniboss finds the new one and dresses it again), and **Miniboss From / Thralls
   From** on Monsters' page. Re-entering a hub level puts back every tier Miniboss gave.
-- **RSQ VisualRewards:** the arrival beams, "GUARD!", "TARGET!" and the pops; the Bossfight music scene (its Scene Music
-  row turns it off for you; **Bossfight Music** here turns it off for everyone); Kill Rewards' boss fountain; Top HP Bars draws a crown over the miniboss's bar, with a pip for each tier, and a chain link over each
+- **RSQ VisualRewards:** the arrival beams, "GUARD!", "TARGET!" and the pops; the miniboss fight music scene (its Scene Music
+  row turns it off for you; **Miniboss Music** here turns it off for everyone); Kill Rewards' boss fountain; Top HP Bars draws a crown over the miniboss's bar, with a pip for each tier, and a chain link over each
   thrall.
 - **RSQ Glow In The Dark:** the red heartbeat of a full meter, the landing in DarkDoom Black, the cold grey, gold and
   red of the fight room, the colour waves at the landing and the death, and the colour re-roll after. Its own **Miniboss
   Tint** rows turn the map the miniboss's colour and darken it while any miniboss lives.
-- **RSQ SlowMo:** the landing's slow motion (a game slow with its countdown bar and BOSSFIGHT line, under its Triggers
+- **RSQ SlowMo:** the landing's slow motion (a game slow with its countdown bar and MINIBOSS INCOMING line, under its Triggers
   page's **Miniboss** switch, outside its shared cooldown), the slow motion of every window, and the edge arrows to
   monsters out of view. Its countdown bar sits under the meter at the same width. **Slow Depth** at -1 uses SlowMo's own
   World Speed.
 - **Champions and LegenDoom (LegenDoom Lite 4.2 or LegenDoom 3.0):** boosted legendary champions, the inherited powers,
   and **Legendary Boss Health**: a miniboss made legendary gets the higher of LegenDoom's boss and normal legendary
   health. RSQ Gun Bonsai VR and RSQ ShieldSaw read that and size their own numbers on it. With Brutal Doom 22 VR's
-  LegenDoom Lite patch, legendary weapons drop only from a Bossfight's monsters.
+  LegenDoom Lite patch, legendary weapons drop only from a miniboss fight's monsters.
 - **RSQ Gun Bonsai VR:** its weapon XP fills the meter and its player level sets the tier.
 - **RSQ Gestures and RSQ Gun Cards:** the watch check for the call-in (this mod carries its own copy too).
-- **RSQ Tactical Rig:** while a Bossfight can be called, the watch check's Use press is the call-in's and the gun stays
+- **RSQ Tactical Rig:** while a miniboss fight can be called, the watch check's Use press is the call-in's and the gun stays
   put; killing a miniboss fills your cigarette pocket.
 - **RSQ Grapple and RSQ Whip:** with **Can't Be Yanked** on, they refuse to yank or throw a miniboss: the line pulls you
   to it instead, as with a boss.
@@ -299,11 +299,11 @@ is the host's.
 
 | Section | Rows |
 |---|---|
-| Top | Bossfights · Meter Speed (1) · Bossfight Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Effects Density (Low, Medium, High) |
+| Top | Minibosses · Meter Speed (1) · Miniboss Meter Fills From (Score, Gun Bonsai, Both) · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Effects Density (Low, Medium, High) |
 | Fight | Thralls (3) · Lives (3) · Tier From (Set, Gun Bonsai VR Level, Score Lives, Whichever Is Larger) · Graves Rise (Legion of Bones) (off) · Graves Rise Mode (One or Thralls Per Stone; Whole Map or Within Radius) · Graves Radius (1024) |
 | Rules | Legendary Thralls (LegenDoom) · Tier-Up Hits the Whole Map · Tier Up Each Life · Inherit Powers · Greed Enrages Monsters · Score Awards |
-| Counts as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
-| Test and Debug: Bossfight | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Bossfight Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Score Per Tier (4000) · Show Meter · Meter Size (1.5) |
+| Other Mods Treat It as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
+| Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Score Per Tier (4000) · Show Meter · Meter Size (1.5) |
 | Test and Debug: Classic | Classic Pick at Level Load (off) · Per Map (1) · Map Chance (100) |
 | Test and Debug: Fight | Thrall Range (1024) · Power Cap (4) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own) · Rage Speed (2) · Effects Range (4000) |
 | Test and Debug | Debug Log (off) |
@@ -321,8 +321,8 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, logs and a frame sheet from a test probe: TestRig/bossfight_rig/evidence_2026-11-09) | The reworked fight, called in, with RSQ Monsters: three thralls landing one by one on V2 beams and the miniboss on a V4 beam; three segments; a shot on the shield doing no damage; a thrall kill opening a three-second window; the window missed and +3 tiers asked on 11 monsters map-wide, with the swapped bodies found again; a hit in the window breaking a segment; two lives lost, each refilled with five seconds of invulnerability and +1 tier; the death and its drop. Run twice: ColorfulHell monsters, and (since removed) a MeatGrinder miniboss with ColorfulHell thralls through Miniboss From / Thralls From. The same day the reworked pack loaded on the series' load order with no script error from it (Bossfights off in those runs) |
-| **Shown on the rig** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up); the Bossfight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a Bossfight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a Bossfight runs |
+| **Shown on the rig** (2026-11-09, logs and a frame sheet from a test probe: TestRig/bossfight_rig/evidence_2026-11-09) | The reworked fight, called in, with RSQ Monsters: three thralls landing one by one on V2 beams and the miniboss on a V4 beam; three segments; a shot on the shield doing no damage; a thrall kill opening a three-second window; the window missed and +3 tiers asked on 11 monsters map-wide, with the swapped bodies found again; a hit in the window breaking a segment; two lives lost, each refilled with five seconds of invulnerability and +1 tier; the death and its drop. Run twice: ColorfulHell monsters, and (since removed) a MeatGrinder miniboss with ColorfulHell thralls through Miniboss From / Thralls From. The same day the reworked pack loaded on the series' load order with no script error from it (miniboss fights off in those runs) |
+| **Shown on the rig** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up); the miniboss fight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a miniboss fight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a miniboss fight runs |
 | **Shown on the rig before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
 | **Headset-confirmed** | Nothing yet |
 | **Code only, not yet shown** | Everything else on this page, among it: the HUD bars of the fight (seen only in the design mockups), "GUARD!", "TARGET!", the grey Xs and the pops, the slow motion and Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music, Graves Rise, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the tethers and flames since the rework, the rage since the rework, the hub tier reset |
@@ -333,11 +333,11 @@ are in map units (32 to a metre).
 
 - **The set piece** is one handler per level, saved with it; each miniboss is a thinker holding its thralls, segments,
   window, lives and inherited powers. Tokens on the monsters (a ward on the miniboss, a mark on each thrall and on
-  everything a Bossfight brought) ride the save with them.
+  everything a miniboss fight brought) ride the save with them.
 - **All the damage rules live in the ward's damage hook,** never in the monster's damage factor (Champions writes that
   itself), so they stack with Champions, LegenDoom and the monster's own. A fraction of a point carries to the next
   blow, so weak shots still count against a tough miniboss. Its lives come from holding it at 1 HP, never from the
-  engine's BOSS flag: a miniboss counts as a boss only for the systems switched on under Counts as a Boss.
+  engine's BOSS flag: a miniboss counts as a boss only for the systems switched on under Other Mods Treat It as a Boss.
 - **The arrival's room test** uses an invisible probe the size of each monster (1.25x for the miniboss): floor, ceiling,
   walls and things, plus your line of sight. The idea of trying the map's own monster start spots comes from Dynamic
   Enemy Reinforcements v3.
@@ -363,7 +363,7 @@ The full list is in **CREDITS.txt**.
 
 - **Tartlman** (*Minibosses!* v0.1.1, 2019): the mod this rebuilds (a miniboss with extra lives and thralls tied to it
   by trails) and its effects' design in the IWAD's own sprites. Kept unmodified in original/; its code is not copied.
-- **presidentkoopa:** the set piece's design, the Bossfight (the meter, the call-in, the arrival, the drops) and the
+- **presidentkoopa:** the set piece's design, the miniboss fight (the meter, the call-in, the arrival, the drops) and the
   reworked fight (the staggered arrival, the shield and its windows, the tier-ups, the HUD bars, the words).
 - **Joshua Hard** (*Dynamic Enemy Reinforcements* v3, MIT): the idea of landing reinforcements on the map's own
   monster start spots (none of its code).

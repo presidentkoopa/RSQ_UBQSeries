@@ -19,11 +19,6 @@ Owner: "im not saying we should change anything, but ... this looks like a LOT g
 3. Shrink RSQ FnF's pocket/clip diamonds to holster-ring size, or show them only when the off hand is near.
 4. "Always show" rings only while moving holsters (setup), else near-hand only.
 
-## A boss bar next to the Bossfight meter (owner 2026-11-09 04:49)
-"Consider spinning up another bar next to the Miniboss one that we will use for Boss fights, EX tier monsters. Just note
-that for now." A second meter-sized bar beside RSQ Miniboss's Bossfight meter, for boss fights and EX-tier monsters
-(their health, presumably; not designed). Nothing built. Same size as the meter, like the two SlowMo bars (11-09).
-
 ## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25)
 A gun you already carry, with full ammo, cannot be picked up with Distance Grab (the catch is refused, like walking
 over it). Marked as a concern; not changed. Listed in DistanceGrab/README.md "Known concerns".
@@ -31,6 +26,8 @@ over it). Marked as a concern; not changed. Listed in DistanceGrab/README.md "Kn
 ## Saber's training remote HUD (owner 2026-11-10: "I would have liked to co-design that. Table it for now.")
 A real score / timer panel for the training remote in the series' fonts, to be designed WITH the owner. A first mockup
 (design/mockups/saber_remote/remote_hud_mock.png) was made without him; treat it as a talking point only.
+Co-design so far (owner 11-10): on the OFF WRIST, like Score's wrist digits. It shows the 4 hit pips (hits toward the
+knock-down), the deflect streak, the round number and a 30-second round timer (:30 counting down).
 
 ## One throw (owner 2026-11-10): "hold trigger, swing, let go" for everything thrown
 Audit 11-10: RSQ Grenade (trigger or alt held, swing, release), RSQ Saber (release fire as the hand snaps forward),

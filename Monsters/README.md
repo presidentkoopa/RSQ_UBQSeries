@@ -38,7 +38,7 @@ map, or when the map restarts.
 | **Vanilla** | The id monsters themselves, even with Brutal Doom loaded |
 
 **Out of the box every ColorfulHell monster spawns at Common**, which plays close to vanilla Doom. The colours come in
-when monsters change tier: a Bossfight from RSQ Miniboss tiers the whole map up when you miss its window. A
+when monsters change tier: a miniboss fight from RSQ Miniboss tiers the whole map up when you miss its window. A
 setting saved from an older version that picked MeatGrinder (now removed) reads as ColorfulHell.
 
 ### The ladder
@@ -58,7 +58,7 @@ one. The two boss colours are the top.
 
 ### Changing tier, and the flash
 
-A monster changes tier when something asks it to: RSQ Miniboss's Bossfight, or the test commands under the hood.
+A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight, or the test commands under the hood.
 
 - **The flash.** The monster waits a moment (a random 5 to 25 tics, so a room full of them ripples instead of
   turning at once), and every 3 tics it swaps between pure white and its own colour. A monster becoming White
@@ -66,7 +66,7 @@ A monster changes tier when something asks it to: RSQ Miniboss's Bossfight, or t
 - **ColorfulHell swaps the creature.** Every colour is its own monster, so the old body steps out and the new one
   steps in on the same spot, facing the same way, still after you. The old body does not count as a kill.
 - **One flash.** It is the owner's Hackfraud (HF) flash, and it is how every RSQ monster changes tier while you
-  watch. A change asked to be instant (a Bossfight's own setting-up, say) skips it.
+  watch. A change asked to be instant (a miniboss fight's own setting-up, say) skips it.
 - **Health on a tier change** (*On tier change*): by default an instant change (one with no flash) brings full
   health, and a change with the flash keeps the share of health already lost, so a hurt Common imp turns into an
   equally hurt Red one. You can keep the share always, or give full health always.
@@ -86,9 +86,9 @@ Common (out of the box it is not; see Under the hood):
 - **Some monsters change others.** Some Colourful Hell monsters change the monsters around them the way the
   original does: for example, the Abyss Pain Elemental's pulse can turn the monsters it hits into their Abyss form.
 
-## Bossfight picks
+## Miniboss picks
 
-With RSQ Miniboss loaded, a Bossfight can take its miniboss and its thralls from ColorfulHell, whatever the map's
+With RSQ Miniboss loaded, a miniboss fight can take its miniboss and its thralls from ColorfulHell, whatever the map's
 monsters are:
 
 - **Miniboss From:** the map's own monsters (Same as Monster Set) or ColorfulHell.
@@ -96,7 +96,7 @@ monsters are:
   Miniboss, a Brutal Doom or Vanilla miniboss gets ColorfulHell thralls.
 - A saved MeatGrinder or Mixed pick from an older version reads as ColorfulHell.
 
-The pick keeps the Doom family: an imp in the map becomes a ColorfulHell imp, at the tier the Bossfight asks for.
+The pick keeps the Doom family: an imp in the map becomes a ColorfulHell imp, at the tier the miniboss fight asks for.
 
 ---
 
@@ -150,12 +150,12 @@ RSQ Monsters asks the other mods by name and answers them by name: every mod sti
   20 Monster Roster rows read this mod: the colour of what you killed, an EX boss, how rare its roll was, a kill in
   the middle of its flash or just after a tier change. When a ColorfulHell monster changes tier, its place in Score's
   map count passes to the new body, so it still pays in full once.
-- **RSQ Miniboss:** the Bossfight is where tiers change. A missed window tiers the miniboss and its thralls up by one
+- **RSQ Miniboss:** the miniboss fight is where tiers change. A missed window tiers the miniboss and its thralls up by one
   to three (the whole map with Tier-Up Hits the Whole Map), and each life it loses tiers it up once more, with the
   flash each time; Miniboss follows a ColorfulHell monster into its new body. **Miniboss From** and **Thralls From** can pick ColorfulHell.
-- **RSQ VisualRewards and RSQ Glow In The Dark** (through RSQ Miniboss): a Bossfight takes each monster's colour from
+- **RSQ VisualRewards and RSQ Glow In The Dark** (through RSQ Miniboss): a miniboss fight takes each monster's colour from
   the ladder: its arrival beam, the light on the miniboss and its thralls, and the miniboss's colour wherever the
-  Bossfight shows it.
+  miniboss fight shows it.
 - **RSQ SlowMo's DOWN:** its target plate names a monster by its own name, so a ColorfulHell boss comes in as "Smoking
   Black Imp" or "Imp Master".
 - **RSQ Grenade:** with **Explosion Colour** on Kill Colour, a blast takes the colour of the highest-tier monster it
@@ -176,7 +176,7 @@ next monster that needs them.
 | Section | Rows |
 |---|---|
 | Top | Select Monster Set (Vanilla, BD22, **ColorfulHell**) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) |
-| Bossfight | Miniboss From (**Same as Monster Set**, ColorfulHell) · Thralls From (**Same as Miniboss**, ColorfulHell, Map's Own Monsters) |
+| Miniboss | Miniboss From (**Same as Monster Set**, ColorfulHell) · Thralls From (**Same as Miniboss**, ColorfulHell, Map's Own Monsters) |
 | Monster Diagnostics | A test page. Today only God Mode works: Spawn hostile, the fourteen chaingunner buttons, Spawn All Fourteen, Remove them all, DIAG and WAKE are on the page but nothing answers them |
 
 Defaults are in bold.
@@ -189,7 +189,7 @@ Defaults are in bold.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, the TestRig Bossfight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss Bossfight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red). This was a log: the flash itself was not looked at in frames |
+| **Shown on the rig** (2026-11-09, the TestRig miniboss-fight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss fight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red). This was a log: the flash itself was not looked at in frames |
 | **Shown on the rig** (2026-11-09, RSQ Score's head-shot frames and log) | A ColorfulHell imp judged head against chest |
 | **Not yet re-run** | Nothing above has been run again since MeatGrinder was removed on 2026-11-10 |
 | **Headset-confirmed** | Nothing yet |

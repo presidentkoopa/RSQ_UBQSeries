@@ -41,7 +41,7 @@ There is nothing to hold or wear: load it and play. The rest is choices.
 |---|---|
 | Start a map | Every room gets its colours (with the default Classic (1.1) profile, any colour, one per group of rooms) |
 | Finish the map | The next one gets new colours (Re-roll Colours: Every Map) |
-| Press your Randomize Colours key | New colours now, same profile. During a miniboss's tint, the Red Map or another mod's timed tint, it does nothing and says "Glow In The Dark: colours held during a Bossfight or sequence" |
+| Press your Randomize Colours key | New colours now, same profile. During a miniboss's tint, the Red Map or another mod's timed tint, it does nothing and says "Glow In The Dark: colours held during a miniboss fight or sequence" |
 | Step the **Profile** row left or right | A different named look |
 | **Shuffle Profile Now** | Another named profile, picked at random, with new colours |
 | **Randomize Current Look** | A look of its own, made at random and kept on the Custom Profile rows |
@@ -215,7 +215,7 @@ Colour Seed, so it stays. With Random Profile, a new seed also draws a new profi
 
 It stands down while a sequence owns the map's glow: a miniboss's tint (RSQ Miniboss), the Red Map while you are down
 (RSQ SlowMo), or a timed tint another mod has asked for (RSQ Miniboss's fight colours, for one). Then it does nothing
-and the console says **"Glow In The Dark: colours held during a Bossfight or sequence"**.
+and the console says **"Glow In The Dark: colours held during a miniboss fight or sequence"**.
 
 *[Still to come: the "colours held" line on screen during a miniboss fight]*
 
@@ -271,10 +271,10 @@ two minibosses' own colours (top right: an older build that always tinted blood 
 - **Darken the Map** (on): meanwhile the map loses **Darken By** (48) of its light, through DarkDoomZ's Post-Gain, and
   gets it back exactly afterwards (even after a quit mid-fight, at the next map start).
 - **Landing in the dark:** with RSQ Miniboss's Landing In The Dark on, the darkness drops to DarkDoom Black for the
-  few seconds of a Bossfight landing, then goes back to your own setting. Single player only.
+  few seconds of a miniboss fight landing, then goes back to your own setting. Single player only.
 - **The fight's colours:** during a fight RSQ Miniboss leans the map's glow its own way: a cold grey while the shield
   is up, gold in its windows, red when a life is lost. When it dies a wave in its colour rolls across the map, and
-  after a Bossfight the colours re-roll two seconds later.
+  after a miniboss fight the colours re-roll two seconds later.
 
 *[GIF to come: a miniboss landing in DarkDoom Black, then the map beating in its colour]*
 

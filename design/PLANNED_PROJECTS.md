@@ -52,6 +52,11 @@ Stale comments, cvars and menus out; menus redone from scratch; Monster Diagnost
 key to the expanded coloured roster); Brutal Doom's own monsters tiered onto the colour ladder (health as CH: a Red
 zombieman is a Red zombieman); the tier icons back (design/icons, style B). MeatGrinder was removed 11-10.
 
+Bosses live here (owner 11-10). A **Boss** is a real boss: the EX-tier monsters and their fights. None exist yet. A
+**Miniboss** is RSQ Miniboss's (the map's, or the one you call in); its event is no longer called "Bossfight" (renamed
+11-10). The **boss bar** (owner 11-09 04:49: "another bar next to the Miniboss one that we will use for Boss fights, EX
+tier monsters") is built with the bosses: a second bar beside the Miniboss meter, the same size, like the two SlowMo bars.
+
 ## Lasers for a non-BD weapon set
 RSQ Laser Sight measures each gun's muzzle from its mesh; a new weapon set needs that pass (owner 11-10).
 

@@ -40,7 +40,6 @@ brings you back in a ring of fire.
 | Keep killing | The bar under your score fills toward the map's target |
 | Fill the bar | It lights blue, a chime plays, and a life pip pops above your score: you hold an extra life |
 | Take a hit that would kill you, with a life held | You stop at 1 HP, a life is spent: full health, a blast round you, a column of fire, and a moment of no damage |
-| Touch the gold life crate (an RSQ Miniboss Bossfight win drops it) | One more life. It lasts 10 seconds and fades red at the end |
 | Look at your off-hand wrist (turn on **Score on the Wrist**) | Your score in small gold digits above the controller |
 
 **Nothing to bind.** Score has no keys. It works on any monster set, alone or with any mix of the series.
@@ -108,14 +107,12 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
   ring of fire with flames climbing round you for about two seconds, then a last burst (**Revival Fire**), and no
   damage to you while it plays (about 2.7 seconds).
 - **What still kills you:** damage that ignores the hold, such as a telefrag. Then every life you held is lost.
-- **More lives from other mods:** RSQ Miniboss can give one, or drop the gold life crate where its Bossfight miniboss
-  died. The crate wears Score's gold, sends a beam of light into the sky, stays where it fell and lasts 10 seconds; in
+- **More lives from other mods:** RSQ Miniboss can give one. The gold life crate is kept for the arcade systems, and nothing
+  drops it yet (RSQ Miniboss stopped 11-10). The crate wears Score's gold, sends a beam of light into the sky, stays where it fell and lasts 10 seconds; in
   its last 5 it breathes faster and faster and turns ember, then red. RSQ Distance Grab can pull it to you.
 - **RSQ SlowMo's DOWN comes first.** While DOWN holds you at 1 HP no life is spent; a life is spent if DOWN fails.
 
 *[GIF to come: a life spent: the blast and the ring of fire climbing round the player]*
-
-*[GIF to come: the gold life crate dropping after a Bossfight, its beam, fading red at the end]*
 
 ---
 
@@ -771,7 +768,8 @@ These rows pay when another mod says so, not on a kill of their own:
 
 - **Deflect**, **Remote Down** (Melee): RSQ Saber's training remote, a bolt knocked back into it and the remote knocked out of the air.
 - **Indiana Jones** (Daring): a gap crossed on RSQ Grapple's rope.
-- **Thrall Slow Kill** ×0.3, **Miniboss** ×1.0, **Bossfight** ×2.0 (Daring): RSQ Miniboss's, each a share of the kill it is for.
+- **Thrall Slow Kill** ×0.3 and **Miniboss** (Daring): RSQ Miniboss's, each a share of the kill it is for. Miniboss is ×1.0 for a
+  miniboss in the map and ×3.0 for the one you called in: one row, one reward.
 - **Revenge** ×1.0 and **Revive** (Daring): RSQ SlowMo's DOWN. Revenge is the kill's base (100 if no kill comes with it); Revive pays three times the last Revenge's base (300 without one).
 
 </details>
@@ -810,7 +808,7 @@ Text Size makes it bigger still).
   white. A row grows while it is still on screen; it shows for **Bonus Time** (35 tics: half a second at full, then a
   half-second fade). Rows keep
   their places while others come and go.
-- **Out of the way:** the rows drop below RSQ SlowMo's countdown bar and RSQ Miniboss's Bossfight meter while they
+- **Out of the way:** the rows drop below RSQ SlowMo's countdown bar and RSQ Miniboss's Miniboss meter while they
   show, and the whole display moves down while RSQ Gun Bonsai VR's ShieldSaw gauge is on. It hides on the automap and
   with the full-screen no-HUD view.
 - **On your wrist** (**Score on the Wrist**, off): your total in small gold digits above the off-hand controller, in
@@ -862,8 +860,8 @@ without the mod they read.
 - **RSQ Grenade:** every kind, cooked, skeeted, pulled with your teeth, Impact, Cluster, Sticky, and the monsters its
   Infight and Charm grenades turn.
 - **RSQ Miniboss:** its thralls, the miniboss, its rage and slow window. It pays Thrall Slow Kill, Miniboss and
-  Bossfight, reads each kill's style points and your lives for
-  its own scoring, and its Bossfight meter sits under Score's bar.
+  miniboss fight, reads each kill's style points and your lives for
+  its own scoring, and its Miniboss meter sits under Score's bar.
 - **RSQ Monsters:** the roster rows. When a monster changes tier, Monsters moves its place in the map's count so it
   still pays once.
 - **RSQ Gun Bonsai VR:** its fist, shove and hook upgrades are tags Score reads (Finisher, Shatter, Shock Fist,
