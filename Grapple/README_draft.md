@@ -1,6 +1,9 @@
 # RSQ Grapple
 ### Doom Arcade VR · a hookshot in your hand: fire it at a wall and fly, fire it at an imp and it flies to you
 
+> **Waiting on Grapple 2.0.** This page describes the Grapple as it is today. Its known bugs and the next version are
+> held for the Grapple 2.0 update (owner, 2026-11-10).
+
 Point a hand, press Fire Hook, and a claw flies from that hand on a chain. If it bites a wall, a floor or a ceiling, you
 are thrown at it. If it bites a monster light enough to come, the monster is thrown at you. Whatever is too heavy to
 come (a boss, or anything heavier than a baron) becomes something you fly to instead. That is jpalomo's grappling hook,
