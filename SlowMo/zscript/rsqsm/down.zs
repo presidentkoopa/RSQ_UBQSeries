@@ -129,6 +129,7 @@ class RSQSM_Down : EventHandler
 	double gwMix;                                         // 0 colour .. 1 grey (eased)
 	int    gwN;                                           // sectors held (0: none)
 	int    gwQ;                                           // the last step written
+	int gwSeed;                                           // the tic the grey world was captured (Fog Colour Random's pick)
 	Array<int> gwFade, gwLastFade;                         // each sector's own fade (fog) colour; what we last wrote (the red haze)
 	Array<int> gwCol, gwDes, gwLastCol, gwLastDes;        // each sector's own light colour and desaturation; what we last wrote
 	Array<double> gwIsl;                                  // each sector: 0 grey .. 1 a target's room kept in colour

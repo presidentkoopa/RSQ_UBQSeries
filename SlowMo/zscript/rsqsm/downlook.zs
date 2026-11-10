@@ -41,17 +41,57 @@ extend class RSQSM_Down
 	const GW_STEPS = 16.0;        // the fade is written in 16 steps (each sector write re-lights its attached lights: p_sectors.cpp:754)
 	const GW_SMALL = 768.0;       // Small Rooms: a sector no wider than this (its lines' box, map units; my number)
 	const GW_ISL_STEP = 0.1;      // a room's colour eases in or out over ~0.3 s
-	const RED_G = 40.0;           // the blood-red tint at full: the light colour's green and blue multiplied toward 40 / 30 of 255
-	const RED_B = 30.0;
 	// THE RED READS UNDER DARKDOOM BLACK (owner 2026-11-09 18:53, rig test: "DarkDoom Black buries the blood red ... make the
 	// read stronger or more intense"). The tint above multiplies the light, so in near-black rooms there is nothing left to
 	// tint. While DOWN's DarkDoomZ mode is on, two things change: the tint goes all the way to red (green and blue toward
 	// 0, not 40 / 30), and every sector's FADE colour (the colour its darkness fades to: Sector.SetFade, ColorMap.FadeColor)
 	// is pulled toward a deep blood red, so the darkness itself is red. Both scale with Blood Red Tint and ease with the grey;
 	// both are given back exactly as the light colour is.
-	const HAZE_R = 120;            // the fade colour at full (Blood Red Tint 1, DarkDoomZ on): a deep blood red (my number)
-	const HAZE_G = 0;
-	const HAZE_B = 4;
+	const HAZE_MAX = 120.0;        // the fade colour at full (Blood Red Tint 1, DarkDoomZ on): the chosen colour, brightest channel 120 (my number)
+	const TINT_FLOOR = 0.14;       // without DarkDoomZ the tint keeps this much of the other channels (blood red: 255, 36, 36)
+	// FOG COLOUR (owner 2026-11-09 19:13: "choose the color of the fog ... including 'random' and 'complimentary to GITD
+	// colors' but have bloodred be the default"): the colour both the tint and the red darkness go toward. Fixed colours;
+	// Random, one colour a DOWN (from the tic it started: no RNG is used, so netplay's random stays in step); Complementary
+	// to GITD, per sector, the opposite hue of that sector's RSQ Glow In The Dark glow (floor, else ceiling; blood red where
+	// it has none). Console player only, like the rest of the grey world.
+	static const int FOGS[] = { 0xFF0008, 0xFF5000, 0x30FF10, 0x1040FF, 0xA020FF, 0xFFFFFF };
+	static clearscope int FogMode() { return int(CvP("rsqsm_down_fog", consoleplayer, 0)); }
+	// a hue (degrees) at full saturation, as 0xRRGGBB
+	static int HueRGB(double h)
+	{
+		h = h - 360.0 * floor(h / 360.0);
+		double x = 1.0 - abs((h / 60.0) % 2.0 - 1.0);
+		double r = 0, g = 0, b = 0;
+		if (h < 60) { r = 1; g = x; } else if (h < 120) { r = x; g = 1; } else if (h < 180) { g = 1; b = x; }
+		else if (h < 240) { g = x; b = 1; } else if (h < 300) { r = x; b = 1; } else { r = 1; b = x; }
+		return (int(r * 255) << 16) | (int(g * 255) << 8) | int(b * 255);
+	}
+	static double HueOf(int c)
+	{
+		double r = ((c >> 16) & 255) / 255.0, g = ((c >> 8) & 255) / 255.0, b = (c & 255) / 255.0;
+		double mx = max(r, max(g, b)), mn = min(r, min(g, b)), d = mx - mn;
+		if (d < 0.0001) return -1;      // grey: no hue
+		double h;
+		if (mx == r) h = 60.0 * (((g - b) / d) % 6.0);
+		else if (mx == g) h = 60.0 * ((b - r) / d + 2.0);
+		else h = 60.0 * ((r - g) / d + 4.0);
+		return h < 0 ? h + 360.0 : h;
+	}
+	// the colour sector s goes toward
+	int FogOf(Sector s)
+	{
+		int m = FogMode();
+		if (m >= 0 && m < FOGS.Size()) return FOGS[m];
+		if (m == 6) return HueRGB(((gwSeed * 40503) & 0xFFFF) * 360.0 / 65536.0);
+		if (m == 7 && s)
+		{
+			int g = s.GetGlowColor(Sector.floor) & 0xFFFFFF;
+			if (g <= 0x010101) g = s.GetGlowColor(Sector.ceiling) & 0xFFFFFF;
+			double h = g > 0x010101 ? HueOf(g) : -1;
+			if (h >= 0) return HueRGB(h + 180.0);
+		}
+		return FOGS[0];
+	}
 
 	static clearscope bool BwOn(int n) { return CvP("rsqsm_down_bw", n, 1) != 0; }
 	static clearscope double BwFade(int n) { return clamp(CvP("rsqsm_down_bw_fade", n, 1.0), 0.0, 5.0); }
@@ -90,27 +130,34 @@ extend class RSQSM_Down
 			gwFade.Push(f); gwLastFade.Push(f);
 			gwCol.Push(c); gwDes.Push(d); gwLastCol.Push(c); gwLastDes.Push(d); gwIsl.Push(0);
 		}
-		gwN = n; gwQ = -1;
+		gwN = n; gwQ = -1; gwSeed = level.maptime + 1;
 		Log(String.Format("the grey world: %d sectors' own colours kept (console player %d)", n, consoleplayer));
 	}
 
-	// the fade colour pulled toward the haze, a 0..1
-	static int Haze(int f, double a)
+	// the fade colour pulled toward the haze (the fog colour, its brightest channel HAZE_MAX), a 0..1
+	static int Haze(int f, double a, int fog = 0xFF0008)
 	{
 		if (a <= 0) return f;
 		int r = (f >> 16) & 255, g = (f >> 8) & 255, b = f & 255;
-		r = int(r + (HAZE_R - r) * a + 0.5); g = int(g + (HAZE_G - g) * a + 0.5); b = int(b + (HAZE_B - b) * a + 0.5);
+		double fr = (fog >> 16) & 255, fg = (fog >> 8) & 255, fb = fog & 255, fm = max(1.0, max(fr, max(fg, fb)));
+		fr *= HAZE_MAX / fm; fg *= HAZE_MAX / fm; fb *= HAZE_MAX / fm;
+		r = int(r + (fr - r) * a + 0.5); g = int(g + (fg - g) * a + 0.5); b = int(b + (fb - b) * a + 0.5);
 		return (f & 0xFF000000) | (r << 16) | (g << 8) | b;
 	}
 
 	// the light colour times the blood-red tint, a 0..1 (its alpha byte kept)
-	static int Tint(int c, double a, bool deep = false)
+	// the light colour multiplied toward the fog colour (normalised, its brightest channel 1), a 0..1; without DarkDoomZ
+	// each channel keeps at least TINT_FLOOR
+	static int Tint(int c, double a, bool deep = false, int fog = 0xFF0008)
 	{
 		if (a <= 0) return c;
 		int r = (c >> 16) & 255, g = (c >> 8) & 255, b = c & 255;
-		double fg = deep ? 0.0 : RED_G / 255.0, fb = deep ? 0.0 : RED_B / 255.0;
-		g = int(g * (1.0 - a + a * fg) + 0.5);
-		b = int(b * (1.0 - a + a * fb) + 0.5);
+		double kr = (fog >> 16) & 255, kg = (fog >> 8) & 255, kb = fog & 255, km = max(1.0, max(kr, max(kg, kb)));
+		double fl = deep ? 0.0 : TINT_FLOOR;
+		kr = max(kr / km, fl); kg = max(kg / km, fl); kb = max(kb / km, fl);
+		r = int(r * (1.0 - a + a * kr) + 0.5);
+		g = int(g * (1.0 - a + a * kg) + 0.5);
+		b = int(b * (1.0 - a + a * kb) + 0.5);
 		return (c & 0xFF000000) | (r << 16) | (g << 8) | b;
 	}
 
@@ -131,12 +178,13 @@ extend class RSQSM_Down
 			if (cc != gwLastCol[i] || cd != gwLastDes[i]) { gwCol[i] = cc; gwDes[i] = cd; }
 			double k = int(e * (1.0 - gwIsl[i]) * GW_STEPS + 0.5) / GW_STEPS;
 			int d = gwDes[i] + int((255 - gwDes[i]) * k + 0.5);
-			int c = Tint(gwCol[i], k * red, deep);
+			int fog = FogOf(s);
+			int c = Tint(gwCol[i], k * red, deep, fog);
 			if (c != cc || d != cd) { s.SetColor(c, d); writes++; }
 			gwLastCol[i] = c; gwLastDes[i] = d;
 			int cf = s.ColorMap.FadeColor;
 			if (cf != gwLastFade[i]) gwFade[i] = cf;
-			int f = Haze(gwFade[i], deep ? k * red : 0.0);
+			int f = Haze(gwFade[i], deep ? k * red : 0.0, fog);
 			if (f != cf) { s.SetFade(f); writes++; }
 			gwLastFade[i] = f;
 		}

@@ -123,14 +123,15 @@ class RSQSM_Plate play
 
 	// a full-bright particle for one tic: tex centred at p, w wide in the world (a particle's half-size is size x 2.5 / 7:
 	// hw_sprites.cpp:1597-1600), turned roll degrees, in rgb (Shaded, or AddShaded)
-	static void Part(String tex, Vector3 p, double w, double roll, int rgb, double alpha, bool add = false)
+	// plain: drawn as the texture is (Translucent; the trail's grey frame), rgb ignored
+	static void Part(String tex, Vector3 p, double w, double roll, int rgb, double alpha, bool add = false, bool plain = false)
 	{
 		TextureID t = TexMan.CheckForTexture(tex, TexMan.Type_Any);
 		if (!t.IsValid() || alpha <= 0.002 || w <= 0) return;
 		FSpawnParticleParams pp;
-		pp.color1 = Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
+		pp.color1 = plain ? Color(255, 255, 255, 255) : Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255);
 		pp.texture = t;
-		pp.style = add ? STYLE_AddShaded : STYLE_Shaded;
+		pp.style = plain ? STYLE_Translucent : (add ? STYLE_AddShaded : STYLE_Shaded);
 		pp.flags = SPF_FULLBRIGHT | SPF_NOTIMEFREEZE | SPF_ROLL;
 		pp.lifetime = 1;
 		pp.size = w * 7.0 / 5.0;
@@ -284,11 +285,13 @@ class RSQSM_Plate play
 			PutAt(m.tC[i], p, w, TRAIL_H, roll, 1); PutAt(m.tL[i], p, w, TRAIL_H, roll, 2);
 			if (grey)
 			{
-				// THE CHEVRONS' COLOUR (owner 2026-11-09 18:53, rig test: "trail chevrons look white"): the particles sat at the
-				// frame quad's own depth (p), so the frame (grey bevel, black under the fill) drew over them and only the bevel
-				// showed. The crosshair has no frame quad, so it kept its colour. The colour particles now sit in front of the
-				// frame, toward the eye (nrm, from Face above).
-				Off(m.tC[i]); Off(m.tL[i]);
+				// THE CHEVRONS' COLOUR (owner 2026-11-09 18:53 / 19:13, "fix chevrons"; rig follow-up: still white). The frame
+				// quad (grey bevel, black under the fill) always drew over the colour particles, however far toward the eye they
+				// sat: translucent particles write no depth. The crosshair has no frame, so it kept its colour. While the world
+				// is grey the FRAME is a particle too, set farther from the eye (so it sorts and draws first), the fill and the
+				// light in front of it; the frame quad is hidden.
+				Off(m.tF[i]); Off(m.tC[i]); Off(m.tL[i]);
+				Part("RSPTRF", p - nrm * 0.5, TRAIL_H, roll, 0, alpha, false, true);
 				Part(String.Format("RSPTC%02d", f), p + nrm * 0.5, TRAIL_H, roll, m.col, alpha);
 				Part(String.Format("RSPTL%02d", f), p + nrm * 0.6, TRAIL_H, roll, Light(m.col), alpha, true);
 			}

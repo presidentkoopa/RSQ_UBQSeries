@@ -261,7 +261,11 @@ class RSQSM_DownHud ui
 		{
 			// MIDDLE THEN SINK: big, its middle on the gaze; holds, then glides to its place (eased in and out)
 			double big = Big(), bsx = sx * big, bsy = sy * big;
-			if (MW * bsx > sw * 0.94) { double kk = sw * 0.94 / (MW * bsx); bsx *= kk; bsy *= kk; }
+			// at most 94% of the EYE's width (rig follow-up 11-09: this was 94% of the HUD canvas, Screen.GetWidth(), but the
+			// panel is sized in eye units -- ptx = sw / 2 / vr_hud_scale -- so in VR every Entrance Size hit that limit and came
+			// out one fixed size, smaller than the panel at rest)
+			double wmax = 2.0 * EYE_TAN * ptx * 0.94;
+			if (MW * bsx > wmax) { double kk = wmax / (MW * bsx); bsx *= kk; bsy *= kk; }
 			double bfy = gy + (MFOOT - (top + MFOOT) * 0.5) * bsy;
 			double g = clamp((st - RSQSM_Down.ENTRY_HOLD) / double(RSQSM_Down.ENTRY_GLIDE), 0.0, 1.0);
 			g = g * g * (3.0 - 2.0 * g);

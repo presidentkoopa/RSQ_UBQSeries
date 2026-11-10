@@ -249,10 +249,12 @@ off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
 | Panel Size | 1.00 | Scales the DOWN panel and the edge arrows together (1 = half the view, 0.5 to 1.8). Code only, not shown on the rig. |
 | Target Lines | Icon | Each Target line: Icon = "TARGET:" and that target's own crosshair icon in its colour; Name = "TARGET:" and its name (Score's words). Rig only, not headset-confirmed. |
 | Death In Entrance | Middle Then Sink | Where the DOWN panel starts: Middle Then Sink (big in the middle with DOWN over it, then down to its place), Bottom Only, Slam Up (from the bottom edge). Code only, not run. |
+| Entrance Size | 1.6 | How big the panel is in the middle (Middle Then Sink), x its resting size; at most nearly the whole view. Rig: the limit was wrong (one fixed size in VR), fixed 11-09, not yet re-run. |
 | Slow Fall | On | You go down in slow motion: about a second, your view easing down. Code only, not run. |
 | Black and White World | On | While you are DOWN your world goes black and white (your view only). Code only, not run. |
 | Fade (s) | 1.00 | How long the grey takes to come in, and to go back to colour. Code only, not run. |
-| Blood Red Tint | 0.60 | 0 = plain grey, 1 = deep red over the grey. Code only, not run. |
+| Blood Red Tint | 0.60 | 0 = plain grey, 1 = full tint in the Fog Colour over the grey. With DarkDoomZ When Down on, the tint is full strength and the darkness itself fades to the Fog Colour (rig, 11-09: dark rooms read deep red; not headset-confirmed). |
+| Fog Colour | Blood Red | The colour of the tint and of the darkness: Blood Red, Ember, Toxic Green, Deep Blue, Violet, Bone White, Random (one a DOWN), Complementary to GITD (each room the opposite hue of its Glow In The Dark glow; blood red where it has none). Code only, not run. |
 | Targets' Room in Colour | Small Rooms | A target's room stays in colour: Off, Small Rooms, Always. Code only, not run. |
 | DarkDoomZ When Down | DarkDoom Black | With DarkDoomZ: Off, DarkDoom Black, DarkDoom Classic while you are DOWN; your setting comes back after. Single player only. Code only, not run. |
 | Sounds | On | DOWN's own sounds: a hit and ringing, a heartbeat, a relief. Code only, not run. |
