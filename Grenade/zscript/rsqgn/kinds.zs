@@ -73,9 +73,10 @@ class RSQGN_Kind play
 		{
 			if (RSQGN_Fx.Kinetic(false))
 			{
-				// Kinetic (owner 11-10): a boom pitched a touch up (the grenade is smaller than a barrel), and two pops
-				at.A_StartSound("rsqgn/k/boom", CHAN_AUTO, 0, 1.0, ATTN_NORM, 1.08);
-				RSQGN_Pops.Go(at.pos, 2, 2, 3, 0.75);
+				// Kinetic (owner 11-10, "switch rocket and grenade"): a boom a touch low with a low copy under it, and three pops
+				at.A_StartSound("rsqgn/k/boom", CHAN_AUTO, 0, 1.0, ATTN_NORM, 0.92);
+				at.A_StartSound("rsqgn/k/boom", CHAN_AUTO, CHANF_OVERLAP, 0.55, ATTN_NORM, 0.68);
+				RSQGN_Pops.Go(at.pos, 3, 2, 3, 0.8);
 			}
 			else at.A_StartSound("rsqgn/explode", CHAN_AUTO);
 			at.A_StartSound("rsqgn/farexpl", CHAN_7);

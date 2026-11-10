@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# Grenade/tools/sound_engineer.py (tool only): run as python3 -I sound_engineer.py with the owner's WAVs in SRC; writes out/*.ogg
 # Sound engineering for the owner's explosion set (2026-11-10). In: his 17 WAVs. Out: mono OGGs, trimmed, cleaned,
 # loudness-matched by role, soft-limited, faded.
 import numpy as np, subprocess, json, sys
@@ -12,7 +10,7 @@ def env(a,sr,ms=10):
     w=max(1,int(sr*ms/1000)); return np.sqrt(np.convolve(a*a,np.ones(w)/w,'same'))
 def db(x): return 20*np.log10(max(x,1e-9))
 ROLE={ # role: (target impact RMS dBFS over its first 250 ms, max length s, tail floor dB below peak)
- 'boom':(-14.0,1.9,-48),'pop':(-19.0,0.8,-44),'long':(-15.0,4.0,-52),'rocket':(-13.5,2.6,-50)}
+ 'boom':(-14.0,1.15,-48),'pop':(-19.0,0.45,-44),'long':(-15.0,2.5,-52),'rocket':(-13.5,2.6,-50)}
 SET=[('QGKB1','28.wav','boom'),('QGKB2','35.wav','boom'),('QGKB3','37.wav','boom'),('QGKB4','39.wav','boom'),
      ('QGKB5','40.wav','boom'),('QGKB6','42.wav','boom'),('QGKB7','58.wav','boom'),
      ('QGKP1','1.wav','pop'),('QGKP2','3.wav','pop'),('QGKP3','10.wav','pop'),('QGKP4','SFX00.wav','pop'),
@@ -36,7 +34,7 @@ for lump,f,role in SET:
     a[over]=np.sign(a[over])*(knee+(ceil-knee)*np.tanh((np.abs(a[over])-knee)/(ceil-knee)))
     # fades: 2 ms in (no click on the trim), a cosine out over the last 25% (at most 600 ms)
     fi=int(sr*0.002); a[:fi]*=np.linspace(0,1,fi)
-    fo=min(int(len(a)*0.25),int(sr*0.6)); a[-fo:]*=np.cos(np.linspace(0,np.pi/2,fo))**2
+    fo=min(int(len(a)*0.45),int(sr*0.9)); a[-fo:]*=np.cos(np.linspace(0,np.pi/2,fo))**2
     pcm=(np.clip(a,-1,1)*32767).astype(np.int16).tobytes()
     subprocess.run(['ffmpeg','-v','error','-y','-f','s16le','-ar',str(sr),'-ac','1','-i','-','-c:a','libvorbis','-q:a','6','out/%s.ogg'%lump],input=pcm)
     subprocess.run(['ffmpeg','-v','error','-y','-f','s16le','-ar',str(sr),'-ac','1','-i','-','out/%s.wav'%lump],input=pcm)

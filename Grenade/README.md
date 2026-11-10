@@ -81,7 +81,7 @@ mushroom cloud**, half again as big (both counts are options).
 ![The mega blast, every third barrel down a chain](docs/readme/mega.gif)
 
 **They sound like they look.** Every blast is one boom and then a run of short pops on the tics its bursts land: two for a
-barrel (one more for each link down a chain, up to five), two for a grenade, three for a rocket, six or seven under
+barrel (one more for each link down a chain, up to five), each sound ending as its fire does, three for a grenade, two for a rocket, six or seven under
 the mega and mushroom's long roll. The sounds are the owner's set, cleaned, trimmed and level-matched (Barrel Sound and
 Grenade Sound: Kinetic, the default; the old sounds are still there to pick).
 
