@@ -341,7 +341,7 @@ class RSQTR_Cig : EventHandler
 		if (!tok) return;
 		int was = tok.Amount;
 		tok.Amount = min(cap, tok.Amount + add);
-		if (tok.Amount > was && RSQTR_Rig.Flag("rsqtr_debug", p, false))
+		if (tok.Amount > was && RSQTR_Rig.Flag("rsqtr_messages", p, false))
 			Console.Printf("T_RIG cigarettes +%d (%s): %d of %d", tok.Amount - was, why, tok.Amount, cap);
 	}
 	override void WorldThingDied(WorldEvent e)

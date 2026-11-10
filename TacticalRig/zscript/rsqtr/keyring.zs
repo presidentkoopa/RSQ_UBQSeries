@@ -57,6 +57,9 @@ class RSQTR_Keyring : EventHandler
 		if (!f && !a) return false;
 		bool down = e.Type == InputEvent.Type_KeyDown;
 		if (keysIn != 2 && down) return false;      // not holding the keys: the gun's, as always
+		// a release only travels while the keys hold that button (it may have been pressed with the keys in the hand and
+		// let go after they left it): every other release used to send an event too (rig follow-up 2026-11-09)
+		if (keysIn != 2 && !down && !(a ? keyAlt[consoleplayer] : keyFire[consoleplayer])) return false;
 		EventHandler.SendNetworkEvent("rsqtr_keybtn", a ? 1 : 0, down ? 1 : 0);
 		return keysIn == 2;
 	}

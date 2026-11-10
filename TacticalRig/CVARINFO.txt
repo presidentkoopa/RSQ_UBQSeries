@@ -1,5 +1,6 @@
-// RSQ_TacticalRig. All per player (user): the rig is read from your own hands, and the
-// actions it sends are applied the same on every machine.
+// RSQ_TacticalRig. Almost all per player (user): the rig is read from your own hands, and the actions it sends are
+// applied the same on every machine. Three are server settings (the torso's fade, the helmet and its height); some are
+// nosave (internal state, not kept between sessions).
 user bool   rsqtr_on          = true;
 user bool   rsqtr_grip        = true;    // the grips draw and holster
 user bool   rsqtr_use         = true;    // Use draws and holsters too
@@ -99,11 +100,11 @@ user float rsqtr_vest_u     = -0.20;   // metres from your eyes down to its coll
 user float rsqtr_vest_f     = -0.04;   // metres forward of your eyes
 user float rsqtr_vest_size  = 1.0;
 user int   rsqtr_vest_low   = 35;      // health under which it breathes red
-server bool rsqtr_vest_fade = true;
-server bool rsqtr_helmet    = true;
-server float rsqtr_helmet_u = 0.0;    // metres to raise (+) or lower (-) the helmet from where it rests on the torso    // a helmet on your head with the marine torso (seen only in mirrors)    // the torso fades as you look down (local look only)
+server bool rsqtr_vest_fade = true;   // the torso fades as you look down (local look only)
+server bool rsqtr_helmet    = true;   // a helmet on your head with the marine torso (seen only in mirrors)
+server float rsqtr_helmet_u = 0.0;    // metres to raise (+) or lower (-) the helmet from where it rests on the torso
 user int    rsqtr_cfgver      = 0;       // settings version this machine has been moved to (internal)
-user bool  rsqtr_quickswap   = true;    // a gun in the hand at a full holster swaps at once (no Press Delay)
+user bool  rsqtr_quickswap   = true;    // a gun in the hand at a full holster acts at once, a swap or a refusal (no Press Delay)
 user bool  rsqtr_keep        = true;    // what each holster holds is kept from level to level
 user bool  rsqtr_ammo_light  = true;    // a full holster shows its gun's ammo: green, yellow (low / reload), red (empty)
 user bool  rsqtr_grenades    = true;    // the grenade spot on the belt buckle: grip it for the pack's hand grenade (BD's HandGrenades)

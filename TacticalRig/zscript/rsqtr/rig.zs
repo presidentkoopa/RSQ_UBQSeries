@@ -4,8 +4,9 @@
 // 2026-10-31: "i want two more holsters, six seems like good number", both sides of the chest): both
 // hips, both sides of the chest and both shoulders hold one gun each, exactly the one you put there; just below each hip is a
 // spot for RSQ_Saber's hilts. Grip (or press Use) at a holster with a gun in the
-// hand and it goes in (a full holster swaps: its gun comes out); with the hand empty, the
-// holster's gun is drawn. Each hand holsters and draws its own gun.
+// hand and it goes in: into its own holster, or, the first time, into an empty one that becomes its own (a gun that already
+// has a home, put at another holster, goes home and brings that holster's gun out); with the hand empty, the holster's
+// gun is drawn. Each hand holsters and draws its own gun.
 //
 // Credit: the tactical vest and the cigarette are Ermac's ideas (his Virtual
 // Tactical Vest for Doom VR). This is a new implementation for stock QuestZDoom
@@ -19,9 +20,10 @@
 
 class RSQTR_Region
 {
-	// ELEVEN INDICES, TEN IN USE. The index is a place's identity: its cvars (rsqtr_rN_*) and its
+	// FOURTEEN INDICES, THIRTEEN IN USE. The index is a place's identity: its cvars (rsqtr_rN_*) and its
 	// position in a saved holster profile. 0 1 hips, 3 the grenade spot, 4 5 shoulders, 6 7 the chest
-	// (cross-draw, owner 2026-10-31), 8 the keyring (owner 2026-11-01: "its own spot"), 9 10 saber spots.
+	// (cross-draw, owner 2026-10-31), 8 the keyring (owner 2026-11-01: "its own spot"), 9 10 saber spots,
+	// 11 the whip, 12 the flare, 13 the ammo pouch.
 	// 2 (the stomach) is RETIRED: never live, no settings; kept as an index so nothing renumbers. A
 	// profile saved before the chest pair has them empty: they keep the values they had. One saved
 	// before the keyring had index 8 (then retired, the lower back) empty: loading it puts the keyring
@@ -756,8 +758,9 @@ class RSQTR_Rig : EventHandler
 	// moves around"). Six gun holsters -- both hips, both sides of the chest, both shoulders -- and the two
 	// saber spots.
 	// A gun holster holds exactly what you put in it: any gun, one at a time, never chosen for
-	// you. Grip a holster with a gun in your hand and the gun goes in (if one was there, you
-	// swap: that one comes out); grip a full holster with your hand empty and you draw it; an
+	// you. Grip a holster with a gun in your hand and the gun goes in if the holster is its own, or empty and unassigned
+	// (it becomes its own); a gun with a home put at another holster goes home and that holster's gun comes out;
+	// anything else is refused (ASSIGNMENT, Holster). Grip a full holster with your hand empty and you draw it; an
 	// empty holster with an empty hand does nothing.
 	static bool IsGunRegion(int r) { return r == 0 || r == 1 || r == 4 || r == 5 || r == 6 || r == 7; }
 	static bool LockOn(PlayerInfo p) { return true; }   // assignment is always on (the option row is removed, 11-07)
@@ -2189,7 +2192,7 @@ class RSQTR_Rig : EventHandler
 			// A hand passing through a region does not act on it: the press counts once
 			// the hand has been there rsqtr_dwell tics (a press a moment early waits).
 			int dwell = Opt("rsqtr_dwell", p, 3);
-			// QUICK SWAP (owner 2026-10-31): a gun in the hand at a full holster swaps at once, no wait
+			// QUICK SWAP (owner 2026-10-31): a gun in the hand at a full holster acts at once, no wait (a swap, or a refusal)
 			if (r >= 0 && IsGunRegion(r) && Flag("rsqtr_quickswap", p, true) && Content(pmo, r) != ""
 				&& (h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo))) dwell = 0;
 			if (edge && r < 0) ShoulderGrace(pmo, p, h, hp);
@@ -2621,7 +2624,7 @@ class RSQTR_Rig : EventHandler
 			ver.SetInt(7);
 		}
 		// settings version 8 (owner 11-05 01:53, "switch off weapon throwing and hide the options for it, I'm not happy
-		// with it"): gun throwing goes off, whatever was saved; its rows are out of the menu
+		// with it"): gun throwing goes off, whatever was saved (its rows came back to the menu later, off by default)
 		if (ver && ver.GetInt() < 8)
 		{
 			let th = CVar.FindCVar("rsqtr_throw"), tu = CVar.FindCVar("rsqtr_throw_use");
@@ -2651,7 +2654,7 @@ class RSQTR_Rig : EventHandler
 		return cv && cv.GetBool();
 	}
 
-	// A region another mod has claimed right now answers here (rig.slot service,
+	// A region another mod has claimed right now answers here (RSQTR_Hooks.Claimed,
 	// hooks.zs); a claimed region is not ours to act on.
 	bool RegionLive(PlayerPawn pmo, int r)
 	{
@@ -2814,7 +2817,7 @@ class RSQTR_Rig : EventHandler
 		}
 		if (IsGunRegion(r))
 		{
-			// gun in hand: in it goes (a full holster swaps); hand empty: draw what is there
+			// gun in hand: in it goes, as assignment allows (Holster); hand empty: draw what is there
 			if (HoldsGun(pmo))
 			{
 				EventHandler.SendNetworkEvent("rsqtr_holster", r);
@@ -3217,7 +3220,7 @@ class RSQTR_Rig : EventHandler
 
 	// ---- what you see ------------------------------------------------------------------
 	// A soft ring at each region while a hand is near it (or always, rsqtr_markers 2),
-	// amber with the hand inside; and the weapon last holstered there, as its own
+	// green with the hand inside; and the weapon last holstered there, as its own
 	// pickup sprite, hanging at the region.
 	private void DrawMarkers(PlayerPawn pmo, PlayerInfo p)
 	{
@@ -3241,7 +3244,7 @@ class RSQTR_Rig : EventHandler
 			// AN ITEM STOWED IN IT IS NOT GHOSTED (owner 11-05 01:07 "holstered models are like, see through?"): the additive
 			// sphere drawn through the solid item washed it out, so a place showing its item (last tic's: a gun or saber, the
 			// coiled whip, a flare, the grenade, the pouch) draws its sphere at STOWED_SPHERE of the alpha.
-			// (not the pouch: its 0.10 sphere is far larger than the 10 cm pouch and is meant to be seen)
+			// (not the pouch: its 0.11 sphere is far larger than the 10 cm pouch and is meant to be seen)
 			bool holds = r != RSQTR_Region.POUCH && ((icon[r] && !icon[r].bINVISIBLE) || (IsGrenadeRegion(r) && nadeShow && !nadeShow.bINVISIBLE));
 			if (holds) a *= STOWED_SPHERE;
 			// RULES SHOWN (11-08): a first fit, a refusal or a freed holster flashes the ring (with Holster Rings on) and
@@ -4032,7 +4035,7 @@ class RSQTR_Icon : Actor
 		if (fit.squat[at] > 0.7) metres = min(metres, RSQTR_Rig.Num("rsqtr_icon_m", players[consoleplayer], 0.25));
 		double s = metres * RSQTR_Body.Upm() / fit.len[at];
 		Scale = (s, s);
-		// still backwards in your pack? listed in "Stored guns to turn round" (rsqtr_icon_flip)
+		// still backwards in your pack? listed in "Flip These Guns" (rsqtr_icon_flip)
 		double cy = fit.yaw[at], cp = fit.pitch[at];
 		if (RSQTR_Fit.Listed(wearing, players[consoleplayer])) { cy += 180; cp = -cp; }
 		double oa, op, orl;

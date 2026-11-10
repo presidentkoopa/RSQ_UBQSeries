@@ -59,8 +59,8 @@ class RSQTR_Torso : EventHandler
 		// green, blue, red. The Quake torso's: own, green, blue, red.
 		// IT FADES AS YOU LOOK DOWN (the owner, 10-27: "can the torsos fade out when I look down,
 		// I can't see my holsters or stored weapons"). Solid looking ahead; from 12 degrees down
-		// it thins, to a ghost (0.06) by 32 -- the first version (25 -> 50) went unseen in the
-		// headset (10-27): a glance at the hip is a shallow head pitch.
+		// it thins, to 0.53 by 32 (half the change, below) -- the first version (25 -> 50) went
+		// unseen in the headset (10-27): a glance at the hip is a shallow head pitch.
 		double fade = 1.0;
 		if (RSQTR_Rig.CVarOn("rsqtr_vest_fade"))
 			fade = clamp(1.0 - (pmo.pitch - 12.0) / 20.0 * 0.47, 0.53, 1.0);   // half the change (the owner, 10-27): solid to 0.53

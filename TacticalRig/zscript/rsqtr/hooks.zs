@@ -23,8 +23,9 @@
 //                                           whip: 11, its own holster, while that is on and it is not in a hand)
 //   GetString("rig.regionname", "", region)              that region's name ("Left hip" ...)
 // (RSQ Wheel badges a holstered gun's card with where it hangs.)
-// These two are synced play state (the draw is a network event), so they answer for any
-// player, not only the console player.
+// rig.drawtic, rig.drawn and rig.holster are synced play state (the draw is a network event), so they answer for any
+// player, not only the console player. More requests are answered below (rig.locked, rig.regionname, ...): each is
+// described where it is answered.
 class RSQTR_Hooks play
 {
 	static bool Claimed(PlayerPawn pmo, int r)
@@ -111,7 +112,7 @@ class RSQTR_RigService : Service
 			while (ds = dit.Next()) if (ds.GetInt("door.holding", "", h, 0, null) >= 0) return 1;
 			return 0;
 		}
-		// HOLSTER LOCK (rig.zs lockCls): the holster this gun is locked to, or -1; and whether gun holster intArg takes a lock
+		// HOLSTER ASSIGNMENT (rig.zs lockCls): the holster this gun is assigned to, or -1; and whether gun holster intArg takes a lock
 		if (request == "rig.locked")
 		{
 			int n = who ? who.PlayerNumber() : consoleplayer;
