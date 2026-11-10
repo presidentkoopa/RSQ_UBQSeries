@@ -82,17 +82,43 @@ def sym(kind,col):
         d.ellipse([8,7,11,11],fill=(30,30,40,255)); d.ellipse([13,7,16,11],fill=(30,30,40,255))
     elif kind=='balloon':
         d.ellipse([5,1,19,16],fill=c); d.polygon([(10,16),(14,16),(12,18)],fill=dk); d.line([(12,18),(10,23)],fill=(220,220,220,255)); d.ellipse([8,4,11,7],fill=hi)
+    elif kind=='slime':
+        d.ellipse([2,13,22,21],fill=dk); d.ellipse([4,12,20,19],fill=c); d.ellipse([7,13,11,15],fill=hi)
+        d.ellipse([15,6,19,11],fill=c); d.polygon([(15,9),(19,9),(17,3)],fill=c); d.ellipse([16,7,17,8],fill=hi)
+    elif kind=='clones3':
+        for x,y,s in ((2,9,6),(9,4,7),(16,9,6)):
+            d.ellipse([x,y,x+s,y+s],fill=c); d.polygon([(x-1,y+s+9),(x+s+1,y+s+9),(x+s,y+s),(x,y+s)],fill=c if s==7 else dk)
+            d.rectangle([x+1,y+2,x+2,y+3],fill=(255,255,255,255)); d.rectangle([x+s-2,y+2,x+s-1,y+3],fill=(255,255,255,255))
+    elif kind=='titanhead':
+        d.polygon([(3,3),(7,9),(5,10)],fill=(230,225,210,255)); d.polygon([(21,3),(17,9),(19,10)],fill=(230,225,210,255))
+        d.ellipse([5,6,19,21],fill=c); d.rectangle([8,12,10,14],fill=(255,230,60,255)); d.rectangle([14,12,16,14],fill=(255,230,60,255))
+        d.line([(9,18),(15,18)],fill=dk,width=2); d.polygon([(7,4),(7,0),(10,2),(12,0),(14,2),(17,0),(17,4)],fill=(250,200,40,255))
+    elif kind=='dodge':
+        d.polygon([(1,12),(7,6),(7,10),(11,10),(11,14),(7,14),(7,18)],fill=c); d.polygon([(23,12),(17,6),(17,10),(13,10),(13,14),(17,14),(17,18)],fill=c)
+        d.line([(12,2),(12,22)],fill=hi,width=1)
+    elif kind=='anvil':
+        d.polygon([(2,6),(21,6),(18,11),(15,11),(15,15),(19,20),(5,20),(9,15),(9,11),(5,11)],fill=c); d.line([(3,7),(20,7)],fill=hi)
+    elif kind=='aura':
+        d.ellipse([1,1,22,22],outline=c,width=2); d.polygon([(7,6),(17,6),(17,12),(12,18),(7,12)],fill=c); d.polygon([(12,6),(17,6),(17,12),(12,18)],fill=dk)
+    elif kind=='homing':
+        d.arc([2,4,20,22],200,330,fill=dk,width=2); d.polygon([(17,4),(22,9),(15,11)],fill=dk); d.ellipse([12,2,21,11],fill=c); d.ellipse([15,4,18,7],fill=hi)
+    elif kind=='skullheart':
+        d.ellipse([3,1,17,14],fill=c); d.rectangle([6,11,14,17],fill=c); d.ellipse([6,6,9,9],fill=(20,20,20,255)); d.ellipse([11,6,14,9],fill=(20,20,20,255))
+        r=(230,30,40,255); d.ellipse([13,13,18,18],fill=r); d.ellipse([17,13,22,18],fill=r); d.polygon([(13,16),(22,16),(17.5,22)],fill=r)
+    elif kind=='hybrid':
+        d.pieslice([2,2,21,21],90,270,fill=c); d.pieslice([2,2,21,21],270,90,fill=(60,200,220,255)); d.line([(12,2),(12,21)],fill=(20,20,20,255))
     elif kind=='mystery':
         d.ellipse([3,3,20,20],fill=c); d.text((9,6),"?",fill=(255,255,255,255))
     return outline(im)
 
-CHAMPS=[('Red: 2x health','heart',(220,40,40)),('Bronze: 2x health','heart',(190,120,60)),('Gold: 5x health','coin',(240,200,50)),
- ('Black: 2x damage','dagger',(70,60,80)),('Yellow: 2x speed','bolt',(250,220,40)),('Grey: lunges','lunge',(150,150,155)),
- ('Green: teleports','teleport',(60,200,70)),('Cyan: wind','wind',(60,220,230)),('Violet: shoots','fireball',(170,70,220)),
- ('Orange: explodes','boom',(240,120,30)),('Blue: bursts into shots','burst',(60,120,240)),('Indigo: clones','clones',(80,60,190)),
- ('DarkRed: respawns','respawn',(150,20,30)),('Pink: resurrects','ankh',(250,120,190)),('Silver: magnet','magnet',(200,205,215)),
- ('DarkGreen: creep trail','drops',(40,120,40)),('White: slowing creep','snow',(235,240,255)),('Titan: big, angry','titan',(160,90,60)),
- ('Undying','skull',(225,220,200)),('Ghost','ghost',(200,220,240)),('Balloon','balloon',(240,70,90)),('Magenta (no effect found)','mystery',(230,40,230))]
+CHAMPS=[('Red: 2x health','heart',(220,40,40)),('Dark Red: comes back','respawn',(150,20,30)),('Orange: explodes','boom',(240,120,30)),
+ ('Yellow: 2x speed','bolt',(250,220,40)),('Green: teleports','teleport',(60,200,70)),('Dark Green: damaging creep','slime',(60,170,40)),
+ ('Light Blue: wind','wind',(60,220,230)),('Blue: bursts into shots','burst',(60,120,240)),('Indigo: weak clones','clones3',(90,70,200)),
+ ('Violet: homing shots','homing',(170,70,220)),('Pink: resurrects','ankh',(250,120,190)),('Black: 2x damage','dagger',(70,60,80)),
+ ('Grey: dodges','dodge',(150,150,155)),('White: slowing creep','snow',(235,240,255)),('Bronze: tough, slow','anvil',(190,120,60)),
+ ('Silver: magnet','magnet',(200,205,215)),('Gold: shields its friends','aura',(240,200,50)),
+ ('Floating (balloon)','balloon',(240,70,90)),('Ethereal','ghost',(200,220,240)),('Hybrid','hybrid',(240,120,30)),
+ ('Undying (guardian heart)','skullheart',(225,220,200)),('Titan (boss)','titanhead',(160,90,60))]
 champs=[(n,sym(k,c)) for n,k,c in CHAMPS]
 misc=[('Glove (Melee hands)',glove(N,'shade')),('Glove (boxing, off hand)',glove(N,'shade').transpose(Image.FLIP_LEFT_RIGHT)),('Miniboss shield',shield(N,'shade'))]
 
