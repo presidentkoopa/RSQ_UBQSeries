@@ -1,7 +1,8 @@
 # RSQ Miniboss
 ### Doom Arcade VR · fill the meter, call the fight in, break the shield one thrall at a time
 
-Fight well and a meter fills under your score. When it is full, glance at your watch and press Use, and a miniboss
+Built on Tartlman's **Minibosses!** (a miniboss and its thralls, the tethers and the flames) and rebuilt for Doom
+Arcade VR. Fight well and a meter fills under your score. When it is full, glance at your watch and press Use, and a miniboss
 lands in front of you in slow motion with its thralls around it, each one arriving on a beam of light. While its
 thralls stand it cannot be hurt: kill one, and for a few seconds its shield is down. Break it in time, or everything
 gets stronger.
@@ -12,7 +13,7 @@ gets stronger.
 
 ## What it feels like
 
-- **You earn the fight.** Kills, quick kill chains, style points from RSQ Score, weapon XP from RSQ Gun Bonsai VR and
+- **Your play fills the meter.** Kills, quick kill chains, style points from RSQ Score, weapon XP from RSQ Gun Bonsai VR and
   simply pushing on through the map fill the Bossfight meter.
 - **You call it in.** When the meter is full it turns gold and beats like a heart, and the room's light beats red with
   it. Look at your watch and press Use, and it comes. Or wait, and it comes by itself a minute later.
@@ -22,15 +23,15 @@ gets stronger.
 - **Its thralls are its shield.** While a thrall lives, shots on the miniboss do nothing: "GUARD!" pops over it and grey
   Xs bounce off. "TARGET!" hangs over every thrall.
 - **Kill a thrall and the shield drops.** The world slows, the power that thrall gave the miniboss leaves it, and you
-  get one second for every thrall it came with to break one piece of its shield bar. Break it fast and RSQ Score pays
-  more.
+  get one second for every thrall it came with to break one piece of its shield bar. The faster you break it, the more
+  RSQ Score points you get.
 - **Miss and they grow.** If the window runs out with that piece unbroken, the miniboss and its thralls climb the RSQ
   Monsters colour ladder by one to three steps, and by default so does every monster on the map.
 - **Then it is you and the miniboss.** With the shield bar gone, its own bar takes the hits. It has three lives: each
   time a bar empties it refills, burns with flames for five seconds and comes back a colour higher.
-- **Greed has a price.** Shoot it while its thralls live, and if a thrall is still standing a few seconds later, every
+- **Don't shoot it first.** Shoot it while its thralls live, and if a thrall is still standing a few seconds later, every
   monster on the map goes into a rage: twice as fast and twice as keen to attack, until the miniboss dies.
-- **The payoff.** A gun you don't have yet (or a power-up), a fountain of RSQ VisualRewards bits, RSQ Score's
+- **When it dies.** A gun you don't have yet (or a power-up), a fountain of RSQ VisualRewards bits, RSQ Score's
   Miniboss and Bossfight rows, and RSQ Score's gold life crate where it fell.
 
 ---
@@ -47,7 +48,7 @@ gets stronger.
 | Kill a thrall | The shield drops: a window of 1 s for each thrall it came with |
 | Hit the miniboss inside the window | The open piece of the shield bar drains; break it before the window ends |
 | Break every piece | One-on-one: its own bar takes the damage, life by life |
-| Kill it | Its loot, its rewards, the level's music back |
+| Kill it | A gun or power-up, bits, Score rows and a life crate; the level's music comes back |
 
 **The watch check** comes from RSQ Gestures. Without Gestures, RSQ Gun Cards' copy or this mod's own copy does the same
 check, so the call-in always works.
@@ -145,8 +146,8 @@ unbroken segment. A stepped gold bar under the segments drains, the room's light
 over the miniboss and the thralls' shrink. The window closes early when the segment breaks. A thrall killed while a
 window is open waits its turn: the next window opens when this one closes.
 
-**Broken in time,** the segment pays RSQ Score's **Thrall Slow Kill**: 100 points for every second still left in the
-window, so the fastest break pays the most.
+**Broken in time,** the segment scores RSQ Score's **Thrall Slow Kill**: 100 points for every second still left in the
+window, so the fastest break scores the most.
 
 ![Window missed: the miniboss and its thralls a few colours higher, the shield back (design mockup)](docs/readme/mock_window_missed.jpg)
 
@@ -191,10 +192,10 @@ The tethers, bursts, flames, bars and the room's glow all wear it, and it change
 ## Greed
 
 Hit the miniboss while its shield is up and its greed is armed. One window's length later (one second for every thrall
-it came with, or when a running window ends) the bill comes due: if the miniboss lives and a thrall still stands,
+it came with, or when a running window ends) it is checked: if the miniboss lives and a thrall still stands,
 **every monster on the map is enraged** until the miniboss dies. They move at twice their speed (**Rage Speed**), attack
 twice as readily and react at once, a red spark rises off each one near you, and a roar sounds. Monsters that spawn or
-are raised meanwhile are enraged too. Kill every thrall before it comes due and nothing happens. When the miniboss dies
+are raised meanwhile are enraged too. Kill every thrall before then and nothing happens. When the miniboss dies
 or you leave the level, every monster is put back exactly as it was.
 
 *[GIF to come: the rage: every monster on the map sparking red and charging]*
@@ -214,7 +215,7 @@ or you leave the level, every monster is put back exactly as it was.
 - **RSQ Score's gold life crate** where it died (**Bossfight Kill Drops a Life Crate**): touch it for one more life.
 - **A win counted** (it adds to the tier under Tier From's "Set").
 
-**Any miniboss killed** pays RSQ Score's **Miniboss** row.
+**Any miniboss killed** scores RSQ Score's **Miniboss** row.
 
 *[GIF to come: the miniboss dying, the colour wave, the gun and the bits fountain, the gold crate]*
 
@@ -238,7 +239,7 @@ monsters, favouring the toughest, with up to **Thralls** monsters within **Thral
 Champions first, then legendaries, then the nearest. With LegenDoom and **Legendary Thralls** on, its thralls are made
 legendary. A classic miniboss fights by the same rules (the shield, the windows, the lives, greed, the tethers, the
 words) and shows the same HUD bars (the nearest one, when there are several), but it does not arrive boosted, has no
-room glow and no Bossfight payoff.
+room glow and none of the Bossfight's extra drops.
 
 ---
 
@@ -248,7 +249,7 @@ Everything is asked by name: every mod still loads and plays alone, and the part
 happen.
 
 - **RSQ Score:** its style points fill the meter, its lives can set the tier, and the meter sits centred under its bar.
-  Miniboss sends it the **Miniboss**, **Bossfight** and **Thrall Slow Kill** rows; Score pays the first two as a
+  Miniboss sends it the **Miniboss**, **Bossfight** and **Thrall Slow Kill** rows; Score values the first two as a
   share of the miniboss kill's worth (1x, 2x). Score also reads Miniboss for its own rows: **Chain Gang** (thralls
   killed in one window), **Rage Quit**, **Riot Control**, and combos that ask for a thrall
   or the miniboss. Miniboss drops Score's gold life crate after a Bossfight.
@@ -318,7 +319,7 @@ are in map units (32 to a metre).
 | **Shown on the rig** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up); the Bossfight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a Bossfight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a Bossfight runs |
 | **Shown on the rig before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page, among it: the HUD bars of the fight (seen only in the design mockups), "GUARD!", "TARGET!", the grey Xs and the pops, the slow motion and Thrall Slow Kill pay of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music, the life crate, Graves Rise, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the tethers and flames since the rework, the rage since the rework, the hub tier reset |
+| **Code only, not yet shown** | Everything else on this page, among it: the HUD bars of the fight (seen only in the design mockups), "GUARD!", "TARGET!", the grey Xs and the pops, the slow motion and Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music, the life crate, Graves Rise, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the tethers and flames since the rework, the rage since the rework, the hub tier reset |
 
 ---
 
@@ -356,7 +357,7 @@ The full list is in **CREDITS.txt**.
 
 - **Tartlman** (*Minibosses!* v0.1.1, 2019): the mod this rebuilds (a miniboss with extra lives and thralls tied to it
   by trails) and its effects' design in the IWAD's own sprites. Kept unmodified in original/; its code is not copied.
-- **presidentkoopa:** the set piece's design, the Bossfight (the meter, the call-in, the arrival, the payoff) and the
+- **presidentkoopa:** the set piece's design, the Bossfight (the meter, the call-in, the arrival, the drops) and the
   reworked fight (the staggered arrival, the shield and its windows, the tier-ups, the HUD bars, the words).
 - **Joshua Hard** (*Dynamic Enemy Reinforcements* v3, MIT): the idea of landing reinforcements on the map's own
   monster start spots (none of its code).

@@ -35,6 +35,7 @@ class RSQVR_Scenes : EventHandler
 	Array<double> tLevel;
 	Array<int>    tCh;
 	transient bool restart;       // after a load the channels are empty: start the tracks again
+	transient double musSet;      // the music volume we last set (0 after a load: set again on the first tic)
 
 	static RSQVR_Scenes Get() { return RSQVR_Scenes(EventHandler.Find("RSQVR_Scenes")); }
 
@@ -105,13 +106,13 @@ class RSQVR_Scenes : EventHandler
 		if (e.IsSaveGame) return;
 		StopAll();
 		stack.Clear(); tName.Clear(); tLevel.Clear(); tCh.Clear();
-		SetMusicVolume(1.0);
+		SetMusicVolume(1.0); musSet = 2;
 	}
 
 	override void WorldLoaded(WorldEvent e)
 	{
 		// a new map starts with no scene and the level music at full; a loaded save puts its tracks back on their channels
-		if (!e.IsSaveGame) { StopAll(); stack.Clear(); tName.Clear(); tLevel.Clear(); tCh.Clear(); SetMusicVolume(1.0); }
+		if (!e.IsSaveGame) { StopAll(); stack.Clear(); tName.Clear(); tLevel.Clear(); tCh.Clear(); SetMusicVolume(1.0); musSet = 2; }
 		else restart = true;
 	}
 
@@ -157,7 +158,10 @@ class RSQVR_Scenes : EventHandler
 			ear.A_SoundVolume(tCh[i], max(0.001, tLevel[i] * vol));
 			top = max(top, tLevel[i]);
 		}
-		SetMusicVolume(1.0 - top);
+		// THE MUSIC KNOB ONLY WHEN IT MOVES (owner 11-10): set while a crossfade changes it, never re-set every tic, so another
+		// mod's own music fade isn't overwritten while ours stands still
+		double want = 1.0 - top;
+		if (musSet <= 0 || abs(want - (musSet - 1)) > 0.0001) { SetMusicVolume(want); musSet = want + 1; }
 	}
 
 	static void Dbg(String s) { let c = CVar.FindCVar('rsqvr_scene_debug'); if (c && c.GetBool()) Console.Printf("RSQVR %s", s); }
