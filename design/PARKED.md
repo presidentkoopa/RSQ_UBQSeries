@@ -152,3 +152,10 @@ notice kept, our changes marked as altered, and credit (its credits.md). Upload:
 Environmental_DarkDoomz.zip (darkdoomz.pk3 + src/). Not started. Note: anything that drives DDZ by cvar (GITD menu.zs,
 DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
 
+
+## Decisions 2026-11-10 (after the code-read agents)
+- Gun Bonsai VR: an agent fixes all 17 code-read items (owner: "Agent fixes it all").
+- Graveyard netgame: everyone's stones, not the host's only (owner). An agent reworks the stone sync.
+- Rumble Backup: route every series mod's rumble through RSQ Accessibility (owner: "Yes, all mods"). QUEUED after the rig test.
+- Gun Cards saber card: LIT/OFF is enough; no second-blade answer (owner).
+- Whip dead code: build Rope perks and the bind whip (owner). QUEUED after the rig test and the README controls pass.
