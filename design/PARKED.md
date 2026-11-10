@@ -159,3 +159,11 @@ DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
 - Rumble Backup: route every series mod's rumble through RSQ Accessibility (owner: "Yes, all mods"). QUEUED after the rig test.
 - Gun Cards saber card: LIT/OFF is enough; no second-blade answer (owner).
 - Whip dead code: build Rope perks and the bind whip (owner). QUEUED after the rig test and the README controls pass.
+- Graveyard Remove buttons in a netgame: keep m8f's way (either player's button clears every machine's store) (owner).
+- Rig scope 11-10: stop after L9; the rest stays "not yet run" for the next batch (owner).
+- OPEN BLOCKER (README agents, 11-10): ropes cannot be climbed out of the box. Grapple (input.zs:204) and Whip take the
+  rope only through Distance Grab's grab keys, which have had no default bind since 11-10. KEYBINDS_PLAN says "grabbing
+  the rope is the grip". Owner to decide.
+- Open from the agents: Wheel's Opens On and Re-centre Window rows do nothing with one key; Monsters' Tier Icons row
+  is unreachable (old pages with no entry); ShieldSaw a11y.zs HoldToggle() is dead; stale KEYCONF comments in Distance
+  Grab, Wheel, ShieldSaw, Whip MENUDEF, Grapple input.zs.
