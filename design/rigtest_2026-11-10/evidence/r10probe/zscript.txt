@@ -32,6 +32,13 @@ class R10_Probe : EventHandler
 	{
 		let p = P();
 		if (!p) return;
+		if (e.Name ~== "r10_inv")
+		{
+			int nades = p.CountInv("RSQGN_Ammo"); let q = CVar.GetCVar("rsqgn_quick", p.player);
+			int thrown = 0; let it = ThinkerIterator.Create("RSQGN_Thrown"); Thinker t; while (t = it.Next()) thrown++;
+			Console.Printf("R10 INV t%d RSQGN_Ammo %d quick %d thrown-in-world %d ready %s", level.maptime, nades, q ? q.GetInt() : -1, thrown, p.player.ReadyWeapon ? String.Format("%s", p.player.ReadyWeapon.GetClassName()) : "none");
+			return;
+		}
 		if (e.Name ~== "r10_hurt")      // every monster within Args[1] (default 1024) loses Args[0] health (never killed)
 		{
 			double r = e.Args[1] > 0 ? e.Args[1] : 1024;
@@ -61,6 +68,12 @@ class R10_Probe : EventHandler
 			let it = ThinkerIterator.Create("UBQS_Remote"); let r = UBQS_Remote(it.Next());
 			if (r) Console.Printf("R10 REMOTE t%d round %d hits %d streak %d best %d points %d roundEnd in %d", level.maptime, r.round, r.roundHits, r.streak, r.best, r.points, r.roundEnd - level.maptime);
 			else Console.Printf("R10 REMOTE t%d: none", level.maptime);
+		}
+		else if (e.Name ~== "r10_saber")
+		{
+			String o = "";
+			for (let i = p.Inv; i; i = i.Inv) { let sb = UBQS_SaberBase(i); if (sb) o = o .. String.Format("[%s inhand %d back %d thrown %d] ", sb.GetClassName(), sb.InHand(), sb.back, sb.thrown != null); }
+			Console.Printf("R10 SABER t%d tag %d %s ready %s", level.maptime, e.Args[0], o, p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none');
 		}
 		else if (e.Name ~== "r10_bring") bring = e.Args[0] != 0;
 		else if (e.Name ~== "r10_holdall") holdAll = e.Args[0] != 0;
