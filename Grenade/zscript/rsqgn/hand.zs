@@ -2,9 +2,10 @@
 // code, ported to this pack's own weapon), plus the teeth from his RS_Grenade (rs_vrgrenade.zs):
 //   1. the OTHER hand's trigger takes the RING and pulls it away: the pin is out. Bring that hand back to the top and
 //      take the ring again: the pin goes back in.
-//   2. the holding hand's TRIGGER is your squeeze on the spoon. Let go of it while swinging: thrown, at the speed and
-//      direction of the swing. Let go while still: the spoon flies off and the fuse is lit in your hand (cooking).
-//      Squeeze and let go again to throw it.
+//   2. the holding hand's TRIGGER or ALT FIRE is your squeeze on the spoon (either held is the squeeze, both up the
+//      let-go; 2026-11-09, Local below). Let go while swinging: thrown, at the speed and direction of the
+//      swing. Let go while still: the spoon flies off and the fuse is lit in your hand (cooking). Squeeze and let go
+//      again to throw it. With the pin still in, alt fire cycles the grenade kinds instead (THE KINDS below).
 //   3. cook too long and it goes off in your hand.
 //   4. THE FACE ROUTE (RS_Grenade): squeeze and hold the grenade at your mouth for a moment: you pull the pin with
 //      your teeth (2026-11-03: the mouth measured from the headset, the trigger or a gripped squeeze; Face below).
