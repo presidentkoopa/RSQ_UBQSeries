@@ -146,6 +146,21 @@ class RSQGN_Buzzer : Actor
 		q.tleft = q.total;
 	}
 
+	// RSQ_Accessibility's RUMBLE BACKUP, by name (as its tools/a11y_template.zs RumbleBackup; this mod carries no copy of
+	// that class): as a rumble starts, at Quake Haptics 0, RSQ_Accessibility sends the engine's shot buzz on that
+	// controller. This rumble is played as before either way; Rumble Backup off or RSQ_Accessibility absent, nothing.
+	static void RumbleBackup(Actor who, bool left)
+	{
+		if (!who || !who.player) return;
+		Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN;
+		if (!rsqaC) return;
+		let cv = CVar.FindCVar('rsqa_rumble_backup');
+		if (!cv || !cv.GetInt()) return;
+		let it = ServiceIterator.Find("RSQA_Service");
+		let s = it.Next();
+		if (s) s.GetInt("buzz", "RSQGN", who.PlayerNumber(), left ? 1 : 0);
+	}
+
 	override void Tick()
 	{
 		Super.Tick();
@@ -153,6 +168,7 @@ class RSQGN_Buzzer : Actor
 		if (!feels) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
 		if (tleft <= 0) return;
+		if (tleft == total) RumbleBackup(feels, left);
 		double a = amp * tleft / double(total) / 3.2;
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

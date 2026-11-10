@@ -812,6 +812,7 @@ class RSQTR_Buzzer : Actor
 		if (tleft <= 0) return;
 		if (tleft == total && feels.player && RSQTR_Rig.Flag("rsqtr_messages", feels.player, false))
 			Console.Printf("T_BUZZ t%d %s hand %.2f for %d tics", level.maptime, left ? "left" : "right", amp, total);
+		if (tleft == total) RSQTR_A11y.RumbleBackup(feels, left);   // RSQ_Accessibility's Rumble Backup, at Quake Haptics 0 (a11y.zs)
 		double a = amp * tleft / double(total) / 3.2;
 		tleft--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

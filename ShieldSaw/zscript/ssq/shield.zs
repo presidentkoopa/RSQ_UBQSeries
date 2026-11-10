@@ -382,6 +382,8 @@ class SSQ_Buzzer : Actor
 		if (tleft <= 0) return;
 		// amplitude / 3.2: the jigger peak is 4x the intensity, the haptic 0.8x that by default
 		double a = amp * tleft / double(total) / 3.2;
+		// RSQ_Accessibility's Rumble Backup (a11y.zs RumbleBackup): as each knock starts, at Quake Haptics 0
+		if (tleft == total || (twice && total - tleft == 7)) SSQ_A11y.RumbleBackup(feels, left);
 		if (twice)
 		{
 			int k = total - tleft;			// 0.. : 4 on, 3 off, the rest on, both knocks full

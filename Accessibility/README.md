@@ -258,10 +258,15 @@ double chevron and a short rumble on that side.
 **Rumble Strength** (1.0, from 0.0 to 2.0): every series rumble is multiplied by this; 0 is no rumble at all.
 
 **Rumble Backup** (Off): QuestZDoom's Quake Haptics setting at 0 silences the rumble route the series uses. With
-Rumble Backup on, the rumbles that go through this pack come as the engine's shot buzz on that controller instead:
-every one feels the same, but you feel them. That is this pack's own cues (the off-view and wake cues, the slow-motion
-cues, the modifier tick, the brace cue), the watch-check tick, and the "ready" tick the Saber's Force Grip asks for.
-Every other mod's rumble goes through that mod's own route and stays silent at Quake Haptics 0.
+Rumble Backup on, the series' rumbles come as the engine's shot buzz on that controller instead: every one feels the
+same, but you feel them. That is this pack's own cues (the off-view and wake cues, the slow-motion cues, the modifier
+tick, the brace cue), the watch-check tick, the "ready" tick the Saber's Force Grip asks for, and (since 2026-11-10)
+the rumbles of every series mod that loads with this pack: RSQ Saber, ShieldSaw, Melee, SlowMo, Tactical Rig, Whip,
+Distance Grab, Grenade and Flash and Flare. Each asks this pack by name as one of its rumbles starts; on its own, or
+with Rumble Backup off, it rumbles exactly as before. A mod's rumbles come at most one buzz a controller every 5 tics
+(the buzz is 150 ms long). RSQ Wheel and RSQ Grapple already buzz this way by themselves; RSQ Distance Grab's pulse
+setting too. The earthquakes of RSQ Monsters (Brutal Doom's) and RSQ Grenade's explosions shake you, they are not a
+mod's rumble, and are not covered.
 
 ---
 
@@ -433,7 +438,8 @@ always has.
 | **code only, not shown** | Everything else on this page: Colour Blind Mode, Photosensitive Mode, Cue Size, Text Size, Handedness and its Control Scheme switch, Steady Hands, Slower Taps, Hold to Toggle, Gesture Ease, One-Handed and its buttons, the Comfort Vignette and Vignette on Knockback, Slow-Mo Ease, Seated Play and Measure Standing Height, Sound Cues and Wake Cues, Rumble Strength and Rumble Backup, Two-Hand Brace and Brace Cue, the current watch check and two-hand gestures, Fit to My Body, Show Gesture Names, Menus: Simple, Reset All, Reset Every Mod, and every "Plays well with" line |
 | **code only, not shown** (fixed 2026-11-10, commit d8c79eb2) | A code read found these; each is fixed in code and only load-checked (no error from this pack on doom2, brutal22test6, BD_VoxelPack, LOB 1.05, Champions, Gun Bonsai 0.10.6 and the series; BD22 VR was not in that load). None was exercised. **Rumble Backup** now also covers the watch-check tick (it goes through this pack's rumble route), and its text says what it covers: this pack's rumbles and the Saber's ready tick, not other mods'. **Gesture Ease** now applies to this pack's watch check, two-hand gestures and punches. **Sound Cues' "ready"** text says only the Saber's Force Grip sends it. **Menus: Simple** knows RSQ Monsters and RSQ Graveyards, so "Monster Diagnostics" is hidden. **Seated Play on Auto** uses only your own heights (no 1.62 m floor). **Reset All** keeps your Measure Standing Height. **Twist Off** is held at least 5 degrees under Twist On. **Measure Me** says "RSQ Accessibility". **Gesture names** follow Text Size |
 | **not yet run** | Nothing. The batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/PLAN.md`) has no check for this pack |
-| **Known open** (from reading the code) | **Rumble Backup** does not reach other mods' rumbles: each mod rumbles through its own copy of the route. RSQ Whip's Hold to Toggle code (its old hook keys) has no key to act on since the 11-10 keys pass |
+| **rig only, not headset-confirmed** (2026-11-10) | **Rumble Backup for every series mod**: on the rig (no rumble there; the log of the route is the evidence) RSQ SlowMo's slow-motion rumbles sent this pack's buzz the same tic on both controllers with Rumble Backup on and Quake Haptics 0, and none with Rumble Backup off or Quake Haptics 0.8; left-handed, the left controller is the main hand (design/rigtest_2026-11-10/evidence/RUMBLE_SM_*). The other mods' calls are the same helper: code only, load-checked |
+| **Known open** (from reading the code) | **Rumble Backup's buzz is a real (0.1-unit, harmless) player trace** on the machine whose player it is, so other mods' "a hitscan is starting" hooks see it there (RSQ Gun Bonsai VR's hitscan bracket, cleared each tic): single-player it is nothing, in a netgame it is the one part that is not the same on every machine. RSQ Whip's Hold to Toggle code (its old hook keys) has no key to act on since the 11-10 keys pass |
 
 Code comments say several things were measured on the rig (Handedness trading the two hands' poses, the brace
 latching with a fist, the watch-check wrist direction on 11-02, the hands drifting while walking on 11-03, the Hold to
@@ -481,7 +487,9 @@ scripts `Accessibility/tools/rigtest/qol.sh` and `sweep.sh` exist; their output 
   it has something to show.
 - **Rumble** is `A_QuakeEx` waves re-issued every tic on one controller (X the left, Y the right), scaled by
   QuestZDoom's Quake Haptics level and by Rumble Strength. Rumble Backup at Quake Haptics 0 sends a 0.1-unit trace that
-  touches nothing, which makes the engine buzz that hand once (150 ms).
+  touches nothing, which makes the engine buzz that hand once (150 ms) (`RSQA_Buzz.Backup`). Series mods reach it by
+  name: `RSQA_Service` `GetInt("buzz", prefix, playerNumber, 1 left / 0 right controller)` as a rumble starts (their
+  copy of `tools/a11y_template.zs`, `RumbleBackup`); only the machine whose player it is sends the buzz.
 - **Event handlers:** `RSQG_HandSync`, `RSQA_Handler` (buttons, vignette, cues, brace cue), `RSQA_QoL` (Steady Hands,
   Seated Play, knockback, wake cues), `RSQA_MenuMode` (Simple / Full), `RSQG_Handler` (the gesture reader).
 - **Radiant Silvergun Options:** this pack carries the series' shared menu pieces (`zscript/rsqa_rsmenu.zs`,

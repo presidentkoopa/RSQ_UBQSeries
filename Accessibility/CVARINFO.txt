@@ -29,10 +29,11 @@ server int   rsqa_hold_toggle  = 0;     // 0 Off, 1 On: held inputs toggle: this
 server int   rsqa_menus        = 0;     // 0 Full, 1 Simple: the series' option pages hide their niche sub-pages
 
 // ---- 2026-10-31 sweep (owner's picks 44, 45, 47). Off by default like the rest.
-server int   rsqa_rumble_backup = 0;    // 1: when QuestZDoom's Quake Haptics level is 0, the rumbles through this pack's
-                                        //   route (RSQA_Buzz: its own cues, the watch-check tick, the Saber's "ready" tick)
-                                        //   still come, as the engine's own 150 ms shot buzz on that controller. Other
-                                        //   mods rumble through their own route: not covered
+server int   rsqa_rumble_backup = 0;    // 1: when QuestZDoom's Quake Haptics level is 0, every series rumble still comes, as
+                                        //   the engine's own 150 ms shot buzz on that controller: this pack's own (RSQA_Buzz:
+                                        //   its cues, the watch-check tick, the Saber's "ready" tick) and, since 2026-11-10,
+                                        //   every series mod loaded with it (each asks RSQA_Service "buzz" as a rumble starts;
+                                        //   at most one buzz a controller every 5 tics for those). Their own rumble is unchanged
 server int   rsqa_brace_off    = 0;     // 1: QuestZDoom's Two Handed Weapons (vr_two_handed_weapons) is turned off, so the
                                         //   off-hand grip near the gun never latches the brace that kills the off-hand gun;
                                         //   0 puts back the player's own value (rsqa_brace_keep). Set from the menu row only.

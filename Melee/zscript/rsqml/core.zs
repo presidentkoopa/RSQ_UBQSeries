@@ -355,6 +355,7 @@ class RSQ_Buzz : Actor
 		if (bDestroyed) return;
 		if (!feels || leftTics <= 0) { Destroy(); return; }
 		SetOrigin(feels.pos, true);
+		if (leftTics == total) RSQML_A11y.RumbleBackup(feels, left);   // RSQ_Accessibility's Rumble Backup, at Quake Haptics 0 (a11y.zs)
 		double a = amp * leftTics / double(total) / 3.2;
 		leftTics--;
 		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);

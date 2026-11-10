@@ -336,6 +336,7 @@ class RSQDG_Feel : EventHandler
 		// RUMBLE STRENGTH (RSQ_Accessibility AC2, a11y.zs): both hands x0..2 (0 = none). 1 without it.
 		double rs = RSQDG_A11y.Rumble();
 		amp0 *= rs; amp1 *= rs;
+		bool rise0 = amp0 > 0.001 && lastAmp[0] <= 0.001, rise1 = amp1 > 0.001 && lastAmp[1] <= 0.001;
 		lastAmp[0] = amp0;
 		lastAmp[1] = amp1;
 		if (amp0 <= 0.001 && amp1 <= 0.001) return;   // the last quake dies next tic
@@ -351,6 +352,9 @@ class RSQDG_Feel : EventHandler
 		bool leftHanded = cs && cs.GetInt() >= 10;
 		double right = leftHanded ? amp1 : amp0;
 		double left  = leftHanded ? amp0 : amp1;
+		// RSQ_Accessibility's Rumble Backup (a11y.zs RumbleBackup): a hand's rumble rising from silence, at Quake Haptics 0
+		if (rise0) RSQDG_A11y.RumbleBackup(pmo, leftHanded);
+		if (rise1) RSQDG_A11y.RumbleBackup(pmo, !leftHanded);
 
 		rumbleSpot.A_QuakeEx(
 			clamp(left, 0.0, max(1.0, rs)) * AMP_TO_QUAKE,     // X -> left controller (cap 1, or Rumble Strength above it)

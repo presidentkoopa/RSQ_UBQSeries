@@ -15,6 +15,10 @@
 //                    GetInt("ready", "", playerNumber, hand) a lock / grab-ready cue on that hand:
 //                                                            a short rumble when Sound Cues has it
 //                                                            (only RSQ Saber's Force Grip asks, 11-10)
+//                    GetInt("buzz", source, playerNumber, left 1 / right 0)
+//                                                            RUMBLE BACKUP for a series mod's own rumble starting
+//                                                            on that controller (RSQA_Buzz.Backup): 1 if the
+//                                                            engine's shot buzz was sent for it (11-10)
 //   RSQA_MenuMode  Simple / Full: the series' front option pages without / with their sub-pages
 
 class RSQA_Set
@@ -54,6 +58,8 @@ class RSQA_Handler : EventHandler
 	// THE VIGNETTE: the strongest comfort request this tic (play), eased per tic for the local view.
 	transient double vigReq[MAXPLAYERS];
 	transient int    vigTic[MAXPLAYERS];
+	// RUMBLE BACKUP's pulse, this machine's controllers (0 the right, 1 the left): the tic the last one went
+	transient int    pulseAt[2];
 	transient double vig, vigLast;
 	ui bool vigShown;
 	ui bool vigSynced;   // the shader's on/off lasts the session, this handler doesn't: turn it off once on first draw
@@ -408,6 +414,14 @@ class RSQA_Service : Service
 			RSQA_Buzz.Start(players[intArg].mo, int(doubleArg) ? 1 : 0, 0.5, 3);
 			return 1;
 		}
+		// RUMBLE BACKUP FOR THE SERIES (owner 11-10: "Yes, all mods"). A series mod asks as one of its own rumbles
+		// starts (its copy of tools/a11y_template.zs, RumbleBackup), naming the controller its quake drives; its own
+		// rumble is played as before, whatever the answer.
+		if (request ~== "buzz")
+		{
+			if (intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return 0;
+			return RSQA_Buzz.Backup(players[intArg].mo, int(doubleArg) != 0, stringArg) ? 1 : 0;
+		}
 		return -1;
 	}
 }
@@ -417,7 +431,8 @@ class RSQA_Service : Service
 // hand is the engine's vr_control_scheme). The local player only. What comes through here: this pack's
 // own cues (off-view, wake, slow motion, brace, the modifier tick), the gesture reader's watch-check tick,
 // and the "ready" tick a mod asks for (RSQA_Service; only RSQ Saber's Force Grip asks). Every other
-// series rumble goes through that mod's own copy of the route, so Rumble Backup does not reach it.
+// series rumble is played by that mod's own copy of the route, and since 2026-11-10 each one also asks
+// RSQA_Service "buzz" as it starts, so Rumble Backup (Backup below) reaches every series mod loaded with this pack.
 class RSQA_Buzz : Actor
 {
 	Actor feels;
@@ -436,24 +451,47 @@ class RSQA_Buzz : Actor
 		double scale = RSQA_Set.Rumble();
 		if (scale <= 0) return;
 		strength *= scale;
-		// RUMBLE BACKUP (rsqa_rumble_backup, owner's pick 44; only what comes through here, see above). The quake route is scaled by QuestZDoom's
-		// vr_quake_haptic_level and silent at 0 (r_utility.cpp:1085). The engine buzzes the firing hand for any
-		// player hitscan with damage > 0, not gated on LAF_NOINTERACT (p_map.cpp:4764-4769; teardown 99_OVERLOOKED
-		// 1a, apply/07_WHEEL 7.3), and LAF_ISOFFHAND picks the off controller by vr_control_scheme. So at level 0 a
-		// 0.1-unit trace that touches nothing gives one 150 ms pulse at 0.8 on that hand: every pulse feels the same,
-		// but each one is felt again.
-		if (RSQA_Set.I('rsqa_rumble_backup') && RSQA_Set.F('vr_quake_haptic_level', 1.0) <= 0)
-		{
-			who.LineAttack(who.angle, 0.1, 0, 1, 'None', "RSQA_PulsePuff", LAF_NOINTERACT | (hand == 1 ? LAF_ISOFFHAND : 0));
-			return;
-		}
+		// RUMBLE BACKUP (rsqa_rumble_backup, owner's pick 44): at Quake Haptics 0 the pulse instead (Backup below)
+		bool left = (hand == 1) != RSQA_Hand.EngineLeft();
+		if (Backup(who, left, "RSQA", false)) return;
 		let q = RSQA_Buzz(Actor.Spawn("RSQA_Buzz", who.pos));
 		if (!q) return;
 		q.feels = who;
-		q.left = (hand == 1) != RSQA_Hand.EngineLeft();
+		q.left = left;
 		q.amp = clamp(strength, 0.05, 2.0);
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
+	}
+
+	// RUMBLE BACKUP (rsqa_rumble_backup, owner's pick 44; every series mod since 2026-11-10, owner: "Yes, all mods").
+	// The quake route is scaled by QuestZDoom's vr_quake_haptic_level and silent at 0 (r_utility.cpp:1085). The
+	// engine buzzes the firing hand for any player hitscan with damage > 0, not gated on LAF_NOINTERACT
+	// (p_map.cpp:4762-4769; teardown 99_OVERLOOKED 1a, apply/07_WHEEL 7.3), and LAF_ISOFFHAND picks the off
+	// controller by vr_control_scheme. So at level 0 a 0.1-unit trace that touches nothing gives one 150 ms pulse
+	// at 0.8 on that controller: every pulse feels the same, but each one is felt again. Returns true if it went.
+	//   left    the controller: the left one, as a QF_WAVE quake's X picks it (Y the right)
+	//   source  who asked (a mod's prefix), for the debug line
+	//   limit   a series mod's rumble: at most one pulse a controller every PULSE_GAP tics. 5 tics (143 ms) is
+	//           the engine's 150 ms pulse: the runtime drops a buzz sent while one is playing (RSQ Wheel's
+	//           wr_VR.VRHaptic, PULSE_MS 150; RSQ DistanceGrab's BUSY_MS 165), so nothing felt is lost.
+	// The only machine that acts is the one whose player it is: the engine buzzes this machine's controllers
+	// for ANY player's hitscan (p_map.cpp:4762, no consoleplayer test). The trace is LAF_NORANDOMPUFFZ so it
+	// draws no random number (P_SpawnPuff, p_mobj.cpp:6321): what every machine shares stays the same.
+	const PULSE_GAP = 5;
+	static bool Backup(Actor who, bool left, String source = "", bool limit = true)
+	{
+		if (!who || !who.player || who.player != players[consoleplayer]) return false;
+		if (!RSQA_Set.I('rsqa_rumble_backup') || RSQA_Set.F('vr_quake_haptic_level', 1.0) > 0) return false;
+		if (RSQA_Set.Rumble() <= 0) return false;   // Rumble Strength 0 is no rumble at all
+		let h = RSQA_Handler.Get();
+		int c = left ? 1 : 0;
+		if (limit && h && h.pulseAt[c] > 0 && level.maptime >= h.pulseAt[c] && level.maptime - h.pulseAt[c] < PULSE_GAP) return false;
+		bool off = left != RSQA_Hand.EngineLeft();
+		who.LineAttack(who.angle, 0.1, 0, 1, 'None', "RSQA_PulsePuff", LAF_NOINTERACT | LAF_NORANDOMPUFFZ | (off ? LAF_ISOFFHAND : 0));
+		if (h) h.pulseAt[c] = level.maptime;
+		if (RSQA_Set.I('rsqa_debug'))
+			Console.Printf("RSQA_BACKUP t%d %s %s controller (%s hand)", level.maptime, source == "" ? "?" : source, left ? "left" : "right", off ? "off" : "main");
+		return true;
 	}
 
 	override void Tick()
