@@ -135,3 +135,14 @@ Format: mod, what to show, still or GIF, notes. Captures are labelled in the REA
 | Saber | A scorch trail | still | |
 | Saber | The sabers at the hip without the Tactical Rig; the Tactical Rig holster draw and put-away | still | |
 | Saber | All eight colours and five lengths side by side | still | |
+| ShieldSaw | HERO: three rings painted, a throw that cuts through two imps and grinds a third, then the catch | GIF | |
+| ShieldSaw | The shield flat on the back in Tactical Rig's mirror, and the reach to draw it | GIF | |
+| ShieldSaw | The held shield in a headset view, closed and with the blades out | still | |
+| ShieldSaw | A fireball glancing off the plate, then a perfect block sending one back faster | GIF | |
+| ShieldSaw | A zombieman's bullet stopped and returned | GIF | |
+| ShieldSaw | The saber braced across the shield | still | |
+| ShieldSaw | A bash that slams an imp into a wall (current build) | GIF | |
+| ShieldSaw | The blades deploying and grinding a pinky, with blood | GIF | |
+| ShieldSaw | Three rings painting one by one as the hand sweeps | GIF | |
+| ShieldSaw | The disc cutting an imp in two, sticking in a cacodemon, glancing off a baron | GIF | |
+| ShieldSaw | A wall bounce, the return along its path, and the catch | GIF | |
