@@ -43,7 +43,20 @@ your revenge.
 **How long it lasts.** With Adrenaline off (the default) your held slow motion lets go by itself after **Slow Motion
 Length** (6 real seconds); pressing again ends it sooner. A crisis dive lasts until you land, 6 seconds at most.
 
-**Nothing to bind?** The keys have no default binding. The wrist cross works without one.
+### Controls
+
+**Two keys**, both unbound by default, on this mod's page (top: **Slow Motion Key**, **Crisis Dive Key**) and in
+Customize Controls, section **RSQ SlowMo** (listed as "Slow motion on/off" and "Crisis Dive").
+
+- **Slow Motion Key:** slow motion on, and off again.
+- **Crisis Dive Key:** the sideways leap, while standing; the stick picks the way.
+- **Gesture:** cross your wrists in front of your face and hold them a moment: the same as the Slow Motion Key (a burst
+  with **Wrist Cross Bursts** on). It needs no key.
+- **Lean** your head out of a round's path to dodge it.
+- RSQ Accessibility's **Wrist Cross** button does the gesture for a one-handed or seated player.
+
+Changed on 2026-11-10: the **Shootdodge** key is now **Crisis Dive** (the same move and the same command, so a key you
+had bound stays bound).
 
 **Also in slow motion:** your own walking, jumping and falling slow with the world (**Slow Me Too**; never your head or
 hands). The nearest monsters walk smoothly instead of stepping in jumps (**Smooth Walkers**). Your shots leave a fading
@@ -154,7 +167,7 @@ It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** 
 
 ## Be Quick or Be Dead (DOWN)
 
-Its name on the menu and the panel is **Be Quick or Be Dead** (code only, not shown yet), with the Q, the K and both D's of DEAD breathing in
+Its name on the menu and the panel is **Be Quick or Be Dead** (the plate: rig only, not headset-confirmed), with the Q, the K and both D's of DEAD breathing in
 size (still in Photosensitive Mode); this page calls it DOWN for short. Off by default. Turn it on and the killing blow from a monster holds you at 1 HP instead. A fall, a crusher, your
 own shot, a barrel nobody set off or a hazard still kills you as normal.
 
@@ -296,9 +309,11 @@ Bullets is greyed until you learn Lean Dodge.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, frames and logs) | DOWN from start to finish: a monster's killing hit held at 1 HP, the world to 5%, the slow fall to 40% view height, the crawl, targets (the killer swapped for a real Champions copy, extra copies spawned in view), the grey world with its blood-red tint and the target's small room in colour, DarkDoomZ to DarkDoom Black and back, the panel's Middle Then Sink entrance and the chevron trail (both in their earlier form: see below), hits buying time, the bar refilling on a kill with targets left, getting up on the top, middle and bottom tiers with their slow motion, Score's Revenge and Revival Fire, a save and load mid-DOWN, and a map change mid-DOWN letting the grey world and DarkDoomZ go (log; the next map not seen) (the kills were made by the test probe). The Reload trigger on the main hand, the off hand and both hands, with Fixed Time and Until the Reload Ends, the world easing to a quarter speed and back (log) |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **Be Quick or Be Dead:** the name over the panel in the middle, sinking, and the breathing letters (two frames differ in the D's and the K; `evidence/S5_*`). **The miniboss landing:** the countdown's line reads MINIBOSS INCOMING (`evidence/L1_log.txt`) |
+| **rig only, not headset-confirmed** (2026-11-09, frames and logs) | DOWN from start to finish: a monster's killing hit held at 1 HP, the world to 5%, the slow fall to 40% view height, the crawl, targets (the killer swapped for a real Champions copy, extra copies spawned in view), the grey world with its blood-red tint and the target's small room in colour, DarkDoomZ to DarkDoom Black and back, the panel's Middle Then Sink entrance and the chevron trail (both in their earlier form: see below), hits buying time, the bar refilling on a kill with targets left, getting up on the top, middle and bottom tiers with their slow motion, Score's Revenge and Revival Fire, a save and load mid-DOWN, and a map change mid-DOWN letting the grey world and DarkDoomZ go (log; the next map not seen) (the kills were made by the test probe). The Reload trigger on the main hand, the off hand and both hands, with Fixed Time and Until the Reload Ends, the world easing to a quarter speed and back (log) |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | The three fixes made after the rig run: Entrance Size (the rig showed one fixed size whatever the setting), the chevrons in the target's colour while the world is grey (the rig showed them white), and Fog Colour. Everything else on this page: the key, the wrist cross, the burst, the crisis dive, Slow Me Too, the dodgeable rounds and leaning out of them, Smooth Walkers, Colour Drain, the adrenaline meter, how the two bars look, every other trigger, Heavy Hit Slowdown, the edge arrows, the crosshairs assembling, and DOWN's sounds and music |
+| **code only, not shown** | The 11-10 changes: the Shootdodge key renamed Crisis Dive, the Quick Grenade and Training Remote triggers, the slow motion and its bar ending with a miniboss window, the Fog Tint Strength row (was Blood Red Tint). The three fixes made after the 11-09 run: Entrance Size (the rig showed one fixed size whatever the setting), the chevrons in the target's colour while the world is grey (the rig showed them white), and Fog Colour. Everything else on this page: the keys, the wrist cross, the burst, the crisis dive, Slow Me Too, the dodgeable rounds and leaning out of them, Smooth Walkers, Colour Drain, the adrenaline meter, how the two bars look, every other trigger, Heavy Hit Slowdown, the edge arrows, the crosshairs assembling, and DOWN's sounds and music |
+| **not yet run** | The rest of the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): S1 a miniboss window broken early ending the slow and the bar, S3 the fog off part of P14, S4 the Training Remote trigger (0.3 s on a deflect, 1.5 s when it goes down), and S5's menu header and its Photosensitive Mode (still letters). S2 (the Fog Tint Strength row) is not reported yet |
 
 ---
 

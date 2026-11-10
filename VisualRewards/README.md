@@ -49,6 +49,12 @@ There is nothing to hold: load it and play.
 
 Everything is on one options page, **RSQ VisualRewards**, and every part can be switched off on its own.
 
+### Controls
+
+**No keys**, and no buttons to press in play. It draws what the game is doing.
+
+- **Menu buttons:** only **Reset All**, at the foot of its page.
+
 ---
 
 ## HP bars
@@ -296,10 +302,12 @@ rows are each player's own.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, 19:04 run) | The four arrival beams on the rig's full series load order (doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded, then the series): each called on a monster with its own sound starting on the beam's first tic (V1 1.16 s, V2 1.26 s, V3 1.00 s, V4 2.78 s) and the monster revealed on tic 7, 12, 19 and 31; frames of V1, V3 outdoors and V4 (above). In the same run: the DOWN tie-ins logged ("+1.5s" and "+0.5s", REVENGE, REVIVE at the middle and top tier sizes), HP bars drawn over monsters in the frames, and no script error from this pack. That build was the one before the evening's changes (scene music rewritten for DOWN, DOWN's track, the Kill Rewards banked-bit fix); those are code only |
-| **Shown on the rig, earlier builds** (committed by 2026-11-05) | HP bar colour sets and markers, damage-number jets, totals, combo, kill and overkill, headshots, the level-up band, the weapon tag, gains flying to the wrist, Kill Rewards after its move into this pack (frames and logs in test/evidence). The code has changed since; they are not proof of the current build |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f, ColorfulHell and Champions) had no script error from our packs. **The HP bar's icons:** the tier gem and the Champion power icon left of the bar; **Tier Gem and Champion Icons** off, ours go and Champions' own icon is back; on again. Champion frames logged against their tokens: all 9 colours seen match (`evidence/V3_hpbar_icons_on_off_on.jpg`, `L2_log.txt`). The Tier Gem and Champion Icons row, On (`evidence/menus_new_rows.jpg`) |
+| **rig only, not headset-confirmed** (2026-11-09, 19:04 run) | The four arrival beams on the rig's full series load order (doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded, then the series): each called on a monster with its own sound starting on the beam's first tic (V1 1.16 s, V2 1.26 s, V3 1.00 s, V4 2.78 s) and the monster revealed on tic 7, 12, 19 and 31; frames of V1, V3 outdoors and V4 (above). In the same run: the DOWN tie-ins logged ("+1.5s" and "+0.5s", REVENGE, REVIVE at the middle and top tier sizes), HP bars drawn over monsters in the frames, and no script error from this pack. That build was the one before the evening's changes (scene music rewritten for DOWN, DOWN's track, the Kill Rewards banked-bit fix); those are code only |
+| **rig only, not headset-confirmed** (earlier builds) (committed by 2026-11-05) | HP bar colour sets and markers, damage-number jets, totals, combo, kill and overkill, headshots, the level-up band, the weapon tag, gains flying to the wrist, Kill Rewards after its move into this pack (frames and logs in test/evidence). The code has changed since; they are not proof of the current build |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Monster words and pops; V2's frames and V3 indoors; the scene music (miniboss fight and DOWN); battery bits; bits banking into the DOWN plate; Photosensitive Mode's versions of everything; netplay; everything else on this page not listed above |
+| **code only, not shown** | The 11-10 changes: the scene music stopping at a map change, the music volume set only while it fades, no extra multiplier for a miniboss fight, the Miniboss naming. The icons on the right of the bar when markers are on the left, and the mutation icon. Monster words and pops; V2's frames and V3 indoors; the scene music (miniboss fight and DOWN); battery bits; bits banking into the DOWN plate; Photosensitive Mode's versions of everything; netplay; everything else on this page not listed above |
+| **not yet run** | V1 and V2 of the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): the miniboss music stopping at a map change, and the volume set only while fading (logs) |
 
 ---
 

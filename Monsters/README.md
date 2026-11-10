@@ -26,6 +26,13 @@ Brutal Doom's own monsters getting the colour ladder is planned, not built.
 
 ## How it plays
 
+### Controls
+
+**No keys.** Nothing to hold or press: the monsters change as they spawn and as fights change their tier.
+
+- **Menu buttons:** the **Monster Diagnostics** page (a row on this mod's page) has God Mode and the test spawns; see
+  *Status* for what answers them.
+
 ### Which monsters a map gets
 
 **Select Monster Set** decides what each Doom monster in a map becomes as it spawns. A change takes hold on the next
@@ -189,12 +196,16 @@ Defaults are in bold.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, the TestRig miniboss-fight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss fight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red). This was a log: the flash itself was not looked at in frames |
-| **Shown on the rig** (2026-11-09, RSQ Score's head-shot frames and log) | A ColorfulHell imp judged head against chest |
-| **Not yet re-run** | Nothing above has been run again since MeatGrinder was removed on 2026-11-10 |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **The floating tier gems** (`rs_ch_colorblind`, set from the console in that run): drawn over the monsters (they drew nothing before 11-10: no art), busy with the colour-blind aid on (`evidence/V3_hpbar_icons_on_off_on.jpg`). ColorfulHell was the Monster Set in the miniboss runs (`evidence/L1_log.txt`, `L2_log.txt`) |
+| **rig only, not headset-confirmed** (2026-11-09, the TestRig miniboss-fight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss fight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red). This was a log: the flash itself was not looked at in frames |
+| **rig only, not headset-confirmed** (2026-11-09, RSQ Score's head-shot frames and log) | A ColorfulHell imp judged head against chest |
 | **Headset-confirmed** | Nothing yet |
-| **Known not to work** (from reading the code) | The **Monster Diagnostics** page: only God Mode works. The chaingunner spawns, Spawn All, Remove, DIAG and WAKE send commands nothing in the pk3 answers, and Spawn hostile changes nothing. (Until 11-10 the tier icons drew nothing: their pictures were missing. They are the series' tier gems now, code only.) |
-| **Code only, not yet shown** | Everything else on this page: the look of the flash, On tier change, the Vanilla and BD22 sets, Brutal Doom's load order, Colourful Hell's extra colours, bosses and EX forms, its fireball swaps, old saved settings reading as ColorfulHell |
+| **Known not to work** (from reading the code) | The **Monster Diagnostics** page: only God Mode works. The chaingunner spawns, Spawn All, Remove, DIAG and WAKE send commands nothing in the pk3 answers, and Spawn hostile changes nothing. |
+| **code only, not shown** | MeatGrinder removed (11-10), and a saved MeatGrinder pick reading as ColorfulHell. Everything else on this page: the look of the flash, On tier change, the Vanilla and BD22 sets, Brutal Doom's load order, Colourful Hell's extra colours, bosses and EX forms, its fireball swaps, old saved settings reading as ColorfulHell |
+| **not yet run** | R1 of the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): a Monster Set saved as 2 reading as ColorfulHell, and a retier. The 11-09 tier-change log has not been run again since MeatGrinder was removed |
+
+Tier Icons Above Monsters has no row on the RSQ Monsters page: the row is only on RS Monsters' old pages, which have no
+entry since 11-09. It is set with `rs_ch_colorblind 1` for now.
 
 ---
 

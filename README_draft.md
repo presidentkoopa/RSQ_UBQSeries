@@ -134,21 +134,40 @@ Each mod's own README has its full "Plays well with" list.
 
 ## Keys
 
-Most of the series has no keys: you do it with your hands. Keys as they are in the code today (the owner's keys plan of
-2026-11-10, `design/KEYBINDS_PLAN.md`):
+Keybinds are a precious resource in VR (the owner, 2026-11-10). Most of the series has no keys: you do it with your
+hands, the trigger and alt fire, and anything that can be switched on or off is a row on the mod's page, not a key.
+Keys as they are in the code after the keys pass of 2026-11-10 (`design/KEYBINDS_PLAN.md`):
 
-**Grenade:** Quick Grenade · **SlowMo:** Slow Motion, Crisis Dive · **Grapple:** Fire Hook (which hand fires is a
-menu option, Off Hand by default) · **Wheel:** Open Wheel (left thumbstick click by default) · **ShieldSaw:** Draw /
-Put Back · **Tactical Rig:** Recenter Torso · **Distance Grab:** Main Hand Key and Off Hand Key, used only with its
-Grab Keys option on (off by default) · **Graveyards:** Remove Gravestones on This Map, Remove All Gravestones ·
-**Accessibility:** nine buttons that stand in for gestures (Off-Hand Modifier, Grab Pull, Grab Reach, Force Push, Force
-Pull, Force Grip, Shield Throw, Flick Reload, Wrist Cross) · **Gun Bonsai VR:** Gun Bonsai's own key · everything
-else: none.
+| Mod | Keys | Menu buttons and gestures that replaced keys |
+|---|---|---|
+| Tactical Rig | Recenter Torso | the grip holsters, both hands (no holster keys); both hands to your chest recenters too |
+| Accessibility | nine buttons that stand in for gestures: Off-Hand Modifier, Grab Pull, Grab Reach, Force Push, Force Pull, Force Grip, Shield Throw, Flick Reload, Wrist Cross | |
+| Saber | none | Training Remote: Summon / Send Away is a menu button (saber only); the off-hand saber's second blade lights by twisting the wrist |
+| ShieldSaw | Draw / Put Back (also calls a thrown shield home) | lock-on is holding the off trigger; the throw is the swing; recenter is Tactical Rig's key or hands to chest |
+| Melee | none | |
+| Whip | none | attack and alt attack; the rope is climbed with Distance Grab's grab keys |
+| Grenade | Quick Grenade | |
+| FnF | none | |
+| Grapple | Fire Hook (one key; which hand fires is the Fire Hook From row, Off Hand by default) | grabbing the rope is the grip |
+| Distance Grab | Grab / pull, main hand and off hand: unbound, read only with its Grab Keys row on (off by default); RSQ Grapple's and RSQ Whip's ropes are taken through them | |
+| Laser Sight | none | |
+| SlowMo | Slow motion on/off, Crisis Dive (Shootdodge renamed) | the wrist cross |
+| Score | none | |
+| Miniboss | none | |
+| VisualRewards | none | |
+| Gun Cards | none | |
+| Wheel | Open Wheel (hold, point, release; left thumbstick click by default) | |
+| Glow In The Dark | none | Randomize Colours Now is a menu button |
+| Gun Bonsai VR | Gun Bonsai's own key | |
+| Monsters | none | |
+| Graveyards | none | Remove Gravestones on This Map and Remove All Gravestones are menu buttons |
 
-The Saber's Training Remote and Glow In The Dark's Randomize Colours Now are buttons on their menu pages, not keys.
-Every key is on its mod's page and in Customize Controls.
+Every key is on its mod's page and in Customize Controls. No RSQ key has a default binding except the Wheel's. Each
+mod's README has a Controls section: its keys, which hand and button does what, its gestures and its menu buttons.
 
-Status: the keys pass went in on 2026-11-10. It was load-checked; it has not been run on the rig yet. Code only.
+Status: the keys pass is code only, not shown, in the keys themselves. The 11-10 rig runs drove a few of them by their
+commands (the ShieldSaw's `ssq_draw`, the Saber remote's `netevent ubqs_remote`) and showed the ShieldSaw's trigger-hold
+lock, rig only, not headset-confirmed. The Quick Grenade key was shown on the rig after a fix (ae089395).
 
 ---
 
@@ -179,51 +198,50 @@ Options had one, and the menu held all 21 rows (log `design/rigtest_2026-11-09/l
 
 ## Status
 
-Taken from each mod's README. "Shown on the rig" means frames or a log from the Linux QuestZDoom 17.3 rig with a
-simulated headset and controllers: rig only, not headset-confirmed. "Code only" means written, never shown.
+Taken from each mod's README and the batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/RESULTS.md`, its
+`evidence/` and `PLAN.md`). Three labels: **rig only, not headset-confirmed** (frames or a log from the Linux
+QuestZDoom 17.3 rig, a simulated headset and controllers); **code only, not shown** (built, never shown); **not yet
+run** (waiting in the batched rig test). Nothing is headset-confirmed unless the repo records the owner saying so.
 
-| Mod | Shown on the rig | Code only | Headset |
-|---|---|---|---|
-| Tactical Rig | 2026-11-09: the ammo pouch, refusals at a holster, a shotgun assigned to a holster, the grip hint | everything else | **Cigarettes** (the owner, 2026-11-09: "Cigarette works") |
-| Accessibility | "New since the headset pass": rig only (the README.md status line) | not split out | README.md: 0.99 played and confirmed in the headset (see the note below) |
-| Saber | 2026-11-09: loads with no script error; saber in the main hand, Force hand in the off hand. 2026-11-03 (earlier build): Force Only With Saber, the Force hand, Hand on the Hilt | cutting, blocking, deflecting, the throw, the Force, the training remote and the 2026-11-10 changes | nothing yet |
-| ShieldSaw | 2026-11-09: loads; the Draw key puts the shield in the off hand. 2026-11-03 (earlier build): the stowed shield follows the body | the block, the bash, the rev, the throw and the catch | nothing |
-| Melee | 2026-11-09: loads, page listed. No move exercised | everything else | nothing yet |
-| Whip | "New since the headset pass": rig only (the README.md status line) | not split out | README.md: 0.99 played and confirmed in the headset (see the note below) |
-| Grenade | 2026-11-09: throwing with the trigger, with alt fire, cook-then-throw | everything else | nothing yet |
-| FnF | 2026-11-09: the flashlight taken into the off hand and switched off and on; the Beam Look lights | the grip, strike and throw of the flare; everything else | nothing yet |
-| Grapple | "New on 11-06": rig only (the README.md status line) | not split out | README.md: 0.99 played and confirmed in the headset (see the note below) |
-| Distance Grab | 2026-11-09: loads, page listed. 2026-11-03 (earlier build): a clip locked at range | the pull, catch, carry, throw and everything else | nothing yet |
-| Laser Sight | 2026-11-09, current build: the beam staying on between shots (pistol, pump shotgun), the rifle's beam | the dot, targets, the grenade arc, colours, everything else | nothing yet |
-| SlowMo | 2026-11-09: DOWN from start to finish; the Reload trigger | the key, the wrist cross, the Crisis Dive, the dodgeable rounds, three later fixes | nothing yet |
-| Score | 2026-11-09: the head-shot check and its row; the Revival Fire; Revenge from DOWN | every other bonus row, combos, the target, lives | nothing yet |
-| Miniboss | 2026-11-09: the reworked fight, called in, with RSQ Monsters (thralls on beams, the shield, the window, tier-ups, lives). 2026-11-05: the meter and the call-in | the fight's HUD bars, GUARD! / TARGET!, Graves Rise and more | nothing yet |
-| VisualRewards | 2026-11-09: the four arrival beams with their sounds; DOWN's pops; HP bars in frames | monster words and pops, the scene music, Photosensitive Mode's versions | nothing yet |
-| Gun Cards | "New on 11-06": rig only; per-gun card spots boot clean, not rig-tested (the README.md status line) | not split out | README.md: 0.99 played and confirmed in the headset (see the note below) |
-| Wheel | 2026-11-09: loads, page listed. The ring was not exercised | everything else | nothing yet |
-| Glow In The Dark | 2026-11-09 (the 18:49 build, not the current one): the built-in DarkDoomZ darkening MAP01 and switching live | the glow, the liquids, profiles, the reactions, the 11-09 evening changes | nothing yet |
-| Gun Bonsai VR | "New on 11-06": HUD Colour Cycle per hand, rig only (the README.md status line) | not split out | README.md: 0.99 played and confirmed in the headset (see the note below) |
-| Graveyards | its Readme has no Status section; it marks the RSQ Edition's additions (the gold stone, the Bones, Graves Rise) "rig only, not headset-confirmed". It says 31 stones raised 31 undead on the rig; the log of that run (`SlowMo/tools/rigtest/build/logs/v3c.log`) ends with risers still trying again ("did not fit"), so that number is not shown | not split out | nothing recorded |
-| Monsters | 2026-11-09: ColorfulHell spawns; a missed miniboss window turning eleven monsters Common to Purple (a log; the flash not looked at). Not re-run since MeatGrinder was removed on 11-10 | the flash's look, the Vanilla and BD22 sets, bosses and EX forms | nothing yet |
+Every launch of the 11-10 rig test, on the owner's order with BD22 VR Reloaded 2.0.4f, had no script error from our
+packs.
+
+| Mod | Status |
+|---|---|
+| Tactical Rig | rig only, not headset-confirmed: the ammo pouch, holster refusals, an assignment, the grip hint (11-09). Headset-confirmed: cigarettes (the owner, 11-09: "Cigarette works"; recorded only in its README). code only, not shown: the rig clutter fixes, the cigarette pocket rules, everything else. not yet run: T1 |
+| Accessibility | rig only, not headset-confirmed: loads clean (11-10); the gesture reader on an older build (10-31). code only, not shown: everything else, and the 11-10 code-read fixes. No check in the rig test |
+| Saber | rig only, not headset-confirmed: the training remote as a saber game, its wrist panel and 30-second round, one throw (2.06 m/s no, 3.09 m/s yes) (11-10). code only, not shown: the wrist twist (the rig cannot pass a controller's roll), cutting, blocking, the Force and the rest. not yet run: A1 to A3 |
+| ShieldSaw | rig only, not headset-confirmed: the trigger-hold lock (11-10); the Draw key putting the shield in the off hand (11-09). code only, not shown: the throw threshold, the block, the bash, the rev, the throw and the catch. not yet run: H1 to H3 |
+| Melee | rig only, not headset-confirmed: loads clean. code only, not shown: every move. not yet run: M1 to M9 |
+| Whip | rig only, not headset-confirmed: loads clean (11-09, 11-10); the mark, the locked crack and the aim ray on an earlier build (11-03). code only, not shown: the 11-10 fixes (09243dd8), the swing, the lasso, the yank and the rest. No check in the rig test |
+| Grenade | rig only, not headset-confirmed: Quick Grenade on BD22's Toss Grenade and on its key, after a fix (11-10); trigger, alt fire and cook-then-throw (11-09). code only, not shown: the barrels and the rest. not yet run: G2 |
+| FnF | rig only, not headset-confirmed: the flashlight into the off hand, off and on; the Beam Look lights (11-09). code only, not shown: the flare's grip, strike and throw, everything else. No check in the rig test |
+| Grapple | **Waiting on Grapple 2.0.** rig only, not headset-confirmed: older builds (10-27 to 11-03) and clean loads. code only, not shown: the one Fire Hook key and everything about the current build. No check in the rig test |
+| Distance Grab | rig only, not headset-confirmed: loads clean; a clip locked at range (11-03, earlier build). code only, not shown: the pull, catch, carry, throw and the rest. not yet run: D3 (and D1, D2 with no result) |
+| Laser Sight | rig only, not headset-confirmed: the beam on between shots, through a BD22 VR hand reload and gone during a switch (11-10); its page rows. Beam Sparkle not shown. code only, not shown: the dot, targets, the grenade arc and the rest. not yet run: L2 to L5 |
+| SlowMo | rig only, not headset-confirmed: Be Quick or Be Dead's plate and breathing letters, MINIBOSS INCOMING (11-10); DOWN from start to finish and the Reload trigger (11-09). code only, not shown: the keys, the wrist cross, the Crisis Dive, the dodgeable rounds, the 11-10 changes. not yet run: S1, S3, S4 |
+| Score | rig only, not headset-confirmed: one Miniboss row at 3x, a Champion row with its icon, the wrist digits stepping aside (11-10); the head-shot check, the Revival Fire, Revenge (11-09). code only, not shown: the other rows, combos, the target, lives. not yet run: R2 |
+| Miniboss | rig only, not headset-confirmed: the rename, the bar stack, GUARD! and TARGET! (11-10); the reworked fight (11-09); the meter and the call-in (11-05). code only, not shown: the pops, Graves Rise and more. not yet run: B1 to B6 |
+| VisualRewards | rig only, not headset-confirmed: the tier gem and Champion icons beside the HP bar, on, off and on (11-10); the four arrival beams, DOWN's pops, HP bars (11-09). code only, not shown: monster words and pops, the scene music, Photosensitive Mode's versions. not yet run: V1, V2 |
+| Gun Cards | rig only, not headset-confirmed: loads clean (11-10); count colours, RELOAD and the ammo colours on earlier builds (10-31 to 11-05). code only, not shown: the 11-10 fixes and item cards, the watch-check reader and the rest. No check in the rig test |
+| Wheel | rig only, not headset-confirmed: loads clean, its page listed (11-09, 11-10). code only, not shown: the ring itself, the one Open Wheel key. No check in the rig test |
+| Glow In The Dark | rig only, not headset-confirmed: the built-in DarkDoomZ darkening MAP01 and switching live (11-09). code only, not shown: the glow, the liquids, the reactions, Randomize Colours Now as a button. No check in the rig test |
+| Gun Bonsai VR | rig only, not headset-confirmed: loads clean, both hands' gauges drawn (11-10); the Kill Rewards path (11-03, earlier build). code only, not shown: every tree's moves, the status screen, the 11-10 code-read fixes. No check in the rig test yet |
+| Monsters | rig only, not headset-confirmed: the floating tier gems (11-10); a missed miniboss window tiering eleven monsters up (11-09, before MeatGrinder was removed). code only, not shown: the flash's look, the Vanilla and BD22 sets, bosses. not yet run: R1 |
+| Graveyards | rig only, not headset-confirmed: the Bones Bridge, a gold stone from a spent Score life (11-06); loads clean (11-09, 11-10). Graves Rise's "31 raised 31" not shown (the log ends with risers still retrying). code only, not shown: m8f's base in this edition, the 11-10 fixes. not yet run: netgames |
 
 **Known not to work** (from reading the code and the built pk3s):
 
-- RSQ Monsters' **Monster Diagnostics** page: only God Mode works (its README).
-- The **Fire Hook** key in the RSQ_Grapple.pk3 now in pk3/: `tools/build_all.py` leaves Grapple's KEYCONF.txt out, so
-  the key's command does not exist in that pk3 (the pk3 holds no KEYCONF).
-- The same tool leaves the Whip's KEYCONF.txt out of RSQ_Whip.pk3, so the whip is not added to weapon slot 1.
+- RSQ Monsters' **Monster Diagnostics** page: only God Mode works (its README). Its **Tier Icons Above Monsters** row is
+  on no page you can open.
+- Climbing RSQ Grapple's or RSQ Whip's rope needs RSQ Distance Grab's grab keys, which have no default binding.
+- (Fixed 11-10, commit 09243dd8: `tools/build_all.py` left Grapple's and the Whip's KEYCONF.txt out of their pk3s, so the
+  Fire Hook key did not exist and the whip was not in slot 1. Both now pack; not shown on the rig since.)
 
-**About "0.99 played and confirmed in the headset."** Five READMEs (Accessibility, Grapple, Gun Cards, Whip, Gun Bonsai
-VR) still carry this line. The only record of it in the repo is one note in `BUGS_0.99a.md` (item 46: "owner confirmed
+**About "0.99 played and confirmed in the headset."** Older READMEs carried this line (Gun Bonsai VR's installed
+README.md still does). The only record of it in the repo is one note in `BUGS_0.99a.md` (item 46: "owner confirmed
 every mod in the headset 11-03"). It does not say which parts. Everything changed since 2026-11-03 is rig only or code
 only.
-
-**Since these READMEs were written:** the 2026-11-10 rig test (`design/rigtest_2026-11-10/RESULTS.md`, BD22 VR 2.0.4f)
-showed the Miniboss rename (MINIBOSS INCOMING; the called-in kill paying Score's Miniboss row at 3x), GUARD! and
-TARGET! over the miniboss, the tier gem and Champion icons beside the HP bar (VisualRewards) and on Score's Champion
-rows, the floating tier gems, the Saber's training remote (only with a saber, its wrist panel and 30-second round),
-and SlowMo's Be Quick or Be Dead plate. Rig only, not headset-confirmed. Every launch had no script error from the
-series.
 
 ---
 
@@ -231,14 +249,26 @@ series.
 
 The owner's planned projects (`design/PLANNED_PROJECTS.md`). None of these is in the pk3s.
 
-- **The Arcade:** arcade words and numbers in the world, contextual challenges, time attack. Design only.
-- **Grapple 2.0:** jpalomo's hookshot rebuilt in ZScript, the weight rule both ways, air steering.
-- **Gun Bonsai VR's Big Pass:** many more features per weapon, gated behind weapon and player levels. Part of it:
-  close-call slow motion, condition and gold bits, weapon wear, and maybe the whip in one hand with a pistol in the
-  other.
-- **RSQ Score's Big Pass:** not yet scoped.
-- **Monster Assembly:** the RSQ Monsters rebuild: new menus, Brutal Doom's own monsters on the colour ladder, real
-  bosses and a boss bar beside the Miniboss meter.
+**The Big Four** (named 2026-11-09):
+
+- **RSQ Score's Big Pass:** its pruning, the names too. Not yet scoped.
+- **Gun Bonsai VR's Big Pass:** its pruning, and many more features per weapon, gated behind weapon and player levels
+  with branching paths. Part of it: close-call slow motion, condition and gold bits, weapon wear.
+- **Monster Assembly:** the RSQ Monsters rebuild: menus redone, Monster Diagnostics written up, Brutal Doom's own
+  monsters on the colour ladder, the tier icons back. The bosses live here: a **Boss** is a real boss, the EX-tier
+  monsters and their fights (none exist yet), and the **boss bar** is built with them, a second bar beside the Miniboss
+  meter. (A **Miniboss** is RSQ Miniboss's.)
+- **The Arcade:** arcade words and numbers in the world, contextual challenges, a conductor, bits as jackpot, time
+  attack. Design only.
+
+**Also planned:**
+
+- **Grapple 2.0:** jpalomo's hookshot rebuilt in ZScript, the weight rule both ways, air steering. RSQ Grapple waits on
+  it.
+- **The Whip's Rope perks:** Fast Reel, Steady Line and Slingshot as Gun Bonsai VR nodes on the whip tree, from the
+  Whip's unused code.
+- **The bind whip, "Indiana Jones":** the whip in one hand and a pistol in the other, the whip hand's own ray as the
+  snag cursor while its trigger is up. Built from the Whip's unused bind-whip code, with the Rope perks.
 - **Wheel support for other weapon mods:** parked for now (only LegenDoom is read).
 - **Lasers for a non-BD weapon set.**
 - **Netplay:** parked until QuestZDoom has netplay.

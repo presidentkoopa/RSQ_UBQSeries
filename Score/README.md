@@ -42,7 +42,13 @@ brings you back in a ring of fire.
 | Take a hit that would kill you, with a life held | You stop at 1 HP, a life is spent: full health, a blast round you, a column of fire, and a moment of no damage |
 | Look at your off-hand wrist (turn on **Score on the Wrist**) | Your score in small gold digits above the controller |
 
-**Nothing to bind.** Score has no keys. It works on any monster set, alone or with any mix of the series.
+### Controls
+
+**No keys**, and nothing to bind. Score watches what you do. It works on any monster set, alone or with any mix of the
+series.
+
+- **Gesture:** look at your off-hand wrist for the score on the wrist (with **Score on the Wrist** on).
+- **Menu buttons:** only **Reset All**, at the foot of its page.
 
 **A new map starts from zero by default:** the score, the bar and the lives you held. **New Map Keeps** lets you keep
 the total, the total and the lives, or everything.
@@ -913,9 +919,11 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, logs and frames) | The head-shot check, with the Headshot row paying on head kills and not on chest kills: Brutal Doom zombies and imps (head and chest), a Brutal Doom Baron's head through Score's own head target, an imp and a Baron grown to 1.25x judged on their grown size (and a 1.25x imp that was only drawn bigger judged on its real box), RSQ Monsters' ColorfulHell and (since removed) MeatGrinder imps; the +30 head damage, and the Baron's head shot doubled. The same run showed that Brutal Doom's own check did not pay the Headshot row on a Brutal Doom head kill, so that option was removed (the check is always Score's own now). The Revival Fire's ring of flames, fired by RSQ SlowMo's DOWN top tier, and the Revenge award reaching Score from DOWN (SlowMo's log; the points paid were not logged) |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. A called-in miniboss's kill paid ONE row, **Miniboss** (15000, 3x), and no Bossfight row (`evidence/L1_log.txt`). A Champion row with its icon: "+21 White Champion" with its snowflake (`evidence/R4_score_champion_row.jpg`). The wrist digits stepping aside while RSQ Saber's training remote is out, and back after (`evidence/A4_score_wrist_steps_aside.jpg`) |
+| **rig only, not headset-confirmed** (2026-11-09, logs and frames) | The head-shot check, with the Headshot row paying on head kills and not on chest kills: Brutal Doom zombies and imps (head and chest), a Brutal Doom Baron's head through Score's own head target, an imp and a Baron grown to 1.25x judged on their grown size (and a 1.25x imp that was only drawn bigger judged on its real box), RSQ Monsters' ColorfulHell and (since removed) MeatGrinder imps; the +30 head damage, and the Baron's head shot doubled. The same run showed that Brutal Doom's own check did not pay the Headshot row on a Brutal Doom head kill, so that option was removed (the check is always Score's own now). The Revival Fire's ring of flames, fired by RSQ SlowMo's DOWN top tier, and the Revenge award reaching Score from DOWN (SlowMo's log; the points paid were not logged) |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | The 11-09 evening fixes: Headshot pays only when the killing blow itself hit the head (a head hit then a body-shot kill no longer pays), and Hot Seat, Aftershock and Demolition can fire (a barrel thrown with Distance Grab now counts as a thrown keg). Also:  Everything else on this page: the base and every other bonus row, the combo chain and its named combos, the target and the rewards, lives and Score's own revival on a spent life, the life crate, the breakdown, the breathing word, the wrist, the big moments and the hit-stop, the roster rows |
+| **code only, not shown** | The 11-10 changes: the whip rows (Snap Kill named before the crack lands; with RSQ Grapple loaded too, Score asks both ropes for Swinging, Hanging Shot and Dismount), MeatGrinder's rows gone, Severed retired. The 11-09 evening fixes: Headshot pays only when the killing blow itself hit the head (a head hit then a body-shot kill no longer pays), and Hot Seat, Aftershock and Demolition can fire (a barrel thrown with Distance Grab now counts as a thrown keg). Everything else on this page: the base and every other bonus row, the combo chain and its named combos, the target and the rewards, lives and Score's own revival on a spent life, the life crate, the breakdown, the breathing word, the wrist, the big moments and the hit-stop, the roster rows |
+| **not yet run** | R2 of the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): Score's menu without the MeatGrinder rows |
 
 ---
 

@@ -45,6 +45,21 @@ The rings show when a hand comes near, and only for holsters that hand can use r
 faint ghost hand shows you where to put it. Miss the same ring three times in a few seconds and it lights up with a
 "Grip inside the ring" hint.
 
+### Controls
+
+**One key: Recenter Torso** (unbound; owner 2026-11-10: the grip holsters, so there are no holster keys). It turns
+the holsters, the torso and RSQ ShieldSaw's shield to where your head faces. It is on this mod's page and in Customize
+Controls, section **RSQ Tactical Rig**.
+
+- **Either hand, the grip:** put away and draw at a holster's ring (**Grip Holsters**, on). **Use** does the same
+  (**Use Holsters**, on). The grip is read from the controller's grip buttons (**Main Grip Keys**, **Off Grip Keys**
+  under Test and Debug), not from a key you bind.
+- **Off-hand trigger** with the Zippo: light the cigarette. **Main-hand alt fire** on a card of RSQ Wheel: the holster
+  screen.
+- **Gestures:** both hands held to your chest for a moment (recenter, **Recenter by Hands**); an empty hand held in an
+  empty holster for a second (free it). The cigarette goes in at your lips with **Use**.
+- **Menu buttons:** **Measure My Height**, and Save and Load for the four holster profiles.
+
 *[picture to come: the ghost hand showing the way to the hip holster (GIF)]*
 
 ---
@@ -277,7 +292,7 @@ torso fades to about half as you look down, so you can see your holsters.
 | Holster Profiles | Save and Load: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow) |
 | Test and Debug | Stored Guns: Gun Length (0.25 m), Back Gun Length (0.70 m), Gun Turn (0°), Flip These Guns · Body: Body Turn Angle (35°), Body Turn Delay (1 s), Ignore Looking Down (25°), Mirror Distance (1.0 m) · Hands: Press Delay (3 tics), Throw Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys, Off Grip Keys, Empty Hand Weapon · Torso Fit: Torso Height, Torso Forward, Torso Size, Helmet Height, Low Health Glow (35%) · Cigarette: Mouth Zone Size, In Mouth Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Unlit Goes Away After (7 s), Slow Motion Speed (25%), Pack Size (3) · Holster Positions: Forward, Left, Up and Size for each of Left Hip, Right Hip, Grenade Spot, Left Chest, Right Chest, Keyring, Left Shoulder, Right Shoulder, Left Saber, Right Saber, Whip, Flare, Ammo Pouch · Debug: Throw Debug Log (Off) |
 
-**Keys:** *Options → Customize Controls → RSQ Tactical Rig → Recenter Torso* (also on the rig's own page).
+**Keys:** one, *Options → Customize Controls → RSQ Tactical Rig → Recenter Torso* (also on the rig's own page).
 
 ---
 
@@ -285,9 +300,11 @@ torso fades to about half as you look down, so you can see your holsters.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, full series load order with Brutal Doom 22 VR Reloaded) | The ammo pouch on the belt, its ring, and the pouch easing toward the off hand · own-home refusals: RSQ Grenade's grenade and FnF's flare turned away with the double buzz, and a shotgun assigned to Left chest with its ring flash and ammo arc (sent as the same assignment events the Wheel's holster screen sends; the screen itself was not used) · two-handing a rifle not counting toward the "Grip inside the ring" hint, while the same reach without two-handing shows it · grenade throws through a shoulder ring not counting toward the hint, while the control run shows it · logged in the same runs: Brutal Doom VR's Dual key giving the main hand the off hand's gun, the ghost-hand holster tip looping to the right hip, the automatic height measure, the one-time recenter tip |
-| **Headset-confirmed** | Cigarettes (the owner, 2026-11-09: "Cigarette works") |
-| **Code only, not yet shown** | Everything else on this page, including the hint staying quiet while you are DOWN |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. No Tactical Rig check has been run in it yet |
+| **rig only, not headset-confirmed** (2026-11-09, full series load order with Brutal Doom 22 VR Reloaded) | The ammo pouch on the belt, its ring, and the pouch easing toward the off hand · own-home refusals: RSQ Grenade's grenade and FnF's flare turned away with the double buzz, and a shotgun assigned to Left chest with its ring flash and ammo arc (sent as the same assignment events the Wheel's holster screen sends; the screen itself was not used) · two-handing a rifle not counting toward the "Grip inside the ring" hint, while the same reach without two-handing shows it · grenade throws through a shoulder ring not counting toward the hint, while the control run shows it · logged in the same runs: Brutal Doom VR's Dual key giving the main hand the off hand's gun, the ghost-hand holster tip looping to the right hip, the automatic height measure, the one-time recenter tip |
+| **Headset-confirmed** | Cigarettes (the owner, 2026-11-09: "Cigarette works"). This line is the only record of it in the repo (it went in with this README, commit 0146025c), and the cigarette's pocket rules changed after it (below) |
+| **code only, not shown** | Rig clutter, all four fixes (built 11-08, kept by the owner 11-10; among them rings only for what the hand can use and the nearest bright; `design/PARKED.md` lists all four); cigarettes are precious (the pocket no longer refills on a new level, what is left is kept across levels, earned from Score, minibosses and DOWN); the watch check's copy regenerated 11-10; the hint staying quiet while you are DOWN; everything else on this page |
+| **not yet run** | T1 of the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): the rig clutter fixes, all four, in frames |
 
 ---
 

@@ -55,8 +55,24 @@ arm forward, and the saw goes round the room cutting through them, then comes ho
 | Both hands to your chest for half a second | The body the shield hangs on turns to where you face |
 | Flick the gun in your main hand down | That gun reloads (with Brutal Doom VR's guns) |
 
-No key needs binding. For a desktop or a backup there is one, **Draw / Put Back**, on this mod's page or under
-Customize Controls ("RSQ ShieldSaw").
+### Controls
+
+**One key, and it needs no binding:** **Draw / Put Back**, for a desktop or a backup. It draws the shield, puts it
+back, or calls a thrown one home. It is on this mod's page under Controls and in Customize Controls ("RSQ ShieldSaw",
+listed as "ShieldSaw: draw / put back / recall"). Unbound.
+
+- **Off hand, Use** at the spot on your back: draw, and put back.
+- **Off trigger:** hold to rev the saw and, with **Lock On With: Hold the Trigger** (the default), ring targets at the
+  same time; let go with the arm snapping forward to throw; press it while the shield flies to call it back. **Throw
+  Button** can move the throw to the off alt, or either.
+- **Gestures:** hold the plate in the way (block), push it into a hit as it lands (perfect block), shove it into a
+  monster (bash), the throw (at least **Throw Hand Speed (m/s)**, 2.5), both hands to your chest for half a second
+  (recenter, **Recenter: Hands to Chest**), and a flick down of the main-hand gun (reload, with Brutal Doom VR's guns).
+
+Gone on 2026-11-10: the **Throw Along Aim** key (the throw is the swing), the **Lock On (Hold)** key (hold the trigger
+instead) and the **Recenter Torso** key of this mod (RSQ Tactical Rig's Recenter Torso key and the hands-to-chest gesture
+do it). The console commands `ssq_throw` and `ssq_recenter` stay, with no key. RSQ Accessibility's
+Shield Throw button is its own (see *Plays well with*).
 
 You start every game with it on your back. Turn on **Start in Hand** to start holding it.
 
@@ -242,7 +258,8 @@ you sweep across a crowd and feel each one land, with a click and a tick in your
 ### Let it fly
 
 The off trigger always revs the saw. The throw is letting go of the throw button with your arm snapping forward, at
-least about 1.8 m/s and roughly where you are looking. **Throw Button** picks which: **Off Trigger** (default), **Off
+least **Throw Hand Speed (m/s)** (2.5, the series' one throw threshold since 2026-11-10) and roughly where you are
+looking. **Throw Button** picks which: **Off Trigger** (default), **Off
 Alt**, or **Either**. Pressing it again while the saw flies calls it back.
 A release with the arm still, a backhand or the end of a block is not a throw: the shield stays in your hand.
 
@@ -316,7 +333,7 @@ Every other mod is found by name while the game runs. RSQ ShieldSaw loads and pl
 - **RSQ Accessibility:** Photosensitive Mode (the block flash and bloom dimmed and rate-limited), Gesture Ease (wider
   grab zone, lower throw speed and angle, an easier flick), Cue Size (the rings), Colour-blind modes (the rings and the
   block-area view; rank is size, never colour), Rumble Strength, Seated Play (the mount comes down with you), Steady
-  Hands (the lock cone and the throw's aim), Hold to Toggle (the Lock key), and One-Handed: the Off-Hand Modifier lets
+  Hands (the lock cone and the throw's aim), and One-Handed: the Off-Hand Modifier lets
   your main hand take the shield off your back, the Shield Throw button throws at the rings (or along your aim), and
   the Flick Reload button reloads.
 - **RSQ Miniboss:** a miniboss made legendary at its best health counts that health in the hit tiers.
@@ -365,13 +382,15 @@ player's own.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, full load order) | The pack loads on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series with no script error of its own, and "RSQ ShieldSaw" is on Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`, load order lines 3-38, menu line 1201). The Draw key puts the shield in the off hand beside BD22 VR's rifle, and it stays there while the main hand changes to the rocket launcher and RSQ Tactical Rig's cigarette (`design/rigtest_2026-11-09/batch2/launch3_harness_reruns.log`, lines 1223, 4689, 4703). That run was not a ShieldSaw test |
-| **Shown on the rig** (2026-11-03, an earlier build, RSQ ShieldSaw alone) | The body the stowed shield hangs on: sixteen 45° snaps followed exactly, a smooth 360 each way, a real 60° or 90° room turn left alone, then put right by the hands-to-chest gesture and by the Recenter Torso key; faced to the head again after a save and load and a map change; no script errors (`TacticalRig/tools/rigtest/turnprobe/evidence/recenter_after_shieldsaw_alone.txt`, `after_shieldsaw_alone.txt`) |
-| **Shown on the rig** (frames, an earlier build, before 2026-11-05) | The held shield in the hand, desktop view (`docs/screens/held_shield_ermac_hand.png`); the bash burst, a wall slam and its stun (`docs/screens/bash_fx_before_after.png`, `docs/screens/bash_hit_owner_burst.png`). Pictures of what an earlier build did, not proof of this one |
-| **Fixed 2026-11-10** (code only, not rig-shown) | After a ricochet the rings stay on the right targets (a new ring now goes in at the same place as its lock, `disc.zs`); a monster's bullet from beyond its melee reach is treated as a shot, not melee (`guard.zs`); 16 unused sprites and an unused saw loop sound removed |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **The trigger-hold lock:** holding the off trigger painted a lock ("1 locked", `evidence/L8_log.txt`). **One throw:** the posed swing read the same as the Saber's, 2.06 m/s and 3.09 m/s (`L8_log.txt`). Both releases had a target locked, and a locked release always throws, so the 2.5 m/s threshold itself is not shown. The ShieldSaw Throw Hand Speed (m/s) row at 2.50 (`evidence/menus_new_rows.jpg`) |
+| **rig only, not headset-confirmed** (2026-11-09, full load order) | The pack loads on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series with no script error of its own, and "RSQ ShieldSaw" is on Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`, load order lines 3-38, menu line 1201). The Draw key puts the shield in the off hand beside BD22 VR's rifle, and it stays there while the main hand changes to the rocket launcher and RSQ Tactical Rig's cigarette (`design/rigtest_2026-11-09/batch2/launch3_harness_reruns.log`, lines 1223, 4689, 4703). That run was not a ShieldSaw test |
+| **rig only, not headset-confirmed** (2026-11-03, an earlier build, RSQ ShieldSaw alone) | The body the stowed shield hangs on: sixteen 45° snaps followed exactly, a smooth 360 each way, a real 60° or 90° room turn left alone, then put right by the hands-to-chest gesture and by the Recenter Torso key; faced to the head again after a save and load and a map change; no script errors (`TacticalRig/tools/rigtest/turnprobe/evidence/recenter_after_shieldsaw_alone.txt`, `after_shieldsaw_alone.txt`) |
+| **rig only, not headset-confirmed** (frames, an earlier build, before 2026-11-05) | The held shield in the hand, desktop view (`docs/screens/held_shield_ermac_hand.png`); the bash burst, a wall slam and its stun (`docs/screens/bash_fx_before_after.png`, `docs/screens/bash_hit_owner_burst.png`). Pictures of what an earlier build did, not proof of this one |
 | **Headset-confirmed** | Nothing |
-| **Code only: a commit says rig-shown, but no log or frame is in the repo** | The stowed shield flat along the back at every spot, and a draw from the small of the back with RSQ Tactical Rig (commits of 11-08 and 11-09); Next/Prev Offhand Weapon and the grind's blood (11-06) |
-| **Code only, not yet shown** | Everything else on this page: the block, the sweep, the muzzle block and returned bullets, the perfect block, Saber Over Shield, the bash's damage and shove, the rev and the grind, lock-on, the throw, the hit tiers, the bounces, the return and the catch, the flick reload, every Gun Bonsai VR upgrade, the Accessibility settings, netplay |
+| **code only, not shown** | **The 11-10 key change:** one key, Draw / Put Back, and the lock and throw keys gone (the 11-10 run drew the shield with the key's command, `ssq_draw`, before its throws, but no line logs the draw itself). The 11-10 fixes: after a ricochet the rings stay on the right targets (a new ring now goes in at the same place as its lock, `disc.zs`); a monster's bullet from beyond its melee reach is treated as a shot, not melee (`guard.zs`); 16 unused sprites and an unused saw loop sound removed. The throw threshold (2.5 m/s) on a release with nothing locked |
+| **code only, not shown** (a commit says rig-shown, but no log or frame is in the repo) | The stowed shield flat along the back at every spot, and a draw from the small of the back with RSQ Tactical Rig (commits of 11-08 and 11-09); Next/Prev Offhand Weapon and the grind's blood (11-06) |
+| **code only, not shown** | Everything else on this page: the block, the sweep, the muzzle block and returned bullets, the perfect block, Saber Over Shield, the bash's damage and shove, the rev and the grind, the throw's flight, the hit tiers, the bounces, the return and the catch, the flick reload, every Gun Bonsai VR upgrade, the Accessibility settings, netplay |
+| **not yet run** | The rest of the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): H1 a ricochet with the rings staying on their targets, H2 a far zombie's bullet on the plate read as a shot, H3 a stow at 2.0 m/s with nothing locked |
 
 All VR behaviour is rig only, not headset-confirmed.
 

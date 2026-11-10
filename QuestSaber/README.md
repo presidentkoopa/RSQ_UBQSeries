@@ -58,8 +58,25 @@ captures from the headset.*
 | Twist the wrist of a saber hand, quickly, hand still | That saber's second blade out of the pommel, or back in. With it lit, the saber twirls in your hand when idle |
 | **Training Remote: Summon / Send Away** (on the menu) | Summon the remote, or send it away (with a saber in hand) |
 
-The three keys are unbound at first. Bind them on this pack's page or under Customize Controls, in the **RSQ Saber**
-section.
+### Controls
+
+**No keys** (owner, 2026-11-10: keys are precious in VR). Everything is the saber's own buttons, your swing and three
+gestures.
+
+- **Saber hand, trigger:** hold to mark, let go to throw; with the saber out of your hand, it calls it back.
+- **Main saber, alt:** Force push. With **Force Push on Alt** off, or **The Force** off, it lights and puts out the
+  second blade instead. With the saber out of your hand, it calls it back.
+- **Off hand:** the Force by gesture, through alt on a second saber or a fist, or through either trigger on the bare
+  Force hand.
+- **Jump**, with a saber or the Force hand out: the Force jump.
+- **Gestures:** the swing (cut, stab, block); the throw (let go with the arm snapping forward, at least **Throw Speed
+  (m/s)**, 2.5); thrust out, yank back or hold still for push, pull and grip; a quick **twist of the wrist** (75° or
+  more in a fifth of a second, the hand still) for that saber's second blade.
+- **Menu button:** **Training Remote: Summon / Send Away**, on this pack's page under Controls. It replaced the remote's
+  key.
+
+Gone on 2026-11-10: the **Second blade on / off**, **Blade on / off** and **Summon / dismiss training remote** keys, and
+the **RSQ Saber** section in Customize Controls. The blade stays lit; the second blade is the wrist twist.
 
 *[GIF to come: a slash through two imps, the flash, sparks and smoke where the blade went in]*
 
@@ -138,7 +155,8 @@ A turned shot is yours: its kill is yours, and a homing shot homes on the one th
 ### The second blade and the staff
 
 A quick twist of the wrist (a roll of 75° or more in a fifth of a second, the hand held still) lights a blade out of
-the pommel of that hand's saber, and puts it out again (code only, not shown yet). With RSQ
+the pommel of that hand's saber, and puts it out again (code only, not shown: the rig cannot pass a controller's
+roll to ZScript). With RSQ
 Gun Bonsai VR loaded, the second blade needs its **Double-Bladed** upgrade.
 
 The spinning staff is not a button of its own. With the second blade lit, the saber **twirls in your hand** when idle:
@@ -292,7 +310,7 @@ back into it:
   wrist digits. Out of VR it keeps score in lines of text on screen instead.
 - **A saber game.** The remote comes only with a saber in your hand. Switch the saber away and the training is over.
 - It pays into RSQ Score when that is loaded. **Remote Start Level** (Test and Debug) sets how hard it starts. Press the
-  key again to send it away.
+  menu button again to send it away.
 
 *[GIF to come: the remote circling, a bolt batted back into it, the wrist panel lighting a pip, "REMOTE DOWN!"]*
 
@@ -368,14 +386,12 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09) | The pack loaded on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the whole RSQ series with no script error of its own (the only script errors in the log are BD_VoxelPack's). The pk3 in that run has the same zscript.txt and MENUDEF as the source today. On MAP01 of that run the saber was in the main hand and the Force hand in the off hand. Files: design/rigtest_2026-11-09/logs/main_A-G_I.log, design/rigtest_2026-11-09/batch2/launch1_main.log (the MAP01 state line) |
-| **Shown on the rig** (2026-11-03, earlier build) | Force Only With Saber: the Force hand arriving in the off hand when the saber came into the main hand and leaving the same tic when it went, a pistol kept in the off hand, the same across level changes and saves; on the full order, Brutal Doom VR's hands back with the rifle and its hand reload working (docs/forcecomboprobe/log_doom2_saber.txt, log_full_A_reload_m203.txt, log_full_B_levels_saves.txt, log_full_newgame_before_after.txt). The Force hand's two meshes drawn idle, with the Force up, pushing, pulling and gripping, both hands (docs/forcehand_1103/saber_alone.png, full_order.png; in saber_alone.png's Original left-handed row two frames came out dark). Hand Skin Tone on the Force hand (docs/forcehand_1103/tone.png). Hand on the Hilt on both sabers, in a swing, hidden while thrown and back on the catch, left-handed, with Gun Bonsai VR and with Hand Skin Tone (docs/hilthand/rig_1103/sheet.png) |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **A saber game:** with the rifle the remote is refused ("draw your saber first"); with the saber it is summoned; switched to the rifle, TRAINING OVER and the remote is gone (`evidence/L7_log.txt`). **The wrist panel and the round:** :30 and :28 in gold, a pip lit per hit (3 of 4 at tic 250), the knock-down at 4, round 1 to round 2, the clock held while the remote is down and back to :30 when it rises; the clock running out ends the training and the remote leaves; RSQ Score's wrist digits hidden while it is out and back after (`evidence/A4_*`, `L6_log.txt`, `L7_log.txt`). **One throw:** the same posed swing released at 2.06 m/s did not throw (it needs 2.50) and at 3.09 m/s threw (`evidence/L8_log.txt`, rig02, no monsters). The Saber Throw Speed (m/s) row at 2.50 (`evidence/menus_new_rows.jpg`) |
+| **rig only, not headset-confirmed** (2026-11-09) | The pack loaded on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the whole RSQ series with no script error of its own (the only script errors in the log are BD_VoxelPack's). On MAP01 of that run the saber was in the main hand and the Force hand in the off hand. Files: design/rigtest_2026-11-09/logs/main_A-G_I.log, design/rigtest_2026-11-09/batch2/launch1_main.log (the MAP01 state line) |
+| **rig only, not headset-confirmed** (2026-11-03, earlier build) | Force Only With Saber: the Force hand arriving in the off hand when the saber came into the main hand and leaving the same tic when it went, a pistol kept in the off hand, the same across level changes and saves; on the full order, Brutal Doom VR's hands back with the rifle and its hand reload working (docs/forcecomboprobe/log_doom2_saber.txt, log_full_A_reload_m203.txt, log_full_B_levels_saves.txt, log_full_newgame_before_after.txt). The Force hand's two meshes drawn idle, with the Force up, pushing, pulling and gripping, both hands (docs/forcehand_1103/saber_alone.png, full_order.png; in saber_alone.png's Original left-handed row two frames came out dark). Hand Skin Tone on the Force hand (docs/forcehand_1103/tone.png). Hand on the Hilt on both sabers, in a swing, hidden while thrown and back on the catch, left-handed, with Gun Bonsai VR and with Hand Skin Tone (docs/hilthand/rig_1103/sheet.png) |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page: cutting, stabs and shoves, blocking, parrying, deflecting, the return bolt, marking and throwing, the staff, the clash, lock and cross guard, burning, the sounds and their placement, the lights, the rumble, push, pull, grip, fling and Force jump, Force Lightning, the training remote, Second Saber Starts, the holster and the hip display, Sword Becomes Saber, the flick reload, every Gun Bonsai VR upgrade and every RSQ Accessibility setting |
-
-The 2026-11-10 changes are all code only, not shown on the rig: the second saber lighting whenever it is drawn, the
-Two Sabers and Double-Bladed gates under Gun Bonsai VR, the twirl's Double-Bladed 3 cut, Force Pull's gates, the
-holster draw's ignition, and the training remote's distance, its 25 health, its RSQ SlowMo trigger, its 30-second round and its wrist panel.
+| **code only, not shown** | **The wrist twist** (the second blade): the rig does not pass a posed controller's roll to ZScript, so the twist cannot be shown there (tried in `evidence/L8_log.txt`); with Gun Bonsai VR loaded it also needs Double-Bladed. **The 11-10 key change:** no keys, and the remote's menu button itself (the rig summoned the remote with the button's command, `netevent ubqs_remote`; the menu was not clicked). The other 11-10 changes: the second saber lighting whenever it is drawn, the Two Sabers and Double-Bladed gates under Gun Bonsai VR, the twirl's Double-Bladed 3 cut, Force Pull's gates, the holster draw's ignition, and the remote's distance, its 25 health and its RSQ SlowMo trigger. Everything else on this page: cutting, stabs and shoves, blocking, parrying, deflecting, the return bolt, marking, the staff, the clash, lock and cross guard, burning, the sounds and their placement, the lights, the rumble, push, pull, grip, fling and Force jump, Force Lightning, Second Saber Starts, the holster and the hip display, Sword Becomes Saber, the flick reload, every Gun Bonsai VR upgrade and every RSQ Accessibility setting |
+| **not yet run** | The rest of the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): A1 the second saber lit on its first draw, A2 Force Pull refused with the Force off or without Force Sensitive, A3 the remote's distance, the +25 health on a knock-down and its slow |
 
 A blade turning an imp fireball is recorded only as one line in the header of the test probe TestRig/saberprobe
 (2026-11-03); the log itself is not in the repo, so it is listed as code only. The 2026-11-03 frames show what an

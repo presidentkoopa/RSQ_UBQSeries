@@ -37,7 +37,6 @@ gun you are pointing at.
 | Hold the wheel button (left thumbstick click), point a hand at a card, let go | That hand takes the gun. Let go over nothing and the ring just closes |
 | Tap the wheel button | The ring opens and stays up. Pull the trigger (either hand) on a card to take it |
 | Tap it twice, quickly | The ring closes and the hand you last picked with goes back to the gun it had before |
-| Press `[` or `]` again within a moment of opening | The ring moves to where your hand is now, instead of closing |
 | Reach a hand into a card and press Use | That hand takes the gun |
 | Hand in a card, snap it back toward you | The gun comes out with your hand |
 | Snap a hand holding a gun toward the ring, pointing at no card | The gun goes back on the ring; the hand takes its fist |
@@ -49,8 +48,24 @@ gun you are pointing at.
 | Turn more than 45° away from the ring | It swings round to sit in front of you again |
 | Leave it alone | After 4 seconds with nothing pointed at, it fades, ticks once, and folds away |
 
-One key opens the wheel: **Open Wheel** (hold, point, release; the left thumbstick click by default). The old `[`, `]`
-and Open or Close keys went on 11-10 (owner: keys are precious in VR).
+### Controls
+
+**One key: Open Wheel** (hold, point, release). It is bound to the **left thumbstick click** by default (a key already
+bound to something else is left alone). It is on this mod's page under Controls and in Customize Controls, section
+**RSQ Wheel**, as "Open Wheel (hold, point, release)".
+
+- **The key:** hold, point, let go to take a gun; tap to leave the ring up; tap twice to go back to the last gun.
+- **Either hand, trigger** on a card: take it (hold it on a card in a fan to move that card).
+- **Main hand, alt fire** on a card: the holster screen (with RSQ Tactical Rig). **Off hand, alt fire** on a card: that
+  gun in or out of your next / previous weapon list.
+- **Use** with a hand in a card: that hand takes the gun.
+- **Gestures:** snap a hand in a card back toward you (the gun comes out with it); snap a hand holding a gun toward the
+  ring (it goes back on the ring).
+- Your own **next / previous weapon** keys step through the Wheel's list.
+
+Gone on 2026-11-10 (owner: keys are precious in VR): **Wheel: open**, **Wheel: off hand** and **Wheel: main hand**, and
+the `]` and `[` default binds. Their console commands stay, with no key and no menu row. The two ModelSwapper keys have
+been off the controls list since 11-09, while ModelSwapper support is parked.
 
 ---
 
@@ -233,8 +248,9 @@ now (the owner, 2026-11-09) and their options are hidden. Only Gun Bonsai and Le
 SlowMo** only acts when RSQ SlowMo is not loaded; **Freeze Time While Open** stops
 time whether SlowMo is loaded or not. Distances are in map units (34 to a metre).
 
-**Keys:** *Options → Customize Controls → RSQ Wheel.* A default key that is already bound to something else is left
-alone; bind it there instead.
+**Keys:** one, *Options → Customize Controls → RSQ Wheel → Open Wheel*. A default key that is already bound to
+something else is left alone; bind it there instead. With the one key, **Opens On: Whichever key you press** opens the
+ring on the main hand, and **Re-centre Window** acts only on the old toggle commands, which no key sends now.
 
 ---
 
@@ -242,9 +258,11 @@ alone; bind it there instead.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, full series load order) | The Wheel loads with the rest of the series and its RSQ Wheel page appears under Radiant Silvergun Options, with no error from the Wheel in the log. Nothing of the ring itself was exercised in that run |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. The ring was not opened |
+| **rig only, not headset-confirmed** (2026-11-09, full series load order) | The Wheel loads with the rest of the series and its RSQ Wheel page appears under Radiant Silvergun Options, with no error from the Wheel in the log. Nothing of the ring itself was exercised in that run |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page |
+| **code only, not shown** | The 11-10 key change (one Open Wheel key); the 11-09 evening fixes (Reset All covers Freeze Time and Web View, the ModelSwapper keys off the controls list, Freeze Without SlowMo on its own); everything else on this page |
+| **not yet run** | Nothing: the batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/PLAN.md`) has no Wheel check (M9 may use a Wheel frame for RSQ Melee's glove icons) |
 
 ---
 
