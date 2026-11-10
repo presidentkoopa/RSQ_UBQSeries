@@ -41,6 +41,21 @@ class RSQMB_Boss : Thinker
 	int    diedAt;               // the tic it died (Boss Kill Rewards counts a just-killed miniboss)
 	bool   called;               // a Bossfight (called in, bossfight.zs), not the classic pick
 	int    tier;                 // the Bossfight's tier, 0..4
+	// THE ICONS BESIDE ITS BAR (owner 11-10, design/icons style B; hud.zs DrawStack): read every half second in play
+	int    ladder;               // RSQ Monsters' tier of the miniboss's body, 1..13 (its RSQMN_RosterService "tier"), 0 none
+	Array<int> champIcons;       // its Champion powers, its own and inherited: 0..16 the types, 18..21 the mutations
+	void ReadIcons(Service roster)
+	{
+		ladder = 0;
+		champIcons.Clear();
+		if (!mb) return;
+		if (roster) { int t = roster.GetInt("tier", "", 0, 0, mb); if (t >= 1 && t <= 13) ladder = t; }
+		static const String COL[] = { "DarkRed", "Red", "Orange", "Yellow", "DarkGreen", "Green", "Cyan", "Blue", "Indigo",
+			"Violet", "Pink", "Black", "Grey", "White", "Bronze", "Silver", "Gold" };
+		static const String MUT[] = { "Titan", "Undying", "Ghost", "Balloon" };
+		for (int i = 0; i < 17; i++) { class<Inventory> c = "champion_" .. COL[i] .. "Token"; if (c && mb.FindInventory(c)) champIcons.Push(i); }
+		for (int i = 0; i < 4; i++) { class<Inventory> c = "champion_" .. MUT[i] .. "Token"; if (c && mb.FindInventory(c)) champIcons.Push(18 + i); }
+	}
 
 	// THE THRALL BAR AND THE WINDOW (fight.zs)
 	Array<double> segHP;         // what is left of each segment

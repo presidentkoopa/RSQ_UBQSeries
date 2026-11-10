@@ -439,7 +439,7 @@ extend class RSQMB_Handler
 				double f = (i < b.segHP.Size() && b.segMax > 0) ? b.segHP[i] / b.segMax : 0;
 				Bar(te, tw, sx, thrY, sw, th, f, b.ShieldUp() ? grey : b.col);
 			}
-			// the shield icon over it while it is immune (PLACEHOLDER art, the mockup's)
+			// the shield icon over it while it is immune (the series' style B shield, design/icons, 11-10)
 			TextureID sh = TexMan.CheckForTexture("RSQMBSH", TexMan.Type_Any);
 			if (b && b.ShieldUp() && sh.IsValid())
 			{
@@ -509,6 +509,23 @@ extend class RSQMB_Handler
 			Bar(te, tw, x, mainY, w, h, f, c);
 			TextureID k1 = TexMan.CheckForTexture("RSQMBSK1", TexMan.Type_Any);
 			if (k1.IsValid()) Screen.DrawTexture(k1, false, kx, ky, DTA_DestWidthF, ks, DTA_DestHeightF, ks, DTA_Alpha, 0.95);
+			// ---- ITS ICONS (owner 11-10, design/icons style B): beside the bar on the side the skull is not, the right: its
+			// tier gem (RSQ Monsters' ladder), then each Champion power it carries, its own and inherited, in order; as
+			// tall as the skull, a little gap between ----
+			if (b)
+			{
+				double isz = ks * 0.8, ix = x + w + h * KGAP, iy = mainY + h * 0.5 - isz * 0.5;
+				if (b.ladder > 0)
+				{
+					TextureID g = TexMan.CheckForTexture(String.Format("RSQMBG%02d", b.ladder), TexMan.Type_Any);
+					if (g.IsValid()) { Screen.DrawTexture(g, false, ix, iy, DTA_DestWidthF, isz, DTA_DestHeightF, isz, DTA_Alpha, 0.95); ix += isz * 1.1; }
+				}
+				for (int ci = 0; ci < b.champIcons.Size() && ci < 8; ci++)
+				{
+					TextureID g = TexMan.CheckForTexture(String.Format("RSQMBC%02d", b.champIcons[ci]), TexMan.Type_Any);
+					if (g.IsValid()) { Screen.DrawTexture(g, false, ix, iy, DTA_DestWidthF, isz, DTA_DestHeightF, isz, DTA_Alpha, 0.95); ix += isz * 1.1; }
+				}
+			}
 			// ---- its lives: thin bars, one a life to spare ----
 			for (int l = 0; l < lives; l++)
 				Bar(te, tw, x, lifeY + l * h * (LIFE_K + LIFE_GAP), w, h * LIFE_K, 1.0, c);

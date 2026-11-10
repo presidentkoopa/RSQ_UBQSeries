@@ -104,6 +104,7 @@ class RSQTHP_Handler : EventHandler
 	transient int sprBoss;           // RSYI: crown / chain link / gem, tier pips (TEXTURES.rsqthp)
 	transient int sprDown;           // RSYJ: RSQ SlowMo's DOWN mark, a skull
 	transient int sprWhip;           // RSYW: whipped + the other four markers
+	transient int sprTier, sprChamp; // RSYT: the tier gem A..M (tiers 1..13); RSYK: a Champion's icon (ChampFrame)
 	const BURN_STREAM = 1;           // BD22 VR's flamethrower stream: one FlamethrowerProjectileNew* a tic
 	const BURN_GROUND = 26;          // BD's FlamethrowerBurningStuff: one A_Explode every 26 tics
 	const BURN_FIELD = 7;            // RSQ Grenade's RSQGN_FireField: every 7th tic
@@ -149,6 +150,60 @@ class RSQTHP_Handler : EventHandler
 	bool champIcons;
 	double champIconH;
 
+	// ---- THE TIER GEM AND THE CHAMPION ICON BESIDE THE BAR (owner 11-10, design/icons style B) ----------------------------
+	// "the icon and tier gem should be to the side of the hp bar, or the opposite side if there is an icon there already"
+	// (bar.zs SyncParts). The gem: RSQ Monsters' tier of the monster (its RSQMN_RosterService "tier", 1..13, by name).
+	// The icon: the Champion's type, read off Champions' own floating icon (champion_Icon: its frame is the type, 0 Dark
+	// Red .. 16 Gold; two icons on one monster = Hybrid), which is then hidden, and its mutation tokens (Titan, Undying,
+	// Ghost = Ethereal, Balloon), each with its own icon. Tier Gem and Champion Icons (rsqthp_tiericons), on; off: Champions
+	// draws its own icon again.
+	bool tierIcons;
+	transient CVar cTierIcons;
+	transient Service rosterSvc;
+	transient bool rosterLooked;
+	Array<Actor> champIconsSeen;     // Champions' floating icons: hidden while ours are on
+	int TierOf(Actor a)
+	{
+		if (!rosterLooked) { rosterLooked = true; rosterSvc = ServiceIterator.Find("RSQMN_RosterService").Next(); }
+		if (!rosterSvc || !a) return -1;
+		int t = rosterSvc.GetInt("tier", "", 0, 0, a);
+		return (t >= 1 && t <= 13) ? t : -1;
+	}
+	// the Champion icon frame (RSYK: 0..16 the types, 17 Hybrid) or -1; and the mutation's (18 Titan, 19 Undying,
+	// 20 Ethereal, 21 Balloon) or -1
+	int ChampFrame(Actor a)
+	{
+		let k = RSQTHP_ChampKind(a.FindInventory("RSQTHP_ChampKind"));
+		if (!k) return -1;
+		return k.second >= 0 ? 17 : k.first;
+	}
+	static int MutFrame(Actor a)
+	{
+		static const String TOK[] = { "champion_TitanToken", "champion_UndyingToken", "champion_GhostToken", "champion_BalloonToken" };
+		for (int i = 0; i < 4; i++)
+		{
+			class<Inventory> c = TOK[i];
+			if (c && a.FindInventory(c)) return 18 + i;
+		}
+		return -1;
+	}
+	private void ChampIconsTick()
+	{
+		for (int i = champIconsSeen.Size() - 1; i >= 0; i--)
+		{
+			let ic = champIconsSeen[i];
+			if (!ic) { champIconsSeen.Delete(i); continue; }
+			if (ic.bINVISIBLE != tierIcons) ic.bINVISIBLE = tierIcons;
+			let m = ic.master;
+			if (!m || ic.frame > 16) continue;
+			let k = RSQTHP_ChampKind(m.FindInventory("RSQTHP_ChampKind"));
+			if (!k) { m.GiveInventory("RSQTHP_ChampKind", 1); k = RSQTHP_ChampKind(m.FindInventory("RSQTHP_ChampKind")); }
+			if (!k) continue;
+			if (k.first < 0) k.first = ic.frame;
+			else if (k.first != ic.frame && k.second < 0) k.second = ic.frame;
+		}
+	}
+
 	// A LegenDoom candidate: picked (its token) and not turned yet. False without LegenDoom (no token class).
 	bool LDCandidate(Actor a)
 	{
@@ -179,6 +234,7 @@ class RSQTHP_Handler : EventHandler
 		cStealth = CVar.FindCVar('rsqthp_stealth');
 		cOver = CVar.FindCVar('rsqthp_overheal');
 		cMark = CVar.FindCVar('rsqthp_markers');
+		cTierIcons = CVar.FindCVar('rsqthp_tiericons');
 		cAim = CVar.FindCVar('rsqthp_aimed');
 		cChunk = CVar.FindCVar('rsqthp_chunk');
 		cAlly = CVar.FindCVar('rsqthp_ally');
@@ -205,6 +261,8 @@ class RSQTHP_Handler : EventHandler
 		sprBoss = Actor.GetSpriteIndex('RSYI');
 		sprDown = Actor.GetSpriteIndex('RSYJ');
 		sprWhip = Actor.GetSpriteIndex('RSYW');
+		sprTier = Actor.GetSpriteIndex('RSYT');
+		sprChamp = Actor.GetSpriteIndex('RSYK');
 	}
 
 	private void FindServices()
@@ -243,7 +301,7 @@ class RSQTHP_Handler : EventHandler
 	// the same ld_dormant). Before, those bars were lifted over an icon that was not there.
 	bool WearsChampIcon(Actor a)
 	{
-		if (!champIcons || !a.FindInventory(champInfo)) return false;
+		if (!champIcons || tierIcons || !a.FindInventory(champInfo)) return false;   // ours on: theirs is hidden, no lift
 		bool dormantMode = cChDormant && cChDormant.GetInt() && cChLD && cChLD.GetInt() && ldLoaded;
 		if (dormantMode && !(ldTransformed && a.FindInventory(ldTransformed))) return false;
 		return true;
@@ -278,6 +336,7 @@ class RSQTHP_Handler : EventHandler
 		if (o != on || sc != scheme || ov != overheal || br != bright) ver++;
 		on = o; scheme = sc; set = SetOf(sc); overheal = ov; bright = br;
 		markers = cMark ? cMark.GetBool() : true;
+		tierIcons = cTierIcons ? cTierIcons.GetBool() : true;
 		aimedOnly = cAim ? cAim.GetBool() : false;
 		chunk = cChunk ? cChunk.GetBool() : false;
 		bool al = cAlly ? cAlly.GetBool() : false;
@@ -334,6 +393,7 @@ class RSQTHP_Handler : EventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
+		if (a && a.GetClassName() == 'champion_Icon') { champIconsSeen.Push(a); a.bINVISIBLE = tierIcons; return; }
 		if (!a || a.player || !Eligible(a)) return;
 		Track(a);
 		if (!coldChecked) CheckCold();
@@ -403,6 +463,7 @@ class RSQTHP_Handler : EventHandler
 	override void WorldTick()
 	{
 		ReadSettings();
+		if (champIconsSeen.Size()) ChampIconsTick();
 		if (!svcFound) FindServices();
 		if (!coldChecked) CheckCold();
 
@@ -638,4 +699,12 @@ class RSQTHP_Handler : EventHandler
 		monPeak.Clear();
 		coldPending.Clear();
 	}
+}
+
+// the Champion type a monster carries, read off Champions' own icons (handler.zs ChampIconsTick): -1 none
+class RSQTHP_ChampKind : Inventory
+{
+	int first, second;
+	Default { +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE +INVENTORY.QUIET Inventory.MaxAmount 1; }
+	override void BeginPlay() { Super.BeginPlay(); first = -1; second = -1; }
 }

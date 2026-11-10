@@ -672,6 +672,8 @@ All Melee family.
 
 - **Champions' colours:** Dark Red, Red, Orange, Yellow, Dark Green, Green, Cyan, Blue, Indigo, Violet, Pink, Black, Grey and White Champion ×0.25; **Bronze** and **Silver Champion** ×0.5; **Gold Champion** ×0.75. A champion's extra health is in its base already; these pay for its powers.
 - **Champions' mutations:** **Titan** ×0.5 (a big moment), **Undying** ×0.5 (its heart killed first), **Ghost**, **Balloon** and **Hybrid** ×0.25.
+- Each Champion row carries its power's icon, the series' own (left of the number, or right of the name when the
+  colour-blind letter is on the left). Code only, not shown yet.
 - **LegenDoom:** **Legendary** (it rose) ×1.5, a big moment; **Legend Denied** (killed before it could rise) ×0.75; **Legendary Champion** (risen, with its champion powers on) ×0.5, a big moment. With Champions' LegenDoom dormant mode a champion has no powers until it rises, and pays no colour row before then.
 
 **How you killed it** (Daring unless marked):

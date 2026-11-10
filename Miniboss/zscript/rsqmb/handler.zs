@@ -115,6 +115,8 @@ class RSQMB_Handler : EventHandler
 	// Leaving the level: everything the greed rule changed is put back (a hub keeps its monsters).
 	override void WorldUnloaded(WorldEvent e) { RestoreAll(); }
 
+	transient Service roster;     // RSQ Monsters' roster service (the tier gem beside the miniboss's bar), by name
+	transient bool rosterLooked;
 	override void WorldTick()
 	{
 		Refresh();
@@ -122,6 +124,11 @@ class RSQMB_Handler : EventHandler
 		Tick2();
 		BfTick();
 		FightTick();
+		if ((level.maptime % 17) == 0 && bosses.Size())
+		{
+			if (!rosterLooked) { rosterLooked = true; roster = ServiceIterator.Find("RSQMN_RosterService").Next(); }
+			for (int i = 0; i < bosses.Size(); i++) if (bosses[i] && !bosses[i].done) bosses[i].ReadIcons(roster);
+		}
 		if ((bosses.Size() || arrPhase || (fxp && fxp.shots.Size())) && fxOn && UseSprites()) FxEnsureDriver();
 		if (debug) { double dt = MSTimeF() - t0; costMs += dt; costTics++; }
 	}

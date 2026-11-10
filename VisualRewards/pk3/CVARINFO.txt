@@ -12,6 +12,7 @@ server bool   rsqthp_stealth  = true;   // follow the monster's translucency (co
 server bool   rsqthp_overheal = true;   // strip above the bar for health over spawn health
 server bool   rsqthp_markers  = true;   // hooked / stunned / locked / gripped icons from the series' mods, and the frozen /
                                       // held icon right of the bar (owner's picks 36, 37: on with the markers)
+server bool   rsqthp_tiericons = true;   // (owner 11-10) the tier gem (RSQ Monsters) and the Champion icon beside the bar; Champions' own icon hidden
 server bool   rsqthp_aimed    = false;  // Aimed Only (owner's pick 35, an option): a bar only over the monster a hand's gun
                                       // points at (and half a second after the aim leaves it)
 // QoL round (owner's picks, 2026-10-31). HP6-HP9 are always on (bar.zs); these four are options, off by default:

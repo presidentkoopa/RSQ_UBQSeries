@@ -400,6 +400,18 @@ class RS_ScoreHUD : EventHandler
 			Screen.DrawText(fnt, Font.FindFontColor("RSScore_White"), cx - 12, rowY, name,
 				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
 				DTA_Alpha, alpha);
+			// A CHAMPION ROW'S ICON (owner 11-10, design/icons style B): left of the number; right of the name when the
+			// colour-blind letter already sits on the left
+			int ic = row < handler.rowIcon.Size() ? handler.rowIcon[row] : -1;
+			if (ic >= 0)
+			{
+				TextureID it = TexMan.CheckForTexture(String.Format("RSSCCH%02d", ic), TexMan.Type_Any);
+				double isz = fnt.GetHeight() * 1.1;
+				double ix = tag != "" ? cx - 12 + fnt.StringWidth(name) + 3 : cx - 55 - isz - 3;
+				if (it.IsValid())
+					Screen.DrawTexture(it, false, ix, rowY + half - isz * 0.5, DTA_DestWidthF, isz, DTA_DestHeightF, isz,
+						DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, alpha);
+			}
 		}
 	}
 

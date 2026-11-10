@@ -42,7 +42,7 @@ class RSQ_Glove : Weapon
 		Weapon.Kickback 100;
 		Weapon.SlotNumber 1;
 		Tag "$RSQ_GLOVE_TAG";
-		Inventory.Icon "RMICA0";     // the boxing glove, drawn for the series (RSQ Wheel's sources/icons/gen_item_icons.py; owner 2026-11-05)
+		Inventory.Icon "RMICA0";     // the boxing glove: the series' style B icon set (design/icons, owner 11-10), x3
 		Inventory.PickupMessage "$RSQ_GLOVE_PICKUP";
 		Obituary "$RSQ_GLOVE_OB";
 		+WEAPON.WIMPY_WEAPON
@@ -170,6 +170,7 @@ class RSQ_GloveOff : RSQ_Glove
 {
 	Default
 	{
+		Inventory.Icon "RMICB0";     // the off hand's glove (style B, owner 11-10)
 		+WEAPON.OFFHANDWEAPON
 	}
 }

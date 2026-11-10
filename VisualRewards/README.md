@@ -79,6 +79,10 @@ The bars are coldcite's Top HP Bars, rebuilt for VR.
 - **Markers beside the bar.** Hooked, stunned, locked on, gripped and whipped (from the series' mods), frozen in a
   hit-stop, held in a headlock, brought back by an Arch-Vile, burning, and a heart on allies. Above the bar: a crown on a
   miniboss (with its tier pips), a chain link on its thralls, a gem on a LegenDoom legendary.
+- **Tier gem and Champion icons** (on): beside the bar, the monster's RSQ Monsters tier as a gem (bosses' gems
+  crowned), then its Champion power and mutation, in the series' own icons. They sit on the left, or on the right
+  when the left already holds markers. Champions' own floating icon is hidden while they are on. Code only, not shown
+  yet.
 - **Choices:** only the monster your gun points at, a lit chunk showing what your hit took off, blue bars for allies,
   only the 24 nearest, and a distance limit.
 
@@ -273,7 +277,7 @@ While you are DOWN in RSQ SlowMo:
 
 | Section | Rows |
 |---|---|
-| HP Bars | HP Bars (On) · Bar Colours (Classic; Red, Protanopia, Deuteranopia, Tritanopia, High Contrast, Cyan Lavender Orange, Random) · Bar Size (0.30) · Full Bright (Off) · Fade With Stealth (On) · Overheal Strip (On) · Status Markers (On) · Only Where I Aim (Off) · Damage Chunk (Off) · Blue Bars for Allies (Off) · Nearest 24 Only (Off) · Distance Limit (Off) |
+| HP Bars | HP Bars (On) · Bar Colours (Classic; Red, Protanopia, Deuteranopia, Tritanopia, High Contrast, Cyan Lavender Orange, Random) · Bar Size (0.30) · Full Bright (Off) · Fade With Stealth (On) · Overheal Strip (On) · Status Markers (On) · Tier Gem and Champion Icons (On) · Only Where I Aim (Off) · Damage Chunk (Off) · Blue Bars for Allies (Off) · Nearest 24 Only (Off) · Distance Limit (Off) |
 | Damage Numbers | Damage Numbers (On) · Numbers For (Monsters Only; All Shootable) · Number Font (JFO Metal; Ermac, Classic Doom, Classic Doom (small)) · Number Size (1.00) · Word Size (1.00) · Text Quality (Quest; PCVR) · Hit Colours (By Damage Type; By Hit Strength, Classic (below), 17 colours, Random) · Classic Colour (Default, and damnums' 21 colours) · Classic Type Colours (On) · Total Colours (Follow Combo; 17 colours, Random) · Combo Colours (White Yellow Orange Red; five more ramps, Random) · Headshot Colour (Gold) · Pop and Settle (On) · Motion Without Pop (Toss; Float) · Size by Hit (Off) · Grow with Distance (Off) · Running Total (On) · Kill Slam (On) · Combo Counter (On) · Combo Shake (On) · Overkill Word (Off) · Headshot Word (On) · Headshot Flash (On) · Headshot Cycling (On) · Shotgun Spray (Off) · Gains on You (On) · Freeze in Hit-Stop (On) · Numbers in Slow-Mo (World Time; Your Time) · Out of Your Face (On) · Clear of Walls (On) · Most Numbers (12; 6, 24, 48) |
 | Kill Rewards | Kill Rewards (On) · Bits per Kill (Standard (1 per 10); Few (1 per 20 health), Many (1 per 5), Custom (Test and Debug)) · Boss Fountain (x3; x1, x5) · What Drops (Custom (Test and Debug); Even Mix, Mostly Health, Mostly Armour, Mostly Ammo) · Bits Vanish After (7 s; Never, 15 s, 30 s, 1 min) · Bits Vanish As (Blink Out; Fade Out) · Ammo Bits Give (Any Gun I Carry; The Gun in Hand) · Bits Fly to Me (2.0 m, 0 to 4) |
 | Level-Up | Player Level-Up (On) · Level-Up Slow-Mo (Off) · Band Colour (Gold) · Text Colour (Gold) · Weapon Level-Up (On) · Weapon Tag Colour (Gold) |

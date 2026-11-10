@@ -37,6 +37,7 @@ class RS_ScoreHandler : EventHandler
 	// Resolving them once here, in play scope, is what makes them readable there.
 	Array<String> rowName;
 	Array<String> rowColor;
+	Array<int> rowIcon;     // a Champion row's icon (graphics/RSSCCH00-21, design/icons style B, owner 11-10), -1 none
 	// the first breakdown row of each bonus (a bonus may have several: RowCount, bonus.zs)
 	private Array<int> m_rowBase;
 
@@ -1266,13 +1267,29 @@ class RS_ScoreHandler : EventHandler
 
 	// Row 0 is Base; rows 1..n are the bonuses in registry order, which is the same
 	// order tracker.rowValue uses.
+	// THE CHAMPION ROWS' ICONS (owner 11-10: Champion icons on "Score kill line"): by the row's Champions token, in
+	// Champions' own icon order (0 Dark Red .. 16 Gold), then 17 Hybrid, 18 Titan, 19 Undying, 20 Ghost, 21 Balloon
+	static int ChampIconOf(RS_ScoreBonus b)
+	{
+		let t = RS_ScoreTierRow(b);
+		if (!t) return -1;
+		if (b is "RS_Bonus_MutHybrid") return 17;
+		static const String TOK[] = { "DarkRed", "Red", "Orange", "Yellow", "DarkGreen", "Green", "Cyan", "Blue", "Indigo",
+			"Violet", "Pink", "Black", "Grey", "White", "Bronze", "Silver", "Gold", "", "Titan", "Undying", "Ghost", "Balloon" };
+		String tk = t.Token();
+		for (int i = 0; i < TOK.Size(); i++) if (TOK[i] != "" && tk ~== "champion_" .. TOK[i] .. "Token") return i;
+		return -1;
+	}
+
 	private void BuildRowLabels()
 	{
 		rowName.Clear();
 		rowColor.Clear();
+		rowIcon.Clear();
 
 		rowName.Push("Base");
 		rowColor.Push("RSScore_Base");
+		rowIcon.Push(-1);
 
 		m_rowBase.Clear();
 		for (int i = 0; i < m_bonuses.Size(); i++)
@@ -1283,6 +1300,7 @@ class RS_ScoreHandler : EventHandler
 			{
 				rowName.Push(m_bonuses[i].RowName(r));
 				rowColor.Push(m_bonuses[i].FamilyColor());
+				rowIcon.Push(ChampIconOf(m_bonuses[i]));
 			}
 		}
 	}

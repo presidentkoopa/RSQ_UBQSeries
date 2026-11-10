@@ -193,7 +193,7 @@ Defaults are in bold.
 | **Shown on the rig** (2026-11-09, RSQ Score's head-shot frames and log) | A ColorfulHell imp judged head against chest |
 | **Not yet re-run** | Nothing above has been run again since MeatGrinder was removed on 2026-11-10 |
 | **Headset-confirmed** | Nothing yet |
-| **Known not to work** (from reading the code) | The **Monster Diagnostics** page: only God Mode works. The chaingunner spawns, Spawn All, Remove, DIAG and WAKE send commands nothing in the pk3 answers, and Spawn hostile changes nothing. Tier icons (a console setting, see Under the hood) draw nothing: the icon pictures are not in the pk3 |
+| **Known not to work** (from reading the code) | The **Monster Diagnostics** page: only God Mode works. The chaingunner spawns, Spawn All, Remove, DIAG and WAKE send commands nothing in the pk3 answers, and Spawn hostile changes nothing. (Until 11-10 the tier icons drew nothing: their pictures were missing. They are the series' tier gems now, code only.) |
 | **Code only, not yet shown** | Everything else on this page: the look of the flash, On tier change, the Vanilla and BD22 sets, Brutal Doom's load order, Colourful Hell's extra colours, bosses and EX forms, its fireball swaps, old saved settings reading as ColorfulHell |
 
 ---
@@ -212,8 +212,8 @@ Defaults are in bold.
 - **Colourful Hell's switches** are server settings too, with Colourful Hell's own values and no menu rows:
   `rs_ch_fireblu`, `rs_ch_gray`, `rs_ch_abyss`, `rs_ch_cyan`, `rs_ch_brown` (1 = off, the default), `rs_ch_blackboss`,
   `rs_ch_whiteboss` (1 = on), `rs_ch_exboss` (1 = the 24-in-256 EX share), `rs_ch_nerfredboss`, `rs_ch_yellowrev`,
-  `rs_ch_intercept`, `rs_ch_cyanbounce`, `rs_ch_rawket`, `rs_ch_abyssmark`, `rs_ch_colorblind` (tier icons: they draw
-  nothing, the pictures are not in the pk3), and the drop
+  `rs_ch_intercept`, `rs_ch_cyanbounce`, `rs_ch_rawket`, `rs_ch_abyssmark`, `rs_ch_colorblind` (tier icons: the series'
+  tier gems floating up off a monster, a colour-blind aid; on the menu as Tier Icons Above Monsters), and the drop
   settings `rs_ch_healthdrops`, `rs_ch_backpackdrops`, `rs_ch_ammodrops`, `rs_ch_extradrops`, `rs_ch_weapondrops`,
   `rs_ch_powerupdrops`, `rs_ch_armordrops`.
 - **The six projectile swaps** (imp fireball, Cacodemon ball, Baron ball, Mancubus shot, Arachnotron plasma, rocket)

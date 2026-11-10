@@ -57,6 +57,8 @@ class RSQTHP_Bar : Actor
 	Actor who;
 	RSQTHP_Handler h;
 	RSQTHP_Part over, mark, stat, boss, dmark;   // dmark: RSQ SlowMo's DOWN mark, a skull (RSYJ)
+	RSQTHP_Part gemP, champP, mutP;              // the tier gem, the Champion icon and its mutation's, beside the bar (11-10)
+	int gemF, champF, mutF;          // last frames shown (-1 none); start unset (-2, PostBeginPlay)
 	int lastHp, lastMax, lastVer;
 	bool lastInv, built;
 	int lastSpr, lastFrm;
@@ -129,6 +131,8 @@ class RSQTHP_Bar : Actor
 		Stop;
 	}
 
+	override void BeginPlay() { Super.BeginPlay(); gemF = -2; champF = -2; mutF = -2; }
+
 	override void OnDestroy()
 	{
 		if (over) over.Destroy();
@@ -136,6 +140,9 @@ class RSQTHP_Bar : Actor
 		if (stat) stat.Destroy();
 		if (boss) boss.Destroy();
 		if (dmark) dmark.Destroy();
+		if (gemP) gemP.Destroy();
+		if (champP) champP.Destroy();
+		if (mutP) mutP.Destroy();
 		if (chunkP) chunkP.Destroy();
 		Super.OnDestroy();
 	}
@@ -324,6 +331,13 @@ class RSQTHP_Bar : Actor
 				if (!bb && boss) { boss.Destroy(); boss = null; }
 				if (boss) { boss.sprite = h.sprBoss; boss.frame = bb - 1; }
 			}
+			// THE TIER GEM AND THE CHAMPION ICON (owner 11-10; handler.zs): beside the bar, SyncParts places them
+			int gf = h.tierIcons ? h.TierOf(who) - 1 : -1;
+			int cf = h.tierIcons ? h.ChampFrame(who) : -1;
+			int mf = h.tierIcons && cf >= 0 ? h.MutFrame(who) : -1;
+			if (gf != gemF) { gemF = gf; gemP = SidePart(gemP, gf, h.sprTier); }
+			if (cf != champF) { champF = cf; champP = SidePart(champP, cf, h.sprChamp); }
+			if (mf != mutF) { mutF = mf; mutP = SidePart(mutP, mf, h.sprChamp); }
 			// RSQ SlowMo's DOWN mark: the v2 skull is gone (v3, owner 11-07): SlowMo draws the target's own icon over the bar
 			int db = 0;
 			if (db != dmarkBits)
@@ -412,6 +426,37 @@ class RSQTHP_Bar : Actor
 		if (want != tintNow) { tintNow = want; A_SetTranslation(want); }
 	}
 
+	RSQTHP_Part SidePart(RSQTHP_Part p, int f, int spr)
+	{
+		if (f < 0) { if (p) p.Destroy(); return null; }
+		if (!p) p = RSQTHP_Part(Spawn("RSQTHP_Part", Pos, NO_REPLACE));
+		if (p) { p.sprite = spr; p.frame = f; }
+		return p;
+	}
+	// Beside the bar, outward from it: the gem, then the Champion icon, then its mutation. On the left; on the right when
+	// the left already holds the series' markers (owner 11-10), past the right-hand row's first icon if it is there.
+	// The art is 24 px drawn at 0.75 x the bar's scale (18 of the bar's pixels, as the 9 px markers at x2), centred by its
+	// grAb on the bar's middle.
+	const SIDE_GAP = 2;     // bar px between the bar's end and the first icon
+	const SIDE_STEP = 20;   // bar px from one icon's centre to the next
+	void SyncSide(Vector2 rt, double sy)
+	{
+		bool right = mark != null;
+		double c0 = 56 * lenK + SIDE_GAP + 9 + (right && stat ? SIDE_STEP : 0);
+		int slot = 0;
+		double k = 0.75 * RSQTHP_A11y.Cue();
+		RSQTHP_Part ps[3]; ps[0] = gemP; ps[1] = champP; ps[2] = mutP;
+		for (int i = 0; i < 3; i++)
+		{
+			let p = ps[i];
+			if (!p) continue;
+			double cx = (c0 + slot * SIDE_STEP) * sy;
+			SyncPart(p, rt * (right ? cx : -cx));
+			p.Scale = (sy, sy) * k;
+			slot++;
+		}
+	}
+
 	void SyncParts()
 	{
 		// HP6: the stretched bar's extra half-width, in world units along the view's right (a sprite faces the view's
@@ -426,6 +471,7 @@ class RSQTHP_Bar : Actor
 		if (stat) { SyncPart(stat, rt * ext); stat.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
 		if (boss) { SyncPart(boss); boss.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); }
 		if (dmark) { SyncPart(dmark); dmark.Scale = (sy, sy) * 2 * RSQTHP_A11y.Cue(); dmark.bBright = true; }
+		if (gemP || champP || mutP) SyncSide(rt, sy);
 		if (chunkP)
 		{
 			SyncPart(chunkP, rt * ((chunkX0 - 56) * sy * lenK));
@@ -504,7 +550,7 @@ class RSQTHP_SpriteNames : Actor
 		RS30 A 0; RS31 A 0; RS32 A 0; RS33 A 0; RS34 A 0;
 		RS40 A 0; RS41 A 0; RS42 A 0; RS43 A 0; RS44 A 0;
 		RS50 A 0; RS51 A 0; RS52 A 0; RS53 A 0; RS54 A 0;
-		RSYI A 0; RSYJ A 0;
+		RSYI A 0; RSYJ A 0; RSYT A 0; RSYK A 0;
 		Stop;
 	}
 }

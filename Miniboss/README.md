@@ -28,7 +28,8 @@ gets stronger.
 - **Miss and they grow.** If the window runs out with that piece unbroken, the miniboss and its thralls climb the RSQ
   Monsters colour ladder by one to three steps, and by default so does every monster on the map.
 - **Then it is you and the miniboss.** With the shield bar gone, its own bar takes the hits. It has three lives: each
-  time a bar empties it refills, burns with flames for five seconds and comes back a colour higher.
+  time a bar empties it refills, burns with flames for five seconds and comes back a colour higher. Beside its bar:
+  its tier gem and an icon for every Champion power it carries, its own and the ones it took from its thralls.
 - **Don't shoot it first.** Shoot it while its thralls live, and if a thrall is still standing a few seconds later, every
   monster on the map goes into a rage: twice as fast and twice as keen to attack, until the miniboss dies.
 - **When it dies.** A gun you don't have yet (or a power-up), a fountain of RSQ VisualRewards bits, RSQ Score's

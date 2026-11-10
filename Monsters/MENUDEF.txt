@@ -643,12 +643,10 @@ OptionMenu "RS_MonsterOptions"
 
 	StaticText " "
 	StaticText "Readability", 1
-	// Colourful Hell's own colourblind aid, rebuilt. CH encodes its whole
-	// difficulty ladder as a palette tint, so a player who cannot separate
-	// the colours cannot read how dangerous an approaching monster is.
-	// This shows the tier as a SHAPE instead. Off by default, exactly as
-	// CH ships it. See zscript/monsters/chaingunner/RS_ColorTierIcon.zs.
-	Option "Tier icons over monsters", "rs_mon_tiericons", "OnOff"
+	// Colourful Hell's own colourblind aid: the tier as a SHAPE (the series' style B tier gems, TI3R A-M,
+	// zombieman/RS_ZombiemanFX.zs). Off by default, as CH ships it. (A second row here read rs_mon_tiericons,
+	// which nothing reads: gone 11-10.)
+	Option "Tier Icons Above Monsters", "rs_ch_colorblind", "RS_CH_OffOn"
 
 	StaticText " "
 	StaticText "Aggression", 1

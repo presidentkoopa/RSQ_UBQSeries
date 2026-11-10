@@ -76,7 +76,8 @@ class RS_CHAbyssMark: Inventory { Default { Inventory.MaxAmount 1; } }   // CH D
 // ---------------------------------------------------------------------------
 // Colour tier icons.  CH: DECORATE.txt:709-849.  Verbatim; the ACS colour-
 // blind gate becomes rs_ch_colorblind (CH cvar CH_ColorBlind, default 0).
-// Sprites TI3R A-M ship in sprites/rs_zombieman/.
+// Sprites TI3R A-M: the series' style B tier gems (11-10; design/icons, sprites/monsters/TierIcons). They were
+// missing until then, so the aid never drew.
 // ---------------------------------------------------------------------------
 class RS_ColorTierIconCH : Actor
 {
@@ -87,6 +88,7 @@ class RS_ColorTierIconCH : Actor
 		Speed 1;
 		Projectile;
 		+NOINTERACTION
+		Scale 0.6;      // the 24 px gem at about 14 map units (11-10, my number)
 	}
 	States
 	{
