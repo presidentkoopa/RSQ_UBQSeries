@@ -93,6 +93,10 @@ The **Laser** row picks one look for every beam, both hands, straight or bent al
 
 *[Image to come: the same gun with Quest and PC VR side by side]*
 
+**Beam Sparkle (Quest)** (off): now and then a tiny spark glints on the Quest beam's outer edge, in your colour
+whitened, gone in a third of a second. Almost too faint to notice, on purpose. Photosensitive Mode dims the sparks and
+halves how often they come. Code only, not shown yet.
+
 ### Which guns have a beam
 
 25 of Brutal Doom's guns, as BD22 VR Reloaded holds them: pistol, revolver, SMG, MP40, rifle, sniper rifle,
@@ -240,7 +244,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 | Section | Rows |
 |---|---|
 | (top) | Laser Sight (On) · Which Laser (RSQ Laser Sight; QuestZDoom's (M8F)) · Main Hand (On) · Off Hand (On) |
-| Beam and Dot | Show Beam (On) · Laser (Quest; PC VR) · Show Dot (On) · Dot Only on Enemies (Off) · Dot Size (1.00) · Dot Glow (Bloom and Light; Off, Bloom, Light) · Dot Reacts to Surface (On) · Infrared Only (Off) |
+| Beam and Dot | Show Beam (On) · Laser (Quest; PC VR) · Beam Sparkle (Quest) (Off) · Show Dot (On) · Dot Only on Enemies (Off) · Dot Size (1.00) · Dot Glow (Bloom and Light; Off, Bloom, Light) · Dot Reacts to Surface (On) · Infrared Only (Off) |
 | When It Shows | Show on Melee (No) · Only When Ready (No) · Off When Aimed Down (55 degrees; 0 = never) · Follow Brutal Doom Shots (On) |
 | Targets | Target Lock (On) · Colour on Target (Off) · Target Colour (yellow) · Headshot Reaction (Off) · Headshot Colour (white) · Headshot Pulse (On) |
 | Extras | Grenade Arc (On) · Arc With Beam (On) · Spread Ring (Off) · Show Range (Off; By the Gun, At the Dot) · Range Units (Metres; Feet, Map Units) |

@@ -80,6 +80,7 @@ OptionMenu "RSQLS_Options"
 	StaticText "Beam and Dot", 1
 	Option "Show Beam", "rsqls_beam", "OnOff"
 	Option "Laser", "rsqls_beam_type", "RSQLS_BeamType", "rsqls_beam"
+	Option "Beam Sparkle (Quest)", "rsqls_beam_sparkle", "OnOff", "rsqls_beam"
 	Option "Show Dot", "rsqls_pointer", "OnOff"
 	Option "Dot Only on Enemies", "rsqls_dot_enemy", "OnOff", "rsqls_pointer"
 	Slider "Dot Size", "rsqls_spot_size", 0.25, 4.0, 0.05, 2, "rsqls_pointer"

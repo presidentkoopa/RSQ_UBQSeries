@@ -83,6 +83,45 @@ class RSQLS_Readout : Actor
 
 class RSQLS_Sight : EventHandler
 {
+	// ---- BEAM SPARKLE (owner 2026-11-07 05:49, built 11-10; design/PARKED.md): the Quest beam only, a toggle, off ------
+	// The stray bright voxels once seen in the outer beam were never tracked down; instead points on the beam's outer
+	// shell sparkle gently, almost imperceptibly: now and then one tiny additive particle at a random point along the
+	// beam's lit length, a hair off its line, in the beam's colour whitened, fading out in a third of a second. Particles
+	// (no actor, no light, no voxel frames: Quest memory). RSQ Accessibility's Photosensitive Mode dims them and halves
+	// how often. Local, drawn only; its RNG feeds nothing else.
+	const SPARK_EVERY = 5;        // tics between sparks, a hand (x2 in Photosensitive Mode)
+	const SPARK_OFF_CM = 0.35;    // off the beam's line
+	private int sparkNext[2];
+	private void Sparkle(int h, Vector3 at, Vector3 dir, double len, int rgb, double a)
+	{
+		if (len <= 1 || level.maptime < sparkNext[h]) return;
+		bool photo = RSQLS_A11y.Photo();
+		sparkNext[h] = level.maptime + random[RSQLSSpark](SPARK_EVERY - 2, SPARK_EVERY + 3) * (photo ? 2 : 1);
+		Vector3 d = dir.Length() > 0 ? dir.Unit() : (1, 0, 0);
+		Vector3 side = d cross (0, 0, 1);
+		if (side.Length() < 0.1) side = d cross (1, 0, 0);
+		side = side.Unit();
+		Vector3 up = d cross side;
+		double t = frandom[RSQLSSpark](0.04, 0.85) * len;
+		double ang = frandom[RSQLSSpark](0, 360);
+		double off = SPARK_OFF_CM * RSQLS_Hand.Upm() / 100.0;
+		int r = (rgb >> 16) & 255, g = (rgb >> 8) & 255, b = rgb & 255;
+		r = (r + 255) / 2; g = (g + 255) / 2; b = (b + 255) / 2;
+		FSpawnParticleParams pp;
+		pp.color1 = Color(255, r, g, b);
+		pp.style = STYLE_Add;
+		pp.flags = SPF_FULLBRIGHT;
+		pp.lifetime = random[RSQLSSpark](8, 12);
+		pp.size = frandom[RSQLSSpark](0.8, 1.4);
+		pp.sizestep = 0;
+		pp.pos = at + d * t + (side * cos(ang) + up * sin(ang)) * off;
+		pp.vel = (0, 0, 0);
+		pp.accel = (0, 0, 0);
+		pp.startalpha = RSQLS_A11y.Dim(clamp(a, 0.1, 1.0) * 0.6);
+		pp.fadestep = -1;
+		level.SpawnParticle(pp);
+	}
+
 	const LEAD_JUMP = 17.0;     // map units in one tic (~0.5 m) that is not a hand
 
 	private Actor spot[2];
@@ -682,6 +721,8 @@ class RSQLS_Sight : EventHandler
 				// halo (beam.zs ShowGlow). One server setting, so both hands always match.
 				if (RSQLS_Hand.Opt("rsqls_beam_type", p, 0) == 1) bt.ShowGlow(p, h, w, row, gp, k, beamRgb, a, fadeCm);
 				else { bt.Show(p, h, w, row, gp, k, bt.Tint(beamRgb, a, fadeCm)); RSQLS_Beams.HideHalo(p, h); }
+				if (RSQLS_Hand.Opt("rsqls_beam_type", p, 0) == 0 && RSQLS_Hand.Flag("rsqls_beam_sparkle", p, false))
+					Sparkle(h, beamAt, beamDir, (hitCm >= 0 ? min(hitCm, fadeCm) : fadeCm) * RSQLS_Hand.Upm() / 100.0, beamRgb, a);
 				beamOn = true;
 			}
 		}

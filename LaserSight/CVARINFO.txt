@@ -72,6 +72,7 @@ server float rsqls_head_pulse_hz = 4.0;
 server bool  rsqls_arc          = true;    // a thrown weapon (grenades) shows its arc, once it has fired once
 server bool  rsqls_arc_beam     = true;    // the beam as well as the arc's dots, bent along the arc (owner 11-06; it was straight). ON by default (owner 11-06 06:59)
 server int   rsqls_beam_type    = 0;       // Laser (owner 11-06): 0 Quest (the voxel beam), 1 PC VR (a whiter core inside a soft halo); every beam, straight and along the arc, both hands
+user   bool  rsqls_beam_sparkle = false;   // Beam Sparkle (owner 11-07, built 11-10): the Quest beam's outer shell sparkles gently; off
 server bool  rsqls_dot_enemy    = false;   // Dot Only on Enemies (owner 11-06): the dot shows only on a live hostile monster
 server float rsqls_arc_size     = 1.0;     // arc dot size
 server float rsqls_arc_a        = 0.8;     // arc dot brightness
