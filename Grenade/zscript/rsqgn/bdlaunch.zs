@@ -58,7 +58,9 @@ class RSQGN_BDLaunchers : EventHandler
 				// flipbook, which lives as long as the blast (the actor that told us is removed this tic)
 				if (fb && RSQGN_Fx.Kinetic(false))
 				{
-					fb.A_StartSound("rsqgn/k/rocket", CHAN_AUTO, CHANF_OVERLAP, 0.9, ATTN_NORM);
+					// the same booms as everything else, a touch lower (owner 11-10: mapwpn005 "doesn't belong, it's too different")
+					fb.A_StartSound("rsqgn/k/boom", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NORM, 0.92);
+					fb.A_StartSound("rsqgn/k/boom", CHAN_AUTO, CHANF_OVERLAP, 0.55, ATTN_NORM, 0.68);
 					RSQGN_Pops.Go(s.pos, 3, 2, 3, 0.8);
 				}
 			}

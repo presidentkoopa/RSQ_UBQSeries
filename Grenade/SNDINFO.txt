@@ -101,9 +101,7 @@ rsqgn/k/pop6   QGKP6   // Merge Clip 1-186.wav
 rsqgn/k/pop7   QGKP7   // Merge Clip 1-189.wav
 $rolloff rsqgn/k/pop 500 1500
 $limit rsqgn/k/pop 10
-rsqgn/k/rocket QGKR1   // mapwpn005.acx_001.wav: the rocket blast
-$rolloff rsqgn/k/rocket 1200 2000
 rsqgn/k/mega   QGKM2   // 27.wav: the mega blast (MEGA2)
 $rolloff rsqgn/k/mega 1600 3200
-rsqgn/k/mush   QGKMU   // Merge Clip 1-175.wav: the mushroom mega
+rsqgn/k/mush   QGKMU   // Merge Clip 1-175.wav's hit and swell, then MEGA2's roll slowed under deep boom tails (owner 11-10: its rumble repeated)
 $rolloff rsqgn/k/mush 1600 3200
