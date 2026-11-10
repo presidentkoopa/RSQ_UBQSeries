@@ -573,7 +573,11 @@ class RSQGR_Core : EventHandler
 		h.lastThump = level.maptime;
 		let pmo = h.owner;
 		int ctrl = RSQGR_Util.Ctrl(pmo, h.hand);   // the controller playing that hand's part now
-		pmo.LineAttack(pmo.Angle, 0.1, 0, 1, 'None', "RSQGR_NullPuff", LAF_NOINTERACT | (ctrl == 1 ? LAF_ISOFFHAND : 0));
+		// ONLY THE HOOK'S OWNER FEELS IT (11-10): the engine buzzes this machine's controllers for ANY player's hitscan
+		// (p_map.cpp:4762, no consoleplayer test), so traced on every machine it buzzed every player in a netgame. Traced
+		// only on the owner's machine, LAF_NORANDOMPUFFZ so it draws no shared random number (as RSQA_Buzz.Backup).
+		if (pmo.player != players[consoleplayer]) return;
+		pmo.LineAttack(pmo.Angle, 0.1, 0, 1, 'None', "RSQGR_NullPuff", LAF_NOINTERACT | LAF_NORANDOMPUFFZ | (ctrl == 1 ? LAF_ISOFFHAND : 0));
 		if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
 			Console.Printf("T_GR t%d h%d thump %s ctrl%d", level.maptime, h.hand, why, ctrl);
 	}

@@ -135,13 +135,17 @@ class RSQGN_Buzzer : Actor
 	static void Start(Actor who, int hand, double strength, int tics)
 	{
 		if (!who || !who.player || who.player != players[consoleplayer]) return;
+		// RSQ_Accessibility's RUMBLE STRENGTH (rsqa_rumble_scale, 0-2; by name, 1 without it), as every other series buzzer
+		let rcv = CVar.FindCVar("rsqa_rumble_scale");
+		double rs = rcv ? clamp(rcv.GetFloat(), 0.0, 2.0) : 1.0;
+		if (rs <= 0) return;
 		let q = RSQGN_Buzzer(Actor.Spawn("RSQGN_Buzzer", who.pos));
 		if (!q) return;
 		let cv = CVar.FindCVar("vr_control_scheme");
 		bool lefty = cv && cv.GetInt() >= 10;
 		q.feels = who;
 		q.left = (hand == 1) != lefty;
-		q.amp = clamp(strength, 0.05, 1.0);
+		q.amp = clamp(strength, 0.05, 1.0) * rs;   // at Rumble Strength 1, exactly as before
 		q.total = clamp(tics, 1, 16);
 		q.tleft = q.total;
 	}
