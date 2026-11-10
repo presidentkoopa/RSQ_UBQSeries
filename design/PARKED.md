@@ -22,12 +22,12 @@ Owner: "im not saying we should change anything, but ... this looks like a LOT g
 11-10: all four were built 11-08 (TacticalRig rig.zs). Owner 11-10 first picked 3 and 4, then (11:31) "put those fixes
 back in, 1 and 2": all four stay. FnF's diamonds already show only to the off hand (rule 1: its grips are the off hand's).
 
-## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25)
+## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25) — DONE 11-10
 A gun you already carry, with full ammo, cannot be picked up with Distance Grab (the catch is refused, like walking
 over it). Marked as a concern; not changed. Listed in DistanceGrab/README.md "Known concerns".
 DONE 11-10 (owner): stays targetable; AMMO FULL over it (VisualRewards' word), a soft buzz, dropped at your feet.
 
-## Saber's training remote HUD (owner 2026-11-10: "I would have liked to co-design that. Table it for now.")
+## Saber's training remote HUD (owner 2026-11-10: "I would have liked to co-design that. Table it for now.") — BUILT 11-10, layout B
 A real score / timer panel for the training remote in the series' fonts, to be designed WITH the owner. A first mockup
 (design/mockups/saber_remote/remote_hud_mock.png) was made without him; treat it as a talking point only.
 Co-design so far (owner 11-10): on the OFF WRIST, like Score's wrist digits. It shows the 4 hit pips (hits toward the
@@ -36,7 +36,7 @@ Layout picked (owner 11-10 11:0x): **B, stacked** (design/mockups/saber_remote/p
 pips under it, round (blue) and streak (gold) below. A lit red pip is a hit you've LANDED (fills toward the knock-down).
 No backing: billboard glyphs like Score's wrist digits (a canvas draws black in VR). Fonts: QVW words, JFO timer digits.
 
-## One throw (owner 2026-11-10): "hold trigger, swing, let go" for everything thrown
+## One throw (owner 2026-11-10): "hold trigger, swing, let go" for everything thrown — BUILT 11-10 (Saber, ShieldSaw, BD22 VR 2.0.4f axe + grenade on the grenade's sampler, 2.5 m/s)
 Audit 11-10: RSQ Grenade (trigger or alt held, swing, release), RSQ Saber (release fire as the hand snaps forward),
 RSQ ShieldSaw (off trigger held revs, release with the arm moving), BD22 VR's axe (rsvr/melee.zs: hold the trigger,
 swing, let go, "like the grenade") already share the gesture. They differ in how the hand's speed is sampled and in
