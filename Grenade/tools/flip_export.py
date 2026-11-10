@@ -11,6 +11,8 @@ their source art from /tmp/eosfr, /tmp/fx_agentB/cut and the repo):
           its trail, the cacodemon and its gore, the floor scorch and the floor glow are the mockup's scene, not the
           blast: they are left out. The WALL shot is not exported: its fire folds onto a wall seen side-on, which no
           billboard can hold at every angle; a rocket into a wall plays the AIR blast.
+  MUSH    /tmp/fx_mega/mega.py, the mushroom mega (owner 11-10: "the mushroom cloud one every 5, but make it big"),
+          the same way.
   MEGA    /tmp/fx_mega2/mega2.py (owner: "of the two of these i like the second one, non mushroom, more"): its whole
           render from the blast tic, without the barrel (the game's barrel is already there), the room or its floor
           glow.
@@ -116,10 +118,11 @@ def rocket_shots():
 
 
 # ---------------------------------------------------------------------------------------------------------------- MEGA
-def mega_shot():
-    sys.path.insert(0, '/tmp/fx_mega2/lib'); sys.path.insert(0, '/tmp/fx_mega2'); os.chdir('/tmp/fx_mega2')
-    M = importlib.import_module('mega2')
-    import fx
+def mega_shot(d='/tmp/fx_mega2', mod='mega2', key='mega', keep_whole=('core', 'swell')):
+    """MEGA2 (/tmp/fx_mega2 mega2.py) or the mushroom MEGA (/tmp/fx_mega mega.py): their render() without the room"""
+    sys.path.insert(0, d + '/lib'); sys.path.insert(0, d); os.chdir(d)
+    for m in ('fx', 'debris_v3', mod): sys.modules.pop(m, None)
+    M = importlib.import_module(mod)
 
     def render(bgval):
         L, LB, FL, S, B, BF, D, light, lcol = M.build()
@@ -128,14 +131,17 @@ def mega_shot():
         for t in range(M.T0, M.END):
             c = np.zeros((M.CH, M.CW, 3), np.float32); c[:] = bgval
             for b in B: b.draw(c, t)
+            for l in LB:
+                rr = l.at(t)
+                if rr: M.blit(c, *rr, l.add, l.gain, clip_floor=True)
             M.draw_cloud(c, P, V, t)
             for l in L:
                 if l.name == 'barrel': continue
                 rr = l.at(t)
-                if rr: M.blit(c, *rr, l.add, l.gain, clip_floor=not l.name.startswith(('core', 'swell')))
+                if rr: M.blit(c, *rr, l.add, l.gain, clip_floor=not l.name.startswith(keep_whole))
             for s in S: s.draw(c, t)
             for b in BF: b.draw(c, t)
-            for d in D: d.draw(c, t)
+            for dd in D: dd.draw(c, t)
             for l in FL:
                 rr = l.at(t)
                 if rr: M.blit(c, *rr, l.add, l.gain)
@@ -146,16 +152,19 @@ def mega_shot():
     wht, _ = render(1.0)
     fr = [matte(b, w) for b, w in zip(blk, wht)]
     glow = [min(1.0, light(t)) for t in range(M.T0, M.END)]
-    return {'mega': (fr, (M.BX, M.FY), 1.0 / M.PX, True, glow, (255, 158, 66), 210.0)}
+    sys.path.remove(d + '/lib'); sys.path.remove(d)
+    for m in ('fx', 'debris_v3', mod): sys.modules.pop(m, None)
+    return {key: (fr, (M.BX, M.FY), 1.0 / M.PX, True, glow, (255, 158, 66), 210.0)}
 
 
 # ---------------------------------------------------------------------------------------------------------------- WRITE
-SEQ = [('floor', 'QRF', 'ROCKET_FLOOR'), ('air', 'QRA', 'ROCKET_AIR'), ('mega', 'QMG', 'MEGA')]
+SEQ = [('floor', 'QRF', 'ROCKET_FLOOR'), ('air', 'QRA', 'ROCKET_AIR'), ('mega', 'QMG', 'MEGA'), ('mush', 'QMU', 'MUSH')]
 
 
 def main():
     shots = rocket_shots()
     shots.update(mega_shot())
+    shots.update(mega_shot('/tmp/fx_mega', 'mega', 'mush', ('core', 'dome')))
     if os.path.isdir(OUT):
         for f in os.listdir(OUT): os.remove(os.path.join(OUT, f))
     os.makedirs(OUT, exist_ok=True)

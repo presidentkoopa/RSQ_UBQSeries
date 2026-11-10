@@ -45,6 +45,18 @@ class RSQGN_Fx play
 	// CHAIN ESCALATION (chain.py LINKS): the blink before a chained barrel goes off, 10 8 6 6 4 tics down the chain
 	// (the look only: the barrel stands longer, the blast keeps stock's tic, barrel.zs Death)
 	static bool Escalates() { return Ctx("rsqgn_ctx_chain") && B("rsqgn_chain_escalate", true); }
+	// Chain Mega Every / Chain Mushroom Every (0: never)
+	static int ChainEvery(Name cv, int def) { let c = CVar.FindCVar(cv); return c ? max(0, c.GetInt()) : def; }
+
+	// THE BLAST RADIUS DOWN A CHAIN (owner 11-10: "the radius of damage for the 3rd 4th and 5th explosion would be
+	// larger"): stock 128 for the first two, then 160, 192 and 224 from the fifth on (Chain Escalation; the damage stays
+	// the stock 128 at the centre)
+	static int ChainRadius(int depth)
+	{
+		if (!Escalates() || depth < 2) return 128;
+		return depth == 2 ? 160 : (depth == 3 ? 192 : 224);
+	}
+
 	static int BlinkFor(int depth)
 	{
 		static const int BL[] = { 10, 8, 6, 6, 4 };
@@ -274,27 +286,34 @@ class RSQGN_Boom : Actor
 
 		// ---- WHAT PLAYS ----
 		int s;
-		bool finale = false;          // a chain's last barrel: the mega blast (flip.zs)
+		bool finale = false;          // a chain's mega or mushroom barrel (flip.zs)
+		int flipSeq = 0;
+		double flipK = 1.0;
 		double ko = isBarrel ? 1.0 : 0.7;            // a barrel overlay on a grenade (no grenade version was designed): smaller
 		if (isBarrel)
 		{
 			int choice = RSQGN_BarrelSwap.Kind();
 			s = (choice >= 5 && choice <= 10) ? choice - 5 : random[RSQGNBarrel](0, RSQGN_BarrelData.BARRELS - 1);
-			// CHAIN (chain.py LINKS): #5, #5 x1.25, #6, #6 x1.2, then the finale
+			// CHAIN (owner 11-10): the barrels down a chain grow (#5 x1.25, #6, #6 x1.2, the biggest x1.4); every Chain Mega
+			// Every'th barrel (3) is the mega blast MEGA2, every Chain Mushroom Every'th (5) the mushroom mega, big ("make it
+			// big"); the mushroom wins when both land. Their place in the barrel tables (cap, debris, light) stays the
+			// biggest of the six, which then doesn't play
 			if (depth >= 1 && RSQGN_Fx.Escalates())
 			{
+				int link = depth + 1;                     // the barrel's number down the chain: the one set off first is 1
+				int megaN = RSQGN_Fx.ChainEvery("rsqgn_chain_mega", 3), mushN = RSQGN_Fx.ChainEvery("rsqgn_chain_mush", 5);
 				if (depth == 1) { s = 0; k = 1.25; }
 				else if (depth == 2) { s = 1; k = 1.0; }
 				else if (depth == 3) { s = 1; k = 1.2; }
-				// the finale: the owner's own-material mega blast (MEGA2, the non-mushroom design; flip.zs). Its place in the
-				// barrel tables (cap, debris, light) stays the biggest of the six, which no longer plays
-				else { s = RSQGN_BarrelData.BIGGEST; k = 1.4; finale = true; }
+				else { s = RSQGN_BarrelData.BIGGEST; k = 1.4; }
+				if (mushN > 0 && link % mushN == 0) { s = RSQGN_BarrelData.BIGGEST; finale = true; flipSeq = RSQGN_FlipData.MUSH; flipK = 1.5; }
+				else if (megaN > 0 && link % megaN == 0) { s = RSQGN_BarrelData.BIGGEST; finale = true; flipSeq = RSQGN_FlipData.MEGA; flipK = 1.0; }
 			}
 		}
 		else s = air ? RSQGN_BarrelData.G_AIR : RSQGN_BarrelData.G_FLOOR;
 		if (waterOn) s = isBarrel ? RSQGN_BarrelData.X_WATER_B : RSQGN_BarrelData.X_WATER_G;   // the underwater swap: no fire
 		mainSeq = s;
-		if (finale && !waterOn) RSQGN_Flip.PlayAt(pos, RSQGN_FlipData.MEGA);
+		if (finale && !waterOn) RSQGN_Flip.PlayAt(pos, flipSeq, flipK);
 		else RSQGN_BarrelFX.PlayFX(pos, s, self, k, !waterOn);
 		if (!waterOn)
 		{

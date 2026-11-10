@@ -78,7 +78,10 @@ class RSQGN_Barrel : ExplosiveBarrel
 	{
 		invoker.Translation = invoker.rsqgnTrans;
 		RSQGN_Boom.ForBarrel(invoker);
-		A_Explode();   // ExplosiveBarrel's own call: default damage and radius (128 / 128), XF_HURTSOURCE
+		// ExplosiveBarrel's own call (128 damage over 128, XF_HURTSOURCE); down a chain, from the third barrel, a wider reach
+		int r = RSQGN_Fx.ChainRadius(invoker.rsqgnDepth);
+		if (r > 128) A_Explode(128, r);
+		else A_Explode();
 	}
 
 	States

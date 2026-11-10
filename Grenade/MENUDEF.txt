@@ -64,6 +64,8 @@ OptionMenu "RSQGN_Options"
 	Option "Chain", "rsqgn_ctx_chain", "OnOff"
 	Option "Crowd", "rsqgn_ctx_crowd", "OnOff"
 	Option "Chain Escalation", "rsqgn_chain_escalate", "OnOff"
+	Slider "Chain Mega Every", "rsqgn_chain_mega", 0, 10, 1, 0
+	Slider "Chain Mushroom Every", "rsqgn_chain_mush", 0, 10, 1, 0
 	Option "Screen Kick on Chains", "rsqgn_chain_kick", "OnOff"
 	StaticText "Crowd slow motion: RSQ SlowMo's Barrel Multi-Kill"
 	StaticText " "
