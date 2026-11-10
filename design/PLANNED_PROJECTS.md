@@ -51,6 +51,9 @@ swing. A possible Gun Bonsai VR upgrade on the whip tree.
 Owner 12:30 (the aim): "aim with the whip hand, we still target actors while holding in primary fire. so with whip in
 hand we are free aiming the snag cursor, but holding the trigger makes it behave like normal". So: the whip hand's own
 ray is the snag cursor while the trigger is up (the off hand free for the pistol); trigger held = marking actors as now.
+Owner 11-10 (dead-code pick): build it from the Whip's dead bind-whip code (design/WHIP_DEAD_FEATURES.md section 6),
+together with the Rope perks (section 4: Fast Reel, Steady Line, Slingshot as Gun Bonsai VR whip-tree nodes). Queued
+after the rig test and the README controls pass.
 
 
 ## RSQ Score's Big Pass

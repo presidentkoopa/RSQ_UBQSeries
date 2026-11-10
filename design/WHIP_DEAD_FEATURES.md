@@ -4,6 +4,10 @@ Owner 2026-11-10 12:53, on the code read: "But that dead code seems like a featu
 each piece: what the player would get if it worked, and what it would take. Read from the code (Whip/zscript/rsqwp/),
 nothing here is shown. The owner picks; nothing is built without his yes.
 
+**Owner's pick, 2026-11-10:** build **4. Rope perks** and **6. The bind whip** (the bind whip is the Indiana Jones
+whip + pistol project in PLANNED_PROJECTS.md). The rest (Fly, the zip, PlaceChain, Bitten) stays dead code, not built.
+The Leash's three Test and Debug sliders going is approved.
+
 ## 1. Fly: a hook you throw (core.zs Fly, PH_FLY; the recall in Press)
 
 **What the player would get.** A real grappling throw from the whip hand: press, and the line flies straight out along
