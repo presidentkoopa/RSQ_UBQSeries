@@ -4,8 +4,9 @@
 #           AC7 the taps answer. Read it with tools/rigtest/qol_analyse.py <OUT>/steady.log
 #  comfort  AC5 a throw (velocity +18 sideways) with Vignette on Knockback off and on, a fall with it on and off;
 #           AC8 a ZombieMan 250 away at 150 deg woken by your noise, then teleported to 250 at 150 deg; a barrel blast 40 ahead; Wake Cues off: the same;
-#           AC2 a "ready" rumble at Rumble Strength 1, 0.5, 2, 0 (AT_BUZZ amp lines); AC4 the preset's three settings
-#  reset    AC1 with RSQ SlowMo, Grapple and Gun Cards loaded: their settings changed, "Reset Every Series Mod"
+#           AC2 a "ready" rumble at Rumble Strength 1, 0.5, 2, 0 (AT_BUZZ amp lines) (AC4, the Comfort Preset row, is
+#           not on the page any more, so it is not tested)
+#  reset    AC1 with RSQ SlowMo, Grapple and Gun Cards loaded: their settings changed, "Reset Every Mod"
 #           picked and confirmed through the menu, their settings read back
 HERE="$(cd "$(dirname "$0")" && pwd)"; HUB="$(cd "$HERE/../../.." && pwd)"
 OUT=${OUT:-${TMPDIR:-/tmp}/rsqa_qol}; mkdir -p "$OUT"
@@ -28,15 +29,14 @@ comfort)
 	S="$S"' echo WAKE_OFF; rsqa_cue_wake 0; netevent rsqat_behind 250 150; wait 10; netevent rsqat_alert; wait 20; netevent rsqat_tele 250 -150; wait 20;'
 	S="$S"' echo RUMBLE; rsqa_sound_cues 2; netevent rsqat_ready 0; wait 10; rsqa_rumble_scale 0.5; netevent rsqat_ready 0; wait 10;'
 	S="$S"' rsqa_rumble_scale 2; netevent rsqat_ready 0; wait 10; rsqa_rumble_scale 0; netevent rsqat_ready 0; wait 10; rsqa_rumble_scale 1;'
-	S="$S"' rsqa_vignette 0; wait 3; echo PRESET; openmenu RSQA_Options; wait 5; rsqat_sel "Comfort Preset"; wait 5; qz_rstick "1 0"; wait 2; qz_rstick "0 0"; wait 10;'
-	S="$S"' closemenu; wait 5; echo PRESET_READ; rsqa_vignette; rsqa_slowmo_ramp; rsqa_photosafe; wait 5; quit'
+	S="$S"' rsqa_vignette 0; wait 5; quit'
 	exec "$HERE/run.sh" comfort 400 "$S" ;;
 reset)
 	S='god; notarget; wait 30; rsm_depth 0.9; rsqsm_radius 77; rsqgr_on 0; rsqgc_card 3; rsqa_colorblind 2;'
 	S="$S"' wait 3; echo BEFORE; rsm_depth; rsqsm_radius; rsqgr_on; rsqgc_card; rsqa_colorblind; wait 5;'
 	# the A button picks the row, A again answers the message box's "Yes" (real menu input: a menu command
 	# run from anything but menu code is fatal, "Attempt to execute CCMD ... outside of menu code")
-	S="$S"' openmenu RSQA_Options; wait 5; rsqat_sel "Reset Every Series Mod"; wait 5; qz_rbuttons 1; wait 3; qz_rbuttons 0; wait 15;'
+	S="$S"' openmenu RSQA_Options; wait 5; rsqat_sel "Reset Every Mod"; wait 5; qz_rbuttons 1; wait 3; qz_rbuttons 0; wait 15;'
 	S="$S"' echo CONFIRM; qz_rbuttons 1; wait 3; qz_rbuttons 0; wait 15; closemenu; wait 5;'
 	S="$S"' echo AFTER; rsm_depth; rsqsm_radius; rsqgr_on; rsqgc_card; rsqa_colorblind; wait 5; quit'
 	EXTRA="$HUB/pk3/RSQ_SlowMo.pk3 $HUB/pk3/RSQ_Grapple.pk3 $HUB/pk3/RSQ_GunCards.pk3" exec "$HERE/run.sh" reset 300 "$S" ;;

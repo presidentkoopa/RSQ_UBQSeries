@@ -105,13 +105,4 @@ class RSQG_Pose
 
 	static clearscope double Roll(PlayerPawn pmo, int hand)  { return Src(pmo, hand) == 0 ? pmo.AttackRoll : pmo.OffhandRoll; }
 	static clearscope double Pitch(PlayerPawn pmo, int hand) { return Src(pmo, hand) == 0 ? pmo.AttackPitch : pmo.OffhandPitch; }
-	// the hand's yaw in engine degrees (the stored -90 restored)
-	static clearscope double Yaw(PlayerPawn pmo, int hand)   { return (Src(pmo, hand) == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90; }
-
-	// the way the hand points, in ROOM space (metric axes): the same basis RS_Gestures' HandForward uses
-	static clearscope Vector3 Forward(PlayerPawn pmo, int hand)
-	{
-		double y = Yaw(pmo, hand), p = Pitch(pmo, hand);
-		return (cos(y) * cos(p), sin(y) * cos(p), sin(p));
-	}
 }

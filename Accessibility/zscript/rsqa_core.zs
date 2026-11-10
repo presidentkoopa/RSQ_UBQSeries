@@ -1,4 +1,4 @@
-// RSQ_Accessibility -- round two: the parts this pk3 runs itself (README.md "Round two").
+// RSQ_Accessibility -- the parts this pk3 runs itself (README_draft.md "Cues and rumble", "Comfort", "One hand", "Menus").
 //
 //   RSQA_Set       the settings, read in one place (every series mod carries the same few lines
 //                  under its own prefix, tools/a11y_template.zs; this class is for this pk3 only)
@@ -14,6 +14,7 @@
 //                                                            Vignette on); the strongest wins
 //                    GetInt("ready", "", playerNumber, hand) a lock / grab-ready cue on that hand:
 //                                                            a short rumble when Sound Cues has it
+//                                                            (only RSQ Saber's Force Grip asks, 11-10)
 //   RSQA_MenuMode  Simple / Full: the series' front option pages without / with their sub-pages
 
 class RSQA_Set
@@ -30,7 +31,6 @@ class RSQA_Set
 	}
 	static clearscope bool OneHand()    { return I('rsqa_onehand') != 0; }
 	static clearscope bool HoldToggle() { return I('rsqa_hold_toggle') != 0; }
-	static clearscope bool Photo()      { return I('rsqa_photosafe') != 0; }
 	static clearscope int  Vignette()   { return clamp(I('rsqa_vignette'), 0, 3); }
 	static clearscope bool CueVisual()  { return (I('rsqa_sound_cues') & 1) != 0; }
 	static clearscope bool CueRumble()  { return (I('rsqa_sound_cues') & 2) != 0; }
@@ -412,9 +412,12 @@ class RSQA_Service : Service
 	}
 }
 
-// A RUMBLE WITH A LENGTH AND A STRENGTH on one controller (0 main, 1 off), the series' route:
+// A RUMBLE WITH A LENGTH AND A STRENGTH on one controller (0 main, 1 off), this pack's route:
 // A_QuakeEx QF_WAVE re-issued every tic (X = the left controller, Y = the right; which is the main
-// hand is the engine's vr_control_scheme). The local player only.
+// hand is the engine's vr_control_scheme). The local player only. What comes through here: this pack's
+// own cues (off-view, wake, slow motion, brace, the modifier tick), the gesture reader's watch-check tick,
+// and the "ready" tick a mod asks for (RSQA_Service; only RSQ Saber's Force Grip asks). Every other
+// series rumble goes through that mod's own copy of the route, so Rumble Backup does not reach it.
 class RSQA_Buzz : Actor
 {
 	Actor feels;
@@ -422,7 +425,9 @@ class RSQA_Buzz : Actor
 	double amp;
 	int total, tleft;
 
-	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +DONTSPLASH }
+	// +NOTIMEFREEZE as the watch-check tick had before it came through here (2026-11-10): a cue still plays under a
+	// time freeze
+	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +DONTSPLASH +NOTIMEFREEZE }
 
 	static void Start(Actor who, int hand, double strength, int tics)
 	{
@@ -431,12 +436,12 @@ class RSQA_Buzz : Actor
 		double scale = RSQA_Set.Rumble();
 		if (scale <= 0) return;
 		strength *= scale;
-		// RUMBLE BACKUP (rsqa_rumble_backup, owner's pick 44). The quake route is scaled by QuestZDoom's
+		// RUMBLE BACKUP (rsqa_rumble_backup, owner's pick 44; only what comes through here, see above). The quake route is scaled by QuestZDoom's
 		// vr_quake_haptic_level and silent at 0 (r_utility.cpp:1085). The engine buzzes the firing hand for any
 		// player hitscan with damage > 0, not gated on LAF_NOINTERACT (p_map.cpp:4764-4769; teardown 99_OVERLOOKED
 		// 1a, apply/07_WHEEL 7.3), and LAF_ISOFFHAND picks the off controller by vr_control_scheme. So at level 0 a
 		// 0.1-unit trace that touches nothing gives one 150 ms pulse at 0.8 on that hand: every pulse feels the same,
-		// but every series mod that rumbles through here is felt again.
+		// but each one is felt again.
 		if (RSQA_Set.I('rsqa_rumble_backup') && RSQA_Set.F('vr_quake_haptic_level', 1.0) <= 0)
 		{
 			who.LineAttack(who.angle, 0.1, 0, 1, 'None', "RSQA_PulsePuff", LAF_NOINTERACT | (hand == 1 ? LAF_ISOFFHAND : 0));
@@ -493,12 +498,13 @@ class RSQA_MenuMode : StaticEventHandler
 	ui bool started;
 
 	// Every series front page (from each mod's MENUDEF; RSQ_MeleeOptions is RSQ Gun Bonsai VR's page,
-	// RSQML_Options is RSQ Melee's). A page whose mod is not loaded has no descriptor and is skipped.
+	// RSQML_Options is RSQ Melee's, RSQMN_Options RSQ Monsters', RSQGY_Options RSQ Graveyards'; the last two added
+	// 2026-11-10). A page whose mod is not loaded has no descriptor and is skipped.
 	static const Name FRONT[] = {
 		'UBQS_Options', 'SSQ_Options', 'RSQTR_Options', 'RSQDG_Options', 'RSQSM_Options',
 		'RSQLS_Options', 'RSQGR_Options', 'RSQ_MeleeOptions', 'RSQSC_Options', 'RSQTHP_Options',
 		'RSQMB_Options', 'RSQML_Options', 'RSQWP_Options', 'wr_Options', 'RSQGN_Options',
-		'RSQGD_Options', 'RSQFF_Options', 'RSQGC_Options'
+		'RSQGD_Options', 'RSQFF_Options', 'RSQGC_Options', 'RSQMN_Options', 'RSQGY_Options'
 	};
 
 	override void UiTick()
@@ -574,11 +580,13 @@ class RSQA_MenuMode : StaticEventHandler
 		// Each series mod's menu-name prefix (lower case; from the mods' MENUDEFs). Since the menu pass (owner 11-04
 		// 19:36) the only page a mod page links is its "Test and Debug" page (<P>_Test; RSQ Gun Bonsai VR's is
 		// RSQ_MeleeAdvanced, "rsq_melee"), so Simple hides exactly that link. "tophpbars_" is VisualRewards' old
-		// settings page, still defined.
+		// settings page, still defined. RSQ Monsters' one link is "Monster Diagnostics" (RS_MonsterDebugMenu): its
+		// pages keep RS Monsters' own names, so "rs_monster" (not "rs_", which is any RS mod's) catches it and
+		// nothing else in the series (2026-11-10). RSQ Graveyards' page links nothing; "rsqgy_" is for when it does.
 		static const String SERIES[] = {
 			"ubqs_", "ssq_", "rsqtr_", "rsqdg_", "rsqsm_", "rsqls_", "rsqgr_", "rsq_melee", "rsqsc_",
 			"rsqthp_", "tophpbars_", "rsqmb_", "rsqml_", "rsqwp_", "wr_", "rsqgn_",
-			"rsqgd_", "rsqff_", "rsqgc_"
+			"rsqgd_", "rsqff_", "rsqgc_", "rsqmn_", "rs_monster", "rsqgy_"
 		};
 		String to = sm.GetAction();
 		to = to.MakeLower();

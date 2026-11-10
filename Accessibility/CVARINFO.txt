@@ -1,4 +1,4 @@
-// RSQ_Accessibility -- the shared settings of the Radiant Silvergun Quest series (README.md).
+// RSQ_Accessibility -- the shared settings of the Radiant Silvergun Quest series (README_draft.md "Options").
 // Server cvars like the rest of the series (single-player VR; userinfo has a size limit).
 // Every series mod reads these with CVar.FindCVar and keeps its own behaviour when this pk3
 // is absent. Names are fixed: add more only as rsqa_*.
@@ -7,26 +7,32 @@ server int rsqa_colorblind = 0;   // 0 Off, 1 Protanopia, 2 Deuteranopia, 3 Trit
 server int rsqa_handed     = 0;   // 0 Follow QuestZDoom, 1 Right-Handed, 2 Left-Handed
 server int rsqa_left_scheme = 10;  // the Left-Handed Control Scheme to go back to: 10 (A) or 11 (B), the last one in use (rsqa_hand.zs)
 
-// ---- round two (README.md "Round two"). Every one is off / 1.0 by default: nothing changes
+// ---- round two (README_draft.md "Seeing", "Hands", "One hand", "Comfort"). Every one is off / 1.0 by default: nothing changes
 // until it is set, and a series mod reads none of them unless this pk3 is loaded.
 server int   rsqa_photosafe    = 0;     // 0 Off, 1 On: flashes, flickers and pulses from the series at most
                                         //   2.5 a second (14 tics apart), strong flashes at 40% brightness
 server int   rsqa_onehand      = 0;     // 0 Off, 1 On: the Off-Hand Modifier works (held: the main hand
                                         //   plays the off hand's part) and the gesture buttons act
-server float rsqa_gesture_ease = 0.0;   // 0..1: gesture tolerances wider (x1..x2), speeds and holds lower (x1..x0.5)
+server float rsqa_gesture_ease = 0.0;   // 0..1: gesture tolerances wider (x1..x2), speeds and holds lower (x1..x0.5),
+                                        //   in the mods that read it and in this pack's gesture reader (rsqg_*)
 server int   rsqa_vignette     = 0;     // 0 Off, 1 Light, 2 Medium, 3 Strong: darkens the edge of view
-                                        //   while a grapple swings, yanks or climbs and on a Force jump
+                                        //   while a Grapple or Whip rope swings, reels, climbs or yanks you, and on the
+                                        //   Saber's Force jump (and on knockback with rsqa_vig_knock)
 server float rsqa_slowmo_ramp  = 0.0;   // seconds: the slowest a slow-motion ease may be (0 = SlowMo's own)
 server float rsqa_cue_scale    = 1.0;   // dots, rings, glows and markers from the series, x0.5..x3
 server float rsqa_text_scale   = 1.0;   // the series' HUD text and the Gun Bonsai screens, x1..x3
 server int   rsqa_sound_cues   = 0;     // 0 Off, 1 Visual, 2 Rumble, 3 Both: hits and shots from off-view,
-                                        //   lock / grab ready, slow motion starting and stopping
-server int   rsqa_hold_toggle  = 0;     // 0 Off, 1 On: held binds (Force, grapple reel, the modifier) toggle
+                                        //   slow motion starting and stopping, and (Rumble) a "ready" tick when a mod
+                                        //   asks for one: only RSQ Saber's Force Grip does, on finding a new target
+server int   rsqa_hold_toggle  = 0;     // 0 Off, 1 On: held inputs toggle: this pack's Off-Hand Modifier, Grab Reach and
+                                        //   Force Grip buttons, RSQ Grapple's Fire Hook key and RSQ Saber's Force trigger
 server int   rsqa_menus        = 0;     // 0 Full, 1 Simple: the series' option pages hide their niche sub-pages
 
 // ---- 2026-10-31 sweep (owner's picks 44, 45, 47). Off by default like the rest.
-server int   rsqa_rumble_backup = 0;    // 1: when QuestZDoom's Quake Haptics level is 0 every series rumble (RSQA_Buzz)
-                                        //   still comes, as the engine's own 150 ms shot buzz on that controller
+server int   rsqa_rumble_backup = 0;    // 1: when QuestZDoom's Quake Haptics level is 0, the rumbles through this pack's
+                                        //   route (RSQA_Buzz: its own cues, the watch-check tick, the Saber's "ready" tick)
+                                        //   still come, as the engine's own 150 ms shot buzz on that controller. Other
+                                        //   mods rumble through their own route: not covered
 server int   rsqa_brace_off    = 0;     // 1: QuestZDoom's Two Handed Weapons (vr_two_handed_weapons) is turned off, so the
                                         //   off-hand grip near the gun never latches the brace that kills the off-hand gun;
                                         //   0 puts back the player's own value (rsqa_brace_keep). Set from the menu row only.
@@ -35,8 +41,10 @@ server int   rsqa_brace_cue    = 0;     // the brace latching (the off-hand gun 
 
 // ---- 2026-10-31 QoL round (owner's picks AC1-AC8, zscript/rsqa_qol.zs). Yes picks on, Option picks off.
 server float rsqa_rumble_scale = 1.0;   // AC2 Rumble Strength: every series rumble x0..2 (0 = none)
-server int   rsqa_seated       = 2;     // AC3 Seated Play: 0 Standing, 1 Seated, 2 Auto (from the measured drop of your eyes)
-server float rsqa_stand_eye    = 0;     // AC3 your standing eye height in metres ("Measure Standing Height"; 0 = learned, at least 1.62)
+server int   rsqa_seated       = 2;     // AC3 Seated Play: 0 Standing, 1 Seated, 2 Auto (from the measured drop of your eyes;
+                                        //   standing until it has a standing height: measured, or your own seen this map)
+server float rsqa_stand_eye    = 0;     // AC3 your standing eye height in metres ("Measure Standing Height"; 0 = learned:
+                                        //   your tallest steady height; Seated alone also takes at least 1.62). Kept by Reset All
 server int   rsqa_steady       = 1;     // AC6 Steady Hands: smoothed hand poses (1-euro filter) offered to the series
 server int   rsqa_vig_knock    = 0;     // AC5 the Comfort Vignette also on a big knockback and on a long fall
 server int   rsqa_slow_taps    = 0;     // AC7 Slower Taps: every tap / double-tap window in the series x1.5
@@ -56,7 +64,8 @@ user bool   rsqg_inspect_off     = false;  // QoL GE5 (Option): 1 = the watch-ch
 user bool   rsqg_inspect_tick    = true;   // QoL GE4: a light tick in that hand's controller when the pose is reached (held)
 user float  rsqg_tick_strength   = 0.35;   // ...its strength at the peak (0..1; the series' quake rumble, vr_quake_haptic_level scales it)
 user float  rsqg_inspect_twist   = 35;     // wrist twist (roll) needed to start, degrees either way (was 45 until 11-06: owner "sometimes I don't see the card when I want to")
-user float  rsqg_inspect_untwist = 20;     // ...and below this it drops (less than the start: no flicker; was 30 until 11-06, the same 15 degree gap)
+user float  rsqg_inspect_untwist = 20;     // ...and below this it drops (less than the start: no flicker; was 30 until 11-06, the same 15 degree gap;
+                                           // held at least 5 under the start in code, so the two sliders cannot cross)
 user int    rsqg_inspect_way     = 2;      // 2 the back of the wrist to your face, as you check a watch (rig 2026-11-02: right AttackRoll -90 fires, +90 does not; left mirrored); 1 the pulse side; 0 either way
 user int    rsqg_inspect_hold    = 6;      // tics the pose must be held before it counts (35 tics = 1 second)
 user float  rsqg_inspect_low     = 0.30;   // lowest the hand may be, metres BELOW your eyes (upper chest)
@@ -68,10 +77,8 @@ user float  rsqg_inspect_pitch   = 60;     // the gun may point at most this far
 user float  rsqg_inspect_still   = 1.2;    // the hand must be slower than this (metres a second) to start
 user float  rsqg_inspect_slack   = 0.05;   // once on, the place may drift this far (metres) before it drops
 
-// ---- ONE HAND: stillness; thrust / pull along the hand's own axis is answered as a speed ("thrust") ----------
-// (rsqg_signals, "Thrust and Pull Events", and its rsqg_thrust_mps / _age / _repeat were removed in 0.99a with the
-// thrust / pull / punch / shove events they switched on: no mod listened. The owner's call, 11-04.)
-user float  rsqg_still_mps       = 0.3;    // below this a hand counts as still (shared with palms out)
+// ---- ONE HAND: stillness ------------------------------------------------------------------------------------
+user float  rsqg_still_mps       = 0.3;    // below this a hand counts as still (palms out; the debug telemetry)
 
 // ---- BOTH HANDS: down past the hips, thrown apart, both palms out (RS_Gestures' rsg_twohand) -----------
 // Off by default, as in RS_Gestures: the switch buys the rsqg_pair event.
@@ -114,8 +121,8 @@ user float  rsqg_punch_together  = 0.6;    // the other hand moving the same way
 // settings: rsqg_shove, rsqg_shove_mps, rsqg_shove_slowmo, rsqg_shove_slowmo_ms are rsqml_shove* there.)
 
 // ---- QoL (2026-10-31) -----------------------------------------------------------------------------------
-// GE7: a small grey line low in the view names each gesture as it is recognised (inspect, jab / hook / uppercut,
-// shove, thrust / pull, the two-hand events), for tuning. Subtle (half-transparent, gone in 1.5 s), so on.
+// GE7: a small grey line low in the view names each gesture as it is recognised (the watch check, jab / hook / uppercut,
+// the gun-butt shove, the two-hand events), for tuning. Subtle (half-transparent, gone in 1.5 s; Text Size scales it), so on.
 user bool   rsqg_names           = true;
 // GE3 (Option): FIT TO MY BODY. Stand tall, arms straight out to your sides, press Measure Me: your eye height
 // and reach are measured, and the zones (inspect's box, the hips, the chest, palms out) scale from the body the

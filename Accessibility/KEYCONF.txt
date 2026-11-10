@@ -9,7 +9,7 @@
 //   6 Throw (the ShieldSaw's forward flick)    7 Reload (the flick-reload)
 // The wrist cross is SlowMo's own toggle (rsm_toggle), offered here too (8). The Force jump is
 // already a button (Jump, held), so it has none here.
-// No default binds: bind them in Customize Controls, under "Accessibility".
+// No default binds: bind them on the Accessibility page or in Customize Controls, under "RSQ Accessibility".
 addkeysection "RSQ Accessibility" RSQA
 addmenukey "Off-Hand Modifier" "+rsqa_mod"
 addmenukey "Grab Pull" rsqa_pull

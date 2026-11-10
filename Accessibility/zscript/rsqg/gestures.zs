@@ -1,11 +1,12 @@
-// RSQ_Gestures -- what the hands are doing, for any series mod that asks. Ported from the owner's
-// RS_Gestures (written for his REMA engine) to stock QuestZDoom 17.3.
+// RSQ_Accessibility's gesture reader (was the pk3 RSQ_Gestures until 0.99a) -- what the hands are doing, for any series
+// mod that asks. Ported from the owner's RS_Gestures (written for his REMA engine) to stock QuestZDoom 17.3.
 //
-// THREE KINDS, as in RS_Gestures:
-//   POSE      one hand held a certain way: INSPECT (new here, the weapon cards' "show me"), STILL.
-//   IMPULSE   one hand moving fast along its own axis: THRUST (away, + ) or PULL (back, -), the "thrust" answer.
-//             (Its rsqg_thrust / rsqg_pull events, and the punch / shove events, behind "Thrust and Pull Events", were
-//             removed in 0.99a: no mod listened. Every answer below is still given to whoever asks.)
+// THE KINDS, as in RS_Gestures (its third, IMPULSE, a hand thrust or pulled along its own axis, is not kept: its events
+// went in 0.99a, its "thrust" answer on 2026-11-10 with the "still", "palms", "punch.ago", "shove.ago" and "shove.speed"
+// answers and the static RSQG class, since nothing in the repo asked for them, the probes under tools/rigtest_gestures
+// included; owner 11-10: "you are free to fix accessibility as you see fit"):
+//   POSE      one hand held a certain way: INSPECT (new here, the weapon cards' "show me"). STILL is counted for the
+//             debug telemetry only.
 //   BOTH      a relationship between the two hands: both swept DOWN past the hips, thrown APART from
 //             the chest, both PALMS held out. rsg_pair.zs. And new here (2026-11-02, for RSQ Melee's Clear Out,
 //             GBOVR_TREES.md 4.1 A): both palms THRUST forward together, side by side.
@@ -29,12 +30,14 @@
 //             day's move to RSQ Melee (its shove.zs), which reads the swing itself. Gestures acts on nothing again: it
 //             names the shove and answers "shove" to whoever asks.)
 //   QUIET     GE1: while RSQ Grapple says you are on the rope ("climbing", "swinging", "reeling") or RSQ Wheel is open
-//             ("IsOpen"), and for RING tics after, no thrust, pull, punch, shove or two-hand event is read.
+//             ("IsOpen"), and for RING tics after, no punch, shove or two-hand event is read.
 //             Both asked by name through their services; neither mod is touched.
 //   TICK      GE4: a light rumble in that hand when the watch-check (inspect) pose is held.
 //   NAMES     GE7: a small grey line names each gesture as it is recognised (RenderOverlay).
 //   BODY      GE3: Measure Me scales the zones to your eye height and reach.
-// The drawn-shape matcher (rsg_match / rsg_capture / rsg_record) is not ported; see README.md.
+//   EASE      RSQ_Accessibility's Gesture Ease (RSQG_A11y.Wide / Low, as every series mod applies it to its own gestures;
+//             2026-11-10): the watch check, the two-hand gestures and the punch (RSQG_Handler.Wide / Low).
+// The drawn-shape matcher (rsg_match / rsg_capture / rsg_record) is not ported.
 //
 // WHAT REMA HAD AND QZD DOES NOT, and what stands in for it here:
 //   Level.HandVelAtPoint / RS_HAND_PEAK / HandPeakAgeMs (the engine's 250 ms velocity ring)
@@ -103,10 +106,9 @@ class RSQG_Handler : EventHandler
 	Vector3 pDir[2];
 	int punchTic[2], punchKind[2];
 	double punchMps[2];
-	// SHOVE (GE2): the last gun-in-hand swing, per hand: its gametic (0 never), two hands on it, its m/s
+	// SHOVE (GE2): the last gun-in-hand swing, per hand: its gametic (0 never), two hands on it
 	int shoveTic[2];
 	bool shoveTwo[2];
-	double shoveMps[2];
 
 	// QUIET (GE1): no impulse gestures until this gametic; why (1 rope climb, 2 the Wheel open)
 	int quietTill, quietWhy;
@@ -142,6 +144,11 @@ class RSQG_Handler : EventHandler
 	static RSQG_Handler Get() { return RSQG_Handler(EventHandler.Find("RSQG_Handler")); }
 
 	static clearscope double Num(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
+	// GESTURE EASE (rsqa_gesture_ease, RSQG_A11y: 0 without RSQ_Accessibility's menu loaded). The series' rule (CVARINFO):
+	// a tolerance (a zone, an angle allowed, a window, a still-speed) x1..x2 (Wide), a threshold to reach (a speed,
+	// an angle needed, a hold, a share) x1..x0.5 (Low).
+	static clearscope double Wide(String n, double d) { return RSQG_A11y.Wide(Num(n, d)); }
+	static clearscope double Low(String n, double d) { return RSQG_A11y.Low(Num(n, d)); }
 	static clearscope int Opt(String n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
 
 	static double NowMs() { return gametic * 1000.0 / TICRATE; }
@@ -235,18 +242,22 @@ class RSQG_Handler : EventHandler
 		if (age < 0 || age >= SHOW) return;
 		// subtle: small, grey, half-transparent, low in the view, fading over its last half second
 		double a = 0.55 * min(1.0, (SHOW - age) / 18.0);
-		double vw = 640, vh = 400;
+		// Text Size (rsqa_text_scale, RSQG_A11y.Text: x1..x3) makes the line bigger, as every series HUD text
+		double vw = 640 / RSQG_A11y.Text(), vh = 400 / RSQG_A11y.Text();
 		String t = sayName;
 		Screen.DrawText(SmallFont, Font.CR_GRAY, (vw - SmallFont.StringWidth(t)) / 2, vh * 0.72, t,
 			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, a);
 	}
 
-	// ---- TICK (GE4): the series' rumble route, a light one ------------------------------------------------
+	// ---- TICK (GE4): a light one, through this pack's rumble route ---------------------------------------
+	// RSQA_Buzz (rsqa_core.zs), so Rumble Strength and Rumble Backup cover it like this pack's other cues (2026-11-10:
+	// it had its own copy of the route, RSQG_Tick, which Rumble Backup never reached).
 	void TickHand(PlayerPawn pmo, int h)
 	{
 		if (!Opt("rsqg_inspect_tick", 1)) return;
-		bool lc = RSQG_Pose.IsLeft(RSQG_Pose.Src(pmo, h));   // the controller playing that hand (the Off-Hand Modifier)
-		RSQG_Tick.Start(pmo, lc, Num("rsqg_tick_strength", 0.35), 3);
+		int ctrl = RSQG_Pose.Src(pmo, h);   // the controller playing that hand (0 main, 1 off: the Off-Hand Modifier)
+		bool lc = RSQG_Pose.IsLeft(ctrl);
+		RSQA_Buzz.Start(pmo, ctrl, Num("rsqg_tick_strength", 0.35), 3);
 		if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: watch-check tick, %s hand (%s controller) (t%d)", HandName(h), lc ? "left" : "right", level.maptime);
 	}
 
@@ -272,7 +283,7 @@ class RSQG_Handler : EventHandler
 		measureFrom = gametic + 2 * TICRATE;
 		measureTill = measureFrom + TICRATE;
 		mEye = 0; mReach = 0;
-		Console.MidPrint(null, "RSQ Gestures: Measure Me\nClose the menu, stand tall,\narms straight out to your sides.", true);
+		Console.MidPrint(null, "RSQ Accessibility: Measure Me\nClose the menu, stand tall,\narms straight out to your sides.", true);
 	}
 
 	void Measure(PlayerPawn pmo)
@@ -290,7 +301,7 @@ class RSQG_Handler : EventHandler
 		measureTill = 0;
 		if (mEye < 0.5 || mReach < 0.2)
 		{
-			Console.MidPrint(null, String.Format("RSQ Gestures: could not measure\n(eyes %.2f m, reach %.2f m). Try again.", mEye, mReach), true);
+			Console.MidPrint(null, String.Format("RSQ Accessibility: could not measure\n(eyes %.2f m, reach %.2f m). Try again.", mEye, mReach), true);
 			Console.Printf("rsqg: measure failed, eyes %.2f m reach %.2f m", mEye, mReach);
 			return;
 		}
@@ -298,7 +309,7 @@ class RSQG_Handler : EventHandler
 		if (ce) ce.SetFloat(mEye);
 		if (cr) cr.SetFloat(mReach);
 		if (cb) cb.SetInt(1);
-		Console.MidPrint(null, String.Format("RSQ Gestures: measured\neyes %.2f m, reach %.2f m", mEye, mReach), true);
+		Console.MidPrint(null, String.Format("RSQ Accessibility: measured\neyes %.2f m, reach %.2f m", mEye, mReach), true);
 		Console.Printf("rsqg: measured eyes %.2f m, reach %.2f m: zones x%.2f up/down, x%.2f forward/sideways", mEye, mReach,
 			clamp(mEye / REF_EYE, 0.6, 1.4), clamp(mReach / REF_REACH, 0.6, 1.4));
 	}
@@ -451,10 +462,11 @@ class RSQG_Handler : EventHandler
 	{
 		Vector3 b = RSQG_Pose.Body(pmo, h);
 		double hs = HScale(), vs = VScale();   // GE3: fitted to your body (1, 1 unless Fit to My Body)
-		if (b.x < Num("rsqg_inspect_near", 0.15) * hs - slack || b.x > Num("rsqg_inspect_far", 0.65) * hs + slack) return false;
-		if (b.z < -Num("rsqg_inspect_low", 0.30) * vs - slack || b.z > Num("rsqg_inspect_high", 0.20) * vs + slack) return false;
-		if (abs(b.y) > Num("rsqg_inspect_side", 0.35) * hs + slack) return false;
-		if (abs(Actor.Normalize180(RSQG_Pose.Pitch(pmo, h))) > Num("rsqg_inspect_pitch", 60) + slack * 100) return false;
+		// Gesture Ease: the box wider every way (nearest x1..x0.5), the gun's tilt allowed wider (at most 90)
+		if (b.x < Low("rsqg_inspect_near", 0.15) * hs - slack || b.x > Wide("rsqg_inspect_far", 0.65) * hs + slack) return false;
+		if (b.z < -Wide("rsqg_inspect_low", 0.30) * vs - slack || b.z > Wide("rsqg_inspect_high", 0.20) * vs + slack) return false;
+		if (abs(b.y) > Wide("rsqg_inspect_side", 0.35) * hs + slack) return false;
+		if (abs(Actor.Normalize180(RSQG_Pose.Pitch(pmo, h))) > min(Wide("rsqg_inspect_pitch", 60), 90.0) + slack * 100) return false;
 		double r = Actor.Normalize180(RSQG_Pose.Roll(pmo, h));
 		// one way and the other: the engine reports a mirrored twist with the opposite sign on the
 		// left controller (measured: right +60 stage roll reads +50, left -60 reads -50), so a
@@ -471,37 +483,38 @@ class RSQG_Handler : EventHandler
 		return abs(r) >= need;
 	}
 
+	// THE TWIST, ON AND OFF. Off is kept at least TWIST_GAP under On (2026-11-10: the sliders could cross, Twist On
+	// down to 20 = Twist Off's default, Twist Off up to 80; with Off at or over On the pose flickers on and off at the
+	// edge). Both eased (Gesture Ease: x1..x0.5), the gap kept after.
+	const TWIST_GAP = 5.0;
+	static double TwistOn() { return Low("rsqg_inspect_twist", 35); }
+	static double TwistOff() { return min(Low("rsqg_inspect_untwist", 20), TwistOn() - TWIST_GAP); }
+	// the hold, in tics (Gesture Ease: x1..x0.5, at least 1)
+	static int InspectHold() { return max(1, int(RSQG_A11y.Low(Opt("rsqg_inspect_hold", 6)) + 0.5)); }
+
 	void Inspect1(PlayerPawn pmo, int h)
 	{
 		int s = insState[h];
-		bool still = SpeedNow(h) < Num("rsqg_inspect_still", 1.2);
+		bool still = SpeedNow(h) < Wide("rsqg_inspect_still", 1.2);
+		int hold = InspectHold();
 		if (s == 0)
 		{
-			if (still && InspectPose(pmo, h, 0, Num("rsqg_inspect_twist", 35)))
+			if (still && InspectPose(pmo, h, 0, TwistOn()))
 			{
 				insTics[h] = 1;
-				SetInspect(h, Opt("rsqg_inspect_hold", 6) <= 1 ? 2 : 1);
+				SetInspect(h, hold <= 1 ? 2 : 1);
 			}
 			else { insTics[h] = 0; SetInspect(h, 0); }
 			return;
 		}
-		double slack = Num("rsqg_inspect_slack", 0.05);
-		bool keep = InspectPose(pmo, h, slack, Num("rsqg_inspect_untwist", 20));
+		double slack = Wide("rsqg_inspect_slack", 0.05);
+		bool keep = InspectPose(pmo, h, slack, TwistOff());
 		// entering must stay still too (a swing through the pose is not holding it); once held you may
 		// move the gun a little while you read it
 		if (!keep || (s == 1 && !still)) { insTics[h] = 0; SetInspect(h, 0); return; }
 		insTics[h]++;
-		if (s == 1 && insTics[h] >= Opt("rsqg_inspect_hold", 6)) SetInspect(h, 2);
+		if (s == 1 && insTics[h] >= hold) SetInspect(h, 2);
 		else SetInspect(h, s);
-	}
-
-	// ---- ONE HAND (rsg_signals.zs) ----------------------------------------------------------------------
-	// speed along the hand's own forward axis at the ring's fastest instant, metres a second; + away
-	double ThrustAlong(PlayerPawn pmo, int h)
-	{
-		if (!live[h] || ringN[h] <= 0) return 0;
-		Vector3 ax = RSQG_Pose.Forward(pmo, h);
-		return PeakVel(h) dot ax;
 	}
 
 	// ---- BRACED --------------------------------------------------------------------------------------
@@ -530,7 +543,7 @@ class RSQG_Handler : EventHandler
 	void Punch1(PlayerPawn pmo, int h, bool isBr)
 	{
 		if (!live[h] || ringN[h] <= 0) { pArmed[h] = false; PunchReset(h); return; }
-		double minMps = Num("rsqg_punch_mps", 2.0);
+		double minMps = Low("rsqg_punch_mps", 2.0);   // Gesture Ease: x1..x0.5 (the arming speed below follows it)
 		Vector3 v = VelAgo(h, 0);
 		// a tic that repeats the last pose exactly is a late frame, not a stop (the hand is written per
 		// rendered frame): it neither adds to the swing nor ends it, for MAX_STALE tics
@@ -590,7 +603,7 @@ class RSQG_Handler : EventHandler
 		if (carry == CARRY_GUN)
 		{
 			// THE SHOVE (GE2): its own answer, never a punch. (Its blow, the butt shove, is RSQ Melee's: it reads the swing itself.)
-			shoveTic[h] = gametic; shoveTwo[h] = two; shoveMps[h] = avg;
+			shoveTic[h] = gametic; shoveTwo[h] = two;
 			Say("gun-butt shove (" .. HandName(h) .. ")");
 			if (SwDebug() >= 1)
 				Console.Printf("\c[Gold]rsqg: shove%s, %s hand, %.2f m/s, with %s (t%d)", two ? " (two hands)" : "", HandName(h), avg, CarryName(pmo, h), level.maptime);
@@ -648,7 +661,7 @@ class RSQG_Handler : EventHandler
 		if (!live[h] || ringN[h] <= 0) return false;
 		if (pmo.player.cmd.buttons & (BT_ATTACK | BT_ALTATTACK)) return false;
 		if (PeakVel(h).Length() >= stillMps) return false;
-		if (Actor.Normalize180(RSQG_Pose.Pitch(pmo, h)) < Num("rsqg_two_palms_pitch", 40)) return false;
+		if (Actor.Normalize180(RSQG_Pose.Pitch(pmo, h)) < Low("rsqg_two_palms_pitch", 40)) return false;   // Gesture Ease
 		Vector3 b = RSQG_Pose.Body(pmo, h);
 		return b.x >= frontM && b.z >= -hipM;
 	}
@@ -660,27 +673,31 @@ class RSQG_Handler : EventHandler
 		double now = NowMs();
 		// RSQ_Accessibility's SLOWER TAPS (RSQG_A11y.TapScale: x1.5 when on, x1 without it): the two hands' moment
 		// "together" is this series mod's one two-events-in-a-window test, so it gets the longer window too
-		double windowMs = max(Num("rsqg_two_window_ms", 120), 0) * RSQG_A11y.TapScale();
+		// Gesture Ease (Wide / Low): the window and the chest's reach wider, the speeds, the straightness shares, the
+		// palms' distance ahead, their gap, their pitch and their hold lower. The hip and chest lines are body landmarks,
+		// not tolerances: not eased.
+		double windowMs = max(Wide("rsqg_two_window_ms", 120), 0) * RSQG_A11y.TapScale();
 		double ageMs = Num("rsqg_two_age", 180);
 		double repeatMs = max(Num("rsqg_two_repeat_ms", 500), 0);
-		double needDown = Num("rsqg_two_down_mps", 2.0);
-		double downFrac = clamp(Num("rsqg_two_down_frac", 0.5), 0, 1);
+		double needDown = Low("rsqg_two_down_mps", 2.0);
+		double downFrac = clamp(Low("rsqg_two_down_frac", 0.5), 0, 1);
 		double hs = HScale(), vs = VScale();   // GE3: fitted to your body (1, 1 unless Fit to My Body)
 		double hipM = Num("rsqg_two_hip_m", 0.60) * vs;
-		double needApart = Num("rsqg_two_apart_mps", 2.0);
-		double chestM = Num("rsqg_two_chest_m", 0.40) * vs, chestR = Num("rsqg_two_chest_r", 0.50) * hs;
-		double frontM = Num("rsqg_two_front_m", 0.25) * hs;
+		double needApart = Low("rsqg_two_apart_mps", 2.0);
+		double chestM = Num("rsqg_two_chest_m", 0.40) * vs, chestR = Wide("rsqg_two_chest_r", 0.50) * hs;
+		double frontM = Low("rsqg_two_front_m", 0.25) * hs;
 		// GE6: each event on its own switch (under Two-Hand Events)
 		bool doDown = Opt("rsqg_two_down", 1) != 0, doApart = Opt("rsqg_two_apart", 1) != 0, doPalms = Opt("rsqg_two_palms", 1) != 0;
 		// THRUST: each hand driven forward (where you face) at rsqg_two_thrust_mps, mostly forward, pointing up at least
 		// rsqg_two_thrust_pitch (a palm pushed out; QuestZDoom reads no fingers), above the hips, never braced on a gun
 		bool doThrust = Opt("rsqg_two_thrust", 1) != 0 && !IsBraced(pmo.player);
-		double needThrust = Num("rsqg_two_thrust_mps", 2.5);
-		double thrustFrac = clamp(Num("rsqg_two_thrust_frac", 0.6), 0, 1);
+		double needThrust = Low("rsqg_two_thrust_mps", 2.5);
+		double thrustFrac = clamp(Low("rsqg_two_thrust_frac", 0.6), 0, 1);
 		double thrustPitch = Num("rsqg_two_thrust_pitch", 20);
+		if (thrustPitch > 0) thrustPitch = RSQG_A11y.Low(thrustPitch);   // a pitch at or under 0 is already no demand
 		double fc = cos(pmo.Angle), fs = sin(pmo.Angle);
-		double holdMs = max(Num("rsqg_two_hold_ms", 400), 0);
-		double stillMps = Num("rsqg_still_mps", 0.3);
+		double holdMs = max(Low("rsqg_two_hold_ms", 400), 0);
+		double stillMps = Wide("rsqg_still_mps", 0.3);
 
 		for (int h = 0; h < 2; h++)
 		{
@@ -737,7 +754,7 @@ class RSQG_Handler : EventHandler
 
 		// side by side, not one behind the other on a rifle
 		Vector3 b0 = RSQG_Pose.Body(pmo, 0), b1 = RSQG_Pose.Body(pmo, 1);
-		bool apartEnough = abs(b0.y - b1.y) >= Num("rsqg_two_palms_gap", 0.25) * hs;
+		bool apartEnough = abs(b0.y - b1.y) >= Low("rsqg_two_palms_gap", 0.25) * hs;   // Gesture Ease
 		if (doThrust && apartEnough && Together(thrustAt[0], thrustAt[1], windowMs, now, liveMs))
 		{
 			if (Announce(PAIR_THRUST, min(thrustMps[0], thrustMps[1]), now, repeatMs)) { thrustAt[0] = NEVER; thrustAt[1] = NEVER; }
@@ -793,10 +810,6 @@ class RSQG_Handler : EventHandler
 
 	int Inspect(int pn, int h)      { if (InspectOff()) return -1; if (!Asked(pn) || h < 0 || h > 1) return 0; return insState[h]; }
 	int InspectTics(int pn, int h)  { if (InspectOff()) return -1; if (!Asked(pn) || h < 0 || h > 1) return 0; return insTics[h]; }
-	int StillTics(int pn, int h)    { if (!Asked(pn) || h < 0 || h > 1) return 0; return stillFor[h]; }
-	double Thrust(int pn, int h)    { let pmo = Asked(pn); if (!pmo || h < 0 || h > 1) return 0; return ThrustAlong(pmo, h); }
-	double ThrustAgeMs(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1) return -1; return PeakAgeMs(h); }
-	double PalmsOutSeconds(int pn)  { if (!Asked(pn)) return 0; return palmsHeldFor; }
 	int Braced(int pn)              { lastAsk = gametic; if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return 0; return IsBraced(players[pn]) ? 1 : 0; }
 	int BracedTics(int pn)          { if (!Asked(pn) || bracedSince == 0) return 0; return gametic - bracedSince + 1; }
 	// the last punch: within rsqg_punch_window ms, kind + 1 (1 jab, 2 hook, 3 uppercut); else 0
@@ -807,7 +820,6 @@ class RSQG_Handler : EventHandler
 		return punchKind[h] + 1;
 	}
 	int LastPunchKind(int pn, int h)    { if (!Asked(pn) || h < 0 || h > 1 || punchTic[h] <= 0) return -1; return punchKind[h]; }
-	double PunchAgoMs(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1 || punchTic[h] <= 0) return -1; return (gametic - punchTic[h]) * 1000.0 / TICRATE; }
 	double LastPunchMps(int pn, int h)  { if (!Asked(pn) || h < 0 || h > 1 || punchTic[h] <= 0) return 0; return punchMps[h]; }
 	// the last shove (GE2): within rsqg_punch_window, 1 one hand, 2 two hands on the gun; else 0
 	int ShoveNow(int pn, int h)
@@ -816,8 +828,6 @@ class RSQG_Handler : EventHandler
 		if ((gametic - shoveTic[h]) * 1000.0 / TICRATE > Num("rsqg_punch_window", 300)) return 0;
 		return shoveTwo[h] ? 2 : 1;
 	}
-	double ShoveAgoMs(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1 || shoveTic[h] <= 0) return -1; return (gametic - shoveTic[h]) * 1000.0 / TICRATE; }
-	double LastShoveMps(int pn, int h) { if (!Asked(pn) || h < 0 || h > 1 || shoveTic[h] <= 0) return 0; return shoveMps[h]; }
 	int QuietNow(int pn)            { if (!Asked(pn)) return 0; return gametic < quietTill ? quietWhy : 0; }
 	// asking also keeps the two-hand events read for the next second, with their switch off (TwoHandWanted)
 	double PairAgoMs(int pn, int k) { pairAsk = gametic; if (!Asked(pn) || k < 0 || k >= PAIR_KINDS || saidAt[k] <= NEVER) return -1; return NowMs() - saidAt[k]; }
@@ -836,20 +846,6 @@ class RSQG_Handler : EventHandler
 	// read-only, from any scope: the last answer, without waking the measuring
 	clearscope int Peek(int h) const { return (h < 0 || h > 1) ? 0 : insState[h]; }
 	clearscope int PeekTics(int h) const { return (h < 0 || h > 1) ? 0 : insTics[h]; }
-}
-
-// THE STATIC API, for a mod that loads after this one and is happy to depend on it. Series mods call
-// RSQG_Service by name instead (no compile dependency). Hands: 0 main, 1 off. The console player.
-class RSQG
-{
-	static play int Inspect(int hand)      { let h = RSQG_Handler.Get(); return h ? h.Inspect(consoleplayer, hand) : 0; }
-	static play int InspectTics(int hand)  { let h = RSQG_Handler.Get(); return h ? h.InspectTics(consoleplayer, hand) : 0; }
-	static play int StillTics(int hand)    { let h = RSQG_Handler.Get(); return h ? h.StillTics(consoleplayer, hand) : 0; }
-	static play double Thrust(int hand)    { let h = RSQG_Handler.Get(); return h ? h.Thrust(consoleplayer, hand) : 0; }
-	static play double PalmsOutSeconds()   { let h = RSQG_Handler.Get(); return h ? h.PalmsOutSeconds(consoleplayer) : 0; }
-	static clearscope bool Braced(PlayerPawn pmo) { return pmo && RSQG_Handler.IsBraced(pmo.player); }
-	static play int Punch(int hand)        { let h = RSQG_Handler.Get(); return h ? h.PunchNow(consoleplayer, hand) : 0; }
-	static play int Shove(int hand)        { let h = RSQG_Handler.Get(); return h ? h.ShoveNow(consoleplayer, hand) : 0; }
 }
 
 // RSQG_Service -- ask by name, no compile dependency:
@@ -875,20 +871,14 @@ class RSQG_Service : Service
 		if (request ~== "inspect")      return h.Inspect(pn, intArg);                 // 0 not, 1 entering, 2 held
 		if (request ~== "inspect.tics") return h.InspectTics(pn, intArg);             // tics since the pose was met (0 = not)
 		if (request ~== "inspect.any")  return RSQG_Handler.InspectOff() ? -1 : max(h.Inspect(pn, 0), h.Inspect(pn, 1));   // -1: the pose is switched off (GE5)
-		if (request ~== "still")        return h.StillTics(pn, intArg);               // tics the hand has been still
-		if (request ~== "thrust")       return int(round(h.Thrust(pn, intArg) * 100)); // hundredths m/s along the hand (- = pulling back)
 		if (request ~== "pair.ago")     return int(h.PairAgoMs(pn, intArg));          // ms since that two-hand gesture fired, -1 never; asking keeps the two-hand events read
-		if (request ~== "palms")        return int(h.PalmsOutSeconds(pn) * 1000);     // ms both palms have been out
 		if (request ~== "mainleft")     return RSQG_Pose.MainIsLeft() ? 1 : 0;        // the main hand is the left controller
 		if (request ~== "braced")       return h.Braced(PnAny(objectArg));            // 1 while the two-hand grip latch is on
 		if (request ~== "braced.tics")  return h.BracedTics(pn);                      // tics it has been on (0 = not)
 		if (request ~== "punch")        return h.PunchNow(pn, intArg);                // 1 jab, 2 hook, 3 uppercut within rsqg_punch_window; 0 none
 		if (request ~== "punch.kind")   return h.LastPunchKind(pn, intArg);               // the last punch: 0 jab, 1 hook, 2 uppercut; -1 never
-		if (request ~== "punch.ago")    return int(h.PunchAgoMs(pn, intArg));         // ms since it, -1 never
 		if (request ~== "punch.speed")  return int(round(h.LastPunchMps(pn, intArg) * 100)); // its average, hundredths m/s
 		if (request ~== "shove")        return h.ShoveNow(pn, intArg);                // GE2: 1 a gun shoved one-handed, 2 two hands on it, within rsqg_punch_window; 0 none. Never a punch.
-		if (request ~== "shove.ago")    return int(h.ShoveAgoMs(pn, intArg));         // ms since the last shove, -1 never
-		if (request ~== "shove.speed")  return int(round(h.LastShoveMps(pn, intArg) * 100)); // its average, hundredths m/s
 		if (request ~== "quiet")        return h.QuietNow(pn);                        // GE1: 1 climbing the rope, 2 the Wheel open (or just closed); 0 gestures are read
 		return -1;
 	}
@@ -912,10 +902,7 @@ class RSQG_Service : Service
 		if (request ~== "hand.z")     return h.Hand(pn, intArg, 2);
 		if (request ~== "hand.roll")  return h.Hand(pn, intArg, 3);
 		if (request ~== "hand.pitch") return h.Hand(pn, intArg, 4);
-		if (request ~== "thrust")     return h.Thrust(pn, intArg);
-		if (request ~== "palms")      return h.PalmsOutSeconds(pn);
 		if (request ~== "punch.speed") return h.LastPunchMps(pn, intArg);
-		if (request ~== "shove.speed") return h.LastShoveMps(pn, intArg);
 		return 0;
 	}
 
@@ -943,48 +930,4 @@ class RSQG_Service : Service
 		}
 		return -1;
 	}
-}
-
-// THE WATCH-CHECK TICK (GE4): a short, light rumble on one controller, the series' route (RSQ Accessibility's
-// RSQA_Buzz, RSQ Wheel's wr_Buzz): A_QuakeEx QF_WAVE re-issued every tic, X driving the left controller and Y the
-// right (r_utility.cpp:1084-1094), scaled by vr_quake_haptic_level; amplitude / 3.2 is the controller's peak.
-// The local player only; no sound, no damage, an 8-unit tremor radius at the player.
-class RSQG_Tick : Actor
-{
-	Actor feels;
-	bool left;
-	double amp;
-	int total, tleft;
-
-	Default { +NOINTERACTION +NOBLOCKMAP +NOSECTOR +DONTSPLASH +NOTIMEFREEZE }
-
-	static void Start(Actor who, bool leftController, double strength, int tics)
-	{
-		if (!who || !who.player || who.player != players[consoleplayer]) return;
-		// RUMBLE STRENGTH (RSQ_Accessibility's rsqa_rumble_scale, RSQG_A11y.Rumble: x0..2, 0 = none; 1 without it).
-		// Every Gestures rumble comes through here.
-		double rs = RSQG_A11y.Rumble();
-		if (rs <= 0) return;
-		strength *= rs;
-		let q = RSQG_Tick(Actor.Spawn("RSQG_Tick", who.pos));
-		if (!q) return;
-		q.feels = who;
-		q.left = leftController;
-		q.amp = clamp(strength, 0.05, 1.0);
-		q.total = clamp(tics, 1, 16);
-		q.tleft = q.total;
-	}
-
-	override void Tick()
-	{
-		Super.Tick();
-		if (bDestroyed) return;
-		if (!feels || tleft <= 0) { Destroy(); return; }
-		SetOrigin(feels.pos, true);
-		double a = amp * tleft / double(total) / 3.2;
-		tleft--;
-		A_QuakeEx(left ? a : 0.0, left ? 0.0 : a, 0, 2, 0, 8, "", QF_WAVE, 17.5, 17.5, 1);
-	}
-
-	States { Spawn: TNT1 A 20; Stop; }
 }

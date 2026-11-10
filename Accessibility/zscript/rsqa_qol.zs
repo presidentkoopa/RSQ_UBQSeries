@@ -1,9 +1,10 @@
-// RSQ_Accessibility -- the QoL round (owner's picks AC1-AC8, PICKS_2026-10-31.md "QoL round"; README.md "QoL round").
+// RSQ_Accessibility -- the QoL round (owner's picks AC1-AC8, PICKS_2026-10-31.md "QoL round"; README_draft.md "Comfort",
+// "Cues and rumble", "Hands", "Menus").
 //
 //   AC1  OptionMenuItemRSQAResetSeries  one row runs every LOADED series mod's own "Reset All" (Accessibility kept)
 //   AC2  rsqa_rumble_scale              every rumble through RSQA_Buzz scaled; a shared number for the rest
 //   AC3  rsqa_seated                    Standing / Seated / Auto, with the measured drop of your eyes (metres)
-//   AC4  RSQA_Comfort (MENUDEF preset)  Vignette Medium, Min SlowMo Ease 1 s, Photosensitive Mode in one go
+//   (AC4, a Comfort Preset row, is not on the page: MENUDEF has had no such row since the pack came to this repo)
 //   AC5  rsqa_vig_knock                 the comfort vignette on a big knockback and on a long fall
 //   AC6  rsqa_steady                    Steady Hands: both hands' poses through a 1-euro filter, shared by service
 //   AC7  rsqa_slow_taps                 every tap / double-tap window x1.5 (a shared number)
@@ -123,9 +124,13 @@ class RSQA_QoL : EventHandler
 	// Your seated eyes are tracked the way RSQ Tactical Rig tracks them (TacticalRig/zscript/rsqtr/body.zs
 	// UpdateSeat): the highest the headset has been lately, easing down 2 cm a second, rising at once, and taken
 	// straight to the headset once it has stayed 0.20 m below for a second. The standing reference is the
-	// measured standing eye height (rsqa_stand_eye, the "Measure Standing Height" row), else the highest steady
-	// headset height this session, at least 1.62 m (Tactical Rig's default eyes, rsqtr_eye_m). Auto calls you
-	// seated once the eyes have been 0.25 m or more below standing for 2 s, standing once within 0.15 m for 1 s.
+	// measured standing eye height (rsqa_stand_eye, the "Measure Standing Height" row), else the tallest steady
+	// headset height seen since the map began or the game was loaded (held within 3 cm for a second). Auto calls
+	// you seated once the eyes have been 0.25 m or more below standing for 2 s, standing once within 0.15 m for 1 s.
+	// FAIR TO SHORT PLAYERS (2026-11-10): Auto used to take the reference as at least 1.62 m (Tactical Rig's default
+	// eyes, rsqtr_eye_m), so a player whose standing eyes are under about 1.37 m was called seated after 2 s. Auto
+	// now uses only your own heights: until it has seen you (or you measured), it says standing. Seated, which you
+	// chose, keeps the 1.62 m floor for the drop when nothing better is known, as before.
 	const SEAT_EASE   = 0.02 / 35.0;
 	const SEAT_DROP   = 0.20;
 	const STAND_DEF   = 1.62;
@@ -137,11 +142,14 @@ class RSQA_QoL : EventHandler
 
 	static clearscope int SeatMode() { return clamp(RSQA_Set.I('rsqa_seated', 2), 0, 2); }
 
+	// the standing reference, metres (0 = none yet: Auto with nothing measured or seen)
 	clearscope double StandEye(int pn)
 	{
 		double m = RSQA_Set.F('rsqa_stand_eye', 0);
 		if (m > 0.5) return m;
-		return (pn >= 0 && pn < MAXPLAYERS) ? max(STAND_DEF, highEye[pn]) : STAND_DEF;
+		double seen = (pn >= 0 && pn < MAXPLAYERS) ? highEye[pn] : 0;
+		if (SeatMode() == 2) return seen > 0.3 ? seen : 0;
+		return max(STAND_DEF, seen);
 	}
 
 	clearscope bool IsSeated(int pn)
@@ -153,7 +161,7 @@ class RSQA_QoL : EventHandler
 
 	clearscope double SeatDrop(int pn)
 	{
-		if (!IsSeated(pn) || seatEye[pn] <= 0.3) return 0;
+		if (!IsSeated(pn) || seatEye[pn] <= 0.3 || StandEye(pn) <= 0.3) return 0;
 		return max(0.0, StandEye(pn) - seatEye[pn]);
 	}
 
@@ -169,7 +177,8 @@ class RSQA_QoL : EventHandler
 		stillTics[pn] = abs(h - lastH[pn]) < 0.03 ? stillTics[pn] + 1 : 0;
 		if (abs(h - lastH[pn]) >= 0.03) lastH[pn] = h;
 		if (stillTics[pn] >= TICRATE) highEye[pn] = max(highEye[pn], h);
-		double below = StandEye(pn) - seatEye[pn];
+		double stand = StandEye(pn);
+		double below = stand > 0.3 ? stand - seatEye[pn] : 0;   // no reference yet: standing
 		bool want = seated[pn] ? below > AUTO_STAND : below >= AUTO_SIT;
 		if (want == seated[pn]) autoTics[pn] = 0;
 		else if (++autoTics[pn] >= (want ? 2 * TICRATE : TICRATE)) { seated[pn] = want; autoTics[pn] = 0; }

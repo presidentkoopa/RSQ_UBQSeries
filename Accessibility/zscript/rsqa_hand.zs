@@ -125,23 +125,13 @@ class OptionMenuItemRSQABrace : OptionMenuItemOption
 	}
 }
 
-// For any mod that loads after this pk3 and wants the answer in one call. Series mods do NOT call
-// this (it would be a hard link); each carries the same few lines and falls back to the engine.
+// This pk3's own question: is the engine's main hand the left controller (which controller a rumble goes to). Series
+// mods carry the same few lines themselves (nothing links).
 class RSQA_Hand
 {
-	// the engine's main hand is the left controller
 	static clearscope bool EngineLeft()
 	{
 		let cs = CVar.FindCVar("vr_control_scheme");
 		return cs && cs.GetInt() >= 10;
-	}
-	// the body layout is a left-hander's: rsqa_handed if set, else the engine's
-	static clearscope bool Left()
-	{
-		let h = CVar.FindCVar("rsqa_handed");
-		int v = h ? h.GetInt() : 0;
-		if (v == 1) return false;
-		if (v == 2) return true;
-		return EngineLeft();
 	}
 }
