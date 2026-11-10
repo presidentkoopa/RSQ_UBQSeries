@@ -9,8 +9,10 @@
 // shipping its own.
 //
 // In the pull a weight becomes a SHARE of the pull's strength, k/(k+kg) with
-// k = rsqdg_pull_kg (10 by default): a clip arrives at full speed, the barrel
-// at about a third of it, a Cacodemon corpse at a slow drag. See mass.zs.
+// k = rsqdg_pull_kg (10 by default): a clip at nearly full speed, the barrel
+// (60 kg) at about a seventh, a Cacodemon corpse at a slow drag. See mass.zs.
+// (That share drives the steered pull only; the default path, Arc / WorldHands,
+// takes the same time whatever the weight: flight.zs.)
 // ============================================================================
 
 //   mass "<class>" <kg> [drag <n>] [flutter] [impact explode]

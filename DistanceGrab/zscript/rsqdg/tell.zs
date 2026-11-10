@@ -143,7 +143,7 @@ class RSQDG_Tell : EventHandler
 		}
 		// With the flash off (the default) it still runs for VOXEL hosts, which
 		// the glow twin cannot light (G7); everything else is the glow's.
-		bool lightAll = RSQDG_Reach.Flag("rsqdg_lightup", p, true);
+		bool lightAll = RSQDG_Reach.Flag("rsqdg_lightup", p, false);
 
 		let aim  = RSQDG_Aim.Get();
 		let grab = RSQDG_Grab.Get();

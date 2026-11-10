@@ -5,11 +5,10 @@
 // desktop package nearly shipped with nineteen cvars stranded in the wrong
 // region of its own CVARINFO for exactly this reason.
 //
-// ALL `user`, NOT `server`. These change what YOU see and what YOUR hands do;
-// nothing here is read by the playsim on another machine's behalf. The voxel
-// pack's own cvarinfo states the rule the other way round and is worth
-// repeating: anything that physically alters actor data in the playsim MUST be
-// a server cvar or multiplayer will desync. Nothing in this file does.
+// MOSTLY `user`: how YOUR hands are read and what YOU see. Thirteen are `server`
+// (the flight path, the tumble and others the playsim must agree on). Several user
+// settings do change the play (throw strength, carry, damage): QuestZDoom 17.3 has
+// no netplay, so this is single-player safe; a netplay pass would move them to server.
 
 // ---- the cone ------------------------------------------------------------
 // REACH AND SPREAD ARE SEPARATE AND MUST STAY SEPARATE. How far you can pull

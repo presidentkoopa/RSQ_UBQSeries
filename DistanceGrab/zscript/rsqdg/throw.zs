@@ -71,6 +71,7 @@ class RSQDG_Throw : EventHandler
 	private bool    lgBlast[MAX_LOG];    // its hard landing set it off (or a thrown blast set it off)
 	private int     lgJuggle[MAX_LOG];   // mid-air re-catches carried into this throw
 	private bool    lgAloft[MAX_LOG];    // taken back into a hand / a pull before it landed
+	private int     lgKg[MAX_LOG];       // the kilograms it was thrown at (RSQ Score's Heavy Throw asks "throw.kg", 11-09)
 
 	// ---- the settle list ---------------------------------------------------
 	//
@@ -323,7 +324,7 @@ class RSQDG_Throw : EventHandler
 		wRel[slot] = ImpactMps(a, a.Vel, body);
 		wKg[slot] = kg;
 		for (int v = 0; v < MAX_VICTIMS; v++) wHit[slot * MAX_VICTIMS + v] = null;
-		LogThrow(a, by);
+		LogThrow(a, by, kg);
 	}
 
 	// ---- the ledger --------------------------------------------------------
@@ -350,13 +351,14 @@ class RSQDG_Throw : EventHandler
 
 	// A new throw of `a`. If it was caught back out of its previous throw before
 	// that one landed, the catch is carried: a juggle.
-	private void LogThrow(Actor a, Actor by)
+	private void LogThrow(Actor a, Actor by, double kg = 0)
 	{
 		int prev = LogFind(a);
 		int juggle = (prev >= 0 && lgAloft[prev]) ? lgJuggle[prev] + 1 : 0;
 		int k = LogSlot(a);
 		lgA[k] = a; lgBy[k] = by; lgRel[k] = level.maptime;
 		lgCms[k] = -1; lgBlast[k] = false; lgJuggle[k] = juggle; lgAloft[k] = false;
+		lgKg[k] = int(round(kg > 0 ? kg : RSQDG_Mass.Kg(a)));
 	}
 
 	private void LogLanded(Actor a, double mps)
@@ -373,6 +375,7 @@ class RSQDG_Throw : EventHandler
 		if (request ~== "throw.by")     return (lgBy[k] && lgBy[k].player) ? lgBy[k].PlayerNumber() : -1;
 		if (request ~== "throw.age")    return level.maptime - lgRel[k];
 		if (request ~== "throw.cms")    return lgCms[k];
+		if (request ~== "throw.kg")     return lgKg[k];
 		if (request ~== "throw.blast")  return lgBlast[k] ? 1 : 0;
 		if (request ~== "throw.juggle") return lgJuggle[k];
 		return -1;
@@ -396,7 +399,7 @@ class RSQDG_Throw : EventHandler
 		int rel = lgRel[src];
 		int k = LogSlot(a);
 		lgA[k] = a; lgBy[k] = by; lgRel[k] = rel;
-		lgCms[k] = lgCms[src]; lgBlast[k] = true; lgJuggle[k] = lgJuggle[src]; lgAloft[k] = false;
+		lgCms[k] = lgCms[src]; lgBlast[k] = true; lgJuggle[k] = lgJuggle[src]; lgAloft[k] = false; lgKg[k] = lgKg[src];
 	}
 
 	// the kilograms a watched throw counts as: the weight it was thrown at (wKg), else its own
@@ -801,6 +804,7 @@ class RSQDG_Throw : EventHandler
 //   GetInt("throw.by",     "", 0, 0, object)   player number of whoever threw it
 //   GetInt("throw.age",    "", 0, 0, object)   tics since it left the hand
 //   GetInt("throw.cms",    "", 0, 0, object)   how hard it landed, cm/s (-1 in flight)
+//   GetInt("throw.kg",     "", 0, 0, object)   the kilograms it was thrown at (RSQ Score's Heavy Throw: 100 and up)
 //   GetInt("throw.blast",  "", 0, 0, object)   1: its throw set it off (or a thrown blast did)
 //   GetInt("throw.juggle", "", 0, 0, object)   times it was caught back out of the air first
 //   GetInt("hold.full",    "", hand, 0, pawn)  1 while that hand carries something

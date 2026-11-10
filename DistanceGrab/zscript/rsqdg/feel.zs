@@ -671,6 +671,8 @@ class RSQDG_Feel : EventHandler
 //   pull.blocked   it could not get there in time; it drops where it is
 //   pull.aborted   called off -- switched off, the player died, the level changed
 //   hold.throw / hold.drop   a carried thing left the hand
+//   hold.hit / hold.block    a carried thing struck a monster / stopped a shot
+//   throw.hit / throw.impact a thrown thing struck a monster / landed hard
 //
 // The answer is ignored: an event is news, not a question. With no listener
 // loaded the lookup finds nothing and costs one string search.

@@ -186,10 +186,7 @@ class RSQDG_Grab : EventHandler
 		int hand = e.Args[0];
 		if (hand != 0 && hand != 1) return;
 
-		// TYPED AT THE CONSOLE IS NOT A GESTURE. IsManual distinguishes a real
-		// bound press from somebody poking `netevent` by hand, and letting the
-		// latter through would make the lock reachable without a controller --
-		// useful for a bug report, confusing in a log.
+		// (A netevent typed at the console is taken like a bound press: nothing here tells them apart.)
 		let p = players[e.Player >= 0 ? e.Player : consoleplayer];
 		if (!p || !p.mo) return;
 

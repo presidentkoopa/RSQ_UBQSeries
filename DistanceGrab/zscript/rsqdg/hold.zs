@@ -78,7 +78,7 @@ class RSQDG_Hold : EventHandler
 	// middle is kept on the hand with WorldOffset (RSQDG_Turn.Fix, flight.zs).
 	//
 	// ONE CHANGE, AND THE GESTURE FORCES IT. WorldHands holds on a squeeze, so the
-	// wrist is free; here the PALM POSE is the hold, and the hand is always rolled
+	// wrist is free; here the PALM POSE is the hold (or, since 11-07, the grip owns a walk-up carry: near.zs), and the hand is rolled
 	// a quarter turn while carrying. Taken literally, every held thing would lie on
 	// its side. So the roll is the wrist's turn SINCE THE CATCH: the thing arrives
 	// upright and tips as you tip your wrist (within the palm tolerance, +-30 deg).
@@ -875,7 +875,7 @@ class RSQDG_Hold : EventHandler
 		if (tok) tok.Destroy();
 	}
 
-	override void WorldLoaded(WorldEvent e) { DropAll(); TakeBurden(); }
+	override void WorldLoaded(WorldEvent e) { if (e.IsSaveGame) return; DropAll(); TakeBurden(); }   // a load keeps its carry (as throw.zs)
 	override void WorldUnloaded(WorldEvent e) { DropAll(); TakeBurden(); }
 }
 

@@ -1,291 +1,378 @@
 # RSQ Distance Grab
+### Doom Arcade VR · turn your palm out, pull the barrel across the room, and throw it back at them
 
-Turn your palm out at anything across the room, flick your wrist, and it flies into your hand.
+Turn a hand palm-out toward anything lying in the room and it lights up. Flick your wrist and it flies to your hand in
+an arc, turning over as it comes. Catch it, carry it, club a monster with it, or throw it with your own arm: a barrel
+thrown hard goes off where it lands.
 
-**Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
+*[GIF to come: a barrel pulled across the room, caught, and thrown into a crowd, where it goes off]*
 
-New since the headset pass (tested on the rig, headset check pending): Kill Rewards bits are never grabbed; the throw measured against the frame your headset drew, so walking and stairs are no throw.
+---
 
-New on 11-06 (rig only, not headset-confirmed): throws that follow through, never drop at your feet while walking and
-never go backwards; RSQ FnF flares can be grabbed; a gun caught in the off hand is equipped there every time.
+## What it feels like
 
-New on 11-07 (rig only, not headset-confirmed): release to throw. A carried thing never lets go by itself; squeeze
-the grip on a thing you caught and it stays in your hand until you let the grip go, then flies at your hand's speed.
+- **No buttons.** Your hand is the trigger. Turn your palm out and a beam and a faint cone come out of it; turn it back
+  and they are gone. Even your gun hand can reach: turn the gun on its side.
+- **Things tell you they are yours.** What your hand is on glows amber. Hold it there and it locks: green, breathing
+  faster. A low hum in the controller says you have it.
+- **Flick it to you.** Tip your wrist up as you turn your palm back, and the thing leaves the floor and flies to your
+  hand in an arc, end over end, leaving a faint green trail. The controller rumbles harder as it closes in.
+- **Catch it.** Have your palm out when it gets there. A pickup is used on the spot (a gun goes into the hand that
+  caught it, a medikit heals you); a barrel is in your hand.
+- **Carry it.** It sits a little in front of your hand and tips with your wrist. Heavy things hang lower, swing slower
+  and trail behind your hand. Put your other hand on it and it is lighter.
+- **Throw it.** Swing and let go. How hard you swung is how hard it flies, and weight matters: a keycard leaves at
+  your hand's speed, a barrel at a third of it. A throw near a monster bends onto it.
+- **Barrels are bombs.** A barrel thrown hard goes off where it lands, and the kill is yours.
+- **Hit them with it.** Swing a carried barrel into an imp and it takes the blow.
+- **Hide behind it.** A barrel or a body held up in front of you stops the fireballs that would cross it.
+- **Doors and switches by hand.** Put your palm flat on a door and lift. Lay it on a switch and it flips.
 
-New on 11-07 (rig only, not headset-confirmed): Barrel Lock-On. With a barrel in your other hand, or a barrel within
-punching reach, turn a free palm at a monster: it glows green and is locked. A barrel you throw, or uppercut with RSQ
-Melee, flies to it, follows it if it moves, and hits and goes off.
+---
 
-Gravity-glove grabbing for Doom in VR, built on stock QuestZDoom 17.3 in ZScript alone. No buttons in the
-gesture: your palm is the trigger. Pull ammo, health, keys and guns to you, catch them out of the air, carry a
-barrel in one hand, throw it at an imp and watch it go off. Lift doors by hand. Everything has weight: a keycard
-snaps to you, a barrel heaves.
+## How to play
 
-## Standout feature: the pull and the catch
+| Do this | What happens |
+|---|---|
+| Turn a hand palm-out (a quarter turn of the wrist, hand raised, not hanging at your side) | A beam and a cone from that hand. The thing it is on glows amber |
+| Keep it there | It locks: green. You can look away now; the lock stays |
+| Tip your wrist up sharply as you turn your palm back | It flies to that hand |
+| Turn your palm back without the flick | You let go of the lock |
+| Have your palm out when it arrives | Caught: a pickup is used, anything else is in your hand |
+| Your hand turned away when it arrives | It drops at your feet |
+| Carrying it: swing and turn your palm back mid-swing | Thrown, along your swing |
+| Carrying it: turn your palm back with your hand still | Set down |
+| Squeeze the grip while carrying | The grip holds it now: let go of the grip to throw it or set it down |
+| Squeeze the grip with your palm on a pickup, a barrel or a flare (within 30 cm) | Taken straight into that hand, no pull |
+| Your other, empty palm on the thing you carry | Both hands on it: it handles as if half as heavy |
+| Palm out against a door (or the grip, or Use), then raise your hand | The door lifts with your hand |
+| Palm out on a switch | It flips |
 
-Turn your hand palm out toward a medikit. A blue beam reaches from your palm; the medikit glows amber as the cone
-finds it, then green as your hand takes hold. Flick your wrist up as you roll your palm back. The medikit lifts off
-the floor, arcs across the room tumbling end over end, dips under the door frame, and slows into your hand.
-Turn your palm back out and you catch it: it heals you on the spot, or a gun you pull goes into the hand that grabbed
-it. Turn your hand away and it drops at your feet. Your hand rumbles as it locks, as the pull builds, and hard on
-the catch.
+On a desktop there are two keys, **G** (main hand) and **H** (off hand), read only when **Grab Keys** is on.
 
-## Features
+---
 
-**Reach and pull**
-- **The palm is the trigger.** Palm out arms the reach and holds it. A wrist flick pulls. Rolling the palm back
-  at rest lets go. Nothing to press, so nothing can get stuck.
-- **A true cone in the room:** 12° wide, about 15 m long, and it will not reach through walls.
-- **Clear signals:** a beam from the palm, a dot where it lands and a faint cone showing exactly what can be
-  taken. Targets glow amber when considered, green when locked.
-- **The WorldHands pull (default):** an authored arc that starts slow, speeds up, lifts out of alcoves, ducks
-  under doorways, tumbles and spins, then settles softly into your palm. Steer and Lob paths are also offered.
-- **Weight:** every object has a mass. Light things fly, heavy ones resist.
-- **Catch it:** an open palm takes it out of the air. Pickups are used on the catch (or carried, if you prefer).
-- **Guns go to the hand that grabbed them,** main or off. A gun caught in the off hand is equipped there at once,
-  even one you already own (D40).
+## Pulling things to your hand
 
-**Carry and throw**
-- **Carry:** a barrel (or a corpse, if switched on) stays in your hand on a spring. Heavy things trail, sag and
-  tip with your wrist. Walls stop it.
-- **Two-hand lift:** lay your other empty palm on what you carry and it handles twice as light.
-- **Release to throw:** a carried thing never lets go by itself. Squeeze the grip on what you caught and it is the
-  grip's: swing as hard as you like, it stays. Let the grip go mid-swing and it flies at your hand's speed and
-  direction; let go gently and it is set down. A barrel thrown hard explodes where it lands.
-- **Impacts hurt:** thrown things deal damage from their speed and weight, stagger what they hit hard enough,
-  and a light aim assist bends a throw onto a nearby monster.
-- **Club with it:** swing what you carry into a monster to hit it.
-- **Body shield:** a held barrel or corpse stops bullets and fireballs. A barrel goes off when it is hit.
-- **Heavy slows you:** carrying 120 kg halves your speed.
+**Reach** is about 15 metres, and the **Aim Width** is 12 degrees either side of where your hand points. They are two
+separate settings: how far you can pull from and how precisely you have to point. Through a wall is not pointing at it
+(**Line of Sight**).
 
-**Barrel Lock-On** (on by default)
-- **One lock per player.** Either free palm sets it (a gun hand turned sideways counts); either hand's barrel uses it.
-- **The palm picks the monster over an item** while your other hand holds a barrel, or you stand within punching reach
-  of a barrel (Doom's punch range, 64 map units from your body to the barrel's side). Otherwise the palm finds items
-  as before. The locked monster wears the grab's green glow.
-- **Sticky:** locking needs the 12-degree cone (Aim Width); keeping it needs twice that. Your palm on another monster
-  takes the lock at once. With no palm on it the lock holds 3 seconds, then for half a second more (no glow) a
-  throw or an uppercut still goes to that monster, or where it last was.
-- **A thrown barrel always lands on the lock:** its arc is solved to reach it and it steers after the monster in
-  flight. The swing sets how hard it hits (harder is flatter, faster, more impact); the softest is the lob that just
-  reaches. An arc that would meet a lower ceiling on the way (a window's or a door's top) is thrown flatter. Letting go
-  with the hand still sets it down, as always. Only barrels steer; anything else keeps the throw's aim assist.
-- **RSQ Melee's uppercut barrel** goes to the lock when the lock is roughly ahead (within 60 degrees of the kick), and
-  hits and goes off like a thrown barrel. Otherwise it flies where you punched. Barrel Lock-On on also turns Melee's
-  uppercut barrel kick on.
-- **For RSQ SlowMo's Locked Barrel cue:** Distance Grab answers by name which barrel's steering ended on its locked
-  monster (the newest eight). Built, loads clean, NOT shown on the rig.
+When you point between two things, the one you are pointing straight at wins, then the nearer one. Some things also
+count as nearer than they are, so the dull thing beside the good thing does not steal it:
 
-**Up close**
-- **Walk-up grab:** grip with your palm on a pickup or barrel (or a corpse, if switched on) to take it straight
-  into your hand.
-- **Lift doors by hand:** put a hand on a door, take hold and lift. The door's own sound speeds up with your
-  hand. Let go past 40% open and it finishes opening; let go sooner and it drops shut. Keys are still honoured.
-- **Palm on a switch** flips it.
+| Kind | How hard it competes for your hand |
+|---|---|
+| Barrels | Most |
+| Weapons, keys, RSQ FnF flares | More |
+| Powerups, and anything else a mod leaves lying in the world | Plain |
+| Ammo, health, armour | Less |
+| +1 health and armour bonuses | Less again |
+| Corpses (off by default) | Least |
 
-**Plays nice**
-- Stands down while you two-hand a gun, while a hand holds a melee weapon or a lit saber, wears RSQ Melee's
-  gloves or has just thrown a punch. A hand that cannot reach says why on screen.
-- Doom's own sounds only: a whoosh on a throw, higher the faster; a thud on a catch or landing, deeper the
-  heavier.
+**What it never takes:** a living monster, something already in a hand or in the air, something invisible or drawn as
+nothing, a barrel already going off, a projectile, another player, or RSQ VisualRewards' Kill Rewards bits (those are
+left to RSQ Saber's Force pull).
 
-## How To Play
+**The flight.** By default a pulled thing takes the **Arc**: placed on a hump between where it was and your hand, re-aimed
+at your hand every tic, so it lands in your palm even if you move. It flies at 22 m/s, between a sixth of a second and a
+little over a second, so near and far pulls arrive at the same pace, with a soft pick-up and a settle into your hand. The
+hump is a quarter of the distance high and comes down under a low ceiling; it ducks under door lintels. On the way it
+turns once end over end and once about its own up. If it meets a wall it drops there.
 
-1. **Reach:** raise a hand and turn it a quarter turn so your palm faces outward, not pointing at the floor.
-   The beam appears. Point it at a pickup. The pickup glows amber, then green: you have it.
-2. **Pull:** flick your wrist up sharply as you roll your palm back. The thing flies to you. Turn your palm out
-   again before it arrives to catch it.
-3. **Change your mind:** roll your palm back slowly, with no flick. The lock lets go and nothing moves.
-4. **Carry and throw a barrel:** pull a barrel and catch it, then squeeze the grip: now it is held by the grip and
-   your palm can turn freely. Swing toward a monster and let the grip go to throw it. Let go with the hand still to
-   set it down. (Before you squeeze, the palm holds it and rolling the palm back lets go, the same way.)
-5. **Up close:** walk to an item, put your palm near it and squeeze the grip. For a door, lay a hand on it, grip,
-   and lift.
+**Flight Path** has two other choices: **Steer**, where the thing is pushed toward your hand and heavy things come
+slower and turn lazier, and **Lob**, a lob re-aimed at your hand every tic that peaks about a metre up.
 
-## Controls
+*[GIF to come: the beam idle (blue), on a shotgun (amber), locked (green), then the shotgun pulled to the hand in an arc]*
 
-| Action | How (VR) | Notes |
+---
+
+## Catching
+
+A thing in the air is yours to catch once it is close to your palm. If your palm is out, you have it.
+
+- **Use Pickups on Catch** (on): a caught pickup is used as if you walked over it. Off: everything is carried instead,
+  so you can pull a medikit across the room and take it somewhere.
+- **A gun goes to the hand that caught it.** Catch it with your off hand and it comes up in your off hand, and stays
+  there until you move it. Not melee weapons, off-hand-only or two-handed guns, the saber or the ShieldSaw.
+- **A gun you already have with full ammo** cannot be picked up. It stays in your hand to carry or throw, and the screen
+  says so. Caught in the off hand, your own copy of that gun comes up in the off hand as well.
+- **Missed it?** It stops on your palm for a moment (4 tics), then drops. A miss never hurts you or spends the item.
+
+A green bloom flashes at your palm on a catch, with a thud: deeper and louder the heavier the thing.
+
+*[GIF to come: a medikit pulled and caught; then a shotgun caught in the off hand and coming up there]*
+
+---
+
+## Carrying
+
+A carried thing is held on a spring, not glued to your hand. It sits 30 cm in front of your hand plus half its own size,
+so it is never in your face, and walls stop it: push it against a wall and it stays at the wall. Hold it back more than
+1.5 metres for half a second (stuck behind a corner, or you walked off) and you let go of it.
+
+- **Weight.** A clip follows your hand through any move. A barrel lags, hangs lower and dips when you swing it. With
+  **Heavy Slows You** on, carrying 120 kg halves your walking speed; one barrel leaves you about two-thirds of it.
+- **Tip With Wrist:** it tilts as you turn your wrist from the moment you caught it. A voxel (BD_VoxelPack's barrels,
+  ammo and guns) turns all three ways.
+- **Two hands.** Put your other, empty palm on it (within its body and a quarter metre) and it handles as if half as
+  heavy: it follows faster, sags less and throws harder. It sits between your hands.
+- **Hit With What You Hold.** Swing a carried thing into a monster at 3 m/s or more and it takes a blow, by the thing's
+  weight and the swing's speed, once per swing. Most of the swing stops there, and you feel it.
+- **Body Shield.** A carried barrel or corpse (20 kg or more) stops enemy fireballs that would cross it: they go off on
+  it. A barrel that takes the hit goes off.
+
+*[GIF to come: a barrel carried, then swung into an imp]*
+*[GIF to come: a barrel held up as a shield, an imp's fireball bursting on it]*
+
+---
+
+## Throwing
+
+Swing, and let go while your hand is moving. The throw takes the fastest moment of your forward stroke over the last
+fifth of a second, measured against your body, so walking and turning are never a throw. A wind-up faster than the
+throw is not what leaves your hand.
+
+- **Weight.** Your arm counts as 30 kg moving with the thing. A keycard leaves at your hand's speed, a shotgun at about
+  nine-tenths of it, a 60 kg barrel at a third. Then it is multiplied by 2.5, because a VR arm has none of the body
+  behind it.
+- **Running throws carry the run.** Thrown while moving, your own speed goes with it. Set down, it does not.
+- **It flies like a real thing.** Everything that leaves a hand falls at real gravity, a long lazy arc rather than
+  Doom's drop. Thrown things spin; flat sprites turn end over end; all of it settles when it lands.
+- **Aim assist.** A throw within 12 degrees of a monster you can see is turned onto it, with its lob corrected to come
+  down on its middle. Your speed is kept.
+- **The hit.** What a thrown thing hits takes damage by its weight and speed: a shotgun at 12 m/s about 17, a barrel at
+  5 m/s about 50. A blow of 20 or more knocks the monster into its pain and shoves it. A pickup flies straight through
+  monsters in Doom, so passing through one counts as a hit too. The kill is yours.
+- **Barrels go off.** A barrel thrown at 4 m/s or more goes off at its first hard stop (a wall, a monster, a hard
+  landing), credited to you. Set down gently, it does not.
+- **Hit-Stop** (off by default): a monster a thrown thing hits freezes for a beat (3, 4 or 6 tics).
+- A hard landing kicks up dust, and every throw has a whoosh: higher the faster.
+
+*[GIF to come: a thrown barrel arcing into a group of zombies and going off]*
+
+---
+
+## Barrel Lock-On
+
+For when you have a barrel and want it in someone's face (on by default).
+
+- **When it wakes up:** while your other hand carries a barrel, or you stand within punching reach of one. Then your
+  free palm, turned out, picks the monster instead of an item.
+- **The lock:** the monster wears the green "have" glow. Taking it needs the 12-degree cone; keeping it, twice that.
+  Point at another monster and the lock moves. Take your palm off it and it holds 3 seconds, then half a second more in
+  which a throw still goes to it (or where it last stood).
+- **The throw:** a barrel thrown with a lock is aimed onto the monster and steered after it in flight, so it lands. A
+  harder swing throws it flatter and faster; the softest it goes is the lob that just reaches. It ducks under lintels and
+  window tops on the way.
+- **With RSQ Melee:** a barrel your uppercut kicks goes to the lock too, if the lock is roughly ahead (within 60
+  degrees).
+
+*[GIF to come: a barrel in one hand, the other palm locking an imp, the barrel thrown wide and curving onto it]*
+
+---
+
+## Doors and switches
+
+- **Lift a door.** Put a hand on a door's face and take hold: palm out against it, the grip, or Use. Raise your hand and
+  the door rises with it, two and a half times your hand's travel, capped at four times the door's own speed (a wide
+  door is heavier). The door's own opening sound plays, its pitch following how fast you lift.
+- **Let go past 40% open** and the door finishes opening by itself, then waits and closes as it always did. **Let go
+  before that** and it drops shut.
+- Ordinary doors (the ones you open with Use), from their front, and not while already moving. Locked doors still need
+  their key, with the usual message.
+- **Flip a switch.** Lay your palm, turned out, on a switch and it flips, exactly as a Use press would: its key check,
+  sound and texture. Once per touch: take your hand off before it flips again.
+
+*[GIF to come: a hand on a door, lifting it halfway and letting go; the door finishes opening]*
+*[Still to come: a palm flat on a switch]*
+
+---
+
+## When your hand will not reach
+
+So that fighting never pulls the room into the fight, a hand stands down while:
+
+- **you two-hand a gun:** QuestZDoom's two-hand grip, BD22 VR Reloaded's two-hand holds, or your off hand on the gun
+  (5 to 70 cm ahead of the gun hand, within 20 cm of the barrel). Both hands stand down, and stay down half a second
+  after you let go.
+- **it is fighting** (**Not With Melee**): wearing RSQ Melee's boxing gloves, or moving at punch speed in the last
+  three-quarters of a second.
+- **it holds a melee weapon, a lit saber or another mod's hand** (a switched-off saber hilt can still reach; a bare fist
+  is an empty hand and reaches).
+- **RSQ Tactical Rig is using it** (a holster, the radial, a door, the cigarette or the Zippo).
+
+A hand that is already locked, pulling or carrying keeps going: the flick, the catch and the throw are fast on purpose.
+Hold your palm out for half a second on a hand that cannot reach because of what it holds, and the screen says why, for example "Distance Grab:
+the off hand does not reach -- a lit saber".
+
+---
+
+## The colours
+
+| | Beam and cone | The thing |
 |---|---|---|
-| Arm the reach | Palm out: wrist turned 90° (±30°), hand no lower than 30° below level | Either hand. Each hand reaches on its own. |
-| Lock a target | Hold the cone on it with the palm out | Locks at once by default. The lock survives looking away. |
-| Pull | Flick the wrist up (5° per tic or faster) as you roll the palm back | |
-| Let go of a lock | Roll the palm back slowly | |
-| Catch | Palm out when the object reaches your hand | A miss drops it at your feet. |
-| Hold a caught thing | Squeeze the grip while carrying it | The grip owns it now, as a walk-up grab: the palm can roll freely. It never lets go by itself. |
-| Throw | Let the grip go mid-swing | Flies at the forward stroke's speed and direction (never the wind-up's). Walking is no swing. Before the grip is squeezed, rolling the palm back mid-swing throws the same way. |
-| Set down | Let go (grip, or palm before the grip) with the hand still | |
-| Two-hand lift | Other palm on the carried object, that hand empty | |
-| Walk-up grab | Grip with the palm within 0.30 m of a pickup or barrel | Release the grip to drop; release while moving to throw. |
-| Lift a door | Hand on the door, then grip, Use or palm out, and lift | Ordinary manual doors, from the front. |
-| Flip a switch | Palm out against the switch | |
+| **Searching** | Blue, faint | |
+| **On something** | Amber | An amber glow in its own outline, breathing slowly |
+| **Locked** | Green | A green glow, brighter, breathing twice as fast |
+| **In the air, in your hand** | Hidden | No glow |
 
-**Key binds** (Options → Radiant Silvergun Options → RSQ Distance Grab, Controls: Main Hand Key, Off Hand Key; or
-Customize Controls → RSQ Distance Grab). Desktop defaults G and H; no controller defaults. These binds only drive the
-grab when Grab Keys is on (off by default; the key rows are greyed until then): press to lock or catch, release to
-pull or let go.
-RSQ Grapple and RSQ Whip also use them to take hold of a rope.
+The glow is a copy of the thing's own sprite drawn in light, so nothing about the thing itself changes. A thing drawn as
+a voxel flashes its own colour instead (**Voxel Flash**), because a flat glow in front of a solid voxel looks like a
+card. **Recolour Target** (off) tints the thing itself as well.
 
-Left-handed play works: the engine's left-handed scheme swaps the hands, and the palm test reads both wrists the
-same way.
+With RSQ Accessibility's colour-blind setting on, the colours become the series' pairs: grey, amber and azure for
+protanopia and deuteranopia; grey, red and cyan for tritanopia; grey, yellow and magenta for High Contrast. "Locked" is
+also clearly brighter and wider than "on something", so colour is never the only difference.
 
-## Menu
+*[Still to come: the three beam states side by side, and the amber and green glows on a barrel]*
 
-Options → Radiant Silvergun Options → RSQ Distance Grab. One page (the old What You Can Grab, Beam and Feel and
-Controls pages are on it); every raw number, the grip key codes and the logs are on **Test and Debug**; **Reset All**
-at the foot resets both. Distance Grab has no Gun Bonsai VR gating. A row is greyed while the switch it hangs from is
-off (the door rows under Lift Doors, the rumbles under Haptics, the two key rows under Grab Keys).
+---
 
-| Row | Default | What it does |
-|---|---|---|
-| Distance Grab | On | The whole mechanic. |
-| Reach | 512 | How far you can pull from, map units (about 15 m). |
-| Aim Width | 12 | The cone's half-angle in degrees: how precisely you must point. |
-| Not With Melee | On | A melee hand (weapon, gloves, a punch just thrown, a lit saber) does not reach. |
-| Line of Sight | On | No grabbing through walls. |
-| Palm Gate | On | The hand reaches only with the palm turned out. Off: whatever its pose. |
-| **Pull** | | |
-| Flight Path | Arc | Steer, Lob or Arc (WorldHands' path). |
-| Pull Gravity | Off | Lets a Steer pull sag. |
-| Duck Under Doors | On | A pull dips under a lower ceiling ahead. |
-| Pull Trail | On | A faint trail behind a pulled thing. |
-| Use Pickups on Catch | On | Off: everything caught is carried instead. |
-| **Carry and Throw** | | |
-| Throw Strength | 1.00 | Scales how hard a release throws. |
-| Heavy Slows You | On | Carrying heavy things slows you. |
-| Tip With Wrist | On | A held thing tips as you turn your wrist. |
-| Hit With What You Hold | On | A held thing swung into a monster hits it. |
-| Body Shield | On | A held corpse or barrel stops shots and fireballs. |
-| Hit-Stop | Off | A monster hit by a thrown thing freezes for a beat: Off, Tap, Beat, Heavy. |
-| Barrel Lock-On | On | A free palm locks a monster; barrels thrown, or uppercut with RSQ Melee, go to it (above). |
-| Sounds | On | Whoosh on a throw, thud on a catch and a landing. |
-| Landing Dust | On | A hard landing kicks up dust. |
-| **What You Can Grab** | | |
-| Barrels, Flares, Weapons, Powerups, Ammo, Health, Armor, Keys, +1 Bonuses | On | Each kind its own switch. Flares are RSQ FnF flares lying on the floor, dropped or thrown (once landed); a flare you throw into a monster sets it on fire (FnF, with Brutal Doom). |
-| Corpses | Off | |
-| Walk-Up Grab | On | Grip with the palm on a thing takes it. |
-| **Doors and Switches** | | |
-| Lift Doors | On | Doors can be lifted by hand. |
-| Grip Takes Door | On | The grip takes hold of a door. |
-| Use Takes Door | On | Use takes hold of a door. |
-| Palm Takes Door | On | A palm turned out against a door takes hold. |
-| Palm Flips Switches | On | A palm on a switch flips it. |
-| **Beam** | | |
-| Beam | On | The beam from your palm. |
-| Dot | On | The dot where the beam lands. |
-| Reach Cone | On | The faint cone. |
-| Show When Idle | On | Draw the beam even when it finds nothing. |
-| Yield to Laser Sight | Off | Hide the grab beam on a hand RSQ Laser Sight is lighting. |
-| Target Glow | On | The target glows in its own outline. |
-| Voxel Flash | On | A voxel target flashes its colour instead. |
-| Recolour Target | Off | Tint the target itself. |
-| Catch Flash | On | A green bloom at the palm on a catch. |
-| **Feel** | | |
-| Haptics | On | Controller feedback. |
-| Rumble | On | Rumble feedback (needs the engine's quake haptics above 0). |
-| Approach Ping | On | A ping that speeds up as a pull closes. |
-| Held Back Rumble | On | Rumble when a carried thing is held back by a wall. |
-| **Controls** | | |
-| Grab Keys | Off | The grab keys below drive the grab too (the palm gesture always works). |
-| Main Hand Key / Off Hand Key | G / H (desktop) | The grab keys; greyed until Grab Keys is on. |
-| Test and Debug | | The page below. |
-| Reset All | | Every setting on both pages back to its default. |
+## Plays well with
 
-Living monsters are never pulled.
+- **RSQ Score:** reads every throw. **Thrown** (paid by how hard it landed), **Heavy Throw** (a throw of 100 kg or more), **Powder Keg** (killed by the blast of a
+  barrel your throw set off, down the chain), **Air Catch** (thrown, caught back out of the air, thrown again), **Full
+  Hands** (a shot kill while a hand carries something), **Body Blow** (a thrown corpse), **Hand-Me-Down** (a dead
+  monster's gun thrown), **Clubbed** (a carried thing swung), **Throwaway** (a gun thrown). Combos with a throw: Alley-Oop,
+  Catch This, Batter Up, Bait and Hook, Serve and Volley, Two Throws, Toss and Crack, Kitchen Sink, Bait and Switch,
+  Fetch!, Pitch and Slice. Combos with a **thrown keg** (a thrown barrel's blast): Hot Seat, Aftershock, Demolition. With a
+  swing: Batting Practice. Score's Life Crate registers itself, so you can pull it to you.
+- **RSQ Melee:** its **Headlock** owns the off-hand grip on a living monster; when a monster is nearer your palm than
+  anything this would take, the grip is the Headlock's. A monster you throw out of the Headlock flies through this
+  pack's throw (your strength, its weight, the aim assist), and hurts what it hits and itself by the same rule. Its
+  gloves and punches stand a hand down (above). Its **uppercut** sends a barrel to your Barrel Lock-On target (Score:
+  **Field Goal**).
+- **RSQ FnF:** pick up a flare you dropped or threw (its own **Flares** switch), and throw it again. With Brutal
+  Doom, a burning flare that hits a small monster sets it alight.
+- **RSQ Grenade:** its barrels are still Doom barrels underneath, so they are pulled, carried and thrown like any barrel,
+  and go off on a hard throw. Its grenade pickups count as ammunition. Score's Kitchen Sink and Demolition combos mix the
+  two.
+- **RSQ Tactical Rig:** holsters come first; a hand in one never reaches or grips here. The rig leaves a hand lifting a
+  door alone, and its key ring lifts doors through this pack's door lift.
+- **RSQ SlowMo:** its locked-barrel cue knows when a Barrel Lock-On barrel lands on its monster.
+- **RSQ Laser Sight:** both beams show at once. **Yield to Laser Sight** hides this beam on a hand Laser Sight already
+  lights.
+- **RSQ Saber:** a lit saber hand does not reach; a switched-off hilt does. Its Force hand stands this pack down.
+- **RSQ VisualRewards:** its Kill Rewards bits are never taken here.
+- **RSQ Accessibility:** One-Handed (the Off-Hand Modifier lets one controller play the off hand, and its Pull and Reach
+  buttons stand in for the flick and the palm), Gesture Ease (wider palm tolerance, an easier flick), Steady Hands (the
+  cone points from a smoothed hand), Photosensitive Mode (catch blooms and pulses dimmed and slowed), Cue Size, Rumble
+  Strength, the colour-blind palettes, and Reset Every Mod.
+- **Brutal Doom and BD22 VR Reloaded:** Brutal Doom's own barrels, floor guns and +1 bonuses are recognised for what
+  they replace. BD22 VR Reloaded's axe goes to the hand that grabbed it, and its two-hand holds stand the grab down.
 
-**Test and Debug**
+---
 
-| Row | Default | What it does |
-|---|---|---|
-| **Gesture** | | |
-| Palm Roll / Roll Tolerance | 90 / 30 | Palm-out roll and how far off still counts, degrees. |
-| Min Hand Pitch | -30 | The hand must be above this pitch to reach. |
-| Flick Strength | 5 | Wrist pitch per tic that counts as the pull flick. |
-| Lock Delay (tics) | 0 | Tics the cone must hold the same target before it locks. |
-| Two-Hand Reach (m) | 0.20 | How close to the barrel line the off hand counts as two-handing. |
-| Hand Lead (tics) | 1.0 | The beam is drawn ahead of the hand to hide lag. |
-| Pose Jump Cutoff (m) | 1.0 | A hand jump this big in one tic is ignored. |
-| Walk-Up Reach (m) | 0.30 | How close the palm must be for a walk-up grab. |
-| Main / Off Grip Key Codes | 446 / 443 436 | The raw grip key codes the walk-up grab reads. |
-| **Pull** | | |
-| Arc Speed | 22 | Metres a second; the flight time is distance over this. |
-| Arc Height | 0.25 | Arc height as a share of the distance. |
-| Arc Pull-In | 1.6 | Above 1 a pull starts slow. |
-| Shortest / Longest Flight (tics) | 6 / 40 | Limits on an Arc pull's time. |
-| Pull Smoothness | 0.6 | How softly a pull settles into the hand. |
-| Pull Spin (turns) | 1.0 | Turns about its own up across a pull. |
-| Tumble | 1.0 | End-over-end turns across a pull. |
-| Lob Height (m) | 1.0 | How high a Lob peaks. |
-| Pull Speed / Steering / Pull Strength | 12 / 40 / 10 kg | The Steer pull. |
-| Flight Width | 2 | A pulled thing's flying radius. |
-| Give Up After (tics) | 140 | A pull that cannot arrive is dropped after at least this. |
-| **Catch and Carry** | | |
-| Catch Distance / Catch Window | 24 / 4 tics | |
-| Hold Distance (m) / Hold Stiffness | 0.30 / 0.6 | The carry's spring. |
-| Max Hold Speed | 40 | Fastest a carried thing moves. |
-| Break Distance (m) | 1.5 | Held back this far for half a second and you let go. |
-| Half Speed Mass (kg) | 120 | Carrying this much halves your speed. |
-| Heavy Sag | 1.0 | Heavy things hang lower. |
-| Two-Hand Lift | 2.0 | The other palm on a held thing makes it this many times lighter. |
-| **Throw** | | |
-| Throw Boost | 2.5 | A throw's speed multiplier. |
-| Throw Aim Assist (deg) | 12 | A throw within this of a monster bends to hit it. |
-| Throw Spin | 1.0 | How fast a thrown thing turns. |
-| Throw Gravity | 0.27 | Share of Doom's gravity a thrown thing falls at. |
-| Flutter | 0.35 | Sideways wobble of a light, fluttering thing in the air. |
-| Air Time Limit (tics) | 1400 | The air lets go of something that never lands after this. |
-| Arm Weight (kg) | 30 | The arm's mass in a throw. |
-| Impact Damage | 15 | Joules of a thrown thing per point of damage. |
-| Min Impact Speed (m/s) | 3.0 | Below this a thrown thing does not hurt. |
-| Stagger From (damage) | 20 | A hit this hard knocks a monster into pain. |
-| Barrel Blast (m/s) | 4 | A barrel thrown this fast goes off where it lands (0 never). |
-| Swing Hits From (m/s) | 3.0 | A held thing slower than this is not a hit. |
-| **Beam and Feel** | | |
-| Beam Width / Beam Brightness | 1.0 / 0.8 | |
-| Dot Size | 1.0 | |
-| Cone Brightness | 0.45 | |
-| Glow Brightness / Pulse Period | 1.0 / 24 tics | |
-| Rumble Strength / Locked Rumble | 1.0 / 0.15 | |
-| Door Commit Point / Door Lift Gain | 0.40 / 2.5 | Let go past this much open and the door finishes; door travel per hand travel. |
-| Report Actions / Report Refusals | Off | Log what the grab does / why it refused (the Barrel Lock-On's too). |
+## Options
 
-## Works with
+*Options → Radiant Silvergun Options → RSQ Distance Grab.* Everything is on one page; the fine-tuning numbers are under
+Test and Debug. Defaults in brackets.
 
-RSQ Distance Grab runs alone. It finds the other mods by name, so load order among RSQ pk3s does not matter.
+| Section | Rows |
+|---|---|
+| (top) | Distance Grab (On) · Reach (512 map units, about 15 m) · Aim Width (12°) · Not With Melee (On) · Line of Sight (On) · Palm Gate (On) |
+| Pull | Flight Path (Arc; Steer, Lob) · Pull Gravity (Off) · Duck Under Doors (On) · Pull Trail (On) · Use Pickups on Catch (On) |
+| Carry and Throw | Throw Strength (1.0) · Heavy Slows You (On) · Tip With Wrist (On) · Hit With What You Hold (On) · Body Shield (On) · Hit-Stop (Off; Tap 3, Beat 4, Heavy 6 tics) · Barrel Lock-On (On) · Sounds (On) · Landing Dust (On) |
+| What You Can Grab | Barrels · Flares · Weapons · Powerups · Ammo · Health · Armor · Keys · +1 Bonuses (all On) · Corpses (Off) · Walk-Up Grab (On) |
+| Doors and Switches | Lift Doors (On) · Grip Takes Door · Use Takes Door · Palm Takes Door (On; greyed with Lift Doors off) · Palm Flips Switches (On) |
+| Beam | Beam · Dot · Reach Cone · Show When Idle (On) · Yield to Laser Sight (Off) · Target Glow (On) · Voxel Flash (On) · Recolour Target (Off) · Catch Flash (On) |
+| Feel | Haptics (On) · Rumble · Approach Ping · Held Back Rumble (On; greyed with Haptics off) |
+| Controls | Grab Keys (Off) · Main Hand Key (G) · Off Hand Key (H) (greyed while Grab Keys is off; still bindable) |
+| Test and Debug: Gesture | Palm Roll (90°) · Roll Tolerance (30°) · Min Hand Pitch (-30°) · Flick Strength (5°/tic) · Lock Delay (0 tics) · Two-Hand Reach (0.2 m) · Hand Lead (1 tic) · Pose Jump Cutoff (1 m) · Walk-Up Reach (0.30 m) · Main Grip Key Codes (446) · Off Grip Key Codes (443 436) |
+| Test and Debug: Pull | Arc Speed (22 m/s) · Arc Height (0.25) · Arc Pull-In (1.6) · Shortest Flight (6 tics) · Longest Flight (40 tics) · Pull Smoothness (0.6) · Pull Spin (1 turn) · Tumble (1) · Lob Height (1 m) · Pull Speed (12) · Steering (40) · Pull Strength (10 kg) · Flight Width (2) · Give Up After (140 tics) |
+| Test and Debug: Catch and Carry | Catch Distance (24) · Catch Window (4 tics) · Hold Distance (0.30 m) · Hold Stiffness (0.6) · Max Hold Speed (40) · Break Distance (1.5 m) · Half Speed Mass (120 kg) · Heavy Sag (1.0) · Two-Hand Lift (2.0) |
+| Test and Debug: Throw | Throw Boost (2.5) · Throw Aim Assist (12°) · Throw Spin (1.0) · Throw Gravity (0.27) · Flutter (0.35) · Air Time Limit (1400 tics) · Arm Weight (30 kg) · Impact Damage (15 joules a point) · Min Impact Speed (3 m/s) · Stagger From (20 damage) · Barrel Blast (4 m/s) · Swing Hits From (3 m/s) |
+| Test and Debug: Beam and Feel | Beam Width (1.0) · Beam Brightness (0.8) · Dot Size (1.0) · Cone Brightness (0.45) · Glow Brightness (1.0) · Pulse Period (24 tics) · Rumble Strength (1.0) · Locked Rumble (0.15) · Door Commit Point (0.40) · Door Lift Gain (2.5) |
+| Test and Debug: logs | Report Actions (Off) · Report Refusals (Off) |
 
-- **Brutal Doom / BD22 VR Reloaded:** grab BD's floor guns straight into either hand. BD's fists count as an
-  empty hand. BD22 VR's two-hand aim stands the grab down.
-- **RSQ Laser Sight:** both beams show at once by default; Yield to Laser Sight hides the grab's.
-- **RSQ Tactical Rig:** a hand reaching into a holster, or holding the rig's cigarette or Zippo, belongs to the
-  rig.
-- **RSQ Melee:** a gloved hand, or one that just punched, does not reach. The off-hand Headlock takes a grip
-  press when a monster is nearer than anything to grab, and a monster thrown from the Headlock flies with Distance
-  Grab's throw. Melee's uppercut barrel goes to the Barrel Lock-On's lock (asked by name).
-- **RSQ SlowMo:** its Locked Barrel cue asks by name whether a barrel met its lock (built, loads clean, NOT shown on
-  the rig).
-- **RSQ Saber** and **RSQ ShieldSaw:** a lit saber or a ShieldSaw hand stands down.
-- **RSQ Grapple** and **RSQ Whip:** the grab binds take hold of their ropes.
-- **RSQ Score:** a kill with a swung object scores as Clubbed, and thrown objects feed its scoring.
-- **RSQ Accessibility:** One-Handed mode adds Reach and Pull buttons. Gesture Ease loosens the palm test and the
-  flick. Cue Size and Photosensitive Mode tame the glows and flashes. Rumble Strength scales the haptics.
-- **RSQ Gun Bonsai VR:** does not change the grab. It is everyone's from the start.
+The main page ends with **Reset All**, which resets both pages. **Palm Gate** off means a hand reaches whatever its pose;
+it only works with **Grab Keys** on (without the keys, your palm is the input, so the row greys out). **Rumble** off swaps the rumble for single fixed buzzes in rhythm (a tick to lock, a ping that speeds up as
+the thing closes, one tick or two on the catch). **Steering**, **Pull Speed** and **Pull Gravity** are for the Steer and
+Lob paths; **Arc Speed**, **Arc Height**, **Arc Pull-In** and **Pull Smoothness** for the Arc.
 
-## Credits and licence
+The Arc's numbers, Pull Spin, Tumble, the air (Throw Gravity, Flutter, Air Time Limit), Tip With Wrist and Heavy Sag are
+the server's settings; everything else is each player's own.
 
-Code: written for the Radiant Silvergun Quest series by presidentkoopa, for stock QuestZDoom 17.3: ZScript and
-lumps only, no engine changes. New, ported in part from presidentkoopa's desktop RS_WorldHands.
+---
 
-- **From RS_WorldHands** (presidentkoopa's desktop hand system): the pull's flight path and its end-over-end
-  tumble, the gravity, drag and flutter of everything that leaves a hand, a held thing tipping with the wrist and
-  sagging by its weight, and the strain rumble. His designs and numbers, rewritten for stock QZD.
-- **Generated for this pack** (original, procedural; nothing sampled or ripped): the beam and the reach cone
-  (models/rsqdg/rsqbeam*, rsqcone*) and the cone's placeholder sprites (sprites/rsqdg/RSQC*, RSQE*, RSQB*), made
-  by tools/gen_cone.py.
-- **The aim dot's glow** (sprites/rsqdg/RSQTA0.png, the same image as graphics/rsqdglo.png): added with the
-  first laser models; no outside source is recorded for it.
-- **Ideas, no code or assets taken:** the dot from QuestZDoom's bundled laser sight (GPL-3); the cone's look from
-  DXR's debug wire cone; the beam from the lightsaber blade's crossed-plane trick.
-- **Sounds:** none of its own. The whoosh and thud are Doom's own DSSKESWG and DSPUNCH, pitched by speed and
-  weight.
-- **QuestZDoom** (Emawind84 and Team Beef): the engine, and the hand-pose script API the grab reads.
+## Known concerns
 
-Free to share as part of the Radiant Silvergun Quest series.
+- **A gun you already carry with full ammo can't be picked up.** Pull one in and the catch refuses it, the same way
+  walking over it would leave it on the floor. Noted by the owner (2026-11-09); not changed yet.
+
+## Status
+
+| | |
+|---|---|
+| **Shown on the rig** (2026-11-09) | The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series, and its row appears under Radiant Silvergun Options. Nothing of the grab itself was exercised in that run |
+| **Shown on the rig, earlier build** (2026-11-03, the pack's own evidence file) | With both palms turned out (scripted poses), the main hand locked a clip at range; the Kill Rewards health and ammo bits lying beside it were refused |
+| **Headset-confirmed** | Nothing yet |
+| **Code only, not yet shown** | Everything else on this page: the pull, the catch, carrying, throwing, swings, the shield, Barrel Lock-On, doors, switches, haptics and sounds |
+
+The 11-03 log is a picture of what the code did then. It is not proof of the current build.
+
+---
+
+## Under the hood
+
+- **Reading the hands.** QuestZDoom gives script ten pose fields and nothing else: no hand speed, no grip, no vibrate
+  call. So every motion is differenced from the pose. The hands are taken where the last rendered frame put them,
+  carried to where the body is now, so a slow frame never reads as a swing. A pose that jumps a metre in one tic (a menu
+  opening, tracking lost, a save being drawn) is not trusted: nothing locks, a carried thing stops where it is, and
+  nothing is thrown.
+- **The throw** is the fastest two-tic window of the last seven that moves away from you (within 60 degrees of your
+  facing), measured in the room's frame so walking, snap turns and head turns are never a throw. For two tics after a
+  head turn the throw is blind, because the engine reports the hands swung the other way for one tic.
+- **The flick** is a rate, not a distance: 5 degrees of wrist pitch upward in one tic, anywhere in the last fifth of a
+  second. A slow lift of the forearm never fires it.
+- **The cone** is measured in the room, not in Doom's vertically squashed map space, so pointing up is as easy as
+  pointing sideways. Candidates are scored on angle first, distance a quarter as much, then divided by the square root
+  of their kind's weight. A preference, never a veto. The sight check runs last, only for a thing that would win. The
+  drawn cone is the volume that is tested: one model frame per degree, scaled by reach.
+- **What may be taken** is an ordered table, first match wins, and it follows replacements: Brutal Doom's barrel, which
+  replaces Doom's with no parent, is still a barrel; its +1 bonus is still a bonus. Other mods add their own things by
+  name through `RSQDG_GrabRuleService` (`grab.rule`, `grab.deny`, `grab.weight`, `grab.forget`, after `grab.hello`);
+  their rules sit above the table, and the menu's kind switches still apply.
+- **Weights** come from `MASSDEF` lumps, which any pk3 may ship (a later line wins): exact class, then a measured gun
+  from a weapon-weight service if one is loaded, then the class's ancestors and what it replaces, then a monster's Doom
+  Mass, then a clamped volume guess. Asked by other mods through `RSQDG_MassService` (`mass.kg`, `mass.flags`,
+  `mass.stated`, `mass.grams`).
+- **Borrowed state, one owner.** The flight, the carry and the settle each save a thing's own flags and size before
+  touching them and put them back on every way out. A released thing stays pass-through and uncollectable until it fits
+  where it is (at most two seconds). A pickup flies 2 units wide, not at its pickup-trigger size.
+- **The carry** is a spring: velocity toward a point ahead of the hand, the arm's part scaled by weight and your body's
+  own motion carried in full. Walls refuse it; the gap is the strain the rumble plays and that ends the hold.
+- **The impact** is a thrown thing's speed halving in a tic, judged with real gravity, once per throw. Damage is its
+  kinetic energy over 15 joules a point. The thing is the inflictor and the thrower the source, so kills, infighting and
+  barrel chains are credited to you.
+- **Haptics** ride the engine's quake-to-controller path: a wave quake issued every tic is a per-hand amplitude dial.
+  The fixed buzz (the pulse route) comes from a hitscan that touches nothing. The two cannot share a controller, so they
+  are routes, not layers, and the rumble runs only while it means something. With `cl_capfps` on it falls back to the
+  pulse.
+- **Told to other mods**, found by name, nothing linked: every service whose name contains `GrabEventService` hears
+  `pull.lock`, `pull.unlock`, `pull.start`, `pull.caught`, `pull.refused`, `pull.missed`, `pull.blocked`, `pull.aborted`,
+  `hold.throw`, `hold.drop`, `hold.hit`, `hold.block`, `throw.hit` and `throw.impact`. `RSQDG_ThrowService` answers who
+  threw a thing, how hard it landed, whether its throw set it off and how often it was caught back (for ten seconds), and
+  carries the Headlock throw, `near.dist` and the Barrel Lock-On requests. `RSQDG_DoorService` answers `door.holding`.
+- **Netplay.** Doors, switches and the walk-up grip travel as network events and run on every machine. The palm-out
+  reach, the pull, the carry and the throw are decided and run for the player whose machine has the hands. Built and
+  tested for single player.
+- **Quest budget.** The cone is one blockmap walk per hand per tic, the table's answer cached per class, three render actors per
+  hand for the beam, dot and cone, particles for the trail and dust.
+- **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
+
+## Credits
+
+The full list is in **CREDITS.txt**.
+
+- **presidentkoopa:** his desktop RS_WorldHands, whose designs and numbers are re-written here for stock QuestZDoom: the
+  pull's path and its tumble, the gravity, drag and flutter of everything that leaves a hand, a held thing tipping with
+  the wrist and sagging by its weight, and the strain rumble.
+- **Generated for this pack** (procedural, original): the beam and the reach cone models, and the cone's placeholder
+  sprites, by `tools/gen_cone.py`. The aim dot's glow has no outside source recorded.
+- **Ideas, no code or art taken:** the dot from QuestZDoom's bundled laser sight; the cone's look from DXR's debug wire
+  cone; the beam from the lightsaber blade's crossed planes.
+- **id Software's Doom:** the whoosh and the thud are Doom's own revenant swing and punch, pitched by speed and weight.
+  This pack ships no sounds.
+- **QuestZDoom** (Emawind and Team Beef): the engine and its hand-pose API.

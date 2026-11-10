@@ -44,6 +44,7 @@ alias "-rsqdg_off"  "netevent rsqdg_release 1"
 // controller button posts is not discoverable from the engine tree -- the
 // Android layer that maps buttons to key names is not in it -- so a guessed
 // default would either silently bind nothing or steal a button that already
-// does something. Bind the grips in Customize Controls ("RSQ Distance Grab") or on its page (Controls).
+// does something. These are the Grab Keys: they are only read with Grab Keys on. Bind them in Customize
+// Controls ("RSQ Distance Grab") or on its page (Controls).
 defaultbind g "+rsqdg_main"
 defaultbind h "+rsqdg_off"

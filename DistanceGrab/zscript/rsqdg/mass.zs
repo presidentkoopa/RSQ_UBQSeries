@@ -55,7 +55,7 @@ class RSQDG_Mass play
 
 	// MASSDEF's trailing words, kept for format compatibility with the desktop
 	// lump. FLIGHT_EXPLODE (`impact explode`) is read by throw.zs: a hard
-	// landing sets the thing off. `flutter` and `drag` are parsed, not used.
+	// landing sets the thing off; `flutter` and `drag` shape a throw's flight (throw.zs).
 	const FLIGHT_FLUTTER = 1;
 	const FLIGHT_EXPLODE = 2;
 

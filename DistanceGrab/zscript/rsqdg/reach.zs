@@ -113,7 +113,10 @@ class RSQDG_Reach
 	// asks it to tell "the palm was out but the hand stood down" from "the palm was not out".
 	static play bool PalmPose(PlayerPawn pmo, PlayerInfo p, int hand)
 	{
-		if (!Flag("rsqdg_palm", p, true)) return true;
+		// PALM GATE OFF COUNTS ONLY WITH GRAB KEYS ON (11-09, README from the code): without the keys the palm IS the
+		// input -- turning it away is what launches a lock and lets a carry go. Gate off and keys off held the hand
+		// "armed" for ever: a lock could never be launched and a palm carry only dropped with the grip.
+		if (!Flag("rsqdg_palm", p, true) && Flag("rsqdg_button", p, false)) return true;
 
 		// RSQ_Accessibility's Gesture Ease: the roll tolerance x1..x2 (30 -> 60 degrees) and the
 		// pitch floor lowered by as much again (-30 -> -60); 0 / absent: exactly as tuned.

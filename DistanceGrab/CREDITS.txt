@@ -7,8 +7,9 @@ engine changes. The code is new, ported in part from the project owner's desktop
 written for this pack.
 
 WHAT THIS PK3 SHIPS, AND WHOSE IT IS
-  No sounds of its own. Like RS_WorldHands, the grab is heard only through the world: the
-      things you pull and throw, what they hit, and a door's own sound as you lift it.
+  No sound files of its own. Its whoosh and thud are Doom's own dsskeswg and dspunch, aliased in SNDINFO
+      (rsqdg_sounds off is silent); the rest is heard through the world: the things you pull and throw,
+      what they hit, and a door's own sound as you lift it.
   From RS_WorldHands (presidentkoopa, the project owner; his desktop hand system)
       The pull's flight path and its end-over-end tumble, the gravity, drag and flutter of
       everything that leaves a hand, a held thing tipping with the wrist and sagging by its

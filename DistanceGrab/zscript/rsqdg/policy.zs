@@ -140,7 +140,7 @@ class RSQDG_Policy : StaticEventHandler
 	//
 	// So a class also answers to whatever it REPLACES, walked up the chain
 	// (a mod replacing a mod's replacement), and the table's order still
-	// decides: HealthPlus reaches the HealthBonus DENY before the Health allow,
+	// decides: HealthPlus reaches the HealthBonus rule (Bonuses) before the Health one,
 	// because the deny is higher in the table. This makes the table hold for
 	// every replacement mod at once, with no line naming any of them.
 	const MAX_REPLACE_DEPTH = 4;
@@ -214,24 +214,23 @@ class RSQDG_Policy : StaticEventHandler
 	{
 		if (rules.Size() > 0) return;
 
-		// -- denied, and specific, so these sit above the general allows ------
+		// -- specific, so these sit above the general allows ----------------
 
-		// The "+1" pickups. A health bonus is not a small medikit, it is a
-		// number with a sprite. Walk over them.
+		// The "+1" pickups (once denied: a health bonus is not a small medikit).
 		// (the owner, 10-29, "expanded pickup options": a switch now, rsqdg_bonuses, and the
 		// lowest pickup weight, so a +1 never steals the cone from a real item beside it)
 		Rule('HealthBonus', true, 'Bonuses', "a +1 health bonus", 0.3);
 		Rule('ArmorBonus',  true, 'Bonuses', "a +1 armour bonus", 0.3);
 
-		// -- the powerups: their own switch, OFF by default --------------------
+		// -- the powerups: their own switch (Powerups, on by default) ----------
 		//
 		// The desktop denied these outright -- "a hand closing on one raises the
 		// question of what happens when you let go of a soulsphere, which has no
 		// good answer". That holds for a hand. For a pull it has an answer --
 		// catch it and it is used, exactly as walking into it would -- and pulling
 		// the megasphere off the ledge you cannot reach is the most Force-like
-		// thing this mechanic can do. So: off by default, which is the desktop's
-		// behaviour, and one switch away for anyone who wants it.
+		// thing this mechanic can do. So: on by default, one switch away from the
+		// desktop's behaviour.
 		Rule('Soulsphere',            true, 'Powerups', "a powerup");
 		Rule('Megasphere',            true, 'Powerups', "a powerup");
 		Rule('InvulnerabilitySphere', true, 'Powerups', "a powerup");
@@ -243,8 +242,8 @@ class RSQDG_Policy : StaticEventHandler
 
 		// -- allowed, specific ---------------------------------------------
 
-		// The barrel. The single most satisfying thing in Doom to pull across a
-		// room. The heaviest weight in the table, 4.0 -- it competes as though
+		// (The barrel's rule is below the flare and BD weapon rules.) The barrel. The single most satisfying thing in
+		// Doom to pull across a room. The heaviest weight in the table, 4.0 -- it competes as though
 		// at half the distance -- so the shell box beside it does not quietly
 		// win the barrel you were plainly pointing at.
 		// RSQ FnF's flare, dropped or thrown (owner 11-05: "distancegrab needs to be able to pick up our flares when we
@@ -283,7 +282,7 @@ class RSQDG_Policy : StaticEventHandler
 		// not loaded is skipped, so this line costs nothing without BD.
 		Rule('BDWeaponSpawner', true, 'Weapons', "a weapon (Brutal Doom)", 2.0);
 
-		// Health and armour, the real ones -- the bonuses were denied above.
+		// Health and armour, the real ones -- the bonuses have their own rule above.
 		Rule('Health', true, 'Health', "a health item", 0.6);
 		Rule('Armor',  true, 'Armor', "armour", 0.6);
 
@@ -314,7 +313,7 @@ class RSQDG_Policy : StaticEventHandler
 		if (cat == 'Barrels')  return RSQDG_Reach.Flag("rsqdg_barrels",  p, true);
 		if (cat == 'Weapons')  return RSQDG_Reach.Flag("rsqdg_weapons",  p, true);
 		if (cat == 'Powerups') return RSQDG_Reach.Flag("rsqdg_powerups", p, true);
-		if (cat == 'Corpses')  return RSQDG_Reach.Flag("rsqdg_corpses",  p, true);
+		if (cat == 'Corpses')  return RSQDG_Reach.Flag("rsqdg_corpses",  p, false);
 		if (cat == 'Ammo')     return RSQDG_Reach.Flag("rsqdg_ammo",     p, true);
 		if (cat == 'Health')   return RSQDG_Reach.Flag("rsqdg_health",   p, true);
 		if (cat == 'Armor')    return RSQDG_Reach.Flag("rsqdg_armor",    p, true);

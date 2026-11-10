@@ -37,19 +37,19 @@ class RSQDG_Flight : EventHandler
 	private double flyDist[2];    // room-distance now, palm to middle
 	private int    flyLimit[2];   // tics before giving up, fixed at launch
 	private bool   flyRefused[2]; // pull.refused already said for this flight
-	private bool   flyArc[2];     // this flight is the ARC (rsqdg_flight_mode 1), fixed at launch
+	private bool   flyArc[2];     // this flight is the LOB (rsqdg_flight_mode 1, the menu's "Lob"), fixed at launch
 	private int    flyEta[2];     // arc: tics from launch to the palm, fixed at launch
 
-	// ---- THE WORLDHANDS PATH (rsqdg_flight_mode 2, the default) ------------
+	// ---- THE WORLDHANDS PATH (rsqdg_flight_mode 2, the menu's "Arc", the default) ---
 	//
 	// The owner's RS_WorldHands pull (rs_distance.zs RS_Pull), ported number for
 	// number. A WRITTEN path, not a steered one: each tic the object is placed on
 	//     start + (palm - start) * e,   e = PathE(t)       (a short pick-up, an even cruise, a soft settle: 11-05)
 	// and lifted by the parabola 4 h e (1 - e), keyed on e so the hump sits in the
-	// middle of the PATH whatever the speed curve does. h = 0.15 x the launch
+	// middle of the PATH whatever the speed curve does. h = rsqdg_path_arc (0.25) x the launch
 	// distance, capped ONCE at launch by the lowest ceiling over the whole route
 	// (MeasureArc) so a low doorway gives a flatter pull that still arrives. Time
-	// of flight = distance / 15 m/s, clamped 6..70 tics, so near and far pulls
+	// of flight = distance / rsqdg_path_speed (22 m/s), clamped 6..40 tics, so near and far pulls
 	// travel at the same speed. Moved by TryMove (Z first), lifted 6/12/18 units
 	// if the first try is boxed in, and a pull that meets a wall drops there.
 	// Mass does not change it: in WorldHands it never did.
@@ -60,8 +60,8 @@ class RSQDG_Flight : EventHandler
 
 	// ---- THE TUMBLE (rs_distance.zs SaveTumble/ArmTumble/RestoreTumble) ----
 	//
-	// End over end, rsqdg_tumble turns across the WHOLE flight (WorldHands' shipped
-	// default 0.5, "beautiful" in the headset), linear in time so it turns at a
+	// End over end, rsqdg_tumble turns across the WHOLE flight (1.0 here; WorldHands' shipped
+	// default was 0.5, "beautiful" in the headset), linear in time so it turns at a
 	// constant rate. A sprite needs three render flags for it: +ROLLSPRITE (a
 	// billboard ignores roll without it), +ROLLCENTER (about its middle, not its
 	// feet) and +INTERPOLATEANGLES (the renderer smooths the roll between tics).
@@ -211,7 +211,7 @@ class RSQDG_Flight : EventHandler
 		// it would sag every long pull into the floor and the steering would
 		// spend its whole authority climbing. Switchable, because "let it sag"
 		// is a legitimate feel and this is the cheapest thing here to A/B.
-		// THE ARC (rsqdg_flight_mode 1, G3) needs gravity: it IS the curve.
+		// THE LOB (rsqdg_flight_mode 1, G3) needs gravity: it IS the curve.
 		int mode = int(RSQDG_Reach.Num("rsqdg_flight_mode", p, 2));
 		bool arc = mode == 1;
 		bool path = mode == 2;
@@ -871,10 +871,10 @@ class RSQDG_Flight : EventHandler
 					continue;
 				}
 
-				// THE CATCH IS NOT WRITTEN YET. Until it is, an arrival drops
-				// the object as an ordinary Doom actor -- every borrowed flag
-				// put back, gravity included, which is what carries it down to
-				// your feet from the palm it was flying to.
+				// (An arrival the catch does not take -- Catch() decides -- drops
+				// the object as an ordinary Doom actor: every borrowed flag
+				// put back, gravity included, which carries it down to
+				// your feet from the palm it was flying to.)
 				//
 				// A MISS JUST DROPS IT, and that is the shipping behaviour too,
 				// not a placeholder. The original resolved a missed catch as a
@@ -902,7 +902,7 @@ class RSQDG_Flight : EventHandler
 			// the hand. Both from RSQDG_Mass -- kilograms out of MASSDEF -- and
 			// NOT Actor.Mass, which is 100 on every non-monster and made every
 			// pickup fly the same (PORT_SCOPE A1).
-			// THE ARC (G3): no steering force at all. Each tic the throw that would
+			// THE LOB (mode 1, G3): no steering force at all. Each tic the throw that would
 			// land on the palm in the time remaining is solved again under gravity
 			// and becomes the velocity -- a lob that follows your hand, and the one
 			// path a kinematic arc could route-plan. Mass is in the time of flight.
@@ -948,12 +948,12 @@ class RSQDG_Flight : EventHandler
 	{
 		Vector3 mid0 = MidOf(a);
 		double dist = (mid0 - palm).Length();
-		double upt = max(0.1, RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_path_speed", p, 15.0)) / TICRATE);
+		double upt = max(0.1, RSQDG_Reach.MetresToUnits(RSQDG_Reach.Num("rsqdg_path_speed", p, 22.0)) / TICRATE);
 		double lo = max(1.0, RSQDG_Reach.Num("rsqdg_path_tmin", p, 6.0));
-		double hi = max(lo, RSQDG_Reach.Num("rsqdg_path_tmax", p, 70.0));
+		double hi = max(lo, RSQDG_Reach.Num("rsqdg_path_tmax", p, 40.0));
 		flyTotal[hand] = int(clamp(dist / upt, lo, hi));
 		flyFrom[hand] = mid0;
-		double want = dist * RSQDG_Reach.Num("rsqdg_path_arc", p, 0.15);
+		double want = dist * RSQDG_Reach.Num("rsqdg_path_arc", p, 0.25);
 		double cap = MeasureArc(a, mid0, palm);
 		flyArcH[hand] = (cap < 0.0) ? want : min(want, cap);
 		a.Vel = (0, 0, 0);
@@ -1099,7 +1099,7 @@ class RSQDG_Flight : EventHandler
 		tumSpin[hand]   = RSQDG_Reach.Num("rsqdg_spin", p, 1.0);
 		tumOfs[hand]    = a.WorldOffset;
 		tumVoxel[hand]  = false;
-		tumTurns[hand]  = RSQDG_Reach.Num("rsqdg_tumble", p, 0.5);
+		tumTurns[hand]  = RSQDG_Reach.Num("rsqdg_tumble", p, 1.0);
 		ArmTumble(hand, a);
 	}
 

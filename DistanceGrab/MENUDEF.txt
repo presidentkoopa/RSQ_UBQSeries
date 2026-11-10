@@ -53,7 +53,7 @@ OptionMenu "RSQDG_Options"
 	Slider "Aim Width", "rsqdg_spread", 2, 45, 1, 0
 	Option "Not With Melee", "rsqdg_yield", "OnOff"
 	Option "Line of Sight", "rsqdg_sight", "OnOff"
-	Option "Palm Gate", "rsqdg_palm", "OnOff"
+	Option "Palm Gate", "rsqdg_palm", "OnOff", "rsqdg_button"   // only with Grab Keys on: without them the palm is the input
 	StaticText " "
 	StaticText "Pull", 1
 	Option "Flight Path", "rsqdg_flight_mode", "RSQDG_FlightMode"

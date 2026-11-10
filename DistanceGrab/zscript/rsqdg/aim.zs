@@ -1,7 +1,8 @@
 // MEASUREMENT. Runs the cone, publishes what each hand is pointing at, and
 // does nothing else.
 //
-// REGISTERED FIRST, and that is the semantics rather than a formality. Handlers
+// REGISTERED BEFORE THE GRAB'S OWN HANDLERS (MAPINFO: after HandSync, Policy, MassTable and Voxels, which only
+// answer questions), and that is the semantics rather than a formality. Handlers
 // tick in registration order and that decides who sees whose writes inside one
 // tic. The desktop build's catch test lived in a handler registered 4th and
 // asked "is the flying object on my palm" BEFORE the handler registered 7th

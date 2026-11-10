@@ -133,3 +133,7 @@ environment for years." DarkDoomZ (Caligari87, 2018) is zlib-licensed: we may in
 notice kept, our changes marked as altered, and credit (its credits.md). Upload: /mnt/user-data/uploads/37852b74-3.02-
 Environmental_DarkDoomz.zip (darkdoomz.pk3 + src/). Not started. Note: anything that drives DDZ by cvar (GITD menu.zs,
 DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
+
+## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25)
+A gun you already carry, with full ammo, cannot be picked up with Distance Grab (the catch is refused, like walking
+over it). Marked as a concern; not changed. Listed in DistanceGrab/README.md "Known concerns".
