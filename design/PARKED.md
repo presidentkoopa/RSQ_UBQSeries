@@ -13,14 +13,12 @@ to design/PLANNED_PROJECTS.md.
   in size. Player-facing only (menu and plate); the code keeps the name DOWN. BUILT 11-10 (downhud.zs BreathText,
   menutitle.zs): the Q, K and both D's breathe. Code only.
 
-## Rig clutter ("a lot going on", owner 2026-11-08 17:31) — DONE 11-10: owner picked 3 and 4
+## Rig clutter ("a lot going on", owner 2026-11-08 17:31) — parked, not built
 Owner: "im not saying we should change anything, but ... this looks like a LOT going on". My four suggestions (he asked "all of them?"; parked 17:40):
 1. Show only what the hand can use: a gun hand sees gun holsters; an empty hand sees spots with something in them; spots of mods not loaded never show.
 2. One ring at a time: the nearest ring full, the rest faint until reached toward.
 3. Shrink RSQ FnF's pocket/clip diamonds to holster-ring size, or show them only when the off hand is near.
 4. "Always show" rings only while moving holsters (setup), else near-hand only.
-11-10: all four had in fact been built 11-08 (TacticalRig rig.zs, not asked). The owner picked 3 and 4; 1 and 2 were taken
-out. 3 now also shows FnF's diamonds only with the OFF hand near. Load-checked, rig only once tested.
 
 ## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25)
 A gun you already carry, with full ammo, cannot be picked up with Distance Grab (the catch is refused, like walking
