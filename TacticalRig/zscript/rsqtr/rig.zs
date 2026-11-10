@@ -2355,6 +2355,14 @@ class RSQTR_Rig : EventHandler
 	private transient String stgMap;
 	private transient int stgTwoHand;                    // last tic the engine's two-hand steadying was on (0 never)
 	private transient int stgThrow[2];                   // per hand, last tic it held a grenade (0 never)
+	private transient int stgDown;                       // last tic the player was DOWN in RSQ SlowMo (0 never)
+
+	// RSQ SlowMo's DOWN, by name only (RSQSM_Service "down", intArg the player: 1 while he is DOWN)
+	static bool IsDown(PlayerPawn pmo)
+	{
+		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		return s && pmo && s.GetInt("down", "", pmo.PlayerNumber(), 0, null) == 1;
+	}
 
 	// the hand holds a grenade (RSQ Grenade's, by class name only: rsqgn_grenade / rsq_grenade*)
 	static bool HoldsGrenade(PlayerInfo p, int h)
@@ -2389,6 +2397,11 @@ class RSQTR_Rig : EventHandler
 		if (stgTwoHand > 0 && level.maptime - stgTwoHand < 70) { StruggleReset(h); stgPressed[h] = false; return; }
 		// A THROW IS NO MISS (owner 2026-11-09 18:53, rig test: the grenade wind-up through the shoulder ring counted 2 of 3):
 		// while that hand holds a grenade and for 1 s after it leaves the hand (the follow-through), no count.
+		// NEVER WHILE DOWN (owner 2026-11-09 19:27; rig follow-up: crouched DOWN, the resting off hand went in and out of
+		// the ammo pouch's ring as its reach assist moved the zone, and the hint showed): while RSQ SlowMo has the player
+		// DOWN and for 1 s after he is up, no count.
+		if (IsDown(pmo)) stgDown = level.maptime;
+		if (stgDown > 0 && level.maptime - stgDown < 35) { StruggleReset(h); stgPressed[h] = false; return; }
 		if (HoldsGrenade(p, h)) stgThrow[h] = level.maptime;
 		if (stgThrow[h] > 0 && level.maptime - stgThrow[h] < 35) { StruggleReset(h); stgPressed[h] = false; return; }
 		if (from >= 0 && !stgPressed[h] && stgR[h] == from)
