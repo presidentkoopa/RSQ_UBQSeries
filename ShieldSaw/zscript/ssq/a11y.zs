@@ -11,7 +11,8 @@
 //   rsqa_cue_scale     dots, rings, glows, markers x0.5..x3
 //   rsqa_text_scale    HUD text x1..x3
 //   rsqa_sound_cues    1 visual, 2 rumble, 3 both
-//   rsqa_hold_toggle   held binds toggle
+//   (rsqa_hold_toggle is not read here: since the 11-10 keys pass ShieldSaw has no held key, and its lock is
+//   holding the trigger, which Hold to Toggle does not cover. HoldToggle() is cut from this copy of the template.)
 class SSQ_A11y
 {
 	// PHOTOSENSITIVE MODE's numbers (WCAG 2.3.1 asks for no more than 3 flashes in any second):
@@ -47,7 +48,6 @@ class SSQ_A11y
 	static clearscope double Wide(double tol) { return tol * (1.0 + Ease()); }
 	static clearscope double Low(double thr) { return thr * (1.0 - 0.5 * Ease()); }
 	static clearscope bool OneHand() { return I('rsqa_onehand') != 0; }
-	static clearscope bool HoldToggle() { return I('rsqa_hold_toggle') != 0; }
 
 	// ---- comfort ----
 	static clearscope int Vignette() { return clamp(I('rsqa_vignette'), 0, 3); }
