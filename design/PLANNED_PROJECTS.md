@@ -34,6 +34,12 @@ shot so you can spin round and hadouken it back. Also: use the HUD chevrons more
 ### Condition bits, Gold bits, weapon wear (as noted 11-09)
 "Condition and gold go into Big Arcade; same for weapon wear, that is condition."
 
+### Whip and pistol, Indiana Jones (owner 11-10 12:27, "maybe i'll table it for a gbovr upgrade")
+The whip in one hand and a pistol in the other. The catch: the Whip uses the OFF hand to aim the snag (its aim ray) and to
+grip the thong (the lasso), so a gun in that hand takes both away. Talking points, not designed: the snag aimed by the
+whip hand's own crack direction while a gun is in the other hand; the lasso grip dropped in that mode; one-handed
+swing. A possible Gun Bonsai VR upgrade on the whip tree.
+
 
 ## RSQ Score's Big Pass
 Named by the owner 11-10 10:46 as a planned project beside Gun Bonsai VR's. Not yet scoped.
