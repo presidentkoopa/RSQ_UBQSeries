@@ -3,9 +3,9 @@
 // optimize it as best we can, it is dangerous on mobile").
 //
 // Tartlman's Minibosses! v0.1.1 (original/zscript/minibossfx.txt, minibosscontroller.txt) drew the IWAD's own sprites
-// as ACTORS in RenderStyle AddStencil, stencil red: BFS1 AB over each thrall (scale 0.5, alpha 0.5, floatbob), APLS AB
+// as ACTORS in RenderStyle AddStencil, stencil red: BFS1 AB over each thrall (scale 0.5, alpha 0.5, floatbob; gone here), APLS AB
 // beads along each thrall's trail (scale 1, alpha 0.3, mbos_thralldensity = 30 actors a thrall, warped every tic),
-// BFE1 A-F / APBX A-E when a link breaks, BAL2 AB life orbs circling the boss (BAL2 C-E when one is lost), FIRE flames
+// BFE1 A-F / APBX A-E when a link breaks, BAL2 AB life orbs circling the boss (gone here), FIRE flames
 // circling it while invulnerable (20 of them, FIRE D-H as they go out). Same sprites here, AddStencil in each set
 // piece's own colour (RSQMB_Handler.PALETTE, the service's "colour") instead of red, drawn as cheaply as this engine
 // allows:
@@ -65,11 +65,12 @@ class RSQMB_FxShot play
 class RSQMB_FxPool play
 {
 	// sequences: sprite, frames, tics a frame, loops (else the last frame holds, or a one-shot ends)
-	enum ESeq { SQ_BALL, SQ_BEAD, SQ_ORB, SQ_FLAME, SQ_BREAK, SQ_BEADX, SQ_ORBX, SQ_FLAMEX, SQ_COUNT }
-	static const String SPR[] = { "BFS1", "APLS", "BAL2", "FIRE", "BFE1", "APBX", "BAL2", "FIRE" };
-	static const String FRM[] = { "AB", "AB", "AB", "ABABCBCDCD", "ABCDEF", "ABCDE", "CDE", "DEDEFEFGFGHGH" };
-	static const int    TICS[] = { 5, 5, 5, 2, 5, 5, 5, 2 };
-	static const int    LOOP[] = { 1, 1, 1, 0, 0, 0, 0, 0 };
+	// (the rework's spheres went 11-09: BFS1 over each thrall and the BAL2 life orbs; their sequences went 11-10)
+	enum ESeq { SQ_BEAD, SQ_FLAME, SQ_BREAK, SQ_BEADX, SQ_FLAMEX, SQ_COUNT }
+	static const String SPR[] = { "APLS", "FIRE", "BFE1", "APBX", "FIRE" };
+	static const String FRM[] = { "AB", "ABABCBCDCD", "ABCDEF", "ABCDE", "DEDEFEFGFGHGH" };
+	static const int    TICS[] = { 5, 2, 5, 5, 2 };
+	static const int    LOOP[] = { 1, 0, 0, 0, 0 };
 
 	// The tether is the ORIGINAL's at every density (owner 1.0 #3, 11-06: "use the miniboss art from the OG mod, not
 	// the weak ass dotted tethers"): mbos_thralldensity 30 APLS beads a link, boss to thrall, placed every tic and
@@ -95,7 +96,7 @@ class RSQMB_FxPool play
 		{
 			seqStart.Push(tex.Size());
 			String f = FRM[s];
-			for (int i = 0; i < f.Length(); i++)
+			for (int i = 0; i < int(f.Length()); i++)
 			{
 				TextureID t = TexMan.CheckForTexture(SPR[s] .. f.Mid(i, 1) .. "0", TexMan.Type_Sprite);
 				if (!t.IsValid()) ok = false;
@@ -111,7 +112,7 @@ class RSQMB_FxPool play
 		if (LOOP[s]) return fi % n;
 		return min(fi, n - 1);
 	}
-	bool Over(int s, int age) { return !LOOP[s] && age >= FRM[s].Length() * TICS[s]; }
+	bool Over(int s, int age) { return !LOOP[s] && age >= int(FRM[s].Length()) * TICS[s]; }
 
 	// After a load the saved slots are taken back (the transient pool was emptied).
 	void Adopt()
@@ -235,15 +236,6 @@ extend class RSQMB_Handler
 		let it = ThinkerIterator.Create("RSQMB_FxDriver", 125);
 		fxDriver = RSQMB_FxDriver(it.Next());
 		if (!fxDriver) { fxDriver = new("RSQMB_FxDriver"); fxDriver.ChangeStatNum(125); }
-	}
-
-	static Vector3 OrbPos(RSQMB_Boss b, int i, int n, int t)
-	{
-		let a = b.mb;
-		double spin = 3.0 / max(0.5, a.radius / 20.0);       // the original's mbos_lifespinspeed 3 / (radius / 20)
-		double ang = t * spin + i * 360.0 / max(1, n);
-		double r = a.radius * 1.5;
-		return a.pos + (cos(ang) * r, sin(ang) * r, a.height * 0.9);
 	}
 
 	static Vector3 FlamePos(RSQMB_Boss b, int k, int n, int t)

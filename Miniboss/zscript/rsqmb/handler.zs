@@ -44,7 +44,7 @@ class RSQMB_Handler : EventHandler
 	transient int    depthPct;
 
 	// ---- the cost meter (rsqmb_debug only): script time this mod spends, ms, since the last report
-	transient double costMs, costPeak;
+	transient double costMs;
 	transient int    costTics, fxParticles;
 
 	// ---- other mods, found by name once ----------------------------------------------------------
@@ -271,7 +271,6 @@ class RSQMB_Handler : EventHandler
 		b.col = ColourOf(mb, b.idx) | 0xFF000000;    // its RSQ ladder colour (fight.zs), else the palette as before
 		b.toughness = 1.0;
 		b.outMult = 1.0;
-		b.bornAt = level.maptime;
 		b.winSeg = -1;
 		b.wordState = -9;
 		b.glowSent = -1;
@@ -525,7 +524,7 @@ class RSQMB_Handler : EventHandler
 		Refresh();
 		if (!greedOn || b.done || b.enraged || b.greedArmed || b.Living() == 0) return;
 		b.greedArmed = true;
-		b.greedDeadline = b.winSeg >= 0 ? b.winEnd : level.maptime + max(1, b.total) * TICRATE;
+		b.greedDeadline = level.maptime + max(1, b.total) * TICRATE;     // (only called while the shield is up: no window open)
 		if (debug) Console.Printf("RSQMB greed armed on boss %d: due in %d tics", b.idx, b.greedDeadline - level.maptime);
 	}
 
@@ -598,7 +597,7 @@ class RSQMB_Handler : EventHandler
 		}
 	}
 
-	// ---- RSQ_Score, by name: just the push (its rows come later) ----------------------------------
+	// ---- RSQ_Score, by name: the awards (Score's own rows read Miniboss through its service) ----------
 	void Award(Actor who, String label, int points)
 	{
 		if (!scoreOn || !who || !who.player) return;
@@ -610,6 +609,8 @@ class RSQMB_Handler : EventHandler
 	// ---- console doors ----------------------------------------------------------------------
 	//   netevent rsqmb_state     prints every miniboss
 	//   netevent rsqmb_choose    picks minibosses again now (ignores the map chance)
+	//   netevent rsqmb_callin    calls a full Bossfight meter in (bossfight.zs CallIn)
+	//   netevent rsqmb_fill <permille>  sets the meter (test; 1000 = full now)
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (e.Name ~== "rsqmb_state") { PrintState(); BfState(); }

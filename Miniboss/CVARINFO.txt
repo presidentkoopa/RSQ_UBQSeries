@@ -30,7 +30,7 @@ server int    rsqmb_per_map       = 1;      // classic pick: minibosses chosen p
 server int    rsqmb_map_chance    = 100;    // classic pick: % chance a level gets any
 server int    rsqmb_thralls       = 3;      // thralls per miniboss (1-8)
 server int    rsqmb_radius        = 1024;   // how far from the miniboss a thrall may stand (map units)
-server bool   rsqmb_legend_thralls = true;  // with LegenDoom Lite: every thrall is made legendary (the classic pick; a Bossfight's monsters always arrive legendary since the rework)
+server bool   rsqmb_legend_thralls = true;  // with LegenDoom: every thrall is made legendary, classic pick and Bossfight alike (owner 11-10); off: a Bossfight's thralls get the plain health boost
 server bool   rsqmb_inherit       = true;   // the miniboss inherits its thralls' powers
 server int    rsqmb_inherit_max   = 4;      // most distinct powers inherited (legendary not counted)
 server int    rsqmb_lives         = 3;      // lives in all (3 = it dies on the third)
@@ -54,7 +54,7 @@ server bool   rsqmb_boss_roar      = false; // its sight and death sounds at ful
 server bool   rsqmb_boss_nomorph   = false; // can't be morphed (DONTMORPH)
 server bool   rsqmb_boss_noyank    = true;  // RSQ Grapple's and RSQ Whip's yank / throw refuse it (the line pulls you to it, as a boss)
 server bool   rsqmb_boss_noheadlock = true; // RSQ Melee's headlock refuses it
-user   bool   rsqmb_fx            = true;   // links, lives, invulnerability flames (the original Minibosses! IWAD sprites), rage sparks (particles)
+user   bool   rsqmb_fx            = true;   // links, invulnerability flames and bursts (the original Minibosses! IWAD sprites), rage sparks (particles)
 user   int    rsqmb_fx_density    = 0;      // Effects Density: 0 Low (Quest-safe), 1 Medium, 2 High (flames, the cap on effects drawn; links are always the original's 30 beads)
 user   float  rsqmb_fx_range      = 4000;   // FX drawn only within this distance of you
 server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires

@@ -295,7 +295,7 @@ extend class RSQMB_Handler
 	// VR: quads cropped from the source and boxes only (no clip rectangle, no Screen.Dim). PHOTOSENSITIVE MODE: no shimmer on
 	// the window's fill, the shield icon held still. RSQ SlowMo's countdown and RSQ Score's combo rows go under the stack
 	// ("meter.bottom"); the countdown lines up with its bar ("meter.x" / "meter.w" / "meter.h").
-	// Code only: not compiled here, not rig-tested.
+	// Rig 11-09 (TestRig/bossfight_rig), not headset-confirmed.
 	// ============================================================================
 	const TH_K = 0.85;      // the thrall row's thickness, x the bar's
 	const WIN_K = 1.0;      // the window bar's tallest step

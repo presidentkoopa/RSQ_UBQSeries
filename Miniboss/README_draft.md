@@ -103,8 +103,8 @@ With RSQ Monsters loaded and both left at their defaults, a miniboss from Brutal
 thralls.
 
 **Everything that arrives is boosted:** a Champion (it is given one of Champions' colours if it did not roll one),
-legendary with LegenDoom, lit in its own colour and full-bright. The thralls are drawn a little larger, and get half
-their health again when LegenDoom is not loaded. The miniboss is 1.25x as big (its hitbox too), 1.25x as fast, and far
+legendary with LegenDoom (when **Legendary Thralls** is on), lit in its own colour and full-bright. The thralls are drawn
+a little larger, and get half their health again when they are not made legendary. The miniboss is 1.25x as big (its hitbox too), 1.25x as fast, and far
 keener to shoot. It becomes legendary when any of its thralls is.
 
 ---
@@ -294,7 +294,7 @@ is the host's.
 |---|---|
 | Top | Bossfights · Meter Speed (1) · Bossfight Meter Fills From (Score, Gun Bonsai, Both) · Bossfight Kill Drops a Life Crate · Call It In: Watch Check + Use · Ignore Spawn Restrictions (off) · Effects · Effects Density (Low, Medium, High) |
 | Fight | Thralls (3) · Lives (3) · Tier From (Set, Gun Bonsai VR Level, Score Lives, Whichever Is Larger) · Graves Rise (Legion of Bones) (off) · Graves Area (Map, Radius) · Graves Radius (1024) |
-| Rules | Legendary Thralls (LegenDoom) (the classic pick only) · Tier-Up Hits the Whole Map · Tier Up Each Life · Inherit Powers · Greed Enrages Monsters · Score Awards |
+| Rules | Legendary Thralls (LegenDoom) · Tier-Up Hits the Whole Map · Tier Up Each Life · Inherit Powers · Greed Enrages Monsters · Score Awards |
 | Counts as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
 | Test and Debug: Bossfight | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Bossfight Music · Bits Multiplier (3) · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Score Per Tier (4000) · Show Meter · Meter Size (1.5) |
 | Test and Debug: Classic | Classic Pick at Level Load (off) · Per Map (1) · Map Chance (100) |

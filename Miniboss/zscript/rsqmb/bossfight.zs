@@ -27,9 +27,10 @@
 //              that will stand there (its floor and ceiling, TestMobjLocation against walls and things), the miniboss's
 //              spot must be in your sight (CheckSight), and its thralls must fit round it (at least half of them).
 //   WHO        types already in this map (its own monsters' classes, as Brutal Doom / XMVE / LegenDoom left them),
-//              sorted by spawn health. A tier 0..4 picks how strong: Gun Bonsai player level / 2 (RSQGB_Service
-//              "player.level") + this map's RSQ Score / rsqmb_bf_tier_score + Bossfights won / 2. Tier 0 sends a
-//              middling type, tier 4 the strongest; thralls are weaker types (the same type when none is).
+//              sorted by spawn health. A tier 0..4 picks how strong, by Tier From (rsqmb_bf_tier_from, Tier()): the
+//              default Whichever Is Larger of Gun Bonsai VR Level and Score Lives; Set adds Gun Bonsai player level / 2
+//              + this map's RSQ Score / rsqmb_bf_tier_score + Bossfights won / 2. Tier 0 sends a middling type, tier 4
+//              the strongest; thralls are weaker types (the same type when none is).
 //   ARRIVAL    (reworked 2026-11-09, StartArrival below) STAGGERED: the thralls one at a time about 0.3 s apart, each on
 //              an RSQ VisualRewards arrival beam (V1 or V2, the miniboss V3 or V4: a set picked at random per Bossfight) in its
 //              ladder colour, held until its beam reveals it, RSQ SlowMo's edge arrows on each while out of view; then the
@@ -41,8 +42,7 @@
 //              Champions inheritance; fight.zs runs the fight).
 //   PAYOFF     its miniboss killed: a guaranteed drop (a gun from this map's weapon types you don't have, else a power-up),
 //              RSQ VisualRewards' boss bits x rsqmb_bf_bits more (RSQMB_Service "bossfor" "rewards.x"), RSQ Score's
-//              "Bossfight" row and one RSQ Score extra life (RS_ScoreService "givelife", rsqmb_bf_life), Champions' own
-//              loot (the powers it inherited).
+//              "Bossfight" row and RSQ Score's gold life crate where it died (rsqmb_bf_life; BfPayoff).
 // Rig only, not headset-confirmed.
 // ============================================================================
 
@@ -985,7 +985,8 @@ extend class RSQMB_Handler
 
 	void Boost(Actor a, bool isBoss, int col)
 	{
-		bool ld = Loaded("LDLegendaryMonsterPickupGuaranteed");
+		// Legendary Thralls (rsqmb_legend_thralls) rules a Bossfight too (owner 11-10); off, they get the plain health boost
+		bool ld = Loaded("LDLegendaryMonsterPickupGuaranteed") && CI('rsqmb_legend_thralls', 1) != 0;
 		// legendary: the thralls now (LegenDoom's own guaranteed pickup); the miniboss at the bind (handler.zs Inherit: its
 		// Legendary Boss Health is asked for first)
 		if (ld && !isBoss && !Has(a, "LDLegendaryMonsterToken")) Give(a, "LDLegendaryMonsterPickupGuaranteed");
@@ -1056,7 +1057,7 @@ extend class RSQMB_Handler
 		if (!who) who = players[consoleplayer].mo;
 		if (killer)
 		{
-			// Score pays it as 2 x the kill's base (handler.zs AwardExternal) when the kill is already recorded this tic; the
+			// Score pays it as 2 x the kill's base (RSQ Score's handler.zs AwardExternal) when the kill is already recorded this tic; the
 			// miniboss dies in WorldThingDamaged, before Score's WorldThingDied, so the same number is sent: 2 x its spawn health
 			Award(killer, "Bossfight", max(1, 2 * (b.mb ? b.mb.SpawnHealth() : 500)));
 			let m = MeterOf(killer, true);

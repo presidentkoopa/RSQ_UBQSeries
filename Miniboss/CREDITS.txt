@@ -15,7 +15,7 @@ WHERE IT COMES FROM
 WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   The project owner (presidentkoopa)
       The set-piece design: thralls as boosted legendary champions, the inherited powers, slow time
-      on a thrall's death, the chain, the greed rule.
+      on a thrall's death, the greed rule.
       Bossfight (2026-11-05): called in, never picked at level load; the meter fed by style, kill chains, Gun
       Bonsai XP and time; the watch check + Use call-in; arrival in view at a distance in slow motion; what
       arrives scaling with progress; the payoff (a gun or power-up, extra bits, the Bossfight score row); legendary
@@ -31,8 +31,9 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       along the player's view, and needs the player's line of sight.
   Tartlman (Minibosses! v0.1.1)
       The effects' design, kept on the owner's word (2026-11-05): the IWAD's own sprites in AddStencil
-      over each thrall (BFS1), along its trail (APLS), breaking (BFE1, APBX), the life orbs (BAL2) and
-      the invulnerability flames (FIRE). Drawn here in each set piece's own colour instead of red.
+      along each thrall's trail (APLS), breaking (BFE1, APBX) and the invulnerability flames (FIRE).
+      Drawn here in each set piece's own colour instead of red. (The original's BFS1 over each thrall and
+      BAL2 life orbs went with the 2026-11-09 rework.)
   Written for this pack
       All code (zscript/rsqmb), including the pooled VisualThinker drawing of those effects. No sprites
       or sounds are shipped: the sprites are the IWAD's, looked up by name, and the cues use the IWAD's

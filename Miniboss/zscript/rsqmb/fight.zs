@@ -35,7 +35,7 @@
 //                   other map change the monsters are gone with their map. Tiers from RSQ Score or Gun Bonsai VR are theirs.
 // Everything is asked BY NAME (nothing links): RSQVR_Service (words, pops, beams), RSQSM_Service (arrows, the landing slow),
 // RSQGD_Service (glow), RSQMN_RosterService (tiers). A mod absent: that part is skipped, quietly.
-// Code only: not compiled here, not rig-tested, not headset-confirmed.
+// Rig 11-09 (TestRig/bossfight_rig), not headset-confirmed.
 // ============================================================================
 
 extend class RSQMB_Handler

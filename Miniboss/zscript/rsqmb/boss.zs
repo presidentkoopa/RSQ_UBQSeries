@@ -38,7 +38,6 @@ class RSQMB_Boss : Thinker
 	int    idx;
 	bool   done, enraged, greedArmed;
 	int    greedDeadline;
-	int    bornAt;
 	int    diedAt;               // the tic it died (Boss Kill Rewards counts a just-killed miniboss)
 	bool   called;               // a Bossfight (called in, bossfight.zs), not the classic pick
 	int    tier;                 // the Bossfight's tier, 0..4
