@@ -66,7 +66,6 @@ class RS_ScoreTracker : Inventory
 	int    champTic, champCount;   // Champion Streak
 	int    legendTic;        // Legend Slayer: the last legendary kill
 	int    cgTic, cgCount;   // Chain Gang: thrall kills in one slow window
-	int    thrallTic;        // Severed: the last thrall kill
 	Actor  thrownKillInf;    // Double Throw: the last thrown-saber kill's inflictor
 	int    thrownKillTic;
 	int    colourMask;       // Rainbow: the champion colours killed this map (bit per token)

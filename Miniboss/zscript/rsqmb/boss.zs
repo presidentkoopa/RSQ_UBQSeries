@@ -36,7 +36,7 @@ class RSQMB_Boss : Thinker
 	bool   legendary;            // inherited LegenDoom Lite's legendary status
 	Color  col;
 	int    idx;
-	bool   done, enraged, greedArmed, greedy;
+	bool   done, enraged, greedArmed;
 	int    greedDeadline;
 	int    bornAt;
 	int    diedAt;               // the tic it died (Boss Kill Rewards counts a just-killed miniboss)

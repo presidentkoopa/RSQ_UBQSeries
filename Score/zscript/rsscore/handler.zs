@@ -839,13 +839,12 @@ class RS_ScoreHandler : EventHandler
 		// taken (0) and not paid, so the move pays once. F.E.A.R. Effect: RSQ Melee's 200 -> the combo
 		// "shove > gun.shotgun@slow" (combo.zs).
 		if (label ~== "F.E.A.R. Effect") return 0;
-		// RSQ MINIBOSS'S AWARDS AS MULTIPLIERS (sheet C6): Thrall Slow Kill 100, Miniboss 500 and Greedy 1000 were the same
+		// RSQ MINIBOSS'S AWARDS AS MULTIPLIERS (sheet C6): Thrall Slow Kill 100 and Miniboss 500 were the same
 		// on an imp and a Cyberdemon and sat outside the per-kill cap. The award comes on the tic of the kill it is for:
-		// it pays a share of THAT kill's base instead (0.3 / 1.0 / 1.5), on its own row as before.
+		// it pays a share of THAT kill's base instead (0.3 / 1.0), on its own row as before (Greedy, 1.5, retired 11-10).
 		double mult = 0;
 		if (label ~== "Thrall Slow Kill") mult = 0.3;
 		else if (label ~== "Miniboss") mult = 1.0;
-		else if (label ~== "Greedy") mult = 1.5;
 		else if (label ~== "Bossfight") mult = 2.0;     // the called-in miniboss (owner 11-05), on top of Miniboss's 1.0
 		// RSQ SLOWMO'S DOWN v2 (owner 11-06 19:51): "Revenge", the marked monster killed, is sent from its killing blow,
 		// before that kill is recorded here: it waits for it (a kill already recorded this tic is another one) and pays
@@ -870,11 +869,11 @@ class RS_ScoreHandler : EventHandler
 				return points;
 			}
 			if (k >= 0 && kTic[k] == level.maptime) points = max(1, int(round(kBase[k] * mult)));
-			// MINIBOSS AND GREEDY COME BEFORE THEIR KILL IS RECORDED (owner 11-05): RSQ Miniboss pays them as the
+			// MINIBOSS COMES BEFORE ITS KILL IS RECORDED (owner 11-05): RSQ Miniboss pays them as the
 			// miniboss dies, before Score's WorldThingDied records that kill, so there was no base yet and they paid
 			// a flat 500 / 1000 on any monster. They wait now for the kill this tic (RecordKill: that kill's base
 			// times 1.0 / 1.5, like every other award); with no kill recorded by the next tic, the flat points.
-			else if (label ~== "Miniboss" || label ~== "Greedy")
+			else if (label ~== "Miniboss")
 			{
 				pendWho.Push(who); pendLabel.Push(label); pendMult.Push(mult); pendFlat.Push(points); pendTic.Push(level.maptime);
 				return points;
@@ -897,7 +896,7 @@ class RS_ScoreHandler : EventHandler
 		return points;
 	}
 
-	// awards waiting for their kill (Miniboss, Greedy: AwardExternal)
+	// awards waiting for their kill (Miniboss, Revenge: AwardExternal)
 	int revengeBase[MAXPLAYERS];   // RSQ SlowMo's DOWN: the base of this player's last "Revenge" kill ("Revive" pays 3x it)
 	Array<Actor> pendWho;
 	Array<String> pendLabel;

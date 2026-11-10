@@ -109,7 +109,7 @@ class RSQMB_Handler : EventHandler
 		if (e.IsReopen) TierReset();
 		if (e.IsSaveGame || e.IsReopen) return;
 		chosen = false; bosses.Clear(); windowEnd = 0; nextPulse = 0; rageCount = 0; raged.Clear();
-		bfScanned = false; bfCount = 0; bfLastTic = 0; bfAny = false; bfBoss = null; arrPhase = 0; rerollAt = 0;
+		bfScanned = false; bfCount = 0; bfLastTic = 0; bfAny = false; bfBoss = null; arrPhase = 0; arrQuiet = false; rerollAt = 0;
 	}
 
 	// Leaving the level: everything the greed rule changed is put back (a hub keeps its monsters).
@@ -482,7 +482,6 @@ class RSQMB_Handler : EventHandler
 	void BossDied(RSQMB_Boss b, Actor killer)
 	{
 		if (b.done) return;
-		bool greedy = b.Living() > 0 && !b.enraged;
 		b.Finish();
 		WindowEndNow();    // its window (if open) ends with it: SlowMo's slow and bar too (fight.zs)
 		FxBossDied(b);
@@ -492,10 +491,9 @@ class RSQMB_Handler : EventHandler
 		if (b.called) SceneMusic(false);   // the fight is over: the level music crossfades back (bossfight.zs)
 		if (killer)
 		{
-			Award(killer, "Miniboss", 500);
-			if (greedy) Award(killer, "Greedy", 1000);
+			Award(killer, "Miniboss", 500);     // (Greedy, the kill with a thrall standing, retired 11-10: the rework can't reach it)
 		}
-		if (debug) Console.Printf("RSQMB boss %d died (killer %s)%s rage %d", b.idx, killer ? "player" : "none", (killer && greedy) ? " GREEDY" : "", rageCount);
+		if (debug) Console.Printf("RSQMB boss %d died (killer %s)%s rage %d", b.idx, killer ? "player" : "none", "", rageCount);
 	}
 
 	// ---- greed -------------------------------------------------------------------------------
@@ -504,7 +502,6 @@ class RSQMB_Handler : EventHandler
 		Refresh();
 		if (!greedOn || b.done || b.enraged || b.greedArmed || b.Living() == 0) return;
 		b.greedArmed = true;
-		b.greedy = true;
 		b.greedDeadline = b.winSeg >= 0 ? b.winEnd : level.maptime + max(1, b.total) * TICRATE;
 		if (debug) Console.Printf("RSQMB greed armed on boss %d: due in %d tics", b.idx, b.greedDeadline - level.maptime);
 	}

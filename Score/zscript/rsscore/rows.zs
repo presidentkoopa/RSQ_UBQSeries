@@ -43,7 +43,7 @@ class RS_RowSeed play
 			"RS_Row_ImmovableObject", "RS_Row_Pop", "RS_Row_Pinata", "RS_Row_ChampionStreak", "RS_Row_TooClose",
 			"RS_Row_GlassCannon", "RS_Row_FoolsGold", "RS_Row_Heartbreaker", "RS_Row_ChampionFatality", "RS_Row_Rainbow",
 			"RS_Row_OneTapLegend", "RS_Row_StrikeWhileItRises", "RS_Row_LegendSlayer",
-			"RS_Row_ChainGang", "RS_Row_RageQuit", "RS_Row_RiotControl", "RS_Row_Severed",
+			"RS_Row_ChainGang", "RS_Row_RageQuit", "RS_Row_RiotControl",
 			"RS_Row_LastGrain",
 			// the second round (the facts the mods answer since 11-03 evening)
 			"RS_Row_RunThrough", "RS_Row_Saberstaff", "RS_Row_UnlimitedPower", "RS_Row_ClashBreak",
@@ -1333,7 +1333,6 @@ class RS_Row_ChainGang : RS_ScoreBonus
 	{
 		let tr = ev.tracker;
 		if (!tr) return;
-		if (ev.killer && RS_Boost.Has(ev.victim, "RSQMB_Thrall")) tr.thrallTic = level.maptime;
 		if (!Thrall(ev)) return;
 		tr.cgCount = Earlier(ev) + 1;
 		tr.cgTic = level.maptime;
@@ -1358,21 +1357,6 @@ class RS_Row_RiotControl : RS_ScoreBonus
 	override int Family() const { return FAM_DARING; }
 	override String DisplayName() const { return "Riot Control"; }
 	override double Evaluate(RS_ScoreEvent ev) { return (ev.killer && RS_Boost.Has(ev.victim, "RSQMB_Rage")) ? MULT : 0.0; }
-}
-
-// M2 Severed: kill the miniboss within 1 s of its last thrall dying (its shield just dropped to nothing).
-class RS_Row_Severed : RS_ScoreBonus
-{
-	const MULT = 0.5;
-	const WINDOW = 35;
-	override int Family() const { return FAM_DARING; }
-	override String DisplayName() const { return "Severed"; }
-	override double Evaluate(RS_ScoreEvent ev)
-	{
-		let tr = ev.tracker;
-		if (!tr || !ev.killer || !RS_Boost.Has(ev.victim, "RSQMB_Ward")) return 0.0;
-		return (tr.thrallTic > 0 && level.maptime - tr.thrallTic <= WINDOW) ? MULT : 0.0;
-	}
 }
 
 // ================================================================================ the second round (11-03 evening)

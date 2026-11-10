@@ -695,7 +695,6 @@ All Melee family.
 - **Chain Gang**: thralls killed one after another in one slow window: the second ×0.4, the third ×0.8, then ×1.0 (a big moment).
 - **Rage Quit**: the miniboss, killed while its rage runs. ×0.75, a big moment.
 - **Riot Control**: an enraged monster. ×0.15.
-- **Severed**: the miniboss within a second of its last thrall. ×0.5.
 
 </details>
 
@@ -781,7 +780,7 @@ These rows pay when another mod says so, not on a kill of their own:
 
 - **Deflect**, **Remote Down** (Melee): RSQ Saber's training remote, a bolt knocked back into it and the remote knocked out of the air.
 - **Indiana Jones** (Daring): a gap crossed on RSQ Grapple's rope.
-- **Thrall Slow Kill** ×0.3, **Miniboss** ×1.0, **Greedy** ×1.5, **Bossfight** ×2.0 (Daring): RSQ Miniboss's, each a share of the kill it is for.
+- **Thrall Slow Kill** ×0.3, **Miniboss** ×1.0, **Bossfight** ×2.0 (Daring): RSQ Miniboss's, each a share of the kill it is for.
 - **Revenge** ×1.0 and **Revive** (Daring): RSQ SlowMo's DOWN. Revenge is the kill's base (100 if no kill comes with it); Revive pays three times the last Revenge's base (300 without one).
 
 </details>
@@ -871,7 +870,7 @@ without the mod they read.
   thrown gun. The Rig can give you a cigarette for every so many Score points (its own option).
 - **RSQ Grenade:** every kind, cooked, skeeted, pulled with your teeth, Impact, Cluster, Sticky, and the monsters its
   Infight and Charm grenades turn.
-- **RSQ Miniboss:** its thralls, the miniboss, its rage and slow window. It pays Thrall Slow Kill, Miniboss, Greedy and
+- **RSQ Miniboss:** its thralls, the miniboss, its rage and slow window. It pays Thrall Slow Kill, Miniboss and
   Bossfight, gives a life or drops the life crate on a Bossfight win, reads each kill's style points and your lives for
   its own scoring, and its Bossfight meter sits under Score's bar.
 - **RSQ Monsters:** the 32 roster rows. When a monster changes tier, Monsters moves its place in the map's count so it

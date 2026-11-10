@@ -107,6 +107,7 @@ extend class RSQMB_Handler
 	bool   bfAny;                 // one has run this map (the cooldown applies)
 	RSQMB_Boss bfBoss;            // the called set piece alive now
 	int    arrPhase;              // 0 none, 1 landing (StartArrival .. Bind)
+	bool   arrQuiet;              // a landing failed and is being retried: its slow, dark and music already played (owner 11-10: once)
 	int    arrTic, arrPn, arrTier;
 	Array<double> arrX, arrY, arrZ;
 	Array<String> arrCls;
@@ -416,6 +417,7 @@ extend class RSQMB_Handler
 			if (!PlanArrival(p, tier)) why = "No Miniboss: No Room";
 			else { StartArrival(p, m, tier); return; }
 		}
+		if (arrQuiet) { arrQuiet = false; SceneMusic(false); }   // a failed landing that can't retry now: the level music comes back
 		if (debug && why != bfWhy) Console.Printf("RSQMB bossfight waits: %s", why);
 		bfWhy = why;
 	}
@@ -768,7 +770,9 @@ extend class RSQMB_Handler
 		}
 		arrBeamSet = random[rsqmbbf](0, 1);
 		bfWhy = "";
-		SceneMusic(true);   // the Bossfight scene: the owner's track crossfades in (RSQ VisualRewards, by name)
+		// a retry after a failed landing is quiet (owner 11-10): the slow motion, the dark and the music came with the first try
+		bool quiet = arrQuiet;
+		if (!quiet) SceneMusic(true);   // the Bossfight scene: the owner's track crossfades in (RSQ VisualRewards, by name)
 		// the landing in slow motion: RSQ SlowMo's "start.bossfight" (by name; owner 2026-11-09: the countdown bar always shows
 		// during a game slow). A game slow: SlowMo shows its countdown bar and the BOSSFIGHT line (Adrenaline on or off), under
 		// its Triggers page's "Miniboss" switch, and it neither waits out nor starts SlowMo's shared cooldown, so the thrall
@@ -781,10 +785,10 @@ extend class RSQMB_Handler
 		// Landing At Slowest asks SlowMo for its slowest (0.05); Landing In The Dark asks RSQ Glow In The Dark to hold DarkDoomZ
 		// at DarkDoom Black for the landing ("event.dark", by name; GITD then breathes the miniboss's colour for the fight)
 		double landDepth = CI('rsqmb_bf_slowest', 1) ? 0.05 : depthPct / 100.0;
-		if (smSvc && slowMs > 0 && smSvc.GetInt("start.bossfight", "bossfight", slowMs, landDepth) < 0)
+		if (!quiet && smSvc && slowMs > 0 && smSvc.GetInt("start.bossfight", "bossfight", slowMs, landDepth) < 0)
 			smSvc.GetInt("start", "bossfight", slowMs, landDepth);
 		let gd = GdService();
-		if (gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, max(3.0, slowMs / 1000.0) + 0.5);
+		if (!quiet && gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, max(3.0, slowMs / 1000.0) + 0.5);
 		if (debug) Console.Printf("RSQMB BOSSFIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
 			arrBeamSet == 0 ? "V1 thralls + V3 miniboss" : "V2 thralls + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
 	}
@@ -869,6 +873,7 @@ extend class RSQMB_Handler
 		// bound when all have landed, Champions has dressed the last (BIND_TICS) and the last arrow is cleared (ARROW_HOLD)
 		if (!allIn || now - lastBorn < BIND_TICS || now < lastReveal + ARROW_HOLD) return;
 		arrPhase = 0;
+		arrQuiet = false;
 		if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
 		Actor mb = arrMon[0];
 		Array<Actor> th;
@@ -908,7 +913,7 @@ extend class RSQMB_Handler
 		}
 		arrPhase = 0;
 		if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
-		SceneMusic(false);   // the retry pushes it again; a quick pop and push only dips the music
+		arrQuiet = true;     // the retry keeps the music on and plays no effects again; a retry the guardrails stop ends the scene (TryArrive)
 	}
 
 	// THE BOSSFIGHT SCENE (owner 2026-11-09: "the music change to my selection for a miniboss fight ... when the fight is over
