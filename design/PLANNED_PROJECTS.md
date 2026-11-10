@@ -39,6 +39,9 @@ The whip in one hand and a pistol in the other. The catch: the Whip uses the OFF
 grip the thong (the lasso), so a gun in that hand takes both away. Talking points, not designed: the snag aimed by the
 whip hand's own crack direction while a gun is in the other hand; the lasso grip dropped in that mode; one-handed
 swing. A possible Gun Bonsai VR upgrade on the whip tree.
+Owner 12:30 (the aim): "aim with the whip hand, we still target actors while holding in primary fire. so with whip in
+hand we are free aiming the snag cursor, but holding the trigger makes it behave like normal". So: the whip hand's own
+ray is the snag cursor while the trigger is up (the off hand free for the pistol); trigger held = marking actors as now.
 
 
 ## RSQ Score's Big Pass
