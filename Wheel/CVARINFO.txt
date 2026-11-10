@@ -225,18 +225,10 @@ user int   wr_locktics = 140;
 // without notice, same as before this existed).
 user int   wr_warn_tics = 25;
 
-// Which hand wr_toggle_main/wr_toggle_off actually open the ring on: -1
-// (default) means each bind opens on the hand its own name says. 0 or 1
-// routes BOTH binds to that hand instead -- but only while nothing is
-// open; a ring already open still responds to whichever bind was actually
-// pressed, so either key can still reach and close it.
-user int   wr_toggle_prefer_hand = -1;
-
-// Tics after opening, pressing the SAME hand's toggle key again recenters
-// the ring on your current hand position instead of closing it. 0 turns
-// the recenter off entirely -- the same key always closes, exactly as
-// before this existed.
-user int   wr_recenter_window = 10;
+// Opens On: the hand the Open Wheel key opens the ring in front of. 0 main, 1 off. (-1, "whichever key you
+// press", went with the toggle keys 11-10; config generation 30 moves it to 0. The console-only wr_toggle_main /
+// wr_toggle_off open on the hand their names say.)
+user int   wr_toggle_prefer_hand = 0;
 
 // A one-shot ring flash when a fan actually opens (dwell or the manual
 // +use gesture) or a grab is confirmed.

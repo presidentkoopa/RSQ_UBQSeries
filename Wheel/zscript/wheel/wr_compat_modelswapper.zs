@@ -55,7 +55,7 @@ class wr_CompatModelSwapper
 	}
 
 	// hand: 0 = main, 1 = off. Matches this wheel's own convention
-	// (mInspectHand, preferredToggleHand) rather than ModelSwapper's
+	// (mInspectHand, OpenHand) rather than ModelSwapper's
 	// internal PSP_WEAPON/PSP_OFFHANDWEAPON layer constants, which this
 	// file never needs to know about.
 	//

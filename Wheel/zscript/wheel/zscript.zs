@@ -752,12 +752,12 @@ class wr_Rig : EventHandler
 		// A wheel per hand. Whichever hand you summon it on is the hand that
 		// wears it, points at it, and receives what you pick -- so the bind you
 		// press already says which hand you meant.
-		if (e.Name ~== "wr_toggle_off")  { if (blockOpen) return; toggle(preferredToggleHand(1)); return; }
-		if (e.Name ~== "wr_toggle_main") { if (blockOpen) return; toggle(preferredToggleHand(0)); return; }
+		// RSQ 11-10: console only now (the rig's probes); no key sends them. Each opens on the hand its name says.
+		if (e.Name ~== "wr_toggle_off")  { if (blockOpen) return; toggle(1); return; }
+		if (e.Name ~== "wr_toggle_main") { if (blockOpen) return; toggle(0); return; }
 		if (e.Name ~== "wr_toggle")      { if (blockOpen) return; toggle(1); return; }
-		// RSQ: ONE BUTTON. Opens the ring in front of the preferred hand (main unless
-		// wr_toggle_prefer_hand says otherwise); with wr_either_hand on, both hands pick from it.
-		if (e.Name ~== "wr_toggle_any")  { if (blockOpen) return; toggle(preferredToggleHand(0)); return; }
+		// RSQ: opens the ring in front of the Opens On hand (wr_toggle_prefer_hand); with wr_either_hand on, both hands pick from it.
+		if (e.Name ~== "wr_toggle_any")  { if (blockOpen) return; toggle(opensOnHand()); return; }
 		// RSQ: HOLD, POINT, RELEASE. The +wr_wheel bind sends its press and its release. Held,
 		// the ring is up while the button is down and the release picks whatever is under a hand
 		// (or just closes it). Tapped, the ring stays up and works as before. Tapped twice, the
@@ -968,26 +968,6 @@ class wr_Rig : EventHandler
 	}
 
 
-	// A fat-fingered wr_toggle_main/wr_toggle_off shouldn't have to mean
-	// "summon on this specific hand" for a player who always means the
-	// same hand anyway. wr_toggle_prefer_hand (-1 off, 0 main, 1 off-hand)
-	// overrides which hand BOTH binds target, unconditionally while a
-	// preference is set -- not just on open.
-	//
-	// UNCONDITIONAL ON PURPOSE, fixing a real bug the first version of
-	// this had: substituting only while nothing was open meant a SECOND
-	// press of the exact key that opened the ring (redirected to the
-	// other hand by the preference) no longer matched mRigHand in
-	// toggle()'s own close check -- pressedHand and mRigHand disagreed,
-	// so the "same key again" case fell into the cross-hand MOVE branch
-	// instead of closing, contradicting the very point of always meaning
-	// one hand. Substituting every time instead means both binds always
-	// resolve to the SAME target hand while a preference is active, so
-	// toggle()'s own `mRigHand == hand` check is always comparing against
-	// that same resolved hand and closes correctly on any repress of
-	// either key. The cost: moving an open ring to the OTHER hand isn't
-	// reachable while a preference is set -- which is the deliberately
-	// intended shape of "I always mean one hand", not a regression.
 	// RSQ: the hold / tap / double-tap bind. See NetworkProcess "wr_press".
 	int    mPressTic;        // when the button went down
 	bool   mPressOpened;     // this press opened the ring (so its release may pick)
@@ -1028,7 +1008,7 @@ class wr_Rig : EventHandler
 				mTapTic = 0;
 				return;
 			}
-			openRig(preferredToggleHand(0));
+			openRig(opensOnHand());
 			mPressOpened = mOpen;
 			return;
 		}
@@ -1138,36 +1118,16 @@ class wr_Rig : EventHandler
 	// Off, it is REMA's wheel per hand: the hand that opened it is the only one that picks.
 	private bool eitherHand() const { return cvBool("wr_either_hand", true); }
 
-	private int preferredToggleHand(int pressedHand) const
+	// RSQ 11-10 (one key): the hand the Open Wheel key opens the ring on, the Opens On row (0 main, 1 off).
+	private int opensOnHand() const
 	{
-		int pref = int(cv("wr_toggle_prefer_hand", -1.0));
-		if (pref != 0 && pref != 1) return pressedHand;
-		return pref;
+		return (int(cv("wr_toggle_prefer_hand", 0.0)) == 1) ? 1 : 0;
 	}
 
-	// Pressing the OTHER hand's key while one is open moves the rig across
-	// rather than closing it, for the same reason a menu with two tabs does not
-	// make you shut it to change tab.
-	//
-	// PRESSING THE SAME HAND'S KEY AGAIN, VERY SOON AFTER OPENING,
-	// RECENTERS INSTEAD OF CLOSING. The anchor freezes once per open (see
-	// layout()) and is never revisited, so a ring that opened facing a
-	// wall, or just where your hand happened to be a moment ago, had no
-	// way back short of closing and reopening it -- losing whatever you
-	// were about to do. Clearing mHaveAnchor alone is the whole mechanism:
-	// mOpen, the card arrays, gatherWeapons -- nothing else about the
-	// ring's state is touched, so this recenters in place rather than
-	// tearing anything down.
-	//
-	// mOpenTics, not a new timestamp -- it already counts up from 0 every
-	// tic since THIS open (it drives the grow-in animation). A same-hand
-	// press landing in its first few tics reads as "I just opened this
-	// and I am still adjusting", not "I have been looking at this and I
-	// am done" -- the two intents that would otherwise collide on the
-	// exact same key. Deliberately short (default under a third of a
-	// second) so it cannot be mistaken for a normal, considered close:
-	// outside that window, the same press closes instantly, exactly as
-	// it always has.
+	// Pressing the OTHER hand's toggle while one is open moves the rig across rather than closing it.
+	// RSQ 11-10: the same toggle again closes it. The re-centre window (a quick repress re-anchored the ring) went
+	// with the toggle keys: with the one key, a quick second press is the double tap (back to the last gun), and
+	// a ring you turned away from swings back on its own (wr_follow).
 	// The two alternate layouts have to reach back here when they commit, to
 	// hand the session in. Same shape as their own Get().
 	static wr_Rig Get()
@@ -1178,18 +1138,11 @@ class wr_Rig : EventHandler
 	private void toggle(int hand)
 	{
 		// RSQ: with either hand picking, the ring is not "that hand's" ring -- whichever bind
-		// is pressed while it is open closes it (or re-centres it, inside the window below).
+		// is pressed while it is open closes it.
 		if (mOpen && eitherHand()) hand = mRigHand;
 
 		if (mOpen && mRigHand == hand)
 		{
-			int window = wr_A11y.Tap(int(cv("wr_recenter_window", 10.0)));   // Slower Taps
-			if (window > 0 && mOpenTics <= window)
-			{
-				mHaveAnchor = false;
-				feedback(Sound("wristrig/move"), 0.30, 40);
-				return;
-			}
 			closeRig();
 			return;
 		}
@@ -3528,7 +3481,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 29;
+	const CFG_VERSION = 30;
 
 	private void migrateConfig()
 	{
@@ -3565,6 +3518,13 @@ class wr_Rig : EventHandler
 		{
 			let fs = CVar.FindCVar("wr_fontset");
 			if (fs && (fs.GetString() ~== "JFO" || fs.GetString() ~== "Ermac")) fs.SetString("Score");
+		}
+		// Gen 30 (11-10, one key): Opens On lost "Whichever key you press" (-1), which with the one key always opened on
+		// the main hand. A config on it (or any value but 1) moves to Main hand: what it already did, now named.
+		if (from < 30)
+		{
+			let oh = CVar.FindCVar("wr_toggle_prefer_hand");
+			if (oh && oh.GetInt() != 1) oh.SetInt(0);
 		}
 		stamp.SetInt(CFG_VERSION);
 	}

@@ -236,21 +236,21 @@ now (the owner, 2026-11-09) and their options are hidden. Only Gun Bonsai and Le
 
 | Section | Rows |
 |---|---|
-| (top) | Weapon Wheel (On) · Either Hand Picks (On) · Opens On (Whichever key you press / Main hand / Off hand) · Sound (On) · Controller Rumble (1.0) · Size (1.0) |
+| (top) | Weapon Wheel (On) · Either Hand Picks (On) · Opens On (Main hand / Off hand) · Sound (On) · Controller Rumble (1.0) · Size (1.0) |
 | Controls | Open Wheel (hold, point, release; left thumbstick click) |
 | Picking | Two Hands Compare (Off) · Open on Your Gun (Off) · Wrist Card (Off) · Open at Level Start (Off) · Slow Time While Open (On) · Closing Ends SlowMo (Off) · Freeze Without SlowMo (Off) · Freeze Time While Open (Off) · Pull a Card Out (1.5) · Throw a Gun Back (2.6) · Reach In (7) · Feel Each Gun's Weight (1.0) |
 | Look | Palette (Standard, Doom, Hell, Tech) · Font (Score, Combo, JFO, Status bar numerals, Small gold numerals, Small grey numerals, DoomFont only, Ermac's digits; Score) · Ring Plates (Its own (Ermac style) / Status bar stone) · Card Look (Colour by Gun / Classic) · Web View (Marine / Mirror) · Gun Models on Cards (On) · Ammo Counts (On) · Ammo Readout (LED segments / LCD, punched out / Lozenge badge) · Rarity Colours (On) · Mark Guns You Hold (On) · Slot Numbers (On) · Cards Face You (On) · Hover Halo Breathes (Off) · Edge Sweep (Off) · Flash on Pick (On) · Spark Colour (Slot colour / White hot / Rainbow) · Hover Lights the Room (On) · Background Stars (0) |
 | Data Sheet | Show Data Sheet (On) · Weapon Stats (On) · Track Kills and Accuracy (On) · This Level's Kills (Off) · Gun Bonsai Rows (On) · Point at a Gun (On) · Compare With Yours (Off) |
 | Other Mods | LegenDoom Rarity (On) · LegenDoom Effects (On) |
-| Test and Debug | Picking: Hold to Pick (9 tics), Double Tap (10 tics), Ring Follows Past (45°), Folds After (140 tics), Fold Warning (25 tics), Re-centre Window (10 tics) · Ring: Ring Distance Ahead (34), Ring Radius (5), Height Above Hand (2), Lean Toward You (12), Wrist Roll Spins the Ring (0), Stick Deadzone (0.2), Card Width (4.2), Card Height (3.0), Hovered Card Steps Out (1.5), Hovered Card Grows (0.06), Other Cards Fade To (0.55), Cards Grow In (6 tics), Card Shadow (0.32), Shadow Offset (0.35), Face Parallax (0.06), Idle Breathing (0.35), Breathing Speed (1.7), Low Ammo Below (0.25), Low Ammo Pulse (0.35), Model Turn Speed (1.5), Model Size (0.16), Model Stand-Off (3) · Cards: Flat Ring Up To (10 weapons), Fan Close Forgiveness (6 tics), Star Brightness (0.5), Light Size (44), Light Holds Across Gaps (3 tics), Sparks (18), Spark Speed (1.4), Volume (0.65), Idle Shimmer (0), Taken Card Spins (360°) · Data Sheet: Data Sheet Size (1.0), Pointing at a Gun: Rest For (18 tics), Wrist Card: Hold the Pose (8 tics), Wrist Card Size (0.6), Palette by Name, Font Set by Name · Debug Log (Off) |
+| Test and Debug | Picking: Hold to Pick (9 tics), Double Tap (10 tics), Ring Follows Past (45°), Folds After (140 tics), Fold Warning (25 tics) · Ring: Ring Distance Ahead (34), Ring Radius (5), Height Above Hand (2), Lean Toward You (12), Wrist Roll Spins the Ring (0), Stick Deadzone (0.2), Card Width (4.2), Card Height (3.0), Hovered Card Steps Out (1.5), Hovered Card Grows (0.06), Other Cards Fade To (0.55), Cards Grow In (6 tics), Card Shadow (0.32), Shadow Offset (0.35), Face Parallax (0.06), Idle Breathing (0.35), Breathing Speed (1.7), Low Ammo Below (0.25), Low Ammo Pulse (0.35), Model Turn Speed (1.5), Model Size (0.16), Model Stand-Off (3) · Cards: Flat Ring Up To (10 weapons), Fan Close Forgiveness (6 tics), Star Brightness (0.5), Light Size (44), Light Holds Across Gaps (3 tics), Sparks (18), Spark Speed (1.4), Volume (0.65), Idle Shimmer (0), Taken Card Spins (360°) · Data Sheet: Data Sheet Size (1.0), Pointing at a Gun: Rest For (18 tics), Wrist Card: Hold the Pose (8 tics), Wrist Card Size (0.6), Palette by Name, Font Set by Name · Debug Log (Off) |
 
 **Weapon Wheel Off** stops the ring from opening and hands next / previous weapon back to the engine. **Freeze Without
 SlowMo** only acts when RSQ SlowMo is not loaded; **Freeze Time While Open** stops
 time whether SlowMo is loaded or not. Distances are in map units (34 to a metre).
 
 **Keys:** one, *Options → Customize Controls → RSQ Wheel → Open Wheel*. A default key that is already bound to
-something else is left alone; bind it there instead. With the one key, **Opens On: Whichever key you press** opens the
-ring on the main hand, and **Re-centre Window** acts only on the old toggle commands, which no key sends now.
+something else is left alone; bind it there instead. **Opens On** picks the hand the ring opens in front of (with
+Either Hand Picks on, both hands still pick from it).
 
 ---
 
@@ -295,7 +295,7 @@ ring on the main hand, and **Re-centre Window** acts only on the old toggle comm
   through `wr_RigService` (is it open, which hand, where, which gun is pointed at).
 - **What is kept:** the next / previous list rides on the player (`wr_RotTok`), so it lasts through levels and saves; your
   fan order is a setting (`wr_slot_order`) that Reset All leaves alone. Old configs are moved to new defaults once
-  (`wr_cfgver`, generation 29).
+  (`wr_cfgver`, generation 30).
 - **Other-mod support is parked** in `wr_modsupport.zs`: every compat reader but LegenDoom's answers "off". The hidden
   setting `wr_unpark_mods 1` brings them back, for testing only. Most of those readers read another mod's fields by name,
   which needs REMA's engine; on QuestZDoom that read always answers "not there".
