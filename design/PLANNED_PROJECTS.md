@@ -83,3 +83,8 @@ RSQ Laser Sight measures each gun's muzzle from its mesh; a new weapon set needs
 
 ## Netplay
 Parked until QuestZDoom has netplay (owner 11-09). The known items are marked TODO in the code.
+
+## RSQ Monsters pass (owner 11-10 14:45: "Monsters needs work i know"; its own project, later)
+Known from the 11-10 agents: the menu checker finds 29 structure problems (the orphan RS pages with the undefined
+RS_CH_OffOn, no Reset All on the front page, a sub menu not named Test and Debug); the zscript gives 256 compile
+warnings (deprecated VelX-style calls in rs_zombieman.zs, rs_shotgunner.zs). The owner scopes the rest. Not started.
