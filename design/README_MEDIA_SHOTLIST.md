@@ -116,3 +116,12 @@ Format: mod, what to show, still or GIF, notes. Captures are labelled in the REA
 | Monsters | MG head-pop, burn and freeze deaths | GIF | |
 | Monsters | The options page | still | |
 | Monsters | The ladder colours side by side; a ColorfulHell boss; MG blood running down walls; tracer streaks; the Abyss split | still/GIF | no placeholder yet |
+| LaserSight | Quest and PC VR looks side by side on the same gun | still | |
+| LaserSight | The dot sliding from a wall onto the floor and up an imp | GIF | |
+| LaserSight | The dot on nukage and on a metal door | still | |
+| LaserSight | Target lock on an imp, then the headshot flash | GIF | |
+| LaserSight | A grenade launcher's dotted arc with the bent beam, then the landing | GIF | |
+| LaserSight | The spread ring around the dot (shotgun) | still | |
+| LaserSight | The range readout by the gun and at the dot | still | |
+| LaserSight | Cycle Colours on both hands | GIF | |
+| LaserSight | Infrared Only, without and with the goggles | still | |
