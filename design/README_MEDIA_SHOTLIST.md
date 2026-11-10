@@ -38,3 +38,28 @@ Format: mod, what to show, still or GIF, notes. Captures are labelled in the REA
 | FnF | The flashlight on its chest clip (Show Flashlight on) and the flare at the pocket (Show Flare on) | still | |
 | FnF | The flashlight's cone in a dark room, cut off at a wall, with its colours | still or GIF | |
 | FnF | Optional: current-build replacements for the five earlier-build stills (taking, striking, holding, the light budget, the battery meter) | still | |
+| Wheel | HERO: the ring opening, cards growing out of the wrist | GIF | |
+| Wheel | The wrist card over the main-hand wrist | still | |
+| Wheel | The holster screen, Marine view and Mirror view | still | shared with Tactical Rig |
+| Wheel | A gun flying from its card into a holster ring | GIF | |
+| Wheel | Extras: a fan and a constellation; pulling a card out and throwing a gun back; the grenade kinds fan; the three card states; Classic vs Colour by Gun | still / GIF | no placeholder yet |
+| Glow In The Dark | A room's glow changing on the Randomize Colours key | GIF | |
+| Glow In The Dark | Nukage and lava breathing in a dark room; an imp dying in nukage and the pool flaring | GIF | |
+| Glow In The Dark | A switch, an exit and an ordinary door glowing in a dark room | still | |
+| Glow In The Dark | A teleporter pad's shimmer and a hurt floor throbbing red | still | |
+| Glow In The Dark | A key and a soul sphere drawn bright in a pitch-dark room | still | |
+| Glow In The Dark | A hue-drift profile (Vaporwave or Disco) and a ripple profile (Lava Lamp) | GIF | |
+| Glow In The Dark | The "colours held during a Bossfight" line during a miniboss fight | still | |
+| Glow In The Dark | A miniboss landing in DarkDoom Black, then the map beating in its colour | GIF | |
+| Glow In The Dark | Going DOWN: the map turning blood red and beating, draining back on revive | GIF | |
+| Glow In The Dark | The level-up wave rolling through several rooms | GIF | current build |
+| Score | HERO: a kill, the bonus rows rolling out, the bar filling | GIF | |
+| Score | A spent life: the blast and the ring of fire climbing round you | GIF | |
+| Score | The gold life crate after a Bossfight, its beam, fading red | GIF | |
+| Score | A whip crack, hook yank and shotgun kill showing a named combo | GIF | |
+| Score | A Fatality slowing the world | GIF | |
+| Score | The HUD up close: score line, bar, life pips, a five-colour breakdown | still | the rig frames are too small |
+| Score | The breathing word, then Letters on Wave and Chaos | GIF | |
+| Score | The bar filling, lighting blue, the pips popping | GIF | |
+| Score | The score on the wrist | still | |
+| Score | A colour-blind breakdown with its family letters | still | |

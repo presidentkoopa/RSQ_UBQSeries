@@ -12,7 +12,7 @@ user float rsm_sound_follow   = 1.0;    // how far slowed things' sounds drop in
 
 // ---- the world's, this mod's
 server float rsqsm_radius       = 3000;  // map units around a player that slow
-server bool  rsqsm_slow_own     = true;  // your own missiles slow too
+server bool  rsqsm_slow_own     = true;  // Slow My Shots (owner 11-09): your own projectiles slow too: anything you fire that flies: rockets, plasma, projectile bullets (hitscan is instant). Never while DOWN
 server bool  rsqsm_rounds       = true;  // enemy hitscans become dodgeable rounds
 server float rsqsm_round_speed  = 14;    // a round's speed at the set depth, map units per tic (14 = about 14 m/s)
 server bool  rsqsm_trails       = true;  // your shots leave a fading trail

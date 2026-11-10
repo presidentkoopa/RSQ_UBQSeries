@@ -48,7 +48,7 @@ Length** (6 real seconds); pressing again ends it sooner. A shootdodge lasts unt
 **Also in slow motion:** your own walking, jumping and falling slow with the world (**Slow Me Too**; never your head or
 hands). The nearest monsters walk smoothly instead of stepping in jumps (**Smooth Walkers**). Your shots leave a fading
 trail from the muzzle to where they landed (**Shot Trails**) and slowed rockets and fireballs leave a pale wake
-(**Missile Wakes**). Your own rockets slow too unless you turn **Slow My Missiles** off. **Colour Drain** (off by
+(**Missile Wakes**). Your own shots that fly (rockets, plasma, projectile bullets such as Brutal Doom's true bullets) slow too unless you turn **Slow My Shots** off. **Colour Drain** (off by
 default) greys the view a little while time is slowed.
 
 You hear Doom's power-up pickup as the world slows and a lift landing as it comes back, with a rumble in both hands.
@@ -226,7 +226,7 @@ SlowMo talks to most of the series, always by name: every mod still loads and pl
   glow. If GITD is holding DarkDoomZ dark for a miniboss's landing, DOWN gives back your own setting, not GITD's.
 - **RSQ Grapple and RSQ Whip:** they read the world's speed, so a monster they pull moves at the slowed pace.
 - **RSQ Grenade:** the Grenade Blast trigger. Thrown grenades follow the world's speed (and can run faster than it, on
-  Grenade's own option); with Slow My Missiles off they stay at full speed. Grenade's Only in Slow-Mo row reads
+  Grenade's own option); with Slow My Shots off they stay at full speed. Grenade's Only in Slow-Mo row reads
   SlowMo's clock, and Gun Bonsai VR's Skeet Window slows the world through SlowMo. Getting up on the top tier gives a grenade back.
 - **RSQ Gun Bonsai VR:** a SlowMo upgrade tree. **Deeper** slows the world further (x0.8, x0.6, x0.4 of your World
   Speed). **Longer** stretches the wrist-cross burst (5, 6, 8 s) and makes a full meter last 25% longer a level.
@@ -276,7 +276,7 @@ the bars and DOWN's look are yours.
 | Section | Rows |
 |---|---|
 | Top | Slow Motion Key · Shootdodge Key · World Speed (0.25) · Slow Motion Length (6 s; greyed with Adrenaline on) |
-| Slow Motion | Dodgeable Bullets · Lean Out of Bullets · Slow Me Too · Slow My Missiles · Smooth Walkers · Adrenaline (off) · Keep Adrenaline · Haptics · Yield to Other Mods |
+| Slow Motion | Dodgeable Bullets · Lean Out of Bullets · Slow Me Too · Slow My Shots · Smooth Walkers · Adrenaline (off) · Keep Adrenaline · Haptics · Yield to Other Mods |
 | Look | Colour Drain (off) · Shot Trails · Missile Wakes · Stored Slow-Mo Bar · Countdown Bar · Bar Animation · Bar Colour (Green; 17 colours or Random) |
 | Your Triggers | Slow Motion Key · Shootdodge · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block |
 | Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Score · Gun Bonsai VR · Other Mods |
@@ -308,7 +308,7 @@ Bullets is greyed until you learn Lean Dodge.
   monster's walking slows because its states stretch; **Smooth Walkers** spreads each step of the nearest 12 walkers
   over those stretched tics instead of one jump and a pause.
 - **What is never slowed:** players, what they carry, and the series' own actors (classes named RSQ*, UBQS*, SSQ*: the
-  grab, the rig's props, the shield, the saber). Your own missiles slow unless **Slow My Missiles** is off, and never
+  grab, the rig's props, the shield, the saber). Your own projectiles slow unless **Slow My Shots** is off, and never
   while you are DOWN.
 - **The rounds** replace a monster's hitscan before it is traced (WorldHitscanPreFired), from the same muzzle point and
   angle, carrying the shot's damage, damage type, puff and flags; the hit is dealt as a hitscan's would be, so monsters
