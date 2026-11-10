@@ -127,7 +127,7 @@ bridge pk3 per mod. Needs from the owner: which mods to keep, and their pk3s. Se
 that for now." A second meter-sized bar beside RSQ Miniboss's Bossfight meter, for boss fights and EX-tier monsters
 (their health, presumably; not designed). Nothing built. Same size as the meter, like the two SlowMo bars (11-09).
 
-## DarkDoomZ baked into Glow In The Dark (owner 2026-11-09 17:47)
+## DarkDoomZ baked into Glow In The Dark (owner 2026-11-09 17:47) -- DONE 11-10 (GlowInTheDark/zscript/rsqgd/ddz.zs, marked ALTERED)
 "DDZ will always be loaded, we can bake it into GITD with full credit for all I care, they've been two halves of the same
 environment for years." DarkDoomZ (Caligari87, 2018) is zlib-licensed: we may include and alter it, with its licence
 notice kept, our changes marked as altered, and credit (its credits.md). Upload: /mnt/user-data/uploads/37852b74-3.02-
