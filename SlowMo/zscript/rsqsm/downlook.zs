@@ -45,9 +45,9 @@ extend class RSQSM_Down
 	// read stronger or more intense"). The tint above multiplies the light, so in near-black rooms there is nothing left to
 	// tint. While DOWN's DarkDoomZ mode is on, two things change: the tint goes all the way to red (green and blue toward
 	// 0, not 40 / 30), and every sector's FADE colour (the colour its darkness fades to: Sector.SetFade, ColorMap.FadeColor)
-	// is pulled toward a deep blood red, so the darkness itself is red. Both scale with Blood Red Tint and ease with the grey;
+	// is pulled toward a deep blood red, so the darkness itself is red. Both scale with Fog Tint Strength and ease with the grey;
 	// both are given back exactly as the light colour is.
-	const HAZE_MAX = 120.0;        // the fade colour at full (Blood Red Tint 1, DarkDoomZ on): the chosen colour, brightest channel 120 (my number)
+	const HAZE_MAX = 120.0;        // the fade colour at full (Fog Tint Strength 1, DarkDoomZ on): the chosen colour, brightest channel 120 (my number)
 	const TINT_FLOOR = 0.14;       // without DarkDoomZ the tint keeps this much of the other channels (blood red: 255, 36, 36)
 	// FOG COLOUR (owner 2026-11-09 19:13: "choose the color of the fog ... including 'random' and 'complimentary to GITD
 	// colors' but have bloodred be the default"): the colour both the tint and the red darkness go toward. Fixed colours;
