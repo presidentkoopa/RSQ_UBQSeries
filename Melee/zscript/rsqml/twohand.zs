@@ -92,7 +92,7 @@ class RSQML_TwoHand : StaticEventHandler
 		return o.bBoss ? k * 0.3 : k;
 	}
 
-	// TAUNT (Gun Bonsai VR's player node, GBOVR_TREES.md 4.1 H): empty hands or fists, both thrown apart: every monster
+	// TAUNT (Gun Bonsai VR's player node, GBOVR_TREES.md 4.1 H): Melee's hands or an empty hand, both thrown apart: every monster
 	// within Taunt.range that can see you turns on you, and your next punch inside Taunt.tics does double; at level 3
 	// what stands within TAUNT_NEAR m staggers.
 	void Taunt(PlayerPawn pmo)

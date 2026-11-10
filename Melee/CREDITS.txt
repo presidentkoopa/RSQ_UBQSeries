@@ -33,7 +33,7 @@ THE HEADLOCK (from RSQ Distance Grab)
   numbers and impact rule.
 
 MELEE'S HANDS (2026-11-02)
-  Hand model by Ermac (iAmErmac), Rusted Legacy / Doom Force Unleashed, MIT licence: models/hand/hand.md3 (its
+  Hand model by Ermac (iAmErmac), Rusted Legacy / Doom Force Unleashed, MIT licence: models/rsqml/hand/hand.md3 (its
   frames 0 and 1, cut by Melee/tools/md3_frames.py) and hand.png, at Ermac's own fit (modeldefs/weapons/fist.txt).
   The licence text: credits/Ermac_RustedLegacy_LICENSE.txt.
   The FBX hand: BD22 VR's free hand (RS_Brutal22WeaponsQ, presidentkoopa: src/models/rsq/fbx/fbx_oh_free_R.md3,

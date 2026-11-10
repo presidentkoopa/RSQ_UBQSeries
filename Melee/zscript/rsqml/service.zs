@@ -20,7 +20,7 @@
 //                             stands down for it); 0 not
 //   GetInt "headlock.holding" objectArg = a monster: 1 while a Headlock holds it
 //   GetInt "returned.by"      objectArg = a missile: which hand sent it back at its shooter: 0 a punch (Hadouken, a punched
-//                             bullet, a catch), 1 Swat Back, 2 the Guard's reflect; -1 not one of ours (RSQ Score, 11-03)
+//                             bullet, a catch), 1 Swat Back, 2 the Guard's reflect, 3 an open palm's plain swat (aside); -1 not one of ours (RSQ Score, 11-03)
 //   GetInt "launch.age"       objectArg = a monster, intArg = a player number: tics since that player's uppercut launched
 //                             it, while it is still off the floor; -1 not (RSQ Gun Bonsai VR's Juggle, launch.zs)
 //   GetInt "autopunch"        objectArg = a monster, intArg = a player number, doubleArg = a damage share: that player's

@@ -11,7 +11,7 @@
 //
 //   BUTT SHOVE   BD22 VR Reloaded's butt strike (the owner's mod; its zscript/rsvr/melee.zs, 2.0-b1m and 1.99x-lb-r7
 //                agree), ported. Every number is theirs or Brutal Doom's, parsed, with the line:
-//     swing  BUTT_SWING 3.6 m/s (melee.zs:168): the shove must average this (rsqml_shove_mps; theirs is measured at
+//     swing  BUTT_SWING 3.6 m/s (melee.zs:168; BD22 VR now uses rsq_butt_speed, 2.4): the shove must average this (rsqml_shove_mps; theirs is measured at
 //            the stock's tip, ours at the hand: there is no gun model to measure)
 //     reach  BUTT_REACH 60 map units ahead along the way the swing moves, padded BUTT_PAD 12 (melee.zs:178-179: BD22's
 //            own kick envelope, KickAttack Speed 30 x 2 tics + Radius 12); each body struck once per shove, and only

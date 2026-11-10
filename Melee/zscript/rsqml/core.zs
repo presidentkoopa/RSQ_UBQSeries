@@ -278,17 +278,6 @@ class RSQML_Hands play
 		return p, true;
 	}
 
-	// the way the hand points (engine yaw stored minus 90, pitch positive up)
-	static Vector3 Dir(PlayerPawn pmo, int h)
-	{
-		let sim = RSQML_Sim.Get();
-		int i = pmo.PlayerNumber() * 2 + h;
-		if (sim && sim.simOn[i]) return (cos(pmo.angle), sin(pmo.angle), 0);
-		bool m = RSQML_A11y.Ctrl(pmo, h) == 0;
-		double y = (m ? pmo.AttackAngle : pmo.OffhandAngle) + 90, p = m ? pmo.AttackPitch : pmo.OffhandPitch;
-		return (cos(y) * cos(p), sin(y) * cos(p), sin(p));
-	}
-
 	// the eyes in the map (RSQ Gestures' RSQG_Pose.EyePos): viewz + the headset's height - the height the engine
 	// built the view from
 	static Vector3 EyePos(PlayerPawn pmo)
@@ -301,12 +290,6 @@ class RSQML_Hands play
 		return (pmo.Pos.x, pmo.Pos.y, pmo.player.viewz + hmdH - h);
 	}
 
-	static Weapon InHand(PlayerPawn pmo, int h)
-	{
-		let p = pmo ? pmo.player : null;
-		if (!p) return null;
-		return h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
-	}
 }
 
 // A probe's stand-in for the controllers (headless testing; nothing sets it in play).

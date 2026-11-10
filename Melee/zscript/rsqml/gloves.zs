@@ -23,7 +23,7 @@ class RSQ_Glove : Weapon
 	// ModifyDamageDealt, where the only thing they are handed is this weapon as the inflictor.
 	double lastPower;     // 0..1 between spo_min_speed and spo_full_speed (SuperPunchOut's own scale)
 	double lastSpeed;     // m/s, the swing's average
-	int    lastKind;      // RSQ_GloveHandler.PK_JAB / PK_HOOK / PK_UPPER
+	int    lastKind;      // RSQML_Gloves.PK_JAB / PK_HOOK / PK_UPPER
 	bool   lastBody;      // landed below the chest
 	bool   lastCounter;   // the target was in its attack wind-up
 	bool   lastStar;      // a star punch
@@ -524,7 +524,6 @@ class RSQML_Gloves : StaticEventHandler
 		double upm = RSQML.UnitsPerMetre();
 		double ps = level.pixelstretch > 0.1 ? level.pixelstretch : 1.2;
 		double minSpeed = RSQML.SV("rsqml_punch_min_speed", 2.0);   // spo_min_speed's default
-		double fullSpeed = RSQML.SV("rsqml_punch_full_speed", 7.0); // spo_full_speed's default
 		int rehit = RSQML.SVI("rsqml_punch_rehit", 6);               // spo_rehit_tics' default
 		// DEMPSEY (GBOVR_TREES.md 4.1 C): in a run of alternating hooks, a glove that has it re-arms faster
 		int dpn = pmo.PlayerNumber();
@@ -651,8 +650,7 @@ class RSQML_Gloves : StaticEventHandler
 	// uppercut, this way we have a way to 'kick' barrels like in Brutal Doom, give them some lift in a forward arc";
 	// rsqml_uppercut_barrels, off). The fist meets a barrel this tic and the swing reads as an uppercut (as Deliver reads
 	// it, the same Gun Bonsai VR unlock included): the barrel takes NO damage and flies up and away from you on a 45-degree
-	// arc -- up as an uppercut lifts a monster (5 map units a tic at the slowest, 9 at full speed, under Uppercut Lift
-	// Cap), and as fast forward. You are its target, so its blast is yours when it goes off. A jab or a hook into a barrel
+	// arc -- up as an uppercut lifts a monster (5 map units a tic at the slowest, 9 at full speed, under Lift Cap (m)), and as fast forward. You are its target, so its blast is yours when it goes off. A jab or a hook into a barrel
 	// does nothing, as before.
 	bool KickBarrel(PlayerPawn pmo, Weapon g, int h, RSQ_PunchHand st, double avg, double gr)
 	{
@@ -834,7 +832,7 @@ class RSQML_Gloves : StaticEventHandler
 	// speed knocks it away (with Swat Back, back at its shooter); a fist at punch speed with the Hadouken sends it back.
 	// "Back" is a round of our own (RSQML_Round, SlowMo's tracer mesh): it flies from the hand at the shooter's middle and
 	// does the shot's damage x the move's multiplier on what it meets, paid to that glove (Claim).
-	// rsqml_bullets (Fists and Palms Meet Bullets, on) switches the whole thing; the swat and Hadouken rows and nodes gate
+	// rsqml_bullets (Swat Bullets, on) switches the whole thing; the swat and Hadouken rows and nodes gate
 	// it as they gate missiles.
 	override bool WorldHitscanPreFired(WorldEvent e)
 	{
@@ -864,7 +862,11 @@ class RSQML_Gloves : StaticEventHandler
 				if (!fist) continue;
 				let st = HandOf(pn, h);
 				if (!st.prevValid) continue;
-				double mps = st.vel.Length() / upm;
+				// the same height correction as a punch's (Swing: v.z x pixel stretch), so a vertical swat reads its true
+				// speed (11-09: it was measured raw, a little slow)
+				Vector3 sv = st.vel;
+				sv.z *= (level.pixelstretch > 0.1 ? level.pixelstretch : 1.2);
+				double mps = sv.Length() / upm;
 				bool open = PalmOpen(pmo, h);
 				if (open ? (mps < SWAT_MPS || RSQML.SVI("rsqml_swat", 1) == 0) : mps < minSpeed) continue;
 				double miss = SegSegDist(st.prevHand, st.hand, from, to);
@@ -1414,7 +1416,7 @@ class RSQML_Gloves : StaticEventHandler
 		double extra = RSQML.Num("Uppercut.lift", upLv, 0, 0) + RSQML.Num("Launcher.lift", lnLv, 0, 0);
 		double up = (5.0 + 4.0 * power + extra) * heavy * liftMult;
 		// THE CAP (owner, 2026-11-02: "cap it"): at full levels the lifts stack (Uppercut 3 + Launcher 3 with Heavy Hands'
-		// knock threw an imp up at 30 map units a tic, about 16 m of air). No launch goes higher than Uppercut Lift Cap
+		// knock threw an imp up at 30 map units a tic, about 16 m of air). No launch goes higher than Lift Cap (m)
 		// (rsqml_punch_lift_cap, 3 m of air): the speed whose rise, at gravity 1 a tic, is that height (v^2 / 2 map units,
 		// the vertical x pixelstretch).
 		double capM = RSQML.SV("rsqml_punch_lift_cap", 3.0);

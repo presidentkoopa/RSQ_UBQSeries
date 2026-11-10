@@ -13,7 +13,7 @@
 //        -- and the gun that was in your main hand goes back into it. The gloves stay in your
 //        inventory. Gun pickups the toggle removed from the current level do not come back.
 //
-// Outside it, rsqml_gloves 1 (Start With Gloves) hands you the gloves at the start of each level (default 0: never).
+// Outside it, rsqml_gloves 1 (Start With Melee Hands) hands you the gloves at the start of each level (default 0: never).
 class RSQ_NoPickup : Actor
 {
 	// what a gun pickup becomes: nothing, gone on its first tic

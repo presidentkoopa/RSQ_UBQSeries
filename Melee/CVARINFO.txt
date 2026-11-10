@@ -39,14 +39,14 @@ server bool  rsqml_hadouken = false;    // a punch knocks a monster's missile ba
 server bool  rsqml_wallsplat = false;   // a monster punched into a wall slams into it
 server bool  rsqml_heavyhands = false;  // a landed punch freezes the monster for a beat and knocks it further
 server bool  rsqml_guard_start = false; // with RSQ Gun Bonsai VR: Guard at level 1 before it is learned (owner, 11-02)
-server bool  rsqml_groundpound = false; // both fists swung down together: a shockwave round you (needs RSQ Gestures)
-server bool  rsqml_clearout = false;    // both palms thrust forward together: everything in front shoved back (needs RSQ Gestures)
+server bool  rsqml_groundpound = false; // both fists swung down together: a shockwave round you (Melee reads both hands itself, gestcopy.zs)
+server bool  rsqml_clearout = false;    // both palms thrust forward together: everything in front shoved back (Melee reads both hands itself, gestcopy.zs)
 
 // ---- THE GUN-BUTT SHOVE (shove.zs) -- user settings, as they were in RSQ Gestures --------------------------------
 // The main hand's shove with a gun in it hits (BD22 VR Reloaded's butt strike, ported). Stands down by itself when BD22
 // VR Reloaded is loaded (its own rsq_butt strike is the one).
 user bool    rsqml_shove = true;
-user float   rsqml_shove_mps = 3.6;     // the shove must average this to hit (BD22 VR Reloaded melee.zs BUTT_SWING 3.6)
+user float   rsqml_shove_mps = 3.6;     // the shove must average this to hit (BD22 VR Reloaded's butt strike was BUTT_SWING 3.6; BD22 VR now uses rsq_butt_speed, 2.4)
 // A landed butt shove (ours, or BD22 VR Reloaded's own when it is loaded) asks RSQ SlowMo for a short pulse
 // (rsm_pulse <ms> 35). While that slow motion lasts: the F.E.A.R. Effect.
 user bool    rsqml_shove_slowmo = true;

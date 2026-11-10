@@ -29,8 +29,8 @@ class RSQML_Guard : StaticEventHandler
 	//                     before it lands: no damage, the attacker knocked back and staggered
 	//   REFLECT GUARD     a monster's missile about to hit the raised Guard from in front is sent back at its shooter
 	//                     (gloves.zs SendBack); at level 3 a bullet is too (its damage, at the shooter)
-	//   ABSORB / RELEASE  what the Guard takes charges it (up to AbsorbRelease.cap, draining 5 a second); RSQ Gestures'
-	//                     "both hands apart" (rsqg_pair 1, twohand.zs) throws it out round you
+	//   ABSORB / RELEASE  what the Guard takes charges it (up to AbsorbRelease.cap, draining 5 a second); "both hands
+	//                     apart" (RSQ Gestures' rsqg_pair 1, or Melee's own copy of that reader, twohand.zs) throws it out round you
 	const PARRY_MPS = 1.0;
 	const PARRY_KNOCK = 8.0;
 	const DRAIN_PER_SEC = 5.0;
