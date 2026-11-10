@@ -16,8 +16,9 @@
  *
  * --- Modified by presidentkoopa for the RSQ Edition, 2026 (GPLv3 too): gold stones (an RSQ Score life spent, the
  * "gy_spawk" event, gy_RSQService), one spawn function for every stone, the service's Graves Rise and heartbeat asks,
- * and in a netgame only one machine sends each spawn event (the arbitrator at map load, the dying player's machine at
- * a death), so a stone is not made once per player. ---
+ * and netplay (2026-11-10): every machine sends its own stored stones at map load, only the dying player's machine
+ * sends a new death's stone, and each stone carries a key made from sim data, so a stone whose key was already spawned
+ * on this map is skipped: everyone's stones, each one once. ---
  */
 
 class gy_EventHandler : EventHandler
@@ -33,12 +34,12 @@ class gy_EventHandler : EventHandler
 
     _isFired = true;
     removeStonesOnMap();
+    _spawnedKeys.Clear();
 
-    // RSQ Edition (2026-11-10): every machine runs this and keeps its own store, and every machine spawns what any
-    // machine sends, so in a netgame each player's copy of a stone would come once per player. Only the arbitrator
-    // sends the map's stones (alone, consolePlayer is the arbitrator).
-    if (consolePlayer != Net_Arbitrator) { return; }
-
+    // RSQ Edition (2026-11-10, owner: everyone's stones): every machine sends the stones in its own store (alone, as
+    // m8f's did). A netgame death was stored by every machine that saw it, under one key, so its copies arrive
+    // more than once; networkProcess, which runs in the same order on every machine, spawns the first and skips the
+    // rest. A solo death is in one machine's store only, so it comes once, from its machine.
     let storage = gy_Storage.of();
 
     gy_Death death;
@@ -71,6 +72,7 @@ class gy_EventHandler : EventHandler
 
     let storage = gy_Storage.of();
     let death   = gy_Death.of(event.thing.pos, obituary);
+    death.setKey(deathKey(event.thing.PlayerNumber(), event.thing.pos, 1));
     storage.registerDeath(death);
 
     // Every machine stores the death (each has its own store); only the dying player's machine sends the spawn, so the
@@ -84,7 +86,19 @@ class gy_EventHandler : EventHandler
     // RSQ Edition: "gy_spawk" is the same event for a gold stone (kind 2, an RSQ Score life spent)
     if (event.name.left(8) == "gy_spawn" || event.name.left(8) == "gy_spawk")
     {
-      let death = gy_Death.fromString(event.name.mid(8));
+      // RSQ Edition (2026-11-10): "gy_spawn<key>@<x:y:z:obituary>". The key has no "@"; the first one ends it.
+      String rest = event.name.mid(8);
+      int    at   = rest.IndexOf("@");
+      String key  = (at >= 0) ? rest.left(at) : "";
+      if (at >= 0) { rest = rest.mid(at + 1); }
+      if (key != "" && _spawnedKeys.Find(key) != _spawnedKeys.Size())
+      {
+        let dc = CVar.FindCVar("gy_bones_debug");
+        if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard t%d: stone %s already on the map, copy from player %d skipped", level.maptime, key, event.player); }
+        return;
+      }
+      if (key != "") { _spawnedKeys.Push(key); }
+      let death = gy_Death.fromString(rest);
       death.setKind(event.name.left(8) == "gy_spawk" ? 2 : 1);
       spawnStone(death);
     }
@@ -133,7 +147,28 @@ class gy_EventHandler : EventHandler
   static
   String spawnEventName(gy_Death death)
   {
-    return (death.getKind() > 1 ? "gy_spawk" : "gy_spawn") .. death.toString();
+    return (death.getKind() > 1 ? "gy_spawk" : "gy_spawn") .. sendKey(death) .. "@" .. death.toString();
+  }
+
+  // RSQ Edition (2026-11-10, netplay): a death's key, from sim data only (never the real clock), so every machine in the
+  // game computes the same one: the dead player's number, the game's total tics, the map's tics, the spot (whole map
+  // units) and the kind. The map itself is the store's checksum. "n" marks a keyed record.
+  static
+  String deathKey(int playerNumber, Vector3 pos, int kind)
+  {
+    return String.Format("n%d.%d.%d.%.0f.%.0f.%.0f.%d", playerNumber, level.totaltime, level.maptime, pos.x, pos.y, pos.z, kind);
+  }
+
+  // The key a stone is sent with. A record stored before keys (m8f's, or this edition's before 2026-11-10) has none: it
+  // is sent with a key made of its exact stored spot and kind ("p"). A netgame death stored by m8f's code was stored at
+  // the same spot by every machine, so its copies still meet as one; two old stones at the very same spot become one
+  // stone (they stood in one place anyway).
+  static
+  String sendKey(gy_Death death)
+  {
+    if (death.getKey() != "") { return death.getKey(); }
+    let l = death.getLocation();
+    return String.Format("p%f/%f/%f/%d", l.x, l.y, l.z, death.getKind());
   }
 
 // private: ////////////////////////////////////////////////////////////////////////////////////////
@@ -165,6 +200,7 @@ class gy_EventHandler : EventHandler
   }
 
   private transient bool _isFired;
+  private Array<String> _spawnedKeys; // RSQ Edition: the keys of the stones spawned on this map since it loaded
   private int _lastSecond;
   private int _now;
 
@@ -200,6 +236,7 @@ class gy_RSQService : Service
                                    , level.TimeFormatted()
                                    );
     let death = gy_Death.of(mo.pos, obituary).setKind(2);
+    death.setKey(gy_EventHandler.deathKey(mo.PlayerNumber(), mo.pos, 2)); // the same key on every machine (2026-11-10)
     gy_Storage.of().registerDeath(death);
     let stone = gy_EventHandler.spawnStone(death);
     let dc = CVar.FindCVar("rs_score_debug");

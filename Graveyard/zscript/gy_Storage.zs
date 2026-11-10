@@ -15,7 +15,8 @@
  * Graveyard.  If not, see <https://www.gnu.org/licenses/>.
  *
  * --- Modified by presidentkoopa for the RSQ Edition, 2026 (GPLv3 too): a stone's kind (2 = a gold stone, an RSQ Score
- * life spent) stored as a 4th field of its location; records with 3 fields read as kind 1. ---
+ * life spent) stored as a 4th field of its location; records with 3 fields read as kind 1. A death's key (2026-11-10,
+ * netplay) is a 5th field; records without it read with no key. ---
  */
 
 class gy_Storage
@@ -46,8 +47,10 @@ class gy_Storage
     Vector3 location = (lc[0].ToDouble(), lc[1].ToDouble(), lc[2].ToDouble());
     // RSQ Edition: a 4th field is the stone's kind (2 = a Score life spent). Stones stored before have 3: kind 1.
     int kind = (lc.Size() > 3) ? lc[3].ToInt() : 1;
+    // RSQ Edition (2026-11-10): a 5th field is the death's key (gy_Death.getKey). Records stored before have none.
+    String key = (lc.Size() > 4) ? lc[4] : "";
 
-    return gy_Death.of(location, _obituaries.At(i)).setKind(kind);
+    return gy_Death.of(location, _obituaries.At(i)).setKind(kind).setKey(key);
   }
 
   void registerDeath(gy_Death death)
@@ -56,9 +59,12 @@ class gy_Storage
     let    l = death.GetLocation();
 
     _hashes    .Insert(i, Level.GetChecksum());
-    // RSQ Edition: kind 1 is stored exactly as before; kind 2 adds a 4th field (older readers ignore it)
-    _locations .Insert(i, death.getKind() > 1 ? String.Format("%f:%f:%f:%d", l.x, l.y, l.z, death.getKind())
-                                               : String.Format("%f:%f:%f", l.x, l.y, l.z));
+    // RSQ Edition: x:y:z, then the kind (4th field), then the key (5th, 2026-11-10). m8f's reader takes the first 3; the
+    // 11-06 reader takes the 4th as the kind. A death with no key is stored as before (kind 1: 3 fields).
+    String loc = String.Format("%f:%f:%f", l.x, l.y, l.z);
+    if (death.getKey() != "")      { loc.AppendFormat(":%d:%s", death.getKind(), death.getKey()); }
+    else if (death.getKind() > 1)  { loc.AppendFormat(":%d", death.getKind()); }
+    _locations .Insert(i, loc);
     _obituaries.Insert(i, death.getObituary());
 
     write();

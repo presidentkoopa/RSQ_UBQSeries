@@ -16,11 +16,23 @@ Gravestones are carried over play sessions, so:
 ## Features
 
 - commands to remove gravestones on this map or all gravestones (in this
-  edition, buttons on its options page).
+  edition, buttons on its options page; see Controls).
 - doesn't affect gameplay.
-- netgame compatible (players see other player's gravestones; in this
-  edition each stone is sent once, by the host at map load and by the dying
-  player at a death).
+- netgame compatible (players see other player's gravestones). In this
+  edition (2026-11-10, code only, not shown; no netgame run yet) every
+  machine sends its own stored stones at map load, so each player's solo
+  deaths on the map come too; the dying player's machine sends a new
+  death's stone; each stone carries a key made from game data (player,
+  game tics, map tics, spot, kind), and a copy whose key is already on the
+  map is skipped, so no stone comes twice. Stones stored before the key are
+  matched by their exact spot and kind.
+
+## Controls
+
+No keys. **Remove Gravestones on This Map** and **Remove All Gravestones**
+are menu buttons on its page (Options > Radiant Silvergun Options > RSQ
+Graveyards, Controls). The console aliases still work: `gy_remove_map` and
+`gy_remove_all`.
 
 ### Local additions
 
@@ -98,6 +110,18 @@ come out the same on every machine.
     Mode).
 - source: the `Graveyard/` folder of RSQ_UBQSeries, built to
   `RSQ_Graveyard.pk3`.
+
+## Status (RSQ Edition)
+
+- rig only, not headset-confirmed: the Bones Bridge, the heartbeat, Graves
+  Rise (2026-11-06/07 builds), the gold stone and Living Stones' colour
+  steps (logs), and the pack loading on the owner's order with no script
+  error (2026-11-10).
+- code only, not shown: m8f's stones and store in this edition, the
+  pop-in, breathing and candle fade, Reset All, and the 2026-11-10 fixes
+  (risers looking for a free spot, the remove buttons, the look read the
+  same on every machine, the stone keys).
+- not yet run: netgames, including the everyone's-stones rule above.
 
 ## Acknowledgments
 

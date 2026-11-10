@@ -41,9 +41,13 @@ wake the graves.
 | Choose **Remove Gravestones on This Map** | This map's stones are gone, here and from the store |
 | Choose **Remove All Gravestones** | Every stored stone on every map is gone |
 
-The two remove commands are buttons on this pack's page (Options → Radiant Silvergun Options → RSQ Graveyards,
-Controls), not keys (owner 2026-11-10: keybinds are a precious resource in VR). Each prints a line to the
-console when it is done. Typed in the console, `gy_remove_map` and `gy_remove_all` do the same.
+## Controls
+
+No keys. This pack binds nothing (owner 2026-11-10: keybinds are a precious resource in VR).
+
+- **Remove Gravestones on This Map** and **Remove All Gravestones** are menu buttons on this pack's page (Options →
+  Radiant Silvergun Options → RSQ Graveyards, Controls). Each prints a line to the console when it is done.
+- The console aliases still work: `gy_remove_map` and `gy_remove_all` do the same as the buttons.
 
 ---
 
@@ -212,13 +216,17 @@ state and must come out the same on every machine. Alone, they are simply yours.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-06, the 11-06 build; log `tools/rigtest/evidence_1106/log_final.txt`, frames `rising.jpg`, `stones_pulse.jpg`, `stones_photosafe.jpg`, run by `tools/rigtest/run_batch.sh` on doom2, brutal22test6, BD_VoxelPack, BD22 VR 2.0.4a, XMVE, Legion of Bones 1.05 and the RSQ pk3s) | The Bones Bridge: Brutal Doom and XMVE monsters (imp, nightmare imp, chainsaw zombie, rifle zombie, shotgunner) rising as their undead 195 tics after death at Respawn Delay 5 s and 25 tics at Instant; a lost soul staying dead; a block on a corpse restarting the wait, then the rise once it was taken off; gibbed corpses rising where they lay; the risen turned to the player. Legion of Bones' spawns handed back to XMVE's and Brutal Doom's (a ZombieMan spawning XMVE's spawner with the bridge on, Legion of Bones' with it off). The heartbeat: all 9 stones pulsing on every beat, bright on the beat, and held steady in Photosensitive Mode. Graves Rise in that build (then with a cap): 5 stones within 640 woken, 9 map-wide, risers that did not fit tried again. No script error from the pack |
-| **Shown on the rig** (2026-11-06, RSQ SlowMo's run, log `SlowMo/tools/rigtest/build/logs/v2main.log`) | A spent Score life placing a gold stone (Score and Graveyard log lines). Living Stones' colour and tint steps for both kinds in Uniform, Wave and Chaos (log lines; that run's frames were not checked for this README) |
-| **Shown on the rig** (2026-11-07, SlowMo's run, log `SlowMo/tools/rigtest/build/logs/v3c.log`) | Graves Rise with no cap: 31 tombstones woken map-wide, 31 risers planned. Only 20 had risen when the log ended; the rest were still being retried ("did not fit"). So "31 raised 31" was not shown |
-| **Shown on the rig** (2026-11-09 and 2026-11-10, the series runs) | The pack loading on the owner's order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, Legion of Bones, Champions, Gun Bonsai, every RSQ pk3) with no script error from it; the 11-10 runs used the current build. Its row under Radiant Silvergun Options (11-09 log `design/rigtest_2026-11-09/logs/main_A-G_I.log`) |
-| **Headset-confirmed** | Nothing yet. Everything here is rig only, not headset-confirmed |
-| **Code only, not yet shown** | m8f's base in this edition: a stone at a death, stones coming back on the next load, the obituary on Use, both remove commands. The pop-in, the breathing and the candle fade (frames show stones and candles, but none were checked for these). Graves Rise Mode (one per stone or one per thrall, the 40-unit ring; changed 11-10, load-checked only). Reset All. Netgames. The 11-10 code-read fixes, each load-checked only: a riser that does not fit looks for a free spot near it (5 tries, then given up and logged); the two remove commands are menu buttons, the key section gone; the boss markers and their art removed (nothing placed them); a netgame sends each stone's spawn from one machine only (the arbitrator at map load, the dying player's machine at a death), so a stone is made once, not once per player; the stones' look read the same on every machine (the arbitrator's settings, the nearest player); a never-raised thrall type is skipped by Graves Rise as by the bridge |
-| **Known not to work** (from reading the code) | Alone, a death's stone is not shown until the map loads again (m8f's design: a netgame shows it at once). Each machine keeps its own store: in a netgame only the host's stored stones come back at map load |
+| **rig only, not headset-confirmed** (2026-11-06, the 11-06 build; log `tools/rigtest/evidence_1106/log_final.txt`, frames `rising.jpg`, `stones_pulse.jpg`, `stones_photosafe.jpg`, run by `tools/rigtest/run_batch.sh` on doom2, brutal22test6, BD_VoxelPack, BD22 VR 2.0.4a, XMVE, Legion of Bones 1.05 and the RSQ pk3s) | The Bones Bridge: Brutal Doom and XMVE monsters (imp, nightmare imp, chainsaw zombie, rifle zombie, shotgunner) rising as their undead 195 tics after death at Respawn Delay 5 s and 25 tics at Instant; a lost soul staying dead; a block on a corpse restarting the wait, then the rise once it was taken off; gibbed corpses rising where they lay; the risen turned to the player. Legion of Bones' spawns handed back to XMVE's and Brutal Doom's (a ZombieMan spawning XMVE's spawner with the bridge on, Legion of Bones' with it off). The heartbeat: all 9 stones pulsing on every beat, bright on the beat, and held steady in Photosensitive Mode. Graves Rise in that build (then with a cap): 5 stones within 640 woken, 9 map-wide, risers that did not fit tried again. No script error from the pack |
+| **rig only, not headset-confirmed** (2026-11-06, RSQ SlowMo's run, log `SlowMo/tools/rigtest/build/logs/v2main.log`) | A spent Score life placing a gold stone (Score and Graveyard log lines). Living Stones' colour and tint steps for both kinds in Uniform, Wave and Chaos (log lines; that run's frames were not checked for this README) |
+| **rig only, not headset-confirmed** (2026-11-07, SlowMo's run, log `SlowMo/tools/rigtest/build/logs/v3c.log`) | Graves Rise with no cap: 31 tombstones woken map-wide, 31 risers planned. Only 20 had risen when the log ended; the rest were still being retried ("did not fit"). So "31 raised 31" was not shown |
+| **rig only, not headset-confirmed** (2026-11-09 and 2026-11-10, the series runs) | The pack loading on the owner's order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, Legion of Bones, Champions, Gun Bonsai, every RSQ pk3) with no script error from it; the 11-10 runs used the current build. Its row under Radiant Silvergun Options (11-09 log `design/rigtest_2026-11-09/logs/main_A-G_I.log`) |
+| **code only, not shown** | m8f's base in this edition: a stone at a death, stones coming back on the next load, the obituary on Use, both remove commands. The pop-in, the breathing and the candle fade (frames show stones and candles, but none were checked for these). Graves Rise Mode (one per stone or one per thrall, the 40-unit ring; changed 11-10, load-checked only). Reset All. The 11-10 code-read fixes (92bd8ba9), each load-checked only: a riser that does not fit looks for a free spot near it (5 tries, then given up and logged); the two remove commands are menu buttons, the key section gone; the boss markers and their art removed (nothing placed them); the stones' look read the same on every machine (the arbitrator's settings, the nearest player); a never-raised thrall type is skipped by Graves Rise as by the bridge. The 11-10 stone keys (load-checked only): each new death and spent life is stored with a key made from sim data (player number, game and map tics, spot, kind) |
+| **not yet run** | Netgames, all of it: no two-player game has been run. That includes the 11-10 rule, everyone's stones (every machine sends its own stored stones at map load, the dying player's machine sends a new death's stone, and a stone whose key is already on the map is skipped, so each comes once) |
+
+From reading the code: alone, a death's stone is not shown until the map loads again (m8f's design: a netgame shows it
+at once). In a netgame, a death's obituary keeps the real date and time of the machine whose copy came first, so the
+date line can differ by a few seconds from what another machine stored. The two remove buttons clear every
+machine's store in a netgame, not only the presser's (m8f's design).
 
 ---
 
@@ -231,12 +239,19 @@ state and must come out the same on every machine. Alone, they are simply yours.
   time, to paste into a bug report), `gy_BonesHandler` (the corpses and graves waiting to rise, saved with the game),
   `gy_BonesReplacer` (static; hands Legion of Bones' spawns back while the bridge is on).
 - **The store:** `gy_hashes`, `gy_locations`, `gy_obituaries` (string settings in the engine config, not in saves),
-  one record per stone, keyed by map checksum. A gold stone adds a 4th field to its location; older records read as
-  normal stones.
-- **Network events:** `gy_spawn<x:y:z:obituary>` (a stone), `gy_spawk<...>` (a gold stone), `gy_remove_map`,
-  `gy_remove_all` (the two menu buttons run the aliases `gy_remove_map` / `gy_remove_all`, which send them). In a
-  netgame each machine keeps its own store and records every death; only the arbitrator sends the map's stones at load,
-  and only the dying player's machine sends a new death's stone.
+  one record per stone, keyed by map checksum. A gold stone adds a 4th field to its location (the kind); a record with a
+  key (2026-11-10) has the kind and the key as 4th and 5th fields. Older records read as normal stones with no key.
+- **Network events:** `gy_spawn<key>@<x:y:z:obituary>` (a stone), `gy_spawk<...>` (a gold stone), `gy_remove_map`,
+  `gy_remove_all` (the two menu buttons run the aliases `gy_remove_map` / `gy_remove_all`, which send them).
+- **Everyone's stones in a netgame (2026-11-10, code only, not shown; no netgame run yet).** Each machine keeps its own
+  store and records every death it sees. At map load every machine sends the stones in its own store (your solo deaths
+  on that map come too). Only the dying player's machine sends a new death's stone. Each stone carries a key made from
+  sim data only, never the real clock: the dead player's number, the game's total tics, the map's tics, the spot in whole
+  map units and the kind (`n<player>.<totaltime>.<maptime>.<x>.<y>.<z>.<kind>`), so every machine that saw a netgame
+  death stored the same key. The spawns are handled in the same order on every machine; the first with a key is made,
+  any later copy is skipped (logged with `gy_bones_debug`). **Records stored before keys** are sent with a key made from
+  their exact stored spot and kind (`p<x>/<y>/<z>/<kind>`): m8f's code stored a netgame death at the same spot on every
+  machine, so those copies meet as one too; two old stones at the very same spot become one stone.
 - **Settings with no row:** `gy_living_debug` (yours: logs the Living Stones colour every 10 tics),
   `gy_bones_debug` (the game's, not saved: logs the bridge, the graves and the heartbeat).
 - **Read by name from other packs, each one optional:** `LOB_Respawn` (Legion of Bones), `rsqa_photosafe` (RSQ

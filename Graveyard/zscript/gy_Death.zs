@@ -15,7 +15,7 @@
  * Graveyard.  If not, see <https://www.gnu.org/licenses/>.
  *
  * --- Modified by presidentkoopa for the RSQ Edition, 2026 (GPLv3 too): a death carries its stone's kind (1 a death,
- * 2 a gold stone, an RSQ Score life spent). ---
+ * 2 a gold stone, an RSQ Score life spent) and a key every machine agrees on (netplay, 2026-11-10). ---
  */
 
 class gy_Death
@@ -56,8 +56,15 @@ class gy_Death
   int     getKind()     const { return _kind > 0 ? _kind : 1; }
   gy_Death setKind(int kind) { _kind = kind; return self; }
 
+  // RSQ Edition (2026-11-10, owner: everyone's stones in a netgame): the death's key, made from sim data only, so every
+  // machine that saw the death stores the same key (see gy_EventHandler.deathKey). Two stones with one key are one stone.
+  // Empty for a record stored before this; the sender then makes one from its position (gy_EventHandler.sendKey).
+  String  getKey()      const { return _key; }
+  gy_Death setKey(String key) { _key = key; return self; }
+
   private Vector3 _location;
   private String  _obituary;
   private int     _kind;
+  private String  _key;
 
 } // class gy_Death
