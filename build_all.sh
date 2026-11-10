@@ -34,13 +34,13 @@ pack_list SlowMo       RSQ_SlowMo.pk3       models/rsqsm
 # README.md ships: it carries the credits.
 cd "$HUB/ShieldSaw"
 rm -f "$OUT/RSQ_ShieldSaw.pk3"
-zip -q -r -X "$OUT/RSQ_ShieldSaw.pk3" . -x 'docs/*' 'tools/*' '*.sh' '.gitignore' 'HANDOFF.md'
+zip -q -r -X "$OUT/RSQ_ShieldSaw.pk3" . -x 'docs/*' 'tools/*' '*.sh' '.gitignore' 'HANDOFF.md' 'README_draft.md'
 echo "built pk3/RSQ_ShieldSaw.pk3"
 
 # QuestSaber: everything but docs.
 cd "$HUB/QuestSaber"
 rm -f "$OUT/RSQ_Saber.pk3"
-zip -q -r -X "$OUT/RSQ_Saber.pk3" . -x 'docs/*' '.gitignore'
+zip -q -r -X "$OUT/RSQ_Saber.pk3" . -x 'docs/*' '.gitignore' 'README_draft.md'
 echo "built pk3/RSQ_Saber.pk3"
 
 # LaserSight: its explicit include list (its build.sh); tools/ and docs/ stay out.
