@@ -775,14 +775,17 @@ class RSQ_Upgrade_CriticalHits : RSQ_CritPerk
 		bool melee = MeleeHit(pawn, shot, attacktype);
 		if (!melee && level < 2) return damage;
 		int now = RSQM.Now();
-		let dz = RSQ_Dazed.On(target);
+		// the stun is kept on the monster's RSQ_Dazed, made only by a critical (11-10: it was given to every monster this
+		// touched, and nothing on a monster that never took a critical reads it); a monster without one is not stunned
+		let dz = RSQ_Dazed(target.FindInventory("RSQ_Dazed"));
 		bool combo = IsGlove(shot) && Punch(shot, "punch.kinds") == RSQ_Upgrade_ThreeHit.PATTERN && Glove3Hit(pawn, shot);
 		if ((RSQM.InAttack(target) || combo) && Room(now))
 		{
 			critTics.Push(now);
 			lastCritTic = now;
 			lastCrit = target;
-			dz.critUntil = now + STUN;
+			if (!dz) dz = RSQ_Dazed.On(target);
+			if (dz) dz.critUntil = now + STUN;
 			Vector3 at = shot && shot != pawn && !IsGlove(shot) ? shot.pos : target.pos + (0, 0, target.height * 0.6);
 			String sparkName = "RSQML_SparkSuper";   // through a String: a literal is checked at compile time (an error without RSQ Melee)
 			Class<Actor> spark = sparkName;          // RSQ Melee's Super Spark, by name (none without it)
@@ -794,7 +797,7 @@ class RSQ_Upgrade_CriticalHits : RSQ_CritPerk
 			if (IsGlove(shot) && Punch(shot, "punch.counter") == 1 && GloveHas(pawn, shot, "Counterpunch")) return damage;
 			return damage * Mult(level);
 		}
-		if (dz.critUntil > now) return damage * Stunned(level);
+		if (dz && dz.critUntil > now) return damage * Stunned(level);
 		return damage;
 	}
 	override void OnDamageDealt(Actor pawn, Actor shot, Actor target, int damage)
@@ -836,8 +839,11 @@ class RSQ_Upgrade_Headshot : RSQ_CritPerk
 		if (IsGlove(shot)) { int hh = Punch(shot, "punch.height"); if (hh >= 0) frac = hh / 1000.0; }
 		else if (shot && shot != pawn) frac = (shot.pos.z - target.pos.z) / target.height;
 		// HEADSHOT REACTION 2 (RSQ LaserSight's node): a gun hit with the laser's dot on its head counts (the laser answers
-		// only at that level). REMA port: the laser's dot is local state.
-		if (frac < TOP && shot == pawn) { let ls = RSQM.Svc("RSQLS_SightService"); if (ls && ls.GetInt("head.on", "", 0, 0, target) == 1) frac = 1.0; }
+		// only at that level). REMA port: the laser's dot is local state. A gun hit is any hit that is not a punch or a
+		// melee blow. A hitscan's inflictor is normally its puff (GZDoom's P_LineAttack; the frac line above already reads
+		// a gun hit's height off the shot's pos for that reason) and a converted bullet is a projectile, so the old test
+		// "shot == pawn" let almost no gun hit through (11-10).
+		if (frac < TOP && !IsGlove(shot) && !MeleeHit(pawn, shot, attacktype)) { let ls = RSQM.Svc("RSQLS_SightService"); if (ls && ls.GetInt("head.on", "", 0, 0, target) == 1) frac = 1.0; }
 		if (frac < TOP) return damage;
 		int now = RSQM.Now();
 		double m = Mult(level);

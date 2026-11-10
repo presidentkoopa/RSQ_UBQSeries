@@ -2,7 +2,7 @@
 // THE SHIELD GAUGE'S PLACE, for a HUD that has to make room (RSQ Score moves its line below it while the
 // gauge is on), asked by name from ui code:
 //   GetIntUI("shield.gauge.top") / ("shield.gauge.h")   permille of the screen's height; -1 while the
-//   gauge is off (rsq_hud_shield) for this machine's player
+//   gauge is not drawn for this machine's player (rsq_hud_shield off, Dual HUD off, or no ShieldSaw on the shoulder)
 //   GetIntUI("shield.gauge.drop")   how far below the hand gauges' top the shield gauge ends (its drop
 //   under their bars plus its height): what a display under it moves down by
 class RSQ_HudService : Service
@@ -10,8 +10,10 @@ class RSQ_HudService : Service
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (!(request == "shield.gauge.top" || request == "shield.gauge.h" || request == "shield.gauge.drop")) return -1;
-		let cv = CVar.GetCVar("rsq_hud_shield", players[consoleplayer]);
-		if (!cv || !cv.GetBool()) return -1;
+		// Only while the gauge is really drawn (TFLV_EventHandler.ShieldGaugeShown, the test RenderOverlay draws on):
+		// it is drawn in Dual HUD mode only, and only while the ShieldSaw is on the shoulder.
+		let eh = TFLV_EventHandler(StaticEventHandler.Find("TFLV_EventHandler"));
+		if (!eh || !eh.ShieldGaugeShown(consoleplayer)) return -1;
 		double top, h;
 		[top, h] = TFLV_HUD.ShieldBand();
 		if (request == "shield.gauge.drop")

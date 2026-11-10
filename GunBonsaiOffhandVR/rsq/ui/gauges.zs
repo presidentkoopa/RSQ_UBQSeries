@@ -1,6 +1,7 @@
 // THE BERSERK METER'S GAUGE (2026-11-02; GBOVR_TREES.md 4.1 F "a meter on the skin HUD"). The owner: repurpose coldcite's
-// Top HP Bars bar as a vertical HUD element (TopHPBars/tools/gen_gauges.py: graphics/RSQGBGE empty, RSQGBGF full, blood
-// red; his art, "feel free to use this in your mods"), the style RSQ SlowMo's gauge uses too.
+// Top HP Bars bar as a vertical HUD element (TopHPBars/tools/gen_gauges.py: graphics/RSQGBGE the empty bar; his art,
+// "feel free to use this in your mods"), the style RSQ SlowMo's gauge uses too. The fill is drawn live over it, tinted,
+// from graphics/RSQGBGW (RSQUI_GaugeLife). (The baked full bar RSQGBGF was never drawn; removed 11-10.)
 // One gauge per glove that has learned Berserk Meter, on that hand's side (the main hand right, the off hand left), set
 // in from the edge so RSQ SlowMo's gauge at the very edge never covers it. It fills as that glove's fist damage does;
 // while the Berserk it earned runs, it drains with the time left and pulses. Hidden under a Berserk pack (the meter does

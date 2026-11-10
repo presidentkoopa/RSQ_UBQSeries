@@ -137,7 +137,7 @@ class RSQ_Upgrade_Skeet : RSQ_Upgrade_GrenadeMarker
 class RSQ_Upgrade_SkeetWindow : RSQ_Upgrade_GrenadeMarker
 {
 	static int Tics(uint lv) { return lv > 0 ? 10 + 5 * int(lv) : 0; }
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "Skeet") && LevelOf(info, "SkeetWindow") < 3; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "Skeet") && RSQM.Has("RSQSM_Service") && LevelOf(info, "SkeetWindow") < 3; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", AsSeconds(Tics(level))); }
 }
 
@@ -148,7 +148,7 @@ class RSQ_Upgrade_SkeetWindow : RSQ_Upgrade_GrenadeMarker
 class RSQ_Upgrade_SlowBurn : RSQ_Upgrade_GrenadeMarker
 {
 	static int Ms(uint lv) { return lv > 0 ? 500 + 250 * int(lv) : 0; }
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "CookSense") && LevelOf(info, "SlowBurn") < 3; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GrenadeInfo(info) && Has(info, "CookSense") && RSQM.Has("RSQSM_Service") && LevelOf(info, "SlowBurn") < 3; }
 	override void OnKill(PlayerPawn pawn, Actor shot, Actor target)
 	{
 		if (!RSQM.Slowed() || !shot) return;

@@ -22,14 +22,28 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 	// a save from before this starts at 0 and switches on, once, the rows of what it already learned -- which is what
 	// those rows did then, since a learned node used to override them). Only a row that is off now (0) is set; the
 	// cvar is found by name, so a mod that is not loaded is skipped. RSQ_MeleeHandler.WorldTick runs LearnRows.
+	// NETGAME (11-10): this runs on every machine for every player's nodes, so a cvar is set only where that is one
+	// change for everyone. A user row (UserRow below) is set only on the learning player's own machine (pmo is
+	// consoleplayer's); userinfo carries it to the others. A server row is set only by the settings controller
+	// (consoleplayer is Net_Arbitrator), whose change the engine sends to every machine. rowSeen moves on every machine
+	// alike, so the bags stay the same everywhere.
 	int rowSeen;
-	void RowsOnLearn()
+	// the rows below that are USER cvars, measured from their CVARINFOs (11-10): SlowMo rsqsm_drain, Melee
+	// rsqml_headlock_shield, Grenade rsqgn_skeet_window, QuestSaber ubqs_alt. Every other row is a server cvar.
+	static bool UserRow(String cv)
+	{
+		return cv ~== "rsqsm_drain" || cv ~== "rsqml_headlock_shield" || cv ~== "rsqgn_skeet_window" || cv ~== "ubqs_alt";
+	}
+	void RowsOnLearn(PlayerPawn pmo)
 	{
 		int lv = enabled ? int(level) - rageUp : 0;
 		if (lv < rowSeen) rowSeen = lv;
 		if (lv <= rowSeen) return;
 		// node short name, the level that unlocks the row, the row's cvar, the value "on" is ("^n": a slider raised to n
-		// if it is below n -- ShieldSaw's Hit-Stop Tics, which caps Strike True's 4/5/6, owner 11-04)
+		// if it is below n -- ShieldSaw's Hit-Stop Tics, which caps Strike True's 4/5/6, owner 11-04). Strike True's
+		// "6" is meant: QuestSaber's Hit-Stop row (ubqs_hitstop, server; 0 off, 3 light, 4 medium, 6 heavy) is the
+		// ceiling the node's 3/4/6 tics are capped by (QuestSaber HitStopTics: min(row, node)), so learning sets the
+		// row to Heavy once and the level decides; Strike True 1 still freezes 3 tics.
 		static const String T[] = {
 			"Grapple", "1", "rsqgr_on", "1",                     "SwingMomentum", "1", "rsqgr_swing", "1",
 			"TargetLock", "1", "rsqls_lock", "1",                "TargetLock", "2", "rsqls_target_recolor", "1",
@@ -60,6 +74,8 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 			if (!(T[i] ~== me)) continue;
 			int at = T[i + 1].ToInt();
 			if (at <= rowSeen || at > lv) continue;
+			bool mine = UserRow(T[i + 2]) ? (pmo && pmo.player == players[consoleplayer]) : consoleplayer == Net_Arbitrator;
+			if (!mine) continue;
 			let c = CVar.FindCVar(T[i + 2]);
 			if (!c) continue;
 			int ty = c.GetRealType();
@@ -88,7 +104,7 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 			for (int i = 0; i < stats.upgrades.upgrades.Size(); ++i)
 			{
 				let u = RSQ_Upgrade_Base(stats.upgrades.upgrades[i]);
-				if (u) u.RowsOnLearn();
+				if (u) u.RowsOnLearn(pmo);
 			}
 		for (int w = 0; w < stats.weapons.Size(); ++w)
 		{
@@ -97,7 +113,7 @@ class RSQ_Upgrade_Base : TFLV_Upgrade_BaseUpgrade
 			for (int i = 0; i < info.upgrades.upgrades.Size(); ++i)
 			{
 				let u = RSQ_Upgrade_Base(info.upgrades.upgrades[i]);
-				if (u) u.RowsOnLearn();
+				if (u) u.RowsOnLearn(pmo);
 			}
 		}
 	}
@@ -318,7 +334,7 @@ class RSQ_Upgrade_Knockdown : RSQ_Upgrade_Base
 // HEAVY HANDS: a landed punch freezes what it hit for a beat (hit-stop), and knocks it further.
 class RSQ_Upgrade_HeavyHands : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && info.upgrades.Level(GetClassName()) < 4; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && LevelOf(info, "HeavyHands") < 4; }
 	// tics of hit-stop: 2 at level 1 up to 4 at level 3+, +2 for a punch thrown at half speed or more (6 at most,
 	// the teardown's "heavy"; 10 reads as a bug)
 	static int Freeze(uint lv, double power) { return min(1 + min(lv, 3), 4) + (power >= 0.5 ? 2 : 0); }
@@ -341,7 +357,7 @@ class RSQ_Upgrade_ReturnFire : RSQ_Upgrade_Base
 {
 	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
 	{
-		return GloveInfo(info) && (Has(info, "SwatBack") || Has(info, "Counterpunch")) && info.upgrades.Level(GetClassName()) < 4;
+		return GloveInfo(info) && (Has(info, "SwatBack") || Has(info, "Counterpunch")) && LevelOf(info, "ReturnFire") < 4;
 	}
 	static double Mult(uint lv) { return 1.25 + 0.25 * lv; }
 	static double Speed(uint lv) { return 1.0 + 0.15 * lv; }
@@ -356,7 +372,7 @@ class RSQ_Upgrade_ReturnFire : RSQ_Upgrade_Base
 // knocks into a wall slams into it. (After Haymaker 2; 5 levels.)
 class RSQ_Upgrade_WallSplat : RSQ_Upgrade_Base
 {
-	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Haymaker", 2) && info.upgrades.Level(GetClassName()) < 5; }
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info) { return GloveInfo(info) && Has(info, "Haymaker", 2) && LevelOf(info, "WallSplat") < 5; }
 	// the slam: 5 + 5 a level at the slowest slam that counts (3 map units a tic), up to twice that at 6 or more
 	static int Damage(uint lv, double speed) { return int((5 + 5 * lv) * clamp(speed / 3.0, 1.0, 2.0)); }
 	static int Reel(uint lv) { return 10 + 5 * lv; }

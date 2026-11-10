@@ -13,8 +13,8 @@
 //            PerPlayerStats.menuHand, so the skin sends rsqui-menu-hand (RSQUI_Handler) first.
 //
 // OTHER MODS' HUDS. While a skin draws:
-//  * RS Score's own score line would sit beside ours, so its user cvar rs_score_hide is set, and
-//    put back as it was (saved in rsq_ui_saved_scorehide) when GBOVR Menus and HUD goes Off.
+//  * RS Score draws its own line, untouched (the skin draws no score line since 10-27). An older build
+//    set RS Score's rs_score_hide while a skin drew; that is only put back now, from rsq_ui_saved_scorehide.
 //  * with rsq_ui_bottom on, the base game's fullscreen HUD would sit under our bottom row. Brutal
 //    Doom's is chosen by its user cvar bd_sbartype; it is set to 5 (a type with no status bar) the same way
 //    (saved in rsq_ui_saved_sbartype). Any other base HUD is left alone and drawn over.

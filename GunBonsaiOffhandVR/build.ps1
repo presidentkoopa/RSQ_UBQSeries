@@ -20,7 +20,9 @@ New-Item -ItemType Directory -Force $staging | Out-Null
 # $name must be excluded, or each build zips the previous build into itself:
 # the 86 KB release carried a stale 42 KB copy of an older build of this mod,
 # and grew every time. .gitignore has no business in a release either.
-$exclude = @('.git', '.gitignore', 'build.ps1', 'NOTES.md', 'tools', $name)
+# readme.txt (the old pre-README notes), README_draft.md (not yet approved) and docs/ (the bought pack's contact
+# sheets, docs/art: never shipped) stay out too, as tools/build_all.py's GunBonsaiOffhandVR line has them.
+$exclude = @('.git', '.gitignore', 'build.ps1', 'NOTES.md', 'readme.txt', 'README_draft.md', 'docs', 'tools', $name)
 Get-ChildItem -Path $src -Force | Where-Object { $exclude -notcontains $_.Name } | ForEach-Object {
   Copy-Item -Recurse -Force $_.FullName -Destination $staging
 }

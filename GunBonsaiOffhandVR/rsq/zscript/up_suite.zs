@@ -391,12 +391,10 @@ class RSQ_SlowTreePerk : RSQ_SlowPerk
 		return Super.IsSuitableForPlayer(stats) && (pa == "" || PHas(stats, pa, ParentLevel()));
 	}
 }
-// SLOW MOTION (the unlock, root): your own key, wrist cross, burst and accessibility button start slow motion only once
-// this is learned (other mods' pulses still fire).
 // SLOW MOTION, the unlock of your own key (11-02): DROPPED (owner, 11-03: the key works from the start, "button press for X
 // base seconds"). Never offered; the class stays for saves. SlowMo's clock no longer reads it.
 class RSQ_Upgrade_SlowMotion : RSQ_SlowTreePerk { override String Parent() { return ""; } override int Cap() { return 1; } override bool IsSuitableForPlayer(TFLV_PerPlayerStats stats) { return false; } }
-// LONGER (after Slow Motion): the burst 4 -> 5, 6, 8 s; a full meter lasts 25% longer a level.
+// LONGER (root since 11-03; Slow Motion is no unlock): the burst 4 -> 5, 6, 8 s; a full meter lasts 25% longer a level.
 class RSQ_Upgrade_Longer : RSQ_SlowTreePerk
 {
 	override int Cap() { return 3; }

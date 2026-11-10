@@ -60,6 +60,12 @@ class RSQUI_GunPic ui
 
 class RSQUI_A_StatusMenu : RSQUI_StatusMenu
 {
+	// THE MOCKUP'S TWO PLACEHOLDER PANELS, hidden (11-10): ITEMS (five empty slots) and WEAPON BOND ("No Bond Unlocked",
+	// "Bond perks unlock later.") stand for no feature: nothing fills a slot and there are no bond perks. Their drawing
+	// stays below behind these two switches; the space they took is left empty.
+	const SHOW_ITEMS = 0;   // 1 draws it
+	const SHOW_BOND = 0;
+
 	override void Drawer()
 	{
 		pen.FitBox(960, 540);
@@ -92,16 +98,19 @@ class RSQUI_A_StatusMenu : RSQUI_StatusMenu
 		int n = data.pbag ? data.pbag.upgrades.Size() : 0;
 		if (n == 0) Body("(no upgrades yet)", 100, 195, 16, RSQUI_A_Look.GREY);
 		else DrawList(data.pbag, 2, 0, 98, 195, 245, 6, 18);
-		// ITEMS: vestigial, five empty slots
-		Label("ITEMS", 95, 316, 11, RSQUI_A_Look.STEEL);
-		for (int i = 0; i < 5; i++)
+		// ITEMS: the mockup's five empty slots, hidden (SHOW_ITEMS)
+		if (SHOW_ITEMS)
 		{
-			pen.Rect(94 + i * 50, 329, 44, 45, 0xFF173656, 1.0);
-			pen.Frame(94 + i * 50, 329, 44, 45, 1, 0xFF3C6C94);
+			Label("ITEMS", 95, 316, 11, RSQUI_A_Look.STEEL);
+			for (int i = 0; i < 5; i++)
+			{
+				pen.Rect(94 + i * 50, 329, 44, 45, 0xFF173656, 1.0);
+				pen.Frame(94 + i * 50, 329, 44, 45, 1, 0xFF3C6C94);
+			}
 		}
 	}
 
-	// ---- middle (a gun card) and right (its WEAPON STATUS / WEAPON BOND) ----
+	// ---- middle (a gun card) and right (its WEAPON STATUS; WEAPON BOND hidden) ----
 	void DrawGun(int h)
 	{
 		let hd = data.hands[h];
@@ -144,11 +153,15 @@ class RSQUI_A_StatusMenu : RSQUI_StatusMenu
 		int n = (hd.valid && hd.bag) ? hd.bag.upgrades.Size() : 0;
 		if (n == 0) Body("(no upgrades yet)", 578, py + 26, 16, RSQUI_A_Look.GREY);
 		else DrawList(hd.bag, 1, h, 576, py + 27, 290, 3, 18);
-		double sy = py + 84;
-		pen.Rect(575, sy, 290, 1, 0xFFA060C0, 0.9);
-		Label("WEAPON BOND", 575, sy + 6, 10, RSQUI_A_Look.LAVENDER);
-		Body("No Bond Unlocked", 575, sy + 24, 15, 0xFFE8D8E8);
-		Body("Bond perks unlock later.", 575, sy + 44, 13, 0xFFB8A8C0);
+		// WEAPON BOND: the mockup's placeholder, hidden (SHOW_BOND)
+		if (SHOW_BOND)
+		{
+			double sy = py + 84;
+			pen.Rect(575, sy, 290, 1, 0xFFA060C0, 0.9);
+			Label("WEAPON BOND", 575, sy + 6, 10, RSQUI_A_Look.LAVENDER);
+			Body("No Bond Unlocked", 575, sy + 24, 15, 0xFFE8D8E8);
+			Body("Bond perks unlock later.", 575, sy + 44, 13, 0xFFB8A8C0);
+		}
 	}
 
 	// A scrolling list of a bag's upgrades: name, then the level (gold) -- "Explosive Death  1".
@@ -205,12 +218,13 @@ class RSQUI_A_StatusMenu : RSQUI_StatusMenu
 		}
 	}
 
-	// Labels: Orbitron Bold sized by the mockup's cap height (its capitals are 0.72 of the em).
+	// Labels: pen.fOrb (SmallFont, draw.zs RSQUI_Pen.Make) sized by the mockup's cap height. The 0.72 is the mockup's
+	// Orbitron's cap-to-em ratio, kept as the size rule; the font drawn is SmallFont.
 	void Label(String s, double x, double capTop, double capH, Color c, int align = 0)
 	{
 		pen.Cap(pen.fOrb, capH / 0.72, s, x, capTop, c, align);
 	}
-	// Body: VT323, size = twice the mockup's advance per letter.
+	// Body: pen.fTerm (NewSmallFont), size = twice the mockup's advance per letter (the mockup's was VT323).
 	void Body(String s, double x, double capTop, double size, Color c, int align = 0)
 	{
 		pen.Cap(pen.fTerm, size, s, x, capTop, c, align);
@@ -237,9 +251,9 @@ class RSQUI_A_CardsDraw ui
 	{
 		let pen = m.pen;
 		pen.FitBox(960, 540);
-		// the title: Orbitron chrome, cap 22 units with its top at y 78
+		// the title: pen.fChrome (BigFont), cap 22 units with its top at y 78
 		String t = m.title.MakeUpper();
-		double ts = 30.5;   // cap 22 units: Orbitron's capitals are 0.72 of the em
+		double ts = 30.5;   // cap 22 units by the mockup's Orbitron ratio (capitals 0.72 of the em)
 		double tw = pen.Width(pen.fChrome, ts, t);
 		if (tw > 900) ts *= 900 / tw;
 		pen.TextRaw(pen.fChrome, ts, t, 480, 78 - pen.CapTop(pen.fChrome, ts), 1);
@@ -286,14 +300,14 @@ class RSQUI_A_CardsDraw ui
 		pen.Frame(x + 3, y + 3, w - 6, h - 6, 2, c, 0.45);
 
 		// title: card colour, as large as fits (mockup: 9.3 for 21 letters, 12.6 for 14)
-		// title: Orbitron in the card colour, as large as fits (mockup: cap 8 for 21 letters, 10 for 14)
+		// title: pen.fOrb (SmallFont) in the card colour, as large as fits (mockup: cap 8 for 21 letters, 10 for 14)
 		String t = RSQUI_Pen.Plain(up.GetName()).MakeUpper();
 		double ts = 14;
 		double tw = pen.Width(pen.fOrb, ts, t);
 		if (tw > w - 16) ts *= (w - 16) / tw;
 		pen.Cap(pen.fOrb, ts, t, x + w / 2, y + 13 + (14 - ts) * 0.36, c, 1);
 
-		// description: VT323 14.5, 18 units a line, from 44 below the top
+		// description: pen.fTerm (NewSmallFont) 14.5, 18 units a line, from 44 below the top
 		pen.Para(pen.fTerm, 14.5, up.GetDesc(), x + 10, y + 43 - pen.CapTop(pen.fTerm, 14.5), w - 20, 18, RSQUI_A_Look.WHITE, 6);
 
 		// the icon box (100x100 at 114,161 in the card) -- Gun Bonsai has no icons: it carries the

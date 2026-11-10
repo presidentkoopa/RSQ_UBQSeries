@@ -2,7 +2,7 @@
 // (RSQ_Upgrade_*) on the player and on every weapon carried, through Gun Bonsai's own suitability tests, so the trees'
 // parents and caps hold. ADD ALL: passes until nothing more is offered (every node at its cap). ADD INCREMENTAL: one
 // pass, one level of every node offered now (press again to climb). Stock Gun Bonsai upgrades are never touched.
-// The menu's two rows (menudef.rsq, Tuning and Debug) and the console: rsqgb_add_all, rsqgb_add_step (keyconf.txt).
+// The menu's two rows (menudef.rsq, Test and Debug) and the console: rsqgb_add_all, rsqgb_add_step (keyconf.txt).
 class RSQ_DebugGrant : EventHandler
 {
 	override void NetworkProcess(ConsoleEvent e)
@@ -39,8 +39,19 @@ class RSQ_DebugGrant : EventHandler
 				String cn = u.GetClassName();
 				if (cn.Left(12) != "RSQ_Upgrade_") continue;
 				if (u.IsSuitableForPlayer(st)) { st.upgrades.Add(cn, 1); now++; }
+				// stored where a real level-up stores it (TFLV_WeaponInfo.PoolHolder, as FinishLevelUp does): a saber-tree
+				// node offered on the Force hand's record (UBQS_ForceHand) goes onto the main saber's record. One level per
+				// record per pass, so the saber and the Force hand never both add the same node to the saber in one pass.
+				Array<TFLV_WeaponInfo> got;
 				for (int k = 0; k < infos.Size(); k++)
-					if (infos[k].upgrades && u.IsSuitableForWeapon(infos[k])) { infos[k].upgrades.Add(cn, 1); now++; }
+				{
+					if (!infos[k].upgrades || !u.IsSuitableForWeapon(infos[k])) continue;
+					let into = infos[k].PoolHolder(u);
+					if (!into || !into.upgrades || got.Find(into) < got.Size()) continue;
+					got.Push(into);
+					into.upgrades.Add(cn, 1);
+					now++;
+				}
 			}
 			added += now;
 			if (now == 0) break;

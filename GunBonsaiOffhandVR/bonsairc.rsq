@@ -57,8 +57,8 @@ register
 # otherwise teach it that it is a projectile weapon.
 type RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw : MELEE ;
 
-# No elemental damage and nothing that is rate of fire on these: in VR the rewards are for how
-# you move.
+# No elemental damage and nothing that is rate of fire on these (and on the whip, the grenade and
+# the Force hand, below, when their packs are loaded): in VR the rewards are for how you move.
 disable RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw :
   TFLV_Upgrade_RapidFire
   TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln
@@ -73,6 +73,37 @@ disable RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw :
 # weapon. (RSQ Grenade's RSQGN_Grenade needs no type line: a thrown grenade is a projectile, as inferred.)
 ifdef RSQWP_WhipWeapon {
   type RSQWP_WhipWeapon : MELEE ;
+  disable RSQWP_WhipWeapon :
+    TFLV_Upgrade_RapidFire
+    TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln
+    TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens
+    TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement
+    TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt
+    TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+  ;
+}
+
+# The same no-elements, no-rate-of-fire rule for RSQ Grenade's grenade and RSQ Saber's Force hand, each only when its
+# pack is loaded (an unknown class in a disable line prints a BONSAIRC warning, RC.zsc ValidateWeapons).
+ifdef RSQGN_Grenade {
+  disable RSQGN_Grenade :
+    TFLV_Upgrade_RapidFire
+    TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln
+    TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens
+    TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement
+    TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt
+    TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+  ;
+}
+ifdef UBQS_ForceHand {
+  disable UBQS_ForceHand :
+    TFLV_Upgrade_RapidFire
+    TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln
+    TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens
+    TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement
+    TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt
+    TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+  ;
 }
 
 # SuperPunchOut's own gloves, when that pack is loaded too: the same.

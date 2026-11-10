@@ -72,20 +72,25 @@ OptionMenu "RSQ_MeleeOptions"
 	// On: the Mockup's screens, bottom row and breathing XP bars; Off: Gun Bonsai's own (rsq/ui/skin.zs)
 	Option "GBOVR Menus and HUD", "rsq_ui_skin", "OnOff"
 	Option "Ammo and Health Row", "rsq_ui_bottom", "OnOff", "rsq_ui_skin"
-	Slider "HUD Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
+	// sizes the Ammo and Health Row and the Berserk Meter gauges only (draw.zs HudFrame, gauges.zs); Gun Bonsai's XP
+	// gauges keep Gun Bonsai's own HUD size (bonsai_hud_size, its own menu)
+	Slider "Ammo Row and Berserk Gauge Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
 	Option "Dual HUD", "bonsai_vr_dual_hud", "OnOff"
-	Option "Single HUD Follows", "bonsai_vr_hud_hand", "RSQ_HudHand"
-	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff"
+	// greyed rows (QZD 17.3 graycheck, its last number the value that greys, as FlashFlare's rows): Single HUD Follows
+	// is only read with Dual HUD off (EventHandler.zsc RenderOverlay), and the ShieldSaw gauge and the six HUD Position
+	// rows only with it on (DrawForHand, DrawShield)
+	Option "Single HUD Follows", "bonsai_vr_hud_hand", "RSQ_HudHand", "bonsai_vr_dual_hud", 0, 1
+	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff", "bonsai_vr_dual_hud"
 	Option "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff"
 	Option "Gauge Animation", "rsqgb_gauge_anim", "OnOff"
 	StaticText " "
 	StaticText "HUD Position", 1
-	Slider "Main HUD Across", "bonsai_vr_hud_main_x", 0.0, 1.0, 0.01, 2
-	Slider "Main HUD Down", "bonsai_vr_hud_main_y", 0.0, 1.0, 0.01, 2
-	Option "Main HUD Mirror", "bonsai_vr_hud_main_mirror", "RSQ_HudMirror"
-	Slider "Off HUD Across", "bonsai_vr_hud_off_x", 0.0, 1.0, 0.01, 2
-	Slider "Off HUD Down", "bonsai_vr_hud_off_y", 0.0, 1.0, 0.01, 2
-	Option "Off HUD Mirror", "bonsai_vr_hud_off_mirror", "RSQ_HudMirror"
+	Slider "Main HUD Across", "bonsai_vr_hud_main_x", 0.0, 1.0, 0.01, 2, "bonsai_vr_dual_hud"
+	Slider "Main HUD Down", "bonsai_vr_hud_main_y", 0.0, 1.0, 0.01, 2, "bonsai_vr_dual_hud"
+	Option "Main HUD Mirror", "bonsai_vr_hud_main_mirror", "RSQ_HudMirror", "bonsai_vr_dual_hud"
+	Slider "Off HUD Across", "bonsai_vr_hud_off_x", 0.0, 1.0, 0.01, 2, "bonsai_vr_dual_hud"
+	Slider "Off HUD Down", "bonsai_vr_hud_off_y", 0.0, 1.0, 0.01, 2, "bonsai_vr_dual_hud"
+	Option "Off HUD Mirror", "bonsai_vr_hud_off_mirror", "RSQ_HudMirror", "bonsai_vr_dual_hud"
 	StaticText " "
 	// Colour Cycle per hand (ca.ancilla.bonsai/HUD.zsc CycleOr; the sliders also tune the level-up cycle, so not greyed)
 	StaticText "HUD Colour Cycle", 1
@@ -113,7 +118,8 @@ OptionMenu "RSQ_MeleeAdvanced"
 	Slider "$RSQ_MENU_XPPLAYER", "rsq_xp_style_player", 0, 50, 5, 0
 	Slider "HUD Inset", "rsq_ui_inset", 0.0, 0.25, 0.01, 2
 	StaticText " "
-	Option "Debug Log", "rsq_xp_debug", "OnOff"
+	// rsq_xp_debug: stylexp.zs (each Style XP payout) and up_gloves.zs RowsOnLearn (each row a learned node turns on)
+	Option "Debug Log: Style XP and Learned Rows", "rsq_xp_debug", "OnOff"
 	Command "Debug: Add All", "netevent rsqgb_dbg_all"
 	Command "Debug: Add Incremental", "netevent rsqgb_dbg_step"
 }
@@ -139,4 +145,4 @@ OptionMenu "GunBonsaiPlayerLevelUpMenu"
 }
 
 // (RSQUI_Skins is gone since 11-05: the Mockup is the only look, "GBOVR Menus and HUD" turns it on or off.)
-// (RSQUI_Options, the screens' own page, is folded into RSQ_MeleeOptions and Tuning and Debug.)
+// (RSQUI_Options, the screens' own page, is folded into RSQ_MeleeOptions and Test and Debug.)
