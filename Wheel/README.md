@@ -1,304 +1,308 @@
 # RSQ Wheel
+### Doom Arcade VR · every gun you carry on a ring of cards, and the place where you decide which holster each one lives in
 
-A weapon ring that hangs in the air in front of you. Point at a gun with either hand and it is in your hand.
+Press and hold, and your guns come out of your wrist as a ring of cards in front of you. Point either hand at one and let
+go, or reach in and pull it out by hand. And with RSQ Tactical Rig, it's where you **kit yourself out**: pick a card,
+point at a spot on your body, and that gun lives there from now on. A sheet in the middle of the ring tells you about the
+gun you are pointing at.
 
-**Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
+*[picture to come: the ring opening in the headset, cards growing out of the wrist (GIF)]*
 
-New since the headset pass (tested on the rig, headset check pending): the fist, lightsaber and whip card icons; the fist always on the ring.
+---
 
-New on 11-06 (rig only, not headset-confirmed): the text in JFO with proportional spacing; one fist card; one card per gun (BD22 VR's off-hand versions); the shield, saber, whip and grenade from either hand to their own hand; alt-fire locks a gun to its Tactical Rig holster (replaced 11-07 by the holster web, below); Freeze Time While Open.
+## What it feels like
 
-New on 11-07 (rig only, not headset-confirmed): the **holster web** (design/PARKED.md). Main-hand alt-fire on a card
-opens it: your marine with RSQ Tactical Rig's six holsters as numbered rings fitted to his body from your active profile.
-Point at a ring and pull the trigger: the gun's sprite flies into it, the ring flashes, the controller kicks, the gun goes
-into that holster, and the Wheel stays open. Off-hand alt-fire puts a card in or out of the next/prev rotation (a light
-runs round a card in the rotation; a holstered card sits back with an outline; a plain card is Wheel only); on a
-holstered card it gives a dull tick. next/prev skip Wheel-only and holstered guns. Shown on the rig: all of that. Without
-RSQ Tactical Rig: main-hand alt-fire is a dull tick, the rotation and next/prev work alone (shown in the log). The marine centred on his body between each pair of rings: shown on the rig. Not shown:
-the fly-in mid-flight (too fast for the rig's frames).
-New on 11-09 (rig only, not headset-confirmed): **the ring's text is in RSQ Score's font** (the one "SCORE:" is drawn
-in), because the owner's headset showed every word on the cards as a row of blobs. Why: the words were in JFO, whose
-letters are 32-pixel stone shapes. In the headset they were drawn about 6 pixels tall, and at that size JFO's gaps
-(1-3 pixels of 32 inside a letter, 2 between letters) are less than a pixel, so each letter smeared into a solid slab.
-Score's font is a 12-pixel block font with 2-pixel strokes and gaps and a dark outline, and the Wheel now keeps a pixel
-of air between its letters, so it holds together much smaller. Shown on the rig: the same card in JFO, Score's font,
-Score's combo font and DoomFont, next to each other (tools/rigshots/font_score_vs_jfo_1109.png). Score's font reads
-best, and it is the only one that still reads "WHIP" once the frame is blurred to look like the headset
-(font_score_vs_jfo_blur_1109.png). A config set to JFO (the old default) moves to Score's font once. The others,
-including JFO, are still in Look > Font. Very small text (the body of the info card) is still small: if it does not
-read in the headset, the size is the next thing to change, not the font.
-The web's ring numbers (11-07, rig only, not headset-confirmed): big, in RSQ Score's combo font when Score is loaded (shown on the rig), else in JFO, bigger (not shown).
-Web View (11-07, rig only, not headset-confirmed): **Marine** (default, as above) or **Mirror**: the web shows RSQ
-Tactical Rig's own mirror of you (the one Move Holsters by Hand shows), filling the panel, with the six rings on the real holster
-spots as the mirror shows them (your left on your left). Shown on the rig with the Rig's torso on: the mirror on the
-panel with all six rings on it, a ring picked by pointing, the gun flying in and its sprite in the ring. With RSQ
-ShieldSaw's Take It From set to Over the Shoulder, the off-shoulder ring (1 right-handed) is the ShieldSaw's: it shows
-the ShieldSaw's card art and its name, and a gun picked onto it gets only a dull tick (shown on the rig, Mirror view).
-Mirror big (11-07, rig only, not headset-confirmed): the mirror and its rings (grown with it) take about 90% of the
-panel's height and 91% of its width, centred, nothing over its edges, Clear still below (shown on the rig).
-Not shown: Marine view with the ShieldSaw's ring, ring 2 for a left-handed player, the Rig off (the web falls back to
-Marine).
+- **Kit yourself out from the ring.** With RSQ Tactical Rig, alt fire on a card and a picture of your body opens beside
+  the ring with your six holsters on it: shoulders, chest, hips. Pull the trigger on one and the gun flies off its card
+  into that holster, and that's its home from now on. Reach for that spot in a fight and that gun is there.
+- **One button.** Hold it, point at a card, let go: that gun is in your hand. Tap it and the ring stays up while you
+  choose. Tap twice and you are back on the gun you just had.
+- **Either hand picks.** Whichever hand points at a card, or reaches into it, gets the gun. Point each hand at a
+  different card and let go, and each hand takes its own.
+- **Cards are things.** With your hand in a card, snap it back toward you and the gun comes out with it. Snap a gun
+  toward the ring, not at any card, and it goes back in; your hand is empty again.
+- **Learn it by feel.** Every card ticks in your hand as you land on it: a light short tick on a pistol, a long heavy
+  one on a BFG.
+- **Know before you pick.** The sheet in the middle shows the gun's name, its rounds and reserve, the other guns that
+  share its ammo, which holster it lives in, and its kills and hit rate once you have used it.
+- **Time waits for you.** With RSQ SlowMo, the world slows while the ring is open. You can also have the ring stop time
+  outright.
 
-Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. This is presidentkoopa's weapon wheel from his
-own engine, rebuilt in ZScript alone so it runs on the stock engine. No engine changes.
+---
 
-## Standout feature: the cards are things you can grab
+## How to play
 
-Hold the wheel button and a ring of cards opens in front of your hand, one per gun, each with the gun's own 3D pickup
-model turning on it. Now treat them as objects.
+| Do this | What happens |
+|---|---|
+| Hold the wheel button (left thumbstick click), point a hand at a card, let go | That hand takes the gun. Let go over nothing and the ring just closes |
+| Tap the wheel button | The ring opens and stays up. Pull the trigger (either hand) on a card to take it |
+| Tap it twice, quickly | The ring closes and the hand you last picked with goes back to the gun it had before |
+| Press `[` or `]` again within a moment of opening | The ring moves to where your hand is now, instead of closing |
+| Reach a hand into a card and press Use | That hand takes the gun |
+| Hand in a card, snap it back toward you | The gun comes out with your hand |
+| Snap a hand holding a gun toward the ring, pointing at no card | The gun goes back on the ring; the hand takes its fist |
+| Point at a card that hides more guns, and wait (or press Use) | Its slot fans out, one card per gun |
+| Hold the trigger on a card in a fan, move it, let go | That gun takes the new place in its slot, and keeps it |
+| Main-hand alt fire on a card (with RSQ Tactical Rig) | The holster screen opens for that gun: your body with its six holsters |
+| On the holster screen, pull the trigger on a holster | The gun flies into it: that holster is its home from now on |
+| Off-hand alt fire on a card | That gun goes in or out of your next / previous weapon list |
+| Turn more than 45° away from the ring | It swings round to sit in front of you again |
+| Leave it alone | After 4 seconds with nothing pointed at, it fades, ticks once, and folds away |
 
-Reach into a card and yank your hand back toward you: the gun comes out of the ring and into that hand. Flick the gun
-you are holding back at the ring: it files itself away, its card bursts, and your hand is empty again. Put one hand
-on the rifle and the other on the shotgun, let go of the button, and each hand takes its own gun in one move.
+`[` opens the ring for your main hand and `]` for your off hand, where those keys are free. **Open or Close** is a
+second, unbound key that does the same as `[`.
 
-Every card has a weight. Sweep across the ring and the pistol answers with a short light tick in your controller, the
-BFG with a long heavy thud. After a while you can find a gun by feel.
+---
 
-## Features
+## The ring
 
-**Picking**
-- Hold, point, release: one button. Either hand points; letting go takes the card under a hand.
-- Tap instead and the ring stays up; pick with either trigger from any distance, or Use with your hand inside a card.
-- Two hands, two cards, one release: each hand takes the gun it is on.
-- Pull a card out of the ring with a snap of the hand. Throw a gun back to put it away.
-- Double tap: straight back to the gun you held before.
-- A gun with no ammo at all is not taken: you hear a dry click and keep what you had.
-- The ring stays in view: turn well away and it swings round to sit ahead of you again.
-- Folds away by itself if you leave it alone, with a rumble just before it goes.
+**One card per gun, or one per slot.** With up to ten guns every gun has its own card and the ring grows to fit them.
+Past ten, each weapon slot gets one card, so slot 4 is always in the same direction; a card that hides others shows a
+small "+N" in its corner. Point at it for a moment, or press Use while pointing, and the slot opens as a **fan** of
+cards stacked outward. The last gun you used comes first in its fan, and you can drag the rest into any order you like.
 
-**The cards**
-- Colour by Gun: each card washed in its gun's colour, lit from the top, with a halo behind the card you are on.
-- The gun's pickup model (from BD_VoxelPack) turning on its card. A gun without one keeps its icon.
-- The fist is always on the ring, as slot 1's first card: also when a fan would hide it, when a mod leaves it out
-  of the weapon slots, and when you have none (taking the card gives you the fist). One fist card: the hand that
-  takes it gets its own fist (Doom's Fist, Brutal Doom's fists, or BD22 VR's off-hand fist).
-- One card per gun: a gun with an off-hand version (BD22 VR's) shows once, and the hand that takes it gets its own
-  version (the off hand the off-hand copy, the main hand the gun).
-- Either hand can take RSQ ShieldSaw's shield, RSQ Saber's saber, RSQ Whip's whip and RSQ Grenade's grenade: the
-  shield always ends up in the off hand (drawn by ShieldSaw itself), the others always in the main hand.
-- Main-hand alt-fire on a gun's card opens the holster web (above; needs RSQ Tactical Rig): a trigger on a ring
-  assigns the gun to that holster, Clear unassigns it. Off-hand alt-fire puts a card in or out of the next/prev
-  rotation. (Rig only, not headset-confirmed.)
-- The fist, the lightsaber, the whip and the ShieldSaw have their own icons: LegenDoom's brass knuckles, a pixel-art
-  lightsaber, a coiled whip and a round saw-shield (credits in CREDITS.txt; the ShieldSaw's rig only, not
-  headset-confirmed). So do RSQ Melee's gloves (a red boxing glove), and, when a mod puts them in a weapon slot, RSQ
-  FnF's flare (a burning road flare) and flashlight (a torch with its beam) and RSQ Saber's Force hand (an open hand
-  with blue push waves); drawn for the series (these four cards not yet seen on the rig or in the headset).
-- Ammo counts and gauges, a slot number, and a mark on the guns you are holding.
-- A big arsenal folds into one card per slot. Rest on a slot and its guns fan out; Use opens the fan at once.
-- Hold the trigger on a gun in a fan and drag it to a new place in its slot. The order is saved.
-- A fan lists the guns you used last first.
-- Sparks and a spin on the card you take, and an optional light the hovered card throws on the room.
+**The cards.** Each card shows the gun's picture, its name, its slot number, its ammo and a bar for it. With
+BD_VoxelPack loaded, the gun's own pickup voxel turns slowly on its card instead of a flat picture. A gun you are already
+holding gets a corner mark. A card that is out of ammo rests in a colour that says so, and one running low pulses. The
+card you point at steps toward you, grows a little, lights the room round it, and the others fade back. When you take a
+gun, its card bursts into sparks and spins away as the ring folds.
 
-**The data sheet**
-- A panel in the middle of the ring about the gun under your hand: damage, rate of fire, accuracy and more where the
-  weapon mod declares them.
-- Your kills and hit rate with each gun, counted as you play, so it works with any weapon.
-- The other guns you carry that share its ammo.
-- Point at a gun lying on the floor (with the ring closed) and its sheet appears.
+**The fist is always there.** The fist's card sits on the ring whether or not you own a fist, and it gives the hand that
+picked it that hand's own fist.
 
-**Time**
-- With RSQ SlowMo loaded, time slows while the ring is open.
-- Without it, the ring can stop time instead (optional, off by default).
-- Freeze Time While Open (off by default): the ring stops time while it is open, with or without RSQ SlowMo.
+**Some things always go to one hand.** Either hand can pick them, but RSQ ShieldSaw's shield always ends up in your off
+hand, and RSQ Saber's saber, RSQ Whip's whip and RSQ Grenade's grenade always in your main hand.
 
-**Wrist card** (optional, off by default): bring your forearm up across your chest as if checking a watch and the gun in
-that hand shows a small card.
+**Brutal Doom 22 VR's off-hand guns share one card.** Pick it with your main hand and you get the gun; pick it with your
+off hand and you get its off-hand version.
 
-## How To Play
+**A gun with nothing to fire is not taken.** No rounds loaded, none in reserve, nothing for its alt fire: you hear Doom's
+dry click and your hand keeps what it had. A gun with an empty magazine but rounds in reserve is still taken.
 
-1. Load the pk3. Nothing else is needed.
-2. Press and hold the left thumbstick. The ring opens in front of your main hand.
-3. Point either hand at a card. It steps forward and your controller ticks.
-4. Let go. The gun is in the hand that pointed at it, ready to fire, with no lower-and-raise animation.
-5. Try a quick tap instead: the ring stays up. Look around it, read the sheet, then pull the trigger on the card you
-   want. Tap the button again to close it.
-6. Once that feels natural: put a hand inside a card and snap it back toward you. Then flick a gun back at the ring.
-7. Double tap the button to swap back to the gun you had before.
+**Picking the gun your other hand holds.** If there is a second copy of it, that hand takes the copy and you hold one in
+each hand. If not, the two hands swap.
 
-## Controls
+**RSQ Grenade's kinds.** The grenade's card opens a fan of every other grenade kind you own, each in its own colour.
+Pick one and you hold that kind.
 
-| Action | How (VR) | Notes |
-|---|---|---|
-| Open the ring, pick, close | Hold the left thumbstick click, point, release | Held at least 9 tics (about a quarter second). Release over nothing just closes. |
-| Open and leave it up | Tap the left thumbstick click | Tap again to close. |
-| Back to your last gun | Double tap the left thumbstick click | Second press within 10 tics. |
-| Take the card you point at | Trigger or off-hand trigger | Any distance. The press never reaches your gun. |
-| Take the card your hand is in | Use | With your hand inside the card. |
-| Holster web | Main-hand alt-fire on a card | Needs RSQ Tactical Rig. Trigger on a ring assigns the gun to that holster; Clear unassigns it. Alt-fire on the same card again closes the web. |
-| Rotation in / out | Off-hand alt-fire on a card | next/prev step through the guns in the rotation. On a holstered card: a dull tick. |
-| Pull a gun out | Hand inside a card, snap it back toward you | Faster than about 1.5 m/s. |
-| Put a gun away | Snap the hand holding it toward the ring, not at a card | Faster than about 2.6 m/s. The hand goes back to its fist. |
-| Pick for both hands | One hand on each of two cards, release the button | Each hand takes its own gun. |
-| Open a crowded slot | Rest on its card, or Use while pointing at it | The fan opens after 7 tics on its own. |
-| Reorder a slot | Hold the trigger on a fan card, move to a new place, let go | Let go without moving and it is a pick. |
-| Page the data sheet | Trigger next, alt fire back | Only when there is a second page (ModelSwapper). |
-| Re-centre the ring | Press the same open key again within 10 tics of opening | |
-| Wrist card | Forearm up across the chest, wrist 15 to 50 cm from your eyes, hand pointing across your body | Off by default. Hold for 8 tics. |
-| Inspect a floor gun | Point at it for 18 tics with the ring closed | |
-| Open or Close | Bindable | No default bind. |
-| Main Hand Wheel | Bindable | Default `[`, if that key is free. |
-| Off Hand Wheel | Bindable | Default `]`, if that key is free. |
-| Cycle main / off hand model | Bindable in Customize Controls | ModelSwapper only. No default bind. |
+**The Wheel's own icons.** A few cards would say little with their own pictures, so the Wheel draws its own: the fist,
+the lightsaber, the whip, the ShieldSaw, the road flare and flashlight (RSQ FnF), the Force hand (RSQ Saber) and the
+gloves (RSQ Melee).
 
-A key that is already bound is never taken: the defaults only land where they are free.
+---
 
-Left-handed play: main hand and off hand follow QuestZDoom's own handedness setting, and so does the rumble.
+## The data sheet
 
-## Menu
+A panel stands in the middle of the ring and describes the card you are pointing at, or the gun in your hand when you
+point at nothing ("EMPTY" for an empty hand). Point at a gun lying on the floor and, after a moment, the same sheet
+appears for it.
 
-Options → Radiant Silvergun Options → RSQ Wheel (one page; Test and Debug and Reset All at its foot)
+![The ring and its sheet, with a pistol that shares its ammo with the minigun](docs/readme/ring_and_sheet.png)
 
-| Row | Default | What it does |
-|---|---|---|
-| Weapon Wheel | On | Off stops the ring from opening. |
-| Either Hand Picks | On | Both hands point at and pick from one ring. Off: only the hand that opened it picks. |
-| Opens On | Whichever key you press | Which hand the open keys summon the ring on: as pressed, always main, or always off. |
-| Sound | On |  |
-| Controller Rumble | 1.0 | 0 to 2. QuestZDoom's own haptics switch still overrules it. |
-| Size | 1.00 | The whole ring. |
-| *Controls* | | |
-| Hold, Point, Release | Left thumbstick click | Key bind. |
-| Open or Close | Unbound | Key bind. |
-| Main Hand Wheel | `[` | Key bind. |
-| Off Hand Wheel | `]` | Key bind. |
-| *Picking* | | |
-| Two Hands Compare | Off | A hand on each of two cards shows the two side by side. |
-| Open on Your Gun | Off | The ring opens with your current gun's card under your hand. |
-| Wrist Card | Off | The watch-check card. RSQ Gun Cards' watch card takes over when that mod's is on. |
-| Open at Level Start | Off |  |
-| Slow Time While Open | On | Needs RSQ SlowMo, or Freeze Without SlowMo below. |
-| Closing Ends SlowMo | Off | Off leaves slow motion you started yourself running when the ring closes. |
-| Freeze Without SlowMo | Off | Without RSQ SlowMo, the ring freezes the world while it is open. |
-| Freeze Time While Open | Off | The ring stops the world while it is open, with or without RSQ SlowMo (then SlowMo is not used). |
-| Pull a Card Out | 1.5 | Hand speed for the pull, in map units a tic (about m/s). 0 turns it off. |
-| Throw a Gun Back | 2.6 | Hand speed for the throw. 0 turns it off. |
-| Reach In | 7.0 | How far in front of or behind a card your hand can be and still touch it. 0 turns it off. |
-| Feel Each Gun's Weight | 1.0 | 0 gives every card the same tick. |
-| *Look* | | |
-| Palette | Standard | Standard, Doom, Hell or Tech. |
-| Font | RSQ Score's font | The ring's text: RSQ Score's font (the "SCORE:" font, the default from 11-09), RSQ Score's combo font, JFO, or the older sets (Ermac's digits, DoomFont, the status bar's numerals). |
-| Ring Plates | Its own (Ermac style) | Or the status bar's stone. |
-| Card Look | Colour by Gun | Or Classic. |
-| Web View | Marine | Or Mirror: RSQ Tactical Rig's mirror of you on the holster web. |
-| Gun Models on Cards | On | The gun's pickup voxel on its card. |
-| Ammo Counts | On | Counts and gauges on the cards. |
-| Ammo Readout | LED segments | Or LCD, punched out, or Lozenge badge. |
-| Rarity Colours | On | With a weapon mod that has rarity tiers. |
-| Mark Guns You Hold | On |  |
-| Slot Numbers | On |  |
-| Cards Face You | On |  |
-| Crowded Slot Opens As | Fan | Or Constellation. |
-| Hover Halo Breathes | Off |  |
-| Edge Sweep | Off | A spark running round each card's edge. |
-| Flash on Pick | On |  |
-| Spark Colour | Slot colour | Or White hot, or Rainbow. |
-| Hover Lights the Room | On | One light, on the hovered card. |
-| Background Stars | 0 | 0 = none. |
-| *Data Sheet* | | |
-| Show Data Sheet | On |  |
-| Weapon Stats | On |  |
-| Track Kills and Accuracy | On | Counted by this mod as you play. |
-| This Level's Kills | Off | Adds a kills and accuracy row for this level only. |
-| Gun Bonsai Rows | On | With Gun Bonsai and RSQ Gun Bonsai VR. |
-| Point at a Gun | On | Point at a gun on the floor to see its sheet. |
-| Compare With Yours | Off | That sheet shows the difference from your current gun. |
-| *Other Mods* | | |
-| LegenDoom Rarity | On | Reader for LegenDoom: the card in the rarity's colour, the rarity ("EPIC") on the sheet's top row and the legendary's name ("MURDEROUS SHOTGUN") on the row under it. With the LDL x BD22 VR patch (its 11-04 build), BD22 VR's guns too (rig only, not headset-confirmed). |
-| LegenDoom Effects | On | The power, in LegenDoom's own words, under it. |
-| Reset All | | Every setting back to its default (both pages, and the settings with no row). |
+*Rig frame, 2026-11-06, in the JFO font. The default font is now RSQ Score's (see Fonts).*
 
-Each Other Mods reader does nothing unless its mod is loaded.
+What it can show, each only when there is something to say:
 
-**Other mods parked (owner 2026-11-09):** only LegenDoom is read for now (and Gun Bonsai, above). The readers for DoomRL
-Arsenal, Doomablo, Pandemonia (+ Anarchy, Insurrection), Guncaster, MetaDoom, BorderDoom, Doom Infinite, Combined Arms,
-Final Doomer, ModelSwapper and Lithium are switched off and their rows hidden; about half of them read nothing on stock
-QuestZDoom 17.3 anyway (design/PARKED.md).
+- the gun's name, in a band of its colour
+- what is loaded and what is in reserve, and how many shots that is
+- **SHARES:** the other guns you carry that eat the same ammo
+- **HOLSTER:** where it lives on RSQ Tactical Rig
+- **GUN BONSAI LV:** its level, progress and up to four upgrades by name (with Gun Bonsai and RSQ Gun Bonsai VR)
+- **KILLS, SHOTS, ACCURACY:** counted by the Wheel itself for every gun you use, so it works with any weapon set; turn
+  on **This Level's Kills** for a second row with this level's counts
+- **LegenDoom:** the gun's rarity in LegenDoom's own colours, its legendary name, and its power in LegenDoom's own words
 
-**Test and Debug**
+**Two Hands Compare** (off by default): point your other hand at a different card and the sheet turns into the two guns
+side by side, the better numbers marked.
 
-| Row | Default | What it does |
-|---|---|---|
-| *Picking* | | |
-| Hold to Pick (tics) | 9 | Shorter is a tap, longer is a hold. |
-| Double Tap (tics) | 10 | 0 turns the double tap off. |
-| Ring Follows Past (deg) | 45 | Turn further than this and the ring swings back ahead. 0 = off. |
-| Folds After (tics) | 140 | Untouched for this long, the ring closes. A new card under your hand restarts the clock. |
-| Fold Warning (tics) | 25 | The ring fades and your hand feels a tick this long before it folds. 0 = off. |
-| Re-centre Window (tics) | 10 | The same key this soon after opening re-centres instead of closing. 0 = off. |
-| *Ring* | | |
-| Ring Distance Ahead | 34 | Map units in front of your hand (34 is about a metre). |
-| Ring Radius | 5.0 |  |
-| Height Above Hand | 2.0 |  |
-| Lean Toward You | 12 | Degrees. |
-| Wrist Roll Spins the Ring | 0.00 |  |
-| Stick Deadzone | 0.20 |  |
-| Card Width | 4.20 |  |
-| Card Height | 3.00 |  |
-| Hovered Card Steps Out | 1.50 |  |
-| Hovered Card Grows | 0.06 |  |
-| Other Cards Fade To | 0.55 |  |
-| Cards Grow In (tics) | 6 |  |
-| Card Shadow | 0.32 |  |
-| Shadow Offset | 0.35 |  |
-| Face Parallax | 0.06 |  |
-| Idle Breathing | 0.35 |  |
-| Breathing Speed | 1.7 |  |
-| Low Ammo Below (share) | 0.25 |  |
-| Low Ammo Pulse | 0.35 |  |
-| Model Turn Speed | 1.50 |  |
-| Model Size | 0.16 |  |
-| Model Stand-Off | 3.0 |  |
-| *Cards* | | |
-| Flat Ring Up To (weapons) | 10 | Up to this many guns, each gets its own card; beyond it, one card per slot. |
-| Fan Close Forgiveness (tics) | 6 |  |
-| Constellation Lines Apart (tics) | 2 |  |
-| Star Brightness | 0.50 |  |
-| Light Size | 44 |  |
-| Light Holds Across Gaps (tics) | 3 |  |
-| Sparks | 18 | Particles per pick. |
-| Spark Speed | 1.4 |  |
-| Volume | 0.65 |  |
-| Idle Shimmer | 0.00 |  |
-| Taken Card Spins (deg) | 360 |  |
-| *Data Sheet* | | |
-| Data Sheet Size | 1.00 | In card widths. |
-| Pointing at a Gun: Rest For (tics) | 18 |  |
-| Wrist Card: Hold the Pose (tics) | 8 |  |
-| Wrist Card Size | 0.6 |  |
-| Palette by Name | Standard | A palette added by another pk3. |
-| Font Set by Name | Score | A font set added by another pk3. |
-| Debug Log | Off | Prints diagnostics when the ring opens. |
+---
 
-## Works with
+## The wrist card
 
-Runs on its own with any weapon mod.
+Off by default. Bring a forearm up across your chest as if checking a watch and hold it there a moment: a small card
+stands over that wrist with the gun's name, its rounds, its kills and hit rate, and its Gun Bonsai level. Lower your arm
+and it folds away. With RSQ Gun Cards loaded and its own watch card on, Gun Cards' card shows instead.
 
-- **RSQ SlowMo:** time slows while the ring is open. Slow motion you started yourself is left alone unless you ask.
-- **RSQ Gun Cards:** the ring's colours are Gun Cards' colours, so a gun looks the same on both. Gun Cards' watch card
-  replaces the Wheel's wrist card when it is on.
-- **Gun Bonsai with RSQ Gun Bonsai VR:** the data sheet shows each gun's level, progress and upgrades.
-- **RSQ TacticalRig:** the data sheet shows where each gun is holstered; alt-fire on a card locks that gun to its holster.
-- **RSQ Laser Sight:** the ring's beam stands down on the idle hand when the laser already lights it.
-- **RSQ Accessibility:** Steady Hands smooths card pointing. Slower Taps stretches the tap, hold and double-tap
-  windows. Seated Play moves the wrist card's pose to your seated eyes. Colour-blind mode turns the cards neutral and
-  colours only the one you are on. Photosensitive mode softens the motion.
-- **BD22 VR Reloaded / Brutal Doom:** a gun thrown back from the off hand leaves that hand its own fist; an empty gun
-  gives Brutal Doom's dry click. BD_VoxelPack's pickup models turn on the cards.
+*[picture to come: the wrist card over the main-hand wrist]*
 
-## Credits and licence
+---
 
-- The wheel is presidentkoopa's: RS_WeaponSelectionSystem, written for his UZDXREMA engine and spun out of
-  RS_VR_Unified, brought here to stock QuestZDoom 17.3.
-- QuestZDoom by Emawind and Team Beef: the engine, and the off-hand weapon and hand-pose script API the ring reads.
-- The art drawn from the IWAD is the IWAD's own, used by lump name and never copied: STBAR, STCFN033-095 (DoomFont),
-  STTNUM0-9, STTMINUS, STTPRCNT.
-- The ring's plates and digits are drawn from Ermac's Force Unleashed holo HUD art, used with the owner's blessing.
-- The text is RSQ Score's two fonts (from ijon's Dakka: the score font by Blue Shadow, the combo font by Jimmy), as
-  RSQ Score carries them (CREDITS.txt).
-- The JFO font set is JFO, the JDUI font by Zedas, in Blackmore1014's edit "JDUI Brutal Doom Ultimate Edition", as RSQ Gun
-  Cards and RSQ VisualRewards ship it, with credit to both (CREDITS.txt).
-- The lock-on mark is the series' own, from RSQ ShieldSaw. The glow art is drawn by this pack's tools; its gun colours
-  are measured from RSQ Gun Cards' panel art.
-- The rumble route to the controllers is the series' (RSQ ShieldSaw).
-- Sounds came across with the wheel from UZDXREMA.
+## Kit yourself out: the holster screen (with RSQ Tactical Rig)
+
+This is how you decide where every gun lives on your body, without ever leaving the fight for a menu.
+
+**Main-hand alt fire on a card** opens a panel beside the ring: your marine with Tactical Rig's six gun holsters on him
+as numbered rings (1 left shoulder, 2 right shoulder, 3 left chest, 4 right chest, 5 left hip, 6 right hip), in your
+holster profile's colour. A ring that belongs to another gun shows that gun's name. Lines draw out from the card to the
+rings.
+
+- **Pull the trigger on a ring** and the gun flies into it: it is assigned to that holster and goes straight in. A gun
+  that held that holster before loses it.
+- **Clear** takes the gun's holster away.
+- **Alt fire on the same card again** closes the panel; on another card, it opens that card's.
+
+Set **Web View** to **Mirror** and the panel shows Tactical Rig's own mirror of you instead, with the rings on your real
+holster spots (your left on your left). With RSQ ShieldSaw worn over the shoulder, that shoulder shows the ShieldSaw and
+takes no gun. Without RSQ Tactical Rig, main-hand alt fire on a card gives a dull tick and nothing else.
+
+**How a card looks tells you where its gun lives:** a plain card is on the Wheel only; a card with a short gold light
+running round its edge is in your next / previous list; a card sitting back on the ring, smaller and faded, outlined in
+your profile's colour, has a holster.
+
+*[picture to come: the holster screen, Marine view]*
+*[picture to come: the holster screen, Mirror view]*
+*[picture to come: a gun flying from its card into a holster ring (GIF)]*
+
+---
+
+## Next and previous weapon
+
+Your next / previous weapon keys (each hand's) step through one shared list, in slot order. A new game starts with
+every gun on it. **Off-hand alt fire on a card** takes that gun off the list or puts it back; a gun with a holster is
+never on it. With nothing on the list, the keys step through every gun, as Doom does.
+
+---
+
+## Fonts
+
+The ring's text now uses **RSQ Score's fonts**: **Score** (the default, its "SCORE:" lettering) or **Combo** (its smaller
+combo font). The Wheel carries its own copies, so they work without RSQ Score loaded. The older sets are still there:
+JFO, the status bar numerals, small gold or grey numerals, DoomFont only, and Ermac's digits.
+
+![Four font sets on the same ring: JFO, Score, Combo, DoomFont](docs/readme/fonts_compared.png)
+
+*Rig frames, 2026-11-09: JFO (top left), Score (top right), Combo (bottom left), DoomFont (bottom right).*
+
+The holster screen's ring numbers are in RSQ Score's combo digits when RSQ Score is loaded, and JFO's big digits without
+it.
+
+---
+
+## Looks
+
+- **Card Look.** **Colour by Gun** (the default) washes each card in its gun's colour, the same colour RSQ Gun Cards
+  gives it, lit warm from the top, with a halo behind the card you point at and the series' lock-on mark at your
+  pointer's tip. **Classic** is the plain ring.
+- **Palette.** Standard, Doom (the status bar's reds and golds), Hell (embers and bone) or Tech (Doom 2's computer greens).
+- **Ring Plates.** The Wheel's own plates (Ermac style) or the status bar's stone.
+- **Extras, off by default:** a breathing halo, a spark running round each card's edge, and a starfield behind the ring.
+
+---
+
+## Plays well with
+
+- **RSQ Tactical Rig:** the holster screen, its Mirror view, and the HOLSTER row on the sheet.
+- **RSQ SlowMo:** the ring slows the world while it is open. Slow motion you started yourself keeps running when the ring
+  closes, unless you turn on **Closing Ends SlowMo**.
+- **RSQ Gun Bonsai VR** (with Gun Bonsai): a gun's level and upgrades on the sheet and the wrist card.
+- **RSQ Grenade:** a fan of your grenade kinds, and the grenade always goes to your main hand.
+- **RSQ ShieldSaw, RSQ Saber, RSQ Whip:** each goes to its own hand, with its own icon; ShieldSaw's shoulder on the holster
+  screen.
+- **RSQ Gun Cards:** the cards take Gun Cards' gun colours, and its watch card replaces the Wheel's.
+- **RSQ Laser Sight:** a hand whose gun draws a laser points at the ring along that laser, so you never see two beams.
+- **RSQ Score:** the holster screen's ring numbers in its combo digits.
+- **RSQ Accessibility:** Colour Blind Mode (every card neutral, only the one you point at coloured), Photosensitive Mode
+  (the breathing and the edge sweep softer and slower), Slower Taps (more time for a hold or a double tap) and Steady
+  Hands (a smoothed pointer). Seated Play puts the wrist card's pose at your seated eyes.
+- **Brutal Doom 22 VR Reloaded:** one card for each gun and its off-hand version; Brutal Doom's own dry-fire click.
+- **BD_VoxelPack:** the turning gun models on the cards.
+- **LegenDoom:** rarity colours, legendary names and powers on the sheet.
+
+**Other weapon mods are parked.** The Wheel has readers for DoomRL Arsenal, Doomablo, the Pandemonia family, Guncaster,
+MetaDoom, BorderDoom, DOOM Infinite, Combined Arms, Final Doomer, ModelSwapper and Lithium. They are switched off for
+now (the owner, 2026-11-09) and their options are hidden. Only Gun Bonsai and LegenDoom are read.
+
+---
+
+## Options
+
+*Radiant Silvergun Options → RSQ Wheel.* Everything is on one page; the fine-tuning numbers are under Test and Debug.
+**Reset All** resets both pages.
+
+| Section | Rows |
+|---|---|
+| (top) | Weapon Wheel (On) · Either Hand Picks (On) · Opens On (Whichever key you press / Main hand / Off hand) · Sound (On) · Controller Rumble (1.0) · Size (1.0) |
+| Controls | Hold, Point, Release (left thumbstick click) · Open or Close (unbound) · Main Hand Wheel (`[`) · Off Hand Wheel (`]`) |
+| Picking | Two Hands Compare (Off) · Open on Your Gun (Off) · Wrist Card (Off) · Open at Level Start (Off) · Slow Time While Open (On) · Closing Ends SlowMo (Off) · Freeze Without SlowMo (Off) · Freeze Time While Open (Off) · Pull a Card Out (1.5) · Throw a Gun Back (2.6) · Reach In (7) · Feel Each Gun's Weight (1.0) |
+| Look | Palette (Standard, Doom, Hell, Tech) · Font (Score, Combo, JFO, Status bar numerals, Small gold numerals, Small grey numerals, DoomFont only, Ermac's digits; Score) · Ring Plates (Its own (Ermac style) / Status bar stone) · Card Look (Colour by Gun / Classic) · Web View (Marine / Mirror) · Gun Models on Cards (On) · Ammo Counts (On) · Ammo Readout (LED segments / LCD, punched out / Lozenge badge) · Rarity Colours (On) · Mark Guns You Hold (On) · Slot Numbers (On) · Cards Face You (On) · Hover Halo Breathes (Off) · Edge Sweep (Off) · Flash on Pick (On) · Spark Colour (Slot colour / White hot / Rainbow) · Hover Lights the Room (On) · Background Stars (0) |
+| Data Sheet | Show Data Sheet (On) · Weapon Stats (On) · Track Kills and Accuracy (On) · This Level's Kills (Off) · Gun Bonsai Rows (On) · Point at a Gun (On) · Compare With Yours (Off) |
+| Other Mods | LegenDoom Rarity (On) · LegenDoom Effects (On) |
+| Test and Debug | Picking: Hold to Pick (9 tics), Double Tap (10 tics), Ring Follows Past (45°), Folds After (140 tics), Fold Warning (25 tics), Re-centre Window (10 tics) · Ring: Ring Distance Ahead (34), Ring Radius (5), Height Above Hand (2), Lean Toward You (12), Wrist Roll Spins the Ring (0), Stick Deadzone (0.2), Card Width (4.2), Card Height (3.0), Hovered Card Steps Out (1.5), Hovered Card Grows (0.06), Other Cards Fade To (0.55), Cards Grow In (6 tics), Card Shadow (0.32), Shadow Offset (0.35), Face Parallax (0.06), Idle Breathing (0.35), Breathing Speed (1.7), Low Ammo Below (0.25), Low Ammo Pulse (0.35), Model Turn Speed (1.5), Model Size (0.16), Model Stand-Off (3) · Cards: Flat Ring Up To (10 weapons), Fan Close Forgiveness (6 tics), Star Brightness (0.5), Light Size (44), Light Holds Across Gaps (3 tics), Sparks (18), Spark Speed (1.4), Volume (0.65), Idle Shimmer (0), Taken Card Spins (360°) · Data Sheet: Data Sheet Size (1.0), Pointing at a Gun: Rest For (18 tics), Wrist Card: Hold the Pose (8 tics), Wrist Card Size (0.6), Palette by Name, Font Set by Name · Debug Log (Off) |
+
+**Weapon Wheel Off** stops the ring from opening and hands next / previous weapon back to the engine. **Freeze Without
+SlowMo** only acts when RSQ SlowMo is not loaded; **Freeze Time While Open** stops
+time whether SlowMo is loaded or not. Distances are in map units (34 to a metre).
+
+**Keys:** *Options → Customize Controls → RSQ Wheel.* A default key that is already bound to something else is left
+alone; bind it there instead.
+
+---
+
+## Status
+
+| | |
+|---|---|
+| **Shown on the rig** (2026-11-09, full series load order) | The Wheel loads with the rest of the series and its RSQ Wheel page appears under Radiant Silvergun Options, with no error from the Wheel in the log. Nothing of the ring itself was exercised in that run |
+| **Headset-confirmed** | Nothing yet |
+| **Code only, not yet shown** | Everything else on this page |
+
+---
+
+## Under the hood
+
+- **REMA's wheel on stock QuestZDoom 17.3.** The ring is presidentkoopa's RS_WeaponSelectionSystem from his UZDXREMA
+  engine. Everything it asked of REMA's engine is redone in ZScript (`wr_q_shim.zs`): each card, label and bar is a
+  model quad placed every tic, text is a strip of one-quad-per-character cells, and colour is a palette translation built
+  at run time. Canvas textures were not used: on QuestZDoom 17.3 they draw black in VR.
+- **The WAD's own art.** Card plates come from STBAR, words from DoomFont, numbers from the status bar numerals, all by
+  lump name through TEXTURES (`tools/gen_assets.py`). Palettes (`WRPALS`) and font sets (`WRFONTS`) are lumps read by
+  name, so any pk3 can add its own and pick it with Palette by Name / Font Set by Name.
+- **Event handlers, in order:** `wr_Rig` (the ring), `wr_StatEvents` (the kill / shot / accuracy ledger),
+  `wr_Watch` (the wrist card), `wr_BB` (lays out every quad after the ring moves them), `wr_VRState` (the pointer and
+  the freeze).
+- **Fire never shoots through the ring.** Trigger, alt fire and Use are caught in `InputProcess` only while a card or
+  the holster panel is under a hand, and turned into `wr_*` network events.
+- **Pointing:** each hand's ray, one-to-one with the controller; a hand holding an RSQ Laser Sight gun points along the
+  line Laser Sight publishes (`RSQLS_SightService`). Hand speeds and the wrist pose are measured in true proportions
+  (the engine's pixel stretch put back), at 34 units a metre.
+- **Rumble** goes through the series' quake-wave route (RSQ ShieldSaw's buzzer), felt with `vr_quake_haptic_level`
+  above 0; at 0 every card gets the engine's same flat pulse, so Feel Each Gun's Weight needs it.
+- **Stats are counted, not read.** Damage, rate of fire and pellets live inside fire states, out of a script's reach,
+  so `wr_stattracker.zs` watches the game: per gun instance, on a hidden ledger item the player carries, so a save keeps
+  them. A kill goes to the hand that fired most recently, and to neither if it can't tell.
+- **The series, by name.** Every other mod is reached through its service or class name at run time
+  (`RSQTR_RigService`, `RSQSM_Service`, `RSQGB_Service`, `RSQGN_Service`, `RSQ_BD22OffhandService`,
+  `RSQLS_SightService`, `rsqgc_*` and `rsqa_*` settings), so the Wheel loads and plays alone. The holster screen assigns
+  and clears with Tactical Rig's `rsqtr_assign:<gun>` and `rsqtr_unassign:<gun>` events. Other mods can ask the Wheel
+  through `wr_RigService` (is it open, which hand, where, which gun is pointed at).
+- **What is kept:** the next / previous list rides on the player (`wr_RotTok`), so it lasts through levels and saves; your
+  fan order is a setting (`wr_slot_order`) that Reset All leaves alone. Old configs are moved to new defaults once
+  (`wr_cfgver`, generation 29).
+- **Other-mod support is parked** in `wr_modsupport.zs`: every compat reader but LegenDoom's answers "off". The hidden
+  setting `wr_unpark_mods 1` brings them back, for testing only. Most of those readers read another mod's fields by name,
+  which needs REMA's engine; on QuestZDoom that read always answers "not there".
+- **Not in the menu, on purpose:** REMA settings that do nothing on QuestZDoom 17.3 (the engine's own wheel, the room
+  effects, painted card faces, the distance-field plate and its glow). Their settings stay so a config can still hold
+  them.
+- **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes. Built for single player: the ring follows the
+  console player only.
+
+---
+
+## Credits
+
+The full list, with every file and its source, is in **CREDITS.txt**.
+
+- **presidentkoopa:** the wheel, RS_WeaponSelectionSystem, from his UZDXREMA engine and RS_VR_Unified; its sounds came
+  across with it.
+- **Ermac:** his Force Unleashed holo HUD art, which the ring's own plates and digits are drawn from (with the owner's
+  blessing).
+- **id Software:** the IWAD art the ring draws by name: STBAR, DoomFont, the status bar numerals.
+- **RSQ Score's fonts**, carried from ijon's **Dakka**: the score-line font by **Blue Shadow** and the breakdown (combo)
+  font by **Jimmy**.
+- **JFO**, the JDUI font by **Zedas**, in the "JDUI Brutal Doom Ultimate Edition" edit by **Blackmore1014**.
+- **LegenDoom** (Yholl and its contributors): the brass knuckles on the fist card.
+- **danger_doughnut52** (dinopixel.com): the lightsaber card's pixel art.
+- The whip, ShieldSaw, flare, flashlight, Force hand, gloves and padlock icons, the lock-on mark and the glow art are the
+  series' own.
+- **QuestZDoom** (Emawind and Team Beef): the engine, and the off-hand weapon and hand-pose API the ring reads.
