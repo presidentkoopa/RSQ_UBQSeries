@@ -26,6 +26,7 @@ server float  rsqgr_climb_cap       = 8;     // most the body moves per tic by t
 user   string rsqgr_keys_main     = "446";      // the main controller's grip key codes: the grip holds the rope (input.zs GripKeys; as RSQ Distance Grab and RSQ Tactical Rig read them)
 user   string rsqgr_keys_off      = "443 436";  // the off controller's grip key codes
 server bool   rsqgr_grab_dg         = true;  // RSQ_DistanceGrab's grab binds take hold of the rope too
+server bool   rsqgr_touch           = true;  // Touch Holds Rope: an empty hand laid on the rope and held still (6 tics under 0.4 m/s) takes it with no button; it lets go off the rope by 2 x the reach (core.zs TouchTick)
 server bool   rsqgr_two_hands       = true;  // both hands may hold the rope at once (the climb is their average); off: a new hand takes it over
 server bool   rsqgr_thump           = true;  // a thump in the hand when the hook bites or the rope catches you (the engine's own hit buzz)
 

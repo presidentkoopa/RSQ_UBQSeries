@@ -1,0 +1,55 @@
+version "4.10"
+// TEST ONLY (scratch, rig1110): reads the touch-hold state of RSQ Grapple and RSQ Whip each tic, prints on a change.
+class ROPE_Probe : EventHandler
+{
+	String last[4];
+	override void WorldTick()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		let g = RSQGR_Core.Get();
+		let w = RSQWP_Core.Get();
+		for (int m = 0; m < 2; m++)
+		for (int hand = 0; hand < 2; hand++)
+		{
+			bool ok; Vector3 off; double dist = -1, outm = -1; int ropes = 0;
+			bool armed, key, touch, grab; int on;
+			if (m == 0)
+			{
+				if (!g) continue;
+				[ok, off] = RSQGR_Climb.HandOffset(pmo, consoleplayer, hand);
+				for (int k = 0; ok && k < 2; k++)
+				{
+					let h = g.hooks[consoleplayer * 2 + k];
+					if (!h || h.phase != RSQGR_Hook.PH_LATCH) continue;
+					ropes++;
+					Vector3 a = h.EffAnchor(), b = RSQGR_Core.AttachPoint(pmo), hp = pmo.Pos + off, ab = a - b;
+					double t = clamp(((hp - b) dot ab) / max(0.0001, ab dot ab), 0.0, 1.0);
+					dist = RSQGR_Core.TouchMetres(hp - (b + ab * t)); outm = RSQGR_Core.TouchMetres(ab * t);
+				}
+				int i = consoleplayer * 2 + hand;
+				armed = g.touchArmed[i]; key = g.keyHeld[i]; touch = g.touchHeld[i]; grab = g.grabHeld[i]; on = g.touchOn[i];
+			}
+			else
+			{
+				if (!w) continue;
+				[ok, off] = RSQWP_Climb.HandOffset(pmo, consoleplayer, hand);
+				for (int k = 0; ok && k < 2; k++)
+				{
+					let h = w.hooks[consoleplayer * 2 + k];
+					if (!h || h.phase != RSQWP_Hook.PH_LATCH) continue;
+					ropes++;
+					Vector3 a = h.anchor, b = RSQWP_Core.AttachPoint(pmo), hp = pmo.Pos + off, ab = a - b;
+					double t = clamp(((hp - b) dot ab) / max(0.0001, ab dot ab), 0.0, 1.0);
+					dist = RSQWP_Core.TouchMetres(hp - (b + ab * t)); outm = RSQWP_Core.TouchMetres(ab * t);
+				}
+				int i = consoleplayer * 2 + hand;
+				armed = w.touchArmed[i]; key = w.keyHeld[i]; touch = w.touchHeld[i]; grab = w.grabHeld[i]; on = w.touchOn[i];
+			}
+			if (ropes == 0 && last[m * 2 + hand] == "") continue;
+			String s = String.Format("%s h%d ropes %d off-rope %.2f m out-along %.2f m armed %d counting %d key %d touch %d grabHeld %d",
+				m == 0 ? "GR" : "WP", hand, ropes, int(dist * 20 + 0.5) / 20.0, int(outm * 20 + 0.5) / 20.0, armed, on > 0, key, touch, grab);
+			if (s != last[m * 2 + hand]) { Console.Printf("ROPEPROBE t%d %s", level.maptime, s); last[m * 2 + hand] = s; }
+		}
+	}
+}

@@ -220,7 +220,7 @@ class RSQGR_Core : EventHandler
 		settled = true;
 		for (int i = 0; i < NHOOK; i++)
 		{
-			held[i] = false; pressFired[i] = false; grabHeld[i] = false; wantGrip[i] = false; poseTic[i] = -100;
+			held[i] = false; pressFired[i] = false; grabHeld[i] = false; keyHeld[i] = false; touchHeld[i] = false; touchOn[i] = 0; touchArmed[i] = false; wantGrip[i] = false; poseTic[i] = -100;
 			if (hooks[i]) hooks[i].ClearGrips();
 		}
 	}
@@ -247,6 +247,7 @@ class RSQGR_Core : EventHandler
 				else if (h.phase == RSQGR_Hook.PH_BITE) Bite(h, i);
 				else if (h.phase == RSQGR_Hook.PH_HOLD) { if (h.phaseAge >= 16) LetGo(h, false); }
 			}
+			if (pmo && pmo.Health > 0) TouchTick(pmo, pn);
 			if (pmo && pmo.Health > 0) Swing(pmo, pn);
 			if (pmo && pmo.Health > 0) MantleTick(pmo, pn);
 			if (pmo && pmo.Health > 0 && RSQGR_A11y.Vignette() > 0) Comfort(pmo, pn);
@@ -1038,12 +1039,17 @@ class RSQGR_Core : EventHandler
 	Vector3 poseOff[NHOOK];   // netgame: the hand's offset from the pawn, streamed (rsqgr_pose)
 	int poseTic[NHOOK];
 
-	void Grab(int pn, int hand, bool down)
+	// TWO WAYS TO HOLD, KEPT APART: a key (the grip's code, a Distance Grab key) and a touch (TouchTick). grabHeld is
+	// either; a key's release never lets go of a touch hold, and a touch's release never lets go of a key's.
+	bool keyHeld[NHOOK], touchHeld[NHOOK];
+	void Grab(int pn, int hand, bool down, bool touch = false)
 	{
 		int i = pn * 2 + hand;
-		grabHeld[i] = down;
-		wantGrip[i] = down;
-		if (down) return;
+		if (touch) touchHeld[i] = down; else keyHeld[i] = down;
+		grabHeld[i] = keyHeld[i] || touchHeld[i];
+		if (down) { wantGrip[i] = true; return; }
+		if (grabHeld[i]) return;   // the other way still holds
+		wantGrip[i] = false;
 		for (int k = 0; k < 2; k++)
 		{
 			let h = hooks[pn * 2 + k];
@@ -1055,6 +1061,99 @@ class RSQGR_Core : EventHandler
 				else if (h.gripHand == hand) h.gripHand = 1 - hand;
 				Log(h, String.Format("unhold h%d", hand));
 			}
+		}
+	}
+
+	// ---- THE TOUCH HOLD (owner 2026-11-10: "Grip codes + touch fallback") -------------------------------------------
+	// The grip's key codes are flaky on stock QZD 17.3 (owner: "qzd 17.3 doesnt play too well with grab"), so an EMPTY
+	// hand also takes the rope with no button: laid on the rope and held still a moment. All in play, from the hand pose
+	// every machine has (climb.zs HandOffset: the pose streamed by input.zs RenderOverlay), so every machine takes the
+	// same hold on the same tic. The hold is the key's own (Grab(.., true)): Climb takes it, and Rope Climbing, Two Hands
+	// on Rope and Empty Hand Only rule it as ever. rsqgr_touch ("Touch Holds Rope") off: keys only.
+	//   ON THE ROPE: within the grab's own reach of the rope's line (rsqgr_grab_reach, with Gesture Ease, as Climb takes a
+	//     key's hold), and at least TOUCH_OUT_M out along it from where it meets the body: a hand hanging at your side is
+	//     near the rope's root (the attach point is 0.6 of your height) and never takes it.
+	//   ARMED: the hand has been off the rope (past the reach) since the rope bit, since its last touch hold, or since a key
+	//     held it. The hand that fired the claw lies on the
+	//     rope's line as it bites; holding still to watch it is not a grab.
+	//   STILL: over TOUCH_TICS tics the hand, relative to the body, moved under TOUCH_STILL_MS on average (metres: XY over
+	//     vr_vunits_per_meter, Z times pixelstretch first, as the series' throw samplers measure).
+	//   EMPTY: strictly (HandFree strict): a touch never takes the rope with a gun in that hand.
+	// Let go: the hand more than TOUCH_LEAVE reaches off every rope, no rope out, or the row turned off. A key's hold keeps
+	// its own release (the key up); neither release ends the other's hold (Grab).
+	const TOUCH_TICS = 6;          // ~0.17 s held still on the rope
+	const TOUCH_STILL_MS = 0.4;    // m/s, the hand relative to the body, averaged over TOUCH_TICS
+	const TOUCH_OUT_M = 0.3;       // m out along the rope from the body's attach point
+	const TOUCH_LEAVE = 2.0;       // x the grab reach: a touch hold lets go past this
+	int touchOn[NHOOK];            // 1 + tics the hand has been still on the rope (0: not counting)
+	bool touchArmed[NHOOK];        // the hand has been off the rope since it came out
+	Vector3 touchFrom[NHOOK];      // the hand's offset when this still spell began
+
+	static double TouchMetres(Vector3 v)
+	{
+		let c = CVar.FindCVar("vr_vunits_per_meter");
+		double vu = c ? c.GetFloat() : 34.0;
+		if (vu <= 1.0) vu = 34.0;
+		double ps = level.pixelstretch > 0 ? level.pixelstretch : 1.2;
+		double z = v.z * ps;
+		return sqrt(v.x * v.x + v.y * v.y + z * z) / vu;
+	}
+
+	// once a tic per player, before the ropes run (WorldTick), so a hold taken here is climbed on this tic
+	void TouchTick(PlayerPawn pmo, int pn)
+	{
+		bool on = RSQGR_Util.Flag("rsqgr_touch", true) && RSQGR_Util.Opt("rsqgr_climb", 1) != 0;
+		double reach = RSQGR_A11y.Wide(RSQGR_Util.Num("rsqgr_grab_reach", 16));
+		int latched = 0;
+		for (int k = 0; k < 2; k++) { let h = hooks[pn * 2 + k]; if (h && h.phase == RSQGR_Hook.PH_LATCH) latched++; }
+		bool dbg = RSQGR_Util.Opt("rsqgr_debug", 0) >= 1;
+		for (int g = 0; g < 2; g++)
+		{
+			int i = pn * 2 + g;
+			bool ok; Vector3 off;
+			[ok, off] = RSQGR_Climb.HandOffset(pmo, pn, g);
+			// the nearest rope: how far off its line, and how far out along it from the body
+			double dist = 1e9;
+			Vector3 perp = (0, 0, 0), outV = (0, 0, 0);
+			for (int k = 0; ok && k < 2; k++)
+			{
+				let h = hooks[pn * 2 + k];
+				if (!h || h.phase != RSQGR_Hook.PH_LATCH) continue;
+				Vector3 a = h.EffAnchor(), b = AttachPoint(pmo), hp = pmo.Pos + off;
+				Vector3 ab = a - b;
+				double l2 = ab dot ab;
+				double t = l2 > 0.0001 ? clamp(((hp - b) dot ab) / l2, 0.0, 1.0) : 0.0;
+				Vector3 q = b + ab * t;
+				double dd = (hp - q).Length();
+				if (dd < dist) { dist = dd; perp = hp - q; outV = q - b; }
+			}
+			if (touchHeld[i])
+			{
+				String why = !on ? "Touch Holds Rope is off" : latched == 0 ? "no rope out" : (ok && dist > reach * TOUCH_LEAVE) ? "the hand left the rope" : "";
+				if (why == "") continue;
+				if (dbg) Console.Printf("T_GR t%d h%d TOUCH LET GO: %s (%.2f m off the rope, lets go past %.2f m)", level.maptime, g, why,
+					dist < 1e8 ? TouchMetres(perp) : -1., reach * TOUCH_LEAVE / 34.0);
+				Grab(pn, g, false, true);
+				touchArmed[i] = latched > 0 && ok && dist > reach;
+				touchOn[i] = 0;
+				continue;
+			}
+			if (!on || latched == 0) { touchOn[i] = 0; touchArmed[i] = false; continue; }
+			// a key's hold: the touch stands aside, and after the key is let go the hand must leave the rope before a touch
+			// takes it again (or letting go by the key, the hand still on the rope, would be taken straight back)
+			if (keyHeld[i]) { touchArmed[i] = false; touchOn[i] = 0; continue; }
+			if (!ok) { touchOn[i] = 0; continue; }
+			if (dist > reach) { touchArmed[i] = true; touchOn[i] = 0; continue; }
+			if (!touchArmed[i] || TouchMetres(outV) < TOUCH_OUT_M || !RSQGR_Climb.HandFree(pmo, g, true)) { touchOn[i] = 0; continue; }
+			if (touchOn[i] == 0) { touchFrom[i] = off; touchOn[i] = 1; continue; }
+			if (++touchOn[i] - 1 < TOUCH_TICS) continue;
+			double ms = TouchMetres(off - touchFrom[i]) * 35.0 / TOUCH_TICS;
+			if (ms >= TOUCH_STILL_MS) { touchFrom[i] = off; touchOn[i] = 1; continue; }   // still moving: the spell starts again here
+			if (dbg) Console.Printf("T_GR t%d h%d TOUCH HOLD: still %.2f m/s over %d tics, %.2f m off the rope (reach %.2f m), %.2f m out along it",
+				level.maptime, g, ms, TOUCH_TICS, TouchMetres(perp), reach / 34.0, TouchMetres(outV));
+			touchOn[i] = 0;
+			touchArmed[i] = false;
+			Grab(pn, g, true, true);
 		}
 	}
 
@@ -1298,7 +1397,7 @@ class RSQGR_Core : EventHandler
 	// every bind reads as up (a release that happened before the save never comes).
 	override void WorldLoaded(WorldEvent e)
 	{
-		for (int i = 0; i < NHOOK; i++) { hooks[i] = null; held[i] = false; pressFired[i] = false; grabHeld[i] = false; wantGrip[i] = false; poseTic[i] = -100; }
+		for (int i = 0; i < NHOOK; i++) { hooks[i] = null; held[i] = false; pressFired[i] = false; grabHeld[i] = false; keyHeld[i] = false; touchHeld[i] = false; touchOn[i] = 0; touchArmed[i] = false; wantGrip[i] = false; poseTic[i] = -100; }
 		if (!e.IsSaveGame) return;
 		let it = ThinkerIterator.Create("RSQGR_Hook");
 		RSQGR_Hook h;

@@ -128,9 +128,12 @@ class RSQWP_Input : EventHandler
 		int pn = consoleplayer;
 		if (!c.hooks[pn * 2] && !c.hooks[pn * 2 + 1]) return;
 		let pmo = p.mo;
+		// and both hands while Touch Holds Rope is on: the touch hold (core.zs TouchTick) is decided in play from this
+		// stream, so every machine sees the same hand
+		bool touch = RSQWP_Util.Flag("rsqwp_touch", true);
 		for (int hand = 0; hand < 2; hand++)
 		{
-			if (!c.grabHeld[pn * 2 + hand] || !RSQWP_Util.PoseGood(pmo, hand)) continue;
+			if ((!c.grabHeld[pn * 2 + hand] && !touch) || !RSQWP_Util.PoseGood(pmo, hand)) continue;
 			Vector3 h = RSQWP_Util.Ctrl(pmo, hand) == 0 ? pmo.AttackPos : pmo.OffhandPos;
 			Vector3 off = (h.x - pmo.Pos.x, h.y - pmo.Pos.y, (h.z - e.ViewPos.z) + p.viewheight);
 			EventHandler.SendNetworkEvent("rsqwp_pose", hand, RSQWP_Climb.Pack(off));

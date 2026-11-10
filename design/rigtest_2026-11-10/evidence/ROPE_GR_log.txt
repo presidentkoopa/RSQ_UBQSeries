@@ -1,0 +1,191 @@
+# rig only, not headset-confirmed. Order: doom2 > brutal22test6 > BD_VoxelPack > BD22 VR 2.0.4f > LOB > Champions > GunBonsai > every RSQ pk3 except RSQ_GunBonsaiVR (its Grapple unlock gates the hook) > ropeprobe.pk3. MAP01, RES 120, every tic rendered. Script errors in this run: BD_VoxelPack voxeldef 66/72/77/892 only.
+256 warnings while compiling RSQ_Monsters.pk3:zscript.txt
+173 warnings while parsing scripts
+ROPE_FIRE
+T_GR t41 h0 fire speed 40.0 range 780 pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 794.0 93.0) L0.0 d794.9 segs0 ms0.000/0.045 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t47 h0 thump latch ctrl0
+T_GR t47 h0 latch 251.3 from the claw: pull 20.9 u/tic pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs39 ms0.074/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t47 GR h0 ropes 1 off-rope 0.30 m out-along 0.30 m armed 0 counting 0 key 0 touch 0 grabHeld 0
+ROPEPROBE t47 GR h1 ropes 1 off-rope 0.60 m out-along 0.00 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+T_GR t48 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.092/0.574 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t50 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.074/0.094 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t52 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.082/0.150 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t54 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.084/0.106 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t56 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.065/0.086 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t58 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.069/0.090 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t60 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.075/0.092 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t62 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.082/0.138 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t64 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.092/0.083 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t66 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.062/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t68 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.061/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t70 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs46 ms0.063/0.076 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+ROPEPROBE t71 GR h0 ropes 1 off-rope 0.40 m out-along 0.00 m armed 0 counting 0 key 0 touch 0 grabHeld 0
+T_GR t72 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.076/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t74 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.078/0.070 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t76 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.054/0.057 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t78 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.069/0.093 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPE_ROOT
+T_GR t80 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.059/0.071 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t81 GR h1 ropes 1 off-rope 0.25 m out-along 0.00 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+T_GR t82 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.063/0.081 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t84 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.069/0.096 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t86 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.058/0.071 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t88 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.080/0.096 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t90 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.052/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t92 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.056/0.072 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t94 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.061/0.075 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t96 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.074/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t98 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.077/0.072 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t100 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.059/0.104 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t102 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.058/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t104 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.095/0.089 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t106 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.072/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t108 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.055/0.075 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t110 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.121/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t112 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.060/0.073 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t114 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.067/0.086 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t116 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.110/0.088 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t118 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.055/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPE_OFF
+T_GR t120 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.092/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t121 GR h1 ropes 1 off-rope 0.60 m out-along 0.00 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+T_GR t122 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.064/0.080 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t124 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.073/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t126 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.084/0.109 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t128 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.064/0.108 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPE_SWEEP
+T_GR t130 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.057/0.072 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t132 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.055/0.057 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t132 GR h1 ropes 1 off-rope 0.55 m out-along 0.75 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+ROPEPROBE t133 GR h1 ropes 1 off-rope 0.50 m out-along 0.75 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+T_GR t134 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.090/0.097 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t135 GR h1 ropes 1 off-rope 0.40 m out-along 0.75 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t136 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.063/0.083 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t138 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.051/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t138 GR h1 ropes 1 off-rope 0.25 m out-along 0.75 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t140 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.061/0.085 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t140 GR h1 ropes 1 off-rope 0.15 m out-along 0.75 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t142 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.080/0.121 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t142 GR h1 ropes 1 off-rope 0.05 m out-along 0.75 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t144 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.061/0.073 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t144 GR h1 ropes 1 off-rope 0.00 m out-along 0.80 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+ROPEPROBE t145 GR h1 ropes 1 off-rope 0.10 m out-along 0.80 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t146 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.063/0.088 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t147 GR h1 ropes 1 off-rope 0.20 m out-along 0.80 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t148 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.064/0.106 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t148 GR h1 ropes 1 off-rope 0.25 m out-along 0.80 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t150 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.069/0.091 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t151 GR h1 ropes 1 off-rope 0.35 m out-along 0.80 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t152 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.060/0.090 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t152 GR h1 ropes 1 off-rope 0.45 m out-along 0.80 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t154 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.053/0.106 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t154 GR h1 ropes 1 off-rope 0.50 m out-along 0.80 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+ROPEPROBE t155 GR h1 ropes 1 off-rope 0.60 m out-along 0.80 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+T_GR t156 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.075/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t156 GR h1 ropes 1 off-rope 0.60 m out-along 0.00 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+T_GR t158 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.060/0.104 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t160 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.057/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t162 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.061/0.097 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t164 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.057/0.075 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPE_ONTO
+T_GR t166 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.057/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t166 GR h1 ropes 1 off-rope 0.00 m out-along 0.80 m armed 1 counting 1 key 0 touch 0 grabHeld 0
+T_GR t168 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.079/0.109 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t170 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.052/0.068 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t172 h1 TOUCH HOLD: still 0.00 m/s over 6 tics, 0.01 m off the rope (reach 0.47 m), 0.78 m out along it
+T_GR t172 h0 take h1 pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.076/0.102 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t172 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs48 ms0.076/0.102 scale1.00 grip1 free01 hoff50.00 pt172
+ROPEPROBE t172 GR h1 ropes 1 off-rope 0.00 m out-along 0.80 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t174 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.071/0.091 scale1.00 grip1 free01 hoff50.00 pt174
+T_GR t176 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.069/0.085 scale1.00 grip1 free01 hoff50.00 pt176
+T_GR t178 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.067/0.130 scale1.00 grip1 free01 hoff50.00 pt178
+T_GR t180 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.123/0.122 scale1.00 grip1 free01 hoff50.00 pt179
+T_GR t182 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.068/0.079 scale1.00 grip1 free01 hoff50.00 pt181
+T_GR t184 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.063/0.080 scale1.00 grip1 free01 hoff50.00 pt184
+ROPE_KEY_DOWN_UP
+T_GR t186 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.106/0.119 scale1.00 grip1 free01 hoff50.00 pt186
+ROPEPROBE t186 GR h1 ropes 1 off-rope 0.00 m out-along 0.80 m armed 0 counting 0 key 1 touch 1 grabHeld 1
+T_GR t188 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.085/0.119 scale1.00 grip1 free01 hoff50.00 pt188
+T_GR t190 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.057/0.065 scale1.00 grip1 free01 hoff50.00 pt190
+ROPEPROBE t191 GR h1 ropes 1 off-rope 0.00 m out-along 0.80 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t192 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.072/0.159 scale1.00 grip1 free01 hoff50.00 pt192
+T_GR t194 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.068/0.188 scale1.00 grip1 free01 hoff50.00 pt194
+T_GR t196 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.073/0.080 scale1.00 grip1 free01 hoff50.00 pt195
+T_GR t198 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.099/0.082 scale1.00 grip1 free01 hoff50.00 pt198
+ROPE_PULL
+T_GR t200 h0 ground pos(-96.0 784.0 56.0) vel(0.00 0.00 0.00) claw(-87.5 965.5 263.3) L251.3 d251.3 segs49 ms0.106/0.087 scale1.00 grip1 free01 hoff50.00 pt200
+T_GR t201 h0 climb pos(-96.0 784.0 56.0) vel(0.06 1.28 1.23) claw(-87.5 965.5 263.3) L249.6 d251.3 segs49 ms0.075/0.136 scale1.00 grip1 free01 hoff49.00 pt201
+ROPEPROBE t201 GR h1 ropes 1 off-rope 0.00 m out-along 0.70 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t202 h0 climb pos(-95.9 785.3 56.0) vel(0.06 1.32 0.16) claw(-87.5 965.5 263.3) L248.5 d250.4 segs49 ms0.074/0.155 scale1.00 grip1 free01 hoff48.50 pt202
+T_GR t203 h0 climb pos(-95.9 786.6 56.0) vel(0.09 1.85 0.64) claw(-87.5 965.5 263.3) L246.7 d249.5 segs49 ms0.071/0.166 scale1.00 grip1 free01 hoff47.50 pt203
+ROPEPROBE t203 GR h1 ropes 1 off-rope 0.00 m out-along 0.65 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t204 h0 climb pos(-95.8 788.5 56.0) vel(0.10 2.08 0.41) claw(-87.5 965.5 263.3) L245.0 d248.1 segs49 ms0.072/0.158 scale1.00 grip1 free01 hoff46.50 pt204
+ROPEPROBE t204 GR h1 ropes 1 off-rope 0.05 m out-along 0.55 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t205 h0 climb pos(-95.7 790.5 56.0) vel(0.09 1.93 0.06) claw(-87.5 965.5 263.3) L243.6 d246.7 segs49 ms0.069/0.183 scale1.00 grip1 free01 hoff45.50 pt205
+ROPEPROBE t205 GR h1 ropes 1 off-rope 0.00 m out-along 0.55 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t206 h0 climb pos(-95.6 792.5 56.0) vel(0.10 2.11 0.38) claw(-87.5 965.5 263.3) L241.8 d245.3 segs48 ms0.086/0.133 scale1.00 grip1 free01 hoff44.50 pt206
+ROPEPROBE t206 GR h1 ropes 1 off-rope 0.05 m out-along 0.45 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t207 h0 climb pos(-95.5 794.6 56.0) vel(0.09 1.95 0.06) claw(-87.5 965.5 263.3) L240.4 d243.8 segs48 ms0.073/0.180 scale1.00 grip1 free01 hoff43.50 pt207
+ROPEPROBE t207 GR h1 ropes 1 off-rope 0.05 m out-along 0.40 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t208 h0 climb pos(-95.4 796.5 56.0) vel(0.10 2.13 0.39) claw(-87.5 965.5 263.3) L238.6 d242.4 segs48 ms0.101/0.176 scale1.00 grip1 free01 hoff42.50 pt208
+ROPEPROBE t208 GR h1 ropes 1 off-rope 0.05 m out-along 0.35 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t210 h0 ground pos(-95.2 800.6 56.0) vel(0.08 1.75 0.39) claw(-87.5 965.5 263.3) L239.6 d239.6 segs47 ms0.098/0.090 scale1.00 grip1 free01 hoff42.50 pt209
+T_GR t212 h0 ground pos(-95.1 803.9 56.0) vel(0.07 1.43 0.39) claw(-87.5 965.5 263.3) L237.3 d237.3 segs47 ms0.104/0.078 scale1.00 grip1 free01 hoff42.50 pt212
+T_GR t214 h0 ground pos(-94.9 806.6 56.0) vel(0.06 1.18 0.39) claw(-87.5 965.5 263.3) L235.5 d235.5 segs46 ms0.095/0.077 scale1.00 grip1 free01 hoff42.50 pt214
+T_GR t216 h0 ground pos(-94.8 808.9 56.0) vel(0.05 0.97 0.39) claw(-87.5 965.5 263.3) L234.0 d234.0 segs46 ms0.068/0.084 scale1.00 grip1 free01 hoff42.50 pt216
+ROPEPROBE t216 GR h1 ropes 1 off-rope 0.00 m out-along 0.35 m armed 0 counting 0 key 0 touch 1 grabHeld 1
+T_GR t218 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs46 ms0.067/0.104 scale1.00 grip1 free01 hoff42.50 pt217
+T_GR t220 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs46 ms0.069/0.081 scale1.00 grip1 free01 hoff42.50 pt220
+T_GR t222 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs46 ms0.070/0.093 scale1.00 grip1 free01 hoff42.50 pt222
+ROPE_AWAY
+T_GR t224 h1 TOUCH LET GO: the hand left the rope (1.01 m off the rope, lets go past 0.94 m)
+T_GR t224 h0 unhold h1 pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs46 ms0.075/0.098 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t224 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs46 ms0.075/0.098 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t224 GR h1 ropes 1 off-rope 1.00 m out-along 0.05 m armed 1 counting 0 key 0 touch 0 grabHeld 0
+T_GR t226 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.084/0.130 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t228 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.078/0.096 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t230 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.062/0.095 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t232 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.052/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t234 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.068/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t236 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.053/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t238 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.058/0.075 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t240 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.059/0.095 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t242 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.073/0.110 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPE_KEYHOLD
+T_GR t244 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.073/0.089 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t244 GR h1 ropes 1 off-rope 1.00 m out-along 0.05 m armed 0 counting 0 key 1 touch 0 grabHeld 1
+T_GR t246 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.081/0.098 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t247 h0 take h1 pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.068/0.155 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t247 GR h1 ropes 1 off-rope 0.05 m out-along 0.80 m armed 0 counting 0 key 1 touch 0 grabHeld 1
+T_GR t248 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.367/0.158 scale1.00 grip1 free01 hoff50.00 pt248
+T_GR t250 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.062/0.086 scale1.00 grip1 free01 hoff50.00 pt250
+T_GR t252 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.066/0.083 scale1.00 grip1 free01 hoff50.00 pt252
+T_GR t254 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.074/0.102 scale1.00 grip1 free01 hoff50.00 pt254
+T_GR t256 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.090/0.138 scale1.00 grip1 free01 hoff50.00 pt255
+T_GR t258 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.120/0.114 scale1.00 grip1 free01 hoff50.00 pt258
+T_GR t260 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.132/0.103 scale1.00 grip1 free01 hoff50.00 pt260
+T_GR t262 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.114/0.125 scale1.00 grip1 free01 hoff50.00 pt262
+T_GR t264 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.083/0.121 scale1.00 grip1 free01 hoff50.00 pt264
+ROPE_KEY_UP
+T_GR t266 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.076/0.099 scale1.00 grip1 free01 hoff50.00 pt266
+T_GR t268 h0 unhold h1 pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.088/0.133 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t268 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs45 ms0.088/0.133 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEPROBE t268 GR h1 ropes 1 off-rope 0.05 m out-along 0.80 m armed 0 counting 0 key 0 touch 0 grabHeld 0
+T_GR t270 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.071/0.095 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t272 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.094/0.113 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t274 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.102/0.120 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t276 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.065/0.095 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t278 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.062/0.095 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t280 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.073/0.095 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t282 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.069/0.109 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t284 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.073/0.083 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t286 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.076/0.119 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t288 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.083/0.119 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t290 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.091/0.132 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t292 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.070/0.097 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_GR t294 h0 ground pos(-94.8 809.9 56.0) vel(0.00 0.00 0.39) claw(-87.5 965.5 263.3) L233.3 d233.3 segs44 ms0.083/0.117 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPE_END

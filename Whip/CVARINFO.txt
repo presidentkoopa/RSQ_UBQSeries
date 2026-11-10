@@ -72,6 +72,7 @@ server bool   rsqwp_climb_free_only = true;  // only an empty hand (fist) may ta
 server float  rsqwp_grab_reach      = 16;    // how near the rope the hand must be to take hold (map units)
 server float  rsqwp_climb_cap       = 8;     // most the body moves per tic by the hand (u/tic); faster slips
 server bool   rsqwp_grab_dg         = true;  // RSQ_DistanceGrab's grab binds take hold of the rope too
+server bool   rsqwp_touch           = true;  // Touch Holds Rope: an empty hand laid on the rope and held still (6 tics under 0.4 m/s) takes it with no button; it lets go off the rope by 2 x the reach (core.zs TouchTick)
 
 // a leashed monster
 server float  rsqwp_mass_max      = 1000;   // heavier than this (or a boss) = an anchor, it does not come (the leash's line: core.zs TooHeavy, the bind whip only; no menu row since 11-10)

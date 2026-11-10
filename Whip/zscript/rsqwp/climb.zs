@@ -26,10 +26,11 @@ class RSQWP_Climb
 {
 	const FREEHAND_LAYER = 2200;   // BD22Q RSQ_Layers.FREEHAND
 
-	static play bool HandFree(PlayerPawn pmo, int hand)
+	// strict: an empty hand whatever rsqwp_climb_free_only says (the touch hold, core.zs TouchTick)
+	static play bool HandFree(PlayerPawn pmo, int hand, bool strict = false)
 	{
 		if (!pmo || !pmo.player) return false;
-		if (!RSQWP_Util.Flag("rsqwp_climb_free_only", true)) return true;
+		if (!strict && !RSQWP_Util.Flag("rsqwp_climb_free_only", true)) return true;
 		let p = pmo.player;
 		Weapon w = hand == 0 ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return true;

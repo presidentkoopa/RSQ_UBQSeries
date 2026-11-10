@@ -1,0 +1,58 @@
+# rig only, not headset-confirmed. Same order + swingtst.wad + whp.pk3 (the Whip's rig map and probe), SWINGTST; Grip Starts Swing ON (default): the touch hold is the grip start. Script errors: BD_VoxelPack voxeldef only.
+# trimmed: the whip's crack lines up to the latch, then every T_WP / probe line from ROPEW_OFF on
+T_WPW 0 CAST #1 t216 -> ceiling anchor (685 519 188), 8.7 m, flies 5 tics (beam let go 18 tics ago, remembered)
+T_WPW 0 SWING LATCH t221 ceiling at (685 519 188), rope 312, take-up to 0, hop 0, player (378 512 96) vel (0.0 0.0 0.0) -- waiting for a start (grip / jump), its take-up 0
+ROPEW_OFF
+T_WP t374 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.012/0.049 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t376 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.021/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t378 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.053 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t380 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.071 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t382 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.018/0.069 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t384 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.020/0.070 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t386 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.050 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEW_ONTO
+T_WP t388 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.018/0.066 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t390 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.061 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t392 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.057 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t394 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t395 h1 TOUCH HOLD: still 0.00 m/s over 6 tics, 0.01 m off the rope (reach 0.47 m), 0.51 m out along it
+T_WPW START t395 by GRIP (0.01 m from the whip) ASSIST lift 8.0 speed 10.0: rope 312, take-up to 288; vel (0.0 0.0 0.0) 0.0 flat 0.0 -> (10.0 0.2 8.0) 12.8 flat 10.0; push dir (1.00 0.02 0.00); off hand rsq_hands
+T_WP t396 h0 takeup pos(388.0 512.2 104.0) vel(9.07 0.20 6.96) claw(684.6 518.8 188.0) L292.4 d301.0 segs12 ms0.053/0.178 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t398 h0 swing pos(406.1 512.6 116.9) vel(9.07 0.20 4.93) claw(684.6 518.8 188.0) L288.2 d281.1 segs12 ms0.046/0.106 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t400 h0 swing pos(424.3 513.0 125.8) vel(9.07 0.20 2.93) claw(684.6 518.8 188.0) L288.2 d262.0 segs12 ms0.044/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t402 h0 swing pos(442.4 513.4 130.6) vel(9.07 0.20 0.93) claw(684.6 518.8 188.0) L288.2 d243.4 segs12 ms0.037/0.099 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t404 h0 swing pos(460.6 513.8 131.5) vel(9.07 0.20 -1.07) claw(684.6 518.8 188.0) L288.2 d225.3 segs11 ms0.036/0.080 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t406 h0 swing pos(478.7 514.2 128.3) vel(9.07 0.20 -3.07) claw(684.6 518.8 188.0) L288.2 d207.6 segs10 ms0.030/0.068 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t408 h0 swing pos(496.8 514.6 121.2) vel(9.07 0.20 -5.07) claw(684.6 518.8 188.0) L288.2 d190.7 segs9 ms0.057/0.087 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t410 h0 swing pos(515.0 515.0 110.1) vel(9.07 0.20 -7.07) claw(684.6 518.8 188.0) L288.2 d175.4 segs9 ms0.039/0.086 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t412 h0 swing pos(533.1 515.4 94.9) vel(9.07 0.20 -9.07) claw(684.6 518.8 188.0) L288.2 d162.8 segs8 ms0.057/0.082 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEW_PULL
+T_WP t414 h0 swing pos(551.3 515.8 75.8) vel(9.07 0.20 -11.07) claw(684.6 518.8 188.0) L288.2 d154.8 segs7 ms0.061/0.066 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t416 h0 swing pos(569.4 516.2 52.7) vel(9.07 0.20 -13.07) claw(684.6 518.8 188.0) L288.2 d153.7 segs7 ms0.035/0.090 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t418 h0 swing pos(587.6 516.6 25.5) vel(9.07 0.20 -15.07) claw(684.6 518.8 188.0) L288.2 d161.4 segs7 ms0.033/0.104 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t420 h0 swing pos(605.7 517.0 -5.6) vel(9.07 0.20 -17.07) claw(684.6 518.8 188.0) L288.2 d178.4 segs8 ms0.045/0.082 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t422 h0 swing pos(623.8 517.5 -40.8) vel(9.07 0.20 -19.07) claw(684.6 518.8 188.0) L288.2 d204.4 segs8 ms0.038/0.098 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t424 h0 swing pos(642.0 517.9 -79.9) vel(9.07 0.20 -21.07) claw(684.6 518.8 188.0) L288.2 d238.1 segs9 ms0.035/0.088 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t426 h0 swing pos(660.1 518.3 -123.0) vel(15.45 0.34 -19.38) claw(684.6 518.8 188.0) L288.2 d278.5 segs11 ms0.037/0.069 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t428 h0 swing pos(691.4 518.9 -133.7) vel(15.73 0.35 7.67) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.024/0.111 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t430 h0 swing pos(722.8 519.6 -119.4) vel(15.73 0.35 5.67) claw(684.6 518.8 188.0) L288.2 d276.4 segs12 ms0.034/0.090 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t432 h0 swing pos(754.3 520.3 -109.0) vel(15.73 0.35 3.67) claw(684.6 518.8 188.0) L288.2 d272.5 segs12 ms0.033/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t434 h0 swing pos(785.8 521.0 -102.7) vel(15.73 0.35 1.67) claw(684.6 518.8 188.0) L288.2 d276.3 segs12 ms0.038/0.098 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEW_AWAY
+T_WP t436 h0 swing pos(817.2 521.7 -100.3) vel(14.32 0.32 6.53) claw(684.6 518.8 188.0) L288.2 d287.2 segs12 ms0.036/0.084 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t437 h1 TOUCH LET GO: the hand left the rope (1.00 m off the rope, lets go past 0.94 m)
+T_WP t438 h0 swing pos(844.2 522.3 -85.6) vel(11.85 0.26 8.31) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.023/0.152 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t440 h0 swing pos(866.9 522.8 -68.8) vel(9.98 0.22 8.54) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.020/0.112 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t442 h0 swing pos(886.0 523.3 -51.8) vel(8.18 0.18 8.32) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.017/0.094 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t444 h0 swing pos(901.5 523.6 -35.4) vel(6.51 0.14 7.71) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.018/0.108 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t446 h0 swing pos(913.7 523.9 -20.4) vel(5.01 0.11 6.78) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.023/0.134 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t448 h0 swing pos(923.1 524.1 -7.4) vel(3.70 0.08 5.60) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.015/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t450 h0 swing pos(929.9 524.2 3.1) vel(2.56 0.06 4.23) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.015/0.088 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t452 h0 swing pos(934.5 524.3 10.8) vel(1.56 0.03 2.74) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.023/0.112 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t454 h0 swing pos(937.1 524.4 15.5) vel(0.65 0.01 1.18) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.021/0.111 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t456 h0 swing pos(938.0 524.4 17.1) vel(-0.20 -0.00 -0.36) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.023/0.100 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t458 h0 swing pos(937.2 524.4 15.6) vel(-1.02 -0.02 -1.84) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.024/0.132 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t460 h0 swing pos(934.7 524.3 11.2) vel(-1.90 -0.04 -3.27) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.015/0.107 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t462 h0 swing pos(930.4 524.3 4.0) vel(-2.88 -0.06 -4.60) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.015/0.085 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WP t464 h0 swing pos(924.2 524.1 -5.8) vel(-3.98 -0.09 -5.79) claw(684.6 518.8 188.0) L288.2 d288.2 segs1 ms0.021/0.101 scale1.00 grip-1 free01 hoff0.00 pt-1
+ROPEW_END

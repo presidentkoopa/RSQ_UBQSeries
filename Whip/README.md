@@ -42,10 +42,10 @@ The whip is a weapon in **slot 1**, given to every player. It works in either ha
 | Hold the **other** hand's alt-fire (or, whip in the main hand and the off hand empty, the off hand's trigger) | A dotted aim ray from that hand. Gold diamond: the whip can anchor there. Red: it can't |
 | Crack while the ray is gold (or within 1 s of letting go of a gold spot) | The whip flies to the spot and becomes a rope |
 | On the rope, in the air | You swing. Lean the stick to pump, haul down on the whip to add speed |
-| Snagged while standing: jump, or close your empty off hand on the whip | The swing starts |
+| Snagged while standing: jump, or close your empty off hand on the whip (or hold it still on the rope) | The swing starts |
 | On the rope: hold the whip hand's trigger | Reel in, like climbing |
 | On the rope: whip hand's alt-fire | Let go. You keep your speed |
-| Empty hand on RSQ Distance Grab's grab key, near the rope | Take hold and climb hand over hand |
+| Empty hand on the rope: close its grip, press RSQ Distance Grab's grab key, or just hold it still there a moment | Take hold and climb hand over hand |
 | Reel up to a ledge lip, or lay a free hand on it | Mantle up and over |
 | Main-hand whip: close your off hand's grip on the handle or thong | The lasso: the off hand holds the thong. Circle it to whirl, let go of the grip to throw |
 
@@ -59,9 +59,18 @@ The whip is a weapon in **slot 1**, given to every player. It works in either ha
   trigger too, with **Aim With Off Hand** on).
 - **Off controller's grip button** (read as raw keys, **Off Grip Keys**, 443 436): the off hand on the handle or the
   thong for the lasso; an empty off hand near the whip hand to start a swing.
-- **Climbing the rope**, and a hand laid on a ledge's lip, take hold only through RSQ Distance Grab's grab keys (**Grab /
-  pull**, main and off hand; **Grab Keys Grip Rope** on). Those keys have no default binding since 11-10: without RSQ
-  Distance Grab loaded and its keys bound, the rope cannot be climbed (you can still reel).
+- **Holding the rope** (to climb), with an empty hand within 16 map units of it, any of three:
+  - **the controller's grip** (read as raw keys: **Main Grip Keys** 446, **Off Grip Keys** 443 436); let go of the grip
+    to let go of the rope;
+  - **RSQ Distance Grab's grab keys** (**Grab / pull**, main and off hand; **Grab Keys Grip Rope** on; no default
+    binding since 11-10);
+  - **touch** (**Touch Holds Rope**, on): bring the hand to the rope, at least 0.3 m out along it from your body, and
+    hold it still a moment (6 tics, under 0.4 m/s). No button. Move it about 1 m off the rope (twice Grab Reach) to let
+    go. A hand already on the rope's line when the whip snagged (the off hand aiming the ray) doesn't take it: it has
+    to come to the rope. On a snagged rope waiting for its start, a touch is the grip start, as the grip is.
+  A key's hold and a touch hold are kept apart: letting go of a key never drops a touch hold, or the reverse. After a
+  key's hold the hand must leave the rope before touch takes it again.
+- **A hand laid on a ledge's lip** (the mantle) takes hold only through RSQ Distance Grab's grab keys.
 - **Jump** on a snagged rope: start the swing.
 - **Gestures:** the crack (a wind-up over the shoulder and a hard swing, or a sharp flick), the yank (pull back hard,
   then stop), the whirl and the throw of the lasso, hauling down on the rope (Arm Pump). The movement stick pumps the
@@ -226,11 +235,12 @@ Snagged in the air, you swing at once. Snagged from the ground, you stand on the
 
 ### Climbing
 
-- **Rope Climbing** (on): press RSQ Distance Grab's grab key for a free hand within 16 map units of the rope (**Grab Reach**) and it
-  holds the rope. Pull down to climb, push up to lower yourself, one to one with your hand, at most 8 a tic (**Climb Speed
+- **Rope Climbing** (on): a free hand within 16 map units of the rope (**Grab Reach**) holds it when you close its grip,
+  press RSQ Distance Grab's grab key, or hold it still there (Touch Holds Rope). Pull down to climb, push up to lower yourself, one to one with your hand, at most 8 a tic (**Climb Speed
   Cap**). Let go, reach up with the other hand, take hold, pull.
 - **Free Hand Only** (on): only an empty hand or a fist can take hold, never a gun hand.
-- **Grab Keys Grip Rope** (on): RSQ Distance Grab's grab keys take hold of the rope. Off, nothing takes hold.
+- **Grab Keys Grip Rope** (on): RSQ Distance Grab's grab keys take hold of the rope. The controller's grip always does.
+- **Touch Holds Rope** (on): an empty hand held still on the rope a moment takes it, no button; about 1 m off the rope lets go.
 
 ### Mantle
 
@@ -365,6 +375,7 @@ your own settings; every other row is a server setting.
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order had no script error from our packs. Those launches came before the 11-10 fixes (commit 09243dd8), and no whip move was exercised |
 | **rig only, not headset-confirmed** (2026-11-09, an earlier build) | The pack loads on the full series order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, LOB, Champions, Gun Bonsai and the RSQ pk3s) with no script error of its own (the only script errors in that log are BD_VoxelPack's voxeldef.txt); its page is listed under Radiant Silvergun Options; Gun Bonsai VR registers the whip tree's upgrades on the whip weapon; RSQ Tactical Rig lists the Whip holster among the main hand's holsters (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`). No whip move was exercised in that run |
 | **rig only, not headset-confirmed** (2026-11-03, an earlier build) | The mark skipping Kill Rewards bits and marking a Clip, keeping the mark with the hand pointed away, the wind-up → pay-out → swing → release → crack sequence, the locked crack flying 215 units to the Clip and the Clip taken; a plain crack fetching a Stimpack and leaving the bits; the aim ray refusing a 9.0 m wall at a 9 m reach and an ordinary crack instead, and at a 60 m reach a wall 56.3 m off read gold, the crack cast there in 8 tics and latched, waiting for its start (`tools/rigtest/evidence_1103_holster/bits_and_range.txt`); the Rig's whip holster drawing the whip and putting it home, and the coil on the hip right- and left-handed (same folder); Hand on the Handle, left-handed, Whip In: Off Hand and Hand Skin Tone (`tools/rigtest/hand_1103/sheet.png`). Since then the reach settings were replaced by Whip Reach (11-06) and the holster draw re-seat was added (11-05), so these are not re-shown on the current build |
+| **rig only, not headset-confirmed** (2026-11-10, the touch hold; `design/rigtest_2026-11-10/evidence/ROPE_WP_*`) | On SWINGTST after an aimed crack snagged the ceiling: the off hand aiming the ray, on the rope's line, was not taken (it never came to the rope); brought to the rope and held still, it took it in 6 tics and that was the grip start (lifted and swung); with Grip Starts Swing off the same touch was a climbing hold, and drawing the hand 0.4 m in along the rope shortened it 312 to 299; moved 1 m away it let go. The grip keys themselves can't be pressed on the rig |
 | **Headset-confirmed** | Nothing yet |
 | **code only, not shown** | **The 11-10 fixes (commit 09243dd8):** the whip added to slot 1 in the pk3 (before, its KEYCONF was left out of the pk3), the bind whip's three rows and the Leash's three sliders gone, Snap Kill, Score asking both ropes, the hip coil whenever the Rig is not drawing it, the Rope page's two renamed rows. That commit records a load check of the full order with no errors from our packs; its log is not in the repo. **The 11-10 key change:** no keys |
 | **code only, not shown** | Everything else on this page: the swing itself after the latch (no log of a pendulum swing is in the repo), the reel, climbing, the mantle, the jump and grip starts and Swing Assist, letting go with the speed kept, chain swings, edge snags (Catch Edges), the lasso and the whirl, the wrap, the flail and the smash, the yank, Crack Fireballs, Hit-Stop, Yank Grace, Switches First, the one Whip Reach, the re-seat on a holster draw, Show Whip without the Rig, every Gun Bonsai VR node, the Score rows, the VisualRewards marker. And everything changed 11-10: the marked crack naming itself to Score (Snap Kill), Score asking both ropes (Swinging, Hanging Shot, Dismount with RSQ Grapple loaded), Crack Fireballs noting missiles already in flight when it turns on, the hip coil showing whenever the Rig is not drawing it, Gun Bonsai VR's Quick Mark tooltip reading Whip Reach |
