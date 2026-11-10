@@ -6,7 +6,7 @@ server bool rsqgd_enabled = true;        // the whole mod
 server int rsqgd_profile = 2;            // 0 Custom, 1 Random Profile, 2 Classic (1.1), 3.. named (zscript/rsqgd/profiles.zs)
 server int rsqgd_reroll = 1;             // new colours: 0 Never, 1 Every Map (1.1), 2 On Each Death, 3 On Each Level-Up, 4 Every N Minutes
 server int rsqgd_reroll_min = 5;         //   N for Every N Minutes
-server int rsqgd_seed = 1337;            //   the colour seed for Never (Shuffle Now writes a new one)
+server int rsqgd_seed = 1337;            //   the colour seed for Never (Shuffle Profile Now writes a new one)
 server float rsqgd_strength = 1.0;       // overall glow strength (on top of the profile's)
 server int rsqgd_height = 64;            // glow height: 64 = the profile as written     (1.1 height: in its cvarinfo, never used)
 
@@ -35,7 +35,7 @@ server int rsqgd_items = 1;              // keys and pickups drawn bright: 0 off
 server bool rsqgd_mb = true;             // RSQ Miniboss: the map turns its colour and throbs while it lives
 server int rsqgd_mb_colour = 1;          //   0 blood red, 1 the miniboss's own colour (RSQ Miniboss "colour"), 2 custom
 server color rsqgd_mb_custom = "ff 00 00";
-server bool rsqgd_mb_darken = true;      //   the map darkens meanwhile (through DarkDoomZ's post-gain when it is loaded)
+server bool rsqgd_mb_darken = true;      //   the map darkens meanwhile (through the built-in DarkDoomZ's post-gain)
 server int rsqgd_mb_dark = 48;           //   by how much light
 server bool rsqgd_wave = true;           // Gun Bonsai level-up: a gold wave rolls across the map's glow
 server color rsqgd_wave_color = "ff c0 20";
@@ -62,7 +62,7 @@ server float rsqgd_c_rate = 10.0;        // cycles per minute
 server float rsqgd_c_depth = 0.3;
 server int rsqgd_c_liquid = 0;           // 0 own colour, 1 lean to the room's, 2 the room's
 
-// ---- quality (the Quality row sets these; Quest = no dynamic lights) ----
+// ---- the light budget (Quest = no dynamic lights) ----
 server int rsqgd_budget = 128;           // rooms re-written per tic at most while something moves (2/3 near the players)
 server int rsqgd_liq_lights = 0;         // real lights over the largest pools (Quest 0, PCVR 4)
 server int rsqgd_item_lights = 0;        // small lights on the most important items (Quest 0, PCVR 6)

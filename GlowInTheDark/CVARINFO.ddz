@@ -1,5 +1,6 @@
 // Altered for RSQ Glow In The Dark (2026-11-09): this header and the comments added; the cvars are DarkDoomZ's own,
-//   same names, types and defaults, so its settings and every mod that reads ddz_* keep working.
+//   same names, types and defaults (less its three flashlight cvars, ddz_fl_*, removed with the flashlight), so its settings
+//   and every mod that reads ddz_* keep working.
 // Original: DarkDoomZ (C) 2018 Sterling Parker (Caligari87), zlib licence (DarkDoomZ/license.md in this pk3).
 //
 // NOTE: GZDoom/QuestZDoom 17.3 stop with "cvar 'ddz_mode' already exists" when two pk3s both define these. So the
@@ -10,9 +11,6 @@ server int ddz_preset = 3;
 server int ddz_pregain = 0;
 server int ddz_postgain = 0;
 server float ddz_skymode = 1.0;
-server int ddz_fl_quality = 1;
-server int ddz_fl_type = 1;
-server int ddz_fl_pos = 0;
 server int ddz_fog = 0;
 server int ddz_minlight = 0;
 server bool ddz_lighting = true;

@@ -11,7 +11,7 @@
 //  * gldefs.bm (after Finder153's GlowingLiquids, extended by the owner) is a GLDEFS Glow block, shipped unchanged
 //    as GLDEFS.txt: every listed flat glows in its own average colour, used by the engine only when the plane's
 //    GlowColor is 0 (GetWallGlow). 1.1 gave every untagged room a colour, so its liquids wore the room's colour.
-//    Profiles now decide ("Liquids keep their own colour"); Liquid Colour "Like 1.1" is 1.1 exactly.
+//    Profiles now decide ("Liquids keep their own colour"); Liquid Colour "Room Colour" is 1.1 exactly.
 //
 // WHAT THE ENGINE ALLOWS (QuestZDoom 17.3, read from its source): per plane a glow colour and height (walls only:
 // a floor cannot glow on its own face, that needs UZDXREMA), per sidedef tier an additive colour (doors, switches,
@@ -19,7 +19,7 @@
 //
 // COST (Quest first). One pass over the sectors at map start (classify, keep the map's own glow, pick colours).
 // After that nothing walks the whole map per tic: a still look writes nothing; an animated look or a reaction
-// re-writes the sectors near the players every 2 tics and a rolling slice of the rest (Budget per tic); the
+// re-writes the sectors near the players (cycling through them, some every tic) and a rolling slice of the rest (Budget per tic); the
 // liquids (a short list) every 3 tics; flares and the wave touch only the sectors they cover. A plane is written
 // only when its colour or height changed.
 
@@ -49,7 +49,6 @@ class RSQGD_Handler : EventHandler
 	Array<int> watch, watchF, watchC;      // tagged sectors, for flat changes
 	Array<int> nearSet;
 	int nearCursor;
-	Array<int> darkDelta;                  // light taken away by a big moment (no DarkDoomZ), given back exactly
 
 	// ---- the wave ----
 	Array<double> wdist;
@@ -66,7 +65,6 @@ class RSQGD_Handler : EventHandler
 	int cursor;
 	bool dirty;
 	bool ready;
-	bool darkDoomZ;
 	double mapCx, mapCy;
 	int lastRollTic;
 	int randomizeAt;    // Randomize Current Look: the tic its new settings are read (a cvar set here lands a tic later)
@@ -206,7 +204,7 @@ class RSQGD_Handler : EventHandler
 		origCol0.Clear(); origCol1.Clear(); origH0.Clear(); origH1.Clear(); liq0.Clear(); liq1.Clear(); group.Clear();
 		base0.Clear(); base1.Clear(); hsh.Clear(); cdist.Clear(); last0.Clear(); last1.Clear(); lastH0.Clear(); lastH1.Clear();
 		flareUntil.Clear(); flareCol.Clear(); flares.Clear(); liquids.Clear(); special.Clear(); specials.Clear();
-		watch.Clear(); watchF.Clear(); watchC.Clear(); darkDelta.Clear();
+		watch.Clear(); watchF.Clear(); watchC.Clear();
 
 		double x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
 		for (int i = 0; i < Level.Vertexes.Size(); i++)
@@ -246,12 +244,7 @@ class RSQGD_Handler : EventHandler
 			else if (TexMan.GetName(s.GetTexture(Sector.floor)).Left(4) ~== "GATE") sp = 3;   // teleporter pads
 			special.Push(sp);
 			if (sp) specials.Push(i);
-			darkDelta.Push(0);
 		}
-
-		// DarkDoomZ is built in now (zscript/rsqgd/ddz.zs, RSQGD_DDZ_Handler), so its cvars and its re-lighting are
-		// always there: either our copy does it, or the original pk3 does while ours stands down.
-		darkDoomZ = true;
 
 		// the colour seed (see ChooseSeed) and the look
 		let ses = RSQGD_Session(StaticEventHandler.Find("RSQGD_Session"));
@@ -270,14 +263,14 @@ class RSQGD_Handler : EventHandler
 		lightSig = LightSample();
 		if (I("rsqgd_debug", 0) > 0)
 		{
-			Console.Printf("[RSQGD] map %s: %d sectors, %d liquid, %d hazard/secret, %d lines glowing, profile %s, seed %d, DarkDoomZ %s",
-				Level.MapName, n, liquids.Size(), specials.Size(), lnIdx.Size(), look.title, seed, darkDoomZ ? "found" : "not loaded");
+			Console.Printf("[RSQGD] map %s: %d sectors, %d liquid, %d hazard/secret, %d lines glowing, profile %s, seed %d",
+				Level.MapName, n, liquids.Size(), specials.Size(), lnIdx.Size(), look.title, seed);
 		}
 	}
 
 	// THE COLOUR SEED. Every random colour is a hash of (seed, room, plane): the same seed gives the same map, so a
 	// setting moved re-tints without reshuffling. When it changes follows Re-roll Colours:
-	//   0 Never           the seed in rsqgd_seed (Shuffle Now writes a new one there)
+	//   0 Never           the seed in rsqgd_seed (Shuffle Profile Now writes a new one there)
 	//   1 Every Map       a new seed each map (1.1's way)
 	//   2 On Each Death   a new seed after the player died (also across a reload of the map or a save)
 	//   3 On Each Level-Up / 4 Every N Minutes   kept across maps (in the session), new on the event
@@ -292,6 +285,17 @@ class RSQGD_Handler : EventHandler
 
 	// a sequence owns the glow (the Randomize Colours key stands down): miniboss tint, DOWN's red map, a timed tint
 	bool SequenceBusy() { return mbMix > 0.001 || dnMix > 0.001 || tintUntil > Level.maptime; }
+	// THE SAME ANSWER ON EVERY MACHINE (rig/README follow-up 2026-11-09, owner: "fix color drift"): the Randomize Colours
+	// key is a network event, so whether it re-rolls must not depend on anything one machine sees alone. dnMix is the
+	// console player's own red map (RSQ SlowMo answers "down.redmap" per machine), so a re-roll could happen on some
+	// machines and not others and the colours (and the seed) drift apart. Here DOWN counts when ANY player is down
+	// (SlowMo's "down.any", synced play state); the miniboss tint and a timed tint are synced already.
+	bool SequenceBusySynced()
+	{
+		if (mbMix > 0.001 || tintUntil > Level.maptime) return true;
+		let s = FindSvc("RSQSM_Service");
+		return s && s.GetInt("down.any") == 1;
+	}
 
 	void Reroll()
 	{
@@ -568,7 +572,7 @@ class RSQGD_Handler : EventHandler
 		if (tintUntil == now) dirty = true;
 
 		bool anim = Animating();
-		// one budget per tic (Quality): two thirds to the rooms near the players (cycling), the rest to the map
+		// one budget per tic: two thirds to the rooms near the players (cycling), the rest to the map
 		int left = cBudget;
 		if (anim && nearSet.Size() > 0)
 		{
@@ -648,7 +652,6 @@ class RSQGD_Handler : EventHandler
 		cursor = 0;
 		RestoreDarkDoomZ();
 		darkened = false;
-		for (int i = 0; i < darkDelta.Size(); i++) darkDelta[i] = 0;
 	}
 
 	override void PlayerDied(PlayerEvent e)
@@ -716,7 +719,7 @@ class RSQGD_Handler : EventHandler
 		for (int b = b0; b <= b1; b++) for (int k = wbStart[b]; k < wbStart[b + 1]; k++) WriteSector(wbItems[k]);
 	}
 
-	// ---- network events: the menu's Shuffle Now and the test triggers ---------------------------------
+	// ---- network events: the menu's Shuffle Profile Now, the Randomize Colours key and the test triggers ---------------------------------
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (!ready) return;
@@ -741,7 +744,7 @@ class RSQGD_Handler : EventHandler
 		// another mod's timed tint (service "event.tint"). Then it does nothing and says so.
 		if (e.Name ~== "rsqgd_recolour")
 		{
-			if (SequenceBusy())
+			if (SequenceBusySynced())
 			{
 				if (e.Player == consoleplayer) Console.Printf("Glow In The Dark: colours held during a Bossfight or sequence");
 				return;

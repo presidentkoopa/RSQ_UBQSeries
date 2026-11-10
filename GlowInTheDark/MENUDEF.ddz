@@ -1,8 +1,8 @@
 // Altered for RSQ Glow In The Dark (2026-11-09): DarkDoomZ's own Options entry removed (its settings are reached from
 //   Options > Radiant Silvergun Options > RSQ Glow In The Dark > Darkness (DarkDoomZ)); menus, option lists and the
 //   menu class renamed DarkDoomZ_* / Nice_* -> RSQGD_DDZ_* so nothing can clash; titles and a few labels in plainer
-//   words ("Darkness Mode", "Darkness Level", "Flashlight Key"); the "-- OpenGL only --" line dropped (QuestZDoom
-//   17.3 is GL). Every setting, value and range is DarkDoomZ's own.
+//   words ("Darkness Mode", "Darkness Level"); the "-- OpenGL only --" line dropped (QuestZDoom 17.3 is GL); its
+//   flashlight settings page removed with the flashlight. Every other setting, value and range is DarkDoomZ's own.
 // Original: DarkDoomZ (C) 2018 Sterling Parker (Caligari87), zlib licence (DarkDoomZ/license.md in this pk3).
 
 OptionValue "RSQGD_DDZ_Modes" {
@@ -28,25 +28,6 @@ OptionValue "RSQGD_DDZ_Levels" {
 	8, "Pure"
 }
 
-OptionValue "RSQGD_DDZ_Flashlight_Quality" {
-	0, "Simple"
-	1, "Fancy"
-}
-
-OptionValue "RSQGD_DDZ_Flashlight_Type" {
-	0, "Incandescent"
-	1, "Halogen"
-	2, "LED"
-	3, "Red Filter"
-}
-
-OptionValue "RSQGD_DDZ_Flashlight_Position" {
-	0, "Handheld"
-	1, "Left Shoulder"
-	2, "Right Shoulder"
-	3, "Helmet"
-}
-
 OptionValue "RSQGD_DDZ_Sector_Effects" {
 	0, "Remove"
 	1, "Keep"
@@ -63,7 +44,7 @@ OptionMenu "RSQGD_DDZ_Settings" {
 
 	Submenu "Advanced Settings", "RSQGD_DDZ_Advanced_Settings"
 	Submenu "Fog Settings", "RSQGD_DDZ_Fog_Settings"
-	// "Flashlight Settings" removed 11-09: one flashlight, RSQ FnF's (its Light Style row offers DarkDoomZ's beam types)
+	// (Its "Flashlight Settings" were removed 11-09: one flashlight, RSQ FnF's; its Beam Look row offers DarkDoomZ's beams)
 	StaticText " "
 
 	StaticText "The three DarkDoom modes", "darkgrey"
@@ -109,13 +90,3 @@ OptionMenu "RSQGD_DDZ_Fog_Settings" {
 	Slider "Fog Density", ddz_fog, 0,512,8,0
 }
 
-OptionMenu "RSQGD_DDZ_Flashlight_Settings" {
-	Class "RSQGD_DDZ_OptionMenu"
-	Title "DARKNESS: FLASHLIGHT"
-	StaticText " "
-
-	Option "Quality","ddz_fl_quality", "RSQGD_DDZ_Flashlight_Quality"
-	Option "Type","ddz_fl_type", "RSQGD_DDZ_Flashlight_Type"
-	Option "Position","ddz_fl_pos", "RSQGD_DDZ_Flashlight_Position"
-	Control "Flashlight Key", "ddz_toggleflashlight"
-}

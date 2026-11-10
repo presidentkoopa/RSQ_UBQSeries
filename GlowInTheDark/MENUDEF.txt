@@ -1,6 +1,6 @@
 // RSQ Glow In The Dark -- options. Options -> Radiant Silvergun Options -> RSQ Glow In The Dark: ONE page (owner 11-04
 // 19:36; the old Glow Types, Things That Matter, Reactions and Custom Look pages folded in under short headers), then
-// Test and Debug and Reset All (the series' RSQGDResetAll: every cvar a row names on both pages). No presets.
+// Test and Debug and Reset All (the series' RSQGDResetAll: every cvar a row names on these pages and the Darkness (DarkDoomZ) pages). No presets.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the

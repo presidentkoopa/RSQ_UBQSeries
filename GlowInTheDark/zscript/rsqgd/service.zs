@@ -20,6 +20,7 @@
 //   event.flare    a flare on objectArg's sector, or intArg = a sector index; doubleArg = colour (0 = white)
 //   event.tint     the whole map's glow leans to intArg's colour for doubleArg seconds (0 = 2 s)
 //   event.reroll   new colours now (as Re-roll would)
+//   event.dark     DarkDoom Black held for a moment (RSQ Miniboss's landing); ddz.original: the player's own mode meanwhile
 // ============================================================================
 
 class RSQGD_Service : Service
@@ -33,7 +34,7 @@ class RSQGD_Service : Service
 		if (request ~== "planes") return RSQGD_Handler.B("rsqgd_planes", true) ? 1 : 0;
 		if (request ~== "liquids") return RSQGD_Handler.B("rsqgd_liquids", true) ? 1 : 0;
 		if (request ~== "liquid") return intArg < 0 ? h.CountLiquidSectors() : (h.IsLiquid(intArg) ? 1 : 0);
-		if (request ~== "darkdoomz") return h.darkDoomZ ? 1 : 0;
+		if (request ~== "darkdoomz") return 1;   // built in (ddz.zs): always there
 		if (request ~== "profile") return h.activeProfile;
 		if (request ~== "ddz.original") return h.ddzModeHeld ? h.ddzModeSaved : -1;   // the player's own DarkDoomZ mode while "event.dark" holds it
 		return -1;

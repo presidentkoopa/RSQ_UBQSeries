@@ -134,7 +134,7 @@ extend class RSQGD_Handler
 
 	void CheckKeysHeld()
 	{
-		keysMask = -1;                       // HaveKey is asked per pulse; this keeps the hook for a cheaper mask
+		keysMask = -1;                       // HaveKey is asked per pulse (no mask is kept)
 	}
 
 	// ---- keys and pickups ----

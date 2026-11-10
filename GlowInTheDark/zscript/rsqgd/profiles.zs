@@ -1,5 +1,5 @@
 // RSQ Glow In The Dark -- PROFILES: named, complete looks. One table; add a row to add a profile (the menu reads
-// its names from here, nothing else to edit). Row 0 is Custom (the Custom Look page's own settings) and row 1 is
+// its names from here, nothing else to edit). Row 0 is Custom (its own rsqgd_c_* settings) and row 1 is
 // Random Profile (a named row drawn from the colour seed); every row from 2 on is a named look.
 //
 // FIELDS, separated by '|':
@@ -26,7 +26,7 @@ class RSQGD_Profiles
 	{
 		static const String ROWS[] =
 		{
-		"Custom|-|-|0|1|64|1|1|0|0|0|0|0|0|Your own settings: the Custom Look page.",
+		"Custom|-|-|0|1|64|1|1|0|0|0|0|0|0|Your own settings (rsqgd_c_*).",
 		"Random Profile|-|-|0|1|64|1|1|0|0|0|0|0|0|A named profile drawn at random, re-drawn by Re-roll.",
 		"Classic (1.1)|R|R|0|1|64|1|1|0|0|0|0|2|3|Glow In The Dark 1.1: any colour, one per tag group.",
 		"Classic Doom|C8A070,8C8C8C,B4785A,A0A0B4|A0A0B4,C8B48C,8C8C8C|0.2|0.9|64|1|1|0|0|0|0|2|2|Warm tans and greys, the way id lit it.",
@@ -142,7 +142,7 @@ class RSQGD_Look
 		shape = t[8].ToInt(); rate = t[9].ToDouble(); depth = t[10].ToDouble(); liquid = t[11].ToInt();
 	}
 
-	// Custom: the Custom Look page's settings.
+	// Custom: its own rsqgd_c_* settings (no menu page of their own).
 	void FromCustom()
 	{
 		title = "Custom";

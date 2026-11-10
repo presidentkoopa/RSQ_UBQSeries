@@ -47,17 +47,20 @@ DARKDOOMZ -- Sterling Parker (Caligari87), built in (owner, 2026-11-09: "DDZ wil
   shipped licence). A ZScript clone of Josh771's (SidDoyle's) Dark Doom: it darkens every map, with presets, a
   flashlight and its own settings. Its licence, credits, readme and idgames text ship unchanged in DarkDoomZ/ inside
   this pk3. THIS IS AN ALTERED VERSION, not the original: each altered file says so in its first lines --
-    zscript/rsqgd/ddz.zs   (zscript.zsc) classes renamed DarkDoomZ_* -> RSQGD_DDZ_*; stands down if the original is loaded
-    CVARINFO.ddz           (cvarinfo.txt) unchanged cvars, header added
-    MENUDEF.ddz            (menudef.txt) its Options entry removed (reached from this mod's page), names RSQGD_DDZ_*
-    KEYCONF.txt (its block) (keyconf.txt) section titled "Darkness (DarkDoomZ)", alias uses the renamed item
-    SNDINFO.ddz            (sndinfo.txt) sound and lump renamed; sounds/RGDDZCLK.ogg is its DDZCLK01.ogg
-    graphics/RGDDZLGO.png  its logo (darkdoomz.png, by Accensus), renamed
+    zscript/rsqgd/ddz.zs   (zscript.zsc) the handler and menu classes renamed DarkDoomZ_* -> RSQGD_DDZ_*; its
+                           flashlight removed (the flashlight and spotlight classes, the item given at spawn); the
+                           darkness is off while Glow In The Dark is off (owner 11-09: GITD and DDZ are one)
+    CVARINFO.ddz           (cvarinfo.txt) its cvars, same names and defaults, less the three flashlight cvars; header
+    MENUDEF.ddz            (menudef.txt) its Options entry removed (reached from this mod's page), names RSQGD_DDZ_*;
+                           its flashlight settings page and their option lists removed
     MAPINFO.txt            its handler added as RSQGD_DDZ_Handler
+    NOT SHIPPED (with the flashlight): its keyconf.txt (the flashlight key), sndinfo.txt and the click sound
+    DDZCLK01.ogg, and its logo darkdoomz.png (by Accensus).
   DarkDoomZ's own credits (DarkDoomZ/credits.md): inspiration Josh771's Dark Doom (no code used); code Kinsie (Fancy
   Doom), Gutawer (per-sector iteration), FishyClockwork (lighting adjustment), phantombeta and Marisa Kirisame (sector
   light effect removal), Accensus (iterator, addon support, logo); sound mshahen, "Flashlight On/Off Clicks"
-  (freesound.org 271109, modified), CC BY 3.0; testing Fort of Hard Knox, a1337spy, Orange Bomb.
+  (freesound.org 271109, modified), CC BY 3.0 (the click is not shipped here); testing Fort of Hard Knox, a1337spy,
+  Orange Bomb.
   The pairing row, the miniboss darkening through ddz_postgain and the rest of this mod's DarkDoomZ use are ours.
   Do not load the separate darkdoomz.pk3 as well: the engine stops at start-up ("cvar 'ddz_mode' already exists").
 

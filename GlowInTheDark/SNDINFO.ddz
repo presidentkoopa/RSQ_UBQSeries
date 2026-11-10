@@ -1,7 +1,0 @@
-// Altered for RSQ Glow In The Dark (2026-11-09): sound names renamed DarkDoomZ/Flashlight/Click ->
-//   RSQGD_DDZ/Flashlight/Click and lump DDZCLK01 -> RGDDZCLK (sounds/RGDDZCLK.ogg) so nothing can clash.
-// Original: DarkDoomZ (C) 2018 Sterling Parker (Caligari87), zlib licence (DarkDoomZ/license.md in this pk3).
-// The click: mshahen, "Flashlight On/Off Clicks" (freesound.org 271109, modified), CC BY 3.0 (DarkDoomZ/credits.md).
-
-RSQGD_DDZ/Flashlight/Click	RGDDZCLK
-$pitchset RSQGD_DDZ/Flashlight/Click 0.9 1.1

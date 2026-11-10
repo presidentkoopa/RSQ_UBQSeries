@@ -2,8 +2,4 @@ alias rsqgd_recolour "netevent rsqgd_recolour"
 addkeysection "RSQ Glow In The Dark" RSQGlowInTheDark
 addmenukey "Randomize colours" rsqgd_recolour
 
-// ---- DarkDoomZ's flashlight key (built in) ----
-// Altered for RSQ Glow In The Dark (2026-11-09): the key section titled "Darkness (DarkDoomZ)" (its ini name
-//   darkdoomz kept, so a key you bound before stays bound) and the alias uses the renamed item RSQGD_DDZ_Flashlight.
-// Original: DarkDoomZ (C) 2018 Sterling Parker (Caligari87), zlib licence (DarkDoomZ/license.md in this pk3).
-// 11-09: DarkDoomZ's flashlight key removed (one flashlight: RSQ FnF's). The darkness itself has no key.
+// (DarkDoomZ's flashlight key is not here: its flashlight was removed, 2026-11-09. The darkness has no key.)

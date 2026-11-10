@@ -42,8 +42,8 @@ class OptionMenuItemRSQGDProfile : OptionMenuItem
 	}
 }
 
-// "Use DarkDoomZ Pairing": sets DarkDoomZ's Mode and Preset to the chosen profile's pairing. Only when
-// DarkDoomZ is loaded (its cvars exist); DarkDoomZ applies them itself.
+// "Use DarkDoomZ Pairing": sets the built-in DarkDoomZ's Mode and Preset to the chosen profile's pairing; DarkDoomZ
+// applies them itself.
 class OptionMenuItemRSQGDPairing : OptionMenuItem
 {
 	OptionMenuItemRSQGDPairing Init(String label)

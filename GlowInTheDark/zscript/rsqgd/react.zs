@@ -10,7 +10,8 @@
 //   Gun Bonsai VR RSQGB_Service "level", "xp.permille", "name"     -> a gold wave rolls out from the player
 //   Gun Bonsai    its own netevent "bonsai-level-up" (args 1, level) -> the same wave, when the VR patch is absent
 //                 (plain Gun Bonsai 0.10.6: sent when a weapon's XP bar fills, MODDING.md "Netevents emitted")
-//   DarkDoomZ     its cvar ddz_postgain (read, lowered, put back)   -> the map darkens while a miniboss lives
+//   DarkDoomZ     (built in) ddz_postgain (read, lowered, put back)  -> the map darkens while a miniboss lives;
+//                 ddz_mode held at DarkDoom Black for service event.dark (RSQ Miniboss's landing)
 
 extend class RSQGD_Handler
 {
@@ -103,10 +104,9 @@ extend class RSQGD_Handler
 		return 0xB00008;
 	}
 
-	// The big moment darkens the map so the tint carries it. With DarkDoomZ: through its own post-gain setting (it
-	// re-lights every sector itself when that changes; saved in rsqgd_ddz_saved first and always put back, also
-	// after a quit or crash mid-fight on the next map start). Without it: each sector's light lowered and the exact
-	// amount taken given back.
+	// The big moment darkens the map so the tint carries it, through the built-in DarkDoomZ's post-gain setting (it
+	// re-lights every sector itself when that changes; saved in rsqgd_ddz_saved first and always put back, also after a
+	// quit or crash mid-fight on the next map start). With GITD off the darkness is off whatever this writes (ddz.zs).
 	// A server cvar written from play code changes on the NEXT tic (it goes through the network), so nothing here
 	// reads back what it just wrote: DarkDoomZ's own value is kept in ddzSaved (the handler) and copied to
 	// rsqgd_ddz_saved only so a quit or crash mid-fight can be put right on the next map start.
@@ -125,16 +125,6 @@ extend class RSQGD_Handler
 				saved.SetInt(ddzSaved);
 				pg.SetInt(ddzSaved - amt);
 			}
-			else
-			{
-				for (int i = 0; i < darkDelta.Size(); i++)
-				{
-					Sector s = Level.Sectors[i];
-					int d = min(amt, max(0, s.lightlevel - 16));
-					s.SetLightLevel(s.lightlevel - d);
-					darkDelta[i] = d;
-				}
-			}
 		}
 		else
 		{
@@ -142,16 +132,6 @@ extend class RSQGD_Handler
 			{
 				pg.SetInt(ddzSaved);
 				saved.SetInt(-9999);
-			}
-			else
-			{
-				for (int i = 0; i < darkDelta.Size(); i++)
-				{
-					if (!darkDelta[i]) continue;
-					Sector s = Level.Sectors[i];
-					s.SetLightLevel(s.lightlevel + darkDelta[i]);
-					darkDelta[i] = 0;
-				}
 			}
 		}
 		darkened = want;

@@ -1,7 +1,11 @@
-// Altered for RSQ Glow In The Dark (2026-11-09): classes renamed DarkDoomZ_* -> RSQGD_DDZ_* (Handler, Flashlight,
-//   Spotlight, OptionMenu) and the click sound to RSQGD_DDZ/Flashlight/Click so nothing can clash; the handler stands
-//   down (does nothing) when the original DarkDoomZ pk3 is loaded too; the Version line removed (GITD's zscript.txt
-//   carries the version; this file is included from zscript/rsqgd/rsqgd.zs). Everything else is as shipped.
+// ALTERED for RSQ Glow In The Dark -- this is NOT the original DarkDoomZ. What changed (2026-11-09):
+//   - the handler class renamed DarkDoomZ_Handler -> RSQGD_DDZ_Handler (and its option menu class), so nothing clashes;
+//   - its FLASHLIGHT REMOVED: the flashlight and spotlight classes, the item given at spawn, its settings, its key,
+//     its click sound and its logo (RSQ FnF is the series' one flashlight, and draws DarkDoomZ's beam types itself);
+//   - GLOW IN THE DARK AND DARKDOOMZ ARE ONE (owner 2026-11-09 22:01): with GITD off (rsqgd_enabled) the darkness is off
+//     too and every sector has its map light back (ChangeLighting below);
+//   - the Version line removed (GITD's zscript.txt carries the version; this file is included from rsqgd.zs).
+// The darkness itself (the modes, the gains, the fog, the minimum light) is as shipped.
 // Original: DarkDoomZ (C) 2018 Sterling Parker (Caligari87), zlib licence (DarkDoomZ/license.md in this pk3).
 // Source: darkdoomz.pk3 / https://github.com/caligari87/darkdoomz (commit bcaaab8, 2022 release, ZScript 4.5).
 
@@ -13,23 +17,9 @@ class RSQGD_DDZ_Handler : EventHandler {
 	double SkyMode, OldSkyMode;
 	int BaseAdjustment, FinalAdjustment;
 	bool IsSky;
-	bool StandDown;   // RSQ: the original DarkDoomZ pk3 is loaded too: it does the work, we do nothing
-
-	// RSQ: true when the ORIGINAL DarkDoomZ (class DarkDoomZ_Handler) is loaded. Found by name at run time: the name
-	// is in a variable because a literal class name would be resolved (and fail) at compile time.
-	static bool OriginalLoaded() {
-		String n = "DarkDoomZ_Handler";
-		class<Object> cls = n;
-		return cls != null;
-	}
-
-	override void OnRegister() {
-		StandDown = OriginalLoaded();
-		if (StandDown) { Console.Printf("RSQ Glow In The Dark: the separate DarkDoomZ pk3 is loaded, so GITD's built-in DarkDoomZ stands down."); }
-	}
+	bool WasOn;       // RSQ: GITD was on at the last pass (a change re-lights every sector)
 
 	override void WorldLoaded(WorldEvent e) {
-		if (StandDown) { return; }
 		if(!ddz_lighting) {
 			ThinkerIterator it = ThinkerIterator.Create ("Lighting");
 			Lighting effect;
@@ -42,42 +32,27 @@ class RSQGD_DDZ_Handler : EventHandler {
 		}
 
 		ChangeLighting();
-
-		if(e.isReopen) {
-			let iterator = ThinkerIterator.Create("RSQGD_DDZ_Spotlight");
-			for (Thinker mo; (mo = iterator.Next());) { mo.Destroy(); }
-		}
-	}
-
-	// ONE FLASHLIGHT (owner 2026-11-09 18:12: "our flashlight options, we need to organize them, they have a few conflicting
-	// options for this DDZ stuff"): RSQ FnF is the series' flashlight and already draws DarkDoomZ's beam types (its Light
-	// Style: DarkDoomZ, ddzlight.zs). So the built-in DarkDoomZ flashlight item is no longer given (its class is kept).
-	override void PlayerSpawned(PlayerEvent e) {
-		return;
-		if (StandDown) { return; }
-		PlayerInfo player = players[e.PlayerNumber];
-		let FlashlightClass = (class<Inventory>)(Actor.GetReplacement("RSQGD_DDZ_Flashlight"));
-		player.mo.GiveInventory(FlashlightClass, 1);
 	}
 
 	override void UiTick() {
-		if (StandDown) { return; }
 		EventHandler.SendNetworkEvent("UpdateLights");
 	}
 
 	override void NetworkProcess(ConsoleEvent e) {
-		if (StandDown) { return; }
 		if(e.Name == "UpdateLights") ChangeLighting();
 	}
 
 	void ChangeLighting() {
-		Mode = ddz_mode;
+		// RSQ: GITD off -> DarkDoomZ off: the map's own light, no gains, no fog
+		let gc = CVar.FindCVar("rsqgd_enabled");
+		bool gitdOn = !gc || gc.GetBool();
+		Mode = gitdOn ? ddz_mode : 0;
 		Preset = ddz_preset;
-		PreGain = ddz_pregain;
-		PostGain = ddz_postgain;
+		PreGain = gitdOn ? ddz_pregain : 0;
+		PostGain = gitdOn ? ddz_postgain : 0;
 		SkyMode = ddz_skymode;
-		FogDensity = ddz_fog;
-		MinLight = ddz_minlight;
+		FogDensity = gitdOn ? ddz_fog : 0;
+		MinLight = gitdOn ? ddz_minlight : 0;
 
 		bool changed = (
 			OldMode != Mode ||
@@ -86,7 +61,8 @@ class RSQGD_DDZ_Handler : EventHandler {
 			OldPostGain != PostGain ||
 			OldSkyMode != Skymode ||
 			OldFogDensity != FogDensity ||
-			OldMinLight != MinLight);
+			OldMinLight != MinLight ||
+			WasOn != gitdOn);
 
 		if (changed) {
 			BaseAdjustment = 32 * Preset;
@@ -144,241 +120,7 @@ class RSQGD_DDZ_Handler : EventHandler {
 		OldSkyMode = SkyMode;
 		OldFogDensity = FogDensity;
 		OldMinLight = MinLight;
-	}
-}
-
-class RSQGD_DDZ_Flashlight : CustomInventory {
-	RSQGD_DDZ_Spotlight SelfLight1, SelfLight2;
-	bool Active;
-	int Quality,OldQuality;
-	int Type,OldType;
-	int Mount,OldMount;
-	int R,G,B;
-	int beamInner, beamOuter, beamRadius;
-	int spillInner, spillOuter, spillRadius;
-	double offsetAngle, offsetZ;
-	int inertia;
-	double spring, damping;
-
-	default {
-		+INVENTORY.PERSISTENTPOWER;
-	}
-
-	override void DoEffect() {
-		super.DoEffect();
-		Quality = CVar.GetCvar("ddz_fl_quality").GetInt();
-		Type = CVar.GetCvar("ddz_fl_type").GetInt();
-		Mount = CVar.GetCvar("ddz_fl_pos").GetInt();
-		if(Active) {
-			if(Quality != OldQuality ||
-			   Type != OldType ||
-			   Mount != OldMount) {
-
-				if(SelfLight1) { SelfLight1.Destroy(); }
-				if(SelfLight2) { SelfLight2.Destroy(); }
-			}
-
-			switch(Type) {
-				case 0: //Incandescent
-					R = 255;
-					G = 214;
-					B = 170;
-					beamInner = 0;
-					beamOuter = 25;
-					beamRadius = 384;
-					spillInner = 15;
-					spillOuter = 45;
-					spillRadius = 128;
-					break;
-				case 1: //Halogen
-					R = 255;
-					G = 241;
-					B = 224;
-					beamInner = 0;
-					beamOuter = 20;
-					beamRadius = 512;
-					spillInner = 10;
-					spillOuter = 60;
-					spillRadius = 384;
-					break;
-				case 2: //LED
-					R = 248;
-					G = 255;
-					B = 255;
-					beamInner = 0;
-					beamOuter = 15;
-					beamRadius = 640;
-					spillInner = 15;
-					spillOuter = 75;
-					spillRadius = 256;
-					break;
-				case 3: //Red filter
-					R = 192;
-					G = 36;
-					B = 34;
-					beamInner = 0;
-					beamOuter = 20;
-					beamRadius = 256;
-					spillInner = 10;
-					spillOuter = 60;
-					spillRadius = 128;
-					break;
-			}
-
-			switch(Mount) {
-				case 0: //Handheld
-					spring = 0.25;
-					damping = 0.2;
-					inertia = 4;
-					offsetAngle = 0;
-					offsetZ = -13;
-					break;
-				case 1: //Left Shoulder
-					spring = 0.35;
-					damping = 0.75;
-					inertia = 2;
-					offsetAngle = 80;
-					offsetZ = -5;
-					break;
-				case 2: //Right Shoulder
-					spring = 0.35;
-					damping = 0.75;
-					inertia = 2;
-					offsetAngle = -80;
-					offsetZ = -5;
-					break;
-				case 3: //Helmet
-					spring = 1;
-					damping = 1;
-					inertia = 1;
-					offsetAngle = 0;
-					offsetZ = 4;
-					break;
-			}
-
-			switch(Quality) {
-				case 0:
-					if(!SelfLight1) {
-						SelfLight1 = RSQGD_DDZ_Spotlight(Spawn("RSQGD_DDZ_Spotlight",owner.pos,false));
-						SelfLight1.FollowTarget = owner;
-						SelfLight1.args[DynamicLight.LIGHT_RED] = R; //R
-						SelfLight1.args[DynamicLight.LIGHT_GREEN] = G; //G
-						SelfLight1.args[DynamicLight.LIGHT_BLUE] = B; //B
-						SelfLight1.args[DynamicLight.LIGHT_INTENSITY] = (beamRadius + spillRadius) / 2; //Radius
-						SelfLight1.SpotInnerAngle = (beamInner + spillInner) / 2;
-						SelfLight1.SpotOuterAngle = (beamOuter + spillOuter) / 2;
-						SelfLight1.angle = owner.angle;
-						SelfLight1.pitch = owner.pitch;
-						SelfLight1.spring = spring;
-						SelfLight1.damping = damping;
-						SelfLight1.inertia = inertia;
-						SelfLight1.offsetAngle = offsetAngle;
-						SelfLight1.offsetZ = offsetZ;
-					}
-					break;
-				case 1:
-					if(!SelfLight1) {
-						SelfLight1 = RSQGD_DDZ_Spotlight(Spawn("RSQGD_DDZ_Spotlight",owner.pos,false));
-						SelfLight1.FollowTarget = owner;
-						SelfLight1.args[DynamicLight.LIGHT_RED] = R; //R
-						SelfLight1.args[DynamicLight.LIGHT_GREEN] = G; //G
-						SelfLight1.args[DynamicLight.LIGHT_BLUE] = B; //B
-						SelfLight1.args[DynamicLight.LIGHT_INTENSITY] = beamRadius; //Radius
-						SelfLight1.SpotInnerAngle = beamInner;
-						SelfLight1.SpotOuterAngle = beamOuter;
-						SelfLight1.angle = owner.angle;
-						SelfLight1.pitch = owner.pitch;
-						SelfLight1.spring = spring;
-						SelfLight1.damping = damping;
-						SelfLight1.inertia = inertia;
-						SelfLight1.offsetAngle = offsetAngle;
-						SelfLight1.offsetZ = offsetZ;
-					}
-					if(!SelfLight2) {
-						SelfLight2 = RSQGD_DDZ_Spotlight(Spawn("RSQGD_DDZ_Spotlight",owner.pos,false));
-						SelfLight2.FollowTarget = owner;
-						SelfLight2.args[DynamicLight.LIGHT_RED] = int(R * 0.75); //R
-						SelfLight2.args[DynamicLight.LIGHT_GREEN] = int(G * 0.75); //G
-						SelfLight2.args[DynamicLight.LIGHT_BLUE] = int(B * 0.75); //B
-						SelfLight2.args[DynamicLight.LIGHT_INTENSITY] = spillRadius; //Radius
-						SelfLight2.SpotInnerAngle = spillInner;
-						SelfLight2.SpotOuterAngle = spillOuter;
-						SelfLight2.angle = owner.angle;
-						SelfLight2.pitch = owner.pitch;
-						SelfLight2.spring = spring;
-						SelfLight2.damping = damping;
-						SelfLight2.inertia = inertia;
-						SelfLight2.offsetAngle = offsetAngle;
-						SelfLight2.offsetZ = offsetZ;
-					}
-					break;
-			}
-		}
-		else {
-			if(SelfLight1) { SelfLight1.Destroy(); }
-			if(SelfLight2) { SelfLight2.Destroy(); }
-		}
-		OldQuality = Quality;
-		OldType = Type;
-		OldMount = Mount;
-	}
-
-	States {
-	Spawn:
-		ROCK A -1;
-		stop;
-	Use:
-		TNT1 A 1 { invoker.ToggleActive(); }
-		loop;
-	}
-
-	virtual void ToggleActive() {
-		Active = !Active;
-		owner.A_StartSound("RSQGD_DDZ/Flashlight/Click", CHAN_AUTO, 0, 0.5);
-	}
-
-	override void DetachFromOwner() {
-		if(SelfLight1) { SelfLight1.Destroy(); }
-		if(SelfLight2) { SelfLight2.Destroy(); }
-		super.DetachFromOwner();
-	}
-}
-
-class RSQGD_DDZ_Spotlight : DynamicLight {
-	actor FollowTarget;
-	double vela, velp;
-	double spring, damping;
-	double offsetAngle, offsetZ;
-	vector3 targetPos;
-	int inertia;
-
-	default {
-		DynamicLight.Type "Point";
-		+DYNAMICLIGHT.ATTENUATE;
-		+DYNAMICLIGHT.SPOT
-	}
-	override void Tick() {
-		super.Tick();
-		if(followTarget && followTarget.player) {
-			if(inertia == 0) inertia = 1;
-			targetpos = followTarget.vec3Angle(
-				2 + (6 * abs(sin(offsetAngle))),
-				followtarget.angle + offsetAngle,
-				followtarget.player.viewz - followtarget.pos.z + offsetZ,
-				false);
-			vel.x += DampedSpring(pos.x, targetpos.x, vel.x, 1, 1);
-			vel.y += DampedSpring(pos.y, targetpos.y, vel.y, 1, 1);
-			vel.z += DampedSpring(pos.z, targetpos.z, vel.z, 1, 1);
-			vela  += DampedSpring(angle, followTarget.angle, vela, spring, damping);
-			velp  += DampedSpring(pitch, followTarget.pitch, velp, spring, damping);
-			setOrigin(pos + vel, true);
-			A_SetAngle(angle + (vela / inertia), true);
-			A_SetPitch(pitch + (velp / inertia), true);
-		}
-	}
-
-	double DampedSpring(double p, double r, double v, double k, double d) {
-		return -(d * v) - (k * (p - r));
+		WasOn = gitdOn;
 	}
 }
 
