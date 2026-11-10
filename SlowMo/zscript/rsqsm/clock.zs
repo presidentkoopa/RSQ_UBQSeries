@@ -319,6 +319,7 @@ class RSQSM_Clock : EventHandler
 	private transient int smokeTic[MAXPLAYERS];
 	private transient int skeetTic[MAXPLAYERS];       // RSQ Grenade's Skeet Window marked its pulse this tic
 	private transient int quickTic[MAXPLAYERS];       // RSQ Grenade's Quick Grenade marked its pulse this tic
+	private transient int remoteTic[MAXPLAYERS];      // RSQ Saber's training remote marked its pulse this tic
 	private transient int smokeFree[MAXPLAYERS];   // the smoke's pulse asked that this player move at full speed (Rig arg 3)
 	int freeUntil[MAXPLAYERS];                     // ...until this maptime (the smoke's length plus the way out)
 
@@ -350,6 +351,7 @@ class RSQSM_Clock : EventHandler
 		// pulse is the smoke, whatever its length (0.99a bug 43: Gun Bonsai VR's Smoker lengthens it, so length can't tell)
 		else if (e.Name ~== "rsqgn_skeetslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) skeetTic[e.Player] = level.maptime; }
 		else if (e.Name ~== "rsqgn_quickslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) quickTic[e.Player] = level.maptime; }
+		else if (e.Name ~== "ubqs_remoteslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) remoteTic[e.Player] = level.maptime; }
 		else if (e.Name ~== "rsqtr_cigslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) { smokeTic[e.Player] = level.maptime; smokeFree[e.Player] = e.Args[2]; } }
 		else if (e.Name ~== "rsqsm_start" || e.Name.Left(12) ~== "rsqsm_start:")
 		{
@@ -404,6 +406,8 @@ class RSQSM_Clock : EventHandler
 			// RSQ GRENADE'S QUICK GRENADE (owner 11-10, its "rsqgn_quickslowmo" the same tic, by name): a deliberate throw from
 			// the quick key, slowed so the grenade can be shot in the air; its row here is Quick Grenade (Your Triggers)
 			if (okWho && quickTic[who] == level.maptime) { Trigger("grenade.quick", CAT_QUICKNADE, ms, depth, false, who); continue; }
+			// RSQ SABER'S TRAINING REMOTE (owner 11-10, its "ubqs_remoteslowmo" the same tic): a deflect, or the remote downed
+			if (okWho && remoteTic[who] == level.maptime) { Trigger("saber.remote", CAT_REMOTE, ms, depth, false, who); continue; }
 			// RSQ SABER and RSQ SHIELDSAW send at 35 %: the parry and the block at 500 ms, a block under Gun Bonsai's Shield
 			// Wall at its own length (750 / 1000 / 1250), the Saber's Force Speed at its seconds (3 s and up). Until 11-09
 			// only exactly 500 ms was recognised: the rest fell to Other Mods (automatic, cooldown, the wrong switch).
@@ -523,7 +527,7 @@ class RSQSM_Clock : EventHandler
 	// player who sent it; server ones are the world's.
 	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS, CAT_KEY, CAT_WRIST, CAT_BURST, CAT_WHEEL,
 		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_HEAVY,
-		CAT_BLOCKON, CAT_BMULTI, CAT_BCHAIN, CAT_BNEAR, CAT_QUICKNADE }
+		CAT_BLOCKON, CAT_BMULTI, CAT_BCHAIN, CAT_BNEAR, CAT_QUICKNADE, CAT_REMOTE }
 	static double CvWho(String n, int who, double d)
 	{
 		return (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? CvP(n, players[who], d) : Cv(n, d);
@@ -556,6 +560,7 @@ class RSQSM_Clock : EventHandler
 		case CAT_BCHAIN:    return Cv("rsqsm_trig_barrel_chain", 1) != 0;
 		case CAT_BNEAR:     return Cv("rsqsm_trig_barrel_near", 1) != 0;
 		case CAT_QUICKNADE: return Cv("rsqsm_trig_quicknade", 1) != 0;
+		case CAT_REMOTE:    return Cv("rsqsm_trig_remote", 1) != 0;
 		}
 		return true;
 	}
@@ -564,7 +569,7 @@ class RSQSM_Clock : EventHandler
 		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
 			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
 			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Shootdodge", "Grenade Blast", "Over-Under Blast",
-			"Heavy Hit Slowdown", "Locked Barrel", "Barrel Multi-Kill", "Chain Reaction", "Barrel Near You", "Quick Grenade" };
+			"Heavy Hit Slowdown", "Locked Barrel", "Barrel Multi-Kill", "Chain Reaction", "Barrel Near You", "Quick Grenade", "Training Remote" };
 		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
 	}
 	double Cooldown() { return clamp(Cv("rsqsm_auto_cooldown", 25), 0.0, 120.0); }

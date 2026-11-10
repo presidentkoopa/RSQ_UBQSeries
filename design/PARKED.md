@@ -143,3 +143,7 @@ Contextual slow motion when a monster missile nearly hits you: imp, cacodemon, r
 mancubus (also asked: did we miss any? arachnotron plasma, pain elemental's lost soul, archvile's fire are the others
 that fire at you). Possibly a Gun Bonsai VR option gated behind Hadouken, with SlowMo's HUD chevrons pointing at the
 shot so you can spin round and hadouken it back. Also: use the HUD chevrons more widely. Not built; owner to decide.
+
+## Saber's training remote HUD (owner 2026-11-10: "I would have liked to co-design that. Table it for now.")
+A real score / timer panel for the training remote in the series' fonts, to be designed WITH the owner. A first mockup
+(design/mockups/saber_remote/remote_hud_mock.png) was made without him; treat it as a talking point only.

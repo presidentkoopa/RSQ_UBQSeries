@@ -87,6 +87,7 @@ server bool  rsqsm_trig_shove    = true; // RSQ Melee's gun butt shove
 server bool  rsqsm_trig_smoke    = true; // RSQ Tactical Rig's cigarette
 server bool  rsqsm_trig_parry    = true; // RSQ Saber's perfect parry
 server bool  rsqsm_trig_block    = true; // RSQ ShieldSaw's perfect block
+server bool  rsqsm_trig_remote   = true; // RSQ Saber's training remote: a short slow on each deflect, a longer one when it goes down (owner 11-10)
 server bool  rsqsm_trig_quicknade = true; // RSQ Grenade's Quick Grenade: a throw from its quick key slows the world so you can shoot it in the air (owner 11-10)
 server bool  rsqsm_trig_score    = true; // RSQ Score's big moment and hit-stop (automatic)
 server bool  rsqsm_trig_gbvr     = true; // Gun Bonsai VR patch's Adrenaline, Showdown and Time Dilation perks (automatic)

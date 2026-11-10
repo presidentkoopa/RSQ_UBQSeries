@@ -6107,6 +6107,16 @@ class UBQS_Remote : Actor
 		return over > 0 ? max(0.4, 0.85 ** over) : 1.0;
 	}
 	double Mult() { return 1.0 + 0.1 * min(streak, 10); }
+	// RSQ SLOWMO (owner 11-10): a short slow on every deflect and a longer one when it goes down, through SlowMo's own door
+	// and its "Training Remote" row (marked "ubqs_remoteslowmo" the same tic, by name). From the trainee's machine only.
+	const SLOW_DEFLECT = 300;
+	const SLOW_DOWN = 1500;
+	void Slow(int ms)
+	{
+		if (!trainee || !trainee.player || trainee.player != players[consoleplayer]) return;
+		EventHandler.SendNetworkEvent("rsm_pulse", ms, 35);
+		EventHandler.SendNetworkEvent("ubqs_remoteslowmo");
+	}
 	void Pay(String label, int pts)
 	{
 		points += pts;
@@ -6118,6 +6128,7 @@ class UBQS_Remote : Actor
 		Pay("Remote Down", bonus);
 		// FOUR HITS HEAL (owner 11-10: "four successful hits on the training droid restore 25 health, because why not?")
 		if (trainee && trainee.health > 0) trainee.GiveBody(25);
+		Slow(SLOW_DOWN);
 		if (trainee) trainee.A_Print(String.Format("REMOTE DOWN!  +%d\nround %d cleared -- best streak %d", bonus, round + 1, best), 3.0, UBQS_A11y.PrintFont());
 		A_StartSound("ubqs/rsad", CHAN_VOICE, 0, 1.0);
 		UBQS_FX.Fx(pos + (0, 0, height * 0.5), 'UXRE', 1, 3, 0.14, 1.0);
@@ -6329,6 +6340,7 @@ class UBQS_RemoteBolt : UBQS_Bolt
 			home.streak++;
 			home.best = max(home.best, home.streak);
 			home.Pay("Deflect", 10 * home.Level());
+			home.Slow(home.SLOW_DEFLECT);
 			home.Report();
 		}
 	}
