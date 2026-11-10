@@ -1,25 +1,10 @@
 // RSQ SABER. Your look and your alt fire are yours (userinfo: every machine sees your
 // choice); what it does to the game is the server's.
 //
-// 137 CVARS BECAME 26 (2026-10-30). The old file carried 137; 97 of them were numbers whose
-// shipped value was the designed one -- the old "MORE KNOBS" block said so itself: "EVERY DEFAULT
-// BELOW IS THE LITERAL IT REPLACES, to the digit, so nothing changes until he moves it". Those 97
-// are gone from here and live as literals in zscript.txt, where a fixed value belongs. 15 more were
-// dead, vestigial or a second name for something that already existed. What is left is the 11 on
-// the menu and the 15 kept deliberately unexposed.
-//
-// NOTHING BREAKS WHEN A CVAR LEAVES THIS FILE. UBQS_Data.F / .I return the fallback the call site
-// passes when the name is not found (zscript.txt:191-204), and the fallback was checked against the
-// old default for all 119 reads that carry one: 118 matched to the digit. The seven ubqs_glow_*
-// prediction names fell back to the GLOW_* constants they were made from (zscript.txt:1306-1321),
-// which is a no-op by construction. The CVar.FindCVar sites were read one at a time and all treat
-// "absent" as the old default (ubqs_bd_sword :5523 !bc||GetBool, ubqs_chainsaw :5529 cc&&GetBool,
-// ubqs_hitscan_guard :5631, ubqs_doppler :3148/:3184, ubqs_force_hand :5806, ubqs_dual :5541/:5670).
-// THE ONE EXCEPTION is ubqs_haptic_clash, whose call site falls back to 0 against a default of 1
-// (zscript.txt:2723) -- so that one needs a code edit, not just a deletion. See CHANGES.md Part B.
+// What is a cvar here is a real setting; every other number lives as a literal in zscript.txt (11-10: the last
+// reads of names that were never defined are marked there "/* fixed: was ubqs_..., never a setting */").
 
-// ---- THE MENU (since the 11-04 menu pass every cvar here has a row on the page or on Test and Debug, except
-// ubqs_world_saber and the retired ubqs_blade_guard; the "not on the menu" notes below are history) ------------------
+// ---- THE MENU (every cvar here has a row on the page or on Test and Debug, except ubqs_world_saber) ------------------
 server bool  ubqs_on            = true;   // the saber at all
 server int   ubqs_dual_mode     = 2;      // "Start With Dual Sabers": 2 On (the second saber is the off hand's
                                           // weapon; RSQ Tactical Rig's holster puts it away and draws
@@ -76,11 +61,7 @@ user  int    ubqs_alt           = 1;      // (worklist #14, menu row 11-01) the 
                                           // 1 Force push, 0 the second blade on / off instead. Read by
                                           // A_UBAltFire (fallback 1); it was on in code with no entry.
 
-// ---- DELIBERATELY NOT ON THE MENU ------------------------------------------------------------------
-// These fifteen keep working and keep their full range. They are off the page because the menu is one
-// screen and these are either a developer's switch, a compatibility answer the engine already gives,
-// or a choice a player would never find twice. Set them from the console or the ini; nothing hides
-// them and nothing resets them behind your back.
+// ---- ON TEST AND DEBUG (and ubqs_world_saber, which has no row) ------------------------------------------
 
 server bool  ubqs_start         = true;   // begin holding one. false = it exists, you pick it up.
                                           // "Sabers Off" covers the common case, so this is not a row
@@ -92,8 +73,7 @@ user  bool   ubqs_world_saber   = false;  // the whole saber drawn in the world 
                                           // SteamVR two-hand-grip fix (03_SABER_AND_SAW.md 2.6).
                                           // Not a row because it should not be a choice.
 user  int    ubqs_lights        = 1;      // blade light detail: 0 none, 1 one light per blade (Quest),
-                                          // 2 two per blade, 3 three (PC). The menu's off-blade switch
-                                          // is a separate question; 2 and 3 live on here
+                                          // 2 two per blade, 3 three (PC); the menu offers all four
 user  int    ubqs_deflect_aim   = 1;      // where a turned shot goes: 1 where you look, 0 at the
                                           // shooter, 2 a true mirror off the blade. Three real answers
 server float ubqs_deflect_lead  = 3.0;    // tics of a shot's own path the blade is tested against. 3

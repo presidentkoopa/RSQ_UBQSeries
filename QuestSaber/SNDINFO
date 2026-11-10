@@ -41,10 +41,8 @@ $volume ubqs/burn 0.6
 // The original ANH / ROTJ saber, out of the owner's HD SFX collection. 48 kHz mono, which is what
 // a sound carried in your hand wants: the engine places it, and a stereo file cannot be placed.
 //
-// ONE SET, WIRED STRAIGHT IN. These are the saber, not an option: no picker, no run-time switch,
-// no second definition anywhere in this file. A font pack ships character boots and music stings
-// next to its sounds, and a saber that recites a film line when you switch it on is a joke that
-// stops being funny the first time. Nothing here is a voice.
+// THREE SETS, picked by Saber Sound (ubqs_font: UBQS_Font in zscript.txt): ubqs/* below, ubqs/v2/*, ubqs/v3/*.
+// A font pack ships character boots and music stings next to its sounds; none of those are here. Nothing is a voice.
 
 ubqs/hum                     sounds/ubqs/fonts/f01/hum.wav
 ubqs/bladelock               sounds/ubqs/fonts/f01/lock.wav

@@ -586,7 +586,7 @@ class UBQS_SaberBase : Weapon abstract
 		}
 		psp.Sprite = GetSpriteIndex(invoker.SpriteNow());
 		psp.Frame = f;
-		// (the hand beam layer is put up above, behind ubqs_hand_glow -- off by default, as he asked)
+		// (the hand beam layer is put up above, behind ubqs_hand_glow -- on by default)
 	}
 	// HAND ON THE HILT (the owner, 11-03 19:25: "the magazine hold FBX pose for reloading ... put the saber into it. Assume
 	// the hand is set to receive a vertical cylinder"). BD22 VR Reloaded's FBX hand in its rifle-magazine hold (the
@@ -1020,8 +1020,8 @@ class UBQS_SaberBase : Weapon abstract
 	// ONE PRESS, ONE ACTION. Fire is re-entered every time Ready comes back, so a HELD trigger ran
 	// A_UBHoldBegin again and again: each entry recalled a saber that was in the air and each
 	// release threw it back out, so the hilt blinked in and out of the hand (the owner, 10-02).
-	// +WEAPON.NOAUTOFIRE is not available: this saber does not set it, and in this engine
-	// CheckWeaponFire lost the latch that would make it mean anything. So the latch lives here,
+	// +WEAPON.NOAUTOFIRE is set, but in this engine CheckWeaponFire lost the latch that would make
+	// it mean anything. So the latch lives here,
 	// on the button, per hand. Ticked in DoEffect above every early return so it cannot stick.
 	private bool firePressed, altPressed;
 	private UBQS_Swish swish;	// the emitter the last swing is coming out of, while it lasts
@@ -2548,7 +2548,7 @@ class UBQS_SaberBase : Weapon abstract
 		return best;
 	}
 
-	// IS THE BLADE ACTUALLY IN THE WAY? (ubqs_blade_guard.) The attack's line -- from the attacker's
+	// IS THE BLADE ACTUALLY IN THE WAY? (Block Width, ubqs_blade_width; was ubqs_blade_guard.) The attack's line -- from the attacker's
 	// middle to yours -- against the blade's own segment, closest approach, in map units. `w` is how far
 	// off the blade's line still counts: the blade is about 26 units long at size 1 and your body is 32
 	// across, so 6 makes a slab roughly a quarter of your silhouette. Small enough that putting it there
@@ -2636,13 +2636,13 @@ class UBQS_SaberBase : Weapon abstract
 			return;
 		}
 		if (!source) return;
-		// ONE SABER, HELD ACROSS YOU (ubqs_blade_guard -- the owner, 10-02: "one saber, hosiztonally, with a
+		// ONE SABER, HELD ACROSS YOU (ubqs_blade_width, once ubqs_blade_guard -- the owner, 10-02: "one saber, hosiztonally, with a
 		// small ass hitbox to be kinda tralistic"). The cross guard above is an ARC off the BODY's yaw and
 		// stops everything inside it. This is its opposite: the blade's own segment against the attack's own
 		// line, no cone and no dice, so where you hold the blade is the whole of it.
 		// IT REPLACES THE ROLL, it does not stack on it. The roll below is 70 per cent of everything inside
 		// 150 degrees of the blade's aim, which swamps any amount of precision -- a geometric guard layered
-		// over it would be unfeelable. ubqs_blade_guard 0 is exactly the old behaviour, roll and all.
+		// over it would be unfeelable. Block Width 0 is exactly the old behaviour, roll and all (the menu starts at 0.5).
 		// The roll also bailed out inside 96 units, so a claw was never blocked by anything but the cross
 		// guard. The geometric path has no distance floor: a blade across you stops a claw, which is right.
 		double gw = BladeWidth();
@@ -2847,7 +2847,7 @@ class UBQS_SaberBase : Weapon abstract
 	// The sweep (Deflect) turns a shot BEFORE it arrives; this is the same decision made when it arrives,
 	// exactly where RS_ShieldSawQ makes it (guard.zs AbsorbDamage, kinds 0 and 3), so nothing the sweep
 	// misses by a tic -- a FastProjectile tracer covers 50 units a tic -- gets through a blade that is
-	// really in its way. Width is ubqs_blade_guard (+ the shot's own radius), the same reach as the
+	// really in its way. Width is ubqs_blade_width (+ the shot's own radius), the same reach as the
 	// hitscan and melee block, so one setting is the whole block.
 	//   a shot: its own path, from two tics of its travel behind where it touched you to a body width past
 	//     it (the shield's numbers: back sp*2+8; forward 2 x your radius). Blocked, THE SHOT ITSELF goes
@@ -3706,12 +3706,6 @@ class UBQS_Buzzer : Actor
 	States { Spawn: TNT1 A 20; Stop; }
 }
 
-class UBQS_HapticPuff : Actor
-{
-	Default { +NOINTERACTION +NOBLOCKMAP +BLOODLESSIMPACT +PAINLESS +NODAMAGETHRUST -ALWAYSPUFF RenderStyle "None"; }
-	States { Spawn: TNT1 A 1; Stop; }
-}
-
 // ---- ONE COMBATFX EFFECT: a sprite (the owner's CombatFX set) played through its frames, growing and fading,
 // gone when done. Additive; shade >= 0 draws a grey mask in that colour (AddShaded). No engine particles.
 class UBQS_FX : Actor
@@ -4026,7 +4020,7 @@ class UBQS_WorldSaber : Actor
 	// is more visible than on a symmetrical glow, and letting the hilt keep its angular slide here was
 	// considered -- but the whole point of this change is that the hilt and the beam cannot disagree, and the
 	// tics snapA fires on are the hardest swings, which is precisely where a disagreement would show. If the
-	// hilt pops at the end of hard swings, the knob is ubqs_glow_lead (lower it): that shrinks the lead, and
+	// hilt pops at the end of hard swings, lower the glow's lead (the fixed 1.0 in its prediction, below): that shrinks the lead, and
 	// therefore any snap, for the hilt and the beam together.
 	void Place(Vector3 from, double ya, double pit, double rol, double sc, int spr, int frm, bool jump, bool snapA = false, bool snapL = false)
 	{
@@ -4127,23 +4121,9 @@ class UBQS_WorldSaber : Actor
 // already do. See modeldefRule.
 class UBQS_WorldSaberOff : UBQS_WorldSaber {}
 
-class UBQS_ClashFlash : Actor
+// the clash starburst (UBQS_FX's UXST sprite); a holder for Burst only (the old actor of its own is gone, 11-10)
+class UBQS_ClashFlash play
 {
-	int life;
-	double grow;
-	Default
-	{
-		RenderStyle "Add";
-		Alpha 1.0;
-		Scale 0.12;
-		+NOINTERACTION
-		+NOBLOCKMAP
-		+BRIGHT
-		+NOGRAVITY
-		+NOTONAUTOMAP
-		+FORCEXYBILLBOARD
-		+ROLLSPRITE
-	}
 	// PHOTOSENSITIVE MODE (RSQ_Accessibility's rsqa_photosafe, UBQS_A11y): one starburst at most every
 	// 14 tics (2.5 a second) across the mod, at 40% brightness. Off / absent: exactly as before.
 	static void Burst(Vector3 at, double size)
@@ -4159,18 +4139,11 @@ class UBQS_ClashFlash : Actor
 		}
 		UBQS_FX.Fx(at, 'UXST', 1, 7, 0.09 * size, UBQS_A11y.Dim(1.0), -1, 1.0 + 0.1 * size);
 	}
-	override void Tick()
-	{
-		if (--life <= 0) { Destroy(); return; }
-		scale *= grow;
-		alpha = life / 6.0;
-	}
-	States { Spawn: UBCF A -1 Bright; Stop; }
 }
 
 // ==========================================================================================================
-// THE THROWN SABER: a real model in the room. Hold alt to paint up to ubqs_locks enemies in front of your
-// hand, let go to throw -- it flies to each in turn, Captain America style, cutting them, then comes home.
+// THE THROWN SABER: a real model in the room. Hold fire to paint up to ubqs_locks enemies in front of your
+// hand, let go with the hand snapping forward to throw -- it flies to each in turn, Captain America style, cutting them, then comes home.
 // Nothing painted: it flies straight out to ubqs_throw_range. It spins in the plane you choose (ubqs_throw_plane:
 // your wrist decides, flat like a disc, or end over end), lights its second blade as it leaves your hand,
 // turns shots it passes, and burns a trail into any wall or floor its blades touch. Then (ubqs_throw 0) it
@@ -5549,7 +5522,6 @@ class UBQS_Force : Inventory
 	// a power's strength: exactly 1 without the patch; with it, the start share unlearned, full at
 	// level 1 and +15% each level after
 	// ---- THE FORCE'S TREE (Gun Bonsai VR, GBOVR_TREES.md 4.2) ---------------------------------------------------
-	double OffRoll() { return OffCtrl() == 0 ? owner.AttackRoll : owner.OffhandRoll; }
 	void ForceSpeed()
 	{
 		double secs = UBQS_Upg.Num("ForceSpeed.secs", uSpeed, 3.0);
@@ -5559,7 +5531,7 @@ class UBQS_Force : Inventory
 		UBQS_Upg.Touch("force.speed", owner, owner);
 		if (IV("ubqs_diag", 0) == 1) Console.Printf("ubqs force speed: %.0f s", secs);
 	}
-	// what the palm-down hand points at: any monster in the grip's cone and range (no weight limit: lightning holds nothing)
+	// what the palm-out hand points at: any monster in the grip's cone and range (no weight limit: lightning holds nothing)
 	// the off hand held palm out: pointing up at least LIGHT_PITCH (the series' palm-out, RSQ Gestures' PalmOut)
 	bool PalmOut() { Vector3 a = OffAim(); return a.z >= sin(LIGHT_PITCH); }
 	Actor LightningAim()
@@ -5599,7 +5571,7 @@ class UBQS_Force : Inventory
 	}
 	// FORCE LIGHTNING: for LIGHT_TICS the bolt pours from the Force hand into its target and on to the nearest
 	// others (ForceLightning.targets in all, each within LIGHT_CHAIN of the last), ForceLightning.damage a tic each,
-	// paid to the saber this item's master is. Drawn as jittered blue-white particle arcs.
+	// paid to the saber this item's master is. Drawn as a beam with jittered blue-white particles round it.
 	void LightningTick()
 	{
 		if (!lightTarget) return;
@@ -6431,10 +6403,8 @@ class UBQS_Bridge : EventHandler
 			if (f && e.Args[0] >= 3 && e.Args[0] <= 5) f.Alt(e.Args[0], e.Args[1] != 0);
 			return;
 		}
-		// KEYS, NOT CVARS, so nothing here can go dead in his ini -- and NO KEYCONF alias either: a MENUDEF
-		// Control row binds whatever command string it is given, and `netevent` is a plain CCMD (the shipped
-		// menu already runs `netevent ubqs_remote` from a Command row), so "netevent ubqs_blade2" works as a
-		// bind on its own.
+		// KEYS, NOT CVARS, so nothing here can go dead in his ini: KEYCONF names the aliases (ubqs_blade2_toggle and
+		// the rest) and MENUDEF's Control rows bind them.
 		// `ubqs_blade2` lights or douses the SECOND blade on whichever sabers are in hand; `ubqs_ignite`
 		// douses and relights them.
 		// WHY keys and not cvars: A_UBAltFire returns early for the off hand whenever ubqs_force_gestures is on
@@ -6513,7 +6483,7 @@ class UBQS_Bridge : EventHandler
 		// the muzzle, by P_LineAttack's own formula on stock QZD 17.3: shootz = Center() -
 		// Floorclip + AttackOffset() + sz, and AttackOffset() is a flat 8 for anything that is not a
 		// player. The 8 and the floorclip were missing, so every stopped bullet was tested along a
-		// ray leaving the muzzle 8 units low -- more than the whole of a 6-unit ubqs_blade_guard.
+		// ray leaving the muzzle 8 units low -- more than the whole of the old 6-unit block width.
 		// LAF_OVERRIDEZ measures from the actor's feet instead.
 		double mz = ((e.AttackLineFlags & LAF_OVERRIDEZ) ? 0.0 : (sh.height * 0.5 - sh.Floorclip + 8.0)) + e.AttackZ;
 		Vector3 from = (sh.pos.xy, sh.pos.z + mz);
@@ -7045,7 +7015,7 @@ class UBQS_Telemetry : EventHandler
 //     0   a saber is in that hand with the blade switched off (doused): just a hilt
 //    -1   no saber in that hand
 // RSQ_DistanceGrab asks this: an unlit hilt is not being swung, so that hand may reach. The psprite frame
-// cannot say it -- with the world saber on (the default) the layer is blanked to frame 18 whatever the blade does.
+// cannot say it -- with the world saber on (off by default) the layer is blanked to frame 18 whatever the blade does.
 class UBQS_SaberService : Service
 {
 	// THE MENU'S GUN BONSAI VR GATING (MENU_PASS_BRIEF.md, owner 11-04): GetIntUI("menu.locked", <feature>) is 1 while that
