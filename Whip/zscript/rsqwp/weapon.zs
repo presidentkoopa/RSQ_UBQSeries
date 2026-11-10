@@ -89,9 +89,19 @@ class RSQWP_WhipWeapon : Weapon
 		bool alt = AltHeld();
 		bool altPress = alt && !altWas;
 		altWas = alt;
-		w.aimBy[i] = AimBy();
+		// WHIP AND GUN, "Indiana Jones" (owner 11-10 12:30; swing.zs IndyOn): a weapon in the other hand, the row on. The whip
+		// hand's own ray is the snag cursor while its trigger is up (aimBy 3); the trigger held marks as ever and the
+		// cursor is gone (its gold spot forgotten, so the beam never stands the mark down). The other hand keeps its
+		// buttons (whip.zs AimKey eats nothing), there is no lasso, and the swing is the whip hand's alone.
+		bool indy = RSQWP_Whip.IndyOn(pmo.player, hand);
+		if (indy != w.indy[i] && RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW %d WHIP AND GUN t%d %s (other hand: %s)", i, level.maptime, indy ? "on: the whip hand's ray is the cursor" : "off: the whip as in slot 1",
+				hand ? (pmo.player.ReadyWeapon ? pmo.player.ReadyWeapon.GetClassName() : 'none') : (pmo.player.OffhandWeapon ? pmo.player.OffhandWeapon.GetClassName() : 'none'));
+		w.indy[i] = indy;
+		w.aimBy[i] = indy ? (trig ? 0 : 3) : AimBy();
 		w.aimHeld[i] = w.aimBy[i] != 0;
 		w.aimTic[i] = level.maptime;
+		if (indy && trig && !w.casting[i]) w.okTic[i] = -100;
 		let h = core.hooks[i];
 		// A CHAIN (swing.zs): let go of an aimed swing's rope (or any rope with the ray held) and the whip is back in the
 		// hand at once, its thong straight off the rope, so the next crack can come while you are still in the air
@@ -133,7 +143,7 @@ class RSQWP_WhipWeapon : Weapon
 		bool test = RSQWP_Util.Opt("rsqwp_lasso_test", 0) > 0;
 		bool grip = hand == 0 && (latch || test || w.OffHandCloses(i, pmo));
 		bool was = w.lassoOn[i];
-		w.lassoOn[i] = grip && RSQWP_Whip.Unlock(pmo, RSQWP_Whip.G_LASSO, "rsqwp_whip_lasso", true);   // the Lasso node under Gun Bonsai VR
+		w.lassoOn[i] = !indy && grip && RSQWP_Whip.Unlock(pmo, RSQWP_Whip.G_LASSO, "rsqwp_whip_lasso", true);   // the Lasso node under Gun Bonsai VR; never beside a gun (Whip and Gun)
 		if (w.lassoOn[i] && !was && RSQWP_Util.Flag("rsqwp_debug", false))
 			Console.Printf("T_WPW %d LASSO on t%d by %s", i, level.maptime, latch ? "the two-hand latch" : (test ? "rsqwp_lasso_test" : "the off hand at the thong, grip down"));
 	}

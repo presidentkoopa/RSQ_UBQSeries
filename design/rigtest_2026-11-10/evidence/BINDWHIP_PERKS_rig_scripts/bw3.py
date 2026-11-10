@@ -1,0 +1,13 @@
+from gen import *
+s=S()
+s.add('map SWINGTST','wait 40','god','notarget','qz_rhand '+P(REST),'qz_lhand "-0.200 1.300 -0.300 20.00 0.00 0"','wait 70','use RSQWP_WhipWeapon','wait 60','rsqwp_debug 1','whp_scen 11','whp_log 1','netevent whp_go','netevent whp_tp 40 512 0','set rsqwp_mass_max 50')
+s.add('echo BW_OFFGUN','netevent whp_offgun 0'); s.hold(REST,40)
+s.add('echo BW_SUMMON','netevent whp_summon 1 250 0'); s.hold(REST,30)
+s.add('echo BW_MARK','+attack'); s.hold(REST,20)
+s.add('echo BW_CRACK'); s.crack(REST)
+s.hold(REST,20)
+s.add('-attack','echo BW_TRIGGER_UP'); s.hold(REST,10)
+s.add('echo BW_REEL','+attack'); s.hold(REST,40); s.add('-attack')
+s.add('echo BW_LETGO','+altattack'); s.hold(REST,2); s.add('-altattack')
+s.hold(REST,30)
+s.write('BW3',HEAD)

@@ -120,3 +120,76 @@ class RSQ_Upgrade_Tarzan : RSQ_Upgrade_WhipMarker
 	override int ParentLevel() { return 2; }
 	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("n", String.Format("%d", 10 + 10 * level)); }
 }
+// THE ROPE PERKS (owner's pick 2026-11-10, design/WHIP_DEAD_FEATURES.md 4): RSQ Grapple's Fast Reel, Steady Line and
+// Slingshot on the whip's own Rope branch, with Grapple's numbers (Grapple/zscript/rsqgr/perks.zs RSQGR_Perks, parsed;
+// its nodes up_hook.zs: Fast Reel 4 levels, the other two 3). RSQ Whip does the effect (fx.zs RSQWP_Perks, by name).
+// The class names carry "Whip": FastReel, SteadyLine and Slingshot are the Grapple's player perks.
+// FAST REEL (after Snag 1): the rope's reel, and the leash's pull (Whip and Gun), 10% faster a level (x1.4 at 4).
+class RSQ_Upgrade_WhipFastReel : RSQ_Upgrade_WhipMarker
+{
+	override int Cap() { return 4; }
+	override String Parent() { return "Snag"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(1.0 + 0.10 * level)); }
+}
+// STEADY LINE (after Momentum 1): hanging with the stick centred, the swing's air drag x(1 + 3 lv), so it settles fast.
+class RSQ_Upgrade_WhipSteadyLine : RSQ_Upgrade_WhipMarker
+{
+	override String Parent() { return "WhipMomentum"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("x", String.Format("x%d", 1 + 3 * level)); }
+}
+// SLINGSHOT (after Momentum 1): letting go of a swing in mid-air carries you on x(1 + 0.10 lv).
+class RSQ_Upgrade_WhipSlingshot : RSQ_Upgrade_WhipMarker
+{
+	override String Parent() { return "WhipMomentum"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("r", AsPercentIncrease(1.0 + 0.10 * level)); }
+}
+// THE LEASH'S FOUR (built 11-10 once Whip and Gun's Leash was shown on the rig): Grapple's Heavy Haul, Get Over Here,
+// Bowling and Barbed Claw (its numbers, up_hook.zs / perks.zs) for a monster on the whip's leash. Offered only while RSQ
+// Whip's Whip and Gun and Leash rows are on (rsqwp_indy, rsqwp_whip_leash, read by name): nothing else makes a leash.
+class RSQ_Upgrade_WhipLeashMarker : RSQ_Upgrade_WhipMarker
+{
+	override bool IsSuitableForWeapon(TFLV_WeaponInfo info)
+	{
+		return Super.IsSuitableForWeapon(info) && RSQM.SV("rsqwp_indy", 1) > 0 && RSQM.SV("rsqwp_whip_leash", 1) > 0;
+	}
+}
+// HEAVY HAUL (after Fast Reel 1): heavier things come on the leash (the mass limit x1 + 0.5 lv); a heavy one staggers
+// 10 + 10 lv tics when it is caught, once per 3 s.
+class RSQ_Upgrade_WhipHeavyHaul : RSQ_Upgrade_WhipLeashMarker
+{
+	override String Parent() { return "WhipFastReel"; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("kg", AsPercentIncrease(1.0 + 0.50 * level));
+		fields.Insert("time", AsSeconds(10 + 10 * level));
+	}
+}
+// GET OVER HERE (after Heavy Haul 1): what the leash brings you arrives staggered 20 + 15 lv tics.
+class RSQ_Upgrade_WhipGetOverHere : RSQ_Upgrade_WhipLeashMarker
+{
+	override String Parent() { return "WhipHeavyHaul"; }
+	override void GetTooltipFields(Dictionary fields, uint level) { fields.Insert("time", AsSeconds(20 + 15 * level)); }
+}
+// BOWLING (after Get Over Here 1): what the leash brings strikes what stands in its way, 5 + 5 lv + half its speed,
+// staggered 15 + 10 lv, shoved aside.
+class RSQ_Upgrade_WhipBowling : RSQ_Upgrade_WhipLeashMarker
+{
+	override String Parent() { return "WhipGetOverHere"; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("dmg", String.Format("%d+", 5 + 5 * level));
+		fields.Insert("time", AsSeconds(15 + 10 * level));
+	}
+}
+// BARBED CLAW (after Fast Reel 1; 4 levels as Grapple's): the leash's catch does 4 + 4 lv, tearing it out of a living
+// monster 6 + 6 lv.
+class RSQ_Upgrade_WhipBarbedClaw : RSQ_Upgrade_WhipLeashMarker
+{
+	override int Cap() { return 4; }
+	override String Parent() { return "WhipFastReel"; }
+	override void GetTooltipFields(Dictionary fields, uint level)
+	{
+		fields.Insert("bite", String.Format("%d", 4 + 4 * level));
+		fields.Insert("tear", String.Format("%d", 6 + 6 * level));
+	}
+}

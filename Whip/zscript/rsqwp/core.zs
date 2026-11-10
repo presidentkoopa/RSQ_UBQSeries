@@ -101,7 +101,6 @@ class RSQWP_Core : EventHandler
 	void LetGo(RSQWP_Hook h, bool byPlayer)
 	{
 		if (!h) return;
-		RSQWP_Perks.OnLetGo(h, byPlayer);   // a stub (fx.zs; design/WHIP_DEAD_FEATURES.md, RSQWP_Perks)
 		if (h.phase == RSQWP_Hook.PH_BITE && h.victim && h.owner && !h.heavy)
 			RSQWP_Monster.OnRelease(h.victim, h.owner, h.hand);
 		// A hop off the top: let go within reach of a wall's latch while reeling and the
@@ -114,6 +113,8 @@ class RSQWP_Core : EventHandler
 				h.owner.vel.z = max(h.owner.vel.z, hop);
 		}
 		if (byPlayer && h.phase == RSQWP_Hook.PH_LATCH && h.owner && !h.heavy) Grace(PlayerPawn(h.owner));
+		// SLINGSHOT (fx.zs RSQWP_Perks): after the grace has picked the let-go's speed (it would put the old speed back)
+		RSQWP_Perks.OnLetGo(h, byPlayer);
 		h.victim = null;
 		h.SetPhase(RSQWP_Hook.PH_RETRACT);
 		if (h.owner) Carry(PlayerPawn(h.owner));
@@ -287,7 +288,7 @@ class RSQWP_Core : EventHandler
 				Log(h, "bite");
 			}
 			RSQWP_Events.Bitten(h.owner, v, h.hand, h.heavy);   // service.zs: for other mods to read
-			RSQWP_Perks.OnBite(h, v);   // a stub (fx.zs; design/WHIP_DEAD_FEATURES.md, RSQWP_Perks)
+			RSQWP_Perks.OnBite(h, v);   // Heavy Haul, Barbed Claw (fx.zs); a claw's bite: nothing makes one (Fly)
 			return;
 		}
 
@@ -340,7 +341,7 @@ class RSQWP_Core : EventHandler
 	// too heavy to come: an anchor instead (at the bite, and re-asked every tic of the pull)
 	static bool TooHeavy(RSQWP_Hook h, Actor v)
 	{
-		double mmax = RSQWP_Util.Num("rsqwp_mass_max", 1000) * RSQWP_Perks.Factor(h.owner, 'mass');   // Factor: a stub, 1 (fx.zs)
+		double mmax = RSQWP_Util.Num("rsqwp_mass_max", 1000) * RSQWP_Perks.Factor(h.owner, 'mass');   // Heavy Haul (fx.zs)
 		// an RSQ Miniboss miniboss with Miniboss's "Can't Be Yanked" on: an anchor, as a boss is
 		return v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT || RSQWP_Util.MinibossAs(v, "yank");
 	}
@@ -622,7 +623,7 @@ class RSQWP_Core : EventHandler
 				if (st > 0)
 				{
 					double k = clamp(RSQWP_Util.Num("rsqwp_drag", 0.002), 0.0, 0.2);
-					k = min(k + RSQWP_Perks.SteadyDrag(pmo, k, fwd == 0 && side == 0), 0.2);   // SteadyDrag: a stub, 0 (fx.zs)
+					k = min(k + RSQWP_Perks.SteadyDrag(pmo, k, fwd == 0 && side == 0), 0.2);   // Steady Line (fx.zs)
 					double f = max(0.0, RSQWP_Util.Num("rsqwp_rope_friction", 0.025));
 					double ns = max(0.0, st * (1.0 - k) - f);
 					double ang = acos(clamp(-n.z, -1.0, 1.0));   // from hanging straight down

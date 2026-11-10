@@ -1,0 +1,830 @@
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+whp_MELEE t0 Melee_Attacks spawned (target None) at (0 0 0)
+whp_MELEE t0 RSQ_NoTrigPunch spawned (target None) at (0 0 0)
+whp_MELEE t1 Headkicking spawned (target BDoomer) at (-96 784 56)
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+whp_MELEE t0 Melee_Attacks spawned (target None) at (0 0 0)
+whp_MELEE t0 RSQ_NoTrigPunch spawned (target None) at (0 0 0)
+whp_MELEE t1 Headkicking spawned (target BDoomer) at (300 512 96)
+LP_GRANT
+LP_OFFGUN
+whp_go t169 scen 11
+whp_tp t169 pos(40 512 96) ang 0
+RSQ Gun Bonsai VR: debug Add All: 429 node levels added
+whp_offgun t169 route PendingWeapon (slot key / use / holster): main RSQWP_WhipWeapon
+whp_WEAP t0 main RSQWP_WhipWeapon off Pistol
+whp_S 0 169 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+T_WPW 0 WHIP AND GUN t170 on: the whip hand's ray is the cursor (other hand: Pistol)
+T_WPW 0 BEAM t170 on (held): Whip and Gun's cursor (only a gold cursor stands the other targets down)
+T_WPW 0 AIM t170 INVALID: Floor (7.5 m, portals 0)
+whp_S 1 170 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 303 505 96 whip 1 cp 21.0 btn 0
+whp_S 2 171 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 3 172 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 4 173 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 5 174 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 6 175 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+T_WPW t176 Crack Fireballs on: 1 missile(s) already in flight noted
+whp_S 7 176 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 8 177 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 9 178 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 10 179 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 11 180 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 12 181 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 13 182 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 14 183 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 15 184 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 16 185 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 17 186 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 18 187 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 19 188 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 20 189 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 21 190 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 22 191 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 23 192 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 24 193 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 25 194 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 26 195 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 27 196 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 28 197 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 29 198 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 30 199 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 31 200 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 32 201 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 33 202 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 34 203 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 35 204 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 36 205 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 37 206 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_S 38 207 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+LP_SUMMON
+whp_S 39 208 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_summon t209 RS_CommonImp at (290 512 96) d 250
+whp_V 40 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 40 209 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 41 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 41 210 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 42 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 8 frz 0
+whp_S 42 211 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 43 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 7 frz 0
+whp_S 43 212 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 44 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 6 frz 0
+whp_S 44 213 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 45 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 5 frz 0
+whp_S 45 214 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 46 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 4 frz 0
+whp_S 46 215 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 47 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 3 frz 0
+whp_S 47 216 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 48 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 2 frz 0
+whp_S 48 217 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 49 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 1 frz 0
+whp_S 49 218 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 50 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 50 219 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 51 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 51 220 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 52 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 8 frz 0
+whp_S 52 221 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 53 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 7 frz 0
+whp_S 53 222 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 54 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 6 frz 0
+whp_S 54 223 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 55 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 5 frz 0
+whp_S 55 224 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 56 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 4 frz 0
+whp_S 56 225 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 57 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 3 frz 0
+whp_S 57 226 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 58 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 2 frz 0
+whp_S 58 227 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 59 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 1 frz 0
+whp_S 59 228 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 60 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 60 229 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 61 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 61 230 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 62 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 8 frz 0
+whp_S 62 231 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 63 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 7 frz 0
+whp_S 63 232 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 64 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 6 frz 0
+whp_S 64 233 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 65 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 5 frz 0
+whp_S 65 234 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 66 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 4 frz 0
+whp_S 66 235 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 67 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 3 frz 0
+whp_S 67 236 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 68 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 2 frz 0
+whp_S 68 237 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+LP_MARK
+whp_V 69 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 1 frz 0
+whp_S 69 238 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+T_WPW 0 BEAM t239 off: every target path as before
+T_WPW 0 MARK t239 -> RS_CommonImp (1 of 1)
+whp_V 70 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 70 239 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 71 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 71 240 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 72 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 8 frz 0
+whp_S 72 241 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 73 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 7 frz 0
+whp_S 73 242 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 74 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 6 frz 0
+whp_S 74 243 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 75 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 5 frz 0
+whp_S 75 244 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 76 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 4 frz 0
+whp_S 76 245 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 77 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 3 frz 0
+whp_S 77 246 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 78 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 2 frz 0
+whp_S 78 247 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 79 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 1 frz 0
+whp_S 79 248 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 80 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 80 249 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 81 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 81 250 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 82 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 8 frz 0
+whp_S 82 251 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 83 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 7 frz 0
+whp_S 83 252 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 84 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 6 frz 0
+whp_S 84 253 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 85 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 5 frz 0
+whp_S 85 254 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 86 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 4 frz 0
+whp_S 86 255 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 87 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 3 frz 0
+whp_S 87 256 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 88 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 2 frz 0
+whp_S 88 257 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+LP_CRACK
+whp_V 89 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 1 frz 0
+whp_S 89 258 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 90 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 90 259 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 91 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 91 260 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 92 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 8 frz 0
+whp_S 92 261 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 93 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 7 frz 0
+whp_S 93 262 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 94 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 6 frz 0
+whp_S 94 263 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+T_WPW 0 MARK t264 kept on RS_CommonImp (locked: the hand points away, 0 other candidate(s) there)
+whp_V 95 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 5 frz 0
+whp_S 95 264 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 96 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 4 frz 0
+whp_S 96 265 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 97 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 3 frz 0
+whp_S 97 266 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 98 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 2 frz 0
+whp_S 98 267 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 99 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 1 frz 0
+whp_S 99 268 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+T_WPW 0 WIND-UP t269: the thong stiffens
+T_WPW 0 UNCOIL t269: paying out from 21.0 to 0
+whp_V 100 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 100 269 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 20.0 btn 1
+whp_V 101 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 101 270 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 18.0 btn 1
+whp_V 102 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 8 frz 0
+whp_S 102 271 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 15.0 btn 1
+whp_V 103 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 7 frz 0
+whp_S 103 272 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 11.5 btn 1
+whp_V 104 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 6 frz 0
+whp_S 104 273 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 8.0 btn 1
+whp_V 105 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 5 frz 0
+whp_S 105 274 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 4.5 btn 1
+whp_V 106 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 4 frz 0
+whp_S 106 275 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 1.5 btn 1
+whp_V 107 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 3 frz 0
+whp_S 107 276 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 108 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 2 frz 0
+whp_S 108 277 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 109 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 1 frz 0
+whp_S 109 278 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 110 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 110 279 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 111 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 111 280 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+T_WPW 0 SWING t281: hand 9.9
+whp_V 112 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 8 frz 0
+whp_S 112 281 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 113 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 7 frz 0
+whp_S 113 282 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 114 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 6 frz 0
+whp_S 114 283 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+T_WPW 0 RELEASE t284: hand 0.0 of peak 9.9
+whp_V 115 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 5 frz 0
+whp_S 115 284 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 116 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 4 frz 0
+whp_S 116 285 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+T_WPW 0 CRACK #1 t286 LOCKED -> RS_CommonImp at 232 units
+whp_V 117 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 3 frz 0
+whp_CRACK t117 hand 0 tip speed 38.2
+whp_S 117 286 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+T_WPW 0 MARK t287 -> RS_CommonImp (1 of 1)
+whp_V 118 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 2 frz 0
+whp_S 118 287 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 119 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 1 frz 0
+whp_S 119 288 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 120 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 10 frz 0
+whp_S 120 289 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_V 121 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 60 tics 9 frz 0
+whp_S 121 290 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 0.0 btn 1
+whp_DMG t122 RS_CommonImp took 20 (WHIP) by BDoomer, hp 40
+T_WPW 0 CRACK hit RS_CommonImp at speed 38.2 (k 0.79): dmg 20, hp 60 -> 40, pain 1, hit-stop 6
+whp_DMG t122 RS_CommonImp took 20 (WHIP) by BDoomer, hp 20
+T_WPW BARBED bite RS_CommonImp 40 -> 20
+T_WPW 0 LEASH t291 RS_CommonImp (comes to you) -> core's line
+whp_V 122 pos 290.00 512.00 96.00 vel 0.000 0.000 0.000 hp 20 tics 2 frz 6
+whp_S 122 291 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_V 123 pos 276.00 512.00 96.00 vel 0.000 0.000 0.000 hp 20 tics 2 frz 5
+whp_S 123 292 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+T_WP t293 h0 pull pos(40.0 512.0 96.0) vel(0.00 0.00 0.00) claw(276.0 512.0 129.6) L0.0 d529.7 segs1 ms0.014/0.066 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonImp (262.0 512.0 96.0)
+whp_V 124 pos 262.00 512.00 96.00 vel 0.000 0.000 0.000 hp 20 tics 2 frz 4
+whp_S 124 293 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+LP_OBSTACLE
+whp_V 125 pos 248.00 512.00 96.00 vel 0.000 0.000 0.000 hp 20 tics 2 frz 3
+whp_S 125 294 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_summon t295 RS_CommonDemon at (160 512 96) d 120
+T_WP t295 h0 pull pos(40.0 512.0 96.0) vel(0.00 0.00 0.00) claw(248.0 512.0 129.6) L0.0 d529.7 segs1 ms0.014/0.064 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonImp (234.0 512.0 96.0)
+whp_V 126 pos 160.00 512.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 126 295 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_V 127 pos 160.00 512.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 127 296 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_DMG t128 RS_CommonDemon took 27 (WHIP) by BDoomer, hp 123
+T_WPW BOWL RS_CommonImp -> RS_CommonDemon speed 14.0 dmg 27 hp 150 -> 123 shoved 1
+T_WP t297 h0 pull pos(40.0 512.0 96.0) vel(0.00 0.00 0.00) claw(220.0 512.0 129.6) L0.0 d529.7 segs1 ms0.013/0.065 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonImp (206.0 512.0 96.0)
+whp_V 128 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 45 frz 0
+whp_S 128 297 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_V 129 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 44 frz 0
+whp_S 129 298 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+T_WP t299 h0 pull pos(40.0 512.0 96.0) vel(0.00 0.00 0.00) claw(192.0 512.0 129.6) L0.0 d529.7 segs1 ms0.018/0.077 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonImp (178.0 512.0 96.0)
+whp_V 130 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 43 frz 0
+whp_S 130 299 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_V 131 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 42 frz 0
+whp_S 131 300 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+T_WP t301 h0 pull pos(40.0 512.0 96.0) vel(0.00 0.00 0.00) claw(164.0 512.0 129.6) L0.0 d529.7 segs1 ms0.016/0.048 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonImp (150.0 512.0 96.0)
+whp_V 132 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 41 frz 0
+whp_S 132 301 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_V 133 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 40 frz 0
+whp_S 133 302 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+T_WP t303 h0 pull pos(40.0 512.0 96.0) vel(0.00 0.00 0.00) claw(136.0 512.0 129.6) L0.0 d529.7 segs1 ms0.019/0.087 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonImp (122.0 512.0 96.0)
+whp_V 134 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 39 frz 0
+whp_S 134 303 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_V 135 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 38 frz 0
+whp_S 135 304 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+T_WP t305 h0 pull pos(40.0 512.0 96.0) vel(0.00 0.00 0.00) claw(108.0 512.0 129.6) L0.0 d529.7 segs1 ms0.014/0.064 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonImp (94.0 512.0 96.0)
+whp_V 136 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 37 frz 0
+whp_S 136 305 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+whp_V 137 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 36 frz 0
+whp_S 137 306 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 2 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+T_WPW GET OVER HERE RS_CommonImp arrives staggered 65 tics
+whp_DMG t138 RS_CommonImp took 30 (WHIP) by BDoomer, hp -10
+T_WPW BARBED tear RS_CommonImp 20 -> -10
+T_WP t307 h0 drop pos(40.0 512.0 96.0) vel(0.00 0.00 0.00) claw(92.0 512.0 129.6) L0.0 d529.7 segs1 ms0.012/0.067 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_V 138 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 35 frz 0
+whp_S 138 307 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 4 L 0.0 d 529.7 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 0 cp 0.0 btn 1
+T_WPW 0 start mode 0 len 107
+T_WPW 0 MARK t308 -> RS_CommonDemon (1 of 1)
+whp_V 139 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 41 frz 0
+whp_S 139 308 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 140 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 53 frz 0
+whp_S 140 309 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 141 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 75 frz 0
+whp_S 141 310 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 142 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 91 frz 0
+whp_S 142 311 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 143 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 90 frz 0
+whp_S 143 312 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 144 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 89 frz 0
+whp_S 144 313 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 145 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 88 frz 0
+whp_S 145 314 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 146 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 87 frz 0
+whp_S 146 315 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 147 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 86 frz 0
+whp_S 147 316 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 148 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 85 frz 0
+whp_S 148 317 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 149 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 84 frz 0
+whp_S 149 318 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 150 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 83 frz 0
+whp_S 150 319 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 151 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 82 frz 0
+whp_S 151 320 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 152 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 81 frz 0
+whp_S 152 321 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 153 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 80 frz 0
+whp_S 153 322 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 154 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 79 frz 0
+whp_S 154 323 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 155 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 78 frz 0
+whp_S 155 324 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 156 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 77 frz 0
+whp_S 156 325 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 157 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 76 frz 0
+whp_S 157 326 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 158 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 75 frz 0
+whp_S 158 327 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 159 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 74 frz 0
+whp_S 159 328 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 160 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 73 frz 0
+whp_S 160 329 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 161 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 72 frz 0
+whp_S 161 330 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 162 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 71 frz 0
+whp_S 162 331 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 163 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 70 frz 0
+whp_S 163 332 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 164 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 69 frz 0
+whp_S 164 333 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 165 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 68 frz 0
+whp_S 165 334 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 166 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 67 frz 0
+whp_S 166 335 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 167 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 66 frz 0
+whp_S 167 336 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 168 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 65 frz 0
+whp_S 168 337 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 169 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 64 frz 0
+whp_S 169 338 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 170 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 63 frz 0
+whp_S 170 339 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 171 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 62 frz 0
+whp_S 171 340 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 172 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 61 frz 0
+whp_S 172 341 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 173 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 60 frz 0
+whp_S 173 342 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 174 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 59 frz 0
+whp_S 174 343 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 175 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 58 frz 0
+whp_S 175 344 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 176 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 47 frz 0
+whp_S 176 345 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 177 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 39 frz 0
+whp_S 177 346 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 178 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 33 frz 0
+whp_S 178 347 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+whp_V 179 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 29 frz 0
+whp_S 179 348 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+LP_LIGHT_END
+whp_V 180 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 25 frz 0
+whp_S 180 349 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 1
+T_WPW 0 BEAM t350 on (held): Whip and Gun's cursor (only a gold cursor stands the other targets down)
+whp_V 181 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 22 frz 0
+whp_S 181 350 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 182 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 19 frz 0
+whp_S 182 351 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 183 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 17 frz 0
+whp_S 183 352 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 184 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 14 frz 0
+whp_S 184 353 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 185 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 13 frz 0
+whp_S 185 354 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 186 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 12 frz 0
+whp_S 186 355 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 187 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 11 frz 0
+whp_S 187 356 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 188 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 10 frz 0
+whp_S 188 357 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 189 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 9 frz 0
+whp_S 189 358 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 190 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 8 frz 0
+whp_S 190 359 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 191 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 7 frz 0
+whp_S 191 360 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 192 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 6 frz 0
+whp_S 192 361 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 193 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 5 frz 0
+whp_S 193 362 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 194 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 4 frz 0
+whp_S 194 363 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 195 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 3 frz 0
+whp_S 195 364 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 196 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 2 frz 0
+whp_S 196 365 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 197 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 1 frz 0
+whp_S 197 366 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 198 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 2 frz 0
+whp_S 198 367 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_V 199 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 1 frz 0
+whp_S 199 368 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+LP_HEAVY
+whp_V 200 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 2 frz 0
+whp_S 200 369 pos 40.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 505 96 whip 1 cp 21.0 btn 0
+whp_tp t370 pos(40 250 96) ang 0
+T_WPW 0 AIM t370 INVALID: out of reach (20.0 m, portals 0)
+whp_V 201 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 1 frz 0
+whp_S 201 370 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 720 250 132 whip 1 cp 21.0 btn 0
+T_WPW 0 AIM t371 INVALID: Floor (7.5 m, portals 0)
+whp_V 202 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 2 frz 0
+whp_S 202 371 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 246 96 whip 1 cp 21.0 btn 0
+whp_V 203 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 1 frz 0
+whp_S 203 372 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 204 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 2 frz 0
+whp_S 204 373 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 205 pos 152.00 458.00 96.00 vel 0.000 0.000 0.000 hp 123 tics 1 frz 0
+whp_S 205 374 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_summon t375 RS_CommonDemon at (290 250 96) d 250
+whp_V 206 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 206 375 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 207 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 207 376 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 208 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 8 frz 0
+whp_S 208 377 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 209 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 7 frz 0
+whp_S 209 378 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 210 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 6 frz 0
+whp_S 210 379 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 211 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 5 frz 0
+whp_S 211 380 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 212 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 4 frz 0
+whp_S 212 381 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 213 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 3 frz 0
+whp_S 213 382 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 214 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 2 frz 0
+whp_S 214 383 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 215 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 1 frz 0
+whp_S 215 384 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 216 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 216 385 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 217 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 217 386 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 218 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 8 frz 0
+whp_S 218 387 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 219 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 7 frz 0
+whp_S 219 388 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 220 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 6 frz 0
+whp_S 220 389 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 221 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 5 frz 0
+whp_S 221 390 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 222 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 4 frz 0
+whp_S 222 391 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 223 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 3 frz 0
+whp_S 223 392 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 224 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 2 frz 0
+whp_S 224 393 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 225 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 1 frz 0
+whp_S 225 394 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 226 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 226 395 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 227 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 227 396 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 228 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 8 frz 0
+whp_S 228 397 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 229 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 7 frz 0
+whp_S 229 398 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 230 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 6 frz 0
+whp_S 230 399 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 231 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 5 frz 0
+whp_S 231 400 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 232 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 4 frz 0
+whp_S 232 401 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 233 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 3 frz 0
+whp_S 233 402 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 234 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 2 frz 0
+whp_S 234 403 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 235 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 1 frz 0
+whp_S 235 404 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+T_WPW 0 BEAM t405 off: every target path as before
+T_WPW 0 MARK t405 -> RS_CommonDemon (1 of 1)
+whp_V 236 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 236 405 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 237 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 237 406 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 238 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 8 frz 0
+whp_S 238 407 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 239 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 7 frz 0
+whp_S 239 408 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 240 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 6 frz 0
+whp_S 240 409 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 241 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 5 frz 0
+whp_S 241 410 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 242 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 4 frz 0
+whp_S 242 411 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 243 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 3 frz 0
+whp_S 243 412 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 244 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 2 frz 0
+whp_S 244 413 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 245 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 1 frz 0
+whp_S 245 414 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 246 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 246 415 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 247 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 247 416 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 248 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 8 frz 0
+whp_S 248 417 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 249 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 7 frz 0
+whp_S 249 418 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 250 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 6 frz 0
+whp_S 250 419 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 251 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 5 frz 0
+whp_S 251 420 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 252 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 4 frz 0
+whp_S 252 421 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 253 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 3 frz 0
+whp_S 253 422 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 254 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 2 frz 0
+whp_S 254 423 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 255 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 1 frz 0
+whp_S 255 424 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 256 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 256 425 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 257 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 257 426 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 258 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 8 frz 0
+whp_S 258 427 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 259 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 7 frz 0
+whp_S 259 428 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 260 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 6 frz 0
+whp_S 260 429 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 261 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 5 frz 0
+whp_S 261 430 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+T_WPW 0 MARK t431 kept on RS_CommonDemon (locked: the hand points away, 0 other candidate(s) there)
+whp_V 262 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 4 frz 0
+whp_S 262 431 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 263 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 3 frz 0
+whp_S 263 432 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 264 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 2 frz 0
+whp_S 264 433 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 265 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 1 frz 0
+whp_S 265 434 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+T_WPW 0 WIND-UP t435: the thong stiffens
+T_WPW 0 UNCOIL t435: paying out from 21.0 to 0
+whp_V 266 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 266 435 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 20.0 btn 1
+whp_V 267 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 267 436 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 18.0 btn 1
+whp_V 268 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 8 frz 0
+whp_S 268 437 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 15.0 btn 1
+whp_V 269 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 7 frz 0
+whp_S 269 438 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 11.5 btn 1
+whp_V 270 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 6 frz 0
+whp_S 270 439 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 8.0 btn 1
+whp_V 271 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 5 frz 0
+whp_S 271 440 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 4.5 btn 1
+whp_V 272 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 4 frz 0
+whp_S 272 441 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 1.5 btn 1
+whp_V 273 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 3 frz 0
+whp_S 273 442 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 274 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 2 frz 0
+whp_S 274 443 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 275 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 1 frz 0
+whp_S 275 444 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 276 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 276 445 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 277 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 277 446 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+T_WPW 0 SWING t447: hand 9.9
+whp_V 278 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 8 frz 0
+whp_S 278 447 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 279 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 7 frz 0
+whp_S 279 448 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 280 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 6 frz 0
+whp_S 280 449 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 281 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 5 frz 0
+whp_S 281 450 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+T_WPW 0 RELEASE t451: hand 0.1 of peak 9.9
+whp_V 282 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 4 frz 0
+whp_S 282 451 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+T_WPW 0 CRACK #1 t452 LOCKED -> RS_CommonDemon at 232 units
+whp_V 283 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 3 frz 0
+whp_CRACK t283 hand 0 tip speed 57.5
+whp_S 283 452 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+T_WPW 0 MARK t453 -> RS_CommonDemon (1 of 1)
+whp_V 284 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 2 frz 0
+whp_S 284 453 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 285 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 1 frz 0
+whp_S 285 454 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 286 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 10 frz 0
+whp_S 286 455 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_V 287 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 150 tics 9 frz 0
+whp_S 287 456 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 0.0 btn 1
+whp_DMG t288 RS_CommonDemon took 24 (WHIP) by BDoomer, hp 126
+T_WPW 0 CRACK hit RS_CommonDemon at speed 57.5 (k 1.00): dmg 24, hp 150 -> 126, pain 1, hit-stop 6
+T_WP t457 h0 latch pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs0 ms0.000/0.044 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+T_WPW HAUL RS_CommonDemon (heavy) staggered 40 tics
+whp_DMG t288 RS_CommonDemon took 20 (WHIP) by BDoomer, hp 106
+T_WPW BARBED bite RS_CommonDemon 126 -> 106
+T_WPW 0 LEASH t457 RS_CommonDemon (too heavy: an anchor) -> core's line
+whp_V 288 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 6
+whp_S 288 457 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t458 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.030/0.044 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 289 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 5
+whp_S 289 458 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 290 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 4
+whp_S 290 459 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t460 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.014/0.063 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 291 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 3
+whp_S 291 460 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 292 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 2
+whp_S 292 461 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t462 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.015/0.068 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 293 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 1
+whp_S 293 462 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 294 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 294 463 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t464 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.020/0.061 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 295 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 295 464 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 296 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 296 465 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t466 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.013/0.089 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 297 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 297 466 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 298 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 298 467 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t468 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.012/0.076 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 299 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 299 468 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 300 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 300 469 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t470 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.015/0.070 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 301 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 301 470 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 302 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 302 471 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t472 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.019/0.082 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 303 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 303 472 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 304 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 304 473 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t474 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.013/0.068 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 305 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 305 474 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 306 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 306 475 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t476 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.012/0.056 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 307 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 307 476 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 308 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 308 477 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t478 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.013/0.091 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 309 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 309 478 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 310 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 310 479 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t480 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.013/0.064 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 311 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 311 480 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 312 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 312 481 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t482 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.017/0.070 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 313 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 313 482 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 314 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 314 483 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t484 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.013/0.056 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 315 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 315 484 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 316 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 316 485 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t486 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.013/0.060 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 317 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 317 486 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 318 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 318 487 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t488 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.012/0.058 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 319 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 319 488 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 320 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 320 489 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t490 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.015/0.065 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 321 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 321 490 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 322 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 322 491 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t492 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.037/0.073 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 323 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 323 492 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 324 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 324 493 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t494 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.012/0.058 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 325 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 325 494 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 326 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 326 495 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t496 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.013/0.062 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 327 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 327 496 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 328 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 328 497 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t498 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.013/0.066 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 329 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 329 498 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 330 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 330 499 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t500 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.018/0.080 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 331 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 331 500 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 332 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 332 501 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t502 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.020/0.083 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 333 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 333 502 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 334 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 334 503 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WP t504 h0 ground pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.029/0.056 scale1.00 grip-1 free00 hoff0.00 pt-1 victim RS_CommonDemon (290.0 250.0 96.0)
+whp_V 335 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 1 frz 0
+whp_S 335 504 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+LP_HEAVY_LETGO
+whp_V 336 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 106 tics 2 frz 0
+whp_S 336 505 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_DMG t337 RS_CommonDemon took 30 (WHIP) by BDoomer, hp 76
+T_WPW BARBED tear RS_CommonDemon 106 -> 76
+T_WP t506 h0 letgo pos(40.0 250.0 96.0) vel(0.00 0.00 0.00) claw(290.0 250.0 129.6) L250.0 d250.0 segs1 ms0.012/0.088 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_V 337 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 337 506 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 4 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 21
+whp_V 338 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 338 507 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 4 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 21
+whp_V 339 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 339 508 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 4 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+whp_V 340 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 340 509 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 4 L 250.0 d 250.0 anc 290 250 130 aim 0 ok 0 why Floor end 301 243 96 whip 0 cp 0.0 btn 1
+T_WPW 0 start mode 0 len 107
+T_WPW 0 MARK t510 -> RS_CommonDemon (1 of 1)
+whp_V 341 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 341 510 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 342 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 342 511 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 343 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 343 512 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 344 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 344 513 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 345 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 345 514 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 346 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 346 515 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 347 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 347 516 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 348 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 348 517 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 349 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 349 518 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 350 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 350 519 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 351 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 351 520 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 352 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 352 521 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 353 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 353 522 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 354 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 354 523 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 355 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 355 524 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 356 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 356 525 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 357 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 357 526 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+whp_V 358 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 358 527 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 1
+T_WPW 0 BEAM t528 on (held): Whip and Gun's cursor (only a gold cursor stands the other targets down)
+whp_V 359 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 359 528 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 360 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 360 529 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 361 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 361 530 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 362 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 362 531 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 363 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 363 532 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 364 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 364 533 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 365 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 365 534 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 366 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 366 535 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 367 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 367 536 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 368 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 368 537 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 369 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 369 538 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 370 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 370 539 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 371 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 371 540 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 372 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 372 541 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 373 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 373 542 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 374 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 374 543 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 375 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 375 544 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 376 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 1 frz 0
+whp_S 376 545 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0
+whp_V 377 pos 290.00 250.00 96.00 vel 0.000 0.000 0.000 hp 76 tics 2 frz 0
+whp_S 377 546 pos 40.0 250.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 301 243 96 whip 1 cp 21.0 btn 0

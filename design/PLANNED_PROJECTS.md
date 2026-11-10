@@ -54,6 +54,7 @@ ray is the snag cursor while the trigger is up (the off hand free for the pistol
 Owner 11-10 (dead-code pick): build it from the Whip's dead bind-whip code (design/WHIP_DEAD_FEATURES.md section 6),
 together with the Rope perks (section 4: Fast Reel, Steady Line, Slingshot as Gun Bonsai VR whip-tree nodes). Queued
 after the rig test and the README controls pass.
+**Built 2026-11-10 as Whip and Gun** (rig only, not headset-confirmed): Whip/README.md "Whip and Gun", RESULTS.md BINDWHIP.
 
 
 ## RSQ Score's Big Pass

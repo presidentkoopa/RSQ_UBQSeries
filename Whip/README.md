@@ -48,6 +48,8 @@ The whip is a weapon in **slot 1**, given to every player. It works in either ha
 | Empty hand on the rope: close its grip, press RSQ Distance Grab's grab key, or just hold it still there a moment | Take hold and climb hand over hand |
 | Reel up to a ledge lip, or lay a free hand on it | Mantle up and over |
 | Main-hand whip: close your off hand's grip on the handle or thong | The lasso: the off hand holds the thong. Circle it to whirl, let go of the grip to throw |
+| Whip in one hand, a gun in the other (**Whip and Gun**) | The whip hand's own dotted ray is the snag cursor while its trigger is up. Crack while it is gold and the whip flies there and becomes a rope. The gun keeps both its buttons. See *Whip and Gun* below |
+| Whip and Gun: hold the whip hand's trigger, point at a monster, crack, keep holding | The **Leash**: a light monster is pulled along the floor to you, a heavy one is an anchor you swing from |
 
 ### Controls
 
@@ -55,6 +57,8 @@ The whip is a weapon in **slot 1**, given to every player. It works in either ha
 
 - **Whip hand, trigger:** hold to mark a target; on the rope, hold to reel in.
 - **Whip hand, alt fire:** with the trigger held, move the mark on; on the rope, let go.
+- **Whip and Gun** (a gun in the other hand, the row on): no button aims. The whip hand's own ray is the cursor whenever
+  its trigger is up; the trigger held marks as above. The other hand's trigger and alt-fire stay the gun's.
 - **Other hand, alt fire:** hold for the aim ray (with the whip in the main hand and the off hand empty or a fist, its
   trigger too, with **Aim With Off Hand** on).
 - **Off controller's grip button** (read as raw keys, **Off Grip Keys**, 443 436): the off hand on the handle or the
@@ -252,25 +256,43 @@ lay a free hand on the lip with RSQ Distance Grab's grab key, and you are lifted
 
 ---
 
-## The whip on a bind (not in the game)
+## Whip and Gun ("Indiana Jones")
 
-The old **Whip (Main)** / **Whip (Off)** binds brought a whip out of a hand without selecting slot 1. Their keys went on
-11-10 (no keys: the whip is attack and alt attack), so this bind whip has no input. Its three rows went from the menu
-on 11-10 too (owner: "three rows do nothing.. do we need them to? i think i like the behavior right now"): **Whip
-Style** (the slot-1 whip is always Real), **Whip Aim: Lock** (the slot-1 whip marks with its trigger) and **Leash**
-(the slot-1 whip wraps instead), with Leash's three Test and Debug sliders (the owner approved their going). Its code
-is kept, with the rest of the whip's unused code: `design/WHIP_DEAD_FEATURES.md`.
+The whip in one hand and a gun in the other at the same time (owner, 2026-11-10: "aim with the whip hand, we still
+target actors while holding in primary fire"). This is a second way to carry the slot-1 whip, not a new weapon. With
+the other hand empty or a fist, the whip plays exactly as above.
 
-### Coming later (planned, not built)
+**How you get it.** It turns on by itself whenever the slot-1 whip is in one hand and the other hand holds a weapon
+(anything but an empty hand or a fist), with **Whip and Gun** on (the default). You need no key and no extra select.
+For example:
+- **Whip In: Main Hand**: draw a pistol into the off hand (an RSQ Tactical Rig holster with the off hand, or any
+  off-hand draw);
+- **Whip In: Off Hand**: select the whip (slot 1, or the Rig's whip holster) with a gun in the main hand.
+Put the gun away, or take the whip out of the hand, and it is the ordinary whip again.
 
-The owner picked two of those pieces on 2026-11-10 (`design/WHIP_DEAD_FEATURES.md`, `design/PLANNED_PROJECTS.md`):
+| Do this | What happens |
+|---|---|
+| Point the whip hand (trigger up) | A dotted ray from the whip hand ends in the series' diamond: **gold** on a wall or a ceiling within Whip Reach, **red** where the whip can't anchor |
+| Point at a gold spot, then crack (a wind-up and swing, or a flick) | The cursor holds still on the spot through the wind-up and the swing (it stays where you pointed before the hand began to sweep), and the whip flies there and latches. A red cursor gives an ordinary crack: what the tip hits, edge snags and fetches all work as usual |
+| On the rope | One hand on the whip. **Jump** starts the swing from the ground (there is no free hand for the grip start); trigger reels, alt-fire lets go. Let go with the cursor gold and the next crack goes there (chain swings) |
+| Hold the trigger and point | Marking, exactly as the slot-1 whip does (the cursor is gone while you hold it). Alt-fire moves the mark on |
+| A marked crack lands on a monster with the trigger still held (**Leash** on) | The Leash: the whip catches it on a line. A light one slides to you along the floor (10 map units a tic, stopping 16 short) and the line lets go when it arrives, ready for your gun. One too heavy (over mass 1000, a boss, a Can't Be Yanked miniboss) is an anchor: a fresh trigger press reels you to it, alt-fire lets go |
+| Trigger let go before the marked crack lands, or Leash off | It wraps, as the slot-1 whip does: the yank and the flail |
+| Fire or alt-fire the gun | The gun fires. The whip takes neither button |
 
-- **Rope perks:** Fast Reel, Steady Line and Slingshot as Gun Bonsai VR nodes on the whip tree.
-- **The bind whip, "Indiana Jones":** the whip in one hand and a pistol in the other. The whip hand's own ray is the
-  snag cursor while its trigger is up; with the trigger held it marks as now. A second way to carry the whip; the
-  slot-1 whip stays as it is.
+There is no lasso in this mode, because the other hand is holding the gun.
 
-The rest (the thrown hook, the zip, the chain look, the bite ledger) stays unused code.
+**Rows** (*Whip and Gun* section): **Whip and Gun** (on): off, a gun in the other hand changes nothing (the other
+hand's alt-fire aims the ray, as before). **Leash** (on).
+
+*Rig, 2026-11-10 (simulated headset):* `design/rigtest_2026-11-10/evidence/BINDWHIP_cursor_crack_swing_frames.jpg`:
+the red and then gold ray from the whip hand, held through the wind-up, the thong flying to the ceiling spot, the
+rope in the swing. `BINDWHIP_leash_frames.jpg`: the diamond on an imp, the leash line, the imp pulled in front of
+you, the pistol in the off hand.
+
+The old bind whip's keys (**Whip (Main)** / **Whip (Off)**) and its **Whip Style: Assist** and **Whip Aim: Lock** stay
+unused (Lock points the other hand, which holds the gun here). Their code is kept with the rest of the unused rope code
+(the thrown hook, the zip, the chain look, the bite ledger) in `design/WHIP_DEAD_FEATURES.md`.
 
 ---
 
@@ -305,7 +327,14 @@ Simulated headset, not a capture from a real headset.*
   loaded: a yanked monster arrives staggered for your free hand's punch). Lasso: **Lasso** (level 2: held 50% longer), **Bola** (one more
   light monster within 2.5 m a level, tied to the first and yanked with it). Rope: **Snag** (level 2: edges from your hand's height up),
   **Mantle** (level 2: from a swing too), **Momentum** (levels 2 and 3: the swing's top speed 30 → 36 / 42), **Tarzan**
-  (swinging into a monster at 3 m/s or more hurts it 10 + 10 a level times your share of top speed and knocks it down).
+  (swinging into a monster at 3 m/s or more hurts it 10 + 10 a level times your share of top speed and knocks it down),
+  **Fast Reel** (the reel, and the Leash's pull, 10% faster a level, 4 levels), **Steady Line** (hanging with the stick
+  centred, the swing's air drag ×1 + 3 a level, so it settles fast), **Slingshot** (letting go of a swing in mid-air:
+  your speed ×1 + 0.1 a level). The Leash's four (offered only while Whip and Gun and Leash are on): **Heavy Haul** (the
+  Leash's mass limit ×1 + 0.5 a level; one still too heavy staggers 10 + 10 a level tics when caught), **Barbed Claw**
+  (the catch does 4 + 4 a level, tearing free of a living monster 6 + 6 a level), **Get Over Here** (it arrives staggered
+  20 + 15 a level tics), **Bowling** (on its way it strikes what is in its path: 5 + 5 a level plus half its speed,
+  staggered 15 + 10 a level, shoved aside). Their numbers are RSQ Grapple's own.
   With Gun Bonsai VR loaded, the page shows *"GunBonsaiOVR detected. Mod features unlocked via upgrades."* and these rows
   grey out until learned: **Hit-Stop** (Strike True), **Crack Fireballs** (Crack Shot), **Lasso**, **Catch Edges**
   (Snag), **Mantle**, **Keep Momentum** (Momentum). Learned, the row turns it on and off. **Cracked Fireballs** is always
@@ -355,6 +384,7 @@ resets every Whip setting; the console alias `rsqwp_reset` does the same.
 | Monsters | Lasso (On) · Flail (On) · Keep the Mark (On) · Yank Grace (Off) |
 | Swinging | Catch Edges (On) · Aimed Swing (On) · Aim With Off Hand (On) · Beam Beats Lock-On (On) · Off Hand Stays Free (On) · Grip Starts Swing (On) · Swing Assist: Grab Snag (On) · Jump Starts Swing (On) · Mantle (On) · Keep Momentum (On) |
 | Climbing | Rope Climbing (On) · Free Hand Only (On) · Grab Keys Grip Rope (On) |
+| Whip and Gun | Whip and Gun (On) · Leash (On) |
 | Controls | none (owner 11-10) |
 | Test and Debug: Crack | Crack Speed (20) · Damage (12) · Hardest Crack Speed (43) · Aim Reach (40) · Pulled Up To (mass) (400) · Too Heavy From (mass) (1000) · Lasso Reach (m) (0.30) |
 | Test and Debug: Thong | Thickness (1.0) · Stiffness (1.00) · Damping (1.00) · Air Drag (1.00) · Hand Smoothing (tics) (0.8) |
@@ -376,11 +406,13 @@ your own settings; every other row is a server setting.
 | **rig only, not headset-confirmed** (2026-11-09, an earlier build) | The pack loads on the full series order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, LOB, Champions, Gun Bonsai and the RSQ pk3s) with no script error of its own (the only script errors in that log are BD_VoxelPack's voxeldef.txt); its page is listed under Radiant Silvergun Options; Gun Bonsai VR registers the whip tree's upgrades on the whip weapon; RSQ Tactical Rig lists the Whip holster among the main hand's holsters (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`). No whip move was exercised in that run |
 | **rig only, not headset-confirmed** (2026-11-03, an earlier build) | The mark skipping Kill Rewards bits and marking a Clip, keeping the mark with the hand pointed away, the wind-up → pay-out → swing → release → crack sequence, the locked crack flying 215 units to the Clip and the Clip taken; a plain crack fetching a Stimpack and leaving the bits; the aim ray refusing a 9.0 m wall at a 9 m reach and an ordinary crack instead, and at a 60 m reach a wall 56.3 m off read gold, the crack cast there in 8 tics and latched, waiting for its start (`tools/rigtest/evidence_1103_holster/bits_and_range.txt`); the Rig's whip holster drawing the whip and putting it home, and the coil on the hip right- and left-handed (same folder); Hand on the Handle, left-handed, Whip In: Off Hand and Hand Skin Tone (`tools/rigtest/hand_1103/sheet.png`). Since then the reach settings were replaced by Whip Reach (11-06) and the holster draw re-seat was added (11-05), so these are not re-shown on the current build |
 | **rig only, not headset-confirmed** (2026-11-10, the touch hold; `design/rigtest_2026-11-10/evidence/ROPE_WP_*`) | On SWINGTST after an aimed crack snagged the ceiling: the off hand aiming the ray, on the rope's line, was not taken (it never came to the rope); brought to the rope and held still, it took it in 6 tics and that was the grip start (lifted and swung); with Grip Starts Swing off the same touch was a climbing hold, and drawing the hand 0.4 m in along the rope shortened it 312 to 299; moved 1 m away it let go. The grip keys themselves can't be pressed on the rig |
+| **rig only, not headset-confirmed** (2026-11-10, Whip and Gun; `design/rigtest_2026-11-10/evidence/BINDWHIP_*`) | Slot-1 whip in the main hand, a Pistol put in the off hand: the mode came on the next tic. The whip hand's ray, red, then gold on a ceiling 8.7 m off; held on that spot through the wind-up and swing; the crack cast there and latched; a jump started a one-handed swing; alt-fire let go. Trigger held: an imp marked, the marked crack hit it and the Leash pulled it in 10 a tic until it stood in front; a heavy one became an anchor and a fresh trigger press reeled the player to it. With the off hand empty, the old aimed swing gave the same log as before. Not shown: a gun in the other hand actually firing (the rig's vanilla Pistol in the off hand didn't fire, the whip took none of its buttons), a Tactical Rig holster draw, Whip In: Off Hand with a gun in the main hand, the row turned off |
+| **rig only, not headset-confirmed** (2026-11-10, the Rope perks; `design/rigtest_2026-11-10/evidence/PERKS_*`) | With Gun Bonsai VR's Add All against none: Fast Reel 4 reel 3.0 → 4.2 a tic and the Leash 10 → 14; Steady Line 3 the swing's speed at each bottom 10.5 / 5.2 / 2.2 against 17.1 / 15.2 / 13.4; Slingshot 3 ×1.30 on a let-go in the air; Heavy Haul 3 an imp came at a mass limit that had made it an anchor, and a heavy demon's stagger was asked for 40 tics; Barbed Claw 4 bite 20, tear 30; Get Over Here 3 asked for 65 tics on arrival; Bowling 3 struck a demon in the path for 27 and shoved it aside |
 | **Headset-confirmed** | Nothing yet |
 | **code only, not shown** | **The 11-10 fixes (commit 09243dd8):** the whip added to slot 1 in the pk3 (before, its KEYCONF was left out of the pk3), the bind whip's three rows and the Leash's three sliders gone, Snap Kill, Score asking both ropes, the hip coil whenever the Rig is not drawing it, the Rope page's two renamed rows. That commit records a load check of the full order with no errors from our packs; its log is not in the repo. **The 11-10 key change:** no keys |
 | **code only, not shown** | Everything else on this page: the swing itself after the latch (no log of a pendulum swing is in the repo), the reel, climbing, the mantle, the jump and grip starts and Swing Assist, letting go with the speed kept, chain swings, edge snags (Catch Edges), the lasso and the whirl, the wrap, the flail and the smash, the yank, Crack Fireballs, Hit-Stop, Yank Grace, Switches First, the one Whip Reach, the re-seat on a holster draw, Show Whip without the Rig, every Gun Bonsai VR node, the Score rows, the VisualRewards marker. And everything changed 11-10: the marked crack naming itself to Score (Snap Kill), Score asking both ropes (Swinging, Hanging Shot, Dismount with RSQ Grapple loaded), Crack Fireballs noting missiles already in flight when it turns on, the hip coil showing whenever the Rig is not drawing it, Gun Bonsai VR's Quick Mark tooltip reading Whip Reach |
 | **not yet run** | Nothing: the batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/PLAN.md`) has no Whip check |
-| **Not in the game (from reading the code)** | The bind whip (no input since 11-10), and the unused rope code (a thrown hook, the zip, the chain look, the rope perks, the bite ledger), in `design/WHIP_DEAD_FEATURES.md`. The rope perks and the bind whip are planned (above) |
+| **Not in the game (from reading the code)** | The old bind whip's keys, Assist and Lock (no input since 11-10), and the unused rope code (a thrown hook, the zip, the chain look, the bite ledger), in `design/WHIP_DEAD_FEATURES.md`. The rope perks and the bind whip are planned (above) |
 
 ---
 
@@ -400,7 +432,7 @@ your own settings; every other row is a server setting.
   the frame's eye in all three axes.
 - **The rope** is RSQ Grapple's core, forked (`RSQWP_Core`, `RSQWP_Hook`): solved on the velocity the engine is about to
   move you by, so the engine's own collision moves you and a rope can't put you in a wall.
-- **Handlers:** `RSQWP_Core` (the rope), `RSQWP_Input` (the bind whip's console events, no keys), `RSQWP_Whip` (the whip), `RSQWP_Events` (the ledger
+- **Handlers:** `RSQWP_Core` (the rope), `RSQWP_Input` (the old bind whip's console events, no keys), `RSQWP_Whip` (the whip), `RSQWP_Events` (the ledger
   for other mods), `RSQWP_HipShow` (Show Whip's hip coil, when the Rig is not drawing it). The weapon is `RSQWP_WhipWeapon` (slot 1 through
   KEYCONF's `addslotdefault`, so Brutal Doom's player class keeps it); the hip coil is `RSQWP_Stowed`.
 - **Network events:** `rsqwp_fire`, `rsqwp_up` (the bind whip, no keys since 11-10; the hand's pose packed in),

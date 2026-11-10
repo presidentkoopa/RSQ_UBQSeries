@@ -340,7 +340,12 @@ A power not yet learned (after Force Sensitive) works at **Force Base Strength**
 
 ## The Whip tree (RSQ Whip)
 
-RSQ Whip asks for these levels once a second.
+RSQ Whip asks for these levels once a second. The Rope perks and the Leash's four (2026-11-10) are RSQ Grapple's
+perks with Grapple's numbers, on the whip's own tree (the Grapple's are player perks; these are the whip weapon's).
+The Leash is RSQ Whip's **Whip and Gun** mode (the whip in one hand, a gun in the other): a marked crack with the
+trigger still held pulls the monster in.
+Status: rig only, not headset-confirmed (2026-11-10, Add All against none: `design/rigtest_2026-11-10/evidence/PERKS_*`;
+the staggers are shown as Gun Bonsai VR's stagger being asked, not in frames).
 
 | Branch | Node | After | Levels | What it does |
 |---|---|---|---|---|
@@ -359,6 +364,13 @@ RSQ Whip asks for these levels once a second.
 | Rope | **Mantle** | Snag 1 | 2 | Reel up to a lip, or lay a hand on it, and go over; 2: from a swing too. Turns on the Mantle row |
 | Rope | **Momentum** | Snag 1 | 3 | The swing's speed carries on when you land; 2-3: its top speed 36 / 42 (30). Turns on the carry row |
 | Rope | **Tarzan** | Momentum 2 | 3 | Swinging into a monster at 3 m/s or more hurts it 20 / 30 / 40 times your share of the speed and knocks it flat |
+| Rope | **Fast Reel** | Snag 1 | 4 | The rope reels you in 10% faster a level (3 a tic, up to 4.2), and a leashed monster comes 10% faster a level (10, up to 14). RSQ Grapple's numbers |
+| Rope | **Steady Line** | Momentum 1 | 3 | Hanging with the stick centred, the swing's air drag x4 / x7 / x10, so it settles fast; pushing the stick still pumps. RSQ Grapple's numbers |
+| Rope | **Slingshot** | Momentum 1 | 3 | Letting go of a swing in mid-air carries you on x1.1 / 1.2 / 1.3. RSQ Grapple's numbers |
+| Leash | **Heavy Haul** | Fast Reel 1 | 3 | Offered only with RSQ Whip's Whip and Gun and Leash on. The Leash's mass limit x1.5 / 2 / 2.5; one still too heavy to come staggers 20 / 30 / 40 tics when caught (once per 3 s) |
+| Leash | **Barbed Claw** | Fast Reel 1 | 4 | Offered only with Whip and Gun and Leash on. The Leash's catch does 8 / 12 / 16 / 20, tearing free of a living monster 12 / 18 / 24 / 30 |
+| Leash | **Get Over Here** | Heavy Haul 1 | 3 | Offered only with Whip and Gun and Leash on. A leashed monster arrives staggered 35 / 50 / 65 tics |
+| Leash | **Bowling** | Get Over Here 1 | 3 | Offered only with Whip and Gun and Leash on. A leashed monster strikes what stands in its path for 10 / 15 / 20 plus half its speed, staggers it 25 / 35 / 45 tics and shoves it aside |
 
 ---
 

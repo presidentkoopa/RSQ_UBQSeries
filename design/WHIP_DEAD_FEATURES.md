@@ -7,6 +7,10 @@ nothing here is shown. The owner picks; nothing is built without his yes.
 **Owner's pick, 2026-11-10:** build **4. Rope perks** and **6. The bind whip** (the bind whip is the Indiana Jones
 whip + pistol project in PLANNED_PROJECTS.md). The rest (Fly, the zip, PlaceChain, Bitten) stays dead code, not built.
 The Leash's three Test and Debug sliders going is approved.
+**Built 2026-11-10** (rig only, not headset-confirmed; `design/rigtest_2026-11-10/RESULTS.md` rows BINDWHIP and PERKS):
+4 in full (Fast Reel, Steady Line, Slingshot, and, because the Leash came back working, Heavy Haul, Barbed Claw, Get Over
+Here, Bowling: fx.zs RSQWP_Perks, Gun Bonsai VR up_whip.zs); 6 as **Whip and Gun** (swing.zs IndyOn: the slot-1 whip
+with a weapon in the other hand) with the Leash back for that mode. Assist, Lock and the bind keys stay unused.
 
 ## 1. Fly: a hook you throw (core.zs Fly, PH_FLY; the recall in Press)
 

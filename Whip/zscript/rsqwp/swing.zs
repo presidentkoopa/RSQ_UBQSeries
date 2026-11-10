@@ -99,6 +99,31 @@ extend class RSQWP_Whip
 	Sector  castSec[NW];
 	int     castPlane[NW];
 	bool    outNow[NW];          // the next Start leaves the thong out (a chain: it comes straight off the rope)
+	bool    indy[NW];            // Whip and Gun (IndyOn) this tic: weapon.zs Tend says so
+	bool    aimFrozen[NW];       // Whip and Gun: the cursor is held where it was while a crack is under way (AimTick)
+	// ... the cursor's last INDY_BACK + 1 tics (a ring by maptime): the hand's aim, and what the trace found then
+	const INDY_BACK = 3;         // the sweep test looks this many tics back, and a hold starts from the cursor that far back
+	const INDY_SWEEP = 9.0;      // ... a hand that turned more than this in those tics sweeps (3 degrees a tic, ~105 deg/s)
+	Vector3 rgDir[NW * 4], rgEnd[NW * 4], rgAt[NW * 4], rgHit[NW * 4], rgN[NW * 4];
+	int     rgTic[NW * 4], rgPlane[NW * 4];
+	bool    rgOk[NW * 4], rgTraced[NW * 4];
+	Name    rgWhy[NW * 4];
+	double  rgM[NW * 4];
+	Sector  rgSec[NW * 4];
+	void AimKeep(int i, Vector3 d, bool traced)
+	{
+		int k = i * 4 + level.maptime % 4;
+		rgTic[k] = level.maptime; rgDir[k] = d; rgTraced[k] = traced;
+		rgOk[k] = aimOk[i]; rgWhy[k] = aimWhy[i]; rgEnd[k] = aimEnd[i]; rgM[k] = aimM[i];
+		rgAt[k] = okAt[i]; rgHit[k] = okHit[i]; rgN[k] = okN[i]; rgSec[k] = okSec[i]; rgPlane[k] = okPlane[i];
+	}
+	// the slot of `back` tics ago, or -1
+	int AimSlot(int i, int back)
+	{
+		int t = level.maptime - back;
+		int k = i * 4 + ((t % 4) + 4) % 4;
+		return rgTic[k] == t ? k : -1;
+	}
 	RSQWP_LockRing aimRing[NW];
 	RSQWP_LockCentre aimCen[NW];
 
@@ -115,12 +140,29 @@ extend class RSQWP_Whip
 	static clearscope bool OffFree(PlayerInfo p)
 	{
 		if (!p) return false;
-		let off = p.OffhandWeapon;
+		return FreeHand(p.OffhandWeapon);
+	}
+	// a hand's weapon that is no weapon: nothing, or a fist (OffFree's test, for either hand)
+	static clearscope bool FreeHand(Weapon off)
+	{
 		if (!off) return true;
 		if (off is "Fist") return true;
 		String n = off.GetClassName();
 		n = n.MakeLower();
 		return n == "rsq_hands" || n == "ubqs_forcehand" || n == "melee_attacks" || n == "rsq_glove" || n == "rsq_gloveoff" || n.IndexOf("fist") >= 0;
+	}
+
+	// WHIP AND GUN, "INDIANA JONES" (owner 11-10 12:27 / 12:30, "aim with the whip hand, we still target actors while holding
+	// in primary fire. so with whip in hand we are free aiming the snag cursor, but holding the trigger makes it behave like
+	// normal"; rsqwp_indy, on). The slot-1 whip weapon is in this hand and the OTHER hand holds a weapon (anything that is
+	// not empty or a fist, FreeHand): the whip hand's own ray is the snag cursor while its trigger is up, the other hand's
+	// buttons stay its own, no lasso, a one-handed swing. With the other hand empty or a fist, nothing changes.
+	static clearscope bool IndyOn(PlayerInfo p, int hand)
+	{
+		if (!p || !RSQWP_Util.Flag("rsqwp_indy", true) || !RSQWP_Util.Flag("rsqwp_on", true) || !RSQWP_Util.Flag("rsqwp_swing", true)) return false;
+		Weapon wh = hand ? p.OffhandWeapon : p.ReadyWeapon;
+		Weapon other = hand ? p.ReadyWeapon : p.OffhandWeapon;
+		return wh is "RSQWP_WhipWeapon" && other && !(other is "RSQWP_WhipWeapon") && !FreeHand(other);
 	}
 
 	// The off hand's FIRE aims the ray: the whip weapon in the main hand, the off hand free, the switches on.
@@ -142,6 +184,9 @@ extend class RSQWP_Whip
 	bool BeamWins(int i)
 	{
 		if (!BeamWinsOn() || !byWeapon[i] || !RSQWP_Util.Flag("rsqwp_swing", true) || !RSQWP_Util.Flag("rsqwp_on", true)) return false;
+		// WHIP AND GUN: the cursor is on whenever the trigger is up, so only a GOLD cursor wins (a red one is a plain crack
+		// with every target path as before: the crack's own target, an edge snag, a fetch)
+		if (indy[i]) return (BeamHeld(i) && aimOk[i]) || BeamMemory(i);
 		return BeamHeld(i) || BeamMemory(i);
 	}
 
@@ -177,7 +222,42 @@ extend class RSQWP_Whip
 			if (pmo && level.maptime - aimTic[pn * 2] > 1 && level.maptime - aimTic[pn * 2 + 1] > 1) { aimBtn[pn] = false; aimFire[pn] = false; }
 			return;
 		}
-		int ah = 1 - hand;
+		// WHIP AND GUN: the whip hand's own ray. Held still on a spot while a crack is under way (the wind-up points the hand
+		// up and back, the swing sweeps it down: owner's "aim, then crack"): the cursor stays where it was when the wind-up
+		// began (or the flick's stiffening), drawn there, its gold spot kept fresh until the gesture is over.
+		int ah = indy[i] ? hand : 1 - hand;
+		// ... and while the hand SWEEPS (it turned over INDY_SWEEP in the last INDY_BACK tics: the rise into the wind-up comes
+		// before the wind-up is read, rig 11-10: a 43-degree aim at a ceiling 14.5 m off had become the ceiling 1.9 m overhead
+		// by the tic the wind-up began). The hold starts from the cursor of INDY_BACK tics ago, before the sweep. A hand at
+		// rest on its aim moves the cursor at once.
+		bool sweep = false;
+		Vector3 dnow = (1, 0, 0);
+		if (indy[i])
+		{
+			dnow = RSQWP_Util.MapDir(RSQWP_Util.AimYaw(pmo, hand), RSQWP_Util.AimPitch(pmo, hand));
+			int kb = AimSlot(i, INDY_BACK);
+			sweep = kb >= 0 && acos(clamp(dnow dot rgDir[kb], -1.0, 1.0)) > INDY_SWEEP;
+		}
+		if (indy[i] && aimShown[i] && (sweep || (wstate[i] == ST_OUT && (windTics[i] > 0 || swinging[i] || stiff[i] > 0.01))))
+		{
+			Vector3 o0 = RSQWP_Util.AimPos(pmo, ah);
+			int kb = AimSlot(i, INDY_BACK);
+			if (!aimFrozen[i] && kb >= 0 && rgTraced[kb])
+			{
+				aimOk[i] = rgOk[kb]; aimWhy[i] = rgWhy[kb]; aimEnd[i] = rgEnd[kb]; aimM[i] = rgM[kb];
+				if (aimOk[i]) { okAt[i] = rgAt[kb]; okHit[i] = rgHit[kb]; okN[i] = rgN[kb]; okSec[i] = rgSec[kb]; okPlane[i] = rgPlane[kb]; }
+			}
+			Vector3 sp = aimEnd[i] - o0;
+			if (aimOk[i] && !casting[i]) okTic[i] = level.maptime;
+			if (!aimFrozen[i] && RSQWP_Util.Flag("rsqwp_debug", false))
+				Console.Printf("T_WPW %d CURSOR t%d held (%s %s, %.1f m): %s", i, level.maptime, aimOk[i] ? "GOLD" : "RED", aimWhy[i], aimM[i], sweep ? "the hand sweeps" : "a crack under way");
+			aimFrozen[i] = true;
+			aimBeamWas[i] = 1;
+			DrawAim(i, o0, aimOk[i], aimEnd[i], sp.Length() > 0.01 ? sp.Unit() : (1, 0, 0));
+			AimKeep(i, dnow, false);
+			return;
+		}
+		aimFrozen[i] = false;
 		Vector3 org = RSQWP_Util.AimPos(pmo, ah);
 		Vector3 dir = RSQWP_Util.MapDir(RSQWP_Util.AimYaw(pmo, ah), RSQWP_Util.AimPitch(pmo, ah));
 		double ps = RSQWP_Util.PS();
@@ -249,7 +329,7 @@ extend class RSQWP_Whip
 		}
 		else if (BeamWinsOn()) okTic[i] = -100;   // the beam's last word is red: no gold spot is remembered
 		if (BeamWinsOn() && aimBeamWas[i] != 1 && RSQWP_Util.Flag("rsqwp_debug", false))
-			Console.Printf("T_WPW %d BEAM t%d on (held): lock-on, marks, edge snag and Assist's reach stand down", i, level.maptime);
+			Console.Printf("T_WPW %d BEAM t%d on (held): %s", i, level.maptime, indy[i] ? "Whip and Gun's cursor (only a gold cursor stands the other targets down)" : "lock-on, marks, edge snag and Assist's reach stand down");
 		aimBeamWas[i] = 1;
 		if (changed && RSQWP_Util.Flag("rsqwp_debug", false))
 		{
@@ -257,6 +337,7 @@ extend class RSQWP_Whip
 			else Console.Printf("T_WPW %d AIM t%d INVALID: %s (%.1f m, portals %d)", i, level.maptime, why, aimM[i], d.NumPortals);
 		}
 		DrawAim(i, org, ok, ok ? at : hit, dir);
+		if (indy[i]) AimKeep(i, dnow, true);
 		if (RSQWP_Util.Opt("rsqwp_debug", 0) == 5)
 			Console.Printf("T_WPW %d RAY t%d drawn by %s: %s %s, %.1f m, %d dots, diamond %s", i, level.maptime, aimBy[i] == 2 ? "off-hand fire" : "alt-fire",
 				ok ? "GOLD" : "RED", why, aimM[i], aimDots, aimRing[i] ? "on" : "none");
@@ -419,7 +500,8 @@ extend class RSQWP_Whip
 			h.fullLen = h.autoLen > 0 ? 0 : h.ropeLen;
 			// THE START WAITS (owner 11-03: snag, then grip or jump to begin): from the ground, with a start on, no hop
 			// and no take-up yet -- the take-up is kept for the start (core.SwingStart). In the air it swings at once.
-			if (grounded && RSQWP_Core.StartsOn())
+			// (Whip and Gun: one hand on the whip, so only a jump can start it; Jump Starts Swing off: the old hop)
+			if (grounded && (indy[i] ? RSQWP_Util.Flag("rsqwp_swing_jump", true) : RSQWP_Core.StartsOn()))
 			{
 				h.startLen = h.autoLen;
 				h.autoLen = 0;

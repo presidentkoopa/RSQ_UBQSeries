@@ -1,6 +1,6 @@
-// THE SEAM, monster side (core calls only these three): a monster on the core's line, which only the bind whip's Leash
-// makes (whip.zs Leash; no input since 11-10, design/WHIP_DEAD_FEATURES.md). The slot-1 whip wraps and yanks its own way
-// (whip.zs BeginWrap / Yank) and never comes here.
+// THE SEAM, monster side (core calls only these three): a monster on the core's line, which only the Leash makes
+// (whip.zs Leash: Whip and Gun's marked crack with the trigger held, since 11-10; the old bind whip's has no input). The
+// slot-1 whip with an empty other hand wraps and yanks its own way (whip.zs BeginWrap / Yank) and never comes here.
 //
 //   OnHooked   once, when the line bites a monster light enough to come
 //   Tick       every tic while it is on the line; return false to let go
@@ -44,7 +44,7 @@ class RSQWP_Monster
 		Vector2 to = pmo.Pos.xy - victim.Pos.xy;
 		double d = to.Length();
 		double stopAt = pmo.radius + victim.radius + RSQWP_Util.Num("rsqwp_slide_gap", 16);
-		if (d <= stopAt + 1.0) { RSQWP_Perks.OnArrive(victim, pmo); return false; }   // a stub (fx.zs)
+		if (d <= stopAt + 1.0) { RSQWP_Perks.OnArrive(victim, pmo); return false; }   // Get Over Here (fx.zs)
 		double step = min(RSQWP_Util.Num("rsqwp_slide_speed", 10) * RSQWP_Perks.Factor(pmo, 'reel') * RSQWP_Core.Scale(), d - stopAt);
 		Vector2 dir = to / d;
 		Vector2 np = victim.Pos.xy + dir * step;
@@ -57,7 +57,7 @@ class RSQWP_Monster
 			double nz = clamp(victim.Pos.z + sz, victim.floorz, victim.ceilingz - victim.Height);
 			victim.SetZ(nz);
 		}
-		RSQWP_Perks.Bowl(victim, pmo, (np.x, np.y, victim.Pos.z + victim.Height * 0.5), step / max(RSQWP_Core.Scale(), 0.0001));   // a stub (fx.zs)
+		RSQWP_Perks.Bowl(victim, pmo, (np.x, np.y, victim.Pos.z + victim.Height * 0.5), step / max(RSQWP_Core.Scale(), 0.0001));   // Bowling (fx.zs)
 		if (!victim.TryMove(np, true))
 		{
 			// slide along whatever stopped it, one axis at a time
@@ -66,5 +66,38 @@ class RSQWP_Monster
 		}
 		victim.vel.xy = (0, 0);
 		return true;
+	}
+}
+
+// The leash perks' memory (Grapple's CoolOK and Struck, kept on the core): Heavy Haul's 3 s per monster, Bowling's one
+// strike a second per pair.
+extend class RSQWP_Core
+{
+	const PKN = 32;
+	Actor pcA[PKN];
+	int pcTic[PKN];
+	Actor bwA[PKN], bwBy[PKN];
+	int bwTic[PKN];
+	bool PerkCool(Actor v)
+	{
+		int k = -1, oldest = 0;
+		for (int i = 0; i < PKN; i++)
+		{
+			if (pcA[i] == v) { if (level.maptime < pcTic[i]) return false; k = i; break; }
+			if (k < 0 && !pcA[i]) k = i;
+			if (pcTic[i] < pcTic[oldest]) oldest = i;
+		}
+		if (k < 0) k = oldest;
+		pcA[k] = v; pcTic[k] = level.maptime + 105;
+		return true;
+	}
+	// true when `by` already struck `o` within the last second; else it is noted as struck now
+	bool Bowled(Actor by, Actor o)
+	{
+		for (int i = 0; i < PKN; i++) if (bwA[i] == o && bwBy[i] == by && level.maptime < bwTic[i]) return true;
+		int k = 0;
+		for (int i = 0; i < PKN; i++) { if (!bwA[i] || level.maptime >= bwTic[i]) { k = i; break; } if (bwTic[i] < bwTic[k]) k = i; }
+		bwA[k] = o; bwBy[k] = by; bwTic[k] = level.maptime + 35;
+		return false;
 	}
 }

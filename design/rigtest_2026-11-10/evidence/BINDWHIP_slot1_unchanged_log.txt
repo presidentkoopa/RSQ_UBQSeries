@@ -1,0 +1,455 @@
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+whp_MELEE t0 Melee_Attacks spawned (target None) at (0 0 0)
+whp_MELEE t0 RSQ_NoTrigPunch spawned (target None) at (0 0 0)
+whp_MELEE t1 Headkicking spawned (target BDoomer) at (-96 784 56)
+whp_MELEE t0 Melee_Attacks spawned (target None) at (0 0 0)
+whp_MELEE t0 RSQ_NoTrigPunch spawned (target None) at (0 0 0)
+whp_MELEE t1 Headkicking spawned (target BDoomer) at (300 512 96)
+whp_go t169 scen 11
+whp_tp t169 pos(378 512 96) ang 0
+whp_WEAP t0 main RSQWP_WhipWeapon off rsq_hands
+whp_S 0 169 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+whp_S 1 170 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+whp_S 2 171 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+whp_S 3 172 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+whp_S 4 173 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+T_WPW aim key (off-hand fire) down t174
+T_WPW 0 BEAM t174 on (held): lock-on, marks, edge snag and Assist's reach stand down
+T_WPW 0 AIM t174 VALID Ceiling at (878 519 192) 14.5 m, normal (0.00 0.00 -1.00) (survey's sign faces the hand), anchor (878 519 188)
+whp_S 5 174 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 878 519 188 whip 1 cp 21.0 btn 0
+whp_S 6 175 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 731 519 188 whip 1 cp 21.0 btn 0
+whp_S 7 176 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 705 519 188 whip 1 cp 21.0 btn 0
+whp_S 8 177 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 696 519 188 whip 1 cp 21.0 btn 0
+whp_S 9 178 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 692 519 188 whip 1 cp 21.0 btn 0
+whp_S 10 179 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 690 519 188 whip 1 cp 21.0 btn 0
+whp_S 11 180 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 689 519 188 whip 1 cp 21.0 btn 0
+whp_S 12 181 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 688 519 188 whip 1 cp 21.0 btn 0
+whp_S 13 182 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 688 519 188 whip 1 cp 21.0 btn 0
+whp_S 14 183 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 687 519 188 whip 1 cp 21.0 btn 0
+whp_S 15 184 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 687 519 188 whip 1 cp 21.0 btn 0
+whp_S 16 185 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 686 519 188 whip 1 cp 21.0 btn 0
+whp_S 17 186 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 686 519 188 whip 1 cp 21.0 btn 0
+whp_S 18 187 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 686 519 188 whip 1 cp 21.0 btn 0
+whp_S 19 188 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 686 519 188 whip 1 cp 21.0 btn 0
+whp_S 20 189 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 21 190 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 22 191 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 23 192 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 24 193 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 25 194 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 26 195 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 27 196 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 28 197 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+whp_S 29 198 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 519 188 whip 1 cp 21.0 btn 0
+T_WPW aim key (off-hand fire) up t199
+T_WPW 0 BEAM t199 let go: the gold spot is remembered 35 tics
+T_WPW 0 WIND-UP t199: the thong stiffens
+T_WPW 0 UNCOIL t199: paying out from 21.0 to 0
+whp_S 30 199 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 20.0 btn 0
+whp_S 31 200 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 18.0 btn 0
+whp_S 32 201 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 15.0 btn 0
+whp_S 33 202 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 11.5 btn 0
+whp_S 34 203 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 8.0 btn 0
+whp_S 35 204 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 4.5 btn 0
+whp_S 36 205 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 1.5 btn 0
+whp_S 37 206 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 38 207 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 39 208 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 40 209 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 41 210 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+T_WPW 0 SWING t211: hand 9.9
+whp_S 42 211 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 43 212 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 44 213 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 45 214 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+T_WPW 0 RELEASE t215: hand 0.1 of peak 9.9
+whp_S 46 215 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+T_WPW 0 CAST #1 t216 -> ceiling anchor (685 519 188), 8.7 m, flies 5 tics (beam let go 18 tics ago, remembered)
+whp_CRACK t47 hand 0 tip speed 44.9
+whp_S 47 216 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+T_WPW 0 BEAM t217 off: every target path as before
+whp_S 48 217 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 49 218 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 50 219 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+whp_S 51 220 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why Ceiling end 685 519 188 whip 1 cp 0.0 btn 0
+T_WP t221 h0 latch pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs0 ms0.000/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1
+T_WPW 0 SWING LATCH t221 ceiling at (685 519 188), rope 312, take-up to 0, hop 0, player (378 512 96) vel (0.0 0.0 0.0) -- waiting for a start (grip / jump), its take-up 0
+whp_S 52 221 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t222 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.025/0.046 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 53 222 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 54 223 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t224 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.016/0.059 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 55 224 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 56 225 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t226 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.016/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 57 226 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 58 227 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t228 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.051 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 59 228 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 60 229 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t230 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.022/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 61 230 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 62 231 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t232 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.062 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 63 232 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 64 233 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t234 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.016/0.078 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 65 234 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 66 235 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t236 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.026/0.099 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 67 236 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 68 237 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t238 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.020/0.275 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 69 238 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 70 239 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t240 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.019/0.073 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 71 240 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 72 241 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t242 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.022/0.080 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 73 242 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 74 243 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t244 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 75 244 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 76 245 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t246 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.012/0.050 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 77 246 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 78 247 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t248 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.012/0.054 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 79 248 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 80 249 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t250 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 81 250 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 82 251 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t252 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.097 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 83 252 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 84 253 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t254 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.060 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 85 254 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 86 255 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t256 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.019/0.077 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 87 256 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 88 257 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t258 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.085 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 89 258 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 90 259 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t260 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 91 260 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 92 261 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t262 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.072 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 93 262 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 94 263 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t264 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 95 264 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 96 265 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t266 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.057 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 97 266 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 98 267 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t268 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.062 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 99 268 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 100 269 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t270 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.016/0.070 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 101 270 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 102 271 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t272 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.019/0.081 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 103 272 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 104 273 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t274 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.067 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 105 274 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 106 275 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t276 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.023/0.084 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 107 276 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 108 277 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t278 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.073 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 109 278 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 110 279 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t280 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.058 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 111 280 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 112 281 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t282 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 113 282 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 114 283 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t284 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.019/0.073 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 115 284 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 116 285 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t286 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.021/0.122 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 117 286 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 118 287 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t288 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.022/0.081 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 119 288 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 120 289 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t290 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 121 290 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 122 291 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t292 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.058 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 123 292 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 124 293 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t294 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.018/0.071 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 125 294 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 126 295 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t296 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.012/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 127 296 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 128 297 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t298 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.018/0.072 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 129 298 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 130 299 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t300 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.071 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 131 300 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 132 301 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t302 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.018/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 133 302 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 134 303 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t304 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.059 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 135 304 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 136 305 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t306 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 137 306 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 138 307 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t308 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.054 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 139 308 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 140 309 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t310 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.020/0.081 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 141 310 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 142 311 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t312 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.021/0.102 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 143 312 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 144 313 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t314 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.066 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 145 314 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 146 315 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t316 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.062 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 147 316 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 148 317 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t318 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 149 318 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 150 319 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t320 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.052 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 151 320 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 152 321 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t322 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 153 322 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 154 323 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t324 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.058 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 155 324 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 156 325 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t326 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.066 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 157 326 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 158 327 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t328 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.054 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 159 328 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 160 329 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t330 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.018/0.054 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 161 330 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 162 331 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t332 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 163 332 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 164 333 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t334 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.016/0.057 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 165 334 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 166 335 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t336 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.033/0.068 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 167 336 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 168 337 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t338 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 169 338 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 170 339 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t340 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.021/0.081 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 171 340 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 172 341 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t342 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.024/0.078 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 173 342 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 174 343 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t344 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.069 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 175 344 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 176 345 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t346 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.054 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 177 346 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 178 347 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t348 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.072 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 179 348 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 180 349 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t350 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.080 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 181 350 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 182 351 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t352 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.019/0.058 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 183 352 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 184 353 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t354 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.026/0.205 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 185 354 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 186 355 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t356 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.018/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 187 356 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 188 357 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t358 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.060 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 189 358 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 190 359 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t360 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.062 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 191 360 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 192 361 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t362 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 193 362 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 194 363 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t364 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.057 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 195 364 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 196 365 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t366 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.072 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 197 366 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 198 367 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t368 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.053 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 199 368 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 200 369 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t370 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.018/0.062 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 201 370 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 202 371 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t372 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.013/0.061 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 203 372 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 204 373 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t374 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.082 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 205 374 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 206 375 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t376 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.014/0.059 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 207 376 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 208 377 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t378 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.016/0.065 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 209 378 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 210 379 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t380 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.020/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 211 380 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 212 381 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t382 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.020/0.079 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 213 382 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 214 383 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t384 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.053 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 215 384 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 216 385 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t386 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.016/0.055 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 217 386 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 218 387 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t388 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.015/0.054 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 219 388 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 220 389 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t390 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.042/0.140 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 221 390 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 222 391 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t392 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.025/0.108 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 223 392 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 224 393 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t394 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.017/0.095 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 225 394 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t395 h1 TOUCH HOLD: still 0.00 m/s over 6 tics, 0.01 m off the rope (reach 0.47 m), 0.51 m out along it
+T_WPW START t395 grip not taken: off hand empty, 99.00 m from the whip
+T_WP t395 h0 take h1 pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs1 ms0.019/0.160 scale1.00 grip1 free01 hoff37.00 pt395
+whp_S 226 395 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t396 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.049/0.205 scale1.00 grip1 free01 hoff37.00 pt396
+whp_S 227 396 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 228 397 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t398 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.030/0.107 scale1.00 grip1 free01 hoff37.00 pt398
+whp_S 229 398 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 230 399 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t400 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.028/0.075 scale1.00 grip1 free01 hoff37.00 pt400
+whp_S 231 400 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 232 401 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t402 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.058/0.215 scale1.00 grip1 free01 hoff37.00 pt402
+whp_S 233 402 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 234 403 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t404 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.034/0.109 scale1.00 grip1 free01 hoff37.00 pt404
+whp_S 235 404 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 236 405 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t406 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.041/0.140 scale1.00 grip1 free01 hoff37.00 pt406
+whp_S 237 406 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 238 407 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t408 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.025/0.071 scale1.00 grip1 free01 hoff37.00 pt408
+whp_S 239 408 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 240 409 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t410 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.055/0.133 scale1.00 grip1 free01 hoff37.00 pt410
+whp_S 241 410 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 242 411 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t412 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 518.8 188.0) L312.2 d312.2 segs7 ms0.038/0.133 scale1.00 grip1 free01 hoff37.00 pt412
+whp_S 243 412 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 244 413 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t414 h0 climb pos(378.0 512.0 96.0) vel(1.45 0.03 0.28) claw(684.6 518.8 188.0) L310.7 d312.2 segs7 ms0.059/0.073 scale1.00 grip1 free01 hoff37.00 pt414
+whp_S 245 414 pos 378.0 512.0 96.0 vel 1.45 0.03 0.28 hspd 1.45 spd 1.47 gr 1 hook 1 L 310.7 d 312.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t415 h0 climb pos(379.4 512.0 96.0) vel(1.93 0.04 0.37) claw(684.6 518.8 188.0) L308.8 d310.8 segs7 ms0.043/0.207 scale1.00 grip1 free01 hoff37.00 pt415
+whp_S 246 415 pos 379.4 512.0 96.0 vel 1.93 0.04 0.37 hspd 1.93 spd 1.96 gr 1 hook 1 L 308.8 d 310.8 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t416 h0 climb pos(381.4 512.1 96.0) vel(1.45 0.03 0.28) claw(684.6 518.8 188.0) L307.3 d308.9 segs7 ms0.039/0.178 scale1.00 grip1 free01 hoff37.00 pt416
+whp_S 247 416 pos 381.4 512.1 96.0 vel 1.45 0.03 0.28 hspd 1.45 spd 1.47 gr 1 hook 1 L 307.3 d 308.9 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t417 h0 climb pos(382.8 512.1 96.0) vel(1.93 0.04 0.37) claw(684.6 518.8 188.0) L305.3 d307.5 segs7 ms0.027/0.221 scale1.00 grip1 free01 hoff37.00 pt417
+whp_S 248 417 pos 382.8 512.1 96.0 vel 1.93 0.04 0.37 hspd 1.93 spd 1.96 gr 1 hook 1 L 305.3 d 307.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t418 h0 climb pos(384.7 512.1 96.0) vel(1.44 0.03 0.28) claw(684.6 518.8 188.0) L303.9 d305.6 segs7 ms0.035/0.193 scale1.00 grip1 free01 hoff37.00 pt418
+whp_S 249 418 pos 384.7 512.1 96.0 vel 1.44 0.03 0.28 hspd 1.44 spd 1.47 gr 1 hook 1 L 303.9 d 305.6 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t419 h0 climb pos(386.2 512.2 96.0) vel(1.44 0.03 0.28) claw(684.6 518.8 188.0) L302.4 d304.2 segs7 ms0.045/0.208 scale1.00 grip1 free01 hoff37.00 pt419
+whp_S 250 419 pos 386.2 512.2 96.0 vel 1.44 0.03 0.28 hspd 1.44 spd 1.47 gr 1 hook 1 L 302.4 d 304.2 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t420 h0 climb pos(387.6 512.2 96.0) vel(1.92 0.04 0.38) claw(684.6 518.8 188.0) L300.4 d302.8 segs7 ms0.025/0.128 scale1.00 grip1 free01 hoff37.00 pt420
+whp_S 251 420 pos 387.6 512.2 96.0 vel 1.92 0.04 0.38 hspd 1.93 spd 1.96 gr 1 hook 1 L 300.4 d 302.8 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t421 h0 climb pos(389.6 512.3 96.0) vel(1.44 0.03 0.29) claw(684.6 518.8 188.0) L299.0 d300.9 segs7 ms0.033/0.141 scale1.00 grip1 free01 hoff37.00 pt421
+whp_S 252 421 pos 389.6 512.3 96.0 vel 1.44 0.03 0.29 hspd 1.44 spd 1.47 gr 1 hook 1 L 299.0 d 300.9 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t422 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.026/0.140 scale1.00 grip1 free01 hoff37.00 pt422
+whp_S 253 422 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 254 423 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t424 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.026/0.079 scale1.00 grip1 free01 hoff37.00 pt424
+whp_S 255 424 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 256 425 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t426 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.035/0.109 scale1.00 grip1 free01 hoff37.00 pt426
+whp_S 257 426 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 258 427 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t428 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.037/0.182 scale1.00 grip1 free01 hoff37.00 pt428
+whp_S 259 428 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 260 429 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t430 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.058/0.092 scale1.00 grip1 free01 hoff37.00 pt430
+whp_S 261 430 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 262 431 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t432 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.030/0.111 scale1.00 grip1 free01 hoff37.00 pt432
+whp_S 263 432 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 264 433 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t434 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.034/0.099 scale1.00 grip1 free01 hoff37.00 pt434
+whp_S 265 434 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 266 435 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t436 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.034/0.137 scale1.00 grip1 free01 hoff37.00 pt436
+whp_S 267 436 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t437 h1 TOUCH LET GO: the hand left the rope (1.01 m off the rope, lets go past 0.94 m)
+T_WP t437 h0 unhold pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs7 ms0.025/0.141 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 268 437 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t438 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.036/0.121 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 269 438 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 270 439 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t440 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.019/0.099 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 271 440 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 272 441 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t442 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.016/0.067 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 273 442 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 274 443 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t444 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.028/0.094 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 275 444 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 276 445 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t446 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.066/0.111 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 277 446 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 278 447 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t448 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.023/0.087 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 279 448 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 280 449 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t450 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.017/0.106 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 281 450 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 282 451 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t452 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.020/0.076 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 283 452 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 284 453 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t454 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.016/0.067 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 285 454 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 286 455 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t456 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.022/0.089 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 287 456 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 288 457 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t458 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.014/0.056 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 289 458 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 290 459 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t460 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.017/0.074 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 291 460 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 292 461 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t462 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.019/0.067 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 293 462 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 294 463 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+T_WP t464 h0 ground pos(391.0 512.3 96.0) vel(0.00 0.00 0.29) claw(684.6 518.8 188.0) L299.5 d299.5 segs1 ms0.020/0.058 scale1.00 grip-1 free01 hoff0.00 pt-1
+whp_S 295 464 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0
+whp_S 296 465 pos 391.0 512.3 96.0 vel 0.00 0.00 0.29 hspd 0.00 spd 0.29 gr 1 hook 1 L 299.5 d 299.5 anc 685 519 188 aim 0 ok 0 why Ceiling end 685 519 188 whip 0 cp 0.0 btn 0

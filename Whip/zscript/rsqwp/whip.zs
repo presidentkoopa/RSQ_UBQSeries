@@ -223,12 +223,23 @@ class RSQWP_Whip : EventHandler
 	const G_MOMENTUM = 12;
 	const G_TARZAN = 13;
 	const G_PULL = 14;
-	const G_N = 15;
+	// THE ROPE PERKS (owner's pick 11-10, design/WHIP_DEAD_FEATURES.md 4): RSQ Grapple's Fast Reel, Steady Line and
+	// Slingshot on the whip's own Rope branch, read by fx.zs RSQWP_Perks
+	const G_REEL = 15;
+	const G_STEADY = 16;
+	const G_SLING = 17;
+	// ... and the leash's four (Whip and Gun's Leash only: whip.zs Leash), Grapple's too
+	const G_HAUL = 18;
+	const G_GOH = 19;
+	const G_BOWL = 20;
+	const G_BARB = 21;
+	const G_N = 22;
 	static const String GBN[] = { "Sting", "WhipStun", "CrackShot", "ReturnCrack", "WhipStrikeTrue", "LongThong", "QuickMark",
-		"HeavyYank", "Lasso", "Bola", "Snag", "Mantle", "WhipMomentum", "Tarzan", "PullAndPunch" };
+		"HeavyYank", "Lasso", "Bola", "Snag", "Mantle", "WhipMomentum", "Tarzan", "PullAndPunch",
+		"WhipFastReel", "WhipSteadyLine", "WhipSlingshot", "WhipHeavyHaul", "WhipGetOverHere", "WhipBowling", "WhipBarbedClaw" };
 	transient int gbTic;
 	transient bool gbOn;
-	transient int gbLv[MAXPLAYERS * 15];
+	transient int gbLv[MAXPLAYERS * 22];
 	void GbRefresh()
 	{
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
@@ -462,6 +473,7 @@ class RSQWP_Whip : EventHandler
 		if (!p || !p.mo || p.mo.Health <= 0) return false;
 		int wh = (p.ReadyWeapon is "RSQWP_WhipWeapon") ? 0 : ((p.OffhandWeapon is "RSQWP_WhipWeapon") ? 1 : -1);
 		if (wh < 0) return false;
+		if (RSQWP_Whip.IndyOn(p, wh)) return false;     // Whip and Gun: the other hand's weapon keeps both its buttons (swing.zs IndyOn)
 		let b = Bindings.GetBinding(e.KeyScan);
 		if (wh == 0 && b ~== "+oh_attack")
 		{
@@ -2536,7 +2548,13 @@ class RSQWP_Whip : EventHandler
 			if (marked && v.bISMONSTER) Touch("crack.marked", pmo, v);
 			// it strikes as hard as the crack that sent it (a lasso's throw: as fast as its tip was going)
 			Hit(i, pmo, hand, v, at, max(crackV[i], RSQWP_Util.Num("rsqwp_whip_crack", 20)), true);
-			if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER)
+			// THE LEASH, back for Whip and Gun (owner 11-10: approved for this mode; rsqwp_whip_leash, on): a marked crack that
+			// lands on a monster with the trigger still held catches it on core's line -- a light one slides to you along
+			// the floor, a heavy one (Too Heavy, a boss, Miniboss's Can't Be Yanked) is an anchor you swing from -- while
+			// your other hand has a free shot. Trigger let go before it lands, or the row off: the wrap as ever.
+			if (byWeapon[i] && indy[i] && marked && markHeld[i] && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true))
+				Leash(i, pmo, hand, v, at);
+			else if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER)
 			{
 				// the whip weapon: it wraps round the monster and waits for the pull (HoldWrap), and swings with the arm
 				// (the flail: not for a crack's wrap with Crack Knocks Enemies Back off, BeginWrap / Flail)

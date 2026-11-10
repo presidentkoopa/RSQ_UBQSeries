@@ -8,7 +8,8 @@
 // pages; KEYCONF's rsqwp_reset alias (tools/gen_reset.py) does the same from the console.
 // 11-10 (owner: "three rows do nothing.. do we need them to? i think i like the behavior right now"): Whip Style, Whip Aim's
 // Lock and Leash (with its three Test sliders) went: they changed only the bind whip, which has no input since its keys
-// went (design/WHIP_DEAD_FEATURES.md). Their cvars stay, read by that bind code only.
+// went (design/WHIP_DEAD_FEATURES.md). Their cvars stay, read by that bind code only. Leash came back 11-10 under Whip and Gun
+// (the slot-1 whip with a weapon in the other hand, swing.zs IndyOn).
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
 // parent is PROTECTED, so the first definition stays and later ones add nothing (QZD 17.3 merges a
@@ -77,6 +78,10 @@ OptionMenu "RSQWP_Options"
 	Option "Free Hand Only", "rsqwp_climb_free_only", "OnOff"
 	Option "Grab Keys Grip Rope", "rsqwp_grab_dg", "OnOff"
 	Option "Touch Holds Rope", "rsqwp_touch", "OnOff"
+	StaticText " "
+	StaticText "Whip and Gun", "Gold"
+	Option "Whip and Gun", "rsqwp_indy", "OnOff"
+	Option "Leash", "rsqwp_whip_leash", "OnOff"
 	StaticText " "
 	// (the Controls went 11-10, owner: the whip is attack and alt attack; design/KEYBINDS_PLAN.md)
 	StaticText " "

@@ -1,0 +1,20 @@
+from gen import *
+import sys
+grant = sys.argv[1]=='on'
+s=S()
+s.add('map SWINGTST','wait 40','god','notarget','qz_rhand '+P(REST),'qz_lhand "-0.200 1.300 -0.300 20.00 0.00 0"','wait 70','use RSQWP_WhipWeapon','wait 60','rsqwp_debug 1','whp_scen 11','whp_log 1','netevent whp_go','netevent whp_tp 40 512 0','set rsqwp_mass_max 50')
+if grant: s.add('echo LP_GRANT','netevent rsqgb_dbg_all')
+s.add('echo LP_OFFGUN','netevent whp_offgun 0'); s.hold(REST,40)
+s.add('echo LP_SUMMON','netevent whp_summon 1 130 0'); s.hold(REST,2); s.add('netevent whp_summon 0 250 0'); s.hold(REST,30)
+s.add('echo LP_MARK','+attack'); s.hold(REST,15)
+s.add('echo LP_NEXT','+altattack'); s.hold(REST,2); s.add('-altattack'); s.hold(REST,10)
+s.add('echo LP_CRACK'); s.crack(REST)
+s.hold(REST,40)
+s.add('-attack','echo LP_LIGHT_END'); s.hold(REST,30)
+s.add('echo LP_HEAVY','set rsqwp_mass_max 30','netevent whp_tp 40 300 0'); s.hold(REST,5); s.add('netevent whp_summon 1 250 0'); s.hold(REST,30)
+s.add('+attack'); s.hold(REST,20)
+s.crack(REST)
+s.hold(REST,20)
+s.add('echo LP_HEAVY_LETGO','+altattack'); s.hold(REST,2); s.add('-altattack')
+s.hold(REST,20); s.add('-attack'); s.hold(REST,10)
+s.write('LP_'+sys.argv[1],HEAD)

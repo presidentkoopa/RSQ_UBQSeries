@@ -1,0 +1,332 @@
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+whp_MELEE t0 Melee_Attacks spawned (target None) at (0 0 0)
+whp_MELEE t0 RSQ_NoTrigPunch spawned (target None) at (0 0 0)
+whp_MELEE t1 Headkicking spawned (target BDoomer) at (-96 784 56)
+whp_MELEE t0 Melee_Attacks spawned (target None) at (0 0 0)
+whp_MELEE t0 RSQ_NoTrigPunch spawned (target None) at (0 0 0)
+whp_MELEE t1 Headkicking spawned (target BDoomer) at (300 512 96)
+whp_go t169 scen 11
+whp_tp t169 pos(378 512 96) ang 0
+whp_WEAP t0 main RSQWP_WhipWeapon off rsq_hands
+whp_S 0 169 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+whp_S 1 170 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+whp_S 2 171 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+whp_S 3 172 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+BW_OFFGUN
+whp_S 4 173 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+whp_offgun t174 route PendingWeapon (slot key / use / holster): main RSQWP_WhipWeapon
+whp_WEAP t5 main RSQWP_WhipWeapon off Pistol
+whp_S 5 174 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 0 ok 0 why None end 0 0 0 whip 1 cp 21.0 btn 0
+T_WPW 0 WHIP AND GUN t175 on: the whip hand's ray is the cursor (other hand: Pistol)
+T_WPW 0 BEAM t175 on (held): Whip and Gun's cursor (only a gold cursor stands the other targets down)
+T_WPW 0 AIM t175 INVALID: out of reach (20.0 m, portals 0)
+whp_S 6 175 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 7 176 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 8 177 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 9 178 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 10 179 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 11 180 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 12 181 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 13 182 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 14 183 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 15 184 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 16 185 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 17 186 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 18 187 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 19 188 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 20 189 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 21 190 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 22 191 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 23 192 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 24 193 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 25 194 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 26 195 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 27 196 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 28 197 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 29 198 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 30 199 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 31 200 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 32 201 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 33 202 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 34 203 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 35 204 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 36 205 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 37 206 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 38 207 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 39 208 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 40 209 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 41 210 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 42 211 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 43 212 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+BW_POINT
+whp_S 44 213 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+T_WPW 0 CURSOR t214 held (RED out of reach, 20.0 m): the hand sweeps
+whp_S 45 214 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 46 215 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+whp_S 47 216 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1058 505 34 whip 1 cp 21.0 btn 0
+T_WPW 0 AIM t217 VALID Ceiling at (696 505 192) 9.2 m, normal (0.00 0.00 -1.00) (survey's sign faces the hand), anchor (696 505 188)
+whp_S 48 217 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 696 505 188 whip 1 cp 21.0 btn 0
+whp_S 49 218 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 692 505 188 whip 1 cp 21.0 btn 0
+whp_S 50 219 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 690 505 188 whip 1 cp 21.0 btn 0
+whp_S 51 220 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 689 505 188 whip 1 cp 21.0 btn 0
+whp_S 52 221 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 688 505 188 whip 1 cp 21.0 btn 0
+whp_S 53 222 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 688 505 188 whip 1 cp 21.0 btn 0
+whp_S 54 223 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 687 505 188 whip 1 cp 21.0 btn 0
+whp_S 55 224 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 687 505 188 whip 1 cp 21.0 btn 0
+whp_S 56 225 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 686 505 188 whip 1 cp 21.0 btn 0
+whp_S 57 226 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 686 505 188 whip 1 cp 21.0 btn 0
+whp_S 58 227 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 686 505 188 whip 1 cp 21.0 btn 0
+whp_S 59 228 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 686 505 188 whip 1 cp 21.0 btn 0
+whp_S 60 229 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 61 230 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 62 231 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 63 232 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 64 233 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 65 234 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 66 235 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 67 236 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 68 237 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+BW_CRACK
+whp_S 69 238 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 70 239 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 71 240 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+T_WPW 0 CURSOR t241 held (GOLD Ceiling, 8.8 m): the hand sweeps
+whp_S 72 241 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 73 242 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 74 243 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 75 244 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 76 245 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 77 246 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+whp_S 78 247 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 21.0 btn 0
+T_WPW 0 WIND-UP t248: the thong stiffens
+T_WPW 0 UNCOIL t248: paying out from 21.0 to 0
+whp_S 79 248 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 20.0 btn 0
+whp_S 80 249 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 18.0 btn 0
+whp_S 81 250 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 15.0 btn 0
+whp_S 82 251 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 11.5 btn 0
+whp_S 83 252 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 8.0 btn 0
+whp_S 84 253 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 4.5 btn 0
+whp_S 85 254 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 1.5 btn 0
+whp_S 86 255 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 87 256 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 88 257 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 89 258 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 90 259 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 91 260 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+T_WPW 0 SWING t261: hand 9.9
+whp_S 92 261 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 93 262 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 94 263 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 95 264 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+T_WPW 0 RELEASE t265: hand 0.1 of peak 9.9
+whp_S 96 265 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+T_WPW 0 CAST #1 t266 -> ceiling anchor (685 505 188), 8.7 m, flies 5 tics (beam held)
+whp_CRACK t97 hand 0 tip speed 45.0
+whp_S 97 266 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+whp_S 98 267 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Ceiling end 685 505 188 whip 1 cp 0.0 btn 0
+T_WPW 0 AIM t268 INVALID: out of reach (20.0 m, portals 0)
+whp_S 99 268 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1004 505 -120 whip 1 cp 0.0 btn 0
+whp_S 100 269 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1005 505 -117 whip 1 cp 0.0 btn 0
+whp_S 101 270 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1009 505 -110 whip 1 cp 0.0 btn 0
+T_WP t271 h0 latch pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs0 ms0.000/0.046 scale1.00 grip-1 free00 hoff0.00 pt-1
+T_WPW 0 SWING LATCH t271 ceiling at (685 505 188), rope 312, take-up to 0, hop 0, player (378 512 96) vel (0.0 0.0 0.0) -- waiting for a start (grip / jump), its take-up 0
+whp_S 102 271 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1014 505 -101 whip 0 cp 0.0 btn 0
+T_WP t272 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.021/0.046 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 103 272 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1019 505 -91 whip 0 cp 0.0 btn 0
+whp_S 104 273 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1025 505 -81 whip 0 cp 0.0 btn 0
+T_WP t274 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.015/0.077 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 105 274 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1028 505 -74 whip 0 cp 0.0 btn 0
+whp_S 106 275 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1030 505 -68 whip 0 cp 0.0 btn 0
+T_WP t276 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.012/0.058 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 107 276 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1032 505 -63 whip 0 cp 0.0 btn 0
+whp_S 108 277 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1034 505 -59 whip 0 cp 0.0 btn 0
+T_WP t278 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.014/0.095 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 109 278 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1035 505 -55 whip 0 cp 0.0 btn 0
+whp_S 110 279 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1036 505 -51 whip 0 cp 0.0 btn 0
+T_WP t280 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.019/0.084 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 111 280 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1038 505 -47 whip 0 cp 0.0 btn 0
+whp_S 112 281 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1039 505 -44 whip 0 cp 0.0 btn 0
+T_WP t282 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.013/0.074 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 113 282 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1040 505 -40 whip 0 cp 0.0 btn 0
+whp_S 114 283 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1041 505 -36 whip 0 cp 0.0 btn 0
+T_WP t284 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.014/0.068 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 115 284 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1043 505 -33 whip 0 cp 0.0 btn 0
+whp_S 116 285 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1044 505 -29 whip 0 cp 0.0 btn 0
+T_WP t286 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.014/0.104 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 117 286 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1045 505 -25 whip 0 cp 0.0 btn 0
+whp_S 118 287 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1046 505 -22 whip 0 cp 0.0 btn 0
+T_WP t288 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.012/0.058 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 119 288 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1047 505 -18 whip 0 cp 0.0 btn 0
+whp_S 120 289 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1048 505 -14 whip 0 cp 0.0 btn 0
+T_WP t290 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.013/0.067 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 121 290 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1049 505 -11 whip 0 cp 0.0 btn 0
+whp_S 122 291 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1049 505 -7 whip 0 cp 0.0 btn 0
+T_WP t292 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.014/0.071 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 123 292 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1050 505 -3 whip 0 cp 0.0 btn 0
+whp_S 124 293 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1051 505 0 whip 0 cp 0.0 btn 0
+T_WP t294 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.013/0.069 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 125 294 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1052 505 4 whip 0 cp 0.0 btn 0
+whp_S 126 295 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1053 505 7 whip 0 cp 0.0 btn 0
+T_WP t296 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.020/0.087 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 127 296 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1053 505 11 whip 0 cp 0.0 btn 0
+whp_S 128 297 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1054 505 15 whip 0 cp 0.0 btn 0
+T_WP t298 h0 ground pos(378.0 512.0 96.0) vel(0.00 0.00 0.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.023/0.091 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 129 298 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1055 505 19 whip 0 cp 0.0 btn 0
+BW_JUMP
+whp_S 130 299 pos 378.0 512.0 96.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1055 505 21 whip 0 cp 0.0 btn 0
+T_WPW START t300 by JUMP from the ground: rope 312, take-up to 0; vel (0.0 0.0 7.4) 7.4 flat 0.0 -> (8.0 0.0 10.0) 12.8 flat 8.0; push dir (1.00 0.00 0.00); off hand Pistol
+T_WP t300 h0 ground pos(378.0 512.0 96.0) vel(8.00 0.00 10.00) claw(684.6 505.2 188.0) L312.2 d312.2 segs1 ms0.025/0.115 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 131 300 pos 378.0 512.0 96.0 vel 8.00 0.00 10.00 hspd 8.00 spd 12.81 gr 1 hook 1 L 312.2 d 312.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1056 505 24 whip 0 cp 0.0 btn 4
+whp_S 132 301 pos 386.0 512.0 106.0 vel 7.26 -0.00 8.96 hspd 7.26 spd 11.53 gr 0 hook 1 L 302.6 d 302.6 anc 685 505 188 aim 1 ok 0 why out of reach end 1064 505 26 whip 0 cp 0.0 btn 4
+T_WP t302 h0 swing pos(393.3 512.0 115.0) vel(7.26 -0.00 7.92) claw(684.6 505.2 188.0) L294.1 d294.1 segs12 ms0.057/0.088 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 133 302 pos 393.3 512.0 115.0 vel 7.26 -0.00 7.92 hspd 7.26 spd 10.75 gr 0 hook 1 L 294.1 d 294.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1072 505 32 whip 0 cp 0.0 btn 0
+whp_S 134 303 pos 400.5 512.0 122.9 vel 7.27 -0.00 6.88 hspd 7.27 spd 10.01 gr 0 hook 1 L 285.9 d 285.9 anc 685 505 188 aim 1 ok 0 why out of reach end 1079 505 40 whip 0 cp 0.0 btn 0
+T_WP t304 h0 swing pos(407.8 512.0 129.8) vel(7.27 -0.00 5.85) claw(684.6 505.2 188.0) L278.0 d278.0 segs12 ms0.048/0.100 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 135 304 pos 407.8 512.0 129.8 vel 7.27 -0.00 5.85 hspd 7.27 spd 9.33 gr 0 hook 1 L 278.0 d 278.0 anc 685 505 188 aim 1 ok 0 why out of reach end 1087 505 54 whip 0 cp 0.0 btn 0
+whp_S 136 305 pos 415.1 512.0 135.6 vel 7.27 -0.01 4.82 hspd 7.27 spd 8.72 gr 0 hook 1 L 270.3 d 270.3 anc 685 505 188 aim 1 ok 0 why out of reach end 1094 505 62 whip 0 cp 0.0 btn 0
+T_WP t306 h0 swing pos(422.3 512.0 136.0) vel(7.27 -0.01 -4.40) claw(684.6 505.2 188.0) L263.0 d263.0 segs12 ms0.045/0.081 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 137 306 pos 422.3 512.0 136.0 vel 7.27 -0.01 -4.40 hspd 7.27 spd 8.50 gr 0 hook 1 L 263.0 d 263.0 anc 685 505 188 aim 1 ok 0 why out of reach end 1101 505 69 whip 0 cp 0.0 btn 0
+whp_S 138 307 pos 429.6 512.0 131.6 vel 7.27 -0.01 -5.36 hspd 7.27 spd 9.03 gr 0 hook 1 L 256.1 d 256.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1109 505 71 whip 0 cp 0.0 btn 0
+T_WP t308 h0 swing pos(436.9 512.0 126.2) vel(7.27 -0.01 -6.36) claw(684.6 505.2 188.0) L264.1 d249.5 segs12 ms0.042/0.193 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 139 308 pos 436.9 512.0 126.2 vel 7.27 -0.01 -6.36 hspd 7.27 spd 9.66 gr 0 hook 1 L 264.1 d 249.5 anc 685 505 188 aim 1 ok 0 why out of reach end 1110 505 71 whip 0 cp 0.0 btn 0
+whp_S 140 309 pos 444.1 512.0 119.9 vel 7.27 -0.01 -7.36 hspd 7.27 spd 10.34 gr 0 hook 1 L 272.1 d 243.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1122 505 71 whip 0 cp 0.0 btn 0
+T_WP t310 h0 swing pos(451.4 512.0 112.5) vel(7.27 -0.01 -8.36) claw(684.6 505.2 188.0) L280.1 d237.1 segs11 ms0.058/0.101 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 141 310 pos 451.4 512.0 112.5 vel 7.27 -0.01 -8.36 hspd 7.27 spd 11.08 gr 0 hook 1 L 280.1 d 237.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1130 505 61 whip 0 cp 0.0 btn 0
+whp_S 142 311 pos 458.7 511.9 104.2 vel 7.27 -0.01 -9.36 hspd 7.27 spd 11.85 gr 0 hook 1 L 288.1 d 231.6 anc 685 505 188 aim 1 ok 0 why out of reach end 1138 505 53 whip 0 cp 0.0 btn 0
+T_WP t312 h0 swing pos(465.9 511.9 94.8) vel(7.27 -0.01 -10.36) claw(684.6 505.2 188.0) L296.1 d226.8 segs11 ms0.030/0.075 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 143 312 pos 465.9 511.9 94.8 vel 7.27 -0.01 -10.36 hspd 7.27 spd 12.65 gr 0 hook 1 L 296.1 d 226.8 anc 685 505 188 aim 1 ok 0 why out of reach end 1145 505 44 whip 0 cp 0.0 btn 0
+whp_S 144 313 pos 473.2 511.9 84.4 vel 7.27 -0.01 -11.36 hspd 7.27 spd 13.48 gr 0 hook 1 L 304.1 d 222.8 anc 685 505 188 aim 1 ok 0 why out of reach end 1153 505 37 whip 0 cp 0.0 btn 0
+T_WP t314 h0 swing pos(480.4 511.9 73.1) vel(7.27 -0.01 -12.36) claw(684.6 505.2 188.0) L312.1 d219.9 segs10 ms0.044/0.099 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 145 314 pos 480.4 511.9 73.1 vel 7.27 -0.01 -12.36 hspd 7.27 spd 14.34 gr 0 hook 1 L 312.1 d 219.9 anc 685 505 188 aim 1 ok 0 why out of reach end 1160 505 27 whip 0 cp 0.0 btn 0
+whp_S 146 315 pos 487.7 511.9 60.7 vel 7.27 -0.01 -13.36 hspd 7.27 spd 15.21 gr 0 hook 1 L 312.1 d 218.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1167 505 16 whip 0 cp 0.0 btn 0
+T_WP t316 h0 swing pos(495.0 511.9 47.4) vel(7.27 -0.01 -14.36) claw(684.6 505.2 188.0) L312.1 d217.9 segs10 ms0.038/0.098 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 147 316 pos 495.0 511.9 47.4 vel 7.27 -0.01 -14.36 hspd 7.27 spd 16.09 gr 0 hook 1 L 312.1 d 217.9 anc 685 505 188 aim 1 ok 0 why out of reach end 1175 505 7 whip 0 cp 0.0 btn 0
+whp_S 148 317 pos 502.2 511.9 33.0 vel 7.27 -0.01 -15.36 hspd 7.27 spd 16.99 gr 0 hook 1 L 312.1 d 219.2 anc 685 505 188 aim 1 ok 0 why out of reach end 1182 505 -6 whip 0 cp 0.0 btn 0
+T_WP t318 h0 swing pos(509.5 511.9 17.6) vel(7.27 -0.01 -16.36) claw(684.6 505.2 188.0) L312.1 d222.3 segs10 ms0.030/0.097 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 149 318 pos 509.5 511.9 17.6 vel 7.27 -0.01 -16.36 hspd 7.27 spd 17.90 gr 0 hook 1 L 312.1 d 222.3 anc 685 505 188 aim 1 ok 0 why out of reach end 1189 505 -19 whip 0 cp 0.0 btn 0
+whp_S 150 319 pos 516.8 511.9 1.3 vel 7.27 -0.01 -17.36 hspd 7.27 spd 18.82 gr 0 hook 1 L 312.1 d 227.3 anc 685 505 188 aim 1 ok 0 why out of reach end 1197 505 -33 whip 0 cp 0.0 btn 0
+T_WP t320 h0 swing pos(524.0 511.9 -16.1) vel(7.27 -0.01 -18.36) claw(684.6 505.2 188.0) L312.1 d234.3 segs10 ms0.036/0.074 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 151 320 pos 524.0 511.9 -16.1 vel 7.27 -0.01 -18.36 hspd 7.27 spd 19.75 gr 0 hook 1 L 312.1 d 234.3 anc 685 505 188 aim 1 ok 0 why out of reach end 1204 505 -59 whip 0 cp 0.0 btn 0
+whp_S 152 321 pos 531.3 511.9 -34.4 vel 7.27 -0.01 -19.36 hspd 7.27 spd 20.68 gr 0 hook 1 L 312.1 d 243.3 anc 685 505 188 aim 1 ok 0 why out of reach end 1211 505 -76 whip 0 cp 0.0 btn 0
+T_WP t322 h0 swing pos(538.6 511.9 -53.8) vel(7.27 -0.01 -20.36) claw(684.6 505.2 188.0) L312.1 d254.4 segs11 ms0.261/0.111 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 153 322 pos 538.6 511.9 -53.8 vel 7.27 -0.01 -20.36 hspd 7.27 spd 21.62 gr 0 hook 1 L 312.1 d 254.4 anc 685 505 188 aim 1 ok 0 why out of reach end 1218 505 -93 whip 0 cp 0.0 btn 0
+whp_S 154 323 pos 545.8 511.8 -74.2 vel 7.27 -0.01 -21.36 hspd 7.27 spd 22.56 gr 0 hook 1 L 312.1 d 267.5 anc 685 505 188 aim 1 ok 0 why out of reach end 1226 505 -108 whip 0 cp 0.0 btn 0
+T_WP t324 h0 swing pos(553.1 511.8 -95.5) vel(7.27 -0.01 -22.36) claw(684.6 505.2 188.0) L312.1 d282.5 segs11 ms0.029/0.074 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 155 324 pos 553.1 511.8 -95.5 vel 7.27 -0.01 -22.36 hspd 7.27 spd 23.51 gr 0 hook 1 L 312.1 d 282.5 anc 685 505 188 aim 1 ok 0 why out of reach end 1233 505 -123 whip 0 cp 0.0 btn 0
+whp_S 156 325 pos 560.4 511.8 -117.9 vel 11.39 -0.16 -21.65 hspd 11.39 spd 24.46 gr 0 hook 1 L 312.1 d 299.4 anc 685 505 188 aim 1 ok 0 why out of reach end 1240 505 -154 whip 0 cp 0.0 btn 0
+T_WP t326 h0 swing pos(571.8 511.7 -139.5) vel(18.45 -0.57 -3.54) claw(684.6 505.2 188.0) L312.1 d314.9 segs1 ms0.049/0.088 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 157 326 pos 571.8 511.7 -139.5 vel 18.45 -0.57 -3.54 hspd 18.46 spd 18.80 gr 0 hook 1 L 312.1 d 314.9 anc 685 505 188 aim 1 ok 0 why out of reach end 1252 505 -175 whip 0 cp 0.0 btn 0
+whp_S 158 327 pos 590.2 511.1 -143.1 vel 18.39 -0.57 -4.52 hspd 18.40 spd 18.95 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1270 504 -191 whip 0 cp 0.0 btn 0
+T_WP t328 h0 swing pos(608.6 510.5 -147.6) vel(18.53 -0.58 -4.79) claw(684.6 505.2 188.0) L312.1 d311.5 segs12 ms0.175/0.099 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 159 328 pos 608.6 510.5 -147.6 vel 18.53 -0.58 -4.79 hspd 18.54 spd 19.15 gr 0 hook 1 L 312.1 d 311.5 anc 685 505 188 aim 1 ok 0 why out of reach end 1288 504 -202 whip 0 cp 0.0 btn 0
+whp_S 160 329 pos 627.1 510.0 -152.4 vel 18.99 -0.62 -2.96 hspd 19.00 spd 19.23 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1307 503 -206 whip 0 cp 0.0 btn 0
+T_WP t330 h0 swing pos(646.1 509.3 -155.3) vel(19.18 -0.65 -1.79) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.015/0.101 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 161 330 pos 646.1 509.3 -155.3 vel 19.18 -0.65 -1.79 hspd 19.19 spd 19.28 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1326 503 -210 whip 0 cp 0.0 btn 0
+whp_S 162 331 pos 665.3 508.7 -157.1 vel 19.25 -0.67 -0.61 hspd 19.26 spd 19.27 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1345 502 -215 whip 0 cp 0.0 btn 0
+T_WP t332 h0 swing pos(684.6 508.0 -157.7) vel(19.17 -0.69 0.58) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.020/0.091 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 163 332 pos 684.6 508.0 -157.7 vel 19.17 -0.69 0.58 hspd 19.19 spd 19.20 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1364 501 -217 whip 0 cp 0.0 btn 0
+whp_S 164 333 pos 703.7 507.3 -157.2 vel 18.97 -0.70 1.74 hspd 18.98 spd 19.06 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1384 501 -219 whip 0 cp 0.0 btn 0
+T_WP t334 h0 swing pos(722.7 506.6 -155.4) vel(18.64 -0.71 2.86) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.026/0.129 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 165 334 pos 722.7 506.6 -155.4 vel 18.64 -0.71 2.86 hspd 18.65 spd 18.87 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1403 500 -219 whip 0 cp 0.0 btn 0
+whp_S 166 335 pos 741.3 505.9 -152.6 vel 18.18 -0.71 3.92 hspd 18.20 spd 18.62 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1421 499 -217 whip 0 cp 0.0 btn 0
+T_WP t336 h0 swing pos(759.5 505.2 -148.6) vel(17.62 -0.70 4.91) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.023/0.317 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 167 336 pos 759.5 505.2 -148.6 vel 17.62 -0.70 4.91 hspd 17.64 spd 18.31 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1439 498 -214 whip 0 cp 0.0 btn 0
+whp_S 168 337 pos 777.1 504.5 -143.7 vel 16.96 -0.70 5.80 hspd 16.98 spd 17.94 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1440 498 -214 whip 0 cp 0.0 btn 0
+T_WP t338 h0 swing pos(794.1 503.8 -137.9) vel(16.22 -0.69 6.60) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.013/0.079 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 169 338 pos 794.1 503.8 -137.9 vel 16.22 -0.69 6.60 hspd 16.23 spd 17.52 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1472 497 -213 whip 0 cp 0.0 btn 0
+whp_S 170 339 pos 810.3 503.1 -131.3 vel 15.40 -0.67 7.29 hspd 15.42 spd 17.05 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1490 496 -205 whip 0 cp 0.0 btn 0
+T_WP t340 h0 swing pos(825.7 502.5 -124.0) vel(14.53 -0.65 7.86) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.014/0.090 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 171 340 pos 825.7 502.5 -124.0 vel 14.53 -0.65 7.86 hspd 14.55 spd 16.54 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1505 496 -195 whip 0 cp 0.0 btn 0
+BW_OFFFIRE
+whp_S 172 341 pos 840.3 501.8 -116.2 vel 13.63 -0.63 8.32 hspd 13.64 spd 15.98 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1520 495 -188 whip 0 cp 0.0 btn 0
+T_WP t342 h0 swing pos(853.9 501.2 -107.8) vel(12.69 -0.61 8.65) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.013/0.086 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 173 342 pos 853.9 501.2 -107.8 vel 12.69 -0.61 8.65 hspd 12.71 spd 15.37 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1534 494 -182 whip 0 cp 0.0 btn 4000000
+whp_S 174 343 pos 866.6 500.6 -99.2 vel 11.75 -0.58 8.87 hspd 11.76 spd 14.73 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1546 494 -171 whip 0 cp 0.0 btn 4000000
+BW_OFFALT
+T_WP t344 h0 swing pos(878.3 500.0 -90.3) vel(10.81 -0.56 8.97) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.015/0.093 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 175 344 pos 878.3 500.0 -90.3 vel 10.81 -0.56 8.97 hspd 10.82 spd 14.05 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1558 493 -162 whip 0 cp 0.0 btn 4000000
+whp_S 176 345 pos 889.1 499.4 -81.4 vel 9.88 -0.53 8.96 hspd 9.89 spd 13.34 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1569 493 -155 whip 0 cp 0.0 btn 8000000
+T_WP t346 h0 swing pos(899.0 498.9 -72.4) vel(8.97 -0.50 8.84) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.014/0.082 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 177 346 pos 899.0 498.9 -72.4 vel 8.97 -0.50 8.84 hspd 8.98 spd 12.60 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1579 492 -148 whip 0 cp 0.0 btn 8000000
+whp_S 178 347 pos 908.0 498.4 -63.6 vel 8.09 -0.47 8.63 hspd 8.10 spd 11.84 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1588 492 -142 whip 0 cp 0.0 btn 8000000
+T_WP t348 h0 swing pos(916.1 497.9 -54.9) vel(7.25 -0.45 8.32) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.014/0.077 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 179 348 pos 916.1 497.9 -54.9 vel 7.25 -0.45 8.32 hspd 7.26 spd 11.04 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1596 491 -128 whip 0 cp 0.0 btn 8000000
+whp_S 180 349 pos 923.3 497.5 -46.6 vel 6.45 -0.42 7.93 hspd 6.46 spd 10.23 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1603 491 -120 whip 0 cp 0.0 btn 8000000
+T_WP t350 h0 swing pos(929.8 497.1 -38.7) vel(5.69 -0.39 7.47) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.014/0.085 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 181 350 pos 929.8 497.1 -38.7 vel 5.69 -0.39 7.47 hspd 5.71 spd 9.40 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1610 490 -112 whip 0 cp 0.0 btn 8000000
+whp_S 182 351 pos 935.5 496.7 -31.2 vel 4.98 -0.37 6.94 hspd 4.99 spd 8.55 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1615 490 -105 whip 0 cp 0.0 btn 0
+T_WP t352 h0 swing pos(940.4 496.3 -24.3) vel(4.31 -0.34 6.36) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.017/0.094 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 183 352 pos 940.4 496.3 -24.3 vel 4.31 -0.34 6.36 hspd 4.33 spd 7.69 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1620 490 -98 whip 0 cp 0.0 btn 0
+whp_S 184 353 pos 944.8 495.9 -17.9 vel 3.69 -0.32 5.73 hspd 3.71 spd 6.82 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1625 489 -91 whip 0 cp 0.0 btn 0
+T_WP t354 h0 swing pos(948.4 495.6 -12.2) vel(3.11 -0.30 5.05) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.028/0.081 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 185 354 pos 948.4 495.6 -12.2 vel 3.11 -0.30 5.05 hspd 3.12 spd 5.94 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1628 489 -80 whip 0 cp 0.0 btn 0
+whp_S 186 355 pos 951.6 495.3 -7.1 vel 2.57 -0.28 4.34 hspd 2.58 spd 5.05 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1631 489 -75 whip 0 cp 0.0 btn 0
+T_WP t356 h0 swing pos(954.1 495.0 -2.8) vel(2.06 -0.26 3.60) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.014/0.096 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 187 356 pos 954.1 495.0 -2.8 vel 2.06 -0.26 3.60 hspd 2.07 spd 4.15 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1634 488 -70 whip 0 cp 0.0 btn 0
+whp_S 188 357 pos 956.2 494.8 0.8 vel 1.57 -0.24 2.83 hspd 1.59 spd 3.25 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1636 488 -66 whip 0 cp 0.0 btn 0
+T_WP t358 h0 swing pos(957.8 494.6 3.6) vel(1.11 -0.22 2.05) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.013/0.079 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 189 358 pos 957.8 494.6 3.6 vel 1.11 -0.22 2.05 hspd 1.14 spd 2.35 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1638 488 -63 whip 0 cp 0.0 btn 0
+whp_S 190 359 pos 958.9 494.3 5.7 vel 0.67 -0.20 1.26 hspd 0.70 spd 1.44 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1639 488 -61 whip 0 cp 0.0 btn 0
+BW_LETGO
+T_WP t360 h0 swing pos(959.5 494.1 6.9) vel(0.24 -0.17 0.46) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.013/0.078 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 191 360 pos 959.5 494.1 6.9 vel 0.24 -0.17 0.46 hspd 0.30 spd 0.55 gr 0 hook 1 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1639 487 -57 whip 0 cp 0.0 btn 0
+T_WP t361 GRACE vel (0.2 -0.2 -0.5) 0.6 -> (1.1 -0.2 2.1) 2.3 (from 2 tic(s) back)
+T_WP t361 h0 letgo pos(959.8 494.0 7.4) vel(1.11 -0.22 2.05) claw(684.6 505.2 188.0) L312.1 d312.1 segs1 ms0.014/0.132 scale1.00 grip-1 free00 hoff0.00 pt-1
+whp_S 192 361 pos 959.8 494.0 7.4 vel 1.11 -0.22 2.05 hspd 1.14 spd 2.35 gr 0 hook 4 L 312.1 d 312.1 anc 685 505 188 aim 1 ok 0 why out of reach end 1640 487 -56 whip 0 cp 0.0 btn 20
+T_WPW 0 start mode 0 len 61
+whp_S 193 362 pos 960.9 493.8 9.5 vel 1.11 -0.22 1.05 hspd 1.14 spd 1.55 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1641 487 -54 whip 1 cp 0.0 btn 20
+whp_S 194 363 pos 962.0 493.5 10.5 vel 1.11 -0.22 0.05 hspd 1.14 spd 1.14 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1642 487 -53 whip 1 cp 0.0 btn 0
+whp_S 195 364 pos 963.1 493.3 10.6 vel 1.11 -0.22 -0.95 hspd 1.14 spd 1.48 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1643 487 -52 whip 1 cp 0.0 btn 0
+whp_S 196 365 pos 964.2 493.1 9.6 vel 1.11 -0.22 -1.95 hspd 1.14 spd 2.25 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1644 486 -52 whip 1 cp 0.0 btn 0
+whp_S 197 366 pos 965.4 492.9 7.7 vel 1.11 -0.22 -2.95 hspd 1.14 spd 3.16 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1645 486 -52 whip 1 cp 0.0 btn 0
+whp_S 198 367 pos 966.5 492.7 4.7 vel 1.11 -0.22 -3.95 hspd 1.14 spd 4.11 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1646 486 -53 whip 1 cp 0.0 btn 0
+whp_S 199 368 pos 967.6 492.5 0.8 vel 1.11 -0.22 -4.95 hspd 1.14 spd 5.08 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1647 486 -55 whip 1 cp 0.0 btn 0
+whp_S 200 369 pos 968.7 492.2 -4.2 vel 1.11 -0.22 -5.95 hspd 1.14 spd 6.06 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1649 485 -57 whip 1 cp 0.0 btn 0
+whp_S 201 370 pos 969.8 492.0 -10.1 vel 1.11 -0.22 -6.95 hspd 1.14 spd 7.04 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1650 485 -61 whip 1 cp 0.0 btn 0
+whp_S 202 371 pos 970.9 491.8 -17.1 vel 1.11 -0.22 -7.95 hspd 1.14 spd 8.03 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1651 485 -67 whip 1 cp 0.0 btn 0
+whp_S 203 372 pos 972.0 491.6 -25.0 vel 1.11 -0.22 -8.95 hspd 1.14 spd 9.02 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1652 485 -73 whip 1 cp 0.0 btn 0
+whp_S 204 373 pos 973.2 491.4 -34.0 vel 1.11 -0.22 -9.95 hspd 1.14 spd 10.01 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1653 485 -80 whip 1 cp 0.0 btn 0
+whp_S 205 374 pos 974.3 491.2 -43.9 vel 1.11 -0.22 -10.95 hspd 1.14 spd 11.01 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1654 484 -88 whip 1 cp 0.0 btn 0
+whp_S 206 375 pos 975.4 490.9 -54.9 vel 1.11 -0.22 -11.95 hspd 1.14 spd 12.00 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1655 484 -104 whip 1 cp 0.0 btn 0
+whp_S 207 376 pos 976.5 490.7 -66.8 vel 1.11 -0.22 -12.95 hspd 1.14 spd 13.00 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1656 484 -116 whip 1 cp 0.0 btn 0
+whp_S 208 377 pos 977.6 490.5 -79.8 vel 1.11 -0.22 -13.95 hspd 1.14 spd 13.99 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1657 484 -126 whip 1 cp 0.0 btn 0
+whp_S 209 378 pos 978.7 490.3 -93.7 vel 1.11 -0.22 -14.95 hspd 1.14 spd 14.99 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1659 483 -136 whip 1 cp 0.0 btn 0
+whp_S 210 379 pos 979.8 490.1 -108.7 vel 1.11 -0.22 -15.95 hspd 1.14 spd 15.99 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1660 483 -149 whip 1 cp 0.0 btn 0
+whp_S 211 380 pos 981.0 489.9 -124.6 vel 1.11 -0.22 -16.95 hspd 1.14 spd 16.99 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1661 483 -162 whip 1 cp 0.0 btn 0
+whp_S 212 381 pos 982.1 489.6 -141.5 vel 1.11 -0.22 -17.95 hspd 1.14 spd 17.98 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1662 483 -180 whip 1 cp 0.0 btn 0
+whp_S 213 382 pos 983.2 489.4 -159.5 vel 1.11 -0.22 -18.95 hspd 1.14 spd 18.98 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1663 483 -197 whip 1 cp 0.0 btn 0
+whp_S 214 383 pos 984.3 489.2 -178.4 vel 1.11 -0.22 -19.95 hspd 1.14 spd 19.98 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1664 482 -212 whip 1 cp 0.0 btn 0
+whp_S 215 384 pos 985.4 489.0 -198.4 vel 1.11 -0.22 -20.95 hspd 1.14 spd 20.98 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1665 482 -228 whip 1 cp 0.0 btn 0
+whp_S 216 385 pos 986.5 488.8 -219.3 vel 1.11 -0.22 -21.95 hspd 1.14 spd 21.98 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1666 482 -244 whip 1 cp 0.0 btn 0
+whp_S 217 386 pos 987.6 488.6 -241.3 vel 1.11 -0.22 -22.95 hspd 1.14 spd 22.98 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1668 482 -265 whip 1 cp 0.0 btn 0
+whp_S 218 387 pos 988.8 488.3 -264.2 vel 1.11 -0.22 -23.95 hspd 1.14 spd 23.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why out of reach end 1669 482 -289 whip 1 cp 0.0 btn 0
+T_WPW 0 AIM t388 INVALID: Floor (8.8 m, portals 0)
+whp_S 219 388 pos 989.9 488.1 -288.2 vel 1.11 -0.22 -24.95 hspd 1.14 spd 24.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 1296 481 -260 whip 1 cp 0.0 btn 0
+whp_S 220 389 pos 991.0 487.9 -313.1 vel 1.11 -0.22 -25.95 hspd 1.14 spd 25.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 0 why Floor end 1122 481 -260 whip 1 cp 0.0 btn 0
+T_WPW 0 AIM t390 VALID Wall at (1050 481 -273) 1.4 m, normal (-1.00 -0.00 0.00) (survey's sign faces the hand), anchor (1046 481 -273)
+whp_S 221 390 pos 992.1 487.7 -339.1 vel 1.11 -0.22 -26.95 hspd 1.14 spd 26.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 481 -273 whip 1 cp 0.0 btn 0
+whp_S 222 391 pos 993.2 487.5 -366.0 vel 1.11 -0.22 -27.95 hspd 1.14 spd 27.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 481 -292 whip 1 cp 0.0 btn 0
+T_WPW 0 REEL t392: quiet 30 tics, back into the coil
+whp_S 223 392 pos 994.3 487.3 -394.0 vel 1.11 -0.22 -28.95 hspd 1.14 spd 28.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 480 -334 whip 1 cp 0.3 btn 0
+whp_S 224 393 pos 995.4 487.0 -422.9 vel 1.11 -0.22 -29.95 hspd 1.14 spd 29.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 480 -361 whip 1 cp 0.8 btn 0
+whp_S 225 394 pos 996.6 486.8 -452.9 vel 1.11 -0.22 -30.95 hspd 1.14 spd 30.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 480 -390 whip 1 cp 1.5 btn 0
+whp_S 226 395 pos 997.7 486.6 -483.8 vel 1.11 -0.22 -31.95 hspd 1.14 spd 31.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 480 -417 whip 1 cp 2.5 btn 0
+whp_S 227 396 pos 998.8 486.4 -515.8 vel 1.11 -0.22 -32.95 hspd 1.14 spd 32.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 480 -446 whip 1 cp 3.7 btn 0
+whp_S 228 397 pos 999.9 486.2 -548.7 vel 1.11 -0.22 -33.95 hspd 1.14 spd 33.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 479 -477 whip 1 cp 4.9 btn 0
+whp_S 229 398 pos 1001.0 486.0 -582.7 vel 1.11 -0.22 -34.95 hspd 1.14 spd 34.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 479 -500 whip 1 cp 6.1 btn 0
+whp_S 230 399 pos 1002.1 485.7 -617.6 vel 1.11 -0.22 -35.95 hspd 1.14 spd 35.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 479 -545 whip 1 cp 7.3 btn 0
+whp_S 231 400 pos 1003.2 485.5 -653.6 vel 1.11 -0.22 -36.95 hspd 1.14 spd 36.97 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 479 -571 whip 1 cp 8.5 btn 0
+whp_S 232 401 pos 1004.4 485.3 -690.5 vel 1.11 -0.22 -37.95 hspd 1.14 spd 37.96 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 479 -596 whip 1 cp 9.7 btn 0
+whp_S 233 402 pos 1005.5 485.1 -728.5 vel 1.11 -0.22 -38.95 hspd 1.14 spd 38.96 gr 0 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -651 whip 1 cp 10.9 btn 0
+whp_S 234 403 pos 1006.6 484.9 -768.0 vel 0.00 -0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -689 whip 1 cp 12.1 btn 0
+whp_S 235 404 pos 1006.6 484.9 -768.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -726 whip 1 cp 13.3 btn 0
+whp_S 236 405 pos 1006.6 484.9 -768.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -737 whip 1 cp 14.5 btn 0
+whp_S 237 406 pos 1006.6 484.9 -768.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -737 whip 1 cp 15.7 btn 0
+whp_S 238 407 pos 1006.6 484.9 -768.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -737 whip 1 cp 16.9 btn 0
+whp_S 239 408 pos 1006.6 484.9 -768.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -737 whip 1 cp 18.1 btn 0
+whp_S 240 409 pos 1006.6 484.9 -768.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -737 whip 1 cp 19.3 btn 0
+whp_S 241 410 pos 1006.6 484.9 -768.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -737 whip 1 cp 20.2 btn 0
+whp_S 242 411 pos 1006.6 484.9 -768.0 vel 0.00 0.00 0.00 hspd 0.00 spd 0.00 gr 1 hook -1 L 0.0 d 0.0 anc 0 0 0 aim 1 ok 1 why Wall end 1046 478 -737 whip 1 cp 20.9 btn 0
