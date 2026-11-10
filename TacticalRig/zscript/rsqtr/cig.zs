@@ -54,7 +54,8 @@
 // The idea is Ermac's: the cigarette, its butt and its smoke come from his Virtual Tactical Vest for Doom VR (its credits
 // name him as their modeller; the cigarette's texture is an atlas shared with a Sketchfab cigarette-pack model, its pack
 // art blanked here), and the Zippo is the voxel lighter from his ZBlood-VR, credited to him there. tools/gen_handprops.py
-// bakes both into Brutal Doom VR's hand. A pocket holds a few (rsqtr_cig_count), refilled on a new level.
+// bakes both into Brutal Doom VR's hand. A pocket holds a few (rsqtr_cig_count); it does NOT refill on a new level
+// (owner 11-09: cigarettes are precious; Refill Each Level brings that back): earn them (RSQ Score, minibosses, DOWN).
 //
 // NETPLAY: the hands are the console player's alone, so that machine decides and sends one event per action (take, put
 // back, to the mouth, flick, the Zippo, light); every machine runs the same steps from them, and the timed steps (the
@@ -175,12 +176,12 @@ class RSQTR_Cig : EventHandler
 			let p = players[i];
 			int count = (RSQTR_Rig.Opt("rsqtr_cig_count", p, 3) + max(RSQTR_Rig.Gb(p, 'ChainSmoker'), 0));
 			let tok = RSQTR_CigPack(pmo.FindInventory("RSQTR_CigPack"));
-			if (!tok) { pmo.SetInventory("RSQTR_CigPack", count); tok = RSQTR_CigPack(pmo.FindInventory("RSQTR_CigPack")); }
+			if (!tok) { pmo.SetInventory("RSQTR_CigPack", RSQTR_CigKeep.Left(i, count)); tok = RSQTR_CigPack(pmo.FindInventory("RSQTR_CigPack")); }
 			else
 			{
 				// out at the level change and never lit: back in the pocket
 				if (tok.held == PH_HAND || tok.held == PH_MOUTH) tok.Amount++;
-				if (RSQTR_Rig.Flag("rsqtr_cig_refill", p, true)) tok.Amount = count;
+				if (RSQTR_Rig.Flag("rsqtr_cig_refill", p, false)) tok.Amount = count;
 			}
 			if (tok)
 			{
@@ -952,9 +953,17 @@ class RSQTR_Cig : EventHandler
 			bool msg = RSQTR_Rig.Flag("rsqtr_messages", p, false);
 
 			// NO POCKET AT ALL: Brutal Doom clears the player's inventory as a level starts, after WorldLoaded gave the
-			// pocket (rig 11-02, the full load order: the pocket was empty and nothing came out). Give it again.
+			// pocket (rig 11-02, the full load order: the pocket was empty and nothing came out). Give it again -- with
+			// what he had left (RSQTR_CigKeep), not a full pack: CIGARETTES ARE PRECIOUS (owner 2026-11-09 21:39). A full
+			// pack only on a new game, or with Refill Each Level on.
 			if (!pmo.FindInventory("RSQTR_CigPack") && pmo.health > 0)
-				pmo.SetInventory("RSQTR_CigPack", (RSQTR_Rig.Opt("rsqtr_cig_count", p, 3) + max(RSQTR_Rig.Gb(p, 'ChainSmoker'), 0)));
+			{
+				int full = RSQTR_Rig.Opt("rsqtr_cig_count", p, 3) + max(RSQTR_Rig.Gb(p, 'ChainSmoker'), 0);
+				pmo.SetInventory("RSQTR_CigPack", RSQTR_Rig.Flag("rsqtr_cig_refill", p, false) ? full : RSQTR_CigKeep.Left(n, full));
+			}
+			// remember what is in the pocket, for the next level (above)
+			let kt = pmo.FindInventory("RSQTR_CigPack");
+			if (kt) RSQTR_CigKeep.Note(n, kt.Amount);
 
 			// Smoker's untouchable spell over: the flag back to what it was
 			if (godUntil[n] > 0 && (level.maptime >= godUntil[n] || pmo.health <= 0))
@@ -1604,6 +1613,27 @@ class RSQTR_CigStowed : Actor
 		Radius 1; Height 1;
 	}
 	States { Spawn: RSCG A -1; Stop; }
+}
+
+// CIGARETTES ARE PRECIOUS (owner 2026-11-09 21:39): what is left in each player's pocket, remembered across level
+// changes outside the inventory (Brutal Doom empties it as a level starts). Static, so it outlives a level; cleared on a
+// new game, when the pocket starts full. Every machine writes the same numbers (from the synced inventory).
+class RSQTR_CigKeep : StaticEventHandler
+{
+	int cigsLeft[MAXPLAYERS];
+	bool known[MAXPLAYERS];
+	override void NewGame() { for (int i = 0; i < MAXPLAYERS; i++) { cigsLeft[i] = 0; known[i] = false; } }
+	static void Note(int n, int amt)
+	{
+		let k = RSQTR_CigKeep(StaticEventHandler.Find("RSQTR_CigKeep"));
+		if (k && n >= 0 && n < MAXPLAYERS) { k.cigsLeft[n] = amt; k.known[n] = true; }
+	}
+	// what player n had left, or full when nothing is known (a new game)
+	static int Left(int n, int full)
+	{
+		let k = RSQTR_CigKeep(StaticEventHandler.Find("RSQTR_CigKeep"));
+		return (k && n >= 0 && n < MAXPLAYERS && k.known[n]) ? k.cigsLeft[n] : full;
+	}
 }
 
 class RSQTR_CigPack : Inventory

@@ -172,8 +172,11 @@ default), it doesn't use your adrenaline, and RSQ SlowMo's countdown bar shows h
 
 Switching weapons, a holster, death or a level change ends it at once: an unlit cigarette goes back in the pocket, a lit
 one is flicked. Left unlit in your mouth for 7 seconds, it drops. You move at full speed in the smoke's slow motion unless
-you turn that off. The pocket refills each level; RSQ Score can earn you one every so many points, killing an RSQ
-Miniboss fills it, and getting up from RSQ SlowMo's DOWN gives one back.
+you turn that off.
+
+**Cigarettes are precious.** You start a game with a full pocket, and it does **not** refill on a new level: what you
+have left comes with you. You earn more: RSQ Score gives you one every so many points, killing an RSQ Miniboss fills
+the pocket, and getting up from RSQ SlowMo's DOWN gives one back. (Turn on **Refill Each Level** for the old way.)
 
 *[picture to come: the whole ritual, pocket to lips to Zippo to flick (GIF)]*
 
@@ -269,7 +272,7 @@ torso fades to about half as you look down, so you can see your holsters.
 | Stored Guns | Show Stored Guns (On) · Stored Gun Size (1.0) · Ammo Light (On) · Ammo Count (Off) |
 | Gun Throwing | Throw Guns (Off) · Throw With Use (Off) · Thrown Guns Hurt (On) |
 | Body | Seated (Off) · Measure My Height · Torso (Off) · Torso Style (Doom Marine / Quake Grunt) · Helmet (On) · Torso Fades Looking Down (On) · Torso Follows Room Turns (On) · Head and Hands Turn (Off) · Torso Catches Up (Off) · Recenter by Hands (On) · Recenter Torso (a key, unbound) |
-| Cigarettes | Cigarettes (Off) · Smoke Slows Time (On) · Smoke Slow-Mo Time (6 s) · Move at Full Speed While Smoking (On) · Cigarette Every N Score (0, off) · Minibosses Refill Cigarettes (On) · Refill Each Level (On) · Unlit Cigarette Goes Away (On) · Show Cigarettes (On) |
+| Cigarettes | Cigarettes (Off) · Smoke Slows Time (On) · Smoke Slow-Mo Time (6 s) · Move at Full Speed While Smoking (On) · Cigarette Every N Score (0, off) · Minibosses Refill Cigarettes (On) · Refill Each Level (Off) · Unlit Cigarette Goes Away (On) · Show Cigarettes (On) |
 | Setup | Move Holsters by Hand (Off) · Mirror (Off / While Moving / Always; While Moving) · Mirror Shows (Front / Back / Both; Both) · Haptics (On) · Messages (Off) |
 | Holster Profiles | Save and Load: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow) |
 | Test and Debug | Stored Guns: Gun Length (0.25 m), Back Gun Length (0.70 m), Gun Turn (0°), Flip These Guns · Body: Body Turn Angle (35°), Body Turn Delay (1 s), Ignore Looking Down (25°), Mirror Distance (1.0 m) · Hands: Press Delay (3 tics), Throw Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys, Off Grip Keys, Empty Hand Weapon · Torso Fit: Torso Height, Torso Forward, Torso Size, Helmet Height, Low Health Glow (35%) · Cigarette: Mouth Zone Size, In Mouth Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Unlit Goes Away After (7 s), Slow Motion Speed (25%), Pack Size (3) · Holster Positions: Forward, Left, Up and Size for each of Left Hip, Right Hip, Grenade Spot, Left Chest, Right Chest, Keyring, Left Shoulder, Right Shoulder, Left Saber, Right Saber, Whip, Flare, Ammo Pouch · Debug: Throw Debug Log (Off) |
