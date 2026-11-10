@@ -10,6 +10,10 @@ The same credits as README.md's "Credits and licence".
   he separated), the hand model and the sounds come from it. His Rusted Legacy code is MIT
   (models/hand/LICENSE_RustedLegacy_MIT.txt); that licence does not make id Software's ripped mesh MIT. Which of the
   two shipped shield meshes is which, and where the hand and sounds came from before Rusted Legacy, is not recorded.
+  WHERE THE OWNER'S LIBRARIES COME FROM (the owner's list, 2026-11-10: melee sprites from Street Fighter II (Capcom); explosion sprites and sounds from Gunstar
+  Heroes (Treasure / Sega), Top Gear 2 (Genesis), Castlevania: Bloodlines (Konami) and Streets of
+  Rage 2 (Sega); explosion sprites from Mega Man X3 (Capcom), Metal Slug X (SNK), Castlevania: Symphony of the Night
+  (Konami), Dark Wizard (Sega) and The King of Dragons (Capcom). Which file came from which game is not recorded yet.)
 - RS Combat FX and RS Ballistics (the owner's effect libraries): the saw voice and block sparks (chainsaw
   archetype), and Gun Bonsai VR's Shield Dash and Charge effects and sounds.
 - QuestZDoom (Emawind, Team Beef): the engine and its off-hand weapon and hand-pose support.

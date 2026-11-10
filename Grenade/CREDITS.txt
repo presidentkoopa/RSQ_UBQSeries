@@ -39,6 +39,10 @@ SOUNDS
 Every sound is the UAC Survival Pack's own recording. Nothing is synthesized. The Gun Bonsai VR tree's (below) are not.
 
 THE GRENADE TREE'S EFFECTS AND SOUNDS (Gun Bonsai VR patch, 2026-11-02)
+  WHERE THE OWNER'S LIBRARIES COME FROM (the owner's list, 2026-11-10: melee sprites from Street Fighter II (Capcom); explosion sprites and sounds from Gunstar
+  Heroes (Treasure / Sega), Top Gear 2 (Genesis), Castlevania: Bloodlines (Konami) and Streets of
+  Rage 2 (Sega); explosion sprites from Mega Man X3 (Capcom), Metal Slug X (SNK), Castlevania: Symphony of the Night
+  (Konami), Dark Wizard (Sega) and The King of Dragons (Capcom). Which file came from which game is not recorded yet.)
   From the owner's two wells, RS Combat FX and RS Ballistics (presidentkoopa's libraries), one asset at a time, under
   this pack's own names (QGB1 QGBB QGIC QGFI QGCL QGHF; QGBOMB1-3 QGBIGB QGFREEZ QGFIRE QGSMOKE QGFLASH QGSTUN QGCHARM):
   Grenade/tools/fxpull.py is the record of each pull (the well and the path); sounds converted to mono 44.1 kHz.
@@ -67,7 +71,7 @@ size; nothing is smoothed.
     shock ring, #10 gold ring), the fire ring (#6 child, #7 crown, #8 ember scorch), the streak flare (the three pops
     of all six), the pastel ring (#6 cap rings), the bubble burst (#6 child, #10 floor ring), the yellow puffs (#7),
     the dust ring (#8 #9), the yellow flash (#8 child, #10), the star pops and the cluster ring (#10).
-  - fx_sheet_2.png (design/assets/fx_sheets): *** SOURCE UNKNOWN *** -- the owner kept it (fx_sheets/README.md:
+  - fx_sheet_2.png (design/assets/fx_sheets): one of the games in the owner's 11-10 list above (explosion sprites); which one not recorded yet -- the owner kept it (fx_sheets/README.md:
     "ask the owner before shipping"). Used ONLY in #6 Heavy: its main blast (the flash domes, gradient-mapped to
     fire: sprites QB01X-Z, QB02A-B) and its floor ring (f2ring: QB02H), as exported on 11-09. If this sheet
     cannot ship, #6 needs a new main blast and floor ring; the other five do not use it.
@@ -94,7 +98,7 @@ is the source art recoloured, re-centred and trimmed at its own pixel size, or d
     ring), the streak flare (the three pops; the skeet's crosshair ring), the cluster ring (the skeet's gold fireball
     ring), the dust ring (the grit puffs), the bubble burst (the underwater gas bubbles and dome), the yellow flash ring
     (the barrel's underwater thump ring), the yellow puffs (the sky column).
-  - fx_sheet_2.png (design/assets/fx_sheets): *** SOURCE UNKNOWN *** (as above). Used ONLY as a SHAPE: the barrel's
+  - fx_sheet_2.png (design/assets/fx_sheets): one of the games in the owner's 11-10 list above (explosion sprites); which one not recorded yet (as above). Used ONLY as a SHAPE: the barrel's
     underwater white flash is #6 Heavy's first dome frame drawn solid white (ctx_a.py water_barrel). If the sheet cannot
     ship, that flash needs another shape.
   - Sergeant Mark IV's Meatgrinder, via RS Monsters (Monsters/sprites/meatgrinder, MGAB A-H the blood burst, MGAG E-H

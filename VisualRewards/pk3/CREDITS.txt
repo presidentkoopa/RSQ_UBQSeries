@@ -116,7 +116,7 @@ from the owner's approved mockups, tools/beam_spec/)
   - The arrival sounds (sounds/rsqvr/RVQB1-4 and RVQHIT; RVQB1-4 are made from the owner's ONPARE2/3/8 and PL01_U, sources in tools/beam_sounds): arrival sounds supplied by the owner
     (presidentkoopa), 2026-11-09; source not stated.
 
-- Scene music (2026-11-09): the Bossfight track "20 organic beat", supplied by the owner (presidentkoopa); cut to loop
-  at 2:02.97 with a 0.5 s crossfade (sounds/rsqvr/RVQMUS1.ogg). Its source to record before release.
-- DOWN's track (2026-11-09): "29 red alert", supplied by the owner; its first 22.4 s looped (sounds/rsqvr/RVQMUS2.ogg).
-  Its source to record before release.
+- Scene music (2026-11-09): the miniboss fight's track "20 organic beat", supplied by the owner (presidentkoopa); cut to
+  loop at 2:02.97 with a 0.5 s crossfade (sounds/rsqvr/RVQMUS1.ogg). From Phantasy Star IV (Sega), per the owner (2026-11-10).
+- DOWN's (Be Quick or Be Dead's) track (2026-11-09): "29 red alert", supplied by the owner; its first 22.4 s looped
+  (sounds/rsqvr/RVQMUS2.ogg). From Phantasy Star IV (Sega), per the owner (2026-11-10).

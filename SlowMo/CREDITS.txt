@@ -30,6 +30,9 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
       Hires/SmallFont/stcfnNNN.png) by tools/plate/gen_plate_font.py. JFO ships with credit to Zedas and Blackmore1014,
       by the owner's decision (2026-11-04). Characters JFO does not have (. , ( ) ' ! ? % and the like) are the IWAD's own
       DoomFont glyphs, by lump name (TEXTURES.txt, as the RSQ Wheel does).
+  Kirby Mass Attack (HAL Laboratory / Nintendo), per the owner (2026-11-10)
+      Be Quick or Be Dead's (DOWN's) reward bar and the turn markers' chevrons: their design comes from Kirby Mass
+      Attack's, supplied by the owner.
   id Software (Doom), played by name from the IWAD, NOT shipped
       The clock's cues: DSGETPOW (slowing), DSPSTOP (back to speed), DSITEMUP (meter full),
       DSNOWAY (not enough adrenaline). See SNDINFO.txt.

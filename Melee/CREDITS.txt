@@ -54,6 +54,10 @@ HIT SPARKS (2026-11-06)
   repainted. (The Capcom vs. SNK 2 sparks used until 11-06 are gone.)
 
 FISTS TREE SOUNDS (2026-11-02)
+  WHERE THE OWNER'S LIBRARIES COME FROM (the owner's list, 2026-11-10: melee sprites from Street Fighter II (Capcom); explosion sprites and sounds from Gunstar
+  Heroes (Treasure / Sega), Top Gear 2 (Genesis), Castlevania: Bloodlines (Konami) and Streets of
+  Rage 2 (Sega); explosion sprites from Mega Man X3 (Capcom), Metal Slug X (SNK), Castlevania: Symphony of the Night
+  (Konami), Dark Wizard (Sega) and The King of Dragons (Capcom). Which file came from which game is not recorded yet.)
   From the owner's two sound wells, RS Combat FX and RS Ballistics (presidentkoopa's libraries), one file at a time;
   Melee/tools/fxsounds.py is the record of each pull (the well and the path) and converts each to mono 44.1 kHz.
 
