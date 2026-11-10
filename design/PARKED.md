@@ -40,10 +40,11 @@ No backing: billboard glyphs like Score's wrist digits (a canvas draws black in 
 Audit 11-10: RSQ Grenade (trigger or alt held, swing, release), RSQ Saber (release fire as the hand snaps forward),
 RSQ ShieldSaw (off trigger held revs, release with the arm moving), BD22 VR's axe (rsvr/melee.zs: hold the trigger,
 swing, let go, "like the grenade") already share the gesture. They differ in how the hand's speed is sampled and in
-their thresholds (Saber's Throw Needs, ShieldSaw's ssq_throw_min, the grenade's body-frame sampler of 11-09). Next:
-one sampler (the grenade's) and one threshold for all of them. Not built.
+their thresholds (Saber's Throw Needs, ShieldSaw's ssq_throw_min, the grenade's body-frame sampler of 11-09). Built 11-10:
+one sampler (the grenade's) and one threshold (2.5 m/s). Rig: the Saber shown (2.06 no throw, 3.09 thrown); the
+ShieldSaw's threshold, BD22 VR's axe and grenade not shown.
 
-## After the rig tests: every README's controls (owner 2026-11-10 12:59)
+## After the rig tests: every README's controls (owner 2026-11-10 12:59) — DONE 11-10 (77476a91, 0ed50ac8, 3e60c376, de9fc1e8)
 "all readmes need to be updated with controls and shit once this is over": every README's How to play and Controls rows to
 match the 11-10 keys pass (design/KEYBINDS_PLAN.md) and each mod's inputs as built. Whip, Gun Cards and Accessibility
 READMEs: approved pending their fixes (owner 12:59).
@@ -161,7 +162,8 @@ DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
 - Whip dead code: build Rope perks and the bind whip (owner). QUEUED after the rig test and the README controls pass.
 - Graveyard Remove buttons in a netgame: keep m8f's way (either player's button clears every machine's store) (owner).
 - Rig scope 11-10: stop after L9; the rest stays "not yet run" for the next batch (owner).
-- OPEN BLOCKER (README agents, 11-10): ropes cannot be climbed out of the box. Grapple (input.zs:204) and Whip take the
+- RESOLVING (owner 13:4x: "The grip grabs the rope", then "Grip codes + touch fallback"): grip codes built 26636422 (code
+  only); the touch fallback being built and rig-tested by an agent. Was: OPEN BLOCKER (README agents, 11-10): ropes cannot be climbed out of the box. Grapple (input.zs:204) and Whip take the
   rope only through Distance Grab's grab keys, which have had no default bind since 11-10. KEYBINDS_PLAN says "grabbing
   the rope is the grip". Owner to decide.
 - Open from the agents: Wheel's Opens On and Re-centre Window rows do nothing with one key; Monsters' Tier Icons row
