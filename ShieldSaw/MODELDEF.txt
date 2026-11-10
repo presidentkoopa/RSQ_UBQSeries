@@ -3,7 +3,7 @@
 // draws at the off controller every frame; its live placement comes from the weapon's
 // ModifyBobLayer3D hook (zscript/ssq/shield.zs), not from here.
 //
-// Meshes are Ermac's (Rusted Legacy, MIT). shield.md3: frames 0 (closed) to 3 (open).
+// Meshes: see CREDITS.txt (Ermac's are MIT; the ripped id mesh is not). shield.md3: frames 0 (closed) to 3 (open).
 // shieldsaw.md3: 0 blades in, 1-4 deploying, 5-7 spinning. hand_ssq.md3: frame 0 open, 1 fist
 // (frames 0 and 1 of his hand.md3, nothing else). The placement -- Scale -1 1 1, Offset 0 -24 -10
 // -- is Ermac's own for this hand, the same the BD22 Quest pack draws its free hand with, and the

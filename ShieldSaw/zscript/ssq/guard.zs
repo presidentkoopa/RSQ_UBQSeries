@@ -161,7 +161,7 @@ class SSQ_Guard : Inventory
 
 	bool Crosses(Vector3 A, Vector3 B, Vector3 C, Vector3 n, double R)
 	{
-		double thick = SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_thick', 25.0));
+		double thick = SSQ_Handler.CM(SSQ_Handler.SV('ssq_plate_thick', 4.0));
 		Vector3 d = B - A;
 		double dd = d dot d;
 		if (dd <= 0 || dd != dd) return false;
@@ -374,7 +374,9 @@ class SSQ_Guard : Inventory
 			A = inflictor.pos;
 			B = centre;
 		}
-		else if (source && inflictor == source && !source.player)
+		// MELEE only within the attacker's own reach (owner 11-10: a monster's bullet is not melee). A hitscan with no puff
+		// can arrive with the shooter as its inflictor too; from further than its melee range it is read as a shot below.
+		else if (source && inflictor == source && !source.player && source.Distance3D(mo) <= source.MeleeRange + mo.radius + 16)
 		{
 			kind = 2;
 			A = source.pos + (0, 0, source.height * 0.6);
@@ -531,7 +533,7 @@ class SSQ_Guard : Inventory
 		if (!mo || !mo.player || mo.health <= 0) return false;
 		if (!shooter || shooter == mo) return false;
 		if (!Plate()) return false;
-		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 18.0));
+		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 0.0));
 		Vector3 B = A + dir * max(dist, 1.0);
 		Vector3 travel = PlateTravel();
 		bool got = false;
@@ -647,8 +649,8 @@ class SSQ_Guard : Inventory
 		if (!mo || !mo.player || mo.health <= 0) return;
 		if (!Plate() || !PlateTurns()) return;	// the sweep only TURNS: a Back Plate 1 shield just blocks
 		Vector3 C = plateC, n = plateN;
-		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 18.0));
-		double lead = clamp(SSQ_Handler.SV('ssq_sweep_lead', 3.0), 1.0, 6.0);
+		double R = plateR + SSQ_Handler.CM(SSQ_Handler.SV('ssq_sweep_pad', 0.0));
+		double lead = clamp(SSQ_Handler.SV('ssq_sweep_lead', 1.0), 1.0, 6.0);
 		Vector3 travel = PlateTravel();
 		double reach = R + 320.0 + travel.Length();	// a fast bolt, and a fast arm, cover ground
 		// the missiles in flight (SSQ_Handler.mMissiles: a projectile is never in the blockmap)
@@ -713,7 +715,7 @@ class SSQ_Guard : Inventory
 	// WHERE A TURNED SHOT GOES, for both the sweep and the block, so they never disagree.
 	// ssq_deflect_aim: 0 straight back at whoever fired it, 1 where you are LOOKING (helped
 	// onto the nearest enemy within ssq_deflect_assist of your gaze), 2 mirrored off the face.
-	// 1 is the default because it is the one that makes a shield feel like a weapon: you catch
+	// The default is 3 (CVARINFO); 1 is the one that makes a shield feel like a weapon: you catch
 	// a fireball on the plate and send it wherever you turn your head.
 	// 3, OFF THE PLATE AND YOUR SWING (owner 2026-10-31: "100% of the time it sends the projectile directly back to
 	// the attacker, it doesn't seem to make a difference if I block at an angle, or bash"): the shot glances off the
@@ -1033,7 +1035,7 @@ class SSQ_Guard : Inventory
 		bool los = SSQ_Handler.SVI('ssq_bash_los', 1) != 0;
 		// AND THE PLATE WALKS ITS OWN TIC HERE TOO. This loop tested ONE plate centre -- the one
 		// the tic ended at -- while both block paths have walked the plate across its travel all
-		// along (StopsHitscan, :378-384; DoEffect, :484-505, and PlateTravel's own comment says
+		// along (StopsHitscan and DoEffect, and PlateTravel's own comment says
 		// why). The rim is the fastest-moving part of the shield and the grind is the rim
 		// actually on a body: sweep the arm along a line of them at a plain 3 m/s (2.91 units a
 		// tic) and the plate crossed that much between evaluations with the per-body cooldown

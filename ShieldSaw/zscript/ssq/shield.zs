@@ -15,7 +15,6 @@
 class SSQ_ShieldSaw : Weapon
 {
 	int rev;			// 0 .. ssq_rev_tics
-	int grindTic;
 	bool loopOn;
 
 	Default
@@ -46,7 +45,7 @@ class SSQ_ShieldSaw : Weapon
 		int n = SSQ_Handler.SVI('ssq_rev_tics', 21);
 		if (n <= 0) n = 1;
 		int f = int(floor(rev * 7.0 / n + 0.5));
-		if (rev >= n) f = 5 + (Level.maptime / 2) % 3;	// spinning: E F G H cycle the blade frames 5-7
+		if (rev >= n) f = 5 + (Level.maptime / 2) % 3;	// spinning: F G H cycle the blade frames 5-7
 		return clamp(f, 0, 7);
 	}
 

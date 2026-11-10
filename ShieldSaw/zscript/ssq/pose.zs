@@ -219,23 +219,8 @@ class SSQ_Hand abstract play
 		return yaw, pitch, roll, grip;
 	}
 
-	// the basis from the packed angles: F from yaw/pitch, L0 the horizontal left of F, U0 = F x L0,
-	// then L and U rolled about F
-	// (returns, not out params: the JIT cannot pass an out Vector3)
-	static clearscope Vector3, Vector3, Vector3 Basis(double yaw, double pitch, double roll)
-	{
-		double cp = cos(pitch);
-		Vector3 F = (cp * cos(yaw), cp * sin(yaw), sin(pitch));
-		Vector3 L0 = (cos(yaw + 90), sin(yaw + 90), 0);
-		Vector3 U0 = (F.y * L0.z - F.z * L0.y, F.z * L0.x - F.x * L0.z, F.x * L0.y - F.y * L0.x);
-		double cr = cos(roll), sr = sin(roll);
-		Vector3 L = L0 * cr + U0 * sr;
-		Vector3 U = U0 * cr - L0 * sr;
-		return F, L, U;
-	}
-
 	// the roll of the controller's real left axis about F, measured against the horizontal
-	// left, so the receiving side's Basis() rebuilds the same L and U the sender had
+	// left (the roll the sender packs)
 	static clearscope double RollOf(Vector3 F, Vector3 Lreal)
 	{
 		double yaw = atan2(F.y, F.x);

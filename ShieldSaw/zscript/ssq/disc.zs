@@ -2,7 +2,7 @@
 //
 // Launched from the synced hand velocity (every machine computes the same launch from the
 // same pose history), spinning in the plane the wrist gave it (UseActorRoll), it visits up to
-// ssq_locks targets found in a cone from the hand's forward at release, then comes home
+// ssq_locks targets painted while you held the shield (state.zs: the rings), then comes home
 // along the breadcrumbs it dropped on the way out -- never through a wall -- and either
 // lands in the hand that is waiting for it (a catch) or on the mount.
 //
@@ -134,8 +134,11 @@ class SSQ_Disc : Actor
 		if (l > 1) vel = d / l * max(cruise, vel.Length());
 		A_StartSound("ssq/bounce", CHAN_5);
 		SSQ_FX.Sparks(self, pos, (0, 0, 1), 8);
+		// its ring goes in at the same place as its lock (owner 11-10: rings matched to targets by position, so a pushed
+		// ring took the next target's place): the clean-up below reads marks[i] as locks[i]
 		let m = Spawn('SSQ_LockMark', t.pos + (0, 0, t.height + 8));
-		if (m) { m.tracer = t; marks.Push(m); }
+		if (m) m.tracer = t;
+		if (lockAt <= marks.Size()) marks.Insert(lockAt, m); else marks.Push(m);
 		return true;
 	}
 
@@ -421,7 +424,7 @@ class SSQ_Disc : Actor
 			let h = SSQ_Handler.Get();
 			int pnum = thrower ? thrower.PlayerNumber() : -1;
 			// a hand waiting for it catches it
-			if (h && pnum >= 0 && SSQ_Handler.SVI('ssq_catch', 1) != 0 && h.Holding(pnum))
+			if (h && pnum >= 0 && SSQ_Handler.SVI('ssq_catch', 1) != 0)   // the catch needs only the hand near the disc
 			{
 				let pose = h.PoseOf(pnum);
 				if (pose.Fresh(Level.maptime) && (pose.pos[0] - pos).Length() <= SSQ_Handler.SV('ssq_catch_radius', 24.0))

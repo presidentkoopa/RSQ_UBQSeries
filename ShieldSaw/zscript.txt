@@ -1,5 +1,5 @@
 // RS_ShieldSawQ -- a shield saw for stock QuestZDoom 17.3. Standalone: loads with any weapon
-// pack, nothing to change in the engine. The design and its reasons: ShieldSaw_Quest_Design.md.
+// pack, nothing to change in the engine. What it does: README.md; the reasons sit beside the code.
 version "4.14"
 
 #include "zscript/ssq/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)

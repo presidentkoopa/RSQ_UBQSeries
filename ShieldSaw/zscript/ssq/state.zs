@@ -1,7 +1,7 @@
 // RS_ShieldSawQ -- the three states, the shoulder mount, the loadout swap, and the input.
 //
 //   STOWED   on the mount: the small of your back, behind your neck or over your off shoulder
-//            (ssq_mount_spot), hung on your body, not your head (a world prop, guarding your back)
+//            (ssq_mount_spot), hung on your body, not your head (a world prop; Guard Your Back is off by default)
 //   DRAWN    in your off hand: SSQ_ShieldSaw is the off-hand weapon
 //   FLYING   thrown. Your previous off-hand weapon is already back, so you are never
 //            empty-handed. The disc comes home along the way it went; a hand near it on the
@@ -14,8 +14,9 @@
 //   USE held away from the mount                      -> lock-on: rings over what you aim at
 //                                                        (ssq_lock_input 0; 1 the ShieldSaw lock key,
 //                                                        2 the throw trigger too: LockHeld)
-//   off TRIGGER held                                  -> the saw revs (ssq_lock_button picks which off
-//                                                        button is the trigger: SecHeld)
+//   off TRIGGER held                                  -> the saw revs (always the off trigger)
+//   the throw button (ssq_lock_button: off trigger,  -> let go with the arm moving: the throw
+//     off alt, or either; SecHeld)
 //   off TRIGGER released, arm moving forward          -> throw, at the ringed targets in order
 //   off TRIGGER released, arm still                   -> nothing; it stays in the hand
 //   off TRIGGER pressed while it flies                -> recall
@@ -33,8 +34,8 @@ class SSQ_Handler : EventHandler
 	Actor mMarker[MAXPLAYERS];
 	Actor mDisc[MAXPLAYERS];
 	class<Weapon> mPrevOff[MAXPLAYERS];	// what the draw displaced (null: nothing, or the pack's hands)
-	transient bool mFistNext[MAXPLAYERS];
-	transient int a11yFlash;	// the last block star / bloom's tic (Photosensitive Mode, SSQ_FX.FlashOk)	// the next store hands the off hand its fist (ssq_store_to 0)
+	transient bool mFistNext[MAXPLAYERS];	// the next store hands the off hand its fist (ssq_store_to 0)
+	transient int a11yFlash;	// the last block star / bloom's tic (Photosensitive Mode, SSQ_FX.FlashOk)
 	class<Weapon> mPrevMain[MAXPLAYERS];	// the main-hand weapon a two-handed conflict lowered
 	bool  mGripWas[MAXPLAYERS];		// off secondary last tic
 	bool  mUseWas[MAXPLAYERS];
@@ -43,7 +44,6 @@ class SSQ_Handler : EventHandler
 	int   mDrawGrace[MAXPLAYERS];	// tics after a draw before an empty off hand counts as eviction
 	int   mCycleTic[MAXPLAYERS];	// the last Next / Prev Offhand Weapon press (ssq_offhand_cycle), gametic + 1; 0 none
 	int   mStartDrawn[MAXPLAYERS];	// countdown to the draw at spawn (ssq_start_drawn)
-	bool  mInZone[MAXPLAYERS];		// kept for the debug line; the zone-hides-the-gun pass was retired
 	// THE LOCK-ON YOU SEE. While the shield is held, a cone from where the off hand points picks
 	// the targets every tic; a ring hangs over each, biggest over the first the disc will visit.
 	// Let go and this list is what flies, in this order.
@@ -56,7 +56,6 @@ class SSQ_Handler : EventHandler
 	bool  mLockWas[MAXPLAYERS];	// the lock input last tic
 	bool  mMigrated;
 	SSQ_ScoreMemory score;		// what a scorer may ask about blocks and turned shots (score.zs)
-	int   mLockSig[MAXPLAYERS];
 	// SABER OVER SHIELD (pick 15): the stance, as the player's own machine last said (netevent ssq-brace)
 	bool  mBraced[MAXPLAYERS];
 	int   mSpartan[MAXPLAYERS];	// SPARTAN (Gun Bonsai VR patch): each player's level, kept for SSQ_Guard.Spartan (clearscope)
@@ -419,7 +418,6 @@ class SSQ_Handler : EventHandler
 		double vu = SSQ_Hand.VU();
 		return BodyAt(mo, c.x * vu, c.y * vu * (LeftHanded(p) ? -1 : 1), c.z * vu / SSQ_Hand.PS(mo));
 	}
-	static clearscope Vector3 NeckPos(PlayerPawn mo) { return SpotPos(mo, true); }
 
 	// HOW FAR INTO THE GRAB the hand is: <= 1 takes a Use press; up to ZoneK() the marker brightens and the pose is
 	// sent. With both back spots, the nearer.
@@ -580,10 +578,9 @@ class SSQ_Handler : EventHandler
 	// threw. The owner's own lightsaber reads BT_OFFHANDATTACK -- the plain off-hand trigger --
 	// and that is why its lock-on and throw work.
 	//
-	// So: either button, by default. Holding the off trigger revs the saw AND paints locks;
-	// letting go with the arm moving throws, which is also how the saber does it and makes a
-	// revved throw the natural one. ssq_lock_button 0 keeps the old alt-only behaviour, 2 is
-	// the trigger alone.
+	// So the throw button is the off trigger by default (ssq_lock_button 2; 0 the old alt only, 1 either):
+	// holding the off trigger revs the saw, letting go with the arm moving throws -- how the saber and
+	// the grenade throw too. Locking on is its own hold (LockHeld below: Use by default).
 	// ---- LIVING WITH OTHER OFF-HAND MODS ------------------------------------------------
 	//
 	// Two mods we load beside are built to never leave the off hand empty: the weapon pack's
@@ -909,12 +906,6 @@ class SSQ_Handler : EventHandler
 		else mKeepMarks[i] = max(mKeepMarks[i], Level.maptime + SVI('ssq_keep_marks', 175));	// not a throw: hold the marks
 	}
 
-	clearscope bool Holding(int i) { return true; }	// the catch needs only the hand near the disc
-
-	// WHILE FIRE IS HELD BOTH HANDS ARE PINNED: the shield in the off hand, the gun you had in
-	// the main hand. QZD's `switchhand` (an off-hand button on the Quest) nulls BOTH hands and
-	// moves the gun across (player.zs SwitchWeaponHand); a weapon-cycle or a pickup switch
-	// changes one. Whatever happened, it is undone this tic. Only the release moves the shield.
 	// WE STOPPED FIGHTING THE ENGINE FOR THE OFF HAND.
 	//
 	// v0.6 pinned both hands every single tic: if anything moved a weapon it was put back the
@@ -1035,7 +1026,6 @@ class SSQ_Handler : EventHandler
 		mLastPaint[i] = 0;
 		for (int k = 0; k < mLockMarks[i].Size(); k++) if (mLockMarks[i][k]) mLockMarks[i][k].Destroy();
 		mLockMarks[i].Clear();
-		mLockSig[i] = 0;
 	}
 
 	// IS THIS ONE STILL MINE? The keep test, deliberately looser than the acquire test:
@@ -1174,7 +1164,6 @@ class SSQ_Handler : EventHandler
 		// BRING IT UP OURSELVES. A switch normally happens inside the old weapon's ready state
 		// (it sees PendingWeapon, lowers, raises the next) -- and the zone took that layer away.
 		mo.BringUpWeapon();
-		mInZone[i] = false;
 		mDrawGrace[i] = 8;	// the raise takes a few tics; do not read an empty slot as eviction
 		mState[i] = SS_DRAWN;
 		mo.A_StartSound("ssq/draw", CHAN_6);
@@ -1476,7 +1465,7 @@ class SSQ_Handler : EventHandler
 	}
 
 	// ---- events ------------------------------------------------------------------
-	// the live state in the corner, for a screenshot (Debug -> Print decisions)
+	// the live state in the corner, for a screenshot (Debug Log)
 	override void RenderOverlay(RenderEvent e)
 	{
 		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
@@ -1623,10 +1612,6 @@ class SSQ_Handler : EventHandler
 		}
 	}
 
-	// ---- the console player's side: the pose, and the raw grip ----------------------------
-	// SendPose runs in WorldTick on every machine, for that machine's own console player only:
-	// it reads the renderer-written fields (console pawn only) and sends them. The sim never
-	// reads those fields anywhere else. OffhandDir is play-scope, so this cannot live in UiTick.
 	// ---- WALL SLAM (owner's pick 12; Quest teardown surveys/01_MELEE.md 4.7) -----------------------
 	// A bashed body is watched for 12 tics (longer while a hit-stop holds it). The engine stops a monster
 	// that walks into a wall dead: P_XYMovement zeroes its XY velocity and leaves the line in
@@ -1786,6 +1771,10 @@ class SSQ_Handler : EventHandler
 		EventHandler.SendNetworkEvent("ssq-brace", now - 1);
 	}
 
+	// ---- the console player's side: the pose, and the raw grip ----------------------------
+	// SendPose runs in WorldTick on every machine, for that machine's own console player only:
+	// it reads the renderer-written fields (console pawn only) and sends them. The sim never
+	// reads those fields anywhere else. OffhandDir is play-scope, so this cannot live in UiTick.
 	void SendPose()
 	{
 		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
