@@ -1,226 +1,324 @@
 # RSQ Melee
+### Doom Arcade VR · fight with your fists, slap fireballs aside, shove with the gun butt, and grab an imp by the collar
 
-Fight with your body: real punches read from your real swing, an open palm that swats fireballs aside, a gun-butt
-shove, and a headlock that holds a monster still while you work on it.
+Swing your fists to punch. Jabs, hooks and uppercuts are each read from how your hand moved, and a fast punch hits
+twice as hard as a slow one. Open your hand and you can slap a fireball out of the air. Put a gun butt into a face and
+time slows down for a moment. Grab a monster with your off hand, hold it, punch it, then throw it.
 
-Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
+*[GIF to come: a jab, a hook, then an uppercut launching an imp]*
 
-New since the headset pass (tested on the rig, headset check pending): the hands measured against the frame your headset drew, so walking and strafing never swing a punch, a shove or a guard.
+---
 
-New on 11-06 (rig only, not headset-confirmed): punches and the shove work switches and doors; Uppercut Kicks Barrels;
-the new hit sparks (the Capcom vs. SNK 2 sparks are gone).
+## What it feels like
 
-New on 11-07 (rig only, not headset-confirmed): with RSQ Distance Grab's Barrel Lock-On, an uppercut barrel flies to the
-monster you locked, if it is roughly ahead, and hits and goes off like a thrown barrel. Barrel Lock-On on also turns
-the uppercut barrel kick on.
+- **Any fist punches.** Melee's own hands, Doom's fist, Brutal Doom's fists, Brutal Doom VR's free off hand, or an
+  empty hand. Swing it into a monster and the punch lands where your fist meets the body.
+- **Three punches, read from your swing.** Drive straight in for a jab, swing across for a hook, rise into it for an
+  uppercut. The uppercut lifts the monster off the floor.
+- **Speed is power.** The slowest punch that counts does 10 damage and a full-speed one does 20. A Berserk pack makes
+  it five times that.
+- **Open hand, closed hand.** Tap a hand's trigger to open it. An open palm doesn't punch: it slaps a monster's
+  fireball (or bullet) out of the way.
+- **The gun butt.** Thrust the gun in your hand forward, hard. The stock hits whatever is in front of it, and time
+  slows down so you can bring the gun round and finish the job. Kill it with a shotgun in that slow-down and it
+  bursts into a red mist.
+- **The Headlock.** Squeeze your off hand's grip next to a monster and it's stuck at your hand, facing you, while
+  your other fist works it over. Swing your off hand hard and you throw it.
+- **Hits you can see and feel.** Every blow has its own spark, every hit gives a rumble in that hand, and
+  punching a switch flips it.
 
-New on 11-09 (code only: not run on the rig, not headset-confirmed): **Brutal Doom's fists count as real punches in
-RSQ Score.** Melee has read a swing of Brutal Doom's fists (and BD22 VR's free off fist) since 11-04, exactly as it reads
-its own hands: jab, hook or uppercut, the uppercut's launch, the knock, Heavy Hands, Wall Splat, Hadouken. What is new:
-RSQ Score now knows which punch it was, so Shoryuken, Liver Shot, Glass Jaw, Textbook, Triple Threat, Dempsey Roll, Flurry, Air Combo,
-Knockdown and the punch combos pay for Brutal Doom's fists too (and for Doom's Fist and an empty hand). Until now those
-punches reached Score as a thrown gun or a plain punch. Brutal Doom itself is not changed: its trigger punch is still
-its own. One punch per swing: Brutal Doom has no swing punch of its own, so Melee's punch is the blow. The new row
-**Punch With Brutal Doom's Fists** (on) turns Melee's punching with Brutal Doom's fists off altogether. Not for these
-fists: Star Punch, Juggle, Launcher and Meteor (Gun Bonsai VR teaches them to Melee's hands only); and with BD22 VR's
-VR Punching on, Score still cannot tell which punch it was (see Works with). Also fixed in RSQ Score: a punch from Melee's own hands was read as a thrown gun,
-so those rows never paid for them either.
+---
 
-Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes. It needs no
-other mod and works on plain Doom 2.
+## How to play
 
-## Standout feature: it knows which punch you threw
+| Do this | What happens |
+|---|---|
+| Swing a fist into a monster | A punch: a jab, hook or uppercut, from 10 damage at the slowest to 20 at full speed |
+| Swing up into it | An uppercut: it flies up and back, stuck in its pain frames until it lands |
+| Punch it while it winds up its attack | A counter, with a red spark |
+| Tap that hand's trigger (press and let go quickly) | That hand opens (or closes again). A soft click tells you which way it went |
+| Swing an open palm through a monster's fireball or bullet | Knocked aside. It is yours now, so it can hurt monsters but not you |
+| Turn on **Hadouken**, then punch a fireball | It flies back at whoever fired it, faster and harder |
+| Turn on **Guard**, wear the boxing gloves and hold both fists up at your face | Blows from in front are softened |
+| A gun in your main hand, thrust it forward fast | The gun-butt shove, then a short slow-down (with RSQ SlowMo) |
+| Off-hand grip on a monster within a hand's width of your palm | Headlock: it is held at your hand |
+| Holding one, swing your off hand forward hard | Thrown |
+| Let go of the grip | It drops |
+| Any punch or shove into a switch or a door | It works, as if you'd pressed Use |
 
-Put up your fists (any fists: Doom's, Brutal Doom's, an empty hand, or Melee Hands) and throw a punch. The mod follows your fist the whole way in: it only counts once your hand
-has travelled 15 cm toward the monster on consecutive tics, and the harder you swing, the harder it lands, up to
-twice the base damage at full speed. It reads the shape of the swing against the line to the monster, not where you
-look or how you hold the controller. Straight in is a jab. Across is a hook. Rising is an uppercut, and an uppercut
-lifts the monster off its feet.
+The punches, the swat and the Headlock work with whatever is in your hands, from the first map. Melee's own hands are
+optional: turn on **Start With Melee Hands** and you get a pair at every level start, raised in both hands (slot 1).
 
-Tap a hand's trigger and that hand opens. Now swing your open palm through an imp's fireball and you knock it aside.
-Turn the Hadouken on and a fist punched into a fireball sends it straight back at whoever threw it. Bullets too: a
-palm or fist meeting a monster's shot knocks it away or returns it.
+---
 
-Walking, strafing and turning never count as a swing: your hands are measured against the frame your headset just
-drew, so only your arms throw punches.
+## Your hands
 
-## Features
+*[picture to come: the three looks side by side: Ermac's hand (fist and open), the FBX hand (fist and open), the boxing glove]*
 
-**The hands**
-- Melee Hands for both hands: Ermac's hand, or BD22 VR Reloaded's hand when that mod is loaded (or pick one).
-- Optional boxing gloves (off by default): always fists, no open palm.
-- Fist or open palm per hand: tap that hand's trigger to switch.
-- Jab, hook and uppercut, read from the swing. Damage scales with speed, from 10 at 2 m/s up to 20 at 7 m/s.
-- Brutal Doom's fists punch the same way (Punch With Brutal Doom's Fists, on), and RSQ Score reads which punch it was.
-- Uppercuts launch, capped at 3 m of air.
-- Any punch that meets a switch or a door works it, like pressing Use on it (the line's special decides, so a WAD's own switch textures work the same). The gun-butt shove does too.
-- Optional (off): Uppercut Kicks Barrels. An uppercut into a barrel does no damage and kicks it up and away in an arc, like Brutal Doom's kick.
-  RSQ Distance Grab's Barrel Lock-On (on by default there) turns the kick on too, and with a lock roughly ahead (within
-  60 degrees of the kick) the barrel flies to the locked monster and hits and goes off like a thrown one.
-- Open-palm swat: a palm swung at 1.5 m/s or more through a monster's missile knocks it aside.
-- Fists and palms meet bullets: a monster's bullet met by your hand is knocked away (or returned with the Hadouken).
-- Hit sparks on every blow, with an adjustable size: orange for jabs and hooks, violet for uppercuts and the Hadouken, blue
-  for the Guard, red for counters and perfects, bigger the faster the swing; a starburst on the gun-butt shove, dust on
-  Ground Pound, Wall Splat and the barrel kick, chicks and stars over a monster Heavy Hands freezes.
-- Slappers Only (off by default): gloves on both hands, every gun put away, gun pickups gone. Turn it off and your
-  guns come back.
+When Melee's own hands are up, you see them:
 
-**Moves you switch on** (off by default; with RSQ Gun Bonsai VR they are earned as upgrades instead)
-- **Guard**: both hands up at your face with no gun in either, and a blow from in front is soaked: you take 60% and
-  step back. A blow too big for it breaks the guard.
-- **Hadouken**: a punch into a monster's missile sends it back at its shooter.
-- **Wall Splat**: a monster you punch into a wall slams into it, hurts and reels.
-- **Heavy Hands**: a landed punch freezes the monster for a beat and knocks it further.
-- **Ground Pound**: both fists swung down together send a shockwave round you (both hands read by RSQ Accessibility's gesture reader, or by Melee itself without it).
-- **Clear Out**: both palms thrust forward together shove everything in front of you back hard (read the same way).
+- **Ermac's hand** or **the FBX hand** from Brutal Doom VR. Each has a fist and an open hand, and changes when you tap
+  the trigger. **Hand Model: Auto** picks the FBX hand when Brutal Doom VR is loaded and Ermac's otherwise. The FBX
+  hand wears Brutal Doom VR's Hand Skin Tone (single player).
+- **Boxing Gloves**, SuperPunchOut's. Always fists, never an open palm.
 
-**The gun-butt shove** (on by default)
-- Swing the gun in your main hand forward at a monster, hard (3.6 m/s), and the stock hits like Brutal Doom's kick,
-  knocking it back.
-- Every landed shove slows time (Always Slow Time on Shove, on), for 1 second by default (Slow Time Length). Inside
-  it, the F.E.A.R. Effect: every shotgun hit bleeds twice.
-- New on 11-09 (code only: not run on the rig, not headset-confirmed): **F.E.A.R. Blood Mist** (on). A shotgun kill
-  inside that slow motion is the monster's gib death and it bursts into a cloud of blood mist: Brutal Doom's own mist,
-  in the monster's blood colour, when Brutal Doom is loaded; the monster's own blood without it.
-- The slow motion was 0.3 s until 11-09: with the ease in and out it slowed the world for about 0.6 s, only 0.2 s of
-  it at full depth, too short to bring the gun back and fire. Now 1 s (about 1.3 s slowed, 0.9 s at full depth).
+![The hands' item icon](docs/readme/glove_icon.png)
 
-**The Headlock** (on by default)
-- Your off hand's grip on a living monster within 0.30 m holds it frozen in front of you for 3 seconds, so your main
-  hand can punch it. Up to demon weight.
-- Every blow you land on the monster you hold bleeds more: 1.3x, then 1.6x, then 2x.
-- Swing the off hand hard (3 m/s) while holding and you throw it.
-- Optional Human Shield (off by default): held as long as you grip, turned to face away from you.
+*The hands' item icon (the Wheel shows it), as drawn in the pack.*
 
-## How To Play
+With any other fist (Doom's, Brutal Doom's, an empty hand) the open-hand tap still works, but the fist looks the
+same either way, so the click is your only cue.
 
-1. Add RSQ_Melee.pk3 to your load order and play in VR.
-2. Everything works straight away. A hand punches whenever it holds fists: Doom's Fist, Brutal Doom's fists and
-   BD22 VR's free off hand, an empty hand, or Melee Hands. For Melee's own hands (Ermac's or BD22 VR's hand, or
-   boxing gloves), turn on Options → Radiant Silvergun Options → RSQ Melee → Start With Melee Hands (or Slappers Only
-   for a fists-only run). The hands come up in both hands at the next level start; after that they live in slot 1.
-3. Walk up to an imp and throw a jab, then a hook with the other hand. Then an uppercut from low down.
-4. Tap your off-hand trigger to open that palm. When the next fireball comes, swing your palm through it.
-5. Reach out with your off hand, grip a zombie, hold it, and punch it with your main hand. Swing the off hand to throw
-   it away.
-6. Holding a gun? Drive the stock forward into a face.
-7. Want more? Turn on Guard, Hadouken, Wall Splat and Heavy Hands one at a time.
+**Slappers Only** is GoldenEye's: fists only. It puts the boxing gloves on both hands right away and takes every other
+weapon from you, sabers and the ShieldSaw included: the ones you carry go into a stash, weapons lying in the level vanish,
+and one you're given later goes into the stash within a quarter of a second. Your ammo stays. It is done again at every level start. Turn it
+off and your guns come back, with the gun you had in your hand back in it, but no free ammo.
 
-## Controls
+---
 
-| Action | How (VR) | Notes |
-|---|---|---|
-| Punch | Swing a Melee Hand into a monster | Must travel 15 cm toward it, averaging 2 m/s or more |
-| Jab / hook / uppercut | Straight in / across / rising | Uppercut rises past about 30 degrees |
-| Fist or open palm | Tap that hand's trigger (main trigger or off-hand trigger) | A tap: let go within 10 tics, no punch landed |
-| Swat | Open palm swung at 1.5 m/s or more through a missile or bullet | |
-| Hadouken | Fist punched into a missile or bullet | Hadouken on |
-| Guard | Both hands up at your face, no gun in either | Within 0.35 m of your head across, 0.25 m below to 0.15 m above your eyes; Guard on |
-| Gun-butt shove | Main hand with a gun, driven forward at 3.6 m/s | 12 tics between shoves |
-| Headlock | Off-hand grip on a monster within 0.30 m | Up to mass 400 (a demon) |
-| Throw a held monster | Swing the off hand at 3 m/s or more | Within 60 degrees of where you face |
-| Ground Pound | Both fists swung down hard together | Ground Pound on |
-| Clear Out | Both palms thrust forward together | Clear Out on |
+## The punch
 
-- The off-hand grip is read from the keys the engine sends for it (443, or 436 while the main grip is held).
-- With RSQ Distance Grab loaded, one grip press goes to one mod: the Headlock takes it only when a holdable monster is
-  nearer your palm than anything Distance Grab would grab.
+![The hit sparks](docs/readme/sparks.png)
 
-## Menu
+*The hit sparks as they are drawn in the pack (the first frame of each, not to scale). Not a capture from the game.*
 
-Options → Radiant Silvergun Options → RSQ Melee. One page, and one sub menu, **Test and Debug**. With RSQ Gun Bonsai VR
-loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB are greyed
-while that upgrade is not learned (they do nothing until then). Learning one turns its row on; the row can still turn
-it off. Hadouken and Heavy Hands are not greyed: the gloves learn them, but any other fist still plays the row (and the
-row off turns them off on the gloves too).
+- **Jab, hook or uppercut** comes from the whole path your fist took, not where you were looking. A swing that
+  rises more than 30° is an uppercut.
+- **The spark tells you which:** orange for a jab or hook, violet for an uppercut, red for a counter. A faster
+  punch gets a bigger spark. **Hit Spark Size** scales them all.
+- **Knockback by weight.** An imp or a zombieman is knocked well back, a demon about a quarter as far, a baron a
+  tenth.
+- **The uppercut** lifts it: about half a metre to 1.4 m of air for an imp, never more than the
+  **Lift Cap** (3 m). It is stuck in its pain frames for the flight, so it can't attack from the air.
+- **Walls block punches.** A monster behind a thin wall, or a pillar between your fist and its body, isn't hit.
+- **Switches and doors.** Any punch that meets a switch, a door or anything else with an action works it, keys and
+  locks included, as a Use press would.
+- **Uppercut Kicks Barrels** (off): an uppercut into a barrel does no damage. It sends the barrel flying up and away
+  from you, and the blast is yours when it goes off.
 
-| Row | Default | What it does |
-|---|---|---|
-| **Hands** | | |
-| Start With Melee Hands | Off | The hands at each level start, up in both hands |
-| Punch With Brutal Doom's Fists | On | Brutal Doom's fists (and BD22 VR's free off fist) punch with Melee's punch reader. Off: Melee leaves them alone and Brutal Doom punches as it ships. Does nothing without Brutal Doom |
-| Hand Model | Auto | Auto (FBX with BD22 VR), Ermac, or FBX (BD22 VR) |
-| Boxing Gloves | Off | The hands wear boxing gloves (always fists) |
-| Slappers Only | Off | Gloves only, guns put away |
-| Open-Palm Swat | On | Palms knock missiles aside |
-| Swat Bullets | On | Hands meet monsters' bullets too |
-| Uppercut Kicks Barrels | Off | An uppercut kicks a barrel up and away, no damage (also on while Distance Grab's Barrel Lock-On is on) |
-| Hit Spark Size | 1.0 | Size of the hit sparks |
-| **Gun Butt Shove** | | |
-| Gun Butt Shove | On | The stock strike |
-| Always Slow Time on Shove | On | Every landed shove slows time (RSQ SlowMo; its Melee Gun Butt Shove trigger must be on too), and the F.E.A.R. Effect runs inside it |
-| F.E.A.R. Blood Mist | On | A shotgun kill in the shove's slow motion bursts the monster into blood mist |
-| **Headlock** | | |
-| Headlock | On | Off-hand grip holds a monster |
-| Human Shield (GB) | Off | Held while you grip, facing away |
-| Extra Blood | On | Blows on a held monster bleed more |
-| **Moves** | | |
-| Guard (GB) | Off | The guard (level 1 without Gun Bonsai VR) |
-| Start With Guard (Gun Bonsai VR) | Off | With Gun Bonsai VR, Guard at level 1 before it is learned |
-| Hadouken | Off | Punches return missiles |
-| Wall Splat (GB) | Off | Punched into a wall, it slams |
-| Heavy Hands | Off | Heavier punches |
-| Ground Pound (GB) | Off | Two-fist shockwave (no other mod needed) |
-| Clear Out (GB) | Off | Two-palm shove (no other mod needed) |
-| Reset All | | Every setting on both pages back to default |
+*[GIF to come: an uppercut launching an imp, with the dust puff]*
 
-**Test and Debug**: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise
-(0.50), Lift Cap (3.0 m), Extra Reach (4); Shove Speed (3.6 m/s), Slow Time Length (1000 ms, up to 2000); Headlock Reach (0.30 m),
-Heaviest (400), Seconds (3.0), Throw At (3.0 m/s, 0 never), Throw Weight % (30), Off Grip Keys (443 436); Debug Log
-(Off); Reset All.
+---
 
-## Works with
+## The open palm
 
-Runs alone. It finds the others by name:
-- **Gun Bonsai + RSQ Gun Bonsai VR**: the gloves level like weapons. Guard, Hadouken, Wall Splat, Heavy Hands,
-  Ground Pound and Clear Out become upgrades, joined by the Fists tree (Uppercut as an unlock, Launcher, Juggle,
-  Meteor, Star Punch, combos), the Guard's tree (Parry, Reflect Guard, Absorb and Release, Swat Back) and the
-  Grappler's nodes for the Headlock (heavier holds, Slam, Chokehold, Headlock Uppercut, Human Shield). Other fists
-  can't learn the glove upgrades: they always uppercut and play Hadouken, Heavy Hands and Wall Splat by their Melee rows.
-- **BD22 VR Reloaded**: the shove stands down for BD22 VR's own butt strike (the slow-mo beat still follows its hits);
-  Melee Hands use its FBX hand and skin tone. Its fists punch (main hand, and the off hand while it is free). With
-  BD22 VR's own VR Punching on, its blow does the damage and Melee adds the rest (which punch, the knock, the
-  uppercut's lift, the Headlock's moves), so a swing never hits twice. BD22 VR's No Trigger Punch (on by default,
-  2.0.3y) means the trigger tap that opens your palm throws no canned punch; with it off, or with Brutal Doom without
-  BD22 VR, the tap also throws that fist's own trigger punch.
-- **Brutal Doom**: the shove plays Brutal Doom's swing and kick sounds, and its monsters react to the kick themselves.
-  Its fists (Melee_Attacks, found by name, and anything made from it or put in its place) punch with Melee's reader
-  while Punch With Brutal Doom's Fists is on. Brutal Doom only punches when you press the trigger, never when you swing,
-  so a swing's punch is Melee's and lands once. Its trigger punch is left as it is.
-- **BD22 VR Reloaded's VR Punching** (its own option, off by default): with it on, BD22 VR's punch does the damage,
-  as before, and Melee adds the rest. RSQ Score then cannot tell which punch it was (BD22 VR's blow lands first), so
-  the punch rows only pay with VR Punching off.
-- **RSQ Distance Grab**: a monster thrown out of the Headlock flies through its throw code; the two share the grip.
-  Its Barrel Lock-On sends an uppercut barrel to the locked monster (asked by name; Melee still loads alone).
-- **RSQ Accessibility (its gesture reader)**: reads both hands for Ground Pound and Clear Out when it is loaded; without it Melee reads them with its own copy of that two-hand reader (the same moves and numbers).
-- **RSQ SlowMo**: the beat after a shove, and the F.E.A.R. window.
-- **RSQ Score**: which punch you threw (jab, hook, uppercut, body or head, the combo), for any fist; the Headlock combo, the F.E.A.R. Effect, returned missiles and bullets; since 11-09 Melee also tells it
-  which monsters your Guard soaked, which barrels your uppercut kicked, who your Headlock holds (and whether as a Human
-  Shield), and whether your F.E.A.R. window is open (Rope-a-Dope, Field Goal, Meat Shield, Human Shield, Red Mist).
-- **RSQ Tactical Rig**: the Headlock waits while your off hand is in a holster.
-- **RSQ Accessibility**: rumble strength, seated play and the Off-Hand Modifier apply.
-- **RSQ Grapple, RSQ Wheel**: the shove stays quiet on the rope or with the wheel open.
-- **RSQ Wheel, RSQ Gun Bonsai VR**: the gloves have their own icon (a red boxing glove) on the Wheel's card and Gun
-  Bonsai VR's status screen, whichever look the hands wear (not yet seen on the rig or in the headset).
+- **The swat** (on): an open palm moving at a brisk swing through a monster's fireball knocks it to the side, past
+  you. It now belongs to you.
+- **Swat Bullets** (on): a zombie's bullet that your open palm meets on its way to you is stopped. With **Hadouken**
+  on, a fist that meets it sends a visible round back at the shooter for one and a half times the shot's damage.
+- The swat plays Doom's revenant slap and a knock in that hand.
 
-## Credits and licence
+*[GIF to come: an open palm slapping an imp's fireball aside]*
 
-- **presidentkoopa** (project owner): the code; the gloves, punch reader, punch classification and Star Punch from
-  his SuperPunchOut; the gun-butt shove from his BD22 VR Reloaded; the Headlock from RSQ Distance Grab (its feel from
-  his RS_WorldHands); the swing reader from RS_Gestures; the Fists tree sounds from his RS Combat FX and RS
-  Ballistics libraries; the bullet tracer mesh from RS_Ballistics; the gloves' icon (sprites/rsqml/RMICA0.png,
-  original pixel art drawn by RSQ Wheel's sources/icons/gen_item_icons.py).
-- **Ermac** (iAmErmac): the boxing-glove mesh and fit (PunchOutVR / Virtual Punch Out); the hand model from Rusted
-  Legacy / Doom Force Unleashed, MIT licence (credits/Ermac_RustedLegacy_LICENSE.txt).
-- Punch and star sounds from Punch Out Doom (DerrickDavison), through Virtual Punch Out. Punch-Out!! is Nintendo's.
-- **Brutal Doom** (Sergeant Mark IV): the fist and kick numbers and the monsters' kick thrusts, parsed, not shipped;
-  its sounds played by name when loaded.
-- **id Software**: stock Doom sounds played by name (swing, punch, the guard and the swat).
-- Hit sparks, dizzy chicks/stars and dust: community sprite sheet ripped by shezzor (source game rights belong to their
-  owners; non-commercial).
-- Impact bursts: "VFX Hit Impact" by kiddolink, a paid asset pack bought for this series; not for re-sale or
-  redistribution as an asset pack.
-- Gun Bonsai is by Rebecca "ToxicFrog" Kelly (MIT).
-- **QuestZDoom** (Emawind and Team Beef): the engine.
+---
 
-Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms.
+## The moves
+
+Each of these is **off** by default. Turn it on and you have it at its first level. With RSQ Gun Bonsai VR loaded,
+you earn them instead (see Plays well with).
+
+| Move | What it does |
+|---|---|
+| **Hadouken** | Punch a monster's fireball and it flies back at whoever fired it, 15% faster, hitting for 150% |
+| **Guard** | The boxing gloves on both hands, both fists up at your face for a moment. A blow from in front (within about 55° of where you face) is soaked: you take 60% and are pushed back a step. A blow of 35 or more breaks the guard: full damage, and no guard for 0.4 s. A blue spark and a tick where it is stopped |
+| **Wall Splat** | A monster your punch knocks into a wall slams into it: 10 to 20 damage, bounces off and reels |
+| **Heavy Hands** | A punch freezes the monster for a beat and knocks it 25% further. Chicks and stars circle its head while it is frozen |
+| **Ground Pound** | Melee's hands in both hands, swing both fists down hard together (3 m/s or more), ending low: a rainbow pixel shockwave rolls out along the floor round you, 30 damage to everything within 2.5 m, knocked out, up and staggered. The floor shakes |
+| **Clear Out** | Both palms thrust forward together (the Force Push ring rolls out in front), hands apart and turned up and out, with Melee's hands up (one hand may be empty) and no gun: everything in front of you within 2.5 m (a quarter circle) takes 15 damage, is shoved back hard and staggered. With Wall Splat, shoved into a wall it splats |
+
+**Guard** is the boxing gloves' move: it needs Melee's hands with **Boxing Gloves** (or Slappers Only) on both hands.
+Bare hands, Brutal Doom's fists and sabers don't guard.
+Seated (RSQ Accessibility's Seated Play), the guard height follows your eyes down.
+
+*[GIF to come: Guard up, an imp's claw soaked with the blue spark]*
+*[GIF to come: Hadouken, a fireball punched back into the imp]*
+*[GIF to come: Wall Splat, a zombieman punched into a wall]*
+*[picture to come: Heavy Hands, chicks and stars over a frozen imp]*
+*[GIF to come: Ground Pound, a ring of monsters thrown back]*
+*[GIF to come: Clear Out, the palm thrust shoving a crowd]*
+
+---
+
+## The gun-butt shove
+
+With a gun in your main hand, drive it forward hard (on average 3.6 m/s or more). Swinging it down or pulling it
+back doesn't count. The stock hits everything in front of the gun up to about a metre and three quarters, once each,
+as long as no wall is in the way.
+
+- **14 damage** (62 with a Berserk), as Brutal Doom's kick does. Brutal Doom's monsters react to it the way they
+  react to its kick, and plain Doom's get the same push.
+- Wakes monsters nearby, and needs a short wait (about a third of a second) before the next.
+- An orange starburst where the stock hits. A shove that hits no monster can still work a switch or a door.
+- **Always Slow Time on Shove** (on): a landed shove asks RSQ SlowMo for one second at 35% speed.
+- With **Brutal Doom VR** loaded, its own butt strike is the one and this shove stands down. A landed Brutal Doom VR
+  butt strike still gets the slow-down.
+
+*[GIF to come: a shotgun butt into a zombieman's face, the orange starburst]*
+
+### The F.E.A.R. Effect
+
+While the slow-down from your shove lasts, **every shotgun hit you land bleeds twice**. A monster you kill with a
+shotgun in that window dies its most violent death and, with **F.E.A.R. Blood Mist** on, bursts into a cloud of
+blood mist that hangs in the slow motion: Brutal Doom's own red, green or blue mist when it is loaded, the monster's
+own blood without it. The words **F.E.A.R. Effect** show low in your view for a moment.
+
+Brutal Doom VR's own butt strike opens the window too. The window needs RSQ SlowMo: without it, there's no slow-down
+and no window.
+
+*[GIF to come: shove, slow-down, shotgun, an imp bursting into blood mist, "F.E.A.R. Effect" low in view]*
+
+---
+
+## The Headlock
+
+Squeeze your off hand's grip with your palm within 30 cm of a living monster. It's held at your hand, its face at
+your hand's height, turned to you, frozen. It's still solid, so shots can hit it.
+
+- **What you can hold:** anything up to a demon's weight (imps, zombies, demons). Not a baron, not a boss, and not
+  an RSQ Miniboss with **Can't Be Headlocked** on.
+- **How long:** 3 seconds, or until you let go.
+- **Punch it.** Each blow shows its pain frame and its cry. With **Extra Blood**, the first punch bleeds 1.3 times,
+  the second 1.6 times, the third and on twice.
+- **Throw it.** Swing your off hand forward hard (3 m/s and more, within 60° of where you face) and it leaves your
+  hand as the swing slows. It is thrown as if it weighed 30% of what it does. What it slams into, a wall or a
+  monster, takes the impact, and so does the thrown monster. With RSQ Distance Grab loaded, its throw does the
+  flying.
+- **Human Shield** (off): held for as long as you keep gripping (a minute at most), turned to face away from you.
+- Your off hand doesn't punch while it holds one.
+
+*[GIF to come: an imp held by the collar and punched three times, the blood growing]*
+*[GIF to come: a held imp thrown into a zombieman]*
+
+---
+
+## Plays well with
+
+- **RSQ Gun Bonsai VR:** Guard, Wall Splat (its Wallflower), Ground Pound, Clear Out and Human Shield become
+  upgrades you earn. Their rows grey out until learned, and the page says *"GunBonsaiOVR detected. Mod features
+  unlocked via upgrades."* Learning one turns its row on; the row can still turn it off. **Start With Guard** gives
+  you Guard at its first level before you learn it. Melee's own hands learn **Hadouken** and **Heavy Hands**; any
+  other fist plays those rows as they are. With Gun Bonsai VR, Melee's hands learn the **uppercut** too (until then
+  a rising punch lands as a jab). Then the fists tree adds to Melee's moves: **Launcher**, **Juggle**, **Meteor**,
+  **Dempsey**, **Star Punch**, **Catch**, **Swat Back**, **Bullet Time Fists** (with RSQ SlowMo), **Knockdown**,
+  **Rage**, **Parry**, **Reflect Guard**, **Absorb and Release**, **Taunt**, **Pistol Whip**, **Rifle Butt**, and
+  the off hand's grapples: **Heavier Headlock**, **Slam**, **Throw Into**, **Chokehold**, **Headlock Uppercut**.
+  Gun Bonsai VR's own elemental fists, criticals and finishers use Melee's bursts and sounds.
+- **RSQ Score:** Melee tells Score which punch landed and which moves touched a monster, so its melee rows pay:
+  Shoryuken (an uppercut kill), Liver Shot, Glass Jaw, Textbook, Triple Threat, Dempsey Roll, Air Combo, Counter,
+  Flurry, Knockdown, Bouncer (Clear Out), Release, Toss, Piledriver, Cut Loose, Butt Stroke, and the combos
+  Headlock, Pistol Whip and **F.E.A.R. Effect**. The newer rows read Melee too: Swatted, Rope-a-Dope, Seismic, Out
+  of My Way, Full Release, Meat Shield, Human Shield, Field Goal, Seeing Stars, Meteor, Star Punch, Down for the
+  Count, Bare Knuckle (a kill with Slappers Only on) and Red Mist. Brutal Doom's fists and an empty hand are read as
+  punches as well, not as plain hits.
+- **RSQ SlowMo:** the shove's slow-down and the F.E.A.R. window (SlowMo's **Melee Gun Butt Shove** row can turn
+  that trigger off). A slowed bullet punched with Bullet Time Fists goes home to its shooter.
+- **RSQ Distance Grab:** a monster thrown out of the Headlock flies through its throw (strength, aim assist, the
+  impact). The two share the off-hand grip: a press goes to whichever has the nearer target, never both. Its
+  **Barrel Lock-On** also turns on the uppercut barrel kick and sends the kicked barrel at the locked monster.
+- **RSQ Grenade:** its barrels are barrels to the uppercut kick. Slappers Only stashes its hand grenade with the
+  guns (it uses ammo).
+- **Brutal Doom VR (BD22 VR):** its fists punch with Melee's reader (**Punch With Brutal Doom's Fists**, on); turn
+  that off and Brutal Doom punches as it ships. With Brutal Doom VR's own **VR Punching** on, its punch does the
+  damage and Melee adds the rest (which punch, the lift, the moves). Its butt strike replaces Melee's shove; its FBX
+  hand and skin tone are Melee's FBX look.
+- **RSQ Accessibility** (which carries RSQ Gestures): Rumble Strength scales every knock in your hands. The Off-Hand
+  Modifier lets the main controller play the off hand. Seated Play lowers the Guard. Its two-hand gesture rows
+  (Both Hands Down, Both Palms Thrust) are the ones Ground Pound and Clear Out use. Without it, Melee reads both hands
+  itself with a copy of the same reader.
+- **RSQ Tactical Rig:** a grip press at a holster is the holster's, never the Headlock's.
+- **RSQ Grapple** and **RSQ Wheel:** no shove while you're on the rope or the Wheel is open. Grapple's Scorpion (Gun
+  Bonsai VR) punches the monster it pulls in through Melee.
+- **RSQ Miniboss:** its **Can't Be Headlocked** row (on) refuses minibosses.
+
+---
+
+## Options
+
+*Radiant Silvergun Options → RSQ Melee.* Everything is on one page; the raw numbers are under Test and Debug.
+**Reset All** (on both pages) resets every Melee setting.
+
+| Section | Rows |
+|---|---|
+| Hands | Start With Melee Hands (Off) · Punch With Brutal Doom's Fists (On) · Hand Model (Auto / Ermac / FBX (BD22 VR); Auto) · Boxing Gloves (Off) · Slappers Only (Off) · Open-Palm Swat (On) · Swat Bullets (On) · Uppercut Kicks Barrels (Off) · Hit Spark Size (1.0) |
+| Gun Butt Shove | Gun Butt Shove (On) · Always Slow Time on Shove (On) · F.E.A.R. Blood Mist (On) |
+| Headlock | Headlock (On) · Human Shield (Off) · Extra Blood (On) |
+| Moves | Guard (Off) · Start With Guard (Gun Bonsai VR) (Off) · Hadouken (Off) · Wall Splat (Off) · Heavy Hands (Off) · Ground Pound (Off) · Clear Out (Off) |
+| Test and Debug | Punch: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise (0.50), Lift Cap (3.0 m), Extra Reach (4) · Gun Butt Shove: Shove Speed (3.6 m/s), Slow Time Length (1000 ms) · Headlock: Reach (0.30 m), Heaviest (400), Seconds (3.0), Throw At (3.0 m/s), Throw Weight % (30), Off Grip Keys (443 436) · Debug Log (Off / Each Decision / Also F.E.A.R. Hits) |
+
+**Swat Bullets** covers the fist's Hadouken on bullets too. No keys to bind.
+
+*[picture to come: the RSQ Melee options page]*
+
+---
+
+## Status
+
+| | |
+|---|---|
+| **Shown on the rig** (2026-11-09, full series load order with Brutal Doom 22) | The pack loads with no script error of its own, and its page is listed under Radiant Silvergun Options. No Melee move was exercised in that run |
+| **Headset-confirmed** | Nothing yet |
+| **Code only, not yet shown** | Everything else on this page |
+
+---
+
+## Under the hood
+
+- **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes. No other mod is required; every other mod is
+  found by name while the game runs (`ServiceIterator`, class names), never linked.
+- **The punch reader** is SuperPunchOut's Arcade reader: a punch arms on a slow hand, counts after 0.15 m of travel
+  on consecutive tics at 2.0 m/s (Min Speed) or more on average, and its power is that average between Min
+  Speed and Full Speed. Which punch it is comes from the swing's whole path in real metres (the vertical scaled by the
+  level's pixel stretch), so a rising punch is not squashed into a jab. Snap turns and one-tic jumps are dropped.
+- **Hands carried to the body** (`RSQML_HandSync`): QuestZDoom writes the controllers only when it renders a frame,
+  so on a slow frame a still hand read against a walking body looked like a swing. Each frame's controller offset is
+  added to where the body is this tic. Swings are measured from the body at the view's height, so stairs and landings
+  are not swings.
+- **Contact:** the fist is a 9 cm sphere plus Extra Reach, swept along its path this tic against each body's
+  cylinder; one `LineTrace` from the fist (not `CheckSight`, which starts at the eyes and rolls the playsim's random
+  numbers) confirms no wall is in between.
+- **Missiles** are not in the blockmap, so Melee lists monsters' damaging missiles as they spawn. The swat and the
+  Hadouken test the fist's path against the missile's path from 2.5 tics behind to 2 ahead, because Brutal Doom's
+  imp fireball is drawn by a trail that lags the real one. **Bullets** are caught in `WorldHitscanPreFired`, before
+  the trace, with the hand between the shooter and you.
+- **Who deals the blow:** Melee's own hands are the inflictor (Gun Bonsai VR credits the weapon). Any other fist's
+  punch goes through a per-hand helper, `RSQ_GloveFist`, that carries the punch's record, so RSQ Score can tell a jab
+  from a hook. `RSQML_Service` answers `punch.*`, `guard`, `headlock.*`, `returned.by`, `launch.age`, `autopunch`,
+  `guarded`, `barrel.kicked` and `fear` to any mod that asks.
+- **The Headlock** freezes the monster (`freezetics`, re-applied every tic) and moves it to the hand with eased
+  `SetOrigin`, never into you or a wall. The flags it borrows (no gravity, forced infighting) are kept on the monster
+  itself, so a save taken mid-hold gives them back.
+- **F.E.A.R. extreme death:** a killing shotgun blow inside the window is replaced by one blow of damage type
+  `Extreme`, so the monster's XDeath runs (Brutal Doom's gib burst). The kill keeps the same source and inflictor, so
+  Score still reads a shotgun kill.
+- **Network events:** the shove (`rsqml_buttshove`), the F.E.A.R. window (`rsqml_fear`), the Headlock's grip
+  (`rsqml_hgrip`) and the two-hand moves (`rsqg_pair`) are sent as events and applied on every machine. The punch,
+  the swat, the Guard pose and the Headlock's hold and throw are read from the hands on your own machine. QuestZDoom
+  has no netplay.
+- **Saves:** the classes a save can hold keep their old Gun Bonsai VR names (`RSQ_Glove`, `RSQ_GloveOff`,
+  `RSQ_Splat`, `RSQ_SlapperStash`, `RSQ_Buzz`...), and the two old handlers stay as empty shells, so a game saved
+  before Melee existed still loads. Melee's own handlers are static and never saved.
+- **Server and user settings:** the Hands rows (but Hand Model), the punch numbers, the moves and F.E.A.R. Blood Mist
+  are server settings; Hand Model, the shove, the Headlock, Hit Spark Size and the debug log are your own.
+- **Rumble** goes through `A_QuakeEx` waves on one controller at a time, scaled by RSQ Accessibility's Rumble
+  Strength.
+
+---
+
+## Credits
+
+The full list, with every file and its source, is in **CREDITS.txt**.
+
+- **presidentkoopa:** SuperPunchOut (the glove weapons, the Arcade punch reader, Star Punch's banking), BD22 VR
+  Reloaded's butt strike (ported), RSQ Distance Grab's Headlock and throw, RS Gestures' swing reader, and the sounds
+  from his RS Combat FX and RS Ballistics. The FBX hand is Brutal Doom VR's free hand.
+- **Ermac** (iAmErmac): the hand model (Rusted Legacy / Doom Force Unleashed, MIT; licence in
+  `credits/Ermac_RustedLegacy_LICENSE.txt`) and the boxing glove mesh and fit (PunchOutVR / Virtual Punch Out).
+- **DerrickDavison** (Punch Out Doom): the punch and star sounds, through Virtual Punch Out. Punch-Out!! is
+  Nintendo's.
+- **Sergeant Mark IV** (Brutal Doom): the punch, kick and knock numbers, parsed, not shipped; its mist and sounds are
+  played by name when it is loaded.
+- **shezzor:** the community sprite sheet the hit sparks, dust and dizzy chicks are cut from (non-commercial).
+- **kiddolink:** "VFX Hit Impact", the impact bursts (a paid pack, bought for this series).
+- **Rebecca "ToxicFrog" Kelly:** Gun Bonsai (MIT), which RSQ Gun Bonsai VR extends.
+- **id Software:** stock Doom's sounds played by name (the revenant's slap, the chat tick, the swing, the punch).
+- **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
