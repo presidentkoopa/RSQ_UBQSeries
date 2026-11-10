@@ -147,3 +147,16 @@ shot so you can spin round and hadouken it back. Also: use the HUD chevrons more
 ## Saber's training remote HUD (owner 2026-11-10: "I would have liked to co-design that. Table it for now.")
 A real score / timer panel for the training remote in the series' fonts, to be designed WITH the owner. A first mockup
 (design/mockups/saber_remote/remote_hud_mock.png) was made without him; treat it as a talking point only.
+
+## Gun Bonsai VR's Big Pass (owner 2026-11-10)
+"With GBOVR, it gates as much as it possibly can." A Vampire Survivors approach: design an enormous number of features
+per weapon (the lightsaber's dozen and more), then gate them behind weapon and player levels with branching paths.
+This is how the Miniboss rewards get their meaning. Melee's uppercut stays a Gun Bonsai VR unlock on Melee's own hands
+for now; the Big Pass decides the rest. Needs the Arcade brain designed first.
+
+## One throw (owner 2026-11-10): "hold trigger, swing, let go" for everything thrown
+Audit 11-10: RSQ Grenade (trigger or alt held, swing, release), RSQ Saber (release fire as the hand snaps forward),
+RSQ ShieldSaw (off trigger held revs, release with the arm moving), BD22 VR's axe (rsvr/melee.zs: hold the trigger,
+swing, let go, "like the grenade") already share the gesture. They differ in how the hand's speed is sampled and in
+their thresholds (Saber's Throw Needs, ShieldSaw's ssq_throw_min, the grenade's body-frame sampler of 11-09). Next:
+one sampler (the grenade's) and one threshold for all of them. Not built.
