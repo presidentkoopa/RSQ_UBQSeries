@@ -288,9 +288,13 @@ class RSQSM_Plate play
 				// is grey the FRAME is a particle too, set farther from the eye (so it sorts and draws first), the fill and the
 				// light in front of it; the frame quad is hidden.
 				Off(m.tF[i]); Off(m.tC[i]); Off(m.tL[i]);
-				Part("RSPTRF", p - nrm * 0.5, TRAIL_H, roll, 0, alpha, false, true);
-				Part(String.Format("RSPTC%02d", f), p + nrm * 0.5, TRAIL_H, roll, m.col, alpha);
-				Part(String.Format("RSPTL%02d", f), p + nrm * 0.6, TRAIL_H, roll, Light(m.col), alpha, true);
+				// THE PARTICLE IS DRAWN MIRRORED (rig batch 2, 2026-11-09: the chevrons filled in colour but pointed AWAY from
+				// the target, ">" for a target on the left): a particle's texture is flipped left-right against the quad's. The
+				// chevron is symmetric top to bottom, so a mirror is a half turn: the particles are turned 180 more.
+				double proll = roll + 180;
+				Part("RSPTRF", p - nrm * 0.5, TRAIL_H, proll, 0, alpha, false, true);
+				Part(String.Format("RSPTC%02d", f), p + nrm * 0.5, TRAIL_H, proll, m.col, alpha);
+				Part(String.Format("RSPTL%02d", f), p + nrm * 0.6, TRAIL_H, proll, Light(m.col), alpha, true);
 			}
 			else { Shade(m.tC[i], m.col, alpha); Shade(m.tL[i], Light(m.col), alpha, true); }
 		}

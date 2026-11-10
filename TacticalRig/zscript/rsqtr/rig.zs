@@ -2120,6 +2120,10 @@ class RSQTR_Rig : EventHandler
 			// holsters they should take precedent over everything"). Until 10-29 an off hand within
 			// half a metre of the gun with grip held was read as the engine's two-hand steadying and
 			// the holster was ignored; now the holster wins. Other mods yield through "rig.busy".
+			// DOWN IS REFRESHED EVERY TIC (rig batch 2, 2026-11-09: StruggleMove only runs when a hand changes place, so a
+			// crouched hand resting in the pouch through a DOWN left stgDown stale, and the 1 s grace after getting up had
+			// already run out when the hand left the pouch: counts came right after the revive)
+			if (h == 0 && IsDown(pmo)) stgDown = level.maptime;
 			if (r != hoverR[h])
 			{
 				StruggleMove(pmo, p, h, hoverR[h], r, editing);

@@ -63,3 +63,39 @@ Format: mod, what to show, still or GIF, notes. Captures are labelled in the REA
 | Score | The bar filling, lighting blue, the pips popping | GIF | |
 | Score | The score on the wrist | still | |
 | Score | A colour-blind breakdown with its family letters | still | |
+| Distance Grab | HERO: a barrel pulled across the room, caught, thrown into a crowd where it goes off | GIF | |
+| Distance Grab | The beam idle (blue), on a shotgun (amber), locked (green), the shotgun pulled in an arc | GIF | |
+| Distance Grab | A medikit pulled and caught; a shotgun caught in the off hand and coming up there | GIF | |
+| Distance Grab | A barrel carried, then swung into an imp | GIF | |
+| Distance Grab | A barrel held as a shield, an imp's fireball bursting on it | GIF | |
+| Distance Grab | A thrown barrel arcing into zombies and going off | GIF | |
+| Distance Grab | Barrel Lock-On: one palm locks an imp, the barrel thrown wide curves onto it | GIF | |
+| Distance Grab | A hand lifting a door halfway and letting go; the door finishes opening | GIF | |
+| Distance Grab | A palm flat on a switch | still | |
+| Distance Grab | The three beam states side by side, and the amber and green glows on a barrel | still | |
+| Distance Grab | Extras: a walk-up grip grab, a two-hand lift, the colour-blind palettes | still / GIF | no placeholder yet |
+| Melee | HERO: a jab, a hook, then an uppercut launching an imp | GIF | |
+| Melee | The three hand looks side by side (Ermac's hand, the FBX hand, the boxing glove; fist and open) | still | |
+| Melee | An uppercut launching an imp, with the dust puff | GIF | |
+| Melee | An open palm slapping an imp's fireball aside | GIF | |
+| Melee | Guard up, an imp's claw soaked with the blue spark | GIF | |
+| Melee | Hadouken: a fireball punched back into the imp | GIF | |
+| Melee | Wall Splat: a zombieman punched into a wall | GIF | |
+| Melee | Heavy Hands: chicks and stars over a frozen imp | still | |
+| Melee | Ground Pound: a ring of monsters thrown back | GIF | |
+| Melee | Clear Out: the palm thrust shoving a crowd | GIF | |
+| Melee | A shotgun butt into a zombieman's face, the orange starburst | GIF | |
+| Melee | Shove, slow-down, shotgun, an imp bursting into blood mist, "F.E.A.R. Effect" | GIF | RSQ SlowMo loaded |
+| Melee | An imp held by the collar and punched three times | GIF | |
+| Melee | A held imp thrown into a zombieman | GIF | |
+| Melee | Extras: Slappers Only switching on, an uppercut barrel kick, a bullet sent back as a tracer | GIF | no placeholder yet |
+| Grapple | HERO: fire at a high ledge, get flung up, hook an imp and pull it in for a punch | GIF | |
+| Grapple | A swing across a pit, a pump at the bottom, let go at the top, the landing | GIF | Swing and Momentum on |
+| Grapple | Climbing hand over hand, then mantling onto the ledge | GIF | |
+| Grapple | An imp on the lasso swung into a zombieman, then flicked away | GIF | |
+| Grapple | Hooking a barrel out of a group of imps and shooting it as it flies past (Hooked Keg) | GIF | |
+| Grapple | A whip crack interrupting an imp's fireball, then a snag on a beam | GIF | |
+| Grapple | The chain and the cable side by side from the same ledge | still | |
+| Grapple | The Ballistics claw in flight (tracer streak) | still | |
+| Grapple | Double Hook: two imps pulled into each other | GIF | Gun Bonsai VR |
+| Grapple | Reshoot the three Yank sheets (spin, flip, barrel) with the chain rope | still | |
