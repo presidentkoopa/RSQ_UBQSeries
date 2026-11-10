@@ -5,6 +5,7 @@ server bool   rsqgn_on          = true;   // the whole grenade (with Brutal Doom
 // before). On, it does NOT stand down: RSQ Grenade runs with BD22 VR loaded. THE HANDSHAKE: BD22 VR Reloaded reads this cvar BY NAME
 // (CVar.FindCVar("rsqgn_replace_bd"): null when RSQ Grenade is not loaded) and stands its own grenade down while it is true.
 server bool   rsqgn_replace_bd  = false;
+user   bool   rsqgn_quick       = true;   // Quick Grenade (owner 11-10): BD22's Toss Grenade key (+user1) or the Quick Grenade key throws one, as BD22 throws (hand.zs QuickThrow)
 server int    rsqgn_start       = 3;      // grenades you start with (a new game, or after dying); 0-8
 server bool   rsqgn_scatter     = true;   // grenades scattered beside each map's items (the UAC Survival Pack's way)
 server int    rsqgn_singles     = 4;      // ...at most this many single grenades a map (the pack's uac_grenamt)

@@ -25,6 +25,7 @@ class RSQGN_Thrown : Actor
 	int skeetWin;		// SKEET WINDOW (Gun Bonsai VR patch): its level at the throw
 	int age, brightUntil;
 	int serial;			// SHOOT THROWN GRENADES: which grenade a shot named (hand.zs Throw numbers them)
+	bool quick;			// QUICK GRENADE (hand.zs QuickThrow): RSQ SlowMo's Quick Grenade trigger eight tics out
 	Vector3 lastPos;	// ...where the handler saw it a tic ago (the swept projectile test)
 	bool lastSet;
 	int cooked;			// tics it cooked in the hand before the throw (SLOW BURN reads it)
@@ -109,6 +110,7 @@ class RSQGN_Thrown : Actor
 		if (kind > 0 && !hot) { sprite = GetSpriteIndex(RSQGN_Kind.ThrownSprite(kind)); frame = 0; }
 		age++;
 		if (skeetWin > 0 && age == 8) SkeetWindow();
+		else if (quick && age == 8) QuickSlow();
 		if (brightUntil > 0 && age >= brightUntil) { bBright = false; brightUntil = 0; }
 
 		bool grounded = pos.z <= floorz + 0.25 || bOnMobj;		// on the floor, or come to rest on top of a monster
@@ -201,6 +203,15 @@ class RSQGN_Thrown : Actor
 	// SKEET WINDOW (Gun Bonsai VR patch): eight tics after the throw slow motion kicks in for 10 + 5 tics a level (through
 	// RSQ SlowMo, from the thrower's own machine; the Skeet Window row turns it off) and the grenade draws full bright for
 	// that long: a window to line up the shot.
+	// QUICK GRENADE: RSQ SlowMo's slow, from the thrower's own machine; SlowMo's Quick Grenade row decides (by name)
+	void QuickSlow()
+	{
+		if (!target || !target.player || target.PlayerNumber() != consoleplayer) return;
+		let d = CVar.FindCVar("rsm_depth");
+		EventHandler.SendNetworkEvent("rsm_pulse", RSQGN_Handler.QUICK_SLOW_MS, int(clamp(d ? d.GetFloat() : 0.25, 0.05, 0.95) * 100));
+		EventHandler.SendNetworkEvent("rsqgn_quickslowmo");
+	}
+
 	void SkeetWindow()
 	{
 		int tics = int(RSQGN_Upg.Num("SkeetWindow.tics", skeetWin, 0));

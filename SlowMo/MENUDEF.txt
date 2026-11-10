@@ -67,6 +67,7 @@ OptionMenu "RSQSM_Options"
 	Option "Cigarette", "rsqsm_trig_smoke", "OnOff"
 	Option "Saber Parry", "rsqsm_trig_parry", "OnOff"
 	Option "ShieldSaw Block", "rsqsm_trig_block", "OnOff"
+	Option "Quick Grenade", "rsqsm_trig_quicknade", "OnOff"
 	StaticText " "
 	StaticText "Automatic Triggers", 1
 	Option "Miniboss", "rsqsm_auto_miniboss", "OnOff"

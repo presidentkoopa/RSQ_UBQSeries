@@ -38,6 +38,8 @@ OptionMenu "RSQGN_Options"
 	Slider "Packs of Three a Map", "rsqgn_packs", 0, 16, 1, 0
 	StaticText " "
 	StaticText "Throwing", "Gold"
+	Option "Quick Grenade (BD22's Toss Grenade key)", "rsqgn_quick", "OnOff"
+	Control "Quick Grenade Key", "rsqgn_quickthrow"
 	Option "Pin With Your Teeth", "rsqgn_face", "OnOff"
 	Option "Alt Fire Changes Type", "rsqgn_kind_alt", "OnOff"
 	RSQGNGbOption "Grenade Types", "rsqgn_kinds_free", "RSQGN_KindsFree", "RSQGN_Service", "KindsFree"

@@ -87,6 +87,7 @@ server bool  rsqsm_trig_shove    = true; // RSQ Melee's gun butt shove
 server bool  rsqsm_trig_smoke    = true; // RSQ Tactical Rig's cigarette
 server bool  rsqsm_trig_parry    = true; // RSQ Saber's perfect parry
 server bool  rsqsm_trig_block    = true; // RSQ ShieldSaw's perfect block
+server bool  rsqsm_trig_quicknade = true; // RSQ Grenade's Quick Grenade: a throw from its quick key slows the world so you can shoot it in the air (owner 11-10)
 server bool  rsqsm_trig_score    = true; // RSQ Score's big moment and hit-stop (automatic)
 server bool  rsqsm_trig_gbvr     = true; // Gun Bonsai VR patch's Adrenaline, Showdown and Time Dilation perks (automatic)
 
@@ -141,7 +142,7 @@ user int     rsqsm_down_lines    = 0;     // Target Lines (owner 11-07 11:0x): 0
 user bool    rsqsm_down_bw       = true;  // Black and White World: the world goes grey (your view only) while you are DOWN
 user float   rsqsm_down_bw_fade  = 1.0;   // Fade (s): how long the grey takes to come in, and to go back to colour
 user int     rsqsm_down_fog      = 0;     // Fog Colour (owner 11-09 19:13): 0 Blood Red .. 5 Bone White, 6 Random, 7 Complementary to GITD
-user float   rsqsm_down_bw_red   = 0.6;   // Fog Tint Strength: 0 plain grey .. 1 deep red over the grey
+user float   rsqsm_down_bw_red   = 0.6;   // Fog Tint Strength: 0 plain grey .. 1 the Fog Colour deep over the grey
 user int     rsqsm_down_bw_room  = 1;     // Targets' Room in Colour: 0 Off, 1 Small Rooms, 2 Always
 server int   rsqsm_down_ddz      = 1;     // DarkDoomZ When Down: 0 Off, 1 DarkDoom Black, 2 DarkDoom Classic (single player)
 server int   rsqsm_ddz_saved     = -9999; // DarkDoomZ's own mode while DOWN holds it (put back after a quit mid-DOWN)

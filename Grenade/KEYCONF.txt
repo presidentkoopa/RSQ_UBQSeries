@@ -1,0 +1,5 @@
+// RSQ Grenade's keys. QUICK GRENADE (owner 2026-11-10): throw one at any time, as Brutal Doom 22's Toss Grenade does
+// (BD22's own key, +user1, works too while RSQ Grenade is in play: hand.zs QuickThrow).
+alias rsqgn_quickthrow "netevent rsqgn_quick"
+addkeysection "RSQ Grenade" RSQGrenade
+addmenukey "Quick Grenade" rsqgn_quickthrow

@@ -34,6 +34,7 @@ it out of the air.
 | Let go of the squeeze while holding still | The spoon flies and it starts cooking. Squeeze again and swing to throw |
 | Alt fire with the pin still in | Next grenade kind (the grenade changes colour) |
 | Shoot a grenade in flight | It goes off on the spot |
+| Press Brutal Doom's Toss Grenade key (G), or bind **Quick Grenade** | A quick throw, whatever is in your hands: the same timing, speed and arc as Brutal Doom 22's toss. With RSQ SlowMo the world slows so you can shoot it in the air |
 
 You start each game with 3. They turn up lying in levels beside other items, singly or in packs of three. You carry 8,
 or 16 with a backpack.
@@ -124,7 +125,7 @@ headset.*
 | Section | Rows |
 |---|---|
 | Grenades | Grenades on/off · Replace Brutal Doom's Grenade · Start With (3) · Grenades in Levels · Singles a Map (4) · Packs of Three a Map (2) |
-| Throwing | Pin With Your Teeth · Alt Fire Changes Type · Grenade Types (All / Frag Only) · Your Fire Burns You (Auto: yes with Brutal Doom) |
+| Throwing | Quick Grenade (BD22's Toss Grenade key) (on) · Quick Grenade Key · Pin With Your Teeth · Alt Fire Changes Type · Grenade Types (All / Frag Only) · Your Fire Burns You (Auto: yes with Brutal Doom) |
 | Barrels | Barrels on/off · Explosion (Random, or #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column, #10 Neon Crescent) · Barrel Sound · Replace Brutal Doom's Barrels (on) |
 | Explosions | Grenade Explosion (New / Original) · Brutal Doom's Launchers · Explosion Colour (Normal, Room Complement, Kill Colour, Grenade Kind) · Explosion Lights (Off, Simple, Full) · Debris · Contexts: Wall, Low Ceiling, Open Sky, Water, Liquid Floors, Chain, Crowd · Chain Escalation · Chain Mega Every (3) · Chain Mushroom Every (5) · Screen Kick on Chains |
 | Shooting | Shoot Thrown Grenades · Only in Slow-Mo · Faster in Slow-Mo · Skeet Slow-Mo (Gun Bonsai VR) |

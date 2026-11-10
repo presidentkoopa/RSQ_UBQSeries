@@ -176,6 +176,8 @@ class RSQGN_Handler : EventHandler
 	Array<double> missLX, missLY, missLZ;	// ...where each was a tic ago (spawned: where it appeared); MissLast(i)
 	Vector3 MissLast(int i) { return (missLX[i], missLY[i], missLZ[i]); }
 	int nadeSerial;
+	int quickAt[MAXPLAYERS];	// QUICK GRENADE: the tic the queued quick throw leaves (0: none)
+	int quickFree[MAXPLAYERS];	// ...and the tic the next press is taken
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
@@ -346,6 +348,7 @@ class RSQGN_Handler : EventHandler
 			for (int i = 0; i < missiles.Size(); i++) if (missiles[i]) { missLX[i] = missiles[i].pos.x; missLY[i] = missiles[i].pos.y; missLZ[i] = missiles[i].pos.z; }
 		}
 		PruneMissiles();	// after the test: a missile that burst in this tic's movement still had its path tested
+		if (Active()) QuickTick();
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			if (!playeringame[n]) continue;
@@ -518,6 +521,7 @@ class RSQGN_Handler : EventHandler
 		let pmo = p.mo;
 		if (!pmo || pmo.health <= 0) return;
 		if (!Active() && HandOf(p) < 0) return;		// standing down: only a grenade in a hand (Live)
+		if (e.Name == "rsqgn_quick") { if (Active()) QuickPress(pmo, n); return; }
 		if (e.Name == "rsqgn_kind")
 		{
 			if (spoon[n]) return;
@@ -577,6 +581,96 @@ class RSQGN_Handler : EventHandler
 			if (!armed[n]) return;
 			Throw(pmo, n, h, e.Args[0] / 100.0);
 		}
+	}
+
+	// ---- QUICK GRENADE (owner 2026-11-10) ------------------------------------------------------------------------
+	// A grenade thrown at any time from a key, whatever is in the hands, EXACTLY as Brutal Doom 22's Toss Grenade throws its
+	// own (parsed from BD22 / BD22 VR Reloaded 2.0.4e actors/Weapons/DEFAULTWEAPON.dec, TossGrenade, and Grenades.dec
+	// HandGrenade), so muscle memory carries over:
+	//   - the key: BD22's own Toss Grenade (+user1, its default G) -- with RSQ Grenade in play BD22 VR stands its grenade
+	//     down and that key throws nothing of its own -- or "Quick Grenade" (rsqgn_quickthrow) bound here;
+	//   - the timing: the pin at tic 7 (GRTH ABCDEF 1 after one tic), the toss sound at tic 15, the grenade out at tic 17
+	//     (FGHIJK 1, TNT1 2, LM 1), the next press taken at tic 22 (NOP 1, TNT1 1 and the jump back);
+	//   - the flight: A_ThrowGrenade(.., 5, 45, 5) from the pawn (5 units above its default 35, 45 units a tic along the
+	//     view, 5 up turned by the pitch, half the pawn's own speed, the engine's own random spread), with HandGrenade's
+	//     gravity 0.7, bounce 0.6 and wall bounce 0.3;
+	//   - its fuse, its kind and the rest are this pack's grenade (the kind in hand, Gun Bonsai VR's claim);
+	//   - RSQ SlowMo: eight tics out, its Quick Grenade trigger (Your Triggers) slows the world so it can be shot in the air.
+	// Off with Quick Grenade (rsqgn_quick, per player). Rig: not yet shown.
+	const QUICK_PIN = 7;
+	const QUICK_TOSS = 15;
+	const QUICK_OUT = 17;
+	const QUICK_NEXT = 22;
+	const QUICK_SLOW_MS = 1500;		// RSQ SlowMo's slow after a quick throw (my number: a skeet-style window, 1.5 s)
+
+	void QuickPress(PlayerPawn pmo, int n)
+	{
+		let p = pmo.player;
+		if (!PFlag(p, "rsqgn_quick", true) || pmo.health <= 0) return;
+		if (quickAt[n] > 0 || level.maptime < quickFree[n] || armed[n]) return;
+		if (pmo.CountInv("RSQGN_Ammo") <= 0)
+		{
+			if (n == consoleplayer) Console.MidPrint(null, "No grenades");
+			quickFree[n] = level.maptime + QUICK_NEXT;
+			return;
+		}
+		quickAt[n] = level.maptime + QUICK_OUT;
+		quickFree[n] = level.maptime + QUICK_NEXT;
+		if (Debug(p)) Console.Printf("RSQGN quick p%d t%d: queued, out at t%d", n, level.maptime, quickAt[n]);
+	}
+
+	void QuickTick()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n]) continue;
+			let p = players[n];
+			let pmo = p.mo;
+			if (!pmo) { quickAt[n] = 0; continue; }
+			// BD22's key (+user1), pressed this tic (the synced command, so every machine sees it)
+			if ((p.cmd.buttons & BT_USER1) && !(p.oldbuttons & BT_USER1)) QuickPress(pmo, n);
+			if (quickAt[n] <= 0) continue;
+			if (pmo.health <= 0) { quickAt[n] = 0; continue; }
+			int t = level.maptime - (quickAt[n] - QUICK_OUT);
+			if (t == QUICK_PIN) pmo.A_StartSound("rsqgn/pin", CHAN_AUTO, CHANF_OVERLAP);
+			if (t == QUICK_TOSS) pmo.A_StartSound("rsqgn/toss", CHAN_AUTO, CHANF_OVERLAP);
+			if (level.maptime >= quickAt[n]) { quickAt[n] = 0; QuickThrow(pmo, n); }
+		}
+	}
+
+	void QuickThrow(PlayerPawn pmo, int n)
+	{
+		if (pmo.CountInv("RSQGN_Ammo") <= 0) return;
+		pmo.A_ThrowGrenade("RSQGN_Thrown", 5, 45, 5, false);
+		// the grenade it just threw: the newest of ours with this thrower and no serial yet
+		RSQGN_Thrown g = null;
+		let it = ThinkerIterator.Create("RSQGN_Thrown");
+		RSQGN_Thrown t;
+		while (t = RSQGN_Thrown(it.Next())) if (t.target == pmo && t.serial == 0 && t.age == 0) g = t;
+		if (!g) return;
+		g.serial = ++nadeSerial;
+		let gw = Weapon(pmo.FindInventory("RSQGN_Grenade"));
+		if (gw)
+		{
+			g.master = gw;
+			let si = ServiceIterator.Find("RSQ_MeleeUpgradeService");
+			Service gb = si.Next();
+			if (gb) gb.GetInt("claim", "", 0, 0, g);
+		}
+		int fuse = FuseTics(pmo);
+		g.angle = VectorAngle(g.Vel.x, g.Vel.y);
+		g.fuse = fuse;
+		g.fuseTotal = fuse;
+		g.dmgMult = 1.0;
+		g.kind = RSQGN_Kind.Owns(pmo, kind[n]) ? kind[n] : RSQGN_Kind.FRAG;
+		if (g.kind == RSQGN_Kind.FLASH) g.bBright = true;
+		g.Gravity = 0.7;            // BD22's HandGrenade
+		g.BounceFactor = 0.6;
+		g.WallBounceFactor = 0.3;
+		g.quick = true;
+		pmo.TakeInventory("RSQGN_Ammo", 1);
+		if (Debug(pmo.player))
+			Console.Printf("RSQGN quick thrown p%d t%d: %.1f u/tic from (%.0f %.0f %.0f), fuse %d", n, level.maptime, g.Vel.Length(), g.pos.x, g.pos.y, g.pos.z, fuse);
 	}
 
 	void Throw(PlayerPawn pmo, int n, int h, double ms)
