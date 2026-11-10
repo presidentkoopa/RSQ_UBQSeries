@@ -3,7 +3,8 @@
 // triggers it, it starts full, and drains for however long the player has set it to").
 //
 // WHEN (owner 2026-11-06: "RIGHT = the automatic slow-mo countdown, shown ONLY while the game has slowed time by itself"):
-// the countdown runs for EVERY slow motion (clock.zs) but the bar SHOWS only while an automatic trigger let it in (clock.cdAuto).
+// the countdown runs for EVERY slow motion (clock.zs); with Adrenaline on the bar SHOWS only while an automatic trigger
+// let it in (clock.cdAuto); with Adrenaline off it shows for every slow motion (ShowsFor).
 // The stored slow-mo bar (the adrenaline meter) is drawn here too, at its left. Before 11-06: EVERY slow motion, from any source (clock.zs CountdownStart / CountdownTick): his key, the wrist cross, its burst,
 // the Wheel, the Accessibility button, the shootdodge, and every pulse (a kill moment or shove, the cigarette, the
 // Bossfight landing, Score, Gun Bonsai VR, close-call, reload, any mod through rsm_pulse or the named door). It starts
@@ -11,6 +12,7 @@
 // (level.maptime is never slowed, and the frame's FracTic makes it smooth), then fades. A slow that starts or pushes the end
 // later refills it to the new time left, with a glint. A held slow with no end of its own (the key, the Wheel, a dodge in
 // the air) drains the adrenaline meter's time with Adrenaline on, and sits full until let go with it off.
+// WHERE and SIZE below are the bars' place WITHOUT RSQ Miniboss; with it, Slot() sets both to the Miniboss meter's slot.
 // WHERE: centred under RSQ Score's bar and above its combo rows, read by name (RS_ScoreService "hud.cx" /
 // "hud.bar.bottom"; Score moves its rows below this slot, asking "countdown.bottom" back). Without Score, the spot Score's
 // defaults would put its bar on. Kept inside the series' safe area (rsq_ui_inset).
@@ -132,15 +134,10 @@ class RSQSM_Countdown : StaticEventHandler
 		[cx, y, h] = Slot();
 		double bot = y + h * (1.0 + (GLASS - 1.0) * 0.5);
 		if (CauseShown() != "") bot += h * (CAUSE_GAP + CAUSE_H);
-		if (DownShown()) bot = DownY(y, h) + h * (1.0 + (GLASS - 1.0) * 0.5) + h * (CAUSE_GAP + CAUSE_H);
 		return int(ceil(bot));
 	}
 
-	// THE DOWN BAR (v2) IS GONE (v3, owner 2026-11-07): DOWN's clock and reward bar are on the plate in the world (down.zs /
-	// plate.zs). These stay as no-ops so the callers below need no change.
-	static ui bool DownShown() { return false; }
-	static ui double DownY(double y, double h) { return y; }
-	ui void DrawDown(double t) {}
+	// (THE DOWN BAR, v2, IS GONE: v3, owner 2026-11-07, draws DOWN's clock and bars on its own panel, downhud.zs.)
 
 	// THE CAUSE LINE (owner 2026-11-06: "under the right-hand automatic countdown bar, while it runs, one short line naming
 	// what caused it ... in the same style as Miniboss's blocker text under its bar"): RSQ Miniboss's wait line's look
@@ -239,7 +236,6 @@ class RSQSM_Countdown : StaticEventHandler
 		if (screenblocks > 11 || automapactive) return;
 		let clock = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
 		if (!clock || (clock.rival && SCv("rsm_yield", 1) != 0)) return;
-		if (DownShown()) DrawDown(level.maptime + e.FracTic);
 		if (!AnyOn()) return;
 		double t = level.maptime + e.FracTic;
 		double dt = clamp(t - lastT, 0.0, 3.0);

@@ -38,7 +38,7 @@ your revenge.
 | Cross your wrists in front of your face and hold them there a moment | The same as the key. With **Wrist Cross Bursts** on, a 4-second burst instead |
 | Press your **Shootdodge Key** while standing | You jump and leap the way your stick points (forward if it is centred); the world drops to a tenth until you land |
 | Lean your head sideways as a round comes at you | It passes on the side you leaned away from |
-| Open the RSQ Wheel | The world slows while the wheel is open (Slow Motion Length still applies) |
+| Open the RSQ Wheel | The world slows for as long as the wheel is open |
 
 **How long it lasts.** With Adrenaline off (the default) your held slow motion lets go by itself after **Slow Motion
 Length** (6 real seconds); pressing again ends it sooner. A shootdodge lasts until you land, 6 seconds at most.

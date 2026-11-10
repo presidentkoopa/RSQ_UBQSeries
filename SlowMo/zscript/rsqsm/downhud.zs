@@ -38,7 +38,7 @@
 // whole panel (bar, lines, DEATH IN) and a big "DOWN" over it appear in the MIDDLE of the view at 1.6x, hold through the
 // slow-mo fall (RSQSM_Down.ENTRY_HOLD, ~1 s), then glide down and shrink to their place (ENTRY_GLIDE), the label fading as
 // it goes; the thump lands as it comes to rest. Bottom Only: at its place from the first frame. Slam Up: the slam below.
-// Code only, not run on the rig.
+// Run on the rig 2026-11-09 (design/rigtest_2026-11-09); not headset-confirmed.
 // THE EDGE ARROWS: a target farther than 75 degrees from your view (plate.zs decides, and eases the direction after your
 // gaze): the chosen Turn Marker (default Triple Chevron) in its baked momentum frames, pointing the way to turn, with the
 // target's icon on a dark slot on its inner side, round the middle of the view at the mockup's distances (icon 110 px, the
@@ -181,7 +181,14 @@ class RSQSM_DownHud ui
 			int c = txt.ByteAt(k);
 			if (c < RSQSM_PlateFont.LO || c > RSQSM_PlateFont.HI) c = 32;
 			double adv = RSQSM_PlateFont.Adv(sf, c) * k0, w = RSQSM_PlateFont.Wid(sf, c) * k0, h = RSQSM_PlateFont.Hgt(sf, c) * k0;
-			if (c != 32 && w > 0) BoxC(String.Format(sf ? "RSPC%03d" : "RSPJ%03d", c), cx + adv * 0.5, y, w, h, rgb, alpha);
+			if (c != 32 && w > 0)
+			{
+				String tn = String.Format(sf ? "RSPC%03d" : "RSPJ%03d", c);
+				// JFO has no glyph for some punctuation (. , ! ? % ' brackets): without RSQ Score's font those drew blank in
+				// the Name target lines; the Doom font's glyph (RSPG, TEXTURES.txt) stands in (rig follow-up 2026-11-09)
+				if (!sf && !TexMan.CheckForTexture(tn, TexMan.Type_Any).IsValid()) tn = String.Format("RSPG%03d", c);
+				BoxC(tn, cx + adv * 0.5, y, w, h, rgb, alpha);
+			}
 			cx += adv;
 		}
 		return cx;

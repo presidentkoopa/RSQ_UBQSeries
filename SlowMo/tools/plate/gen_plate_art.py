@@ -20,7 +20,7 @@ Our own art, generated. White on transparent where it is drawn Shaded in the tar
   graphics/rsqsmp/RSPSLOT    #0b0b0d  a dark round slot (cut out)
   graphics/rsqsmp/RSPCRK     #dddddd  the crack over a dead target's slot: the mockup's crack lines, 3 px on its 54 px slot
   sprites/rsqsm/RSPQA0       the frame the quad models hang on
-  models/rsqsm/plate/quad.obj, strip8/12/24.obj   a unit quad and glyph strips (the Wheel's geometry, our own files)
+  models/rsqsm/plate/quad.obj                     a unit quad (the Wheel's geometry, our own file; the glyph strips were retired 11-09)
 (the turn markers and the world trail are gen_chevron.py's)
 Run from anywhere: python3 SlowMo/tools/plate/gen_plate_art.py"""
 import os, math, glob
@@ -207,5 +207,5 @@ def obj(path, cells, quad=False):
             b = k * 4
             fh.write('usemtl RSPWHT\nf %d/1/1 %d/3/1 %d/2/1\nf %d/1/1 %d/4/1 %d/3/1\n' % (b + 1, b + 3, b + 2, b + 1, b + 4, b + 3))
 obj(os.path.join(M, 'quad.obj'), 1, True)
-for c in (8, 12, 24): obj(os.path.join(M, 'strip%d.obj' % c), c)
+# (the glyph strips strip8/12/24.obj were never used and were retired 2026-11-09)
 print('ok')

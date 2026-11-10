@@ -172,7 +172,6 @@ class RSQSM_Down : EventHandler
 		for (int i = 0; i < tMon.Size(); i++) if (tMon[i] == a && (tDead[i] == 0)) return true;
 		return false;
 	}
-	clearscope bool IsMarked(Actor a) { return IsTarget(a); }
 	// the bar: elapsed real tics into this DOWN, and the tier it stands at (0 top, 1 middle, 2 bottom)
 	clearscope int Elapsed(int n) { return IsDown(n) ? max(0, level.maptime - barStart[n]) : 0; }
 	clearscope int TierAt(int e) { double s = StepTics(); return e < s ? 0 : (e < 2 * s ? 1 : 2); }

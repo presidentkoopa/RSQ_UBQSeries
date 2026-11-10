@@ -211,6 +211,7 @@ class RSQGN_Thrown : Actor
 		{
 			let d = CVar.FindCVar("rsm_depth");
 			EventHandler.SendNetworkEvent("rsm_pulse", tics * 1000 / TICRATE, int(clamp(d ? d.GetFloat() : 0.25, 0.05, 0.95) * 100));
+			EventHandler.SendNetworkEvent("rsqgn_skeetslowmo");   // RSQ SlowMo: this pulse is the Skeet Window (by name)
 		}
 	}
 

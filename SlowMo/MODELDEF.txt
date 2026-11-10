@@ -21,27 +21,3 @@ Model RSQSM_PQuad
 	USEACTORROLL
 	FrameIndex RSPQ A 0 0
 }
-Model RSQSM_PStrip8
-{
-	Path "models/rsqsm/plate"
-	Model 0 "strip8.obj"
-	USEACTORPITCH
-	USEACTORROLL
-	FrameIndex RSPQ A 0 0
-}
-Model RSQSM_PStrip12
-{
-	Path "models/rsqsm/plate"
-	Model 0 "strip12.obj"
-	USEACTORPITCH
-	USEACTORROLL
-	FrameIndex RSPQ A 0 0
-}
-Model RSQSM_PStrip24
-{
-	Path "models/rsqsm/plate"
-	Model 0 "strip24.obj"
-	USEACTORPITCH
-	USEACTORROLL
-	FrameIndex RSPQ A 0 0
-}

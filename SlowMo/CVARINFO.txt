@@ -49,9 +49,10 @@ user float   rsqsm_drain_amt    = 0.35;  // how much colour goes at full depth, 
 // every slow motion, whatever started it: a green bar under RSQ Score's bar starts full and counts down the real time left
 user bool    rsqsm_cdbar        = true;  // Real-Time Countdown Bar
 user bool    rsqsm_cdbar_anim   = true;  // Bar Animation: the sweeping band, the breathing edge, the refill glint
-user float   rsqsm_cdbar_size   = 1.5;   // Bar Size: x 0.8 of RSQ Score's bar thickness / 1.5, never wider than Score's bar
+user float   rsqsm_cdbar_size   = 1.5;   // Bar Size: x 0.8 of RSQ Score's bar thickness / 1.5, never wider than Score's bar (without RSQ Miniboss)
 user int     rsqsm_cdbar_color  = 15;    // Bar Colour: the series palette (RSQSM_CdColors), 15 Green, 98 Random (fresh each time)
-// (owner 11-06: the countdown bar shows only while the game slowed time by itself; the stored bar is back at its left)
+// (owner 11-06: with Adrenaline on, the countdown bar shows only while the game slowed time by itself; with it off, for
+// every slow motion; the stored bar is back at its left)
 user bool    rsqsm_storebar     = true;  // Stored Slow-Mo Bar: the adrenaline meter (with Adrenaline on): fills as you earn, drains as you spend
 
 // ---- the owner's QoL round (2026-10-31): options, off by default
@@ -136,7 +137,7 @@ user bool    rsqsm_down_redmap   = true;  // Red Map: RSQ Glow In The Dark turns
 user bool    rsqsm_down_lowview  = true;  // Lower View When Down (comfort): off = no view drop (the crawl stays)
 user float   rsqsm_down_panelsize = 1.0;  // Panel Size (owner 11-07 08:00): multiplies the panel and the edge arrows together (1 = half the view)
 user int     rsqsm_down_lines    = 0;     // Target Lines (owner 11-07 11:0x): 0 Icon ("TARGET:" + its own crosshair icon in its colour), 1 Name (the monster's name)
-// DOWN's look (owner 2026-11-09 17:42-17:45; downlook.zs, downhud.zs): code only, not run on the rig
+// DOWN's look (owner 2026-11-09 17:42-17:45; downlook.zs, downhud.zs): run on the rig 11-09 (design/rigtest_2026-11-09)
 user bool    rsqsm_down_bw       = true;  // Black and White World: the world goes grey (your view only) while you are DOWN
 user float   rsqsm_down_bw_fade  = 1.0;   // Fade (s): how long the grey takes to come in, and to go back to colour
 user int     rsqsm_down_fog      = 0;     // Fog Colour (owner 11-09 19:13): 0 Blood Red .. 5 Bone White, 6 Random, 7 Complementary to GITD

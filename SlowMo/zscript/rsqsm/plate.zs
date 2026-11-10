@@ -15,7 +15,7 @@
 // PARTICLE (hw_sprites.cpp:1492-1496), so the crosshair and the trail's colour layers are drawn as full-bright particles
 // with the same textures (one tic each, spawned after the particles have thought: p_tick.cpp:164 then :171) and the quads
 // hide. A particle is a square facing the eye (hw_sprites.cpp:1600-1614): the trail's 16x22 chevron is drawn square there.
-// Code only, not run on the rig.
+// Run on the rig 2026-11-09 (design/rigtest_2026-11-09); not headset-confirmed.
 // Drawn the RSQ Wheel's way on stock QuestZDoom 17.3 (its wr_q_shim.zs, copied, nothing linked): unit quad models placed in
 // the world every tic, facing the eye, coloured with the Shaded style. No panel moves or scales to animate (owner 07:15).
 class RSQSM_PQuad : Actor
@@ -38,9 +38,6 @@ class RSQSM_PQuad : Actor
 	}
 	States { Spawn: RSPQ A -1; Stop; }
 }
-class RSQSM_PStrip8 : RSQSM_PQuad {}
-class RSQSM_PStrip12 : RSQSM_PQuad {}
-class RSQSM_PStrip24 : RSQSM_PQuad {}
 
 // one target's pointers
 class RSQSM_TMark play

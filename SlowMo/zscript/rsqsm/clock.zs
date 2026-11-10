@@ -37,9 +37,9 @@
 //
 // AUTOMATIC AND DELIBERATE (owner 2026-11-02: "it's firing all the fuckin time"). Every way in is a
 // TRIGGER with a name (Trigger below). A deliberate one -- the key, the wrist cross, the burst, the Wheel,
-// the Accessibility button, Melee's shove, the cigarette, a Saber parry, a ShieldSaw block -- is never
-// refused for time. An automatic one -- Close-Call, Reload Slowdown, Score, Gun Bonsai VR, other mods, the
-// miniboss window -- waits out rsqsm_auto_cooldown seconds after the last automatic pulse ENDED.
+// the Accessibility button, Melee's shove, the cigarette, a Saber parry or Force Speed, a ShieldSaw block,
+// Grenade's Skeet Window -- is never refused for time. An automatic one -- Close-Call, Reload Slowdown, Score,
+// Gun Bonsai VR, other mods, the miniboss window, Heavy Hit, the blasts and the barrels -- waits out rsqsm_auto_cooldown seconds after the last automatic pulse ENDED.
 // EVERY ONE HAS ITS OWN ON/OFF SWITCH (owner 2026-11-02: "everything has an on off switch"): CatOn below,
 // the Triggers page in MENUDEF. A switch only stops a START; turning slow motion off is never refused.
 // rsqsm_debug 1 logs each one: its name, the tic and what happened.
@@ -83,8 +83,8 @@ class RSQSM_Clock : EventHandler
 	int    cdRefillTic;      // maptime of the last refill (the glint)
 	int    cdEndTic;         // maptime it reached zero (the fade)
 	// THE TWO BARS (owner 2026-11-06, approved layout: stored slow-mo LEFT, the automatic countdown RIGHT): the countdown bar
-	// shows ONLY while the game slowed time by itself (an automatic trigger, Trigger isAuto); his own slow motion (the key,
-	// the wrist cross, the Wheel, a dodge, his own deliberate pulses) leaves it hidden. cdAuto: the slow running now (or
+	// shows only while the game slowed time by itself (an automatic trigger, Trigger isAuto); his own slow motion (the key,
+	// the wrist cross, the Wheel, a dodge, his own deliberate pulses) leaves it hidden (with Adrenaline on; with it off, the countdown bar shows for every slow motion: countdown.zs ShowsFor). cdAuto: the slow running now (or
 	// easing out) was let in by an automatic trigger; cdAutoTic: maptime that became so (the bar's fade in).
 	bool   cdAuto;
 	int    cdAutoTic;
@@ -159,7 +159,7 @@ class RSQSM_Clock : EventHandler
 	// MATRIX is the full look.
 	transient int gbTic;
 	transient bool gbOn;
-	transient int gbSM[MAXPLAYERS], gbLonger[MAXPLAYERS], gbDeeper[MAXPLAYERS], gbCheaper[MAXPLAYERS], gbLean[MAXPLAYERS], gbMatrix[MAXPLAYERS];
+	transient int gbLonger[MAXPLAYERS], gbDeeper[MAXPLAYERS], gbCheaper[MAXPLAYERS], gbLean[MAXPLAYERS], gbMatrix[MAXPLAYERS];
 	void GbRefresh()
 	{
 		if (gbTic > 0 && level.maptime < gbTic && level.maptime >= gbTic - 35) return;
@@ -168,10 +168,9 @@ class RSQSM_Clock : EventHandler
 		gbOn = svc != null;
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
-			gbSM[n] = 0; gbLonger[n] = 0; gbDeeper[n] = 0; gbCheaper[n] = 0; gbLean[n] = 0; gbMatrix[n] = 0;
+			gbLonger[n] = 0; gbDeeper[n] = 0; gbCheaper[n] = 0; gbLean[n] = 0; gbMatrix[n] = 0;
 			if (!svc || !playeringame[n] || !players[n].mo) continue;
 			let pmo = players[n].mo;
-			gbSM[n]      = max(0, svc.GetInt("plevel", "SlowMotion", 0, 0, pmo));
 			gbLonger[n]  = max(0, svc.GetInt("plevel", "Longer", 0, 0, pmo));
 			gbDeeper[n]  = max(0, svc.GetInt("plevel", "Deeper", 0, 0, pmo));
 			gbCheaper[n] = max(0, svc.GetInt("plevel", "Cheaper", 0, 0, pmo));
@@ -187,7 +186,6 @@ class RSQSM_Clock : EventHandler
 		if (who < 0 || who >= MAXPLAYERS) return GbMax(what);
 		switch (what)
 		{
-		case 'SlowMotion': return gbSM[who];
 		case 'Longer':     return gbLonger[who];
 		case 'Deeper':     return gbDeeper[who];
 		case 'Cheaper':    return gbCheaper[who];
@@ -203,10 +201,9 @@ class RSQSM_Clock : EventHandler
 		for (int n = 0; n < MAXPLAYERS; n++) if (playeringame[n]) m = max(m, Gb(n, what));
 		return m;
 	}
-	// SLOW MOTION was the unlock of your own triggers under the patch (11-02). DROPPED (owner, 11-03: the key, the wrist cross,
-	// the burst and the accessibility button work from the start; the levels only lengthen and deepen it). Nothing is ever
-	// unlearned now; the function stays at its call sites.
-	bool Unlearned(int who, int cat) { return false; }
+	// (SLOW MOTION was the unlock of your own triggers under the patch, 11-02; DROPPED 11-03: the key, the wrist cross, the
+	// burst and the accessibility button work from the start; the levels only lengthen and deepen it. Its check was removed
+	// 11-09.)
 	// LONGER: the burst 4 -> 5, 6, 8 s; a full meter lasts 25% longer a level. CHEAPER: the meter spent 20% slower a level.
 	int BurstMs(int who) { static const int B[] = { 4000, 5000, 6000, 8000 }; int l = Gb(who, 'Longer'); return l < 0 ? BURST_MS : B[clamp(l, 0, 3)]; }
 	double AdrSecs() { int l = GbMax('Longer'); return max(1.0, Cv("rsqsm_adr_secs", 10)) * (1.0 + 0.25 * max(l, 0)); }
@@ -220,8 +217,9 @@ class RSQSM_Clock : EventHandler
 		int g = c ? c.Gb(n, 'LeanDodge') : -1;
 		return g < 0 || g >= 1;
 	}
-	// MATRIX: the colour drain and the shot trails at full while slowed -- each while its own row is on (owner 11-04 "Row
-	// can still turn it off"; learning Matrix switches both rows on once, GBOVR's RowsOnLearn)
+	// MATRIX: the colour drain at full (0.85 at least) while slowed, while its row is on (owner 11-04 "Row can still turn it
+	// off"); learning Matrix switches the Colour Drain and Shot Trails rows on once (GBOVR's RowsOnLearn); the trails
+	// themselves are drawn the same either way (round.zs)
 	static clearscope bool MatrixOn()
 	{
 		let c = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
@@ -319,6 +317,7 @@ class RSQSM_Clock : EventHandler
 	private transient int pendTic;
 	private transient int fearTic[MAXPLAYERS];
 	private transient int smokeTic[MAXPLAYERS];
+	private transient int skeetTic[MAXPLAYERS];       // RSQ Grenade's Skeet Window marked its pulse this tic
 	private transient int smokeFree[MAXPLAYERS];   // the smoke's pulse asked that this player move at full speed (Rig arg 3)
 	int freeUntil[MAXPLAYERS];                     // ...until this maptime (the smoke's length plus the way out)
 
@@ -348,6 +347,7 @@ class RSQSM_Clock : EventHandler
 		else if (e.Name ~== "rsqml_fear") { if (e.Player >= 0 && e.Player < MAXPLAYERS) fearTic[e.Player] = level.maptime; }
 		// RSQ Tactical Rig's cigarette names its pulse the same way (cig.zs, sent with its rsm_pulse on the same tic): that
 		// pulse is the smoke, whatever its length (0.99a bug 43: Gun Bonsai VR's Smoker lengthens it, so length can't tell)
+		else if (e.Name ~== "rsqgn_skeetslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) skeetTic[e.Player] = level.maptime; }
 		else if (e.Name ~== "rsqtr_cigslowmo") { if (e.Player >= 0 && e.Player < MAXPLAYERS) { smokeTic[e.Player] = level.maptime; smokeFree[e.Player] = e.Args[2]; } }
 		else if (e.Name ~== "rsqsm_start" || e.Name.Left(12) ~== "rsqsm_start:")
 		{
@@ -370,6 +370,10 @@ class RSQSM_Clock : EventHandler
 	//   RSQ Tactical Rig cigarette rsm_pulse <smoke ms> <rsqtr_cig_depth>, then rsqtr_cigslowmo the same tic -> deliberate
 	//   RSQ Saber perfect parry (ubqs_parry_slowmo), RSQ ShieldSaw perfect block (ssq_perfect_slowmo): both
 	//     rsm_pulse 500 35, told apart by whose option is on and what the sender holds (ParryOrBlock) -> deliberate
+	//   RSQ ShieldSaw block under Gun Bonsai's Shield Wall: rsm_pulse 750/1000/1250 35 -> deliberate (ShieldSaw Block)
+	//   RSQ Saber Force Speed (Gun Bonsai patch): rsm_pulse <secs x 1000> 35 -> deliberate (no switch: a power you use)
+	//   RSQ Grenade Skeet Window: rsm_pulse <tics> <rsm_depth>, then rsqgn_skeetslowmo the same tic -> deliberate
+	//   RSQ VisualRewards (damage numbers' level-up): rsm_pulse 500 30 -> other mods (automatic)
 	//   RSQ Miniboss's slow window (RSQMB_Service "window" > 0, by name), re-sent each second            -> automatic
 	//   RSQ Score (Score handler.zs): big moment 600 35; hit-stop (115 + rsm_ramp_in x 1000) 5            -> automatic
 	//   Gun Bonsai VR patch (up_melee.zs, up_suite.zs): Adrenaline min(300+150 lv, 1500) max(60-5 lv, 30);
@@ -391,6 +395,18 @@ class RSQSM_Clock : EventHandler
 				if (smokeFree[who]) freeUntil[who] = level.maptime + ms * TICRATE / 1000 + int(Cv("rsm_ramp_out", 0.4) * TICRATE) + 1;
 				Trigger("smoke", CAT_SMOKE, ms, depth, false, who);
 				continue;
+			}
+			// GRENADE'S SKEET WINDOW (its "rsqgn_skeetslowmo" the same tic, by name): deliberate -- your throw earned it; its
+			// own row (rsqgn_skeet_window) already decided. Was taken for Gun Bonsai's Time Dilation (same ms and depth).
+			if (okWho && skeetTic[who] == level.maptime) { Trigger("grenade.skeet", CAT_NONE, ms, depth, false, who); continue; }
+			// RSQ SABER and RSQ SHIELDSAW send at 35 %: the parry and the block at 500 ms, a block under Gun Bonsai's Shield
+			// Wall at its own length (750 / 1000 / 1250), the Saber's Force Speed at its seconds (3 s and up). Until 11-09
+			// only exactly 500 ms was recognised: the rest fell to Other Mods (automatic, cooldown, the wrong switch).
+			if (dp == 35 && ms != 500)
+			{
+				int pb2 = ParryOrBlock(okWho ? who : -1, true);
+				if (pb2 & 2) { Trigger("shieldsaw.block", CAT_BLOCK, ms, depth, false, who); continue; }
+				if (pb2 & 1) { Trigger("saber.forcespeed", CAT_NONE, ms, depth, false, who); continue; }
 			}
 			if (ms == 500 && dp == 35)
 			{
@@ -425,9 +441,11 @@ class RSQSM_Clock : EventHandler
 	}
 	// 500 ms at 35 %: 1 RSQ Saber's parry, 2 RSQ ShieldSaw's block, 3 could be either, 0 neither. A sender counts only
 	// with its mod loaded, its slow-mo option on, and (if a player is known) its weapon in one of his hands.
-	private int ParryOrBlock(int who)
+	// anyLen (not 500 ms): the saber counts without its parry option (Force Speed is a power you use, not the parry);
+	// the ShieldSaw still needs its Perfect-Block Slow-Mo row (Shield Wall only sends with it on)
+	private int ParryOrBlock(int who, bool anyLen = false)
 	{
-		bool sb = OptOn('ubqs_parry_slowmo') && Loaded('UBQS_SaberBase') && (who < 0 || HoldsKind(who, 'UBQS_SaberBase'));
+		bool sb = (anyLen || OptOn('ubqs_parry_slowmo')) && Loaded('UBQS_SaberBase') && (who < 0 || HoldsKind(who, 'UBQS_SaberBase'));
 		bool ss = OptOn('ssq_perfect_slowmo') && Loaded('SSQ_ShieldSaw') && (who < 0 || HoldsKind(who, 'SSQ_ShieldSaw'));
 		return (sb ? 1 : 0) + (ss ? 2 : 0);
 	}
@@ -463,7 +481,6 @@ class RSQSM_Clock : EventHandler
 		if (StoodDown()) return;
 		// a switched-off trigger cannot START it; stopping is never refused
 		if (want && !on && !CatOn(cat, who)) { Log(why, String.Format("refused: its switch is off (%s)", CatName(cat))); return; }
-		if (want && !on && Unlearned(who, cat)) { Log(why, "refused: Slow Motion is not learned (Gun Bonsai VR)"); return; }
 		if (want && Cv("rsqsm_adrenaline", 0) != 0 && adr < Cv("rsqsm_adr_min", 25))
 		{
 			// Not enough in the meter: a short, low buzz on the hand that asked.
@@ -477,7 +494,9 @@ class RSQSM_Clock : EventHandler
 		}
 		bool was = on;
 		on = want;
-		if (on && !was) { heldUntil = level.maptime + int(ceil(HeldSecs() * TICRATE)); heldWho = who; }
+		// THE WHEEL HOLDS FOR AS LONG AS IT IS OPEN (owner 2026-11-09 21:13): with Adrenaline off its slow motion has no
+		// Slow Motion Length; the Wheel's rsm_off when it closes ends it. Every other held start keeps the length.
+		if (on && !was) { heldUntil = cat == CAT_WHEEL ? 0 : level.maptime + int(ceil(HeldSecs() * TICRATE)); heldWho = who; }
 		if (!on) heldUntil = 0;
 		if (on) { pulseUntil = 0; CountdownStart(why, true); SetCdAuto(false); cdCause = CauseWord(why); }     // the toggle outranks a pulse; the bar starts (or refills) full
 		// A CUE ONLY FOR A CHANGE. An rsm_off to a clock already off (the Wheel closing after the
@@ -646,7 +665,6 @@ class RSQSM_Clock : EventHandler
 		bool adrOn = Cv("rsqsm_adrenaline", 0) != 0;
 		Actor mo = (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? players[who].mo : null;
 		if (!CatOn(CAT_BURST, who)) { Log("wristcross.burst", "refused: its switch is off (Burst)"); return; }
-		if (Unlearned(who, CAT_BURST)) { Log("wristcross.burst", "refused: Slow Motion is not learned (Gun Bonsai VR)"); return; }
 		int ms = BurstMs(who);
 		if (adrOn && adr < Cv("rsqsm_adr_min", 25))
 		{
@@ -1515,7 +1533,10 @@ class RSQSM_Clock : EventHandler
 				int a2 = (w && w.Ammo2) ? w.Ammo2.Amount : 0;
 				if (w && w == lastW[k] && w.Ammo1 && w.Ammo2 && w.Ammo1 != w.Ammo2)
 					moved = (a2 > lastA2[k] && a1 < lastA1[k]) || (a1 > lastA1[k] && a2 < lastA2[k]);
-				bool began = reloadPrimed && alive && ((r && !reloadBusy[k]) || moved);
+				// AMMO MOVED counts as a start only while the gun is not in its Ready state (a hand reload's own animation): ammo
+				// shuffled with the gun ready (an instant move, another mod's give / take) made a 1-tic "reload" whose slow
+				// motion could eat the Auto Cooldown just before the real one (rig 2026-11-09)
+				bool began = reloadPrimed && alive && ((r && !reloadBusy[k]) || (moved && !HandReady(p, h)));
 				// the hand's reload, start to end (watched whatever the options: it is the slow motion's end)
 				if (rlActive[k])
 				{
@@ -2164,7 +2185,7 @@ class RSQSM_Service : Service
 		if (request.Left(4) ~== "down") return DownAsk(request, intArg, objectArg);
 		if (request ~== "countdown.bottom")
 		{
-			if (!c || (c.rival && RSQSM_Countdown.SCv("rsm_yield", 1) != 0) || (!RSQSM_Countdown.AnyOn() && !RSQSM_Countdown.DownShown())) return -1;
+			if (!c || (c.rival && RSQSM_Countdown.SCv("rsm_yield", 1) != 0) || !RSQSM_Countdown.AnyOn()) return -1;
 			return RSQSM_Countdown.Bottom();
 		}
 		// THE MENU: "menu.locked", "LeanDodge" -> 1 while the Gun Bonsai VR patch is loaded and the console player has

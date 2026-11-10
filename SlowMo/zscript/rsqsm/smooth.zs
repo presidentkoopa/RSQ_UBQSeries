@@ -4,7 +4,7 @@
 // (P_Move, p_enemy.cpp:502), and the clock slows walking by stretching the states. So a slowed
 // walker steps the whole step at once and then stands: at rsm_depth 0.25 a 3-tic walk state lasts 12,
 // a step, hold x11 (~2.9 Hz); at 0.4 it lasts 7-8 (~4.7 Hz). Measured on the rig before this was
-// built (tools/rigtest, mode 1): see README / HANDOFF.
+// built (tools/rigtest, mode 1): see tools/rigtest.
 //
 // The fix is §4's "puppeted step": a thinker that runs AFTER the actors (RunThinkers walks the
 // statnums upward, dthinker.cpp:145-149; this sits at RSQSM_STAT = 120, above STAT_DEFAULT 100 and

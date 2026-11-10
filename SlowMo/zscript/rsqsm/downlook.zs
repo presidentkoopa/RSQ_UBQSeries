@@ -1,5 +1,5 @@
 // RSQ_SlowMo -- DOWN'S LOOK: THE BLACK AND WHITE WORLD AND DARKDOOMZ (owner 2026-11-09 17:42: "we need to find a way to black and
-// white the world"; 17:44: "tinting the map blood red", "dropping DarkDoomZ to DarkDoom Black"). Code only, not run on the rig.
+// white the world"; 17:44: "tinting the map blood red", "dropping DarkDoomZ to DarkDoom Black"). Run on the rig 2026-11-09 (design/rigtest_2026-11-09); not headset-confirmed.
 //
 // WHAT QUESTZDOOM 17.3 ALLOWS (read in its source, tag qzd17.3, and its own shaders in qzdoom.pk3):
 //  * A SECTOR'S OWN DESATURATION AND LIGHT COLOUR (Sector.SetColor(colour, desat), mapdata.zs:538; p_sectors.cpp:750 writes
