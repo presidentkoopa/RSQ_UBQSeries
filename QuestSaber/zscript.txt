@@ -356,7 +356,7 @@ class UBQS_Bolt : FastProjectile
 		Radius 3;
 		Height 4;
 		Speed 60;
-		DamageFunction (UBQS_Data.I(target, "ubqs_block_damage", 20));
+		DamageFunction (20 /* fixed: was ubqs_block_damage, never a setting */);
 		DamageType "Saber";
 		+NOEXTREMEDEATH
 		+DONTSPLASH
@@ -528,7 +528,7 @@ class UBQS_SaberBase : Weapon abstract
 		// stuck to the hilt. It is opaque where the beam is light, and it is drawn at a different moment
 		// from the glow, so it only ever showed the seam. Gone in code, not by a default, because the
 		// setting is saved in the ini and an old one would bring it back. Prefix K = hilt only.
-		if (!UInt("ubqs_blade_tube", 0)) pre = "K";
+		if (!0 /* fixed: was ubqs_blade_tube, never a setting */) pre = "K";
 		return String.Format("%s%d%s%s", pre, SizeIdx() + 1, UBQS_Data.Col(ColIdx()), back ? "D" : "S");
 	}
 
@@ -557,7 +557,7 @@ class UBQS_SaberBase : Weapon abstract
 		// in the world, which would make the hand beam silently unavailable in exactly the configuration
 		// it is most useful in -- a world hilt with a zero-lag beam on it.
 		// The FindPSprite half is what lets A_UBGlow blank a layer already up the moment the slider hits 0.
-		if (invoker.UF("ubqs_hand_glow", 1.0) > 0.01 || player.FindPSprite(invoker.GlowLayer())) A_UBGlow(f);
+		if (1.0 /* fixed: was ubqs_hand_glow, never a setting */ > 0.01 || player.FindPSprite(invoker.GlowLayer())) A_UBGlow(f);
 		// THE PSPRITE DRAWS NOTHING WHILE THE SABER IS IN THE WORLD -- but the LAYER STAYS ALIVE.
 		// A_WeaponReady, A_Raise and A_Lower drive the whole ready / draw / holster handshake through this
 		// psprite, and PoseTick reads its y back out for the draw-and-holster rotation, so deleting the
@@ -623,7 +623,7 @@ class UBQS_SaberBase : Weapon abstract
 		// drawn AFTER both sabers (layers are drawn in order; the off hand's saber is layer 1000000), so a glow
 		// can never black out a blade drawn after it (the owner, 10-01)
 		int gl = invoker.GlowLayer();
-		double str = invoker.UF("ubqs_hand_glow", 1.0);   // its OWN 0-1 strength, not the world beam's
+		double str = 1.0 /* fixed: was ubqs_hand_glow, never a setting */;   // its OWN 0-1 strength, not the world beam's
 		if (!player.FindPSprite(gl))
 		{
 			if (str <= 0.01) return;
@@ -638,7 +638,7 @@ class UBQS_SaberBase : Weapon abstract
 		// the one moment you can see that. So during a lock the world beam takes over -- soft, and a tic
 		// of lag costs nothing when neither blade is moving. The HILT never swaps: it is a psprite always.
 		bool show = str > 0.01 && !invoker.Locked() && !UBQS_Data.IsTwirl(f) && f != 18 && f != 17;
-		int ci = invoker.UInt("ubqs_blade_glow_color", -1);
+		int ci = -1 /* fixed: was ubqs_blade_glow_color, never a setting */;
 		int col = (ci < 0) ? invoker.ColIdx() : clamp(ci, 0, UBQS_Data.NCOL - 1);
 		g.Sprite = GetSpriteIndex(String.Format("G%d%s%s", invoker.SizeIdx() + 1, UBQS_Data.Col(col), invoker.back ? "D" : "S"));
 		g.Frame = show ? f : 18;
@@ -659,7 +659,7 @@ class UBQS_SaberBase : Weapon abstract
 	Actor HumSrc(bool make, Vector3 mid)
 	{
 		if (!owner) return null;
-		if (UInt("ubqs_swing_spatial", 1) == 0) return owner;
+		if (1 /* fixed: was ubqs_swing_spatial, never a setting */ == 0) return owner;
 		if (!hummer && make)
 		{
 			hummer = UBQS_Hummer(Actor.Spawn('UBQS_Hummer', mid));
@@ -667,7 +667,7 @@ class UBQS_SaberBase : Weapon abstract
 		}
 		return hummer ? Actor(hummer) : owner;
 	}
-	int HumChan() { return (UInt("ubqs_swing_spatial", 1) != 0 && hummer) ? CHAN_BODY : (bOffhandWeapon ? 21 : 20); }
+	int HumChan() { return (1 /* fixed: was ubqs_swing_spatial, never a setting */ != 0 && hummer) ? CHAN_BODY : (bOffhandWeapon ? 21 : 20); }
 	void HumOff()
 	{
 		if (hummer) { hummer.A_StopSound(CHAN_BODY); hummer.Destroy(); hummer = null; }
@@ -678,9 +678,9 @@ class UBQS_SaberBase : Weapon abstract
 	void Swing(Vector3 tip, double speed)
 	{
 		if (!owner) return;
-		double vol = clamp(speed / 24.0, 0.5, 1.0) * UF("ubqs_vol_swing", 1.0);
+		double vol = clamp(speed / 24.0, 0.5, 1.0) * 1.0 /* fixed: was ubqs_vol_swing, never a setting */;
 		double pit = clamp(0.85 + speed / 60.0, 0.85, 1.35);
-		if (UInt("ubqs_swing_spatial", 1) == 0)
+		if (1 /* fixed: was ubqs_swing_spatial, never a setting */ == 0)
 		{
 			owner.A_StartSound(UBQS_Font.Swing(), CHAN_AUTO, 0, vol, ATTN_NORM, pit);
 			return;
@@ -703,7 +703,7 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		if (invoker.Twirling())
 		{
-			int step = (invoker.UInt("ubqs_twirl", 2) >= 2) ? 1 : 2;
+			int step = (2 /* fixed: was ubqs_twirl, never a setting */ >= 2) ? 1 : 2;
 			f = UBQS_Data.TW0 + (level.maptime / step) % UBQS_Data.TWN;
 		}
 		A_UBShow(f);
@@ -715,26 +715,17 @@ class UBQS_SaberBase : Weapon abstract
 	action void A_UBOn()
 	{
 		if (invoker.thrown || invoker.ignited) return;
-		// SECOND SABER STARTS PUT AWAY, WITH NO HOLSTER (ubqs_dual_start 0, no RSQ Tactical Rig): its first
-		// draw leaves the blade off -- a hilt in the off hand, which RSQ_DistanceGrab lets reach. The Blade
-		// On / Off key (or a throw and catch) lights it; any later draw lights it as usual.
-		if (invoker.startDark)
-		{
-			invoker.startDark = false;
-			invoker.doused = true;
-			return;
-		}
 		// It always lights when drawn. The `netevent ubqs_ignite` key (UBQS_Bridge.NetworkProcess -> Flick())
 		// is what douses and relights it by hand; there is no wrist flick any more.
 		invoker.doused = false;
 		invoker.ignited = true;
-		A_StartSound(UBQS_Font.On(), CHAN_WEAPON, 0, invoker.UF("ubqs_vol_ignite", 1.0));
+		A_StartSound(UBQS_Font.On(), CHAN_WEAPON, 0, 1.0 /* fixed: was ubqs_vol_ignite, never a setting */);
 	}
 	action void A_UBOff()
 	{
 		if (invoker.thrown || !invoker.ignited) return;
 		invoker.ignited = false;
-		A_StartSound(UBQS_Font.Off(), CHAN_WEAPON, 0, invoker.UF("ubqs_vol_ignite", 1.0));
+		A_StartSound(UBQS_Font.Off(), CHAN_WEAPON, 0, 1.0 /* fixed: was ubqs_vol_ignite, never a setting */);
 	}
 	// ---- FIRE: LOCK ON, THEN THROW IT WITH YOUR ARM (the owner, 10-01) -------------------------------------
 	// There is no button swing: the saber cuts what your real swing passes it through (DoEffect). Fire is the
@@ -775,7 +766,7 @@ class UBQS_SaberBase : Weapon abstract
 			// route -- it flies the ringed targets in order -- so demanding a forward snap on top of the
 			// marks asked for a gesture that changed nothing, and threw the marks away when it was missed.
 			// With nothing marked the snap is still the whole decision, and nothing below this changed.
-			if (invoker.locks.Size() > 0 && invoker.UInt("ubqs_throw_on_lock", 1)) invoker.Throw();
+			if (invoker.locks.Size() > 0 && 1 /* fixed: was ubqs_throw_on_lock, never a setting */) invoker.Throw();
 			else if (invoker.ThrowRelease(thr)) invoker.Throw();
 			else invoker.keepMarksUntil = level.maptime + UBQS_A11y.Tap(35);   // Slower Taps: x1.5
 			return ResolveState("AltDone");
@@ -794,7 +785,7 @@ class UBQS_SaberBase : Weapon abstract
 		// becomes the second-blade toggle -- the same thing ubqs_alt 0 does. Switching the Force off
 		// should leave you a working alt button, not a dead one.
 		bool force = invoker.UInt("ubqs_force", 1) != 0;
-		if (force && invoker.bOffhandWeapon && invoker.UInt("ubqs_force_gestures", 1)) return ResolveState("AltDone");
+		if (force && invoker.bOffhandWeapon && 1 /* fixed: was ubqs_force_gestures, never a setting */) return ResolveState("AltDone");
 		if (!force || invoker.UInt("ubqs_alt", 1) == 0)
 		{
 			if (invoker.TakeAltPress()) invoker.ToggleBack();
@@ -848,7 +839,7 @@ class UBQS_SaberBase : Weapon abstract
 		int sh = bOffhandWeapon ? 1 : 0;
 		double ha = UBQS_Steady.Angle(owner, sh, "angle") + 90.0, hpit = -UBQS_Steady.Angle(owner, sh, "pitch");
 		Actor best = null;
-		double bestOff = UF("ubqs_lock_cone", 14.0);
+		double bestOff = 14.0 /* fixed: was ubqs_lock_cone, never a setting */;
 		double range = 1536.0;
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
 		while (it.Next())
@@ -904,7 +895,7 @@ class UBQS_SaberBase : Weapon abstract
 	void Rumble(double strength, int tics, bool twice = false)
 	{
 		if (!owner || !owner.player || !UInt("ubqs_haptics", 1)) return;
-		double k = strength * clamp(UF("ubqs_haptic_power", 1.0), 0.0, 3.0);
+		double k = strength * clamp(1.0 /* fixed: was ubqs_haptic_power, never a setting */, 0.0, 3.0);
 		if (k <= 0.01) return;
 		UBQS_Buzzer.Start(owner, bOffhandWeapon, k, tics, twice);
 	}
@@ -924,7 +915,7 @@ class UBQS_SaberBase : Weapon abstract
 			return;
 		}
 		back = !back;
-		if (owner) owner.A_StartSound(back ? UBQS_Font.On() : UBQS_Font.Off(), CHAN_WEAPON, 0, UF("ubqs_vol_ignite", 1.0));
+		if (owner) owner.A_StartSound(back ? UBQS_Font.On() : UBQS_Font.Off(), CHAN_WEAPON, 0, 1.0 /* fixed: was ubqs_vol_ignite, never a setting */);
 	}
 
 	// ---- THE HAND ----------------------------------------------------------------------------------------
@@ -947,7 +938,7 @@ class UBQS_SaberBase : Weapon abstract
 		// the first was exposed. It is measured against the HEAD (owner.pitch / owner.angle), so a seated or
 		// swivel-chair player throwing across his body gets nothing. Exposed as the dot it is, not converted
 		// to degrees -- 0.55 is not the cosine of any round number.
-		return (hv / sp) dot fwd >= UBQS_A11y.Low(UF("ubqs_throw_straight", 0.55));
+		return (hv / sp) dot fwd >= UBQS_A11y.Low(0.55 /* fixed: was ubqs_throw_straight, never a setting */);
 	}
 	Vector3 Aim()
 	{
@@ -981,7 +972,7 @@ class UBQS_SaberBase : Weapon abstract
 	// and DeathThink keeps ticking the weapon layer -- so a dead player's blade went on cutting,
 	// deflecting and scorching from the floor until the respawn.
 	bool Lit() { return !thrown && owner && owner.health > 0 && UBQS_Data.Ext(frameNow) > 0.5 && InHand() && HandLive(); }
-	bool Twirling() { return back && !thrown && !doused && UInt("ubqs_twirl", 2) > 0; }
+	bool Twirling() { return back && !thrown && !doused && 2 /* fixed: was ubqs_twirl, never a setting */ > 0; }
 
 	// ---- THE BLADE ON AND OFF --------------------------------------------------------------------------------
 	// THE WRIST FLICK IS GONE (the owner, 10-01: "remove wrist flick"). FlickCheck's whole body sat after an
@@ -993,7 +984,6 @@ class UBQS_SaberBase : Weapon abstract
 	// still run from Select, Deselect and Ready, so they were never orphaned -- only the by-hand dousing was.)
 	// A key is not a cvar, so this cannot go dead in anyone's ini.
 	bool doused;              // the blade is off; the hilt is in your hand
-	bool startDark;           // the first draw leaves the blade off (UBQS_Bridge, ubqs_dual_start 0, no holster)
 	int  igniteAnim;          // tics left of the blade running out (lighting) or in (dousing)
 	bool merged;              // off hand: KEPT -- A_UBShow, A_UBHoldBegin, A_UBAltFire, DetachFromOwner and
 	                          // UBQS_Force all read it
@@ -1010,7 +1000,7 @@ class UBQS_SaberBase : Weapon abstract
 		doused = !doused;
 		ignited = !doused;
 		igniteAnim = 8;
-		owner.A_StartSound(doused ? UBQS_Font.Off() : UBQS_Font.On(), bOffhandWeapon ? CHAN_6 : CHAN_WEAPON, 0, UF("ubqs_vol_ignite", 1.0));
+		owner.A_StartSound(doused ? UBQS_Font.Off() : UBQS_Font.On(), bOffhandWeapon ? CHAN_6 : CHAN_WEAPON, 0, 1.0 /* fixed: was ubqs_vol_ignite, never a setting */);
 		Buzz();
 	}
 
@@ -1145,7 +1135,7 @@ class UBQS_SaberBase : Weapon abstract
 			{
 				// only ever raised back from 0: the glow layer owns its own alpha (ubqs_hand_glow) and
 				// must not be stamped to 1 here on every tic it is held at half strength.
-				psp.alpha = (k == 0) ? 1.0 : clamp(UF("ubqs_hand_glow", 1.0), 0.0, 1.0);
+				psp.alpha = (k == 0) ? 1.0 : clamp(1.0 /* fixed: was ubqs_hand_glow, never a setting */, 0.0, 1.0);
 			}
 		}
 	}
@@ -1203,7 +1193,7 @@ class UBQS_SaberBase : Weapon abstract
 		// view changes between two samples and a tip position from before it is not comparable with one
 		// after. The threshold is raised well above any smooth-turn rate so it stops firing every tic on
 		// a turning player, which is what was killing prediction, swings and throws through a turn.
-		if (turned >= UF("ubqs_snap_turn_deg", 45.0) || jumped)
+		if (turned >= 45.0 /* fixed: was ubqs_snap_turn_deg, never a setting */ || jumped)
 		{
 			h1 = h0; h2 = h0; h3 = h0;
 			lastOk = false;
@@ -1301,7 +1291,7 @@ class UBQS_SaberBase : Weapon abstract
 		// itself. Integrating instead of differentiating is also what stops the turnaround of a swing
 		// lying to you. 0 restores exactly the old behaviour.
 		cutPath = cutPath * 0.75 + speed;
-		double eff = max(speed, cutPath * clamp(UF("ubqs_cut_sustain", 0.6), 0.0, 1.0));
+		double eff = max(speed, cutPath * clamp(0.6 /* fixed: was ubqs_cut_sustain, never a setting */, 0.0, 1.0));
 		// the swing's own lift on the hum. On the blade emitter this is the BASE the Doppler ride
 		// bends around; on the player it is the whole of it, as before.
 		// THE SWOOSH (owner 2026-10-31: "blade hum by speed"): the hum's pitch AND loudness ride the blade's own speed --
@@ -1356,12 +1346,12 @@ class UBQS_SaberBase : Weapon abstract
 			if (speed >= cut && swingQuiet <= 0)
 			{
 				Swing(tip, speed);
-				swingQuiet = max(UInt("ubqs_swing_gap", 8), 1);
+				swingQuiet = max(8 /* fixed: was ubqs_swing_gap, never a setting */, 1);
 			}
 		}
 		if (swish) swish.tip = tip;	// it follows the blade, not the tic it was born on
-		if (speed >= cut - 2.0 && lastOk && UInt("ubqs_trail", 1)) Trail(hand, tip, speed, cut);
-		if (UInt("ubqs_deflect", 1))
+		if (speed >= cut - 2.0 && lastOk && 1 /* fixed: was ubqs_trail, never a setting */) Trail(hand, tip, speed, cut);
+		if (1 /* fixed: was ubqs_deflect, never a setting */)
 		{
 			Deflect(hand, dir, len);
 			if (back) Deflect(pom, -dir, len);
@@ -1468,23 +1458,23 @@ class UBQS_SaberBase : Weapon abstract
 	private double cAge, cMaxA, cMaxL, cRampW, cStop, cHitch, cFadeW0, cFadeW1, cJerk;
 	private void GlowTunables()
 	{
-		cAge    = UF("ubqs_glow_frame_ms", GLOW_AGE);
-		cMaxA   = UF("ubqs_glow_maxang", GLOW_MAXANG);
-		cMaxL   = UF("ubqs_glow_maxlin", GLOW_MAXLIN);
-		cRampW  = max(UF("ubqs_glow_ramp_deg", GLOW_RAMPW), GLOW_STILLOUTW + 1.0);
-		cStop   = clamp(UF("ubqs_glow_stop", GLOW_STOP), 0.05, 0.99);
-		cHitch  = max(UF("ubqs_glow_hitch_ms", 120.0), 20.0);
-		cFadeW0 = UF("ubqs_glow_fade_deg0", GLOW_FADEW0);
-		cFadeW1 = max(UF("ubqs_glow_fade_deg1", GLOW_FADEW1), cFadeW0 + 1.0);
-		cJerk   = UF("ubqs_glow_fade_jerk", 1.0);
+		cAge    = GLOW_AGE /* fixed: was ubqs_glow_frame_ms, never a setting */;
+		cMaxA   = GLOW_MAXANG /* fixed: was ubqs_glow_maxang, never a setting */;
+		cMaxL   = GLOW_MAXLIN /* fixed: was ubqs_glow_maxlin, never a setting */;
+		cRampW  = max(GLOW_RAMPW /* fixed: was ubqs_glow_ramp_deg, never a setting */, GLOW_STILLOUTW + 1.0);
+		cStop   = clamp(GLOW_STOP /* fixed: was ubqs_glow_stop, never a setting */, 0.05, 0.99);
+		cHitch  = max(120.0 /* fixed: was ubqs_glow_hitch_ms, never a setting */, 20.0);
+		cFadeW0 = GLOW_FADEW0 /* fixed: was ubqs_glow_fade_deg0, never a setting */;
+		cFadeW1 = max(GLOW_FADEW1 /* fixed: was ubqs_glow_fade_deg1, never a setting */, cFadeW0 + 1.0);
+		cJerk   = 1.0 /* fixed: was ubqs_glow_fade_jerk, never a setting */;
 	}
 	// THE HUM'S VOLUME, in one place because it is asserted in TWO (where the loop starts, and again every tic
 	// below it -- the second one is the line that actually wins). ubqs_hum_off is the off hand's share: dual
 	// wield is the default, so a lit pair is two stacked loops, on channels 20 and 21.
 	double HumVol()
 	{
-		double v = UF("ubqs_hum", 0.45);
-		if (bOffhandWeapon) v *= UF("ubqs_hum_off", 1.0);
+		double v = 0.45 /* fixed: was ubqs_hum, never a setting */;
+		if (bOffhandWeapon) v *= 1.0 /* fixed: was ubqs_hum_off, never a setting */;
 		return clamp(v, 0.0, 1.0);
 	}
 
@@ -1542,8 +1532,8 @@ class UBQS_SaberBase : Weapon abstract
 		else if (ws < GLOW_STILLINW && vs < GLOW_STILLINV) { gStill = true; gSnapA = true; gSnapL = true; }
 		if (gStill) return had;
 		gFade = GlowSS(cFadeW0, cFadeW1, ws);       // ubqs_glow_fade_deg0 / ubqs_glow_fade_deg1
-		bool pred = UInt("ubqs_glow_predict", 1);
-		double lead = pred ? clamp(UF("ubqs_glow_lead", 1.0), 0.0, 2.0) : 0.0;
+		bool pred = 1 /* fixed: was ubqs_glow_predict, never a setting */;
+		double lead = pred ? clamp(1.0 /* fixed: was ubqs_glow_lead, never a setting */, 0.0, 2.0) : 0.0;
 		double f = clamp(System.GetTimeFrac(), 0.0, 1.0);
 		double tn = (1.0 - f) * GLOW_TICMS + cAge;   // ubqs_glow_frame_ms: 90 Hz 11.1, 72 Hz 13.9, 120 Hz 8.3
 		double kA = lead * GlowSS(GLOW_STILLOUTW, cRampW, ws);
@@ -1779,7 +1769,7 @@ class UBQS_SaberBase : Weapon abstract
 	}
 	private void BladeGlow(Vector3 base, Vector3 dir, double len, Vector3 pom)
 	{
-		double str = UF("ubqs_blade_glow", 0.0);
+		double str = 0.0 /* fixed: was ubqs_blade_glow, never a setting */;
 		// retracted (or off): no glow at all -- it comes back fresh, so nothing sweeps in from where it was
 		// A LOCK BRINGS THIS ONE UP whatever ubqs_blade_glow says, because it is the half of the swap
 		// that looks right when the blades are crossed. 0.6 is its designed strength.
@@ -1793,7 +1783,7 @@ class UBQS_SaberBase : Weapon abstract
 		// pommel move together, so the overlap room below and the back blade's offset are unchanged.
 		// Note: ubqs_diag 2's telemetry computes the base without the shift, so with a shift set it reports
 		// exactly that many units of base error -- which is the truth: the beam IS that far off the blade line.
-		double shift = clamp(UF("ubqs_beam_shift", 0.0), -8.0, 8.0);
+		double shift = clamp(0.0 /* fixed: was ubqs_beam_shift, never a setting */, -8.0, 8.0);
 		if (shift != 0.0) { base += dir * shift; pom += dir * shift; }
 		// THE PREDICTION WAS ALREADY DONE THIS TIC, ON THE HAND, IN PoseTick -- never here. GlowPredict keeps
 		// a rolling three-sample history (gT0..gT2 / gB0..gB2 / gD0..gD2) plus one hysteresis bit; call it
@@ -1814,18 +1804,18 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 pb = owner.pos + gPRel + pDir * UBQS_Data.EmitAlong(SizeIdx());
 		// the pommel rides the same hilt: as far down the (predicted) beam as it is down the real one
 		Vector3 pp = pb + pDir * ((pom - base) dot dir);
-		int ci = UInt("ubqs_blade_glow_color", -1);
+		int ci = -1 /* fixed: was ubqs_blade_glow_color, never a setting */;
 		int col = (ci < 0) ? ColIdx() : clamp(ci, 0, UBQS_Data.NCOL - 1);
 		// BUILD 51 (the owner: "far too fat"): the shells are built in world units at the film look (vgface.py:
 		// white core out to ~0.33 = the emitter mouth, the colour tight round it, a faint bloom to 2.8), drawn 1:1
 		// at ubqs_glow_width 1.2 -- its old default, so a saved setting keeps meaning "the designed width"
-		double w = UF("ubqs_glow_width", 1.2) / 1.2 * UBQS_Data.Size(SizeIdx());
-		int q = clamp(UInt("ubqs_glow_quality", 3), 1, 4);
+		double w = 1.2 /* fixed: was ubqs_glow_width, never a setting */ / 1.2 * UBQS_Data.Size(SizeIdx());
+		int q = clamp(3 /* fixed: was ubqs_glow_quality, never a setting */, 1, 4);
 		double a = clamp(str / 0.6, 0.0, 1.0);   // the capsule's profile is designed at alpha 1 = the default 0.6
-		double fade = UInt("ubqs_glow_motionfade", 1) ? gFade : 0.0;
+		double fade = 1 /* fixed: was ubqs_glow_motionfade, never a setting */ ? gFade : 0.0;
 		// ubqs_glow_fade_widen: the other half of motionfade -- the halo widening that is supposed to read as
 		// motion blur. It was an inline literal, and width is the thing he has called out twice.
-		double ac = a * (1.0 - fade), wh = w * (1.0 + clamp(UF("ubqs_glow_fade_widen", 0.25), 0.0, 1.0) * fade);
+		double ac = a * (1.0 - fade), wh = w * (1.0 + clamp(0.25 /* fixed: was ubqs_glow_fade_widen, never a setting */, 0.0, 1.0) * fade);
 		// THE BEAM REACHES THE HILT (build 54; the owner, 10-01: "give life to that beam thing"). Each
 		// shell fades in over a length that grows with its radius (vgface.py), so AT the emitter mouth
 		// the glow is only about 13% of full: measured off the shipped meshes with tools/joint51vs52.py,
@@ -1838,8 +1828,8 @@ class UBQS_SaberBase : Weapon abstract
 		// matter sleeves the hilt in light (tried at 4 units; it swallowed the hilt).
 		double room = -((pom - base) dot dir);
 		double cap = room * (back ? 0.45 : 0.9);
-		double ovC = clamp(min(UF("ubqs_glow_overlap_core", 0.5), cap), 0.0, 4.0);
-		double ovH = clamp(min(UF("ubqs_glow_overlap_halo", 1.5), cap), 0.0, 4.0);
+		double ovC = clamp(min(0.5 /* fixed: was ubqs_glow_overlap_core, never a setting */, cap), 0.0, 4.0);
+		double ovH = clamp(min(1.5 /* fixed: was ubqs_glow_overlap_halo, never a setting */, cap), 0.0, 4.0);
 		gHalo = UBQS_BeamGlow.Put(gHalo, false, pb - pDir * ovH, pDir, len + ovH, wh, col, q, a, jump, sA, sL);
 		gCore = UBQS_BeamGlow.Put(gCore, true, pb - pDir * ovC, pDir, len + ovC, w, col, q, ac, jump, sA, sL);
 		if (back)
@@ -1862,7 +1852,7 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		int N = 10;
 		double str = 0.42;
-		int want = UInt("ubqs_glow_dots", 0) ? (back ? N * 2 : N) : 0;
+		int want = 0 /* fixed: was ubqs_glow_dots, never a setting */ ? (back ? N * 2 : N) : 0;
 		while (bglow.Size() > want) { let g = bglow[bglow.Size() - 1]; if (g) g.Destroy(); bglow.Pop(); }
 		if (want == 0) return;
 		int rgb = UBQS_Data.Mix(RgbNow(), 0xFFFFFF, 0.15);
@@ -1916,8 +1906,8 @@ class UBQS_SaberBase : Weapon abstract
 		// whoosh saturates) is 24, so 4 is a genuinely hard arc and not a number he can never see.
 		// ubqs_trail_life is the knob that turns dots into a streak; it is fully live over its whole range.
 		int rgb = RgbNow();
-		int most = clamp(UInt("ubqs_trail_steps", 2), 1, 4);
-		int life = clamp(UInt("ubqs_trail_life", 6), 1, 24);
+		int most = clamp(2 /* fixed: was ubqs_trail_steps, never a setting */, 1, 4);
+		int life = clamp(6 /* fixed: was ubqs_trail_life, never a setting */, 1, 24);
 		int steps = clamp(1 + int((speed - cut) / 8.0), 1, most);
 		for (int i = 0; i < steps; i++)
 		{
@@ -2068,16 +2058,16 @@ class UBQS_SaberBase : Weapon abstract
 		// the damage (0 = not at all, which is what anyone seated or in a small room needs -- they live on the
 		// 0.5 floor of this curve for good otherwise). Its slider stops at 1 because above 1 the floor drives
 		// the product toward zero, and a cut that draws blood and plays a hit for no damage is worse than none.
-		int    rate = max(UInt("ubqs_cut_rate", 8), 1);
-		double pad  = UF("ubqs_cut_pad", 3.0);
+		int    rate = max(8 /* fixed: was ubqs_cut_rate, never a setting */, 1);
+		double pad  = 3.0 /* fixed: was ubqs_cut_pad, never a setting */;
 		double dmg0 = UF("ubqs_damage", 30.0);
 		if (rear && gbOn) dmg0 *= UBQS_Upg.Num("DoubleBladed.back", uDouble, 0.75);   // DOUBLE-BLADED 2: the backswing's share
-		double mult = 1.0 + (clamp(speed / 20.0, 0.5, 2.0) - 1.0) * clamp(UF("ubqs_swing_scale", 1.0), 0.0, 1.0);
-		double vhit = UF("ubqs_vol_hit", 1.0);
-		bool   buzzc = UInt("ubqs_haptic_cut", 1) != 0;
-		double shove = UF("ubqs_cut_shove", 1.0);
-		double lift  = clamp(UF("ubqs_cut_lift", 0.35), 0.0, 1.0);
-		bool   los   = UInt("ubqs_cut_los", 1) != 0;
+		double mult = 1.0 + (clamp(speed / 20.0, 0.5, 2.0) - 1.0) * clamp(1.0 /* fixed: was ubqs_swing_scale, never a setting */, 0.0, 1.0);
+		double vhit = 1.0 /* fixed: was ubqs_vol_hit, never a setting */;
+		bool   buzzc = 1 /* fixed: was ubqs_haptic_cut, never a setting */ != 0;
+		double shove = 1.0 /* fixed: was ubqs_cut_shove, never a setting */;
+		double lift  = clamp(0.35 /* fixed: was ubqs_cut_lift, never a setting */, 0.0, 1.0);
+		bool   los   = 1 /* fixed: was ubqs_cut_los, never a setting */ != 0;
 		bool   cutAny = false;
 		bool   ripe = uRiposte > 0 && level.maptime <= primedUntil;
 		double um = UpgCutMult(ripe);
@@ -2202,7 +2192,7 @@ class UBQS_SaberBase : Weapon abstract
 		// (ubqs_haptic_cut 1).
 		if (buzzc && cutAny) Rumble(0.9, 4);
 		// THE RIPOSTE IS SPENT on the cut that lands, not on a swing at the air
-		if (ripe && cutAny) { primedUntil = 0; if (owner) owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, 0.6 * UF("ubqs_vol_clash", 1.0), ATTN_NORM, 1.3); }
+		if (ripe && cutAny) { primedUntil = 0; if (owner) owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, 0.6 * 1.0 /* fixed: was ubqs_vol_clash, never a setting */, ATTN_NORM, 1.3); }
 		for (int k = cutWho.Size() - 1; k >= 0; k--)
 			if (!cutWho[k] || cutWho[k].health <= 0) { cutWho.Delete(k); cutWhen.Delete(k); }
 	}
@@ -2222,7 +2212,7 @@ class UBQS_SaberBase : Weapon abstract
 	private void CutFx(Vector3 at, Vector3 dir, Actor mo, int dmg)
 	{
 		if (!mo.bNoBlood) mo.SpawnBlood(at, VectorAngle(dir.x, dir.y), dmg);
-		double k = clamp(UF("ubqs_cut_fx", 1.0), 0.0, 3.0);
+		double k = clamp(1.0 /* fixed: was ubqs_cut_fx, never a setting */, 0.0, 3.0);
 		if (k <= 0.01) return;
 		int rgb = RgbNow();
 		double bs = clamp(mo.radius / 20.0, 0.6, 2.2);
@@ -2277,10 +2267,10 @@ class UBQS_SaberBase : Weapon abstract
 		double reach = len + 160.0;
 		// read above the iterator, as in CutLine. ubqs_cut_rate is the SAME cvar the swing uses, so the two
 		// cooldowns cannot drift apart; ubqs_dmg_twirl is the disc's own share of ubqs_damage (a bare 0.8).
-		int    rate = max(UInt("ubqs_cut_rate", 8), 1);
-		double dmg0 = UF("ubqs_damage", 30.0) * UF("ubqs_dmg_twirl", 0.8);
-		double vhit = UF("ubqs_vol_hit", 1.0);
-		bool   los  = UInt("ubqs_cut_los", 1) != 0;	// the swing got this; the twirl never did
+		int    rate = max(8 /* fixed: was ubqs_cut_rate, never a setting */, 1);
+		double dmg0 = UF("ubqs_damage", 30.0) * 0.8 /* fixed: was ubqs_dmg_twirl, never a setting */;
+		double vhit = 1.0 /* fixed: was ubqs_vol_hit, never a setting */;
+		bool   los  = 1 /* fixed: was ubqs_cut_los, never a setting */ != 0;	// the swing got this; the twirl never did
 		let it = BlockThingsIterator.CreateFromPos(hand.x, hand.y, hand.z - reach, reach * 2.0, reach, false);
 		while (it.Next())
 		{
@@ -2291,7 +2281,7 @@ class UBQS_SaberBase : Weapon abstract
 			Vector3 c = level.Vec3Diff(hand, mo.pos);
 			if (mo.bMissile)
 			{
-				if (mo.target == owner || mo is "UBQS_Thrown" || !UInt("ubqs_deflect", 1)) continue;
+				if (mo.target == owner || mo is "UBQS_Thrown" || !1 /* fixed: was ubqs_deflect, never a setting */) continue;
 				// where its path this tic crosses the disc's plane, and whether that is inside the disc
 				double a0 = c dot n, a1 = (c + mo.vel) dot n;
 				double bwd = BladeWidth();
@@ -2399,7 +2389,7 @@ class UBQS_SaberBase : Weapon abstract
 			if (level.maptime != lastDeflectTic)
 			{
 				lastDeflectTic = level.maptime;
-				UBQS_Ping.At(owner, fxAt, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0));
+				UBQS_Ping.At(owner, fxAt, UBQS_Font.Clash(), 1.0 /* fixed: was ubqs_vol_clash, never a setting */);
 			}
 			UBQS_Data.Sparks(fxAt, -mo.vel.Unit(), RgbNow(), 8);
 			FlashAt(fxAt, 64, 4);
@@ -2444,7 +2434,7 @@ class UBQS_SaberBase : Weapon abstract
 			// ubqs_deflect_assist: the aim help that puts a deflected shot onto an enemy. It happens to equal
 			// ubqs_lock_cone's default, which makes it LOOK linked to it -- it is not, and turning
 			// ubqs_lock_cone does nothing here. 0 = hard-mode deflection, with no help at all.
-			double gcone = UF("ubqs_deflect_assist", 14.0);
+			double gcone = 14.0 /* fixed: was ubqs_deflect_assist, never a setting */;
 			Actor pick = null;
 			if (gcone > 0.0) pick = GazeTarget(gcone);
 			if (pick) d = level.Vec3Diff(mo.pos, (pick.pos.xy, pick.pos.z + pick.height * 0.55));
@@ -2479,7 +2469,7 @@ class UBQS_SaberBase : Weapon abstract
 		if (level.maptime != lastDeflectTic)
 		{
 			lastDeflectTic = level.maptime;
-			UBQS_Ping.At(owner, fxAt, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0));
+			UBQS_Ping.At(owner, fxAt, UBQS_Font.Clash(), 1.0 /* fixed: was ubqs_vol_clash, never a setting */);
 		}
 		UBQS_Data.Sparks(fxAt, d, RgbNow(), 8);
 		FlashAt(fxAt, 64, 4);
@@ -2515,7 +2505,7 @@ class UBQS_SaberBase : Weapon abstract
 		else if (!held && gripHeldWas && !thrown)
 		{
 			double thr = UF("ubqs_throw_min", 1.5);
-			if (locks.Size() > 0 && UInt("ubqs_throw_on_lock", 1)) Throw();
+			if (locks.Size() > 0 && 1 /* fixed: was ubqs_throw_on_lock, never a setting */) Throw();
 			else if (ThrowRelease(thr)) Throw();
 			else keepMarksUntil = level.maptime + UBQS_A11y.Tap(35);   // Slower Taps: x1.5
 		}
@@ -2611,15 +2601,15 @@ class UBQS_SaberBase : Weapon abstract
 				double gw2 = BladeWidth(48.0);
 				let og = Other();
 				bool inPath = gw2 <= 0.01 || BladeInPath(from, gw2) || (og && og.BladeInPath(from, gw2));
-				if (off < UF("ubqs_guard_arc", 100.0) && inPath)
+				if (off < 100.0 /* fixed: was ubqs_guard_arc, never a setting */ && inPath)
 				{
 					newdamage = 0;
 					// CROSS GUARD (Gun Bonsai VR): what the X stops goes back (1 straight back, 2+ at whoever sent it)
 					UpgRefresh();
 					if (uCross > 0 && level.maptime != crossBoltTic) CrossReturn(from, source);
 					UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, source);
-					owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
-					double gfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
+					owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, 1.0 /* fixed: was ubqs_vol_clash, never a setting */);
+					double gfx = clamp(1.0 /* fixed: was ubqs_clash_fx, never a setting */, 0.0, 3.0);
 					if (gfx > 0.01)
 					{
 						UBQS_ClashFlash.Burst(guardAt, 0.8 * gfx);
@@ -2665,12 +2655,12 @@ class UBQS_SaberBase : Weapon abstract
 			if (owner.Distance3D(source) < 96) return;
 			Vector3 aim = Aim();
 			double toShooter = VectorAngle(source.pos.x - owner.pos.x, source.pos.y - owner.pos.y);
-			if (abs(DeltaAngle(VectorAngle(aim.x, aim.y), toShooter)) > UF("ubqs_block_cone", 75.0)) return;
+			if (abs(DeltaAngle(VectorAngle(aim.x, aim.y), toShooter)) > 75.0 /* fixed: was ubqs_block_cone, never a setting */) return;
 			// ubqs_block_swung: inside this window ubqs_block is ignored entirely and EVERY hitscan is blocked.
 			// A third of a second of total immunity after any fast swing -- and the twirl sets lastFastTic
 			// every single tic, so a twirling player never leaves it. 0 turns the window off.
-			bool swung = level.maptime - lastFastTic < UInt("ubqs_block_swung", 12);
-			if (!swung && random[UBQSBlock](1, 100) > UInt("ubqs_block", 70)) return;
+			bool swung = level.maptime - lastFastTic < 12 /* fixed: was ubqs_block_swung, never a setting */;
+			if (!swung && random[UBQSBlock](1, 100) > 70 /* fixed: was ubqs_block, never a setting */) return;
 		}
 		newdamage = 0;
 		Vector3 hand = BladeBase(), dir = BladeDir();
@@ -2690,11 +2680,11 @@ class UBQS_SaberBase : Weapon abstract
 		// claw calls DamageMobj with the monster as both. A parry staggers twice as hard, off the
 		// same ParryGain the return bolt uses.
 		// (RS_ShieldSawQ does this on every blocked melee: ssq_melee / ssq_stagger_push.)
-		if (UInt("ubqs_block_stagger", 1) != 0 && (inflictor == source || (claw && loud)) && !(flags & DMG_EXPLOSION)
+		if (1 /* fixed: was ubqs_block_stagger, never a setting */ != 0 && (inflictor == source || (claw && loud)) && !(flags & DMG_EXPLOSION)
 			&& source.bIsMonster && source.health > 0)
 		{
 			source.TriggerPainChance('Melee', true);
-			double push = UF("ubqs_stagger_push", 12.0) / 10.0 * ParryGain(-back);
+			double push = 12.0 /* fixed: was ubqs_stagger_push, never a setting */ / 10.0 * ParryGain(-back);
 			Vector3 away = (source.pos.x - owner.pos.x, source.pos.y - owner.pos.y, 0);
 			if (push > 0.01 && away.Length() > 0) source.Thrust(push, VectorAngle(away.x, away.y));
 		}
@@ -2709,7 +2699,7 @@ class UBQS_SaberBase : Weapon abstract
 	{
 		bool ok = BladeBefore();
 		if (!ok) return 1.0;
-		double need = UF("ubqs_parry_speed", 6.0);
+		double need = 6.0 /* fixed: was ubqs_parry_speed, never a setting */;
 		if (uPrecog > 0) need *= UBQS_Upg.Num("Precognition.speed", uPrecog, 1.0);   // PRECOGNITION (Gun Bonsai VR)
 		if (need <= 0.01 || shotDir.Length() < 0.001) return 1.0;
 		Vector3 now = BladeBase() + BladeDir() * BladeLen();
@@ -2718,7 +2708,7 @@ class UBQS_SaberBase : Weapon abstract
 		Vector3 sd = shotDir.Unit();
 		double into = sp > 0.001 ? -((step / sp) dot sd) : 0.0;
 		double pg = 1.0;
-		if (sp >= need && into >= 0.3) pg = 1.0 + (clamp(UF("ubqs_parry_power", 2.0), 1.0, 4.0) - 1.0) * clamp(into, 0.0, 1.0);
+		if (sp >= need && into >= 0.3) pg = 1.0 + (clamp(2.0 /* fixed: was ubqs_parry_power, never a setting */, 1.0, 4.0) - 1.0) * clamp(into, 0.0, 1.0);
 		if (UInt("ubqs_diag", 0) == 3)
 			Console.Printf("SBX_PARRY t%d %s used tip(t%d) %.1f %.1f %.1f now %.1f %.1f %.1f step %.2f need %.1f into %.2f -> %s %.2f",
 				level.maptime, TicOrder(), befTic, befTip.x, befTip.y, befTip.z,
@@ -2740,7 +2730,7 @@ class UBQS_SaberBase : Weapon abstract
 		if (pg > 1.01) UBQS_Memory.Note(UBQS_Memory.M_PERFECT, src);
 		if (loud)
 		{
-			UBQS_Ping.At(owner, at, UBQS_Font.Clash(), UF("ubqs_vol_clash", 1.0), pg > 1.01 ? 1.25 : 1.0);
+			UBQS_Ping.At(owner, at, UBQS_Font.Clash(), 1.0 /* fixed: was ubqs_vol_clash, never a setting */, pg > 1.01 ? 1.25 : 1.0);
 			// a parry KNOCKS TWICE at a cut's strength; a plain block stays one short buzz (was 0.8 x pg for 5 tics,
 			// a stronger buzz the controller clipped to the same 1.0 as a cut)
 			if (pg > 1.01) Rumble(0.9, KNOCK_TICS, true);
@@ -2761,10 +2751,10 @@ class UBQS_SaberBase : Weapon abstract
 		// (The shield blooms the same way on a perfect block.)
 		if (pg > 1.01)
 		{
-			double pgfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
+			double pgfx = clamp(1.0 /* fixed: was ubqs_clash_fx, never a setting */, 0.0, 3.0);
 			if (pgfx > 0.01) UBQS_ClashFlash.Burst(at, 0.9 * pgfx);
 		}
-		if (!loud || !bolt || !UInt("ubqs_block_return", 1)) return;
+		if (!loud || !bolt || !1 /* fixed: was ubqs_block_return, never a setting */) return;
 		Vector3 d = back;
 		if (src && src.health > 0)
 		{
@@ -2937,7 +2927,7 @@ class UBQS_SaberBase : Weapon abstract
 		// cooldown -- two allocations and two traces a tic per saber, four fifths of them thrown away,
 		// and the thrown blade does the same twice a tic. Nothing below the gate has a side effect, so
 		// moving it up is a strict win.
-		if (len < 4 || burnQuiet > 0 || !UInt("ubqs_burn", 1)) return;
+		if (len < 4 || burnQuiet > 0 || !1 /* fixed: was ubqs_burn, never a setting */) return;
 		let tr = new("UBQS_Tracer");
 		Sector sec = level.PointInSector(base.xy);
 		if (!tr.Trace(base, sec, dir, len, 0, 0xFFFFFFFF, true)) return;
@@ -2967,7 +2957,7 @@ class UBQS_SaberBase : Weapon abstract
 	Vector3 otherLastTip;
 	double lastSide;
 	bool sideOk;
-	bool Guarding() { return !bOffhandWeapon && level.maptime <= guardUntil && UInt("ubqs_crossguard", 1); }
+	bool Guarding() { return !bOffhandWeapon && level.maptime <= guardUntil && 1 /* fixed: was ubqs_crossguard, never a setting */; }
 	// THE CROSSING'S LIGHT (the owner, 10-01, Empire's carbon-freeze fight: "a nice flash of light to obscure
 	// the geometry of the blades overlapping"): a hot white core where the beams pass through each other, in
 	// a halo of both blades' colours -- two soft CombatFX glows that stay on while the blades are together,
@@ -3035,7 +3025,7 @@ class UBQS_SaberBase : Weapon abstract
 			if (!mo.bDontThrust) mo.Thrust(12.0 * clamp(100.0 / max(mo.mass, 1.0), 0.1, 1.5), owner.AngleTo(mo));
 			mo.TriggerPainChance('Melee', true);
 		}
-		owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, UF("ubqs_vol_clash", 1.0));
+		owner.A_StartSound(UBQS_Font.Clash(), CHAN_AUTO, 0, 1.0 /* fixed: was ubqs_vol_clash, never a setting */);
 	}
 	// CLASH: the blades brought together release a shockwave round you; what stands in it staggers (Gun Bonsai VR's
 	// stagger, by name)
@@ -3108,14 +3098,14 @@ class UBQS_SaberBase : Weapon abstract
 		// of the blade went inert). One beam's base across the other's blade is a real crossing.
 		// both tunable in game (the owner, 10-01): ubqs_contact, how close the beams must come; ubqs_contact_hilt,
 		// the dead zone up from the emitters where hilts bumping is ignored
-		double hz = UF("ubqs_contact_hilt", 0.75), cz = UF("ubqs_contact", 3.5);
+		double hz = 0.75 /* fixed: was ubqs_contact_hilt, never a setting */, cz = 3.5 /* fixed: was ubqs_contact, never a setting */;
 		bool nearHilt = sa * len < hz && sb * ol < hz;
 		// ubqs_lock_stick: contact is ENTERED at ubqs_contact and left only past this much of it. THIS
 		// multiplier, not ubqs_contact, is what stops a lock stuttering in and out on a trembling hand, and it
 		// is the only number that helps if he reports flickering locks. Floored at 1 in code. It is a `user`
 		// cvar to sit with ubqs_contact and ubqs_contact_hilt, which are user today and reach the cross guard
 		// the same way: the whole contact family is kept together rather than split down the middle.
-		double stick = max(UF("ubqs_lock_stick", 1.7), 1.0);
+		double stick = max(1.7 /* fixed: was ubqs_lock_stick, never a setting */, 1.0);
 		bool touching = !nearHilt && (crossed || gap <= (inLock ? cz * stick : cz));
 		// == 1, NOT nonzero. ubqs_diag 2 is the glow telemetry overlay, and selecting it was also printing this
 		// line every tic a blade lock was held. Fixed before ubqs_diag gets a menu row.
@@ -3143,8 +3133,8 @@ class UBQS_SaberBase : Weapon abstract
 		// skip the thing it feeds. The gating cvars are userinfo read off the owner, so every machine already
 		// computes the same answer, but keeping the stream byte-identical costs nothing and removes the
 		// question entirely.
-		double vcl = UF("ubqs_vol_clash", 1.0);
-		double cfx = clamp(UF("ubqs_clash_fx", 1.0), 0.0, 3.0);
+		double vcl = 1.0 /* fixed: was ubqs_vol_clash, never a setting */;
+		double cfx = clamp(1.0 /* fixed: was ubqs_clash_fx, never a setting */, 0.0, 3.0);
 		bool buzzk = true;   // the clash always buzzes; ubqs_haptics is the one switch (its own gate is in Rumble)
 		if (!inLock)
 		{
@@ -3221,19 +3211,19 @@ class UBQS_SaberBase : Weapon abstract
 		t.cutDmg = UF("ubqs_damage", 30.0);
 		t.col = ColIdx();
 		// THE SECOND BLADE LIGHTS AS IT LEAVES YOUR HAND (ubqs_throw_double): a staff spinning is the throw
-		t.dbl = back || UInt("ubqs_throw_double", 1);
+		t.dbl = back || 1 /* fixed: was ubqs_throw_double, never a setting */;
 		t.bladeLen = FullLen();
 		for (int i = 0; i < locks.Size(); i++) if (locks[i]) t.route.Push(locks[i]);
 		locks.Clear();
 		// THE SPIN PLANE (ubqs_throw_plane): 0 your wrist decides -- thrown with the hand upright it goes end
 		// over end, turned on its side it goes flat; 1 always flat; 2 always end over end
-		int plane = UInt("ubqs_throw_plane", 0);
+		int plane = 0 /* fixed: was ubqs_throw_plane, never a setting */;
 		double r = abs(HR());
 		bool vert = (plane == 2) || (plane == 0 && (r < 45.0 || r > 135.0));
 		// THE ARM'S OWN THROW: its speed and direction at the moment it let go. A hard throw flies fast and far,
 		// along your swing (steadied toward where the hand points). Locked enemies are always flown to.
 		Vector3 d = Aim();
-		double flySpeed = 26.0, range = UF("ubqs_throw_range", 512.0);
+		double flySpeed = 26.0, range = 512.0 /* fixed: was ubqs_throw_range, never a setting */;
 		Vector3 hv = HandVel();
 		double sp = hv.Length();
 		// ubqs_throw_blend: how much of the throw is the direction the arm actually MOVED and how much is where
@@ -3242,18 +3232,18 @@ class UBQS_SaberBase : Weapon abstract
 		// clamp alike: the cosmetic spin was already a slider and the actual flight speed was not.
 		if (t.route.Size() == 0 && sp > 0.5)
 		{
-			double bl = clamp(UF("ubqs_throw_blend", 0.6), 0.0, 1.0);
+			double bl = clamp(0.6 /* fixed: was ubqs_throw_blend, never a setting */, 0.0, 1.0);
 			d = (hv.Unit() * bl + d * (1.0 - bl)).Unit();
 			flySpeed = clamp(16.0 + sp * 4.0, 22.0, 44.0);
 			range *= clamp(sp / 4.0, 0.8, 1.6);
 		}
-		flySpeed *= clamp(UF("ubqs_throw_speed", 1.0), 0.5, 2.0);
+		flySpeed *= clamp(1.0 /* fixed: was ubqs_throw_speed, never a setting */, 0.5, 2.0);
 		t.Speed = flySpeed;
 		t.range = range;
 		t.Launch(d, vert);
 		thrown = t;
 		Lights(false);
-		owner.A_StartSound(UBQS_Font.Swing(), CHAN_WEAPON, 0, UF("ubqs_vol_swing", 1.0));
+		owner.A_StartSound(UBQS_Font.Swing(), CHAN_WEAPON, 0, 1.0 /* fixed: was ubqs_vol_swing, never a setting */);
 	}
 	// BACK IN THE HAND: it lights again as it lands
 	void Caught()
@@ -3313,7 +3303,7 @@ class UBQS_SaberBase : Weapon abstract
 		// and burn flashes with it -- the player lost his combat FEEDBACK meaning only to lose the blade light,
 		// and could not have one without the other. 1 (the default) is exactly as it shipped; 2 keeps the
 		// flashes even with the blade light off; 0 drops them and keeps the light.
-		int fl = UInt("ubqs_flash", 1);
+		int fl = 1 /* fixed: was ubqs_flash, never a setting */;
 		if (fl <= 0 || rad <= 0) return;
 		if (!flash) flash = UBQS_Light(Actor.Spawn("UBQS_Light", at));
 		if (!flash) return;
@@ -3551,7 +3541,7 @@ class UBQS_Ping : Actor
 		if (!from) return;
 		// Read through the OWNER's userinfo like every other saber setting, not the local cvar: whether an
 		// actor is spawned is playsim, and the local answer differed per machine (a netgame desync).
-		if (UBQS_Data.I(from, "ubqs_swing_spatial", 1) == 0) { from.A_StartSound(s, CHAN_AUTO, 0, vol, ATTN_NORM, pitch); return; }
+		if (1 /* fixed: was ubqs_swing_spatial, never a setting */ == 0) { from.A_StartSound(s, CHAN_AUTO, 0, vol, ATTN_NORM, pitch); return; }
 		let p = UBQS_Ping(Actor.Spawn('UBQS_Ping', at));
 		if (!p) { from.A_StartSound(s, CHAN_AUTO, 0, vol, ATTN_NORM, pitch); return; }
 		p.life = 70;		// two seconds: longer than any of these samples, and the tic loop ends it
@@ -4340,7 +4330,7 @@ class UBQS_Thrown : Actor
 	// THE THROW IS OVER: home, or down where it is (ubqs_throw)
 	private void Done()
 	{
-		if (UBQS_Data.I(master, "ubqs_throw", 0) == 0) SetPhase(PH_HOME);
+		if (0 /* fixed: was ubqs_throw, never a setting */ == 0) SetPhase(PH_HOME);
 		else { fallV = 0; SetPhase(PH_FALL); }
 	}
 
@@ -4367,7 +4357,7 @@ class UBQS_Thrown : Actor
 		case PH_OUT:
 			if (!Fly(dir * sp)) { Bang(); ClearRoute(); Done(); break; }
 			flown += sp;
-			if (flown >= (range > 0 ? range : UBQS_Data.F(master, "ubqs_throw_range", 512.0))) { if (!ExtraHop()) Done(); }
+			if (flown >= (range > 0 ? range : 512.0 /* fixed: was ubqs_throw_range, never a setting */)) { if (!ExtraHop()) Done(); }
 			break;
 		case PH_ROUTE:
 		{
@@ -4482,7 +4472,7 @@ class UBQS_Thrown : Actor
 	// THE LOOK: lit and spinning in the air, still and dark at rest.
 	private void Look()
 	{
-		double spin = UBQS_Data.F(master, "ubqs_throw_spin", 14.0);
+		double spin = 14.0 /* fixed: was ubqs_throw_spin, never a setting */;
 		if (phase == PH_REST) { pitch = 0; roll = 0; }
 		else
 		{
@@ -4513,7 +4503,7 @@ class UBQS_Thrown : Actor
 	// the owner, 10-01). One trace per blade per tic; one scorch every three tics at most (decals are not free).
 	private void BurnTrail()
 	{
-		if (!UBQS_Data.I(master, "ubqs_burn", 1)) return;
+		if (!1 /* fixed: was ubqs_burn, never a setting */) return;
 		Vector3 b = BladeVec();
 		BurnAlong(b);
 		if (dbl) BurnAlong(-b);
@@ -4548,7 +4538,7 @@ class UBQS_Thrown : Actor
 			if (Distance2D(mo) > reach + mo.radius) continue;
 			// NOT THROUGH THE WALL -- and the HILT is the eye here, not the thrower, which is right for a
 			// blade flying down a corridor away from you.
-			if (UBQS_Data.I(master, "ubqs_cut_los", 1) && !CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
+			if (1 /* fixed: was ubqs_cut_los, never a setting */ && !CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			double mz = mo.pos.z + mo.height * 0.5;
 			if (abs(mz - pos.z) > mo.height * 0.5 + reach * (vertical ? 1.0 : 0.3)) continue;
 			int i = cutWho.Find(mo);
@@ -4556,11 +4546,11 @@ class UBQS_Thrown : Actor
 			// UBQS_Thrown is an Actor, not Inventory: there is no UF()/UInt() here, only UBQS_Data.F(master,
 			// ...). ubqs_dmg_thrown was a bare 1.5 -- the hardest-hitting attack in the mod, against the
 			// swing's 0.5-2.0 and the twirl's 0.8, with ubqs_damage moving all three together.
-			int dmg = int(UBQS_Data.F(master, "ubqs_damage", 30.0) * UBQS_Data.F(master, "ubqs_dmg_thrown", 1.5));
+			int dmg = int(UBQS_Data.F(master, "ubqs_damage", 30.0) * 1.5 /* fixed: was ubqs_dmg_thrown, never a setting */);
 			if (homeward && barrage > 0) { dmg = int(cutDmg * UBQS_Upg.Num("SaberBarrage.share", barrage, 0.65)); UBQS_Upg.Touch("barrage", master, mo); }
 			if (!mo.bNoBlood) mo.SpawnBlood((mo.pos.xy, mz), angle, dmg);
 			mo.DamageMobj(self, master, dmg, 'Saber', DMG_THRUSTLESS);
-			A_StartSound(mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", CHAN_AUTO, 0, UBQS_Data.F(master, "ubqs_vol_hit", 1.0));
+			A_StartSound(mo.bNoBlood ? "ubqs/wall" : "ubqs/hit", CHAN_AUTO, 0, 1.0 /* fixed: was ubqs_vol_hit, never a setting */);
 			if (phase == PH_ROUTE && leg < route.Size() && route[leg] == mo) legHit = true;
 			if (i < cutWho.Size()) cutWhen[i] = level.maptime;
 			else { cutWho.Push(mo); cutWhen.Push(level.maptime); }
@@ -4570,7 +4560,7 @@ class UBQS_Thrown : Actor
 	}
 	private void SpinDeflect()
 	{
-		if (!UBQS_Data.I(master, "ubqs_deflect", 1)) return;
+		if (!1 /* fixed: was ubqs_deflect, never a setting */) return;
 		// the missiles in flight, as in Deflect (a projectile is never in the blockmap)
 		let mem = UBQS_Memory.Get();
 		int mn = mem ? mem.missiles.Size() : 0;
@@ -4580,7 +4570,7 @@ class UBQS_Thrown : Actor
 			if (!mo || !mo.bMissile || mo == self || mo.target == master || mo is "UBQS_Thrown") continue;
 			if (Distance3D(mo) > bladeLen + 64.0 + mo.radius) continue;
 			// ...and a flying blade does not turn shots on the far side of a wall
-			if (UBQS_Data.I(master, "ubqs_cut_los", 1) && !CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
+			if (1 /* fixed: was ubqs_cut_los, never a setting */ && !CheckSight(mo, SF_IGNOREVISIBILITY)) continue;
 			if (Distance3D(mo) < bladeLen + mo.radius) launcher.BatBack(mo, BladeVec());
 		}
 	}
@@ -4851,7 +4841,7 @@ class UBQS_Force : Inventory
 	{
 		// A rumble on the off hand, NOT a player hitscan -- see UBQS_SaberBase.Buzz for why.
 		if (!owner || !owner.player || !IV("ubqs_haptics", 1)) return;
-		double k = 0.85 * clamp(FV("ubqs_haptic_power", 1.0), 0.0, 3.0);   // the same power slider as the saber
+		double k = 0.85 * clamp(1.0 /* fixed: was ubqs_haptic_power, never a setting */, 0.0, 3.0);   // the same power slider as the saber
 		if (k > 0.01) UBQS_Buzzer.Start(owner, true, k, 4);
 	}
 
@@ -4902,7 +4892,7 @@ class UBQS_Force : Inventory
 		bool forceHand = off is "UBQS_ForceHand";
 		int bits = 0;
 		if (forceHand) bits = BT_OFFHANDATTACK | BT_OFFHANDALTATTACK;
-		else if (off is "UBQS_SaberOff" && IV("ubqs_force_gestures", 1) && !UBQS_SaberBase(off).merged) bits = BT_OFFHANDALTATTACK;
+		else if (off is "UBQS_SaberOff" && 1 /* fixed: was ubqs_force_gestures, never a setting */ && !UBQS_SaberBase(off).merged) bits = BT_OFFHANDALTATTACK;
 		else if (FistOff(p)) bits = BT_OFFHANDALTATTACK;
 		bool raw = bits != 0 && (p.cmd.buttons & bits);
 		// RSQ_ACCESSIBILITY (UBQS_A11y). The Off-Hand Modifier held: the modifier itself holds the Force up,
@@ -5013,7 +5003,7 @@ class UBQS_Force : Inventory
 		// Held still: reach for something to grip. A hand in VR is never truly still, so a player whose tremor
 		// stays above ubqs_grip_still can never grip anything and has no way to find out why. ubqs_grip_hold is
 		// how long he must hold it; tune the two as a pair.
-		if (armTics >= max(int(UBQS_A11y.Low(IV("ubqs_grip_hold", 8)) + 0.5), 1) && sp < UBQS_A11y.Wide(FV("ubqs_grip_still", 1.5)) && level.maptime - lastScan >= 3)
+		if (armTics >= max(int(UBQS_A11y.Low(8 /* fixed: was ubqs_grip_hold, never a setting */) + 0.5), 1) && sp < UBQS_A11y.Wide(1.5 /* fixed: was ubqs_grip_still, never a setting */) && level.maptime - lastScan >= 3)
 		{
 			lastScan = level.maptime;
 			let t = FindGrip();
@@ -5021,7 +5011,7 @@ class UBQS_Force : Inventory
 		}
 		// FORCE SPEED (Gun Bonsai VR): held up and still for a second with nothing to grip, the world slows (RSQ SlowMo's
 		// rsm_pulse, sent from this player's own machine, as the perfect parry's is)
-		if (uSpeed > 0 && armTics >= SPEED_HOLD && sp < UBQS_A11y.Wide(FV("ubqs_grip_still", 1.5)))
+		if (uSpeed > 0 && armTics >= SPEED_HOLD && sp < UBQS_A11y.Wide(1.5 /* fixed: was ubqs_grip_still, never a setting */))
 		{
 			fired = true;
 			ForceSpeed();
@@ -5050,23 +5040,22 @@ class UBQS_Force : Inventory
 		if (!owner || !IV("ubqs_force", 1)) return;
 		UpgRefresh();
 		if (uLoaded && uFS <= 0) return;   // FORCE SENSITIVE (Gun Bonsai VR): no Force until it is learned
-		UpgRefresh();
 		if (!Learned(uPush)) { Unlearned(); return; }   // Force Push not learned yet: nothing happens
 		if (level.maptime < pushReady) { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); return; }
-		pushReady = level.maptime + int(FV("ubqs_push_cooldown", 1.5) * 35);
+		pushReady = level.maptime + int(1.5 /* fixed: was ubqs_push_cooldown, never a setting */ * 35);
 		// ubqs_push_cone: power and reach were both sliders and the SHAPE was baked at 80 degrees of total arc.
 		// A narrow focused shove and a wide room-clearing blast are different abilities.
 		// ubqs_vol_force: this sample is a sub-bass thump played at full volume on the default alt button --
 		// the loudest thing in the mod by a wide margin.
-		double range = FV("ubqs_push_range", 448.0), cone = clamp(FV("ubqs_push_cone", 40.0), 5.0, 90.0);
-		double pwr = FV("ubqs_push_power", 1.0);
-		double pdmg = FV("ubqs_push_damage", 8.0);
+		double range = 448.0 /* fixed: was ubqs_push_range, never a setting */, cone = clamp(40.0 /* fixed: was ubqs_push_cone, never a setting */, 5.0, 90.0);
+		double pwr = 1.0 /* fixed: was ubqs_push_power, never a setting */;
+		double pdmg = 8.0 /* fixed: was ubqs_push_damage, never a setting */;
 		// Force Push (Gun Bonsai): FScale by level; 2+ opens the cone
 		pwr *= FScale(uPush);
 		pdmg *= FScale(uPush);
 		if (uLoaded && uPush <= 0) range *= 0.75;
 		if (uPush >= 2) cone = min(cone + 10.0 * (uPush - 1), 90.0);
-		owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 1.0 * FV("ubqs_vol_force", 1.0));
+		owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 1.0 * 1.0 /* fixed: was ubqs_vol_force, never a setting */);
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
 		while (it.Next())
 		{
@@ -5183,11 +5172,14 @@ class UBQS_Force : Inventory
 	// ---- PULL ------------------------------------------------------------------------------------------------
 	void Pull(Vector3 hp, Vector3 d)
 	{
+		// the same gates as Push (owner 11-10): the Force switch, and Force Sensitive under Gun Bonsai VR
+		if (!owner || !IV("ubqs_force", 1)) return;
 		UpgRefresh();
+		if (uLoaded && uFS <= 0) return;
 		if (!Learned(uPull)) { Unlearned(); return; }   // Force Pull not learned yet: nothing happens
 		if (level.maptime < pushReady) { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); return; }
-		pushReady = level.maptime + int(FV("ubqs_push_cooldown", 1.5) * 35);
-		owner.A_StartSound("ubqs/pull", CHAN_AUTO, 0, 1.0 * FV("ubqs_vol_force", 1.0));
+		pushReady = level.maptime + int(1.5 /* fixed: was ubqs_push_cooldown, never a setting */ * 35);
+		owner.A_StartSound("ubqs/pull", CHAN_AUTO, 0, 1.0 * 1.0 /* fixed: was ubqs_vol_force, never a setting */);
 		// your sabers, wherever they are, come home
 		for (let item = owner.Inv; item; item = item.Inv)
 		{
@@ -5199,8 +5191,8 @@ class UBQS_Force : Inventory
 		// ubqs_pull_power: there was NO pull strength cvar; pull borrowed ubqs_push_power, so a strong yank with
 		// a gentle shove was impossible and the menu never said the push slider moved both. 1.0 is identical to
 		// today. Both read above the iterator.
-		double range = FV("ubqs_pull_range", 768.0), cone = clamp(FV("ubqs_pull_cone", 30.0), 5.0, 90.0);
-		double pwr = FV("ubqs_push_power", 1.0) * FV("ubqs_pull_power", 1.0);
+		double range = 768.0 /* fixed: was ubqs_pull_range, never a setting */, cone = clamp(30.0 /* fixed: was ubqs_pull_cone, never a setting */, 5.0, 90.0);
+		double pwr = 1.0 /* fixed: was ubqs_push_power, never a setting */ * 1.0 /* fixed: was ubqs_pull_power, never a setting */;
 		// Force Pull (Gun Bonsai): FScale by level
 		pwr *= FScale(uPull);
 		if (uLoaded && uPull <= 0) range *= 0.75;
@@ -5320,9 +5312,9 @@ class UBQS_Force : Inventory
 		// degrees at range is demanding for the fiddliest gesture in the mod -- this is the answer to "it never
 		// grabs the one I want". ubqs_grip_boss: bBoss was excluded outright, so raising the mass slider to
 		// 1000 still could not choke a Cyberdemon and nothing said so. Default 0 is exactly today.
-		double range = clamp(FV("ubqs_grip_range", 1024.0), 128.0, 1536.0);
-		double best = min(UBQS_A11y.Wide(clamp(FV("ubqs_grip_cone", 12.0), 1.0, 60.0)), 60.0);   // Gesture Ease: x1..x2
-		bool boss = IV("ubqs_grip_boss", 0) != 0;
+		double range = clamp(1024.0 /* fixed: was ubqs_grip_range, never a setting */, 128.0, 1536.0);
+		double best = min(UBQS_A11y.Wide(clamp(12.0 /* fixed: was ubqs_grip_cone, never a setting */, 1.0, 60.0)), 60.0);   // Gesture Ease: x1..x2
+		bool boss = 0 /* fixed: was ubqs_grip_boss, never a setting */ != 0;
 		Actor pick = null;
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
 		while (it.Next())
@@ -5356,8 +5348,8 @@ class UBQS_Force : Inventory
 		UBQS_FX.Fx(mo.pos + (0, 0, mo.height * 0.55), 'UXFL', 13, 1, 0.22 + mo.radius * 0.004, 0.95, 0xCFE4FF, 1.04);
 		// ubqs_snd_choke: the loop only. A_StopSound in EndGrip stays unconditional, so turning this
 		// off part-way through a grip still silences the loop that is already running.
-		if (IV("ubqs_snd_choke", 1))
-			owner.A_StartSound("ubqs/grip", 23, CHANF_LOOPING, 0.7 * FV("ubqs_vol_force", 1.0));
+		if (1 /* fixed: was ubqs_snd_choke, never a setting */)
+			owner.A_StartSound("ubqs/grip", 23, CHANF_LOOPING, 0.7 * 1.0 /* fixed: was ubqs_vol_force, never a setting */);
 		if (gripGlow) gripGlow.Destroy();
 		gripGlow = UBQS_GripGlow(Actor.Spawn("UBQS_GripGlow", mo.pos));
 		if (gripGlow) gripGlow.Follow(mo, owner, 0);
@@ -5386,7 +5378,7 @@ class UBQS_Force : Inventory
 		// a Dark Red champion at 1 health turns unshootable and is moved to the far corner of the map:
 		// the hold dragged it back, invisible, and its pain state every 18 tics woke it there. Dropped,
 		// not flung.
-		if (!Grippable(mo, GripMass(), IV("ubqs_grip_boss", 0) != 0)) { EndGrip(false); return; }
+		if (!Grippable(mo, GripMass(), 0 /* fixed: was ubqs_grip_boss, never a setting */ != 0)) { EndGrip(false); return; }
 		gripLast = mo.pos + (0, 0, mo.height * 0.5);
 		// it hangs where your hand points, lifted a little, and follows the hand (Force Choke 2+: higher)
 		Vector3 want = OffPos() + OffAim() * gripDist + (0, 0, 10.0 - mo.height * 0.5 + (uChoke >= 2 ? 34.0 : 0.0));
@@ -5409,7 +5401,7 @@ class UBQS_Force : Inventory
 		// Force Choke (Gun Bonsai): weaker unlearned, full at 1, +15% a level after; 2+ crushes harder
 		// the longer it is held (+50% a second, up to x3)
 		double crush = uChoke >= 2 ? min(1.0 + 0.5 * t / 35.0, 3.0) : 1.0;
-		dmgAcc += FV("ubqs_grip_damage", 18.0) * FScale(uChoke) * crush / 35.0;
+		dmgAcc += 18.0 /* fixed: was ubqs_grip_damage, never a setting */ * FScale(uChoke) * crush / 35.0;
 		int edmg = 0;
 		if (dmgAcc >= 1.0)
 		{
@@ -5438,7 +5430,7 @@ class UBQS_Force : Inventory
 			if (!e) continue;
 			e.bNoGravity = extraNoGrav[k] != 0;
 			if (e.tics > 1) e.tics = 1;
-			if (fling && e.health > 0) { Vector3 ev = HandVel() * FV("ubqs_grip_fling", 3.5); if (ev.Length() > 40.0) ev = ev.Unit() * 40.0; e.vel += ev; }
+			if (fling && e.health > 0) { Vector3 ev = HandVel() * 3.5 /* fixed: was ubqs_grip_fling, never a setting */; if (ev.Length() > 40.0) ev = ev.Unit() * 40.0; e.vel += ev; }
 		}
 		extraGrip.Clear();
 		extraNoGrav.Clear();
@@ -5448,13 +5440,13 @@ class UBQS_Force : Inventory
 		if (fling && mo.health > 0)
 		{
 			Vector3 hv = HandVel();
-			Vector3 v = hv * FV("ubqs_grip_fling", 3.5);
+			Vector3 v = hv * 3.5 /* fixed: was ubqs_grip_fling, never a setting */;
 			if (v.Length() > 40.0) v = v.Unit() * 40.0;
 			mo.vel += v;
 			slamMo = mo;
 			slamTics = 40;
 			slamLast = mo.vel.Length();
-			if (v.Length() > 6.0) owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.5 * FV("ubqs_vol_force", 1.0), ATTN_NORM, 1.4);
+			if (v.Length() > 6.0) owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.5 * 1.0 /* fixed: was ubqs_vol_force, never a setting */, ATTN_NORM, 1.4);
 		}
 	}
 	// a flung body that stops dead has hit something: it hurts, as hard as it was going
@@ -5465,7 +5457,7 @@ class UBQS_Force : Inventory
 		double sp = slamMo.vel.Length();
 		if (slamLast > 9.0 && sp < slamLast * 0.4)
 		{
-			int dmg = int(slamLast * FV("ubqs_grip_slam", 3.0));
+			int dmg = int(slamLast * 3.0 /* fixed: was ubqs_grip_slam, never a setting */);
 			slamMo.A_StartSound("ubqs/drop", CHAN_AUTO, 0, 0.8, ATTN_NORM, 0.6);
 			UBQS_Upg.Touch("force.slam", owner, slamMo);						// RSQ Score (11-03): the fling's slam, named before the blow
 			slamMo.DamageMobj(self, owner, dmg, 'Force');
@@ -5503,22 +5495,22 @@ class UBQS_Force : Inventory
 		if (a11yJumped) UBQS_A11y.Comfort(owner, clamp(0.5 + abs(owner.vel.z) / 16.0, 0.5, 1.0));
 		slamFall = min(slamFall, owner.vel.z);
 		if (!jump) { boostOk = false; return; }
-		double pw = FV("ubqs_jump_power", 1.0);
+		double pw = 1.0 /* fixed: was ubqs_jump_power, never a setting */;
 		// ubqs_jump_hold is the whole HEIGHT of a Force jump -- ubqs_jump_power only changes the rate inside the
 		// window, so a genuinely big leap needs this and not the power slider. ubqs_jump_float decouples the
 		// glide from the height: today raising the power makes you fall FASTER, which nothing said.
 		// Force Jump (Gun Bonsai): the hold window, which is the jump's height, FScale by level
-		int jhold = max(int(max(IV("ubqs_jump_hold", 8), 1) * FScale(uJump) + 0.5), 1);
+		int jhold = max(int(max(8 /* fixed: was ubqs_jump_hold, never a setting */, 1) * FScale(uJump) + 0.5), 1);
 		if (boostOk && owner.vel.z > 0 && airTics <= jhold)
 		{
 			if (uJump >= 2) slamArmed = true;
 			a11yJumped = true;
 			owner.vel.z += 0.55 * pw;
-			if (airTics == 1) owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.35 * FV("ubqs_vol_force", 1.0), ATTN_NORM, 1.6);
+			if (airTics == 1) owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.35 * 1.0 /* fixed: was ubqs_vol_force, never a setting */, ATTN_NORM, 1.6);
 		}
 		else
 		{
-			double fl = -5.0 / max(pw * FV("ubqs_jump_float", 1.0), 0.25);
+			double fl = -5.0 / max(pw * 1.0 /* fixed: was ubqs_jump_float, never a setting */, 0.25);
 			if (owner.vel.z < fl) owner.vel.z = fl;        // a floating fall
 		}
 	}
@@ -5577,8 +5569,8 @@ class UBQS_Force : Inventory
 		Vector3 eye = (owner.pos.xy, owner.player ? owner.player.viewz : owner.pos.z + 41.0);
 		Vector3 aim = hp - eye;
 		aim = aim.Length() > 0.01 ? aim.Unit() : ViewFwd();
-		double range = clamp(FV("ubqs_grip_range", 1024.0), 128.0, 1536.0);
-		double best = clamp(FV("ubqs_grip_cone", 12.0), 1.0, 60.0);
+		double range = clamp(1024.0 /* fixed: was ubqs_grip_range, never a setting */, 128.0, 1536.0);
+		double best = clamp(12.0 /* fixed: was ubqs_grip_cone, never a setting */, 1.0, 60.0);
 		Actor pick = null;
 		let it = BlockThingsIterator.CreateFromPos(hp.x, hp.y, hp.z - range, range * 2.0, range, false);
 		while (it.Next())
@@ -5723,7 +5715,7 @@ class UBQS_Force : Inventory
 	void Unlearned() { owner.A_StartSound(UBQS_Font.Off(), CHAN_AUTO, 0, 0.25); }
 	double GripMass()
 	{
-		double m = FV("ubqs_grip_mass", 600.0);
+		double m = 600.0 /* fixed: was ubqs_grip_mass, never a setting */;
 		if (uLoaded && uChoke <= 0) m *= 0.5;
 		return m;
 	}
@@ -5738,7 +5730,7 @@ class UBQS_Force : Inventory
 		extraGrip.Clear();
 		extraNoGrav.Clear();
 		double maxMass = GripMass();
-		bool boss = IV("ubqs_grip_boss", 0) != 0;
+		bool boss = 0 /* fixed: was ubqs_grip_boss, never a setting */ != 0;
 		let it = BlockThingsIterator.Create(first, 160.0);
 		while (it.Next() && extraGrip.Size() < n)
 		{
@@ -5760,7 +5752,7 @@ class UBQS_Force : Inventory
 			let e = extraGrip[k];
 			if (!e || e.health <= 0) { extraGrip.Delete(k); extraNoGrav.Delete(k); continue; }
 			// the same check as the first (GripTick): no longer one it could take -> let go of it
-			if (!Grippable(e, GripMass(), IV("ubqs_grip_boss", 0) != 0))
+			if (!Grippable(e, GripMass(), 0 /* fixed: was ubqs_grip_boss, never a setting */ != 0))
 			{
 				e.bNoGravity = extraNoGrav[k] != 0;
 				if (e.tics > 1) e.tics = 1;
@@ -5783,7 +5775,7 @@ class UBQS_Force : Inventory
 		if (uChain <= 0 || !owner) return;
 		double r = 256.0 + 64.0 * uChain;
 		double maxMass = GripMass();
-		bool boss = IV("ubqs_grip_boss", 0) != 0;
+		bool boss = 0 /* fixed: was ubqs_grip_boss, never a setting */ != 0;
 		Actor best = null;
 		double bd = r;
 		let it = BlockThingsIterator.CreateFromPos(gripLast.x, gripLast.y, gripLast.z - r, r * 2.0, r, false);
@@ -5827,7 +5819,7 @@ class UBQS_Force : Inventory
 	{
 		double r = 96.0 + 32.0 * (uJump - 2);
 		int dmg = int((8.0 + 2.0 * abs(slamFall)) * (uJump - 1));
-		owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.9 * FV("ubqs_vol_force", 1.0), ATTN_NORM, 0.7);
+		owner.A_StartSound("ubqs/push", CHAN_AUTO, 0, 0.9 * 1.0 /* fixed: was ubqs_vol_force, never a setting */, ATTN_NORM, 0.7);
 		UBQS_FX.Fx(owner.pos + (0, 0, 4), 'UXRG', 17, 1, r / 150.0, 0.8, 0xB8D8FF, 1.06);
 		let it = BlockThingsIterator.Create(owner, r);
 		while (it.Next())
@@ -5872,7 +5864,7 @@ class UBQS_Force : Inventory
 		// a lob that lands at the hand in about 20 tics (gravity 1 unit/tic^2 at Doom's default)
 		double tt = clamp(dist / 14.0, 8.0, 24.0);
 		it.vel = (to.x / tt, to.y / tt, to.z / tt + 0.5 * tt * it.GetGravity());
-		if (FV("ubqs_debug", 0) != 0) Console.Printf("ubqs: pull yanked %s from %s", it.GetClassName(), mo.GetClassName());
+		if (0.0 /* fixed: was ubqs_debug, never a setting */ != 0) Console.Printf("ubqs: pull yanked %s from %s", it.GetClassName(), mo.GetClassName());
 	}
 
 	// the pulled-and-stunned and the disarmed, each tic
@@ -6163,7 +6155,7 @@ class UBQS_Remote : Actor
 			vel = (0, 0, 2);
 			nextShot = level.maptime + 70;
 			if (trainee) trainee.A_Print(String.Format("TRAINING REMOTE: round %d", round + 1), 2.0, UBQS_A11y.PrintFont());
-			A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, UBQS_Data.F(trainee, "ubqs_remote_chirp", 1.0));
+			A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
 		}
 		// THE DANCE: round you, out in front, drifting in and out and up and down
 		if (level.maptime >= omUntil)
@@ -6216,7 +6208,7 @@ class UBQS_Remote : Actor
 			// telegraph length, so the extra tics are a quiet early glow and the growing ramp still runs over
 			// the last windupBase tics exactly as it does today.
 			windupBase = 12 - Level() * 2;
-			windup = windupBase + clamp(UBQS_Data.I(trainee, "ubqs_remote_warn", 0), 0, 20);
+			windup = windupBase + clamp(0 /* fixed: was ubqs_remote_warn, never a setting */, 0, 20);
 			frame = 1;
 			A_StartSound("ubqs/rcharge", CHAN_BODY, 0, 0.7);
 		}
@@ -6226,7 +6218,7 @@ class UBQS_Remote : Actor
 			// A droid chirping every two to five seconds for a whole training session, with no off switch.
 			// The RNG above stays unconditional; only the sound is scaled (0 = quiet). All three ubqs/rbeep
 			// sites read this cvar, so 0 really does mean a quiet remote.
-			A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 0.6 * UBQS_Data.F(trainee, "ubqs_remote_chirp", 1.0));
+			A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 0.6 * 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
 		}
 	}
 	void Fire()
@@ -6269,7 +6261,7 @@ class UBQS_Remote : Actor
 			if (roundHits >= HITS_TO_DOWN) { Down(); return 0; }
 			Report();
 		}
-		else A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, UBQS_Data.F(trainee, "ubqs_remote_chirp", 1.0));
+		else A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
 		Vector3 kick = (frandom[UBQSRem](-1, 1), frandom[UBQSRem](-1, 1), frandom[UBQSRem](0, 1));
 		if (source && source != self)
 		{
@@ -6319,7 +6311,7 @@ class UBQS_RemoteBolt : UBQS_Bolt
 			home.stung++;
 			home.streak = 0;
 			home.Report();
-			return UBQS_Data.I(victim, "ubqs_remote_sting", 2);
+			return 2 /* fixed: was ubqs_remote_sting, never a setting */;
 		}
 		if (victim is "UBQS_Remote") return 1;
 		return 10;
@@ -6396,9 +6388,7 @@ class UBQS_Bridge : EventHandler
 		}
 		if (n ~== "Chainsaw")
 		{
-			if (XimLoaded()) return true;
-			let cc = CVar.FindCVar("ubqs_chainsaw");
-			return cc && cc.GetBool();
+			return XimLoaded();   // (an undefined "ubqs_chainsaw" console switch was here; 11-10)
 		}
 		return false;
 	}
@@ -6486,7 +6476,7 @@ class UBQS_Bridge : EventHandler
 		if (nr)
 		{
 			nr.trainee = mo;
-			nr.A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, UBQS_Data.F(mo, "ubqs_remote_chirp", 1.0));
+			nr.A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
 			mo.A_Print("Training remote: deflect its stings", 2.0, UBQS_A11y.PrintFont());
 		}
 	}
@@ -6504,8 +6494,6 @@ class UBQS_Bridge : EventHandler
 	{
 		Actor sh = e.Thing;
 		if (!sh || sh.player || e.Damage <= 0 || !On()) return false;
-		let hc = CVar.FindCVar("ubqs_hitscan_guard");
-		if (hc && !hc.GetBool()) return false;
 		double ca = cos(e.AttackPitch);
 		Vector3 dir = (ca * cos(e.AttackAngle), ca * sin(e.AttackAngle), -sin(e.AttackPitch));
 		// the muzzle, by P_LineAttack's own formula on stock QZD 17.3: shootz = Center() -
@@ -6585,7 +6573,7 @@ class UBQS_Bridge : EventHandler
 				p.PendingWeapon = off;
 				mo.BringUpWeapon();
 			}
-			mo.A_StartSound("ubqs/on", CHAN_AUTO, 0, 0.6 * UBQS_Data.F(mo, "ubqs_vol_ignite", 1.0));
+			mo.A_StartSound(UBQS_Font.On(), CHAN_AUTO, 0, 0.6 * 1.0 /* fixed: was ubqs_vol_ignite, never a setting */);   // the Saber Sound set (11-10)
 			return;
 		}
 		// put it away: the off hand goes back to what fills it empty (Brutal Doom Quest's hands, or the
@@ -6679,9 +6667,8 @@ class UBQS_Bridge : EventHandler
 	{
 		let mo = p.mo;
 		if (!On() || !mo.FindInventory("UBQS_Saber")) return false;
-		let fhc = CVar.FindCVar("ubqs_force_hand");
 		let fmc = CVar.FindCVar("ubqs_force");
-		if ((fhc && !fhc.GetBool()) || (fmc && fmc.GetInt() == 0)) return false;
+		if (fmc && fmc.GetInt() == 0) return false;
 		bool dual = DualMode() != 0 && (!UBQS_Upg.Svc() || UBQS_Upg.Lv(mo, "TwoSabers") > 0);
 		bool away = mo.FindInventory("UBQS_DualAway") != null && HolsterThere(p);
 		if (dual && !away) return false;                   // the second saber is due in the off hand
@@ -6798,25 +6785,16 @@ class UBQS_Bridge : EventHandler
 				// "SECOND SABER STARTS" (ubqs_dual_start; the owner, 11-02: "Off saber not lit at start"). At the
 				// start -- a new game, or the first time it is given; never on a level change, since it is
 				// carried -- Put Away (0) holsters it with RSQ Tactical Rig (UBQS_DualAway: the off hand gets
-				// its empty hand, the holster draws it), and without the rig leaves its blade off for its first
-				// draw. In Hand (1) is the old behaviour: lit in the off hand.
+				// its empty hand, the holster draws it); without the rig it is in the off hand. In Hand (1): in the
+				// off hand. Either way it lights when drawn, like the first (owner 11-10: no dark first draw).
 				let sc = CVar.FindCVar("ubqs_dual_start");
-				if (!sc || sc.GetInt() == 0)
-				{
-					if (HolsterThere(p)) p.mo.GiveInventory("UBQS_DualAway", 1);
-					else
-					{
-						let so = UBQS_SaberBase(p.mo.FindInventory("UBQS_SaberOff"));
-						if (so) so.startDark = true;
-					}
-				}
+				if ((!sc || sc.GetInt() == 0) && HolsterThere(p)) p.mo.GiveInventory("UBQS_DualAway", 1);
 			}
 			// THE FORCE goes with the saber; with no off-hand saber, the bare Force hand too (ubqs_force_hand)
 			if (p.mo.FindInventory("UBQS_Saber") && !p.mo.FindInventory("UBQS_Force")) p.mo.GiveInventory("UBQS_Force", 1);
 			// The UBQS_Force item is given either way, and sits inert while ubqs_force is 0, so the
 			// switch works mid-game without a pickup. The bare Force HAND is a weapon in your off hand
 			// and there is no reason to hold one when it cannot do anything.
-			let fhc = CVar.FindCVar("ubqs_force_hand");
 			let fmc = CVar.FindCVar("ubqs_force");
 			// HOLSTERED STAYS HOLSTERED until the holster draws it -- unless there is no longer a holster (rig
 			// unloaded or switched off) or the menu turned the second saber off: then the mark goes, and with
@@ -6828,7 +6806,7 @@ class UBQS_Bridge : EventHandler
 				raisedAt[i] = 0;
 			}
 			bool wantOff = dual && !p.mo.FindInventory("UBQS_DualAway");
-			bool fhand = !wantOff && (!fhc || fhc.GetBool()) && (!fmc || fmc.GetInt() != 0);
+			bool fhand = !wantOff && (!fmc || fmc.GetInt() != 0);
 			// A HOLSTERED SECOND SABER LEAVES THE OFF HAND EMPTY, as the holster's own put-away does (SetDual):
 			// Brutal Doom Quest's hands when that pack is there, the bare Force hand only without it. (Measured on
 			// the full order, 11-02: the Force hand got there first at tic 0, and RSQ_DistanceGrab counts it as a
