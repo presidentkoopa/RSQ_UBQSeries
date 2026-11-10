@@ -17,6 +17,10 @@ THE BOXING GLOVES AND THE PUNCH (from RSQ Gun Bonsai VR)
   apply/02_MELEE_BUILD.md). Their upgrades and numbers stay in RSQ Gun Bonsai VR, an addon for Rebecca
   "ToxicFrog" Kelly's Gun Bonsai (MIT).
 
+THE SHOCK RING (2026-11-10)
+  Clear Out's and Ground Pound's ring: sprites/rsqml/RQRG*, RSQ Saber's Force Push shockwave (its UXRG frames, the
+  owner's CombatFX set, as RSQ Saber ships them), copied and renamed so Melee works without Saber.
+
 THE GUN-BUTT SHOVE AND ITS SLOW-MO (from RSQ Gestures)
   The gun butt shove is BD22 VR Reloaded's butt shove (the owner's own mod; zscript/rsvr/melee.zs: the swing
   speed, reach, wait and the blow it lands), ported. Numbers taken from Brutal Doom (Sergeant Mark IV;

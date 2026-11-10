@@ -160,6 +160,7 @@ class RSQML_TwoHand : StaticEventHandler
 		pmo.A_StartSound("rsqml/fx/thud", CHAN_AUTO, CHANF_OVERLAP, 1.0);
 		RSQML_Burst.At("RSQML_Burst5", pmo.pos + (0, 0, 4), 1.5, RSQML_Burst.ByLevel(lv, 3));
 		RSQML_Spark.Dust(pmo.pos + (0, 0, 4), 1.5);   // the dust cloud (sparks.zs)
+		RSQML_Ring.At(pmo.pos + (0, 0, 2), true, r, 0.9, 1);   // THE SHOCKWAVE (owner 11-10): a ring along the floor out to the reach
 		pmo.A_QuakeEx(1, 1, 2, 8, 0, r, "", QF_SCALEDOWN);
 		RSQ_Buzz.Start(pmo, 0, 1.0, 10);
 		RSQ_Buzz.Start(pmo, 1, 1.0, 10);
@@ -181,6 +182,14 @@ class RSQML_TwoHand : StaticEventHandler
 		int st = int(RSQML.Num("ClearOut.stagger", lv, 0, 10));
 		int wsLv = RSQML.MoveLevel(pmo, g, "WallSplat", "rsqml_wallsplat");
 		Actor inf = RSQML.Blow(pmo, g, pmo.pos);
+		// THE FORCE PUSH RING (owner 11-10: "Clear Out needs to use the Force push art"): two rings rolling out in front,
+		// at chest height, as RSQ Saber's Push draws them
+		{
+			Vector3 fw = (cos(pmo.angle), sin(pmo.angle), 0);
+			Vector3 chest = pmo.pos + (0, 0, pmo.height * 0.55);
+			RSQML_Ring.At(chest + fw * 36.0, false, r * 0.35, 0.85, 1);
+			RSQML_Ring.At(chest + fw * (r * 0.6), false, r * 0.6, 0.6, 1);
+		}
 		int n = 0;
 		let it = BlockThingsIterator.Create(pmo, r);
 		while (it.Next())

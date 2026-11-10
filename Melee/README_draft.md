@@ -123,8 +123,8 @@ you earn them instead (see Plays well with).
 | **Guard** | The boxing gloves on both hands, both fists up at your face for a moment. A blow from in front (within about 55° of where you face) is soaked: you take 60% and are pushed back a step. A blow of 35 or more breaks the guard: full damage, and no guard for 0.4 s. A blue spark and a tick where it is stopped |
 | **Wall Splat** | A monster your punch knocks into a wall slams into it: 10 to 20 damage, bounces off and reels |
 | **Heavy Hands** | A punch freezes the monster for a beat and knocks it 25% further. Chicks and stars circle its head while it is frozen |
-| **Ground Pound** | Melee's hands in both hands, swing both fists down hard together (3 m/s or more), ending low: a shockwave round you, 30 damage to everything within 2.5 m, knocked out, up and staggered. The floor shakes |
-| **Clear Out** | Both palms thrust forward together, hands apart and turned up and out, with Melee's hands up (one hand may be empty) and no gun: everything in front of you within 2.5 m (a quarter circle) takes 15 damage, is shoved back hard and staggered. With Wall Splat, shoved into a wall it splats |
+| **Ground Pound** | Melee's hands in both hands, swing both fists down hard together (3 m/s or more), ending low: a shockwave ring rolls out along the floor round you, 30 damage to everything within 2.5 m, knocked out, up and staggered. The floor shakes |
+| **Clear Out** | Both palms thrust forward together (the Force Push ring rolls out in front), hands apart and turned up and out, with Melee's hands up (one hand may be empty) and no gun: everything in front of you within 2.5 m (a quarter circle) takes 15 damage, is shoved back hard and staggered. With Wall Splat, shoved into a wall it splats |
 
 **Guard** is the boxing gloves' move: it needs Melee's hands with **Boxing Gloves** (or Slappers Only) on both hands.
 Bare hands, Brutal Doom's fists and sabers don't guard.

@@ -256,3 +256,49 @@ class RSQML_BurstF : RSQML_Burst { Default { Scale 0.4167; } States { Spawn: MLK
 class RSQML_BurstS : RSQML_Burst { Default { Scale 0.4348; } States { Spawn: MLKS ABCDEFGHI 2 Bright A_Burst; Stop; } }
 class RSQML_BurstR : RSQML_Burst { Default { Scale 0.4348; } States { Spawn: MLKR ABCDEFGH 2 Bright A_Burst; Stop; } }
 class RSQML_BurstH : RSQML_Burst { Default { Scale 0.4167; } States { Spawn: MLKH ABCDEFGH 2 Bright A_Burst; Stop; } }
+
+// THE SHOCK RING (owner 2026-11-10): the Force Push ring (RSQ Saber's CombatFX shockwave UXRG, 17 frames that grow,
+// copied here as RQRG so Melee needs no Saber) for CLEAR OUT, standing up in front of you as Push draws it; and for
+// GROUND POUND laid flat on the floor (+FLATSPRITE), sized so its last frame reaches the move's reach. Additive,
+// tinted pale blue (AddShaded), gone when its frames are done. Not shown on the rig yet.
+class RSQML_Ring : Actor
+{
+	int life, total;
+	double a0;
+	Default
+	{
+		RenderStyle "AddShaded"; Radius 1; Height 1;
+		+NOINTERACTION +NOBLOCKMAP +BRIGHT +NOGRAVITY +NOTONAUTOMAP +DONTSPLASH +NOTELEPORT +ROLLSPRITE +ROLLCENTER
+	}
+	const FRAMES = 17;
+	const LAST_PX = 154.0;        // the ring's width in its last frame, pixels (RQRGQ0's drawn ring, measured)
+
+	// flat: on the floor; reach: the ring's radius at its last frame, map units; tpf: tics a frame
+	static RSQML_Ring At(Vector3 at, bool flat, double reach, double alpha = 0.85, int tpf = 1, Color shade = 0xB8D8FF)
+	{
+		let r = RSQML_Ring(Actor.Spawn("RSQML_Ring", at, NO_REPLACE));
+		if (!r) return null;
+		r.sprite = GetSpriteIndex('RQRG');
+		r.frame = 0;
+		double sc = reach * 2.0 / LAST_PX;
+		r.scale = (sc, sc);
+		r.bFlatSprite = flat;
+		if (!flat) r.bForceXYBillboard = true;
+		r.roll = frandom[RSQMLRing](0, 360);
+		r.total = FRAMES * max(tpf, 1);
+		r.life = r.total;
+		r.a0 = alpha;
+		r.alpha = alpha;
+		r.SetShade(shade);
+		return r;
+	}
+	override void Tick()
+	{
+		if (isFrozen()) return;
+		if (--life < 0) { Destroy(); return; }
+		int tpf = max(1, total / FRAMES);
+		frame = clamp((total - life - 1) / tpf, 0, FRAMES - 1);
+		alpha = a0 * min(1.0, (life / double(total)) * 2.5);
+	}
+	States { Spawn: RQRG A -1 Bright; Stop; }
+}
