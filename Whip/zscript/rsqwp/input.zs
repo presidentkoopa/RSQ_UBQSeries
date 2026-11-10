@@ -18,6 +18,39 @@
 //   rsqwp_up    a0 = hand
 class RSQWP_Input : EventHandler
 {
+	// THE GRIPS HOLD THE ROPE (owner 2026-11-10: "The grip grabs the rope"). Stock QuestZDoom never puts a controller's
+	// grip in cmd.buttons; it arrives as a key, read here by scan code as RSQ Distance Grab (near.zs), RSQ Tactical Rig
+	// and the Whip's lasso read it (rsqwp_keys_main "446", rsqwp_keys_off "443 436"). Each edge becomes this pack's own
+	// grab event, so no key bind and no other mod is needed. Never eaten: the press still reaches every other mod.
+	ui String gripFrom[2];
+	ui Array<int> gripMain, gripOff;
+	ui bool gripDown[2];
+	ui void GripKeys(int h)
+	{
+		let cv = CVar.FindCVar(h ? "rsqwp_keys_off" : "rsqwp_keys_main");
+		String s = cv ? cv.GetString() : (h ? "443 436" : "446");
+		if (s == gripFrom[h]) return;
+		gripFrom[h] = s;
+		Array<String> w;
+		s.Split(w, " ", TOK_SKIPEMPTY);
+		if (h) { gripOff.Clear(); for (int k = 0; k < w.Size(); k++) gripOff.Push(w[k].ToInt()); }
+		else { gripMain.Clear(); for (int k = 0; k < w.Size(); k++) gripMain.Push(w[k].ToInt()); }
+	}
+	override bool InputProcess(InputEvent e)
+	{
+		if (e.Type != InputEvent.Type_KeyDown && e.Type != InputEvent.Type_KeyUp) return false;
+		GripKeys(0); GripKeys(1);
+		int h = -1;
+		if (gripMain.Find(e.KeyScan) < gripMain.Size()) h = 0;
+		else if (gripOff.Find(e.KeyScan) < gripOff.Size()) h = 1;
+		if (h < 0) return false;
+		bool down = e.Type == InputEvent.Type_KeyDown;
+		if (down == gripDown[h]) return false;
+		gripDown[h] = down;
+		EventHandler.SendNetworkEvent("rsqwp_grab", h, down ? 1 : 0);
+		return false;
+	}
+
 	// RSQ_Accessibility's Hold to Toggle: the hook bind's press latches on (fire, then reel while
 	// latched, as a held bind does) and the next press lets it go (a release within a tap of the
 	// press lets go of the rope, as ever). Releases are ignored. This machine's side only.

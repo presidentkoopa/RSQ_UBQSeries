@@ -124,6 +124,7 @@ OptionMenu "RSQWP_Test"
 	StaticText "Climbing", "Gold"
 	Slider "Grab Reach", "rsqwp_grab_reach", 4, 40, 2, 0
 	Slider "Climb Speed Cap", "rsqwp_climb_cap", 2, 20, 1, 0
+	TextField "Main Grip Keys", "rsqwp_keys_main"
 	TextField "Off Grip Keys", "rsqwp_keys_off"
 	StaticText " "
 	Option "Debug Log", "rsqwp_debug", "RSQWP_Debug"
