@@ -92,10 +92,26 @@ class RSQVR_Scenes : EventHandler
 
 	Actor Ear() { return players[consoleplayer].mo; }
 
+	// stop every scene channel on this machine's player (the pawn travels to the next map, and its looping sounds with it)
+	void StopAll()
+	{
+		let ear = Ear();
+		if (ear) for (int c = CH_TOP; c > CH_TOP - CH_MAX; c--) ear.A_StopSound(c);
+	}
+
+	// leaving the map: a scene never carries into the next one (owner 11-10: a Bossfight's track must not play on)
+	override void WorldUnloaded(WorldEvent e)
+	{
+		if (e.IsSaveGame) return;
+		StopAll();
+		stack.Clear(); tName.Clear(); tLevel.Clear(); tCh.Clear();
+		SetMusicVolume(1.0);
+	}
+
 	override void WorldLoaded(WorldEvent e)
 	{
-		// a new map starts with the level music at full; a loaded save puts its tracks back on their channels
-		if (!e.IsSaveGame) { stack.Clear(); tName.Clear(); tLevel.Clear(); tCh.Clear(); SetMusicVolume(1.0); }
+		// a new map starts with no scene and the level music at full; a loaded save puts its tracks back on their channels
+		if (!e.IsSaveGame) { StopAll(); stack.Clear(); tName.Clear(); tLevel.Clear(); tCh.Clear(); SetMusicVolume(1.0); }
 		else restart = true;
 	}
 

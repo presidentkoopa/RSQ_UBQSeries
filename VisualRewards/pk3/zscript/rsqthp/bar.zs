@@ -7,7 +7,7 @@
 // WHAT CHANGED, AND WHY
 //  - Work per tic: the frame is rebuilt only when health, spawn health, invulnerability or the look
 //    changed; the sprite's height only when the thing's sprite frame or scale changed. Settings come from the
-//    handler (read once a tic for all bars). Measured: see HANDOFF.md.
+//    handler (read once a tic for all bars).
 //  - Overheal (health above spawn health -- LegenDoom Lite's 300 % legendaries, a resurrection buff):
 //    his bar showed it as plain full. Here a thinner strip sits one pixel above the bar, in the same
 //    10-block grid: it holds the health ABOVE 100 %, one spawn-health's worth per lap. Laps beyond

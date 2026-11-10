@@ -2,7 +2,7 @@
 // RSQVR_Service "word", "word.hold", "word.clear", "pop" (service.zs; the shared contract of the Bossfight rework build).
 //
 // THE WORDS (design/MINIBOSS_REWORK.md "Words": the owner's Castlevania GIF, "our font"): a word in RS Score's
-// score-line font (RSSCFON, Blue Shadow via Dakka; generated as textures QVW032..QVW096 by tools/gen_beams.py) stands
+// score-line font (RSSCFON, Blue Shadow via Dakka; generated as textures QVW033..QVW096 by tools/gen_beams.py) stands
 // over the actor as a world billboard, drawn with the engine's VisualThinker exactly as the damage numbers are
 // (damnums/glyphs.zs: one quad per letter, from the centre eye, so both eyes see it at one depth; no sprite frames;
 // placed after every actor has moved, Prev and Pos set so it is interpolated). Score's font is grey with a dark

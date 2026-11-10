@@ -1,20 +1,13 @@
-// RSQ VisualRewards -- the arrival beams' sounds (2026-11-09, rsqvr/beams.zs). Supplied by the owner (presidentkoopa),
-// 2026-11-09, source not stated; the coordinator's assignment by role (RSQVR_Service "beam", nameArg):
-//   miniboss (V3 / V4 by default)  two layers: the RISER when the beam starts, the HIT on the reveal tic
-//   thrall   (V1 / V2 by default)  one of two at random when the beam starts
-//   chump    (summoned low tier; any other monster)  the short one when the beam starts
-// 11-09 18:38 (owner): ONE SOUND PER BEAM, on its first tic: V1 chump (ONPARE8), V2 thrall1 (ONPARE2), V3 rise (PL00_U),
-// V4 thrall2 (PL01_U, a stand-in until the owner's boss sound). rsqvr/beam/hit (ONPARE6) is no longer an arrival sound: it is
-// the miniboss fight's segment-break sound. The role lines above are the older layout.
-// Files (22 kHz mono 16-bit): RVQRISE PL00_U_00028 (1.05 s, swells to 0.66 s), RVQHIT ONPARE6_00004 (0.97 s, darkest and
-// loudest), RVQTHR1 ONPARE2_00008 (0.76 s), RVQTHR2 PL01_U_00021 (1.16 s), RVQCHMP ONPARE8_00004 (0.66 s).
+// RSQ VisualRewards -- the arrival beams' sounds (rsqvr/beams.zs). One sound per beam, on its first tic (owner 11-09
+// 18:38-18:53, locked), made from the owner's files only (pitch, layering, echo; nothing synthesized):
+//   V1 RVQB1 = ONPARE8 + an octave-down copy, small-room echo
+//   V2 RVQB2 = ONPARE2 the same way
+//   V3 RVQB3 = ONPARE3 + an octave-down copy, small-room echo, faded out over its last 0.3 s so it ends with the beam ("blue C")
+//   V4 RVQB4 = ONPARE2 as the pillars rise, then PL01_U lowered 15% on the merge (tic 18), hall echo ("boss C")
+// The recipe and its source files: VisualRewards/tools/beam_sounds/gen_beam_sounds.py (reproduces RVQB1-4 byte-exact).
+// rsqvr/beam/hit (ONPARE6) is not an arrival sound: it is kept for the miniboss fight's segment break.
 // THE REACH: arrivals land 12-32 m away (34 map units a metre: 400-1100 units). Full volume to 400 units, gone at 1800
 // (about 53 m), so the far end of the range still hears them clearly (Doom's own default fades out by 1200).
-// 11-09 18:50 (owner, locked): the beams' own sounds. V1 RVQB1 = ONPARE8 + an octave-down copy, small-room echo; V2 RVQB2 =
-// ONPARE2 the same way; V4 RVQB4 = ONPARE2 as the pillars rise, then PL01_U lowered 15% on the merge (tic 18), hall echo
-// (the owner's "boss C"). Made from the owner's files only (pitch, layering, echo; nothing synthesized):
-// the recipe is in VisualRewards/README.md. V3 RVQB3 (owner 18:53, "blue C") = ONPARE3 (the owner's, 11-09) + an octave-down
-// copy, small-room echo, faded out over its last 0.3 s so it ends with the beam (1.0 s).
 rsqvr/beam/v1       sounds/rsqvr/RVQB1.wav
 rsqvr/beam/v2       sounds/rsqvr/RVQB2.wav
 rsqvr/beam/v3       sounds/rsqvr/RVQB3.wav
@@ -23,17 +16,8 @@ $rolloff rsqvr/beam/v1  400 1800
 $rolloff rsqvr/beam/v2  400 1800
 $rolloff rsqvr/beam/v3  400 1800
 $rolloff rsqvr/beam/v4  400 1800
-rsqvr/beam/rise     sounds/rsqvr/RVQRISE.wav
 rsqvr/beam/hit      sounds/rsqvr/RVQHIT.wav
-rsqvr/beam/thrall1  sounds/rsqvr/RVQTHR1.wav
-rsqvr/beam/thrall2  sounds/rsqvr/RVQTHR2.wav
-rsqvr/beam/chump    sounds/rsqvr/RVQCHMP.wav
-$random rsqvr/beam/thrall { rsqvr/beam/thrall1 rsqvr/beam/thrall2 }
-$rolloff rsqvr/beam/rise     400 1800
 $rolloff rsqvr/beam/hit      400 1800
-$rolloff rsqvr/beam/thrall1  400 1800
-$rolloff rsqvr/beam/thrall2  400 1800
-$rolloff rsqvr/beam/chump    400 1800
 
 // Scene music (2026-11-09): the owner's Bossfight track ("20 organic beat"), cut to loop at 2:02.97 with a 0.5 s
 // crossfade baked in (LOOP_START 22050 / LOOP_END 5422827 in its Vorbis tags; TestRig/music_test)

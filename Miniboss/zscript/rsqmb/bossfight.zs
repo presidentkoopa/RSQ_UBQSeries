@@ -963,7 +963,7 @@ extend class RSQMB_Handler
 		// the beam (VisualRewards hides it until its reveal) or the original's teleport fog
 		let vr = VrService();
 		String kind = i == 0 ? (arrBeamSet == 0 ? "v3" : "v4") : (arrBeamSet == 0 ? "v1" : "v2");
-		// nameArg role (contract addition 2026-11-09): 'miniboss' or 'thrall' picks the owner's arrival sound
+		// nameArg role (contract addition 2026-11-09): sent, but VisualRewards ignores it now (each beam has its own sound)
 		Name role = i == 0 ? 'miniboss' : 'thrall';
 		int r = vr ? vr.GetInt("beam", kind, col, 1.0, a, role) : 0;
 		if (r > 0) arrReveal[i] = level.maptime + min(r, HOLD_CAP);

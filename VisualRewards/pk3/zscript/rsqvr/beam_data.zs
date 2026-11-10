@@ -26,7 +26,7 @@ class RSQVR_BeamData play
 	const POP_N = 9;
 	const POP_S = 33;           // texels across a pop frame; textures QVPOP00.. at x3
 	const POP_K = 3;
-	const FONT_H = 12;            // RSSCFON's cell height in its pixels; textures QVW032..QVW096 at x4
+	const FONT_H = 12;            // RSSCFON's cell height in its pixels; textures QVW033..QVW096 at x4
 	const FONT_K = 4;
 
 	static String SPR(int i)

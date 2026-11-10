@@ -15,8 +15,8 @@
 //  A COMBAT NUMBERS
 //   - Each hit's number is SMALL (the size of the icons beside the HP bar, twice the bar's scale; it does not grow with
 //     distance unless Grow with Distance is on). It pops at the hit with a white flash for 2-3 tics, snaps out with a small
-//     overshoot, arcs up and out -- successive hits on one monster alternate left / right and step outward, so they never
-//     overlap -- and is gone in 0.75 s. It appears on the side of the monster facing you and is kept clear of walls and
+//     overshoot, then jets up and over in a small fountain, spinning a little (PlaceJet, 22 tics: about 0.63 s; owner
+//     11-03 18:36). Only a headshot's number arcs up and out (alternating left / right, stepping outward). It appears on the side of the monster facing you and is kept clear of walls and
 //     the ceiling: traced from the monster to its spot, and along its whole arc, before it is shown (Clear of Walls).
 //   - Colour by damage type (BD22's bullets, shells, fire, plasma, explosives, melee, saws, the series' Saber and Force ...),
 //     with Castlevania-style colour cycling: a 4-shade ramp of its colour shifting every 2 tics, letter by letter.
@@ -803,11 +803,11 @@ class RSQTHP_DamNumHandler : EventHandler
 	}
 
 	// ===================================================================================================================
-	// RSQ SLOWMO'S DOWN v2 (owner-approved 11-06 19:51, design/NEAR_DEATH.md 12; rsqvr/down.zs tells these)
+	// RSQ SLOWMO'S DOWN (v3, 11-07; design/NEAR_DEATH.md 12; rsqvr/down.zs tells these)
 	// TIME ADDED: each hit that adds time to the DOWN clock pops "+0.5s" at the monster hit (its standing height, out in
 	// front of it on your side), on your time (DOWN slows the world to 5%), in the DOWN colour (crimson; RSQ
-	// Accessibility's colour-blind combo ramp's last colour instead). THE WORDS: REVENGE (the mark killed), REVIVE (the
-	// crate taken) and RAGE (its 5 s) fly past on the level-up band in the numbers' font (JFO), each its own colour.
+	// Accessibility's colour-blind combo ramp's last colour instead). THE WORDS: REVENGE (the mark killed) and REVIVE
+	// (every time you get up, sized by tier) fly past on the level-up band in the numbers' font (JFO), each its own colour.
 	const TIME_COL = 6;             // crimson: DOWN's colour
 	const REVENGE_COL = 8;          // magenta
 	const REVIVE_COL = 13;          // cyan
@@ -835,7 +835,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		let dc = CVar.FindCVar("rsqsm_debug");
 		if (dc && dc.GetBool()) Console.Printf("RSQ VisualRewards: DOWN time \"%s\" (colour %d) at %.0f %.0f %.0f over %s", n.label, n.fam, p.x, p.y, p.z, mon.GetClassName());
 	}
-	// one word at a time: REVIVE and RAGE come on the same tic, so a word asked while another DOWN word is still on the
+	// one word at a time: a word asked while another DOWN word is still on the
 	// band waits for it (WorldTick)
 	Array<String> qWord;
 	Array<int> qCol;

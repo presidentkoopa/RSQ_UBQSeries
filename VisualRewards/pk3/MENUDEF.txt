@@ -1,6 +1,6 @@
 // RSQ VisualRewards options (until 2026-11-03 RSQ HP Bars'), modelled on Brutal Doom Quest 2.0's options page (the owner, 10-28): one short
 // page of real choices, named; the numbers on Tuning and Debug. What each one does is in CVARINFO's
-// comments. Preset choices: tools/rsmenu/presets.py (Standard = today's defaults).
+// comments.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the

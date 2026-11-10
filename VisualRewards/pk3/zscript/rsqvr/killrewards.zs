@@ -441,7 +441,7 @@ mixin class RSQ_KRBit
 		int life = RSQ_KRHandler.SVI("rsqgb_kr_life", 7);
 		if (life > 0 && ++bitLife >= life * TICRATE) { Destroy(); return; }
 		if (life > 0) VanishTick(life * TICRATE - bitLife);
-		// Bits Fly to Me: inside the radius a bit drifts to the nearest player's hand height
+		// Bits Fly to Me: inside the radius a bit drifts to the middle of the nearest player's body
 		if (level.maptime & 1) return;
 		// MAGNET (the path node) or the row, whichever reaches further, per player
 		Actor best = null; double bd = 1e9;

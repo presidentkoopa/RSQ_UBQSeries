@@ -71,7 +71,6 @@ class RSQVR_BeamSpark : RSQVR_BeamPiece
 {
 	int holdTics, age, life, rgb, frBase, mode;   // mode 0 spark (shaded by band), 1 flame (banded frames: hot then cool)
 	double grav, floorLimit;
-	bool dark;
 
 	override void Tick()
 	{
@@ -110,7 +109,6 @@ class RSQVR_Beam : Actor
 
 	Actor mon;
 	int bKind;               // 1..4
-	int role;                // 1 miniboss, 2 thrall, 3 chump (kept for callers; sounds now go by beam)
 	int rgb;
 	double sz;               // map units per mockup unit
 	int clock, startTic, reveal, total;
@@ -151,14 +149,6 @@ class RSQVR_Beam : Actor
 	// the reveal tic and the length of each kind (tics from the call), from the mockups
 	static int RevealOf(int k) { return k == 1 ? 7 : (k == 2 ? 12 : (k == 3 ? 19 : 31)); }
 	static int LengthOf(int k) { return k == 1 ? 24 : (k == 2 ? 34 : (k == 3 ? 30 : 68)); }
-	// the role (nameArg): 1 miniboss, 2 thrall, 3 chump; none or unknown: V3 / V4 a miniboss, V1 / V2 a thrall
-	static int RoleOf(Name r, int k)
-	{
-		if (r == 'miniboss') return 1;
-		if (r == 'thrall') return 2;
-		if (r == 'chump') return 3;
-		return k >= 3 ? 1 : 2;
-	}
 	// the sound the beam starts with, one per beam (owner 18:50, SNDINFO.txt): the locked RVQB1-4 sounds
 	static String SoundOf(int k)
 	{
@@ -176,7 +166,7 @@ class RSQVR_Beam : Actor
 	}
 
 	// RSQVR_Service "beam": returns the reveal tic (> 0), or 0 when nothing played
-	static int StartBeam(String kindName, int colour, double size, Actor m, Name roleName = 'None')
+	static int StartBeam(String kindName, int colour, double size, Actor m, Name roleName = 'None')   // roleName: accepted, ignored
 	{
 		int k = KindOf(kindName);
 		if (k == 0 || !m || m.bDestroyed || m.health <= 0) return 0;
@@ -187,14 +177,14 @@ class RSQVR_Beam : Actor
 		if (h.BeamOn(m)) return 0;
 		let b = RSQVR_Beam(Actor.Spawn("RSQVR_Beam", m.Pos));
 		if (!b) return 0;
-		b.Begin(k, colour & 0xFFFFFF, size, m, RoleOf(roleName, k));
+		b.Begin(k, colour & 0xFFFFFF, size, m);
 		h.beams.Push(b);
 		return b.reveal;
 	}
 
-	void Begin(int k, int colour, double size, Actor m, int r)
+	void Begin(int k, int colour, double size, Actor m)
 	{
-		bKind = k; rgb = colour; mon = m; role = r;
+		bKind = k; rgb = colour; mon = m;
 		if (size <= 0) size = 1.0;
 		sz = clamp(size * max(m.Height, 16.0) / IMP_H, 0.3, 6.0);
 		dark = RSQVR_FxHandler.IsDark(rgb);
@@ -395,7 +385,7 @@ class RSQVR_Beam : Actor
 			Vector3 at = Pos + (cos(an) * rr * sz, sin(an) * rr * sz, frandom[rsqvrbeam](zLo, zHi) * sz + 0.5);
 			let s = RSQVR_BeamSpark(Actor.Spawn("RSQVR_BeamSpark", at));
 			if (!s) continue;
-			s.rgb = rgb; s.dark = dark; s.mode = 0;
+			s.rgb = rgb; s.mode = 0;
 			s.holdTics = i % 3; s.bInvisible = s.holdTics > 0;
 			s.life = random[rsqvrbeam](lifeLo, lifeHi);
 			s.grav = grav * sz;
@@ -418,7 +408,7 @@ class RSQVR_Beam : Actor
 		Vector3 at = Pos + ((camR.xy * x * sz) + toEye.xy * push, z0 * sz);
 		let s = RSQVR_BeamSpark(Actor.Spawn("RSQVR_BeamSpark", at));
 		if (!s) return;
-		s.rgb = rgb; s.dark = dark; s.mode = 1;
+		s.rgb = rgb; s.mode = 1;
 		s.life = life;
 		s.grav = 0;
 		s.floorLimit = Pos.z - 1;

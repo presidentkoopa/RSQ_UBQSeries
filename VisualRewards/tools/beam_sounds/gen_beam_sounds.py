@@ -35,7 +35,7 @@ def wr_round(x):
 ROOM = [(0.045, 0.45), (0.09, 0.3), (0.15, 0.18), (0.23, 0.1)]
 HALL = [(0.07, 0.5), (0.14, 0.35), (0.23, 0.25), (0.34, 0.16), (0.48, 0.1), (0.65, 0.06)]
 def octave(x, g=0.5): return echo(x + g * pitch(x, 0.5)[:len(x)], ROOM, 0.5)
-CH, T1, T2 = rd(os.path.join(SND, 'RVQCHMP.wav')), rd(os.path.join(SND, 'RVQTHR1.wav')), rd(os.path.join(SND, 'RVQTHR2.wav'))
+CH, T1, T2 = rd(os.path.join(HERE, 'RVQCHMP.wav')), rd(os.path.join(HERE, 'RVQTHR1.wav')), rd(os.path.join(HERE, 'RVQTHR2.wav'))   # the owner's sources (moved out of the pk3 11-10)
 O3 = rd(os.path.join(HERE, 'ONPARE3_00002.wav'))
 wr('RVQB1.wav', octave(CH))
 wr('RVQB2.wav', octave(T1, 0.45))

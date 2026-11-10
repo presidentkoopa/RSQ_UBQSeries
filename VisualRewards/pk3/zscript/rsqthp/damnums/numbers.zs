@@ -39,7 +39,7 @@ class RSQTHP_DnNum play
 	int hand;                   // a gain / a tag: the hand
 	bool landOnCards;           // a gain: RSQ Gun Cards is loaded and shows its own +N there
 	int level;                  // a banner / a tag: the level reached
-	String label;               // a tag: the gun's name; DOWN's time added: "+0.5s"; a banner: REVENGE / REVIVE / RAGE (RSQ SlowMo's DOWN), else LEVEL UP
+	String label;               // a tag: the gun's name; DOWN's time added: "+0.5s"; a banner: REVENGE / REVIVE (RSQ SlowMo's DOWN), else LEVEL UP
 	bool special;               // RSQ SlowMo's DOWN (the time added, the words): the headshot's life (flash, colour cycling,
 	                            // bobbing letters) and your time, not the world's (DOWN slows the world to 5%)
 	bool slowSent;              // a banner: its slow-motion pulse has gone out
