@@ -1,362 +1,354 @@
 # RSQ SlowMo
+### Doom Arcade VR · the world slows, you don't: dodgeable bullets, a shootdodge, and one last stand when you go DOWN
 
-The world slows down. You don't. Enemy bullets turn into rounds you can watch coming and lean out of the way of.
+Press a key, cross your wrists or leap sideways and the world drops to a quarter speed while your head and hands stay
+on real time. Enemy bullets become rounds you can see, lean away from and hear whiz past. The rest of the series slows
+the world too, for a parry, a shove, a chain of barrels or a heavy hit, and a bar under your score counts down the real
+time left. Turn on DOWN and a monster's killing blow leaves you on the floor in a grey world with a few seconds to take
+your revenge.
 
-**Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
+*[GIF to come: the world slowing, an enemy's shots turning into glowing rounds, the player leaning out of one as it whizzes past]*
 
-New since the headset pass (tested on the rig, headset check pending): the Real-Time Countdown bar.
+---
 
-New on 11-09 (rig only, not headset-confirmed): **Reload Length** and **Reload Hands**, two rows under Reload. Reload Length
-says how long a reload's slow motion lasts: **Fixed Time** (Reload Time (ms), as before), **Until the Reload Ends** (the slow
-motion lasts exactly as long as the reload, 10 seconds at most), or **Until It Ends, at Most the Fixed Time** (it ends with the
-reload, or at Reload Time if the reload takes longer). Reload Hands says whose reload counts, for Brutal Doom 22 VR Reloaded's
-dual wield: **Either Hand**, **Main Hand Only**, **Off Hand Only**, or **Both Hands at Once** (the second hand starts reloading
-while the first still is; the slow motion then lasts until both are done). Details under Ways in.
+## What it feels like
 
-New on 11-09 evening (rig only, not heard): **DOWN Music** (DOWN rows, on): the owner's "red alert" loop plays while
-you are DOWN (yours alone in co-op), over a Bossfight's music; when you get up whatever was playing crossfades back
-(RSQ VisualRewards' scene music).
+- **The world slows; you don't.** Monsters walk, fire, fall and die at a quarter speed. Their sounds drop in pitch with
+  them. Your head and hands are never slowed.
+- **Bullets you can see.** Inside slow motion an enemy's gunshot becomes a glowing round flying down the same line, with
+  the same damage. Step or lean out of its way and it misses. A close one whizzes or cracks past your ear and buzzes
+  both hands.
+- **Lean out of it.** Move your head across a round's path and it passes you by, the way you would dodge in a room.
+- **Shootdodge.** One key throws you into a sideways leap and drops the world to a tenth of its speed until you land.
+  Your own dive hangs in the air too.
+- **The game slows time for you.** A perfect parry, a gun-butt shove, the cigarette, a barrel chain, a heavy hit from a
+  boss: each can slow the world for a moment. Every one has its own on/off switch.
+- **A bar that tells you when real time is back.** A green bar under your score drains with the real seconds left and
+  names what slowed the world.
+- **DOWN (optional).** A monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you sink
+  to the floor, and you have 9 seconds to kill the monsters marked for you and get up.
 
-New on 11-09 (rig only, not headset-confirmed): the Bossfight landing slow-mo (the countdown bar always shows it) and edge
-arrows other mods can put up (RSQ Miniboss points at its arriving monsters with them); see Works with.
+---
 
-New on 11-06 (rig only, not headset-confirmed): the two bars (stored slow-mo and countdown) with the cause line under
-the countdown; Heavy Hit Slowdown; the Grenade Blast and Over-Under Blast triggers; Reload When.
+## How to play
 
-New on 11-07 (rig only, not headset-confirmed): three barrel cues, Barrel Multi-Kill, Chain Reaction and Barrel Near You (shown
-on the rig, BD order, each firing with its cause line). The fourth, Locked Barrel (asks RSQ Distance Grab by name): built,
-loads clean, NOT shown on the rig.
+| Do this | What happens |
+|---|---|
+| Press your **Slow Motion Key** (bind it under *Customize Controls → RSQ SlowMo*) | The world eases down to the World Speed (a quarter by default). Press again to end it |
+| Cross your wrists in front of your face and hold them there a moment | The same as the key. With **Wrist Cross Bursts** on, a 4-second burst instead |
+| Press your **Shootdodge Key** while standing | You jump and leap the way your stick points (forward if it is centred); the world drops to a tenth until you land |
+| Lean your head sideways as a round comes at you | It passes on the side you leaned away from |
+| Open the RSQ Wheel | The world slows while the wheel is open (Slow Motion Length still applies) |
 
-New on 11-07, **DOWN v3** (design/NEAR_DEATH.md; the look is design/mockups/down_v3_full_view_mockup.html). Status: rig only,
-not headset-confirmed. The last rig run (v3g) showed: the panel slamming up and the bar filling as it lands, the panel
-half the eye wide, three stacked target lines, a kill with the refill edge and a struck line, the edge arrows (Triple
-Chevron) behind and to the left, the eye-level trail, a crosshair assembling and the trail fading, bits banking and
-paying health and armour on the revive. Not shown: the other Turn Marker styles, the JFO font, a crosshair hidden by a
-wall, Photosensitive Mode, a Score life spent, netplay. The panel's size uses the rig eye's measured width (an ~85
-degree eye); a headset with a wider or narrower eye shows it in proportion. Off by default (DOWN row). A monster's
-killing hit holds you at 1 HP instead (before any RSQ Score life); a barrel nobody set off, a crusher, a fall or your own
-shot is a normal death. While DOWN no hit can kill you: you drop into a crouch, crawl at a third of your speed, the world
-slows to its deepest, RSQ Glow In The Dark turns the map red, a heartbeat plays, and your own shots fly at normal speed.
-THE PANEL is on the HUD layer (like RSQ Score's readout), so the gun, a wall or the floor never hides it: half the view
-wide, low and centred, clear of the status bar; it slams up from the bottom edge with a slight overshoot and a heavy
-thump in both hands, the bar filling left to right as it lands. It shows one line per target, stacked, by the **Target
-Lines** row: **Icon** (default) **TARGET:** and that target's own crosshair icon in its colour only, no name and no slot
-icon at the left (rig only, not headset-confirmed); **Name** its icon on a dark slot, then **TARGET: <name>**: the monster's name with RSQ Score's tier words in front when it has them,
-e.g. LEGENDARY ORANGE CHAMPION ZOMBIE; a target that dies keeps its line, dimmed with a thin strike-through, its icon
-cracked), the reward bar
-(three 3 s steps, the tall one first, in the target's colour, draining smoothly) and **DEATH IN:** with a seven-segment
-SS:hh clock of 9 real seconds. Its words are in RSQ Score's combo font when Score is loaded, else in JFO. Killing a target
-while others remain refills the bar with a bright edge running left to right (the DEATH IN clock is not reset; the tier
-is the step you are in at the last kill). Damage you deal buys clock time (a whole monster's worth: 1 s for zombies,
-Imps, Pinkies; 0.5 s a Lost Soul; 2 s bigger; 10 s a Cyberdemon or Spider Mastermind), never above 9 s, the clock never
-slower than a quarter speed. You owe 1 kill, then 2, then 3... (back to 1 when a Score life is spent): the monster that
-downed you if it is in your fight, else a boosted copy of it spawned in view, and fresh boosted copies for the rest.
-With Champions loaded, every spawned copy is a REAL Champion made by Champions itself (its own colour, powers, icon and
-mutation chance, by its own settings): Champions only makes champions as monsters spawn, so SlowMo spawns hidden copies
-on the spot until Champions makes one a champion and keeps that one (rig only, not headset-confirmed: shown on the full
-load order with LegenDoom 3.0 and Champions, e.g. an Orange and a Dark Green champion with Champions' icons, and the
-Name lines reading LEGENDARY ORANGE CHAMPION ZOMBIE). The monster that downed you, if it is in your fight: already a
-champion, it stays as it is; not a champion, it vanishes in teleport fog and a REAL Champion copy of its class, made by
-Champions the same way, appears where it stood and is the target (its map tid and special go with it) (rig only, not
-headset-confirmed: shown on the same load order, a plain zombie swapped for a Bronze champion on its spot). Without
-Champions it stays as it is. If Champions is set never to make one, after 300 tries the copy gets a colour token instead. Each
-target has its own crosshair (ten, never repeated in one DOWN). A target more than about 75 degrees from your view shows
-EDGE ARROWS on the HUD (Turn Marker: Framed Triangle, Framed Fat Arrow, Triple Chevron (default), Triangle With
-Afterimages) with its icon, pointing the way to turn and swinging round with an easing as you turn. Closer than that, a
-TRAIL of six chevrons fixed in the world at eye level runs from just ahead of you to it, a brightness wave chasing toward
-it; in view, its crosshair assembles on it and the trail fades out. Neither is placed behind a wall. Kill them all to
-get up at once: REVIVE, and by the bar's step: invulnerable 5 / 3 / 1 s, slow motion 3 / 1.5 / 5 s; the top step also
-Score's Revival Fire, +1 cigarette, +1 grenade. Health and armour come from the bits your kills dropped while DOWN (RSQ
-VisualRewards' Kill Rewards: kills within 3x your Bits Fly to Me reach fly to you quickly and bank), up to max health
-and 250 armour; without that bank, 100 / 66 / 33 %. Both held guns' magazines are filled for free. The clock at zero: a
-Score life (the spawned targets vanish in teleport fog, the map's own monster loses its boost), or death. Every number
-is a row on the DOWN part of the page (Reset All). Panel Size (default 1 = half the view) scales the panel and the edge
-arrows together: code only, not shown on the rig.
+**How long it lasts.** With Adrenaline off (the default) your held slow motion lets go by itself after **Slow Motion
+Length** (6 real seconds); pressing again ends it sooner. A shootdodge lasts until you land, 6 seconds at most.
 
-New on 11-09, **DOWN's look** (owner 17:42-17:45). Status: **code only, not run** (it loads with no script errors; nothing of
-it has been seen on the rig or in the headset yet). Going down is now a slow-motion moment: **Slow Fall** eases your view
-down over about a second instead of dropping it, and slows you yourself through the fall. The world goes **black and
-white** with a **blood-red tint**, fading in as you go down and back to colour when you get up or die (**Fade**). Only your
-own view goes grey: in co-op the other players see their world as usual. The monsters you must kill stay in colour where
-the engine allows it: a target standing in a small room keeps that room in colour (**Targets' Room in Colour**), and its
-crosshair and the chevron trail are drawn in full colour on top of the grey. In a big room the target itself is grey,
-but full-bright and untinted against the dark red world. The engine has no way to keep one monster in colour in a grey
-room. The sky stays as it is. Every room gets its own colour back exactly when DOWN ends, when the map ends, and after
-a save made mid-DOWN is loaded. With DarkDoomZ loaded, **DarkDoomZ When Down** drops it to DarkDoom Black while you are
-DOWN and puts your own setting back after (single player only: DarkDoomZ's darkness is everyone's). In DarkDoom Black
-the rooms are dark, so the red tint has little light to colour; DarkDoom Classic keeps more of it. RSQ Glow In The Dark's
-Red Map keeps working: under the grey its glow shows as a beating band of light, and the red comes from the tint.
-**Death In Entrance**: the panel and a big DOWN appear in the middle of your view, hold for the fall, then glide down to
-their place (**Middle Then Sink**, the default); or **Bottom Only**, at their place from the start; or **Slam Up**, as
-before. **Sounds** (our own, made for this pack): a heavy hit and a ringing in your ears as you go down, a heartbeat that
-gets faster as DEATH IN runs down, and a relief when you get up. If you load LiveReverb, its own low-health effect will
-also play while you are DOWN, because you are held at 1 HP. Nothing here needs it.
+**Nothing to bind?** The keys have no default binding. The wrist cross works without one.
 
-Stock QuestZDoom 17.3 has no world clock that a mod can slow. This mod builds one in ZScript. Every monster,
-missile, gib and sound near you is time-dilated, not frozen. Each one still moves every frame, just by less,
-so slow motion stays smooth in a headset instead of stuttering. Your head and hands always run in real time.
+**Also in slow motion:** your own walking, jumping and falling slow with the world (**Slow Me Too**; never your head or
+hands). The nearest monsters walk smoothly instead of stepping in jumps (**Smooth Walkers**). Your shots leave a fading
+trail from the muzzle to where they landed (**Shot Trails**) and slowed rockets and fireballs leave a pale wake
+(**Missile Wakes**). Your own rockets slow too unless you turn **Slow My Missiles** off. **Colour Drain** (off by
+default) greys the view a little while time is slowed.
 
-## Standout feature: dodge the bullet with your body
+You hear Doom's power-up pickup as the world slows and a lift landing as it comes back, with a rumble in both hands.
 
-Slow time down. A zombieman fires. His shot doesn't land instantly any more. It leaves his muzzle as a
-glowing round you can see, flying down the same line with the same damage. Lean your head to one side,
-the way you would in real life. The round goes past where you were. You hear it whiz by, or crack if it was
-close, and both controllers buzz.
+---
 
-That lean is real. The mod tracks how far your head moves off its resting spot. If your head moved at least
-6 cm (and you weren't walking with the stick), a slowed round passing on the side you leaned away from misses.
-A round aimed at where you are now still hits. Brutal Doom's own projectile bullets slow down to the same
-dodgeable speed. Your shield and saber stop the rounds like any other projectile.
+## The adrenaline meter
 
-## Features
+Off by default. Turn on **Adrenaline** and your own slow motion is no longer free:
 
-**The clock**
-- Everything within range of you slows: movement, falling, animation, attacks and deaths. Sounds drop in pitch.
-- It eases in and out (0.15 s in, 0.4 s out by default) and never snaps.
-- Your own rockets slow too (you can switch that off).
-- Players, what they carry and the series' hand-held effects (saber, shield, grabbed objects, rig props) are never slowed.
+- **Earn it.** A kill gives 12, a round that only just misses you gives 4, and damage you take gives half its amount.
+  Other mods can add to it (RSQ Gun Bonsai VR's melee Adrenaline and Second Wind do).
+- **Spend it.** Your held slow motion and a shootdodge in the air drain it: a full meter lasts 10 seconds. A wrist-cross
+  burst pays its 4 seconds up front.
+- **You need 25 to start.** Below that you get a low buzz and Doom's "oof" instead.
+- **A full meter** plays the item pickup sound. With **Keep Adrenaline** on the meter goes with you to the next level.
 
-**Bullets you can dodge**
-- In slow motion, an enemy hitscan becomes a visible round carrying the same damage, puff and damage type.
-- Rounds fly at about 14 map units a tic and speed up as the world comes back.
-- Near misses play whiz and crack recordings and rumble both hands.
-- Your own shots leave a short, fading trail from the muzzle to where they hit.
-- Slowed rockets and fireballs leave a faint wake.
+Only your held slow motion (the key, the wrist cross, the Wheel, the Accessibility button), the burst and the
+shootdodge spend it. Slow motion started any other way (a parry, the cigarette, a blast, a heavy hit) never does.
 
-**Your body in slow motion**
-- **Lean out of bullets.** On by default. See above.
-- **Slow Me Too.** On by default. Your own walking, jumping and falling slow with the world. Your head and hands never do.
-- **Shootdodge.** A bound key throws you into a leap and slows the world to 10% until you land. Max Payne's dive, in VR.
-- **Smooth walkers.** Slowed monsters glide through their steps every frame instead of jerking forward a few times a second.
+---
 
-**Ways in**
-- A bound key, or a gesture: cross your wrists in front of your face.
-- An optional 4-second burst on the wrist cross instead of a toggle.
-- Other mods can start it: opening the RSQ Wheel, a Melee shove, the Tactical Rig cigarette, a Saber perfect parry, a ShieldSaw perfect block, Score's big kills, Miniboss's slow window and Gun Bonsai VR perks.
-- Every trigger has its own on/off switch. Automatic triggers wait out a 25-second cooldown so they don't fire all the time. The ones you start yourself are never held back.
-- More automatic triggers, each off by default (owner 11-06): **Grenade Blast** (Brutal Doom's hand grenade or RSQ Grenade's, yours; 3 seconds), **Over-Under Blast** (the 40 mm under BD22 VR's Rifle and Machinegun, `ShortGrenade`; the same Blast Time), and **Reload When: Always / Low Health** (Low Health At, 25 by default).
-- **Heavy Hit Slowdown** (on, owner 11-06; rig only, not headset-confirmed). One hit (everything you take in one tic) of at least Heavy Hit Size (75% of your max health by default) slows the world for 3 seconds, you with it. It fires when the hit came from a LegenDoom legendary, a Champions champion, RSQ Miniboss's miniboss or one of its thralls, a boss (Doom's BOSS flag) or a big demon (Cyberdemon, Spider Mastermind, Baron of Hell, Hell Knight, Mancubus, Arch-Vile, Revenant, and Brutal Doom's and XMVE's versions of them). Or, whatever hit you, when one of four extras is true (each its own row, on): **Arch-Vile Blast** (an Arch-Vile's flame attack), **Blasted Off Your Feet** (the hit throws you up: your vertical speed rises by 10 map units a tic or more; a jump is about 7.4), **Hit From Behind** (the attacker is more than 60 degrees off where your head faces) and **Armour Broken** (the hit takes your last armour). Never on a hit that kills you. Its cooldown: Once per 20 s, Once per 60 s, Use Shared (the automatic cooldown the other triggers share) or No Limit (default); during a Bossfight every heavy hit fires.
-- **Barrel cues** (owner 11-07, design/SLOWMO_BARRELS.md; rig only, not headset-confirmed). Automatic triggers, each its own row, all on, the same Blast Time (3 s) and the shared cooldown: **Barrel Multi-Kill** (one barrel's blast kills 2 or more monsters), **Chain Reaction** (a barrel's blast sets off another barrel) and **Barrel Near You** (any barrel goes off within 2 m of you). The fourth, **Locked Barrel** (a barrel thrown or uppercut with RSQ Distance Grab's Barrel Lock-On lands on its locked monster and goes off; SlowMo asks Distance Grab by name, so without it, never): built, loads clean, NOT shown on the rig. A barrel is Doom's or anything that replaces it (Brutal Doom's, BD_VoxelPack's). One blast that is several cues at once shows the first of Locked Barrel, Multi-Kill, Chain Reaction, Near You.
-- Optional and off by default: **Close-Call** (a rocket or fireball about to hit you up close sets off a short slow) and **Reload Slowdown** (a reload buys a moment of slow motion).
-- **Reload Length and Reload Hands** (owner 11-09; rig only, not headset-confirmed). Each hand is watched on its own: the gun in your main hand and the gun in your off hand (Brutal Doom 22 VR Reloaded's dual wield; its off-hand gun reloads with the flick). A hand counts as reloading while its gun plays its reload animation (BD22's own, or BD22 VR Reloaded's), waits for a hand reload (your off hand fetching a magazine) or plays a flick reload. The reload ENDS when that gun is ready to fire again; also when that hand's gun changes (switched, put away, dropped, thrown) or you die, and a new map always starts at full speed. **Until the Reload Ends** can never leave the world slowed: it lasts 10 seconds at most (a hand reload left waiting ends there). Ending early only ends the reload's own slow motion: if another trigger's slow motion was already running, its time stays. With Until the Reload Ends, the countdown bar starts as if for 10 seconds and drops away when the reload ends. On the rig (11-09, BD order, BD22 VR's Rifle with its own reload, Real VR Reload off), main hand: a 40-tic reload gave Fixed Time 1200 ms its 42 tics; Until the Reload Ends ended on the tic the reload ended (40 tics, the 10 s cap cut); Until It Ends, at Most the Fixed Time with 3000 ms also ended with the reload (40 tics). NOT shown yet: the fixed time cutting a longer reload short, the off hand's reload (the test ran the reserve dry, so the off hand's flick had nothing to load), Both Hands at Once, Main Hand Only ignoring the off hand, and the 10-second cap on a waiting hand reload; they wait for the next rig session.
+## The bars
 
-**Adrenaline (optional, off by default)**
-- Slow motion costs a meter. You earn 12 per kill, 4 per near miss and half a point per point of damage you take.
-- You need 25 to start. A full meter lasts 10 seconds held on. The meter carries over to the next level.
-- With too little in the meter you get a short buzz and the player "oof".
+Two bars sit centred under RSQ Score's bar, each with a small hourglass at its left. Without Score they sit where
+Score's bar would be.
 
-**On the HUD**
-- **Two bars (2026-11-06; rig only, not headset-confirmed).** Under Score (and under Miniboss's Bossfight meter) sit two bars side by side. LEFT, the **stored slow-mo bar** (the old charge bar, back): with Adrenaline on, it is the meter, filling as you earn and draining while you spend; dim below Adrenaline: To Start (a white tick marks that line). Its hourglass has black trim. RIGHT, the **countdown bar**, shown while the game slowed time by itself (an automatic trigger: Miniboss, Score, Gun Bonsai VR, close call, reload, grenade blast, over-under blast, heavy hit, barrel cues, other mods); its hourglass has brown trim. **Under it, one short line says what caused it** (owner 11-06; Miniboss's wait-line look), and goes with the bar: HEAVY HIT: <the monster's name> (e.g. HEAVY HIT: CYBERDEMON), ARCH-VILE BLAST, BLASTED, HIT FROM BEHIND, ARMOUR BROKEN, GRENADE BLAST, OVER-UNDER BLAST, LOCKED BARREL, BARREL MULTI-KILL, CHAIN REACTION, BARREL BLAST, RELOAD, CLOSE CALL, MINIBOSS, SCORE, GUN BONSAI, OTHER MOD, or another mod's own name when it uses the named door. **With Adrenaline off, your own slow motion shows the countdown bar and its line too** (owner 11-06): SLOW MOTION (your key or the Accessibility button), WRIST CROSS, WHEEL, SHOOTDODGE, BURST, CIGARETTE, SHOVE, PARRY, BLOCK, BOSSFIGHT (Miniboss's landing). With Adrenaline on, your own slow motion (key, wrist cross, Wheel, shootdodge, cigarette, shove, parry, block) spends the stored bar instead and shows no countdown. One bar alone is centred; when the other appears the pair glides so both are centred. The pair is never wider than Score's bar; while the Bossfight meter shows, the pair spans exactly its row.
-- **How the countdown runs.** Green by default. It starts full and drains over that slow motion's real seconds, reaching zero just as time catches up (the ease out included). A burst lasts its 4 s (longer with Gun Bonsai VR's Longer); another mod's slow motion lasts what it asked for. Your own slow motion held on (Adrenaline off) drains over your Slow Motion Length (6 s by default). A shootdodge has no set length (it ends when you land), so the bar sits full until then. A new or longer slow motion refills it smoothly with a glint. The bars sit under RSQ Score's bar (under RSQ Miniboss's Bossfight meter when that is loaded), each with a pixel-art hourglass at its left. Without Score, they go where Score's bar would be.
-- **Color Drain** (optional, off by default). Colours fade out while time is slowed.
-
-## How To Play
-
-1. **Bind a key.** Options → Radiant Silvergun Options → RSQ SlowMo → *Slow Motion*. Or skip it and use the gesture.
-2. **Try the gesture.** Cross your wrists in front of your face, like blocking a punch, and hold for a third of a second. Time slows. Cross them again to bring it back. Uncross between tries.
-3. **Find a zombieman or a chaingunner.** Slow time and watch his shots come at you as rounds. Lean your head sideways out of the line. Listen for the whiz.
-4. **Shoot back while they crawl.** Your hands run at full speed and theirs don't. That's the whole advantage.
-5. **Shootdodge.** Bind *Shootdodge*. Push the thumbstick the way you want to dive and press it. You leap, the world drops to 10%, and you hang in the air while you shoot. Time comes back when you land.
-6. **Master it.** Turn on Adrenaline if free slow motion feels too strong. Then slow motion becomes something you earn from kills and close calls, and spend carefully.
-
-## Controls
-
-| Action | How (VR) | Notes |
+| Bar | When | What it shows |
 |---|---|---|
-| Slow motion on/off | Bound key: *Slow Motion* (Controls: "RSQ SlowMo" → "Slow motion on/off") | No default binding. Toggles slow motion; with Adrenaline off it ends by itself after Slow Motion Length. |
-| Slow motion on/off (gesture) | Cross your wrists in front of your face and hold about 1/3 s | Wrists within 16 cm of each other, main hand at least 3 cm across onto the off-hand side, 12–60 cm in front of your eyes, from 40 cm below eye level to 15 cm above. Uncross before the next one. |
-| 4-second burst | The same wrist cross, with *Wrist Cross = 4 s Burst* on | A timed slow instead of a toggle. |
-| Shootdodge | Bound key: *Shootdodge* (Controls: "RSQ SlowMo" → "Shootdodge"), thumbstick for direction | Only while standing on the ground (not crouched, not in deep water, and only where the map allows jumping). Leaps the way the stick points, forward if it's centred. Ends when you land, die, run out of adrenaline or after 6 s. |
-| Lean out of a round | Move your head sideways at least 6 cm, without the stick | Only while time is slowed. Your resting spot follows your head over 2 s, so a lean you hold stops counting. |
-| Accessibility button | RSQ Accessibility's slow-motion button | Only with RSQ Accessibility loaded. |
-| Open the Wheel | RSQ Wheel's own control | Opening the Wheel slows time, and closing it lets time go. |
+| **Stored slow-mo** (left) | Adrenaline on | Your adrenaline meter. Deep blue when low, cyan at half, nearly white when full. Dim below the line you need to start (a white tick marks it), and it pulses while you spend it |
+| **Countdown** (right) | While the world is slowed | The real time left until full speed, draining evenly through the ease back out. A short line underneath says what slowed the world: SLOW MOTION, SHOOTDODGE, RELOAD, CHAIN REACTION, HEAVY HIT: BARON OF HELL and so on |
 
-**Left-handed play:** with QuestZDoom's left-handed control scheme, the wrist cross is mirrored and each
-rumble goes to the correct hand.
+With Adrenaline off the countdown shows for every slow motion. With Adrenaline on it shows only when the game slowed time
+for you (your own spends the stored bar instead). When the countdown appears beside the stored bar, the stored bar glides
+aside so the pair stays centred.
 
-## Menu
+If something stretches the slow motion, the countdown refills with a glint. **Bar Animation** adds a light band sweeping
+along the fill and a breathing edge. **Bar Colour** picks one of 17 colours or Random (a new one each time). With RSQ
+Miniboss loaded, both bars take the size of its Bossfight meter and sit centred under it.
 
-Options → Radiant Silvergun Options → **RSQ SlowMo**. One page (the Triggers list is on it); the raw numbers and the
-debug log are on **Test and Debug**; **Reset All** at the foot resets both. With RSQ Gun Bonsai VR loaded the page's
-top line reads "GunBonsaiOVR detected. Mod features unlocked via upgrades." and Lean Out of Bullets stays greyed until
-the Lean Dodge node is learned (the row still turns the lean off). A row is greyed while the switch it hangs from is
-off (Keep Adrenaline, the bar rows, Wrist Cross Bursts, Burst).
+*[GIF to come: the adrenaline meter filling and the countdown bars draining]*
 
-| Row | Default | What it does |
+*[Still to come: the countdown bar with its cause line under RSQ Score's bar]*
+
+---
+
+## When the game slows time for you
+
+Each trigger has its own switch on the options page. There are two kinds.
+
+**Your triggers** are things you chose to do. They are never refused for time.
+
+| Trigger | From |
+|---|---|
+| Slow Motion Key, Wrist Cross, Burst, Shootdodge | This mod |
+| Wheel | Opening the RSQ Wheel |
+| Accessibility Button | RSQ Accessibility's slow-motion button |
+| Melee Gun Butt Shove | A shove that lands (RSQ Melee) |
+| Cigarette | Flicking the cigarette from your mouth (RSQ Tactical Rig) |
+| Saber Parry | A perfect parry (RSQ Saber, with its own slow-motion option on) |
+| ShieldSaw Block | A perfect block (RSQ ShieldSaw, with its own slow-motion option on) |
+
+**Automatic triggers** happen to you. After one ends, the next automatic one waits 25 seconds (**Auto Cooldown**), so
+the game is not slowing all the time. Heavy Hit Slowdown and the Bossfight landing keep out of that shared wait.
+
+| Trigger | Default | What sets it off |
 |---|---|---|
-| Slow Motion Key | unbound | The key that toggles slow motion. |
-| Shootdodge Key | unbound | The shootdodge key. |
-| World Speed | 0.25 | How fast the world runs while slowed, from 0.05 (near freeze) to 0.95. With Gun Bonsai VR's Deeper learned, slower still: x0.8, 0.6, 0.4 of this. |
-| Slow Motion Length | 6 s | With Adrenaline off, your slow motion (key, wrist cross, Wheel, Accessibility button) ends by itself after this many seconds, 1 to 30; press again to end it sooner. Greyed while Adrenaline is on: the meter decides then. |
-| **Slow Motion** | | |
-| Dodgeable Bullets | On | Enemy hitscans become visible rounds in slow motion. |
-| Lean Out of Bullets | On | Leaning out of a slowed round's path makes it miss. With Gun Bonsai VR: also needs Lean Dodge. |
-| Slow Me Too | On | Your own walking, jumping and falling slow with the world. |
-| Slow My Missiles | On | Your rockets slow with the world. |
-| Smooth Walkers | On | Nearby slowed monsters move a little every frame. |
-| Adrenaline | Off | Slow motion costs a meter you earn. |
-| Keep Adrenaline | On | The meter carries over to the next level. |
-| Haptics | On | All of this mod's rumbles. |
-| Yield to Other Mods | On | Stand down if another slow-motion mod is loaded. |
-| **Look** | | |
-| Colour Drain | Off | Colours fade while time is slowed. |
-| Shot Trails | On | Your shots leave a fading trail in slow motion. |
-| Missile Wakes | On | Slowed missiles leave a faint wake. |
-| Stored Slow-Mo Bar | On | The adrenaline meter as a bar left of the countdown (needs Adrenaline on). |
-| Countdown Bar | On | The bar that counts down an automatic slow motion to real time (your own too, with Adrenaline off), with the cause line under it. |
-| Bar Animation | On | The bar's sweeping band, breathing edge and refill glint. |
-| Bar Colour | Green | 17 colours, or Random (a new one each time it appears). |
-| **Your Triggers** (a switch only stops a start, never a stop) | | |
-| Slow Motion Key | On | Your Slow Motion key. |
-| Shootdodge | On | Your Shootdodge key. |
-| Wrist Cross | On | The wrist-cross gesture. |
-| Wrist Cross Bursts | Off | The wrist cross starts a 4 s burst instead of toggling. |
-| Burst | On | That 4 s burst. |
-| Wheel | On | Opening RSQ Wheel. |
-| Accessibility Button | On | RSQ Accessibility's slow-motion button. |
-| Melee Gun Butt Shove | On | RSQ Melee's gun-butt shove: every landed shove slows time (its length is Melee's Slow Time Length, 1 s). Melee's own Always Slow Time on Shove must be on too. |
-| Cigarette | On | RSQ Tactical Rig's cigarette. With the Rig's Move at Full Speed While Smoking on, you are not slowed during it. |
-| Saber Parry | On | RSQ Saber's perfect parry. |
-| ShieldSaw Block | On | RSQ ShieldSaw's perfect block. |
-| **Automatic Triggers** (they wait out the cooldown) | | |
-| Miniboss | On | RSQ Miniboss's slow window. |
-| Close Call | Off | A rocket or fireball about to hit you up close. |
-| Reload | Off | A reload buys a moment of slow motion. |
-| Reload When | Always | Always, or only at or under Low Health At. |
-| Reload Length | Fixed Time | Fixed Time (Reload Time (ms)); Until the Reload Ends (10 s at most); Until It Ends, at Most the Fixed Time. |
-| Reload Hands | Either Hand | Either Hand; Main Hand Only; Off Hand Only; Both Hands at Once (dual wield: the second starts while the first still reloads). |
-| Grenade Blast | Off | Your grenade's blast (Brutal Doom's or RSQ Grenade's). |
-| Over-Under Blast | Off | The blast of BD22 VR's Rifle / Machinegun 40 mm (secondary fire). |
-| Locked Barrel | On | A barrel thrown or uppercut at RSQ Distance Grab's Barrel Lock-On lands on its locked monster and goes off. Built, loads clean, NOT shown on the rig. |
-| Barrel Multi-Kill | On | One barrel's blast kills 2 or more monsters. |
-| Chain Reaction | On | A barrel's blast sets off another barrel. |
-| Barrel Near You | On | Any barrel goes off within 2 m of you. |
-| Score | On | RSQ Score's big moments and hit-stop. |
-| Gun Bonsai VR | On | Gun Bonsai VR's Adrenaline, Showdown and Time Dilation perks. |
-| Other Mods | On | Any other mod that asks for slow motion. |
-| *DOWN* | | |
-| DOWN | Off | A monster's killing hit holds you at 1 HP: crouched, crawling, the world at its slowest; kill your targets before DEATH IN runs out to get up. |
-| Clock (s) | 9 | DEATH IN, real seconds; it never goes above this. |
-| Bar Step (s) | 3 | Each of the reward bar's three steps. |
-| Slowest Clock Drain | 0.25 | Bought time pours in; the clock still drains at least this fast. |
-| Time: Small Monster (s) | 1 | What a whole zombie / Imp / Pinky's worth of your damage buys. |
-| Time: Lost Soul (s) | 0.5 | A whole Lost Soul. |
-| Time: Big Monster (s) | 2 | A whole monster above them. |
-| Time: Cyberdemon / Mastermind (s) | 10 | A whole Cyberdemon or Spider Mastermind. |
-| Invulnerable: Top / Middle / Bottom (s) | 5 / 3 / 1 | After getting up, by the bar's step. |
-| Slow-Mo After: Top / Middle / Bottom (s) | 3 / 1.5 / 5 | After getting up, by the bar's step. |
-| No Bank: Top / Middle / Bottom (%) | 100 / 66 / 33 | Health and armour when there is no bits bank (VisualRewards' Kill Rewards not loaded or off). |
-| Bank Armour Cap | 250 | The bank pays armour up to this. |
-| Turn Marker | Triple Chevron | The off-view marker: Framed Triangle, Framed Fat Arrow, Triple Chevron, Triangle With Afterimages. |
-| Red Map | On | RSQ Glow In The Dark turns the map deep blood red while you are DOWN. |
-| Lower View When Down | On | Comfort: off = no view drop (the crawl stays). |
-| Panel Size | 1.00 | Scales the DOWN panel and the edge arrows together (1 = half the view, 0.5 to 1.8). Code only, not shown on the rig. |
-| Target Lines | Icon | Each Target line: Icon = "TARGET:" and that target's own crosshair icon in its colour; Name = "TARGET:" and its name (Score's words). Rig only, not headset-confirmed. |
-| Death In Entrance | Middle Then Sink | Where the DOWN panel starts: Middle Then Sink (big in the middle with DOWN over it, then down to its place), Bottom Only, Slam Up (from the bottom edge). Code only, not run. |
-| Entrance Size | 1.6 | How big the panel is in the middle (Middle Then Sink), x its resting size; at most nearly the whole view. Rig: the limit was wrong (one fixed size in VR), fixed 11-09, not yet re-run. |
-| Slow Fall | On | You go down in slow motion: about a second, your view easing down. Code only, not run. |
-| Black and White World | On | While you are DOWN your world goes black and white (your view only). Code only, not run. |
-| Fade (s) | 1.00 | How long the grey takes to come in, and to go back to colour. Code only, not run. |
-| Blood Red Tint | 0.60 | 0 = plain grey, 1 = full tint in the Fog Colour over the grey. With DarkDoomZ When Down on, the tint is full strength and the darkness itself fades to the Fog Colour (rig, 11-09: dark rooms read deep red; not headset-confirmed). |
-| Fog Colour | Blood Red | The colour of the tint and of the darkness: Blood Red, Ember, Toxic Green, Deep Blue, Violet, Bone White, Random (one a DOWN), Complementary to GITD (each room the opposite hue of its Glow In The Dark glow; blood red where it has none). Code only, not run. |
-| Targets' Room in Colour | Small Rooms | A target's room stays in colour: Off, Small Rooms, Always. Code only, not run. |
-| DarkDoomZ When Down | DarkDoom Black | With DarkDoomZ: Off, DarkDoom Black, DarkDoom Classic while you are DOWN; your setting comes back after. Single player only. Code only, not run. |
-| Sounds | On | DOWN's own sounds: a hit and ringing, a heartbeat, a relief. Code only, not run. |
-| **Heavy Hit Slowdown** | | |
-| Heavy Hit Slowdown | On | A heavy hit from a legendary, champion, miniboss or thrall, boss or big demon slows time 3 s (you too). Never on a hit that kills you, never while you are DOWN. |
-| Heavy Hit Size (% of max health) | 75 | What one tic's damage must add up to. |
-| Arch-Vile Blast | On | Also on any heavy hit that is an Arch-Vile's flame attack. |
-| Blasted Off Your Feet | On | Also on any heavy hit that throws you up (vertical speed up 10+ map units a tic). |
-| Hit From Behind | On | Also on any heavy hit from an attacker over 60 degrees off where your head faces. |
-| Armour Broken | On | Also on any heavy hit that takes your last armour. |
-| Cooldown | No Limit | Once per 20 s, Once per 60 s, Use Shared (the Auto Cooldown) or No Limit. During a Bossfight it fires on every heavy hit. |
-| Test and Debug | | The page below. |
-| Reset All | | Every setting on both pages back to its default. |
+| **Miniboss** | On | RSQ Miniboss's slow window, and the Bossfight landing (the landing skips the cooldown) |
+| **Close Call** | Off | A rocket or fireball about to hit you up close: 0.7 s to step aside |
+| **Reload** | Off | Your reload. **Reload When**: always, or only at 25 health or less. **Reload Length**: a fixed 1.2 s, until the reload ends (10 s at most), or until it ends but no longer than the fixed time. **Reload Hands**: either hand, main hand only, off hand only, or both hands at once (Brutal Doom VR's dual wield) |
+| **Grenade Blast** | Off | Your own grenade going off (Brutal Doom's hand grenade, RSQ Grenade's) |
+| **Over-Under Blast** | Off | The 40 mm under Brutal Doom VR's Rifle and Machinegun going off |
+| **Locked Barrel** | On | A barrel you threw or uppercut at a locked monster lands on it and goes off (RSQ Distance Grab) |
+| **Barrel Multi-Kill** | On | One barrel's blast kills two or more monsters |
+| **Chain Reaction** | On | A barrel's blast sets off another barrel |
+| **Barrel Near You** | On | Any barrel goes off within 2 m of you |
+| **Score** | On | RSQ Score's big moments and its hit-stop |
+| **Gun Bonsai VR** | On | RSQ Gun Bonsai VR's Adrenaline, Showdown and Time Dilation upgrades |
+| **Other Mods** | On | Any other mod that asks for slow motion |
+| **Heavy Hit Slowdown** | On | See below |
 
-**Test and Debug**
+Blasts and barrels hold the slow motion for **Blast Time** (3 s); a heavy hit for 3 s. This mod's own triggers slow the
+world to your World Speed; the other mods ask for their own length and speed.
 
-| Row | Default | What it does |
-|---|---|---|
-| Ease In (s) | 0.15 | Seconds to slow down. |
-| Ease Out (s) | 0.40 | Seconds to come back to full speed. |
-| Range | 3000 | Map units around a player that slow. |
-| Sound Follows | 1.0 | How far slowed sounds drop in pitch. |
-| Round Speed | 14 | A round's speed at the set World Speed, map units a tic. |
-| Slow Me Too Strength | 1.0 | 1 is as slow as the world, 0.5 half as much, 0 not at all. |
-| Auto Cooldown (s) | 25 | Seconds after an automatic slow ends before the next automatic one can start (0 = none). |
-| Shootdodge: World Speed | 0.10 | The world's speed during a shootdodge. |
-| Shootdodge: Leap | 12 | The dive's push, in map units a tic (0 = just the jump). |
-| Shootdodge: Hang | 0.5 | How much of the world's slowing your dive takes (1 = a jump hangs ten times as long at 10%). |
-| Wrist Gap (m) | 0.16 | How close the wrists must be. |
-| Wrist Hold (tics) | 12 | Tics to hold the wrist cross. |
-| Reload Time (ms) | 1200 | How long a reload's slow motion lasts (Fixed Time), or its longest (Until It Ends, at Most the Fixed Time). |
-| Close Call Time (ms) | 700 | How long a close call's slow motion lasts. |
-| Blast Time (ms) | 3000 | A grenade, over-under or barrel blast's slow motion. |
-| Low Health At | 25 | The health line for Reload When = Low Health. |
-| Adrenaline: To Start | 25 | The meter needed to start slow motion. |
-| Adrenaline: Full Meter (s) | 10 | Seconds a full meter lasts held on. |
-| Adrenaline: Per Kill | 12 | Earned per kill. |
-| Adrenaline: Per Near Miss | 4 | Earned per round that passes close. |
-| Lean Needed (m) | 0.06 | How far your head must move to count as a lean. |
-| Lean Baseline (s) | 2.0 | How fast your resting spot catches up with your head. |
-| Smooth Range | 1024 | Map units from you that walkers are smoothed. |
-| Smooth Walkers | 12 | How many of the nearest walkers are smoothed. |
-| Colour Drain Amount | 0.35 | How much colour goes at full depth. |
-| Bar Size | 1.5 | Size of the two bars when RSQ Miniboss isn't loaded. With Miniboss, each bar is exactly the size of its Bossfight meter (owner 11-09: the adrenaline bar, the world slow-mo bar and the Miniboss bar the same size), one alone centred under the meter, two side by side centred under it; Miniboss's Meter Size sets all three. Code only, not run on the rig. |
-| Debug Log | Off | Print every trigger to the console: its name, when, and what happened. |
+### Heavy Hit Slowdown
 
-## Works with
+On by default. When one tic's damage takes 75% of your maximum health (**Heavy Hit Size**), the world slows for 3
+seconds, if the hit came from a boss, a big demon (Cyberdemon, Spider Mastermind, Baron, Hell Knight, Mancubus,
+Arch-Vile, Revenant, or anything that replaces one), a LegenDoom legendary, a Champions champion, or an RSQ Miniboss or
+its thralls. Any attacker counts when one of these is true:
 
-RSQ SlowMo runs on its own. It finds the other mods by name at run time and links to none of them.
+- **Arch-Vile Blast:** it was an Arch-Vile's flame.
+- **Blasted Off Your Feet:** the hit threw you upward.
+- **Hit From Behind:** it came from more than 60 degrees off where you were looking.
+- **Armour Broken:** it took your last armour.
 
-- **RSQ Score:** a big kill can ask for a short slow-motion moment, or an optional hit-stop. Score pays a
-  share of a kill's style when it lands in slow motion (full for slow motion you started, half for automatic,
-  none for Score's own). The two slow-mo bars slot in under Score's bar (and under RSQ Miniboss's Bossfight meter) and move Score's bonus list below them.
-- **RSQ Wheel:** opening the Wheel slows time while you pick.
-- **RSQ Melee, RSQ Tactical Rig, RSQ Saber, RSQ ShieldSaw, RSQ Miniboss:** the shove, the cigarette, the
-  perfect parry, the perfect block and the miniboss window each start slow motion, each with its own switch.
-  The saber and the shield also stop rounds.
-- **RSQ Accessibility:** its slow-motion button works here. Its Min SlowMo Ease sets a floor under both eases,
-  Gesture Ease widens and shortens the wrist cross, Rumble Strength scales every rumble, and Text Size scales the
-  countdown bar. Colour-blind play recolours the rounds (a quarter larger, in the colour that means "dodge this"),
-  your shot trails and the countdown bar. Photosensitive Mode drops the bar's glint and holds its edge still.
-- **Gun Bonsai with RSQ Gun Bonsai VR:** the Adrenaline, Showdown and Time Dilation perks pulse slow motion
-  (switchable). The slow-motion upgrades shape it: **Longer** stretches the burst (up to 8 s) and the meter,
-  **Deeper** slows the world further (down to 10% at the default World Speed), **Cheaper** spends the meter more slowly,
-  and **Matrix** turns on the full colour drain and shot trails (learning it switches both rows on; either row can still
-  turn its part off). With the patch loaded, leaning out of bullets also needs its
-  **Lean Dodge** upgrade (the menu row still turns it off). At its second level, a lean also dodges a monster's claw.
-- **Brutal Doom / BD22 VR Reloaded:** Brutal Doom fires many enemy bullets as fast projectiles, and those slow to the same
-  dodgeable speed as the rounds. Reload Slowdown catches Brutal Doom's reloads too.
-- **Xortts' Bullet Time X or RS_SlowMo:** two slow-motion systems would stack on each other, so RSQ SlowMo
-  stands down and says so in the console. Turn off *Yield to Other Mods* to run both anyway.
-- **For modders:** start slow motion with `netevent rsqsm_start:<name> <ms> <speed %> <flags>`, or with
-  `RSQSM_Service` `GetInt("start", ...)` from synced play code. RS_SlowMo's `rsm_toggle`, `rsm_on`, `rsm_off` and
-  `rsm_pulse` also work.
-- **The Bossfight landing** (2026-11-09; rig only, not headset-confirmed): `RSQSM_Service`
-  `GetInt("start.bossfight", "bossfight", ms, depth)` starts the slow-mo for RSQ Miniboss's arrival as an automatic event:
-  it runs even with Adrenaline on, so the countdown bar always shows it, and it doesn't touch the shared cooldown (owner:
-  "the bar is always visible when the game contextual slomo is active, so player knows when time is coming back").
-- **Edge arrows for other mods** (2026-11-09; rig only, not headset-confirmed: called by the Bossfight arrival on the rig
-  with no errors; their look is not yet seen): from synced play code,
-  `RSQSM_Service` `GetInt("arrow.add", key, 0xRRGGBB, size, actor)` puts DOWN's edge arrow (your Turn Marker, Panel Size,
-  the same 75-degree rule, straight behind = at the bottom) on your HUD in that colour, pointing at the actor while it is
-  out of view; size 1 normal, 1.5 big. `GetInt("arrow.clear", key, 0, 0, actor)` takes it off (no actor: every arrow with
-  that key); it also goes when the actor dies and with the map. Several at once. Hidden while you are DOWN (DOWN's own
-  arrows first); Photosensitive Mode holds them still. RSQ Miniboss points at its arriving thralls and the miniboss with it.
+It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** row: No Limit (the default), once per
+20 s, once per 60 s, or the shared Auto Cooldown. During an RSQ Miniboss Bossfight every heavy hit fires.
 
-## Credits and licence
+---
 
-- **presidentkoopa** (project owner): the design, from his RS_SlowMo (its events, settings and the rule of
-  standing down for another slow-motion mod); the round's tracer mesh and the near-miss whiz and crack
-  recordings, from his RS_Ballistics library.
-- **coldcite** (Top HP Bars 1.04, 2017: "Feel free to use this in your mods. You don't have to ask my
-  permission!"): the countdown bar is built from his health-bar art,
-  recoloured.
-- **id Software** (Doom): the clock's cue sounds (DSGETPOW, DSPSTOP, DSITEMUP, DSNOWAY), played by name from
-  your IWAD. They are not shipped.
-- **Xortts' Bullet Time X:** nothing is taken from it. This mod only recognises it by name so the two don't stack.
-- **QuestZDoom** (Emawind and Team Beef): the engine and the hand-pose API the gesture reads.
-- The round's placeholder sprite was generated for this pack. The code is new, written for this pack.
+## DOWN
 
-Free to share as part of the Radiant Silvergun Quest series. See [CREDITS.txt](CREDITS.txt).
+Off by default. Turn on **DOWN** and the killing blow from a monster holds you at 1 HP instead. A fall, a crusher, your
+own shot, a barrel nobody set off or a hazard still kills you as normal.
+
+![Going down: the colour drains, the DOWN panel appears big in the middle and sinks to its place (rig frames)](docs/readme/down_going_down.jpg)
+
+- **You go down in slow motion.** About a second of slow fall, your view sinking to 40% of your standing height. The world
+  drops to its slowest (5%). You can still crawl, at a third of your speed, and your own shots fly at full speed. While
+  you are DOWN, hits cannot kill you.
+- **DEATH IN.** A clock of 9 real seconds. Damage you deal buys time back, as a share of a whole monster: 1 second for a
+  zombie, imp or pinky, half a second for a Lost Soul, 2 for anything bigger, 10 for a Cyberdemon or Spider Mastermind.
+  The bought time pours in slowly, so the clock always drains at least a quarter speed, and it never climbs above 9.
+- **Your targets.** The first time you go down you owe one kill. Each DOWN after that owes one more, until you spend an
+  RSQ Score life. The first target is the monster that downed you, if it is still in your fight; the rest are copies of
+  it that appear in front of you (or nearby, out of view, if there is no room in front). Targets glow in their own
+  colour, are full-bright and 15% bigger, with half again their health (LegenDoom sets its own). With Champions loaded they are real Champions; with LegenDoom loaded, legendaries; with neither, DOWN
+  red.
+- **Find them.** Each target carries its own crosshair icon. In view, the crosshair assembles over it. Up to 75 degrees off to
+  the side, a trail of chevrons at eye level leads to it. Farther round, an arrow at the edge of your view points the
+  way to turn (straight behind you: at the bottom, pointing down).
+- **The reward bar.** Three steps of 3 seconds, tallest on the right. Kill a target while others remain and the bar
+  refills. The step you are in when the last one dies is your tier.
+- **Get up.** The last target dead, you are up at once:
+
+| Tier | Invulnerable | Slow motion after | Extras |
+|---|---|---|---|
+| **Top** (the first 3 s) | 5 s | 3 s | RSQ Score's Revival Fire, a cigarette back (RSQ Tactical Rig), a grenade back (RSQ Grenade) |
+| **Middle** | 3 s | 1.5 s | |
+| **Bottom** | 1 s | 5 s | |
+
+  Both guns you hold get their magazines filled for free (guns with a magazine, never from your reserve). Health and armour: with RSQ VisualRewards' Kill Rewards on,
+  the bits from your kills while DOWN are banked and paid out (health up to your maximum, armour up to 250); if nothing
+  was banked you get up with the health you had. Without it you get 100%, 66% or 33% of your maximum health by tier,
+  and that share of 100 armour.
+- **Run out of time** and you die, unless RSQ Score has a life for you. Then the spawned targets vanish in teleport fog
+  and the monster that downed you loses its glow and stays.
+
+![The grey world: only the target's small room keeps its colour; the panel and DEATH IN clock below (rig frame)](docs/readme/down_grey_world.jpg)
+
+**The look.** The world goes black and white under a blood-red tint, and only for you. A target's room keeps its
+colour when the room is small. DarkDoomZ drops to DarkDoom Black while you are DOWN (single player) and goes back after.
+With RSQ Glow In The Dark the map turns deep blood red. With RSQ VisualRewards the DOWN music plays. You hear a heavy
+hit and a ringing in your ears as you fall, a heartbeat that quickens as the clock runs down, and a relief when you get
+up. Both controllers thump when the panel lands.
+
+**The panel.** The reward bar, a line for each target, and the DEATH IN clock in red seven-segment digits. By default it
+appears big in the middle of your view with the word DOWN over it, then sinks to its place under your gaze.
+
+![Outdoors while DOWN under DarkDoom Black: the blood-red world, the bar and DEATH IN (rig frame)](docs/readme/down_courtyard.jpg)
+![Up again: the colour comes back, and RSQ VisualRewards says REVIVE (rig frame)](docs/readme/down_revive.jpg)
+
+*These pictures are frames from the test rig (stock QuestZDoom 17.3, 2026-11-09), not captures from the headset.*
+
+*[GIF to come: a target's crosshair assembling over it]*
+
+*[Still to come: the edge arrows pointing to a target behind you]*
+
+---
+
+## Plays well with
+
+SlowMo talks to most of the series, always by name: every mod still loads and plays alone.
+
+- **RSQ Accessibility:** its slow-motion button toggles slow motion (its own switch here). Its Min SlowMo Ease makes
+  every ease in and out at least that long, Gesture Ease widens the wrist cross, Rumble Strength scales every rumble, the
+  colour-blind palette recolours the rounds, your shot trails and the countdown bar, and Photosensitive Mode drops the
+  bar's glint, holds its edge, the DOWN arrows, trail and clock still, and removes the panel's overshoot and the
+  crosshair's flash. Its own slow-motion cues (a rumble and a label) come from SlowMo's clock.
+- **RSQ Distance Grab:** the Locked Barrel trigger. A barrel you steered onto its locked monster slows the world when it
+  goes off.
+- **RSQ Glow In The Dark:** its glow drains toward a cold grey while the world is slowed. With **Red Map** on the whole
+  map turns blood red while you are DOWN. **Fog Colour: Complementary to GITD** takes the opposite colour of each room's
+  glow. If GITD is holding DarkDoomZ dark for a miniboss's landing, DOWN gives back your own setting, not GITD's.
+- **RSQ Grapple and RSQ Whip:** they read the world's speed, so a monster they pull moves at the slowed pace.
+- **RSQ Grenade:** the Grenade Blast trigger. Thrown grenades follow the world's speed (and can run faster than it, on
+  Grenade's own option); with Slow My Missiles off they stay at full speed. Grenade's Only in Slow-Mo row reads
+  SlowMo's clock, and Gun Bonsai VR's Skeet Window slows the world through SlowMo. Getting up on the top tier gives a grenade back.
+- **RSQ Gun Bonsai VR:** a SlowMo upgrade tree. **Deeper** slows the world further (x0.8, x0.6, x0.4 of your World
+  Speed). **Longer** stretches the wrist-cross burst (5, 6, 8 s) and makes a full meter last 25% longer a level.
+  **Cheaper** spends the meter 20% slower a level. **Lean Dodge** unlocks Lean Out of Bullets (that row is greyed until
+  it is learned); its second level dodges a monster's claw as well. **Matrix** turns on Colour Drain and Shot Trails and
+  drains the colour almost fully. Its Adrenaline, Showdown and Time Dilation upgrades slow the world, Marksman and
+  Dodger work while it is slowed, and Bullet Time Fists (with RSQ Melee) punch the slowed rounds back.
+- **RSQ Melee:** a landed gun-butt shove slows the world, and while that lasts the shotgun's F.E.A.R. Effect is on.
+  Fireballs you punch back keep the speed you sent them with.
+- **RSQ Miniboss:** its slow windows and its Bossfight landing slow the world (the landing shows BOSSFIGHT under the
+  countdown and leaves the cooldown alone, so the windows after it still slow). Its miniboss and thralls count for Heavy
+  Hit Slowdown, and a Bossfight lifts that cooldown. Its arrows to arriving monsters are SlowMo's edge arrows. The bars
+  line up under its Bossfight meter.
+- **RSQ Saber and RSQ ShieldSaw:** a perfect parry or a perfect block slows the world for half a second.
+- **RSQ Score:** its big moments and hit-stop slow the world, and it reads SlowMo back for its own slow-motion bonuses
+  (a claw dodged by leaning, with Lean Dodge 2, is reported to it too). Its combo rows move down to make room for the countdown bar. With DOWN: no Score life
+  is spent while you are DOWN, spending one resets the kills you owe, a failed DOWN uses a life if you have one, each
+  target you kill earns Revenge, the top tier fires its Revival Fire, and the target lines use Score's monster names and
+  font.
+- **RSQ Tactical Rig:** the cigarette slows the world, and with the Rig's own option you move at full speed while you
+  smoke. Getting up on the top tier puts a cigarette back. The Rig knows when you are DOWN.
+- **RSQ VisualRewards:** with DOWN, "+0.4s" pops where your hits buy time, REVENGE and REVIVE (sized by tier), each
+  target's health bar kept up, the Kill Rewards bank for getting up, and the DOWN music. Its Level-Up Slow-Mo option
+  slows the world through SlowMo.
+- **RSQ Wheel:** opening it slows the world (its own switch here); closing it ends the slow motion it started.
+- **Brutal Doom and Brutal Doom VR Reloaded:** enemy bullets that Brutal Doom fires as projectiles slow down to round
+  speed too.
+  The reload trigger reads Brutal Doom VR's reloads, hand reloads and dual wield; the blast triggers know its grenades and
+  the over-under 40 mm. DOWN's magazine refill is for its magazine guns, and without DOWN's own sounds its heartbeat is
+  Brutal Doom's.
+- **LegenDoom and Champions:** DOWN's targets become legendaries or real Champions; their attacks count for Heavy Hit
+  Slowdown.
+- **DarkDoomZ:** DarkDoom Black (or Classic) while you are DOWN, your own mode put back after, even after a quit
+  mid-DOWN.
+- **Xortts' Bullet Time X or RS_SlowMo:** two slow-motion systems would compound, so with **Yield to Other Mods** on
+  (the default) SlowMo stands down and says so in the console.
+
+---
+
+## Options
+
+*Radiant Silvergun Options → RSQ SlowMo.* One page with every option, most important first; the raw numbers are under
+Test and Debug. **Reset All** at the foot covers both. In a netgame the rows that change everyone's world are the
+host's (World Speed, the world's rules, most triggers, DOWN's rules); your keys, wrist cross, reload rows, Slow Me Too,
+the bars and DOWN's look are yours.
+
+| Section | Rows |
+|---|---|
+| Top | Slow Motion Key · Shootdodge Key · World Speed (0.25) · Slow Motion Length (6 s; greyed with Adrenaline on) |
+| Slow Motion | Dodgeable Bullets · Lean Out of Bullets · Slow Me Too · Slow My Missiles · Smooth Walkers · Adrenaline (off) · Keep Adrenaline · Haptics · Yield to Other Mods |
+| Look | Colour Drain (off) · Shot Trails · Missile Wakes · Stored Slow-Mo Bar · Countdown Bar · Bar Animation · Bar Colour (Green; 17 colours or Random) |
+| Your Triggers | Slow Motion Key · Shootdodge · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block |
+| Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Score · Gun Bonsai VR · Other Mods |
+| DOWN | DOWN (off) · DOWN Music · Clock (9 s) · Bar Step (3 s) · Slowest Clock Drain (0.25) · Time: Small Monster (1 s), Lost Soul (0.5 s), Big Monster (2 s), Cyberdemon / Mastermind (10 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Blood Red Tint (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
+| Heavy Hit Slowdown | Heavy Hit Slowdown · Heavy Hit Size (75% of max health) · Arch-Vile Blast · Blasted Off Your Feet · Hit From Behind · Armour Broken · Cooldown (No Limit; Once per 20 s, Once per 60 s, Use Shared) |
+| Test and Debug | Ease In (0.15 s) · Ease Out (0.4 s) · Range (3000) · Sound Follows (1.0) · Round Speed (14) · Slow Me Too Strength (1.0) · Auto Cooldown (25 s) · Shootdodge World Speed (0.10), Leap (12), Hang (0.5) · Wrist Gap (0.16 m) · Wrist Hold (12 tics) · Reload Time (1200 ms) · Close Call Time (700 ms) · Blast Time (3000 ms) · Low Health At (25) · Adrenaline To Start (25), Full Meter (10 s), Per Kill (12), Per Near Miss (4) · Lean Needed (0.06 m) · Lean Baseline (2 s) · Smooth Range (1024) · Smooth Walkers (12) · Colour Drain Amount (0.35) · Bar Size (1.5; only without RSQ Miniboss) · Debug Log |
+
+Rows not marked (off) are on by default. With RSQ Gun Bonsai VR loaded, a gold line at the top says so and Lean Out of
+Bullets is greyed until you learn Lean Dodge.
+
+---
+
+## Status
+
+| | |
+|---|---|
+| **Shown on the rig** (2026-11-09, frames and logs) | DOWN from start to finish: a monster's killing hit held at 1 HP, the world to 5%, the slow fall to 40% view height, the crawl, targets (the killer swapped for a real Champions copy, extra copies spawned in view), the grey world with its blood-red tint and the target's small room in colour, DarkDoomZ to DarkDoom Black and back, the panel's Middle Then Sink entrance and the chevron trail (both in their earlier form: see below), hits buying time, the bar refilling on a kill with targets left, getting up on the top, middle and bottom tiers with their slow motion, Score's Revenge and Revival Fire, a save and load mid-DOWN, and a map change mid-DOWN letting the grey world and DarkDoomZ go (log; the next map not seen) (the kills were made by the test probe). The Reload trigger on the main hand, the off hand and both hands, with Fixed Time and Until the Reload Ends, the world easing to a quarter speed and back (log) |
+| **Headset-confirmed** | Nothing yet |
+| **Code only, not yet shown** | The three fixes made after the rig run: Entrance Size (the rig showed one fixed size whatever the setting), the chevrons in the target's colour while the world is grey (the rig showed them white), and Fog Colour. Everything else on this page: the key, the wrist cross, the burst, the shootdodge, Slow Me Too, the dodgeable rounds and leaning out of them, Smooth Walkers, Colour Drain, the adrenaline meter, how the two bars look, every other trigger, Heavy Hit Slowdown, the edge arrows, the crosshairs assembling, and DOWN's sounds and music |
+
+---
+
+## Under the hood
+
+- **Slow motion in script, on stock QuestZDoom 17.3.** The engine has no world clock, so SlowMo keeps one. Everything
+  within **Range** (3000 units) of a player is time-dilated, not frozen: its velocity is scaled by the factor and its
+  gravity by the factor squared (a slowed fall), every state it enters lasts 1/factor as long (fractions carried), and
+  a push it is given mid-slow is scaled too. So the world still moves every tic and does not stutter in a headset. A
+  monster's walking slows because its states stretch; **Smooth Walkers** spreads each step of the nearest 12 walkers
+  over those stretched tics instead of one jump and a pause.
+- **What is never slowed:** players, what they carry, and the series' own actors (classes named RSQ*, UBQS*, SSQ*: the
+  grab, the rig's props, the shield, the saber). Your own missiles slow unless **Slow My Missiles** is off, and never
+  while you are DOWN.
+- **The rounds** replace a monster's hitscan before it is traced (WorldHitscanPreFired), from the same muzzle point and
+  angle, carrying the shot's damage, damage type, puff and flags; the hit is dealt as a hitscan's would be, so monsters
+  still infight over it. Melee and reaches of 128 or less stay hitscans. They fly at **Round Speed** (14 units a tic) at
+  the set depth and speed up as the world comes back.
+- **The doors other mods use** (by name, nothing linked): `netevent rsm_toggle | rsm_on | rsm_off | rsm_pulse <ms>
+  <speed %> | rsm_state` (RS_SlowMo's own events, deeper and longer win), the named door `netevent
+  rsqsm_start:<who> <ms> <speed %> <flags>`, and `RSQSM_Service` (`start`, `start.auto`, `start.bossfight`,
+  `adrenaline`, `adrenaline.add`, `slowmo.active`, `active`, `scale`, `running`, `trigger.auto`, `trigger.score`,
+  `countdown`, `countdown.bottom`, `arrow.add`, `arrow.clear`, `down`, `down.hold`, `down.any`, `down.redmap`,
+  `down.left`, `down.mark`, `down.bank`). An `rsm_pulse` is told apart by what was sent with it on the same tic
+  (`rsqml_fear`, `rsqtr_cigslowmo`) or by its length and speed; anything unrecognised is Other Mods. DOWN tells every
+  service whose name contains `RSQDownJoin`: `down.start`, `down.target`, `down.time`, `down.revenge`, `down.up`,
+  `down.revive`, `down.fail`.
+- **The ease** is linear: Ease In crosses the whole way in 0.15 s, Ease Out in 0.4 s. The countdown counts real tics
+  (the map's own clock is never slowed) and ends exactly as the world reaches full speed.
+- **Slow Me Too** scales what the engine produced for your movement each tic (the step on the ground, the thrust in the
+  air, your vertical speed and gravity), never your head or hands; **Slow Me Too Strength** takes part of it.
+- **Netplay-safe.** Every event lands on every machine on the same tic and the clock runs on synced state. Only the
+  sound pitch, the wrist cross and the head lean read your own machine, and those only send events. The adrenaline
+  meter is one meter shared by the game. DOWN's grey world and DarkDoomZ are your view only (DarkDoomZ single player
+  only).
+- **Exact restores.** Each room's own colour, the stock heights of your pawn, DarkDoomZ's mode and every slowed actor's
+  speed, gravity and sound pitch are put back as they were, at the end, at a map change, and after a load.
+- **Quest-friendly:** the world is scanned once every 17 tics (4000 actors at most); the bars and DOWN's panel are
+  separate HUD quads with no clip rectangle (a scissor misses the projected HUD in VR); the grey world is each sector's
+  own desaturation, written in 16 steps, not a post-process pass.
+- **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
+
+## Credits
+
+The full list, with every file and licence, is in **CREDITS.txt**.
+
+- **presidentkoopa:** the design (his RS_SlowMo's events, settings and standing down for another slow-motion mod), the
+  round's tracer mesh and the near-miss whiz and crack recordings from his RS_Ballistics.
+- **coldcite** (Top HP Bars 1.04): the countdown bar's style.
+- **Jimmy** (RSQ Score's combo font, carried from ijon's Dakka) and **Zedas** (JFO, in Blackmore1014's "JDUI Brutal Doom
+  Ultimate Edition"): DOWN's panel lettering.
+- **id Software:** the stock Doom sounds the clock plays, from the IWAD (not shipped).
+- **Generated for this pack:** DOWN's sounds (synthesized, no samples), the round's placeholder sprite, the crosshair
+  icons, turn markers and trail chevrons.
+- **Xortts' Bullet Time X:** nothing taken; SlowMo only recognises it so the two never compound.
+- **QuestZDoom** (Emawind and Team Beef): the engine and its hand-pose API.

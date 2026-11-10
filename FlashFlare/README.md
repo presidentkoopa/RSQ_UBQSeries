@@ -1,227 +1,248 @@
-# RSQ FnF (Flash and Flare)
+# RSQ FnF
+### Doom Arcade VR · a road flare you strike and throw by hand, and a flashlight clipped to your chest
 
-A road flare you pull from your chest, strike with a flick of the wrist and throw into the dark, and a flashlight
-clipped to your chest with a beam you can see in the air.
+Reach across your chest for a road flare, strike it with a flick of your wrist and hold it up to light the way, or throw
+it down the corridor and watch it light the room where it lands. On the other side of your chest hangs a flashlight:
+grab it, click it on, and point a real beam with your hand.
 
-Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
+![A lit flare held up in a dark room](docs/readme/flare_held.jpg)
 
-New since the headset pass (tested on the rig, headset check pending): the flashlight, the RSQ Tactical Rig flare holster, the voxel flare box.
+*Rig frame from an earlier build. Not a capture from the headset.*
 
-New on 11-06 (rig only, not headset-confirmed): the trigger-only grenade-style throw; flares that hurt and burn
-monsters; lying flares for RSQ Distance Grab; Shoot Out Flares; and the DarkDoomZ Beam Look.
+*[GIF to come: a flare struck, held up, then thrown down a dark corridor where it lights the room]*
 
-Part of the Radiant Silvergun Quest series for stock QuestZDoom 17.3. ZScript only, no engine changes.
+---
 
-**Dynamic lights must be on** in the engine's video settings. The flare's and the flashlight's light are real dynamic
-lights; with them off you get the flame, sparks and the visible beam, but no light on the walls.
+## What it feels like
 
-## Standout feature: strike it like the real thing
+- **A pocket on your chest.** Your off hand reaches across to the pocket on your gun-hand side and pulls out a flare,
+  unlit, cap on. Your gun hand keeps its gun.
+- **Strike it like the real thing.** A sharp flick down and it catches with a burst of sparks, sputters for a moment,
+  then burns red. Or just pull that hand's trigger.
+- **Throw it like a grenade.** Hold the trigger, swing, and let go mid-swing. It flies the way your hand moved, tumbles,
+  bounces and lies burning where it stops, lighting the walls round it.
+- **It burns for a minute.** In your hand or on the floor, then it dies away over its last two seconds. Burn it out in
+  your hand and the spent flare drops.
+- **Hit a monster with it.** A flying flare does a little damage. With Brutal Doom, zombies, imps and other small fry
+  catch fire.
+- **A flashlight on your other side.** Grab it from the clip on your chest and it comes up switched on. The trigger
+  clicks it off and on. You see the beam in the air, cut short where it meets a wall or a monster.
+- **The battery matters.** A meter on the flashlight's body counts down while it is on, and the beam dims and flickers
+  when it runs low. Switch it off and it charges again. Kills inside your beam top it up.
 
-Reach your off hand across to the pocket on your chest and grip. An unlit flare is in your hand, cap on, and your
-main hand still has its gun. Flick the flare hand sharply down, the way you strike a real road flare. It catches with
-a burst of sparks, sputters for a moment, then settles into a flickering red-orange burn that lights the
-room around you. The light sits on the burning end you see in your hand and follows it as you move.
+---
 
-Throw it the way you throw an RSQ Grenade: hold the off-hand trigger, swing, and let go. The flare leaves your hand
-at your arm's own speed and direction, with the grenade's arc. It tumbles, bounces off the floor and walls, slides to a stop, and lies there burning. Light a corridor ahead of you, toss
-one into a dark room before you go in, or leave a trail behind you.
+## How to play
 
-All of it is ZScript on a stock engine: the pocket hangs on your body, the strike is read from your hand's motion,
-and the throw is measured against your body, so walking and turning never count as a swing.
+| Do this | What happens |
+|---|---|
+| Reach your off hand across to the pocket on your chest (gun-hand side) and grip | An unlit flare in your off hand |
+| Grip at the pocket again with the flare still unlit | It goes back in the pocket |
+| Flick the flare hand sharply down, or pull that hand's trigger | It catches, sputters, then burns |
+| Hold the trigger, swing, and let go while your hand is moving | Thrown, along your swing |
+| Let go of the trigger with your hand still | It stays in your hand |
+| Reach your off hand to the clip on your chest (off-hand side) and grip | The flashlight in your hand, switched on |
+| Pull the trigger with the flashlight in your hand | Off, on, off |
+| Grip at the clip again | The flashlight goes back on its clip |
 
-## Features
+You start a game with 2 flares, and get them back after you die. Boxes of 6 turn up lying beside other items in the
+levels, at most 2 a map. You carry up to 24. Grip an empty pocket and you are told "No flares left".
 
-**The flare**
-- Taken from a chest pocket by the off hand. The main hand keeps its gun the whole time.
-- Lit by a downward flick, by the off-hand trigger, or either (your choice).
-- A sputter on the strike, then a flickering burn: the light's size and colour shift a little every few tics.
-- Burns 60 seconds by default, in your hand or on the floor, and dies away over its last two seconds.
-- Burnt out in your hand, the spent flare drops. A spent flare lies dark for 10 seconds, then is gone.
-- Thrown like RSQ Grenade: hold the off-hand trigger, swing, let go. Let go with the hand still and it stays in your hand.
-  The grip does nothing to a lit flare (trigger only, as the grenade).
-- Thrown flares bounce off floors, walls and monsters, then lie burning. A flying flare that hits a monster does a little
-  damage (4). With Brutal Doom loaded it also sets the monster on fire with Brutal Doom's own Fire damage (3 every 6 tics
-  for 5 s, 90 in all: the burn alone kills an imp, Brutal Doom's 80-health one too, so Brutal Doom plays its own burning pain and death): zombiemen, shotgunners, chaingunners, SS, imps and their
-  Brutal Doom / XMVE kin (any walking monster of a zombie's or imp's size, 100 health or less). A LegenDoom legendary or a
-  Champions champion only catches fire below "Boosted monsters ignite below N% health" (25 %) of its normal health.
-  Without Brutal Doom: the damage only.
-- A flare lying on the floor (dropped or thrown, once it has landed) can be pulled, caught, carried and thrown with RSQ
-  Distance Grab. Thrown that way into a monster, it sets it on fire the same way.
-- Shoot Out Flares (option, off): a dropped or thrown flare can be shot; a hit puts it out.
-- A lit flare cannot be dropped by hand: throw it, or let it burn out.
-- Unlit flares go back in the pocket by hand. Anything else that takes the off hand (another weapon, death, a new
-  level) puts an unlit flare back in the pocket and lets a lit one fall where your hand was, still burning.
-- Flame and sparks off the burning end; an optional thin smoke trail.
-- saegiru's flare sounds for the strike, the burn and the burnout; a stock Doom knock on landing.
-- The hand holding it is Brutal Doom 22 VR Reloaded's hand, drawn in its off-hand place (it can be hidden).
+A burning flare never goes back in the pocket: it leaves your hand by a throw, by burning out, or by something else
+taking your off hand (it falls there, still burning). A burning flare in your hand at a level exit is used up; an unlit one goes back in your pocket. The grip does nothing to a lit flare.
 
-**Light that stays cheap**
-- One light per flare, no shadow map, re-set only on a flicker step.
-- A cap on how many flares give light at once (3 on the Quest preset, 6 on PCVR). Light one more and the oldest lying
-  flare fades dark over half a second and burns on as flame and sparks. The one in your hand goes dark last. When a
-  flare burns out, the last one that went dark lights again.
-- Soft Light: twice the radius at half the brightness, for a softer look.
+---
 
-**The flashlight**
-- On a clip on your chest, on your off hand's own side. Grip there with the off hand: it comes out switched on. That
-  hand's trigger turns it off and on. Grip at the clip again to put it back.
-- On the clip it is a small pocket light, about 12 cm long, lens up (11-08; not yet seen in-engine).
-- Held in Brutal Doom 22 VR Reloaded's shotgun-pump support hand, drawn where your off hand is.
-- One real spot light from the lens, plus a beam you can see in the air. The beam stops where it meets a wall or a
-  monster, and a soft spot shows where it lands, even past the light's reach. Monsters stay visible through the beam
-  (it is drawn see-through in the world, moved a tic ahead so it keeps up with your hand).
-- Beam size, colour and quality are menu rows. One light per flashlight; Quest quality keeps the range short.
-- One thing in the off hand at a time: take a flare and the flashlight goes away. Put the flare back and the
-  flashlight comes back, on or off as it was.
-- No battery: it stays on as long as you like. On a new level it stays in your hand, switched off.
-- With DarkDoomz loaded, its own flashlight switches off while yours is on.
+## The flare
 
-**Supply**
-- You start a new game with 2 flares, and get them back after dying. You carry up to 24.
-- Boxes of 6 turn up beside a map's items, up to 2 a map: saegiru's flare box (with voxels on, a voxel box with
-  "FLARE" on its sides; his box sprite with voxels off). A single flare lying about is his lying-flare sprite (with models on, three flares in a bundle).
-- Optional: the pocket tops up at each new level (off by default).
+![Taken from the pocket, unlit](docs/readme/flare_taken.jpg)
+![Struck: sparks and a sputter](docs/readme/flare_struck.jpg)
 
-### New on 11-06 (rig only, not headset-confirmed)
-- **Battery** (Ermac's VR-Flashlight model): the flashlight drains while on and recharges while off (in the hand or on its
-  clip), at the same rate. **Battery (min)** sets the capacity (3, Ermac's default; 0 = never drains). Empty, it clicks
-  off by itself; with under a second of light left it won't switch on. Below 50% it dims and flickers like Ermac's (the
-  cone fades with it).
-- **The meter is on the flashlight**: 10 segments and a round LED on top of the body, behind the head. Green, yellow,
-  orange, red as it empties; the LED blinks at the last step. Hidden when the battery is off (0 or Never Drains).
-  Rig frames: docs/rig/11_battery_meter.jpg.
-- **Kills in the beam** refill it: a monster you kill while it is inside your lit beam gives back **5%** of a full battery.
-- **Battery Never Drains** (off): no drain, no meter.
-- **Bones Drop Battery Bits** (off): with Legion of Bones loaded, each Legion of Bones monster you kill drops a yellow
-  battery bit 8% of the time (a LegenDoom legendary or Champions champion always drops 3). They are RSQ VisualRewards'
-  Kill Rewards bits (need VisualRewards), fly to you like the others, and each refills **15%**.
-- **Beam Colour: six** (was 18): Warm White, White, and the four Bossfight colours (Pink, Cyan, Amber, Violet, RSQ
-  Miniboss's own), plus Random of the six. No special powers. A saved colour from the old list moves to the nearest of the
-  six once (Silver -> Warm White; Yellow, Gold, Orange, Red, Lime -> Amber; Crimson, Pink, Magenta -> Pink; Lavender,
-  Purple, Blue -> Violet; Sky, Cyan, Teal, Green -> Cyan).
+*Rig frames from an earlier build. Not captures from the headset.*
 
-## How To Play
+- **One light each,** a warm red-orange that flickers in size and colour. A lying flare's light sits a little above it,
+  so the walls light, not just the floor.
+- **Flame and sparks** come off the burning end, and a thin smoke trail if you want one.
+- **Soft Light** doubles how far the light reaches at half the brightness, for a gentler look.
+- **Shoot Out Flares** (off by default): shoot a thrown or dropped flare and it goes out.
+- A spent flare lies dark for 10 seconds, then it is gone.
 
-1. Add RSQ_FnF.pk3 to your load order. Make sure dynamic lights are on. Play in VR: the flare is taken by hand only.
-2. Bring your off hand across your chest toward your main-hand side, on your upper chest, and grip.
-   You hear the pickup sound and feel a tick. A flare you carry hangs at the pocket (Show Flare), so you can see where to
-   reach; if nothing happens, move a little and grip again, or move the pocket under Test and Debug.
-   The flashlight is the mirror: your off hand on its own side of your chest, grip, and it comes out on.
-3. Flick the flare hand down hard. Too gentle? Pull the off-hand trigger instead, or lower Strike Speed Down.
-4. Hold it up and walk. To throw it, hold the off-hand trigger, swing, and let go mid-swing, as with RSQ Grenade.
-5. Out of flares, the game tells you "No flares left". Look for boxes beside the map's items.
+### When a lot of flares are burning
 
-## Controls
+Only 3 flares give light at once. Light a fourth and the oldest one lying on the floor fades dark over half a second.
+It keeps burning as flame and sparks, it just stops lighting the room. The flare in your hand is the last to go dark.
+When one burns out, the last one that went dark lights up again.
 
-| Action | How (VR) | Notes |
-|---|---|---|
-| Take a flare | Off hand at the chest pocket, grip | Pocket: 0.12 m forward, 0.15 m toward your main hand, 0.28 m under your eyes; reach 0.11 m |
-| Put it back | Off hand at the pocket with an unlit flare, grip | |
-| Strike it | Flick the flare hand down at 1.4 m/s or more | With Light It By on Strike or Strike or Trigger |
-| Light by trigger | Off-hand trigger | With Light It By on Trigger or Strike or Trigger |
-| Throw | Hold the off-hand trigger, swing, and let go while the hand moves faster than 2 m/s (RSQ Grenade's throw). The grip does nothing to a lit flare | Leaves at your hand's own speed (Throw Strength 1.0), with the grenade's arc (0.35) and your walking speed added. Let go of the trigger with the hand still: it stays in your hand. A lit flare is never put away |
-| Take the flashlight | Off hand at the clip (your off hand's side of your chest), grip | Clip: 0.10 m forward, 0.17 m toward your off hand, 0.22 m under your eyes; reach 0.12 m. Comes out on |
-| Flashlight on / off | The flashlight hand's trigger | A click |
-| Put the flashlight back | Off hand at the clip, grip | |
-| Flare holster (with RSQ Tactical Rig) | Off hand at the Rig's flare holster on your off-hand hip, grip | Takes or puts back an unlit flare, the same flares as the pocket. A lit one cannot go back: it stays in your hand. Shown there while you carry one |
+![Three lit flares plus one in the hand](docs/readme/flare_budget.jpg)
 
-- The flare is always in the off hand. With QuestZDoom's left-handed setting the pocket moves to the other side of
-  your chest, still toward your main hand.
-- The off-hand grip is read from the keys the engine sends for it (443, or 436 while the main grip is held).
-- If the engine is steadying a gun with both hands when you grip at the pocket, the flare comes up the moment you
-  let go of the grip.
+*Rig frame from an earlier build: the oldest flare went dark when the fourth was lit.*
 
-## Menu
+*[GIF to come: four flares thrown one after another, the oldest fading dark as the newest lands]*
 
-Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare). One page, and one sub menu, **Test and Debug**. Nothing
-here is a Gun Bonsai VR upgrade.
+---
 
-| Row | Default | What it does |
-|---|---|---|
-| **Flares** | | |
-| Flares | On | The whole mod |
-| Show Flare | On | A flare you carry hangs at the chest pocket; with RSQ Tactical Rig's flare holster, at that holster |
-| Show Hand | On | Draw the hand holding the flare |
-| Light It By | Either | Strike (flick down), Trigger, or Either |
-| Soft Light | Off | Double radius, half brightness |
-| Burn Time (s) | 60 | How long a flare burns (10-180) |
-| Sparks | On | Sparks off the burning end |
-| Smoke | Off | A thin smoke trail |
-| Sounds | On | Strike, burning, burnout and landing sounds |
-| Shoot Out Flares | Off | A dropped or thrown flare can be shot; a hit puts it out |
-| Boosted monsters ignite below N% health | 25 | With Brutal Doom: a LegenDoom legendary or Champions champion catches fire from a flare only below this share of its normal health |
-| **Supply** | | |
-| Start With | 2 | Flares at a new game (0-24) |
-| Boxes in Levels | On | Boxes of 6 beside a map's items |
-| Boxes a Map | 2 | Most boxes in one map (0-8) |
-| Refill Each Level | Off | Tops the pocket up at each new level |
-| Refill To | 4 | ...to this many (1-24) |
-| **Flashlight** | | |
-| Flashlight | On | The flashlight on its clip |
-| Show Flashlight | On | The flashlight hangs on its chest clip while it is not in the hand |
-| Beam Size | Medium | Narrow (6/14 degrees), Medium (10/22), Wide (16/32) |
-| Beam Colour | Warm White | Warm White, the series' 17 colours, or Random (a new one each time you switch it on) |
-| Beam Quality | Quest | Quest: range 448, one-layer beam, trace every 2nd tic. PCVR: 640, two layers, a little dust. High: 896, more dust |
-| Beam Length (m) | 4 | How far the visible cone reaches before it fades out (1-15). The light itself still reaches the whole range. |
-| Beam Hotspot | Off | A soft glow sprite where the beam lands. Off: the spot light alone shows it. |
-| Show Cone | On | The visible tapered cone (and its dust); off, the light alone |
-| Beam Look | FnF | FnF: the rows above. DarkDoomZ: DarkDoomZ's flashlight light, rewritten to come from our flashlight's lens (its types and spill light; Beam Size and Beam Colour grey out) |
-| DarkDoomZ Type | Halogen | Incandescent, Halogen, LED or Red Filter: DarkDoomZ's own colours, angles and reach (greyed on FnF) |
-| DarkDoomZ Spill Light | On | On: DarkDoomZ's Fancy (a beam light plus a wider, dimmer spill light). Off: its Simple (one light) (greyed on FnF) |
-| Reset All | | Every setting on both pages back to default |
+## Throwing flares and setting things on fire
 
-**Test and Debug**: Light Radius (140; the old Quest preset, PCVR was 220), Most Lit at Once (3; PCVR 6), Flicker Step (4
-tics; PCVR 3); Strike Speed (1.4 m/s), Throw Speed (2.0 m/s), Throw Strength (1.0), Arc (0.35), Off Grip Keys (443 436);
-Pocket Forward / Toward Main Hand / Height / Reach (0.12 / 0.15 / -0.28 / 0.11 m); Flashlight Clip Forward / Toward Off
-Hand / Height / Reach (0.10 / 0.17 / -0.22 / 0.12 m); Debug Log (Off); Reset All.
+The throw is RSQ Grenade's: how hard and which way you swung is how it flies, a hard throw arcs higher than a gentle
+one, and your own running speed is carried with it. A flying flare hits each monster it touches once, for a little damage.
 
-## Works with
+**With Brutal Doom,** that hit is fire. Zombiemen, shotgunners, chaingunners, SS and imps (and Brutal Doom's own
+humans and small demons of that size) catch fire and burn for 5 seconds, enough on its own to kill an imp. Their
+burning pain and burning death are Brutal Doom's own. Bigger monsters only take the hit. A LegenDoom legendary or a
+Champions champion only catches fire once it is below 25% of its health (you can change that number).
 
-Runs alone. It finds the others by name:
-- **RSQ Tactical Rig**: the pocket hangs on the Rig's torso and turns with its holsters (stick turns, followed room
-  turns, recenters). The pocket and the flashlight clip show the Rig's fading holster sphere, like its own holsters. The Rig adds a flare holster on your off-hand hip that holds the same flares as the pocket, with
-  a flare model hanging there while you carry one. While your off hand is in one of the Rig's holsters, the grip
-  belongs to the Rig, never the pocket, and a fast reach down to a holster is never read as a strike. Drawing a gun
-  into the off hand from a holster puts an unlit flare back; with a lit flare in the off hand the Rig's holsters do nothing for that hand (the flare stays in it). The Rig never throws the
-  flare. The two pockets sit on opposite sides: the Rig's cigarettes on your off-hand side, flares on your main-hand
-  side. Without the Rig, the pocket follows snap and stick turns and eases under your head while you look ahead.
-- **Brutal Doom 22 VR Reloaded**: when the flare leaves your hand, the off hand gets BD22 VR's empty hands back (on
-  plain Doom the off hand is simply empty). Its Hand Skin Tone tones the hand holding the flare or the flashlight.
-- **RSQ Wheel, RSQ Gun Bonsai VR**: the flare and the flashlight each have their own icon (a burning road flare, a
-  torch with its beam), shown wherever those mods picture the item in your hand (Gun Bonsai VR's status screen; the
-  Wheel's card, when a mod puts them in a weapon slot). Seen on the status screen on the rig only, not
-  headset-confirmed; the Wheel card not seen.
-- **DarkDoomZ** (built into RSQ Glow In The Dark since 11-09) no longer has a flashlight of its own: this is the only
-  flashlight. Its darkness is left alone. Beam Look can borrow DarkDoomZ's beam types and spill light.
-- **RSQ Distance Grab**: lying flares are things it can pull, catch, carry and throw (its "Flares" switch).
-- **Brutal Doom, LegenDoom, Champions**: found by name for the flare's burn (above). The flashlight clip also hangs on RSQ Tactical Rig's body, and a Rig holster can take it by name.
+**Without Brutal Doom,** a flare only does its little hit damage.
 
-## Credits and licence
+*[GIF to come: a flare thrown into an imp, the imp burning]*
 
-- **presidentkoopa** (project owner): the flare model (Flare.blend with its FlareTexture and FlareTip textures),
-  read from the .blend and turned into the in-hand, lying and box models, scaled to a 22.5 cm road flare. The code.
-- **Brutal Doom 22 VR Reloaded** (the owner's mod): the FBX hand, its off-hand magazine hold and skin, drawn in BD22
-  VR's own off-hand placement; its shotgun-pump support hand holds the flashlight.
-- This pack: the flare and flashlight icons (graphics/rsqff/WRIFLARE.png, WRITORCH.png), original pixel art drawn by
-  RSQ Wheel's sources/icons/gen_item_icons.py.
-- **Ermac** (VR-Flashlight, base code by SuaveSteve): ideas for the flashlight.
-- **DarkDoomZ** by **Caligari87** (Sterling Parker), zlib licence (github.com/caligari87/darkdoomz): the "DarkDoomZ"
-  Light Style is an altered rewrite of its flashlight (`zscript/rsqff/ddzlight.zs`, which carries its licence notice):
-  its four types and their numbers and its beam + spill lights, moved onto our flashlight's lens. Not carried: its
-  spring-follow and mounts, toggle key and click sound. DarkDoomZ's own credits: code by Kinsie, Gutawer,
-  FishyClockwork, phantombeta, Marisa Kirisame, Accensus; testing by Fort of Hard Knox, a1337spy, Orange Bomb; its click
-  sound by mshahen (CC BY 3.0, not used here).
-- **saegiru's Emergency Flare** (UDV Survival Flares, part of the UAC Survival Pack by JohnnyDoom, forum.zdoom.org t=47229):
-  the box and lying-flare sprites and the strike, burning and burnout sounds (renamed), and the numbers: a box of 6,
-  carry 24, the red-orange colour, the raised light, boxes rolled beside a map's items, a thrown flare that bounces and
-  lies burning with sparks.
-- **BD_VoxelPack**: DooMAD's "Ammo Box" voxel, made into the flare box voxel (lid closed, recoloured to saegiru's box,
-  "FLARE" and a latch added). The pack's voxel authors, as its credits name them: Ghostpilot, DooMAD, Monfriez,
-  DooMGoaT, Exl, Scott_AW, ReaperMan, 4mer, phi108, Conrad RDW, Voxelbro, zedas.
-- **id Software**: the stock Doom sounds played by name.
-- Generated for this pack: the glowing end, flame, spark and smoke pictures, the clear skin and placeholder sprites,
-  the flashlight model, its beam cones and the hotspot.
-- **QuestZDoom** (Emawind and Team Beef): the engine, and its off-hand weapon and hand-pose API.
+---
 
-Free to share as part of the Radiant Silvergun Quest series. Borrowed assets keep their authors' terms; sharing other
-people's work in this pack is the project owner's decision.
+## The flashlight
+
+It hangs on a clip on your chest, on your off-hand side. Grip there and it is in your hand, switched on, with a click.
+The trigger turns it off and on. Grip at the clip again to put it back.
+
+- **One thing in the off hand at a time.** With a flare in your hand the clip does nothing. Take a flare while you hold
+  the flashlight and the flashlight goes away; when the flare leaves your hand, the flashlight comes back as it was, on
+  or off.
+- **On a new level** a flashlight in your hand stays there, switched off.
+- **The beam you can see:** a see-through cone in the beam's colour that fades out over 4 metres and stops where it
+  meets a wall or a monster. The light itself reaches much further. On PCVR and High quality, dust drifts in it.
+- **Pick your beam:** Narrow, Medium or Wide; Warm White, White, Pink, Cyan, Amber, Violet, or Random (a new one of the
+  six every time you switch it on).
+- **Beam Hotspot** (off by default): a soft glow where the beam lands.
+
+*[Still to come: the flashlight on its chest clip, and the beam's cone in a dark room]*
+
+### The battery
+
+![The battery meter: full, empty, half, low, refilled](docs/readme/battery_meter.jpg)
+
+*Rig frames from an earlier build. Not captures from the headset.*
+
+- **3 minutes of light** from full. It drains while the flashlight is on and charges back at the same rate while it is
+  off, in your hand or on the clip. The charge carries over from one level to the next; a new game starts full.
+- **The meter** on the flashlight's body has 10 segments: green when it is well charged, then yellow, orange and red.
+  On the last segment its light blinks red.
+- **Low battery:** from half charge down, the beam gets dimmer, and below 20% it flickers and narrows.
+- **Empty:** it clicks itself off, and it won't switch on again until it has a second of light in it.
+- **Kills in the beam:** a monster you kill while it is inside your lit beam gives back 5% of a full battery.
+- Set Battery to 0, or turn on **Battery Never Drains**, and it never runs out (no meter then).
+
+### Beam Look: FnF or DarkDoomZ
+
+There is one flashlight, this one. **Beam Look** picks how its light looks:
+
+- **FnF:** this pack's own beam, with your Beam Size and Beam Colour.
+- **DarkDoomZ:** the beam of the DarkDoomZ mod's flashlight, rewritten to come from this flashlight's lens. Pick its
+  type (Incandescent, Halogen, LED or Red Filter). With **DarkDoomZ Spill Light** on you get its beam light plus a wider,
+  dimmer spill light; off, one light in between. Beam Size and Beam Colour don't apply in this look.
+
+The cone, the dust, the hotspot and the battery work the same in both looks.
+
+![The Beam Look lights on the rig](docs/readme/beam_look.jpg)
+
+*Rig frames, 2026-11-09: the FnF look (one light), the DarkDoomZ look with Spill Light on (two lights), and switched
+off (none). The flashlight is the one in the left hand.*
+
+---
+
+## Plays well with
+
+- **Brutal Doom:** thrown flares set small enemies on fire, using Brutal Doom's own fire damage, burning pain and
+  burning death.
+- **Brutal Doom 22 VR Reloaded:** the hands holding the flare and the flashlight are its hands, toned by its Hand Skin
+  Tone. When the flare or flashlight leaves your off hand, you get its empty hand back.
+- **RSQ Tactical Rig:** the pocket and the clip turn with the rig's body, like its holsters. While your off hand is in
+  one of the rig's places, the grip is the rig's. With the rig's flare holster, the holster shares the pocket's flares
+  and draws the flare there. A quick reach down to a holster is never read as a strike.
+- **RSQ Distance Grab:** pick up a flare lying on the floor and throw it. With Brutal Doom, a burning one sets a small
+  enemy it hits alight.
+- **RSQ VisualRewards** and **Legion of Bones:** turn on **Bones Drop Battery Bits** and Legion of Bones monsters
+  sometimes drop battery bits (8% of kills; a legendary or champion always drops 3). Each one you pick up refills 15% of
+  your battery. Without VisualRewards, no bits drop.
+- **LegenDoom** and **Champions:** their boosted monsters only burn below the health share you set.
+- **RSQ Glow In The Dark:** it has DarkDoomZ's darkness built in, without DarkDoomZ's own flashlight. This pack's
+  flashlight is the flashlight, and its DarkDoomZ Beam Look gives you DarkDoomZ's beam.
+- **RSQ Accessibility:** its Reset Every Mod resets this pack too.
+
+---
+
+## Options
+
+*Options → Radiant Silvergun Options → RSQ FnF (Flash and Flare).* Everything is on one page; the fine-tuning numbers
+are under Test and Debug. Defaults in brackets.
+
+| Section | Rows |
+|---|---|
+| Flares | Flares (On) · Show Flare (On) · Show Hand (On) · Light It By (Either; Strike, Trigger) · Soft Light (Off) · Burn Time (60 s) · Sparks (On) · Smoke (Off) · Sounds (On) · Shoot Out Flares (Off) · Boosted monsters ignite below N% health (25) |
+| Supply | Start With (2) · Boxes in Levels (On) · Boxes a Map (2) · Refill Each Level (Off) · Refill To (4) |
+| Flashlight | Flashlight (On) · Show Flashlight (On) · Beam Size (Medium; Narrow, Wide) · Beam Colour (Warm White; White, Pink, Cyan, Amber, Violet, Random) · Beam Quality (Quest; PCVR, High) · Beam Length (4 m) · Beam Hotspot (Off) · Show Cone (On) · Battery (3 min; 0 never drains) · Battery Never Drains (Off) · Bones Drop Battery Bits (Off) · Beam Look (FnF; DarkDoomZ) · DarkDoomZ Beam Type (Halogen; Incandescent, LED, Red Filter) · DarkDoomZ Spill Light (On) |
+| Test and Debug | Flare Light: Light Radius (140) · Most Lit at Once (3) · Flicker Step (4 tics). Hands: Strike Speed (1.4 m/s) · Throw Speed (2.0 m/s) · Throw Strength (1.0) · Arc (0.35) · Off Grip Keys (443 436). Pocket: Forward (0.12 m) · Toward Main Hand (0.15 m) · Height (-0.28 m) · Reach (0.11 m). Flashlight Clip: Forward (0.10 m) · Toward Off Hand (0.17 m) · Height (-0.22 m) · Reach (0.12 m). Debug Log |
+
+Both pages end with **Reset All**. **Show Flare** hangs a flare at the pocket while you carry any; **Show Flashlight**
+hangs the flashlight on its clip while it is not in your hand; **Show Hand** draws the hand holding the flare and the
+flashlight. **Flares** turns the flares off; the flashlight has its own **Flashlight** row and keeps working without
+them. Beam Size and Beam Colour only apply to the FnF look, and the two DarkDoomZ rows only to the DarkDoomZ look.
+
+The light, supply, burn and flashlight rows are the server's (one setting for everyone in netplay). How your hands are
+read (Light It By, the speeds, the pocket and clip places, the grip keys) and the Show rows are each player's own.
+
+---
+
+## Status
+
+| | |
+|---|---|
+| **Shown on the rig** (2026-11-09) | The flashlight taken into the off hand (it came up switched on) and switched off and on, sent as the same network events the grip and the trigger send; the Beam Look lights: FnF 1, DarkDoomZ with Spill Light 2, DarkDoomZ without Spill Light 1, switched off 0. The pack loaded with no script error of its own, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series |
+| **Headset-confirmed** | Nothing yet |
+| **Code only, not yet shown** | Everything else on this page, including reading the hands themselves (grip, strike, throw) |
+
+The rig frames from earlier builds on this page are pictures of what the code did then. They are not proof of the
+current build.
+
+---
+
+## Under the hood
+
+- **Netplay-safe by design.** Your hands are read on your own machine only. What they decide (take, put back, strike,
+  throw, the flashlight's take, put back and switch) travels as network events, and every machine runs the burn, the
+  light budget, the beam and the battery from the same synced state. Boxes are placed with the game's synced random
+  numbers, so every machine gets the same boxes.
+- **The throw** is RSQ Grenade's: the fastest two-tic window of the last seven, measured against your body, so walking
+  and turning are never a swing. The hand is taken where the last rendered frame put it, carried to where the body is
+  now, so a slow frame never reads as a swing.
+- **The strike** is a flick mostly downward at 1.4 m/s or more, read from 8 tics after the take. With RSQ Tactical Rig
+  loaded it waits 3 tics: if your hand went into one of the rig's places, it was a reach, not a strike.
+- **The flare's light budget:** one point light per burning flare, no shadow maps, at most 3 lit at once (Most Lit at
+  Once). The flicker changes the light every 4 tics, not every frame. Flame, sparks and smoke are particles, not actors.
+- **The flashlight's budget:** one spot light (two in the DarkDoomZ look with Spill Light), no shadow map. Its reach is
+  set by Beam Quality: 448 map units on Quest, 640 on PCVR, 896 on High. One trace a tic finds where the beam stops
+  (every second tic on Quest). The cone is one model, the hotspot one sprite with no light, the dust particles.
+- **The cone never hides monsters.** It is drawn as a world object in the see-through pass, not as part of the hand, and
+  it is moved a tic ahead so it sits on the hand instead of trailing it.
+- **Damage:** a flying flare's hit is 4, once per monster per flight. With Brutal Doom the burn is 3 fire damage every
+  6 tics for 5 seconds (90 in all).
+- **No hard links.** Every other mod (Brutal Doom, BD22 VR Reloaded, Tactical Rig, Distance Grab, VisualRewards, Legion
+  of Bones, LegenDoom, Champions) is found by name while the game runs. FnF loads and plays alone.
+- **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.
+
+## Credits
+
+The full list, with every file and licence, is in **CREDITS.txt**.
+
+- **presidentkoopa:** the flare model; the hands, from his Brutal Doom 22 VR Reloaded (the rifle-magazine hold for the
+  flare, the shotgun pump hand for the flashlight); the throw, from his RSQ Grenade; RSQ Tactical Rig's body and hand
+  geometry.
+- **saegiru's Emergency Flare** (UDV Survival Flares, part of the UAC Survival Pack by JohnnyDoom): the box and lying
+  flare sprites, the strike, burn and burn-out sounds, the box of 6, carrying 24, the flare's colour and the way boxes
+  turn up beside items.
+- **BD_VoxelPack:** DooMAD's ammo box voxel, made into the flare box.
+- **Ermac's VR-Flashlight** (its base, SuaveSteve's Steve's Flashlight): the idea of a spot light that follows the
+  controller, and the battery's model (its drain and recharge, its 10-step meter, its low-battery dim and flicker).
+  Read and rewritten; none of its code or art is used.
+- **DarkDoomZ** by Caligari87 (Sterling Parker), zlib licence: the DarkDoomZ Beam Look is an altered rewrite of its
+  flashlight code (its four types and its beam and spill lights), from this pack's lens. Its licence notice is kept in
+  that file. DarkDoomZ's credits also name Kinsie, Gutawer, FishyClockwork, phantombeta, Marisa Kirisame and Accensus
+  (code), and Fort of Hard Knox, a1337spy and Orange Bomb (testing).
+- **QuestZDoom** (Emawind and Team Beef): the engine and its VR hand API.
