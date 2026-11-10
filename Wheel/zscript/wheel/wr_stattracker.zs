@@ -1,7 +1,7 @@
 // WEAPON STAT TRACKER.
 //
 // Everything else this wheel reads for the sheet -- RS Weapon's fields, the
-// eight other mods' compat files -- is a READ: some other mod already
+// the other mods' compat files (parked here, wr_modsupport.zs) -- is a READ: some other mod already
 // computed the number, this wheel just asks for it by name. Nothing,
 // anywhere, computes "kills with this gun" or "shots fired" or "was that a
 // headshot" as a queryable field, including for RS Weapon's own arsenal.

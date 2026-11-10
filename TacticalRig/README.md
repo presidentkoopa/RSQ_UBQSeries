@@ -171,8 +171,8 @@ Ermac's tribute, **off by default**. Turn on **Cigarettes** and a pocket of thre
 default), it doesn't use your adrenaline, and RSQ SlowMo's countdown bar shows how much of it is left.
 
 Switching weapons, a holster, death or a level change ends it at once: an unlit cigarette goes back in the pocket, a lit
-one is flicked. Left unlit in your mouth for 7 seconds, it drops. You move at full speed in the smoke's slow motion unless
-you turn that off.
+one is flicked. Left unlit in your mouth for 7 seconds, it drops. You and your shots move at full speed in the smoke's slow
+motion unless you turn that off (Move at Full Speed While Smoking).
 
 **Cigarettes are precious.** You start a game with a full pocket, and it does **not** refill on a new level: what you
 have left comes with you. You earn more: RSQ Score gives you one every so many points, killing an RSQ Miniboss fills

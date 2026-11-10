@@ -1,3 +1,7 @@
+// RSQ NOTE (2026-11-09): the compat readers listed below came across from REMA. On QuestZDoom 17.3 they are PARKED
+// (wr_modsupport.zs) and most could not answer anyway: they read other mods' fields by name, which the shim's wr_Field
+// cannot do here (it answers false). LegenDoom is the one reader still live.
+//
 
 // wr_compat_legendoom.zs -- reading LegenDoom's own rarity for the data
 // card. Its own file, one per compat target going forward, so any one mod's
@@ -91,7 +95,8 @@
 // orientation and TouchBillboard on one reports a hit from anywhere in the
 // room, so cards are oriented by hand every tic instead.
 //
-// THIS NEEDS ENGINE CHANGES, and the note here used to say it did not. It also
+// (REMA's note:) THIS NEEDS ENGINE CHANGES -- here on QuestZDoom 17.3 the RSQ shim (wr_q_shim.zs) stands in for those
+// engine hooks. The note used to say it did not. It also
 // used to say groups were unusable because group scale moved the picture
 // without moving the hit box and a group scaled to zero stayed clickable --
 // both true, both found by this mod, and both fixed in the fork (see its
@@ -131,7 +136,7 @@ class wr_Keybind
 // "wr_Rig"))` -- a CAST, which needs the wr_Rig CLASS NAME at compile
 // time, not just at runtime. That line compiles fine here, where this
 // file defines wr_Rig, and fails EVERYWHERE ELSE the moment
-// RS_WeaponWheel.pk3 is not loaded -- which is exactly the situation
+// the wheel's pk3 (REMA's RS_WeaponWheel.pk3, here RSQ_Wheel.pk3) is not loaded -- which is exactly the situation
 // this mod being split into its own repo was supposed to make normal.
 // A soft runtime dependency would have quietly become a hard
 // compile-time one.
@@ -4525,10 +4530,9 @@ class wr_Rig : EventHandler
 			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: the ring closed: the world runs (t%d)", level.maptime);
 			return;
 		}
-		if (on && !cvBool("wr_bullettime", true)) return;
-
-		// RSQ: RSQ SlowMo when it is loaded -- its own on/off events, which it holds until told
-		// otherwise -- and BulletTimeX's toggle (REMA's route) when it is not.
+		// RSQ: RSQ SlowMo when it is loaded -- its own on/off events, which it holds until told otherwise, while Slow Time
+		// While Open (wr_bullettime) is on -- and without it, the ring's own freeze (Freeze Without SlowMo, below), which
+		// does not depend on Slow Time While Open (rig follow-up 2026-11-09: it used to).
 		//
 		// SLOW MOTION THAT WAS ALREADY RUNNING when the ring opened (the player's own SlowMo key, the
 		// cigarette, adrenaline) is the player's, not the ring's. wr_slowmo_cancel decides what
@@ -4540,6 +4544,7 @@ class wr_Rig : EventHandler
 		{
 			if (on)
 			{
+				if (!cvBool("wr_bullettime", true)) return;
 				// SlowMo already running for something else (held, a pulse) is the player's; only EASING BACK is not, so
 				// the ring slows time again then (owner 2026-10-31). An older SlowMo without "running" answers -1.
 				int running = sm.GetInt("running");

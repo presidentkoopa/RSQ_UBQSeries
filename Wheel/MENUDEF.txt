@@ -140,7 +140,7 @@ OptionMenu wr_Options
 	// RSQ Gun Cards' own watch card takes over when that mod is loaded and its watch card is on.
 	Option "Wrist Card",                "wr_watch",        "OnOff"
 	Option "Open at Level Start",       "wr_autoopen",     "OnOff"
-	// RSQ SlowMo when loaded; without it, only with Freeze Without SlowMo below.
+	// RSQ SlowMo when loaded (this row); without it, Freeze Without SlowMo below (on its own).
 	Option "Slow Time While Open",      "wr_bullettime",   "OnOff"
 	Option "Closing Ends SlowMo",       "wr_slowmo_cancel", "OnOff"
 	// Without RSQ SlowMo: the ring stops time itself while it is open.
@@ -256,7 +256,7 @@ OptionMenu wr_Test
 	Slider "Model Stand-Off",           "wr_model_lift",   0.0, 12.0, 0.5, 1
 	StaticText " "
 	StaticText "Cards", 1
-	// Below this many weapons every one gets its own card; from it on, one card per slot.
+	// Up to this many weapons every one gets its own card; past it, one card per slot.
 	Slider "Flat Ring Up To (weapons)", "wr_subcards_max", 0, 30, 1, 0
 	Slider "Fan Close Forgiveness (tics)", "wr_subcards_grace", 0, 20, 1, 0
 	Slider "Constellation Lines Apart (tics)", "wr_star_stagger", 0, 12, 1, 0

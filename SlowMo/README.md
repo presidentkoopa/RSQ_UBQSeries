@@ -309,7 +309,7 @@ Bullets is greyed until you learn Lean Dodge.
   over those stretched tics instead of one jump and a pause.
 - **What is never slowed:** players, what they carry, and the series' own actors (classes named RSQ*, UBQS*, SSQ*: the
   grab, the rig's props, the shield, the saber). Your own projectiles slow unless **Slow My Shots** is off, and never
-  while you are DOWN.
+  while you are DOWN or smoking at full speed (RSQ Tactical Rig's cigarette).
 - **The rounds** replace a monster's hitscan before it is traced (WorldHitscanPreFired), from the same muzzle point and
   angle, carrying the shot's damage, damage type, puff and flags; the hit is dealt as a hitscan's would be, so monsters
   still infight over it. Melee and reaches of 128 or less stay hitscans. They fly at **Round Speed** (14 units a tic) at

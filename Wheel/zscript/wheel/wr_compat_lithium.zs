@@ -989,7 +989,7 @@ class wr_CompatLithium
 	static bool AcsOpen(Weapon w)
 	{
 		if (!ready(w)) return false;
-		if ((wr_ModSupport.Parked() ? 0.0 : cv("wr_lith_acs", 0.0)) <= 0.0) return false;   // OFF by default
+		if ((wr_ModSupport.Parked() ? 0.0 : cv("wr_lith_acs", 0.0)) <= 0.0) return false;   // wr_lith_acs is on by default, but the park answers off
 
 		// A canary failure earlier this session latches the door shut.
 		if (hasItem(w.Owner, "wr_LithAcsBlocked")) return false;

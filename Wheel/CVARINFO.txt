@@ -22,7 +22,7 @@
 // to answer what happens to the engine's own wheel.
 //
 //   1  this wheel   (default)
-//   2  the engine's native wheel
+//   2  the engine's native wheel (REMA only: QuestZDoom 17.3 has none, and the menu offers 0 and 1)
 //   0  neither
 //
 // wr_suppress_native_wheel is what the ENGINE actually reads, once, when the
@@ -122,12 +122,12 @@ user bool wr_edge_sweep = false;
 // first pass at this used flat-screen numbers and put the cards a metre off
 // each side of the hand.
 
-// Panel face size. 3.5 x 2.5 units is about 10cm x 7cm -- a playing card.
+// Panel face size. 4.2 x 3.0 units is about 12cm x 9cm (3.5 x 2.5, about 10cm x 7cm, is a playing card).
 user float wr_panel_w  = 4.2;
 user float wr_panel_h  = 3.0;
 
 // How far the panels orbit out from the hand, and how high above it they ride.
-// 7 units is about 20cm: far enough to read, close enough to reach without
+// 5 units is about 15cm: far enough to read, close enough to reach without
 // moving your arm.
 user float wr_radius   = 5.0;
 user float wr_rise     = 2.0;
@@ -254,9 +254,8 @@ user float wr_scale    = 1.0;
 
 
 
-// Slow time while the wheel is up, via BulletTimeX if it is loaded. Its
-// activate is a toggle, so turning this on means opening the wheel during a
-// bullet time you started yourself will cancel it.
+// Slow time while the wheel is up, through RSQ SlowMo (its rsm_on / rsm_off; a slow motion you already had running is
+// left alone). Without SlowMo nothing happens here: Freeze Without SlowMo (wr_own_freeze) decides that on its own.
 user bool  wr_bullettime = true;
 
 // How far the stick must leave centre before it picks a slot. UserCmd units:
@@ -382,7 +381,8 @@ user float wr_floor_seam   = 0.5;
 // will -- which is why the name and the count stay as field billboards on top
 // either way, and only the artwork underneath them changes.
 //
-// Twelve canvas textures are declared in animdefs.txt, and that is a hard
+// (REMA:) Twelve canvas textures were declared in animdefs.txt -- not shipped here: canvas textures draw black in VR on
+// QuestZDoom 17.3, so this path is off -- and that is a hard
 // ceiling -- they have to be declared up front and there is no allocating one
 // on demand. A ring that does not fit uses composed faces for ALL of it, not
 // for the overflow: painted and composed cards do not read as variants of one
@@ -494,12 +494,12 @@ user int   wr_readout = 0;
 // How many weapons the ring will show INDIVIDUALLY before it gives up and
 // collapses to one card per SLOT with the rest folded behind it.
 //
-// BELOW the threshold: every weapon gets its own card and the ring grows to
+// UP TO the threshold (this many weapons or fewer): every weapon gets its own card and the ring grows to
 // fit. One reach instead of a dwell and a reach, at the cost of the fixed
 // bearing -- picking up a second plasma rifle moves everything after it round
 // the ring.
 //
-// AT OR PAST it: one card per slot, and slot 4 is in the same direction
+// PAST it (more weapons than this number): one card per slot, and slot 4 is in the same direction
 // whether you own one weapon in it or five -- which is what makes bearings
 // learnable. Anything past a slot's first weapon opens on dwell, and a card
 // that is hiding others says so with a small "+N" in its corner (wr_marker's
@@ -531,7 +531,7 @@ user int wr_subcards_grace = 6;
 // The spawned copy is defanged: not pickupable, not in the blockmap, no
 // gravity, not on the automap.
 //
-// OFF, and PARKED rather than removed. Whether a card shows geometry depends
+// (REMA had this OFF, and PARKED; RSQ turns it on below.) Whether a card shows geometry depends
 // entirely on the loaded weapon set, and a set is free to gate its own pickup
 // models behind a cvar of its own -- VanillaVRPlus branches its Spawn state on
 // evw_pickupmodel, which defaults to 0. That is too many other people's
@@ -795,8 +795,7 @@ user bool  wr_lith_acs = true;
 // which made it useless for the one thing it is best at: deciding whether
 // what is on the floor beats what you have.
 //
-// No new trace is cast for this. The engine already tracks what each hand's
-// laser rests on, every frame, for the laser sight itself.
+// RSQ casts its own short LineTrace from the hand for this (zscript.zs, the inspect pass).
 user bool  wr_inspect = true;
 
 // Tics of rest on the same weapon before the card appears. Sweeping an arm
@@ -817,43 +816,13 @@ user bool  wr_inspect_delta = false;
 // wr_stattracker.zs. Not a compat switch: nothing above this reads another
 // mod's fields, it watches the game happen and keeps its own counters, per
 // weapon instance, so it applies to every weapon whether or not any of the
-// eight mods above are loaded at all -- including genuinely vanilla guns.
+// compat mods above are loaded at all -- including genuinely vanilla guns.
 // Off also stops it granting its hidden per-player ledger item.
 user bool  wr_stats_track = true;
 
 
-// THE GUN'S OWN READOUT
-//
-// A count welded to the weapon in your hand, not just to the ring. See
-// wr_gunhud.zs for why this is a fixed offset in the hand's own frame rather
-// than anything attached to the model -- the model's world transform is not
-// reachable from script at all, and attaching to the weapon actor would put
-// the counter at your ankles, where a held weapon's Pos() actually is.
-
-// 0 lies it flush on the weapon, occluded by the gun's own geometry the way
-// depth testing already works by default -- the Dead Space reading. 1 turns
-// it to face you wherever the gun points -- always readable, reads as HUD
-// rather than as part of the gun. Both are real; the default is the one that
-// needed the placement tool built to be worth shipping.
-// Which flank of the gun a flush panel sits on. 0 and 1 are the two sides.
-
-
-// The GLOBAL fallback placement, used for any weapon nobody has measured yet.
-// Deliberately one guess and not a table of guesses by archetype -- a table
-// would be right for whatever it was tuned against and quietly wrong for
-// everything else while looking deliberate. wr_place fixes the guns that
-// actually matter; this just keeps the rest from having no readout at all.
-
-// Nudge step while placing -- map units per press, degrees per press.
-
-// Which hand wr_place calibrates. 0 main, 1 off -- the OTHER hand is always
-// the cursor, so placing an offhand weapon means flipping this first.
-
-// Flips which way positive wrist roll turns the panel. Source cannot answer
-// this one -- it depends on the handedness convention OpenXR happens to
-// report on your actual runtime. Leave it at 1; if the readout rolls the
-// wrong way when you turn the gun over, set it to -1.
-
+// (THE GUN'S OWN READOUT, a count welded to the gun in your hand, came across from REMA with no settings and no code
+// here; its notes were removed 2026-11-09.)
 
 // The cards on the guns (wr_card_*) moved to RSQ Gun Cards (rsqgc_*), 2026-10-31.
 user int    wr_ring_art = 0;             // the ring's plates: 0 its own (Ermac style), 1 the status bar's stone

@@ -1070,7 +1070,11 @@ class RSQSM_Clock : EventHandler
 		{
 			if (!cvSlowOwn) return true;
 			let dn = RSQSM_Down.Get();
-			if (dn && dn.IsDown(a.target.PlayerNumber())) return true;
+			int sn = a.target.PlayerNumber();
+			if (dn && dn.IsDown(sn)) return true;
+			// WHILE SMOKING (owner 2026-11-09 21:52: "all shots full speed while smoking"): the smoker's shots fly at full
+			// speed for as long as he does (freeUntil, Move at Full Speed While Smoking)
+			if (sn >= 0 && sn < MAXPLAYERS && level.maptime < freeUntil[sn]) return true;
 		}
 		return false;
 	}
