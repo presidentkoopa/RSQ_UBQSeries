@@ -1,5 +1,8 @@
 # Parked ideas (owner said "not now"; discuss before building)
 
+Owner 2026-11-10 10:46: everything still parked here gets done before the next rig test. The planned projects moved
+to design/PLANNED_PROJECTS.md.
+
 - Laser Sight, Quest beam (owner 2026-11-07 05:49): the stray bright voxels seen in the outer beam were never
   tracked down. Instead of removing them, make points along the outer beam sparkle gently, almost
   imperceptibly. Likely route: a few tiny additive sparks at random points on the beam's outer shell, fading in
@@ -8,6 +11,35 @@
 
 - DOWN's player-facing name (owner 2026-11-07 06:31): "Be Quick or Be Dead", with some of its letters breathing
   in size. Player-facing only (menu and plate); the code keeps the name DOWN. Later.
+
+## Rig clutter ("a lot going on", owner 2026-11-08 17:31) — parked, not built
+Owner: "im not saying we should change anything, but ... this looks like a LOT going on". My four suggestions (he asked "all of them?"; parked 17:40):
+1. Show only what the hand can use: a gun hand sees gun holsters; an empty hand sees spots with something in them; spots of mods not loaded never show.
+2. One ring at a time: the nearest ring full, the rest faint until reached toward.
+3. Shrink RSQ FnF's pocket/clip diamonds to holster-ring size, or show them only when the off hand is near.
+4. "Always show" rings only while moving holsters (setup), else near-hand only.
+
+## A boss bar next to the Bossfight meter (owner 2026-11-09 04:49)
+"Consider spinning up another bar next to the Miniboss one that we will use for Boss fights, EX tier monsters. Just note
+that for now." A second meter-sized bar beside RSQ Miniboss's Bossfight meter, for boss fights and EX-tier monsters
+(their health, presumably; not designed). Nothing built. Same size as the meter, like the two SlowMo bars (11-09).
+
+## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25)
+A gun you already carry, with full ammo, cannot be picked up with Distance Grab (the catch is refused, like walking
+over it). Marked as a concern; not changed. Listed in DistanceGrab/README.md "Known concerns".
+
+## Saber's training remote HUD (owner 2026-11-10: "I would have liked to co-design that. Table it for now.")
+A real score / timer panel for the training remote in the series' fonts, to be designed WITH the owner. A first mockup
+(design/mockups/saber_remote/remote_hud_mock.png) was made without him; treat it as a talking point only.
+
+## One throw (owner 2026-11-10): "hold trigger, swing, let go" for everything thrown
+Audit 11-10: RSQ Grenade (trigger or alt held, swing, release), RSQ Saber (release fire as the hand snaps forward),
+RSQ ShieldSaw (off trigger held revs, release with the arm moving), BD22 VR's axe (rsvr/melee.zs: hold the trigger,
+swing, let go, "like the grenade") already share the gesture. They differ in how the hand's speed is sampled and in
+their thresholds (Saber's Throw Needs, ShieldSaw's ssq_throw_min, the grenade's body-frame sampler of 11-09). Next:
+one sampler (the grenade's) and one threshold for all of them. Not built.
+
+# Built (moved here 11-10; kept for the record)
 
 ## Wheel holster web (owner 2026-11-07 06:50-07:22; approved to build; BUILT 11-07, rig only, not headset-confirmed)
 - Alt-fire on a Wheel card opens a web on a nearer layer in its own colour: the Doom marine sprite (the IWAD's
@@ -104,29 +136,6 @@
   holster becomes the gun's and the gun goes in, both hands to fists (like A). The copy into a holster assigned to X
   while X is not there: like A (the gun goes home, both hands to fists) (as built).
 
-## Rig clutter ("a lot going on", owner 2026-11-08 17:31) — parked, not built
-Owner: "im not saying we should change anything, but ... this looks like a LOT going on". My four suggestions (he asked "all of them?"; parked 17:40):
-1. Show only what the hand can use: a gun hand sees gun holsters; an empty hand sees spots with something in them; spots of mods not loaded never show.
-2. One ring at a time: the nearest ring full, the rest faint until reached toward.
-3. Shrink RSQ FnF's pocket/clip diamonds to holster-ring size, or show them only when the off hand is near.
-4. "Always show" rings only while moving holsters (setup), else near-hand only.
-
-## Wheel mod support on stock 17.3 (found 2026-11-08) — parked; DISABLED 2026-11-09
-Owner 02:56: "disable wheel mod support for now". Done: every reader but LegenDoom answers off (Wheel/zscript/wheel/wr_modsupport.zs), rows hidden.
-About half the Wheel's compat files (Lithium, Doom Infinite, Doomablo, Pandemonia + Anarchy/Insurrection, BorderDoom,
-Guncaster, Model Swapper) read nothing on stock QZD 17.3: they use REMA's field reflection, stubbed to "no field"
-(Wheel/zscript/wheel/wr_q_shim.zs:873-886). LegenDoom, DRLA, Combined Arms, Final Doomer, MetaDoom Demon Keys work.
-Owner: "either get it working or we will drop support". Ways: read public items/cvars/events by name, or one small
-bridge pk3 per mod. Needs from the owner: which mods to keep, and their pk3s. See design/WHEEL_MODS_PEEK.md.
-
-## Condition bits, Gold bits, weapon wear -> Big Arcade (owner 2026-11-09 02:56)
-"Condition and gold go into Big Arcade; same for weapon wear, that is condition."
-
-## A boss bar next to the Bossfight meter (owner 2026-11-09 04:49)
-"Consider spinning up another bar next to the Miniboss one that we will use for Boss fights, EX tier monsters. Just note
-that for now." A second meter-sized bar beside RSQ Miniboss's Bossfight meter, for boss fights and EX-tier monsters
-(their health, presumably; not designed). Nothing built. Same size as the meter, like the two SlowMo bars (11-09).
-
 ## DarkDoomZ baked into Glow In The Dark (owner 2026-11-09 17:47) -- DONE 11-10 (GlowInTheDark/zscript/rsqgd/ddz.zs, marked ALTERED)
 "DDZ will always be loaded, we can bake it into GITD with full credit for all I care, they've been two halves of the same
 environment for years." DarkDoomZ (Caligari87, 2018) is zlib-licensed: we may include and alter it, with its licence
@@ -134,29 +143,3 @@ notice kept, our changes marked as altered, and credit (its credits.md). Upload:
 Environmental_DarkDoomz.zip (darkdoomz.pk3 + src/). Not started. Note: anything that drives DDZ by cvar (GITD menu.zs,
 DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
 
-## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25)
-A gun you already carry, with full ammo, cannot be picked up with Distance Grab (the catch is refused, like walking
-over it). Marked as a concern; not changed. Listed in DistanceGrab/README.md "Known concerns".
-
-## Close-call slow motion (owner 2026-11-10 08:37: "remind me to consider")
-Contextual slow motion when a monster missile nearly hits you: imp, cacodemon, revenant, baron, hell knight, cyberdemon,
-mancubus (also asked: did we miss any? arachnotron plasma, pain elemental's lost soul, archvile's fire are the others
-that fire at you). Possibly a Gun Bonsai VR option gated behind Hadouken, with SlowMo's HUD chevrons pointing at the
-shot so you can spin round and hadouken it back. Also: use the HUD chevrons more widely. Not built; owner to decide.
-
-## Saber's training remote HUD (owner 2026-11-10: "I would have liked to co-design that. Table it for now.")
-A real score / timer panel for the training remote in the series' fonts, to be designed WITH the owner. A first mockup
-(design/mockups/saber_remote/remote_hud_mock.png) was made without him; treat it as a talking point only.
-
-## Gun Bonsai VR's Big Pass (owner 2026-11-10)
-"With GBOVR, it gates as much as it possibly can." A Vampire Survivors approach: design an enormous number of features
-per weapon (the lightsaber's dozen and more), then gate them behind weapon and player levels with branching paths.
-This is how the Miniboss rewards get their meaning. Melee's uppercut stays a Gun Bonsai VR unlock on Melee's own hands
-for now; the Big Pass decides the rest. Needs the Arcade brain designed first.
-
-## One throw (owner 2026-11-10): "hold trigger, swing, let go" for everything thrown
-Audit 11-10: RSQ Grenade (trigger or alt held, swing, release), RSQ Saber (release fire as the hand snaps forward),
-RSQ ShieldSaw (off trigger held revs, release with the arm moving), BD22 VR's axe (rsvr/melee.zs: hold the trigger,
-swing, let go, "like the grenade") already share the gesture. They differ in how the hand's speed is sampled and in
-their thresholds (Saber's Throw Needs, ShieldSaw's ssq_throw_min, the grenade's body-frame sampler of 11-09). Next:
-one sampler (the grenade's) and one threshold for all of them. Not built.
