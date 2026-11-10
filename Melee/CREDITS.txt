@@ -18,8 +18,12 @@ THE BOXING GLOVES AND THE PUNCH (from RSQ Gun Bonsai VR)
   "ToxicFrog" Kelly's Gun Bonsai (MIT).
 
 THE SHOCK RING (2026-11-10)
-  Clear Out's and Ground Pound's ring: sprites/rsqml/RQRG*, RSQ Saber's Force Push shockwave (its UXRG frames, the
+  Clear Out's ring: sprites/rsqml/RQRG*, RSQ Saber's Force Push shockwave (its UXRG frames, the
   owner's CombatFX set, as RSQ Saber ships them), copied and renamed so Melee works without Saber.
+
+THE PIXEL SHOCKWAVE (2026-11-10)
+  Ground Pound's ring: sprites/rsqml/RQSW*, RSQ Grenade's dashed pixel ring (its blast QE09, frames C-T, drawn for
+  RSQ Grenade's explosions), copied grey and renamed so Melee works without Grenade.
 
 THE GUN-BUTT SHOVE AND ITS SLOW-MO (from RSQ Gestures)
   The gun butt shove is BD22 VR Reloaded's butt shove (the owner's own mod; zscript/rsvr/melee.zs: the swing

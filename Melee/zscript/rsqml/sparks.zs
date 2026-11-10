@@ -302,3 +302,59 @@ class RSQML_Ring : Actor
 	}
 	States { Spawn: RQRG A -1 Bright; Stop; }
 }
+
+// GROUND POUND'S PIXEL SHOCKWAVE (owner 2026-11-10: "repurpose [our explosions' pixel shockwave], scale it, recolor it
+// grey or give it some rainbow life and some glow"). RSQ Grenade's dashed pixel ring (its blast QE09 C-T, 18 frames
+// growing 21 to 89 px), copied here grey as RQSW so Melee works without Grenade, laid flat on the floor, sized so its last
+// frame reaches the move's reach, and tinted through the rainbow as it rolls out (AddShaded, a new hue every tic), with a
+// fainter, wider copy a few tics behind it for the glow. Not shown on the rig yet.
+class RSQML_PixelWave : Actor
+{
+	int age, delay;
+	double hue0;
+	Default
+	{
+		RenderStyle "AddShaded"; Radius 1; Height 1;
+		+NOINTERACTION +NOBLOCKMAP +BRIGHT +NOGRAVITY +NOTONAUTOMAP +DONTSPLASH +NOTELEPORT +FLATSPRITE
+	}
+	const FRAMES = 18;
+	const LAST_PX = 89.0;
+
+	static void At(Vector3 at, double reach)
+	{
+		double h0 = frandom[RSQMLWave](0, 360);
+		for (int k = 0; k < 2; k++)
+		{
+			let w = RSQML_PixelWave(Actor.Spawn("RSQML_PixelWave", at + (0, 0, 1 + k), NO_REPLACE));
+			if (!w) continue;
+			w.sprite = GetSpriteIndex('RQSW');
+			double sc = reach * 2.0 / LAST_PX * (k == 0 ? 1.0 : 1.15);
+			w.scale = (sc, sc);
+			w.alpha = k == 0 ? 1.0 : 0.45;
+			w.delay = k * 3;
+			w.hue0 = h0 + k * 40;
+			w.bInvisible = w.delay > 0;
+			w.Shade();
+		}
+	}
+	void Shade()
+	{
+		// HSV to RGB at full saturation and value: the hue walks 20 degrees a tic
+		double h = (hue0 + age * 20.0) % 360.0;
+		double x = 1.0 - abs((h / 60.0) % 2.0 - 1.0);
+		double r = 0, g = 0, b = 0;
+		if (h < 60) { r = 1; g = x; } else if (h < 120) { r = x; g = 1; } else if (h < 180) { g = 1; b = x; }
+		else if (h < 240) { g = x; b = 1; } else if (h < 300) { r = x; b = 1; } else { r = 1; b = x; }
+		SetShade(Color(255, int(r * 255), int(g * 255), int(b * 255)));
+	}
+	override void Tick()
+	{
+		if (isFrozen()) return;
+		if (delay > 0) { delay--; if (delay == 0) bInvisible = false; return; }
+		if (age >= FRAMES) { Destroy(); return; }
+		frame = age;
+		Shade();
+		age++;
+	}
+	States { Spawn: RQSW A -1 Bright; Stop; }
+}
