@@ -1,0 +1,13 @@
+L7_RIFLE_SUMMON
+Training remote: draw your saber first
+R10 REMOTE t60: none
+L7_SABER
+L7_SABER_SUMMON
+Training remote: deflect its stings
+L7_PANEL
+R10 REMOTE t242 round 0 hits 0 streak 0 best 0 points 0 roundEnd in 979
+L7_SWITCH_AWAY
+TRAINING OVER
+L7_AFTER
+R10 REMOTE t329: none
+L7_END

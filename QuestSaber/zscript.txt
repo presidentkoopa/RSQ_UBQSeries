@@ -6103,6 +6103,17 @@ class UBQS_Remote : Actor
 	// before the fourth hit the training is over (owner 11-10: "Training over"): the remote leaves and says how you did.
 	const ROUND_TICS = 30 * TICRATE;
 	int roundEnd;    // the tic this round's clock runs out; 0 while held
+	// A SABER MINIGAME (owner 11-10: "it's a saber only thing ... we switch off saber, it goes away and the minigame is over").
+	// Summoned only with a saber in a hand; with none in either hand (nor one being drawn) for NO_SABER_TICS, the training
+	// is over (TrainingOver). The grace covers a swap from one saber to the other.
+	const NO_SABER_TICS = 10;
+	int noSaber;
+	static bool HoldsSaber(Actor mo)
+	{
+		if (!mo || !mo.player) return false;
+		let p = mo.player;
+		return p.ReadyWeapon is "UBQS_SaberBase" || p.OffhandWeapon is "UBQS_SaberBase" || p.PendingWeapon is "UBQS_SaberBase";
+	}
 
 	Default
 	{
@@ -6335,6 +6346,8 @@ class UBQS_Remote : Actor
 			if (trainee) trainee.A_Print(String.Format("TRAINING REMOTE: round %d", round + 1), 2.0, UBQS_A11y.PrintFont());
 			A_StartSound("ubqs/rbeep", CHAN_VOICE, 0, 1.0 /* fixed: was ubqs_remote_chirp, never a setting */);
 		}
+		if (HoldsSaber(trainee)) noSaber = 0;
+		else if (++noSaber > NO_SABER_TICS) { TrainingOver(); return; }
 		if (roundEnd == 0) roundEnd = level.maptime + ROUND_TICS;
 		if (!trainee.FindInventory("UBQS_RemoteOut")) trainee.GiveInventory("UBQS_RemoteOut", 1);
 		if (level.maptime >= roundEnd) { TrainingOver(); return; }
@@ -6670,6 +6683,7 @@ class UBQS_Bridge : EventHandler
 			had = true;
 		}
 		if (had) { mo.A_Print("Training remote dismissed", 1.5, UBQS_A11y.PrintFont()); return; }
+		if (!UBQS_Remote.HoldsSaber(mo)) { mo.A_Print("Training remote: draw your saber first", 1.5, UBQS_A11y.PrintFont()); return; }
 		let nr = UBQS_Remote(Actor.Spawn("UBQS_Remote", mo.Vec3Angle(112, mo.angle, mo.player.viewheight - 6.0)));   // (11-10: was 64)
 		if (nr)
 		{

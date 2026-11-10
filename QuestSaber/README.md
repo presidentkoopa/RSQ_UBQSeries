@@ -290,6 +290,7 @@ back into it:
 - **On your off-hand wrist** (in VR): the round's clock big on top, four pips under it that light red for each hit you
   land, and the round (blue) and your streak (gold) below. While the remote is out it takes the place of RSQ Score's
   wrist digits. Out of VR it keeps score in lines of text on screen instead.
+- **A saber game.** The remote comes only with a saber in your hand. Switch the saber away and the training is over.
 - It pays into RSQ Score when that is loaded. **Remote Start Level** (Test and Debug) sets how hard it starts. Press the
   key again to send it away.
 
