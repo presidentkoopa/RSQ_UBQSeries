@@ -58,6 +58,29 @@ Bonsai"* (at most every 3 seconds) and nothing fires.
 
 ---
 
+## Controls
+
+- **Keys: one, Fire Hook.** No default bind. Bind it on this mod's page (Controls) or in Customize Controls, under
+  "RSQ Grapple". Since 2026-11-10 it replaces four keys: Fire Hook (Main), Fire Hook (Off), Grab Rope (Main) and Grab
+  Rope (Off).
+- **Which hand:** **Fire Hook From**, a menu row, picks it: the **Off Hand** (default) or the **Main Hand**. It took
+  the place of the two per-hand Fire Hook keys. The claw leaves that controller along where it points.
+- **Fire Hook, press:** fire. Press again while the claw is flying: it comes back. With the OG modes, press again
+  after a bite: a new claw.
+- **Fire Hook, hold** (Wall Hook Rope, Swing and Momentum, Lasso): reel in. **Tap** (let go within 8 tics): let go of
+  the rope or the monster. With **Whip Instead of Hook** on, the same key cracks the whip.
+- **Taking hold of the rope** (to climb): RSQ Distance Grab's two keys, **Grab / pull (main hand)** and **Grab / pull
+  (off hand)**, with an empty hand near the rope. Grapple has no grab key of its own now. Those keys have no default
+  bind either (since 2026-11-10): bind them, to your grips if you like, on Distance Grab's page. Without Distance Grab
+  loaded, or with **Grab Keys Hold Rope** off, nothing takes hold of the rope.
+- **Movement stick** (Swing and Momentum): lean to pump a swing, pull back past half to calm it, push forward under a
+  lip to mantle.
+- **Gestures:** one. In Lasso mode, a hard flick of the arm (3 m/s) throws the held monster that way. The trigger, the
+  grip and Use are not read by this mod.
+- RSQ Accessibility's **Hold to Toggle** turns the Fire Hook key into press on, press off.
+
+---
+
 ## Hooking a wall
 
 **Wall Hook** has two settings. **Swing and Momentum** on overrides both.
@@ -290,16 +313,21 @@ Every setting but Fire Hook From is the host's (a server setting). Fire Hook Fro
 
 ## Status
 
+**Waiting on Grapple 2.0.** The code-read findings below, and the next version, are held for the Grapple 2.0 update
+(owner, 2026-11-10; `design/PLANNED_PROJECTS.md`, `Grapple/ROADMAP.md`).
+
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, the build before the 11-10 key change, full series load order) | The pack loaded with no script error of its own, and its page is listed under Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`). No hook was fired in that run |
-| **Shown on the rig** (2026-11-03, older build, doom2 and the full order; `test/evidence/og_1103.txt`) | Wall Hook OG and Monster Hook OG against jpalomo's own pk3 on the same rig: seven wall, ceiling and floor shots and six monster shots gave his launch speeds to 0.001, the player's path after the fling matched his for 71 to 80 tics, a miss flew as his did. Bosses as anchors. With Gun Bonsai VR, the Grapple unlock refused to fire until learned. No script errors from the pack |
-| **Shown on the rig** (2026-11-03, older build; `test/evidence/gb_1103.txt`) | Gun Bonsai VR: Fast Reel on the claw, the fling and the throw; Twin Lines with Momentum; Scorpion on the OG throw |
-| **Shown on the rig** (2026-10-31, older build, logs; `test/evidence/qol_1031.txt`, `sweep_1031.txt`) | Calm Swing, Slack Rope Lets Go, the tap window, Hook Uses Switches (a switch lowered a ceiling), Lasso Flick Throw, the Aim Dot (in the log only: the dot could not be made out in frames at its real size), the press held back while both hands read as one point, Two Hands on Rope, the thump being sent (not felt on the rig), the Lasso, Split Pull |
-| **Shown on the rig** (10-27, older build; `test/evidence/` w_*, ev_*, sl_*, fr_*, gb_*, frames_*.png) | The whip's hit and snag, the Yank's arc full speed and slowed, tumble frames (sprite and voxel), Gun Bonsai VR's first nine upgrades |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). No hook was fired. Those launches came before the KEYCONF fix that packs the one Fire Hook key (commit 09243dd8) |
+| **rig only, not headset-confirmed** (2026-11-09, the build before the 11-10 key change, full series load order) | The pack loaded with no script error of its own, and its page is listed under Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`). No hook was fired in that run |
+| **rig only, not headset-confirmed** (2026-11-03, older build, doom2 and the full order; `test/evidence/og_1103.txt`) | Wall Hook OG and Monster Hook OG against jpalomo's own pk3 on the same rig: seven wall, ceiling and floor shots and six monster shots gave his launch speeds to 0.001, the player's path after the fling matched his for 71 to 80 tics, a miss flew as his did. Bosses as anchors. With Gun Bonsai VR, the Grapple unlock refused to fire until learned. No script errors from the pack |
+| **rig only, not headset-confirmed** (2026-11-03, older build; `test/evidence/gb_1103.txt`) | Gun Bonsai VR: Fast Reel on the claw, the fling and the throw; Twin Lines with Momentum; Scorpion on the OG throw |
+| **rig only, not headset-confirmed** (2026-10-31, older build, logs; `test/evidence/qol_1031.txt`, `sweep_1031.txt`) | Calm Swing, Slack Rope Lets Go, the tap window, Hook Uses Switches (a switch lowered a ceiling), Lasso Flick Throw, the Aim Dot (in the log only: the dot could not be made out in frames at its real size), the press held back while both hands read as one point, Two Hands on Rope, the thump being sent (not felt on the rig), the Lasso, Split Pull |
+| **rig only, not headset-confirmed** (10-27, older build; `test/evidence/` w_*, ev_*, sl_*, fr_*, gb_*, frames_*.png) | The whip's hit and snag, the Yank's arc full speed and slowed, tumble frames (sprite and voxel), Gun Bonsai VR's first nine upgrades |
 | **Headset-confirmed** | Nothing yet. The owner has played earlier builds in his headset (his notes ask for changes, e.g. `BUGS_1.0.md` #27 and BUGS_0.99a item 18), but the repo records no feature confirmed working there |
-| **Code only, not yet shown** | Everything about the current build: the one Fire Hook key and Fire Hook From (load-checked when committed, not run on the rig), taking the rope with Distance Grab's grab keys only. Wall Hook Rope pulling at jpalomo's speed and letting go on arrival (the 11-06 commit says a rig log showed it; no such log is in the repo). Wraps Corners, Mantle Over Ledges, Indiana Jones, Hold to Toggle, the Comfort Vignette, the Combat FX set, the High Contrast look, Reset All |
-| **Known not to work (from reading the code)** | **Whip Snag** with Swing and Momentum off (the default): the snag goes through Wall Hook OG's fling, aimed at a point the whip never sets, so you are shoved toward the map's origin instead of the snag. **Indiana Jones, Swinging and Dismount** can't pay with the default Wall Hook OG: they need a rope that holds you, and the OG fling never makes one (they can with Wall Hook Rope or Swing and Momentum). **Climbing** needs RSQ Distance Grab and Grab Keys Hold Rope on: nothing else takes hold of the rope now. **Reel Speed** does nothing to the Rope wall pull (its speed is the distance / 12), and **Grab Reach** and **Climb Speed Cap** stay live in Rope mode, where nothing climbs |
+| **code only, not shown** | Everything about the current build: the one Fire Hook key and Fire Hook From (load-checked when committed, not run on the rig), taking the rope with Distance Grab's grab keys only. Wall Hook Rope pulling at jpalomo's speed and letting go on arrival (the 11-06 commit says a rig log showed it; no such log is in the repo). Wraps Corners, Mantle Over Ledges, Indiana Jones, Hold to Toggle, the Comfort Vignette, the Combat FX set, the High Contrast look, Reset All |
+| **not yet run** | Nothing. The batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/PLAN.md`) has no Grapple check: it waits on 2.0 |
+| **Known not to work (from reading the code; held for 2.0)** | **Whip Snag** with Swing and Momentum off (the default): the snag goes through Wall Hook OG's fling, aimed at a point the whip never sets, so you are shoved toward the map's origin instead of the snag. **Indiana Jones, Swinging and Dismount** can't pay with the default Wall Hook OG: they need a rope that holds you, and the OG fling never makes one (they can with Wall Hook Rope or Swing and Momentum). **Climbing** needs RSQ Distance Grab, a bind on its grab keys (none by default since 11-10) and Grab Keys Hold Rope on: nothing else takes hold of the rope now. **Reel Speed** does nothing to the Rope wall pull (its speed is the distance / 12), and **Grab Reach** and **Climb Speed Cap** stay live in Rope mode, where nothing climbs |
 
 ---
 

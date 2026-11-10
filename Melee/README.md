@@ -51,6 +51,22 @@ optional: turn on **Start With Melee Hands** and you get a pair at every level s
 
 ---
 
+## Controls
+
+- **No keys**, and no menu button stands in for one.
+- **Either hand:** swing the fist to punch. **Tap the trigger** (press and let go quickly) to open the hand or close it
+  again (not in boxing gloves). With Gun Bonsai VR's Star Punch, an uppercut with that hand's trigger or alt fire
+  squeezed spends a banked star.
+- **Off hand:** **the grip** (read raw from QuestZDoom's grip keys; their codes are on Test and Debug) next to a monster
+  is the Headlock; let go of the grip and it drops.
+- **Main hand, holding a gun:** thrust it forward hard for the gun-butt shove.
+- **Gestures:** the jab, hook and uppercut (read from the fist's path); the open-palm swat; both fists up at your face
+  (Guard); both fists swung down together (Ground Pound); both palms thrust forward (Clear Out); a hard forward swing
+  of the off hand while holding a monster (the Headlock throw). With RSQ Accessibility loaded, its reader supplies the
+  two-hand gestures; without it, Melee reads them with its own copy.
+
+---
+
 ## Your hands
 
 *[picture to come: the three looks side by side: Ermac's hand (fist and open), the FBX hand (fist and open), the boxing glove]*
@@ -255,9 +271,11 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, full series load order with Brutal Doom 22) | The pack loads with no script error of its own, and its page is listed under Radiant Silvergun Options. No Melee move was exercised in that run |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, full series load order with Brutal Doom 22 and BD22 VR Reloaded 2.0.4f) | Every launch loaded every RSQ pk3 with no script error from our packs (`design/rigtest_2026-11-10/RESULTS.md`). No Melee move was exercised |
+| **rig only, not headset-confirmed** (2026-11-09, full series load order with Brutal Doom 22) | The pack loads with no script error of its own, and its page is listed under Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`). No Melee move was exercised in that run |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page |
+| **code only, not shown** | Everything else on this page, among it the 11-10 changes: Slappers Only as fists only and Guard needing the gloves (commit 63a85be3), Ground Pound's rainbow pixel shockwave (c1d0efc3), Clear Out's Force Push ring (ad7e0d86), the bullet swat's true speed (1d296aa5), the glove icons (20f17c7a) |
+| **not yet run** | M1 to M9 wait in the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): the punch, the trigger tap and both hand models in frames; the boxing gloves; the Headlock (grab, hold, punch, throw); the swat of a fireball and of a bullet; the off-hand fist beside a gun, and Uppercut Kicks Barrels; Ground Pound's and Clear Out's rings; Guard with and without the gloves; Slappers Only's stash; the glove icons |
 
 ---
 

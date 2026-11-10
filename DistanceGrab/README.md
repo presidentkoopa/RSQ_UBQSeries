@@ -48,7 +48,29 @@ thrown hard goes off where it lands.
 | Palm out against a door (or the grip, or Use), then raise your hand | The door lifts with your hand |
 | Palm out on a switch | It flips |
 
-On a desktop there are two keys, **G** (main hand) and **H** (off hand), read only when **Grab Keys** is on.
+---
+
+## Controls
+
+- **Keys: two, optional, none bound.** **Grab / pull (main hand)** and **Grab / pull (off hand)**, on this mod's page
+  (Controls) or in Customize Controls, under "RSQ Distance Grab". For the grab, they are read only with **Grab Keys**
+  on: a press catches what is arriving at that hand, or locks what its cone is on. Their old default binds, **G** and
+  **H**, went on 2026-11-10: G is Brutal Doom's Toss Grenade, which RSQ Grenade's quick throw reads. These two keys are
+  also how RSQ Grapple's and RSQ Whip's ropes are taken in hand, whatever the Grab Keys row says.
+- **No button for the grab itself.** Your palm is the input: turn a hand palm-out to reach, flick the wrist up to
+  pull. Either hand, the gun hand too (turn the gun on its side).
+- **The grip** (either hand, read raw from QuestZDoom's grip keys; their codes are on Test and Debug): with the palm
+  on a pickup, a barrel or a flare within 30 cm, takes it straight into that hand; while carrying, makes the grip hold
+  it until you let go; on a door, lifts it (**Grip Takes Door**). With RSQ Melee loaded, an off-hand grip on a monster
+  is Melee's Headlock.
+- **Use:** on a door with your palm on it, lifts it (**Use Takes Door**).
+- **The trigger** is not read.
+- **Gestures:** the palm turned out (reach and lock), the wrist flick (pull), turning the palm back (let go, or set
+  down), a swing released (throw), your other empty palm on what you carry (both hands), a palm on a door then raised
+  (lift it), a palm on a switch (flip it).
+- **With RSQ Accessibility's One-Handed:** its **Grab Pull** button does the wrist flick and **Grab Reach** (held) the
+  palm out; its Off-Hand Modifier moves the off hand's grab to the main controller.
+- No key of this mod became a menu button.
 
 ---
 
@@ -278,7 +300,7 @@ Test and Debug. Defaults in brackets.
 | Doors and Switches | Lift Doors (On) · Grip Takes Door · Use Takes Door · Palm Takes Door (On; greyed with Lift Doors off) · Palm Flips Switches (On) |
 | Beam | Beam · Dot · Reach Cone · Show When Idle (On) · Yield to Laser Sight (Off) · Target Glow (On) · Voxel Flash (On) · Recolour Target (Off) · Catch Flash (On) |
 | Feel | Haptics (On) · Rumble · Approach Ping · Held Back Rumble (On; greyed with Haptics off) |
-| Controls | Grab Keys (Off) · Main Hand Key (G) · Off Hand Key (H) (greyed while Grab Keys is off; still bindable) |
+| Controls | Grab Keys (Off) · Main Hand Key · Off Hand Key (no default bind; greyed while Grab Keys is off; still bindable) |
 | Test and Debug: Gesture | Palm Roll (90°) · Roll Tolerance (30°) · Min Hand Pitch (-30°) · Flick Strength (5°/tic) · Lock Delay (0 tics) · Two-Hand Reach (0.2 m) · Hand Lead (1 tic) · Pose Jump Cutoff (1 m) · Walk-Up Reach (0.30 m) · Main Grip Key Codes (446) · Off Grip Key Codes (443 436) |
 | Test and Debug: Pull | Arc Speed (22 m/s) · Arc Height (0.25) · Arc Pull-In (1.6) · Shortest Flight (6 tics) · Longest Flight (40 tics) · Pull Smoothness (0.6) · Pull Spin (1 turn) · Tumble (1) · Lob Height (1 m) · Pull Speed (12) · Steering (40) · Pull Strength (10 kg) · Flight Width (2) · Give Up After (140 tics) |
 | Test and Debug: Catch and Carry | Catch Distance (24) · Catch Window (4 tics) · Hold Distance (0.30 m) · Hold Stiffness (0.6) · Max Hold Speed (40) · Break Distance (1.5 m) · Half Speed Mass (120 kg) · Heavy Sag (1.0) · Two-Hand Lift (2.0) |
@@ -298,7 +320,7 @@ the server's settings; everything else is each player's own.
 
 ## Known concerns
 
-- (Fixed 11-10, code only, not run.) A gun you already carry with full ammo still can't be taken, as walking over it
+- (Fixed 11-10, code only, not shown.) A gun you already carry with full ammo still can't be taken, as walking over it
   leaves it on the floor; now **AMMO FULL** floats over it for a second (with RSQ VisualRewards; a short line on screen
   without it), your hand gets a soft buzz, and it drops at your feet for when you're low.
 
@@ -306,10 +328,12 @@ the server's settings; everything else is each player's own.
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09) | The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series, and its row appears under Radiant Silvergun Options. Nothing of the grab itself was exercised in that run |
-| **Shown on the rig, earlier build** (2026-11-03, the pack's own evidence file) | With both palms turned out (scripted poses), the main hand locked a clip at range; the Kill Rewards health and ammo bits lying beside it were refused |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of the grab was exercised. Those launches came before the G / H binds were taken out (commit 09243dd8) |
+| **rig only, not headset-confirmed** (2026-11-09) | The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series, and its row appears under Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`). Nothing of the grab itself was exercised in that run |
+| **rig only, not headset-confirmed, earlier build** (2026-11-03, `tools/rigtest/evidence_kr_bits_1103.txt`) | With both palms turned out (scripted poses), the main hand locked a clip at range; the Kill Rewards health and ammo bits lying beside it were refused |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page: the pull, the catch, carrying, throwing, swings, the shield, Barrel Lock-On, doors, switches, haptics and sounds |
+| **code only, not shown** | Everything else on this page: the pull, the catch, carrying, throwing, swings, the shield, Barrel Lock-On, doors, switches, haptics and sounds. Also the 11-09 and 11-10 changes: the heavy throw's weight for RSQ Score's Heavy Throw, Palm Gate off only with Grab Keys on, the door buzzing the hand that held it, the door palm with Gesture Ease (commit 2fdc039a); AMMO FULL (0ce3e402); no default binds (09243dd8) |
+| **not yet run** | D3, AMMO FULL over a full gun you carry, dropped at your feet, waits in the batched rig test (`design/rigtest_2026-11-10/RESULTS.md`, "Not yet run"). D1 (the heavy throw's kg logged) and D2 (Palm Gate off counts only with Grab Keys on) are in its plan (`PLAN.md`) with no result recorded |
 
 The 11-03 log is a picture of what the code did then. It is not proof of the current build.
 

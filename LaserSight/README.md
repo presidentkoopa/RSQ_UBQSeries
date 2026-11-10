@@ -19,7 +19,7 @@ a fire frame. Simulated headset on the Linux rig, not a capture from a real head
 - **It comes out of the barrel.** The beam starts at the gun's real muzzle and runs along its real barrel, measured from
   the gun's own 3D model. It fades to nothing over three metres and stops exactly where it hits.
 - **It stays glued to the gun.** The beam is drawn as part of the gun, so it moves at the headset's frame rate, not the
-  game's. It stays on between shots and through the kick, and steps aside while you reload.
+  game's. It stays on between shots and through the kick, and through a BD22 VR hand reload.
 - **The dot sits on things.** On a wall it lies flat on the wall; on a floor or ceiling, flat on that; on a monster, on
   its body. It keeps the same size on screen near or far, glows, and lights the spot it lands on.
 - **Two looks.** **Quest:** a clean, cheap beam. **PC VR:** a white-hot core inside a soft coloured glow.
@@ -29,7 +29,7 @@ a fire frame. Simulated headset on the Linux rig, not a capture from a real head
   land, with the beam bent along it.
 - **Your colours.** Any colour from a picker, per hand, beam and dot apart, per weapon slot, or a rainbow cycle.
 - **Night-vision laser.** Infrared Only hides it from the naked eye; pick up light amplification goggles to see it.
-- **It gets out of the way.** Point the gun at the floor, reload, switch guns or die and it goes out; punch, saw or
+- **It gets out of the way.** Point the gun at the floor, switch guns or die and it goes out; punch, saw or
   slice and there is no laser at all.
 
 ---
@@ -44,13 +44,28 @@ There is nothing to hold: load it, pick up a gun.
 | Hold any other gun | No beam (it has no measured muzzle), but the dot still shows where you aim |
 | Point the gun down past 55 degrees | The laser goes out until you raise it |
 | Switch guns | The main hand's laser goes out at once, until the new gun is up |
-| Reload, or raise or lower the gun | The beam goes out until the gun is steady again |
+| Reload a BD22 VR gun by hand | The beam stays on: the gun stays in a measured pose while your hand reloads |
+| Raise or lower the gun (a switch, a quick grenade), or a reload the gun plays as an animation | The beam goes out until the gun is steady again |
 | Aim at a live enemy | The dot swells and pulses (Target Lock) |
 | Fire a grenade launcher once | From then on: a dotted arc to the landing point, beam bent along it |
 | Pick up light amplification goggles with Infrared Only on | The laser appears while they last |
 
 There are no keys to bind. Each hand's laser is switched on or off on this pack's page (**Main Hand**, **Off Hand**;
 greyed while **Laser Sight** is off).
+
+---
+
+## Controls
+
+- **No keys.** The two old keys, **Laser on/off (main hand)** and **Laser on/off (off hand)**, went on 2026-11-10
+  (owner: "we do not need keybinds for things that can be turned on and off in options"). They are now the menu rows
+  **Main Hand** and **Off Hand**. The buzz those keys gave went with them.
+- **Each hand's laser** comes out of the gun in that hand. Nothing to hold or press for it.
+- **Buttons it watches, never takes:** your fire and alt fire. After any press the beam stays up for a second (the
+  fire, recoil and pump frames); a gun's shots teach it the gun's spread (Spread Ring) and a launcher's arc (Grenade
+  Arc).
+- **No gestures.** One pose: the gun pointed down past 55 degrees puts the laser out (**Off When Aimed Down**).
+- **Menu buttons:** Reset All.
 
 ---
 
@@ -69,8 +84,10 @@ not a capture from a real headset.*
   the beam's start moves with the gun.
 - **Stays on between shots.** For a second after any trigger press, frames that were never measured (fire, kick,
   pump) keep the gun's last measured pose, so the beam does not blink off on every shot.
-- **Hides while you reload.** Past that second, an unmeasured frame is a reload or the gun going up or down, and the
-  beam hides until the gun is back in a measured pose. Starting a weapon switch puts the main hand's beam out at once.
+- **Hides while the gun moves away.** Past that second, an unmeasured frame (the gun going up or down, or a reload
+  the gun plays as an animation) hides the beam until the gun is back in a measured pose. Starting a weapon switch puts
+  the main hand's beam out at once. A BD22 VR hand reload keeps the gun in a measured pose, so the beam stays on
+  through it (rig, 11-10).
 - **Fades and stops.** Brightest at the muzzle, gone at **Beam Fade Length** (3 m). It comes in 72 lengths from 10 cm
   to 6 m, and the longest one that does not pass what the laser hits is drawn, so it never shows through a wall.
 - **Real beams show in the dark.** In full light the beam is 35% as bright as in the dark (**Beam in Daylight**); a
@@ -200,7 +217,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 - **Show on Melee** (No): fists, chainsaw, saber, shield and an empty hand get no laser. Brutal Doom's off-hand gun
   copies are guns and always get one.
 - **Off When Aimed Down** (55 degrees): pointed down past this, the laser goes out; the main hand's also goes out
-  while you switch guns. 0 keeps it on always (the beam still goes out during a switch or a reload, see The beam).
+  while you switch guns. 0 keeps it on always (the beam still goes out during a switch, see The beam).
 - **Only When Ready** (No): the laser shows only while the gun is ready to fire, not while firing, reloading or
   switching.
 - **Infrared Only** (off): invisible to the naked eye; visible while the light amplification goggles last.
@@ -264,9 +281,12 @@ The page ends with **Reset All**: every setting on the page and on Test and Debu
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, current build) | The beam staying on between shots: the pistol's fire frames and the pump shotgun's pump frames, none of them measured, kept the beam and the PC VR glow up every tic (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`, sections BR_B_PISTOL and BR_B_SHOTGUN; frames: `design/rigtest_2026-11-09/frames/B_pistol_PISTB_rawrow-1_beam_on_f466.jpg`, `B_shotgun_pump_beam_on_f519.jpg`). The rifle's beam drawn in the same run (frames `I_ddz_mode2_default_t40_f028.jpg`, `I_ddz_mode0_t232_relit_f076.jpg`). The pack loaded with no script error or warning of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series, and its page sits under Radiant Silvergun Options (same log). Rig only, not headset-confirmed |
+| **rig only, not headset-confirmed** (2026-11-10, L1: `design/rigtest_2026-11-10/evidence/L9_laser_reload_switch_quicknade.jpg`, t220 to t740) | The pistol's beam on at idle and through 7 shots; during a BD22 VR hand reload (magazine out, gun empty) the beam stayed on; on the shotgun after the switch, gone while the gun lowered for a quick grenade and back with it |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | The page as loaded: **Which Laser** (RSQ Laser Sight), **Main Hand** and **Off Hand** (On), and **Beam Sparkle (Quest)** (Off) (`design/rigtest_2026-11-10/evidence/menus_new_rows.jpg`). Only the rows were seen, not what they do. Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). No laser check was run |
+| **rig only, not headset-confirmed** (2026-11-09, the build of that day) | The beam staying on between shots: the pistol's fire frames and the pump shotgun's pump frames, none of them measured, kept the beam and the PC VR glow up every tic (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`, sections BR_B_PISTOL and BR_B_SHOTGUN; frames: `design/rigtest_2026-11-09/frames/B_pistol_PISTB_rawrow-1_beam_on_f466.jpg`, `B_shotgun_pump_beam_on_f519.jpg`). The rifle's beam drawn in the same run (frames `I_ddz_mode2_default_t40_f028.jpg`, `I_ddz_mode0_t232_relit_f076.jpg`). The pack loaded with no script error or warning of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series, and its page sits under Radiant Silvergun Options (same log). The 11-10 changes came after it |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page: the dot and where it sits, its glow and light, surfaces, Dot Only on Enemies, Follow Brutal Doom Shots, Target Lock, Colour on Target, Headshot Reaction and its Gun Bonsai VR levels, the grenade arc and the bent beam, the spread ring, the range readout, every colour option, Infrared Only, the Main Hand / Off Hand rows, Which Laser with M8F's mod, the beam hiding during a reload or raise / lower and at a weapon switch (and its one-second hold after a trigger press), the greyed rows, Glow Intensity widening the light, the Map Units readout, Off When Aimed Down, Only When Ready, the Quest look's beam, Reset All |
+| **code only, not shown** | Everything else on this page: the dot and where it sits, its glow and light, surfaces, Dot Only on Enemies, Follow Brutal Doom Shots, Target Lock, Colour on Target, Headshot Reaction and its Gun Bonsai VR levels, the grenade arc and the bent beam, the spread ring, the range readout, every colour option, Infrared Only, the Main Hand / Off Hand rows, the keys gone (commit ef179dbc), Which Laser with M8F's mod, Beam Sparkle's sparks (L6 looked for them at 480 and 1080 px and saw none; the sparks are about 3 cm and nothing logs one: `L9c_sparkle_1080_none_seen.png`), the beam hiding during a reload the gun plays as an animation, the greyed rows, Glow Intensity widening the light, the Map Units readout, Off When Aimed Down, Only When Ready, the Quest look's beam, Reset All |
+| **not yet run** | L2 to L5 wait in the batched rig test (`design/rigtest_2026-11-10/RESULTS.md`, "Not yet run"): Which Laser with M8F's Laser Sight; the greyed rows; Glow Intensity 1 against 3; the Map Units readout on a steep shot |
 
 Earlier commit messages (2026-11-06) say Dot Only on Enemies and the bent arc beam (with a test lobber, not BD22's
 launcher) were shown on the rig; those logs and frames are not in the repo, so they are not counted here.

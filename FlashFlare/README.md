@@ -53,6 +53,20 @@ taking your off hand (it falls there, still burning). A burning flare in your ha
 
 ---
 
+## Controls
+
+- **No keys.** Nothing to bind, and no menu button stands in for a key.
+- **Off hand only.** Your gun hand keeps its gun.
+  - **Off-hand grip** (read raw from QuestZDoom's grip keys; their codes are on Test and Debug): at the pocket on your
+    chest (gun-hand side), take a flare or put an unlit one back; at the clip on your chest (off-hand side), take the
+    flashlight or put it back.
+  - **Off-hand trigger:** with a flare, light it (**Light It By** Trigger or Either); hold it, swing and let go to
+    throw. With the flashlight, click it off and on.
+- **Gestures:** a sharp flick down of the flare hand strikes it (**Light It By** Strike or Either); a swing released
+  with the trigger held throws it.
+
+---
+
 ## The flare
 
 ![Taken from the pocket, unlit](docs/readme/flare_taken.jpg)
@@ -194,9 +208,11 @@ read (Light It By, the speeds, the pocket and clip places, the grip keys) and th
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09) | The flashlight taken into the off hand (it came up switched on) and switched off and on, sent as the same network events the grip and the trigger send; the Beam Look lights: FnF 1, DarkDoomZ with Spill Light 2, DarkDoomZ without Spill Light 1, switched off 0. The pack loaded with no script error of its own, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of this pack was exercised |
+| **rig only, not headset-confirmed** (2026-11-09, `design/rigtest_2026-11-09/logs/J_flashlight.log`) | The flashlight taken into the off hand (it came up switched on) and switched off and on, sent as the same network events the grip and the trigger send; the Beam Look lights: FnF 1, DarkDoomZ with Spill Light 2, DarkDoomZ without Spill Light 1, switched off 0. The pack loaded with no script error of its own, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page, including reading the hands themselves (grip, strike, throw) |
+| **code only, not shown** | Everything else on this page, including reading the hands themselves (grip, strike, throw). Also the 11-09 evening changes (commit 9533a9d7): no free flare at a level exit (a lit one is used up), the battery's charge carried between levels |
+| **not yet run** | Nothing. The batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/PLAN.md`) has no check for this pack |
 
 The rig frames from earlier builds on this page are pictures of what the code did then. They are not proof of the
 current build.

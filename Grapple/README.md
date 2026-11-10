@@ -3,10 +3,17 @@
 A grappling hook in each hand: aim it with your real arm, fire, and fling yourself across the map or drag monsters
 to your feet.
 
-**Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.**
+> **Waiting on Grapple 2.0.** This page describes the Grapple as it is today. Its known bugs and the next version are
+> held for the Grapple 2.0 update (owner, 2026-11-10; `design/PLANNED_PROJECTS.md`). A new page is drafted
+> (`README_draft.md`) and waits for 2.0 too.
 
-New on 11-06 (rig only, not headset-confirmed): the Rope wall hook pulls at jp_grapple's speed and lets go when you
-arrive; hanging, climbing and mantling are Swing and Momentum's.
+**Status:** rig only, not headset-confirmed (older builds, 10-27 to 11-03, logs in `test/evidence/`; and a clean load
+on the full series order on 11-09 and 11-10). The one Fire Hook key and Fire Hook From (11-10): code only, not shown.
+Nothing is headset-confirmed: the owner played earlier builds in his headset, but the repo records no feature confirmed
+working there.
+
+New on 11-06 (the commit says a rig log showed it; that log is not in the repo, so: code only, not shown): the Rope wall
+hook pulls at jp_grapple's speed and lets go when you arrive; hanging, climbing and mantling are Swing and Momentum's.
 
 Two hooks, one per controller, each fired along the exact line your hand points. Out of the box it plays like
 jpalomo's classic jp_grapple, rebuilt number for number. Turn on Swing and Momentum and it becomes a full rope: hang from it,
@@ -16,7 +23,7 @@ All of it is ZScript on stock QuestZDoom 17.3. No engine changes.
 ## Standout feature: climbing the rope hand over hand
 
 Turn on Swing and Momentum, fire at a high ledge and hang. Reach up with an empty
-hand, hold Grab Rope and pull down. Your body rises by exactly how far your hand moved. Let go, reach up with the
+hand, take hold of the rope (RSQ Distance Grab's grab keys) and pull down. Your body rises by exactly how far your hand moved. Let go, reach up with the
 other hand, take hold, pull again. Push down to lower yourself. Both hands can hold the rope at once, and the climb
 follows their average, so it stays smooth. Only an empty hand takes hold: a climb never takes a gun out of your
 hand. The rope is drawn running through your upper hand. When you reach the lip, push the stick forward and you
@@ -37,7 +44,7 @@ mantle up and over.
 - **Hook Thump:** a thump in your hand when the claw bites or the rope catches you.
 
 **On the rope (Swing on; Wraps Corners also in Rope mode)**
-- **Climb hand over hand** with a free hand on Grab Rope. Both hands at once.
+- **Climb hand over hand** with a free hand on the rope (taken with RSQ Distance Grab's grab keys). Both hands at once.
 - **Mantle:** hanging under a lip, push the stick forward to go up and over.
 - **Rope wraps corners:** swing past a corner and the rope bends round it instead of snapping.
 - **Calm swing (Swing on):** pull the stick back to brake a swing in about a second.
@@ -53,7 +60,7 @@ mantle up and over.
 - **Split Pull (optional, Slide mode):** the pull is shared by weight. You go part of the way, it comes the rest.
 
 **Extras**
-- **Whip (optional, off):** the same binds crack a short whip. It hits the first thing in reach and knocks it out
+- **Whip (optional, off):** the Fire Hook key cracks a short whip. It hits the first thing in reach and knocks it out
   of its attack. Crack it at something above you and it wraps round and becomes a rope.
 - **Hook Switches and Doors (optional, off):** the claw uses a switch or door it hits, with the map's own rules.
 - **Aim Dot (optional, off):** a faint dot where the claw would bite, while an empty hand points.
@@ -63,16 +70,16 @@ mantle up and over.
 
 ## How To Play
 
-1. **Bind the hooks.** There are no default binds. Open Options → Customize Controls, find the **RSQ Grapple**
-   section and bind Fire Hook (one key since 11-10; **Fire Hook From** on the page picks the hand). Stick clicks work
-   well. To climb, take the rope with RSQ Distance Grab's grips (Grapple's own Grab Rope keys went 11-10; they also take
-   hold of the rope).
+1. **Bind the hook.** There is no default bind. Open Options → Customize Controls, find the **RSQ Grapple**
+   section and bind **Fire Hook** (one key since 11-10; **Fire Hook From** on the page picks the hand, the off hand
+   by default). Stick clicks work well. To climb, bind RSQ Distance Grab's two grab keys too (they have no default
+   bind since 11-10): they are how you take hold of the rope. Grapple's own Grab Rope keys went 11-10.
 2. **First swing (OG):** point at a wall across a gap and press Fire Hook. The claw bites and flings you toward
    it. Aim a little high to clear the gap.
 3. **Pull monsters:** fire at an imp. It is thrown to your feet. Heavy monsters pull you to them instead.
 4. **Try the rope:** set Wall Hook to Rope. Fire at a ledge above you. The rope pulls you up fast and lets go when
    you get there. To hang, turn on Swing and Momentum: hold the button to reel in, tap it to drop, reach up with an
-   empty hand, hold Grab Rope and pull down to climb, push the stick forward under the lip to mantle.
+   empty hand, hold Distance Grab's grab key for that hand and pull down to climb, push the stick forward under the lip to mantle.
 5. **Master the swing:** turn on Swing and Momentum. Fire at a ceiling, step off a ledge and lean into the swing
    with the stick. Let go at the top of the arc to fly. Pull the stick back to calm it down.
 
@@ -82,16 +89,20 @@ mantle up and over.
 |---|---|---|
 | Fire hook | Fire Hook (the hand set by Fire Hook From, off hand by default) | Fires from that controller along where it points. No default bind. |
 | Recall a miss | Press again while the claw is flying | |
-| Reel in | Hold the fire bind while latched | Swing mode. Holding from the shot reels at once. |
-| Let go | Tap the fire bind (release within 8 tics) while latched | Swing mode (or Rope mode, before you arrive; it lets go by itself on arrival). |
-| Climb | Hold Grab Rope with an empty hand touching the rope, pull down; push up to lower | Within 16 map units of the rope. Distance Grab's binds also work. |
+| Reel in | Hold Fire Hook while latched | Swing mode. Holding from the shot reels at once. |
+| Let go | Tap Fire Hook (release within 8 tics) while latched | Swing mode (or Rope mode, before you arrive; it lets go by itself on arrival). |
+| Climb | Hold RSQ Distance Grab's grab key for that hand, the hand empty and touching the rope; pull down; push up to lower | Within 16 map units of the rope. Needs RSQ Distance Grab and Grab Keys Hold Rope on; its keys have no default bind. |
 | Pump a swing | Movement stick | Swing mode, in the air. |
 | Calm a swing | Stick pulled back past half | |
 | Mantle | Stick forward while hanging under a lip | |
 | Lasso flick | A hard flick of the arm (3 m/s) | Lasso mode. Throws the held monster that way. |
-| Whip | Fire binds | Only with Whip on. |
+| Whip | Fire Hook | Only with Whip on. |
 
-Key binds (Options → Customize Controls → RSQ Grapple): Fire Hook, one key (owner 11-10). Left-handed play works: the engine's left-handed scheme swaps which controller is main.
+**Keys:** one, **Fire Hook** (Options → Customize Controls → RSQ Grapple, or the page's Controls). No default bind. On
+11-10 it replaced four keys: Fire Hook (Main), Fire Hook (Off), Grab Rope (Main) and Grab Rope (Off). Which hand
+fires is the menu row **Fire Hook From** (Off Hand by default, or Main Hand). The rope is taken with RSQ Distance
+Grab's grab keys. The trigger, the grip and Use are not read. The one gesture is the Lasso's arm flick. Left-handed
+play works: the engine's left-handed scheme swaps which controller is main.
 
 ## Menu
 
@@ -114,10 +125,10 @@ the row can still turn it off.
 | Hook Uses Switches | Off | The claw uses switches and doors it hits. |
 | Score Stunts | On | Gap crossings pay RSQ Score's Indiana Jones. |
 | **Rope** | | |
-| Rope Climbing | On | A free hand on Grab Rope climbs. |
+| Rope Climbing | On | A free hand holding the rope (Distance Grab's grab keys) climbs. |
 | Two Hands on Rope | On | Both hands may hold at once. Off: a new hand takes over. |
 | Empty Hand Only | On | Only an empty hand may climb. |
-| Grab Keys Hold Rope | On | RSQ Distance Grab's grab binds take hold of the rope. |
+| Grab Keys Hold Rope | On | RSQ Distance Grab's grab keys take hold of the rope. The only way to take hold now. |
 | Wraps Corners | On | The rope bends round corners. |
 | Mantle Over Ledges | On | Stick forward under a lip climbs over it. |
 | Calm Swing | On | Stick back brakes a swing (Swing and Momentum). |
@@ -132,12 +143,12 @@ the row can still turn it off.
 | Throw Damage | On | Yank and Lasso: a thrown monster is hurt by its landing or what it hits. |
 | Art and Sound | JP | JP, Combat FX or Ballistics art and sound. |
 | **Whip** | | |
-| Whip Instead of Hook | Off | The fire binds crack a whip instead of firing the claw. |
+| Whip Instead of Hook | Off | The Fire Hook key cracks a whip instead of firing the claw. |
 | Whip Stun | On | A crack knocks the monster into pain. |
 | Whip Snag | On | The tip wraps round things above your hand (the rope). |
 | **Controls** | | |
-| Fire Hook: Main / Off | Unbound | The hook binds (also in Customize Controls, "RSQ Grapple"). |
-| Grab Rope: Main / Off | Unbound | The rope grip binds. |
+| Fire Hook | Unbound | The one hook key (also in Customize Controls, "RSQ Grapple"). |
+| Fire Hook From | Off Hand | Which hand Fire Hook fires from: Main Hand or Off Hand. Your own setting. |
 | Test and Debug | | The page below. |
 | Reset All | | Every setting on both pages back to its default. |
 
@@ -194,14 +205,14 @@ RSQ Grapple runs alone. It finds the other mods by name, so load order among RSQ
   Double Hook (two hooked monsters slammed together), Zip Kick (arriving fast on a monster hurts it), Scorpion
   (an empty fist punches what the hook brings in; needs RSQ Melee) and Twin Lines (two wall ropes at once). The
   hook earns its own XP.
-- **RSQ Distance Grab:** its grab binds also take hold of the rope.
+- **RSQ Distance Grab:** its grab keys are how you take hold of the rope (none bound by default).
 - **RSQ SlowMo:** you and the claw stay at full speed while hooked monsters move at the slowed world's pace.
 - **RSQ Score:** Indiana Jones points for gap crossings, plus the hook's stunts for its scoring.
 - **RSQ Miniboss:** a miniboss set to "Can't Be Yanked" is treated as a boss: an anchor.
 - **RSQ VisualRewards:** HP bars show when a monster is hooked or stunned by the hook.
 - **RSQ Accessibility (its gesture reader)** and **RSQ Melee:** no gestures or melee swings are read while you climb, swing or reel.
-- **RSQ Accessibility:** Steady Hands smooths the aim and the aim dot. Hold to Toggle latches the fire bind.
-  Slower Taps lengthens the tap window. One-Handed lets the main controller fire the off hook. Gesture Ease
+- **RSQ Accessibility:** Steady Hands smooths the aim and the aim dot. Hold to Toggle latches the Fire Hook key.
+  Slower Taps lengthens the tap window. One-Handed's Off-Hand Modifier lets the main controller fire the off hook. Gesture Ease
   widens Grab Reach. The Comfort Vignette reacts to rope speed. Rumble Strength scales the thump.
 - **Brutal Doom / BD22 VR Reloaded:** BD22 VR's fists count as an empty hand for climbing.
 

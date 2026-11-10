@@ -54,6 +54,17 @@ It is a button on this pack's page, not a key (owner 11-10: keys are precious in
 
 ---
 
+## Controls
+
+- **No keys.** The old **Randomize colours** key went on 2026-11-10: it is now the menu button **Randomize Colours
+  Now**.
+- **No hands, no buttons, no gestures.** Nothing here reads a trigger, a grip or your hands.
+- **Menu buttons:** **Shuffle Profile Now**, **Randomize Colours Now**, **Randomize Current Look**, **Reset All**.
+- DarkDoomZ's flashlight key is not in this pack (its flashlight was left out on 2026-11-09; RSQ FnF's is the
+  series' one). The darkness has no key.
+
+---
+
 ## The glow
 
 ### Rooms
@@ -349,7 +360,7 @@ below it. Defaults in brackets.
 | Test and Debug | Rooms per Tic (128) · Colour Seed (1337) · Combo Per Kill (0.08). Custom Profile: Colour Wander (0.00) · Floor Balance (1.0) · Ceiling Balance (1.0) · Pulse Speed (10 /min) · Pulse Depth (0.30). Debug Log (Off; One Line per Map, + Every Second) |
 
 The page ends with **Reset All**: every setting on the page, on Test and Debug and on the Darkness pages goes back to
-its default, both Profile rows included (the engine's Fog Mode and your key binding stay).
+its default, both Profile rows included (the engine's Fog Mode stays).
 
 All the settings are the host's (one setting for everyone in netplay), except Debug Log, which is each player's own.
 
@@ -359,10 +370,12 @@ All the settings are the host's (one setting for everyone in netplay), except De
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09) | The built-in DarkDoomZ: MAP01 darker from the start at its defaults (58 of 59 sectors, average light 173 to 108); Darkness Mode switched live to DarkDoom Black (every sector 0), to Disable (every sector back to its own light) and back to the default (108 again) without a reload; no DarkDoomZ flashlight or spotlight in the game. Darkness (DarkDoomZ) on this pack's page, under Radiant Silvergun Options (the menu as loaded, row by row). The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series. That run was on the build of 18:49; the core, reactions and service code and CVARINFO.txt have changed since (19:40), and the current build has not been run on the rig |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of this pack was exercised |
+| **rig only, not headset-confirmed** (2026-11-09; `design/rigtest_2026-11-09/logs/main_A-G_I.log`, frames `I_ddz_*`) | The built-in DarkDoomZ: MAP01 darker from the start at its defaults (58 of 59 sectors, average light 173 to 108); Darkness Mode switched live to DarkDoom Black (every sector 0), to Disable (every sector back to its own light) and back to the default (108 again) without a reload; no DarkDoomZ flashlight or spotlight in the game. Darkness (DarkDoomZ) on this pack's page, under Radiant Silvergun Options (the menu as loaded, row by row). The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series. That run was on the build of 18:49; the core, reactions and service code and CVARINFO.txt changed after it (19:40) |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | The 11-09 evening changes: the darkness switching off with Glow In The Dark, and Randomize Colours deciding the same way on every machine in netplay. |
-| **Also code only** | Everything else on this page: the glow, the liquids, the things that matter, the profiles and re-rolls, Randomize Colours Now and its stand-down, the pairing, the reactions (miniboss, landing darkness, Red Map, wave, combo, slow motion), the lights, Reset All |
+| **code only, not shown** | The 11-09 evening changes (commit 4fcfcbbe): the darkness switching off with Glow In The Dark, and Randomize Colours deciding the same way on every machine in netplay. The 11-10 change (commit 5d1d02b8): Randomize Colours Now as a menu button, its key gone |
+| **code only, not shown** | Everything else on this page: the glow, the liquids, the things that matter, the profiles and re-rolls, Randomize Colours Now and its stand-down, the pairing, the reactions (miniboss, landing darkness, Red Map, wave, combo, slow motion), the lights, Reset All |
+| **not yet run** | Nothing. The batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/PLAN.md`) has no check for this pack |
 
 The frames on this page from 2026-11-06 are pictures of what an earlier build did. They are not proof of the current
 build.
@@ -382,7 +395,7 @@ build.
   changed. Settings are read once a second, so a change shows within a second.
 - **Seeded colours.** Every random colour is a hash of the seed, the room and the plane, so the same seed always gives
   the same colours. Re-roll Colours decides when the seed changes.
-- **Netplay.** The settings are the host's. The menu commands and the Randomize Colours key travel as network events.
+- **Netplay.** The settings are the host's. The menu buttons (Randomize Colours Now among them) travel as network events.
   Plain Gun Bonsai's level-up signal names no player, so in co-op only the first player's copy counts and the wave
   rolls from that player. The Red Map is asked for each machine's own player, so in co-op it shows only on the screen
   of the player who is down.

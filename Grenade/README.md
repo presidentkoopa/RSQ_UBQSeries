@@ -34,10 +34,29 @@ it out of the air.
 | Let go of the squeeze while holding still | The spoon flies and it starts cooking. Squeeze again and swing to throw |
 | Alt fire with the pin still in | Next grenade kind (the grenade changes colour) |
 | Shoot a grenade in flight | It goes off on the spot |
-| Press Brutal Doom's Toss Grenade key (G), or bind **Quick Grenade** | A quick throw, whatever is in your hands: the same timing, speed and arc as Brutal Doom 22's toss. With RSQ SlowMo the world slows so you can shoot it in the air. With Brutal Doom VR loaded it needs **Replace Brutal Doom's Grenade** on (otherwise G throws Brutal Doom's own) |
+| Press Brutal Doom's Toss Grenade key (G), or bind **Quick Grenade** | A quick throw, whatever is in your hands: the same timing, speed and arc as Brutal Doom 22's toss. With RSQ SlowMo the world slows so you can shoot it in the air. With Brutal Doom VR loaded it needs **Replace Brutal Doom's Grenade** on, or BD22 VR's own **Use RSQ Grenade Instead** (otherwise G throws Brutal Doom's own) |
 
 You start each game with 3. They turn up lying in levels beside other items, singly or in packs of three. You carry 8,
 or 16 with a backpack.
+
+---
+
+## Controls
+
+- **Keys: one, Quick Grenade.** No default bind: bind it on this pack's page (**Quick Grenade Key**) or in Customize
+  Controls, under "RSQ Grenade". Brutal Doom's own **Toss Grenade** key (`+user1`, G by default in Brutal Doom) does
+  the same quick throw while this pack is in play. **Quick Grenade (BD22's Toss Grenade key)** on the page turns both
+  off. With BD22 VR loaded, both need **Replace Brutal Doom's Grenade** on (or BD22 VR's **Use RSQ Grenade
+  Instead**); otherwise this pack stands down and BD22's own toss is the quick throw.
+- **The hand holding the grenade** (either hand):
+  - **trigger or alt fire, held:** the squeeze on the spoon. Swing and let go to throw; let go with the hand still and
+    it starts cooking.
+  - **alt fire, pin still in:** the next grenade kind (**Alt Fire Changes Type**).
+- **The other hand's trigger:** on the ring, then pull away: the pin comes out.
+- **Gestures:** the throw is your swing; squeeze and hold the grenade at your mouth to pull the pin with your teeth
+  (**Pin With Your Teeth**).
+- **Taking one:** pick slot 9, or with RSQ Tactical Rig reach to the front of your belt (the rig's grip).
+- No key of this pack became a menu button.
 
 ---
 
@@ -143,9 +162,12 @@ headset.*
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09) | Throwing with the trigger, with alt fire, and cook-then-throw, with and without Replace Brutal Doom's Grenade |
+| **rig only, not headset-confirmed** (2026-11-10, G1: `design/rigtest_2026-11-10/evidence/L9_log.txt`) | The quick throw on Brutal Doom's Toss Grenade (`+user1`): out 17 tics after the press, 45.3 units a tic, one grenade spent. The **Quick Grenade** key did nothing at first (the engine marks a key's network event as typed by hand, and this pack dropped those); fixed in commit ae089395, then the key threw the same way, 17 tics out at the same speed. With BD22 VR loaded and Replace Brutal Doom's Grenade on. The pin and toss sounds and the side-by-side with BD22's own toss were not logged |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of this pack was exercised |
+| **rig only, not headset-confirmed** (2026-11-09; `design/rigtest_2026-11-09/logs/`, frames `A1_*`, `A3_*`) | Throwing with the trigger, with alt fire, and cook-then-throw, with and without Replace Brutal Doom's Grenade |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page |
+| **code only, not shown** | Everything else on this page. Among it, the 11-10 changes: RSQ SlowMo's Quick Grenade slow, Replace Brutal Doom's Barrels on by default (4f5280c1), the chain's mega blasts (0c80b1d0), the Kinetic sounds |
+| **not yet run** | G2 (Brutal Doom's barrels replaced by default; a chain of six or more growing; the mega blast) waits in the batched rig test (`design/rigtest_2026-11-10/RESULTS.md`, "Not yet run"). From G1, still not logged: the pin and toss sounds, the speed against BD22's own toss measured the same way, RSQ SlowMo's slow |
 
 ---
 

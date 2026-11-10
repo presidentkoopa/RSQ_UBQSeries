@@ -51,8 +51,8 @@ gets stronger.
 | Break every piece | One-on-one: its own bar takes the damage, life by life |
 | Kill it | A gun or power-up, bits and Score rows; the level's music comes back |
 
-**The watch check** comes from RSQ Gestures. Without Gestures, RSQ Gun Cards' copy or this mod's own copy does the same
-check, so the call-in always works.
+**The watch check** comes from RSQ Accessibility (which carries what was RSQ Gestures). Without it, RSQ Gun Cards'
+copy or this mod's own copy does the same check, so the call-in always works.
 
 **When it won't come,** a small line under the full meter says why: *No Miniboss: Too Early* (the map's first minute),
 *Map Limit* (two a map), *Cooldown* (90 s after the last), *Low Health* (under 40), *Near Exit*, *Too Busy* (more than
@@ -64,6 +64,17 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 *The mod's own HUD art from graphics/, enlarged (an earlier set: the shield icon has since gone from the HUD).*
 
 *[Still to come: the meter filling red under the score, then gold and beating, with a wait line under it]*
+
+---
+
+## Controls
+
+- **No keys**, and no menu button stands in for one.
+- **Calling the fight in:** hold a watch check with either hand (the back of the wrist turned to your face, held still)
+  and press **Use** while it holds, or a moment after. **Call It In: Watch Check + Use** on the page switches this off;
+  the fight still comes by itself 60 s after the meter is full (**Arrives By Itself**).
+- **The fight itself** is your guns, fists and the other mods: this mod reads no trigger, grip or gesture of its own.
+- **Menu buttons:** Reset All. The console commands listed in Under the hood are for testing.
 
 ---
 
@@ -281,7 +292,7 @@ happen.
   health. RSQ Gun Bonsai VR and RSQ ShieldSaw read that and size their own numbers on it. With Brutal Doom 22 VR's
   LegenDoom Lite patch, legendary weapons drop only from a miniboss fight's monsters.
 - **RSQ Gun Bonsai VR:** its weapon XP fills the meter and its player level sets the tier.
-- **RSQ Gestures and RSQ Gun Cards:** the watch check for the call-in (this mod carries its own copy too).
+- **RSQ Accessibility and RSQ Gun Cards:** the watch check for the call-in (this mod carries its own copy too).
 - **RSQ Tactical Rig:** while a miniboss fight can be called, the watch check's Use press is the call-in's and the gun stays
   put; killing a miniboss fills your cigarette pocket.
 - **RSQ Grapple and RSQ Whip:** with **Can't Be Yanked** on, they refuse to yank or throw a miniboss: the line pulls you
@@ -324,11 +335,13 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
-| **Shown on the rig** (2026-11-09, logs and a frame sheet from a test probe: TestRig/bossfight_rig/evidence_2026-11-09) | The reworked fight, called in, with RSQ Monsters: three thralls landing one by one on V2 beams and the miniboss on a V4 beam; three segments; a shot on the shield doing no damage; a thrall kill opening a three-second window; the window missed and +3 tiers asked on 11 monsters map-wide, with the swapped bodies found again; a hit in the window breaking a segment; two lives lost, each refilled with five seconds of invulnerability and +1 tier; the death and its drop. Run twice: ColorfulHell monsters, and (since removed) a MeatGrinder miniboss with ColorfulHell thralls through Miniboss From / Thralls From. The same day the reworked pack loaded on the series' load order with no script error from it (miniboss fights off in those runs) |
-| **Shown on the rig** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up); the miniboss fight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a miniboss fight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a miniboss fight runs |
-| **Shown on the rig before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test: `design/rigtest_2026-11-10/RESULTS.md` and `evidence/`) | The rename: the menus read Minibosses, Miniboss Meter Fills From and Other Mods Treat It as a Boss (`B7_miniboss_menu.jpg`); RSQ SlowMo's landing line MINIBOSS INCOMING, and the called-in kill paying one Score row, "Miniboss Called" (`L1_log.txt`). The HUD stack: the thrall bar, the miniboss's bar with its tier gem and Champion icon on its right, three life bars (`B8_stack_before_shield_removed.png`; the shield icon in that frame was taken off the HUD afterwards). "GUARD!" on a shielded hit and during the invulnerability after a life is lost, "TARGET!" over the miniboss while it can be shot and gone when a life is lost, following it into a new body (`L5_log.txt`). Graves Rise Mode greyed with Graves Rise off (`menus_new_rows.jpg`). The fight was called in by console command in these runs, not by the watch check. Zero script errors from our packs on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series |
+| **rig only, not headset-confirmed** (2026-11-09, logs and a frame sheet from a test probe: `TestRig/bossfight_rig/evidence_2026-11-09`) | The reworked fight, called in, with RSQ Monsters: three thralls landing one by one on V2 beams and the miniboss on a V4 beam; three segments; a shot on the shield doing no damage; a thrall kill opening a three-second window; the window missed and +3 tiers asked on 11 monsters map-wide, with the swapped bodies found again; a hit in the window breaking a segment; two lives lost, each refilled with five seconds of invulnerability and +1 tier; the death and its drop. Run twice: ColorfulHell monsters, and (since removed) a MeatGrinder miniboss with ColorfulHell thralls through Miniboss From / Thralls From. The same day the reworked pack loaded on the series' load order with no script error from it (miniboss fights off in those runs) |
+| **rig only, not headset-confirmed** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up); the miniboss fight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a miniboss fight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a miniboss fight runs |
+| **rig only, not headset-confirmed, before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
 | **Headset-confirmed** | Nothing yet |
-| **Code only, not yet shown** | Everything else on this page, among it: the HUD bars of the fight (seen only in the design mockups), "GUARD!", "TARGET!", the grey Xs and the pops, the slow motion and Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music, Graves Rise, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the tethers and flames since the rework, the rage since the rework, the hub tier reset |
+| **code only, not shown** | Everything else on this page, among it: the grey Xs and the pops, the slow motion and Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music, Graves Rise, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the tethers and flames since the rework, the rage since the rework, the hub tier reset |
+| **not yet run** | B1 to B6 wait in the batched rig test (`design/rigtest_2026-11-10/PLAN.md`): a failed landing retrying quietly; the life bars counting inherited lives during the landing; the classic pick showing the HUD bars; Legendary Thralls off; Graves Rise in all four modes; the kill dropping no life crate and no x3 bits |
 
 ---
 
