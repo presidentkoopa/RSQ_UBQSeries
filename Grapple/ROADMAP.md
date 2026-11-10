@@ -1,3 +1,17 @@
+# >>> COME BACK TO GRAPPLE (owner, 2026-11-10 03:04) <<<
+
+**Grapple 2.0 is mid-talk, not settled. Nothing below is the plan any more.** Owner: OG jp hookshot in ZScript
+(not a swing: Ermac/Agent_Ash's hook is a pendulum and the Whip already does that). Proposed 11-10:
+- Walls/flats exactly jp: claw 40 u/tic x 20 tics (~800), one fling (dist/12 sideways, height/4 up), no tether, jp chain trail.
+- Monsters by what they replace (BD masses are unreliable: Revenant/Arachnotron read 100). Come to you: zombie,
+  shotgun guy, chaingunner, imp, lost soul, SS, Keen. You go to them: pinky, spectre and up, incl. archvile and
+  mancubus. Unknown monsters: radius >= 30 pulls you, narrower comes.
+- Air steering after any fling (our own nudge, slider); re-fire mid-air after a cooldown (chains).
+- Cut: rope, swing, climb, mantle, wrap, lasso, flick, slide, yank tumble, whip mode, cable, Indiana Jones row.
+- Later, separate: arcade movement mod (dash, double jump, ledge grab) from Ermac's Hyper-V (GPLv3) / ZMovement.
+**Open, owner to answer:** (1) Revenant comes to you or you go to it? (2) Arriving at a big monster: bump like
+the wall fling, or stop at punching range for a Melee follow-up? Build nothing until he says go.
+
 # RSQ_Grapple -- road to Hook 1.0
 
 Hook 1.0 = the core as built (HANDOFF.md, measured 10-27) + the items below. Status is measured on

@@ -99,3 +99,16 @@ Format: mod, what to show, still or GIF, notes. Captures are labelled in the REA
 | Grapple | The Ballistics claw in flight (tracer streak) | still | |
 | Grapple | Double Hook: two imps pulled into each other | GIF | Gun Bonsai VR |
 | Grapple | Reshoot the three Yank sheets (spin, flip, barrel) with the chain rope | still | |
+| VisualRewards | An HP bar appearing, flashing, the chunk draining; the overheal strip on a legendary | GIF | |
+| VisualRewards | A fountain of Kill Rewards bits flying to the player | GIF | |
+| VisualRewards | GUARD!, TARGET! and a pop | GIF | |
+| VisualRewards | "+0.5s" and REVIVE while DOWN | GIF | RSQ SlowMo loaded |
+| VisualRewards | Arrival beam V2, and V3 indoors (rig has V1, V3 outdoors and V4 only) | GIF | no placeholder yet |
+| Miniboss | HERO: a Bossfight landing in slow motion, the thralls one by one on their beams, then the miniboss | GIF | |
+| Miniboss | The meter filling red under Score, then gold and beating, with a "No Miniboss: ..." line under it | still | |
+| Miniboss | Shooting the shield (GUARD!, grey Xs), then a thrall killed and the window bar draining | GIF | |
+| Miniboss | A missed window: the whole map flashing up a colour | GIF | |
+| Miniboss | The rage: every monster sparking red | GIF | |
+| Miniboss | The death: colour wave, gun drop, bits fountain, gold life crate | GIF | |
+| Miniboss | The options page | still | |
+| Miniboss | In-headset capture of the fight's HUD bars (today only in mockups) | still | no placeholder yet |
