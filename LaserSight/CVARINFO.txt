@@ -3,7 +3,7 @@
 
 // ---- laser pointer ------------------------------------------------------------
 server bool  rsqls_on           = true;   // the whole mod
-server bool  rsqls_main         = true;   // per hand on/off -- bound to keys in KEYCONF
+server bool  rsqls_main         = true;   // per hand on/off (the menu; no keys: owner 11-10)
 server bool  rsqls_off          = true;
 server bool  rsqls_pointer      = true;   // the dot where it lands
 server bool  rsqls_show_melee   = false;  // show on a fist, chainsaw, saber, shield or empty hand
@@ -66,7 +66,6 @@ server bool  rsqls_head_pulse    = true;
 server float rsqls_head_pulse_hz = 4.0;
 
 // ---- feedback ------------------------------------------------------------------------
-server bool  rsqls_haptics       = true;  // a tick in the hand when you toggle it
 
 // ---- phase 3: learned from each gun, the pack's muzzles, the range readout ----
 server bool  rsqls_arc          = true;    // a thrown weapon (grenades) shows its arc, once it has fired once

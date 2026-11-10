@@ -81,23 +81,6 @@ class RSQLS_Readout : Actor
 	States { Spawn: RSLQ A -1 Bright; Stop; }
 }
 
-// The haptic tick on a toggle. NOT a missile -- see RSQ_DistanceGrab feel.zs:
-// Brutal22Q's recoil and flash hooks treat every player missile as a shot except
-// RSVR_Buzz by name; without +MISSILE, P_CheckMissileSpawn treats this as an MBF
-// grenade, the per-hand vibrate still fires, and WorldThingSpawned reports
-// bMissile false to every listener.
-class RSQLS_Buzz : Actor
-{
-	Default
-	{
-		+NOCLIP +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
-		Radius 1; Height 1; Speed 0;
-		DamageType "RSQLSHaptic";
-		RenderStyle "None";
-	}
-	States { Spawn: TNT1 A 1; Stop; }
-}
-
 class RSQLS_Sight : EventHandler
 {
 	const LEAD_JUMP = 17.0;     // map units in one tic (~0.5 m) that is not a hand
@@ -228,8 +211,6 @@ class RSQLS_Sight : EventHandler
 	private Weapon heldGun[2];
 
 	// Toggle edge detection, for the haptic tick.
-	private bool wasOn[2];
-	private bool togglePrimed;
 
 	// ---- placement helpers ----------------------------------------------------
 
@@ -336,17 +317,6 @@ class RSQLS_Sight : EventHandler
 		return true;
 	}
 
-	// ---- the toggle's tick ----------------------------------------------------
-	private void Buzz(PlayerPawn pmo, int h)
-	{
-		if (!RSQLS_Hand.Flag("rsqls_haptics", pmo.player, true)) return;
-		// RUMBLE STRENGTH (RSQ_Accessibility AC2): this tick is the engine's fixed missile buzz (one strength), so the
-		// setting can only take it away: 0 is none. Any other value, and without RSQ_Accessibility, it buzzes as ever.
-		if (RSQLS_A11y.Rumble() <= 0) return;
-		pmo.SpawnPlayerMissile("RSQLS_Buzz", pmo.angle, noautoaim: true,
-			aimflags: (h == 1) ? ALF_ISOFFHAND : 0);
-	}
-
 	// ---- the colours (UZDXREMA's colour block, on runtime translations) -------
 	//
 	// Order of precedence, lowest first: the colour mode's base colour; the
@@ -439,15 +409,6 @@ class RSQLS_Sight : EventHandler
 		let pmo = p.mo;
 		GbRefresh(pmo);
 
-		// Toggle feedback first, whatever else is going on.
-		bool master = RSQLS_Hand.Flag("rsqls_on", p, true);
-		for (int h = 0; h < 2; h++)
-		{
-			bool on = RSQLS_Hand.Flag(h == 0 ? "rsqls_main" : "rsqls_off", p, true);
-			if (togglePrimed && master && on != wasOn[h]) Buzz(pmo, h);   // (11-10) no buzz with Laser Sight off
-			wasOn[h] = on;
-		}
-		togglePrimed = true;
 
 		bool wantDot  = RSQLS_Hand.Flag("rsqls_pointer", p, true);
 		bool wantBeam = RSQLS_Hand.Flag("rsqls_beam", p, true);

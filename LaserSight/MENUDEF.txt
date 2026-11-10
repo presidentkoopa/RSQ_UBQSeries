@@ -67,17 +67,17 @@ OptionMenu "RSQLS_Options"
 	RSQLSGbLine "", "RSQLS_SightService"
 	StaticText " "
 	Option "Laser Sight", "rsqls_on", "OnOff"
-	Option "Main Hand", "rsqls_main", "OnOff"
-	Option "Off Hand", "rsqls_off", "OnOff"
+	Option "Main Hand", "rsqls_main", "OnOff", "rsqls_on"
+	Option "Off Hand", "rsqls_off", "OnOff", "rsqls_on"
 	StaticText " "
 	StaticText "Beam and Dot", 1
 	Option "Show Beam", "rsqls_beam", "OnOff"
 	Option "Laser", "rsqls_beam_type", "RSQLS_BeamType", "rsqls_beam"
 	Option "Show Dot", "rsqls_pointer", "OnOff"
 	Option "Dot Only on Enemies", "rsqls_dot_enemy", "OnOff", "rsqls_pointer"
-	Slider "Dot Size", "rsqls_spot_size", 0.25, 4.0, 0.05, 2
-	Option "Dot Glow", "rsqls_glow", "RSQLS_Glow"
-	Option "Dot Reacts to Surface", "rsqls_surface", "OnOff"
+	Slider "Dot Size", "rsqls_spot_size", 0.25, 4.0, 0.05, 2, "rsqls_pointer"
+	Option "Dot Glow", "rsqls_glow", "RSQLS_Glow", "rsqls_pointer"
+	Option "Dot Reacts to Surface", "rsqls_surface", "OnOff", "rsqls_pointer"
 	Option "Infrared Only", "rsqls_ir", "OnOff"
 	StaticText " "
 	StaticText "When It Shows", 1
@@ -99,14 +99,14 @@ OptionMenu "RSQLS_Options"
 	Option "Arc With Beam", "rsqls_arc_beam", "OnOff", "rsqls_arc"
 	Option "Spread Ring", "rsqls_spread", "OnOff"
 	Option "Show Range", "rsqls_readout", "RSQLS_Readout"
-	Option "Range Units", "rsqls_readout_units", "RSQLS_Units"
+	Option "Range Units", "rsqls_readout_units", "RSQLS_Units", "rsqls_readout"
 	StaticText " "
 	StaticText "Colours", 1
 	Option "Colour Mode", "rsqls_color_mode", "RSQLS_ColorMode"
 	ColorPicker "Main Hand Colour", "rsqls_col_main"
 	ColorPicker "Off Hand Colour", "rsqls_col_off"
-	ColorPicker "Main Hand Dot", "rsqls_col_dot_main"
-	ColorPicker "Off Hand Dot", "rsqls_col_dot_off"
+	ColorPicker "Main Hand Dot", "rsqls_col_dot_main", "rsqls_pointer"
+	ColorPicker "Off Hand Dot", "rsqls_col_dot_off", "rsqls_pointer"
 	Option "Cycle Colours", "rsqls_cycle", "OnOff"
 	Option "Dot Cycles Too", "rsqls_cycle_dot", "OnOff", "rsqls_cycle"
 	Option "Colour per Slot", "rsqls_col_per_slot", "OnOff"
@@ -120,11 +120,6 @@ OptionMenu "RSQLS_Options"
 	ColorPicker "Slot 8", "rsqls_col_slot8", "rsqls_col_per_slot"
 	ColorPicker "Slot 9", "rsqls_col_slot9", "rsqls_col_per_slot"
 	ColorPicker "Slot 0", "rsqls_col_slot0", "rsqls_col_per_slot"
-	StaticText " "
-	StaticText "Controls", 1
-	Control "Toggle Main Hand", "toggle rsqls_main"
-	Control "Toggle Off Hand", "toggle rsqls_off"
-	Option "Toggle Rumble", "rsqls_haptics", "OnOff"
 	StaticText " "
 	Submenu "Test and Debug", "RSQLS_Test"
 	RSQLSResetAll "Reset All", "Reset all RSQ Laser Sight settings?"
@@ -140,7 +135,7 @@ OptionMenu "RSQLS_Test"
 	Slider "Beam in Daylight", "rsqls_beam_daylight", 0.0, 1.0, 0.05, 2
 	Slider "Dot Brightness", "rsqls_spot_a", 0.0, 1.0, 0.05, 2
 	Slider "Glow Size", "rsqls_glow_scale", 1.1, 4.0, 0.05, 2
-	Slider "Glow Intensity", "rsqls_glow_int", 0.1, 4.0, 0.05, 2
+	Slider "Glow Intensity", "rsqls_glow_int", 0.1, 4.0, 0.05, 2, "rsqls_glow"
 	Slider "Trace Range", "rsqls_range", 256, 8192, 256, 0
 	Slider "Dot Range Limit", "rsqls_dot_range", 0, 8192, 32, 0
 	Slider "Dot Lead (Tics)", "rsqls_lead", 0.0, 2.0, 0.1, 1
