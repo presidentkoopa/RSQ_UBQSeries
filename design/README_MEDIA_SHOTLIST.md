@@ -125,3 +125,13 @@ Format: mod, what to show, still or GIF, notes. Captures are labelled in the REA
 | LaserSight | The range readout by the gun and at the dot | still | |
 | LaserSight | Cycle Colours on both hands | GIF | |
 | LaserSight | Infrared Only, without and with the goggles | still | |
+| Saber | A slash through imps with the flash, sparks and smoke | GIF | |
+| Saber | A fireball deflected back; a parry starburst; two blades locking | GIF | |
+| Saber | The spinning staff turning a shot | GIF | |
+| Saber | A marked throw route | GIF | |
+| Saber | A push turning fireballs back; a grip and fling; a Force jump | GIF | |
+| Saber | Force Lightning chaining | GIF | |
+| Saber | The training remote knocked down | GIF | |
+| Saber | A scorch trail | still | |
+| Saber | The sabers at the hip without the Tactical Rig; the Tactical Rig holster draw and put-away | still | |
+| Saber | All eight colours and five lengths side by side | still | |
