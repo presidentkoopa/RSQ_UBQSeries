@@ -41,7 +41,7 @@ spot of their own on your belt.
 | Both hands held to your chest for a moment (or the Recenter Torso key) | The holsters turn back in front of you |
 | Turn on **Move Holsters by Hand**, squeeze a ring, carry it, let go | That holster moves there and stays |
 
-The rings show when a hand comes near, and only for holsters that hand can use right now. The first time you hold a gun, a
+The rings show when a hand comes near. The first time you hold a gun, a
 faint ghost hand shows you where to put it. Miss the same ring three times in a few seconds and it lights up with a
 "Grip inside the ring" hint.
 
@@ -70,9 +70,9 @@ player. Positions are set for an eye height of 1.62 m and scale to you (see Your
 *[picture to come: the mirror's front and back views with every ring showing]*
 
 **Rings tell you what is what.** A gun holster is a wire sphere: blue when idle (or your profile's colour), green, brighter
-and a size larger with a hand inside. A spot that holds one thing only is a magenta wire diamond. Only the rings your hand
-could use right now show, and only the nearest is bright. Set **Holster Rings** to **Always** to see them all while you
-move holsters around.
+and a size larger with a hand inside. A spot that holds one thing only is a magenta wire diamond. RSQ FnF's flare pocket and
+flashlight clip diamonds are no bigger than a gun holster's ring and show only when your off hand comes near.
+**Holster Rings** set to **Always** shows them all only while **Move Holsters by Hand** is on; otherwise it is Hand Nearby.
 
 **Things with their own home never take a gun holster.** Your grenade, flares and flashlight, the cigarette and Zippo, the
 whip, the sabers and the ShieldSaw stay out of the six gun holsters. Put a saber, the whip or an unlit flare on an empty

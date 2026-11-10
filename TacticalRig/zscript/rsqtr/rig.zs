@@ -3015,29 +3015,14 @@ class RSQTR_Rig : EventHandler
 		return inside ? 1 : IDLE[prof - 1];
 	}
 
-	// ---- RIG CLUTTER (owner 2026-11-08, design/PARKED.md "Rig clutter"; rig only, not headset-confirmed) ----------------
+	// ---- RIG CLUTTER (owner 2026-11-08 "a lot going on"; owner 11-10 picked fixes 3 and 4 of four, design/PARKED.md) -----
 	// What is DRAWN only: grab zones, presses and overlap rules are unchanged. Local (this machine's rings).
-	//   1. ONLY WHAT THE HAND CAN USE: a ring shows to a hand only if a grip / Use by THAT hand there would do something
-	//      today (holster, draw, swap, take an item, put an item home, free a holster; a refusal is not doing something).
-	//      HandActs mirrors Press (and WhipPress, FlarePress, FreeTick, WouldRefuse), the keyring's key grab (keyring.zs
-	//      KeysTick), FnF's pocket and clip (its own grips, handler.zs / torch.zs Hands) and the cigarette pocket (cig.zs).
-	//      A ring shown to either hand shows: the stronger of the two hands' alphas.
-	//   2. ONE RING AT A TIME: of the rings a hand can act on, the nearest (centre) keeps today's alpha; the others draw at
-	//      RING_FAR of it.
+	//   3. FnF's pocket and clip diamonds no larger than the largest gun holster's ring, shown only with the OFF hand
+	//      (the one that takes from them) near (DrawFnFMarkers).
 	//   4. "ALWAYS" ONLY WHILE SETTING UP: Holster Rings "Always" (2) is Hand Nearby (1) unless Move Holsters by Hand is on.
-	// Move Holsters by Hand on: 1 and 2 are off, every ring as before (it forces "Always" as before). The rule flashes,
-	// the struggle hint and the ghost hand's ring are laid over the result as before.
-	// Ring keys: a rig place 0 .. N-1, FnF's pocket N, its clip N + 1, the cigarette pocket N + 2.
-	const RING_FAR = 0.35;
-	const RK_FNF = RSQTR_Region.N;
-	const RK_CIG = RSQTR_Region.N + 2;
-	const RK_N = RSQTR_Region.N + 3;
-	private transient bool ringActs[2 * RK_N];
-	private transient int ringNear[2];
-	private transient bool ringFilter;
+	// Fixes 1 (only rings the hand can use) and 2 (one ring at a time) were built 11-08 and taken out 11-10: not picked.
 	private transient Vector3 fnfAt[2];
 	private transient double fnfRad[2];
-	private transient String clutSaid[2];
 
 	// Holster Rings as drawn: 0 never, 1 hand nearby, 2 always -- "Always" only while Move Holsters by Hand is on (4)
 	static int RingMode(PlayerInfo p)
@@ -3053,103 +3038,18 @@ class RSQTR_Rig : EventHandler
 		if (d >= rad * 2.5) return 0;
 		return inside ? 0.7 : 0.35 * (1.0 - (d - rad) / (rad * 1.5));
 	}
-	// the ring's alpha from both hands, rules 1 and 2 applied (insideMask: bit h, hand h is inside it)
-	double RingAlpha(PlayerPawn pmo, int mode, int key, Vector3 at, double rad, int insideMask)
+	// the ring's alpha: the stronger of the two hands' (insideMask: bit h, hand h is inside it)
+	double RingAlpha(PlayerPawn pmo, int mode, Vector3 at, double rad, int insideMask)
 	{
 		double a = 0;
 		for (int h = 0; h < 2; h++)
-		{
-			double ah = HandAlpha(mode, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), at), rad, (insideMask & (1 << h)) != 0);
-			if (ringFilter)
-			{
-				if (!ringActs[h * RK_N + key]) ah = 0;
-				else if (ringNear[h] != key) ah *= RING_FAR;
-			}
-			a = max(a, ah);
-		}
+			a = max(a, HandAlpha(mode, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), at), rad, (insideMask & (1 << h)) != 0));
 		return a;
 	}
 
-	static bool HasKeys(PlayerPawn pmo)
+	// Once a tic, before any ring is drawn: FnF's pocket and clip, as FnF publishes them (DrawFnFMarkers draws them)
+	private void FnFPass(PlayerPawn pmo, PlayerInfo p)
 	{
-		for (let it = pmo.Inv; it; it = it.Inv) if (it is "Key" && it.Amount > 0) return true;
-		return false;
-	}
-
-	// Would a grip / Use by hand h at rig place r do something today? Press's own tests, in Press's order.
-	bool HandActs(PlayerPawn pmo, PlayerInfo p, int h, int r)
-	{
-		// THE KEYRING is no holster (never hovered outside Move Holsters by Hand): its grip is keyring.zs's key grab,
-		// with Keys Open Doors on, a key carried and the keys on the ring
-		if (r == RSQTR_Region.KEYRING)
-		{
-			let kr = RSQTR_Keyring(EventHandler.Find("RSQTR_Keyring"));
-			return RegionLive(pmo, r) && Flag("rsqtr_key_doors", p, false) && HasKeys(pmo) && (!kr || kr.keysIn == 0);
-		}
-		if (!RegionLive(pmo, r)) return false;
-		// with the cigarette out a press at a place that is no gun holster only ends the cigarette
-		if (RSQTR_Cig.IsOut(pmo.PlayerNumber()) && !IsGunRegion(r)) return false;
-		if (IsGrenadeRegion(r))
-		{
-			String nw = NadeWeapon();
-			bool inHand = p.ReadyWeapon && nw != "" && p.ReadyWeapon.GetClassName() == Name(nw);
-			return inHand || Grenades(pmo) > 0;
-		}
-		if (h == 1 && FlareAsk("flare.phase", pmo) == 2) return false;      // a lit flare: refused everywhere
-		bool gunIn = h == 0 ? HoldsGun(pmo) : OffHoldsGun(pmo);
-		if (IsGunRegion(r) && r == RSQTR_Hooks.ShieldHolster(pmo) && gunIn) return false;
-		// THE POUCH: no rig action; Brutal Doom 22 VR's reload reads "pouch.at" for either hand. Shown while the main hand's
-		// gun has reserve there (SpotHolds), to both hands: which hand its reload asks for is BD22 VR's
-		if (r == RSQTR_Region.POUCH) return SpotHolds(pmo, p, r);
-		if (r == RSQTR_Region.WHIP) return WhipOf(pmo) && h == WhipHand(pmo);
-		if (r == RSQTR_Region.FLARE)
-		{
-			int ph = FlareAsk("flare.phase", pmo);
-			if (h != 1 || ph < 0 || ph == 2) return false;
-			return ph == 1 || FlareAsk("flare.count", pmo) > 0;
-		}
-		Array<String> own;
-		Owned(pmo, r, own);
-		if (IsGunRegion(r) && Content(pmo, r) == "")
-		{
-			let hw = h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
-			if (HomeWhip(hw)) return true;                                                      // the whip goes home
-			if (h == 1 && FlareHolsterOn(p) && FlareAsk("flare.phase", pmo) == 1) return true;  // the unlit flare goes home
-		}
-		bool spotEmpty = IsGunRegion(r) ? Content(pmo, r) == "" : own.Size() == 0;
-		let offW = p.OffhandWeapon;
-		if (h == 1 && spotEmpty && offW && IsSaber(offW) && IsSecondSaber(offW)) return true;
-		let mainW = p.ReadyWeapon;
-		if (h == 0 && mainW && IsSaber(mainW) && !IsSecondSaber(mainW))
-		{
-			bool itsOwn = r == SaberHome() || ((r == 0 || r == 1) && Flag("rsqtr_saber_hip", p, false));
-			if (!itsOwn && spotEmpty) return true;
-		}
-		if (IsSaberRegion(r) && ((r == SaberHome() && h != 0) || (r == SaberAway() && h != 1))) return false;
-		if (own.Size() == 1)
-		{
-			class<Weapon> sc = own[0];
-			let sw = sc ? Weapon(pmo.FindInventory(sc)) : null;
-			if (sw && IsSaber(sw) && IsSecondSaber(sw)) return true;
-		}
-		if (IsGunRegion(r))
-		{
-			if (gunIn) return WouldRefuse(pmo, h, r) == "";          // in it goes, or a swap / sent home
-			if (Content(pmo, r) != "") return true;                 // a draw
-			// FREE A HOLSTER BY HAND (FreeTick): an empty hand at an empty holster that is a gun's
-			return HandKind(pmo, h) == 0 && r != RSQTR_Hooks.ShieldHolster(pmo) && lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r] != "";
-		}
-		// a saber spot, the main hand: its saber goes in, or the saber there is drawn
-		String cur = HeldAs(pmo, p.ReadyWeapon);
-		if (cur != "" && own.Find(cur) < own.Size()) return true;
-		return own.Size() > 0;
-	}
-
-	// Once a tic, before any ring is drawn: what each hand can act on, and the nearest of those to each hand.
-	private void ClutterPass(PlayerPawn pmo, PlayerInfo p)
-	{
-		ringFilter = !Flag("rsqtr_edit", p, false);
-		// FnF's pocket and clip, as FnF publishes them (DrawFnFMarkers draws them from here)
 		let svc = ServiceIterator.Find("RSQFF_Service").Next();
 		double by = BodyYaw(pmo);
 		static const String Z[] = { "pocket", "clip" };
@@ -3163,63 +3063,6 @@ class RSQTR_Rig : EventHandler
 			fnfAt[k] = (x, svc.GetDouble(Z[k] .. ".y", "", 0, by, pmo), svc.GetDouble(Z[k] .. ".z", "", 0, by, pmo));
 			fnfRad[k] = rr;
 		}
-		let cig = RSQTR_Cig.Get();
-		bool cigOn = cig && Flag("rsqtr_cig", p, false);
-		int n = pmo.PlayerNumber();
-		bool dbg = Flag("rsqtr_messages", p, false);
-		for (int h = 0; h < 2; h++)
-		{
-			Vector3 hp = RSQTR_Body.Hand(pmo, h);
-			double best = 1e9;
-			ringNear[h] = -1;
-			String said = "";
-			for (int key = 0; key < RK_N; key++)
-			{
-				bool acts = false;
-				Vector3 at = (0, 0, 0);
-				if (key < RSQTR_Region.N)
-				{
-					if (!RSQTR_Region.Retired(key) && HandActs(pmo, p, h, key)) { acts = true; at = RegionAt(pmo, key); }
-				}
-				else if (key < RK_CIG)
-				{
-					int k = key - RK_FNF;
-					// FnF's grips are the off hand's. The pocket: no flare in the hand and one carried -> take; an unlit one in the
-					// hand -> back; a lit one -> nothing. The clip: the flashlight comes out, or goes back (always one or the other).
-					if (h == 1 && fnfRad[k] > 0)
-					{
-						int ph = FlareAsk("flare.phase", pmo);
-						acts = k == 1 || ph == 1 || (ph == 0 && FlareAsk("flare.count", pmo) > 0);
-						at = fnfAt[k];
-					}
-				}
-				else if (cigOn && h == 0)
-				{
-					// the cigarette pocket (cig.zs): the main hand's grip takes one (none out, one left) or puts the one in the hand back
-					int ph = cig.phase[n];
-					acts = (ph == RSQTR_Cig.PH_NONE && RSQTR_Cig.Packs(pmo) > 0) || ph == RSQTR_Cig.PH_HAND;
-					at = cig.Pocket(pmo);
-				}
-				ringActs[h * RK_N + key] = acts;
-				if (!acts) continue;
-				double d = RSQTR_Body.RoomMetres(hp, at);
-				if (d < best) { best = d; ringNear[h] = key; }
-				if (dbg) said = said .. " " .. RingName(key);
-			}
-			if (dbg && said != clutSaid[h])
-			{
-				Console.Printf("T_CLUTTER t%d %s hand (kind %d) can act on:%s%s", level.maptime, h ? "off" : "main", h == 0 ? (HoldsGun(pmo) ? 1 : HandKind(pmo, 0)) : HandKind(pmo, 1),
-					said == "" ? " nothing" : said, ringFilter ? "" : " (Move Holsters by Hand: every ring shown)");
-				clutSaid[h] = said;
-			}
-		}
-	}
-	static String RingName(int key)
-	{
-		if (key < RSQTR_Region.N) return "[" .. RSQTR_Region.NAMES[key] .. "]";
-		if (key == RK_FNF) return "[FnF pocket]";
-		if (key == RK_FNF + 1) return "[FnF clip]";
-		return "[Cigarette pocket]";
 	}
 
 	// ---- what you see ------------------------------------------------------------------
@@ -3229,7 +3072,7 @@ class RSQTR_Rig : EventHandler
 	private void DrawMarkers(PlayerPawn pmo, PlayerInfo p)
 	{
 		int mode = RingMode(p);
-		ClutterPass(pmo, p);
+		FnFPass(pmo, p);
 		bool icons = Flag("rsqtr_icons", p, true);
 		for (int r = 0; r < RSQTR_Region.N; r++)
 		{
@@ -3244,7 +3087,7 @@ class RSQTR_Rig : EventHandler
 				if (hoverR[h] == r || (r == RSQTR_Region.KEYRING && RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, h), at) <= rad)) inMask |= 1 << h;
 			bool inside = inMask != 0;
 			bool live = RegionLive(pmo, r);
-			double a = live ? RingAlpha(pmo, mode, r, at, rad, inMask) : 0;
+			double a = live ? RingAlpha(pmo, mode, at, rad, inMask) : 0;
 			// AN ITEM STOWED IN IT IS NOT GHOSTED (owner 11-05 01:07 "holstered models are like, see through?"): the additive
 			// sphere drawn through the solid item washed it out, so a place showing its item (last tic's: a gun or saber, the
 			// coiled whip, a flare, the grenade, the pouch) draws its sphere at STOWED_SPHERE of the alpha.
@@ -3384,7 +3227,7 @@ class RSQTR_Rig : EventHandler
 	// hand (the one that takes from them) is inside. FnF alone draws nothing, as before.
 	// RIG CLUTTER (owner 11-08, fix 3): FnF's diamonds are drawn NO LARGER THAN THE LARGEST GUN HOLSTER'S RING as drawn
 	// (that place's radius, x1.15 with a hand inside, as DrawMarkers draws it); FnF's grab zones (its own radius) are not
-	// touched. Rules 1, 2 and 4 as every ring (ClutterPass: FnF's grips are the off hand's).
+	// touched. Shown only with the off hand near (fix 3: FnF's grips are the off hand's); fix 4 as every ring.
 	private void DrawFnFMarkers(PlayerPawn pmo, PlayerInfo p, int mode)
 	{
 		double gunMax = 0;
@@ -3397,7 +3240,7 @@ class RSQTR_Rig : EventHandler
 			{
 				Vector3 at = fnfAt[k];
 				bool inside = RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, 1), at) <= rad;
-				a = RingAlpha(pmo, mode, RK_FNF + k, at, rad, inside ? 2 : 0);
+				a = HandAlpha(mode, RSQTR_Body.RoomMetres(RSQTR_Body.Hand(pmo, 1), at), rad, inside);
 				if (a > 0.01)
 				{
 					if (!fnfMark[k]) fnfMark[k] = Actor.Spawn("RSQTR_ItemMarker", at);   // an item spot: a wire diamond (11-08)
