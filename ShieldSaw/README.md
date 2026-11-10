@@ -1,228 +1,432 @@
 # RSQ ShieldSaw
+### Doom Arcade VR · a buzzsaw shield on your back: block it, bash it, rev it, throw it and catch it
 
-A buzzsaw shield for your off hand: block with it, bash with it, rev it into a grinder, then paint targets and hurl it through all of them and catch it on the way back.
+<img src="docs/readme/shieldsaw_icon.png" width="64" align="right" alt="ShieldSaw icon">
 
-Status: 0.99 — played and confirmed working in the headset; refinement and bug fixing ongoing.
+Reach behind you, press Use, and the shield saw from Doom: The Dark Ages is on your off arm. Hold it up and fireballs
+glance off it, bullets die at the muzzle, and anything that claws at you gets shoved back. Shove it into a demon and
+the demon flies into the wall. Squeeze the trigger and the blades come out screaming. Paint a few targets, snap your
+arm forward, and the saw goes round the room cutting through them, then comes home to your hand.
 
-New since the headset pass (tested on the rig, headset check pending): the hand measured against the frame your headset drew, so walking never swings the shield or saw; Shield on the Rig (the stowed shield drawn on RSQ Tactical Rig).
+*[GIF to come: three rings painted, a throw cutting through two imps and grinding a third, then the catch]*
 
-New on 11-09 (shown flat in the engine at the back and shoulder spots): Back Yaw, Back Pitch and Back Roll were reset
-(their settings were renamed), so an old saved tweak no longer tips the stowed shield off your back. Set them again if
-you had changed them.
+---
 
-New on 11-06 (rig only, not headset-confirmed): Next/Prev Offhand Weapon (off); grinding throws the monster's own
-blood.
+## What it feels like
 
-New on 11-07 (rig only, not headset-confirmed): with **Take It From** set to Over the Shoulder, RSQ Tactical Rig's
-off-shoulder gun holster is the ShieldSaw's (no gun goes in; RSQ Wheel's holster web shows the ShieldSaw there).
+- **It lives on your back.** Reach to the small of your back (or behind your neck, or over your shoulder) and press
+  Use. Whatever your off hand was holding steps aside, and comes back when the shield goes away.
+- **Hold it up and it blocks.** The block is the shield you see: a 58 cm disc on your forearm. A fireball that
+  crosses it glances off, a fireball that flies under the rim hits you.
+- **Meet the shot and it's a perfect block.** Push the plate into the attack instead of just holding it there: the
+  shot leaves faster, a clawing demon always reels, the hit rings a tone higher, your hand knocks twice, and the plate
+  blooms white.
+- **Bullets never get out of the gun.** A bullet whose line crosses your shield is stopped at the muzzle, and goes
+  back out at whoever is in its way.
+- **Shove it.** A hard push of the plate is a bash: a burst of sparks, a body launched off its feet, and if a wall is
+  behind it, a wall slam that stuns.
+- **Rev it.** Hold the off trigger and the saw winds up, blades out, pitch climbing. Anything in the blades is ground
+  and bleeds.
+- **Throw it.** Hold Use away from your back and sweep your hand across the room: a ring lands on each target, one at a
+  time, the first one biggest. Snap your arm forward and let go of the throw button (the off trigger, unless you pick
+  another). The saw visits them in the order you ringed them, bouncing off walls on the way.
+- **Small things are cut in two, big things are chewed.** Fodder is sliced through, mid-size monsters get the disc
+  stuck in them grinding, the heavies knock it away.
+- **It always comes home.** Back along the way it went, and into your hand if your hand is there. Press the throw
+  button again mid-flight to call it back early.
 
-RSQ is a series of VR mods for stock QuestZDoom 17.3, built in ZScript alone with no engine changes. ShieldSaw is a full
-physical shield: the plate that blocks is measured off the same mesh you see in your hand, every throw is launched from
-your real arm speed, and the disc flies a path, ricochets and comes home on its own.
-It is the shield saw from *Doom: The Dark Ages*, brought to Doom VR first by Ermac in Rusted Legacy, rebuilt here as a
-standalone off-hand mod that loads beside any weapon pack.
+---
 
-## Standout feature: the throw
+## How to play
 
-Hold **Use** with the shield up and sweep your off hand across the room. Rings drop onto monsters one at a time as your
-hand passes them, with a click and a tick in the controller, up to five. The biggest ring marks the first stop.
+| Do this | What happens |
+|---|---|
+| Off hand to the small of your back, press **Use** | The shield is in your off hand |
+| Same place, **Use** again | Back on your back. Your off hand gets its empty hand back |
+| Hold the shield in the way | Blocks shots, bullets, claws and blasts that cross the disc |
+| Push the plate into a shot or a claw as it lands | A perfect block |
+| Shove the plate into a monster | A bash |
+| Hold the **off trigger** | The saw revs: blades out, grinding |
+| Hold **Use** with the hand away from your back, sweep across targets | A ring on each target (up to 5). **Lock On With** can move this to the lock key or the throw button |
+| Let go of the throw button (the **off trigger** by default) while snapping your arm forward | Thrown, at the ringed targets in order (or into a cone along the throw) |
+| Let go with the arm still | Nothing: it stays in your hand, and your rings stay 5 seconds |
+| Press the throw button while it flies | Called back |
+| Hand near it as it comes back | Caught |
+| Both hands to your chest for half a second | The body the shield hangs on turns to where you face |
+| Flick the gun in your main hand down | That gun reloads (with Brutal Doom VR's guns) |
 
-Hold the **off-hand trigger** to rev the saw. The blades open and the whine climbs. Then snap your arm forward and let go.
+No key needs binding. For a desktop or a backup, bind **Draw / Put Back**, **Throw Along Aim**, **Lock On (Hold)** and
+**Recenter Torso** on this mod's page or under Customize Controls ("RSQ ShieldSaw").
 
-The disc leaves your hand spinning in the plane your wrist gave it and visits every ringed target in order. Light
-monsters are sliced in half and it rips straight through. Medium ones take the blade and get ground for a moment.
-Heavies knock it aside. A wall in the way is a bounce, not the end. When the list is done it flies home along the path
-it took, never through a wall, and if your off hand is waiting, it snaps back into it. A fully revved throw hits 60%
-harder and flies 60% faster.
+You start every game with it on your back. Turn on **Start in Hand** to start holding it.
 
-Nothing ringed? At the moment it leaves it picks up to five targets in a cone along your throw, and with none there it
-flies where you threw it. Changed your mind? Press the trigger again mid-flight and it turns for home.
+---
 
-## Features
+## On your back
 
-**Carrying it**
-- Everyone spawns with it. It lives on your body, not your head: take it from the **small of your back** (default),
-  **behind your neck**, either, or **over your off shoulder**. Stowed, it lies flat along your back, outer face out,
-  like a plate on a backpack, at every spot (11-08, rig only, not headset-confirmed).
-- The mount turns with your snap and smooth turns. After turning your real body in the room, hold **both hands to your
-  chest** for a moment to recenter it, or press the Recenter Torso key.
-- Seated? With RSQ Accessibility's Seated Play, the mount drops with you.
-- Drawing it sets your off-hand weapon aside. Putting it away hands back your fist (or the weapon you held: your
-  choice), and throwing it hands back what the off hand held, so you are never empty-handed.
+The shield hangs flat along your back, outer face out, like a plate on a backpack, at whichever spot you take it
+from. A small diamond marks the grab, brighter as your hand gets close.
 
-**Blocking**
-- Anything that crosses the face of the plate is stopped: fireballs, rockets, and bullets at the muzzle. A fireball
-  that flies under the rim still hits you.
-- **Turned shots** go back out, glancing off the face and steered by the way you swung (default), or back at the
-  shooter, or where you look (helped onto the enemy nearest your gaze).
-- **Returned bullets** fly back out at the damage you would have taken.
-- **Blocked melee** stuns the attacker and shoves it back.
-- **Perfect block**: meet the attack with the plate moving into it and the turned shot leaves 60% faster, the attacker
-  always staggers and is shoved twice as far, and you feel a double knock and hear a higher ring.
+| Take It From | Where |
+|---|---|
+| **Small of the Back** (default) | 30 cm behind your eyes, 10 cm to the off side, 62 cm down (belt height), a 30 cm grab. Only behind your hips, so the hip holsters stay free |
+| **Behind the Neck** | 22 cm behind, 8 cm to the off side, 18 cm down, a 26 cm grab: reach over the off shoulder |
+| **Back or Neck** | Either |
+| **Over the Shoulder** | The old mount, 27 cm behind and 12 cm to the off side of your eyes, 30 cm down |
 
-**Bashing and grinding**
-- **Shield bash**: shove the plate along its face (a quick snap, or a firm lean) into a monster to hit and knock it back.
-- **Wall slam**: a body you bash into a wall takes extra damage by how hard it hit, and is stunned for a moment.
-- **Grind**: with the saw revved, press the blades into a monster and it is chewed, each body no more than once every
-  4 tics. The blades reach 6 cm past the rim. Every grind hit throws the monster's own blood (Brutal Doom's blood on
-  Brutal Doom's monsters).
-- Bashes and grinds never reach through walls or doors.
+**It hangs on your body, not your head.** Look around and the shield stays where your back is. Snap turns and smooth
+turns carry it round with you. A real turn in your room does not: put it back in front of you with both hands to your
+chest (half a second), or the **Recenter Torso** key. It also faces you again on its own at a map start, a respawn, a
+level change and a loaded save. Two older guesses (the body turning when your head and both hands turn together, and
+the body slowly catching up with a head held round) are still there as options, both off.
 
-**Throwing**
-- Up to 5 targets, painted one at a time as you sweep, kept even when they drift out of the cone (one drops after
-  3 seconds out of sight or well off your aim). Let go of Use and your rings stay for 5 seconds, long enough to rev and throw.
-- **Hit tiers** by the monster's health, never its name: up to 70 health is bisected, up to 600 is embedded and ground,
-  anything tougher takes a glancing hit. **BD22 Monsters** raises these to 250 and 1200 for Brutal Doom's tougher monsters.
-- Bounces off up to 3 walls on the way to its targets.
-- Catch it with your off hand when it returns, or it lands back on the mount by itself.
+**It hangs at your real height.** The mount is measured from your standing eyes, not the game's fixed eye height, and
+does not dip when you bend to reach behind you. Sit down (or use RSQ Accessibility's Seated Play) and it comes down with
+you.
 
-**Also**
-- **Flick reload**: with the shield in your off hand, flick your main gun down to reload it, the way Brutal Doom VR does
-  with a gun in each hand.
-- **Saber Over Shield**: with RSQ Saber, rest the lit blade across the front of the plate and the block grows 30% wider.
-- Left-handed play follows QuestZDoom's Control Scheme: the held shield is mirrored and the mount moves to the other side.
-- Optional, off by default: **Hit-Stop** (a bash or perfect block freezes the monster for a beat), **Perfect Block
-  Slow-Mo** (half a second of slow motion through RSQ SlowMo), **Block While Holstered**. On by default: **Show ShieldSaw** (the stowed shield drawn on your back, or on RSQ Tactical Rig's body).
+![The shield's body following snap and smooth turns](docs/readme/turnprobe_shield_alone.png)
 
-## How To Play
+*A rig plot, 2026-11-03, RSQ ShieldSaw alone (TacticalRig/tools/rigtest/turnprobe): the dotted line is the body the
+shield hangs on. Top: eight 45° snaps each way, followed exactly. Second: a smooth 360 each way. The third panel was
+taken while the body still followed a real room turn of head and hands; that guess has been off by default since the
+evening of 11-03. Not captures from the headset.*
 
-1. Load the pk3. You start with the shield on your back.
-2. Reach your off hand behind you to the small of your back, about belt height and a little toward your off side, and
-   press **Use**. The shield is in your hand.
-3. Raise it into incoming fire. Turn your wrist to aim the turned shots.
-4. Snap the plate forward into a monster to bash it. Drive it into a wall for a slam.
-5. Hold the **off-hand trigger**: the blades open. Push them into a monster to grind.
-6. Hold **Use** away from your back and sweep your off hand over a group. Watch the rings land.
-7. Keep the trigger held to rev, snap your arm forward toward them and let go. Hold your off hand out as it returns.
-8. Reach behind you and press Use again to put it away.
-9. Can't reach your back? Set **Take It From** to Behind the Neck or Over the Off Shoulder, or bind the Draw key.
+*[Still to come: the shield flat on the back in RSQ Tactical Rig's mirror, and the reach to draw it]*
 
-## Controls
+**Show ShieldSaw** (on) draws the stowed shield. **Draw With Use** off leaves your back free for another mod's holster
+and draws only with the Draw key. **Next/Prev Offhand Weapon** (off) puts the shield into QuestZDoom's off-hand
+weapon cycle as well.
 
-| Action | How (VR) | Notes |
-|---|---|---|
-| Draw | Off hand at the mount + **Use** | Small of the back by default: 30 cm behind, 10 cm to the off side, 62 cm below your eyes, 30 cm reach, and at least 14 cm behind your eyes. |
-| Put away | Off hand at the mount + **Use** | Off hand returns to its fist (or the weapon it held: On Manual Store). |
-| Block | Hold the plate in the way | Turn your wrist to aim the turned shot. |
-| Perfect block | Move the plate into the attack | About 0.7 m/s or faster. |
-| Bash | Shove the plate along its face | About 1.3 m/s, or a sustained lean. |
-| Rev | Hold **off-hand trigger** | 0.6 s to full speed. |
-| Grind | Revved blades into a monster | |
-| Lock on | Hold **Use** away from the mount, sweep the off hand | Or the Lock key (Lock On With). One target every 3 tics, up to 5. |
-| Throw | Release the **off-hand trigger** while snapping the arm forward | About 1.8 m/s, within about 70 degrees of where you look. A slow release keeps it in hand. |
-| Recall | Press the **off-hand trigger** while it flies | |
-| Catch | Off hand near the returning disc | Within about 70 cm. |
-| Reload main gun | Flick the main gun down | 45 degrees in 4 tics, ending 40 degrees below level. Shield in the off hand. |
-| Recenter | Both hands to your chest, 0.4 s | 12 cm in front of and 30 cm below your eyes, no buttons held. |
-| ShieldSaw: draw / put back / recall | Bindable key | Works without reaching, and without VR. |
-| ShieldSaw: throw along aim | Bindable key | Flat throw where you look. |
-| ShieldSaw: lock on (hold) | Bindable key | Used when Lock On With is Lock Key. |
-| Recenter Torso | Bindable key | Turns the mount to where your head faces. |
+**Putting it away** (**On Manual Store**): your off hand gets its empty hand back (the default, so you can reload by
+hand at once), or the weapon it held before the shield came out.
 
-Binds are under **RSQ ShieldSaw** in Customize Controls. With RSQ Accessibility's One-Handed mode, the Off-Hand Modifier
-lets your main hand reach for the shield, and the Shield Throw and Flick Reload gesture buttons work.
+---
 
-## Menu
+## In your hand
 
-**Options → Radiant Silvergun Options → RSQ ShieldSaw.** One page, and one sub menu, **Test and Debug**. With RSQ Gun
-Bonsai VR loaded the page starts with "GunBonsaiOVR detected. Mod features unlocked via upgrades." and the rows marked GB
-are greyed while the upgrade that unlocks them is not learned (Back Plate, Shield Wall, Strike True). Learning one
-turns its row on; the row can still turn it off.
+![Desktop rig frame of the held shield](docs/readme/held_shield_rig.jpg)
 
-| Row | Default | What it does |
-|---|---|---|
-| **Shield** | | |
-| Start With Shield | On | Every player spawns with it |
-| Start in Hand | Off | Spawn with it already drawn |
-| Show ShieldSaw | On | The stowed shield is drawn where it hangs: on RSQ Tactical Rig's body, else at its mount on your back |
-| Take It From | Small of the Back | Over the Shoulder, Small of the Back, Behind the Neck, Back or Neck |
-| Draw With Use | On | Use at the mount draws and puts away (off: only the Draw key) |
-| Next/Prev Offhand Weapon | Off | QuestZDoom's next / previous off-hand weapon reach the shield too |
-| Mount Marker | When Needed | Never, When Needed, Always: the marker at the grab point |
-| Shield Size | 1.0 | Model and block together (1.0-1.5) |
-| **Block** | | |
-| Shield Blocks | On | The block at all |
-| Block While Holstered (GB) | Off | The stowed shield guards your back |
-| Double Block Size | Off | The blocking plate twice as wide (the model is unchanged) |
-| Blocked Shots | Returned | Cancelled or Returned |
-| Turned Shots Go | Off the Face and My Swing | To Shooter, Where I Look, Off the Face, Off the Face and My Swing |
-| Turn Shots Early | On | Turn shots that cross the plate before they reach you |
-| Muzzle Block | On | Stop bullets whose line crosses the plate |
-| Return Bullets | On | A stopped bullet goes back out |
-| Perfect Block | On | Meeting a shot with a moving plate: faster turned shot, always staggers |
-| Perfect Block Slow-Mo (GB) | Off | Half a second of slow motion (needs RSQ SlowMo) |
-| Saber Over Shield | On | RSQ Saber's lit blade across the plate widens the block |
-| Blocked Melee | Stun and Shove | Nothing, Stun, Stun and Shove |
-| **Bash** | | |
-| Shield Bash | On | The bash |
-| Bash Needs Sight | On | Bash and grind cannot reach through walls or doors |
-| Wall Slam | On | Bashed bodies slam into walls |
-| Hit-Stop (GB) | Off | A bash or perfect block freezes the monster briefly |
-| **Throw** | | |
-| Lock On With | Use | Use (held away from the mount), Lock Key, Throw Button |
-| Throw Button | Off Trigger | Off Alt, Either, Off Trigger |
-| Max Locks | 5 | Targets one throw visits (0-5) |
-| Catch on Return | On | A hand near the returning disc catches it |
-| Hit Tiers | On | Bisect, embed or glance by the monster's health |
-| BD22 Monsters | Off | Hit tiers for Brutal Doom's tougher monsters |
-| **Hands and Body** | | |
-| On Manual Store | Fist | Fist or Previously Held Weapon |
-| Off-Hand Switch | Keep Shield | Keep Shield, or Allow Switch |
-| Recenter: Hands to Chest | On | Both hands to your chest turn the body to your head |
-| Turn With the Rig | On | With RSQ Tactical Rig, the shield hangs on the rig's body |
-| Body Turns With Hands | Off | Head and both hands turning together turn the body at once |
-| Body Catches Up | Off | A head held round eases the body round |
-| **Look and Sound** | | |
-| Block Feedback | On | Block feedback and haptics |
-| Positional Sound | On | Contacts heard where they happen |
-| Others See Shield | Netgame Only | Only Me, Everyone, Netgame Only |
-| Spin Direction | Normal | Flip if the disc spins the wrong way |
-| **Controls** | | Draw / Put Back, Throw Along Aim, Lock On (Hold), Recenter Torso |
-| Reset All | | Every setting on both pages back to default |
+*Rig frame from an earlier build (before 2026-11-05), desktop view: the hand on the grip (centre) and the shield's
+face, very close to the camera, on the right. On a desktop the off controller is not where your arm would be. Not a
+capture from the headset.*
 
-**Test and Debug** holds every number on one page under short headers: Debug Log and Show Block Area; **Damage** (throw,
-bash, grind, wall slam, bullet return); **Shield Fit** (disc position, block radius and depth); **Throw and Disc** (throw
-threshold and speed, arm-or-aim blend, aim forward, slowest throw, disc weight, wind-up, top and return speed, return
-patience, catch radius, breadcrumbs, hit-tier limits, glance and embed damage and time, rev time, grind gap, rev throw
-bonus, revved blade reach, wall bounces); **Lock-On** (cone, range, keep angle, out-of-sight grace, lock gap, rings kept,
-ring size); **Block and Bash** (deflect assist, swing steering, guard margin, lookahead, turned shot speed, melee shove,
-perfect block speed, bash speed, reach, lean, knockback, lift, wall slam bump and stun, Hit-Stop Tics (GB: the most Strike True may give; learning it raises this to 6 once), brace size
-and gap); **Mount** (shoulder, small of back and neck spots, eyes-to-neck, grab reach and zone, stowed yaw, pitch, roll,
-size); **In the Hand** (held placement). Reset All. The old Shield Size / Throw Feel / Block Assist / Damage presets are
-gone (the owner, 11-04: no presets); each number they set is a row.
+*[Still to come: the held shield in a headset view, closed and with the blades out]*
 
-## Works with
+The shield in your hand is Ermac's shield and saw models, with his hand closed on the grip. **Shield Size** makes the whole
+thing bigger in five steps (1.0 to 1.5); the block grows with it, so what you see is always what blocks. Fine
+placement sliders (Held X, Y, Z, Yaw, Pitch, Roll) are under Test and Debug, read live, so you can dial it in with the
+headset on.
 
-- **Alone**: everything above, with any weapon pack.
-- **Brutal Doom / BD22 VR Reloaded**: the off hand gets Brutal Doom's fist back when the shield leaves it; flick reload
-  works on its guns (honouring its flick switch); a shield hit never triggers Brutal Doom's stealth-kill cutscene; BD22
-  Monsters adjusts the hit tiers.
-- **RSQ Tactical Rig**: with **Turn With the Tactical Rig** on (default), the shield hangs on the rig's body, so shield
-  and holsters always turn together, and the Recenter Torso key recenters the rig. A hand inside one of the rig's
-  holsters is the rig's press, never the shield's. With **Take It From** set to Over the Shoulder, the rig's off-shoulder
-  gun holster is the ShieldSaw's: no gun goes in by hand (a dull tick) or from RSQ Wheel's holster web, whose ring there
-  shows the ShieldSaw (11-07, rig only, not headset-confirmed).
-- **RSQ Saber**: Saber Over Shield.
-- **RSQ SlowMo**: Perfect Block Slow-Mo.
-- **RSQ Score**: disc kills, bashes, grinds, turned shots and kills after a block or perfect block earn their own bonuses.
-- **RSQ VisualRewards**: HP bars show which monsters carry a lock-on ring.
-- **RSQ Miniboss**: true legendary health for minibosses.
-- **RSQ Gun Bonsai VR**: adds a ShieldSaw upgrade tree: ricochets, Hunter's Return, Meat Grinder, Cleaver, Shield Dash,
-  Charge, a bigger shield and more.
-- **RSQ Accessibility**: Gesture Ease, Cue Size, Colour Blind High Contrast rings, Photosensitive Mode, Steady Hands aim,
-  Seated Play, Rumble Strength, Hold to Toggle and One-Handed play.
+While you hold it, your main hand keeps its gun. Weapon switches in the main hand are followed; if QuestZDoom's
+switch-hands button or another mod tries to take the off hand, the shield is put straight back (**Off-Hand Switch:
+Keep Shield**). Set it to **Allow Switch** and taking the hand puts the shield on your back instead.
 
-## Credits and licence
+**Flick to reload.** Brutal Doom VR only reloads by hand while its own empty hand is in your off hand. With the shield
+there, flick the main gun's barrel down (45° within four tics, ending 40° below level) and it reloads, the same flick
+Brutal Doom VR uses. Its own Flick setting is honoured.
 
-- **id Software**: the shield saw itself, the weapon of *Doom: The Dark Ages* (2025): its design, and the mesh Ermac
-  ripped from the game.
-- **Ermac (iAmErmac)**, [Rusted Legacy](https://github.com/iAmErmac/rusted-legacy): brought the shield saw to Doom VR
-  first, and this mod started from his version. His two shield models (one built by him, one a game rip whose parts he
-  separated), the hand model and the sounds come from it. His Rusted Legacy code is MIT
-  (`models/hand/LICENSE_RustedLegacy_MIT.txt`); that licence does not make id Software's ripped mesh MIT. Which of the
-  two shipped shield meshes is which, and where the hand and sounds came from before Rusted Legacy, is not recorded.
-- **RS Combat FX** and **RS Ballistics** (the owner's effect libraries): the saw voice and block sparks (chainsaw
-  archetype), and Gun Bonsai VR's Shield Dash and Charge effects and sounds.
+---
+
+## The block
+
+**What crosses the disc is stopped.** Every hit you take is tested against the disc's face: fireballs, claws and bites,
+bullets, and explosions whose line to you crosses the plate. A blocked hit does no damage, sparks fly off the face on
+the attacker's side, and you hear it where it happened (**Positional Sound**) and feel it in your off hand.
+
+- **Turn Shots Early** (on): a shot crossing the plate is turned before it ever reaches you, even one that would have
+  missed. The plate is tested where it was, halfway, and where it is each tic, so a fast parry doesn't slip past.
+- **Blocked Shots:** **Returned** (default) or **Cancelled**.
+- **Turned Shots Go:** **Off the Face and My Swing** (default: the shot glances off the plate like a mirror, and the way
+  the plate is moving pushes it, so a bash throws it along the bash), **Off the Face**, **Where I Look** (helped onto
+  the enemy nearest your gaze, within 14°), or **To Shooter**.
+- **Muzzle Block** and **Return Bullets** (both on): a bullet whose line crosses your shield never fires. It comes back
+  off the plate at the same damage, along the same aim rule, and the monster it hits turns on you. Your own shots are
+  never stopped.
+- **Blocked Melee:** **Stun and Shove** (default), **Stun**, or **Nothing**.
+- **Block While Holstered** (off): the shield on your back blocks too.
+- **Double Block Size** (off): the blocking disc twice as wide; the shield you see stays the same.
+- **Revved,** the blades add 6 cm to the rim.
+
+### Perfect block
+
+Meet the attack instead of waiting for it: the plate must be moving into the hit at about 0.7 m/s (a parry flick)
+when it lands. The best of the last few tics counts, so a parry past its peak still counts.
+
+- A turned shot leaves 1.6 times faster.
+- A melee attacker always reels and is shoved twice as far, whatever Blocked Melee says.
+- The block rings a tone higher, your hand knocks twice, and the plate blooms white.
+- **Hit-Stop** (off): the attacker freezes for a beat (4 tics).
+- **Perfect Block Slow-Mo** (off): half a second of slow motion through RSQ SlowMo.
+
+*[GIF to come: an imp's fireball glancing off the plate, then a perfect block sending one back faster]*
+*[GIF to come: a zombieman firing into the shield, and the bullet coming back at him]*
+
+### Saber over shield
+
+With RSQ Saber in your main hand, lit, rest the blade across the front of the plate (within 15 cm of the face): the
+block grows 1.3 times wider while you hold the stance. The grind and the bash stay the plain plate.
+
+*[Still to come: the saber braced across the shield]*
+
+---
+
+## The bash
+
+Drive the plate along its face at about 1.3 m/s, or lean it steadily into a body (a sustained push counts too), and
+whatever the plate is on gets bashed:
+
+- 10 to 40 damage, harder the faster you drove it.
+- Thrown away from the plate with a little lift, so it leaves the floor. Heavy monsters lean, light ones fly, and
+  anything that cannot be pushed stays put.
+- A burst of sparks on the body at the height the plate struck, a thud, a long buzz.
+- **Bash Needs Sight** (on): nothing through a wall or a closed door.
+- One bash every 10 tics.
+- **Hit-Stop** (off): the bashed body freezes for a beat (4 tics), as on a perfect block.
+- A bash never starts Brutal Doom's stealth-kill cutscene on an unaware monster; Brutal Doom's own kicks and punches
+  still do.
+
+**Wall Slam** (on). A body the bash throws into a wall hits it: extra damage by how hard it struck (5 to 40), a forced
+pain frame, frozen for 8 tics, then a small rebound off the wall.
+
+![The bash burst at the plate](docs/readme/bash_burst_sheet.jpg)
+
+*Rig frames from an earlier build (before 2026-11-05), desktop view, six frames. Top row: the held shield beside the
+rifle in the main hand, an orange and yellow burst blooming round its rim, larger in each frame. Bottom left: the burst
+fading to a thin yellow ring round the plate. Bottom middle and right: an imp and a green-armoured marine down the
+corridor with small sparks at head height; what those two frames record is not written down. Not captures from the
+headset.*
+
+![A bash and a wall slam, before and after the bash effect](docs/readme/bash_and_slam_sheet.jpg)
+
+*Rig frames from an earlier build (before 2026-11-05), desktop view, as labelled on the sheet: a bash on a monster
+without (top) and with (bottom) the bash burst, then the slam and the stun. Not captures from the headset.*
+
+*[GIF to come: a bash that slams an imp into a wall, in the current build]*
+
+---
+
+## The rev
+
+Hold the off trigger: the saw winds up in 0.6 seconds, the housing opens, the blades deploy and spin, and the motor's
+pitch climbs. Let go and it winds down.
+
+- **The grind:** anything the revved rim is on takes 6 damage, each body at most every 4 tics, and throws its own blood
+  (Brutal Doom's blood on Brutal Doom's monsters).
+- **A revved throw** goes 60% faster and hits 60% harder.
+
+*[GIF to come: the blades deploying, then grinding a pinky with blood flying]*
+
+---
+
+## The throw
+
+### Lock on
+
+Locking on is its own choice, **Lock On With**:
+
+- **Use** (default): hold Use with your hand away from the shoulder mount and sweep the shield across the room to paint
+  rings. Use at the mount is still the draw and the put-back.
+- **Lock Key:** hold the ShieldSaw **Lock On** key (bind the off grip or any key to it).
+- **Throw Button:** hold the off trigger to rev AND paint at once (with Throw Button on Off Trigger), then let go to
+  throw.
+
+Every 3 tics the target nearest your hand's line gets a ring, so
+you sweep across a crowd and feel each one land, with a click and a tick in your hand.
+
+- Up to **5** rings (**Max Locks**), inside 25° of where your hand points and within about 35 m, in sight.
+- **The first ring is the biggest** and breathes; the disc visits them in the order you ringed them.
+- A ring holds while its target stays within 60° of your hand and in sight; it drops after 3 seconds out.
+- Let go of the lock and the rings stay 5 seconds: long enough to rev and throw.
+
+*[GIF to come: three rings painting one by one as the hand sweeps across a room]*
+
+### Let it fly
+
+The off trigger always revs the saw. The throw is letting go of the throw button with your arm snapping forward, at
+least about 1.8 m/s and roughly where you are looking. **Throw Button** picks which: **Off Trigger** (default), **Off
+Alt**, or **Either**. Pressing it again while the saw flies calls it back.
+A release with the arm still, a backhand or the end of a block is not a throw: the shield stays in your hand.
+
+- **The fastest moment of your swing** is the throw, not the instant you let go.
+- **How fast:** your arm's speed, as if the disc weighed 5 kg, never slower than a floor speed. It winds up as it
+  chases targets, toward a top speed.
+- **Which way:** 70% the way your arm moved, 30% the way your hand points. With a ring ahead, it leaves toward the
+  first ring.
+- **No rings?** It takes what is in a 25° cone along the throw. Nothing there: it flies on for two seconds, then turns
+  for home.
+- **Walls:** it bounces off up to 3 walls on its way to the ringed targets, turning back to the next one as soon as it
+  can see it.
+
+### What it does to them
+
+By the monster's starting health, never by its name:
+
+| Monster | What happens |
+|---|---|
+| 70 health or less | **Cut in two**, every time, and the disc rips on through |
+| Up to 600 | The disc **sticks in it and grinds** for 0.6 seconds, then goes on to the next ring |
+| More, or a boss | **Glances off** at 40% damage |
+
+A thrown hit does 24 to 44 before those rules. **BD22 Monsters** (off) raises the limits for Brutal Doom's tougher
+monsters: cut up to 250 (to the revenant), stuck up to 1200 (to the baron). A monster that refuses to die on purpose
+(a Champions Dark Red playing dead, an Undying heart) takes the grind or the glance, never the cut. A LegenDoom
+legendary counts its second life.
+
+*[GIF to come: the disc cutting an imp in two, sticking in a cacodemon, and glancing off a baron]*
+
+### Coming home
+
+When the last ring is done (or it hits a wall with none left), it comes back the way it went, never through a wall.
+After 3 seconds of trying it stops asking the level and flies straight to you. Your hand within about 70 cm catches it
+(**Catch on Return**, on); otherwise it lands on your back. It is never gone longer than 12 seconds.
+
+*[GIF to come: the disc bouncing off a wall, coming home along its path, and caught in the hand]*
+
+---
+
+## Plays well with
+
+Every other mod is found by name while the game runs. RSQ ShieldSaw loads and plays alone.
+
+- **RSQ Gun Bonsai VR:** the ShieldSaw has its own upgrade tree. **Broadening** widens the block (+20% a level, to
+  double). **Back Plate** lets the shield on your back block, then turn shots. **Bulwark** makes a perfect block
+  easier. **Rebound** and **Reflect** make returned bullets hit harder. **Rev Shield** grinds what claws a revving
+  plate, then turns shots even with Blocked Shots on Cancelled. **Spartan** (with RSQ Saber braced) sends every turned
+  shot back at its shooter, then makes the bash cut too. **Shield Wall** sets the perfect-block slow motion. **Strike
+  True** sets the hit-stop (never longer than the Hit-Stop Tics slider). **Hungry Blades** raises the grind. **Wall
+  Slam** hits and stuns harder. **Shield Size** grows the shield. **Charge** makes a bash on the run strike everything in
+  a wedge ahead, with a shockwave. **Shield Dash** thrusts you forward when you shove the shield with the stick pushed
+  forward, and lands as a bash. **Battering Ram** throws a bashed body into whatever is behind it. **Lockstep** sets
+  the number of rings. **Ricochet** turns a wall hit toward a new target. **Wall Bounces** adds walls. **Meat Grinder**
+  frees a stuck disc at full speed after a kill. **Cleaver** raises the hit tiers. **Buzzsaw Return** grinds what it
+  passes on the way home. **Hunter's Return** swerves it through monsters on the way home. All the disc's, bullets' and
+  turned shots' damage is paid to the ShieldSaw, not to the gun in your other hand. With Gun Bonsai VR loaded, Block
+  While Holstered, Perfect Block Slow-Mo and Hit-Stop are greyed until you learn Back Plate, Shield Wall and Strike
+  True; learned, the row turns them on or off.
+- **RSQ Tactical Rig:** with **Turn With the Rig** on, the shield hangs on the rig's own body, so the shield and the
+  holsters always turn together, and the Recenter Torso key recenters the rig. A hand inside one of the rig's holsters
+  is the rig's press, never the shield's. The off-shoulder holster is the shield's when it is carried Over the
+  Shoulder.
+- **RSQ Saber:** Saber Over Shield (a wider block) and Spartan. The saber's off-hand blade is never mistaken for you
+  taking the off hand.
+- **RSQ SlowMo:** Perfect Block Slow-Mo.
+- **RSQ Score:** the shield tells it what no damage event can: which monster's attack you blocked (and if it was
+  perfect), which shots you turned and whose bullets you returned, which monster is ringed, which way the disc is
+  flying and whether it is stuck grinding, and how long the rim has been grinding a monster. Wall slams, back-plate
+  blocks, rev blocks, Spartan, Reflect, Charge, dashes, Cleaver and Buzzsaw Return each count as their own move.
+- **RSQ Accessibility:** Photosensitive Mode (the block flash and bloom dimmed and rate-limited), Gesture Ease (wider
+  grab zone, lower throw speed and angle, an easier flick), Cue Size (the rings), Colour-blind modes (the rings and the
+  block-area view; rank is size, never colour), Rumble Strength, Seated Play (the mount comes down with you), Steady
+  Hands (the lock cone and the throw's aim), Hold to Toggle (the Lock key), and One-Handed: the Off-Hand Modifier lets
+  your main hand take the shield off your back, the Shield Throw button throws at the rings (or along your aim), and
+  the Flick Reload button reloads.
+- **RSQ Miniboss:** a miniboss made legendary at its best health counts that health in the hit tiers.
+- **Brutal Doom VR (BD22 VR):** its empty hand comes back to your off hand when you put the shield away, its gun-side
+  hand layers keep working while the shield is drawn, and the flick reloads its guns.
+- **Brutal Doom (brutal22test6):** BD22 Monsters hit tiers, its blood on a grind, and no stealth-kill cutscene from
+  a bash or a wall slam.
+- **Champions:** a Dark Red that turns unshootable and vanishes is let go, not followed across the map; a Bronze that
+  cannot be moved is not shoved; a champion's raised health counts in the tiers.
+- **Gun Bonsai:** a returned bullet counts as your damage.
+- **LegenDoom and LegenDoom Lite:** a legendary's second life counts in the tiers.
+
+---
+
+## Options
+
+*Options → Radiant Silvergun Options → RSQ ShieldSaw.* One page, every number under Test and Debug. Defaults in
+brackets.
+
+| Section | Rows |
+|---|---|
+| Shield | Start With Shield (On) · Start in Hand (Off) · Show ShieldSaw (On) · Take It From (Small of the Back; Over the Shoulder, Behind the Neck, Back or Neck) · Draw With Use (On) · Next/Prev Offhand Weapon (Off) · Mount Marker (When Needed; Never, Always) · Shield Size (1.0, up to 1.5) |
+| Block | Shield Blocks (On) · Block While Holstered (Off) · Double Block Size (Off) · Blocked Shots (Returned; Cancelled) · Turned Shots Go (Off the Face and My Swing; To Shooter, Where I Look, Off the Face) · Turn Shots Early (On) · Muzzle Block (On) · Return Bullets (On) · Perfect Block (On) · Perfect Block Slow-Mo (Off) · Saber Over Shield (On) · Blocked Melee (Stun and Shove; Stun, Nothing) |
+| Bash | Shield Bash (On) · Bash Needs Sight (On) · Wall Slam (On) · Hit-Stop (Off) |
+| Throw | Lock On With (Use; Lock Key, Throw Button) · Throw Button (Off Trigger; Off Alt, Either) · Max Locks (5) · Catch on Return (On) · Hit Tiers (On) · BD22 Monsters (Off) |
+| Hands and Body | On Manual Store (Fist; Previously Held Weapon) · Off-Hand Switch (Keep Shield; Allow Switch) · Recenter: Hands to Chest (On) · Turn With the Rig (On) · Body Turns With Hands (Off) · Body Catches Up (Off) |
+| Look and Sound | Block Feedback (On: sparks, flashes, block sounds and rumble) · Positional Sound (On) · Others See Shield (Netgame Only; Only Me, Everyone) · Spin Direction (Normal; Flipped) |
+| Controls | Draw / Put Back (also recalls a thrown shield) · Throw Along Aim (a flat throw where you look) · Lock On (Hold) · Recenter Torso. All unbound |
+| Test and Debug | Debug Log (Off) · Show Block Area (Off: the blocking disc drawn as dots). **Damage:** Throw Damage (1.0) · Bash Damage (1.0) · Grind Damage (6) · Wall Slam Damage (1.0) · Bullet Return Damage (1.0). **Shield Fit:** Disc Forward (-15.4) · Disc Side (-7.5) · Disc Up (-5.0) · Block Radius (29.2 cm) · Block Depth (4 cm). **Throw and Disc:** Throw Hand Speed (60) · Throw Speed (1.6) · Arm or Aim (0.70) · Aim Forward (0.35) · Slowest Throw (12) · Disc Weight (5.0) · Disc Wind-Up (0.05) · Disc Top Speed (34) · Return Speed (22) · Return Patience (105 tics) · Catch Radius (24) · Breadcrumb Gap (4) · Bisect Limit (70) · Embed Limit (600) · Glance Damage (0.40) · Embed Damage (3) · Embed Time (21) · Rev Time (21) · Grind Gap (4) · Rev Throw Bonus (0.6) · Revved Blade Reach (6.0) · Wall Bounces (3). **Lock-On:** Lock Cone (25°) · Lock Range (1200) · Lock Keep Angle (60°) · Out of Sight Grace (105 tics) · Lock Gap (3) · Rings Kept (175 tics) · Ring Size (1.00). **Block and Bash:** Deflect Assist (14°) · Swing Steers Shots (3.00) · Guard Margin (0 cm) · Early Turn Lookahead (1.0) · Turned Shot Speed (1.00) · Melee Shove (12) · Perfect Block Speed (25) · Bash Speed (45) · Bash Reach (1.20) · Leaned Bash (0.6) · Bash Knockback (1.35) · Bash Lift (2.5) · Wall Slam Bump (3.0) · Wall Slam Stun (8) · Hit-Stop Tics (4) · Brace Block Size (1.30) · Brace Gap (15 cm). **Mount:** Shoulder Forward (-27) · Shoulder Side (12) · Shoulder Up (-30) · Small of Back: Behind (-30), Side (10), Down (-62), Reach (30) · Neck: Behind (-22), Side (8), Down (-18), Reach (26) · Eyes to Neck (9) · Grab Reach (30) · Grab Zone (1.6) · Back Yaw, Pitch, Roll (0) · Back Size (1.00). **In the Hand:** Held X, Y, Z (0) · Held Yaw, Pitch, Roll (0) |
+
+Speeds on Test and Debug are map units a second (about 34 to the metre) for the hand, map units a tic for the disc.
+
+Both pages end with **Reset All**: every setting on both pages goes back to its default (your key bindings stay).
+
+With RSQ Gun Bonsai VR loaded, a line at the top of the page says so, and Block While Holstered, Perfect Block Slow-Mo,
+Hit-Stop and Hit-Stop Tics are greyed until their upgrade is learned.
+
+The game rules (damage, block, bash, throw, lock-on, the disc, the grab zone) are the host's in netplay. Your carry
+spot and its numbers, Start in Hand, Show ShieldSaw, Draw With Use, Next/Prev Offhand Weapon, Lock On With, Mount
+Marker, the body rows, Block Feedback, Positional Sound, Others See Shield, the held placement and Debug Log are each
+player's own.
+
+---
+
+## Status
+
+| | |
+|---|---|
+| **Shown on the rig** (2026-11-09, full load order) | The pack loads on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series with no script error of its own, and "RSQ ShieldSaw" is on Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`, load order lines 3-38, menu line 1201). The Draw key puts the shield in the off hand beside BD22 VR's rifle, and it stays there while the main hand changes to the rocket launcher and RSQ Tactical Rig's cigarette (`design/rigtest_2026-11-09/batch2/launch3_harness_reruns.log`, lines 1223, 4689, 4703). That run was not a ShieldSaw test |
+| **Shown on the rig** (2026-11-03, an earlier build, RSQ ShieldSaw alone) | The body the stowed shield hangs on: sixteen 45° snaps followed exactly, a smooth 360 each way, a real 60° or 90° room turn left alone, then put right by the hands-to-chest gesture and by the Recenter Torso key; faced to the head again after a save and load and a map change; no script errors (`TacticalRig/tools/rigtest/turnprobe/evidence/recenter_after_shieldsaw_alone.txt`, `after_shieldsaw_alone.txt`) |
+| **Shown on the rig** (frames, an earlier build, before 2026-11-05) | The held shield in the hand, desktop view (`docs/screens/held_shield_ermac_hand.png`); the bash burst, a wall slam and its stun (`docs/screens/bash_fx_before_after.png`, `docs/screens/bash_hit_owner_burst.png`). Pictures of what an earlier build did, not proof of this one |
+| **Fixed 2026-11-10** (code only, not rig-shown) | After a ricochet the rings stay on the right targets (a new ring now goes in at the same place as its lock, `disc.zs`); a monster's bullet from beyond its melee reach is treated as a shot, not melee (`guard.zs`); 16 unused sprites and an unused saw loop sound removed |
+| **Headset-confirmed** | Nothing |
+| **Code only: a commit says rig-shown, but no log or frame is in the repo** | The stowed shield flat along the back at every spot, and a draw from the small of the back with RSQ Tactical Rig (commits of 11-08 and 11-09); Next/Prev Offhand Weapon and the grind's blood (11-06) |
+| **Code only, not yet shown** | Everything else on this page: the block, the sweep, the muzzle block and returned bullets, the perfect block, Saber Over Shield, the bash's damage and shove, the rev and the grind, lock-on, the throw, the hit tiers, the bounces, the return and the catch, the flick reload, every Gun Bonsai VR upgrade, the Accessibility settings, netplay |
+
+All VR behaviour is rig only, not headset-confirmed.
+
+---
+
+## Under the hood
+
+- **Stock QuestZDoom 17.3** (gzdoom 4.14 ZScript): ZScript and data only. No engine changes.
+- **The shield is an off-hand weapon** (`SSQ_ShieldSaw`) only so the engine draws its model at the off controller. It
+  never fires: the rev reads the off trigger straight off the synced buttons. The five sizes are five baked meshes,
+  picked by sprite, because MODELDEF fixes a model's size at load.
+- **The block disc is measured off the mesh,** followed through stock QZD 17.3's model chain (`guard.zs`): centre 15.4
+  cm back along the forearm, 7.5 cm to the controller's right, 5 cm down, rim 29.2 cm (35.2 cm with the blades out),
+  face pointing away from the arm. Show Block Area draws it.
+- **Three block paths:** `AbsorbDamage` on the player's `SSQ_Guard` item for everything that lands; a sweep each tic
+  over a list of live missiles (a projectile is never in the blockmap, so an iterator never finds one); and
+  `WorldHitscanPreFired`, which cancels a monster's bullet before it is traced. The returned bullet is fired by a
+  one-tic helper (`SSQ_Ricochet`) so the engine does not re-aim it down the main controller.
+- **The arm, not the body.** Every hand speed (throw, bash, perfect block) is measured in the body's frame, so walking,
+  strafing and snap turns are never a swing. A per-frame hand fix (`SSQ_HandSync`) carries the last rendered frame's
+  hands to where the body is now, so a slow frame never reads as a jump.
+- **Netplay-safe.** The renderer writes the hands on the console player's pawn only, so each machine sends its own
+  hand (`ssq-pose`: position, angles, handedness, Steady Hands aim, seat drop), the body's yaw and eye height
+  (`ssq-body`) and the saber stance (`ssq-brace`) as network events; every block, bash, throw and catch is decided in
+  the playsim from those. The world copy of your shield (Others See Shield) stands in for the off-hand model while
+  QuestZDoom's two-hand grab hides it.
+- **Turns:** `SSQ_TurnKeeper` (`turnkeep.zs`) is RSQ Tactical Rig's turn keeper, copied so the two turn together.
+- **For other mods: `SSQ_ScoreService`**, found by name. `GetInt`: `locked`, `blocked`, `perfect`, `returned`,
+  `grind.held`, `thrown.leg`, `disc.grinding`; `GetObject`: `returned.from`; `GetIntUI`: `menu.locked`.
+- **It asks, by name:** `RSQ_MeleeUpgradeService` (Gun Bonsai VR), `RS_ScoreService` (`touch`), `RSQTR_BodyService`
+  (`body.yaw`, `body.recenter`), `UBQS_SaberService` (`saber.lit`), `RSQA_Service`, `RSQMB_Service`, and sends
+  `rsm_pulse` for RSQ SlowMo.
+- **Console:** `netevent ssq-draw`, `ssq-throw`, `ssq-lock 1|0`, `ssq-recenter`. `tools/packpose.py` packs a fake hand
+  pose for `netevent ssq-pose` on a headless rig.
+- **Old settings move on once.** Settings saved under older defaults (lock grace, rings kept, the throw button, the
+  block's margin and depth, the turned-shot aim, the back spots, the body-turn guess) are moved to the current ones the
+  first time this version loads.
+- **Tools:** `build.sh` packs the pk3; `tools/fxpull.py` is the record of what came from RS Combat FX and RS
+  Ballistics; `tools/rigtest/ssprobe` and `ssbody` are rig probes (the wall-slam and brace scenes, the body-frame log).
+  Never shipped.
+
+## Credits
+
+The full list is in **CREDITS.txt**.
+
+- **id Software:** the shield saw itself, from Doom: The Dark Ages (2025): its design, and the mesh Ermac ripped from
+  the game.
+- **Ermac (iAmErmac), Rusted Legacy** (https://github.com/iAmErmac/rusted-legacy): brought the shield saw to Doom VR
+  first, and this mod started from his version. His two shield models, the hand model and the sounds come from it.
+  His Rusted Legacy code is MIT (`models/hand/LICENSE_RustedLegacy_MIT.txt`); that licence does not make id Software's
+  ripped mesh MIT. Which of the two shield meshes is which, and where the hand and sounds came from before Rusted
+  Legacy, is not recorded.
+- **RS Combat FX and RS Ballistics** (presidentkoopa's effect libraries): the saw voice and block sparks, and the Shield
+  Dash and Charge effects and sounds.
 - **QuestZDoom** (Emawind, Team Beef): the engine and its off-hand weapon and hand-pose support.
-- **presidentkoopa**: this standalone version, its design, its headset testing and the direction of every change.
-  Code written for this pack.
+- **presidentkoopa:** this standalone version, its design, its headset testing and the direction of every change; the
+  bash-hit burst.

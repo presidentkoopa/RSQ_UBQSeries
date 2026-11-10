@@ -1,0 +1,17 @@
+RSQ Monsters -- credits
+
+COLOURFUL HELL
+  By Hege Cactus (ZDoom forums: "Colourful Hell", https://forum.zdoom.org/viewtopic.php?t=47980).
+  Every ColorfulHell monster here -- its colours, names, numbers, attacks, sounds and option switches -- is Hege Cactus'
+  Colourful Hell, rebuilt in ZScript from its DECORATE for stock QuestZDoom 17.3. The code also follows its CHP
+  (Colourful Hell Plus) edition in places; that edition's author is still to be credited here.
+
+THE TIER FLASH AND THE TIER-CHANGE HEALTH RULE
+  presidentkoopa's Hackfraud (HF) tree.
+
+ALSO IN THE PACK
+  coldcite (Top HP Bars): the health-bar pictures (graphics/HP_*; unused by this mod).
+  id Software: the Doom monsters, sprites and sounds the Common forms use, read from the IWAD.
+  The voxel models, the brightmaps and the decal pictures in the pack: their makers are still to be credited here.
+
+RSQ Monsters is presidentkoopa's, for the RSQ UBQ Series on QuestZDoom (Emawind and Team Beef).
