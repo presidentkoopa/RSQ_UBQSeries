@@ -34,7 +34,7 @@ it out of the air.
 | Let go of the squeeze while holding still | The spoon flies and it starts cooking. Squeeze again and swing to throw |
 | Alt fire with the pin still in | Next grenade kind (the grenade changes colour) |
 | Shoot a grenade in flight | It goes off on the spot |
-| Press Brutal Doom's Toss Grenade key (G), or bind **Quick Grenade** | A quick throw, whatever is in your hands: the same timing, speed and arc as Brutal Doom 22's toss. With RSQ SlowMo the world slows so you can shoot it in the air |
+| Press Brutal Doom's Toss Grenade key (G), or bind **Quick Grenade** | A quick throw, whatever is in your hands: the same timing, speed and arc as Brutal Doom 22's toss. With RSQ SlowMo the world slows so you can shoot it in the air. With Brutal Doom VR loaded it needs **Replace Brutal Doom's Grenade** on (otherwise G throws Brutal Doom's own) |
 
 You start each game with 3. They turn up lying in levels beside other items, singly or in packs of three. You carry 8,
 or 16 with a backpack.
@@ -114,7 +114,8 @@ headset.*
 - **RSQ Glow In The Dark:** explosions can take the opposite colour of the room's glow.
 - **RSQ Accessibility:** Photosensitive Mode or a comfort vignette turns off the chain-reaction screen kick.
 - **Brutal Doom VR Reloaded:** by default this grenade steps aside for Brutal Doom VR's own. Turn on **Replace Brutal
-  Doom's Grenade** and this one takes over. The same choice exists for barrels.
+  Doom's Grenade** and this one takes over. Barrels are ours by default (**Replace Brutal Doom's Barrels** on), so
+  Brutal Doom's barrels grow down a chain too; turn it off to keep Brutal Doom's own barrel kick and spilled fire.
 
 ---
 

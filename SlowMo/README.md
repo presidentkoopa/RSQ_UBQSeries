@@ -110,6 +110,8 @@ Each trigger has its own switch on the options page. There are two kinds.
 | Cigarette | Flicking the cigarette from your mouth (RSQ Tactical Rig) |
 | Saber Parry | A perfect parry (RSQ Saber, with its own slow-motion option on) |
 | ShieldSaw Block | A perfect block (RSQ ShieldSaw, with its own slow-motion option on) |
+| Quick Grenade | A grenade from RSQ Grenade's quick key, so you can shoot it in the air (1.5 s) |
+| Training Remote | RSQ Saber's training remote: each bolt you deflect (0.3 s), and the remote knocked down (1.5 s) |
 
 **Automatic triggers** happen to you. After one ends, the next automatic one waits 25 seconds (**Auto Cooldown**), so
 the game is not slowing all the time. Heavy Hit Slowdown and the Bossfight landing keep out of that shared wait.
@@ -278,7 +280,7 @@ the bars and DOWN's look are yours.
 | Top | Slow Motion Key · Shootdodge Key · World Speed (0.25) · Slow Motion Length (6 s; greyed with Adrenaline on) |
 | Slow Motion | Dodgeable Bullets · Lean Out of Bullets · Slow Me Too · Slow My Shots · Smooth Walkers · Adrenaline (off) · Keep Adrenaline · Haptics · Yield to Other Mods |
 | Look | Colour Drain (off) · Shot Trails · Missile Wakes · Stored Slow-Mo Bar · Countdown Bar · Bar Animation · Bar Colour (Green; 17 colours or Random) |
-| Your Triggers | Slow Motion Key · Shootdodge · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block |
+| Your Triggers | Slow Motion Key · Shootdodge · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block · Quick Grenade · Training Remote |
 | Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Score · Gun Bonsai VR · Other Mods |
 | DOWN | DOWN (off) · DOWN Music · Clock (9 s) · Bar Step (3 s) · Slowest Clock Drain (0.25) · Time: Small Monster (1 s), Lost Soul (0.5 s), Big Monster (2 s), Cyberdemon / Mastermind (10 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
 | Heavy Hit Slowdown | Heavy Hit Slowdown · Heavy Hit Size (75% of max health) · Arch-Vile Blast · Blasted Off Your Feet · Hit From Behind · Armour Broken · Cooldown (No Limit; Once per 20 s, Once per 60 s, Use Shared) |
