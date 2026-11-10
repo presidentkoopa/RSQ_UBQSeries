@@ -1,0 +1,1931 @@
+Log started: 2026-11-09 23:08:31
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/gamedata/doom2.wad, 2919 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/gamedata/brutal22test6.pk3, 22264 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/gamedata/BD_VoxelPack.pk3, 257 lumps
+adding /home/claude/rs_brutal22weaponsq/pk3/03_BD22_VR-Reloaded_2.0.4e.pk3, 836 lumps
+adding /home/claude/gamedata/LOB_v1.05.pk3, 2999 lumps
+adding /home/claude/gamedata/mk-champions20210309.pk3, 140 lumps
+adding /home/claude/gamedata/GunBonsai-0.10.6.pk3, 284 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Accessibility.pk3, 18 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_DistanceGrab.pk3, 88 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 58 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Graveyard.pk3, 47 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1567 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunBonsaiVR.pk3, 63 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 32929 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_LaserSight.pk3, 14719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Melee.pk3, 273 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Miniboss.pk3, 24 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Monsters.pk3, 22940 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10942 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 56 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 259 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 746 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 166 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 733 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 275 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 49 lumps
+adding /home/claude/scratch/bigrig/b6/brp.pk3, 3 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+  Opened device No Output
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.4 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.10GHz
+  Family 6, Model 207, Stepping 2
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+Invalid data encountered for texture GunBonsai-0.10.6.pk3:sprites/ui/.gitignore
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 428: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 527: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 655: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1059: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1186: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1333: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1507: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1850: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2065: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2459: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 967: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 968: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 361: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 494: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 626: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 745: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1293: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1435: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1564: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1700: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1951: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1952: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2085: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2086: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1228: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1229: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1292: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1293: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1368: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1369: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 216: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 359: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 504: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 505: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 629: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 630: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 778: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1343: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1344: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1522: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1654: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1797: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1909: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 218: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 373: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 536: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 664: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 779: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1092: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1207: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1331: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1458: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1586: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1587: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1766: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1767: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1908: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1947: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1986: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2025: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2064: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2117: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2118: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 493: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 494: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 871: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 872: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1668: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1902: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs, line 1335: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1236: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1237: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 232: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 359: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 490: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 629: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 742: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 743: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1046: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1162: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1294: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1441: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1593: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1778: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2005: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2176: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 832: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 833: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1866: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1867: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 249: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 250: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 349: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 350: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 441: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 442: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 630: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 631: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 712: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 713: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 781: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 782: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 835: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 836: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 909: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 910: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 997: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 998: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1170: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1171: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1290: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1413: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1720: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1934: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 767: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 770: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 1855: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 215: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 368: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 476: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 477: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 736: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 737: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1194: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1279: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1280: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1406: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknightfx.zs, line 633: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 257: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 391: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 392: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 552: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 723: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 834: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1162: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1280: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1411: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1535: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1715: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1893: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 2202: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 257: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 381: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 652: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 653: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 844: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 845: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 987: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1226: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1358: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1481: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1624: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1777: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1939: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2091: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2279: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2451: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2677: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2678: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 235: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 236: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 352: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 353: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 490: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 634: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 640: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 777: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 898: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1026: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1161: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1327: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1328: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1508: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1509: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1595: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1812: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1978: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2144: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2145: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2266: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2482: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2571: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2715: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 404: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 542: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 654: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1534: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1677: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1934: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 2152: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 330: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 446: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 559: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 668: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 821: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 823: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 944: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1074: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1208: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1360: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1517: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1738: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1740: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1894: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1896: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2190: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2498: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2499: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2606: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2607: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2693: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2694: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2763: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2764: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 140: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 141: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1248: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1828: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2734: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2735: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 465: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1672: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1801: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 331: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 500: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 652: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 853: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 974: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1104: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1203: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1293: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1430: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1474: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1634: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1772: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2004: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2081: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2420: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 466: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 695: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 896: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1155: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1321: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1445: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1568: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1688: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1689: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1741: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1906: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2108: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2361: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2639: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2688: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2960: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 1169: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 2119: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 2208: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+259 warnings while compiling RSQ_Monsters.pk3:zscript.txt
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 1:
+Tried to define class 'Tracer' more than once. Renaming class to 'Tracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 28:
+Tried to define class 'MonsterTracer' more than once. Renaming class to 'MonsterTracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "RSQ_Miniboss.pk3:zscript/rsqmb/fx.zs" line 98:
+Comparison between signed and unsigned value
+Script warning, "RSQ_Miniboss.pk3:zscript/rsqmb/fx.zs" line 114:
+Comparison between signed and unsigned value
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs" line 180:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs" line 181:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 2596:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 546:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 548:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 550:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 552:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1093:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1094:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1095:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1727:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1728:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1740:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1741:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1870:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1888:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1889:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1131:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1138:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1387:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1390:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1393:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1398:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1401:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1404:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1409:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1412:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1415:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1696:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1519:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 1608:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1538:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1677:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1872:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 2242:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1643:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1964:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 1882:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2017:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2389:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs" line 1903:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 1619:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2014:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2016:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2018:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2020:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2022:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2024:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2277:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2280:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2281:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2858:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2859:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2860:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2861:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2862:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2863:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2864:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2865:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 1905:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2233:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2246:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 736:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 916:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1697:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1894:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 2170:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1965:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2202:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2208:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2235:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2455:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2912:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2913:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs" line 1398:
+Accessing deprecated member variable ScaleX - deprecated since 2.3.0, Use Scale.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs" line 1398:
+Accessing deprecated member variable ScaleY - deprecated since 2.3.0, Use Scale.Y instead
+Script warning, "BD_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+179 warnings while parsing scripts
+Undefined drop item class TreasureChest referenced from actor LOBSpiderMastermind
+Undefined drop item class TomeSpawner referenced from actor LOBArchvile
+Undefined drop item class AmplifierGiver referenced from actor LOBArchvile
+Undefined drop item class Sapphire referenced from actor LOBArchvile
+Undefined drop item class Ruby referenced from actor LOBArachnotron
+Undefined drop item class Amber referenced from actor LOBArachnotron
+Undefined drop item class Ruby referenced from actor LOBRevenant
+Undefined drop item class Amber referenced from actor LOBCacodemon
+Undefined drop item class Emerald referenced from actor LOBBaronOfHell
+Undefined drop item class Ruby referenced from actor LOBHellKnight
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh10 referenced from actor LOBSpectre
+Undefined drop item class Dosh5 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh10 referenced from actor LOBDemon
+Undefined drop item class Dosh5 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh10 referenced from actor LOBDoomImp
+Undefined drop item class Dosh5 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh25 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh5 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh5 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh5 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class TreasureChest referenced from actor Conqueror
+Undefined drop item class TomeSpawner referenced from actor Reaper
+Undefined drop item class AmplifierGiver referenced from actor Reaper
+Undefined drop item class Sapphire referenced from actor Reaper
+Undefined drop item class Ruby referenced from actor Arachnobone
+Undefined drop item class Amber referenced from actor Arachnobone
+Undefined drop item class Ruby referenced from actor PhantomRevenant
+Undefined drop item class Emerald referenced from actor Painbringer
+Undefined drop item class Amber referenced from actor CacoLich
+Undefined drop item class Emerald referenced from actor Balrog
+Undefined drop item class Ruby referenced from actor SlayerKnight
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh10 referenced from actor GhostSpectre
+Undefined drop item class Dosh5 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh10 referenced from actor SkeletonDemon
+Undefined drop item class Dosh5 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh25 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkullChaingunner
+Undefined drop item class Dosh5 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkeletonImp
+Undefined drop item class Dosh5 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh10 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh5 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+Undefined drop item class LewdLabCoat referenced from actor RS_WhiteCguy2
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombie1
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombieEX
+script parsing took 3449.02 ms
+Initializing Gun Bonsai v0.10.5+185ae19d...
+Couldn't find Legendoom, LD-specific features in Gun Bonsai disabled.
+[BONSAIRC] Registered TFLV_Upgrade_AmmoLeech
+[BONSAIRC] Registered TFLV_Upgrade_ArmourLeech
+[BONSAIRC] Registered TFLV_Upgrade_Bandoliers
+[BONSAIRC] Registered TFLV_Upgrade_BlastShaping
+[BONSAIRC] Registered TFLV_Upgrade_ECM
+[BONSAIRC] Registered TFLV_Upgrade_HazardSuit
+[BONSAIRC] Registered TFLV_Upgrade_Intuition
+[BONSAIRC] Registered TFLV_Upgrade_Juggler
+[BONSAIRC] Registered TFLV_Upgrade_LifeLeech
+[BONSAIRC] Registered TFLV_Upgrade_PlayerDamage
+[BONSAIRC] Registered TFLV_Upgrade_Thorns
+[BONSAIRC] Registered TFLV_Upgrade_ToughAsNails
+[BONSAIRC] Registered TFLV_Upgrade_AggressiveDefence
+[BONSAIRC] Registered TFLV_Upgrade_BouncyShots
+[BONSAIRC] Registered TFLV_Upgrade_Cleave
+[BONSAIRC] Registered TFLV_Upgrade_DarkHarvest
+[BONSAIRC] Registered TFLV_Upgrade_DecoyFlares
+[BONSAIRC] Registered TFLV_Upgrade_ExplosiveDeath
+[BONSAIRC] Registered TFLV_Upgrade_ExplosiveShots
+[BONSAIRC] Registered TFLV_Upgrade_FastShots
+[BONSAIRC] Registered TFLV_Upgrade_FragmentationShots
+[BONSAIRC] Registered TFLV_Upgrade_HomingShots
+[BONSAIRC] Registered TFLV_Upgrade_PiercingShots
+[BONSAIRC] Registered TFLV_Upgrade_RapidFire
+[BONSAIRC] Registered TFLV_Upgrade_Shield
+[BONSAIRC] Registered TFLV_Upgrade_Submunitions
+[BONSAIRC] Registered TFLV_Upgrade_Sweep
+[BONSAIRC] Registered TFLV_Upgrade_Swiftness
+[BONSAIRC] Registered TFLV_Upgrade_WeaponDamage
+[BONSAIRC] Registered TFLV_Upgrade_IncendiaryShots
+[BONSAIRC] Registered TFLV_Upgrade_BurningTerror
+[BONSAIRC] Registered TFLV_Upgrade_Conflagration
+[BONSAIRC] Registered TFLV_Upgrade_InfernalKiln
+[BONSAIRC] Registered TFLV_Upgrade_PoisonShots
+[BONSAIRC] Registered TFLV_Upgrade_Weakness
+[BONSAIRC] Registered TFLV_Upgrade_Putrefaction
+[BONSAIRC] Registered TFLV_Upgrade_Hallucinogens
+[BONSAIRC] Registered TFLV_Upgrade_CorrosiveShots
+[BONSAIRC] Registered TFLV_Upgrade_ConcentratedAcid
+[BONSAIRC] Registered TFLV_Upgrade_AcidSpray
+[BONSAIRC] Registered TFLV_Upgrade_Embrittlement
+[BONSAIRC] Registered TFLV_Upgrade_ShockingInscription
+[BONSAIRC] Registered TFLV_Upgrade_Revivification
+[BONSAIRC] Registered TFLV_Upgrade_ChainLightning
+[BONSAIRC] Registered TFLV_Upgrade_Thunderbolt
+[BONSAIRC] Registered TFLV_Upgrade_ElementalBeam
+[BONSAIRC] Registered TFLV_Upgrade_ElementalBlast
+[BONSAIRC] Registered TFLV_Upgrade_ElementalWave
+[BONSAIRC] Activating configuration for class GoldWand.
+[BONSAIRC] Forcing type 0x106 for: Staff
+[BONSAIRC] Forcing type 0x104 for: GoldWand
+[BONSAIRC] Activating configuration for class MWeapWand.
+[BONSAIRC] Forcing type 0x02 for: FWeapFist FWeapAxe CWeapMace
+[BONSAIRC] Forcing type 0x68 for: MWeapLightning
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_HomingShots TFLV_Upgrade_PiercingShots TFLV_Upgrade_FragmentationShots
+           On weapons: MWeapLightning
+[BONSAIRC] Forcing type 0x68 for: MWeapBloodscourge
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_BouncyShots
+           On weapons: CWeapWraithverge
+[BONSAIRC] Activating configuration for class StrifeWeapon.
+[BONSAIRC] Forcing type 0x02 for: PunchDagger
+[BONSAIRC] Registered RSQ_Upgrade_Haymaker
+[BONSAIRC] Registered RSQ_Upgrade_OneTwo
+[BONSAIRC] Registered RSQ_Upgrade_StarPunch
+[BONSAIRC] Registered RSQ_Upgrade_Counterpunch
+[BONSAIRC] Registered RSQ_Upgrade_BodyBlow
+[BONSAIRC] Registered RSQ_Upgrade_Knockdown
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHands
+[BONSAIRC] Registered RSQ_Upgrade_ReturnFire
+[BONSAIRC] Registered RSQ_Upgrade_WallSplat
+[BONSAIRC] Registered RSQ_Upgrade_Guard
+[BONSAIRC] Registered RSQ_Upgrade_Lunge
+[BONSAIRC] Registered RSQ_Upgrade_Executioner
+[BONSAIRC] Registered RSQ_Upgrade_Adrenaline
+[BONSAIRC] Registered RSQ_Upgrade_Momentum
+[BONSAIRC] Registered RSQ_Upgrade_RiposteEdge
+[BONSAIRC] Registered RSQ_Upgrade_PiercingReturn
+[BONSAIRC] Registered RSQ_Upgrade_SaberThrow
+[BONSAIRC] Registered RSQ_Upgrade_ChainChoke
+[BONSAIRC] Registered RSQ_Upgrade_DualHarmony
+[BONSAIRC] Registered RSQ_Upgrade_ForcePush
+[BONSAIRC] Registered RSQ_Upgrade_ForcePull
+[BONSAIRC] Registered RSQ_Upgrade_ForceChoke
+[BONSAIRC] Registered RSQ_Upgrade_ForceJump
+[BONSAIRC] Registered RSQ_Upgrade_Ricochet
+[BONSAIRC] Registered RSQ_Upgrade_MeatGrinder
+[BONSAIRC] Registered RSQ_Upgrade_HuntersReturn
+[BONSAIRC] Registered RSQ_Upgrade_Bulwark
+[BONSAIRC] Registered RSQ_Upgrade_Rebound
+[BONSAIRC] Registered RSQ_Upgrade_BatteringRam
+[BONSAIRC] Registered RSQ_Upgrade_Broadening
+[BONSAIRC] Registered RSQ_Upgrade_Lockstep
+[BONSAIRC] Registered RSQ_Upgrade_Deflector
+[BONSAIRC] Registered RSQ_Upgrade_WallBounces
+[BONSAIRC] Registered RSQ_Upgrade_Cleaver
+[BONSAIRC] Registered RSQ_Upgrade_BackPlate
+[BONSAIRC] Registered RSQ_Upgrade_ShieldWall
+[BONSAIRC] Registered RSQ_Upgrade_Reflect
+[BONSAIRC] Registered RSQ_Upgrade_WallSlam
+[BONSAIRC] Registered RSQ_Upgrade_BashHitStop
+[BONSAIRC] Registered RSQ_Upgrade_Charge
+[BONSAIRC] Registered RSQ_Upgrade_ShieldSize
+[BONSAIRC] Registered RSQ_Upgrade_ShieldDash
+[BONSAIRC] Registered RSQ_Upgrade_HungryBlades
+[BONSAIRC] Registered RSQ_Upgrade_RevShield
+[BONSAIRC] Registered RSQ_Upgrade_BuzzsawReturn
+[BONSAIRC] Registered RSQ_Upgrade_Spartan
+[BONSAIRC] Registered RSQ_Upgrade_Bandolier
+[BONSAIRC] Registered RSQ_Upgrade_Scavenger
+[BONSAIRC] Registered RSQ_Upgrade_StrongArm
+[BONSAIRC] Registered RSQ_Upgrade_FlatArc
+[BONSAIRC] Registered RSQ_Upgrade_Bounce
+[BONSAIRC] Registered RSQ_Upgrade_CookSense
+[BONSAIRC] Registered RSQ_Upgrade_ShortFuse
+[BONSAIRC] Registered RSQ_Upgrade_BigBang
+[BONSAIRC] Registered RSQ_Upgrade_Frag
+[BONSAIRC] Registered RSQ_Upgrade_Cluster
+[BONSAIRC] Registered RSQ_Upgrade_Sticky
+[BONSAIRC] Registered RSQ_Upgrade_Teeth
+[BONSAIRC] Registered RSQ_Upgrade_Skeet
+[BONSAIRC] Registered RSQ_Upgrade_SkeetWindow
+[BONSAIRC] Registered RSQ_Upgrade_SlowBurn
+[BONSAIRC] Registered RSQ_Upgrade_Impact
+[BONSAIRC] Registered RSQ_Upgrade_Incendiary
+[BONSAIRC] Registered RSQ_Upgrade_Freeze
+[BONSAIRC] Registered RSQ_Upgrade_Stun
+[BONSAIRC] Registered RSQ_Upgrade_Smoke
+[BONSAIRC] Registered RSQ_Upgrade_Flash
+[BONSAIRC] Registered RSQ_Upgrade_Charm
+[BONSAIRC] Registered RSQ_Upgrade_Infight
+[BONSAIRC] Registered RSQ_Upgrade_Grapple
+[BONSAIRC] Registered RSQ_Upgrade_SwingMomentum
+[BONSAIRC] Registered RSQ_Upgrade_ZipKick
+[BONSAIRC] Registered RSQ_Upgrade_Scorpion
+[BONSAIRC] Registered RSQ_Upgrade_TwinLines
+[BONSAIRC] Registered RSQ_Upgrade_DeadEye
+[BONSAIRC] Registered RSQ_Upgrade_HeavyLift
+[BONSAIRC] Registered RSQ_Upgrade_StraightPull
+[BONSAIRC] Registered RSQ_Upgrade_BodyShield
+[BONSAIRC] Registered RSQ_Upgrade_AmmoReadout
+[BONSAIRC] Registered RSQ_Upgrade_GunToss
+[BONSAIRC] Registered RSQ_Upgrade_BoomerangGun
+[BONSAIRC] Registered RSQ_Upgrade_KeysByHand
+[BONSAIRC] Registered RSQ_Upgrade_Smoker
+[BONSAIRC] Registered RSQ_Upgrade_ChainSmoker
+[BONSAIRC] Registered RSQ_Upgrade_TargetLock
+[BONSAIRC] Registered RSQ_Upgrade_HeadshotReaction
+[BONSAIRC] Registered RSQ_Upgrade_SlowMotion
+[BONSAIRC] Registered RSQ_Upgrade_Longer
+[BONSAIRC] Registered RSQ_Upgrade_Deeper
+[BONSAIRC] Registered RSQ_Upgrade_Cheaper
+[BONSAIRC] Registered RSQ_Upgrade_LeanDodge
+[BONSAIRC] Registered RSQ_Upgrade_Matrix
+[BONSAIRC] Registered RSQ_Upgrade_LongArm
+[BONSAIRC] Registered RSQ_Upgrade_IronGrip
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHitter
+[BONSAIRC] Registered RSQ_Upgrade_AirCatch
+[BONSAIRC] Registered RSQ_Upgrade_PowderKeg
+[BONSAIRC] Registered RSQ_Upgrade_QuickDraw
+[BONSAIRC] Registered RSQ_Upgrade_PairDraw
+[BONSAIRC] Registered RSQ_Upgrade_Showdown
+[BONSAIRC] Registered RSQ_Upgrade_Marksman
+[BONSAIRC] Registered RSQ_Upgrade_Dodger
+[BONSAIRC] Registered RSQ_Upgrade_SecondWind
+[BONSAIRC] Registered RSQ_Upgrade_TimeDilation
+[BONSAIRC] Registered RSQ_Upgrade_Akimbo
+[BONSAIRC] Registered RSQ_Upgrade_Crossfire
+[BONSAIRC] Registered RSQ_Upgrade_Alternator
+[BONSAIRC] Registered RSQ_Upgrade_Evasion
+[BONSAIRC] Registered RSQ_Upgrade_Southpaw
+[BONSAIRC] Registered RSQ_Upgrade_SteadyAim
+[BONSAIRC] Registered RSQ_Upgrade_LongLine
+[BONSAIRC] Registered RSQ_Upgrade_FastReel
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHaul
+[BONSAIRC] Registered RSQ_Upgrade_GetOverHere
+[BONSAIRC] Registered RSQ_Upgrade_Bowling
+[BONSAIRC] Registered RSQ_Upgrade_BarbedClaw
+[BONSAIRC] Registered RSQ_Upgrade_Slingshot
+[BONSAIRC] Registered RSQ_Upgrade_SteadyLine
+[BONSAIRC] Registered RSQ_Upgrade_DoubleHook
+[BONSAIRC] Registered RSQ_Upgrade_Uppercut
+[BONSAIRC] Registered RSQ_Upgrade_Launcher
+[BONSAIRC] Registered RSQ_Upgrade_Juggle
+[BONSAIRC] Registered RSQ_Upgrade_Meteor
+[BONSAIRC] Registered RSQ_Upgrade_GroundPound
+[BONSAIRC] Registered RSQ_Upgrade_ClearOut
+[BONSAIRC] Registered RSQ_Upgrade_ExplosiveFist
+[BONSAIRC] Registered RSQ_Upgrade_FrostFist
+[BONSAIRC] Registered RSQ_Upgrade_ShockFist
+[BONSAIRC] Registered RSQ_Upgrade_FireFist
+[BONSAIRC] Registered RSQ_Upgrade_ThreeHit
+[BONSAIRC] Registered RSQ_Upgrade_Dempsey
+[BONSAIRC] Registered RSQ_Upgrade_Finisher
+[BONSAIRC] Registered RSQ_Upgrade_SwatBack
+[BONSAIRC] Registered RSQ_Upgrade_Parry
+[BONSAIRC] Registered RSQ_Upgrade_ReflectGuard
+[BONSAIRC] Registered RSQ_Upgrade_AbsorbRelease
+[BONSAIRC] Registered RSQ_Upgrade_Catch
+[BONSAIRC] Registered RSQ_Upgrade_BulletTimeFists
+[BONSAIRC] Registered RSQ_Upgrade_HumanShield
+[BONSAIRC] Registered RSQ_Upgrade_HeadlockUppercut
+[BONSAIRC] Registered RSQ_Upgrade_HeavierHeadlock
+[BONSAIRC] Registered RSQ_Upgrade_Slam
+[BONSAIRC] Registered RSQ_Upgrade_ThrowInto
+[BONSAIRC] Registered RSQ_Upgrade_Chokehold
+[BONSAIRC] Registered RSQ_Upgrade_Rage
+[BONSAIRC] Registered RSQ_Upgrade_BloodRush
+[BONSAIRC] Registered RSQ_Upgrade_BerserkMeter
+[BONSAIRC] Registered RSQ_Upgrade_PistolWhip
+[BONSAIRC] Registered RSQ_Upgrade_RifleButt
+[BONSAIRC] Registered RSQ_Upgrade_Taunt
+[BONSAIRC] Registered RSQ_Upgrade_CriticalHits
+[BONSAIRC] Registered RSQ_Upgrade_Headshot
+[BONSAIRC] Registered RSQ_Upgrade_Backstab
+[BONSAIRC] Registered RSQ_Upgrade_BitScavenger
+[BONSAIRC] Registered RSQ_Upgrade_RichBits
+[BONSAIRC] Registered RSQ_Upgrade_Magnet
+[BONSAIRC] Registered RSQ_Upgrade_LuckyKill
+[BONSAIRC] Registered RSQ_Upgrade_Sting
+[BONSAIRC] Registered RSQ_Upgrade_WhipStun
+[BONSAIRC] Registered RSQ_Upgrade_CrackShot
+[BONSAIRC] Registered RSQ_Upgrade_ReturnCrack
+[BONSAIRC] Registered RSQ_Upgrade_WhipStrikeTrue
+[BONSAIRC] Registered RSQ_Upgrade_LongThong
+[BONSAIRC] Registered RSQ_Upgrade_QuickMark
+[BONSAIRC] Registered RSQ_Upgrade_HeavyYank
+[BONSAIRC] Registered RSQ_Upgrade_PullAndPunch
+[BONSAIRC] Registered RSQ_Upgrade_Lasso
+[BONSAIRC] Registered RSQ_Upgrade_Bola
+[BONSAIRC] Registered RSQ_Upgrade_Snag
+[BONSAIRC] Registered RSQ_Upgrade_Mantle
+[BONSAIRC] Registered RSQ_Upgrade_WhipMomentum
+[BONSAIRC] Registered RSQ_Upgrade_Tarzan
+[BONSAIRC] Registered RSQ_Upgrade_BattleMeditation
+[BONSAIRC] Registered RSQ_Upgrade_SaberBarrage
+[BONSAIRC] Registered RSQ_Upgrade_ReturningBlade
+[BONSAIRC] Registered RSQ_Upgrade_StrikeTrue
+[BONSAIRC] Registered RSQ_Upgrade_KyberAttunement
+[BONSAIRC] Registered RSQ_Upgrade_HighGround
+[BONSAIRC] Registered RSQ_Upgrade_PointTaken
+[BONSAIRC] Registered RSQ_Upgrade_RunThrough
+[BONSAIRC] Registered RSQ_Upgrade_ReturnToSender
+[BONSAIRC] Registered RSQ_Upgrade_GuidedReturn
+[BONSAIRC] Registered RSQ_Upgrade_Precognition
+[BONSAIRC] Registered RSQ_Upgrade_TwoSabers
+[BONSAIRC] Registered RSQ_Upgrade_DoubleBladed
+[BONSAIRC] Registered RSQ_Upgrade_CrossGuard
+[BONSAIRC] Registered RSQ_Upgrade_Clash
+[BONSAIRC] Registered RSQ_Upgrade_ForceSensitive
+[BONSAIRC] Registered RSQ_Upgrade_ForceSpeed
+[BONSAIRC] Registered RSQ_Upgrade_ForceLightning
+[BONSAIRC] Forcing type 0x02 for: RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_RapidFire TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+           On weapons: RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw
+[BONSAIRC] Activating configuration for class RSQWP_WhipWeapon.
+[BONSAIRC] Forcing type 0x02 for: RSQWP_WhipWeapon
+Gun Bonsai VR/offhand patch active: two hands, two HUDs, provenance-based XP.
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+M_Init: Init menus.
+P_Init: Init Playloop state.
+R_InstallSpriteLump: Bad frame characters in lump PENTAHUD
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Entryway
+
+BRP LOADED MAP01 maptime 0 savegame 0 reopen 0
+BRP STATS t0 MAP01 on load: 59 sectors, desaturated 0, light colour not white 0; ddz_mode 2 rsqsm_ddz_saved -9999; DOWN 0 gwN 0 mix 0.00
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+
+----------------------------------------
+TIP 21: While BDv22 supports a handful of popular WADs, not every WAD is compatible. Check the list in the level options menu and see which can be ripped and torn through. (Submit any WAD support requests to the BD discord server)
+----------------------------------------
+BRP R 1 maptime 1 gametic 1
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 1
+BRP R 2 maptime 18 gametic 18
+BRP MENU   RSQSC_Options [0] "Show Score" -> rs_score_hide (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [1] "Size" -> rs_score_scale (OptionMenuItemSlider) range 50.00..200.00 step 5.00
+BRP MENU   RSQSC_Options [2] "Living Label" -> rs_score_alive (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [3] "Letters" -> rs_score_letters (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [4] "Score on the Wrist" -> rs_score_wrist (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [5] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [6] "Rewards" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [7] "Show Reward Bar" -> rs_score_norewards (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [8] "Target Reward" -> rs_score_rewardtypes (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [9] "New Map Keeps" -> rs_score_startmode (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [10] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [11] "Big Moments" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [12] "Slow Motion Moments" -> rs_score_slowmo (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [13] "Hit-Stop on Big Kills" -> rs_score_hitstop (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [14] "Revival Fire" -> rs_score_revivefire (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [15] "Bar Flash" -> rs_score_flash (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [16] "Screen Flash" -> rs_score_screenflash (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [17] "Reward Screen Flash" -> rs_score_rewardflash (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [18] "Revival Screen Flash" -> rs_score_reviveflash (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [19] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [20] "Head Shots" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [21] "Head Shot Damage" -> rs_score_hs_bonus (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [22] "Heads on Demons, Cacos and Spiders" -> rs_score_hs_headless (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [23] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [24] "Monster Roster Rows: Tiers" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [25] "Green Tier" -> rs_score_rr_green (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [26] "Blue Tier" -> rs_score_rr_blue (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [27] "Cyan Tier" -> rs_score_rr_cyan (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [28] "Purple Tier" -> rs_score_rr_purple (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [29] "Yellow Tier" -> rs_score_rr_yellow (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [30] "FireBlu Tier" -> rs_score_rr_fireblu (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [31] "Abyss Tier" -> rs_score_rr_abyss (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [32] "Brown Tier" -> rs_score_rr_brown (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [33] "Gray Tier" -> rs_score_rr_gray (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [34] "Red Tier" -> rs_score_rr_red (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [35] "Black Boss" -> rs_score_rr_black (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [36] "White Boss" -> rs_score_rr_white (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [37] "EX Boss" -> rs_score_rr_ex (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [38] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [39] "Monster Roster Rows: The Roster" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [40] "Rarity" -> rs_score_rr_rarity (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [41] "Full Spectrum" -> rs_score_rr_spectrum (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [42] "Colour Chain" -> rs_score_rr_chain (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [43] "Keep the Change" -> rs_score_rr_keepchange (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [44] "Fresh Paint" -> rs_score_rr_freshpaint (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [45] "Upset" -> rs_score_rr_upset (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [46] "Tier Slayer" -> rs_score_rr_tierslayer (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [47] "Gang War" -> rs_score_rr_gangwar (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [48] "Mixed Bag" -> rs_score_rr_mixedbag (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [49] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [50] "Monster Roster Rows: MeatGrinder" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [51] "Headhunter" -> rs_score_rr_headhunter (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [52] "Barbecue (MG Burn)" -> rs_score_rr_mgburn (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [53] "Ice Breaker (MG Freeze)" -> rs_score_rr_mgfreeze (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [54] "Live Wire (MG Shock)" -> rs_score_rr_mgshock (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [55] "Pop! (MG Exploding Head)" -> rs_score_rr_mgpop (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [56] "Cleaved (MG Gib, Melee)" -> rs_score_rr_mgcleaved (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [57] "Pinata (MG Gib)" -> rs_score_rr_mgpinata (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [58] "Meltdown" -> rs_score_rr_meltdown (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [59] "Splitter" -> rs_score_rr_splitter (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [60] "Cut Short" -> rs_score_rr_cutshort (OptionMenuItemOption)
+BRP MENU   RSQSC_Options [61] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Options [62] "Test and Debug" -> RSQSC_Test (OptionMenuItemSubmenu)
+BRP MENU   RSQSC_Options [63] "Reset All" -> None (OptionMenuItemRSQSCResetAll)
+BRP MENU   RSQSC_Test [0] "Display" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [1] "Across" -> rs_score_x (OptionMenuItemSlider) range 0.00..100.00 step 1.00
+BRP MENU   RSQSC_Test [2] "Down" -> rs_score_y (OptionMenuItemSlider) range 0.00..100.00 step 1.00
+BRP MENU   RSQSC_Test [3] "Bonus Time (0 Hides)" -> rs_score_bonustime (OptionMenuItemSlider) range 0.00..196.00 step 7.00
+BRP MENU   RSQSC_Test [4] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [5] "Bonus Caps (0 = None)" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [6] "Kill Bonus Cap" -> rs_score_cap_kill (OptionMenuItemSlider) range 0.00..1000.00 step 50.00
+BRP MENU   RSQSC_Test [7] "Efficiency Cap" -> rs_score_cap_efficiency (OptionMenuItemSlider) range 0.00..300.00 step 10.00
+BRP MENU   RSQSC_Test [8] "Style Cap" -> rs_score_cap_style (OptionMenuItemSlider) range 0.00..300.00 step 10.00
+BRP MENU   RSQSC_Test [9] "Daring Cap" -> rs_score_cap_daring (OptionMenuItemSlider) range 0.00..300.00 step 10.00
+BRP MENU   RSQSC_Test [10] "Melee Cap" -> rs_score_cap_melee (OptionMenuItemSlider) range 0.00..300.00 step 10.00
+BRP MENU   RSQSC_Test [11] "Counterplay Cap" -> rs_score_cap_counter (OptionMenuItemSlider) range 0.00..300.00 step 10.00
+BRP MENU   RSQSC_Test [12] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [13] "Reward Target" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [14] "Target Size (%)" -> rs_score_monsterscalar (OptionMenuItemSlider) range 10.00..200.00 step 5.00
+BRP MENU   RSQSC_Test [15] "Fewest Monsters" -> rs_score_monstermin (OptionMenuItemSlider) range 0.00..500.00 step 10.00
+BRP MENU   RSQSC_Test [16] "Most Monsters" -> rs_score_monstermax (OptionMenuItemSlider) range 100.00..2000.00 step 50.00
+BRP MENU   RSQSC_Test [17] "Round To" -> rs_score_interval (OptionMenuItemSlider) range 1000.00..20000.00 step 1000.00
+BRP MENU   RSQSC_Test [18] "Ammo Refill (%)" -> rs_score_regenpercent (OptionMenuItemSlider) range 0.00..400.00 step 10.00
+BRP MENU   RSQSC_Test [19] "Raised Monster Pay (%)" -> rs_score_farmpercent (OptionMenuItemSlider) range 0.00..100.00 step 5.00
+BRP MENU   RSQSC_Test [20] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [21] "Slow Motion" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [22] "Cooldown (s)" -> rs_score_slowmo_cooldown (OptionMenuItemSlider) range 1.00..30.00 step 1.00
+BRP MENU   RSQSC_Test [23] "Style Share (%)" -> rs_score_slowstyle (OptionMenuItemSlider) range 0.00..200.00 step 10.00
+BRP MENU   RSQSC_Test [24] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [25] "Head Shots" -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [26] "Unknown Monster's Head (% of Height)" -> rs_score_hs_unknown (OptionMenuItemSlider) range 50.00..98.00 step 1.00
+BRP MENU   RSQSC_Test [27] "Head Shot Log" -> rs_score_hs_log (OptionMenuItemOption)
+BRP MENU   RSQSC_Test [28] " " -> None (OptionMenuItemStaticText)
+BRP MENU   RSQSC_Test [29] "Debug Log" -> rs_score_debug (OptionMenuItemOption)
+BRP R 3 maptime 30 gametic 30
+BRP R 4 maptime 36 gametic 36
+BRP R 5 maptime 41 gametic 41
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+BRP TELE t41 player to (-800 700 8) sector 11 angle 90
+T_CLUTTER t41 main hand (kind 1) can act on: [Left hip] [Right hip] [Grenades] [Left shoulder] [Right shoulder] [Left chest] [Right chest] [Right saber] [Whip] [Ammo pouch]
+T_CLUTTER t41 off hand (kind 0) can act on: [Grenades] [Flare] [Ammo pouch] [FnF pocket] [FnF clip]
+BRP R 6 maptime 47 gametic 47
+BR_P18_BARRELS
+BRP R 7 maptime 52 gametic 52
+BRP STATE t52 MAP01 (tag 0): flares in the pocket 2; cigarettes 3; battery token 1001 (permille+1), stored 100%, handler live 100%; off hand rsq_hands; main Rifle
+BRP TELE t52 player to (-700 500 8) sector 11 angle 90
+BRP R 8 maptime 56 gametic 56
+BRP R 9 maptime 60 gametic 60
+BRP BARREL 0 t60 RSQGN_Barrel at (-560 800)
+BRP BARREL 1 t60 RSQGN_Barrel at (-630 800)
+BRP BARREL 2 t60 RSQGN_Barrel at (-700 800)
+BRP BARREL 3 t60 RSQGN_Barrel at (-770 800)
+BRP BARREL 4 t60 RSQGN_Barrel at (-840 800)
+BRP BARRELHIT t60 at (-560 800) took 500 (None) from inflictor BDoomer at (-700 500), health now -480
+BRP BARRELDIED t60 at (-560 800) chain depth 0, inflictor BDoomer, source none
+BRP R 10 maptime 63 gametic 63
+BRP R 11 maptime 69 gametic 69
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+T_GHOST t70 start: Rifle in the main hand, ghost hand to Right hip (loop 52 tics, alpha 0.35)
+BRP R 12 maptime 74 gametic 74
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+BRP BARRELHIT t74 at (-630 800) took 61 (None) from inflictor RSQGN_Barrel at (-553 814), health now -41
+BRP BARRELDIED t74 at (-630 800) chain depth 1, inflictor RSQGN_Barrel, source none
+RSQ_SlowMo: trigger barrel.chain t74: seen: RSQGN_Barrel set off by another barrel's blast (RSQGN_Barrel)
+RSQ_SlowMo: trigger barrel.chain t75: refused: its switch is off (Chain Reaction)
+BRP R 13 maptime 78 gametic 78
+BRP R 14 maptime 85 gametic 85
+BRP BARRELHIT t87 at (-770 800) took 44 (None) from inflictor RSQGN_Barrel at (-677 791), health now -24
+BRP BARRELDIED t87 at (-770 800) chain depth 2, inflictor RSQGN_Barrel, source none
+RSQ_SlowMo: trigger barrel.chain t87: seen: RSQGN_Barrel set off by another barrel's blast (RSQGN_Barrel)
+BRP BARRELHIT t87 at (-700 800) took 114 (None) from inflictor RSQGN_Barrel at (-677 791), health now -94
+BRP BARRELDIED t87 at (-700 800) chain depth 2, inflictor RSQGN_Barrel, source none
+RSQ_SlowMo: trigger barrel.chain t87: seen: RSQGN_Barrel set off by another barrel's blast (RSQGN_Barrel)
+RSQ_SlowMo: trigger barrel.chain t88: refused: its switch is off (Chain Reaction)
+BRP R 15 maptime 94 gametic 94
+T_GHOST t96 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP BARRELHIT t99 at (-840 800) took 110 (None) from inflictor RSQGN_Barrel at (-812 804), health now -90
+BRP BARRELDIED t99 at (-840 800) chain depth 3, inflictor RSQGN_Barrel, source none
+RSQ_SlowMo: trigger barrel.chain t99: seen: RSQGN_Barrel set off by another barrel's blast (RSQGN_Barrel)
+RSQ_SlowMo: trigger barrel.chain t100: refused: its switch is off (Chain Reaction)
+BRP R 16 maptime 104 gametic 104
+BRP R 17 maptime 110 gametic 110
+BRP R 18 maptime 115 gametic 115
+BRP R 19 maptime 119 gametic 119
+BRP R 20 maptime 123 gametic 123
+BRP R 21 maptime 127 gametic 127
+BRP R 22 maptime 131 gametic 131
+BRP R 23 maptime 134 gametic 134
+BRP R 24 maptime 138 gametic 138
+BRP R 25 maptime 143 gametic 143
+BRP R 26 maptime 147 gametic 147
+T_GHOST t148 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 27 maptime 152 gametic 152
+BRP R 28 maptime 158 gametic 158
+BRP R 29 maptime 164 gametic 164
+BRP R 30 maptime 168 gametic 168
+BRP R 31 maptime 173 gametic 173
+BRP R 32 maptime 177 gametic 177
+BRP R 33 maptime 181 gametic 181
+BRP R 34 maptime 185 gametic 185
+BRP R 35 maptime 189 gametic 189
+BRP R 36 maptime 193 gametic 193
+BRP R 37 maptime 197 gametic 197
+T_GHOST t200 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 38 maptime 202 gametic 202
+BRP R 39 maptime 206 gametic 206
+BRP R 40 maptime 211 gametic 211
+BRP R 41 maptime 216 gametic 216
+BRP R 42 maptime 221 gametic 221
+BRP R 43 maptime 225 gametic 225
+BRP R 44 maptime 229 gametic 229
+BRP R 45 maptime 233 gametic 233
+BRP R 46 maptime 237 gametic 237
+BRP R 47 maptime 240 gametic 240
+BRP R 48 maptime 243 gametic 243
+BRP R 49 maptime 247 gametic 247
+BRP R 50 maptime 251 gametic 251
+T_GHOST t252 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 51 maptime 254 gametic 254
+BRP R 52 maptime 258 gametic 258
+BRP R 53 maptime 262 gametic 262
+BRP R 54 maptime 266 gametic 266
+BRP R 55 maptime 270 gametic 270
+BRP R 56 maptime 274 gametic 274
+BRP R 57 maptime 279 gametic 279
+BR_P16_SETUP
+BRP R 58 maptime 284 gametic 284
+BRP TELE t284 player to (-900 600 8) sector 11 angle 90
+BRP R 59 maptime 289 gametic 289
+BRP R 60 maptime 298 gametic 298
+BRP R 61 maptime 304 gametic 304
+T_GHOST t304 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 62 maptime 308 gametic 308
+BRP R 63 maptime 312 gametic 312
+BRP R 64 maptime 316 gametic 316
+BRP R 65 maptime 320 gametic 320
+BRP R 66 maptime 324 gametic 324
+BRP R 67 maptime 329 gametic 329
+BRP R 68 maptime 334 gametic 334
+BRP R 69 maptime 340 gametic 340
+BRP R 70 maptime 347 gametic 347
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+BRP R 71 maptime 352 gametic 352
+T_GHOST t356 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 72 maptime 357 gametic 357
+BRP R 73 maptime 363 gametic 363
+BRP R 74 maptime 369 gametic 369
+BRP R 75 maptime 372 gametic 372
+BRP R 76 maptime 375 gametic 375
+BRP R 77 maptime 379 gametic 379
+BRP R 78 maptime 382 gametic 382
+BRP DSPAWN t382 RS_CommonZombie at (-891 720 8) sector 11 (120 units from the player)
+BRP R 79 maptime 385 gametic 385
+BRP R 80 maptime 388 gametic 388
+BRP R 81 maptime 392 gametic 392
+BRP R 82 maptime 395 gametic 395
+BRP R 83 maptime 398 gametic 398
+BRP R 84 maptime 401 gametic 401
+BRP R 85 maptime 404 gametic 404
+T_GHOST t408 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 86 maptime 409 gametic 409
+BRP R 87 maptime 413 gametic 413
+BRP R 88 maptime 418 gametic 418
+BR_P16_HEAD_NONLETHAL
+BRP R 89 maptime 422 gametic 422
+BRP ZHP t422 RS_CommonZombie health 500
+BRP GUN t422 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+[RSQDG] t422 hand 0 at punch speed (7.1 m/s >= 2.0): no reach for 0.75 s
+BRP GUN t423 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t424 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t425 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t426 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP R 90 maptime 427 gametic 427
+BRP GUN t427 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t428 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t429 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t430 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t431 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP R 91 maptime 432 gametic 432
+BRP GUN t432 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t433 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t434 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t435 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP R 92 maptime 436 gametic 436
+BRP GUN t436 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t437 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t438 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t439 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t440 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP R 93 maptime 441 gametic 441
+BRP GUN t441 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t442 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t443 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t444 cmd ---- BrutalPistol ready 1 state PISTE0 mag 16 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP R 94 maptime 445 gametic 445
+BRP GUN t445 cmd A--- BrutalPistol ready 0 state PISTA0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP GUN t446 cmd A--- BrutalPistol ready 0 state PISTB0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 500 at (-891 720) top 56.0
+BRP BLOW t446 RS_CommonZombie took 14 (Minor) from BDoomer via WeakPuff: tool gun.pistol, health now 486
+HS t446 RS_CommonZombie fam zombie H 56.0 (def 56.0) R 20.0 scale 1.00 feet 8.0 floor 8.0 hit 64.0 up 56.0 frac 1.000 lo 0.821 verdict HEAD dt Minor src player route blood bonus 30 (after the blow) tokens 1 hp 486
+BRP BLOW t446 RS_CommonZombie took 30 (head) from BDoomer via WeakPuff: tool gun.pistol, health now 456
+BRP GUN t447 cmd A--- BrutalPistol ready 0 state PISTC0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-891 720) top 56.0
+BRP GUN t448 cmd A--- BrutalPistol ready 0 state PISTD0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-891 722) top 56.0
+BRP R 95 maptime 449 gametic 449
+BRP GUN t449 cmd A--- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-891 723) top 56.0
+BRP GUN t450 cmd A--- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-891 725) top 56.0
+BRP GUN t451 cmd A--- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-891 726) top 56.0
+BRP GUN t452 cmd A--- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-891 727) top 56.0
+BRP R 96 maptime 453 gametic 453
+BRP GUN t453 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 728) top 56.0
+BRP GUN t454 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 729) top 56.0
+BRP GUN t455 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 730) top 56.0
+BRP GUN t456 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 731) top 56.0
+BRP R 97 maptime 457 gametic 457
+BRP GUN t457 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 732) top 56.0
+BRP GUN t458 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 732) top 56.0
+BRP GUN t459 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 733) top 56.0
+BRP GUN t460 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 733) top 56.0
+T_GHOST t460 loop: ghost hand at Right hip (0.893 m from the hand, ring 0.893 m away)
+BRP R 98 maptime 461 gametic 461
+BRP GUN t461 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 734) top 56.0
+BRP GUN t462 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 734) top 56.0
+BRP GUN t463 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 735) top 56.0
+BRP GUN t464 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 735) top 56.0
+BRP R 99 maptime 465 gametic 465
+BRP GUN t465 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 735) top 56.0
+BRP GUN t466 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 736) top 56.0
+BRP GUN t467 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 736) top 56.0
+BRP GUN t468 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 736) top 56.0
+BRP R 100 maptime 469 gametic 469
+BRP GUN t469 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 736) top 56.0
+BRP GUN t470 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 737) top 56.0
+BRP GUN t471 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 737) top 56.0
+BRP R 101 maptime 472 gametic 472
+BRP GUN t472 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 737) top 56.0
+BRP GUN t473 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 737) top 56.0
+BRP GUN t474 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 737) top 56.0
+BRP GUN t475 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 737) top 56.0
+BRP R 102 maptime 476 gametic 476
+BRP GUN t476 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BRP GUN t477 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BRP GUN t478 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BRP GUN t479 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BRP R 103 maptime 480 gametic 480
+BRP GUN t480 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BRP GUN t481 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BR_P16_BODY_KILL
+BRP GUN t482 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BRP GUN t483 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BRP GUN t484 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 48.2 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 456 at (-892 738) top 56.0
+BRP R 104 maptime 485 gametic 485
+BRP ZHP t485 RS_CommonZombie health 10
+BRP GUN t485 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+[RSQDG] t485 hand 0 at punch speed (12.4 m/s >= 2.0): no reach for 0.75 s
+BRP GUN t486 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t487 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t488 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP R 105 maptime 489 gametic 489
+BRP GUN t489 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t490 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t491 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t492 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP R 106 maptime 493 gametic 493
+BRP GUN t493 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t494 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t495 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP R 107 maptime 496 gametic 496
+BRP GUN t496 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t497 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t498 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t499 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP R 108 maptime 500 gametic 500
+BRP GUN t500 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t501 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t502 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP R 109 maptime 503 gametic 503
+BRP GUN t503 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t504 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t505 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t506 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP R 110 maptime 507 gametic 507
+BRP GUN t507 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t508 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t509 cmd ---- BrutalPistol ready 1 state PISTE0 mag 15 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP R 111 maptime 510 gametic 510
+BRP GUN t510 cmd A--- BrutalPistol ready 0 state PISTA0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP GUN t511 cmd A--- BrutalPistol ready 0 state PISTB0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-892 738) top 56.0
+BRP BLOW t511 RS_CommonZombie took 14 (Minor) from BDoomer via WeakPuff: tool gun.pistol, health now -4 KILLED
+HS t511 RS_CommonZombie fam zombie H 56.0 (def 56.0) R 20.0 scale 1.00 feet 8.0 floor 8.0 hit 44.0 up 36.0 frac 0.643 lo 0.821 verdict body dt Minor src player route blood bonus 0 (after the blow) tokens 1 hp -4
+HS t511 kill RS_CommonZombie: Score Headshot row does not pay
+RS_Score[killer]: RS_CommonZombie spawnhp 20 base 20 counted 0 | spree n=0 exp=0 t=511 | ut k=0 hp=0 st=0
+RS_Score: +20 -> 20 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #1 p0 base 20 style 0 chain gun.pistol
+BRP GUN t512 cmd A--- BrutalPistol ready 0 state PISTC0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+T_GHOST t512 loop: ghost hand at Right hip (0.338 m from the hand, ring 0.338 m away)
+BRP GUN t513 cmd A--- BrutalPistol ready 0 state PISTD0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 740) top 14.0
+BRP R 112 maptime 514 gametic 514
+BRP GUN t514 cmd A--- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 741) top 14.0
+BRP GUN t515 cmd A--- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 743) top 14.0
+BRP GUN t516 cmd A--- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 744) top 14.0
+BRP R 113 maptime 517 gametic 517
+BRP GUN t517 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 745) top 14.0
+BRP GUN t518 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 746) top 14.0
+BRP GUN t519 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 747) top 14.0
+BRP GUN t520 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 748) top 14.0
+BRP R 114 maptime 521 gametic 521
+BRP GUN t521 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 749) top 14.0
+BRP GUN t522 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 750) top 14.0
+BRP GUN t523 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 750) top 14.0
+BRP R 115 maptime 524 gametic 524
+BRP GUN t524 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 751) top 14.0
+BRP GUN t525 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 751) top 14.0
+BRP GUN t526 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 752) top 14.0
+BRP R 116 maptime 527 gametic 527
+BRP GUN t527 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 752) top 14.0
+BRP GUN t528 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 753) top 14.0
+BRP GUN t529 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 753) top 14.0
+BRP R 117 maptime 530 gametic 530
+BRP GUN t530 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 754) top 14.0
+BRP GUN t531 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 754) top 14.0
+BRP GUN t532 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 754) top 14.0
+BRP GUN t533 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 754) top 14.0
+BRP R 118 maptime 534 gametic 534
+BRP GUN t534 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 755) top 14.0
+BRP GUN t535 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 755) top 14.0
+BRP GUN t536 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 755) top 14.0
+BRP GUN t537 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 755) top 14.0
+BRP R 119 maptime 538 gametic 538
+BRP GUN t538 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 755) top 14.0
+BRP GUN t539 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 755) top 14.0
+BRP GUN t540 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 755) top 14.0
+BRP R 120 maptime 541 gametic 541
+BRP GUN t541 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 756) top 14.0
+BRP GUN t542 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 756) top 14.0
+BRP GUN t543 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 756) top 14.0
+BRP R 121 maptime 544 gametic 544
+BRP GUN t544 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 756) top 14.0
+BRP GUN t545 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 756) top 14.0
+BRP GUN t546 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-893 756) top 14.0
+BRP R 122 maptime 547 gametic 547
+BRP DSPAWN t547 RS_CommonZombie at (-891 720 8) sector 11 (120 units from the player)
+BRP GUN t547 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t548 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t549 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t550 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 123 maptime 551 gametic 551
+BRP GUN t551 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t552 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t553 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t554 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t555 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 124 maptime 556 gametic 556
+BRP GUN t556 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t557 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t558 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t559 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t560 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 125 maptime 561 gametic 561
+BRP GUN t561 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t562 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t563 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t564 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+T_GHOST t564 loop: ghost hand at Right hip (0.338 m from the hand, ring 0.338 m away)
+BRP R 126 maptime 565 gametic 565
+BRP GUN t565 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t566 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t567 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t568 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 127 maptime 569 gametic 569
+BRP GUN t569 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t570 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t571 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t572 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t573 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 128 maptime 574 gametic 574
+BRP GUN t574 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t575 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t576 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t577 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t578 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t579 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 129 maptime 580 gametic 580
+BRP GUN t580 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t581 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t582 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t583 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t584 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 130 maptime 585 gametic 585
+BR_P16_HEAD_KILL_CONTROL
+BRP GUN t585 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t586 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t587 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t588 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 28.3 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 131 maptime 589 gametic 589
+BRP ZHP t589 RS_CommonZombie health 10
+BRP GUN t589 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+[RSQDG] t589 hand 0 at punch speed (11.9 m/s >= 2.0): no reach for 0.75 s
+BRP GUN t590 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t591 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t592 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t593 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 132 maptime 594 gametic 594
+BRP GUN t594 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t595 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t596 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t597 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t598 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t599 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 133 maptime 600 gametic 600
+BRP GUN t600 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t601 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t602 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t603 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 134 maptime 604 gametic 604
+BRP GUN t604 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t605 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t606 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t607 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 135 maptime 608 gametic 608
+BRP GUN t608 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t609 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t610 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t611 cmd ---- BrutalPistol ready 1 state PISTE0 mag 14 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 136 maptime 612 gametic 612
+BRP GUN t612 cmd A--- BrutalPistol ready 0 state PISTA0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t613 cmd A--- BrutalPistol ready 0 state PISTB0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP BLOW t613 RS_CommonZombie took 14 (Minor) from BDoomer via WeakPuff: tool gun.pistol, health now -4 KILLED
+HS t613 RS_CommonZombie fam zombie H 56.0 (def 56.0) R 20.0 scale 1.00 feet 8.0 floor 8.0 hit 58.2 up 50.2 frac 0.897 lo 0.821 verdict HEAD dt Minor src player route blood bonus 0 (after the blow) tokens 1 hp -4
+HS t613 kill RS_CommonZombie: Score Headshot row PAYS
+RS_Score[killer]: RS_CommonZombie spawnhp 20 base 20 counted 0 | spree n=1 exp=583 t=613 | ut k=1 hp=20 st=0 | Headshot 0.250
+RS_Score: +25 -> 45 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #2 p0 base 20 style 5 chain gun.pistol
+BRP GUN t614 cmd A--- BrutalPistol ready 0 state PISTC0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 720) top 14.0
+BRP GUN t615 cmd A--- BrutalPistol ready 0 state PISTD0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 722) top 14.0
+BRP R 137 maptime 616 gametic 616
+BRP GUN t616 cmd A--- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 723) top 14.0
+T_GHOST t616 loop: ghost hand at Right hip (0.875 m from the hand, ring 0.875 m away)
+BRP GUN t617 cmd A--- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 725) top 14.0
+BRP GUN t618 cmd A--- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 726) top 14.0
+BRP GUN t619 cmd A--- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 727) top 14.0
+BRP R 138 maptime 620 gametic 620
+BRP GUN t620 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 728) top 14.0
+BRP GUN t621 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 729) top 14.0
+BRP GUN t622 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 730) top 14.0
+BRP GUN t623 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 731) top 14.0
+BRP R 139 maptime 624 gametic 624
+BRP GUN t624 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 732) top 14.0
+BRP GUN t625 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 732) top 14.0
+BRP GUN t626 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 733) top 14.0
+BRP GUN t627 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 733) top 14.0
+BRP R 140 maptime 628 gametic 628
+BRP GUN t628 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 734) top 14.0
+BRP GUN t629 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 734) top 14.0
+BRP GUN t630 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 735) top 14.0
+BRP GUN t631 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 735) top 14.0
+BRP GUN t632 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 735) top 14.0
+BRP R 141 maptime 633 gametic 633
+BRP GUN t633 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 736) top 14.0
+BRP GUN t634 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 736) top 14.0
+BRP GUN t635 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 736) top 14.0
+BRP GUN t636 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 736) top 14.0
+BRP GUN t637 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t638 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t639 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP R 142 maptime 640 gametic 640
+BRP GUN t640 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t641 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t642 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t643 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t644 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t645 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t646 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t647 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP R 143 maptime 648 gametic 648
+BRP GUN t648 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t649 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t650 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t651 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t652 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t653 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t654 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP R 144 maptime 655 gametic 655
+BRP DSPAWN t655 RS_CommonZombie at (-891 720 8) sector 11 (120 units from the player)
+BRP GUN t655 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t656 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t657 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t658 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t659 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t660 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 145 maptime 661 gametic 661
+BRP GUN t661 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t662 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t663 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t664 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t665 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 146 maptime 666 gametic 666
+BRP GUN t666 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t667 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t668 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+T_GHOST t668 loop: ghost hand at Right hip (0.875 m from the hand, ring 0.875 m away)
+BRP GUN t669 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t670 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t671 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 147 maptime 672 gametic 672
+BRP GUN t672 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t673 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t674 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t675 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t676 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t677 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t678 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t679 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 148 maptime 680 gametic 680
+BRP GUN t680 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t681 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t682 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t683 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 149 maptime 684 gametic 684
+BRP GUN t684 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t685 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t686 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t687 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 150 maptime 688 gametic 688
+BR_P16_HEAD_KILL_CONTROL2
+BRP GUN t688 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t689 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t690 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP GUN t691 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 47.6 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 20 at (-891 720) top 56.0
+BRP R 151 maptime 692 gametic 692
+BRP ZHP t692 RS_CommonZombie health 10
+BRP GUN t692 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t693 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t694 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t695 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 152 maptime 696 gametic 696
+BRP GUN t696 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t697 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t698 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t699 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t700 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 153 maptime 701 gametic 701
+BRP GUN t701 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t702 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t703 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t704 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 154 maptime 705 gametic 705
+BRP GUN t705 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t706 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t707 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t708 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 155 maptime 709 gametic 709
+BRP GUN t709 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t710 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t711 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 156 maptime 712 gametic 712
+BRP GUN t712 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t713 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t714 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t715 cmd ---- BrutalPistol ready 1 state PISTE0 mag 13 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP R 157 maptime 716 gametic 716
+BRP GUN t716 cmd A--- BrutalPistol ready 0 state PISTA0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP GUN t717 cmd A--- BrutalPistol ready 0 state PISTB0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp 10 at (-891 720) top 56.0
+BRP BLOW t717 RS_CommonZombie took 14 (Minor) from BDoomer via WeakPuff: tool gun.pistol, health now -4 KILLED
+HS t717 RS_CommonZombie fam zombie H 56.0 (def 56.0) R 20.0 scale 1.00 feet 8.0 floor 8.0 hit 55.5 up 47.5 frac 0.848 lo 0.821 verdict HEAD dt Minor src player route blood bonus 0 (after the blow) tokens 1 hp -4
+HS t717 kill RS_CommonZombie: Score Headshot row PAYS
+RS_Score[killer]: RS_CommonZombie spawnhp 20 base 20 counted 0 | spree n=1 exp=685 t=717 | ut k=2 hp=40 st=0 | Green Champion 0.250 | Headshot 0.250
+RS_Score: +30 -> 75 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #3 p0 base 20 style 10 chain gun.pistol
+BRP GUN t718 cmd A--- BrutalPistol ready 0 state PISTC0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 720) top 14.0
+BRP GUN t719 cmd A--- BrutalPistol ready 0 state PISTD0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 722) top 14.0
+BRP GUN t720 cmd A--- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 723) top 14.0
+T_GHOST t720 loop: ghost hand at Right hip (0.819 m from the hand, ring 0.819 m away)
+BRP R 158 maptime 721 gametic 721
+BRP GUN t721 cmd A--- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 725) top 14.0
+BRP GUN t722 cmd A--- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-891 726) top 14.0
+BRP GUN t723 cmd A--- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 727) top 14.0
+BRP GUN t724 cmd A--- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 728) top 14.0
+BRP GUN t725 cmd A--- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 729) top 14.0
+BRP GUN t726 cmd A--- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 730) top 14.0
+BRP R 159 maptime 727 gametic 727
+BRP GUN t727 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 731) top 14.0
+BRP GUN t728 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 732) top 14.0
+BRP GUN t729 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 732) top 14.0
+BRP GUN t730 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 733) top 14.0
+BRP GUN t731 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 733) top 14.0
+BRP GUN t732 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 734) top 14.0
+BRP GUN t733 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 734) top 14.0
+BRP GUN t734 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 735) top 14.0
+BRP R 160 maptime 735 gametic 735
+BRP GUN t735 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 735) top 14.0
+BRP GUN t736 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 735) top 14.0
+BRP GUN t737 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 736) top 14.0
+BRP GUN t738 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 736) top 14.0
+BRP GUN t739 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 736) top 14.0
+BRP GUN t740 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 736) top 14.0
+BRP GUN t741 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP R 161 maptime 742 gametic 742
+BRP GUN t742 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t743 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t744 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t745 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t746 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 737) top 14.0
+BRP GUN t747 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t748 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP R 162 maptime 749 gametic 749
+BRP GUN t749 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t750 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BR_P17_DG
+BRP GUN t751 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t752 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP GUN t753 cmd ---- BrutalPistol ready 1 state PISTE0 mag 12 | hand z 45.9 over the floor, angle 0.0 pitch 0.0 | zed RS_CommonZombie hp -4 at (-892 738) top 14.0
+BRP R 163 maptime 754 gametic 754
+BRP TELE t754 player to (-800 450 8) sector 11 angle 90
+[RSQDG] t754 hand 0 at punch speed (5.7 m/s >= 2.0): no reach for 0.75 s
+BRP R 164 maptime 758 gametic 758
+BRP R 165 maptime 763 gametic 763
+BRP R 166 maptime 767 gametic 767
+BRP R 167 maptime 772 gametic 772
+T_GHOST t772 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 168 maptime 778 gametic 778
+BRP R 169 maptime 783 gametic 783
+BRP R 170 maptime 788 gametic 788
+BRP R 171 maptime 795 gametic 795
+BRP R 172 maptime 803 gametic 803
+BRP R 173 maptime 810 gametic 810
+BRP R 174 maptime 816 gametic 816
+BRP SCENE 12 start t816
+BRP DGSPAWN t816 ExplosiveBarrel -> BarrelVOX at 160 ahead 0 right, health 20
+BRP DG u0 t816 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP DG u5 t821 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 175 maptime 822 gametic 822
+[RSQDG] t822 lock-on: hand 0 -- no barrel in the other hand nor in punching reach: the cone finds items
+[RSQDG] hand 0 LOCKED BarrelVOX
+T_GHOST t824 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP DG u10 t826 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 176 maptime 827 gametic 827
+BRP DG u15 t831 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 177 maptime 833 gametic 833
+BRP DG u20 t836 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 178 maptime 838 gametic 838
+BRP DG u25 t841 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 179 maptime 843 gametic 843
+BRP DG u30 t846 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 180 maptime 848 gametic 848
+BRP DG u35 t851 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 181 maptime 854 gametic 854
+BRP DG u40 t856 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP DG u45 t861 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 182 maptime 862 gametic 862
+BRP DG u50 t866 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP DG u55 t871 pose (0.25 1.30 -0.30) p9 y-30 r90 grip 0
+BRP R 183 maptime 873 gametic 873
+BRP DG u60 t876 pose (0.25 1.30 -0.30) p29 y-30 r90 grip 0
+T_GHOST t876 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 184 maptime 881 gametic 881
+BRP DG u65 t881 pose (0.25 1.30 -0.30) p49 y-30 r0 grip 0
+[RSQDG] hand 0 let go of BarrelVOX (3.8 deg/tic, needed 5.0)
+[RSQDG] hand 0 unlocked BarrelVOX -- opened at rest
+BRP DG u70 t886 pose (0.25 1.30 -0.30) p53 y-30 r0 grip 0
+BRP R 185 maptime 887 gametic 887
+BRP DG u75 t891 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 186 maptime 893 gametic 893
+[RSQDG] hand 0 LOCKED BarrelVOX
+BRP DG u80 t896 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 187 maptime 898 gametic 898
+BRP DG u85 t901 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 188 maptime 903 gametic 903
+BRP DG u90 t906 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 189 maptime 908 gametic 908
+BRP DG u95 t911 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 0
+BRP R 190 maptime 914 gametic 914
+BRP DGSPAWN t916 Zombieman -> RS_CommonZombie at 110 ahead 18 right, health 300
+BRP DGSPAWN t916 Zombieman -> RS_CommonZombie at 130 ahead 60 right, health 20
+BRP DGSPAWN t916 Zombieman -> RS_CommonZombie at 130 ahead -30 right, health 20
+BRP DG u100 t916 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 1
+BRP R 191 maptime 921 gametic 921
+BRP DG u105 t921 pose (0.25 1.30 -0.30) p-11 y-30 r90 grip 1
+BRP NEAR: RS_CommonZombie 0 units from the spawn spot
+BRP DG t922 the barrel's target RS_CommonZombie health set to 300
+BRP DG u110 t926 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+T_GHOST t928 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP R 192 maptime 931 gametic 931
+BRP DG u115 t931 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+[RSQDG] hand 0 let go of BarrelVOX (0.0 deg/tic, needed 5.0)
+[RSQDG] hand 0 unlocked BarrelVOX -- opened at rest
+BRP DG u120 t936 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 193 maptime 938 gametic 938
+BRP DG u125 t941 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 194 maptime 943 gametic 943
+BRP DG u130 t946 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 195 maptime 947 gametic 947
+BRP DG u135 t951 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 196 maptime 952 gametic 952
+BRP DG u140 t956 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 197 maptime 957 gametic 957
+BRP DG u145 t961 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 198 maptime 962 gametic 962
+BRP DG u150 t966 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 199 maptime 967 gametic 967
+BRP DG u155 t971 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 200 maptime 974 gametic 974
+BRP DG u160 t976 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 201 maptime 980 gametic 980
+T_GHOST t980 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BRP DG u165 t981 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP DG u170 t986 pose (0.25 1.30 -0.30) p-11 y-30 r0 grip 1
+BRP R 202 maptime 987 gametic 987
+BRP DG u175 t991 pose (0.25 1.25 -0.30) p-11 y-30 r0 grip 1
+BRP R 203 maptime 994 gametic 994
+BRP DG u180 t996 pose (0.25 1.30 -0.17) p-11 y-30 r0 grip 1
+BRP R 204 maptime 999 gametic 999
+BRP DG u183 t999 pose (0.25 1.33 -0.10) p-11 y-30 r0 grip 1
+[RSQDG] t999 hand 0 at punch speed (2.4 m/s >= 2.0): no reach for 0.75 s
+BRP DG u184 t1000 pose (0.25 1.34 -0.07) p-11 y-30 r0 grip 1
+BRP DG u185 t1001 pose (0.25 1.35 -0.05) p-11 y-30 r0 grip 1
+BRP DG u186 t1002 pose (0.25 1.38 -0.35) p-11 y-30 r0 grip 1
+BRP R 205 maptime 1003 gametic 1003
+BRP DG u187 t1003 pose (0.25 1.41 -0.65) p-11 y-30 r0 grip 1
+BRP DG u188 t1004 pose (0.25 1.44 -0.95) p-11 y-30 r0 grip 1
+BRP DG u189 t1005 pose (0.25 1.47 -1.25) p-11 y-30 r0 grip 0
+BRP DG u190 t1006 pose (0.25 1.50 -1.55) p-11 y-30 r0 grip 0
+BRP DG u191 t1007 pose (0.25 1.53 -1.85) p-11 y-30 r0 grip 0
+BRP R 206 maptime 1008 gametic 1008
+BRP DG u192 t1008 pose (0.25 1.53 -1.85) p-11 y-30 r0 grip 0
+BRP DG u193 t1009 pose (0.25 1.53 -1.85) p-11 y-30 r0 grip 0
+BRP DG u194 t1010 pose (0.25 1.53 -1.85) p-11 y-30 r0 grip 0
+BRP DG u195 t1011 pose (0.25 1.53 -1.85) p-11 y-30 r0 grip 0
+BRP R 207 maptime 1013 gametic 1013
+BRP DG u200 t1016 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 208 maptime 1019 gametic 1019
+BRP DG u205 t1021 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 209 maptime 1024 gametic 1024
+BRP DG u210 t1026 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 210 maptime 1030 gametic 1030
+BRP DG u215 t1031 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+T_GHOST t1032 loop: ghost hand at Right hip (0.598 m from the hand, ring 0.598 m away)
+BRP DG u220 t1036 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 211 maptime 1037 gametic 1037
+BRP DG u225 t1041 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 212 maptime 1044 gametic 1044
+BRP DG u230 t1046 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 213 maptime 1051 gametic 1051
+BRP DG u235 t1051 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP DG u240 t1056 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 214 maptime 1057 gametic 1057
+BRP DG u245 t1061 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 215 maptime 1063 gametic 1063
+BRP DG u250 t1066 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 216 maptime 1068 gametic 1068
+BRP DG u255 t1071 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 217 maptime 1073 gametic 1073
+BRP DG u260 t1076 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 218 maptime 1078 gametic 1078
+BRP DG u265 t1081 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 219 maptime 1083 gametic 1083
+T_GHOST t1084 loop: ghost hand at Right hip (0.598 m from the hand, ring 0.598 m away)
+BRP DG u270 t1086 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 220 maptime 1088 gametic 1088
+BRP DG u275 t1091 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 221 maptime 1094 gametic 1094
+BRP DG u280 t1096 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 222 maptime 1101 gametic 1101
+BRP DG u285 t1101 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP DG u290 t1106 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 223 maptime 1108 gametic 1108
+BRP DG u295 t1111 pose (0.25 1.30 -0.40) p-11 y-30 r0 grip 0
+BRP R 224 maptime 1115 gametic 1115
+BRP SCENE 12 end t1116
+BRP R 225 maptime 1122 gametic 1122
+BRP R 226 maptime 1129 gametic 1129
+BRP R 227 maptime 1136 gametic 1136
+T_GHOST t1136 loop: ghost hand at Right hip (0.536 m from the hand, ring 0.536 m away)
+BR_END
