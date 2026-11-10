@@ -22,7 +22,8 @@ class RSQGC_SideOp
 class RSQGC_SideCard play
 {
 	const MAXL = 180;
-	const BASE0 = 1001200;      // main hand 1001200.., off hand 1001400..; the other side +400
+	const BASE0 = 1001200;      // main hand 1001200.., off hand 1001400..
+	const PER_HAND = 200;
 	// the mockup's colours (mock5.py)
 	const C_WHITE = 0xF0F0F0;
 	const C_GREY = 0xC8C8C8;
@@ -34,7 +35,6 @@ class RSQGC_SideCard play
 	Array<RSQGC_SideOp> ops;
 	string sig;
 	int hand;
-	int side;                   // 0: the back-of-the-hand side (the only one drawn since 2026-11-02; 1 kept so old layers clear)
 	int rot;                    // 0 / 1: which way up the text is baked (card.zs SideRot)
 	bool mir;
 	int quality;                // rsqgc_text_q when built: 0 Quest, 1 PCVR
@@ -100,8 +100,11 @@ class RSQGC_SideCard play
 	// ---- the layers -----------------------------------------------------------------------------------------------
 	void Sync(PlayerInfo p, Actor owner, double alpha, double up, RSQGC_GunCard gc)
 	{
-		int base = BASE0 + hand * 200 + side * 400;
+		int base = BASE0 + hand * PER_HAND;
 		int n = min(ops.Size(), MAXL);
+		// the card turned half round (rot 1, families 2 and 3) has its rows the other way along the turn (RowY's sign
+		// flips there), so the Up slider turns the other way too, to stay "up as it reads" (fixed 2026-11-10: it ran down)
+		double upDir = rot == 1 ? -1 : 1;
 		for (int i = 0; i < n; i++)
 		{
 			let o = ops[i];
@@ -120,7 +123,7 @@ class RSQGC_SideCard play
 			// the row: a turn about the pieces' far turning point (tools/gen_side.py HOW v3), plus the Up / Down slider
 			// scaled to move the card as far as it did; no slide between tics when a piece changes rows
 			ps.x = 0;
-			double ny = 32 + o.y + up * 4 * RSQGC_SideStates.NUDGE_K;
+			double ny = 32 + o.y + upDir * up * 4 * RSQGC_SideStates.NUDGE_K;
 			if (ps.y != ny) { ps.y = ny; ps.oldy = ny; }
 			ps.alpha = alpha;
 			ps.Translation = o.col >= 0 ? TranslationID(gc.TransFor(o.col)) : TranslationID(0);
@@ -132,7 +135,7 @@ class RSQGC_SideCard play
 	void Remove(PlayerInfo p)
 	{
 		if (laid <= 0 && sig == "") return;
-		int base = BASE0 + hand * 200 + side * 400;
+		int base = BASE0 + hand * PER_HAND;
 		for (int i = 0; i < MAXL; i++) if (p.FindPSprite(base + i)) p.SetPSprite(base + i, null);
 		laid = 0; sig = "";
 	}
@@ -267,6 +270,41 @@ class RSQGC_SideCard play
 				SRight(row, num, colr);
 			}
 			if (e.names.Size() > shown) { row = Line(); if (row >= 0) SText(row, String.Format("+%d MORE", e.names.Size() - shown), 0, 0x9A9A9A); }
+		}
+		Panel(panelCol);
+	}
+
+	// THE ITEM CARD (items.zs, owner 11-10): the watch check with a weapon that has no ammo pile. Its name and what it holds
+	// on the top row. With a count (flares, cigarettes, the battery) the count big under it, then "H 100" / "A 50" and the
+	// key row as on the Both card; with none, health and armour big as on the Status card, then the key row.
+	void BuildItem(PlayerPawn pmo, Weapon w, int panelCol, RSQGC_GunCard gc)
+	{
+		Clear();
+		nextLine = 0;
+		string st; int stc;
+		[st, stc] = RSQGC_Items.State(w);
+		int R = RSQGC_SideStates.R_LABELS, C = RSQGC_SideStates.R_COUNTS;
+		int room = RSQGC_SideStates.SMALL_UNITS - (st != "" ? SmallWidth(st) + 1 : 0);
+		string nm = RSQGC_Items.Label(w);
+		nm = nm.MakeUpper();
+		while (nm.Length() > 0 && SmallWidth(nm) > room) nm = nm.Left(nm.Length() - 1);
+		SText(R, nm, 0, C_WHITE);
+		if (st != "") SRight(R, st, stc);
+		int hp = max(pmo.Health, 0), ar = clamp(RSQGC_GunCard.ArmorOf(pmo), 0, 999);
+		int n = RSQGC_Items.Count(w);
+		if (n >= 0)
+		{
+			BText(C, String.Format("%d", clamp(n, 0, 999)), 0, n == 0 ? C_RED : C_WHITE);
+			SText(RSQGC_SideStates.R_LINE2, "H", 0, C_WHITE);
+			SText(RSQGC_SideStates.R_LINE2, String.Format("%d", clamp(hp, 0, 999)), 3, hp <= 25 ? C_RED : C_WHITE);
+			SRight(RSQGC_SideStates.R_LINE2, String.Format("A %d", ar), C_BLUE);
+			KeyRow(pmo, RSQGC_SideStates.R_KEYS3, RSQGC_SideStates.R_KEYS3TEXT, gc);
+		}
+		else
+		{
+			BText(C, String.Format("%d", clamp(hp, 0, 999)), 0, hp <= 25 ? C_RED : C_WHITE);
+			BRight(C, String.Format("%d", ar), C_BLUE);
+			KeyRow(pmo, RSQGC_SideStates.R_KEYS2, RSQGC_SideStates.R_KEYS2TEXT, gc);
 		}
 		Panel(panelCol);
 	}

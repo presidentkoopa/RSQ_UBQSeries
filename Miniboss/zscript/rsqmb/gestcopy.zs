@@ -1,22 +1,25 @@
-// RSQMB_GCopy -- RSQ Miniboss's OWN COPY of what RSQ Gestures reads, used ONLY when RSQ Gestures is not loaded
+// RSQMB_GCopy -- RSQ Miniboss's OWN COPY of RSQ Accessibility's gesture reader, used ONLY when RSQ Accessibility is not loaded
 // (tools/gestcopy/gestcopy_template.zs, written by tools/gestcopy/gen_gestcopy.py; GENERATED, do not edit here).
 // Owner 2026-11-04 19:45: "I worry that anyone who uses Gun Cards won't have the standout feature of the watch check card
-// because they didn't have Gestures." So each mod whose standout rides on a gesture carries the detector itself.
+// because they didn't have Gestures." So each mod whose standout rides on a gesture carries the detector itself. (The
+// reader was RSQ Gestures until it was folded into RSQ Accessibility, 11-05, keeping its class and cvar names.)
 //
-// WHAT IT IS. A copy of RSQ Gestures 0.99a (Gestures/zscript/rsqg/gestures.zs RSQG_Handler, pose.zs RSQG_Pose), not a
-// rewrite: the same pose rules, the same numbers, the same cvar names (rsqg_*: without RSQ Gestures those cvars do not
-// exist, so every number here is the default Gestures' CVARINFO gives it), the left hand mirrored the same way.
+// WHAT IT IS. A copy of the reader (Accessibility/zscript/rsqg/gestures.zs RSQG_Handler, pose.zs RSQG_Pose), not a
+// rewrite: the same pose rules, the same numbers, the same cvar names (rsqg_*: without RSQ Accessibility those cvars do
+// not exist, so every number here is the default its CVARINFO gives; gen_gestcopy.py checks that on every run), the left
+// hand mirrored the same way.
 //   INSPECT  the watch check, one hand: in front of the eyes at chest-to-face height, wrist turned rsqg_inspect_twist
 //            degrees, still, held rsqg_inspect_hold tics (RSQG_Handler.InspectPose / Inspect1, copied).
-// What Gestures adds on top and this copy does not: the watch-check rumble tick, the names on screen, Measure Me (its
-// cvars are read, so a body measured with Gestures once still fits), the punch / shove / thrust answers, its menu.
+// What Accessibility adds on top and this copy does not: the watch-check rumble tick, the names on screen, Measure Me
+// (its cvars are read, so a body measured once still fits), Gesture Ease and the twist sliders' gap (both act on its
+// sliders, which do not exist without it), the punch / shove / thrust answers, its menu.
 //
-// ONE READER. The mod asks RSQ Gestures first (RSQG_Service, by name) and asks this copy only when Gestures is absent.
-// The copy also checks for itself (once a second) and stands down when Gestures is there: it measures nothing and sends
-// nothing. Nothing is measured unless someone asked in the last IDLE tics (as Gestures).
-// NETPLAY: as Gestures. The pose is the console player's local hardware; the answers are about the console player.
+// ONE READER. The mod asks RSQ Accessibility first (RSQG_Service, by name) and asks this copy only when it is absent.
+// The copy also checks for itself (once a second) and stands down when Accessibility is there: it measures nothing and
+// sends nothing. Nothing is measured unless someone asked in the last IDLE tics (as the reader does).
+// NETPLAY: as the reader. The pose is the console player's local hardware; the answers are about the console player.
 //
-// THE HANDS: RSQMB_HandSync.Fix (tools/handsync), the frame's hand carried to the body this tic, as Gestures does.
+// THE HANDS: RSQMB_HandSync.Fix (tools/handsync), the frame's hand carried to the body this tic, as the reader does.
 // Rig only, not headset-confirmed.
 
 // RSQG_Pose, copied (pose.zs): where a hand is and how it is turned, in the player's own frame, in metres. Src() asks
@@ -74,7 +77,7 @@ class RSQMB_GPose
 	static clearscope double Pitch(PlayerPawn pmo, int hand) { return Src(pmo, hand) == 0 ? pmo.AttackPitch : pmo.OffhandPitch; }
 }
 
-// RSQG_Handler, the parts named above, copied. STATIC (never in a save; started afresh on every level, as Gestures' reset).
+// RSQG_Handler, the parts named above, copied. STATIC (never in a save; started afresh on every level, as the reader's reset).
 class RSQMB_GCopy : StaticEventHandler
 {
 	const IDLE = 35;
@@ -90,7 +93,7 @@ class RSQMB_GCopy : StaticEventHandler
 	double rvx[18], rvy[18], rvz[18];
 	int ringAt[2], ringN[2];
 	bool swapWas;
-	// RSQ Gestures loaded (then this copy measures nothing): looked up once a second
+	// RSQ Accessibility loaded (then this copy measures nothing): looked up once a second
 	transient int gestLook;
 	transient bool gestHere;
 	int insState[2], insTics[2];
@@ -113,8 +116,8 @@ class RSQMB_GCopy : StaticEventHandler
 		}
 	}
 
-	// RSQ Gestures is loaded: it is the one reader, this copy stands down
-	bool GesturesHere()
+	// RSQ Accessibility is loaded: its reader is the one reader, this copy stands down
+	bool ReaderHere()
 	{
 		if (gestLook <= 0 || gametic >= gestLook)
 		{
@@ -135,13 +138,13 @@ class RSQMB_GCopy : StaticEventHandler
 
 	bool Running() { return gametic - lastAsk <= IDLE; }
 
-	// body fit (Gestures' Fit to My Body, rsqg_body*): 1 without RSQ Gestures
+	// body fit (Accessibility's Fit to My Body, rsqg_body*): 1 without RSQ Accessibility
 	static double VScale() { if (!Opt("rsqg_body", 0)) return 1; double e = Num("rsqg_body_eye", 0); return e > 0.5 ? clamp(e / 1.60, 0.6, 1.4) : 1; }
 	static double HScale() { if (!Opt("rsqg_body", 0)) return 1; double r = Num("rsqg_body_reach", 0); return r > 0.2 ? clamp(r / 0.70, 0.6, 1.4) : 1; }
 
 	override void WorldTick()
 	{
-		if (!Running() || GesturesHere())
+		if (!Running() || ReaderHere())
 		{
 			if (lastRun >= 0) { ResetAll(); lastRun = -1; }
 		}
@@ -212,7 +215,7 @@ class RSQMB_GCopy : StaticEventHandler
 	PlayerPawn Asked(int pn)
 	{
 		lastAsk = gametic;
-		if (pn != consoleplayer || GesturesHere()) return null;
+		if (pn != consoleplayer || ReaderHere()) return null;
 		Update();
 		return Me();
 	}
@@ -221,7 +224,7 @@ class RSQMB_GCopy : StaticEventHandler
 	void SetInspect(int h, int s)
 	{
 		if (insState[h] == s) return;
-		if (Dbg()) Console.Printf("RSQMB watch check (own copy of RSQ Gestures' inspect): %s hand %d -> %d (t%d)", h == 0 ? "main" : "off", insState[h], s, level.maptime);
+		if (Dbg()) Console.Printf("RSQMB watch check (own copy of RSQ Accessibility's watch check): %s hand %d -> %d (t%d)", h == 0 ? "main" : "off", insState[h], s, level.maptime);
 		insState[h] = s;
 	}
 	static clearscope bool InspectOff() { return Opt("rsqg_inspect_off", 0) != 0; }
@@ -235,11 +238,11 @@ class RSQMB_GCopy : StaticEventHandler
 		if (abs(b.y) > Num("rsqg_inspect_side", 0.35) * hs + slack) return false;
 		if (abs(Actor.Normalize180(RSQMB_GPose.Pitch(pmo, h))) > Num("rsqg_inspect_pitch", 60) + slack * 100) return false;
 		double r = Actor.Normalize180(RSQMB_GPose.Roll(pmo, h));
-		// the left controller reports the mirrored twist with the opposite sign (Gestures' rig measurement): a one-way
+		// the left controller reports the mirrored twist with the opposite sign (the reader's rig measurement): a one-way
 		// choice is flipped for the physical left hand
 		double s = RSQMB_GPose.IsLeft(h) ? -1 : 1;
-		// rsqg_inspect_way: Gestures' CVARINFO default is 2 (the back of the wrist; its code's own fallback, 0, is never used
-		// while Gestures is loaded), so without Gestures this copy uses 2 too
+		// rsqg_inspect_way: Accessibility's CVARINFO default is 2 (the back of the wrist; its code's own fallback, 0, is never
+		// used while Accessibility is loaded), so without it this copy uses 2 too
 		int dir = Opt("rsqg_inspect_way", 2);
 		if (dir == 1) return r * s >= need;
 		if (dir == 2) return -r * s >= need;
@@ -252,7 +255,7 @@ class RSQMB_GCopy : StaticEventHandler
 		bool still = SpeedNow(h) < Num("rsqg_inspect_still", 1.2);
 		if (s == 0)
 		{
-			if (still && InspectPose(pmo, h, 0, Num("rsqg_inspect_twist", 45)))
+			if (still && InspectPose(pmo, h, 0, Num("rsqg_inspect_twist", 35)))
 			{
 				insTics[h] = 1;
 				SetInspect(h, Opt("rsqg_inspect_hold", 6) <= 1 ? 2 : 1);
@@ -261,22 +264,22 @@ class RSQMB_GCopy : StaticEventHandler
 			return;
 		}
 		double slack = Num("rsqg_inspect_slack", 0.05);
-		bool keep = InspectPose(pmo, h, slack, Num("rsqg_inspect_untwist", 30));
+		bool keep = InspectPose(pmo, h, slack, Num("rsqg_inspect_untwist", 20));
 		if (!keep || (s == 1 && !still)) { insTics[h] = 0; SetInspect(h, 0); return; }
 		insTics[h]++;
 		if (s == 1 && insTics[h] >= Opt("rsqg_inspect_hold", 6)) SetInspect(h, 2);
 	}
 
-	// Gestures' "inspect" answer: 0 not, 1 entering, 2 held; -1 switched off (rsqg_inspect_off) or Gestures is loaded
-	int Inspect(int pn, int h)     { if (InspectOff()) return -1; if (!Asked(pn)) return GesturesHere() ? -1 : 0; if (h < 0 || h > 1) return 0; return insState[h]; }
-	int InspectTics(int pn, int h) { if (InspectOff()) return -1; if (!Asked(pn)) return GesturesHere() ? -1 : 0; if (h < 0 || h > 1) return 0; return insTics[h]; }
+	// the reader's "inspect" answer: 0 not, 1 entering, 2 held; -1 switched off (rsqg_inspect_off) or Accessibility is loaded
+	int Inspect(int pn, int h)     { if (InspectOff()) return -1; if (!Asked(pn)) return ReaderHere() ? -1 : 0; if (h < 0 || h > 1) return 0; return insState[h]; }
+	int InspectTics(int pn, int h) { if (InspectOff()) return -1; if (!Asked(pn)) return ReaderHere() ? -1 : 0; if (h < 0 || h > 1) return 0; return insTics[h]; }
 
 }
 
 // RSQMB_GCopyService -- ask by name, as RSQG_Service is asked (no compile dependency). The same requests and answers as
-// RSQ Gestures for what is copied; objectArg the asking PlayerPawn (anyone but the console player gets 0). -1 unknown,
-// or RSQ Gestures is loaded (ask it instead).
-//   "reader"     1: this copy is here (whether or not it stands down for RSQ Gestures)
+// RSQ Accessibility's RSQG_Service for what is copied; objectArg the asking PlayerPawn (anyone but the console player
+// gets 0). -1 unknown, or RSQ Accessibility is loaded (ask its RSQG_Service instead).
+//   "reader"     1: this copy is here (whether or not it stands down for RSQ Accessibility)
 //   "inspect"    0 not, 1 entering, 2 held, intArg the hand (0 main, 1 off)     "inspect.tics"  tics since the pose was met
 //   "inspect.any" the higher of the two hands
 class RSQMB_GCopyService : Service
@@ -287,7 +290,7 @@ class RSQMB_GCopyService : Service
 	{
 		if (request ~== "reader") return 1;
 		let h = RSQMB_GCopy.Get();
-		if (!h || h.GesturesHere()) return -1;
+		if (!h || h.ReaderHere()) return -1;
 		int pn = Pn(objectArg);
 		if (request ~== "inspect")      return h.Inspect(pn, intArg);
 		if (request ~== "inspect.tics") return h.InspectTics(pn, intArg);

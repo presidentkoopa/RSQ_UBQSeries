@@ -6,8 +6,9 @@
 //   small card  over the wrist, on the firing line: the magazine big, the reserve small
 //   full card   on the knuckles-up watch check: beside the wrist, the name, MAGAZINE / RESERVE, Gun Bonsai level,
 //               XP and upgrades, in the gun's colour
-//   status card the same check with an EMPTY hand (GC5): health big, armour small, the map's keys (held ones in
-//               their colour, missing ones grey), other keys, grenades (FillStatus; owner 2026-11-04)
+//   status card the same check with an EMPTY hand (GC5), or with a weapon that has no ammo pile (the world has no item
+//               card, items.zs): health big, armour small, the map's keys (held ones in their colour, missing ones
+//               grey), other keys, grenades (FillStatus; owner 2026-11-04)
 
 class RSQGC_WorldCard play
 {

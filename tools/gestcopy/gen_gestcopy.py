@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
-"""gen_gestcopy.py -- writes a series mod's OWN COPY of RSQ Gestures' readers (gestcopy_template.zs), used by that mod
-only when RSQ Gestures is not loaded (owner 2026-11-04 19:45). Every copy comes from the one template, so they stay
+"""gen_gestcopy.py -- writes a series mod's OWN COPY of RSQ Accessibility's gesture readers (gestcopy_template.zs), used
+by that mod only when RSQ Accessibility is not loaded (owner 2026-11-04 19:45; the readers were RSQ Gestures until they
+were folded into Accessibility, 11-05). Every copy comes from the one template, so they stay
 identical; regenerate them all after changing it:
 
     python3 tools/gestcopy/gen_gestcopy.py            every mod in COPIES
     python3 tools/gestcopy/gen_gestcopy.py --check    exit 1 if a written copy differs from what the template makes
 
 The template is itself a copy of Accessibility/zscript/rsqg/gestures.zs (RSQG_Handler) and pose.zs (RSQG_Pose). Every run
-also checks every rsqg_* default the template reads against Accessibility/CVARINFO.txt (what Gestures really uses when it is
-loaded; gestures.zs's own fallbacks can differ, e.g. rsqg_inspect_way 0 in code, 2 in CVARINFO), and that each cvar is
-one Gestures reads, so the copies cannot drift from Gestures' numbers unnoticed.
+also checks every rsqg_* default the template reads against Accessibility/CVARINFO.txt (what the reader really uses when
+Accessibility is loaded; gestures.zs's own fallbacks can differ, e.g. rsqg_inspect_way 0 in code, 2 in CVARINFO), and that
+each cvar is one the reader reads, so the copies cannot drift from its numbers unnoticed.
 
 Template lines: @IF PART@ / @IF !PART@ ... @END@ keep or drop whole lines; @P@ the class prefix, @MOD@ the mod's
 name, @HS@ the mod's HandSync class (tools/handsync), @DBG@ the mod's debug cvar."""
@@ -70,11 +71,11 @@ def check_numbers():
     bad = 0
     for name, vals in sorted(tpl.items()):
         if ('"%s"' % name) not in gtext:
-            print('NOT READ BY GESTURES: %s' % name); bad += 1
+            print('NOT READ BY THE READER (Accessibility gestures.zs): %s' % name); bad += 1
         elif name not in ci:
-            print('NOT IN GESTURES CVARINFO: %s' % name); bad += 1
+            print('NOT IN ACCESSIBILITY CVARINFO: %s' % name); bad += 1
         elif vals != {ci[name]}:
-            print('DEFAULT DIFFERS: %s template %s, Gestures CVARINFO %s' % (name, sorted(vals), ci[name])); bad += 1
+            print('DEFAULT DIFFERS: %s template %s, Accessibility CVARINFO %s' % (name, sorted(vals), ci[name])); bad += 1
     print('%d rsqg_* defaults compared with Accessibility/CVARINFO.txt: %s' % (len(tpl), 'all equal' if not bad else '%d differ' % bad))
     return bad == 0
 

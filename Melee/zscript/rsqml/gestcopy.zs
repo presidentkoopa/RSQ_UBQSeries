@@ -1,22 +1,25 @@
-// RSQML_GCopy -- RSQ Melee's OWN COPY of what RSQ Gestures reads, used ONLY when RSQ Gestures is not loaded
+// RSQML_GCopy -- RSQ Melee's OWN COPY of RSQ Accessibility's gesture reader, used ONLY when RSQ Accessibility is not loaded
 // (tools/gestcopy/gestcopy_template.zs, written by tools/gestcopy/gen_gestcopy.py; GENERATED, do not edit here).
 // Owner 2026-11-04 19:45: "I worry that anyone who uses Gun Cards won't have the standout feature of the watch check card
-// because they didn't have Gestures." So each mod whose standout rides on a gesture carries the detector itself.
+// because they didn't have Gestures." So each mod whose standout rides on a gesture carries the detector itself. (The
+// reader was RSQ Gestures until it was folded into RSQ Accessibility, 11-05, keeping its class and cvar names.)
 //
-// WHAT IT IS. A copy of RSQ Gestures 0.99a (Gestures/zscript/rsqg/gestures.zs RSQG_Handler, pose.zs RSQG_Pose), not a
-// rewrite: the same pose rules, the same numbers, the same cvar names (rsqg_*: without RSQ Gestures those cvars do not
-// exist, so every number here is the default Gestures' CVARINFO gives it), the left hand mirrored the same way.
+// WHAT IT IS. A copy of the reader (Accessibility/zscript/rsqg/gestures.zs RSQG_Handler, pose.zs RSQG_Pose), not a
+// rewrite: the same pose rules, the same numbers, the same cvar names (rsqg_*: without RSQ Accessibility those cvars do
+// not exist, so every number here is the default its CVARINFO gives; gen_gestcopy.py checks that on every run), the left
+// hand mirrored the same way.
 //   PAIR     both hands down, both thrown apart, both palms out, both palms thrust (RSQG_Handler.TwoHand, copied), sent
 //            as the same network event, rsqg_pair (arg0 the kind, arg1 hundredths), so the receiver is unchanged.
-// What Gestures adds on top and this copy does not: the watch-check rumble tick, the names on screen, Measure Me (its
-// cvars are read, so a body measured with Gestures once still fits), the punch / shove / thrust answers, its menu.
+// What Accessibility adds on top and this copy does not: the watch-check rumble tick, the names on screen, Measure Me
+// (its cvars are read, so a body measured once still fits), Gesture Ease and the twist sliders' gap (both act on its
+// sliders, which do not exist without it), the punch / shove / thrust answers, its menu.
 //
-// ONE READER. The mod asks RSQ Gestures first (RSQG_Service, by name) and asks this copy only when Gestures is absent.
-// The copy also checks for itself (once a second) and stands down when Gestures is there: it measures nothing and sends
-// nothing. Nothing is measured unless someone asked in the last IDLE tics (as Gestures).
-// NETPLAY: as Gestures. The pose is the console player's local hardware; the answers are about the console player.
+// ONE READER. The mod asks RSQ Accessibility first (RSQG_Service, by name) and asks this copy only when it is absent.
+// The copy also checks for itself (once a second) and stands down when Accessibility is there: it measures nothing and
+// sends nothing. Nothing is measured unless someone asked in the last IDLE tics (as the reader does).
+// NETPLAY: as the reader. The pose is the console player's local hardware; the answers are about the console player.
 //
-// THE HANDS: RSQML_HandSync.Fix (tools/handsync), the frame's hand carried to the body this tic, as Gestures does.
+// THE HANDS: RSQML_HandSync.Fix (tools/handsync), the frame's hand carried to the body this tic, as the reader does.
 // Rig only, not headset-confirmed.
 
 // RSQG_Pose, copied (pose.zs): where a hand is and how it is turned, in the player's own frame, in metres. Src() asks
@@ -74,7 +77,7 @@ class RSQML_GPose
 	static clearscope double Pitch(PlayerPawn pmo, int hand) { return Src(pmo, hand) == 0 ? pmo.AttackPitch : pmo.OffhandPitch; }
 }
 
-// RSQG_Handler, the parts named above, copied. STATIC (never in a save; started afresh on every level, as Gestures' reset).
+// RSQG_Handler, the parts named above, copied. STATIC (never in a save; started afresh on every level, as the reader's reset).
 class RSQML_GCopy : StaticEventHandler
 {
 	const IDLE = 35;
@@ -95,7 +98,7 @@ class RSQML_GCopy : StaticEventHandler
 	double rvx[18], rvy[18], rvz[18];
 	int ringAt[2], ringN[2];
 	bool swapWas;
-	// RSQ Gestures loaded (then this copy measures nothing): looked up once a second
+	// RSQ Accessibility loaded (then this copy measures nothing): looked up once a second
 	transient int gestLook;
 	transient bool gestHere;
 	int quietTill;
@@ -127,8 +130,8 @@ class RSQML_GCopy : StaticEventHandler
 		palmsHeldFor = 0; palmsSaid = false;
 	}
 
-	// RSQ Gestures is loaded: it is the one reader, this copy stands down
-	bool GesturesHere()
+	// RSQ Accessibility is loaded: its reader is the one reader, this copy stands down
+	bool ReaderHere()
 	{
 		if (gestLook <= 0 || gametic >= gestLook)
 		{
@@ -147,18 +150,18 @@ class RSQML_GCopy : StaticEventHandler
 		return p.mo;
 	}
 
-	// Gestures' Two-Hand Events switch (rsqg_twohand) is read too: without Gestures it does not exist, so the events are
-	// read while a mod asked about them in the last second, as Gestures does with its switch off
+	// the reader's Two-Hand Events switch (rsqg_twohand) is read too: without Accessibility it does not exist, so the
+	// events are read while a mod asked about them in the last second, as the reader does with its switch off
 	bool TwoHandWanted() { return Opt("rsqg_twohand", 0) || gametic - pairAsk <= IDLE; }
 	bool Running() { return gametic - lastAsk <= IDLE || TwoHandWanted(); }
 
-	// body fit (Gestures' Fit to My Body, rsqg_body*): 1 without RSQ Gestures
+	// body fit (Accessibility's Fit to My Body, rsqg_body*): 1 without RSQ Accessibility
 	static double VScale() { if (!Opt("rsqg_body", 0)) return 1; double e = Num("rsqg_body_eye", 0); return e > 0.5 ? clamp(e / 1.60, 0.6, 1.4) : 1; }
 	static double HScale() { if (!Opt("rsqg_body", 0)) return 1; double r = Num("rsqg_body_reach", 0); return r > 0.2 ? clamp(r / 0.70, 0.6, 1.4) : 1; }
 
 	override void WorldTick()
 	{
-		if (!Running() || GesturesHere())
+		if (!Running() || ReaderHere())
 		{
 			if (lastRun >= 0) { ResetAll(); lastRun = -1; }
 		}
@@ -227,13 +230,13 @@ class RSQML_GCopy : StaticEventHandler
 	PlayerPawn Asked(int pn)
 	{
 		lastAsk = gametic;
-		if (pn != consoleplayer || GesturesHere()) return null;
+		if (pn != consoleplayer || ReaderHere()) return null;
 		Update();
 		return Me();
 	}
 
 
-	// ---- QUIET (Gestures' GE1, copied): on RSQ Grapple's rope or with RSQ Wheel open, no two-hand events -------------
+	// ---- QUIET (the reader's GE1, copied): on RSQ Grapple's rope or with RSQ Wheel open, no two-hand events -------------
 	static Service FindSvc(String n) { let it = ServiceIterator.Find(n); return it.Next(); }
 	bool Quiet(PlayerPawn pmo)
 	{
@@ -366,26 +369,26 @@ class RSQML_GCopy : StaticEventHandler
 	{
 		if (which < 0 || which >= PAIR_KINDS) return false;
 		if (repeatMs > 0 && now - saidAt[which] < repeatMs) return false;
-		if (GesturesHere()) return false;   // never a second rsqg_pair beside RSQ Gestures' own
+		if (ReaderHere()) return false;   // never a second rsqg_pair beside RSQ Accessibility's own
 		EventHandler.SendNetworkEvent("rsqg_pair", which, int(round(mag * 100)), 0);
 		saidAt[which] = now;
 		if (Dbg())
 		{
 			static const String pairName[] = { "both hands down", "both hands apart", "both palms out", "both palms thrust" };
-			Console.Printf("RSQML pair (own copy of RSQ Gestures' two-hand reader): %s, %.2f (t%d)", pairName[which], mag, level.maptime);
+			Console.Printf("RSQML pair (own copy of RSQ Accessibility's two-hand reader): %s, %.2f (t%d)", pairName[which], mag, level.maptime);
 		}
 		return true;
 	}
 
-	// Gestures' "pair.ago": ms since that two-hand gesture fired, -1 never; asking keeps the two-hand events read a second
+	// the reader's "pair.ago": ms since that two-hand gesture fired, -1 never; asking keeps the two-hand events read a second
 	double PairAgoMs(int pn, int k) { pairAsk = gametic; if (!Asked(pn) || k < 0 || k >= PAIR_KINDS || saidAt[k] <= NEVER) return -1; return NowMs() - saidAt[k]; }
 }
 
 // RSQML_GCopyService -- ask by name, as RSQG_Service is asked (no compile dependency). The same requests and answers as
-// RSQ Gestures for what is copied; objectArg the asking PlayerPawn (anyone but the console player gets 0). -1 unknown,
-// or RSQ Gestures is loaded (ask it instead).
-//   "reader"     1: this copy is here (whether or not it stands down for RSQ Gestures)
-//   "pair.reader" 1: this mod reads both hands itself without RSQ Gestures (both hands down / apart / palms / palms thrust)
+// RSQ Accessibility's RSQG_Service for what is copied; objectArg the asking PlayerPawn (anyone but the console player
+// gets 0). -1 unknown, or RSQ Accessibility is loaded (ask its RSQG_Service instead).
+//   "reader"     1: this copy is here (whether or not it stands down for RSQ Accessibility)
+//   "pair.reader" 1: this mod reads both hands itself without RSQ Accessibility (both hands down / apart / palms / palms thrust)
 //   "pair.ago"   ms since that two-hand gesture (intArg the kind) fired, -1 never; asking keeps the reader awake
 class RSQML_GCopyService : Service
 {
@@ -396,7 +399,7 @@ class RSQML_GCopyService : Service
 		if (request ~== "reader") return 1;
 		if (request ~== "pair.reader") return 1;
 		let h = RSQML_GCopy.Get();
-		if (!h || h.GesturesHere()) return -1;
+		if (!h || h.ReaderHere()) return -1;
 		int pn = Pn(objectArg);
 		if (request ~== "pair.ago")     return int(h.PairAgoMs(pn, intArg));
 		return -1;
