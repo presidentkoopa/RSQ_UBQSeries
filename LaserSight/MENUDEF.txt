@@ -61,12 +61,19 @@ OptionValue "RSQLS_Units"
 	2, "Map Units"
 }
 
+OptionValue "RSQLS_Which"
+{
+	0, "RSQ Laser Sight"
+	1, "QuestZDoom's (M8F)"
+}
+
 OptionMenu "RSQLS_Options"
 {
 	Title "RSQ LASER SIGHT"
 	RSQLSGbLine "", "RSQLS_SightService"
 	StaticText " "
 	Option "Laser Sight", "rsqls_on", "OnOff"
+	Option "Which Laser", "rsqls_which", "RSQLS_Which"
 	Option "Main Hand", "rsqls_main", "OnOff", "rsqls_on"
 	Option "Off Hand", "rsqls_off", "OnOff", "rsqls_on"
 	StaticText " "

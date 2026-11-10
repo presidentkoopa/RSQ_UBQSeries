@@ -3,6 +3,7 @@
 
 // ---- laser pointer ------------------------------------------------------------
 server bool  rsqls_on           = true;   // the whole mod
+user   int   rsqls_which        = 0;      // Which Laser (owner 11-10), with M8F's Laser Sight loaded: 0 RSQ Laser Sight, 1 QuestZDoom's (M8F's)
 server bool  rsqls_main         = true;   // per hand on/off (the menu; no keys: owner 11-10)
 server bool  rsqls_off          = true;
 server bool  rsqls_pointer      = true;   // the dot where it lands

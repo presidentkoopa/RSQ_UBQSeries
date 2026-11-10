@@ -113,6 +113,26 @@ class RSQLS_Sight : EventHandler
 		return level.maptime - lastFireTic > KEEP_AFTER_FIRE;
 	}
 
+	// WHICH LASER (owner 11-10: "menu switch: ours / theirs"). QuestZDoom's launcher can load M8F's Laser Sight mod
+	// (mmaulwurff/laser-sight: its handler m8f_ls_EventHandler, its switch m8f_wm_ShowLaserSight). With it loaded, Which
+	// Laser picks one: RSQ Laser Sight (0) turns M8F's off, QuestZDoom's (1) turns it on and hides ours. Without it the
+	// row does nothing. Both found by name: nothing links to M8F's mod.
+	transient int m8fState;       // 0 not looked, 1 loaded, -1 not
+	bool M8FPicked(PlayerInfo p)
+	{
+		if (m8fState == 0)
+		{
+			String hn = "m8f_ls_EventHandler";
+			class<Object> hc = hn;
+			m8fState = hc ? 1 : -1;
+		}
+		if (m8fState < 0) return false;
+		bool theirs = RSQLS_Hand.Opt("rsqls_which", p, 0) == 1;
+		let sw = CVar.GetCVar("m8f_wm_ShowLaserSight", p);
+		if (sw && sw.GetInt() != (theirs ? 1 : 0)) sw.SetInt(theirs ? 1 : 0);
+		return theirs;
+	}
+
 	static bool, Vector3, Vector3 BeamLine(int h)
 	{
 		let me = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
@@ -417,7 +437,8 @@ class RSQLS_Sight : EventHandler
 		bool ir = RSQLS_Hand.Flag("rsqls_ir", p, false);
 		bool irVisible = ir && pmo.FindInventory("PowerLightAmp", true) != null;
 
-		if (pmo.Health <= 0 || !RSQLS_Hand.Flag("rsqls_on", p, true)
+		bool theirs = M8FPicked(p);
+		if (pmo.Health <= 0 || !RSQLS_Hand.Flag("rsqls_on", p, true) || theirs
 			|| (!wantDot && !wantBeam) || (ir && !irVisible))
 		{
 			HideHand(0); HideHand(1);
