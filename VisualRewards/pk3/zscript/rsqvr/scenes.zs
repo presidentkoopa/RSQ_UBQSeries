@@ -9,8 +9,10 @@
 //   RSQVR_Service GetInt("scene.pop",  key)                               1 removed, 0 it wasn't there
 //
 // Scenes stack: the highest priority (the latest among equals) is heard. Its track fades in as a looping sound while the
-// level music fades to silent underneath; when no scene is left the track fades out and the level music fades back in
-// where it has got to by then (QuestZDoom can't pause or seek music from a mod). Owner 2026-11-09: "when the fight is
+// level music fades to silent underneath. A scene under the top one keeps its track playing silently (each track on its
+// own channel), so when the top one goes it comes back where it has got to: a Bossfight's track goes on under DOWN, and
+// if the miniboss dies while you are DOWN it is gone too and getting up brings back the level music (owner 2026-11-09).
+// When no scene is left the track fades out and the level music fades back in where it has got to by then (QuestZDoom can't pause or seek music from a mod). Owner 2026-11-09: "when the fight is
 // over the regular music crossfades back in where it left off."
 // =====================================================================================================================
 class RSQVR_Scene play
@@ -23,13 +25,16 @@ class RSQVR_Scene play
 
 class RSQVR_Scenes : EventHandler
 {
-	const CH = 32765;             // a sound channel nothing else in the series uses
+	const CH_TOP = 32765;         // the sound channels, from here down (nothing else in the series uses them)
+	const CH_MAX = 6;
 
 	Array<RSQVR_Scene> stack;
-	String playing;               // the track on the channel ("": none)
-	double level;                 // 0 the level music alone .. 1 the scene's track alone
-	transient bool restart;
-	bool full;       // after a load the channel is empty: start the track again
+	// the tracks playing on this machine: a scene's track stays on while its scene is on the stack (silent under a higher
+	// one), and fades out and stops once its scene is gone
+	Array<String> tName;
+	Array<double> tLevel;
+	Array<int>    tCh;
+	transient bool restart;       // after a load the channels are empty: start the tracks again
 
 	static RSQVR_Scenes Get() { return RSQVR_Scenes(EventHandler.Find("RSQVR_Scenes")); }
 
@@ -53,34 +58,44 @@ class RSQVR_Scenes : EventHandler
 		int at = stack.Size();
 		while (at > 0 && stack[at - 1].prio > prio) at--;
 		stack.Insert(at, s);
-		Pick();
 		return 1;
 	}
 
 	int Pop(String key)
 	{
 		for (int i = 0; i < stack.Size(); i++)
-			if (stack[i].key ~== key) { stack.Delete(i); Pick(); return 1; }
+			if (stack[i].key ~== key) { stack.Delete(i); return 1; }
 		return 0;
 	}
 
-	void Pick() {}
+	bool Mine(RSQVR_Scene s) { return s.music != "" && (s.owner < 0 || s.owner == consoleplayer); }
 
-	// the track this machine's player hears: the top scene that is everyone's or his (worked out here, per machine:
-	// the stack is the same everywhere, only what each player hears differs)
+	// the track this machine's player hears: the top scene that is everyone's or his (worked out here, per machine: the
+	// stack is the same everywhere, only what each player hears differs)
 	String TopMusic()
 	{
-		for (int i = stack.Size() - 1; i >= 0; i--)
-			if (stack[i].music != "" && (stack[i].owner < 0 || stack[i].owner == consoleplayer)) return stack[i].music;
+		for (int i = stack.Size() - 1; i >= 0; i--) if (Mine(stack[i])) return stack[i].music;
 		return "";
+	}
+
+	bool OnStack(String music)
+	{
+		for (int i = 0; i < stack.Size(); i++) if (Mine(stack[i]) && stack[i].music == music) return true;
+		return false;
+	}
+
+	int FreeChannel()
+	{
+		for (int c = CH_TOP; c > CH_TOP - CH_MAX; c--) if (tCh.Find(c) == tCh.Size()) return c;
+		return -1;
 	}
 
 	Actor Ear() { return players[consoleplayer].mo; }
 
 	override void WorldLoaded(WorldEvent e)
 	{
-		// a new map starts with the level music at full; a loaded save puts its scene's track back on the channel
-		if (!e.IsSaveGame) { stack.Clear(); playing = ""; level = 0; SetMusicVolume(1.0); }
+		// a new map starts with the level music at full; a loaded save puts its tracks back on their channels
+		if (!e.IsSaveGame) { stack.Clear(); tName.Clear(); tLevel.Clear(); tCh.Clear(); SetMusicVolume(1.0); }
 		else restart = true;
 	}
 
@@ -88,36 +103,46 @@ class RSQVR_Scenes : EventHandler
 	{
 		let ear = Ear();
 		if (!ear) return;
-		bool on = MusicOn();
-		String target = on ? TopMusic() : "";
+		double vol = clamp(CF('rsqvr_scene_volume', 1.0), 0.0, 1.0);
+		String heard = MusicOn() ? TopMusic() : "";
 		if (restart)
 		{
 			restart = false;
-			if (playing != "") ear.A_StartSound(playing, CH, CHANF_LOOP | CHANF_UI | CHANF_NOPAUSE | CHANF_NOSTOP, max(0.001, level), ATTN_NONE);
+			for (int i = 0; i < tName.Size(); i++) ear.A_StartSound(tName[i], tCh[i], CHANF_LOOP | CHANF_UI | CHANF_NOPAUSE | CHANF_NOSTOP, max(0.001, tLevel[i] * vol), ATTN_NONE);
 		}
-		if (target != "" && playing != target)
+		// every track whose scene is on the stack is playing (the heard one loud, the rest silent)
+		if (MusicOn())
 		{
-			// a different track: fade the old one out first, then the new one in
-			if (playing != "" && level > 0) { level = max(0.0, level - Step()); Apply(ear); return; }
-			if (playing != "") ear.A_StopSound(CH);
-			playing = target;
-			ear.A_StartSound(playing, CH, CHANF_LOOP | CHANF_UI | CHANF_NOPAUSE | CHANF_NOSTOP, 0.001, ATTN_NONE);
-			Dbg(String.Format("scene track %s fading in", playing));
+			for (int i = 0; i < stack.Size(); i++)
+			{
+				if (!Mine(stack[i]) || tName.Find(stack[i].music) < tName.Size()) continue;
+				int ch = FreeChannel();
+				if (ch < 0) continue;
+				tName.Push(stack[i].music); tLevel.Push(0); tCh.Push(ch);
+				ear.A_StartSound(stack[i].music, ch, CHANF_LOOP | CHANF_UI | CHANF_NOPAUSE | CHANF_NOSTOP, 0.001, ATTN_NONE);
+				Dbg(String.Format("scene track %s started on channel %d", stack[i].music, ch));
+			}
 		}
-		double goal = target != "" ? 1.0 : 0.0;
-		if (level < goal) level = min(goal, level + Step());
-		else if (level > goal) level = max(goal, level - Step());
-		Apply(ear);
-		if (level <= 0 && playing != "" && target == "") { ear.A_StopSound(CH); Dbg(String.Format("scene track %s out, level music back", playing)); playing = ""; }
-		if (level >= 1 && !full && playing != "") { full = true; Dbg(String.Format("scene track %s in, level music silent", playing)); }
-		if (level < 1) full = false;
+		double top = 0;
+		for (int i = tName.Size() - 1; i >= 0; i--)
+		{
+			double goal = tName[i] == heard ? 1.0 : 0.0;
+			double was = tLevel[i];
+			if (tLevel[i] < goal) tLevel[i] = min(goal, tLevel[i] + Step());
+			else if (tLevel[i] > goal) tLevel[i] = max(goal, tLevel[i] - Step());
+			if (was < 1 && tLevel[i] >= 1) Dbg(String.Format("scene track %s in", tName[i]));
+			if (tLevel[i] <= 0 && (!MusicOn() || !OnStack(tName[i])))
+			{
+				ear.A_StopSound(tCh[i]);
+				Dbg(String.Format("scene track %s out", tName[i]));
+				tName.Delete(i); tLevel.Delete(i); tCh.Delete(i);
+				continue;
+			}
+			ear.A_SoundVolume(tCh[i], max(0.001, tLevel[i] * vol));
+			top = max(top, tLevel[i]);
+		}
+		SetMusicVolume(1.0 - top);
 	}
 
 	static void Dbg(String s) { let c = CVar.FindCVar('rsqvr_scene_debug'); if (c && c.GetBool()) Console.Printf("RSQVR %s", s); }
-
-	void Apply(Actor ear)
-	{
-		if (playing != "") ear.A_SoundVolume(CH, max(0.001, level * clamp(CF('rsqvr_scene_volume', 1.0), 0.0, 1.0)));
-		SetMusicVolume(1.0 - level);
-	}
 }

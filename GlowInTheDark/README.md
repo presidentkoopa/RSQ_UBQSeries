@@ -9,6 +9,11 @@ New since the headset pass (tested on the rig, headset check pending): the whole
 
 New on 11-06 (rig only, not headset-confirmed): Randomize Current Look; More Lights' glowing flats merged in.
 
+New on 11-09 evening (rig only): **the drop's darkness**: another mod asks `RSQGD_Service` `GetInt("event.dark", "", 0,
+seconds)` and DarkDoomZ is held at DarkDoom Black that long, then its own mode goes back (single player; put right at the
+next map start after a quit). It hands over cleanly with RSQ SlowMo's DOWN, which uses the same setting
+(`"ddz.original"`). RSQ Miniboss asks it for a Bossfight's landing.
+
 New on 11-09 (code and load check only, not run on the rig): DarkDoomZ built in, with its settings under Darkness
 (DarkDoomZ).
 

@@ -69,5 +69,6 @@ server int rsqgd_item_lights = 0;        // small lights on the most important i
 server int rsqgd_light_style = 1;        // our lights: 0 Normal, 1 Subdued (double radius, half brightness)
 
 // ---- housekeeping ----
+server int rsqgd_ddz_mode_saved = -9999; // DarkDoomZ's own mode while another mod's drop darkness held it at Black (put back after)
 server int rsqgd_ddz_saved = -9999;      // DarkDoomZ's post-gain while a big moment darkened the map (put back after)
 user int rsqgd_debug = 0;                // 1: a line per map; 2: + a line per second (ms per tic, writes, lights)

@@ -10,6 +10,10 @@ chain at the stock pace; both Barrel Sound choices play. The look of the six exp
 (rebuilt 11-09).
 
 **What's new**
+- **11-09 evening** (rig, with brutal22test6 + BD22 VR Reloaded 2.0.4e + XMVE): **Brutal Doom's Launchers** (Explosions,
+  on): BD's rocket launcher (Rocket2, Rocket2Fast, RocketDM) and grenade launcher (GrenadeMissile, ShortGrenade2) shots
+  go off with our blast; BD's drawing-only explosion actors there are removed, its damage, sounds, quake and craters
+  stay. Rockets use the grenade's blast until the approved rocket blast (renders/rocket) is built.
 - **11-09, evening** (code only: loads clean, not yet run on the rig, not headset-confirmed): the throw. Owner on PC VR:
   "there is no way to throw grenades". Three fixes. Grip and trigger together (which the engine sends as alt fire) now
   count as squeezing the spoon, so letting go of them cooks or throws. The swing speed is measured the way BD22 VR's

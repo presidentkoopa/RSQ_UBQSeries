@@ -3,5 +3,5 @@
 // which barrels the map gets; RSQGN_BarrelBook: the barrel effects' count and sprites (barrel.zs).
 GameInfo
 {
-	AddEventHandlers = "RSQGN_Handler", "RSQGN_Scatter", "RSQGN_BarrelSwap", "RSQGN_BarrelBook"
+	AddEventHandlers = "RSQGN_Handler", "RSQGN_Scatter", "RSQGN_BarrelSwap", "RSQGN_BarrelBook", "RSQGN_BDLaunchers"
 }

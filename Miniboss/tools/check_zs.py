@@ -52,7 +52,7 @@ FOREIGN = {'champion_Token', 'champion_PersistentInfo', 'champion_DarkRedToken',
 SVC_REQ = {
     'RSQVR_Service': {'beam', 'word', 'word.hold', 'word.clear', 'pop', 'loaded', 'scene.push', 'scene.pop'},
     'RSQSM_Service': {'arrow.add', 'arrow.clear', 'start.bossfight', 'start', 'start.auto', 'countdown'},
-    'RSQGD_Service': {'event.tint', 'event.wave', 'event.reroll', 'event.flare', 'enabled'},
+    'RSQGD_Service': {'event.tint', 'event.wave', 'event.reroll', 'event.flare', 'enabled', 'event.dark'},
     'RSQMN_RosterService': {'tier', 'tier.next', 'tier.ago', 'tier.from', 'retier', 'set', 'class.set', 'class.tier'},
 }
 SVC_FIELD = {'vrSvc': 'RSQVR_Service', 'VrService()': 'RSQVR_Service', 'vr': 'RSQVR_Service', 'smSvc': 'RSQSM_Service',

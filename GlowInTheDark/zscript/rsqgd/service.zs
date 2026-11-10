@@ -35,6 +35,7 @@ class RSQGD_Service : Service
 		if (request ~== "liquid") return intArg < 0 ? h.CountLiquidSectors() : (h.IsLiquid(intArg) ? 1 : 0);
 		if (request ~== "darkdoomz") return h.darkDoomZ ? 1 : 0;
 		if (request ~== "profile") return h.activeProfile;
+		if (request ~== "ddz.original") return h.ddzModeHeld ? h.ddzModeSaved : -1;   // the player's own DarkDoomZ mode while "event.dark" holds it
 		return -1;
 	}
 
@@ -64,6 +65,11 @@ class RSQGD_Service : Service
 				return 1;
 			}
 			if (request ~== "event.reroll") { h.Reroll(); return 1; }
+			if (request ~== "event.dark")
+			{
+				h.darkUntil = max(h.darkUntil, Level.maptime + int((doubleArg > 0 ? doubleArg : 4.0) * 35));
+				return 1;
+			}
 			return 0;
 		}
 		return GetIntData(request, stringArg, intArg, doubleArg, objectArg, nameArg);

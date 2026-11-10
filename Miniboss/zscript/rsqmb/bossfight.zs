@@ -777,8 +777,14 @@ extend class RSQMB_Handler
 		// staggered landing fits inside it), at most 5.
 		if (!svcChecked) FindServices();
 		int slowMs = int(clamp(CF('rsqmb_bf_slow', 4.0), 0.0, 5.0) * 1000);
-		if (smSvc && slowMs > 0 && smSvc.GetInt("start.bossfight", "bossfight", slowMs, depthPct / 100.0) < 0)
-			smSvc.GetInt("start", "bossfight", slowMs, depthPct / 100.0);
+		// owner 2026-11-09: "we go to darkdoomz blackest setting and our slowest slomo so the player can find the miniboss":
+		// Landing At Slowest asks SlowMo for its slowest (0.05); Landing In The Dark asks RSQ Glow In The Dark to hold DarkDoomZ
+		// at DarkDoom Black for the landing ("event.dark", by name; GITD then breathes the miniboss's colour for the fight)
+		double landDepth = CI('rsqmb_bf_slowest', 1) ? 0.05 : depthPct / 100.0;
+		if (smSvc && slowMs > 0 && smSvc.GetInt("start.bossfight", "bossfight", slowMs, landDepth) < 0)
+			smSvc.GetInt("start", "bossfight", slowMs, landDepth);
+		let gd = GdService();
+		if (gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, max(3.0, slowMs / 1000.0) + 0.5);
 		if (debug) Console.Printf("RSQMB BOSSFIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
 			arrBeamSet == 0 ? "V1 thralls + V3 miniboss" : "V2 thralls + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
 	}

@@ -53,6 +53,7 @@ OptionMenu "RSQGN_Options"
 	Option "Grenade Explosion", "rsqgn_blast_style", "RSQGN_BlastStyle"
 	Option "Explosion Colour", "rsqgn_fx_colour", "RSQGN_FxColour"
 	Option "Explosion Lights", "rsqgn_fx_lights", "RSQGN_FxLights"
+	Option "Brutal Doom's Launchers", "rsqgn_bd_launchers", "OnOff"
 	Slider "Debris", "rsqgn_barrel_debris", 0.0, 1.0, 0.1, 1
 	Option "Contexts", "rsqgn_ctx", "OnOff"
 	Option "Wall", "rsqgn_ctx_wall", "OnOff"

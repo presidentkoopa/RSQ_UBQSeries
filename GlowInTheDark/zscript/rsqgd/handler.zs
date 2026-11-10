@@ -77,6 +77,8 @@ class RSQGD_Handler : EventHandler
 	// ---- reactions ----
 	double mbMix;  int mbColour, mbLive, mbN;   // miniboss tint (mbN: RSQ Miniboss's own count)
 	int tintUntil, tintColour;             // another mod's tint (service "event.tint")
+	int darkUntil;                         // another mod's blackest-darkness window (service "event.dark", react.zs DropDark)
+	int ddzModeSaved; bool ddzModeHeld;    // DarkDoomZ's own ddz_mode while that window holds it at DarkDoom Black
 	double smMix;                          // slow motion
 	const DOWN_RED = 0x8A0000;             // deep blood red
 	double dnMix;                          // RSQ SlowMo's DOWN: the map deep blood red (react.zs PollSlowMo)
@@ -559,6 +561,7 @@ class RSQGD_Handler : EventHandler
 		if (now % 10 == 3) { PollMiniboss(); PollBonsai(); }
 		if (now % 4 == 1) { PollSlowMo(); PollScore(); }
 		Darken(mbLive > 0 && B("rsqgd_mb_darken", true) && B("rsqgd_mb", true));
+		DropDark();
 		double mbT = (mbLive > 0 && B("rsqgd_mb", true)) ? 0.85 : 0.0;
 		if (mbMix != mbT) { mbMix = mbMix < mbT ? min(mbT, mbMix + 0.03) : max(mbT, mbMix - 0.02); if (mbMix < 0.001) dirty = true; }
 		if (combo > 0 && now - comboTic > 35 * 4) { combo = max(0.0, combo - 0.01); if (combo == 0) dirty = true; }

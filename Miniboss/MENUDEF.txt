@@ -107,6 +107,8 @@ OptionMenu "RSQMB_Test"
 	Slider "Farthest Arrival", "rsqmb_bf_far", 256, 4096, 64, 0
 	Slider "Exit Distance", "rsqmb_bf_exit", 0, 2048, 64, 0
 	Slider "Landing Slow Motion (s)", "rsqmb_bf_slow", 0, 5, 0.5, 1
+	Option "Landing At Slowest", "rsqmb_bf_slowest", "OnOff"
+	Option "Landing In The Dark", "rsqmb_bf_dark", "OnOff"
 	Option "Bossfight Music", "rsqmb_bf_music", "OnOff"
 	Slider "Bits Multiplier", "rsqmb_bf_bits", 1, 10, 1, 0
 	Slider "Score Style Fill", "rsqmb_bf_style", 0, 2, 0.05, 2

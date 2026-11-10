@@ -44,6 +44,45 @@ extend class RSQGD_Handler
 		mbLive = n + testMb;
 	}
 
+	// THE DROP'S DARKNESS (owner 2026-11-09: "when the Miniboss is called in / dropped in, we go to darkdoomz blackest
+	// setting ... so the player can find the miniboss"). Another mod asks "event.dark" for a few seconds; DarkDoomZ's
+	// ddz_mode is held at 12, DarkDoom Black, and its own mode put back after. Single player only, as DOWN's (the mode
+	// is the whole game's). It shares ddz_mode with RSQ SlowMo's DOWN: a DOWN already on is black already, so the hold
+	// doesn't start; a DOWN that starts inside it asks "ddz.original" and keeps the player's own mode, not ours; at the
+	// end, a DOWN still on is left to put it back.
+	void DropDark()
+	{
+		let m = CVar.FindCVar("ddz_mode");
+		if (!m) return;
+		bool want = !multiplayer && darkUntil > Level.maptime;
+		if (want && !ddzModeHeld)
+		{
+			if (AnyDown()) { darkUntil = 0; return; }
+			ddzModeSaved = m.GetInt();
+			ddzModeHeld = true;
+			if (ddzModeSaved != 12) m.SetInt(12);
+			let ds = CVar.FindCVar("rsqgd_ddz_mode_saved");
+			if (ds) ds.SetInt(ddzModeSaved);
+			if (I("rsqgd_debug", 0) > 0) Console.Printf("[RSQGD] drop darkness: DarkDoomZ mode %d kept, DarkDoom Black", ddzModeSaved);
+		}
+		else if (!want && ddzModeHeld)
+		{
+			ddzModeHeld = false;
+			if (!AnyDown()) m.SetInt(ddzModeSaved);
+			let ds = CVar.FindCVar("rsqgd_ddz_mode_saved");
+			if (ds) ds.SetInt(-9999);
+			if (I("rsqgd_debug", 0) > 0) Console.Printf("[RSQGD] drop darkness over: mode %d %s", ddzModeSaved, AnyDown() ? "left to DOWN" : "back");
+		}
+	}
+
+	bool AnyDown()
+	{
+		let s = FindSvc("RSQSM_Service");
+		if (!s) return false;
+		for (int i = 0; i < MAXPLAYERS; i++) if (playeringame[i] && s.GetInt("down", "", i) == 1) return true;
+		return false;
+	}
+
 	int MinibossColour(Service s)
 	{
 		int mode = I("rsqgd_mb_colour", 1);      // 0 blood red, 1 the miniboss's own (red if RSQ Miniboss gives none), 2 custom
@@ -122,6 +161,15 @@ extend class RSQGD_Handler
 	// map start / after a load: a darkness left behind by a quit mid-fight goes back (read from the archive)
 	void RestoreDarkDoomZ()
 	{
+		// the drop darkness's mode, left at Black by a quit or a map change inside its window
+		let dm = CVar.FindCVar("ddz_mode");
+		let ds = CVar.FindCVar("rsqgd_ddz_mode_saved");
+		if (dm && ds && ds.GetInt() != -9999 && !ddzModeHeld)
+		{
+			int mv = ds.GetInt();
+			dm.SetInt(mv >= 0 && mv <= 12 ? mv : 2);
+			ds.SetInt(-9999);
+		}
 		let pg = CVar.FindCVar("ddz_postgain");
 		let saved = CVar.FindCVar("rsqgd_ddz_saved");
 		if (!pg || !saved || saved.GetInt() == -9999) return;

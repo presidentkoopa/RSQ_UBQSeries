@@ -11,6 +11,10 @@ drop). Not yet seen: the look of the beams, words and HUD stack; the watch check
 Logs and the test kit: `TestRig/bossfight_rig/`. The pk3 is `pk3/RSQ_Miniboss.pk3` (rebuilt 11-09).
 
 **What's new**
+- **11-09 evening** (rig only): the drop, the owner's way: **Landing At Slowest** (on) runs the landing slow-mo at SlowMo's
+  slowest; **Landing In The Dark** (on) has RSQ Glow In The Dark hold DarkDoomZ at DarkDoom Black through the landing
+  (rig: mode 2 -> 12 -> 2), then GITD breathes the miniboss's colour for the fight as before. The Bossfight track keeps
+  going under DOWN (rig: never restarted).
 - **11-09 evening** (rig only, not heard): a Bossfight has its own music. The owner's track crossfades in when it's
   called in and the level music crossfades back when the miniboss dies (RSQ VisualRewards' scene music; without it,
   nothing changes).
@@ -239,6 +243,8 @@ Where a Bossfight's monsters come from (Miniboss From, Thralls From) is on RSQ M
 | Farthest Arrival | 1024 | Its greatest distance. |
 | Exit Distance | 768 | It waits within this of an exit. |
 | Landing Slow Motion (s) | 4.0 | RSQ SlowMo for the landing (0: none; at most 5): the staggered arrival fits inside it. |
+| Landing At Slowest | On | The landing slow-mo at RSQ SlowMo's slowest (0.05), not Slow Depth. |
+| Landing In The Dark | On | RSQ Glow In The Dark holds DarkDoomZ at DarkDoom Black through the landing, so the arrivals stand out (single player). |
 | Bossfight Music | On | The owner's track over the fight, from the call-in until the miniboss dies; then the level music crossfades back. Needs RSQ VisualRewards (its Scene Music rows set it per player). |
 | Bits Multiplier | 3 | Times more Kill Rewards boss bits for a Bossfight's miniboss. |
 | Score Style Fill | 0.25 | Meter points per Score style point. |

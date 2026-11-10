@@ -56,3 +56,4 @@ server bool   rsqgn_ctx_chain   = true;   // ...Chain: a barrel set off by anoth
 server bool   rsqgn_ctx_crowd   = true;   // ...Crowd: a blast that kills 3 or more -- each of those deaths a gib burst (its slow motion is RSQ SlowMo's Barrel Multi-Kill / Grenade Blast)
 server bool   rsqgn_chain_escalate = true; // Chain Escalation: each link blows bigger (#5, #5 x1.25, #6, #6 x1.2, the finale) and blinks shorter (10 8 6 6 4 tics; it stands longer, the blast keeps stock's timing)
 server bool   rsqgn_chain_kick  = true;   // Screen Kick on Chains: a small short quake from the third link up (never with RSQ Accessibility's Photosensitive Mode or a Comfort Vignette)
+server bool rsqgn_bd_launchers = true;   // Brutal Doom's Launchers (owner 11-09): BD's rocket and grenade launcher shots go off with our blast (bdlaunch.zs)
