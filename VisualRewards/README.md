@@ -238,8 +238,7 @@ While you are DOWN in RSQ SlowMo:
 - **RSQ Miniboss:** its Bossfight calls the arrival beams (V1 thralls with a V3 miniboss, or V2 thralls with V4, picked
   per fight, each in its monster's tier colour), the GUARD! and TARGET! words, the pops, and the Bossfight scene music
   (its **Bossfight Music** row). Here: a crown with tier pips over the miniboss's bar and a chain link over its thralls;
-  with its **Boss Kill Rewards** row on, a miniboss counts as a boss for Kill Rewards, and a Bossfight miniboss's fountain
-  is multiplied again. Without this pack, its monsters land in teleport fog.
+  with its **Boss Kill Rewards** row on, a miniboss counts as a boss for Kill Rewards (its boss fountain). Without this pack, its monsters land in teleport fog.
 - **RSQ SlowMo:** the DOWN tie-ins above, and its DOWN Music (its **DOWN Music** row). Here: Numbers in Slow-Mo, and the
   optional level-up slow-motion pulse.
 - **RSQ Gun Bonsai VR** and **Gun Bonsai:** the level-up band and the weapon tag (with Gun Bonsai VR, the gun's name and
