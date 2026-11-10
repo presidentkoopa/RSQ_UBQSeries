@@ -13,6 +13,11 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * Graveyard.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * --- Modified by presidentkoopa for the RSQ Edition, 2026 (GPLv3 too): gold stones (an RSQ Score life spent, the
+ * "gy_spawk" event, gy_RSQService), one spawn function for every stone, the service's Graves Rise and heartbeat asks,
+ * and in a netgame only one machine sends each spawn event (the arbitrator at map load, the dying player's machine at
+ * a death), so a stone is not made once per player. ---
  */
 
 class gy_EventHandler : EventHandler
@@ -28,6 +33,11 @@ class gy_EventHandler : EventHandler
 
     _isFired = true;
     removeStonesOnMap();
+
+    // RSQ Edition (2026-11-10): every machine runs this and keeps its own store, and every machine spawns what any
+    // machine sends, so in a netgame each player's copy of a stone would come once per player. Only the arbitrator
+    // sends the map's stones (alone, consolePlayer is the arbitrator).
+    if (consolePlayer != Net_Arbitrator) { return; }
 
     let storage = gy_Storage.of();
 
@@ -63,7 +73,9 @@ class gy_EventHandler : EventHandler
     let death   = gy_Death.of(event.thing.pos, obituary);
     storage.registerDeath(death);
 
-    if (multiplayer) { sendNetworkEvent(spawnEventName(death)); }
+    // Every machine stores the death (each has its own store); only the dying player's machine sends the spawn, so the
+    // stone is made once (RSQ Edition, 2026-11-10: m8f's sent it from every machine, one stone per player).
+    if (multiplayer && event.thing.player == players[consolePlayer]) { sendNetworkEvent(spawnEventName(death)); }
   }
 
   override
@@ -168,7 +180,7 @@ class gy_RSQService : Service
   override
   int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
   {
-    // RSQ Edition (owner 2026-11-06): the Bossfight's two asks (zscript/rsqgy/bones.zs)
+    // RSQ Edition (owner 2026-11-06): RSQ Miniboss's two asks, Graves Rise and the heartbeat (zscript/rsqgy/bones.zs)
     if (request == "bones.graves") { return gy_Bones.GravesAsked(stringArg, intArg, doubleArg, Actor(objectArg)); }
     if (request == "stones.pulse") { return gy_Stone.PulseAll(intArg, doubleArg); }
     if (request != "stone.life") { return 0; }

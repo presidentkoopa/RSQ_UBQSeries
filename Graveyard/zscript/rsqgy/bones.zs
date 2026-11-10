@@ -18,10 +18,11 @@
 //      actor (the undead's death frames backwards, facing its target), which spawns the undead with SXF_TRANSFERPOINTERS: it
 //      comes for whoever killed the corpse. The Brutal Doom corpse is removed (it got up). A corpse already removed (gibbed
 //      away) rises where it lay, as LoB raises gibbed deaths too.
-// 2. GRAVES RISE IN A BOSSFIGHT: RSQ Miniboss asks gy_RSQService "bones.graves" when a Bossfight calls in (its row, off): the
-//    tombstones in the map, or within a radius of the fight's spawn, raise undead the same way. Miniboss says how many.
-// 3. STONES PULSE WITH THE BOSSFIGHT: RSQ Miniboss asks gy_RSQService "stones.pulse" on each beat of RSQ Glow In The Dark's
-//    red heartbeat while a Bossfight waits to be called in: every stone's candle beats with it (gy_Stone.pulse).
+// 2. GRAVES RISE (RSQ Miniboss): RSQ Miniboss asks gy_RSQService "bones.graves" when a miniboss fight calls in (its Graves
+//    Rise row, off): the tombstones in the map, or within a radius of the fight's spawn, raise undead the same way.
+//    Miniboss says how many a stone. A riser that does not fit looks for a free spot near it and tries again (RiseNear).
+// 3. THE HEARTBEAT (RSQ Miniboss): it asks gy_RSQService "stones.pulse" on each beat of RSQ Glow In The Dark's red
+//    heartbeat while a miniboss fight waits to be called in: every stone's candle beats with it (gy_Stone.pulse).
 //
 // NETPLAY: all of it is play code from synced events (WorldThingDied, WorldTick, the server cvars, Miniboss's play-side call);
 // nothing reads a hand or the console player.
@@ -96,7 +97,7 @@ class gy_Bones play
 		{
 			Name cn = k.GetClassName();
 			if (cn == 'Actor') break;
-			if (IsLob(cn)) return -1;
+			if (IsLob(cn) || gy_BonesTable.Never(cn)) return -1;
 			int t = gy_BonesTable.Kind(cn);
 			if (t >= 0) return t;
 			t = VanillaKind(cn);
@@ -105,7 +106,7 @@ class gy_Bones play
 		return -1;
 	}
 
-	// RSQ Miniboss's "bones.graves" (gy_RSQService): stringArg the Bossfight's thrall classes, comma-separated (each raises
+	// RSQ Miniboss's "bones.graves" (gy_RSQService): stringArg the miniboss fight's thrall classes, comma-separated (each raises
 	// the undead its kind maps to; none that LoB raises: Skull Zombies); intArg player * 1000 + how many undead A TOMBSTONE
 	// (owner 11-10: one, or one for each thrall);
 	// doubleArg the radius round the spot (0 = the whole map); objectArg an actor at the fight's spawn. Returns how many.
@@ -137,6 +138,45 @@ class gy_Bones play
 		let r = Actor.Spawn(rc, at, ALLOW_REPLACE);
 		if (!r) return null;
 		if (test && !r.TestMobjLocation()) { r.Destroy(); return null; }
+		return Risen(r, target, faceAngle);
+	}
+
+	// A GRAVE'S RISER (owner 2026-11-10: a woken stone's undead do rise). The 11-07 rig log (SlowMo v3c.log) had 31 risers
+	// planned and only 20 risen when the log ended: the rest kept trying the same spot (what blocked it was not logged).
+	// So: the planned spot, else the nearest free spot round it, 2 rings of 8, one and two riser widths out (LoB's rising
+	// actors are 20 wide in radius, so 40 and 80 map units), each in clear sight of the planned spot (nothing rises through
+	// a wall) and within a step of its floor. Null when none fits (the caller tries again a second later, GRAVE_TRIES in all).
+	static Actor RiseNear(int kind, Vector3 at, Actor target, double faceAngle)
+	{
+		class<Actor> rc = Rise(kind);
+		if (!rc) return null;
+		let r = Actor.Spawn(rc, at, ALLOW_REPLACE);
+		if (!r) return null;
+		bool ok = r.TestMobjLocation();
+		for (int ring = 1; !ok && ring <= 2; ring++)
+		{
+			for (int j = 0; !ok && j < 8; j++)
+			{
+				double ang = faceAngle + j * 45.0 + ring * 22.5;
+				double dist = ring * 2 * r.radius;
+				r.SetOrigin(at, false);
+				FLineTraceData tr;
+				if (r.LineTrace(ang, dist + r.radius, 0, TRF_THRUACTORS, r.height * 0.5, data: tr)) continue;   // a wall between
+				Vector2 xy = at.xy + (cos(ang), sin(ang)) * dist;
+				double fz = level.PointInSector(xy).floorplane.ZAtPoint(xy);
+				if (abs(fz - at.z) > r.MaxStepHeight) continue;
+				r.SetOrigin((xy, fz), false);
+				ok = r.TestMobjLocation();
+			}
+		}
+		if (!ok) { r.Destroy(); return null; }
+		return Risen(r, target, faceAngle);
+	}
+
+	// the rising actor is in place: its target and facing, then LoB's fire and Doom's teleport sound
+	static Actor Risen(Actor r, Actor target, double faceAngle)
+	{
+		Vector3 at = r.pos;
 		r.target = target;
 		r.angle = target ? r.AngleTo(target) : faceAngle;
 		Name fn = 'UndeadSpawnFire';
@@ -206,9 +246,9 @@ class gy_BonesHandler : EventHandler
 	Array<Actor> killer;
 	Array<double> bx, by, bz, ba;
 	Array<int> kind, due;
-	Array<bool> grave;          // a Bossfight's grave rise (no corpse; never held)
+	Array<bool> grave;          // a grave rise for RSQ Miniboss (no corpse; never held)
 	Array<int> tries;           // a grave riser's tries (one that never fits is given up after GRAVE_TRIES); a corpse's holds
-	const GRAVE_TRIES = 10;
+	const GRAVE_TRIES = 5;      // a second apart: about 4 s from the first try to the last (owner 11-10: a few, then give up)
 
 	override void WorldThingDied(WorldEvent e)
 	{
@@ -221,7 +261,9 @@ class gy_BonesHandler : EventHandler
 			if (dbg) Console.Printf("RSQ Graveyard bones t%d: %s died: not one LoB raises, stays dead", level.maptime, a.GetClassName());
 			return;
 		}
-		Actor who = e.DamageSource ? e.DamageSource : a.target;
+		// the killer: the corpse's target. WorldThingDied gives no DamageSource (gzdoom 4.14.3 events.cpp
+		// DStaticEventHandler::WorldThingDied sets only Thing and Inflictor), and the damage that kills sets the target.
+		Actor who = a.target;
 		int wait = gy_Bones.DEATH_ANIM + gy_Bones.WaitTics();
 		Push(a, who, a.pos, a.angle, k, level.maptime + wait, false);
 		if (dbg) Console.Printf("RSQ Graveyard bones t%d: %s died at %.0f %.0f: rises as %s in %d tics (LOB_Respawn %d)", level.maptime,
@@ -256,7 +298,7 @@ class gy_BonesHandler : EventHandler
 			if (a && a.health > 0) { if (dbg) Console.Printf("RSQ Graveyard bones t%d: %s was revived: no rise", now, a.GetClassName()); Drop(i); continue; }
 			Vector3 at = a ? a.pos : (bx[i], by[i], bz[i]);
 			bool hold = !grave[i] && gy_Bones.CI('gy_bones_block', 0) == 0;
-			let r = gy_Bones.RiseAt(kind[i], at, killer[i], a ? a.angle : ba[i], hold || grave[i]);
+			let r = grave[i] ? gy_Bones.RiseNear(kind[i], at, killer[i], ba[i]) : gy_Bones.RiseAt(kind[i], at, killer[i], a ? a.angle : ba[i], hold);
 			if (!r)
 			{
 				if (hold)
@@ -268,22 +310,28 @@ class gy_BonesHandler : EventHandler
 				}
 				else
 				{
-					// a grave's riser that does not fit is tried again a little later (a monster standing there moves on)
-					if (++tries[i] >= GRAVE_TRIES) { if (dbg) Console.Printf("RSQ Graveyard bones t%d: a grave riser at %.0f %.0f never fit: given up", now, at.x, at.y); Drop(i); continue; }
+					// no free spot at or near the grave's riser: a second later it looks again (what stood there may move on)
+					if (++tries[i] >= GRAVE_TRIES) { if (dbg) Console.Printf("RSQ Graveyard bones t%d: a grave riser at %.0f %.0f found no free spot in %d tries: given up", now, at.x, at.y, tries[i]); Drop(i); continue; }
 					due[i] = now + 35;
-					if (dbg) Console.Printf("RSQ Graveyard bones t%d: a grave riser at %.0f %.0f did not fit: tries again", now, at.x, at.y);
+					if (dbg) Console.Printf("RSQ Graveyard bones t%d: a grave riser at %.0f %.0f did not fit, nor any spot near it (try %d of %d): tries again in 35 tics", now, at.x, at.y, tries[i], GRAVE_TRIES);
 				}
 				continue;
 			}
-			if (dbg) Console.Printf("RSQ Graveyard bones t%d: %s RISES at %.0f %.0f from %s (target %s)%s", now, r.GetClassName(), at.x, at.y,
-				grave[i] ? "a tombstone" : (a ? String.Format("%s", a.GetClassName()) : "a corpse gone"), killer[i] ? String.Format("%s", killer[i].GetClassName()) : "none",
-				(!grave[i] && tries[i] > 0) ? String.Format(", after %d hold%s", tries[i], tries[i] == 1 ? "" : "s") : "");
+			if (dbg)
+			{
+				double moved = (r.pos.xy - at.xy).Length();
+				String note = "";
+				if (grave[i] && moved > 0.5) note = String.Format(", %.0f map units from its planned spot", moved);
+				if (tries[i] > 0) note = note .. String.Format(grave[i] ? ", on try %d" : ", after %d hold%s", grave[i] ? tries[i] + 1 : tries[i], tries[i] == 1 ? "" : "s");
+				Console.Printf("RSQ Graveyard bones t%d: %s RISES at %.0f %.0f from %s (target %s)%s", now, r.GetClassName(), r.pos.x, r.pos.y,
+					grave[i] ? "a tombstone" : (a ? String.Format("%s", a.GetClassName()) : "a corpse gone"), killer[i] ? String.Format("%s", killer[i].GetClassName()) : "none", note);
+			}
 			if (a && !grave[i]) a.Destroy();   // the corpse got up
 			Drop(i);
 		}
 	}
 
-	// ---- GRAVES RISE (RSQ Miniboss, "bones.graves"): the tombstones in range, nearest the spot first -----------------------
+	// ---- GRAVES RISE (RSQ Miniboss, "bones.graves"): the tombstones in range, nearest the spot first ----------------------
 	// perStone: how many undead each tombstone raises (Miniboss's Graves Rise Mode, owner 11-10: one, or one for each thrall);
 	// radius 0: the whole map. NO CAP (owner 2026-11-07: every tombstone raises undead; the old cap of 24 is gone). A stone's risers stand in a ring round it and rise one after another
 	// (GRAVE_STAGGER tics apart), the stones a few tics apart.
@@ -321,7 +369,7 @@ class gy_BonesHandler : EventHandler
 			}
 		}
 		if (gy_Bones.Debug())
-			Console.Printf("RSQ Graveyard bones t%d: a Bossfight wakes %d tombstone%s (%s): %d undead (%d a stone, no cap)", now, n, n == 1 ? "" : "s",
+			Console.Printf("RSQ Graveyard bones t%d: a miniboss fight wakes %d tombstone%s (%s): %d undead (%d a stone, no cap)", now, n, n == 1 ? "" : "s",
 				radius > 0 ? String.Format("within %.0f", radius) : "the whole map", made, perStone);
 		return made;
 	}

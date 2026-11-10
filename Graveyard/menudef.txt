@@ -1,7 +1,8 @@
 // RSQ Graveyards -- MENUDEF (RSQ Edition, presidentkoopa). The settings are Graveyard's own options page, moved under
 // Radiant Silvergun Options -> RSQ Graveyards (owner 11-06, BUGS_1.0 item 7). Graveyard's own "Graveyards" row in the
-// main Options menu is gone: this page is the only way in. The two keys (keyconf.txt) also stay in Customize Controls.
-// Reset All (RSQGYResetAll, tools/rsmenu) resets every setting a row on this page names; key binds are kept.
+// main Options menu is gone: this page is the only way in. The two remove commands are buttons here, not keys (owner
+// 2026-11-10, design/KEYBINDS_PLAN.md). Reset All (RSQGYResetAll, tools/rsmenu) resets every setting a row on this page
+// names; the stored stones are kept.
 
 // ---- Radiant Silvergun Options (tools/rsmenu) ----------------------------------------------------
 // The series' one Options entry. Every series pk3 carries this same block with its own prefix: the
@@ -61,8 +62,8 @@ OptionMenu "RSQGY_Options"
 	Option "What Stops a Rise", "gy_bones_block", "RSQGY_BonesBlock", "gy_bones"
 	StaticText " "
 	StaticText "Controls", "Gold"
-	Control "Remove Gravestones on This Map", "gy_remove_map"
-	Control "Remove All Gravestones", "gy_remove_all"
+	Command "Remove Gravestones on This Map", "gy_remove_map"   // menu buttons, not keys (owner 11-10)
+	Command "Remove All Gravestones", "gy_remove_all"
 	StaticText " "
 	RSQGYResetAll "Reset All", "Reset all RSQ Graveyards settings?"
 }

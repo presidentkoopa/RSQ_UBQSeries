@@ -14,7 +14,8 @@
  * You should have received a copy of the GNU General Public License along with
  * Graveyards.  If not, see <https://www.gnu.org/licenses/>.
  *
- * --- Modifications: pop-in, idle bounce, and a culled grave light. GPLv3 too. ---
+ * --- Modified by presidentkoopa for the RSQ Edition, 2026 (GPLv3 too): pop-in, idle bounce, a culled grave light,
+ * gold stones, Living Stones, RSQ Miniboss's heartbeat, and the look read the same on every machine (netplay). ---
  */
 
 class gy_Stone : Actor
@@ -78,7 +79,7 @@ class gy_Stone : Actor
   {
     Super.Tick();
 
-    // Cvars are re-read on a stagger rather than every tic: 50 graves x 9
+    // Cvars are re-read on a stagger rather than every tic: 50 graves x 11
     // lookups x 35Hz is a lot of hashing for settings that change by hand.
     if (--_cfgTimer <= 0) { readConfig(); }
 
@@ -95,7 +96,7 @@ class gy_Stone : Actor
 
     updateLight();
     updateTint();
-    bBright = pulseEnv() > 0.35;   // RSQ Edition: the stone itself lights on the Bossfight's beat (seen past the light's cull)
+    bBright = pulseEnv() > 0.35;   // RSQ Edition: the stone itself lights on RSQ Miniboss's beat (seen past the light's cull)
   }
 
   override
@@ -158,8 +159,7 @@ class gy_Stone : Actor
   private
   void updateLight()
   {
-    let pmo     = players[consolePlayer].mo;
-    bool inRange = _cfgLight && (pmo != NULL) && (Distance3D(pmo) <= _cfgCull);
+    bool inRange = _cfgLight && (nearestPlayerDist(true) <= _cfgCull);
 
     double target = inRange ? 1.0 : 0.0;
     if      (_lightFade < target) { _lightFade = min(target, _lightFade + FADE_STEP); }
@@ -183,7 +183,7 @@ class gy_Stone : Actor
     Color lc = lightColor();
     if (env > 0)
     {
-      // the beat leans the candle to the Bossfight's colour, at full brightness on the beat
+      // the beat leans the candle to the heartbeat's colour, at full brightness on the beat
       double w = PULSE_MIX * env;
       lc = Color(255, int(lc.r + (_pulseCol.r - lc.r) * w), int(lc.g + (_pulseCol.g - lc.g) * w), int(lc.b + (_pulseCol.b - lc.b) * w));
     }
@@ -205,8 +205,8 @@ class gy_Stone : Actor
     _lastRadius = radius;
   }
 
-  // ---- RSQ Edition (owner 2026-11-06): THE BOSSFIGHT'S HEARTBEAT --------------------------------------------------------
-  // While a Bossfight waits to be called in, RSQ Miniboss beats RSQ Glow In The Dark's map glow red (lub-dub, every 45 tics)
+  // ---- RSQ Edition (owner 2026-11-06): RSQ MINIBOSS'S HEARTBEAT --------------------------------------------------------
+  // While a miniboss fight waits to be called in, RSQ Miniboss beats RSQ Glow In The Dark's map glow red (lub-dub, every 45 tics)
   // and asks gy_RSQService "stones.pulse" on each beat with the same colour and length: every stone's candle swells (radius up
   // to x1.6) and leans to that colour (85% at the beat), fading over the beat's length, as the map's glow does. RSQ
   // Accessibility's Photosensitive Mode: no beat; the candle holds a steady half lean while the beats keep coming.
@@ -217,7 +217,7 @@ class gy_Stone : Actor
     gy_Stone s;
     while (s = gy_Stone(it.Next())) { s.pulse(rgb, secs); n++; }
     let dc = CVar.FindCVar("gy_bones_debug");
-    if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard t%d: Bossfight heartbeat %06x %.2f s: %d stone%s pulse%s", level.maptime, rgb & 0xFFFFFF, secs, n, n == 1 ? "" : "s", photoSafe() ? " (Photosensitive Mode: held steady)" : ""); }
+    if (dc && dc.GetInt() != 0) { Console.Printf("RSQ Graveyard t%d: miniboss heartbeat %06x %.2f s: %d stone%s pulse%s", level.maptime, rgb & 0xFFFFFF, secs, n, n == 1 ? "" : "s", photoSafe() ? " (Photosensitive Mode: held steady)" : ""); }
     return n;
   }
 
@@ -283,8 +283,8 @@ class gy_Stone : Actor
     double rate  = 1.0;
     if (_cfgLivingMode == 1)
     {
-      let pmo = players[consolePlayer].mo;
-      if (pmo != NULL) { phase = -Distance2D(pmo) * (360.0 / 512.0); }
+      double d = nearestPlayerDist(false);
+      if (d < BIG) { phase = -d * (360.0 / 512.0); }
     }
     else if (_cfgLivingMode == 2)
     {
@@ -352,33 +352,61 @@ class gy_Stone : Actor
     _cfgTimer = 17 + (_phaseOffset % 13);
   }
 
+  // RSQ Edition (2026-11-10), NETPLAY: the scale, tint, brightness and light set here are play state, saved with the
+  // game, so they must come out the same on every machine. They used to follow each machine's own player (his settings,
+  // his distance), which differs from machine to machine. Now every machine reads one player's settings, the
+  // arbitrator's (user cvars travel in his userinfo, so every machine sees the same values), and the candle and Wave
+  // mode go by the nearest player in the game. Alone, that is you, as before; in a netgame the host's look applies to all.
+  static
+  int lookPlayer()
+  {
+    if (Net_Arbitrator >= 0 && Net_Arbitrator < MAXPLAYERS && playeringame[Net_Arbitrator]) { return Net_Arbitrator; }
+    for (int i = 0; i < MAXPLAYERS; i++) { if (playeringame[i]) { return i; } }
+    return 0;
+  }
+
+  // the distance to the nearest player in the game (3D or across the map), BIG when there is none
+  private
+  double nearestPlayerDist(bool in3D) const
+  {
+    double best = BIG;
+    for (int i = 0; i < MAXPLAYERS; i++)
+    {
+      if (!playeringame[i] || players[i].mo == NULL) { continue; }
+      double d = in3D ? Distance3D(players[i].mo) : Distance2D(players[i].mo);
+      if (d < best) { best = d; }
+    }
+    return best;
+  }
+
   // Every cvar read goes through these: GetCVar returns NULL for a cvar that
   // isn't registered (older install, cvarinfo overridden by another pk3), and
   // calling GetFloat() on that NULL is a VM abort.
   private
   bool boolCvar(String name, bool defaultValue) const
   {
-    let c = CVar.GetCVar(name, players[consolePlayer]);
+    let c = CVar.GetCVar(name, players[lookPlayer()]);
     return (c != NULL) ? c.GetBool() : defaultValue;
   }
 
   private
   double floatCvar(String name, double defaultValue) const
   {
-    let c = CVar.GetCVar(name, players[consolePlayer]);
+    let c = CVar.GetCVar(name, players[lookPlayer()]);
     return (c != NULL) ? c.GetFloat() : defaultValue;
   }
 
   private
   int intCvar(String name, int defaultValue) const
   {
-    let c = CVar.GetCVar(name, players[consolePlayer]);
+    let c = CVar.GetCVar(name, players[lookPlayer()]);
     return (c != NULL) ? c.GetInt() : defaultValue;
   }
 
   const POPIN_TICS = 24.0;
   const MIN_SCALE  = 0.05;
-  const FADE_STEP  = 0.05; // ~0.7s from dark to full
+  const BIG        = 1e9;
+  const FADE_STEP  = 0.05; // 20 tics (0.57 s) from dark to full
 
   const PULSE_GROW = 0.6;
   const PULSE_MIX  = 0.85;

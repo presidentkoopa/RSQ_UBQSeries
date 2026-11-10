@@ -4,9 +4,8 @@ version 4.5
 #include "zscript/gy_Death.zs"
 #include "zscript/gy_Storage.zs"
 #include "zscript/gy_Stone.zs"
-#include "zscript/gy_Boss.zs"
 
-// RSQ Edition (2026-11-06): the Bones (Legion of Bones, by name): the Bones Bridge, graves rising in a Bossfight
+// RSQ Edition (2026-11-06): the Bones (Legion of Bones, by name): the Bones Bridge, Graves Rise (RSQ Miniboss)
 #include "zscript/rsqgy/bones_table.zs"
 #include "zscript/rsqgy/bones.zs"
 

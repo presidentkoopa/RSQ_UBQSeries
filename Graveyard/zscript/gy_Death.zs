@@ -13,6 +13,9 @@
  *
  * You should have received a copy of the GNU General Public License along with
  * Graveyard.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ * --- Modified by presidentkoopa for the RSQ Edition, 2026 (GPLv3 too): a death carries its stone's kind (1 a death,
+ * 2 a gold stone, an RSQ Score life spent). ---
  */
 
 class gy_Death

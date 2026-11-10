@@ -15,9 +15,12 @@ Gravestones are carried over play sessions, so:
 
 ## Features
 
-- keys to remove gravestones on this map or all gravestones.
+- commands to remove gravestones on this map or all gravestones (in this
+  edition, buttons on its options page).
 - doesn't affect gameplay.
-- netgame compatible (players see other player's gravestones).
+- netgame compatible (players see other player's gravestones; in this
+  edition each stone is sent once, by the host at map load and by the dying
+  player at a death).
 
 ### Local additions
 
@@ -31,23 +34,17 @@ Options > Radiant Silvergun Options > RSQ Graveyards, or the cvars directly:
   entirely past `gy_light_cull` (`gy_light_enabled`, `gy_light_flicker`,
   `gy_light_radius`, `gy_light_bright`).
 
-Both are cosmetic and read only from the local player's cvars.
-
-- boss markers: an animated terminal, `gy_BossSmall` (45x40 map units) and
-  `gy_BossBig` (161x143, taller than a standard 128 ceiling so it only fits
-  outdoors). Summon either to look at one.
-
-Boss marker frames are imported from a GIF with
-`E:\Tools\msdfgen\Import-GifSprite.ps1`, which extracts every frame, writes the
-patches, and emits the TEXTURES and a ready-made state line.
+Both are cosmetic. In a netgame every machine draws them with the host's
+(arbitrator's) settings and lights a candle for the nearest player, so they
+come out the same on every machine.
 
 ### How To Play (RSQ Edition)
 
 1. Load `RSQ_Graveyard.pk3` with the other RSQ pk3s.
 2. Play. Where you die, a gravestone stands the next time you play that map (new game or a loaded save). With RSQ Score,
    a life you spend leaves a gold stone instead.
-3. Options > Radiant Silvergun Options > RSQ Graveyards: the settings, Living Stones, and the two keys (Remove Gravestones
-   on This Map, Remove All Gravestones; also in Customize Controls).
+3. Options > Radiant Silvergun Options > RSQ Graveyards: the settings, Living Stones, and the two remove buttons (Remove
+   Gravestones on This Map, Remove All Gravestones; menu buttons, not keys).
 4. With RSQ Miniboss and Legion of Bones: Graves Rise raises undead from the stones when a miniboss fight lands (RSQ Miniboss's
    option, off by default).
 
@@ -56,9 +53,9 @@ patches, and emits the TEXTURES and a ready-made state line.
 - the animated gravestones and the grave light above.
 - the options page lives under Options > Radiant Silvergun Options >
   RSQ Graveyards (the RSQ series' shared menu), with the same settings as
-  before plus the two keys (Remove Gravestones on This Map, Remove All
-  Gravestones) and a Reset All. Graveyard's own "Graveyards" row in the
-  Options menu is gone. The keys are still in Customize Controls too.
+  before plus the two remove commands as buttons (Remove Gravestones on
+  This Map, Remove All Gravestones; no keys, owner 2026-11-10) and a Reset
+  All. Graveyard's own "Graveyards" row in the Options menu is gone.
 - two kinds of stone (2026-11-06, rig only, not headset-confirmed): a real
   death is the stone as always (grey, warm flickering candle); an RSQ Score
   life spent (RSQ Score asks by name, service `gy_RSQService`) is the same
@@ -94,8 +91,9 @@ patches, and emits the TEXTURES and a ready-made state line.
     Doom's tracer.)
   - RSQ Miniboss can wake the tombstones in a miniboss fight (its Graves Rise row):
     every tombstone in range raises undead, with no cap (2026-11-07; the old
-    cap of 24 is gone; rig only, not headset-confirmed: 31 stones raised 31
-    Legion of Bones undead on the rig), and while a miniboss fight waits every stone's candle and stone beat with the
+    cap of 24 is gone). A riser whose spot is taken looks for a free spot
+    near it, 5 tries a second apart, then is given up (2026-11-10, code
+    only, not shown), and while a miniboss fight waits every stone's candle and stone beat with the
     map's red heartbeat (held steady in RSQ Accessibility's Photosensitive
     Mode).
 - source: the `Graveyard/` folder of RSQ_UBQSeries, built to
@@ -108,6 +106,8 @@ patches, and emits the TEXTURES and a ready-made state line.
 - Thanks to mamaluigisbagel and Colerx for bug reports.
 - Thanks to 3saster for implementing real time access in GZDoom.
 - PresidentKoopa for RSQ changes: animated tombstone, fading lights.
+- m8f's soulsphere add-on (`add-ons/soulsphere` in the source) is not part
+  of RSQ_Graveyard.pk3.
 ## Other Info
 
 Author: m8f
