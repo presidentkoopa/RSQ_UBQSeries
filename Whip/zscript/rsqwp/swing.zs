@@ -351,6 +351,9 @@ extend class RSQWP_Whip
 	{
 		aimShown[i] = true;
 		aimDots = 0;
+		// WHIP AND GUN (owner 11-10): its cursor is drawn only when it can snag (gold); a red one is not drawn (the state
+		// and the freeze behave the same, only the dots are left out). The slot-1 aimed swing's red ray is unchanged.
+		if (indy[i] && !ok) return;
 		int col = ok ? RSQWP_CB.Pick(RSQWP_CB.CB_COULD, RSQWP_LockRing.GOLD) : RSQWP_CB.Pick(RSQWP_CB.CB_IDLE, AIM_RED);
 		Vector3 span = end - org;
 		double len = span.Length();

@@ -164,7 +164,7 @@ class RSQ_Upgrade_WhipHeavyHaul : RSQ_Upgrade_WhipLeashMarker
 		fields.Insert("time", AsSeconds(10 + 10 * level));
 	}
 }
-// GET OVER HERE (after Heavy Haul 1): what the leash brings you arrives staggered 20 + 15 lv tics.
+// GET OVER HERE (after Heavy Lash 1): what the leash brings you arrives staggered 20 + 15 lv tics.
 class RSQ_Upgrade_WhipGetOverHere : RSQ_Upgrade_WhipLeashMarker
 {
 	override String Parent() { return "WhipHeavyHaul"; }

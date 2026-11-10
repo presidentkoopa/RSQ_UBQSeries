@@ -288,7 +288,7 @@ class RSQWP_Core : EventHandler
 				Log(h, "bite");
 			}
 			RSQWP_Events.Bitten(h.owner, v, h.hand, h.heavy);   // service.zs: for other mods to read
-			RSQWP_Perks.OnBite(h, v);   // Heavy Haul, Barbed Claw (fx.zs); a claw's bite: nothing makes one (Fly)
+			RSQWP_Perks.OnBite(h, v);   // Heavy Lash, Barbed Claw (fx.zs); a claw's bite: nothing makes one (Fly)
 			return;
 		}
 
@@ -341,7 +341,7 @@ class RSQWP_Core : EventHandler
 	// too heavy to come: an anchor instead (at the bite, and re-asked every tic of the pull)
 	static bool TooHeavy(RSQWP_Hook h, Actor v)
 	{
-		double mmax = RSQWP_Util.Num("rsqwp_mass_max", 1000) * RSQWP_Perks.Factor(h.owner, 'mass');   // Heavy Haul (fx.zs)
+		double mmax = RSQWP_Util.Num("rsqwp_mass_max", 1000) * RSQWP_Perks.Factor(h.owner, 'mass');   // Heavy Lash (fx.zs)
 		// an RSQ Miniboss miniboss with Miniboss's "Can't Be Yanked" on: an anchor, as a boss is
 		return v.bBOSS || (mmax > 0 && v.Mass > mmax) || v.bDORMANT || RSQWP_Util.MinibossAs(v, "yank");
 	}

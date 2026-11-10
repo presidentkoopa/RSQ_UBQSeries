@@ -36,7 +36,7 @@ class RSQWP_Perks
 	//   Steady Line   the swing's air drag + drag x 3 lv while the stick is centred                        (SteadyDrag)
 	//   Slingshot     a let-go in the air: the speed x(1 + 0.10 lv)                                           (OnLetGo)
 	// and, since Whip and Gun's Leash came back (11-10), the four that need a monster on the core's line:
-	//   Heavy Haul    the mass limit x(1 + 0.5 lv); a heavy one (too heavy, a boss) leashed staggers 10 + 10 lv tics,
+	//   Heavy Lash    the mass limit x(1 + 0.5 lv); a heavy one (too heavy, a boss) leashed staggers 10 + 10 lv tics,
 	//                 once per 3 s per monster                                                    (Factor 'mass', OnBite)
 	//   Barbed Claw   the leash's bite 4 + 4 lv; torn out of a living monster 6 + 6 lv                  (OnBite, OnLetGo)
 	//   Get Over Here what the leash brings arrives staggered 20 + 15 lv tics                                (OnArrive)

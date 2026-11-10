@@ -367,9 +367,9 @@ the staggers are shown as Gun Bonsai VR's stagger being asked, not in frames).
 | Rope | **Fast Reel** | Snag 1 | 4 | The rope reels you in 10% faster a level (3 a tic, up to 4.2), and a leashed monster comes 10% faster a level (10, up to 14). RSQ Grapple's numbers |
 | Rope | **Steady Line** | Momentum 1 | 3 | Hanging with the stick centred, the swing's air drag x4 / x7 / x10, so it settles fast; pushing the stick still pumps. RSQ Grapple's numbers |
 | Rope | **Slingshot** | Momentum 1 | 3 | Letting go of a swing in mid-air carries you on x1.1 / 1.2 / 1.3. RSQ Grapple's numbers |
-| Leash | **Heavy Haul** | Fast Reel 1 | 3 | Offered only with RSQ Whip's Whip and Gun and Leash on. The Leash's mass limit x1.5 / 2 / 2.5; one still too heavy to come staggers 20 / 30 / 40 tics when caught (once per 3 s) |
+| Leash | **Heavy Lash** | Fast Reel 1 | 3 | Offered only with RSQ Whip's Whip and Gun and Leash on. The Leash's mass limit x1.5 / 2 / 2.5; one still too heavy to come staggers 20 / 30 / 40 tics when caught (once per 3 s) |
 | Leash | **Barbed Claw** | Fast Reel 1 | 4 | Offered only with Whip and Gun and Leash on. The Leash's catch does 8 / 12 / 16 / 20, tearing free of a living monster 12 / 18 / 24 / 30 |
-| Leash | **Get Over Here** | Heavy Haul 1 | 3 | Offered only with Whip and Gun and Leash on. A leashed monster arrives staggered 35 / 50 / 65 tics |
+| Leash | **Get Over Here** | Heavy Lash 1 | 3 | Offered only with Whip and Gun and Leash on. A leashed monster arrives staggered 35 / 50 / 65 tics |
 | Leash | **Bowling** | Get Over Here 1 | 3 | Offered only with Whip and Gun and Leash on. A leashed monster strikes what stands in its path for 10 / 15 / 20 plus half its speed, staggers it 25 / 35 / 45 tics and shoves it aside |
 
 ---
