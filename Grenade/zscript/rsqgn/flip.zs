@@ -35,7 +35,7 @@ class RSQGN_Flip : Actor
 	}
 
 	// `at`: the blast point; a floor sequence stands on the floor under it. k: an extra scale (1 the mockup's size)
-	static RSQGN_Flip Play(Vector3 at, int which, double k = 1.0)
+	static RSQGN_Flip PlayAt(Vector3 at, int which, double k = 1.0)
 	{
 		if (which < 0 || which >= RSQGN_FlipData.COUNT) return null;
 		let f = RSQGN_Flip(Actor.Spawn("RSQGN_Flip", at));

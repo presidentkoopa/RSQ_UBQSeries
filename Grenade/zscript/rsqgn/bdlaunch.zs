@@ -52,7 +52,7 @@ class RSQGN_BDLaunchers : EventHandler
 			if (s.Distance3D(a) > NEAR) continue;
 			Name sn = s.GetClassName();
 			if (sn == 'Rocket2' || sn == 'Rocket2Fast' || sn == 'RocketDM')
-				RSQGN_Flip.Play(s.pos, s.pos.z - s.floorz < 24 ? RSQGN_FlipData.ROCKET_FLOOR : RSQGN_FlipData.ROCKET_AIR);
+				RSQGN_Flip.PlayAt(s.pos, s.pos.z - s.floorz < 24 ? RSQGN_FlipData.ROCKET_FLOOR : RSQGN_FlipData.ROCKET_AIR);
 			else
 				RSQGN_Boom.ForGrenade(s, 0);
 			let dbg = CVar.FindCVar("rsqgn_debug");

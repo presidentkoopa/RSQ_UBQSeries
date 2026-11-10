@@ -294,7 +294,7 @@ class RSQGN_Boom : Actor
 		else s = air ? RSQGN_BarrelData.G_AIR : RSQGN_BarrelData.G_FLOOR;
 		if (waterOn) s = isBarrel ? RSQGN_BarrelData.X_WATER_B : RSQGN_BarrelData.X_WATER_G;   // the underwater swap: no fire
 		mainSeq = s;
-		if (finale && !waterOn) RSQGN_Flip.Play(pos, RSQGN_FlipData.MEGA);
+		if (finale && !waterOn) RSQGN_Flip.PlayAt(pos, RSQGN_FlipData.MEGA);
 		else RSQGN_BarrelFX.PlayFX(pos, s, self, k, !waterOn);
 		if (!waterOn)
 		{
