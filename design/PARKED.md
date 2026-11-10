@@ -137,3 +137,9 @@ DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
 ## Concern: Distance Grab and full guns (owner, 2026-11-09 23:25)
 A gun you already carry, with full ammo, cannot be picked up with Distance Grab (the catch is refused, like walking
 over it). Marked as a concern; not changed. Listed in DistanceGrab/README.md "Known concerns".
+
+## Close-call slow motion (owner 2026-11-10 08:37: "remind me to consider")
+Contextual slow motion when a monster missile nearly hits you: imp, cacodemon, revenant, baron, hell knight, cyberdemon,
+mancubus (also asked: did we miss any? arachnotron plasma, pain elemental's lost soul, archvile's fire are the others
+that fire at you). Possibly a Gun Bonsai VR option gated behind Hadouken, with SlowMo's HUD chevrons pointing at the
+shot so you can spin round and hadouken it back. Also: use the HUD chevrons more widely. Not built; owner to decide.
