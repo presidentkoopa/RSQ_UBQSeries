@@ -1,0 +1,327 @@
+Log started: 2026-11-09 22:39:03
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/gamedata/doom2.wad, 2919 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/gamedata/brutal22test6.pk3, 22264 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/gamedata/BD_VoxelPack.pk3, 257 lumps
+adding /home/claude/rs_brutal22weaponsq/pk3/03_BD22_VR-Reloaded_2.0.4e.pk3, 836 lumps
+adding /home/claude/gamedata/LOB_v1.05.pk3, 2999 lumps
+adding /home/claude/gamedata/mk-champions20210309.pk3, 140 lumps
+adding /home/claude/gamedata/GunBonsai-0.10.6.pk3, 284 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Accessibility.pk3, 18 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_DistanceGrab.pk3, 88 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 58 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Graveyard.pk3, 47 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1567 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunBonsaiVR.pk3, 63 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 32929 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_LaserSight.pk3, 14719 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Melee.pk3, 273 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Miniboss.pk3, 24 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Monsters.pk3, 22940 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10942 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 56 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 259 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 746 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 166 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 733 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 275 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 49 lumps
+adding /home/claude/scratch/bigrig/b2/brp.pk3, 3 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+  Opened device No Output
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.4 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.10GHz
+  Family 6, Model 207, Stepping 2
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+Invalid data encountered for texture GunBonsai-0.10.6.pk3:sprites/ui/.gitignore
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 428: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 527: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 655: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1059: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1186: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1333: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1507: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1850: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2065: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2459: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 967: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 968: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 361: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 494: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 626: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 745: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1293: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1435: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1564: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1700: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1951: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1952: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2085: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2086: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1228: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1229: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1292: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1293: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1368: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1369: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 216: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 359: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 504: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 505: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 629: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 630: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 778: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1343: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1344: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1522: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1654: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1797: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1909: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 218: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 373: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 536: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 664: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 779: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1092: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1207: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1331: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1458: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1586: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1587: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1766: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1767: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1908: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1947: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1986: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2025: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2064: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2117: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2118: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 493: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 494: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 871: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 872: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1668: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1902: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs, line 1335: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1236: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1237: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 232: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 359: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 490: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 629: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 742: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 743: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1046: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1162: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1294: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1441: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1593: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1778: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2005: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2176: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 832: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 833: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1866: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1867: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 249: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 250: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 349: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 350: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 441: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 442: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 630: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 631: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 712: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 713: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 781: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 782: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 835: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 836: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 909: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 910: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 997: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 998: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1170: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1171: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1290: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1413: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1720: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1934: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 767: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 770: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 1855: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 215: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 368: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 476: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 477: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 736: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 737: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1194: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1279: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1280: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1406: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknightfx.zs, line 633: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 257: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 391: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 392: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 552: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 723: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 834: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1162: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1280: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1411: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1535: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1715: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1893: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 2202: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 257: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 381: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 652: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 653: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 844: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 845: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 987: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1226: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1358: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1481: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1624: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1777: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1939: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2091: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2279: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2451: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2677: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2678: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 235: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 236: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 352: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 353: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 490: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 634: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 640: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 777: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 898: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1026: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1161: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1327: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1328: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1508: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1509: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1595: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1812: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1978: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2144: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2145: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2266: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2482: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2571: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2715: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 404: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 542: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 654: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1534: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1677: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1934: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 2152: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 330: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 446: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 559: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 668: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 821: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 823: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 944: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1074: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1208: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1360: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1517: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1738: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1740: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1894: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1896: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2190: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2498: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2499: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2606: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2607: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2693: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2694: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2763: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2764: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 140: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 141: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1248: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1828: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2734: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2735: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 465: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1672: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1801: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 331: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 500: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 652: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 853: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 974: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1104: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1203: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1293: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1430: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1474: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1634: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1772: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2004: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2081: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2420: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 466: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 695: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 896: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1155: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1321: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1445: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1568: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1688: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1689: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1741: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1906: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2108: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2361: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2639: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2688: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2960: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 1169: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 2119: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/meatgrinder/rs_mgmonsters.zs, line 2208: Deprecated flag 'missileMore' used, deprecated since 4.13.0
+259 warnings while compiling RSQ_Monsters.pk3:zscript.txt
+brp.pk3:zscript.txt, line 22: misLast: Base type for dynamic array types must be integral, but got Vector3
+brp.pk3:zscript.txt, line 5: Unable to resolve all fields for class BRP_Probe
