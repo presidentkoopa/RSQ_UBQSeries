@@ -408,7 +408,7 @@ class RS_Row_MultiKill : RS_ScoreBonus
 		if (tool == "gun.energy") return (g ~== "RailGun") ? 0.4 : (g.Left(3) ~== "BFG" || g ~== "BIG_FUCKING_GUN" || g ~== "BFG9000") ? 0.1 : 0.2;
 		if (pre == "gun") return 0.15;
 		if (tool == "force.push") return 0.2;
-		if (tool == "grab.throw") return 0.3;
+		if (tool == "grab.throw" || tool == "grab.keg") return 0.3;
 		if (tool == "gun.explosive") return 0.15;
 		return RS_Tool.IsMelee(tool) ? 0.25 : 0.0;
 	}
@@ -997,7 +997,7 @@ class RS_Row_HandCannon : RS_ScoreBonus
 }
 
 // D Headshot: the killing blow was a headshot (its damage type, BD22's Head / MinorHead: the ledger's +head). The
-// Ruger and the Moonlight pay more. The damage type names were checked against brutal22test6's own files (its
+// sniper rifle (class Sniper) and the BrutalRevolver pay more (Evaluate). The damage type names were checked against brutal22test6's own files (its
 // headshot damage types are Head and MinorHead, re-checked 2026-11-04; SCORE_SWARM_HANDOFF.md).
 // [11-09 score-fix] RSQ Monsters' MeatGrinder head shots set the same +head, asked by name (combo.zs CondOf).
 // [11-09 head shots] Score's own head check (head.zs) marks every monster's head shots +head (BD, CH, MG, packs).
@@ -1012,7 +1012,7 @@ class RS_Row_Headshot : RS_ScoreBonus
 		RS_Combo.ChainOf(ev);
 		let led = RS_ComboLedger.Get();
 		int n = ev.chainIdx.Size();
-		bool head = led && n >= 1 && (led.CondAt(ev.chainIdx[n - 1]) & RS_ComboLedger.C_HEAD) != 0;
+		bool head = led && n >= 1 && (led.BlowCondAt(ev.chainIdx[n - 1]) & RS_ComboLedger.C_HEAD) != 0;   // the KILLING blow's, not the run's
 		if (RS_ScoreHead.LogOn() && ev.victim)
 			Console.Printf("HS t%d kill %s: Score Headshot row %s", level.maptime, ev.victim.GetClassName(), head ? "PAYS" : "does not pay");
 		if (!head) return 0.0;
@@ -1022,7 +1022,7 @@ class RS_Row_Headshot : RS_ScoreBonus
 }
 
 // D Sights Up / Glass: a gun kill from far with the shot's line within 2 degrees of the head's facing (aimed down the
-// gun, not from the hip): 768 units pays Sights Up; the Ruger or the Railgun at 1024 pays Glass (0.6 at 2048).
+// gun, not from the hip): 768 units pays Sights Up; the sniper rifle (Sniper) or the Railgun at 1024 pays Glass (0.6 at 2048).
 class RS_Row_SightsUp : RS_ScoreBonus
 {
 	const MULT = 0.2;

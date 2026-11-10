@@ -67,7 +67,7 @@ server bool rs_score_slowmo          = true;
 server int  rs_score_slowmo_cooldown = 6;
 
 // Slow motion multiplies style (Bullet Time, physical.zs): a kill in slow motion pays this percent of
-// what its style, daring and melee bonuses paid. A plain kill in slow motion pays nothing more.
+// what its bonuses paid in every family but Efficiency. A plain kill in slow motion pays nothing more.
 server int  rs_score_slowstyle       = 50;
 
 // HIT-STOP ON BIG KILLS (owner's pick 57, off): a big kill stops the world for a beat -- an RSQ_SlowMo pulse at

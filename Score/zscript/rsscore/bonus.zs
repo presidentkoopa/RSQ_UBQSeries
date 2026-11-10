@@ -46,7 +46,7 @@ class RS_ScoreBonus play
 		FAM_COUNT
 	}
 
-	// Which of the three families this belongs to. The family decides the colour
+	// Which of the five families this belongs to (Efficiency, Style, Daring, Melee, Counterplay). The family decides the colour
 	// on the HUD and which cap the bonus is charged against.
 	virtual int Family() const { return FAM_STYLE; }
 
@@ -91,7 +91,7 @@ class RS_ScoreBonus play
 
 	// ------------------------------------------------------------ small helpers
 
-	// The colour name this family draws in. One per family, three in all.
+	// The colour name this family draws in. One per family, five in all.
 	String FamilyColor() const
 	{
 		switch (Family())
@@ -130,7 +130,7 @@ class RS_ScoreRegistry : StaticEventHandler
 	// tools another mod adds, with the groups a pattern may name them by ("melee,shield")
 	private Array<String> m_toolId, m_toolGroups;
 
-	// RS_Score's own thirteen, pushed DIRECTLY onto this instance.
+	// RS_Score's own original thirteen (the rest are registered the same way), pushed DIRECTLY onto this instance.
 	//
 	// NOT through RegisterBonus, and NOT from OnRegister. A handler cannot Find
 	// ITSELF from inside its own OnRegister -- it is not in the registered list yet,

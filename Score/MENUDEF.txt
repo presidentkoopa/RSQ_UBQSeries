@@ -136,7 +136,7 @@ OptionMenu "RSQSC_Test"
 	StaticText "Display", 1
 	Slider "Across", "rs_score_x", 0, 100, 1, 0
 	Slider "Down", "rs_score_y", 0, 100, 1, 0
-	Slider "Bonus Time (0 Hides)", "rs_score_bonustime", 0, 193, 7, 0
+	Slider "Bonus Time (0 Hides)", "rs_score_bonustime", 0, 196, 7, 0
 	StaticText " "
 	StaticText "Bonus Caps (0 = None)", 1
 	Slider "Kill Bonus Cap", "rs_score_cap_kill", 0, 1000, 50, 0
@@ -156,10 +156,10 @@ OptionMenu "RSQSC_Test"
 	StaticText " "
 	StaticText "Slow Motion", 1
 	Slider "Cooldown (s)", "rs_score_slowmo_cooldown", 1, 30, 1, 0
-	Slider "Style Share (%)", "rs_score_slowstyle", 0, 100, 10, 0
+	Slider "Style Share (%)", "rs_score_slowstyle", 0, 200, 10, 0
 	StaticText " "
 	StaticText "Head Shots", 1
-	Slider "Unknown Monster's Head (% of Height)", "rs_score_hs_unknown", 50, 95, 1, 0
+	Slider "Unknown Monster's Head (% of Height)", "rs_score_hs_unknown", 50, 98, 1, 0
 	Option "Head Shot Log", "rs_score_hs_log", "OnOff"
 	StaticText " "
 	Option "Debug Log", "rs_score_debug", "OnOff"

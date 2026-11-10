@@ -105,7 +105,8 @@ class RS_ScoreTracker : Inventory
 	// SMult_WeaponSwitch returned 0 for any player class that did not update it.
 	// Watching the attack buttons instead looks equivalent and is not -- it fires on
 	// a trigger press rather than on a shot, and it cannot tell a burst from a tap.
-	// So this stays inert until a weapon calls RS_ScoreHandler.Switcharoo().
+	// So the slot path stays unused (no weapon calls RS_ScoreHandler.Switcharoo()); since 11-08 the guns are heard off
+	// the blows instead (NoteFire, below), which is what feeds Switcharoo now.
 	private int lastFired[27];   // SCOREWEPS * SCOREFIREMODES
 
 	// SWITCHAROO'S EARS (11-03, sheet D3): no weapon in BD22 VR Reloaded calls the old door, so the fire is read off

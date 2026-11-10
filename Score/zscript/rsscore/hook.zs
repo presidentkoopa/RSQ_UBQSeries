@@ -16,7 +16,7 @@
 //                     and now the hook's own blows MK_HOOK and the whip MK_WHIP)
 //   RS_Physical       physical.zs: a shot, a Distance Grab throw, the rig's draw, SlowMo's clock
 //
-// NOTHING SCORES TWICE (the inventory, README "The arcade layer"): Pulled In is the saber's Force
+// NOTHING SCORES TWICE: Pulled In is the saber's Force
 // pull, Reeled In the hook's -- one replaces the other; Skeet and Juggle are a body in the air, Fly
 // Ball one the hook threw -- it replaces them; Air is your jump, Swinging and Dismount the rope's
 // height -- they replace it; a thrown body's blows were read as punches (Brawler 0.5, Knockdown,

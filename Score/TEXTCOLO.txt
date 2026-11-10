@@ -2,7 +2,7 @@
 // verbatim so that loading the original mod alongside this pack cannot have one
 // definition quietly win over the other.
 //
-// Three families, three colours, and that is the whole reason the breakdown is
+// Five families, five colours (the original's three, plus Melee and Counterplay), and that is the whole reason the breakdown is
 // readable at a glance: Efficiency reads red, Style reads green, Daring reads
 // orange. Base is the same gold as the score line so the first row of a
 // breakdown ties back to the number above it.

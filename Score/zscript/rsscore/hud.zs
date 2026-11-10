@@ -1,7 +1,8 @@
 // ============================================================================
 // RS_ScoreHUD -- a transcription of score_display.h, not an interpretation.
 //
-// EVERY NUMBER AND EVERY ANCHOR HERE MATCHES THE ORIGINAL. That includes the two
+// THE LAYOUT IS THE ORIGINAL'S (its anchors and spacing; the size default is 150 here and the rows move down for
+// other mods' HUD pieces, RSQ SlowMo's countdown bar). That includes the two
 // things that look like mistakes and are not:
 //
 //   compressRatio -- the original multiplies the virtual WIDTH by
@@ -338,12 +339,13 @@ class RS_ScoreHUD : EventHandler
 	// column is LEFT-anchored at centerX-55, the name at centerX-12, and both are
 	// vertically CENTRED on centerY + 26 + 13*(offset-1).
 	//
-	// Hold time is (bonustime/35) - 0.5 seconds, then a 0.5 second fade.
+	// Hold time is (bonustime/35) - 0.5 seconds (never under 0), then a 0.5 second fade. Every slider step counts (11-09:
+	// values under 35 used to read as 35).
 
 	private ui void DrawBreakdown(RS_ScoreTracker tr, RS_ScoreHandler handler, int pln,
 	                              double vw, double vh, double cx, double cy)
 	{
-		int showTics = clamp(UserInt(pln, "rs_score_bonustime", 35), 35, 193);
+		int showTics = clamp(UserInt(pln, "rs_score_bonustime", 35), 7, 196);
 
 		Font fnt = Font.GetFont("RSSCFN2");
 		if (!fnt) { fnt = smallfont; }

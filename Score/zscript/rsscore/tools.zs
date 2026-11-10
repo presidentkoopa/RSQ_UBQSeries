@@ -126,7 +126,7 @@ class RS_Tool play
 		String pre = Prefix(t);
 		return t == "punch" || t == "kick" || t == "glove" || pre == "gun" || pre == "blade"
 			|| t == "whip.crack" || t == "hook.bite" || t == "shield.bash" || t == "grenade.frag"
-			|| t == "force.push" || t == "grab.throw" || t == "saber.cut";
+			|| t == "force.push" || t == "grab.throw" || t == "grab.keg" || t == "saber.cut";
 	}
 
 	static bool IsMelee(String t)
@@ -158,7 +158,7 @@ class RS_Tool play
 		if (g == "return") return t == "saber.return" || t == "shield.return" || t == "hadouken" || t == "swat"
 			|| t == "guard.reflect" || t == "whip.return" || t == "grab.shield";
 		if (g == "throw") return t == "saber.throw" || t == "shield.disc" || t == "whip.lasso" || t == "whip.bola"
-			|| t == "headlock.throw" || t == "grab.throw" || t == "throw.gun";
+			|| t == "headlock.throw" || t == "grab.throw" || t == "grab.keg" || t == "throw.gun";
 		if (g == "dodge") return t == "lean";
 		if (g == "rig.draw") return pre == "rig";
 		return RS_ScoreRegistry.ToolInGroup(t, g);
@@ -304,6 +304,10 @@ class RS_Tool play
 		// carrying it), striking something -- or itself, its own landing -- as 'Melee' with the body as the inflictor
 		if (dt == 'Melee' && inf && inf != src && inf.bIsMonster && inf.health > 0) return "headlock.throw";
 		if (dt == 'Melee' && !inf && RS_Physical.AskGrab("throw.by", v) == pn) return "headlock.throw";   // its own landing, Distance Grab carrying it
+		// a THROWN KEG: an explosive thrown with Distance Grab (a barrel), its blast -- or a barrel down the chain it set off
+		// (Distance Grab's "throw.blast"). Until 11-09 nothing named it, so the combos Hot Seat, Aftershock and Demolition
+		// (grab.keg) could never fire: the blast read as a plain grab.throw.
+		if (inf && inf != src && !inf.bIsPuff && RS_Physical.AskGrab("throw.by", inf) == pn && RS_Physical.AskGrab("throw.blast", inf) == 1) return "grab.keg";
 		// a thing thrown with Distance Grab (an object)
 		if (inf && inf != src && !inf.bIsPuff && RS_Physical.AskGrab("throw.by", inf) == pn) return "grab.throw";
 		// a shot sent back: turned by the shield (a fresh puff or missile of the shield's), or a monster's missile now

@@ -688,8 +688,8 @@ class RS_Bonus_HotSwap : RS_PhysicalBonus
 }
 
 // Bullet Time: SLOW MOTION MULTIPLIES STYLE, IT IS NOT AN EASY MODE (the owner, 10-27). A kill while
-// RSQ_SlowMo has the world slowed pays rs_score_slowstyle percent (50) of what the kill's style, daring and
-// melee bonuses paid. A plain kill in slow motion pays nothing more. (It paid a flat 0.15 on every kill before.)
+// RSQ_SlowMo has the world slowed pays rs_score_slowstyle percent (50) of what the kill's bonuses paid in every
+// family but Efficiency (Style, Daring, Melee and Counterplay). A plain kill in slow motion pays nothing more. (It paid a flat 0.15 on every kill before.)
 // 11-03 (sheet C2, C3, C4, the S1 rework): a slow motion the player STARTED (the key, the wrist cross, a shove, a
 // parry) pays the full share; an AUTOMATIC one (the miniboss window, Gun Bonsai VR's pulses, a reload) pays half;
 // Score's own pulses (a big moment, the hit-stop) pay nothing -- read from SlowMo's "trigger.auto" / "trigger.score"

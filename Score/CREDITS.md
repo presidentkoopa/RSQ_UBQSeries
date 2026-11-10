@@ -45,8 +45,8 @@ read from the IWAD the player already has.
   fact they measure, rather than a fixed list in one file.
 - The anti-farming rule (`rs_score_farmpercent`). *Dakka* paid full points for a
   resurrected monster, which made an Arch-vile an endless score fountain.
-- The multiplier caps (`rs_score_cap_*`), all defaulting to off so that out of the
-  box the arithmetic is *Dakka*'s exactly.
+- The multiplier caps (`rs_score_cap_*`): the family caps default to off; the total cap
+  (`rs_score_cap_kill`) defaults to 300.
 - Generalised ammo regeneration. *Dakka* regenerated a hardcoded list of its own
   eight ammo classes at fixed rates; this gives back a percentage of whatever ammo
   the player actually carries, so it works for any weapon set. The amounts are

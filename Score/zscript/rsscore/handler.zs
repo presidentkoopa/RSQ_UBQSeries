@@ -417,7 +417,7 @@ class RS_ScoreHandler : EventHandler
 
 		// Anti-farming. A monster that was not on the map at load -- spawned by a
 		// script, raised from the dead, a Lost Soul thrown by a Pain Elemental --
-		// pays a fraction. Taking it off the list here is what stops the same
+		// pays rs_score_farmpercent percent (100 by default: full; lower it to stop farming). Taking it off the list here is what stops the same
 		// corpse being farmed by an Arch-vile.
 		// Compared by hand rather than with Array.Find: Find on an array of object
 		// references does not reliably report a miss, which quietly turned this whole
@@ -430,7 +430,7 @@ class RS_ScoreHandler : EventHandler
 
 		if (at < 0)
 		{
-			int pct = clamp(CvarInt("rs_score_farmpercent", 25), 0, 100);
+			int pct = clamp(CvarInt("rs_score_farmpercent", 100), 0, 100);
 			ev.basePoints = (ev.basePoints * pct) / 100;
 		}
 		else
@@ -587,8 +587,8 @@ class RS_ScoreHandler : EventHandler
 			mults[b] = m_bonuses[b].AfterOthers(ev, m_bonuses, asked, b);
 		}
 
-		// 3. Cap per family, then in total. Both default to off, so out of the box
-		//    the numbers are the original's exactly.
+		// 3. Cap per family, then in total. The family caps default to off; the total cap (rs_score_cap_kill) defaults
+		//    to 300, so out of the box no single kill runs away.
 		Array<double> famSum;
 		famSum.Resize(RS_ScoreBonus.FAM_COUNT);
 

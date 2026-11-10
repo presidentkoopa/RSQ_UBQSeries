@@ -22,7 +22,8 @@
 //
 // The rising flames are drawn tall (scale 0.6 x 1.0) so the two on a spoke overlap into one tongue of fire.
 // (A first pool, 16 + 8 flames all at scale 0.5 / 0.32, read as scattered flames beside the original's solid ring on
-// the rig, 11-05; this one is denser. Code only since: not rig-tested, not headset-confirmed.)
+// the rig, 11-05; this one is denser. Its ring of flames shown on the rig 2026-11-09 (design/rigtest_2026-11-09/followup); not
+// headset-confirmed.)
 //
 // IN VR the player stands inside the ring: the ring follows the player and keeps its 80-unit radius (2.5 m), so no
 // flame comes nearer the eyes than about 68 units even when the player walks during it.

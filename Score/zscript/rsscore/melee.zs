@@ -801,7 +801,7 @@ class RS_Bonus_ShieldWall : RS_ScoreBonus
 	}
 }
 
-// Counter: a punch killed it in the middle of its own attack -- in its Missile or Melee sequence, or
+// Counter: a melee blow killed it in the middle of its own attack -- in its Missile or Melee sequence, or
 // half a second after it fired a shot (Brutal Doom's monsters jump out of "Missile" into their own
 // attack states at once: an imp set to Missile on the rig was not in that sequence a tic later) --
 // the gloves' counter, Brutal Doom's fists too.

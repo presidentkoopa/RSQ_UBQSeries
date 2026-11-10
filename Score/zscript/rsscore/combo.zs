@@ -103,6 +103,10 @@ class RS_ComboLedger : EventHandler
 
 	Array<Actor> eV;
 	Array<int> ePn, eFirst, eLast, eCond, eHits;   // eHits: blows in the run (a burst's pellets count one each)
+	// THE LATEST BLOW'S OWN CONDITIONS (11-09, owner: "stop headshot pay on body kill"): eCond is the whole run's (a head
+	// hit, then a body-shot kill with the same gun, still read as a head kill). eBlowCond is only the blows of the run's
+	// LATEST tic (a shotgun's pellets in one tic count together); eBlowTic is that tic.
+	Array<int> eBlowCond, eBlowTic;
 	Array<String> eTool, eTags;
 
 	// one poll per monster per player per tic
@@ -178,7 +182,7 @@ class RS_ComboLedger : EventHandler
 
 	private void Drop(int k)
 	{
-		eV.Delete(k); ePn.Delete(k); eFirst.Delete(k); eLast.Delete(k); eTool.Delete(k); eCond.Delete(k); eTags.Delete(k); eHits.Delete(k);
+		eV.Delete(k); ePn.Delete(k); eFirst.Delete(k); eLast.Delete(k); eTool.Delete(k); eCond.Delete(k); eTags.Delete(k); eHits.Delete(k); eBlowCond.Delete(k); eBlowTic.Delete(k);
 	}
 
 	// the last entry of (v, pn), or -1
@@ -201,16 +205,16 @@ class RS_ComboLedger : EventHandler
 			else Hold(v, pn, tool, tic);
 			return;
 		}
-		if (j >= 0 && eTool[j] == tool) { eLast[j] = max(eLast[j], tic); eCond[j] |= cond; eHits[j]++; TakeHeld(j, v, pn, tic); return; }
+		if (j >= 0 && eTool[j] == tool) { eLast[j] = max(eLast[j], tic); eCond[j] |= cond; Blow(j, tic, cond); eHits[j]++; TakeHeld(j, v, pn, tic); return; }
 		// the mod named the move BEFORE its blow landed (the contract: a kill by it then reads as that move, since
 		// the kill is scored inside the blow): the blow's guess is that move
-		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(tool) && !RS_Tool.Guess(eTool[j])) { eCond[j] |= cond; eHits[j]++; TakeHeld(j, v, pn, tic); return; }
+		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(tool) && !RS_Tool.Guess(eTool[j])) { eCond[j] |= cond; Blow(j, tic, cond); eHits[j]++; TakeHeld(j, v, pn, tic); return; }
 		if (j >= 0 && eLast[j] == tic && RS_Tool.Guess(eTool[j]) && !RS_Tool.Guess(tool))
 		{
-			eTool[j] = tool; eCond[j] |= cond;
+			eTool[j] = tool; eCond[j] |= cond; Blow(j, tic, cond);
 			// the run before it was the same move (a pound's second blow): one run
 			int i = PrevOf(v, pn, j);
-			if (i >= 0 && eTool[i] == tool) { eLast[i] = max(eLast[i], tic); eCond[i] |= eCond[j]; eHits[i] += eHits[j]; if (eTags[j] != "") AddTags(i, eTags[j]); Drop(j); }
+			if (i >= 0 && eTool[i] == tool) { eLast[i] = max(eLast[i], tic); eCond[i] |= eCond[j]; Blow(i, eBlowTic[j], eBlowCond[j]); eHits[i] += eHits[j]; if (eTags[j] != "") AddTags(i, eTags[j]); Drop(j); }
 			return;
 		}
 		Append(v, pn, tool, tic, eV.Size(), cond);
@@ -289,7 +293,7 @@ class RS_ComboLedger : EventHandler
 		if (eV.Size() >= MAXE) { Drop(0); at = max(0, at - 1); }
 		at = clamp(at, 0, eV.Size());
 		eV.Insert(at, v); ePn.Insert(at, pn); eTool.Insert(at, tool); eFirst.Insert(at, tic); eLast.Insert(at, tic);
-		eCond.Insert(at, cond); eTags.Insert(at, ""); eHits.Insert(at, 1);
+		eCond.Insert(at, cond); eTags.Insert(at, ""); eHits.Insert(at, 1); eBlowCond.Insert(at, cond); eBlowTic.Insert(at, tic);
 	}
 
 	// THE FACTS THAT DEAL NO DAMAGE, asked of each mod by name (absent mods answer -1).
@@ -379,6 +383,14 @@ class RS_ComboLedger : EventHandler
 	int HitsAt(int k) { return (k >= 0 && k < eV.Size()) ? eHits[k] : 0; }
 	int SpanAt(int k) { return (k >= 0 && k < eV.Size()) ? eLast[k] - eFirst[k] : 0; }
 	int CondAt(int k) { return (k >= 0 && k < eV.Size()) ? eCond[k] : 0; }
+	// the conditions of run k's latest blow (its latest tic), not the whole run's
+	int BlowCondAt(int k) { return (k >= 0 && k < eBlowCond.Size()) ? eBlowCond[k] : 0; }
+	private void Blow(int j, int tic, int cond)
+	{
+		if (j < 0 || j >= eBlowCond.Size()) return;
+		if (eBlowTic[j] != tic) { eBlowTic[j] = tic; eBlowCond[j] = 0; }
+		eBlowCond[j] |= cond;
+	}
 
 	// for the debug line and the probe
 	String Describe(Actor v, int pn)
