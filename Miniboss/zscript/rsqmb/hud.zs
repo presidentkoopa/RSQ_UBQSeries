@@ -307,7 +307,25 @@ extend class RSQMB_Handler
 
 	static ui RSQMB_Handler HD() { return RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); }
 
-	// the Bossfight being fought now (landing or bound), for the stack
+	// whose stack is drawn once nothing is landing: the Bossfight's miniboss, else (owner 11-10: classic picks get the bars
+	// too) the nearest living classic-pick miniboss to this machine's player
+	static ui RSQMB_Boss StackBoss(RSQMB_Handler hd)
+	{
+		if (hd.bfBoss && !hd.bfBoss.done && hd.bfBoss.mb) return hd.bfBoss;
+		let pm = players[consoleplayer].mo;
+		RSQMB_Boss best = null;
+		double bd = 0;
+		for (int i = 0; i < hd.bosses.Size(); i++)
+		{
+			let o = hd.bosses[i];
+			if (!o || o.done || o.called || !o.mb || o.mb.health <= 0) continue;
+			double d = pm ? pm.Distance3D(o.mb) : 0;
+			if (!best || d < bd) { best = o; bd = d; }
+		}
+		return best;
+	}
+
+	// the Bossfight being fought now (landing or bound), or a classic pick's miniboss, for the stack
 	static ui bool StackShown()
 	{
 		if (!BfOn() || UCv("rsqmb_bf_hud", 1) == 0) return false;
@@ -318,7 +336,7 @@ extend class RSQMB_Handler
 			for (int i = 0; i < hd.arrState.Size(); i++) if (hd.arrState[i] == 2) return true;
 			return false;
 		}
-		return hd.bfBoss && !hd.bfBoss.done && hd.bfBoss.mb;
+		return StackBoss(hd) != null;
 	}
 
 	// what the stack holds now: segments shown (planned count), the window open, spare lives
@@ -326,10 +344,10 @@ extend class RSQMB_Handler
 	{
 		if (hd.arrPhase != 0)
 		{
-			int lv = (hd.arrState.Size() && hd.arrState[0] == 2) ? max(0, CI('rsqmb_lives', 3) - 1) : 0;
+			int lv = (hd.arrState.Size() && hd.arrState[0] == 2) ? max(0, clamp(CI('rsqmb_lives', 3), 1, 9) + hd.LifeBonusPreview() - 1) : 0;
 			return max(0, hd.arrState.Size() - 1), false, lv;
 		}
-		let b = hd.bfBoss;
+		let b = StackBoss(hd);
 		if (!b) return 0, false, 0;
 		int segs = (b.SegsLeft() > 0) ? b.total : 0;
 		return segs, b.winSeg >= 0, max(0, b.lives - 1);
@@ -399,7 +417,7 @@ extend class RSQMB_Handler
 		[kx, ky, ks] = SkullRect(x, mainY, h);
 		double gx = kx, gw = x + w - kx;     // the full rows: from the skull's left to the bar's right end
 		RSQMB_Boss b = null;
-		if (hd.arrPhase == 0) b = hd.bfBoss;
+		if (hd.arrPhase == 0) b = StackBoss(hd);
 		Color grey = Color(255, 125, 128, 135);
 
 		// ---- the thrall bar ----

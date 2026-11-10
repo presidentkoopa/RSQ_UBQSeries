@@ -237,7 +237,8 @@ level starts one miniboss (**Per Map**, up to 4, **Map Chance**) is picked from 
 monsters, favouring the toughest, with up to **Thralls** monsters within **Thrall Range** of it, none stronger:
 Champions first, then legendaries, then the nearest. With LegenDoom and **Legendary Thralls** on, its thralls are made
 legendary. A classic miniboss fights by the same rules (the shield, the windows, the lives, greed, the tethers, the
-words), but it does not arrive boosted, has no HUD bars, no room glow and no Bossfight payoff.
+words) and shows the same HUD bars (the nearest one, when there are several), but it does not arrive boosted, has no
+room glow and no Bossfight payoff.
 
 ---
 

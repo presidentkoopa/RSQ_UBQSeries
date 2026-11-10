@@ -61,14 +61,14 @@ class RSQMB_Handler : EventHandler
 		let c = CVar.GetCVar(n, players[consoleplayer]);
 		return c ? c.GetFloat() : d;
 	}
-	static bool Has(Actor a, String n)
+	static clearscope bool Has(Actor a, String n)
 	{
 		class<Inventory> c = n;
 		return a && c && a.FindInventory(c);
 	}
-	static class<Inventory> InvClass(String n) { class<Inventory> c = n; return c; }
+	static clearscope class<Inventory> InvClass(String n) { class<Inventory> c = n; return c; }
 	static void Give(Actor a, String n) { let c = InvClass(n); if (a && c) a.GiveInventory(c, 1); }
-	static bool Loaded(String cls) { return cls != "" && Object.FindClass(cls) != null; }
+	static clearscope bool Loaded(String cls) { return cls != "" && Object.FindClass(cls) != null; }
 
 	void Refresh()
 	{
@@ -336,6 +336,29 @@ class RSQMB_Handler : EventHandler
 		"DarkRed", "Red", "Orange", "Yellow", "DarkGreen", "Green", "Cyan", "Blue", "Indigo", "Violet",
 		"Pink", "Magenta", "Black", "Grey", "White", "Bronze", "Silver", "Gold",
 		"Titan", "Undying", "Ghost", "Balloon" };
+
+	// the lives Inherit() will add, worked out from the thralls that have landed (the same rule and caps, nothing given):
+	// the HUD shows the real count during a Bossfight's landing, so the bars don't jump at the bind (owner 11-10)
+	clearscope int LifeBonusPreview()
+	{
+		if (!CI('rsqmb_inherit', 1) || !Loaded("champion_Token")) return 0;
+		int cap = clamp(CI('rsqmb_inherit_max', 4), 0, 12);
+		Array<String> pw;
+		int lifeBonus = 0;
+		for (int i = 1; i < arrMon.Size() && pw.Size() < cap; i++)
+		{
+			let t = arrMon[i];
+			if (i >= arrState.Size() || arrState[i] != 2 || !t || t.health <= 0) continue;
+			for (int c = 0; c < COLOURS.Size() && pw.Size() < cap; c++)
+			{
+				String n = COLOURS[c];
+				if (!Has(t, "champion_" .. n .. "Token") || pw.Find(n) < pw.Size()) continue;
+				pw.Push(n);
+				if ((n == "DarkRed" || n == "Undying") && lifeBonus < 2) lifeBonus++;
+			}
+		}
+		return lifeBonus;
+	}
 
 	int Inherit(RSQMB_Boss b, bool anyLegend)
 	{
