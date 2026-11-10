@@ -14,10 +14,8 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 $root = $PSScriptRoot
 $out  = Join-Path $root 'RSQ_LaserSight.pk3'
 
-# docs/ and models/ stay out for now: docs is prose, and the FBX is a 24 MB
-# SOURCE asset that the engine cannot read and must never be packed.
-# tools/ stays out too: gen_sounds.py and gen_cone.py WRITE lumps, they are not lumps.
-# models/rsqdg is the generated cone and beam; models/hands (the FBX) stays out.
+# docs/ and tools/ stay out: docs is prose, and the generators in tools/ WRITE lumps, they are not lumps.
+# models/rsqls (the readout quad, the arc segment and their skins) is packed.
 $required = @('zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt')
 $optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'VOXELDEF.txt', 'SNDINFO.txt', 'MASSDEF.txt', 'ANIMDEFS.txt', 'VOXELDEF.halo')
 $dirs     = @('zscript', 'graphics', 'sprites', 'sounds', 'models/rsqls')
@@ -103,7 +101,7 @@ $ci = $z.Entries | Where-Object { $_.FullName -eq 'CVARINFO.txt' }
 $sr3 = New-Object System.IO.StreamReader($ci.Open()); $ct = $sr3.ReadToEnd(); $sr3.Close()
 $declaredCvars = @([regex]::Matches($ct, '(?im)^\s*(?:user|server)\s+\w+\s+([A-Za-z0-9_]+)') | ForEach-Object { $_.Groups[1].Value.ToLower() })
 # Matched at the CALL SITE, not as any rsqls_* string literal. The loose form
-# flagged the netevent names `rsqdg_press` and `rsqdg_release` as undeclared
+# flagged netevent names (DistanceGrab's `rsqdg_press`, where this check came from) as undeclared
 # cvars, which they are not -- and a check that cries wolf gets switched off.
 # A CVAR DECLARED TWICE IS FATAL AT LOAD ("cvar already exists"), and nothing
 # short of starting the engine says so. Caught here instead.

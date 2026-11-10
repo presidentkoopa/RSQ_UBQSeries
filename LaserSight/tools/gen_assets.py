@@ -6,9 +6,11 @@
   (the beam is not made here: it rides the gun as voxel rods, tools/gen_beams.py)
   models/rsqls/rslsread.md3  the range readout's quad
   models/rsqls/rslsseg.md3   one segment of the beam bent along a grenade arc (and its skin rslsseg.png)
-  models/rsqls/rslshalo.png  Beam Type: Glow, the halo skin an arc segment's halo wears (same mesh)
+  models/rsqls/rslshalo.png  Laser: PC VR, the halo skin an arc segment's halo wears (same mesh)
   sprites/rsqls/RSLGA0.png                  the pointer glow (a wide soft bloom)
   sprites/rsqls/RSLSA0.png   the spot: hot white centre, soft falloff, faint ring
+  sprites/rsqls/RSLRA0.png   the spread ring round the dot
+  sprites/rsqls/RSLQA0.png, RSLVA0.png  1 px blank sprites the range readout and the arc segments' models ride
   MODELDEF.txt               generated
 
 Everything is WHITE: colour is the actor's translation at runtime, and additive
@@ -107,7 +109,7 @@ def main():
         c = int(255 * max(0.0, math.exp(-(r / 0.45) ** 2)))
         return (c, c, c, c)
     png(os.path.join(md, 'rslsseg.png'), 16, 4, seg_px)
-    # Beam Type: Glow (owner 2026-11-06) on the arc: the halo around the segment, worn by a second, wider segment on the
+    # Laser: PC VR (owner 2026-11-06) on the arc: the halo around the segment, worn by a second, wider segment on the
     # same mesh. Its cross-section is the straight beam's halo rod (tools/gen_halo.py): hollow where the core lies, then
     # rings 1..3 at 0.4 map units each, brightness 1.0 / 0.55 / 0.28 of the beam's. 28 px = 2.8 map units across at
     # Scale.X 2.8 (sight.zs HALO_W), so a pixel is 0.1 map unit.
@@ -126,7 +128,7 @@ def main():
             'Model RSQLS_ArcSeg', '{', '\tPath "models/rsqls"', '\tModel 0 "rslsseg.md3"',
             '\tSkin 0 "rslsseg.png"', '\tScale 1.0 1.0 1.0', '\tUSEACTORPITCH',
             '\tFrameIndex RSLV A 0 0', '}', '']
-    out += ['// Beam Type: Glow -- the halo around an arc segment (sight.zs LayArcBeam): the same mesh, the halo skin.',
+    out += ['// Laser: PC VR -- the halo around an arc segment (sight.zs LayArcBeam): the same mesh, the halo skin.',
             'Model RSQLS_ArcHalo', '{', '\tPath "models/rsqls"', '\tModel 0 "rslsseg.md3"',
             '\tSkin 0 "rslshalo.png"', '\tScale 1.0 1.0 1.0', '\tUSEACTORPITCH',
             '\tFrameIndex RSLV A 0 0', '}', '']

@@ -1,5 +1,5 @@
-// RSQ_LaserSight -- every option is a SERVER cvar: userinfo carries each user cvar with a
-// 256-byte limit per cvar, and this is a single-player VR mod. MENUDEF.txt lays them out.
+// RSQ_LaserSight -- the options are SERVER cvars (userinfo carries each user cvar with a 256-byte limit, and this is a
+// single-player VR mod), except the few marked user below. MENUDEF.txt lays them out.
 
 // ---- laser pointer ------------------------------------------------------------
 server bool  rsqls_on           = true;   // the whole mod

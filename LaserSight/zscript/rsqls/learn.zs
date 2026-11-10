@@ -46,7 +46,6 @@ class RSQLS_Learn : StaticEventHandler
 	private transient Actor cM[2];
 	private transient Weapon cW[2];
 	private transient Vector3 cV[2];
-	private Array<int>   pendAlt;
 
 	clearscope int Find(String k) const
 	{
@@ -64,7 +63,6 @@ class RSQLS_Learn : StaticEventHandler
 		return keys.Size() - 1;
 	}
 
-	static String WName(Weapon w) { return w ? w.GetClassName() .. "" : "none"; }
 	private static String KeyOf(Weapon w, bool alt) { String k = w.GetClassName(); return alt ? k .. "#alt" : k; }
 
 	private static bool AltHeld(PlayerInfo p, bool off)

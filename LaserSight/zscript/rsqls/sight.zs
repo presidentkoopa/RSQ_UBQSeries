@@ -62,7 +62,7 @@ class RSQLS_ArcSeg : Actor
 	}
 	States { Spawn: RSLV A -1 Bright; Stop; }
 }
-// Beam Type: Glow (owner 2026-11-06) on the arc: the halo around a segment, a wider segment on the same mesh wearing the
+// Laser: PC VR (owner 2026-11-06) on the arc: the halo around a segment, a wider segment on the same mesh wearing the
 // halo skin (MODELDEF RSQLS_ArcHalo, tools/gen_assets.py): the straight beam's halo rod in cross-section.
 class RSQLS_ArcHalo : RSQLS_ArcSeg {}
 class RSQLS_Ring : RSQLS_Spot
@@ -112,7 +112,8 @@ class RSQLS_Sight : EventHandler
 	transient int liveMask;
 	transient int beamMask;   // the same, beam only
 	// The line each hand's beam was drawn on this tic (its muzzle and barrel, from the held model), for RSQ Wheel's
-	// card pick (owner 11-05: "use the gun's laser sight to select from the wheel"). Valid while beamMask has the hand.
+	// card pick (owner 11-05: "use the gun's laser sight to select from the wheel"; RSQ Wheel does not read it yet).
+	// Valid while beamMask has the hand.
 	transient Vector3 lineAt[2], lineDir[2];
 	static bool, Vector3, Vector3 BeamLine(int h)
 	{
@@ -181,7 +182,7 @@ class RSQLS_Sight : EventHandler
 	const SEG_N = 64;          // the most segments of the beam bent along an arc, per hand
 	const SEG_LEN = 8.0;       // map units a segment covers at most (shorter arcs: fewer segments)
 	private Actor arcSeg[128]; // SEG_N per hand
-	private Actor arcHalo[128];// SEG_N per hand: Beam Type Glow's halo around each segment
+	private Actor arcHalo[128];// SEG_N per hand: Laser: PC VR's halo around each segment
 	const HALO_W = 2.8;        // the arc halo's width, map units (the halo skin is 28 px at 0.1 unit; gen_assets.py)
 	private bool  segShown[2];
 	private Actor ring[2];
@@ -484,7 +485,7 @@ class RSQLS_Sight : EventHandler
 		let bt = RSQLS_Beams.Get();
 		int ci = bt ? bt.Find(w) : -1;
 		let gp = p.FindPSprite(h == 0 ? PSprite.WEAPON : PSprite.OFFHANDWEAPON);
-		// The pose the gun is drawn in right now (-1: none measured -- no beam), and the
+		// The pose the gun is drawn in right now (-1: none measured -- kept below), and the
 		// placement the dot is traced from: that pose's, or the class's first while none shows.
 		int row = (ci >= 0) ? bt.PoseRow(ci, gp) : -1;
 		// THE BEAM STAYS ON BETWEEN SHOTS (owner 2026-11-09: "PCVR laser sight disappears between shots. not good."). A
@@ -646,8 +647,8 @@ class RSQLS_Sight : EventHandler
 		TranslationID dotTint  = RSQLS_Colors.Tint(dotRgb);
 		rangeRgb[h] = dotRgb;
 		if (arcOn) LayArc(h, dotTint, p); else HideArc(h);
-		// the bent beam: a measured gun only in its ready pose (as the straight beam), any other gun whenever its arc is
-		// known (it has no pose to check); its colour and brightness are the beam's
+		// the bent beam: a measured gun in a measured (or kept) pose, as the straight beam; any other gun whenever its arc
+		// is known (it has no pose to check); its colour and brightness are the beam's
 		if (arcBeam && (row >= 0 || ci < 0))
 		{
 			Sector bs = Level.PointInSector(muzzle.xy);
@@ -676,7 +677,7 @@ class RSQLS_Sight : EventHandler
 				double litFade = RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35);
 				double a = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - litFade) * lit);
 				if (hostile && Lock(p)) a *= 1.35;
-				// BEAM TYPE (owner 2026-11-06): Standard is the plain beam (no halo layer), Glow the whiter core inside its
+				// LASER: QUEST / PC VR (owner 2026-11-06; once "Beam Type"): Quest is the plain beam (no halo layer), PC VR the whiter core inside its
 				// halo (beam.zs ShowGlow). One server setting, so both hands always match.
 				if (RSQLS_Hand.Opt("rsqls_beam_type", p, 0) == 1) bt.ShowGlow(p, h, w, row, gp, k, beamRgb, a, fadeCm);
 				else { bt.Show(p, h, w, row, gp, k, bt.Tint(beamRgb, a, fadeCm)); RSQLS_Beams.HideHalo(p, h); }
@@ -889,8 +890,8 @@ class RSQLS_Sight : EventHandler
 	// CONTINUOUS (owner 2026-11-06: it drew as a dashed line): every segment reaches half a segment past both of its ends,
 	// so each point of the path is covered by exactly two segments (one at the very start and end), at half the
 	// brightness each: one even line with no gaps between segments.
-	// BEAM TYPE (owner 2026-11-06), the same look as the straight beam: Standard is the plain segment in the beam colour.
-	// Glow is the core (the colour pushed RSQLS_Beams.GLOW_WHITE toward white, brightness x GLOW_CORE) inside a halo
+	// LASER: QUEST / PC VR, the same look as the straight beam: Quest is the plain segment in the beam colour.
+	// PC VR is the core (the colour pushed RSQLS_Beams.GLOW_WHITE toward white, brightness x GLOW_CORE) inside a halo
 	// segment (RSQLS_ArcHalo, beam colour, brightness x GLOW_HALO, the halo rod's rings).
 	private void LayArcBeam(int h, int rgb, double alpha, PlayerInfo p)
 	{
@@ -1102,7 +1103,7 @@ class RSQLS_Sight : EventHandler
 //   GetInt("laser.beam", "", hand)    -> the same for the beam alone
 //   GetDouble("laser.line", "x"|"y"|"z"|"dx"|"dy"|"dz", hand) -> the line that hand's beam was drawn on last tic
 //                                        (muzzle in map units, unit barrel direction); 0 when no beam drew there.
-//                                        RSQ Wheel picks its cards along it (one beam per hand, owner 11-05).
+//                                        Meant for RSQ Wheel's card pick (owner 11-05); Wheel does not read it yet.
 // RSQ_DistanceGrab asks this so its grab beam stands down on a hand the laser
 // already lights.
 class RSQLS_SightService : Service

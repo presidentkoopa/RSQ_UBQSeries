@@ -15,7 +15,11 @@ HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 TAIL = r"""	// Brutal Doom's own: is its muzzle handler running (BD22 VR Reloaded 2.0 and later)?
 	static bool Active()
 	{
-		return EventHandler.Find("RSQ_Muzzle") != null;
+		// BY NAME AT RUN TIME: a class name in quotes is resolved when the pk3 compiles, and without Brutal Doom VR 2.0
+		// loaded that was a script error ("Unknown class name 'RSQ_Muzzle'", plain Doom 2, rig 2026-11-01).
+		Name rn = 'RSQ_Muzzle';
+		class<StaticEventHandler> k = rn;
+		return k && EventHandler.Find(k) != null;
 	}
 
 	// A direction in the hand's own frame (yaw 0 pitch 0 forward, yaw 90 left, pitch 90 up), as Brutal Doom's

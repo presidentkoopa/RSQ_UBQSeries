@@ -23,7 +23,7 @@ Model RSQLS_ArcSeg
 	FrameIndex RSLV A 0 0
 }
 
-// Beam Type: Glow -- the halo around an arc segment (sight.zs LayArcBeam): the same mesh, the halo skin.
+// Laser: PC VR -- the halo around an arc segment (sight.zs LayArcBeam): the same mesh, the halo skin.
 Model RSQLS_ArcHalo
 {
 	Path "models/rsqls"

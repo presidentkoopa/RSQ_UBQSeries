@@ -35,7 +35,6 @@ class RSQLS_Hand
 	// the muzzle offset and the no-hit end went the wrong way vertically.
 	static double Pitch(PlayerPawn pmo, int h) { return (h == 0) ? pmo.AttackPitch : pmo.OffhandPitch; }
 	// Doom's sense (positive DOWN), for LineTrace and friends.
-	static double DoomPitch(PlayerPawn pmo, int h) { return -Pitch(pmo, h); }
 	static double Roll(PlayerPawn pmo, int h)  { return (h == 0) ? pmo.AttackRoll : pmo.OffhandRoll; }
 	static Vector3 Grip(PlayerPawn pmo, int h) { return (h == 0) ? pmo.AttackPos : pmo.OffhandPos; }
 
@@ -74,14 +73,6 @@ class RSQLS_Hand
 		double r = Roll(pmo, h);
 		Vector3 m = Fwd(y, pt) * fwdMetres + Up(y, pt, r) * upMetres + Side(y, pt, r) * sideMetres;
 		return (m.x * Upm(), m.y * Upm(), m.z * Upm() / Ps());
-	}
-
-	// Room-space yaw, pitch (Doom convention: positive DOWN) and length of a
-	// map-space vector -- what a CORRECTPIXELSTRETCH model is aimed and sized by.
-	static double, double, double RoomAim(Vector3 d)
-	{
-		Vector3 r = (d.x, d.y, d.z * Ps());
-		return VectorAngle(r.x, r.y), -atan2(r.z, r.xy.Length()), r.Length();
 	}
 
 	// ---- THE HAND'S OWN FRAME, as the renderer builds it ---------------------------

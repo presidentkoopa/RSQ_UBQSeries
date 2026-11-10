@@ -39,7 +39,7 @@ class RSQLS_Beams : StaticEventHandler
 	const LAYER_MAIN = 2140;
 	const LAYER_OFF = 1000140;
 	const TINTS = 32;
-	// Beam Type: Glow (owner 2026-11-06): the halo rod is drawn on its own layer just after the core.
+	// Laser: PC VR (owner 2026-11-06): the halo rod is drawn on its own layer just after the core.
 	const HALO_MAIN = 2141;
 	const HALO_OFF = 1000141;
 	// The Glow look (the numbers of the 2026-11-06 glow test frames): core colour 60% toward
@@ -53,14 +53,14 @@ class RSQLS_Beams : StaticEventHandler
 	private Array<int> cplace, cmirror, cfirst, ccount;
 	private Array<int> rkeys;        // sprite index * 64 + frame, ready-pose frames, per class
 	private Array<int> sprIdx;       // the rods' sprite indices
-	private Array<int> haloIdx;      // the halo rods' sprite indices (Beam Type: Glow)
+	private Array<int> haloIdx;      // the halo rods' sprite indices (Laser: PC VR)
 	private State beamState;
 
 	// Translation cache: (colour, fade cm, brightness step) -> id
 	private int tKey[TINTS], tFade[TINTS];
 	private TranslationID tId[TINTS];
 	private int tN, tNext;
-	// Beam Type: Glow: the same bounded cache for the core and halo translations
+	// Laser: PC VR: the same bounded cache for the core and halo translations
 	private int cKey[TINTS], cFade[TINTS];
 	private TranslationID cId[TINTS];
 	private int cN, cNext;
@@ -112,12 +112,11 @@ class RSQLS_Beams : StaticEventHandler
 	}
 
 	int Place(int ci) { return cplace[ci]; }
-	bool IsMirrored(int ci) { return cmirror[ci] != 0; }
 
 	// Which measured pose is the gun layer drawing the gun in? A class that rests in more than
 	// one pose (BD's pistol with and without a round chambered, its SSG on SHTN or SHT2) has a
-	// row per pose, adjacent, starting at Find's row. -1: none -- a reload, a kick in the mesh:
-	// the mesh has moved off every measured muzzle, so no beam.
+	// row per pose, adjacent, starting at Find's row. -1: none measured for this frame (sight.zs
+	// then keeps the gun's last measured pose: the beam stays on, owner 11-09).
 	int PoseRow(int ci, PSprite gp)
 	{
 		if (!gp || ci < 0) return -1;
@@ -225,14 +224,14 @@ class RSQLS_Beams : StaticEventHandler
 		HideHalo(p, h);
 	}
 
-	// Beam Type: Standard draws no halo layer: one left over from Glow goes.
+	// Laser: Quest draws no halo layer: one left over from PC VR goes.
 	static void HideHalo(PlayerInfo p, int h)
 	{
 		int id = (h == 0) ? HALO_MAIN : HALO_OFF;
 		if (p.FindPSprite(id)) p.SetPsprite(id, null);
 	}
 
-	// ---- Beam Type: Glow, core + halo -------------------------------------------------------------
+	// ---- Laser: PC VR, core + halo -------------------------------------------------------------
 	// The core: today's rod, its colour pushed GLOW_WHITE toward white, brightness a x GLOW_CORE,
 	// fading (quadratic: holds bright longer, then goes) over the fade length. The halo: the
 	// hollow 8-arm rod around it (tools: gen_halo.py), beam colour, brightness a x GLOW_HALO x
