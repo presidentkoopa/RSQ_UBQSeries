@@ -61,7 +61,7 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 
 ![The meter's art: the crowned skull dim and lit, the shield icon, the empty bar and its fill (enlarged 8x)](docs/readme/hud_art.png)
 
-*The mod's own HUD art from graphics/, enlarged. The shield icon is placeholder art.*
+*The mod's own HUD art from graphics/, enlarged (an earlier set: the shield icon has since gone from the HUD).*
 
 *[Still to come: the meter filling red under the score, then gold and beating, with a wait line under it]*
 
@@ -129,13 +129,13 @@ keener to shoot. It becomes legendary when any of its thralls is.
 
 ## The fight
 
-![Shield up: grey segments under the shield icon, "GUARD!" over the miniboss, "TARGET!" over each thrall, grey Xs (design mockup)](docs/readme/mock_shield_up.jpg)
+![Shield up (mockup from before the shield icon went): grey segments, "GUARD!" over the miniboss, "TARGET!" over each thrall, grey Xs (design mockup)](docs/readme/mock_shield_up.jpg)
 
 **The thrall bar.** Above the miniboss's own bar sits one segment for every thrall it came with. Together they hold as
 much health as the miniboss itself, so you have to wear down the thrall bar before you ever touch its own.
 
 **Shield up.** While a thrall lives, a segment is left and no window is open, the miniboss takes no damage at all. The
-thrall bar is grey under a big shield icon, "GUARD!" pops over the miniboss when you hit it, and grey Xs (Doom's own
+thrall bar is grey, "GUARD!" pops over the miniboss when you hit it (and while it is invulnerable after losing a life), and grey Xs (Doom's own
 small X) bounce off where the shot landed. The room's light holds a steady cold grey.
 
 ![A thrall killed: the window bar under the segments, a big "TARGET!" over the miniboss (design mockup)](docs/readme/mock_window.jpg)
@@ -161,6 +161,8 @@ Monsters can tier climbs with them. Then the shield is back up. (Without RSQ Mon
 
 **One-on-one.** Once every segment is broken (or no thrall is left standing) the hits go where they land: into any
 segment that is left, then into its own bar, in its colour. "TARGET!" hangs over it, and the room glows its colour.
+After it loses a life it cannot be hurt for a few seconds: "TARGET!" goes, and "GUARD!" pops when you hit it, until it
+can be shot again.
 
 ![A life lost: the bar refilled, one life bar fewer, a colour higher (design mockup)](docs/readme/mock_life_lost.jpg)
 

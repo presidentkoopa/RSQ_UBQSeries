@@ -44,7 +44,7 @@ WHAT THIS PK3 SHIPS, AND WHOSE IT IS
   The HUD (graphics/)
       RSQMBHE / RSQMBHW: coldcite's Top HP Bars bar (via VisualRewards/tools/gen_gauges.py; the same art as RSQ SlowMo's
       RSQSMHE / RSQSMHW). RSQMBSK0 / RSQMBSK1: the crowned skull, original pixel art for this pack. RSQMBWH (a white box)
-      made by tools/gen_hudart.py for this pack. RSQMBSH (the shield), RSQMBG01-13 (the tier gems) and RSQMBC00-21 (the
+      made by tools/gen_hudart.py for this pack. RSQMBG01-13 (the tier gems) and RSQMBC00-21 (the
       Champion power icons): the series' own style B icon set (design/icons, 2026-11-10), original art for the series.
 
 NOT SHIPPED, ONLY RECOGNISED BY NAME (nothing links)

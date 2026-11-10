@@ -279,8 +279,8 @@ extend class RSQMB_Handler
 	// THE FIGHT'S HUD STACK (owner + Claude 2026-11-09, design/MINIBOSS_REWORK.md "HUD bar stack", "The arrival, the HUD and
 	// the beams"; mockups design/mockups/miniboss/p1..p7). It REPLACES the hidden meter while a Bossfight runs, in the meter's
 	// place (centred under RSQ Score's bar, its width: MeterRect), top to bottom:
-	//   THE THRALL BAR  one segment a thrall it came with, each a share of the miniboss's health (fight.zs): grey under a
-	//                   large shield icon while it is immune, its colour when open (a window, or no thrall standing), empty
+	//   THE THRALL BAR  one segment a thrall it came with, each a share of the miniboss's health (fight.zs): grey while it is
+	//                   immune, its colour when open (a window, or no thrall standing), empty
 	//                   once broken. Gone one-on-one. During the landing each thrall's segment slots in, in its colour.
 	//   THE WINDOW BAR  while a window is open: RSQ SlowMo DOWN's reward bar redrawn for the HUD (downhud.zs's look: steps
 	//                   thin to tall, a #0b0b0d border round a #202024 track, a moving gold fill), one step a thrall, 1 s
@@ -289,11 +289,10 @@ extend class RSQMB_Handler
 	//                   most it has had. A life lost: the bar refills from empty, white into its colour.
 	//   ITS LIVES       thin bars under it, one a life to spare (they replace the life orbs).
 	// Every bar is coldcite's (RSQMBHE / RSQMBHW, the same art as RSQ SlowMo's RSQSMHE / RSQSMHW: VisualRewards/tools/
-	// gen_gauges.py); the boxes and the shield icon are this mod's (graphics/RSQMBWH, RSQMBSH: tools/gen_hudart.py; the
-	// shield is the mockup's PLACEHOLDER art, the series has none yet). The words over the monsters are RSQ VisualRewards'
+	// gen_gauges.py); the boxes are this mod's (graphics/RSQMBWH: tools/gen_hudart.py). The words over the monsters are RSQ VisualRewards'
 	// (fight.zs), not drawn here.
 	// VR: quads cropped from the source and boxes only (no clip rectangle, no Screen.Dim). PHOTOSENSITIVE MODE: no shimmer on
-	// the window's fill, the shield icon held still. RSQ SlowMo's countdown and RSQ Score's combo rows go under the stack
+	// the window's fill. RSQ SlowMo's countdown and RSQ Score's combo rows go under the stack
 	// ("meter.bottom"); the countdown lines up with its bar ("meter.x" / "meter.w" / "meter.h").
 	// Rig 11-09 (TestRig/bossfight_rig), not headset-confirmed.
 	// ============================================================================
@@ -439,17 +438,8 @@ extend class RSQMB_Handler
 				double f = (i < b.segHP.Size() && b.segMax > 0) ? b.segHP[i] / b.segMax : 0;
 				Bar(te, tw, sx, thrY, sw, th, f, b.ShieldUp() ? grey : b.col);
 			}
-			// the shield icon over it while it is immune (the series' style B shield, design/icons, 11-10)
-			TextureID sh = TexMan.CheckForTexture("RSQMBSH", TexMan.Type_Any);
-			if (b && b.ShieldUp() && sh.IsValid())
-			{
-				double s = th * 2.4;
-				double cx = gx + gw * 0.5, cy = thrY + th * 0.5;
-				Screen.DrawTexture(sh, false, cx - s * 0.5, cy - s * 0.5, DTA_DestWidthF, s, DTA_DestHeightF, s, DTA_Alpha, 0.95);
-				if (!photo)
-					Screen.DrawTexture(sh, false, cx - s * 0.5, cy - s * 0.5, DTA_DestWidthF, s, DTA_DestHeightF, s, DTA_Alpha,
-						0.12 + 0.12 * sin(t * 6.0), DTA_LegacyRenderStyle, STYLE_Add);
-			}
+			// (the shield icon over it went 11-10, owner: "the shield is over the thrall bar"; "GUARD!" on a blow it shrugs off,
+			// shield or a life just lost, and "TARGET!" over it only while it can be shot, tell it instead: fight.zs)
 		}
 
 		// ---- the window bar: DOWN's reward bar, one step a thrall, the tall end draining first ----

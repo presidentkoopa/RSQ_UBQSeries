@@ -37,7 +37,9 @@ class RSQMB_Ward : RSQMB_Token
 			Actor who = source;
 			if (who && !who.player && who.FriendPlayer > 0) who = players[who.FriendPlayer - 1].mo;
 			let h = RSQMB_Handler.Get();
-			if (boss.Invulnerable()) { newdamage = 0; return; }
+			// INVULNERABLE (a life just lost): no damage, and "GUARD!" says so (owner 11-10: the shield icon goes from the HUD, so
+			// a blow that does nothing must be told on the miniboss itself, as the shield's are)
+			if (boss.Invulnerable()) { newdamage = 0; if (h) h.GuardHit(boss, inflictor, source); return; }
 			if (boss.ShieldUp())
 			{
 				// Struck by a player while thralls live: the greedy play this set piece is built around.

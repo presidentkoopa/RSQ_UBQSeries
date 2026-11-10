@@ -373,17 +373,19 @@ extend class RSQMB_Handler
 	//   0 shield up: "TARGET!" over each living thrall (size 1), none over the miniboss
 	//   1 window: a big pulsing "TARGET!" over the miniboss (size 2), the thralls' shrunk (0.6)
 	//   2 one-on-one (no segment left, or no thrall standing): "TARGET!" over the miniboss (size 2), none over thralls
+	//   3 invulnerable (a life just lost): no "TARGET!" over the miniboss until it can be shot again (owner 11-10: TARGET!
+	//     appears over it WHEN IT CAN BE SHOT), none over thralls
 	void WordsStep(RSQMB_Boss b)
 	{
-		int st = b.FightState();
+		int st = b.Invulnerable() ? 3 : b.FightState();
 		if (st == b.wordState) return;
 		b.wordState = st;
-		if (st == 0) WordClear("TARGET!", b.mb); else WordHold("TARGET!", RGB_TARGET, 2.0, b.mb);
+		if (st == 0 || st == 3) WordClear("TARGET!", b.mb); else WordHold("TARGET!", RGB_TARGET, 2.0, b.mb);
 		for (int i = 0; i < b.thr.Size(); i++)
 		{
 			let t = b.thr[i];
 			if (!t) continue;
-			if (b.thrState[i] != RSQMB_Boss.ST_ALIVE || st == 2) WordClear("TARGET!", t);
+			if (b.thrState[i] != RSQMB_Boss.ST_ALIVE || st >= 2) WordClear("TARGET!", t);
 			else WordHold("TARGET!", RGB_TARGET, st == 1 ? 0.6 : 1.0, t);
 		}
 	}
