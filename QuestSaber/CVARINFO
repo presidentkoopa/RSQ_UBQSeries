@@ -79,9 +79,9 @@ user  int    ubqs_deflect_aim   = 1;      // where a turned shot goes: 1 where y
 server float ubqs_deflect_lead  = 3.0;    // tics of a shot's own path the blade is tested against. 3
                                           // turns shots two tics early, including ones that would have
                                           // missed; only the headset can say whether that reads psychic
-user  float  ubqs_throw_min     = 1.5;    // how hard a throw must be. Body-dependent, like swing_cut,
-                                          // but a throw that does not go is visible and a cut that does
-                                          // not land is not -- so this one stays off the page
+user  float  ubqs_throw_ms      = 2.5;    // ONE THROW (owner 11-10): m/s the hand must reach to throw, the series'
+                                          // one threshold (RSQ Grenade's rsqgn_swing, ShieldSaw's ssq_throw_ms, BD22
+                                          // VR's axe). Replaces ubqs_throw_min (1.5 map units a tic, ~1.5 m/s)
 server int   ubqs_force         = 1;      // the Force at all: push, pull, choke, jump
 server int   ubqs_force_jump    = 1;      // it changes how you move, so it is worth being able to stop
 server bool  ubqs_force_saber   = true;   // (owner, 11-03 17:44) "Force Only With the Saber": the bare Force hand is in the off

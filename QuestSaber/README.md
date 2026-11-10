@@ -346,7 +346,7 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
 | Fighting | Damage (30; 15 to 60) · Swing to Cut (8.0; 3 to 20) · Turned Shots Go (Where I Look; At the Shooter, Mirrored) · Hit-Stop (Off; Light, Medium, Heavy) · Perfect Parry Slow-Mo (Off) · Lock-On Targets (5; 1 to 5) · Rumble (On) |
 | The Force | The Force (On) · Force Push on Alt (On) · Force Jump (On) · Force Only With Saber (On) · Force Hand (Our Hand; Original) · Lightning Beam (Gun Bonsai VR) (On) |
 | Controls | Second Blade · Blade On / Off · Training Remote (all unbound) |
-| Test and Debug | Block Width (1.5) · Shot Lookahead (3 tics) · Throw Needs (1.5) · Swing Hum Boost (1.1) · Gesture Sharpness (2.0) · Gesture Straightness (0.55) · Remote Start Level (2) · Rumble Hand (Auto; Right, Left) · Debug View (Off; Blade Line, Glow Readout) |
+| Test and Debug | Block Width (1.5) · Shot Lookahead (3 tics) · Throw Speed (m/s) (2.5) · Swing Hum Boost (1.1) · Gesture Sharpness (2.0) · Gesture Straightness (0.55) · Remote Start Level (2) · Rumble Hand (Auto; Right, Left) · Debug View (Off; Blade Line, Glow Readout) |
 
 - **The host's:** Sabers, Start With Saber, Dual Sabers, Second Saber Starts, Sword Becomes Saber, Damage, Swing to
   Cut, Hit-Stop, Perfect Parry Slow-Mo, The Force, Force Jump, Force Only With Saber, Lightning Beam, Block Width, Shot

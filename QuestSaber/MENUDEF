@@ -174,7 +174,7 @@ OptionMenu "UBQS_Test"
 	StaticText "Blade", "Gold"
 	Slider "Block Width", "ubqs_blade_width", 0.5, 6, 0.5, 1
 	Slider "Shot Lookahead (tics)", "ubqs_deflect_lead", 1, 6, 0.5, 1
-	Slider "Throw Needs (speed)", "ubqs_throw_min", 0.5, 4, 0.1, 1
+	Slider "Throw Speed (m/s)", "ubqs_throw_ms", 1.0, 6.0, 0.25, 2
 	Slider "Swing Hum Boost", "ubqs_hum_swing", 0, 3, 0.1, 1
 	StaticText " "
 	StaticText "Force Gestures", "Gold"

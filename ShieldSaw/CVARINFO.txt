@@ -20,7 +20,9 @@ server float ssq_throw_blend    = 0.7;    // 1 = throw along the arm's own direc
 // ssq_throw_min goes UP, not down: 20 was only ever met by the player's own travel, and on the
 // arm alone a casual wave clears it. A throw should be a throw.
 // Everything here is still a feel number -- the sliders are on the menu and these are a start.
-server float ssq_throw_min      = 60.0;   // units/sec of ARM speed below which a release stows instead of throwing
+// ONE THROW (owner 11-10): ssq_throw_ms replaces ssq_throw_min (60 units/sec, ~1.8 m/s): the series' one threshold, in m/s,
+// the same as RSQ Grenade's rsqgn_swing, RSQ Saber's ubqs_throw_ms and BD22 VR's axe.
+server float ssq_throw_ms       = 2.5;    // m/s of ARM speed below which a release stows instead of throwing
 server float ssq_throw_forward  = 0.35;   // how closely the throw must go where you look (cosine; 0 = any direction)
 server float ssq_speed_floor    = 12.0;   // units/tic: the slowest a throw can leave at
 server float ssq_mass_kg        = 5.0;    // the disc keeps arm/(arm+this) of the hand speed

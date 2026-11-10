@@ -115,15 +115,21 @@ class SSQ_Pose play
 	// slower straight up than straight out, and an overhand throw left the hand soft. ps puts
 	// that back into the MAGNITUDE only: the direction is already correct in Doom space, so
 	// the returned vector keeps its heading and carries the true speed in its length.
+	//
+	// ONE THROW (owner 11-10: "one throw for everything"): the series' one sampler, the same as RSQ Grenade's (hand.zs
+	// Sample / Peak), RSQ Saber's (ThrowPeak) and BD22 VR's axe: the last 7 samples (5 windows; it was 8), and over a
+	// metre in two tics is a pose jump, not an arm.
 	Vector3 ThrowVel(double ps)
 	{
 		Vector3 best = (0, 0, 0);
 		double bl = 0;
-		for (int k = 0; k < 6; k++)
+		double vu = SSQ_Hand.VU();
+		for (int k = 0; k < 5; k++)
 		{
 			Vector3 v = VelAt(k);
 			double zt = v.z * ps;
 			double l = sqrt(v.x * v.x + v.y * v.y + zt * zt);
+			if (vu > 0 && l / vu >= 0.5) continue;
 			if (l > bl) { bl = l; best = v; }
 		}
 		double dl = best.Length();

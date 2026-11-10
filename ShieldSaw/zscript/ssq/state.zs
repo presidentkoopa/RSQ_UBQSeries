@@ -890,6 +890,7 @@ class SSQ_Handler : EventHandler
 		let pose = mPose[i];
 		Vector3 hv = pose.Fresh(Level.maptime) ? pose.ThrowVel(SSQ_Hand.PS(mo)) : (0, 0, 0);
 		double speed = hv.Length() * TICRATE;
+		double ms = speed / max(SSQ_Hand.VU(), 1.0);   // ONE THROW: real m/s, against ssq_throw_ms like the series' others
 		// A THROW IS A FORWARD SNAP, NOT ANY FAST HAND. Letting go at the end of a block, a
 		// backhand or a chop used to launch the shield because only raw speed was tested. The
 		// hand has to be going out the way you are looking -- ssq_throw_forward is the cosine
@@ -901,8 +902,8 @@ class SSQ_Handler : EventHandler
 			Vector3 look = (cos(mo.angle) * cos(mo.pitch), sin(mo.angle) * cos(mo.pitch), -sin(mo.pitch));
 			forward = (hv.Unit() dot look) >= fwdmin;
 		}
-		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.0f/s, %d locked, forward %d", i, speed, mLocks[i].Size(), forward);
-		if (speed >= SSQ_A11y.Low(SV('ssq_throw_min', 60.0)) && forward) Throw(i);
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: release p%d speed %.2f m/s, %d locked, forward %d", i, ms, mLocks[i].Size(), forward);
+		if (ms >= SSQ_A11y.Low(SV('ssq_throw_ms', 2.5)) && forward) Throw(i);
 		else mKeepMarks[i] = max(mKeepMarks[i], Level.maptime + SVI('ssq_keep_marks', 175));	// not a throw: hold the marks
 	}
 

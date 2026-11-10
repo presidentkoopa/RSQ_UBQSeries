@@ -756,7 +756,7 @@ class UBQS_SaberBase : Weapon abstract
 		int bit = invoker.bOffhandWeapon ? BT_OFFHANDATTACK : BT_ATTACK;
 		bool held = player && (player.cmd.buttons & bit);
 		invoker.altHold++;
-		double thr = invoker.UF("ubqs_throw_min", 1.5);
+		double thr = invoker.UF("ubqs_throw_ms", 2.5);
 		// HOLDING FIRE NEVER THROWS (the owner, 10-01): mark, swing, walk, turn -- the saber stays in your hand.
 		// THE THROW IS LETTING GO: release fire while the hand snaps FORWARD, out where you are looking. A slash,
 		// a chop or a backhand released mid-swing is not a throw. A slow release keeps the marks for a second.
@@ -927,11 +927,59 @@ class UBQS_SaberBase : Weapon abstract
 	double HR() { return bOffhandWeapon ? owner.OffhandRoll : owner.AttackRoll; }
 	int keepMarksUntil;
 	// a forward throw: fast enough, and moving out the way you face (not across you, down, or back)
+	// ---- ONE THROW (owner 11-10: "one throw for everything", "hold trigger, swing, let go") ------------------------------
+	// The series' one throw sampler, copied (not linked) the same into RSQ Grenade (hand.zs Sample / Peak), RSQ ShieldSaw
+	// (pose.zs ThrowVel) and BD22 VR's axe (rsvr/melee.zs): each tic the hand relative to the pawn, turned by the pawn's
+	// yaw; the throw is the fastest 2-tic window over the last 7 tics, in real m/s (the vertical squash, pixelstretch,
+	// taken out); a collapsed pose (a menu or a save writes both hands to one point) and over a metre in two tics are no
+	// motion. One threshold, ubqs_throw_ms, 2.5 m/s by default like the others. (It was the fastest single-tic step of the
+	// last three, in the tracking space's frame, against 1.5 map units a tic: about 1.5 m/s.) Cuts still read HandVel.
+	const TWIN = 7;
+	Vector3 tHist[TWIN];
+	bool tOk[TWIN];
+	int tAt;
+	bool tSame;
+	double tPeakMs;
+	Vector3 tPeakV;      // the peak's velocity, map units a tic, in the world
+	void ThrowSample()
+	{
+		if (!owner) return;
+		bool same = owner.AttackPos == owner.OffhandPos;
+		bool collapsed = same && !tSame;
+		tSame = same;
+		Vector3 off = HandPos() - owner.pos;
+		double c = cos(owner.angle), sn = sin(owner.angle);
+		tHist[tAt] = (off.x * c + off.y * sn, off.y * c - off.x * sn, off.z);
+		tOk[tAt] = !same && !collapsed && HandLive();
+		tAt = (tAt + 1) % TWIN;
+	}
+	void ThrowPeak()
+	{
+		let vc = CVar.FindCVar("vr_vunits_per_meter");
+		double vu = vc ? vc.GetFloat() : 34.0;
+		if (vu <= 0) vu = 34.0;
+		double ps = level.pixelstretch > 0.1 ? level.pixelstretch : 1.2;
+		Vector3 best = (0, 0, 0);
+		double bestM = 0;
+		for (int i = 0; i + 2 < TWIN; i++)
+		{
+			int ka = (tAt - 1 - i + 2 * TWIN) % TWIN, kb = (tAt - 3 - i + 2 * TWIN) % TWIN;
+			if (!tOk[ka] || !tOk[kb]) continue;
+			Vector3 v = (tHist[ka] - tHist[kb]) * 0.5;
+			double m = (v.x, v.y, v.z * ps).Length() / vu;
+			if (m >= 0.5) continue;      // over a metre in two tics: a pose jump, not an arm
+			if (m > bestM) { bestM = m; best = v; }
+		}
+		double c = owner ? cos(owner.angle) : 1.0, sn = owner ? sin(owner.angle) : 0.0;
+		tPeakMs = bestM * TICRATE;
+		tPeakV = (best.x * c - best.y * sn, best.x * sn + best.y * c, best.z);
+	}
 	bool ThrowRelease(double thr)
 	{
-		Vector3 hv = HandVel();
+		ThrowPeak();
+		Vector3 hv = tPeakV;
 		double sp = hv.Length();
-		if (sp < UBQS_A11y.Low(thr)) return false;   // RSQ_Accessibility's Gesture Ease: x1..x0.5
+		if (sp <= 0 || tPeakMs < UBQS_A11y.Low(thr)) return false;   // RSQ_Accessibility's Gesture Ease: x1..x0.5
 		double p = owner.pitch, a = owner.angle;
 		Vector3 fwd = (cos(p) * cos(a), cos(p) * sin(a), -sin(p));
 		// ubqs_throw_straight: ubqs_throw_min says how HARD the throw must be, this says how FORWARD, and only
@@ -1200,6 +1248,7 @@ class UBQS_SaberBase : Weapon abstract
 			snapQuiet = 2;
 		}
 		if (snapQuiet > 0) { snapQuiet--; lastOk = false; h1 = h0; h2 = h0; h3 = h0; }
+		ThrowSample();     // ONE THROW's sampler (ThrowRelease)
 		if (keepMarksUntil > 0 && level.maptime > keepMarksUntil) { keepMarksUntil = 0; ClearLocks(); }
 		if (flashTics > 0 && --flashTics == 0 && flash) flash.Dark();
 		if (burnQuiet > 0) burnQuiet--;
@@ -2504,7 +2553,7 @@ class UBQS_SaberBase : Weapon abstract
 		else if (held && !thrown) Paint();
 		else if (!held && gripHeldWas && !thrown)
 		{
-			double thr = UF("ubqs_throw_min", 1.5);
+			double thr = UF("ubqs_throw_ms", 2.5);
 			if (locks.Size() > 0 && 1 /* fixed: was ubqs_throw_on_lock, never a setting */) Throw();
 			else if (ThrowRelease(thr)) Throw();
 			else keepMarksUntil = level.maptime + UBQS_A11y.Tap(35);   // Slower Taps: x1.5
@@ -6187,7 +6236,7 @@ class UBQS_Remote : Actor
 	private void Word(String t, int col, Array<int> ks, Array<int> cols)
 	{
 		String v = "0123456789:RX";
-		for (int i = 0; i < t.Length(); i++) { int k = v.IndexOf(t.Mid(i, 1)); if (k >= 0) { ks.Push(k); cols.Push(col); } }
+		for (int i = 0; i < int(t.Length()); i++) { int k = v.IndexOf(t.Mid(i, 1)); if (k >= 0) { ks.Push(k); cols.Push(col); } }
 	}
 	void Panel()
 	{

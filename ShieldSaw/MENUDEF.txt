@@ -190,7 +190,7 @@ OptionMenu "SSQ_Test"
 	Slider "Block Depth", "ssq_plate_thick", 2.0, 60.0, 1.0, 0
 	StaticText " "
 	StaticText "Throw and Disc", "Gold"
-	Slider "Throw Hand Speed", "ssq_throw_min", 0.0, 100.0, 5.0, 0
+	Slider "Throw Hand Speed (m/s)", "ssq_throw_ms", 1.0, 6.0, 0.25, 2
 	Slider "Throw Speed", "ssq_throw_speed", 0.2, 3.0, 0.1, 1
 	Slider "Arm or Aim", "ssq_throw_blend", 0.0, 1.0, 0.05, 2
 	Slider "Aim Forward", "ssq_throw_forward", 0.0, 1.0, 0.05, 2
