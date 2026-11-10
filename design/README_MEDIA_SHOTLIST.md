@@ -112,3 +112,7 @@ Format: mod, what to show, still or GIF, notes. Captures are labelled in the REA
 | Miniboss | The death: colour wave, gun drop, bits fountain, gold life crate | GIF | |
 | Miniboss | The options page | still | |
 | Miniboss | In-headset capture of the fight's HUD bars (today only in mockups) | still | no placeholder yet |
+| Monsters | HERO: a monster flashing up a tier | GIF | |
+| Monsters | MG head-pop, burn and freeze deaths | GIF | |
+| Monsters | The options page | still | |
+| Monsters | The ladder colours side by side; a ColorfulHell boss; MG blood running down walls; tracer streaks; the Abyss split | still/GIF | no placeholder yet |
