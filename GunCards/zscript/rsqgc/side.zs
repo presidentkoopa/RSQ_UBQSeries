@@ -307,11 +307,12 @@ class RSQGC_SideCard play
 		int hp = max(pmo.Health, 0), ar = clamp(RSQGC_GunCard.ArmorOf(pmo), 0, 999);
 		int n = RSQGC_Items.Count(w);
 		int C = RSQGC_SideStates.R_COUNTS;
+		// the big number is the item's own count only (flares, battery, cigarettes). An item with none (the saber, gloves,
+		// the whip...) shows no big number: health there read as ammo (owner 11-11: "saber probably doesnt need to say 100")
 		if (n >= 0) HBig(C, String.Format("%d", clamp(n, 0, 999)), n == 0 ? C_RED : C_WHITE);
-		else HBig(C, String.Format("%d", clamp(hp, 0, 999)), hp <= 25 ? C_RED : C_WHITE);
 		int row;
 		if (st != "" && (row = Line()) >= 0) HText(row, st, stc);
-		if (n >= 0 && (row = Line()) >= 0) HText(row, String.Format("H %d", clamp(hp, 0, 999)), hp <= 25 ? C_RED : C_WHITE);
+		if ((row = Line()) >= 0) HText(row, String.Format("H %d", clamp(hp, 0, 999)), hp <= 25 ? C_RED : C_WHITE);
 		if ((row = Line()) >= 0) HText(row, String.Format("A %d", ar), C_BLUE);
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0 && (row = Line()) >= 0) HText(row, String.Format("G:%d", gren), gren > 0 ? C_ORANGE : C_DARK);
