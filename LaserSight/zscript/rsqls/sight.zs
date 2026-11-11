@@ -343,12 +343,33 @@ class RSQLS_Sight : EventHandler
 	}
 	private void HideHand(int h) { HideBeam(h); HideSpot(h); HideArc(h); HideArcBeam(h); Hide(ring[h]); rangeM[h] = 0; muzzlePrimed[h] = false; }
 
+	// ---- the watch check, read by name -------------------------------------------
+	// RSQ Accessibility's watch check (RSQG_Service "inspect": 0 not, 1 entering, 2 held, -1 switched off), else RSQ Gun
+	// Cards' own copy of that reader (RSQGC_GCopyService, -1 while Accessibility answers or the check is off): the two
+	// readers the watch card is shown from. 0 with neither loaded: the laser is never held off by a mod that is absent.
+	static int WatchCheck(PlayerPawn pmo, int h)
+	{
+		if (!pmo) return 0;
+		let it = ServiceIterator.Find("RSQG_Service");
+		Service s;
+		while (s = it.Next()) return s.GetInt("inspect", "", h, 0, pmo);
+		it = ServiceIterator.Find("RSQGC_GCopyService");
+		while (s = it.Next()) { int g = s.GetInt("inspect", "", h, 0, pmo); if (g >= 0) return g; }
+		return 0;
+	}
+
 	// ---- which hands have a laser right now -----------------------------------
 	private bool HandLive(PlayerInfo p, int h)
 	{
 		if (!RSQLS_Hand.Flag(h == 0 ? "rsqls_main" : "rsqls_off", p, true)) return false;
 		Weapon w = (h == 0) ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return false;
+		// OFF WHILE YOU CHECK YOUR WATCH (owner 11-11 15:05: "watch check causes phantom voxels along the sight"). In the
+		// watch pose the back of the wrist is turned to your face and the gun points across your chest, so its beam (a
+		// rod of 4 mm voxels drawn over the world, beam.zs) runs a hand's width in front of your eyes: each voxel is seen
+		// as a block of its own, laid over the watch card and the hand. That hand's laser goes out whole (HideHand: beam,
+		// halo, dot, arc, ring, readout) from the moment the pose is met until it is let go. Code only, not shown.
+		if (p.mo && WatchCheck(PlayerPawn(p.mo), h) > 0) return false;
 		// THE ENGINE TAKES THE OFF HAND'S GUN WHEN YOU BRACE, SO THE LASER GOES WITH IT.
 		// vr_two_handed_weapons is on by default (hw_vrmodes.cpp:119), and the off-hand grip
 		// pressed with the controllers inside 0.50 m latches weaponStabilised on the grip's
