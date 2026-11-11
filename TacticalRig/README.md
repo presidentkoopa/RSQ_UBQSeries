@@ -276,7 +276,8 @@ torso fades to about half as you look down, so you can see your holsters.
   never counts while you are down.
 - **RSQ Score:** a Quick Draw bonus for a kill with a gun you just drew; cigarettes earned by score.
 - **RSQ Miniboss:** a miniboss kill fills your cigarettes; calling a miniboss fight at the watch check never also moves your gun.
-- **RSQ Gun Bonsai VR:** Smoker (longer smoke slow motion, and nothing can hurt you in it), Chain Smoker (more
+- **RSQ Gun Bonsai VR:** Smoker (longer smoke slow motion, and nothing can hurt you in it, across a level change too,
+  ending when the slow motion ends), Chain Smoker (more
   cigarettes), Gun Toss (harder gun throws), Boomerang Gun (a thrown gun flies back to its holster or your hand).
 - **RSQ Distance Grab:** lift locked doors with the keys in your off hand; it stands aside while a hand is in a holster.
 - **RSQ Accessibility:** colour-blind palettes for every ring and the torso, larger text for the rig's messages, rumble

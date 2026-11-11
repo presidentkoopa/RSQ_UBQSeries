@@ -188,6 +188,17 @@ class RSQTR_Cig : EventHandler
 			{
 				prevMain[i] = tok.prevMain; prevOff[i] = tok.prevOff;
 				tok.held = PH_NONE;
+				// SMOKER GOES ON WITH THE SLOW MOTION (11-11): what was left of the untouchable spell when the last level
+				// ended (WorldUnloaded) starts again here, as RSQ SlowMo resumes the smoke's slow motion (its RSQSM_AdrToken)
+				if (tok.godLeft > 0 && pmo.health > 0)
+				{
+					godWas[i] = tok.godWasCarried;
+					godUntil[i] = level.maptime + tok.godLeft;
+					pmo.bINVULNERABLE = true;
+					if (RSQTR_Rig.Flag("rsqtr_messages", p, false))
+						Console.Printf("T_CIG smoker: player %d untouchable again on the new level for %d tics (until t%d), then back to %d", i, tok.godLeft, godUntil[i], godWas[i]);
+				}
+				tok.godLeft = 0;
 			}
 			// still in a hand from the last level: the hands get their guns back on the first tic
 			restore[i] = (p.ReadyWeapon is "RSQTR_CigWeapon") || (p.PendingWeapon is "RSQTR_CigWeapon") || (p.OffhandWeapon is "RSQTR_ZippoWeapon");
@@ -196,6 +207,26 @@ class RSQTR_Cig : EventHandler
 				pmo.TakeInventory("RSQTR_CigWeapon", 999);
 				pmo.TakeInventory("RSQTR_ZippoWeapon", 999);
 			}
+		}
+	}
+
+	// LEAVING THE LEVEL: Smoker's untouchable spell never outlives this handler (a level's handlers are rebuilt, and the
+	// player keeps his flags across a level change). The flag goes back to what it was now, and what is left of the spell is
+	// carried on the pocket's token to the next level (WorldLoaded), so it ends when the smoke's slow motion ends.
+	override void WorldUnloaded(WorldEvent e)
+	{
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (godUntil[i] <= 0 || !playeringame[i] || !players[i].mo) continue;
+			let pmo = players[i].mo;
+			int left = godUntil[i] - level.maptime;
+			pmo.bINVULNERABLE = godWas[i];
+			godUntil[i] = 0;
+			let tok = RSQTR_CigPack(pmo.FindInventory("RSQTR_CigPack"));
+			if (tok && left > 0 && pmo.health > 0) { tok.godLeft = left; tok.godWasCarried = godWas[i]; }
+			if (RSQTR_Rig.Flag("rsqtr_messages", players[i], false))
+				Console.Printf("T_CIG smoker: level ends with %d tics of player %d's untouchable spell left: flag back to %d, %s", max(left, 0), i,
+					godWas[i], (tok && left > 0 && pmo.health > 0) ? "the rest carried to the next level" : "nothing carried");
 		}
 	}
 
@@ -974,6 +1005,7 @@ class RSQTR_Cig : EventHandler
 			{
 				pmo.bINVULNERABLE = godWas[n];
 				godUntil[n] = 0;
+				if (msg) Console.Printf("T_CIG smoker: untouchable spell over t%d, bINVULNERABLE back to %d", level.maptime, pmo.bINVULNERABLE);
 			}
 
 			// a level change found them still in a hand: the guns back, once the rig is up
@@ -1156,6 +1188,8 @@ class RSQTR_Cig : EventHandler
 			if (godUntil[n] <= 0) godWas[n] = pmo.bINVULNERABLE;
 			godUntil[n] = level.maptime + int(SmokeSecs(pmo.player) * TICRATE);
 			pmo.bINVULNERABLE = true;
+			if (RSQTR_Rig.Flag("rsqtr_messages", pmo.player, false))
+				Console.Printf("T_CIG smoker: untouchable t%d until t%d (was %d)", level.maptime, godUntil[n], godWas[n]);
 		}
 		SetPhase(n, PH_NONE);
 	}
@@ -1646,6 +1680,8 @@ class RSQTR_CigPack : Inventory
 {
 	int held;                    // what was out when this was last written (RSQTR_Cig.PH_*), for a level change
 	String prevMain, prevOff;    // the guns the hands had before the cigarette came out
+	int godLeft;                 // Smoker: tics of the untouchable spell left when the last level ended (0 none)
+	bool godWasCarried;          // ...and what bINVULNERABLE was before the spell
 
 	Default
 	{

@@ -1,0 +1,46 @@
+CIG_SMOKER_SETUP
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT SCAN t0 tag 2: MINIBOSS none | 0 thralls: 
+MBT INV t0 MAP01 bINVULNERABLE 0
+MBT SMOKER t41 added (player upgrades)
+CIG_SMOKER_SMOKE
+MBT INVNOW t101 MAP01 tag 1 bINVULNERABLE 0 health 100
+T_CIG rsqtr_cigtake t101 phase 0
+T_CIG rsqtr_ciglock t140 phase 1
+T_CIG rsqtr_ciglight t159 phase 2
+T_CIG lit t159: smoking 70 tics (2.0 s)
+T_CIG flick from the mouth t229 at (-96 790 99) vel (0.0 2.6 3.0)
+T_CIG exit t229 (the end: smoked): main BrutalPistol | off nothing
+T_CIG smoker: untouchable t229 until t474 (was 0)
+T_CIG exit t229 (off hand done: smoked): main BrutalPistol | off RSQ_Off_BrutalPistol
+T_CIG slow motion asked: rsm_pulse 7000 25
+MBT INV t229 MAP01 bINVULNERABLE 1
+T_CIG exit t230 (the tic after: smoked): main BrutalPistol | off RSQ_Off_BrutalPistol
+T_CIG rsqtr_cigslowmo t232 phase 0
+RSQ_SlowMo: trigger smoke t232: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger smoke t232: started 7000 ms at 25% (deliberate), pulse until t477, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t232: the flick: player 0's smoke slow motion kept until t477 (245 tics) at 25%, he moves at full speed
+CIG_SMOKER_CHANGEMAP
+MBT INVNOW t281 MAP01 tag 2 bINVULNERABLE 1 health 100
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 373 actors slowed, adrenaline 0, pulse 0.25 for 196 tics (smoke)
+MBT UNLOADED MAP01 t281 bINVULNERABLE 1
+T_CIG smoker: level ends with 193 tics of player 0's untouchable spell left: flag back to 0, the rest carried to the next level
+RSQ_SlowMo: trigger smoke t281: level ends: player 0's smoke slow motion has 196 tics left, carried to the next level
+MBT INV t281 MAP01 bINVULNERABLE 0
+MAP02 - Underhalls
+RSQ_SlowMo: trigger smoke t0: player 0 carries 196 tics of the smoke's slow motion into this level
+T_CIG smoker: player 0 untouchable again on the new level for 193 tics (until t193), then back to 0
+MBT LOADED MAP02 t0 bINVULNERABLE 1
+MBT INV t0 MAP02 bINVULNERABLE 1
+RSQ_SlowMo: trigger smoke t1: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger smoke t1: started 5600 ms at 25% (deliberate), pulse until t197, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t1: resumed on the new level (196 tics carried): player 0's smoke slow motion kept until t197 (196 tics) at 25%, he moves at full speed
+CIG_SMOKER_ON_MAP02
+MBT INVNOW t75 MAP02 tag 3 bINVULNERABLE 1 health 100
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 219 actors slowed, adrenaline 0, pulse 0.25 for 122 tics (smoke)
+T_CIG smoker: untouchable spell over t193, bINVULNERABLE back to 0
+MBT INV t193 MAP02 bINVULNERABLE 0
+RSQ_SlowMo: trigger smoke t197: player 0's smoke slow motion ran its time
+MBT INVNOW t374 MAP02 tag 4 bINVULNERABLE 0 health 100
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
