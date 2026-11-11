@@ -7,7 +7,9 @@ edition they pop up out of the ground, breathe, and burn a small candle. A life 
 stone. With Legion of Bones loaded, Brutal Doom's dead can get back up as Legion of Bones undead, and RSQ Miniboss can
 wake the graves.
 
-*[GIF to come: a map loading with its old graves popping up one after another, candles coming on as you walk up]*
+![Stones popping up where you died as MAP01 loads again, candles lighting](docs/readme/gy_return.gif)
+
+*MAP01 loaded again after five deaths: the stones pop in one after another where you fell, and their candles light (rig capture, not headset)*
 
 ---
 
@@ -40,6 +42,10 @@ wake the graves.
 | Press Use on a stone | Its obituary prints to the console |
 | Choose **Remove Gravestones on This Map** | This map's stones are gone, here and from the store |
 | Choose **Remove All Gravestones** | Every stored stone on every map is gone |
+
+![Walking up to a stone and pressing Use: its obituary appears](docs/readme/gy_obituary.gif)
+
+*Walk up, press Use: "Here lies Player, killed by Imp.", the date and the map time. In VR the line is small; this was filmed with the message text scale at 4 (con_scaletext) and Screen Size 11 (rig capture, not headset)*
 
 ## Controls
 
@@ -80,7 +86,9 @@ With RSQ Score loaded, a life Score spends on a killing blow is a death too. The
 gold, its candle gold, its radius 1.25 times as big and its flicker a third as strong. Its line reads "Here <name> lost
 a life, killed by <killer>." with the map time. Without RSQ Score every stone is a normal one.
 
-*[Image to come: a grey stone and a gold stone side by side, candles lit]*
+![A grey stone and a gold stone side by side, candles lit](docs/readme/gy_gold.gif)
+
+*A grey stone from a death beside a gold stone from an RSQ Score life spent on a killing blow, with its gold candle (rig capture, not headset)*
 
 ### Living Stones
 
@@ -161,6 +169,10 @@ and within a step of its floor. If none is free, it looks again a second later, 
 it is given up (logged with `gy_bones_debug`). *Code only, not shown: on the 11-07 rig run (before this change) 20 of
 31 planned risers had risen when the log ended, the rest retrying the same spot.*
 
+![Graves Rise: undead climbing out of three stones as a miniboss fight lands](docs/readme/gy_rise.gif)
+
+*A miniboss fight lands at the far end of the room and Graves Rise wakes three stones, Thralls Per Stone: Legion of Bones' fire on each stone, then nine undead stand up and come for you (rig capture, not headset)*
+
 ### The heartbeat
 
 While a miniboss fight waits to be called in, RSQ Miniboss beats the map's light red, and every stone beats with it:
@@ -220,7 +232,8 @@ state and must come out the same on every machine. Alone, they are simply yours.
 | **rig only, not headset-confirmed** (2026-11-06, RSQ SlowMo's run, log `SlowMo/tools/rigtest/build/logs/v2main.log`) | A spent Score life placing a gold stone (Score and Graveyard log lines). Living Stones' colour and tint steps for both kinds in Uniform, Wave and Chaos (log lines; that run's frames were not checked for this README) |
 | **rig only, not headset-confirmed** (2026-11-07, SlowMo's run, log `SlowMo/tools/rigtest/build/logs/v3c.log`) | Graves Rise with no cap: 31 tombstones woken map-wide, 31 risers planned. Only 20 had risen when the log ended; the rest were still being retried ("did not fit"). So "31 raised 31" was not shown |
 | **rig only, not headset-confirmed** (2026-11-09 and 2026-11-10, the series runs) | The pack loading on the owner's order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, Legion of Bones, Champions, Gun Bonsai, every RSQ pk3) with no script error from it; the 11-10 runs used the current build. Its row under Radiant Silvergun Options (11-09 log `design/rigtest_2026-11-09/logs/main_A-G_I.log`) |
-| **code only, not shown** | m8f's base in this edition: a stone at a death, stones coming back on the next load, the obituary on Use, both remove commands. The pop-in, the breathing and the candle fade (frames show stones and candles, but none were checked for these). Graves Rise Mode (one per stone or one per thrall, the 40-unit ring; changed 11-10, load-checked only). Reset All. The 11-10 code-read fixes (92bd8ba9), each load-checked only: a riser that does not fit looks for a free spot near it (5 tries, then given up and logged); the two remove commands are menu buttons, the key section gone; the boss markers and their art removed (nothing placed them); the stones' look read the same on every machine (the arbitrator's settings, the nearest player); a never-raised thrall type is skipped by Graves Rise as by the bridge. The 11-10 stone keys (load-checked only): each new death and spent life is stored with a key made from sim data (player number, game and map tics, spot, kind) |
+| **rig only, not headset-confirmed** (2026-11-11, the README GIFs, `docs/readme/`, the owner's order with dynamic lights on) | A stone at each death (five deaths to an Imp), all five back when MAP01 loaded again, popping in one after another, candles fading up. A Score life spent placing a gold stone beside a grey one. The obituary printing on Use ("Here lies Player, killed by Imp.", date, map time); in VR it is drawn small on the HUD and not at all at Screen Size 12. Graves Rise, Thralls Per Stone: 3 stones woken, 9 Skull Zombies risen (log lines `RSQ Graveyard bones ... RISES`) |
+| **code only, not shown** | Both remove commands. The breathing (too slow to see in a 3-second loop). Graves Rise Mode (one per stone or one per thrall, the 40-unit ring; changed 11-10, load-checked only). Reset All. The 11-10 code-read fixes (92bd8ba9), each load-checked only: a riser that does not fit looks for a free spot near it (5 tries, then given up and logged); the two remove commands are menu buttons, the key section gone; the boss markers and their art removed (nothing placed them); the stones' look read the same on every machine (the arbitrator's settings, the nearest player); a never-raised thrall type is skipped by Graves Rise as by the bridge. The 11-10 stone keys (load-checked only): each new death and spent life is stored with a key made from sim data (player number, game and map tics, spot, kind) |
 | **not yet run** | Netgames, all of it: no two-player game has been run. That includes the 11-10 rule, everyone's stones (every machine sends its own stored stones at map load, the dying player's machine sends a new death's stone, and a stone whose key is already on the map is skipped, so each comes once) |
 
 From reading the code: alone, a death's stone is not shown until the map loads again (m8f's design: a netgame shows it
@@ -267,7 +280,7 @@ machine's store in a netgame, not only the presser's (m8f's design).
   pack loads and plays alone.
 - **The folder ships** as `RSQ_Graveyard.pk3` (`tools/build_all.py`), with the licence (`copying.txt`), `credits.txt`
   and this README (it replaced m8f's `Readme.md` on 11-10; his is in the original release at github.com/mmaulwurff/graveyard).
-  Not in the pk3: `tools/` (the Bones table generator, the rig tests), `.gitignore` and `add-ons/`.
+  Not in the pk3: `tools/` (the Bones table generator, the rig tests), `docs/` (the README's GIFs), `.gitignore` and `add-ons/`.
 - **m8f's soulsphere add-on** (`add-ons/soulsphere`) stays in the source folder as m8f made it, but it is not part of
   the pk3 and nothing loads it.
 
