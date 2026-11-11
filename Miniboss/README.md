@@ -7,7 +7,9 @@ lands in front of you in slow motion with its thralls around it, each one arrivi
 thralls stand it cannot be hurt: kill one, and for a few seconds its shield is down. Break it in time, or everything
 gets stronger.
 
-*[GIF to come: a miniboss fight landing, the thralls one by one on their beams, then the miniboss, in slow motion]*
+![The four arrival beams the thralls and the miniboss land on](../VisualRewards/docs/readme/beams_hero.gif)
+
+*The arrival beams, from RSQ VisualRewards (its design renders; its README has each beam on its own).*
 
 ---
 
@@ -197,9 +199,7 @@ not count. **Each power goes with the thrall it came from.**
 **Its colour** is its RSQ Monsters ladder colour. A monster off the ladder takes pink, cyan, amber or violet, in turn.
 The tethers, bursts, flames, bars and the room's glow all wear it, and it changes as it climbs.
 
-*[GIF to come: shooting the shield, "GUARD!" and the grey Xs, then a thrall killed and the window bar draining]*
 
-*[GIF to come: a missed window, the whole map flashing up a colour]*
 
 ---
 
@@ -212,7 +212,6 @@ twice as readily and react at once, a red spark rises off each one near you, and
 are raised meanwhile are enraged too. Kill every thrall before then and nothing happens. When the miniboss dies
 or you leave the level, every monster is put back exactly as it was.
 
-*[GIF to come: the rage: every monster on the map sparking red and charging]*
 
 ---
 
@@ -231,7 +230,6 @@ or you leave the level, every monster is put back exactly as it was.
 
 **Any miniboss killed** scores RSQ Score's **Miniboss** row.
 
-*[GIF to come: the miniboss dying, the colour wave, the gun and the bits fountain, the gold crate]*
 
 ---
 
