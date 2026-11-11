@@ -1,0 +1,270 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+R10 R 0 maptime 1
+R10 R 0 maptime 12
+R10 R 1 maptime 29
+R10 R 2 maptime 41
+R10 R 3 maptime 47
+R10 R 4 maptime 52
+R10 R 5 maptime 57
+R10 R 6 maptime 61
+R10 R 7 maptime 65
+R10 R 8 maptime 70
+R10 R 9 maptime 75
+R1_FIST_INFO
+R10 R 10 maptime 79
+GBP HANDS t79 hand0=RSQWP_WhipWeapon hand1=rsq_hands  ready RSQWP_WhipWeapon
+R10 R 11 maptime 79
+GBP STATUS rows 2, focus hand 0, menuHand 0
+GBP STATUS  [0] kind 0 hand 0 Whip
+GBP STATUS  [1] kind 0 hand 1 Fist
+R10 R 12 maptime 79
+R10 R 13 maptime 79
+R10 R 14 maptime 79
+R10 R 15 maptime 79
+R10 R 16 maptime 79
+R10 R 17 maptime 79
+R10 R 18 maptime 79
+R10 R 19 maptime 79
+R10 R 20 maptime 80
+R10 R 21 maptime 85
+R10 R 22 maptime 89
+R1_SLOWMO
+R10 R 23 maptime 94
+RSQ_SlowMo: trigger key t94: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger key t94: held ON at 25%
+R10 R 24 maptime 98
+R10 R 25 maptime 102
+R10 R 26 maptime 106
+R10 R 27 maptime 109
+R1_SLOWMO_MENU
+R10 R 28 maptime 109
+R10 R 29 maptime 109
+R10 R 30 maptime 109
+R10 R 31 maptime 109
+R10 R 32 maptime 109
+R10 R 33 maptime 109
+R10 R 34 maptime 110
+R10 R 35 maptime 113
+R1_SLOWMO_AFTER
+R10 R 36 maptime 117
+R10 R 37 maptime 121
+R10 R 38 maptime 125
+RSQ_SlowMo: trigger key t125: held off
+R10 R 39 maptime 129
+R10 R 40 maptime 133
+R1_CHEST
+RSQ_SlowMo: trigger countdown t135: countdown bar: gone (real time)
+R10 R 41 maptime 137
+R10 R 42 maptime 142
+R10 R 43 maptime 153
+R10 R 44 maptime 160
+R10 R 45 maptime 166
+R10 R 46 maptime 172
+R1_HIP_DIAMONDS
+R10 R 47 maptime 178
+R1 GEO t178 tag 0 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 782.0 76.5) r 0.089 body f -0.060 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 774.9 76.5) body f -0.270 l 0.300 u -0.840 | FnF clip (-106.1 774.9 76.5) body f -0.270 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 788.1 93.4) body f 0.121 l -0.152 u -0.236
+R1 GEO  cig pocket (-101.4 788.0 93.0) body f 0.120 l 0.160 u -0.250 | main hand (-87.5 794.2 92.8) body f 0.304 l -0.253 u -0.256, 0.447 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-106.2 784.0 78.7) body f -0.000 l 0.304 u -0.762, 0.277 m from the FnF clip, 0.097 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+R10 R 48 maptime 186
+R10 R 49 maptime 194
+R1 GEO t194 tag 1 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.6 76.5) r 0.089 body f -0.100 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840 | FnF clip (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.7 96.9) body f 0.082 l -0.152 u -0.110
+R1 GEO  cig pocket (-101.4 786.7 93.0) body f 0.080 l 0.160 u -0.250 | main hand (-87.5 794.2 92.8) body f 0.304 l -0.253 u -0.256, 0.464 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-106.2 784.0 78.7) body f -0.000 l 0.304 u -0.762, 0.315 m from the FnF clip, 0.125 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+R1_RIGHT_CHEST
+R10 R 50 maptime 201
+R10 R 51 maptime 207
+R10 R 52 maptime 213
+R10 R 53 maptime 218
+R1 GEO t218 tag 2 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.6 76.5) r 0.089 body f -0.100 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840 | FnF clip (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.7 95.5) body f 0.082 l -0.152 u -0.159
+R1 GEO  cig pocket (-101.4 786.7 93.0) body f 0.080 l 0.160 u -0.250 | main hand (-87.5 794.2 92.8) body f 0.304 l -0.253 u -0.256, 0.464 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-90.2 788.1 95.1) body f 0.121 l -0.172 u -0.175, 0.911 m from the FnF clip, 0.835 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+R10 R 54 maptime 223
+R1_TORCH
+R10 R 55 maptime 231
+R1 GEO t231 tag 3 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.6 76.5) r 0.089 body f -0.100 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840 | FnF clip (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.7 95.5) body f 0.082 l -0.152 u -0.159
+R1 GEO  cig pocket (-101.4 786.7 93.0) body f 0.080 l 0.160 u -0.250 | main hand (-87.5 794.2 92.8) body f 0.304 l -0.253 u -0.256, 0.464 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-106.2 776.9 78.7) body f -0.213 l 0.304 u -0.762, 0.123 m from the FnF clip, 0.135 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+R10 R 56 maptime 238
+R1_TORCH_GRIP
+R10 R 57 maptime 246
+R1 GEO t246 tag 4 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.6 76.5) r 0.089 body f -0.100 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840 | FnF clip (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.7 96.9) body f 0.082 l -0.152 u -0.110
+R1 GEO  cig pocket (-101.4 786.7 93.0) body f 0.080 l 0.160 u -0.250 | main hand (-87.5 794.2 92.8) body f 0.304 l -0.253 u -0.256, 0.464 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-106.2 776.9 78.7) body f -0.213 l 0.304 u -0.762, 0.123 m from the FnF clip, 0.135 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+R10 R 58 maptime 254
+R1_TORCH_BACK
+R10 R 59 maptime 262
+R1 GEO t262 tag 5 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.6 76.5) r 0.089 body f -0.100 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840 | FnF clip (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.7 96.9) body f 0.082 l -0.152 u -0.110
+R1 GEO  cig pocket (-101.4 786.7 93.0) body f 0.080 l 0.160 u -0.250 | main hand (-87.5 794.2 92.8) body f 0.304 l -0.253 u -0.256, 0.464 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-106.2 776.9 78.7) body f -0.213 l 0.304 u -0.762, 0.123 m from the FnF clip, 0.135 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+RSQFF grip t262: off hand 0.84 m from the pocket (needs 0.11), the pocket is off: the flares are in the Tactical Rig's flare holster
+RSQFF torch grip t262: off hand 0.12 m from the clip (needs 0.08)
+R10 R 60 maptime 270
+R1_CIG
+R10 R 61 maptime 279
+R1 GEO t279 tag 6 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.6 76.5) r 0.089 body f -0.100 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840 | FnF clip (-106.1 773.6 76.5) body f -0.310 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.7 96.9) body f 0.082 l -0.152 u -0.110
+R1 GEO  cig pocket (-101.4 786.7 93.0) body f 0.080 l 0.160 u -0.250 | main hand (-101.4 788.1 94.2) body f 0.121 l 0.162 u -0.205, 0.060 m from it (R 0.08) AtPocket 1
+R1 GEO  off hand (-104.5 794.2 92.8) body f 0.304 l 0.253 u -0.256, 0.838 m from the FnF clip, 0.703 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+R10 R 62 maptime 286
+R1_CIG_GRIP
+R10 R 63 maptime 294
+rsr key down 446 (¾)
+R1 GEO t294 tag 7 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.7 76.5) r 0.089 body f -0.097 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.7 76.5) body f -0.307 l 0.300 u -0.840 | FnF clip (-106.1 773.7 76.5) body f -0.307 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.8 95.2) body f 0.084 l -0.152 u -0.172
+R1 GEO  cig pocket (-101.4 786.8 93.0) body f 0.083 l 0.160 u -0.250 | main hand (-101.4 788.1 94.2) body f 0.121 l 0.162 u -0.205, 0.058 m from it (R 0.08) AtPocket 1
+R1 GEO  off hand (-104.5 794.2 92.8) body f 0.304 l 0.253 u -0.256, 0.836 m from the FnF clip, 0.701 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+Burst
+Semi-auto
+Burst
+Semi-auto
+R10 R 64 maptime 301
+rsr key up 446 (¾)
+T_CIG rsqtr_cigtake t301 phase 0
+R10 R 65 maptime 308
+R10 R 66 maptime 315
+R1_CIG_BACK
+R10 R 67 maptime 320
+rsr key down 446 (¾)
+R1 GEO t320 tag 8 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.7 76.5) r 0.089 body f -0.097 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.7 76.5) body f -0.307 l 0.300 u -0.840 | FnF clip (-106.1 773.7 76.5) body f -0.307 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.8 95.2) body f 0.084 l -0.152 u -0.172
+R1 GEO  cig pocket (-101.4 786.8 93.0) body f 0.083 l 0.160 u -0.250 | main hand (-101.4 788.1 94.2) body f 0.121 l 0.162 u -0.205, 0.058 m from it (R 0.08) AtPocket 1
+R1 GEO  off hand (-104.5 794.2 92.8) body f 0.304 l 0.253 u -0.256, 0.836 m from the FnF clip, 0.701 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready RSQTR_CigWeapon off RSQTR_ZippoWeapon cigs 4 flares 24
+R10 R 68 maptime 323
+T_CIG rsqtr_cigback t323 phase 1
+T_CIG exit t323 (the end: back in the pocket): main RSQTR_CigWeapon -> BrutalPistol | off nothing
+T_CIG exit t323 (off hand done: back in the pocket): main BrutalPistol | off nothing -> rsq_hands
+Burst
+T_CIG exit t324 (the tic after: back in the pocket): main BrutalPistol | off rsq_hands
+Semi-auto
+R10 R 69 maptime 327
+rsr key up 446 (¾)
+R10 R 70 maptime 331
+R10 R 71 maptime 335
+R10 R 72 maptime 340
+R1_WHEEL_RELOAD
+R10 R 73 maptime 344
+R1 GEO t344 tag 9 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 780.7 76.5) r 0.089 body f -0.097 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 773.7 76.5) body f -0.307 l 0.300 u -0.840 | FnF clip (-106.1 773.7 76.5) body f -0.307 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 786.8 95.2) body f 0.084 l -0.152 u -0.172
+R1 GEO  cig pocket (-101.4 786.8 93.0) body f 0.083 l 0.160 u -0.250 | main hand (-101.4 788.1 94.2) body f 0.121 l 0.162 u -0.205, 0.058 m from it (R 0.08) AtPocket 1
+R1 GEO  off hand (-104.5 794.2 92.8) body f 0.304 l 0.253 u -0.256, 0.836 m from the FnF clip, 0.701 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off rsq_hands cigs 5 flares 24
+R10 R 74 maptime 350
+RSQFF scatter MAP01: 24 items rolled, 1 boxes of flares (cap 2)
+R10 R 0 maptime 7
+R10 R 1 maptime 24
+R10 R 2 maptime 32
+R10 R 3 maptime 38
+R10 R 4 maptime 41
+R10 R 5 maptime 44
+R10 R 6 maptime 48
+R10 R 7 maptime 52
+R10 R 8 maptime 56
+R10 R 9 maptime 61
+R10 R 10 maptime 66
+R1_WHEEL
+R10 R 11 maptime 70
+R10 R 12 maptime 76
+RSQ Wheel card Melee_Attacks: prop RSQ_Glove RMHF 0, fit 0.143, centre 1.24 -22.14 -10.47
+RSQ Wheel card RSQ_Glove: prop RSQ_Glove RMHF 0, fit 0.143, centre 1.24 -22.14 -10.47
+RSQ Wheel card RSQ_GloveOff: prop RSQ_Glove RMHF 0, fit 0.143, centre 1.24 -22.14 -10.47
+RSQ Wheel card UBQS_Saber: prop UBQS_HipSaber UBSP 13, fit 0.061, centre 0.01 -28.92 -8.01
+RSQ Wheel card SSQ_ShieldSaw: prop SSQ_Prop SSQP 0, fit 0.100, centre -3.21 -2.13 0.02
+RSQ Wheel card RSQWP_WhipWeapon: prop RSQWP_Stowed RSWP 0, fit 0.162, centre 0.09 0.62 -0.93
+RSQ Wheel card Rifle: frame RIFLA0 voxel measured fit 0.054
+RSQ Wheel card HandGrenades: frame GRNDH0 voxel none fit 0.000
+R10 R 13 maptime 81
+RSQ_SlowMo: trigger wheel t81: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger wheel t81: held ON at 25%
+R10 R 14 maptime 98
+R1 WHEEL t98 UBQS_HipSaber pos (-86.7 820.1 84.1) from pawn (9.3 36.1 28.1) angle 176 scale 0.061 frame 13
+R1 WHEEL t98 SSQ_Prop pos (-99.4 773.8 83.8) from pawn (-3.4 -10.2 27.8) angle 0 scale 1.000 frame 0
+R1 WHEEL t98 SSQ_Prop pos (-89.5 821.5 76.6) from pawn (6.5 37.5 20.6) angle 216 scale 0.100 frame 0
+R1 WHEEL t98 RSQWP_Stowed pos (-85.9 781.4 76.5) from pawn (10.1 -2.6 20.5) angle 90 scale 1.000 frame 0
+R1 WHEEL t98 RSQWP_Stowed pos (-96.1 821.9 73.9) from pawn (-0.1 37.9 17.9) angle 256 scale 0.162 frame 0
+R1 WHEEL t98 RSQ_Glove pos (-105.4 823.5 92.1) from pawn (-9.4 39.5 36.1) angle 56 scale 0.143 frame 0
+R1 WHEEL t98 RSQ_Glove pos (-99.1 821.4 95.0) from pawn (-3.1 37.4 39.0) angle 96 scale 0.143 frame 0
+R1 WHEEL t98 RSQ_Glove pos (-91.4 819.5 92.1) from pawn (4.6 35.5 36.1) angle 136 scale 0.143 frame 0
+R10 R 15 maptime 108
+R1 WHEEL t108 UBQS_HipSaber pos (-86.2 820.2 84.0) from pawn (9.8 36.2 28.0) angle 191 scale 0.061 frame 13
+R1 WHEEL t108 SSQ_Prop pos (-99.4 773.8 83.8) from pawn (-3.4 -10.2 27.8) angle 0 scale 1.000 frame 0
+R1 WHEEL t108 SSQ_Prop pos (-89.4 821.5 76.5) from pawn (6.6 37.5 20.5) angle 231 scale 0.100 frame 0
+R1 WHEEL t108 RSQWP_Stowed pos (-85.9 781.4 76.5) from pawn (10.1 -2.6 20.5) angle 90 scale 1.000 frame 0
+R1 WHEEL t108 RSQWP_Stowed pos (-96.1 821.9 73.8) from pawn (-0.1 37.9 17.8) angle 271 scale 0.162 frame 0
+R1 WHEEL t108 RSQ_Glove pos (-105.7 822.8 92.0) from pawn (-9.7 38.8 36.0) angle 71 scale 0.143 frame 0
+R1 WHEEL t108 RSQ_Glove pos (-98.9 820.6 94.9) from pawn (-2.9 36.6 38.9) angle 111 scale 0.143 frame 0
+R1 WHEEL t108 RSQ_Glove pos (-90.7 819.0 92.0) from pawn (5.3 35.0 36.0) angle 151 scale 0.143 frame 0
+R10 R 16 maptime 116
+R10 R 17 maptime 123
+R1 WHEEL t123 UBQS_HipSaber pos (-85.6 820.4 83.8) from pawn (10.4 36.4 27.8) angle 213 scale 0.061 frame 13
+R1 WHEEL t123 SSQ_Prop pos (-99.4 773.8 83.8) from pawn (-3.4 -10.2 27.8) angle 0 scale 1.000 frame 0
+R1 WHEEL t123 SSQ_Prop pos (-89.2 821.5 76.4) from pawn (6.8 37.5 20.4) angle 253 scale 0.100 frame 0
+R1 WHEEL t123 RSQWP_Stowed pos (-85.9 781.4 76.5) from pawn (10.1 -2.6 20.5) angle 90 scale 1.000 frame 0
+R1 WHEEL t123 RSQWP_Stowed pos (-96.1 821.8 73.6) from pawn (-0.1 37.8 17.6) angle 293 scale 0.162 frame 0
+R1 WHEEL t123 RSQ_Glove pos (-105.8 821.5 91.8) from pawn (-9.8 37.5 35.8) angle 93 scale 0.143 frame 0
+R1 WHEEL t123 RSQ_Glove pos (-98.2 819.6 94.7) from pawn (-2.2 35.6 38.7) angle 133 scale 0.143 frame 0
+R1 WHEEL t123 RSQ_Glove pos (-89.5 818.7 91.8) from pawn (6.5 34.7 35.8) angle 173 scale 0.143 frame 0
+R10 R 18 maptime 130
+R10 R 19 maptime 135
+R1_WHEEL_CLOSE
+R10 R 20 maptime 141
+R1 WHEEL t141 UBQS_HipSaber pos (-85.0 821.0 83.7) from pawn (11.0 37.0 27.7) angle 240 scale 0.061 frame 13
+R1 WHEEL t141 SSQ_Prop pos (-99.4 773.8 83.8) from pawn (-3.4 -10.2 27.8) angle 0 scale 1.000 frame 0
+R1 WHEEL t141 SSQ_Prop pos (-89.1 821.6 76.2) from pawn (6.9 37.6 20.2) angle 280 scale 0.100 frame 0
+R1 WHEEL t141 RSQWP_Stowed pos (-85.9 781.4 76.5) from pawn (10.1 -2.6 20.5) angle 90 scale 1.000 frame 0
+R1 WHEEL t141 RSQWP_Stowed pos (-96.1 821.8 73.5) from pawn (-0.1 37.8 17.5) angle 320 scale 0.162 frame 0
+R1 WHEEL t141 RSQ_Glove pos (-105.3 820.1 91.7) from pawn (-9.3 36.1 35.7) angle 120 scale 0.143 frame 0
+R1 WHEEL t141 RSQ_Glove pos (-96.9 818.8 94.6) from pawn (-0.9 34.8 38.6) angle 160 scale 0.143 frame 0
+R1 WHEEL t141 RSQ_Glove pos (-88.1 819.0 91.7) from pawn (7.9 35.0 35.7) angle 200 scale 0.143 frame 0
+R10 R 21 maptime 148
+RSQ_SlowMo: trigger rsm_off t148: held off
+R10 R 22 maptime 153
+R1B_END
