@@ -87,3 +87,8 @@ RESULTS.md at the end.
 - **P2 Hands and throws:** Saber A1-A3, ShieldSaw H1-H3, BD22 VR X1, Distance Grab D1-D3, N1.
 - **P3 Fights:** Miniboss B1-B6, SlowMo S1-S4, VisualRewards V1-V2, Monsters R1-R2, Grenade G2, N3.
 - **P4 Looks and menus:** LaserSight L2-L5, Tactical Rig T1, N2, N4, N5, N7.
+
+## After the batch: Graveyard README GIFs (owner 11-10 22:52, all four picked)
+G-GIF1 stones return on reload (pop-in, candles light and breathe)   G-GIF2 a gold stone for a spent life beside a grey one
+G-GIF3 Graves Rise: thralls climbing out of your stones in a miniboss fight   G-GIF4 the obituary on Use
+Filmed on the rig once P1-P4 free it; short loops into Graveyard/docs/readme/, linked from Graveyard/README.md.
