@@ -1,0 +1,89 @@
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+R1C_TORCH
+R1C_TORCH_GRIP
+R1 GEO t99 tag 10 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 782.0 76.5) r 0.089 body f -0.060 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 774.9 76.5) body f -0.270 l 0.300 u -0.840 | FnF clip (-106.1 774.9 76.5) body f -0.270 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 788.1 93.4) body f 0.121 l -0.152 u -0.236
+R1 GEO  cig pocket (-101.4 788.0 93.0) body f 0.120 l 0.160 u -0.250 | main hand (-87.5 794.2 92.8) body f 0.304 l -0.253 u -0.256, 0.447 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-106.2 773.5 76.4) body f -0.314 l 0.304 u -0.843, 0.044 m from the FnF clip, 0.251 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off RSQ_GloveOff cigs 3 flares 24
+RSQFF grip t99: off hand 0.86 m from the pocket (needs 0.11), the pocket is off: the flares are in the Tactical Rig's flare holster
+RSQFF torch take t108: the flashlight in the off hand (had RSQ_GloveOff)
+RSQFF torch t108: on (size 1: 10/22 deg, quality 0: range 448, colour 20)
+R1C_TORCH_BACK
+R1 GEO t116 tag 11 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 782.0 76.5) r 0.089 body f -0.060 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 774.9 76.5) body f -0.270 l 0.300 u -0.840 | FnF clip (-106.1 774.9 76.5) body f -0.270 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 788.1 93.4) body f 0.121 l -0.152 u -0.236
+R1 GEO  cig pocket (-101.4 788.0 93.0) body f 0.120 l 0.160 u -0.250 | main hand (-87.5 794.2 92.8) body f 0.304 l -0.253 u -0.256, 0.447 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-106.2 773.5 76.4) body f -0.314 l 0.304 u -0.843, 0.044 m from the FnF clip, 0.251 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off RSQFF_Torch cigs 3 flares 24
+RSQFF grip t116: off hand 0.86 m from the pocket (needs 0.11), the pocket is off: the flares are in the Tactical Rig's flare holster
+RSQFF torch back t126: on the clip again
+R1C_WHEEL
+R1 GEO t140 tag 12 flare.home 1 | FnF pocket zone published NO (1e9) | FnF clip zone on
+R1 GEO  flare holster (-106.1 782.0 76.5) r 0.089 body f -0.060 l 0.300 u -0.840
+R1 GEO  rig torch (-106.1 774.9 76.5) body f -0.270 l 0.300 u -0.840 | FnF clip (-106.1 774.9 76.5) body f -0.270 l 0.300 u -0.840
+R1 GEO  FnF clip to flare holster centre 0.207 m; to rig torch 0.000 m; to cig pocket 0.712 m
+R1 GEO  FnF chest pocket (computed) (-90.9 788.1 93.4) body f 0.121 l -0.152 u -0.236
+R1 GEO  cig pocket (-101.4 788.0 93.0) body f 0.120 l 0.160 u -0.250 | main hand (-96.0 794.2 98.5) body f 0.304 l 0.000 u -0.054, 0.309 m from it (R 0.08) AtPocket 0
+R1 GEO  off hand (-111.3 784.0 81.5) body f -0.000 l 0.456 u -0.661, 0.355 m from the FnF clip, 0.242 from the flare holster; hover regions main -1 off -1
+R1 GEO  hands: ready BrutalPistol off RSQ_GloveOff cigs 3 flares 24
+RSQ Wheel card RSQ_Glove: prop RSQ_Glove RMHF 0, fit 0.143, centre 1.24 -22.14 -10.47
+RSQ Wheel card UBQS_Saber: prop UBQS_HipSaber UBSP 13, fit 0.061, centre 0.01 -28.92 -8.01
+RSQ Wheel card SSQ_ShieldSaw: prop SSQ_Prop SSQP 0, fit 0.100, centre -3.21 -2.13 0.02
+RSQ Wheel card RSQWP_WhipWeapon: prop RSQWP_Stowed RSWP 0, fit 0.162, centre 0.09 0.62 -0.93
+RSQ Wheel card BrutalPistol: frame P3STK0 voxel none fit 0.000
+RSQ Wheel card Rifle: frame RIFLA0 voxel measured fit 0.054
+RSQ Wheel card HandGrenades: frame GRNDH0 voxel none fit 0.000
+R1 RING t158 open 1 rigHand 0 cards 7: [0] RSQ_Glove [1] UBQS_Saber [2] SSQ_ShieldSaw [3] RSQWP_WhipWeapon [4] BrutalPistol [5] Rifle [6] HandGrenades | fist/melee-hand cards 1
+R1 WHEEL t158 UBQS_HipSaber pos (-94.8 820.1 93.5) from pawn (1.2 36.1 37.5) angle 186 scale 0.061 frame 13
+R1 WHEEL t158 SSQ_Prop pos (-99.4 773.8 83.8) from pawn (-3.4 -10.2 27.8) angle 0 scale 1.000 frame 0
+R1 WHEEL t158 SSQ_Prop pos (-88.1 821.5 88.4) from pawn (7.9 37.5 32.4) angle 226 scale 0.100 frame 0
+R1 WHEEL t158 RSQWP_Stowed pos (-85.9 781.4 76.5) from pawn (10.1 -2.6 20.5) angle 90 scale 1.000 frame 0
+R1 WHEEL t158 RSQWP_Stowed pos (-87.2 821.9 80.0) from pawn (8.8 37.9 24.0) angle 266 scale 0.162 frame 0
+R1 WHEEL t158 RSQ_Glove pos (-104.3 819.2 91.6) from pawn (-8.3 35.2 35.6) angle 146 scale 0.143 frame 0
+R1 WHEEL t175 UBQS_HipSaber pos (-94.0 820.3 93.5) from pawn (2.0 36.3 37.5) angle 211 scale 0.061 frame 13
+R1 WHEEL t175 SSQ_Prop pos (-99.4 773.8 83.8) from pawn (-3.4 -10.2 27.8) angle 0 scale 1.000 frame 0
+R1 WHEEL t175 SSQ_Prop pos (-87.9 821.5 88.4) from pawn (8.1 37.5 32.4) angle 251 scale 0.100 frame 0
+R1 WHEEL t175 RSQWP_Stowed pos (-85.9 781.4 76.5) from pawn (10.1 -2.6 20.5) angle 90 scale 1.000 frame 0
+R1 WHEEL t175 RSQWP_Stowed pos (-87.2 821.9 80.1) from pawn (8.8 37.9 24.1) angle 291 scale 0.162 frame 0
+R1 WHEEL t175 RSQ_Glove pos (-103.0 818.7 91.7) from pawn (-7.0 34.7 35.7) angle 171 scale 0.143 frame 0
+R1 WHEEL t188 UBQS_HipSaber pos (-93.6 820.7 93.6) from pawn (2.4 36.7 37.6) angle 231 scale 0.061 frame 13
+R1 WHEEL t188 SSQ_Prop pos (-99.4 773.8 83.8) from pawn (-3.4 -10.2 27.8) angle 0 scale 1.000 frame 0
+R1 WHEEL t188 SSQ_Prop pos (-87.8 821.6 88.5) from pawn (8.2 37.6 32.5) angle 271 scale 0.100 frame 0
+R1 WHEEL t188 RSQWP_Stowed pos (-85.9 781.4 76.5) from pawn (10.1 -2.6 20.5) angle 90 scale 1.000 frame 0
+R1 WHEEL t188 RSQWP_Stowed pos (-87.2 821.8 80.2) from pawn (8.8 37.8 24.2) angle 311 scale 0.162 frame 0
+R1 WHEEL t188 RSQ_Glove pos (-101.9 818.8 91.7) from pawn (-5.9 34.8 35.7) angle 191 scale 0.143 frame 0
+R1C_PICK_MAIN
+R1 WHEEL t212 UBQS_HipSaber pos (-93.2 821.7 93.8) from pawn (2.8 37.7 37.8) angle 267 scale 0.061 frame 13
+R1 WHEEL t212 SSQ_Prop pos (-99.4 773.8 83.8) from pawn (-3.4 -10.2 27.8) angle 0 scale 1.000 frame 0
+R1 WHEEL t212 SSQ_Prop pos (-87.7 821.8 88.7) from pawn (8.3 37.8 32.7) angle 307 scale 0.100 frame 0
+R1 WHEEL t212 RSQWP_Stowed pos (-85.9 781.4 76.5) from pawn (10.1 -2.6 20.5) angle 90 scale 1.000 frame 0
+R1 WHEEL t212 RSQWP_Stowed pos (-87.1 821.8 80.4) from pawn (8.9 37.8 24.4) angle 347 scale 0.162 frame 0
+R1 WHEEL t212 RSQ_Glove pos (-100.2 819.8 92.0) from pawn (-4.2 35.8 36.0) angle 227 scale 0.143 frame 0
+R1 RING t212 open 1 rigHand 0 cards 7: [0] RSQ_Glove [1] UBQS_Saber [2] SSQ_ShieldSaw [3] RSQWP_WhipWeapon [4] BrutalPistol [5] Rifle [6] HandGrenades | fist/melee-hand cards 1
+R1 PICK t212 hover forced to card [0] for hand 0 (aim not tested), then wr_grab
+RSQ Wheel: pick RSQ_Glove (card RSQ_Glove) -> hand 0
+R1 HANDS t237 ready RSQ_Glove pending None off RSQ_GloveOff
+R1C_OPEN_OFF
+R1 HANDS t254 ready RSQ_Glove pending None off RSQ_GloveOff
+RSQ Wheel card RSQ_Glove: prop RSQ_Glove RMHF 0, fit 0.143, centre 1.24 -22.14 -10.47
+RSQ Wheel card UBQS_Saber: prop UBQS_HipSaber UBSP 13, fit 0.061, centre 0.01 -28.92 -8.01
+RSQ Wheel card SSQ_ShieldSaw: prop SSQ_Prop SSQP 0, fit 0.100, centre -3.21 -2.13 0.02
+RSQ Wheel card RSQWP_WhipWeapon: prop RSQWP_Stowed RSWP 0, fit 0.162, centre 0.09 0.62 -0.93
+RSQ Wheel card BrutalPistol: frame P3STK0 voxel none fit 0.000
+RSQ Wheel card Rifle: frame RIFLA0 voxel measured fit 0.054
+RSQ Wheel card HandGrenades: frame GRNDH0 voxel none fit 0.000
+R1C_PICK_OFF
+R1 RING t274 open 1 rigHand 1 cards 7: [0] RSQ_Glove [1] UBQS_Saber [2] SSQ_ShieldSaw [3] RSQWP_WhipWeapon [4] BrutalPistol [5] Rifle [6] HandGrenades | fist/melee-hand cards 1
+R1 PICK t274 hover forced to card [0] for hand 1 (aim not tested), then wr_grab
+RSQ Wheel: pick RSQ_GloveOff (card RSQ_Glove) -> hand 1
+R1 HANDS t301 ready RSQ_Glove pending None off RSQ_GloveOff
+R1C_END
