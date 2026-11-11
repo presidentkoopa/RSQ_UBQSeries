@@ -74,7 +74,7 @@ class RSQUI_GunPic ui
 		TextureID t;
 		t.SetInvalid();
 		if (!w) return t;
-		String cls = w.GetClassName();
+		String cls = w.GetClassName();   // as declared: BD22 VR declares "rsq_hands" in lower case, so names compare with ~==
 		t = TexMan.CheckForTexture("graphics/rsqui/guns/" .. cls .. ".png", TexMan.Type_Any);
 		if (Shows(t)) return t;
 		t = w.Icon;
@@ -83,10 +83,10 @@ class RSQUI_GunPic ui
 		if (st) t = st.GetSpriteTexture(0);
 		if (Shows(t)) return t;
 		bool off = w.owner && w.owner.player && w.owner.player.OffhandWeapon == w;
-		if (cls == "RSQWP_WhipWeapon") return FirstNamed("WRIWHIP");
-		if (cls == "RSQ_Glove") return FirstNamed("RMICA0");
-		if (cls == "RSQ_GloveOff") return FirstNamed("RMICB0");
-		if (cls == "RSQ_Hands" || cls == "Melee_Attacks" || cls == "Fist")
+		if (cls ~== "RSQWP_WhipWeapon") return FirstNamed("WRIWHIP");
+		if (cls ~== "RSQ_Glove") return FirstNamed("RMICA0");
+		if (cls ~== "RSQ_GloveOff") return FirstNamed("RMICB0");
+		if (cls ~== "RSQ_Hands" || cls ~== "Melee_Attacks" || cls ~== "Fist")
 			return FirstNamed("FISTD0", off ? "RMICB0" : "RMICA0", "WRIFIST");
 		// a fist has no pickup: its raised frame
 		st = w.FindState("Ready");
