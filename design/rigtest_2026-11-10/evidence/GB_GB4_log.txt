@@ -1,0 +1,135 @@
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Initializing Gun Bonsai v0.10.6+RSQ...
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+GBP BAND maptime 1 dual 1 shieldrow 0 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+GBP BAND maptime 12 dual 1 shieldrow 0 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+GB_GRENADE
+GBP HANDS t55 hand0=RSQ_Glove hand1=RSQ_GloveOff  ready RSQ_Glove
+Your Frag is ready to level up!
+GBP XP t55 RSQGN_Grenade +1201 -> lv 0 xp 1201/1200 pending 1 hand -1
+GBP START t58 RSQGN_Grenade -> 1
+GBP MENU open RSQUI_A_WeaponLevelUp
+GBP CARDS title "Frag" player 0 count 4
+GBP CARDS  [0] RSQ_Upgrade_StrongArm "Strong Arm" tree Grenade owned 0
+GBP CARDS  [1] RSQ_Upgrade_BigBang "Big Bang" tree Grenade owned 0
+GBP CARDS  [2] RSQ_Upgrade_Bandolier "Bandolier" tree Grenade owned 0
+GBP CARDS  [3] TFLV_Upgrade_WeaponDamage "Damage" tree stock owned 0
+GBP PICK "Frag" [0] RSQ_Upgrade_StrongArm tree Grenade (was level 0) by Enter
+Your Frag gained a level of Strong Arm!
+GB_KR
+GBP BAG tag 1 player level 0 xp 1 upgrades (empty)
+GBP BAG tag 1  SSQ_ShieldSaw lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  Rifle lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 1  Melee_Attacks lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  HandGrenades lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 1  AmmoDroper lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  UBQS_ForceHand lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  UBQS_Saber lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  RSQ_Off_Rifle lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 1  RSQWP_WhipWeapon lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  RSQ_GloveOff lv 0 xp 0/600 hand 1 upgrades (empty)
+GBP BAG tag 1  RSQ_Glove lv 0 xp 0/600 hand 0 upgrades (empty)
+GBP BAG tag 1  rsq_hands lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  RSQGN_Grenade lv 1 xp 1/2400 hand -1 upgrades RSQ_Upgrade_StrongArm:1[Grenade] 
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 1" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Smoker "Smoker" tree Gunslinger owned 0
+GBP CARDS  [1] RSQ_Upgrade_QuickDraw "Quick Draw" tree Gunslinger owned 0
+GBP CARDS  [2] RSQ_Upgrade_BitScavenger "Gastropub" tree KillRewards owned 0
+GBP CARDS  [3] RSQ_Upgrade_Akimbo "Akimbo" tree TwoHandsBody owned 0
+GBP PICK "LEVEL 1" [2] RSQ_Upgrade_BitScavenger tree KillRewards (was level 0) by Enter
+You gained a level of Gastropub!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 2" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_QuickDraw "Quick Draw" tree Gunslinger owned 0
+GBP CARDS  [1] TFLV_Upgrade_ToughAsNails "Tough as Nails" tree stock owned 0
+GBP CARDS  [2] TFLV_Upgrade_ECM "Personal ECM" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_Taunt "Taunt" tree Fists owned 0
+GBP PICK "LEVEL 2" [0] RSQ_Upgrade_QuickDraw tree Gunslinger (was level 0) by Enter
+You gained a level of Quick Draw!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 3" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_SteadyAim "Steady Aim" tree TwoHandsBody owned 0
+GBP CARDS  [1] RSQ_Upgrade_Akimbo "Akimbo" tree TwoHandsBody owned 0
+GBP CARDS  [2] TFLV_Upgrade_ToughAsNails "Tough as Nails" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_PairDraw "Pair Draw" tree Gunslinger owned 0
+GBP PICK "LEVEL 3" [0] RSQ_Upgrade_SteadyAim tree TwoHandsBody (was level 0) by Enter
+You gained a level of Steady Aim!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 4" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_QuickDraw "Quick Draw" tree Gunslinger owned 1
+GBP CARDS  [1] RSQ_Upgrade_Smoker "Smoker" tree Gunslinger owned 0
+GBP CARDS  [2] RSQ_Upgrade_Guard "Guard" tree Guard owned 0
+GBP CARDS  [3] RSQ_Upgrade_SteadyAim "Steady Aim" tree TwoHandsBody owned 1
+GBP PICK "LEVEL 4" [2] RSQ_Upgrade_Guard tree Guard (was level 0) by Enter
+You gained a level of Guard!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 5" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Alternator "Alternator" tree TwoHandsBody owned 0
+GBP CARDS  [1] RSQ_Upgrade_Taunt "Taunt" tree Fists owned 0
+GBP CARDS  [2] RSQ_Upgrade_RichBits "Rich Bits" tree KillRewards owned 0
+GBP CARDS  [3] RSQ_Upgrade_QuickDraw "Quick Draw" tree Gunslinger owned 1
+GBP PICK "LEVEL 5" [2] RSQ_Upgrade_RichBits tree KillRewards (was level 0) by Enter
+You gained a level of Rich Bits!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 6" player 1 count 4
+GBP CARDS  [0] TFLV_Upgrade_HazardSuit "Hazard Suit" tree stock owned 0
+GBP CARDS  [1] RSQ_Upgrade_Crossfire "Crossfire" tree TwoHandsBody owned 0
+GBP CARDS  [2] RSQ_Upgrade_Magnet "Magnet" tree KillRewards owned 0
+GBP CARDS  [3] RSQ_Upgrade_BitScavenger "Gastropub" tree KillRewards owned 1
+GBP PICK "LEVEL 6" [2] RSQ_Upgrade_Magnet tree KillRewards (was level 0) by Enter
+You gained a level of Magnet!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 7" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Smoker "Smoker" tree Gunslinger owned 0
+GBP CARDS  [1] RSQ_Upgrade_RichBits "Rich Bits" tree KillRewards owned 1
+GBP CARDS  [2] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_Deeper "Deeper" tree SlowMo owned 0
+GBP PICK "LEVEL 7" [1] RSQ_Upgrade_RichBits tree KillRewards (was level 1) by Enter
+You gained a level of Rich Bits!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 8" player 1 count 4
+GBP CARDS  [0] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP CARDS  [1] RSQ_Upgrade_Southpaw "Southpaw" tree TwoHandsBody owned 0
+GBP CARDS  [2] RSQ_Upgrade_PairDraw "Pair Draw" tree Gunslinger owned 0
+GBP CARDS  [3] RSQ_Upgrade_Guard "Guard" tree Guard owned 1
+GBP PICK "LEVEL 8" [1] RSQ_Upgrade_Southpaw tree TwoHandsBody (was level 0) by Enter
+You gained a level of Southpaw!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 9" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Crossfire "Crossfire" tree TwoHandsBody owned 0
+GBP CARDS  [1] RSQ_Upgrade_Deeper "Deeper" tree SlowMo owned 0
+GBP CARDS  [2] RSQ_Upgrade_Taunt "Taunt" tree Fists owned 0
+GBP CARDS  [3] RSQ_Upgrade_Magnet "Magnet" tree KillRewards owned 1
+GBP PICK "LEVEL 9" [3] RSQ_Upgrade_Magnet tree KillRewards (was level 1) by Enter
+You gained a level of Magnet!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 10" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Magnet "Magnet" tree KillRewards owned 2
+GBP CARDS  [1] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP CARDS  [2] RSQ_Upgrade_Smoker "Smoker" tree Gunslinger owned 0
+GBP CARDS  [3] RSQ_Upgrade_PairDraw "Pair Draw" tree Gunslinger owned 0
+GBP PICK "LEVEL 10" [0] RSQ_Upgrade_Magnet tree KillRewards (was level 2) by Enter
+You gained a level of Magnet!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 11" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_LuckyKill "Lucky Kill" tree KillRewards owned 0
+GBP CARDS  [1] RSQ_Upgrade_Parry "Parry" tree Guard owned 0
+GBP CARDS  [2] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_Evasion "Evasion" tree TwoHandsBody owned 0
+GBP PICK "LEVEL 11" [0] RSQ_Upgrade_LuckyKill tree KillRewards (was level 0) by Enter
+You gained a level of Lucky Kill!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 12" player 1 count 4
+GBP CARDS  [0] TFLV_Upgrade_ToughAsNails "Tough as Nails" tree stock owned 0
+GBP CARDS  [1] TFLV_Upgrade_HazardSuit "Hazard Suit" tree stock owned 0
+GBP CARDS  [2] RSQ_Upgrade_PairDraw "Pair Draw" tree Gunslinger owned 0
+GBP CARDS  [3] RSQ_Upgrade_Taunt "Taunt" tree Fists owned 0
+GBP PICK "LEVEL 12" [3] RSQ_Upgrade_Taunt tree Fists (was level 0) by Enter
+You gained a level of Taunt!
+GB_END

@@ -1,0 +1,4 @@
+user int gbp_hold = -1;
+user int gbp_stat = -1;
+user int gbp_menusel = -1;
+user string gbp_want = "";

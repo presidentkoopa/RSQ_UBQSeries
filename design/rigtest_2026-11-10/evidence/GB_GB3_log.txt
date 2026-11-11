@@ -1,0 +1,333 @@
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Initializing Gun Bonsai v0.10.6+RSQ...
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+GBP BAND maptime 1 dual 1 shieldrow 0 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+GBP BAND maptime 12 dual 1 shieldrow 0 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+GB_GAUGES_START
+GBP HANDS t50 hand0=RSQ_Glove hand1=RSQ_GloveOff  ready RSQ_Glove
+GBP BAG tag 0 player level 0 xp 0 upgrades (empty)
+GBP BAG tag 0  SSQ_ShieldSaw lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 0  Rifle lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 0  Melee_Attacks lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 0  HandGrenades lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 0  AmmoDroper lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 0  UBQS_ForceHand lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 0  UBQS_Saber lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 0  RSQ_Off_Rifle lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 0  RSQWP_WhipWeapon lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 0  RSQ_GloveOff lv 0 xp 0/600 hand 1 upgrades (empty)
+GBP BAG tag 0  RSQ_Glove lv 0 xp 0/600 hand 0 upgrades (empty)
+GBP BAG tag 0  rsq_hands lv 0 xp 0/600 hand -1 upgrades (empty)
+GB_FISTS_MAIN
+Your Melee Hands is ready to level up!
+GBP XP t100 RSQ_Glove +1801 -> lv 0 xp 1801/600 pending 2 hand 0
+GBP MENU open RSQUI_A_WeaponLevelUp
+GBP CARDS title "Melee Hands" player 0 count 4
+GBP CARDS  [0] RSQ_Upgrade_Lunge "Lunge" tree Melee owned 0
+GBP CARDS  [1] TFLV_Upgrade_Swiftness "Swiftness" tree stock owned 0
+GBP CARDS  [2] RSQ_Upgrade_Rage "Rage" tree Fists owned 0
+GBP CARDS  [3] RSQ_Upgrade_PistolWhip "Pistol Whip" tree Fists owned 0
+GBP PICK "Melee Hands" [0] RSQ_Upgrade_Lunge tree Melee (was level 0) by Enter
+Your Melee Hands gained a level of Lunge!
+GBP MENU open RSQUI_WeaponLevelUpRouter
+GBP MENU open RSQUI_A_WeaponLevelUp
+GBP CARDS title "Melee Hands" player 0 count 4
+GBP CARDS  [0] RSQ_Upgrade_HeavyHands "Heavy Hands" tree Fists owned 0
+GBP CARDS  [1] TFLV_Upgrade_Shield "Shield" tree stock owned 0
+GBP CARDS  [2] RSQ_Upgrade_OneTwo "One-Two" tree Fists owned 0
+GBP CARDS  [3] RSQ_Upgrade_Lunge "Lunge" tree Melee owned 1
+GBP PICK "Melee Hands" [0] RSQ_Upgrade_HeavyHands tree Fists (was level 0) by Enter
+Your Melee Hands gained a level of Heavy Hands!
+GB_FISTS_OFF
+Your Melee Hands is ready to level up!
+GBP XP t139 RSQ_GloveOff +1801 -> lv 0 xp 1801/600 pending 2 hand 1
+GBP MENU open RSQUI_A_WeaponLevelUp
+GBP CARDS title "Melee Hands" player 0 count 4
+GBP CARDS  [0] RSQ_Upgrade_Executioner "Executioner" tree Melee owned 0
+GBP CARDS  [1] RSQ_Upgrade_HeavyHands "Heavy Hands" tree Fists owned 0
+GBP CARDS  [2] RSQ_Upgrade_HumanShield "Human Shield" tree Fists owned 0
+GBP CARDS  [3] RSQ_Upgrade_Lunge "Lunge" tree Melee owned 0
+GBP PICK "Melee Hands" [0] RSQ_Upgrade_Executioner tree Melee (was level 0) by Enter
+Your Melee Hands gained a level of Executioner!
+GBP MENU open RSQUI_WeaponLevelUpRouter
+GBP MENU open RSQUI_A_WeaponLevelUp
+GBP CARDS title "Melee Hands" player 0 count 4
+GBP CARDS  [0] RSQ_Upgrade_HumanShield "Human Shield" tree Fists owned 0
+GBP CARDS  [1] TFLV_Upgrade_Sweep "Sweep" tree stock owned 0
+GBP CARDS  [2] RSQ_Upgrade_HeavyHands "Heavy Hands" tree Fists owned 0
+GBP CARDS  [3] RSQ_Upgrade_Adrenaline "Adrenaline" tree Melee owned 0
+GBP PICK "Melee Hands" [0] RSQ_Upgrade_HumanShield tree Fists (was level 0) by Enter
+Your Melee Hands gained a level of Human Shield!
+GB_GRENADE
+GBP BAG tag 1 player level 0 xp 4 upgrades (empty)
+GBP BAG tag 1  SSQ_ShieldSaw lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  Rifle lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 1  Melee_Attacks lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  HandGrenades lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 1  AmmoDroper lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  UBQS_ForceHand lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  UBQS_Saber lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  RSQ_Off_Rifle lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 1  RSQWP_WhipWeapon lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 1  RSQ_GloveOff lv 2 xp 1/1800 hand 1 upgrades RSQ_Upgrade_Executioner:1[Melee] RSQ_Upgrade_HumanShield:1[Fists] 
+GBP BAG tag 1  RSQ_Glove lv 2 xp 1/1800 hand 0 upgrades RSQ_Upgrade_Lunge:1[Melee] RSQ_Upgrade_HeavyHands:1[Fists] 
+GBP BAG tag 1  rsq_hands lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP XP RSQGN_Grenade: not carried
+GBP START t183 RSQGN_Grenade -> 0
+GB_GAUGES_AFTER
+GB_PLAYER
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 1" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Longer "Longer" tree SlowMo owned 0
+GBP CARDS  [1] TFLV_Upgrade_HazardSuit "Hazard Suit" tree stock owned 0
+GBP CARDS  [2] TFLV_Upgrade_ToughAsNails "Tough as Nails" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_Grapple "Grapple" tree Grapple owned 0
+GBP PICK "LEVEL 1" [0] RSQ_Upgrade_Longer tree SlowMo (was level 0) by Enter
+You gained a level of Longer!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 2" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Guard "Guard" tree Guard owned 0
+GBP CARDS  [1] RSQ_Upgrade_Deeper "Deeper" tree SlowMo owned 0
+GBP CARDS  [2] TFLV_Upgrade_ECM "Personal ECM" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_Grapple "Grapple" tree Grapple owned 0
+GBP PICK "LEVEL 2" [0] RSQ_Upgrade_Guard tree Guard (was level 0) by Enter
+You gained a level of Guard!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 3" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Akimbo "Akimbo" tree TwoHandsBody owned 0
+GBP CARDS  [1] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP CARDS  [2] RSQ_Upgrade_Alternator "Alternator" tree TwoHandsBody owned 0
+GBP CARDS  [3] RSQ_Upgrade_Deeper "Deeper" tree SlowMo owned 0
+GBP PICK "LEVEL 3" [0] RSQ_Upgrade_Akimbo tree TwoHandsBody (was level 0) by Enter
+You gained a level of Akimbo!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 4" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Guard "Guard" tree Guard owned 1
+GBP CARDS  [1] RSQ_Upgrade_Crossfire "Crossfire" tree TwoHandsBody owned 0
+GBP CARDS  [2] TFLV_Upgrade_ECM "Personal ECM" tree stock owned 0
+GBP CARDS  [3] TFLV_Upgrade_ToughAsNails "Tough as Nails" tree stock owned 0
+GBP PICK "LEVEL 4" [0] RSQ_Upgrade_Guard tree Guard (was level 1) by Enter
+You gained a level of Guard!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 5" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Grapple "Grapple" tree Grapple owned 0
+GBP CARDS  [1] RSQ_Upgrade_Longer "Longer" tree SlowMo owned 1
+GBP CARDS  [2] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP CARDS  [3] TFLV_Upgrade_BlastShaping "Blast Shaping" tree stock owned 0
+GBP PICK "LEVEL 5" [0] RSQ_Upgrade_Grapple tree Grapple (was level 0) by Enter
+You gained a level of Grapple!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 6" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Parry "Parry" tree Guard owned 0
+GBP CARDS  [1] RSQ_Upgrade_Evasion "Evasion" tree TwoHandsBody owned 0
+GBP CARDS  [2] RSQ_Upgrade_Smoker "Smoker" tree Gunslinger owned 0
+GBP CARDS  [3] RSQ_Upgrade_Crossfire "Crossfire" tree TwoHandsBody owned 0
+GBP PICK "LEVEL 6" [2] RSQ_Upgrade_Smoker tree Gunslinger (was level 0) by Enter
+You gained a level of Smoker!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 7" player 1 count 4
+GBP CARDS  [0] TFLV_Upgrade_HazardSuit "Hazard Suit" tree stock owned 0
+GBP CARDS  [1] RSQ_Upgrade_Southpaw "Southpaw" tree TwoHandsBody owned 0
+GBP CARDS  [2] TFLV_Upgrade_ECM "Personal ECM" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_Guard "Guard" tree Guard owned 2
+GBP PICK "LEVEL 7" [1] RSQ_Upgrade_Southpaw tree TwoHandsBody (was level 0) by Enter
+You gained a level of Southpaw!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 8" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_SwingMomentum "Momentum" tree Grapple owned 0
+GBP CARDS  [1] RSQ_Upgrade_QuickDraw "Quick Draw" tree Gunslinger owned 0
+GBP CARDS  [2] TFLV_Upgrade_ECM "Personal ECM" tree stock owned 0
+GBP CARDS  [3] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP PICK "LEVEL 8" [0] RSQ_Upgrade_SwingMomentum tree Grapple (was level 0) by Enter
+You gained a level of Momentum!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 9" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_LongLine "Long Line" tree Grapple owned 0
+GBP CARDS  [1] RSQ_Upgrade_QuickDraw "Quick Draw" tree Gunslinger owned 0
+GBP CARDS  [2] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_SteadyLine "Steady Line" tree Grapple owned 0
+GBP PICK "LEVEL 9" [0] RSQ_Upgrade_LongLine tree Grapple (was level 0) by Enter
+You gained a level of Long Line!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 10" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Akimbo "Akimbo" tree TwoHandsBody owned 1
+GBP CARDS  [1] RSQ_Upgrade_QuickDraw "Quick Draw" tree Gunslinger owned 0
+GBP CARDS  [2] RSQ_Upgrade_Southpaw "Southpaw" tree TwoHandsBody owned 1
+GBP CARDS  [3] TFLV_Upgrade_Bandoliers "Bandoliers" tree stock owned 0
+GBP PICK "LEVEL 10" [0] RSQ_Upgrade_Akimbo tree TwoHandsBody (was level 1) by Enter
+You gained a level of Akimbo!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 11" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_SteadyAim "Steady Aim" tree TwoHandsBody owned 0
+GBP CARDS  [1] RSQ_Upgrade_Deeper "Deeper" tree SlowMo owned 0
+GBP CARDS  [2] TFLV_Upgrade_ToughAsNails "Tough as Nails" tree stock owned 0
+GBP CARDS  [3] RSQ_Upgrade_QuickDraw "Quick Draw" tree Gunslinger owned 0
+GBP PICK "LEVEL 11" [0] RSQ_Upgrade_SteadyAim tree TwoHandsBody (was level 0) by Enter
+You gained a level of Steady Aim!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 12" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_CriticalHits "Critical Hits" tree CriticalHits owned 0
+GBP CARDS  [1] RSQ_Upgrade_Guard "Guard" tree Guard owned 2
+GBP CARDS  [2] RSQ_Upgrade_BitScavenger "Gastropub" tree KillRewards owned 0
+GBP CARDS  [3] RSQ_Upgrade_ChainSmoker "Chain Smoker" tree Gunslinger owned 0
+GBP PICK "LEVEL 12" [0] RSQ_Upgrade_CriticalHits tree CriticalHits (was level 0) by Enter
+You gained a level of Critical Hits!
+GBP MENU open RSQUI_A_PlayerLevelUp
+GBP CARDS title "LEVEL 13" player 1 count 4
+GBP CARDS  [0] RSQ_Upgrade_Slingshot "Slingshot" tree Grapple owned 0
+GBP CARDS  [1] RSQ_Upgrade_Longer "Longer" tree SlowMo owned 1
+GBP CARDS  [2] RSQ_Upgrade_ChainSmoker "Chain Smoker" tree Gunslinger owned 0
+GBP CARDS  [3] RSQ_Upgrade_Backstab "Backstab" tree CriticalHits owned 0
+GBP PICK "LEVEL 13" [0] RSQ_Upgrade_Slingshot tree Grapple (was level 0) by Enter
+You gained a level of Slingshot!
+GBP BAG tag 2 player level 13 xp 4 upgrades RSQ_Upgrade_Longer:1[SlowMo] RSQ_Upgrade_Guard:2[Guard] RSQ_Upgrade_Akimbo:2[TwoHandsBody] RSQ_Upgrade_Grapple:1[Grapple] RSQ_Upgrade_Smoker:1[Gunslinger] RSQ_Upgrade_Southpaw:1[TwoHandsBody] RSQ_Upgrade_SwingMomentum:1[Grapple] RSQ_Upgrade_LongLine:1[Grapple] RSQ_Upgrade_SteadyAim:1[TwoHandsBody] RSQ_Upgrade_CriticalHits:1[CriticalHits] RSQ_Upgrade_Slingshot:1[Grapple] 
+GBP BAG tag 2  SSQ_ShieldSaw lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 2  Rifle lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 2  Melee_Attacks lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 2  HandGrenades lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 2  AmmoDroper lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 2  UBQS_ForceHand lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 2  UBQS_Saber lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 2  RSQ_Off_Rifle lv 0 xp 0/1200 hand -1 upgrades (empty)
+GBP BAG tag 2  RSQWP_WhipWeapon lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP BAG tag 2  RSQ_GloveOff lv 2 xp 1/1800 hand 1 upgrades RSQ_Upgrade_Executioner:1[Melee] RSQ_Upgrade_HumanShield:1[Fists] 
+GBP BAG tag 2  RSQ_Glove lv 2 xp 1/1800 hand 0 upgrades RSQ_Upgrade_Lunge:1[Melee] RSQ_Upgrade_HeavyHands:1[Fists] 
+GBP BAG tag 2  rsq_hands lv 0 xp 0/600 hand -1 upgrades (empty)
+GBP HANDS t582 hand0=RSQ_Glove hand1=RSQ_GloveOff  ready RSQ_Glove
+GB_BAND
+GBP BAND maptime 591 dual 1 shieldrow 0 | shield.gauge.top 51 h 75 drop 109 | Score GaugeShift 0.109
+GBP BAND maptime 593 dual 1 shieldrow 1 | shield.gauge.top 51 h 75 drop 109 | Score GaugeShift 0.109
+GB_BAND_DUAL_OFF
+GBP BAND maptime 649 dual 1 shieldrow 1 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+GBP BAND maptime 651 dual 0 shieldrow 1 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+GB_BAND_DUAL_ON
+GBP BAND maptime 709 dual 0 shieldrow 1 | shield.gauge.top 51 h 75 drop 109 | Score GaugeShift 0.109
+GBP BAND maptime 712 dual 1 shieldrow 1 | shield.gauge.top 51 h 75 drop 109 | Score GaugeShift 0.109
+GB_BAND_ROW_OFF
+GBP BAND maptime 759 dual 1 shieldrow 1 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+GBP BAND maptime 762 dual 1 shieldrow 0 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+GB_STATUS_MAIN
+GBP MENU open RSQUI_StatusRouter
+GBP MENU open RSQUI_A_StatusMenu
+GBP STATUS rows 17, focus hand 1, menuHand 1
+GBP STATUS  [0] kind 0 hand 0 Melee Hands
+GBP STATUS  [1] kind 1 hand 0 RSQ_Upgrade_Lunge lv 1
+GBP STATUS  [2] kind 1 hand 0 RSQ_Upgrade_HeavyHands lv 1
+GBP STATUS  [3] kind 0 hand 1 Melee Hands
+GBP STATUS  [4] kind 1 hand 1 RSQ_Upgrade_Executioner lv 1
+GBP STATUS  [5] kind 1 hand 1 RSQ_Upgrade_HumanShield lv 1
+GBP STATUS  [6] kind 2 hand 0 RSQ_Upgrade_Longer lv 1
+GBP STATUS  [7] kind 2 hand 0 RSQ_Upgrade_Guard lv 2
+GBP STATUS  [8] kind 2 hand 0 RSQ_Upgrade_Akimbo lv 2
+GBP STATUS  [9] kind 2 hand 0 RSQ_Upgrade_Grapple lv 1
+GBP STATUS  [10] kind 2 hand 0 RSQ_Upgrade_Smoker lv 1
+GBP STATUS  [11] kind 2 hand 0 RSQ_Upgrade_Southpaw lv 1
+GBP STATUS  [12] kind 2 hand 0 RSQ_Upgrade_SwingMomentum lv 1
+GBP STATUS  [13] kind 2 hand 0 RSQ_Upgrade_LongLine lv 1
+GBP STATUS  [14] kind 2 hand 0 RSQ_Upgrade_SteadyAim lv 1
+GBP STATUS  [15] kind 2 hand 0 RSQ_Upgrade_CriticalHits lv 1
+GBP STATUS  [16] kind 2 hand 0 RSQ_Upgrade_Slingshot lv 1
+GBP STATUS cursor -> 1
+GB_STATUS_OFF
+GBP MENU open RSQUI_StatusRouter
+GBP MENU open RSQUI_A_StatusMenu
+GBP STATUS rows 17, focus hand 0, menuHand 0
+GBP STATUS  [0] kind 0 hand 0 Melee Hands
+GBP STATUS  [1] kind 1 hand 0 RSQ_Upgrade_Lunge lv 1
+GBP STATUS  [2] kind 1 hand 0 RSQ_Upgrade_HeavyHands lv 1
+GBP STATUS  [3] kind 0 hand 1 Melee Hands
+GBP STATUS  [4] kind 1 hand 1 RSQ_Upgrade_Executioner lv 1
+GBP STATUS  [5] kind 1 hand 1 RSQ_Upgrade_HumanShield lv 1
+GBP STATUS  [6] kind 2 hand 0 RSQ_Upgrade_Longer lv 1
+GBP STATUS  [7] kind 2 hand 0 RSQ_Upgrade_Guard lv 2
+GBP STATUS  [8] kind 2 hand 0 RSQ_Upgrade_Akimbo lv 2
+GBP STATUS  [9] kind 2 hand 0 RSQ_Upgrade_Grapple lv 1
+GBP STATUS  [10] kind 2 hand 0 RSQ_Upgrade_Smoker lv 1
+GBP STATUS  [11] kind 2 hand 0 RSQ_Upgrade_Southpaw lv 1
+GBP STATUS  [12] kind 2 hand 0 RSQ_Upgrade_SwingMomentum lv 1
+GBP STATUS  [13] kind 2 hand 0 RSQ_Upgrade_LongLine lv 1
+GBP STATUS  [14] kind 2 hand 0 RSQ_Upgrade_SteadyAim lv 1
+GBP STATUS  [15] kind 2 hand 0 RSQ_Upgrade_CriticalHits lv 1
+GBP STATUS  [16] kind 2 hand 0 RSQ_Upgrade_Slingshot lv 1
+GBP STATUS cursor -> 16
+GB_MENU_DUAL_ON
+GBP MENU open OptionMenu
+GBP OPT RSQ_MeleeOptions [0] "$RSQ_MENU_STOCK" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [1] "$RSQ_MENU_XPSRC" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [2] "$RSQ_MENU_FORCE_LEARNS" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [3] "$RSQ_MENU_FORCE_SHARE" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [4] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [5] "HUD" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [6] "GBOVR Menus and HUD" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [7] "Ammo and Health Row" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [8] "Ammo Row and Berserk Gauge Size" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [9] "Dual HUD" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [10] "Single HUD Follows" OptionMenuItemOption grey 1
+GBP OPT RSQ_MeleeOptions [11] "$RSQ_MENU_SHIELDGAUGE" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [12] "Berserk Meter Gauge" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [13] "Gauge Animation" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [14] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [15] "HUD Position" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [16] "Main HUD Across" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [17] "Main HUD Down" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [18] "Main HUD Mirror" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [19] "Off HUD Across" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [20] "Off HUD Down" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [21] "Off HUD Mirror" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [22] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [23] "HUD Colour Cycle" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [24] "Main HUD Colour Cycle" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [25] "Main HUD Cycle Speed" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [26] "Main HUD Cycle Spread" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [27] "Main HUD Cycle Intensity" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [28] "Off HUD Colour Cycle" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [29] "Off HUD Cycle Speed" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [30] "Off HUD Cycle Spread" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [31] "Off HUD Cycle Intensity" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [32] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [33] "Test and Debug" OptionMenuItemSubmenu grey 0
+GBP OPT RSQ_MeleeOptions [34] "Reset All" OptionMenuItemRSQGBVResetAll grey 0
+GB_MENU_DUAL_OFF
+GBP BAND maptime 821 dual 0 shieldrow 0 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+GBP OPT RSQ_MeleeOptions [0] "$RSQ_MENU_STOCK" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [1] "$RSQ_MENU_XPSRC" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [2] "$RSQ_MENU_FORCE_LEARNS" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [3] "$RSQ_MENU_FORCE_SHARE" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [4] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [5] "HUD" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [6] "GBOVR Menus and HUD" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [7] "Ammo and Health Row" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [8] "Ammo Row and Berserk Gauge Size" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [9] "Dual HUD" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [10] "Single HUD Follows" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [11] "$RSQ_MENU_SHIELDGAUGE" OptionMenuItemOption grey 1
+GBP OPT RSQ_MeleeOptions [12] "Berserk Meter Gauge" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [13] "Gauge Animation" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [14] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [15] "HUD Position" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [16] "Main HUD Across" OptionMenuItemSlider grey 1
+GBP OPT RSQ_MeleeOptions [17] "Main HUD Down" OptionMenuItemSlider grey 1
+GBP OPT RSQ_MeleeOptions [18] "Main HUD Mirror" OptionMenuItemOption grey 1
+GBP OPT RSQ_MeleeOptions [19] "Off HUD Across" OptionMenuItemSlider grey 1
+GBP OPT RSQ_MeleeOptions [20] "Off HUD Down" OptionMenuItemSlider grey 1
+GBP OPT RSQ_MeleeOptions [21] "Off HUD Mirror" OptionMenuItemOption grey 1
+GBP OPT RSQ_MeleeOptions [22] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [23] "HUD Colour Cycle" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [24] "Main HUD Colour Cycle" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [25] "Main HUD Cycle Speed" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [26] "Main HUD Cycle Spread" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [27] "Main HUD Cycle Intensity" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [28] "Off HUD Colour Cycle" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [29] "Off HUD Cycle Speed" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [30] "Off HUD Cycle Spread" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [31] "Off HUD Cycle Intensity" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [32] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [33] "Test and Debug" OptionMenuItemSubmenu grey 0
+GBP OPT RSQ_MeleeOptions [34] "Reset All" OptionMenuItemRSQGBVResetAll grey 0
+GBP BAND maptime 826 dual 1 shieldrow 0 | shield.gauge.top -1 h -1 drop -1 | Score GaugeShift 0.000
+GB_END

@@ -1,0 +1,25 @@
+set rsqml_gloves 1; wait 5; map MAP01; wait 30; vr_control_scheme 0; bd_tips 0; crosshair 0; screenblocks 10; god; notarget; set rsq_xp_debug 1; set bonsai_vr_dual_hud 1; set rsq_hud_shield 0;
+qz_hmd "0 1.6 0 0 0 0"; qz_rhand "0.25 1.3 -0.3 30 0 0"; qz_lhand "-0.25 1.3 -0.3 30 0 0"; wait 20;
+netevent gbp_hands; bonsai-hands; netevent gbp_bag 0; echo GB_GAUGES_START; wait 60;
+echo GB_FISTS_MAIN; set gbp_hold 60; netevent gbp_xp:RSQ_Glove 2; wait 3; netevent bonsai-show-info; wait 120; netevent gbp_bag 1;
+echo GB_FISTS_OFF; set gbp_hold 10; netevent gbp_xp:RSQ_GloveOff 2; wait 3; netevent bonsai-show-info; wait 50; netevent gbp_bag 2;
+echo GB_GAUGES_AFTER; wait 60;
+echo GB_SABER; give UBQS_Saber; use UBQS_Saber; wait 70; netevent gbp_hands; netevent gbp_xp:UBQS_Saber 2; wait 3; netevent bonsai-show-info; wait 50; netevent gbp_start:UBQS_Saber; wait 30;
+echo GB_FORCE; netevent gbp_xp:UBQS_ForceHand 1; wait 3; netevent bonsai-show-info; wait 30; netevent gbp_start:UBQS_ForceHand; wait 30;
+echo GB_SHIELD; give SSQ_ShieldSaw; use SSQ_ShieldSaw; wait 70; netevent gbp_hands; netevent gbp_xp:SSQ_ShieldSaw 1; wait 3; netevent bonsai-show-info; wait 30; netevent gbp_start:SSQ_ShieldSaw; wait 30;
+echo GB_WHIP; give RSQWP_WhipWeapon; use RSQWP_WhipWeapon; wait 70; netevent gbp_hands; netevent gbp_xp:RSQWP_WhipWeapon 1; wait 3; netevent bonsai-show-info; wait 30; netevent gbp_start:RSQWP_WhipWeapon; wait 30;
+echo GB_GRENADE; give RSQGN_Ammo 3; give RSQGN_Grenade; use RSQGN_Grenade; wait 70; netevent gbp_hands; netevent gbp_xp:RSQGN_Grenade 1; wait 3; netevent bonsai-show-info; wait 30; netevent gbp_start:RSQGN_Grenade; wait 30;
+netevent gbp_bag 3;
+echo GB_PLAYER; set gbp_hold 60; netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 100; set gbp_hold 8;
+netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25; netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25;
+netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25; netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25;
+netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25; netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25;
+netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25; netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25;
+netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25; netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25;
+netevent bonsai-debug,p-xp 7; wait 2; netevent bonsai-show-info; wait 25;
+netevent gbp_bag 4; set gbp_hold -1;
+echo GB_BAND; use RSQ_Glove; wait 60; netevent gbp_hands; set rsq_hud_shield 1; set bonsai_vr_dual_hud 1; wait 50; echo GB_BAND_DUAL_OFF; set bonsai_vr_dual_hud 0; wait 50; echo GB_BAND_DUAL_ON; set bonsai_vr_dual_hud 1; wait 40; echo GB_BAND_ROW_OFF; set rsq_hud_shield 0; wait 30;
+echo GB_STATUS_MAIN; set gbp_stat -1; netevent bonsai-show-info; wait 50; set gbp_stat 1; wait 50; set gbp_stat -1; closemenu; wait 5;
+echo GB_STATUS_OFF; netevent bonsai-show-info; wait 50; set gbp_stat 99; wait 50; set gbp_stat -1; closemenu; wait 5;
+echo GB_MENU_DUAL_ON; set bonsai_vr_dual_hud 1; openmenu RSQ_MeleeOptions; wait 3; set gbp_menusel 1000; wait 3; set gbp_menusel 13; wait 45; echo GB_MENU_DUAL_OFF; set bonsai_vr_dual_hud 0; wait 3; set gbp_menusel 1000; wait 3; set gbp_menusel 13; wait 45; set bonsai_vr_dual_hud 1; set gbp_menusel -1; closemenu; wait 5;
+echo GB_END; quit
