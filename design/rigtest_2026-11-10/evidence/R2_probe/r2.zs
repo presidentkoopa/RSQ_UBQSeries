@@ -170,6 +170,7 @@ class R2_Probe : EventHandler
 	int lastShots;
 	bool lsLog; String lsWas;
 	bool handsLog;
+	Array<Actor> trk; Array<int> trkUntil;
 
 	void Where(int tag)
 	{
@@ -177,9 +178,9 @@ class R2_Probe : EventHandler
 		Vector3 m; bool ok;
 		[m, ok] = RSQ_Muzzle.Where(p);
 		let dn = RSQSM_Down.Get();
-		Console.Printf("R2 WHERE t%d tag %d DOWN %d viewz-floor %.1f ViewHeight %.1f default %.1f | hand AttackPos %s | muzzle Where %s%s | off hand %s | angle %.1f AttackAngle %.1f",
+		Console.Printf("R2 WHERE t%d tag %d DOWN %d viewz-floor %.1f ViewHeight %.1f default %.1f | hand AttackPos %s | muzzle Where %s%s | off hand %s | angle %.1f AttackAngle %.1f pitch %.1f AttackPitch %.1f",
 			level.maptime, tag, dn ? dn.IsDown(p.PlayerNumber()) : -1, p.player.viewz - p.pos.z, p.ViewHeight, p.Default.ViewHeight,
-			Rel(p.AttackPos), Rel(m), ok ? "" : " (guard: the hand)", Rel(p.OffhandPos), p.angle, p.AttackAngle);
+			Rel(p.AttackPos), Rel(m), ok ? "" : " (guard: the hand)", Rel(p.OffhandPos), p.angle, p.AttackAngle, p.pitch, p.AttackPitch);
 	}
 
 	void Holsters(int tag)
@@ -218,6 +219,7 @@ class R2_Probe : EventHandler
 			{
 				shotLines++;
 				Console.Printf("R2 SPAWN t%d %s at %s vel (%.1f %.1f %.1f)%s", level.maptime, n, Rel(a.pos), a.vel.x, a.vel.y, a.vel.z, mine ? " (player's)" : "");
+				if (n.IndexOf("Tracer") >= 0 || n.IndexOf("Round") >= 0 || n.IndexOf("Muzzle") >= 0) { trk.Push(a); trkUntil.Push(level.maptime + 3); }
 			}
 		}
 	}
@@ -228,6 +230,14 @@ class R2_Probe : EventHandler
 		let p = P();
 		if (!p) return;
 		if (gems) GemTick();
+		for (int i = trk.Size() - 1; i >= 0; i--)
+		{
+			if (!trk[i] || level.maptime > trkUntil[i]) { trk.Delete(i); trkUntil.Delete(i); continue; }
+			let a = trk[i];
+			double hs = a.vel.xy.Length();
+			Console.Printf("R2 TRACK t%d %s at %s heading: yaw %.1f off the pawn's, pitch %.1f", level.maptime, a.GetClassName(), Rel(a.pos),
+				hs > 0.01 || a.vel.z != 0 ? Actor.DeltaAngle(p.angle, VectorAngle(a.vel.x, a.vel.y)) : 0., a.vel.Length() > 0.01 ? -asin(clamp(a.vel.z / a.vel.Length(), -1, 1)) : 0.);
+		}
 		RowsTick();
 		let rc = RSQ_Recoil(EventHandler.Find("RSQ_Recoil"));
 		if (rc && rc.shots[0] != lastShots) { Console.Printf("R2 KICK t%d recoil shots %d -> %d", level.maptime, lastShots, rc.shots[0]); lastShots = rc.shots[0]; }
@@ -240,7 +250,8 @@ class R2_Probe : EventHandler
 				let ps = p.player.FindPSprite(L[i]);
 				s = s .. String.Format("%d=%s ", L[i], ps && ps.CurState ? "1" : "0");
 			}
-			s = s .. String.Format("| inspect main %d off %d", RSQLS_Sight.WatchCheck(p, 0), RSQLS_Sight.WatchCheck(p, 1));
+			s = s .. String.Format("| inspect main %d off %d | HandYawOff main %.0f off %.0f", RSQLS_Sight.WatchCheck(p, 0), RSQLS_Sight.WatchCheck(p, 1),
+				abs(Actor.Normalize180(p.AttackAngle + 90 - p.Angle)), abs(Actor.Normalize180(p.OffhandAngle + 90 - p.Angle)));
 			if (s != lsWas) { Console.Printf("R2 LASER t%d %s", level.maptime, s); lsWas = s; }
 		}
 		if (handsLog && (level.maptime % 35 == 0 || level.maptime < 8)) Hands();
@@ -292,6 +303,13 @@ class R2_Probe : EventHandler
 		else if (n ~== "r2_holsters") Holsters(e.Args[0]);
 		else if (n ~== "r2_lslog") { lsLog = e.Args[0] != 0; lsWas = ""; }
 		else if (n ~== "r2_hands") { handsLog = e.Args[0] != 0; Hands(); }
+		else if (n ~== "r2_offglove")   // the Wheel's off-hand glove pick, as RSQ Melee's EquipTick does it
+		{
+			let o = Weapon(p.FindInventory("RSQ_GloveOff"));
+			if (!o) { p.GiveInventory("RSQ_GloveOff", 1); o = Weapon(p.FindInventory("RSQ_GloveOff")); }
+			if (o) p.player.PendingWeapon = o;
+			Console.Printf("R2 OFFGLOVE t%d asked %s", level.maptime, o ? "RSQ_GloveOff" : "none");
+		}
 		else if (n ~== "r2_buzz")    // one RSQ Accessibility buzz on the main hand, by its own route
 		{
 			bool went = RSQA_Buzz.Backup(p, false, "R2probe", false);

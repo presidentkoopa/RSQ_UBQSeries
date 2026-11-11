@@ -320,6 +320,7 @@ Bullets is greyed until you learn Lean Dodge.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-11, rig batch R3, `design/rigtest_2026-11-10/RESULTS_R2.md`) | The green world bar for the revive and the cigarette; a smoke lit during an automatic slow is added after it (end t314 -> t489), and an automatic slow during a smoke is added after the smoke (t347 -> t452). |
 | **code only, not shown** (2026-11-11; loads clean on the full order, not run) | The green world (countdown) bar also shows for the revive's and the cigarette's slow motion, Adrenaline on or off. The cigarette and the world's slow motion add up: a cigarette lit during a slow adds its time after it; a world slow (an automatic trigger or the revive) during a smoke adds its time after the smoke's, and the smoke's full-speed walk runs to the combined end (owner 11-11) |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | Slow motion on by its key (held ON at 25%, countdown bar on), then a menu opened over it: no SlowMo bar or other series HUD over the menu |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The countdown bar, the edge arrows and DOWN's panel and edge marks are not drawn while any menu is open (owner 11-11) |

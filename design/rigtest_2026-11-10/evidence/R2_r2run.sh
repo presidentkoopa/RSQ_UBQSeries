@@ -4,7 +4,7 @@ set -u
 T=$(realpath $1); shift
 G=/home/claude/gamedata; R=/home/claude/rsq_ubqseries
 RIG=/home/claude/rsq_weapondepot/tools/rig/bin
-BDVR=/home/claude/rs_brutal22weaponsq/pk3/03_BD22_VR-Reloaded_2.0.4h.pk3
+BDVR=/home/claude/rs_brutal22weaponsq/pk3/03_BD22_VR-Reloaded_2.0.4i.pk3
 LDF=""; [ "${LD:-0}" = 1 ] && LDF=/mnt/user-data/uploads/1f3eb79e-LegenDoom_3.0.pk3
 D=$T/frames; rm -rf $D; mkdir -p $D
 P=$(ls $R/pk3/RSQ_*.pk3 | xargs -n1 realpath | tr '\n' ' ')

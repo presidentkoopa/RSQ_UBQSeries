@@ -289,6 +289,7 @@ The page ends with **Reset All**: every setting on the page and on Test and Debu
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | A watch check (either hand) takes both hands' laser layers 1 -> 0 -> 1; no other rod in the frames during the check. |
 | **rig only, not headset-confirmed** (2026-11-11, the last checks, `design/rigtest_2026-11-10/RESULTS_LAST.md`) | **At the Dot in Feet:** "45 ft" under the dot on a ceiling 13.6 m up the beam, read in the frame (`design/rigtest_2026-11-10/evidence/LAST_LS_at_the_dot_feet.jpg`, `_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-10, L1: `design/rigtest_2026-11-10/evidence/L9_laser_reload_switch_quicknade.jpg`, t220 to t740) | The pistol's beam on at idle and through 7 shots; during a BD22 VR hand reload (magazine out, gun empty) the beam stayed on; on the shotgun after the switch, gone while the gun lowered for a quick grenade and back with it |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | The page as loaded: **Main Hand** and **Off Hand** (On), and **Beam Sparkle (Quest)** (Off) (`design/rigtest_2026-11-10/evidence/menus_new_rows.jpg`). Only the rows were seen, not what they do. Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). No laser check was run in them (L1 and the packed batch have their own rows) |

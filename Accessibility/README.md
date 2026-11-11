@@ -434,6 +434,7 @@ always has.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-11, rig batch R3, `design/rigtest_2026-11-10/RESULTS_R2.md`) | Across the Body: a rifle aimed forward (one or two hands) gives no watch check even with the twist met; a forearm across the body (70 deg) gives it for each hand. Rumble Backup's buzz no longer flashes BD22 VR 2.0.4h's muzzle. |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | The Comfort Vignette (held by a probe) is off while a menu is open and back after (`vigShown` 1 -> 0 -> 1); no cue over the menu with slow motion running |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The gesture reader's eyes (RSQG_Pose.EyePos) use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | While any menu is open: the vignette is switched off, and the threat and slow-motion cues and the gesture names are not drawn (owner 11-11) |
