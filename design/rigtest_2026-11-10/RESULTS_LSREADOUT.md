@@ -45,3 +45,5 @@ BD_VoxelPack's VOXELDEF).
   Whether the default should be bigger is your call; nothing was changed there.
 - The By the Gun row sits off to the side of your view when you look ahead (it needs a glance down and right, as in
   the frames); in the headset that is a matter of where you look.
+
+| At the Dot, constant apparent size (owner 11-10: "Constant size with distance") | At 10.5 m the digit's glyph scale is 0.207 (By the Gun 0.027): "341 u" and "11 m" read clearly by the ceiling dot at Readout Size 1; Readout Size 3 three times that. READ_DOT_DEG 1.1 deg, never below the old size up close | LS_READOUT_at_the_dot_constant_size.jpg (t525 u, t595 m, t662 size 3, t700), _log.txt |

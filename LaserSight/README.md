@@ -188,8 +188,8 @@ With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you
   a shotgun's ring can be an oval. Below 0.75 degrees no ring is drawn.
 - **Show Range** (off): the distance to what the laser is on, in the dot's colour, as a number and its unit ("341 u",
   "11 m", "34 ft"). **By the Gun:** beside the gun, on the hand's outer side, its near edge 3 cm past the barrel as you
-  see it, so the gun never covers it. **At the Dot:** floating over the dot (bigger the further it is, the same angular
-  size past 4 m), or under it when the dot is on a ceiling. **Range Units:** metres (one decimal under 10 m), feet or
+  see it, so the gun never covers it. **At the Dot:** floating over the dot, always the same size to your eye however far
+  the dot is (never smaller than up close), or under it when the dot is on a ceiling. **Range Units:** metres (one decimal under 10 m), feet or
   map units (counted along the laser's own line, so steep shots read true). **Readout Size** (Test and Debug) and RSQ
   Accessibility's **Text Size** scale it. It shows the main hand's, or the off hand's when the main hand has nothing.
   Rig only, not headset-confirmed (2026-11-10: `design/rigtest_2026-11-10/RESULTS_LSREADOUT.md`).

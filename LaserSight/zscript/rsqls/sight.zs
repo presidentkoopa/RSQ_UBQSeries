@@ -1099,8 +1099,9 @@ class RSQLS_Sight : EventHandler
 	// by the gun or over the spot, in the dot's colour. Glyphs, not a canvas (see RSQLS_ReadoutGlyph): each character
 	// is a billboard laid out across the line from your eye, centred on where the old canvas screen was.
 	// Sizes: a digit is READ_DIGIT_U map units tall at scale 1 (the old screen's text: SmallFont x2 on a 2-unit quad),
-	// x Readout Size, x RSQ Accessibility's Text Size, and At the Dot x the old distance factor (1 to 8).
+	// x Readout Size, x RSQ Accessibility's Text Size; At the Dot is sized to one apparent size (READ_DOT_DEG).
 	const READ_DIGIT_U = 0.875;
+	const READ_DOT_DEG = 1.1;    // At the Dot: a digit's apparent height in degrees at Readout Size 1 (constant with distance)
 	const GLYPH_PX = 48.0;     // every glyph's canvas height (tools/gen_readout_glyphs.py)
 	const DIGIT_PX = 33.0;     // a digit's ink height in it
 	const READ_GAP = 0.30;     // the space before the unit, in digit heights
@@ -1151,7 +1152,15 @@ class RSQLS_Sight : EventHandler
 		// where: as the old screen (By the Gun: 8 cm up the barrel and 9 cm over the grip; At the Dot: 4 units + 0.6 a
 		// metre over the dot, x1 to x8 with the distance), with two fixes the rig asked for (11-10, LS_READOUT_*):
 		bool atDot = mode == 2 && spot[h] && !spot[h].bINVISIBLE;
-		double sc = atDot ? clamp(rangeM[h] / 4.0, 1.0, 8.0) : 1.0;
+		// At the Dot keeps ONE APPARENT SIZE however far the dot is (owner 11-10: "Constant size with distance"): a digit
+		// READ_DOT_DEG tall as seen from your eye (Readout Size 1), never smaller than the old size up close. The old
+		// x1-x8 factor left it ~0.37 deg past 4 m, a few pixels (rig 11-10, LS_READOUT_*); size 3 (~1.1 deg) read well.
+		double sc = 1.0;
+		if (atDot)
+		{
+			double eyeDist = (spot[h].pos - (pmo.pos.x, pmo.pos.y, p.viewz)).Length();
+			sc = max(1.0, eyeDist * tan(READ_DOT_DEG) / READ_DIGIT_U);
+		}
 		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0) * RSQLS_A11y.Text();   // RSQ_Accessibility's Text Size
 		double ps = RSQLS_Hand.Ps();
 		double digitU = READ_DIGIT_U * sc;
