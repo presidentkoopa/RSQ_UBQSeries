@@ -1,0 +1,125 @@
+version "4.10"
+// TEST ONLY (scratch, rig1110, group P1 Melee): a copy of the r10 probe's doors plus P1's readouts. Everything by name.
+class P1_Probe : EventHandler
+{
+	PlayerPawn P() { return players[consoleplayer].mo; }
+	ui int rframe;
+	override void RenderOverlay(RenderEvent e) { Console.Printf("R10 R %d maptime %d", rframe++, level.maptime); }
+	Array<Actor> held;
+	Array<Actor> watch;
+	int watchUntil;
+	override void WorldTick()
+	{
+		for (int i = held.Size() - 1; i >= 0; i--) { let a = held[i]; if (!a || a.health <= 0) { held.Delete(i); continue; } if (a.freezetics <= 0) a.vel = (0, 0, a.vel.z); a.A_ClearTarget(); a.ReactionTime = 9999; }
+		if (level.maptime < watchUntil && level.maptime % 2 == 0)
+			for (int i = 0; i < watch.Size(); i++) { let a = watch[i]; if (!a) continue; Console.Printf("P1 WATCH t%d %s hp %d at %.0f %.0f %.0f vel %.1f %.1f %.1f target %s", level.maptime, a.GetClassName(), a.health, a.pos.x, a.pos.y, a.pos.z, a.vel.x, a.vel.y, a.vel.z, a.target ? String.Format("%s", a.target.GetClassName()) : "none"); }
+	}
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let m = e.Thing;
+		if (m && m.bMissile && level.maptime < watchUntil && watch.Size() < 12) watch.Push(m);
+	}
+	override void WorldThingDied(WorldEvent e)
+	{
+		let a = e.Thing; if (!a) return;
+		Console.Printf("P1 DIED t%d %s by %s (inflictor %s)", level.maptime, a.GetClassName(), a.target ? String.Format("%s", a.target.GetClassName()) : "none", e.Inflictor ? String.Format("%s", e.Inflictor.GetClassName()) : "none");
+	}
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		let a = e.Thing; if (!a) return;
+		Console.Printf("P1 DAMAGED t%d %s took %d (%s) from %s via %s, hp %d", level.maptime, a.GetClassName(), e.Damage, e.DamageType, e.DamageSource ? String.Format("%s", e.DamageSource.GetClassName()) : "none", e.Inflictor ? String.Format("%s", e.Inflictor.GetClassName()) : "none", a.health);
+	}
+	Actor Nearest(Name cls = 'None', bool barrels = false)
+	{
+		let p = P();
+		let it = ThinkerIterator.Create("Actor"); Actor a, best; double bd = 1e9;
+		while (a = Actor(it.Next()))
+		{
+			if (a == p || a.health <= 0) continue;
+			if (barrels) { if (!a.bShootable || a.bIsMonster || a.player) continue; String n = a.GetClassName(); if (n.IndexOf("arrel") < 0) continue; }
+			else if (!a.bIsMonster) continue;
+			if (cls != 'None' && a.GetClassName() != cls) continue;
+			double d = p.Distance3D(a); if (d < bd) { bd = d; best = a; }
+		}
+		return best;
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = P();
+		if (!p) return;
+		if (e.Name ~== "p1_inv") { String s = ""; for (let i = p.Inv; i; i = i.Inv) if (Weapon(i) || i.GetClassName() == 'RSQ_SlapperStash') s = s .. i.GetClassName() .. " "; let st = p.FindInventory("RSQ_SlapperStash"); Console.Printf("P1 INV t%d tag %d weapons: %s| ready %s off %s", level.maptime, e.Args[0], s, p.player.ReadyWeapon ? String.Format("%s", p.player.ReadyWeapon.GetClassName()) : "none", p.player.OffhandWeapon ? String.Format("%s", p.player.OffhandWeapon.GetClassName()) : "none"); }
+		else if (e.Name ~== "p1_hands")
+		{
+			Console.Printf("P1 HANDS t%d tag %d pawn %.1f %.1f %.1f viewz %.1f angle %.1f main %.1f %.1f %.1f p%.1f a%.1f off %.1f %.1f %.1f p%.1f a%.1f hp %d", level.maptime, e.Args[0], p.pos.x, p.pos.y, p.pos.z, p.player.viewz, p.angle,
+				p.AttackPos.x, p.AttackPos.y, p.AttackPos.z, p.AttackPitch, p.AttackAngle, p.OffhandPos.x, p.OffhandPos.y, p.OffhandPos.z, p.OffhandPitch, p.OffhandAngle, p.health);
+		}
+		else if (e.Name ~== "p1_watch") { watch.Clear(); watchUntil = level.maptime + e.Args[0]; let b = Nearest('None', e.Args[1] == 1); if (e.Args[1] && b) watch.Push(b); }
+		else if (e.Name ~== "p1_fire")   // the nearest monster fires its missile class (arg0: 0 DoomImpBall) at the player now
+		{
+			let m = Nearest();
+			if (!m) return;
+			m.target = p; m.A_FaceTarget();
+			let ms = m.SpawnMissile(p, "DoomImpBall");
+			Console.Printf("P1 FIRE t%d %s fired %s at %.0f %.0f %.0f vel %.1f %.1f %.1f", level.maptime, m.GetClassName(), ms ? String.Format("%s", ms.GetClassName()) : "none", ms ? ms.pos.x : 0, ms ? ms.pos.y : 0, ms ? ms.pos.z : 0, ms ? ms.vel.x : 0, ms ? ms.vel.y : 0, ms ? ms.vel.z : 0);
+			if (ms) { watch.Push(ms); watchUntil = max(watchUntil, level.maptime + 40); }
+		}
+		else if (e.Name ~== "p1_zshot")  // the nearest monster fires one bullet (3 damage) at the player's middle now
+		{
+			let m = Nearest();
+			if (!m) return;
+			m.target = p; m.A_FaceTarget();
+			double mz = m.height * 0.5 - m.Floorclip + 8.0;
+			Vector3 from = (m.pos.xy, m.pos.z + mz);
+			Vector3 to = p.pos + (0, 0, p.height * 0.5);
+			Vector3 d = level.Vec3Diff(from, to);
+			double pit = -atan2(d.z, d.xy.Length());
+			int hpWas = p.health;
+			m.LineAttack(m.AngleTo(p), 2048, pit, 3, 'Hitscan', "BulletPuff");
+			Console.Printf("P1 ZSHOT t%d %s shot at the player (pitch %.1f), player hp %d -> %d", level.maptime, m.GetClassName(), pit, hpWas, p.health);
+		}
+		else if (e.Name ~== "p1_mons")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if ((a.bIsMonster || held.Find(a) < held.Size()) && p.Distance3D(a) < (e.Args[0] > 0 ? e.Args[0] : 400))
+				Console.Printf("P1 MON t%d tag %d %s hp %d at %.0f %.0f %.0f vel %.1f %.1f %.1f freeze %d dist %.0f dontthrust %d mass %d", level.maptime, e.Args[1], a.GetClassName(), a.health, a.pos.x, a.pos.y, a.pos.z, a.vel.x, a.vel.y, a.vel.z, a.freezetics, p.Distance2D(a), a.bDontThrust, a.mass);
+		}
+		else if (e.Name ~== "p1_clear")   // every monster within Args[0] goes (a clean arena near the start)
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int n = 0;
+			while (a = Actor(it.Next())) if (a.bIsMonster && p.Distance3D(a) < e.Args[0]) { a.Destroy(); n++; }
+			Console.Printf("P1 CLEAR t%d %d monsters removed", level.maptime, n);
+		}
+		else if (e.Name ~== "r10_hitme")
+		{
+			let best = Nearest();
+			if (best) { Console.Printf("R10 HITME t%d by %s for %d (hp %d)", level.maptime, best.GetClassName(), e.Args[0], p.health); p.DamageMobj(best, best, e.Args[0], 'None'); Console.Printf("R10 HITME after: hp %d", p.health); }
+		}
+		else if (e.Name.Left(10) ~== "r10_spawn:" || e.Name.Left(9) ~== "p1_spawn:")   // <class> dist sideways(+left); r10_ holds it passive, p1_ leaves it free
+		{
+			bool hold = e.Name.Left(10) ~== "r10_spawn:";
+			String cn = e.Name.Mid(hold ? 10 : 9);
+			Vector3 at = p.Vec3Offset(cos(p.angle) * e.Args[0] - sin(p.angle) * e.Args[1], sin(p.angle) * e.Args[0] + cos(p.angle) * e.Args[1], e.Args[2]);
+			let a = Actor.Spawn(cn, at, ALLOW_REPLACE);
+			if (a) { a.angle = a.AngleTo(p); if (hold) held.Push(a); }
+			Console.Printf("P1 SPAWN t%d %s -> %s at %.0f %.0f %.0f %s", level.maptime, cn, a ? String.Format("%s", a.GetClassName()) : "none", at.x, at.y, at.z, hold ? "held" : "free");
+		}
+		else if (e.Name ~== "p1_push")   // the nearest monster: 0 vel only, 1 vel + Pain, 2 damage (thrustless) + vel + Pain, as Clear Out does
+		{
+			let m = Nearest(); if (!m) return;
+			if (e.Args[0] == 2) m.DamageMobj(p, p, 15, 'Melee', DMG_THRUSTLESS);
+			if (!m || m.health <= 0) return;
+			double a = p.AngleTo(m);
+			m.vel.xy += (cos(a), sin(a)) * 14.0; m.vel.z += 4.0;
+			if (e.Args[0] >= 1) { State ps = m.FindState("Pain"); if (ps) m.SetState(ps); if (m.tics >= 0 && m.tics < 10) m.tics = 10; }
+			Console.Printf("P1 PUSH t%d mode %d %s vel %.1f %.1f %.1f state %s", level.maptime, e.Args[0], m.GetClassName(), m.vel.x, m.vel.y, m.vel.z, m.CurState ? "set" : "none");
+		}
+		else if (e.Name ~== "p1_near")   // what stands round the nearest monster
+		{
+			let m = Nearest(); if (!m) return;
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (a != m && m.Distance3D(a) < (e.Args[0] > 0 ? e.Args[0] : 48))
+				Console.Printf("P1 NEAR t%d %s at %.0f %.0f %.0f solid %d noblockmap %d nointeraction %d shootable %d radius %.0f height %.0f", level.maptime, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, a.bSolid, a.bNoBlockmap, a.bNoInteraction, a.bShootable, a.radius, a.height);
+		}
+		else if (e.Name ~== "p1_unhold") held.Clear();
+	}
+}
