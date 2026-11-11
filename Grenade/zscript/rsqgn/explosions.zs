@@ -109,12 +109,14 @@ class RSQGN_Fx play
 // =====================================================================================================================
 class RSQGN_Tint play
 {
-	// RSQ Monsters' ladder (1 Common .. 13 Brown) carries no tint colours; its representative colours (RS_MonsterMaster.zs
-	// RS_TierForColour) are this 13-entry table, kept here and in blast_export.py TIER_COL only
+	// RSQ Monsters' ladder (1 Common .. 13 White, numbered by STRENGTH since 11-11: 5 Cyan 6 Brown 7 Yellow 8 FireBlu 9 Gray
+	// 10 Red 11 Abyss 12 Black 13 White) carries no tint colours; its representative colours (RS_MonsterMaster.zs
+	// RS_TierForColour) are this 13-entry table, kept here and in blast_export.py TIER_COL only. Each colour keeps its
+	// value; the order follows the ladder. Kill Colour takes the HIGHEST tier killed, so the strongest monster's colour.
 	static int TierRGB(int t)
 	{
-		static const int C[] = { 0xC8C8C8, 0x3CDC46, 0x3C78FF, 0xAA46E6, 0xFFC828, 0xE62828, 0x28A0DC, 0x828282, 0x46146E,
-			0x191919, 0xFFFFFF, 0x3CF0F0, 0x8C5A28 };
+		static const int C[] = { 0xC8C8C8, 0x3CDC46, 0x3C78FF, 0xAA46E6, 0x3CF0F0, 0x8C5A28, 0xFFC828, 0x28A0DC, 0x828282,
+			0xE62828, 0x46146E, 0x191919, 0xFFFFFF };
 		return (t >= 1 && t <= 13) ? C[t - 1] : -1;
 	}
 	// Room Complement's 12 hues (blast_export.py hue_rgb: HSV(i/12, 0.85, 1))
@@ -587,7 +589,7 @@ class RSQGN_Boom : Actor
 	{
 		int r = (rgb >> 16) & 255, g = (rgb >> 8) & 255, b = rgb & 255;
 		int m = max(r, max(g, b));
-		if (m <= 0) return 0x404040;   // a black tint (tier 10) lights as a dim grey
+		if (m <= 0) return 0x404040;   // a black tint (tier 12, Black) lights as a dim grey
 		return ((r * 255 / m) << 16) | ((g * 255 / m) << 8) | (b * 255 / m);
 	}
 

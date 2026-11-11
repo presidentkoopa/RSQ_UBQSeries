@@ -557,8 +557,10 @@ def collect_C2():
 KIND_COL = [0xFF7814, 0xFFC828, 0x46BEFF, 0xAA50FF, 0x8C8C96, 0xFFFFFF, 0xFF6EBE, 0x3CDC5A]   # kinds.zs Colour() 1..8
 # RSQ Monsters' ladder has no tint colours of its own; its representative colours (RS_MonsterMaster.zs RS_TierForColour,
 # "they exist to be told apart") are the 13-entry table, kept in ONE place here and in explosions.zs RSQGN_Tint.TierRGB
-TIER_COL = [0xC8C8C8, 0x3CDC46, 0x3C78FF, 0xAA46E6, 0xFFC828, 0xE62828, 0x28A0DC, 0x828282, 0x46146E, 0x191919,
-            0xFFFFFF, 0x3CF0F0, 0x8C5A28]
+# In RSQ Monsters' ladder order, numbered by STRENGTH since 11-11 (1 Common 2 Green 3 Blue 4 Purple 5 Cyan 6 Brown 7 Yellow
+# 8 FireBlu 9 Gray 10 Red 11 Abyss 12 Black 13 White); each colour keeps its value.
+TIER_COL = [0xC8C8C8, 0x3CDC46, 0x3C78FF, 0xAA46E6, 0x3CF0F0, 0x8C5A28, 0xFFC828, 0x28A0DC, 0x828282, 0xE62828,
+            0x46146E, 0x191919, 0xFFFFFF]
 HUES = 12      # Room Complement: the complement's hue in 12 steps, full colour
 
 
