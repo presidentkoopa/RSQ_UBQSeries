@@ -30,6 +30,7 @@
 // cvar rather than deleted.
 class RSQDG_Flight : EventHandler
 {
+	private transient bool refusedFull;   // TakeInto, this catch: the pickup refused a gun you own, its ammo full (AMMO FULL)
 	private Actor  flyActor[2];
 	private int    flyTic[2];
 	private int    flyHold[2];
@@ -396,24 +397,15 @@ class RSQDG_Flight : EventHandler
 			}
 		}
 
-		let hold = RSQDG_Hold.Get();
-		if (hold && hold.Take(hand, a, p))
-		{
-			flyActor[hand] = null;
-			flyTic[hand] = 0;
-			flyHold[hand] = 0;
-			let feel = RSQDG_Feel.Get();
-			if (feel) feel.OnCatch(hand, a, p, false, RSQDG_Mass.Heft(a));
-			return true;
-		}
-
 		// A GUN YOU ALREADY CARRY WITH ITS AMMO FULL (owner 11-10: "it's easy to lose track of ammo ... you'd want to be
 		// trying to pick up guns just out of habit"). It stays targetable; the catch refuses it as the floor would, so
 		// "AMMO FULL" floats over it for a second (RSQ VisualRewards' "word", by name; a short print without it), the hand
 		// gets a soft buzz, and it drops at your feet, there for when you are low. The flight ends here.
-		let fw = Weapon(a);
-		if (fw && pmo.FindInventory(fw.GetClass()))
+		// (Rig 11-10, P2 D3: this sat after the carry below, which takes anything a free hand catches, so it was never
+		// reached and the full gun was carried. It now runs first, on the pickup's own refusal in TakeInto above.)
+		if (refusedFull)
 		{
+			refusedFull = false;
 			Restore(hand);
 			a.SetOrigin(pmo.Vec3Angle(pmo.radius + 12, pmo.angle, 0), false);
 			a.Vel = (0, 0, 0);
@@ -425,6 +417,17 @@ class RSQDG_Flight : EventHandler
 			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
 				Console.Printf("[RSQDG] hand %d: %s carried, ammo full: AMMO FULL, dropped at the feet", hand, a.GetClassName());
 			return false;
+		}
+
+		let hold = RSQDG_Hold.Get();
+		if (hold && hold.Take(hand, a, p))
+		{
+			flyActor[hand] = null;
+			flyTic[hand] = 0;
+			flyHold[hand] = 0;
+			let feel = RSQDG_Feel.Get();
+			if (feel) feel.OnCatch(hand, a, p, false, RSQDG_Mass.Heft(a));
+			return true;
 		}
 
 		// REFUSED, so it keeps flying rather than being dropped on the floor by
@@ -537,6 +540,7 @@ class RSQDG_Flight : EventHandler
 	// The pickup, watched: took or not, and the gun it gave goes to this hand.
 	bool TakeInto(int hand, Inventory inv, PlayerPawn pmo, PlayerInfo p)
 	{
+		refusedFull = false;
 		if (!inv || !pmo || !p) return false;
 		Array<Weapon> had;
 		for (let it = pmo.Inv; it; it = it.Inv) { let ow = Weapon(it); if (ow) had.Push(ow); }
@@ -555,12 +559,13 @@ class RSQDG_Flight : EventHandler
 		else if (w && RSQDG_Reach.Flag("rsqdg_catch_takes", p, true))
 		{
 			// EQUIPPED ANYWAY (owner 11-06, BUGS_1.0 item 16: "a weapon caught in the off hand is equipped, every time"):
-			// the gun you already own goes into the hand that caught it all the same; the floor copy is still carried.
+			// the gun you already own goes into the hand that caught it all the same; the floor copy goes to your feet.
 			if (hand == 1) HandKeep(pmo, p, hand, w);
 			// THE ONE DELIBERATE REFUSAL HERE IS THE PICKUP'S OWN: you have this gun and its ammo is full, so
-			// the game will not take it. It stays in the hand as a thing to carry, drop or throw -- and says so.
-			Say(p, hand == 1 ? String.Format("%s: you have it and its ammo is full -- yours is in your off hand, this one is carried", WeaponName(w))
-				: String.Format("%s: you have it and its ammo is full -- carried, not taken", WeaponName(w)));
+			// the game will not take it. Catch says AMMO FULL over it and drops it at your feet (owner 11-10).
+			refusedFull = true;
+			Say(p, hand == 1 ? String.Format("%s: you have it and its ammo is full -- yours is in your off hand, this one is at your feet", WeaponName(w))
+				: String.Format("%s: you have it and its ammo is full -- left at your feet", WeaponName(w)));
 			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
 				Console.Printf("[RSQDG] hand %d refused -- the pickup refused %s (owned, ammo full)", hand, w.GetClassName());
 		}

@@ -1,2 +1,0 @@
-// The range readout's screen: written by RSQLS_Sight.UiTick, worn by RSQLS_Readout (MODELDEF).
-canvastexture RSLRANGE 128 32

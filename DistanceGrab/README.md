@@ -117,8 +117,8 @@ A thing in the air is yours to catch once it is close to your palm. If your palm
   so you can pull a medikit across the room and take it somewhere.
 - **A gun goes to the hand that caught it.** Catch it with your off hand and it comes up in your off hand, and stays
   there until you move it. Not melee weapons, off-hand-only or two-handed guns, the saber or the ShieldSaw.
-- **A gun you already have with full ammo** cannot be picked up. It stays in your hand to carry or throw, and the screen
-  says so. Caught in the off hand, your own copy of that gun comes up in the off hand as well.
+- **A gun you already have with full ammo** cannot be picked up. **AMMO FULL** floats over it and it drops at your feet,
+  there for when you are low. Caught in the off hand, your own copy of that gun comes up in the off hand as well.
 - **Missed it?** It stops on your palm for a moment (4 tics), then drops. A miss never hurts you or spends the item.
 
 A green bloom flashes at your palm on a catch, with a thud: deeper and louder the heavier the thing.
@@ -320,9 +320,10 @@ the server's settings; everything else is each player's own.
 
 ## Known concerns
 
-- (Fixed 11-10, code only, not shown.) A gun you already carry with full ammo still can't be taken, as walking over it
-  leaves it on the floor; now **AMMO FULL** floats over it for a second (with RSQ VisualRewards; a short line on screen
-  without it), your hand gets a soft buzz, and it drops at your feet for when you're low.
+- (Fixed 11-10, rig only, not headset-confirmed.) A gun you already carry with full ammo still can't be taken, as walking
+  over it leaves it on the floor; now **AMMO FULL** floats over it for a second (with RSQ VisualRewards; a short line on
+  screen without it), your hand gets a soft buzz, and it drops at your feet for when you're low. (The first build of this
+  never ran: the catch carried the gun first. Fixed and shown on the rig 11-10, design/rigtest_2026-11-10 D3.)
 
 ## Status
 
