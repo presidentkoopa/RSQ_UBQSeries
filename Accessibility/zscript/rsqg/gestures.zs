@@ -458,28 +458,21 @@ class RSQG_Handler : EventHandler
 
 	// the pose: in front of the eyes at chest-to-face height, not pointing at floor or ceiling, wrist
 	// twisted at least `need` degrees (the way rsqg_inspect_way says), `slack` metres of drift allowed
-	// TWO HANDS ON THE GUN is never a watch check (owner 11-11 16:28: "two handing a rifle and holding it at a 45^ tilt
-	// counts as a watch check"): the engine's two-hand steadying (WF_TWOHANDSTABILIZED, the off grip near the gun), or
-	// the off hand within 25 cm of the gun hand while a weapon is up (resting on the fore-end without the grip)
-	static bool TwoHanded(PlayerPawn pmo)
+	// THE FOREARM ACROSS THE BODY (owner 11-11 16:28: a two-handed rifle tilted 45 degrees counted as a watch check). The
+	// pose never asked which way the hand points, so any gun held in front of the face and canted past the twist (35)
+	// passed. A watch check points the forearm across the chest; aiming points it forward. rsqg_inspect_across: the
+	// least angle, in degrees, between where the hand points and where you face (0 = not checked, the old pose).
+	// The engine's AttackAngle / OffhandAngle are the world yaw minus 90 (BD22 VR scope.zs; the engine's weaponmace.zs).
+	static clearscope double HandYawOff(PlayerPawn pmo, int h)
 	{
-		let p = pmo ? pmo.player : null;
-		if (!p) return false;
-		if (p.WeaponState & WF_TWOHANDSTABILIZED) return true;
-		if (!p.ReadyWeapon) return false;
-		let cv = CVar.FindCVar('vr_vunits_per_meter');
-		double vu = cv ? cv.GetFloat() : 34;
-		if (vu <= 0) vu = 34;
-		double ps = pmo.Level.pixelstretch;
-		if (ps <= 0) ps = 1.2;
-		Vector3 w = pmo.OffhandPos - pmo.AttackPos;
-		w.z *= ps;
-		return w.Length() < 0.25 * vu;
+		double yaw = (RSQG_Pose.Src(pmo, h) == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90.0;
+		return abs(Actor.Normalize180(yaw - pmo.Angle));
 	}
 
 	static bool InspectPose(PlayerPawn pmo, int h, double slack, double need)
 	{
-		if (TwoHanded(pmo)) return false;
+		double across = Num("rsqg_inspect_across", 45);
+		if (across > 0 && HandYawOff(pmo, h) < across - slack * 100) return false;
 		Vector3 b = RSQG_Pose.Body(pmo, h);
 		double hs = HScale(), vs = VScale();   // GE3: fitted to your body (1, 1 unless Fit to My Body)
 		// Gesture Ease: the box wider every way (nearest x1..x0.5), the gun's tilt allowed wider (at most 90)
