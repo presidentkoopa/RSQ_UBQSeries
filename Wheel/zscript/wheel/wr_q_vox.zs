@@ -131,28 +131,29 @@ class wr_VoxSize play
 //   meshZ    the mesh's part of the middle's z (divided by the pixel stretch), offZ the Offset's z (not divided)
 class wr_CardProp
 {
-	enum ERow { SABER, SHIELD, WHIP, FBXFIST, GLOVE, N }
+	enum ERow { SABER, SHIELD, WHIP, FBXFIST, GLOVE }
+	const NROWS = 5;   // QZD 17.3 will not compare an int with an enum member ("Incompatible operands"): a plain const
 
 	static Name ClassOf(int r)
 	{
 		static const Name n[] = { 'UBQS_HipSaber', 'SSQ_Prop', 'RSQWP_Stowed', 'RSQ_Glove', 'RSQ_Glove' };
-		return (r >= 0 && r < N) ? n[r] : 'None';
+		return (r >= 0 && r < NROWS) ? n[r] : 'None';
 	}
 	static Name SpriteOf(int r)
 	{
 		static const Name n[] = { 'UBSP', 'SSQP', 'RSWP', 'RMHF', 'RMHG' };
-		return (r >= 0 && r < N) ? n[r] : 'TNT1';
+		return (r >= 0 && r < NROWS) ? n[r] : 'TNT1';
 	}
 	static int FrameOf(int r)
 	{
 		static const int n[] = { 13, 0, 0, 0, 0 };   // UBSP N; the rest frame A
-		return (r >= 0 && r < N) ? n[r] : 0;
+		return (r >= 0 && r < NROWS) ? n[r] : 0;
 	}
 	//                                              saber   shield  whip    FBX fist  glove
-	static double Across(int r) { static const double v[] = { 27.06, 19.97,  9.64, 20.55,  18.78 }; return v[clamp(r, 0, N - 1)]; }
-	static double Height(int r) { static const double v[] = { 32.24, 19.88, 12.23, 11.73,  13.98 }; return v[clamp(r, 0, N - 1)]; }
-	static double CX(int r)     { static const double v[] = {  0.01, -3.21,  0.09,  1.24,  -0.37 }; return v[clamp(r, 0, N - 1)]; }
-	static double CY(int r)     { static const double v[] = { -28.92, -2.13, 0.62, -22.14, -22.34 }; return v[clamp(r, 0, N - 1)]; }
-	static double MeshZ(int r)  { static const double v[] = { -0.01,  0.03, -1.12, -0.57,   0.04 }; return v[clamp(r, 0, N - 1)]; }
-	static double OffZ(int r)   { static const double v[] = { -8.00,  0.00,  0.00, -10.00, -10.30 }; return v[clamp(r, 0, N - 1)]; }
+	static double Across(int r) { static const double v[] = { 27.06, 19.97,  9.64, 20.55,  18.78 }; return v[clamp(r, 0, NROWS - 1)]; }
+	static double Height(int r) { static const double v[] = { 32.24, 19.88, 12.23, 11.73,  13.98 }; return v[clamp(r, 0, NROWS - 1)]; }
+	static double CX(int r)     { static const double v[] = {  0.01, -3.21,  0.09,  1.24,  -0.37 }; return v[clamp(r, 0, NROWS - 1)]; }
+	static double CY(int r)     { static const double v[] = { -28.92, -2.13, 0.62, -22.14, -22.34 }; return v[clamp(r, 0, NROWS - 1)]; }
+	static double MeshZ(int r)  { static const double v[] = { -0.01,  0.03, -1.12, -0.57,   0.04 }; return v[clamp(r, 0, NROWS - 1)]; }
+	static double OffZ(int r)   { static const double v[] = { -8.00,  0.00,  0.00, -10.00, -10.30 }; return v[clamp(r, 0, NROWS - 1)]; }
 }
