@@ -109,7 +109,7 @@ class GTP_Probe : EventHandler
 		let v = CVar.FindCVar("vr_vunits_per_meter"); if (v && v.GetFloat() > 0) vu = v.GetFloat();
 		if (level.pixelstretch > 0) ps = level.pixelstretch;
 		let ha = CVar.FindCVar("vr_height_adjust"); double adj = ha ? ha.GetFloat() : 0;
-		double eyeZ = p.viewz + (pmo.HmdPosition.y + adj) * vu / ps - pmo.ViewHeight;
+		double eyeZ = p.viewz + (pmo.HmdPosition.y + adj) * vu / ps - pmo.Default.ViewHeight;	// the engine's fixed eye height, never DOWN's scaled one
 		int b = p.cmd.buttons;
 		String bs = String.Format("%s%s%s%s", (b & BT_ATTACK) ? "A" : "-", (b & BT_ALTATTACK) ? "a" : "-", (b & BT_OFFHANDATTACK) ? "O" : "-", (b & BT_OFFHANDALTATTACK) ? "o" : "-");
 		String hs = "";

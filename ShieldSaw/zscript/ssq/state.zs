@@ -188,7 +188,7 @@ class SSQ_Handler : EventHandler
 		let h = Get();
 		int n = mo.PlayerNumber();
 		if (h && n >= 0 && n < MAXPLAYERS && h.mBodyEyeOk[n])
-			return p.viewz - mo.ViewHeight + h.mBodyEye[n] * SSQ_Hand.VU() / SSQ_Hand.PS(mo);
+			return p.viewz - SSQ_Hand.StandEyeHeight(mo) + h.mBodyEye[n] * SSQ_Hand.VU() / SSQ_Hand.PS(mo);
 		return p.viewz - SeatUnits(mo);
 	}
 	// a point f forward, l to the LEFT, u up from BodyEyes, all in MAP UNITS, in the body's frame
@@ -340,7 +340,7 @@ class SSQ_Handler : EventHandler
 		let ha = CVar.FindCVar('vr_height_adjust');
 		double hy = mo.HmdPosition.y, vu = SSQ_Hand.VU(), ps = SSQ_Hand.PS(mo);
 		// the live eyes: the headset's own height (the hands are placed from it), the nod taken out as the rig does
-		double ez = ((!cb || cb.GetBool()) && hy > 0.3) ? p.viewz - mo.ViewHeight + (hy + (ha ? ha.GetFloat() : 0.0)) * vu / ps : p.viewz;
+		double ez = ((!cb || cb.GetBool()) && hy > 0.3) ? p.viewz - SSQ_Hand.StandEyeHeight(mo) + (hy + (ha ? ha.GetFloat() : 0.0)) * vu / ps : p.viewz;
 		double t = clamp(mo.pitch, -89, 89), nf = (0.10 * (1 - cos(t)) - 0.10 * sin(t)) * vu;
 		Vector3 e = (mo.pos.x + cos(mo.angle) * nf, mo.pos.y + sin(mo.angle) * nf, ez);
 		double c = cos(mo.angle), sn = sin(mo.angle);

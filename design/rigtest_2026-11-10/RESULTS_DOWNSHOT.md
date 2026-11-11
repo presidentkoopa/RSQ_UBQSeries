@@ -33,7 +33,30 @@ units (about 0.9 m) too high:
   Accessibility `rsqg/pose.zs:82`);
 - Tactical Rig `body.zs:288` (RoomFloor), ShieldSaw `state.zs:191, :343`, Grenade `hand.zs:103`, FlashFlare `geo.zs:48`.
 
-None of these is the gun's shot. These are the owner's call; I have not touched them.
+None of these is the gun's shot.
+
+### Fixed (owner's yes, 11-11). Code only, not shown: not run and not load-checked, by the owner's order
+
+Each pack has one helper, `StandEyeHeight(pmo)` = `pmo.Default.ViewHeight`. That is the player class's default view
+height: the number the engine caches, and DOWN never changes it. Every site above now uses it in place of
+`pmo.ViewHeight`:
+- BD22 VR 2.0.4g (`RSVR_VRHand.StandEyeHeight`): `scope.zs:230`, `grenade.zs:564`. Rebuilt with `build.py` as
+  `pk3/03_BD22_VR-Reloaded_2.0.4g.pk3` (not committed). The rig's `run.sh` and `/tmp/lc.sh` still name 2.0.4f.
+- RSQ: Accessibility `RSQG_Pose`; the gesture template and its four copies, regenerated with `gen_gestcopy.py`
+  (`--check`: all the same); Melee `RSQML` (core.zs EyePos); Tactical Rig `RSQTR_Body.RoomFloor`; ShieldSaw
+  `SSQ_Hand` (state.zs EyeZ and the recenter gesture); Grenade `RSQGN_Geo.Eyes`; FlashFlare `RSQFF_Geo.Eyes`; and the
+  Grenade rig probe `tools/rigtest/teeth`. Rebuilt with `build_all.py`.
+
+Why a crouch still works: a crouch reaches these eyes through `viewz`, which is unchanged. A button crouch never touched
+ViewHeight, so nothing changes there. With head-tracked crouch (`vr_crouch_use_button` 0) these sites already used the
+headset's height and are unchanged.
+
+What changes while DOWN: the eyes now sit where the engine puts them, low with the view. Tactical Rig's holsters now
+come down with the hands; before, they stayed about 0.9 m above the hands.
+
+Left alone on purpose: Whip `whip.zs:819` (SteadyEye). It must follow the actual view height, and
+`ViewHeight + crouchviewdelta` already does, DOWN included. Every `player.viewheight` use is the current view, not this
+number.
 
 There is also a vertical risk: at 40% the eye is 17.6 units (about 0.62 m) above the floor. A hand held about 0.6 m
 below the eyes is then at or under the floor, and its shot starts there. That is a vertical fault, not a sideways one.

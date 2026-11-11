@@ -35,6 +35,13 @@ class RSQML play
 		double u = c ? c.GetFloat() : 34.0;
 		return u < 1.0 ? 34.0 : u;
 	}
+	// THE ENGINE'S FIXED EYE HEIGHT (owner 2026-11-11, design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md). With
+	// vr_crouch_use_button on, QuestZDoom 17.3 places the eyes and the hands at viewz + the headset's height - a height it
+	// caches ONCE (hw_openxrdevice.cpp:158-170, getDoomPlayerHeightWithoutCrouch: the pawn's ViewHeight at its first
+	// frame). RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40% while you are down, so pmo.ViewHeight is not that number
+	// then; the pawn class's default (pmo.Default) is, crouched or not. A crouch still reaches the eyes through viewz. Code only, not shown.
+	static clearscope double StandEyeHeight(PlayerPawn pmo) { return pmo ? pmo.Default.ViewHeight : 41.0; }
+
 	static clearscope double Stretch() { double ps = level.pixelstretch; return ps > 0.1 ? ps : 1.2; }
 
 	// a map-space vector's real length in metres (the vertical x pixelstretch)
@@ -286,7 +293,7 @@ class RSQML_Hands play
 		let adj = CVar.FindCVar("vr_height_adjust");
 		double hmdH = (pmo.HmdPosition.y + (adj ? adj.GetFloat() : 0)) * u / ps;
 		let cb = CVar.FindCVar("vr_crouch_use_button");
-		double h = (cb && cb.GetBool()) ? pmo.ViewHeight : hmdH;
+		double h = (cb && cb.GetBool()) ? RSQML.StandEyeHeight(pmo) : hmdH;
 		return (pmo.Pos.x, pmo.Pos.y, pmo.player.viewz + hmdH - h);
 	}
 
