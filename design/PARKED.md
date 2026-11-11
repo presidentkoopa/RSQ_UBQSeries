@@ -181,3 +181,9 @@ DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
   enough; the owner wants to come back to it. See design/mockups/legendoom_hud/README.md.
 - PARKED (owner 11-11 15:47, "fine, later"): give Melee's boxing gloves more of their own. Today they are a look plus
   Guard (and Slappers Only); the punches, swat, headlock and two-hand moves work with any fist.
+- PARKED (owner 11-11 16:10, "for later"): "i was hoping these crosshairs for be quick or be dead or miniboss or wherever
+  they are used would fly in from offscreen like in this clip from predator and virtual cop". His two clips (reference
+  only, not shipped) and their contact sheets are in design/refs/crosshair_flyin/:
+  - predator_lock.mp4: the red pieces slide in from the screen's edges and close into a triangle on the target.
+  - virtual_cop_lock.mp4: the lock ring closes on the target, its colour going green, yellow, orange, then red.
+  Still to find: every place the series draws one of these crosshairs (Be Quick or Be Dead, Miniboss, others).
