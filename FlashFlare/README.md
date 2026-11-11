@@ -209,10 +209,11 @@ read (Light It By, the speeds, the pocket and clip places, the grip keys) and th
 | | |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of this pack was exercised |
+| **rig only, not headset-confirmed** (2026-11-10 night, RSQ Gun Cards' item card checks: `design/rigtest_2026-11-10/RESULTS_P2.md` N1, `RESULTS_FIX.md` 5) | The flare and the flashlight held in the off hand, their states read on Gun Cards' item card: the flare UNLIT with 5 left, the flashlight ON with its battery at 99 (`design/rigtest_2026-11-10/evidence/FIX_5_item_cards_before_after.jpg`, `FIX_C_log.txt`). Only their states were read; nothing was struck, thrown or switched |
 | **rig only, not headset-confirmed** (2026-11-09, `design/rigtest_2026-11-09/logs/J_flashlight.log`) | The flashlight taken into the off hand (it came up switched on) and switched off and on, sent as the same network events the grip and the trigger send; the Beam Look lights: FnF 1, DarkDoomZ with Spill Light 2, DarkDoomZ without Spill Light 1, switched off 0. The pack loaded with no script error of its own, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series |
 | **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | Everything else on this page, including reading the hands themselves (grip, strike, throw). Also the 11-09 evening changes (commit 9533a9d7): no free flare at a level exit (a lit one is used up), the battery's charge carried between levels |
-| **not yet run** | Nothing. The batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/PLAN.md`) has no check for this pack |
+| **code only, not shown** | Everything else on this page, including reading the hands themselves (grip, strike, throw). Also the 11-09 evening changes (commit 9533a9d7): no free flare at a level exit (a lit one is used up), the battery's charge carried between levels. The 11-10 rumble changes: Accessibility's Rumble Strength and Rumble Backup |
+| **not yet run** | Nothing. The batched rig test of 2026-11-10 had no check of its own for this pack (its flare and flashlight stood in for Gun Cards' N1, above) |
 
 The rig frames from earlier builds on this page are pictures of what the code did then. They are not proof of the
 current build.

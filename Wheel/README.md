@@ -263,12 +263,13 @@ Either Hand Picks on, both hands still pick from it).
 
 | | |
 |---|---|
-| **rig only, not headset-confirmed** (2026-11-10 night, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **The glove cards wear RSQ Melee's icons:** both rings with the two MELEE HANDS cards showing Melee's RMICA0 / RMICB0, not the Wheel's WRIGLOVE (`design/rigtest_2026-11-10/evidence/FIX_3_wheel_glove_cards_RMIC.jpg`). **But** on the owner's order the gloves are not in any weapon slot, so the ring has no glove card at all: for that frame they were put in slot 1 from the console (`addslot 1 RSQ_Glove`; slot readout in `FIX_E_log.txt`). Owner to decide (RESULTS_FIX) |
-| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. The ring was not opened |
+| **rig only, not headset-confirmed** (2026-11-10 night, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **The glove cards wear RSQ Melee's icons:** both rings with the two MELEE HANDS cards showing Melee's RMICA0 / RMICB0, not the Wheel's WRIGLOVE (`design/rigtest_2026-11-10/evidence/FIX_3_wheel_glove_cards_RMIC.jpg`). **But** on the owner's order the gloves are not in any weapon slot, so the ring has no glove card at all: for that frame they were put in slot 1 from the console (`addslot 1 RSQ_Glove`; slot readout in `FIX_E_log.txt`). The owner decided: RSQ Melee now puts them in slot 1 (commit 18043e65; slot readout `FIX_3b_gloves_in_slot1_log.txt`) |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. The ring was not opened in them (the packed batch, next row, opened it) |
+| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch, N4: `design/rigtest_2026-11-10/RESULTS_P4.md`) | **Opens On:** hands 0.64 m apart, the Open Wheel key's command tapped: on Main hand the ring opened in front of the right hand, on Off hand in front of the left; a second tap closed it each time (`design/rigtest_2026-11-10/evidence/P4_N4_wheel_opens_on_main_then_off.jpg`, `P4_A_log.txt`). The key was sent as its command, not pressed |
 | **rig only, not headset-confirmed** (2026-11-09, full series load order) | The Wheel loads with the rest of the series and its RSQ Wheel page appears under Radiant Silvergun Options, with no error from the Wheel in the log. Nothing of the ring itself was exercised in that run |
 | **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | The 11-10 key change (one Open Wheel key); the 11-09 evening fixes (Reset All covers Freeze Time and Web View, the ModelSwapper keys off the controls list, Freeze Without SlowMo on its own); everything else on this page |
-| **not yet run** | Nothing: the batched rig test of 2026-11-10 (`design/rigtest_2026-11-10/PLAN.md`) has no Wheel check (M9 may use a Wheel frame for RSQ Melee's glove icons) |
+| **code only, not shown** | The 11-10 key change (one Open Wheel key; on the rig only its command was sent, above); the 11-09 evening fixes (Reset All covers Freeze Time and Web View, the ModelSwapper keys off the controls list, Freeze Without SlowMo on its own); everything else on this page |
+| **not yet run** | A frame of the glove cards with the gloves in slot 1 by RSQ Melee (not from the console). N4 has run (above) |
 
 ---
 
