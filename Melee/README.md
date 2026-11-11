@@ -81,9 +81,9 @@ When Melee's own hands are up, you see them:
 
 ![The hands' item icon](docs/readme/glove_icon.png)
 
-*The hands' item icon (the Wheel shows it on the gloves' cards), as drawn in the pack.* On the owner's load order the
-gloves are not in a weapon slot (Brutal Doom's slots do not take them), so the Wheel has no glove card to show it on;
-see RSQ Wheel's Status.
+*The hands' item icon (the Wheel shows it on the gloves' cards), as drawn in the pack.* The gloves are in weapon slot 1,
+beside the fists (this pack's KEYCONF adds them, since Brutal Doom rebuilds slot 1), so the Wheel shows them on slot 1's
+cards (rig only, not headset-confirmed: `design/rigtest_2026-11-10/evidence/FIX_3b_gloves_in_slot1_log.txt`).
 
 With any other fist (Doom's, Brutal Doom's, an empty hand) the open-hand tap still works, but the fist looks the
 same either way, so the click is your only cue.
