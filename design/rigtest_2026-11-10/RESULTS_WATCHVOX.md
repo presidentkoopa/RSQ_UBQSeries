@@ -48,3 +48,22 @@ turned across the chest in front of the eyes (yaw only: roll does not reach ZScr
 cannot be met by pose there and a probe has to stand in for its "inspect" answer); frames before and after the fix at
 1080, looked at, plus a log of `laser.beam` for that hand going 1 -> 0 -> 1. The blocks themselves are a headset
 judgement: the owner's eye decides whether they are gone.
+
+## Update, owner 15:26: "two instances, one green, one gray", parallel to the laser, going away from the gun
+
+That rules out the first reading (the real beam seen close). Still read only, not run (no rig, no lc.sh). What the code says:
+
+| Question | Finding |
+|---|---|
+| What in the load order is a rod of voxels? | Only RSQ Laser Sight's beam rods (LZ, 7,344 entries) and halo rods (LH, 7,344). Every VOXELDEF and voxels/ lump of every pk3 in the owner's order was read: Gun Cards' 16,442 pieces are glyphs, keys and plates; BD_VoxelPack, RSQ Monsters and FnF are pickups. A rod laid parallel to the gun's beam, starting at the muzzle, is a rod built for a gun placement (its VOXELDEF carries that gun's muzzle as pivot and its barrel's yaw). |
+| Which colours fit? | Green is the off hand's default laser colour (`rsqls_col_off` 20 ff 30). In Laser: PC VR a beam is two rods: the halo in the hand's colour (green) and the core pushed 62.5% toward white and x1.5 (a pale grey-green that reads grey). Gun Cards' watch card has C_GREEN 80e040 and C_GREY c8c8c8, but none of its layers can show a rod sprite (only beam.zs writes a layer's sprite to a rod; Gun Cards sets its states from its own classes). |
+| The Rumble Backup trace (coordinator's suspect) | Cannot draw a line. It is 0.1 units with LAF_NOINTERACT; p_map.cpp (17.3) returns the puff before WorldHitscanFired on both the miss and hit paths, so BD22 VR's shotfx tracer, ballistics, SlowMo's trail never run, and playerrounds makes rounds only past 2048 units. Its PreFired hooks do run: flash.zs lights a muzzle flash and plays the tail, recoil.zs kicks the gun (the side finding above). Not tagged or changed: a light and a kick are not two rods. |
+| Tactical Rig, Accessibility | Neither draws anything along the aim for the watch check (Rig: the watch move, off by default, on Use; Accessibility: a quake or the backup trace, and a grey text line low on screen). |
+| How the pair gets onto the gun hand during the check | **Not found.** |
+
+**Fix, widened (LaserSight only):** while EITHER hand's watch check is met, both hands' lasers go out whole (HideHand
+destroys the beam and halo layers 2140 / 2141 / 1000140 / 1000141 and hides dot, arc, ring, readout). Whatever puts those
+rods on the gun hand, no Laser Sight rod is drawn during the check. If the owner still sees the two rods with this build,
+they are not Laser Sight's, and the table above is wrong about what is a rod. Code only, not shown.
+
+The quickest proof when the owner allows it, no rig needed: Laser Sight's Off Hand row off (or Laser: Quest), then a watch check.

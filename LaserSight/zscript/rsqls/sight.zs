@@ -364,12 +364,17 @@ class RSQLS_Sight : EventHandler
 		if (!RSQLS_Hand.Flag(h == 0 ? "rsqls_main" : "rsqls_off", p, true)) return false;
 		Weapon w = (h == 0) ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return false;
-		// OFF WHILE YOU CHECK YOUR WATCH (owner 11-11 15:05: "watch check causes phantom voxels along the sight"). In the
-		// watch pose the back of the wrist is turned to your face and the gun points across your chest, so its beam (a
-		// rod of 4 mm voxels drawn over the world, beam.zs) runs a hand's width in front of your eyes: each voxel is seen
-		// as a block of its own, laid over the watch card and the hand. That hand's laser goes out whole (HideHand: beam,
-		// halo, dot, arc, ring, readout) from the moment the pose is met until it is let go. Code only, not shown.
-		if (p.mo && WatchCheck(PlayerPawn(p.mo), h) > 0) return false;
+		// OFF WHILE YOU CHECK YOUR WATCH, BOTH HANDS (owner 11-11 15:05 "watch check causes phantom voxels along the sight";
+		// 15:26 "hand with gun in it, the rogue voxels appear parallel to the laser going away from the gun, there are two
+		// instances, one green, one gray"). The only rod-shaped voxels in the owner's load order are this pack's beam and
+		// halo rods (every VOXELDEF of every pk3 read, 11-11: Gun Cards' pieces are glyphs and plates, BD_VoxelPack's and
+		// RSQ Monsters' are pickups), and a rod laid parallel to the gun's beam is one built for a gun placement. Green and
+		// a whitened grey are what the off hand's default green gives in Laser: PC VR (its halo, and its core pushed 60%
+		// toward white). How such a pair comes to be drawn on the gun hand during the check was not found (read only, not
+		// run). So while EITHER hand's watch check is met, every laser layer of both hands goes (HideHand: SetPsprite null
+		// on the beam and halo layers, the dot, arc, ring, readout), whatever drew it; lowering the wrist brings them back.
+		// Code only, not shown.
+		if (p.mo && (WatchCheck(PlayerPawn(p.mo), 0) > 0 || WatchCheck(PlayerPawn(p.mo), 1) > 0)) return false;
 		// THE ENGINE TAKES THE OFF HAND'S GUN WHEN YOU BRACE, SO THE LASER GOES WITH IT.
 		// vr_two_handed_weapons is on by default (hw_vrmodes.cpp:119), and the off-hand grip
 		// pressed with the controllers inside 0.50 m latches weaponStabilised on the grip's
