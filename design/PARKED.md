@@ -179,3 +179,5 @@ DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
     (Wheel's in 82cc31a7)
 - PARKED (owner 11-11 15:30): words over Champions monsters (what they would say, if anything). Icons and visuals may be
   enough; the owner wants to come back to it. See design/mockups/legendoom_hud/README.md.
+- PARKED (owner 11-11 15:47, "fine, later"): give Melee's boxing gloves more of their own. Today they are a look plus
+  Guard (and Slappers Only); the punches, swat, headlock and two-hand moves work with any fist.
