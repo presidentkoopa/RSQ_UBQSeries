@@ -87,6 +87,28 @@ class RSQTR_Region
 	static const double DL[] = {  0.18, -0.18, 0,  0.00,  0.18, -0.18,  0.12, -0.12,  0.13,  0.21, -0.21,  0.30,  0.30,  0.18 };
 	static const double DU[] = { -0.70, -0.70, 0, -0.62, -0.10, -0.10, -0.46, -0.46, -0.70, -0.84, -0.84, -0.84, -0.84, -0.64 };
 	static const double DR[] = {  0.14,  0.14, 0,  0.08,  0.14,  0.14,  0.11,  0.11,  0.12,  0.10,  0.10,  0.08,  0.09,  0.11 };
+	// RSQ FnF'S FLASHLIGHT BESIDE THE FLARE (owner 11-11 15:19: "lets move the flashlight adjacent to the flare, you pick
+	// where ... the problem is that i cant get to the cigarettes"). FnF's flashlight clip hung on the left chest (FnF's
+	// 0.10 forward, 0.17 toward the off hand, 0.22 under the eyes, grab radius 0.12): its centre 0.037 m from the cigarette
+	// pocket's (cig.zs), the two zones overlapping by 0.163 m and the hanging flashlight on the cigarettes. Now, with the rig
+	// on, the clip hangs a hand's width BEHIND THE FLARE HOLSTER (place 12), same side and height: TORCH_F / _L / _U metres
+	// from the flare place's own centre (the place as set: moved by hand, a profile or the seated defaults, it follows), in
+	// the body's frame, "left" toward the off hand. FnF asks for it by name (RSQTR_RigService GetDouble "torch.x/y/z") and
+	// keeps its grab (radius rsqff_fl_clip_r, 0.08 since FnF cfgver 4: the 12 cm light's half-length plus 2 cm, as the
+	// cigarette pocket's). Measured (tools/measure_torch_spot.py, parsed from this file, cig.zs and FnF's CVARINFO; standing, Body Scale 1, Reach 1):
+	// at (-0.27, 0.30, -0.84), centre 0.210 m from the flare place's (radii 0.09 + 0.08: clear by 0.040), 0.327 from the
+	// off hip (0.14: clear by 0.107), 0.304 from the off saber spot (0.10: clear by 0.124), 0.721 from the cigarette
+	// pocket. Body Scale 0.7 to 1.3 keeps it clear of everything (+0.004 to +0.076 against the flare place, the nearest).
+	// It is clear of every place, so FnF's grab (which stands down while the off hand is in a rig place) owns its whole
+	// sphere. SEATED (profiles 3 / 4): behind the seated flare would be the seat, so beside the waist instead, over the flare:
+	// STORCH_* from the seated flare place, at (-0.05, 0.30, -0.54): clear of the flare place by 0.056 and the off chest
+	// holster by 0.058. Code only, not shown.
+	const TORCH_F = -0.21;
+	const TORCH_L = 0.00;
+	const TORCH_U = 0.00;
+	const STORCH_F = -0.12;
+	const STORCH_L = 0.15;
+	const STORCH_U = 0.12;
 	// SEATED DEFAULTS (Report rec 8, 11-08; rig only, not headset-confirmed): in the two seated profiles (Seated A / B,
 	// rsqtr_profile_active 3 / 4) the hips and the low belt spots (SeatedMoves) that still sit at their standing default
 	// (never moved by hand, by slider or by a profile) are put here instead: up and forward onto the front of the lap and
@@ -408,6 +430,26 @@ class RSQTR_Rig : EventHandler
 		Settings(p);
 		return cR[r];
 	}
+
+	// RSQ FnF's flashlight clip, beside the flare place (RSQTR_Region.TORCH_F's note): the flare place's centre as set, plus
+	// the standing or the seated offset, "left" toward the off hand (cL[FLARE] is already the body's left, Settings).
+	Vector3 TorchAt(PlayerPawn pmo)
+	{
+		let p = pmo.player;
+		Settings(p);
+		int fr = RSQTR_Region.FLARE;
+		bool seatedProf = Opt("rsqtr_profile_active", p, 1) >= 3;
+		double df = seatedProf ? RSQTR_Region.STORCH_F : RSQTR_Region.TORCH_F;
+		double dl = seatedProf ? RSQTR_Region.STORCH_L : RSQTR_Region.TORCH_L;
+		double du = seatedProf ? RSQTR_Region.STORCH_U : RSQTR_Region.TORCH_U;
+		if (RSQTR_Body.LeftHanded()) dl = -dl;
+		return BodyPoint(pmo, cF[fr] + df, cL[fr] + dl, cU[fr] + du);
+	}
+
+	// THE FLARES' ONE HOME (owner 11-11 15:19: "i want that gone, flare has its own"): with this player's flare holster live
+	// (on, RSQ FnF loaded and on, the rig on) the flares are kept there only, and FnF's chest pocket is off (FnF asks
+	// RSQTR_RigService "flare.home" by name). Rig off or the flare holster off: FnF's pocket is the flares' home again.
+	static bool FlareHome(PlayerInfo p) { return p && Flag("rsqtr_on", p, true) && FlareHolsterOn(p); }
 
 	// ---- the saber spots ------------------------------------------------------------
 	// The saber classes this player owns that belong at place r. ONE SPOT PER SABER (the owner,

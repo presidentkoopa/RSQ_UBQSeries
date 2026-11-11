@@ -83,6 +83,13 @@ class RSQTR_RigService : Service
 		let who = PlayerPawn(objectArg);
 		bool local = !who || (who.player && who.player == players[consoleplayer]);
 		if (request == "rig.region") return local ? rig.HoverRegion(h) : -1;
+		// THE FLARES' ONE HOME (owner 11-11 15:19, rig.zs FlareHome): 1 this player's flares live in the flare holster and RSQ
+		// FnF's chest pocket is off, 0 FnF's pocket is their home. objectArg: the pawn.
+		if (request == "flare.home")
+		{
+			let pm = who ? who : players[consoleplayer].mo;
+			return (pm && RSQTR_Rig.FlareHome(pm.player)) ? 1 : 0;
+		}
 		// THE AMMO POUCH (11-03): 1 that hand is in the pouch, 0 it is not, -1 no pouch (Ammo Pouch off, no BD22 VR, the rig
 		// off or out of VR, or another player's pawn: the hands are known here only) -- Brutal Doom 22 VR's reloads ask it
 		if (request == "pouch.at")
@@ -101,6 +108,10 @@ class RSQTR_RigService : Service
 		{
 			if (!local) return 0;
 			if (rig.HandBusy(h)) return 1;
+			// THE MAIN HAND AT THE CIGARETTE POCKET (owner 11-11 15:19: "i cant get to the cigarettes") is the pocket's, as a
+			// hand in a holster is the rig's: no other mod's grab (RSQ Distance Grab) arms there
+			let cpm = who ? who : players[consoleplayer].mo;
+			if (h == 0 && cpm && RSQTR_Cig.AtPocket(cpm)) return 1;
 			let cig = RSQTR_Cig.Get();
 			// the cigarette in the main hand; the off hand the whole time the cigarette is out (the Zippo is there or on
 			// its way: cig.zs rule B)
@@ -143,6 +154,19 @@ class RSQTR_RigService : Service
 			return -1;
 		}
 		return -1;
+	}
+
+	// RSQ FnF'S FLASHLIGHT CLIP, BESIDE THE FLARE HOLSTER (owner 11-11 15:19, rig.zs RSQTR_Region.TORCH_F): "torch.x" / ".y" /
+	// ".z", the clip's centre in map units for the pawn in objectArg, while the rig is on for that player; 1e9 otherwise (FnF
+	// then hangs it at its own place). FnF keeps the grab and its radius.
+	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request != "torch.x" && request != "torch.y" && request != "torch.z") return 1e9;
+		let rig = RSQTR_Rig.Get();
+		let pm = PlayerPawn(objectArg);
+		if (!rig || !pm || !pm.player || !RSQTR_Rig.Flag("rsqtr_on", pm.player, true)) return 1e9;
+		Vector3 at = rig.TorchAt(pm);
+		return request == "torch.x" ? at.x : request == "torch.y" ? at.y : at.z;
 	}
 
 	override String GetString(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)

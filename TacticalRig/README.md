@@ -79,8 +79,17 @@ player. Positions are set for an eye height of 1.62 m and scale to you (see Your
 | **Keyring** | Front of the belt, on your off-hand side | Every key you carry |
 | **Saber spots** | Just below each hip | RSQ Saber's hilts, each on its own hand's side |
 | **Whip holster** | Main-hand hip, just behind and outside the saber spot | RSQ Whip's whip |
-| **Flare holster** | Off-hand hip, just behind and outside the saber spot | RSQ FnF's road flares |
+| **Flare holster** | Off-hand hip, just behind and outside the saber spot | RSQ FnF's road flares (their only home: FnF's chest pocket is off while this holster is on) |
+| **Flashlight clip** | Off-hand hip, a hand's width behind the flare holster, same height | RSQ FnF's flashlight |
 | **Cigarette pocket** | High on your left chest (right, left-handed) | Your cigarettes |
+
+**The flashlight sits beside the flare, and the left chest is the cigarettes' alone** (owner, 2026-11-11). Until then FnF
+hung its flashlight on the left chest, right on the cigarette pocket, and its own flare pocket on the right chest showed a
+second flare diamond beside the flare holster. Now the flare comes only from the flare holster, and the flashlight hangs
+21 cm behind it (when seated: beside your waist, over the flare). Measured on the code's numbers by
+`tools/measure_torch_spot.py` (standing, eye height 1.62 m): the flashlight's grab zone is 4 cm clear of the flare
+holster's and 11 cm clear of the hip holster's, and the cigarette pocket's zone overlaps nothing (the nearest, the left
+chest holster, is 2.5 cm clear). *Code only, not shown.*
 
 *[picture to come: the mirror's front and back views with every ring showing]*
 
@@ -267,8 +276,9 @@ torso fades to about half as you look down, so you can see your holsters.
 - **RSQ Wheel:** the holster assignment screen, its mirror view, and badges on each holstered gun's card showing where it
   hangs.
 - **RSQ Saber:** two hilt spots below the hips, each hand its own. **Saber on Hip Too** lets the main saber clip to a hip.
-- **RSQ Whip** and **RSQ FnF:** a holster each on the hips, drawn on your body while stored. FnF's own flare pocket and
-  flashlight clip get rings like the rig's.
+- **RSQ Whip** and **RSQ FnF:** a holster each on the hips, drawn on your body while stored. FnF's flashlight clip hangs
+  where the rig says, behind the flare holster, and gets a ring like the rig's. With the flare holster on, FnF's own flare
+  pocket is off; with it off, the pocket is back on your chest, with its ring.
 - **RSQ Grenade:** the buckle hands out its grenade when Brutal Doom VR's is not in play, and glows in the kind's colour.
 - **RSQ ShieldSaw:** while its shield is stowed on your off shoulder, the rig leaves that shoulder to it (**Shoulder to
   ShieldSaw**). Set to Over the Shoulder, that holster is the ShieldSaw's alone.
@@ -312,6 +322,7 @@ torso fades to about half as you look down, so you can see your holsters.
 | | |
 |---|---|
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The room floor the rig hangs from (the holsters follow the hands down while you are DOWN) and its gesture copy's eyes use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
+| **code only, not shown** (2026-11-11, the owner's headset report of 15:19; not run, by his order "no rig test, code only until i say"; not load-checked either) | FnF's flashlight clip moved from the left chest to behind the flare holster (asked of the rig by name, "torch.x/y/z"); FnF's chest flare pocket and its diamond off while the flare holster is on ("flare.home"); the main hand at the cigarette pocket counts as busy for other mods' grabs (RSQ Distance Grab). Distances measured on the code's numbers (`tools/measure_torch_spot.py`), not in a game |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. Its Tactical Rig check, T1, came in the packed batch (next row) |
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch, T1: `design/rigtest_2026-11-10/RESULTS_P4.md`) | **The rig clutter fixes, in frames:** rings only for what the hand can use, the nearest bright. The pistol at the right hip lit that ring and left the others faint; the off hand at the empty left hip got no ring; the pistol at the right chest lit the chest; holstering flashed; the empty hand at the empty right chest got no chest ring; hands away, no ring (`design/rigtest_2026-11-10/evidence/P4_T1_rings_gun_hip_chest_holster_empty.jpg`, `P4_B_log.txt`). In the first try the ghost-hand tip's ring sat on the right hip; the second run marked the tip done |
 | **rig only, not headset-confirmed** (2026-11-09, full series load order with Brutal Doom 22 VR Reloaded) | The ammo pouch on the belt, its ring, and the pouch easing toward the off hand · own-home refusals: RSQ Grenade's grenade and FnF's flare turned away with the double buzz, and a shotgun assigned to Left chest with its ring flash and ammo arc (sent as the same assignment events the Wheel's holster screen sends; the screen itself was not used) · two-handing a rifle not counting toward the "Grip inside the ring" hint, while the same reach without two-handing shows it · grenade throws through a shoulder ring not counting toward the hint, while the control run shows it · logged in the same runs: Brutal Doom VR's Dual key giving the main hand the off hand's gun, the ghost-hand holster tip looping to the right hip, the automatic height measure, the one-time recenter tip |
