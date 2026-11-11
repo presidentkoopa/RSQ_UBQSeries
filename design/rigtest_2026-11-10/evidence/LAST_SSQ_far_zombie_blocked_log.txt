@@ -1,0 +1,77 @@
+== LASTA (rig02, full order): the muzzle guard, real LineAttack from 400 units
+LAST_SSQ
+LAST TP t386 player at (-440 -300 0) angle 0
+ssq: p0 DRAW (prev off -, prev main Shot_Gun)
+LAST SSQ t447 want 1 was 0 now 1
+LAST_SSQ_MUZZLE_GUARD
+LAST ZM t491 ZombieMan spawned at (-40 -300 0): 400 units = 11.76 m (34 u/m), its floor 0, the player's floor 0, sight 1
+LAST HP t491 100
+ssq: p0 ATE a hitscan from Zombieman
+LAST ZSHOOT t491 zombie at 400 units (11.76 m) fired a LineAttack with BulletPuff: player hp 100 -> 100
+LAST_SSQ_ABSORB
+== LASTB (rig02): Absorb route (ssq_hitscan_guard 0), real LineAttack from 400 units; then the unpinned AI (walks in; renders every ~8 tics at 1080 px)
+LAST_SSQ
+LAST TP t121 player at (-440 -300 0) angle 0
+LAST SLOW t124 pulse none, bar 0
+ssq: p0 DRAW (prev off -, prev main Shot_Gun)
+LAST SSQ t184 want 1 was 0 now 1
+LAST_SSQ_ABSORB
+LAST ZM t227 ZombieMan spawned at (-40 -300 0): 400 units = 11.76 m (34 u/m), its floor 0, the player's floor 0, sight 1
+LAST HP t227 100
+ssq: guard kind 1 BLOCKED dmg 2 from Zombieman (held 1, plate r 9.9) A(-40 -300 42) B(-440 -300 28) C(-427 -295 37) n(1.00 -0.00 0.00)
+LAST ZSHOOT t227 zombie at 400 units (11.76 m) fired a LineAttack with BulletPuff: player hp 100 -> 100
+LAST_SSQ_ZOMBIE_AI_ABSORB
+LAST HP t236 100
+LAST DMG t302 player took 6 from Zombieman via HitPuff (type Bullet), hp now 94
+ssq: guard kind 1 BLOCKED dmg 4 from Zombieman (held 1, plate r 9.9) A(-399 -259 42) B(-440 -300 28) C(-427 -295 37) n(1.00 -0.00 0.00)
+LAST DMG t382 player took 10 from Zombieman via HitPuff (type Bullet), hp now 84
+LAST DMG t514 player took 8 from Zombieman via HitPuff (type Bullet), hp now 76
+LAST_SSQ_MUZZLE_GUARD
+LAST HP t544 100
+LAST DMG t544 player took 2 from Zombieman via HitPuff (type Bullet), hp now 98
+LAST ZSHOOT t544 zombie at 82 units (2.41 m) fired a LineAttack with BulletPuff: player hp 100 -> 98
+LAST_SSQ_ZOMBIE_AI_DEFAULT
+LAST HP t556 100
+LAST DMG t618 player took 2 from Zombieman via HitPuff (type Bullet), hp now 98
+LAST DMG t676 player took 4 from Zombieman via HitPuff (type Bullet), hp now 94
+LAST DMG t758 player took 4 from Zombieman via HitPuff (type Bullet), hp now 90
+LAST_SSQ_END
+LAST_END
+== LASTC (rig02, 120 px, every tic rendered): the zombie's OWN attacks, pinned at 400 units on flat floor
+LAST WORLDLOADED t0 map MAP01
+R10 R 0 maptime 1
+LAST GLOVES t10 rsqml_gloves 0 RSQ_Glove 0 RSQ_GloveOff 0 off rsq_hands
+R10 R 2 maptime 25
+LAST_SSQ
+R10 R 3 maptime 30
+LAST CLEARMON t30 8 removed
+LAST TP t30 player at (-440 -300 0) angle 0
+R10 R 4 maptime 33
+LAST GLOVES t40 rsqml_gloves 0 RSQ_Glove 0 RSQ_GloveOff 0 off rsq_hands
+R10 R 29 maptime 93
+ssq: p0 DRAW (prev off -, prev main Shot_Gun)
+LAST SSQ t93 want 1 was 0 now 1
+R10 R 48 maptime 132
+LAST ZPIN t132 1
+LAST ZM t132 ZombieMan spawned at (-40 -300 0): 400 units = 11.76 m (34 u/m), its floor 0, the player's floor 0, sight 1
+R10 R 49 maptime 134
+LAST_SSQ_AI_ABSORB
+R10 R 50 maptime 136
+LAST HP t136 100
+R10 R 369 maptime 785
+ssq: guard kind 1 BLOCKED dmg 6 from Zombieman (held 1, plate r 9.9) A(-40 -300 42) B(-440 -300 28) C(-427 -295 37) n(1.00 -0.00 0.00)
+R10 R 491 maptime 1033
+LAST_SSQ_AI_DEFAULT
+R10 R 492 maptime 1035
+LAST HP t1035 100
+R10 R 633 maptime 1308
+ssq: guard kind 1 BLOCKED dmg 2 from Zombieman (held 1, plate r 9.9) A(-40 -300 42) B(-440 -300 28) C(-427 -295 37) n(1.00 -0.00 0.00)
+R10 R 845 maptime 1703
+LAST ZDMG t1703 zombie took 9 from SSQ_Ricochet via HitPuff, health 4991
+ssq: p0 ATE a hitscan from Zombieman
+R10 R 861 maptime 1734
+LAST_SSQ_END
+LAST_END
+R10 R 862 maptime 1735
+ssq: p0 STOW
+LAST SSQ t1735 want 0 was 1 now 0

@@ -1,0 +1,16 @@
+LAST WORLDLOADED t0 map MAP01
+LAST WORLDLOADED t0 map MAP01
+LAST GLOVES t10 rsqml_gloves 1 RSQ_Glove 1 RSQ_GloveOff 1 off RSQ_GloveOff
+LAST GLOVES t40 rsqml_gloves 1 RSQ_Glove 1 RSQ_GloveOff 1 off RSQ_GloveOff
+LAST_WHEEL_OPEN
+LAST SLOTS t53 slot 0: HandGrenades* PuristHandGrenades 
+LAST SLOTS t53 slot 1: DSweap BrutalAxe Chain_saw Melee_Attacks* rsq_hands* RSQ_Off_BrutalAxe RSQ_Glove* RSQ_GloveOff* UBQS_Saber* SSQ_ShieldSaw* RSQWP_WhipWeapon* 
+LAST SLOTS t53 slot 2: BrutalPistol DualPistols PuristPistol BrutalSMG DualSMG PuristSMG MP40 DualMP40 PuristMP40 revolver PuristRevolver BrutalRevolver 
+LAST SLOTS t53 slot 3: Shot_Gun PuristShot_Gun AssaultShotgun PuristAssaultShotgun SSG PuristSSG 
+LAST SLOTS t53 slot 4: Sniper PuristSniper Rifle* DualRifles PuristRifle Minigun PuristMinigun MG42 PuristMG42 Machinegun 
+LAST SLOTS t53 slot 5: IncendiaryLauncher PuristIncendiaryLauncher GrenadeLauncher PuristGrenadeLauncher Rocket_Launcher PuristRocket_Launcher Devastator PuristDevastator 
+LAST SLOTS t53 slot 6: Plasma_Gun DualPlasmaRifles PuristPlasma_Gun Railgun PuristRailGun 
+LAST SLOTS t53 slot 7: NukeLauncher PuristNukeLauncher BFG10k PuristBFG10k BIG_FUCKING_GUN PuristBIG_FUCKING_GUN 
+LAST SLOTS t53 slot 8: HellishMissileLauncher PuristHellishMissileLauncher Unmaker PuristUnmaker 
+LAST SLOTS t53 slot 9: FlameCannon DualFlameCannon PuristFlameCannon Flamethrower2 PuristFlamethrower2 
+LAST_WHEEL_CLOSE

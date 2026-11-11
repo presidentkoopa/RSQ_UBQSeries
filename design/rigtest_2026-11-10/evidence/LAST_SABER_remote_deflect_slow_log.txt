@@ -1,0 +1,80 @@
+LAST_SABER
+LAST_SABER_UNLEARNED
+LAST PIN t1120 blade base (-428 -309 39) dir (0.64 0.00 0.77) len 28.5 tip (-409 -309 61); remote centre (-403 -310 66)
+LAST PIN t1155 blade base (-428 -309 39) dir (0.64 0.00 0.77) len 28.5 tip (-409 -309 61); remote centre (-403 -310 66)
+LAST BOLT t1178 remote bolt spawned at (-408 -309 63), 2.1 units from the blade tip, vel 9.0
+SBX_DEFLECT t1179 in-player-tick UBQS_RemoteBolt from tip(t1178) -409.2 -308.5 61.2 to now -409.2 -308.5 61.2 near 0.66 need 3.50 -> DEFLECTED
+LAST PIN t1190 blade base (-428 -309 39) dir (0.64 0.00 0.77) len 28.5 tip (-409 -309 61); remote centre (-403 -310 66)
+LAST PIN t1225 blade base (-428 -309 39) dir (0.64 0.00 0.77) len 28.5 tip (-409 -309 61); remote centre (-403 -310 66)
+LAST BOLT t1240 remote bolt spawned at (-408 -308 63), 2.2 units from the blade tip, vel 9.0
+SBX_DEFLECT t1241 in-player-tick UBQS_RemoteBolt from tip(t1240) -409.2 -308.5 61.2 to now -409.2 -308.5 61.2 near 1.06 need 3.50 -> DEFLECTED
+LAST PIN t1260 blade base (-428 -309 39) dir (0.64 0.00 0.77) len 28.5 tip (-409 -309 61); remote centre (-403 -310 66)
+LAST BOLT t1290 remote bolt spawned at (-407 -308 62), 2.3 units from the blade tip, vel 9.0
+SBX_DEFLECT t1291 in-player-tick UBQS_RemoteBolt from tip(t1290) -409.2 -308.5 61.2 to now -409.2 -308.5 61.2 near 1.35 need 3.50 -> DEFLECTED
+LAST PIN t1295 blade base (-428 -309 39) dir (0.64 0.00 0.77) len 28.5 tip (-409 -309 61); remote centre (-403 -310 66)
+LAST_SABER_ADDALL
+RSQ Gun Bonsai VR: debug Add All: 429 node levels added
+LAST PIN t1330 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST PIN t1365 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST BOLT t1370 remote bolt spawned at (-402 -308 71), 2.4 units from the blade tip, vel 9.0
+SBX_DEFLECT t1371 in-player-tick UBQS_RemoteBolt from tip(t1370) -402.9 -308.5 68.8 to now -402.9 -308.5 68.8 near 1.59 need 5.00 -> DEFLECTED
+LAST REMOTE t1372 deflects 0 -> 1, struck 0 -> 1, stung 0 -> 0, streak 1, round hits 1, points 120
+LAST NET t1375 event rsm_pulse arrived (args 300 35)
+LAST NET t1375 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t1375: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t1375: started 300 ms at 35% (deliberate), pulse until t1386, cause line "SABER REMOTE"
+LAST SLOW t1375 pulse until t1386 (11 tics) from saber.remote, bar 1
+LAST SLOW t1386 pulse none, bar 1
+LAST SLOW t1395 pulse none, bar 0
+LAST PIN t1400 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST BOLT t1428 remote bolt spawned at (-401 -309 70), 2.0 units from the blade tip, vel 9.0
+SBX_DEFLECT t1429 in-player-tick UBQS_RemoteBolt from tip(t1428) -402.9 -308.5 68.8 to now -402.9 -308.5 68.8 near 0.08 need 5.00 -> DEFLECTED
+LAST NET t1430 event rsm_pulse arrived (args 300 35)
+LAST NET t1430 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t1430: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t1430: started 300 ms at 35% (deliberate), pulse until t1441, cause line "SABER REMOTE"
+LAST REMOTE t1430 deflects 1 -> 2, struck 1 -> 2, stung 0 -> 0, streak 2, round hits 2, points 250
+LAST SLOW t1430 pulse until t1441 (11 tics) from saber.remote, bar 1
+LAST PIN t1435 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST SLOW t1441 pulse none, bar 1
+LAST SLOW t1450 pulse none, bar 0
+LAST PIN t1470 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST BOLT t1492 remote bolt spawned at (-402 -308 70), 2.2 units from the blade tip, vel 9.0
+SBX_DEFLECT t1493 in-player-tick UBQS_RemoteBolt from tip(t1492) -402.9 -308.5 68.8 to now -402.9 -308.5 68.8 near 0.93 need 5.00 -> DEFLECTED
+LAST REMOTE t1494 deflects 2 -> 3, struck 2 -> 3, stung 0 -> 0, streak 3, round hits 3, points 390
+LAST NET t1496 event rsm_pulse arrived (args 300 35)
+LAST NET t1496 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t1496: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t1496: started 300 ms at 35% (deliberate), pulse until t1507, cause line "SABER REMOTE"
+LAST SLOW t1496 pulse until t1507 (11 tics) from saber.remote, bar 1
+LAST PIN t1505 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST SLOW t1507 pulse none, bar 1
+LAST SLOW t1516 pulse none, bar 0
+LAST BOLT t1536 remote bolt spawned at (-401 -309 70), 2.0 units from the blade tip, vel 9.0
+SBX_DEFLECT t1537 in-player-tick UBQS_RemoteBolt from tip(t1536) -402.9 -308.5 68.8 to now -402.9 -308.5 68.8 near 0.16 need 5.00 -> DEFLECTED
+LAST REMOTE t1538 deflects 3 -> 4, struck 3 -> 4, stung 0 -> 0, streak 4, round hits 0, points 1150
+LAST NET t1539 event rsm_pulse arrived (args 1500 35)
+LAST NET t1539 event ubqs_remoteslowmo arrived (args 0 0)
+LAST NET t1539 event rsm_pulse arrived (args 300 35)
+LAST NET t1539 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t1539: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t1539: started 1500 ms at 35% (deliberate), pulse until t1592, cause line "SABER REMOTE"
+RSQ_SlowMo: trigger saber.remote t1539: merged 300 ms at 35% (deliberate), pulse until t1592, cause line "SABER REMOTE"
+LAST SLOW t1539 pulse until t1592 (53 tics) from saber.remote, bar 1
+LAST SLOW t1592 pulse none, bar 1
+LAST SLOW t1601 pulse none, bar 0
+LAST PIN t1645 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST PIN t1680 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST PIN t1715 blade base (-427 -309 40) dir (0.64 0.00 0.77) len 37.0 tip (-403 -309 69); remote centre (-397 -310 74)
+LAST BOLT t1718 remote bolt spawned at (-402 -308 71), 2.3 units from the blade tip, vel 12.0
+SBX_DEFLECT t1719 in-player-tick UBQS_RemoteBolt from tip(t1718) -402.9 -308.5 68.8 to now -402.9 -308.5 68.8 near 1.39 need 5.00 -> DEFLECTED
+LAST NET t1720 event rsm_pulse arrived (args 300 35)
+LAST NET t1720 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t1720: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t1720: started 300 ms at 35% (deliberate), pulse until t1731, cause line "SABER REMOTE"
+LAST REMOTE t1720 deflects 4 -> 5, struck 4 -> 5, stung 0 -> 0, streak 5, round hits 1, points 1390
+LAST SLOW t1720 pulse until t1731 (11 tics) from saber.remote, bar 1
+LAST_SABER_END
+LAST PIN t1104 8
+LAST PIN t1120 blade base (-428 -309 39) dir (0.64 0.00 0.77) len 28.5 tip (-409 -309 61); remote centre (-403 -310 66)
+LAST PIN t1155 blade base (-428 -309 39) dir (0.64 0.00 0.77) len 28.5 tip (-409 -309 61); remote centre (-403 -310 66)

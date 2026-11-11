@@ -1,0 +1,7 @@
+LAST_SM_MENU_PHOTO0
+LAST MENU RSQSM_Options row 59 "BE QUICK OR BE DEAD" OptionMenuItemRSQSMBreathTitle (selected 60)
+LAST_SM_MENU_PHOTO1
+LAST PHOTO RSQSM_A11y.Photo() 1 (rsqa_photosafe 1)
+LAST_A11Y_MENU
+LAST MENU RSQA_Options row 2 "Photosensitive Mode" OptionMenuItemOption (selected 2)
+LAST PHOTO RSQSM_A11y.Photo() 0 (rsqa_photosafe 0)

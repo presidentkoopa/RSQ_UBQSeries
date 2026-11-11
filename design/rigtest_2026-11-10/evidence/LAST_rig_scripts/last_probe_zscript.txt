@@ -1,0 +1,152 @@
+version "4.10"
+// TEST ONLY (scratch, rig1110 "LAST" batch, 11-11). Readouts and test placement for the five last checks. Never ships.
+// The frame line (R10 R) comes from lsr.pk3, loaded with it.
+class LAST_Probe : EventHandler
+{
+	PlayerPawn P() { return players[consoleplayer].mo; }
+	Array<Actor> zs;
+	Array<double> zx, zy; bool zpin;
+	double pinDist;
+	int lastDef, lastStruck, lastStung, lastPulse; String lastSrc; bool lastCd;
+	ui int uiPhoto; ui String uiFound;
+
+	static String V3(Vector3 v) { return String.Format("(%.0f %.0f %.0f)", v.x, v.y, v.z); }
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing; if (!a) return;
+		if (a is "UBQS_RemoteBolt")
+		{
+			let p = P(); let sb = p ? UBQS_SaberBase(p.FindInventory("UBQS_Saber")) : null;
+			double dt = sb ? (a.pos - (sb.BladeBase() + sb.BladeDir() * sb.BladeLen())).Length() : -1;
+			Console.Printf("LAST BOLT t%d remote bolt spawned at %s, %.1f units from the blade tip, vel %.1f", level.maptime, V3(a.pos), dt, a.vel.Length());
+		}
+	}
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.Thing && zs.Find(e.Thing) < zs.Size()) { Console.Printf("LAST ZDMG t%d zombie took %d from %s via %s, health %d", level.maptime, e.Damage, e.DamageSource ? e.DamageSource.GetClassName() : 'none', e.Inflictor ? e.Inflictor.GetClassName() : 'none', e.Thing.health); return; }
+		if (!e.Thing || !e.Thing.player) return;
+		Console.Printf("LAST DMG t%d player took %d from %s via %s (type %s), hp now %d", level.maptime, e.Damage,
+			e.DamageSource ? e.DamageSource.GetClassName() : 'none', e.Inflictor ? e.Inflictor.GetClassName() : 'none', e.DamageType, e.Thing.health);
+	}
+	override void WorldLoaded(WorldEvent e) { Console.Printf("LAST WORLDLOADED t%d map %s", level.maptime, level.MapName); }
+
+	override void WorldTick()
+	{
+		let p = P(); if (!p) return;
+		int now = level.maptime;
+		if (zpin) for (int i = 0; i < zs.Size(); i++) if (zs[i] && zs[i].health > 0) { zs[i].SetOrigin((zx[i], zy[i], zs[i].floorz), true); zs[i].vel = (0, 0, 0); }
+		if (now == 10 || now == 40)
+			Console.Printf("LAST GLOVES t%d rsqml_gloves %d RSQ_Glove %d RSQ_GloveOff %d off %s", now, CVar.FindCVar("rsqml_gloves").GetInt(), p.CountInv("RSQ_Glove"), p.CountInv("RSQ_GloveOff"),
+				p.player.OffhandWeapon ? String.Format("%s", p.player.OffhandWeapon.GetClassName()) : "none");
+		let it = ThinkerIterator.Create("UBQS_Remote"); let r = UBQS_Remote(it.Next());
+		if (r)
+		{
+			// the remote held on the line from the trainee's middle through the blade tip, pinDist past the tip (the rig cannot turn to face it)
+			let sb = UBQS_SaberBase(p.FindInventory("UBQS_Saber"));
+			if (pinDist > 0 && sb && sb.InHand() && r.downUntil <= 0)
+			{
+				Vector3 bd = sb.BladeDir();
+				Vector3 tip = sb.BladeBase() + bd * sb.BladeLen();
+				Vector3 mid = p.pos + (0, 0, p.height * 0.65);
+				Vector3 u = tip - mid; if (u.Length() > 1) u = u.Unit();
+				Vector3 c = tip + u * pinDist;
+				r.SetOrigin(c - (0, 0, r.height * 0.5), false); r.vel = (0, 0, 0);
+				if (now % 35 == 0) Console.Printf("LAST PIN t%d blade base %s dir (%.2f %.2f %.2f) len %.1f tip %s; remote centre %s", now, V3(sb.BladeBase()), bd.x, bd.y, bd.z, sb.BladeLen(), V3(tip), V3(c));
+			}
+			if (r.deflects != lastDef || r.struck != lastStruck || r.stung != lastStung)
+				Console.Printf("LAST REMOTE t%d deflects %d -> %d, struck %d -> %d, stung %d -> %d, streak %d, round hits %d, points %d", now, lastDef, r.deflects, lastStruck, r.struck, lastStung, r.stung, r.streak, r.roundHits, r.points);
+			lastDef = r.deflects; lastStruck = r.struck; lastStung = r.stung;
+		}
+		let ck = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
+		if (ck && (ck.pulseUntil != lastPulse || ck.pulseSrc != lastSrc || ck.cdOn != lastCd))
+			Console.Printf("LAST SLOW t%d pulse %s%s, bar %d", now, ck.pulseUntil > now ? String.Format("until t%d (%d tics) from ", ck.pulseUntil, ck.pulseUntil - now) : "none", ck.pulseUntil > now ? ck.pulseSrc : "", ck.cdOn);
+		if (ck) { lastPulse = ck.pulseUntil; lastSrc = ck.pulseSrc; lastCd = ck.cdOn; }
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		String n = e.Name;
+		if (n ~== "rsm_pulse" || n ~== "ubqs_remoteslowmo") { Console.Printf("LAST NET t%d event %s arrived (args %d %d)", level.maptime, n, e.Args[0], e.Args[1]); return; }
+		let p = P(); if (!p) return;
+		if (n ~== "last_clearmon")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int k = 0;
+			while (a = Actor(it.Next())) if (a.bIsMonster) { a.Destroy(); k++; }
+			Console.Printf("LAST CLEARMON t%d %d removed", level.maptime, k);
+		}
+		else if (n ~== "last_tp")
+		{
+			Vector2 xy = (e.Args[0], e.Args[1]);
+			p.SetOrigin((xy.x, xy.y, level.PointInSector(xy).floorplane.ZatPoint(xy)), false); p.vel = (0, 0, 0);
+			Console.Printf("LAST TP t%d player at %s angle %.0f", level.maptime, V3(p.pos), p.angle);
+		}
+		else if (n ~== "last_hp") { p.A_SetHealth(e.Args[0]); Console.Printf("LAST HP t%d %d", level.maptime, p.health); }
+		else if (n ~== "last_zm")   // a vanilla ZombieMan, Args[0] ahead along the player's angle
+		{
+			Vector2 xy = p.pos.xy + (cos(p.angle), sin(p.angle)) * e.Args[0];
+			double fz = level.PointInSector(xy).floorplane.ZatPoint(xy);
+			let z = Actor.Spawn("ZombieMan", (xy.x, xy.y, fz), NO_REPLACE);
+			if (z) { z.angle = z.AngleTo(p); if (e.Args[1] > 0) { z.health = e.Args[1]; } zs.Push(z); zx.Push(xy.x); zy.Push(xy.y); }
+			Console.Printf("LAST ZM t%d ZombieMan %s at %s: %.0f units = %.2f m (34 u/m), its floor %.0f, the player's floor %.0f, sight %d", level.maptime, z ? "spawned" : "FAILED",
+				V3((xy.x, xy.y, fz)), z ? z.Distance3D(p) : 0, z ? z.Distance3D(p) / 34.0 : 0, fz, p.floorz, z ? z.CheckSight(p) : 0);
+		}
+		else if (n ~== "last_zshoot")   // the zombie fires one real hitscan (LineAttack + BulletPuff) at the player's middle
+		{
+			for (int i = 0; i < zs.Size(); i++)
+			{
+				let z = zs[i]; if (!z || z.health <= 0) continue;
+				Vector3 from = z.pos + (0, 0, z.height * 0.5 + 8);
+				Vector3 dd = (p.pos + (0, 0, p.height * 0.5)) - from;
+				double pit = -atan2(dd.z, dd.xy.Length());
+				int hp0 = p.health;
+				z.A_StartSound("grunt/attack", CHAN_WEAPON);
+				z.LineAttack(z.AngleTo(p), 4096, -pit, 3, 'Hitscan', "BulletPuff");
+				Console.Printf("LAST ZSHOOT t%d zombie at %.0f units (%.2f m) fired a LineAttack with BulletPuff: player hp %d -> %d", level.maptime, z.Distance3D(p), z.Distance3D(p) / 34.0, hp0, p.health);
+			}
+		}
+		else if (n ~== "last_zclear") { for (int i = 0; i < zs.Size(); i++) if (zs[i]) zs[i].Destroy(); zs.Clear(); zx.Clear(); zy.Clear(); }
+		else if (n ~== "last_zpin") { zpin = e.Args[0] != 0; Console.Printf("LAST ZPIN t%d %d", level.maptime, zpin); }
+		else if (n ~== "last_ssq")
+		{
+			let h = SSQ_Handler(EventHandler.Find("SSQ_Handler")); if (!h) return;
+			int i = consoleplayer, st = h.mState[i];
+			if (e.Args[0] == 1 && st == SSQ_Handler.SS_STOWED) h.Draw(i);
+			else if (e.Args[0] == 0 && st == SSQ_Handler.SS_DRAWN) h.Stow(i, true);
+			Console.Printf("LAST SSQ t%d want %d was %d now %d", level.maptime, e.Args[0], st, h.mState[i]);
+		}
+		else if (n ~== "last_pin") { pinDist = e.Args[0]; Console.Printf("LAST PIN t%d %.0f", level.maptime, pinDist); }
+		else if (n ~== "last_slots")
+		{
+			let ws = players[e.Player].weapons;
+			for (int sl = 0; sl < 10; sl++)
+			{
+				String o = "";
+				for (int j = 0; j < ws.SlotSize(sl); j++) { let c = ws.GetWeapon(sl, j); if (c) o = o .. c.GetClassName() .. (p.FindInventory(c) ? "* " : " "); }
+				if (o != "") Console.Printf("LAST SLOTS t%d slot %d: %s", level.maptime, sl, o);
+			}
+		}
+	}
+
+	override void UiTick()
+	{
+		int ph = RSQSM_A11y.Photo() ? 1 : 0;
+		if (ph != uiPhoto) { Console.Printf("LAST PHOTO RSQSM_A11y.Photo() %d (rsqa_photosafe %d)", ph, CVar.FindCVar("rsqa_photosafe").GetInt()); uiPhoto = ph; }
+		let c = CVar.GetCVar("last_menufind", players[consoleplayer]);
+		if (!c) return;
+		String want = c.GetString();
+		let m = OptionMenu(Menu.GetCurrentMenu());
+		if (want == "" || !m || !m.mDesc) return;
+		for (int i = 0; i < m.mDesc.mItems.Size(); i++)
+		{
+			String lb = StringTable.Localize(m.mDesc.mItems[i].mLabel);
+			if (lb.IndexOf(want) < 0) continue;
+			int sel = i;
+			if (!m.mDesc.mItems[i].Selectable()) sel = min(i + 1, m.mDesc.mItems.Size() - 1);
+			m.mDesc.mSelectedItem = sel; m.mDesc.mScrollPos = max(0, i - 3);
+			String tag = m.mDesc.mMenuName .. ":" .. want;
+			if (tag != uiFound) { Console.Printf("LAST MENU %s row %d \"%s\" %s (selected %d)", m.mDesc.mMenuName, i, lb, m.mDesc.mItems[i].GetClassName(), sel); uiFound = tag; }
+			return;
+		}
+	}
+}
