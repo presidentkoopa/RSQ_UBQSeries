@@ -76,18 +76,21 @@ When Melee's own hands are up, you see them:
 - **Ermac's hand** or **the FBX hand** from Brutal Doom VR. Each has a fist and an open hand, and changes when you tap
   the trigger. **Hand Model: Auto** picks the FBX hand when Brutal Doom VR is loaded and Ermac's otherwise. The FBX
   hand wears Brutal Doom VR's Hand Skin Tone (single player).
-- **Boxing Gloves**, SuperPunchOut's. Always fists, never an open palm.
+- **Boxing Gloves**, SuperPunchOut's. Always fists, never an open palm. Drawn at the hands' size, where the fist is
+  (11-10: they drew about 1.4 times the fist across, nearer your eye).
 
 ![The hands' item icon](docs/readme/glove_icon.png)
 
-*The hands' item icon (the Wheel shows it), as drawn in the pack.*
+*The hands' item icon (the Wheel shows it on the gloves' cards), as drawn in the pack.* On the owner's load order the
+gloves are not in a weapon slot (Brutal Doom's slots do not take them), so the Wheel has no glove card to show it on;
+see RSQ Wheel's Status.
 
 With any other fist (Doom's, Brutal Doom's, an empty hand) the open-hand tap still works, but the fist looks the
 same either way, so the click is your only cue.
 
 **Slappers Only** is GoldenEye's: fists only. It puts the boxing gloves on both hands right away and takes every other
 weapon from you, sabers and the ShieldSaw included: the ones you carry go into a stash, weapons lying in the level vanish,
-and one you're given later goes into the stash within a quarter of a second. Your ammo stays. It is done again at every level start. Turn it
+and one you're given later goes into the stash within a quarter of a second. Your ammo stays. It is done again at every level start. RSQ Saber's Start With Saber stands down while it is on. Turn it
 off and your guns come back, with the gun you had in your hand back in it, but no free ammo.
 
 ---
@@ -271,6 +274,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-10 night, the rig batch's fixes, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **Boxing glove at hand size:** scale and offset measured against the two fists (`tools/md3_bounds.py`); frames of the FBX fist, the glove before and after at rest, held out and at the guard (`design/rigtest_2026-11-10/evidence/FIX_2_boxing_glove_before_after.jpg`). **Slappers Only with RSQ Saber:** the saber stays out of the inventory while it is on, and off puts the Shotgun back in the main hand (`FIX_B_log.txt`). The batch's own checks M1-M9: `RESULTS_P1.md` |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, full series load order with Brutal Doom 22 and BD22 VR Reloaded 2.0.4f) | Every launch loaded every RSQ pk3 with no script error from our packs (`design/rigtest_2026-11-10/RESULTS.md`). No Melee move was exercised |
 | **rig only, not headset-confirmed** (2026-11-09, full series load order with Brutal Doom 22) | The pack loads with no script error of its own, and its page is listed under Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`). No Melee move was exercised in that run |
 | **Headset-confirmed** | Nothing yet |

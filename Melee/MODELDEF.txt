@@ -11,8 +11,12 @@
 //   RMHF A  BD22 VR's FBX free hand (RS_Brutal22WeaponsQ src/models/rsq/fbx/fbx_oh_free_R.md3, frames 0 and 1 kept), its
 //      frame 1 = the fist, fitted in place of Ermac's fist (BD22 VR MODELDEF.rsq RSQ_Hands: the same Scale and Offset)
 //   RMHF B  the FBX hand, frame 0 = the relaxed open hand
-//   RMHG A  SuperPunchOut's boxing glove (glove.md3, byte-identical to Ermac's PunchOutVR glove) at Ermac's glove fit,
-//      unchanged: Scale -1.2 1.2 1.2, Offset 0 -10 -10
+//   RMHG A  SuperPunchOut's boxing glove (glove.md3, byte-identical to Ermac's PunchOutVR glove). HAND SIZE (owner 11-10:
+//      "Shrink to hand size"; was Ermac's glove fit, Scale -1.2 1.2 1.2, Offset 0 -10 -10, which drew it about 1.4x the
+//      fist across and nearer the eye). Measured with tools/md3_bounds.py: the glove's ball (raw x >= 8.2) is 12.20 x 13.98
+//      across; the fists (frame 1, the fingers' half) are Ermac 10.56 x 12.44 and FBX 10.12 x 11.73: scale 0.86 (the mean of
+//      the four ratios). The ball's centre is put on the two fists' mean centre (-5.31 -22.30 -10.31 at the hands' fit):
+//      Offset 6.0 -22.4 -10.3
 // Every block uses model slot 0 (a block whose only model was slot 1 drew nothing of its own on the rig: the glove
 // showed instead). BD22 VR's skin tone (an A_ChangeModel skin override on slot 0) is put on only while the FBX look is
 // up, and taken off when another look comes up (RSQML_HandLook.Tone).
@@ -41,8 +45,8 @@ Model RSQ_Glove
 	Path "models/rsqml"
 	Model 0 "glove.md3"
 	Skin 0 "glove.png"
-	Scale -1.2 1.2 1.2
-	Offset 0.0 -10.0 -10.0
+	Scale -0.86 0.86 0.86
+	Offset 6.0 -22.4 -10.3
 	FrameIndex RMHG A 0 0
 	FrameIndex TNT1 A 0 0
 }
@@ -72,8 +76,8 @@ Model RSQ_GloveOff
 	Path "models/rsqml"
 	Model 0 "glove.md3"
 	Skin 0 "glove.png"
-	Scale -1.2 1.2 1.2
-	Offset 0.0 -10.0 -10.0
+	Scale -0.86 0.86 0.86
+	Offset 6.0 -22.4 -10.3
 	FrameIndex RMHG A 0 0
 	FrameIndex TNT1 A 0 0
 }
