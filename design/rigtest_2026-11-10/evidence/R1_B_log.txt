@@ -268,3 +268,15 @@ R10 R 21 maptime 148
 RSQ_SlowMo: trigger rsm_off t148: held off
 R10 R 22 maptime 153
 R1B_END
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+RSQ_SlowMo: trigger key t94: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger key t94: held ON at 25%
+slow motion: ON, scale 0.25 heading for 0.25 (depth 0.25), 387 actors slowed, adrenaline 0
+slow motion: ON, scale 0.25 heading for 0.25 (depth 0.25), 387 actors slowed, adrenaline 0
+RSQ_SlowMo: trigger key t125: held off
+RSQ_SlowMo: trigger countdown t135: countdown bar: gone (real time)
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+RSQ_SlowMo: trigger wheel t81: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger wheel t81: held ON at 25%
+RSQ_SlowMo: trigger rsm_off t148: held off
