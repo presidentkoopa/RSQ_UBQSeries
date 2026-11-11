@@ -4,7 +4,7 @@
 // ---- THE GLOVES AND THE PUNCH (gloves.zs, slappers.zs) -- server settings, as they were ------------------------
 // Slappers Only: on puts the boxing gloves on both hands at once and puts your guns away (gun pickups vanish); off gives them back.
 server bool  rsqml_slappers = false;
-// Start With Melee Hands: 1 hands you Melee's hands at each level start and brings them up in both hands.
+// Start With Melee Hands: 1 puts Melee's hands in your inventory at each level start (not raised: BD22's start weapon and BD22 VR's off hand stay; owner 11-11).
 server int   rsqml_gloves = 0;
 // Melee Hands: 0 Auto (BD22 VR's FBX hand when RSQ's BD22 VR weapons mod is loaded, else Ermac's), 1 Ermac, 2 FBX.
 user int     rsqml_hands_model = 0;

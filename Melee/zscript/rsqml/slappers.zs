@@ -108,12 +108,12 @@ class RSQML_Slappers : StaticEventHandler
 			if (dueTic[pn] > 0 && level.maptime >= dueTic[pn])
 			{
 				dueTic[pn] = 0;
-				bool had = pmo.FindInventory("RSQ_Glove") != null;
 				if (gloves) GiveGloves(pmo);
 				if (slap) { Strip(pmo); GiveKit(pmo); StartEquip(pn); }
-				// Start With Melee Hands: newly given, they come up in both hands (2026-11-02; before, they were
-				// only put in your inventory, and with BD22 VR the off hand kept its own free hand)
-				else if (gloves && !had) StartEquip(pn);
+				// Start With Melee Hands: the gloves go in your inventory only (owner 2026-11-11: "Inventory only").
+				// You start with BD22's own start weapon, and the off hand keeps BD22 VR's RSQ_Hands (the
+				// pump, the rifle grenade load, the hands on the guns). Equipping both hands at the start
+				// (11-02) took the start weapon and RSQ_Hands away.
 			}
 			// AND IT STAYS THAT WAY: whatever hands you a gun later (a script, a mod's own
 			// give, a cheat) loses it within a quarter of a second

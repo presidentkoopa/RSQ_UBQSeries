@@ -47,7 +47,7 @@ time slows down for a moment. Grab a monster with your off hand, hold it, punch 
 | Any punch or shove into a switch or a door | It works, as if you'd pressed Use |
 
 The punches, the swat and the Headlock work with whatever is in your hands, from the first map. Melee's own hands are
-optional: turn on **Start With Melee Hands** and you get a pair at every level start, raised in both hands (slot 1).
+optional: turn on **Start With Melee Hands** and you get a pair in your inventory at every level start. You still start with BD22's own start weapon, and the off hand keeps BD22 VR's hands (owner 11-11).
 
 ---
 
