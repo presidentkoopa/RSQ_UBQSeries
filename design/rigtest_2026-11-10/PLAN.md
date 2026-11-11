@@ -1,4 +1,4 @@
-# Batched rig test, 2026-11-10 (proposed; owner to OK before it runs)
+# Batched rig test, 2026-11-10 (owner greenlit the batch 11-10 22:35: "Let's make sure RSQ UBSQ works")
 
 Load order: doom2 > brutal22test6 > BD_VoxelPack > BD22 VR 2.0.4f (one throw; built for this test) > LOB > Champions > GunBonsai > the RSQ pk3s.
 Every check ends in frames or a log of the behaviour itself. "Rig only, not headset-confirmed" for anything VR.
@@ -69,3 +69,21 @@ M9 the glove icons, main and off hand (Wheel or HUD frame)
 
 ## Tactical Rig
 T1 rig clutter, all four (as 11-08) still in: rings only for what the hand can use, the nearest bright (frames)
+
+## Today's builds, code only until shown (added 11-10 22:35)
+N1 Gun Cards item card: saber LIT/OFF, flare count, flashlight battery on the watch (frames)
+N2 Whip and Gun: the cursor drawn only when gold; no red dots (frames, gold then red aim)
+N3 Graveyard: a riser that does not fit finds a nearby spot (log: RISES moved/try)
+N4 Wheel: Opens On Main / Off opens the ring on that hand (frames or log)
+N5 Monsters: Tier Icons Above Monsters is on the options page and turns the gems on (menu frame, frames)
+N6 Rumble Backup route from another mod (Melee or ShieldSaw): RSQA_BACKUP log line
+N7 Accessibility Seated Auto: a standing player is never called seated; a 0.5 m drop after standing is (log)
+
+## The packed batch (one agent per group; the rig lock runs one game at a time)
+Each group packs its checks into as few map loads as it can, uses a log line wherever a log proves the point, and saves
+frames only for what an eye must judge (hands, HUD, words, menus). Results go to RESULTS_<group>.md, merged into
+RESULTS.md at the end.
+- **P1 Melee:** M1-M9, N6 (Melee's rumble route).
+- **P2 Hands and throws:** Saber A1-A3, ShieldSaw H1-H3, BD22 VR X1, Distance Grab D1-D3, N1.
+- **P3 Fights:** Miniboss B1-B6, SlowMo S1-S4, VisualRewards V1-V2, Monsters R1-R2, Grenade G2, N3.
+- **P4 Looks and menus:** LaserSight L2-L5, Tactical Rig T1, N2, N4, N5, N7.
