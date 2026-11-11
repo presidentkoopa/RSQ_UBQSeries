@@ -760,6 +760,11 @@ All Melee family.
 **Purple** and **Yellow** ×0.25, **FireBlu** and **Abyss** ×0.3, **Brown** and **Gray** ×0.35, **Red** ×0.4, the
 **Black Boss** ×0.75 and **White Boss** ×1.0 (both big moments). **EX Boss** ×0.5 pays on top (a big moment).
 
+RSQ Monsters numbers its ladder by strength since 11-11 (1 Common, 2 Green, 3 Blue, 4 Purple, 5 Cyan, 6 Brown,
+7 Yellow, 8 FireBlu, 9 Gray, 10 Red, 11 Abyss, 12 Black, 13 White). These rows are paid by colour and ranked by how rare
+a colour's spawn is, not by its number, so the renumber changed none of their pay; Keep the Change, Fresh Paint, Upset
+and Tier Slayer use that rarity rank too.
+
 **The roster:**
 
 - **Rarity** (Daring): how rare the monster's spawn was, from 1 in 20: ×0.1 a doubling past 1 in 10, at most ×1.0 (a big moment from ×0.5).
@@ -937,6 +942,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 | **rig only, not headset-confirmed** (2026-11-09, logs and frames) | The head-shot check, with the Headshot row paying on head kills and not on chest kills: Brutal Doom zombies and imps (head and chest), a Brutal Doom Baron's head through Score's own head target, an imp and a Baron grown to 1.25x judged on their grown size (and a 1.25x imp that was only drawn bigger judged on its real box), RSQ Monsters' ColorfulHell and (since removed) MeatGrinder imps; the +30 head damage, and the Baron's head shot doubled. The same run showed that Brutal Doom's own check did not pay the Headshot row on a Brutal Doom head kill, so that option was removed (the check is always Score's own now). The Revival Fire's ring of flames, fired by RSQ SlowMo's DOWN top tier, and the Revenge award reaching Score from DOWN (SlowMo's log; the points paid were not logged) |
 | **Headset-confirmed** | Nothing yet |
 | **code only, not shown** | The 11-10 changes: the whip rows (Snap Kill named before the crack lands; with RSQ Grapple loaded too, Score asks both ropes for Swinging, Hanging Shot and Dismount), Severed retired. The 11-09 evening fixes: Headshot pays only when the killing blow itself hit the head (a head hit then a body-shot kill no longer pays), and Hot Seat, Aftershock and Demolition can fire (a barrel thrown with Distance Grab now counts as a thrown keg). Everything else on this page: the base and every other bonus row, the combo chain and its named combos, the target and the rewards, lives and Score's own revival on a spent life, the life crate, the breakdown, the breathing word, the wrist, the big moments and the hit-stop, the roster rows |
+| **code only, not shown** (2026-11-11, RSQ Monsters' ladder renumbered by strength; owner: "no rig test, code only until i say") | The roster rows read the new tier numbers: each colour row, the rarity rank behind Keep the Change, Fresh Paint, Upset and Tier Slayer, Full Spectrum's and Colour Chain's colours; pay unchanged |
 | **not yet run** | Nothing from the batched rig test: R2 and R4 have run (above) |
 
 ---

@@ -19,9 +19,12 @@
 // these rows pay for its powers and rarity, the way the champion colour rows do (0.25 each, Bronze/Silver 0.5,
 // Gold 0.75, a risen Legendary 1.5).
 //
-// THE LADDER'S ORDER IS NOT ITS STRENGTH. Tier 12 Cyan and 13 Brown are not stronger than 6 Red (CH weights: Cyan 120,
-// Brown 65, Red 55 of the imp's 1843). So the rows rank a colour by the CH dial's rarity: Common 1, Green 2, Blue 3, Cyan 4, Purple 5, Yellow 6, FireBlu 7, Abyss 7, Brown 8,
-// Gray 8, Red 9, Black 10, White 11. "Top" is rank 10+ (the Black and White bosses) or an EX form; "low" is rank 3 or less.
+// THE LADDER IS NUMBERED BY STRENGTH since 11-11 (owner; RSQ Monsters RS_Retier.zs): 1 Common 2 Green 3 Blue 4 Purple
+// 5 Cyan 6 Brown 7 Yellow 8 FireBlu 9 Gray 10 Red 11 Abyss 12 Black 13 White. These rows still rank a colour by the CH
+// dial's RARITY, not its strength (CH weights: Cyan 120, Brown 65, Red 55 of the imp's 1843): Common 1, Green 2, Blue 3,
+// Cyan 4, Purple 5, Yellow 6, FireBlu 7, Abyss 7, Brown 8, Gray 8, Red 9, Black 10, White 11 -- unchanged by the
+// renumber, only keyed by the new tier numbers (Rank). "Top" is rank 10+ (the Black and White bosses) or an EX form;
+// "low" is rank 3 or less.
 //
 // Pay, per row, is a share of the kill's base like every bonus, charged against the family caps and the kill cap.
 // ============================================================================
@@ -47,7 +50,7 @@ class RS_Roster play
 {
 	static int Ask(String req, Actor v, int arg = 0) { return v ? RS_Svc.Int(RS_Svc.MONSTERS, req, arg, v) : -1; }
 	static int SetOf(Actor v) { return Ask("set", v); }    // 1 CH, -1 not the roster
-	static int Tier(Actor v) { return Ask("tier", v); }   // 1..13, -1
+	static int Tier(Actor v) { return Ask("tier", v); }   // 1..13 (RSQ Monsters' ladder, strength order since 11-11), -1
 	static bool EX(Actor v)  { return Ask("ex", v) == 1; }
 
 	// a row's switch (server cvar, on when missing)
@@ -58,6 +61,7 @@ class RS_Roster play
 		return !c || c.GetBool();
 	}
 
+	// the RARITY rank of a ladder tier (tier numbers since the 11-11 renumber; the ranks themselves unchanged)
 	static int Rank(int tier)
 	{
 		switch (tier)
@@ -65,16 +69,16 @@ class RS_Roster play
 			case 1:  return 1;   // Common
 			case 2:  return 2;   // Green
 			case 3:  return 3;   // Blue
-			case 12: return 4;   // Cyan
+			case 5:  return 4;   // Cyan
 			case 4:  return 5;   // Purple
-			case 5:  return 6;   // Yellow
-			case 7:  return 7;   // FireBlu
-			case 9:  return 7;   // Abyss
-			case 13: return 8;   // Brown
-			case 8:  return 8;   // Gray
-			case 6:  return 9;   // Red
-			case 10: return 10;  // Black
-			case 11: return 11;  // White
+			case 7:  return 6;   // Yellow
+			case 8:  return 7;   // FireBlu
+			case 11: return 7;   // Abyss
+			case 6:  return 8;   // Brown
+			case 9:  return 8;   // Gray
+			case 10: return 9;   // Red
+			case 12: return 10;  // Black
+			case 13: return 11;  // White
 		}
 		return 0;
 	}
@@ -155,18 +159,18 @@ class RS_RosterTierRow : RS_ScoreTierRow
 
 class RS_RR_TierGreen   : RS_RosterTierRow { override int TierNo() const { return 2; }  override Name RowCvar() const { return 'rs_score_rr_green'; }   override String DisplayName() const { return "Green Tier"; }   override double Mult() const { return 0.1; } }
 class RS_RR_TierBlue    : RS_RosterTierRow { override int TierNo() const { return 3; }  override Name RowCvar() const { return 'rs_score_rr_blue'; }    override String DisplayName() const { return "Blue Tier"; }    override double Mult() const { return 0.15; } }
-class RS_RR_TierCyan    : RS_RosterTierRow { override int TierNo() const { return 12; } override Name RowCvar() const { return 'rs_score_rr_cyan'; }    override String DisplayName() const { return "Cyan Tier"; }    override double Mult() const { return 0.2; } }
+class RS_RR_TierCyan    : RS_RosterTierRow { override int TierNo() const { return 5; } override Name RowCvar() const { return 'rs_score_rr_cyan'; }    override String DisplayName() const { return "Cyan Tier"; }    override double Mult() const { return 0.2; } }
 class RS_RR_TierPurple  : RS_RosterTierRow { override int TierNo() const { return 4; }  override Name RowCvar() const { return 'rs_score_rr_purple'; }  override String DisplayName() const { return "Purple Tier"; }  override double Mult() const { return 0.25; } }
-class RS_RR_TierYellow  : RS_RosterTierRow { override int TierNo() const { return 5; }  override Name RowCvar() const { return 'rs_score_rr_yellow'; }  override String DisplayName() const { return "Yellow Tier"; }  override double Mult() const { return 0.25; } }
-class RS_RR_TierFireBlu : RS_RosterTierRow { override int TierNo() const { return 7; }  override Name RowCvar() const { return 'rs_score_rr_fireblu'; } override String DisplayName() const { return "FireBlu Tier"; } override double Mult() const { return 0.3; } }
-class RS_RR_TierAbyss   : RS_RosterTierRow { override int TierNo() const { return 9; }  override Name RowCvar() const { return 'rs_score_rr_abyss'; }   override String DisplayName() const { return "Abyss Tier"; }   override double Mult() const { return 0.3; } }
-class RS_RR_TierBrown   : RS_RosterTierRow { override int TierNo() const { return 13; } override Name RowCvar() const { return 'rs_score_rr_brown'; }   override String DisplayName() const { return "Brown Tier"; }   override double Mult() const { return 0.35; } }
-class RS_RR_TierGray    : RS_RosterTierRow { override int TierNo() const { return 8; }  override Name RowCvar() const { return 'rs_score_rr_gray'; }    override String DisplayName() const { return "Gray Tier"; }    override double Mult() const { return 0.35; } }
-class RS_RR_TierRed     : RS_RosterTierRow { override int TierNo() const { return 6; }  override Name RowCvar() const { return 'rs_score_rr_red'; }     override String DisplayName() const { return "Red Tier"; }     override double Mult() const { return 0.4; } }
+class RS_RR_TierYellow  : RS_RosterTierRow { override int TierNo() const { return 7; }  override Name RowCvar() const { return 'rs_score_rr_yellow'; }  override String DisplayName() const { return "Yellow Tier"; }  override double Mult() const { return 0.25; } }
+class RS_RR_TierFireBlu : RS_RosterTierRow { override int TierNo() const { return 8; }  override Name RowCvar() const { return 'rs_score_rr_fireblu'; } override String DisplayName() const { return "FireBlu Tier"; } override double Mult() const { return 0.3; } }
+class RS_RR_TierAbyss   : RS_RosterTierRow { override int TierNo() const { return 11; }  override Name RowCvar() const { return 'rs_score_rr_abyss'; }   override String DisplayName() const { return "Abyss Tier"; }   override double Mult() const { return 0.3; } }
+class RS_RR_TierBrown   : RS_RosterTierRow { override int TierNo() const { return 6; } override Name RowCvar() const { return 'rs_score_rr_brown'; }   override String DisplayName() const { return "Brown Tier"; }   override double Mult() const { return 0.35; } }
+class RS_RR_TierGray    : RS_RosterTierRow { override int TierNo() const { return 9; }  override Name RowCvar() const { return 'rs_score_rr_gray'; }    override String DisplayName() const { return "Gray Tier"; }    override double Mult() const { return 0.35; } }
+class RS_RR_TierRed     : RS_RosterTierRow { override int TierNo() const { return 10; }  override Name RowCvar() const { return 'rs_score_rr_red'; }     override String DisplayName() const { return "Red Tier"; }     override double Mult() const { return 0.4; } }
 // the boss tiers (Monsters' "Boss & Special Forms": about one spawn in eight hundred)
 class RS_RR_TierBlack   : RS_RosterTierRow
 {
-	override int TierNo() const { return 10; }
+	override int TierNo() const { return 12; }   // Black (10 before the 11-11 renumber)
 	override Name RowCvar() const { return 'rs_score_rr_black'; }
 	override String DisplayName() const { return "Black Boss"; }
 	override double Mult() const { return 0.75; }
@@ -174,7 +178,7 @@ class RS_RR_TierBlack   : RS_RosterTierRow
 }
 class RS_RR_TierWhite   : RS_RosterTierRow
 {
-	override int TierNo() const { return 11; }
+	override int TierNo() const { return 13; }   // White (11 before the 11-11 renumber)
 	override Name RowCvar() const { return 'rs_score_rr_white'; }
 	override String DisplayName() const { return "White Boss"; }
 	override double Mult() const { return 1.0; }
