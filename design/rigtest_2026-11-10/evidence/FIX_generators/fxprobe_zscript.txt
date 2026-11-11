@@ -1,0 +1,369 @@
+version "4.10"
+// TEST ONLY (scratch, rig1110, group P2): a COPY of r10probe with P2 readouts (p2_* events). Never ships.
+class R10_Probe : EventHandler
+{
+	PlayerPawn P() { return players[consoleplayer].mo; }
+	ui int rframe;
+	override void RenderOverlay(RenderEvent e) { Console.Printf("R10 R %d maptime %d", rframe++, level.maptime); }
+	Array<Actor> held;
+	bool holdAll, bring;
+	String lastWords;
+	override void WorldTick()
+	{
+		let fh = RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler"));
+		if (fh && level.maptime % 3 == 0)
+		{
+			String ws = "";
+			for (int i = 0; i < fh.words.Size(); i++) { let w = fh.words[i]; if (w) ws = ws .. String.Format("[%s %s%s on %s] ", w.text, w.held ? "held" : "once", w.clearing ? " clearing" : "", w.who ? w.who.GetClassName() : 'none'); }
+			if (ws != lastWords) { Console.Printf("R10 WORDS t%d %s", level.maptime, ws == "" ? "(none)" : ws); lastWords = ws; }
+		}
+		if (bring && P())
+		{
+			let mb = ServiceIterator.Find("RSQMB_Service").Next();
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			let p = P();
+			while (mb && (a = Actor(it.Next()))) if (a.bIsMonster && a.health > 0 && mb.GetInt("miniboss", "", 0, 0, a) == 1)
+			{ a.SetOrigin(p.Vec3Offset(cos(p.angle) * 200, sin(p.angle) * 200, 0), true); a.vel = (0, 0, 0); a.angle = a.AngleTo(p); a.A_ClearTarget(); }
+		}
+		for (int i = held.Size() - 1; i >= 0; i--) { let a = held[i]; if (!a || a.health <= 0) { held.Delete(i); continue; } a.vel = (0, 0, a.vel.z); a.A_ClearTarget(); a.ReactionTime = 9999; }
+		if (holdAll && level.maptime % 5 == 0) { let it = ThinkerIterator.Create("Actor"); Actor a; while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0 && held.Find(a) == held.Size()) held.Push(a); }
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = P();
+		if (!p) return;
+		if (e.Name ~== "r10_inv")
+		{
+			int nades = p.CountInv("RSQGN_Ammo"); let q = CVar.GetCVar("rsqgn_quick", p.player);
+			int thrown = 0; let it = ThinkerIterator.Create("RSQGN_Thrown"); Thinker t; while (t = it.Next()) thrown++;
+			Console.Printf("R10 INV t%d RSQGN_Ammo %d quick %d thrown-in-world %d ready %s", level.maptime, nades, q ? q.GetInt() : -1, thrown, p.player.ReadyWeapon ? String.Format("%s", p.player.ReadyWeapon.GetClassName()) : "none");
+			return;
+		}
+		if (e.Name ~== "r10_hurt")      // every monster within Args[1] (default 1024) loses Args[0] health (never killed)
+		{
+			double r = e.Args[1] > 0 ? e.Args[1] : 1024;
+			let it = ThinkerIterator.Create("Actor"); Actor a; int n = 0;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0 && p.Distance3D(a) < r)
+			{ int d = min(e.Args[0], a.health - 1); if (d > 0) { a.DamageMobj(p, p, d, 'None'); n++; } }
+			Console.Printf("R10 HURT t%d %d monsters by %d", level.maptime, n, e.Args[0]);
+		}
+		else if (e.Name ~== "r10_mon") Mons(e.Args[0]);
+		else if (e.Name ~== "r10_hitme")   // the nearest monster hits the player for Args[0]
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a, best; double bd = 1e9;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { double d = p.Distance3D(a); if (d < bd) { bd = d; best = a; } }
+			if (best) { Console.Printf("R10 HITME t%d by %s for %d (hp %d)", level.maptime, best.GetClassName(), e.Args[0], p.health); p.DamageMobj(best, best, e.Args[0], 'None'); Console.Printf("R10 HITME after: hp %d", p.health); }
+		}
+		else if (e.Name ~== "r10_remotehit")   // a bolt the player sent back, flown into his training remote
+		{
+			let it = ThinkerIterator.Create("UBQS_Remote"); let r = Actor(it.Next());
+			if (!r) { Console.Printf("R10 REMOTEHIT t%d: no remote", level.maptime); return; }
+			Vector3 from = r.pos + (0, 0, r.height * 0.5) + (r.pos - p.pos).Unit() * -24.0;
+			let b = UBQS_RemoteBolt(Actor.Spawn("UBQS_RemoteBolt", from));
+			if (b) { b.target = p; b.home = UBQS_Remote(r); b.vel = (0, 0, 0); r.DamageMobj(b, p, 1, 'None'); b.Destroy(); }
+			Console.Printf("R10 REMOTEHIT t%d bolt %s", level.maptime, b ? "sent" : "none");
+		}
+		else if (e.Name ~== "r10_remote")
+		{
+			let it = ThinkerIterator.Create("UBQS_Remote"); let r = UBQS_Remote(it.Next());
+			if (r) Console.Printf("R10 REMOTE t%d round %d hits %d streak %d best %d points %d roundEnd in %d", level.maptime, r.round, r.roundHits, r.streak, r.best, r.points, r.roundEnd - level.maptime);
+			else Console.Printf("R10 REMOTE t%d: none", level.maptime);
+		}
+		else if (e.Name ~== "r10_saber")
+		{
+			String o = "";
+			for (let i = p.Inv; i; i = i.Inv) { let sb = UBQS_SaberBase(i); if (sb) o = o .. String.Format("[%s inhand %d back %d thrown %d] ", sb.GetClassName(), sb.InHand(), sb.back, sb.thrown != null); }
+			Console.Printf("R10 SABER t%d tag %d %s ready %s", level.maptime, e.Args[0], o, p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none');
+		}
+		else if (e.Name ~== "r10_bring") bring = e.Args[0] != 0;
+		else if (e.Name ~== "r10_holdall") holdAll = e.Args[0] != 0;
+		else if (e.Name.Left(10) ~== "r10_spawn:")   // r10_spawn:<class> dist sideways(+left)
+		{
+			String cn = e.Name.Mid(10);
+			Vector3 at = p.Vec3Offset(cos(p.angle) * e.Args[0] - sin(p.angle) * e.Args[1], sin(p.angle) * e.Args[0] + cos(p.angle) * e.Args[1], 0);
+			let a = Actor.Spawn(cn, at, ALLOW_REPLACE);
+			if (a) { a.angle = a.AngleTo(p); held.Push(a); }
+			Console.Printf("R10 SPAWN t%d %s -> %s at %.0f %.0f", level.maptime, cn, a ? String.Format("%s", a.GetClassName()) : "none", at.x, at.y);
+		}
+		else if (e.Name ~== "r10_killnear")   // the nearest monster, killed by the player
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a, best; double bd = 1e9;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { double d = p.Distance3D(a); if (d < bd) { bd = d; best = a; } }
+			if (best) { Console.Printf("R10 KILL t%d %s", level.maptime, best.GetClassName()); best.DamageMobj(p, p, best.health + 50, 'None'); }
+		}
+		else if (e.Name ~== "r10_hold")  // monsters stand still and do not attack
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { a.Speed = 0; a.A_ClearTarget(); a.bFRIGHTENED = false; a.ReactionTime = 9999; }
+		}
+		else if (e.Name ~== "r10_inv") { String s = ""; for (let i = p.Inv; i; i = i.Inv) s = s .. i.GetClassName() .. ":" .. i.Amount .. " "; Console.Printf("R10 INV t%d %s", level.maptime, s); }
+	}
+	void Mons(int tag)
+	{
+		let p = P();
+		let roster = ServiceIterator.Find("RSQMN_RosterService").Next();
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0)
+		{
+			String champ = "";
+			let k = RSQTHP_ChampKind(a.FindInventory("RSQTHP_ChampKind"));
+			String toks = "";
+			for (let i = a.Inv; i; i = i.Inv) { String n = i.GetClassName(); if (n.Left(9) == "champion_") toks = toks .. n.Mid(9) .. " "; }
+			int tier = roster ? roster.GetInt("tier", "", 0, 0, a) : -9;
+			Console.Printf("R10 MON tag %d t%d %s hp %d/%d tier %d champKind %s tokens [%s] at %.0f %.0f", tag, level.maptime, a.GetClassName(), a.health, a.SpawnHealth(), tier,
+				k ? String.Format("%d/%d", k.first, k.second) : "none", toks, a.pos.x, a.pos.y);
+		}
+	}
+}
+
+class P2_Probe : EventHandler
+{
+	PlayerPawn P() { return players[consoleplayer].mo; }
+	Array<Actor> items;      // pickups / barrels / corpses spawned for P2
+	Array<Actor> zs;         // vanilla zombiemen, still (they shoot only when told)
+	Array<Actor> still;      // monsters spawned to stand still (p2_xyit with Args[2] 1)
+	Actor axeSeen, nadeSeen, disc;
+	int axeTic, nadeTic, discTic;
+	String lastMap;
+	static String V3(Vector3 v) { return String.Format("(%.0f %.0f %.0f)", v.x, v.y, v.z); }
+	override void WorldTick()
+	{
+		let p = P(); if (!p) return;
+		for (int i = 0; i < zs.Size(); i++) if (zs[i] && zs[i].health > 0) { zs[i].vel = (0, 0, zs[i].vel.z); zs[i].A_ClearTarget(); zs[i].ReactionTime = 9999; }
+		for (int i = 0; i < still.Size(); i++) if (still[i] && still[i].health > 0) { still[i].vel = (0, 0, still[i].vel.z); still[i].A_ClearTarget(); still[i].ReactionTime = 9999; }
+		// a thrown axe / grenade: its spawn and its first second of flight
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			String cn = a.GetClassName();
+			if ((cn == "ThrowedAxe" || cn == "ThrowedAxeStrong") && a != axeSeen && level.maptime - axeTic > 40) { axeSeen = a; axeTic = level.maptime; Console.Printf("P2 AXE SPAWN t%d %s at %s vel %.1f u/tic %s", level.maptime, cn, V3(a.pos), a.vel.Length(), V3(a.vel)); }
+			if (cn == "HandGrenade" && a != nadeSeen) { nadeSeen = a; nadeTic = level.maptime; Console.Printf("P2 NADE SPAWN t%d %s at %s vel %.1f u/tic", level.maptime, cn, V3(a.pos), a.vel.Length()); }
+			if (a is "SSQ_Disc" && a != disc) { disc = a; discTic = level.maptime; lastMap = ""; Console.Printf("P2 DISC SPAWN t%d ricochet left %d wall bounces %d", level.maptime, SSQ_Disc(a).ricLeft, SSQ_Disc(a).bounces); }
+		}
+		if (axeSeen && level.maptime - axeTic <= 30 && (level.maptime - axeTic) % 5 == 0) Console.Printf("P2 AXE t%d at %s vel %.1f", level.maptime, V3(axeSeen.pos), axeSeen.vel.Length());
+		let d = SSQ_Disc(disc);
+		if (d)
+		{
+			String m = String.Format("lockAt %d phase %d locks:", d.lockAt, d.phase);
+			for (int i = 0; i < d.locks.Size(); i++) m = m .. String.Format(" [%d %s#%d]", i, d.locks[i] ? d.locks[i].GetClassName() : 'none', Tag(d.locks[i]));
+			m = m .. " marks:";
+			for (int i = 0; i < d.marks.Size(); i++) { let k = d.marks[i]; m = m .. String.Format(" [%d %s]", i, (k && !k.bDestroyed) ? String.Format("on %s#%d", k.tracer ? k.tracer.GetClassName() : 'none', Tag(k.tracer)) : "gone"); }
+			if (m != lastMap) { Console.Printf("P2 DISC t%d %s", level.maptime, m); lastMap = m; }
+			if (level.maptime - discTic <= 45)
+			{
+				String o = String.Format("P2 DTIC t%d pos %s vel %.1f ricPend %d ricLeft %d bounces %d bounceHold %d |", level.maptime, V3(d.pos), d.vel.Length(), d.ricPend, d.ricLeft, d.bounces, d.bounceHold);
+				for (int i = 0; i < items.Size(); i++) if (items[i] && items[i].bIsMonster) o = o .. String.Format(" #%d hp %d d %.0f sight %d shoot %d", i, items[i].health, d.Distance3D(items[i]), d.CheckSight(items[i]), items[i].bShootable);
+				Console.Printf("%s", o);
+			}
+		}
+	}
+	// a stable short id for a monster: its index in the spawn list, or 99
+	int Tag(Actor a) { if (!a) return -1; for (int i = 0; i < items.Size(); i++) if (items[i] == a) return i; return 99; }
+	Vector3 Ahead(PlayerPawn p, double dist, double side) { return p.Vec3Offset(cos(p.angle) * dist - sin(p.angle) * side, sin(p.angle) * dist + cos(p.angle) * side, 0); }
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = P(); if (!p) return;
+		String n = e.Name;
+		if (n ~== "p2_clearmon")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int k = 0;
+			while (a = Actor(it.Next())) if (a.bIsMonster) { a.Destroy(); k++; }
+			Console.Printf("P2 CLEARMON t%d %d monsters removed", level.maptime, k);
+		}
+		else if (n.Left(8) ~== "p2_item:" || n.Left(8) ~== "p2_vani:" || n.Left(8) ~== "p2_xyit:")   // item: replaced; vani: no replacement; xyit: at map x y (args)
+		{
+			String cn = n.Mid(8);
+			Vector3 at = n.Left(8) ~== "p2_xyit:" ? (e.Args[0], e.Args[1], 0) : Ahead(p, e.Args[0], e.Args[1]);
+			if (n.Left(8) ~== "p2_xyit:") at.z = level.PointInSector(at.xy).floorplane.ZatPoint(at.xy);
+			let a = Actor.Spawn(cn, at, n.Left(8) ~== "p2_vani:" ? NO_REPLACE : ALLOW_REPLACE);
+			if (a) { a.angle = a.AngleTo(p); items.Push(a); if (n.Left(8) ~== "p2_xyit:" && e.Args[2] == 1) still.Push(a); }
+			Console.Printf("P2 SPAWN t%d #%d %s -> %s at %s", level.maptime, items.Size() - 1, cn, a ? String.Format("%s", a.GetClassName()) : "none", V3(at));
+		}
+		else if (n ~== "p2_move")      // item #Args[0] to map x y
+		{
+			let a = e.Args[0] < items.Size() ? items[e.Args[0]] : null;
+			if (a) { { Vector2 xy = (e.Args[1], e.Args[2]); a.SetOrigin((xy.x, xy.y, level.PointInSector(xy).floorplane.ZatPoint(xy)), false); } Console.Printf("P2 MOVE t%d #%d %s to %s", level.maptime, e.Args[0], a.GetClassName(), V3(a.pos)); }
+		}
+		else if (n ~== "p2_kill")      // item #Args[0] killed by the player, exactly its health
+		{
+			let a = e.Args[0] < items.Size() ? items[e.Args[0]] : null;
+			if (a && a.health > 0) { int h = a.health; a.DamageMobj(p, p, h, 'None'); Console.Printf("P2 KILL t%d #%d %s hp %d -> %d corpse %d", level.maptime, e.Args[0], a.GetClassName(), h, a.health, a.bCorpse); }
+		}
+		else if (n ~== "p2_items")
+		{
+			for (int i = 0; i < items.Size(); i++) { let a = items[i]; Console.Printf("P2 ITEM t%d #%d %s", level.maptime, i, a ? String.Format("%s at %s hp %d dist %.0f %s", a.GetClassName(), V3(a.pos), a.health, p.Distance2D(a), Inventory(a) && Inventory(a).owner ? "OWNED" : "") : "gone"); }
+		}
+		else if (n ~== "p2_hp") { p.A_SetHealth(e.Args[0]); Console.Printf("P2 HP t%d set %d", level.maptime, p.health); }
+		else if (n ~== "p2_force")
+		{
+			let f = UBQS_Force(p.FindInventory("UBQS_Force"));
+			let off = p.player.OffhandWeapon;
+			if (!f) { Console.Printf("P2 FORCE t%d tag %d: no UBQS_Force", level.maptime, e.Args[0]); return; }
+			let fc = CVar.FindCVar("ubqs_force");
+			String o = String.Format("P2 FORCE t%d tag %d ubqs_force %d uLoaded %d ForceSensitive %d ForcePull %d start %.2f pushReady %d armed %d fired %d main %s off %s", level.maptime, e.Args[0], fc ? fc.GetInt() : -1,
+				f.uLoaded, f.uFS, f.uPull, f.uStart, f.pushReady, f.armed, f.fired, p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', off ? off.GetClassName() : 'none');
+			for (int i = 0; i < items.Size(); i++) if (items[i]) o = o .. String.Format(" | #%d %s at %s dist %.0f vel %.1f", i, items[i].GetClassName(), V3(items[i].pos), p.Distance3D(items[i]), items[i].vel.Length());
+			Console.Printf("%s", o);
+		}
+		else if (n ~== "p2_lit")
+		{
+			let svc = ServiceIterator.Find("UBQS_SaberService").Next();
+			String o = String.Format("P2 LIT t%d tag %d saber.lit main %d off %d |", level.maptime, e.Args[0], svc ? svc.GetInt("saber.lit", "", 0, 0, p) : -9, svc ? svc.GetInt("saber.lit", "", 1, 0, p) : -9);
+			for (let i = p.Inv; i; i = i.Inv) { let sb = UBQS_SaberBase(i); if (sb) o = o .. String.Format(" [%s inhand %d doused %d]", sb.GetClassName(), sb.InHand(), sb.doused); }
+			o = o .. String.Format(" DualAway %d main %s off %s", p.CountInv("UBQS_DualAway"), p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none');
+			Console.Printf("%s", o);
+		}
+		else if (n ~== "p2_remote")
+		{
+			let it = ThinkerIterator.Create("UBQS_Remote"); let r = UBQS_Remote(it.Next());
+			if (r) Console.Printf("P2 REMOTE t%d tag %d dist %.0f u = %.2f m (2D %.2f m) up %.2f m | round %d hits %d points %d | player hp %d", level.maptime, e.Args[0], p.Distance3D(r), p.Distance3D(r) / 34.0, p.Distance2D(r) / 34.0, (r.pos.z - p.pos.z) / 34.0, r.round, r.roundHits, r.points, p.health);
+			else Console.Printf("P2 REMOTE t%d tag %d: none | player hp %d", level.maptime, e.Args[0], p.health);
+		}
+		else if (n ~== "p2_axe")
+		{
+			let h = RSVR_MeleeHandler.HandOf(p);
+			int na = 0; let it = ThinkerIterator.Create("ThrowedAxe"); while (it.Next()) na++;
+			Console.Printf("P2 AXE t%d tag %d ready %s hand ThrowMs %.2f m/s (min %.1f) | ThrowedAxe in world %d | AxeThrown %d MainAxeGone %d AxeHolding %d BrutalAxe %d", level.maptime, e.Args[0],
+				p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', h ? h.ThrowMs() : -1, RSVR_Hand.THROW_MIN, na, p.CountInv("RSVR_AxeThrown"), p.CountInv("RSVR_MainAxeGone"), p.CountInv("RSVR_AxeHolding"), p.CountInv("BrutalAxe"));
+		}
+		else if (n ~== "p2_nade")
+		{
+			int ng = 0; let it = ThinkerIterator.Create("HandGrenade"); while (it.Next()) ng++;
+			Console.Printf("P2 NADE t%d tag %d ready %s GrenadeAmmo %d PinOut %d Spoon %d Thrown %d RSG_VR %d | HandGrenade in world %d", level.maptime, e.Args[0], p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none',
+				p.CountInv("GrenadeAmmo"), p.CountInv("RSG_PinOut"), p.CountInv("RSG_Spoon"), p.CountInv("RSG_Thrown"), p.CountInv("RSG_VR"), ng);
+		}
+		else if (n ~== "p2_ssq")
+		{
+			let h = SSQ_Handler(EventHandler.Find("SSQ_Handler"));
+			if (!h) return;
+			int i = consoleplayer;
+			String o = String.Format("P2 SSQ t%d tag %d state %d locks %d:", level.maptime, e.Args[0], h.mState[i], h.mLocks[i].Size());
+			for (int k = 0; k < h.mLocks[i].Size(); k++) o = o .. String.Format(" %s#%d", h.mLocks[i][k] ? h.mLocks[i][k].GetClassName() : 'none', Tag(h.mLocks[i][k]));
+			Console.Printf("%s | disc %s", o, h.mDisc[i] ? "flying" : "none");
+		}
+		else if (n ~== "p2_zm")   // a vanilla ZombieMan (no replacement), still, Args[0] ahead, Args[1] left
+		{
+			let z = Actor.Spawn("ZombieMan", Ahead(p, e.Args[0], e.Args[1]), NO_REPLACE);
+			if (z) { z.angle = z.AngleTo(p); zs.Push(z); items.Push(z); }
+			Console.Printf("P2 ZM t%d #%d ZombieMan %s at %.0f units (melee reach %.0f + %.0f + 16)", level.maptime, items.Size() - 1, z ? "spawned" : "FAILED", z ? z.Distance3D(p) : 0, z ? z.MeleeRange : 0, p.radius);
+		}
+		else if (n ~== "p2_zshoot")      // each still zombieman fires one real hitscan (LineAttack, BulletPuff) at the player's middle
+		{
+			for (int i = 0; i < zs.Size(); i++)
+			{
+				let z = zs[i]; if (!z || z.health <= 0) continue;
+				Vector3 from = z.pos + (0, 0, z.height * 0.5 + 8);
+				Vector3 to = p.pos + (0, 0, p.height * 0.5);
+				Vector3 dd = to - from;
+				double pit = -atan2(dd.z, dd.xy.Length());
+				int hp0 = p.health;
+				z.A_StartSound("grunt/attack", CHAN_WEAPON);
+				z.LineAttack(z.AngleTo(p), 4096, -pit, 3, 'Hitscan', e.Args[0] == 1 ? "P2_NoPuff" : "BulletPuff");
+				Console.Printf("P2 ZSHOOT t%d zombie %d at %.0f units (%.2f m) fired, puff %s: player hp %d -> %d", level.maptime, i, z.Distance3D(p), z.Distance3D(p) / 34.0, e.Args[0] == 1 ? "none on a body (inflictor = shooter)" : "BulletPuff", hp0, p.health);
+			}
+		}
+		else if (n ~== "p2_zclear") { for (int i = 0; i < zs.Size(); i++) if (zs[i]) zs[i].Destroy(); zs.Clear(); }
+		else if (n ~== "p2_dgkg")
+		{
+			let svc = ServiceIterator.Find("RSQDG_ThrowService").Next();
+			for (int i = 0; i < items.Size(); i++) if (items[i] && svc)
+				Console.Printf("P2 DGKG t%d #%d %s throw.kg %d throw.by %d throw.age %d throw.cms %d | mass.kg %d", level.maptime, i, items[i].GetClassName(), svc.GetInt("throw.kg", "", 0, 0, items[i]), svc.GetInt("throw.by", "", 0, 0, items[i]),
+					svc.GetInt("throw.age", "", 0, 0, items[i]), svc.GetInt("throw.cms", "", 0, 0, items[i]), int(RSQDG_Mass.Kg(items[i])));
+		}
+		else if (n ~== "p2_ff")
+		{
+			let fs = ServiceIterator.Find("RSQFF_Service").Next();
+			let ts = ServiceIterator.Find("RSQFF_TorchService").Next();
+			Console.Printf("P2 FF t%d tag %d flare.count %d flare.phase %d torch.phase %d battery %d permille | main %s off %s", level.maptime, e.Args[0], fs ? fs.GetInt("flare.count", "", consoleplayer) : -9, fs ? fs.GetInt("flare.phase", "", consoleplayer) : -9,
+				ts ? ts.GetInt("torch.phase", "", consoleplayer) : -9, ts ? ts.GetInt("battery", "", consoleplayer) : -9, p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none');
+		}
+		else if (n ~== "p2_ssqset")     // the ShieldSaw drawn (1) or stowed (0), whatever it is now; a flying disc is called back
+		{
+			let h = SSQ_Handler(EventHandler.Find("SSQ_Handler"));
+			if (!h) return;
+			int i = consoleplayer, st = h.mState[i];
+			if (st == SSQ_Handler.SS_FLYING && h.mDisc[i]) SSQ_Disc(h.mDisc[i]).Recall();
+			else if (e.Args[0] == 1 && st == SSQ_Handler.SS_STOWED) h.Draw(i);
+			else if (e.Args[0] == 0 && st == SSQ_Handler.SS_DRAWN) h.Stow(i, true);
+			Console.Printf("P2 SSQSET t%d want %d was %d now %d", level.maptime, e.Args[0], st, h.mState[i]);
+		}
+		else if (n ~== "p2_clearfloor")  // every pickup lying in the level (no owner) and not one of ours, gone
+		{
+			let it = ThinkerIterator.Create("Inventory"); Inventory a; int k = 0; String what = "";
+			while (a = Inventory(it.Next())) if (!a.owner && items.Find(a) == items.Size()) { what = what .. a.GetClassName() .. " "; a.Destroy(); k++; }
+			Console.Printf("P2 CLEARFLOOR t%d %d removed: %s", level.maptime, k, what);
+		}
+		else if (n ~== "p2_off") Console.Printf("P2 OFF t%d tag %d at %s angle %.0f main %s off %s pending %s", level.maptime, e.Args[0], V3(p.pos), p.angle, p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none', p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none', p.player.PendingWeapon && p.player.PendingWeapon != WP_NOCHANGE ? p.player.PendingWeapon.GetClassName() : 'none');
+		else if (n ~== "p2_tp")       // the player to map x y, facing Args[2] degrees
+		{
+			Vector2 xy = (e.Args[0], e.Args[1]);
+			p.SetOrigin((xy.x, xy.y, level.PointInSector(xy).floorplane.ZatPoint(xy)), false);
+			p.vel = (0, 0, 0); p.A_SetAngle(e.Args[2], SPF_INTERPOLATE);
+			Console.Printf("P2 TP t%d player at %s angle %.0f", level.maptime, V3(p.pos), p.angle);
+		}
+		else if (n ~== "p2_del") { let a = e.Args[0] < items.Size() ? items[e.Args[0]] : null; if (a) a.Destroy(); Console.Printf("P2 DEL t%d #%d", level.maptime, e.Args[0]); }
+		else if (n ~== "p2_zhit")      // each still zombieman hits the player for 3 with ITSELF as the inflictor (what the guard's melee branch reads)
+		{
+			for (int i = 0; i < zs.Size(); i++)
+			{
+				let z = zs[i]; if (!z || z.health <= 0) continue;
+				int hp0 = p.health;
+				p.DamageMobj(z, z, 3, 'Hitscan');
+				Console.Printf("P2 ZHIT t%d zombie %d at %.0f units (%.2f m; melee reach %.0f) inflictor = source: player hp %d -> %d", level.maptime, i, z.Distance3D(p), z.Distance3D(p) / 34.0, z.MeleeRange + p.radius + 16, hp0, p.health);
+			}
+		}
+		else if (n ~== "p2_inv") { String s = ""; for (let i = p.Inv; i; i = i.Inv) s = s .. i.GetClassName() .. ":" .. i.Amount .. " "; Console.Printf("P2 INV t%d %s", level.maptime, s); }
+	}
+}
+// a puff for p2_zshoot that is never spawned on a bleeding body: the damage's inflictor is then the shooter itself
+class P2_NoPuff : Actor { Default { +NOINTERACTION +NOBLOCKMAP +NOGRAVITY } States { Spawn: TNT1 A 1; Stop; } }
+
+// TEST ONLY (scratch, rig1110 FIX group): readouts for the fixes
+class FX_Probe : EventHandler
+{
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Player < 0 || !players[e.Player].mo) return;
+		let p = players[e.Player].mo;
+		String n = e.Name;
+		if (n ~== "fx_inv")
+		{
+			String s = "";
+			for (let i = p.Inv; i; i = i.Inv) if (Weapon(i)) s = s .. i.GetClassName() .. " ";
+			let pw = p.player.PendingWeapon;
+			Console.Printf("FX INV t%d tag %d weapons: %s| ready %s off %s pending %s | saber %d", level.maptime, e.Args[0], s,
+				p.player.ReadyWeapon ? String.Format("%s", p.player.ReadyWeapon.GetClassName()) : "none",
+				p.player.OffhandWeapon ? String.Format("%s", p.player.OffhandWeapon.GetClassName()) : "none",
+				(pw && pw != WP_NOCHANGE) ? String.Format("%s", pw.GetClassName()) : "none", p.CountInv("UBQS_Saber"));
+		}
+		else if (n ~== "fx_slots")    // what the player's weapon slots hold (what the Wheel's ring is built from)
+		{
+			let ws = players[e.Player].weapons;
+			for (int sl = 0; sl < 10; sl++)
+			{
+				String o = "";
+				for (int j = 0; j < ws.SlotSize(sl); j++) { let c = ws.GetWeapon(sl, j); if (c) o = o .. c.GetClassName() .. (p.FindInventory(c) ? "* " : " "); }
+				Console.Printf("FX SLOTS t%d tag %d slot %d: %s", level.maptime, e.Args[0], sl, o);
+			}
+			TextureID a = TexMan.CheckForTexture("RMICA0", TexMan.Type_Any), b = TexMan.CheckForTexture("RMICB0", TexMan.Type_Any);
+			Console.Printf("FX SLOTS RMICA0 %s RMICB0 %s", a.IsValid() ? "found" : "missing", b.IsValid() ? "found" : "missing");
+		}
+		else if (n ~== "fx_watch")    // Args[0] tics: the saber's count in the inventory, every tic
+		{
+			watchLeft = e.Args[0]; watchPn = e.Player; watchTag = e.Args[1]; watchHad = 0; watchFlips = 0; watchLast = -1;
+		}
+	}
+	int watchLeft, watchPn, watchTag, watchHad, watchFlips, watchLast;
+	override void WorldTick()
+	{
+		if (watchLeft <= 0) return;
+		watchLeft--;
+		let p = players[watchPn].mo;
+		if (!p) return;
+		int has = p.CountInv("UBQS_Saber") > 0 ? 1 : 0;
+		if (has) watchHad++;
+		if (watchLast >= 0 && has != watchLast) watchFlips++;
+		watchLast = has;
+		if (watchLeft == 0) Console.Printf("FX WATCH t%d tag %d: UBQS_Saber in the inventory on %d tics, %d changes", level.maptime, watchTag, watchHad, watchFlips);
+	}
+}
