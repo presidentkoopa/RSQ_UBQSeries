@@ -5010,8 +5010,20 @@ class UBQS_Force : Inventory
 		if (!off || off is "UBQS_SaberBase" || off is "UBQS_ForceHand") return false;
 		if (off is "Fist") return true;
 		String n = off.GetClassName();
+		if (MeleeGlove(n)) return true;     // RSQ Melee's off glove is a fist too (rig 11-10, P2 A2)
 		n = n.MakeLower();
 		return n == "rsq_hands" || n.IndexOf("fist") >= 0;
+	}
+	// RSQ MELEE'S GLOVES (by name, as Melee's own RSQML.IsGloveName: RSQ_Glove, RSQ_GloveOff, SuperPunchOut's SPO_Glove*).
+	// With Start With Melee Hands (rsqml_gloves) the off hand's empty hand is Melee's off glove, not BD22 VR's RSQ_Hands, and
+	// the saber treats it as its own empty hand (fixed 11-10: the glove stayed, the Force hand never came, and no Force).
+	static clearscope bool MeleeGlove(String n) { return n.Left(9) ~== "RSQ_Glove" || n.Left(9) ~== "SPO_Glove"; }
+	// RSQ Melee's Slappers Only (rsqml_slappers, a server setting, read by name): fists only, so the saber is not handed out
+	// while it is on (fixed 11-10: Slappers Only stripped the saber every 8 tics and Start With Saber gave it back every 5)
+	static bool SlappersOn()
+	{
+		let c = CVar.FindCVar("rsqml_slappers");
+		return c && c.GetBool();
 	}
 
 	// ---- READING THE HAND ----------------------------------------------------------------------------------
@@ -6872,6 +6884,7 @@ class UBQS_Bridge : EventHandler
 	//     holstered second saber and BD22 VR loaded the off hand stays RSQ_Hands, as before). Only on that edge, so
 	//     the player may switch the off hand to anything else while the saber is held.
 	private bool comboSaber[MAXPLAYERS];
+	private Name comboGlove[MAXPLAYERS];     // the Melee glove the Force hand took the place of, given back when the saber goes
 
 	static bool ForceOnlyWithSaber()
 	{
@@ -6946,7 +6959,15 @@ class UBQS_Bridge : EventHandler
 				if (p.PendingWeapon is "UBQS_ForceHand") p.PendingWeapon = WP_NOCHANGE;
 				if (p.OffhandWeapon is "UBQS_ForceHand")
 				{
-					let e = EmptyOffOf(mo);
+					// the Melee glove it replaced comes back, if you still carry it; else the load order's empty hand
+					Weapon e = null;
+					if (comboGlove[i] != 'None')
+					{
+						class<Weapon> gc = comboGlove[i];
+						if (gc) e = Weapon(mo.FindInventory(gc));
+					}
+					if (!e) e = EmptyOffOf(mo);
+					comboGlove[i] = 'None';
 					PutOff(p, e);
 					if (UBQS_Data.I(mo, "ubqs_diag", 0) == 4)
 						Console.Printf("UBQS COMBO t%d saber gone (main %s): off UBQS_ForceHand -> %s", level.maptime,
@@ -6957,12 +6978,15 @@ class UBQS_Bridge : EventHandler
 			if (was) continue;
 			// the saber has just come into the main hand
 			let off = p.OffhandWeapon;
-			if (off && !(off.GetClassName() == 'RSQ_Hands')) continue;   // a gun, a second saber, the Force hand: left
+			// a gun, a second saber, the Force hand: left. An empty hand (BD22 VR's RSQ_Hands, or Melee's off glove) becomes it
+			bool glove = off && UBQS_Force.MeleeGlove(off.GetClassName());
+			if (off && !glove && !(off.GetClassName() == 'RSQ_Hands')) continue;
 			if (p.PendingWeapon != WP_NOCHANGE || !ForceHandIsEmpty(p)) continue;
 			if (!mo.FindInventory("UBQS_ForceHand")) mo.GiveInventory("UBQS_ForceHand", 1);
 			let fh = Weapon(mo.FindInventory("UBQS_ForceHand"));
 			if (!fh) continue;
 			PutOff(p, fh);
+			comboGlove[i] = glove ? off.GetClassName() : 'None';
 			raisedAt[i] = level.maptime;
 			if (UBQS_Data.I(mo, "ubqs_diag", 0) == 4)
 				Console.Printf("UBQS COMBO t%d saber in: off %s -> UBQS_ForceHand", level.maptime, off ? off.GetClassName() : 'none');
@@ -6981,6 +7005,7 @@ class UBQS_Bridge : EventHandler
 			if (mc && mc.GetInt() != 0 && mc.GetInt() != 2) mc.SetInt(2);
 		}
 		if (!On()) return;
+		if (UBQS_Force.SlappersOn()) return;      // Slappers Only: no saber, no second saber, no Force handed out (see SlappersOn)
 		int dmode = DualMode();
 		bool dualAll = dmode != 0;
 		let stc = CVar.FindCVar("ubqs_start");

@@ -205,8 +205,9 @@ up, two push frames, two pull frames, a grip, the hand turned. The saber is in t
 headset.*
 
 The Force lives in your off hand. It answers through the **alt** of a second saber or of an off-hand fist (Brutal Doom
-VR's hands, Doom's fist, anything named a fist), or through **either trigger** of the bare Force hand, which fills the
-off hand when it holds nothing else. While the Force is up, your hand glows and the monster a grip would take is
+VR's hands, Doom's fist, RSQ Melee's off glove, anything named a fist), or through **either trigger** of the bare Force hand,
+which fills the off hand when it holds nothing else. Drawing the saber with an empty off hand (BD22 VR's hands, or RSQ
+Melee's off glove from Start With Melee Hands) puts the Force hand there; put the saber away and the glove comes back. While the Force is up, your hand glows and the monster a grip would take is
 outlined in warm gold.
 
 | Gesture (with the Force up) | Power |
@@ -293,7 +294,7 @@ and 12. Not captures from the headset.*
 ## The training remote
 
 The **Training Remote** button on the menu summons the little drone about 3.3 m in front of you. It circles all the way round you,
-from about 3 m out, nearer and further, high and low, beeps, glows for a moment and stings (2 damage). Bat its bolts
+from about 3 to 9 m out (104 to 300 units, picked afresh as it goes; the rig read 4.6 to 8.1 m over eight readings), high and low, beeps, glows for a moment and stings (2 damage). Bat its bolts
 back into it:
 
 - **Each deflect** pays points, and a **streak** of deflects without being stung multiplies what a hit pays, up to
@@ -340,6 +341,9 @@ back into it:
   Cue Size (the marks, the grip outline, the hand flare), Colour-Blind colours (the outlines and the hand flare), Text
   Size (the remote's messages) and the Comfort Vignette on a Force jump.
 - **RSQ Distance Grab:** an off hand holding a dark hilt may still reach and grab.
+- **RSQ Melee:** with **Slappers Only** on, Start With Saber stands down (no saber, second saber or Force is handed out)
+  and you get them back when it goes off. Melee's off glove counts as your empty off hand: the Force hand takes its
+  place while the saber is drawn, and its alt raises the Force if you switch back to it.
 - **RSQ Wheel:** the same saber picture on its card.
 - **RSQ TopHPBars:** can mark the monster your Force grip is holding.
 - **Brutal Doom 22 VR Reloaded:** its hand on the hilt and as the Force hand, its Hand Skin Tone on both, its hands back
@@ -386,6 +390,7 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-10 night, the rig batch's fixes, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **Slappers Only:** the saber not in the inventory on any of 48 tics with it on (it flickered in every 5 tics before); off, the Shotgun back in the main hand and the saber back in the inventory (`design/rigtest_2026-11-10/evidence/FIX_B_log.txt`, FX WATCH / FX INV). **Melee's gloves:** with Start With Melee Hands, drawing the saber turned the off glove into the Force hand (`UBQS COMBO ... off RSQ_GloveOff -> UBQS_ForceHand`), a Force pull then took a medikit from 200 to 105 units; the Shotgun drawn, the glove came back; with the glove picked beside the saber, its alt pulled too (`FIX_B_log.txt`; before: `FIX_A_log.txt` t382, the glove kept). Loads clean on the owner's order |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **A saber game:** with the rifle the remote is refused ("draw your saber first"); with the saber it is summoned; switched to the rifle, TRAINING OVER and the remote is gone (`evidence/L7_log.txt`). **The wrist panel and the round:** :30 and :28 in gold, a pip lit per hit (3 of 4 at tic 250), the knock-down at 4, round 1 to round 2, the clock held while the remote is down and back to :30 when it rises; the clock running out ends the training and the remote leaves; RSQ Score's wrist digits hidden while it is out and back after (`evidence/A4_*`, `L6_log.txt`, `L7_log.txt`). **One throw:** the same posed swing released at 2.06 m/s did not throw (it needs 2.50) and at 3.09 m/s threw (`evidence/L8_log.txt`, rig02, no monsters). The Saber Throw Speed (m/s) row at 2.50 (`evidence/menus_new_rows.jpg`) |
 | **rig only, not headset-confirmed** (2026-11-09) | The pack loaded on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the whole RSQ series with no script error of its own (the only script errors in the log are BD_VoxelPack's). On MAP01 of that run the saber was in the main hand and the Force hand in the off hand. Files: design/rigtest_2026-11-09/logs/main_A-G_I.log, design/rigtest_2026-11-09/batch2/launch1_main.log (the MAP01 state line) |
 | **rig only, not headset-confirmed** (2026-11-03, earlier build) | Force Only With Saber: the Force hand arriving in the off hand when the saber came into the main hand and leaving the same tic when it went, a pistol kept in the off hand, the same across level changes and saves; on the full order, Brutal Doom VR's hands back with the rifle and its hand reload working (docs/forcecomboprobe/log_doom2_saber.txt, log_full_A_reload_m203.txt, log_full_B_levels_saves.txt, log_full_newgame_before_after.txt). The Force hand's two meshes drawn idle, with the Force up, pushing, pulling and gripping, both hands (docs/forcehand_1103/saber_alone.png, full_order.png; in saber_alone.png's Original left-handed row two frames came out dark). Hand Skin Tone on the Force hand (docs/forcehand_1103/tone.png). Hand on the Hilt on both sabers, in a swing, hidden while thrown and back on the catch, left-handed, with Gun Bonsai VR and with Hand Skin Tone (docs/hilthand/rig_1103/sheet.png) |
