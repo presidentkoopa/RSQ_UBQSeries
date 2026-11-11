@@ -5153,7 +5153,8 @@ class wr_Rig : EventHandler
 	//   the road flare   WRIFLARE  drawn (sources/icons/gen_item_icons.py; owner 2026-11-05 "Build them now"): RSQ FnF's RSQFF_Held
 	//   the flashlight   WRITORCH  drawn (gen_item_icons.py): RSQ FnF's RSQFF_Torch
 	//   the Force hand   WRIFORCE  drawn (gen_item_icons.py): RSQ Saber's UBQS_ForceHand
-	//   the gloves       WRIGLOVE  drawn (gen_item_icons.py): RSQ Melee's RSQ_Glove / RSQ_GloveOff
+	//   the gloves       RSQ Melee's own RMICA0 (RSQ_Glove) / RMICB0 (RSQ_GloveOff), by name (owner 11-10: "Melee's new
+	//                    icons"); WRIGLOVE, drawn (gen_item_icons.py), only when those are not found
 	// Sources and credits: sources/icons/SOURCES.md, CREDITS.txt. The series' classes are looked up by name
 	// at run time, so none of their mods has to be loaded.
 	clearscope static Class<Actor> clsNamed(Name n) { Class<Actor> c = n; return c; }
@@ -5239,7 +5240,14 @@ class wr_Rig : EventHandler
 		if (mOwnBase.Size() < OWN_N) ownBases(mOwnBase);
 		String lump = ownLump(c, mOwnBase);
 		TextureID t = none;
-		if (lump.Length() > 0) t = TexMan.CheckForTexture(lump, TexMan.Type_Any);
+		// THE GLOVES' OWN ICONS (owner 11-10: "Melee's new icons"): RSQ Melee's RMICA0 (the main glove) and RMICB0 (the off
+		// glove), by name; the Wheel's own WRIGLOVE only when Melee is not loaded or the graphic is not there
+		if (lump == "WRIGLOVE")
+		{
+			String ml = descends(c, clsNamed('RSQ_GloveOff')) ? "RMICB0" : "RMICA0";
+			t = TexMan.CheckForTexture(ml, TexMan.Type_Any);
+		}
+		if (lump.Length() > 0 && !t.IsValid()) t = TexMan.CheckForTexture(lump, TexMan.Type_Any);
 		mOwnCls.Push(c);
 		mOwnTex.Push(t);
 		return t;

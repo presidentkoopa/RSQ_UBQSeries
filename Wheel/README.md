@@ -101,8 +101,9 @@ each hand. If not, the two hands swap.
 Pick one and you hold that kind.
 
 **The Wheel's own icons.** A few cards would say little with their own pictures, so the Wheel draws its own: the fist,
-the lightsaber, the whip, the ShieldSaw, the road flare and flashlight (RSQ FnF), the Force hand (RSQ Saber) and the
-gloves (RSQ Melee).
+the lightsaber, the whip, the ShieldSaw, the road flare and flashlight (RSQ FnF) and the Force hand (RSQ Saber). The
+gloves wear RSQ Melee's own icons (the main glove's and the off glove's), and the Wheel's glove only when those are not
+there.
 
 ---
 
@@ -258,6 +259,7 @@ Either Hand Picks on, both hands still pick from it).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-10 night, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **The glove cards wear RSQ Melee's icons:** both rings with the two MELEE HANDS cards showing Melee's RMICA0 / RMICB0, not the Wheel's WRIGLOVE (`design/rigtest_2026-11-10/evidence/FIX_3_wheel_glove_cards_RMIC.jpg`). **But** on the owner's order the gloves are not in any weapon slot, so the ring has no glove card at all: for that frame they were put in slot 1 from the console (`addslot 1 RSQ_Glove`; slot readout in `FIX_E_log.txt`). Owner to decide (RESULTS_FIX) |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. The ring was not opened |
 | **rig only, not headset-confirmed** (2026-11-09, full series load order) | The Wheel loads with the rest of the series and its RSQ Wheel page appears under Radiant Silvergun Options, with no error from the Wheel in the log. Nothing of the ring itself was exercised in that run |
 | **Headset-confirmed** | Nothing yet |
