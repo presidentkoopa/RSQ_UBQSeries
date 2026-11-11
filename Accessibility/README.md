@@ -434,6 +434,7 @@ always has.
 
 | | |
 |---|---|
+| **code only, not shown** (2026-11-11; loads clean on the full order, not run) | Two hands on the gun is never a watch check (owner 11-11 16:28): not while the engine steadies the gun with both hands, nor while the off hand is within 25 cm of the gun hand with a weapon up. A two-handed rifle tilted 45 degrees no longer brings up the watch card. The same rule is in RSQ Accessibility's watch check and in Gun Cards' own copy |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | The Comfort Vignette (held by a probe) is off while a menu is open and back after (`vigShown` 1 -> 0 -> 1); no cue over the menu with slow motion running |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The gesture reader's eyes (RSQG_Pose.EyePos) use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | While any menu is open: the vignette is switched off, and the threat and slow-motion cues and the gesture names are not drawn (owner 11-11) |

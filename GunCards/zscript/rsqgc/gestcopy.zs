@@ -236,8 +236,28 @@ class RSQGC_GCopy : StaticEventHandler
 	}
 	static clearscope bool InspectOff() { return Opt("rsqg_inspect_off", 0) != 0; }
 
+	// TWO HANDS ON THE GUN is never a watch check (owner 11-11 16:28: "two handing a rifle and holding it at a 45^ tilt
+	// counts as a watch check"): the engine's two-hand steadying (WF_TWOHANDSTABILIZED, the off grip near the gun), or
+	// the off hand within 25 cm of the gun hand while a weapon is up (resting on the fore-end without the grip)
+	static bool TwoHanded(PlayerPawn pmo)
+	{
+		let p = pmo ? pmo.player : null;
+		if (!p) return false;
+		if (p.WeaponState & WF_TWOHANDSTABILIZED) return true;
+		if (!p.ReadyWeapon) return false;
+		let cv = CVar.FindCVar('vr_vunits_per_meter');
+		double vu = cv ? cv.GetFloat() : 34;
+		if (vu <= 0) vu = 34;
+		double ps = pmo.Level.pixelstretch;
+		if (ps <= 0) ps = 1.2;
+		Vector3 w = pmo.OffhandPos - pmo.AttackPos;
+		w.z *= ps;
+		return w.Length() < 0.25 * vu;
+	}
+
 	static bool InspectPose(PlayerPawn pmo, int h, double slack, double need)
 	{
+		if (TwoHanded(pmo)) return false;
 		Vector3 b = RSQGC_GPose.Body(pmo, h);
 		double hs = HScale(), vs = VScale();
 		if (b.x < Num("rsqg_inspect_near", 0.15) * hs - slack || b.x > Num("rsqg_inspect_far", 0.65) * hs + slack) return false;
