@@ -170,6 +170,7 @@ class R2_Probe : EventHandler
 	int lastShots;
 	bool lsLog; String lsWas;
 	bool handsLog;
+	int killLayer;
 	Array<Actor> trk; Array<int> trkUntil;
 
 	void Where(int tag)
@@ -254,6 +255,7 @@ class R2_Probe : EventHandler
 				abs(Actor.Normalize180(p.AttackAngle + 90 - p.Angle)), abs(Actor.Normalize180(p.OffhandAngle + 90 - p.Angle)));
 			if (s != lsWas) { Console.Printf("R2 LASER t%d %s", level.maptime, s); lsWas = s; }
 		}
+		if (killLayer != 0) p.player.SetPSprite(killLayer, null);
 		if (handsLog && (level.maptime % 35 == 0 || level.maptime < 8)) Hands();
 	}
 
@@ -302,6 +304,14 @@ class R2_Probe : EventHandler
 		else if (n ~== "r2_where") Where(e.Args[0]);
 		else if (n ~== "r2_holsters") Holsters(e.Args[0]);
 		else if (n ~== "r2_lslog") { lsLog = e.Args[0] != 0; lsWas = ""; }
+		else if (n ~== "r2_killlayer") { killLayer = e.Args[0]; Console.Printf("R2 KILLLAYER t%d %d", level.maptime, killLayer); }
+		else if (n ~== "r2_layers")
+		{
+			String ls = "";
+			for (let q = p.player.psprites; q; q = q.Next)
+				ls = ls .. String.Format("%d:%s:spr%d/fr%d ", q.ID, q.Caller ? String.Format("%s", q.Caller.GetClassName()) : "-", q.Sprite, q.Frame);
+			Console.Printf("R2 LAYERS t%d tag %d %s", level.maptime, e.Args[0], ls);
+		}
 		else if (n ~== "r2_hands") { handsLog = e.Args[0] != 0; Hands(); }
 		else if (n ~== "r2_offglove")   // the Wheel's off-hand glove pick, as RSQ Melee's EquipTick does it
 		{

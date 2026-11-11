@@ -88,3 +88,15 @@ interleaved; it was thrown away and run again.)
 BD22 VR 2.0.4i (rs_brutal22weaponsq, `pk3/03_BD22_VR-Reloaded_2.0.4i.pk3`, not committed): the off glove returns the
 hands on a gun switch (hands.zs), the muzzle glow on the muzzle (muzzle.zs), and the revolver's empties (rsr_break.zs).
 The shared run.sh points at 2.0.4h; R3 used `evidence/R2_r2run.sh` (2.0.4i).
+
+# R4: the owner's 16:36 frame (extra voxels over an upside-down two-handed rifle)
+
+Accessibility and GunCards rebuilt from HEAD (7e755dc2: the watch check as it was), BD22 VR 2.0.4i, LegenDoom after
+doom2. The rig's `qz_rhand` roll does reach the renderer, so the rifle was drawn upside down (roll 180), two hands, with
+the watch card up (`rsqg_inspect_twist 0`, because roll does not reach scripts). RES 720, every frame.
+
+| Check | Result | Evidence |
+|---|---|---|
+| What draws the black piece above the barrel and the thin grey rod | **Layer 1, the Rifle's own model** (MODELDEF.bd.txt `Model Rifle`: model 0 Rifle.md3, the grey rifle and its barrel; model 1 M203.md3, the black kitbashed M203, mounted UNDER the barrel). The R4B toggles: card off and laser off: both still there; layers 2100, 2101, 2112 (RSQ_GunSide), 2200 and 1000000 (RSQ_Hands) removed one at a time: both still there; layer 1 removed: both gone, with the whole rifle. Upside down, the M203 sits above the barrel. While the card is up, LaserSight's layers 2140/2141 do not exist (`R2 LAYERS`), and Gun Cards' layers are all 1000299 and up | R2_R4A/R4B_run.log; `R2_R4B_rolled_rifle_layer_toggles.jpg`, `R2_R4A_rolled_rifle_muzzle_crop.jpg` (looked at) |
+| Matches the owner's frame? | **Not settled.** In my frames the M203 sits on the barrel. In his frame the black slab floats above it and further forward, with a ring. That is how BD22 VR's OPEN M203 tube looks (`RSR_GunParts` layer 2130, the tube slid 11 cm forward, drawn on its own while open; its latch is the off trigger with the off grip held, which a two-handed hold can trip). It was not drawn in these runs, and I could not tell from his frame whether his tube was open | |
+| Fix | **None made.** Nothing extra was drawn in the reproduction: the pieces belong to the rifle. Removing the M203 would remove the launcher. Before changing anything, the owner needs to say whether his M203 tube was open | |
