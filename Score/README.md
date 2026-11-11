@@ -679,8 +679,12 @@ All Melee family.
 - **Champions' colours:** Dark Red, Red, Orange, Yellow, Dark Green, Green, Cyan, Blue, Indigo, Violet, Pink, Black, Grey and White Champion ×0.25; **Bronze** and **Silver Champion** ×0.5; **Gold Champion** ×0.75. A champion's extra health is in its base already; these pay for its powers.
 - **Champions' mutations:** **Titan** ×0.5 (a big moment), **Undying** ×0.5 (its heart killed first), **Ghost**, **Balloon** and **Hybrid** ×0.25.
 - Each Champion row carries its power's icon, the series' own (left of the number, or right of the name when the
-  colour-blind letter is on the left). Code only, not shown yet.
+  colour-blind letter is on the left). Rig only, not headset-confirmed (the picture below).
 - **LegenDoom:** **Legendary** (it rose) ×1.5, a big moment; **Legend Denied** (killed before it could rise) ×0.75; **Legendary Champion** (risen, with its champion powers on) ×0.5, a big moment. With Champions' LegenDoom dormant mode a champion has no powers until it rises, and pays no colour row before then.
+
+![A White Champion kill's breakdown: +21 White Champion with its snowflake icon, under the base row](docs/readme/champion_row.jpg)
+
+*A White Champion's row in the breakdown, "+21 White Champion" with its snowflake icon on the left (rig capture, not headset).*
 
 **How you killed it** (Daring unless marked):
 
@@ -910,6 +914,10 @@ score looks is yours.
 | Test and Debug | Debug Log |
 
 Rows not marked (off) are on by default; the default choice is Life Every Time, Nothing and Every Monster by Its Size.
+
+![The options page's roster rows: the Tiers rows and The Roster's rows, then Test and Debug](docs/readme/roster_rows_menu.jpg)
+
+*The roster rows on the options page: the tier rows, The Roster's seven, then Test and Debug (rig capture, not headset).*
 
 *[Still to come: the options page]*
 

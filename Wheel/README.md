@@ -253,6 +253,10 @@ time whether SlowMo is loaded or not. Distances are in map units (34 to a metre)
 something else is left alone; bind it there instead. **Opens On** picks the hand the ring opens in front of (with
 Either Hand Picks on, both hands still pick from it).
 
+![Opens On: the ring in front of the main hand, then in front of the off hand](docs/readme/wheel_opens_main_then_off_hand.jpg)
+
+*Opens On set to Main hand: the ring opens in front of the right hand, the PISTOL card in front (left); set to Off hand: in front of the left hand, the FIST card in front (right) (rig capture, not headset).*
+
 ---
 
 ## Status

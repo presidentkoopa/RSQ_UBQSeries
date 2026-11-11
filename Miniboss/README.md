@@ -262,6 +262,10 @@ legendary. A classic miniboss fights by the same rules (the shield, the windows,
 words) and shows the same HUD bars (the nearest one, when there are several), but it does not arrive boosted, has no
 room glow and none of the miniboss fight's extra drops.
 
+![A classic miniboss's HUD stack: the thrall row, the crowned skull with its bar and tier gem, two life bars](docs/readme/classic_pick_hud_stack.jpg)
+
+*A classic pick's HUD bars: the thrall row, the crowned skull with the miniboss's bar and its tier gem, two life bars under it (rig capture, not headset).*
+
 ---
 
 ## Plays well with

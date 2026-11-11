@@ -150,6 +150,10 @@ A turned shot is yours: its kill is yours, and a homing shot homes on the one th
 - **The cross guard.** While the blades are crossed in front of you, an X or a +, nothing from in front gets past
   either blade: shots, bolts, claws or blasts. From behind, it does not help.
 
+![The second saber drawn from its holster, lit in the first frame after the draw](docs/readme/second_saber_lit_first_draw.jpg)
+
+*The second saber's first draw from its RSQ Tactical Rig holster: the off hand empty (left), and the first frame after the draw, the red blade already lit (right) (rig capture, not headset).*
+
 *[GIF to come: two blades meeting, locking and crackling, then pulled apart]*
 
 ### The second blade and the staff

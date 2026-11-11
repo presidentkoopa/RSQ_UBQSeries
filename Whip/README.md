@@ -280,6 +280,14 @@ Put the gun away, or take the whip out of the hand, and it is the ordinary whip 
 | Trigger let go before the marked crack lands, or Leash off | It wraps, as the slot-1 whip does: the yank and the flail |
 | Fire or alt-fire the gun | The gun fires. The whip takes neither button |
 
+![The gold dotted ray from the whip hand to the diamond on the ceiling, then the whip flying to that spot](docs/readme/whip_and_gun_cursor_crack.jpg)
+
+*The cursor: the gold dotted ray from the whip hand ends in the diamond on the ceiling through the wind-up (left), and the crack flies to that spot (right) (rig capture, not headset).*
+
+![The whip cracked out to a marked imp, then the imp pulled in front of you, a pistol in the off hand](docs/readme/whip_and_gun_leash.jpg)
+
+*The Leash: the whip cracked out to the marked imp down the room (left), then the imp pulled in close in front of you, the diamond over it; the pistol is in the off hand (rig capture, not headset).*
+
 There is no lasso in this mode, because the other hand is holding the gun.
 
 **Rows** (*Whip and Gun* section): **Whip and Gun** (on): off, a gun in the other hand changes nothing (the other

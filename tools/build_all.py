@@ -56,7 +56,7 @@ MODS = {
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sprites', 'graphics',
                      'VOXELDEF.txt', 'voxels', 'sounds', 'MODELDEF.torch']),
     'Graveyard':    ('RSQ_Graveyard.pk3', 'all', ['.gitignore', 'tools/*', 'add-ons/*', 'docs/*']),   # m8f's Graveyard (GPLv3), RSQ Edition: the whole folder ships (copying.txt, credits.txt, README.md included)
-    'Monsters':     ('RSQ_Monsters.pk3', 'all', ['*.md', '.gitignore', 'EXCLUDED.txt', 'ELITE_SYSTEMS.txt']),   # RS Monsters (owner's), Quest edition
+    'Monsters':     ('RSQ_Monsters.pk3', 'all', ['*.md', '.gitignore', 'EXCLUDED.txt', 'ELITE_SYSTEMS.txt', 'docs/*']),   # RS Monsters (owner's), Quest edition
     'GunBonsaiOffhandVR': ('RSQ_GunBonsaiVR.pk3', 'all', ['.git*', 'build.ps1', 'NOTES.md', 'readme.txt', 'README_draft.md', 'tools/*', 'docs/*', '*.pk3']),  # readme.txt: the old pre-README notes (0.99a item 30), not shipped; README_draft.md: not yet approved
 }
 

@@ -121,6 +121,10 @@ A thing in the air is yours to catch once it is close to your palm. If your palm
   there for when you are low. Caught in the off hand, your own copy of that gun comes up in the off hand as well.
 - **Missed it?** It stops on your palm for a moment (4 tics), then drops. A miss never hurts you or spends the item.
 
+![AMMO FULL over a full shotgun pulled to the hand, the shotgun dropped at your feet](docs/readme/ammo_full_dropped_at_feet.jpg)
+
+*A shotgun pulled in while you carry a full one: AMMO FULL in gold, and the shotgun lying at your feet (rig capture, not headset).*
+
 A green bloom flashes at your palm on a catch, with a thud: deeper and louder the heavier the thing.
 
 *[GIF to come: a medikit pulled and caught; then a shotgun caught in the off hand and coming up there]*

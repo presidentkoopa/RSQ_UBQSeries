@@ -89,6 +89,10 @@ and a size larger with a hand inside. A spot that holds one thing only is a mage
 could use right now show, and only the nearest is bright. Set **Holster Rings** to **Always** to see them all while you
 move holsters around.
 
+![The right-hip holster's ring round the hand with the pistol, then the pistol holstered](docs/readme/holster_ring_hip_and_holstered.jpg)
+
+*Looking down: the pistol hand inside the right-hip holster's ring, green and bright (left), then the pistol put away in it (right) (rig capture, not headset).*
+
 **Things with their own home never take a gun holster.** Your grenade, flares and flashlight, the cigarette and Zippo, the
 whip, the sabers and the ShieldSaw stay out of the six gun holsters. Put a saber, the whip or an unlit flare on an empty
 holster and it simply goes to its own spot. A lit flare is never holstered.

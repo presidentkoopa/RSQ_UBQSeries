@@ -69,7 +69,9 @@ optional: turn on **Start With Melee Hands** and you get a pair at every level s
 
 ## Your hands
 
-*[picture to come: the three looks side by side: Ermac's hand (fist and open), the FBX hand (fist and open), the boxing glove]*
+![Ermac's hand and the FBX hand, fist and open](docs/readme/hand_models_fist_open.jpg)
+
+*Ermac's hand, fist then open (top), and the FBX hand, fist then open (bottom), both hands up (rig capture, not headset).*
 
 When Melee's own hands are up, you see them:
 
@@ -78,6 +80,10 @@ When Melee's own hands are up, you see them:
   hand wears Brutal Doom VR's Hand Skin Tone (single player).
 - **Boxing Gloves**, SuperPunchOut's. Always fists, never an open palm. Drawn at the hands' size, where the fist is
   (11-10: they drew about 1.4 times the fist across, nearer your eye).
+
+![The boxing gloves at the guard, held out and at rest](docs/readme/boxing_gloves_hand_size.jpg)
+
+*The boxing gloves at their new size: at the guard, held out, and at rest (rig capture, not headset).*
 
 ![The hands' item icon](docs/readme/glove_icon.png)
 
@@ -148,6 +154,10 @@ you earn them instead (see Plays well with).
 **Guard** is the boxing gloves' move: it needs Melee's hands with **Boxing Gloves** (or Slappers Only) on both hands.
 Bare hands, Brutal Doom's fists and sabers don't guard.
 Seated (RSQ Accessibility's Seated Play), the guard height follows your eyes down.
+
+![Ground Pound's ring rolling out along the floor, and Clear Out's Force Push ring in front](docs/readme/ground_pound_clear_out_rings.jpg)
+
+*Ground Pound's pixel ring rolling out along the floor round you (left), and Clear Out's Force Push ring rolling out in front (right) (rig capture, not headset).*
 
 *[GIF to come: Guard up, an imp's claw soaked with the blue spark]*
 *[GIF to come: Hadouken, a fireball punched back into the imp]*

@@ -212,8 +212,16 @@ With RSQ Glow In The Dark the map turns deep blood red. With RSQ VisualRewards t
 hit and a ringing in your ears as you fall, a heartbeat that quickens as the clock runs down, and a relief when you get
 up. Both controllers thump when the panel lands.
 
+![The DOWN page's Fog Tint Strength row at 0.60, with Fog Colour and the rows under it](docs/readme/fog_tint_strength_row.jpg)
+
+*How strong the tint is: Fog Tint Strength (0.60) and Fog Colour (Blood Red) on the options page (rig capture, not headset).*
+
 **The panel.** The reward bar, a line for each target, and the DEATH IN clock in red seven-segment digits. By default it
 appears big in the middle of your view with BE QUICK OR BE DEAD over it, then sinks to its place under your gaze.
+
+![BE QUICK OR BE DEAD over the panel in the middle of the view, the DEATH IN clock beside it](docs/readme/be_quick_or_be_dead_plate.jpg)
+
+*The panel in the middle of your view as you go down: BE QUICK OR BE DEAD over the target line and its bar, the DEATH IN clock beside it (rig capture, not headset).*
 
 ![Outdoors while DOWN under DarkDoom Black: the blood-red world, the bar and DEATH IN (rig frame)](docs/readme/down_courtyard.jpg)
 ![Up again: the colour comes back, and RSQ VisualRewards says REVIVE (rig frame)](docs/readme/down_revive.jpg)

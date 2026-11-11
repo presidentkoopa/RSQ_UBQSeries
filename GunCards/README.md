@@ -218,6 +218,10 @@ weapon with ammo gets a gun's cards, one without gets the item card with its nam
 (the item's own hand lies over the other half): its name; the count big (flares, cigarettes, the battery) or, with none,
 your health big (red at 25 or less); what it is doing (LIT, OFF, UNLIT, ON); then "H 100" when the count is big, "A 50"
 in blue, G:n, and the key icons.
+
+![The saber's item card reading SABER 100 LIT, and the flashlight's reading LIGHT 99 ON](docs/readme/item_cards_saber_torch.jpg)
+
+*Item cards on the wrist: the saber's (SABER, your health 100, LIT in green, A 0, G:1) and the flashlight's (LIGHT, its battery 99, ON, H 100, A 0) (rig capture, not headset).*
 Watch Card Shows: Status Card shows the Status card instead.
 
 Not on any card: the saber's second blade (RSQ Saber answers only "saber.lit" by name; reading the second blade would

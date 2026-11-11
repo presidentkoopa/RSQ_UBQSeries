@@ -80,6 +80,10 @@ A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight,
 - **Tier Icons Above Monsters** (off by default, as Colourful Hell ships it): the tier's gem floats up off each
   ColorfulHell monster, so the ladder reads as a shape and not only as a colour (Colourful Hell's colour-blind aid).
 
+![Tier gems floating up over MAP01's zombies with Tier Icons Above Monsters on](docs/readme/tier_gems_over_zombies.jpg)
+
+*Tier Icons Above Monsters on: the gems floating up over MAP01's zombies (rig capture, not headset).*
+
 ### Colourful Hell's own surprises
 
 ColorfulHell keeps the original's own rules. They decide which colour a spawn gets once its family is allowed past

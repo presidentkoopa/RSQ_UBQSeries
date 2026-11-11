@@ -254,6 +254,10 @@ you sweep across a crowd and feel each one land, with a click and a tick in your
 - A ring holds while its target stays within 60° of your hand and in sight; it drops after 3 seconds out.
 - Let go of the lock and the rings stay 5 seconds: long enough to rev and throw.
 
+![After a ricochet cut a new imp, the rings still on the two targets painted before the throw](docs/readme/ricochet_lock_marks_stay.jpg)
+
+*With Gun Bonsai VR's Ricochet: the disc turned off a pillar and cut a new imp (the blood, right), and the rings (the small white diamonds) are still on the two targets painted before the throw; the two blades are RSQ Saber's, held in the same run (rig capture, not headset).*
+
 *[GIF to come: three rings painting one by one as the hand sweeps across a room]*
 
 ### Let it fly
