@@ -1,0 +1,60 @@
+version "4.10"
+// TEST ONLY (scratch, rig1110 "SR" 11-11: Seated Auto while DOWN, the remote's block). Readouts and the remote's pin. Never ships.
+class SR_Probe : EventHandler
+{
+	PlayerPawn P() { return players[consoleplayer].mo; }
+	bool seatLog;
+	double pinDist;
+	int lastDef, lastStruck, lastStung, lastHits, lastPulse; String lastSrc;
+	static String V3(Vector3 v) { return String.Format("(%.0f %.0f %.0f)", v.x, v.y, v.z); }
+
+	override void WorldTick()
+	{
+		let p = P(); if (!p) return;
+		int now = level.maptime;
+		if (seatLog && now % 7 == 0)
+		{
+			let sv = ServiceIterator.Find("RSQA_Service").Next();
+			let sm = ServiceIterator.Find("RSQSM_Service").Next();
+			int pn = consoleplayer;
+			String s = sv ? String.Format("seated %d drop %.2f seatEye %.2f standEye %.2f (rsqa_seated %d)", sv.GetIntData("seated", "", pn), sv.GetDoubleData("seated.drop", "", pn),
+				sv.GetDoubleData("seated.eye", "", pn), sv.GetDoubleData("stand.eye", "", pn), CVar.FindCVar("rsqa_seated").GetInt()) : "no RSQA_Service";
+			Console.Printf("SR SEAT t%d hmd %.2f %s; SlowMo down %d; hp %d view %.1f", now, p.HmdPosition.y, s, sm ? sm.GetInt("down", "", pn) : -9, p.health, p.player.viewheight);
+		}
+		let it = ThinkerIterator.Create("UBQS_Remote"); let r = UBQS_Remote(it.Next());
+		if (r)
+		{
+			let sb = UBQS_SaberBase(p.FindInventory("UBQS_Saber"));
+			if (pinDist > 0 && sb && sb.InHand() && r.downUntil <= 0)
+			{
+				Vector3 bd = sb.BladeDir();
+				Vector3 tip = sb.BladeBase() + bd * sb.BladeLen();
+				Vector3 mid = p.pos + (0, 0, p.height * 0.65);
+				Vector3 u = tip - mid; if (u.Length() > 1) u = u.Unit();
+				Vector3 c = tip + u * pinDist;
+				r.SetOrigin(c - (0, 0, r.height * 0.5), false); r.vel = (0, 0, 0);
+			}
+			if (r.deflects != lastDef || r.struck != lastStruck || r.stung != lastStung || r.roundHits != lastHits)
+				Console.Printf("SR REMOTE t%d deflects %d -> %d, struck %d -> %d, stung %d -> %d, round hits (pips) %d -> %d, streak %d, best %d, points %d", now, lastDef, r.deflects, lastStruck, r.struck, lastStung, r.stung, lastHits, r.roundHits, r.streak, r.best, r.points);
+			lastDef = r.deflects; lastStruck = r.struck; lastStung = r.stung; lastHits = r.roundHits;
+		}
+		let ck = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
+		if (ck && (ck.pulseUntil != lastPulse || ck.pulseSrc != lastSrc))
+			Console.Printf("SR SLOW t%d pulse %s%s", now, ck.pulseUntil > now ? String.Format("until t%d (%d tics) from ", ck.pulseUntil, ck.pulseUntil - now) : "none", ck.pulseUntil > now ? ck.pulseSrc : "");
+		if (ck) { lastPulse = ck.pulseUntil; lastSrc = ck.pulseSrc; }
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		String n = e.Name;
+		if (n ~== "rsm_pulse" || n ~== "ubqs_remoteslowmo") { Console.Printf("SR NET t%d event %s arrived (args %d %d)", level.maptime, n, e.Args[0], e.Args[1]); return; }
+		if (n ~== "sr_seatlog") seatLog = e.Args[0] != 0;
+		else if (n ~== "sr_pin") { pinDist = e.Args[0]; Console.Printf("SR PIN t%d %.0f", level.maptime, pinDist); }
+		else if (n ~== "sr_clearmon")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int k = 0;
+			while (a = Actor(it.Next())) if (a.bIsMonster) { a.Destroy(); k++; }
+			Console.Printf("SR CLEARMON t%d %d removed", level.maptime, k);
+		}
+	}
+}

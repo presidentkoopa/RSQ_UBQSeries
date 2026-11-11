@@ -1,0 +1,145 @@
+SEAT_DOWN_STAND_1.60
+No Target ON 
+(OooOoo, I'm a ghost!)
+SR SEAT t35 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 0.00 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR SEAT t42 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR SEAT t49 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR SEAT t56 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR SEAT t63 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+SR SEAT t70 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+SR SEAT t77 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR SEAT t84 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR SEAT t91 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR CLEARMON t96 19 removed
+R10 SPAWN t96 DoomImp -> RS_CommonImp at -96 944
+SR SEAT t98 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR SEAT t105 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SR SEAT t112 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+SEAT_DOWN_HIT
+SR SEAT t119 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 100 view 44.0
+R10 HITME t122 by RS_CommonImp for 500 (hp 100)
+RSQ_SlowMo: trigger heavyhit t122: player 0 took 500 (ordinary from RS_CommonImp "Imp" via RS_CommonImp, type None), 500 this tic
+RSQ_SlowMo: DOWN t122: player 0 went DOWN: a lethal hit (500 at 100 HP from RS_CommonImp) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since a Score life), world to 5%
+RSQ_SlowMo: DOWN t122: told 3 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t122: player 0: RS_CommonImp downed him in his fight (167 units, in sight), not a champion: it is swapped for a REAL Champion copy
+R10 HITME after: hp 1
+RSQ_SlowMo: trigger heavyhit t122: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t122: player 0 crouch: down to 40% of standing over 17 tics (ViewHeight 44.0 FullHeight 56.0 saved; crouchfactor 1.00, vr_crouch_use_button 1)
+RSQ_SlowMo: DOWN t122: player 0 crouch restored (risen): ViewHeight 44.0 FullHeight 56.0, view 44.0, height 56.0
+RSQ_SlowMo: DOWN t122: the grey world: 59 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t122: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+RSQ_SlowMo: DOWN t123: player 0 crouch: down to 40% of standing over 17 tics (ViewHeight 44.0 FullHeight 56.0 saved; crouchfactor 1.00, vr_crouch_use_button 1)
+RSQ_SlowMo: DOWN t123: player 0: RS_CommonImp (health 60) vanishes in teleport fog at (-96, 944, 8) (tid 0, special 0)
+RSQ_SlowMo: DOWN t124: player 0 TARGET 1/1: RS_CommonImp "Imp" (the monster that downed him (167 units, in sight), swapped for a copy; a REAL Champion made by Champions itself (one of 6 candidates it rolled on)): icon 4, colour 6030C0, a REAL Champions champion (Champions' own PersistentInfo and controller); light, full-bright, x1.15 size, +30 health; health 90 of 60; plate name "Indigo Champion Imp"
+RSQ_SlowMo: DOWN t124: told 3 joined mod(s): down.target 6030C0
+SR SEAT t126 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 43.0
+SR SEAT t133 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 37.8
+SR SEAT t140 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 30.2
+SR SEAT t147 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 22.8
+SR SEAT t154 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 18.1
+RSQ_SlowMo: DOWN t157: player 0 crouch held: view 17.6 of 44.0 standing, height 22.4 of 56.0 (crouchfactor 1.00 x heights 0.40), crawl x0.33
+SEAT_DOWN_DROP_0.50_WHILE_DOWN
+SR SEAT t161 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t168 hmd 1.10 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+RSQ_SlowMo: DOWN t171: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+SR SEAT t175 hmd 1.10 seated 0 drop 0.00 seatEye 1.59 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t182 hmd 1.10 seated 0 drop 0.00 seatEye 1.59 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t189 hmd 1.10 seated 0 drop 0.00 seatEye 1.58 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t196 hmd 1.10 seated 0 drop 0.00 seatEye 1.58 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t203 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t210 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t217 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t224 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t231 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t238 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t245 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t252 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t259 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t266 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t273 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t280 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t287 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t294 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SEAT_DOWN_HEAD_BACK_1.60
+SR SEAT t301 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SR SEAT t308 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 1; hp 1 view 17.6
+SEAT_DOWN_KILL_TARGET
+R10 KILL t310 RS_CommonImp
+RSQ_SlowMo: DOWN t310: player 0 hit RS_CommonImp (small, 1.0 s a whole one): 90 of 60 health -> +1.50 s bought (1.50 asked; clock 3.63 s, pool 1.50 s)
+RSQ VisualRewards: DOWN time "+1.5s" (colour 6) at -96 918 58 over RS_CommonImp
+RSQ_SlowMo: DOWN t310: player 0 target RS_CommonImp died by his hand at 5.37 s into the bar (middle step): 1 of 1 owed
+RSQ VisualRewards: DOWN word REVENGE (colour 8, size x1.00, 44 tics) on the band
+RSQ_SlowMo: DOWN t310: told 3 joined mod(s): down.revenge 
+RSQ_SlowMo: DOWN t310: RSQ Score award "Revenge": 100
+RSQ_SlowMo: DOWN t310: player 0 UP (REVIVE), middle tier (the last kill 5.37 s into the bar): invulnerable 3.0 s, slow motion 1.5 s; health 1 -> 1 (max 100), armour 0 -> 0 from the bits bank (0 health, 0 armour banked); both held guns: main Rifle RifleAmmo 31 -> 31 (reserve Clip2 30 untouched); off rsq_hands: no magazine
+RSQ_SlowMo: DOWN t310: told 3 joined mod(s): down.up middle
+RSQ_SlowMo: trigger down.up t310: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger down.up t310: started 1500 ms at 25% (deliberate), pulse until t363, cause line "REVIVE"
+RSQ_SlowMo: DOWN t310: player 0 revive slow motion 1.5 s: started
+RSQ_SlowMo: DOWN t310: DarkDoomZ: its own mode 2 back (DOWN is over)
+SR SLOW t310 pulse until t363 (53 tics) from down.up
+SR NET t314 event rsm_pulse arrived (args 600 35)
+RSQ_SlowMo: trigger score t314: merged 600 ms at 35% (automatic), pulse until t363, cause line "SCORE"
+SR SLOW t314 pulse until t363 (49 tics) from score
+SR SEAT t315 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 26.9
+SR SEAT t322 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 37.8
+RSQ_SlowMo: DOWN t327: player 0 crouch restored (risen): ViewHeight 44.0 FullHeight 56.0, view 44.0, height 56.0
+SR SEAT t329 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t336 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t343 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+RSQ_SlowMo: DOWN t344: the grey world released (eased back to colour): 0 sectors given their own colour back, 0 recoloured by others kept as they are
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+SR SEAT t350 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+RSQ VisualRewards: DOWN word REVIVE (colour 13, size x1.15, 50 tics) on the band
+SR SEAT t357 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SLOW t363 pulse none
+SR SEAT t364 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SEAT_UP_STANDING
+SR SEAT t371 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+RSQ_SlowMo: trigger countdown t373: countdown bar: gone (real time)
+SR SEAT t378 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t385 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t392 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t399 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t406 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t413 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SEAT_UP_DROP_0.50
+SR SEAT t420 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t427 hmd 1.10 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t434 hmd 1.10 seated 0 drop 0.00 seatEye 1.59 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t441 hmd 1.10 seated 0 drop 0.00 seatEye 1.59 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t448 hmd 1.10 seated 0 drop 0.00 seatEye 1.59 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t455 hmd 1.10 seated 0 drop 0.00 seatEye 1.58 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t462 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t469 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t476 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t483 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t490 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t497 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t504 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t511 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t518 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t525 hmd 1.10 seated 0 drop 0.00 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t532 hmd 1.10 seated 1 drop 0.50 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t539 hmd 1.10 seated 1 drop 0.50 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t546 hmd 1.10 seated 1 drop 0.50 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t553 hmd 1.10 seated 1 drop 0.50 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SEAT_UP_RISE_1.60
+SR SEAT t560 hmd 1.10 seated 1 drop 0.50 seatEye 1.10 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t567 hmd 1.60 seated 1 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t574 hmd 1.60 seated 1 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t581 hmd 1.60 seated 1 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t588 hmd 1.60 seated 1 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t595 hmd 1.60 seated 1 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t602 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t609 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+SR SEAT t616 hmd 1.60 seated 0 drop 0.00 seatEye 1.60 standEye 1.60 (rsqa_seated 2); SlowMo down 0; hp 1 view 44.0
+REMOTE_BLOCK_SETUP
+SR CLEARMON t620 3 removed

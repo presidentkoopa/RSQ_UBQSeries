@@ -223,6 +223,9 @@ headset height.
   once they have been within 0.15 m for 1 second. Auto uses only your own heights, so a short player standing is not
   called seated; until it has seen you stand (or you measured), it says standing. If you start a map sitting, Auto
   cannot tell until you stand once: use Measure Standing Height, or Seated.
+- **While you are DOWN** (RSQ SlowMo's Be Quick or Be Dead), Auto does not switch either way: DOWN crouches only the
+  in-game view, so ducking for real while down is not sitting. It picks up again when you get up. Without SlowMo,
+  nothing changes.
 
 What the series does with it: Tactical Rig hangs its belt and holsters from your seated eyes; Melee lowers its Guard
 pose; the Wheel lowers its eye line; ShieldSaw brings its shield mount down; Measure Me adds the drop back so the gesture zones fit your
@@ -374,7 +377,7 @@ always has.
 - **RSQ ShieldSaw:** Shield Throw and Flick Reload buttons; Gesture Ease (throw speed
   and forward share, the flick reload, the zones); Seated Play brings its shield mount down with your eyes; Steady
   Hands smooths the aim its locks and throw share; Photosensitive Mode dims and gates its flashes; Cue Size scales its lock marks; Colour Blind Mode; Rumble Strength.
-- **RSQ SlowMo:** Slow-Mo Ease; Wrist Cross button; Gesture Ease for the wrist cross (the gap and the hold);
+- **RSQ SlowMo:** Seated Play on Auto waits while you are DOWN (asked by name: SlowMo's `down`); Slow-Mo Ease; Wrist Cross button; Gesture Ease for the wrist cross (the gap and the hold);
   Photosensitive Mode calms its HUD, its countdown and its plate (no flash ring, still trails); Text Size for its
   countdown; Colour Blind Mode; Rumble Strength. Sound Cues read its slow motion.
 - **RSQ Tactical Rig:** Handedness sets the body layout (the cigarette pocket, the way holstered guns hang); Seated
@@ -432,6 +435,7 @@ always has.
 | | |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3, this one included, with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Those launches came before the 11-10 fixes below. No setting on this page was exercised in them (the packed batch, next row, exercised some) |
+| **rig only, not headset-confirmed** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_SEATREMOTE.md`) | **Seated Play on Auto waits while you are DOWN** (RSQ SlowMo, asked by name: `down`). Standing at 1.60 m (reference learned 1.60), then DOWN (a lethal hit held at 1 HP, SlowMo answering `down` 1): the headset dropped 0.50 m to 1.10 for 3.8 s; the seated eyes followed it to 1.10 for 2.8 s and Auto stayed **standing** throughout. Head back up, the target killed, up (SlowMo `down` 0): the same 0.50 m drop was called **seated** 2 s after the seated eyes reached 1.10, and standing again 1 s after rising (`design/rigtest_2026-11-10/evidence/SEAT_DOWN_log.txt`). Not shown: the run without SlowMo (code: no SlowMo answer means not down) |
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P4.md` N7, `RESULTS_P1.md` N6 and M6) | **Seated Play on Auto** (N7, the 11-10 fix with no 1.62 m floor): a short player standing at 1.30 m from the start was never called seated; at 1.60 m a 0.15 m dip stayed standing; a sudden 0.50 m drop was called seated about 2 s later, and standing again about 1 s after rising (`design/rigtest_2026-11-10/evidence/P4_N7_seated_log.txt`). **Rumble Backup from RSQ Melee** (N6): with Rumble Backup on and Quake Haptics 0, Melee's guard soak, landed punches, the swat, Ground Pound and Clear Out each sent this pack's buzz to that hand's controller (log lines, `P1_C_log.txt`, `P1_B_log.txt`). **Two two-hand gestures** as RSQ Melee uses them: both hands swung down read as Ground Pound, both palms thrust as Clear Out (`P1_C_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-09) | The pack loads with no script error or warning of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB 1.05, Champions, Gun Bonsai 0.10.6 and the rest of the series, and Accessibility is listed under Radiant Silvergun Options (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`). No setting on this page was exercised in that run. That run used BD22 VR 2.0.4e, not 2.0.4f |
 | **rig only, not headset-confirmed, older build** (2026-10-31, as RSQ Gestures, on doom2, brutal22test6, BD_VoxelPack and BD22 VR Reloaded 2.0.3h + hotfix) | The gesture reader: jab, hook and uppercut named; a gun swing named a shove, not a punch; no punch while braced or with both hands together; quiet while the Wheel was open and while on the Grapple rope; the watch check entering, held, dropped, its tick reaching the right controller (0.24); Watch Check off answering "not answering"; both hands apart and both hands down; Measure Me (eyes 1.60 m, reach 0.62 m). Logs: `Accessibility/tools/rigtest_gestures/qolprobe/evidence_1031.txt`, `.../punchprobe/evidence_1031.txt`. The reader has changed since (the watch-check twist was 45 / 30 then, now 35 / 20; hand sync added 11-03; thrust and pull events removed), so this is not the current build |

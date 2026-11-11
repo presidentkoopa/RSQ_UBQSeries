@@ -1,0 +1,55 @@
+SR CLEARMON t620 3 removed
+----------------------------------------
+Training remote: deflect its stings
+----------------------------------------
+REMOTE_BLOCK_UNLEARNED
+SR PIN t713 8
+SBX_DEFLECT t789 in-player-tick UBQS_RemoteBolt from tip(t788) -87.5 814.8 117.2 to now -87.5 814.8 117.2 near 0.46 need 3.50 -> DEFLECTED
+SBX_BLOCK t789 UBQS_RemoteBolt stopped on the blade (Deflector not learned): remote deflects 1 streak 1 hits 1
+SR REMOTE t790 deflects 0 -> 1, struck 0 -> 1, stung 0 -> 0, round hits (pips) 0 -> 1, streak 1, best 1, points 130
+SR NET t792 event rsm_pulse arrived (args 300 35)
+SR NET t792 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t792: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t792: started 300 ms at 35% (deliberate), pulse until t803, cause line "SABER REMOTE"
+SR SLOW t792 pulse until t803 (11 tics) from saber.remote
+SR SLOW t803 pulse none
+RSQ_SlowMo: trigger countdown t812: countdown bar: gone (real time)
+SBX_DEFLECT t849 in-player-tick UBQS_RemoteBolt from tip(t848) -87.5 814.8 117.2 to now -87.5 814.8 117.2 near 0.67 need 3.50 -> DEFLECTED
+SBX_BLOCK t849 UBQS_RemoteBolt stopped on the blade (Deflector not learned): remote deflects 2 streak 2 hits 2
+SR NET t850 event rsm_pulse arrived (args 300 35)
+SR NET t850 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t850: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t850: started 300 ms at 35% (deliberate), pulse until t861, cause line "SABER REMOTE"
+SR REMOTE t850 deflects 1 -> 2, struck 1 -> 2, stung 0 -> 0, round hits (pips) 1 -> 2, streak 2, best 2, points 270
+SR SLOW t850 pulse until t861 (11 tics) from saber.remote
+SR SLOW t861 pulse none
+RSQ_SlowMo: trigger countdown t870: countdown bar: gone (real time)
+SBX_DEFLECT t910 in-player-tick UBQS_RemoteBolt from tip(t909) -87.5 814.8 117.2 to now -87.5 814.8 117.2 near 0.74 need 3.50 -> DEFLECTED
+SBX_BLOCK t910 UBQS_RemoteBolt stopped on the blade (Deflector not learned): remote deflects 3 streak 3 hits 3
+SR REMOTE t911 deflects 2 -> 3, struck 2 -> 3, stung 0 -> 0, round hits (pips) 2 -> 3, streak 3, best 3, points 420
+SR NET t914 event rsm_pulse arrived (args 300 35)
+SR NET t914 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t914: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t914: started 300 ms at 35% (deliberate), pulse until t925, cause line "SABER REMOTE"
+SR SLOW t914 pulse until t925 (11 tics) from saber.remote
+SR SLOW t925 pulse none
+RSQ_SlowMo: trigger countdown t934: countdown bar: gone (real time)
+SBX_DEFLECT t962 in-player-tick UBQS_RemoteBolt from tip(t961) -87.5 814.8 117.2 to now -87.5 814.8 117.2 near 0.80 need 3.50 -> DEFLECTED
+----------------------------------------
+REMOTE DOWN!  +600
+round 1 cleared -- best streak 4
+----------------------------------------
+SBX_BLOCK t962 UBQS_RemoteBolt stopped on the blade (Deflector not learned): remote deflects 4 streak 4 hits 0
+SR REMOTE t963 deflects 3 -> 4, struck 3 -> 4, stung 0 -> 0, round hits (pips) 3 -> 0, streak 4, best 4, points 1180
+SR NET t964 event rsm_pulse arrived (args 300 35)
+SR NET t964 event ubqs_remoteslowmo arrived (args 0 0)
+SR NET t964 event rsm_pulse arrived (args 1500 35)
+SR NET t964 event ubqs_remoteslowmo arrived (args 0 0)
+RSQ_SlowMo: trigger saber.remote t964: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger saber.remote t964: started 300 ms at 35% (deliberate), pulse until t975, cause line "SABER REMOTE"
+RSQ_SlowMo: trigger saber.remote t964: merged 1500 ms at 35% (deliberate), pulse until t1017, cause line "SABER REMOTE"
+SR SLOW t964 pulse until t1017 (53 tics) from saber.remote
+SR SLOW t1017 pulse none
+RSQ_SlowMo: trigger countdown t1026: countdown bar: gone (real time)
+REMOTE_BLOCK_END
+SR PIN t1045 0

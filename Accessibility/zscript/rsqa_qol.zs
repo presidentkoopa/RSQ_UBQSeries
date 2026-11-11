@@ -131,6 +131,10 @@ class RSQA_QoL : EventHandler
 	// eyes, rsqtr_eye_m), so a player whose standing eyes are under about 1.37 m was called seated after 2 s. Auto
 	// now uses only your own heights: until it has seen you (or you measured), it says standing. Seated, which you
 	// chose, keeps the 1.62 m floor for the drop when nothing better is known, as before.
+	// PAUSED WHILE DOWN (owner 2026-11-11): RSQ SlowMo's DOWN (Be Quick or Be Dead) crouches only the in-game view, so a
+	// player who ducks for real while down is not sitting. While SlowMo answers "down" for him (RSQSM_Service, by name),
+	// Auto does not switch either way; it resumes when he gets up. Without SlowMo nothing changes. Starting a map
+	// sitting is unchanged: Auto still waits until it has seen you stand.
 	const SEAT_EASE   = 0.02 / 35.0;
 	const SEAT_DROP   = 0.20;
 	const STAND_DEF   = 1.62;
@@ -165,6 +169,13 @@ class RSQA_QoL : EventHandler
 		return max(0.0, StandEye(pn) - seatEye[pn]);
 	}
 
+	// RSQ SlowMo's DOWN, asked by name: 1 while that player is DOWN; no SlowMo (or no answer): not down
+	static bool IsDown(int pn)
+	{
+		let s = ServiceIterator.Find("RSQSM_Service").Next();
+		return s && s.GetInt("down", "", pn) == 1;
+	}
+
 	void SeatTick(int pn)
 	{
 		let mo = playeringame[pn] ? players[pn].mo : null;
@@ -177,6 +188,7 @@ class RSQA_QoL : EventHandler
 		stillTics[pn] = abs(h - lastH[pn]) < 0.03 ? stillTics[pn] + 1 : 0;
 		if (abs(h - lastH[pn]) >= 0.03) lastH[pn] = h;
 		if (stillTics[pn] >= TICRATE) highEye[pn] = max(highEye[pn], h);
+		if (IsDown(pn)) { autoTics[pn] = 0; return; }   // DOWN: Auto holds what it had
 		double stand = StandEye(pn);
 		double below = stand > 0.3 ? stand - seatEye[pn] : 0;   // no reference yet: standing
 		bool want = seated[pn] ? below > AUTO_STAND : below >= AUTO_SIT;
