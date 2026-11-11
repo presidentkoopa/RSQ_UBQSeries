@@ -315,6 +315,8 @@ class wr_Rig : EventHandler
 	Array<Actor> mModels;         // a real weapon model per card, when enabled
 	Array<double> mModelFit;      // RSQ: per model, the scale that fits it on its card
 	Array<double> mModelDrop;     // RSQ: ...and how far below the card's centre its base sits, at that scale
+	Array<double> mModelCX;       // RSQ: a mesh prop's middle off its origin, forward and left at scale 1 (wr_CardProp)
+	Array<double> mModelCY;
 
 	// ONE GROUP PER CARD, so a card is an object rather than six loose quads.
 	//
@@ -7132,11 +7134,20 @@ class wr_Rig : EventHandler
 				// expression is not one.
 				Vector3 mp = pos + lift * hModelLift;
 				if (i < mModelDrop.Size()) mp.z -= mModelDrop[i] * ms;   // RSQ: centred on the card
+				// RSQ: a pickup turns slowly on its card, as pickups do in a showcase
+				double ma = pmo.angle + 180 + level.maptime * cv("wr_model_spin", 1.5) + i * 40;
+				// RSQ: a mesh prop's middle is off its origin (a hand's model sits where the hand is, 22 units aside):
+				// it turns about its middle, which stays on the card (spawnOwnProp)
+				if (i < mModelCX.Size())
+				{
+					double mcx = mModelCX[i], mcy = mModelCY[i];
+					mp.x -= (mcx * cos(ma) - mcy * sin(ma)) * ms;
+					mp.y -= (mcx * sin(ma) + mcy * cos(ma)) * ms;
+				}
 				mModels[i].SetOrigin(mp, true);
 				mModels[i].Scale = (ms, ms);
 				mModels[i].A_SetRenderStyle(cardAlpha, STYLE_Translucent);
-				// RSQ: a pickup turns slowly on its card, as pickups do in a showcase
-				mModels[i].angle = pmo.angle + 180 + level.maptime * cv("wr_model_spin", 1.5) + i * 40;
+				mModels[i].angle = ma;
 				// the picture replaces the flat icon rather than sitting on top of it
 				if (i < mIcons.Size()) fade(mIcons[i], 0);
 			}
@@ -9511,10 +9522,12 @@ class wr_Rig : EventHandler
 
 		for (int i = 0; i < mTypes.Size(); ++i)
 		{
-			// RSQ: a card with the Wheel's own icon (ownIconOf) shows that icon, not a pickup model
-			if (ownIconOf(mTypes[i]).IsValid()) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
+			// RSQ: a card with the Wheel's own icon (ownIconOf) has no pickup to show: the saber, the shield saw, the whip
+			// and the fist (and the gloves) show their own pack's mesh instead (spawnOwnProp, owner 11-11); the icon
+			// stays when that pack is not loaded or the card has no prop (the flare, the torch, the Force hand)
+			if (ownIconOf(mTypes[i]).IsValid()) { if (!spawnOwnProp(mTypes[i], pmo)) pushCardModel(null, 1.0, 0, 0, 0); continue; }
 			let a = Actor.Spawn(artClass(mTypes[i]), pmo.Pos, NO_REPLACE);   // RSQ: an off-hand copy shows its gun (artClass)
-			if (a == null) { mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
+			if (a == null) { pushCardModel(null, 1.0, 0, 0, 0); continue; }
 
 			// bSpecial is the one that matters: an Inventory actor in the world
 			// is picked up on touch, and a prop that vanishes into your backpack
@@ -9555,14 +9568,87 @@ class wr_Rig : EventHandler
 			if (cvBool("wr_debug", false))
 				Console.Printf("RSQ Wheel card %s: frame %s voxel %s fit %.3f", a.GetClassName(), t.IsValid() ? TexMan.GetName(t) : "-",
 					fit > 0 ? "measured" : "none", fit);
-			if (fit <= 0) { a.Destroy(); mModels.Push(null); mModelFit.Push(1.0); mModelDrop.Push(0); continue; }
+			if (fit <= 0) { a.Destroy(); pushCardModel(null, 1.0, 0, 0, 0); continue; }
 
 			// a voxel stands on its origin, so it drops by half its height to sit centred
 			Vector2 vsz = wr_VoxSize.Size(TexMan.GetName(t));
-			mModels.Push(a);
-			mModelFit.Push(fit);
-			mModelDrop.Push(vsz.y * 0.5);
+			pushCardModel(a, fit, vsz.y * 0.5, 0, 0);
 		}
+	}
+
+	private void pushCardModel(Actor a, double fit, double drop, double cx, double cy)
+	{
+		mModels.Push(a);
+		mModelFit.Push(fit);
+		mModelDrop.Push(drop);
+		mModelCX.Push(cx);
+		mModelCY.Push(cy);
+	}
+
+	// THE SERIES' OWN HAND WEAPONS ON THE 3D MODEL CARDS (owner 11-11: "the wheel shows no 3d models for saber, shield,
+	// whip, or fist. if we set it to 3d model it should show our colored fbx fist"). Their cards wear the Wheel's own
+	// icons (ownIconOf), and they have no pickup voxel for wr_VoxSize to measure, so until now the card kept the flat
+	// icon. Each now stands its own pack's world mesh, spawned BY NAME from that pack's own class, so its own MODELDEF
+	// block draws it (nothing of theirs is copied here):
+	//   saber   UBQS_HipSaber, UBSP N    RSQ Saber's saber at the hip (MODELDEF.hip): UBQS_Saber's own pickup block,
+	//                                    blades in, the frame the Rig wears
+	//   shield  SSQ_Prop, SSQP A         RSQ ShieldSaw's world shield (on your back, and others' view of your hand), closed
+	//   whip    RSQWP_Stowed, RSWP A     RSQ Whip's coiled whip (the Rig's whip holster)
+	//   fist    RSQ_Glove, RMHF A        RSQ Melee's FBX hand, its fist frame, wearing BD22 VR's Hand Skin Tone
+	//                                    (rsq_hand_tone, BD22 VR's own pre-tinted textures by path) exactly as Melee's
+	//                                    RSQML_HandLook.Tone puts it on the held hand (A_ChangeModel's skin on slot 0;
+	//                                    none in multiplayer, as there); RMHG A, the boxing glove, while the gloves are
+	//                                    worn (Melee's RSQML_HandLook.Gloved: Slappers Only or Boxing Gloves on).
+	//                                    The fist card and the gloves' card both show it: either draws this hand.
+	// A pack not loaded (its class not found) leaves the card its icon.
+	// THE SIZES ARE MEASURED, not guessed: ZScript cannot read an MD3, so tools/measure_card_props.py reads each block's
+	// Scale and Offset and its mesh frame, as the engine's world path places them, and wr_CardProp holds its numbers.
+	private bool spawnOwnProp(Class<Actor> c, PlayerPawn pmo)
+	{
+		if (pmo == null) return false;
+		if (mOwnBase.Size() < OWN_N) ownBases(mOwnBase);
+		String lump = ownLump(c, mOwnBase);
+		int row = -1;
+		if (lump == "WRISABER") row = wr_CardProp.SABER;
+		else if (lump == "WRISSAW") row = wr_CardProp.SHIELD;
+		else if (lump == "WRIWHIP") row = wr_CardProp.WHIP;
+		else if (lump == "WRIFIST" || lump == "WRIGLOVE")
+			row = (cvBool("rsqml_slappers", false) || cvBool("rsqml_boxing", false)) ? wr_CardProp.GLOVE : wr_CardProp.FBXFIST;
+		if (row < 0) return false;
+		let pc = clsNamed(wr_CardProp.ClassOf(row));
+		if (pc == null) return false;
+		let a = Actor.Spawn(pc, pmo.Pos, NO_REPLACE);
+		if (a == null) return false;
+		// defanged as a pickup is (the glove is a Weapon; the other three are NOINTERACTION props already)
+		a.bSpecial      = false;
+		a.bNoGravity    = true;
+		a.bNoTonAutomap = true;
+		a.Vel           = (0, 0, 0);
+		a.A_ChangeLinkFlags(1);
+		// the frame its MODELDEF block draws: set here, held (tics -1); each class's Spawn state is a -1 frame already,
+		// the glove's a TNT1 one (its looks are Ready states, MODELDEF.txt), so its sprite is chosen here
+		a.sprite = Actor.GetSpriteIndex(wr_CardProp.SpriteOf(row));
+		a.frame  = wr_CardProp.FrameOf(row);
+		a.tics   = -1;
+		if (row == wr_CardProp.FBXFIST && !multiplayer)
+		{
+			let tc = CVar.FindCVar("rsq_hand_tone");   // the local value (cv's note on QZD 17.3's per-player copies)
+			int tone = tc ? clamp(tc.GetInt(), 0, 17) : 0;
+			if (tone > 0 && Wads.CheckNumForFullName(String.Format("models/rsq/fbx/tones/fbx_hand_t%02d.png", tone)) >= 0)
+				a.A_ChangeModel('None', 0, "", 'None', 0, "models/rsq/fbx/tones/", Name(String.Format("fbx_hand_t%02d.png", tone)));
+		}
+		double sc = cv("wr_model_scale", 0.16);
+		a.Scale = (sc, sc);
+		// fitted inside the card as the voxels are; the mesh's own height is squashed by the pixel stretch, its Offset not
+		double ps = level.pixelstretch > 0 ? level.pixelstretch : 1.2;
+		double propH = wr_CardProp.Height(row) / ps;
+		double fit = min(panelWNow() * 0.70 / wr_CardProp.Across(row), panelHNow() * 0.55 / propH);
+		double cz = wr_CardProp.MeshZ(row) / ps + wr_CardProp.OffZ(row);
+		if (cvBool("wr_debug", false))
+			Console.Printf("RSQ Wheel card %s: prop %s %s %d, fit %.3f, centre %.2f %.2f %.2f", c.GetClassName(), a.GetClassName(),
+				wr_CardProp.SpriteOf(row), a.frame, fit, wr_CardProp.CX(row), wr_CardProp.CY(row), cz);
+		pushCardModel(a, fit, cz, wr_CardProp.CX(row), wr_CardProp.CY(row));
+		return true;
 	}
 
 	private void clearCardModels()
@@ -9574,6 +9660,8 @@ class wr_Rig : EventHandler
 		mModels.Clear();
 		mModelFit.Clear();
 		mModelDrop.Clear();
+		mModelCX.Clear();
+		mModelCY.Clear();
 	}
 
 	// Guarded so a zero handle is a no-op rather than a call into nothing --

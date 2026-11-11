@@ -222,6 +222,10 @@ it.
   Hands (a smoothed pointer). Seated Play puts the wrist card's pose at your seated eyes.
 - **Brutal Doom 22 VR Reloaded:** one card for each gun and its off-hand version; Brutal Doom's own dry-fire click.
 - **BD_VoxelPack:** the turning gun models on the cards.
+- **RSQ Saber, RSQ ShieldSaw, RSQ Whip, RSQ Melee (with Gun Models on Cards):** their cards turn their own pack's model
+  instead of the icon: the saber's hilt (the one at your hip), the shield, the coiled whip, and for the fist and the
+  gloves RSQ Melee's FBX fist in your Hand Skin Tone (BD22 VR's), or the boxing glove while the gloves are worn. A pack
+  that is not loaded leaves its card the icon. Code only, not shown on the rig yet.
 - **LegenDoom:** rarity colours, legendary names and powers on the sheet.
 
 **Other weapon mods are parked.** The Wheel has readers for DoomRL Arsenal, Doomablo, the Pandemonia family, Guncaster,
@@ -269,6 +273,7 @@ Either Hand Picks on, both hands still pick from it).
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch, N4: `design/rigtest_2026-11-10/RESULTS_P4.md`) | **Opens On:** hands 0.64 m apart, the Open Wheel key's command tapped: on Main hand the ring opened in front of the right hand, on Off hand in front of the left; a second tap closed it each time (`design/rigtest_2026-11-10/evidence/P4_N4_wheel_opens_on_main_then_off.jpg`, `P4_A_log.txt`). The key was sent as its command, not pressed |
 | **rig only, not headset-confirmed** (2026-11-09, full series load order) | The Wheel loads with the rest of the series and its RSQ Wheel page appears under Radiant Silvergun Options, with no error from the Wheel in the log. Nothing of the ring itself was exercised in that run |
 | **Headset-confirmed** | Nothing yet |
+| **code only, not shown** (2026-11-11, owner's order "no rig test, code only until i say") | **3D models on the saber, shield, whip and fist cards** (Gun Models on Cards on): each card stands its own pack's world mesh, spawned by its class name so the pack's own MODELDEF draws it: RSQ Saber's UBQS_HipSaber (UBSP N), RSQ ShieldSaw's SSQ_Prop (SSQP A), RSQ Whip's RSQWP_Stowed (RSWP A), RSQ Melee's RSQ_Glove at its FBX fist (RMHF A) wearing BD22 VR's Hand Skin Tone, or its boxing glove (RMHG A) while Slappers Only or Boxing Gloves is on; the gloves' cards show the same. Without the pack, the icon. Sizes and centres measured from the meshes by `tools/measure_card_props.py` (`wr_CardProp`, `wr_q_vox.zs`). Not run: not built into a load-checked launch, no frame. Before: these cards kept their icon in 3D mode, because a card with the Wheel's own icon skipped the model (`spawnCardModels`), and their packs have no pickup voxel for the card to measure |
 | **code only, not shown** | The 11-10 key change (one Open Wheel key; on the rig only its command was sent, above); the 11-09 evening fixes (Reset All covers Freeze Time and Web View, the ModelSwapper keys off the controls list, Freeze Without SlowMo on its own); everything else on this page |
 | **not yet run** | Nothing from the rig test: N4 and the glove cards with the gloves in slot 1 by Melee have run (above) |
 
