@@ -525,8 +525,13 @@ All done here.
   Bonsai's own. A waiting level-up cycles whatever the switch.
 - **The bars breathe** (with GBOVR Menus and HUD on): each XP bar pulses slowly around its own colour, warms toward
   amber and quickens past 60% full, flashes toward white when XP comes in, and flares when a level is ready.
-- **ShieldSaw Gauge** (off): a third, smaller gauge at the top between the two, for the ShieldSaw while it is on
-  your shoulder or thrown (in a hand, that hand's gauge shows it). Dual HUD only: the row is greyed while it is off.
+- **No HUD over a menu** (owner 11-11): while any menu is open (the options, the status screen, the level-up cards),
+  the gauges, the Berserk gauges and the Ammo and Health Row are not drawn. RSQ Score's line and RSQ Miniboss's meter
+  hide the same way.
+- **RSQ Score's line** sits centred just below the two gauges (it moves down until it clears the lower gauge, in
+  Dual HUD or single HUD; Score's own Across and Down rows still place it below that).
+- (The ShieldSaw Gauge, a third gauge for the ShieldSaw on the shoulder, was removed on 11-11 by the owner: its row
+  and setting are gone.)
 - **Berserk Meter Gauge** (on): a tall red gauge on the glove's side for each glove that has learned Berserk Meter.
   It fills with that glove's fist damage, then drains as the earned Berserk runs out. Hidden under a Berserk pack.
   **Gauge Animation** (on): a band of light rising through it, a breathing edge, a glint when full.
@@ -549,7 +554,12 @@ Off, Gun Bonsai's own menus come back unchanged.
 
 - **The status screen**: PLAYER STATUS (your level, XP and player upgrades) on the left; a card for each hand's gun
   (its picture, name, level, XP) with its WEAPON STATUS list beside it; a DESCRIPTION box with the selected
-  upgrade's text and numbers along the bottom. Upgrades you switched off show as [OFF].
+  upgrade's text and numbers along the bottom. Upgrades you switched off show as [OFF]. **Display Info** opens it
+  on the main hand's gun first; pressing it again steps to the other gun.
+- **Gun pictures:** the gun's icon or pickup sprite. A blank one (a 1x1 or TNT1 sprite) counts as none. The whip
+  shows the series' whip icon (a copy of RSQ Wheel's, shipped in this pack). The bare fist shows Brutal Doom's own fist
+  sprite (FISTD0), then RSQ Melee's glove icon for that hand (RMICA0 / RMICB0), then RSQ Wheel's fist icon. RSQ
+  Melee's gloves show their own icons. Anything with no picture at all shows "?".
 - **The level-up cards**: the gun's name (or "LEVEL n" for a player level) as the title, then up to four cards in
   orange, cyan, magenta and green, each with the upgrade's name, its text and the level it takes it to. More than
   four: page with left and right.
@@ -573,8 +583,7 @@ Off, Gun Bonsai's own menus come back unchanged.
 - **RSQ VisualRewards:** the Kill Rewards nodes. Its damage numbers read each hand's gun level from this pack, and
   its monster bars show a star over a monster this pack holds staggered or stunned.
 - **RSQ Score:** XP Source Style reads each kill's style and combo chain. Many nodes report their move to Score's
-  combo ledger (crits, headshots, shatters, Finishers...). Score's line moves down while the ShieldSaw Gauge is drawn (Dual HUD on, the row on, the ShieldSaw on your
-  shoulder).
+  combo ledger (crits, headshots, shatters, Finishers...). Score's line sits centred just below the hand gauges (it asks this pack where they end).
 - **RSQ Gun Cards** and **RSQ Wheel:** show each gun's Gun Bonsai level and upgrades, read from this pack's service.
   Gun Cards adds Cook Sense's third level.
 - **RSQ Glow In The Dark:** a gold wave at a level-up, read from this pack's service.
@@ -598,7 +607,7 @@ are under Test and Debug. **Reset All** resets every setting on both pages.
 | Section | Rows |
 |---|---|
 | (top) | Stock Gun Bonsai Upgrades (Silvergun / All; Silvergun) · XP Source (Damage / Style / Both; Damage) · Force Learns From Saber (On) · Force XP Share (50) |
-| HUD | GBOVR Menus and HUD (On) · Ammo and Health Row (On; greyed with GBOVR Menus and HUD off) · Ammo Row and Berserk Gauge Size (1.50) · Dual HUD (On) · Single HUD Follows (Main Hand / Off Hand / Last to Earn XP; Main Hand; greyed with Dual HUD on) · ShieldSaw Gauge (Off; greyed with Dual HUD off) · Berserk Meter Gauge (On) · Gauge Animation (On) |
+| HUD | GBOVR Menus and HUD (On) · Ammo and Health Row (On; greyed with GBOVR Menus and HUD off) · Ammo Row and Berserk Gauge Size (1.50) · Dual HUD (On) · Single HUD Follows (Main Hand / Off Hand / Last to Earn XP; Main Hand; greyed with Dual HUD on) · Berserk Meter Gauge (On) · Gauge Animation (On) |
 | HUD Position (greyed with Dual HUD off) | Main HUD Across (0.99) · Main HUD Down (0.02) · Main HUD Mirror (None / Left-Right / Up-Down / Both; Both) · Off HUD Across (0.01) · Off HUD Down (0.02) · Off HUD Mirror (Up-Down) |
 | HUD Colour Cycle | Main HUD Colour Cycle (On) · Main HUD Cycle Speed (1.0) · Main HUD Cycle Spread (1.0) · Main HUD Cycle Intensity (1.0) · Off HUD Colour Cycle (On) · Off HUD Cycle Speed (1.0) · Off HUD Cycle Spread (1.0) · Off HUD Cycle Intensity (1.0) |
 | Test and Debug | Force Base Strength (0.00) · Grapple XP (1.0) · Style XP Scale (1.0) · Style Player Share (10) · HUD Inset (0.04) · Debug Log: Style XP and Learned Rows (Off) · Debug: Add All · Debug: Add Incremental |
@@ -616,17 +625,18 @@ level-up stores it. **Debug Log: Style XP and Learned Rows** prints the Style XP
 
 | | |
 |---|---|
-| **rig only, not headset-confirmed** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_GBOVR.md`, the owner's order, the pk3 built after the 11-10 fixes; XP given by debug, every level taken through Display Info and the cards' Enter, no Add All) | **The status screen** (PLAYER STATUS, both guns' cards and WEAPON STATUS lists, the DESCRIPTION box, the list walked to its end, a second press stepping to the other gun; no ITEMS or WEAPON BOND panel) (`evidence/GB_2_status_screen_cursor_main_upgrade_and_player_upgrade.jpg`). **The level-up cards**, weapon and player (`GB_3_levelup_cards_fists_saber_player.jpg`, `GB_3_levelup_card_grenade_480px.jpg`). **A level-up on every tree:** Fists, Melee, Saber, the Force (stored on the main saber), ShieldSaw, Whip, Grenade; SlowMo, Guard, Two hands and the body, Grapple, Gunslinger, Critical Hits, Kill Rewards (Gastropub, Rich Bits, Magnet, Lucky Kill in order) (`GB_GB2_log.txt`, `GB_GB3_log.txt`, `GB_GB4_log.txt`). **Both gauges' Colour Cycle** after the fixes (`GB_1_gauges_colour_cycle_both_hands.jpg`). **The greyed rows:** Single HUD Follows with Dual HUD on; the six HUD Position rows and ShieldSaw Gauge with it off (`GB_5_options_page_dual_hud_on_off.jpg`, row dump in `GB_GB3_log.txt`). **Score's line** moves down only while the ShieldSaw gauge is drawn (shift 0.109 with it, 0 with Dual HUD off or the row off) (`GB_6_score_line_vs_shieldsaw_gauge.jpg`). The start line "v0.10.6+RSQ" |
+| **code only, not shown** (2026-11-11, the owner's five HUD decisions, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run on the rig by the owner's order "no rig test, code only until i say") | The ShieldSaw Gauge removed (drawing, row, setting, service band). No gauge, Berserk gauge or Ammo and Health Row while a menu is open. The `gauges.bottom` service that puts RSQ Score's line centred under the gauges. Display Info opening on the main hand first. The whip's and the bare fist's pictures on the status screen. The pack compiles in the owner's order with no script error or warning of its own (load check before the order) |
+| **rig only, not headset-confirmed** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_GBOVR.md`, the owner's order, the pk3 built after the 11-10 fixes; XP given by debug, every level taken through Display Info and the cards' Enter, no Add All) | **The status screen** (PLAYER STATUS, both guns' cards and WEAPON STATUS lists, the DESCRIPTION box, the list walked to its end, a second press stepping to the other gun; no ITEMS or WEAPON BOND panel) (`evidence/GB_2_status_screen_cursor_main_upgrade_and_player_upgrade.jpg`). **The level-up cards**, weapon and player (`GB_3_levelup_cards_fists_saber_player.jpg`, `GB_3_levelup_card_grenade_480px.jpg`). **A level-up on every tree:** Fists, Melee, Saber, the Force (stored on the main saber), ShieldSaw, Whip, Grenade; SlowMo, Guard, Two hands and the body, Grapple, Gunslinger, Critical Hits, Kill Rewards (Gastropub, Rich Bits, Magnet, Lucky Kill in order) (`GB_GB2_log.txt`, `GB_GB3_log.txt`, `GB_GB4_log.txt`). **Both gauges' Colour Cycle** after the fixes (`GB_1_gauges_colour_cycle_both_hands.jpg`). **The greyed rows:** Single HUD Follows with Dual HUD on; the six HUD Position rows and ShieldSaw Gauge (since removed) with it off (`GB_5_options_page_dual_hud_on_off.jpg`, row dump in `GB_GB3_log.txt`). **Score's line** moved down only while the ShieldSaw gauge was drawn (shift 0.109 with it, 0 with Dual HUD off or the row off; gauge removed since) (`GB_6_score_line_vs_shieldsaw_gauge.jpg`). The start line "v0.10.6+RSQ" |
 | **rig only, not headset-confirmed** (2026-11-10, design/rigtest_2026-11-10, the owner's order with BD22 VR 2.0.4f, Legion of Bones, Champions and Gun Bonsai; the pk3 built 2026-11-09, before the 11-10 fixes below) | Loads with no script error of its own. Both hands' Gun Bonsai gauges drawn, the off hand's ("Fist") top left and the main hand's ("Rifle") top right, their frames changing colour from frame to frame (evidence/A4_score_wrist_steps_aside.jpg, A4_remote_wrist_panel_full.jpg) |
 | **rig only, not headset-confirmed** (2026-11-10, the debug Add All in the batch's runs: `design/rigtest_2026-11-10/RESULTS.md`, `RESULTS_P2.md`) | Nodes given by Add All at work in play: the whip tree's Rope perks against none (Fast Reel, Steady Line, Slingshot, Heavy Lash, Barbed Claw, Get Over Here, Bowling; `design/rigtest_2026-11-10/evidence/PERKS_*`; the stagger they ask for was logged as asked, not seen); Two Sabers giving the second saber (`P2B_log.txt`); Force Sensitive gating Force Pull (not learned: nothing; learned: the pull) (`P2E_log.txt`); the ShieldSaw's Ricochet (`P2G_log.txt`). Only Add All against none: no level-by-level climb |
 | **rig only, not headset-confirmed** (2026-11-09, design/rigtest_2026-11-09/batch3 launch logs, full order) | The pack's start line, "RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)" |
 | **rig only, not headset-confirmed** (2026-11-03, VisualRewards/test/evidence/merge_vr_gbnodes.txt, doom2 and a probe that grants nodes) | The Kill Rewards path offered by its parents (Gastropub alone, then Rich Bits and Magnet, then Lucky Kill), VisualRewards reading each level, a Lucky Kill; Bandolier and Scavenger granted on the grenade and ammo bits giving grenades |
 | **code only, not shown** (the rest of the 11-10 fixes; the start line, Score's line, the Force's pool, the hidden placeholders and the greyed rows are shown above) | Elemental upgrades and Rapid Fire barred on the whip, the grenade and the Force hand. Skeet Window and Slow Burn offered only with RSQ SlowMo loaded. Heavy Hands, Hadouken and Wallflower capped on their learned level (Rage's +1 no longer closes them early). Debug: Add All / Add Incremental store saber-tree nodes on the main saber, as a real level-up does (the real level-up's storing is shown above). Learning a node switches a user row only on that player's own machine and a server row only on the settings controller's. Headshot Reaction 2 counts gun hits (puffs and bullets), not only hits that named the player. Critical Hits makes a monster's token only on a critical. HUD Size renamed Ammo Row and Berserk Gauge Size; Debug Log renamed Debug Log: Style XP and Learned Rows. The unused full-gauge art and the old HUD drawing code removed. readme.txt, docs/ and this draft no longer go into the pk3 |
 | **code only, not shown** | Everything else on this page: every tree's moves in play (learning one is shown above), the Ammo and Health Row (in the 11-10 frames the base status bar is drawn at the bottom instead), the bars' breathing, the HUD Colour Cycle switches and sliders, the Berserk gauge, Style XP, the hook's XP, the Force's 50% share, the debug rows. GBOVR_TREES.md records headless probe runs of most trees on 2026-11-02 and an XP-credit measurement on 2026-11-03 (xpprobe; the Force share was 25% then), and commit 756de18c's message reports the Colour Cycle on the rig on 11-07; none of their logs or frames are in the repo, so they are not counted as shown |
-| **not yet run** | On the screens: refusing a level (Back), toggling or tuning an upgrade on the status screen, paging past four cards, keys 1-4, and the screens with GBOVR Menus and HUD off. Seen in the 11-11 frames, for the owner: Score's line sits on the main gauge's weapon name; the gauges draw over the options page's top rows; the whip has no picture on the status screen |
+| **not yet run** | On the screens: refusing a level (Back), toggling or tuning an upgrade on the status screen, paging past four cards, keys 1-4, and the screens with GBOVR Menus and HUD off. Seen in the 11-11 frames, for the owner: Score's line sat on the main gauge's weapon name; the gauges drew over the options page's top rows; the whip had no picture on the status screen; Display Info opened on the off hand (all four changed 11-11, code only, above) |
 
 Known gaps (from reading the code): Gun Bonsai's other stock upgrades can still be offered on all the series
-weapons. No gun pictures ship for the status screen, so it falls back to each gun's icon or pickup sprite.
+weapons. Only the whip's gun picture ships for the status screen; the rest fall back to each gun's icon or pickup sprite.
 
 ---
 
@@ -650,7 +660,8 @@ weapons. No gun pictures ship for the status screen, so it falls back to each gu
     `upgrade.num` (every move's numbers), `head.mps`, `force.start`.
   - `RSQGB_Service`: a gun's `level`, `xp`, `xp.next`, `xp.permille`, `count`, `hand`, `player.level`, and the
     strings `upgrades` ("Name:level:max:Class:on:Colour|...") and `name`.
-  - `RSQ_HudService` (ui): `shield.gauge.top`, `shield.gauge.h`, `shield.gauge.drop`.
+  - `RSQ_HudService` (ui): `gauges.bottom` (permille of the screen's height, the lowest hand gauge drawn; -1 while
+    none is drawn).
   - `RSQTHP_MarkerGBVR`: `stunned`, for the monster bars.
 - **Network events:** Gun Bonsai's `bonsai-show-info`, `bonsai-choose-level-up-option`, `bonsai-toggle-upgrade` and
   `bonsai-tune-upgrade`; this pack's `rsqui-menu-hand` (which hand the status screen acts on), `rsqgb_dbg_all` and

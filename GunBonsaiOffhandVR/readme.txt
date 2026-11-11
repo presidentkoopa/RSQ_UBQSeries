@@ -161,7 +161,7 @@ SUITE UPGRADES (rsq/)
 Upgrade paths for the whole RSQ suite, added as new files. No elemental damage, nothing that is
 rate of fire, no new resource: each one grows a number the suite already has, or rewards something
 the player already does. Options: Options -> Radiant Silvergun Options -> RSQ Gun Bonsai VR (also at the bottom of Gun Bonsai's own
-options): XP Source, ShieldSaw Gauge, the screens, and Tuning. (Slappers Only, Start With Gloves and the punch
+options): XP Source, the screens, and Tuning. (Slappers Only, Start With Gloves and the punch
 settings are RSQ Melee's page now.)
 
 WEAPON PATHS (offered when that weapon levels)

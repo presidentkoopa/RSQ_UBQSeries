@@ -34,7 +34,7 @@ user int bonsai_vr_hud_off_mirror = 2;
 // GetShinyColour / CycleOr). On: that hand's gauge frame, weapon XP bar and player XP bar cycle through the colours all
 // the time, 34 tics apart so the colour ripples across. Off: Gun Bonsai's colours, as before. A waiting level-up cycles
 // whatever the switch. Speed scales the rate (0 = still), Spread the gap between frame and bars, Intensity the
-// brightness; 1.0 / 1.0 / 1.0 is Gun Bonsai's own cycle. The main set also colours the shield gauge and the single HUD.
+// brightness; 1.0 / 1.0 / 1.0 is Gun Bonsai's own cycle. The main set also colours the single HUD.
 // Photosensitive Mode (RSQ_Accessibility): no cycling. Any colour-blind mode: the switch acts as off (both hands).
 user bool  bonsai_vr_hud_main_cycle = true;
 user float bonsai_vr_hud_main_cyclespeed = 1.0;
@@ -45,9 +45,8 @@ user float bonsai_vr_hud_off_cyclespeed = 1.0;
 user float bonsai_vr_hud_off_gradient = 1.0;
 user float bonsai_vr_hud_off_intensity = 1.0;
 
-// A third gauge, for the ShieldSaw while it rides on the shoulder (in a hand, that hand's gauge shows
-// it): Gun Bonsai's own gauge, centred at the top between the two, scaled to fit. Off by default.
-user bool rsq_hud_shield = false;
+// (rsq_hud_shield, the ShieldSaw's third gauge, is gone since 11-11: the owner removed it. A value left in an old ini
+// is ignored.)
 
 // (bonsai_vr_warn_binding, the startup warning about Gun Bonsai's upgrade binding mode, is gone since 0.99a: measured
 // on the rig in modes 0, 1 and 2, with two different weapons and with two weapons merged into one class, each hand's

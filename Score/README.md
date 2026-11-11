@@ -805,8 +805,11 @@ Without SlowMo nothing slows; the rows still pay.
 
 ## The HUD
 
-The score sits in the top right of your view by default (**Across** 85, **Down** 10, **Size** 150; RSQ Accessibility's
-Text Size makes it bigger still).
+The score sits at the top centre of your view by default (**Across** 50, **Down** 10, **Size** 150; RSQ Accessibility's
+Text Size makes it bigger still). With RSQ Gun Bonsai VR's gauges on screen (owner 11-11: "i want it centered"), the
+whole display moves down until the line is just below the two gauges, with Dual HUD or single HUD; Across and Down
+still place it below that. A saved Across of 85 (the old default, which put the line over the main gauge's weapon
+name) is moved to 50 once; any other saved Across is kept.
 
 - **The line:** "Score:" and your running total in gold. It flashes when points land (**Bar Flash**).
 - **The word "Score:" is alive** (**Living Label**): it breathes from calm blue to warm once every 2 seconds, flares
@@ -821,10 +824,11 @@ Text Size makes it bigger still).
   half-second fade). Rows keep
   their places while others come and go.
 - **Out of the way:** the rows drop below RSQ SlowMo's countdown bar and RSQ Miniboss's Miniboss meter while they
-  show, and the whole display moves down while RSQ Gun Bonsai VR's ShieldSaw gauge is on. It hides on the automap and
-  with the full-screen no-HUD view.
+  show, and the whole display sits below RSQ Gun Bonsai VR's hand gauges. It hides on the automap, with the
+  full-screen no-HUD view, and while any menu is open (owner 11-11).
 - **On your wrist** (**Score on the Wrist**, off): your total in small gold digits above the off-hand controller, in
-  VR only. While RSQ Saber's training remote is out, its panel takes this spot and the digits step aside.
+  VR only. While RSQ Saber's training remote is out, its panel takes this spot and the digits step aside. They hide
+  while a menu is open (your frame tells the game by a network event, `rs_score_wristmenu`).
 
 **Screen flashes are off.** A reward and a revival light the bar and the pips instead of tinting your whole view
 (**Reward Screen Flash** and **Revival Screen Flash** bring the old tints back, under the **Screen Flash** switch).
@@ -906,7 +910,7 @@ score looks is yours.
 | Head Shots | Head Shot Damage · Heads on Demons, Cacos and Spiders |
 | Monster Roster Rows: Tiers | Green, Blue, Cyan, Purple, Yellow, FireBlu, Abyss, Brown, Gray, Red Tier · Black Boss · White Boss · EX Boss |
 | Monster Roster Rows: The Roster | Rarity · Full Spectrum · Colour Chain · Keep the Change · Fresh Paint · Upset · Tier Slayer |
-| Test and Debug: Display | Across (85) · Down (10) · Bonus Time (35 tics; 0 hides the breakdown) |
+| Test and Debug: Display | Across (50) · Down (10) · Bonus Time (35 tics; 0 hides the breakdown) |
 | Test and Debug: Bonus Caps | Kill Bonus Cap (300%) · Efficiency, Style, Daring, Melee and Counterplay Caps (0, none) |
 | Test and Debug: Reward Target | Target Size (50%) · Fewest Monsters (140) · Most Monsters (800) · Round To (5,000) · Ammo Refill (40%) · Raised Monster Pay (100%) |
 | Test and Debug: Slow Motion | Cooldown (6 s) · Style Share (50%) |
@@ -927,6 +931,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 
 | | |
 |---|---|
+| **code only, not shown** (2026-11-11, the owner's HUD decisions, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run on the rig by the owner's order "no rig test, code only until i say") | The line centred (Across 50, a saved 85 moved once) and placed just below RSQ Gun Bonsai VR's hand gauges (its `gauges.bottom`); the old ShieldSaw-gauge shift removed. The line, bar, pips and breakdown not drawn while a menu is open; the wrist digits hidden while a menu is open. Compiles in the owner's order with no script error or warning of its own (load check before the order) |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. A called-in miniboss's kill paid ONE row, **Miniboss** (15000, 3x), and no Bossfight row (`evidence/L1_log.txt`). A Champion row with its icon: "+21 White Champion" with its snowflake (`evidence/R4_score_champion_row.jpg`). The wrist digits stepping aside while RSQ Saber's training remote is out, and back after (`evidence/A4_score_wrist_steps_aside.jpg`) |
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md` R2, B6) | **Score's menu without MeatGrinder's rows:** the roster rows are Tiers and The Roster only, with no MeatGrinder section, no Gang War or Mixed Bag (row dump in `design/rigtest_2026-11-10/evidence/P3A_log.txt`; frames `P3_R2_score_menu_no_MG_rows.jpg`). A miniboss kill paying "Miniboss Called" again (B6, same log) |
 | **rig only, not headset-confirmed** (2026-11-09, logs and frames) | The head-shot check, with the Headshot row paying on head kills and not on chest kills: Brutal Doom zombies and imps (head and chest), a Brutal Doom Baron's head through Score's own head target, an imp and a Baron grown to 1.25x judged on their grown size (and a 1.25x imp that was only drawn bigger judged on its real box), RSQ Monsters' ColorfulHell and (since removed) MeatGrinder imps; the +30 head damage, and the Baron's head shot doubled. The same run showed that Brutal Doom's own check did not pay the Headshot row on a Brutal Doom head kill, so that option was removed (the check is always Score's own now). The Revival Fire's ring of flames, fired by RSQ SlowMo's DOWN top tier, and the Revenge award reaching Score from DOWN (SlowMo's log; the points paid were not logged) |

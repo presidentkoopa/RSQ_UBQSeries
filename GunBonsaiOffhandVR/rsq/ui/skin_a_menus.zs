@@ -35,8 +35,40 @@ class RSQUI_A_Look ui
 
 // Gun pictures: graphics/rsqui/guns/<class>.png made by tools/rsqui_gunshots.py from the gun's
 // own model on the rig; without one, the weapon's own icon or pickup sprite.
+// RSQ (owner 11-11): a picture is never blank. A 1x1 or TNT1 sprite (RSQ Whip's WHPWA0 is a 1x1 clear pixel)
+// counts as none, and two guns with no art of their own are given one by name, with fallbacks:
+//   the whip (RSQWP_WhipWeapon)   graphics/rsqui/guns/RSQWP_WhipWeapon.png (a copy of RSQ Wheel's whip icon,
+//                                 WRIWHIP, drawn for the Wheel by its sources/icons/gen_whip_icon.py), then WRIWHIP
+//   the bare fist (BD22 VR's RSQ_Hands, Brutal Doom's Melee_Attacks: all TNT1 frames, no icon)
+//                                 Brutal Doom's own fist sprite FISTD0, then RSQ Melee's glove icon for that hand
+//                                 (RMICA0 main, RMICB0 off), then RSQ Wheel's WRIFIST
+//   RSQ Melee's gloves            their own icon; RMICA0 (RSQ_Glove) / RMICB0 (RSQ_GloveOff) by name if it is blank
 class RSQUI_GunPic ui
 {
+	static bool Shows(TextureID t)
+	{
+		if (!t.IsValid() || TexMan.GetName(t) == "TNT1A0") return false;
+		int w, h;
+		[w, h] = TexMan.GetSize(t);
+		return w > 2 && h > 2;
+	}
+
+	static TextureID Named(String n)
+	{
+		return TexMan.CheckForTexture(n, TexMan.Type_Any);
+	}
+
+	// the first of up to three names that shows; none: invalid (the card's "?")
+	static TextureID FirstNamed(String a, String b = "", String c = "")
+	{
+		TextureID t = Named(a);
+		if (Shows(t)) return t;
+		if (b != "") { t = Named(b); if (Shows(t)) return t; }
+		if (c != "") { t = Named(c); if (Shows(t)) return t; }
+		t.SetInvalid();
+		return t;
+	}
+
 	static TextureID Get(Weapon w)
 	{
 		TextureID t;
@@ -44,16 +76,22 @@ class RSQUI_GunPic ui
 		if (!w) return t;
 		String cls = w.GetClassName();
 		t = TexMan.CheckForTexture("graphics/rsqui/guns/" .. cls .. ".png", TexMan.Type_Any);
-		if (t.IsValid()) return t;
+		if (Shows(t)) return t;
 		t = w.Icon;
-		if (t.IsValid()) return t;
+		if (Shows(t)) return t;
 		let st = w.SpawnState;
 		if (st) t = st.GetSpriteTexture(0);
-		if (t.IsValid() && TexMan.GetName(t) != "TNT1A0") return t;
+		if (Shows(t)) return t;
+		bool off = w.owner && w.owner.player && w.owner.player.OffhandWeapon == w;
+		if (cls == "RSQWP_WhipWeapon") return FirstNamed("WRIWHIP");
+		if (cls == "RSQ_Glove") return FirstNamed("RMICA0");
+		if (cls == "RSQ_GloveOff") return FirstNamed("RMICB0");
+		if (cls == "RSQ_Hands" || cls == "Melee_Attacks" || cls == "Fist")
+			return FirstNamed("FISTD0", off ? "RMICB0" : "RMICA0", "WRIFIST");
 		// a fist has no pickup: its raised frame
 		st = w.FindState("Ready");
 		if (st) t = st.GetSpriteTexture(0);
-		if (t.IsValid() && TexMan.GetName(t) == "TNT1A0") t.SetInvalid();
+		if (!Shows(t)) t.SetInvalid();
 		return t;
 	}
 }

@@ -117,17 +117,28 @@ class TFLV_EventHandler : StaticEventHandler {
       && playerstats[p]
       && (players[p].ReadyWeapon || players[p].OffhandWeapon)
       && screenblocks <= 11
-      && !automapactive;
+      && !automapactive
+      // RSQ PATCH (owner 11-11): no gauge over a menu (any menu: options, the status screen, the level-up cards)
+      && menuactive == Menu.Off;
   }
 
-  // RSQ PATCH: the ShieldSaw's gauge is drawn exactly when this is true (RenderOverlay below); RSQ_HudService
-  // (rsq/zscript/shieldgauge.zs) reports the gauge's band to RSQ Score on this same test, so Score's line moves
-  // only for a gauge that is on screen: Dual HUD on, rsq_hud_shield on, the ShieldSaw on the shoulder.
-  ui bool ShieldGaugeShown(uint p) const {
-    if (p >= MAXPLAYERS || !ShouldDrawHUD(p)) return false;
-    if (!TFLV_Settings.GetBool("bonsai_vr_dual_hud") || !TFLV_Settings.GetBool("rsq_hud_shield")) return false;
+  // RSQ PATCH (owner 11-11): the bottom of the lowest hand gauge drawn this frame, as a fraction of the screen's
+  // height; -1 when none is drawn (RSQ_HudService "gauges.bottom": RSQ Score puts its line under the gauges). The
+  // same test and the same anchors RenderOverlay draws with.
+  ui double GaugesBottom(uint p) const {
+    if (p >= MAXPLAYERS || !ShouldDrawHUD(p)) return -1;
     TFLV_CurrentStats cur;
-    return playerstats[p].GetShieldStats(cur);
+    let stats = playerstats[p];
+    if (TFLV_Settings.GetBool("bonsai_vr_dual_hud")) {
+      double b = -1;
+      if (stats.GetCurrentStatsForHand(0, cur)) b = max(b, TFLV_HUD.GaugeBottom(TFLV_Settings.GetDouble("bonsai_vr_hud_main_y")));
+      if (stats.GetCurrentStatsForHand(1, cur)) b = max(b, TFLV_HUD.GaugeBottom(TFLV_Settings.GetDouble("bonsai_vr_hud_off_y")));
+      return b;
+    }
+    if (!stats.GetCurrentStatsPreferring(TFLV_Settings.GetInt("bonsai_vr_hud_hand"), cur)) return -1;
+    double x, y, sc, al; uint mi;
+    [x, y, sc, al, mi] = TFLV_Settings.hud_params();
+    return TFLV_HUD.GaugeBottom(y);
   }
 
   /* ui */ override void RenderOverlay(RenderEvent evt) {
@@ -144,8 +155,6 @@ class TFLV_EventHandler : StaticEventHandler {
     if (TFLV_Settings.GetBool("bonsai_vr_dual_hud")) {
       if (stats.GetCurrentStatsForHand(0, cur)) hud.DrawForHand(cur, 0);
       if (stats.GetCurrentStatsForHand(1, cur)) hud.DrawForHand(cur, 1);
-      // RSQ PATCH: the ShieldSaw's gauge while it is on the shoulder (rsq_hud_shield, off by default)
-      if (ShieldGaugeShown(consoleplayer) && stats.GetShieldStats(cur)) hud.DrawShield(cur);
       return;
     }
 
@@ -173,6 +182,9 @@ class TFLV_EventHandler : StaticEventHandler {
     // VR PATCH: nothing pending, so this is a browse. Step to the next hand so
     // repeated presses cycle mainhand -> offhand -> mainhand instead of always
     // landing on the same gun.
+    // RSQ PATCH (owner 11-11): the first browse opens on the main hand. menuHand starts at 0, so the step took the
+    // first press to the off hand; from -1 the step lands on the main hand (or the off hand when the main is empty).
+    if (!stats.menuBrowsed) { stats.menuBrowsed = true; stats.menuHand = -1; }
     stats.AdvanceMenuHand();
     if (p == consoleplayer) Menu.SetMenu("GunBonsaiStatusDisplay");
     return;

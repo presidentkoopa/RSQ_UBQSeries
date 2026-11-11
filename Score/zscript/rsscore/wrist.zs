@@ -27,6 +27,30 @@ class RS_ScoreWrist : EventHandler
 
 	transient class<Inventory> remoteOut;    // RSQ Saber's UBQS_RemoteOut, by name (null without the Saber)
 
+	// NOT WHILE A MENU IS OPEN (owner 11-11). Whether a menu is open is known only to ui code (menuactive), so this
+	// machine's frame tells the playsim by a network event when it changes (RenderOverlay); the digits of a player with
+	// a menu open are hidden at once (NetworkProcess) and stay hidden until it closes.
+	bool menuOpen[MAXPLAYERS];
+	ui int menuSent;   // 0 not sent yet, 1 closed, 2 open
+
+	override void RenderOverlay(RenderEvent e)
+	{
+		int m = menuactive != Menu.Off ? 2 : 1;
+		if (m == menuSent) return;
+		menuSent = m;
+		EventHandler.SendNetworkEvent("rs_score_wristmenu", m == 2 ? 1 : 0);
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.name != "rs_score_wristmenu" || e.player < 0 || e.player >= MAXPLAYERS) return;
+		menuOpen[e.player] = e.args[0] != 0;
+		if (menuOpen[e.player]) Hide(e.player);
+		let dbg = CVar.FindCVar("rs_score_debug");
+		if (dbg && dbg.GetBool())
+			Console.Printf("RSSC WRIST menu %s player %d t%d", menuOpen[e.player] ? "open: hidden" : "closed", e.player, level.maptime);
+	}
+
 	private void FindGlyphs()
 	{
 		glyphsFound = true;
@@ -52,7 +76,7 @@ class RS_ScoreWrist : EventHandler
 		let on = CVar.GetCVar("rs_score_wrist", players[pn]);
 		let hid = CVar.GetCVar("rs_score_hide", players[pn]);
 		let tr = RS_ScoreTracker(pmo.FindInventory("RS_ScoreTracker"));
-		if (!on || !on.GetBool() || (hid && hid.GetBool()) || !tr || pmo.health <= 0) { Hide(pn); return; }
+		if (!on || !on.GetBool() || (hid && hid.GetBool()) || !tr || pmo.health <= 0 || menuOpen[pn]) { Hide(pn); return; }
 		// RSQ Saber's training remote panel takes this spot while the remote is out (owner 11-10: "Panel replaces Score")
 		if (remoteOut && pmo.FindInventory(remoteOut)) { Hide(pn); return; }
 		Vector3 hand;

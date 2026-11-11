@@ -371,8 +371,10 @@ class TFLV_PerPlayerStats : Object play {
 
   // VR PATCH: which hand the status screen is showing. The Show Info key
   // advances it, so repeated presses walk the hands instead of always landing
-  // on the same one. Starts at -1 so the first press lands on the mainhand.
+  // on the same one. The first press lands on the mainhand: ShowInfo sets it to -1 before the first step
+  // (menuBrowsed), since a field starts at 0 and 0 stepped to the offhand (RSQ, owner 11-11).
   int menuHand;
+  bool menuBrowsed;
 
   // VR PATCH: the gun currently being credited, valid only for the duration of
   // an upgrade dispatch. Anything an upgrade creates during that window --
@@ -461,19 +463,6 @@ class TFLV_PerPlayerStats : Object play {
   // is how the renderer knows to skip drawing that side entirely.
   bool GetCurrentStatsForHand(int hand, out TFLV_CurrentStats stats) const {
     return FillStats(GetInfoForHand(hand), stats);
-  }
-
-  // RSQ PATCH (shield gauge): the ShieldSaw's record while it is in neither hand (on the shoulder, or
-  // thrown). False when it is in a hand (that hand's gauge shows it), not owned, or never recorded.
-  bool GetShieldStats(out TFLV_CurrentStats stats) const {
-    if (!owner || !owner.player) return false;
-    for (let it = owner.Inv; it; it = it.Inv) {
-      let w = Weapon(it);
-      if (!w || w.GetClassName() != 'SSQ_ShieldSaw') continue;
-      if (HandHolding(w) >= 0) return false;
-      return FillStats(GetInfoFor(w), stats);
-    }
-    return false;
   }
 
   bool FillStats(TFLV_WeaponInfo info, out TFLV_CurrentStats stats) const {

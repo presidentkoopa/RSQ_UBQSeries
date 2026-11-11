@@ -13,7 +13,7 @@ class RSQUI_Gauges : StaticEventHandler
 	override void RenderOverlay(RenderEvent e)
 	{
 		if (gamestate != GS_LEVEL || !playeringame[consoleplayer] || !players[consoleplayer].mo) return;
-		if (screenblocks > 11 || automapactive) return;
+		if (screenblocks > 11 || automapactive || menuactive != Menu.Off) return;   // no gauge over a menu (owner 11-11)
 		let cv = CVar.GetCVar("rsqgb_berserk_gauge", players[consoleplayer]);
 		if (cv && !cv.GetBool()) return;
 		let stats = TFLV_EventHandler.GetConsolePlayerStats();

@@ -1,29 +1,18 @@
-// The ShieldSaw's gauge (rsq_hud_shield; drawn by ca.ancilla.bonsai/HUD.zsc DrawShield).
-// THE SHIELD GAUGE'S PLACE, for a HUD that has to make room (RSQ Score moves its line below it while the
-// gauge is on), asked by name from ui code:
-//   GetIntUI("shield.gauge.top") / ("shield.gauge.h")   permille of the screen's height; -1 while the
-//   gauge is not drawn for this machine's player (rsq_hud_shield off, Dual HUD off, or no ShieldSaw on the shoulder)
-//   GetIntUI("shield.gauge.drop")   how far below the hand gauges' top the shield gauge ends (its drop
-//   under their bars plus its height): what a display under it moves down by
+// THE HAND GAUGES' PLACE, for a HUD placed under them (owner 11-11: RSQ Score's line, centred just below the
+// two gauges), asked by name from ui code:
+//   GetIntUI("gauges.bottom")   permille of the screen's height: the bottom of the lowest hand gauge drawn this
+//   frame (Dual HUD: either hand's; Dual HUD off: the single gauge). -1 while no gauge is drawn (no weapon, the
+//   automap, screenblocks 12, a menu open). The test and anchors are the ones the gauges are drawn with
+//   (TFLV_EventHandler.GaugesBottom, ca.ancilla.bonsai/EventHandler.zsc).
+// (Until 11-11 this service reported the ShieldSaw gauge's band, "shield.gauge.*"; that gauge is removed.)
 class RSQ_HudService : Service
 {
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
-		if (!(request == "shield.gauge.top" || request == "shield.gauge.h" || request == "shield.gauge.drop")) return -1;
-		// Only while the gauge is really drawn (TFLV_EventHandler.ShieldGaugeShown, the test RenderOverlay draws on):
-		// it is drawn in Dual HUD mode only, and only while the ShieldSaw is on the shoulder.
+		if (request != "gauges.bottom") return -1;
 		let eh = TFLV_EventHandler(StaticEventHandler.Find("TFLV_EventHandler"));
-		if (!eh || !eh.ShieldGaugeShown(consoleplayer)) return -1;
-		double top, h;
-		[top, h] = TFLV_HUD.ShieldBand();
-		if (request == "shield.gauge.drop")
-		{
-			let ty = CVar.GetCVar("bonsai_vr_hud_main_y", players[consoleplayer]);
-			double sc = TFLV_Settings.GetDouble("bonsai_hud_size");
-			if (sc > 1) sc = sc / 1080;
-			double row = (ty && ty.GetFloat() >= 0 && ty.GetFloat() <= 1) ? (1 - sc) * ty.GetFloat() : 0.02;
-			return int(1000 * max(0.0, top + h - row));
-		}
-		return int(1000 * (request == "shield.gauge.top" ? top : h));
+		if (!eh) return -1;
+		double b = eh.GaugesBottom(consoleplayer);
+		return b < 0 ? -1 : int(ceil(1000 * b));
 	}
 }

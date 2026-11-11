@@ -618,7 +618,6 @@ RSQ_MENU_FORCE_LEARNS = "Force Learns From Saber";
 RSQ_MENU_FORCE_SHARE = "Force XP Share";
 RSQ_MENU_RESETALL = "Reset All";
 RSQ_MENU_RESETALL_Q = "Reset all RSQ Gun Bonsai VR settings?";
-RSQ_MENU_SHIELDGAUGE = "ShieldSaw Gauge";
 RSQ_MENU_XPSRC_DAMAGE = "Damage";
 RSQ_MENU_XPSRC_STYLE = "Style";
 RSQ_MENU_XPSRC_BOTH = "Both";

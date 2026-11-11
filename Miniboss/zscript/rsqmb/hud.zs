@@ -167,7 +167,7 @@ extend class RSQMB_Handler
 	override void RenderOverlay(RenderEvent e)
 	{
 		if (gamestate != GS_LEVEL || !playeringame[consoleplayer] || !players[consoleplayer].mo) return;
-		if (screenblocks > 11 || automapactive) return;
+		if (screenblocks > 11 || automapactive || menuactive != Menu.Off) return;   // nothing over a menu (owner 11-11)
 		if (StackShown()) { DrawStack(e); return; }
 		if (!MeterShown()) return;
 		TextureID te = TexMan.CheckForTexture("RSQMBHE", TexMan.Type_Any);

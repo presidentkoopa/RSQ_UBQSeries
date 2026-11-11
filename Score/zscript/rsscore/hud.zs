@@ -52,10 +52,25 @@ class RS_ScoreHUD : EventHandler
 	const LIVES_MAX   = 10;    // LIVES_MAXDRAW
 	const ROW_STEP    = 13;
 
+	ui bool migrated;
+
+	// Saved settings outlive a changed default, so a saved Across is moved once (rs_score_cfgver), as Gun Bonsai VR does.
+	// Version 1 (owner 11-11): Across 85 (the old default, the line over the main hand gauge's weapon name) becomes 50.
+	static ui void Migrate()
+	{
+		let ver = CVar.FindCVar("rs_score_cfgver");
+		if (!ver || ver.GetInt() >= 1) return;
+		let x = CVar.FindCVar("rs_score_x");
+		if (x && x.GetInt() == 85) x.SetInt(50);
+		ver.SetInt(1);
+	}
+
 	override void RenderOverlay(RenderEvent e)
 	{
+		if (!migrated) { migrated = true; Migrate(); }
 		if (gamestate != GS_LEVEL) { return; }
 		if (automapactive) { return; }
+		if (menuactive != Menu.Off) { return; }   // owner 11-11: nothing over a menu (any menu)
 
 		int pln = consoleplayer;
 		if (pln < 0 || pln >= MAXPLAYERS || !playeringame[pln]) { return; }
@@ -111,13 +126,14 @@ class RS_ScoreHUD : EventHandler
 		double compressRatio = max(1.0, aspect / (16.0 / 9.0));
 		screenwidth *= compressRatio;
 
-		double centerX = SScaledCoord(SUserInt(pln, "rs_score_x", 85), widewidth,    PAD_WIDTH,  widewidth - screenwidth);
+		double centerX = SScaledCoord(SUserInt(pln, "rs_score_x", 50), widewidth,    PAD_WIDTH,  widewidth - screenwidth);
 		double centerY = SScaledCoord(SUserInt(pln, "rs_score_y", 10), screenheight, PAD_HEIGHT, 0);
-		// THE SHIELDSAW'S GAUGE (the Gun Bonsai VR patch, rsq_hud_shield, off by default) takes the top
-		// middle; while it is on, the whole display -- line, bar, lives, breakdown -- moves down by as far
-		// as that gauge reaches below the hand gauges' top (asked by name: RSQ_HudService). Off, or
-		// without the patch, nothing moves.
-		centerY += screenheight * GaugeShift();
+		// UNDER THE HAND GAUGES (owner 11-11: "i want it centered, below the shieldsaw bar"; that bar is gone, so
+		// centred, just below Gun Bonsai VR's two hand gauges). While a gauge is drawn (Dual HUD or single), the whole
+		// display -- line, bar, lives, breakdown -- moves down until the line's top clears the lowest gauge's bottom
+		// (asked by name: RSQ_HudService "gauges.bottom"). The Down row still works below that; without Gun Bonsai VR,
+		// or with no gauge on screen, nothing moves.
+		centerY += GaugeShift(centerY, screenheight);
 
 		// The original draws into SetHudSize(screenwidth, screenheight) while its X
 		// coordinates were measured against widewidth. That asymmetry IS the
@@ -503,13 +519,21 @@ class RS_ScoreHUD : EventHandler
 
 	// the share of the screen's height the display moves down while the Gun Bonsai VR patch's ShieldSaw
 	// gauge is on (how far it reaches below the hand gauges' top, RSQ_HudService "shield.gauge.drop"); 0 off or without the patch
-	static ui double GaugeShift()
+	// How far (virtual units) the display must move down for the score line's top (DrawScoreLine: bottom edge at
+	// centerY + 7, one font height tall) to sit GAUGE_GAP of the screen's height under the hand gauges' bottom; 0 when
+	// it is already lower, or no gauge is drawn.
+	const GAUGE_GAP = 0.01;
+	static ui double GaugeShift(double cy, double vh)
 	{
 		let it = ServiceIterator.Find("RSQ_HudService");
 		let s = it.Next();
 		if (!s) return 0.0;
-		int h = s.GetIntUI("shield.gauge.drop", "", 0, 0, null);
-		return h > 0 ? h / 1000.0 : 0.0;
+		int b = s.GetIntUI("gauges.bottom", "", 0, 0, null);
+		if (b <= 0) return 0.0;
+		Font fnt = Font.GetFont("RSSCFON");
+		if (!fnt) { fnt = smallfont; }
+		double lineTop = cy + 7 - fnt.GetHeight();
+		return max(0.0, (b / 1000.0 + GAUGE_GAP) * vh - lineTop);
 	}
 
 	// ----------------------------------------------------------------- helpers

@@ -77,10 +77,9 @@ OptionMenu "RSQ_MeleeOptions"
 	Slider "Ammo Row and Berserk Gauge Size", "rsq_ui_hud_scale", 0.5, 2.0, 0.05, 2
 	Option "Dual HUD", "bonsai_vr_dual_hud", "OnOff"
 	// greyed rows (QZD 17.3 graycheck, its last number the value that greys, as FlashFlare's rows): Single HUD Follows
-	// is only read with Dual HUD off (EventHandler.zsc RenderOverlay), and the ShieldSaw gauge and the six HUD Position
-	// rows only with it on (DrawForHand, DrawShield)
+	// is only read with Dual HUD off (EventHandler.zsc RenderOverlay), and the six HUD Position rows only with it on
+	// (DrawForHand)
 	Option "Single HUD Follows", "bonsai_vr_hud_hand", "RSQ_HudHand", "bonsai_vr_dual_hud", 0, 1
-	Option "$RSQ_MENU_SHIELDGAUGE", "rsq_hud_shield", "OnOff", "bonsai_vr_dual_hud"
 	Option "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff"
 	Option "Gauge Animation", "rsqgb_gauge_anim", "OnOff"
 	StaticText " "

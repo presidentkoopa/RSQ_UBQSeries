@@ -46,7 +46,7 @@ class RSQUI_Dispatch ui
 		return skin;
 	}
 
-	// From RenderOverlay. canDraw = the HUD is not hidden (screenblocks, automap).
+	// From RenderOverlay. canDraw = the HUD is not hidden (screenblocks, automap, a menu open).
 	bool Draw(RenderEvent e, bool canDraw)
 	{
 		let sk = Current();
@@ -123,7 +123,8 @@ class RSQUI_Handler : StaticEventHandler
 	{
 		if (!disp) disp = new("RSQUI_Dispatch");
 		bool canDraw = gamestate == GS_LEVEL && playeringame[consoleplayer] && players[consoleplayer].mo
-			&& screenblocks <= 11 && !automapactive;
+			&& screenblocks <= 11 && !automapactive
+			&& menuactive == Menu.Off;   // owner 11-11: no HUD over a menu (any menu)
 		disp.Draw(e, canDraw);
 	}
 
