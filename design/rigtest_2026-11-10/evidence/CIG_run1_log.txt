@@ -1,0 +1,54 @@
+CIG_DEFAULT_READ
+"rsqtr_cig_secs" is "15" (default: "15")
+"rsqtr_cfgver" is "9" (default: "0")
+CIG_A_SWITCH_MIDSMOKE
+T_CIG lit t181: smoking 70 tics (2.0 s)
+CIG_A_SWITCH_NOW
+T_CIG end t211: the main hand holding Rifle -> flicked (lit): smoked, the slow motion starts
+T_CIG flick from the mouth t211 at (-96 790 99) vel (0.0 2.6 3.0)
+T_CIG exit t211 (the end: the main hand holding Rifle): main Rifle | off nothing
+T_CIG exit t211 (off hand done: the main hand holding Rifle): main Rifle | off RSQ_Off_Rifle
+T_CIG slow motion asked: rsm_pulse 15000 25
+T_CIG exit t212 (the tic after: the main hand holding Rifle): main Rifle | off RSQ_Off_Rifle
+RSQ_SlowMo: trigger smoke t213: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger smoke t213: started 15000 ms at 25% (deliberate), pulse until t738, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t213: the flick: player 0's smoke slow motion kept until t738 (525 tics) at 25%, he moves at full speed
+CIG_B_SWITCH_WHILE_RUNNING
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 375 actors slowed, adrenaline 0, pulse 0.25 for 486 tics (smoke)
+CIG_C_HELD_KEY_OVERLAP
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 375 actors slowed, adrenaline 0, pulse 0.25 for 444 tics (smoke)
+CIG_C_HELD_KEY_OFF
+slow motion: ON, scale 0.25 heading for 0.25 (depth 0.25), 379 actors slowed, adrenaline 0
+RSQ_SlowMo: trigger smoke t327: the smoke takes the slow motion back (from smoke), until t738
+RSQ_SlowMo: trigger smoke t327: countdown bar: refilled, 12.0 s to real time
+CIG_D_MIGRATION_SETUP
+CIG_D_MAPCHANGE
+MAP02 - Underhalls
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+CIG_D_ON_MAP02
+CIG_D_MIGRATED_READ
+"rsqtr_cig_secs" is "15" (default: "15")
+"rsqtr_cfgver" is "9" (default: "0")
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+CIG_D_AFTER
+CIG_E_HOLSTER
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+T_CIG lit t471: smoking 70 tics (2.0 s)
+CIG_E_GRIP
+T_CIG flick from the mouth t541 at (1104 1983 40) vel (0.0 -2.6 3.0)
+T_CIG exit t541 (the end: smoked): main Rifle | off nothing
+T_CIG exit t541 (off hand done: smoked): main Rifle | off RSQ_Off_Rifle
+T_CIG slow motion asked: rsm_pulse 15000 25
+RSQ_SlowMo: trigger smoke t542: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger smoke t542: started 15000 ms at 25% (deliberate), pulse until t1067, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t542: the flick: player 0's smoke slow motion kept until t1067 (525 tics) at 25%, he moves at full speed
+T_CIG exit t542 (the tic after: smoked): main Rifle | off RSQ_Off_Rifle
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 203 actors slowed, adrenaline 0, pulse 0.25 for 498 tics (smoke)
+CIG_F_DEATH
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 212 actors slowed, adrenaline 0, pulse 0.25 for 435 tics (smoke)
+RSQ_SlowMo: trigger smoke t633: player 0's smoke slow motion ENDS: death (434 tics were left), pulse now until t633
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0
+CIG_END
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0

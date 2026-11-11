@@ -271,7 +271,10 @@ SlowMo talks to most of the series, always by name: every mod still loads and pl
   target you kill earns Revenge, the top tier fires its Revival Fire, and the target lines use Score's monster names and
   font.
 - **RSQ Tactical Rig:** the cigarette slows the world, and with the Rig's own option you move at full speed while you
-  smoke. Getting up on the top tier puts a cigarette back. The Rig knows when you are DOWN.
+  smoke. The smoke's slow motion keeps its own time: only your death or your DOWN ends it. Another slow motion on top
+  of it (a parry, a miniboss, your key or the Wheel) runs by the usual rules, and the smoke's takes over again when that
+  one ends; on a level change what is left of it goes on in the next level (rig only, not headset-confirmed). Getting
+  up on the top tier puts a cigarette back. The Rig knows when you are DOWN.
 - **RSQ VisualRewards:** with DOWN, "+0.4s" pops where your hits buy time, REVENGE and REVIVE (sized by tier), each
   target's health bar kept up, the Kill Rewards bank for getting up, and the DOWN music. Its Level-Up Slow-Mo option
   slows the world through SlowMo.

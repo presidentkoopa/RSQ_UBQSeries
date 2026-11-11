@@ -186,12 +186,18 @@ Ermac's tribute, **off by default**. Turn on **Cigarettes** and a pocket of thre
 | Use anywhere but your lips | Flicked away |
 | Main-hand squeeze at your mouth before it is lit | Back in your hand |
 
-**The smoke's slow motion is its own.** It lasts as long as you set with **Smoke Slow-Mo Time** (5 to 30 seconds, 6 by
+**The smoke's slow motion is its own.** It lasts as long as you set with **Smoke Slow-Mo Time** (5 to 30 seconds, 15 by
 default), it doesn't use your adrenaline, and RSQ SlowMo's countdown bar shows how much of it is left.
 
-Switching weapons, a holster, death or a level change ends it at once: an unlit cigarette goes back in the pocket, a lit
-one is flicked. Left unlit in your mouth for 7 seconds, it drops. You and your shots move at full speed in the smoke's slow
-motion unless you turn that off (Move at Full Speed While Smoking).
+**Only death or RSQ SlowMo's DOWN (Be Quick or Be Dead) ends it.** Switching weapons or grabbing a holster while you smoke
+counts as a finished smoke: the cigarette flicks out of your mouth, the slow motion starts, and your hands get what you
+switched to. Once it runs, a switch, a holster, Use or a level change does not end it: on a new level it goes on for the
+time it had left. Another slow motion on top of it (a parry, a miniboss, your own key) runs by SlowMo's rules, and the
+smoke's takes over again when that one ends. Getting up from DOWN does not bring it back.
+
+Switching or a holster with the cigarette still unlit puts it back in the pocket. Left unlit in your mouth for 7 seconds,
+it drops. You and your shots move at full speed in the smoke's slow motion unless you turn that off (Move at Full Speed
+While Smoking). *(The switch, the holster and the level change: rig only, not headset-confirmed.)*
 
 **Cigarettes are precious.** You start a game with a full pocket, and it does **not** refill on a new level: what you
 have left comes with you. You earn more: RSQ Score gives you one every so many points, killing an RSQ Miniboss fills
@@ -291,7 +297,7 @@ torso fades to about half as you look down, so you can see your holsters.
 | Stored Guns | Show Stored Guns (On) · Stored Gun Size (1.0) · Ammo Light (On) · Ammo Count (Off) |
 | Gun Throwing | Throw Guns (Off) · Throw With Use (Off) · Thrown Guns Hurt (On) |
 | Body | Seated (Off) · Measure My Height · Torso (Off) · Torso Style (Doom Marine / Quake Grunt) · Helmet (On) · Torso Fades Looking Down (On) · Torso Follows Room Turns (On) · Head and Hands Turn (Off) · Torso Catches Up (Off) · Recenter by Hands (On) · Recenter Torso (a key, unbound) |
-| Cigarettes | Cigarettes (Off) · Smoke Slows Time (On) · Smoke Slow-Mo Time (6 s) · Move at Full Speed While Smoking (On) · Cigarette Every N Score (0, off) · Minibosses Refill Cigarettes (On) · Refill Each Level (Off) · Unlit Cigarette Goes Away (On) · Show Cigarettes (On) |
+| Cigarettes | Cigarettes (Off) · Smoke Slows Time (On) · Smoke Slow-Mo Time (15 s) · Move at Full Speed While Smoking (On) · Cigarette Every N Score (0, off) · Minibosses Refill Cigarettes (On) · Refill Each Level (Off) · Unlit Cigarette Goes Away (On) · Show Cigarettes (On) |
 | Setup | Move Holsters by Hand (Off) · Mirror (Off / While Moving / Always; While Moving) · Mirror Shows (Front / Back / Both; Both) · Haptics (On) · Messages (Off) |
 | Holster Profiles | Save and Load: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow) |
 | Test and Debug | Stored Guns: Gun Length (0.25 m), Back Gun Length (0.70 m), Gun Turn (0°), Flip These Guns · Body: Body Turn Angle (35°), Body Turn Delay (1 s), Ignore Looking Down (25°), Mirror Distance (1.0 m) · Hands: Press Delay (3 tics), Throw Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys, Off Grip Keys, Empty Hand Weapon · Torso Fit: Torso Height, Torso Forward, Torso Size, Helmet Height, Low Health Glow (35%) · Cigarette: Mouth Zone Size, In Mouth Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Unlit Goes Away After (7 s), Slow Motion Speed (25%), Pack Size (3) · Holster Positions: Forward, Left, Up and Size for each of Left Hip, Right Hip, Grenade Spot, Left Chest, Right Chest, Keyring, Left Shoulder, Right Shoulder, Left Saber, Right Saber, Whip, Flare, Ammo Pouch · Debug: Throw Debug Log (Off) |
@@ -338,7 +344,7 @@ torso fades to about half as you look down, so you can see your holsters.
   RSQ Wheel's web assigns and clears with the `rsqtr_assign:<gun>` and `rsqtr_unassign:<gun>` events.
 - **Holster profiles and the item spots' places are this machine's only** (nosave settings): a profile of every place is
   longer than the engine's 256-byte limit for a shared user setting.
-- **Old settings move forward once.** A setting still at an old default moves to the new one (`rsqtr_cfgver`, version 8).
+- **Old settings move forward once.** A setting still at an old default moves to the new one (`rsqtr_cfgver`, version 9: Smoke Slow-Mo Time 6 -> 15).
 - **The watch check** is RSQ Gestures' when loaded, else RSQ Gun Cards' copy, else the rig's own generated copy.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes. The rig stands down outside VR, where the two hands
   collapse to one point.

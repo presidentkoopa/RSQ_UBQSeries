@@ -1,0 +1,34 @@
+CIG_D_SMOKE
+T_CIG lit t160: smoking 70 tics (2.0 s)
+T_CIG flick from the mouth t230 at (-96 790 99) vel (0.0 2.6 3.0)
+T_CIG exit t230 (the end: smoked): main BrutalPistol | off nothing
+T_CIG exit t230 (off hand done: smoked): main BrutalPistol | off RSQ_Off_BrutalPistol
+T_CIG slow motion asked: rsm_pulse 15000 25
+RSQ_SlowMo: trigger smoke t231: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger smoke t231: started 15000 ms at 25% (deliberate), pulse until t756, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t231: the flick: player 0's smoke slow motion kept until t756 (525 tics) at 25%, he moves at full speed
+T_CIG exit t231 (the tic after: smoked): main BrutalPistol | off RSQ_Off_BrutalPistol
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 388 actors slowed, adrenaline 0, pulse 0.25 for 474 tics (smoke)
+CIG_D_CHANGEMAP
+RSQ_SlowMo: trigger smoke t285: level ends: player 0's smoke slow motion has 471 tics left, carried to the next level
+rsr key down 446 (¾)
+rsr key up 446 (¾)
+rsr key down 446 (¾)
+rsr key up 446 (¾)
+rsr key down 446 (¾)
+rsr key up 446 (¾)
+MAP02 - Underhalls
+RSQ_SlowMo: trigger smoke t0: player 0 carries 471 tics of the smoke's slow motion into this level
+RSQ_SlowMo: trigger smoke t1: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger smoke t1: started 13458 ms at 25% (deliberate), pulse until t473, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t1: resumed on the new level (471 tics carried): player 0's smoke slow motion kept until t473 (472 tics) at 25%, he moves at full speed
+rsr key down 446 (¾)
+rsr key up 446 (¾)
+CIG_D_PRESSES_DONE
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 211 actors slowed, adrenaline 0, pulse 0.25 for 400 tics (smoke)
+CIG_F_DEATH
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 210 actors slowed, adrenaline 0, pulse 0.25 for 328 tics (smoke)
+RSQ_SlowMo: trigger smoke t146: player 0's smoke slow motion ENDS: death (327 tics were left), pulse now until t146
+slow motion: off, scale 0.82 heading for 1.00 (depth 0.25), 392 actors slowed, adrenaline 0
+CIG_END
+slow motion: off, scale 1.00 heading for 1.00 (depth 0.25), 0 actors slowed, adrenaline 0

@@ -1,0 +1,21 @@
+CIG_E_HOLSTER
+T_CIG lit t181: smoking 70 tics (2.0 s)
+CIG_E_GRIP
+rsr key down 446 (¾)
+T_CIG end t212: the main hand's grip at a holster -> flicked (lit): smoked, the slow motion starts
+T_CIG flick from the mouth t212 at (-96 785 96) vel (0.0 2.6 3.0)
+T_CIG exit t212 (the end: the main hand's grip at a holster): main BrutalPistol | off nothing
+T_CIG exit t212 (off hand done: the main hand's grip at a holster): main BrutalPistol -> Melee_Attacks | off rsq_hands
+T_CIG slow motion asked: rsm_pulse 15000 25
+T_CIG exit t213 (the tic after: the main hand's grip at a holster): main BrutalPistol -> Melee_Attacks | off rsq_hands
+RSQ_SlowMo: trigger smoke t215: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger smoke t215: started 15000 ms at 25% (deliberate), pulse until t740, cause line "CIGARETTE"
+RSQ_SlowMo: trigger smoke t215: the flick: player 0's smoke slow motion kept until t740 (525 tics) at 25%, he moves at full speed
+rsr key up 446 (¾)
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 391 actors slowed, adrenaline 0, pulse 0.25 for 481 tics (smoke)
+CIG_D_CHANGEMAP
+slow motion: off, scale 0.25 heading for 0.25 (depth 0.25), 391 actors slowed, adrenaline 0, pulse 0.25 for 422 tics (smoke)
+RSQ_SlowMo: trigger smoke t318: level ends: player 0's smoke slow motion has 422 tics left, carried to the next level
+CIG_D_PRESSES_DONE
+CIG_F_DEATH
+CIG_END

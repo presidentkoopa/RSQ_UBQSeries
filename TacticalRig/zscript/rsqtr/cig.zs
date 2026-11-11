@@ -34,7 +34,8 @@
 // THE END, ANY END (owner 11-03, final): a weapon switch of either hand (wheel, keys, next / prev, slot), switchhand,
 // a holster press, another mod switching, death, a level change, Cigarettes off, the flick, the smoke done. In the SAME
 // TIC: the ritual ends, the Zippo leaves the off hand (StripOff, its queued raise dropped), an unlit cigarette goes back
-// in the pocket (refunded), a lit one is flicked. Then:
+// in the pocket (refunded), a lit one is flicked (by a switch or a holster: as smoked, the slow motion starts; owner
+// 11-11). Then:
 //   - THE MAIN HAND gets what the player switched to: the switch is carried out, one press. The engine's own switch
 //     (a slot key, the wheel, another mod) stands; a next / prev key from the cigarette, which is in no slot so the
 //     engine finds nothing (player.zs PickNextWeapon), is worked out from the gun the hand had before (NextFrom); a
@@ -772,13 +773,16 @@ class RSQTR_Cig : EventHandler
 			WName(p.OffhandWeapon), (pend && pend.bOffhandWeapon) ? " -> " .. WName(pend) : "");
 	}
 
-	// A switch, a holster, another mod: the ritual ends (unlit: the pocket, lit: flicked, no slow motion) and the switch
-	// is carried out (target: the gun a switch key picked; null: whatever the switch already started, MainTo).
+	// A switch, a holster, another mod: the ritual ends (unlit: the pocket, lit: flicked) and the switch is carried out
+	// (target: the gun a switch key picked; null: whatever the switch already started, MainTo).
+	// A LIT ONE IS A FINISHED SMOKE (owner 2026-11-11 13:54: "switching weapons does not end slowmo, holstering does not
+	// end slomo ... i don't want anything ending cig slmo except Quick/Dead ... or Death"): it flicks out of the mouth and
+	// the slow motion starts as if smoked (Spit with slowmo), while the hands get what the switch or the holster asked for.
 	private void EndBySwitch(PlayerPawn pmo, int n, String why, Weapon target = null)
 	{
 		if (phase[n] == PH_NONE) return;
-		if (RSQTR_Rig.Flag("rsqtr_messages", players[n], false)) Console.Printf("T_CIG end t%d: %s -> %s", level.maptime, why, phase[n] == PH_SMOKE ? "flicked (lit)" : "back in the pocket (unlit)");
-		if (phase[n] == PH_SMOKE) Spit(pmo, n, false, target, why);
+		if (RSQTR_Rig.Flag("rsqtr_messages", players[n], false)) Console.Printf("T_CIG end t%d: %s -> %s", level.maptime, why, phase[n] == PH_SMOKE ? "flicked (lit): smoked, the slow motion starts" : "back in the pocket (unlit)");
+		if (phase[n] == PH_SMOKE) Spit(pmo, n, true, target, why);
 		else PutBack(pmo, n, target, why);
 	}
 
@@ -1134,7 +1138,8 @@ class RSQTR_Cig : EventHandler
 	}
 
 	// SMOKED: it flicks out of the mouth, you exhale, the Zippo goes and the hands are as they were; RSQ_SlowMo starts on
-	// this tic (WorldTick, the console player), unless the smoke was cut short by a switch or a cancel (slowmo false).
+	// this tic (WorldTick, the console player), unless slowmo is false (Cigarettes turned off mid-smoke). A switch or a
+	// holster mid-smoke counts as smoked (EndBySwitch, owner 11-11).
 	private void Spit(PlayerPawn pmo, int n, bool slowmo, Weapon target = null, String why = "smoked")
 	{
 		Flick(pmo, n, true);
@@ -1154,10 +1159,11 @@ class RSQTR_Cig : EventHandler
 		}
 		SetPhase(n, PH_NONE);
 	}
-	// how long the flick's slow motion runs: the Smoke Slow-Mo Seconds row, +2 s a Smoker level (6 -> 8, 10, 12)
+	// how long the flick's slow motion runs: the Smoke Slow-Mo Seconds row (15 by default, owner 11-11), +2 s a Smoker
+	// level (15 -> 17, 19, 21)
 	static double SmokeSecs(PlayerInfo p)
 	{
-		return clamp(RSQTR_Rig.Num("rsqtr_cig_secs", p, 6), 5.0, 30.0) + 2.0 * max(RSQTR_Rig.Gb(p, 'Smoker'), 0);
+		return clamp(RSQTR_Rig.Num("rsqtr_cig_secs", p, 15), 5.0, 30.0) + 2.0 * max(RSQTR_Rig.Gb(p, 'Smoker'), 0);
 	}
 
 	// Smoke from the mouth, out where you face.

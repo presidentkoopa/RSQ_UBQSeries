@@ -266,7 +266,19 @@ class RSQSM_Clock : EventHandler
 		cdAuto = false; cdAutoTic = 0; cdCause = ""; hhLast = 0;
 		rsWho = -1; for (int i = 0; i < MAXPLAYERS * 2; i++) { rlActive[i] = false; rlW[i] = null; }
 		ClearAll();
-		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; freeUntil[i] = 0; }
+		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; freeUntil[i] = 0; smokeUntil[i] = 0; smokeResume[i] = 0; }
+		// THE SMOKE GOES ON (owner 11-11): what was left of a smoke's slow motion when the last level ended (WorldUnloaded),
+		// started again on this one's first tic (SmokeKeep), at the same depth and Move at Full Speed rule. Read here, before
+		// Brutal Doom clears the inventory as a level starts.
+		for (int i = 0; i < MAXPLAYERS; i++)
+		{
+			if (!playeringame[i] || !players[i].mo) continue;
+			let t = RSQSM_AdrToken(players[i].mo.FindInventory("RSQSM_AdrToken"));
+			if (!t || t.smokeLeft <= 0) continue;
+			smokeResume[i] = t.smokeLeft; smokeDepth[i] = t.smokeDepth; smokeMove[i] = t.smokeMove;
+			t.smokeLeft = 0;
+			Log("smoke", String.Format("player %d carries %d tics of the smoke's slow motion into this level", i, smokeResume[i]));
+		}
 		// An EventHandler is rebuilt on every map, so the meter is carried on the player.
 		adr = 0;
 		if (Cv("rsqsm_adr_keep", 1) != 0)
@@ -300,6 +312,13 @@ class RSQSM_Clock : EventHandler
 			let t = RSQSM_AdrToken(pmo.FindInventory("RSQSM_AdrToken"));
 			if (!t) t = RSQSM_AdrToken(pmo.GiveInventoryType("RSQSM_AdrToken"));
 			if (t) t.meter = adr;
+			// the smoke's slow motion still running goes with him (owner 11-11: nothing but death and DOWN ends it)
+			if (t)
+			{
+				t.smokeLeft = smokeUntil[i] > level.maptime ? smokeUntil[i] - level.maptime : 0;
+				t.smokeDepth = smokeDepth[i]; t.smokeMove = smokeMove[i];
+				if (t.smokeLeft > 0) Log("smoke", String.Format("level ends: player %d's smoke slow motion has %d tics left, carried to the next level", i, t.smokeLeft));
+			}
 		}
 	}
 
@@ -322,6 +341,15 @@ class RSQSM_Clock : EventHandler
 	private transient int remoteTic[MAXPLAYERS];      // RSQ Saber's training remote marked its pulse this tic
 	private transient int smokeFree[MAXPLAYERS];   // the smoke's pulse asked that this player move at full speed (Rig arg 3)
 	int freeUntil[MAXPLAYERS];                     // ...until this maptime (the smoke's length plus the way out)
+	// THE SMOKE'S SLOW MOTION IS KEPT (owner 2026-11-11 13:54: "i don't want anything ending cig slmo except Quick/Dead ...
+	// or Death"). Each smoker's own end, apart from the shared pulse, so nothing else cuts it short (SmokeKeep): a held
+	// toggle (the key, the Wheel: it outranks a pulse and zeroes it), a miniboss window taking the pulse over and ending
+	// early, a reload's cut. Only his death and his DOWN end it. A level change carries what is left (WorldUnloaded ->
+	// RSQSM_AdrToken -> WorldLoaded -> resumed on the new level's first tics, SmokeResume).
+	int    smokeUntil[MAXPLAYERS];      // maptime the smoke's slow motion holds until, 0 none
+	double smokeDepth[MAXPLAYERS];
+	bool   smokeMove[MAXPLAYERS];       // Move at Full Speed While Smoking was asked
+	int    smokeResume[MAXPLAYERS];     // tics carried in from the last level, started on this one's first tic (0 none)
 
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -395,9 +423,7 @@ class RSQSM_Clock : EventHandler
 			if (okWho && fearTic[who] == level.maptime) { Trigger("melee.shove", CAT_SHOVE, ms, depth, false, who); continue; }
 			if (okWho && smokeTic[who] == level.maptime)
 			{
-				// RSQ Tactical Rig's Move at Full Speed While Smoking (owner 11-05): the smoker is not slowed for its length
-				if (smokeFree[who]) freeUntil[who] = level.maptime + ms * TICRATE / 1000 + int(Cv("rsm_ramp_out", 0.4) * TICRATE) + 1;
-				Trigger("smoke", CAT_SMOKE, ms, depth, false, who);
+				SmokeStart(who, ms, depth, smokeFree[who] != 0, "the flick");
 				continue;
 			}
 			// GRENADE'S SKEET WINDOW (its "rsqgn_skeetslowmo" the same tic, by name): deliberate -- your throw earned it; its
@@ -435,6 +461,75 @@ class RSQSM_Clock : EventHandler
 			Trigger("othermod", CAT_OTHER, ms, depth, true, who);
 		}
 		pendMs.Clear(); pendDepth.Clear(); pendWho.Clear();
+	}
+
+	// THE SMOKE STARTS (the flick, or what was left of it carried into a new level): the pulse as any trigger's, and the
+	// smoker's own end kept (smokeUntil). Kept too while slow motion is held on (Trigger: "not needed"): it takes over
+	// when the hold lets go. Not kept when its switch is off or SlowMo stood down.
+	private void SmokeStart(int who, int ms, double depth, bool move, String how)
+	{
+		// RSQ Tactical Rig's Move at Full Speed While Smoking (owner 11-05): the smoker is not slowed for its length
+		if (move) freeUntil[who] = level.maptime + ms * TICRATE / 1000 + int(Cv("rsm_ramp_out", 0.4) * TICRATE) + 1;
+		bool ok = Trigger("smoke", CAT_SMOKE, ms, depth, false, who);
+		if (!ok && !(on && !StoodDown() && CatOn(CAT_SMOKE, who))) return;
+		smokeUntil[who] = level.maptime + int(ceil(clamp(ms, 30, PULSE_MAX_MS) * TICRATE / 1000.0));
+		smokeDepth[who] = clamp(depth, 0.05, 1.0);
+		smokeMove[who] = move;
+		Log("smoke", String.Format("%s: player %d's smoke slow motion kept until t%d (%d tics) at %d%%%s", how, who, smokeUntil[who],
+			smokeUntil[who] - level.maptime, int(smokeDepth[who] * 100 + 0.5), move ? ", he moves at full speed" : ""));
+	}
+
+	// Only death and DOWN end a smoke (owner 11-11). The pulse is cut only where the smoke was what held it (a pulse
+	// running past the smoke's end is another trigger's and keeps its own time); another smoker's time stays.
+	private void SmokeEnd(int n, String why)
+	{
+		int was = smokeUntil[n];
+		smokeUntil[n] = 0;
+		smokeResume[n] = 0;
+		freeUntil[n] = min(freeUntil[n], level.maptime);
+		int other = 0;
+		for (int i = 0; i < MAXPLAYERS; i++) if (i != n && smokeUntil[i] > level.maptime) other = max(other, smokeUntil[i]);
+		bool cut = !on && pulseUntil > level.maptime && pulseUntil <= was && pulseUntil > other;
+		if (cut) pulseUntil = max(level.maptime, other);
+		Log("smoke", String.Format("player %d's smoke slow motion ENDS: %s (%d tics were left)%s", n, why, max(0, was - level.maptime),
+			cut ? String.Format(", pulse now until t%d", pulseUntil) : ", the pulse is not the smoke's alone and keeps its time"));
+	}
+
+	// Every tic, before the clock picks its target: carried-in smoke resumed, death and DOWN end a smoke, and a smoke still
+	// running holds the pulse to its own end (deeper wins, longer wins, as Pulse merges) once nothing outranks it.
+	private void SmokeKeep()
+	{
+		let dn = RSQSM_Down.Get();
+		int best = 0, who = -1;
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			bool alive = playeringame[n] && players[n].mo && players[n].mo.health > 0 && players[n].playerstate != PST_DEAD;
+			if (smokeResume[n] > 0 && alive && level.maptime >= 1)
+			{
+				int left = smokeResume[n];
+				smokeResume[n] = 0;
+				SmokeStart(n, int(ceil(left * 1000.0 / TICRATE)), smokeDepth[n], smokeMove[n], String.Format("resumed on the new level (%d tics carried)", left));
+			}
+			if (smokeUntil[n] <= 0) continue;
+			if (!alive) { SmokeEnd(n, "death"); continue; }
+			if (dn && dn.IsDown(n)) { SmokeEnd(n, "DOWN"); continue; }
+			if (smokeUntil[n] <= level.maptime) { smokeUntil[n] = 0; Log("smoke", String.Format("player %d's smoke slow motion ran its time", n)); continue; }
+			if (smokeUntil[n] > best) { best = smokeUntil[n]; who = n; }
+		}
+		if (who < 0 || on || StoodDown() || pulseUntil >= best) return;
+		if (pulseUntil <= level.maptime)
+		{
+			// the other trigger's slow (or the held one) is over: the smoke's own takes the clock back
+			Log("smoke", String.Format("the smoke takes the slow motion back (from %s), until t%d", pulseSrc != "" ? pulseSrc : (cdOn ? "a held slow motion" : "nothing"), best));
+			pulseDepth = smokeDepth[who];
+			pulseSrc = "smoke";
+			pulseAuto = false;
+			CountdownStart("smoke");
+			SetCdAuto(false);
+			cdCause = CauseWord("smoke");
+		}
+		else pulseDepth = min(pulseDepth, smokeDepth[who]);
+		pulseUntil = best;
 	}
 
 	static bool Loaded(Name cn) { class<Object> c = cn; return c != null; }
@@ -645,8 +740,8 @@ class RSQSM_Clock : EventHandler
 	// RS_SlowMo's pulse, same arguments and the same rules: hold `ms`, at `depth` of
 	// full speed; the ramps are this mod's; deeper wins and longer wins; the held
 	// toggle outranks it; both clamped so no caller can freeze the world for good.
-	// THE HOLD'S CAP IS 30 s, NOT 5. Ermac's cigarette (RSQ_TacticalRig rsqtr_cig_secs) asks for 6 s by
-	// default and up to 20 from its menu; a 5 s cap cut every one of those short (measured on the rig,
+	// THE HOLD'S CAP IS 30 s, NOT 5. Ermac's cigarette (RSQ_TacticalRig rsqtr_cig_secs) asks for 15 s by
+	// default (6 until 11-11) and up to 30 from its menu; a 5 s cap cut every one of those short (measured on the rig,
 	// bugfix pass 10-31: rsm_pulse 6000 25 held 175 tics, not 210).
 	const PULSE_MAX_MS = 30000;
 	private void Pulse(int ms, double depth)
@@ -998,6 +1093,8 @@ class RSQSM_Clock : EventHandler
 		// THE MINIBOSS WINDOW ENDS WHEN IT ENDS (owner 11-10: the bar must be honest): its pulse never outlasts what RSQ
 		// Miniboss says is left, so a segment broken early ends the slow (and the countdown bar) with the window
 		if (pulseUntil > level.maptime && pulseSrc == "miniboss") pulseUntil = min(pulseUntil, level.maptime + MinibossWindow());
+		// THE SMOKE KEEPS ITS TIME (owner 11-11): only death and DOWN end it
+		SmokeKeep();
 		// Where the clock is heading: the toggle, then a pulse, then full speed.
 		if (on) target = Depth();
 		else if (pulseUntil > 0)
@@ -2078,6 +2175,9 @@ class RSQSM_Buzz : Actor
 class RSQSM_AdrToken : Inventory
 {
 	double meter;
+	int    smokeLeft;      // tics of the smoke's slow motion carried to the next level (clock.zs WorldUnloaded / WorldLoaded)
+	double smokeDepth;
+	bool   smokeMove;
 	Default
 	{
 		Inventory.MaxAmount 1;

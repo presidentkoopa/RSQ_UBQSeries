@@ -2636,6 +2636,14 @@ class RSQTR_Rig : EventHandler
 			if (tu) tu.SetBool(false);
 			ver.SetInt(8);
 		}
+		// settings version 9 (owner 2026-11-11 13:54, "Cigarettes: default 15"): Smoke Slow-Mo Time still at its old
+		// default (6 s) moves to 15
+		if (ver && ver.GetInt() < 9)
+		{
+			let cs = CVar.FindCVar("rsqtr_cig_secs");
+			if (cs && abs(cs.GetFloat() - 6) < 0.01) cs.SetFloat(15);
+			ver.SetInt(9);
+		}
 	}
 
 	private void SaveEdit(PlayerPawn pmo, PlayerInfo p)
