@@ -120,7 +120,7 @@ class RSQSM_Arrows : EventHandler
 	// ---- the HUD (downhud.zs's gating and art) ------------------------------------------------------------------------
 	override void RenderOverlay(RenderEvent e)
 	{
-		if (arrows.Size() == 0 || gamestate != GS_LEVEL || screenblocks > 11 || automapactive) return;
+		if (arrows.Size() == 0 || gamestate != GS_LEVEL || screenblocks > 11 || automapactive || menuactive != Menu.Off) return;   // not over a menu (owner 11-11)
 		int cp = consoleplayer;
 		if (!playeringame[cp] || !players[cp].mo) return;
 		let d = RSQSM_Down(EventHandler.Find("RSQSM_Down"));

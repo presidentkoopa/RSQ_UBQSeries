@@ -236,7 +236,7 @@ class RSQG_Handler : EventHandler
 
 	override void RenderOverlay(RenderEvent e)
 	{
-		if (sayName == "" || !Opt("rsqg_names", 1)) return;
+		if (sayName == "" || !Opt("rsqg_names", 1) || menuactive != Menu.Off) return;   // not over a menu (owner 11-11)
 		int age = gametic - sayTic;
 
 		if (age < 0 || age >= SHOW) return;

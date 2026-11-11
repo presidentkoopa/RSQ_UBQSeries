@@ -233,7 +233,7 @@ class RSQSM_Countdown : StaticEventHandler
 	override void RenderOverlay(RenderEvent e)
 	{
 		if (gamestate != GS_LEVEL || !playeringame[consoleplayer] || !players[consoleplayer].mo) return;
-		if (screenblocks > 11 || automapactive) return;
+		if (screenblocks > 11 || automapactive || menuactive != Menu.Off) return;   // nothing over a menu (owner 11-11)
 		let clock = RSQSM_Clock(EventHandler.Find("RSQSM_Clock"));
 		if (!clock || (clock.rival && SCv("rsm_yield", 1) != 0)) return;
 		if (!AnyOn()) return;

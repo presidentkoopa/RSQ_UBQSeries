@@ -625,7 +625,7 @@ class RSQML_Shove : StaticEventHandler
 	// the award's name, small, grey, half-transparent, low in the view, fading over its last half second
 	override void RenderOverlay(RenderEvent e)
 	{
-		if (sayName == "") return;
+		if (sayName == "" || menuactive != Menu.Off) return;   // not over a menu (owner 11-11)
 		int age = gametic - sayTic;
 		if (age < 0 || age >= SHOW) return;
 		double a = 0.55 * min(1.0, (SHOW - age) / 18.0);

@@ -17,12 +17,20 @@ untouched here). That proves it compiles, not that it works.
 
 ## Other series HUDs checked for drawing over menus
 
-- **Changed:** RSQ Miniboss (meter and stack, one early return in `RSQMB_Hud.RenderOverlay`).
-- **Not changed, not HUD:** RSQ VisualRewards' bars and damage numbers are world actors over monsters (no
-  RenderOverlay in its pack), drawn in the world, not on the HUD layer.
-- **Not changed, owner's call:** RSQ SlowMo's countdown bar and edge arrows, RSQ Accessibility's vignette and threat
-  cues, the gesture-name lines (Accessibility, Melee) still draw while a menu is open. They show only for moments (slow
-  motion, a threat, a gesture), but can overlap a menu opened during one. Each is a one-line change like the above.
+- **Changed (11-11, first pass):** RSQ Miniboss (meter and stack, one early return in `RSQMB_Hud.RenderOverlay`).
+- **Changed (11-11, the owner's "yes, hide them too"), the same test (`menuactive != Menu.Off`), code only, not
+  shown, not load-checked (the owner's order also stops lc.sh):**
+  - RSQ SlowMo: the countdown bar (`countdown.zs`), the edge arrows (`arrows.zs`), DOWN's panel and edge marks
+    (`downhud.zs` Draw).
+  - RSQ Accessibility: the vignette (a post-process pass, switched off through its own off path while a menu is open,
+    `rsqa_core.zs` DrawVignette), the threat and slow-motion cues (`rsqa_core.zs` RenderOverlay), the gesture names
+    (`rsqg/gestures.zs`).
+  - RSQ Melee: the gesture-name line (`shove.zs`).
+  - Found on the way, debug only: RSQ ShieldSaw's `ssq_debug` lines (`state.zs`), RSQ Saber's `ubqs_diag 2` lines
+    (`QuestSaber/zscript.txt`).
+- **Not changed, not HUD:** RSQ VisualRewards' bars and damage numbers (world actors over monsters); RSQ SlowMo's
+  colour drain (a post-process pass on the world during slow motion, not a HUD piece); the Wheel (a menu itself);
+  SlowMo's breathing menu title (it is a menu row). No other `Screen.Draw` in the series' code.
 
 ## To show when the owner allows the rig
 
@@ -30,4 +38,8 @@ The launch is written (`/home/claude/scratch/rig1110/HUD11A/script.txt`, probe `
 whip in the main hand and the bare fist in the off hand (gloves off), Dual HUD then single HUD frames for the Score
 line under the gauges with its numbers logged (`gauges.bottom`, the line's top and centre, Across and cfgver after
 the migration from a saved 85), Display Info twice (focus hand logged), the options page open with its rows dumped
-(no ShieldSaw Gauge row) and no HUD over it, and the wrist digits' visible count logged as the menu opens and closes.
+(no ShieldSaw Gauge row) and no HUD over it, and the wrist digits' visible count logged as the menu opens and closes. Added (owner's "hide them too"): slow motion
+toggled on and the options menu opened inside it (frames: no Accessibility slow-motion cue, Score or Miniboss over
+it; SlowMo's countdown bar shows only for an automatic trigger, so this launch does not cover it), and a Comfort
+Vignette held by the probe (`gbp_vig`, Accessibility's own request fields) with the menu opened over it (the probe
+logs `vignette shown` with `menuactive`). The scratch probe and script are updated, not run, not committed.

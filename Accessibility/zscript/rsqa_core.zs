@@ -268,6 +268,7 @@ class RSQA_Handler : EventHandler
 	override void RenderOverlay(RenderEvent e)
 	{
 		DrawVignette(e);
+		if (menuactive != Menu.Off) return;   // no threat or slow-motion cue over a menu (owner 11-11)
 		if (!RSQA_Set.CueVisual()) return;
 		DrawThreats(e);
 		DrawSlowMo(e);
@@ -277,6 +278,7 @@ class RSQA_Handler : EventHandler
 	{
 		int lv = RSQA_Set.Vignette();
 		double v = lv > 0 ? vigLast + (vig - vigLast) * e.FracTic : 0.0;
+		if (menuactive != Menu.Off) v = 0;   // the vignette is switched off while a menu is open (owner 11-11)
 		if (v <= 0.005)
 		{
 			if (vigShown || !vigSynced) { PPShader.SetEnabled("RSQA_Vignette", false); vigShown = false; vigSynced = true; }

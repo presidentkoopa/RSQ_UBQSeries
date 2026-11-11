@@ -1477,7 +1477,7 @@ class SSQ_Handler : EventHandler
 	{
 		if (consoleplayer < 0 || !playeringame[consoleplayer]) return;
 		let p = players[consoleplayer];
-		if (!p.mo || UVI(p, 'ssq_debug', 0) == 0) return;
+		if (!p.mo || UVI(p, 'ssq_debug', 0) == 0 || menuactive != Menu.Off) return;   // the debug lines: not over a menu (owner 11-11)
 		int i = consoleplayer;
 		String off = "-", main = "-";
 		if (p.OffhandWeapon) off = p.OffhandWeapon.GetClassName();

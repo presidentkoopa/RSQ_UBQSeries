@@ -261,7 +261,7 @@ class RSQSM_DownHud ui
 	// RSQSM_Down.RenderOverlay calls this every frame
 	void Draw(RSQSM_Down d, RenderEvent e)
 	{
-		if (gamestate != GS_LEVEL || screenblocks > 11 || automapactive) return;
+		if (gamestate != GS_LEVEL || screenblocks > 11 || automapactive || menuactive != Menu.Off) return;   // not over a menu (owner 11-11)
 		int pn = consoleplayer;
 		if (!d || !d.IsDown(pn) || !players[pn].mo) return;
 		DrawPanel(d, pn, level.maptime + e.FracTic);

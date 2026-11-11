@@ -7247,7 +7247,7 @@ class UBQS_Telemetry : EventHandler
 		let pl = players[consoleplayer];
 		if (!pl || !pl.mo) return;
 		let cv = CVar.GetCVar("ubqs_diag", pl);
-		if (!cv || cv.GetInt() != 2) return;
+		if (!cv || cv.GetInt() != 2 || menuactive != Menu.Off) return;   // the diagnostic lines: not over a menu (owner 11-11)
 		let s = UBQS_SaberBase(pl.mo.FindInventory("UBQS_Saber"));
 		double now = MSTimeF();
 		// THE WORLD HILT'S OWN RESIDUAL: how far the hilt you are holding sits from your real hand, in map
