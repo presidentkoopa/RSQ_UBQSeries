@@ -1,0 +1,70 @@
+# TEST ONLY rig log excerpt, 2026-11-11 (run GA2: the owner's order + scratch probe; screenblocks 12, no con_scaletext)
+# script: wait 20; vr_control_scheme 0; bd_tips 0; crosshair 0; wipetype 0; show_messages 1; con_notifytime 0; gl_lights 1; set rsqls_on 0; set rsqgd_c_floor_mode 1; set rsqgd_c_ceil_mode 1; screenblocks 12; qz_rhand "0.22 1.15 -0.3 -15 0 0"; qz_lhand "-0.22 1.15 -0.28 -15 0 0"; qz_hmd "0 1.6 0 -12 0 0"; wait 5; netevent gyf_kill -180 910 90; wait 30; resurrect; wait 10; netevent gyf_kill -40 930 90; wait 30; resurrect; wait 10; netevent gyf_kill -100 1010 90; wait 30; resurrect; wait 10; netevent gyf_kill -280 900 90; wait 30; resurrect; wait 10; netevent gyf_kill 20 1080 90; wait 30; resurrect; wait 10; netevent gyf_mark 1; i_timescale 0.3; map MAP01; wait 1; netevent gyf_tp -96 784 90; wait 130; netevent gyf_scan; netevent gyf_mark 2; i_timescale 1; netevent gyf_tp 20 930 90; netevent gyf_givelife; wait 15; netevent gyf_hit; wait 100; netevent gyf_tp -10 840 90; qz_hmd "0 1.6 0 -22 0 0"; wait 20; netevent gyf_scan; netevent gyf_mark 3; i_timescale 0.3; wait 140; i_timescale 1; netevent gyf_mark 4; wait 2; netevent gyf_tp -100 850 90; qz_hmd "0 1.6 0 -20 0 0"; screenblocks 12; con_notifytime 8; wait 60; netevent gyf_mark 5; i_timescale 0.3; wait 8; netevent gyf_walk -100 958 30; wait 40; netevent gyf_mark 6; +use; wait 2; -use; wait 90; netevent gyf_mark 7; +use; wait 2; -use; wait 175; netevent gyf_mark 8; i_timescale 1; netevent gyf_scan; wait 2; quit
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/gamedata/doom2.wad, 2919 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/gamedata/brutal22test6.pk3, 22264 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/gamedata/BD_VoxelPack.pk3, 257 lumps
+adding /home/claude/rs_brutal22weaponsq/pk3/03_BD22_VR-Reloaded_2.0.4f.pk3, 836 lumps
+adding /home/claude/gamedata/LOB_v1.05.pk3, 2999 lumps
+adding /home/claude/gamedata/mk-champions20210309.pk3, 140 lumps
+adding /home/claude/gamedata/GunBonsai-0.10.6.pk3, 284 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Accessibility.pk3, 18 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_DistanceGrab.pk3, 88 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 58 lumps
+adding /tmp/gyold/RSQ_Graveyard_new2.pk3, 23 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1673 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunBonsaiVR.pk3, 62 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 32928 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_LaserSight.pk3, 14730 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Melee.pk3, 310 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Miniboss.pk3, 58 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Monsters.pk3, 22282 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10967 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 78 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 242 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 166 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 764 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 275 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 49 lumps
+adding /home/claude/scratch/gygif/gyprobe.pk3, 2 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+GYF MARK 1 t225
+GYF SCAN t131 stone 0 gy_Stone0 at -280 900 scale 0.96 dist 218
+GYF SCAN t131 stone 1 gy_Stone2 at -180 910 scale 0.95 dist 151
+GYF SCAN t131 stone 2 gy_Stone2 at -40 930 scale 0.99 dist 156
+GYF SCAN t131 stone 3 gy_Stone2 at -100 1010 scale 1.03 dist 226
+GYF SCAN t131 stone 4 gy_Stone0 at 20 1080 scale 0.96 dist 318
+GYF SCAN t131 5 stones; player at -96 784 angle 90 pitch 12.0
+GYF MARK 2 t131
+GYF GIVELIFE t131 -> lives 1
+GYF SCAN t269 stone 0 gy_Stone0 at -280 900 scale 1.05 dist 277
+GYF SCAN t269 stone 1 gy_Stone2 at -180 910 scale 1.05 dist 184
+GYF SCAN t269 stone 2 gy_Stone2 at -40 930 scale 1.03 dist 95
+GYF SCAN t269 stone 3 gy_Stone2 at -100 1010 scale 0.95 dist 192
+GYF SCAN t269 stone 4 gy_Stone0 at 20 1080 scale 1.05 dist 242
+GYF SCAN t269 stone 5 gy_Stone2 at 20 930 scale 1.04 dist 95
+GYF SCAN t269 6 stones; player at -10 840 angle 90 pitch 22.0
+GYF MARK 3 t269
+GYF MARK 4 t405
+GYF MARK 5 t467
+GYF MARK 6 t515
+GYF MARK 7 t607
+GYF MARK 8 t784
+GYF SCAN t784 stone 0 gy_Stone0 at -280 900 scale 1.03 dist 189
+GYF SCAN t784 stone 1 gy_Stone2 at -180 910 scale 1.02 dist 93
+GYF SCAN t784 stone 2 gy_Stone2 at -40 930 scale 1.05 dist 66
+GYF SCAN t784 stone 3 gy_Stone2 at -100 1010 scale 0.96 dist 52
+GYF SCAN t784 stone 4 gy_Stone0 at 20 1080 scale 1.03 dist 171
+GYF SCAN t784 stone 5 gy_Stone2 at 20 930 scale 1.00 dist 123
+GYF SCAN t784 6 stones; player at -100 958 angle 90 pitch 20.0

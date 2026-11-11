@@ -15,7 +15,8 @@
  * Graveyards.  If not, see <https://www.gnu.org/licenses/>.
  *
  * --- Modified by presidentkoopa for the RSQ Edition, 2026 (GPLv3 too): pop-in, idle bounce, a culled grave light,
- * gold stones, Living Stones, RSQ Miniboss's heartbeat, and the look read the same on every machine (netplay). ---
+ * gold stones, Living Stones, RSQ Miniboss's heartbeat, the look read the same on every machine (netplay), the obituary
+ * as words over the stone and a brighter gold candle (2026-11-11). ---
  */
 
 class gy_Stone : Actor
@@ -99,12 +100,89 @@ class gy_Stone : Actor
     bBright = pulseEnv() > 0.35;   // RSQ Edition: the stone itself lights on RSQ Miniboss's beat (seen past the light's cull)
   }
 
+  // RSQ Edition (owner 2026-11-11, "Words over the stone"): Use shows the obituary as billboard words over the stone for about
+  // 4 s, in RSQ VisualRewards' words (RSQVR_Service "word.hold" / its fade when the anchor goes, asked by name). A second
+  // Use refreshes them. Without VisualRewards, or with its Monster Words row off on this machine, the console line as before.
   override
   bool Used(Actor user)
   {
-    Console.Printf("%s", _obituary);
+    if (!showWords()) { Console.Printf("%s", _obituary); }
     return Super.Used(user);
   }
+
+  // asks the words; false when this machine's player will not see them (no VisualRewards, or its Monster Words off)
+  private
+  bool showWords()
+  {
+    let svc = ServiceIterator.Find("RSQVR_Service").Next();
+    if (svc == NULL || svc.GetInt("loaded") != 1) { return false; }
+
+    if (_words == NULL || _words.bDestroyed)
+    {
+      _words = gy_StoneWords(Spawn("gy_StoneWords", pos, NO_REPLACE));
+      if (_words == NULL) { return false; }
+    }
+    _words.life = gy_StoneWords.WORD_TICS;
+
+    // top to bottom: who, the killer, the date, the map time. The words stack upward in the order asked, so ask bottom first.
+    Array<String> txt;
+    Array<int>    col;
+    Array<double> size;
+    obituaryLines(txt, col, size);
+    for (int i = txt.Size() - 1; i >= 0; i--) { svc.GetInt("word.hold", txt[i], col[i], size[i], _words); }
+
+    let c = CVar.GetCVar("rsqvr_words", players[consolePlayer]);
+    return c == NULL || c.GetBool();
+  }
+
+  // m8f's obituary ("Here lies <name>, killed by <killer>.\n<date time>\n<map time>"; a gold stone's "Here <name> lost a
+  // life, killed by <killer>.\n<map time>") as short upper-case lines, wrapped at WRAP characters
+  private
+  void obituaryLines(out Array<String> txt, out Array<int> col, out Array<double> size)
+  {
+    Array<String> parts;
+    _obituary.Split(parts, "\n");
+    if (parts.Size() == 0) { return; }
+    String head = parts[0];
+    if (head.Length() > 0 && head.Mid(head.Length() - 1) == ".") { head = head.Left(head.Length() - 1); }
+    String who = head, killer = "";
+    int k = head.IndexOf(", killed by ");
+    if (k >= 0) { who = head.Left(k); killer = head.Mid(k + 12); }
+    int top = (_kind == 2) ? COL_GOLD : COL_NAME;
+    wrapInto(who, top, BIG_W, txt, col, size);
+    if (killer != "") { wrapInto("KILLED BY " .. killer, COL_KILLER, BIG_W, txt, col, size); }
+    for (int i = 1; i < parts.Size(); i++)
+    {
+      String l = parts[i];
+      if (l == "") { continue; }
+      if (l.IndexOf("-") < 0) { l = "MAP TIME " .. l; }   // the date has dashes; the map time does not
+      wrapInto(l, COL_SMALL, SMALL, txt, col, size);
+    }
+  }
+
+  private static
+  void wrapInto(String s, int rgb, double sz, out Array<String> txt, out Array<int> col, out Array<double> size)
+  {
+    s = s.MakeUpper();
+    while (s.Length() > WRAP)
+    {
+      int cut = -1;
+      for (int i = WRAP; i > 0; i--) { if (s.Mid(i, 1) == " ") { cut = i; break; } }
+      String line = (cut > 0) ? s.Left(cut) : s.Left(WRAP);
+      s = (cut > 0) ? s.Mid(cut + 1) : s.Mid(WRAP);
+      if (txt.Find(line) == txt.Size()) { txt.Push(line); col.Push(rgb); size.Push(sz); }
+    }
+    if (s != "" && txt.Find(s) == txt.Size()) { txt.Push(s); col.Push(rgb); size.Push(sz); }
+  }
+
+  const WRAP       = 20;    // characters a line (the date and time, 19, stay one line)
+  const BIG_W      = 0.45;  // VisualRewards word sizes (1 = its monster words, 6 map units tall): you read these from Use
+  const SMALL      = 0.3;   // range (about 50 map units), not across a room
+  const COL_NAME   = 0xE8E0C8;   // bone white
+  const COL_GOLD   = 0xFFC840;   // a gold stone's first line
+  const COL_KILLER = 0xE04838;   // blood red
+  const COL_SMALL  = 0xB4B4B4;   // grey
+  private gy_StoneWords _words;
 
 // private: ////////////////////////////////////////////////////////////////////////////////////////
 
@@ -170,6 +248,7 @@ class gy_Stone : Actor
       if (_hasLight)
       {
         A_RemoveLight('gy_grave_light');
+        A_RemoveLight('gy_gold_core');
         _hasLight   = false;
         _lastRadius = -1;
       }
@@ -200,6 +279,13 @@ class gy_Stone : Actor
                  , DynamicLight.LF_ATTENUATE
                  , (0, 0, 24)
                  );
+
+    // RSQ Edition (2026-11-11, owner: "brighter / warmer glow"): a gold stone's candle has a second, smaller light on the
+    // same spot, so the glow round the stone is twice as strong (one light is capped at full colour)
+    if (_kind == 2)
+    {
+      A_AttachLight('gy_gold_core', DynamicLight.PointLight, lc, max(1, int(radius * GOLD_CORE)), 0, DynamicLight.LF_ATTENUATE, (0, 0, 24));
+    }
 
     _hasLight   = true;
     _lastRadius = radius;
@@ -260,7 +346,9 @@ class gy_Stone : Actor
       Vector3 c = livingRgb();
       return Color(255, int(c.x * b / 255.0), int(c.y * b / 255.0), int(c.z * b / 255.0));
     }
-    if (_kind == 2) { return Color(255, b, int(b * 0.80), int(b * 0.15)); } // RSQ Edition: gold
+    // RSQ Edition: gold. 2026-11-11 (owner: "brighter / warmer glow"): a quarter brighter than the grey candle (red full at
+    // the default 210) and a deeper amber, almost no blue (was b, 0.80 b, 0.15 b: the grey candle's brightness)
+    if (_kind == 2) { return Color(255, min(255, int(b * 1.25)), min(255, int(b * 0.80)), int(b * 0.08)); }
     return Color(255, b, int(b * 0.72), int(b * 0.42)); // warm candle tone
   }
 
@@ -421,8 +509,9 @@ class gy_Stone : Actor
   private Color  _lastColor;
   private bool   _cfgLiving;
   private int    _cfgLivingMode;
-  const GOLD_RADIUS  = 1.25;
+  const GOLD_RADIUS  = 2.2;    // 2026-11-11: was 1.25 (owner: a gold candle that reads at a glance)
   const GOLD_FLICKER = 0.33;
+  const GOLD_CORE    = 0.5;    // the gold candle's second light, its radius against the first
 
   private int    _spawnTime;
   private int    _phaseOffset;
@@ -445,6 +534,19 @@ class gy_Stone : Actor
   private int    _cfgCull;
 
 } // class gy_Stone
+
+// RSQ Edition (2026-11-11): the obituary words' anchor, a stone's height over its foot (RSQ VisualRewards draws held words
+// above an actor's top). It goes after WORD_TICS, and the words fade with it (VisualRewards fades a held word whose actor
+// is gone). Nothing else: no sprite, no collision.
+class gy_StoneWords : Actor
+{
+  const WORD_TICS = 140;   // 4 s
+  // VisualRewards puts held words at 1.1 x the actor's height + 10: 18 sets the bottom line just over the tall stones' tops
+  int life;
+  Default { Radius 1; Height 18; +NOINTERACTION; +NOBLOCKMAP; +NOGRAVITY; RenderStyle "None"; }
+  override void Tick() { if (--life <= 0) { Destroy(); } }
+  States { Spawn: TNT1 A -1; Stop; }
+}
 
 class gy_Stone0 : gy_Stone { States { Spawn: gy_t a -1; Stop; } }
 class gy_Stone1 : gy_Stone { States { Spawn: gy_t b -1; Stop; } }

@@ -16,15 +16,16 @@ wake the graves.
 ## What it feels like
 
 - **Your deaths stay on the map.** Every death leaves a stone at the spot. Load the map again and they are all there.
-- **Each stone says who lies there.** Press Use on a stone and the console prints its line: who died, what killed
-  them, the real date and time, and the map time.
+- **Each stone says who lies there.** Press Use on a stone and its words stand over it for about 4 seconds, facing
+  you: HERE LIES <name>, KILLED BY <killer>, then the real date and time and the map time, smaller. Press Use again and
+  they stay up another 4 seconds. (With RSQ VisualRewards; without it, the console prints the line as before.)
 - **They come up out of the ground.** A stone pops in with a little bounce past full size. When a map loads, its
   stones pop one after another over about a second, not all at once.
 - **They breathe.** A slow squash and stretch, about seven seconds a breath, each stone at its own point in the breath.
 - **A candle on every grave.** A warm, flickering light that fades in as you come near and fades out as you leave.
   Past the cull distance it is gone.
-- **Gold for a spent life.** With RSQ Score, a life spent on a killing blow leaves a gold stone with a steadier, gold,
-  slightly larger candle.
+- **Gold for a spent life.** With RSQ Score, a life spent on a killing blow leaves a gold stone with a steady, bright
+  amber glow, twice the size of a grey stone's candle, so you can tell it apart at a glance.
 - **Living Stones (off).** The candles and stones breathe in colour, calm blue to warm yellow, gold stones within a
   gold range.
 - **The Bones (off, needs Legion of Bones).** A Brutal Doom monster you kill rises again as its Legion of Bones undead,
@@ -39,13 +40,19 @@ wake the graves.
 | Die | The spot is stored. In a netgame the stone appears at once; alone, it is there the next time the map loads |
 | Start the map again (new game or loaded save) | A stone stands at every death stored for this map |
 | Spend an RSQ Score life | A gold stone appears at once where you stood, and is stored like any other |
-| Press Use on a stone | Its obituary prints to the console |
+| Press Use on a stone | Its obituary stands over it in words for about 4 s (Use again: another 4 s). Without RSQ VisualRewards, or with its Monster Words row off, it prints to the console |
 | Choose **Remove Gravestones on This Map** | This map's stones are gone, here and from the store |
 | Choose **Remove All Gravestones** | Every stored stone on every map is gone |
 
 ![Walking up to a stone and pressing Use: its obituary appears](docs/readme/gy_obituary.gif)
 
-*Walk up, press Use: "Here lies Player, killed by Imp.", the date and the map time. In VR the line is small; this was filmed with the message text scale at 4 (con_scaletext) and Screen Size 11 (rig capture, not headset)*
+*Walk up, press Use: HERE LIES PLAYER, KILLED BY IMP, the date and the map time stand over the stone. Use again 2.6 s later keeps them up; 4 s after that they fade. Screen Size 12, no text scale: the words are in the world, not on the HUD (rig capture, not headset)*
+
+The words are RSQ VisualRewards' words (its "word.hold", asked by name), in RS Score's font: the name in bone white
+(gold on a gold stone), the killer in red, the date and map time in grey at two thirds the size. Lines longer than 20
+characters wrap at a space. They sit just over the stone and turn to face you. Everyone in a netgame sees them, as they
+see every VisualRewards word (the Use happens in the game, on every machine). Its **Word Size** row scales them, and
+its **Monster Words** row off hides them: then the console line prints instead, on your machine.
 
 ## Controls
 
@@ -83,12 +90,19 @@ No keys. This pack binds nothing (owner 2026-11-10: keybinds are a precious reso
 ### Gold stones
 
 With RSQ Score loaded, a life Score spends on a killing blow is a death too. The stone is the same tombstone tinted
-gold, its candle gold, its radius 1.25 times as big and its flicker a third as strong. Its line reads "Here <name> lost
+gold, its candle gold, and its flicker a third as strong. Its candle (2026-11-11, owner: "brighter / warmer glow") is a deeper amber,
+a quarter brighter than a grey candle (full red at the default Light Brightness), 2.2 times the radius, with a second
+light half that size on the same spot, so the glow round the stone is about twice as strong. Its line reads "Here <name> lost
 a life, killed by <killer>." with the map time. Without RSQ Score every stone is a normal one.
 
 ![A grey stone and a gold stone side by side, candles lit](docs/readme/gy_gold.gif)
 
-*A grey stone from a death beside a gold stone from an RSQ Score life spent on a killing blow, with its gold candle (rig capture, not headset)*
+*A grey stone from a death beside a gold stone from an RSQ Score life spent on a killing blow: the gold stone's amber glow on the floor and the pillar (rig capture, not headset)*
+
+![Before and after: the gold stone's candle in the same spot](tools/rigtest/evidence_1111/gold_before_after.jpg)
+
+*Rig frames, 2026-11-11, the same script and tic: left the build before this change, right after (the walls' glow
+colour is RSQ Glow In The Dark's own pick each load). Simulated headset on the Linux rig, not a capture from a real headset.*
 
 ### Living Stones
 
@@ -190,6 +204,7 @@ Linux rig, not a capture from a real headset.*
 ## Plays well with
 
 - **RSQ Score:** a life it spends leaves a gold stone (it asks this pack by name).
+- **RSQ VisualRewards:** the obituary's words over a stone (this pack asks it by name; without it, the console line).
 - **RSQ Miniboss:** Graves Rise and the heartbeat (it asks this pack by name). Both need Legion of Bones for the
   undead; the heartbeat works without it.
 - **Legion of Bones** (LOB_v1.05): the Bones Bridge and Graves Rise use its undead, its fire, its rising actors and its
@@ -232,7 +247,9 @@ state and must come out the same on every machine. Alone, they are simply yours.
 | **rig only, not headset-confirmed** (2026-11-06, RSQ SlowMo's run, log `SlowMo/tools/rigtest/build/logs/v2main.log`) | A spent Score life placing a gold stone (Score and Graveyard log lines). Living Stones' colour and tint steps for both kinds in Uniform, Wave and Chaos (log lines; that run's frames were not checked for this README) |
 | **rig only, not headset-confirmed** (2026-11-07, SlowMo's run, log `SlowMo/tools/rigtest/build/logs/v3c.log`) | Graves Rise with no cap: 31 tombstones woken map-wide, 31 risers planned. Only 20 had risen when the log ended; the rest were still being retried ("did not fit"). So "31 raised 31" was not shown |
 | **rig only, not headset-confirmed** (2026-11-09 and 2026-11-10, the series runs) | The pack loading on the owner's order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, Legion of Bones, Champions, Gun Bonsai, every RSQ pk3) with no script error from it; the 11-10 runs used the current build. Its row under Radiant Silvergun Options (11-09 log `design/rigtest_2026-11-09/logs/main_A-G_I.log`) |
-| **rig only, not headset-confirmed** (2026-11-11, the README GIFs, `docs/readme/`, the owner's order with dynamic lights on) | A stone at each death (five deaths to an Imp), all five back when MAP01 loaded again, popping in one after another, candles fading up. A Score life spent placing a gold stone beside a grey one. The obituary printing on Use ("Here lies Player, killed by Imp.", date, map time); in VR it is drawn small on the HUD and not at all at Screen Size 12. Graves Rise, Thralls Per Stone: 3 stones woken, 9 Skull Zombies risen (log lines `RSQ Graveyard bones ... RISES`) |
+| **rig only, not headset-confirmed** (2026-11-11, the README GIFs, `docs/readme/`, the owner's order with dynamic lights on) | A stone at each death (five deaths to an Imp), all five back when MAP01 loaded again, popping in one after another, candles fading up. A Score life spent placing a gold stone beside a grey one. The obituary printing on Use (that build's console line; replaced by the words on 11-11). Graves Rise, Thralls Per Stone: 3 stones woken, 9 Skull Zombies risen (log lines `RSQ Graveyard bones ... RISES`) |
+| **rig only, not headset-confirmed** (2026-11-11, the obituary words and the gold glow; log `tools/rigtest/evidence_1111/log_GA2.txt`, frames `obituary_words_t640.jpg`, `obituary_words_t502-782.jpg`, `gold_before_after.jpg`, and the two README GIFs; the owner's order, dynamic lights on, Screen Size 12, no text scale) | Use on a stone: HERE LIES PLAYER, KILLED BY IMP, the date and the map time over the stone, readable from where you press Use, and no console line. Use at tic 515, the words up in the next saved frame (t532); a second Use at t607 kept them up (still there at t738, past 515 + 140), then they faded (fading at t751, gone at t767, about 4.3 s after the second Use). Without RSQ VisualRewards loaded (a separate run), the console line printed instead. The gold stone's candle against the build before, same script and tic: a bright amber pool on the floor and pillar where before there was hardly any. No script error from the pack |
+| **code only, not shown** | The words on a gold stone (the gold first line), long names wrapping, Monster Words off falling back to the console line, the words in a netgame |
 | **code only, not shown** | Both remove commands. The breathing (too slow to see in a 3-second loop). Graves Rise Mode (one per stone or one per thrall, the 40-unit ring; changed 11-10, load-checked only). Reset All. The 11-10 code-read fixes (92bd8ba9), each load-checked only: a riser that does not fit looks for a free spot near it (5 tries, then given up and logged); the two remove commands are menu buttons, the key section gone; the boss markers and their art removed (nothing placed them); the stones' look read the same on every machine (the arbitrator's settings, the nearest player); a never-raised thrall type is skipped by Graves Rise as by the bridge. The 11-10 stone keys (load-checked only): each new death and spent life is stored with a key made from sim data (player number, game and map tics, spot, kind) |
 | **not yet run** | Netgames, all of it: no two-player game has been run. That includes the 11-10 rule, everyone's stones (every machine sends its own stored stones at map load, the dying player's machine sends a new death's stone, and a stone whose key is already on the map is skipped, so each comes once) |
 
@@ -267,6 +284,9 @@ machine's store in a netgame, not only the presser's (m8f's design).
   machine, so those copies meet as one too; two old stones at the very same spot become one stone.
 - **Settings with no row:** `gy_living_debug` (yours: logs the Living Stones colour every 10 tics),
   `gy_bones_debug` (the game's, not saved: logs the bridge, the graves and the heartbeat).
+- **Asked by name, optional:** `RSQVR_Service` (RSQ VisualRewards) `word.hold` for the obituary's words, held on a
+  `gy_StoneWords` anchor (an invisible actor 18 units tall at the stone's foot) that removes itself after 140 tics; the
+  words fade with it. `rsqvr_words` (VisualRewards' Monster Words, your own) is read to know whether to print the line.
 - **Read by name from other packs, each one optional:** `LOB_Respawn` (Legion of Bones), `rsqa_photosafe` (RSQ
   Accessibility, only while its menu class `RSQA_Menu` exists), `rs_score_debug` (RSQ Score, logs the gold stone).
 - **For other mods: `gy_RSQService`,** found by name. `GetInt("stone.life", "", player, 0, pawn)`: a gold stone at the
