@@ -19,6 +19,40 @@ python3 -I design/mockups/legendoom_hud/src/make_mockups.py <LegenDoom_3.0 unzip
 | `A_gunbonsai_gauge_and_card.png` | **A**: put it into Gun Bonsai VR: a row under the gun hand's gauge, and one card when you pick it up |
 | `B_world_words_sotn.png` | **B**: words in the world (SOTN style A): over the legendary monster, over its drop and over the gun |
 | `C_wrist_panel.png` | **C**: one small panel on the off-hand wrist, for both guns, which you look at when you want |
+| `D_overview.png` | **D** (owner 11-11 15:22): B's monster words and A's pickup card together. Two options for after the card: A's gauge row, or B's X3 over the gun |
+| `D_card_variants.png` | the D pickup card: one frame per rarity, plus four versions V1-V4 |
+| `D_card_V3_shimmer.gif` | V3's title moving between its two SOTN looks |
+| `D_sequence.png` | D's moments in order: LEGENDARY, RISEN!, the glowing drop, the card for 3 s, then the card folding into the gauge row (5a) or into X3 over the gun (5b) |
+
+## Direction D: B's monster words with A's card (owner 11-11 15:22)
+
+The owner: "i love the enemy legendary and risen and red shit but i adore the gbovr-inspired card".
+
+- **Monster (from B):**
+  - LEGENDARY appears over a legendary in view;
+  - at half health, RISEN! appears in red;
+  - LegenDoom's own pentagram and red after-images stay as they are.
+- **Drop (from B):** our gun glows, with EPIC and the power's name over it.
+- **Pickup (from A):** one Gun Bonsai VR-style card in the rarity colour, for 3 s, with no key to close it.
+- **Afterwards, two options for the owner to pick from:**
+  - **Option 1:** the card folds into a row under the gun hand's gauge, on the HUD (A);
+  - **Option 2:** the card becomes X3 and its seconds over the gun, moving with the hand, in the world (B).
+
+**The card's variants** (`D_card_variants.png`):
+
+- **Rarity frames:** one card per LegenDoom rarity, each with a chaingun-slot power of that rarity:
+  - Common is green (Determined);
+  - Uncommon is blue (Berserker);
+  - Rare is purple (Vampiric);
+  - Epic is orange (Murderous).
+
+  LegenDoom 3.0 has only these four rarities. Epic is its top one; there is no separate "legendary" rarity.
+- **V1, LegenDoom's name:** the sub line reads "EPIC CHAINGUN", LegenDoom's slot name. The card has the icon box.
+- **V2, no icon box:** the text is centred across the card, with a rarity bar at the foot.
+- **V3, SOTN A title shimmer:** the title is the two-tone SOTN word and flashes between two looks, like GUARD! and TARGET!. The GIF shows it moving.
+- **V4, our gun's name:** the sub line reads "EPIC RIFLE". "Rifle" is BD22's own tag for the gun in hand (`Tag "$TAGBD_RIFLE"`, language.enu `TAGBD_RIFLE = "Rifle"`). The card has the icon box.
+
+One catch for V4: BD22 tags the Minigun "Chaingun" too (`TAGBD_CHAINGUN = "Chaingun"`). So if the card names the gun the drop hands you (the Minigun), it still says Chaingun. It reads "Rifle" only when it names the gun in your hand.
 
 ## What LegenDoom shows today (from its code)
 

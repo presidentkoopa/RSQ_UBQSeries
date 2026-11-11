@@ -277,7 +277,7 @@ def dir_b():
     put(f3, sotn('MURDEROUS', 8, (200, 200, 205), (255, 255, 255), 2), 470, 790, 'cb')
     # the running buff as a word over the gun hand (moves with the gun): X3 and the seconds
     put(f3, sotn('X3', 12, (240, 150, 20), (255, 236, 120)), 640, 600, 'cb')
-    put(f3, sotn('7', 12, (200, 200, 205), (255, 255, 255)), 664, 600, 'lb')
+    put(f3, txt(SF, '7S', (120, 120, 120), WHITE, 1.4), 662, 598, 'lb')
     # page frame: the legendary named, the drop, the buff (three moments drawn on one frame for the left side)
     full = base(); put(full, w, 168, 428, 'cb')
     full.alpha_composite(f3.crop((380, 560, 720, 860)), (380, 560))
@@ -338,6 +338,183 @@ def dir_c():
           ('Note', 'needs the off hand free to read; with a saber or shield in it the panel shares that wrist.')])
 
 
+
+# ---- D: B's monster words + A's pickup card (owner 11-11 15:22) -----------------------------------------------------------
+# LegenDoom's four rarities (LEGENDINF.acs rarityColors[]: CR_GREEN, CR_BLUE, CR_PURPLE, CR_ORANGE; LegenDoom 3.0 has no
+# fifth "legendary" rarity: Epic is the top), with one chaingun-slot power of each (decorate/Chaingun, LANGUAGE.effect*)
+RARS = [('COMMON', (90, 230, 90), (40, 140, 40), (150, 255, 120), 'Common/E_DETERM', 'DETERMINED',
+         ['WHILE NOT', 'ATTACKING, MAKES', 'YOU 50% TOUGHER']),
+        ('UNCOMMON', (100, 150, 255), (40, 80, 200), (170, 210, 255), 'Uncommon/E_BERSER', 'BERSERKER',
+         ['MORE DAMAGE THE', 'LOWER YOUR HEALTH']),
+        ('RARE', (220, 110, 255), (130, 40, 170), (240, 180, 255), 'Rare/E_VAMPIR', 'VAMPIRIC',
+         ['ATTACKS DRAIN LIFE', 'FROM ENEMIES']),
+        ('EPIC', EPIC, (240, 150, 20), (255, 236, 120), 'Epic/E_MURDER', 'MURDEROUS',
+         ['KILLS GIVE A SHORT,', 'EXTENDABLE', '3X DAMAGE BOOST'])]
+
+
+def card2(r, gun='RIFLE', icon=True, shimmer=None, w=150, h=104):
+    """r: a RARS row. gun: the name on the sub line. icon: the icon box. shimmer: None, 0 or 1 (SOTN's two looks)."""
+    name, col, top, bot, icp, power, desc = r
+    c = Image.new('RGBA', (w, h), (0, 0, 0, 0)); d = ImageDraw.Draw(c)
+    d.rectangle((0, 0, w - 1, h - 1), fill=CARD_FILL + (235,))
+    d.rectangle((0, 0, w - 1, h - 1), outline=col + (255,), width=2)
+    d.rectangle((3, 3, w - 4, h - 4), outline=tuple(int(v * 0.45) for v in col) + (255,), width=1)
+    if shimmer is None:
+        tt = txt(SF, power, tuple(v // 3 for v in col), col, 1)
+    else:   # SOTN style A: two-tone, dark box, flashing between two looks
+        looks = [(top, bot), (tuple(min(255, v + 70) for v in top), (255, 255, 235))]
+        tt = sotn(power, 9, *looks[shimmer], 1)
+    if tt.width > w - 10: tt = sc(tt, (w - 10) / tt.width)
+    put(c, tt, w // 2, 5, 'ct')
+    st = txt(CB, name + '  ' + gun, (90, 90, 95), GREY, 1); put(c, st, w // 2, 5 + tt.height + 3, 'ct')
+    y = 5 + tt.height + st.height + 8
+    ic = ld('graphics/EffectIcons/' + icp)
+    if icon:
+        for line in desc:
+            lt = txt(CB, line, (120, 120, 120), WHITE, 1); put(c, lt, 7, y); y += lt.height + 3
+        bs = 38; bx, by = w - bs - 7, h - bs - 7
+        d.rectangle((bx, by, bx + bs, by + bs), fill=CARD_DARK + (255,), outline=col + (255,), width=1)
+        put(c, sc(ic, (bs - 6) / ic.width), bx + bs // 2 + 1, by + bs // 2 + 1, 'cm')
+    else:   # no box: the text takes the card, centred; a rarity bar at the foot
+        y += 4
+        for line in desc:
+            lt = txt(CB, line, (120, 120, 120), WHITE, 1); put(c, lt, w // 2, y, 'ct'); y += lt.height + 4
+        d.rectangle((10, h - 12, w - 11, h - 10), fill=col + (255,))
+    return c
+
+
+def gauge_row(f, r=RARS[3]):
+    name, col, top, bot, icp, power, desc = r
+    gx, gy = 584, 485
+    row = txt(CB, power, tuple(v // 3 for v in col), col, 1)
+    put(f, sc(ld('graphics/EffectIcons/' + icp), 9 / 42), gx, gy)
+    put(f, glow(pad(row, 4), col, 2, 0.9), gx + 11 - 4, gy - 4); put(f, row, gx + 11, gy)
+    d = ImageDraw.Draw(f); x1 = gx + 11 + row.width
+    d.rectangle((gx, gy + row.height + 3, x1, gy + row.height + 4), fill=(60, 30, 10, 255))
+    d.rectangle((gx, gy + row.height + 3, gx + int((x1 - gx) * 0.6), gy + row.height + 4), fill=col + (255,))
+    put(f, txt(CB, 'X3', (110, 80, 0), (255, 230, 120), 1), x1 + 3, gy)
+    d.line((598, 449, 615, 449), fill=col + (255,), width=2); d.line((615, 449, 615, 465), fill=col + (255,), width=2)
+
+
+def gun_x3(f):
+    put(f, sotn('X3', 12, (240, 150, 20), (255, 236, 120)), 640, 600, 'cb')
+    put(f, txt(SF, '7S', (120, 120, 120), WHITE, 1.4), 662, 598, 'lb')
+
+
+def legendary(f):
+    put(f, sotn('LEGENDARY', 14, (240, 150, 20), (255, 236, 120)), 168, 428, 'cb')
+
+
+def risen(f):
+    import math
+    d = ImageDraw.Draw(f)
+    r = f.crop((110, 435, 225, 655)); px = r.load()
+    for y in range(r.height):
+        for x in range(r.width):
+            p = px[x, y]
+            px[x, y] = (200, 20, 20, 110) if p[0] + p[1] + p[2] > 120 else (0, 0, 0, 0)
+    f.alpha_composite(r, (104, 437))
+    cx, cy, rx, ry = 168, 650, 70, 14
+    for i in range(5):
+        a1 = math.radians(-90 + i * 144); a2 = math.radians(-90 + (i + 1) * 144)
+        d.line((cx + rx * math.cos(a1), cy + ry * math.sin(a1), cx + rx * math.cos(a2), cy + ry * math.sin(a2)), fill=(255, 40, 30, 255), width=2)
+    d.ellipse((cx - rx, cy - ry, cx + rx, cy + ry), outline=(255, 40, 30, 255), width=2)
+    put(f, sotn('RISEN!', 18, (255, 80, 90), (255, 140, 140), 3), 168, 426, 'cb')
+
+
+def drop(f):
+    mg = sc(Image.open(MGUN).convert('RGBA'), 1.6)
+    put(f, glow(pad(mg, 8), EPIC, 6, 1.2), 470, 840, 'cb'); put(f, mg, 470, 832, 'cb')
+    put(f, sotn('EPIC', 13, (240, 150, 20), (255, 236, 120)), 470, 776, 'cb')
+    put(f, sotn('MURDEROUS', 8, (200, 200, 205), (255, 255, 255), 2), 470, 790, 'cb')
+
+
+def with_card(f, c=None, alpha=1.0, y=512):
+    c = c or card2(RARS[3])
+    put(f, glow(pad(c, 6), EPIC, 4, 0.5), 503, y - 6, 'ct', alpha); put(f, c, 503, y, 'ct', alpha)
+
+
+def dir_d():
+    # 1. overview
+    scene = base(); legendary(scene); with_card(scene)
+    o1 = base(); gauge_row(o1)
+    o2 = base(); gun_x3(o2)
+    page('D_overview.png', 'Direction D: B\'s monster words + A\'s pickup card',
+         'LEGENDARY over the monster (left, with the card you get on taking its drop, two moments on one frame). Then pick one:',
+         scene, [('Option 1: the power stays in a row under the gun hand\'s gauge (HUD plane, A)', o1, (380, 440, 700, 512)),
+                 ('Option 2: the power stays as X3 and its seconds over the gun, moving with it (world, B)', o2, (520, 540, 760, 660))],
+         [('Monster', 'LEGENDARY on sight, RISEN! in red with LegenDoom\'s pentagram and after-images (B).'),
+          ('Pickup', 'one Gun Bonsai VR card, 3 s, no key, in the rarity colour (A). Variants: D_card_variants.png.'),
+          ('After', 'option 1 (gauge row) or option 2 (X3 over the gun): the card folds into whichever is picked.'),
+          ('Drops', 'LegenDoom\'s pickup screen, Fire-to-close, the buff row at the top of the view.')], ih=300)
+
+    # 2. card variants: row 1 the four rarities (V4 layout), row 2 the four versions on Epic
+    Z = 3
+    cols = []
+    for r in RARS: cols.append((r[0] + ': ' + r[5], card2(r)))
+    vars_ = [('V1  LegenDoom\'s name (CHAINGUN), icon box', card2(RARS[3], gun='CHAINGUN')),
+             ('V2  No icon box (text centred, rarity bar)', card2(RARS[3], icon=False)),
+             ('V3  SOTN A title shimmer (look 1 / look 2)', None),
+             ('V4  Our gun\'s name (BD22 VR\'s Rifle), icon box', card2(RARS[3]))]
+    W, H = 1940, 1150
+    pg = Image.new('RGBA', (W, H), (16, 14, 20, 255)); d = ImageDraw.Draw(pg)
+    d.text((20, 14), 'Direction D: the pickup card, variants', font=F_T, fill=(255, 205, 110))
+    d.text((20, 54), 'Gun Bonsai VR level-up card style (skin A: #170D26 fill, double outline in the card colour, SmallFont title). '
+           'Drawn at rig scale (150 x 104 px on the 960 frame), shown 3x.', font=F_S, fill=(170, 170, 180))
+    def row_at(y, items, head):
+        d.text((20, y), head, font=F_L, fill=(255, 205, 110)); y += 28
+        x = 20
+        for label, c in items:
+            d.text((x, y), label, font=F_L, fill=(220, 220, 230))
+            if c is None:   # the shimmer: look 1 as the card, look 2's title strip under it (D_card_V3_shimmer.gif moves)
+                a = sc(card2(RARS[3], shimmer=0), Z); pg.alpha_composite(a, (x, y + 26))
+                b = sc(card2(RARS[3], shimmer=1).crop((0, 0, 150, 18)), Z)
+                pg.alpha_composite(b, (x, y + 26 + a.height + 30))
+                d.text((x, y + 26 + a.height + 6), 'look 2 (the title flashes between the two; see the GIF):', font=F_B, fill=(170, 170, 180))
+            else:
+                pg.alpha_composite(sc(c, Z), (x, y + 26))
+            x += 470
+        return y + 26 + 104 * Z + 20
+    y = row_at(92, cols, 'Rarity frames: LegenDoom\'s four rarities, one chaingun-slot power each, V4 layout')
+    row_at(y, vars_, 'Versions, on the Epic card')
+    pg.convert('RGB').save(os.path.join(OUT, 'D_card_variants.png'), optimize=True)
+    # the shimmer as a GIF (8 frames a look, as in sotn_words)
+    fr = []
+    for i in range(16):
+        im = Image.new('RGBA', (150 * 3 + 20, 104 * 3 + 20), (16, 14, 20, 255))
+        im.alpha_composite(sc(card2(RARS[3], shimmer=(i // 4) % 2), 3), (10, 10)); fr.append(im.convert('P', palette=Image.ADAPTIVE))
+    fr[0].save(os.path.join(OUT, 'D_card_V3_shimmer.gif'), save_all=True, append_images=fr[1:], duration=70, loop=0)
+
+    # 3. the sequence
+    s1 = base(); legendary(s1)
+    s2 = base(); risen(s2)
+    s3 = base(); drop(s3)
+    s4 = base(); with_card(s4)
+    s5 = base(); gauge_row(s5); with_card(s5, sc(card2(RARS[3]), 0.5), 0.45, 492)
+    d5 = ImageDraw.Draw(s5); d5.line((540, 500, 584, 490), fill=(255, 200, 120, 200), width=1)
+    s6 = base(); gun_x3(s6); with_card(s6, sc(card2(RARS[3]), 0.5), 0.45, 540)
+    d6 = ImageDraw.Draw(s6); d6.line((540, 560, 632, 592), fill=(255, 200, 120, 200), width=1)
+    tiles = [('1  On sight: LEGENDARY over it', s1, (40, 380, 300, 670)),
+             ('2  At half health: RISEN!, red after-images, pentagram', s2, (40, 380, 300, 670)),
+             ('3  Its drop glows: EPIC and the power over it', s3, (370, 740, 570, 870)),
+             ('4  Taken: the card, 3 s, no key', s4, (360, 430, 650, 630)),
+             ('5a Then it folds into the gauge row (option 1)', s5, (360, 430, 700, 560)),
+             ('5b ...or into X3 over the gun (option 2)', s6, (430, 480, 720, 640))]
+    W, H = 1940, 1090
+    pg = Image.new('RGBA', (W, H), (16, 14, 20, 255)); d = ImageDraw.Draw(pg)
+    d.text((20, 14), 'Direction D: the moments in order', font=F_T, fill=(255, 205, 110))
+    d.text((20, 54), 'Each tile is a crop of the same rig frame (P3A f00144) with the mockup drawn at rig scale, zoomed. '
+           'Steps 5a and 5b: the card shrinking toward where it lands (mid-fold).', font=F_S, fill=(170, 170, 180))
+    tw, th = 620, 440
+    for i, (label, im, box) in enumerate(tiles):
+        x = 20 + (i % 3) * (tw + 16); y = 92 + (i // 3) * (th + 50)
+        d.text((x, y), label, font=F_L, fill=(220, 220, 230))
+        cr = im.crop(box); k = min(tw / cr.width, th / cr.height)
+        z = cr.resize((int(cr.width * k), int(cr.height * k)), Image.NEAREST)
+        pg.alpha_composite(z, (x, y + 26)); d.rectangle((x, y + 26, x + z.width - 1, y + 26 + z.height - 1), outline=(70, 60, 90))
+    pg.convert('RGB').save(os.path.join(OUT, 'D_sequence.png'), optimize=True)
+
+
 if __name__ == '__main__':
-    today(); dir_a(); dir_b(); dir_c()
+    today(); dir_a(); dir_b(); dir_c(); dir_d()
     print('written to', OUT)
