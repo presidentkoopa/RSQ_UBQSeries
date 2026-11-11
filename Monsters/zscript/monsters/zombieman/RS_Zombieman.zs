@@ -4,9 +4,9 @@
 // read whole). Every actor cites its CH line. Support classes and the
 // import rules header live in RS_ZombiemanFX.zs.
 //
-// Tier ladder (CH icon index): 1 Common, 2 Green, 3 Blue, 4 Purple,
-// 5 Yellow(Orange), 6 Red, 7 FireBlu, 8 Gray, 9 Abyss, 10 Black,
-// 11 White, 12 Cyan, 13 Brown.  RS_Zom.SetTier() in each PostBeginPlay.
+// Tier ladder (the RSQ ladder by strength, 11-11): 1 Common, 2 Green, 3 Blue, 4 Purple,
+// 7 Yellow(Orange), 10 Red, 8 FireBlu, 9 Gray, 11 Abyss, 12 Black,
+// 13 White, 5 Cyan, 6 Brown.  RS_Zom.SetTier() in each PostBeginPlay.
 //
 // Frame gap closed 2026-08-06 (owner: visual consistency beats verbatim
 // silence):
@@ -211,12 +211,12 @@ class RS_WhiteZombie : Actor   // CH Zombies.txt:2027
 }
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN.  CH: Zombies.txt:40.  The bodyguard: warps to big
+// TIER 6 -- BROWN.  CH: Zombies.txt:40.  The bodyguard: warps to big
 // demons and jumps at you.
 // ---------------------------------------------------------------------------
 class RS_BrownZombie2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 100;
@@ -364,7 +364,7 @@ class RS_BrownZombie2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN.  CH: Zombies.txt:245.  Comes in threes; ice shots.
+// TIER 5 -- CYAN.  CH: Zombies.txt:245.  Comes in threes; ice shots.
 // ---------------------------------------------------------------------------
 class RS_IceZombieShot : Actor   // CH Zombies.txt:211
 {
@@ -408,7 +408,7 @@ class RS_IceZombieShot2 : RS_IceZombieShot   // CH Zombies.txt:236
 
 class RS_CyanZombie2 : Actor   // CH Zombies.txt:245
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 30;
@@ -502,12 +502,12 @@ class RS_CyanZombie2 : Actor   // CH Zombies.txt:245
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU.  CH: Zombies.txt:359.  Sheds fire while it walks,
+// TIER 8 -- FIREBLU.  CH: Zombies.txt:359.  Sheds fire while it walks,
 // explodes on melee range / XDeath.
 // ---------------------------------------------------------------------------
 class RS_FireBluZombie2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 70;
@@ -623,7 +623,7 @@ class RS_FireBluZombie2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY.  CH: Zombies.txt:492.  Slow brick-thrower.
+// TIER 9 -- GRAY.  CH: Zombies.txt:492.  Slow brick-thrower.
 // ---------------------------------------------------------------------------
 class RS_ZombieRock : RS_WDRock3   // CH Zombies.txt:614
 {
@@ -636,7 +636,7 @@ class RS_ZombieRock : RS_WDRock3   // CH Zombies.txt:614
 
 class RS_GrayZombie2 : ZombieMan
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 110;
@@ -757,7 +757,7 @@ class RS_GrayZombie2 : ZombieMan
 }
 
 // ---------------------------------------------------------------------------
-// TIER 9 -- ABYSS.  CH: Zombies.txt:643-786.  Infects other zombies with
+// TIER 11 -- ABYSS.  CH: Zombies.txt:643-786.  Infects other zombies with
 // the mark; they transform into more of it when they die.
 // ---------------------------------------------------------------------------
 class RS_AbyssZShotCH : Actor   // CH Zombies.txt:643
@@ -822,7 +822,7 @@ class RS_AbyssZShotCH3 : RS_AbyssZShotCH   // CH Zombies.txt:686
 
 class RS_AbyssZombie2 : Actor   // CH Zombies.txt:695
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Obituary "%o was dragged down deep by Abyss Zombie.";
@@ -1437,7 +1437,7 @@ class RS_PurpleZombie : ZombieMan
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW (Orange Zombiewoman).  CH: Zombies.txt:1275.
+// TIER 7 -- YELLOW (Orange Zombiewoman).  CH: Zombies.txt:1275.
 // Burst bullets close, mini-rockets far; launcher jams after 3.
 // ---------------------------------------------------------------------------
 class RS_MiniRKTZombie : Actor   // CH Zombies.txt:1411
@@ -1474,7 +1474,7 @@ class RS_RocketCounter : Inventory { Default { Inventory.MaxAmount 3; } }   // C
 
 class RS_YellowZombie : ZombieMan
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 140;
@@ -1613,7 +1613,7 @@ class RS_YellowZombie : ZombieMan
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED (ZombieUnman).  CH: Zombies.txt:1441.  Unmaker beams.
+// TIER 10 -- RED (ZombieUnman).  CH: Zombies.txt:1441.  Unmaker beams.
 // ---------------------------------------------------------------------------
 class RS_BloodyPuff : Actor   // CH Zombies.txt:1553
 {
@@ -1636,7 +1636,7 @@ class RS_BloodyPuff : Actor   // CH Zombies.txt:1553
 
 class RS_RedZombie : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Obituary "%o was unmade by the Red Zombie.";
@@ -1751,7 +1751,7 @@ class RS_RedZombie : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK.  CH: Zombies.txt:1607 (EX) / 1888 (normal).
+// TIER 12 -- BLACK.  CH: Zombies.txt:1607 (EX) / 1888 (normal).
 // "Player X" / "Player 9".  ACS announcer dropped per owner.
 // ---------------------------------------------------------------------------
 class RS_PlayerEXBFG : Actor   // CH Zombies.txt:1825
@@ -1823,7 +1823,7 @@ class RS_ShotgunWhere : Inventory { Default { Inventory.MaxAmount 1; } }   // CH
 
 class RS_BlackZombieEX : Actor   // CH Zombies.txt:1607 -- Player X
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 5000;
@@ -2041,7 +2041,7 @@ class RS_BlackZombieEX : Actor   // CH Zombies.txt:1607 -- Player X
 
 class RS_BlackZombie1 : Actor   // CH Zombies.txt:1888 -- Player 9
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 2500;
@@ -2178,7 +2178,7 @@ class RS_BlackZombie1 : Actor   // CH Zombies.txt:1888 -- Player 9
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE (the Undertaker) and the bone economy.
+// TIER 13 -- WHITE (the Undertaker) and the bone economy.
 // CH: Zombies.txt:2046-2786.
 // ---------------------------------------------------------------------------
 class RS_ThePlanBoner : Actor   // CH Zombies.txt:2046 -- the egg every marked corpse hatches
@@ -2438,7 +2438,7 @@ class RS_SpirZom2 : Actor   // CH Zombies.txt:2260
 class RS_WhiteZombie1 : Actor   // CH Zombies.txt:2282 -- UNDERTAKER
 {
 	int user_skel1;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 2800;

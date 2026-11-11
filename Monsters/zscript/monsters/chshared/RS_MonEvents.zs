@@ -334,7 +334,7 @@ class RS_Mon_PackofHitScan : RandomSpawner   // CH DECORATE.txt:1384
 	}
 }
 
-// CH: DECORATE.txt:1490.  One tier-10 black boss, flat 1-in-9.
+// CH: DECORATE.txt:1490.  One tier-12 black boss, flat 1-in-9.
 class RS_Mon_BossSurprise1 : RandomSpawner   // CH DECORATE.txt:1490
 {
 	Default
@@ -799,7 +799,7 @@ class RS_Mon_BonusEnemySneak4 : RS_Mon_BonusEnemyBaseSpawner2   // CH DECORATE.t
 	}
 }
 
-// PACK 5 -- one tier-10 black boss.
+// PACK 5 -- one tier-12 black boss.
 class RS_Mon_BonusEnemy5 : RS_Mon_BonusEnemyBaseSpawner   // CH DECORATE.txt:1543
 {
 	States

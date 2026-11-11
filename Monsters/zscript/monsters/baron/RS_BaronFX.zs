@@ -286,7 +286,7 @@ class RS_BigBadFire1 : Actor   // CH Revenants.txt:2578
 
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown Baron's kit.  CH: Barons.txt:170-373.
+// Tier 6 -- Brown Baron's kit.  CH: Barons.txt:170-373.
 // ---------------------------------------------------------------------------
 
 class RS_BaronBrownRock : Actor   // CH Barons.txt:170
@@ -513,7 +513,7 @@ class RS_BBaronCmonAndSlam : Actor   // CH Barons.txt:341
 
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan Baron's kit.  CH: Barons.txt:664-873.
+// Tier 5 -- Cyan Baron's kit.  CH: Barons.txt:664-873.
 // ---------------------------------------------------------------------------
 
 class RS_IceSeekerBaron : Actor   // CH Barons.txt:664
@@ -723,7 +723,7 @@ class RS_FrostWingBaron2 : Actor   // CH Barons.txt:850
 
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss Baron's kit.  CH: Barons.txt:898-1459.
+// Tier 11 -- Abyss Baron's kit.  CH: Barons.txt:898-1459.
 // ---------------------------------------------------------------------------
 
 class RS_AbyssBaronRing : Actor   // CH Barons.txt:898
@@ -1016,7 +1016,7 @@ class RS_AbyssBaronFlare : Actor   // CH Barons.txt:1417
 
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray Baron's dirt kit.  CH: Barons.txt:1621-1735.
+// Tier 9 -- Gray Baron's dirt kit.  CH: Barons.txt:1621-1735.
 // ---------------------------------------------------------------------------
 
 class RS_BaronOfDirtCH : Actor   // CH Barons.txt:1621
@@ -1142,7 +1142,7 @@ class RS_BaronOfDirtCH3 : Actor   // CH Barons.txt:1704
 
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- FireBlu Baron's bomb, and the family's BaronBall replacement.
+// Tier 8 -- FireBlu Baron's bomb, and the family's BaronBall replacement.
 // CH: Barons.txt:1885-1945.
 // ---------------------------------------------------------------------------
 
@@ -1335,7 +1335,7 @@ class RS_SmashBall4 : Actor   // CH Barons.txt:2489
 
 
 // ---------------------------------------------------------------------------
-// Tier 5 -- Yellow (Grand Orange) Baron's star kit.  CH: Barons.txt:2943-3055.
+// Tier 7 -- Yellow (Grand Orange) Baron's star kit.  CH: Barons.txt:2943-3055.
 // RS_BaronStar3 (:2988) and RS_BaronStar (:3023) shipped with earlier lanes;
 // only the second star and the fire bomb land here.
 // ---------------------------------------------------------------------------
@@ -1425,7 +1425,7 @@ class RS_BaronStar2 : Actor   // CH Barons.txt:3057
 
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red Baron's three phases: rage bomb, archon comet, fallen kit.
+// Tier 10 -- Red Baron's three phases: rage bomb, archon comet, fallen kit.
 // CH: Barons.txt:3141-3855.
 // ---------------------------------------------------------------------------
 
@@ -1680,7 +1680,7 @@ class RS_FallenSP : Actor   // CH Barons.txt:3837
 
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black Baron's deep-one kit.  CH: Barons.txt:4149-4266.
+// Tier 12 -- Black Baron's deep-one kit.  CH: Barons.txt:4149-4266.
 // ---------------------------------------------------------------------------
 
 class RS_DeepOneBall : Actor   // CH Barons.txt:4149
@@ -1819,7 +1819,7 @@ class RS_DeepBeam1 : Actor   // CH Barons.txt:4244
 
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White Baron's slice kit.  CH: Barons.txt:4478-4644.
+// Tier 13 -- White Baron's slice kit.  CH: Barons.txt:4478-4644.
 // ---------------------------------------------------------------------------
 
 class RS_WhiteBaronSlice : Actor   // CH Barons.txt:4478

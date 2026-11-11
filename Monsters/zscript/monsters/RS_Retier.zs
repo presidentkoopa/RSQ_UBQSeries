@@ -14,8 +14,18 @@
 // (RS_FireBluSpectre2 : RS_FireBluDemon2) were followed to the class that
 // states the number. 17 families, 13 tiers, no gaps.
 //
-//   1 Common  2 Green  3 Blue   4 Purple  5 Yellow  6 Red     7 FireBlu
-//   8 Gray    9 Abyss  10 Black 11 White  12 Cyan   13 Brown
+// THE NUMBER IS THE STRENGTH (owner 2026-11-11): the ladder is ordered by
+// measured strength (mean health rank over the 17 families, Miniboss commit
+// 7c50d118, design/rigtest_2026-11-10/evidence/MB_TIER2_strength.py), not by
+// Colourful Hell's listing order. Only the numbering changed; every colour
+// keeps its classes, health, look and boss status.
+//
+//   1 Common  2 Green  3 Blue    4 Purple  5 Cyan   6 Brown  7 Yellow
+//   8 FireBlu 9 Gray   10 Red    11 Abyss  12 Black (boss, EX roll)  13 White (boss)
+//
+// (Colourful Hell's own order, the numbers before 11-11: 1 Common 2 Green
+// 3 Blue 4 Purple 5 Yellow 6 Red 7 FireBlu 8 Gray 9 Abyss 10 Black 11 White
+// 12 Cyan 13 Brown. The icon actors RS_ColorTierIconCH<n> keep CH's names.)
 //
 // Generated tables are if-chains, not arrays: this tree records that array
 // literals do not resolve reliably on this build. FamilyOf/TierOf are LOOPS
@@ -60,15 +70,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenCGuy';
 			if (tier == 3) return 'RS_BlueCGuy';
 			if (tier == 4) return 'RS_PurpleCGuy';
-			if (tier == 5) return 'RS_YellowCGuy';
-			if (tier == 6) return 'RS_RedCGuy';
-			if (tier == 7) return 'RS_FireBluCGuy2';
-			if (tier == 8) return 'RS_GrayCGuy2';
-			if (tier == 9) return 'RS_AbyssCGuy2';
-			if (tier == 10) return 'RS_BlackCGuy2';
-			if (tier == 11) return 'RS_WhiteCguy2';
-			if (tier == 12) return 'RS_CyanCGuy2';
-			if (tier == 13) return 'RS_BrownCGuy2';
+			if (tier == 5) return 'RS_CyanCGuy2';
+			if (tier == 6) return 'RS_BrownCGuy2';
+			if (tier == 7) return 'RS_YellowCGuy';
+			if (tier == 8) return 'RS_FireBluCGuy2';
+			if (tier == 9) return 'RS_GrayCGuy2';
+			if (tier == 10) return 'RS_RedCGuy';
+			if (tier == 11) return 'RS_AbyssCGuy2';
+			if (tier == 12) return 'RS_BlackCGuy2';
+			if (tier == 13) return 'RS_WhiteCguy2';
 			return 'None';
 		}
 		if (fam == 1)
@@ -77,15 +87,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenRevenant';
 			if (tier == 3) return 'RS_BlueRevenant';
 			if (tier == 4) return 'RS_PurpleRevenant';
-			if (tier == 5) return 'RS_YellowRevenant';
-			if (tier == 6) return 'RS_RedRevenant';
-			if (tier == 7) return 'RS_FireBluRevenant2';
-			if (tier == 8) return 'RS_GrayRevenant2';
-			if (tier == 9) return 'RS_AbyssRevenant2';
-			if (tier == 10) return 'RS_BlackRevenant3';
-			if (tier == 11) return 'RS_WhiteRevenant2';
-			if (tier == 12) return 'RS_CyanRevenant2';
-			if (tier == 13) return 'RS_BrownRevenant2';
+			if (tier == 5) return 'RS_CyanRevenant2';
+			if (tier == 6) return 'RS_BrownRevenant2';
+			if (tier == 7) return 'RS_YellowRevenant';
+			if (tier == 8) return 'RS_FireBluRevenant2';
+			if (tier == 9) return 'RS_GrayRevenant2';
+			if (tier == 10) return 'RS_RedRevenant';
+			if (tier == 11) return 'RS_AbyssRevenant2';
+			if (tier == 12) return 'RS_BlackRevenant3';
+			if (tier == 13) return 'RS_WhiteRevenant2';
 			return 'None';
 		}
 		if (fam == 2)
@@ -94,15 +104,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenFatso';
 			if (tier == 3) return 'RS_BlueFatso';
 			if (tier == 4) return 'RS_PurpleFatso';
-			if (tier == 5) return 'RS_YellowFatso';
-			if (tier == 6) return 'RS_RedFatso';
-			if (tier == 7) return 'RS_FireBluFatso2';
-			if (tier == 8) return 'RS_GrayFatso2';
-			if (tier == 9) return 'RS_AbyssFatso2';
-			if (tier == 10) return 'RS_BlackFatso2';
-			if (tier == 11) return 'RS_WhiteFatso2';
-			if (tier == 12) return 'RS_CyanFatso2';
-			if (tier == 13) return 'RS_BrownFatso2';
+			if (tier == 5) return 'RS_CyanFatso2';
+			if (tier == 6) return 'RS_BrownFatso2';
+			if (tier == 7) return 'RS_YellowFatso';
+			if (tier == 8) return 'RS_FireBluFatso2';
+			if (tier == 9) return 'RS_GrayFatso2';
+			if (tier == 10) return 'RS_RedFatso';
+			if (tier == 11) return 'RS_AbyssFatso2';
+			if (tier == 12) return 'RS_BlackFatso2';
+			if (tier == 13) return 'RS_WhiteFatso2';
 			return 'None';
 		}
 		if (fam == 3)
@@ -111,15 +121,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenArch';
 			if (tier == 3) return 'RS_BlueArch';
 			if (tier == 4) return 'RS_PurpleArch';
-			if (tier == 5) return 'RS_YellowArch';
-			if (tier == 6) return 'RS_RedArch3';
-			if (tier == 7) return 'RS_FireBluArch2';
-			if (tier == 8) return 'RS_GrayArch2';
-			if (tier == 9) return 'RS_AbyssVile';
-			if (tier == 10) return 'RS_BlackVile';
-			if (tier == 11) return 'RS_Whitevile';
-			if (tier == 12) return 'RS_CyanVile';
-			if (tier == 13) return 'RS_BrownVile';
+			if (tier == 5) return 'RS_CyanVile';
+			if (tier == 6) return 'RS_BrownVile';
+			if (tier == 7) return 'RS_YellowArch';
+			if (tier == 8) return 'RS_FireBluArch2';
+			if (tier == 9) return 'RS_GrayArch2';
+			if (tier == 10) return 'RS_RedArch3';
+			if (tier == 11) return 'RS_AbyssVile';
+			if (tier == 12) return 'RS_BlackVile';
+			if (tier == 13) return 'RS_Whitevile';
 			return 'None';
 		}
 		if (fam == 4)
@@ -128,15 +138,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenBaron';
 			if (tier == 3) return 'RS_BlueBaron';
 			if (tier == 4) return 'RS_PurpleBaron';
-			if (tier == 5) return 'RS_YellowBaron';
-			if (tier == 6) return 'RS_RedBaron3';
-			if (tier == 7) return 'RS_FireBluBaron2';
-			if (tier == 8) return 'RS_GrayBaron2';
-			if (tier == 9) return 'RS_AbyssBaron2';
-			if (tier == 10) return 'RS_BlackBaron2';
-			if (tier == 11) return 'RS_WhiteBaron2';
-			if (tier == 12) return 'RS_CyanBaron2';
-			if (tier == 13) return 'RS_BrownBaron2';
+			if (tier == 5) return 'RS_CyanBaron2';
+			if (tier == 6) return 'RS_BrownBaron2';
+			if (tier == 7) return 'RS_YellowBaron';
+			if (tier == 8) return 'RS_FireBluBaron2';
+			if (tier == 9) return 'RS_GrayBaron2';
+			if (tier == 10) return 'RS_RedBaron3';
+			if (tier == 11) return 'RS_AbyssBaron2';
+			if (tier == 12) return 'RS_BlackBaron2';
+			if (tier == 13) return 'RS_WhiteBaron2';
 			return 'None';
 		}
 		if (fam == 5)
@@ -145,15 +155,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenLSoul';
 			if (tier == 3) return 'RS_BlueLSoul';
 			if (tier == 4) return 'RS_PurpleLSoul';
-			if (tier == 5) return 'RS_YellowLSoul';
-			if (tier == 6) return 'RS_RedLSoul';
-			if (tier == 7) return 'RS_FireBluLSoul2';
-			if (tier == 8) return 'RS_GrayLSoul2';
-			if (tier == 9) return 'RS_AbyssLSoul2';
-			if (tier == 10) return 'RS_BlackLSoul3';
-			if (tier == 11) return 'RS_WhiteLSoul2';
-			if (tier == 12) return 'RS_CyanLSoul2';
-			if (tier == 13) return 'RS_BrownLSoul2';
+			if (tier == 5) return 'RS_CyanLSoul2';
+			if (tier == 6) return 'RS_BrownLSoul2';
+			if (tier == 7) return 'RS_YellowLSoul';
+			if (tier == 8) return 'RS_FireBluLSoul2';
+			if (tier == 9) return 'RS_GrayLSoul2';
+			if (tier == 10) return 'RS_RedLSoul';
+			if (tier == 11) return 'RS_AbyssLSoul2';
+			if (tier == 12) return 'RS_BlackLSoul3';
+			if (tier == 13) return 'RS_WhiteLSoul2';
 			return 'None';
 		}
 		if (fam == 6)
@@ -162,15 +172,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenPE';
 			if (tier == 3) return 'RS_BluePE';
 			if (tier == 4) return 'RS_PurplePE';
-			if (tier == 5) return 'RS_YellowPE';
-			if (tier == 6) return 'RS_RedPE';
-			if (tier == 7) return 'RS_FireBluPE2';
-			if (tier == 8) return 'RS_GrayPE2';
-			if (tier == 9) return 'RS_AbyssPE2';
-			if (tier == 10) return 'RS_BlackPE2';
-			if (tier == 11) return 'RS_WhitePE2';
-			if (tier == 12) return 'RS_CyanPE2';
-			if (tier == 13) return 'RS_BrownPE2';
+			if (tier == 5) return 'RS_CyanPE2';
+			if (tier == 6) return 'RS_BrownPE2';
+			if (tier == 7) return 'RS_YellowPE';
+			if (tier == 8) return 'RS_FireBluPE2';
+			if (tier == 9) return 'RS_GrayPE2';
+			if (tier == 10) return 'RS_RedPE';
+			if (tier == 11) return 'RS_AbyssPE2';
+			if (tier == 12) return 'RS_BlackPE2';
+			if (tier == 13) return 'RS_WhitePE2';
 			return 'None';
 		}
 		if (fam == 7)
@@ -179,15 +189,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenCybie';
 			if (tier == 3) return 'RS_BlueCybie';
 			if (tier == 4) return 'RS_PurpleCybie';
-			if (tier == 5) return 'RS_YellowCybie';
-			if (tier == 6) return 'RS_RedCybie';
-			if (tier == 7) return 'RS_FireBluCybie2';
-			if (tier == 8) return 'RS_GrayCybie2';
-			if (tier == 9) return 'RS_AbyssCybie2';
-			if (tier == 10) return 'RS_BlackCybie2';
-			if (tier == 11) return 'RS_WhiteCybie2';
-			if (tier == 12) return 'RS_CyanCybie2';
-			if (tier == 13) return 'RS_BrownCybie2';
+			if (tier == 5) return 'RS_CyanCybie2';
+			if (tier == 6) return 'RS_BrownCybie2';
+			if (tier == 7) return 'RS_YellowCybie';
+			if (tier == 8) return 'RS_FireBluCybie2';
+			if (tier == 9) return 'RS_GrayCybie2';
+			if (tier == 10) return 'RS_RedCybie';
+			if (tier == 11) return 'RS_AbyssCybie2';
+			if (tier == 12) return 'RS_BlackCybie2';
+			if (tier == 13) return 'RS_WhiteCybie2';
 			return 'None';
 		}
 		if (fam == 8)
@@ -196,15 +206,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenMind';
 			if (tier == 3) return 'RS_BlueMind';
 			if (tier == 4) return 'RS_PurpleMind';
-			if (tier == 5) return 'RS_YellowMind';
-			if (tier == 6) return 'RS_RedMind';
-			if (tier == 7) return 'RS_FireBluMind2';
-			if (tier == 8) return 'RS_GrayMind2';
-			if (tier == 9) return 'RS_AbyssMind2';
-			if (tier == 10) return 'RS_BlackMind2';
-			if (tier == 11) return 'RS_WhiteMind2';
-			if (tier == 12) return 'RS_CyanMind2';
-			if (tier == 13) return 'RS_BrownMind2';
+			if (tier == 5) return 'RS_CyanMind2';
+			if (tier == 6) return 'RS_BrownMind2';
+			if (tier == 7) return 'RS_YellowMind';
+			if (tier == 8) return 'RS_FireBluMind2';
+			if (tier == 9) return 'RS_GrayMind2';
+			if (tier == 10) return 'RS_RedMind';
+			if (tier == 11) return 'RS_AbyssMind2';
+			if (tier == 12) return 'RS_BlackMind2';
+			if (tier == 13) return 'RS_WhiteMind2';
 			return 'None';
 		}
 		if (fam == 9)
@@ -213,15 +223,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenDemon';
 			if (tier == 3) return 'RS_BlueDemon';
 			if (tier == 4) return 'RS_PurpleDemon';
-			if (tier == 5) return 'RS_YellowDemon';
-			if (tier == 6) return 'RS_RedDemon';
-			if (tier == 7) return 'RS_FireBluDemon2';
-			if (tier == 8) return 'RS_GreyDemon2';
-			if (tier == 9) return 'RS_AbyssDemon2';
-			if (tier == 10) return 'RS_BlackDemon3';
-			if (tier == 11) return 'RS_WhiteDemon2';
-			if (tier == 12) return 'RS_CyanDemon2';
-			if (tier == 13) return 'RS_BrownDemon2';
+			if (tier == 5) return 'RS_CyanDemon2';
+			if (tier == 6) return 'RS_BrownDemon2';
+			if (tier == 7) return 'RS_YellowDemon';
+			if (tier == 8) return 'RS_FireBluDemon2';
+			if (tier == 9) return 'RS_GreyDemon2';
+			if (tier == 10) return 'RS_RedDemon';
+			if (tier == 11) return 'RS_AbyssDemon2';
+			if (tier == 12) return 'RS_BlackDemon3';
+			if (tier == 13) return 'RS_WhiteDemon2';
 			return 'None';
 		}
 		if (fam == 10)
@@ -230,15 +240,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenCaco';
 			if (tier == 3) return 'RS_BlueCaco';
 			if (tier == 4) return 'RS_PurpleCaco';
-			if (tier == 5) return 'RS_YellowCaco';
-			if (tier == 6) return 'RS_RedCaco';
-			if (tier == 7) return 'RS_FireBluCaco2';
-			if (tier == 8) return 'RS_GrayCaco2';
-			if (tier == 9) return 'RS_AbyssCaco2';
-			if (tier == 10) return 'RS_BlackCaco2';
-			if (tier == 11) return 'RS_WhiteCaco2';
-			if (tier == 12) return 'RS_CyanCaco2';
-			if (tier == 13) return 'RS_BrownCaco2';
+			if (tier == 5) return 'RS_CyanCaco2';
+			if (tier == 6) return 'RS_BrownCaco2';
+			if (tier == 7) return 'RS_YellowCaco';
+			if (tier == 8) return 'RS_FireBluCaco2';
+			if (tier == 9) return 'RS_GrayCaco2';
+			if (tier == 10) return 'RS_RedCaco';
+			if (tier == 11) return 'RS_AbyssCaco2';
+			if (tier == 12) return 'RS_BlackCaco2';
+			if (tier == 13) return 'RS_WhiteCaco2';
 			return 'None';
 		}
 		if (fam == 11)
@@ -247,15 +257,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenHK';
 			if (tier == 3) return 'RS_BlueHK';
 			if (tier == 4) return 'RS_PurpleHK';
-			if (tier == 5) return 'RS_YellowHK';
-			if (tier == 6) return 'RS_RedHK';
-			if (tier == 7) return 'RS_FireBluHK2';
-			if (tier == 8) return 'RS_GrayHK2';
-			if (tier == 9) return 'RS_AbyssHK2';
-			if (tier == 10) return 'RS_BlackHK2';
-			if (tier == 11) return 'RS_WhiteHK3';
-			if (tier == 12) return 'RS_CyanHK2';
-			if (tier == 13) return 'RS_BrownHK2';
+			if (tier == 5) return 'RS_CyanHK2';
+			if (tier == 6) return 'RS_BrownHK2';
+			if (tier == 7) return 'RS_YellowHK';
+			if (tier == 8) return 'RS_FireBluHK2';
+			if (tier == 9) return 'RS_GrayHK2';
+			if (tier == 10) return 'RS_RedHK';
+			if (tier == 11) return 'RS_AbyssHK2';
+			if (tier == 12) return 'RS_BlackHK2';
+			if (tier == 13) return 'RS_WhiteHK3';
 			return 'None';
 		}
 		if (fam == 12)
@@ -264,15 +274,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenSP1';
 			if (tier == 3) return 'RS_BlueSP1';
 			if (tier == 4) return 'RS_PurpleSP1';
-			if (tier == 5) return 'RS_YellowSP1';
-			if (tier == 6) return 'RS_RedSP1';
-			if (tier == 7) return 'RS_FireBluSP2';
-			if (tier == 8) return 'RS_GraySP2';
-			if (tier == 9) return 'RS_AbyssSP2';
-			if (tier == 10) return 'RS_BlackSP2';
-			if (tier == 11) return 'RS_WhiteSP11';
-			if (tier == 12) return 'RS_CyanSP2';
-			if (tier == 13) return 'RS_BrownSP2';
+			if (tier == 5) return 'RS_CyanSP2';
+			if (tier == 6) return 'RS_BrownSP2';
+			if (tier == 7) return 'RS_YellowSP1';
+			if (tier == 8) return 'RS_FireBluSP2';
+			if (tier == 9) return 'RS_GraySP2';
+			if (tier == 10) return 'RS_RedSP1';
+			if (tier == 11) return 'RS_AbyssSP2';
+			if (tier == 12) return 'RS_BlackSP2';
+			if (tier == 13) return 'RS_WhiteSP11';
 			return 'None';
 		}
 		if (fam == 13)
@@ -281,15 +291,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenImp';
 			if (tier == 3) return 'RS_BlueImp';
 			if (tier == 4) return 'RS_PurpleImp';
-			if (tier == 5) return 'RS_YellowImp';
-			if (tier == 6) return 'RS_RedImp';
-			if (tier == 7) return 'RS_FireBluImp2';
-			if (tier == 8) return 'RS_GrayImp2';
-			if (tier == 9) return 'RS_AbyssImp2';
-			if (tier == 10) return 'RS_BlackImp1';
-			if (tier == 11) return 'RS_WhiteImp2';
-			if (tier == 12) return 'RS_CyanImp2';
-			if (tier == 13) return 'RS_BrownImp2';
+			if (tier == 5) return 'RS_CyanImp2';
+			if (tier == 6) return 'RS_BrownImp2';
+			if (tier == 7) return 'RS_YellowImp';
+			if (tier == 8) return 'RS_FireBluImp2';
+			if (tier == 9) return 'RS_GrayImp2';
+			if (tier == 10) return 'RS_RedImp';
+			if (tier == 11) return 'RS_AbyssImp2';
+			if (tier == 12) return 'RS_BlackImp1';
+			if (tier == 13) return 'RS_WhiteImp2';
 			return 'None';
 		}
 		if (fam == 14)
@@ -298,15 +308,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenSG';
 			if (tier == 3) return 'RS_BlueSG';
 			if (tier == 4) return 'RS_PurpleSG';
-			if (tier == 5) return 'RS_YellowSG';
-			if (tier == 6) return 'RS_RedSG';
-			if (tier == 7) return 'RS_FireBluSG2';
-			if (tier == 8) return 'RS_GraySG2';
-			if (tier == 9) return 'RS_AbyssSG2';
-			if (tier == 10) return 'RS_BlackSG3';
-			if (tier == 11) return 'RS_WhiteSG2';
-			if (tier == 12) return 'RS_CyanSG2';
-			if (tier == 13) return 'RS_BrownSG2';
+			if (tier == 5) return 'RS_CyanSG2';
+			if (tier == 6) return 'RS_BrownSG2';
+			if (tier == 7) return 'RS_YellowSG';
+			if (tier == 8) return 'RS_FireBluSG2';
+			if (tier == 9) return 'RS_GraySG2';
+			if (tier == 10) return 'RS_RedSG';
+			if (tier == 11) return 'RS_AbyssSG2';
+			if (tier == 12) return 'RS_BlackSG3';
+			if (tier == 13) return 'RS_WhiteSG2';
 			return 'None';
 		}
 		if (fam == 15)
@@ -315,15 +325,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenSpectre';
 			if (tier == 3) return 'RS_BlueSpectre';
 			if (tier == 4) return 'RS_PurpleSpectre';
-			if (tier == 5) return 'RS_YellowSpectre';
-			if (tier == 6) return 'RS_RedSpectre';
-			if (tier == 7) return 'RS_FireBluDemon2';
-			if (tier == 8) return 'RS_GraySpectre2';
-			if (tier == 9) return 'RS_AbyssDemon2';
-			if (tier == 10) return 'RS_BlackSpectre2';
-			if (tier == 11) return 'RS_WhiteSpectre2';
-			if (tier == 12) return 'RS_CyanSpectre2';
-			if (tier == 13) return 'RS_BrownSpectre2';
+			if (tier == 5) return 'RS_CyanSpectre2';
+			if (tier == 6) return 'RS_BrownSpectre2';
+			if (tier == 7) return 'RS_YellowSpectre';
+			if (tier == 8) return 'RS_FireBluDemon2';
+			if (tier == 9) return 'RS_GraySpectre2';
+			if (tier == 10) return 'RS_RedSpectre';
+			if (tier == 11) return 'RS_AbyssDemon2';
+			if (tier == 12) return 'RS_BlackSpectre2';
+			if (tier == 13) return 'RS_WhiteSpectre2';
 			return 'None';
 		}
 		if (fam == 16)
@@ -332,15 +342,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenZombie';
 			if (tier == 3) return 'RS_BlueZombie';
 			if (tier == 4) return 'RS_PurpleZombie';
-			if (tier == 5) return 'RS_YellowZombie';
-			if (tier == 6) return 'RS_RedZombie';
-			if (tier == 7) return 'RS_FireBluZombie2';
-			if (tier == 8) return 'RS_GrayZombie2';
-			if (tier == 9) return 'RS_AbyssZombie2';
-			if (tier == 10) return 'RS_BlackZombie1';
-			if (tier == 11) return 'RS_WhiteZombie1';
-			if (tier == 12) return 'RS_CyanZombie2';
-			if (tier == 13) return 'RS_BrownZombie2';
+			if (tier == 5) return 'RS_CyanZombie2';
+			if (tier == 6) return 'RS_BrownZombie2';
+			if (tier == 7) return 'RS_YellowZombie';
+			if (tier == 8) return 'RS_FireBluZombie2';
+			if (tier == 9) return 'RS_GrayZombie2';
+			if (tier == 10) return 'RS_RedZombie';
+			if (tier == 11) return 'RS_AbyssZombie2';
+			if (tier == 12) return 'RS_BlackZombie1';
+			if (tier == 13) return 'RS_WhiteZombie1';
 			return 'None';
 		}
 		return 'None';
@@ -356,15 +366,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenCGuy';
 			if (tier == 3) return 'RS_BlueCGuy';
 			if (tier == 4) return 'RS_PurpleCGuy';
-			if (tier == 5) return 'RS_YellowCGuy';
-			if (tier == 6) return 'RS_RedCGuy';
-			if (tier == 7) return 'RS_FireBluCGuy';
-			if (tier == 8) return 'RS_GrayCGuy';
-			if (tier == 9) return 'RS_AbyssCGuy';
-			if (tier == 10) return 'RS_BlackCGuy';
-			if (tier == 11) return 'RS_WhiteCGuy';
-			if (tier == 12) return 'RS_CyanCGuy';
-			if (tier == 13) return 'RS_BrownCGuy';
+			if (tier == 5) return 'RS_CyanCGuy';
+			if (tier == 6) return 'RS_BrownCGuy';
+			if (tier == 7) return 'RS_YellowCGuy';
+			if (tier == 8) return 'RS_FireBluCGuy';
+			if (tier == 9) return 'RS_GrayCGuy';
+			if (tier == 10) return 'RS_RedCGuy';
+			if (tier == 11) return 'RS_AbyssCGuy';
+			if (tier == 12) return 'RS_BlackCGuy';
+			if (tier == 13) return 'RS_WhiteCGuy';
 			return 'None';
 		}
 		if (fam == 1)
@@ -373,15 +383,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenRevenant';
 			if (tier == 3) return 'RS_BlueRevenant';
 			if (tier == 4) return 'RS_PurpleRevenant';
-			if (tier == 5) return 'RS_YellowRevenant';
-			if (tier == 6) return 'RS_RedRevenant';
-			if (tier == 7) return 'RS_FireBLURevenant';
-			if (tier == 8) return 'RS_GrayRevenant';
-			if (tier == 9) return 'RS_AbyssRevenant';
-			if (tier == 10) return 'RS_BlackRevenant';
-			if (tier == 11) return 'RS_WhiteRevenant';
-			if (tier == 12) return 'RS_CyanRevenant';
-			if (tier == 13) return 'RS_BrownRevenant';
+			if (tier == 5) return 'RS_CyanRevenant';
+			if (tier == 6) return 'RS_BrownRevenant';
+			if (tier == 7) return 'RS_YellowRevenant';
+			if (tier == 8) return 'RS_FireBLURevenant';
+			if (tier == 9) return 'RS_GrayRevenant';
+			if (tier == 10) return 'RS_RedRevenant';
+			if (tier == 11) return 'RS_AbyssRevenant';
+			if (tier == 12) return 'RS_BlackRevenant';
+			if (tier == 13) return 'RS_WhiteRevenant';
 			return 'None';
 		}
 		if (fam == 2)
@@ -390,15 +400,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenFatso';
 			if (tier == 3) return 'RS_BlueFatso';
 			if (tier == 4) return 'RS_PurpleFatso';
-			if (tier == 5) return 'RS_YellowFatso';
-			if (tier == 6) return 'RS_RedFatso';
-			if (tier == 7) return 'RS_FireBluFatso';
-			if (tier == 8) return 'RS_GrayFatso';
-			if (tier == 9) return 'RS_AbyssFatso';
-			if (tier == 10) return 'RS_BlackFatso';
-			if (tier == 11) return 'RS_WhiteFatso';
-			if (tier == 12) return 'RS_CyanFatso';
-			if (tier == 13) return 'RS_BrownFatso';
+			if (tier == 5) return 'RS_CyanFatso';
+			if (tier == 6) return 'RS_BrownFatso';
+			if (tier == 7) return 'RS_YellowFatso';
+			if (tier == 8) return 'RS_FireBluFatso';
+			if (tier == 9) return 'RS_GrayFatso';
+			if (tier == 10) return 'RS_RedFatso';
+			if (tier == 11) return 'RS_AbyssFatso';
+			if (tier == 12) return 'RS_BlackFatso';
+			if (tier == 13) return 'RS_WhiteFatso';
 			return 'None';
 		}
 		if (fam == 3)
@@ -407,15 +417,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenArch';
 			if (tier == 3) return 'RS_BlueArch';
 			if (tier == 4) return 'RS_PurpleArch';
-			if (tier == 5) return 'RS_YellowArch';
-			if (tier == 6) return 'RS_RedArch';
-			if (tier == 7) return 'RS_FireBluArch';
-			if (tier == 8) return 'RS_GrayArch';
-			if (tier == 9) return 'RS_AbyssArch';
-			if (tier == 10) return 'RS_BlackArch';
-			if (tier == 11) return 'RS_WhiteArch';
-			if (tier == 12) return 'RS_CyanArch';
-			if (tier == 13) return 'RS_BrownArch';
+			if (tier == 5) return 'RS_CyanArch';
+			if (tier == 6) return 'RS_BrownArch';
+			if (tier == 7) return 'RS_YellowArch';
+			if (tier == 8) return 'RS_FireBluArch';
+			if (tier == 9) return 'RS_GrayArch';
+			if (tier == 10) return 'RS_RedArch';
+			if (tier == 11) return 'RS_AbyssArch';
+			if (tier == 12) return 'RS_BlackArch';
+			if (tier == 13) return 'RS_WhiteArch';
 			return 'None';
 		}
 		if (fam == 4)
@@ -424,15 +434,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenBaron';
 			if (tier == 3) return 'RS_BlueBaron';
 			if (tier == 4) return 'RS_PurpleBaron';
-			if (tier == 5) return 'RS_YellowBaron';
-			if (tier == 6) return 'RS_RedBaron';
-			if (tier == 7) return 'RS_FireBluBaron';
-			if (tier == 8) return 'RS_GrayBaron';
-			if (tier == 9) return 'RS_AbyssBaron';
-			if (tier == 10) return 'RS_BlackBaron';
-			if (tier == 11) return 'RS_WhiteBaron';
-			if (tier == 12) return 'RS_CyanBaron';
-			if (tier == 13) return 'RS_BrownBaron';
+			if (tier == 5) return 'RS_CyanBaron';
+			if (tier == 6) return 'RS_BrownBaron';
+			if (tier == 7) return 'RS_YellowBaron';
+			if (tier == 8) return 'RS_FireBluBaron';
+			if (tier == 9) return 'RS_GrayBaron';
+			if (tier == 10) return 'RS_RedBaron';
+			if (tier == 11) return 'RS_AbyssBaron';
+			if (tier == 12) return 'RS_BlackBaron';
+			if (tier == 13) return 'RS_WhiteBaron';
 			return 'None';
 		}
 		if (fam == 5)
@@ -441,15 +451,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenLSoul';
 			if (tier == 3) return 'RS_BlueLSoul';
 			if (tier == 4) return 'RS_PurpleLSoul';
-			if (tier == 5) return 'RS_YellowLSoul';
-			if (tier == 6) return 'RS_RedLSoul';
-			if (tier == 7) return 'RS_FireBluLSoul';
-			if (tier == 8) return 'RS_GrayLSoul';
-			if (tier == 9) return 'RS_AbyssLsoul';
-			if (tier == 10) return 'RS_BlackLSoul';
-			if (tier == 11) return 'RS_WhiteLSoul';
-			if (tier == 12) return 'RS_CyanLSoul';
-			if (tier == 13) return 'RS_BrownLSoul';
+			if (tier == 5) return 'RS_CyanLSoul';
+			if (tier == 6) return 'RS_BrownLSoul';
+			if (tier == 7) return 'RS_YellowLSoul';
+			if (tier == 8) return 'RS_FireBluLSoul';
+			if (tier == 9) return 'RS_GrayLSoul';
+			if (tier == 10) return 'RS_RedLSoul';
+			if (tier == 11) return 'RS_AbyssLsoul';
+			if (tier == 12) return 'RS_BlackLSoul';
+			if (tier == 13) return 'RS_WhiteLSoul';
 			return 'None';
 		}
 		if (fam == 6)
@@ -458,15 +468,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenPE';
 			if (tier == 3) return 'RS_BluePE';
 			if (tier == 4) return 'RS_PurplePE';
-			if (tier == 5) return 'RS_YellowPE';
-			if (tier == 6) return 'RS_RedPE';
-			if (tier == 7) return 'RS_FireBluPE';
-			if (tier == 8) return 'RS_GrayPE';
-			if (tier == 9) return 'RS_AbyssPE';
-			if (tier == 10) return 'RS_BlackPE';
-			if (tier == 11) return 'RS_WhitePE';
-			if (tier == 12) return 'RS_CyanPE';
-			if (tier == 13) return 'RS_BrownPE';
+			if (tier == 5) return 'RS_CyanPE';
+			if (tier == 6) return 'RS_BrownPE';
+			if (tier == 7) return 'RS_YellowPE';
+			if (tier == 8) return 'RS_FireBluPE';
+			if (tier == 9) return 'RS_GrayPE';
+			if (tier == 10) return 'RS_RedPE';
+			if (tier == 11) return 'RS_AbyssPE';
+			if (tier == 12) return 'RS_BlackPE';
+			if (tier == 13) return 'RS_WhitePE';
 			return 'None';
 		}
 		if (fam == 7)
@@ -475,15 +485,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenCybie';
 			if (tier == 3) return 'RS_BlueCybie';
 			if (tier == 4) return 'RS_PurpleCybie';
-			if (tier == 5) return 'RS_YellowCybie';
-			if (tier == 6) return 'RS_RedCybie';
-			if (tier == 7) return 'RS_FireBluCybie';
-			if (tier == 8) return 'RS_GrayCybie';
-			if (tier == 9) return 'RS_AbyssCybie';
-			if (tier == 10) return 'RS_BlackCybie';
-			if (tier == 11) return 'RS_WhiteCybie';
-			if (tier == 12) return 'RS_CyanCybie';
-			if (tier == 13) return 'RS_BrownCybie';
+			if (tier == 5) return 'RS_CyanCybie';
+			if (tier == 6) return 'RS_BrownCybie';
+			if (tier == 7) return 'RS_YellowCybie';
+			if (tier == 8) return 'RS_FireBluCybie';
+			if (tier == 9) return 'RS_GrayCybie';
+			if (tier == 10) return 'RS_RedCybie';
+			if (tier == 11) return 'RS_AbyssCybie';
+			if (tier == 12) return 'RS_BlackCybie';
+			if (tier == 13) return 'RS_WhiteCybie';
 			return 'None';
 		}
 		if (fam == 8)
@@ -492,15 +502,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenMind';
 			if (tier == 3) return 'RS_BlueMind';
 			if (tier == 4) return 'RS_PurpleMind';
-			if (tier == 5) return 'RS_YellowMind';
-			if (tier == 6) return 'RS_RedMind';
-			if (tier == 7) return 'RS_FireBluMind';
-			if (tier == 8) return 'RS_GrayMind';
-			if (tier == 9) return 'RS_AbyssMind';
-			if (tier == 10) return 'RS_BlackMind';
-			if (tier == 11) return 'RS_WhiteMind';
-			if (tier == 12) return 'RS_CyanMind';
-			if (tier == 13) return 'RS_BrownMind';
+			if (tier == 5) return 'RS_CyanMind';
+			if (tier == 6) return 'RS_BrownMind';
+			if (tier == 7) return 'RS_YellowMind';
+			if (tier == 8) return 'RS_FireBluMind';
+			if (tier == 9) return 'RS_GrayMind';
+			if (tier == 10) return 'RS_RedMind';
+			if (tier == 11) return 'RS_AbyssMind';
+			if (tier == 12) return 'RS_BlackMind';
+			if (tier == 13) return 'RS_WhiteMind';
 			return 'None';
 		}
 		if (fam == 9)
@@ -509,15 +519,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenDemon';
 			if (tier == 3) return 'RS_BlueDemon';
 			if (tier == 4) return 'RS_PurpleDemon';
-			if (tier == 5) return 'RS_YellowDemon';
-			if (tier == 6) return 'RS_RedDemon';
-			if (tier == 7) return 'RS_FireBluDemon';
-			if (tier == 8) return 'RS_GrayDemon';
-			if (tier == 9) return 'RS_AbyssDemon';
-			if (tier == 10) return 'RS_BlackDemon';
-			if (tier == 11) return 'RS_WhiteDemon';
-			if (tier == 12) return 'RS_CyanDemon';
-			if (tier == 13) return 'RS_BrownDemon';
+			if (tier == 5) return 'RS_CyanDemon';
+			if (tier == 6) return 'RS_BrownDemon';
+			if (tier == 7) return 'RS_YellowDemon';
+			if (tier == 8) return 'RS_FireBluDemon';
+			if (tier == 9) return 'RS_GrayDemon';
+			if (tier == 10) return 'RS_RedDemon';
+			if (tier == 11) return 'RS_AbyssDemon';
+			if (tier == 12) return 'RS_BlackDemon';
+			if (tier == 13) return 'RS_WhiteDemon';
 			return 'None';
 		}
 		if (fam == 10)
@@ -526,15 +536,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenCaco';
 			if (tier == 3) return 'RS_BlueCaco';
 			if (tier == 4) return 'RS_PurpleCaco';
-			if (tier == 5) return 'RS_YellowCaco';
-			if (tier == 6) return 'RS_RedCaco';
-			if (tier == 7) return 'RS_FireBluCaco';
-			if (tier == 8) return 'RS_GrayCaco';
-			if (tier == 9) return 'RS_AbyssCaco';
-			if (tier == 10) return 'RS_BlackCaco';
-			if (tier == 11) return 'RS_WhiteCaco';
-			if (tier == 12) return 'RS_CyanCaco';
-			if (tier == 13) return 'RS_BrownCaco';
+			if (tier == 5) return 'RS_CyanCaco';
+			if (tier == 6) return 'RS_BrownCaco';
+			if (tier == 7) return 'RS_YellowCaco';
+			if (tier == 8) return 'RS_FireBluCaco';
+			if (tier == 9) return 'RS_GrayCaco';
+			if (tier == 10) return 'RS_RedCaco';
+			if (tier == 11) return 'RS_AbyssCaco';
+			if (tier == 12) return 'RS_BlackCaco';
+			if (tier == 13) return 'RS_WhiteCaco';
 			return 'None';
 		}
 		if (fam == 11)
@@ -543,15 +553,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenHK';
 			if (tier == 3) return 'RS_BlueHK';
 			if (tier == 4) return 'RS_PurpleHK';
-			if (tier == 5) return 'RS_YellowHK';
-			if (tier == 6) return 'RS_RedHK';
-			if (tier == 7) return 'RS_FireBluHK';
-			if (tier == 8) return 'RS_GrayHK';
-			if (tier == 9) return 'RS_AbyssHK';
-			if (tier == 10) return 'RS_BlackHK';
-			if (tier == 11) return 'RS_WhiteHK';
-			if (tier == 12) return 'RS_CyanHK';
-			if (tier == 13) return 'RS_BrownHK';
+			if (tier == 5) return 'RS_CyanHK';
+			if (tier == 6) return 'RS_BrownHK';
+			if (tier == 7) return 'RS_YellowHK';
+			if (tier == 8) return 'RS_FireBluHK';
+			if (tier == 9) return 'RS_GrayHK';
+			if (tier == 10) return 'RS_RedHK';
+			if (tier == 11) return 'RS_AbyssHK';
+			if (tier == 12) return 'RS_BlackHK';
+			if (tier == 13) return 'RS_WhiteHK';
 			return 'None';
 		}
 		if (fam == 12)
@@ -560,15 +570,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenSP1';
 			if (tier == 3) return 'RS_BlueSP1';
 			if (tier == 4) return 'RS_PurpleSP1';
-			if (tier == 5) return 'RS_YellowSP1';
-			if (tier == 6) return 'RS_RedSP1';
-			if (tier == 7) return 'RS_FireBluSP1';
-			if (tier == 8) return 'RS_GraySP1';
-			if (tier == 9) return 'RS_AbyssSP1';
-			if (tier == 10) return 'RS_BlackSP1';
-			if (tier == 11) return 'RS_WhiteSP1';
-			if (tier == 12) return 'RS_CyanSP1';
-			if (tier == 13) return 'RS_BrownSP1';
+			if (tier == 5) return 'RS_CyanSP1';
+			if (tier == 6) return 'RS_BrownSP1';
+			if (tier == 7) return 'RS_YellowSP1';
+			if (tier == 8) return 'RS_FireBluSP1';
+			if (tier == 9) return 'RS_GraySP1';
+			if (tier == 10) return 'RS_RedSP1';
+			if (tier == 11) return 'RS_AbyssSP1';
+			if (tier == 12) return 'RS_BlackSP1';
+			if (tier == 13) return 'RS_WhiteSP1';
 			return 'None';
 		}
 		if (fam == 13)
@@ -577,15 +587,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenImp';
 			if (tier == 3) return 'RS_BlueImp';
 			if (tier == 4) return 'RS_PurpleImp';
-			if (tier == 5) return 'RS_YellowImp';
-			if (tier == 6) return 'RS_RedImp';
-			if (tier == 7) return 'RS_FireBluImp';
-			if (tier == 8) return 'RS_GrayImp';
-			if (tier == 9) return 'RS_AbyssImp';
-			if (tier == 10) return 'RS_BlackImp';
-			if (tier == 11) return 'RS_WhiteImp';
-			if (tier == 12) return 'RS_CyanImp';
-			if (tier == 13) return 'RS_BrownImp';
+			if (tier == 5) return 'RS_CyanImp';
+			if (tier == 6) return 'RS_BrownImp';
+			if (tier == 7) return 'RS_YellowImp';
+			if (tier == 8) return 'RS_FireBluImp';
+			if (tier == 9) return 'RS_GrayImp';
+			if (tier == 10) return 'RS_RedImp';
+			if (tier == 11) return 'RS_AbyssImp';
+			if (tier == 12) return 'RS_BlackImp';
+			if (tier == 13) return 'RS_WhiteImp';
 			return 'None';
 		}
 		if (fam == 14)
@@ -594,15 +604,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenSG';
 			if (tier == 3) return 'RS_BlueSG';
 			if (tier == 4) return 'RS_PurpleSG';
-			if (tier == 5) return 'RS_YellowSG';
-			if (tier == 6) return 'RS_RedSG';
-			if (tier == 7) return 'RS_FireBluSG';
-			if (tier == 8) return 'RS_GraySG';
-			if (tier == 9) return 'RS_AbyssSG';
-			if (tier == 10) return 'RS_BlackSG';
-			if (tier == 11) return 'RS_WhiteSG';
-			if (tier == 12) return 'RS_CyanSG';
-			if (tier == 13) return 'RS_BrownSG';
+			if (tier == 5) return 'RS_CyanSG';
+			if (tier == 6) return 'RS_BrownSG';
+			if (tier == 7) return 'RS_YellowSG';
+			if (tier == 8) return 'RS_FireBluSG';
+			if (tier == 9) return 'RS_GraySG';
+			if (tier == 10) return 'RS_RedSG';
+			if (tier == 11) return 'RS_AbyssSG';
+			if (tier == 12) return 'RS_BlackSG';
+			if (tier == 13) return 'RS_WhiteSG';
 			return 'None';
 		}
 		if (fam == 15)
@@ -611,15 +621,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenSpectre';
 			if (tier == 3) return 'RS_BlueSpectre';
 			if (tier == 4) return 'RS_PurpleSpectre';
-			if (tier == 5) return 'RS_YellowSpectre';
-			if (tier == 6) return 'RS_RedSpectre';
-			if (tier == 7) return 'RS_FireBluSpectre';
-			if (tier == 8) return 'RS_GraySpectre';
-			if (tier == 9) return 'RS_AbyssSpectre';
-			if (tier == 10) return 'RS_BlackSpectre';
-			if (tier == 11) return 'RS_WhiteSpectre';
-			if (tier == 12) return 'RS_CyanSpectre';
-			if (tier == 13) return 'RS_BrownSpectre';
+			if (tier == 5) return 'RS_CyanSpectre';
+			if (tier == 6) return 'RS_BrownSpectre';
+			if (tier == 7) return 'RS_YellowSpectre';
+			if (tier == 8) return 'RS_FireBluSpectre';
+			if (tier == 9) return 'RS_GraySpectre';
+			if (tier == 10) return 'RS_RedSpectre';
+			if (tier == 11) return 'RS_AbyssSpectre';
+			if (tier == 12) return 'RS_BlackSpectre';
+			if (tier == 13) return 'RS_WhiteSpectre';
 			return 'None';
 		}
 		if (fam == 16)
@@ -628,15 +638,15 @@ class RS_TierLadder
 			if (tier == 2) return 'RS_GreenZombie';
 			if (tier == 3) return 'RS_BlueZombie';
 			if (tier == 4) return 'RS_PurpleZombie';
-			if (tier == 5) return 'RS_YellowZombie';
-			if (tier == 6) return 'RS_RedZombie';
-			if (tier == 7) return 'RS_FireBluZombie';
-			if (tier == 8) return 'RS_GrayZombie';
-			if (tier == 9) return 'RS_AbyssZombie';
-			if (tier == 10) return 'RS_BlackZombie';
-			if (tier == 11) return 'RS_WhiteZombie';
-			if (tier == 12) return 'RS_CyanZombie';
-			if (tier == 13) return 'RS_BrownZombie';
+			if (tier == 5) return 'RS_CyanZombie';
+			if (tier == 6) return 'RS_BrownZombie';
+			if (tier == 7) return 'RS_YellowZombie';
+			if (tier == 8) return 'RS_FireBluZombie';
+			if (tier == 9) return 'RS_GrayZombie';
+			if (tier == 10) return 'RS_RedZombie';
+			if (tier == 11) return 'RS_AbyssZombie';
+			if (tier == 12) return 'RS_BlackZombie';
+			if (tier == 13) return 'RS_WhiteZombie';
 			return 'None';
 		}
 		return 'None';
@@ -659,6 +669,35 @@ class RS_TierLadder
 				if (ClassFor(f, t) == cls || GateFor(f, t) == cls) return t;
 		return 0;
 	}
+
+	// [11-11 ladder renumber] EX FORMS. A boss's EX build (RS_BlackImpEX, RS_WhiteSGEX ...) is in neither table: it
+	// belongs to the gate it came from (RS_BlackImpEX -> RS_BlackImp; the spider's RS_BlackSPEX -> RS_BlackSP1), so it
+	// has that gate's family and tier. Without this a tier change asked of an EX body (RSQ Miniboss: a life lost)
+	// found no family and did nothing.
+	static bool IsEXName(String n)
+	{
+		return n.Length() > 2 && n.Mid(n.Length() - 2) == "EX";
+	}
+
+	static int FamilyOfAny(String n)
+	{
+		int f = FamilyOf(n);
+		if (f >= 0 || !IsEXName(n)) return f;
+		String g = n.Left(n.Length() - 2);
+		f = FamilyOf(g);
+		if (f < 0) f = FamilyOf(g .. "1");
+		return f;
+	}
+
+	static int TierOfAny(String n)
+	{
+		int t = TierOf(n);
+		if (t > 0 || !IsEXName(n)) return t;
+		String g = n.Left(n.Length() - 2);
+		t = TierOf(g);
+		if (t <= 0) t = TierOf(g .. "1");
+		return t;
+	}
 }
 
 // ============================================================================
@@ -678,7 +717,7 @@ class RS_TierLadder
 // it's how monsters change tier in real time"; it applies to ALL RSQ monsters),
 // ported from HF_Monster.zs SetTier/Tick: a random 5..25-tic wait, and every 3
 // tics the monster alternates between the flash translation (rs_tier_flashwhite,
-// or rs_tier_flashblack when the target tier is White, 11) and its ORIGINAL
+// or rs_tier_flashblack when the target tier is White, 13) and its ORIGINAL
 // translation, saved at job start and restored (some CH colours carry one).
 // Then the swap.
 // It replaced a bBRIGHT flicker (45..105 tics).
@@ -699,8 +738,9 @@ class RS_Retier play
 	{
 		if (!mo || mo.health <= 0) return;
 		tier = clamp(tier, 1, RS_TierLadder.MaxTier());
-		int fam = RS_TierLadder.FamilyOf(mo.GetClassName());
-		if (fam < 0) return;              // not one of ours (the ColorfulHell ladder)
+		String mn = mo.GetClassName();
+		int fam = RS_TierLadder.FamilyOfAny(mn);
+		if (fam < 0) return;              // not one of ours (the ColorfulHell ladder; an EX form by its gate)
 		if (TierNowOf(mo) == tier && !JobFor(mo)) return;
 
 		if (instant)
@@ -734,12 +774,13 @@ class RS_Retier play
 		return mode >= 2 || (mode == 1 && instant);
 	}
 
-	// The tier an actor is on: its ColorfulHell class's place on the ladder.
+	// The tier an actor is on: its ColorfulHell class's place on the ladder (an EX form: its gate's).
 	static int TierNowOf(Actor mo)
 	{
 		if (!mo) return -1;
-		if (RS_TierLadder.FamilyOf(mo.GetClassName()) >= 0)
-			return RS_TierLadder.TierOf(mo.GetClassName());
+		String n = mo.GetClassName();
+		if (RS_TierLadder.FamilyOfAny(n) >= 0)
+			return RS_TierLadder.TierOfAny(n);
 		return -1;
 	}
 
@@ -747,8 +788,11 @@ class RS_Retier play
 	static Actor Swap(Actor mo, int tier, bool instant = false)
 	{
 		if (!mo) return null;
-		int fam = RS_TierLadder.FamilyOf(mo.GetClassName());
+		String mn = mo.GetClassName();
+		int fam = RS_TierLadder.FamilyOfAny(mn);
 		if (fam < 0) return null;
+		// already on that tier: nothing (an EX body re-asked its own tier keeps its EX build, never swapped to the plain one)
+		if (RS_TierLadder.TierOfAny(mn) == tier) return null;
 		Name nn = RS_TierLadder.ClassFor(fam, tier);
 		if (nn == 'None') return null;
 		Class<Actor> nc = nn;
@@ -831,7 +875,7 @@ class RS_RetierJob : Thinker
 		// flash colour, then the monster's own colour.
 		ticker++;
 		if ((ticker / 3) % 2 == 0)
-			mo.A_SetTranslation(targetTier == 11 ? "rs_tier_flashblack" : "rs_tier_flashwhite");
+			mo.A_SetTranslation(targetTier == 13 ? "rs_tier_flashblack" : "rs_tier_flashwhite");   // 13 White (was 11 before the 11-11 renumber)
 		else
 			mo.Translation = origTrans;
 
@@ -848,13 +892,66 @@ class RS_RetierJob : Thinker
 
 // ----------------------------------------------------------------------------
 //   netevent rs_tierof          print what the aimed monster is
-//   netevent rs_retier 7        aimed monster becomes tier 7
-//   netevent rs_retier_up       aimed monster goes up one tier
-//   netevent rs_retier_all 9    every monster in the map becomes tier 9
+//   netevent rs_retier 7        aimed monster becomes tier 7 (Yellow)
+//   netevent rs_retier_up       aimed monster goes up one tier (one step stronger)
+//   netevent rs_retier_all 9    every monster in the map becomes tier 9 (Gray)
 // RS_RetierHandler must also be in MAPINFO's AddEventHandlers.
 // ----------------------------------------------------------------------------
+// ----------------------------------------------------------------------------
+// [11-11 ladder renumber] A SAVE FROM BEFORE THE RENUMBER. Its monsters carry the
+// tier token CH's old number gave them (a Yellow imp 5, which now reads Cyan), and a
+// running flash or a fresh tier stamp holds old numbers too. Each level gets one
+// RS_LadderMark the first time it loads on this version; a level that loads from a
+// save (or a hub level re-entered) WITHOUT one is from before, so its numbers are
+// moved to the strength ladder once, here, and it gets its mark. A new map needs
+// nothing (its monsters set the new numbers as they spawn).
+// ----------------------------------------------------------------------------
+class RS_LadderMark : Thinker {}
+
 class RS_RetierHandler : EventHandler
 {
+	// CH's listing order (the numbers before 11-11) -> the strength ladder
+	static int OldToNew(int t)
+	{
+		switch (t)
+		{
+			case 5:  return 7;    // Yellow
+			case 6:  return 10;   // Red
+			case 7:  return 8;    // FireBlu
+			case 8:  return 9;    // Gray
+			case 9:  return 11;   // Abyss
+			case 10: return 12;   // Black
+			case 11: return 13;   // White
+			case 12: return 5;    // Cyan
+			case 13: return 6;    // Brown
+		}
+		return t;                 // 1-4 (Common, Green, Blue, Purple) and anything else stay
+	}
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		let mk = ThinkerIterator.Create("RS_LadderMark");
+		if (mk.Next()) return;
+		if (e.IsSaveGame || e.IsReopen)
+		{
+			int n = 0;
+			ThinkerIterator it = ThinkerIterator.Create("Actor");
+			Actor a;
+			while (a = Actor(it.Next()))
+			{
+				let tok = a.FindInventory("RS_ZomTierToken");
+				if (tok && tok.Amount > 0) { int nt = OldToNew(tok.Amount); if (nt != tok.Amount) { tok.Amount = nt; n++; } }
+				let st = RS_TierStamp(a.FindInventory("RS_TierStamp"));
+				if (st) { st.fromTier = OldToNew(st.fromTier); st.toTier = OldToNew(st.toTier); }
+			}
+			ThinkerIterator ji = ThinkerIterator.Create("RS_RetierJob", Thinker.STAT_DEFAULT);
+			RS_RetierJob j;
+			while (j = RS_RetierJob(ji.Next())) j.targetTier = OldToNew(j.targetTier);
+			if (n > 0) Console.Printf("RSQ Monsters: a save from before the 11-11 ladder renumber: %d monsters' tiers moved to the strength ladder", n);
+		}
+		new("RS_LadderMark");
+	}
+
 	static Actor AimedAt(int pnum)
 	{
 		let p = players[pnum].mo;
@@ -870,10 +967,11 @@ class RS_RetierHandler : EventHandler
 		{
 			let a = AimedAt(e.Player);
 			if (!a) { Console.Printf("RETIER: nothing aimed at"); return; }
-			int f = RS_TierLadder.FamilyOf(a.GetClassName());
-			Console.Printf("RETIER: %s -- family %s, tier %d", a.GetClassName(),
+			String an = a.GetClassName();
+			int f = RS_TierLadder.FamilyOfAny(an);
+			Console.Printf("RETIER: %s -- family %s, tier %d", an,
 				f >= 0 ? String.Format("%s", RS_TierLadder.DialOf(f)) : "not ours",
-				f >= 0 ? RS_TierLadder.TierOf(a.GetClassName()) : 0);
+				f >= 0 ? RS_TierLadder.TierOfAny(an) : 0);
 			return;
 		}
 		if (e.Name ~== "rs_retier" || e.Name ~== "rs_retier_up")

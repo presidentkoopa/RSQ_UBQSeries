@@ -3,10 +3,10 @@
 // Source: C:\Users\Command\Desktop\CH\decorate\Demons.txt (2654 lines, read
 // whole). Every actor cites its CH line. Support: RS_DemonFX.zs (see its
 // header for cross-lane notes, proven-missing assets, and standing strips).
-// Tier ladder as before: CH icon index -- 1 Common, 2 Green, 3 Blue,
-// 4 Purple, 5 Yellow, 6 Red, 7 FireBlu, 8 Gray(worm), 9 Abyss(dog),
-// 10 Black boss (Butcher), 11 White boss (Juggernaut), 12 Cyan(worm),
-// 13 Brown. Minions (hounds, dash ghosts) get no token.
+// Tier ladder as before: the RSQ ladder by strength, 11-11 -- 1 Common, 2 Green, 3 Blue,
+// 4 Purple, 7 Yellow, 10 Red, 8 FireBlu, 9 Gray(worm), 11 Abyss(dog),
+// 12 Black boss (Butcher), 13 White boss (Juggernaut), 5 Cyan(worm),
+// 6 Brown. Minions (hounds, dash ghosts) get no token.
 // RS_PinkDemon is CH's ORPHAN: defined at Demons.txt:19, spawned by nothing
 // anywhere in CH's decorate. Imported whole anyway; its tier icon lines are
 // commented out in CH itself (index 1) and its Raise jumps to a "Grow" label
@@ -282,14 +282,14 @@ class RS_WhiteDemon : Actor   // CH Demons.txt:2105 -- gate CH_WhiteBossy
 }
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN ("Brownie").  CH: Demons.txt:137.  The dasher: afterimage
+// TIER 6 -- BROWN ("Brownie").  CH: Demons.txt:137.  The dasher: afterimage
 // blink-rush under a protection powerup, sniper orb, close-range flame chain,
 // and a death cry that hands the pack the BrownImpCommand buff.
 // ---------------------------------------------------------------------------
 class RS_BrownDemon2 : Actor
 {
 	int user_Calm;   // CH: Var int User_Calm
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 420;
@@ -448,12 +448,12 @@ class RS_BrownDemon2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN ("Ice Worm").  CH: Demons.txt:382.  The burrower: hides
+// TIER 5 -- CYAN ("Ice Worm").  CH: Demons.txt:382.  The burrower: hides
 // flat, needle rings, warp-lunge hiss.
 // ---------------------------------------------------------------------------
 class RS_CyanDemon2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Obituary "%o was stored for winter by cyan demon";
@@ -584,12 +584,12 @@ class RS_CyanDemon2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU ("FireBluey").  CH: Demons.txt:532.  The slow tank that
+// TIER 8 -- FIREBLU ("FireBluey").  CH: Demons.txt:532.  The slow tank that
 // chain-rams.  The spectre lane's RS_FireBluSpectre2 inherits this class.
 // ---------------------------------------------------------------------------
 class RS_FireBluDemon2 : Demon
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 205;
@@ -704,13 +704,13 @@ class RS_FireBluDemon2 : Demon
 }
 
 // ---------------------------------------------------------------------------
-// TIER 9 -- ABYSS ("Bad dog").  CH: Demons.txt:669.  The near-invisible
+// TIER 11 -- ABYSS ("Bad dog").  CH: Demons.txt:669.  The near-invisible
 // hound; fades in to bite, drips abyss the whole while.
 // ---------------------------------------------------------------------------
 class RS_AbyssDemon2 : Actor
 {
 	int user_hidd;   // CH: var int user_hidd
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 600;
@@ -835,12 +835,12 @@ class RS_AbyssDemon2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY ("Coiling menace").  CH: Demons.txt:881.  The wrap worm:
+// TIER 9 -- GRAY ("Coiling menace").  CH: Demons.txt:881.  The wrap worm:
 // warps onto you, drains, heals itself.
 // ---------------------------------------------------------------------------
 class RS_GreyDemon2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Obituary "%o was questionably assimilated by gray demon worm";
@@ -1396,13 +1396,13 @@ class RS_PurpleDemon : Demon
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW ("Yellowy").  CH: Demons.txt:1466.  The blood demon that
+// TIER 7 -- YELLOW ("Yellowy").  CH: Demons.txt:1466.  The blood demon that
 // skull-rams behind a lightning burst; loses an arm on death.
 // ---------------------------------------------------------------------------
 class RS_YellowDemon : Demon
 {
 	int user_Calm;   // CH: Var int User_Calm
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 325;
@@ -1517,12 +1517,12 @@ class RS_YellowDemon : Demon
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED ("Red-y").  CH: Demons.txt:1600.  The blood spitter; enrage
+// TIER 10 -- RED ("Red-y").  CH: Demons.txt:1600.  The blood spitter; enrage
 // buff on pain, arm drop on death.
 // ---------------------------------------------------------------------------
 class RS_RedDemon : Demon
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 400;
@@ -1628,12 +1628,12 @@ class RS_RedDemon : Demon
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK BOSS ("FRESH MEAT", the Butcher).  CH: Demons.txt:1794.
+// TIER 12 -- BLACK BOSS ("FRESH MEAT", the Butcher).  CH: Demons.txt:1794.
 // ---------------------------------------------------------------------------
 class RS_BlackDemon3 : Actor
 {
 	int user_HOP;   // CH: Var Int User_HOP
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was made into minced meat by Butcher";
@@ -1865,13 +1865,13 @@ class RS_WHOLETTHEDOGSOUT : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE BOSS ("YOU KNOW WHO I AM", the Juggernaut).
+// TIER 13 -- WHITE BOSS ("YOU KNOW WHO I AM", the Juggernaut).
 // CH: Demons.txt:2124.  Meteor call, rock barrages, ground-quake dash.
 // ---------------------------------------------------------------------------
 class RS_WhiteDemon2 : Actor
 {
 	int user_rock;   // CH: var int user_rock
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 8000;

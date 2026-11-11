@@ -5,11 +5,11 @@
 // RS_FatsoFX.zs (see its header for the already-owned list, the two classes
 // ceded to the Revenants lane, proven-missing assets, and standing strips).
 //
-// Tier ladder is CH's icon index, as for every earlier family: 1 Common,
-// 2 Green, 3 Blue, 4 Purple, 5 Yellow (Orange Mancubus), 6 Red (Horned),
-// 7 FireBlu, 8 Gray, 9 Abyss (Ralph Bluetawn), 10 Black (both the swamp
-// thing and the EX bog thing), 11 White (Angry Mama), 12 Cyan (Crystal),
-// 13 Brown. The FatsoArmed props, projectiles and summons get no token.
+// Tier ladder is the RSQ ladder by strength (11-11), as for every earlier family: 1 Common,
+// 2 Green, 3 Blue, 4 Purple, 7 Yellow (Orange Mancubus), 10 Red (Horned),
+// 8 FireBlu, 9 Gray, 11 Abyss (Ralph Bluetawn), 12 Black (both the swamp
+// thing and the EX bog thing), 13 White (Angry Mama), 5 Cyan (Crystal),
+// 6 Brown. The FatsoArmed props, projectiles and summons get no token.
 //
 // Gate cvars are the existing rs_ch_* set -- brown, cyan, abyss, fireblu,
 // gray, blackboss, exboss, whiteboss, cyanbounce. No new cvar is needed.
@@ -226,14 +226,14 @@ class RS_WhiteFatso : Actor   // CH Fatsos.txt:3442 -- gate CH_WhiteBossy
 }
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown ("What big hands you got").  CH: Fatsos.txt:40.
+// Tier 6 -- Brown ("What big hands you got").  CH: Fatsos.txt:40.
 // The whole tesla kit runs on RS_ZapFFAT, which CH defines in Fatsos.txt:269
 // but which ships via the Revenants lane (earlier CH file, and Revenants.txt
 // spawns it too). Referenced read-only -- see the RS_FatsoFX.zs header.
 // ---------------------------------------------------------------------------
 class RS_BrownFatso2 : Fatso   // CH Fatsos.txt:40
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Species "Fatso";
@@ -368,11 +368,11 @@ class RS_BrownFatso2 : Fatso   // CH Fatsos.txt:40
 }
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan ("Crystal Fatso").  CH: Fatsos.txt:321.
+// Tier 5 -- Cyan ("Crystal Fatso").  CH: Fatsos.txt:321.
 // ---------------------------------------------------------------------------
 class RS_CyanFatso2 : Fatso   // CH Fatsos.txt:321
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Species "Fatso";
@@ -526,11 +526,11 @@ class RS_CyanFatso2 : Fatso   // CH Fatsos.txt:321
 }
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss ("Ralph Bluetawn").  CH: Fatsos.txt:547.
+// Tier 11 -- Abyss ("Ralph Bluetawn").  CH: Fatsos.txt:547.
 // ---------------------------------------------------------------------------
 class RS_AbyssFatso2 : Fatso   // CH Fatsos.txt:547
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Radius 48;
@@ -624,11 +624,11 @@ class RS_AbyssFatso2 : Fatso   // CH Fatsos.txt:547
 }
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- FireBlu ("Big blob of fireblu").  CH: Fatsos.txt:746.
+// Tier 8 -- FireBlu ("Big blob of fireblu").  CH: Fatsos.txt:746.
 // ---------------------------------------------------------------------------
 class RS_FireBluFatso2 : Actor   // CH Fatsos.txt:746
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Species "Fatso2";
@@ -751,11 +751,11 @@ class RS_FireBluFatso2 : Actor   // CH Fatsos.txt:746
 }
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray ("Big Gray and Ugly").  CH: Fatsos.txt:984.
+// Tier 9 -- Gray ("Big Gray and Ugly").  CH: Fatsos.txt:984.
 // ---------------------------------------------------------------------------
 class RS_GrayFatso2 : Fatso   // CH Fatsos.txt:984
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Species "Fatso";
@@ -1359,13 +1359,13 @@ class RS_PurpleFatso : Fatso   // CH Fatsos.txt:1764
 }
 
 // ---------------------------------------------------------------------------
-// Tier 5 -- Yellow ("Orange Mancubus").  CH: Fatsos.txt:2007.
+// Tier 7 -- Yellow ("Orange Mancubus").  CH: Fatsos.txt:2007.
 // Its kit -- RS_RocketShotFatso, RS_FatsoShotYE -- shipped with the lostsoul
 // family and is referenced read-only.
 // ---------------------------------------------------------------------------
 class RS_YellowFatso : Fatso   // CH Fatsos.txt:2007
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Species "Fatso2";
@@ -1499,14 +1499,14 @@ class RS_YellowFatso : Fatso   // CH Fatsos.txt:2007
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red ("Red Horned Mancubus").  CH: Fatsos.txt:2223.
+// Tier 10 -- Red ("Red Horned Mancubus").  CH: Fatsos.txt:2223.
 // RS_Shot2Fatso shipped with the lostsoul family; referenced read-only.
 // ---------------------------------------------------------------------------
 class RS_RedFatso : Actor   // CH Fatsos.txt:2223
 {
 	int user_Rage5;   // CH: Var Int User_Rage5
 
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Species "Fatso2";
@@ -1638,12 +1638,12 @@ class RS_RedFatso : Actor   // CH Fatsos.txt:2223
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black EX ("The thing from the bog").  CH: Fatsos.txt:2550.
+// Tier 12 -- Black EX ("The thing from the bog").  CH: Fatsos.txt:2550.
 // Black bosses take token 10, as in every earlier family.
 // ---------------------------------------------------------------------------
 class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was killed by the absolutely furious dark beast";
@@ -1899,11 +1899,11 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black ("The thing from the swamp").  CH: Fatsos.txt:2805.
+// Tier 12 -- Black ("The thing from the swamp").  CH: Fatsos.txt:2805.
 // ---------------------------------------------------------------------------
 class RS_BlackFatso2 : Actor   // CH Fatsos.txt:2805
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was killed by the angry dark beast";
@@ -2121,11 +2121,11 @@ class RS_BlackFatso2 : Actor   // CH Fatsos.txt:2805
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White ("Angry Mama").  CH: Fatsos.txt:3462.
+// Tier 13 -- White ("Angry Mama").  CH: Fatsos.txt:3462.
 // ---------------------------------------------------------------------------
 class RS_WhiteFatso2 : Actor   // CH Fatsos.txt:3462
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 15000;

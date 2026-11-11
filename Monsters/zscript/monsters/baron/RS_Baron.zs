@@ -5,10 +5,10 @@
 // header for cross-lane notes, the externals this lane defines, the
 // proven-missing assets, and the standing strips).
 //
-// Tier ladder is CH's icon index: 1 Common, 2 Green, 3 Blue, 4 Purple
-// (Royal), 5 Yellow (Grand Orange), 6 Red (all three phases), 7 FireBlu,
-// 8 Gray (Statue?), 9 Abyss, 10 Black (Baron from Abyss), 11 White (Slice
-// and Dicer), 12 Cyan, 13 Brown (Satyr). Minions -- RS_DeepTentacle,
+// Tier ladder is the RSQ ladder by strength (11-11): 1 Common, 2 Green, 3 Blue, 4 Purple
+// (Royal), 7 Yellow (Grand Orange), 10 Red (all three phases), 8 FireBlu,
+// 9 Gray (Statue?), 11 Abyss, 12 Black (Baron from Abyss), 13 White (Slice
+// and Dicer), 5 Cyan, 6 Brown (Satyr). Minions -- RS_DeepTentacle,
 // RS_RoseTentacle -- get no token.
 //
 // rs_ch_nerfredboss IS DECLARED -- CVARINFO.txt:1005, default 1.
@@ -222,11 +222,11 @@ class RS_WhiteBaron : Actor   // CH Barons.txt:4459 -- gate CH_WhiteBossy
 }
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown ("Brown Baron Boi", the satyr).  CH: Barons.txt:40.
+// Tier 6 -- Brown ("Brown Baron Boi", the satyr).  CH: Barons.txt:40.
 // ---------------------------------------------------------------------------
 class RS_BrownBaron2 : Actor   // CH Barons.txt:40
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 2250;
@@ -356,11 +356,11 @@ class RS_BrownBaron2 : Actor   // CH Barons.txt:40
 }
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan ("Cyanide bitten BaronOfHell").  CH: Barons.txt:397.
+// Tier 5 -- Cyan ("Cyanide bitten BaronOfHell").  CH: Barons.txt:397.
 // ---------------------------------------------------------------------------
 class RS_CyanBaron2 : Actor   // CH Barons.txt:397
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 1666;
@@ -625,11 +625,11 @@ class RS_CyanBaron2 : Actor   // CH Barons.txt:397
 }
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss Baron.  CH: Barons.txt:978.
+// Tier 11 -- Abyss Baron.  CH: Barons.txt:978.
 // ---------------------------------------------------------------------------
 class RS_AbyssBaron2 : Actor   // CH Barons.txt:978
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 3333;
@@ -817,11 +817,11 @@ class RS_AbyssBaron2 : Actor   // CH Barons.txt:978
 }
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray ("Statue?").  CH: Barons.txt:1480.
+// Tier 9 -- Gray ("Statue?").  CH: Barons.txt:1480.
 // ---------------------------------------------------------------------------
 class RS_GrayBaron2 : Actor   // CH Barons.txt:1480
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 2000;
@@ -963,11 +963,11 @@ class RS_GrayBaron2 : Actor   // CH Barons.txt:1480
 }
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- FireBlu ("How awkward!").  CH: Barons.txt:1757.
+// Tier 8 -- FireBlu ("How awkward!").  CH: Barons.txt:1757.
 // ---------------------------------------------------------------------------
 class RS_FireBluBaron2 : Actor   // CH Barons.txt:1757
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 2300;
@@ -1595,11 +1595,11 @@ class RS_PurpleBaron : BaronOfHell   // CH Barons.txt:2524
 }
 
 // ---------------------------------------------------------------------------
-// Tier 5 -- Yellow ("Grand Orange BaronOfHell").  CH: Barons.txt:2793.
+// Tier 7 -- Yellow ("Grand Orange BaronOfHell").  CH: Barons.txt:2793.
 // ---------------------------------------------------------------------------
 class RS_YellowBaron : BaronOfHell   // CH Barons.txt:2793
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 1888;
@@ -1750,12 +1750,12 @@ class RS_YellowBaron : BaronOfHell   // CH Barons.txt:2793
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red, phase one ("Red Rage Baron").  CH: Barons.txt:3172.
+// Tier 10 -- Red, phase one ("Red Rage Baron").  CH: Barons.txt:3172.
 // ---------------------------------------------------------------------------
 class RS_RedBaron1 : Actor   // CH Barons.txt:3172
 {
 	int user_rageup2;   // CH: Var int User_RageUP2
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 2000;
@@ -1910,14 +1910,14 @@ class RS_RedBaron1 : Actor   // CH Barons.txt:3172
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red, boss phase one ("Power Baron of Red").  CH: Barons.txt:3326.
+// Tier 10 -- Red, boss phase one ("Power Baron of Red").  CH: Barons.txt:3326.
 // Its death spawns RS_RedBaron2, the flying phase.
 // ---------------------------------------------------------------------------
 class RS_RedBaron3 : Actor   // CH Barons.txt:3326
 {
 	int user_buildup;   // CH: Var Int User_BuildUP
 	int user_rageup;    // CH: Var Int User_RageUP
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 2100;
@@ -2060,14 +2060,14 @@ class RS_RedBaron3 : Actor   // CH Barons.txt:3326
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red, boss phase two ("Flying Red Baron").  CH: Barons.txt:3602.
+// Tier 10 -- Red, boss phase two ("Flying Red Baron").  CH: Barons.txt:3602.
 // CH's See and Missile both jump by numeric offset (A_Jump(96,12),
 // A_Jump(128,13), A_Jump(64,1)), so the state entries below are transcribed
 // one-for-one: reordering or merging any line would move the landing spot.
 // ---------------------------------------------------------------------------
 class RS_RedBaron2 : Actor   // CH Barons.txt:3602
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 1250;
@@ -2230,12 +2230,12 @@ class RS_RedBaron2 : Actor   // CH Barons.txt:3602
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black ("Baron from Abyss").  CH: Barons.txt:3876.
+// Tier 12 -- Black ("Baron from Abyss").  CH: Barons.txt:3876.
 // ---------------------------------------------------------------------------
 class RS_BlackBaron2 : Actor   // CH Barons.txt:3876
 {
 	int user_uhoh;   // CH: var int user_uhoh
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was crafted into lore by the Black Baron";
@@ -2635,12 +2635,12 @@ class RS_RoseTentacle : Actor   // CH Barons.txt:4268
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White ("Hell's Slice and Dicer").  CH: Barons.txt:4646.
+// Tier 13 -- White ("Hell's Slice and Dicer").  CH: Barons.txt:4646.
 // ---------------------------------------------------------------------------
 class RS_WhiteBaron2 : Actor   // CH Barons.txt:4646
 {
 	int user_rude;   // CH: var int user_rude
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Obituary "%o fell to the power of White Baron";

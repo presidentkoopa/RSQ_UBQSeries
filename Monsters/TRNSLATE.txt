@@ -9,6 +9,9 @@
 // Every name below is defined right here.
 //
 // Naming: rs_<family>_t<NN>, NN matching the numeric tier 00..12.
+// [11-11] NN is Colourful Hell's OLD listing order (00 Common .. 12 Brown), not the
+// RSQ ladder, which is numbered by strength since 11-11 (RS_Retier.zs). Nothing
+// in this pack reads these rs_<family>_tNN names (checked 11-11); left as they are.
 //
 // A tier with NO entry here is deliberate, not an oversight -- it means
 // that tier wears a bespoke sprite that is already the right colour, or

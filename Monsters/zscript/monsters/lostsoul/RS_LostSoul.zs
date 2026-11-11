@@ -4,10 +4,10 @@
 // read whole). Every actor cites its CH line. Support: RS_LostSoulFX.zs
 // (see its header for cross-lane notes, proven-missing assets, and
 // standing strips).
-// Tier ladder as before: CH icon index -- 1 Common, 2 Green, 3 Blue,
-// 4 Purple, 5 Yellow (Forgotten One), 6 Red, 7 FireBlu, 8 Gray (hive),
-// 9 Abyss (beetle), 10 Black boss (Queen Bee), 11 White boss (Shifter /
-// EX), 12 Cyan, 13 Brown (THE CUBE). Minions (bees, eggs, EX skulls) get
+// Tier ladder as before: the RSQ ladder by strength, 11-11 -- 1 Common, 2 Green, 3 Blue,
+// 4 Purple, 7 Yellow (Forgotten One), 10 Red, 8 FireBlu, 9 Gray (hive),
+// 11 Abyss (beetle), 12 Black boss (Queen Bee), 13 White boss (Shifter /
+// EX), 5 Cyan, 6 Brown (THE CUBE). Minions (bees, eggs, EX skulls) get
 // no token.
 // RS_BlackLSoulOld3 is CH's ORPHAN: defined at lostsouls.txt:1273, spawned
 // by nothing anywhere in CH. Imported whole per the import-everything rule
@@ -221,13 +221,13 @@ class RS_CHKeganSurprise : Actor   // CH lostsouls.txt:1263
 }
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN ("THE CUBE").  CH: lostsouls.txt:40.  The vile-chasing
+// TIER 6 -- BROWN ("THE CUBE").  CH: lostsouls.txt:40.  The vile-chasing
 // spawn cube: heals the pack, hands out RS_CHBoner on its melee-death, and
 // detonates.
 // ---------------------------------------------------------------------------
 class RS_BrownLSoul2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Species "LSoul";
@@ -320,12 +320,12 @@ class RS_BrownLSoul2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN ("Cyan LostSoul").  CH: lostsouls.txt:203.  The two-eyed
+// TIER 5 -- CYAN ("Cyan LostSoul").  CH: lostsouls.txt:203.  The two-eyed
 // ice comet; leaves a cyan bomb trail on its rush.
 // ---------------------------------------------------------------------------
 class RS_CyanLSoul2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Species "LSoul";
@@ -408,14 +408,14 @@ class RS_CyanLSoul2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 9 -- ABYSS ("beetlejuice").  CH: lostsouls.txt:308.  The stalker
+// TIER 11 -- ABYSS ("beetlejuice").  CH: lostsouls.txt:308.  The stalker
 // beetle: shrinks to a speck, creeps along floor or ceiling, pops back to
 // size on top of you.
 // ---------------------------------------------------------------------------
 class RS_AbyssLSoul2 : Actor
 {
 	int user_pop;   // CH: var int user_pop
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Species "LSoul";
@@ -601,12 +601,12 @@ class RS_AbyssLSoul2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY ("A hive").  CH: lostsouls.txt:552.  The ceiling hive:
+// TIER 9 -- GRAY ("A hive").  CH: lostsouls.txt:552.  The ceiling hive:
 // swells, releases bees, drops dead as a bee bomb.
 // ---------------------------------------------------------------------------
 class RS_GrayLSoul2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Species "LSoul";
@@ -684,12 +684,12 @@ class RS_GrayLSoul2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU ("Charred skull").  CH: lostsouls.txt:648.  The rammer
+// TIER 8 -- FIREBLU ("Charred skull").  CH: lostsouls.txt:648.  The rammer
 // that detonates on its own melee.
 // ---------------------------------------------------------------------------
 class RS_FireBluLSoul2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Species "LSoul";
@@ -1049,12 +1049,12 @@ class RS_PurpleLSoul : LostSoul
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW ("Yellow LostSoul", the Forgotten One).  CH: lostsouls
+// TIER 7 -- YELLOW ("Yellow LostSoul", the Forgotten One).  CH: lostsouls
 // .txt:1003.  The chain-charger; splits into a common soul on death.
 // ---------------------------------------------------------------------------
 class RS_YellowLSoul : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Obituary "%o met the Orange Lost Soul, thats about it";
@@ -1139,12 +1139,12 @@ class RS_YellowLSoul : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED ("Bloody Red LostSoul").  CH: lostsouls.txt:1085.  Charges
+// TIER 10 -- RED ("Bloody Red LostSoul").  CH: lostsouls.txt:1085.  Charges
 // or spits plasma bolts; sheds RS_RedThingsLS flecks the whole while.
 // ---------------------------------------------------------------------------
 class RS_RedLSoul : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Obituary "Red Lost Soul? Wouldn't blood dripping soul sound more powerful?";
@@ -1253,13 +1253,13 @@ class RS_RedLSoul : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK, the old cut.  CH: lostsouls.txt:1273 ("BlackLSoulOld3").
+// TIER 12 -- BLACK, the old cut.  CH: lostsouls.txt:1273 ("BlackLSoulOld3").
 // CH's ORPHAN -- spawned by nothing anywhere in CH; imported whole per the
 // import-everything rule.  The 666hp Queen Bee, 46-bee escort.
 // ---------------------------------------------------------------------------
 class RS_BlackLSoulOld3 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }   // black bosses both 10
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }   // black bosses both 10
 	Default
 	{
 		Obituary "%o was killed by the queen bee";
@@ -1376,12 +1376,12 @@ class RS_BlackLSoulOld3 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK ("Queen Bee").  CH: lostsouls.txt:1413.  The live one:
+// TIER 12 -- BLACK ("Queen Bee").  CH: lostsouls.txt:1413.  The live one:
 // 1500hp, stinger strafes, seeker swarm, revenant loads, bee minions.
 // ---------------------------------------------------------------------------
 class RS_BlackLSoul3 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was killed by the queen bee";
@@ -1683,12 +1683,12 @@ class RS_BlackLSoul2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE ("The shifter").  CH: lostsouls.txt:1906.  4500hp; takes
+// TIER 13 -- WHITE ("The shifter").  CH: lostsouls.txt:1906.  4500hp; takes
 // revenant, baron, and archvile forms, laying eggs that hatch more.
 // ---------------------------------------------------------------------------
 class RS_WhiteLSoul2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Obituary "%o met the randomized terror of white lost soul";
@@ -1896,13 +1896,13 @@ class RS_WhiteLSoul2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE EX ("The vengeful soul").  CH: lostsouls.txt:2225.
+// TIER 13 -- WHITE EX ("The vengeful soul").  CH: lostsouls.txt:2225.
 // 12500hp; adds caco / HK / mancubus forms, twin orbiting skulls, the ice
 // beam, and the charging soul shot.
 // ---------------------------------------------------------------------------
 class RS_WhiteLSoulEX : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Obituary "%o got spooked out by the white lost soul EX";

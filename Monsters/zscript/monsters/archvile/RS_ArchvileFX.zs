@@ -117,7 +117,7 @@
 // ============================================================================
 
 // ---------------------------------------------------------------------------
-// Brown (tier 13) support.
+// Brown (tier 6) support.
 // ---------------------------------------------------------------------------
 
 class RS_BrownBoiVile : Actor   // CH Archviles.txt:323
@@ -735,7 +735,7 @@ class RS_WickedTorso : Actor   // CH Archviles.txt:877
 }
 
 // ---------------------------------------------------------------------------
-// Cyan (tier 12) support.
+// Cyan (tier 5) support.
 // ---------------------------------------------------------------------------
 
 class RS_IceToMeetVile1 : Actor   // CH Archviles.txt:1080
@@ -935,7 +935,7 @@ class RS_IceStartVile4 : Actor   // CH Archviles.txt:1240
 }
 
 // ---------------------------------------------------------------------------
-// Abyss (tier 9) support.
+// Abyss (tier 11) support.
 // ---------------------------------------------------------------------------
 
 class RS_AbyssPortalVile : Actor   // CH Archviles.txt:1444 -- summon, no tier token
@@ -1291,7 +1291,7 @@ class RS_ABVileTentacle : Actor   // CH Archviles.txt:1704 -- minion, no tier to
 }
 
 // ---------------------------------------------------------------------------
-// Gray (tier 8) support.
+// Gray (tier 9) support.
 // ---------------------------------------------------------------------------
 
 class RS_VileGroundSpike : Actor   // CH Archviles.txt:1926
@@ -1477,7 +1477,7 @@ class RS_ROCKDROPVILE : Actor   // CH Archviles.txt:2060
 }
 
 // ---------------------------------------------------------------------------
-// FireBlu (tier 7) support.
+// FireBlu (tier 8) support.
 // ---------------------------------------------------------------------------
 
 class RS_FireBluVile : Actor   // CH Archviles.txt:2244
@@ -1854,7 +1854,7 @@ class RS_SpecialRev : RS_CommonRevenant   // CH Archviles.txt:3005 -- summon, no
 }
 
 // ---------------------------------------------------------------------------
-// Red (tier 6) support.
+// Red (tier 10) support.
 // ---------------------------------------------------------------------------
 
 class RS_ReABreath : Actor   // CH Archviles.txt:3607
@@ -1967,7 +1967,7 @@ class RS_DFire : Actor   // CH Archviles.txt:3848
 }
 
 // ---------------------------------------------------------------------------
-// Black (tier 10) support.
+// Black (tier 12) support.
 // ---------------------------------------------------------------------------
 
 class RS_BVileCloud : Actor   // CH Archviles.txt:3967
@@ -2306,7 +2306,7 @@ class RS_DFlamePuffVile2 : Actor   // CH Archviles.txt:4302
 }
 
 // ---------------------------------------------------------------------------
-// White (tier 11) support.
+// White (tier 13) support.
 // ---------------------------------------------------------------------------
 
 class RS_VBtrail : Actor   // CH Archviles.txt:4518

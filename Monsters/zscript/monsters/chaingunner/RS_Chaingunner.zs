@@ -2,7 +2,7 @@
 // RS_Chaingunner.zs -- Colourful Hell Chaingunner family, native ZScript.
 // Source: C:\Users\Command\Desktop\CH\decorate\Chaingunners.txt (3,169 lines,
 // read whole). Every actor cites its CH line. Support: RS_ChaingunnerFX.zs.
-// Tier ladder as before: 1 Common .. 13 Brown (CH icon index).
+// Tier ladder as before: 1 Common .. 13 White (the RSQ ladder, by strength, 11-11).
 // ============================================================================
 
 // ---------------------------------------------------------------------------
@@ -193,11 +193,11 @@ class RS_WhiteCGuy : Actor   // CH Chaingunners.txt:2501
 }
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN.  CH: Chaingunners.txt:40.  Deploys sandbag cover.
+// TIER 6 -- BROWN.  CH: Chaingunners.txt:40.  Deploys sandbag cover.
 // ---------------------------------------------------------------------------
 class RS_BrownCGuy2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 250;
@@ -321,11 +321,11 @@ class RS_BrownCGuy2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN ("Jetpack Larry").  CH: Chaingunners.txt:256.
+// TIER 5 -- CYAN ("Jetpack Larry").  CH: Chaingunners.txt:256.
 // ---------------------------------------------------------------------------
 class RS_CyanCGuy2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 125;
@@ -481,12 +481,12 @@ class RS_CyanCGuy2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 9 -- ABYSS ("Abyss Captain").  CH: Chaingunners.txt:434.
+// TIER 11 -- ABYSS ("Abyss Captain").  CH: Chaingunners.txt:434.
 // ---------------------------------------------------------------------------
 class RS_AbyssCGuy2 : Actor
 {
 	int user_hide;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 500;
@@ -607,11 +607,11 @@ class RS_AbyssCGuy2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY ("That is bad camo").  CH: Chaingunners.txt:601.
+// TIER 9 -- GRAY ("That is bad camo").  CH: Chaingunners.txt:601.
 // ---------------------------------------------------------------------------
 class RS_GrayCGuy2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 275;
@@ -755,11 +755,11 @@ class RS_GrayCGuy2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU ("Bad makeup day").  CH: Chaingunners.txt:827.
+// TIER 8 -- FIREBLU ("Bad makeup day").  CH: Chaingunners.txt:827.
 // ---------------------------------------------------------------------------
 class RS_FireBluCGuy2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 450;
@@ -1320,11 +1320,11 @@ class RS_PurpleCGuy : ChaingunGuy
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW ("Orange Former Captain").  CH: Chaingunners.txt:1511.
+// TIER 7 -- YELLOW ("Orange Former Captain").  CH: Chaingunners.txt:1511.
 // ---------------------------------------------------------------------------
 class RS_YellowCGuy : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 200;
@@ -1493,11 +1493,11 @@ class RS_YellowCGuy : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED.  CH: Chaingunners.txt:1707.  Detonating bullets by range.
+// TIER 10 -- RED.  CH: Chaingunners.txt:1707.  Detonating bullets by range.
 // ---------------------------------------------------------------------------
 class RS_RedCGuy : ChaingunGuy
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 300;
@@ -1613,12 +1613,12 @@ class RS_RedCGuy : ChaingunGuy
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK.  CH: Chaingunners.txt:1909 (EX "WARFACE") / 2280
+// TIER 12 -- BLACK.  CH: Chaingunners.txt:1909 (EX "WARFACE") / 2280
 // ("The General").  Announcers dropped per owner.
 // ---------------------------------------------------------------------------
 class RS_BlackCGuyEX : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was made to peel potatoes for eternity by Black ChainGunner EX";
@@ -1762,7 +1762,7 @@ class RS_BlackCGuyEX : Actor
 
 class RS_BlackCGuy2 : Actor   // CH Chaingunners.txt:2280 -- The General
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was vapourized by The General";
@@ -1874,12 +1874,12 @@ class RS_BlackCGuy2 : Actor   // CH Chaingunners.txt:2280 -- The General
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE ("The crazy lady scientist").  CH: Chaingunners.txt:2520.
+// TIER 13 -- WHITE ("The crazy lady scientist").  CH: Chaingunners.txt:2520.
 // ---------------------------------------------------------------------------
 class RS_WhiteCguy2 : Actor
 {
 	int User_Ph2;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Obituary "%o fell to the power of science";

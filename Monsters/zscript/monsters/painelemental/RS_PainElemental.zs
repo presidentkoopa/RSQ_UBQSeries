@@ -4,10 +4,10 @@
 // lines, read whole). Every actor cites its CH line. Support:
 // RS_PainElementalFX.zs (see its header for cross-lane notes, proven-missing
 // assets, and standing strips).
-// Tier ladder as before: CH icon index -- 1 Common, 2 Green, 3 Blue,
-// 4 Purple, 5 Yellow, 6 Red, 7 FireBlu, 8 Gray (hive), 9 Abyss (spooky
-// skull), 10 Black (Hell Soul Elemental), 11 White (the Watcher + its
-// Pilot phase), 12 Cyan (ice turtle), 13 Brown (flesh ball).
+// Tier ladder as before: the RSQ ladder by strength, 11-11 -- 1 Common, 2 Green, 3 Blue,
+// 4 Purple, 7 Yellow, 10 Red, 8 FireBlu, 9 Gray (hive), 11 Abyss (spooky
+// skull), 12 Black (Hell Soul Elemental), 13 White (the Watcher + its
+// Pilot phase), 5 Cyan (ice turtle), 6 Brown (flesh ball).
 // Minions (mini sentinels, health fountains, buff droppers, siphon souls)
 // get no token.
 // ============================================================================
@@ -183,11 +183,11 @@ class RS_WhitePE : Actor   // CH thepains.txt:2659 -- gate CH_WhiteBossy
 }
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown ("Ball of fleshy bits").  CH: thepains.txt:40.
+// Tier 6 -- Brown ("Ball of fleshy bits").  CH: thepains.txt:40.
 // ---------------------------------------------------------------------------
 class RS_BrownPE2 : Actor   // CH thepains.txt:40
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Obituary "%o + brown pain elemental = %o dead";
@@ -332,11 +332,11 @@ class RS_BrownPE2 : Actor   // CH thepains.txt:40
 }
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan ("Icey weird Pain elemental").  CH: thepains.txt:471.
+// Tier 5 -- Cyan ("Icey weird Pain elemental").  CH: thepains.txt:471.
 // ---------------------------------------------------------------------------
 class RS_CyanPE2 : Actor   // CH thepains.txt:471
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 963;
@@ -451,11 +451,11 @@ class RS_CyanPE2 : Actor   // CH thepains.txt:471
 }
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss ("Spooky Skull!").  CH: thepains.txt:609.
+// Tier 11 -- Abyss ("Spooky Skull!").  CH: thepains.txt:609.
 // ---------------------------------------------------------------------------
 class RS_AbyssPE2 : Actor   // CH thepains.txt:609
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 1600;
@@ -595,11 +595,11 @@ class RS_AbyssPE2 : Actor   // CH thepains.txt:609
 }
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray ("The nasty hive").  CH: thepains.txt:921.
+// Tier 9 -- Gray ("The nasty hive").  CH: thepains.txt:921.
 // ---------------------------------------------------------------------------
 class RS_GrayPE2 : Actor   // CH thepains.txt:921
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 1450;
@@ -709,11 +709,11 @@ class RS_GrayPE2 : Actor   // CH thepains.txt:921
 }
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- FireBlu ("the fuck is that").  CH: thepains.txt:1045.
+// Tier 8 -- FireBlu ("the fuck is that").  CH: thepains.txt:1045.
 // ---------------------------------------------------------------------------
 class RS_FireBluPE2 : Actor   // CH thepains.txt:1045
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 800;
@@ -1169,7 +1169,7 @@ class RS_PurplePE : Actor   // CH thepains.txt:1481
 
 class RS_YellowPE : PainElemental   // CH thepains.txt:1635
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 900;
@@ -1259,7 +1259,7 @@ class RS_YellowPE : PainElemental   // CH thepains.txt:1635
 
 class RS_RedPE : Actor   // CH thepains.txt:1769
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 1111;
@@ -1375,11 +1375,11 @@ class RS_RedPE : Actor   // CH thepains.txt:1769
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black boss ("Hell Soul Elemental").  CH: thepains.txt:1977.
+// Tier 12 -- Black boss ("Hell Soul Elemental").  CH: thepains.txt:1977.
 // ---------------------------------------------------------------------------
 class RS_BlackPE2 : Actor   // CH thepains.txt:1977
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 5000;
@@ -1551,12 +1551,12 @@ class RS_BlackPE2 : Actor   // CH thepains.txt:1977
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White boss ("Against thee wicked" -- the Watcher, then the
+// Tier 13 -- White boss ("Against thee wicked" -- the Watcher, then the
 // Pilot).  CH: thepains.txt:2678 / 2811.
 // ---------------------------------------------------------------------------
 class RS_WhitePE2 : Actor   // CH thepains.txt:2678
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 5000;
@@ -1691,7 +1691,7 @@ class RS_WhitePE2 : Actor   // CH thepains.txt:2678
 
 class RS_WhitePE3 : Actor   // CH thepains.txt:2811 -- "The Pilot", phase 2
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 1000;

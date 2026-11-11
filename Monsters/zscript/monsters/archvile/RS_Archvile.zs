@@ -6,7 +6,7 @@
 // notes, the already-owned skip list, the proven-missing assets and the
 // standing strips.
 //
-// Tier ladder is CH's own icon index, exactly as CH spawns it:
+// Tier ladder is the RSQ ladder by strength (11-11), exactly as CH spawns it:
 //   1  Common      ColorTierIconCH     RS_CommonArch
 //   2  Green       ColorTierIconCH2    RS_GreenArch
 //   3  Blue        ColorTierIconCH3    RS_BlueArch
@@ -16,10 +16,10 @@
 //   7  FireBlu     ColorTierIconCH7    RS_FireBluArch2
 //   8  Gray        ColorTierIconCH8    RS_GrayArch2
 //   9  Abyss       ColorTierIconCH9    RS_AbyssVile
-//   10 Black       ColorTierIconCH10   RS_BlackVile
-//   11 White       ColorTierIconCH11   RS_Whitevile
-//   12 Cyan        ColorTierIconCH12   RS_CyanVile
-//   13 Brown       ColorTierIconCH13   RS_BrownVile
+//   12 Black       ColorTierIconCH10   RS_BlackVile
+//   13 White       ColorTierIconCH11   RS_Whitevile
+//   5 Cyan        ColorTierIconCH12   RS_CyanVile
+//   6 Brown       ColorTierIconCH13   RS_BrownVile
 // Minions and summons carry NO token: RS_SpecialRev, RS_SpecialVile,
 // RS_ABVileTentacle, RS_AbyssPortalVile, RS_VileGrayDecoy, RS_WVileEye2/3,
 // RS_WvileSpot, RS_BrownBoiVile.
@@ -248,11 +248,11 @@ class RS_WhiteArch : Actor   // CH Archviles.txt:4499 -- gate CH_WhiteBossy
 }
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown ("That's a messy vile").  CH: Archviles.txt:40.
+// Tier 6 -- Brown ("That's a messy vile").  CH: Archviles.txt:40.
 // ---------------------------------------------------------------------------
 class RS_BrownVile : Actor   // CH Archviles.txt:40
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 
 	Default
 	{
@@ -429,11 +429,11 @@ class RS_BrownVile : Actor   // CH Archviles.txt:40
 }
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan ("Barnie").  CH: Archviles.txt:921.
+// Tier 5 -- Cyan ("Barnie").  CH: Archviles.txt:921.
 // ---------------------------------------------------------------------------
 class RS_CyanVile : Actor   // CH Archviles.txt:921
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 
 	Default
 	{
@@ -592,11 +592,11 @@ class RS_CyanVile : Actor   // CH Archviles.txt:921
 }
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss ("Aliens?").  CH: Archviles.txt:1286.
+// Tier 11 -- Abyss ("Aliens?").  CH: Archviles.txt:1286.
 // ---------------------------------------------------------------------------
 class RS_AbyssVile : Actor   // CH Archviles.txt:1286
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 
 	Default
 	{
@@ -758,11 +758,11 @@ class RS_AbyssVile : Actor   // CH Archviles.txt:1286
 }
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray ("Like a stone").  CH: Archviles.txt:1791.
+// Tier 9 -- Gray ("Like a stone").  CH: Archviles.txt:1791.
 // ---------------------------------------------------------------------------
 class RS_GrayArch2 : Actor   // CH Archviles.txt:1791
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 
 	Default
 	{
@@ -912,11 +912,11 @@ class RS_GrayArch2 : Actor   // CH Archviles.txt:1791
 }
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- FireBlu ("Horrible sight").  CH: Archviles.txt:2115.
+// Tier 8 -- FireBlu ("Horrible sight").  CH: Archviles.txt:2115.
 // ---------------------------------------------------------------------------
 class RS_FireBluArch2 : Actor   // CH Archviles.txt:2115
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 
 	Default
 	{
@@ -1471,13 +1471,13 @@ class RS_PurpleArch : Archvile   // CH Archviles.txt:2781
 }
 
 // ---------------------------------------------------------------------------
-// Tier 5 -- Yellow ("Golden Archvile").  CH: Archviles.txt:3065.
+// Tier 7 -- Yellow ("Golden Archvile").  CH: Archviles.txt:3065.
 // ---------------------------------------------------------------------------
 class RS_YellowArch : Archvile   // CH Archviles.txt:3065
 {
 	int User_Summon2;
 
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 
 	Default
 	{
@@ -1645,11 +1645,11 @@ class RS_SpecialVile : RS_CommonArch   // CH Archviles.txt:3443
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red, ordinary phase ("Infernovile").  CH: Archviles.txt:3490.
+// Tier 10 -- Red, ordinary phase ("Infernovile").  CH: Archviles.txt:3490.
 // ---------------------------------------------------------------------------
 class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 
 	Default
 	{
@@ -1769,13 +1769,13 @@ class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red, boss phase ("Grand Redfirevile").  CH: Archviles.txt:3699.
+// Tier 10 -- Red, boss phase ("Grand Redfirevile").  CH: Archviles.txt:3699.
 // ---------------------------------------------------------------------------
 class RS_RedArch3 : Actor   // CH Archviles.txt:3699
 {
 	int User_Rage;
 
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 
 	Default
 	{
@@ -1925,13 +1925,13 @@ class RS_RedArch3 : Actor   // CH Archviles.txt:3699
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black ("Void Gazes Back").  CH: Archviles.txt:4347.
+// Tier 12 -- Black ("Void Gazes Back").  CH: Archviles.txt:4347.
 // ---------------------------------------------------------------------------
 class RS_BlackVile : Actor   // CH Archviles.txt:4347
 {
 	int user_limit;
 
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 
 	Default
 	{
@@ -2090,14 +2090,14 @@ class RS_BlackVile : Actor   // CH Archviles.txt:4347
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White ("Here I am").  CH: Archviles.txt:5033.
+// Tier 13 -- White ("Here I am").  CH: Archviles.txt:5033.
 // ---------------------------------------------------------------------------
 class RS_Whitevile : Actor   // CH Archviles.txt:5033
 {
 	int user_courage;
 	int user_hoho;
 
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 
 	Default
 	{

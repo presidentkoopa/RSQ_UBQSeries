@@ -4,10 +4,10 @@
 // read whole). Every actor cites its CH line. Support: RS_HellKnightFX.zs
 // (see its header for cross-lane notes, proven-missing assets, and
 // standing strips).
-// Tier ladder as before: CH icon index -- 1 Common, 2 Green, 3 Blue,
-// 4 Purple, 5 Yellow (Orange Bruiser), 6 Red (Knightmare), 7 FireBlu,
-// 8 Gray, 9 Abyss (Bruiser), 10 Black (Terminator, + MK II EX), 11 White
-// (Ghost of 1993), 12 Cyan, 13 Brown (Lion). Minions (SpecialImp,
+// Tier ladder as before: the RSQ ladder by strength, 11-11 -- 1 Common, 2 Green, 3 Blue,
+// 4 Purple, 7 Yellow (Orange Bruiser), 10 Red (Knightmare), 8 FireBlu,
+// 9 Gray, 11 Abyss (Bruiser), 12 Black (Terminator, + MK II EX), 13 White
+// (Ghost of 1993), 5 Cyan, 6 Brown (Lion). Minions (SpecialImp,
 // SpecialSpectre2, MiniPhantom, shields) get no token.
 //
 // BRUR FRAME COVERAGE -- CLOSED 2026-08-06.  BRUR ships frames A-N and
@@ -228,11 +228,11 @@ class RS_WhiteHK : Actor   // CH Hellknights.txt:3219 -- gate CH_WhiteBossy
 }
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown ("Lion?"), the parry knight.  CH: Hellknights.txt:40.
+// Tier 6 -- Brown ("Lion?"), the parry knight.  CH: Hellknights.txt:40.
 // ---------------------------------------------------------------------------
 class RS_BrownHK2 : Actor   // CH Hellknights.txt:40
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 700;
@@ -370,11 +370,11 @@ class RS_BrownHK2 : Actor   // CH Hellknights.txt:40
 }
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan ("Cyanide HellKnight").  CH: Hellknights.txt:298.
+// Tier 5 -- Cyan ("Cyanide HellKnight").  CH: Hellknights.txt:298.
 // ---------------------------------------------------------------------------
 class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 700;
@@ -532,11 +532,11 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 }
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss ("Abyss Bruiser").  CH: Hellknights.txt:570.
+// Tier 11 -- Abyss ("Abyss Bruiser").  CH: Hellknights.txt:570.
 // ---------------------------------------------------------------------------
 class RS_AbyssHK2 : HellKnight   // CH Hellknights.txt:570
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Species "BaronOfHell";
@@ -700,11 +700,11 @@ class RS_AbyssHK2 : HellKnight   // CH Hellknights.txt:570
 }
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- FireBlu ("Knight with clown armor").  CH: Hellknights.txt:833.
+// Tier 8 -- FireBlu ("Knight with clown armor").  CH: Hellknights.txt:833.
 // ---------------------------------------------------------------------------
 class RS_FireBluHK2 : Actor   // CH Hellknights.txt:833
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Species "BaronOfHell";
@@ -810,11 +810,11 @@ class RS_FireBluHK2 : Actor   // CH Hellknights.txt:833
 }
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray ("Gray knight").  CH: Hellknights.txt:1020.
+// Tier 9 -- Gray ("Gray knight").  CH: Hellknights.txt:1020.
 // ---------------------------------------------------------------------------
 class RS_GrayHK2 : Actor   // CH Hellknights.txt:1020
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Species "BaronOfHell";
@@ -1388,11 +1388,11 @@ class RS_PurpleHK : HellKnight   // CH Hellknights.txt:1518
 }
 
 // ---------------------------------------------------------------------------
-// Tier 5 -- Yellow ("Orange Bruiser").  CH: Hellknights.txt:1674.
+// Tier 7 -- Yellow ("Orange Bruiser").  CH: Hellknights.txt:1674.
 // ---------------------------------------------------------------------------
 class RS_YellowHK : HellKnight   // CH Hellknights.txt:1674
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Species "BaronOfHell";
@@ -1519,12 +1519,12 @@ class RS_YellowHK : HellKnight   // CH Hellknights.txt:1674
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red ("Red Knightmare").  CH: Hellknights.txt:1902.
+// Tier 10 -- Red ("Red Knightmare").  CH: Hellknights.txt:1902.
 // ---------------------------------------------------------------------------
 class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 {
 	int user_Rage2;   // CH: Var Int User_Rage2
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Species "BaronOfHell";
@@ -1682,11 +1682,11 @@ class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black boss ("Terminator").  CH: Hellknights.txt:2290.
+// Tier 12 -- Black boss ("Terminator").  CH: Hellknights.txt:2290.
 // ---------------------------------------------------------------------------
 class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 5555;
@@ -1861,13 +1861,13 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 EX -- Black EX ("Terminator MK II").  CH: Hellknights.txt:2639.
+// Tier 12 EX -- Black EX ("Terminator MK II").  CH: Hellknights.txt:2639.
 // ---------------------------------------------------------------------------
 class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 {
 	int user_ready;   // CH: var int user_ready
 	int user_rage;    // CH: var int user_rage
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 11000;
@@ -2156,11 +2156,11 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White boss ("Ghost of 1993").  CH: Hellknights.txt:3238 / 3385.
+// Tier 13 -- White boss ("Ghost of 1993").  CH: Hellknights.txt:3238 / 3385.
 // ---------------------------------------------------------------------------
 class RS_WhiteHK3 : Actor   // CH Hellknights.txt:3238
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Obituary "%o was defeated by ghosts of E1M8";

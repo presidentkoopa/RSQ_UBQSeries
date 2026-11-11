@@ -209,10 +209,10 @@ class RS_RosterHandler : EventHandler
 		return 'none';
 	}
 
-	// Tier from the class name's colour word -- CH's own icon index,
-	// documented at RS_ZombiemanFX.zs:17-19. Name-derived because the tier
-	// token is only set in PostBeginPlay and does not exist yet at the
-	// moment this has to choose.
+	// Tier from the class name's colour word -- the RSQ ladder, ordered by
+	// strength (owner 2026-11-11; RS_Retier.zs RS_TierLadder), so a family's cap
+	// is "how strong may a spawn be". Name-derived because the tier token is only
+	// set in PostBeginPlay and does not exist yet at the moment this has to choose.
 	//
 	// FIREBLU IS TESTED FIRST AND MUST STAY FIRST: RS_FireBluZombie also
 	// contains "blu".
@@ -221,19 +221,19 @@ class RS_RosterHandler : EventHandler
 		String s = "" .. cls;
 		s = s.MakeLower();
 
-		if (s.IndexOf("fireblu") >= 0) return 7;
+		if (s.IndexOf("fireblu") >= 0) return 8;
 		if (s.IndexOf("common")  >= 0) return 1;
 		if (s.IndexOf("green")   >= 0) return 2;
 		if (s.IndexOf("blue")    >= 0) return 3;
 		if (s.IndexOf("purple")  >= 0) return 4;
-		if (s.IndexOf("yellow")  >= 0) return 5;
-		if (s.IndexOf("red")     >= 0) return 6;
-		if (s.IndexOf("gray")    >= 0) return 8;
-		if (s.IndexOf("abyss")   >= 0) return 9;
-		if (s.IndexOf("black")   >= 0) return 10;
-		if (s.IndexOf("white")   >= 0) return 11;
-		if (s.IndexOf("cyan")    >= 0) return 12;
-		if (s.IndexOf("brown")   >= 0) return 13;
+		if (s.IndexOf("cyan")    >= 0) return 5;
+		if (s.IndexOf("brown")   >= 0) return 6;
+		if (s.IndexOf("yellow")  >= 0) return 7;
+		if (s.IndexOf("gray")    >= 0) return 9;
+		if (s.IndexOf("red")     >= 0) return 10;
+		if (s.IndexOf("abyss")   >= 0) return 11;
+		if (s.IndexOf("black")   >= 0) return 12;
+		if (s.IndexOf("white")   >= 0) return 13;
 
 		// Unrecognised colour survives the cap rather than vanishing -- a
 		// roster that silently drops entries reads as monsters failing to

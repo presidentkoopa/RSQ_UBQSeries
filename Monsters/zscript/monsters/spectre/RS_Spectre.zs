@@ -48,7 +48,7 @@
 // against spectres.txt:881 `SPG2 G 1 A_SetUserVar("User_Calm",User_Calm == 1)`.
 // One character differs. The spectre file is a copy of the demon file and the
 // copy mistyped SR as SP. Owner's rule: nothing invisible.
-// Tier ladder as before: 1 Common .. 13 Brown (CH icon index); FireBlu
+// Tier ladder as before: 1 Common .. 13 White (the RSQ ladder, by strength, 11-11); FireBlu
 // inherits its tier from the demons lane's RS_FireBluDemon2 (CH icon 7).
 // Announcers dropped per owner.
 // ============================================================================
@@ -225,12 +225,12 @@ class RS_WhiteSpectre : Actor   // CH spectres.txt:1389 -- CH: CallACS("CH_White
 }
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN ("Brown hide").  CH: spectres.txt:40.  The pack marshal:
+// TIER 6 -- BROWN ("Brown hide").  CH: spectres.txt:40.  The pack marshal:
 // rallies demonkind, heals the room, war-cries the pack.
 // ---------------------------------------------------------------------------
 class RS_BrownSpectre2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 300;
@@ -336,12 +336,12 @@ class RS_BrownSpectre2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN ("Ice Worm II").  CH: spectres.txt:166.  The burrower:
+// TIER 5 -- CYAN ("Ice Worm II").  CH: spectres.txt:166.  The burrower:
 // shrinks flat to hide, spikes in every direction, rams as a hiss.
 // ---------------------------------------------------------------------------
 class RS_CyanSpectre2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Obituary "%o was stored for cold summer by cyan spectre";
@@ -478,18 +478,18 @@ class RS_CyanSpectre2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU.  CH: spectres.txt:322 -- one line: the fireblu demon
+// TIER 8 -- FIREBLU.  CH: spectres.txt:322 -- one line: the fireblu demon
 // body with +STEALTH. Tier comes from the demons lane's RS_FireBluDemon2.
 // ---------------------------------------------------------------------------
 class RS_FireBluSpectre2 : RS_FireBluDemon2 { Default { +STEALTH } }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY ("Uhm").  CH: spectres.txt:366.  The low crawler:
+// TIER 9 -- GRAY ("Uhm").  CH: spectres.txt:366.  The low crawler:
 // flattens out of sight, lobs the bouncing ice orb.
 // ---------------------------------------------------------------------------
 class RS_GraySpectre2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		BloodColor "Black";
@@ -937,14 +937,14 @@ class RS_PurpleSpectre : Spectre
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW.  CH: spectres.txt:836.  The blood demon hide: pain can
+// TIER 7 -- YELLOW.  CH: spectres.txt:836.  The blood demon hide: pain can
 // drop stealth and sprint until its next bite calms it.
 // The Melee tail below read SPG2 G in CH; corrected to SRG2 G -- see the
 // file header for the YellowDemon twin-line proof.
 // ---------------------------------------------------------------------------
 class RS_YellowSpectre : Spectre
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	int User_Calm;   // CH: Var int User_Calm
 	Default
 	{
@@ -1044,12 +1044,12 @@ class RS_YellowSpectre : Spectre
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED.  CH: spectres.txt:934.  The heavy blood demon: bleeds
+// TIER 10 -- RED.  CH: spectres.txt:934.  The heavy blood demon: bleeds
 // bolts from its bite, armors up through pain.
 // ---------------------------------------------------------------------------
 class RS_RedSpectre : Spectre
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 394;
@@ -1148,12 +1148,12 @@ class RS_RedSpectre : Spectre
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK BOSS ("Backstabber").  CH: spectres.txt:1075.  The rogue:
+// TIER 12 -- BLACK BOSS ("Backstabber").  CH: spectres.txt:1075.  The rogue:
 // afterimage chase, sight-counter backstab warp, teleport spot escapes.
 // ---------------------------------------------------------------------------
 class RS_BlackSpectre2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	int user_hm;   // CH: var int user_hm
 	Default
 	{
@@ -1311,7 +1311,7 @@ class RS_BlackSpectre2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE BOSS ("Tentacle monster?").  CH: spectres.txt:1409.
+// TIER 13 -- WHITE BOSS ("Tentacle monster?").  CH: spectres.txt:1409.
 // The burrowing slug: untouchable underground, surfaces to bite, spit
 // slime, and summon the chomper.  CH ships neither an SLGMF* nor an
 // SLGM"\"* lump, so both frames are invisible in CH itself. SLGM F is
@@ -1320,7 +1320,7 @@ class RS_BlackSpectre2 : Actor
 // ---------------------------------------------------------------------------
 class RS_WhiteSpectre2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 7500;

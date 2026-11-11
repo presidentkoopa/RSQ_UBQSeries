@@ -6,11 +6,11 @@
 // expected-from-earlier-lane classes, proven-missing assets, and the
 // standing strips).
 //
-// Tier ladder is CH's own icon index: 1 Common (Arachnotron), 2 Green,
-// 3 Blue, 4 Purple, 5 Yellow (Orange Brainchoton), 6 Red (Red Rage),
-// 7 FireBlu (Ugly floater), 8 Gray (Metal Spider?), 9 Abyss (Eye see),
-// 10 Black (Macross Missile Spam, + EX), 11 White (White Spider, all four
-// sizes), 12 Cyan (Cyan Flying Spider), 13 Brown (Brown Recluse).
+// Tier ladder is the RSQ ladder by strength (11-11): 1 Common (Arachnotron), 2 Green,
+// 3 Blue, 4 Purple, 7 Yellow (Orange Brainchoton), 10 Red (Red Rage),
+// 8 FireBlu (Ugly floater), 9 Gray (Metal Spider?), 11 Abyss (Eye see),
+// 12 Black (Macross Missile Spam, + EX), 13 White (White Spider, all four
+// sizes), 5 Cyan (Cyan Flying Spider), 6 Brown (Brown Recluse).
 // Minions -- RS_WhiteSpidegg and RS_MiniSP1 -- get no token.
 //
 // The colour gates reuse the existing rs_ch_* cvar set; this family adds
@@ -647,11 +647,11 @@ class RS_PurpleSP1 : Arachnotron   // CH Spiders.txt:1912
 }
 
 // ---------------------------------------------------------------------------
-// Tier 5 -- Yellow ("Orange Brainchoton").  CH: Spiders.txt:2016.
+// Tier 7 -- Yellow ("Orange Brainchoton").  CH: Spiders.txt:2016.
 // ---------------------------------------------------------------------------
 class RS_YellowSP1 : Arachnotron   // CH Spiders.txt:2016
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		BloodColor "Yellow";
@@ -796,11 +796,11 @@ class RS_YellowSP1 : Arachnotron   // CH Spiders.txt:2016
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red ("Red Rage Arachnotron").  CH: Spiders.txt:2294.
+// Tier 10 -- Red ("Red Rage Arachnotron").  CH: Spiders.txt:2294.
 // ---------------------------------------------------------------------------
 class RS_RedSP1 : Actor   // CH Spiders.txt:2294
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Obituary "%o was toasted by not so tiny red spider";
@@ -916,11 +916,11 @@ class RS_RedSP1 : Actor   // CH Spiders.txt:2294
 }
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown ("Brown Recluse").  CH: Spiders.txt:40.
+// Tier 6 -- Brown ("Brown Recluse").  CH: Spiders.txt:40.
 // ---------------------------------------------------------------------------
 class RS_BrownSP2 : Arachnotron   // CH Spiders.txt:40
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Species "Spider1";
@@ -1044,12 +1044,12 @@ class RS_BrownSP2 : Arachnotron   // CH Spiders.txt:40
 }
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan ("Cyan Flying Spider").  CH: Spiders.txt:250.
+// Tier 5 -- Cyan ("Cyan Flying Spider").  CH: Spiders.txt:250.
 // Its two ice orbs (RS_IceOrbCyanAra1/2) ship with the pain elemental lane.
 // ---------------------------------------------------------------------------
 class RS_CyanSP2 : Actor   // CH Spiders.txt:250
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		BloodColor "cyan";
@@ -1187,11 +1187,11 @@ class RS_CyanSP2 : Actor   // CH Spiders.txt:250
 }
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- FireBlu ("Ugly floater").  CH: Spiders.txt:976.
+// Tier 8 -- FireBlu ("Ugly floater").  CH: Spiders.txt:976.
 // ---------------------------------------------------------------------------
 class RS_FireBluSP2 : Arachnotron   // CH Spiders.txt:976
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		BloodColor "Blue";
@@ -1331,11 +1331,11 @@ class RS_FireBluSP2 : Arachnotron   // CH Spiders.txt:976
 }
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray ("Metal Spider?").  CH: Spiders.txt:1240.
+// Tier 9 -- Gray ("Metal Spider?").  CH: Spiders.txt:1240.
 // ---------------------------------------------------------------------------
 class RS_GraySP2 : Arachnotron   // CH Spiders.txt:1240
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Species "Spider1";
@@ -1489,11 +1489,11 @@ class RS_GraySP2 : Arachnotron   // CH Spiders.txt:1240
 }
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss ("Eye see").  CH: Spiders.txt:518.
+// Tier 11 -- Abyss ("Eye see").  CH: Spiders.txt:518.
 // ---------------------------------------------------------------------------
 class RS_AbyssSP2 : Arachnotron   // CH Spiders.txt:518
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Species "Spider1";
@@ -1705,11 +1705,11 @@ class RS_AbyssSP2 : Arachnotron   // CH Spiders.txt:518
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black boss ("Macross Missile Spam").  CH: Spiders.txt:2499.
+// Tier 12 -- Black boss ("Macross Missile Spam").  CH: Spiders.txt:2499.
 // ---------------------------------------------------------------------------
 class RS_BlackSP2 : Actor   // CH Spiders.txt:2499
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o got missile spammed the hell out";
@@ -1860,11 +1860,11 @@ class RS_BlackSP2 : Actor   // CH Spiders.txt:2499
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black boss EX ("Macross Missile Spam EX").  CH: Spiders.txt:2649.
+// Tier 12 -- Black boss EX ("Macross Missile Spam EX").  CH: Spiders.txt:2649.
 // ---------------------------------------------------------------------------
 class RS_BlackSPEX : Actor   // CH Spiders.txt:2649
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was missile spammed even after beging already dead by black spider EX";
@@ -1921,7 +1921,7 @@ class RS_BlackSPEX : Actor   // CH Spiders.txt:2649
 		// CH: DropItem "RLFireStormModItem" -- DRLA stripped per owner 2026-08-05
 		// CH: Dropitem "RareArmorPool",102 -- DRLA stripped per owner 2026-08-05
 		// CH: Dropitem "RLUniqueWeaponSpawner",16 -- DRLA stripped per owner 2026-08-05
-		// CH keeps the tier-10 black translation commented out below this one; not reproduced.
+		// CH keeps the tier-12 black translation commented out below this one; not reproduced.
 		Translation "0:255=%[0.00,0.00,0.00]:[0.24,0.24,0.27]","208:223=%[0.25,0.00,0.50]:[1.26,0.72,1.38]","147:147=47:47","144:144=191:191","149:149=191:191";
 		Tag "Macross Missile Spam EX";
 	}
@@ -2154,11 +2154,11 @@ class RS_BlackSPEX : Actor   // CH Spiders.txt:2649
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White boss ("White Spider").  CH: Spiders.txt:3765.
+// Tier 13 -- White boss ("White Spider").  CH: Spiders.txt:3765.
 // ---------------------------------------------------------------------------
 class RS_WhiteSP11 : Actor   // CH Spiders.txt:3765
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		BloodColor "White";
@@ -2463,13 +2463,13 @@ class RS_WhiteSpidegg : Actor   // CH Spiders.txt:4002
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- the older white boss CH keeps alongside the current one.
+// Tier 13 -- the older white boss CH keeps alongside the current one.
 // Unreferenced by any spawner in CH (the gate points at WhiteSP11); imported
 // whole so nothing is silently dropped.  CH: Spiders.txt:4159.
 // ---------------------------------------------------------------------------
 class RS_WhiteSP11Old : Actor   // CH Spiders.txt:4159
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		BloodColor "White";
@@ -2575,11 +2575,11 @@ class RS_WhiteSP11Old : Actor   // CH Spiders.txt:4159
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White Spider "and half".  CH: Spiders.txt:4335.
+// Tier 13 -- White Spider "and half".  CH: Spiders.txt:4335.
 // ---------------------------------------------------------------------------
 class RS_WhiteSP2 : Actor   // CH Spiders.txt:4335
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		BloodColor "White";
@@ -2664,11 +2664,11 @@ class RS_WhiteSP2 : Actor   // CH Spiders.txt:4335
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White Spider "and 1/4".  CH: Spiders.txt:4264.
+// Tier 13 -- White Spider "and 1/4".  CH: Spiders.txt:4264.
 // ---------------------------------------------------------------------------
 class RS_WhiteSP3 : Actor   // CH Spiders.txt:4264
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		BloodColor "White";

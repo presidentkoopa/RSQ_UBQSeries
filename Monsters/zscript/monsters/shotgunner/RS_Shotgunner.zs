@@ -4,9 +4,9 @@
 // read whole). Every actor cites its CH line. Support classes and import
 // rules: RS_ShotgunnerFX.zs (and RS_ZombiemanFX.zs for the shared ones).
 //
-// Tier ladder (CH icon index), same as the zombieman: 1 Common, 2 Green,
-// 3 Blue, 4 Purple, 5 Yellow(Orange), 6 Red, 7 FireBlu, 8 Gray, 9 Abyss,
-// 10 Black, 11 White, 12 Cyan, 13 Brown.
+// Tier ladder (the RSQ ladder by strength, 11-11), same as the zombieman: 1 Common, 2 Green,
+// 3 Blue, 4 Purple, 7 Yellow(Orange), 10 Red, 8 FireBlu, 9 Gray, 11 Abyss,
+// 12 Black, 13 White, 5 Cyan, 6 Brown.
 //
 // Known-absent frame, deliberately NOT remapped (checked 2026-08-06):
 //   * SGUP M -- the gib set ships N-U (8 lumps) here AND in CH; M exists in
@@ -206,11 +206,11 @@ class RS_WhiteSG : Actor   // CH Shotgunners.txt:2298
 }
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN.  CH: Shotgunners.txt:40.  Muddy skull-charger.
+// TIER 6 -- BROWN.  CH: Shotgunners.txt:40.  Muddy skull-charger.
 // ---------------------------------------------------------------------------
 class RS_BrownSG2 : ShotgunGuy
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 155;
@@ -334,11 +334,11 @@ class RS_BrownSG2 : ShotgunGuy
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN.  CH: Shotgunners.txt:213.  Heavy ice trooper, jumps.
+// TIER 5 -- CYAN.  CH: Shotgunners.txt:213.  Heavy ice trooper, jumps.
 // ---------------------------------------------------------------------------
 class RS_CyanSG2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 60;
@@ -471,12 +471,12 @@ class RS_CyanSG2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY.  CH: Shotgunners.txt:364.  The sniper.
+// TIER 9 -- GRAY.  CH: Shotgunners.txt:364.  The sniper.
 // ---------------------------------------------------------------------------
 class RS_GraySG2 : ShotgunGuy
 {
 	int user_ready;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 155;
@@ -604,11 +604,11 @@ class RS_GraySG2 : ShotgunGuy
 }
 
 // ---------------------------------------------------------------------------
-// TIER 9 -- ABYSS.  CH: Shotgunners.txt:549.
+// TIER 11 -- ABYSS.  CH: Shotgunners.txt:549.
 // ---------------------------------------------------------------------------
 class RS_AbyssSG2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 300;
@@ -723,11 +723,11 @@ class RS_AbyssSG2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU.  CH: Shotgunners.txt:681.  Flame volley.
+// TIER 8 -- FIREBLU.  CH: Shotgunners.txt:681.  Flame volley.
 // ---------------------------------------------------------------------------
 class RS_FireBluSG2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 225;
@@ -1271,12 +1271,12 @@ class RS_PurpleSG : ShotgunGuy
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW (Orange Sergeant).  CH: Shotgunners.txt:1401.
+// TIER 7 -- YELLOW (Orange Sergeant).  CH: Shotgunners.txt:1401.
 // Autoshotgun with a 16-shell magazine and a reload.
 // ---------------------------------------------------------------------------
 class RS_YellowSG : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 85;
@@ -1413,11 +1413,11 @@ class RS_YellowSG : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED.  CH: Shotgunners.txt:1555.  RNG seeker storm + SSG.
+// TIER 10 -- RED.  CH: Shotgunners.txt:1555.  RNG seeker storm + SSG.
 // ---------------------------------------------------------------------------
 class RS_RedSG : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 150;
@@ -1538,12 +1538,12 @@ class RS_RedSG : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK.  CH: Shotgunners.txt:1863 (commander) / 1994 (troop).
+// TIER 12 -- BLACK.  CH: Shotgunners.txt:1863 (commander) / 1994 (troop).
 // The Crew Commander summons troops; each troop rolls a five-stance brain.
 // ---------------------------------------------------------------------------
 class RS_BlackSG3 : Actor   // Shotgun Crew Commander
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 1950;
@@ -1928,14 +1928,14 @@ class RS_BlackSG2 : Actor   // CH Shotgunners.txt:1994 -- the spec-ops troop.
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE.  CH: Shotgunners.txt:2334 (Benellus) / 2532 (EX).
+// TIER 13 -- WHITE.  CH: Shotgunners.txt:2334 (Benellus) / 2532 (EX).
 // The LegenDoom "Easter" gate is stripped like DRLA (cross-mod):
 // CH: Missile first line was A_JumpIfInventory("LDLegendaryMonsterTransformed",1,"Easter")
 // CH: Easter played "Bene/Song" once, then fell through to Missile+1.
 // ---------------------------------------------------------------------------
 class RS_WhiteSG2 : Actor   // BENELLUS, GOD OF SHOTGUNS
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Monster;
@@ -2068,7 +2068,7 @@ class RS_WhiteSG2 : Actor   // BENELLUS, GOD OF SHOTGUNS
 
 class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Monster;

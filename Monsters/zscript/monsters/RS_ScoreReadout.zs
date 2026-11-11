@@ -12,7 +12,9 @@
 // THE REQUESTS (objectArg is the monster; every answer is -1 for "not ours" /
 // "unknown"):
 //   "set"          1 a CH colour-tier monster (it carries RS_ZomTierToken)
-//   "tier"         its RSQ ladder tier, 1 Common .. 13 Brown (the token's amount)
+//   "tier"         its RSQ ladder tier, 1 Common .. 13 White (the token's amount). THE NUMBER IS THE STRENGTH
+//                  (owner 11-11): 1 Common 2 Green 3 Blue 4 Purple 5 Cyan 6 Brown 7 Yellow 8 FireBlu 9 Gray 10 Red
+//                  11 Abyss 12 Black (boss) 13 White (boss); RS_Retier.zs RS_TierLadder
 //   "ex"           1 a CH EX boss form (class name ends "EX"), else 0
 //   "spawn.odds"   N for "1 in N": how rare the CH colour dial's roll was for this
 //                  colour in its family, with the menu's gates applied the way the
@@ -43,7 +45,7 @@ class RSQMN_RosterService : Service
 		// that colour, "" when the type has no Doom family or the set has none for it
 		if (request == "set.class") return RS_BossfightPick.SetClass(stringArg, intArg, int(doubleArg));
 		// "set.class.ex" (11-11, RSQ Miniboss's miniboss reaching a boss colour): stringArg any monster type, intArg the set (3),
-		// doubleArg the ladder tier -> the family's EX form when this colour is its EX boss gate (Black; White for the
+		// doubleArg the ladder tier (12 Black, 13 White) -> the family's EX form when this colour is its EX boss gate (Black; White for the
 		// Shotgunner and the Lost Soul) AND the roll says EX, the way the gate's stub rolls it (rs_ch_exboss: 1 = 24 in 256,
 		// 2 = half, 3 = always, anything else never); "" otherwise. Play code, its own rng: every machine rolls the same.
 		if (request == "set.class.ex") return RS_BossfightPick.SetClassEX(stringArg, intArg, int(doubleArg));
@@ -111,36 +113,26 @@ class RS_ScoreReadout play
 		return t > 0 ? t : -1;
 	}
 
-	// a type's ladder tier by name, 0 none; an EX form has its gate's (RS_BlackImpEX -> RS_BlackImp, 10; the spider's
-	// RS_BlackSPEX -> RS_BlackSP1)
+	// a type's ladder tier by name, 0 none; an EX form has its gate's (RS_BlackImpEX -> RS_BlackImp, 12; the spider's
+	// RS_BlackSPEX -> RS_BlackSP1). RS_TierLadder.TierOfAny (RS_Retier.zs), the one rule RS_Retier uses too.
 	static int TierOfName(String n)
 	{
-		int t = RS_TierLadder.TierOf(n);
-		if (t > 0 || n.Length() < 3 || n.Mid(n.Length() - 2) != "EX") return t;
-		String g = n.Left(n.Length() - 2);
-		t = RS_TierLadder.TierOf(g);
-		if (t <= 0) t = RS_TierLadder.TierOf(g .. "1");
-		return t;
+		return RS_TierLadder.TierOfAny(n);
 	}
 
 	static bool IsEX(Actor mo)
 	{
 		String n = mo.GetClassName();
-		return n.Length() > 2 && n.Mid(n.Length() - 2) == "EX";
+		return RS_TierLadder.IsEXName(n);
 	}
 
 	// The ladder family of a CH body. EX forms are not in the ladder tables: their
 	// family is the gate they came from (RS_BlackImpEX -> RS_BlackImp; the spider's
-	// RS_BlackSPEX -> RS_BlackSP1).
+	// RS_BlackSPEX -> RS_BlackSP1). RS_TierLadder.FamilyOfAny (RS_Retier.zs).
 	static int FamilyOf(Actor mo)
 	{
 		String n = mo.GetClassName();
-		int f = RS_TierLadder.FamilyOf(n);
-		if (f >= 0 || !IsEX(mo)) return f;
-		String g = n.Left(n.Length() - 2);
-		f = RS_TierLadder.FamilyOf(g);
-		if (f < 0) f = RS_TierLadder.FamilyOf(g .. "1");
-		return f;
+		return RS_TierLadder.FamilyOfAny(n);
 	}
 
 	static int Gate(Name cv)
@@ -177,18 +169,19 @@ class RS_ScoreReadout play
 		}
 
 		// the gates, as the stubs read them (CVARINFO: 1 = colour off and re-rolled;
-		// 3 = half of them re-rolled, brown / cyan / abyss only)
+		// 3 = half of them re-rolled, brown / cyan / abyss only). By the ladder's numbers (11-11, strength order):
+		// 5 Cyan, 6 Brown, 8 FireBlu, 9 Gray, 10 Red, 11 Abyss, 12 Black, 13 White.
 		int g = Gate('rs_ch_brown');
-		if (g == 1) w[13] = 0; else if (g == 3) w[13] *= 0.5;
+		if (g == 1) w[6] = 0; else if (g == 3) w[6] *= 0.5;
 		g = Gate('rs_ch_cyan');
-		if (g == 1) w[12] = 0; else if (g == 3) w[12] *= 0.5;
+		if (g == 1) w[5] = 0; else if (g == 3) w[5] *= 0.5;
 		g = Gate('rs_ch_abyss');
-		if (g == 1) w[9] = 0;  else if (g == 3) w[9] *= 0.5;
-		if (Gate('rs_ch_fireblu') == 1) w[7] = 0;
-		if (Gate('rs_ch_gray') == 1) w[8] = 0;
+		if (g == 1) w[11] = 0;  else if (g == 3) w[11] *= 0.5;
+		if (Gate('rs_ch_fireblu') == 1) w[8] = 0;
+		if (Gate('rs_ch_gray') == 1) w[9] = 0;
 		// White Boss off: a White roll becomes a Black roll; Black Boss off: a Black roll becomes Red
-		if (Gate('rs_ch_whiteboss') != 1) { w[10] += w[11]; w[11] = 0; }
-		if (Gate('rs_ch_blackboss') != 1) { w[6] += w[10]; w[10] = 0; }
+		if (Gate('rs_ch_whiteboss') != 1) { w[12] += w[13]; w[13] = 0; }
+		if (Gate('rs_ch_blackboss') != 1) { w[10] += w[12]; w[12] = 0; }
 
 		double total = 0;
 		for (int t = 1; t <= 13; t++) total += w[t];
@@ -283,12 +276,7 @@ class RS_BossfightPick play
 		Name v = VanillaOf(c);
 		int f = v != 'None' ? LadderFam(v) : -1;
 		if (f >= 0) return f;
-		f = RS_TierLadder.FamilyOf(clsName);
-		if (f >= 0 || clsName.Length() < 3 || clsName.Mid(clsName.Length() - 2) != "EX") return f;
-		String g = clsName.Left(clsName.Length() - 2);
-		f = RS_TierLadder.FamilyOf(g);
-		if (f < 0) f = RS_TierLadder.FamilyOf(g .. "1");
-		return f;
+		return RS_TierLadder.FamilyOfAny(clsName);
 	}
 
 	static String SetClass(String clsName, int set, int tier)
@@ -308,7 +296,7 @@ class RS_BossfightPick play
 	// the EX form of a family at a boss colour, after the stub's roll (see "set.class.ex"); "" when none or not rolled
 	static String SetClassEX(String clsName, int set, int tier)
 	{
-		if (set != 3 || (tier != 10 && tier != 11)) return "";
+		if (set != 3 || (tier != 12 && tier != 13)) return "";   // 12 Black, 13 White (the boss colours; 10 and 11 before 11-11)
 		int f = FamOfType(clsName);
 		if (f < 0) return "";
 		// the EX class is named after the gate (RS_BlackImp -> RS_BlackImpEX; the spider's RS_BlackSP1 -> RS_BlackSPEX)

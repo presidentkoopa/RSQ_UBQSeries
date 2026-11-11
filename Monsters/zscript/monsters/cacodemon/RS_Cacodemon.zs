@@ -4,10 +4,10 @@
 // read whole). Every actor cites its CH line. Support: RS_CacodemonFX.zs
 // (see its header for cross-lane notes, proven-missing assets, and standing
 // strips).
-// Tier ladder as before: CH icon index -- 1 Common, 2 Green, 3 Blue,
-// 4 Purple, 5 Yellow (Cacolich), 6 Red, 7 FireBlu, 8 Gray (Stone Cold),
-// 9 Abyss, 10 Black boss (SHOCKMASTER, both EX and non-EX), 11 White boss
-// (both phases), 12 Cyan (FrostBaller), 13 Brown (Grell). Minions and
+// Tier ladder as before: the RSQ ladder by strength, 11-11 -- 1 Common, 2 Green, 3 Blue,
+// 4 Purple, 7 Yellow (Cacolich), 10 Red, 8 FireBlu, 9 Gray (Stone Cold),
+// 11 Abyss, 12 Black boss (SHOCKMASTER, both EX and non-EX), 13 White boss
+// (both phases), 5 Cyan (FrostBaller), 6 Brown (Grell). Minions and
 // summons (VoidField, RedSpikeCacoEX, WhiteCacoOrb1, BloodRainerCaco,
 // WhiteCacoFake, SummonPortalCybie) get no token.
 // CyanCaco2 is CH's DOUBLE-LABEL case: Cacodemons.txt defines "See:" twice
@@ -207,12 +207,12 @@ class RS_WhiteCaco : Actor   // CH Cacodemons.txt:3191 -- gate CH_WhiteBossy
 }
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN ("Gruelsome").  CH: Cacodemons.txt:40.  The Grell: pack
+// TIER 6 -- BROWN ("Gruelsome").  CH: Cacodemons.txt:40.  The Grell: pack
 // healer/buffer that scatters healing motes and hands out the PE speed buff.
 // ---------------------------------------------------------------------------
 class RS_BrownCaco2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Tag "Gruelsome";
@@ -323,12 +323,12 @@ class RS_BrownCaco2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN ("FrostBaller").  CH: Cacodemons.txt:257.  Fast-chasing
+// TIER 5 -- CYAN ("FrostBaller").  CH: Cacodemons.txt:257.  Fast-chasing
 // ice thrower; the double-See case documented in the file header.
 // ---------------------------------------------------------------------------
 class RS_CyanCaco2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		HitObituary "%o was icicled by cyan Cacodemon";
@@ -444,12 +444,12 @@ class RS_CyanCaco2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 9 -- ABYSS ("Abyssmal Tomatoe quality").  CH: Cacodemons.txt:490.
+// TIER 11 -- ABYSS ("Abyssmal Tomatoe quality").  CH: Cacodemons.txt:490.
 // Black-blooded spam boss with the seeking Hidi flame and pack heal.
 // ---------------------------------------------------------------------------
 class RS_AbyssCaco2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 1100;
@@ -603,13 +603,13 @@ class RS_AbyssCaco2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY ("Stone Cold Cacodemon").  CH: Cacodemons.txt:815.
+// TIER 9 -- GRAY ("Stone Cold Cacodemon").  CH: Cacodemons.txt:815.
 // Skull-rushing rock spitter with the dash budget (user_nodash3).
 // ---------------------------------------------------------------------------
 class RS_GrayCaco2 : Cacodemon
 {
 	int user_nodash3;   // CH: Var int User_nodash3
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 650;
@@ -715,12 +715,12 @@ class RS_GrayCaco2 : Cacodemon
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU ("One Ugly Tomatoe").  CH: Cacodemons.txt:922.
+// TIER 8 -- FIREBLU ("One Ugly Tomatoe").  CH: Cacodemons.txt:922.
 // Bouncing-fireball thrower; its Raise can Grow into Purple.
 // ---------------------------------------------------------------------------
 class RS_FireBluCaco2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 800;
@@ -1258,14 +1258,14 @@ class RS_PurpleCaco : Cacodemon
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW ("Yellow Cacolich").  CH: Cacodemons.txt:1640.  The
+// TIER 7 -- YELLOW ("Yellow Cacolich").  CH: Cacodemons.txt:1640.  The
 // phasing lich: void fields, bouncing flame, stealth wander.
 // lostsouls.txt:2984 spawns it (read-only there).
 // ---------------------------------------------------------------------------
 class RS_YellowCaco : Cacodemon
 {
 	int user_VoidField;   // CH: Var Int User_VoidField
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 720;
@@ -1401,13 +1401,13 @@ class RS_YellowCaco : Cacodemon
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED ("Red Cacodemon").  CH: Cacodemons.txt:1852.  Blood-spam
+// TIER 10 -- RED ("Red Cacodemon").  CH: Cacodemons.txt:1852.  Blood-spam
 // thrower with the rage counter (user_Tick2) and the sludge bomb.
 // ---------------------------------------------------------------------------
 class RS_RedCaco : Actor
 {
 	int user_Tick2;   // CH: Var Int User_Tick2
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 830;
@@ -1556,13 +1556,13 @@ class RS_RedCaco : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK ("SHOCKMASTER").  CH: Cacodemons.txt:2109.
+// TIER 12 -- BLACK ("SHOCKMASTER").  CH: Cacodemons.txt:2109.
 // Announcers dropped per owner.
 // ---------------------------------------------------------------------------
 class RS_BlackCaco2 : Actor
 {
 	int user_DO2;   // CH: Var int User_DO2
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o got extra well bloodcrocuted by Black Cacodemon";
@@ -1742,13 +1742,13 @@ class RS_BlackCaco2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 EX -- BLACK EX ("SHOCKMASTER RETURNS").  CH: Cacodemons.txt:2348.
+// TIER 12 EX -- BLACK EX ("SHOCKMASTER RETURNS").  CH: Cacodemons.txt:2348.
 // Announcers dropped per owner.
 // ---------------------------------------------------------------------------
 class RS_BlackCacoEX : Actor
 {
 	int user_DO2;   // CH: Var int User_DO2
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o got boilingly bloodcrocuted by Black Cacodemon EX";
@@ -1974,13 +1974,13 @@ class RS_BlackCacoEX : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE, PHASE 1 ("PLEASE NO").  CH: Cacodemons.txt:3210.
+// TIER 13 -- WHITE, PHASE 1 ("PLEASE NO").  CH: Cacodemons.txt:3210.
 // Announcers dropped per owner.  Its Death hatches WhiteCacoREAL.
 // lostsouls.txt has no claim here.
 // ---------------------------------------------------------------------------
 class RS_WhiteCaco2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 5000;
@@ -2146,13 +2146,13 @@ class RS_WhiteCaco2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE, PHASE 2 ("Thy flesh consumer").  CH: Cacodemons.txt:3375.
+// TIER 13 -- WHITE, PHASE 2 ("Thy flesh consumer").  CH: Cacodemons.txt:3375.
 // Invulnerable until all four orbs die (RS_CacoSafety x4 -> Vuln).
 // ---------------------------------------------------------------------------
 class RS_WhiteCacoREAL : Actor
 {
 	int user_mad;   // CH: var int user_mad
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 5000;

@@ -2,7 +2,7 @@
 // RS_Imp.zs -- Colourful Hell Imp family, native ZScript.
 // Source: C:\Users\Command\Desktop\CH\decorate\Imps.txt (3,133 lines, read
 // whole). Every actor cites its CH line. Support: RS_ImpFX.zs.
-// Tier ladder as before: 1 Common .. 13 Brown (CH icon index).
+// Tier ladder as before: 1 Common .. 13 White (the RSQ ladder, by strength, 11-11).
 // ============================================================================
 
 // ---------------------------------------------------------------------------
@@ -192,12 +192,12 @@ class RS_WhiteImp : Actor   // CH Imps.txt:2757
 }
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN ("medium evil imp").  CH: Imps.txt:40.  The warlord:
+// TIER 6 -- BROWN ("medium evil imp").  CH: Imps.txt:40.  The warlord:
 // parries, pulls, spikes, and war-cries the pack.
 // ---------------------------------------------------------------------------
 class RS_BrownImp2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 215;
@@ -342,11 +342,11 @@ class RS_BrownImp2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN ("Cyanide Imp").  CH: Imps.txt:297.
+// TIER 5 -- CYAN ("Cyanide Imp").  CH: Imps.txt:297.
 // ---------------------------------------------------------------------------
 class RS_CyanImp2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 125;
@@ -511,11 +511,11 @@ class RS_CyanImp2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 9 -- ABYSS.  CH: Imps.txt:514.
+// TIER 11 -- ABYSS.  CH: Imps.txt:514.
 // ---------------------------------------------------------------------------
 class RS_AbyssImp2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 300;
@@ -638,11 +638,11 @@ class RS_AbyssImp2 : Actor
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU ("Now THATS ugly").  CH: Imps.txt:726.
+// TIER 8 -- FIREBLU ("Now THATS ugly").  CH: Imps.txt:726.
 // ---------------------------------------------------------------------------
 class RS_FireBluImp2 : DoomImp
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 125;
@@ -754,11 +754,11 @@ class RS_FireBluImp2 : DoomImp
 }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY ("Stoned Imp").  CH: Imps.txt:854.  Nail rings.
+// TIER 9 -- GRAY ("Stoned Imp").  CH: Imps.txt:854.  Nail rings.
 // ---------------------------------------------------------------------------
 class RS_GrayImp2 : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 265;
@@ -1303,11 +1303,11 @@ class RS_PurpleImp : DoomImp
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW ("Orange Imp").  CH: Imps.txt:1535.
+// TIER 7 -- YELLOW ("Orange Imp").  CH: Imps.txt:1535.
 // ---------------------------------------------------------------------------
 class RS_YellowImp : DoomImp
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 145;
@@ -1433,11 +1433,11 @@ class RS_YellowImp : DoomImp
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED.  CH: Imps.txt:1688.  Enrages on pain; red seeker swarms.
+// TIER 10 -- RED.  CH: Imps.txt:1688.  Enrages on pain; red seeker swarms.
 // ---------------------------------------------------------------------------
 class RS_RedImp : DoomImp
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 200;
@@ -1551,12 +1551,12 @@ class RS_RedImp : DoomImp
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK.  CH: Imps.txt:2085 (Smoking EX) / 2300 (Smoking Black).
+// TIER 12 -- BLACK.  CH: Imps.txt:2085 (Smoking EX) / 2300 (Smoking Black).
 // Announcers dropped per owner.
 // ---------------------------------------------------------------------------
 class RS_BlackImpEX : Actor
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o was smoked out by the black imp EX";
@@ -1738,7 +1738,7 @@ class RS_BlackImpEX : Actor
 
 class RS_BlackImp1 : Actor   // CH Imps.txt:2300 -- Smoking Black Imp
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Obituary "%o wasn't good enough at dodging black imps spam shots";
@@ -1878,7 +1878,7 @@ class RS_BlackImp1 : Actor   // CH Imps.txt:2300 -- Smoking Black Imp
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE ("Imp Master") and the ghost imp squad.
+// TIER 13 -- WHITE ("Imp Master") and the ghost imp squad.
 // CH: Imps.txt:2568-2979.  Ghosts are minions: no tier tokens.
 // ---------------------------------------------------------------------------
 class RS_SpecialImp2 : RandomSpawner   // CH Imps.txt:2568
@@ -2090,7 +2090,7 @@ class RS_SpecialImp3 : RS_BlueImp   // CH Imps.txt:2721 -- Ghost Blue Imp
 
 class RS_WhiteImp2 : Actor   // CH Imps.txt:2776 -- Imp Master
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Obituary "Look,%o , it's the revenge of the imps!";

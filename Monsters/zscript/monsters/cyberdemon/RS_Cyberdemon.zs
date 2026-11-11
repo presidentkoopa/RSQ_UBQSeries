@@ -5,9 +5,9 @@
 // Support: RS_CyberdemonFX.zs (see its header for cross-lane ownership,
 // expected-from-Archviles names, proven-missing assets, and standing strips).
 //
-// Tier ladder is CH's own icon index: 1 Common, 2 Green, 3 Blue, 4 Purple,
-// 5 Yellow, 6 Red, 7 FireBlu, 8 Gray, 9 Abyss, 10 Black, 11 White, 12 Cyan,
-// 13 Brown. RS_SpecialHK, RS_RomeroBaronsCH and RS_MolochWraith are summoned
+// Tier ladder is the RSQ ladder by strength (11-11): 1 Common, 2 Green, 3 Blue, 4 Purple,
+// 7 Yellow, 10 Red, 8 FireBlu, 9 Gray, 11 Abyss, 12 Black, 13 White, 5 Cyan,
+// 6 Brown. RS_SpecialHK, RS_RomeroBaronsCH and RS_MolochWraith are summoned
 // minions and get no token.
 //
 // LANDING THIS FAMILY CLOSES A DORMANT GUARD:
@@ -284,11 +284,11 @@ class RS_WhiteCybie : RS_BrownCybie   // CH CYBIES.txt:5170 -- gate CH_WhiteBoss
 }
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown Cybie ("ComposterDemon").  CH: CYBIES.txt:69.
+// Tier 6 -- Brown Cybie ("ComposterDemon").  CH: CYBIES.txt:69.
 // ---------------------------------------------------------------------------
 class RS_BrownCybie2 : Actor   // CH CYBIES.txt:69
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Species "Cybie";
@@ -464,11 +464,11 @@ class RS_BrownCybie2 : Actor   // CH CYBIES.txt:69
 }
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan Cybie ("Akinator").  CH: CYBIES.txt:788.
+// Tier 5 -- Cyan Cybie ("Akinator").  CH: CYBIES.txt:788.
 // ---------------------------------------------------------------------------
 class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 8083;
@@ -624,11 +624,11 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 }
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss Cybie ("Unholy diver").  CH: CYBIES.txt:1112.
+// Tier 11 -- Abyss Cybie ("Unholy diver").  CH: CYBIES.txt:1112.
 // ---------------------------------------------------------------------------
 class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 12000;
@@ -810,12 +810,12 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 }
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray Cybie ("Stoner Cybie").  CH: CYBIES.txt:1576.
+// Tier 9 -- Gray Cybie ("Stoner Cybie").  CH: CYBIES.txt:1576.
 // ---------------------------------------------------------------------------
 class RS_GrayCybie2 : Actor   // CH CYBIES.txt:1576
 {
 	int User_Doner;   // CH: Var int User_Doner;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Species "Cybie";
@@ -947,11 +947,11 @@ class RS_GrayCybie2 : Actor   // CH CYBIES.txt:1576
 }
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- FireBlu Cybie.  CH: CYBIES.txt:1947.
+// Tier 8 -- FireBlu Cybie.  CH: CYBIES.txt:1947.
 // ---------------------------------------------------------------------------
 class RS_FireBluCybie2 : Actor   // CH CYBIES.txt:1947
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 7777;
@@ -1595,12 +1595,12 @@ class RS_PurpleCybie : Cyberdemon   // CH CYBIES.txt:2699
 }
 
 // ---------------------------------------------------------------------------
-// Tier 5 -- Yellow Cybie ("Less cyber yellow Cybie").  CH: CYBIES.txt:2991.
+// Tier 7 -- Yellow Cybie ("Less cyber yellow Cybie").  CH: CYBIES.txt:2991.
 // ---------------------------------------------------------------------------
 class RS_YellowCybie : Actor   // CH CYBIES.txt:2991
 {
 	int User_Doner;   // CH: Var int User_Doner;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Species "Cybie";
@@ -1734,12 +1734,12 @@ class RS_YellowCybie : Actor   // CH CYBIES.txt:2991
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red Cybie ("Red Overlord").  CH: CYBIES.txt:3308.
+// Tier 10 -- Red Cybie ("Red Overlord").  CH: CYBIES.txt:3308.
 // ---------------------------------------------------------------------------
 class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 {
 	int User_PhaseIt;   // CH: Var Int User_PhaseIt;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 10000;
@@ -2052,14 +2052,14 @@ class RS_MolochWraith : Actor   // CH CYBIES.txt:3692
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- Black Cybie ("He Will Smith You").  CH: CYBIES.txt:4082.
+// Tier 12 -- Black Cybie ("He Will Smith You").  CH: CYBIES.txt:4082.
 // Black bosses are icon 10 in CH's ladder.
 // ---------------------------------------------------------------------------
 class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 {
 	int User_OH1;      // CH: Var Int User_OH1;
 	int User_DumDum;   // CH: Var Int User_DumDum;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 14500;
@@ -2384,12 +2384,12 @@ class RS_RomeroBaronsCH : RS_CommonBaron   // CH CYBIES.txt:5224
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- White Cybie ("It runs doom").  CH: CYBIES.txt:5235.
+// Tier 13 -- White Cybie ("It runs doom").  CH: CYBIES.txt:5235.
 // ---------------------------------------------------------------------------
 class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 {
 	int user_phase;   // CH: var int user_phase;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Obituary "%o was made into Romero's bitch";

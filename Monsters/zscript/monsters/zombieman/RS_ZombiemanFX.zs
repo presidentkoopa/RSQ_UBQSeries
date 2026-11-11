@@ -14,9 +14,11 @@
 //   * No abstract. No state dispatchers. No shared monster base class.
 //   * Tier: CH's own token idiom (CHBoner/BoneUp style). RS_ZomTierToken
 //     amount == tier. Query: mo.CountInv("RS_ZomTierToken").
-//     Set: RS_Zom.SetTier(mo, n). Ladder = CH's icon index:
-//     1 Common, 2 Green, 3 Blue, 4 Purple, 5 Yellow(Orange), 6 Red,
-//     7 FireBlu, 8 Gray, 9 Abyss, 10 Black, 11 White, 12 Cyan, 13 Brown.
+//     Set: RS_Zom.SetTier(mo, n). The RSQ ladder, ordered by STRENGTH (owner
+//     2026-11-11; RS_Retier.zs RS_TierLadder):
+//     1 Common, 2 Green, 3 Blue, 4 Purple, 5 Cyan, 6 Brown, 7 Yellow(Orange),
+//     8 FireBlu, 9 Gray, 10 Red, 11 Abyss, 12 Black (boss), 13 White (boss).
+//     (Before 11-11 the token held CH's icon index, its listing order.)
 //
 // Dangling by design (all no-op safely until their owners exist):
 // RS_CommonRevenant (MrBones 3rd raise, guarded), CH_Chaingun (undefined in
@@ -78,6 +80,11 @@ class RS_CHAbyssMark: Inventory { Default { Inventory.MaxAmount 1; } }   // CH D
 // blind gate becomes rs_ch_colorblind (CH cvar CH_ColorBlind, default 0).
 // Sprites TI3R A-M: the series' style B tier gems (11-10; design/icons, sprites/monsters/TierIcons). They were
 // missing until then, so the aid never drew.
+// [11-11 ladder renumber] The frames are in LADDER order (A = tier 1 Common .. M = tier 13 White, strength order);
+// the actors keep Colourful Hell's names (RS_ColorTierIconCH<n>, n = CH's icon index, spawned by name from every
+// colour's states), so each one below shows its own colour's frame: CH5 Yellow -> G (tier 7), CH6 Red -> J (10),
+// CH7 FireBlu -> H (8), CH8 Gray -> I (9), CH9 Abyss -> K (11), CH10 Black -> L (12), CH11 White -> M (13),
+// CH12 Cyan -> E (5), CH13 Brown -> F (6).
 // ---------------------------------------------------------------------------
 class RS_ColorTierIconCH : Actor
 {
@@ -105,18 +112,18 @@ class RS_ColorTierIconCH : Actor
 	}
 }
 
-class RS_ColorTierIconCH2 : RS_ColorTierIconCH { States { Show: TI3R B 30 Bright; Stop; } }
-class RS_ColorTierIconCH3 : RS_ColorTierIconCH { States { Show: TI3R C 30 Bright; Stop; } }
-class RS_ColorTierIconCH4 : RS_ColorTierIconCH { States { Show: TI3R D 30 Bright; Stop; } }
-class RS_ColorTierIconCH5 : RS_ColorTierIconCH { States { Show: TI3R E 30 Bright; Stop; } }
-class RS_ColorTierIconCH6 : RS_ColorTierIconCH { States { Show: TI3R F 30 Bright; Stop; } }
-class RS_ColorTierIconCH7 : RS_ColorTierIconCH { States { Show: TI3R G 30 Bright; Stop; } }
-class RS_ColorTierIconCH8 : RS_ColorTierIconCH { States { Show: TI3R H 30 Bright; Stop; } }
-class RS_ColorTierIconCH9 : RS_ColorTierIconCH { States { Show: TI3R I 30 Bright; Stop; } }
-class RS_ColorTierIconCH10 : RS_ColorTierIconCH { States { Show: TI3R J 30 Bright; Stop; } }
-class RS_ColorTierIconCH11 : RS_ColorTierIconCH { States { Show: TI3R K 30 Bright; Stop; } }
-class RS_ColorTierIconCH12 : RS_ColorTierIconCH { States { Show: TI3R L 30 Bright; Stop; } }
-class RS_ColorTierIconCH13 : RS_ColorTierIconCH { States { Show: TI3R M 30 Bright; Stop; } }
+class RS_ColorTierIconCH2 : RS_ColorTierIconCH { States { Show: TI3R B 30 Bright; Stop; } }   // Green, tier 2
+class RS_ColorTierIconCH3 : RS_ColorTierIconCH { States { Show: TI3R C 30 Bright; Stop; } }   // Blue, tier 3
+class RS_ColorTierIconCH4 : RS_ColorTierIconCH { States { Show: TI3R D 30 Bright; Stop; } }   // Purple, tier 4
+class RS_ColorTierIconCH5 : RS_ColorTierIconCH { States { Show: TI3R G 30 Bright; Stop; } }   // Yellow, tier 7
+class RS_ColorTierIconCH6 : RS_ColorTierIconCH { States { Show: TI3R J 30 Bright; Stop; } }   // Red, tier 10
+class RS_ColorTierIconCH7 : RS_ColorTierIconCH { States { Show: TI3R H 30 Bright; Stop; } }   // FireBlu, tier 8
+class RS_ColorTierIconCH8 : RS_ColorTierIconCH { States { Show: TI3R I 30 Bright; Stop; } }   // Gray, tier 9
+class RS_ColorTierIconCH9 : RS_ColorTierIconCH { States { Show: TI3R K 30 Bright; Stop; } }   // Abyss, tier 11
+class RS_ColorTierIconCH10 : RS_ColorTierIconCH { States { Show: TI3R L 30 Bright; Stop; } }   // Black, tier 12
+class RS_ColorTierIconCH11 : RS_ColorTierIconCH { States { Show: TI3R M 30 Bright; Stop; } }   // White, tier 13
+class RS_ColorTierIconCH12 : RS_ColorTierIconCH { States { Show: TI3R E 30 Bright; Stop; } }   // Cyan, tier 5
+class RS_ColorTierIconCH13 : RS_ColorTierIconCH { States { Show: TI3R F 30 Bright; Stop; } }   // Brown, tier 6
 
 // ---------------------------------------------------------------------------
 // Bonus bundles.  CH: DECORATE.txt:21-89 (Health), 91-159 (Armor),

@@ -8,9 +8,9 @@
 //
 // SEVENTEENTH AND FINAL CH FAMILY. With this in, the import is complete.
 //
-// Tier ladder is CH's own icon index: 1 Common, 2 Green, 3 Blue, 4 Purple,
-// 5 Yellow, 6 Red, 7 FireBlu, 8 Gray, 9 Abyss, 10 Black, 11 White, 12 Cyan,
-// 13 Brown. RS_SpecialSpider1 (purple's babies), RS_MiniSentinelSpider
+// Tier ladder is the RSQ ladder by strength (11-11): 1 Common, 2 Green, 3 Blue, 4 Purple,
+// 7 Yellow, 10 Red, 8 FireBlu, 9 Gray, 11 Abyss, 12 Black, 13 White, 5 Cyan,
+// 6 Brown. RS_SpecialSpider1 (purple's babies), RS_MiniSentinelSpider
 // (white's drones) and RS_RedMindBomb (red's floating mine) are summons and
 // get NO tier token. RS_CH_OrbOfChaos is CH's own "// UNUSED" actor -- kept
 // verbatim, unreferenced, no token.
@@ -438,11 +438,11 @@ class RS_WhiteMind : Actor   // CH MASTERMINDS.txt:4428 -- gate CH_WhiteBossy
 // ===========================================================================
 
 // ---------------------------------------------------------------------------
-// TIER 13 -- BROWN. CH MASTERMINDS.txt:70.
+// TIER 6 -- BROWN. CH MASTERMINDS.txt:70.
 // ---------------------------------------------------------------------------
 class RS_BrownMind2 : Actor   // CH MASTERMINDS.txt:70
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 8858;
@@ -660,11 +660,11 @@ class RS_BrownMind2 : Actor   // CH MASTERMINDS.txt:70
 }
 
 // ---------------------------------------------------------------------------
-// TIER 12 -- CYAN. CH MASTERMINDS.txt:804.
+// TIER 5 -- CYAN. CH MASTERMINDS.txt:804.
 // ---------------------------------------------------------------------------
 class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 7777;
@@ -853,7 +853,7 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 }
 
 // ---------------------------------------------------------------------------
-// TIER 9 -- ABYSS. CH MASTERMINDS.txt:1143.
+// TIER 11 -- ABYSS. CH MASTERMINDS.txt:1143.
 // RESOLVED 2026-08-06 -- the See/See2/See3 "AMIN KLMLK" lines were a slip for
 // ANIM and are now ANIM KLMLK. AMIN ships A-I (8-rotation walk); K/L/M ship on
 // ANIM (ANIMK0/ANIML0/ANIMM0), the SAME monster's flat-rotation prefix, in the
@@ -866,7 +866,7 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 // ---------------------------------------------------------------------------
 class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 12222;
@@ -1128,11 +1128,11 @@ class RS_CommonMind : SpiderMastermind   // CH MASTERMINDS.txt:1721
 }
 
 // ---------------------------------------------------------------------------
-// TIER 8 -- GRAY. CH MASTERMINDS.txt:1807.
+// TIER 9 -- GRAY. CH MASTERMINDS.txt:1807.
 // ---------------------------------------------------------------------------
 class RS_GrayMind2 : SpiderMastermind   // CH MASTERMINDS.txt:1807
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 8007;
@@ -1294,11 +1294,11 @@ class RS_GrayMind2 : SpiderMastermind   // CH MASTERMINDS.txt:1807
 }
 
 // ---------------------------------------------------------------------------
-// TIER 7 -- FIREBLU. CH MASTERMINDS.txt:2114.
+// TIER 8 -- FIREBLU. CH MASTERMINDS.txt:2114.
 // ---------------------------------------------------------------------------
 class RS_FireBluMind2 : SpiderMastermind   // CH MASTERMINDS.txt:2114
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 8007;
@@ -1875,11 +1875,11 @@ class RS_PurpleMind : SpiderMastermind   // CH MASTERMINDS.txt:2764
 }
 
 // ---------------------------------------------------------------------------
-// TIER 5 -- YELLOW. CH MASTERMINDS.txt:3037.
+// TIER 7 -- YELLOW. CH MASTERMINDS.txt:3037.
 // ---------------------------------------------------------------------------
 class RS_YellowMind : Actor   // CH MASTERMINDS.txt:3037
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 
 	int user_halpme;   // CH: Var Int User_HalpMe (MASTERMINDS.txt:3080)
 
@@ -2074,11 +2074,11 @@ class RS_YellowMind : Actor   // CH MASTERMINDS.txt:3037
 }
 
 // ---------------------------------------------------------------------------
-// TIER 6 -- RED. CH MASTERMINDS.txt:3359.
+// TIER 10 -- RED. CH MASTERMINDS.txt:3359.
 // ---------------------------------------------------------------------------
 class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 
 	int user_phase2;   // CH: Var Int User_Phase2 (MASTERMINDS.txt:3418)
 
@@ -2335,7 +2335,7 @@ class RS_RedMindBomb : Actor   // CH MASTERMINDS.txt:3715
 }
 
 // ---------------------------------------------------------------------------
-// TIER 10 -- BLACK, "Pseudo Old God". CH MASTERMINDS.txt:3839.
+// TIER 12 -- BLACK, "Pseudo Old God". CH MASTERMINDS.txt:3839.
 // RESOLVED 2026-08-06 -- RapidFire's "ARNQ P" was a slip for ARNQ D and is now
 // ARNQ D. ARNQ ships A-M (CH sprites/bigmama, 37 lumps); the line sits in a run
 // of eleven otherwise-identical "ARNQ D 0 A_FaceTarget" facing-resets in the
@@ -2346,7 +2346,7 @@ class RS_RedMindBomb : Actor   // CH MASTERMINDS.txt:3715
 // ---------------------------------------------------------------------------
 class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 
 	int user_sce;   // CH: var int user_sce (MASTERMINDS.txt:3894)
 
@@ -2657,11 +2657,11 @@ class RS_CH_OrbOfChaos : Actor   // CH MASTERMINDS.txt:4477 -- UNUSED in CH
 }
 
 // ---------------------------------------------------------------------------
-// TIER 11 -- WHITE, "Heavily Armed Spidey". CH MASTERMINDS.txt:4925.
+// TIER 13 -- WHITE, "Heavily Armed Spidey". CH MASTERMINDS.txt:4925.
 // ---------------------------------------------------------------------------
 class RS_WhiteMind2 : Actor   // CH MASTERMINDS.txt:4925
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 15000;

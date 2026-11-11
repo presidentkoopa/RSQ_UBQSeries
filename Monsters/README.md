@@ -15,8 +15,8 @@ Brutal Doom's own monsters getting the colour ladder is planned, not built.
 
 - **Your maps, your monsters.** One setting decides what every map's monsters become: ColorfulHell, Brutal Doom's,
   or the id originals. It takes hold on the next map.
-- **A ladder you can read.** Thirteen colours, from Common up through Green, Blue, Purple, Yellow and Red, five odd
-  ones out (FireBlu, Gray, Abyss, Cyan, Brown), and two boss colours, Black and White.
+- **A ladder you can read.** Thirteen colours, numbered by strength: Common, Green, Blue, Purple, Cyan, Brown, Yellow,
+  FireBlu, Gray, Red, Abyss, and the two boss colours, Black and White. A higher tier is a stronger monster.
 - **The flash.** A monster that changes tier blinks white against its own colour for a beat (black, when it is
   becoming White), then turns. A tier change you are meant to watch always comes with it.
 - **ColorfulHell is a bestiary.** Every colour of every Doom monster is its own creature, with its own name, health and
@@ -50,18 +50,23 @@ setting saved from an older version that picked MeatGrinder (now removed) reads 
 
 ### The ladder
 
+The ladder is ordered by strength (owner, 2026-11-11): the tier number IS the strength. Each colour's place was
+measured from its health in every family (mean rank over the 17 families, EX forms left out; RSQ Miniboss commit
+7c50d118, `design/rigtest_2026-11-10/evidence/MB_TIER2_strength.py`).
+
 | # | Colour | | # | Colour |
 |---|---|---|---|---|
-| 1 | Common | | 8 | Gray (extra) |
-| 2 | Green | | 9 | Abyss (extra) |
-| 3 | Blue | | 10 | **Black** (boss) |
-| 4 | Purple | | 11 | **White** (boss) |
-| 5 | Yellow (Colourful Hell's names call it Orange) | | 12 | Cyan (extra) |
-| 6 | Red | | 13 | Brown (extra) |
-| 7 | FireBlu (extra) | | | |
+| 1 | Common | | 8 | FireBlu (extra) |
+| 2 | Green | | 9 | Gray (extra) |
+| 3 | Blue | | 10 | Red |
+| 4 | Purple | | 11 | Abyss (extra) |
+| 5 | Cyan (extra) | | 12 | **Black** (boss; the EX roll) |
+| 6 | Brown (extra) | | 13 | **White** (boss) |
+| 7 | Yellow (Colourful Hell's names call it Orange) | | | |
 
-The order is the mod's numbering, not a strength ranking: a Cyan or Brown monster is not tougher than a Red
-one. The two boss colours are the top.
+Only the numbering changed on 11-11: every colour keeps its monsters, health, look and boss status. Before, the numbers
+were Colourful Hell's listing order (5 Yellow, 6 Red, 7 FireBlu, 8 Gray, 9 Abyss, 10 Black, 11 White, 12 Cyan,
+13 Brown). A tier change one step up is now always one step stronger; the tier gems are in this order too.
 
 ### Changing tier, and the flash
 
@@ -204,11 +209,12 @@ Defaults are in bold.
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **The floating tier gems** (`rs_ch_colorblind`, set from the console in that run): drawn over the monsters (they drew nothing before 11-10: no art), busy with the colour-blind aid on (`evidence/V3_hpbar_icons_on_off_on.jpg`). ColorfulHell was the Monster Set in the miniboss runs (`evidence/L1_log.txt`, `L2_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md` R1, `RESULTS_P4.md` N5) | **R1:** a Monster Set saved as 2 (the old MeatGrinder pick) read as ColorfulHell: every monster a ColorfulHell class with a tier; in a miniboss fight the tier-ups swapped bodies and the miniboss was followed into each (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **N5:** Tier Icons Above Monsters on the RSQ Monsters page, off by default; off, no gems; on, the gems float up over MAP01's zombies (`P4_N5_menu_row_and_gems_off_on.jpg`, `P4_A_log.txt`) |
-| **rig only, not headset-confirmed** (2026-11-09, the TestRig miniboss-fight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss fight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red). This was a log: the flash itself was not looked at in frames |
+| **rig only, not headset-confirmed** (2026-11-09, the TestRig miniboss-fight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss fight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red, under the old numbering; on the strength ladder the same steps go Purple to Cyan to Brown, code only). This was a log: the flash itself was not looked at in frames |
 | **rig only, not headset-confirmed** (2026-11-09, RSQ Score's head-shot frames and log) | A ColorfulHell imp judged head against chest |
 | **Headset-confirmed** | Nothing yet |
 | **Known not to work** (from reading the code) | The **Monster Diagnostics** page: only God Mode works. The chaingunner spawns, Spawn All, Remove, DIAG and WAKE send commands nothing in the pk3 answers, and Spawn hostile changes nothing. |
 | **code only, not shown** | Everything else on this page: the look of the flash, On tier change, the Vanilla and BD22 sets, Brutal Doom's load order, Colourful Hell's extra colours, bosses and EX forms, its fireball swaps, other old saved settings reading as ColorfulHell |
+| **code only, not shown** (2026-11-11, owner: "no rig test, code only until i say") | The ladder numbered by strength: the ladder table, every colour's tier, the caps, the spawn odds, the boss and EX numbers, the flash's White, the gems' order, an older save's tiers moved once on load; an EX form changing tier (it could not before: its class was in no table) |
 | **not yet run** | Nothing from the batched rig test: R1 and N5 have run (above) |
 
 **Tier Icons Above Monsters** (`rs_ch_colorblind`) is on the RSQ Monsters page since 11-10 (rig only, not headset-confirmed:
@@ -226,7 +232,9 @@ the row and the gems in frames, N5 above).
   time, never linked. The monster classes themselves replace nothing, so every set stays spawnable by name.
 - **The per-family caps.** How far up its ladder each ColorfulHell family may spawn is a server setting per family,
   1 (Common) to 13 (all): `rs_roster_zombieman` ... `rs_roster_mastermind`, all 1 by default, and `rs_roster_enable`
-  (on). They have no menu row in this build; set them in the console. A cap reads each colour from its class name.
+  (on). They have no menu row in this build; set them in the console. A cap reads each colour from its class name, by
+  the strength ladder (a cap of 7 allows Common to Yellow, Cyan and Brown included). The pack has no settings-version
+  step, so a cap saved before 11-11 above 1 now counts by strength.
 - **Colourful Hell's switches** are server settings too, with Colourful Hell's own values and no menu rows:
   `rs_ch_fireblu`, `rs_ch_gray`, `rs_ch_abyss`, `rs_ch_cyan`, `rs_ch_brown` (1 = off, the default), `rs_ch_blackboss`,
   `rs_ch_whiteboss` (1 = on), `rs_ch_exboss` (1 = the 24-in-256 EX share), `rs_ch_nerfredboss`, `rs_ch_yellowrev`,
@@ -238,7 +246,13 @@ the row and the gems in frames, N5 above).
   apply to every one of those shots in a ColorfulHell map, whoever fires it, as they did in Colourful Hell: a Hell
   Knight's ball and a stock rocket launcher's rocket too.
 - **The ladder table** (`RS_TierLadder`) names the class for each of 17 families × 13 tiers, recovered from the
-  classes themselves (each ColorfulHell colour states its tier when it spawns).
+  classes themselves (each ColorfulHell colour states its tier when it spawns), numbered by strength since 11-11. An
+  EX form has its gate's family and tier (`RS_BlackImpEX` is the imp at 12), so it can change tier too: a Black EX
+  asked one step up becomes the family's White.
+- **A save from before 11-11** is moved to the new numbers once, when each of its levels loads (a mark per level,
+  `RS_LadderMark`): every monster's tier token, a running flash and a fresh tier stamp. A new map needs nothing.
+- **The tier gems** (`TI3R` A to M) are in ladder order, A = 1 Common to M = 13 White. The gem actors keep Colourful
+  Hell's names (`RS_ColorTierIconCH5` is Yellow), and each shows its own colour's gem.
 - **A ColorfulHell tier change** spawns the new class on the spot and carries angle, pitch, velocity, target, master,
   tracer, special and arguments, ambush, friendliness and TID; it carries no inventory. The old body's kill count is
   cleared before it is removed. With RSQ Score loaded, the old body's census place moves to the new one
@@ -248,7 +262,8 @@ the row and the gems in frames, N5 above).
   lights.
 - **The service** `RSQMN_RosterService`, asked by name: `set`, `tier`, `ex`, `spawn.odds`, `tier.next`, `tier.ago`,
   `tier.from`, `headshot`, `retier`, `class.set`,
-  `class.tier`, and the string `set.class`. RSQ Score, RSQ Miniboss and RSQ Grenade use it. MeatGrinder's `mg.death`,
+  `class.tier`, and the strings `set.class` and `set.class.ex`. Every tier number it gives or takes is the strength
+  ladder's. RSQ Score, RSQ Miniboss and RSQ Grenade use it. MeatGrinder's `mg.death`,
   `mg.behave`, `split.group`, `split.child` and `family` went with it on 2026-11-10 and are no longer answered.
 - **Test commands** (console): `netevent rs_tierof` (what the aimed monster is), `netevent rs_retier N`,
   `netevent rs_retier_up`, `netevent rs_retier_all N`. All go through the flash.

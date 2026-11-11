@@ -5,10 +5,10 @@
 // (see its header for cross-lane ownership, expected-from-Barons names,
 // proven-missing assets, and standing strips).
 //
-// Tier ladder is CH's own icon index: 1 Common, 2 Green, 3 Blue, 4 Purple,
-// 5 Yellow (Orange), 6 Red, 7 FireBlu, 8 Gray, 9 Abyss, 10 Black (Knight,
-// phase 2, EX, EX phase 2, EX shade -- black bosses all 10), 11 White
-// (Lich), 12 Cyan, 13 Brown. RS_SpecialSoul is a summoned minion and gets
+// Tier ladder is the RSQ ladder by strength (11-11): 1 Common, 2 Green, 3 Blue, 4 Purple,
+// 7 Yellow (Orange), 10 Red, 8 FireBlu, 9 Gray, 11 Abyss, 12 Black (Knight,
+// phase 2, EX, EX phase 2, EX shade -- black bosses all 12), 13 White
+// (Lich), 5 Cyan, 6 Brown. RS_SpecialSoul is a summoned minion and gets
 // no token.
 //
 // LANDING THIS FAMILY CLOSES THREE SETS OF DORMANT GUARDS:
@@ -214,11 +214,11 @@ class RS_WhiteRevenant : Actor   // CH Revenants.txt:4457 -- gate CH_WhiteBossy
 }
 
 // ---------------------------------------------------------------------------
-// Tier 13 -- Brown Revenant ("Mummy mummy").  CH: Revenants.txt:57.
+// Tier 6 -- Brown Revenant ("Mummy mummy").  CH: Revenants.txt:57.
 // ---------------------------------------------------------------------------
 class RS_BrownRevenant2 : Actor   // CH Revenants.txt:57
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
 	Default
 	{
 		Health 666;
@@ -332,11 +332,11 @@ class RS_BrownRevenant2 : Actor   // CH Revenants.txt:57
 }
 
 // ---------------------------------------------------------------------------
-// Tier 12 -- Cyan Revenant ("Cyan Revenant chains").  CH: Revenants.txt:271.
+// Tier 5 -- Cyan Revenant ("Cyan Revenant chains").  CH: Revenants.txt:271.
 // ---------------------------------------------------------------------------
 class RS_CyanRevenant2 : Actor   // CH Revenants.txt:271
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
 	Default
 	{
 		Health 480;
@@ -470,11 +470,11 @@ class RS_CyanRevenant2 : Actor   // CH Revenants.txt:271
 }
 
 // ---------------------------------------------------------------------------
-// Tier 9 -- Abyss Revenant.  CH: Revenants.txt:586.
+// Tier 11 -- Abyss Revenant.  CH: Revenants.txt:586.
 // ---------------------------------------------------------------------------
 class RS_AbyssRevenant2 : Actor   // CH Revenants.txt:586
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
 	Default
 	{
 		Health 1000;
@@ -609,11 +609,11 @@ class RS_AbyssRevenant2 : Actor   // CH Revenants.txt:586
 }
 
 // ---------------------------------------------------------------------------
-// Tier 7 -- Fire Blue Revenant ("Skeleton on fire!").  CH: Revenants.txt:824.
+// Tier 8 -- Fire Blue Revenant ("Skeleton on fire!").  CH: Revenants.txt:824.
 // ---------------------------------------------------------------------------
 class RS_FireBluRevenant2 : Actor   // CH Revenants.txt:824
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
 	Default
 	{
 		Health 720;
@@ -755,11 +755,11 @@ class RS_FireBluRevenant2 : Actor   // CH Revenants.txt:824
 }
 
 // ---------------------------------------------------------------------------
-// Tier 8 -- Gray Revenant ("Punchout master").  CH: Revenants.txt:1173.
+// Tier 9 -- Gray Revenant ("Punchout master").  CH: Revenants.txt:1173.
 // ---------------------------------------------------------------------------
 class RS_GrayRevenant2 : Actor   // CH Revenants.txt:1173
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 8); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 9); }
 	Default
 	{
 		Health 660;
@@ -1560,7 +1560,7 @@ class RS_SpecialSoul : Actor   // CH Revenants.txt:2207
 }
 
 // ---------------------------------------------------------------------------
-// Tier 5 -- Orange ("Yellow") Revenant.  CH: Revenants.txt:2311.
+// Tier 7 -- Orange ("Yellow") Revenant.  CH: Revenants.txt:2311.
 // Gate CH_YellowRev (CH CVARINFO.txt:19, default 0) becomes
 // RS_Zom.CV('rs_ch_yellowrev', 0). That cvar is NOT in this repo's
 // CVARINFO.txt and this lane must not edit it; CV() returns the CH default
@@ -1570,7 +1570,7 @@ class RS_SpecialSoul : Actor   // CH Revenants.txt:2207
 // ---------------------------------------------------------------------------
 class RS_YellowRevenant : Actor   // CH Revenants.txt:2311
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 5); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 7); }
 	Default
 	{
 		Health 666;
@@ -1786,12 +1786,12 @@ class RS_YellowRevenant : Actor   // CH Revenants.txt:2311
 }
 
 // ---------------------------------------------------------------------------
-// Tier 6 -- Red Revenant.  CH: Revenants.txt:2706.
+// Tier 10 -- Red Revenant.  CH: Revenants.txt:2706.
 // ---------------------------------------------------------------------------
 class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 {
 	int user_ttt;   // CH: Var Int User_TTT;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 6); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
 	Default
 	{
 		Health 830;
@@ -1939,7 +1939,7 @@ class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- The Black Knight, phase 1.  CH: Revenants.txt:2989.
+// Tier 12 -- The Black Knight, phase 1.  CH: Revenants.txt:2989.
 // CH: "////// AnnounceBlackRev" (Revenants.txt:2951) and the
 // ACS_NamedExecuteAlways("AnnounceBlackRev") call in Scripted are the ACS
 // announcer, stripped per the standing order; the 1-tic timing states stay.
@@ -1948,7 +1948,7 @@ class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 // ---------------------------------------------------------------------------
 class RS_BlackRevenant3 : Actor   // CH Revenants.txt:2989
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 4500;
@@ -2107,12 +2107,12 @@ class RS_BlackRevenant3 : Actor   // CH Revenants.txt:2989
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- The Black Knight, phase 2 ("Just a flesh wound").
+// Tier 12 -- The Black Knight, phase 2 ("Just a flesh wound").
 // CH: Revenants.txt:3452.
 // ---------------------------------------------------------------------------
 class RS_BlackRev2 : Actor   // CH Revenants.txt:3452
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 2800;
@@ -2233,11 +2233,11 @@ class RS_BlackRev2 : Actor   // CH Revenants.txt:3452
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- The Black Knight EX, phase 1.  CH: Revenants.txt:3667.
+// Tier 12 -- The Black Knight EX, phase 1.  CH: Revenants.txt:3667.
 // ---------------------------------------------------------------------------
 class RS_BlackRevenantEX : Actor   // CH Revenants.txt:3667
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 7500;
@@ -2455,11 +2455,11 @@ class RS_BlackRevenantEX : Actor   // CH Revenants.txt:3667
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- The Black Knight's shadow.  CH: Revenants.txt:4221.
+// Tier 12 -- The Black Knight's shadow.  CH: Revenants.txt:4221.
 // ---------------------------------------------------------------------------
 class RS_BlackRevEx3 : Actor   // CH Revenants.txt:4221
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 20000;
@@ -2534,12 +2534,12 @@ class RS_BlackRevEx3 : Actor   // CH Revenants.txt:4221
 }
 
 // ---------------------------------------------------------------------------
-// Tier 10 -- The Black Knight EX, phase 2 ("Just a shade wound").
+// Tier 12 -- The Black Knight EX, phase 2 ("Just a shade wound").
 // CH: Revenants.txt:4293.
 // ---------------------------------------------------------------------------
 class RS_BlackRevEx2 : Actor   // CH Revenants.txt:4293
 {
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 10); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 12); }
 	Default
 	{
 		Health 6666;
@@ -2672,7 +2672,7 @@ class RS_BlackRevEx2 : Actor   // CH Revenants.txt:4293
 }
 
 // ---------------------------------------------------------------------------
-// Tier 11 -- The Lich ("Lichest Lich").  CH: Revenants.txt:4476.
+// Tier 13 -- The Lich ("Lichest Lich"), White.  CH: Revenants.txt:4476.
 // CH defines Pain: TWICE in this one States block (Revenants.txt:4703 and
 // :4725) with byte-identical bodies. The first is the one that binds; the
 // second is kept below verbatim under PainDup:, unreachable exactly as in
@@ -2682,7 +2682,7 @@ class RS_BlackRevEx2 : Actor   // CH Revenants.txt:4293
 class RS_WhiteRevenant2 : Actor   // CH Revenants.txt:4476
 {
 	int user_enrage;   // CH: var int user_enrage;
-	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 11); }
+	override void PostBeginPlay() { Super.PostBeginPlay(); RS_Zom.SetTier(self, 13); }
 	Default
 	{
 		Health 8866;

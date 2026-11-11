@@ -835,7 +835,8 @@ server int rs_reserve_spread = 96;
 //       RS_ReserveSquads.SetRoster(). Falls back to 0 if nothing was set.
 server int rs_reserve_roster = 0;
 // Tier band, inclusive, filtering the roster above. Tiers are the numeric
-// monster ladder (1 Common .. 13 Brown); 0 is a monster carrying no RS
+// monster ladder (1 Common .. 13 White, by strength since 11-11; NO READER in
+// RSQ Monsters, kept declared); 0 is a monster carrying no RS
 // tier at all, e.g. a plain vanilla map monster, so the default minimum
 // is 0 and not 1. A band that excludes every class in the chosen roster
 // means NO WAVE FIRES -- widen the band or change rs_reserve_roster.
@@ -1157,9 +1158,11 @@ server bool rs_summons_pay = false;
 // =====================================================================
 // Starting roster -- zscript/monsters/RS_Roster.zs
 //
-// Highest colour tier each family may spawn. CH's ladder:
-//   1 Common  2 Green  3 Blue   4 Purple 5 Yellow 6 Red     7 FireBlu
-//   8 Gray    9 Abyss  10 Black 11 White 12 Cyan  13 Brown
+// Highest colour tier each family may spawn. The RSQ ladder, ordered by
+// STRENGTH (owner 2026-11-11; before that it was CH's listing order):
+//   1 Common  2 Green  3 Blue   4 Purple 5 Cyan   6 Brown   7 Yellow
+//   8 FireBlu 9 Gray   10 Red   11 Abyss 12 Black (boss)    13 White (boss)
+// (No cfgver step: a saved cap above 1 now caps by strength. The defaults, 1, are unchanged.)
 //
 // 1 = Common only (roughly vanilla). 13 = the full roster, which also
 // hands the family straight back to its own dial and the rs_ch_* gates.
@@ -1486,7 +1489,7 @@ server float rs_elite_damage_boss = 1.5;
 // tree sets +BOSS, it is a family property only. So the tier axis has to
 // be a number. -1 disables it and leaves bBOSS as the sole test.
 // Mode: 0 normal, 1 bosses never marked, 2 bosses always marked.
-server int   rs_elite_tier_boss_at = 10;
+server int   rs_elite_tier_boss_at = 12;   // 12 Black, the first boss tier (10 before the 11-11 renumber; NO READER in RSQ Monsters)
 server int   rs_elite_boss_mode = 0;
 // AGGRESSION. +MISSILEMORE and +MISSILEEVENMORE are deprecated on this
 // engine build, so they are applied as MissileChanceMult and pass through
