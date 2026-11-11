@@ -13,9 +13,11 @@ def crown(im,col=(250,200,40,255)):
 def crowned_gem(col):
     g=gem(N-4,col,'shade'); im=Image.new('RGBA',(N,N),(0,0,0,0)); im.alpha_composite(g,(2,4))
     im=crown(im); return outline(im)
+# RSQ Monsters' ladder, numbered by STRENGTH since 11-11 (owner). The game's gem frames follow these numbers:
+# TI3R / RSYT A..M and RSQMBG01..13 = tier 1..13. Each colour keeps its own gem; only the numbers moved.
 LADDER=[('1 Common',(170,170,170)),('2 Green',(60,200,70)),('3 Blue',(50,110,230)),('4 Purple',(150,60,200)),
-        ('5 Yellow',(240,200,40)),('6 Red',(220,40,40)),('7 FireBlu',(60,190,255)),('8 Gray',(120,120,128)),
-        ('9 Abyss',(20,40,90)),('10 Black boss',(60,50,70)),('11 White boss',(240,240,250)),('12 Cyan',(40,220,220)),('13 Brown',(140,90,50))]
+        ('5 Cyan',(40,220,220)),('6 Brown',(140,90,50)),('7 Yellow',(240,200,40)),('8 FireBlu',(60,190,255)),
+        ('9 Gray',(120,120,128)),('10 Red',(220,40,40)),('11 Abyss',(20,40,90)),('12 Black boss',(60,50,70)),('13 White boss',(240,240,250))]
 tiers=[]
 for n,c in LADDER:
     tiers.append((n, crowned_gem(c) if 'boss' in n else gem(N,c,'shade')))
