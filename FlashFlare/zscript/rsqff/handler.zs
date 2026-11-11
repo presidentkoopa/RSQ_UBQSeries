@@ -20,7 +20,8 @@
 //
 // THE OTHER MODS, BY NAME (nothing here links against them):
 //   RSQ Tactical Rig: the pocket hangs on its body ("body.yaw", RSQTR_BodyService) so it turns with its holsters; while
-//     the off hand is in one of its places ("rig.region") the grip is the rig's, never the pocket's.
+//     the off hand is in one of its places ("rig.region") the grip is the rig's, never the pocket's. While its flare
+//     holster holds the flares ("flare.home", owner 11-11 15:19) the pocket is off: the flares have one home, the holster.
 //   Brutal Doom 22 VR Reloaded: when the flare leaves the off hand it gets BD22's empty hands back (RSQ_Hands) if it had
 //     them; its Hand Skin Tone tones the hand holding the flare (MODELDEF.txt).
 //
@@ -398,7 +399,11 @@ class RSQFF_Handler : EventHandler
 		Vector3 pk = RSQFF_Geo.Pocket(pmo, by);
 		double d = RSQFF_Geo.Metres(pmo, RSQFF_Geo.Pos(pmo, 1) - pk);
 		bool inRig = RigHasHand(pmo);
-		bool nearPocket = d <= clamp(PNum(p, "rsqff_pocket_r", 0.11), 0.04, 0.4);
+		// THE POCKET IS OFF WHILE RSQ TACTICAL RIG'S FLARE HOLSTER HOLDS THE FLARES (owner 11-11 15:19: "another diamond
+		// holster which seems to spawn a flare, i want that gone, flare has its own"; RSQFF_Geo.RigFlareHome). The flare is
+		// taken and put back at the holster only (the rig sends "rsqff_take" / "rsqff_back"). Code only, not shown.
+		bool rigHome = RSQFF_Geo.RigFlareHome(pmo);
+		bool nearPocket = !rigHome && d <= clamp(PNum(p, "rsqff_pocket_r", 0.11), 0.04, 0.4);
 		bool atPocket = nearPocket && !inRig;
 
 		if (phase[n] == PH_NONE)
@@ -413,7 +418,7 @@ class RSQFF_Handler : EventHandler
 					if (dbg) Console.Printf("RSQFF take t%d: the pocket is empty", level.maptime);
 				}
 			}
-			else if (gripEdge && dbg) Console.Printf("RSQFF grip t%d: off hand %.2f m from the pocket (needs %.2f)%s", level.maptime, d, PNum(p, "rsqff_pocket_r", 0.11), RigHasHand(pmo) ? ", in a Tactical Rig place" : "");
+			else if (gripEdge && dbg) Console.Printf("RSQFF grip t%d: off hand %.2f m from the pocket (needs %.2f)%s", level.maptime, d, PNum(p, "rsqff_pocket_r", 0.11), rigHome ? ", the pocket is off: the flares are in the Tactical Rig's flare holster" : RigHasHand(pmo) ? ", in a Tactical Rig place" : "");
 			return;
 		}
 
@@ -646,7 +651,10 @@ class RSQFF_Handler : EventHandler
 	//     Arc 0.25 -> 0.35.
 	//   3 (owner 11-06: the flashlight's colours cut to six): a saved Beam Colour of the old list's 1-16 is moved to the nearest
 	//     of the six by its RGB (RSQFF_Torches.Nearest).
-	const CFG_VERSION = 3;
+	//   4 (owner 11-11 15:19: the flashlight beside the flare, the cigarettes reachable): the clip's grab radius 0.12 -> 0.08
+	//     (rsqff_fl_clip_r; a saved 0.12 is the old default). The clip's place itself is the rig's now (RSQFF_Geo.RigTorch),
+	//     so no saved place needs moving; without the rig it stays where it was.
+	const CFG_VERSION = 4;
 	private transient bool migrated;
 	private void Migrate()
 	{
@@ -674,6 +682,11 @@ class RSQFF_Handler : EventHandler
 				int was = fc.GetInt(), to = RSQFF_Torches.Nearest(was);
 				if (to != was) { fc.SetInt(to); Console.Printf("RSQ FnF: Beam Colour %d is now %d (the nearest of the six)", was, to); }
 			}
+		}
+		if (ver.GetInt() < 4)
+		{
+			let cr = CVar.FindCVar("rsqff_fl_clip_r");
+			if (cr && abs(cr.GetFloat() - 0.12) < 0.001) cr.SetFloat(0.08);
 		}
 		ver.SetInt(CFG_VERSION);
 	}
@@ -728,7 +741,8 @@ class RSQFF_Handler : EventHandler
 // doubleArg: the body's yaw to hang them by (the asker's; FnF follows the rig's body anyway).
 //   GetDouble("pocket.x" / ".y" / ".z", "", 0, yaw, pawn)  the flare pocket's centre, map units; ".r" its grab radius in
 //   metres (rsqff_pocket_r). "clip.*" the same for the flashlight clip (rsqff_fl_clip_r). 1e9 when that zone is off
-//   (FnF off, Flashlight off) or the pawn is not in VR.
+//   (FnF off, Flashlight off, the pocket while the rig's flare holster holds the flares: RSQFF_Geo.RigFlareHome, owner
+//   11-11) or the pawn is not in VR.
 class RSQFF_Service : Service
 {
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
@@ -741,7 +755,7 @@ class RSQFF_Service : Service
 		double r;
 		if (zone == "pocket")
 		{
-			if (!RSQFF_Handler.On()) return 1e9;
+			if (!RSQFF_Handler.On() || RSQFF_Geo.RigFlareHome(pmo)) return 1e9;
 			at = RSQFF_Geo.Pocket(pmo, doubleArg);
 			r = clamp(RSQFF_Handler.PNum(pmo.player, "rsqff_pocket_r", 0.11), 0.04, 0.4);
 		}
@@ -749,7 +763,7 @@ class RSQFF_Service : Service
 		{
 			if (!RSQFF_Torches.FlOn()) return 1e9;
 			at = RSQFF_Torches.Clip(pmo, doubleArg);
-			r = clamp(RSQFF_Torches.LNum("rsqff_fl_clip_r", 0.12), 0.04, 0.4);
+			r = clamp(RSQFF_Torches.LNum("rsqff_fl_clip_r", 0.08), 0.04, 0.4);
 		}
 		else return 1e9;
 		if (axis == "x") return at.x;

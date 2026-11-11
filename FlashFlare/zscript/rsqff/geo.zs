@@ -94,6 +94,40 @@ class RSQFF_Geo play
 		return neck + (xy.x, xy.y, u * vu / Ps(pmo));
 	}
 
+	// THE FLARES' ONE HOME (owner 11-11 15:19: "another diamond holster which seems to spawn a flare, i want that gone, flare
+	// has its own"). With RSQ Tactical Rig's flare holster live for this player (asked by name: RSQTR_RigService
+	// "flare.home" 1), the flares live there only and this pack's chest pocket is OFF: no grab, no zone published (so the rig
+	// draws no diamond there), no flare drawn there. 0: the pocket is their home. No rig, or a rig too old to answer (-1):
+	// the pocket, as before.
+	static bool RigFlareHome(PlayerPawn pmo)
+	{
+		let it = ServiceIterator.Find("RSQTR_RigService");
+		Service s;
+		while (s = it.Next())
+		{
+			int v = s.GetInt("flare.home", "", 0, 0, pmo);
+			if (v >= 0) return v == 1;
+		}
+		return false;
+	}
+
+	// THE FLASHLIGHT CLIP BESIDE THE FLARE HOLSTER (owner 11-11 15:19: "lets move the flashlight adjacent to the flare, you
+	// pick where"): with RSQ Tactical Rig on, the rig says where the clip hangs (RSQTR_RigService "torch.x/y/z": a hand's
+	// width behind its flare holster, in the rig's own body frame; its rig.zs RSQTR_Region.TORCH_F note has the measures).
+	// false: no rig answer, the clip hangs at this pack's own place (RSQFF_Torches.Clip).
+	static bool, Vector3 RigTorch(PlayerPawn pmo)
+	{
+		let it = ServiceIterator.Find("RSQTR_RigService");
+		Service s;
+		while (s = it.Next())
+		{
+			double x = s.GetDouble("torch.x", "", 0, 0, pmo);
+			if (x >= 1e8) continue;
+			return true, (x, s.GetDouble("torch.y", "", 0, 0, pmo), s.GetDouble("torch.z", "", 0, 0, pmo));
+		}
+		return false, (0, 0, 0);
+	}
+
 	// A POINT OF THE FLARE DRAWN IN THE OFF HAND: md3 cm (mx, my, mz) of flare_h.md3 through the engine's hand-model
 	// transform (RSQ Tactical Rig RSQTR_Cig.HandPoint, unchanged but for the hand: always the off hand here).
 	static Vector3 HandPoint(PlayerPawn pmo, int h, double mx, double my, double mz)

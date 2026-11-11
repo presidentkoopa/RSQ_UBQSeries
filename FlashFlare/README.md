@@ -1,9 +1,20 @@
 # RSQ FnF
-### Doom Arcade VR · a road flare you strike and throw by hand, and a flashlight clipped to your chest
+### Doom Arcade VR · a road flare you strike and throw by hand, and a flashlight you carry on your body
 
-Reach across your chest for a road flare, strike it with a flick of your wrist and hold it up to light the way, or throw
-it down the corridor and watch it light the room where it lands. On the other side of your chest hangs a flashlight:
-grab it, click it on, and point a real beam with your hand.
+Reach for a road flare, strike it with a flick of your wrist and hold it up to light the way, or throw it down the
+corridor and watch it light the room where it lands. A flashlight hangs on you too: grab it, click it on, and point a
+real beam with your hand.
+
+**Where they are worn** (owner, 2026-11-11):
+
+| | With RSQ Tactical Rig (its Flare Holster on, the default) | FnF alone |
+|---|---|---|
+| **Flares** | The rig's flare holster on your off-hand hip, and only there | A pocket on your chest, gun-hand side |
+| **Flashlight** | A hand's width behind the flare holster, same side and height (seated: beside your waist, over the flare) | A clip on your chest, off-hand side |
+| **The rig's cigarettes** | Left chest (right, left-handed), with nothing else there | (no rig, no cigarettes) |
+
+With the rig on but its Flare Holster turned off, the flares go back to the chest pocket and the flashlight stays behind
+the flare holster's place. *Code only, not shown.*
 
 ![A lit flare held up in a dark room](docs/readme/flare_held.jpg)
 
@@ -15,8 +26,8 @@ grab it, click it on, and point a real beam with your hand.
 
 ## What it feels like
 
-- **A pocket on your chest.** Your off hand reaches across to the pocket on your gun-hand side and pulls out a flare,
-  unlit, cap on. Your gun hand keeps its gun.
+- **Where the flares are.** Your off hand pulls a flare from its home, unlit, cap on: the Tactical Rig's flare holster on
+  your off-hand hip, or, without it, the pocket on your chest (gun-hand side). Your gun hand keeps its gun.
 - **Strike it like the real thing.** A sharp flick down and it catches with a burst of sparks, sputters for a moment,
   then burns red. Or just pull that hand's trigger.
 - **Throw it like a grenade.** Hold the trigger, swing, and let go mid-swing. It flies the way your hand moved, tumbles,
@@ -25,8 +36,8 @@ grab it, click it on, and point a real beam with your hand.
   your hand and the spent flare drops.
 - **Hit a monster with it.** A flying flare does a little damage. With Brutal Doom, zombies, imps and other small fry
   catch fire.
-- **A flashlight on your other side.** Grab it from the clip on your chest and it comes up switched on. The trigger
-  clicks it off and on. You see the beam in the air, cut short where it meets a wall or a monster.
+- **A flashlight beside the flares.** Grab it from its clip (behind the flare holster with the Tactical Rig, on your
+  chest without it) and it comes up switched on. The trigger clicks it off and on. You see the beam in the air, cut short where it meets a wall or a monster.
 - **The battery matters.** A meter on the flashlight's body counts down while it is on, and the beam dims and flickers
   when it runs low. Switch it off and it charges again. Kills inside your beam top it up.
 
@@ -36,12 +47,12 @@ grab it, click it on, and point a real beam with your hand.
 
 | Do this | What happens |
 |---|---|
-| Reach your off hand across to the pocket on your chest (gun-hand side) and grip | An unlit flare in your off hand |
-| Grip at the pocket again with the flare still unlit | It goes back in the pocket |
+| Grip with your off hand at the flare holster (Tactical Rig) or the pocket on your chest (FnF alone, gun-hand side) | An unlit flare in your off hand |
+| Grip there again with the flare still unlit | It goes back |
 | Flick the flare hand sharply down, or pull that hand's trigger | It catches, sputters, then burns |
 | Hold the trigger, swing, and let go while your hand is moving | Thrown, along your swing |
 | Let go of the trigger with your hand still | It stays in your hand |
-| Reach your off hand to the clip on your chest (off-hand side) and grip | The flashlight in your hand, switched on |
+| Grip with your off hand at the flashlight's clip (Tactical Rig: behind the flare holster; FnF alone: your chest, off-hand side) | The flashlight in your hand, switched on |
 | Pull the trigger with the flashlight in your hand | Off, on, off |
 | Grip at the clip again | The flashlight goes back on its clip |
 
@@ -57,9 +68,9 @@ taking your off hand (it falls there, still burning). A burning flare in your ha
 
 - **No keys.** Nothing to bind, and no menu button stands in for a key.
 - **Off hand only.** Your gun hand keeps its gun.
-  - **Off-hand grip** (read raw from QuestZDoom's grip keys; their codes are on Test and Debug): at the pocket on your
-    chest (gun-hand side), take a flare or put an unlit one back; at the clip on your chest (off-hand side), take the
-    flashlight or put it back.
+  - **Off-hand grip** (read raw from QuestZDoom's grip keys; their codes are on Test and Debug): at the flares' home
+    (the rig's flare holster, or FnF's chest pocket without it), take a flare or put an unlit one back; at the
+    flashlight's clip (behind the flare holster, or on your chest without the rig), take the flashlight or put it back.
   - **Off-hand trigger:** with a flare, light it (**Light It By** Trigger or Either); hold it, swing and let go to
     throw. With the flashlight, click it off and on.
 - **Gestures:** a sharp flick down of the flare hand strikes it (**Light It By** Strike or Either); a swing released
@@ -113,7 +124,9 @@ Champions champion only catches fire once it is below 25% of its health (you can
 
 ## The flashlight
 
-It hangs on a clip on your chest, on your off-hand side. Grip there and it is in your hand, switched on, with a click.
+It hangs on a clip: with RSQ Tactical Rig, a hand's width behind the rig's flare holster on your off-hand hip (seated:
+beside your waist, over the flare); without the rig, on your chest, on your off-hand side. Grip there and it is in your
+hand, switched on, with a click.
 The trigger turns it off and on. Grip at the clip again to put it back.
 
 - **One thing in the off hand at a time.** With a flare in your hand the clip does nothing. Take a flare while you hold
@@ -167,9 +180,10 @@ off (none). The flashlight is the one in the left hand.*
   burning death.
 - **Brutal Doom 22 VR Reloaded:** the hands holding the flare and the flashlight are its hands, toned by its Hand Skin
   Tone. When the flare or flashlight leaves your off hand, you get its empty hand back.
-- **RSQ Tactical Rig:** the pocket and the clip turn with the rig's body, like its holsters. While your off hand is in
-  one of the rig's places, the grip is the rig's. With the rig's flare holster, the holster shares the pocket's flares
-  and draws the flare there. A quick reach down to a holster is never read as a strike.
+- **RSQ Tactical Rig:** the flares live in the rig's flare holster (the chest pocket and its diamond are off while that
+  holster is on), and the flashlight hangs where the rig says, behind the flare holster, so the left chest is the rig's
+  cigarette pocket alone (owner, 2026-11-11). The clip turns with the rig's body, like its holsters. While your off hand
+  is in one of the rig's places, the grip is the rig's. A quick reach down to a holster is never read as a strike.
 - **RSQ Distance Grab:** pick up a flare lying on the floor and throw it. With Brutal Doom, a burning one sets a small
   enemy it hits alight.
 - **RSQ VisualRewards** and **Legion of Bones:** turn on **Bones Drop Battery Bits** and Legion of Bones monsters
@@ -192,7 +206,7 @@ are under Test and Debug. Defaults in brackets.
 | Flares | Flares (On) · Show Flare (On) · Show Hand (On) · Light It By (Either; Strike, Trigger) · Soft Light (Off) · Burn Time (60 s) · Sparks (On) · Smoke (Off) · Sounds (On) · Shoot Out Flares (Off) · Boosted monsters ignite below N% health (25) |
 | Supply | Start With (2) · Boxes in Levels (On) · Boxes a Map (2) · Refill Each Level (Off) · Refill To (4) |
 | Flashlight | Flashlight (On) · Show Flashlight (On) · Beam Size (Medium; Narrow, Wide) · Beam Colour (Warm White; White, Pink, Cyan, Amber, Violet, Random) · Beam Quality (Quest; PCVR, High) · Beam Length (4 m) · Beam Hotspot (Off) · Show Cone (On) · Battery (3 min; 0 never drains) · Battery Never Drains (Off) · Bones Drop Battery Bits (Off) · Beam Look (FnF; DarkDoomZ) · DarkDoomZ Beam Type (Halogen; Incandescent, LED, Red Filter) · DarkDoomZ Spill Light (On) |
-| Test and Debug | Flare Light: Light Radius (140) · Most Lit at Once (3) · Flicker Step (4 tics). Hands: Strike Speed (1.4 m/s) · Throw Speed (2.0 m/s) · Throw Strength (1.0) · Arc (0.35) · Off Grip Keys (443 436). Pocket: Forward (0.12 m) · Toward Main Hand (0.15 m) · Height (-0.28 m) · Reach (0.11 m). Flashlight Clip: Forward (0.10 m) · Toward Off Hand (0.17 m) · Height (-0.22 m) · Reach (0.12 m). Debug Log |
+| Test and Debug | Flare Light: Light Radius (140) · Most Lit at Once (3) · Flicker Step (4 tics). Hands: Strike Speed (1.4 m/s) · Throw Speed (2.0 m/s) · Throw Strength (1.0) · Arc (0.35) · Off Grip Keys (443 436). Pocket (not used while the rig's flare holster is on): Forward (0.12 m) · Toward Main Hand (0.15 m) · Height (-0.28 m) · Reach (0.11 m). Flashlight Clip: Forward (0.10 m) · Toward Off Hand (0.17 m) · Height (-0.22 m) (these three for FnF alone; with the rig on, the rig places the clip) · Reach (0.08 m). Debug Log |
 
 Both pages end with **Reset All**. **Show Flare** hangs a flare at the pocket while you carry any; **Show Flashlight**
 hangs the flashlight on its clip while it is not in your hand; **Show Hand** draws the hand holding the flare and the
@@ -213,6 +227,7 @@ read (Light It By, the speeds, the pocket and clip places, the grip keys) and th
 | **rig only, not headset-confirmed** (2026-11-10 night, RSQ Gun Cards' item card checks: `design/rigtest_2026-11-10/RESULTS_P2.md` N1, `RESULTS_FIX.md` 5) | The flare and the flashlight held in the off hand, their states read on Gun Cards' item card: the flare UNLIT with 5 left, the flashlight ON with its battery at 99 (`design/rigtest_2026-11-10/evidence/FIX_5_item_cards_before_after.jpg`, `FIX_C_log.txt`). Only their states were read; nothing was struck, thrown or switched |
 | **rig only, not headset-confirmed** (2026-11-09, `design/rigtest_2026-11-09/logs/J_flashlight.log`) | The flashlight taken into the off hand (it came up switched on) and switched off and on, sent as the same network events the grip and the trigger send; the Beam Look lights: FnF 1, DarkDoomZ with Spill Light 2, DarkDoomZ without Spill Light 1, switched off 0. The pack loaded with no script error of its own, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series |
 | **Headset-confirmed** | Nothing yet |
+| **code only, not shown** (2026-11-11, the owner's headset report of 15:19; not run, by his order "no rig test, code only until i say"; not load-checked either) | The flares' one home: with RSQ Tactical Rig's flare holster on, the chest pocket is off (no grab, no diamond, no flare drawn there). The flashlight beside the flare: with the rig on, its clip hangs where the rig says, 0.21 m behind the flare holster (standing), and its grab radius is 0.08 m (was 0.12; a saved 0.12 moves to 0.08 once, settings version 4). Distances measured on the code's numbers (RSQ Tactical Rig `tools/measure_torch_spot.py`), not in a game |
 | **code only, not shown** | Everything else on this page, including reading the hands themselves (grip, strike, throw). Also the 11-09 evening changes (commit 9533a9d7): no free flare at a level exit (a lit one is used up), the battery's charge carried between levels. The 11-10 rumble changes: Accessibility's Rumble Strength and Rumble Backup |
 | **not yet run** | Nothing. The batched rig test of 2026-11-10 had no check of its own for this pack (its flare and flashlight stood in for Gun Cards' N1, above) |
 

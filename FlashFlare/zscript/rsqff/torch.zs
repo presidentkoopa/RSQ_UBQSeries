@@ -4,8 +4,9 @@
 // headset-confirmed.
 //
 // IN VR:
-//   1. TAKE: the OFF hand at the flashlight clip, on your chest on the OFF hand's own side (the flare pocket's mirror; it
-//      reaches across, this one does not), grip: the flashlight is in that hand, ON (a click). The main hand keeps its gun.
+//   1. TAKE: the OFF hand at the flashlight clip, grip: the flashlight is in that hand, ON (a click). The main hand keeps its
+//      gun. The clip: with RSQ Tactical Rig on, a hand's width behind the rig's flare holster on the off hand's hip (owner
+//      11-11 15:19, Clip below; code only, not shown); without the rig, on your chest on the OFF hand's own side.
 //   2. That hand's TRIGGER turns it off and on.
 //   3. PUT BACK: grip at the clip again. Anything else that takes the off hand (a flare from the pocket, another weapon,
 //      death) puts it away; given the hand back by the flare, it comes back as it was (on or off). On a new level it stays
@@ -28,9 +29,10 @@
 // the lens now) and where it is (one tic on), so it sits on the hand instead of a tic behind.
 //
 // THE OTHER MODS, BY NAME:
-//   RSQ Tactical Rig: the clip hangs on its body ("body.yaw"); while the off hand is in one of its places the grip is the
-//     rig's. A holster of the rig's can take and put back the flashlight with the network events "rsqff_fl_take" /
-//     "rsqff_fl_back", and ask "torch.phase" (RSQFF_TorchService, below), as its flare holster does with the flare.
+//   RSQ Tactical Rig: the clip hangs where the rig says, beside its flare holster ("torch.x/y/z", owner 11-11), else on its
+//     body ("body.yaw"); while the off hand is in one of its places the grip is the rig's. A holster of the rig's can
+//     take and put back the flashlight with the network events "rsqff_fl_take" / "rsqff_fl_back", and ask "torch.phase"
+//     (RSQFF_TorchService, below), as its flare holster does with the flare.
 //   RSQ Glow In The Dark: carries DarkDoomZ (Caligari87) without its own flashlight, so this is the only flashlight; its
 //     Beam Look row can borrow DarkDoomZ's beam (ddzlight.zs). (The old stand-down of a second, DarkDoomZ flashlight was
 //     removed 2026-11-09.)
@@ -655,7 +657,7 @@ class RSQFF_Torches : EventHandler
 		bool dbg = Debug(p);
 		Vector3 cp = Clip(pmo, BodyYaw(pmo));
 		double d = RSQFF_Geo.Metres(pmo, RSQFF_Geo.Pos(pmo, 1) - cp);
-		double reach = clamp(LNum("rsqff_fl_clip_r", 0.12), 0.04, 0.4);
+		double reach = clamp(LNum("rsqff_fl_clip_r", 0.08), 0.04, 0.4);
 		bool rig = RigHasHand(pmo);
 		bool atClip = d <= reach && !rig;
 		if (phase[n] == T_NONE)
@@ -676,8 +678,15 @@ class RSQFF_Torches : EventHandler
 	// TODO NETPLAY (owner 2026-11-09 20:23: "mark netplay bug for later fix"): the clip offsets are read with LNum, this
 	// machine's user cvars, not the pawn's own player's (Pocket uses CVar.GetCVar(n, p)). In a netgame every other player's
 	// flashlight clip is drawn at YOUR offsets (stowed.zs) and RSQFF_Service "clip.*" answers with yours. Visual only.
+	// MOVED BESIDE THE FLARE HOLSTER (owner 11-11 15:19): with RSQ Tactical Rig on, the rig's place for it, a hand's width
+	// behind the rig's flare holster (RSQFF_Geo.RigTorch); it used to hang here on the left chest, on the rig's cigarette
+	// pocket (centres 0.037 m apart, the zones overlapping by 0.163 m). Without the rig, this pack's own place below.
+	// Code only, not shown.
 	static Vector3 Clip(PlayerPawn pmo, double bodyYaw)
 	{
+		bool rigSays; Vector3 rigAt;
+		[rigSays, rigAt] = RSQFF_Geo.RigTorch(pmo);
+		if (rigSays) return rigAt;
 		double f = LNum("rsqff_fl_clip_f", 0.10);
 		double l = LNum("rsqff_fl_clip_l", 0.17);
 		double u = LNum("rsqff_fl_clip_u", -0.22);

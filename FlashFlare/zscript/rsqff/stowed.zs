@@ -16,10 +16,15 @@ class RSQFF_Shown : EventHandler
 	static bool UFlag(PlayerInfo p, String n, bool d) { let c = CVar.GetCVar(n, p); return c ? c.GetBool() : d; }
 	static bool SFlag(String n, bool d) { let c = CVar.FindCVar(n); return c ? c.GetBool() : d; }
 
-	// RSQ Tactical Rig's flare holster holds (and draws) the flares for this player
+	// RSQ Tactical Rig's flare holster holds (and draws) the flares for this player: the rig's own answer ("flare.home", owner
+	// 11-11, RSQFF_Geo.RigFlareHome: the pocket is off then), else, from a rig too old to answer, its flare holster row
 	static bool RigHolster(PlayerInfo p)
 	{
-		if (ServiceIterator.Find("RSQTR_RigService").Next() == null) return false;
+		let it = ServiceIterator.Find("RSQTR_RigService");
+		let s = it.Next();
+		if (!s) return false;
+		int v = s.GetInt("flare.home", "", 0, 0, p.mo);
+		if (v >= 0) return v == 1;
 		return UFlag(p, "rsqtr_flare_holster", true);
 	}
 
