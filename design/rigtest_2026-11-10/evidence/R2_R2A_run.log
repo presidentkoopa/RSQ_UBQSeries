@@ -1,0 +1,1900 @@
+Log started: 2026-11-11 15:47:29
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/gamedata/doom2.wad, 2919 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/gamedata/brutal22test6.pk3, 22264 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/gamedata/BD_VoxelPack.pk3, 257 lumps
+adding /home/claude/rs_brutal22weaponsq/pk3/03_BD22_VR-Reloaded_2.0.4h.pk3, 836 lumps
+adding /home/claude/gamedata/LOB_v1.05.pk3, 2999 lumps
+adding /home/claude/gamedata/mk-champions20210309.pk3, 140 lumps
+adding /home/claude/gamedata/GunBonsai-0.10.6.pk3, 284 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Accessibility.pk3, 18 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_DistanceGrab.pk3, 88 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 58 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Graveyard.pk3, 23 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1673 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunBonsaiVR.pk3, 63 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 32928 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_LaserSight.pk3, 14730 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Melee.pk3, 310 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Miniboss.pk3, 58 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Monsters.pk3, 22282 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10967 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 78 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 242 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 166 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 764 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 275 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 49 lumps
+adding /home/claude/scratch/rig1110/r10.pk3, 2 lumps
+adding /home/claude/scratch/rig1110/r2.pk3, 3 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+  Opened device No Output
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.4 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.10GHz
+  Family 6, Model 207, Stepping 2
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+Invalid data encountered for texture GunBonsai-0.10.6.pk3:sprites/ui/.gitignore
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 428: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 527: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 655: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1059: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1186: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1333: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1507: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1850: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2065: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2459: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 967: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 968: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 361: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 494: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 626: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 745: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1293: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1435: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1564: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1700: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1951: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1952: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2085: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2086: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1228: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1229: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1292: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1293: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1368: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1369: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 216: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 359: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 504: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 505: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 629: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 630: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 778: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1343: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1344: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1522: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1654: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1797: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1909: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 218: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 373: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 536: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 664: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 779: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1092: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1207: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1331: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1458: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1586: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1587: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1766: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1767: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1908: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1947: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1986: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2025: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2064: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2117: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2118: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 493: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 494: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 871: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 872: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1668: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1902: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs, line 1335: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1236: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1237: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 232: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 359: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 490: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 629: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 742: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 743: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1046: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1162: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1294: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1441: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1593: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1778: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2005: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2176: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 832: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 833: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1866: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1867: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 249: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 250: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 349: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 350: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 441: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 442: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 630: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 631: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 712: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 713: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 781: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 782: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 835: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 836: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 909: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 910: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 997: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 998: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1170: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1171: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1290: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1413: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1720: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1934: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 767: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 770: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 1855: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 215: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 368: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 476: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 477: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 736: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 737: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1194: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1279: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1280: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1406: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknightfx.zs, line 633: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 257: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 391: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 392: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 552: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 723: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 834: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1162: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1280: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1411: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1535: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1715: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1893: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 2202: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 257: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 381: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 652: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 653: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 844: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 845: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 987: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1226: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1358: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1481: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1624: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1777: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1939: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2091: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2279: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2451: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2677: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2678: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 235: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 236: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 352: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 353: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 490: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 634: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 640: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 777: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 898: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1026: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1161: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1327: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1328: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1508: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1509: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1595: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1812: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1978: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2144: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2145: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2266: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2482: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2571: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2715: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 404: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 542: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 654: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1534: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1677: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1934: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 2152: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 330: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 446: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 559: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 668: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 821: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 823: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 944: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1074: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1208: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1360: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1517: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1738: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1740: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1894: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1896: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2190: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2498: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2499: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2606: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2607: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2693: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2694: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2763: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2764: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 140: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 141: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1248: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1828: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2734: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2735: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 465: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1672: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1801: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 331: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 500: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 652: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 853: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 974: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1104: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1203: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1293: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1430: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1474: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1634: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1772: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2004: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2081: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2420: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 466: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 695: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 896: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1155: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1321: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1445: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1568: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1688: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1689: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1741: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1906: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2108: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2361: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2639: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2688: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2960: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+256 warnings while compiling RSQ_Monsters.pk3:zscript.txt
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 1:
+Tried to define class 'Tracer' more than once. Renaming class to 'Tracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 28:
+Tried to define class 'MonsterTracer' more than once. Renaming class to 'MonsterTracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 2596:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 546:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 548:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 550:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 552:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1093:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1094:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1095:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1727:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1728:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1740:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1741:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1870:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1888:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1889:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1131:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1138:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1387:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1390:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1393:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1398:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1401:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1404:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1409:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1412:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1415:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1696:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1519:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 1608:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1538:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1677:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1872:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 2242:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1643:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1964:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 1882:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2017:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2389:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs" line 1903:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 1619:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2014:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2016:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2018:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2020:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2022:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2024:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2277:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2280:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2281:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2858:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2859:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2860:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2861:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2862:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2863:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2864:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2865:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 1905:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2233:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2246:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 736:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 916:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1697:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1894:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 2170:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1965:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2202:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2208:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2235:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2455:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2912:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2913:
+Bad hex number: no
+Script warning, "BD_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+173 warnings while parsing scripts
+Undefined drop item class TreasureChest referenced from actor LOBSpiderMastermind
+Undefined drop item class TomeSpawner referenced from actor LOBArchvile
+Undefined drop item class AmplifierGiver referenced from actor LOBArchvile
+Undefined drop item class Sapphire referenced from actor LOBArchvile
+Undefined drop item class Ruby referenced from actor LOBArachnotron
+Undefined drop item class Amber referenced from actor LOBArachnotron
+Undefined drop item class Ruby referenced from actor LOBRevenant
+Undefined drop item class Amber referenced from actor LOBCacodemon
+Undefined drop item class Emerald referenced from actor LOBBaronOfHell
+Undefined drop item class Ruby referenced from actor LOBHellKnight
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh10 referenced from actor LOBSpectre
+Undefined drop item class Dosh5 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh10 referenced from actor LOBDemon
+Undefined drop item class Dosh5 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh10 referenced from actor LOBDoomImp
+Undefined drop item class Dosh5 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh25 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh5 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh5 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh5 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class TreasureChest referenced from actor Conqueror
+Undefined drop item class TomeSpawner referenced from actor Reaper
+Undefined drop item class AmplifierGiver referenced from actor Reaper
+Undefined drop item class Sapphire referenced from actor Reaper
+Undefined drop item class Ruby referenced from actor Arachnobone
+Undefined drop item class Amber referenced from actor Arachnobone
+Undefined drop item class Ruby referenced from actor PhantomRevenant
+Undefined drop item class Emerald referenced from actor Painbringer
+Undefined drop item class Amber referenced from actor CacoLich
+Undefined drop item class Emerald referenced from actor Balrog
+Undefined drop item class Ruby referenced from actor SlayerKnight
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh10 referenced from actor GhostSpectre
+Undefined drop item class Dosh5 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh10 referenced from actor SkeletonDemon
+Undefined drop item class Dosh5 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh25 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkullChaingunner
+Undefined drop item class Dosh5 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkeletonImp
+Undefined drop item class Dosh5 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh10 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh5 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+Undefined drop item class LewdLabCoat referenced from actor RS_WhiteCguy2
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombie1
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombieEX
+script parsing took 2838.17 ms
+Initializing Gun Bonsai v0.10.6+RSQ...
+Couldn't find Legendoom, LD-specific features in Gun Bonsai disabled.
+[BONSAIRC] Registered TFLV_Upgrade_AmmoLeech
+[BONSAIRC] Registered TFLV_Upgrade_ArmourLeech
+[BONSAIRC] Registered TFLV_Upgrade_Bandoliers
+[BONSAIRC] Registered TFLV_Upgrade_BlastShaping
+[BONSAIRC] Registered TFLV_Upgrade_ECM
+[BONSAIRC] Registered TFLV_Upgrade_HazardSuit
+[BONSAIRC] Registered TFLV_Upgrade_Intuition
+[BONSAIRC] Registered TFLV_Upgrade_Juggler
+[BONSAIRC] Registered TFLV_Upgrade_LifeLeech
+[BONSAIRC] Registered TFLV_Upgrade_PlayerDamage
+[BONSAIRC] Registered TFLV_Upgrade_Thorns
+[BONSAIRC] Registered TFLV_Upgrade_ToughAsNails
+[BONSAIRC] Registered TFLV_Upgrade_AggressiveDefence
+[BONSAIRC] Registered TFLV_Upgrade_BouncyShots
+[BONSAIRC] Registered TFLV_Upgrade_Cleave
+[BONSAIRC] Registered TFLV_Upgrade_DarkHarvest
+[BONSAIRC] Registered TFLV_Upgrade_DecoyFlares
+[BONSAIRC] Registered TFLV_Upgrade_ExplosiveDeath
+[BONSAIRC] Registered TFLV_Upgrade_ExplosiveShots
+[BONSAIRC] Registered TFLV_Upgrade_FastShots
+[BONSAIRC] Registered TFLV_Upgrade_FragmentationShots
+[BONSAIRC] Registered TFLV_Upgrade_HomingShots
+[BONSAIRC] Registered TFLV_Upgrade_PiercingShots
+[BONSAIRC] Registered TFLV_Upgrade_RapidFire
+[BONSAIRC] Registered TFLV_Upgrade_Shield
+[BONSAIRC] Registered TFLV_Upgrade_Submunitions
+[BONSAIRC] Registered TFLV_Upgrade_Sweep
+[BONSAIRC] Registered TFLV_Upgrade_Swiftness
+[BONSAIRC] Registered TFLV_Upgrade_WeaponDamage
+[BONSAIRC] Registered TFLV_Upgrade_IncendiaryShots
+[BONSAIRC] Registered TFLV_Upgrade_BurningTerror
+[BONSAIRC] Registered TFLV_Upgrade_Conflagration
+[BONSAIRC] Registered TFLV_Upgrade_InfernalKiln
+[BONSAIRC] Registered TFLV_Upgrade_PoisonShots
+[BONSAIRC] Registered TFLV_Upgrade_Weakness
+[BONSAIRC] Registered TFLV_Upgrade_Putrefaction
+[BONSAIRC] Registered TFLV_Upgrade_Hallucinogens
+[BONSAIRC] Registered TFLV_Upgrade_CorrosiveShots
+[BONSAIRC] Registered TFLV_Upgrade_ConcentratedAcid
+[BONSAIRC] Registered TFLV_Upgrade_AcidSpray
+[BONSAIRC] Registered TFLV_Upgrade_Embrittlement
+[BONSAIRC] Registered TFLV_Upgrade_ShockingInscription
+[BONSAIRC] Registered TFLV_Upgrade_Revivification
+[BONSAIRC] Registered TFLV_Upgrade_ChainLightning
+[BONSAIRC] Registered TFLV_Upgrade_Thunderbolt
+[BONSAIRC] Registered TFLV_Upgrade_ElementalBeam
+[BONSAIRC] Registered TFLV_Upgrade_ElementalBlast
+[BONSAIRC] Registered TFLV_Upgrade_ElementalWave
+[BONSAIRC] Activating configuration for class GoldWand.
+[BONSAIRC] Forcing type 0x106 for: Staff
+[BONSAIRC] Forcing type 0x104 for: GoldWand
+[BONSAIRC] Activating configuration for class MWeapWand.
+[BONSAIRC] Forcing type 0x02 for: FWeapFist FWeapAxe CWeapMace
+[BONSAIRC] Forcing type 0x68 for: MWeapLightning
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_HomingShots TFLV_Upgrade_PiercingShots TFLV_Upgrade_FragmentationShots
+           On weapons: MWeapLightning
+[BONSAIRC] Forcing type 0x68 for: MWeapBloodscourge
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_BouncyShots
+           On weapons: CWeapWraithverge
+[BONSAIRC] Activating configuration for class StrifeWeapon.
+[BONSAIRC] Forcing type 0x02 for: PunchDagger
+[BONSAIRC] Registered RSQ_Upgrade_Haymaker
+[BONSAIRC] Registered RSQ_Upgrade_OneTwo
+[BONSAIRC] Registered RSQ_Upgrade_StarPunch
+[BONSAIRC] Registered RSQ_Upgrade_Counterpunch
+[BONSAIRC] Registered RSQ_Upgrade_BodyBlow
+[BONSAIRC] Registered RSQ_Upgrade_Knockdown
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHands
+[BONSAIRC] Registered RSQ_Upgrade_ReturnFire
+[BONSAIRC] Registered RSQ_Upgrade_WallSplat
+[BONSAIRC] Registered RSQ_Upgrade_Guard
+[BONSAIRC] Registered RSQ_Upgrade_Lunge
+[BONSAIRC] Registered RSQ_Upgrade_Executioner
+[BONSAIRC] Registered RSQ_Upgrade_Adrenaline
+[BONSAIRC] Registered RSQ_Upgrade_Momentum
+[BONSAIRC] Registered RSQ_Upgrade_RiposteEdge
+[BONSAIRC] Registered RSQ_Upgrade_PiercingReturn
+[BONSAIRC] Registered RSQ_Upgrade_SaberThrow
+[BONSAIRC] Registered RSQ_Upgrade_ChainChoke
+[BONSAIRC] Registered RSQ_Upgrade_DualHarmony
+[BONSAIRC] Registered RSQ_Upgrade_ForcePush
+[BONSAIRC] Registered RSQ_Upgrade_ForcePull
+[BONSAIRC] Registered RSQ_Upgrade_ForceChoke
+[BONSAIRC] Registered RSQ_Upgrade_ForceJump
+[BONSAIRC] Registered RSQ_Upgrade_Ricochet
+[BONSAIRC] Registered RSQ_Upgrade_MeatGrinder
+[BONSAIRC] Registered RSQ_Upgrade_HuntersReturn
+[BONSAIRC] Registered RSQ_Upgrade_Bulwark
+[BONSAIRC] Registered RSQ_Upgrade_Rebound
+[BONSAIRC] Registered RSQ_Upgrade_BatteringRam
+[BONSAIRC] Registered RSQ_Upgrade_Broadening
+[BONSAIRC] Registered RSQ_Upgrade_Lockstep
+[BONSAIRC] Registered RSQ_Upgrade_Deflector
+[BONSAIRC] Registered RSQ_Upgrade_WallBounces
+[BONSAIRC] Registered RSQ_Upgrade_Cleaver
+[BONSAIRC] Registered RSQ_Upgrade_BackPlate
+[BONSAIRC] Registered RSQ_Upgrade_ShieldWall
+[BONSAIRC] Registered RSQ_Upgrade_Reflect
+[BONSAIRC] Registered RSQ_Upgrade_WallSlam
+[BONSAIRC] Registered RSQ_Upgrade_BashHitStop
+[BONSAIRC] Registered RSQ_Upgrade_Charge
+[BONSAIRC] Registered RSQ_Upgrade_ShieldSize
+[BONSAIRC] Registered RSQ_Upgrade_ShieldDash
+[BONSAIRC] Registered RSQ_Upgrade_HungryBlades
+[BONSAIRC] Registered RSQ_Upgrade_RevShield
+[BONSAIRC] Registered RSQ_Upgrade_BuzzsawReturn
+[BONSAIRC] Registered RSQ_Upgrade_Spartan
+[BONSAIRC] Registered RSQ_Upgrade_Bandolier
+[BONSAIRC] Registered RSQ_Upgrade_Scavenger
+[BONSAIRC] Registered RSQ_Upgrade_StrongArm
+[BONSAIRC] Registered RSQ_Upgrade_FlatArc
+[BONSAIRC] Registered RSQ_Upgrade_Bounce
+[BONSAIRC] Registered RSQ_Upgrade_CookSense
+[BONSAIRC] Registered RSQ_Upgrade_ShortFuse
+[BONSAIRC] Registered RSQ_Upgrade_BigBang
+[BONSAIRC] Registered RSQ_Upgrade_Frag
+[BONSAIRC] Registered RSQ_Upgrade_Cluster
+[BONSAIRC] Registered RSQ_Upgrade_Sticky
+[BONSAIRC] Registered RSQ_Upgrade_Teeth
+[BONSAIRC] Registered RSQ_Upgrade_Skeet
+[BONSAIRC] Registered RSQ_Upgrade_SkeetWindow
+[BONSAIRC] Registered RSQ_Upgrade_SlowBurn
+[BONSAIRC] Registered RSQ_Upgrade_Impact
+[BONSAIRC] Registered RSQ_Upgrade_Incendiary
+[BONSAIRC] Registered RSQ_Upgrade_Freeze
+[BONSAIRC] Registered RSQ_Upgrade_Stun
+[BONSAIRC] Registered RSQ_Upgrade_Smoke
+[BONSAIRC] Registered RSQ_Upgrade_Flash
+[BONSAIRC] Registered RSQ_Upgrade_Charm
+[BONSAIRC] Registered RSQ_Upgrade_Infight
+[BONSAIRC] Registered RSQ_Upgrade_Grapple
+[BONSAIRC] Registered RSQ_Upgrade_SwingMomentum
+[BONSAIRC] Registered RSQ_Upgrade_ZipKick
+[BONSAIRC] Registered RSQ_Upgrade_Scorpion
+[BONSAIRC] Registered RSQ_Upgrade_TwinLines
+[BONSAIRC] Registered RSQ_Upgrade_DeadEye
+[BONSAIRC] Registered RSQ_Upgrade_HeavyLift
+[BONSAIRC] Registered RSQ_Upgrade_StraightPull
+[BONSAIRC] Registered RSQ_Upgrade_BodyShield
+[BONSAIRC] Registered RSQ_Upgrade_AmmoReadout
+[BONSAIRC] Registered RSQ_Upgrade_GunToss
+[BONSAIRC] Registered RSQ_Upgrade_BoomerangGun
+[BONSAIRC] Registered RSQ_Upgrade_KeysByHand
+[BONSAIRC] Registered RSQ_Upgrade_Smoker
+[BONSAIRC] Registered RSQ_Upgrade_ChainSmoker
+[BONSAIRC] Registered RSQ_Upgrade_TargetLock
+[BONSAIRC] Registered RSQ_Upgrade_HeadshotReaction
+[BONSAIRC] Registered RSQ_Upgrade_SlowMotion
+[BONSAIRC] Registered RSQ_Upgrade_Longer
+[BONSAIRC] Registered RSQ_Upgrade_Deeper
+[BONSAIRC] Registered RSQ_Upgrade_Cheaper
+[BONSAIRC] Registered RSQ_Upgrade_LeanDodge
+[BONSAIRC] Registered RSQ_Upgrade_Matrix
+[BONSAIRC] Registered RSQ_Upgrade_LongArm
+[BONSAIRC] Registered RSQ_Upgrade_IronGrip
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHitter
+[BONSAIRC] Registered RSQ_Upgrade_AirCatch
+[BONSAIRC] Registered RSQ_Upgrade_PowderKeg
+[BONSAIRC] Registered RSQ_Upgrade_QuickDraw
+[BONSAIRC] Registered RSQ_Upgrade_PairDraw
+[BONSAIRC] Registered RSQ_Upgrade_Showdown
+[BONSAIRC] Registered RSQ_Upgrade_Marksman
+[BONSAIRC] Registered RSQ_Upgrade_Dodger
+[BONSAIRC] Registered RSQ_Upgrade_SecondWind
+[BONSAIRC] Registered RSQ_Upgrade_TimeDilation
+[BONSAIRC] Registered RSQ_Upgrade_Akimbo
+[BONSAIRC] Registered RSQ_Upgrade_Crossfire
+[BONSAIRC] Registered RSQ_Upgrade_Alternator
+[BONSAIRC] Registered RSQ_Upgrade_Evasion
+[BONSAIRC] Registered RSQ_Upgrade_Southpaw
+[BONSAIRC] Registered RSQ_Upgrade_SteadyAim
+[BONSAIRC] Registered RSQ_Upgrade_LongLine
+[BONSAIRC] Registered RSQ_Upgrade_FastReel
+[BONSAIRC] Registered RSQ_Upgrade_HeavyHaul
+[BONSAIRC] Registered RSQ_Upgrade_GetOverHere
+[BONSAIRC] Registered RSQ_Upgrade_Bowling
+[BONSAIRC] Registered RSQ_Upgrade_BarbedClaw
+[BONSAIRC] Registered RSQ_Upgrade_Slingshot
+[BONSAIRC] Registered RSQ_Upgrade_SteadyLine
+[BONSAIRC] Registered RSQ_Upgrade_DoubleHook
+[BONSAIRC] Registered RSQ_Upgrade_Uppercut
+[BONSAIRC] Registered RSQ_Upgrade_Launcher
+[BONSAIRC] Registered RSQ_Upgrade_Juggle
+[BONSAIRC] Registered RSQ_Upgrade_Meteor
+[BONSAIRC] Registered RSQ_Upgrade_GroundPound
+[BONSAIRC] Registered RSQ_Upgrade_ClearOut
+[BONSAIRC] Registered RSQ_Upgrade_ExplosiveFist
+[BONSAIRC] Registered RSQ_Upgrade_FrostFist
+[BONSAIRC] Registered RSQ_Upgrade_ShockFist
+[BONSAIRC] Registered RSQ_Upgrade_FireFist
+[BONSAIRC] Registered RSQ_Upgrade_ThreeHit
+[BONSAIRC] Registered RSQ_Upgrade_Dempsey
+[BONSAIRC] Registered RSQ_Upgrade_Finisher
+[BONSAIRC] Registered RSQ_Upgrade_SwatBack
+[BONSAIRC] Registered RSQ_Upgrade_Parry
+[BONSAIRC] Registered RSQ_Upgrade_ReflectGuard
+[BONSAIRC] Registered RSQ_Upgrade_AbsorbRelease
+[BONSAIRC] Registered RSQ_Upgrade_Catch
+[BONSAIRC] Registered RSQ_Upgrade_BulletTimeFists
+[BONSAIRC] Registered RSQ_Upgrade_HumanShield
+[BONSAIRC] Registered RSQ_Upgrade_HeadlockUppercut
+[BONSAIRC] Registered RSQ_Upgrade_HeavierHeadlock
+[BONSAIRC] Registered RSQ_Upgrade_Slam
+[BONSAIRC] Registered RSQ_Upgrade_ThrowInto
+[BONSAIRC] Registered RSQ_Upgrade_Chokehold
+[BONSAIRC] Registered RSQ_Upgrade_Rage
+[BONSAIRC] Registered RSQ_Upgrade_BloodRush
+[BONSAIRC] Registered RSQ_Upgrade_BerserkMeter
+[BONSAIRC] Registered RSQ_Upgrade_PistolWhip
+[BONSAIRC] Registered RSQ_Upgrade_RifleButt
+[BONSAIRC] Registered RSQ_Upgrade_Taunt
+[BONSAIRC] Registered RSQ_Upgrade_CriticalHits
+[BONSAIRC] Registered RSQ_Upgrade_Headshot
+[BONSAIRC] Registered RSQ_Upgrade_Backstab
+[BONSAIRC] Registered RSQ_Upgrade_BitScavenger
+[BONSAIRC] Registered RSQ_Upgrade_RichBits
+[BONSAIRC] Registered RSQ_Upgrade_Magnet
+[BONSAIRC] Registered RSQ_Upgrade_LuckyKill
+[BONSAIRC] Registered RSQ_Upgrade_Sting
+[BONSAIRC] Registered RSQ_Upgrade_WhipStun
+[BONSAIRC] Registered RSQ_Upgrade_CrackShot
+[BONSAIRC] Registered RSQ_Upgrade_ReturnCrack
+[BONSAIRC] Registered RSQ_Upgrade_WhipStrikeTrue
+[BONSAIRC] Registered RSQ_Upgrade_LongThong
+[BONSAIRC] Registered RSQ_Upgrade_QuickMark
+[BONSAIRC] Registered RSQ_Upgrade_HeavyYank
+[BONSAIRC] Registered RSQ_Upgrade_PullAndPunch
+[BONSAIRC] Registered RSQ_Upgrade_Lasso
+[BONSAIRC] Registered RSQ_Upgrade_Bola
+[BONSAIRC] Registered RSQ_Upgrade_Snag
+[BONSAIRC] Registered RSQ_Upgrade_Mantle
+[BONSAIRC] Registered RSQ_Upgrade_WhipMomentum
+[BONSAIRC] Registered RSQ_Upgrade_Tarzan
+[BONSAIRC] Registered RSQ_Upgrade_WhipFastReel
+[BONSAIRC] Registered RSQ_Upgrade_WhipSteadyLine
+[BONSAIRC] Registered RSQ_Upgrade_WhipSlingshot
+[BONSAIRC] Registered RSQ_Upgrade_WhipHeavyHaul
+[BONSAIRC] Registered RSQ_Upgrade_WhipGetOverHere
+[BONSAIRC] Registered RSQ_Upgrade_WhipBowling
+[BONSAIRC] Registered RSQ_Upgrade_WhipBarbedClaw
+[BONSAIRC] Registered RSQ_Upgrade_BattleMeditation
+[BONSAIRC] Registered RSQ_Upgrade_SaberBarrage
+[BONSAIRC] Registered RSQ_Upgrade_ReturningBlade
+[BONSAIRC] Registered RSQ_Upgrade_StrikeTrue
+[BONSAIRC] Registered RSQ_Upgrade_KyberAttunement
+[BONSAIRC] Registered RSQ_Upgrade_HighGround
+[BONSAIRC] Registered RSQ_Upgrade_PointTaken
+[BONSAIRC] Registered RSQ_Upgrade_RunThrough
+[BONSAIRC] Registered RSQ_Upgrade_ReturnToSender
+[BONSAIRC] Registered RSQ_Upgrade_GuidedReturn
+[BONSAIRC] Registered RSQ_Upgrade_Precognition
+[BONSAIRC] Registered RSQ_Upgrade_TwoSabers
+[BONSAIRC] Registered RSQ_Upgrade_DoubleBladed
+[BONSAIRC] Registered RSQ_Upgrade_CrossGuard
+[BONSAIRC] Registered RSQ_Upgrade_Clash
+[BONSAIRC] Registered RSQ_Upgrade_ForceSensitive
+[BONSAIRC] Registered RSQ_Upgrade_ForceSpeed
+[BONSAIRC] Registered RSQ_Upgrade_ForceLightning
+[BONSAIRC] Forcing type 0x02 for: RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_RapidFire TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+           On weapons: RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw
+[BONSAIRC] Activating configuration for class RSQWP_WhipWeapon.
+[BONSAIRC] Forcing type 0x02 for: RSQWP_WhipWeapon
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_RapidFire TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+           On weapons: RSQWP_WhipWeapon
+[BONSAIRC] Activating configuration for class RSQGN_Grenade.
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_RapidFire TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+           On weapons: RSQGN_Grenade
+[BONSAIRC] Activating configuration for class UBQS_ForceHand.
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_RapidFire TFLV_Upgrade_IncendiaryShots TFLV_Upgrade_BurningTerror TFLV_Upgrade_Conflagration TFLV_Upgrade_InfernalKiln TFLV_Upgrade_PoisonShots TFLV_Upgrade_Weakness TFLV_Upgrade_Putrefaction TFLV_Upgrade_Hallucinogens TFLV_Upgrade_CorrosiveShots TFLV_Upgrade_AcidSpray TFLV_Upgrade_ConcentratedAcid TFLV_Upgrade_Embrittlement TFLV_Upgrade_ShockingInscription TFLV_Upgrade_Revivification TFLV_Upgrade_ChainLightning TFLV_Upgrade_Thunderbolt TFLV_Upgrade_ElementalBeam TFLV_Upgrade_ElementalBlast TFLV_Upgrade_ElementalWave
+           On weapons: UBQS_ForceHand
+Gun Bonsai VR/offhand patch active: two hands, two HUDs, provenance-based XP.
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+M_Init: Init menus.
+P_Init: Init Playloop state.
+R_InstallSpriteLump: Bad frame characters in lump PENTAHUD
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+
+----------------------------------------
+TIP 42: The railgun can penetrate multiple enemies, and even... thin surfaces?! See if you can try hitting a baddie that's behind a wall!
+----------------------------------------
+R10 R 0 maptime 1
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 0
+R10 R 1 maptime 18
+R2_LADDER_LINE
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+
+----------------------------------------
+TIP 10: Imps may be cannon fodder, but can still be pretty dangerous up close. Get cocky and they'll leap at you with a brutal melee attack!
+----------------------------------------
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 1
+R10 R 0 maptime 11
+RSSC WRIST menu closed player 0 t11
+R10 R 1 maptime 28
+R10 R 2 maptime 45
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+R10 R 3 maptime 60
+R2 MON tag 0 RS_CommonImp tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonImp tier 1 Common name fits
+R2 MON tag 0 RS_CommonImp tier 1 Common name fits
+R2 MON tag 0 RS_CommonImp tier 1 Common name fits
+R2 MON tag 0 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 0 RS_CommonImp tier 1 Common name fits
+R2 MON tag 0 RS_CommonImp tier 1 Common name fits
+R2 MON tag 0 RS_CommonImp tier 1 Common name fits
+R2 MONSUM tag 0 t60: 19 monsters, 0 whose class name is not their tier's colour
+R2 LINE spawn tier 1 (Common): RS_CommonZombie -> RS_CommonZombie
+R2 LINE spawn tier 2 (Green): RS_GreenZombie -> RS_GreenZombie
+R2 LINE spawn tier 3 (Blue): RS_BlueZombie -> RS_BlueZombie
+R2 LINE spawn tier 4 (Purple): RS_PurpleZombie -> RS_PurpleZombie
+R2 LINE spawn tier 5 (Cyan): RS_CyanZombie2 -> RS_CyanZombie2
+R2 LINE spawn tier 6 (Brown): RS_BrownZombie2 -> RS_BrownZombie2
+R2 LINE spawn tier 7 (Yellow): RS_YellowZombie -> RS_YellowZombie
+R2 LINE spawn tier 8 (FireBlu): RS_FireBluZombie2 -> RS_FireBluZombie2
+R2 LINE spawn tier 9 (Gray): RS_GrayZombie2 -> RS_GrayZombie2
+R2 LINE spawn tier 10 (Red): RS_RedZombie -> RS_RedZombie
+R2 LINE spawn tier 11 (Abyss): RS_AbyssZombie2 -> RS_AbyssZombie2
+R2 LINE spawn tier 12 (Black): RS_BlackZombie1 -> RS_BlackZombie1
+R2 LINE spawn tier 13 (White): RS_WhiteZombie1 -> RS_WhiteZombie1
+R2_GEM_FRAME
+R10 R 4 maptime 76
+R2 LINETIER asked 1 Common: RS_CommonZombie reads tier 1 Common: OK
+R2 LINETIER asked 2 Green: RS_GreenZombie reads tier 2 Green: OK
+R2 LINETIER asked 3 Blue: RS_BlueZombie reads tier 3 Blue: OK
+R2 LINETIER asked 4 Purple: RS_PurpleZombie reads tier 4 Purple: OK
+R2 LINETIER asked 5 Cyan: RS_CyanZombie2 reads tier 5 Cyan: OK
+R2 LINETIER asked 6 Brown: RS_BrownZombie2 reads tier 6 Brown: OK
+R2 LINETIER asked 7 Yellow: RS_YellowZombie reads tier 7 Yellow: OK
+R2 LINETIER asked 8 FireBlu: RS_FireBluZombie2 reads tier 8 FireBlu: OK
+R2 LINETIER asked 9 Gray: RS_GrayZombie2 reads tier 9 Gray: OK
+R2 LINETIER asked 10 Red: RS_RedZombie reads tier 10 Red: OK
+R2 LINETIER asked 11 Abyss: RS_AbyssZombie2 reads tier 11 Abyss: OK
+R2 LINETIER asked 12 Black: RS_BlackZombie1 reads tier 12 Black: OK
+R2 LINETIER asked 13 White: RS_WhiteZombie1 reads tier 13 White: OK
+R2 MON tag 1 RS_CommonImp tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonImp tier 1 Common name fits
+R2 MON tag 1 RS_CommonImp tier 1 Common name fits
+R2 MON tag 1 RS_CommonImp tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_CommonImp tier 1 Common name fits
+R2 MON tag 1 RS_CommonImp tier 1 Common name fits
+R2 MON tag 1 RS_CommonImp tier 1 Common name fits
+R2 MON tag 1 RS_CommonZombie tier 1 Common name fits
+R2 MON tag 1 RS_GreenZombie tier 2 Green name fits
+R2 MON tag 1 RS_BlueZombie tier 3 Blue name fits
+R2 MON tag 1 RS_PurpleZombie tier 4 Purple name fits
+R2 MON tag 1 RS_CyanZombie2 tier 5 Cyan name fits
+R2 MON tag 1 RS_BrownZombie2 tier 6 Brown name fits
+R2 MON tag 1 RS_YellowZombie tier 7 Yellow name fits
+R2 MON tag 1 RS_FireBluZombie2 tier 8 FireBlu name fits
+R2 MON tag 1 RS_GrayZombie2 tier 9 Gray name fits
+R2 MON tag 1 RS_RedZombie tier 10 Red name fits
+R2 MON tag 1 RS_AbyssZombie2 tier 11 Abyss name fits
+R2 MON tag 1 RS_BlackZombie1 tier 12 Black name fits
+R2 MON tag 1 RS_WhiteZombie1 tier 13 White name fits
+R2 MONSUM tag 1 t76: 32 monsters, 0 whose class name is not their tier's colour
+R2 GEMS 1
+R2 GEM t76 RS_ColorTierIconCH frame A (gem tier 1 Common) from RS_CommonImp tier 1 Common: MATCH
+R2 GEM t76 RS_ColorTierIconCH frame A (gem tier 1 Common) from RS_CommonZombie tier 1 Common: MATCH
+R2 GEM t76 RS_ColorTierIconCH13 frame F (gem tier 6 Brown) from RS_BrownZombie2 tier 6 Brown: MATCH
+R2 GEM t76 RS_ColorTierIconCH11 frame M (gem tier 13 White) from RS_WhiteZombie1 tier 13 White: MATCH
+R2 GEM t76 RS_ColorTierIconCH10 frame L (gem tier 12 Black) from RS_BlackZombie1 tier 12 Black: MATCH
+R2 GEM t76 RS_ColorTierIconCH13 frame F (gem tier 6 Brown) from RS_BrownZombie2 tier 6 Brown: MATCH
+R2 GEM t76 RS_ColorTierIconCH11 frame M (gem tier 13 White) from RS_BlackZombie1 tier 12 Black: MISMATCH
+R2 GEM t76 RS_ColorTierIconCH10 frame L (gem tier 12 Black) from RS_BlackZombie1 tier 12 Black: MATCH
+T_HEIGHT t80: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+R2 GEM t80 RS_ColorTierIconCH2 frame B (gem tier 2 Green) from RS_GreenZombie tier 2 Green: MATCH
+R2 GEM t80 RS_ColorTierIconCH3 frame C (gem tier 3 Blue) from RS_BlueZombie tier 3 Blue: MATCH
+R2 GEM t80 RS_ColorTierIconCH4 frame D (gem tier 4 Purple) from RS_PurpleZombie tier 4 Purple: MATCH
+R2 GEM t80 RS_ColorTierIconCH12 frame E (gem tier 5 Cyan) from RS_CyanZombie2 tier 5 Cyan: MATCH
+R2 GEM t80 RS_ColorTierIconCH5 frame G (gem tier 7 Yellow) from RS_YellowZombie tier 7 Yellow: MATCH
+R2 GEM t80 RS_ColorTierIconCH7 frame H (gem tier 8 FireBlu) from RS_FireBluZombie2 tier 8 FireBlu: MATCH
+R2 GEM t80 RS_ColorTierIconCH8 frame I (gem tier 9 Gray) from RS_GrayZombie2 tier 9 Gray: MATCH
+R2 GEM t80 RS_ColorTierIconCH6 frame J (gem tier 10 Red) from RS_RedZombie tier 10 Red: MATCH
+R2 GEM t82 RS_ColorTierIconCH9 frame K (gem tier 11 Abyss) from RS_AbyssZombie2 tier 11 Abyss: MATCH
+R10 R 5 maptime 89
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+R10 R 6 maptime 100
+R2 GEM t100 RS_ColorTierIconCH2 frame B (gem tier 2 Green) from RS_GreenZombie tier 2 Green: MATCH
+R2 GEM t100 RS_ColorTierIconCH3 frame C (gem tier 3 Blue) from RS_BlueZombie tier 3 Blue: MATCH
+R2 GEM t100 RS_ColorTierIconCH4 frame D (gem tier 4 Purple) from RS_PurpleZombie tier 4 Purple: MATCH
+R2 GEM t100 RS_ColorTierIconCH12 frame E (gem tier 5 Cyan) from RS_CyanZombie2 tier 5 Cyan: MATCH
+R2 GEM t100 RS_ColorTierIconCH5 frame G (gem tier 7 Yellow) from RS_YellowZombie tier 7 Yellow: MATCH
+R2 GEM t100 RS_ColorTierIconCH7 frame H (gem tier 8 FireBlu) from RS_FireBluZombie2 tier 8 FireBlu: MATCH
+R2 GEM t100 RS_ColorTierIconCH8 frame I (gem tier 9 Gray) from RS_GrayZombie2 tier 9 Gray: MATCH
+R2 GEM t100 RS_ColorTierIconCH6 frame J (gem tier 10 Red) from RS_RedZombie tier 10 Red: MATCH
+R2 GEM t102 RS_ColorTierIconCH9 frame K (gem tier 11 Abyss) from RS_AbyssZombie2 tier 11 Abyss: MATCH
+R10 R 7 maptime 109
+R10 R 8 maptime 118
+R10 R 9 maptime 127
+R10 R 10 maptime 140
+R10 R 11 maptime 151
+R10 R 12 maptime 162
+R2_SCORE_ROWS
+R10 R 13 maptime 173
+R2 GEMS 0
+R2 KILL t173 line 1: RS_CommonZombie tier 1 Common
+RSQMB meter +4.0 (kill) -> 4
+RS_Score[killer]: RS_CommonZombie spawnhp 20 base 20 counted 19 | spree n=0 exp=0 t=173 | ut k=0 hp=0 st=0 | Curveball 0.200
+RS_Score: +24 -> 24 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #1 p0 base 20 style 4 chain gun.pistol
+R2 KILL t173 line 2: RS_GreenZombie tier 2 Green
+RSQMB meter +10.0 (kill, chain 2) -> 14
+RS_Score[killer]: RS_GreenZombie spawnhp 40 base 40 counted 19 | spree n=1 exp=245 t=173 | ut k=1 hp=20 st=0 | Green Champion 0.250 | Spree 0.025 | Green Tier 0.100 | Multi-Kill 0.150 | Pinata 0.250
+RS_Score: +71 -> 95 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #2 p0 base 40 style 31 chain gun.pistol
+RSQMB meter +1.0 (Score style 4) -> 15
+RSQMB meter +7.8 (Score style 31) -> 23
+R2 ROWS t175 kill of RS_GreenZombie tier 2 Green: tier row(s) paid: Green Tier | all rows: [Base +40] [Green Champion +10] [Spree +1] [Green Tier +4] [Multi-Kill +6] [Pinata +10] 
+RSQMB meter +12.0 (Gun Bonsai XP 60) -> 35
+R10 R 14 maptime 185
+R2 KILL t185 line 3: RS_BlueZombie tier 3 Blue
+RSQMB meter +16.0 (kill, chain 3) -> 51
+RS_Score[killer]: RS_BlueZombie spawnhp 60 base 60 counted 19 | spree n=2 exp=245 t=185 | ut k=2 hp=60 st=0 | Spree 0.050 | Blue Tier 0.150
+RS_Score: +72 -> 167 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #3 p0 base 60 style 12 chain gun.pistol
+RSQMB meter +3.0 (Score style 12) -> 54
+R2 ROWS t187 kill of RS_BlueZombie tier 3 Blue: tier row(s) paid: Blue Tier | all rows: [Base +60] [Spree +3] [Blue Tier +9] 
+RSQMB meter +12.0 (Gun Bonsai XP 60) -> 66
+R10 R 15 maptime 197
+R2 KILL t197 line 4: RS_PurpleZombie tier 4 Purple
+RSQMB meter +22.0 (kill, chain 4) -> 88
+RS_Score[killer]: RS_PurpleZombie spawnhp 95 base 95 counted 19 | spree n=3 exp=257 t=197 | ut k=3 hp=120 st=0 | Spree 0.075 | Purple Tier 0.250
+RS_Score: +126 -> 293 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #4 p0 base 95 style 31 chain gun.pistol
+R2 KILL t197 line 5: RS_CyanZombie2 tier 5 Cyan
+RSQMB meter +28.0 (kill, chain 5) -> 116
+RS_Score[killer]: RS_CyanZombie2 spawnhp 30 base 30 counted 19 | spree n=4 exp=269 t=197 | ut k=4 hp=215 st=0 | Spree 0.100 | Cyan Tier 0.200 | Multi-Kill 0.150
+RS_Score: +44 -> 337 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #5 p0 base 30 style 14 chain gun.pistol
+RSQMB meter +7.8 (Score style 31) -> 124
+RSQMB meter +3.5 (Score style 14) -> 127
+R2 ROWS t199 kill of RS_CyanZombie2 tier 5 Cyan: tier row(s) paid: Cyan Tier | all rows: [Base +30] [Spree +3] [Cyan Tier +6] [Multi-Kill +5] 
+RSQMB meter +25.0 (Gun Bonsai XP 125) -> 152
+R10 R 16 maptime 211
+R2 KILL t211 line 6: RS_BrownZombie2 tier 6 Brown
+RSQMB meter +34.0 (kill, chain 6) -> 186
+RS_Score[killer]: RS_BrownZombie2 spawnhp 100 base 100 counted 19 | spree n=5 exp=269 t=211 | ut k=5 hp=245 st=0 | Spree 0.125 | Brown Tier 0.350
+RS_Score: +148 -> 485 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #6 p0 base 100 style 48 chain gun.pistol
+RSQMB meter +12.0 (Score style 48) -> 198
+R2 ROWS t213 kill of RS_BrownZombie2 tier 6 Brown: tier row(s) paid: Brown Tier | all rows: [Base +100] [Spree +13] [Brown Tier +35] 
+RSQMB meter +20.0 (Gun Bonsai XP 100) -> 218
+R10 R 17 maptime 227
+R2 KILL t227 line 7: RS_YellowZombie tier 7 Yellow
+RSQMB meter +34.0 (kill, chain 7) -> 252
+RS_Score[killer]: RS_YellowZombie spawnhp 140 base 140 counted 19 | spree n=6 exp=283 t=227 | ut k=6 hp=345 st=0 | Spree 0.150 | Rarity 0.107 | Yellow Tier 0.250
+RS_Score: +211 -> 696 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #7 p0 base 140 style 71 chain gun.pistol
+R2 KILL t227 line 8: RS_FireBluZombie2 tier 8 FireBlu
+RSQMB meter +34.0 (kill, chain 8) -> 286
+RS_Score[killer]: RS_FireBluZombie2 spawnhp 70 base 70 counted 19 | spree n=7 exp=299 t=227 | ut k=7 hp=485 st=0 | Spree 0.175 | FireBlu Tier 0.300 | Multi-Kill 0.150
+RS_Score: +114 -> 810 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #8 p0 base 70 style 44 chain gun.pistol
+Your Pistol is ready to level up!
+RSQMB meter +17.8 (Score style 71) -> 304
+RSQMB meter +11.0 (Score style 44) -> 315
+R2 ROWS t229 kill of RS_FireBluZombie2 tier 8 FireBlu: tier row(s) paid: FireBlu Tier | all rows: [Base +70] [Spree +12] [FireBlu Tier +21] [Multi-Kill +11] 
+RSQMB meter +40.0 (Gun Bonsai XP 265) -> 355
+R10 R 18 maptime 243
+R2 KILL t243 line 9: RS_GrayZombie2 tier 9 Gray
+RSQMB meter +34.0 (kill, chain 9) -> 389
+RS_Score[killer]: RS_GrayZombie2 spawnhp 110 base 110 counted 19 | spree n=8 exp=299 t=243 | ut k=8 hp=555 st=0 | Spree 0.200 | Gray Tier 0.350
+RS_Score: +171 -> 981 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #9 p0 base 110 style 61 chain gun.pistol
+R2 KILL t243 line 10: RS_RedZombie tier 10 Red
+RSQMB meter +34.0 (kill, chain 10) -> 423
+RS_Score[killer]: RS_RedZombie spawnhp 186 base 186 counted 19 | spree n=9 exp=315 t=243 | ut k=9 hp=665 st=0 | Cyan Champion 0.250 | Spree 0.225 | Rarity 0.226 | Red Tier 0.400 | Justice Shot 0.400 | Champion Streak 0.100 | Multi-Kill 0.150
+RS_Score: +512 -> 1493 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #10 p0 base 186 style 326 chain gun.pistol
+RSQMB meter +15.3 (Score style 61) -> 438
+RSQMB meter +81.5 (Score style 326) -> 520
+R2 ROWS t245 kill of RS_RedZombie tier 10 Red: tier row(s) paid: Red Tier | all rows: [Base +186] [Cyan Champion +47] [Spree +42] [Rarity +42] [Red Tier +74] [Justice Shot +74] [Champion Streak +19] [Multi-Kill +28] 
+RSQMB meter +40.0 (Gun Bonsai XP 332) -> 560
+RSQMB meter +34.0 (kill, chain 11) -> 594
+R10 R 19 maptime 259
+R2 KILL t259 line 11: RS_AbyssZombie2 tier 11 Abyss
+RSQMB meter +34.0 (kill, chain 12) -> 628
+RS_Score[killer]: RS_AbyssZombie2 spawnhp 200 base 200 counted 19 | spree n=10 exp=315 t=259 | ut k=10 hp=851 st=0 | Curveball 0.200 | Spree 0.250 | Abyss Tier 0.300
+RS_Score: +350 -> 1843 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #11 p0 base 200 style 150 chain gun.pistol
+R2 KILL t259 line 12: RS_BlackZombie1 tier 12 Black
+RSQMB meter +34.0 (kill, chain 13) -> 662
+RS_Score[killer]: RS_BlackZombie1 spawnhp 2500 base 2500 counted 19 | spree n=11 exp=331 t=259 | ut k=11 hp=1051 st=0 | Curveball 0.200 | Spree 0.250 | Rarity 0.597 | Black Boss 0.750 | Tier Slayer 0.500 | Multi-Kill 0.150
+RS_Score: +8616 -> 10459 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #12 p0 base 2500 style 6116 chain gun.pistol
+RS_Score: big moment (Rarity) -> slow-motion pulse 600 ms at 35%
+RSQMB meter +37.5 (Score style 150) -> 699
+RSQMB meter +120.0 (Score style 6116) -> 819
+RS_Score: buddha ON (2 lives held)
+R2 ROWS t261 kill of RS_BlackZombie1 tier 12 Black: tier row(s) paid: none | all rows: [Base +2500] [Curveball +500] [Spree +625] [Rarity +1491] [Black Boss +1875] [Tier Slayer +1250] [Multi-Kill +375] 
+RSQMB meter +40.0 (Gun Bonsai XP 6253) -> 859
+R2_MB_RED
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+RS_Score: 19 monsters, 660 points, threshold 5000 (UT 20 kills / 2000 hp)
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 1
+RS_Score: census after the first tic: 19 monsters, 660 points, threshold 5000 (UT 20 kills / 2000 hp)
+R10 R 0 maptime 7
+R2 KILL 13: none
+RSSC WRIST menu closed player 0 t7
+RSQMB bossfight scan: 2 types [RS_CommonZombie 20, RS_CommonImp 60], 19 spots, 1 exits, 0 weapon types
+RSQMB meter fills from: kills, chains, time, Score style, Gun Bonsai XP (chosen Both; Score loaded, Gun Bonsai VR loaded)
+R10 R 1 maptime 24
+R10 R 2 maptime 38
+R10 R 3 maptime 50
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+R10 R 4 maptime 59
+R10 R 5 maptime 70
+R10 R 6 maptime 78
+R10 R 7 maptime 87
+R10 R 8 maptime 99
+R10 R 9 maptime 110
+R10 R 10 maptime 120
+R2 PLV player level 8
+R2 WLV hand 0 BrutalPistol level 8
+R2 WLV hand 1 RSQ_Off_BrutalPistol level 8
+RSQMB meter +40.0 (Gun Bonsai XP 600) -> 40
+R10 R 11 maptime 130
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for:  Too Early
+RSQMB bossfight tier 4 from Whichever Is Larger (Gun Bonsai VR level 8, Score lives 0)
+RSQMB colour bonus t130 (ladder tiers, strength order): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 8 -> miniboss +8 | weapon levels main 8 + off 8 = 16 -> thralls +4 (x0.25, half up) | final miniboss Red(10) (RS_RedImp), thralls Cyan(5) Cyan(5) Cyan(5) Cyan(5) (thralls stop at Abyss(11), top White(13))
+RSQMB Miniboss From 1 / Thralls From 1: RS_RedImp
+RSQMB bossfight spot: found after 11 of 14 candidates (near 384 far 1024): RS_RedImp at 474 units with 4 thralls
+RSQMB BOSSFIGHT ARRIVING: tier 4, RS_RedImp + 4 thralls, beams V1 thralls + V3 miniboss, SlowMo asked, VisualRewards asked
+RSQMB arrival: thrall 1 RS_CyanZombie2 lands (colour 3CF0F0, tier 5), beam v1, revealed in 7 tics
+R10 R 12 maptime 140
+RSQMB arrival: thrall 2 RS_CyanZombie2 lands (colour 3CF0F0, tier 5), beam v1, revealed in 7 tics
+RSQMB arrival: thrall 3 RS_CyanZombie2 lands (colour 3CF0F0, tier 5), beam v1, revealed in 7 tics
+R10 R 13 maptime 157
+RSQMB arrival: thrall 4 RS_CyanZombie2 lands (colour 3CF0F0, tier 5), beam v1, revealed in 7 tics
+R10 R 14 maptime 174
+RSQMB arrival: miniboss 0 RS_RedImp lands (colour E62828, tier 10), beam v3, revealed in 19 tics
+R10 R 15 maptime 191
+R10 R 16 maptime 208
+RSQMB bound: boss 0 RS_RedImp hp 300 lives 3 thralls 4 powers [White, Indigo, Cyan] tough 1.50 out 1.00
+RSQMB BOSSFIGHT LANDED: boss 0 RS_RedImp hp 300, 4 thralls, 4 segments of 75, lives 3, map count 1
+R10 WORDS t213 [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] 
+R10 R 17 maptime 224
+R10 R 18 maptime 239
+R10 R 19 maptime 254
+R10 R 20 maptime 268
+R10 R 21 maptime 277
+R10 R 22 maptime 288
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 23 maptime 299
+R10 R 24 maptime 309
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 25 maptime 318
+R10 R 26 maptime 326
+R10 R 27 maptime 333
+R10 R 28 maptime 340
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 29 maptime 350
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 30 maptime 363
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 31 maptime 376
+R2_MB_RED_LIFE1
+R10 WORDS t384 [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] [GUARD! once on RS_RedImp] 
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 32 maptime 388
+R2 MBSCAN t388 tag 1: MINIBOSS RS_RedImp(tier 10 Red, hp 300) | 4 thralls: RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 45) 
+R2 MBHP t388 RS_RedImp tier 10 Red hp 300 -> 1
+RSQMB life lost: boss 0 lives 2 hp 300 invuln 175 tics, tier +1 asked
+R10 WORDS t390 [TARGET! held clearing on RS_CyanZombie2] [TARGET! held clearing on RS_CyanZombie2] [TARGET! held clearing on RS_CyanZombie2] [TARGET! held clearing on RS_CyanZombie2] [GUARD! once on RS_RedImp] 
+RS_Score: Read It armed: RS_RedImp's shot dodged by player 0
+RS_Score: Read It armed: RS_RedImp's shot dodged by player 0
+RS_Score: Read It armed: RS_RedImp's shot dodged by player 0
+RS_Score: Read It armed: RS_RedImp's shot dodged by player 0
+RS_Score: Read It armed: RS_RedImp's shot dodged by player 0
+R10 WORDS t396 [GUARD! once on RS_RedImp] 
+R10 R 33 maptime 402
+RSQMB tier swap followed: RS_AbyssImp2 (the miniboss) at 31 1194, tokens again [champion_WhiteToken,champion_DarkGreenToken,champion_CyanToken,]
+R10 WORDS t402 [GUARD! once on None] 
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 34 maptime 416
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 35 maptime 429
+R2 MBSCAN t429 tag 2: MINIBOSS RS_AbyssImp2(tier 11 Abyss, hp 300) | 4 thralls: RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 45) 
+R10 WORDS t429 (none)
+RS_Score[everyone]: RS_CommonZombie spawnhp 20 base 20 counted 18 | spree n=0 exp=0 t=432 | ut k=0 hp=0 st=0
+RS_Score: +24 -> 24 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+R10 R 36 maptime 440
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 37 maptime 452
+R2_MB_RED_LIFE2
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 38 maptime 463
+R2 MBHP t463 RS_AbyssImp2 tier 11 Abyss hp 300 -> 1
+RSQMB life lost: boss 0 lives 1 hp 300 invuln 175 tics, tier +1 asked
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_AbyssImp2's shot dodged by player 0
+RSQMB tier swap followed: RS_BlackImp1 (the miniboss) at -67 1151, tokens again [champion_WhiteToken,champion_DarkGreenToken,champion_CyanToken,]
+R10 R 39 maptime 475
+R10 R 40 maptime 487
+R2_MB_RED_MISSWIN
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 41 maptime 498
+R2 MBSCAN t498 tag 3: MINIBOSS RS_BlackImp1(tier 12 Black, hp 3800) | 4 thralls: RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 4) RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 45) 
+R2 KILLTHRALL t498 RS_CyanZombie2 tier 5
+RSQMB power lost: boss 0 loses White with thrall 0
+RSQMB window OPEN: boss 0 segment 0 (950 of 950) for 4 s
+RSQMB thrall 0 of boss 0 killed: power colour F0F0F0, segments left 4, window open, credits 0
+RSQMB thrall 0 of boss 0 died (killer player) living 3
+RS_Score[killer]: RS_CyanZombie2 spawnhp 30 base 30 counted 18 | spree n=0 exp=0 t=498 | ut k=0 hp=0 st=0 | Cyan Tier 0.200 | Read It 0.500
+RS_Score: +51 -> 75 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: kill #1 p0 base 30 style 21 chain gun.pistol
+R10 R 42 maptime 510
+R10 R 43 maptime 521
+R10 R 44 maptime 531
+R2 MBSCAN t531 tag 4: MINIBOSS RS_BlackImp1(tier 12 Black, hp 3800) | 3 thralls: RS_CyanZombie2(tier 5 Cyan, hp 4) RS_CyanZombie2(tier 5 Cyan, hp 45) RS_CyanZombie2(tier 5 Cyan, hp 45) 
+R10 R 45 maptime 544
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 46 maptime 557
+R10 R 47 maptime 570
+RS_Score[everyone]: RS_CommonZombie spawnhp 20 base 20 counted 17 | spree n=1 exp=570 t=570 | ut k=1 hp=30 st=0
+RS_Score: +25 -> 100 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+RS_Score: Read It armed: RS_CyanZombie2's shot dodged by player 0
+R10 R 48 maptime 583
+R10 R 49 maptime 598
+RSQMB power lost: boss 0 loses Indigo with thrall 1
+RSQMB thrall 1 of boss 0 killed: power colour 6030C0, segments left 4, window open, credits 1
+RSQMB thrall 1 of boss 0 died (killer player) living 2
+RS_Score[everyone]: RS_CyanZombie2 spawnhp 45 base 45 counted 17 | spree n=1 exp=570 t=604 | ut k=1 hp=30 st=0
+RS_Score: +54 -> 154 (threshold 5000) | rewards 0 lives 0 buddha 0 regen 0
+R10 R 50 maptime 612
+R10 WORDS t621 [GUARD! once on RS_BlackImp1] 
+RS_Score: Read It armed: RS_BlackImp1's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImp1's shot dodged by player 0
+R10 R 51 maptime 628
+RSQMB window MISSED: boss 0 segment 0 left 100%: tier +3, 20 monsters asked (map-wide)
+RSQMB window OPEN: boss 0 segment 0 (950 of 950) for 4 s
+R10 WORDS t639 [GUARD! once on RS_BlackImp1] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_BlackImp1] 
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at 32 656, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at 320 224, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at 1200 608, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at 320 304, tokens again [champion_DarkGreenToken,]
+R10 R 52 maptime 645
+RSQMB tier swap followed: RS_WhiteImp2 (the miniboss) at -67 1075, tokens again [champion_DarkGreenToken,champion_CyanToken,]
+R10 WORDS t645 [GUARD! once on None] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] [TARGET! held clearing on None] [TARGET! held on RS_WhiteImp2] 
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at 256 272, tokens again []
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 352 1040, tokens again []
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 144 656, tokens again []
+R10 WORDS t651 [GUARD! once on None] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_CyanZombie2] [TARGET! held on RS_WhiteImp2] 
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 224 1568, tokens again []
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 352 2272, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at 1200 864, tokens again []
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 352 1248, tokens again []
+RSQMB tier swap followed: RS_FireBluZombie2 (thrall 3) at 236 838, tokens again [champion_CyanToken,]
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 32 2400, tokens again []
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 160 1616, tokens again []
+RSQMB tier swap followed: RS_FireBluZombie2 (thrall 2) at 33 1504, tokens again [champion_WhiteToken,]
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 352 2400, tokens again []
+R10 WORDS t657 [GUARD! once on None] [TARGET! held clearing on None] [TARGET! held clearing on None] [TARGET! held on RS_WhiteImp2] [TARGET! held on RS_FireBluZombie2] [TARGET! held on RS_FireBluZombie2] 
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 320 1584, tokens again []
+RSQMB tier swap followed: RS_PurpleImp (a map monster) at 1248 608, tokens again [champion_WhiteToken,]
+R10 R 53 maptime 662
+RSQMB tier swap followed: RS_PurpleZombie (a map monster) at 32 2272, tokens again []
+R10 WORDS t663 [GUARD! once on None] [TARGET! held on RS_WhiteImp2] [TARGET! held on RS_FireBluZombie2] [TARGET! held on RS_FireBluZombie2] 
+R10 WORDS t666 [TARGET! held on RS_WhiteImp2] [TARGET! held on RS_FireBluZombie2] [TARGET! held on RS_FireBluZombie2] 
+R10 R 54 maptime 679
+R10 R 55 maptime 696
+R10 R 56 maptime 713
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+R10 R 57 maptime 730
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+R2_MB_EX
+RS_Score: Read It armed: RS_WhiteImp2's shot dodged by player 0
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+RS_Score: 19 monsters, 660 points, threshold 5000 (UT 20 kills / 2000 hp)
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 0
+RS_Score: census after the first tic: 19 monsters, 700 points, threshold 5000 (UT 20 kills / 2000 hp)
+RSQMB bossfight scan: 2 types [RS_CommonZombie 20, RS_CommonImp 60], 18 spots, 1 exits, 0 weapon types
+RSQMB meter fills from: kills, chains, time, Score style, Gun Bonsai XP (chosen Both; Score loaded, Gun Bonsai VR loaded)
+R10 R 0 maptime 12
+R2 MBSCAN t12 tag 5: MINIBOSS none | 0 thralls: 
+RSSC WRIST menu closed player 0 t12
+R10 R 1 maptime 29
+R10 R 2 maptime 41
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+R10 R 3 maptime 50
+R10 R 4 maptime 59
+R10 R 5 maptime 70
+R10 R 6 maptime 85
+R10 R 7 maptime 101
+R10 R 8 maptime 113
+R10 R 9 maptime 125
+R2 PLV player level 10
+R2 WLV hand 0 BrutalPistol level 0
+R2 WLV hand 1 RSQ_Off_BrutalPistol level 0
+RSQMB BOSSFIGHT READY (auto in 60 s)
+RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player 0
+RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for:  Too Early
+RSQMB bossfight tier 4 from Whichever Is Larger (Gun Bonsai VR level 10, Score lives 0)
+RSQMB colour bonus t125 (ladder tiers, strength order): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 10 -> miniboss +10 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss Black(12) EX (RS_BlackImpEX), thralls Common(1) Common(1) Common(1) Common(1) (thralls stop at Abyss(11), top White(13))
+RSQMB Miniboss From 1 / Thralls From 1: RS_BlackImpEX
+RSQMB bossfight spot: found after 5 of 14 candidates (near 384 far 1024): RS_BlackImpEX at 474 units with 4 thralls
+RSQMB BOSSFIGHT ARRIVING: tier 4, RS_BlackImpEX + 4 thralls, beams V2 thralls + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB arrival: thrall 1 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+RSQMB arrival: thrall 2 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+R10 R 10 maptime 137
+RSQMB arrival: thrall 3 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+R10 R 11 maptime 154
+RSQMB arrival: thrall 4 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+R10 R 12 maptime 168
+RSQMB arrival: miniboss 0 RS_BlackImpEX lands (colour 505058, tier 12), beam v4, revealed in 31 tics
+R10 R 13 maptime 180
+R10 R 14 maptime 193
+R10 R 15 maptime 205
+R10 R 16 maptime 217
+RSQMB bound: boss 0 RS_BlackImpEX hp 12900 lives 3 thralls 4 powers [White, Yellow, Cyan] tough 1.00 out 1.00
+RSQMB BOSSFIGHT LANDED: boss 0 RS_BlackImpEX hp 12900, 4 thralls, 4 segments of 3225, lives 3, map count 1
+R10 WORDS t222 [TARGET! held on RS_CommonZombie] [TARGET! held on RS_CommonZombie] [TARGET! held on RS_CommonZombie] [TARGET! held on RS_CommonZombie] 
+R10 R 17 maptime 227
+R10 R 18 maptime 238
+R10 R 19 maptime 250
+R10 R 20 maptime 263
+R10 R 21 maptime 274
+R10 R 22 maptime 285
+R10 R 23 maptime 299
+R10 R 24 maptime 312
+R10 R 25 maptime 325
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+R10 R 26 maptime 336
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+R10 R 27 maptime 353
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+RS_Score: Read It armed: RS_BlackImpEX's shot dodged by player 0
+R10 R 28 maptime 370
+R10 R 29 maptime 381
+R2_MB_EX_LIFE1
+R10 R 30 maptime 394
+R2 MBSCAN t394 tag 1: MINIBOSS RS_BlackImpEX(tier 12 Black EX, hp 12900) | 4 thralls: RS_CommonZombie(tier 1 Common, hp 30) RS_CommonZombie(tier 1 Common, hp 30) RS_CommonZombie(tier 1 Common, hp 30) RS_CommonZombie(tier 1 Common, hp 30) 
+R2 MBHP t394 RS_BlackImpEX tier 12 Black hp 12900 -> 1
+RSQMB life lost: boss 0 lives 2 hp 12900 invuln 175 tics, tier +1 asked
+R10 WORDS t396 [TARGET! held clearing on RS_CommonZombie] [TARGET! held clearing on RS_CommonZombie] [TARGET! held clearing on RS_CommonZombie] [TARGET! held clearing on RS_CommonZombie] 
+RSQMB tier swap followed: RS_WhiteImp2 (the miniboss) at 34 1219, tokens again [champion_YellowToken,champion_WhiteToken,champion_CyanToken,]
+R10 WORDS t402 [GUARD! once on RS_WhiteImp2] 
+R10 R 31 maptime 405
+R10 R 32 maptime 415
+R2_DOWN_SETUP
+R10 R 33 maptime 424
+R2 MBSCAN t424 tag 2: MINIBOSS RS_WhiteImp2(tier 13 White, hp 6666) | 4 thralls: RS_CommonZombie(tier 1 Common, hp 30) RS_CommonZombie(tier 1 Common, hp 30) RS_CommonZombie(tier 1 Common, hp 30) RS_CommonZombie(tier 1 Common, hp 30) 
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+RS_Score: 19 monsters, 660 points, threshold 5000 (UT 20 kills / 2000 hp)
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 0
+RS_Score: census after the first tic: 19 monsters, 660 points, threshold 5000 (UT 20 kills / 2000 hp)
+R10 R 0 maptime 10
+RSSC WRIST menu closed player 0 t10
+RSQMB bossfight scan: 2 types [RS_CommonZombie 20, RS_CommonImp 60], 19 spots, 1 exits, 0 weapon types
+RSQMB meter fills from: kills, chains, time, Score style, Gun Bonsai XP (chosen Both; Score loaded, Gun Bonsai VR loaded)
+R10 R 1 maptime 27
+R10 R 2 maptime 41
+No Target ON 
+(OooOoo, I'm a ghost!)
+R10 R 3 maptime 52
+R10 R 4 maptime 63
+R10 R 5 maptime 74
+R10 R 6 maptime 86
+R10 R 7 maptime 96
+R10 R 8 maptime 105
+R10 R 9 maptime 115
+R10 SPAWN t115 DoomImp -> RS_CommonImp at -356 984
+R10 R 10 maptime 126
+R2_DS_STAND
+R10 R 11 maptime 137
+R2 HOLSTER t137 tag 1 RoomFloor-pawn 0.0 | main hand (f 11.9 l -8.5 u 36.8) off hand (f 8.5 l 8.5 u 34.0) | Left hip (f 0.0 l 6.0 u 24.4); Right hip (f 0.0 l -6.0 u 24.4); Grenades (f 4.0 l -0.0 u 26.7); Left shoulder (f -2.7 l 6.0 u 41.2); Right shoulder (f -2.7 l -6.0 u 41.2); Left chest (f 3.4 l 4.0 u 31.1); Right chest (f 3.4 l -4.0 u 31.1); Flare (f -2.0 l 10.1 u 20.5); Ammo pouch (f 7.4 l 6.0 u 26.1); 
+R2 SHOTS t137 logging 20 tics
+R2 WHERE t137 tag 1 DOWN 0 viewz-floor 44.0 ViewHeight 44.0 default 44.0 | hand AttackPos (f 11.9 l -8.5 u 36.8) | muzzle Where (f 34.8 l -6.4 u 29.6) | off hand (f 8.5 l 8.5 u 34.0) | angle 90.0 AttackAngle 0.0
+R10 R 12 maptime 149
+R10 R 13 maptime 160
+R2_DS_STAND_NOTRUE
+R10 R 14 maptime 169
+R2 SHOTS t169 logging 20 tics
+R2 WHERE t169 tag 2 DOWN 0 viewz-floor 44.0 ViewHeight 44.0 default 44.0 | hand AttackPos (f 11.9 l -8.5 u 36.8) | muzzle Where (f 34.9 l -6.4 u 29.5) | off hand (f 8.5 l 8.5 u 34.0) | angle 90.0 AttackAngle 0.0
+R10 R 15 maptime 180
+R10 R 16 maptime 192
+R2_BUZZ_STAND
+R10 R 17 maptime 202
+R2 PREFIRED t202 dist 0.1 dmg 1 flags 8A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t202 R2probe right controller (main hand)
+R2 BUZZ t202 RSQA_Buzz.Backup -> 1
+R2_DOWN_HIT
+R10 R 18 maptime 211
+R10 HITME t211 by RS_CommonImp for 500 (hp 100)
+RSQ_SlowMo: trigger heavyhit t211: player 0 took 500 (ordinary from RS_CommonImp "Imp" via RS_CommonImp, type None), from outside his view, 500 this tic
+RSQ_SlowMo: DOWN t211: player 0 went DOWN: a lethal hit (500 at 100 HP from RS_CommonImp) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since a Score life), world to 5%
+RSQ_SlowMo: DOWN t211: told 3 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t211: player 0: RS_CommonImp downed him in his fight (205 units), not a champion: it is swapped for a REAL Champion copy
+R10 HITME after: hp 1
+RSQ_SlowMo: trigger heavyhit t211: not fired: player 0 is DOWN (a lethal hit is DOWN's)
+RSQ_SlowMo: DOWN t211: player 0 crouch: down to 40% of standing over 17 tics (ViewHeight 44.0 FullHeight 56.0 saved; crouchfactor 1.00, vr_crouch_use_button 1)
+RSQ_SlowMo: DOWN t211: player 0 crouch restored (risen): ViewHeight 44.0 FullHeight 56.0, view 44.0, height 56.0
+RSQ_SlowMo: DOWN t211: the grey world: 59 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t211: DarkDoomZ: its mode 2 kept, set to 12 (DarkDoom Black) while DOWN
+R2 PREFIRED t211 dist 0.1 dmg 1 flags 8A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t211 RSQSM right controller (main hand)
+R2 PREFIRED t211 dist 0.1 dmg 1 flags 10A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t211 RSQSM left controller (off hand)
+RSQ_SlowMo: DOWN t212: player 0 crouch: down to 40% of standing over 17 tics (ViewHeight 44.0 FullHeight 56.0 saved; crouchfactor 1.00, vr_crouch_use_button 1)
+RSQ_SlowMo: DOWN t212: player 0: RS_CommonImp (health 60) vanishes in teleport fog at (32, 656, 152) (tid 0, special 0)
+RSQ_SlowMo: DOWN t214: player 0 TARGET 1/1: RS_CommonImp "Imp" (the monster that downed him (205 units), swapped for a copy; a REAL Champion made by Champions itself (one of 12 candidates it rolled on)): icon 2, colour 6030C0, a REAL Champions champion (Champions' own PersistentInfo and controller); light, full-bright, x1.15 size, +30 health; health 90 of 60; plate name "Indigo Champion Imp"
+RSQ_SlowMo: DOWN t214: told 3 joined mod(s): down.target 6030C0
+R10 R 19 maptime 221
+R10 R 20 maptime 236
+R2 PREFIRED t236 dist 0.1 dmg 1 flags 8A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t236 RSQSM right controller (main hand)
+R2 PREFIRED t236 dist 0.1 dmg 1 flags 10A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t236 RSQSM left controller (off hand)
+RSQ_SlowMo: DOWN t246: player 0 crouch held: view 17.6 of 44.0 standing, height 22.4 of 56.0 (crouchfactor 1.00 x heights 0.40), crawl x0.33
+R2_DS_DOWN
+R10 R 21 maptime 249
+R2 HOLSTER t249 tag 3 RoomFloor-pawn -26.4 | main hand (f 11.9 l -8.5 u 14.3) off hand (f 8.5 l 8.5 u 11.5) | Left hip (f 0.0 l 6.0 u -2.0); Right hip (f 0.0 l -6.0 u -2.0); Grenades (f 4.0 l -0.0 u 0.3); Left shoulder (f -2.7 l 6.0 u 14.8); Right shoulder (f -2.7 l -6.0 u 14.8); Left chest (f 3.4 l 4.0 u 4.7); Right chest (f 3.4 l -4.0 u 4.7); Flare (f -2.0 l 10.1 u -5.9); Ammo pouch (f 7.4 l 6.0 u -0.3); 
+R2 SHOTS t249 logging 20 tics
+R2 WHERE t249 tag 3 DOWN 1 viewz-floor 17.6 ViewHeight 17.6 default 44.0 | hand AttackPos (f 11.9 l -8.5 u 14.3) | muzzle Where (f 34.8 l -6.4 u 7.0) | off hand (f 8.5 l 8.5 u 11.5) | angle 90.0 AttackAngle 0.0
+R2 PREFIRED t249 dist 8192.0 dmg 20 flags 80 puff HitPuff from (f -784.0 l -96.0 u -56.0)
+R2 SPAWN t249 DistantFireSoundRifle at (f 11.9 l -8.5 u 14.3) vel (0.0 0.0 -0.0) (player's)
+R2 SPAWN t249 PlayerMuzzle1 at (f 30.0 l -5.0 u 30.0) vel (0.0 0.0 0.0) (player's)
+R2 SPAWN t249 DecorativeTracer at (f 51.0 l -5.2 u -3.7) vel (-12.2 128.7 -53.8) (player's)
+R2 FLASH t249 at (f 12.0 l -8.5 u 10.3)
+R2 SPAWN t249 RSQ_PlayerRound at (f 34.9 l -6.4 u 3.1) vel (0.0 0.0 0.0) (player's)
+R2 SPAWN t250 RifleCaseSpawn at (f 20.9 l -8.5 u 10.0) vel (1.8 17.9 -8.6) (player's)
+R2 SPAWN t250 EmptyBrass at (f 18.0 l -8.1 u 10.1) vel (5.2 1.1 2.8) (player's)
+R2 PREFIRED t253 dist 8192.0 dmg 20 flags 80 puff HitPuffDM from (f -784.0 l -96.0 u -56.0)
+R2 SPAWN t253 DistantFireSoundRifle at (f 11.9 l -8.5 u 14.3) vel (0.0 0.0 -0.0) (player's)
+R2 SPAWN t253 PlayerMuzzle1 at (f 30.0 l -5.0 u 30.0) vel (0.0 0.0 0.0) (player's)
+R2 SPAWN t253 DecorativeTracer at (f 50.9 l -5.2 u -3.9) vel (-7.2 129.0 -53.9) (player's)
+R2 FLASH t253 at (f 12.0 l -8.5 u 10.3)
+R2 SPAWN t253 RSQ_PlayerRound at (f 34.9 l -6.4 u 3.1) vel (0.0 0.0 0.0) (player's)
+R2 SPAWN t254 RifleCaseSpawn at (f 20.9 l -8.5 u 10.0) vel (1.8 17.9 -8.6) (player's)
+R2 SPAWN t254 EmptyBrass at (f 18.0 l -8.1 u 10.1) vel (5.1 0.9 3.1) (player's)
+R2 PREFIRED t257 dist 8192.0 dmg 20 flags 80 puff HitPuff from (f -784.0 l -96.0 u -56.0)
+R2 SPAWN t257 DistantFireSoundRifle at (f 11.9 l -8.5 u 14.3) vel (-0.0 0.0 -0.0) (player's)
+R2 SPAWN t257 PlayerMuzzle1 at (f 30.0 l -5.0 u 30.0) vel (0.0 0.0 0.0) (player's)
+R2 SPAWN t257 DecorativeTracer at (f 51.1 l -5.2 u -3.4) vel (-7.2 129.0 -53.9) (player's)
+R2 FLASH t257 at (f 12.0 l -8.5 u 10.3)
+R2 SPAWN t257 RSQ_PlayerRound at (f 34.9 l -6.4 u 3.1) vel (0.0 0.0 0.0) (player's)
+R2 SPAWN t258 RifleCaseSpawn at (f 20.9 l -8.5 u 10.0) vel (1.8 17.9 -8.6) (player's)
+R2 SPAWN t258 EmptyBrass at (f 18.0 l -8.1 u 10.1) vel (5.0 1.2 3.1) (player's)
+R10 R 22 maptime 259
+RSQ_SlowMo: DOWN t260: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+R2 PREFIRED t260 dist 0.1 dmg 1 flags 8A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t260 RSQSM right controller (main hand)
+R2 PREFIRED t260 dist 0.1 dmg 1 flags 10A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t260 RSQSM left controller (off hand)
+R10 R 23 maptime 273
+R2_DS_DOWN_NOTRUE
+R2 PREFIRED t283 dist 0.1 dmg 1 flags 8A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t283 RSQSM right controller (main hand)
+R2 PREFIRED t283 dist 0.1 dmg 1 flags 10A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t283 RSQSM left controller (off hand)
+R10 R 24 maptime 285
+R2 SHOTS t285 logging 20 tics
+R2 WHERE t285 tag 4 DOWN 1 viewz-floor 17.6 ViewHeight 17.6 default 44.0 | hand AttackPos (f 11.9 l -8.5 u 10.4) | muzzle Where (f 34.8 l -6.4 u 3.2) | off hand (f 8.5 l 8.5 u 7.6) | angle 90.0 AttackAngle 0.0
+R10 R 25 maptime 298
+R2 PREFIRED t305 dist 0.1 dmg 1 flags 8A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t305 RSQSM right controller (main hand)
+R2 PREFIRED t305 dist 0.1 dmg 1 flags 10A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t305 RSQSM left controller (off hand)
+R10 R 26 maptime 310
+R2_BUZZ_DOWN
+R10 R 27 maptime 323
+R2 PREFIRED t323 dist 0.1 dmg 1 flags 8A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t323 R2probe right controller (main hand)
+R2 BUZZ t323 RSQA_Buzz.Backup -> 1
+R2_WATCH_SETUP
+R2 PREFIRED t326 dist 0.1 dmg 1 flags 10A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t326 RSQSM left controller (off hand)
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+RS_Score: 19 monsters, 660 points, threshold 5000 (UT 20 kills / 2000 hp)
+RSQ_SlowMo: DOWN t0: DarkDoomZ: its mode 2 put back (left behind by a quit mid-DOWN)
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 0
+RS_Score: census after the first tic: 19 monsters, 680 points, threshold 5000 (UT 20 kills / 2000 hp)
+R10 R 0 maptime 7
+R2 HOLSTER t7 tag 5 RoomFloor-pawn 0.0 | main hand (f 11.9 l -8.5 u 36.8) off hand (f 8.5 l 8.5 u 34.0) | Left hip (f 0.0 l 6.0 u 24.4); Right hip (f 0.0 l -6.0 u 24.4); Grenades (f 4.0 l -0.0 u 26.7); Left shoulder (f -2.7 l 6.0 u 41.2); Right shoulder (f -2.7 l -6.0 u 41.2); Left chest (f 3.4 l 4.0 u 31.1); Right chest (f 3.4 l -4.0 u 31.1); Flare (f -2.0 l 10.1 u 20.5); Ammo pouch (f 7.4 l 6.0 u 26.1); 
+RSSC WRIST menu closed player 0 t7
+RSQMB bossfight scan: 2 types [RS_CommonZombie 20, RS_CommonImp 60], 19 spots, 1 exits, 0 weapon types
+RSQMB meter fills from: kills, chains, time, Score style, Gun Bonsai XP (chosen Both; Score loaded, Gun Bonsai VR loaded)
+R10 R 1 maptime 24
+R10 R 2 maptime 36
+R10 R 3 maptime 45
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+R10 R 4 maptime 54
+R10 R 5 maptime 65
+R10 R 6 maptime 75
+R10 R 7 maptime 84
+R10 R 8 maptime 93
+R10 R 9 maptime 101
+R10 R 10 maptime 113
+R2_WATCH_BEFORE
+R10 R 11 maptime 125
+rsqg: shove, main hand, 8.65 m/s, with BrutalPistol (t125)
+rsqg: shove (two hands), off hand, 6.37 m/s, with RSQ_Off_BrutalPistol (t125)
+R2 LASER t125 2140=1 2141=1 1000140=1 1000141=1 | inspect main 0 off 0
+R10 R 12 maptime 136
+R10 R 13 maptime 148
+R10 R 14 maptime 161
+R10 R 15 maptime 178
+R2_WATCH_ON
+rsqg: inspect main hand 0 -> 1 (t178)
+rsqg: inspect off hand 0 -> 1 (t178)
+R2 LASER t178 2140=0 2141=0 1000140=0 1000141=0 | inspect main 1 off 1
+rsqg: inspect main hand 1 -> 2 (t183)
+R2 PREFIRED t183 dist 0.1 dmg 1 flags 8A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t183 RSQA right controller (main hand)
+rsqg: watch-check tick, main hand (right controller) (t183)
+rsqg: inspect off hand 1 -> 2 (t183)
+R2 PREFIRED t183 dist 0.1 dmg 1 flags 10A puff RSQA_PulsePuff from (f -784.0 l -96.0 u -56.0)
+RSQA_BACKUP t183 RSQA left controller (off hand)
+rsqg: watch-check tick, off hand (left controller) (t183)
+R2 LASER t183 2140=0 2141=0 1000140=0 1000141=0 | inspect main 2 off 2
+R10 R 16 maptime 194
+R10 R 17 maptime 211
+R10 R 18 maptime 225
+R10 R 19 maptime 239
+R2_WATCH_OFF
+rsqg: inspect main hand 2 -> 0 (t248)
+rsqg: inspect off hand 2 -> 0 (t248)
+R2 LASER t248 2140=1 2141=1 1000140=1 1000141=1 | inspect main 0 off 0
+R10 R 20 maptime 254
+R10 R 21 maptime 271
+R10 R 22 maptime 284
+R10 R 23 maptime 295
+R2_HANDS_NOLD
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (0 pruned)
+RS_Score: 19 monsters, 660 points, threshold 5000 (UT 20 kills / 2000 hp)
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 2
+RS_Score: census after the first tic: 19 monsters, 660 points, threshold 5000 (UT 20 kills / 2000 hp)
+R10 R 0 maptime 3
+RSSC WRIST menu closed player 0 t3
+RSQMB bossfight scan: 2 types [RS_CommonZombie 20, RS_CommonImp 60], 19 spots, 1 exits, 0 weapon types
+RSQMB meter fills from: kills, chains, time, Score style, Gun Bonsai XP (chosen Both; Score loaded, Gun Bonsai VR loaded)
+R10 R 1 maptime 20
+R10 R 2 maptime 36
+R10 R 3 maptime 50
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+VM execution aborted: string format failed. Expected a string for format %s.
+Called from StringStruct.Format [Native]
+Called from R2_Probe.hands at r2.pk3:r2.zs, line 256
+Called from R2_Probe.NetworkProcess at r2.pk3:r2.zs, line 293
+ __  __  __  __  __  __
+/  \/  \/  \/  \/  \/  \
+|Za||bo||r ||v1||.0||.1|
+|..||..||..||..||..||..|
+|..||..||..||..||..||..|
+|__||__||__||__||__||__|
+
+Game: level: MAP01, time: 50, multiplayer: 0, player class: BDoomer, skill: Hurt Me Plenty!
+compatflags: 0, compatflags2: 0, dmflags: 0, dmflags2: 0, autoaim: 35.000000
+Event handlers: ZC_TMapHack, Script_DamageMult, RSQ_NoSniper, RSVR_HandSync, RSQ_PoseHandler, RSVR_MeleeHandler, RSVR_Door, RSQ_Handler, RSQ_Switch, RSQ_RocketLock, rsq_ballistics, RSQ_Fists, RSQ_DualHands, rsq_flick, RSQ_ScopeReal, RSA_Handler, RSA_Casings, RSA_FlameSpout, RSQ_Dual, RSQ_Voxels, RSR_ReloadHandler, RSB_Handler, RSQ_Counters, RSQ_Roster, rsq_recoil, RSQ_FlashHandler, RSQ_Muzzle, RSP_Handler, RSK_M203Handler, RSG_Handler, RSQ_PlayerRounds, RSQ_ShotFX, RSQ_HandTone, RSLD_Handler, RSLD_Interface, champion_CHextra, champion_Handler, TFLV_EventHandler, RSQA_Handler, RSQA_MenuMode, RSQA_QoL, RSQG_HandSync, RSQG_Handler, RSQDG_HandSync, RSQDG_Policy, RSQDG_MassTable, RSQDG_Aim, RSQDG_Grab, RSQDG_Flight, RSQDG_Hold, RSQDG_Throw, RSQDG_Voxels, RSQDG_Tell, RSQDG_Laser, RSQDG_Feel, rsqdg_door, rsqdg_near, rsqdg_lockon, RSQFF_HandSync, RSQFF_Handler, RSQFF_Torches, RSQFF_Shown, RSQGD_Handler, RSQGD_Session, RSQGD_DDZ_Handler, RSQGR_Input, RSQGR_Core, RSQGR_Flight, RSQGR_Voxels, RSQGR_Events, rsqgr_whip, RSQGR_Perks, gy_EventHandler, gy_BonesReplacer, gy_BonesHandler, gy_VmAbortHandler, RSQGN_Handler, rsqgn_scatter, RSQGN_BarrelSwap, RSQGN_BarrelBook, RSQGN_BDLaunchers, RSQ_StockHandler, RSQ_MeleeHandler, RSQ_DebugGrant, RSQ_HookHandler, RSQ_StyleXP, RSQUI_Handler, RSQUI_Gauges, RSQGC_HandSync, RSQGC_GCopy, RSQGC_BB, RSQGC_GunCard, RSQLS_Beams, RSQLS_Learn, RSQLS_Sight, RSQLS_ColorTable, RSQML_HandSync, RSQML_Sim, rsqml_gloves, RSQML_GCopy, RSQML_TwoHand, rsqml_slappers, rsqml_guard, rsqml_shove, rsqml_headlock, RSQ_GloveHandler, RSQ_SlappersHandler, RSQMB_Handler, RSQMB_HandSync, RSQMB_GCopy, RS_RosterHandler, RS_RetierHandler, UBQS_Bridge, UBQS_FrameKeeper, UBQS_Telemetry, UBQS_Memory, UBQS_OffFlick, UBQS_HandSync, UBQS_HipShow, RS_ScoreRegistry, RS_ScoreShots, RS_ScoreHead, RS_ScoreHeadLate, RS_ComboLedger, RS_ScorePanels, RS_ScoreHandler, RS_ScoreHUD, RS_ScoreWrist, SSQ_HandSync, SSQ_Handler, SSQ_OffFlick, RSQSM_Clock, RSQSM_Shots, RSQSM_Body, rsqsm_down, RSQSM_Arrows, RSQSM_Countdown, RSQTR_HandSync, RSQTR_GCopy, RSQTR_Rig, RSQTR_Loadout, rsqtr_cig, RSQTR_CigKeep, rsqtr_keyring, RSQTR_Torso, rsqtr_mirror, RSQTR_MirrorBody, RSQTHP_Handler, RSQTHP_Voxels, RSQTHP_DamNumHandler, RSQ_KRHandler, RSQVR_FxHandler, RSQVR_Scenes, wr_BB, wr_VRState, wr_StatEvents, wr_Rig, wr_watch, RSQWP_Events, RSQWP_Input, RSQWP_Core, RSQWP_Whip, RSQWP_HipShow, R10_Probe, R2_Probe
+System time: 2026-11-11 15:49:14 EST
+
+  ######################################################
+  # Player, please report this VM abort to mod author. #
+  # Attach screenshot to the report.                   #
+  # Type "screenshot" below to take a screenshot.      #
+  ######################################################
+
+R2_END
