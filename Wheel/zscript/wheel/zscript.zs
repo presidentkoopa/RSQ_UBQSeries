@@ -5183,6 +5183,9 @@ class wr_Rig : EventHandler
 		if (descends(c, rep)) return true;
 		Name n = c.GetClassName();
 		if (n == 'Melee_Attacks') return true;
+		// RSQ Melee's gloves (RSQ_Glove, RSQ_GloveOff : RSQ_Glove) are the melee hands too: they join the ONE fist card
+		// (owner 11-11: "the Fist is the melee hand... we only need one because either hand can select from the wheel")
+		if (n == 'RSQ_Glove' || n == 'RSQ_GloveOff') return true;
 		return descends(c, off);
 	}
 
@@ -5261,6 +5264,11 @@ class wr_Rig : EventHandler
 	private Class<Weapon> fistFor(PlayerPawn pmo, int hand)
 	{
 		Array<Class<Weapon> > cand;
+		// RSQ Melee's own glove for this hand first, when the player has them (Start With Melee Hands / a pickup):
+		// the main hand's RSQ_Glove, the off hand's RSQ_GloveOff. Only owned gloves count (the owned pass below);
+		// without them the hand gets its fist as before.
+		let gm = (Class<Weapon>)(clsNamed(hand == 1 ? 'RSQ_GloveOff' : 'RSQ_Glove'));
+		if (gm && pmo.FindInventory(gm)) cand.Push(gm);
 		if (hand == 1) { let o = (Class<Weapon>)(clsNamed('RSQ_Hands')); if (o) cand.Push(o); }
 		let rep = (Class<Weapon>)(Actor.GetReplacement('Fist'));
 		if (rep) cand.Push(rep);
