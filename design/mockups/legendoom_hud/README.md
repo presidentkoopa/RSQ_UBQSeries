@@ -143,4 +143,6 @@ and the info screen (L).
 - Minibosses and thralls: no change (GUARD! and TARGET! stay as they work now).
 - Champions: words for Champions (Champions mod) are PARKED. Maybe none are needed, since they have icons and visuals;
   the owner wants to come back to it, not drop it.
-- Still to pick: the card variant (V1-V4) and what stays after the pickup (option 1 gauge row, option 2 X3 over the gun).
+- Picked (owner 11-11 15:3x): the pickup card is **V3, the SOTN shimmer title**; after the card folds away the power lives
+  in **option 1, the row under the gun hand's Gun Bonsai VR gauge** (icon, name, X3 with its drain line, a rarity tick).
+- The design is settled; building it is the next step (not started).
