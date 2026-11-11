@@ -473,6 +473,9 @@ class RSQSM_Clock : EventHandler
 		bool ok = Trigger("smoke", CAT_SMOKE, ms, depth, false, who);
 		if (!ok && !(on && !StoodDown() && CatOn(CAT_SMOKE, who))) return;
 		smokeUntil[who] = level.maptime + int(ceil(clamp(ms, 30, PULSE_MAX_MS) * TICRATE / 1000.0));
+		// added on after a running slow (Trigger stacked it): the smoke runs to the combined end, walking free all of it
+		if (ok && pulseUntil > smokeUntil[who]) smokeUntil[who] = pulseUntil;
+		if (move) freeUntil[who] = max(freeUntil[who], smokeUntil[who] + int(Cv("rsm_ramp_out", 0.4) * TICRATE) + 1);
 		smokeDepth[who] = clamp(depth, 0.05, 1.0);
 		smokeMove[who] = move;
 		Log("smoke", String.Format("%s: player %d's smoke slow motion kept until t%d (%d tics) at %d%%%s", how, who, smokeUntil[who],
@@ -525,7 +528,7 @@ class RSQSM_Clock : EventHandler
 			pulseSrc = "smoke";
 			pulseAuto = false;
 			CountdownStart("smoke");
-			SetCdAuto(false);
+			SetCdAuto(true);     // the cigarette shows the green world bar (owner 11-11)
 			cdCause = CauseWord("smoke");
 		}
 		else pulseDepth = min(pulseDepth, smokeDepth[who]);
@@ -695,15 +698,30 @@ class RSQSM_Clock : EventHandler
 			}
 		}
 		bool fresh = pulseUntil <= 0;
-		Pulse(ms, depth);
+		// THE CIGARETTE AND THE WORLD'S SLOW MOTION ADD UP (owner 11-11): a smoke lit during a running slow adds its time
+		// after it; a world slow (an automatic trigger, or the revive) during a smoke adds its time after the smoke's
+		bool world = isAuto || src ~== "down.up";
+		bool smoking = false;
+		for (int i = 0; i < MAXPLAYERS; i++) if (smokeUntil[i] > level.maptime) smoking = true;
+		bool stack = pulseUntil > level.maptime && ((src ~== "smoke") || (world && smoking));
+		Pulse(ms, depth, stack);
+		if (stack && world)
+			for (int i = 0; i < MAXPLAYERS; i++)
+				if (smokeUntil[i] > level.maptime)
+				{
+					// one combined slow: the smoke's own end (and its full-speed walk) runs to the combined end
+					smokeUntil[i] = max(smokeUntil[i], pulseUntil);
+					if (smokeMove[i]) freeUntil[i] = max(freeUntil[i], pulseUntil + int(Cv("rsm_ramp_out", 0.4) * TICRATE) + 1);
+				}
 		pulseSrc = src;
 		pulseAuto = isAuto;
 		CountdownStart(src);     // every slow motion runs the countdown (owner 11-05 03:55); CountdownTick refills it when the end moves later
 		                         // (not on every ask: the miniboss window re-asks each second)
-		SetCdAuto(isAuto);       // ... and the bar shows only for an automatic one (owner 11-06)
+		SetCdAuto(world || src ~== "smoke");   // ... and the green world bar shows for an automatic one (owner 11-06), the revive
+		                         // and the cigarette (owner 11-11: "why the hell is there not a world slomo bar when we revive")
 		cdCause = cause != "" ? cause : CauseWord(src);
 		if (isAuto && shared) autoReady = max(autoReady, pulseUntil + int(Cooldown() * TICRATE));
-		Log(src, String.Format("%s %d ms at %d%% (%s), pulse until t%d, cause line \"%s\"", fresh ? "started" : "merged", ms, int(depth * 100 + 0.5),
+		Log(src, String.Format("%s %d ms at %d%% (%s), pulse until t%d, cause line \"%s\"", fresh ? "started" : stack ? "added on" : "merged", ms, int(depth * 100 + 0.5),
 			isAuto ? (shared ? "automatic" : "automatic, own cooldown") : "deliberate", pulseUntil, cdCause));
 		return true;
 	}
@@ -744,10 +762,13 @@ class RSQSM_Clock : EventHandler
 	// default (6 until 11-11) and up to 30 from its menu; a 5 s cap cut every one of those short (measured on the rig,
 	// bugfix pass 10-31: rsm_pulse 6000 25 held 175 tics, not 210).
 	const PULSE_MAX_MS = 30000;
-	private void Pulse(int ms, double depth)
+	// stack: this pulse's time is ADDED after the running pulse's end (the cigarette and the world's slow motion,
+	// owner 11-11: "it adds to any existing slomo or any worldslomo is added to it"); otherwise longer wins.
+	private void Pulse(int ms, double depth, bool stack = false)
 	{
 		if (StoodDown() || on) return;
-		int holdUntil = level.maptime + int(ceil(clamp(ms, 30, PULSE_MAX_MS) * TICRATE / 1000.0));
+		int base = (stack && pulseUntil > level.maptime) ? pulseUntil : level.maptime;
+		int holdUntil = base + int(ceil(clamp(ms, 30, PULSE_MAX_MS) * TICRATE / 1000.0));
 		depth = clamp(depth, 0.05, 1.0);
 		if (pulseUntil > 0)
 		{
