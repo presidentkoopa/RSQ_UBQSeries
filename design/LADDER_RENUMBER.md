@@ -13,6 +13,10 @@ The tier number IS the strength now. Measured order (Miniboss commit 7c50d118, `
 
 Only the numbers moved: every colour keeps its classes, health, look, boss status and EX roll.
 
+The re-ordered gem files (TI3R, RSYT, RSQMBG) were staged first and went out inside another agent's commit d2ad1ff9
+(eye height), pushed before the code that reads them; from d2ad1ff9 until 76980ec3-2850f20c the gems and the numbers
+did not match. They match from 743b3f5b on.
+
 ## Changed
 
 **RSQ Monsters**
