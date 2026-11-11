@@ -2469,9 +2469,8 @@ class UBQS_SaberBase : Weapon abstract
 			UBQS_Data.Sparks(fxAt, -mo.vel.Unit(), RgbNow(), 8);
 			FlashAt(fxAt, 64, 4);
 			UBQS_Memory.Note(UBQS_Memory.M_BLOCKED, mo.target);
-			// THE TRAINING REMOTE (owner 11-11): a block counts for it exactly as a deflect does -- the deflect (the streak,
-			// its points, the 0.3 s slow) and the hit (a pip, its points, the knock-down at four) -- while the bolt itself
-			// is still stopped, not sent back
+			// THE TRAINING REMOTE (owner 11-11): a block counts for it as a deflect -- the streak and the 0.3 s slow -- but
+			// not as a hit (no pip, no knock-down); the bolt itself is still stopped, not sent back
 			let rb = UBQS_RemoteBolt(mo);
 			if (rb && rb.home && owner && owner.player) rb.CountBlock(owner);
 			if (UInt("ubqs_diag", 0) == 3) Console.Printf("SBX_BLOCK t%d %s stopped on the blade (Deflector not learned)%s",
@@ -6595,14 +6594,11 @@ class UBQS_RemoteBolt : UBQS_Bolt
 		home.Report();
 	}
 	// BLOCKED (Gun Bonsai VR, Deflector not learned: the blade stops the bolt dead, UBQS_SaberBase.BatBack). For the remote it
-	// counts as a deflect that went home: the deflect above, then the hit it would have landed (the remote's own DamageMobj:
-	// a pip, its points, down at four). The caller destroys the bolt after.
+	// counts as a deflect: the streak and the 0.3 s slow (owner 11-11: "streak and slow only"). No hit: no pip, so blocks
+	// never knock it down; only a bolt sent back lights a pip. The caller destroys the bolt after.
 	void CountBlock(Actor by)
 	{
-		if (counted || !home) return;
-		let h = home;
 		CountDeflect();
-		if (h && !h.bDestroyed) h.DamageMobj(self, by, 1, 'None');
 	}
 }
 

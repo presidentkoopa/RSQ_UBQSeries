@@ -10,11 +10,11 @@ four in the log are BD_VoxelPack's voxeldef). All **rig only, not headset-confir
 | Get up, the same drop: seated | Head back to 1.60, the target killed (t310): UP, `down` 0. At 1.60 for 3 s, standing. Headset to 1.10 (t427): the seated eyes to 1.10 by t462, **seated 1** by t532 (2 s), drop 0.50; up to 1.60: standing again by t602 (1 s) | `evidence/SEAT_DOWN_log.txt` (SEAT_UP_*) |
 | Without SlowMo nothing changes | **not shown** (no run without SlowMo). Code: no `RSQSM_Service`, or no answer, is "not down" (`Accessibility/zscript/rsqa_qol.zs`, `IsDown`) | - |
 | Starting a map sitting | unchanged (owner): Auto waits until it has seen you stand. Not re-run | - |
-| A block counts for the remote (Gun Bonsai VR, Deflector not learned) | The remote held 8 units past the blade tip (as in LAST). Four bolts stopped dead: `SBX_BLOCK t789 / t849 / t910 / t962 ... stopped on the blade (Deflector not learned)`. Each the same tic: deflects +1, streak +1 (1, 2, 3, 4), round hits (pips) 1, 2, 3, points paid; SlowMo `rsm_pulse (300 35)` + `ubqs_remoteslowmo` arrived t792 / t850 / t914 / t964 and started **300 ms at 35%** (pulse 11 tics). The fourth block: REMOTE DOWN +600, its 1500 ms merged (pulse 53 tics). Stung 0; no bolt sent back | `evidence/REMOTE_BLOCK_log.txt` |
+| A block counts for the remote (Gun Bonsai VR, Deflector not learned): streak and slow only (owner 11-11) | Second launch (`evidence/REMOTE_BLOCK_script.txt`, after the owner's "streak and slow only"). The remote held 8 units past the blade tip (as in LAST). Five bolts stopped dead: `SBX_BLOCK t200 / t252 / t320 / t361 / t400 ... stopped on the blade (Deflector not learned)`. Each the same tic: deflects +1, streak +1 (1 to 5), the deflect's own 20 points; SlowMo `rsm_pulse (300 35)` + `ubqs_remoteslowmo` arrived t202 / t254 / t321 / t364 / t401 and started **300 ms at 35%** (pulse 11 tics). **Pips (round hits) 0 throughout, struck 0, no knock-down** (no +600, no 1500 ms slow). Stung 0; no bolt sent back | `evidence/REMOTE_BLOCK_log.txt` |
 
 Not looked at in frames: the wrist panel's pips (the count is the log's).
 
 Code: `Accessibility/zscript/rsqa_qol.zs` (`IsDown`, asked in `SeatTick`: while DOWN, Auto's switch timer is held at
 0 and nothing switches; the eyes are still tracked). `QuestSaber/zscript.txt` (`UBQS_SaberBase.BatBack`'s block branch
-calls `UBQS_RemoteBolt.CountBlock`: the deflect's own count, then the remote's own hit, `DamageMobj`; the bolt is still
-destroyed). SlowMo unchanged: its `down` answer already existed.
+calls `UBQS_RemoteBolt.CountBlock`: the deflect's own count only (streak, its points, the slow), no hit; the bolt is
+still destroyed). The first version (a92cd0a8) also counted a hit and knocked the remote down at four; replaced. SlowMo unchanged: its `down` answer already existed.
