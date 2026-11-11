@@ -1,44 +1,35 @@
 # RSQ UBQ Series
 ### DoomVR - Arcade Edition · twenty-one pk3s for stock QuestZDoom 17.3
 
-The RSQ UBQ Series (Radiant Silvergun Quest) is **DoomVR - Arcade Edition**: Brutal Doom 22 in VR, played with your
-hands and your body, for a score. "Doom Arcade VR" is the owner's (presidentkoopa's) guiding statement for it. It is
-21 pk3s for stock QuestZDoom 17.3, all ZScript and data, with no engine changes.
+The RSQ UBQ Series (Radiant Silvergun Quest) is **DoomVR - Arcade Edition**: Brutal Doom 22 rebuilt for VR from the
+hands up, and played as an arcade game. It is twenty-one pk3s for stock QuestZDoom 17.3, written entirely in ZScript
+and data, with no engine changes.
 
 *[GIF to come: one fight using several mods at once, filmed in the headset]*
 
-## What it is like to play
+## The idea
 
-**Your hands do the fighting.** BD22 VR Reloaded puts your hands on every Brutal Doom gun: hold the handguard, rip
-out the magazine, take a fresh one from the pouch on your belt and slam it home. Your guns hang in holsters on your
-hips, chest and shoulders; reach and squeeze the grip to draw. Hold a lightsaber in each hand, or keep one hand free
-for the Force. Block and bash with the shield saw, throw it round the room and catch it. Throw jabs, hooks and
-uppercuts. Crack a whip and rope a monster in. Pull a grenade's pin, cook it and throw it with your arm. Turn your
-palm to something lying in the room and it flies to your hand. Aim the grappling hook with your arm.
+Most VR ports of Doom keep the flat game and give it a headset. This series starts from the other end. Every weapon,
+tool and system is designed for two tracked hands and a body in a room first, and the game around it is built to be
+played for mastery: a score, a run, a margin for error that you earn.
 
-**Every kill is scored.** A kill pays the monster's worth, and style pays more: a kill in mid-air, a shot sent back
-at the imp that threw it, a whip crack into a shield bash. The bonus rows roll out under your score as they land.
-Each map has a target. Cross it and you earn a life, which stops a killing blow at 1 HP and brings you back.
+**VR first.** The hands are the interface. BD22 VR Reloaded puts both hands on every Brutal Doom gun, with the
+magazine changed by hand from pouches on the belt and the guns drawn from holsters on the body. Melee is real: fists,
+two sabers and the Force, a shield saw that blocks, bashes and returns when thrown, a whip, a grappling hook aimed with
+the arm, grenades pinned, cooked and thrown. Information lives on the body as well: ammo and status on the wrists, a
+watch check instead of a menu.
 
-**Each hand grows.** In Gun Bonsai VR each hand earns its own XP and grows its own upgrade trees, with more than 170
-new upgrades for what you do with your body: the saber, the shield, the whip, the grenade, the hook, your fists,
-slow motion.
+**Arcade oriented.** RSQ Score reads how you fight, not only what you kill: air kills, reflected shots, chains
+between tools. Each map sets a target, and crossing it earns a life that holds a killing blow at 1 HP. Gun Bonsai VR
+gives each hand its own experience and its own upgrade trees, more than 170 nodes built around what the body does.
+SlowMo slows the world while your head and hands stay in real time, and Be Quick or Be Dead turns a death into a few
+seconds of last chance. Minibosses are called in by the player when the meter is full; monsters climb a ladder of
+thirteen tiers, and Champions are scored apart.
 
-**Time bends.** SlowMo drops the world to a quarter speed while your head and hands stay on real time. Enemy bullets
-become rounds you can see and lean out of. With Be Quick or Be Dead (DOWN) on, a killing blow leaves you on the floor
-in a grey world, with a few seconds to take your revenge.
-
-**The fights grow.** Play well and the Miniboss meter fills. Check your watch and press Use, and a miniboss lands in
-front of you with its thralls; while they stand, it cannot be hurt. Monsters stand on a ladder of thirteen colours,
-and one that changes tier flashes white first. With Champions loaded, champions turn up too, and pay their own Score
-row.
-
-**What you need is on you.** Ammo cards ride beside your wrists; check your watch and a full card lies on your wrist.
-Monsters carry health bars, hits throw damage numbers, and kills burst into bits that fly to you.
-
-**Play it your way.** One Accessibility page that every mod reads: one hand, seated, left-handed, colour blind,
-motion sensitive or light sensitive. Every pk3 loads alone. Load more and they work together: a whip crack pays a
-Score row, a miniboss fight slows the world through SlowMo, a level-up washes the map in Glow In The Dark's colours.
+**One series, any subset.** Every pk3 loads and plays alone. Loaded together, they find each other by name and work
+as one game: the whip pays Score, a miniboss fight drives SlowMo, a level-up colours the world through Glow In The
+Dark. One Accessibility page serves every mod: one-handed, seated, left-handed, colour-blind and motion- or
+light-sensitive play.
 
 ## Where it stands
 
@@ -46,9 +37,9 @@ Nothing here is headset-confirmed unless the Status section says so. Most of it 
 headset-confirmed** (frames or a log from the Linux rig, with a simulated headset and controllers) or **code only,
 not shown**. RSQ Grapple is **waiting on Grapple 2.0**. The [Status](#status) section has one line per mod.
 
-Built on Brutal Doom 22 (Sergeant Mark IV), the owner's BD22 VR Reloaded, QuestZDoom 17.3 (Emawind and Team Beef,
-DrBeef's line of Quest ports), Gun Bonsai (ToxicFrog), Legion of Bones (SpacemanStrife), Champions, m8f's Graveyards,
-ijon's Dakka scoring and Tartlman's Minibosses!. [Credits](#credits) has the rest.
+Built on Brutal Doom 22 (Sergeant Mark IV), the owner's BD22 VR Reloaded, QuestZDoom 17.3 (Emawind and Team Beef),
+Gun Bonsai (ToxicFrog), Legion of Bones (SpacemanStrife), Champions, m8f's Graveyards, ijon's Dakka scoring and
+Tartlman's Minibosses!. [Credits](#credits) has the rest.
 
 ---
 
