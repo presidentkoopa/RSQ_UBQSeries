@@ -532,7 +532,7 @@ extend class RSQMB_Handler
 		Array<String> tc;
 		int lo = int(bi * max(0.0, 0.25 + 0.1 * tier));
 		for (int i = 0; i < want; i++) tc.Push(rosterCls[bi > 0 ? random[rsqmbbf](min(lo, bi - 1), bi - 1) : 0]);
-		bc = ApplyFrom(bc, tc);   // RSQ Monsters > Bossfight: Miniboss From / Thralls From (fight.zs)
+		bc = ApplyFrom(bc, tc, p);   // RSQ Monsters > Bossfight: Miniboss From / Thralls From (fight.zs)
 		if (!bc) return false;
 
 		let pr = RSQMB_Probe(Actor.Spawn("RSQMB_Probe", p.pos));

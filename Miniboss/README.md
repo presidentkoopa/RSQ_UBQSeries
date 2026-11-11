@@ -117,6 +117,18 @@ family. Picked from a set, the miniboss stands at least one colour above its str
 With RSQ Monsters loaded and both left at their defaults, a miniboss from Brutal Doom or plain Doom gets ColorfulHell
 thralls.
 
+**The colours climb with your Gun Bonsai VR levels** (with RSQ Monsters and RSQ Gun Bonsai VR both loaded). When the
+fight arrives, on top of the colours above:
+- the miniboss goes up **one colour for each Gun Bonsai VR player level** you have;
+- each thrall goes up **a quarter of a colour for each weapon level** in your hands: the main hand's gun level plus the
+  off hand's, rounded half up (5 levels give 1 colour, 6 give 2). An empty hand or fists count 0.
+- Thralls stop one colour below the top (Pink), the miniboss at the top (Brown), and the miniboss is always at least
+  one colour above its strongest thrall (raised if needed, never lowered).
+
+Who sets what: this mod sets the arrival colours; RSQ Monsters makes the monsters of each colour; Gun Bonsai VR gives
+the levels. Without Gun Bonsai VR there is no bonus; without RSQ Monsters there are no colours at all. Champions and
+LegenDoom boosts are added as before.
+
 **Everything that arrives is boosted:** a Champion (it is given one of Champions' colours if it did not roll one),
 legendary with LegenDoom (when **Legendary Thralls** is on), lit in its own colour and full-bright. The thralls are drawn
 a little larger, and get half their health again when they are not made legendary. The miniboss is 1.25x as big (its hitbox too), 1.25x as fast, and far
@@ -293,7 +305,8 @@ happen.
   and **Legendary Boss Health**: a miniboss made legendary gets the higher of LegenDoom's boss and normal legendary
   health. RSQ Gun Bonsai VR and RSQ ShieldSaw read that and size their own numbers on it. With Brutal Doom 22 VR's
   LegenDoom Lite patch, legendary weapons drop only from a miniboss fight's monsters.
-- **RSQ Gun Bonsai VR:** its weapon XP fills the meter and its player level sets the tier.
+- **RSQ Gun Bonsai VR:** its weapon XP fills the meter, its player level sets the tier, and (with RSQ Monsters) its
+  player level and your weapons' levels raise the arrival colours.
 - **RSQ Accessibility and RSQ Gun Cards:** the watch check for the call-in (this mod carries its own copy too).
 - **RSQ Tactical Rig:** while a miniboss fight can be called, the watch check's Use press is the call-in's and the gun stays
   put; killing a miniboss fills your cigarette pocket.
@@ -337,6 +350,7 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-11, the Gun Bonsai VR colour bonus: `design/rigtest_2026-11-10/RESULTS_MBTIER.md`) | A called-in fight on MAP01 with the levels set by a test probe; the debug line and each arriving monster's colour from RSQ Monsters agree: player level 3, weapons 3 + 2 = 5 gave the miniboss +3 and the thralls +1 (1.25 rounds down); weapons 4 + 2 = 6 gave +2 (1.5 rounds up); player level 20, weapons 30 + 30 capped the miniboss at Brown (13) and the thralls at 12; weapons 10 + 10 and player level 0 raised the miniboss to one above its thralls (7 over 6); the fists counted 0; without Gun Bonsai VR, no bonus (`MB_TIER_*`) |
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch, P3: `design/rigtest_2026-11-10/RESULTS_P3.md`, on rig02) | **B1:** a landing blocked on purpose tried again quietly and landed on its third try, with one slow motion, one music start and one darkness drop across the three (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **B2:** during the landing the life bars count an inherited life (3 bars; 2 without it) (`P3_B2_landing_life_bars.jpg`, `P3C_log.txt`). **B3:** the classic pick shows the HUD bars (`P3_B3_classic_stack.jpg`). **B4:** Legendary Thralls off: no thrall and not the miniboss legendary, each thrall at 1.5x health; on: all legendary. Run with LegenDoom 3.0 added, which is not in the owner's order (`P3D_log.txt`). **B5:** Graves Rise in all four modes, each with the count it should give (`P3A_log.txt`). **B6:** the kill drops a gun and pays "Miniboss Called", no life crate, and Kill Rewards' bits are not tripled again (`P3A_log.txt`). **A bug found, then fixed and shown:** a Bossfight's first landing often failed and landed again with nothing in the way (a thrall pushed aside on a diagonal still overlapped the miniboss); fixed (commit 2c390a65); after, 7 of 7 landings landed on the first try (`P3C_log.txt`, `P3D_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test: `design/rigtest_2026-11-10/RESULTS.md` and `evidence/`) | The rename: the menus read Minibosses, Miniboss Meter Fills From and Other Mods Treat It as a Boss (`B7_miniboss_menu.jpg`); RSQ SlowMo's landing line MINIBOSS INCOMING, and the called-in kill paying one Score row, "Miniboss Called" (`L1_log.txt`). The HUD stack: the thrall bar, the miniboss's bar with its tier gem and Champion icon on its right, three life bars (`B8_stack_before_shield_removed.png`; the shield icon in that frame was taken off the HUD afterwards). "GUARD!" on a shielded hit and during the invulnerability after a life is lost, "TARGET!" over the miniboss while it can be shot and gone when a life is lost, following it into a new body (`L5_log.txt`). Graves Rise Mode greyed with Graves Rise off (`menus_new_rows.jpg`). The fight was called in by console command in these runs, not by the watch check. Zero script errors from our packs on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series |
 | **rig only, not headset-confirmed** (2026-11-09, logs and a frame sheet from a test probe: `TestRig/bossfight_rig/evidence_2026-11-09`) | The reworked fight, called in, with RSQ Monsters: three thralls landing one by one on V2 beams and the miniboss on a V4 beam; three segments; a shot on the shield doing no damage; a thrall kill opening a three-second window; the window missed and +3 tiers asked on 11 monsters map-wide, with the swapped bodies found again; a hit in the window breaking a segment; two lives lost, each refilled with five seconds of invulnerability and +1 tier; the death and its drop. Run twice: ColorfulHell monsters, and (since removed) a MeatGrinder miniboss with ColorfulHell thralls through Miniboss From / Thralls From. The same day the reworked pack loaded on the series' load order with no script error from it (miniboss fights off in those runs) |

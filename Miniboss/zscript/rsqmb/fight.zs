@@ -485,7 +485,47 @@ extend class RSQMB_Handler
 	// old MeatGrinder (2) and Mixed (3) values read as ColorfulHell)
 	static int SetOfMenu(int v) { return (v >= 1 && v <= 3) ? 3 : 0; }
 
-	class<Actor> ApplyFrom(class<Actor> bc, Array<String> tc)
+	// THE TIER BONUS (owner 2026-11-11 14:07-14:12, "just design something"): on top of the start colours above, with RSQ Gun
+	// Bonsai VR loaded (RSQGB_Service, by name), at the arrival tic, once:
+	//   the miniboss  +1 colour a Gun Bonsai VR PLAYER level ("player.level");
+	//   each thrall   +0.25 colour a WEAPON level, the main hand's and the off hand's Gun Bonsai VR levels added ("level",
+	//                 intArg 0 / 1), rounded half up (5 levels 1.25 -> +1, 6 levels 1.5 -> +2). An empty hand, the fists, or a
+	//                 gun with no record counts 0.
+	//   limits        a thrall tops out one below the top colour (12, Pink) so the miniboss can stand above it; the miniboss
+	//                 tops out at the top (13, Brown) and is raised (never lowered) to one above its strongest thrall.
+	// Only a pick on the ladder gets colours (a Brutal Doom / Vanilla pick kept as it is gets none, as before). Play code, read
+	// from synced records, so every machine picks the same.
+	const TOP_TIER = 13;
+
+	static bool IsFists(Weapon w)
+	{
+		if (!w) return true;
+		if (w is "Fist") return true;
+		static const Name FISTS[] = { 'Melee_Attacks', 'RSQ_Hands', 'RSQ_Glove', 'RSQ_GloveOff', 'SPO_Glove', 'SPO_GloveOff', 'DWep_Fists' };
+		class<Actor> c = w.GetClass();
+		for (int d = 0; c && d < 4; d++)
+		{
+			Name n = c.GetClassName();
+			for (int k = 0; k < FISTS.Size(); k++) if (n == FISTS[k]) return true;
+			if (c is "Fist") return true;
+			class<Actor> r = Actor.GetReplacee(c);
+			if (r == c) break;
+			c = r;
+		}
+		return false;
+	}
+
+	// one hand's Gun Bonsai VR weapon level: 0 for an empty hand (BD22 VR's free hand RSQ_Hands too), the fists or gloves,
+	// or no record
+	int HandLevel(PlayerPawn p, int hand)
+	{
+		if (!p || !p.player || !GbSvc()) return 0;
+		Weapon w = hand == 1 ? p.player.OffhandWeapon : p.player.ReadyWeapon;
+		if (!w || IsFists(w)) return 0;
+		return max(0, gbService.GetInt("level", "", hand, 0, p));
+	}
+
+	class<Actor> ApplyFrom(class<Actor> bc, Array<String> tc, PlayerPawn p = null)
 	{
 		let s = MnService();
 		if (!s || !bc) return bc;
@@ -499,22 +539,61 @@ extend class RSQMB_Handler
 			if (bSet == 3) tMode = 1;
 			else tMode = ClassSet(s, bn) > 0 ? 4 : 1;
 		}
+		// the start colours (unchanged), kept for the bonus: 0 = not on the ladder
+		Array<int> tStart;
 		int topThrall = 0;
-		if (tMode != 4)
+		for (int i = 0; i < tc.Size(); i++)
 		{
-			for (int i = 0; i < tc.Size(); i++)
+			if (tMode != 4)
 			{
 				int tt = max(1, s.GetInt("class.tier", tc[i]));
 				tc[i] = IntoSet(s, tc[i], SetOfMenu(tMode), tt);
 				topThrall = max(topThrall, tt);
+				tStart.Push(tt);
 			}
+			else tStart.Push(ClassSet(s, tc[i]) > 0 ? max(1, s.GetInt("class.tier", tc[i])) : 0);
 		}
+		int bStart = 0;
 		if (bSet > 0)
 		{
 			int bt = max(1, s.GetInt("class.tier", bn));
 			if (topThrall > 0) bt = max(bt, topThrall + 1);
-			bn = IntoSet(s, bn, bSet, min(13, bt));
+			bStart = min(TOP_TIER, bt);
+			bn = IntoSet(s, bn, bSet, bStart);
 		}
+		else if (ClassSet(s, bn) > 0) bStart = max(1, s.GetInt("class.tier", bn));
+
+		// THE TIER BONUS (above)
+		if (GbSvc() && p)
+		{
+			int pl = max(0, gbService.GetInt("player.level", "", 0, 0, p));
+			int wm = HandLevel(p, 0), wo = HandLevel(p, 1);
+			int tBonus = (wm + wo + 2) / 4;   // 0.25 a level, half up
+			String st = "", fin = "";
+			int topNow = 0, topStart = 0;
+			for (int i = 0; i < tc.Size(); i++)
+			{
+				int t0 = tStart[i];
+				if (t0 <= 0) { st = st .. " -"; fin = fin .. " -"; continue; }
+				int t1 = max(t0, min(TOP_TIER - 1, t0 + tBonus));
+				if (t1 != t0) { String nn = IntoSet(s, tc[i], 3, t1); if (nn != "") tc[i] = nn; }
+				topNow = max(topNow, t1); topStart = max(topStart, t0);
+				st = st .. " " .. t0; fin = fin .. " " .. t1;
+			}
+			int b1 = bStart;
+			if (bStart > 0)
+			{
+				b1 = min(TOP_TIER, bStart + pl);
+				// one above its strongest thrall after the bonuses (the start rule already holds for a pick into the set; a
+				// map's own miniboss is held to it only once the bonus raised a thrall)
+				if (topNow > 0 && (bSet > 0 || topNow > topStart)) b1 = max(b1, min(TOP_TIER, topNow + 1));
+				if (b1 != bStart) { String nn = IntoSet(s, bn, 3, b1); if (nn != "") bn = nn; }
+			}
+			if (debug) Console.Printf("RSQMB tier bonus t%d: start miniboss %d, thralls%s | Gun Bonsai VR player level %d -> miniboss +%d | weapon levels main %d + off %d = %d -> thralls +%d (x0.25, half up) | final miniboss %d (%s), thralls%s (top %d, thralls cap %d)",
+				level.maptime, bStart, st, pl, bStart > 0 ? pl : 0, wm, wo, wm + wo, tBonus, b1, bn, fin, TOP_TIER, TOP_TIER - 1);
+		}
+		else if (debug) Console.Printf("RSQMB tier bonus t%d: none (%s)", level.maptime, GbSvc() ? "no player" : "Gun Bonsai VR not loaded");
+
 		class<Actor> nc = bn;
 		if (debug) Console.Printf("RSQMB Miniboss From %d / Thralls From %d: %s", bfv, tfv, nc ? bn : "(none)");
 		return nc ? nc : bc;

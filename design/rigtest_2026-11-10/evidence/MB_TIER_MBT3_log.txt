@@ -1,0 +1,33 @@
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT INV t0 MAP01 bINVULNERABLE 0
+MB_TIER_E_CAP_BOTH
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT INV t0 MAP01 bINVULNERABLE 0
+MBT HANDS t121 tag 0 hand0=BrutalPistol gb level 0; hand1=RSQ_Off_BrutalPistol gb level 0;  player level 0
+MBT PLV t121 player level set 20
+MBT WLV t121 hand 0 BrutalPistol level set 30
+MBT WLV t121 hand 1 RSQ_Off_BrutalPistol level set 30
+MBT HANDS t121 tag 1 hand0=BrutalPistol gb level 30; hand1=RSQ_Off_BrutalPistol gb level 30;  player level 20
+RSQMB bossfight tier 4 from Whichever Is Larger (Gun Bonsai VR level 20, Score lives 0)
+RSQMB tier bonus t125: start miniboss 2, thralls 1 1 1 1 | Gun Bonsai VR player level 20 -> miniboss +20 | weapon levels main 30 + off 30 = 60 -> thralls +15 (x0.25, half up) | final miniboss 13 (RS_BrownImp2), thralls 12 12 12 12 (top 13, thralls cap 12)
+RSQMB Miniboss From 1 / Thralls From 1: RS_BrownImp2
+MB_TIER_F_RAISED
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT SCAN t0 tag 1: MINIBOSS none | 0 thralls: 
+MBT INV t0 MAP01 bINVULNERABLE 0
+MBT HANDS t120 tag 0 hand0=BrutalPistol gb level 0; hand1=RSQ_Off_BrutalPistol gb level 0;  player level 0
+MBT PLV t120 player level set 0
+MBT WLV t120 hand 0 BrutalPistol level set 10
+MBT WLV t120 hand 1 RSQ_Off_BrutalPistol level set 10
+MBT HANDS t122 tag 1 hand0=BrutalPistol gb level 10; hand1=RSQ_Off_BrutalPistol gb level 10;  player level 0
+RSQMB bossfight tier 0 from Whichever Is Larger (Gun Bonsai VR level 0, Score lives 0)
+RSQMB tier bonus t124: start miniboss 2, thralls 1 1 1 | Gun Bonsai VR player level 0 -> miniboss +0 | weapon levels main 10 + off 10 = 20 -> thralls +5 (x0.25, half up) | final miniboss 7 (RS_FireBluZombie2), thralls 6 6 6 (top 13, thralls cap 12)
+RSQMB Miniboss From 1 / Thralls From 1: RS_FireBluZombie2
+MBT SCAN t385 tag 1: MINIBOSS RS_FireBluZombie2(tier 7) | 3 thralls: RS_RedZombie(tier 6) RS_RedZombie(tier 6) RS_RedZombie(tier 6) 

@@ -1,0 +1,63 @@
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT INV t0 MAP01 bINVULNERABLE 0
+MB_TIER_A_125
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT INV t0 MAP01 bINVULNERABLE 0
+MBT HANDS t119 tag 0 hand0=BrutalPistol gb level 0; hand1=RSQ_Off_BrutalPistol gb level 0;  player level 0
+MBT PLV t119 player level set 3
+MBT WLV t119 hand 0 BrutalPistol level set 3
+MBT WLV t119 hand 1 RSQ_Off_BrutalPistol level set 2
+MBT HANDS t121 tag 1 hand0=BrutalPistol gb level 3; hand1=RSQ_Off_BrutalPistol gb level 2;  player level 3
+RSQMB bossfight tier 3 from Whichever Is Larger (Gun Bonsai VR level 3, Score lives 0)
+RSQMB tier bonus t124: start miniboss 2, thralls 1 1 1 1 | Gun Bonsai VR player level 3 -> miniboss +3 | weapon levels main 3 + off 2 = 5 -> thralls +1 (x0.25, half up) | final miniboss 5 (RS_YellowZombie), thralls 2 2 2 2 (top 13, thralls cap 12)
+RSQMB Miniboss From 1 / Thralls From 1: RS_YellowZombie
+MBT SCAN t385 tag 1: MINIBOSS RS_YellowZombie(tier 5) | 3 thralls: RS_GreenZombie(tier 2) RS_GreenZombie(tier 2) RS_GreenZombie(tier 2) 
+MB_TIER_B_150
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT SCAN t0 tag 2: MINIBOSS none | 0 thralls: 
+MBT INV t0 MAP01 bINVULNERABLE 0
+MBT HANDS t119 tag 0 hand0=BrutalPistol gb level 0; hand1=RSQ_Off_BrutalPistol gb level 0;  player level 0
+MBT PLV t119 player level set 1
+MBT WLV t119 hand 0 BrutalPistol level set 4
+MBT WLV t119 hand 1 RSQ_Off_BrutalPistol level set 2
+MBT HANDS t123 tag 1 hand0=BrutalPistol gb level 4; hand1=RSQ_Off_BrutalPistol gb level 2;  player level 1
+RSQMB bossfight tier 1 from Whichever Is Larger (Gun Bonsai VR level 1, Score lives 0)
+RSQMB tier bonus t127: start miniboss 2, thralls 1 1 1 | Gun Bonsai VR player level 1 -> miniboss +1 | weapon levels main 4 + off 2 = 6 -> thralls +2 (x0.25, half up) | final miniboss 4 (RS_PurpleImp), thralls 3 3 3 (top 13, thralls cap 12)
+RSQMB Miniboss From 1 / Thralls From 1: RS_PurpleImp
+MBT SCAN t385 tag 1: MINIBOSS RS_PurpleImp(tier 4) | 3 thralls: RS_BlueZombie(tier 3) RS_BlueZombie(tier 3) RS_BlueZombie(tier 3) 
+MB_TIER_C_CAP
+MBT SCAN t444 tag 2: MINIBOSS RS_PurpleImp(tier 4) | 3 thralls: RS_BlueZombie(tier 3) RS_BlueZombie(tier 3) RS_BlueZombie(tier 3) 
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT INV t0 MAP01 bINVULNERABLE 0
+MBT HANDS t119 tag 0 hand0=BrutalPistol gb level 0; hand1=RSQ_Off_BrutalPistol gb level 0;  player level 0
+MBT PLV t119 player level set 20
+MBT WLV t119 hand 0 BrutalPistol level set 20
+MBT WLV t119 hand 1 RSQ_Off_BrutalPistol level set 20
+MBT HANDS t121 tag 1 hand0=BrutalPistol gb level 20; hand1=RSQ_Off_BrutalPistol gb level 20;  player level 20
+RSQMB bossfight tier 4 from Whichever Is Larger (Gun Bonsai VR level 20, Score lives 0)
+RSQMB tier bonus t125: start miniboss 2, thralls 1 1 1 1 | Gun Bonsai VR player level 20 -> miniboss +20 | weapon levels main 20 + off 20 = 40 -> thralls +10 (x0.25, half up) | final miniboss 13 (RS_BrownImp2), thralls 11 11 11 11 (top 13, thralls cap 12)
+RSQMB Miniboss From 1 / Thralls From 1: RS_BrownImp2
+MBT SCAN t384 tag 1: MINIBOSS RS_BrownImp2(tier 13) | 4 thralls: RS_WhiteZombie1(tier 11) RS_WhiteZombie1(tier 11) RS_WhiteZombie1(tier 11) RS_WhiteZombie1(tier 11) 
+MB_TIER_D_FISTS_MAPOWN
+MBT SCAN t444 tag 2: MINIBOSS RS_BrownImp2(tier 13) | 4 thralls: RS_WhiteZombie1(tier 11) RS_WhiteZombie1(tier 11) RS_WhiteZombie1(tier 11) RS_WhiteZombie1(tier 11) 
+MAP01 - Entryway
+MBT LOADED MAP01 t0 bINVULNERABLE 0
+MBT INV t0 MAP01 bINVULNERABLE 0
+MBT HANDS t79 tag 0 hand0=Melee_Attacks gb level 0; hand1=rsq_hands gb level 0;  player level 0
+MBT PLV t79 player level set 0
+MBT WLV t79 hand 0 Melee_Attacks level set 9
+MBT WLV t79 hand 1 rsq_hands level set 9
+MBT HANDS t81 tag 1 hand0=Melee_Attacks gb level 9; hand1=rsq_hands gb level 9;  player level 0
+RSQMB bossfight tier 0 from Whichever Is Larger (Gun Bonsai VR level 0, Score lives 0)
+RSQMB tier bonus t84: start miniboss 1, thralls 1 1 1 | Gun Bonsai VR player level 0 -> miniboss +0 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss 1 (RS_CommonZombie), thralls 1 1 1 (top 13, thralls cap 12)
+RSQMB Miniboss From 0 / Thralls From 0: RS_CommonZombie
+MBT SCAN t344 tag 1: MINIBOSS RS_CommonZombie(tier 1) | 3 thralls: RS_CommonZombie(tier 1) RS_CommonZombie(tier 1) RS_CommonZombie(tier 1) 
+MBT SCAN t404 tag 2: MINIBOSS RS_CommonZombie(tier 1) | 3 thralls: RS_CommonZombie(tier 1) RS_CommonZombie(tier 1) RS_CommonZombie(tier 1) 
