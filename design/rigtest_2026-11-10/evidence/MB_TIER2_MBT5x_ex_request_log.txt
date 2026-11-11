@@ -1,0 +1,17 @@
+MBTX_GO
+MBTX gate 3 svc 1
+MBTX RS_BlackImp1 10 -> 'RS_BlackImpEX'  11 -> ''  set.class 10 'RS_BlackImp1'
+MBTX RS_BlackImp 10 -> 'RS_BlackImpEX'  11 -> ''  set.class 10 'RS_BlackImp1'
+MBTX DoomImp 10 -> 'RS_BlackImpEX'  11 -> ''  set.class 10 'RS_BlackImp1'
+MBTX RS_BlackZombie1 10 -> 'RS_BlackZombieEX'  11 -> ''  set.class 10 'RS_BlackZombie1'
+MBTX RS_WhiteSG2 10 -> ''  11 -> 'RS_WhiteSGEX'  set.class 10 'RS_BlackSG3'
+MBTX RS_BlackSP2 10 -> 'RS_BlackSPEX'  11 -> ''  set.class 10 'RS_BlackSP2'
+MBTX RS_BlackSG3 10 -> ''  11 -> 'RS_WhiteSGEX'  set.class 10 'RS_BlackSG3'
+MBTX gate 1 svc 1
+MBTX RS_BlackImp1 10 -> ''  11 -> ''  set.class 10 'RS_BlackImp1'
+MBTX RS_BlackImp 10 -> ''  11 -> ''  set.class 10 'RS_BlackImp1'
+MBTX DoomImp 10 -> ''  11 -> ''  set.class 10 'RS_BlackImp1'
+MBTX RS_BlackZombie1 10 -> ''  11 -> ''  set.class 10 'RS_BlackZombie1'
+MBTX RS_WhiteSG2 10 -> ''  11 -> ''  set.class 10 'RS_BlackSG3'
+MBTX RS_BlackSP2 10 -> ''  11 -> ''  set.class 10 'RS_BlackSP2'
+MBTX RS_BlackSG3 10 -> ''  11 -> ''  set.class 10 'RS_BlackSG3'

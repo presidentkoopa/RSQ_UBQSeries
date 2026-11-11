@@ -485,17 +485,43 @@ extend class RSQMB_Handler
 	// old MeatGrinder (2) and Mixed (3) values read as ColorfulHell)
 	static int SetOfMenu(int v) { return (v >= 1 && v <= 3) ? 3 : 0; }
 
-	// THE TIER BONUS (owner 2026-11-11 14:07-14:12, "just design something"): on top of the start colours above, with RSQ Gun
-	// Bonsai VR loaded (RSQGB_Service, by name), at the arrival tic, once:
-	//   the miniboss  +1 colour a Gun Bonsai VR PLAYER level ("player.level");
-	//   each thrall   +0.25 colour a WEAPON level, the main hand's and the off hand's Gun Bonsai VR levels added ("level",
-	//                 intArg 0 / 1), rounded half up (5 levels 1.25 -> +1, 6 levels 1.5 -> +2). An empty hand, the fists, or a
-	//                 gun with no record counts 0.
-	//   limits        a thrall tops out one below the top colour (12, Pink) so the miniboss can stand above it; the miniboss
-	//                 tops out at the top (13, Brown) and is raised (never lowered) to one above its strongest thrall.
-	// Only a pick on the ladder gets colours (a Brutal Doom / Vanilla pick kept as it is gets none, as before). Play code, read
-	// from synced records, so every machine picks the same.
-	const TOP_TIER = 13;
+	// THE COLOUR BONUS (owner 2026-11-11 14:07-14:12, reworked 14:51-14:55: climb the STRENGTH order, not the ladder's
+	// numbering). With RSQ Gun Bonsai VR loaded (RSQGB_Service, by name), at the arrival tic, once, on top of the start
+	// colours above (unchanged), each converted to its STEP in the strength order:
+	//   the miniboss  +1 step a Gun Bonsai VR PLAYER level ("player.level"), all the way to Black (12, its boss roll may
+	//                 come out EX the way RSQ Monsters rolls it: "set.class.ex") and White (13, the Shotgunner's and the
+	//                 Lost Soul's EX colour);
+	//   each thrall   +0.25 step a WEAPON level, the main hand's and the off hand's Gun Bonsai VR levels added ("level",
+	//                 intArg 0 / 1), rounded half up (5 levels 1.25 -> +1, 6 levels 1.5 -> +2). An empty hand, the fists,
+	//                 gloves, RSQ_Hands, or a gun with no record counts 0. The bonus stops at Abyss (11): never Black, White
+	//                 or EX;
+	//   then          the miniboss is raised (never lowered) to one step above its strongest thrall.
+	// Only a pick on the ladder gets colours (a Brutal Doom / Vanilla pick kept as it is gets none, as before). Play code,
+	// read from synced records, so every machine picks the same.
+	// THE STRENGTH ORDER, weakest first (measured 11-11 from each colour's health in Monsters/zscript/monsters/*/, mean
+	// rank over the 17 families, EX excluded; Monsters/README.md "The ladder"):
+	//   step  1 Common, 2 Green, 3 Blue, 4 Purple, 5 Cyan, 6 Brown, 7 Yellow, 8 FireBlu, 9 Gray, 10 Red, 11 Abyss,
+	//        12 Black (boss), 13 White (boss)
+	const TOP_STEP = 13;
+	const THRALL_STEP_CAP = 11;   // Abyss
+
+	// a ladder colour (1..13, RSQ Monsters' numbering) -> its step in the strength order, and back
+	static int StepOf(int lad)
+	{
+		static const int S[] = { 0, 1, 2, 3, 4, 7, 10, 8, 9, 11, 12, 13, 5, 6 };
+		return lad >= 1 && lad <= 13 ? S[lad] : 0;
+	}
+	static int LadderOf(int step)
+	{
+		static const int L[] = { 0, 1, 2, 3, 4, 12, 13, 5, 7, 8, 6, 9, 10, 11 };
+		return step >= 1 && step <= 13 ? L[step] : 0;
+	}
+	static String ColourName(int lad)
+	{
+		static const String N[] = { "-", "Common", "Green", "Blue", "Purple", "Yellow", "Red", "FireBlu", "Gray", "Abyss", "Black", "White", "Cyan", "Brown" };
+		return lad >= 1 && lad <= 13 ? N[lad] : "-";
+	}
+	static String StepText(int step) { return step > 0 ? String.Format("%s(%d)", ColourName(LadderOf(step)), step) : "-"; }
 
 	static bool IsFists(Weapon w)
 	{
@@ -558,41 +584,46 @@ extend class RSQMB_Handler
 		{
 			int bt = max(1, s.GetInt("class.tier", bn));
 			if (topThrall > 0) bt = max(bt, topThrall + 1);
-			bStart = min(TOP_TIER, bt);
+			bStart = min(13, bt);
 			bn = IntoSet(s, bn, bSet, bStart);
 		}
 		else if (ClassSet(s, bn) > 0) bStart = max(1, s.GetInt("class.tier", bn));
 
-		// THE TIER BONUS (above)
+		// THE COLOUR BONUS (above), in strength-order steps
 		if (GbSvc() && p)
 		{
 			int pl = max(0, gbService.GetInt("player.level", "", 0, 0, p));
 			int wm = HandLevel(p, 0), wo = HandLevel(p, 1);
 			int tBonus = (wm + wo + 2) / 4;   // 0.25 a level, half up
 			String st = "", fin = "";
-			int topNow = 0, topStart = 0;
+			int topNow = 0;
 			for (int i = 0; i < tc.Size(); i++)
 			{
-				int t0 = tStart[i];
-				if (t0 <= 0) { st = st .. " -"; fin = fin .. " -"; continue; }
-				int t1 = max(t0, min(TOP_TIER - 1, t0 + tBonus));
-				if (t1 != t0) { String nn = IntoSet(s, tc[i], 3, t1); if (nn != "") tc[i] = nn; }
-				topNow = max(topNow, t1); topStart = max(topStart, t0);
-				st = st .. " " .. t0; fin = fin .. " " .. t1;
+				int s0 = StepOf(tStart[i]);
+				if (s0 <= 0) { st = st .. " -"; fin = fin .. " -"; continue; }
+				// the bonus stops at Abyss; a start colour already above it (a map's own Black or White) is kept, never lowered
+				int s1 = max(s0, min(THRALL_STEP_CAP, s0 + tBonus));
+				if (s1 != s0) { String nn = IntoSet(s, tc[i], 3, LadderOf(s1)); if (nn != "") tc[i] = nn; }
+				topNow = max(topNow, s1);
+				st = st .. " " .. StepText(s0); fin = fin .. " " .. StepText(s1);
 			}
-			int b1 = bStart;
-			if (bStart > 0)
+			int b0 = StepOf(bStart), b1 = b0;
+			String ex = "";
+			if (b0 > 0)
 			{
-				b1 = min(TOP_TIER, bStart + pl);
-				// one above its strongest thrall after the bonuses (the start rule already holds for a pick into the set; a
-				// map's own miniboss is held to it only once the bonus raised a thrall)
-				if (topNow > 0 && (bSet > 0 || topNow > topStart)) b1 = max(b1, min(TOP_TIER, topNow + 1));
-				if (b1 != bStart) { String nn = IntoSet(s, bn, 3, b1); if (nn != "") bn = nn; }
+				b1 = min(TOP_STEP, b0 + pl);
+				// at least one step above its strongest thrall (raised, never lowered)
+				if (topNow > 0) b1 = max(b1, min(TOP_STEP, topNow + 1));
+				if (b1 != b0) { String nn = IntoSet(s, bn, 3, LadderOf(b1)); if (nn != "") bn = nn; }
+				// a boss colour this mod gave it: RSQ Monsters' EX roll for this family at this colour (none for the others); a
+				// map's own boss-colour miniboss left where it was has had its own roll
+				if (b1 >= 12 && (b1 != b0 || bSet > 0)) { ex = s.GetString("set.class.ex", bn, 3, LadderOf(b1)); if (ex != "") bn = ex; }
 			}
-			if (debug) Console.Printf("RSQMB tier bonus t%d: start miniboss %d, thralls%s | Gun Bonsai VR player level %d -> miniboss +%d | weapon levels main %d + off %d = %d -> thralls +%d (x0.25, half up) | final miniboss %d (%s), thralls%s (top %d, thralls cap %d)",
-				level.maptime, bStart, st, pl, bStart > 0 ? pl : 0, wm, wo, wm + wo, tBonus, b1, bn, fin, TOP_TIER, TOP_TIER - 1);
+			if (debug) Console.Printf("RSQMB colour bonus t%d (strength steps): start miniboss %s, thralls%s | Gun Bonsai VR player level %d -> miniboss +%d | weapon levels main %d + off %d = %d -> thralls +%d (x0.25, half up) | final miniboss %s%s (%s), thralls%s (thralls stop at %s, top %s)",
+				level.maptime, StepText(b0), st, pl, b0 > 0 ? pl : 0, wm, wo, wm + wo, tBonus, StepText(b1), ex != "" ? " EX" : "", bn, fin,
+				StepText(THRALL_STEP_CAP), StepText(TOP_STEP));
 		}
-		else if (debug) Console.Printf("RSQMB tier bonus t%d: none (%s)", level.maptime, GbSvc() ? "no player" : "Gun Bonsai VR not loaded");
+		else if (debug) Console.Printf("RSQMB colour bonus t%d: none (%s)", level.maptime, GbSvc() ? "no player" : "Gun Bonsai VR not loaded");
 
 		class<Actor> nc = bn;
 		if (debug) Console.Printf("RSQMB Miniboss From %d / Thralls From %d: %s", bfv, tfv, nc ? bn : "(none)");

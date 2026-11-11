@@ -1,0 +1,1 @@
+wait 20; map MAP01; wait 40; echo MBTX_GO; set rs_ch_exboss 3; wait 5; netevent mbtx; wait 5; set rs_ch_exboss 1; wait 5; netevent mbtx; wait 20; quit

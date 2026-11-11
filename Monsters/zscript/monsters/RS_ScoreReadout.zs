@@ -42,6 +42,11 @@ class RSQMN_RosterService : Service
 		// Brutal Doom's, CH), intArg the set (3 ColorfulHell), doubleArg the ladder tier -> the same family's class at
 		// that colour, "" when the type has no Doom family or the set has none for it
 		if (request == "set.class") return RS_BossfightPick.SetClass(stringArg, intArg, int(doubleArg));
+		// "set.class.ex" (11-11, RSQ Miniboss's miniboss reaching a boss colour): stringArg any monster type, intArg the set (3),
+		// doubleArg the ladder tier -> the family's EX form when this colour is its EX boss gate (Black; White for the
+		// Shotgunner and the Lost Soul) AND the roll says EX, the way the gate's stub rolls it (rs_ch_exboss: 1 = 24 in 256,
+		// 2 = half, 3 = always, anything else never); "" otherwise. Play code, its own rng: every machine rolls the same.
+		if (request == "set.class.ex") return RS_BossfightPick.SetClassEX(stringArg, intArg, int(doubleArg));
 		return "";
 	}
 
@@ -53,9 +58,9 @@ class RSQMN_RosterService : Service
 		{
 			class<Actor> c = stringArg;
 			if (!c) return -1;
-			return RS_TierLadder.TierOf(stringArg) > 0 ? 1 : -1;
+			return RS_ScoreReadout.TierOfName(stringArg) > 0 ? 1 : -1;
 		}
-		if (request == "class.tier") return RS_TierLadder.TierOf(stringArg);
+		if (request == "class.tier") return RS_ScoreReadout.TierOfName(stringArg);
 		let mo = Actor(objectArg);
 		if (!mo) return -1;
 		if (request == "set")         return RS_ScoreReadout.SetOf(mo);
@@ -102,8 +107,20 @@ class RS_ScoreReadout play
 	static int TierOf(Actor mo)
 	{
 		int t = RS_Zom.GetTier(mo);
-		if (t <= 0) t = RS_TierLadder.TierOf(mo.GetClassName());   // (rig 11-09) a Common CH body carries no tier token
+		if (t <= 0) t = TierOfName(mo.GetClassName());   // (rig 11-09) a Common CH body carries no tier token; (11-11) nor an EX one before its PostBeginPlay
 		return t > 0 ? t : -1;
+	}
+
+	// a type's ladder tier by name, 0 none; an EX form has its gate's (RS_BlackImpEX -> RS_BlackImp, 10; the spider's
+	// RS_BlackSPEX -> RS_BlackSP1)
+	static int TierOfName(String n)
+	{
+		int t = RS_TierLadder.TierOf(n);
+		if (t > 0 || n.Length() < 3 || n.Mid(n.Length() - 2) != "EX") return t;
+		String g = n.Left(n.Length() - 2);
+		t = RS_TierLadder.TierOf(g);
+		if (t <= 0) t = RS_TierLadder.TierOf(g .. "1");
+		return t;
 	}
 
 	static bool IsEX(Actor mo)
@@ -257,14 +274,28 @@ class RS_BossfightPick play
 		return -1;
 	}
 
-	static String SetClass(String clsName, int set, int tier)
+	// the ladder family of any monster type: a Doom family by its vanilla class, else a ColorfulHell body by name (a Black
+	// or White body that is no Doom class's child; an EX form by its gate); -1 none
+	static int FamOfType(String clsName)
 	{
 		class<Actor> c = clsName;
+		if (!c) return -1;
 		Name v = VanillaOf(c);
-		if (v == 'None') return "";
+		int f = v != 'None' ? LadderFam(v) : -1;
+		if (f >= 0) return f;
+		f = RS_TierLadder.FamilyOf(clsName);
+		if (f >= 0 || clsName.Length() < 3 || clsName.Mid(clsName.Length() - 2) != "EX") return f;
+		String g = clsName.Left(clsName.Length() - 2);
+		f = RS_TierLadder.FamilyOf(g);
+		if (f < 0) f = RS_TierLadder.FamilyOf(g .. "1");
+		return f;
+	}
+
+	static String SetClass(String clsName, int set, int tier)
+	{
 		if (set == 3)
 		{
-			int f = LadderFam(v);
+			int f = FamOfType(clsName);
 			if (f < 0) return "";
 			Name n = RS_TierLadder.ClassFor(f, clamp(tier, 1, RS_TierLadder.MaxTier()));
 			String ns = n;
@@ -272,5 +303,28 @@ class RS_BossfightPick play
 			return nc ? ns : "";
 		}
 		return "";
+	}
+
+	// the EX form of a family at a boss colour, after the stub's roll (see "set.class.ex"); "" when none or not rolled
+	static String SetClassEX(String clsName, int set, int tier)
+	{
+		if (set != 3 || (tier != 10 && tier != 11)) return "";
+		int f = FamOfType(clsName);
+		if (f < 0) return "";
+		// the EX class is named after the gate (RS_BlackImp -> RS_BlackImpEX; the spider's RS_BlackSP1 -> RS_BlackSPEX)
+		String g = RS_TierLadder.GateFor(f, tier);
+		String ex = g .. "EX";
+		class<Actor> xc = ex;
+		if (!xc)
+		{
+			int n = g.Length();
+			while (n > 0 && g.ByteAt(n - 1) >= 48 && g.ByteAt(n - 1) <= 57) n--;
+			ex = g.Left(n) .. "EX";
+			xc = ex;
+		}
+		if (!xc) return "";
+		int gate = RS_ScoreReadout.Gate('rs_ch_exboss');
+		bool yes = gate == 3 || (gate == 2 && random[rsqmnex](0, 255) >= 128) || (gate == 1 && random[rsqmnex](0, 255) >= 232);
+		return yes ? ex : "";
 	}
 }

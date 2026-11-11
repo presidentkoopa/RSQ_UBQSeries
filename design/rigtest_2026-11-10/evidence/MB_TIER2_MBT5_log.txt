@@ -1,0 +1,43 @@
+# MB_TIER2, MBT5 run 2 (2026-11-11 ~15:03, launch dir scratch/rig1110/MBT5, script MB_TIER2_MBT5_script.txt, probe MB_TIER2_probe).
+# Build: Miniboss with the strength-order bonus; Monsters with "set.class.ex" and FamOfType, BEFORE the EX tier readout
+# fix (TierOfName). rc=0, errors=4 (BD_VoxelPack's voxeldef lines only).
+# NOTE: the run's own run.log was overwritten by a third run (with TierOfName) that was stopped by the owner's
+# "no rig test" order after case A (MB_TIER2_MBT5_interrupted_log.txt). These lines are the run's log lines as
+# grep printed them in the session (filter: case echoes, MBT HANDS, colour bonus, Miniboss From, scan at ~t385,
+# arrivals of the miniboss and thrall 1); nothing edited.
+MB_TIER2_A_ABYSS_STOP
+MBT HANDS t122 tag 1 hand0=BrutalPistol gb level 30; hand1=RSQ_Off_BrutalPistol gb level 30;  player level 0
+RSQMB colour bonus t124 (strength steps): start miniboss Green(2), thralls Common(1) Common(1) Common(1) | Gun Bonsai VR player level 0 -> miniboss +0 | weapon levels main 30 + off 30 = 60 -> thralls +15 (x0.25, half up) | final miniboss Black(12) (RS_BlackImp1), thralls Abyss(11) Abyss(11) Abyss(11) (thralls stop at Abyss(11), top White(13))
+RSQMB Miniboss From 1 / Thralls From 1: RS_BlackImp1
+RSQMB arrival: thrall 1 RS_AbyssZombie2 lands (colour 46146E, tier 9), beam v1, revealed in 7 tics
+RSQMB arrival: miniboss 0 RS_BlackImp1 lands (colour 505058, tier 10), beam v3, revealed in 19 tics
+MBT SCAN t387 tag 1: MINIBOSS RS_BlackImp1(ladder 10 Black, step 12) | 3 thralls: RS_AbyssZombie2(ladder 9 Abyss, step 11) RS_AbyssZombie2(ladder 9 Abyss, step 11) RS_AbyssZombie2(ladder 9 Abyss, step 11)
+MB_TIER2_B_BLACK
+MBT HANDS t121 tag 1 hand0=BrutalPistol gb level 0; hand1=RSQ_Off_BrutalPistol gb level 0;  player level 10
+RSQMB colour bonus t126 (strength steps): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 10 -> miniboss +10 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss Black(12) (RS_BlackImp1), thralls Common(1) Common(1) Common(1) Common(1) (thralls stop at Abyss(11), top White(13))
+RSQMB Miniboss From 1 / Thralls From 1: RS_BlackImp1
+RSQMB arrival: thrall 1 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+RSQMB arrival: miniboss 0 RS_BlackImp1 lands (colour 505058, tier 10), beam v4, revealed in 31 tics
+MBT SCAN t384 tag 1: MINIBOSS RS_BlackImp1(ladder 10 Black, step 12) | 4 thralls: RS_CommonZombie(ladder 1 Common, step 1) RS_CommonZombie(ladder 1 Common, step 1) RS_CommonZombie(ladder 1 Common, step 1) RS_CommonZombie(ladder 1 Common, step 1)
+MB_TIER2_C_BLACK_EXGATE3
+MBT HANDS t121 tag 1 hand0=BrutalPistol gb level 0; hand1=RSQ_Off_BrutalPistol gb level 0;  player level 10
+RSQMB colour bonus t125 (strength steps): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 10 -> miniboss +10 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss Black(12) EX (RS_BlackImpEX), thralls Common(1) Common(1) Common(1) Common(1) (thralls stop at Abyss(11), top White(13))
+RSQMB Miniboss From 1 / Thralls From 1: RS_BlackImpEX
+RSQMB arrival: thrall 1 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+RSQMB arrival: miniboss 0 RS_BlackImpEX lands (colour FF3CC8, tier -1), beam v4, revealed in 31 tics
+MBT SCAN t384 tag 1: MINIBOSS RS_BlackImpEX(ladder 10 Black, step 12, EX) | 2 thralls: RS_CommonZombie(ladder 1 Common, step 1) RS_CommonZombie(ladder 1 Common, step 1)
+MB_TIER2_D_WHITE
+MBT HANDS t122 tag 1 hand0=BrutalPistol gb level 0; hand1=RSQ_Off_BrutalPistol gb level 0;  player level 20
+RSQMB colour bonus t124 (strength steps): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 20 -> miniboss +20 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss White(13) (RS_WhiteImp2), thralls Common(1) Common(1) Common(1) Common(1) (thralls stop at Abyss(11), top White(13))
+RSQMB Miniboss From 1 / Thralls From 1: RS_WhiteImp2
+RSQMB arrival: thrall 1 RS_CommonZombie lands (colour C8C8C8, tier 1), beam v2, revealed in 12 tics
+RSQMB arrival: miniboss 0 RS_WhiteImp2 lands (colour FFFFFF, tier 11), beam v4, revealed in 31 tics
+MBT SCAN t386 tag 1: MINIBOSS RS_WhiteImp2(ladder 11 White, step 13) | 4 thralls: RS_CommonZombie(ladder 1 Common, step 1) RS_CommonZombie(ladder 1 Common, step 1) RS_CommonZombie(ladder 1 Common, step 1) RS_CommonZombie(ladder 1 Common, step 1)
+MB_TIER2_E_HALFUP
+MBT HANDS t121 tag 1 hand0=BrutalPistol gb level 4; hand1=RSQ_Off_BrutalPistol gb level 2;  player level 3
+RSQMB colour bonus t125 (strength steps): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 3 -> miniboss +3 | weapon levels main 4 + off 2 = 6 -> thralls +2 (x0.25, half up) | final miniboss Cyan(5) (RS_CyanZombie2), thralls Blue(3) Blue(3) Blue(3) Blue(3) (thralls stop at Abyss(11), top White(13))
+RSQMB Miniboss From 1 / Thralls From 1: RS_CyanZombie2
+RSQMB arrival: thrall 1 RS_BlueZombie lands (colour 3C78FF, tier 3), beam v1, revealed in 7 tics
+RSQMB arrival: miniboss 0 RS_CyanZombie2 lands (colour 3CF0F0, tier 12), beam v3, revealed in 19 tics
+MBT SCAN t385 tag 1: MINIBOSS RS_CyanZombie2(ladder 12 Cyan, step 5) | 4 thralls: RS_BlueZombie(ladder 3 Blue, step 3) RS_BlueZombie(ladder 3 Blue, step 3) RS_BlueZombie(ladder 3 Blue, step 3) RS_BlueZombie(ladder 3 Blue, step 3)
+MBT_END

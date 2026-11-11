@@ -1,0 +1,15 @@
+version "4.10"
+class MBTX_Probe : EventHandler
+{
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (!(e.Name ~== "mbtx")) return;
+		let it = ServiceIterator.Find("RSQMN_RosterService"); Service s = it.Next();
+		let c = CVar.FindCVar('rs_ch_exboss');
+		Console.Printf("MBTX gate %d svc %d", c ? c.GetInt() : -9, s != null);
+		if (!s) return;
+		static const String CL[] = { "RS_BlackImp1", "RS_BlackImp", "DoomImp", "RS_BlackZombie1", "RS_WhiteSG2", "RS_BlackSP2", "RS_BlackSG3" };
+		for (int i = 0; i < CL.Size(); i++)
+			Console.Printf("MBTX %s 10 -> '%s'  11 -> '%s'  set.class 10 '%s'", CL[i], s.GetString("set.class.ex", CL[i], 3, 10), s.GetString("set.class.ex", CL[i], 3, 11), s.GetString("set.class", CL[i], 3, 10));
+	}
+}
