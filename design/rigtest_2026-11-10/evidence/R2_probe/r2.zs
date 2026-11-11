@@ -243,7 +243,7 @@ class R2_Probe : EventHandler
 			s = s .. String.Format("| inspect main %d off %d", RSQLS_Sight.WatchCheck(p, 0), RSQLS_Sight.WatchCheck(p, 1));
 			if (s != lsWas) { Console.Printf("R2 LASER t%d %s", level.maptime, s); lsWas = s; }
 		}
-		if (handsLog && level.maptime % 35 == 0) Hands();
+		if (handsLog && (level.maptime % 35 == 0 || level.maptime < 8)) Hands();
 	}
 
 	void Hands()
@@ -253,7 +253,8 @@ class R2_Probe : EventHandler
 		let h = p.FindInventory("RSQ_Hands");
 		String ps = "";
 		for (let s = pl.psprites; s; s = s.Next)
-			ps = ps .. String.Format("%d:%s:%s ", s.ID, s.Caller ? String.Format("%s", s.Caller.GetClassName()) : "-", s.CurState ? (s.bInvisible ? "inv" : "on") : "-");
+			ps = ps .. String.Format("%d:%s:%s ", s.ID, s.Caller ? String.Format("%s", s.Caller.GetClassName()) : "-", s.CurState ? "on" : "-");
+		Console.Printf("R2 GLOVEINV t%d RSQ_Glove %d RSQ_GloveOff %d rsqml_gloves %d", level.maptime, p.CountInv("RSQ_Glove"), p.CountInv("RSQ_GloveOff"), CVar.FindCVar("rsqml_gloves") ? CVar.FindCVar("rsqml_gloves").GetInt() : -1);
 		Console.Printf("R2 HANDS t%d ready %s off %s pending %s | RSQ_Hands item %d, Shown %d (rsq_hands %d, InVR %d), HandTable.Index(ready) %d | layers %s",
 			level.maptime, pl.ReadyWeapon ? String.Format("%s", pl.ReadyWeapon.GetClassName()) : "none",
 			pl.OffhandWeapon ? String.Format("%s", pl.OffhandWeapon.GetClassName()) : "none",

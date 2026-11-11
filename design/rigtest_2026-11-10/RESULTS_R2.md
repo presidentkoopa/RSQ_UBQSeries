@@ -22,7 +22,29 @@ every RSQ pk3 in pk3/ > r10 > r2. RES 1080, every rendered frame dumped. Log: `e
 | Check | Result | Evidence |
 |---|---|---|
 | (a) Tactical Rig's holsters come down with the hands while DOWN | **SHOWN.** Standing: main hand up 36.8, hips 24.4, shoulders 41.2, RoomFloor 0. DOWN (view 17.6 of 44): RoomFloor -26.4, hips -2.0, shoulders 14.8; main hand 14.3 at t249, 10.4 at t285 (the pose catches up a frame later): hand and holsters both 26.4 lower, the same gaps as standing | `R2 HOLSTER` tags 1, 3, 5 |
-| (b) Shots "from far to my right" while DOWN | see below (in progress) | |
+| (b) Shots "from far to my right" while DOWN | **Not settled.** Standing shots did not fire at RES 1080 (+attack and -attack fell in one rendered frame), so there is no standing comparison. DOWN, rifle, True Bullets on (t249): hand (f 11.9, l -8.5, u 14.3), muzzle Where (f 34.8, l -6.4, u 7.0), RSQ_PlayerRound spawn (f 34.9, l -6.4, u 3.1), BD22's **PlayerMuzzle1 at (f 30, l -5, u 30)**: about 23 units ABOVE the hand while DOWN (a pawn-based offset, not the hand); DecorativeTracer from (f 51, l -5.2, u -3.7) heading about 23 deg DOWN and slightly LEFT. Nothing starts far to the right in this log. Suspects for the owner's view: the muzzle flash sprite left at standing height and the tracer's steep start. Needs the standing run at low RES | R2_R2A_run.log `R2_DS_DOWN` |
+
+## 3. Hands on the guns (LegenDoom / Start With Melee Hands), run first on the coordinator's priority change
+
+Order used: doom2 > **LegenDoom_3.0** > brutal22test6 > BD_VoxelPack > BD22 VR 2.0.4h > LOB > Champions > GunBonsai >
+RSQ pk3s (the owner's launcher order, LegenDoom at 0.99). Not on the rig: Brutal_Difficulties was not loaded; No More
+Hitscans, Universal Entropy, Spawn Adjuster, Shotgun Spawner and RegenShield are not on the rig; the XMVE packs and the
+environmental packs were not loaded. Probe `R2 HANDS` (ready / off / pending weapons, RSQ_Hands.Shown, HandTable.Index,
+every psprite layer) and `R2 GLOVEINV`.
+
+| Case | Result | Evidence |
+|---|---|---|
+| (a) `rsqml_gloves 1` from level start, NO LegenDoom | **Reproduced.** t1 Rifle main, RSQ_Hands off; t3 RSQ_Glove given and in the MAIN hand; t5 **RSQ_GloveOff in the OFF hand** (RSQ_Hands gone from the off hand); still so at t70 and after a `map` | R2_R2G3_run.log |
+| (a) `rsqml_gloves 1` from level start, WITH LegenDoom after doom2 | Gloves given (inventory 1/1 by t35) but NOT equipped: Rifle main, rsq_hands off throughout; Shot_Gun, then Rifle: off hand rsq_hands, RSQ_GunSide hand layers 2100/2101/2112 on. Frame: hands on the shotgun's grip and fore-end, and on the rifle | R2_R2G4_run.log; R2_G4_LD_gloves1_shotgun_hands_f00038.jpg, R2_G4_LD_hands_shotgun_rifle_sheet.jpg (looked at) |
+| (b) `rsqml_gloves 0`, with LegenDoom | Rifle / Shot_Gun main, rsq_hands off, hand layers on | R2_R2G4_run.log (R2G4_GLOVES0), R2_R2G_run.log |
+| Pump and rifle grenade load | **Not shown** (needs a scripted off-hand pump / load motion; not run in this batch). Only the precondition is shown: RSQ_Hands is the off-hand weapon with LegenDoom loaded | |
+
+So on the rig LegenDoom does not take the hands; Start With Melee Hands does, at level start, without LegenDoom (with
+LegenDoom loaded the gloves stayed in the inventory and were not raised; why is not traced). Cause in code (coordinator,
+confirmed by R2G3): Melee/zscript/rsqml/slappers.zs WorldTick `else if (gloves && !had) StartEquip(pn)` -> EquipTick puts
+RSQ_Glove in the main hand and RSQ_GloveOff in the off hand; BD22 VR's RSQ_Hands.Upkeep only refills an EMPTY off hand,
+so it never comes back while the off glove sits there. **Not fixed** (coordinator: the owner decides Melee's start
+behaviour first).
 
 ## 4. Watch-check rods: laser layers SHOWN going 1 -> 0 -> 1
 

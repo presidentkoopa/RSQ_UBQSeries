@@ -1,0 +1,1 @@
+wait 1; netevent r2_hands 1; set rsqml_gloves 1; wait 60; vr_control_scheme 0; bd_tips 0; crosshair 0; screenblocks 10; qz_hmd "0 1.6 0 0 0 0"; qz_rhand "0.12 1.4 -0.35 0 0 0"; qz_lhand "-0.15 1.35 -0.45 0 0 0"; echo R2G3_NEWGAME; map MAP01; wait 2; netevent r2_hands 1; wait 80; echo R2G3_END; wait 5; quit
