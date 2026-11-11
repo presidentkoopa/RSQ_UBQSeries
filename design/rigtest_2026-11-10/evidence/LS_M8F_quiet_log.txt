@@ -1,0 +1,13 @@
+LSDBG t0 state 1 sw 0 was -1 on 1
+LSM8F_SET_ON
+LSDBG t35 state 1 sw 0 was 1 on 1
+LSDBG t70 state 1 sw 0 was 1 on 1
+LSM8F_OURS_ON_AFTER_70
+LSDBG t105 state 1 sw 0 was 1 on 1
+LSM8F_OURS_OFF
+LSDBG t140 state 1 sw 1 was -1 on 0
+LSDBG t175 state 1 sw 1 was -1 on 0
+LSM8F_OURS_BACK_ON
+LSDBG t210 state 1 sw 0 was 1 on 1
+LSDBG t245 state 1 sw 0 was 1 on 1
+LSM8F_END

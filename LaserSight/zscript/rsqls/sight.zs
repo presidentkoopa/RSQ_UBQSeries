@@ -152,12 +152,15 @@ class RSQLS_Sight : EventHandler
 		return level.maptime - lastFireTic > KEEP_AFTER_FIRE;
 	}
 
-	// WHICH LASER (owner 11-10: "menu switch: ours / theirs"). QuestZDoom's launcher can load M8F's Laser Sight mod
-	// (mmaulwurff/laser-sight: its handler m8f_ls_EventHandler, its switch m8f_wm_ShowLaserSight). With it loaded, Which
-	// Laser picks one: RSQ Laser Sight (0) turns M8F's off, QuestZDoom's (1) turns it on and hides ours. Without it the
-	// row does nothing. Both found by name: nothing links to M8F's mod.
+	// QUESTZDOOM'S OWN LASER (owner 11-10 23:0x: "Qzd autoloads laser sight. We want ours to always win but not
+	// conflict."). QuestZDoom's launcher autoloads M8F's Laser Sight (mmaulwurff/laser-sight: handler m8f_ls_EventHandler,
+	// switch m8f_wm_ShowLaserSight). While RSQ Laser Sight is on, M8F's switch is held at 0: its WorldTick returns before
+	// tracing (ls_event_handler.zs:43), so no second dot and no 0-damage LineAttack every tic for BD22 VR to turn into
+	// rounds (rig P4 L2: a flash and tracer every frame). The player's own M8F setting is kept in rsqls_m8f_was and put
+	// back when RSQ Laser Sight is turned off. Found by name: nothing links to M8F's mod; without it, nothing happens.
+	// (Replaces the 11-10 Which Laser row.)
 	transient int m8fState;       // 0 not looked, 1 loaded, -1 not
-	bool M8FPicked(PlayerInfo p)
+	void M8FQuiet(PlayerInfo p, bool oursOn)
 	{
 		if (m8fState == 0)
 		{
@@ -165,11 +168,19 @@ class RSQLS_Sight : EventHandler
 			class<Object> hc = hn;
 			m8fState = hc ? 1 : -1;
 		}
-		if (m8fState < 0) return false;
-		bool theirs = RSQLS_Hand.Opt("rsqls_which", p, 0) == 1;
+		if (m8fState < 0) return;
 		let sw = CVar.GetCVar("m8f_wm_ShowLaserSight", p);
-		if (sw && sw.GetInt() != (theirs ? 1 : 0)) sw.SetInt(theirs ? 1 : 0);
-		return theirs;
+		let was = CVar.GetCVar("rsqls_m8f_was", p);
+		if (!sw || !was) return;
+		if (oursOn)
+		{
+			if (sw.GetInt() != 0) { was.SetInt(sw.GetInt()); sw.SetInt(0); }
+		}
+		else if (was.GetInt() >= 0)
+		{
+			sw.SetInt(was.GetInt());
+			was.SetInt(-1);
+		}
 	}
 
 	static bool, Vector3, Vector3 BeamLine(int h)
@@ -476,8 +487,9 @@ class RSQLS_Sight : EventHandler
 		bool ir = RSQLS_Hand.Flag("rsqls_ir", p, false);
 		bool irVisible = ir && pmo.FindInventory("PowerLightAmp", true) != null;
 
-		bool theirs = M8FPicked(p);
-		if (pmo.Health <= 0 || !RSQLS_Hand.Flag("rsqls_on", p, true) || theirs
+		bool oursOn = RSQLS_Hand.Flag("rsqls_on", p, true);
+		M8FQuiet(p, oursOn);
+		if (pmo.Health <= 0 || !oursOn
 			|| (!wantDot && !wantBeam) || (ir && !irVisible))
 		{
 			HideHand(0); HideHand(1);

@@ -246,9 +246,11 @@ The laser can be any colour from a picker. In order, each one over the last:
 - **BD22 VR Reloaded 2.0:** Follow Brutal Doom Shots uses its own shot line; its off-hand copies of the pistol,
   revolver, SMG, MP40, rifle, plasma gun, shotguns and railgun get their own beams.
 - **Brutal Doom (brutal22test6) and BD_VoxelPack:** their guns, as BD22 VR holds them, are the measured guns.
-- **QuestZDoom's own laser sight** (M8F's Laser Sight, the launcher's add-on): with it loaded, **Which Laser** picks one.
-  RSQ Laser Sight switches M8F's off; QuestZDoom's (M8F) switches it on and this pack's laser hides. Without M8F's mod
-  the row does nothing.
+- **QuestZDoom's own laser sight** (M8F's Laser Sight, which QuestZDoom autoloads): RSQ Laser Sight always wins, with no
+  conflict. While this pack's laser is on, M8F's is held off (its own setting is remembered); turn this pack's laser off and
+  M8F's comes back as you had it. Without M8F's mod nothing happens. (This replaced the Which Laser row, 11-10: with BD22
+  VR loaded, M8F's per-tic trace was turned into rounds, a flash and tracer every frame.) Rig only, not headset-confirmed:
+  `design/rigtest_2026-11-10/evidence/LS_M8F_quiet_log.txt`.
 - **Any weapon pack** can tell this pack each gun's laser colour or muzzle point, and any mod can ask what the laser
   is doing (see Under the hood).
 
@@ -260,7 +262,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 
 | Section | Rows |
 |---|---|
-| (top) | Laser Sight (On) · Which Laser (RSQ Laser Sight; QuestZDoom's (M8F)) · Main Hand (On) · Off Hand (On) |
+| (top) | Laser Sight (On) · Main Hand (On) · Off Hand (On) |
 | Beam and Dot | Show Beam (On) · Laser (Quest; PC VR) · Beam Sparkle (Quest) (Off) · Show Dot (On) · Dot Only on Enemies (Off) · Dot Size (1.00) · Dot Glow (Bloom and Light; Off, Bloom, Light) · Dot Reacts to Surface (On) · Infrared Only (Off) |
 | When It Shows | Show on Melee (No) · Only When Ready (No) · Off When Aimed Down (55 degrees; 0 = never) · Follow Brutal Doom Shots (On) |
 | Targets | Target Lock (On) · Colour on Target (Off) · Target Colour (yellow) · Headshot Reaction (Off) · Headshot Colour (white) · Headshot Pulse (On) |
@@ -282,11 +284,11 @@ The page ends with **Reset All**: every setting on the page and on Test and Debu
 | | |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-10, L1: `design/rigtest_2026-11-10/evidence/L9_laser_reload_switch_quicknade.jpg`, t220 to t740) | The pistol's beam on at idle and through 7 shots; during a BD22 VR hand reload (magazine out, gun empty) the beam stayed on; on the shotgun after the switch, gone while the gun lowered for a quick grenade and back with it |
-| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | The page as loaded: **Which Laser** (RSQ Laser Sight), **Main Hand** and **Off Hand** (On), and **Beam Sparkle (Quest)** (Off) (`design/rigtest_2026-11-10/evidence/menus_new_rows.jpg`). Only the rows were seen, not what they do. Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). No laser check was run |
+| **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | The page as loaded: **Main Hand** and **Off Hand** (On), and **Beam Sparkle (Quest)** (Off) (`design/rigtest_2026-11-10/evidence/menus_new_rows.jpg`). Only the rows were seen, not what they do. Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). No laser check was run |
 | **rig only, not headset-confirmed** (2026-11-09, the build of that day) | The beam staying on between shots: the pistol's fire frames and the pump shotgun's pump frames, none of them measured, kept the beam and the PC VR glow up every tic (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`, sections BR_B_PISTOL and BR_B_SHOTGUN; frames: `design/rigtest_2026-11-09/frames/B_pistol_PISTB_rawrow-1_beam_on_f466.jpg`, `B_shotgun_pump_beam_on_f519.jpg`). The rifle's beam drawn in the same run (frames `I_ddz_mode2_default_t40_f028.jpg`, `I_ddz_mode0_t232_relit_f076.jpg`). The pack loaded with no script error or warning of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series, and its page sits under Radiant Silvergun Options (same log). The 11-10 changes came after it |
 | **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | Everything else on this page: the dot and where it sits, its glow and light, surfaces, Dot Only on Enemies, Follow Brutal Doom Shots, Target Lock, Colour on Target, Headshot Reaction and its Gun Bonsai VR levels, the grenade arc and the bent beam, the spread ring, the range readout, every colour option, Infrared Only, the Main Hand / Off Hand rows, the keys gone (commit ef179dbc), Which Laser with M8F's mod, Beam Sparkle's sparks (L6 looked for them at 480 and 1080 px and saw none; the sparks are about 3 cm and nothing logs one: `L9c_sparkle_1080_none_seen.png`), the beam hiding during a reload the gun plays as an animation, the greyed rows, Glow Intensity widening the light, the Map Units readout, Off When Aimed Down, Only When Ready, the Quest look's beam, Reset All |
-| **not yet run** | L2 to L5 wait in the batched rig test (`design/rigtest_2026-11-10/RESULTS.md`, "Not yet run"): Which Laser with M8F's Laser Sight; the greyed rows; Glow Intensity 1 against 3; the Map Units readout on a steep shot |
+| **code only, not shown** | Everything else on this page: the dot and where it sits, its glow and light, surfaces, Dot Only on Enemies, Follow Brutal Doom Shots, Target Lock, Colour on Target, Headshot Reaction and its Gun Bonsai VR levels, the grenade arc and the bent beam, the spread ring, the range readout, every colour option, Infrared Only, the Main Hand / Off Hand rows, the keys gone (commit ef179dbc), Beam Sparkle's sparks (L6 looked for them at 480 and 1080 px and saw none; the sparks are about 3 cm and nothing logs one: `L9c_sparkle_1080_none_seen.png`), the beam hiding during a reload the gun plays as an animation, the greyed rows, Glow Intensity widening the light, the Map Units readout, Off When Aimed Down, Only When Ready, the Quest look's beam, Reset All |
+| **not yet run** | L2 to L5 wait in the batched rig test (`design/rigtest_2026-11-10/RESULTS.md`, "Not yet run"): the greyed rows; Glow Intensity 1 against 3; the Map Units readout on a steep shot |
 
 Earlier commit messages (2026-11-06) say Dot Only on Enemies and the bent arc beam (with a test lobber, not BD22's
 launcher) were shown on the rig; those logs and frames are not in the repo, so they are not counted here.
@@ -314,12 +316,12 @@ launcher) were shown on the rig; those logs and frames are not in the repo, so t
   for the session, not saved.
 - **Colour.** Translations are built at run time from the palette's own brightness (read from PLAYPAL), cached, and
   stepped (36 hues, 8 pulse steps) so a cycling laser reuses them.
-- **Single player.** Drawn for the console player only; every option except Which Laser, Off When Aimed Down, Dot
+- **Single player.** Drawn for the console player only; every option except Off When Aimed Down, Dot
   Reacts to Surface, Follow Brutal Doom Shots and Debug Log is a server setting.
 - **Size.** The pk3 is about 25.7 MB, nearly all of it the beam and halo voxels; the halo voxels load whichever Laser
   look is picked (Quest memory use not measured).
 - **No hard links.** Every other mod is found by name at run time (Gun Bonsai VR, Tactical Rig, Accessibility, BD22
-  VR's muzzle handler, M8F's `m8f_ls_EventHandler` and its `m8f_wm_ShowLaserSight` switch for Which Laser). The pack loads and plays alone.
+  VR's muzzle handler, M8F's `m8f_ls_EventHandler` and its `m8f_wm_ShowLaserSight` switch, held off while this pack's laser is on). The pack loads and plays alone.
 - **For other mods: `RSQLS_SightService`,** found by name. `GetInt("laser.active", "", hand)` and `"laser.beam"`: did
   that hand draw a laser (or a beam) last tic; `GetDouble("laser.line", "x"|"y"|"z"|"dx"|"dy"|"dz", hand)`: the line
   that hand's beam was drawn on; `GetInt("head.on", "", 0, 0, monster)`: your dot sat on its head this tic or the last
@@ -337,7 +339,7 @@ The full list is in **CREDITS.txt**.
 - **presidentkoopa:** the project, and the options carried over from his UZDXREMA laser (pointer and beam apart,
   glow, colour pickers per hand, per slot, cycling, target and headshot reactions, infrared).
 - **Laser Sight** by m8f (Alexander Kromm, github.com/mmaulwurff/laser-sight, GPLv3), the laser sight bundled with
-  QuestZDoom: the inspiration. None of its code or sprites is used; with both loaded, Which Laser picks one.
+  QuestZDoom: the inspiration. None of its code or sprites is used; with both loaded, this pack's laser wins and M8F's is held off.
 - **Brutal Doom** and **BD22 VR Reloaded:** the gun models the muzzles were measured from, and BD22 VR's shot line.
   None of their files ship in this pack.
 - **Generated for this pack:** the beam and halo voxels, the muzzle table, the sprites and meshes (the tools above).
