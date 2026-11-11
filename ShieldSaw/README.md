@@ -146,7 +146,8 @@ Brutal Doom VR uses. Its own Flick setting is honoured.
 ## The block
 
 **What crosses the disc is stopped.** Every hit you take is tested against the disc's face: fireballs, claws and bites,
-bullets, and explosions whose line to you crosses the plate. A blocked hit does no damage, sparks fly off the face on
+bullets, and explosions whose line to you crosses the plate (the plate is a 4 cm thick disc: a line through any part
+of it counts, slanted or straight). A blocked hit does no damage, sparks fly off the face on
 the attacker's side, and you hear it where it happened (**Positional Sound**) and feel it in your off hand.
 
 - **Turn Shots Early** (on): a shot crossing the plate is turned before it ever reaches you, even one that would have
@@ -382,6 +383,7 @@ player's own.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-10 night, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **A slanted shot through the plate is a block:** a zombie 1.7 m ahead firing down through the held plate, `guard kind 1 BLOCKED`, health 100 -> 100 (the same line read `missed` before the fix, `P2D_log.txt`); the plate held aside, the same shot `missed`, 100 -> 98 (`design/rigtest_2026-11-10/evidence/FIX_B_log.txt`, F6). A far shot from the step reached neither the plate nor the player, so a far block is still not shown |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **The trigger-hold lock:** holding the off trigger painted a lock ("1 locked", `evidence/L8_log.txt`). **One throw:** the posed swing read the same as the Saber's, 2.06 m/s and 3.09 m/s (`L8_log.txt`). Both releases had a target locked, and a locked release always throws, so the 2.5 m/s threshold itself is not shown. The ShieldSaw Throw Hand Speed (m/s) row at 2.50 (`evidence/menus_new_rows.jpg`) |
 | **rig only, not headset-confirmed** (2026-11-09, full load order) | The pack loads on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series with no script error of its own, and "RSQ ShieldSaw" is on Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`, load order lines 3-38, menu line 1201). The Draw key puts the shield in the off hand beside BD22 VR's rifle, and it stays there while the main hand changes to the rocket launcher and RSQ Tactical Rig's cigarette (`design/rigtest_2026-11-09/batch2/launch3_harness_reruns.log`, lines 1223, 4689, 4703). That run was not a ShieldSaw test |
 | **rig only, not headset-confirmed** (2026-11-03, an earlier build, RSQ ShieldSaw alone) | The body the stowed shield hangs on: sixteen 45° snaps followed exactly, a smooth 360 each way, a real 60° or 90° room turn left alone, then put right by the hands-to-chest gesture and by the Recenter Torso key; faced to the head again after a save and load and a map change; no script errors (`TacticalRig/tools/rigtest/turnprobe/evidence/recenter_after_shieldsaw_alone.txt`, `after_shieldsaw_alone.txt`) |

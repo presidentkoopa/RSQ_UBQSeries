@@ -157,6 +157,10 @@ class SSQ_Guard : Inventory
 	// thickness T)? P is where. A thick disc, not a plane: the plane test misses a shot that
 	// skims the face edge-on, and it needs the face's sign to be right; the thick disc blocks
 	// anything whose path comes within the rim and within T of the face.
+	// A REAL SEGMENT-THROUGH-SLAB TEST (rig 11-10, RESULTS_P2 H2; fixed 11-10). Before, it took the segment's point closest
+	// to the plate's CENTRE and asked whether that point was in the slab: a slanted shot straight through the face could
+	// have that point 1.8 units off the face (limit 1.36) and read as a miss. Now: the part of the segment inside the slab
+	// (|(p - C) . n| <= T), and on that part the point nearest the plate's axis; a block when that point is within R.
 	Vector3 hitP;		// where the last Crosses() hit the face (no Vector3 returns: the VM drops them)
 
 	bool Crosses(Vector3 A, Vector3 B, Vector3 C, Vector3 n, double R)
@@ -165,21 +169,33 @@ class SSQ_Guard : Inventory
 		Vector3 d = B - A;
 		double dd = d dot d;
 		if (dd <= 0 || dd != dd) return false;
-		// the closest point on the segment to the centre
-		double frac = ((C - A) dot d) / dd;
-		if (frac < 0) frac = 0; else if (frac > 1) frac = 1;
-		Vector3 q = A + d * frac;
-		Vector3 rel = q - C;
-		double along = rel dot n;
-		if (along != along) return false;
-		Vector3 inplane = rel - n * along;
+		double da = (A - C) dot n;        // how far A is off the face
+		double dn = d dot n;              // and how fast the segment closes on it
+		if (da != da || dn != dn) return false;
+		// the stretch of the segment, t in [t0, t1], that lies inside the slab
+		double t0 = 0, t1 = 1;
+		if (abs(dn) < 1e-9)
+		{
+			if (abs(da) > thick) return false;           // parallel to the face, outside the slab
+		}
+		else
+		{
+			double ta = (-thick - da) / dn, tb = (thick - da) / dn;
+			t0 = max(0.0, min(ta, tb));
+			t1 = min(1.0, max(ta, tb));
+			if (t0 > t1) return false;                   // never inside the slab
+		}
+		// on that stretch, the point nearest the plate's axis: |u + w t| is least at t = -(u . w) / (w . w)
+		Vector3 u = (A - C) - n * da;
+		Vector3 w = d - n * dn;
+		double ww = w dot w;
+		double t = t0;
+		if (ww > 0) t = clamp(-(u dot w) / ww, t0, t1);
+		Vector3 inplane = u + w * t;
 		if (inplane.Length() > R) return false;
-		if (along > thick || along < -thick) return false;
-		// THE REPORTED POINT GOES ON THE FACE. Where the segment actually pierces the
-		// face plane if it does -- the slab is thick, so the closest point can be 10 cm
-		// off the face and the spark lands in mid air. Otherwise the closest point,
-		// flattened onto the plane.
-		double da = (A - C) dot n, db = (B - C) dot n;
+		// THE REPORTED POINT GOES ON THE FACE: where the segment pierces the face plane if it does
+		// there within the rim; otherwise that nearest point, flattened onto the plane.
+		double db = (B - C) dot n;
 		if ((da > 0) != (db > 0))
 		{
 			double den = da - db;
