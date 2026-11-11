@@ -945,8 +945,26 @@ extend class RSQMB_Handler
 			Vector2 d = bk.pos.xy - a.pos.xy;
 			if (d.Length() < 1) d = (1, 0);
 			Vector3 old = bk.pos;
-			bk.SetOrigin((a.pos.xy + d.Unit() * (a.radius + bk.radius + 8), bk.pos.z), false);
-			if (!bk.TestMobjLocation()) { bk.SetOrigin(old, false); break; }
+			// (rig 11-10) clear of the miniboss's BOX: actors collide as axis-aligned squares, so along a diagonal the
+			// radii's sum + 8 still overlapped it, and the one spot straight out was often another thrall's: most first
+			// landings on rig02 failed and re-landed. Now the eight directions round it, nearest the thrall's own first.
+			double ang0 = atan2(d.y, d.x);
+			bool moved = false;
+			for (int k = 0; k < 8 && !moved; k++)
+			{
+				double ang = ang0 + ((k + 1) / 2) * 45.0 * ((k % 2) ? 1 : -1);
+				Vector2 u = (cos(ang), sin(ang));
+				double push = (a.radius + bk.radius + 8) / max(abs(u.x), abs(u.y));
+				bk.SetOrigin((a.pos.xy + u * push, bk.pos.z), false);
+				moved = bk.TestMobjLocation();
+			}
+			if (!moved)
+			{
+				if (debug) Console.Printf("RSQMB arrival: thrall %s could not be moved aside (%s)", bk.GetClassName(),
+					bk.BlockingMobj ? String.Format("%s", bk.BlockingMobj.GetClassName()) : (bk.BlockingLine ? "a wall" : "the floor or ceiling"));
+				bk.SetOrigin(old, false);
+				break;
+			}
 			if (debug) Console.Printf("RSQMB arrival: thrall %s moved aside for the miniboss", bk.GetClassName());
 		}
 		if (a && !arrForce && !a.TestMobjLocation())
