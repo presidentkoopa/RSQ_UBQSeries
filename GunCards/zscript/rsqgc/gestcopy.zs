@@ -236,21 +236,8 @@ class RSQGC_GCopy : StaticEventHandler
 	}
 	static clearscope bool InspectOff() { return Opt("rsqg_inspect_off", 0) != 0; }
 
-	// THE FOREARM ACROSS THE BODY (owner 11-11 16:28: a two-handed rifle tilted 45 degrees counted as a watch check). The
-	// pose never asked which way the hand points, so any gun held in front of the face and canted past the twist (35)
-	// passed. A watch check points the forearm across the chest; aiming points it forward. rsqg_inspect_across: the
-	// least angle, in degrees, between where the hand points and where you face (0 = not checked, the old pose).
-	// The engine's AttackAngle / OffhandAngle are the world yaw minus 90 (BD22 VR scope.zs; the engine's weaponmace.zs).
-	static clearscope double HandYawOff(PlayerPawn pmo, int h)
-	{
-		double yaw = (RSQGC_GPose.Src(pmo, h) == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90.0;
-		return abs(Actor.Normalize180(yaw - pmo.Angle));
-	}
-
 	static bool InspectPose(PlayerPawn pmo, int h, double slack, double need)
 	{
-		double across = Num("rsqg_inspect_across", 45);
-		if (across > 0 && HandYawOff(pmo, h) < across - slack * 100) return false;
 		Vector3 b = RSQGC_GPose.Body(pmo, h);
 		double hs = HScale(), vs = VScale();
 		if (b.x < Num("rsqg_inspect_near", 0.15) * hs - slack || b.x > Num("rsqg_inspect_far", 0.65) * hs + slack) return false;
