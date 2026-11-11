@@ -16,7 +16,8 @@
 //      fist across and nearer the eye). Measured with tools/md3_bounds.py: the glove's ball (raw x >= 8.2) is 12.20 x 13.98
 //      across; the fists (frame 1, the fingers' half) are Ermac 10.56 x 12.44 and FBX 10.12 x 11.73: scale 0.86 (the mean of
 //      the four ratios). The ball's centre is put on the two fists' mean centre (-5.31 -22.30 -10.31 at the hands' fit):
-//      Offset 6.0 -22.4 -10.3
+//      Offset 6.0 -22.4 -10.3. Then BOXING-GLOVE SIZE (owner 11-10, "your best call"): a real glove is wider than the fist,
+//      so Scale 1.0 (the ball 12.2 x 14.0, ~1.17x the fists), re-centred on the same fist centre: Offset 7.8 -22.5 -10.3
 // Every block uses model slot 0 (a block whose only model was slot 1 drew nothing of its own on the rig: the glove
 // showed instead). BD22 VR's skin tone (an A_ChangeModel skin override on slot 0) is put on only while the FBX look is
 // up, and taken off when another look comes up (RSQML_HandLook.Tone).
@@ -45,8 +46,8 @@ Model RSQ_Glove
 	Path "models/rsqml"
 	Model 0 "glove.md3"
 	Skin 0 "glove.png"
-	Scale -0.86 0.86 0.86
-	Offset 6.0 -22.4 -10.3
+	Scale -1.0 1.0 1.0
+	Offset 7.8 -22.5 -10.3
 	FrameIndex RMHG A 0 0
 	FrameIndex TNT1 A 0 0
 }
@@ -76,8 +77,8 @@ Model RSQ_GloveOff
 	Path "models/rsqml"
 	Model 0 "glove.md3"
 	Skin 0 "glove.png"
-	Scale -0.86 0.86 0.86
-	Offset 6.0 -22.4 -10.3
+	Scale -1.0 1.0 1.0
+	Offset 7.8 -22.5 -10.3
 	FrameIndex RMHG A 0 0
 	FrameIndex TNT1 A 0 0
 }

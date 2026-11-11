@@ -1,0 +1,1 @@
+wait 20; screenblocks 10; god; notarget; set rsqml_gloves 1; wait 40; echo GLV_SLOTS; netevent fx_slots 1; wait 5; echo GLV_END; quit

@@ -1,0 +1,6 @@
+// RSQ Melee: no keys (design/KEYBINDS_PLAN.md). This file only puts the gloves in weapon slot 1.
+// Brutal Doom's KEYCONF rebuilds slot 1 with setslot, which drops the gloves' own Weapon.SlotNumber 1, so on the owner's
+// load order they sat in no slot and the Wheel never showed a glove card (rig 11-10, RESULTS_FIX.md item 3). addslotdefault
+// adds them beside the fists, as BD22 VR adds its RSQ_Hands (owner 11-10: "Slot 1, by Melee").
+addslotdefault 1 RSQ_Glove
+addslotdefault 1 RSQ_GloveOff

@@ -31,3 +31,8 @@ Saber, Melee, Wheel, Gun Cards and ShieldSaw after the last change: no script er
 - `addslot` works from the console on QuestZDoom 17.3 (used to show the glove cards).
 - The forearm-across watch pose (yaw +-90, roll -+60) turns the card edge-on to the eye on the rig; P2's pose (pitch 0,
   yaw 0, roll -+60, head pitched -25) is the one that shows the card face-on.
+
+| Follow-up (owner 11-10) | Result | Evidence |
+|---|---|---|
+| Gloves in slot 1, by Melee ("Slot 1, by Melee") | Melee's new KEYCONF `addslotdefault 1 RSQ_Glove / RSQ_GloveOff` (BD's setslot had dropped them): on the owner's order slot 1 now lists RSQ_Glove and RSQ_GloveOff beside the fists | FIX_3b_gloves_in_slot1_log.txt |
+| Glove size ("your best call") | Scale 1.0 (the ball 12.2 x 14.0, ~1.17x the fists, a glove's size), re-centred on the fists' centre, offset 7.8 -22.5 -10.3 (tools/md3_bounds.py): FBX fists at rest / out / guard, then the gloves at guard / out / rest | FIX_2b_boxing_glove_scale1_vs_fist.jpg |

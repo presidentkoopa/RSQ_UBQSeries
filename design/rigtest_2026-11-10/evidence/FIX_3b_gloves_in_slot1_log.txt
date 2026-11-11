@@ -1,0 +1,11 @@
+FX SLOTS t60 tag 1 slot 0: HandGrenades* PuristHandGrenades 
+FX SLOTS t60 tag 1 slot 1: DSweap BrutalAxe Chain_saw Melee_Attacks* rsq_hands* RSQ_Off_BrutalAxe RSQ_Glove RSQ_GloveOff UBQS_Saber* SSQ_ShieldSaw* RSQWP_WhipWeapon* 
+FX SLOTS t60 tag 1 slot 2: BrutalPistol DualPistols PuristPistol BrutalSMG DualSMG PuristSMG MP40 DualMP40 PuristMP40 revolver PuristRevolver BrutalRevolver 
+FX SLOTS t60 tag 1 slot 3: Shot_Gun PuristShot_Gun AssaultShotgun PuristAssaultShotgun SSG PuristSSG 
+FX SLOTS t60 tag 1 slot 4: Sniper PuristSniper Rifle* DualRifles PuristRifle Minigun PuristMinigun MG42 PuristMG42 Machinegun 
+FX SLOTS t60 tag 1 slot 5: IncendiaryLauncher PuristIncendiaryLauncher GrenadeLauncher PuristGrenadeLauncher Rocket_Launcher PuristRocket_Launcher Devastator PuristDevastator 
+FX SLOTS t60 tag 1 slot 6: Plasma_Gun DualPlasmaRifles PuristPlasma_Gun Railgun PuristRailGun 
+FX SLOTS t60 tag 1 slot 7: NukeLauncher PuristNukeLauncher BFG10k PuristBFG10k BIG_FUCKING_GUN PuristBIG_FUCKING_GUN 
+FX SLOTS t60 tag 1 slot 8: HellishMissileLauncher PuristHellishMissileLauncher Unmaker PuristUnmaker 
+FX SLOTS t60 tag 1 slot 9: FlameCannon DualFlameCannon PuristFlameCannon Flamethrower2 PuristFlamethrower2 
+FX SLOTS RMICA0 found RMICB0 found
