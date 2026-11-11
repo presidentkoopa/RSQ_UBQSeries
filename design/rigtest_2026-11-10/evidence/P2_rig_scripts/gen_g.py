@@ -1,0 +1,18 @@
+# TEST ONLY: P2G (RES 120): H1 debug, the disc tic by tic
+import sys; sys.path.insert(0, '.')
+from lib import S
+s = S()
+REST_R = (0.25, 1.30, -0.30); REST_L = (-0.25, 1.30, -0.30)
+s.add('wait 20', 'vr_control_scheme 0', 'bd_tips 0', 'crosshair 0', 'screenblocks 10', 'buddha', 'set ssq_debug 1', 'qz_hmd "0 1.6 0 0 0 0"')
+s.r(*REST_R); s.l(*REST_L); s.w(20); s.add('netevent p2_clearmon', 'give SSQ_ShieldSaw'); s.w(5); s.add('netevent rsqgb_dbg_all'); s.w(40)
+s.add('use UBQS_Saber'); s.w(60)
+# ---- H1 (as P2D, with the Ricochet fix)
+s.add('echo H1', 'netevent p2_tp -320 0 0', 'netevent p2_ssqset 1'); s.w(60); s.add('netevent p2_off 20', 'netevent p2_ssq 0')
+s.add('netevent p2_xyit:DoomImp -60 150 1', 'netevent p2_xyit:DoomImp -40 -150 1'); s.w(30); s.add('netevent p2_items')
+s.l(-0.25, 1.20, -0.35, 28, 29, 0); s.w(4); s.add('echo H1_PAINT', 'qz_ltrigger 1'); s.w(12); s.add('netevent p2_ssq 1')
+s.l(-0.25, 1.20, -0.35, 28, -30, 0); s.w(12); s.add('netevent p2_ssq 2'); s.l(-0.25, 1.20, -0.35, 28, 0, 0); s.w(4); s.add('netevent p2_ssq 3', 'set rsqa_onehand 1'); s.w(2)
+s.add('echo H1_THROW', 'netevent p2_move 0 -60 330', 'netevent p2_xyit:DoomImp -250 -60 1', 'netevent rsqa_alt 6 1'); s.w(1); s.add('netevent rsqa_alt 6 0', 'qz_ltrigger 0', 'set rsqa_onehand 0')
+s.w(60); s.add('echo H1_A_BACK_IN_VIEW', 'netevent p2_move 0 -60 150'); s.w(90); s.add('netevent p2_ssq 4', 'netevent p2_items', 'echo H1_END'); s.w(150)
+s.add('netevent p2_ssqset 0'); s.w(60); s.add('netevent p2_ssqset 0'); s.w(30)
+s.add('echo P2G_END'); s.w(5); s.add('quit')
+open(sys.argv[1], 'w').write(s.text()); print(len(s.c), 'commands')

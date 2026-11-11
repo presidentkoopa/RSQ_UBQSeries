@@ -1,0 +1,652 @@
+Log started: 2026-11-10 23:17:35
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+  Opened device No Output
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.4 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.10GHz
+  Family 6, Model 207, Stepping 2
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+Invalid data encountered for texture GunBonsai-0.10.6.pk3:sprites/ui/.gitignore
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+256 warnings while compiling RSQ_Monsters.pk3:zscript.txt
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 1:
+Tried to define class 'Tracer' more than once. Renaming class to 'Tracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 28:
+Tried to define class 'MonsterTracer' more than once. Renaming class to 'MonsterTracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 2596:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 546:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 548:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 550:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 552:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1093:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1094:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1095:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1727:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1728:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1740:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1741:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1870:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1888:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1889:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1131:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1138:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1387:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1390:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1393:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1398:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1401:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1404:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1409:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1412:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1415:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1696:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1519:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 1608:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1538:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1677:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1872:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 2242:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1643:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1964:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 1882:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2017:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2389:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs" line 1903:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 1619:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2014:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2016:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2018:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2020:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2022:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2024:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2277:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2280:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2281:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2858:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2859:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2860:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2861:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2862:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2863:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2864:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2865:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 1905:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2233:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2246:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 736:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 916:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1697:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1894:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 2170:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1965:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2202:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2208:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2235:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2455:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2912:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2913:
+Bad hex number: no
+Script warning, "BD_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+173 warnings while parsing scripts
+Undefined drop item class TreasureChest referenced from actor LOBSpiderMastermind
+Undefined drop item class TomeSpawner referenced from actor LOBArchvile
+Undefined drop item class AmplifierGiver referenced from actor LOBArchvile
+Undefined drop item class Sapphire referenced from actor LOBArchvile
+Undefined drop item class Ruby referenced from actor LOBArachnotron
+Undefined drop item class Amber referenced from actor LOBArachnotron
+Undefined drop item class Ruby referenced from actor LOBRevenant
+Undefined drop item class Amber referenced from actor LOBCacodemon
+Undefined drop item class Emerald referenced from actor LOBBaronOfHell
+Undefined drop item class Ruby referenced from actor LOBHellKnight
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh10 referenced from actor LOBSpectre
+Undefined drop item class Dosh5 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh10 referenced from actor LOBDemon
+Undefined drop item class Dosh5 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh10 referenced from actor LOBDoomImp
+Undefined drop item class Dosh5 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh25 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh5 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh5 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh5 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class TreasureChest referenced from actor Conqueror
+Undefined drop item class TomeSpawner referenced from actor Reaper
+Undefined drop item class AmplifierGiver referenced from actor Reaper
+Undefined drop item class Sapphire referenced from actor Reaper
+Undefined drop item class Ruby referenced from actor Arachnobone
+Undefined drop item class Amber referenced from actor Arachnobone
+Undefined drop item class Ruby referenced from actor PhantomRevenant
+Undefined drop item class Emerald referenced from actor Painbringer
+Undefined drop item class Amber referenced from actor CacoLich
+Undefined drop item class Emerald referenced from actor Balrog
+Undefined drop item class Ruby referenced from actor SlayerKnight
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh10 referenced from actor GhostSpectre
+Undefined drop item class Dosh5 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh10 referenced from actor SkeletonDemon
+Undefined drop item class Dosh5 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh25 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkullChaingunner
+Undefined drop item class Dosh5 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkeletonImp
+Undefined drop item class Dosh5 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh10 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh5 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+Undefined drop item class LewdLabCoat referenced from actor RS_WhiteCguy2
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombie1
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombieEX
+script parsing took 2742.04 ms
+Initializing Gun Bonsai v0.10.6+RSQ...
+Couldn't find Legendoom, LD-specific features in Gun Bonsai disabled.
+           On weapons: MWeapLightning
+           On weapons: CWeapWraithverge
+           On weapons: RSQ_Glove RSQ_GloveOff UBQS_Saber UBQS_SaberOff SSQ_ShieldSaw
+           On weapons: RSQWP_WhipWeapon
+           On weapons: RSQGN_Grenade
+           On weapons: UBQS_ForceHand
+Gun Bonsai VR/offhand patch active: two hands, two HUDs, provenance-based XP.
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+M_Init: Init menus.
+P_Init: Init Playloop state.
+R_InstallSpriteLump: Bad frame characters in lump PENTAHUD
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 0, Minigun ammo boxes put beside 0
+Buddha mode ON 
+(Trying to play god, hmm?)
+P2 CLEARMON t42 8 monsters removed
+RSQ Gun Bonsai VR: debug Add All: 429 node levels added
+N1_SABER_LIT_V0
+P2 OFF t146 tag 0 at (-283 -64 0) angle 0 main UBQS_Saber off rsq_hands pending None
+[RSQDG] t146 hand 0 at punch speed (5.1 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t146 hand 0 refused -- palm out, but moved at punch speed in the last 0.75 s
+N1_SABER_LIT_V1
+P2 LIT t178 tag 0 saber.lit main 1 off -1 | [UBQS_SaberOff inhand 0 doused 0] [UBQS_Saber inhand 1 doused 0] DualAway 1 main UBQS_Saber off rsq_hands
+N1_SABER_LIT_V2
+P2 LIT t206 tag 1 saber.lit main 1 off -1 | [UBQS_SaberOff inhand 0 doused 0] [UBQS_Saber inhand 1 doused 0] DualAway 1 main UBQS_Saber off rsq_hands
+[RSQDG] t206 hand 0 at punch speed (2.1 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t206 hand 0 refused -- palm out, but moved at punch speed in the last 0.75 s
+P2 LIT t235 tag 2 saber.lit main 1 off -1 | [UBQS_SaberOff inhand 0 doused 0] [UBQS_Saber inhand 1 doused 0] DualAway 1 main UBQS_Saber off rsq_hands
+[RSQDG] t238 lock-on: hand 0 -- no barrel in the other hand nor in punching reach: the cone finds items
+[RSQDG] t238 hand 0 refused -- nothing in the cone
+N1_SABER_OFF_V0
+N1_SABER_OFF_V1
+P2 LIT t276 tag 0 saber.lit main 0 off -1 | [UBQS_SaberOff inhand 0 doused 0] [UBQS_Saber inhand 1 doused 1] DualAway 1 main UBQS_Saber off rsq_hands
+N1_SABER_OFF_V2
+P2 LIT t305 tag 1 saber.lit main 0 off -1 | [UBQS_SaberOff inhand 0 doused 0] [UBQS_Saber inhand 1 doused 1] DualAway 1 main UBQS_Saber off rsq_hands
+[RSQDG] t305 hand 0 at punch speed (2.1 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t305 hand 0 refused -- palm out, but moved at punch speed in the last 0.75 s
+P2 LIT t338 tag 2 saber.lit main 0 off -1 | [UBQS_SaberOff inhand 0 doused 0] [UBQS_Saber inhand 1 doused 1] DualAway 1 main UBQS_Saber off rsq_hands
+[RSQDG] t338 hand 0 at punch speed (4.7 m/s >= 2.0): no reach for 0.75 s
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+N1_FLARE_V0
+P2 FF t386 tag 1 flare.count 5 flare.phase 1 torch.phase 0 battery 1000 permille | main UBQS_Saber off RSQFF_Held
+[RSQDG] t386 hand 1 at punch speed (5.1 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t386 hand 1 refused -- palm out, but moved at punch speed in the last 0.75 s
+N1_FLARE_V1
+P2 FF t417 tag 10 flare.count 5 flare.phase 1 torch.phase 0 battery 1000 permille | main UBQS_Saber off RSQFF_Held
+N1_FLARE_V2
+P2 FF t447 tag 11 flare.count 5 flare.phase 1 torch.phase 0 battery 1000 permille | main UBQS_Saber off RSQFF_Held
+[RSQDG] t447 hand 1 at punch speed (2.1 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t447 hand 1 refused -- palm out, but moved at punch speed in the last 0.75 s
+P2 FF t475 tag 12 flare.count 5 flare.phase 1 torch.phase 0 battery 1000 permille | main UBQS_Saber off RSQFF_Held
+N1_TORCH_V0
+[RSQDG] t551 hand 1 at punch speed (5.1 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t551 hand 1 refused -- palm out, but moved at punch speed in the last 0.75 s
+N1_TORCH_V1
+P2 FF t580 tag 20 flare.count 6 flare.phase 0 torch.phase 2 battery 989 permille | main UBQS_Saber off RSQFF_Torch
+N1_TORCH_V2
+P2 FF t612 tag 21 flare.count 6 flare.phase 0 torch.phase 2 battery 984 permille | main UBQS_Saber off RSQFF_Torch
+[RSQDG] t612 hand 1 at punch speed (2.1 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t612 hand 1 refused -- palm out, but moved at punch speed in the last 0.75 s
+P2 FF t642 tag 22 flare.count 6 flare.phase 0 torch.phase 2 battery 979 permille | main UBQS_Saber off RSQFF_Torch
+N1_END
+H1
+P2 TP t676 player at (-320 0 -0) angle 0
+ssq: p0 DRAW (prev off -, prev main UBQS_Saber)
+P2 SSQSET t676 want 1 was 0 now 1
+P2 OFF t735 tag 20 at (-320 0 -0) angle 0 main UBQS_Saber off SSQ_ShieldSaw pending None
+P2 SSQ t735 tag 0 state 1 locks 0: | disc none
+P2 SPAWN t735 #0 DoomImp -> RS_CommonImp at (-60 150 -0)
+P2 SPAWN t735 #1 DoomImp -> RS_CommonImp at (-40 -150 0)
+P2 ITEM t767 #0 RS_CommonImp at (-66 144 -0) hp 60 dist 292 
+P2 ITEM t767 #1 RS_CommonImp at (-46 -144 0) hp 60 dist 310 
+H1_PAINT
+P2 SSQ t783 tag 1 state 1 locks 1: RS_CommonImp#0 | disc none
+P2 SSQ t794 tag 2 state 1 locks 2: RS_CommonImp#0 RS_CommonImp#1 | disc none
+H1_THROW
+P2 SSQ t799 tag 3 state 1 locks 2: RS_CommonImp#0 RS_CommonImp#1 | disc none
+P2 MOVE t799 #0 RS_CommonImp to (-60 330 -0)
+P2 SPAWN t799 #2 DoomImp -> RS_CommonImp at (-200 100 -0)
+ssq: p0 THROW speed 12.0/tic rev 21 locks 2
+P2 DISC SPAWN t799 ricochet left 3 wall bounces 6
+P2 DISC t799 lockAt 0 phase 0 locks: [0 RS_CommonImp#0] [1 RS_CommonImp#1] marks: [0 on RS_CommonImp#0] [1 on RS_CommonImp#1]
+SSQ: wall bounce at -154 208 30, sparks along -0.00 -1.00 -0.00
+SSQ: wall bounce at -10 221 27, sparks along -1.00 -0.00 -0.00
+P2 DISC t843 lockAt 1 phase 0 locks: [0 RS_CommonImp#0] [1 RS_CommonImp#1] marks: [0 gone] [1 on RS_CommonImp#1]
+H1_A_BACK_IN_VIEW
+P2 MOVE t861 #0 RS_CommonImp to (-60 150 -0)
+P2 DISC t873 lockAt 2 phase 2 locks: [0 RS_CommonImp#0] [1 RS_CommonImp#1] marks: [0 gone] [1 gone]
+ssq: p0 disc home, CAUGHT
+ssq: p0 DRAW (prev off UBQS_SaberOff, prev main UBQS_Saber)
+H1_END
+P2 SSQ t952 tag 4 state 1 locks 0: | disc none
+P2 ITEM t952 #0 RS_CommonImp at (-60 150 -0) hp -61 dist 300 
+P2 ITEM t952 #1 RS_CommonImp at (-46 -144 0) hp -61 dist 310 
+P2 ITEM t952 #2 RS_CommonImp at (-206 94 -0) hp -61 dist 148 
+ssq: p0 STOW
+P2 SSQSET t1100 want 0 was 1 now 0
+P2 SSQSET t1161 want 0 was 0 now 0
+D3
+P2 CLEARMON t1191 3 monsters removed
+P2 CLEARFLOOR t1191 0 removed: 
+P2 TP t1191 player at (-320 0 -0) angle 0
+D3_TRY_0
+P2 OFF t1287 tag 30 at (-320 0 -0) angle 0 main Shot_Gun off rsq_hands pending None
+P2 SPAWN t1287 #3 Shot_Gun -> Shot_Gun at (-160 0 0)
+P2 ITEM t1287 #0 gone
+P2 ITEM t1287 #1 gone
+P2 ITEM t1287 #2 gone
+P2 ITEM t1287 #3 Shot_Gun at (-160 0 0) hp 1000 dist 160 
+[RSQDG] hand 0 LOCKED Shot_Gun
+[RSQDG] hand 0 let go of Shot_Gun (0.0 deg/tic, needed 5.0)
+[RSQDG] hand 0 unlocked Shot_Gun -- opened at rest
+[RSQDG] hand 0 LOCKED Shot_Gun
+P2 ITEM t1389 #0 gone
+P2 ITEM t1389 #1 gone
+P2 ITEM t1389 #2 gone
+P2 ITEM t1389 #3 Shot_Gun at (-160 0 0) hp 1000 dist 160 
+[RSQDG] hand 0 let go of Shot_Gun (0.0 deg/tic, needed 5.0)
+[RSQDG] hand 0 unlocked Shot_Gun -- opened at rest
+D3_TRY_1
+[RSQDG] hand 0 LOCKED Shot_Gun
+[RSQDG] arc: run 150 eta 16.2 apexT 16.5 fastT 6.4 room 209 g 1.00 -> 16 tics
+[RSQDG] path: dist 153  7 tics  arc 38 (wanted 38, room 195)
+[RSQDG] hand 0 LAUNCHED Shot_Gun  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+[RSQDG] t1455 hand 0 refused -- this hand is already pulling something
+Distance Grab: Shotgun: you have it and its ammo is full -- left at your feet
+[RSQDG] hand 0 refused -- the pickup refused Shot_Gun (owned, ammo full)
+[RSQDG] hand 0: Shot_Gun carried, ammo full: AMMO FULL, dropped at the feet
+[RSQDG] t1457 hand 0 refused -- nothing in the cone
+R10 WORDS t1458 [AMMO FULL once on Shot_Gun] 
+R10 WORDS t1503 (none)
+P2 ITEM t1514 #0 gone
+P2 ITEM t1514 #1 gone
+P2 ITEM t1514 #2 gone
+P2 ITEM t1514 #3 Shot_Gun at (-292 0 0) hp 1000 dist 28 
+P2F_END

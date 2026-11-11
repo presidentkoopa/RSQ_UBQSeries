@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "R10_Probe", "P2_Probe" }
