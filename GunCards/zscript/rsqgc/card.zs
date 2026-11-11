@@ -945,11 +945,14 @@ class RSQGC_GunCard : EventHandler
 		int q = Quality();
 		bool isItem = RSQGC_Items.IsItem(w);
 		string sig = Signature(pmo, w, 9, style) .. (mir ? " m" : "") .. String.Format(" c%d q%d v%d b%d w%d %.2f", ci("rsqgc_color", 0), q, shows, ci("rsqgc_watch_bonsai", 0), ci("rsqgc_lowwarn", 1), cv("rsqgc_lowammo_frac", 0.25))
-			.. ExtraSig(pmo, hand, w) .. (shows == 2 || isItem ? StatusSig(pmo) : "") .. (isItem ? RSQGC_Items.Sig(w) : "") .. RSQGC_Glow.Sig();
+			.. ExtraSig(pmo, hand, w) .. (shows == 2 || isItem ? StatusSig(pmo) : "") .. (isItem ? RSQGC_Items.Sig(w) .. String.Format(" s%d", ci("vr_control_scheme", 0)) : "") .. RSQGC_Glow.Sig();
 		if (sig != c.sig || c.mir != mir || c.rot != rot)
 		{
 			c.sig = sig; c.mir = mir; c.rot = rot; c.quality = q;
-			if (isItem) c.BuildItem(pmo, w, CardColour(p, w), self);
+			// the item card's words go in the half of the card nearer the elbow (side.zs BuildItem): which half, from
+			// which wrist this is physically (as Mirrored)
+			bool physLeft = hand == 1 ? ci("vr_control_scheme", 0) < 10 : ci("vr_control_scheme", 0) >= 10;
+			if (isItem) c.BuildItem(pmo, w, CardColour(p, w), self, physLeft);
 			else c.Build(pmo, hand, w, CardColour(p, w), self, shows);
 		}
 		c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);

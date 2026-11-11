@@ -214,9 +214,10 @@ code only, not shown):
 Brutal Doom's own other weapon classes (its executions, ledge grab, human shields and vehicles) follow the same rules: a
 weapon with ammo gets a gun's cards, one without gets the item card with its name.
 
-**The item card** (a weapon with no ammo pile): its name on the top row and what it holds on the right of it. With a
-count (flares, cigarettes, the battery) the count big under it, then "H 100" and "A 50" and the key row, as on the Both
-card; with none, your health big (red at 25 or less) and armour big in blue, as on the Status card, then the key row.
+**The item card** (a weapon with no ammo pile), one thing to a line, all in the half of the card nearer your elbow
+(the item's own hand lies over the other half): its name; the count big (flares, cigarettes, the battery) or, with none,
+your health big (red at 25 or less); what it is doing (LIT, OFF, UNLIT, ON); then "H 100" when the count is big, "A 50"
+in blue, G:n, and the key icons.
 Watch Card Shows: Status Card shows the Status card instead.
 
 Not on any card: the saber's second blade (RSQ Saber answers only "saber.lit" by name; reading the second blade would
@@ -329,6 +330,7 @@ spots are kept (use Reset All Saved Spots).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-10 night, `design/rigtest_2026-11-10/RESULTS_FIX.md`) | **The item card clear of the hand:** before, the saber's LIT, the flare count and the battery lay under the drawn hand; after, the saber card reads SABER, 100, LIT (and OFF when doused), A 0, G:1; the flashlight card LIGHT, 99, ON, H 100, A 0; the flare card FLARE, 5 and the rest, with the first letter of UNLIT and the H of H 100 still under the wrist in the rig's watch pose (`design/rigtest_2026-11-10/evidence/FIX_5_item_cards_before_after.jpg`, `FIX_C_log.txt`). Key icons on the item card not shown (MAP01 has no keys) |
 | **rig only, not headset-confirmed** (2026-11-03 and 2026-11-05, frames in `test/evidence/`, an earlier build than today's) | The small card's count colours at a full, half, quarter and empty magazine, in JFO Quest, JFO PCVR and Ermac's font (`20261103_small_*_full_half_quarter_empty.png`); RELOAD and the red 0 taking turns, frames and a log of the switch every 52 tics (`20261103_small_reload_0_alternating.png`, `20261103_small_reload_0_switch_tics.txt`); the reserve in gold; AMMO Word on and off; the short card's numbers centred (`20261105_small_short_centred_before_after.png`, main and off hand). The watch card's Weapon, Status and Both cards at Quest and PCVR text (`20261103_watch_weapon_status.png`, `20261103_watch_both_empty.png`); the Gun Bonsai rows on the full load order; all six key icons; the key row by map on MAP01, MAP02, MAP08 and MAP17 (`20261103_watch_keys_by_map.png`); Freedoom's keys on plain Doom 2; the left hand's status card |
 | **rig only, not headset-confirmed** (2026-10-31, log `tools/rigtest/qolprobe/evidence_1031.txt`, an earlier build) | "+20" after a clip pickup; the RELOAD state on an empty rifle magazine; the By Ammo Type colour on the rifle (gold); a kill counted to the main hand's rifle |
 | **rig only, not headset-confirmed** (2026-11-09, log `design/rigtest_2026-11-09/logs/main_A-G_I.log`) | The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e (not 2.0.4f), LOB, Champions, Gun Bonsai and the rest of the series, and its page sits under Radiant Silvergun Options. No card was exercised in that run |

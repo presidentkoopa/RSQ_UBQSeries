@@ -15,7 +15,8 @@
 //   any other item               its name (its tag)       -                    -
 // "Any other" is RSQ Melee's gloves, RSQ Saber's Force hand, the ShieldSaw, the whip, the Zippo, Brutal Doom's axe,
 // chainsaw and Dragonslayer, and any pack's melee weapon. The empty hands (card.zs EmptyHand) keep the status card.
-// Code only, not shown.
+// The item card: the saber, flare and flashlight cards shown on the rig 11-10 night (design/rigtest_2026-11-10/RESULTS_FIX.md 5),
+// rig only, not headset-confirmed; the other items code only.
 
 class RSQGC_Items play
 {

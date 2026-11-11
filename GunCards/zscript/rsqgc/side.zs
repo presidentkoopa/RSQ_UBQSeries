@@ -194,7 +194,8 @@ class RSQGC_SideCard play
 	// THE KEY ICONS (owner 2026-11-03): only the key kinds this map has (RSQGC_GunCard.MapKeys: keycards, skulls), each
 	// colour lit when held and dark grey when not; the voxel pack's own keys when it is loaded, Freedoom's otherwise.
 	// Other keys (no red / yellow / blue in the name) count as "+N" after the icons. Then G:n on the right.
-	private void KeyRow(PlayerPawn pmo, int row, int textRow, RSQGC_GunCard gc)
+	// iconsOnly (the item card, 11-10): the icons alone; the item card puts G:n on its own line, clear of the hand
+	private void KeyRow(PlayerPawn pmo, int row, int textRow, RSQGC_GunCard gc, bool iconsOnly = false)
 	{
 		bool cards, skulls;
 		[cards, skulls] = gc.MapKeys(pmo);
@@ -208,6 +209,7 @@ class RSQGC_SideCard play
 		if (cards) for (int t = 0; t < 3; t++) { Add(RSQGC_Glow.SKey(src, fam, t, 0, !(heldMask & (1 << t))), -1, y); any = true; }
 		if (skulls) for (int t = 3; t < 6; t++) { Add(RSQGC_Glow.SKey(src, fam, t, cards, !(heldMask & (1 << t))), -1, y); any = true; }
 		if (any) Used(row);
+		if (iconsOnly) return;
 		// other keys as "+N" after the icons, where it does not run into G:n
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		string g = gren >= 0 ? String.Format("G:%d", gren) : "";
@@ -274,38 +276,46 @@ class RSQGC_SideCard play
 		Panel(panelCol);
 	}
 
-	// THE ITEM CARD (items.zs, owner 11-10): the watch check with a weapon that has no ammo pile. Its name and what it holds
-	// on the top row. With a count (flares, cigarettes, the battery) the count big under it, then "H 100" / "A 50" and the
-	// key row as on the Both card; with none, health and armour big as on the Status card, then the key row.
-	void BuildItem(PlayerPawn pmo, Weapon w, int panelCol, RSQGC_GunCard gc)
+	// THE ITEM CARD (items.zs, owner 11-10): the watch check with a weapon that has no ammo pile. Its name, what it holds and
+	// what it is doing, then health, armour, G:n and the key icons.
+	// ITS WORDS ARE CLEAR OF THE HAND (rig 11-10, RESULTS_P2 N1; fixed 11-10): an item's own hand (the saber's hilt hand, the
+	// flare's, the torch's) is drawn over the far half of the card -- the half toward the fingers, the right half of the
+	// text on the right wrist and the left half on the left -- where a gun's hand is not, and it hid the saber's LIT / OFF,
+	// the flare count and the battery. So every word and number of the item card stands in the near half (HALF small
+	// units; the big count in the same half), one to a line, top down: the name, the count big (the flares left, the
+	// battery) or else health big, the state word, then "H n" (when the count is big), "A n", "G:n", and the key icons.
+	const HALF = 12;
+	bool nearRight;     // the near half is the text's right half (the physically left wrist)
+	private void HText(int row, string s, int col)
+	{
+		s = s.MakeUpper();
+		while (s.Length() > 0 && SmallWidth(s) > HALF) s = s.Left(s.Length() - 1);
+		if (nearRight) SRight(row, s, col); else SText(row, s, 0, col);
+	}
+	private void HBig(int row, string s, int col)
+	{
+		if (nearRight) BRight(row, s, col); else BText(row, s, 0, col);
+	}
+	void BuildItem(PlayerPawn pmo, Weapon w, int panelCol, RSQGC_GunCard gc, bool physLeft)
 	{
 		Clear();
 		nextLine = 0;
+		nearRight = physLeft;
 		string st; int stc;
 		[st, stc] = RSQGC_Items.State(w);
-		int R = RSQGC_SideStates.R_LABELS, C = RSQGC_SideStates.R_COUNTS;
-		int room = RSQGC_SideStates.SMALL_UNITS - (st != "" ? SmallWidth(st) + 1 : 0);
-		string nm = RSQGC_Items.Label(w);
-		nm = nm.MakeUpper();
-		while (nm.Length() > 0 && SmallWidth(nm) > room) nm = nm.Left(nm.Length() - 1);
-		SText(R, nm, 0, C_WHITE);
-		if (st != "") SRight(R, st, stc);
+		HText(RSQGC_SideStates.R_LABELS, RSQGC_Items.Label(w), C_WHITE);
 		int hp = max(pmo.Health, 0), ar = clamp(RSQGC_GunCard.ArmorOf(pmo), 0, 999);
 		int n = RSQGC_Items.Count(w);
-		if (n >= 0)
-		{
-			BText(C, String.Format("%d", clamp(n, 0, 999)), 0, n == 0 ? C_RED : C_WHITE);
-			SText(RSQGC_SideStates.R_LINE2, "H", 0, C_WHITE);
-			SText(RSQGC_SideStates.R_LINE2, String.Format("%d", clamp(hp, 0, 999)), 3, hp <= 25 ? C_RED : C_WHITE);
-			SRight(RSQGC_SideStates.R_LINE2, String.Format("A %d", ar), C_BLUE);
-			KeyRow(pmo, RSQGC_SideStates.R_KEYS3, RSQGC_SideStates.R_KEYS3TEXT, gc);
-		}
-		else
-		{
-			BText(C, String.Format("%d", clamp(hp, 0, 999)), 0, hp <= 25 ? C_RED : C_WHITE);
-			BRight(C, String.Format("%d", ar), C_BLUE);
-			KeyRow(pmo, RSQGC_SideStates.R_KEYS2, RSQGC_SideStates.R_KEYS2TEXT, gc);
-		}
+		int C = RSQGC_SideStates.R_COUNTS;
+		if (n >= 0) HBig(C, String.Format("%d", clamp(n, 0, 999)), n == 0 ? C_RED : C_WHITE);
+		else HBig(C, String.Format("%d", clamp(hp, 0, 999)), hp <= 25 ? C_RED : C_WHITE);
+		int row;
+		if (st != "" && (row = Line()) >= 0) HText(row, st, stc);
+		if (n >= 0 && (row = Line()) >= 0) HText(row, String.Format("H %d", clamp(hp, 0, 999)), hp <= 25 ? C_RED : C_WHITE);
+		if ((row = Line()) >= 0) HText(row, String.Format("A %d", ar), C_BLUE);
+		int gren = RSQGC_GunCard.Grenades(pmo);
+		if (gren >= 0 && (row = Line()) >= 0) HText(row, String.Format("G:%d", gren), gren > 0 ? C_ORANGE : C_DARK);
+		if ((row = Line()) >= 0) KeyRow(pmo, row, row, gc, true);
 		Panel(panelCol);
 	}
 
