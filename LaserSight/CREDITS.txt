@@ -14,3 +14,9 @@ GENERATED FOR THIS PACK
   tools/gen_beams.py, measured from Brutal Doom Quest's own gun models.
 
 QuestZDoom (Emawind and Team Beef): the engine and the hand-pose script API.
+
+THE RANGE READOUT'S GLYPHS (2026-11-10)
+  graphics/rsqls/RSLN*.png are rendered by tools/gen_readout_glyphs.py from DejaVu Sans Bold (DejaVu fonts,
+  https://dejavu-fonts.github.io/; Bitstream Vera licence, DejaVu changes public domain). The font file and its
+  licence are kept in tools/fonts/ (not shipped). Copyright (c) 2003 by Bitstream, Inc. All Rights Reserved.
+  Bitstream Vera is a trademark of Bitstream, Inc.

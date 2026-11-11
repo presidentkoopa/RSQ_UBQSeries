@@ -3,4 +3,4 @@
 # tools/ and docs/ stay out: tools WRITE lumps, docs are prose.
 cd "$(dirname "$0")" && rm -f RSQ_LaserSight.pk3 && \
 zip -q -r -X RSQ_LaserSight.pk3 zscript.txt MAPINFO.txt CVARINFO.txt MENUDEF.txt MODELDEF.txt CREDITS.txt \
-	VOXELDEF.txt VOXELDEF.halo ANIMDEFS.txt zscript sprites models/rsqls && echo "built RSQ_LaserSight.pk3 ($(du -k RSQ_LaserSight.pk3 | cut -f1) KB)"
+	VOXELDEF.txt VOXELDEF.halo zscript sprites graphics models/rsqls && echo "built RSQ_LaserSight.pk3 ($(du -k RSQ_LaserSight.pk3 | cut -f1) KB)"

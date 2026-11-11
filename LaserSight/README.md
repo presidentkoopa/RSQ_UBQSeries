@@ -186,12 +186,16 @@ With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you
 - **Spread Ring** (off): a ring around the dot showing where this gun's shots can land: the cone 95% of its shots
   fell inside, measured from its own shots after it has fired three. Sideways and up-down spread are measured apart, so
   a shotgun's ring can be an oval. Below 0.75 degrees no ring is drawn.
-- **Show Range** (off): the distance to what the laser is on, on a little screen **By the Gun** or floating **At the
-  Dot** (bigger the further it is), in the dot's colour. **Range Units:** metres (one decimal under 10 m), feet or map
-  units (counted along the laser's own line, so steep shots read true). It shows the main hand's, or the off hand's when the main hand has nothing.
+- **Show Range** (off): the distance to what the laser is on, in the dot's colour, as a number and its unit ("341 u",
+  "11 m", "34 ft"). **By the Gun:** beside the gun, on the hand's outer side, its near edge 3 cm past the barrel as you
+  see it, so the gun never covers it. **At the Dot:** floating over the dot (bigger the further it is, the same angular
+  size past 4 m), or under it when the dot is on a ceiling. **Range Units:** metres (one decimal under 10 m), feet or
+  map units (counted along the laser's own line, so steep shots read true). **Readout Size** (Test and Debug) and RSQ
+  Accessibility's **Text Size** scale it. It shows the main hand's, or the off hand's when the main hand has nothing.
+  Rig only, not headset-confirmed (2026-11-10: `design/rigtest_2026-11-10/RESULTS_LSREADOUT.md`).
 
 *[Image to come: the spread ring around the dot on a wall, shotgun]*
-*[Image to come: the range readout by the gun and at the dot]*
+![The range readout by the gun, in map units, metres and feet (rig)](../design/rigtest_2026-11-10/evidence/LS_READOUT_by_the_gun_u_m_ft.jpg)
 
 ---
 
@@ -286,9 +290,10 @@ The page ends with **Reset All**: every setting on the page and on Test and Debu
 | **rig only, not headset-confirmed** (2026-11-10, L1: `design/rigtest_2026-11-10/evidence/L9_laser_reload_switch_quicknade.jpg`, t220 to t740) | The pistol's beam on at idle and through 7 shots; during a BD22 VR hand reload (magazine out, gun empty) the beam stayed on; on the shotgun after the switch, gone while the gun lowered for a quick grenade and back with it |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | The page as loaded: **Main Hand** and **Off Hand** (On), and **Beam Sparkle (Quest)** (Off) (`design/rigtest_2026-11-10/evidence/menus_new_rows.jpg`). Only the rows were seen, not what they do. Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). No laser check was run |
 | **rig only, not headset-confirmed** (2026-11-09, the build of that day) | The beam staying on between shots: the pistol's fire frames and the pump shotgun's pump frames, none of them measured, kept the beam and the PC VR glow up every tic (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`, sections BR_B_PISTOL and BR_B_SHOTGUN; frames: `design/rigtest_2026-11-09/frames/B_pistol_PISTB_rawrow-1_beam_on_f466.jpg`, `B_shotgun_pump_beam_on_f519.jpg`). The rifle's beam drawn in the same run (frames `I_ddz_mode2_default_t40_f028.jpg`, `I_ddz_mode0_t232_relit_f076.jpg`). The pack loaded with no script error or warning of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4e, LOB, Champions, Gun Bonsai and the rest of the series, and its page sits under Radiant Silvergun Options (same log). The 11-10 changes came after it |
+| **rig only, not headset-confirmed** (2026-11-10, the range readout rebuilt as glyphs: `design/rigtest_2026-11-10/RESULTS_LSREADOUT.md`) | **Show Range** By the Gun in Map Units, Metres and Feet (341 u / 11 m / 34 ft) and At the Dot in Map Units and Metres, on a beam 29 degrees up into a ceiling; At the Dot on a wall (12 m); Readout Size 3; Off hiding it (`LS_READOUT_by_the_gun_u_m_ft.jpg`, `LS_READOUT_at_the_dot_u_m_ceiling.jpg`, `LS_READOUT_at_the_dot_wall.jpg`, `LS_READOUT_log.txt`). The old canvas readout was never drawn in VR (P4, L5) |
 | **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | Everything else on this page: the dot and where it sits, its glow and light, surfaces, Dot Only on Enemies, Follow Brutal Doom Shots, Target Lock, Colour on Target, Headshot Reaction and its Gun Bonsai VR levels, the grenade arc and the bent beam, the spread ring, the range readout, every colour option, Infrared Only, the Main Hand / Off Hand rows, the keys gone (commit ef179dbc), Beam Sparkle's sparks (L6 looked for them at 480 and 1080 px and saw none; the sparks are about 3 cm and nothing logs one: `L9c_sparkle_1080_none_seen.png`), the beam hiding during a reload the gun plays as an animation, the greyed rows, Glow Intensity widening the light, the Map Units readout, Off When Aimed Down, Only When Ready, the Quest look's beam, Reset All |
-| **not yet run** | L2 to L5 wait in the batched rig test (`design/rigtest_2026-11-10/RESULTS.md`, "Not yet run"): the greyed rows; Glow Intensity 1 against 3; the Map Units readout on a steep shot |
+| **code only, not shown** | Everything else on this page: the dot and where it sits, its glow and light, surfaces, Dot Only on Enemies, Follow Brutal Doom Shots, Target Lock, Colour on Target, Headshot Reaction and its Gun Bonsai VR levels, the grenade arc and the bent beam, the spread ring, every colour option, Infrared Only, the Main Hand / Off Hand rows, the keys gone (commit ef179dbc), Beam Sparkle's sparks (L6 looked for them at 480 and 1080 px and saw none; the sparks are about 3 cm and nothing logs one: `L9c_sparkle_1080_none_seen.png`), the beam hiding during a reload the gun plays as an animation, the greyed rows, Glow Intensity widening the light, Off When Aimed Down, Only When Ready, the Quest look's beam, Reset All |
+| **not yet run** | L2 to L4 wait in the batched rig test (`design/rigtest_2026-11-10/RESULTS.md`, "Not yet run"): the greyed rows; Glow Intensity 1 against 3 |
 
 Earlier commit messages (2026-11-06) say Dot Only on Enemies and the bent arc beam (with a test lobber, not BD22's
 launcher) were shown on the rig; those logs and frames are not in the repo, so they are not counted here.
@@ -302,13 +307,17 @@ launcher) were shown on the rig; those logs and frames are not in the repo, so t
   frame rate; one voxel rod per gun placement and length (102 placements x 72 lengths), found by sprite frame alone so
   it loads with or without Brutal Doom. The fade is a colour table built at run time: the rod's colours encode the
   distance from the muzzle, so one rod serves every colour and fade length. The dot, glow, ring, arc and readout are
-  world actors moved 35 times a second.
+  world actors moved 35 times a second. The readout is billboard glyphs (one actor a character, two layers deep,
+  spawned once and moved; the picture set through picnum, drawn AddShaded in the dot's colour), the series' way
+  (RSQ Score's wrist digits, the Saber's training-remote panel): QuestZDoom 17.3 draws a canvas texture black or not at
+  all in VR, so the first readout, a canvas, was never seen.
 - **Measured, not guessed.** `tools/gen_beams.py` reads each gun's MODELDEF and held mesh from the load order's pk3s and
   writes the voxel rods, `VOXELDEF.txt`, `zscript/rsqls/muzzles.zs` and `docs/MUZZLES.txt`; its Ready frames come from
   `tools/readyprobe` (dump in `tools/ready_bd22q.txt`). `tools/gen_halo.py` writes the PC VR halo rods
   (`VOXELDEF.halo`, a second VOXELDEF lump). `tools/gen_bdbore.py` parses BD22 VR's own muzzle table and bore into
-  `zscript/rsqls/bdbore.zs`. `tools/gen_assets.py` makes the dot, glow, ring, arc segment and readout meshes and
-  `MODELDEF.txt`. `tools/aimprobe` is a test map handler that logs the dot against an imp's billboard.
+  `zscript/rsqls/bdbore.zs`. `tools/gen_assets.py` makes the dot, glow, ring and arc segment meshes and
+  `MODELDEF.txt`; `tools/gen_readout_glyphs.py` renders the readout's glyphs (`graphics/rsqls/RSLNnnn.png`: 0-9 . m f t u)
+  from DejaVu Sans Bold (`tools/fonts/`). `tools/aimprobe` is a test map handler that logs the dot against an imp's billboard.
 - **The hands.** Each hand's muzzle is carried from the controller's model frame into the map the way the renderer
   carries the gun (yaw, pitch, roll, 34 map units a metre, the 1.2 vertical stretch), mirrored for a left-hand model.
 - **Learning.** A static handler watches the console player's hitscans (spread histogram per weapon and fire mode)

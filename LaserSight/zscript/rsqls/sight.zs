@@ -46,8 +46,7 @@ class RSQLS_Glow : RSQLS_Spot
 }
 
 // PHASE 3 pieces. A dot along a thrown weapon's arc; the spread ring (RSLR, a
-// thin circle at 0.9 of the sprite's radius); the range readout, a quad model
-// wearing the canvas texture RSLRANGE that the UI writes (see UiTick).
+// thin circle at 0.9 of the sprite's radius); the range readout's glyphs (RSQLS_ReadoutGlyph, below).
 class RSQLS_ArcDot : RSQLS_Spot {}
 // THE BEAM ALONG THE ARC (owner 2026-11-06, BUGS_1.0 #38): one segment of the beam bent along a thrown weapon's arc, a
 // crossed-quad model (MODELDEF RSQLS_ArcSeg, tools/gen_assets.py) laid from one point of the arc to the next
@@ -69,16 +68,19 @@ class RSQLS_Ring : RSQLS_Spot
 {
 	States { Spawn: RSLR A -1 Bright; Stop; }
 }
-class RSQLS_Readout : Actor
+// THE RANGE READOUT's glyph (owner 11-10: "Redo it as glyphs"): one character, a billboard whose picture is set
+// through picnum (graphics/rsqls/RSLNnnn, tools/gen_readout_glyphs.py), drawn AddShaded in the dot's colour. The
+// series' way (RSQ Score's wrist digits, the Saber's training-remote panel): QZD 17.3 draws a canvas black or not at
+// all in VR, and the old canvas readout (RSLRANGE) was never seen on the rig (P4, 11-10, L5).
+class RSQLS_ReadoutGlyph : Actor
 {
 	Default
 	{
-		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP
-		+BRIGHT
-		RenderStyle "Add";
+		+NOINTERACTION +NOBLOCKMAP +NOGRAVITY +NOTELEPORT +DONTSPLASH +NOTONAUTOMAP +BRIGHT +NOTIMEFREEZE
+		RenderStyle "AddShaded";
 		Radius 1; Height 1;
 	}
-	States { Spawn: RSLQ A -1 Bright; Stop; }
+	States { Spawn: TNT1 A -1 Bright; Stop; }
 }
 
 class RSQLS_Sight : EventHandler
@@ -254,7 +256,13 @@ class RSQLS_Sight : EventHandler
 	const HALO_W = 2.8;        // the arc halo's width, map units (the halo skin is 28 px at 0.1 unit; gen_assets.py)
 	private bool  segShown[2];
 	private Actor ring[2];
-	private Actor readout;
+	// THE RANGE READOUT: READ_N characters, READ_LAYERS actors each, spawned once (the first time it shows) and moved.
+	const READ_N = 8;
+	const READ_LAYERS = 2;     // two on the same spot: AddShaded draws by brightness (RSQ Score's wrist, rig 11-01)
+	private Actor readGlyph[16];   // READ_N * READ_LAYERS
+	private bool  readShown;
+	private transient TextureID readTex[128];   // by ASCII code: RSLNnnn
+	private transient bool readTexFound;
 	// The simulated path (no dynamic arrays of vectors on 4.12-4.14: three of doubles).
 	private transient Array<double> arcX, arcY, arcZ;
 	private void ArcClear() { arcX.Clear(); arcY.Clear(); arcZ.Clear(); }
@@ -271,6 +279,7 @@ class RSQLS_Sight : EventHandler
 	transient double readM;
 	transient double readU;
 	transient int    readRgb;
+	transient String readTxt;     // what it shows ("341 u")
 
 	// Leading (see header).
 	private Vector3 lastMuzzle[2], lastHit[2];
@@ -1086,58 +1095,160 @@ class RSQLS_Sight : EventHandler
 		return mzGot[h], mzF[h], mzU[h], mzS[h];
 	}
 
-	// THE RANGE READOUT: metres to what the main hand's laser is on (the off
-	// hand's when the main has none), on a small screen by the gun or at the
-	// spot. The numbers are written to the canvas texture in UiTick.
+	// THE RANGE READOUT: the distance to what the main hand's laser is on (the off hand's when the main has none),
+	// by the gun or over the spot, in the dot's colour. Glyphs, not a canvas (see RSQLS_ReadoutGlyph): each character
+	// is a billboard laid out across the line from your eye, centred on where the old canvas screen was.
+	// Sizes: a digit is READ_DIGIT_U map units tall at scale 1 (the old screen's text: SmallFont x2 on a 2-unit quad),
+	// x Readout Size, x RSQ Accessibility's Text Size, and At the Dot x the old distance factor (1 to 8).
+	const READ_DIGIT_U = 0.875;
+	const GLYPH_PX = 48.0;     // every glyph's canvas height (tools/gen_readout_glyphs.py)
+	const DIGIT_PX = 33.0;     // a digit's ink height in it
+	const READ_GAP = 0.30;     // the space before the unit, in digit heights
+	const READ_CLEAR_M = 0.03; // By the Gun: the row's near edge this far past the drawn muzzle's line as seen, metres
+	// how far right of the row's centre a point looks, as a slope (across over ahead) from the eye
+	private static double ReadSeen(Vector2 d, Vector2 fwd, Vector2 right)
+	{
+		double ahead = max(d.x * fwd.x + d.y * fwd.y, 1.0);
+		return (d.x * right.x + d.y * right.y) / ahead;
+	}
+	private void HideReadout()
+	{
+		if (!readShown) return;
+		for (int i = 0; i < READ_N * READ_LAYERS; i++) if (readGlyph[i]) readGlyph[i].bINVISIBLE = true;
+		readShown = false;
+	}
 	private void UpdateReadout(PlayerPawn pmo, PlayerInfo p)
 	{
 		int mode = RSQLS_Hand.Opt("rsqls_readout", p, 0);
 		int h = (rangeM[0] > 0) ? 0 : 1;
 		if (mode <= 0 || rangeM[h] <= 0 || pmo.Health <= 0)
 		{
-			Hide(readout);
-			readM = 0;
+			HideReadout();
+			readM = 0; readTxt = "";
 			return;
 		}
-		readout = Ensure(readout, "RSQLS_Readout");
-		if (!readout) return;
-		bool was = !readout.bINVISIBLE;
-		Vector3 at;
-		double sc = 1.0;
-		if (mode == 2 && spot[h] && !spot[h].bINVISIBLE)
-		{
-			at = spot[h].pos + (0, 0, 4 + rangeM[h] * 0.6);
-			sc = clamp(rangeM[h] / 4.0, 1.0, 8.0);
-		}
-		else
-			at = RSQLS_Hand.Grip(pmo, h) + RSQLS_Hand.GunOffset(pmo, h, 0.08, 0.09, 0.0);
-		Put(readout, was, at);
-		Vector3 eye = (pmo.pos.x, pmo.pos.y, p.viewz);
-		Vector3 d = eye - at;
-		readout.Angle = VectorAngle(d.x, d.y);
-		readout.Pitch = -atan2(d.z * RSQLS_Hand.Ps(), d.xy.Length());
-		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0) * RSQLS_A11y.Text();   // RSQ_Accessibility's Text Size
-		readout.Scale = (sc, sc);
 		readM = rangeM[h];
 		readU = rangeU[h];
 		readRgb = rangeRgb[h];
-	}
+		int units = RSQLS_Hand.Opt("rsqls_readout_units", p, 0);
+		String num, unit;
+		if (units == 1) { num = String.Format("%.0f", readM * 3.28084); unit = "ft"; }
+		else if (units == 2) { num = String.Format("%.0f", readU); unit = "u"; }   // the trace's own map units (11-10: room metres x 34 read short on steep shots)
+		else { num = readM < 10 ? String.Format("%.1f", readM) : String.Format("%.0f", readM); unit = "m"; }
+		readTxt = num .. " " .. unit;
 
-	override void UiTick()
-	{
-		let cv = TexMan.GetCanvas("RSLRANGE");
-		if (!cv) return;
-		cv.Clear(0, 0, 128, 32, Color(255, 0, 0, 0));
-		if (readM <= 0) return;
-		let pp = players[consoleplayer];
-		int units = RSQLS_Hand.Opt("rsqls_readout_units", pp, 0);
-		String txt;
-		if (units == 1) txt = String.Format("%.0f ft", readM * 3.28084);
-		else if (units == 2) txt = String.Format("%.0f u", readU);   // the trace's own map units (11-10: room metres x 34 read short on steep shots)
-		else txt = readM < 10 ? String.Format("%.1f m", readM) : String.Format("%.0f m", readM);
-		double tw = SmallFont.StringWidth(txt) * 2.0;
-		cv.DrawText(SmallFont, Font.CR_WHITE, (128 - tw) * 0.5, 16 - SmallFont.GetHeight(), txt,
-			DTA_ScaleX, 2.0, DTA_ScaleY, 2.0, DTA_Color, Color(255, (readRgb >> 16) & 255, (readRgb >> 8) & 255, readRgb & 255));
+		if (!readTexFound)
+		{
+			readTexFound = true;
+			String cs = "0123456789.mftu";
+			for (int i = 0; i < int(cs.Length()); i++)
+			{
+				int c = cs.ByteAt(i);
+				readTex[c] = TexMan.CheckForTexture(String.Format("RSLN%03d", c), TexMan.Type_Any);
+			}
+		}
+
+		// where: as the old screen (By the Gun: 8 cm up the barrel and 9 cm over the grip; At the Dot: 4 units + 0.6 a
+		// metre over the dot, x1 to x8 with the distance), with two fixes the rig asked for (11-10, LS_READOUT_*):
+		bool atDot = mode == 2 && spot[h] && !spot[h].bINVISIBLE;
+		double sc = atDot ? clamp(rangeM[h] / 4.0, 1.0, 8.0) : 1.0;
+		sc *= RSQLS_Hand.Num("rsqls_readout_size", p, 1.0) * RSQLS_A11y.Text();   // RSQ_Accessibility's Text Size
+		double ps = RSQLS_Hand.Ps();
+		double digitU = READ_DIGIT_U * sc;
+		double pxU = digitU / DIGIT_PX;             // map units a glyph pixel
+		Vector3 eye = (pmo.pos.x, pmo.pos.y, p.viewz);
+		Vector3 at;
+		if (atDot)
+		{
+			// pulled a little toward your eye so a wall's face never cuts it, and when the dot is on a ceiling (a steep
+			// shot: over the dot was inside the ceiling, never seen) it goes UNDER the dot instead
+			Vector3 onDot = spot[h].pos;
+			Vector3 te = eye - onDot;
+			double tl = te.Length();
+			if (tl > 0.01) onDot += te * (min(2.0 + tl * 0.02, tl * 0.5) / tl);
+			double lift = 4 + rangeM[h] * 0.6;
+			at = onDot + (0, 0, lift + digitU * 0.6 / ps);
+			let sec = level.PointInSector(at.xy);
+			if (sec && at.z + digitU / ps > sec.ceilingplane.ZatPoint(at.xy))
+			{
+				at = onDot - (0, 0, lift + digitU * 0.6 / ps);
+				double fl = sec.floorplane.ZatPoint(at.xy);
+				if (at.z - digitU / ps < fl) at.z = fl + digitU / ps;
+			}
+		}
+		else
+			at = RSQLS_Hand.Grip(pmo, h) + RSQLS_Hand.GunOffset(pmo, h, 0.08, 0.09, 0.0) + (0, 0, digitU * 0.6 / ps);
+		// across your line of sight, as Score's wrist does
+		Vector2 v = at.xy - pmo.pos.xy;
+		double vl = v.Length();
+		Vector2 right = vl > 0.5 ? (v.y, -v.x) / vl : (sin(pmo.angle), -cos(pmo.angle));
+
+		// the row: each glyph its own width, the space a gap; centred
+		int n = 0;
+		double wsum = 0;
+		int codes[READ_N];
+		double wid[READ_N];
+		bool gapBefore[READ_N];
+		bool gap = false;
+		for (int i = 0; i < int(readTxt.Length()) && n < READ_N; i++)
+		{
+			int c = readTxt.ByteAt(i);
+			if (c == 32) { gap = true; continue; }
+			if (c < 0 || c >= 128 || !readTex[c].IsValid()) continue;
+			Vector2 sz = TexMan.GetScaledSize(readTex[c]);
+			codes[n] = c; wid[n] = sz.x * pxU; gapBefore[n] = gap; gap = false;
+			wsum += wid[n] + (gapBefore[n] ? READ_GAP * digitU : 0);
+			n++;
+		}
+		bool was = readShown;
+		double x = -wsum * 0.5;
+		// By the Gun the row starts beside the gun, on the hand's outer side, not across it (rig 11-10: held up, the
+		// gun hid the first digit when the row was centred on the old spot): its near edge READ_CLEAR_M past the gun as
+		// you see it, the gun's muzzle taken through your eye onto the row's own depth
+		if (!atDot)
+		{
+			Vector2 fwd = vl > 0.5 ? v / vl : (cos(pmo.angle), sin(pmo.angle));
+			Vector2 e2 = eye.xy;
+			Vector3 grip = RSQLS_Hand.Grip(pmo, h);
+			double depth = max((at.x - e2.x) * fwd.x + (at.y - e2.y) * fwd.y, 1.0);
+			double outer = ((grip.x - e2.x) * right.x + (grip.y - e2.y) * right.y) >= 0 ? 1.0 : -1.0;
+			// the drawn beam's start is the drawn gun's muzzle (beam.zs); the grip is the controller, which BD22 VR's
+			// guns are drawn beside (rig 11-10: 5 cm off as seen), so it stands in only with no beam
+			Vector2 gunAt = ((beamMask >> h) & 1) ? lineAt[h].xy : grip.xy;
+			double edge = outer * ReadSeen(gunAt - e2, fwd, right) * depth;
+			edge += READ_CLEAR_M * RSQLS_Hand.Upm();
+			x = outer > 0 ? edge : -edge - wsum;
+		}
+		for (int g = 0; g < READ_N; g++)
+		{
+			double cx = 0;
+			if (g < n)
+			{
+				if (gapBefore[g]) x += READ_GAP * digitU;
+				cx = x + wid[g] * 0.5;
+				x += wid[g];
+			}
+			for (int l = 0; l < READ_LAYERS; l++)
+			{
+				int k = g * READ_LAYERS + l;
+				let q = readGlyph[k];
+				if (g >= n) { if (q) q.bINVISIBLE = true; continue; }
+				Vector3 pos = at + (right.x * cx, right.y * cx, 0);
+				if (!q)
+				{
+					q = Actor.Spawn("RSQLS_ReadoutGlyph", pos, NO_REPLACE);
+					readGlyph[k] = q;
+					if (!q) continue;
+					q.A_SetRenderStyle(1.0, STYLE_AddShaded);
+				}
+				Put(q, was && !q.bINVISIBLE, pos);
+				q.picnum = readTex[codes[g]];
+				q.Scale = (pxU, pxU / ps);           // the font's own shape: undo the world's 1.2 vertical stretch
+				q.SetShade(readRgb);
+				q.bINVISIBLE = false;
+			}
+		}
+		readShown = n > 0;
 	}
 
 	override void WorldUnloaded(WorldEvent e)

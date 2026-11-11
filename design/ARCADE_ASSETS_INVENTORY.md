@@ -24,9 +24,9 @@ decoded there; nothing copied by hand): `design/mockups/fonts/font_*.png` and `c
      banners): `VisualRewards/pk3/zscript/rsqthp/damnums/glyphs.zs:3-14`, `events.zs:63`.
   4. **Voxels baked on the hand** (Gun Cards: every digit and letter a voxel drawn as a HUD model at the hand):
      `GunCards/zscript/rsqgc/card.zs:10-17`; 16,442 `.kvx` files in `GunCards/voxels/` (counted).
-- The one canvas still in the series: RSQ LaserSight's range readout writes canvas `RSLRANGE` in SmallFont
-  (`LaserSight/zscript/rsqls/sight.zs:49-50, 1059-1071`). By the rule above it should be black in VR **(inference;
-  not checked here)**.
+- No canvas is left in the series. RSQ LaserSight's range readout was a canvas (`RSLRANGE`) and was never seen in VR
+  (rig P4, 11-10, L5); it is billboard glyphs now, kind 2 above (`LaserSight/zscript/rsqls/sight.zs`, THE RANGE
+  READOUT; `design/rigtest_2026-11-10/RESULTS_LSREADOUT.md`).
 
 ## 1. Fonts (files, glyphs, look, users, VR path)
 
