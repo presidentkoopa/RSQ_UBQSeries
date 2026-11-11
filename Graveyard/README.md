@@ -266,8 +266,8 @@ machine's store in a netgame, not only the presser's (m8f's design).
 - **No hard links.** Legion of Bones, RSQ Score, RSQ Miniboss and RSQ Accessibility are found by name at run time; the
   pack loads and plays alone.
 - **The folder ships** as `RSQ_Graveyard.pk3` (`tools/build_all.py`), with the licence (`copying.txt`), `credits.txt`
-  and m8f's `Readme.md`. Not in the pk3: `tools/` (the Bones table generator, the rig tests), this draft, `.gitignore`
-  and `add-ons/`.
+  and this README (it replaced m8f's `Readme.md` on 11-10; his is in the original release at github.com/mmaulwurff/graveyard).
+  Not in the pk3: `tools/` (the Bones table generator, the rig tests), `.gitignore` and `add-ons/`.
 - **m8f's soulsphere add-on** (`add-ons/soulsphere`) stays in the source folder as m8f made it, but it is not part of
   the pk3 and nothing loads it.
 
