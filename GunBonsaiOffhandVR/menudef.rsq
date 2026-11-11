@@ -82,6 +82,9 @@ OptionMenu "RSQ_MeleeOptions"
 	Option "Single HUD Follows", "bonsai_vr_hud_hand", "RSQ_HudHand", "bonsai_vr_dual_hud", 0, 1
 	Option "Berserk Meter Gauge", "rsqgb_berserk_gauge", "OnOff"
 	Option "Gauge Animation", "rsqgb_gauge_anim", "OnOff"
+	// the LegenDoom HUD, direction D (rsq/ui/legendoom.zs): each off brings LegenDoom's own back
+	Option "LegenDoom: Pickup Card", "rsqgb_ld_card", "OnOff"
+	Option "LegenDoom: Gauge Row", "rsqgb_ld_row", "OnOff"
 	StaticText " "
 	StaticText "HUD Position", 1
 	Slider "Main HUD Across", "bonsai_vr_hud_main_x", 0.0, 1.0, 0.01, 2, "bonsai_vr_dual_hud"

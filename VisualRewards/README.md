@@ -214,6 +214,12 @@ star burst in a colour, at the monster's middle (RSQ Miniboss: a thrall's death)
 
 *[GIF to come: GUARD! popping over a shielded miniboss, TARGET! held over its thralls, a pop as a thrall dies]*
 
+**LEGENDARY** (LegenDoom HUD, direction D, owner 11-11 15:30). A LegenDoom legendary shows no word while it is at full
+strength. When it rises at half health (LegenDoom refills it and turns it red, with its pentagram and after-images), the word
+**LEGENDARY** goes up over it and stays until it dies. It is the SOTN style A word: each letter's top half in one gold, its
+bottom half in a lighter gold, on a dark box. Minibosses and thralls never get it (their GUARD! and TARGET! are unchanged).
+Without LegenDoom nothing happens. Its own row, **LegenDoom: LEGENDARY Word**, turns it off (LegenDoom itself shows nothing there).
+
 ---
 
 ## Scene music
@@ -269,7 +275,7 @@ While you are DOWN in RSQ SlowMo:
 - **Brutal Doom:** its head hits are HEADSHOTs, its damage types colour the numbers, its helpers and dying bodies get no
   bar, number or bits.
 - **LegenDoom and Champions:** a LegenDoom candidate does not give itself away with an overheal before it turns; a turned
-  legendary wears a gem. Over a champion the bar sits above Champions' icon.
+  legendary wears a gem and the word LEGENDARY. Over a champion the bar sits above Champions' icon.
 - **coldcite's Top HP Bars:** loaded too, this pack takes over (one set of bars), and his HUD Options entry opens this
   menu when his pk3 loads first.
 - **Mods written for damnums:** their damage-type colours are read too.
@@ -287,7 +293,7 @@ While you are DOWN in RSQ SlowMo:
 | Damage Numbers | Damage Numbers (On) · Numbers For (Monsters Only; All Shootable) · Number Font (JFO Metal; Ermac, Classic Doom, Classic Doom (small)) · Number Size (1.00) · Word Size (1.00) · Text Quality (Quest; PCVR) · Hit Colours (By Damage Type; By Hit Strength, Classic (below), 17 colours, Random) · Classic Colour (Default, and damnums' 21 colours) · Classic Type Colours (On) · Total Colours (Follow Combo; 17 colours, Random) · Combo Colours (White Yellow Orange Red; five more ramps, Random) · Headshot Colour (Gold) · Pop and Settle (On) · Motion Without Pop (Toss; Float) · Size by Hit (Off) · Grow with Distance (Off) · Running Total (On) · Kill Slam (On) · Combo Counter (On) · Combo Shake (On) · Overkill Word (Off) · Headshot Word (On) · Headshot Flash (On) · Headshot Cycling (On) · Shotgun Spray (Off) · Gains on You (On) · Freeze in Hit-Stop (On) · Numbers in Slow-Mo (World Time; Your Time) · Out of Your Face (On) · Clear of Walls (On) · Most Numbers (12; 6, 24, 48) |
 | Kill Rewards | Kill Rewards (On) · Bits per Kill (Standard (1 per 10); Few (1 per 20 health), Many (1 per 5), Custom (Test and Debug)) · Boss Fountain (x3; x1, x5) · What Drops (Custom (Test and Debug); Even Mix, Mostly Health, Mostly Armour, Mostly Ammo) · Bits Vanish After (7 s; Never, 15 s, 30 s, 1 min) · Bits Vanish As (Blink Out; Fade Out) · Ammo Bits Give (Any Gun I Carry; The Gun in Hand) · Bits Fly to Me (2.0 m, 0 to 4) |
 | Level-Up | Player Level-Up (On) · Level-Up Slow-Mo (Off) · Band Colour (Gold) · Text Colour (Gold) · Weapon Level-Up (On) · Weapon Tag Colour (Gold) |
-| Arrivals and Words | Arrival Beams (On) · Monster Words (On) · Pops (On) · Scene Music (On) · Scene Music Volume (1.00) · Scene Crossfade (2.0 s) |
+| Arrivals and Words | Arrival Beams (On) · Monster Words (On) · LegenDoom: LEGENDARY Word (On) · Pops (On) · Scene Music (On) · Scene Music Volume (1.00) · Scene Crossfade (2.0 s) |
 | Test and Debug | HP Bars: Far Size (2.00) · Height (0.10) · Limit Distance (1536). Kill Rewards: Drop Mode (By Health; Range) · Health per Bit (10) · Drop Chance (50) · Mix: Health (15) · Mix: Armour (20) · Mix: Ammo (65) · Ammo Type 1 Counts (On) · Ammo Type 2 Counts (Off) · Range: Fewest (1) · Range: Most (3) · Range: Random (On) · Debug Log (Off) |
 
 The page ends with **Reset All**: every setting named on this page and on Test and Debug goes back to its default.
@@ -306,7 +312,9 @@ rows are each player's own.
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md`, `RESULTS_P2.md`) | **V1:** the miniboss music stopped at a map change, and no track came back until the next call-in. **V2:** the music volume changed only while fading in and out, untouched in the 800-odd tics between. **The scene music** started once for a landing that retried twice (B1). **No extra multiplier for a miniboss fight:** Kill Rewards burst the miniboss into 25 bits (83 hp x 3 / 10), not tripled again (B6). All logs (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **AMMO FULL** as a word over a full gun caught by RSQ Distance Grab (`P2F_log.txt`, `P2_D3_ammo_full_dropped_at_feet_after_fix.jpg`) |
 | **rig only, not headset-confirmed** (2026-11-09, 19:04 run) | The four arrival beams on the rig's full series load order (doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded, then the series): each called on a monster with its own sound starting on the beam's first tic (V1 1.16 s, V2 1.26 s, V3 1.00 s, V4 2.78 s) and the monster revealed on tic 7, 12, 19 and 31; frames of V1, V3 outdoors and V4 (above). In the same run: the DOWN tie-ins logged ("+1.5s" and "+0.5s", REVENGE, REVIVE at the middle and top tier sizes), HP bars drawn over monsters in the frames, and no script error from this pack. That build was the one before the evening's changes (scene music rewritten for DOWN, DOWN's track, the Kill Rewards banked-bit fix); those are code only |
 | **rig only, not headset-confirmed** (earlier builds) (committed by 2026-11-05) | HP bar colour sets and markers, damage-number jets, totals, combo, kill and overkill, headshots, the level-up band, the weapon tag, gains flying to the wrist, Kill Rewards after its move into this pack (frames and logs in test/evidence). The code has changed since; they are not proof of the current build |
+| **rig only, not headset-confirmed** (2026-11-11, rig run LDH1: the owner's order with LegenDoom 3.0 right after doom2, a probe that spawns a legendary and hurts it; `design/rigtest_2026-11-10/RESULTS_LDH.md`) | **LEGENDARY:** no word over the legendary at full health (`evidence/LDH_1_legendary_full_health_no_word.jpg`); the word goes up the moment it rises at half health, in the two-tone SOTN gold, and stays over it (`LDH_2_risen_LEGENDARY.jpg`, `LDH_log.txt`: held from t150, rose at t146-150) |
 | **Headset-confirmed** | Nothing yet |
+| **code only, not shown** (2026-11-11, LegenDoom HUD D) | LEGENDARY's colour-blind colour, its LegenDoom: LEGENDARY Word row turned off, no word over a miniboss or thrall that LegenDoom made legendary |
 | **code only, not shown** | The 11-10 changes: the Miniboss naming. The icons on the right of the bar when markers are on the left, and the mutation icon. Monster words and pops; V2's frames and V3 indoors; the scene music for DOWN, and the miniboss track heard (only logged, above); battery bits; bits banking into the DOWN plate; Photosensitive Mode's versions of everything; netplay; everything else on this page not listed above |
 | **code only, not shown** (2026-11-11, RSQ Monsters' ladder renumbered by strength; owner: "no rig test, code only until i say") | The tier gems (RSYT A to M) re-ordered to the new tier numbers, so each colour still shows its own gem |
 | **not yet run** | Nothing from the batched rig test: V1 to V3 have run (above) |

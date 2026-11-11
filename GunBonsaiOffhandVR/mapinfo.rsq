@@ -1,5 +1,5 @@
 // Gun Bonsai VR patch -- the melee upgrades' event handlers.
 GameInfo
 {
-	AddEventHandlers = "RSQ_MeleeHandler", "RSQ_HookHandler", "RSQUI_Handler", "RSQ_StyleXP", "RSQ_StockHandler", "RSQUI_Gauges", "RSQ_DebugGrant"
+	AddEventHandlers = "RSQ_MeleeHandler", "RSQ_HookHandler", "RSQUI_Handler", "RSQ_StyleXP", "RSQ_StockHandler", "RSQUI_Gauges", "RSQ_DebugGrant", "RSQGB_LDHud"
 }

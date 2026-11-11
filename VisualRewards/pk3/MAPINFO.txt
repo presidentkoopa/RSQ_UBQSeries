@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "RSQTHP_Handler", "RSQTHP_Voxels", "RSQTHP_DamNumHandler", "RSQ_KRHandler", "RSQVR_FxHandler", "RSQVR_Scenes"
+	AddEventHandlers = "RSQTHP_Handler", "RSQTHP_Voxels", "RSQTHP_DamNumHandler", "RSQ_KRHandler", "RSQVR_FxHandler", "RSQVR_Scenes", "RSQVR_LDWord"
 }

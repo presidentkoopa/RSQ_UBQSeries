@@ -47,3 +47,4 @@ gains features when another is loaded.
 | The last punch, the Guard, which mod takes an off-grip press (`RSQML_Service`) | Melee | Gun Bonsai VR (glove upgrades), Distance Grab |
 | Monster markers | VisualRewards (the HP bars) | reads the others |
 | Arrival beams (a monster another mod brings in arrives on a beam, hidden until its reveal) and monster words (GUARD!, TARGET!: one-off and held words over a monster in RS Score's font) and pops (`RSQVR_Service` "beam", "word", "word.hold", "word.clear", "pop") | VisualRewards (rsqvr/beams.zs, words.zs) | Miniboss (the Bossfight's arrival, its words and thrall-kill pops) |
+| The LegenDoom HUD (direction D, owner 11-11): the pickup card and the row under the gun hand's gauge; LEGENDARY over a risen legendary | Gun Bonsai VR (rsq/ui/legendoom.zs: card, row); VisualRewards (rsqvr/ldword.zs: the word) | reads LegenDoom and BD22 VR's LD mode by name |

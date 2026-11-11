@@ -44,6 +44,12 @@ class RSQVR_Word play
 	double size;
 	bool held, clearing;
 	int clearT;
+	// the SOTN look (LegenDoom HUD direction D, owner 11-11 15:30): two tones, rgb on the top half of each letter and rgb2 on
+	// the bottom, the font's outline near-black (SOTN style A's dark box); each letter is two quads, gl (top) and gl2 (bottom)
+	bool sotn;
+	int rgb2;
+	Name tag;              // who asked (nothing for the service's words; 'legendary' for LEGENDARY, its own user row)
+	Array<RSQVR_WGlyph> gl2;
 	Vector3 lastPos;
 	double lastH;
 	Array<RSQVR_WGlyph> gl;
@@ -85,7 +91,9 @@ class RSQVR_FxHandler : EventHandler
 	transient Array<TextureID> glyphTex;
 	transient Array<TextureID> popFrames;
 	transient int readAt;
-	transient bool wordsOn, popsOn, photo;
+	transient bool wordsOn, popsOn, photo, ldWordOn;
+	transient Array<TextureID> halfTex;      // QVTnnn (top halves) then QVBnnn (bottom halves), 33..96 (TEXTURES.rsqvrsotn)
+	transient int cbMode;
 	transient double wordSize, far;
 
 	static RSQVR_FxHandler Get() { return RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler")); }
@@ -165,6 +173,31 @@ class RSQVR_FxHandler : EventHandler
 		return id;
 	}
 
+	// The SOTN look's colour (design/mockups/sotn_words/mock.py paint + boxed, as make_mockups.py sotn() draws LEGENDARY): the
+	// font's outline and anything darker (palette brightness <= 75) near-black, the SOTN dark box; the lit face the colour at
+	// 0.55 + 0.45 x its brightness, x 1.15. Cached per colour beside the others.
+	TranslationID TransSotn(int rgb)
+	{
+		rgb &= 0xFFFFFF;
+		int key = rgb | 0x2000000;
+		for (int i = 0; i < tKey.Size(); i++) if (tKey[i] == key) return tId[i];
+		if (palLum.Size() != 256) ReadPal();
+		Translation tr;
+		double r = (rgb >> 16) & 255, g = (rgb >> 8) & 255, b = rgb & 255;
+		for (int i = 0; i < 256; i++)
+		{
+			double l = palLum[i];
+			if (l <= 75) { tr.colors[i] = Color(255, 8, 8, 10); continue; }
+			double k = (0.55 + 0.45 * l / 255.0) * 1.15;
+			tr.colors[i] = Color(255, clamp(int(r * k), 0, 255), clamp(int(g * k), 0, 255), clamp(int(b * k), 0, 255));
+		}
+		tr.colors[0] = Color(0, 0, 0, 0);
+		TranslationID id = tr.AddTranslation();
+		tKey.Push(key);
+		tId.Push(id);
+		return id;
+	}
+
 	// a sprite name's number (GetSpriteIndex searches every sprite: once, then kept)
 	int Spr(int i)
 	{
@@ -223,6 +256,20 @@ class RSQVR_FxHandler : EventHandler
 		let w = NewWord(txt, rgb, a);
 		w.held = true;
 		w.size = clamp(sizeArg, 0.3, 4.0);
+		return 1;
+	}
+
+	// A held word in the SOTN look: top and bottom colours, a tag for its own user row (DrawStep). LegenDoom's LEGENDARY
+	// (owner 11-11 15:30, ldword.zs) is the only one so far.
+	int WordHoldSotn(String txt, int top, int bot, double sizeArg, Actor a, Name tag)
+	{
+		if (WordHold(txt, top, sizeArg, a) != 1) return 0;
+		txt = txt.MakeUpper();
+		for (int i = 0; i < words.Size(); i++)
+		{
+			let w = words[i];
+			if (w && w.held && w.who == a && w.text == txt) { w.sotn = true; w.rgb2 = bot & 0xFFFFFF; w.tag = tag; }
+		}
 		return 1;
 	}
 
@@ -290,6 +337,8 @@ class RSQVR_FxHandler : EventHandler
 		if (!w) return;
 		for (int i = 0; i < w.gl.Size(); i++) Release(w.gl[i]);
 		w.gl.Clear();
+		for (int i = 0; i < w.gl2.Size(); i++) Release(w.gl2[i]);
+		w.gl2.Clear();
 	}
 	void FreePop(RSQVR_Pop p) { if (p && p.g) { Release(p.g); p.g = null; } }
 
@@ -301,6 +350,17 @@ class RSQVR_FxHandler : EventHandler
 			for (int i = 32; i <= 96; i++) glyphTex.Push(TexMan.CheckForTexture(String.Format("QVW%03d", i), TexMan.Type_Any));
 		}
 		return glyphTex[clamp(c, 32, 96) - 32];
+	}
+	// the SOTN halves of a character: bottom false the top half (QVTnnn), true the bottom (QVBnnn)
+	TextureID SotnTex(int c, bool bottom)
+	{
+		if (halfTex.Size() != 130)
+		{
+			halfTex.Clear();
+			for (int i = 32; i <= 96; i++) halfTex.Push(TexMan.CheckForTexture(String.Format("QVT%03d", i), TexMan.Type_Any));
+			for (int i = 32; i <= 96; i++) halfTex.Push(TexMan.CheckForTexture(String.Format("QVB%03d", i), TexMan.Type_Any));
+		}
+		return halfTex[clamp(c, 32, 96) - 32 + (bottom ? 65 : 0)];
 	}
 	TextureID PopTex(int f)
 	{
@@ -333,6 +393,10 @@ class RSQVR_FxHandler : EventHandler
 		photo = RSQTHP_A11y.Photo();
 		c = CVar.GetCvar('rsqthp_dn_wordsize', players[consoleplayer]);
 		wordSize = c ? clamp(c.GetFloat(), 0.25, 4.0) : 1.0;
+		c = CVar.GetCvar('rsqvr_ldword', players[consoleplayer]);
+		ldWordOn = !c || c.GetBool();
+		cbMode = 0;
+		{ Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) { let cb = CVar.FindCVar("rsqa_colorblind"); if (cb) cbMode = clamp(cb.GetInt(), 0, 4); } }
 		let cf = CVar.FindCVar('rsqthp_far');
 		far = cf ? max(1.0, cf.GetFloat()) : 2.0;
 	}
@@ -364,7 +428,9 @@ class RSQVR_FxHandler : EventHandler
 		for (int i = 0; i < words.Size(); i++)
 		{
 			let w = words[i];
-			if (!wordsOn || !cam) { HideWord(w); continue; }
+			// LEGENDARY has its own row (rsqvr_ldword), the service's words Monster Words (rsqvr_words)
+			bool on = w.tag == 'legendary' ? ldWordOn : wordsOn;
+			if (!on || !cam) { HideWord(w); continue; }
 			double heldUp = 0;
 			for (int j = 0; j < words.Size(); j++)
 			{
@@ -415,6 +481,7 @@ class RSQVR_FxHandler : EventHandler
 	void HideWord(RSQVR_Word w)
 	{
 		for (int i = 0; i < w.gl.Size(); i++) if (w.gl[i]) w.gl[i].Alpha = 0;
+		for (int i = 0; i < w.gl2.Size(); i++) if (w.gl2[i]) w.gl2[i].Alpha = 0;
 	}
 
 	void DrawWord(RSQVR_Word w, Vector3 eye, double heldUp, double ps)
@@ -422,6 +489,7 @@ class RSQVR_FxHandler : EventHandler
 		int n = int(w.text.Length());
 		// its glyphs (one per character that has one; spaces only advance)
 		while (w.gl.Size() < n) w.gl.Push(null);
+		if (w.sotn) while (w.gl2.Size() < n) w.gl2.Push(null);
 		double u = Unit(w, eye);
 		// the life: pop (overshoot) over 4 tics; a held big word pulses (about once a second)
 		double popK = w.t == 0 ? 0.45 : (w.t == 1 ? 1.35 : (w.t == 2 ? 1.15 : 1.0));
@@ -439,6 +507,21 @@ class RSQVR_FxHandler : EventHandler
 		// colour: Castlevania's flicker to white for the first 14 tics (2 tics each); never with Photosensitive Mode
 		bool white = !w.held && !photo && w.t < 14 && ((w.t / 2) & 1) == 1;
 		TranslationID tr = Trans(white ? 0xFFFFFF : w.rgb, true);
+		TranslationID trTop, trBot;
+		if (w.sotn)
+		{
+			// colour-blind play (RSQ Accessibility): the series' COULD colour on top, the same lightened halfway to white below
+			int top = w.rgb, bot = w.rgb2;
+			if (cbMode)
+			{
+				static const int CB[] = { 0xFFB000, 0xFFB000, 0xFF4040, 0xFFFF00 };
+				top = CB[cbMode - 1];
+				int r = (top >> 16) & 255, g = (top >> 8) & 255, b = top & 255;
+				bot = (((r + 255) / 2) << 16) | (((g + 255) / 2) << 8) | ((b + 255) / 2);
+			}
+			trTop = TransSotn(top);
+			trBot = TransSotn(bot);
+		}
 		// where: above the actor's HP bar and markers, the held stack below it
 		Vector3 anchor = w.lastPos + (0, 0, w.lastH * 1.1 + 10 + heldUp + rise + u * RSQVR_BeamData.FONT_H * 0.5);
 		Vector3 d = eye - anchor;
@@ -453,12 +536,12 @@ class RSQVR_FxHandler : EventHandler
 			int c = Code(w.text.ByteAt(i));
 			double adv = RSQVR_BeamData.FONT_ADV(c), gw = RSQVR_BeamData.FONT_W(c);
 			let g = w.gl[i];
-			if (c == 32 || gw <= 0) { if (g) g.Alpha = 0; cx += adv; continue; }
+			if (c == 32 || gw <= 0) { if (g) g.Alpha = 0; if (w.sotn && w.gl2[i]) w.gl2[i].Alpha = 0; cx += adv; continue; }
 			bool fresh = false;
 			if (!g) { g = Acquire(anchor); w.gl[i] = g; fresh = true; if (!g) { cx += adv; continue; } }
-			TextureID tx = FontTex(c);
+			TextureID tx = w.sotn ? SotnTex(c, false) : FontTex(c);
 			if (g.Texture != tx) g.Texture = tx;
-			g.Translation = tr;
+			g.Translation = w.sotn ? trTop : tr;
 			g.SetRenderStyle(STYLE_Translucent);     // (a pooled glyph may last have been a pop, drawn Add)
 			double sc = k / RSQVR_BeamData.FONT_K;
 			g.Scale = (sc, sc);
@@ -467,6 +550,25 @@ class RSQVR_FxHandler : EventHandler
 			// each glyph a hair nearer than the one before (see-through quads at one depth flicker in the headset)
 			Vector3 at = anchor + toEye * (i * 0.03);
 			g.Put(at, fresh ? at : g.Pos);
+			if (w.sotn)
+			{
+				// the bottom half: the same place, size and offset (its cell is the full glyph's), a hair nearer still
+				let g2 = w.gl2[i];
+				bool fresh2 = false;
+				if (!g2) { g2 = Acquire(anchor); w.gl2[i] = g2; fresh2 = true; }
+				if (g2)
+				{
+					TextureID tb = SotnTex(c, true);
+					if (g2.Texture != tb) g2.Texture = tb;
+					g2.Translation = trBot;
+					g2.SetRenderStyle(STYLE_Translucent);
+					g2.Scale = (sc, sc);
+					g2.Offset = g.Offset;
+					g2.Alpha = g.Alpha;
+					Vector3 at2 = at + toEye * 0.015;
+					g2.Put(at2, fresh2 ? at2 : g2.Pos);
+				}
+			}
 			cx += adv;
 		}
 	}

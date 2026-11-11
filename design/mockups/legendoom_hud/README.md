@@ -146,3 +146,11 @@ and the info screen (L).
 - Picked (owner 11-11 15:3x): the pickup card is **V3, the SOTN shimmer title**; after the card folds away the power lives
   in **option 1, the row under the gun hand's Gun Bonsai VR gauge** (icon, name, X3 with its drain line, a rarity tick).
 - The design is settled; building it is the next step (not started).
+
+## Built (2026-11-11)
+- The pickup card V3 and the gauge row (option 1) are in RSQ Gun Bonsai VR (`GunBonsaiOffhandVR/rsq/ui/legendoom.zs`). This
+  README names no home for the HUD, so it went to the pack that draws the gauges.
+- LEGENDARY over a risen legendary is in RSQ VisualRewards, the home of monster words (`VisualRewards/pk3/zscript/rsqvr/ldword.zs`;
+  the two-tone SOTN look added to `words.zs`).
+- One rig run, rig only, not headset-confirmed: `design/rigtest_2026-11-10/RESULTS_LDH.md`. LegenDoom's buff row at the top
+  cannot be hidden from ZScript (open there). The words over the drop were not built.

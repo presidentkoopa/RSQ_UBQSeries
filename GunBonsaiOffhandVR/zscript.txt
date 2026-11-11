@@ -33,3 +33,4 @@ version "4.14"
 #include "rsq/ui/skin_a_hud.zs"
 #include "rsq/ui/skin_a_menus.zs"
 #include "rsq/ui/gauges.zs"         // the Berserk Meter's gauge (coldcite's HP bar stood on end, 2026-11-02)
+#include "rsq/ui/legendoom.zs"      // the LegenDoom HUD, direction D (owner 11-11 15:30): the pickup card and the gauge row

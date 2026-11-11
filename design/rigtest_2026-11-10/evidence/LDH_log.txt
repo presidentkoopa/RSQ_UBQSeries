@@ -1,0 +1,104 @@
+LDH_SPAWN
+LDH mon spawned Zombieman at -96 1004
+LDH_FULL
+LDH STATE t116 mon Zombieman hp 60 spawn 20 token 1 risen 0
+LDH STATE t116 ready Rifle off rsq_hands powers 
+LDH_HURT
+LDH HURT t146 mon Zombieman hp 28 spawn 20 token 1 risen 0
+LDH HURT t146 ready Rifle off rsq_hands powers 
+LDH WORDS t150 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t155 [LEGENDARY held sotn 1 on Zombieman] 
+LDH STATE t156 mon Zombieman hp 60 spawn 20 token 1 risen 1
+LDH STATE t156 ready Rifle off rsq_hands powers 
+LDH WORDS t160 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t165 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t170 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t175 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t180 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t185 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t190 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_RISEN
+LDH WORDS t195 [LEGENDARY held sotn 1 on Zombieman] 
+LDH STATE t198 mon Zombieman hp 60 spawn 20 token 1 risen 1
+LDH STATE t198 ready Rifle off rsq_hands powers 
+LDH WORDS t200 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t205 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t210 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_DROP
+RSLD pickup: BDoomer took legendary Chaingun Murderous (Epic)
+LDH DROP t215 mon Zombieman hp 60 spawn 20 token 1 risen 1
+LDH DROP t215 ready Rifle off rsq_hands powers LDChaingunEffect_Murderous 
+LDH WORDS t215 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t220 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t225 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t230 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t235 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t240 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t245 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t250 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_CARD
+LDH WORDS t255 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t260 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t265 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t270 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t275 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t280 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t285 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t290 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t295 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t300 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t305 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t310 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t315 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t320 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t325 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t330 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_FOLD
+LDH WORDS t335 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t340 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t345 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t350 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t355 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t360 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t365 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t370 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_ROW
+LDH WORDS t375 [LEGENDARY held sotn 1 on Zombieman] 
+LDH STATE t378 mon Zombieman hp 60 spawn 20 token 1 risen 1
+LDH STATE t378 ready Rifle off rsq_hands powers LDChaingunEffect_Murderous 
+LDH WORDS t380 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t385 [LEGENDARY held sotn 1 on Zombieman] 
+LDH MURDER t387 mon Zombieman hp 60 spawn 20 token 1 risen 1
+LDH MURDER t387 ready Rifle off rsq_hands powers LDMurderousDamageBuff LDChaingunEffect_Murderous 
+LDH WORDS t390 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t395 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t400 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t405 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t410 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_ROW_X3
+LDH WORDS t415 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t420 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t425 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t430 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t435 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t440 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t445 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t450 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_MENU
+LDH WORDS t455 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t460 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_CARD_OFF
+RSLD pickup: BDoomer took legendary Shotgun Determined (Common)
+LDH DROP t464 mon Zombieman hp 60 spawn 20 token 1 risen 1
+LDH DROP t464 ready Rifle off rsq_hands powers LDShotgunEffect_Determined LDMurderousDamageBuff LDChaingunEffect_Murderous 
+LDH WORDS t465 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t470 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t475 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t480 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t485 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t490 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t495 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t500 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t505 [LEGENDARY held sotn 1 on Zombieman] 
+LDH WORDS t510 [LEGENDARY held sotn 1 on Zombieman] 
+LDH_END

@@ -62,6 +62,8 @@ Code only, not shown, not compiled (after 15:07):
   **LEGENDARY** (with LegenDoom's red pentagram and after-images); minibosses and thralls unchanged (GUARD!/TARGET!);
   pickup card **V3 (SOTN shimmer title)**; afterwards **option 1, a row under the gun hand's Gun Bonsai VR gauge**.
   Champions words PARKED (maybe none needed).
+  **Built 11-11 (after this handoff):** GBOVR `rsq/ui/legendoom.zs` (card, row) and VisualRewards `rsqvr/ldword.zs` (LEGENDARY);
+  one rig run, `design/rigtest_2026-11-10/RESULTS_LDH.md` (rig only; the placement fix after it is code only).
 
 ## Questions still to ask the owner (one at a time)
 1. Miniboss: if RSQ Monsters' Black Boss / White Boss settings are off, may a miniboss still climb to Black / White?

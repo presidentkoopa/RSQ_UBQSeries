@@ -87,6 +87,15 @@ class TFLV_HUD : Object ui {
   // VR PATCH: draw this hand's HUD at its own anchor.
   // 0 = mainhand (top right by default), 1 = offhand (top left).
   void DrawForHand(TFLV_CurrentStats stats, int hand) {
+    CalibrateForHand(hand);
+    lifeSlot = hand ? 1 : 0;
+    DrawHUD(stats);
+  }
+
+  // RSQ PATCH (LegenDoom HUD, owner 11-11 15:30): DrawForHand's placement on its own, so a piece drawn under a hand's
+  // gauge (rsq/ui/legendoom.zs, the gauge row) reads the very box the gauge is drawn in: hudx, hudy, hudw, hudh, fbw,
+  // fbh and mirror after the call. Nothing else changed.
+  void CalibrateForHand(int hand) {
     double x, y, sc, al; uint mi;
     // Scale and alpha stay shared -- two HUDs at different sizes reads as a
     // bug rather than as a choice.
@@ -113,8 +122,13 @@ class TFLV_HUD : Object ui {
       hudx = (hudx <= fbw - hudw) ? (fbw - hudw) - hudx : 0;
       mirror ^= 1;
     }
-    lifeSlot = hand ? 1 : 0;
-    DrawHUD(stats);
+  }
+
+  // RSQ PATCH: the single HUD's placement (Draw's), for the same reason
+  void CalibrateSingle() {
+    double x, y, sc, al; uint mi;
+    [x, y, sc, al, mi] = TFLV_Settings.hud_params();
+    Calibrate(x, y, sc, al, mi);
   }
 
   // RSQ PATCH (owner 11-11): where the hand gauges end, for a HUD placed under them (RSQ Score's line, asked by

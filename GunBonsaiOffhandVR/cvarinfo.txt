@@ -45,6 +45,11 @@ user float bonsai_vr_hud_off_cyclespeed = 1.0;
 user float bonsai_vr_hud_off_gradient = 1.0;
 user float bonsai_vr_hud_off_intensity = 1.0;
 
+// The LegenDoom HUD, direction D (owner 11-11 15:30; rsq/ui/legendoom.zs). Each row off brings LegenDoom's own back:
+// Pickup Card off: LegenDoom's pickup screen shows as LegenDoom draws it, no card. Gauge Row off: no row under the gauge.
+user bool rsqgb_ld_card = true;
+user bool rsqgb_ld_row = true;
+
 // (rsq_hud_shield, the ShieldSaw's third gauge, is gone since 11-11: the owner removed it. A value left in an old ini
 // is ignored.)
 

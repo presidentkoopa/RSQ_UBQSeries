@@ -544,6 +544,31 @@ All done here.
   level makes the whole gauge pulse in brightness, the Colour Cycle and the warming are off.
   **Photosensitive Mode**: no cycling, breathing or flashes; the earned-Berserk pulse stays slow.
 
+### The LegenDoom HUD (direction D)
+
+With LegenDoom loaded, this pack draws LegenDoom's weapon powers in Gun Bonsai VR's style, as the owner chose on 11-11
+(`design/mockups/legendoom_hud/README.md`, "Direction D" and "Owner's decision"):
+
+- **The pickup card.** When you take a LegenDoom weapon power, one Gun Bonsai VR card appears on the HUD for about 3 s, in
+  the power's rarity colour (Common green, Uncommon blue, Rare purple, Epic orange). No key closes it. It shows:
+  - the power's name as a two-tone SOTN word that flashes between two looks;
+  - the rarity and the gun the power is on ("EPIC  RIFLE"): the name of the gun in your hand;
+  - LegenDoom's description (without its joke quote);
+  - LegenDoom's own icon for the power.
+
+  While the card is up, LegenDoom's own pickup screen is taken off the HUD, so Fire no longer has to close it. Its jingle
+  still plays.
+- **The fold.** Then the card shrinks into the row under the gauge of the hand that holds the power's gun.
+- **The gauge row.** Under each hand's gauge, for a gun that carries a power: LegenDoom's icon and the power's name in its
+  rarity colour. While the power's timed buff runs, a drain line runs under the name. For Murderous it also shows X3, its
+  3x damage. A rarity tick runs along the gauge's outer top corner. The row starts at the gauge's octagon and runs
+  outward; where the screen ends first, it slides back in.
+- Not drawn over a menu or the automap. A colour-blind mode draws every rarity in the series' HAVE colour (the card still
+  names the rarity). Photosensitive Mode stops the title flashing.
+- **LegenDoom: Pickup Card** (On) and **LegenDoom: Gauge Row** (On) turn each part off. Pickup Card off brings
+  LegenDoom's own pickup screen back. LegenDoom's buff row at the top of the view always stays (see Status).
+- LEGENDARY over a legendary monster once it rises is RSQ VisualRewards' (its monster words).
+
 ### The screens
 
 With **GBOVR Menus and HUD** on, Gun Bonsai's status screen and level-up menus are replaced by the owner's mockups.
@@ -594,7 +619,8 @@ Off, Gun Bonsai's own menus come back unchanged.
 - **Brutal Doom VR (BD22 VR):** its True Bullets rounds pay the hand that fired them. Its fists are typed melee.
   Cleaver's tiers follow its gib tiers.
 - **LegenDoom and Champions:** "a share of its health" (Knockdown, Executioner, Finisher, High Ground) uses the
-  boosted health these give. Gun Bonsai's own LegenDoom support is untouched.
+  boosted health these give. Gun Bonsai's own LegenDoom support is untouched. LegenDoom's weapon powers get the pickup card
+  and the gauge row (The LegenDoom HUD, above); BD22 VR's LD mode tells this pack which of its guns carry which slot.
 - **SuperPunchOut:** its gloves are melee and can take the Fists tree.
 
 ---
@@ -607,7 +633,7 @@ are under Test and Debug. **Reset All** resets every setting on both pages.
 | Section | Rows |
 |---|---|
 | (top) | Stock Gun Bonsai Upgrades (Silvergun / All; Silvergun) · XP Source (Damage / Style / Both; Damage) · Force Learns From Saber (On) · Force XP Share (50) |
-| HUD | GBOVR Menus and HUD (On) · Ammo and Health Row (On; greyed with GBOVR Menus and HUD off) · Ammo Row and Berserk Gauge Size (1.50) · Dual HUD (On) · Single HUD Follows (Main Hand / Off Hand / Last to Earn XP; Main Hand; greyed with Dual HUD on) · Berserk Meter Gauge (On) · Gauge Animation (On) |
+| HUD | GBOVR Menus and HUD (On) · Ammo and Health Row (On; greyed with GBOVR Menus and HUD off) · Ammo Row and Berserk Gauge Size (1.50) · Dual HUD (On) · Single HUD Follows (Main Hand / Off Hand / Last to Earn XP; Main Hand; greyed with Dual HUD on) · Berserk Meter Gauge (On) · Gauge Animation (On) · LegenDoom: Pickup Card (On) · LegenDoom: Gauge Row (On) |
 | HUD Position (greyed with Dual HUD off) | Main HUD Across (0.99) · Main HUD Down (0.02) · Main HUD Mirror (None / Left-Right / Up-Down / Both; Both) · Off HUD Across (0.01) · Off HUD Down (0.02) · Off HUD Mirror (Up-Down) |
 | HUD Colour Cycle | Main HUD Colour Cycle (On) · Main HUD Cycle Speed (1.0) · Main HUD Cycle Spread (1.0) · Main HUD Cycle Intensity (1.0) · Off HUD Colour Cycle (On) · Off HUD Cycle Speed (1.0) · Off HUD Cycle Spread (1.0) · Off HUD Cycle Intensity (1.0) |
 | Test and Debug | Force Base Strength (0.00) · Grapple XP (1.0) · Style XP Scale (1.0) · Style Player Share (10) · HUD Inset (0.04) · Debug Log: Style XP and Learned Rows (Off) · Debug: Add All · Debug: Add Incremental |
@@ -625,6 +651,9 @@ level-up stores it. **Debug Log: Style XP and Learned Rows** prints the Style XP
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-11, rig run LDH1: the owner's order with LegenDoom 3.0 right after doom2, BD22 VR 2.0.4h's LD mode; a probe hands over an Epic Murderous chaingun-slot drop through LD mode's own pickup; `design/rigtest_2026-11-10/RESULTS_LDH.md`) | **The LegenDoom pickup card** (V3) in Epic orange, "EPIC  RIFLE", LegenDoom's description and icon, the title in its two looks on alternate frames (`evidence/LDH_3_card_look1.jpg`, `LDH_3_card_look2.jpg`). **LegenDoom's own pickup screen not on screen** while the card is up, and **back with LegenDoom: Pickup Card off** (`LDH_7_card_off_legendoom_screen.jpg`). The card folding away (`LDH_4_fold.jpg`). **The gauge row:** MURDEROUS, X3 and the drain line while the buff runs, the line shorter later (`LDH_5_row_X3_drain.jpg`, `LDH_5_row_drain_later.jpg`). No card, row or gauge over the options page, which shows the two LegenDoom rows (`LDH_6_menu_rows_no_hud.jpg`). No script error from this pack (`LDH_log.txt`) |
+| **code only, not shown** (2026-11-11, after LDH1) | **Where the row, the tick and the card sit.** In LDH1 they were drawn through the wrong virtual-to-screen mapping: the row and the rarity tick about 12 px too low at 480 px (the tick on the octagon's lower corner) and the card at 0.75 of its size. Fixed to the mapping the gauge itself is drawn with; not run since. Also not shown: the colour-blind and Photosensitive versions, the off hand's row, the row under the single HUD, LegenDoom: Gauge Row turned off |
+| **open (for the owner)** | **LegenDoom's buff row stays.** Its boxes at the top of the view (LEGENDPLY.acs LDPlayerLoop) are HudMessages with no id, so they cannot be taken off without taking every other mod's id-less HUD messages too. Only the pickup screen (ids 12300-12303) is hidden. **The row's room.** The mockup put the row outward of the main gauge. On the rig the main gauge sits at the HUD's right edge, so the row slides back in under the gauge, where it may meet RSQ Score's line once it sits at its intended height. Needs a look. **Not built:** Direction D's words over the glowing drop (EPIC and the power's name), which the build brief left out |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | The owner's five HUD decisions, shown: the ShieldSaw Gauge row and bar gone; no gauge over any open menu (status screen, options; with slow motion running too); the whip's picture on the status screen, and the bare fist's (Brutal Doom's fist, after a fix: BD22 VR's `rsq_hands` is lower case, names now compare case-blind); Display Info opens on the main hand first, the off hand on the second press. `gauges.bottom` answers 166 permille for Score's line |
 | **code only, not shown** (2026-11-11, the owner's five HUD decisions, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run on the rig by the owner's order "no rig test, code only until i say") | The ShieldSaw Gauge removed (drawing, row, setting, service band). No gauge, Berserk gauge or Ammo and Health Row while a menu is open. The `gauges.bottom` service that puts RSQ Score's line centred under the gauges. Display Info opening on the main hand first. The whip's and the bare fist's pictures on the status screen. The pack compiles in the owner's order with no script error or warning of its own (load check before the order) |
 | **rig only, not headset-confirmed** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_GBOVR.md`, the owner's order, the pk3 built after the 11-10 fixes; XP given by debug, every level taken through Display Info and the cards' Enter, no Add All) | **The status screen** (PLAYER STATUS, both guns' cards and WEAPON STATUS lists, the DESCRIPTION box, the list walked to its end, a second press stepping to the other gun; no ITEMS or WEAPON BOND panel) (`evidence/GB_2_status_screen_cursor_main_upgrade_and_player_upgrade.jpg`). **The level-up cards**, weapon and player (`GB_3_levelup_cards_fists_saber_player.jpg`, `GB_3_levelup_card_grenade_480px.jpg`). **A level-up on every tree:** Fists, Melee, Saber, the Force (stored on the main saber), ShieldSaw, Whip, Grenade; SlowMo, Guard, Two hands and the body, Grapple, Gunslinger, Critical Hits, Kill Rewards (Gastropub, Rich Bits, Magnet, Lucky Kill in order) (`GB_GB2_log.txt`, `GB_GB3_log.txt`, `GB_GB4_log.txt`). **Both gauges' Colour Cycle** after the fixes (`GB_1_gauges_colour_cycle_both_hands.jpg`). **The greyed rows:** Single HUD Follows with Dual HUD on; the six HUD Position rows and ShieldSaw Gauge (since removed) with it off (`GB_5_options_page_dual_hud_on_off.jpg`, row dump in `GB_GB3_log.txt`). **Score's line** moved down only while the ShieldSaw gauge was drawn (shift 0.109 with it, 0 with Dual HUD off or the row off; gauge removed since) (`GB_6_score_line_vs_shieldsaw_gauge.jpg`). The start line "v0.10.6+RSQ" |
