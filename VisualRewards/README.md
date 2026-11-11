@@ -86,7 +86,7 @@ The bars are coldcite's Top HP Bars, rebuilt for VR.
   hit-stop, held in a headlock, brought back by an Arch-Vile, burning, and a heart on allies. Above the bar: a crown on a
   miniboss (with its tier pips), a chain link on its thralls, a gem on a LegenDoom legendary.
 - **Tier gem and Champion icons** (on): beside the bar, the monster's RSQ Monsters tier as a gem (bosses' gems
-  crowned), then its Champion power and mutation, in the series' own icons. They sit on the left, or on the right
+  crowned; the gems follow RSQ Monsters' ladder, numbered by strength since 11-11, each colour keeping its own gem), then its Champion power and mutation, in the series' own icons. They sit on the left, or on the right
   when the left already holds markers. Champions' own floating icon is hidden while they are on. Code only, not shown
   yet.
 - **Choices:** only the monster your gun points at, a lit chunk showing what your hit took off, blue bars for allies,
@@ -308,6 +308,7 @@ rows are each player's own.
 | **rig only, not headset-confirmed** (earlier builds) (committed by 2026-11-05) | HP bar colour sets and markers, damage-number jets, totals, combo, kill and overkill, headshots, the level-up band, the weapon tag, gains flying to the wrist, Kill Rewards after its move into this pack (frames and logs in test/evidence). The code has changed since; they are not proof of the current build |
 | **Headset-confirmed** | Nothing yet |
 | **code only, not shown** | The 11-10 changes: the Miniboss naming. The icons on the right of the bar when markers are on the left, and the mutation icon. Monster words and pops; V2's frames and V3 indoors; the scene music for DOWN, and the miniboss track heard (only logged, above); battery bits; bits banking into the DOWN plate; Photosensitive Mode's versions of everything; netplay; everything else on this page not listed above |
+| **code only, not shown** (2026-11-11, RSQ Monsters' ladder renumbered by strength; owner: "no rig test, code only until i say") | The tier gems (RSYT A to M) re-ordered to the new tier numbers, so each colour still shows its own gem |
 | **not yet run** | Nothing from the batched rig test: V1 to V3 have run (above) |
 
 ---

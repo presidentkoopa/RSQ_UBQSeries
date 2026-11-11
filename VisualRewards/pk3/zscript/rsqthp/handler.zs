@@ -104,7 +104,7 @@ class RSQTHP_Handler : EventHandler
 	transient int sprBoss;           // RSYI: crown / chain link / gem, tier pips (TEXTURES.rsqthp)
 	transient int sprDown;           // RSYJ: RSQ SlowMo's DOWN mark, a skull
 	transient int sprWhip;           // RSYW: whipped + the other four markers
-	transient int sprTier, sprChamp; // RSYT: the tier gem A..M (tiers 1..13); RSYK: a Champion's icon (ChampFrame)
+	transient int sprTier, sprChamp; // RSYT: the tier gem A..M (tiers 1..13, RSQ Monsters' ladder: strength order since 11-11, the frames re-ordered with it); RSYK: a Champion's icon (ChampFrame)
 	const BURN_STREAM = 1;           // BD22 VR's flamethrower stream: one FlamethrowerProjectileNew* a tic
 	const BURN_GROUND = 26;          // BD's FlamethrowerBurningStuff: one A_Explode every 26 tics
 	const BURN_FIELD = 7;            // RSQ Grenade's RSQGN_FireField: every 7th tic
