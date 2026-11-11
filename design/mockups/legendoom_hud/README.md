@@ -136,3 +136,11 @@ and the info screen (L).
   - The separate `LegenDoom_BD22VR_Patch.pk3` is the old version and must not be loaded with it
     (`rs_brutal22weaponsq/ldl_patch/README.md`).
   - The owner's order puts LegenDoom right after doom2.
+
+## Owner's decision (2026-11-11 15:30): direction D approved, with changes
+- No words over a legendary monster until it rises. When it rises (half health), the word is **LEGENDARY** (it replaces
+  RISEN!), with LegenDoom's red pentagram and after-images as they are.
+- Minibosses and thralls: no change (GUARD! and TARGET! stay as they work now).
+- Champions: words for Champions (Champions mod) are PARKED. Maybe none are needed, since they have icons and visuals;
+  the owner wants to come back to it, not drop it.
+- Still to pick: the card variant (V1-V4) and what stays after the pickup (option 1 gauge row, option 2 X3 over the gun).

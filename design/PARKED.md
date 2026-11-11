@@ -177,3 +177,5 @@ DOWN's DarkDoom Black) keeps working if the cvar names stay ddz_*.
   - Stale comments in Distance Grab, Wheel, ShieldSaw KEYCONF, Whip MENUDEF, Grapple input.zs / KEYCONF, Miniboss,
     Melee and Tactical Rig fixed; Grapple's console Reset All alias covers rsqgr_key_hand and the grip keys. cf084db6
     (Wheel's in 82cc31a7)
+- PARKED (owner 11-11 15:30): words over Champions monsters (what they would say, if anything). Icons and visuals may be
+  enough; the owner wants to come back to it. See design/mockups/legendoom_hud/README.md.
