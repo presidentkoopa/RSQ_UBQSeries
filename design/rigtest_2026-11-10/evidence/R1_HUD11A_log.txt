@@ -1,0 +1,116 @@
+adding /home/claude/scratch/rig1110/HUD11_probe.pk3, 5 lumps
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+GBP BAND maptime 1 dual 1 menu 0 | gauges.bottom -1 | score line top 0.134 bottom 0.172 centre x 0.648 (Across 85, cfgver 0)
+GBP WRIST maptime 1 gametic 1 menu 0 wrist digits 0 of 0 visible | vignette shown 0
+GBP BAND maptime 12 dual 1 menu 0 | gauges.bottom -1 | score line top 0.134 bottom 0.172 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 12 gametic 18 menu 0 wrist digits 0 of 0 visible | vignette shown 0
+GBP BAND maptime 29 dual 1 menu 0 | gauges.bottom 166 | score line top 0.176 bottom 0.214 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 40 gametic 46 menu 0 wrist digits 2 of 2 visible | vignette shown 0
+HUD11_DUAL
+GBP HANDS t84 hand0=RSQWP_WhipWeapon hand1=rsq_hands  ready RSQWP_WhipWeapon
+HUD11_SINGLE
+GBP BAND maptime 127 dual 0 menu 0 | gauges.bottom 166 | score line top 0.176 bottom 0.214 centre x 0.500 (Across 50, cfgver 1)
+GBP BAND maptime 168 dual 1 menu 0 | gauges.bottom 166 | score line top 0.176 bottom 0.214 centre x 0.500 (Across 50, cfgver 1)
+HUD11_INFO1
+GBP MENU open RSQUI_StatusRouter
+GBP MENU open RSQUI_A_StatusMenu
+GBP STATUS rows 2, focus hand 0, menuHand 0
+GBP STATUS  [0] kind 0 hand 0 Whip
+GBP STATUS  [1] kind 0 hand 1 Fist
+GBP BAND maptime 175 dual 1 menu 1 | gauges.bottom -1 | score line top 0.134 bottom 0.172 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 175 gametic 189 menu 1 wrist digits 2 of 2 visible | vignette shown 0
+RSSC WRIST menu open: hidden player 0 t175
+GBP WRIST maptime 175 gametic 192 menu 1 wrist digits 0 of 2 visible | vignette shown 0
+GBP BAND maptime 177 dual 1 menu 0 | gauges.bottom 166 | score line top 0.176 bottom 0.214 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 177 gametic 231 menu 0 wrist digits 0 of 2 visible | vignette shown 0
+RSSC WRIST menu closed player 0 t177
+GBP WRIST maptime 180 gametic 234 menu 0 wrist digits 2 of 2 visible | vignette shown 0
+HUD11_INFO2
+GBP MENU open RSQUI_StatusRouter
+GBP MENU open RSQUI_A_StatusMenu
+GBP BAND maptime 193 dual 1 menu 1 | gauges.bottom -1 | score line top 0.134 bottom 0.172 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 193 gametic 250 menu 1 wrist digits 2 of 2 visible | vignette shown 0
+RSSC WRIST menu open: hidden player 0 t193
+GBP STATUS rows 2, focus hand 1, menuHand 1
+GBP STATUS  [0] kind 0 hand 0 Whip
+GBP STATUS  [1] kind 0 hand 1 Fist
+GBP WRIST maptime 193 gametic 252 menu 1 wrist digits 0 of 2 visible | vignette shown 0
+GBP BAND maptime 195 dual 1 menu 0 | gauges.bottom 166 | score line top 0.176 bottom 0.214 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 195 gametic 286 menu 0 wrist digits 0 of 2 visible | vignette shown 0
+RSSC WRIST menu closed player 0 t195
+GBP WRIST maptime 198 gametic 289 menu 0 wrist digits 2 of 2 visible | vignette shown 0
+HUD11_OPTIONS
+GBP MENU open OptionMenu
+GBP BAND maptime 208 dual 1 menu 1 | gauges.bottom -1 | score line top 0.134 bottom 0.172 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 208 gametic 301 menu 1 wrist digits 2 of 2 visible | vignette shown 0
+RSSC WRIST menu open: hidden player 0 t208
+GBP WRIST maptime 208 gametic 304 menu 1 wrist digits 0 of 2 visible | vignette shown 0
+GBP OPT RSQ_MeleeOptions [0] "$RSQ_MENU_STOCK" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [1] "$RSQ_MENU_XPSRC" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [2] "$RSQ_MENU_FORCE_LEARNS" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [3] "$RSQ_MENU_FORCE_SHARE" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [4] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [5] "HUD" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [6] "GBOVR Menus and HUD" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [7] "Ammo and Health Row" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [8] "Ammo Row and Berserk Gauge Size" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [9] "Dual HUD" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [10] "Single HUD Follows" OptionMenuItemOption grey 1
+GBP OPT RSQ_MeleeOptions [11] "Berserk Meter Gauge" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [12] "Gauge Animation" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [13] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [14] "HUD Position" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [15] "Main HUD Across" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [16] "Main HUD Down" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [17] "Main HUD Mirror" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [18] "Off HUD Across" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [19] "Off HUD Down" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [20] "Off HUD Mirror" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [21] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [22] "HUD Colour Cycle" OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [23] "Main HUD Colour Cycle" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [24] "Main HUD Cycle Speed" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [25] "Main HUD Cycle Spread" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [26] "Main HUD Cycle Intensity" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [27] "Off HUD Colour Cycle" OptionMenuItemOption grey 0
+GBP OPT RSQ_MeleeOptions [28] "Off HUD Cycle Speed" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [29] "Off HUD Cycle Spread" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [30] "Off HUD Cycle Intensity" OptionMenuItemSlider grey 0
+GBP OPT RSQ_MeleeOptions [31] " " OptionMenuItemStaticText grey 0
+GBP OPT RSQ_MeleeOptions [32] "Test and Debug" OptionMenuItemSubmenu grey 0
+GBP OPT RSQ_MeleeOptions [33] "Reset All" OptionMenuItemRSQGBVResetAll grey 0
+GBP BAND maptime 209 dual 1 menu 0 | gauges.bottom 166 | score line top 0.176 bottom 0.214 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 209 gametic 356 menu 0 wrist digits 0 of 2 visible | vignette shown 0
+RSSC WRIST menu closed player 0 t209
+GBP WRIST maptime 210 gametic 357 menu 0 wrist digits 2 of 2 visible | vignette shown 0
+HUD11_AFTER
+HUD11_SLOWMO
+HUD11_SLOWMO_MENU
+GBP BAND maptime 273 dual 1 menu 1 | gauges.bottom -1 | score line top 0.134 bottom 0.172 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 273 gametic 421 menu 1 wrist digits 2 of 2 visible | vignette shown 0
+RSSC WRIST menu open: hidden player 0 t273
+GBP MENU open OptionMenu
+GBP WRIST maptime 273 gametic 423 menu 1 wrist digits 0 of 2 visible | vignette shown 0
+GBP BAND maptime 274 dual 1 menu 0 | gauges.bottom 166 | score line top 0.176 bottom 0.214 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 274 gametic 461 menu 0 wrist digits 0 of 2 visible | vignette shown 0
+RSSC WRIST menu closed player 0 t274
+GBP WRIST maptime 276 gametic 463 menu 0 wrist digits 2 of 2 visible | vignette shown 0
+HUD11_SLOWMO_AFTER
+HUD11_VIG
+GBP WRIST maptime 327 gametic 514 menu 0 wrist digits 2 of 2 visible | vignette shown 1
+HUD11_VIG_MENU
+GBP BAND maptime 348 dual 1 menu 1 | gauges.bottom -1 | score line top 0.134 bottom 0.172 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 348 gametic 536 menu 1 wrist digits 2 of 2 visible | vignette shown 0
+RSSC WRIST menu open: hidden player 0 t348
+GBP MENU open OptionMenu
+GBP WRIST maptime 348 gametic 539 menu 1 wrist digits 0 of 2 visible | vignette shown 0
+GBP BAND maptime 349 dual 1 menu 0 | gauges.bottom 166 | score line top 0.176 bottom 0.214 centre x 0.500 (Across 50, cfgver 1)
+GBP WRIST maptime 349 gametic 566 menu 0 wrist digits 0 of 2 visible | vignette shown 1
+RSSC WRIST menu closed player 0 t349
+T_TIP t350: the recentre tip shown (once ever)
+GBP WRIST maptime 351 gametic 568 menu 0 wrist digits 2 of 2 visible | vignette shown 1
+HUD11_VIG_AFTER
+HUD11_END
