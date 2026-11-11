@@ -307,6 +307,16 @@ The owner's planned projects (`design/PLANNED_PROJECTS.md`). None of these is in
 
 Every folder's CREDITS file, gathered. Each mod's own CREDITS and README say exactly which file is whose.
 
+**The DoomVR lineage.** This series stands at the end of a long line of people who put Doom in a headset:
+- **biospud:** GZ3Doom, GZDoom on the Oculus Rift, later ViveDoom.
+- **Fishbiter:** forked it as OpenVRDoom and added motion controls.
+- **hh79 (hari):** carried that desktop fork forward through newer GZDoom versions (3.5, 4.1, 4.3 as gzdoomvr), with fixes
+  backported from QuestZDoom.
+- **Team Beef (DrBeef):** QuestZDoom, Doom on the standalone Quest.
+- **Emawind84:** continued QuestZDoom, bringing it up to GZDoom 4.11 and on to 17.3, the engine this series targets.
+- **Ermac:** DoomXR, from Emawind84's fork.
+- **presidentkoopa:** moved DoomXR onto UZDoom 5.0, now his own engine, REMA, which this series will move to after 2.0.
+
 **The series:** presidentkoopa: the design, the direction of every change, his headset testing, and his own libraries
 and mods the series draws on (RS Combat FX, RS Ballistics, RS_WorldHands, RS_Gestures, RS_SlowMo, RS_Score, RS_Holsters,
 RS_VRBody, RS_WeaponSelectionSystem, RS Monsters, SuperPunchOut, Glow In The Dark 1.1, BD22 VR Reloaded). The code is
