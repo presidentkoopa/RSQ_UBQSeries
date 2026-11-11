@@ -1,7 +1,7 @@
 # DOWN: "the shots I fire seem to come from far to my right" (owner, headset, 11-11 15:05)
 
 **Code only, not shown. Nothing was run** (owner 15:07: "no rig test, code only until i say"; no rig launch, no load
-check). No mod code changed. No DOWNSHOT_* evidence exists, because evidence needs a run.
+check). The shot path was not changed. The ViewHeight fix below was made later, on the owner's yes. No DOWNSHOT_* evidence exists, because evidence needs a run.
 
 ## Result: cause not found in the code
 
