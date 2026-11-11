@@ -1,0 +1,2168 @@
+Log started: 2026-11-10 22:55:03
+QZDoom version 4.14.3
+W_Init: Init WADfiles.
+adding res/qzdoom.pk3, 709 lumps
+adding res/game_support.pk3, 3308 lumps
+adding /home/claude/gamedata/doom2.wad, 2919 lumps
+adding game_widescreen_gfx.pk3, 214 lumps
+adding /home/claude/gamedata/brutal22test6.pk3, 22264 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bddmmaps.wad, 130 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdhordemodemaps.wad, 65 lumps
+adding /home/claude/gamedata/brutal22test6.pk3:bdpsxmaps.wad, 42 lumps
+adding /home/claude/gamedata/BD_VoxelPack.pk3, 257 lumps
+adding /home/claude/rs_brutal22weaponsq/pk3/03_BD22_VR-Reloaded_2.0.4f.pk3, 836 lumps
+adding /home/claude/gamedata/LOB_v1.05.pk3, 2999 lumps
+adding /home/claude/gamedata/mk-champions20210309.pk3, 140 lumps
+adding /home/claude/gamedata/GunBonsai-0.10.6.pk3, 284 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Accessibility.pk3, 18 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_DistanceGrab.pk3, 88 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_FnF.pk3, 140 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GlowInTheDark.pk3, 25 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grapple.pk3, 58 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Graveyard.pk3, 23 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Grenade.pk3, 1673 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_GunCards.pk3, 32928 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_LaserSight.pk3, 14718 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Melee.pk3, 309 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Miniboss.pk3, 58 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Monsters.pk3, 22282 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Saber.pk3, 10967 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Score.pk3, 78 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_ShieldSaw.pk3, 242 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 747 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_TacticalRig.pk3, 166 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_VisualRewards.pk3, 764 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Wheel.pk3, 275 lumps
+adding /home/claude/rsq_ubqseries/pk3/RSQ_Whip.pk3, 49 lumps
+adding /home/claude/scratch/bindwhip/swingtst.wad, 3 lumps
+adding /home/claude/scratch/bindwhip/whp.pk3, 3 lumps
+S_Init: Setting up sound.
+I_InitSound: Initializing OpenAL
+  Opened device No Output
+GL_VENDOR: Mesa
+GL_RENDERER: llvmpipe (LLVM 20.1.2, 256 bits)
+GL_VERSION: OpenGL ES 3.2 Mesa 25.2.8-0ubuntu0.24.04.4 (Compatibility profile)
+GL_SHADING_LANGUAGE_VERSION: OpenGL ES GLSL ES 3.20
+GL_EXTENSIONS: GL_ANDROID_extension_pack_es31a GL_ANGLE_pack_reverse_row_order GL_ANGLE_texture_compression_dxt3 GL_ANGLE_texture_compression_dxt5 GL_APPLE_sync GL_APPLE_texture_max_level GL_ARM_shader_framebuffer_fetch_depth_stencil GL_EXT_EGL_image_storage GL_EXT_EGL_image_storage_compression GL_EXT_base_instance GL_EXT_blend_func_extended GL_EXT_blend_minmax GL_EXT_buffer_storage GL_EXT_clear_texture GL_EXT_clip_control GL_EXT_clip_cull_distance GL_EXT_color_buffer_float GL_EXT_color_buffer_half_float GL_EXT_compressed_ETC1_RGB8_sub_texture GL_EXT_conservative_depth GL_EXT_copy_image GL_EXT_debug_label GL_EXT_depth_clamp GL_EXT_discard_framebuffer GL_EXT_disjoint_timer_query GL_EXT_draw_buffers GL_EXT_draw_buffers_indexed GL_EXT_draw_elements_base_vertex GL_EXT_draw_instanced GL_EXT_float_blend GL_EXT_frag_depth GL_EXT_geometry_point_size GL_EXT_geometry_shader GL_EXT_gpu_shader5 GL_EXT_instanced_arrays GL_EXT_map_buffer_range GL_EXT_memory_object GL_EXT_memory_object_fd GL_EXT_multi_draw_arrays GL_EXT_multi_draw_indirect GL_EXT_occlusion_query_boolean GL_EXT_polygon_offset_clamp GL_EXT_primitive_bounding_box GL_EXT_read_format_bgra GL_EXT_render_snorm GL_EXT_robustness GL_EXT_sRGB_write_control GL_EXT_separate_shader_objects GL_EXT_shader_clock GL_EXT_shader_framebuffer_fetch GL_EXT_shader_framebuffer_fetch_non_coherent GL_EXT_shader_group_vote GL_EXT_shader_implicit_conversions GL_EXT_shader_integer_mix GL_EXT_shader_io_blocks GL_EXT_shadow_samplers GL_EXT_tessellation_point_size GL_EXT_tessellation_shader GL_EXT_texture_border_clamp GL_EXT_texture_buffer GL_EXT_texture_compression_bptc GL_EXT_texture_compression_dxt1 GL_EXT_texture_compression_rgtc GL_EXT_texture_compression_s3tc GL_EXT_texture_compression_s3tc_srgb GL_EXT_texture_cube_map_array GL_EXT_texture_filter_anisotropic GL_EXT_texture_filter_minmax GL_EXT_texture_format_BGRA8888 GL_EXT_texture_mirror_clamp_to_edge GL_EXT_texture_norm16 GL_EXT_texture_query_lod GL_EXT_texture_rg GL_EXT_texture_sRGB_R8 GL_EXT_texture_sRGB_RG8 GL_EXT_texture_sRGB_decode GL_EXT_texture_shadow_lod GL_EXT_texture_storage GL_EXT_texture_storage_compression GL_EXT_texture_type_2_10_10_10_REV GL_EXT_texture_view GL_EXT_unpack_subimage GL_KHR_blend_equation_advanced GL_KHR_blend_equation_advanced_coherent GL_KHR_context_flush_control GL_KHR_debug GL_KHR_no_error GL_KHR_parallel_shader_compile GL_KHR_robust_buffer_access_behavior GL_KHR_robustness GL_KHR_texture_compression_astc_ldr GL_KHR_texture_compression_astc_sliced_3d GL_MESA_bgra GL_MESA_framebuffer_flip_y GL_MESA_sampler_objects GL_MESA_shader_integer_functions GL_NV_alpha_to_coverage_dither_control GL_NV_conditional_render GL_NV_draw_buffers GL_NV_fbo_color_attachments GL_NV_generate_mipmap_sRGB GL_NV_image_formats GL_NV_pack_subimage GL_NV_pixel_buffer_object GL_NV_read_buffer GL_NV_read_depth GL_NV_read_depth_stencil GL_NV_read_stencil GL_NV_shader_noperspective_interpolation GL_NV_texture_barrier GL_OES_EGL_image GL_OES_EGL_image_external GL_OES_EGL_image_external_essl3 GL_OES_EGL_sync GL_OES_compressed_ETC1_RGB8_texture GL_OES_copy_image GL_OES_depth24 GL_OES_depth_texture GL_OES_depth_texture_cube_map GL_OES_draw_buffers_indexed GL_OES_draw_elements_base_vertex GL_OES_element_index_uint GL_OES_fbo_render_mipmap GL_OES_geometry_point_size GL_OES_geometry_shader GL_OES_get_program_binary GL_OES_gpu_shader5 GL_OES_mapbuffer GL_OES_packed_depth_stencil GL_OES_primitive_bounding_box GL_OES_required_internalformat GL_OES_rgb8_rgba8 GL_OES_sample_shading GL_OES_sample_variables GL_OES_shader_image_atomic GL_OES_shader_io_blocks GL_OES_shader_multisample_interpolation GL_OES_standard_derivatives GL_OES_stencil8 GL_OES_surfaceless_context GL_OES_tessellation_point_size GL_OES_tessellation_shader GL_OES_texture_3D GL_OES_texture_border_clamp GL_OES_texture_buffer GL_OES_texture_cube_map_array GL_OES_texture_float GL_OES_texture_float_linear GL_OES_texture_half_float GL_OES_texture_half_float_linear GL_OES_texture_npot GL_OES_texture_stencil8 GL_OES_texture_storage_multisample_2d_array GL_OES_texture_view GL_OES_vertex_array_object GL_OES_vertex_half_float GL_OES_viewport_array GL_OVR_multiview GL_OVR_multiview2
+Max. texture size: 16384
+Max. texture units: 32
+Max. combined shader storage blocks: 80
+Max. vertex shader storage blocks: 16
+Resolution: 1400 x 1400
+I_Init: Setting up machine state.
+CPU Vendor ID: GenuineIntel
+  Name: Intel(R) Xeon(R) Processor @ 2.10GHz
+  Family 6, Model 207, Stepping 2
+  Features: SSE2 SSE3 SSSE3 SSE4.1 SSE4.2 AVX AVX2 AVX512 F16C FMA3 BMI1 BMI2 HyperThreading
+V_Init: allocate screen.
+ST_Init: Init startup screen.
+Checking cmd-line parameters...
+S_InitData: Load sound definitions.
+G_ParseMapInfo: Load map definitions.
+Texman.Init: Init texture manager.
+Invalid data encountered for texture GunBonsai-0.10.6.pk3:sprites/ui/.gitignore
+ParseTeamInfo: Load team definitions.
+LoadActors: Load actor definitions.
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 428: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 527: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 655: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1059: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1186: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1333: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1507: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 1850: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2065: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs, line 2459: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 967: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunnerfx.zs, line 968: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 361: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 494: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 626: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 745: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1293: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1435: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1564: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1700: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1951: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 1952: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2085: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs, line 2086: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1228: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1229: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1292: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1293: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1368: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunnerfx.zs, line 1369: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 216: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 359: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 504: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 505: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 629: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 630: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 778: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1343: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1344: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1522: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1654: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1797: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs, line 1909: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 218: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 373: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 536: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 664: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 779: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1092: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1207: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1331: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1458: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1586: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1587: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1766: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1767: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1908: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1947: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 1986: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2025: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2064: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2117: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs, line 2118: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 493: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 494: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 871: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 872: Deprecated flag 'SHORTMISSILERANGE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1668: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs, line 1902: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs, line 1335: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1236: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemonfx.zs, line 1237: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 232: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 359: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 490: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 629: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 742: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 743: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1046: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1162: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1294: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1441: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1593: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 1778: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2005: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs, line 2176: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 832: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 833: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1866: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoulfx.zs, line 1867: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 249: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 250: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 349: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 350: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 441: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 442: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 630: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 631: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 712: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 713: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 781: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 782: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 835: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 836: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 909: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 910: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 997: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 998: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1170: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1171: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1290: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1413: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1720: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/lostsoul/rs_lostsoul.zs, line 1934: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 767: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 770: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs, line 1855: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 215: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 368: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 476: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 477: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 736: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 737: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1194: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1279: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1280: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs, line 1406: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknightfx.zs, line 633: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 257: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 391: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 392: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 552: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 723: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 834: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1162: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1280: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1411: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1535: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1715: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 1893: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs, line 2202: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 257: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 381: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 652: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 653: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 844: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 845: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 987: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1226: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1358: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1481: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1624: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1777: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 1939: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2091: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2279: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2451: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2677: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs, line 2678: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 235: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 236: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 352: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 353: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 490: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 634: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 640: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 777: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 898: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1026: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1161: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1327: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1328: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1508: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1509: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1595: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1812: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 1978: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2144: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2145: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2266: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2482: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2571: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs, line 2715: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 404: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 542: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 654: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1534: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1677: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 1934: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs, line 2152: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 330: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 446: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 559: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 668: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 821: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 823: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 944: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1074: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1208: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1360: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1517: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1738: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1740: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1894: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 1896: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2190: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2498: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2499: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2606: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2607: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2693: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2694: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2763: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs, line 2764: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 140: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 141: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1248: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 1828: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2734: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs, line 2735: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 465: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1672: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs, line 1801: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 331: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 500: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 652: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 853: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 974: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1104: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1203: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1293: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1430: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1474: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1634: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 1772: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2004: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2081: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs, line 2420: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 466: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 695: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 896: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1155: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1321: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1445: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1568: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1573: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1688: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1689: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1741: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 1906: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2108: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2361: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2639: Deprecated flag 'MISSILEEVENMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2688: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs, line 2960: Deprecated flag 'MISSILEMORE' used, deprecated since 4.13.0
+256 warnings while compiling RSQ_Monsters.pk3:zscript.txt
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 205:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/gore/limbs.dec" line 6164:
+Bad hex number: Al
+Attempt to get invalid state BBled1 from actor AlienBloodSplasher.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Flash from actor BrutalWeapon.
+Attempt to get invalid state Missile from actor BDMummy.
+Attempt to get invalid state Crush from actor Actor.
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/eeevilll.dec" line 2213:
+Tried to define class 'Deh_Actor_153' more than once. Renaming class to 'Deh_Actor_153@brutal22test6.pk3@actors/enemies/wcs/eeevilll.dec'
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 134:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 603:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 664:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 723:
+Bad hex number: Al
+Script warning, "brutal22test6.pk3:actors/enemies/wcs/aaliens.dec" line 839:
+Bad hex number: Al
+Attempt to get invalid state Missile from actor BrutalNightmareDemon.
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 1:
+Tried to define class 'Tracer' more than once. Renaming class to 'Tracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "LOB_v1.05.pk3:decorate/projectiles.txt" line 28:
+Tried to define class 'MonsterTracer' more than once. Renaming class to 'MonsterTracer@LOB_v1.05.pk3@decorate/projectiles.txt'
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 1606:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/zombieman/rs_zombieman.zs" line 2596:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 467:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 546:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 548:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 550:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 552:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1093:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1094:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1095:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1727:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1728:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1740:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1741:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1870:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1888:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 1889:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2064:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/shotgunner/rs_shotgunner.zs" line 2309:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 477:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 600:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 748:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 872:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1131:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1138:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1387:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1390:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1393:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1398:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1401:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1404:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1409:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1412:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1415:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1486:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 1696:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/chaingunner/rs_chaingunner.zs" line 2062:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 507:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1161:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1292:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/imp/rs_imp.zs" line 1519:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 580:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/demon/rs_demon.zs" line 1608:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 474:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spectre/rs_spectre.zs" line 1307:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 439:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1538:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1677:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 1872:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cacodemon/rs_cacodemon.zs" line 2242:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelementalfx.zs" line 918:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 446:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 863:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 964:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/painelemental/rs_painelemental.zs" line 1067:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 527:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1643:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/hellknight/rs_hellknight.zs" line 1964:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 1882:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2017:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/baron/rs_baron.zs" line 2389:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/revenant/rs_revenant.zs" line 1903:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 521:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/fatso/rs_fatso.zs" line 1619:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 1182:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2014:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2016:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2018:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2020:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2022:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2024:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2277:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2280:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/spider/rs_spider.zs" line 2281:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2858:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2859:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2860:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2861:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2862:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2863:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2864:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvilefx.zs" line 2865:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 588:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 1905:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2233:
+Accessing deprecated member variable bMISSILEMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/archvile/rs_archvile.zs" line 2246:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 621:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 736:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 916:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1697:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 1894:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/cyberdemon/rs_cyberdemon.zs" line 2170:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 849:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelX - deprecated since 2.3.0, Use Vel.X instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelY - deprecated since 2.3.0, Use Vel.Y instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1665:
+Accessing deprecated member variable VelZ - deprecated since 2.3.0, Use Vel.Z instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 1965:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2202:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2208:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2235:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2455:
+Accessing deprecated member variable bMISSILEEVENMORE - deprecated since 4.13.0, Use missilechancemult property instead
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2912:
+Bad hex number: no
+Script warning, "RSQ_Monsters.pk3:zscript/monsters/mastermind/rs_mastermind.zs" line 2913:
+Bad hex number: no
+Script warning, "BD_VoxelPack.pk3:sphere.txt" line 69:
+Unknown class name 'DeathSphereHealth' of type 'Inventory'
+173 warnings while parsing scripts
+Undefined drop item class TreasureChest referenced from actor LOBSpiderMastermind
+Undefined drop item class TomeSpawner referenced from actor LOBArchvile
+Undefined drop item class AmplifierGiver referenced from actor LOBArchvile
+Undefined drop item class Sapphire referenced from actor LOBArchvile
+Undefined drop item class Ruby referenced from actor LOBArachnotron
+Undefined drop item class Amber referenced from actor LOBArachnotron
+Undefined drop item class Ruby referenced from actor LOBRevenant
+Undefined drop item class Amber referenced from actor LOBCacodemon
+Undefined drop item class Emerald referenced from actor LOBBaronOfHell
+Undefined drop item class Ruby referenced from actor LOBHellKnight
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh5 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh1 referenced from actor LOBLostSoul
+Undefined drop item class Dosh10 referenced from actor LOBSpectre
+Undefined drop item class Dosh5 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh1 referenced from actor LOBSpectre
+Undefined drop item class Dosh10 referenced from actor LOBDemon
+Undefined drop item class Dosh5 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh1 referenced from actor LOBDemon
+Undefined drop item class Dosh10 referenced from actor LOBDoomImp
+Undefined drop item class Dosh5 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh1 referenced from actor LOBDoomImp
+Undefined drop item class Dosh25 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh5 referenced from actor LOBChaingunGuy
+Undefined drop item class Dosh10 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh1 referenced from actor LOBShotgunGuy
+Undefined drop item class Dosh5 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh1 referenced from actor LOBZombieMan
+Undefined drop item class Dosh5 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class Dosh1 referenced from actor RetroSkeleton
+Undefined drop item class TreasureChest referenced from actor Conqueror
+Undefined drop item class TomeSpawner referenced from actor Reaper
+Undefined drop item class AmplifierGiver referenced from actor Reaper
+Undefined drop item class Sapphire referenced from actor Reaper
+Undefined drop item class Ruby referenced from actor Arachnobone
+Undefined drop item class Amber referenced from actor Arachnobone
+Undefined drop item class Ruby referenced from actor PhantomRevenant
+Undefined drop item class Emerald referenced from actor Painbringer
+Undefined drop item class Amber referenced from actor CacoLich
+Undefined drop item class Emerald referenced from actor Balrog
+Undefined drop item class Ruby referenced from actor SlayerKnight
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh5 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh1 referenced from actor DragonSoul
+Undefined drop item class Dosh10 referenced from actor GhostSpectre
+Undefined drop item class Dosh5 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh1 referenced from actor GhostSpectre
+Undefined drop item class Dosh10 referenced from actor SkeletonDemon
+Undefined drop item class Dosh5 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh1 referenced from actor SkeletonDemon
+Undefined drop item class Dosh25 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkullChaingunner
+Undefined drop item class Dosh5 referenced from actor SkullChaingunner
+Undefined drop item class Dosh10 referenced from actor SkeletonImp
+Undefined drop item class Dosh5 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh1 referenced from actor SkeletonImp
+Undefined drop item class Dosh10 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh1 referenced from actor SkullShotgunner
+Undefined drop item class Dosh5 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class Dosh1 referenced from actor SkullZombie
+Undefined drop item class NormalWeaponStarter referenced from actor Doomer
+Undefined drop item class LewdLabCoat referenced from actor RS_WhiteCguy2
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombie1
+Undefined drop item class CH_Chaingun referenced from actor RS_BlackZombieEX
+script parsing took 2855.48 ms
+Initializing Gun Bonsai v0.10.6+local...
+Couldn't find Legendoom, LD-specific features in Gun Bonsai disabled.
+[BONSAIRC] Registered TFLV_Upgrade_AmmoLeech
+[BONSAIRC] Registered TFLV_Upgrade_ArmourLeech
+[BONSAIRC] Registered TFLV_Upgrade_Bandoliers
+[BONSAIRC] Registered TFLV_Upgrade_BlastShaping
+[BONSAIRC] Registered TFLV_Upgrade_ECM
+[BONSAIRC] Registered TFLV_Upgrade_HazardSuit
+[BONSAIRC] Registered TFLV_Upgrade_Intuition
+[BONSAIRC] Registered TFLV_Upgrade_Juggler
+[BONSAIRC] Registered TFLV_Upgrade_LifeLeech
+[BONSAIRC] Registered TFLV_Upgrade_PlayerDamage
+[BONSAIRC] Registered TFLV_Upgrade_Thorns
+[BONSAIRC] Registered TFLV_Upgrade_ToughAsNails
+[BONSAIRC] Registered TFLV_Upgrade_AggressiveDefence
+[BONSAIRC] Registered TFLV_Upgrade_BouncyShots
+[BONSAIRC] Registered TFLV_Upgrade_Cleave
+[BONSAIRC] Registered TFLV_Upgrade_DarkHarvest
+[BONSAIRC] Registered TFLV_Upgrade_DecoyFlares
+[BONSAIRC] Registered TFLV_Upgrade_ExplosiveDeath
+[BONSAIRC] Registered TFLV_Upgrade_ExplosiveShots
+[BONSAIRC] Registered TFLV_Upgrade_FastShots
+[BONSAIRC] Registered TFLV_Upgrade_FragmentationShots
+[BONSAIRC] Registered TFLV_Upgrade_HomingShots
+[BONSAIRC] Registered TFLV_Upgrade_PiercingShots
+[BONSAIRC] Registered TFLV_Upgrade_RapidFire
+[BONSAIRC] Registered TFLV_Upgrade_Shield
+[BONSAIRC] Registered TFLV_Upgrade_Submunitions
+[BONSAIRC] Registered TFLV_Upgrade_Sweep
+[BONSAIRC] Registered TFLV_Upgrade_Swiftness
+[BONSAIRC] Registered TFLV_Upgrade_WeaponDamage
+[BONSAIRC] Registered TFLV_Upgrade_IncendiaryShots
+[BONSAIRC] Registered TFLV_Upgrade_BurningTerror
+[BONSAIRC] Registered TFLV_Upgrade_Conflagration
+[BONSAIRC] Registered TFLV_Upgrade_InfernalKiln
+[BONSAIRC] Registered TFLV_Upgrade_PoisonShots
+[BONSAIRC] Registered TFLV_Upgrade_Weakness
+[BONSAIRC] Registered TFLV_Upgrade_Putrefaction
+[BONSAIRC] Registered TFLV_Upgrade_Hallucinogens
+[BONSAIRC] Registered TFLV_Upgrade_CorrosiveShots
+[BONSAIRC] Registered TFLV_Upgrade_ConcentratedAcid
+[BONSAIRC] Registered TFLV_Upgrade_AcidSpray
+[BONSAIRC] Registered TFLV_Upgrade_Embrittlement
+[BONSAIRC] Registered TFLV_Upgrade_ShockingInscription
+[BONSAIRC] Registered TFLV_Upgrade_Revivification
+[BONSAIRC] Registered TFLV_Upgrade_ChainLightning
+[BONSAIRC] Registered TFLV_Upgrade_Thunderbolt
+[BONSAIRC] Registered TFLV_Upgrade_ElementalBeam
+[BONSAIRC] Registered TFLV_Upgrade_ElementalBlast
+[BONSAIRC] Registered TFLV_Upgrade_ElementalWave
+[BONSAIRC] Activating configuration for class GoldWand.
+[BONSAIRC] Forcing type 0x106 for: Staff
+[BONSAIRC] Forcing type 0x104 for: GoldWand
+[BONSAIRC] Activating configuration for class MWeapWand.
+[BONSAIRC] Forcing type 0x02 for: FWeapFist FWeapAxe CWeapMace
+[BONSAIRC] Forcing type 0x68 for: MWeapLightning
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_HomingShots TFLV_Upgrade_PiercingShots TFLV_Upgrade_FragmentationShots
+           On weapons: MWeapLightning
+[BONSAIRC] Forcing type 0x68 for: MWeapBloodscourge
+[BONSAIRC] Disabling upgrades: TFLV_Upgrade_BouncyShots
+           On weapons: CWeapWraithverge
+[BONSAIRC] Activating configuration for class StrifeWeapon.
+[BONSAIRC] Forcing type 0x02 for: PunchDagger
+R_Init: Init Doom refresh subsystem.
+DecalLibrary: Load decals.
+DistX in slider decal Drops is unsupported
+M_Init: Init menus.
+P_Init: Init Playloop state.
+R_InstallSpriteLump: Bad frame characters in lump PENTAHUD
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "BD_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Entryway
+
+[RSQGD] map MAP01: 59 sectors, 1 liquid, 5 hazard/secret, 12 lines glowing, profile Classic (1.1), seed 1515979
+T_WPW t0 Crack Fireballs on: 0 missile(s) already in flight noted
+whp_MELEE t0 Melee_Attacks spawned (target None) at (0 0 0)
+whp_MELEE t0 RSQ_NoTrigPunch spawned (target None) at (0 0 0)
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 0
+[RSQDG] t1 two-handing -- standing down: off hand on the gun (0.50 m ahead, 0.00 m off the barrel)
+whp_MELEE t1 Headkicking spawned (target BDoomer) at (-96 784 56)
+[RSQDG] t20 hand 0 at punch speed (9.7 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t20 hand 1 at punch speed (9.7 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t20 two-handing over -- back
+
+----------------------------------------
+
+SWINGTST - Unnamed
+
+[RSQGD] map SWINGTST: 5 sectors, 1 liquid, 0 hazard/secret, 0 lines glowing, profile Classic (1.1), seed 124621345
+T_WPW t0 Crack Fireballs on: 0 missile(s) already in flight noted
+whp_MELEE t0 Melee_Attacks spawned (target None) at (0 0 0)
+whp_MELEE t0 RSQ_NoTrigPunch spawned (target None) at (0 0 0)
+RSQ moon: map SWINGTST, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 0, Minigun ammo boxes put beside 0
+whp_MELEE t1 Headkicking spawned (target BDoomer) at (300 512 96)
+[RSQDG] t23 hand 0 at punch speed (9.7 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t23 hand 1 at punch speed (9.7 m/s >= 2.0): no reach for 0.75 s
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+T_WPW 0 start mode 0 len 61
+T_WPW 0 t109 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.6 498.2 124.4) ms 0.037
+T_WPW 0 t110 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.6 498.2 124.4) ms 0.431
+T_WPW 0 t111 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.6 498.1 124.4) ms 0.354
+T_WPW 0 t112 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.6 498.1 124.4) ms 0.464
+T_WPW 0 t113 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.7 498.1 124.4) ms 0.459
+T_WPW 0 t114 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.7 498.1 124.4) ms 1.379
+T_WPW 0 t115 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.7 498.0 124.4) ms 0.419
+T_WPW 0 t116 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.7 498.0 124.4) ms 0.453
+T_WPW 0 t117 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.7 498.0 124.4) ms 0.430
+T_WPW 0 t118 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.7 498.0 124.4) ms 0.356
+T_WPW 0 t119 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.8 497.9 124.4) ms 0.550
+T_WPW 0 t120 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.8 497.9 124.4) ms 0.985
+T_WPW 0 t121 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.8 497.9 124.4) ms 0.360
+T_WPW 0 t122 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.8 497.8 124.4) ms 0.416
+T_WPW 0 t123 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.9 497.8 124.4) ms 0.378
+T_WPW 0 t124 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.9 497.8 124.4) ms 0.361
+T_WPW 0 t125 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.9 497.8 124.4) ms 0.407
+T_WPW 0 t126 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.9 497.7 124.4) ms 0.368
+T_WPW 0 t127 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.9 497.7 124.4) ms 0.382
+T_WPW 0 t128 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.9 497.7 124.4) ms 0.376
+T_WPW 0 t129 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(316.9 497.7 124.4) ms 0.338
+T_WPW 0 t130 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.7 124.4) ms 0.402
+T_WPW 0 t131 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.7 124.4) ms 0.340
+T_WPW 0 t132 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.611
+T_WPW 0 t133 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.396
+T_WPW 0 t134 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.434
+T_WPW 0 t135 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.592
+T_WPW 0 t136 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.529
+T_WPW 0 t137 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.489
+T_WPW 0 t138 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.495
+T_WPW 0 t139 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.592
+T_WPW 0 t140 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.569
+T_WPW 0 t141 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.587
+T_WPW 0 t142 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.418
+T_WPW 0 t143 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.538
+T_WPW 0 t144 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.477
+T_WPW 0 t145 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.6 124.4) ms 0.548
+T_WPW 0 t146 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.354
+T_WPW 0 t147 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.383
+T_WPW 0 t148 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.394
+T_WPW 0 t149 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.420
+T_WPW 0 t150 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.390
+T_WPW 0 t151 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.389
+T_WPW 0 t152 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.367
+T_WPW 0 t153 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.450
+T_WPW 0 t154 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.372
+T_WPW 0 t155 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.399
+T_WPW 0 t156 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.450
+T_WPW 0 t157 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.394
+T_WPW 0 t158 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.376
+T_WPW 0 t159 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.396
+T_WPW 0 t160 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.367
+T_WPW 0 t161 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.371
+T_WPW 0 t162 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.373
+T_WPW 0 t163 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.572
+T_WPW 0 t164 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.448
+T_WPW 0 t165 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.399
+T_WPW 0 t166 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.365
+T_WPW 0 t167 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.726
+T_WPW 0 t168 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.1 497.5 124.4) ms 0.358
+T_WPW 0 t169 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(317.0 497.5 124.4) ms 0.376
+whp_go t170 scen 11
+whp_tp t170 pos(378 512 96) ang 0
+T_WPW 0 t170 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.463
+whp_WEAP t0 main RSQWP_WhipWeapon off RSQ_GloveOff
+whp_H 0 nohook lock None mark - beam 0
+whp_T t0 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(-67.8 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t171 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.407
+whp_H 1 nohook lock None mark - beam 0
+whp_T t1 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(-67.8 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t172 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.354
+whp_H 2 nohook lock None mark - beam 0
+whp_T t2 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(-67.8 -6.8 36.8) z 96.0 vh 44.0
+N2_OFFGUN
+T_WPW 0 t173 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.334
+whp_H 3 nohook lock None mark - beam 0
+whp_T t3 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t174 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.387
+whp_H 4 nohook lock None mark - beam 0
+whp_T t4 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t175 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.396
+whp_H 5 nohook lock None mark - beam 0
+whp_T t5 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+whp_offgun t176 route PendingWeapon (slot key / use / holster): main RSQWP_WhipWeapon
+T_WPW 0 t176 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.371
+whp_WEAP t6 main RSQWP_WhipWeapon off Pistol
+whp_H 6 nohook lock None mark - beam 0
+whp_T t6 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 WHIP AND GUN t177 on: the whip hand's ray is the cursor (other hand: Pistol)
+T_WPW 0 BEAM t177 on (held): Whip and Gun's cursor (only a gold cursor stands the other targets down)
+T_WPW 0 AIM t177 INVALID: out of reach (20.0 m, portals 0)
+T_WPW 0 RAY t177 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t177 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.390
+whp_H 7 nohook lock None mark - beam 0
+whp_T t7 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t178 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t178 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.552
+whp_H 8 nohook lock None mark - beam 0
+whp_T t8 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t179 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t179 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.605
+whp_H 9 nohook lock None mark - beam 0
+whp_T t9 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t180 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t180 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.546
+whp_H 10 nohook lock None mark - beam 0
+whp_T t10 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t181 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t181 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.4) ms 0.720
+whp_H 11 nohook lock None mark - beam 0
+whp_T t11 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t182 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t182 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.536
+whp_H 12 nohook lock None mark - beam 0
+whp_T t12 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t183 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t183 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.511
+whp_H 13 nohook lock None mark - beam 0
+whp_T t13 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t184 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t184 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.684
+whp_H 14 nohook lock None mark - beam 0
+whp_T t14 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t185 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t185 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.526
+whp_H 15 nohook lock None mark - beam 0
+whp_T t15 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t186 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t186 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.562
+whp_H 16 nohook lock None mark - beam 0
+whp_T t16 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t187 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t187 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.523
+whp_H 17 nohook lock None mark - beam 0
+whp_T t17 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t188 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t188 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.516
+whp_H 18 nohook lock None mark - beam 0
+whp_T t18 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t189 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t189 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.567
+whp_H 19 nohook lock None mark - beam 0
+whp_T t19 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t190 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t190 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.514
+whp_H 20 nohook lock None mark - beam 0
+whp_T t20 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t191 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t191 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.578
+whp_H 21 nohook lock None mark - beam 0
+whp_T t21 tip body(17.0 -14.4 34.1) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t192 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t192 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.520
+whp_H 22 nohook lock None mark - beam 0
+whp_T t22 tip body(17.0 -14.4 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t193 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t193 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.501
+whp_H 23 nohook lock None mark - beam 0
+whp_T t23 tip body(17.0 -14.4 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t194 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t194 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.527
+whp_H 24 nohook lock None mark - beam 0
+whp_T t24 tip body(17.0 -14.4 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t195 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t195 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.507
+whp_H 25 nohook lock None mark - beam 0
+whp_T t25 tip body(17.0 -14.4 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t196 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t196 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.483
+whp_H 26 nohook lock None mark - beam 0
+whp_T t26 tip body(17.0 -14.4 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t197 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t197 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.623
+whp_H 27 nohook lock None mark - beam 0
+whp_T t27 tip body(17.0 -14.4 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t198 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t198 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.583
+whp_H 28 nohook lock None mark - beam 0
+whp_T t28 tip body(17.0 -14.4 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t199 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t199 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.6 124.5) ms 0.548
+whp_H 29 nohook lock None mark - beam 0
+whp_T t29 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t200 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t200 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.510
+whp_H 30 nohook lock None mark - beam 0
+whp_T t30 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t201 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t201 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.587
+whp_H 31 nohook lock None mark - beam 0
+whp_T t31 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t202 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t202 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.548
+whp_H 32 nohook lock None mark - beam 0
+whp_T t32 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t203 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t203 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.564
+whp_H 33 nohook lock None mark - beam 0
+whp_T t33 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t204 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t204 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.525
+whp_H 34 nohook lock None mark - beam 0
+whp_T t34 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t205 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t205 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.516
+whp_H 35 nohook lock None mark - beam 0
+whp_T t35 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t206 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t206 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.673
+whp_H 36 nohook lock None mark - beam 0
+whp_T t36 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t207 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t207 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.534
+whp_H 37 nohook lock None mark - beam 0
+whp_T t37 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t208 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t208 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.546
+whp_H 38 nohook lock None mark - beam 0
+whp_T t38 tip body(17.0 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t209 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t209 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(395.0 497.7 124.5) ms 0.490
+whp_H 39 nohook lock None mark - beam 0
+whp_T t39 tip body(16.9 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t210 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t210 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.9 497.7 124.5) ms 0.760
+whp_H 40 nohook lock None mark - beam 0
+whp_T t40 tip body(16.9 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t211 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t211 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.9 497.7 124.5) ms 0.763
+whp_H 41 nohook lock None mark - beam 0
+whp_T t41 tip body(16.9 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t212 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t212 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.9 497.7 124.5) ms 0.544
+whp_H 42 nohook lock None mark - beam 0
+whp_T t42 tip body(16.9 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+N2_TO_GOLD_0
+T_WPW 0 RAY t213 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t213 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.9 497.7 124.5) ms 0.524
+whp_H 43 nohook lock None mark - beam 0
+whp_T t43 tip body(16.9 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t214 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t214 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.9 497.7 124.5) ms 0.528
+whp_H 44 nohook lock None mark - beam 0
+whp_T t44 tip body(16.9 -14.3 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t215 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t215 tip 0.2 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.9 497.7 124.5) ms 0.538
+whp_H 45 nohook lock None mark - beam 0
+whp_T t45 tip body(16.9 -14.3 34.3) spd 0.2 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.4 -6.8 37.0) z 96.0 vh 44.0
+T_WPW 0 RAY t216 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t216 tip 0.2 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.9 497.7 124.7) ms 0.572
+whp_H 46 nohook lock None mark - beam 0
+whp_T t46 tip body(16.9 -14.3 34.5) spd 0.2 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.5 -6.8 37.1) z 96.0 vh 44.0
+T_WPW 0 RAY t217 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t217 tip 0.2 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.9 497.7 124.7) ms 0.591
+whp_H 47 nohook lock None mark - beam 0
+whp_T t47 tip body(16.9 -14.3 34.6) spd 0.2 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.5 -6.8 37.1) z 96.0 vh 44.0
+T_WPW 0 RAY t218 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t218 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(395.0 497.7 125.0) ms 0.562
+whp_H 48 nohook lock None mark - beam 0
+whp_T t48 tip body(17.0 -14.3 34.8) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.9 -6.8 37.4) z 96.0 vh 44.0
+T_WPW 0 RAY t219 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t219 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.0 497.7 125.1) ms 0.548
+whp_H 49 nohook lock None mark - beam 0
+whp_T t49 tip body(17.0 -14.3 35.1) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.9 -6.8 37.4) z 96.0 vh 44.0
+T_WPW 0 RAY t220 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t220 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(395.1 497.7 125.4) ms 0.539
+whp_H 50 nohook lock None mark - beam 0
+whp_T t50 tip body(17.1 -14.3 35.3) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.2 -6.8 37.7) z 96.0 vh 44.0
+T_WPW 0 RAY t221 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t221 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.1 497.7 125.5) ms 0.535
+whp_H 51 nohook lock None mark - beam 0
+whp_T t51 tip body(17.2 -14.3 35.6) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.2 -6.8 37.7) z 96.0 vh 44.0
+T_WPW 0 RAY t222 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t222 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(395.3 497.7 125.8) ms 0.537
+whp_H 52 nohook lock None mark - beam 0
+whp_T t52 tip body(17.3 -14.3 35.8) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.6 -6.8 38.0) z 96.0 vh 44.0
+T_WPW 0 RAY t223 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t223 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.3 497.7 125.9) ms 0.825
+whp_H 53 nohook lock None mark - beam 0
+whp_T t53 tip body(17.4 -14.3 36.1) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.7 -6.8 38.1) z 96.0 vh 44.0
+T_WPW 0 RAY t224 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t224 tip 0.3 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(395.4 497.7 126.1) ms 0.526
+whp_H 54 nohook lock None mark - beam 0
+whp_T t54 tip body(17.5 -14.3 36.3) spd 0.3 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.7 -6.8 38.1) z 96.0 vh 44.0
+T_WPW 0 RAY t225 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t225 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.6 497.7 126.4) ms 0.519
+whp_H 55 nohook lock None mark - beam 0
+whp_T t55 tip body(17.6 -14.3 36.5) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.1 -6.8 38.4) z 96.0 vh 44.0
+T_WPW 0 RAY t226 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t226 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.6 497.7 126.5) ms 0.541
+whp_H 56 nohook lock None mark - beam 0
+whp_T t56 tip body(17.7 -14.3 36.7) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.1 -6.8 38.4) z 96.0 vh 44.0
+T_WPW 0 RAY t227 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t227 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.8 497.7 126.8) ms 0.522
+whp_H 57 nohook lock None mark - beam 0
+whp_T t57 tip body(17.8 -14.3 37.0) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.4 -6.8 38.7) z 96.0 vh 44.0
+T_WPW 0 RAY t228 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t228 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.9 497.7 126.8) ms 0.545
+whp_H 58 nohook lock None mark - beam 0
+whp_T t58 tip body(18.0 -14.3 37.2) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.4 -6.8 38.7) z 96.0 vh 44.0
+T_WPW 0 RAY t229 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t229 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(396.1 497.7 127.2) ms 0.502
+whp_H 59 nohook lock None mark - beam 0
+whp_T t59 tip body(18.1 -14.3 37.4) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.8 -6.8 39.0) z 96.0 vh 44.0
+T_WPW 0 RAY t230 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t230 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(396.1 497.7 127.2) ms 0.584
+whp_H 60 nohook lock None mark - beam 0
+whp_T t60 tip body(18.2 -14.3 37.7) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.8 -6.8 39.0) z 96.0 vh 44.0
+T_WPW 0 AIM t231 VALID Ceiling at (938 505 192) 16.2 m, normal (0.00 0.00 -1.00) (survey's sign faces the hand), anchor (938 505 188)
+T_WPW 0 RAY t231 drawn by alt-fire: GOLD Ceiling, 16.2 m, 55 dots, diamond on
+T_WPW 0 t231 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(396.3 497.7 127.6) ms 0.541
+whp_H 61 nohook lock None mark - beam 1
+whp_T t61 tip body(18.3 -14.3 37.9) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.1 -6.8 39.2) z 96.0 vh 44.0
+T_WPW 0 RAY t232 drawn by alt-fire: GOLD Ceiling, 14.7 m, 50 dots, diamond on
+T_WPW 0 t232 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(396.3 497.7 127.6) ms 0.609
+whp_H 62 nohook lock None mark - beam 1
+whp_T t62 tip body(18.4 -14.3 38.1) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.1 -6.8 39.2) z 96.0 vh 44.0
+T_WPW 0 RAY t233 drawn by alt-fire: GOLD Ceiling, 12.2 m, 41 dots, diamond on
+T_WPW 0 t233 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(396.6 497.7 127.9) ms 0.573
+whp_H 63 nohook lock None mark - beam 1
+whp_T t63 tip body(18.6 -14.3 38.3) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.4 -6.8 39.5) z 96.0 vh 44.0
+N2_GOLD_HOLD_0
+T_WPW 0 RAY t234 drawn by alt-fire: GOLD Ceiling, 11.3 m, 38 dots, diamond on
+T_WPW 0 t234 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(396.6 497.7 128.0) ms 0.547
+whp_H 64 nohook lock None mark - beam 1
+whp_T t64 tip body(18.7 -14.3 38.6) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.4 -6.8 39.5) z 96.0 vh 44.0
+T_WPW 0 RAY t235 drawn by alt-fire: GOLD Ceiling, 10.4 m, 35 dots, diamond on
+T_WPW 0 t235 tip 0.2 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(396.8 497.7 128.2) ms 0.492
+whp_H 65 nohook lock None mark - beam 1
+whp_T t65 tip body(18.8 -14.3 38.7) spd 0.2 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t236 drawn by alt-fire: GOLD Ceiling, 9.9 m, 33 dots, diamond on
+T_WPW 0 t236 tip 0.2 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(396.8 497.7 128.3) ms 0.539
+whp_H 66 nohook lock None mark - beam 1
+whp_T t66 tip body(18.9 -14.3 38.8) spd 0.2 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t237 drawn by alt-fire: GOLD Ceiling, 9.7 m, 32 dots, diamond on
+T_WPW 0 t237 tip 0.1 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(396.9 497.7 128.3) ms 0.543
+whp_H 67 nohook lock None mark - beam 1
+whp_T t67 tip body(19.0 -14.3 38.8) spd 0.1 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t238 drawn by alt-fire: GOLD Ceiling, 9.5 m, 32 dots, diamond on
+T_WPW 0 t238 tip 0.1 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(397.0 497.7 128.4) ms 0.562
+whp_H 68 nohook lock None mark - beam 1
+whp_T t68 tip body(19.1 -14.3 38.8) spd 0.1 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t239 drawn by alt-fire: GOLD Ceiling, 9.4 m, 31 dots, diamond on
+T_WPW 0 t239 tip 0.1 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(397.1 497.7 128.4) ms 0.631
+whp_H 69 nohook lock None mark - beam 1
+whp_T t69 tip body(19.1 -14.2 38.8) spd 0.1 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t240 drawn by alt-fire: GOLD Ceiling, 9.3 m, 31 dots, diamond on
+T_WPW 0 t240 tip 0.1 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(397.1 497.8 128.4) ms 0.558
+whp_H 70 nohook lock None mark - beam 1
+whp_T t70 tip body(19.2 -14.2 38.8) spd 0.1 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t241 drawn by alt-fire: GOLD Ceiling, 9.2 m, 31 dots, diamond on
+T_WPW 0 t241 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(397.2 497.8 128.4) ms 0.541
+whp_H 71 nohook lock None mark - beam 1
+whp_T t71 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t242 drawn by alt-fire: GOLD Ceiling, 9.2 m, 31 dots, diamond on
+T_WPW 0 t242 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(397.2 497.8 128.4) ms 0.538
+whp_H 72 nohook lock None mark - beam 1
+whp_T t72 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t243 drawn by alt-fire: GOLD Ceiling, 9.1 m, 30 dots, diamond on
+T_WPW 0 t243 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.2 497.8 128.4) ms 0.563
+whp_H 73 nohook lock None mark - beam 1
+whp_T t73 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t244 drawn by alt-fire: GOLD Ceiling, 9.1 m, 30 dots, diamond on
+T_WPW 0 t244 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.2 497.8 128.4) ms 0.538
+whp_H 74 nohook lock None mark - beam 1
+whp_T t74 tip body(19.3 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t245 drawn by alt-fire: GOLD Ceiling, 9.0 m, 30 dots, diamond on
+T_WPW 0 t245 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.3 497.8 128.4) ms 0.516
+whp_H 75 nohook lock None mark - beam 1
+whp_T t75 tip body(19.3 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t246 drawn by alt-fire: GOLD Ceiling, 9.0 m, 30 dots, diamond on
+T_WPW 0 t246 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.3 497.8 128.4) ms 0.576
+whp_H 76 nohook lock None mark - beam 1
+whp_T t76 tip body(19.3 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t247 drawn by alt-fire: GOLD Ceiling, 9.0 m, 30 dots, diamond on
+T_WPW 0 t247 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.2 497.8 128.4) ms 0.597
+whp_H 77 nohook lock None mark - beam 1
+whp_T t77 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t248 drawn by alt-fire: GOLD Ceiling, 9.0 m, 30 dots, diamond on
+T_WPW 0 t248 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.2 497.8 128.4) ms 0.500
+whp_H 78 nohook lock None mark - beam 1
+whp_T t78 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t249 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t249 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.2 497.8 128.4) ms 0.616
+whp_H 79 nohook lock None mark - beam 1
+whp_T t79 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t250 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t250 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.2 497.8 128.4) ms 0.763
+whp_H 80 nohook lock None mark - beam 1
+whp_T t80 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t251 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t251 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.2 497.8 128.4) ms 0.613
+whp_H 81 nohook lock None mark - beam 1
+whp_T t81 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t252 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t252 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.2 497.8 128.4) ms 0.624
+whp_H 82 nohook lock None mark - beam 1
+whp_T t82 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t253 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t253 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.2 497.8 128.4) ms 0.544
+whp_H 83 nohook lock None mark - beam 1
+whp_T t83 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t254 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t254 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.2 497.8 128.4) ms 0.530
+whp_H 84 nohook lock None mark - beam 1
+whp_T t84 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t255 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t255 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.2 497.8 128.4) ms 0.533
+whp_H 85 nohook lock None mark - beam 1
+whp_T t85 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t256 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t256 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.2 497.8 128.4) ms 0.607
+whp_H 86 nohook lock None mark - beam 1
+whp_T t86 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t257 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t257 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.574
+whp_H 87 nohook lock None mark - beam 1
+whp_T t87 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t258 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t258 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.538
+whp_H 88 nohook lock None mark - beam 1
+whp_T t88 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t259 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t259 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 1.265
+whp_H 89 nohook lock None mark - beam 1
+whp_T t89 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t260 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t260 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.961
+whp_H 90 nohook lock None mark - beam 1
+whp_T t90 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t261 drawn by alt-fire: GOLD Ceiling, 8.9 m, 29 dots, diamond on
+T_WPW 0 t261 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.526
+whp_H 91 nohook lock None mark - beam 1
+whp_T t91 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t262 drawn by alt-fire: GOLD Ceiling, 8.9 m, 29 dots, diamond on
+T_WPW 0 t262 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.625
+whp_H 92 nohook lock None mark - beam 1
+whp_T t92 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t263 drawn by alt-fire: GOLD Ceiling, 8.8 m, 29 dots, diamond on
+T_WPW 0 t263 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.519
+whp_H 93 nohook lock None mark - beam 1
+whp_T t93 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+N2_TO_RED_0
+T_WPW 0 RAY t264 drawn by alt-fire: GOLD Ceiling, 8.8 m, 29 dots, diamond on
+T_WPW 0 t264 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.531
+whp_H 94 nohook lock None mark - beam 1
+whp_T t94 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t265 drawn by alt-fire: GOLD Ceiling, 8.8 m, 29 dots, diamond on
+T_WPW 0 t265 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.539
+whp_H 95 nohook lock None mark - beam 1
+whp_T t95 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t266 drawn by alt-fire: GOLD Ceiling, 8.8 m, 29 dots, diamond on
+T_WPW 0 t266 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.587
+whp_H 96 nohook lock None mark - beam 1
+whp_T t96 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t267 drawn by alt-fire: GOLD Ceiling, 9.4 m, 31 dots, diamond on
+T_WPW 0 t267 tip 0.3 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(397.1 497.8 128.2) ms 0.482
+whp_H 97 nohook lock None mark - beam 1
+whp_T t97 tip body(19.1 -14.2 38.7) spd 0.3 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.3 -6.8 39.4) z 96.0 vh 44.0
+T_WPW 0 RAY t268 drawn by alt-fire: GOLD Ceiling, 9.7 m, 33 dots, diamond on
+T_WPW 0 t268 tip 0.3 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(397.1 497.8 128.2) ms 0.573
+whp_H 98 nohook lock None mark - beam 1
+whp_T t98 tip body(19.1 -14.2 38.5) spd 0.3 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.3 -6.8 39.4) z 96.0 vh 44.0
+T_WPW 0 RAY t269 drawn by alt-fire: GOLD Ceiling, 9.9 m, 33 dots, diamond on
+T_WPW 0 t269 tip 0.1 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(397.1 497.8 128.0) ms 0.544
+whp_H 99 nohook lock None mark - beam 1
+whp_T t99 tip body(19.1 -14.2 38.4) spd 0.1 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.3 -6.8 39.4) z 96.0 vh 44.0
+T_WPW 0 RAY t270 drawn by alt-fire: GOLD Ceiling, 11.8 m, 40 dots, diamond on
+T_WPW 0 t270 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(397.0 497.8 127.8) ms 0.519
+whp_H 100 nohook lock None mark - beam 1
+whp_T t100 tip body(19.0 -14.2 38.2) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.8 -6.8 39.0) z 96.0 vh 44.0
+T_WPW 0 RAY t271 drawn by alt-fire: GOLD Ceiling, 12.9 m, 43 dots, diamond on
+T_WPW 0 t271 tip 0.5 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(397.0 497.8 127.7) ms 0.559
+whp_H 101 nohook lock None mark - beam 1
+whp_T t101 tip body(19.0 -14.2 37.8) spd 0.5 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.8 -6.8 39.0) z 96.0 vh 44.0
+T_WPW 0 RAY t272 drawn by alt-fire: GOLD Ceiling, 13.6 m, 46 dots, diamond on
+T_WPW 0 t272 tip 0.2 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(397.0 497.8 127.5) ms 0.506
+whp_H 102 nohook lock None mark - beam 1
+whp_T t102 tip body(18.9 -14.2 37.7) spd 0.2 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.8 -6.8 39.0) z 96.0 vh 44.0
+T_WPW 0 RAY t273 drawn by alt-fire: GOLD Ceiling, 17.9 m, 61 dots, diamond on
+T_WPW 0 t273 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(396.8 497.8 127.2) ms 0.528
+whp_H 103 nohook lock None mark - beam 1
+whp_T t103 tip body(18.8 -14.2 37.5) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.2 -6.8 38.5) z 96.0 vh 44.0
+T_WPW 0 AIM t274 INVALID: out of reach (20.0 m, portals 0)
+T_WPW 0 RAY t274 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t274 tip 0.5 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(396.8 497.8 127.2) ms 0.574
+whp_H 104 nohook lock None mark - beam 0
+whp_T t104 tip body(18.8 -14.2 37.1) spd 0.5 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.2 -6.8 38.5) z 96.0 vh 44.0
+T_WPW 0 RAY t275 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t275 tip 0.4 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(396.6 497.8 126.7) ms 0.576
+whp_H 105 nohook lock None mark - beam 0
+whp_T t105 tip body(18.6 -14.2 36.9) spd 0.4 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.9 -6.8 38.2) z 96.0 vh 44.0
+T_WPW 0 RAY t276 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t276 tip 0.4 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(396.6 497.8 126.7) ms 0.754
+whp_H 106 nohook lock None mark - beam 0
+whp_T t106 tip body(18.5 -14.2 36.6) spd 0.4 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.9 -6.8 38.2) z 96.0 vh 44.0
+T_WPW 0 RAY t277 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t277 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(396.4 497.8 126.3) ms 0.560
+whp_H 107 nohook lock None mark - beam 0
+whp_T t107 tip body(18.4 -14.2 36.4) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.6 -6.8 38.0) z 96.0 vh 44.0
+T_WPW 0 RAY t278 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t278 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(396.4 497.8 126.3) ms 0.573
+whp_H 108 nohook lock None mark - beam 0
+whp_T t108 tip body(18.3 -14.2 36.2) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.6 -6.8 38.0) z 96.0 vh 44.0
+T_WPW 0 RAY t279 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t279 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(396.2 497.8 126.0) ms 0.608
+whp_H 109 nohook lock None mark - beam 0
+whp_T t109 tip body(18.2 -14.2 35.9) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.2 -6.8 37.7) z 96.0 vh 44.0
+T_WPW 0 RAY t280 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t280 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(396.1 497.8 125.9) ms 0.805
+whp_H 110 nohook lock None mark - beam 0
+whp_T t110 tip body(18.0 -14.2 35.7) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.2 -6.8 37.7) z 96.0 vh 44.0
+T_WPW 0 RAY t281 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t281 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(395.9 497.8 125.6) ms 0.807
+whp_H 111 nohook lock None mark - beam 0
+whp_T t111 tip body(17.9 -14.2 35.5) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.9 -6.8 37.4) z 96.0 vh 44.0
+T_WPW 0 RAY t282 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t282 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.9 497.8 125.5) ms 0.575
+whp_H 112 nohook lock None mark - beam 0
+whp_T t112 tip body(17.8 -14.1 35.2) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.9 -6.8 37.4) z 96.0 vh 44.0
+T_WPW 0 RAY t283 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t283 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(395.6 497.9 125.2) ms 0.528
+whp_H 113 nohook lock None mark - beam 0
+whp_T t113 tip body(17.6 -14.1 35.0) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.5 -6.8 37.1) z 96.0 vh 44.0
+T_WPW 0 RAY t284 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t284 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.6 497.9 125.1) ms 0.537
+whp_H 114 nohook lock None mark - beam 0
+whp_T t114 tip body(17.5 -14.1 34.7) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.5 -6.8 37.1) z 96.0 vh 44.0
+N2_RED_HOLD_0
+T_WPW 0 RAY t285 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t285 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(395.4 497.9 124.7) ms 0.476
+whp_H 115 nohook lock None mark - beam 0
+whp_T t115 tip body(17.4 -14.1 34.5) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t286 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t286 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.4 497.9 124.7) ms 0.556
+whp_H 116 nohook lock None mark - beam 0
+whp_T t116 tip body(17.3 -14.1 34.2) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t287 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t287 tip 0.2 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.2 497.9 124.5) ms 0.507
+whp_H 117 nohook lock None mark - beam 0
+whp_T t117 tip body(17.1 -14.1 34.2) spd 0.2 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t288 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t288 tip 0.1 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(395.1 497.9 124.5) ms 0.566
+whp_H 118 nohook lock None mark - beam 0
+whp_T t118 tip body(17.0 -14.1 34.2) spd 0.1 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t289 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t289 tip 0.1 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(395.0 497.9 124.5) ms 0.520
+whp_H 119 nohook lock None mark - beam 0
+whp_T t119 tip body(16.9 -14.2 34.2) spd 0.1 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t290 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t290 tip 0.1 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(394.9 497.8 124.5) ms 0.542
+whp_H 120 nohook lock None mark - beam 0
+whp_T t120 tip body(16.8 -14.2 34.2) spd 0.1 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t291 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t291 tip 0.1 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(394.8 497.8 124.5) ms 0.533
+whp_H 121 nohook lock None mark - beam 0
+whp_T t121 tip body(16.7 -14.2 34.2) spd 0.1 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t292 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t292 tip 0.1 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(394.7 497.8 124.5) ms 0.526
+whp_H 122 nohook lock None mark - beam 0
+whp_T t122 tip body(16.7 -14.2 34.2) spd 0.1 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t293 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t293 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.7 497.8 124.5) ms 0.650
+whp_H 123 nohook lock None mark - beam 0
+whp_T t123 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t294 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t294 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.7 497.8 124.5) ms 0.550
+whp_H 124 nohook lock None mark - beam 0
+whp_T t124 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t295 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t295 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.6 497.8 124.5) ms 0.772
+whp_H 125 nohook lock None mark - beam 0
+whp_T t125 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t296 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t296 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.6 497.8 124.5) ms 0.751
+whp_H 126 nohook lock None mark - beam 0
+whp_T t126 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t297 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t297 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.6 497.8 124.5) ms 0.541
+whp_H 127 nohook lock None mark - beam 0
+whp_T t127 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t298 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t298 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.6 497.8 124.5) ms 0.525
+whp_H 128 nohook lock None mark - beam 0
+whp_T t128 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t299 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t299 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.7 497.8 124.5) ms 0.558
+whp_H 129 nohook lock None mark - beam 0
+whp_T t129 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t300 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t300 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.7 497.8 124.5) ms 0.571
+whp_H 130 nohook lock None mark - beam 0
+whp_T t130 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t301 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t301 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.591
+whp_H 131 nohook lock None mark - beam 0
+whp_T t131 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t302 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t302 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.556
+whp_H 132 nohook lock None mark - beam 0
+whp_T t132 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t303 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t303 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.541
+whp_H 133 nohook lock None mark - beam 0
+whp_T t133 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t304 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t304 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.551
+whp_H 134 nohook lock None mark - beam 0
+whp_T t134 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t305 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t305 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.504
+whp_H 135 nohook lock None mark - beam 0
+whp_T t135 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t306 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t306 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.544
+whp_H 136 nohook lock None mark - beam 0
+whp_T t136 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t307 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t307 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.8 497.8 124.5) ms 0.501
+whp_H 137 nohook lock None mark - beam 0
+whp_T t137 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t308 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t308 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.548
+whp_H 138 nohook lock None mark - beam 0
+whp_T t138 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t309 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t309 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.543
+whp_H 139 nohook lock None mark - beam 0
+whp_T t139 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t310 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t310 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.580
+whp_H 140 nohook lock None mark - beam 0
+whp_T t140 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t311 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t311 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.811
+whp_H 141 nohook lock None mark - beam 0
+whp_T t141 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t312 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t312 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.550
+whp_H 142 nohook lock None mark - beam 0
+whp_T t142 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t313 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t313 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.515
+whp_H 143 nohook lock None mark - beam 0
+whp_T t143 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t314 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t314 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.476
+whp_H 144 nohook lock None mark - beam 0
+whp_T t144 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t315 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t315 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.579
+whp_H 145 nohook lock None mark - beam 0
+whp_T t145 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t316 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t316 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.577
+whp_H 146 nohook lock None mark - beam 0
+whp_T t146 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t317 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t317 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.579
+whp_H 147 nohook lock None mark - beam 0
+whp_T t147 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t318 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t318 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.539
+whp_H 148 nohook lock None mark - beam 0
+whp_T t148 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t319 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t319 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.543
+whp_H 149 nohook lock None mark - beam 0
+whp_T t149 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t320 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t320 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.807
+whp_H 150 nohook lock None mark - beam 0
+whp_T t150 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t321 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t321 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.890
+whp_H 151 nohook lock None mark - beam 0
+whp_T t151 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t322 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t322 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.750
+whp_H 152 nohook lock None mark - beam 0
+whp_T t152 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t323 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t323 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.534
+whp_H 153 nohook lock None mark - beam 0
+whp_T t153 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t324 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t324 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.929
+whp_H 154 nohook lock None mark - beam 0
+whp_T t154 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+N2_TO_GOLD_1
+T_WPW 0 RAY t325 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t325 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 2.171
+whp_H 155 nohook lock None mark - beam 0
+whp_T t155 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t326 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t326 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.525
+whp_H 156 nohook lock None mark - beam 0
+whp_T t156 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t327 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t327 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.616
+whp_H 157 nohook lock None mark - beam 0
+whp_T t157 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t328 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t328 tip 0.4 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(394.8 497.8 124.6) ms 0.511
+whp_H 158 nohook lock None mark - beam 0
+whp_T t158 tip body(16.8 -14.2 34.3) spd 0.4 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.5 -6.8 37.1) z 96.0 vh 44.0
+T_WPW 0 RAY t329 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t329 tip 0.4 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(394.8 497.8 124.7) ms 0.577
+whp_H 159 nohook lock None mark - beam 0
+whp_T t159 tip body(16.8 -14.2 34.6) spd 0.4 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.5 -6.8 37.1) z 96.0 vh 44.0
+T_WPW 0 RAY t330 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t330 tip 0.1 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(394.8 497.8 124.8) ms 0.522
+whp_H 160 nohook lock None mark - beam 0
+whp_T t160 tip body(16.9 -14.2 34.6) spd 0.1 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.5 -6.8 37.1) z 96.0 vh 44.0
+T_WPW 0 RAY t331 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t331 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(394.9 497.8 125.1) ms 0.490
+whp_H 161 nohook lock None mark - beam 0
+whp_T t161 tip body(16.9 -14.2 34.9) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.0 -6.8 37.5) z 96.0 vh 44.0
+T_WPW 0 RAY t332 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t332 tip 0.6 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(394.9 497.8 125.2) ms 0.598
+whp_H 162 nohook lock None mark - beam 0
+whp_T t162 tip body(17.0 -14.2 35.3) spd 0.6 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.0 -6.8 37.5) z 96.0 vh 44.0
+T_WPW 0 RAY t333 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t333 tip 0.2 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(395.0 497.8 125.4) ms 0.521
+whp_H 163 nohook lock None mark - beam 0
+whp_T t163 tip body(17.0 -14.2 35.4) spd 0.2 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.0 -6.8 37.5) z 96.0 vh 44.0
+T_WPW 0 RAY t334 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t334 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(395.1 497.8 125.7) ms 0.514
+whp_H 164 nohook lock None mark - beam 0
+whp_T t164 tip body(17.1 -14.2 35.7) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.6 -6.8 38.0) z 96.0 vh 44.0
+T_WPW 0 RAY t335 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t335 tip 0.6 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(395.1 497.8 125.8) ms 0.754
+whp_H 165 nohook lock None mark - beam 0
+whp_T t165 tip body(17.2 -14.2 36.0) spd 0.6 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.6 -6.8 38.0) z 96.0 vh 44.0
+T_WPW 0 RAY t336 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t336 tip 0.2 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(395.2 497.8 126.0) ms 0.767
+whp_H 166 nohook lock None mark - beam 0
+whp_T t166 tip body(17.3 -14.2 36.1) spd 0.2 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.6 -6.8 38.0) z 96.0 vh 44.0
+T_WPW 0 RAY t337 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t337 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(395.4 497.8 126.3) ms 0.734
+whp_H 167 nohook lock None mark - beam 0
+whp_T t167 tip body(17.4 -14.2 36.4) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.1 -6.8 38.4) z 96.0 vh 44.0
+T_WPW 0 RAY t338 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t338 tip 0.6 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(395.4 497.8 126.4) ms 0.746
+whp_H 168 nohook lock None mark - beam 0
+whp_T t168 tip body(17.5 -14.2 36.7) spd 0.6 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.1 -6.8 38.4) z 96.0 vh 44.0
+T_WPW 0 RAY t339 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t339 tip 0.2 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(395.5 497.8 126.6) ms 0.584
+whp_H 169 nohook lock None mark - beam 0
+whp_T t169 tip body(17.7 -14.2 36.8) spd 0.2 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.1 -6.8 38.4) z 96.0 vh 44.0
+T_WPW 0 RAY t340 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t340 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(395.8 497.8 126.9) ms 0.657
+whp_H 170 nohook lock None mark - beam 0
+whp_T t170 tip body(17.8 -14.2 37.1) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.6 -6.8 38.8) z 96.0 vh 44.0
+T_WPW 0 RAY t341 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t341 tip 0.5 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(395.8 497.8 126.9) ms 0.654
+whp_H 171 nohook lock None mark - beam 0
+whp_T t171 tip body(17.9 -14.2 37.4) spd 0.5 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.6 -6.8 38.8) z 96.0 vh 44.0
+T_WPW 0 RAY t342 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t342 tip 0.2 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(395.9 497.8 127.2) ms 0.752
+whp_H 172 nohook lock None mark - beam 0
+whp_T t172 tip body(18.0 -14.2 37.5) spd 0.2 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.6 -6.8 38.8) z 96.0 vh 44.0
+T_WPW 0 AIM t343 VALID Ceiling at (960 505 192) 16.9 m, normal (0.00 0.00 -1.00) (survey's sign faces the hand), anchor (960 505 188)
+T_WPW 0 RAY t343 drawn by alt-fire: GOLD Ceiling, 16.9 m, 57 dots, diamond on
+T_WPW 0 t343 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(396.1 497.8 127.5) ms 0.515
+whp_H 173 nohook lock None mark - beam 1
+whp_T t173 tip body(18.1 -14.2 37.7) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.1 -6.8 39.2) z 96.0 vh 44.0
+T_WPW 0 RAY t344 drawn by alt-fire: GOLD Ceiling, 14.9 m, 50 dots, diamond on
+T_WPW 0 t344 tip 0.5 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(396.2 497.8 127.5) ms 0.583
+whp_H 174 nohook lock None mark - beam 1
+whp_T t174 tip body(18.3 -14.2 38.1) spd 0.5 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.1 -6.8 39.2) z 96.0 vh 44.0
+T_WPW 0 RAY t345 drawn by alt-fire: GOLD Ceiling, 14.1 m, 47 dots, diamond on
+T_WPW 0 t345 tip 0.2 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(396.3 497.8 127.7) ms 0.540
+whp_H 175 nohook lock None mark - beam 1
+whp_T t175 tip body(18.4 -14.2 38.2) spd 0.2 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.1 -6.8 39.2) z 96.0 vh 44.0
+N2_GOLD_HOLD_1
+T_WPW 0 RAY t346 drawn by alt-fire: GOLD Ceiling, 11.2 m, 37 dots, diamond on
+T_WPW 0 t346 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(396.5 497.8 128.0) ms 0.517
+whp_H 176 nohook lock None mark - beam 1
+whp_T t176 tip body(18.5 -14.2 38.4) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t347 drawn by alt-fire: GOLD Ceiling, 10.3 m, 34 dots, diamond on
+T_WPW 0 t347 tip 0.5 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(396.5 497.8 128.1) ms 0.556
+whp_H 177 nohook lock None mark - beam 1
+whp_T t177 tip body(18.6 -14.2 38.8) spd 0.5 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t348 drawn by alt-fire: GOLD Ceiling, 9.9 m, 33 dots, diamond on
+T_WPW 0 t348 tip 0.2 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(396.6 497.8 128.3) ms 0.516
+whp_H 178 nohook lock None mark - beam 1
+whp_T t178 tip body(18.7 -14.2 38.8) spd 0.2 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t349 drawn by alt-fire: GOLD Ceiling, 9.6 m, 32 dots, diamond on
+T_WPW 0 t349 tip 0.1 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(396.7 497.8 128.4) ms 0.567
+whp_H 179 nohook lock None mark - beam 1
+whp_T t179 tip body(18.8 -14.2 38.8) spd 0.1 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t350 drawn by alt-fire: GOLD Ceiling, 9.5 m, 32 dots, diamond on
+T_WPW 0 t350 tip 0.1 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(396.8 497.8 128.4) ms 0.552
+whp_H 180 nohook lock None mark - beam 1
+whp_T t180 tip body(18.9 -14.2 38.8) spd 0.1 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t351 drawn by alt-fire: GOLD Ceiling, 9.4 m, 31 dots, diamond on
+T_WPW 0 t351 tip 0.1 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(396.9 497.8 128.4) ms 0.599
+whp_H 181 nohook lock None mark - beam 1
+whp_T t181 tip body(19.0 -14.2 38.8) spd 0.1 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t352 drawn by alt-fire: GOLD Ceiling, 9.3 m, 31 dots, diamond on
+T_WPW 0 t352 tip 0.1 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(397.0 497.8 128.4) ms 0.533
+whp_H 182 nohook lock None mark - beam 1
+whp_T t182 tip body(19.1 -14.2 38.8) spd 0.1 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t353 drawn by alt-fire: GOLD Ceiling, 9.2 m, 31 dots, diamond on
+T_WPW 0 t353 tip 0.0 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(397.1 497.8 128.4) ms 0.562
+whp_H 183 nohook lock None mark - beam 1
+whp_T t183 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t354 drawn by alt-fire: GOLD Ceiling, 9.1 m, 30 dots, diamond on
+T_WPW 0 t354 tip 0.0 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(397.1 497.8 128.4) ms 0.548
+whp_H 184 nohook lock None mark - beam 1
+whp_T t184 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t355 drawn by alt-fire: GOLD Ceiling, 9.1 m, 30 dots, diamond on
+T_WPW 0 t355 tip 0.0 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(397.1 497.8 128.4) ms 0.668
+whp_H 185 nohook lock None mark - beam 1
+whp_T t185 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t356 drawn by alt-fire: GOLD Ceiling, 9.1 m, 30 dots, diamond on
+T_WPW 0 t356 tip 0.0 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(397.1 497.8 128.4) ms 0.575
+whp_H 186 nohook lock None mark - beam 1
+whp_T t186 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t357 drawn by alt-fire: GOLD Ceiling, 9.0 m, 30 dots, diamond on
+T_WPW 0 t357 tip 0.0 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(397.2 497.8 128.4) ms 0.521
+whp_H 187 nohook lock None mark - beam 1
+whp_T t187 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t358 drawn by alt-fire: GOLD Ceiling, 9.0 m, 30 dots, diamond on
+T_WPW 0 t358 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(397.2 497.8 128.4) ms 0.561
+whp_H 188 nohook lock None mark - beam 1
+whp_T t188 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t359 drawn by alt-fire: GOLD Ceiling, 9.0 m, 30 dots, diamond on
+T_WPW 0 t359 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(397.2 497.8 128.4) ms 0.496
+whp_H 189 nohook lock None mark - beam 1
+whp_T t189 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t360 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t360 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(397.2 497.8 128.4) ms 0.626
+whp_H 190 nohook lock None mark - beam 1
+whp_T t190 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t361 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t361 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(397.2 497.8 128.4) ms 0.648
+whp_H 191 nohook lock None mark - beam 1
+whp_T t191 tip body(19.2 -14.2 38.8) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t362 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t362 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.1 497.8 128.4) ms 0.800
+whp_H 192 nohook lock None mark - beam 1
+whp_T t192 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t363 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t363 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.1 497.8 128.4) ms 0.827
+whp_H 193 nohook lock None mark - beam 1
+whp_T t193 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t364 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t364 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.1 497.8 128.4) ms 0.734
+whp_H 194 nohook lock None mark - beam 1
+whp_T t194 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t365 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t365 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.1 497.8 128.4) ms 0.680
+whp_H 195 nohook lock None mark - beam 1
+whp_T t195 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t366 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t366 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.1 497.8 128.4) ms 0.549
+whp_H 196 nohook lock None mark - beam 1
+whp_T t196 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t367 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t367 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.1 497.8 128.4) ms 0.586
+whp_H 197 nohook lock None mark - beam 1
+whp_T t197 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t368 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t368 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.1 497.8 128.4) ms 0.542
+whp_H 198 nohook lock None mark - beam 1
+whp_T t198 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t369 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t369 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.1 497.8 128.4) ms 0.609
+whp_H 199 nohook lock None mark - beam 1
+whp_T t199 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t370 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t370 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.1 497.8 128.4) ms 0.577
+whp_H 200 nohook lock None mark - beam 1
+whp_T t200 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t371 drawn by alt-fire: GOLD Ceiling, 8.9 m, 30 dots, diamond on
+T_WPW 0 t371 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.1 497.8 128.4) ms 0.843
+whp_H 201 nohook lock None mark - beam 1
+whp_T t201 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t372 drawn by alt-fire: GOLD Ceiling, 8.9 m, 29 dots, diamond on
+T_WPW 0 t372 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.1 497.8 128.4) ms 0.548
+whp_H 202 nohook lock None mark - beam 1
+whp_T t202 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t373 drawn by alt-fire: GOLD Ceiling, 8.9 m, 29 dots, diamond on
+T_WPW 0 t373 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(397.1 497.8 128.4) ms 0.660
+whp_H 203 nohook lock None mark - beam 1
+whp_T t203 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t374 drawn by alt-fire: GOLD Ceiling, 8.8 m, 29 dots, diamond on
+T_WPW 0 t374 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.534
+whp_H 204 nohook lock None mark - beam 1
+whp_T t204 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t375 drawn by alt-fire: GOLD Ceiling, 8.8 m, 29 dots, diamond on
+T_WPW 0 t375 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.799
+whp_H 205 nohook lock None mark - beam 1
+whp_T t205 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+N2_TO_RED_1
+T_WPW 0 RAY t376 drawn by alt-fire: GOLD Ceiling, 8.8 m, 29 dots, diamond on
+T_WPW 0 t376 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.802
+whp_H 206 nohook lock None mark - beam 1
+whp_T t206 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t377 drawn by alt-fire: GOLD Ceiling, 8.8 m, 29 dots, diamond on
+T_WPW 0 t377 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(397.1 497.8 128.4) ms 0.612
+whp_H 207 nohook lock None mark - beam 1
+whp_T t207 tip body(19.1 -14.2 38.8) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.6 -6.8 39.7) z 96.0 vh 44.0
+T_WPW 0 RAY t378 drawn by alt-fire: GOLD Ceiling, 9.1 m, 30 dots, diamond on
+T_WPW 0 t378 tip 0.2 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(397.1 497.8 128.3) ms 0.639
+whp_H 208 nohook lock None mark - beam 1
+whp_T t208 tip body(19.1 -14.2 38.8) spd 0.2 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.4 -6.8 39.5) z 96.0 vh 44.0
+T_WPW 0 RAY t379 drawn by alt-fire: GOLD Ceiling, 9.2 m, 31 dots, diamond on
+T_WPW 0 t379 tip 0.2 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.1 497.8 128.3) ms 0.808
+whp_H 209 nohook lock None mark - beam 1
+whp_T t209 tip body(19.1 -14.2 38.6) spd 0.2 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.4 -6.8 39.5) z 96.0 vh 44.0
+T_WPW 0 RAY t380 drawn by alt-fire: GOLD Ceiling, 9.3 m, 31 dots, diamond on
+T_WPW 0 t380 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(397.1 497.8 128.2) ms 0.932
+whp_H 210 nohook lock None mark - beam 1
+whp_T t210 tip body(19.1 -14.2 38.6) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(13.4 -6.8 39.5) z 96.0 vh 44.0
+T_WPW 0 RAY t381 drawn by alt-fire: GOLD Ceiling, 10.7 m, 36 dots, diamond on
+T_WPW 0 t381 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(397.1 497.8 128.0) ms 0.822
+whp_H 211 nohook lock None mark - beam 1
+whp_T t211 tip body(19.1 -14.2 38.4) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.9 -6.8 39.1) z 96.0 vh 44.0
+T_WPW 0 RAY t382 drawn by alt-fire: GOLD Ceiling, 11.5 m, 39 dots, diamond on
+T_WPW 0 t382 tip 0.5 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(397.1 497.8 127.9) ms 0.556
+whp_H 212 nohook lock None mark - beam 1
+whp_T t212 tip body(19.0 -14.2 38.0) spd 0.5 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.9 -6.8 39.1) z 96.0 vh 44.0
+T_WPW 0 RAY t383 drawn by alt-fire: GOLD Ceiling, 12.0 m, 40 dots, diamond on
+T_WPW 0 t383 tip 0.2 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(397.0 497.8 127.7) ms 0.540
+whp_H 213 nohook lock None mark - beam 1
+whp_T t213 tip body(19.0 -14.2 38.0) spd 0.2 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.9 -6.8 39.1) z 96.0 vh 44.0
+T_WPW 0 RAY t384 drawn by alt-fire: GOLD Ceiling, 12.3 m, 41 dots, diamond on
+T_WPW 0 t384 tip 0.1 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(396.9 497.8 127.6) ms 0.503
+whp_H 214 nohook lock None mark - beam 1
+whp_T t214 tip body(18.9 -14.2 37.9) spd 0.1 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.9 -6.8 39.1) z 96.0 vh 44.0
+T_WPW 0 RAY t385 drawn by alt-fire: GOLD Ceiling, 17.2 m, 58 dots, diamond on
+T_WPW 0 t385 tip 0.6 armed 1 coil 21.00 full 0 hand 1.5 pend 0 tip(396.8 497.8 127.3) ms 0.632
+whp_H 215 nohook lock None mark - beam 1
+whp_T t215 tip body(18.8 -14.2 37.6) spd 0.6 hand 1.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.2 -6.8 38.5) z 96.0 vh 44.0
+T_WPW 0 AIM t386 INVALID: out of reach (20.0 m, portals 0)
+T_WPW 0 RAY t386 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t386 tip 0.7 armed 1 coil 21.00 full 0 hand 1.4 pend 0 tip(396.8 497.8 127.3) ms 0.590
+whp_H 216 nohook lock None mark - beam 0
+whp_T t216 tip body(18.8 -14.2 37.2) spd 0.7 hand 1.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.2 -6.8 38.5) z 96.0 vh 44.0
+T_WPW 0 RAY t387 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t387 tip 0.2 armed 1 coil 21.00 full 0 hand 1.3 pend 0 tip(396.8 497.8 127.0) ms 0.513
+whp_H 217 nohook lock None mark - beam 0
+whp_T t217 tip body(18.6 -14.2 37.1) spd 0.2 hand 1.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(12.2 -6.8 38.5) z 96.0 vh 44.0
+T_WPW 0 RAY t388 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t388 tip 0.5 armed 1 coil 21.00 full 0 hand 1.2 pend 0 tip(396.5 497.8 126.7) ms 0.523
+whp_H 218 nohook lock None mark - beam 0
+whp_T t218 tip body(18.5 -14.2 36.8) spd 0.5 hand 1.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.7 -6.8 38.1) z 96.0 vh 44.0
+T_WPW 0 RAY t389 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t389 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(396.5 497.8 126.6) ms 0.573
+whp_H 219 nohook lock None mark - beam 0
+whp_T t219 tip body(18.4 -14.2 36.4) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.7 -6.8 38.1) z 96.0 vh 44.0
+T_WPW 0 RAY t390 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t390 tip 0.2 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(396.4 497.8 126.3) ms 0.492
+whp_H 220 nohook lock None mark - beam 0
+whp_T t220 tip body(18.3 -14.2 36.3) spd 0.2 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.7 -6.8 38.1) z 96.0 vh 44.0
+T_WPW 0 RAY t391 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t391 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(396.2 497.8 126.1) ms 0.545
+whp_H 221 nohook lock None mark - beam 0
+whp_T t221 tip body(18.2 -14.2 36.1) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.2 -6.8 37.7) z 96.0 vh 44.0
+T_WPW 0 RAY t392 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t392 tip 0.5 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(396.2 497.8 126.0) ms 0.556
+whp_H 222 nohook lock None mark - beam 0
+whp_T t222 tip body(18.1 -14.2 35.7) spd 0.5 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.2 -6.8 37.7) z 96.0 vh 44.0
+T_WPW 0 RAY t393 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t393 tip 0.2 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(396.0 497.8 125.8) ms 0.490
+whp_H 223 nohook lock None mark - beam 0
+whp_T t223 tip body(17.9 -14.2 35.6) spd 0.2 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(11.2 -6.8 37.7) z 96.0 vh 44.0
+T_WPW 0 RAY t394 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t394 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(395.8 497.8 125.5) ms 0.520
+whp_H 224 nohook lock None mark - beam 0
+whp_T t224 tip body(17.8 -14.2 35.4) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.7 -6.8 37.3) z 96.0 vh 44.0
+T_WPW 0 RAY t395 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t395 tip 0.5 armed 1 coil 21.00 full 0 hand 1.1 pend 0 tip(395.8 497.8 125.4) ms 0.554
+whp_H 225 nohook lock None mark - beam 0
+whp_T t225 tip body(17.7 -14.1 35.0) spd 0.5 hand 1.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.7 -6.8 37.3) z 96.0 vh 44.0
+T_WPW 0 RAY t396 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t396 tip 0.4 armed 1 coil 21.00 full 0 hand 1.0 pend 0 tip(395.5 497.9 124.9) ms 0.500
+whp_H 226 nohook lock None mark - beam 0
+whp_T t226 tip body(17.5 -14.1 34.7) spd 0.4 hand 1.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.4 -6.8 37.0) z 96.0 vh 44.0
+N2_RED_HOLD_1
+T_WPW 0 RAY t397 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t397 tip 0.4 armed 1 coil 21.00 full 0 hand 0.9 pend 0 tip(395.5 497.9 124.9) ms 0.562
+whp_H 227 nohook lock None mark - beam 0
+whp_T t227 tip body(17.4 -14.1 34.5) spd 0.4 hand 0.9 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.4 -6.8 37.0) z 96.0 vh 44.0
+T_WPW 0 RAY t398 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t398 tip 0.2 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(395.2 497.9 124.6) ms 0.519
+whp_H 228 nohook lock None mark - beam 0
+whp_T t228 tip body(17.2 -14.1 34.3) spd 0.2 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t399 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t399 tip 0.2 armed 1 coil 21.00 full 0 hand 0.8 pend 0 tip(395.2 497.9 124.6) ms 0.555
+whp_H 229 nohook lock None mark - beam 0
+whp_T t229 tip body(17.1 -14.1 34.2) spd 0.2 hand 0.8 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t400 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t400 tip 0.1 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.1 497.9 124.5) ms 0.543
+whp_H 230 nohook lock None mark - beam 0
+whp_T t230 tip body(17.0 -14.1 34.2) spd 0.1 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t401 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t401 tip 0.1 armed 1 coil 21.00 full 0 hand 0.7 pend 0 tip(395.0 497.9 124.5) ms 0.555
+whp_H 231 nohook lock None mark - beam 0
+whp_T t231 tip body(16.9 -14.2 34.2) spd 0.1 hand 0.7 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t402 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t402 tip 0.1 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(394.9 497.8 124.5) ms 0.566
+whp_H 232 nohook lock None mark - beam 0
+whp_T t232 tip body(16.8 -14.2 34.2) spd 0.1 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t403 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t403 tip 0.1 armed 1 coil 21.00 full 0 hand 0.6 pend 0 tip(394.8 497.8 124.5) ms 0.525
+whp_H 233 nohook lock None mark - beam 0
+whp_T t233 tip body(16.7 -14.2 34.2) spd 0.1 hand 0.6 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t404 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t404 tip 0.1 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(394.7 497.8 124.5) ms 0.535
+whp_H 234 nohook lock None mark - beam 0
+whp_T t234 tip body(16.7 -14.2 34.2) spd 0.1 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t405 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t405 tip 0.0 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(394.7 497.8 124.5) ms 0.533
+whp_H 235 nohook lock None mark - beam 0
+whp_T t235 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t406 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t406 tip 0.0 armed 1 coil 21.00 full 0 hand 0.5 pend 0 tip(394.6 497.8 124.5) ms 0.576
+whp_H 236 nohook lock None mark - beam 0
+whp_T t236 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.5 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t407 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t407 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.6 497.8 124.5) ms 0.550
+whp_H 237 nohook lock None mark - beam 0
+whp_T t237 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t408 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t408 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.6 497.8 124.5) ms 0.563
+whp_H 238 nohook lock None mark - beam 0
+whp_T t238 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t409 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t409 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.6 497.8 124.5) ms 0.594
+whp_H 239 nohook lock None mark - beam 0
+whp_T t239 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t410 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t410 tip 0.0 armed 1 coil 21.00 full 0 hand 0.4 pend 0 tip(394.6 497.8 124.5) ms 0.534
+whp_H 240 nohook lock None mark - beam 0
+whp_T t240 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.4 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t411 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t411 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.6 497.8 124.5) ms 0.534
+whp_H 241 nohook lock None mark - beam 0
+whp_T t241 tip body(16.6 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t412 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t412 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.7 497.8 124.5) ms 0.557
+whp_H 242 nohook lock None mark - beam 0
+whp_T t242 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t413 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t413 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.7 497.8 124.5) ms 0.569
+whp_H 243 nohook lock None mark - beam 0
+whp_T t243 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t414 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t414 tip 0.0 armed 1 coil 21.00 full 0 hand 0.3 pend 0 tip(394.7 497.8 124.5) ms 0.528
+whp_H 244 nohook lock None mark - beam 0
+whp_T t244 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.3 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t415 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t415 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.568
+whp_H 245 nohook lock None mark - beam 0
+whp_T t245 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t416 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t416 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.508
+whp_H 246 nohook lock None mark - beam 0
+whp_T t246 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t417 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t417 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.638
+whp_H 247 nohook lock None mark - beam 0
+whp_T t247 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t418 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t418 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.7 497.8 124.5) ms 0.484
+whp_H 248 nohook lock None mark - beam 0
+whp_T t248 tip body(16.7 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t419 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t419 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.8 497.8 124.5) ms 0.538
+whp_H 249 nohook lock None mark - beam 0
+whp_T t249 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t420 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t420 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.8 497.8 124.5) ms 0.666
+whp_H 250 nohook lock None mark - beam 0
+whp_T t250 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t421 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t421 tip 0.0 armed 1 coil 21.00 full 0 hand 0.2 pend 0 tip(394.8 497.8 124.5) ms 0.592
+whp_H 251 nohook lock None mark - beam 0
+whp_T t251 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.2 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t422 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t422 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.600
+whp_H 252 nohook lock None mark - beam 0
+whp_T t252 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t423 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t423 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.498
+whp_H 253 nohook lock None mark - beam 0
+whp_T t253 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t424 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t424 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.556
+whp_H 254 nohook lock None mark - beam 0
+whp_T t254 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t425 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t425 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.561
+whp_H 255 nohook lock None mark - beam 0
+whp_T t255 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t426 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t426 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.528
+whp_H 256 nohook lock None mark - beam 0
+whp_T t256 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t427 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t427 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.516
+whp_H 257 nohook lock None mark - beam 0
+whp_T t257 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t428 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t428 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.508
+whp_H 258 nohook lock None mark - beam 0
+whp_T t258 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t429 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t429 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.602
+whp_H 259 nohook lock None mark - beam 0
+whp_T t259 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t430 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t430 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.579
+whp_H 260 nohook lock None mark - beam 0
+whp_T t260 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t431 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t431 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.574
+whp_H 261 nohook lock None mark - beam 0
+whp_T t261 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t432 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t432 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.530
+whp_H 262 nohook lock None mark - beam 0
+whp_T t262 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t433 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t433 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.587
+whp_H 263 nohook lock None mark - beam 0
+whp_T t263 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t434 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t434 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.595
+whp_H 264 nohook lock None mark - beam 0
+whp_T t264 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t435 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t435 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.748
+whp_H 265 nohook lock None mark - beam 0
+whp_T t265 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 RAY t436 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t436 tip 0.0 armed 1 coil 21.00 full 0 hand 0.1 pend 0 tip(394.8 497.8 124.5) ms 0.505
+whp_H 266 nohook lock None mark - beam 0
+whp_T t266 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.1 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+N2_SLOT1_ONLY
+T_WPW 0 RAY t437 drawn by alt-fire: RED out of reach, 20.0 m, 0 dots, diamond none
+T_WPW 0 t437 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.653
+whp_H 267 nohook lock None mark - beam 0
+whp_T t267 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+whp_offgun t438 emptied
+T_WPW 0 WHIP AND GUN t438 off: the whip as in slot 1 (other hand: None)
+T_WPW 0 start mode 0 len 61
+T_WPW 0 BEAM t438 off: every target path as before
+T_WPW 0 t438 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.619
+whp_WEAP t268 main RSQWP_WhipWeapon off rsq_hands
+whp_H 268 nohook lock None mark - beam 0
+whp_T t268 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t439 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.399
+whp_H 269 nohook lock None mark - beam 0
+whp_T t269 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t440 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.391
+whp_H 270 nohook lock None mark - beam 0
+whp_T t270 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t441 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.367
+whp_H 271 nohook lock None mark - beam 0
+whp_T t271 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t442 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.390
+whp_H 272 nohook lock None mark - beam 0
+whp_T t272 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t443 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.397
+whp_H 273 nohook lock None mark - beam 0
+whp_T t273 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t444 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.365
+whp_H 274 nohook lock None mark - beam 0
+whp_T t274 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t445 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.400
+whp_H 275 nohook lock None mark - beam 0
+whp_T t275 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t446 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.357
+whp_H 276 nohook lock None mark - beam 0
+whp_T t276 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t447 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.397
+whp_H 277 nohook lock None mark - beam 0
+whp_T t277 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t448 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.359
+whp_H 278 nohook lock None mark - beam 0
+whp_T t278 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t449 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.392
+whp_H 279 nohook lock None mark - beam 0
+whp_T t279 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t450 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.467
+whp_H 280 nohook lock None mark - beam 0
+whp_T t280 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t451 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.350
+whp_H 281 nohook lock None mark - beam 0
+whp_T t281 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t452 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.392
+whp_H 282 nohook lock None mark - beam 0
+whp_T t282 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t453 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.406
+whp_H 283 nohook lock None mark - beam 0
+whp_T t283 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t454 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.449
+whp_H 284 nohook lock None mark - beam 0
+whp_T t284 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t455 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.344
+whp_H 285 nohook lock None mark - beam 0
+whp_T t285 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t456 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.427
+whp_H 286 nohook lock None mark - beam 0
+whp_T t286 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t457 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.396
+whp_H 287 nohook lock None mark - beam 0
+whp_T t287 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t458 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.413
+whp_H 288 nohook lock None mark - beam 0
+whp_T t288 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t459 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.366
+whp_H 289 nohook lock None mark - beam 0
+whp_T t289 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t460 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.336
+whp_H 290 nohook lock None mark - beam 0
+whp_T t290 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t461 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.415
+whp_H 291 nohook lock None mark - beam 0
+whp_T t291 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t462 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.349
+whp_H 292 nohook lock None mark - beam 0
+whp_T t292 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t463 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.410
+whp_H 293 nohook lock None mark - beam 0
+whp_T t293 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t464 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.345
+whp_H 294 nohook lock None mark - beam 0
+whp_T t294 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t465 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.466
+whp_H 295 nohook lock None mark - beam 0
+whp_T t295 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t466 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.345
+whp_H 296 nohook lock None mark - beam 0
+whp_T t296 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t467 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.573
+whp_H 297 nohook lock None mark - beam 0
+whp_T t297 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t468 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.510
+whp_H 298 nohook lock None mark - beam 0
+whp_T t298 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t469 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.569
+whp_H 299 nohook lock None mark - beam 0
+whp_T t299 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t470 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.384
+whp_H 300 nohook lock None mark - beam 0
+whp_T t300 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t471 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.378
+whp_H 301 nohook lock None mark - beam 0
+whp_T t301 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t472 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.329
+whp_H 302 nohook lock None mark - beam 0
+whp_T t302 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t473 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.449
+whp_H 303 nohook lock None mark - beam 0
+whp_T t303 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t474 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.340
+whp_H 304 nohook lock None mark - beam 0
+whp_T t304 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t475 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.408
+whp_H 305 nohook lock None mark - beam 0
+whp_T t305 tip body(16.8 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0
+T_WPW 0 t476 tip 0.0 armed 1 coil 21.00 full 0 hand 0.0 pend 0 tip(394.8 497.8 124.5) ms 0.351
+whp_H 306 nohook lock None mark - beam 0
+whp_T t306 tip body(16.9 -14.2 34.2) spd 0.0 hand 0.0 inwall 0 out 1 ang 0.0 handyaw 0.0 pos(378 512) hand-body(10.2 -6.8 36.8) z 96.0 vh 44.0

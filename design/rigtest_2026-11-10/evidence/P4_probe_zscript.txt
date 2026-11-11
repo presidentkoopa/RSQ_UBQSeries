@@ -1,0 +1,95 @@
+version "4.10"
+// TEST ONLY (scratch, rig1110 group P4). A copy of the r10 probe's frame line (R10 R, for ftic.py) plus P4 readouts.
+// netevent p4_log <mask>: 1 laser, 2 wheel, 4 rings, 8 seat, 16 tier gems.
+class P4_Probe : EventHandler
+{
+	ui int rframe;
+	override void RenderOverlay(RenderEvent e) { Console.Printf("R10 R %d maptime %d", rframe++, level.maptime); }
+	int mask;
+	String lastLS, lastWR, lastTR, lastSeat;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name ~== "p4_log") { mask = e.Args[0]; Console.Printf("P4 LOGMASK t%d %d", level.maptime, mask); }
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		let mo = p.mo;
+		if (!mo) return;
+		int t = level.maptime;
+		if (mask & 1) LaserLog(p, t);
+		if (mask & 2)
+		{
+			let wr = wr_Rig(EventHandler.Find("wr_Rig"));
+			String s = wr ? String.Format("open %d hand %d (wr_toggle_prefer_hand %d)", wr.IsOpen(), wr.OpenHand(), CVar.FindCVar("wr_toggle_prefer_hand").GetInt()) : "no wr_Rig";
+			if (s != lastWR) { Console.Printf("P4 WHEEL t%d %s", t, s); lastWR = s; }
+		}
+		if (mask & 4)
+		{
+			let rg = RSQTR_Rig(EventHandler.Find("RSQTR_Rig"));
+			String s = "";
+			if (rg) for (int r = 0; r < RSQTR_Region.N; r++)
+			{
+				let m = rg.marker[r];
+				if (m && !m.bINVISIBLE && m.Alpha > 0.001) s = s .. String.Format(" %d:%s a%.2f", r, RSQTR_Region.NAMES[r], m.Alpha);
+			}
+			s = String.Format("main %s off %s | shown:%s", p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none', s == "" ? " none" : s);
+			if (s != lastTR || t % 35 == 0) { Console.Printf("P4 RINGS t%d %s", t, s); lastTR = s; }
+		}
+		if ((mask & 8) && t % 7 == 0)
+		{
+			let sv = ServiceIterator.Find("RSQA_Service").Next();
+			int pn = consoleplayer;
+			String s = sv ? String.Format("seated %d drop %.2f seatEye %.2f standEye %.2f (rsqa_seated %d)", sv.GetIntData("seated", "", pn), sv.GetDoubleData("seated.drop", "", pn),
+				sv.GetDoubleData("seated.eye", "", pn), sv.GetDoubleData("stand.eye", "", pn), CVar.FindCVar("rsqa_seated").GetInt()) : "no RSQA_Service";
+			Console.Printf("P4 SEAT t%d hmd %.2f %s", t, mo.HmdPosition.y, s);
+		}
+		if ((mask & 16) && t % 35 == 0)
+		{
+			int n = 0, shown = 0;
+			let it = ThinkerIterator.Create("RS_ColorTierIconCH");
+			Actor a;
+			while (a = Actor(it.Next())) { n++; if (a.sprite != Actor.GetSpriteIndex('TNT1')) shown++; }
+			Console.Printf("P4 GEMS t%d rs_ch_colorblind %d: tier icons alive %d, drawn (TI3R) %d", t, CVar.FindCVar("rs_ch_colorblind").GetInt(), n, shown);
+		}
+	}
+	void LaserLog(PlayerInfo p, int t)
+	{
+		let mo = p.mo;
+		let sv = ServiceIterator.Find("RSQLS_SightService").Next();
+		let ls = RSQLS_Sight(EventHandler.Find("RSQLS_Sight"));
+		String s = String.Format("which %d m8f_wm_ShowLaserSight %d", CVar.GetCVar("rsqls_which", p).GetInt(),
+			CVar.GetCVar("m8f_wm_ShowLaserSight", p) ? CVar.GetCVar("m8f_wm_ShowLaserSight", p).GetInt() : -9);
+		if (sv) s = s .. String.Format(" | RSQ main active %d beam %d", sv.GetInt("laser.active", "", 0), sv.GetInt("laser.beam", "", 0));
+		// M8F's dot
+		let it = ThinkerIterator.Create("m8f_ls_LaserPuff");
+		Actor a; int n = 0, vis = 0; Vector3 at;
+		while (a = Actor(it.Next())) { n++; if (!a.bINVISIBLE) { vis++; at = a.pos; } }
+		s = s .. String.Format(" | M8F dots %d visible %d", n, vis);
+		if (vis) s = s .. String.Format(" at (%.0f %.0f %.0f)", at.x, at.y, at.z);
+		// our glow
+		let gi = ThinkerIterator.Create("RSQLS_Glow");
+		Actor g;
+		while (g = Actor(gi.Next())) if (!g.bINVISIBLE) s = s .. String.Format(" | glow a%.2f sc%.2f", g.Alpha, g.Scale.X);
+		s = s .. String.Format(" | glow_int %.1f", CVar.FindCVar("rsqls_glow_int").GetFloat());
+		let ri = ThinkerIterator.Create("RSQLS_Readout");
+		Actor rd;
+		while (rd = Actor(ri.Next())) s = s .. String.Format(" | readout actor %s at %.0f %.0f %.0f from the eye, sc %.2f a %.2f", rd.bINVISIBLE ? "hidden" : "shown",
+			rd.pos.x - mo.pos.x, rd.pos.y - mo.pos.y, rd.pos.z - p.viewz, rd.Scale.X, rd.Alpha);
+		if (ls && ls.readM > 0)
+		{
+			double vu = CVar.FindCVar("vr_vunits_per_meter") ? CVar.FindCVar("vr_vunits_per_meter").GetFloat() : 0;
+			s = s .. String.Format(" | readout %.1f m, %.0f u (metres x %.1f = %.0f)", ls.readM, ls.readU, vu, ls.readM * vu);
+			bool ok; Vector3 o, d;
+			[ok, o, d] = RSQLS_Sight.BeamLine(0);
+			if (ok)
+			{
+				FLineTraceData td;
+				double pit = -atan2(d.z, d.xy.Length());
+				if (mo.LineTrace(VectorAngle(d.x, d.y), 4096, pit, TRF_ABSPOSITION, o.z, o.x, o.y, td))
+					s = s .. String.Format(" | beam pitch %.0f deg, probe trace from the beam's muzzle %.0f u", -pit, (td.HitLocation - o).Length());
+			}
+		}
+		if (s != lastLS || t % 35 == 0) { Console.Printf("P4 LS t%d %s", t, s); lastLS = s; }
+	}
+}
