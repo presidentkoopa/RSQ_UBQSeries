@@ -42,6 +42,9 @@ server bool   rsqgn_barrel_replace_bd = true;    // on by default (owner 11-10: 
 user   int    rsqgn_cfgver = 0;               // settings generations done once on this machine (barrel.zs RSQGN_BarrelSwap.OnRegister)
 server int    rsqgn_barrel_sound = 2;     // 2 Kinetic (owner 11-10: his set, a boom and pops), 0 Combat FX (QGBX1-3), 1 Test Candidate (ST0E_U0_00001, QGBT1)
 server int    rsqgn_grenade_sound = 0;    // Grenade Sound: 0 Kinetic (the owner's set), 1 Original (the pack's bangs)
+server float  rsqgn_barrel_size = 2.0;    // Barrel Explosion Size (owner 11-12): the barrel blasts' art, x what it was (the look only)
+server float  rsqgn_barrel_radius = 1.5;  // Barrel Blast Radius (owner 11-12): the blast's reach, x what it was (128 map units a lone barrel: 192 at 1.5)
+server bool   rsqgn_neon_room = true;     // Neon Crescent: Room Colour (owner 11-12): with Explosion Colour Normal, the Neon Crescent takes the room's Glow In The Dark hue; off or no glow: its own pink
 server float  rsqgn_barrel_debris = 1.0;  // how much of each blast's debris is thrown (0 none to 1 all the design has): barrels, the new grenade blast, the contexts
 server int    rsqgn_barrel_cap  = 600;    // most explosion effect actors alive at once, barrels and grenades together (Quest: a long chain reaction stays cheap); past it a blast shows its first tic only
 // THE EXPLOSIONS (explosions.zs; owner 11-09: "options for explosion customization like colors and reactivity and context").

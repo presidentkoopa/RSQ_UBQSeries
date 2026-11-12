@@ -37,6 +37,9 @@ class RSQGN_Fx play
 	static bool NewGrenade() { return N("rsqgn_blast_style", 1) != 0; }
 	// Explosion Colour: 0 Normal, 1 Room Complement, 2 Kill Colour, 3 Grenade Kind
 	static int ColourMode() { return clamp(N("rsqgn_fx_colour", 0), 0, 3); }
+	// Barrel Explosion Size and Barrel Blast Radius (owner 11-12 01:22), both multipliers
+	static double BarrelSize() { let c = CVar.FindCVar("rsqgn_barrel_size"); return c ? clamp(c.GetFloat(), 0.5, 4.0) : 2.0; }
+	static double BarrelReach() { let c = CVar.FindCVar("rsqgn_barrel_radius"); return c ? clamp(c.GetFloat(), 1.0, 3.0) : 1.5; }
 	// Explosion Lights: 0 Off, 1 Simple (one flash), 2 Full (stepped)
 	static int Lights() { return clamp(N("rsqgn_fx_lights", 2), 0, 2); }
 	// a context's row, under the Contexts master switch
@@ -330,6 +333,17 @@ class RSQGN_Boom : Actor
 		}
 		else s = air ? RSQGN_BarrelData.G_AIR : RSQGN_BarrelData.G_FLOOR;
 		if (waterOn) s = isBarrel ? RSQGN_BarrelData.X_WATER_B : RSQGN_BarrelData.X_WATER_G;   // the underwater swap: no fire
+		// BARRELS TWICE AS LARGE (owner 2026-11-12 01:22: "make our explosions for barrels 2x as large and extend the blast
+		// radius"): every barrel blast's art (the six, the chain's bigger links, the mega and the mushroom) is drawn at
+		// Barrel Explosion Size (rsqgn_barrel_size, 2.0) times what it was. The look only; the reach is Barrel Blast Radius
+		// (barrel.zs A_RSQGN_Blast). A grenade's blast is unchanged.
+		if (isBarrel) { double bs = RSQGN_Fx.BarrelSize(); k *= bs; flipK *= bs; }
+		// THE NEON CRESCENT WEARS THE ROOM'S COLOUR (owner 11-12 01:22: "our colored barrel explosion could ... breathe with
+		// the world (just that one though, having it always be pink clashes with the world sometimes)"): with Explosion
+		// Colour on Normal, the Neon Crescent (the one barrel blast with a colour of its own) takes the hue of the room's
+		// RSQ Glow In The Dark glow, so it goes with the room it is in. A room with no glow, or no Glow In The Dark: its
+		// own pink, as before. The other five stay fire. Row: Neon Crescent: Room Colour (rsqgn_neon_room, on).
+		if (isBarrel && !waterOn && !finale && s == NEON_CRESCENT && colourMode == 0 && RSQGN_Fx.B("rsqgn_neon_room", true)) RoomHueTint();
 		mainSeq = s;
 		if (finale && !waterOn)
 		{
@@ -423,6 +437,21 @@ class RSQGN_Boom : Actor
 		if (g == 0) g = int(CurSector.GetGlowColor(Sector.ceiling)) & 0xFFFFFF;
 		int h = g ? RSQGN_Tint.ComplementStep(g) : -1;
 		if (h < 0) return;
+		Name hn = String.Format("RSQGN_H%02d", h);
+		SetTint(hn, RSQGN_Tint.HueRGB(h));
+	}
+
+	// the room's own glow hue (not its complement): the Neon Crescent's colour (Begin)
+	const NEON_CRESCENT = 5;    // barrel_data.zs: the six are 0 .. 5 in the owner's order, #10 Neon Crescent the last
+	void RoomHueTint()
+	{
+		let s = RSQGN_Fx.Svc("RSQGD_Service");
+		if (!s || s.GetInt("enabled") != 1 || !CurSector) return;
+		int g = int(CurSector.GetGlowColor(Sector.floor)) & 0xFFFFFF;
+		if (g == 0) g = int(CurSector.GetGlowColor(Sector.ceiling)) & 0xFFFFFF;
+		int h = g ? RSQGN_Tint.ComplementStep(g) : -1;
+		if (h < 0) return;
+		h = (h + 6) % 12;          // ComplementStep turns the hue half way round (6 of the 12 steps): turned back
 		Name hn = String.Format("RSQGN_H%02d", h);
 		SetTint(hn, RSQGN_Tint.HueRGB(h));
 	}

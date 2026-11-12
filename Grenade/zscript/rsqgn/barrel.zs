@@ -79,7 +79,10 @@ class RSQGN_Barrel : ExplosiveBarrel
 		invoker.Translation = invoker.rsqgnTrans;
 		RSQGN_Boom.ForBarrel(invoker);
 		// ExplosiveBarrel's own call (128 damage over 128, XF_HURTSOURCE); down a chain, from the third barrel, a wider reach
-		int r = RSQGN_Fx.ChainRadius(invoker.rsqgnDepth);
+		// A WIDER BLAST (owner 11-12 01:22: "extend the blast radius"): the reach is Barrel Blast Radius (rsqgn_barrel_radius,
+		// 1.5) times what it was -- 192 map units (6 m) for a barrel on its own, up to 336 at the end of a long chain. The
+		// damage at the heart is the stock 128, falling off to the new edge. At 1.0 a lone barrel is the stock call again.
+		int r = int(RSQGN_Fx.ChainRadius(invoker.rsqgnDepth) * RSQGN_Fx.BarrelReach() + 0.5);
 		if (r > 128) A_Explode(128, r);
 		else A_Explode();
 	}

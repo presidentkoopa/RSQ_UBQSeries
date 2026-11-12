@@ -57,6 +57,10 @@ OptionMenu "RSQGN_Options"
 	Option "Explosion Colour", "rsqgn_fx_colour", "RSQGN_FxColour"
 	Option "Explosion Lights", "rsqgn_fx_lights", "RSQGN_FxLights"
 	Option "Brutal Doom's Launchers", "rsqgn_bd_launchers", "OnOff"
+	Slider "Barrel Explosion Size", "rsqgn_barrel_size", 0.5, 4.0, 0.25, 2
+	Slider "Barrel Blast Radius", "rsqgn_barrel_radius", 1.0, 3.0, 0.25, 2
+	// The pink Neon Crescent takes the room's Glow In The Dark colour. Off: always pink.
+	Option "Neon Crescent: Room Colour", "rsqgn_neon_room", "OnOff"
 	Slider "Debris", "rsqgn_barrel_debris", 0.0, 1.0, 0.1, 1
 	Option "Contexts", "rsqgn_ctx", "OnOff"
 	Option "Wall", "rsqgn_ctx_wall", "OnOff"
