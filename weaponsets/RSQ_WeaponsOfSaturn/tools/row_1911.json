@@ -1,0 +1,93 @@
+{
+ "Well": [
+  5.722,
+  0.986,
+  3.481
+ ],
+ "MagCentre": [
+  5.416,
+  1.66,
+  0.487
+ ],
+ "Grab": [
+  11.613,
+  1.071,
+  5.518
+ ],
+ "Axis": [
+  0.254,
+  -0.199,
+  0.946
+ ],
+ "Pull": [
+  -0.993,
+  -0.082,
+  -0.09
+ ],
+ "WellHook": [
+  0.2,
+  -0.947,
+  0.254
+ ],
+ "HandleHook": [
+  -0.082,
+  -0.09,
+  0.993
+ ],
+ "Offset": [
+  1.709,
+  -8.477,
+  -2.334
+ ],
+ "Scale": [
+  -1.0,
+  1.0,
+  1.0
+ ],
+ "Mouth": 12.49,
+ "MagLen": 11.88,
+ "Travel": 4.08,
+ "BackAt": 0.85,
+ "Channel": 5,
+ "ChargeRule": 1,
+ "BoltRatio": 0.0,
+ "HasHandle": true,
+ "HandleLayers": true,
+ "TopInHand": [
+  0.69,
+  3.937,
+  2.56
+ ],
+ "HandHook": [
+  3.937,
+  4.76,
+  -3.69
+ ],
+ "SprGun": "RQ1M",
+ "SprPart": "RQ1P",
+ "SprWorld": "RQ1W",
+ "ReadySprites": "PIST E",
+ "SndOut": "Pistol/Reload1",
+ "SndIn": "Pistol/Reload2",
+ "SndBack": "rsr/slideback",
+ "SndFwd": "pistol/slide2",
+ "SndLand": "weapons/smallmagdrop",
+ "place": [
+  1.709,
+  -8.477,
+  -2.334,
+  4.713,
+  5.17,
+  13.413
+ ],
+ "axis_old_frame": [
+  0.321,
+  0.0,
+  0.947
+ ],
+ "card_axis_old_frame": [
+  0.243,
+  0.192,
+  0.951
+ ]
+}
