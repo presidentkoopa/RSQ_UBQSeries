@@ -170,3 +170,24 @@ Found, not fixed:
   pack's "Evil Candle" replaces Doom's EvilEye (a floating eye over a stand): candidate, not shown. Asked for a screenshot.
 
 Not started: whip climb (off hand grabs the snagged whip, Use climbs), BD22 imp frame drops, HUD boss bar (mockup E on the canvas, not approved).
+
+## 15:28 to 16:20
+
+Done, in PK3TEST (rig only, not headset-confirmed):
+- Miniboss bar where Be Quick or Be Dead is, its size, mockup E's look from baked series art (tools/gen_bossbar.py:
+  MBFG/MBFS glyphs, RSQMBHD, RSQMBX01..10); raised BB_LIFT 110; LED clock only during the 3 s charge; thrall bars in
+  their Champion colour (ChampColour); GUARD shakes and lights gold on a blocked hit (b.guardHitTic, GUARD_SHAKE);
+  Start Fight card off hand only; README renders rig_bar_charge.jpg, rig_bar_guard_hit.jpg.
+- Thralls are real Champions only with Champions' "Legendoom Compatibility" on (the owner's Boosted/Dormant Legendary
+  Champions): LegenDoom's guaranteed pickup makes them legendary, Champions' champion_LDoomDelayer makes them Champions.
+  The rig's default (off) gave token-only fakes: always run miniboss rig tests with
+  `champion_legendoom 1; champion_dormant 1; champion_booster 1; map map01`. A thrall that does not fit tries 24 spots.
+  Champions' Override Chance cannot be set from play (server cvar, run champ2).
+- Remove HUD Health and Armor: rsq_hud_nohp (BD 2.0.4o CVARINFO.rsq; SBARINFO via tools/hud/make_sbarinfo.py; RSQ Gun
+  Bonsai VR's Skin A bottom row, which is the HUD actually drawn on the owner's order); row in GunCards' menu.
+- Whip: hand over hand: Use on the whip hand (HandFree allows RSQWP_WhipWeapon, non-strict) and the off hand's grip
+  alternate (run useclimb with XCMD="rsqwp_lockwhip 0": rope 274 -> 168 -> 157 -> 145). Whip README still waits.
+
+Found, not fixed: BD22 imp frame drops. A BD22 Imp attacking on the rig adds ~9 actors a shot (FireBall_ + 3 trail
+sprites a tic, one IMPBALL light); nothing heavy. Asked the owner whether it is every attack or the first one.
+Still open: floor candle and rogue voxels (screenshots asked).
