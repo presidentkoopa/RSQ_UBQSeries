@@ -26,3 +26,18 @@ error from an RSQ pack. All of it is RIG ONLY, not headset-confirmed. The rig ha
 ## Next (owner: "all at your discretion")
 - GunCards: cards animated like the SlowMo bars (toggle, on); level-up cards out of the way; rogue voxels (his image).
 - The legendary power on the Gun Bonsai VR card; legendary drops tied to minibosses; bits.
+
+## Later the same night
+- On main, rig only: the word over a risen legendary is THREAT! and fades after 3 s (LEGENDARY Word Seconds);
+  a gun's level-up is a wrist toast (Weapon Level-Up: Wrist Toast).
+- Owner 01:19: NO RIG RUNS until he says so. Two changes after that are on the branch `wip/2026-11-12-uncompiled`,
+  NOT COMPILED, NOT LOADED, NOT in his PK3TEST: do not merge or deliver them before a load check on his full order.
+  - GunCards: Cards Alive (rsqgc_alive, on): every card's opacity breathes (card.zs CardAlpha).
+  - Gun Bonsai VR status screen: a gun's LegenDoom power where WEAPON BOND was planned (skin_a_menus.zs DrawGun).
+- Already built before this session, nothing to do: the LegenDoom power on the HUD (pickup card and gauge row,
+  GunBonsaiOffhandVR rsq/ui/legendoom.zs); legendary guns only from Bossfights (BD22 VR rsld_bossfight_only, on, with
+  Champions and RSQ Miniboss's Bossfights).
+- Blocked on the owner: GunCards rogue voxels (his image); holsters while DOWN (not reproduced; ask him to try Lower
+  View When Down off); "sometimes we don't get up" (his log with rsqsm_debug on).
+- Bits: ideas only (he asked for ideas): a cap on bits alive at once, one merged bit per kill. Not built.
+- The whip's direction is PARKED by the owner.
