@@ -64,6 +64,10 @@ class RSQUI_A_Skin : RSQUI_Skin
 		double cx = W / 2;
 		TextureID face = StatusBar ? StatusBar.GetMugshot(5) : TexMan.CheckForTexture("STFST01", TexMan.Type_Any);
 		pen.Picture(face, cx - 17, H - 36, 34, 32);
+		// REMOVE HUD HEALTH AND ARMOR (owner 2026-11-12 15:36, the row in RSQ Gun Cards' options; the cvar is BD22 VR
+		// Reloaded's, rsq_hud_nohp, read by name): the face stays, its health and armour go
+		let nohp = CVar.GetCVar('rsq_hud_nohp', players[consoleplayer]);
+		if (nohp && nohp.GetBool()) return;
 		double hw = Digits(big, 24, String.Format("%d", data.health), cx - 26, H - 33, Font.CR_UNTRANSLATED, 2);
 		TextureID med = TexMan.CheckForTexture("MEDIA0", TexMan.Type_Any);
 		pen.Picture(med, cx - 26 - hw - 38, H - 34, 32, 29);

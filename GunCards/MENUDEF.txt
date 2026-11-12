@@ -41,6 +41,7 @@ OptionMenu "RSQGC_Options"
 	// The cards breathe, like the slow-motion bars. Off: steady.
 	Option "Cards Alive", "rsqgc_alive", "OnOff"
 	Option "Level-Up Card Replaces Small Card", "rsqgc_lvlcard", "OnOff"
+	Option "Remove HUD Health and Armor", "rsq_hud_nohp", "OnOff"   // owner 2026-11-12 15:36; the cvar is BD22 VR Reloaded's (2.0.4o+, its status bar)
 	Option "Card Glow", "rsqgc_glow", "RSQGC_Glow"
 	Option "AMMO Word", "rsqgc_label", "OnOff"
 	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"

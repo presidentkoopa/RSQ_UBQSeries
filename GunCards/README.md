@@ -114,6 +114,9 @@ It lets go when the twist drops under 20 degrees.
 
 ### Where it sits
 
+- **Remove HUD Health and Armor** (Off): the HUD shows no health or armour numbers (BD22 VR Reloaded 2.0.4o's status bars
+  and RSQ Gun Bonsai VR's bottom row; the face stays). For players who read them on the cards instead. *Rig only, not
+  headset-confirmed (2026-11-12).*
 - **Small Card Up / Side** turn the card about the hand, -100 to 100 degrees; **Small Card In** moves it along the
   forearm, -12 to 12 cm, in steps of 2 cm (the card is baked in 13 places). The same three per gun are under
   **Advanced: This Gun's Small Card** (Up / Down, Left / Right, In / Out).
