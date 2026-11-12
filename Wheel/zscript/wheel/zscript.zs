@@ -313,6 +313,7 @@ class wr_Rig : EventHandler
 	Vector3    mLightLastPos;     // where it was, so a graced tic has somewhere to sit
 	color      mLightLastHue;
 	Array<Actor> mModels;         // a real weapon model per card, when enabled
+	Array<double> mCardMul;       // RSQ: each card's size now, easing to PICK_BIG / PICK_NEXT / PICK_NEXT2 around the picked card
 	Array<double> mModelFit;      // RSQ: per model, the scale that fits it on its card
 	Array<double> mModelDrop;     // RSQ: ...and how far below the card's centre its base sits, at that scale
 	Array<double> mModelCX;       // RSQ: a mesh prop's middle off its origin, forward and left at scale 1 (wr_CardProp)
@@ -2997,6 +2998,20 @@ class wr_Rig : EventHandler
 		// that would draw the title off its own plate.
 		if (usedFrac > 1.0) usedFrac = 1.0;
 		if (usedFrac < SHEET_ROWS_TOP + 0.08) usedFrac = SHEET_ROWS_TOP + 0.08;
+
+		// RSQ (owner 2026-11-12 14:36: "i wish our datacard was bigger, as the ring grew in side the datacard could fill the
+		// empty space more"; 14:11: "much space for a larger data card"): GROW WITH THE RING. A ring pushed out by its card
+		// count leaves a hole far bigger than the sheet, so the sheet, text and all, grows until its corner is the usual gap
+		// short of the cards. It only ever grows here; the fit below still holds it off the cards above and below.
+		if (ringR > 0.0)
+		{
+			double hw = panelW * SHEET_W_CARDS * ss * 0.5;
+			double hh = panelH * SHEET_H_CARDS * ss * usedFrac * 0.5 * CARD_STRETCH;
+			double corner = sqrt(hw * hw + hh * hh);
+			double cardR  = 0.5 * sqrt(panelW * panelW + panelH * panelH * CARD_STRETCH * CARD_STRETCH);
+			double hole   = ringR - cardR - panelW * SHEET_GAP_CARDS;
+			if (corner > 0.0 && hole > corner) ss *= hole / corner;
+		}
 
 		// RSQ (2026-11-02): FIT INSIDE THE RING. The ring no longer grows for a tall sheet (layout: it never
 		// changes on a hover), so a sheet taller than the hole in the middle -- half a card and the gap clear of
@@ -6969,8 +6984,27 @@ class wr_Rig : EventHandler
 		if (warnTics > 0 && mLockTics < warnTics)
 			warnFrac = clamp(double(mLockTics) / warnTics, 0.15, 1.0);
 
+		// RSQ (owner 2026-11-12 14:11: "we will need to make the selected card quite large and the cards adjacent to it less
+		// laege, and less large ... so the player can easily see what is next to the se;ected card"): the picked card is
+		// PICK_BIG, the one either side PICK_NEXT, the next PICK_NEXT2, the rest as they were. Size only: no card leaves its
+		// bearing, so the ring is still learned by feel.
+		int pickAt = -1;
+		if (mHovered != 0) for (int i = 0; i < n; ++i) if (mIds[i] == mHovered) { pickAt = i; break; }
+		if (mCardMul.Size() != n) { mCardMul.Resize(n); for (int i = 0; i < n; ++i) mCardMul[i] = 1.0; }
+
 		for (int i = 0; i < n; ++i)
 		{
+			double wantMul = 1.0;
+			if (pickAt >= 0)
+			{
+				int away = abs(i - pickAt);
+				if (n - away < away) away = n - away;
+				if (away == 0) wantMul = PICK_BIG; else if (away == 1) wantMul = PICK_NEXT; else if (away == 2) wantMul = PICK_NEXT2;
+			}
+			mCardMul[i] += (wantMul - mCardMul[i]) * 0.4;
+			if (abs(wantMul - mCardMul[i]) < 0.004) mCardMul[i] = wantMul;
+			if (i < mGroups.Size()) wr_BB.SetBillboardGroupMul(mGroups[i], mCardMul[i]);
+
 			// Position is the slot's bearing on the ring, clockwise from north
 			// west. Cards you do not own still consume their place, so a slot's
 			// direction never changes as you pick things up -- which is the whole
@@ -7166,7 +7200,7 @@ class wr_Rig : EventHandler
 			if (i < mModels.Size() && mModels[i] != null)
 			{
 				// fitted to the card at build (mModelFit); wr_model_scale 0.16 is "as fitted"
-				double ms = (hModelScale / 0.16) * pulse * (i < mModelFit.Size() ? mModelFit[i] : 1.0);
+				double ms = (hModelScale / 0.16) * pulse * (i < mModelFit.Size() ? mModelFit[i] : 1.0) * mCardMul[i];
 
 				// Through a local: SetOrigin wants a modifiable value and an
 				// expression is not one.
@@ -10629,6 +10663,9 @@ class wr_Rig : EventHandler
 	// How often a shown sheet is restrung, in tics. Ten is roughly three times
 	// a second -- finer than a countdown printed in whole seconds can show, and
 	// nine tics in ten still skip the rebuild entirely.
+	const PICK_BIG   = 1.8;    // RSQ: the picked card's size, the card either side of it, and the next one out
+	const PICK_NEXT  = 1.35;
+	const PICK_NEXT2 = 1.12;
 	const SHEET_TICK       = 10;
 	const SHEET_W_CARDS    = 2.6;
 	// Grown from 3.2 -- the stat tracker (wr_stattracker.zs) added three

@@ -71,6 +71,9 @@ been off the controls list since 11-09, while ModelSwapper support is parked.
 
 ## The ring
 
+**The card you are on is the big one.** It grows to 1.8 times its size, the card either side of it to 1.35 and the
+next one out to 1.12, so you can read what is next to your pick. No card leaves its place on the ring.
+
 **One card per gun, or one per slot.** With up to ten guns every gun has its own card and the ring grows to fit them.
 Past ten, each weapon slot gets one card, so slot 4 is always in the same direction; a card that hides others shows a
 small "+N" in its corner. Point at it for a moment, or press Use while pointing, and the slot opens as a **fan** of
@@ -112,6 +115,9 @@ there.
 A panel stands in the middle of the ring and describes the card you are pointing at, or the gun in your hand when you
 point at nothing ("EMPTY" for an empty hand). Point at a gun lying on the floor and, after a moment, the same sheet
 appears for it.
+
+**It grows with the ring.** The more cards the ring holds, the wider the ring and the bigger the hole in its middle;
+the sheet, text and all, grows to fill that hole and stops a gap short of the cards.
 
 ![The ring and its sheet, with a pistol that shares its ammo with the minigun](docs/readme/ring_and_sheet.png)
 
@@ -267,6 +273,9 @@ Either Hand Picks on, both hands still pick from it).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12; runs voxsize, wheelvox4) | The SMG, flamethrower, grenade launcher, rocket launcher and BFG10k show their models on their cards. Their voxels carry the same short names as Brutal Doom's pickup sprites and the size was being read from the sprite |
+| **rig only, not headset-confirmed** (2026-11-12; run sheetgrow, every weapon given) | The data sheet grows with the ring |
+| **rig only at 1.5 / 1.22 / 1.08 with one card forced, not headset-confirmed** (2026-11-12; run pickbig5). Shipped at 1.8 / 1.35 / 1.12, loads clean, not shown at those sizes; picking a card by hand was not managed on the rig | The picked card is the big one and its neighbours step down |
 | **code only, not shown** (2026-11-11 22:10; loads clean on the full order, not run) | The data sheet is back in the middle of the ring (3616ed19's "closer" sheet reverted: pulled toward the eye it left the centre and shrank) and a third bigger at every Data Sheet Size (owner: "put it back where it was and make it bigger") |
 | **code only, not shown** (2026-11-11 evening; loads clean on the full order, not run) | A card shows the pickup frame a gun really shows: the first Spawn state that lasts and draws something. BD22's pistol starts on a zero-tic frame of vanilla Doom's pistol (PIST A 0) before its own pickup (P3ST K), so its card drew the vanilla pistol; now it is BD's pistol pickup, like every other gun (owner: "use BD pistol pickup model in wheel for pistol") |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | Start With Melee Hands on: ONE fist card in slot 1; a pick with the main hand gives RSQ_Glove, with the off hand RSQ_GloveOff (log; the hover was set by a probe, so aiming is not tested). 3D cards: the FBX fist in skin tone, the shield turning in place, the coiled whip, the saber as a thin rod turning in place in two frames (whether it reads as a hilt: judge in the headset) |

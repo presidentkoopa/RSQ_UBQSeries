@@ -84,6 +84,7 @@ class wr_BBGroup play
 	int     sTic;            // groupScale()'s answer for tic sTic, while sOk
 	double  sVal;
 	bool    sOk;
+	double  mul;             // RSQ: a size of the group's own on top of its grow-in (the picked card and its neighbours)
 }
 
 class wr_BBQuad : Actor
@@ -283,7 +284,7 @@ class wr_BB : EventHandler
 	{
 		let b = Get(); if (!b) return 0;
 		let g = new("wr_BBGroup");
-		g.id = ++b.mNextGid; g.origin = origin; g.from = 1; g.to = 1; g.durTics = 0;
+		g.id = ++b.mNextGid; g.origin = origin; g.from = 1; g.to = 1; g.durTics = 0; g.mul = 1;
 		b.mGroupMap.Insert(g.id, g);
 		return g.id;
 	}
@@ -300,6 +301,12 @@ class wr_BB : EventHandler
 	{
 		let b = Get(); if (!b) return; let g = b.grp(gid); if (!g) return;
 		g.from = from; g.to = to; g.startTic = level.maptime; g.durTics = max(0, tics); g.ver++; g.sOk = false;
+	}
+	static void SetBillboardGroupMul(int gid, double mul)
+	{
+		let b = Get(); if (!b) return; let g = b.grp(gid); if (!g) return;
+		if (abs(g.mul - mul) < 0.001) return;
+		g.mul = mul; g.ver++; g.sOk = false;
 	}
 	static void SetBillboardGroupOrigin(int gid, Vector3 origin)
 	{
@@ -421,7 +428,7 @@ class wr_BB : EventHandler
 		let g = grp(gid);
 		if (!g) return 1.0;
 		if (g.sOk && g.sTic == level.maptime) return g.sVal;   // once a tic (a pure function of the group and the tic)
-		double v = groupScaleAt(g);
+		double v = groupScaleAt(g) * g.mul;
 		g.sTic = level.maptime; g.sVal = v; g.sOk = true;
 		return v;
 	}
