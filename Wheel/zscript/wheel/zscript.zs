@@ -5035,6 +5035,22 @@ class wr_Rig : EventHandler
 	// animating -- so for most of them that call returns nothing and the card
 	// comes out blank. The state's own sprite/frame pair is fixed at compile
 	// time and does not care what the actor is doing.
+	// THE FRAME A PICKUP SHOWS (owner 11-11 19:24: "use BD pistol pickup model in wheel for pistol"): the first state of
+	// its Spawn sequence that lasts (tics != 0) and draws something (not TNT1). BD22's BrutalPistol starts "PIST A 0" --
+	// a zero-tic frame of vanilla Doom's pistol that is never seen -- then "P3ST K -1", its own pickup; the card drew the
+	// vanilla pistol. Every other gun whose Spawn starts on its real frame is unchanged.
+	clearscope static State shownState(State st)
+	{
+		int tnt = Actor.GetSpriteIndex('TNT1');
+		State first = st;
+		for (int i = 0; i < 16 && st; i++)
+		{
+			if (st.Tics != 0 && st.sprite != tnt && st.ValidateSpriteFrame()) return st;
+			st = st.NextState;
+		}
+		return first;
+	}
+
 	private static TextureID spriteOf(Actor a, StateLabel which)
 	{
 		TextureID none;
@@ -5042,6 +5058,7 @@ class wr_Rig : EventHandler
 		if (a == null) return none;
 
 		State st = a.FindState(which);
+		if (which == 'Spawn') st = shownState(st);
 		if (st == null || !st.ValidateSpriteFrame()) return none;
 
 		TextureID tex;
@@ -5060,7 +5077,7 @@ class wr_Rig : EventHandler
 	clearscope static bool spawnShows(Class<Actor> c)
 	{
 		if (c == null) return false;
-		State st = GetDefaultByType(c).FindState('Spawn');
+		State st = shownState(GetDefaultByType(c).FindState('Spawn'));
 		if (st == null || !st.ValidateSpriteFrame()) return false;
 		TextureID t; bool m; Vector2 sc;
 		[t, m, sc] = st.GetSpriteTexture(0);
@@ -5069,7 +5086,7 @@ class wr_Rig : EventHandler
 	clearscope static TextureID spawnTex(Class<Actor> c)
 	{
 		TextureID t; t.SetInvalid();
-		State st = c ? GetDefaultByType(c).FindState('Spawn') : null;
+		State st = c ? shownState(GetDefaultByType(c).FindState('Spawn')) : null;
 		if (st == null || !st.ValidateSpriteFrame()) return t;
 		bool m; Vector2 sc;
 		[t, m, sc] = st.GetSpriteTexture(0);
@@ -5110,7 +5127,7 @@ class wr_Rig : EventHandler
 		if (art != it.GetClass())
 		{
 			let d = Inventory(GetDefaultByType(art));
-			State ast = d ? d.FindState('Spawn') : null;
+			State ast = d ? shownState(d.FindState('Spawn')) : null;
 			if (ast && ast.ValidateSpriteFrame())
 			{
 				TextureID at; bool am; Vector2 asc;
