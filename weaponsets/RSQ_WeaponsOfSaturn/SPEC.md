@@ -44,6 +44,10 @@ Target: QuestZDoom 17.3 (ZScript 4.14), no engine changes. Generic Weapons is OU
 - 1911 hand reload: the BrutalWolf card's own five sounds.
 - Other BD22 VR reload names with no file: RS Combat FX / RS Ballistics (earlier answer).
 
+## Effects and sounds (owner 17:51)
+- Weapon effects and sounds (ballistics): an option, WoS's original (OG) or our Enhanced set from RS Ballistics and
+  RS Combat FX.
+
 ## Pickups (Q8)
 - Every weapon and ammo pickup uses its Voxels of Saturn voxel; the dead BELT entry is dropped.
 - They appear in the RSQ Wheel when it is loaded. RSQ compatibility for now: the Wheel and Melee; the rest should come mostly automatically.
