@@ -65,6 +65,16 @@ Code only, not shown, not compiled (after 15:07):
   **Built 11-11 (after this handoff):** GBOVR `rsq/ui/legendoom.zs` (card, row) and VisualRewards `rsqvr/ldword.zs` (LEGENDARY);
   one rig run, `design/rigtest_2026-11-10/RESULTS_LDH.md` (rig only; the placement fix after it is code only).
 
+## Owner answers 11-11 evening
+- Rifle grenade (M203) load: WORKS in his headset (19:10). The rig's failure was the rig's poses.
+- Q1: RSQ Monsters is for minibosses, events and set-pieces; he plays with BD monsters almost always. So minibosses
+  climb to Black/White whatever Monsters' boss settings are (as built). No change.
+- Q2: his call to me; kept "Tier" (it means the 1-13 strength number everywhere). No change.
+- Q3 answered by a decision: Colourful Hell (CH) monsters stop being a selectable spawn set; they are used for
+  encounters only (minibosses, thralls, set-pieces). Then a map's own monsters are BD monsters, never Black/White, so
+  Q3 is moot. NOT BUILT: goes into the queued Monsters pass.
+- Voxel hunt over the upside-down rifle: STOPPED by the owner (16:5x). Don't restart unless he asks.
+
 ## Questions still to ask the owner (one at a time)
 1. Miniboss: if RSQ Monsters' Black Boss / White Boss settings are off, may a miniboss still climb to Black / White?
    (The agent allowed it.)
