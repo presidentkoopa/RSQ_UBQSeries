@@ -1,7 +1,8 @@
 # Handoff: session of 2026-11-10 / 11 (RSQ UBQ Series, "DoomVR - Arcade Edition")
 
 Owner: presidentkoopa. Read /home/claude/rsq_ubqseries/CLAUDE.md first, then this file, then design/PARKED.md and
-design/PLANNED_PROJECTS.md. Last updated 11-11 22:00 (end of session).
+design/PLANNED_PROJECTS.md. Last updated 11-11 22:12 (end of session). The owner is moving this work to another lane; he is frustrated with this
+session's changes (the data sheet move, the watch-check changes). Repo pk3/ and his Desktop\PK3TEST match.
 
 ## Standing orders in force
 - **Rig:** the owner reopened batched rig tests at 15:35 ("expect to hit weekly limit"), then said "no rig checks" for the
@@ -60,8 +61,9 @@ Code only, not shown (each loads clean on the full order):
   the owner revives.
 - **Wheel:**
   - cards use the Spawn frame a gun really shows (BD22's pistol was drawing vanilla PIST A);
-  - the data sheet is drawn 0.5 m from the eyes along the line of sight, at the same angular size (Data Sheet Distance;
-    0 = at the ring).
+  - the data sheet: 3616ed19 drew it 0.5 m from the eyes. It left the middle and shrank; the owner was angry
+    (22:10, "put it back where it was and make it bigger"). REVERTED in aa07f0e5, which also makes it a third bigger
+    (sheetScale x1.33, in code, so a saved 1.0 grows too). It still shrinks to fit inside the ring if it is tall.
 - **Reverted:** both watch-check changes (76daa8ca two-hand gate, 5a08eeca forearm-across). The owner liked the watch card as
   it was.
 
@@ -77,7 +79,7 @@ Code only, not shown (each loads clean on the full order):
   - SlowMo bars and stacking;
   - the Saber block;
   - Score's place;
-  - the Wheel pistol card and sheet distance;
+  - the Wheel pistol card, and the data sheet back in the middle and bigger;
   - the LegenDoom HUD.
 - **Not asked yet:** the main grip flipped BD22's pistol between Burst and Semi on the rig. Should it?
 - **Not built, decided:** Colourful Hell monsters for encounters only, no longer a spawn set. This goes into the Monsters pass.
