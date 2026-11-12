@@ -193,23 +193,37 @@ class RSQVR_LDWord : EventHandler
 			if (rar < 0) continue;
 			fresh.Delete(i); freshT.Delete(i);
 			FistLook(d);
-			let h = RSQVR_FxHandler.Get();
-			if (!h) continue;
-			// the power's name first (lower), the rarity above it
-			h.WordHoldSotn(w1, RTop(rar), RBot(rar), 1.0, d, 'lddrop');
-			h.WordHoldSotn(w2, RTop(rar), RBot(rar), 1.0, d, 'lddrop');
-			drops.Push(d); dropW1.Push(w1); dropW2.Push(w2);
+			// ONLY THE POWER'S NAME, AND ONLY UP CLOSE (owner 11-12 14:11: "we dont need the floor pickups to say 'common' or
+			// 'uncommon'. and they shouldnt say anything until we are within maybe 2 meters of them, less, even"): the
+			// rarity word is not written (the colour says it); the power's name shows while the console player is within
+			// DROP_NEAR of the drop and goes when he is past DROP_FAR.
+			drops.Push(d); dropW1.Push(w1); dropW2.Push(""); dropRar.Push(rar); dropOn.Push(0);
 		}
+		let me = players[consoleplayer].mo;
 		for (int i = drops.Size() - 1; i >= 0; i--)
 		{
 			let d = drops[i];
-			if (d && !d.bDestroyed && !d.Owner) continue;
-			// picked up (it went into someone's inventory) or gone: the words fade
 			let h = RSQVR_FxHandler.Get();
-			if (h && d) { h.ClearWord(dropW1[i], d); h.ClearWord(dropW2[i], d); }
-			drops.Delete(i); dropW1.Delete(i); dropW2.Delete(i);
+			if (d && !d.bDestroyed && !d.Owner)
+			{
+				if (!h || !me) continue;
+				double dist = me.Distance3D(d);
+				if (!dropOn[i] && dist <= DROP_NEAR)
+				{
+					h.WordHoldSotn(dropW1[i], RTop(dropRar[i]), RBot(dropRar[i]), 0.7, d, 'lddrop');
+					dropOn[i] = 1;
+				}
+				else if (dropOn[i] && dist > DROP_FAR) { h.ClearWord(dropW1[i], d); dropOn[i] = 0; }
+				continue;
+			}
+			// picked up (it went into someone's inventory) or gone: the word fades
+			if (h && d && dropOn[i]) h.ClearWord(dropW1[i], d);
+			drops.Delete(i); dropW1.Delete(i); dropW2.Delete(i); dropRar.Delete(i); dropOn.Delete(i);
 		}
 	}
+	const DROP_NEAR = 48.0;     // map units: about 1.7 m
+	const DROP_FAR = 60.0;
+	Array<int> dropRar, dropOn;
 
-	override void WorldUnloaded(WorldEvent e) { watch.Clear(); shown.Clear(); shownT.Clear(); fresh.Clear(); freshT.Clear(); drops.Clear(); dropW1.Clear(); dropW2.Clear(); }
+	override void WorldUnloaded(WorldEvent e) { watch.Clear(); shown.Clear(); shownT.Clear(); fresh.Clear(); freshT.Clear(); drops.Clear(); dropW1.Clear(); dropW2.Clear(); dropRar.Clear(); dropOn.Clear(); }
 }

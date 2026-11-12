@@ -2508,7 +2508,8 @@ class RSQTR_Rig : EventHandler
 					stgHints++;
 					stgLast[from] = level.maptime;
 					stgUntil[from] = level.maptime + STRUGGLE_SHOW;
-					pmo.A_Print("Grip inside the ring", STRUGGLE_SHOW / TICRATE, RSQTR_A11y.PrintFont());
+					// (the words "Grip inside the ring" are no longer printed -- owner 11-12 14:11: "lets remove GRIP INSIDE THE
+					// RING"; the ring still fills in for STRUGGLE_SHOW)
 				}
 				if (dbg) Console.Printf("T_STRUGGLE t%d %s hand %s: %s", level.maptime, h ? "off" : "main", RSQTR_Region.NAMES[from],
 					why == "" ? String.Format("shown (ring full and \"Grip inside the ring\" for 3 s; hint %d/%d this map)", stgHints, STRUGGLE_MAP) : why);

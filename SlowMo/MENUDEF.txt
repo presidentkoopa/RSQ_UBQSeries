@@ -154,6 +154,8 @@ OptionMenu "RSQSM_Test"
 	StaticText "Crisis Dive", 1
 	Slider "World Speed", "rsqsm_dodge_depth", 0.05, 0.95, 0.05, 2
 	Slider "Leap", "rsqsm_dodge_leap", 0, 40, 2, 0
+	Slider "Dive Lift", "rsqsm_dodge_lift", 0, 12, 1, 0
+	Slider "Dive Burst", "rsqsm_dodge_burst", 0, 30, 2, 0
 	Slider "Hang", "rsqsm_dodge_me", 0.0, 1.0, 0.1, 1
 	StaticText " "
 	StaticText "Triggers", 1

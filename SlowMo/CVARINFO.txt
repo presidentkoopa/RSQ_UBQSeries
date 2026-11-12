@@ -70,7 +70,9 @@ server bool  rsqsm_debug         = false; // log every trigger to the console: i
 
 // ---- shootdodge and "slow me too" (owner 2026-11-03: Xortts' Bullet Time X's model; clock.zs Dodges / SlowMe) -----
 server float rsqsm_dodge_depth   = 0.10;  // the world's speed through a shootdodge (0.05-0.95)
-server float rsqsm_dodge_leap    = 12;    // the leap's thrust the way the stick points, map units a tic (0 = the jump alone)
+server float rsqsm_dodge_lift    = 3;     // Dive Lift (owner 11-12): upward speed added to the jump: a higher, longer arc
+server float rsqsm_dodge_burst   = 8;     // Dive Burst: extra speed at the start that bleeds off in 8 tics
+server float rsqsm_dodge_leap    = 16;    // the leap's thrust the way the stick points, map units a tic (0 = the jump alone)
 server float rsqsm_dodge_me      = 0.5;   // Shootdodge Hang: how much of the world's slowing YOUR dive takes (1 = as slow as the world: a jump hangs 10x at 10%)
 user bool    rsqsm_me            = true;  // Slow Me Too: your own walking, jumping and falling slow with the world (head and hands never)
 user float   rsqsm_me_ratio      = 1.0;   // how much of the world's slowing you take: 1 as slow as the world, 0.5 half, 0 none

@@ -275,6 +275,13 @@ class RSQSM_Down : EventHandler
 			for (int i = 0; i < 4; i++) { let c = CVar.FindCVar(ROW[i]); if (c) c.SetFloat(VAL[i]); }
 			mc.SetInt(1);
 		}
+		if (mc && mc.GetInt() < 2)
+		{
+			// the dive's new Leap (16): a saved 12, the old default, is moved once
+			let lc = CVar.FindCVar("rsqsm_dodge_leap");
+			if (lc && lc.GetFloat() == 12) lc.SetFloat(16);
+			mc.SetInt(2);
+		}
 		// a save keeps the plate's quads but not the transient plate that drove them: clear them, the plate rebuilds
 		if (e.IsSaveGame)
 		{

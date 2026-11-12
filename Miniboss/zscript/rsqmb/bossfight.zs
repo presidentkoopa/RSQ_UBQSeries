@@ -146,6 +146,9 @@ extend class RSQMB_Handler
 				continue;
 			}
 			if (!Eligible(a) || a.bBOSS || Has(a, "champion_DarkRedToken") || Has(a, "champion_UndyingToken")) continue;
+			// never Wolfenstein's SS soldier or whatever stands in for it (owner 11-12 14:11: "one of them is a ss soldier?")
+			class<Actor> rpl = Actor.GetReplacee(a.GetClass());
+			if (a is "WolfensteinSS" || (rpl && rpl is "WolfensteinSS")) continue;
 			if (a.Speed <= 0 && !a.MissileState && !a.MeleeState) continue;
 			if (spX.Size() < 400) { spX.Push(a.pos.x); spY.Push(a.pos.y); spZ.Push(a.pos.z); }
 			String cn = a.GetClassName();
@@ -200,7 +203,7 @@ extend class RSQMB_Handler
 		m.readyAt = level.maptime;
 		m.called = false; m.force = false;
 		let p = m.Owner;
-		if (p && p.PlayerNumber() == consoleplayer) p.A_StartSound("brain/spit", CHAN_AUTO, CHANF_UI | CHANF_LOCAL, 1.0, ATTN_NONE);
+		// (no sound: it was Doom's Icon of Sin cube, "brain/spit" -- owner 11-12 14:11: "that is not needed")
 		Glow(0xFF2010, 0.6);
 		if (debug) Console.Printf("RSQMB BOSSFIGHT READY (auto in %d s)", CI('rsqmb_bf_auto', 60));
 	}
@@ -1128,6 +1131,22 @@ extend class RSQMB_Handler
 		// legendary: the thralls now (LegenDoom's own guaranteed pickup); the miniboss at the bind (handler.zs Inherit: its
 		// Legendary Boss Health is asked for first)
 		if (ld && !isBoss && !Has(a, "LDLegendaryMonsterToken")) Give(a, "LDLegendaryMonsterPickupGuaranteed");
+		// EVERY THRALL IS A BOOSTED LEGENDARY CHAMPION (owner 11-12 14:11 / 14:15: "no one spawns in as a
+		// boostedlegendarychampion"; "boosted legendary champions, how hard is this?"): legendary just above; a Champion
+		// here -- one that did not roll a colour of its own gets one of the Champions colour tokens that mod's handler
+		// acts on by itself (the four RSQ SlowMo's DOWN uses), by name.
+		if (!isBoss && Loaded("champion_Token") && !Has(a, "champion_PersistentInfo"))
+		{
+			bool any = false;
+			for (let it = a.Inv; it && !any; it = it.Inv) { String cn = it.GetClassName(); if (cn.Left(9) ~== "champion_" && cn.IndexOf("Token") >= 0) any = true; }
+			if (!any)
+			{
+				static const String TOK[] = { "Yellow", "White", "DarkGreen", "Cyan" };
+				String pick = TOK[random[rsqmbbf](0, 3)];
+				Give(a, "champion_" .. pick .. "Token");
+				if (debug) Console.Printf("RSQMB arrival: thrall %s made a %s Champion (it had no colour)%s", a.GetClassName(), pick, ld ? ", and legendary" : "");
+			}
+		}
 		a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (col >> 16) & 255, (col >> 8) & 255, col & 255),
 			int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
 		a.bBRIGHT = true;

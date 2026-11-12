@@ -919,6 +919,8 @@ class RSQSM_Clock : EventHandler
 	// k = the clock's factor ^ rsqsm_me_ratio (1: as slow as the world; 0.5: half as slowed; 0: not at all). Head and
 	// hands are tracked and never slowed. Everything is put back when the clock is at full speed (MeRestore).
 	const DODGE_MAX_TICS = 6 * TICRATE;
+	const BURST_TICS = 8;
+	double dodgeBurst[MAXPLAYERS];
 	double DodgeDepth() { return clamp(Cv("rsqsm_dodge_depth", 0.10), 0.05, 0.95); }
 	bool DodgeOn() { for (int n = 0; n < MAXPLAYERS; n++) if (dodgeTic[n] > 0) return true; return false; }
 	private void Dodges()
@@ -937,6 +939,12 @@ class RSQSM_Clock : EventHandler
 				{
 					Log("shootdodge", pmo.health <= 0 ? "ended: dead" : age >= DODGE_MAX_TICS ? "ended: 6 s" : "landed");
 					dodgeTic[n] = 0;
+				}
+				// the start's burst bleeds off over BURST_TICS, leaving the leap's own speed for the rest of the arc
+				else if (age >= 1 && age <= BURST_TICS && dodgeBurst[n] > 0)
+				{
+					double sp = pmo.vel.xy.Length();
+					if (sp > 0.5) pmo.vel.xy -= pmo.vel.xy / sp * min(sp, dodgeBurst[n] / BURST_TICS);
 				}
 				continue;
 			}
@@ -963,8 +971,16 @@ class RSQSM_Clock : EventHandler
 			Vector2 fwd = (cos(a), sin(a)), right = (sin(a), -cos(a));
 			Vector2 st = (p.cmd.forwardmove, p.cmd.sidemove);
 			Vector2 dir = st.Length() > 1 ? (fwd * st.x + right * st.y).Unit() : fwd;
-			double leap = clamp(Cv("rsqsm_dodge_leap", 12), 0.0, 40.0);
-			pmo.vel.xy += dir * leap;
+			// MAX PAYNE, NOT MAX LAME (owner 11-12 14:11: "our crisis dive needs to be longer, and more of an arc over
+			// distance with more oomph at the start"): a faster leap (16 units a tic, was 12), LIFT on top of the jump for a
+			// higher, longer arc (Dive Lift, rsqsm_dodge_lift, 3: about 22 tics in the air where the jump alone gave 16),
+			// and a BURST at the start that bleeds off over BURST_TICS (Dive Burst, rsqsm_dodge_burst, 8). About 10 m where
+			// it was 5.5. Code only: loads, not run on the rig, not headset-confirmed.
+			double leap = clamp(Cv("rsqsm_dodge_leap", 16), 0.0, 40.0);
+			double burst = clamp(Cv("rsqsm_dodge_burst", 8), 0.0, 30.0);
+			pmo.vel.xy += dir * (leap + burst);
+			pmo.vel.z += clamp(Cv("rsqsm_dodge_lift", 3), 0.0, 12.0);
+			dodgeBurst[n] = burst;
 			dodgeTic[n] = level.maptime;
 			CountdownStart("shootdodge", true);
 			SetCdAuto(false);
@@ -2280,6 +2296,17 @@ class RSQSM_Service : Service
 		// RSQ MELEE'S LAUNCHED BARREL (owner 11-12 05:11: "contextual slo mo ... 3 seconds or explosion, whichever happens
 		// first"): "start.barrel" a game slow (the countdown bar, its line BARREL), no shared cooldown, under the Other /
 		// Unknown Mods switch; "stop" stringArg the trigger's name: that slow, if it is the one running, ends now.
+		// "down.target" objectArg a monster: 0 not a DOWN target; else 1 + the step of the bar its player is in now (1 the
+		// bottom third, 2 the middle, 3 the top). BD22 VR Reloaded's LegenDoom drops ask at its death (owner 11-12 14:11).
+		if (request ~== "down.target")
+		{
+			let dn = RSQSM_Down(EventHandler.Find("RSQSM_Down"));
+			let who = Actor(objectArg);
+			if (!dn || !who) return 0;
+			for (int i = 0; i < dn.tMon.Size(); i++)
+				if (dn.tMon[i] == who) return clamp(3 - dn.TierAt(dn.Elapsed(dn.tPn[i])), 1, 3);
+			return 0;
+		}
 		if (request ~== "start.barrel")
 			return c.Trigger("barrel", RSQSM_Clock.CAT_OTHER, intArg > 0 ? intArg : 3000, doubleArg > 0 ? clamp(doubleArg, 0.05, 1.0) : c.Depth(), true, -1, "BARREL", false) ? 1 : 0;
 		if (request ~== "stop")

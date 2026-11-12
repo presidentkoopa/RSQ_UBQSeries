@@ -569,6 +569,17 @@ class RSQGC_GunCard : EventHandler
 	// And only while you are looking its way: the wrist within GAZE_MAX of where your head points (a hand resting at
 	// your side with its card half turned to you is not being read).
 	const FACE_MIN = 0.50;      // 60 degrees off square
+	const TWOHAND_NEAR = 16.0;  // map units between the hands (about 45 cm) under which the off hand is taken to be on the gun
+	bool wchk[2];               // this hand's watch pose is held this tic (Watching), not just lingering or Always On
+	static bool TwoHanding(PlayerInfo p, PlayerPawn pmo)
+	{
+		if (!p.ReadyWeapon) return false;
+		if ((p.WeaponState & WF_TWOHANDSTABILIZED) != 0) return true;
+		if (!pmo.OverrideAttackPosDir) return false;
+		Vector3 d = pmo.AttackPos - pmo.OffhandPos;
+		d.z *= level.pixelstretch;
+		return d.Length() < TWOHAND_NEAR;
+	}
 	const GAZE_MAX = 45.0;
 	static double GazeOff(PlayerPawn pmo, int hand)
 	{
@@ -857,6 +868,13 @@ class RSQGC_GunCard : EventHandler
 		for (int hand = 0; hand < 2; hand++)
 		{
 			bool checking = watchOn && Watching(pmo, hand);
+			// THE SUPPORT HAND IS NOT A WATCH CHECK (owner 11-12 14:11: "I'm still seeing voxels parallel to the laser when
+			// holding ballistic weapons, gun posed in a 'freeze, police!' pose"): two-handing a gun puts the off hand across
+			// the body with the back of its wrist up, which IS the watch pose, so its card came up edge on beside the gun.
+			// While the engine steadies the gun with the off hand (WF_TWOHANDSTABILIZED), or the off hand is within
+			// TWOHAND_NEAR of the hand holding a gun, the off hand's check does not count.
+			if (checking && hand == 1 && TwoHanding(p, pmo)) checking = false;
+			wchk[hand] = checking;
 			watching[hand] = always || checking;
 			// GC5: checking your watch with an EMPTY hand shows health, armour and keys (the status card). Drawn with
 			// the hand, the off hand needs its own weapon slot filled to own the layers (Brutal Doom VR's off-hand
@@ -885,7 +903,10 @@ class RSQGC_GunCard : EventHandler
 			if (show[hand] && (watching[hand] || status[hand] || itemCard[hand]) && !ci("rsqgc_world", 0))
 			{
 				double fd = FaceDot(pmo, hand), go = GazeOff(pmo, hand);
-				bool cull = fd < FACE_MIN || go > GAZE_MAX;
+				// (11-12 14:11, "the watch card does not show up anymore": a real check tilts the wrist only 45-80 degrees, which
+				// measures under FACE_MIN, so the test hid every checked card. A card whose own hand is being checked now, by
+				// Watching's pose, is always drawn; the face and gaze test is for the rest: Always On, a lingering card.)
+				bool cull = !wchk[hand] && (fd < FACE_MIN || go > GAZE_MAX);
 				if (ci("rsqgc_debug_log", 0) && (level.maptime % 10) == 0) Console.Printf("rsqgc: hand %d watch card face %.2f, %.0f degrees off your gaze%s", hand, fd, go, cull ? " (not drawn)" : "");
 				if (cull) show[hand] = false;
 			}

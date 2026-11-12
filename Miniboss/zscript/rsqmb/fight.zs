@@ -379,16 +379,17 @@ extend class RSQMB_Handler
 	//     appears over it WHEN IT CAN BE SHOT), none over thralls
 	void WordsStep(RSQMB_Boss b)
 	{
+		if (b.guardTic > 0 && level.maptime - b.guardTic == 35 && b.mb) WordClear("GUARD!", b.mb);
 		int st = b.Invulnerable() ? 3 : b.FightState();
 		if (st == b.wordState) return;
 		b.wordState = st;
-		if (st == 0 || st == 3) WordClear("TARGET!", b.mb); else WordHold("TARGET!", RGB_TARGET, 2.0, b.mb);
+		if (st == 0 || st == 3) WordClear("TARGET!", b.mb); else WordHold("TARGET!", RGB_TARGET, 0.8, b.mb);     // (owner 11-12 14:11: "TARGET and GUARD are way too big, it's all I can see": 2.0 -> 0.8)
 		for (int i = 0; i < b.thr.Size(); i++)
 		{
 			let t = b.thr[i];
 			if (!t) continue;
 			if (b.thrState[i] != RSQMB_Boss.ST_ALIVE || st >= 2) WordClear("TARGET!", t);
-			else WordHold("TARGET!", RGB_TARGET, st == 1 ? 0.6 : 1.0, t);
+			else WordHold("TARGET!", RGB_TARGET, st == 1 ? 0.35 : 0.5, t);     // (1.0 / 0.6 -> 0.5 / 0.35)
 		}
 	}
 
@@ -442,7 +443,8 @@ extend class RSQMB_Handler
 		let mb = b.mb;
 		if (!mb) return;
 		int now = level.maptime;
-		if (now - b.guardTic >= 18) { b.guardTic = now; Word("GUARD!", RGB_GUARD, 0, mb); }
+		// (a small held word, not the full-size pop -- owner 11-12 14:11; WordsStep lets it go 1 s after the last blocked hit)
+		if (now - b.guardTic >= 18) { b.guardTic = now; WordHold("GUARD!", RGB_GUARD, 0.5, mb); }
 		if (!fxOn || now - b.xTic < 2) return;
 		b.xTic = now;
 		for (int i = xfx.Size() - 1; i >= 0; i--) if (!xfx[i]) xfx.Delete(i);
