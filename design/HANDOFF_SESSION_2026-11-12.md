@@ -41,3 +41,15 @@ error from an RSQ pack. All of it is RIG ONLY, not headset-confirmed. The rig ha
   View When Down off); "sometimes we don't get up" (his log with rsqsm_debug on).
 - Bits: ideas only (he asked for ideas): a cap on bits alive at once, one merged bit per kill. Not built.
 - The whip's direction is PARKED by the owner.
+
+## 01:50: the uncompiled branch is merged
+The owner allowed one load check. All six changes loaded on his full order with no script error from an RSQ pack and
+no VM abort, in one run that also exercised them: a heavy crack critted and held the imp 50 tics, the yank left it
+"staggered where it stands (Whip Pulls Monsters off)", a barrel (RSQGN_Barrel) was set off, a slow motion with a reason
+ran, and the Gun Bonsai VR status screen was opened and closed. Merged to main, pk3s in his PK3TEST.
+NOT SEEN (no frames were taken): the barrel's size and the Neon Crescent's colour, the cards breathing, the legendary
+power line on the status screen, the reason line's SOTN look. The commit subjects still say NOT COMPILED: they are
+compiled and loaded now, not shown.
+Also on main from that branch: Grenade barrels (size x2, reach x1.5, Neon Crescent room colour), SlowMo reason line.
+Whip controls (fire snaps the lock to a monster, alt-fire locks onto geometry) are NOT written.
+The owner rejected both badge sketches; rank badges on the HP bar are dropped.
