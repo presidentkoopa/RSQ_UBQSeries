@@ -266,6 +266,7 @@ OptionMenu wr_Test
 	StaticText "Data Sheet", 1
 	// Measured in card widths.
 	Slider "Data Sheet Size",           "wr_sheet_scale",  0.5, 2.0, 0.05, 2
+	Slider "Data Sheet Distance (m)",   "wr_sheet_near",   0.0, 1.5, 0.05, 2
 	Slider "Pointing at a Gun: Rest For (tics)", "wr_inspect_dwell", 0, 70, 2, 0
 	Slider "Wrist Card: Hold the Pose (tics)", "wr_watch_dwell", 2, 30, 1, 0
 	Slider "Wrist Card Size",           "wr_watch_scale",  0.5, 2.0, 0.1, 1

@@ -2976,7 +2976,8 @@ class wr_Rig : EventHandler
 	// with the ring when a big weapon set grows it instead of being buried.
 	private void layoutSheet(Vector3 wrist, double viewYaw, Vector3 viewRight,
 	                         double tilt, double rise, double ringR,
-	                         double panelW, double panelH, double lateral)
+	                         double panelW, double panelH, double lateral,
+	                         Vector3 eye = (0, 0, 0), bool haveEye = false)
 	{
 		if (mSheetPlate == 0) return;
 
@@ -3005,6 +3006,27 @@ class wr_Rig : EventHandler
 			double halfH = panelH * SHEET_H_CARDS * ss * usedFrac * 0.5 * CARD_STRETCH;
 			double room  = ringR - panelH * (0.5 * CARD_STRETCH + SHEET_GAP_CARDS);
 			if (room > 0.0 && halfH > room) ss *= room / halfH;
+		}
+
+		// RSQ (owner 11-11 19:3x: the data card "is hard to read and drawn far from our face" -> "Bring it closer"): THE
+		// WHEEL'S SHEET COMES TOWARD YOU along your line of sight, to wr_sheet_near metres in front of your eyes (0 = where
+		// the ring is, as before). It shrinks by the same ratio, so it covers exactly the same part of your view as
+		// before and never reaches over a card; only its depth changes. The inspect sheet on a hand (ringR 0) stays.
+		Vector3 pullBy = (0, 0, 0);
+		if (ringR > 0.0 && haveEye)
+		{
+			let vu = CVar.FindCVar("vr_vunits_per_meter");
+			double upm = (vu && vu.GetFloat() > 0) ? vu.GetFloat() : 34.0;
+			double want = cv("wr_sheet_near", 0.5) * upm;
+			Vector3 c0 = wrist + viewRight * lateral + (0, 0, rise);
+			Vector3 toEye = eye - c0;
+			double d = toEye.Length();
+			if (want > 0 && d > want + 1)
+			{
+				double k = want / d;
+				ss *= k;
+				pullBy = toEye * (1.0 - k);
+			}
 		}
 
 		double sw = panelW * SHEET_W_CARDS * ss;
@@ -3042,7 +3064,7 @@ class wr_Rig : EventHandler
 		// without covering a card. The caller passes the layout's
 		// own half-width plus clearance here and the sheet stands beside the
 		// comb instead. Zero in ring mode, which is every existing setup.
-		Vector3 centre = wrist + viewRight * lateral + (0, 0, rise);
+		Vector3 centre = wrist + viewRight * lateral + (0, 0, rise) + pullBy;
 
 		// Toward the eye, so text sits proud of its plate instead of z-fighting
 		// it -- the same lift every card label uses.
@@ -6875,7 +6897,7 @@ class wr_Rig : EventHandler
 		// is shared.
 		double sheetLateral = 0.0;
 
-		layoutSheet(wrist, viewYaw, viewRight, tilt, rise, ringR, panelW, panelH, sheetLateral);
+		layoutSheet(wrist, viewYaw, viewRight, tilt, rise, ringR, panelW, panelH, sheetLateral, eye, true);
 
 		// The field goes down BEFORE the cards, so anything the cards paint
 		// this tic lands in front of it rather than behind. Faded in by the
