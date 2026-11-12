@@ -173,7 +173,7 @@ keener to shoot. It becomes legendary when any of its thralls is.
 - **When it lands:** the world and you slow to SlowMo's slowest for 4 seconds, and the room drops to DarkDoom Black
   (with RSQ Glow In The Dark). The thralls land about 0.3 s apart, then the miniboss. Each one is hidden and frozen
   until its RSQ VisualRewards arrival beam shows it, and an RSQ SlowMo edge arrow points to it while it is out of view.
-  The beams are picked at random each time: V1 thralls and a V3 miniboss, or V2 thralls and a V4 miniboss. When the
+  The miniboss always lands on V4; each thrall lands on V1, V2 or V3, picked at random for each one. When the
   miniboss appears, a wave of its colour rolls out across the map.
 - **Without VisualRewards' beams** each one lands at once in the original Minibosses! teleport flash, with Doom's
   teleport sound.
@@ -400,7 +400,7 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
-| **rig only, not headset-confirmed** (2026-11-12, runs `champ4`, `mb9`, with Champions' Legendoom Compatibility, Dormant and Booster on) | Thralls are real Champions (LegenDoom legendaries that Champions turns into Champions): 5 thralls, 5 different powers; a thrall that does not fit tries the spots round its own; the clock only during the charge; the bar raised; thrall bars in their Champion colours; GUARD lit on blocked hits. The Start Fight card on the off-hand wrist only: loads, not shown |
+| **rig only, not headset-confirmed** (2026-11-12, runs `charge2`, `mb9`, `beams1`, with Champions' Legendoom Compatibility, Dormant and Booster on) | Thralls are real Champions (LegenDoom legendaries that Champions turns into Champions): 5 thralls, 5 different powers; a thrall that does not fit tries the spots round its own; the clock only during the charge; the bar raised; thrall bars in their Champion colours; GUARD lit on blocked hits. The Start Fight card on the off-hand wrist only: loads, not shown |
 | **rig only, not headset-confirmed** (2026-11-12, run `bbar6`; called in by console) | The miniboss bar moved to Be Quick or Be Dead's place and size, and drawn as the mockup: skull and crosshair, gold name, GUARD in silver, X3, the clock counting down, thrall bars with their crosshair and Champion icon. On the rig at HUD size 11 the status bar's health and armour numbers sit over the thrall row |
 | **rig only, not headset-confirmed** (2026-11-12, runs `bbar3`, `bbar5`; called in by console) | The miniboss bar: the empty bar first, thrall bars with their icon pairs, the head, name, GUARD on a grey bar charging, X2, the LED clock counting down, then the bar in its colour and the clock on a window. During the charge the thralls stood still and the player took no damage. Not seen: the sliver's first frames, the white flash, the trail, Photosensitive Mode, the bar without RSQ VisualRewards or RSQ SlowMo loaded |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | Tier-ups climb in strength: a Red miniboss losing a life goes to Abyss, then Black; a missed window takes it to White and Cyan thralls to FireBlu. A Black EX lands in its own colour and goes to White when it loses a life. |

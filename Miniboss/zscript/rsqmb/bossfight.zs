@@ -918,7 +918,7 @@ extend class RSQMB_Handler
 		let gd = GdService();
 		if (!quiet && gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, max(3.0, slowMs / 1000.0) + 0.5);
 		if (debug) Console.Printf("RSQMB BOSSFIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
-			arrBeamSet == 0 ? "V1 thralls + V3 miniboss" : "V2 thralls + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
+			"V1-V3 thralls (each at random) + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
 	}
 
 	// GRAVES RISE (owner 2026-11-06, rsqmb_bf_graves, off): with Legion of Bones and RSQ Graveyards loaded, a Bossfight calling
@@ -1139,7 +1139,8 @@ extend class RSQMB_Handler
 		Hold(i, a);
 		// the beam (VisualRewards hides it until its reveal) or the original's teleport fog
 		let vr = VrService();
-		String kind = i == 0 ? (arrBeamSet == 0 ? "v3" : "v4") : (arrBeamSet == 0 ? "v1" : "v2");
+		// THE MINIBOSS ALWAYS ON V4, EACH THRALL ON V1, V2 OR V3 AT RANDOM (owner 2026-11-12 16:53)
+		String kind = i == 0 ? "v4" : String.Format("v%d", random[rsqmbbf](1, 3));
 		// nameArg role (contract addition 2026-11-09): sent, but VisualRewards ignores it now (each beam has its own sound)
 		Name role = i == 0 ? 'miniboss' : 'thrall';
 		int r = vr ? vr.GetInt("beam", kind, col, 1.0, a, role) : 0;

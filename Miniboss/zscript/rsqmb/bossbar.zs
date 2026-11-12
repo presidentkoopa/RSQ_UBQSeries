@@ -378,7 +378,9 @@ extend class RSQMB_Handler
 			bool alive = a && a.health > 0;
 			if (alive && a.health > bbThrMax[i]) bbThrMax[i] = a.health;
 			double hf = alive ? a.health / max(1.0, bbThrMax[i]) : 0.0;
-			if (fresh && a) bbThrIc[i] = ChampIconOf(a);
+			// every tic until it has one (Champions turns a legendary thrall into a Champion a few tics after it lands), then
+			// twice a second
+			if (a && (fresh || bbThrIc[i] < 0)) bbThrIc[i] = ChampIconOf(a);
 			// IN ITS OWN COLOUR (owner 15:56: "those bars will be the color of the boosted legendary champion thrall"): its
 			// Champion colour, else the colour it landed in
 			if (bbThrIc[i] >= 0) tc = ChampColour(bbThrIc[i]);
