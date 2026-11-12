@@ -221,6 +221,16 @@ class RSQSM_Down : EventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
+		// THE TIME ROWS' NEW DEFAULTS (owner 11-12 04:22: 0.5 and 0.25 s): a config saved under the old ones (1 / 0.5 / 2 /
+		// 10 s) still holds them, so once per config the four rows are set to the new defaults; after that they are his.
+		let mc = CVar.FindCVar("rsqsm_down_cfg");
+		if (mc && mc.GetInt() < 1)
+		{
+			static const String ROW[] = { "rsqsm_down_t_small", "rsqsm_down_t_soul", "rsqsm_down_t_big", "rsqsm_down_t_boss" };
+			static const double VAL[] = { 0.25, 0.25, 0.5, 0.5 };
+			for (int i = 0; i < 4; i++) { let c = CVar.FindCVar(ROW[i]); if (c) c.SetFloat(VAL[i]); }
+			mc.SetInt(1);
+		}
 		// a save keeps the plate's quads but not the transient plate that drove them: clear them, the plate rebuilds
 		if (e.IsSaveGame)
 		{
@@ -540,17 +550,17 @@ class RSQSM_Down : EventHandler
 	}
 	static double SecsPerMonster(Actor t, out String kind)
 	{
-		if (KindOf(t, 'Cyberdemon') || KindOf(t, 'SpiderMastermind')) { kind = "boss"; return Cv("rsqsm_down_t_boss", 10); }
-		if (KindOf(t, 'LostSoul')) { kind = "lost soul"; return Cv("rsqsm_down_t_soul", 0.5); }
+		if (KindOf(t, 'Cyberdemon') || KindOf(t, 'SpiderMastermind')) { kind = "boss"; return Cv("rsqsm_down_t_boss", 0.5); }
+		if (KindOf(t, 'LostSoul')) { kind = "lost soul"; return Cv("rsqsm_down_t_soul", 0.25); }
 		static const Name SMALL[] = { 'ZombieMan', 'ShotgunGuy', 'ChaingunGuy', 'WolfensteinSS', 'DoomImp', 'Demon', 'Spectre' };
-		for (int i = 0; i < SMALL.Size(); i++) if (KindOf(t, SMALL[i])) { kind = "small"; return Cv("rsqsm_down_t_small", 1); }
+		for (int i = 0; i < SMALL.Size(); i++) if (KindOf(t, SMALL[i])) { kind = "small"; return Cv("rsqsm_down_t_small", 0.25); }
 		// my reading: a monster that is none of Doom's and replaces none of them -- small by health (up to an Imp's
 		// worth of 150), else above them; a BOSS of 3000+ health counts as the Cyberdemon
 		int sh = t.GetSpawnHealth();
-		if (t.bBOSS && sh >= 3000) { kind = "boss (unknown)"; return Cv("rsqsm_down_t_boss", 10); }
-		if (sh <= 150) { kind = "small (unknown)"; return Cv("rsqsm_down_t_small", 1); }
+		if (t.bBOSS && sh >= 3000) { kind = "boss (unknown)"; return Cv("rsqsm_down_t_boss", 0.5); }
+		if (sh <= 150) { kind = "small (unknown)"; return Cv("rsqsm_down_t_small", 0.25); }
 		kind = "big";
-		return Cv("rsqsm_down_t_big", 2);
+		return Cv("rsqsm_down_t_big", 0.5);
 	}
 
 	override void WorldThingDamaged(WorldEvent e)

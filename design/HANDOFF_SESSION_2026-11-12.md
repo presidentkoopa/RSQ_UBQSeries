@@ -89,3 +89,5 @@ SlowMo, on `main`. Loads on the full order only; not run on the rig, not headset
   monsters in sight get a small white crosshair and "+1 SEC" / "+0.5 SEC" / "+2 SEC" / "+10 SEC". The chevron trail and
   the edge arrows stay the target's alone.
 - Taken back out the same night: an on-screen "no room to stand" message the owner did not ask for.
+- 04:22 (owner: "I said 0.5 and 0.25"): the Time rows' defaults are now 0.25 s (small monsters, Lost Souls) and 0.5 s
+  (anything above, bosses too), with a one-time move of saved values (`rsqsm_down_cfg`). The labels read +0.25 SEC / +0.5 SEC.
