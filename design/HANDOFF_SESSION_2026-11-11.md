@@ -81,7 +81,7 @@ Code only, not shown (each loads clean on the full order):
   - the LegenDoom HUD.
 - **Not asked yet:** the main grip flipped BD22's pistol between Burst and Semi on the rig. Should it?
 - **Not built, decided:** Colourful Hell monsters for encounters only, no longer a spawn set. This goes into the Monsters pass.
-- **Not built, in the design:** the words over a LegenDoom drop (EPIC plus the power name). X3 is shown for Murderous only.
+- **Built 22:00, code only:** the words over a LegenDoom drop (VisualRewards ldword.zs, row "LegenDoom: Drop Words"). X3 is shown for Murderous only.
 
 ## Owner answers 11-11 evening
 - Q1: RSQ Monsters is for minibosses, events and set-pieces; he plays with BD monsters almost always. Minibosses climb to
