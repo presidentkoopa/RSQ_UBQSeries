@@ -146,7 +146,7 @@ class RSQSM_Countdown : StaticEventHandler
 	// centred on the row from the icon to the bar's end, shrunk to fit it). The clock's cdCause, while the countdown bar shows
 	// (it fades with the bar and is gone with it).
 	const CAUSE_GAP = 0.15;
-	const CAUSE_H = 0.8;
+	const CAUSE_H = 1.1;     // owner 11-12 01:24: "a little larger to easier to read" (was 0.8)
 	static ui String CauseShown()
 	{
 		if (!Enabled()) return "";
@@ -156,12 +156,63 @@ class RSQSM_Countdown : StaticEventHandler
 		double age = level.maptime - clock.cdEndTic;
 		return (clock.cdEndTic > 0 && age >= 0 && age < FADE_OUT) ? clock.cdCause : "";
 	}
+	// a word in the SOTN look, in screen pixels: hp its height, (x, y) its top left; returns its width. measure: the
+	// width only. (The routine of Gun Bonsai VR's legendoom.zs Sotn, in pixels.)
+	static ui double SotnLine(String word, double x, double y, double hp, Color top, Color bot, double a, bool measure)
+	{
+		word = word.MakeUpper();
+		double px = hp / 48.0;                    // screen pixels per glyph texel (a glyph cell is 48 texels tall)
+		double gap = max(1.0, hp / 12.0), edge = max(1.0, hp / 14.0);
+		double cx = x;
+		for (int i = 0; i < int(word.Length()); i++)
+		{
+			int c = word.ByteAt(i);
+			TextureID t;
+			if (c >= 33 && c <= 96) t = TexMan.CheckForTexture(String.Format("QVW%03d", c), TexMan.Type_Any);
+			if (c < 33 || c > 96 || !t.IsValid()) { cx += hp * 0.5 + gap; continue; }
+			Vector2 ts = TexMan.GetScaledSize(t);
+			double gw = ts.x * px, gh = ts.y * px, half = ts.y * 0.5;
+			if (!measure)
+			{
+				for (int dx = -1; dx <= 1; dx++) for (int dy = -1; dy <= 1; dy++)
+				{
+					if (!dx && !dy) continue;
+					Screen.DrawTexture(t, false, cx + dx * edge, y + dy * edge, DTA_DestWidthF, gw, DTA_DestHeightF, gh, DTA_TopLeft, true,
+						DTA_FillColor, 0xFF08080A, DTA_Alpha, a);
+				}
+				for (int part = 0; part < 2; part++)
+				{
+					Color col = part ? bot : top;
+					double sy = part ? half : 0;
+					double dy2 = y + (part ? gh * 0.5 : 0);
+					Screen.DrawTexture(t, false, cx, dy2, DTA_DestWidthF, gw, DTA_DestHeightF, gh * 0.5, DTA_TopLeft, true,
+						DTA_SrcY, sy, DTA_SrcHeight, half, DTA_Color, col | 0xFF000000, DTA_Alpha, a);
+				}
+			}
+			cx += gw + gap;
+		}
+		return max(0.0, cx - x - gap);
+	}
 	static ui void DrawCause(String why, double x, double y, double w, double h, double alpha)
 	{
 		if (why == "" || alpha <= 0.01) return;
 		double gx, gy, gs;
 		[gx, gy, gs] = GlassRect(x, y, h);
 		double gl = x, gw = w;     // centred under the BAR itself (owner 11-09: "centered under the green bar"; was the whole row, hourglass included)
+		// THE SOTN LOOK (owner 11-12 01:24: "for the world slomo bar i want the reason-text to have our SOTN styling to it,
+		// and be a little larger"): the series' two-tone word (RSQ VisualRewards' QVW glyphs, each letter's top half pale
+		// gold and its bottom half orange on a near-black outline, as THREAT! and Gun Bonsai VR's card title), at CAUSE_H of
+		// the bar's thickness, shrunk to fit the bar. Without RSQ VisualRewards (no QVW glyphs): the plain line below.
+		// CODE ONLY, NOT COMPILED OR SHOWN (owner 11-12 01:19: no rig runs).
+		if (TexMan.CheckForTexture("QVW065", TexMan.Type_Any).IsValid())
+		{
+			double hp = h * CAUSE_H;
+			double sw = SotnLine(why, 0, 0, hp, 0, 0, 0, true);
+			if (sw > gw && sw > 0) { hp *= gw / sw; sw = gw; }
+			double sy0 = max(y + h, gy + gs) + h * CAUSE_GAP;
+			SotnLine(why, gl + (gw - sw) * 0.5, sy0, hp, 0xFFFFEC78, 0xFFF09614, alpha, false);
+			return;
+		}
 		Font fnt = NewSmallFont;
 		double s = (h * CAUSE_H) / max(1, fnt.GetHeight());
 		double tw2 = fnt.StringWidth(why) * s;
