@@ -6,7 +6,9 @@ server int    rsqwp_whip_aim      = 1;      // 0 Free: the crack hits what the t
 server float  rsqwp_whip_crack    = 20;     // how fast the tip must go to crack, room units a tic (lower = easier)
 server float  rsqwp_whip_assist   = 40;     // Assist aim's reach round the crack, map units
 server int    rsqwp_whip_damage   = 12;     // a crack's damage (a sting does part of it)
+server bool   rsqwp_whip_hardcrit = true;   // Hard Crack Crits (owner 11-11): with MK Crits loaded, a heavy crack is always its critical hit (whip.zs MkCrit)
 server bool   rsqwp_whip_stun     = true;   // a crack knocks a monster into its Pain state (breaks off its attack)
+server bool   rsqwp_rope_fire     = true;   // On a Rope, Fire Lets Go (owner 11-11): the whip hand's fire (a fresh press) lets go and its alt-fire reels; off, the trigger reels and alt-fire lets go
 server bool   rsqwp_whip_snag     = true;   // a lash that catches an edge (beam, lintel, ledge lip) wraps round it: a rope
 server float  rsqwp_whip_above    = 16;     // how far above the hand an edge must be to snag
 server bool   rsqwp_swing         = true;   // Aimed Swing: the other hand's alt-fire aims a ray; a crack with it on a wall or ceiling swings from there (swing.zs)

@@ -2954,7 +2954,13 @@ class RSQWP_Whip : EventHandler
 		// weapon in the main hand that is 0 anyway (its Kickback 0); the Whip (Off) bind with a gun in the main hand
 		// thrust by the GUN's kickback (ApplyKickback reads ReadyWeapon): rig 11-03, 1.75-1.9 a tic on an imp
 		int thr = KnockOn() ? 0 : DMG_THRUSTLESS;
+		// A HEAVY CRACK IS A CRITICAL HIT (owner 11-11 23:56: "we use MK Crits so i'd like a 'hard crack' on an enemy always
+		// trigger a critical hit"), MkCrit below. MK Crits' own crit may fire on this very hit (its window: the monster
+		// began an attack within 10 tics); its csh_JustStunned on the monster afterwards says it did, and then nothing is added.
+		bool mkc = crack && hk >= 0.5 && dmg > 0 && v.bISMONSTER && MkOn();
+		int js0 = mkc ? MkCount(v, "csh_JustStunned") : 0;
 		if (dmg > 0) { RSQWP_Events.Whipped(v, pmo, crack ? hk : -1.0); RSQWP_Perks.Hurt(v, pmo, pmo, dmg, DmgType(), thr); }
+		if (mkc && v && !v.bDestroyed && v.Health > 0 && MkCount(v, "csh_JustStunned") <= js0) MkCrit(v, pmo, dmg, at, thr);
 		bool stunned = false;
 		if (crack && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_stun", true))
 		{
@@ -2983,6 +2989,56 @@ class RSQWP_Whip : EventHandler
 		Buzz(pmo, hand, crack ? 0.8 : 0.35, crack ? 6 : 3);
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
 			Console.Printf("T_WPW %d %s %s at speed %.1f (k %.2f): dmg %d, hp %d -> %d, pain %d, hit-stop %d", i, crack ? "CRACK hit" : "sting", v ? v.GetClassName() : 'gone', spd, crack ? hk : 0.0, dmg, hp0, v ? v.Health : 0, stunned, frz);
+	}
+
+	// MK CRITS (Critical Shots & Headshots, m8f/mk-crits; by name, nothing of its is copied but the names it plays):
+	// its crit is "damage x Critical Factor, its crit sound and effect, the monster held in Pain 50 tics", given when you
+	// hurt a monster within 10 tics of its starting an attack. A HEAVY crack (CrackK 0.5 and up: the one that sounds
+	// heavy) gives the same every time: the rest of the factor as damage of type 'Critical' (MK Crits skips its own crit
+	// for that type, so the two never multiply), its sound and effect by its own settings, and the 50-tic hold on the
+	// Pain state the crack's Stun put it in. Its "stunned monsters take more" bonus is its own state and is not set.
+	// Nothing without MK Crits, with its Critical Hits off, or with Hard Crack Crits (rsqwp_whip_hardcrit) off.
+	static bool MkOn()
+	{
+		if (!RSQWP_Util.Flag("rsqwp_whip_hardcrit", true)) return false;
+		String cn = "csh_Brain";
+		Class<Actor> c = cn;
+		return c != null && RSQWP_Util.Flag("csh_critical_enabled", false);
+	}
+	static int MkCount(Actor v, String item)
+	{
+		Class<Inventory> c = item;
+		return (v && c) ? v.CountInv(c) : 0;
+	}
+	void MkCrit(Actor v, PlayerPawn pmo, int dmg, Vector3 at, int thr)
+	{
+		static const String MKSND[] = { "", "criticalshots/mmz/clash", "criticalshots/cod/hitmark", "criticalshots/dks/dink",
+			"criticalshots/dks/kill1", "criticalshots/dks/kill2", "criticalshots/dks/meat", "criticalshots/tf2/crit",
+			"criticalshots/tf2/rec", "criticalshots/tf2/mini", "criticalshots/csz/headshot", "criticalshots/csg/helmet",
+			"criticalshots/csg/headshot", "criticalshots/re1/slash", "criticalshots/re1/pop", "criticalshots/nmc/cutbody",
+			"criticalshots/htd/splat" };
+		static const String MKFX[] = { "", "csh_visual_SmallBloodSplatter", "csh_visual_LargeBloodSplatter", "csh_visual_SharpBlueFlash",
+			"csh_visual_RoundRedFlash", "csh_visual_RoundBlueRedFlash", "csh_visual_BloodSplat", "csh_visual_TF2Crit" };
+		double f = max(1.0, RSQWP_Util.Num("csh_critical_factor", 2.0));
+		int fi = int(RSQWP_Util.Num("csh_critical_effect", 3));
+		if (fi > 0 && fi < 8)
+		{
+			Class<Actor> fc = MKFX[fi];
+			let h = fc ? Actor.Spawn(fc, at, NO_REPLACE) : null;
+			if (h && (fi <= 2 || fi == 6)) h.translation = v.bloodtranslation;
+		}
+		int sn = int(RSQWP_Util.Num("csh_critical_sound", 1));
+		if (sn > 0 && sn < 17) pmo.A_StartSound(MKSND[sn], 99, 0, RSQWP_Util.Num("csh_critical_vol", 1.0));
+		int extra = int(dmg * (f - 1.0) + 0.5);
+		int hp0 = v.Health;
+		if (extra > 0) RSQWP_Perks.Hurt(v, pmo, pmo, extra, 'Critical', thr | DMG_THRUSTLESS);
+		if (v && !v.bDestroyed && v.Health > 0)
+		{
+			State pain = v.FindState("Pain");
+			if (pain) { if (!v.InStateSequence(v.CurState, pain)) v.SetState(pain); v.tics = max(v.tics, 50); }
+		}
+		if (RSQWP_Util.Flag("rsqwp_debug", false))
+			Console.Printf("T_WPW MKCRIT %s: + %d (x %.2f), hp %d -> %d, held %d", v ? v.GetClassName() : 'gone', extra, f, hp0, v ? v.Health : 0, (v && v.Health > 0) ? v.tics : 0);
 	}
 
 	// How hard a crack was, 0..1, from the tip's speed at it.

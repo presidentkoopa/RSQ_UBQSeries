@@ -118,9 +118,17 @@ class RSQWP_WhipWeapon : Weapon
 			if (!hadHook) reelArmed = !trig;
 			if (!trig) reelArmed = true;
 			hadHook = true;
-			core.held[i] = trig && reelArmed;
+			// FIRE LETS GO (owner 11-11 23:56: "using mainhand alt fire to dismount is strange, can we change it to primary
+			// fire dismounts (when snagged)?"; rsqwp_rope_fire, on): on a rope the whip hand's trigger, in a fresh press,
+			// lets go, and its alt-fire held reels. Off: as before, the trigger reels and alt-fire lets go.
+			bool fireDrops = RSQWP_Util.Flag("rsqwp_rope_fire", true);
+			core.held[i] = fireDrops ? alt : (trig && reelArmed);
 			core.pressFired[i] = true;
-			if (altPress) { core.held[i] = false; core.LetGo(h, true); }
+			if (fireDrops ? (trig && reelArmed) : altPress)
+			{
+				core.held[i] = false; core.LetGo(h, true);
+				if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d ROPE let go t%d by %s", i, level.maptime, fireDrops ? "fire" : "alt-fire");
+			}
 			w.markHeld[i] = false;
 			w.lassoOn[i] = false;
 			return;
