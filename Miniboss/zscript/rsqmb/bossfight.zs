@@ -1063,6 +1063,11 @@ extend class RSQMB_Handler
 	void Land(int i, Actor p)
 	{
 		class<Actor> c = arrCls[i];
+		// A REAL CHAMPION (owner 2026-11-12 15:39: "why are your screenshots showing no champions or legendaries at all"): a
+		// thrall is made legendary by LegenDoom's own guaranteed pickup in Boost, the tic it spawns; with Champions'
+		// "Legendoom Compatibility" on (the owner's Boosted / Dormant Legendary Champions), Champions makes every LegenDoom
+		// legendary a Champion of its own colour (its champion_LDoomDelayer), with its look and its powers. A colour token
+		// handed over by this mod (ChampionFallback) is only the last resort: a name without the look.
 		Actor a = c ? Actor.Spawn(c, (arrX[i], arrY[i], arrZ[i]), ALLOW_REPLACE) : null;
 		if (a && i == 0) { a.A_SetScale(a.Scale.X * MB_SCALE, a.Scale.Y * MB_SCALE); a.A_SetSize(a.radius * MB_SCALE, a.height * MB_SCALE, false); }
 		// (rig 11-09) its own thralls land first and walk; one may have stepped into the miniboss's spot: move it aside
@@ -1094,6 +1099,25 @@ extend class RSQMB_Handler
 				break;
 			}
 			if (debug) Console.Printf("RSQMB arrival: thrall %s moved aside for the miniboss", bk.GetClassName());
+		}
+		// A THRALL THAT DOES NOT FIT tries the spots round its own before it gives up (owner 14:24: 3 to 5 thralls; rig run
+		// champ1: one was blocked by a map monster and the encounter bound with 2)
+		if (a && i > 0 && !arrForce && !a.TestMobjLocation())
+		{
+			Vector3 at0 = a.pos;
+			bool fit = false;
+			for (int ring = 1; ring <= 3 && !fit; ring++)
+				for (int k = 0; k < 8 && !fit; k++)
+				{
+					double ang = k * 45.0;
+					Vector2 off = (cos(ang), sin(ang)) * (a.radius * 2.0 + 8) * ring;
+					Vector3 np = (at0.xy + off, at0.z);
+					if (!level.IsPointInLevel(np)) continue;
+					a.SetOrigin(np, false);
+					if (a.TestMobjLocation() && a.CheckSight(arrMon[0] ? arrMon[0] : (p ? Actor(p) : a), SF_IGNOREVISIBILITY)) fit = true;
+				}
+			if (!fit) a.SetOrigin(at0, false);
+			else if (debug) Console.Printf("RSQMB arrival: thrall %d moved to a free spot next to its own", i);
 		}
 		if (a && !arrForce && !a.TestMobjLocation())
 		{
@@ -1140,27 +1164,7 @@ extend class RSQMB_Handler
 		// boostedlegendarychampion"; "boosted legendary champions, how hard is this?"): legendary just above; a Champion
 		// here -- one that did not roll a colour of its own gets one of the Champions colour tokens that mod's handler
 		// acts on by itself (the four RSQ SlowMo's DOWN uses), by name.
-		if (!isBoss && Loaded("champion_Token") && !Has(a, "champion_PersistentInfo"))
-		{
-			bool any = false;
-			for (let it = a.Inv; it && !any; it = it.Inv) { String cn = it.GetClassName(); if (cn.Left(9) ~== "champion_" && cn.IndexOf("Token") >= 0) any = true; }
-			if (!any)
-			{
-				// a colour no thrall of this encounter carries yet, while there is one (each thrall a different power for the
-				// miniboss to absorb)
-				static const String TOK[] = { "Yellow", "White", "DarkGreen", "Cyan" };
-				Array<String> free;
-				for (int k = 0; k < 4; k++)
-				{
-					bool taken = false;
-					for (int j = 1; j < arrMon.Size() && !taken; j++) if (arrMon[j] && arrMon[j] != a && Has(arrMon[j], "champion_" .. TOK[k] .. "Token")) taken = true;
-					if (!taken) free.Push(TOK[k]);
-				}
-				String pick = free.Size() ? free[random[rsqmbbf](0, free.Size() - 1)] : TOK[random[rsqmbbf](0, 3)];
-				Give(a, "champion_" .. pick .. "Token");
-				if (debug) Console.Printf("RSQMB arrival: thrall %s made a %s Champion (it had no colour)%s", a.GetClassName(), pick, ld ? ", and legendary" : "");
-			}
-		}
+		// (a Champion: Land spawns it as one, by Champions' own roll; ChampionFallback covers one Champions would not take)
 		a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (col >> 16) & 255, (col >> 8) & 255, col & 255),
 			int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
 		a.bBRIGHT = true;

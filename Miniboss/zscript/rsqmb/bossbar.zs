@@ -16,7 +16,7 @@
 //   GUARD        silver (MBFS glyphs), 22 high, ending at 706, over the bar's right end, while it cannot be hurt;
 //   X2           gold, 30 high at 744, 90, while it has more than one bar;
 //   the clock    96 x 38 at 826, 86: #1a0606 inside a #5a1410 rim, red (#ff3b30) seven-segment SS:hh (RSQ SlowMo's DOWN
-//                readout's digits), while the guard counts down (the charge) or a window is open;
+//                readout's digits), ONLY while the arrival's charge counts 03:00 down (owner 15:36: not during the fight);
 //   the thralls  a 150 x 16 bar each (rim 3) at y 238, 40 apart, centred under the miniboss bar; over each, side by side
 //                and centred, its crosshair (RSQ SlowMo's DOWN crosshairs, RSQMBX, in its colour) and its Champion icon.
 // THE ARRIVAL (owner 14:11): the bar appears as a sliver and grows outward, empty (BB_GROW); each thrall's bar and icons pop
@@ -41,6 +41,7 @@ extend class RSQMB_Handler
 	const BB_MW = 908.0;
 	const BB_MCX = 468.0;
 	const BB_MFOOT = 254.0;
+	const BB_LIFT = 110.0;      // raised this many mockup px above Be Quick or Be Dead's foot
 	const BB_EYE_TAN = 0.91;    // RSQ SlowMo's measured eye (downhud.zs EYE_TAN)
 
 	ui bool   bbWas;
@@ -86,6 +87,9 @@ extend class RSQMB_Handler
 		double floorY = shh * (1 - f);
 		if (StatusBar && screenblocks <= 10) floorY = min(floorY, StatusBar.GetTopOfStatusBar() - 2.0);
 		bbFy = min(bbFy, floorY);
+		// RAISED (owner 15:36 "raise the bar some"): its foot BB_LIFT mockup px above Be Quick or Be Dead's, clear of the HUD's
+		// health and armour row
+		bbFy -= BB_LIFT * bbSy;
 		// shrunk, never moved, if it would rise past the gaze
 		double tall = (BB_MFOOT - 36.0) * bbSy;
 		if (bbFy > gy && tall > bbFy - gy) { double kk = (bbFy - gy) / tall; bbSx *= kk; bbSy *= kk; }
@@ -291,7 +295,6 @@ extend class RSQMB_Handler
 					bbLag = 0;
 				}
 				guard = b.ShieldUp() || b.Invulnerable();
-				if (b.winSeg >= 0) clock = max(0.0, (b.winEnd - t) / TICRATE);
 				if (bbLag < frac) bbLag = frac;
 				else bbLag = max(frac, bbLag - dt * 0.012);
 			}
