@@ -173,7 +173,7 @@ def run(scen, hand='r'):
 # ---- THE AIMED SWING (swing.zs) on SWINGTST ------------------------------------------------------------------------
 SWINGS = ('aim', 'ceil', 'wallanchor', 'chain', 'refuse', 'snag', 'ohold', 'ohceil', 'ohgun',
           'beammon', 'bits', 'range', 'offgun', 'gripstart', 'jumpstart', 'reelclimb',
-          'assistwall', 'assistnosnag')
+          'assistwall', 'assistnosnag', 'useclimb')
 # AIM WITH OFF-HAND FIRE (11-03): the off trigger pressed as the real controller presses it -- qz_ltrigger, which
 # QuestZDoom's input posts as KEY_LSHIFT (bound +oh_attack), so the key road the whip eats is the one tested (the
 # console's +oh_attack would set the button and skip it). qz_rgrip held + qz_ltrigger = KEY_LALT (+oh_altatk).
@@ -398,6 +398,22 @@ def swing_scen(scen):
         at(70, 'qz_lstick "0 1"'); at(73, 'qz_lstick "0 0"')
         at(130, 'qz_rtrigger 1'); at(230, 'qz_rtrigger 0')
         T = 260
+    elif scen == 'useclimb':
+        # HAND OVER HAND (owner 11-12 14:11): snag the pit's ceiling, step off the lip (t70), hang; the off hand closes on
+        # the rope (its grip, a grab event) at t110 and pulls down to t125, lets go; the whip hand's Use held t140 and the
+        # whip hand pulled down to t155 (the crack's rest pose overridden), let go; again
+        at(0, 'netevent whp_tp 378 512 0')
+        at(5, lpose(13)); at(5, 'qz_ltrigger 1'); at(30, 'qz_ltrigger 0')
+        cracks.append(20)
+        at(70, 'qz_lstick "0 1"'); at(73, 'qz_lstick "0 0"')
+        for base in (110, 180):
+            at(base - 4, 'qz_lhand "-0.10 1.75 -0.25 60 0 0"')
+            at(base, 'netevent rsqwp_grab 1 1')
+            for k in range(1, 16): at(base + k, 'qz_lhand "-0.10 %.3f -0.25 60 0 0"' % (1.75 - 0.03 * k))
+            at(base + 16, 'netevent rsqwp_grab 1 0')
+            at(base + 26, '+use')
+            at(base + 42, '-use')
+        T = 260
     if os.environ.get('CHASE'): at(int(os.environ['CHASE']), 'chase')    # CHASE=n: the chase camera from tic n (frames; after the aim)
     out = []
     for t in range(T):
@@ -405,6 +421,11 @@ def swing_scen(scen):
         p = R
         for c in cracks:
             if t >= c: p = key(t, [(k[0] + c,) + k[1:] for k in SWING])
+        if scen == 'useclimb':
+            for base in (110, 180):
+                if base + 24 <= t <= base + 44:
+                    k = min(15, max(0, t - base - 26))
+                    p = (0.10, 1.75 - 0.03 * k, -0.25, 60, 0)
         out.append(pose(p) + '; wait 1;')
     return out
 

@@ -576,6 +576,7 @@ extend class RSQWP_Core
 
 	bool jumpWas[MAXPLAYERS], gripWas[MAXPLAYERS], offFreeWas[MAXPLAYERS];
 	bool jumpEdge[MAXPLAYERS], gripEdge[MAXPLAYERS];
+	bool useWas[MAXPLAYERS], useGrab[MAXPLAYERS];   // the whip hand's Use hold on the rope (SwingInput)
 
 	static bool StartsOn() { return RSQWP_Util.Flag("rsqwp_swing_grip", true) || RSQWP_Util.Flag("rsqwp_swing_jump", true); }
 
@@ -588,6 +589,18 @@ extend class RSQWP_Core
 		jumpEdge[pn] = j && !jumpWas[pn];
 		gripEdge[pn] = g && !gripWas[pn];
 		jumpWas[pn] = j; gripWas[pn] = g;
+		// USE ON THE WHIP HAND CLIMBS (owner 14:11, climb.zs HandFree): while a rope is out, Use held is the whip hand's
+		// hold on the rope -- pull that hand back or down to climb, as the off hand's grip does: off hand, whip hand, off
+		// hand, hand over hand. Its press and release go through Grab like a grip key's (core.zs), so a key's own hold and a
+		// touch hold are left alone.
+		bool u = pmo.player && (pmo.player.cmd.buttons & BT_USE);
+		bool roped = false;
+		for (int k = 0; k < 2; k++) { let h = hooks[pn * 2 + k]; if (h && h.phase == RSQWP_Hook.PH_LATCH) roped = true; }
+		bool whipHand = pmo.player && pmo.player.ReadyWeapon is "RSQWP_WhipWeapon";
+		if (u && !useWas[pn] && roped && whipHand) { useGrab[pn] = true; Grab(pn, 0, true); }
+		if (!u && useGrab[pn]) { useGrab[pn] = false; Grab(pn, 0, false); }
+		if (!roped && useGrab[pn]) { useGrab[pn] = false; Grab(pn, 0, false); }
+		useWas[pn] = u;
 	}
 
 	// OFF HAND FREE WHILE SNAGGED. On (the default): nothing here -- the off hand may take any gun. Off: an aimed swing's

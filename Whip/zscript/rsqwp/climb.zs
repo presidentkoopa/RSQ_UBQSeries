@@ -34,6 +34,11 @@ class RSQWP_Climb
 		let p = pmo.player;
 		Weapon w = hand == 0 ? p.ReadyWeapon : p.OffhandWeapon;
 		if (!w) return true;
+		// THE WHIP'S OWN HAND (owner 2026-11-12 14:11: "once snagged, lets have offhand grab whip and we can pull back with
+		// offhand to climb some. then we can use 'use' on mainhand to climb ... end over end climb on the snagged whip"):
+		// the hand holding the whip's handle is holding the rope, so it climbs (its Use takes the hold, swing.zs SwingInput).
+		// Not for the touch hold (strict): a touch never takes the rope with something in the hand.
+		if (!strict && w is "RSQWP_WhipWeapon") return true;
 		String n = w.GetClassName();
 		n = n.MakeLower();
 		if (n == "rsq_hands")
