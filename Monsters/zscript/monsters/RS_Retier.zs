@@ -928,6 +928,19 @@ class RS_RetierHandler : EventHandler
 		return t;                 // 1-4 (Common, Green, Blue, Purple) and anything else stay
 	}
 
+	// NO FROZEN STATUES (owner 2026-11-12 14:11: "sometimes when i kill an imp it dies as a frozen purple imp"; rig, run
+	// ice0: an RS_CommonImp killed by Ice damage stood as a dark blue statue for good). Ice damage (LegenDoom's Freezing
+	// guns and its freezing blast, this pack's cyan monsters hitting other monsters) on a monster with no ice death of
+	// its own makes the engine freeze it where it stands, and Doom has no shatter to end that. Every monster of this pack
+	// now dies its own death from ice (NOICEDEATH, as Brutal Doom's monsters have). The cyan ones had it already.
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || !a.bIsMonster || a.bNOICEDEATH) return;
+		String cn = a.GetClassName();
+		if (cn.Left(3) ~== "RS_") a.bNOICEDEATH = true;
+	}
+
 	override void WorldLoaded(WorldEvent e)
 	{
 		let mk = ThinkerIterator.Create("RS_LadderMark");
