@@ -94,7 +94,7 @@ user int  rs_score_letters      = 0;      // Letters (owner 11-06): 0 Uniform (t
 user int  rs_score_bonustime    = 35;
 user int  rs_score_scale        = 150;   // "Large" (from 11-03: 100 read too small in the headset)
 user int  rs_score_x            = 50;
-user int  rs_score_y            = 10;
+user int  rs_score_y            = 13;   // owner 11-11 23:56: "lower Score a few units more" (was 10)
 // the settings version (hud.zs Migrate): 1 (11-11) moved a saved Across of 85, the old default, to 50, the new one
 // (the line centred under Gun Bonsai VR's gauges). Any other saved Across is kept.
 user int  rs_score_cfgver       = 0;

@@ -59,10 +59,15 @@ class RS_ScoreHUD : EventHandler
 	static ui void Migrate()
 	{
 		let ver = CVar.FindCVar("rs_score_cfgver");
-		if (!ver || ver.GetInt() >= 1) return;
+		if (!ver || ver.GetInt() >= 2) return;
+		int from = ver.GetInt();
 		let x = CVar.FindCVar("rs_score_x");
-		if (x && x.GetInt() == 85) x.SetInt(50);
-		ver.SetInt(1);
+		if (from < 1 && x && x.GetInt() == 85) x.SetInt(50);
+		// Version 2 (owner 11-11 23:56: "lower Score a few units more"): Down 10 (the old default) becomes 13; any other
+		// saved Down is kept. Between the hand gauges it is 3 units under their middle (GaugeShift keeps the move from 10).
+		let y = CVar.FindCVar("rs_score_y");
+		if (from < 2 && y && y.GetInt() == 10) y.SetInt(13);
+		ver.SetInt(2);
 	}
 
 	override void RenderOverlay(RenderEvent e)
@@ -127,7 +132,7 @@ class RS_ScoreHUD : EventHandler
 		screenwidth *= compressRatio;
 
 		double centerX = SScaledCoord(SUserInt(pln, "rs_score_x", 50), widewidth,    PAD_WIDTH,  widewidth - screenwidth);
-		double centerY = SScaledCoord(SUserInt(pln, "rs_score_y", 10), screenheight, PAD_HEIGHT, 0);
+		double centerY = SScaledCoord(SUserInt(pln, "rs_score_y", 13), screenheight, PAD_HEIGHT, 0);
 		// BETWEEN THE HAND GAUGES (owner 11-11 evening: "score should be centered top middle and down a few units so it
 		// isn't flush with the top edge of screen. neatly between xp bars"): while a gauge is drawn, the score line's middle
 		// sits at the middle of the gauges' band (RSQ_HudService "gauges.top" / "gauges.bottom"); the Down row still moves

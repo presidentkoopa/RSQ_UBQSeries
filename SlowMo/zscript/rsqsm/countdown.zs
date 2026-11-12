@@ -101,7 +101,8 @@ class RSQSM_Countdown : StaticEventHandler
 		// the meter's own formula (Miniboss hud.zs MeterRect), with its Meter Size when RSQ Miniboss is loaded
 		let ms = CVar.GetCVar("rsqmb_bf_hud_size", players[consoleplayer]);
 		double size = ms ? ms.GetFloat() : UCv("rsqsm_cdbar_size", 1.5);
-		double h = sbw * 8.0 / 120.0 * ROWK * clamp(size, 0.5, 2.5) / 1.5;
+		// RSQ (owner 11-11 23:56: the three bars ".3 larger"): + 0.3 at every size, as RSQ Miniboss's MeterRect (BIGGER)
+		double h = sbw * 8.0 / 120.0 * ROWK * (clamp(size, 0.5, 2.5) + 0.3) / 1.5;
 		double gw = min(h * PER, sbw);
 		double lane = ah * 0.32 * clamp(SCv("rsq_ui_hud_scale", 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
 		double room = 2.0 * min(cx - (sx + lane), sx + aw - lane - cx);

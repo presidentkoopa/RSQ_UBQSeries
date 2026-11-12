@@ -60,7 +60,10 @@ extend class RSQMB_Handler
 		double cx, below, sbw;
 		[cx, below, sbw] = ScoreSpot();
 		double per = 112.0 / 11.0 + SKULL + KGAP;     // the row's width per pixel of bar thickness
-		double h = sbw * 8.0 / 120.0 * ROWK * clamp(UCv("rsqmb_bf_hud_size", 1.5), 0.5, 2.5) / 1.5;
+		// RSQ (owner 11-11 23:56: "adrenaline, miniboss, and world slowmo bar, make them .3 larger"): Meter Size + 0.3 at
+		// every setting (the default 1.5 draws as the old 1.8), in code so a saved size grows too. Still never wider than
+		// Score's bar and still clear of the side gauges' lanes (below).
+		double h = sbw * 8.0 / 120.0 * ROWK * (clamp(UCv("rsqmb_bf_hud_size", 1.5), 0.5, 2.5) + BIGGER) / 1.5;
 		double gw = min(h * per, sbw);
 		double lane = ah * 0.32 * clamp(CF('rsq_ui_hud_scale', 1.5), 0.4, 2.5) * 11.0 / 112.0 * 4.0;
 		double room = 2.0 * min(cx - (sx + lane), sx + aw - lane - cx);
@@ -74,6 +77,7 @@ extend class RSQMB_Handler
 	}
 	// the crowned skull: a square SKULL x the bar's thickness, KGAP left of the bar, centred on it
 	const SKULL = 1.6;
+	const BIGGER = 0.3;      // added to Meter Size (owner 11-11); RSQ SlowMo's countdown.zs holds the same number
 	const KGAP = 0.3;
 	const ROWK = 0.8;        // the bar's thickness against Score's bar (8 of 120): smaller than Score
 	static ui double, double, double SkullRect(double x, double y, double h)
