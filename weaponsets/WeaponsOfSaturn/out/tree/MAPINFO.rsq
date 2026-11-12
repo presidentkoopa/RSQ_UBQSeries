@@ -1,5 +1,0 @@
-gameinfo
-{
-	PlayerClasses = "RSQWS_PistolPlayer"
-	AddEventHandlers = "RSVR_HandSync", "RSQ_Handler", "RSR_ReloadHandler", "RSB_Handler", "RSP_Handler", "RSK_M203Handler", "RSQ_Muzzle", "RSQ_HandTone", "RSQ_Start", "RSA_Casings", "RSQ_AmmoHud", "RSQ_Flick", "RSQ_Ballistics", "RSQ_FlashHandler", "RSQ_PlayerRounds", "RSQ_ShotFX", "RSQ_Dual", "RSQ_DualHands", "RSQ_DualKey", "RSQ_ScopeReal", "RSQWS_KickKey"
-}
