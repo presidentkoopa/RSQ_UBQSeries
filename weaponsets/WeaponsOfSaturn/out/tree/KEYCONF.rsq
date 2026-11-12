@@ -1,0 +1,5 @@
+addkeysection "Weapons of Saturn VR" rsqwsvr
+addmenukey "Quick Kick" rsqws_kickkey
+alias rsqws_kickkey "netevent rsqws_kick"
+addmenukey "Dual Wield" rsq_dualkey
+alias rsq_dualkey "netevent rsq_dual"
