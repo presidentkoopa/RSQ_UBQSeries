@@ -449,7 +449,9 @@ extend class RSQMB_Handler
 		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		int shown = -1;
-		for (int h = 1; h >= 0; h--)
+		// THE OFF HAND ONLY (owner 2026-11-12 15:54: "I had wanted the Start Fight card on the inside of the offhand wrist")
+		wcHold[0] = 0;
+		for (int h = 1; h >= 1; h--)
 		{
 			bool pose = want && InnerDot(p, h) >= 0.5 && GazeOff(p, h) <= 45.0;
 			wcHold[h] = pose ? min(wcHold[h] + 1, 100) : 0;

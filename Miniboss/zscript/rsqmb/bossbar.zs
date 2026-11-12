@@ -41,6 +41,7 @@ extend class RSQMB_Handler
 	const BB_MW = 908.0;
 	const BB_MCX = 468.0;
 	const BB_MFOOT = 254.0;
+	const GUARD_SHAKE = 12.0;   // tics GUARD shakes after a blow on the guarded miniboss
 	const BB_LIFT = 110.0;      // raised this many mockup px above Be Quick or Be Dead's foot
 	const BB_EYE_TAN = 0.91;    // RSQ SlowMo's measured eye (downhud.zs EYE_TAN)
 
@@ -223,6 +224,14 @@ extend class RSQMB_Handler
 		return -1;
 	}
 
+	// a Champion colour (graphics/RSQMBC00..16's order) as a HUD colour
+	static ui Color ChampColour(int i)
+	{
+		static const int RGB[] = { 0xB01818, 0xFF3030, 0xFF9020, 0xFFE030, 0x1E9E3A, 0x40F040, 0x40E8E8, 0x3868FF, 0x6A50D8,
+			0xB040E0, 0xFF80B0, 0x505058, 0x9A9AA4, 0xF2F2F2, 0xC08A50, 0xD8DEE6, 0xFFC820 };
+		return RGBc(i >= 0 && i < RGB.Size() ? RGB[i] : 0xC8C8C8);
+	}
+
 	// the console player is DOWN (RSQ SlowMo, by name): Be Quick or Be Dead has the spot
 	static ui bool BBDown()
 	{
@@ -302,8 +311,23 @@ extend class RSQMB_Handler
 		if (guard) BBBar(wh, 186, 90, 540, 30, 4, frac, g1, g2, g3, bbLag, flash, g);
 		else       BBBar(wh, 186, 90, 540, 30, 4, frac, lite, col, deep, bbLag, flash, g);
 
-		// ---- GUARD, silver, over the bar's right end ----
-		if (guard && g >= 0.999) BBWord("GUARD", "MBFS", 706, 94, 22, 1.0, true);
+		// ---- GUARD, silver, over the bar's right end; it SHAKES when a blow on the guarded miniboss is shrugged off (owner
+		// 15:56: "the word GUARD in the healthbar shakes and vibrates when the guarded miniboss is hit ... to help give
+		// feedback"): GUARD_SHAKE tics of a fast jitter that dies away, brighter while it lasts (Photosensitive Mode: brighter,
+		// no jitter) ----
+		if (guard && g >= 0.999)
+		{
+			double jx = 0, jy = 0, lit = 0;
+			int since = b ? now - b.guardHitTic : 999;
+			if (b && b.guardHitTic > 0 && since < GUARD_SHAKE)
+			{
+				double k = 1.0 - (since + e.FracTic) / GUARD_SHAKE;
+				lit = k;
+				if (!photo) { jx = sin(t * 97.0) * 5.0 * k + sin(t * 151.0) * 2.0 * k; jy = cos(t * 113.0) * 2.5 * k; }
+			}
+			BBWord("GUARD", "MBFS", 706 + jx, 94 + jy, 22, 1.0, true);
+			if (lit > 0.01) BBWord("GUARD", "MBFG", 706 + jx, 94 + jy, 22, lit * 0.8, true);
+		}
 
 		// ---- its head, its name, X2 and the clock: they come in with it ----
 		if (mbIn && mb)
@@ -355,6 +379,9 @@ extend class RSQMB_Handler
 			if (alive && a.health > bbThrMax[i]) bbThrMax[i] = a.health;
 			double hf = alive ? a.health / max(1.0, bbThrMax[i]) : 0.0;
 			if (fresh && a) bbThrIc[i] = ChampIconOf(a);
+			// IN ITS OWN COLOUR (owner 15:56: "those bars will be the color of the boosted legendary champion thrall"): its
+			// Champion colour, else the colour it landed in
+			if (bbThrIc[i] >= 0) tc = ChampColour(bbThrIc[i]);
 			double tx = x0 + i * 190;
 			BBBar(wh, tx, 238, 150, 16, 3, hf * fillIn, Mix(tc, Color(255, 255, 255, 255), 0.4), tc, Mix(tc, Color(255, 0, 0, 0), 0.25), 0, 0, 1.0, pop);
 			// the pair, side by side and centred over its bar (the mockup: crosshair 52, the icon 48, 112 in all)

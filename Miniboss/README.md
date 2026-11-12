@@ -75,7 +75,7 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 - **Calling the fight in:** hold a watch check with either hand (the back of the wrist turned to your face, held still)
   and press **Use** while it holds, or a moment after. **Call It In: Watch Check + Use** on the page switches this off;
   the fight still comes by itself 60 s after the meter is full (**Arrives By Itself**).
-- **Or from the inside of your wrist.** Turn the inside of either wrist to your face and look at it: a card lies along it.
+- **Or from the inside of your off-hand wrist.** Turn the inside of your off-hand wrist to your face and look at it: a card lies along it.
   Once the meter is full it is gold, **START (skull) FIGHT?**, and **Use** calls the fight in at once: none of the rules
   below hold it back (only a map with no monster types, or no room to land, can). Until the meter is full, or while a
   fight is running, it is grey: **FIGHT (skull) NOT READY**. **Inner-Wrist Card: Start Fight?** on the page switches it off. *Rig only, not
@@ -193,6 +193,13 @@ thrall has a small bar of its own with its crosshair and its Champion power icon
 the miniboss lands its bar fills over three seconds while an LED clock beside it counts down from 03:00; until the
 clock runs out nobody in the encounter moves and nobody can be hurt. The same clock shows how long a window stays open
 after a thrall dies.
+
+Each thrall's bar is in its own Champion colour. Shoot the miniboss while it is guarded and `GUARD` on its bar shakes
+and flashes gold, so you know the hit landed and did nothing.
+
+![The miniboss bar on the rig, charging: grey bar, GUARD, X3 and the LED clock counting down, five thrall bars with their crosshair and Champion icon](docs/readme/rig_bar_charge.jpg)
+
+![The miniboss bar on the rig after the charge: thrall bars in their Champion colours, GUARD flashing on a blocked hit](docs/readme/rig_bar_guard_hit.jpg)
 
 ![Shield up (mockup from before the shield icon went): grey segments, "GUARD!" over the miniboss, "TARGET!" over each thrall, grey Xs (design mockup)](docs/readme/mock_shield_up.jpg)
 
@@ -393,6 +400,7 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, runs `champ4`, `mb9`, with Champions' Legendoom Compatibility, Dormant and Booster on) | Thralls are real Champions (LegenDoom legendaries that Champions turns into Champions): 5 thralls, 5 different powers; a thrall that does not fit tries the spots round its own; the clock only during the charge; the bar raised; thrall bars in their Champion colours; GUARD lit on blocked hits. The Start Fight card on the off-hand wrist only: loads, not shown |
 | **rig only, not headset-confirmed** (2026-11-12, run `bbar6`; called in by console) | The miniboss bar moved to Be Quick or Be Dead's place and size, and drawn as the mockup: skull and crosshair, gold name, GUARD in silver, X3, the clock counting down, thrall bars with their crosshair and Champion icon. On the rig at HUD size 11 the status bar's health and armour numbers sit over the thrall row |
 | **rig only, not headset-confirmed** (2026-11-12, runs `bbar3`, `bbar5`; called in by console) | The miniboss bar: the empty bar first, thrall bars with their icon pairs, the head, name, GUARD on a grey bar charging, X2, the LED clock counting down, then the bar in its colour and the clock on a window. During the charge the thralls stood still and the player took no damage. Not seen: the sliver's first frames, the white flash, the trail, Photosensitive Mode, the bar without RSQ VisualRewards or RSQ SlowMo loaded |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | Tier-ups climb in strength: a Red miniboss losing a life goes to Abyss, then Black; a missed window takes it to White and Cyan thralls to FireBlu. A Black EX lands in its own colour and goes to White when it loses a life. |

@@ -110,6 +110,7 @@ class RSQMB_Boss : Thinker
 	int    wordState;            // the words shown (fight.zs WordsStep), -9 re-send
 	int    glowSent, glowTic;    // the room's glow sent last (fight.zs RoomGlow)
 	int    guardTic, xTic;       // the last "GUARD!" word, the last grey X
+	int    guardHitTic;          // the last blow it shrugged off (the HUD bar's GUARD shakes, bossbar.zs)
 	double carry;                // a fraction of a point carried to the next blow (items.zs)
 
 	// COUNTS AS A BOSS (owner 2026-11-03): never the engine's BOSS flag; only the systems the owner picked, each on

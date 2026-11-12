@@ -444,6 +444,7 @@ extend class RSQMB_Handler
 		if (!mb) return;
 		int now = level.maptime;
 		// (a small held word, not the full-size pop -- owner 11-12 14:11; WordsStep lets it go 1 s after the last blocked hit)
+		b.guardHitTic = now;   // the HUD bar's GUARD shakes (bossbar.zs, owner 15:56)
 		if (now - b.guardTic >= 18) { b.guardTic = now; WordHold("GUARD!", RGB_GUARD, 0.5, mb); }
 		if (!fxOn || now - b.xTic < 2) return;
 		b.xTic = now;
