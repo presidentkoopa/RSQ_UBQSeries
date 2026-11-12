@@ -223,3 +223,12 @@ Tabled / parked
 - Rumble Backup through RSQ Accessibility for every mod (queued 11-10).
 - Wheel holster web drawn with Tactical Rig's mirror (later, 11-07).
 - Laser Sight Quest beam stray bright voxels (11-07).
+
+## 18:02 update
+- Done since the pause list: miniboss monsters always full Champions (Override Chance forced for the landing, run
+  force1 with Legendoom Compatibility off); beams in the Champion colour; candle flame drawn (BD 2.0.4p WICK).
+- Owner removed the old BD pk3s from PK3TEST. Sprite-name clashes: parked for a later monster pass.
+- Outstanding now: (1) BD22 Imp vanishes before it throws, (2) rogue voxels.
+- Boxing gloves: owner "prepare to remove entirely, unless you can find a way to integrate them". Proposed: drop the
+  gloves item and model, move Guard onto bare fists, keep Slappers Only as fists only. Waiting on his answer.
+- Champion words: proposed one word per Champions power (see the 18:02 reply); nothing built.
