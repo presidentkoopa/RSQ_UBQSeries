@@ -117,6 +117,50 @@ class RSQSM_Down : EventHandler
 	int          spNextId;
 	Array<Actor> cdMon;
 	Array<int>   cdId;
+	// THE BONUS MONSTERS (owner 11-12 05:50: "of the closest 20 monsters lets say 10 have +0.X Sec, but as you kill one,
+	// another is assigned its place so there is always 10"): only THESE (and the target) buy clock time. Chosen in play
+	// (every machine the same), drawn by plate.zs.
+	Array<Actor> bnMon;
+	Array<int>   bnPn;
+	const BONUS_MAX = 10;
+	const BONUS_POOL = 20;
+	const BONUS_REACH = 2048.0;
+	clearscope bool IsBonus(int n, Actor a) { for (int i = 0; i < bnMon.Size(); i++) if (bnMon[i] == a && bnPn[i] == n) return true; return false; }
+	private void BonusStep(int n, PlayerPawn pmo)
+	{
+		int have = 0;
+		for (int i = bnMon.Size() - 1; i >= 0; i--)
+		{
+			if (bnPn[i] != n) continue;
+			let a = bnMon[i];
+			if (!a || a.health <= 0 || IsTarget(a)) { bnMon.Delete(i); bnPn.Delete(i); continue; }
+			have++;
+		}
+		if (have >= BONUS_MAX) return;
+		// the nearest BONUS_POOL living monsters he can see, nearest first
+		Array<Actor> pool; Array<double> pd;
+		let it = BlockThingsIterator.Create(pmo, BONUS_REACH);
+		while (it.Next())
+		{
+			let a = it.thing;
+			if (!a || a.health <= 0 || !IsFoe(a) || a.bDORMANT || IsTarget(a) || IsBonus(n, a)) continue;
+			double d = pmo.Distance3D(a);
+			if (d > BONUS_REACH || !pmo.CheckSight(a, SF_IGNOREVISIBILITY)) continue;
+			int at = pd.Size();
+			while (at > 0 && pd[at - 1] > d) at--;
+			if (at >= BONUS_POOL) continue;
+			pool.Insert(at, a); pd.Insert(at, d);
+			if (pool.Size() > BONUS_POOL) { pool.Pop(); pd.Pop(); }
+		}
+		while (have < BONUS_MAX && pool.Size() > 0)
+		{
+			int k = random[RSQSMDn](0, int(pool.Size()) - 1);
+			bnMon.Push(pool[k]); bnPn.Push(n);
+			Log(String.Format("player %d bonus monster %d of %d: %s (%s)", n, have + 1, BONUS_MAX, pool[k].GetClassName(), WorthLabel(pool[k])));
+			pool.Delete(k); pd.Delete(k);
+			have++;
+		}
+	}
 	Array<int>   tHurt;                                   // 1: he has damaged this target in this DOWN (a target swapped out for another actor then counts as his kill)
 	Array<int>   tChWait;                                 // 1: a real champion whose colour token Champions has not given yet
 	// the killer swapped for a real Champion copy (owner 11-07 11:1x): the map's monster that downed him (not a champion,
@@ -246,7 +290,7 @@ class RSQSM_Down : EventHandler
 			downOn[n] = false; downStart[n] = 0; clk[n] = 0; pool[n] = 0; owed[n] = 0; beatNext[n] = 0; beatN[n] = 0; held[n] = false;
 			endTic[n] = 0; endHow[n] = 0; cOn[n] = false; invulUntil[n] = 0; bankHp[n] = 0; bankAr[n] = 0; livesSeen[n] = -1;
 		}
-		tMon.Clear(); tPn.Clear(); tIcon.Clear(); tSpawned.Clear(); tDead.Clear(); tCol.Clear(); tBorn.Clear(); tDeadTic.Clear(); tName.Clear(); tHurt.Clear();
+		tMon.Clear(); tPn.Clear(); tIcon.Clear(); tSpawned.Clear(); tDead.Clear(); tCol.Clear(); tBorn.Clear(); tDeadTic.Clear(); tName.Clear(); tHurt.Clear(); bnMon.Clear(); bnPn.Clear();
 		bMon.Clear(); bSX.Clear(); bSY.Clear(); bHp.Clear(); bBright.Clear(); bOwn.Clear();
 		spPn.Clear(); spTries.Clear(); spIcon.Clear(); spCls.Clear();
 		spId.Clear(); spHave.Clear(); spRolls.Clear(); spX.Clear(); spY.Clear(); spZ.Clear(); spAng.Clear(); spWhy.Clear();
@@ -329,6 +373,8 @@ class RSQSM_Down : EventHandler
 			}
 			if (pmo.health <= 0 || players[n].playerstate == PST_DEAD) CrouchRestore(n, "he is dead");
 			else Crouch(n, pmo, downOn[n]);
+			if (downOn[n] && (level.maptime + n) % 6 == 0) BonusStep(n, pmo);
+			else if (!downOn[n] && bnMon.Size()) { for (int bi = bnMon.Size() - 1; bi >= 0; bi--) if (bnPn[bi] == n) { bnMon.Delete(bi); bnPn.Delete(bi); } }
 			Hold(n, Armed(n));
 			hpSeen[n] = pmo.health;
 		}
@@ -572,6 +618,8 @@ class RSQSM_Down : EventHandler
 		int n = PlayerOf(e.DamageSource);
 		if (n < 0 || !downOn[n]) return;
 		for (int i = 0; i < tMon.Size(); i++) if (tMon[i] == t && tPn[i] == n) tHurt[i] = 1;
+		// only his target and his bonus monsters buy time (owner 11-12 05:50)
+		if (!IsTarget(t) && !IsBonus(n, t)) return;
 		// THE TIME BOUGHT: the damage that landed (never more than the health it had) as a share of its spawn health
 		int eff = t.health > 0 ? e.Damage : max(0, e.Damage + t.health);
 		int sh = max(1, t.GetSpawnHealth());

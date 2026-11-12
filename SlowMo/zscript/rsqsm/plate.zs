@@ -53,6 +53,7 @@ class RSQSM_TMark play
 	double eAng;                // the edge arrows' direction on the screen (degrees, 0 right, 90 up), round the eased gaze
 	Actor xhair;
 	Actor tF[6], tC[6], tL[6];
+	Actor fly[3];               // the fly-in's three copies
 	String word;                // the word held over it (RSQ VisualRewards): TARGET, or a bonus monster's "+1 SEC"
 }
 
@@ -63,7 +64,6 @@ class RSQSM_Plate play
 	bool gSet;
 	Array<RSQSM_TMark> marks;
 	Array<RSQSM_TMark> bonus;  // the other monsters in sight: a small white crosshair and what a whole one is worth (BonusTick)
-	int bonusScan;
 	Vector3 r, u, nrm, eye;
 	double pYaw, pTilt;
 
@@ -84,13 +84,11 @@ class RSQSM_Plate play
 	// correct one is labelled TARGET, other enemies can be labelled \"+0.5 sec\" ... so the player could fight and get their
 	// timer higher before getting their revenge") --------------------------------------------------------------------------
 	// A word held over the monster by RSQ VisualRewards (RSQVR_Service "word.hold" / "word.clear", by name; without it no
-	// labels, the crosshairs still show). The target: TARGET in its own colour. Every other monster in sight, the nearest
-	// BONUS_MAX: a small white crosshair and what a whole one of it adds to the clock (down.zs SecsPerMonster, the same
-	// number its hits pay out as "+0.4s"). The trail's chevrons and the edge arrows stay the target's alone: they are
+	// labels, the crosshairs still show). The target: TARGET in its own colour. The BONUS monsters (down.zs BonusStep:
+	// ten of the nearest twenty in sight, a new one assigned as each dies): a small white crosshair, already whole, faded
+	// in, and what a whole one of it adds to the clock (down.zs SecsPerMonster). Only they and the target buy time. The trail's chevrons and the edge arrows stay the target's alone: they are
 	// the way to it. Code only: loads, not run on the rig, not headset-confirmed.
-	const BONUS_MAX = 4;
-	const BONUS_REACH = 1024.0;
-	const BONUS_EVERY = 8;
+	const BONUS_FADE = 10;
 	const BONUS_COL = 0xFFFFFF;
 	const TARGET_WORD = "TARGET";
 	static void Word(Actor a, String txt, int rgb, double size)
@@ -108,39 +106,24 @@ class RSQSM_Plate play
 	void BonusTick(RSQSM_Down d)
 	{
 		let pmo = players[pn].mo;
-		if (level.maptime >= bonusScan)
+		// the bonus monsters are down.zs' (BonusStep: ten of the nearest twenty, a new one as each dies); here they are drawn
+		for (int i = bonus.Size() - 1; i >= 0; i--)
 		{
-			bonusScan = level.maptime + BONUS_EVERY;
-			Array<Actor> best; Array<double> bd;
-			let it = BlockThingsIterator.Create(pmo, BONUS_REACH);
-			while (it.Next())
-			{
-				let a = it.thing;
-				if (!a || a.health <= 0 || !RSQSM_Down.IsFoe(a) || d.IsTarget(a) || a.bDORMANT || a.bINVISIBLE) continue;
-				double ds = pmo.Distance3D(a);
-				if (ds > BONUS_REACH || !pmo.CheckSight(a, SF_IGNOREVISIBILITY)) continue;
-				int at = bd.Size();
-				while (at > 0 && bd[at - 1] > ds) at--;
-				if (at >= BONUS_MAX) continue;
-				best.Insert(at, a); bd.Insert(at, ds);
-				if (best.Size() > BONUS_MAX) { best.Pop(); bd.Pop(); }
-			}
-			for (int i = bonus.Size() - 1; i >= 0; i--)
-			{
-				let m = bonus[i];
-				if (m.mon && m.mon.health > 0 && best.Find(m.mon) != best.Size()) continue;
-				DropMark(m); bonus.Delete(i);
-			}
-			for (int i = 0; i < best.Size(); i++)
-			{
-				bool have = false;
-				for (int j = 0; j < bonus.Size(); j++) if (bonus[j].mon == best[i]) { have = true; break; }
-				if (have) continue;
-				let m = RSQSM_TMark(new("RSQSM_TMark"));
-				m.mon = best[i]; m.icon = 1; m.col = BONUS_COL; m.word = RSQSM_Down.WorthLabel(best[i]);
-				bonus.Push(m);
-				Word(m.mon, m.word, BONUS_COL, 0.6);
-			}
+			let m = bonus[i];
+			if (m.mon && m.mon.health > 0 && d.IsBonus(pn, m.mon)) continue;
+			DropMark(m); bonus.Delete(i);
+		}
+		for (int i = 0; i < d.bnMon.Size(); i++)
+		{
+			if (d.bnPn[i] != pn || !d.bnMon[i]) continue;
+			bool have = false;
+			for (int j = 0; j < bonus.Size(); j++) if (bonus[j].mon == d.bnMon[i]) { have = true; break; }
+			if (have) continue;
+			let m = RSQSM_TMark(new("RSQSM_TMark"));
+			m.mon = d.bnMon[i]; m.icon = 1; m.col = BONUS_COL; m.word = RSQSM_Down.WorthLabel(d.bnMon[i]);
+			m.lockTic = level.maptime;
+			bonus.Push(m);
+			Word(m.mon, m.word, BONUS_COL, 0.6);
 		}
 		Vector3 gaze = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
 		for (int i = bonus.Size() - 1; i >= 0; i--)
@@ -151,16 +134,18 @@ class RSQSM_Plate play
 			Vector3 to = ctr - eye;
 			double dist = max(1.0, to.Length());
 			Vector3 dir = to / dist;
-			if (acos(clamp(dir dot gaze, -1.0, 1.0)) > VIEW_DEG) { Off(m.xhair); continue; }
-			// the locked frame, no assembly, half the target's size and dimmer: it never reads as the target
+			if (acos(clamp(dir dot gaze, -1.0, 1.0)) > VIEW_DEG || !pmo.CheckSight(m.mon, SF_IGNOREVISIBILITY)) { Off(m.xhair); continue; }
+			// already whole (the locked frame, no assembly), FADED IN over BONUS_FADE tics (owner 05:50), half the target's
+			// size and dimmer: it never reads as the target
+			double ba = 0.55 * clamp((level.maptime - m.lockTic) / double(BONUS_FADE), 0.0, 1.0);
 			m.xhair = Need(m.xhair);
 			String tex = String.Format("RSPA%02d%02d", m.icon, ASM_LAST);
 			Skin(m.xhair, tex);
 			double sz = max(40.0, m.mon.height * 0.75);
 			Vector3 p = ctr - dir * (m.mon.radius + 4);
 			PutAt(m.xhair, p, sz, sz, 0);
-			if (grey) { Off(m.xhair); Part(tex, p, sz, 0, m.col, 0.55); }
-			else Shade(m.xhair, m.col, 0.55);
+			if (grey) { Off(m.xhair); Part(tex, p, sz, 0, m.col, ba); }
+			else Shade(m.xhair, m.col, ba);
 		}
 	}
 	void DropMark(RSQSM_TMark m)
@@ -168,6 +153,7 @@ class RSQSM_Plate play
 		if (!m) return;
 		Unword(m.mon, m.word);
 		Kill(m.xhair);
+		for (int k = 0; k < 3; k++) Kill(m.fly[k]);
 		for (int i = 0; i < 6; i++) { Kill(m.tF[i]); Kill(m.tC[i]); Kill(m.tL[i]); }
 	}
 	static void Skin(Actor a, String tex) { if (a) a.A_ChangeModel("", 0, "", "", 0, "", tex); }
@@ -237,6 +223,8 @@ class RSQSM_Plate play
 	const VIEW_DEG = 38.0;     // in view: within this of the gaze, and in sight
 	const TRAIL_DEG = 75.0;    // within this the trail takes over from the edge arrows (owner 07:12, "about 75 degrees")
 	const TRAIL_FADE = 10;     // tics the trail takes to fade once the crosshair has assembled ("fades out": my number, ~0.3 s)
+	const FLY_TICS = 9;        // the fly-in: tics from offscreen to the target
+	const FLY_OUT = 6.0;       // and from how many reticle sizes out
 	const ASM_LAST = 16;       // the assembly's last frame (the locked icon)
 	const TRAIL_FR = 24;
 	const TRAIL_H = 6.0;       // a trail chevron's height in the world (its 22 cells; 16 wide): ~8.6 degrees at 40 units, the edge chevrons' 88 px
@@ -294,7 +282,7 @@ class RSQSM_Plate play
 			if (want && !m.shown) m.lockTic = level.maptime;
 			m.shown = want;
 			if (want) Crosshair(m, ctr, dir, m.dead ? 1.0 - (level.maptime - m.deadTic) / 6.0 : 1.0);
-			else Off(m.xhair);
+			else { Off(m.xhair); for (int k = 0; k < 3; k++) Off(m.fly[k]); }
 			// the edge arrows or the trail
 			int mode = m.dead ? 0 : (off > TRAIL_DEG ? 1 : 2);
 			if (mode != m.mode)
@@ -306,7 +294,7 @@ class RSQSM_Plate play
 			if (mode == 1) Edge(m, dir);
 			// the trail, until the crosshair has assembled on it; then it fades out (owner 07:47)
 			double ta = 1.0;
-			if (m.shown && !m.dead) ta = clamp(1.0 - (level.maptime - (m.lockTic + ASM_LAST)) / double(TRAIL_FADE), 0.0, 1.0);
+			if (m.shown && !m.dead) ta = clamp(1.0 - (level.maptime - (m.lockTic + ASM_LAST + FLY_TICS)) / double(TRAIL_FADE), 0.0, 1.0);
 			if (mode == 2 && ta > 0) Trail(m, ctr, ta); else HideTrail(m);
 		}
 	}
@@ -315,13 +303,41 @@ class RSQSM_Plate play
 	void Crosshair(RSQSM_TMark m, Vector3 ctr, Vector3 dir, double fade)
 	{
 		m.xhair = Need(m.xhair);
-		int f = min(ASM_LAST, level.maptime - m.lockTic);
+		// DRAWN IN FROM OFFSCREEN, IN THE WORLD ROUND THE TARGET (owner 11-11 16:10, design/PARKED.md, his Predator and
+		// Virtual Cop clips; 11-12 05:50: "crosshairs when down, drawn in from offscreen in the world around the target"):
+		// for FLY_TICS three copies of the reticle come in from FLY_OUT sizes out, 120 degrees apart and turning as they
+		// close (the last third of a turn), fast at first and easing onto the target; when they meet, the assembly's own
+		// frames play as before. Photosensitive Mode: no fly-in. Code only: loads, its look not seen in a frame.
+		int age = level.maptime - m.lockTic;
+		bool fly = fade >= 1.0 && age < FLY_TICS && !RSQSM_A11y.Photo();
+		int f = min(ASM_LAST, max(0, age - (RSQSM_A11y.Photo() ? 0 : FLY_TICS)));
 		if (RSQSM_A11y.Photo() && f >= 11) f = ASM_LAST;     // Photosensitive Mode: no flash ring
 		String tex = String.Format("RSPA%02d%02d", m.icon, f);
 		Skin(m.xhair, tex);
 		// the icon 3/4 of the monster's height across, the frame twice the icon; a fixed size in the world
 		double sz = max(40.0, m.mon.height * 0.75) * 2.0;
 		Vector3 p = ctr - dir * (m.mon.radius + 4);
+		if (fly)
+		{
+			double u01 = age / double(FLY_TICS), ease = 1.0 - (1.0 - u01) * (1.0 - u01);
+			double far = sz * FLY_OUT * (1.0 - ease);
+			String ft = String.Format("RSPA%02d%02d", m.icon, ASM_LAST);
+			Face(p, eye);
+			Vector3 fr = r, fu = u;
+			for (int k = 0; k < 3; k++)
+			{
+				double a = 90.0 + 120.0 * k + 120.0 * (1.0 - ease);
+				Vector3 q = p + fr * (cos(a) * far) + fu * (sin(a) * far);
+				m.fly[k] = Need(m.fly[k]);
+				Skin(m.fly[k], ft);
+				PutAt(m.fly[k], q, sz * 0.6, sz * 0.6, 0);
+				if (grey) { Off(m.fly[k]); Part(ft, q, sz * 0.6, 0, m.col, 0.35 + 0.5 * ease); }
+				else Shade(m.fly[k], m.col, 0.35 + 0.5 * ease);
+			}
+			Off(m.xhair);
+			return;
+		}
+		for (int k = 0; k < 3; k++) Off(m.fly[k]);
 		PutAt(m.xhair, p, sz, sz, 0);
 		if (grey) { Off(m.xhair); Part(tex, p, sz, 0, m.col, clamp(fade, 0.0, 1.0)); return; }
 		Shade(m.xhair, m.col, clamp(fade, 0.0, 1.0));

@@ -27,8 +27,9 @@ your revenge.
   names what slowed the world.
 - **DOWN (optional).** A monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you sink
   to the floor, and you have 9 seconds to kill the monster marked TARGET and get up. Go down again before spending a
-  Score life and the clock starts at 6 seconds, then 3. Damage to any monster adds time; the others in sight show what
-  a whole one is worth: +0.25 SEC small, +0.5 SEC bigger (*rig only 2026-11-12: three DOWNs in a row started at 9, 6 and 3 s and each ended on the one kill; the labels were not seen in a frame*).
+  Score life and the clock starts at 6 seconds, then 3. Ten of the nearest monsters carry a small crosshair and +0.25 SEC or +0.5 SEC:
+  damage to those (and to the target) adds time, and as one dies another takes its place. The target's crosshair flies
+  in from offscreen. What a whole one is worth: +0.25 SEC small, +0.5 SEC bigger (*rig only 2026-11-12: three DOWNs in a row started at 9, 6 and 3 s and each ended on the one kill; the labels were not seen in a frame*).
 
 ---
 

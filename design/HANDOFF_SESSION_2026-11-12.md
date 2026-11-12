@@ -118,3 +118,11 @@ SlowMo, on `main`. Loads on the full order only; not run on the rig, not headset
 - Asked 05:38: the fly-in crosshairs (Predator / Virtual Cop) are parked in design/PARKED.md with his two clips in
   design/refs/crosshair_flyin/. Crosshairs and chevrons are drawn only by SlowMo's DOWN today.
 - 05:44 (owner): the fight card needs the FULL METER again. My reading of "without restrictions" as "ignore the meter too" was wrong; only the guardrails are skipped.
+
+## 05:50 (owner's numbers and the DOWN marks)
+
+- BD22 VR 2.0.4l drop weights (Common / Uncommon / Rare / Epic): thralls 85/12/2/1, 75/20/3/2, 65/35/6/4 by tier;
+  the miniboss 50/30/15/5 to start (past the first tier: 2.0.4k's easing, my numbers).
+- DOWN: the target's crosshair flies in from offscreen (three copies closing over 9 tics, then the assembly; the PARKED
+  Predator / Virtual Cop note, for DOWN only). Bonus monsters: ten of the nearest twenty in sight, chosen in play, a new
+  one as each dies; ONLY they and the target buy clock time now. Their crosshairs are whole and fade in.
