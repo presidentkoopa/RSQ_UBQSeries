@@ -318,6 +318,7 @@ extend class RSQMB_Handler
 				m.lastX = p.pos.x; m.lastY = p.pos.y;
 				if (dx * dx + dy * dy >= 96.0 * 96.0) Fill(m, 2, "time");
 			}
+			if (pn == consoleplayer) WristCard(p, m);
 			if (!m.ready) continue;
 			// the telegraph: the glow's heartbeat (lub-dub) while it waits
 			if (!BfBusy())
@@ -385,11 +386,96 @@ extend class RSQMB_Handler
 		bool use = (p.player.cmd.buttons & BT_USE) != 0;
 		bool edge = use && !m.prevUse;
 		m.prevUse = use;
+		if (debug && edge) Console.Printf("RSQMB call-in: Use pressed t%d, a check held %d tics ago (grace %d)", now, m.watchTic > 0 ? now + 1 - m.watchTic : -1, WATCH_GRACE);
 		if (edge && m.watchTic > 0 && now + 1 - m.watchTic <= WATCH_GRACE)
 		{
 			EventHandler.SendNetworkEvent("rsqmb_callin");
 			m.watchTic = 0;
 		}
+	}
+
+	// ---- THE INNER-WRIST CARD (owner 2026-11-12 05:06: "We need an mainhand / offhand inner watch card (inside of wrist)
+	// that was Start (icon) Fight? So when we offhand inner wrist check we can Use to call in miniboss fight. current call
+	// in method does not work. And the icon will be our Miniboss icon, for now") ---------------------------------------
+	// Turn the INSIDE of either wrist to your face and look at it: a card stands over it, START (the crowned skull)
+	// FIGHT? in gold while a Bossfight is ready to call, FIGHT (skull) NOT READY in grey while the meter is still filling
+	// or it is already called. With the gold card up, Use calls the Bossfight in (the same call as the watch check + Use,
+	// which stays). The pose: the inner wrist's face within 60 degrees of square to your eyes (the back-of-wrist watch
+	// check turned over: RSQ Gun Cards' FaceDot, negated), the wrist within 45 degrees of your gaze, held WC_HOLD tics.
+	// One textured quad in the world (a VisualThinker, as the set pieces' effects), this machine only. Inner-Wrist Card
+	// (rsqmb_wristcard, user, on). Rig only for the pose and the card; not headset-confirmed.
+	const WC_HOLD = 4;
+	const WC_WIDE = 6.0;        // the card's width, map units (about 18 cm)
+	transient RSQMB_Fx wcQuad;
+	transient int wcHold[2];
+	transient double wcAlpha;
+	transient int wcHand;
+	static double InnerDot(PlayerPawn pmo, int hand)
+	{
+		if (!pmo.OverrideAttackPosDir || !pmo.player) return -1;
+		double y = ((hand == 1) ? pmo.OffhandAngle : pmo.AttackAngle) + 90;
+		double p = (hand == 1) ? pmo.OffhandPitch : pmo.AttackPitch;
+		Vector3 f = (cos(p) * cos(y), cos(p) * sin(y), sin(p));
+		Vector3 r0 = (sin(y), -cos(y), 0);
+		Vector3 u0 = r0 cross f;
+		double rl = Actor.Normalize180(hand == 1 ? pmo.OffhandRoll : pmo.AttackRoll);
+		double b = RSQMB_GPose.IsLeft(hand) ? rl : -rl;
+		Vector3 n = -(r0 * cos(b) + u0 * sin(b));
+		Vector3 to = (pmo.pos.xy, pmo.player.viewz) - ((hand == 1) ? pmo.OffhandPos : pmo.AttackPos);
+		to.z *= level.pixelstretch;
+		double d = to.Length();
+		return d > 0.01 ? (n dot to) / d : -1;
+	}
+	static double GazeOff(PlayerPawn pmo, int hand)
+	{
+		Vector3 to = ((hand == 1) ? pmo.OffhandPos : pmo.AttackPos) - (pmo.pos.xy, pmo.player.viewz);
+		to.z *= level.pixelstretch;
+		double d = to.Length();
+		if (d < 0.01) return 0;
+		Vector3 look = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
+		return acos(clamp((to / d) dot look, -1.0, 1.0));
+	}
+	void WristCard(PlayerPawn p, RSQMB_Meter m)
+	{
+		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
+		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
+		int shown = -1;
+		for (int h = 1; h >= 0; h--)
+		{
+			bool pose = want && InnerDot(p, h) >= 0.5 && GazeOff(p, h) <= 45.0;
+			wcHold[h] = pose ? min(wcHold[h] + 1, 100) : 0;
+			if (wcHold[h] >= WC_HOLD) shown = h;
+		}
+		if (debug && level.maptime % 35 == 0)
+			Console.Printf("RSQMB wrist card: inner wrist main %.2f off %.2f, gaze %.0f / %.0f degrees, held %d / %d, meter %s", InnerDot(p, 0), InnerDot(p, 1), GazeOff(p, 0), GazeOff(p, 1), wcHold[0], wcHold[1], m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
+		if (shown >= 0) wcHand = shown;
+		wcAlpha = clamp(wcAlpha + (shown >= 0 ? 0.25 : -0.25), 0.0, 1.0);
+		bool gold = m.ready && !m.called;
+		if (wcAlpha <= 0) { if (wcQuad) wcQuad.Alpha = 0; return; }
+		TextureID tx = TexMan.CheckForTexture(gold ? "RSQMBWC1" : "RSQMBWC0", TexMan.Type_Any);
+		if (!tx.IsValid()) return;
+		int tw, th; [tw, th] = TexMan.GetSize(tx);
+		Vector3 hp = wcHand == 1 ? p.OffhandPos : p.AttackPos;
+		Vector3 eye = (p.pos.xy, p.player.viewz);
+		Vector3 to = eye - hp;
+		double d = to.Length();
+		Vector3 at = hp + (d > 0.01 ? to / d : (0, 0, 1)) * 3.0 + (0, 0, 4.0);     // just off the wrist toward your eyes, above it
+		double sc = WC_WIDE / max(1, tw);
+		if (!wcQuad)
+		{
+			wcQuad = RSQMB_Fx(VisualThinker.Spawn("RSQMB_Fx", tx, at, (0, 0, 0), 0, SPF_FULLBRIGHT, 0, (sc, sc), (0, 0), STYLE_Translucent));
+			if (!wcQuad) return;
+			wcQuad.ChangeStatNum(RSQMB_Fx.STAT_FX);
+			wcQuad.key = -2;
+			wcQuad.Put(at, at);
+		}
+		if (wcQuad.Texture != tx) wcQuad.Texture = tx;
+		wcQuad.SetRenderStyle(STYLE_Translucent);
+		wcQuad.Scale = (sc, sc);
+		wcQuad.Alpha = wcAlpha;
+		wcQuad.Put(at, wcQuad.Pos);
+		// the gold card up: Use calls it in (CallInput reads watchTic, below in the same tic)
+		if (gold && shown >= 0) m.watchTic = level.maptime + 1;
 	}
 
 	void CallIn(int pn)

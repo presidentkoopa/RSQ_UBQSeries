@@ -56,3 +56,4 @@ user   bool   rsqmb_fx            = true;   // links, invulnerability flames and
 user   int    rsqmb_fx_density    = 0;      // Effects Density: 0 Low (Quest-safe), 1 Medium, 2 High (flames, the cap on effects drawn; links are always the original's 30 beads)
 user   float  rsqmb_fx_range      = 4000;   // FX drawn only within this distance of you
 server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires
+user bool     rsqmb_wristcard     = true;   // Inner-Wrist Card (owner 11-12): the inside of a wrist turned to your face shows START (skull) FIGHT?; with it up, Use calls the Bossfight in
