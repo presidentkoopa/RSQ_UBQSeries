@@ -232,6 +232,21 @@ class RSQGC_GunCard : EventHandler
 	}
 
 	static double cv(string n, double f) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : f; }
+	// CARDS ALIVE (owner 2026-11-11 23:56: "IF we could give them life like our RSQ bars I would want that as a toggle,
+	// default on"; 11-12 00:44, his pick: the animated look). Cards Alive (rsqgc_alive, on): every card breathes -- its
+	// opacity eases between 82% and 100% of Card Opacity once every 2 s, the off hand's card half a beat behind the main
+	// hand's, as the SlowMo bars' edge breathes. Every card takes its opacity from here (the hand-drawn cards, the watch
+	// and status cards, the cards in the world), so they breathe together. A slow ease, never a flash. Off: steady.
+	// Seen only where the Material shows opacity (Glass, Glow, No Background); a Solid card stays solid.
+	// CODE ONLY, NOT COMPILED OR SHOWN (owner 11-12 01:19: no rig runs).
+	static double CardAlpha(int hand)
+	{
+		double a = cv("rsqgc_alpha", 0.85);
+		let c = CVar.FindCVar("rsqgc_alive");
+		if (c && !c.GetBool()) return a;
+		double ph = (level.maptime % 70) * (360.0 / 70.0) + (hand ? 180.0 : 0.0);
+		return a * (0.91 + 0.09 * sin(ph));
+	}
 	static int ci(string n, int f) { let c = CVar.FindCVar(n); return c ? c.GetInt() : f; }
 
 	// ---- what the card says ----------------------------------------------------------------------------
@@ -879,7 +894,7 @@ class RSQGC_GunCard : EventHandler
 				wc.Fill(pmo, w, CardColour(p, w), self, other[hand], shows);
 				double sSide, sUp, sIn;
 				[sSide, sUp, sIn] = RSQGC_Spots.SpotFor(w.GetClassName());   // this gun's spot (spots.zs)
-				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : sUp, wantFull ? WatchNudge(false) : sSide, mShow[hand] * cv("rsqgc_alpha", 0.85), wantFull ? 0 : sIn);
+				wc.Place(pmo, cv("rsqgc_world_scale", 1.4), wantFull ? WatchNudge(true) : sUp, wantFull ? WatchNudge(false) : sSide, mShow[hand] * CardAlpha(hand), wantFull ? 0 : sIn);
 				continue;
 			}
 			World(hand).Hide();
@@ -925,7 +940,7 @@ class RSQGC_GunCard : EventHandler
 		let wc = World(hand);
 		if (!wc.Shown() || !wc.full || !wc.status) { wc.Show(pmo.pos, true); wc.status = true; }
 		wc.FillStatus(pmo, 0x8A8A8A, self);
-		wc.Place(pmo, cv("rsqgc_world_scale", 1.4), WatchNudge(true), WatchNudge(false), mShow[hand] * cv("rsqgc_alpha", 0.85), 0);
+		wc.Place(pmo, cv("rsqgc_world_scale", 1.4), WatchNudge(true), WatchNudge(false), mShow[hand] * CardAlpha(hand), 0);
 	}
 
 	// ---- the watch card ---------------------------------------------------------------------------------------
@@ -955,7 +970,7 @@ class RSQGC_GunCard : EventHandler
 			if (isItem) c.BuildItem(pmo, w, CardColour(p, w), self, physLeft);
 			else c.Build(pmo, hand, w, CardColour(p, w), self, shows);
 		}
-		c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
+		c.Sync(p, owner, mShow[hand] * CardAlpha(hand), WatchNudge(true), self);
 	}
 
 	// WHICH WAY UP (2026-11-02, owner in the headset: "I look at the back of my wrist, not my pulse ... the card is upside
@@ -1006,7 +1021,7 @@ class RSQGC_GunCard : EventHandler
 			c.sig = sig; c.mir = mir; c.rot = rot; c.quality = q;
 			c.BuildStatus(pmo, hand, 0x8A8A8A, self);
 		}
-		c.Sync(p, owner, mShow[hand] * cv("rsqgc_alpha", 0.85), WatchNudge(true), self);
+		c.Sync(p, owner, mShow[hand] * CardAlpha(hand), WatchNudge(true), self);
 	}
 
 	// ---- the small card ---------------------------------------------------------------------------------------
@@ -1014,7 +1029,7 @@ class RSQGC_GunCard : EventHandler
 	{
 		bool mir = Mirrored(p, hand);
 		int base = L_FIRST + hand * PER_HAND;
-		double alpha = mShow[hand] * cv("rsqgc_alpha", 0.85);
+		double alpha = mShow[hand] * CardAlpha(hand);
 
 		int loaded = Loaded(w);
 		// the magazine big, the reserve small under it (owner 02:47); on a both-guns card the small row is the other gun

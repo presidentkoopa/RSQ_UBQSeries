@@ -200,6 +200,31 @@ class RSQUI_A_StatusMenu : RSQUI_StatusMenu
 			Body("No Bond Unlocked", 575, sy + 24, 15, 0xFFE8D8E8);
 			Body("Bond perks unlock later.", 575, sy + 44, 13, 0xFFB8A8C0);
 		}
+		// THE LEGENDARY POWER (owner 2026-11-11 23:56: "the legendoom weapon drop: can we show the effect somewhere in
+		// GBOVR screens? we used to have WeaponBond but we never built out that system"): where the hidden WEAPON BOND
+		// block was drawn, a gun that carries a LegenDoom power shows it -- a rule in its rarity colour, LEGENDARY POWER,
+		// the power's name (LegenDoom's own title) in that colour and the rarity word. Read through the LegenDoom HUD's
+		// own readers (legendoom.zs: the slot BD22 VR's LD mode answers, the powers the player holds). A gun with no
+		// power, or no LegenDoom: nothing is drawn. CODE ONLY, NOT COMPILED OR SHOWN (owner 11-12 01:19: no rig runs).
+		if (!SHOW_BOND && hd.valid && hd.wpn)
+		{
+			let ld = RSQGB_LDHud(StaticEventHandler.Find("RSQGB_LDHud"));
+			String pw = ld ? ld.PowerFor(ld.SlotOf(hd.wpn)) : "";
+			if (pw != "")
+			{
+				int rr = RSQGB_LDHud.RarityOf(pw);
+				String tt = RSQGB_LDHud.Loc("LD_FX_TITLE_" .. pw);
+				if (tt == "") tt = pw;
+				String rw = RSQGB_LDHud.Rar(rr);
+				rw = rw.MakeUpper();
+				Color rc = RSQGB_LDHud.RarCol(rr, 0);
+				double ly = py + 84;
+				pen.Rect(575, ly, 290, 1, rc, 0.9);
+				Label("LEGENDARY POWER", 575, ly + 6, 10, RSQUI_A_Look.LAVENDER);
+				Body(tt, 575, ly + 24, 15, rc);
+				Body(rw, 865, ly + 24, 13, rc, 2);
+			}
+		}
 	}
 
 	// A scrolling list of a bag's upgrades: name, then the level (gold) -- "Explosive Death  1".
