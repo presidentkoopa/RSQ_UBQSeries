@@ -42,7 +42,8 @@ extend class RSQMB_Handler
 	const BB_MCX = 468.0;
 	const BB_MFOOT = 254.0;
 	const GUARD_SHAKE = 12.0;   // tics GUARD shakes after a blow on the guarded miniboss
-	const BB_LIFT = 110.0;      // raised this many mockup px above Be Quick or Be Dead's foot
+	const BB_LIFT = 110.0;
+	const TB_STEP = 3.0;        // tics per shade on the live miniboss bar (SOTN's boss bar steps about this fast)      // raised this many mockup px above Be Quick or Be Dead's foot
 	const BB_EYE_TAN = 0.91;    // RSQ SlowMo's measured eye (downhud.zs EYE_TAN)
 
 	ui bool   bbWas;
@@ -111,7 +112,7 @@ extend class RSQMB_Handler
 	// the slanted bar at mockup x, y, w, h (leaning 26 degrees about its middle), rim rim: the trail to lag, the fill to frac
 	// (light top, c, deep foot), a white flash over it all; grow scales it across about its middle
 	ui void BBBar(TextureID wh, double mx, double my, double mw, double mh, double rim, double frac, Color top, Color c,
-		Color bot, double lag, double flash, double grow = 1.0, double a = 1.0)
+		Color bot, double lag, double flash, double grow = 1.0, double a = 1.0, bool tube = false)
 	{
 		if (a <= 0) return;
 		int rows = max(4, int(mh / 2.0));
@@ -130,7 +131,16 @@ extend class RSQMB_Handler
 			BBBox(wh, ix, yy, iw, rh + 0.4, well, a);
 			if (lag > frac) BBBox(wh, ix + iw * frac, yy, iw * (min(lag, 1.0) - frac), rh + 0.4, trail, a);
 			double k = (ym - my - rim) / max(1.0, mh - 2 * rim);
-			if (frac > 0.001) BBBox(wh, ix, yy, iw * frac, rh + 0.4, BBGrad(top, c, bot, k), a);
+			Color fc = BBGrad(top, c, bot, k);
+			if (tube)
+			{
+				// THE SOTN GLASS TUBE (the boss bar in Richter's fight, owner 18:26): round across its height, dark at the
+				// edges, a bright streak running its length a little above the middle
+				double hl = (k - 0.3) / 0.13; hl = 1.0 / (1.0 + hl * hl * hl * hl);
+				double ed = abs(k - 0.5) * 2.0; ed *= ed;
+				fc = Mix(Mix(c, Color(255, 0, 0, 0), 0.55 * ed), Color(255, 255, 255, 255), 0.5 * hl);
+			}
+			if (frac > 0.001) BBBox(wh, ix, yy, iw * frac, rh + 0.4, fc, a);
 			if (flash > 0.01) BBBox(wh, ix, yy, iw, rh + 0.4, Color(255, 255, 255, 255), a * flash);
 		}
 	}
@@ -315,8 +325,20 @@ extend class RSQMB_Handler
 				else bbLag = max(frac, bbLag - dt * 0.012);
 			}
 		}
-		if (guard) BBBar(wh, 186, 90, 540, 30, 4, frac, g1, g2, g3, bbLag, flash, g);
-		else       BBBar(wh, 186, 90, 540, 30, 4, frac, lite, col, deep, bbLag, flash, g);
+		// LIVE, IT CYCLES (owner 18:26: the vertical rainbow boss bar in SOTN's Richter fight, "in shades of the MB color"):
+		// the fill steps through shades of the miniboss's colour every few tics, as SOTN's steps through its colours, in the
+		// glass-tube look. Photosensitive Mode: it drifts slowly between them instead of stepping.
+		if (!guard)
+		{
+			static const double SHL[] = { 0.0, 0.34, -0.30, 0.16, -0.46, 0.48 };   // + toward white, - toward black
+			double step = t / TB_STEP;
+			double sh;
+			if (photo) sh = 0.25 * sin(t * 4.0);
+			else sh = SHL[int(step) % SHL.Size()];
+			col = sh >= 0 ? Mix(col, Color(255, 255, 255, 255), sh) : Mix(col, Color(255, 0, 0, 0), -sh);
+		}
+		if (guard) BBBar(wh, 186, 90, 540, 30, 4, frac, g1, g2, g3, bbLag, flash, g, 1.0, true);
+		else       BBBar(wh, 186, 90, 540, 30, 4, frac, lite, col, deep, bbLag, flash, g, 1.0, true);
 
 		// ---- GUARD, silver, over the bar's right end; it SHAKES when a blow on the guarded miniboss is shrugged off (owner
 		// 15:56: "the word GUARD in the healthbar shakes and vibrates when the guarded miniboss is hit ... to help give
