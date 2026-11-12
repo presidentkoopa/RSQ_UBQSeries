@@ -118,6 +118,7 @@ extend class RSQMB_Handler
 	Array<int>    arrCol;         // its colour, 0xRRGGBB (its ladder colour, else the set piece's palette)
 	Array<int>    arrTics;        // its state's tics when it was held (put back at the reveal)
 	Array<int>    arrBorn;        // the tic it landed
+	Array<bool>   arrOwnInv;      // its own INVULNERABLE, read at its reveal (Reveal)
 	int    arrBeamSet;            // 0: V1 thralls + V3 miniboss, 1: V2 thralls + V4 miniboss (owner 11:20, random per Bossfight)
 	Actor  arrProbe;              // the arrival's sound source
 	bool   arrForce;              // Ignore Spawn Restrictions set this one down untested: the landing keeps what lands
@@ -885,7 +886,7 @@ extend class RSQMB_Handler
 		arrTic = level.maptime;
 		arrPn = p.PlayerNumber();
 		arrTier = tier;
-		arrMon.Clear(); arrAt.Clear(); arrState.Clear(); arrReveal.Clear(); arrCol.Clear(); arrTics.Clear(); arrBorn.Clear();
+		arrMon.Clear(); arrAt.Clear(); arrState.Clear(); arrReveal.Clear(); arrCol.Clear(); arrTics.Clear(); arrBorn.Clear(); arrOwnInv.Clear();
 		int nth = arrX.Size() - 1;
 		for (int i = 0; i < arrX.Size(); i++)
 		{
@@ -1010,6 +1011,7 @@ extend class RSQMB_Handler
 		let b = bosses[bosses.Size() - 1];
 		b.called = true;
 		b.tier = arrTier;
+		b.ChargeStart(BB_CHARGE);   // three seconds: nobody acts, nobody is hurt, the bar charges (boss.zs, bossbar.zs)
 		Graves(arrTier, mb, th.Size());
 		bfBoss = b;
 		bfCount++;
@@ -1187,9 +1189,23 @@ extend class RSQMB_Handler
 		let a = arrMon[i];
 		arrState[i] = 2;
 		if (!a) return;
-		a.bDORMANT = false;
-		a.tics = arrTics[i] != 0 ? arrTics[i] : 1;
+		// revealed, but it does not act and cannot be hurt until the charge ends (owner 11-12 14:11: "all miniboss and thralls
+		// are invuln but not attacking"): it stays DORMANT from its landing, and INVULNERABLE from here; its own INVULNERABLE
+		// is kept (arrOwnInv) and both are put back when the bar has charged (boss.zs ChargeStart / ChargeEnd)
+		while (arrOwnInv.Size() <= i) arrOwnInv.Push(false);
+		arrOwnInv[i] = a.bINVULNERABLE;
+		a.bINVULNERABLE = true;
 		if (i == 0) Wave(a, arrCol[i]);     // RSQ Glow In The Dark's arrival wave in its colour from where it lands (owner 08:53)
+		// (its held state stays held: DORMANT alone does not stop a monster's states; Wake below starts it, from ChargeEnd)
+	}
+	// a landed monster starts to act: its state's tics back, awake, on the player who called it in (boss.zs ChargeEnd)
+	void Wake(Actor a)
+	{
+		if (!a) return;
+		int i = -1;
+		for (int k = 0; k < arrMon.Size(); k++) if (arrMon[k] == a) { i = k; break; }
+		a.tics = (i >= 0 && i < arrTics.Size() && arrTics[i] != 0) ? arrTics[i] : 1;
+		Actor p = (arrPn >= 0 && arrPn < MAXPLAYERS && playeringame[arrPn]) ? players[arrPn].mo : null;
 		if (!p || a.health <= 0) return;
 		a.bAMBUSH = false;
 		a.target = p;

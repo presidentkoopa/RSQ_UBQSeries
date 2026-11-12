@@ -172,7 +172,8 @@ extend class RSQMB_Handler
 	{
 		if (gamestate != GS_LEVEL || !playeringame[consoleplayer] || !players[consoleplayer].mo) return;
 		if (screenblocks > 11 || automapactive || menuactive != Menu.Off) return;   // nothing over a menu (owner 11-11)
-		if (StackShown()) { DrawStack(e); return; }
+		if (StackShown()) { DrawBossBar(e); return; }   // the miniboss bar (bossbar.zs, owner 11-12); DrawStack below is the stack it replaced
+		bbWas = false;
 		if (!MeterShown()) return;
 		TextureID te = TexMan.CheckForTexture("RSQMBHE", TexMan.Type_Any);
 		TextureID tw = TexMan.CheckForTexture("RSQMBHW", TexMan.Type_Any);
@@ -334,11 +335,7 @@ extend class RSQMB_Handler
 		if (!BfOn() || UCv("rsqmb_bf_hud", 1) == 0) return false;
 		let hd = HD();
 		if (!hd) return false;
-		if (hd.arrPhase != 0)
-		{
-			for (int i = 0; i < hd.arrState.Size(); i++) if (hd.arrState[i] == 2) return true;
-			return false;
-		}
+		if (hd.arrPhase != 0) return true;   // from the call-in: the bar grows from a sliver before anyone lands (owner 11-12 14:11)
 		return StackBoss(hd) != null;
 	}
 
@@ -373,6 +370,7 @@ extend class RSQMB_Handler
 	// the stack's bar rect (x, y, w, h: the main bar) and its bottom
 	static ui double, double, double, double, double StackRect()
 	{
+		if (true) { double bx, by, bw, bh, bb; [bx, by, bw, bh, bb] = BossBarRect(); return bx, by, bw, bh, bb; }   // the miniboss bar's block (bossbar.zs)
 		double x, y, w, h;
 		[x, y, w, h] = MeterRect();
 		let hd = HD();

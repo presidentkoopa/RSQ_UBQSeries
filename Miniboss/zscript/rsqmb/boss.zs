@@ -29,6 +29,47 @@ class RSQMB_Boss : Thinker
 	bool   ownBuddha;            // the monster's own BUDDHA before we took it
 	int    invulUntil;
 	int    invulFrom;            // the tic it last lost a life (the flames light from it)
+	// THE ARRIVAL'S CHARGE (owner 11-12 14:11: "the miniboss comes in and its bar fills up quickly, smoothly. during this
+	// time, let's say all miniboss and thralls are invuln but not attacking. the miniboss bar takes 3 seconds to charge up"):
+	// until chargeUntil the miniboss and its thralls are DORMANT (they do not act) and INVULNERABLE; their own flags are
+	// kept and put back (ChargeEnd). The HUD's bar fills and its clock counts down over the same tics (bossbar.zs).
+	int    chargeUntil;
+	bool   chargeHeld;
+	Array<Actor> chWho;
+	Array<bool>  chDorm, chInv;
+	void ChargeStart(int tics)
+	{
+		if (chargeHeld || tics <= 0) return;
+		chargeUntil = level.maptime + tics;
+		chargeHeld = true;
+		chWho.Clear(); chDorm.Clear(); chInv.Clear();
+		for (int i = -1; i < thr.Size(); i++)
+		{
+			Actor a = i < 0 ? mb : thr[i];
+			if (!a) continue;
+			// a landed one is already held DORMANT and INVULNERABLE by the arrival (bossfight.zs Reveal): its own are
+			// not dormant, and the INVULNERABLE read there
+			bool ownD = a.bDORMANT, ownI = a.bINVULNERABLE;
+			let hh = H();
+			if (hh) for (int k = 0; k < hh.arrMon.Size(); k++) if (hh.arrMon[k] == a) { ownD = false; ownI = k < hh.arrOwnInv.Size() ? hh.arrOwnInv[k] : false; break; }
+			chWho.Push(a); chDorm.Push(ownD); chInv.Push(ownI);
+			a.bDORMANT = true; a.bINVULNERABLE = true;
+		}
+	}
+	void ChargeEnd()
+	{
+		if (!chargeHeld) return;
+		chargeHeld = false;
+		for (int i = 0; i < chWho.Size(); i++)
+		{
+			Actor a = chWho[i];
+			if (!a) continue;
+			a.bDORMANT = chDorm[i]; a.bINVULNERABLE = chInv[i];
+			let hh = H();
+			if (hh) hh.Wake(a);
+		}
+		chWho.Clear(); chDorm.Clear(); chInv.Clear();
+	}
 	double toughness, outMult;   // inherited: damage taken / toughness, damage dealt x outMult
 	Array<String> powers;        // what it inherited, for the service and the log
 	Array<int>    powerFrom;     // the thrall each power came from (-1: legendary, from them all)
@@ -86,7 +127,7 @@ class RSQMB_Boss : Thinker
 	RSQMB_Handler H() { if (!hnd) hnd = RSQMB_Handler.Get(); return hnd; }
 
 	// ---- the rules, read by the ward (items.zs), the HUD (hud.zs) and the service -------------------------------------------
-	clearscope bool Invulnerable() const { return !done && level.maptime < invulUntil; }
+	clearscope bool Invulnerable() const { return !done && (level.maptime < invulUntil || level.maptime < chargeUntil); }
 
 	clearscope int Living() const
 	{
@@ -145,6 +186,7 @@ class RSQMB_Boss : Thinker
 		if ((!mb || mb.bDestroyed) && h && h.Following(self, -1)) return;
 		if (!mb || mb.bDestroyed || mb.health <= 0) { if (h) h.BossDied(self, null); else done = true; return; }
 
+		if (chargeHeld && level.maptime >= chargeUntil) ChargeEnd();
 		if (ldShPending) LDHealthDone(h);
 		if (mb.health > maxHP) maxHP = mb.health;
 		// the segments follow its health until the first blow lands (LegenDoom sets a legendary's health a tic or two late)
@@ -326,6 +368,7 @@ class RSQMB_Boss : Thinker
 	void Finish()
 	{
 		done = true;
+		ChargeEnd();
 		diedAt = level.maptime;
 		if (mb)
 		{

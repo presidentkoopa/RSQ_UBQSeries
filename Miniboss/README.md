@@ -183,6 +183,16 @@ keener to shoot. It becomes legendary when any of its thralls is.
 
 ## The fight
 
+**The miniboss bar.** While a miniboss is on the map its bar is on your HUD, under the score: its head with a crosshair
+over it, its name in gold, and a slanted bar in its colour with a dark red trail where health just went. `X2` at the
+bar's end means it has two bars. `GUARD` in grey over a greyed bar means it cannot be hurt right now. Under it, each
+thrall has a small bar of its own with its crosshair and its Champion power icon over it.
+
+**It charges up.** The bar appears as a sliver and grows outward, empty. Each thrall's bar pops in as it lands. When
+the miniboss lands its bar fills over three seconds while an LED clock beside it counts down from 03:00; until the
+clock runs out nobody in the encounter moves and nobody can be hurt. The same clock shows how long a window stays open
+after a thrall dies.
+
 ![Shield up (mockup from before the shield icon went): grey segments, "GUARD!" over the miniboss, "TARGET!" over each thrall, grey Xs (design mockup)](docs/readme/mock_shield_up.jpg)
 
 **The thrall bar.** Above the miniboss's own bar sits one segment for every thrall it came with. Together they hold as
@@ -382,6 +392,7 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, runs `bbar3`, `bbar5`; called in by console) | The miniboss bar: the empty bar first, thrall bars with their icon pairs, the head, name, GUARD on a grey bar charging, X2, the LED clock counting down, then the bar in its colour and the clock on a window. During the charge the thralls stood still and the player took no damage. Not seen: the sliver's first frames, the white flash, the trail, Photosensitive Mode, the bar without RSQ VisualRewards or RSQ SlowMo loaded |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | Tier-ups climb in strength: a Red miniboss losing a life goes to Abyss, then Black; a missed window takes it to White and Cyan thralls to FireBlu. A Black EX lands in its own colour and goes to White when it loses a life. |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | Its own copy of the gesture reader (its eyes) use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
 | **code only, not shown** (2026-11-11; not run on the rig by the owner's order "no rig test, code only until i say") | The meter and the stack hidden while any menu is open. Compiles in the owner's order with no script error of its own (load check before the order) |
