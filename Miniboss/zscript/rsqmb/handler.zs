@@ -105,6 +105,7 @@ class RSQMB_Handler : EventHandler
 
 	override void WorldLoaded(WorldEvent e)
 	{
+		ChampForce(false);   // an arrival cut short by a save, a load or a quit: Champions' own Override Chance back (bossfight.zs)
 		// a hub level entered again: the tiers this mod gave its monsters are put back (fight.zs TierReset; owner 07:15)
 		if (e.IsReopen) TierReset();
 		if (e.IsSaveGame || e.IsReopen) return;

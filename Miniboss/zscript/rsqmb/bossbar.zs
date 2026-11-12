@@ -232,6 +232,13 @@ extend class RSQMB_Handler
 		return RGBc(i >= 0 && i < RGB.Size() ? RGB[i] : 0xC8C8C8);
 	}
 
+	static clearscope int ChampRGB(int i)
+	{
+		static const int RGB[] = { 0xB01818, 0xFF3030, 0xFF9020, 0xFFE030, 0x1E9E3A, 0x40F040, 0x40E8E8, 0x3868FF, 0x6A50D8,
+			0xB040E0, 0xFF80B0, 0x505058, 0x9A9AA4, 0xF2F2F2, 0xC08A50, 0xD8DEE6, 0xFFC820 };
+		return (i >= 0 && i < RGB.Size()) ? RGB[i] : 0xC8C8C8;
+	}
+
 	// the console player is DOWN (RSQ SlowMo, by name): Be Quick or Be Dead has the spot
 	static ui bool BBDown()
 	{

@@ -57,3 +57,4 @@ user   int    rsqmb_fx_density    = 0;      // Effects Density: 0 Low (Quest-saf
 user   float  rsqmb_fx_range      = 4000;   // FX drawn only within this distance of you
 server noarchive bool rsqmb_debug = false;  // console lines for every rule as it fires
 user bool     rsqmb_wristcard     = true;   // Inner-Wrist Card (owner 11-12): the inside of the OFF-HAND wrist turned to your face shows START (skull) FIGHT?; with it up, Use calls the Bossfight in
+server int     rsqmb_champ_was     = -2;     // Champions' own Override Chance while an arrival forces it to 256 (bossfight.zs ChampForce); -2: not held

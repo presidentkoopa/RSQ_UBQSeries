@@ -120,6 +120,7 @@ extend class RSQMB_Handler
 	Array<int>    arrBorn;        // the tic it landed
 	Array<bool>   arrOwnInv;      // its own INVULNERABLE, read at its reveal (Reveal)
 	Array<int>    arrTries;       // times this thrall was landed again for a Champion power of its own (RerollThrall)
+	Array<String> arrKind;        // its beam, asked for once Champions has dressed it (BeamNow)
 	int    arrBeamSet;            // 0: V1 thralls + V3 miniboss, 1: V2 thralls + V4 miniboss (owner 11:20, random per Bossfight)
 	Actor  arrProbe;              // the arrival's sound source
 	bool   arrForce;              // Ignore Spawn Restrictions set this one down untested: the landing keeps what lands
@@ -885,17 +886,18 @@ extend class RSQMB_Handler
 
 	void StartArrival(PlayerPawn p, RSQMB_Meter m, int tier)
 	{
+		ChampForce(true);
 		arrPhase = 1;
 		arrTic = level.maptime;
 		arrPn = p.PlayerNumber();
 		arrTier = tier;
-		arrMon.Clear(); arrAt.Clear(); arrState.Clear(); arrReveal.Clear(); arrCol.Clear(); arrTics.Clear(); arrBorn.Clear(); arrOwnInv.Clear(); arrTries.Clear();
+		arrMon.Clear(); arrAt.Clear(); arrState.Clear(); arrReveal.Clear(); arrCol.Clear(); arrTics.Clear(); arrBorn.Clear(); arrOwnInv.Clear(); arrTries.Clear(); arrKind.Clear();
 		int nth = arrX.Size() - 1;
 		for (int i = 0; i < arrX.Size(); i++)
 		{
 			arrMon.Push(null);
-			arrAt.Push(i == 0 ? max(MB_AT, nth * THRALL_STEP) : (i - 1) * THRALL_STEP);
-			arrState.Push(0); arrReveal.Push(0); arrCol.Push(0); arrTics.Push(1); arrBorn.Push(0); arrTries.Push(0);
+			arrAt.Push(CHAMP_LEAD + (i == 0 ? max(MB_AT, nth * THRALL_STEP) : (i - 1) * THRALL_STEP));
+			arrState.Push(0); arrReveal.Push(0); arrCol.Push(0); arrTics.Push(1); arrBorn.Push(0); arrTries.Push(0); arrKind.Push("");
 		}
 		arrBeamSet = random[rsqmbbf](0, 1);
 		bfWhy = "";
@@ -992,7 +994,7 @@ extend class RSQMB_Handler
 			{
 				if (!a || a.health <= 0) { arrState[i] = 3; continue; }
 				if (now - arrBorn[i] == CHAMP_AT && i > 0 && RerollThrall(i, age)) { allIn = false; continue; }
-				if (now - arrBorn[i] == CHAMP_AT) ChampionFallback(a);
+				if (now - arrBorn[i] == CHAMP_AT) { ChampionFallback(a); BeamNow(i); }
 				if (now >= arrReveal[i]) Reveal(i, p);
 				else allIn = false;
 			}
@@ -1005,6 +1007,7 @@ extend class RSQMB_Handler
 		// bound when all have landed, Champions has dressed the last (BIND_TICS) and the last arrow is cleared (ARROW_HOLD)
 		if (!allIn || now - lastBorn < BIND_TICS || now < lastReveal + ARROW_HOLD) return;
 		arrPhase = 0;
+		ChampForce(false);
 		arrQuiet = false;
 		if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
 		Actor mb = arrMon[0];
@@ -1045,6 +1048,7 @@ extend class RSQMB_Handler
 			a.Destroy();
 		}
 		arrPhase = 0;
+		ChampForce(false);
 		if (arrProbe) { arrProbe.Destroy(); arrProbe = null; }
 		arrQuiet = true;     // the retry keeps the music on and plays no effects again; a retry the guardrails stop ends the scene (TryArrive)
 	}
@@ -1139,10 +1143,27 @@ extend class RSQMB_Handler
 		arrCol[i] = col;
 		Boost(a, i == 0, col);
 		Hold(i, a);
-		// the beam (VisualRewards hides it until its reveal) or the original's teleport fog
-		let vr = VrService();
 		// THE MINIBOSS ALWAYS ON V4, EACH THRALL ON V1, V2 OR V3 AT RANDOM (owner 2026-11-12 16:53)
-		String kind = i == 0 ? "v4" : String.Format("v%d", random[rsqmbbf](1, 3));
+		arrKind[i] = i == 0 ? "v4" : String.Format("v%d", random[rsqmbbf](1, 3));
+		// THE BEAM WAITS FOR ITS CHAMPION COLOUR (owner 17:58: the beams and the bars in the same colour): Champions dresses
+		// it a few tics after it spawns, so it is hidden (bInvisible) until CHAMP_AT, and its beam is asked for then, in
+		// that colour (BeamNow). The beam then hides it itself and shows it at its reveal.
+		a.bInvisible = true;
+		arrReveal[i] = level.maptime + 9999;
+		if (debug) Console.Printf("RSQMB arrival: %s %d %s lands, hidden until Champions has dressed it", i ? "thrall" : "miniboss", i, a.GetClassName());
+	}
+
+	// its beam (VisualRewards hides it until its reveal) or the original's teleport fog, in its Champion colour
+	void BeamNow(int i)
+	{
+		let a = arrMon[i];
+		if (!a) return;
+		int ci = ChampIconOf(a);
+		if (ci >= 0) arrCol[i] = ChampRGB(ci);
+		int col = arrCol[i];
+		a.bInvisible = false;
+		let vr = VrService();
+		String kind = arrKind[i];
 		// nameArg role (contract addition 2026-11-09): sent, but VisualRewards ignores it now (each beam has its own sound)
 		Name role = i == 0 ? 'miniboss' : 'thrall';
 		int r = vr ? vr.GetInt("beam", kind, col, 1.0, a, role) : 0;
@@ -1154,8 +1175,33 @@ extend class RSQMB_Handler
 			a.A_StartSound("misc/teleport", CHAN_AUTO, 0, 1.0, 0.4);
 		}
 		ArrowAdd(a, col, i == 0 ? 1.5 : 1.0);
-		if (debug) Console.Printf("RSQMB arrival: %s %d %s lands (colour %06X, tier %d), %s", i ? "thrall" : "miniboss", i, a.GetClassName(), col, TierOfMon(a),
+		if (debug) Console.Printf("RSQMB arrival: %s %d %s lands (colour %06X, %s, tier %d), %s", i ? "thrall" : "miniboss", i, a.GetClassName(), col,
+			ci >= 0 ? "its Champion colour" : "not a Champion", TierOfMon(a),
 			r > 0 ? String.Format("beam %s, revealed in %d tics", kind, arrReveal[i] - level.maptime) : "teleport fog (no beam)");
+	}
+
+	// THE MINIBOSS'S MONSTERS ARE ALWAYS CHAMPIONS (owner 2026-11-12 17:59: "build champions into minibosses"), whatever
+	// Champions' own options say (its Legendoom Compatibility included): for the arrival, Champions' Override Chance
+	// (champion_OverrideChance, read by its handler at every spawn) is 256, so every monster that lands is made a full
+	// Champion by Champions itself -- its colour, its look and its powers. A server cvar takes effect the tic after it is
+	// set, so the landings start CHAMP_LEAD tics after it. Its own value is put back when they have landed (or the landing
+	// fails); kept in rsqmb_champ_was meanwhile, so a save or quit mid-arrival puts it back at the next map (handler.zs).
+	const CHAMP_LEAD = 3;
+	static void ChampForce(bool on)
+	{
+		let oc = CVar.FindCVar("champion_OverrideChance");
+		let keep = CVar.FindCVar("rsqmb_champ_was");
+		if (!oc || !keep) return;
+		if (on)
+		{
+			if (keep.GetInt() == -2) keep.SetInt(oc.GetInt());
+			oc.SetInt(256);
+		}
+		else if (keep.GetInt() != -2)
+		{
+			oc.SetInt(keep.GetInt());
+			keep.SetInt(-2);
+		}
 	}
 
 	void Boost(Actor a, bool isBoss, int col)
