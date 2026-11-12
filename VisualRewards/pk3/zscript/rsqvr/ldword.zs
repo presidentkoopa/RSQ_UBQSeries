@@ -48,6 +48,7 @@ class RSQVR_LDWord : EventHandler
 	override void WorldTick()
 	{
 		if (fresh.Size() || drops.Size()) DropTick();
+		if (shown.Size()) ShownTick();
 		if (!watch.Size()) return;
 		if (!checked) Check();
 		for (int i = watch.Size() - 1; i >= 0; i--)
@@ -58,7 +59,27 @@ class RSQVR_LDWord : EventHandler
 			watch.Delete(i);
 			if (MinibossOrThrall(m)) continue;
 			let h = RSQVR_FxHandler.Get();
-			if (h) h.WordHoldSotn("LEGENDARY", TOP, BOT, 1.0, m, 'legendary');
+			if (h && h.WordHoldSotn("LEGENDARY", TOP, BOT, 1.0, m, 'legendary') == 1) { shown.Push(m); shownT.Push(level.maptime); }
+		}
+	}
+
+	// THE WORD IS A MOMENT, NOT A SIGN (owner 11-12 00:46: "it's redundant to say anything but we can't leave it how it
+	// is"; 11-11 23:56: "the font and presentation is lovely tho and I want it ... it is large with a large hp bar"): the
+	// word shows when the legendary rises and fades after LEGENDARY Word Seconds (rsqvr_ldword_secs, 3); from then on the
+	// monster is told by its HP bar alone (its overheal strip and pips). 0 = held for its whole life, as before.
+	Array<Actor> shown; Array<int> shownT;
+	private void ShownTick()
+	{
+		let c = CVar.FindCVar("rsqvr_ldword_secs");
+		int tics = int((c ? c.GetFloat() : 3.0) * TICRATE);
+		for (int i = shown.Size() - 1; i >= 0; i--)
+		{
+			let m = shown[i];
+			if (!m || m.bDestroyed || m.health <= 0) { shown.Delete(i); shownT.Delete(i); continue; }
+			if (tics <= 0 || level.maptime - shownT[i] < tics) continue;
+			let h = RSQVR_FxHandler.Get();
+			if (h) h.ClearWord("LEGENDARY", m);
+			shown.Delete(i); shownT.Delete(i);
 		}
 	}
 
@@ -187,5 +208,5 @@ class RSQVR_LDWord : EventHandler
 		}
 	}
 
-	override void WorldUnloaded(WorldEvent e) { watch.Clear(); fresh.Clear(); freshT.Clear(); drops.Clear(); dropW1.Clear(); dropW2.Clear(); }
+	override void WorldUnloaded(WorldEvent e) { watch.Clear(); shown.Clear(); shownT.Clear(); fresh.Clear(); freshT.Clear(); drops.Clear(); dropW1.Clear(); dropW2.Clear(); }
 }
