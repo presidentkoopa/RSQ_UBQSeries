@@ -402,11 +402,14 @@ extend class RSQMB_Handler
 	// or it is already called. With the gold card up, Use calls the Bossfight in (the same call as the watch check + Use,
 	// which stays). The pose: the inner wrist's face within 60 degrees of square to your eyes (the back-of-wrist watch
 	// check turned over: RSQ Gun Cards' FaceDot, negated), the wrist within 45 degrees of your gaze, held WC_HOLD tics.
-	// One textured quad in the world (a VisualThinker, as the set pieces' effects), this machine only. Inner-Wrist Card
+	// One textured quad in the world (RSQMB_WQuad, a flat model laid on the wrist), this machine only. Inner-Wrist Card
 	// (rsqmb_wristcard, user, on). Rig only for the pose and the card; not headset-confirmed.
 	const WC_HOLD = 4;
-	const WC_WIDE = 6.0;        // the card's width, map units (about 18 cm)
-	transient RSQMB_Fx wcQuad;
+	const WC_WIDE = 7.0;        // the card's length along the forearm, map units (about 21 cm)
+	transient Actor wcCard;
+	transient String wcSkin;
+	const WC_BACK = 5.0;        // how far down the forearm from the hand it lies, map units
+	const WC_OFF = 1.2;         // and how far off the skin
 	transient int wcHold[2];
 	transient double wcAlpha;
 	transient int wcHand;
@@ -451,29 +454,40 @@ extend class RSQMB_Handler
 		if (shown >= 0) wcHand = shown;
 		wcAlpha = clamp(wcAlpha + (shown >= 0 ? 0.25 : -0.25), 0.0, 1.0);
 		bool gold = m.ready && !m.called;
-		if (wcAlpha <= 0) { if (wcQuad) wcQuad.Alpha = 0; return; }
-		TextureID tx = TexMan.CheckForTexture(gold ? "RSQMBWC1" : "RSQMBWC0", TexMan.Type_Any);
+		if (wcAlpha <= 0) { if (wcCard) wcCard.bInvisible = true; return; }
+		String tn = gold ? "RSQMBWC1" : "RSQMBWC0";
+		TextureID tx = TexMan.CheckForTexture(tn, TexMan.Type_Any);
 		if (!tx.IsValid()) return;
 		int tw, th; [tw, th] = TexMan.GetSize(tx);
-		Vector3 hp = wcHand == 1 ? p.OffhandPos : p.AttackPos;
-		Vector3 eye = (p.pos.xy, p.player.viewz);
-		Vector3 to = eye - hp;
-		double d = to.Length();
-		Vector3 at = hp + (d > 0.01 ? to / d : (0, 0, 1)) * 3.0 + (0, 0, 4.0);     // just off the wrist toward your eyes, above it
-		double sc = WC_WIDE / max(1, tw);
-		if (!wcQuad)
-		{
-			wcQuad = RSQMB_Fx(VisualThinker.Spawn("RSQMB_Fx", tx, at, (0, 0, 0), 0, SPF_FULLBRIGHT, 0, (sc, sc), (0, 0), STYLE_Translucent));
-			if (!wcQuad) return;
-			wcQuad.ChangeStatNum(RSQMB_Fx.STAT_FX);
-			wcQuad.key = -2;
-			wcQuad.Put(at, at);
-		}
-		if (wcQuad.Texture != tx) wcQuad.Texture = tx;
-		wcQuad.SetRenderStyle(STYLE_Translucent);
-		wcQuad.Scale = (sc, sc);
-		wcQuad.Alpha = wcAlpha;
-		wcQuad.Put(at, wcQuad.Pos);
+		// FLAT ALONG THE INSIDE OF THE WRIST (owner 05:26: "why is the fight card not along the inside of the wrist? it's
+		// like the watch check card just on the other side of the wrist"): the quad lies on the inner wrist's own plane
+		// (its face is the inner wrist's normal, InnerDot's n), its long side along the forearm, read left to right as
+		// you see it; it sits a little down the forearm from the hand and just off the skin.
+		int hh = wcHand;
+		double hy = ((hh == 1) ? p.OffhandAngle : p.AttackAngle) + 90;
+		double hpt = (hh == 1) ? p.OffhandPitch : p.AttackPitch;
+		Vector3 f = (cos(hpt) * cos(hy), cos(hpt) * sin(hy), sin(hpt));
+		Vector3 r0 = (sin(hy), -cos(hy), 0);
+		Vector3 u0 = r0 cross f;
+		double rl = Actor.Normalize180(hh == 1 ? p.OffhandRoll : p.AttackRoll);
+		double bb = RSQMB_GPose.IsLeft(hh) ? rl : -rl;
+		Vector3 n = -(r0 * cos(bb) + u0 * sin(bb));
+		Vector3 hp = hh == 1 ? p.OffhandPos : p.AttackPos;
+		Vector3 at = hp - f * WC_BACK + n * WC_OFF;
+		// the quad's own frame for that face (as RSQ SlowMo's plate: angle and pitch aim its face, roll turns it in its plane)
+		double qy = atan2(n.y, n.x), qt = atan2(n.z, n.xy.Length());
+		Vector3 qr = (-sin(qy), cos(qy), 0);
+		Vector3 qu = (-cos(qy) * sin(qt), -sin(qy) * sin(qt), cos(qt));
+		Vector3 right = (sin(p.angle), -cos(p.angle), 0);          // your right
+		Vector3 w = (f dot right) >= 0 ? f : -f;
+		double roll = atan2(w dot qu, w dot qr);
+		if (!wcCard) { class<Actor> qc = "RSQMB_WQuad"; if (qc) wcCard = Actor.Spawn(qc, at, NO_REPLACE); if (!wcCard) return; wcSkin = ""; }
+		if (wcSkin != tn) { wcCard.A_ChangeModel("", 0, "", "", 0, "", tn); wcSkin = tn; }
+		wcCard.SetOrigin(at, true);
+		wcCard.angle = qy; wcCard.pitch = -qt; wcCard.roll = roll;
+		wcCard.scale = (WC_WIDE, WC_WIDE * th / max(1, tw));
+		wcCard.bInvisible = false;
+		wcCard.A_SetRenderStyle(wcAlpha, STYLE_Translucent);
 		// the gold card up: Use calls it in (CallInput reads watchTic, below in the same tic)
 		if (gold && shown >= 0) m.watchTic = level.maptime + 1;
 	}
@@ -1223,4 +1237,24 @@ extend class RSQMB_Handler
 			m ? m.fill : -1.0, m && m.ready, m && m.called, m ? m.beaten : 0, bfCount, bfBoss && !bfBoss.done, arrPhase, bfWhy,
 			rosterCls.Size(), spX.Size(), exX.Size(), mapWeapons.Size());
 	}
+}
+
+// the inner-wrist card's quad (MODELDEF.txt; a flat unit quad, skinned and placed by bossfight.zs WristCard)
+class RSQMB_WQuad : Actor
+{
+	Default
+	{
+		+NOINTERACTION
+		+NOGRAVITY
+		+NOBLOCKMAP
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		+INTERPOLATEANGLES
+		+NOTIMEFREEZE
+		+BRIGHT
+		RenderStyle "Translucent";
+		Radius 1;
+		Height 1;
+	}
+	States { Spawn: RSMQ A -1; Stop; }
 }

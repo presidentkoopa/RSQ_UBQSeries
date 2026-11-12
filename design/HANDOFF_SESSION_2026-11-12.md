@@ -91,3 +91,17 @@ SlowMo, on `main`. Loads on the full order only; not run on the rig, not headset
 - Taken back out the same night: an on-screen "no room to stand" message the owner did not ask for.
 - 04:22 (owner: "I said 0.5 and 0.25"): the Time rows' defaults are now 0.25 s (small monsters, Lost Souls) and 0.5 s
   (anything above, bosses too), with a one-time move of saved values (`rsqsm_down_cfg`). The labels read +0.25 SEC / +0.5 SEC.
+
+## 04:45 to 05:35 (rig tests allowed again: "rig check everything you need to, update readmes accordingly")
+
+- **Whip**: on the rig the new presses worked but nothing on screen had changed, and a crack spent the mark. Now the cast
+  is always drawn (pale; gold with the diamond where alt-fire can lock a snag), the ray snaps to the mark, and the mark
+  stays through cracks (runs whiplock2/3). README still waits for the owner's sign-off.
+- **GunCards "rogue voxels"** (owner's screenshot 04:56): a watch card seen edge on (the other hand's item card while one
+  wrist is checked). Watch cards are drawn only facing the eyes and within 45 degrees of the gaze (runs facecull/2).
+  STILL OPEN: one green glyph of the saber card's LIT word sits away from the card (layers, voxel files and pivots all
+  check out; not found).
+- **Melee Barrel Launch** + SlowMo `start.barrel` / `stop` (run barrelfly).
+- **Miniboss inner-wrist card** START (skull) FIGHT? + Use (runs wrist1-5); flat along the forearm since 05:26.
+- **DOWN** 9 / 6 / 3 s and one kill owed: run down3. Labels and bonus crosshairs not looked at in frames.
+- Not rig-checked: Holsters Ride Up When Down, the lowered LEVEL UP band, the level card's sweep.

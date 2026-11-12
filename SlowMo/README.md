@@ -28,7 +28,7 @@ your revenge.
 - **DOWN (optional).** A monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you sink
   to the floor, and you have 9 seconds to kill the monster marked TARGET and get up. Go down again before spending a
   Score life and the clock starts at 6 seconds, then 3. Damage to any monster adds time; the others in sight show what
-  a whole one is worth (*code only, not shown*).
+  a whole one is worth: +0.25 SEC small, +0.5 SEC bigger (*rig only 2026-11-12: three DOWNs in a row started at 9, 6 and 3 s and each ended on the one kill; the labels were not seen in a frame*).
 
 ---
 

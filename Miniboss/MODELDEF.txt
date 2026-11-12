@@ -1,0 +1,11 @@
+// THE INNER-WRIST CARD (bossfight.zs WristCard, owner 2026-11-12): one unit quad laid along the inside of the wrist,
+// skinned with the card's texture (RSQ SlowMo's DOWN plate technique, copied; nothing linked).
+Model RSQMB_WQuad
+{
+	Path "models/rsqmb"
+	Model 0 "quad.obj"
+	Skin 0 "RSQMBWC1"
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RSMQ A 0 0
+}

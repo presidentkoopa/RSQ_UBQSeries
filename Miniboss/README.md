@@ -75,6 +75,10 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 - **Calling the fight in:** hold a watch check with either hand (the back of the wrist turned to your face, held still)
   and press **Use** while it holds, or a moment after. **Call It In: Watch Check + Use** on the page switches this off;
   the fight still comes by itself 60 s after the meter is full (**Arrives By Itself**).
+- **Or from the inside of your wrist.** Turn the inside of either wrist to your face and look at it: a card lies along it.
+  Gold **START (skull) FIGHT?** means the fight is ready, and **Use** calls it in. Grey **FIGHT (skull) NOT READY** means
+  the meter is still filling. **Inner-Wrist Card: Start Fight?** on the page switches it off. *Rig only, not
+  headset-confirmed (2026-11-12).*
 - **The fight itself** is your guns, fists and the other mods: this mod reads no trigger, grip or gesture of its own.
 - **Menu buttons:** Reset All. The console commands listed in Under the hood are for testing.
 

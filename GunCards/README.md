@@ -145,6 +145,12 @@ The full card lies flat on the back-of-the-hand side of the wrist. It turns itse
 your arm.
 
 **Watch Card:** When I Check My Watch (default), Always On, or Off. With Always On the watch card is always on both
+
+A watch card is drawn only while it faces you and you are looking its way (within 60 degrees of square on, the wrist
+within 45 degrees of your gaze). Seen from its edge a card is a line of bright dashes, so a card on a hand at your side,
+or the other hand's card during a watch check, is not drawn. With RSQ VisualRewards, a gun's level-up card takes the
+small card's place for about 1.3 seconds (**Level-Up Card Replaces Small Card**, on). *Rig only (2026-11-12), not
+headset-confirmed. Known fault: one green piece of the saber card's LIT word can sit away from the card.*
 wrists, and the small card still shows beside it as Show Cards says.
 
 **Watch Card Up** moves it up or down as it reads, whichever way up the card has turned.

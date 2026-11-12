@@ -13,6 +13,9 @@ spot of their own on your belt.
 
 - **Draw from your body.** Reach to a holster, squeeze the grip, and the gun is in your hand. Squeeze there with a gun in
   your hand and it goes away. Each hand holsters and draws its own gun.
+- **Holsters ride up when you are DOWN.** RSQ SlowMo's DOWN lowers your view, which put the hip holsters at the floor.
+  While you are DOWN the holsters squeeze up toward your head so the lowest clears the floor (**Holsters Ride Up When
+  Down**, on). *Code only (2026-11-12): it loads; not run on the rig, not headset-confirmed.*
 - **Everything has its place.** The first holster you put a gun in becomes that gun's. Put it anywhere else and it flies
   home with a streak of light. A holster that belongs to another gun turns you away with a red flash, a double buzz and
   a picture of the gun it belongs to.

@@ -157,6 +157,11 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
 
 ## Level-ups (Gun Bonsai)
 
+*2026-11-12:* the gold LEVEL UP, REVIVE and REVENGE band sits 20 degrees under your gaze, about where SlowMo's DOWN bar
+is. A gun's level-up (the wrist toast) is its level card: one thin white line sweeps across it as the level lands, and
+with RSQ Gun Cards the small gun card steps aside while it shows. *Code only: it loads; not seen in a frame.*
+
+
 ![The LEVEL UP band scrolling past](docs/readme/levelup_band.jpg)
 
 *Rig frames from an earlier build (committed by 2026-11-05): the player level-up band. Not captures from the headset.*

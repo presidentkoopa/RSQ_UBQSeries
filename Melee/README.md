@@ -119,6 +119,11 @@ off and your guns come back, with the gun you had in your hand back in it, but n
   locks included, as a Use press would.
 - **Uppercut Kicks Barrels** (off): an uppercut into a barrel does no damage. It sends the barrel flying up and away
   from you, and the blast is yours when it goes off.
+- **Barrel Launch (Uppercut, Gun-Butt Shove)** (on): an uppercut or a gun-butt shove into a barrel sends it flying, fast
+  and tumbling, to the nearest monster it can see, and it goes off there (or on the first wall, or after 3 seconds). It
+  needs no Uppercut unlock. With RSQ SlowMo the world slows until it goes off (**Barrel Launch Slow-Mo**, on); the
+  barrel itself is not slowed. *Rig only (2026-11-12): the flight and the blast were run; the tumble's look was not
+  seen. Not headset-confirmed.*
 
 *[GIF to come: an uppercut launching an imp, with the dust puff]*
 
