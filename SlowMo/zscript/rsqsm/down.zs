@@ -89,6 +89,7 @@ class RSQSM_Down : EventHandler
 	bool   held[MAXPLAYERS];
 	int    endTic[MAXPLAYERS], endHow[MAXPLAYERS];       // 1 revived, 2 failed
 	int    lastKill[MAXPLAYERS];
+	int    lastKillE[MAXPLAYERS];                        // how much of the Clock was gone at that kill (the tier)
 	double bankHp[MAXPLAYERS], bankAr[MAXPLAYERS];
 	int    invulUntil[MAXPLAYERS];
 	int    livesSeen[MAXPLAYERS];
@@ -173,8 +174,13 @@ class RSQSM_Down : EventHandler
 		return false;
 	}
 	// the bar: elapsed real tics into this DOWN, and the tier it stands at (0 top, 1 middle, 2 bottom)
-	clearscope int Elapsed(int n) { return IsDown(n) ? max(0, level.maptime - barStart[n]) : 0; }
-	clearscope int TierAt(int e) { double s = StepTics(); return e < s ? 0 : (e < 2 * s ? 1 : 2); }
+	// THE BAR IS THE CLOCK (owner 11-11 23:56: "the draining meter has to line up with the timer, and account for when we
+	// get time added to it"): the bar shows DEATH IN itself -- full at the Clock, empty at zero, rising as bought time
+	// pours in -- and its three steps are thirds of the Clock. Was: a separate 3 x Bar Step gauge that drained by the tics
+	// since the DOWN (or since a target's death reset it) and never saw bought time, so the two drifted apart.
+	// Elapsed is how much of the Clock is gone; the tier is the third DEATH IN stands in.
+	clearscope int Elapsed(int n) { return IsDown(n) ? int(clamp(ClockTics() - clk[n], 0.0, ClockTics())) : 0; }
+	clearscope int TierAt(int e) { double s = ClockTics() / 3.0; return e < s ? 0 : (e < 2 * s ? 1 : 2); }
 	double Crawl(int n)
 	{
 		if (!IsDown(n) || !players[n].mo) return 1.0;
@@ -365,12 +371,11 @@ class RSQSM_Down : EventHandler
 	// sweep (plate.zs draws it); it drains again from full once the sweep is done. No step ever breaks off (owner 07:07).
 	private void BarReset(int n)
 	{
+		// (11-11: the bar is the clock now, and DEATH IN was never reset by a kill, so nothing refills here; the time a
+		// kill buys still pours into the clock, and the bar rises with it)
 		int e = Elapsed(n);
-		refillTic[n] = level.maptime;
-		refillOldE[n] = e;
-		barStart[n] = level.maptime + REFILL_TICS;
-		Log(String.Format("player %d bar RESET to full (a target killed, %d of %d owed): it had drained %.2f s (%s step); refill sweep %d tics; DEATH IN not reset (%.2f s)",
-			n, Killed(n), owed[n], e / double(TICRATE), TierName(TierAt(e)), REFILL_TICS, clk[n] / TICRATE));
+		Log(String.Format("player %d a target killed, %d of %d owed: the bar stays with DEATH IN (%.2f s left, %s step; no refill)",
+			n, Killed(n), owed[n], clk[n] / TICRATE, TierName(TierAt(e))));
 	}
 	static clearscope String TierName(int t) { return t == 0 ? "top" : (t == 1 ? "middle" : "bottom"); }
 
@@ -447,7 +452,12 @@ class RSQSM_Down : EventHandler
 		cK[n] = nk;
 		if (nk >= 1.0) { CrouchRestore(n, "risen"); return; }
 		double m = min(1.0, nk / cf);
-		pmo.ViewHeight = cVH[n] * m;
+		// STANDING IN A LIQUID (owner 11-11 23:56: "sometimes i am lowered outside of the map when i stand in liquid with MTO
+		// liquids"): a liquid's foot clip (MTO Liquids' TERRAIN: 10 units) comes off the eye as well, so the 40% view sat
+		// near the floor there and a small lean took the head through it. The lowered part of the drop gives the foot clip
+		// back (none of it standing, all of it fully down), so the eye is 40% of standing above the liquid's floor.
+		double fcBack = pmo.Floorclip > 0 ? pmo.Floorclip * clamp((1.0 - nk) / (1.0 - CROUCH_K), 0.0, 1.0) / cf : 0.0;
+		pmo.ViewHeight = cVH[n] * m + fcBack;
 		pmo.FullHeight = cFH[n] * m;
 		pmo.Height = pmo.FullHeight * cf;
 		p.viewheight = pmo.ViewHeight * cf;
@@ -622,7 +632,7 @@ class RSQSM_Down : EventHandler
 		owed[n] = downs;
 		beatNext[n] = level.maptime;
 		beatN[n] = 0;
-		lastKill[n] = 0;
+		lastKill[n] = 0; lastKillE[n] = 0;
 		bankHp[n] = 0; bankAr[n] = 0;
 		iconsUsed[n] = 0;
 		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since a Score life), world to %d%%",
@@ -1109,6 +1119,7 @@ class RSQSM_Down : EventHandler
 		tDead[i] = 1;
 		tDeadTic[i] = level.maptime;
 		lastKill[n] = level.maptime;
+		lastKillE[n] = Elapsed(n);
 		let m = tMon[i];
 		let pmo = players[n].mo;
 		int e = Elapsed(n);
@@ -1144,7 +1155,7 @@ class RSQSM_Down : EventHandler
 	{
 		let pmo = players[n].mo;
 		if (!pmo) return;
-		int e = max(0, (lastKill[n] > 0 ? lastKill[n] : level.maptime) - barStart[n]);
+		int e = lastKill[n] > 0 ? lastKillE[n] : Elapsed(n);
 		int tier = TierAt(e);
 		tierShown[n] = tier;
 		End(n, true);

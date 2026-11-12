@@ -356,9 +356,9 @@ class RSQSM_DownHud ui
 			double x0 = BL + (BR - BL) * k / 3.0, x1 = BL + (BR - BL) * (k + 1) / 3.0;
 			Box("RSPK20", x0, BASE - HT[k], x1, BASE);
 		}
-		double total = 3.0 * RSQSM_Down.StepTics();
-		double el = max(0.0, t - d.barStart[pn]);
-		double fill = clamp(1.0 - el / total, 0.0, 1.0);
+		// the bar is DEATH IN itself (owner 11-11; down.zs Elapsed): full at the Clock, rising with bought time
+		double total = max(1.0, RSQSM_Down.ClockTics());
+		double fill = clamp(d.clk[pn] / total, 0.0, 1.0);
 		double rt = t - d.refillTic[pn];
 		bool sweeping = rt >= 0 && rt < RSQSM_Down.REFILL_TICS;
 		double front = clamp(rt / RSQSM_Down.REFILL_TICS, 0.0, 1.0);

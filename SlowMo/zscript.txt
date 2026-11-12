@@ -12,6 +12,7 @@ version "4.14"
 #include "zscript/rsqsm/body.zs"
 #include "zscript/rsqsm/smooth.zs"
 #include "zscript/rsqsm/down.zs"        // DOWN v3 (owner 2026-11-06 / 11-07, design/NEAR_DEATH.md)
+#include "zscript/rsqsm/reverb.zs"      // LiveReverb only while DOWN (owner 2026-11-11)
 #include "zscript/rsqsm/downlook.zs"    // DOWN's look: the black and white world, DarkDoomZ (owner 2026-11-09)
 #include "zscript/rsqsm/platefont.zs"   // DOWN v3: the plate's font metrics (tools/plate/gen_plate_font.py)
 #include "zscript/rsqsm/plate.zs"       // DOWN v3: the crosshairs on the targets and the eye-level trail (in the world, the RSQ Wheel's way)

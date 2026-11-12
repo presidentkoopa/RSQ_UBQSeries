@@ -90,8 +90,10 @@ OptionMenu "RSQSM_Options"
 	RSQSMBreathTitle "BE QUICK OR BE DEAD"
 	Option "Be Quick or Be Dead", "rsqsm_down", "OnOff"
 	Option "Music", "rsqsm_down_music", "OnOff", "rsqsm_down"
+	// With the LiveReverb mod loaded: its reverb only while you are DOWN.
+	Option "LiveReverb Only When Down", "rsqsm_down_reverb", "OnOff", "rsqsm_down"
 	Slider "Clock (s)", "rsqsm_down_clock", 2, 30, 1, 0, "rsqsm_down"
-	Slider "Bar Step (s)", "rsqsm_down_step", 1, 10, 0.5, 1, "rsqsm_down"
+	// (Bar Step went 11-11: the bar is the DEATH IN clock itself, its three steps thirds of the Clock)
 	Slider "Slowest Clock Drain", "rsqsm_down_drain", 0, 1, 0.05, 2, "rsqsm_down"
 	Slider "Time: Small Monster (s)", "rsqsm_down_t_small", 0, 10, 0.5, 1, "rsqsm_down"
 	Slider "Time: Lost Soul (s)", "rsqsm_down_t_soul", 0, 10, 0.5, 1, "rsqsm_down"

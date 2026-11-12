@@ -115,10 +115,11 @@ server bool  rsqsm_heavy_armour  = true;  // Armour Broken: the hit takes your l
 server int   rsqsm_heavy_cool    = 3;     // its cooldown: 0 Once per 20 s, 1 Once per 60 s, 2 Use Shared, 3 No Limit
 
 // ---- DOWN v3 (owner-approved 2026-11-07, design/NEAR_DEATH.md; down.zs, plate.zs): the doc's numbers are the defaults -----
+server bool  rsqsm_down_reverb   = true;  // LiveReverb Only When Down (owner 11-11): with LiveReverb loaded and DOWN on, its reverb is held off until you are DOWN (reverb.zs)
 server bool  rsqsm_down_music    = true;  // DOWN Music (owner 11-09): the owner's "red alert" loop while you are DOWN (RSQ VisualRewards' scene music)
 server bool  rsqsm_down          = false; // DOWN (off by default, owner 11-07): a monster's killing hit holds you at 1 HP; kill your targets to get up
 server float rsqsm_down_clock    = 9;     // Clock (s, real time): DEATH IN starts here and never goes above it
-server float rsqsm_down_step     = 3;     // Bar Step (s): each of the reward bar's three steps
+server float rsqsm_down_step     = 3;     // (unused since 11-11: the bar is the clock, its steps thirds of the Clock; kept so a saved config still loads)
 server float rsqsm_down_drain    = 0.25;  // Slowest Clock Drain: bought time pours in, the clock still drains at this speed at best
 server float rsqsm_down_t_small  = 1;     // Time: a whole humanoid / Imp / Pinky's worth of damage buys this (s)
 server float rsqsm_down_t_soul   = 0.5;   // Time: a whole Lost Soul
