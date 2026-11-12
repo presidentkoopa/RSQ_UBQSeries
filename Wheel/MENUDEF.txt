@@ -251,7 +251,7 @@ OptionMenu wr_Test
 	StaticText " "
 	StaticText "Cards", 1
 	// Up to this many weapons every one gets its own card; past it, one card per slot.
-	Slider "Flat Ring Up To (weapons)", "wr_subcards_max", 0, 30, 1, 0
+	Slider "Flat Ring Up To (weapons)", "wr_subcards_max", 0, 99, 1, 0
 	Slider "Fan Close Forgiveness (tics)", "wr_subcards_grace", 0, 20, 1, 0
 	Slider "Constellation Lines Apart (tics)", "wr_star_stagger", 0, 12, 1, 0
 	Slider "Star Brightness",           "wr_stars_alpha",  0.0, 1.0, 0.05, 2
@@ -265,7 +265,7 @@ OptionMenu wr_Test
 	StaticText " "
 	StaticText "Data Sheet", 1
 	// Measured in card widths.
-	Slider "Data Sheet Size",           "wr_sheet_scale",  0.5, 2.0, 0.05, 2
+	Slider "Data Sheet Size",           "wr_sheet_scale",  0.5, 4.0, 0.05, 2
 	Slider "Pointing at a Gun: Rest For (tics)", "wr_inspect_dwell", 0, 70, 2, 0
 	Slider "Wrist Card: Hold the Pose (tics)", "wr_watch_dwell", 2, 30, 1, 0
 	Slider "Wrist Card Size",           "wr_watch_scale",  0.5, 2.0, 0.1, 1

@@ -3485,7 +3485,7 @@ class wr_Rig : EventHandler
 
 	// Geometry generation. Bump this whenever the numbers below change and every
 	// existing config picks them up once, automatically.
-	const CFG_VERSION = 30;
+	const CFG_VERSION = 31;
 
 	private void migrateConfig()
 	{
@@ -3529,6 +3529,13 @@ class wr_Rig : EventHandler
 		{
 			let oh = CVar.FindCVar("wr_toggle_prefer_hand");
 			if (oh && oh.GetInt() != 1) oh.SetInt(0);
+		}
+		// Gen 31 (owner 11-11 23:56: "change default option to not group cards past a certain point"): Flat Ring Up To
+		// 10 (the old default) becomes 99, so every weapon keeps its own card; a number the player chose stays.
+		if (from < 31)
+		{
+			let sm = CVar.FindCVar("wr_subcards_max");
+			if (sm && sm.GetInt() == 10) sm.SetInt(99);
 		}
 		stamp.SetInt(CFG_VERSION);
 	}
@@ -3671,7 +3678,7 @@ class wr_Rig : EventHandler
 		// readable, fifty collapses to the same nine learnable bearings it
 		// always would have, and nothing has to be reconfigured crossing that
 		// line because the ring crosses it by itself.
-		mFansEnabled = countAdmissible(pmo) > max(0, cv("wr_subcards_max", 10.0));
+		mFansEnabled = countAdmissible(pmo) > max(0, cv("wr_subcards_max", 99.0));
 
 		// Every slot Doom has, not the eight a 3x3 happened to hold. Slot 0 is
 		// walked last because that is where the engine's own cycling puts it.

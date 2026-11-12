@@ -502,7 +502,9 @@ user int   wr_readout = 0;
 // flat while it can afford to and only gives up the fixed bearing once it
 // actually has to, which is new: it used to be one or the other for the whole
 // game, not decided per loadout.
-user int wr_subcards_max = 10;
+// RSQ (owner 11-11 23:56: "change default option to not group cards past a certain point"): 99, so the ring stays
+// flat (every weapon its own card) unless the slider is brought down.
+user int wr_subcards_max = 99;
 
 // How many consecutive tics the laser has to spend on a REAL other card --
 // not empty space, which was already free -- before an open fan actually

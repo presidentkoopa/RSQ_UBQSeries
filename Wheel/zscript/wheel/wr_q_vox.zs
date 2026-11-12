@@ -41,6 +41,49 @@ class wr_VoxSize play
 		mRead = true;
 		int lump = -1;
 		while ((lump = Wads.FindLump("VOXELDEF", lump + 1)) != -1) ReadDef(Wads.ReadLump(lump));
+		// RSQ (owner 11-11 23:56: "Wheel needs to use pistol bd pistol model"): BD22 VR lends a pickup a voxel through
+		// MODELDEF, not VOXELDEF (its RSV_* holder blocks, MODELDEF.rsqvox): BrutalPistol's pickup frame P3ST K wears
+		// the voxel pack's pistG0 that way, so VOXELDEF had no size for it and the card kept the flat icon. Those
+		// blocks are read too, for frames VOXELDEF did not give. Only a MODELDEF lump that names RSV_ is read.
+		lump = -1;
+		while ((lump = Wads.FindLump("MODELDEF", lump + 1)) != -1)
+		{
+			string text = Wads.ReadLump(lump);
+			if (text.IndexOf("RSV_") >= 0) ReadLent(text);
+		}
+	}
+
+	// Model RSV_<x> { Model 0 "<kvx path>"  Scale <s> <s> <s>  FrameIndex <SPRT> <F> 0 0 }
+	private void ReadLent(string text)
+	{
+		Array<string> tok;
+		Tokens(text, tok);
+		for (int i = 0; i + 2 < tok.Size(); i++)
+		{
+			if (!(tok[i] ~== "model") || tok[i + 1].Left(4) != "RSV_" || tok[i + 2] != "{") continue;
+			string path = "";
+			double scale = 1.0;
+			Array<string> frames;
+			int j = i + 3;
+			for (; j < tok.Size() && tok[j] != "}"; j++)
+			{
+				if (tok[j] ~== "model" && j + 2 < tok.Size()) { path = tok[j + 2]; j += 2; }
+				else if (tok[j] ~== "scale" && j + 1 < tok.Size()) scale = tok[j + 1].ToDouble();
+				else if (tok[j] ~== "frameindex" && j + 2 < tok.Size()) { frames.Push((tok[j + 1] .. tok[j + 2]).MakeUpper()); j += 2; }
+			}
+			if (path.Length() >= 4 && path.Mid(path.Length() - 4, 4) ~== ".kvx")
+			{
+				int x, y, z;
+				[x, y, z] = KvxDims(path);
+				for (int f = 0; x > 0 && f < frames.Size(); f++)
+				{
+					if (mW.CheckKey(frames[f])) continue;   // VOXELDEF's own entry stands
+					mW.Insert(frames[f], max(x, y) * scale);
+					mH.Insert(frames[f], z * scale);
+				}
+			}
+			i = j;
+		}
 	}
 
 	private void ReadDef(string text)
