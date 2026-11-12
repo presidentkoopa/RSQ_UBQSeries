@@ -602,11 +602,6 @@ user bool  wr_sheet       = true;
 // sheet rather than by your cards.
 user float wr_sheet_scale = 1.0;
 
-// How far in front of your eyes the Wheel's data sheet is drawn, in metres (owner 11-11: "drawn far from our face";
-// "Bring it closer"). It comes toward you along your line of sight and shrinks to match, so it covers the same part
-// of your view; only its depth changes. 0 = where the ring is, as before.
-user float wr_sheet_near = 0.5;
-
 // The rolled stat rows -- tier, condition, DPS, accuracy, crit, velocity,
 // rate of fire, real magazine size. Read straight off the weapon, so they
 // appear for any mod that stores its numbers in fields and simply do not
