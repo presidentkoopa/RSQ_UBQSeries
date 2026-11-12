@@ -119,6 +119,7 @@ extend class RSQMB_Handler
 	Array<int>    arrTics;        // its state's tics when it was held (put back at the reveal)
 	Array<int>    arrBorn;        // the tic it landed
 	Array<bool>   arrOwnInv;      // its own INVULNERABLE, read at its reveal (Reveal)
+	Array<int>    arrTries;       // times this thrall was landed again for a Champion power of its own (RerollThrall)
 	int    arrBeamSet;            // 0: V1 thralls + V3 miniboss, 1: V2 thralls + V4 miniboss (owner 11:20, random per Bossfight)
 	Actor  arrProbe;              // the arrival's sound source
 	bool   arrForce;              // Ignore Spawn Restrictions set this one down untested: the landing keeps what lands
@@ -888,13 +889,13 @@ extend class RSQMB_Handler
 		arrTic = level.maptime;
 		arrPn = p.PlayerNumber();
 		arrTier = tier;
-		arrMon.Clear(); arrAt.Clear(); arrState.Clear(); arrReveal.Clear(); arrCol.Clear(); arrTics.Clear(); arrBorn.Clear(); arrOwnInv.Clear();
+		arrMon.Clear(); arrAt.Clear(); arrState.Clear(); arrReveal.Clear(); arrCol.Clear(); arrTics.Clear(); arrBorn.Clear(); arrOwnInv.Clear(); arrTries.Clear();
 		int nth = arrX.Size() - 1;
 		for (int i = 0; i < arrX.Size(); i++)
 		{
 			arrMon.Push(null);
 			arrAt.Push(i == 0 ? max(MB_AT, nth * THRALL_STEP) : (i - 1) * THRALL_STEP);
-			arrState.Push(0); arrReveal.Push(0); arrCol.Push(0); arrTics.Push(1); arrBorn.Push(0);
+			arrState.Push(0); arrReveal.Push(0); arrCol.Push(0); arrTics.Push(1); arrBorn.Push(0); arrTries.Push(0);
 		}
 		arrBeamSet = random[rsqmbbf](0, 1);
 		bfWhy = "";
@@ -990,6 +991,7 @@ extend class RSQMB_Handler
 			if (arrState[i] == 1)
 			{
 				if (!a || a.health <= 0) { arrState[i] = 3; continue; }
+				if (now - arrBorn[i] == CHAMP_AT && i > 0 && RerollThrall(i, age)) { allIn = false; continue; }
 				if (now - arrBorn[i] == CHAMP_AT) ChampionFallback(a);
 				if (now >= arrReveal[i]) Reveal(i, p);
 				else allIn = false;
@@ -1206,6 +1208,33 @@ extend class RSQMB_Handler
 		// (its held state stays held: DORMANT alone does not stop a monster's states; Wake below starts it, from ChargeEnd)
 	}
 	// a landed monster starts to act: its state's tics back, awake, on the player who called it in (boss.zs ChargeEnd)
+	// EVERY THRALL A DIFFERENT CHAMPION (owner 2026-11-12 17:04: "make sure thralls are always different, we have like 17
+	// champions and we max at 5 thralls"). Champions rolls each one's colour itself, as it lands (Land); CHAMP_AT tics in,
+	// while it is still held and hidden in its beam, a thrall that did not become a Champion, or became one of a colour
+	// another thrall of this encounter already has, is taken out and lands again (a new roll), up to REROLL_MAX times.
+	const REROLL_MAX = 12;
+	bool RerollThrall(int i, int age)
+	{
+		let a = arrMon[i];
+		if (!a || !Loaded("champion_Token") || i >= arrTries.Size()) return false;
+		bool real = a.CountInv("champion_PersistentInfo") > 0;
+		int c = ChampIconOf(a);
+		bool dup = false;
+		for (int k = 1; k < arrMon.Size() && real && c >= 0; k++)
+			if (k != i && arrMon[k] && arrState[k] != 3 && ChampIconOf(arrMon[k]) == c) dup = true;
+		if (real && c >= 0 && !dup) return false;
+		if (arrTries[i] >= REROLL_MAX) return false;
+		arrTries[i]++;
+		if (debug) Console.Printf("RSQMB arrival: thrall %d %s, lands again (%d)", i, !real || c < 0 ? "is not a Champion" : "has a colour another thrall has", arrTries[i]);
+		ArrowClear(a);
+		a.ClearCounters();
+		a.Destroy();
+		arrMon[i] = null;
+		arrState[i] = 0;
+		arrAt[i] = age + 1;
+		return true;
+	}
+
 	void Wake(Actor a)
 	{
 		if (!a) return;

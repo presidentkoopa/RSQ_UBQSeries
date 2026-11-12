@@ -194,7 +194,8 @@ the miniboss lands its bar fills over three seconds while an LED clock beside it
 clock runs out nobody in the encounter moves and nobody can be hurt. The same clock shows how long a window stays open
 after a thrall dies.
 
-Each thrall's bar is in its own Champion colour. Shoot the miniboss while it is guarded and `GUARD` on its bar shakes
+No two thralls share a Champion power: a thrall that lands with a power another thrall already has (or that Champions
+did not make a Champion) is taken out inside its beam and lands again. Each thrall's bar is in its own Champion colour. Shoot the miniboss while it is guarded and `GUARD` on its bar shakes
 and flashes gold, so you know the hit landed and did nothing.
 
 ![The miniboss bar on the rig, charging: grey bar, GUARD, X3 and the LED clock counting down, five thrall bars with their crosshair and Champion icon](docs/readme/rig_bar_charge.jpg)
@@ -400,6 +401,7 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, runs `diff1`, `diff2`) | Every thrall a different Champion: run diff2 rolled a repeat, landed it again, and bound 5 thralls with 5 different powers (White, Grey, Indigo, Yellow, Blue) |
 | **rig only, not headset-confirmed** (2026-11-12, runs `charge2`, `mb9`, `beams1`, with Champions' Legendoom Compatibility, Dormant and Booster on) | Thralls are real Champions (LegenDoom legendaries that Champions turns into Champions): 5 thralls, 5 different powers; a thrall that does not fit tries the spots round its own; the clock only during the charge; the bar raised; thrall bars in their Champion colours; GUARD lit on blocked hits. The Start Fight card on the off-hand wrist only: loads, not shown |
 | **rig only, not headset-confirmed** (2026-11-12, run `bbar6`; called in by console) | The miniboss bar moved to Be Quick or Be Dead's place and size, and drawn as the mockup: skull and crosshair, gold name, GUARD in silver, X3, the clock counting down, thrall bars with their crosshair and Champion icon. On the rig at HUD size 11 the status bar's health and armour numbers sit over the thrall row |
 | **rig only, not headset-confirmed** (2026-11-12, runs `bbar3`, `bbar5`; called in by console) | The miniboss bar: the empty bar first, thrall bars with their icon pairs, the head, name, GUARD on a grey bar charging, X2, the LED clock counting down, then the bar in its colour and the clock on a window. During the charge the thralls stood still and the player took no damage. Not seen: the sliver's first frames, the white flash, the trail, Photosensitive Mode, the bar without RSQ VisualRewards or RSQ SlowMo loaded |

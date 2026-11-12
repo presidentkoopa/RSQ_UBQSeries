@@ -653,7 +653,7 @@ class RS_AraBoom1 : Actor   // CH Spiders.txt:1547
 	States
 	{
 	Spawn:
-		BAR1 AB 0;
+		TNT1 AB 0;
 		Goto Death;
 	Death:
 		MISL B 8 Bright;
@@ -676,7 +676,7 @@ class RS_AraBoom2 : Actor   // CH Spiders.txt:1567
 	States
 	{
 	Spawn:
-		BAR1 AB 0 A_PlaySound("weapons/firex4");
+		TNT1 AB 0 A_PlaySound("weapons/firex4");
 		Goto Death;
 	Death:
 		MISL B 8 Bright;

@@ -865,7 +865,7 @@ class RS_HKRedDeath : Actor
 	States
 	{
 	Spawn:
-		BAR1 AB 0 A_PlaySound("world/barrelx");
+		TNT1 AB 0 A_PlaySound("world/barrelx");
 		Goto Death;
 	Death:
 		MISL B 8 Bright A_Explode(random(5,10),42);

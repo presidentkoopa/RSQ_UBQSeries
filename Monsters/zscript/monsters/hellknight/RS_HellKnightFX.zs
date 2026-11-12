@@ -563,7 +563,7 @@ class RS_HKSplashDed : Actor   // CH Hellknights.txt:1255 -- the XDeath blood bu
 	States
 	{
 	Spawn:
-		BAR1 A 0;
+		TNT1 A 0;
 		Goto Death;
 	Death:
 		BAL7 C 6 Bright A_XScream;
