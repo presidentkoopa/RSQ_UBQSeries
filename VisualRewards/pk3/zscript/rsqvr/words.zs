@@ -91,7 +91,7 @@ class RSQVR_FxHandler : EventHandler
 	transient Array<TextureID> glyphTex;
 	transient Array<TextureID> popFrames;
 	transient int readAt;
-	transient bool wordsOn, popsOn, photo, ldWordOn;
+	transient bool wordsOn, popsOn, photo, ldWordOn, ldDropOn;
 	transient Array<TextureID> halfTex;      // QVTnnn (top halves) then QVBnnn (bottom halves), 33..96 (TEXTURES.rsqvrsotn)
 	transient int cbMode;
 	transient double wordSize, far;
@@ -395,6 +395,8 @@ class RSQVR_FxHandler : EventHandler
 		wordSize = c ? clamp(c.GetFloat(), 0.25, 4.0) : 1.0;
 		c = CVar.GetCvar('rsqvr_ldword', players[consoleplayer]);
 		ldWordOn = !c || c.GetBool();
+		c = CVar.GetCvar('rsqvr_lddrop', players[consoleplayer]);
+		ldDropOn = !c || c.GetBool();
 		cbMode = 0;
 		{ Name rsqaN = "RSQA_Menu"; class<Object> rsqaC = rsqaN; if (rsqaC) { let cb = CVar.FindCVar("rsqa_colorblind"); if (cb) cbMode = clamp(cb.GetInt(), 0, 4); } }
 		let cf = CVar.FindCVar('rsqthp_far');
@@ -429,7 +431,8 @@ class RSQVR_FxHandler : EventHandler
 		{
 			let w = words[i];
 			// LEGENDARY has its own row (rsqvr_ldword), the service's words Monster Words (rsqvr_words)
-			bool on = w.tag == 'legendary' ? ldWordOn : wordsOn;
+			// and a LegenDoom drop's words theirs (rsqvr_lddrop)
+			bool on = w.tag == 'legendary' ? ldWordOn : w.tag == 'lddrop' ? ldDropOn : wordsOn;
 			if (!on || !cam) { HideWord(w); continue; }
 			double heldUp = 0;
 			for (int j = 0; j < words.Size(); j++)

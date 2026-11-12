@@ -96,4 +96,5 @@ user   bool rsqvr_scene_music = true;   // Scene Music: a scene's own track (a B
 user   float rsqvr_scene_volume = 1.0;   // Scene Music Volume: the scene track's loudness (the level music under it fades to silent whatever this is)
 user   float rsqvr_scene_fade = 2.0;     // Scene Crossfade (s): how long a scene track takes to come in or go
 user   bool rsqvr_ldword = true;  // LegenDoom: LEGENDARY Word: LEGENDARY over a LegenDoom legendary once it rises (rsqvr/ldword.zs; off: nothing, as LegenDoom)
+user   bool rsqvr_lddrop = true;  // LegenDoom: Drop Words: the rarity and the power's name over a LegenDoom drop until it is picked up (rsqvr/ldword.zs; off: nothing, as LegenDoom)
 user   bool rsqvr_pops  = true;   // Pops: the small ring and star burst another mod asks for (a thrall's kill)

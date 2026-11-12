@@ -153,4 +153,4 @@ and the info screen (L).
 - LEGENDARY over a risen legendary is in RSQ VisualRewards, the home of monster words (`VisualRewards/pk3/zscript/rsqvr/ldword.zs`;
   the two-tone SOTN look added to `words.zs`).
 - One rig run, rig only, not headset-confirmed: `design/rigtest_2026-11-10/RESULTS_LDH.md`. LegenDoom's buff row at the top
-  cannot be hidden from ZScript (open there). The words over the drop were not built.
+  cannot be hidden from ZScript (open there). The words over the drop: built 11-11 22:00 in VisualRewards `rsqvr/ldword.zs` (code only, not shown).

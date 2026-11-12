@@ -47,6 +47,7 @@ class RSQVR_LDWord : EventHandler
 
 	override void WorldTick()
 	{
+		if (fresh.Size() || drops.Size()) DropTick();
 		if (!watch.Size()) return;
 		if (!checked) Check();
 		for (int i = watch.Size() - 1; i >= 0; i--)
@@ -69,5 +70,103 @@ class RSQVR_LDWord : EventHandler
 		return mbSvc.GetInt("miniboss", "", 0, 0, m) == 1 || mbSvc.GetInt("thrall", "", 0, 0, m) == 1;
 	}
 
-	override void WorldUnloaded(WorldEvent e) { watch.Clear(); }
+	// ---- THE WORDS OVER A LEGENDOOM DROP (owner 11-11 22:00: "the words over a LegenDoom drop (EPIC plus the power's
+	// name)"; direction D, design/mockups/legendoom_hud/README.md "Drop (from B): our gun glows, with EPIC and the power's
+	// name over it"). Two held words over the drop until it is picked up or gone: the power's name (LegenDoom's own
+	// LD_FX_TITLE_<Power>) and the rarity (LD_RARITY_NAME_<Rarity>, else the rarity's English name), both in the SOTN look
+	// in the rarity's two colours (the same table as the Gun Bonsai VR card: Common green, Uncommon blue, Rare purple,
+	// Epic orange). A drop is told by the tokens it carries, by name: LD<Slot>Legendary<Rarity> and LD<Slot>Effect_<Power>
+	// (BD22 VR's LD mode gives them to its RSLD_LegendaryPickup in Setup, "as LegenDoom's do"). A new pickup is looked at
+	// for its first 8 tics, since the tokens can arrive after it spawns. Without LegenDoom nothing carries them.
+	// OFF: the LegenDoom: Drop Words row (rsqvr_lddrop, user).
+	// (QZD 17.3 keeps constant arrays inside functions)
+	private static String SlotN(int i)
+	{
+		static const String T[] = { "Fists", "Chainsaw", "Pistol", "Shotgun", "SuperShotgun", "Chaingun", "RocketLauncher", "PlasmaRifle", "BFG9000" };
+		return T[clamp(i, 0, 8)];
+	}
+	private static String RarN(int i)
+	{
+		static const String T[] = { "Common", "Uncommon", "Rare", "Epic" };
+		return T[clamp(i, 0, 3)];
+	}
+	private static int RTop(int i)
+	{
+		static const int T[] = { 0x5AE65A, 0x6496FF, 0xDC6EFF, 0xF09614 };
+		return T[clamp(i, 0, 3)];
+	}
+	private static int RBot(int i)
+	{
+		static const int T[] = { 0x96FF78, 0xAAD2FF, 0xF0B4FF, 0xFFEC78 };
+		return T[clamp(i, 0, 3)];
+	}
+
+	Array<Inventory> fresh;      // new pickups, looked at for 8 tics
+	Array<int> freshT;
+	Array<Inventory> drops;      // drops wearing words
+	Array<String> dropW1, dropW2;
+
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let it = Inventory(e.Thing);
+		if (!it || it.Owner) return;
+		fresh.Push(it); freshT.Push(0);
+	}
+
+	private static String LocOr(String key, String fallback)
+	{
+		String v = StringTable.Localize("$" .. key);
+		return (v == key || v == "$" .. key || v == "") ? fallback : v;
+	}
+
+	// "" when the pickup carries no legendary power; else the power name and the rarity word, and the rarity index
+	private static String, String, int ReadDrop(Inventory d)
+	{
+		String pow = ""; int rar = -1;
+		for (let i = d.Inv; i; i = i.Inv)
+		{
+			String cn = i.GetClassName();
+			if (cn.Left(2) != "LD") continue;
+			for (int s = 0; s < 9; s++)
+			{
+				String pe = "LD" .. SlotN(s) .. "Effect_";
+				if (cn.Length() > pe.Length() && cn.Left(pe.Length()) == pe) pow = cn.Mid(pe.Length());
+				String pl = "LD" .. SlotN(s) .. "Legendary";
+				if (cn.Length() > pl.Length() && cn.Left(pl.Length()) == pl)
+					for (int r = 0; r < 4; r++) if (cn.Mid(pl.Length()) ~== RarN(r)) rar = r;
+			}
+		}
+		if (pow == "" || rar < 0) return "", "", -1;
+		return LocOr("LD_FX_TITLE_" .. pow, pow), LocOr("LD_RARITY_NAME_" .. RarN(rar), RarN(rar)), rar;
+	}
+
+	private void DropTick()
+	{
+		for (int i = fresh.Size() - 1; i >= 0; i--)
+		{
+			let d = fresh[i];
+			if (!d || d.bDestroyed || d.Owner || ++freshT[i] > 8) { fresh.Delete(i); freshT.Delete(i); continue; }
+			String w1, w2; int rar;
+			[w1, w2, rar] = ReadDrop(d);
+			if (rar < 0) continue;
+			fresh.Delete(i); freshT.Delete(i);
+			let h = RSQVR_FxHandler.Get();
+			if (!h) continue;
+			// the power's name first (lower), the rarity above it
+			h.WordHoldSotn(w1, RTop(rar), RBot(rar), 1.0, d, 'lddrop');
+			h.WordHoldSotn(w2, RTop(rar), RBot(rar), 1.0, d, 'lddrop');
+			drops.Push(d); dropW1.Push(w1); dropW2.Push(w2);
+		}
+		for (int i = drops.Size() - 1; i >= 0; i--)
+		{
+			let d = drops[i];
+			if (d && !d.bDestroyed && !d.Owner) continue;
+			// picked up (it went into someone's inventory) or gone: the words fade
+			let h = RSQVR_FxHandler.Get();
+			if (h && d) { h.ClearWord(dropW1[i], d); h.ClearWord(dropW2[i], d); }
+			drops.Delete(i); dropW1.Delete(i); dropW2.Delete(i);
+		}
+	}
+
+	override void WorldUnloaded(WorldEvent e) { watch.Clear(); fresh.Clear(); freshT.Clear(); drops.Clear(); dropW1.Clear(); dropW2.Clear(); }
 }

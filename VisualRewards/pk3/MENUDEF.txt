@@ -253,6 +253,7 @@ OptionMenu "RSQTHP_Options"
 	Option "Arrival Beams", "rsqvr_beams", "OnOff"
 	Option "Monster Words", "rsqvr_words", "OnOff"
 	Option "LegenDoom: LEGENDARY Word", "rsqvr_ldword", "OnOff"
+	Option "LegenDoom: Drop Words", "rsqvr_lddrop", "OnOff"
 	Option "Pops", "rsqvr_pops", "OnOff"
 	Option "Scene Music", "rsqvr_scene_music", "OnOff"
 	Slider "Scene Music Volume", "rsqvr_scene_volume", 0.1, 1.0, 0.05, 2
