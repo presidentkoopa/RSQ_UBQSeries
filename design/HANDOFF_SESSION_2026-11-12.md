@@ -191,3 +191,35 @@ Done, in PK3TEST (rig only, not headset-confirmed):
 Found, not fixed: BD22 imp frame drops. A BD22 Imp attacking on the rig adds ~9 actors a shot (FireBall_ + 3 trail
 sprites a tic, one IMPBALL light); nothing heavy. Asked the owner whether it is every attack or the first one.
 Still open: floor candle and rogue voxels (screenshots asked).
+
+## PAUSE (owner 2026-11-12 17:56): outstanding, tabled, parked
+
+Everything below is also in the reply to the owner. All packs current in pk3/ (pushed) and PK3TEST (BD 2.0.4o).
+
+Outstanding issues
+1. BD22 Imp vanishes for a frame or two before it throws (every time, owner 17:13). Not reproduced on the rig: per-tic
+   log (impatk3) shows TRO1 A t96-103, TRO1 B t104-105, TROO G t106-111, never invisible, style 6 (Champions sets every
+   monster Translucent), alpha 1. Next: owner's headset test without Champions; if it goes away, put monsters Champions
+   did not make ghosts back to Normal style.
+2. Rogue voxels still seen "here and there". Fixed so far: GunCards watch-card cull (11-12), Monsters' three effects that
+   opened on BAR1 (the voxel pack's barrel). Not confirmed.
+3. RSQ Monsters shares sprite names with the load order (36 with brutal22test6, 43 with XMVE, 11 with Champions, 3 with
+   Legion of Bones; e.g. BLUD, CBAL, BSPL). Ours, loaded last, replace theirs. Only WICK renamed (the candle). Since RSQ
+   Monsters only feeds the miniboss now (owner 17:21), renaming all of ours is safe.
+4. The floor candle's flame now draws nothing (its WICK art is not in the load order; ours was standing in).
+5. Thrall arrival beams use RSQ Monsters' tier colour (grey for Common), the bars use the Champion colour: asked, unanswered.
+6. Miniboss thralls are real Champions only with Champions' Legendoom Compatibility on (the owner's setting); off, they
+   get a colour token in name only. Rig runs need `champion_legendoom 1; champion_dormant 1; champion_booster 1`.
+7. Old BD22_VR-Reloaded_2.0.4i..n in PK3TEST (cannot delete from here).
+Not yet seen working (code or loads only): GunCards wider sliders; Start Fight card on the off-hand wrist; lasers held
+gangsta style; crisis dive; Wheel picked-card sizes at 1.8/1.35/1.12; level card place and sweep; DOWN fly-in crosshair,
+TARGET / +SEC labels; holster lift. Nothing from 11-12 is headset-confirmed.
+
+Tabled / parked
+- Fly-in crosshairs (Predator / Virtual Cop, design/refs/crosshair_flyin): built for DOWN's target; not for the miniboss.
+- GunCards full per-gun roll / pitch / yaw (needs the card drawn in the world); owner took wider sliders instead.
+- Words over Champions monsters (11-11).
+- Melee boxing gloves with moves of their own (11-11).
+- Rumble Backup through RSQ Accessibility for every mod (queued 11-10).
+- Wheel holster web drawn with Tactical Rig's mirror (later, 11-07).
+- Laser Sight Quest beam stray bright voxels (11-07).
