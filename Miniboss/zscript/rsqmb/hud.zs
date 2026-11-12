@@ -118,8 +118,8 @@ extend class RSQMB_Handler
 	static ui int MeterBottom()
 	{
 		if (gamestate != GS_LEVEL) return -1;
-		// the fight's stack in its place: its bottom (RSQ SlowMo's countdown and Score's combo rows go under it)
-		if (StackShown()) { double sx, sy, sw, sh, sb; [sx, sy, sw, sh, sb] = StackRect(); return int(ceil(sb)); }
+		// while a miniboss is on the map its bar stands where Be Quick or Be Dead does (bossbar.zs), not under Score: nothing here
+		if (StackShown()) return -1;
 		if (!MeterShown()) return -1;
 		double x, y, w, h;
 		[x, y, w, h] = MeterRect();
@@ -370,7 +370,6 @@ extend class RSQMB_Handler
 	// the stack's bar rect (x, y, w, h: the main bar) and its bottom
 	static ui double, double, double, double, double StackRect()
 	{
-		if (true) { double bx, by, bw, bh, bb; [bx, by, bw, bh, bb] = BossBarRect(); return bx, by, bw, bh, bb; }   // the miniboss bar's block (bossbar.zs)
 		double x, y, w, h;
 		[x, y, w, h] = MeterRect();
 		let hd = HD();

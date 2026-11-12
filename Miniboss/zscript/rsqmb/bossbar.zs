@@ -1,149 +1,189 @@
 // ============================================================================
-// RSQ_Miniboss -- THE MINIBOSS BAR on the HUD (owner 2026-11-12: mockup "E - Arrival" on the boss bar canvas, approved
-// 15:07 "Yes, build it"). It takes the place of the fight's HUD stack (hud.zs DrawStack, kept but no longer called).
+// RSQ_Miniboss -- THE MINIBOSS BAR on the HUD (owner 2026-11-12, mockup "E - Arrival" on the boss bar canvas, approved 15:07
+// "Yes, build it"; its place, owner 05:56: "a hud boss health bar where Be Quick or Be Dead is").
 //
-// WHAT IS ON IT (owner 05:56, 06:08, 14:11):
-//   - the miniboss's head (its own sprite, the top of it) with a crosshair over it, left of the bar;
-//   - its name over the bar, gold, in the series' score font (RSQ VisualRewards' glyphs by name; the engine's small font
-//     without that pack);
-//   - a smooth slanted bar: white rim, dark well, the fill in its colour, a dark red trail where health just went;
-//   - "X2" at the bar's right end when it has more than one bar (its lives), with a slow shine;
-//   - "GUARD" in grey over the right end of the bar, and the bar greyed, while it cannot be hurt;
-//   - the LED clock right of that (RSQ SlowMo's DOWN readout, rebuilt here from boxes): seconds and hundredths until the
-//     guard ends, shown while a countdown runs (the arrival's charge; a window after a thrall dies);
-//   - under it one small slanted bar a thrall, and over each, side by side and centred, its crosshair icon (RSQ SlowMo's
-//     art by name) and its Champion power icon.
-// THE ARRIVAL (owner 14:11): the bar appears as a sliver and grows outward, empty; each thrall's bar pops in as it lands,
-// one by one; then the miniboss comes in and its bar charges up over 3 seconds, smoothly, grey, with the clock counting
-// 03:00 down; at 00:00 it flashes into its colour. While it charges the miniboss and its thralls take no damage and do
-// not act (boss.zs ChargeStart / ChargeEnd).
-// WHERE: where the stack was, under RSQ Score's bar (hud.zs MeterRect); RSQ SlowMo's rows and Score's combos sit under its
-// bottom (StackRect, "meter.bottom").
-// VR: boxes and textures cropped from the source only (no clip rectangle, no Screen.Dim): the slant is made of rows.
-// PHOTOSENSITIVE MODE (RSQMB_A11y): no flash, no shine. Rig only, not headset-confirmed.
+// WHERE AND HOW BIG (owner 15:28: "why is the bar where it is and not where we agreed it would be"): where RSQ SlowMo's
+// Be Quick or Be Dead panel stands, by the same rule (SlowMo/zscript/rsqsm/downhud.zs EyeMap and its placement): laid out
+// in the mockup's own pixels and scaled as one piece to half of what you see in the headset eye, centred under your gaze,
+// its foot where that panel's foot is, clear of the status bar and inside the series' safe area. While you are DOWN that
+// panel has the spot and this bar steps aside.
+// THE LOOK is the mockup's, piece for piece, from the same series art (tools/gen_bossbar.py bakes it):
+//   the head     the crowned skull with the red crosshair over it (RSQMBHD), 150 x 150 at 14, 36;
+//   the name     gold, the score font (MBFG glyphs), 32 high at 190, 44 ("<SPECIES> WARLORD", owner 14:11: not coloured);
+//   the bar      540 x 30 at 186, 90, leaning 26 degrees: a white rim (#e8ecf4, 4), a dark well (#120e1a), the fill in its
+//                colour (light at the top, deep at the foot), a dark red trail (#7c1422) where health just went;
+//                guarded, a grey fill (#b9bdc8 / #8a8f9c / #6a6e7a); a white flash as it goes live;
+//   GUARD        silver (MBFS glyphs), 22 high, ending at 706, over the bar's right end, while it cannot be hurt;
+//   X2           gold, 30 high at 744, 90, while it has more than one bar;
+//   the clock    96 x 38 at 826, 86: #1a0606 inside a #5a1410 rim, red (#ff3b30) seven-segment SS:hh (RSQ SlowMo's DOWN
+//                readout's digits), while the guard counts down (the charge) or a window is open;
+//   the thralls  a 150 x 16 bar each (rim 3) at y 238, 40 apart, centred under the miniboss bar; over each, side by side
+//                and centred, its crosshair (RSQ SlowMo's DOWN crosshairs, RSQMBX, in its colour) and its Champion icon.
+// THE ARRIVAL (owner 14:11): the bar appears as a sliver and grows outward, empty (BB_GROW); each thrall's bar and icons pop
+// in as it lands; the miniboss lands, its head, name and X2 come in, and its bar charges over 3 seconds while the clock
+// counts 03:00 down and nobody in the encounter acts or can be hurt (boss.zs ChargeStart / ChargeEnd); then it flashes into
+// its colour. Timings are the mockup's (its 12 s loop).
+// VR: boxes and textures only (no clip rectangle, no Screen.Dim). PHOTOSENSITIVE MODE (RSQMB_A11y): no flash.
+// Rig only, not headset-confirmed.
 // ============================================================================
 
 extend class RSQMB_Handler
 {
-	const BB_CHARGE = 105;      // the arrival's charge: 3 seconds (owner 14:11: "the miniboss bar takes 3 seconds to charge up")
-	const BB_GROW = 12.0;       // tics the bar takes to grow outward from a sliver
-	const BB_POP = 6.0;         // tics a thrall's bar and icons take to pop in
-	const BB_SLANT = 0.49;      // the lean: tan 26 degrees (the mockup's skew)
-	const BB_K = 1.5;           // the bar's thickness, x the meter bar's
+	const BB_CHARGE = 105;      // the arrival's charge: 3 seconds (owner 14:11)
+	const BB_GROW = 40.0;       // the sliver growing to the full bar (the mockup: 2% to 12% of 12 s)
+	const BB_POP = 13.0;        // a thrall's bar and icons popping in (3% of 12 s)
+	const BB_TFILL = 17.0;      // ... then its fill (4%)
+	const BB_ARRIVE = 10.0;     // the head, name and X2 coming in (2.5%)
+	const BB_FLASH = 18.0;      // the white flash going (4%)
+	const BB_LEAN = 0.4877;     // tan 26 degrees
+	// the mockup's frame: what is drawn spans x 14..922, y 36..254; its middle goes under the gaze, its foot where Be
+	// Quick or Be Dead's foot is
+	const BB_MW = 908.0;
+	const BB_MCX = 468.0;
+	const BB_MFOOT = 254.0;
+	const BB_EYE_TAN = 0.91;    // RSQ SlowMo's measured eye (downhud.zs EYE_TAN)
 
-	ui bool   bbWas;            // shown last frame
-	ui double bbStart;          // when it appeared
-	ui double bbLag;            // the trail's end, as a share of the bar
-	ui double bbLast;
-	ui double bbThrT[8];        // when each thrall's bar appeared (0: not yet)
-	ui double bbThrMax[8];      // the most health each was seen with
-	ui int    bbThrIc[8];       // its Champion icon, -1 none
+	ui bool   bbWas;
+	ui double bbStart;
+	ui double bbLag, bbLast, bbMbT;
+	ui double bbThrT[8];
+	ui double bbThrMax[8];
+	ui int    bbThrIc[8];
 	ui int    bbIcTic;
+	// this frame's mapping, mockup px -> screen px
+	ui double bbSx, bbSy, bbFx, bbFy;
+	ui double bbA;
 
-	// the bar's rect (x, y, w, h) and the whole block's bottom
-	static ui double, double, double, double, double BossBarRect()
+	ui double BX(double mx) { return bbFx + (mx - BB_MCX) * bbSx; }
+	ui double BY(double my) { return bbFy - (BB_MFOOT - my) * bbSy; }
+
+	// the HUD in the eye, as RSQ SlowMo's Be Quick or Be Dead panel maps it (downhud.zs EyeMap), and its placement
+	ui void BBMap()
 	{
-		double x, y, w, h;
-		[x, y, w, h] = MeterRect();
-		double bh = h * BB_K;
-		double barY = y + bh * 1.15;
-		let hd = HD();
-		int n = 0;
-		if (hd)
+		double sw = Screen.GetWidth(), shh = Screen.GetHeight();
+		double ptx, pty, gx, gy;
+		let vm = CVar.FindCVar("vr_mode");
+		if (!vm || vm.GetInt() == 0)
 		{
-			if (hd.arrPhase != 0) n = max(0, hd.arrState.Size() - 1);
-			else { let b = StackBoss(hd); if (b) n = b.thr.Size(); }
+			ptx = sw * 0.5 / BB_EYE_TAN; pty = ptx; gx = sw * 0.5; gy = shh * 0.5;
 		}
-		double bot = barY + bh;
-		if (n > 0) bot = barY + bh * (1.45 + 1.25 + 0.2 + 0.5);
-		return x, barY, w, bh, bot;
+		else
+		{
+			let hs = CVar.FindCVar("vr_hud_scale");
+			let hr = CVar.FindCVar("vr_hud_rotate");
+			double scale = hs ? max(0.05, hs.GetFloat()) : 0.4;
+			double ps = level.pixelstretch > 0 ? level.pixelstretch : 1.2;
+			ptx = sw * 0.5 / scale;
+			pty = shh * 0.5 / (scale * ps);
+			gx = sw * 0.5;
+			gy = shh * 0.5 - tan(hr ? hr.GetFloat() : 0.0) * pty;
+		}
+		double k = BB_EYE_TAN / BB_MW;
+		bbSx = k * ptx; bbSy = k * pty;
+		bbFx = gx;
+		bbFy = gy + 335.0 * (2 * BB_EYE_TAN / 1312.0) * pty;   // Be Quick or Be Dead's foot: 335 of its 1312 view px under the gaze
+		double f = clamp(CF('rsq_ui_inset', 0.04), 0.0, 0.3);
+		double floorY = shh * (1 - f);
+		if (StatusBar && screenblocks <= 10) floorY = min(floorY, StatusBar.GetTopOfStatusBar() - 2.0);
+		bbFy = min(bbFy, floorY);
+		// shrunk, never moved, if it would rise past the gaze
+		double tall = (BB_MFOOT - 36.0) * bbSy;
+		if (bbFy > gy && tall > bbFy - gy) { double kk = (bbFy - gy) / tall; bbSx *= kk; bbSy *= kk; }
 	}
 
-	// a Champion power's icon for this monster (graphics/RSQMBC00..21), -1 none
-	static clearscope int ChampIconOf(Actor a)
+	ui void BBBox(TextureID wh, double mx, double my, double mw, double mh, Color c, double a = 1.0)
 	{
-		if (!a) return -1;
-		static const String COL[] = { "DarkRed", "Red", "Orange", "Yellow", "DarkGreen", "Green", "Cyan", "Blue", "Indigo",
-			"Violet", "Pink", "Black", "Grey", "White", "Bronze", "Silver", "Gold" };
-		for (int i = 0; i < 17; i++) { class<Inventory> c = "champion_" .. COL[i] .. "Token"; if (c && a.FindInventory(c)) return i; }
-		return -1;
+		if (mw <= 0 || mh <= 0 || a <= 0) return;
+		Screen.DrawTexture(wh, false, BX(mx), BY(my), DTA_DestWidthF, mw * bbSx, DTA_DestHeightF, mh * bbSy,
+			DTA_Color, c, DTA_Alpha, a * bbA);
 	}
 
-	// a slanted bar made of rows: rim, well, a trail from frac to lag, the fill to frac
-	static ui void BBSlant(TextureID wh, double x, double y, double w, double h, double frac, Color c, double lag, double alpha, double flash, int rows = 8)
+	static ui Color BBGrad(Color top, Color mid, Color bot, double k)
 	{
-		if (w <= 0.5 || h <= 0.5 || alpha <= 0) return;
-		double rh = h / rows, bd = rh;
-		Color rim = Color(255, 0xE8, 0xEC, 0xF4), well = Color(255, 0x12, 0x0E, 0x1A), trail = Color(255, 0x7C, 0x14, 0x22);
-		Color lite = Mix(c, Color(255, 255, 255, 255), 0.45), dark = Mix(c, Color(255, 0, 0, 0), 0.3);
+		return k < 0.45 ? Mix(top, mid, k / 0.45) : Mix(mid, bot, (k - 0.45) / 0.55);
+	}
+
+	// the slanted bar at mockup x, y, w, h (leaning 26 degrees about its middle), rim rim: the trail to lag, the fill to frac
+	// (light top, c, deep foot), a white flash over it all; grow scales it across about its middle
+	ui void BBBar(TextureID wh, double mx, double my, double mw, double mh, double rim, double frac, Color top, Color c,
+		Color bot, double lag, double flash, double grow = 1.0, double a = 1.0)
+	{
+		if (a <= 0) return;
+		int rows = max(4, int(mh / 2.0));
+		double rh = mh / rows;
+		double w = mw * grow, x0 = mx + (mw - w) * 0.5;
+		Color rimc = Color(255, 0xE8, 0xEC, 0xF4), well = Color(255, 0x12, 0x0E, 0x1A), trail = Color(255, 0x7C, 0x14, 0x22);
 		frac = clamp(frac, 0.0, 1.0);
 		for (int r = 0; r < rows; r++)
 		{
-			double yy = y + r * rh;
-			double off = (0.5 - (r + 0.5) / rows) * h * BB_SLANT;
-			Box(wh, x + off, yy, w, rh + 0.6, rim, alpha);
-			if (r == 0 || r == rows - 1) continue;
-			double ix = x + off + bd, iw = w - 2 * bd;
+			double yy = my + r * rh, ym = yy + rh * 0.5;
+			double off = (mh * 0.5 - (ym - my)) * BB_LEAN;
+			BBBox(wh, x0 + off, yy, w, rh + 0.4, rimc, a);
+			if (ym - my < rim || my + mh - ym < rim) continue;
+			double ix = x0 + off + rim, iw = w - 2 * rim;
 			if (iw <= 0) continue;
-			Box(wh, ix, yy, iw, rh + 0.6, well, alpha);
-			if (lag > frac) Box(wh, ix + iw * frac, yy, iw * (min(lag, 1.0) - frac), rh + 0.6, trail, alpha);
-			if (frac > 0.001)
-			{
-				double k = (r - 1) / max(1.0, rows - 3.0);
-				Color fc = k < 0.45 ? Mix(lite, c, k / 0.45) : Mix(c, dark, (k - 0.45) / 0.55);
-				Box(wh, ix, yy, iw * frac, rh + 0.6, fc, alpha);
-			}
-			if (flash > 0.01) Box(wh, ix, yy, iw, rh + 0.6, Color(255, 255, 255, 255), alpha * flash);
+			BBBox(wh, ix, yy, iw, rh + 0.4, well, a);
+			if (lag > frac) BBBox(wh, ix + iw * frac, yy, iw * (min(lag, 1.0) - frac), rh + 0.4, trail, a);
+			double k = (ym - my - rim) / max(1.0, mh - 2 * rim);
+			if (frac > 0.001) BBBox(wh, ix, yy, iw * frac, rh + 0.4, BBGrad(top, c, bot, k), a);
+			if (flash > 0.01) BBBox(wh, ix, yy, iw, rh + 0.4, Color(255, 255, 255, 255), a * flash);
 		}
 	}
 
-	// a word in the score font, two-tone (the top half lighter); returns its width. measure: nothing is drawn
-	static ui double BBWord(String s, double x, double y, double hgt, Color c, double alpha, bool measure = false)
+	// a word in the baked score font (MBFG gold / MBFS silver), hgt mockup px tall, from mockup x (right: ending at x);
+	// returns its width in mockup px; measure: nothing drawn
+	ui double BBWord(String s, String set, double mx, double my, double hgt, double a = 1.0, bool right = false, bool measure = false)
 	{
-		TextureID probe = TexMan.CheckForTexture("QVW065", TexMan.Type_Any);
-		if (!probe.IsValid())
-		{
-			double k = hgt / max(1, smallfont.GetHeight());
-			if (!measure)
-				Screen.DrawText(smallfont, Font.CR_UNTRANSLATED, x, y, s, DTA_ScaleX, k, DTA_ScaleY, k, DTA_Color, c, DTA_Alpha, alpha);
-			return smallfont.StringWidth(s) * k;
-		}
-		Color top = Mix(c, Color(255, 255, 255, 255), 0.55);
-		double cx = x;
+		double k = hgt / 48.0;
+		double w = 0;
 		for (int i = 0; i < s.Length(); i++)
 		{
 			int ch = s.ByteAt(i);
 			if (ch >= 97 && ch <= 122) ch -= 32;
-			TextureID g;
-			g.SetInvalid();
-			if (ch > 32 && ch <= 96) g = TexMan.CheckForTexture(String.Format("QVW%03d", ch), TexMan.Type_Any);
-			if (!g.IsValid()) { cx += hgt * 0.45; continue; }
-			Vector2 ts = TexMan.GetScaledSize(g);
-			double gw = ts.x / max(1.0, ts.y) * hgt;
-			if (!measure)
-			{
-				Screen.DrawTexture(g, false, cx, y, DTA_DestWidthF, gw, DTA_DestHeightF, hgt, DTA_Color, c, DTA_Alpha, alpha);
-				Screen.DrawTexture(g, false, cx, y, DTA_DestWidthF, gw, DTA_DestHeightF, hgt * 0.5, DTA_SrcHeight, ts.y * 0.5,
-					DTA_Color, top, DTA_Alpha, alpha);
-			}
-			cx += gw * 0.92;
+			TextureID g = TexMan.CheckForTexture(String.Format("%s%03d", set, ch), TexMan.Type_Any);
+			if (ch == 32 || !g.IsValid()) { w += 18 * k; continue; }
+			Vector2 gs = TexMan.GetScaledSize(g);
+			w += gs.x * k + 2 * k;
 		}
-		return cx - x;
+		if (measure) return w;
+		double cx = right ? mx - w : mx;
+		for (int i = 0; i < s.Length(); i++)
+		{
+			int ch = s.ByteAt(i);
+			if (ch >= 97 && ch <= 122) ch -= 32;
+			TextureID g = TexMan.CheckForTexture(String.Format("%s%03d", set, ch), TexMan.Type_Any);
+			if (ch == 32 || !g.IsValid()) { cx += 18 * k; continue; }
+			Vector2 gs = TexMan.GetScaledSize(g);
+			double gw = gs.x * k;
+			Screen.DrawTexture(g, false, BX(cx), BY(my), DTA_DestWidthF, gw * bbSx, DTA_DestHeightF, hgt * bbSy, DTA_Alpha, a * bbA);
+			cx += gw + 2 * k;
+		}
+		return w;
 	}
 
-	// the LED clock: SS:HH in seven-segment digits, red on a dark panel (RSQ SlowMo's DOWN readout, downhud.zs)
-	static ui void BBClock(TextureID wh, double x, double y, double w, double h, double secs, bool blink)
+	// a texture at mockup x, y, w, h, scaled about its middle by sc
+	ui void BBTex(String name, double mx, double my, double mw, double mh, double a = 1.0, double sc = 1.0, Color c = 0xFFFFFFFF)
 	{
-		Box(wh, x, y, w, h, Color(255, 0x5A, 0x14, 0x10), 0.95);
-		double bd = max(1.0, h * 0.06);
-		Box(wh, x + bd, y + bd, w - 2 * bd, h - 2 * bd, Color(255, 0x1A, 0x06, 0x06), 0.95);
+		TextureID g = TexMan.CheckForTexture(name, TexMan.Type_Any);
+		if (!g.IsValid() || a <= 0) return;
+		double cx = mx + mw * 0.5, cy = my + mh * 0.5;
+		mw *= sc; mh *= sc;
+		Screen.DrawTexture(g, false, BX(cx - mw * 0.5), BY(cy - mh * 0.5), DTA_DestWidthF, mw * bbSx, DTA_DestHeightF, mh * bbSy,
+			DTA_Color, c, DTA_Alpha, a * bbA);
+	}
+
+	// the LED clock at mockup x, y, w, h: SS:hh, red seven-segment (RSQ SlowMo's DOWN readout's digits)
+	ui void BBClock(TextureID wh, double mx, double my, double mw, double mh, double secs, bool blink, double a)
+	{
+		BBBox(wh, mx, my, mw, mh, Color(255, 0x5A, 0x14, 0x10), a);
+		BBBox(wh, mx + 2, my + 2, mw - 4, mh - 4, Color(255, 0x1A, 0x06, 0x06), a);
 		secs = clamp(secs, 0.0, 99.99);
 		int ss = int(secs), hh = int((secs - ss) * 100);
 		static const int MASK[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F };   // a b c d e f g
 		static const double DX[] = { -3.65, -1.35, 1.35, 3.65 };
 		double dw = 1.9, dh = 3.6, th = 0.38;
-		double up = (h * 0.66) / dh;
-		double cx = x + w * 0.5, cy = y + h * 0.5;
+		double up = (mh * 0.62) / dh;
+		double cx = mx + mw * 0.5, cy = my + mh * 0.5;
 		Color lit = Color(255, 0xFF, 0x3B, 0x30);
 		for (int di = 0; di < 4; di++)
 		{
@@ -162,20 +202,30 @@ extend class RSQMB_Handler
 				case 6: sw = dw; break;
 				}
 				bool on = (MASK[dq] & (1 << s7)) != 0;
-				Box(wh, cx + (sx - sw * 0.5) * up, cy - (sy + sh * 0.5) * up, sw * up, sh * up, lit, on ? 1.0 : 0.12);
+				BBBox(wh, cx + (sx - sw * 0.5) * up, cy - (sy + sh * 0.5) * up, sw * up, sh * up, lit, a * (on ? 1.0 : 0.12));
 			}
 		}
 		for (int q = 0; q < 2; q++)
-			Box(wh, cx - 0.22 * up, cy + (q != 0 ? 0.85 : -0.85) * up - 0.22 * up, 0.45 * up, 0.45 * up, lit, blink ? 1.0 : 0.12);
+			BBBox(wh, cx - 0.22 * up, cy + (q != 0 ? 0.85 : -0.85) * up - 0.22 * up, 0.45 * up, 0.45 * up, lit, a * (blink ? 1.0 : 0.12));
 	}
 
-	// a square icon by name, centred; false when the texture is not there
-	static ui bool BBIcon(String name, double cx, double cy, double size, double alpha, Color c = 0xFFFFFFFF)
+	// a Champion power's icon for this monster (graphics/RSQMBC00..16), -1 none
+	static clearscope int ChampIconOf(Actor a)
 	{
-		TextureID g = TexMan.CheckForTexture(name, TexMan.Type_Any);
-		if (!g.IsValid()) return false;
-		Screen.DrawTexture(g, false, cx - size * 0.5, cy - size * 0.5, DTA_DestWidthF, size, DTA_DestHeightF, size, DTA_Color, c, DTA_Alpha, alpha);
-		return true;
+		if (!a) return -1;
+		static const String COL[] = { "DarkRed", "Red", "Orange", "Yellow", "DarkGreen", "Green", "Cyan", "Blue", "Indigo",
+			"Violet", "Pink", "Black", "Grey", "White", "Bronze", "Silver", "Gold" };
+		for (int i = 0; i < 17; i++) { class<Inventory> c = "champion_" .. COL[i] .. "Token"; if (c && a.FindInventory(c)) return i; }
+		return -1;
+	}
+
+	// the console player is DOWN (RSQ SlowMo, by name): Be Quick or Be Dead has the spot
+	static ui bool BBDown()
+	{
+		let it = ServiceIterator.Find("RSQSM_Service");
+		Service s;
+		while (s = it.Next()) return s.GetIntUI("down", "", consoleplayer, 0, null) > 0;
+		return false;
 	}
 
 	ui void DrawBossBar(RenderEvent e)
@@ -183,11 +233,10 @@ extend class RSQMB_Handler
 		TextureID wh = TexMan.CheckForTexture("RSQMBWH", TexMan.Type_Any);
 		let hd = HD();
 		if (!wh.IsValid() || !hd) return;
+		if (BBDown()) return;
 		double t = level.maptime + e.FracTic;
 		int now = level.maptime;
 		bool photo = RSQMB_A11y.Photo();
-		double x, barY, w, bh, bot;
-		[x, barY, w, bh, bot] = BossBarRect();
 		RSQMB_Boss b = null;
 		if (hd.arrPhase == 0) b = StackBoss(hd);
 		bool landing = hd.arrPhase != 0;
@@ -196,23 +245,24 @@ extend class RSQMB_Handler
 		{
 			bbWas = true;
 			bbStart = landing ? t : t - BB_GROW;   // a fight already under way (a save, a classic pick): no grow
-			bbLag = 0;
-			bbIcTic = 0;
+			bbLag = 0; bbIcTic = 0; bbMbT = 0;
 			for (int i = 0; i < 8; i++) { bbThrT[i] = 0; bbThrMax[i] = 0; bbThrIc[i] = -1; }
 		}
 		double dt = clamp(t - bbLast, 0.0, 3.0);
 		bbLast = t;
+		BBMap();
+		bbA = 0.97;
 
 		// ---- the bar: a sliver growing outward ----
 		double g = clamp((t - bbStart) / BB_GROW, 0.0, 1.0);
-		g = 1.0 - (1.0 - g) * (1.0 - g);
-		double bw = max(w * 0.02, w * g);
-		double bx = x + (w - bw) * 0.5;
+		g = 0.02 + 0.98 * (1.0 - (1.0 - g) * (1.0 - g) * (1.0 - g));
 
 		Actor mb = b ? b.mb : (hd.arrMon.Size() ? hd.arrMon[0] : null);
 		bool mbIn = b != null || (hd.arrState.Size() && hd.arrState[0] == 2);
-		Color col = b ? b.col : (hd.arrCol.Size() ? RGBc(hd.arrCol[0]) : Color(255, 255, 70, 50));
-		Color grey = Color(255, 0x8A, 0x8F, 0x9C);
+		if (mbIn && bbMbT <= 0) bbMbT = landing ? t : t - BB_ARRIVE;
+		Color col = b ? b.col : (hd.arrCol.Size() ? RGBc(hd.arrCol[0]) : Color(255, 0xFF, 0x46, 0x32));
+		Color lite = Mix(col, Color(255, 255, 255, 255), 0.5), deep = Mix(col, Color(255, 0, 0, 0), 0.25);
+		Color g1 = Color(255, 0xB9, 0xBD, 0xC8), g2 = Color(255, 0x8A, 0x8F, 0x9C), g3 = Color(255, 0x6A, 0x6E, 0x7A);
 
 		double frac = 0, flash = 0, clock = -1;
 		bool guard = false;
@@ -222,8 +272,7 @@ extend class RSQMB_Handler
 			double left = b.chargeUntil - t;
 			if (b.chargeUntil > 0 && left > 0)
 			{
-				// charging: grey, filling smoothly, the clock counting down
-				frac = clamp(1.0 - left / BB_CHARGE, 0.0, 1.0);
+				frac = clamp(1.0 - left / BB_CHARGE, 0.0, 1.0);   // charging: grey, filling smoothly, the clock counting down
 				clock = left / TICRATE;
 				guard = true;
 				bbLag = 0;
@@ -231,85 +280,53 @@ extend class RSQMB_Handler
 			else
 			{
 				frac = hp;
-				if (b.chargeUntil > 0 && !photo) flash = clamp(1.0 - (t - b.chargeUntil) / 6.0, 0.0, 1.0) * 0.9;
+				if (b.chargeUntil > 0 && !photo) flash = clamp(1.0 - (t - b.chargeUntil) / BB_FLASH, 0.0, 1.0) * 0.9;
 				int since = now - b.lifeLostAt;
 				if (b.lifeLostAt > 0 && since < REFILL)
 				{
 					double k = (since + e.FracTic) / REFILL;   // a life lost: the next bar rises, white into its colour
 					frac = min(frac, k);
 					col = Mix(Color(255, 255, 255, 255), b.col, k);
+					lite = Mix(col, Color(255, 255, 255, 255), 0.5); deep = Mix(col, Color(255, 0, 0, 0), 0.25);
 					bbLag = 0;
 				}
 				guard = b.ShieldUp() || b.Invulnerable();
-				if (b.winSeg >= 0) clock = max(0.0, (b.winEnd - t) / TICRATE);   // a window: how long it stays open
+				if (b.winSeg >= 0) clock = max(0.0, (b.winEnd - t) / TICRATE);
 				if (bbLag < frac) bbLag = frac;
 				else bbLag = max(frac, bbLag - dt * 0.012);
 			}
 		}
-		BBSlant(wh, bx, barY, bw, bh, frac, guard ? grey : col, guard ? 0.0 : bbLag, 0.97, flash);
+		if (guard) BBBar(wh, 186, 90, 540, 30, 4, frac, g1, g2, g3, bbLag, flash, g);
+		else       BBBar(wh, 186, 90, 540, 30, 4, frac, lite, col, deep, bbLag, flash, g);
 
-		// ---- GUARD, grey, over the bar's right end ----
-		if (guard && g >= 1.0)
-		{
-			double gh = bh * 0.62;
-			double gwid = BBWord("GUARD", 0, 0, gh, grey, 1.0, true);
-			BBWord("GUARD", x + w - gwid - bh * 0.7, barY + (bh - gh) * 0.5, gh, Color(255, 0xC8, 0xCC, 0xD6), 0.95);
-		}
+		// ---- GUARD, silver, over the bar's right end ----
+		if (guard && g >= 0.999) BBWord("GUARD", "MBFS", 706, 94, 22, 1.0, true);
 
-		// ---- its head, its name, X and its bars ----
+		// ---- its head, its name, X2 and the clock: they come in with it ----
 		if (mbIn && mb)
 		{
-			double hs = bh * 2.15;                      // from the name's top to the bar's bottom
-			double hx = x - hs - bh * 0.55, hy = barY + bh - hs;
-			double bd = max(1.0, bh * 0.08);
-			Box(wh, hx - bd, hy - bd, hs + 2 * bd, hs + 2 * bd, Color(255, 0xE8, 0xEC, 0xF4), 0.95);
-			Box(wh, hx, hy, hs, hs, Color(255, 0x12, 0x0E, 0x1A), 0.95);
-			State st = mb.SpawnState;
-			if (st)
-			{
-				TextureID sp; bool flip; Vector2 sc;
-				[sp, flip, sc] = st.GetSpriteTexture(0);
-				if (sp.IsValid())
-				{
-					Vector2 ts = TexMan.GetScaledSize(sp);
-					double srcH = min(ts.y, ts.x * 0.8);   // the top of the sprite: its head and shoulders
-					double srcW = min(ts.x, srcH);
-					double dw = hs, dh = hs * srcH / max(1.0, srcW);
-					if (dh > hs) { dw *= hs / dh; dh = hs; }
-					Screen.DrawTexture(sp, false, hx + (hs - dw) * 0.5, hy + hs - dh, DTA_DestWidthF, dw, DTA_DestHeightF, dh,
-						DTA_SrcX, (ts.x - srcW) * 0.5, DTA_SrcWidth, srcW, DTA_SrcY, 0.0, DTA_SrcHeight, srcH,
-						DTA_TranslationIndex, mb.Translation, DTA_FlipX, flip, DTA_TopOffset, 0, DTA_LeftOffset, 0);
-				}
-			}
-			if (!BBIcon("RSPA0116", hx + hs * 0.5, hy + hs * 0.5, hs * 1.2, 0.95, Color(255, 255, 210, 70)))
-				BBIcon("RSQMBSK1", hx + hs * 0.85, hy + hs * 0.15, hs * 0.5, 0.95);
-
+			double ar = clamp((t - bbMbT) / BB_ARRIVE, 0.0, 1.0);
+			BBTex("RSQMBHD", 14, 36, 150, 150, ar, 1.5 - 0.5 * ar);
 			String nm = mb.Species != 'None' ? String.Format("%s", mb.Species) : mb.GetTag();
 			nm = nm.MakeUpper() .. " WARLORD";
-			BBWord(nm, x + bh * 0.2, barY - bh * 1.05, bh * 0.85, Color(255, 255, 200, 60), 0.97);
-
+			double nh = 32;
+			double nw = BBWord(nm, "MBFG", 0, 0, nh, 1.0, false, true);
+			if (nw > 530) nh *= 530 / nw;
+			BBWord(nm, "MBFG", 190, 44 + (32 - nh), nh, ar);
 			int lives = b ? b.lives : (clamp(CI('rsqmb_lives', 3), 1, 9) + hd.LifeBonusPreview());
-			double rx = x + w + bh * 0.55;
-			if (lives > 1)
-			{
-				double shine = photo ? 0.0 : 0.5 + 0.5 * sin(t * 6.0);
-				Color xc = Mix(Color(255, 255, 200, 60), Color(255, 255, 255, 235), shine * 0.6);
-				rx += BBWord(String.Format("X%d", lives), rx, barY, bh, xc, 0.97) + bh * 0.4;
-			}
-			if (clock >= 0) BBClock(wh, rx, barY - bh * 0.12, bh * 3.2, bh * 1.24, clock, photo || ((now / 17) & 1) == 0);
+			if (lives > 1) BBWord(String.Format("X%d", lives), "MBFG", 744, 90, 30, ar);
+			if (clock >= 0) BBClock(wh, 826, 86, 96, 38, clock, photo || ((now / 17) & 1) == 0, ar);
 		}
 
 		// ---- the thralls: a small bar each, its crosshair and its power icon over it ----
 		int n = landing ? max(0, hd.arrState.Size() - 1) : (b ? b.thr.Size() : 0);
-		if (n > 8) n = 8;
+		if (n > 5) n = 5;
 		if (n <= 0) return;
 		bool fresh = bbIcTic == 0 || (now != bbIcTic && now % 10 == 0);
 		if (fresh) bbIcTic = now;
-		double gap = bh * 0.6;
-		double tw = min(w * 0.3, (w - gap * (n - 1)) / n);
-		double tot = tw * n + gap * (n - 1);
-		double tx0 = x + (w - tot) * 0.5;
-		double icY = barY + bh * 1.45, icH = bh * 1.25, tbY = icY + icH + bh * 0.2, tbH = bh * 0.5;
+		static const int XH[] = { 3, 7, 5, 4, 6 };
+		double tot = n * 150 + (n - 1) * 40;
+		double x0 = 456 - tot * 0.5;
 		for (int i = 0; i < n; i++)
 		{
 			Actor a = null;
@@ -323,27 +340,26 @@ extend class RSQMB_Handler
 			}
 			else
 			{
-				a = b.thr[i];
+				a = i < b.thr.Size() ? b.thr[i] : null;
 				shown = true;
 				for (int k = 1; k < hd.arrMon.Size() && k < hd.arrCol.Size(); k++) if (a && hd.arrMon[k] == a) { tc = RGBc(hd.arrCol[k]); break; }
 			}
 			if (!shown) continue;
-			if (bbThrT[i] <= 0) bbThrT[i] = landing ? t : t - BB_POP * 3;
+			if (bbThrT[i] <= 0) bbThrT[i] = landing ? t : t - BB_POP - BB_TFILL;
 			double pop = clamp((t - bbThrT[i]) / BB_POP, 0.0, 1.0);
-			double fillIn = clamp((t - bbThrT[i] - BB_POP) / 8.0, 0.0, 1.0);
+			double fillIn = clamp((t - bbThrT[i] - BB_POP) / BB_TFILL, 0.0, 1.0);
 			bool alive = a && a.health > 0;
 			if (alive && a.health > bbThrMax[i]) bbThrMax[i] = a.health;
 			double hf = alive ? a.health / max(1.0, bbThrMax[i]) : 0.0;
 			if (fresh && a) bbThrIc[i] = ChampIconOf(a);
-			double tx = tx0 + i * (tw + gap);
-			BBSlant(wh, tx, tbY, tw, tbH, hf * fillIn, tc, 0.0, 0.97 * pop, 0.0, 6);
-			// the pair, side by side and centred over its bar
-			double isz = icH * (0.2 + 0.8 * pop);
-			double ia = (alive ? 0.97 : 0.3) * pop;
-			double cxm = tx + tw * 0.5, cym = icY + icH * 0.5;
+			double tx = x0 + i * 190;
+			BBBar(wh, tx, 238, 150, 16, 3, hf * fillIn, Mix(tc, Color(255, 255, 255, 255), 0.4), tc, Mix(tc, Color(255, 0, 0, 0), 0.25), 0, 0, 1.0, pop);
+			// the pair, side by side and centred over its bar (the mockup: crosshair 52, the icon 48, 112 in all)
+			double ia = (alive ? 1.0 : 0.3) * pop, ps = 0.2 + 0.8 * pop;
 			bool two = bbThrIc[i] >= 0;
-			bool gotX = BBIcon(String.Format("RSPA%02d16", 2 + (i % 9)), two ? cxm - isz * 0.55 : cxm, cym, isz, ia, tc);
-			if (two) BBIcon(String.Format("RSQMBC%02d", bbThrIc[i]), gotX ? cxm + isz * 0.55 : cxm, cym, isz * 0.9, ia);
+			double px = tx + 75 - (two ? 56 : 26);
+			BBTex(String.Format("RSQMBX%02d", XH[i]), px, 176, 52, 52, ia, ps, tc);
+			if (two) BBTex(String.Format("RSQMBC%02d", bbThrIc[i]), px + 60, 178, 48, 48, ia, ps);
 		}
 	}
 }

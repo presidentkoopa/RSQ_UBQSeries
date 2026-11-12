@@ -146,7 +146,7 @@ class RSQMB_Service : Service
 	{
 		if (gamestate != GS_LEVEL) return -1;
 		double x, y, w, h, bot;
-		if (RSQMB_Handler.StackShown()) { [x, y, w, h, bot] = RSQMB_Handler.StackRect(); }
+		if (RSQMB_Handler.StackShown()) return -1;   // the miniboss bar is not under Score (bossbar.zs)
 		else if (!RSQMB_Handler.MeterShown()) return -1;
 		else { [x, y, w, h] = RSQMB_Handler.MeterRect(); }
 		if (request ~== "meter.x") return x;
