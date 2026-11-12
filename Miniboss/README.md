@@ -203,6 +203,8 @@ and flashes gold, so you know the hit landed and did nothing.
 
 ![The miniboss bar on the rig after the charge: thrall bars in their Champion colours, GUARD flashing on a blocked hit](docs/readme/rig_bar_guard_hit.jpg)
 
+![The live miniboss bar on the rig, SOTN boss-bar style: a glass tube stepping through shades of the miniboss's red (run mbtube2, enlarged 4x)](docs/readme/rig_bar_sotn_tube.gif)
+
 ![Shield up (mockup from before the shield icon went): grey segments, "GUARD!" over the miniboss, "TARGET!" over each thrall, grey Xs (design mockup)](docs/readme/mock_shield_up.jpg)
 
 **The thrall bar.** Above the miniboss's own bar sits one segment for every thrall it came with. Together they hold as
@@ -404,7 +406,7 @@ are in map units (32 to a metre).
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-12, run `force1`, Champions' Legendoom Compatibility OFF) | Every monster of the encounter a real Champion (all four carry Champions' own record): thralls Green, Indigo, Violet after two repeats landed again; each beam in its Champion colour; Champions' Override Chance back to its own -1 after the landing |
 | **rig only, not headset-confirmed** (2026-11-12, runs `rise4`, `rise5`) | Miniboss and every thrall arrive already risen: LegenDoom's own rise (healed, stat boost, `LDLegendaryMonsterTransformed`, so Champions boosts them too) happens during the 3-second charge, 10 of 10 thralls and both minibosses risen; extra health (Champions' Red, our boost) given back after; no script errors from the pack |
-| **rig only, not headset-confirmed** (2026-11-12, runs `mbtube1`, `mbtube2`) | Miniboss bar in the SOTN boss-bar style (Richter's fight): a glass tube, dark at the edges with a bright streak along it, the live fill stepping through shades of the miniboss's colour every 3 tics (Photosensitive Mode: a slow drift instead); seen gold and red. Thrall bars unchanged. ![SOTN tube](docs/readme/rig_bar_sotn_tube.jpg) |
+| **rig only, not headset-confirmed** (2026-11-12, runs `mbtube1`, `mbtube2`) | Miniboss bar in the SOTN boss-bar style (Richter's fight): a glass tube, dark at the edges with a bright streak along it, the live fill stepping through shades of the miniboss's colour every 3 tics (Photosensitive Mode: a slow drift instead); seen gold and red. Thrall bars unchanged. ![SOTN tube](docs/readme/rig_bar_sotn_tube.gif) |
 | **rig only, not headset-confirmed** (2026-11-12, runs `diff1`, `diff2`) | Every thrall a different Champion: run diff2 rolled a repeat, landed it again, and bound 5 thralls with 5 different powers (White, Grey, Indigo, Yellow, Blue) |
 | **rig only, not headset-confirmed** (2026-11-12, runs `charge2`, `mb9`, `beams1`, with Champions' Legendoom Compatibility, Dormant and Booster on) | Thralls are real Champions (LegenDoom legendaries that Champions turns into Champions): 5 thralls, 5 different powers; a thrall that does not fit tries the spots round its own; the clock only during the charge; the bar raised; thrall bars in their Champion colours; GUARD lit on blocked hits. The Start Fight card on the off-hand wrist only: loads, not shown |
 | **rig only, not headset-confirmed** (2026-11-12, run `bbar6`; called in by console) | The miniboss bar moved to Be Quick or Be Dead's place and size, and drawn as the mockup: skull and crosshair, gold name, GUARD in silver, X3, the clock counting down, thrall bars with their crosshair and Champion icon. On the rig at HUD size 11 the status bar's health and armour numbers sit over the thrall row |
