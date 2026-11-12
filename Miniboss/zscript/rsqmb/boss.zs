@@ -56,6 +56,40 @@ class RSQMB_Boss : Thinker
 			a.bDORMANT = true; a.bINVULNERABLE = true;
 		}
 	}
+	// RISEN AND BOOSTED FROM THE START (owner 2026-11-12 18:06): a LegenDoom legendary is dormant until half its health,
+	// when LegenDoom's own script (LEGENDMON.acs LDMonsterInit) heals it full and gives it its stat boost -- and Champions'
+	// Booster then boosts it too. Here each one is taken to just under half once, while it cannot be hurt and does not act,
+	// so LegenDoom raises it the next tic by its own rules. Only with LegenDoom's Legendary Monsters on full (its own
+	// LD_legendarymonsters 1: the setting that rises and heals); otherwise it is left as it is.
+	Array<Actor> risen;
+	void RiseOne(Actor a)
+	{
+		if (!a || a.health <= 2 || risen.Find(a) < risen.Size()) return;
+		if (a.CountInv("LDLegendaryMonsterToken") <= 0) return;
+		if (a.CountInv("LDLegendaryMonsterTransformed") > 0) { risen.Push(a); risenHp.Push(0); return; }
+		let lm = CVar.FindCVar("LD_legendarymonsters");
+		if (!lm || lm.GetInt() != 1) return;
+		risen.Push(a);
+		// LegenDoom raises it once its health is at or under half of what LegenDoom gave it. Taken to 1 (it cannot be hurt
+		// while the charge holds it), LegenDoom heals it the next tic; whatever it had above LegenDoom's number (Champions'
+		// Red, our own boost) is given back once it has risen (RiseRestore).
+		risenHp.Push(a.health);
+		a.health = 1;
+		let h = H();
+		if (h && h.debug) Console.Printf("RSQMB rise: %s taken to %d for LegenDoom to raise it", a.GetClassName(), a.health);
+	}
+	Array<int> risenHp;
+	void RiseRestore()
+	{
+		for (int i = 0; i < risen.Size() && i < risenHp.Size(); i++)
+		{
+			let a = risen[i];
+			if (!a || risenHp[i] <= 0 || a.CountInv("LDLegendaryMonsterTransformed") <= 0) continue;
+			if (a.health > 0 && a.health < risenHp[i]) a.health = risenHp[i];
+			risenHp[i] = 0;
+		}
+	}
+
 	void ChargeEnd()
 	{
 		if (!chargeHeld) return;
@@ -188,6 +222,8 @@ class RSQMB_Boss : Thinker
 		if (!mb || mb.bDestroyed || mb.health <= 0) { if (h) h.BossDied(self, null); else done = true; return; }
 
 		if (chargeHeld && level.maptime >= chargeUntil) ChargeEnd();
+		// ARRIVE RISEN (owner 2026-11-12 18:06): while the charge runs, every legendary of the encounter rises (RiseOne)
+		if (chargeUntil > 0 && level.maptime < chargeUntil + 35) { RiseOne(mb); for (int i = 0; i < thr.Size(); i++) RiseOne(thr[i]); RiseRestore(); }
 		if (ldShPending) LDHealthDone(h);
 		if (mb.health > maxHP) maxHP = mb.health;
 		// the segments follow its health until the first blow lands (LegenDoom sets a legendary's health a tic or two late)
