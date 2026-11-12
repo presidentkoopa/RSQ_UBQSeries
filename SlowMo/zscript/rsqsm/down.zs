@@ -1062,6 +1062,17 @@ class RSQSM_Down : EventHandler
 				String nm = NameOf(m);
 				if (nm != tName[i]) { Log(String.Format("target %s's plate name now \"%s\" (was \"%s\")", m.GetClassName(), nm, tName[i])); tName[i] = nm; }
 			}
+			// A FAKE DEATH IS THE KILL (owner 11-11 19:23: "when DOWN i cannot seem to revive when i kill a champion"):
+			// Champions' Dark Red champion is buddha; at 1 HP it plays dead -- it vanishes (invisible, not shootable, moved
+			// to the map's corner) and leaves a shootable corpse that must be destroyed, else it gets up again 3 s later
+			// (mk-champions champ_darkred.txt). DOWN saw it alive at 1 HP and never revived him. Any target that plays dead
+			// that way (1 HP or less, buddha, invisible, not shootable) counts as killed, by his hand (he is the one fighting it)
+			if (m && m.health > 0 && m.health <= 1 && m.bBUDDHA && m.bINVISIBLE && !m.bSHOOTABLE)
+			{
+				Log(String.Format("target %s played dead at 1 HP (Champions' Dark Red, or the like): counted as killed", m.GetClassName()));
+				TargetDown(i, true);
+				continue;
+			}
 			if (m && m.health > 0) continue;
 			if (m && m.health <= 0) { TargetDown(i, false); continue; }
 			Log(String.Format("player %d: target %d is gone without dying: a fresh one in its place", n, i));
