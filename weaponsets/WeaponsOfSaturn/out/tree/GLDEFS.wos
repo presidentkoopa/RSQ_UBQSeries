@@ -1,0 +1,147 @@
+// Plasma
+object RSQWS_Plasma
+{
+    frame PLZSA { light PLASMABALL }
+    frame PLZSB { light PLASMABALL }
+
+    frame PLZEA { light PLASMA_X1 }
+    frame PLZEB { light PLASMA_X2 }
+    frame PLZEC { light PLASMA_X2 }
+    frame PLZED { light PLASMA_X3 }
+    frame PLZEE { light PLASMA_X4 }
+}
+
+object RSQWS_PlasmaShot
+{
+    frame PLZSA { light PLASMABALL }
+    frame PLZSB { light PLASMABALL }
+
+    frame PLZEA { light PLASMA_X1 }
+    frame PLZEB { light PLASMA_X2 }
+    frame PLZEC { light PLASMA_X2 }
+    frame PLZED { light PLASMA_X3 }
+    frame PLZEE { light PLASMA_X4 }
+}
+
+object RSQWS_RotaryPlasma
+{
+    frame PLZEE { light PLASMABALL }
+
+    frame PLZEA { light PLASMA_X1 }
+    frame PLZEB { light PLASMA_X1 }
+    frame PLZEC { light PLASMA_X4 }
+    frame PLZED { light PLASMA_X4 }
+    frame PLZEE { light PLASMA_X4 }
+}
+
+object RSQWS_SaturnRocket
+{
+    frame MSLEA { light ROCKET    }
+
+    frame MACXA { light ROCKET_X1 }
+    frame MACXB { light ROCKET_X1 }
+    frame MACXC { light ROCKET_X1 }
+	frame MACXD { light ROCKET_X1 }
+    frame MACXE { light ROCKET_X2 }
+    frame MACXF { light ROCKET_X2 }
+	frame MACXG { light ROCKET_X2 }
+    frame MACXH { light ROCKET_X3 }
+    frame MACXI { light ROCKET_X3 }
+}
+
+object SaturnG
+{
+
+    frame HELXA { light ROCKET_X1 }
+    frame HELXB { light ROCKET_X1 }
+    frame HELXC { light ROCKET_X1 }
+	frame HELXD { light ROCKET_X1 }
+    frame HELXE { light ROCKET_X2 }
+    frame HELXF { light ROCKET_X2 }
+	frame HELXG { light ROCKET_X2 }
+    frame HELXH { light ROCKET_X3 }
+    frame HELXI { light ROCKET_X3 }
+}
+
+//BFG
+
+object RSQWS_Nova
+{
+    frame BBB1E { light BFGBALL_X4 }
+	
+	frame VFX3A { light BFGBALL_X4 }
+	frame VFX3B { light BFGBALL_X4 }
+	frame VFX3C { light BFGBALL_X4 }
+	frame VFX3D { light BFGBALL_X4 }
+	frame VFX3E { light BFGBALL_X4 }
+	frame VFX3F { light BFGBALL_X4 }
+	frame VFX3G { light BFGBALL_X4 }
+	frame VFX3H { light BFGBALL_X4 }
+	frame VFX3I { light BFGBALL_X5 }
+	frame VFX3J { light BFGBALL_X5 }
+}
+
+object RSQWS_HyperNova
+{
+    frame BFS1A { light BFGBALL }
+    frame BFS1B { light BFGBALL }
+	
+    frame BBALA { light BFGBALL }
+    frame BBALB { light BFGBALL }
+	frame BBALC { light BFGBALL }
+	frame BBALD { light BFGBALL }
+	
+	frame BBB1A { light BFGBALL_X3 }
+	frame BBB1B { light BFGBALL_X2 }
+	frame BBB1C { light BFGBALL_X1 }
+	frame BBB1D { light BFGBALL_X4 }
+	frame BBB1E { light BFGBALL_X5 }
+
+    frame RR00A { light BFGBALL_X1 }
+    frame RR00B { light BFGBALL_X2 }
+    frame RR00C { light BFGBALL_X3 }
+    frame RR00D { light BFGBALL_X3 }
+    frame RR00E { light BFGBALL_X2 }
+    frame RR00F { light BFGBALL_X1 }
+	
+	frame PULSA { light BFGBALL_X5 }
+	frame PULSB { light BFGBALL_X4 }
+	frame PULSC { light BFGBALL_X1 }
+	frame PULSD { light BFGBALL_X2 }
+	frame PULSE { light BFGBALL_X3 }
+	frame PULSF { light BFGBALL_X3 }
+	frame PULSG { light BFGBALL_X2 }
+	frame PULSH { light BFGBALL_X1 }
+	frame PULSI { light BFGBALL_X2 }
+	frame PULSJ { light BFGBALL_X2 }
+	frame PULSK { light BFGBALL_X2 }
+	frame PULSL { light BFGBALL_X3 }
+	frame PULSM { light BFGBALL_X3 }
+	frame PULSN { light BFGBALL_X3 }
+	frame PULSO { light BFGBALL_X3 }
+	frame PULSP { light BFGBALL_X3 }
+	frame PULSQ { light BFGBALL_X3 }
+	frame PULSR { light BFGBALL_X2 }
+	frame PULSS { light BFGBALL_X2 }
+	frame PULST { light BFGBALL_X1 }
+}
+
+object RSQWS_Residue
+{
+	frame R044J { light BFGBALL_X5 }
+	frame R044K { light BFGBALL_X5 }
+	frame R044L { light BFGBALL_X4 }
+	frame R044M { light BFGBALL_X4 }
+	frame R044N { light BFGBALL_X4 }
+	frame R044O { light BFGBALL_X4 }
+	frame R044P { light BFGBALL_X5 }
+	frame R044Q { light BFGBALL_X5 }
+}
+
+object BFGExtra
+{
+    frame BFE2A { light BFGBALL    }
+    frame BFE2B { light BFGBALL_X1 }
+    frame BFE2C { light BFGBALL_X4 }
+    frame BFE2D { light BFGBALL_X5 }
+}

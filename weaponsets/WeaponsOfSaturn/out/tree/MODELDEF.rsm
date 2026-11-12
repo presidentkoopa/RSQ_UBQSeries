@@ -1,0 +1,117 @@
+// from BD22 VR's MODELDEF.rsm (RS_Brutal22WeaponsQ), by tools/port/mdl.py: the gun class names are this pack's
+
+Model RSR_GunParts
+{
+	Path "models/bd/Rifle"
+	Model 0 "M203.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "M203.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQ2P A 0 3
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/Rifle"
+	Model 0 "m203_round.md3"
+	Skin 0 "m203_round.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQ2P B 0 0
+}
+
+Model RSQ_Hands
+{
+	Path "models/rsq"	// one Path for both models: the round stays in models/rsq
+	Model 1 "m203_round_hand.md3"
+	Skin 1 "models/bd/Rifle/m203_round.png"
+	// 2.0.2 (owner item 33): the hand's Model line LAST. The build moves it to slot 7 (Hand Skin Tone) and QZD 17.3
+	// sizes a block by its last Model line, so with the round's line last the block was too small ("Too many models").
+	Model 7 "fbx/fbx_oh_hold_R.md3"
+	Skin 7 "fbx/fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQ2H A 7 24	// off-hand FBX lane: the FBX hand round the 40 mm round (RQHF Y); was Ermac ammo_hand 5
+	FrameIndex RQ2H A 1 0
+}
+
+Model RSQ_Hands
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_oh_hold_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQ2H B 7 24	// the same FBX grip, the round on the gun
+}
+
+Model RSM_SpentCase
+{
+	Path "models/bd/Rifle"
+	Model 0 "m203_spent.md3"
+	Skin 0 "m203_spent.png"
+	Scale 0.3468 0.3468 0.3468
+	ZOffset 0.8
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RQ2C A 0 0
+}
+
+Model RSQ_GunSide
+{
+	Path "models/rsq"
+	Model 0 "m203_support.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQ2S A 0 0
+	FrameIndex RQ2S B 0 1
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/Machinegun"
+	Model 0 "Machinegun.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "Machinegun.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.612 -3.967 0.0
+	ZOffset -2.037
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r10 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQ3P A 0 4
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/Rifle"
+	Model 0 "m203_round.md3"
+	Skin 0 "m203_round.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.387 -4.908 0.0
+	ZOffset -3.587
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r10 port (lane B): the Machinegun's seated 40 mm round, moved with the gun (was Offset 0.588 -0.832, ZOffset -6.517)
+	NoInterpolation
+	FrameIndex RQ3P B 0 0
+}

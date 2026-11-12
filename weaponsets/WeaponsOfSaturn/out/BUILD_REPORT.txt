@@ -1,0 +1,12 @@
+RSQ_WeaponsOfSaturn 0.1.0, tree 75b7a996c0c021a4
+
+guns written: RSQWS_Beretta RSQWS_1911
+GUNS NOT WRITTEN YET: RSQWS_Knuckles RSQWS_Motorsaw RSQWS_MP40 RSQWS_Riotgun RSQWS_Coachgun RSQWS_MachineRifle RSQWS_Minigun RSQWS_SaturnV RSQWS_NovaRifle RSQWS_TITAN
+GLDEFS: WoS object names on their RSQWS_ classes (9 objects)
+voxels: Voxels of Saturn, BELT dropped (1), Beretta pickup on RQWP
+1911: 8 BD22 pistol-mesh blocks replaced by its own (MODELDEF.rsqws1911, seat [1.709, -8.477, -2.334, 4.713, 5.17, 13.413])
+casing model blocks: 4
+reload row 19 RSQWS_1911: its own geometry, sprites RQ1M / RQ1P / RQ1W, the card's (= BD22 pistol) sounds
+reload row 2 RSQWS_Beretta: magazine RSQWS_9mm, reserve Clip, racks
+reload row 19 RSQWS_1911: magazine RSQWS_ACP, reserve RSQWS_Bullets, racks
+model-only frames given a transparent image: 656
