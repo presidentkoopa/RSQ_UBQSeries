@@ -722,14 +722,14 @@ class RS_WickedTorso : Actor   // CH Archviles.txt:877
 	States
 	{
 	Spawn:
-		WICK Q 5 NoDelay A_PlaySound("monster/tenpn1");
-		WICK R 5;
+		RVWK Q 5 NoDelay A_PlaySound("monster/tenpn1");
+		RVWK R 5;
 		Wait;
 	Crash:
-		WICK S 1 A_SetFloorClip;
-		WICK S 4 A_PlaySound("monster/tenpn2");
-		WICK TUV 5;
-		WICK W -1;
+		RVWK S 1 A_SetFloorClip;
+		RVWK S 4 A_PlaySound("monster/tenpn2");
+		RVWK TUV 5;
+		RVWK W -1;
 		Stop;
 	}
 }
