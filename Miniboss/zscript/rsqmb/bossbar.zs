@@ -17,7 +17,7 @@
 //   X2           gold, 30 high at 744, 90, while it has more than one bar;
 //   the clock    96 x 38 at 826, 86: #1a0606 inside a #5a1410 rim, red (#ff3b30) seven-segment SS:hh (RSQ SlowMo's DOWN
 //                readout's digits), ONLY while the arrival's charge counts 03:00 down (owner 15:36: not during the fight);
-//   the thralls  a 150 x 16 bar each (rim 3) at y 238, 40 apart, centred under the miniboss bar; over each, side by side
+//   the thralls  a 150 x 16 bar each (rim 3), flat, blended, a band rolling down it, breathing (BBThrallBar), at y 238, 40 apart, centred under the miniboss bar; over each, side by side
 //                and centred, its crosshair (RSQ SlowMo's DOWN crosshairs, RSQMBX, in its colour) and its Champion icon.
 // THE ARRIVAL (owner 14:11): the bar appears as a sliver and grows outward, empty (BB_GROW); each thrall's bar and icons pop
 // in as it lands; the miniboss lands, its head, name and X2 come in, and its bar charges over 3 seconds while the clock
@@ -133,6 +133,50 @@ extend class RSQMB_Handler
 			if (frac > 0.001) BBBox(wh, ix, yy, iw * frac, rh + 0.4, BBGrad(top, c, bot, k), a);
 			if (flash > 0.01) BBBox(wh, ix, yy, iw, rh + 0.4, Color(255, 255, 255, 255), a * flash);
 		}
+	}
+
+	// A THRALL'S BAR (owner 18:19: "the smaller bars i want turned horizontal, scrolling vertically softly, blended, in a
+	// similar style to the rest of the SOTN we use. a horizontal health bar with some life to it, breathing"): flat, no lean;
+	// the white rim and dark well of the miniboss bar; the fill blended top to foot (light, its colour, deep) the way the
+	// SOTN two-tone words are, a soft band of light rolling down through it over and over, and the whole fill breathing
+	// (brighter and a little dimmer, about every 2.5 s) with a lit leading edge that breathes with it. Photosensitive Mode:
+	// the band and the breath at a third.
+	const TB_BREATH = 87.0;     // tics per breath
+	const TB_ROLL = 52.0;       // tics for the band to roll once top to foot
+	ui void BBThrallBar(TextureID wh, double mx, double my, double mw, double mh, double rim, double frac, Color c,
+		double t, double phase, double grow, double a, bool photo)
+	{
+		if (a <= 0) return;
+		double w = mw * grow, x0 = mx + (mw - w) * 0.5;
+		Color rimc = Color(255, 0xE8, 0xEC, 0xF4), well = Color(255, 0x12, 0x0E, 0x1A);
+		Color white = Color(255, 255, 255, 255), black = Color(255, 0, 0, 0);
+		Color top = Mix(c, white, 0.45), bot = Mix(c, black, 0.35);
+		frac = clamp(frac, 0.0, 1.0);
+		double soft = photo ? 0.33 : 1.0;
+		double breath = 0.5 + 0.5 * sin((t + phase) * 360.0 / TB_BREATH);   // 0..1
+		double roll = ((t + phase * 0.6) / TB_ROLL) % 1.0;                    // the band's place, 0 top .. 1 foot
+		BBBox(wh, x0, my, w, mh, rimc, a);
+		double ix = x0 + rim, iw = w - 2 * rim, iy = my + rim, ih = mh - 2 * rim;
+		if (iw <= 0 || ih <= 0) return;
+		BBBox(wh, ix, iy, iw, ih, well, a);
+		if (frac <= 0.001) return;
+		int rows = max(4, int(ih));
+		double rh = ih / rows;
+		for (int r = 0; r < rows; r++)
+		{
+			double k = (r + 0.5) / rows;
+			Color fc = BBGrad(top, c, bot, k);
+			// the band: soft, about a third of the bar tall, wrapping round from the foot to the top
+			double d = abs(k - roll); d = min(d, 1.0 - d);
+			double band = max(0.0, 1.0 - d / 0.22); band *= band;
+			double lift = (0.30 * band + 0.10 * breath) * soft;
+			fc = Mix(fc, white, clamp(lift, 0.0, 0.6));
+			fc = Mix(fc, black, 0.12 * (1.0 - breath) * soft);
+			BBBox(wh, ix, iy + r * rh, iw * frac, rh + 0.4, fc, a);
+		}
+		// the leading edge, lit and breathing
+		double ew = min(iw * frac, 3.0);
+		BBBox(wh, ix + iw * frac - ew, iy, ew, ih, white, a * (0.35 + 0.45 * breath * soft));
 	}
 
 	// a word in the baked score font (MBFG gold / MBFS silver), hgt mockup px tall, from mockup x (right: ending at x);
@@ -392,7 +436,7 @@ extend class RSQMB_Handler
 			// Champion colour, else the colour it landed in
 			if (bbThrIc[i] >= 0) tc = ChampColour(bbThrIc[i]);
 			double tx = x0 + i * 190;
-			BBBar(wh, tx, 238, 150, 16, 3, hf * fillIn, Mix(tc, Color(255, 255, 255, 255), 0.4), tc, Mix(tc, Color(255, 0, 0, 0), 0.25), 0, 0, 1.0, pop);
+			BBThrallBar(wh, tx, 238, 150, 16, 3, hf * fillIn, tc, t, i * 23.0, pop, alive || !a ? 1.0 : 0.5, photo);
 			// the pair, side by side and centred over its bar (the mockup: crosshair 52, the icon 48, 112 in all)
 			double ia = (alive ? 1.0 : 0.3) * pop, ps = 0.2 + 0.8 * pop;
 			bool two = bbThrIc[i] >= 0;
