@@ -445,14 +445,7 @@ class RSQSM_Down : EventHandler
 			double fh = cFH[n] * min(1.0, nk / cf);
 			if (pmo.pos.z + fh * cf > pmo.ceilingz)
 			{
-				if (cLogged[n] != 2)
-				{
-					cLogged[n] = 2; Log(String.Format("player %d crouch: no room to rise (ceiling %.0f over feet %.0f), waiting", n, pmo.ceilingz, pmo.pos.z));
-					// SAID ON SCREEN (owner 11-11 23:56: "sometimes we don't get up"; 11-12 04:01: the headset gives no log to read):
-					// the one place the rise is held is here, under a ceiling lower than you stand (DOWN is 40% tall and crawls
-					// under things). Once per hold, to the player it happens to, whatever the debug row says.
-					if (!down && n == consoleplayer) Console.MidPrint(null, "NO ROOM TO STAND: MOVE OUT FROM UNDER THE CEILING");
-				}
+				if (cLogged[n] != 2) { cLogged[n] = 2; Log(String.Format("player %d crouch: no room to rise (ceiling %.0f over feet %.0f), waiting", n, pmo.ceilingz, pmo.pos.z)); }
 				nk = k;
 			}
 		}
