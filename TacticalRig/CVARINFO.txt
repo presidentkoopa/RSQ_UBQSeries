@@ -119,3 +119,4 @@ user bool  rsqtr_key_doors   = false;   // grip the keyring to take the keys, to
 user bool  rsqtr_ammo_count  = false;   // a full gun holster shows its gun's rounds as a small number while its ring shows
 user float rsqtr_r3_f = 0.12; user float rsqtr_r3_l = 0.00; user float rsqtr_r3_u = -0.62; user float rsqtr_r3_rad = 0.08;
 user bool rsqtr_debug_throw = false;
+user bool  rsqtr_down_lift  = true;    // Holsters Ride Up When Down (owner 11-12): while RSQ SlowMo's DOWN holds the view low, the places under the head squeeze up so none is under the floor (rig.zs DownLift)

@@ -328,7 +328,37 @@ class RSQTR_Rig : EventHandler
 		Settings(p);
 		Vector3 at = BodyPoint(pmo, cF[r], cL[r], cU[r]);
 		if (r == RSQTR_Region.POUCH && pouchShift > 0 && pmo.player == players[consoleplayer]) at += pouchDir * pouchShift;
-		return at;
+		return DownLift(pmo, at);
+	}
+
+	// ---- THE RIG RIDES UP WHILE YOU ARE DOWN (owner 11-11 23:56: "can't reach holsters when DOWN"; 11-12 03:41: "stopping
+	// view from lowering doesn't make us down, does it, find a new solution"; Holsters Ride Up When Down, rsqtr_down_lift,
+	// on; code only, not run on the rig and not headset-confirmed) ---------------------------------------------------
+	// RSQ SlowMo's DOWN drops the view to 40% of standing by scaling the pawn's ViewHeight (its down.zs Crouch). The
+	// rig hangs from that view and the engine places your hands from it, so everything stays where your body is, but
+	// 25 units lower in the map: the hips (0.70 m under the eyes) end AT the floor and the saber, whip and flare spots
+	// (0.84 m) under it, where nothing can be seen or taken. So while the view is held low, every place under the head
+	// is squeezed toward the head by one factor, just enough that the lowest clears the floor by DOWN_CLEAR: the hips
+	// come up about 6 units (a hand's width under the ribs instead of at the hip), the shoulders barely move, and the
+	// order top to bottom is kept. The factor follows the view as it eases down and up, so nothing jumps. A crouch of
+	// your own (the button or your knees) changes crouchfactor, not ViewHeight, and is left as it was.
+	const DOWN_CLEAR = 0.14;    // metres the lowest place's centre keeps over your feet (a holster's radius)
+	Vector3 DownLift(PlayerPawn pmo, Vector3 at)
+	{
+		if (!pmo || !pmo.player || pmo.ViewHeight >= pmo.Default.ViewHeight * 0.95) return at;
+		if (!Flag("rsqtr_down_lift", pmo.player, true)) return at;
+		double low = 0;
+		for (int i = 0; i < RSQTR_Region.N; i++) if (!RSQTR_Region.Retired(i) && cU[i] < low) low = cU[i];
+		if (low >= 0) return at;
+		Vector3 hp = BodyPoint(pmo, 0, 0, 0);
+		double head = hp.z;
+		if (at.z >= head) return at;
+		Vector3 lp = BodyPoint(pmo, 0, 0, low);
+		double lowZ = lp.z;
+		double line = pmo.pos.z + DOWN_CLEAR * RSQTR_Body.Upm() / RSQTR_Body.Ps();
+		if (lowZ >= line || head <= line) return at;
+		double k = (head - line) / (head - lowZ);
+		return (at.x, at.y, head - (head - at.z) * k);
 	}
 
 	// ---- THE POUCH REACHES FOR YOUR HAND (owner 11-09 17:26: "We could even consider letting the ammo pouch move to the

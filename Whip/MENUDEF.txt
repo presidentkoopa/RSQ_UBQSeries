@@ -50,6 +50,10 @@ OptionMenu "RSQWP_Options"
 	Option "Stun", "rsqwp_whip_stun", "OnOff"
 	// A cracked monster is held in its flinch: light about 1 s, heavy longer; bosses and minibosses less.
 	Option "Crack Stun Hold", "rsqwp_whip_stunhold", "OnOff"
+	// The whip hand's ray is always out. Fire marks the nearest monster (again: the next). Alt-fire locks the gold spot to snag.
+	Option "Lock-On Controls", "rsqwp_lockwhip", "OnOff"
+	// Off: a crack on a monster stuns it and the whip comes back (no wrap, flail or yank).
+	Option "Crack Wraps Monsters", "rsqwp_whip_wrap", "OnOff"
 	// Off: a crack never drags a monster toward you (no Leash, no pull on a yank).
 	Option "Whip Pulls Monsters", "rsqwp_whip_pull", "OnOff"
 	// With MK Crits loaded: a heavy crack is always its critical hit.

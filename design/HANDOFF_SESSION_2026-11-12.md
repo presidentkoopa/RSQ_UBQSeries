@@ -53,3 +53,23 @@ compiled and loaded now, not shown.
 Also on main from that branch: Grenade barrels (size x2, reach x1.5, Neon Crescent room colour), SlowMo reason line.
 Whip controls (fire snaps the lock to a monster, alt-fire locks onto geometry) are NOT written.
 The owner rejected both badge sketches; rank badges on the HP bar are dropped.
+
+## 03:41 batch (owner: "write new whip ... barrels are good ... big 4 is gunbonsai, score, monsters, arcade design")
+
+All on `main`. One load on the full order (no script errors past the four voxeldef lines, no VM abort). Nothing here was run
+on the rig beyond that load, and nothing is headset-confirmed.
+
+- **The Big Four** (the owner's words): Gun Bonsai, Score, Monsters, Arcade design.
+- **Barrels**: signed off ("barrels are good").
+- **The new whip** (Whip, Lock-On Controls `rsqwp_lockwhip`, on): the whip hand's ray is always out. Fire marks the monster
+  nearest along the hand with no button held, fire again moves to the next. Alt-fire locks the gold cursor's spot, the
+  crack snags there; alt-fire again lets it go. On a rope: alt-fire reels, fire lets go. A crack on a monster stuns and
+  comes back: no wrap (Crack Wraps Monsters `rsqwp_whip_wrap`, off), no pull, no lasso. The other hand is never read.
+  `swing.zs` LockWhipOn / geoLock, `weapon.zs` Tend. **Whip/README.md is NOT updated: the owner signs the whip off first.**
+- **Holsters while DOWN** (TacticalRig, Holsters Ride Up When Down `rsqtr_down_lift`, on): the view stays lowered. While
+  SlowMo holds the pawn's ViewHeight low, every holster under the head is squeezed toward the head so the lowest clears
+  the floor by 0.14 m (the hips come up about 6 units). `rig.zs` DownLift.
+- **LEVEL UP / REVIVE / REVENGE band** (VisualRewards): 20 degrees under the gaze (`BAND_LOW`), where the DOWN bar is.
+- **Enhanced Ballistics** (BD22 VR 2.0.4j, its own repo): default Low; a saved Stock is moved to Low once.
+- **Level card in place of the small gun card**: style A (sweep) chosen; three sweep variants are on the Design canvas for
+  his pick. Not built yet: it waits for which of the three.

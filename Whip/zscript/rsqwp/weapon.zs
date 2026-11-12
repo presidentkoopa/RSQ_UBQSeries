@@ -24,6 +24,9 @@
 class RSQWP_WhipWeapon : Weapon
 {
 	bool altWas;
+	bool trigWas;
+	bool latched;       // the Lock-On Whip: a fire press has set the mark; it stays with no button held (Tend)
+	int  latchTic;
 	bool hadHook;
 	bool reelArmed;
 
@@ -89,6 +92,10 @@ class RSQWP_WhipWeapon : Weapon
 		bool alt = AltHeld();
 		bool altPress = alt && !altWas;
 		altWas = alt;
+		bool trigPress = trig && !trigWas;
+		trigWas = trig;
+		bool lw = RSQWP_Whip.LockWhipOn();     // the Lock-On Whip (swing.zs): the ray always, presses lock, nothing is held
+		bool dbg = RSQWP_Util.Flag("rsqwp_debug", false);
 		// WHIP AND GUN, "Indiana Jones" (owner 11-10 12:30; swing.zs IndyOn): a weapon in the other hand, the row on. The whip
 		// hand's own ray is the snag cursor while its trigger is up (aimBy 3); the trigger held marks as ever and the
 		// cursor is gone (its gold spot forgotten, so the beam never stands the mark down). The other hand keeps its
@@ -98,10 +105,11 @@ class RSQWP_WhipWeapon : Weapon
 			Console.Printf("T_WPW %d WHIP AND GUN t%d %s (other hand: %s)", i, level.maptime, indy ? "on: the whip hand's ray is the cursor" : "off: the whip as in slot 1",
 				hand ? (pmo.player.ReadyWeapon ? pmo.player.ReadyWeapon.GetClassName() : 'none') : (pmo.player.OffhandWeapon ? pmo.player.OffhandWeapon.GetClassName() : 'none'));
 		w.indy[i] = indy;
-		w.aimBy[i] = indy ? (trig ? 0 : 3) : AimBy();
+		w.aimBy[i] = lw ? 3 : (indy ? (trig ? 0 : 3) : AimBy());
 		w.aimHeld[i] = w.aimBy[i] != 0;
 		w.aimTic[i] = level.maptime;
-		if (indy && trig && !w.casting[i]) w.okTic[i] = -100;
+		if (!lw && indy && trig && !w.casting[i]) w.okTic[i] = -100;
+		if (!lw) { latched = false; if (w.geoLock[i]) w.GeoUnlock(i, "Lock-On Controls is off"); }
 		let h = core.hooks[i];
 		// A CHAIN (swing.zs): let go of an aimed swing's rope (or any rope with the ray held) and the whip is back in the
 		// hand at once, its thong straight off the rope, so the next crack can come while you are still in the air
@@ -131,6 +139,7 @@ class RSQWP_WhipWeapon : Weapon
 			}
 			w.markHeld[i] = false;
 			w.lassoOn[i] = false;
+			latched = false; w.GeoUnlock(i, "on a rope");
 			return;
 		}
 		if (hadHook) { hadHook = false; core.held[i] = false; core.pressFired[i] = false; }
@@ -140,8 +149,43 @@ class RSQWP_WhipWeapon : Weapon
 		w.byWeapon[i] = true;
 		if (w.wstate[i] != RSQWP_Whip.ST_OUT || w.wby[i] != pmo) w.Start(i, pmo, hand, 0);
 		else if (drawn) w.Seat(i, pmo, hand);
-		w.markHeld[i] = trig;
-		if (altPress && trig) w.markNext[i] = true;
+		if (lw)
+		{
+			// FIRE: mark what is nearest along the hand; again: the next one. The mark needs no button held.
+			if (trigPress)
+			{
+				w.GeoUnlock(i, "fire marks");
+				bool had = latched && (w.lockOn[i] || w.markLine[i]);
+				if (had) w.markNext[i] = true;
+				latched = true; latchTic = level.maptime;
+				if (dbg) Console.Printf("T_WPW %d LOCK t%d fire: %s", i, level.maptime, had ? "the mark moves to the next" : "mark the nearest along the hand");
+			}
+			// ALT-FIRE: lock the gold cursor's spot for the crack; again: let it go
+			if (altPress)
+			{
+				if (w.geoLock[i]) w.GeoUnlock(i, "alt-fire again");
+				else if (w.aimOk[i] && !w.casting[i])
+				{
+					w.geoLock[i] = true; latched = false;
+					if (dbg) Console.Printf("T_WPW %d LOCK t%d alt-fire: spot locked at (%.0f %.0f %.0f), %.1f m; the mark is let go", i, level.maptime, w.okAt[i].x, w.okAt[i].y, w.okAt[i].z, w.aimM[i]);
+				}
+				else if (dbg) Console.Printf("T_WPW %d LOCK t%d alt-fire: no gold cursor here (%s), nothing locked", i, level.maptime, w.aimWhy[i]);
+			}
+			// the mark found nothing, or what it was on is gone with nothing else along the hand: the latch is over
+			if (latched && level.maptime > latchTic + 2 && !w.lockOn[i] && !w.markLine[i])
+			{
+				latched = false;
+				if (dbg) Console.Printf("T_WPW %d LOCK t%d the mark is over (nothing to mark)", i, level.maptime);
+			}
+			// a locked spot you have walked out of reach of is let go
+			if (w.geoLock[i] && (w.okAt[i] - RSQWP_Util.HandPos(pmo, hand)).Length() > RSQWP_Whip.LockRange() * 1.15) w.GeoUnlock(i, "out of reach");
+			w.markHeld[i] = latched;
+		}
+		else
+		{
+			w.markHeld[i] = trig;
+			if (altPress && trig) w.markNext[i] = true;
+		}
 		// the lasso: the off hand closed on the thong (only the main-hand whip has an off hand to spin it). Two routes:
 		// the engine's two-hand grip latch (WF_TWOHANDSTABILIZED: SteamVR's gl_openvr.cpp, and QZD's own Quest input
 		// too, VrInputDefault.cpp 130-141, the off grip pressed within 0.50 m with vr_two_handed_weapons on), and --
@@ -164,6 +208,7 @@ class RSQWP_WhipWeapon : Weapon
 		int i = pmo.PlayerNumber() * 2 + Hand();
 		w.markHeld[i] = false;
 		w.lassoOn[i] = false;
+		latched = false; w.GeoUnlock(i, "the whip is put away");
 		w.EndWrap(i);
 		if (core.hooks[i]) { core.held[i] = false; core.LetGo(core.hooks[i], true); }
 		w.WeaponUp(i, pmo);

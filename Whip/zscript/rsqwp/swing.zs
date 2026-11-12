@@ -100,6 +100,7 @@ extend class RSQWP_Whip
 	int     castPlane[NW];
 	bool    outNow[NW];          // the next Start leaves the thong out (a chain: it comes straight off the rope)
 	bool    indy[NW];            // Whip and Gun (IndyOn) this tic: weapon.zs Tend says so
+	bool    geoLock[NW];         // the Lock-On Whip: alt-fire has locked the gold cursor's spot; the next crack flies there (weapon.zs Tend)
 	bool    aimFrozen[NW];       // Whip and Gun: the cursor is held where it was while a crack is under way (AimTick)
 	// ... the cursor's last INDY_BACK + 1 tics (a ring by maptime): the hand's aim, and what the trace found then
 	const INDY_BACK = 3;         // the sweep test looks this many tics back, and a hold starts from the cursor that far back
@@ -159,10 +160,34 @@ extend class RSQWP_Whip
 	// buttons stay its own, no lasso, a one-handed swing. With the other hand empty or a fist, nothing changes.
 	static clearscope bool IndyOn(PlayerInfo p, int hand)
 	{
-		if (!p || !RSQWP_Util.Flag("rsqwp_indy", true) || !RSQWP_Util.Flag("rsqwp_on", true) || !RSQWP_Util.Flag("rsqwp_swing", true)) return false;
+		if (!p || !RSQWP_Util.Flag("rsqwp_on", true)) return false;
 		Weapon wh = hand ? p.OffhandWeapon : p.ReadyWeapon;
+		// THE LOCK-ON WHIP (below): the whip hand's own ray always, whatever the other hand holds or does not
+		if (LockWhipOn()) return wh is "RSQWP_WhipWeapon";
+		if (!RSQWP_Util.Flag("rsqwp_indy", true) || !RSQWP_Util.Flag("rsqwp_swing", true)) return false;
 		Weapon other = hand ? p.ReadyWeapon : p.OffhandWeapon;
 		return wh is "RSQWP_WhipWeapon" && other && !(other is "RSQWP_WhipWeapon") && !FreeHand(other);
+	}
+
+	// THE LOCK-ON WHIP (owner 2026-11-12 01:22: "should we always cast out a lock on from mainhand? pressing fire will snap
+	// it to nearest actor, and pressing alt fire will lock it onto geometry to snag? this free offhand to go into wheel or
+	// holsters for guns to shoot while monster is stunned"; 03:41: "write new whip"; Lock-On Controls, rsqwp_lockwhip, on;
+	// code only: loads, not run on the rig, not headset-confirmed). The whip hand's ray is cast all the time (the gold
+	// cursor on a spot it can snag). Nothing is held:
+	//   FIRE      a press marks the monster (or switch, or pickup) nearest along the hand; the mark stays with no button
+	//             held; another press moves it to the next. The crack flies to the mark (Mark, Crack, Reach).
+	//   ALT-FIRE  a press on a gold cursor locks that spot (the diamond stays there); the crack flies to it and snags
+	//             (SwingCast). A press again lets the spot go. One lock at a time: a mark lets the spot go, a spot the mark.
+	//   ON A ROPE alt-fire held reels, fire lets go (On a Rope, Fire Lets Go).
+	//   NO LOCK   a crack is a plain crack at what the tip meets.
+	// The other hand is never read: it keeps its buttons, its weapon, the Wheel and the holsters. It is Whip and Gun's
+	// machinery (indy[], the cursor from the whip hand) with these buttons; off, the controls are as they were on 11-11.
+	static clearscope bool LockWhipOn() { return RSQWP_Util.Flag("rsqwp_lockwhip", true); }
+	void GeoUnlock(int i, String why)
+	{
+		if (!geoLock[i]) return;
+		geoLock[i] = false; okTic[i] = -100;
+		if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d LOCK t%d spot let go: %s", i, level.maptime, why);
 	}
 
 	// The off hand's FIRE aims the ray: the whip weapon in the main hand, the off hand free, the switches on.
@@ -186,6 +211,8 @@ extend class RSQWP_Whip
 		if (!BeamWinsOn() || !byWeapon[i] || !RSQWP_Util.Flag("rsqwp_swing", true) || !RSQWP_Util.Flag("rsqwp_on", true)) return false;
 		// WHIP AND GUN: the cursor is on whenever the trigger is up, so only a GOLD cursor wins (a red one is a plain crack
 		// with every target path as before: the crack's own target, an edge snag, a fetch)
+		// THE LOCK-ON WHIP: the cursor is always on, so only a LOCKED spot wins; unlocked, every target path is as before
+		if (indy[i] && LockWhipOn()) return geoLock[i];
 		if (indy[i]) return (BeamHeld(i) && aimOk[i]) || BeamMemory(i);
 		return BeamHeld(i) || BeamMemory(i);
 	}
@@ -238,11 +265,12 @@ extend class RSQWP_Whip
 			int kb = AimSlot(i, INDY_BACK);
 			sweep = kb >= 0 && acos(clamp(dnow dot rgDir[kb], -1.0, 1.0)) > INDY_SWEEP;
 		}
-		if (indy[i] && aimShown[i] && (sweep || (wstate[i] == ST_OUT && (windTics[i] > 0 || swinging[i] || stiff[i] > 0.01))))
+		// (the Lock-On Whip's LOCKED spot is held the same way, from the cursor as it is this tic, for as long as it is locked)
+		if (indy[i] && aimShown[i] && (geoLock[i] || sweep || (wstate[i] == ST_OUT && (windTics[i] > 0 || swinging[i] || stiff[i] > 0.01))))
 		{
 			Vector3 o0 = RSQWP_Util.AimPos(pmo, ah);
 			int kb = AimSlot(i, INDY_BACK);
-			if (!aimFrozen[i] && kb >= 0 && rgTraced[kb])
+			if (!aimFrozen[i] && !geoLock[i] && kb >= 0 && rgTraced[kb])
 			{
 				aimOk[i] = rgOk[kb]; aimWhy[i] = rgWhy[kb]; aimEnd[i] = rgEnd[kb]; aimM[i] = rgM[kb];
 				if (aimOk[i]) { okAt[i] = rgAt[kb]; okHit[i] = rgHit[kb]; okN[i] = rgN[kb]; okSec[i] = rgSec[kb]; okPlane[i] = rgPlane[kb]; }
@@ -415,6 +443,7 @@ extend class RSQWP_Whip
 	bool SwingCast(int i, PlayerPawn pmo, int hand, Vector3 at)
 	{
 		if (!byWeapon[i] || !RSQWP_Util.Flag("rsqwp_swing", true)) return false;
+		if (indy[i] && LockWhipOn() && !geoLock[i]) return false;     // the Lock-On Whip: no spot locked, an ordinary crack
 		bool held = BeamHeld(i);
 		bool use = held ? aimOk[i] : BeamMemory(i);
 		if (!use)
@@ -427,6 +456,7 @@ extend class RSQWP_Whip
 		castAt[i] = okAt[i]; castHit[i] = okHit[i]; castN[i] = okN[i]; castSec[i] = okSec[i]; castPlane[i] = okPlane[i];
 		casting[i] = true;
 		okTic[i] = -100;                // one cast per aim
+		geoLock[i] = false;             // (the Lock-On Whip: the locked spot is spent)
 		reachFor[i] = null;
 		reachPt[i] = castAt[i];
 		Vector3 h0 = RSQWP_Util.HandPos(pmo, hand);

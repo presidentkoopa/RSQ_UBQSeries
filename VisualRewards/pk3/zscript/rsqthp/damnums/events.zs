@@ -69,6 +69,7 @@ class RSQTHP_DamNumHandler : EventHandler
 	const GREY = 17;
 	const RND_CHOICE = 98;   // "Random" in the colour rows
 	const BANNER_DUR = 44;          // the player level-up band: 1.26 s
+	const BAND_LOW = 20.0;          // the band's place under the gaze, degrees (owner 11-12 03:41)
 	const TAG_DUR = 70;             // the weapon level-up tag: 2 s
 	// A SHORT TOAST AT THE WRIST (owner 11-11 23:56: "the Gun level Up cards sometimes get in the way of what i am doing,
 	// but i like them"; 11-12 01:05, his pick: "shrink it to a short toast at the wrist"). Weapon Level-Up: Wrist Toast
@@ -1232,7 +1233,10 @@ class RSQTHP_DamNumHandler : EventHandler
 		{
 			// 64 map units (about 2 m) along your gaze, nearer if a wall is closer; it follows your gaze lazily
 			keepAway = false;
-			double pit = clamp(camPitch, -25.0, 25.0);
+			// LOW IN THE VIEW (owner 2026-11-12 03:41: "gold level up (revive and revenge too) need to be lower on the screen.
+			// bottom 3rd, right about where our down bar is"): the band stands BAND_LOW degrees under your gaze (the DOWN
+			// panel's foot is about 25 under it), not on it. LEVEL UP, REVENGE and REVIVE are all this band.
+			double pit = clamp(camPitch, -25.0, 25.0) + BAND_LOW;
 			Vector3 gz = (cos(pit) * cos(camYaw), cos(pit) * sin(camYaw), -sin(pit));
 			FLineTraceData d;
 			double bd = 64;

@@ -2555,7 +2555,7 @@ class RSQWP_Whip : EventHandler
 			// your other hand has a free shot. Trigger let go before it lands, or the row off: the wrap as ever.
 			if (byWeapon[i] && indy[i] && marked && markHeld[i] && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && PullOn())
 				Leash(i, pmo, hand, v, at);
-			else if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER)
+			else if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER && CrackWraps())
 			{
 				// the whip weapon: it wraps round the monster and waits for the pull (HoldWrap), and swings with the arm
 				// (the flail: not for a crack's wrap with Crack Knocks Enemies Back off, BeginWrap / Flail)
@@ -3014,6 +3014,10 @@ class RSQWP_Whip : EventHandler
 	// 11-12 01:22, the stun tool): Whip Pulls Monsters (rsqwp_whip_pull, OFF): off, the Leash does not catch and a yank on
 	// a wrapped monster does not pull it in (the yank still staggers it). On: both as before.
 	static bool PullOn() { return RSQWP_Util.Flag("rsqwp_whip_pull", false); }
+	// CRACK WRAPS MONSTERS (owner 11-12, the new whip: the crack stuns, it does not hold; rsqwp_whip_wrap, OFF): off with
+	// Lock-On Controls on, a crack that lands on a monster stuns it and the whip comes back: no wrap, so no flail and
+	// no yank. On, or with Lock-On Controls off: the wrap as it was.
+	static bool CrackWraps() { return !LockWhipOn() || RSQWP_Util.Flag("rsqwp_whip_wrap", false); }
 	static int StunTics(Actor v, bool heavy)
 	{
 		if (!v || !RSQWP_Util.Flag("rsqwp_whip_stunhold", true)) return 0;
