@@ -16,7 +16,7 @@ user int    rsqgc_tilt = 0;            // 1: the small card turns toward your ey
 // ---- placement
 user float  rsqgc_up = 0;              // the small card: up (+) or down, degrees about the hand (~0.45 cm a degree)
 user float  rsqgc_side = 0;            // the small card: sideways, degrees
-user float  rsqgc_in = 0;              // the small card: in (+, toward you along the forearm) or out, cm (baked every 1.5 cm, -6..6)
+user float  rsqgc_in = 0;              // the small card: in (+, toward you along the forearm) or out, cm (baked every 2 cm, -12..12)
 user float  rsqgc_watch_up = 0;        // the watch card: up (+) or down as it reads, degrees (drawn in the world: cm)
 user float  rsqgc_watch_side = 0;      // the watch card drawn in the world: sideways as it reads, cm (the hand-drawn one cannot
                                        // move sideways: its pieces have one turn, used for the rows; side.zs, tools/gen_side.py)

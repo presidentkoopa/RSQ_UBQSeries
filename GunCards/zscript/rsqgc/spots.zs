@@ -8,8 +8,8 @@
 // the hand. Per tic the engine lets a layer turn its model about the model origin on two axes only, psp.x (yaw about
 // the hand's up) and psp.y (pitch about the hand's right) (hw_weapon.cpp:108: the third, roll, is a fixed 0); the origin
 // is 30 cm behind and 5 cm above the controller (models.cpp:227), so a turn also carries the card round it (about
-// 0.37 cm a degree). In is a choice between baked copies, 1.5 cm apart, -6 to +6 cm (tools/gen_cards.py DEPTHS).
-// So a spot is: Up (pitch, -60..60), Side (yaw, -60..60), In (-6..6, clamped: further needs a re-bake). No roll, and no
+// 0.37 cm a degree). In is a choice between baked copies, 2 cm apart, -12 to +12 cm (tools/gen_cards.py DEPTHS).
+// So a spot is: Up (pitch, -100..100), Side (yaw, -100..100), In (-12..12, clamped: further needs a re-bake). No roll, and no
 // turn of the card about its own centre separate from where it sits: neither has a way to draw without a re-bake.
 //
 // STORE: rsqgc_spots, a nosave string (this machine only; never in the userinfo, which overflowed for the Tactical
@@ -27,9 +27,9 @@
 class RSQGC_Spots
 {
 	const MAXLEN = 4000;
-	const SIDE_MAX = 60.0;
-	const UP_MAX = 60.0;
-	const IN_MAX = 6.0;
+	const SIDE_MAX = 100.0;   // owner 2026-11-12 15:07: "a slider that goes up to 100 ... I DO NOT HAVE ENOUGH CONTROL OVER IT NOW" (was 60)
+	const UP_MAX = 100.0;
+	const IN_MAX = 12.0;     // the baked copies reach this far (tools/gen_cards.py DEPTHS: 13 of them, 2 cm apart; was 9, 1.5 cm, to 6)
 
 	static clearscope String Store()
 	{

@@ -114,8 +114,9 @@ It lets go when the twist drops under 20 degrees.
 
 ### Where it sits
 
-- **Small Card Up / Side** turn the card about the hand, -60 to 60 degrees; **Small Card In** moves it along the
-  forearm, -6 to 6 cm, in steps of 1.5 cm (the card is baked in 9 places).
+- **Small Card Up / Side** turn the card about the hand, -100 to 100 degrees; **Small Card In** moves it along the
+  forearm, -12 to 12 cm, in steps of 2 cm (the card is baked in 13 places). The same three per gun are under
+  **Advanced: This Gun's Small Card** (Up / Down, Left / Right, In / Out).
 - **Tilt to Your Eyes** (off): every tic the card turns toward your eyes, at most **Tilt: Most** (20 degrees) each
   way. Turning it also swings it a little round the wrist.
 - **A spot for each gun** (*Advanced: This Gun's Small Card*). **Edit Spot For** picks the hand (Main Hand Gun, the
@@ -314,7 +315,7 @@ Nothing else is needed. Every other mod is found by name while the game runs.
 | (top) | Show Cards (Always; Off, When I Look, Inspect Gesture, On Reload) · Watch Card (When I Check My Watch; Off, Always On) · Watch Card Shows (Weapon Card; Status Card, Both on One Card) · Gun Bonsai on Card (Off) |
 | Look | Card Colour (Each Gun Its Own; By Ammo Type, White, Grey, Red, Gold, Green, Blue, Cyan, Purple, Orange, Pink) · Small Card Colours (Ermac's; Wheel Palette) · Small Card Font (JFO; Ermac) · Text Quality (Quest; PCVR) · Material (Glass; Solid, Glow, No Background) · Card Opacity (0.85; 0.10 to 1.00) · Card Glow (Off; Quest, PCVR) · AMMO Word (On) · Low Ammo Colour (On) · Key Icons (On) · Only This Map's Keys (On) · Both Guns on One Card (Off) |
 | Behaviour | Draw in the World (Off) · Tilt to Your Eyes (Off) · Hide at Your Eye (Off) |
-| Placement | Small Card Up (0; -60 to 60) · Small Card Side (0; -60 to 60) · Small Card In (0; -6 to 6, steps of 1.5) · Watch Card Up (0; -30 to 30) · Watch Card Side (0; -30 to 30) · World Card Size (1.40; 0.50 to 2.50) |
+| Placement | Small Card Up (0; -100 to 100) · Small Card Side (0; -100 to 100) · Small Card In (0; -12 to 12, steps of 2) · Watch Card Up (0; -30 to 30) · Watch Card Side (0; -30 to 30) · World Card Size (1.40; 0.50 to 2.50) |
 | Advanced: This Gun's Small Card | Edit Spot For (Main Hand Gun; Off-Hand Gun) · This gun / Off-hand gun: (its name; its own spot, its gun's spot or the Placement spot) · Up (pitch) · Side (yaw) · In (cm) · Reset This Gun's Card · Reset All Saved Spots |
 | Test and Debug | Panel (0 = per gun) (0; 0 to 18) · Low Below (share) (0.25) · Fade (tics) (4) · Look: Reach (m) (0.70) · Look: Cone (deg) (30) · Watch Check Shows (Once It Is Held; As the Twist Starts) · Stays After (tics) (35) · Tilt: Most (deg) (20) · Eye Reach (m) (0.30) · Pickup +N (tics) (52) · Hand Numbers on Screen (Off) · Debug Log (Off) |
 

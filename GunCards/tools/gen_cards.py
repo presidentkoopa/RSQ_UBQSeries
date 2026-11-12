@@ -230,7 +230,7 @@ def add(a, b): return tuple(x + y for x, y in zip(a, b))
 # IN AND OUT (owner 2026-10-31: "i want to be able to move the ammo card in and out, in addition to left right and
 # up down"). A layer's x / y only turn a model about its origin, so a move along the forearm cannot be done at run
 # time: the card is baked at DEPTHS (cm along model Y, + toward the player) and rsqgc_in picks one.
-DEPTHS = [-6.0, -4.5, -3.0, -1.5, 0.0, 1.5, 3.0, 4.5, 6.0]
+DEPTHS = [-12.0, -10.0, -8.0, -6.0, -4.0, -2.0, 0.0, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0]   # owner 2026-11-12 15:07: more travel (was -6..6 every 1.5)
 
 
 def main():
@@ -255,7 +255,7 @@ def main():
     import re
     bgs = sorted(int(re.match(r'ammo_bg(\d+)\.png$', f).group(1)) for f in os.listdir(art) if re.match(r'ammo_bg\d+\.png$', f))
     for di, dy in enumerate(DEPTHS):
-     dc = str(di)
+     dc = '0123456789ABCDEFGHIJ'[di]   # one character: it is the second letter of a four-letter sprite name
      for m in (0, 1):
         mc = 'NM'[m]
         # panels: sprite Q<d>P<N|M>, frames A.. = ammo_bg1..19
@@ -394,7 +394,7 @@ def main():
     for label, spr, frames in states:
         kind = {'P': 0, 'L': 1, 'B': 2, 'S': 3, 'R': 4, 'E': 5, 'F': 6, 'T': 7, 'U': 8}[label[0]]
         mir = 1 if label[1] == 'M' else 0
-        dep = int(label[-1])
+        dep = int(label[-1], 36)
         slot = int(label[2:-1]) if len(label) > 3 else 0
         z.append('\t\tcase %d: return d.FindState("%s");' % (dep * 1000 + kind * 100 + mir * 10 + slot, label))
     z += ['\t\t}', '\t\treturn null;', '\t}', '}', '']

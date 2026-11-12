@@ -54,9 +54,9 @@ OptionMenu "RSQGC_Options"
 	Option "Hide at Your Eye", "rsqgc_hide_eye", "OnOff"
 	StaticText " "
 	StaticText "Placement", 1
-	Slider "Small Card Up", "rsqgc_up", -60, 60, 0.5, 1
-	Slider "Small Card Side", "rsqgc_side", -60, 60, 0.5, 1
-	Slider "Small Card In", "rsqgc_in", -6, 6, 1.5, 1
+	Slider "Small Card Up", "rsqgc_up", -100, 100, 0.5, 1
+	Slider "Small Card Side", "rsqgc_side", -100, 100, 0.5, 1
+	Slider "Small Card In", "rsqgc_in", -12, 12, 2, 0
 	Slider "Watch Card Up", "rsqgc_watch_up", -30, 30, 0.5, 1
 	// greyed unless Draw in the World is on: the hand-drawn watch card cannot move sideways (CVARINFO.txt)
 	Slider "Watch Card Side", "rsqgc_watch_side", -30, 30, 0.5, 1, "rsqgc_world"
@@ -65,9 +65,9 @@ OptionMenu "RSQGC_Options"
 	StaticText "Advanced: This Gun's Small Card", 1
 	Option "Edit Spot For", "rsqgc_spot_hand", "RSQGC_SpotHand"
 	RSQGCSpotGun ""
-	RSQGCSpotSlider "Up (pitch)", 1, -60, 60, 0.5, 1
-	RSQGCSpotSlider "Side (yaw)", 0, -60, 60, 0.5, 1
-	RSQGCSpotSlider "In (cm)", 2, -6, 6, 1.5, 1
+	RSQGCSpotSlider "Up / Down", 1, -100, 100, 0.5, 1
+	RSQGCSpotSlider "Left / Right", 0, -100, 100, 0.5, 1
+	RSQGCSpotSlider "In / Out (cm)", 2, -12, 12, 2, 0
 	RSQGCSpotReset "Reset This Gun's Card", 0, "Put this gun's small card back on the Placement spot?"
 	RSQGCSpotReset "Reset All Saved Spots", 1, "Put every gun's small card back on the Placement spot?"
 	StaticText " "
