@@ -23,3 +23,22 @@ Facts the next step needs:
 
 Next: src/zscript/wos/gun.zs (RSQWS_Gun base: RSR / RSP / RSB / RSM protocols, kick, semi, dual), then the 12 guns,
 then build.py (systems + MODELDEF + voxels + sounds + menu), then the rig suite.
+
+## Paused 2026-11-12 (owner: "Pause all work for now. 5hr limit.")
+Done since 18:05:
+- tools/build.py: assembles out/tree (src + WoS assets + Voxels of Saturn + BD22 VR model blocks / scripts via tools/lib/mdl.py,
+  zs_port.py, stubs.zs, CVARINFO.base, MENUDEF.base, MODELDEF.rsqm203). `--pk3` refuses unless out/suite.json says the suite
+  passed on this exact tree (sha256 in out/tree.sha256). Weapon Effects = rsqws_fx (OG / Enhanced) gates ballistics, true bullets, flash.
+- tools/row_1911.py -> row_1911.json: reload row 19 moved with the gun (method checked exactly on BD row 2). The card's well Axis leaned
+  11 deg sideways; re-measured from the mesh's own reload frames 7-9 (18.7 deg down the grip). Owner told.
+- gen_og.sh: zombies dropped (no monsters).
+- Compile check (out/tree): BD22 VR systems compile; my return-null errors fixed (ResolveState(null)); remaining errors are only the
+  guns not written yet (og_actors references RSQWS_MP40 / RSQWS_Knuckles).
+Next, in order:
+1. Motorsaw / Knuckles: owner answer: "this will load with RSQ series, read RSQ Melee" -> read RSQ Melee (RSQ_UBQSeries) before writing them.
+2. Write MP40 (4 tics/shot, open bolt: Chambered false, racks), MachineRifle (+ RSM underbarrel: old port build.py m203_protocol),
+   Riotgun (pump: pump_protocol / slug_protocol in /home/claude/work/port/build.py; set rsr_pump_guns row 1), Coachgun (break: rsb row 1;
+   one barrel / alt both; alt with one shell fires the one), Minigun (spin-up, RotaryPlasma alt, row 17 ammo box), SaturnV (alt = rlock.zs:
+   port it with rsa_rl_lock on, Rocket2 -> RSQWS_SaturnRocket, RSA_Handler.AltDown stub false, RSVR_AxeLock class from rsvr/melee.zs),
+   NovaRifle (charge NovaBall, scope), TITAN (Nova 5 / HyperNova 40). WoS A_SetPitch / A_ZoomFactor / Offset recoil dropped (VR).
+3. Open questions for the owner: RSQWS/dry = Doom 2 dsswtchn (my pick, confirm); Enhanced fire sounds (none mapped yet: ask).
