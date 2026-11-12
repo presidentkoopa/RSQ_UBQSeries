@@ -114,15 +114,37 @@ class wr_VoxSize play
 		}
 	}
 
-	// The KVX header's three sizes, from the lump by its short name (any namespace) or full path.
+	// The KVX header's three sizes, from the lump by its full path or its short name (any namespace).
+	// A SPRITE CAN CARRY THE SAME SHORT NAME (owner 2026-11-12 14:11: "smg and flamethrower need models in the wheel ...
+	// grenade launcher, rocket launcher, bfg10k need models in the wheel"; rig, run voxsize: those five measured 174
+	// MILLION units across): the voxel pack names their voxels SMGZA0, FLMTF0, GLAPA0, RLAUA0, BFG2A0, exactly as Brutal
+	// Doom names the pickup SPRITES, and the lookup by short name found the sprite first, so a PNG's first bytes were
+	// read as the sizes and the card shrank the model to nothing. Every lump of the name is tried now and the first whose
+	// header reads as a voxel's (each side 1 to 1024) is the one.
 	private static int, int, int KvxDims(string name)
 	{
 		int l = Wads.CheckNumForFullName(name);
-		if (l < 0) l = Wads.FindLump(name, 0, Wads.AnyNamespace);
-		if (l < 0) return 0, 0, 0;
+		if (l >= 0)
+		{
+			int x, y, z;
+			[x, y, z] = KvxHead(l);
+			if (x > 0) return x, y, z;
+		}
+		for (l = Wads.FindLump(name, 0, Wads.AnyNamespace); l >= 0; l = Wads.FindLump(name, l + 1, Wads.AnyNamespace))
+		{
+			int x, y, z;
+			[x, y, z] = KvxHead(l);
+			if (x > 0) return x, y, z;
+		}
+		return 0, 0, 0;
+	}
+	private static int, int, int KvxHead(int l)
+	{
 		string d = Wads.ReadLump(l);
 		if (d.Length() < 16) return 0, 0, 0;
-		return I32(d, 4), I32(d, 8), I32(d, 12);
+		int x = I32(d, 4), y = I32(d, 8), z = I32(d, 12);
+		if (x < 1 || y < 1 || z < 1 || x > 1024 || y > 1024 || z > 1024) return 0, 0, 0;
+		return x, y, z;
 	}
 
 	private static int I32(string d, int at)
