@@ -128,11 +128,11 @@ class RS_ScoreHUD : EventHandler
 
 		double centerX = SScaledCoord(SUserInt(pln, "rs_score_x", 50), widewidth,    PAD_WIDTH,  widewidth - screenwidth);
 		double centerY = SScaledCoord(SUserInt(pln, "rs_score_y", 10), screenheight, PAD_HEIGHT, 0);
-		// UNDER THE HAND GAUGES (owner 11-11: "i want it centered, below the shieldsaw bar"; that bar is gone, so
-		// centred, just below Gun Bonsai VR's two hand gauges). While a gauge is drawn (Dual HUD or single), the whole
-		// display -- line, bar, lives, breakdown -- moves down until the line's top clears the lowest gauge's bottom
-		// (asked by name: RSQ_HudService "gauges.bottom"). The Down row still works below that; without Gun Bonsai VR,
-		// or with no gauge on screen, nothing moves.
+		// BETWEEN THE HAND GAUGES (owner 11-11 evening: "score should be centered top middle and down a few units so it
+		// isn't flush with the top edge of screen. neatly between xp bars"): while a gauge is drawn, the score line's middle
+		// sits at the middle of the gauges' band (RSQ_HudService "gauges.top" / "gauges.bottom"); the Down row still moves
+		// it from there (its default, 10, is no move). Without Gun Bonsai VR, or with no gauge on screen, the line is at
+		// the Down row's place near the top, as before.
 		centerY += GaugeShift(centerY, screenheight);
 
 		// The original draws into SetHudSize(screenwidth, screenheight) while its X
@@ -517,23 +517,22 @@ class RS_ScoreHUD : EventHandler
 		return 1.0 + c3 * u * u * u + c1 * u * u;
 	}
 
-	// the share of the screen's height the display moves down while the Gun Bonsai VR patch's ShieldSaw
-	// gauge is on (how far it reaches below the hand gauges' top, RSQ_HudService "shield.gauge.drop"); 0 off or without the patch
-	// How far (virtual units) the display must move down for the score line's top (DrawScoreLine: bottom edge at
-	// centerY + 7, one font height tall) to sit GAUGE_GAP of the screen's height under the hand gauges' bottom; 0 when
-	// it is already lower, or no gauge is drawn.
-	const GAUGE_GAP = 0.01;
+	// How far (virtual units) the display moves so the score line's middle (DrawScoreLine: bottom edge at centerY + 7, one
+	// font height tall) sits at the middle of the hand gauges' band, plus the Down row's move from its default (10).
+	// 0 when no gauge is drawn.
 	static ui double GaugeShift(double cy, double vh)
 	{
 		let it = ServiceIterator.Find("RSQ_HudService");
 		let s = it.Next();
 		if (!s) return 0.0;
 		int b = s.GetIntUI("gauges.bottom", "", 0, 0, null);
-		if (b <= 0) return 0.0;
+		int t = s.GetIntUI("gauges.top", "", 0, 0, null);
+		if (b <= 0 || t < 0 || t >= b) return 0.0;
 		Font fnt = Font.GetFont("RSSCFON");
 		if (!fnt) { fnt = smallfont; }
-		double lineTop = cy + 7 - fnt.GetHeight();
-		return max(0.0, (b / 1000.0 + GAUGE_GAP) * vh - lineTop);
+		double lineMid = cy + 7 - fnt.GetHeight() * 0.5;
+		double downMove = cy - SScaledCoord(10, vh, PAD_HEIGHT, 0);      // the Down row's own move, kept
+		return (t + b) / 2000.0 * vh - (lineMid - downMove);
 	}
 
 	// ----------------------------------------------------------------- helpers

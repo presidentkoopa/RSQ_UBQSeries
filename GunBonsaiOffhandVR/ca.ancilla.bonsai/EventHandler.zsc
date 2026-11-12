@@ -141,6 +141,24 @@ class TFLV_EventHandler : StaticEventHandler {
     return TFLV_HUD.GaugeBottom(y);
   }
 
+  // RSQ PATCH (owner 11-11): the top of the highest hand gauge drawn this frame (fraction of the screen's height), -1 when
+  // none is drawn (RSQ_HudService "gauges.top"). Same test and anchors as GaugesBottom.
+  ui double GaugesTop(uint p) const {
+    if (p >= MAXPLAYERS || !ShouldDrawHUD(p)) return -1;
+    TFLV_CurrentStats cur;
+    let stats = playerstats[p];
+    if (TFLV_Settings.GetBool("bonsai_vr_dual_hud")) {
+      double t = 2;
+      if (stats.GetCurrentStatsForHand(0, cur)) t = min(t, TFLV_HUD.GaugeTop(TFLV_Settings.GetDouble("bonsai_vr_hud_main_y")));
+      if (stats.GetCurrentStatsForHand(1, cur)) t = min(t, TFLV_HUD.GaugeTop(TFLV_Settings.GetDouble("bonsai_vr_hud_off_y")));
+      return t > 1.5 ? -1 : t;
+    }
+    if (!stats.GetCurrentStatsPreferring(TFLV_Settings.GetInt("bonsai_vr_hud_hand"), cur)) return -1;
+    double x, y, sc, al; uint mi;
+    [x, y, sc, al, mi] = TFLV_Settings.hud_params();
+    return TFLV_HUD.GaugeTop(y);
+  }
+
   /* ui */ override void RenderOverlay(RenderEvent evt) {
     if (!ShouldDrawHUD(consoleplayer)) return;
     if (!hud) hud = new("TFLV_HUD");

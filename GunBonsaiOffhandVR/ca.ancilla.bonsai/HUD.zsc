@@ -135,6 +135,17 @@ class TFLV_HUD : Object ui {
   // name through RSQ_HudService, rsq/zscript/hudservice.zs). The same sums Calibrate makes: a gauge's box is
   // bonsai_hud_size of the screen's height tall, its top at (1 - size) x its Down setting. y < 0 or > 1 are pixel
   // anchors (fbh units) as in realposition. Returns the box's bottom as a fraction of the screen's height.
+  // RSQ PATCH (owner 11-11): the top of a hand gauge, as a fraction of the screen's height (RSQ Score centres its line
+  // between the gauges)
+  static double GaugeTop(double y) {
+    double sc = TFLV_Settings.GetDouble("bonsai_hud_size");
+    if (sc > 1) sc = sc / 1080;
+    if (sc <= 0) return 0;
+    double fbh = 512 / (sc / 0.15);
+    double hudh = fbh * sc;
+    return realposition(fbh, hudh, y) / fbh;
+  }
+
   static double GaugeBottom(double y) {
     double sc = TFLV_Settings.GetDouble("bonsai_hud_size");
     if (sc > 1) sc = sc / 1080;
