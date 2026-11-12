@@ -6581,24 +6581,26 @@ class UBQS_RemoteBolt : UBQS_Bolt
 		if (bDestroyed) return;
 		if (!counted && home && target && target.player) CountDeflect();
 	}
-	// a deflect, counted once: the streak, its points, the 0.3 s slow (RSQ SlowMo)
-	void CountDeflect()
+	// a deflect, counted once: the streak, its points, the 0.3 s slow (RSQ SlowMo). pay false: a block, which pays
+	// nothing (owner 11-11 19:1x, "Pay nothing")
+	void CountDeflect(bool pay = true)
 	{
 		if (counted || !home) return;
 		counted = true;
 		home.deflects++;
 		home.streak++;
 		home.best = max(home.best, home.streak);
-		home.Pay("Deflect", 10 * home.Level());
+		if (pay) home.Pay("Deflect", 10 * home.Level());
 		home.Slow(home.SLOW_DEFLECT);
 		home.Report();
 	}
 	// BLOCKED (Gun Bonsai VR, Deflector not learned: the blade stops the bolt dead, UBQS_SaberBase.BatBack). For the remote it
-	// counts as a deflect: the streak and the 0.3 s slow (owner 11-11: "streak and slow only"). No hit: no pip, so blocks
-	// never knock it down; only a bolt sent back lights a pip. The caller destroys the bolt after.
+	// counts as a deflect: the streak and the 0.3 s slow (owner 11-11: "streak and slow only"), and NO points (owner 11-11
+	// evening: "Pay nothing"). No hit: no pip, so blocks never knock it down; only a bolt sent back lights a pip. The caller
+	// destroys the bolt after.
 	void CountBlock(Actor by)
 	{
-		CountDeflect();
+		CountDeflect(false);
 	}
 }
 

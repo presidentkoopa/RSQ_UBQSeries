@@ -73,6 +73,7 @@ Code only, not shown, not compiled (after 15:07):
 - Q3 answered by a decision: Colourful Hell (CH) monsters stop being a selectable spawn set; they are used for
   encounters only (minibosses, thralls, set-pieces). Then a map's own monsters are BD monsters, never Black/White, so
   Q3 is moot. NOT BUILT: goes into the queued Monsters pass.
+- Q4: a remote block pays NOTHING (built: QuestSaber CountBlock -> CountDeflect(false); code only, not shown).
 - Voxel hunt over the upside-down rifle: STOPPED by the owner (16:5x). Don't restart unless he asks.
 
 ## Questions still to ask the owner (one at a time)
