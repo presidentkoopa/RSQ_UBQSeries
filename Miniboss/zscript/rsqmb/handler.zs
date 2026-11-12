@@ -622,7 +622,7 @@ class RSQMB_Handler : EventHandler
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (e.Name ~== "rsqmb_state") { PrintState(); BfState(); }
-		else if (e.Name ~== "rsqmb_callin") CallIn(e.Player);
+		else if (e.Name ~== "rsqmb_callin") CallIn(e.Player, e.Args[0] == 1);
 		else if (e.Name ~== "rsqmb_fill")
 		{
 			// test door: the meter to Args[0] permille (1000: full now)

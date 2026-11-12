@@ -53,6 +53,7 @@ class RSQMB_Meter : RSQMB_Token
 	int    readyAt;        // level.maptime it filled (re-stamped on a new map)
 	int    beaten;         // Bossfights won
 	bool   called;         // the player called it in (this map)
+	bool   force;          // called from the inner-wrist card: no guardrail holds it back (owner 11-12 05:37)
 	int    seenSerial;     // RSQ Score's kill serial read last
 	int    chain, lastKill;
 	double lastX, lastY;   // where you were at the last time sample
@@ -197,7 +198,7 @@ extend class RSQMB_Handler
 	{
 		m.ready = true;
 		m.readyAt = level.maptime;
-		m.called = false;
+		m.called = false; m.force = false;
 		let p = m.Owner;
 		if (p && p.PlayerNumber() == consoleplayer) p.A_StartSound("brain/spit", CHAN_AUTO, CHANF_UI | CHANF_LOCAL, 1.0, ATTN_NONE);
 		Glow(0xFF2010, 0.6);
@@ -284,7 +285,7 @@ extend class RSQMB_Handler
 			{
 				// a new map: the wait for auto-arrival starts again, nothing called yet, this map's score from here
 				m.mapStamp = level.levelnum + 1;
-				m.readyAt = now; m.called = false; m.scoreBase = -1; m.seenSerial = 0; m.chain = 0; m.lastKill = -1000;
+				m.readyAt = now; m.called = false; m.force = false; m.scoreBase = -1; m.seenSerial = 0; m.chain = 0; m.lastKill = -1000;
 				m.lastX = p.pos.x; m.lastY = p.pos.y; m.gbGun = null;
 			}
 			if (!on) continue;
@@ -398,9 +399,9 @@ extend class RSQMB_Handler
 	// that was Start (icon) Fight? So when we offhand inner wrist check we can Use to call in miniboss fight. current call
 	// in method does not work. And the icon will be our Miniboss icon, for now") ---------------------------------------
 	// Turn the INSIDE of either wrist to your face and look at it: a card stands over it, START (the crowned skull)
-	// FIGHT? in gold while a Bossfight is ready to call, FIGHT (skull) NOT READY in grey while the meter is still filling
-	// or it is already called. With the gold card up, Use calls the Bossfight in (the same call as the watch check + Use,
-	// which stays). The pose: the inner wrist's face within 60 degrees of square to your eyes (the back-of-wrist watch
+	// FIGHT? in gold whenever no Bossfight is running or on its way, FIGHT (skull) NOT READY in grey while one is. With
+	// the gold card up, Use calls a Bossfight in at once: the meter need not be full and no guardrail holds it back
+	// (owner 05:37). The watch check + Use stays, with the meter and the rules as before. The pose: the inner wrist's face within 60 degrees of square to your eyes (the back-of-wrist watch
 	// check turned over: RSQ Gun Cards' FaceDot, negated), the wrist within 45 degrees of your gaze, held WC_HOLD tics.
 	// One textured quad in the world (RSQMB_WQuad, a flat model laid on the wrist), this machine only. Inner-Wrist Card
 	// (rsqmb_wristcard, user, on). Rig only for the pose and the card; not headset-confirmed.
@@ -413,6 +414,7 @@ extend class RSQMB_Handler
 	transient int wcHold[2];
 	transient double wcAlpha;
 	transient int wcHand;
+	transient bool wcUse;
 	static double InnerDot(PlayerPawn pmo, int hand)
 	{
 		if (!pmo.OverrideAttackPosDir || !pmo.player) return -1;
@@ -453,7 +455,7 @@ extend class RSQMB_Handler
 			Console.Printf("RSQMB wrist card: inner wrist main %.2f off %.2f, gaze %.0f / %.0f degrees, held %d / %d, meter %s", InnerDot(p, 0), InnerDot(p, 1), GazeOff(p, 0), GazeOff(p, 1), wcHold[0], wcHold[1], m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
 		if (shown >= 0) wcHand = shown;
 		wcAlpha = clamp(wcAlpha + (shown >= 0 ? 0.25 : -0.25), 0.0, 1.0);
-		bool gold = m.ready && !m.called;
+		bool gold = !BfBusy() && !(m.called && m.force);     // callable any time no Bossfight is running or already on its way
 		if (wcAlpha <= 0) { if (wcCard) wcCard.bInvisible = true; return; }
 		String tn = gold ? "RSQMBWC1" : "RSQMBWC0";
 		TextureID tx = TexMan.CheckForTexture(tn, TexMan.Type_Any);
@@ -488,15 +490,25 @@ extend class RSQMB_Handler
 		wcCard.scale = (WC_WIDE, WC_WIDE * th / max(1, tw));
 		wcCard.bInvisible = false;
 		wcCard.A_SetRenderStyle(wcAlpha, STYLE_Translucent);
-		// the gold card up: Use calls it in (CallInput reads watchTic, below in the same tic)
-		if (gold && shown >= 0) m.watchTic = level.maptime + 1;
+		// the gold card up: Use calls it in, with no rules (CallIn's card call)
+		bool use = (p.player.cmd.buttons & BT_USE) != 0;
+		if (gold && shown >= 0 && use && !wcUse) EventHandler.SendNetworkEvent("rsqmb_callin", 1);
+		wcUse = use;
 	}
 
-	void CallIn(int pn)
+	void CallIn(int pn, bool card = false)
 	{
 		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
-		let m = MeterOf(players[pn].mo);
-		if (!m || !m.ready || m.called) return;
+		let m = MeterOf(players[pn].mo, card);
+		if (card)
+		{
+			// the inner-wrist card: whatever the meter holds, whatever the rules say; only never on top of a running one
+			if (!m || BfBusy() || (m.called && m.force)) return;
+			if (!m.ready) Ready(m);
+			m.force = true;
+			if (debug) Console.Printf("RSQMB BOSSFIGHT CALLED IN (the fight card: no rules) by player %d", pn);
+		}
+		if (!m || !m.ready || (m.called && !card)) return;
 		m.called = true;
 		bfNextTry = 0;
 		players[pn].mo.A_StartSound("misc/chat", CHAN_AUTO, CHANF_UI | CHANF_LOCAL, 0.8, ATTN_NONE);
@@ -510,6 +522,14 @@ extend class RSQMB_Handler
 	void TryArrive(PlayerPawn p, RSQMB_Meter m)
 	{
 		String why = Guard(p);
+		// THE FIGHT CARD DOES NOT CARE ABOUT THE RULES (owner 11-12 05:37: "it calls in the fight wherever the player presses
+		// it without restrictions"): a call from the inner-wrist card skips every guardrail (Too Early, Map Limit, Cooldown,
+		// Low Health, Near Exit, Too Busy). What cannot be skipped: no monster types on the map, and no spot to land on.
+		if (m.force && why != "" && why != "No Miniboss: No Monsters")
+		{
+			if (debug) Console.Printf("RSQMB bossfight: the fight card overrides \"%s\"", why);
+			why = "";
+		}
 		if (why == "")
 		{
 			int tier = Tier(p, m);
@@ -990,7 +1010,7 @@ extend class RSQMB_Handler
 		bfAny = true;
 		bfLastTic = level.maptime;
 		let m = MeterOf(p);
-		if (m) { m.fill = 0; m.ready = false; m.called = false; }
+		if (m) { m.fill = 0; m.ready = false; m.called = false; m.force = false; }
 		// the shield is up: the room's glow goes cold grey, the words go up (fight.zs RoomGlow, WordsStep)
 		b.wordState = -9;
 		b.glowSent = -1;

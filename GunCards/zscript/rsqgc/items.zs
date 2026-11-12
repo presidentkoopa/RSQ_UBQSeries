@@ -8,7 +8,7 @@
 // place: the road flares left and the cigarettes left.
 //
 //   class                        top row                  big count            asked of (by name)
-//   UBQS_Saber, UBQS_SaberOff    SABER, LIT / OFF         -                    UBQS_SaberService "saber.lit" (intArg the hand)
+//   UBQS_Saber, UBQS_SaberOff    SABER                    -                    - (LIT / OFF taken off 11-12: you can see the blade)
 //   RSQFF_Held                   FLARE, LIT / UNLIT       flares left          RSQFF_Service "flare.phase", "flare.count"
 //   RSQFF_Torch                  LIGHT, ON / OFF          battery, percent     RSQFF_TorchService "torch.phase", "battery"
 //   RSQTR_CigWeapon              CIGARETTES               cigarettes left      the pocket's RSQTR_CigPack (no service answers it)
@@ -77,9 +77,8 @@ class RSQGC_Items play
 		Name n = w.GetClassName();
 		if (n == 'UBQS_Saber' || n == 'UBQS_SaberOff')
 		{
-			int lit = Ask("UBQS_SaberService", "saber.lit", Hand(w), w.Owner);
-			if (lit == 1) return "LIT", RSQGC_SideCard.C_GREEN;
-			if (lit == 0) return "OFF", RSQGC_SideCard.C_DARK;
+			// no LIT / OFF (owner 11-12 05:37: "remove LIT from saber, we know if it is lit or not")
+			return "", -1;
 		}
 		else if (n == 'RSQFF_Held')
 		{

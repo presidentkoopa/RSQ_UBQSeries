@@ -105,3 +105,15 @@ SlowMo, on `main`. Loads on the full order only; not run on the rig, not headset
 - **Miniboss inner-wrist card** START (skull) FIGHT? + Use (runs wrist1-5); flat along the forearm since 05:26.
 - **DOWN** 9 / 6 / 3 s and one kill owed: run down3. Labels and bonus crosshairs not looked at in frames.
 - Not rig-checked: Holsters Ride Up When Down, the lowered LEVEL UP band, the level card's sweep.
+
+## 05:37 (owner: "remove LIT from saber ... The fight card does not care about the rules ... minibosses drop legendary guns and refill cigarettes")
+
+- GunCards: the saber's card no longer says LIT / OFF (which also removes the stray green piece).
+- Miniboss: the inner-wrist card calls a Bossfight in with no rules and whatever the meter holds (`force`); only "No
+  Monsters" and "No Room" can still stop it. Rig: run fightcard (it overrode Too Early and the fight arrived).
+- BD22 VR 2.0.4k: a Bossfight's legendary drop rolls its rarity by tier (55 / 28 / 12 / 5 at the first tier, rarer
+  gaining 50% x its rank per tier). Miniboss tiers count from 0.
+- Already there, nothing changed: a dead miniboss refills cigarettes (Tactical Rig `CigGive ... "miniboss"`).
+- The owner's direction, not built: boosted legendary champions as the "pinatas".
+- Asked 05:38: the fly-in crosshairs (Predator / Virtual Cop) are parked in design/PARKED.md with his two clips in
+  design/refs/crosshair_flyin/. Crosshairs and chevrons are drawn only by SlowMo's DOWN today.
