@@ -146,3 +146,27 @@ BFG10k) and the fisheye card sizes; lasers when canted while two-handing; why di
 two-handing; whip hand-over-hand climbing; frozen purple imp; BD22 imp attack frame drops; the candle's floating
 monster; the game-exit sound; rogue voxels out in the map; whether Running Total shows in the SOTN look; building
 the boss bar.
+
+## 14:36 to 15:10, down the 14:11 work order (UBQ b0b95cd49d, BD 2.0.4n 3bb4046)
+
+Done and in PK3TEST:
+- Wheel: the five guns' models (voxel size was read from the same-named sprite; `KvxDims` tries every lump, runs voxsize / wheelvox4).
+- Wheel: the data sheet grows with the ring (owner 14:36; run sheetgrow). Picked card 1.8, neighbours 1.35 and 1.12
+  (`PICK_*`, group `mul` in wr_q_shim.zs; seen only at 1.5 / 1.22 / 1.08 with a forced pick, run pickbig5; the rig's hand never picked a card).
+- DistanceGrab: both controllers within 16 cm counts as two-handing (`TWO_HAND_CLASP`, run ls2h).
+- LaserSight: an aimed gun (within 40 degrees of the view) keeps its laser through the watch check (`Aimed`). Loads only.
+- Miniboss: "brain/sight" on arrival removed (handler.zs rage start). Loads only.
+- BD 2.0.4n: menu/quit1, quit2 silent (they were LegenDoom's, its SNDINFO:717-718).
+- Monsters: NOICEDEATH on every RS_ monster at spawn (RS_RetierHandler.WorldThingSpawned); the "frozen purple imp" was the
+  engine's ice death from LegenDoom's Freezing guns (runs ice0 before, ice1 after).
+
+Found, not fixed:
+- GunCards per-gun six axes: the hand-drawn small card is 16,442 baked voxels turned by a layer's two angles; roll and a
+  move apart from the turn cannot be drawn without a re-bake per step or an engine change. Only a world-drawn card can
+  take all six. Asked the owner.
+- Rogue voxels: not reproduced. Checked and ruled out on the rig: the laser's arc learner (rifle, SMG, shotguns, MGs all
+  read STRAIGHT; `rsq_hands` does learn a false arc from Shotgunparticles2 but draws no laser). Asked for a screenshot.
+- Floor candle: `Candlestick` on the owner's order is a plain candle on the rig (runs candle3_1 / candle3_0). The voxel
+  pack's "Evil Candle" replaces Doom's EvilEye (a floating eye over a stand): candidate, not shown. Asked for a screenshot.
+
+Not started: whip climb (off hand grabs the snagged whip, Use climbs), BD22 imp frame drops, HUD boss bar (mockup E on the canvas, not approved).
