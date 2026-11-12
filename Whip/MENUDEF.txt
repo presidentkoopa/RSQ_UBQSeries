@@ -48,6 +48,10 @@ OptionMenu "RSQWP_Options"
 	StaticText " "
 	StaticText "Crack", "Gold"
 	Option "Stun", "rsqwp_whip_stun", "OnOff"
+	// A cracked monster is held in its flinch: light about 1 s, heavy longer; bosses and minibosses less.
+	Option "Crack Stun Hold", "rsqwp_whip_stunhold", "OnOff"
+	// Off: a crack never drags a monster toward you (no Leash, no pull on a yank).
+	Option "Whip Pulls Monsters", "rsqwp_whip_pull", "OnOff"
 	// With MK Crits loaded: a heavy crack is always its critical hit.
 	Option "Hard Crack Crits (MK Crits)", "rsqwp_whip_hardcrit", "OnOff"
 	Option "Knockback", "rsqwp_whip_crackknock", "OnOff"

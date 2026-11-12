@@ -2139,7 +2139,8 @@ class RSQWP_Whip : EventHandler
 			double T = 14;
 			double g = v.bNOGRAVITY ? 0 : level.gravity * v.Gravity / 800.0;
 			double lift = isLight ? 0.5 * g * T : 0.5 * g * T * 0.4;
-			v.vel = (u.x * travel / T, u.y * travel / T, lift + max(0.0, to.z) / T);
+			// Whip Pulls Monsters off (PullOn, owner 11-12): the yank staggers it where it stands, it is not thrown at you
+			if (PullOn() || !v.bISMONSTER) v.vel = (u.x * travel / T, u.y * travel / T, lift + max(0.0, to.z) / T);
 			if (isLight && s >= 0.5 && v.bISMONSTER)
 			{
 				State pain = v.FindState("Pain");
@@ -2151,9 +2152,9 @@ class RSQWP_Whip : EventHandler
 			int pp = Gb(pmo, G_PULL);
 			if (isLight && pp > 0 && v.bISMONSTER) { Ask("stagger", v, int(T) + 17 + 9 * pp); Touch("pull.punch", pmo, v); }
 			BolaYank(i, v.vel);
-			what = isLight ? "light: pulled" : "medium: staggers";
+			what = (PullOn() || !v.bISMONSTER) ? (isLight ? "light: pulled" : "medium: staggers") : "staggered where it stands (Whip Pulls Monsters off)";
 		}
-		else
+		else if (PullOn() || !v.bISMONSTER)
 		{
 			double sp = 6 + 10 * s;
 			pmo.vel.xy = pmo.vel.xy * 0.3 - u * sp;
@@ -2552,7 +2553,7 @@ class RSQWP_Whip : EventHandler
 			// lands on a monster with the trigger still held catches it on core's line -- a light one slides to you along
 			// the floor, a heavy one (Too Heavy, a boss, Miniboss's Can't Be Yanked) is an anchor you swing from -- while
 			// your other hand has a free shot. Trigger let go before it lands, or the row off: the wrap as ever.
-			if (byWeapon[i] && indy[i] && marked && markHeld[i] && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true))
+			if (byWeapon[i] && indy[i] && marked && markHeld[i] && v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && PullOn())
 				Leash(i, pmo, hand, v, at);
 			else if (byWeapon[i] && v && v.Health > 0 && v.bISMONSTER)
 			{
@@ -2560,7 +2561,7 @@ class RSQWP_Whip : EventHandler
 				// (the flail: not for a crack's wrap with Crack Knocks Enemies Back off, BeginWrap / Flail)
 				BeginWrap(i, pmo, hand, v, fromLasso);
 			}
-			else if (v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && BindHeld(pmo, hand)) Leash(i, pmo, hand, v, at);
+			else if (v && v.Health > 0 && v.bISMONSTER && RSQWP_Util.Flag("rsqwp_whip_leash", true) && PullOn() && BindHeld(pmo, hand)) Leash(i, pmo, hand, v, at);
 		}
 		else if (!v && RSQWP_Util.Flag("rsqwp_whip_lines", true))
 		{
@@ -2968,6 +2969,16 @@ class RSQWP_Whip : EventHandler
 			if (pain && !v.InStateSequence(v.CurState, pain)) { v.SetState(pain); stunned = true; }
 			else stunned = pain != null;
 		}
+		// THE WHIP IS THE STUN TOOL (owner 2026-11-12 01:22: "lock on and light crack to stun, hard crack to crit and stun
+		// ... this free offhand to go into wheel or holsters for guns to shoot while monster is stunned. useful bossfight
+		// tool"): the Pain state a crack puts a monster in is HELD (StunTics): a light crack 35 tics (1 s), a heavy one 50;
+		// a boss or an RSQ Miniboss's miniboss: a light crack only breaks off its attack (no hold), a heavy one holds 35.
+		// Row: Crack Stun Hold (rsqwp_whip_stunhold, on); off: the Pain state runs its own length, as before.
+		if (crack && stunned && v && !v.bDestroyed && v.Health > 0)
+		{
+			int hd = StunTics(v, hk >= 0.5);
+			if (hd > 0) v.tics = max(v.tics, hd);
+		}
 		// HIT-STOP (option, owner's pick 10; surveys/01_MELEE 3.6): the cracked monster freezes for a beat --
 		// 3 tics for the lightest crack ("a tap") to 6 for the hardest ("a heavy"); 10 reads as a bug.
 		// STRIKE TRUE (Gun Bonsai VR): the option becomes levels, 3 / 4 / 6 tics whatever the crack -- while the Hit-Stop
@@ -2998,6 +3009,20 @@ class RSQWP_Whip : EventHandler
 	// for that type, so the two never multiply), its sound and effect by its own settings, and the 50-tic hold on the
 	// Pain state the crack's Stun put it in. Its "stunned monsters take more" bonus is its own state and is not set.
 	// Nothing without MK Crits, with its Critical Hits off, or with Hard Crack Crits (rsqwp_whip_hardcrit) off.
+	// how long a crack holds a monster in its Pain state, tics (0: no hold); the note in Hit
+	// A CRACK NEVER BRINGS A MONSTER TO YOU (owner 11-11 23:56: "i end up moving the monster closer to me and I panic";
+	// 11-12 01:22, the stun tool): Whip Pulls Monsters (rsqwp_whip_pull, OFF): off, the Leash does not catch and a yank on
+	// a wrapped monster does not pull it in (the yank still staggers it). On: both as before.
+	static bool PullOn() { return RSQWP_Util.Flag("rsqwp_whip_pull", false); }
+	static int StunTics(Actor v, bool heavy)
+	{
+		if (!v || !RSQWP_Util.Flag("rsqwp_whip_stunhold", true)) return 0;
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		bool big = v.bBOSS || (wc && v.FindInventory(wc));
+		if (big) return heavy ? 35 : 0;
+		return heavy ? 50 : 35;
+	}
 	static bool MkOn()
 	{
 		if (!RSQWP_Util.Flag("rsqwp_whip_hardcrit", true)) return false;
@@ -3035,7 +3060,8 @@ class RSQWP_Whip : EventHandler
 		if (v && !v.bDestroyed && v.Health > 0)
 		{
 			State pain = v.FindState("Pain");
-			if (pain) { if (!v.InStateSequence(v.CurState, pain)) v.SetState(pain); v.tics = max(v.tics, 50); }
+			int hd = StunTics(v, true);
+			if (pain) { if (!v.InStateSequence(v.CurState, pain)) v.SetState(pain); if (hd > 0) v.tics = max(v.tics, hd); }
 		}
 		if (RSQWP_Util.Flag("rsqwp_debug", false))
 			Console.Printf("T_WPW MKCRIT %s: + %d (x %.2f), hp %d -> %d, held %d", v ? v.GetClassName() : 'gone', extra, f, hp0, v ? v.Health : 0, (v && v.Health > 0) ? v.tics : 0);
