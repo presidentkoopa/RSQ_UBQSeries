@@ -550,8 +550,8 @@ class RSQMB_Handler : EventHandler
 			let it = ThinkerIterator.Create("Actor");
 			Actor a;
 			while (a = Actor(it.Next())) RageOne(a);
-			let pmo = players[consoleplayer].mo;
-			if (pmo) pmo.A_StartSound("brain/sight", CHAN_AUTO, CHANF_UI, 0.8, ATTN_NONE);
+			// (no sound: it was Doom's Icon of Sin, "brain/sight" -- owner 11-12 14:11: "it says the john romero / icon of pain
+			// sound on arrival, taht is not needed")
 			if (debug) Console.Printf("RSQMB rage start: %.3f ms (once)", MSTimeF() - t0);
 		}
 		if (debug) Console.Printf("RSQMB GREED: boss %d enraged, %d monsters x%.1f speed", b.idx, raged.Size(), rageSpeed);
