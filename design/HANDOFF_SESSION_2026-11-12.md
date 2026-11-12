@@ -117,3 +117,4 @@ SlowMo, on `main`. Loads on the full order only; not run on the rig, not headset
 - The owner's direction, not built: boosted legendary champions as the "pinatas".
 - Asked 05:38: the fly-in crosshairs (Predator / Virtual Cop) are parked in design/PARKED.md with his two clips in
   design/refs/crosshair_flyin/. Crosshairs and chevrons are drawn only by SlowMo's DOWN today.
+- 05:44 (owner): the fight card needs the FULL METER again. My reading of "without restrictions" as "ignore the meter too" was wrong; only the guardrails are skipped.

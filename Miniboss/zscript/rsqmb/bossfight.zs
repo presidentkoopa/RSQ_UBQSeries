@@ -399,9 +399,9 @@ extend class RSQMB_Handler
 	// that was Start (icon) Fight? So when we offhand inner wrist check we can Use to call in miniboss fight. current call
 	// in method does not work. And the icon will be our Miniboss icon, for now") ---------------------------------------
 	// Turn the INSIDE of either wrist to your face and look at it: a card stands over it, START (the crowned skull)
-	// FIGHT? in gold whenever no Bossfight is running or on its way, FIGHT (skull) NOT READY in grey while one is. With
-	// the gold card up, Use calls a Bossfight in at once: the meter need not be full and no guardrail holds it back
-	// (owner 05:37). The watch check + Use stays, with the meter and the rules as before. The pose: the inner wrist's face within 60 degrees of square to your eyes (the back-of-wrist watch
+	// FIGHT? in gold once the METER IS FULL (and no Bossfight is running or on its way), FIGHT (skull) NOT READY in
+	// grey until then. With the gold card up, Use calls the Bossfight in at once and no guardrail holds it back (owner
+	// 05:37; the meter still decides when, 05:44). The watch check + Use stays, with the meter and the rules as before. The pose: the inner wrist's face within 60 degrees of square to your eyes (the back-of-wrist watch
 	// check turned over: RSQ Gun Cards' FaceDot, negated), the wrist within 45 degrees of your gaze, held WC_HOLD tics.
 	// One textured quad in the world (RSQMB_WQuad, a flat model laid on the wrist), this machine only. Inner-Wrist Card
 	// (rsqmb_wristcard, user, on). Rig only for the pose and the card; not headset-confirmed.
@@ -455,7 +455,7 @@ extend class RSQMB_Handler
 			Console.Printf("RSQMB wrist card: inner wrist main %.2f off %.2f, gaze %.0f / %.0f degrees, held %d / %d, meter %s", InnerDot(p, 0), InnerDot(p, 1), GazeOff(p, 0), GazeOff(p, 1), wcHold[0], wcHold[1], m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
 		if (shown >= 0) wcHand = shown;
 		wcAlpha = clamp(wcAlpha + (shown >= 0 ? 0.25 : -0.25), 0.0, 1.0);
-		bool gold = !BfBusy() && !(m.called && m.force);     // callable any time no Bossfight is running or already on its way
+		bool gold = m.ready && !BfBusy() && !(m.called && m.force);     // the meter full, no Bossfight running or already on its way
 		if (wcAlpha <= 0) { if (wcCard) wcCard.bInvisible = true; return; }
 		String tn = gold ? "RSQMBWC1" : "RSQMBWC0";
 		TextureID tx = TexMan.CheckForTexture(tn, TexMan.Type_Any);
@@ -499,12 +499,12 @@ extend class RSQMB_Handler
 	void CallIn(int pn, bool card = false)
 	{
 		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
-		let m = MeterOf(players[pn].mo, card);
+		let m = MeterOf(players[pn].mo);
 		if (card)
 		{
-			// the inner-wrist card: whatever the meter holds, whatever the rules say; only never on top of a running one
-			if (!m || BfBusy() || (m.called && m.force)) return;
-			if (!m.ready) Ready(m);
+			// the inner-wrist card: THE METER MUST BE FULL (owner 11-12 05:44; it is the meter's own button), and then no
+			// rule holds the fight back; never on top of a running one
+			if (!m || !m.ready || BfBusy() || (m.called && m.force)) return;
 			m.force = true;
 			if (debug) Console.Printf("RSQMB BOSSFIGHT CALLED IN (the fight card: no rules) by player %d", pn);
 		}
