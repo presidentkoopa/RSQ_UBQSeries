@@ -59,7 +59,7 @@ class RSQVR_LDWord : EventHandler
 			watch.Delete(i);
 			if (MinibossOrThrall(m)) continue;
 			let h = RSQVR_FxHandler.Get();
-			if (h && h.WordHoldSotn("LEGENDARY", TOP, BOT, 1.0, m, 'legendary') == 1) { shown.Push(m); shownT.Push(level.maptime); }
+			if (h && h.WordHoldSotn(LD_WORD, TOP, BOT, 1.0, m, 'legendary') == 1) { shown.Push(m); shownT.Push(level.maptime); }
 		}
 	}
 
@@ -67,6 +67,9 @@ class RSQVR_LDWord : EventHandler
 	// is"; 11-11 23:56: "the font and presentation is lovely tho and I want it ... it is large with a large hp bar"): the
 	// word shows when the legendary rises and fades after LEGENDARY Word Seconds (rsqvr_ldword_secs, 3); from then on the
 	// monster is told by its HP bar alone (its overheal strip and pips). 0 = held for its whole life, as before.
+	// THE WORD (owner 11-12 01:05: "i like what you did with legendary but lets change it to \"Threat!\""): THREAT!, in the
+	// same look and colours. Was LEGENDARY (11-11 15:30). The settings keep their rsqvr_ldword names.
+	const LD_WORD = "THREAT!";
 	Array<Actor> shown; Array<int> shownT;
 	private void ShownTick()
 	{
@@ -78,7 +81,7 @@ class RSQVR_LDWord : EventHandler
 			if (!m || m.bDestroyed || m.health <= 0) { shown.Delete(i); shownT.Delete(i); continue; }
 			if (tics <= 0 || level.maptime - shownT[i] < tics) continue;
 			let h = RSQVR_FxHandler.Get();
-			if (h) h.ClearWord("LEGENDARY", m);
+			if (h) h.ClearWord(LD_WORD, m);
 			shown.Delete(i); shownT.Delete(i);
 		}
 	}

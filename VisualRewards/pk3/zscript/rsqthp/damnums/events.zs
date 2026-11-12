@@ -70,6 +70,14 @@ class RSQTHP_DamNumHandler : EventHandler
 	const RND_CHOICE = 98;   // "Random" in the colour rows
 	const BANNER_DUR = 44;          // the player level-up band: 1.26 s
 	const TAG_DUR = 70;             // the weapon level-up tag: 2 s
+	// A SHORT TOAST AT THE WRIST (owner 11-11 23:56: "the Gun level Up cards sometimes get in the way of what i am doing,
+	// but i like them"; 11-12 01:05, his pick: "shrink it to a short toast at the wrist"). Weapon Level-Up: Wrist Toast
+	// (rsqthp_lvl_wpn_toast, on): the same tag at half its size, sitting at the hand (it no longer rises 5 units into
+	// the sight line), gone in TOAST_DUR. Off: the tag as it was. RSQ SlowMo's REVIVE word (a special tag) is unchanged.
+	const TOAST_DUR = 45;           // 1.3 s
+	const TOAST_SIZE = 0.5;
+	bool wpnToast;
+	bool Toast(RSQTHP_DnNum n) { return wpnToast && n && !n.special; }
 
 	// ---- running totals: per monster, its first hit (no total yet) or its total --------------------------------------
 	Array<Actor> tAct;
@@ -310,6 +318,7 @@ class RSQTHP_DamNumHandler : EventHandler
 		lvlOn = CvI('rsqthp_lvl', 1) != 0;
 		lvlSlow = CvI('rsqthp_lvl_slow', 0) != 0;
 		wpnOn = CvI('rsqthp_lvl_wpn', 1) != 0;
+		wpnToast = CvI('rsqthp_lvl_wpn_toast', 1) != 0;
 		bandCol = CvI('rsqthp_lvl_bandcol', 3);
 		textCol = CvI('rsqthp_lvl_textcol', 3);
 		tagCol = CvI('rsqthp_lvl_tagcol', 3);
@@ -1094,8 +1103,11 @@ class RSQTHP_DamNumHandler : EventHandler
 		}
 
 		case RSQTHP_DnNum.K_TAG:
-			n.alpha = clamp(min(t / 4.0, (TAG_DUR - t) / 8.0), 0.0, 1.0);
-			if (t >= TAG_DUR) n.Free(self);
+		{
+			int tdur = Toast(n) ? TOAST_DUR : TAG_DUR;
+			n.alpha = clamp(min(t / 4.0, (tdur - t) / 8.0), 0.0, 1.0);
+			if (t >= tdur) n.Free(self);
+		}
 			break;
 
 		case RSQTHP_DnNum.K_SEQ:
@@ -1246,8 +1258,9 @@ class RSQTHP_DamNumHandler : EventHandler
 			double eob = 1 + c3 * (tt - 1) ** 3 + c1 * (tt - 1) ** 2;
 			// RSQ SlowMo's DOWN REVIVE (v3): its tier's size, and a bigger rise with it
 			double dk = (n.special && n.size > 0) ? n.size : 1.0;
-			at = n.p0 + (0, 0, 5.0 * eob * dk);
-			base = 0.6 * wordSize * dk;     // RSQ Gun Cards' sizes: the name as its title (0.84), LV n as its big digits (1.68)
+			bool toast = Toast(n);
+			at = toast ? n.p0 - (0, 0, 3) : n.p0 + (0, 0, 5.0 * eob * dk);
+			base = 0.6 * wordSize * dk * (toast ? TOAST_SIZE : 1.0);     // RSQ Gun Cards' sizes: the name as its title (0.84), LV n as its big digits (1.68)
 			break;
 		}
 		}

@@ -247,14 +247,16 @@ OptionMenu "RSQTHP_Options"
 	Option "Band Colour", "rsqthp_lvl_bandcol", "RSQTHP_Col"
 	Option "Text Colour", "rsqthp_lvl_textcol", "RSQTHP_Col"
 	Option "Weapon Level-Up", "rsqthp_lvl_wpn", "OnOff"
+	// On: a small tag at the hand for about a second. Off: the full tag that rises off the gun.
+	Option "Weapon Level-Up: Wrist Toast", "rsqthp_lvl_wpn_toast", "OnOff"
 	Option "Weapon Tag Colour", "rsqthp_lvl_tagcol", "RSQTHP_Col"
 	StaticText " "
 	StaticText "Arrivals and Words", 1
 	Option "Arrival Beams", "rsqvr_beams", "OnOff"
 	Option "Monster Words", "rsqvr_words", "OnOff"
-	Option "LegenDoom: LEGENDARY Word", "rsqvr_ldword", "OnOff"
-	// How long LEGENDARY stays after the monster rises. 0 keeps it for the monster's life.
-	Slider "LegenDoom: LEGENDARY Word Seconds", "rsqvr_ldword_secs", 0, 10, 0.5, 1
+	Option "LegenDoom: Threat! Word", "rsqvr_ldword", "OnOff"
+	// How long Threat! stays after the monster rises. 0 keeps it for the monster's life.
+	Slider "LegenDoom: Threat! Word Seconds", "rsqvr_ldword_secs", 0, 10, 0.5, 1
 	Option "LegenDoom: Drop Words", "rsqvr_lddrop", "OnOff"
 	Option "Pops", "rsqvr_pops", "OnOff"
 	Option "Scene Music", "rsqvr_scene_music", "OnOff"
