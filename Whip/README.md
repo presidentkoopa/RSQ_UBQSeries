@@ -30,6 +30,20 @@ a pendulum. Close your off hand on the thong, whirl it, let go, and it ropes a m
 
 The whip is a weapon in **slot 1**, given to every player. It works in either hand (**Whip In**).
 
+**The whip now plays on Lock-On Controls** (on by default; owner 2026-11-12). Nothing is held, and your other hand is
+always free:
+
+| Do this | What happens |
+|---|---|
+| Point the whip hand | A pale dotted ray runs from it all the time. It turns gold, with the gold diamond, where the whip can anchor |
+| Whip hand's trigger, a press | Marks the nearest monster in front of the whip hand. Press again: the next one. The ray then runs gold from your hand to the mark |
+| Crack while a monster is marked | The thong flies to it, stuns it and comes back. The mark stays on it through your cracks while it lives, stays in reach and in sight |
+| Whip hand's alt-fire on a gold spot | Locks that spot (the diamond stays there). Your next crack flies to it and becomes a rope |
+| On the rope: close your off hand on it and pull down, then hold **Use** and pull the whip hand down | Climb hand over hand: off hand, whip hand, off hand |
+
+**Crack Wraps Monsters** (off) brings back the old wrap: a crack on a monster wraps it, for the yank and the flail.
+Lock-On Controls off gives the controls in the table below.
+
 | Do this | What happens |
 |---|---|
 | Select the whip (slot 1) | It comes up in your Whip In hand, coiled |
@@ -242,6 +256,9 @@ Snagged in the air, you swing at once. Snagged from the ground, you stand on the
 - **Rope Climbing** (on): a free hand within 16 map units of the rope (**Grab Reach**) holds it when you close its grip,
   press RSQ Distance Grab's grab key, or hold it still there (Touch Holds Rope). Pull down to climb, push up to lower yourself, one to one with your hand, at most 8 a tic (**Climb Speed
   Cap**). Let go, reach up with the other hand, take hold, pull.
+- **The whip hand climbs too:** hold **Use** and pull the whip hand down; let go of Use, take hold with the off hand,
+  pull; and so on, hand over hand. The hand holding the whip's handle is holding the rope, so Free Hand Only does not
+  stop it (a touch hold still needs an empty hand).
 - **Free Hand Only** (on): only an empty hand or a fist can take hold, never a gun hand.
 - **Grab Keys Grip Rope** (on): RSQ Distance Grab's grab keys take hold of the rope. The controller's grip always does.
 - **Touch Holds Rope** (on): an empty hand held still on the rope a moment takes it, no button; about 1 m off the rope lets go.
@@ -388,7 +405,7 @@ resets every Whip setting; the console alias `rsqwp_reset` does the same.
 | Section | Rows |
 |---|---|
 | Whip | Whip (On) · Whip in Slot 1 (On) · Whip In (Main Hand / Off Hand; Main Hand) · Show Whip (On) · Hand on the Handle (On) · Whip Aim (Free / Assist; Assist) · Whip Reach (m) (20; 3 to 60) · Switches First (On) |
-| Crack | Stun (On) · Knockback (Off) · Hit-Stop (Off) · Throws Switches (On) · Fetches Pickups (On) · Crack Fireballs (Off) · Cracked Fireballs (Explode There / Knocked Away; Explode There) |
+| Crack | Stun (On) · Knockback (Off) · Hit-Stop (Off) · Throws Switches (On) · Fetches Pickups (On) · Crack Fireballs (Off) · Cracked Fireballs (Explode There / Knocked Away; Explode There) · Lock-On Controls (On) · Crack Wraps Monsters (Off) |
 | Monsters | Lasso (On) · Flail (On) · Keep the Mark (On) · Yank Grace (Off) |
 | Swinging | Catch Edges (On) · Aimed Swing (On) · Aim With Off Hand (On) · Beam Beats Lock-On (On) · Off Hand Stays Free (On) · Grip Starts Swing (On) · Swing Assist: Grab Snag (On) · Jump Starts Swing (On) · Mantle (On) · Keep Momentum (On) |
 | Climbing | Rope Climbing (On) · Free Hand Only (On) · Grab Keys Grip Rope (On) |
@@ -410,6 +427,7 @@ your own settings; every other row is a server setting.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, runs `whiplock2`, `whiplock3`, `useclimb`) | Lock-On Controls: the trigger marking the nearest monster and the next, the ray always drawn and running gold to the mark, the mark kept through cracks, alt-fire locking a gold spot and the crack snagging it. Hand over hand with Use: on SWINGTST, three alternating strokes (whip hand with Use, off hand with its grip, whip hand) shortened the rope 274 to 168, 157, 145 |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order had no script error from our packs. Those launches came before the 11-10 fixes (commit 09243dd8), and no whip move was exercised |
 | **rig only, not headset-confirmed** (2026-11-09, an earlier build) | The pack loads on the full series order (doom2, brutal22test6, BD_VoxelPack, BD22 VR, LOB, Champions, Gun Bonsai and the RSQ pk3s) with no script error of its own (the only script errors in that log are BD_VoxelPack's voxeldef.txt); its page is listed under Radiant Silvergun Options; Gun Bonsai VR registers the whip tree's upgrades on the whip weapon; RSQ Tactical Rig lists the Whip holster among the main hand's holsters (log: `design/rigtest_2026-11-09/logs/main_A-G_I.log`). No whip move was exercised in that run |
 | **rig only, not headset-confirmed** (2026-11-03, an earlier build) | The mark skipping Kill Rewards bits and marking a Clip, keeping the mark with the hand pointed away, the wind-up → pay-out → swing → release → crack sequence, the locked crack flying 215 units to the Clip and the Clip taken; a plain crack fetching a Stimpack and leaving the bits; the aim ray refusing a 9.0 m wall at a 9 m reach and an ordinary crack instead, and at a 60 m reach a wall 56.3 m off read gold, the crack cast there in 8 tics and latched, waiting for its start (`tools/rigtest/evidence_1103_holster/bits_and_range.txt`); the Rig's whip holster drawing the whip and putting it home, and the coil on the hip right- and left-handed (same folder); Hand on the Handle, left-handed, Whip In: Off Hand and Hand Skin Tone (`tools/rigtest/hand_1103/sheet.png`). Since then the reach settings were replaced by Whip Reach (11-06) and the holster draw re-seat was added (11-05), so these are not re-shown on the current build |
