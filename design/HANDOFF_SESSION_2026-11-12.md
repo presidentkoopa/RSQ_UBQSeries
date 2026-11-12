@@ -126,3 +126,23 @@ SlowMo, on `main`. Loads on the full order only; not run on the rig, not headset
 - DOWN: the target's crosshair flies in from offscreen (three copies closing over 9 tics, then the assembly; the PARKED
   Predator / Virtual Cop note, for DOWN only). Bonus monsters: ten of the nearest twenty in sight, chosen in play, a new
   one as each dies; ONLY they and the target buy clock time now. Their crosshairs are whole and fade in.
+
+## 14:11 work order (26 items; the organised list was sent back to the owner at 14:26)
+
+Vocabulary (owner 14:20): say MINIBOSS, never "bossfight". A miniboss encounter: the meter fills, the fight card calls
+it; the miniboss (itself a boosted legendary champion that absorbs its thralls' powers, cap five, plus its own) arrives
+with 3-5 thralls, each a boosted legendary champion; thralls drop NOTHING; the miniboss drops a legendary weapon and
+refills cigarettes. A "boosted legendary dormant champion" is what a monster IS (LegenDoom legendary + Champion), out in
+the map: it drops a legendary weapon too.
+
+Done and delivered: thralls legendary champions with different colours, 3-5 of them, power cap 5 (run thralls2); no SS
+soldier; TARGET / GUARD small; no meter-ready sound; drops only miniboss + legendary champions (BD22 VR 2.0.4m, run
+thralls); drop word only within 1.7 m, no rarity word; Wheel inspect card only within 1.7 m; GunCards watch card back
+(the face test hid every real check) and no off-hand card while two-handing; SlowMo dive (leap 16, lift 3, burst 8);
+no "Grip inside the ring" text; Score Down at least 13; boss bar mockups A-E on the canvas (E = the arrival sequence).
+
+NOT done: per-gun 6-axis small card adjust; Wheel models (SMG, flamethrower, grenade launcher, rocket launcher,
+BFG10k) and the fisheye card sizes; lasers when canted while two-handing; why distance grab still fires when
+two-handing; whip hand-over-hand climbing; frozen purple imp; BD22 imp attack frame drops; the candle's floating
+monster; the game-exit sound; rogue voxels out in the map; whether Running Total shows in the SOTN look; building
+the boss bar.

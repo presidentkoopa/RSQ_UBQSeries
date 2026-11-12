@@ -791,6 +791,7 @@ user bool  wr_lith_acs = true;
 //
 // RSQ casts its own short LineTrace from the hand for this (zscript.zs, the inspect pass).
 user bool  wr_inspect = true;
+user float wr_inspect_reach = 1.7;   // Inspect Within (metres; owner 11-12): the card only for a weapon this close
 
 // Tics of rest on the same weapon before the card appears. Sweeping an arm
 // across a room full of pickups would otherwise flash a card at every one.

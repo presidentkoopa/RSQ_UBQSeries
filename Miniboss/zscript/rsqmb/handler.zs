@@ -348,7 +348,7 @@ class RSQMB_Handler : EventHandler
 	clearscope int LifeBonusPreview()
 	{
 		if (!CI('rsqmb_inherit', 1) || !Loaded("champion_Token")) return 0;
-		int cap = clamp(CI('rsqmb_inherit_max', 4), 0, 12);
+		int cap = PowerCap();
 		Array<String> pw;
 		int lifeBonus = 0;
 		for (int i = 1; i < arrMon.Size() && pw.Size() < cap; i++)
@@ -366,11 +366,14 @@ class RSQMB_Handler : EventHandler
 		return lifeBonus;
 	}
 
+	// FIVE POWERS (owner 11-12 14:24: "at most five different powers"): Power Cap's default is 5; a saved 4, the old
+	// default, reads as 5 (a saved value outlives a new default)
+	static clearscope int PowerCap() { int c = clamp(CI('rsqmb_inherit_max', 5), 0, 12); return c == 4 ? 5 : c; }
 	int Inherit(RSQMB_Boss b, bool anyLegend)
 	{
 		if (!CI('rsqmb_inherit', 1)) return 0;
 		let mb = b.mb;
-		int cap = clamp(CI('rsqmb_inherit_max', 4), 0, 12);
+		int cap = PowerCap();
 		int lifeBonus = 0;
 		if (Loaded("champion_Token"))
 		{

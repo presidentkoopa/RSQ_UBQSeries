@@ -59,7 +59,7 @@ class RS_ScoreHUD : EventHandler
 	static ui void Migrate()
 	{
 		let ver = CVar.FindCVar("rs_score_cfgver");
-		if (!ver || ver.GetInt() >= 2) return;
+		if (!ver || ver.GetInt() >= 3) return;
 		int from = ver.GetInt();
 		let x = CVar.FindCVar("rs_score_x");
 		if (from < 1 && x && x.GetInt() == 85) x.SetInt(50);
@@ -67,7 +67,10 @@ class RS_ScoreHUD : EventHandler
 		// saved Down is kept. Between the hand gauges it is 3 units under their middle (GaugeShift keeps the move from 10).
 		let y = CVar.FindCVar("rs_score_y");
 		if (from < 2 && y && y.GetInt() == 10) y.SetInt(13);
-		ver.SetInt(2);
+		// Version 3 (owner 11-12 14:11: "i had asked for the bar to be lower, maybe it is and my settings need changed"):
+		// version 2 only moved a saved 10. Any saved Down under 13 becomes 13 now; one already lower on the screen is kept.
+		if (from < 3 && y && y.GetInt() < 13) y.SetInt(13);
+		ver.SetInt(3);
 	}
 
 	override void RenderOverlay(RenderEvent e)

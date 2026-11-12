@@ -651,7 +651,10 @@ extend class RSQMB_Handler
 		if (tier < 4 && bi > 0 && random[rsqmbbf](0, 2) == 0) bi--;
 		class<Actor> bc = RosterAt(bi);
 		if (!bc) return false;
-		int want = clamp(CI('rsqmb_thralls', 3) + (tier >= 3 ? 1 : 0), 1, 8);
+		// THREE TO FIVE THRALLS (owner 11-12 14:24: "thralls can spawn 3 - 5 so the MB has to absorb 3 - 5 powers plus its
+		// own"): Thralls (rsqmb_thralls, 3) is the fewest; up to two more, by chance, a tier 3+ miniboss never the fewest
+		int tbase = CI('rsqmb_thralls', 3);
+		int want = clamp(random[rsqmbbf](tbase + (tier >= 3 ? 1 : 0), tbase + 2), 1, 8);
 		Array<String> tc;
 		int lo = int(bi * max(0.0, 0.25 + 0.1 * tier));
 		for (int i = 0; i < want; i++) tc.Push(rosterCls[bi > 0 ? random[rsqmbbf](min(lo, bi - 1), bi - 1) : 0]);
@@ -1141,8 +1144,17 @@ extend class RSQMB_Handler
 			for (let it = a.Inv; it && !any; it = it.Inv) { String cn = it.GetClassName(); if (cn.Left(9) ~== "champion_" && cn.IndexOf("Token") >= 0) any = true; }
 			if (!any)
 			{
+				// a colour no thrall of this encounter carries yet, while there is one (each thrall a different power for the
+				// miniboss to absorb)
 				static const String TOK[] = { "Yellow", "White", "DarkGreen", "Cyan" };
-				String pick = TOK[random[rsqmbbf](0, 3)];
+				Array<String> free;
+				for (int k = 0; k < 4; k++)
+				{
+					bool taken = false;
+					for (int j = 1; j < arrMon.Size() && !taken; j++) if (arrMon[j] && arrMon[j] != a && Has(arrMon[j], "champion_" .. TOK[k] .. "Token")) taken = true;
+					if (!taken) free.Push(TOK[k]);
+				}
+				String pick = free.Size() ? free[random[rsqmbbf](0, free.Size() - 1)] : TOK[random[rsqmbbf](0, 3)];
 				Give(a, "champion_" .. pick .. "Token");
 				if (debug) Console.Printf("RSQMB arrival: thrall %s made a %s Champion (it had no colour)%s", a.GetClassName(), pick, ld ? ", and legendary" : "");
 			}

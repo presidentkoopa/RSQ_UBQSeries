@@ -7515,6 +7515,12 @@ class wr_Rig : EventHandler
 		let tinv = Inventory(tgt);
 		if (tinv != null && tinv.Owner != null) tgt = null;
 
+		// ONLY UP CLOSE (owner 2026-11-12 14:11: "they shouldnt say anything until we are within maybe 2 meters of them,
+		// less, even. we have that inspection card we get when we point at a floor model. we need more specific conditions
+		// for it, like, tie it to this. i can't be seeing it when i don't want to see it"): a weapon further than Inspect
+		// Within (wr_inspect_reach, metres, 1.7: the distance the legendary drop's own word shows at) is not inspected.
+		if (tgt != null && pmo.Distance3D(tgt) > clamp(cv("wr_inspect_reach", 1.7), 0.3, 20.0) * 28.3) tgt = null;
+
 		// TWO KINDS OF TARGET. A real weapon lying there is the ordinary
 		// case. The other is a mod's slot-generic PICKUP STAND-IN, which is
 		// not a Weapon at all and so was invisible here until now.

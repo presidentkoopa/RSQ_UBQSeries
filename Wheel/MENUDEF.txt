@@ -187,6 +187,7 @@ OptionMenu wr_Options
 	Option "Gun Bonsai Rows",           "wr_sheet_bonsai", "OnOff"
 	// Point at a gun on the floor and the sheet shows it, against what that hand holds.
 	Option "Point at a Gun",            "wr_inspect",      "OnOff"
+	Slider "Inspect Within (m)",        "wr_inspect_reach", 0.5, 10, 0.1, 1
 	Option "Compare With Yours",        "wr_inspect_delta", "OnOff"
 	StaticText " "
 	StaticText "Other Mods", 1

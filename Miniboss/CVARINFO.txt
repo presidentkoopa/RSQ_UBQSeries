@@ -30,7 +30,7 @@ server int    rsqmb_thralls       = 3;      // thralls per miniboss (1-8)
 server int    rsqmb_radius        = 1024;   // how far from the miniboss a thrall may stand (map units)
 server bool   rsqmb_legend_thralls = true;  // with LegenDoom: every thrall is made legendary, classic pick and Bossfight alike (owner 11-10); off: a Bossfight's thralls get the plain health boost
 server bool   rsqmb_inherit       = true;   // the miniboss inherits its thralls' powers
-server int    rsqmb_inherit_max   = 4;      // most distinct powers inherited (legendary not counted)
+server int    rsqmb_inherit_max   = 5;      // most distinct powers inherited (legendary not counted)
 server int    rsqmb_lives         = 3;      // lives in all (3 = it dies on the third)
 // THE FIGHT, REWORKED (owner 2026-11-09, design/MINIBOSS_REWORK.md; fight.zs). Gone with it: rsqmb_shield (the shield is
 // immunity now), rsqmb_invuln_bonus (no thralls stand by then), rsqmb_revive (owner 08:14: no thralls rise), rsqmb_slow,
