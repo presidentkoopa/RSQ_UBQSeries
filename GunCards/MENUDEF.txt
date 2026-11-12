@@ -40,6 +40,7 @@ OptionMenu "RSQGC_Options"
 	Slider "Card Opacity", "rsqgc_alpha", 0.1, 1.0, 0.05, 2
 	// The cards breathe, like the slow-motion bars. Off: steady.
 	Option "Cards Alive", "rsqgc_alive", "OnOff"
+	Option "Level-Up Card Replaces Small Card", "rsqgc_lvlcard", "OnOff"
 	Option "Card Glow", "rsqgc_glow", "RSQGC_Glow"
 	Option "AMMO Word", "rsqgc_label", "OnOff"
 	Option "Low Ammo Colour", "rsqgc_lowwarn", "OnOff"

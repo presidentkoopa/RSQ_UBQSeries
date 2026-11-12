@@ -99,6 +99,7 @@ class RSQGC_GunCard : EventHandler
 	transient RSQGC_LookState mLook;   // look.zs
 
 	static RSQGC_GunCard Get() { return RSQGC_GunCard(EventHandler.Find("RSQGC_GunCard")); }
+	int mLvHide[2];     // the small card stands down until this map tic: RSQ VisualRewards' weapon level card is in its place (RSQGC_Service)
 
 	// ---- THE QoL ROUND (owner, 2026-10-31 afternoon) -----------------------------------------------------------
 	// GC2 "+N" on a pickup: per hand, the gun and its ammo pile last tic (Pile: the reserve, so BD22 VR's rounds lent back
@@ -841,6 +842,10 @@ class RSQGC_GunCard : EventHandler
 			show[hand] = status[hand] || itemCard[hand] || (watching[hand] ? w != null : (w && !eyeHide && Wanted(pmo, hand)));
 			// a cooking grenade's count shows whatever Show Cards says, unless it says Off
 			if (!show[hand] && w && ci("rsqgc_card", 1) > 0 && FuseCount(p, hand) >= 0) show[hand] = true;
+			// THE LEVEL CARD IN ITS PLACE (owner 11-12; Level-Up Card Replaces Small Card, rsqgc_lvlcard): the small card fades
+			// out while RSQ VisualRewards' weapon level card shows at this hand, and fades back in after. A watch check, the
+			// status card and a cooking grenade's count still show.
+			if (show[hand] && level.maptime < mLvHide[hand] && !watching[hand] && !status[hand] && !itemCard[hand] && FuseCount(p, hand) < 0) show[hand] = false;
 		}
 		// both guns on the main-hand small card (rsqgc_hands): the off hand's stands down. A host hand with nothing
 		// to count carries the other gun alone. A hand you are checking shows its watch card instead.
@@ -1242,5 +1247,22 @@ class RSQGC_GunCard : EventHandler
 		Side(0).Remove(p); Side(1).Remove(p);
 		Kill(p, L_FX);
 		mShow[0] = mShow[1] = 0;
+	}
+}
+
+// RSQ VisualRewards asks by name (its damnums/events.zs Tag): "levelcard", intArg the hand (0 main, 1 off), doubleArg
+// how many tics its weapon level card shows, objectArg the player's pawn. The small card of that hand stands down that
+// long (the console player's own: the cards are drawn for him only). Answers 1 when it does.
+class RSQGC_Service : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (!(request ~== "levelcard")) return 0;
+		let pmo = PlayerPawn(objectArg);
+		let gc = RSQGC_GunCard.Get();
+		if (!gc || !pmo || pmo.player != players[consoleplayer] || intArg < 0 || intArg > 1) return 0;
+		if (RSQGC_GunCard.ci("rsqgc_lvlcard", 1) == 0) return 0;
+		gc.mLvHide[intArg] = level.maptime + int(clamp(doubleArg, 0, 175));
+		return 1;
 	}
 }

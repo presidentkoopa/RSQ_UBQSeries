@@ -69,6 +69,8 @@ class RSQTHP_DamNumHandler : EventHandler
 	const GREY = 17;
 	const RND_CHOICE = 98;   // "Random" in the colour rows
 	const BANNER_DUR = 44;          // the player level-up band: 1.26 s
+	const SWEEP_T0 = 6.0;           // the level card's sweep: starts as LV n lands, crosses in SWEEP_TICS (0.11 s)
+	const SWEEP_TICS = 4.0;
 	const BAND_LOW = 20.0;          // the band's place under the gaze, degrees (owner 11-12 03:41)
 	const TAG_DUR = 70;             // the weapon level-up tag: 2 s
 	// A SHORT TOAST AT THE WRIST (owner 11-11 23:56: "the Gun level Up cards sometimes get in the way of what i am doing,
@@ -280,6 +282,15 @@ class RSQTHP_DamNumHandler : EventHandler
 		n.famWord = Pick(tagCol);        // the border: one steady colour
 		n.alpha = 0;
 		madeTags++;
+		// IN PLACE OF THE SMALL GUN CARD (owner 11-12 03:22: "can we have the weapon level card appear in place of the small
+		// guncard for a few tics, with some life ... and fade back to the guncard"): the wrist toast is the level card, and
+		// RSQ Gun Cards (by name, RSQGC_Service "levelcard") fades that hand's small card out for as long as it shows.
+		if (wpnToast)
+		{
+			let gi = ServiceIterator.Find("RSQGC_Service");
+			let gs = gi.Next();
+			if (gs) gs.GetInt("levelcard", "", hand, TOAST_DUR, pmo);
+		}
 	}
 
 	// ===================================================================================================================
@@ -1356,7 +1367,7 @@ class RSQTHP_DamNumHandler : EventHandler
 			if (tex == RSQTHP_DnNum.T_GLYPH) tx = fonts.Glyph(n.gFont[i], q, n.gCode[i], w, h);
 			else
 			{
-				tx = TexMan.CheckForTexture(tex == RSQTHP_DnNum.T_BAND ? "RQNBAND" : (tex == RSQTHP_DnNum.T_TAGF ? "RQNTAGF" : "RQNTAGB"), TexMan.Type_Any);
+				tx = TexMan.CheckForTexture((tex == RSQTHP_DnNum.T_BAND || tex == RSQTHP_DnNum.T_SWEEP) ? "RQNBAND" : (tex == RSQTHP_DnNum.T_TAGF ? "RQNTAGF" : "RQNTAGB"), TexMan.Type_Any);
 				int iw, ih; [iw, ih] = TexMan.GetSize(tx); w = iw; h = ih;
 			}
 			if (!tx.IsValid() || h <= 0) { g.Alpha = 0; continue; }
@@ -1391,6 +1402,13 @@ class RSQTHP_DamNumHandler : EventHandler
 				if (part == RSQTHP_DnNum.P_BG) depth = 0.25;
 				else if (part == RSQTHP_DnNum.P_BORDER) depth = 0.15;
 				else if (part == RSQTHP_DnNum.P_LV && n.t >= 6) k = 1.0 + 0.3 * exp(-(n.t - 6) / 3.0);
+				else if (part == RSQTHP_DnNum.P_SWEEP)
+				{
+					double su = (n.t - SWEEP_T0) / SWEEP_TICS;
+					if (su < 0 || su > 1) { g.Alpha = 0; g.Put(at, at); continue; }
+					ox = (su - 0.5) * max(0.0, n.width - 0.8);
+					depth = -0.1;
+				}
 				break;
 			}
 			// typed in: not there before its time; a white flash on arrival
@@ -1426,6 +1444,7 @@ class RSQTHP_DamNumHandler : EventHandler
 			if (tex == RSQTHP_DnNum.T_BAND) tr = PalName(n.famWord, 0);
 			else if (tex == RSQTHP_DnNum.T_TAGF) tr = 'RSQTHP_DnRaw';
 			else if (tex == RSQTHP_DnNum.T_TAGB) tr = PalName(n.famWord, 1);      // one steady colour
+			else if (tex == RSQTHP_DnNum.T_SWEEP) tr = FlashName();
 			else if (flashNow) tr = FlashName();
 			else if (n.trans != 'None' && n.gFam[i] < 0 && n.kind == RSQTHP_DnNum.K_HIT) tr = n.trans;
 			else tr = PalName(fm, sh);

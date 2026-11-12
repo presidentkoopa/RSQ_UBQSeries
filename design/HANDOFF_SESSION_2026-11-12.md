@@ -71,5 +71,8 @@ on the rig beyond that load, and nothing is headset-confirmed.
   the floor by 0.14 m (the hips come up about 6 units). `rig.zs` DownLift.
 - **LEVEL UP / REVIVE / REVENGE band** (VisualRewards): 20 degrees under the gaze (`BAND_LOW`), where the DOWN bar is.
 - **Enhanced Ballistics** (BD22 VR 2.0.4j, its own repo): default Low; a saved Stock is moved to Low once.
-- **Level card in place of the small gun card**: style A (sweep) chosen; three sweep variants are on the Design canvas for
-  his pick. Not built yet: it waits for which of the three.
+- **Level card in place of the small gun card** (owner 03:58: "clean sweep, thinner line, faster. good to go"): built.
+  VisualRewards' wrist toast is the level card; one thin white line crosses it in 4 tics as LV n lands (`SWEEP_T0`,
+  `SWEEP_TICS`, part `P_SWEEP`). It asks `RSQGC_Service` "levelcard" by name and Gun Cards fades that hand's small card out
+  for the toast's 45 tics (Level-Up Card Replaces Small Card, `rsqgc_lvlcard`, on). Loads only: the line's look (the
+  band texture under the white flash translation) has not been seen in a frame.

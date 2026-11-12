@@ -11,8 +11,8 @@ class RSQTHP_DnNum play
 	enum EKind { K_HIT, K_TOTAL, K_GAIN, K_BANNER, K_TAG, K_SEQ }   // K_SEQ: RSQ SlowMo's DOWN time added "+0.5s" (rsqvr/down.zs)
 	enum EState { S_LIVE, S_KILL, S_FLY, S_LAND, S_DONE }
 	enum EWord { W_HEAD = 1, W_OVERKILL = 2 }
-	enum EPart { P_DIG, P_COMBO, P_WORD, P_SUB1, P_SUB2, P_BG, P_BORDER, P_NAME, P_LV, P_NEW }
-	enum ETex { T_GLYPH, T_BAND, T_TAGF, T_TAGB }
+	enum EPart { P_DIG, P_COMBO, P_WORD, P_SUB1, P_SUB2, P_BG, P_BORDER, P_NAME, P_LV, P_NEW, P_SWEEP }
+	enum ETex { T_GLYPH, T_BAND, T_TAGF, T_TAGB, T_SWEEP }
 
 	int kind, st;
 	Actor who;                  // the monster it is about (hits, totals)
@@ -223,6 +223,9 @@ class RSQTHP_DnNum play
 			double bw = max(9.0, max(nw, uw) + 2.4);
 			Add(0, 0, 0, 0, 7.6, P_BG, -2, -1, T_TAGF, bw);
 			Add(0, 0, 0, 0, 7.6, P_BORDER, -1, -1, T_TAGB, bw);
+			// THE CLEAN SWEEP (owner 11-12 03:58, mockup A1: "clean sweep, thinner line, faster"): one thin white line that
+			// crosses the card once as LV n lands (events.zs Draw, SWEEP_T0 / SWEEP_TICS)
+			Add(0, 0, 0, 0, 7.0, P_SWEEP, -1, -1, T_SWEEP, 0.35);
 			width = bw; height = 7.6;
 			break;
 		}
