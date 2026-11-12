@@ -20,8 +20,11 @@
 //            you are in when the LAST target dies is the tier. Killing one target while others remain RESETS the bar to
 //            full (owner 11-07 06:35): a fast bright refill sweep left to right (REFILL_TICS); the bar drains again once
 //            the sweep is done. The DEATH IN clock is not reset.
-//  TARGETS   kills owed = 1 + the DOWNs since the last Score life spent (RSQSM_DownWatch.downs travels with you; the count
-//            goes back when Score's life count drops). Target 1: the monster that downed you if it is in your fight
+//  TARGETS   ONE kill owed, always (owner 11-12 04:17; it was 1 + the DOWNs since the last Score life spent). Those DOWNs
+//            (RSQSM_DownWatch.downs travels with you; the count goes back when Score's life count drops) shorten the
+//            clock you start with instead: 9 s, then 6, then 3 (StartShare), so the bar starts 2/3 or 1/3 full; damage
+//            to any monster buys it back up. The other monsters in sight carry a small crosshair and what a whole one
+//            is worth (plate.zs BonusTick). The "extra target" lines below describe a case that no longer arises. Target 1: the monster that downed you if it is in your fight
 //            (alive, and within FIGHT_NEAR, or in sight within FIGHT_FAR), else a boosted copy of its type spawned in view at
 //            range. Every extra target: a fresh boosted copy of that type spawned in view. Boost by what is loaded:
 //            LegenDoom + Champions: a legendary (LegenDoom's own guaranteed pickup) champion; LegenDoom alone: legendary;
@@ -114,6 +117,7 @@ class RSQSM_Down : EventHandler
 	int          spNextId;
 	Array<Actor> cdMon;
 	Array<int>   cdId;
+	Array<int>   tHurt;                                   // 1: he has damaged this target in this DOWN (a target swapped out for another actor then counts as his kill)
 	Array<int>   tChWait;                                 // 1: a real champion whose colour token Champions has not given yet
 	// the killer swapped for a real Champion copy (owner 11-07 11:1x): the map's monster that downed him (not a champion,
 	// Champions loaded), its map tid and special handed to the copy; spSwapK 1 for such a spawn (it stands for the map's own)
@@ -159,6 +163,7 @@ class RSQSM_Down : EventHandler
 	static bool On() { return Cv("rsqsm_down", 0) != 0; }
 	static clearscope double ClockTics() { return clamp(Cv("rsqsm_down_clock", 9), 2, 30) * TICRATE; }
 	static clearscope double StepTics() { return clamp(Cv("rsqsm_down_step", 3), 0.5, 10) * TICRATE; }
+	static clearscope double StartShare(int downs) { return downs <= 1 ? 1.0 : (downs == 2 ? 2.0 / 3.0 : 1.0 / 3.0); }
 	static double MinDrain() { return clamp(Cv("rsqsm_down_drain", 0.25), 0.0, 1.0); }
 	static bool LowView(int n) { return CvP("rsqsm_down_lowview", n, 1) != 0; }
 	static bool Debug() { return Cv("rsqsm_debug", 0) != 0; }
@@ -231,7 +236,7 @@ class RSQSM_Down : EventHandler
 			downOn[n] = false; downStart[n] = 0; clk[n] = 0; pool[n] = 0; owed[n] = 0; beatNext[n] = 0; beatN[n] = 0; held[n] = false;
 			endTic[n] = 0; endHow[n] = 0; cOn[n] = false; invulUntil[n] = 0; bankHp[n] = 0; bankAr[n] = 0; livesSeen[n] = -1;
 		}
-		tMon.Clear(); tPn.Clear(); tIcon.Clear(); tSpawned.Clear(); tDead.Clear(); tCol.Clear(); tBorn.Clear(); tDeadTic.Clear(); tName.Clear();
+		tMon.Clear(); tPn.Clear(); tIcon.Clear(); tSpawned.Clear(); tDead.Clear(); tCol.Clear(); tBorn.Clear(); tDeadTic.Clear(); tName.Clear(); tHurt.Clear();
 		bMon.Clear(); bSX.Clear(); bSY.Clear(); bHp.Clear(); bBright.Clear(); bOwn.Clear();
 		spPn.Clear(); spTries.Clear(); spIcon.Clear(); spCls.Clear();
 		spId.Clear(); spHave.Clear(); spRolls.Clear(); spX.Clear(); spY.Clear(); spZ.Clear(); spAng.Clear(); spWhy.Clear();
@@ -497,6 +502,16 @@ class RSQSM_Down : EventHandler
 		if (!src || !src.player) return -1;
 		return src.PlayerNumber();
 	}
+	// A WHOLE MONSTER'S WORTH OF CLOCK, AS ITS LABEL (plate.zs, the bonus marks): "+1 SEC", "+0.5 SEC"
+	static String WorthLabel(Actor t)
+	{
+		String kind;
+		double per = SecsPerMonster(t, kind);
+		String v = String.Format("%.2f", per);
+		while (v.Length() > 1 && v.Mid(v.Length() - 1, 1) == "0") v = v.Left(v.Length() - 1);
+		if (v.Mid(v.Length() - 1, 1) == ".") v = v.Left(v.Length() - 1);
+		return String.Format("+%s SEC", v);
+	}
 	static bool IsFoe(Actor t)
 	{
 		if (!t || t.player || !t.bISMONSTER || t.bFRIENDLY) return false;
@@ -546,6 +561,7 @@ class RSQSM_Down : EventHandler
 		if (!IsFoe(t) || e.Damage <= 0) return;
 		int n = PlayerOf(e.DamageSource);
 		if (n < 0 || !downOn[n]) return;
+		for (int i = 0; i < tMon.Size(); i++) if (tMon[i] == t && tPn[i] == n) tHurt[i] = 1;
 		// THE TIME BOUGHT: the damage that landed (never more than the health it had) as a share of its spawn health
 		int eff = t.health > 0 ? e.Damage : max(0, e.Damage + t.health);
 		int sh = max(1, t.GetSpawnHealth());
@@ -627,16 +643,23 @@ class RSQSM_Down : EventHandler
 		downStart[n] = level.maptime;
 		barStart[n] = level.maptime;
 		refillTic[n] = -1000; refillOldE[n] = 0;
-		clk[n] = ClockTics();
+		// ONE TARGET, A SHORTER CLOCK (owner 2026-11-12 04:17: "instead of increasing the number of kills, let's say you start
+		// with 9 seconds, then your next down is 6 seconds, then your third down and beyond is 3 seconds. our segmented bar
+		// let's us only need to draw it 2 / 3 or 1 / 3 full"): every DOWN owes ONE kill, the monster that downed you (or its
+		// copy). The DOWNs since the last Score life spent shorten the clock you START with instead: all of it, two thirds,
+		// one third (StartShare). The bar and the tier already read the clock (downhud.zs fill = clk / ClockTics, TierAt), so
+		// it starts two thirds or one third full, in the middle or bottom step, and the time your damage buys (any monster,
+		// up to the whole clock) lifts it back into a better step before the kill.
+		clk[n] = ClockTics() * StartShare(downs);
 		pool[n] = 0;
-		owed[n] = downs;
+		owed[n] = 1;
 		beatNext[n] = level.maptime;
 		beatN[n] = 0;
 		lastKill[n] = 0; lastKillE[n] = 0;
 		bankHp[n] = 0; bankAr[n] = 0;
 		iconsUsed[n] = 0;
 		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since a Score life), world to %d%%",
-			n, dmg, pre, from, pmo.health, ClockTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, owed[n], downs, int(DEPTH * 100 + 0.5)));
+			n, dmg, pre, from, pmo.health, clk[n] / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, owed[n], downs, int(DEPTH * 100 + 0.5)));
 		if (AudioOn(n))
 		{
 			// THE DROP'S SOUND (owner 11-09 17:45): a heavy hit, then a ringing in the ears that fades (its own slot: it stops
@@ -694,7 +717,7 @@ class RSQSM_Down : EventHandler
 		bool wait;
 		[col, how, wait] = Boost(m);
 		tMon.Push(m); tPn.Push(n); tIcon.Push(icon); tSpawned.Push(spawned ? 1 : 0); tDead.Push(0); tCol.Push(col);
-		tBorn.Push(level.maptime); tDeadTic.Push(0); tName.Push(NameOf(m)); tChWait.Push(wait ? 1 : 0);
+		tBorn.Push(level.maptime); tDeadTic.Push(0); tName.Push(NameOf(m)); tChWait.Push(wait ? 1 : 0); tHurt.Push(0);
 		m.target = players[n].mo;
 		m.LastHeard = players[n].mo;
 		m.bAMBUSH = false;
@@ -1085,6 +1108,15 @@ class RSQSM_Down : EventHandler
 			}
 			if (m && m.health > 0) continue;
 			if (m && m.health <= 0) { TargetDown(i, false); continue; }
+			// SWAPPED OUT BY ITS OWN MOD (owner 11-12 04:06: "sometimes i shoot the fuckers who downed me and we do not get
+			// up"; 04:17 "i agree"): Brutal Doom replaces some living monsters with another actor (its Imp in deep water
+			// becomes ImpFish: Imps.dec Swim), so the target is gone with no death. One he has already damaged is his kill.
+			if (tHurt[i] != 0)
+			{
+				Log(String.Format("player %d: target %d is gone without dying after he damaged it (swapped for another actor): counted as his kill", n, i));
+				TargetDown(i, true);
+				continue;
+			}
 			Log(String.Format("player %d: target %d is gone without dying: a fresh one in its place", n, i));
 			tDead[i] = 2; tDeadTic[i] = level.maptime - 100;
 			owed[n]++;     // the gone one is not a kill: one more owed, its place taken by the fresh one
@@ -1131,7 +1163,7 @@ class RSQSM_Down : EventHandler
 	}
 	private void DropTarget(int i)
 	{
-		tMon.Delete(i); tPn.Delete(i); tIcon.Delete(i); tSpawned.Delete(i); tDead.Delete(i); tCol.Delete(i); tBorn.Delete(i); tDeadTic.Delete(i); tName.Delete(i); tChWait.Delete(i);
+		tMon.Delete(i); tPn.Delete(i); tIcon.Delete(i); tSpawned.Delete(i); tDead.Delete(i); tCol.Delete(i); tBorn.Delete(i); tDeadTic.Delete(i); tName.Delete(i); tChWait.Delete(i); tHurt.Delete(i);
 	}
 
 	// ---- THE BANK (VisualRewards' bits, "down.bank") -------------------------------------------------------------------

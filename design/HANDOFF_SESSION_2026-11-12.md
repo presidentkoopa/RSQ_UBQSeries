@@ -76,3 +76,16 @@ on the rig beyond that load, and nothing is headset-confirmed.
   `SWEEP_TICS`, part `P_SWEEP`). It asks `RSQGC_Service` "levelcard" by name and Gun Cards fades that hand's small card out
   for the toast's 45 tics (Level-Up Card Replaces Small Card, `rsqgc_lvlcard`, on). Loads only: the line's look (the
   band texture under the white flash translation) has not been seen in a frame.
+
+## 04:17: DOWN is one target and a shorter clock (owner: "instead of increasing the number of kills ... 9 seconds, then ... 6 seconds, then ... 3")
+
+SlowMo, on `main`. Loads on the full order only; not run on the rig, not headset-confirmed.
+
+- Every DOWN owes ONE kill: the monster that downed you (or its copy). The DOWNs since the last Score life spent set the
+  clock you start with: 9 s, 6 s, 3 s (`StartShare`). The bar and the tier already read the clock, so it starts 2/3 or 1/3 full.
+- A target that its own mod swaps for another actor (BD22's Imp in deep water becomes ImpFish) after you damaged it is
+  your kill (`tHurt`). Before, it added one more kill owed.
+- Labels (`plate.zs` BonusTick, through RSQVR_Service "word.hold"): TARGET over the target; the nearest four other
+  monsters in sight get a small white crosshair and "+1 SEC" / "+0.5 SEC" / "+2 SEC" / "+10 SEC". The chevron trail and
+  the edge arrows stay the target's alone.
+- Taken back out the same night: an on-screen "no room to stand" message the owner did not ask for.

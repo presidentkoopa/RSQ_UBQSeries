@@ -53,6 +53,7 @@ class RSQSM_TMark play
 	double eAng;                // the edge arrows' direction on the screen (degrees, 0 right, 90 up), round the eased gaze
 	Actor xhair;
 	Actor tF[6], tC[6], tL[6];
+	String word;                // the word held over it (RSQ VisualRewards): TARGET, or a bonus monster's "+1 SEC"
 }
 
 class RSQSM_Plate play
@@ -61,6 +62,8 @@ class RSQSM_Plate play
 	double gYaw, gPitch;       // the eased gaze the edge arrows hang on (the RSQ Wheel's ring: a fifth of the way a tic)
 	bool gSet;
 	Array<RSQSM_TMark> marks;
+	Array<RSQSM_TMark> bonus;  // the other monsters in sight: a small white crosshair and what a whole one is worth (BonusTick)
+	int bonusScan;
 	Vector3 r, u, nrm, eye;
 	double pYaw, pTilt;
 
@@ -74,10 +77,96 @@ class RSQSM_Plate play
 	{
 		for (int i = 0; i < marks.Size(); i++) DropMark(marks[i]);
 		marks.Clear();
+		for (int i = 0; i < bonus.Size(); i++) DropMark(bonus[i]);
+		bonus.Clear();
+	}
+	// ---- THE LABELS (owner 2026-11-12 04:17: "we can draw a crosshair and chevrons on multiple enemies as long as the
+	// correct one is labelled TARGET, other enemies can be labelled \"+0.5 sec\" ... so the player could fight and get their
+	// timer higher before getting their revenge") --------------------------------------------------------------------------
+	// A word held over the monster by RSQ VisualRewards (RSQVR_Service "word.hold" / "word.clear", by name; without it no
+	// labels, the crosshairs still show). The target: TARGET in its own colour. Every other monster in sight, the nearest
+	// BONUS_MAX: a small white crosshair and what a whole one of it adds to the clock (down.zs SecsPerMonster, the same
+	// number its hits pay out as "+0.4s"). The trail's chevrons and the edge arrows stay the target's alone: they are
+	// the way to it. Code only: loads, not run on the rig, not headset-confirmed.
+	const BONUS_MAX = 4;
+	const BONUS_REACH = 1024.0;
+	const BONUS_EVERY = 8;
+	const BONUS_COL = 0xFFFFFF;
+	const TARGET_WORD = "TARGET";
+	static void Word(Actor a, String txt, int rgb, double size)
+	{
+		if (!a || txt == "") return;
+		let s = ServiceIterator.Find("RSQVR_Service").Next();
+		if (s && a.health > 0) s.GetInt("word.hold", txt, rgb, size, a);
+	}
+	static void Unword(Actor a, String txt)
+	{
+		if (!a || txt == "") return;
+		let s = ServiceIterator.Find("RSQVR_Service").Next();
+		if (s) s.GetInt("word.clear", txt, 0, 0, a);
+	}
+	void BonusTick(RSQSM_Down d)
+	{
+		let pmo = players[pn].mo;
+		if (level.maptime >= bonusScan)
+		{
+			bonusScan = level.maptime + BONUS_EVERY;
+			Array<Actor> best; Array<double> bd;
+			let it = BlockThingsIterator.Create(pmo, BONUS_REACH);
+			while (it.Next())
+			{
+				let a = it.thing;
+				if (!a || a.health <= 0 || !RSQSM_Down.IsFoe(a) || d.IsTarget(a) || a.bDORMANT || a.bINVISIBLE) continue;
+				double ds = pmo.Distance3D(a);
+				if (ds > BONUS_REACH || !pmo.CheckSight(a, SF_IGNOREVISIBILITY)) continue;
+				int at = bd.Size();
+				while (at > 0 && bd[at - 1] > ds) at--;
+				if (at >= BONUS_MAX) continue;
+				best.Insert(at, a); bd.Insert(at, ds);
+				if (best.Size() > BONUS_MAX) { best.Pop(); bd.Pop(); }
+			}
+			for (int i = bonus.Size() - 1; i >= 0; i--)
+			{
+				let m = bonus[i];
+				if (m.mon && m.mon.health > 0 && best.Find(m.mon) != best.Size()) continue;
+				DropMark(m); bonus.Delete(i);
+			}
+			for (int i = 0; i < best.Size(); i++)
+			{
+				bool have = false;
+				for (int j = 0; j < bonus.Size(); j++) if (bonus[j].mon == best[i]) { have = true; break; }
+				if (have) continue;
+				let m = RSQSM_TMark(new("RSQSM_TMark"));
+				m.mon = best[i]; m.icon = 1; m.col = BONUS_COL; m.word = RSQSM_Down.WorthLabel(best[i]);
+				bonus.Push(m);
+				Word(m.mon, m.word, BONUS_COL, 0.6);
+			}
+		}
+		Vector3 gaze = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
+		for (int i = bonus.Size() - 1; i >= 0; i--)
+		{
+			let m = bonus[i];
+			if (!m.mon || m.mon.health <= 0 || d.IsTarget(m.mon)) { DropMark(m); bonus.Delete(i); continue; }
+			Vector3 ctr = m.mon.pos + (0, 0, m.mon.height * 0.5);
+			Vector3 to = ctr - eye;
+			double dist = max(1.0, to.Length());
+			Vector3 dir = to / dist;
+			if (acos(clamp(dir dot gaze, -1.0, 1.0)) > VIEW_DEG) { Off(m.xhair); continue; }
+			// the locked frame, no assembly, half the target's size and dimmer: it never reads as the target
+			m.xhair = Need(m.xhair);
+			String tex = String.Format("RSPA%02d%02d", m.icon, ASM_LAST);
+			Skin(m.xhair, tex);
+			double sz = max(40.0, m.mon.height * 0.75);
+			Vector3 p = ctr - dir * (m.mon.radius + 4);
+			PutAt(m.xhair, p, sz, sz, 0);
+			if (grey) { Off(m.xhair); Part(tex, p, sz, 0, m.col, 0.55); }
+			else Shade(m.xhair, m.col, 0.55);
+		}
 	}
 	void DropMark(RSQSM_TMark m)
 	{
 		if (!m) return;
+		Unword(m.mon, m.word);
 		Kill(m.xhair);
 		for (int i = 0; i < 6; i++) { Kill(m.tF[i]); Kill(m.tC[i]); Kill(m.tL[i]); }
 	}
@@ -115,7 +204,7 @@ class RSQSM_Plate play
 		a.angle = pYaw; a.pitch = -pTilt; a.roll = roll;
 		a.scale = (max(w, 0.0001), max(h, 0.0001));
 	}
-	void Tick(RSQSM_Down d) { grey = d.gwMix > 0.02; if (players[pn].mo) MarksTick(d); }
+	void Tick(RSQSM_Down d) { grey = d.gwMix > 0.02; if (players[pn].mo) { MarksTick(d); BonusTick(d); } }
 	bool grey;                 // the world is grey (downlook.zs): the colour layers go as particles
 
 	// a full-bright particle for one tic: tex centred at p, w wide in the world (a particle's half-size is size x 2.5 / 7:
@@ -178,8 +267,12 @@ class RSQSM_Plate play
 				m = RSQSM_TMark(new("RSQSM_TMark"));
 				m.mon = d.tMon[i]; m.icon = d.tIcon[i];
 				marks.Push(m);
+				// its own bonus mark (it was one of the others a moment ago) goes; the target's label
+				for (int b = bonus.Size() - 1; b >= 0; b--) if (bonus[b].mon == m.mon) { DropMark(bonus[b]); bonus.Delete(b); }
+				m.word = TARGET_WORD;
+				Word(m.mon, m.word, d.tCol[i], 1.0);
 			}
-			m.col = d.tCol[i];
+			if (m.col != d.tCol[i]) { m.col = d.tCol[i]; if (m.word != "") Word(m.mon, m.word, m.col, 1.0); }   // (a champion's colour comes a few tics late)
 			if (d.tDead[i] != 0 && !m.dead) { m.dead = true; m.deadTic = level.maptime; }
 		}
 		Vector3 gaze = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));

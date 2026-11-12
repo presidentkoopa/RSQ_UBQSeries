@@ -26,7 +26,9 @@ your revenge.
 - **A bar that tells you when real time is back.** A green bar under your score drains with the real seconds left and
   names what slowed the world.
 - **DOWN (optional).** A monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you sink
-  to the floor, and you have 9 seconds to kill the monsters marked for you and get up.
+  to the floor, and you have 9 seconds to kill the monster marked TARGET and get up. Go down again before spending a
+  Score life and the clock starts at 6 seconds, then 3. Damage to any monster adds time; the others in sight show what
+  a whole one is worth (*code only, not shown*).
 
 ---
 
