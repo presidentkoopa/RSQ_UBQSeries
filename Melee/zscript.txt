@@ -12,6 +12,7 @@ version "4.14"
 #include "zscript/rsqml/sparks.zs"    // the hit sparks (the shezzor sheet, tools/hitsheet.py)
 #include "zscript/rsqml/gloves.zs"
 #include "zscript/rsqml/splat.zs"
+#include "zscript/rsqml/barrelfly.zs" // the launched barrel: an uppercut or a gun-butt shove sends it to the nearest monster
 #include "zscript/rsqml/launch.zs"    // the uppercut's launch: Launcher, Juggle, Meteor (GBOVR_TREES.md 4.1 A)
 #include "zscript/rsqml/gestcopy.zs"  // RSQML_GCopy: Melee's own copy of RSQ Accessibility's two-hand reader, used without it (tools/gestcopy)
 #include "zscript/rsqml/twohand.zs"   // Ground Pound and Clear Out, read by RSQ Accessibility (or Melee's own copy without it) (4.1 A)

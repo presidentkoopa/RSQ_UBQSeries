@@ -29,6 +29,8 @@ server float rsqml_punch_pad = 4.0;
 server float rsqml_punch_damage = 10.0;
 // Uppercut Kicks Barrels (owner, BUGS_1.0 item 22): an uppercut into a barrel does no damage and lifts it up and away on a
 // forward arc, Brutal Doom's kick (gloves.zs KickBarrel). Off: a barrel is not a punch target, as before.
+server bool  rsqml_barrel_launch = true;   // Barrel Launch (owner 11-12): an uppercut or a gun-butt shove into a barrel sends it, fast and tumbling, to the nearest monster (barrelfly.zs)
+server bool  rsqml_barrel_slowmo = true;   // Barrel Launch Slow-Mo: RSQ SlowMo slows the world until the barrel goes off, 3 s at most
 server bool  rsqml_uppercut_barrels = false;
 
 // ---- THE MOVES THAT ARE GUN BONSAI VR UPGRADES -------------------------------------------------------------------

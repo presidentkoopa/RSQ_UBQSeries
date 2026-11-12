@@ -2277,6 +2277,17 @@ class RSQSM_Service : Service
 		// A GAME slow (automatic: the countdown bar and its BOSSFIGHT line show, Adrenaline on or off) under the Triggers page's
 		// "Miniboss" switch, with no shared cooldown (it neither waits one out nor starts one), so the thrall windows that
 		// follow still get their slow motion. "start" was used before: deliberate, so with Adrenaline on no bar showed.
+		// RSQ MELEE'S LAUNCHED BARREL (owner 11-12 05:11: "contextual slo mo ... 3 seconds or explosion, whichever happens
+		// first"): "start.barrel" a game slow (the countdown bar, its line BARREL), no shared cooldown, under the Other /
+		// Unknown Mods switch; "stop" stringArg the trigger's name: that slow, if it is the one running, ends now.
+		if (request ~== "start.barrel")
+			return c.Trigger("barrel", RSQSM_Clock.CAT_OTHER, intArg > 0 ? intArg : 3000, doubleArg > 0 ? clamp(doubleArg, 0.05, 1.0) : c.Depth(), true, -1, "BARREL", false) ? 1 : 0;
+		if (request ~== "stop")
+		{
+			if (c.pulseUntil <= level.maptime || !(c.pulseSrc ~== stringArg)) return 0;
+			c.pulseUntil = level.maptime;
+			return 1;
+		}
 		if (request ~== "start.bossfight")
 		{
 			int ms = intArg > 0 ? intArg : RSQSM_Clock.START_MS;

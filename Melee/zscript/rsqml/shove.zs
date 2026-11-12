@@ -241,6 +241,17 @@ class RSQML_Shove : StaticEventHandler
 
 	void ShoveAct(PlayerPawn pmo, bool two, double avg, Vector3 swing)
 	{
+		// A SHOVE INTO A BARREL LAUNCHES IT (owner 11-12 05:11; barrelfly.zs; with or without BD22 VR Reloaded, whose own butt
+		// strike only hurts a barrel): asked for on every machine, the barrel found there (BarrelShove)
+		if (Opt("rsqml_barrel_launch", 1))
+		{
+			Vector3 bd = (swing.x, swing.y, swing.z / RSQML.Stretch());
+			if (bd.Length() < 0.0001) bd = (cos(pmo.Angle), sin(pmo.Angle), 0);
+			bd = bd.Unit();
+			int byaw = int(round(VectorAngle(bd.x, bd.y))) % 360;
+			if (byaw < 0) byaw += 360;
+			EventHandler.SendNetworkEvent("rsqml_barrelshove", 0, 0, byaw * 1000 + clamp(int(round(asin(clamp(bd.z, -1, 1)))), -90, 90) + 90);
+		}
 		if (bdq)
 		{
 			// BD22 VR Reloaded is loaded: ours does nothing. Its own strike is watched for the slow-mo only.
@@ -270,7 +281,36 @@ class RSQML_Shove : StaticEventHandler
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (e.Name ~== "rsqml_buttshove") ButtShove(e);
+		else if (e.Name ~== "rsqml_barrelshove") BarrelShove(e);
 		else if (e.Name ~== "rsqml_fear") FearOpen(e.Player, e.Args[0]);
+	}
+
+	// the barrel the shove meets: the nearest one within BARREL_REACH of the gun hand and within 60 degrees of the shove
+	const BARREL_REACH = 72.0;
+	void BarrelShove(ConsoleEvent e)
+	{
+		if (e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player]) return;
+		let pmo = players[e.Player].mo;
+		if (!pmo || pmo.health <= 0) return;
+		double yaw = e.Args[2] / 1000, pit = (e.Args[2] % 1000) - 90;
+		Vector3 d = (cos(yaw) * cos(pit), sin(yaw) * cos(pit), sin(pit));
+		Vector3 a; bool ok;
+		[a, ok] = RSQML_Hands.Pos(pmo, 0);
+		if (!ok) a = (pmo.pos.x, pmo.pos.y, pmo.player.viewz);
+		Actor best = null; double bdist = BARREL_REACH;
+		let it = BlockThingsIterator.CreateFromPos(a.x, a.y, a.z - BARREL_REACH, 2 * BARREL_REACH, BARREL_REACH, false);
+		while (it.Next())
+		{
+			Actor t = it.thing;
+			if (!t || t.health <= 0 || !RSQML_Gloves.IsBarrel(t)) continue;
+			Vector3 to = t.pos + (0, 0, t.height * 0.5) - a;
+			double dist = to.Length();
+			if (dist >= bdist) continue;
+			if (dist > t.radius + 8 && (to.xy.Length() < 0.01 || (to.xy.Unit() dot (d.xy.Length() > 0.01 ? d.xy.Unit() : (cos(pmo.angle), sin(pmo.angle)))) < 0.5)) continue;
+			best = t; bdist = dist;
+		}
+		if (best) RSQML_FlyingBarrel.Launch(pmo, best, d, "gun-butt shove");
+		else if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: shove met no barrel within %.0f units (t%d)", BARREL_REACH, level.maptime);
 	}
 
 	void ButtShove(ConsoleEvent e)

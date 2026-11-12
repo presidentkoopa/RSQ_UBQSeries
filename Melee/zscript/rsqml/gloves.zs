@@ -595,7 +595,7 @@ class RSQML_Gloves : StaticEventHandler
 		{
 			// UPPERCUT KICKS BARRELS (option, off): an uppercut into a barrel lifts it up and away, no damage. RSQ Distance
 			// Grab's Barrel Lock-On (on by default there) turns the kick on too (owner 11-07, design/PARKED.md).
-			bool used = (RSQML.SVI("rsqml_uppercut_barrels", 0) != 0 || LockOnKicks(pmo)) && KickBarrel(pmo, g, h, st, avg, gr);
+			bool used = (RSQML.SVI("rsqml_barrel_launch", 1) != 0 || RSQML.SVI("rsqml_uppercut_barrels", 0) != 0 || LockOnKicks(pmo)) && KickBarrel(pmo, g, h, st, avg, gr);
 			// A SWITCH OR A DOOR the fist meets this tic (any punch: jab, hook, uppercut): worked as a Use press
 			// (core.zs UseLineAlong). Not when BD22 VR's own punching deals this fist's blow: its punch works the line itself
 			// (its fists.zs PunchUse), and two would flip a repeatable switch twice.
@@ -662,7 +662,9 @@ class RSQML_Gloves : StaticEventHandler
 		toB = tl > 0.5 ? toB / tl : (cos(pmo.angle), sin(pmo.angle));
 		Vector3 dir = st.vel.Length() > 0.001 ? st.vel.Unit() : (toB, 0);
 		int kind = ClassifySwing(dir, st.path, toB, RSQML.SV("rsqml_punch_uppercut_rise", 0.5));
-		if (kind == PK_UPPER && RSQML.UnlockLevel(g, "Uppercut") <= 0) kind = PK_JAB;
+		// (a barrel needs no Uppercut unlock: Gun Bonsai VR's node gates the monster launch, not this -- owner 11-12 05:11,
+		// "our uppercut is bullshit it is supposed to send barrels flying")
+		if (kind == PK_UPPER && RSQML.UnlockLevel(g, "Uppercut") <= 0 && RSQML.SVI("rsqml_barrel_launch", 1) == 0) kind = PK_JAB;
 		if (kind != PK_UPPER) return false;
 		double minSpeed = RSQML.SV("rsqml_punch_min_speed", 2.0), fullSpeed = RSQML.SV("rsqml_punch_full_speed", 7.0);
 		double power = clamp((avg - minSpeed) / max(fullSpeed - minSpeed, 0.1), 0.0, 1.0);
@@ -674,6 +676,8 @@ class RSQML_Gloves : StaticEventHandler
 		// and goes off like a thrown one. Otherwise, or without Distance Grab, the kick as before.
 		let dg = RSQML.Svc("RSQDG_ThrowService");
 		bool locked = dg && dg.GetInt("lockon.kick", "", pmo.PlayerNumber(), up, b) == 1;
+		// BARREL LAUNCH (owner 11-12 05:11, barrelfly.zs; on): no lock -- it flies, fast and tumbling, to the nearest monster
+		if (!locked && RSQML.SVI("rsqml_barrel_launch", 1) != 0 && RSQML_FlyingBarrel.Launch(pmo, b, (toB, 0), "uppercut")) return true;
 		if (!locked)
 		{
 			b.vel.z = max(b.vel.z, up);
@@ -790,6 +794,12 @@ class RSQML_Gloves : StaticEventHandler
 	// UPPERCUT KICKS BARRELS (11-09, for RSQ Score's Field Goal): the barrels a player's uppercut kicked, when, and who
 	// (RSQML_Service "barrel.kicked"; a barrel is only a few dozen a map, the list keeps the last 16)
 	Array<Actor> kickedBarrel;
+	// a launched barrel put back to go off (barrelfly.zs): it is the kick's barrel for RSQ Score's Field Goal
+	void NoteKick(Actor b, int pn, int tic)
+	{
+		if (kickedBarrel.Size() >= 16) { kickedBarrel.Delete(0); kickedTic.Delete(0); kickedPn.Delete(0); }
+		kickedBarrel.Push(b); kickedTic.Push(tic); kickedPn.Push(pn);
+	}
 	Array<int> kickedTic, kickedPn;
 	const KICK_KEEP = 175;   // 5 s: a kicked barrel that goes off later than this is no longer the kick's
 	int KickedAge(Actor b, int pn)
