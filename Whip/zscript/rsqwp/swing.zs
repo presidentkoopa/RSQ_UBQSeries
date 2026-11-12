@@ -75,6 +75,7 @@ extend class RSQWP_Whip
 	const BEAM_MEMORY = 35;      // Beam Wins on: a gold spot is remembered this long after the beam is let go (1 s)
 	const AIM_STEP = 10.0;       // the dotted ray: a dot every this many map units ...
 	const AIM_FROM = 6.0;        // ... from this far out of the hand
+	const CAST_PALE = 0xB8D8FF;  // the Lock-On Whip's cast where it can do nothing: a pale ray, no ring's red
 	const AIM_RED = 0xFF4030;    // the refused ray (the colour-blind palette's IDLE role takes it over)
 
 	bool    aimHeld[NW];         // the other hand's alt-fire is held (weapon.zs Tend: the button, or the eaten key)
@@ -382,14 +383,20 @@ extend class RSQWP_Whip
 		// WHIP AND GUN (owner 11-10): its cursor is drawn only when it can snag (gold); a red one is not drawn (the state
 		// and the freeze behave the same, only the dots are left out). The slot-1 aimed swing's red ray is unchanged.
 		// (rig 11-10, P4 N2: a gold diamond drawn before stayed where it was once the aim went red; it goes too)
-		if (indy[i] && !ok)
+		// THE LOCK-ON WHIP'S CAST IS ALWAYS SEEN (owner 11-12 04:56: "it behaves the same as before" -- on the rig the new
+		// presses worked, but nothing on screen had changed: the ray was still drawn only where it could snag). Its dotted
+		// ray is drawn all the time from the whip hand: pale where it can do nothing, gold with the diamond where alt-fire
+		// can lock a snag. Once fire has marked a monster the ray leaves the hand's aim and runs to the mark (whip.zs
+		// UpdateMark draws it); it comes back when the mark is over.
+		bool lw = indy[i] && LockWhipOn();
+		if ((indy[i] && !ok && !lw) || (lw && !geoLock[i] && markHeld[i] && (lockOn[i] || lockLine[i])))
 		{
 			if (aimRing[i]) aimRing[i].Destroy();
 			if (aimCen[i]) aimCen[i].Destroy();
 			aimRing[i] = null; aimCen[i] = null;
 			return;
 		}
-		int col = ok ? RSQWP_CB.Pick(RSQWP_CB.CB_COULD, RSQWP_LockRing.GOLD) : RSQWP_CB.Pick(RSQWP_CB.CB_IDLE, AIM_RED);
+		int col = ok ? RSQWP_CB.Pick(RSQWP_CB.CB_COULD, RSQWP_LockRing.GOLD) : (lw ? CAST_PALE : RSQWP_CB.Pick(RSQWP_CB.CB_IDLE, AIM_RED));
 		Vector3 span = end - org;
 		double len = span.Length();
 		if (len > AIM_FROM)

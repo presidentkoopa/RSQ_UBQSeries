@@ -1383,6 +1383,26 @@ class RSQWP_Whip : EventHandler
 			markRing[i].SetShade(RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD));
 		}
 		if (markCen[i]) { markCen[i].SetOrigin(at, true); markCen[i].scale = (sc, sc); }
+		// THE LOCK-ON WHIP: the cast has snapped to the mark -- the dotted ray from the whip hand to it, in the mark's gold
+		if (byWeapon[i] && indy[i] && LockWhipOn() && markHeld[i] && !geoLock[i] && PlayerPawn(wby[i]))
+		{
+			Vector3 org = RSQWP_Util.AimPos(PlayerPawn(wby[i]), i & 1);
+			Vector3 to = (lockOn[i] ? lockOn[i].pos + (0, 0, lockOn[i].height * 0.6) : lockAt[i]) - org;
+			double len = to.Length();
+			if (len > AIM_FROM)
+			{
+				FSpawnParticleParams p;
+				p.color1 = RSQWP_CB.Pick(RSQWP_CB.CB_HAVE, RSQWP_LockRing.GOLD);
+				p.style = STYLE_Add;
+				p.flags = SPF_FULLBRIGHT;
+				p.lifetime = 1;
+				p.size = 2.0;
+				p.sizestep = 0;
+				p.startalpha = 0.9;
+				p.fadestep = 0;
+				for (double t = AIM_FROM; t < len - 2; t += AIM_STEP) { p.pos = org + to / len * t; level.SpawnParticle(p); }
+			}
+		}
 		// QUICK MARK 3's second mark
 		let b2 = lock2[i];
 		if (b2 && !b2.bDestroyed && !(Inventory(b2) && Inventory(b2).Owner))

@@ -27,6 +27,7 @@ class RSQWP_WhipWeapon : Weapon
 	bool trigWas;
 	bool latched;       // the Lock-On Whip: a fire press has set the mark; it stays with no button held (Tend)
 	int  latchTic;
+	Actor latchOn;      // the monster the latched mark is on (put back after a crack spends the mark)
 	bool hadHook;
 	bool reelArmed;
 
@@ -171,6 +172,22 @@ class RSQWP_WhipWeapon : Weapon
 				}
 				else if (dbg) Console.Printf("T_WPW %d LOCK t%d alt-fire: no gold cursor here (%s), nothing locked", i, level.maptime, w.aimWhy[i]);
 			}
+			// THE MARK STAYS THROUGH A CRACK (rig 11-12 04:58: the crack that flew to the mark spent it, so the next crack
+			// had no mark): the monster the latch is on is remembered, and put back as the mark while it lives, once the
+			// crack's flight is over. Fire again still moves it on; alt-fire or its death ends it.
+			if (latched && w.lockOn[i]) latchOn = w.lockOn[i];
+			else if (latched && latchOn && latchOn.health > 0 && !latchOn.bDestroyed && !w.markLine[i] && !trigPress)
+			{
+				// (gone out of reach or out of sight: the latch is over, below)
+				if (pmo.Distance3D(latchOn) > RSQWP_Whip.LockRange() * 1.15 || !pmo.CheckSight(latchOn, SF_IGNOREVISIBILITY | SF_IGNOREWATERBOUNDARY)) latchOn = null;
+				else
+				{
+					latchTic = level.maptime;     // the flight is not "nothing to mark"
+					if (!w.casting[i] && w.reachTic[i] <= 0) { w.lockOn[i] = latchOn; w.lockLine[i] = false; w.lockLeft[i] = 35; }
+				}
+			}
+			else if (latched && latchOn && (latchOn.health <= 0 || latchOn.bDestroyed)) latchOn = null;
+			if (!latched) latchOn = null;
 			// the mark found nothing, or what it was on is gone with nothing else along the hand: the latch is over
 			if (latched && level.maptime > latchTic + 2 && !w.lockOn[i] && !w.markLine[i])
 			{
