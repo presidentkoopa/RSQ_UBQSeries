@@ -559,6 +559,47 @@ class RSQGC_GunCard : EventHandler
 		return (cp * cos(y), cp * sin(y), sin(p));
 	}
 
+	// ---- THE WATCH CARD FACES YOU OR IT IS NOT DRAWN (owner 11-11 23:56 "rogue voxels"; 11-12 04:45 "watch check with
+	// lightsaber and tell me you don't see voxels firing off in a line"; his screenshot 04:56) -------------------------
+	// A watch card is one voxel thick. Seen from its edge every row of it is a line of bright dashes running off across
+	// the view: the other hand's card while you check this one (the saber's Force hand has an item card), a card that
+	// lingers as the wrist turns away, any card with Watch Card: Always On. So a watch / status / item card is drawn only
+	// while the back of that wrist is turned toward your eyes: FaceDot is the cosine between the card's face and the line
+	// to your eyes (1 square on, 0 edge on, negative from behind), and under FACE_MIN the card fades out.
+	// And only while you are looking its way: the wrist within GAZE_MAX of where your head points (a hand resting at
+	// your side with its card half turned to you is not being read).
+	const FACE_MIN = 0.50;      // 60 degrees off square
+	const GAZE_MAX = 45.0;
+	static double GazeOff(PlayerPawn pmo, int hand)
+	{
+		if (!pmo.OverrideAttackPosDir || !pmo.player) return 0;
+		Vector3 to = ((hand == 1) ? pmo.OffhandPos : pmo.AttackPos) - (pmo.pos.xy, pmo.player.viewz);
+		to.z *= level.pixelstretch;
+		double d = to.Length();
+		if (d < 0.01) return 0;
+		Vector3 look = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
+		return acos(clamp((to / d) dot look, -1.0, 1.0));
+	}
+	static double FaceDot(PlayerPawn pmo, int hand)
+	{
+		if (!pmo.OverrideAttackPosDir || !pmo.player) return 1.0;
+		double y = ((hand == 1) ? pmo.OffhandAngle : pmo.AttackAngle) + 90;
+		double p = (hand == 1) ? pmo.OffhandPitch : pmo.AttackPitch;
+		Vector3 f = (cos(p) * cos(y), cos(p) * sin(y), sin(p));
+		Vector3 r0 = (sin(y), -cos(y), 0);
+		Vector3 u0 = r0 cross f;
+		// the twist, with the sign Watching reads it by (the physical left controller reports it mirrored)
+		let cs = CVar.FindCVar("vr_control_scheme");
+		bool left = (hand == 0) == (cs && cs.GetInt() >= 10);
+		double rl = Actor.Normalize180(hand == 1 ? pmo.OffhandRoll : pmo.AttackRoll);
+		double b = left ? rl : -rl;
+		Vector3 n = r0 * cos(b) + u0 * sin(b);
+		Vector3 to = (pmo.pos.xy, pmo.player.viewz) - ((hand == 1) ? pmo.OffhandPos : pmo.AttackPos);
+		to.z *= level.pixelstretch;
+		double d = to.Length();
+		return d > 0.01 ? (n dot to) / d : 1.0;
+	}
+
 	// ---- which way the hand is drawn ---------------------------------------------------------------------
 	// hand 0 main, 1 off. The physical left hand is mirrored unless its gun says NoAutoReverse.
 	static bool Mirrored(PlayerInfo p, int hand)
@@ -840,6 +881,14 @@ class RSQGC_GunCard : EventHandler
 			// GC1 (Option): the small card hides while the gun is up at your eye
 			bool eyeHide = ci("rsqgc_hide_eye", 0) && AtEye(pmo, hand);
 			show[hand] = status[hand] || itemCard[hand] || (watching[hand] ? w != null : (w && !eyeHide && Wanted(pmo, hand)));
+			// (edge on or from behind, a watch card is a line of dashes: not drawn, FaceDot)
+			if (show[hand] && (watching[hand] || status[hand] || itemCard[hand]) && !ci("rsqgc_world", 0))
+			{
+				double fd = FaceDot(pmo, hand), go = GazeOff(pmo, hand);
+				bool cull = fd < FACE_MIN || go > GAZE_MAX;
+				if (ci("rsqgc_debug_log", 0) && (level.maptime % 10) == 0) Console.Printf("rsqgc: hand %d watch card face %.2f, %.0f degrees off your gaze%s", hand, fd, go, cull ? " (not drawn)" : "");
+				if (cull) show[hand] = false;
+			}
 			// a cooking grenade's count shows whatever Show Cards says, unless it says Off
 			if (!show[hand] && w && ci("rsqgc_card", 1) > 0 && FuseCount(p, hand) >= 0) show[hand] = true;
 			// THE LEVEL CARD IN ITS PLACE (owner 11-12; Level-Up Card Replaces Small Card, rsqgc_lvlcard): the small card fades
