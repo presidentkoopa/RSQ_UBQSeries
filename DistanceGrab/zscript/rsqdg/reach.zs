@@ -248,6 +248,7 @@ class RSQDG_Reach
 	const TWO_HAND_HOLD = 18;
 	const TWO_HAND_NEAR = 0.05;
 	const TWO_HAND_FAR  = 0.70;
+	const TWO_HAND_CLASP = 0.16;
 
 	static play bool TwoHandRaw(PlayerInfo p)
 	{
@@ -272,6 +273,13 @@ class RSQDG_Reach
 		if (hd && (hd.HandIsFull(0) || hd.HandIsFull(1))) return "";
 		double along, side;
 		[along, side] = OnBarrel(p.mo);
+		// HANDS TOGETHER ON THE GRIP (owner 2026-11-12 14:11: "disable distance grabbing for either hand when two-handing a
+		// weapon"; his pose: "freeze, police"): a pistol held in both hands has the off hand cupped round the gun hand, level
+		// with it or a little behind, so it is not "ahead along the barrel" and the test below never saw it. The two
+		// controllers within TWO_HAND_CLASP (0.16 m) of each other is that hold; a hand reaching beside the gun is 30 cm
+		// or more away (see above), so it still reaches.
+		if (sqrt(along * along + side * side) <= TWO_HAND_CLASP)
+			return String.Format("hands together on the gun (%.2f m apart)", sqrt(along * along + side * side));
 		if (along >= TWO_HAND_NEAR && along <= TWO_HAND_FAR && side <= r)
 			return String.Format("off hand on the gun (%.2f m ahead, %.2f m off the barrel)", along, side);
 		return "";

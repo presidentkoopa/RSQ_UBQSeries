@@ -222,6 +222,8 @@ So that fighting never pulls the room into the fight, a hand stands down while:
 - **you two-hand a gun:** QuestZDoom's two-hand grip, BD22 VR Reloaded's two-hand holds, or your off hand on the gun
   (5 to 70 cm ahead of the gun hand, within 20 cm of the barrel). Both hands stand down, and stay down half a second
   after you let go.
+  Both hands together on the grip count too (the controllers within 16 cm: a pistol held in both hands; rig run ls2h,
+  not headset-confirmed).
 - **it is fighting** (**Not With Melee**): wearing RSQ Melee's boxing gloves, or moving at punch speed in the last
   three-quarters of a second.
 - **it holds a melee weapon, a lit saber or another mod's hand** (a switched-off saber hilt can still reach; a bare fist

@@ -359,6 +359,15 @@ class RSQLS_Sight : EventHandler
 	}
 
 	// ---- which hands have a laser right now -----------------------------------
+	const AIMED_DEG = 40.0;
+	// this hand's gun points where the player looks, within AIMED_DEG
+	static bool Aimed(PlayerPawn pmo, int h)
+	{
+		if (!pmo) return false;
+		Vector3 d = RSQLS_Hand.Dir(pmo, h);
+		Vector3 v = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
+		return (d dot v) >= cos(AIMED_DEG);
+	}
 	private bool HandLive(PlayerInfo p, int h)
 	{
 		if (!RSQLS_Hand.Flag(h == 0 ? "rsqls_main" : "rsqls_off", p, true)) return false;
@@ -374,7 +383,11 @@ class RSQLS_Sight : EventHandler
 		// run). So while EITHER hand's watch check is met, every laser layer of both hands goes (HideHand: SetPsprite null
 		// on the beam and halo layers, the dot, arc, ring, readout), whatever drew it; lowering the wrist brings them back.
 		// Code only, not shown.
-		if (p.mo && (WatchCheck(PlayerPawn(p.mo), 0) > 0 || WatchCheck(PlayerPawn(p.mo), 1) > 0)) return false;
+		// BUT NOT A GUN HELD ON ITS SIDE AND AIMED (owner 2026-11-12 14:11: "turn on lasers when holding the gun 'gangsta
+		// style' even when two handing the gun"): a gun rolled over reads as that wrist's watch check, and the laser went
+		// out. A watch check has the gun across your view; a gun aimed where you look, within AIMED_DEG, keeps its laser
+		// whatever the wrists say.
+		if (p.mo && (WatchCheck(PlayerPawn(p.mo), 0) > 0 || WatchCheck(PlayerPawn(p.mo), 1) > 0) && !Aimed(PlayerPawn(p.mo), h)) return false;
 		// THE ENGINE TAKES THE OFF HAND'S GUN WHEN YOU BRACE, SO THE LASER GOES WITH IT.
 		// vr_two_handed_weapons is on by default (hw_vrmodes.cpp:119), and the off-hand grip
 		// pressed with the controllers inside 0.50 m latches weaponStabilised on the grip's
