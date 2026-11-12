@@ -5041,11 +5041,15 @@ class wr_Rig : EventHandler
 	// vanilla pistol. Every other gun whose Spawn starts on its real frame is unchanged.
 	clearscope static State shownState(State st)
 	{
-		int tnt = Actor.GetSpriteIndex('TNT1');
 		State first = st;
 		for (int i = 0; i < 16 && st; i++)
 		{
-			if (st.Tics != 0 && st.sprite != tnt && st.ValidateSpriteFrame()) return st;
+			if (st.Tics != 0 && st.ValidateSpriteFrame())
+			{
+				TextureID t; bool m; Vector2 sc;
+				[t, m, sc] = st.GetSpriteTexture(0);
+				if (t.IsValid() && !(TexMan.GetName(t).Left(4) ~== "TNT1")) return st;
+			}
 			st = st.NextState;
 		}
 		return first;
