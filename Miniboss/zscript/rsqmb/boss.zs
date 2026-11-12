@@ -70,15 +70,20 @@ class RSQMB_Boss : Thinker
 		let lm = CVar.FindCVar("LD_legendarymonsters");
 		if (!lm || lm.GetInt() != 1) return;
 		risen.Push(a);
-		// LegenDoom raises it once its health is at or under half of what LegenDoom gave it. Taken to 1 (it cannot be hurt
+		// LegenDoom raises it once its health is at or under half of what LegenDoom gave it. Taken to 2 (it cannot be hurt
 		// while the charge holds it), LegenDoom heals it the next tic; whatever it had above LegenDoom's number (Champions'
 		// Red, our own boost) is given back once it has risen (RiseRestore).
 		risenHp.Push(a.health);
-		a.health = 1;
+		a.health = 2;   // 2, not 1: at 1 the miniboss's lives would read it as a life lost (rig run mbwatch2)
 		let h = H();
 		if (h && h.debug) Console.Printf("RSQMB rise: %s taken to %d for LegenDoom to raise it", a.GetClassName(), a.health);
 	}
 	Array<int> risenHp;
+	bool RisePending(Actor a)
+	{
+		int i = risen.Find(a);
+		return i < risen.Size() && i < risenHp.Size() && risenHp[i] > 0;
+	}
 	void RiseRestore()
 	{
 		for (int i = 0; i < risen.Size() && i < risenHp.Size(); i++)
@@ -236,7 +241,7 @@ class RSQMB_Boss : Thinker
 		if (h && level.maptime % 10 == idx % 10) col = h.ColourOf(mb, idx) | 0xFF000000;
 
 		// A life lost: BUDDHA held it at 1 hp.
-		if (lives > 1 && mb.health <= 1) LoseLife(h);
+		if (lives > 1 && mb.health <= 1 && !RisePending(mb)) LoseLife(h);
 
 		// Thralls: alive, dead, or gone (destroyed, gibbed away). Dead ones stay dead (no revive since the rework).
 		for (int i = 0; i < thr.Size(); i++)
