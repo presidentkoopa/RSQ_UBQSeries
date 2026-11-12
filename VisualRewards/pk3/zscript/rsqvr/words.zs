@@ -52,6 +52,7 @@ class RSQVR_Word play
 	Array<RSQVR_WGlyph> gl2;
 	Vector3 lastPos;
 	double lastH;
+	double lastCeil;      // the ceiling over it (owner 11-11 23:56: the word and the bar "get clipped into ceilings")
 	Array<RSQVR_WGlyph> gl;
 }
 
@@ -307,7 +308,7 @@ class RSQVR_FxHandler : EventHandler
 		}
 		let w = new("RSQVR_Word");
 		w.who = a; w.text = txt; w.rgb = rgb & 0xFFFFFF;
-		w.lastPos = a.Pos; w.lastH = a.Height;
+		w.lastPos = a.Pos; w.lastH = a.Height; w.lastCeil = a.ceilingz;
 		words.Push(w);
 		return w;
 	}
@@ -419,7 +420,7 @@ class RSQVR_FxHandler : EventHandler
 			let w = words[i];
 			if (!w) { words.Delete(i); continue; }
 			if (w.who && w.who.bDestroyed) w.who = null;
-			if (w.who) { w.lastPos = w.who.Pos; w.lastH = w.who.Height; }
+			if (w.who) { w.lastPos = w.who.Pos; w.lastH = w.who.Height; w.lastCeil = w.who.ceilingz; }
 			// a held word goes with its actor (dead or gone): a quick fade
 			if (w.held && !w.clearing && (!w.who || w.who.health <= 0)) { w.clearing = true; w.clearT = 0; }
 			if (!frozen) { w.t++; if (w.clearing) w.clearT++; }
@@ -434,14 +435,16 @@ class RSQVR_FxHandler : EventHandler
 			// and a LegenDoom drop's words theirs (rsqvr_lddrop)
 			bool on = w.tag == 'legendary' ? ldWordOn : w.tag == 'lddrop' ? ldDropOn : wordsOn;
 			if (!on || !cam) { HideWord(w); continue; }
-			double heldUp = 0;
+			double heldUp = 0, stackAll = LineH(w, eye);
 			for (int j = 0; j < words.Size(); j++)
 			{
 				let o = words[j];
 				if (j == i || !o || o.who != w.who || !o.held) continue;
+				stackAll += LineH(o, eye);
 				if (j < i || !w.held) heldUp += LineH(o, eye);
 			}
-			DrawWord(w, eye, heldUp, ps);
+			lastEye = eye; haveEye = true;
+			DrawWord(w, eye, heldUp, ps, stackAll);
 		}
 
 		// ---- pops ----
@@ -487,7 +490,34 @@ class RSQVR_FxHandler : EventHandler
 		for (int i = 0; i < w.gl2.Size(); i++) if (w.gl2[i]) w.gl2[i].Alpha = 0;
 	}
 
-	void DrawWord(RSQVR_Word w, Vector3 eye, double heldUp, double ps)
+	// UNDER THE CEILING (owner 11-11 23:56: LEGENDARY "is large with a large hp bar and gets clipped into ceilings"): the
+	// words over an actor start a tenth of its height and 10 units above it; where the ceiling is lower than the whole
+	// stack needs (stackAll: every line over this actor), the stack starts lower so its top is CEIL_GAP under the ceiling,
+	// never below the actor's middle. The HP bar asks StackOver and sits under the words (rsqthp/bar.zs).
+	const CEIL_GAP = 2.0;
+	Vector3 lastEye; bool haveEye;
+	double StackBase(RSQVR_Word w, double stackAll)
+	{
+		double base = w.lastPos.z + w.lastH * 1.1 + 10;
+		if (w.lastCeil > w.lastPos.z) base = min(base, w.lastCeil - CEIL_GAP - stackAll);
+		return max(base, w.lastPos.z + w.lastH * 0.5);
+	}
+	// how much room the words held over this actor take, map units (0 with none): for the HP bar under them
+	double StackOver(Actor who)
+	{
+		if (!who || !haveEye) return 0;
+		double sum = 0;
+		for (int i = 0; i < words.Size(); i++)
+		{
+			let w = words[i];
+			if (!w || w.who != who) continue;
+			bool on = w.tag == 'legendary' ? ldWordOn : w.tag == 'lddrop' ? ldDropOn : wordsOn;
+			if (on) sum += LineH(w, lastEye);
+		}
+		return sum;
+	}
+
+	void DrawWord(RSQVR_Word w, Vector3 eye, double heldUp, double ps, double stackAll)
 	{
 		int n = int(w.text.Length());
 		// its glyphs (one per character that has one; spaces only advance)
@@ -526,7 +556,8 @@ class RSQVR_FxHandler : EventHandler
 			trBot = TransSotn(bot);
 		}
 		// where: above the actor's HP bar and markers, the held stack below it
-		Vector3 anchor = w.lastPos + (0, 0, w.lastH * 1.1 + 10 + heldUp + rise + u * RSQVR_BeamData.FONT_H * 0.5);
+		Vector3 anchor = (w.lastPos.xy, StackBase(w, stackAll) + heldUp + rise + u * RSQVR_BeamData.FONT_H * 0.5);
+		if (w.lastCeil > w.lastPos.z) anchor.z = min(anchor.z, max(w.lastCeil - CEIL_GAP - u * RSQVR_BeamData.FONT_H * 0.5, w.lastPos.z + w.lastH * 0.5));
 		Vector3 d = eye - anchor;
 		double dl = d.Length();
 		Vector3 toEye = dl > 0.01 ? d / dl : (0, 0, 0);

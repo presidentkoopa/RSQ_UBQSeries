@@ -1,0 +1,12 @@
+// RSQ VisualRewards -- the pickup model of a LegenDoom legendary FIST drop (owner 2026-11-11 23:56: "legendoom there is no
+// pickup model for fist ... we have one in e doomwork vrweaponsetrebuild voxelvanillavrweapons"). The mesh is the alternate
+// voxel-style fist of Universal Doom Voxel Weapons for VR (Ermac's mod; the alternate set by Rogue_Steve), copied as it
+// is from the owner's folder (CREDITS.txt). Lent to the drop by name (zscript/rsqvr/ldword.zs FistLook).
+Model RSQVR_LDFist
+{
+	Path "models/rsqvr/fist"
+	Model 0 "doomknuckles.md3"
+	Skin 0 "doomknuckles.png"
+	Scale 1.0 1.0 1.0
+	FrameIndex RVFI A 0 0
+}

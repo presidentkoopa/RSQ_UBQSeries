@@ -207,6 +207,16 @@ class RSQTHP_Bar : Actor
 		double up = top * (1.0 + h.offset);
 		if (champ && h.champIcons) up = max(up, who.Height * 1.1 + h.champIconH + 1.0);
 		up += who.GetBobOffset();
+		// UNDER THE CEILING (owner 11-11 23:56: the word and the bar "get clipped into ceilings"): the bar, its strip and
+		// the words held over this thing (RSQ VisualRewards' own, StackOver) all fit under the ceiling: the bar comes
+		// down by what is missing, never below the thing's middle.
+		if (who.ceilingz > who.Pos.z)
+		{
+			let fx = RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler"));
+			double over = fx ? fx.StackOver(who) : 0.0;
+			double need = 16.0 * Scale.Y + (over > 0 ? over + 10.0 : 0.0) + 2.0;
+			up = max(who.Height * 0.5, min(up, who.ceilingz - who.Pos.z - need));
+		}
 		Vector3 np = (who.Pos.xy, who.Pos.z + up);
 		if (np != Pos) SetOrigin(np, false);
 		Prev = (who.Prev.xy, who.Prev.z + up);

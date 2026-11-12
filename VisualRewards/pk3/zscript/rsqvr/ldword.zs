@@ -140,6 +140,24 @@ class RSQVR_LDWord : EventHandler
 		return LocOr("LD_FX_TITLE_" .. pow, pow), LocOr("LD_RARITY_NAME_" .. RarN(rar), RarN(rar)), rar;
 	}
 
+	// A LEGENDARY FIST DROP HAS A MODEL (owner 11-11 23:56): BD22 VR's legendary pickup wears its weapon's own pickup frame,
+	// and the fists have none, so a fist drop was the glow and the words round nothing. A drop that carries a fists token
+	// (LDFists...) and draws nothing (no sprite, or TNT1) is lent the fist mesh (MODELDEF.rsqvr, RSQVR_LDFist) on a frame
+	// of its own. Any drop that already draws something is left alone. Rig: the log line below; the look is the headset's.
+	private void FistLook(Inventory d)
+	{
+		bool fist = false;
+		for (let i = d.Inv; i; i = i.Inv) { String cn = i.GetClassName(); if (cn.Left(7) == "LDFists") { fist = true; break; } }
+		if (!fist) return;
+		if (d.sprite != Actor.GetSpriteIndex("TNT1")) return;   // it draws something already (BD22 VR sets sprite / frame itself)
+		d.sprite = Actor.GetSpriteIndex("RVFI");
+		d.frame = 0;
+		d.Scale = (1.0, 1.0);
+		d.A_ChangeModel("RSQVR_LDFist");
+		lentFists++;
+	}
+	int lentFists;     // how many fist drops were lent the model (a test reads it)
+
 	private void DropTick()
 	{
 		for (int i = fresh.Size() - 1; i >= 0; i--)
@@ -150,6 +168,7 @@ class RSQVR_LDWord : EventHandler
 			[w1, w2, rar] = ReadDrop(d);
 			if (rar < 0) continue;
 			fresh.Delete(i); freshT.Delete(i);
+			FistLook(d);
 			let h = RSQVR_FxHandler.Get();
 			if (!h) continue;
 			// the power's name first (lower), the rarity above it

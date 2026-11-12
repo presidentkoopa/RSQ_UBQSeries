@@ -120,3 +120,6 @@ from the owner's approved mockups, tools/beam_spec/)
   loop at 2:02.97 with a 0.5 s crossfade (sounds/rsqvr/RVQMUS1.ogg). From Phantasy Star IV (Sega), per the owner (2026-11-10).
 - DOWN's (Be Quick or Be Dead's) track (2026-11-09): "29 red alert", supplied by the owner; its first 22.4 s looped
   (sounds/rsqvr/RVQMUS2.ogg). From Phantasy Star IV (Sega), per the owner (2026-11-10).
+
+models/rsqvr/fist/doomknuckles.md3 + .png (the legendary fist drop): from Universal Doom Voxel Weapons for VR by Ermac
+(https://www.reddit.com/user/iAmErmac); the alternate voxel weapon set is by Rogue_Steve.
