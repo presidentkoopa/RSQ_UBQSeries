@@ -42,6 +42,9 @@ class RS_BDKit : Inventory
 	int  phaseTics, phaseStyle;
 	double phaseAlpha;
 	int  nextBlink, lastPuddle, lastVolley;
+	int  tintId;                // [11-13 fix 6] the tier tint it wears (Look), 0 none; a Champions tint over it is taken off
+	int  flashTic, seenTr;      // the tier flash is running (RS_LookKeep.Hold); the last translation checked for Champions'
+	bool seenChamp;
 
 	Default
 	{
@@ -119,9 +122,11 @@ class RS_BDKit : Inventory
 		for (int i = 0; i < ex; i++) { exh *= 1.10; exd *= 1.05; }
 
 		// health (design 2.4): base x M(colour) / M(entry); every EX step +10%
+		// [11-13 fix 2] health ABOVE its spawn health is kept in proportion (a LegenDoom legendary's x3, which LegenDoom
+		// puts in its health and never in its StartHealth; Universal Entropy's size): it was cut back to 1x before
 		double nh = RS_BDTierData.HP(fam, t) / RS_BDTierData.HP(fam, entry) * exh;
 		int oldFull = o.GetSpawnHealth();
-		double frac = oldFull > 0 ? clamp(double(o.health) / oldFull, 0.05, 1.0) : 1.0;
+		double frac = oldFull > 0 ? max(0.05, double(o.health) / oldFull) : 1.0;
 		int sh = o.StartHealth > 0 ? o.StartHealth : o.default.health;
 		if (hpF <= 0) hpF = 1.0;
 		o.StartHealth = max(1, int(round(sh / hpF * nh)));
@@ -129,7 +134,8 @@ class RS_BDKit : Inventory
 		if (o.health > 0)
 		{
 			int full = o.GetSpawnHealth();
-			o.health = (!first && RS_Retier.FullHealth(instant)) ? full : max(1, int(round(full * frac)));
+			int share = max(1, int(round(full * frac)));
+			o.health = (!first && RS_Retier.FullHealth(instant)) ? max(full, share) : share;
 		}
 		if (hpOnly) { Look(); return; }
 
@@ -171,8 +177,8 @@ class RS_BDKit : Inventory
 	{
 		let o = owner;
 		if (!o) return;
-		if (rung > entry) o.A_SetTranslation(TintName(Tier()));
-		else o.Translation = baseTrans;
+		if (rung > entry) { o.A_SetTranslation(TintName(Tier())); tintId = int(o.Translation); }
+		else { o.Translation = baseTrans; tintId = 0; }
 	}
 
 	// a new place on the ladder (the flash has already run, or the change is instant)
@@ -235,6 +241,19 @@ class RS_BDKit : Inventory
 		if (o.health <= 0) { EndPhase(); return; }
 		if (level.isFrozen()) return;
 		age++;
+		// [11-13 fix 6, RS_Carry.zs] a Champions tint put over its tier tint (a champion's controller starting, a revive,
+		// Gold's own re-tint) is taken off on the next tic; never while the tier flash runs
+		int tr = int(o.Translation);
+		if (tintId && tr != tintId && level.maptime - flashTic > 1)
+		{
+			if (tr != seenTr) { seenTr = tr; seenChamp = RS_CarryLast.IsChampTint(tr); }
+			if (seenChamp)
+			{
+				Look();
+				let h = RS_CarryLast.Get();
+				if (h) h.Fixed(o, "tier tint back over a Champions tint");
+			}
+		}
 		if (age == 1) SummonerLink();
 
 		// the tier gem (Colourful Hell's colour-blind aid, Tier Icons Above Monsters), once a second

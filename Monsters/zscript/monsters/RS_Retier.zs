@@ -870,7 +870,7 @@ class RS_Retier play
 		// any StartHealth another mod set), not the class default: on a skill with MonsterHealth 0.5 the old sum read a
 		// healthy monster as half dead.
 		double frac = 1.0;
-		int oldFull = mo.GetSpawnHealth();
+		int oldFull = RS_Carry.PeakOf(mo);   // [11-13 fix 2] a LegenDoom legendary's full health is its legendary health
 		if (oldFull > 0)
 			frac = clamp(double(mo.health) / double(oldFull), 0.05, 1.0);
 
@@ -905,6 +905,10 @@ class RS_Retier play
 		// later, and this IS a new actor -- so every CH colour change paid the fraction. Moved, not added: only a
 		// body that was counted passes it on, once. By name, so each mod still loads alone.
 		ScoreHandOver(mo, a);
+
+		// [11-13 fix 2, RS_Carry.zs] what the other mods made of the old body goes with it: its Champions champion, its
+		// LegenDoom legendary, Universal Entropy's size, RSQ's own marks
+		RS_Carry.Take(mo, a, frac);
 
 		// It was already awake and fighting -- do not make it re-notice.
 		if (mo.target && a.SeeState)
@@ -968,6 +972,7 @@ class RS_RetierJob : Thinker
 		ticker++;
 		// PHOTOSENSITIVE MODE (RSQ Accessibility rsqa_photosafe, owner 2026-11-12 "Yes, calm it"): no flicker; the monster
 		// holds the flash colour, full-bright, for the whole wait, then changes
+		RS_LookKeep.Hold(mo);      // [11-13 fix 6] the flash is ours: the tier colour keepers leave it alone
 		bool calm = false;
 		{ Name an = "RSQA_Menu"; class<Object> ac = an; if (ac) { let pc = CVar.FindCVar('rsqa_photosafe'); calm = pc && pc.GetInt() != 0; } }
 		if (calm || (ticker / 3) % 2 == 0)

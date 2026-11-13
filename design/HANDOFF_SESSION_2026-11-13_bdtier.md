@@ -65,6 +65,8 @@ name list was widened afterwards and that widening was not re-run.
 ## 3. Not built
 
 - Section 8 fixes 2, 5, 6: they hook Champions, LegenDoom, Universal Entropy and MK Crits by name. I had none of them.
+  (Later 11-13, lane monC: fixes 2 and 6 BUILT in `Monsters/zscript/monsters/RS_Carry.zs`, rig only, not headset-confirmed;
+  evidence `rigtest_2026-11-13/MON_CARRY_*`. Fix 5 still not built.)
 - Section 8 fix 8's hub reset, ColorfulHell's own conversions (the Abyss PE pulse, Grow) through Swap, Score's colour rows
   relative to the world tier, census timing.
 - The Cyan Zombie's three bodies on a swap.

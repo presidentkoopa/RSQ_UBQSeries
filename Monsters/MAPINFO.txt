@@ -1,5 +1,5 @@
 // RS_Monsters -- MAPINFO. Every EventHandler this pack compiles.
 gameinfo
 {
-	AddEventHandlers = "RS_RetierHandler", "RS_RosterHandler", "RS_BDTierHandler"
+	AddEventHandlers = "RS_RetierHandler", "RS_RosterHandler", "RS_BDTierHandler", "RS_CarryFirst", "RS_CarryLast"
 }

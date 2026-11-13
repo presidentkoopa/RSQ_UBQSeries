@@ -1,0 +1,75 @@
+# rig run monC_carry2 (2026-11-13): owner's full load order, his cvars (full_monC.sh), -skill 6, arena MAP33 + rig probe (not shipped).
+# probe: 6 ColorfulHell + 6 Brutal Doom monsters; every other one given LegenDoom's own LDLegendaryMonsterPickupGuaranteed, then taken to 2 hp so LegenDoom raises it; then netevent rs_retier_all 9.
+MONC: 6 probe monsters (set 1)
+MONC: 12 probe monsters (set 0)
+MONC: 6 probe monsters given LegenDoom's guaranteed legendary
+MONC: 6 legendaries taken to 2 health for LegenDoom to raise
+LOOK t180: RS_BlueImp its ColorfulHell colour back over a Champions tint (6 so far)
+LOOK t180: RS_GreenZombie its ColorfulHell colour back over a Champions tint (7 so far)
+LOOK t180: Imp tier tint back over a Champions tint (8 so far)
+LOOK t180: ChaingunGuy1 tier tint back over a Champions tint (9 so far)
+LOOK t180: NamiDarkImp tier tint back over a Champions tint (10 so far)
+CARRYDUMP: RS_CommonImp tier 1 | hp 144 | CHAMPIONS TINT champion_darkred | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_DarkRedToken champion_PersistentInfo
+CARRYDUMP: RS_GreenImp tier 2 | hp 56 | its ColorfulHell colour | scale 1.00 | champion_VioletToken champion_PersistentInfo
+CARRYDUMP: RS_BlueImp tier 3 | hp 198 | its ColorfulHell colour | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_GreenToken champion_PersistentInfo
+CARRYDUMP: RS_PurpleImp tier 4 | hp 84 | its ColorfulHell colour | scale 1.00 | champion_WhiteToken champion_PersistentInfo
+CARRYDUMP: RS_GreenZombie tier 2 | hp 96 | its ColorfulHell colour | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_GreyToken champion_PersistentInfo
+CARRYDUMP: RS_BlueZombie tier 3 | hp 48 | its ColorfulHell colour | scale 1.00 | champion_YellowToken champion_PersistentInfo
+CARRYDUMP: Imp tier 3 | hp 528 | tier tint rs_bdtier_blue | scale 1.04 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_RedToken champion_PersistentInfo
+CARRYDUMP: ShotgunGuy1 tier 3 | hp 58 | tier tint rs_bdtier_blue | scale 0.98 | champion_IndigoToken champion_PersistentInfo
+CARRYDUMP: ChaingunGuy1 tier 3 | hp 576 | tier tint rs_bdtier_blue | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_RedToken champion_PersistentInfo
+CARRYDUMP: SuperImp tier 5 | hp 96 | tier tint rs_bdtier_cyan | scale 1.04 | champion_GreyToken champion_PersistentInfo
+CARRYDUMP: NamiDarkImp tier 5 | hp 456 | tier tint rs_bdtier_cyan | scale 1.04 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_OrangeToken champion_PersistentInfo
+CARRYDUMP: PistolZombiePatch tier 3 | hp 96 | tier tint rs_bdtier_blue | scale 0.98 | champion_VioletToken champion_PersistentInfo
+CARRYDUMP: 12 living monsters; 11 wear their tier colour; 1 wear a Champions tint
+MONC: RS_CommonImp hp 144/144 trans 655361 scale 1.00  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_DarkRedToken champion_PersistentInfo
+MONC: RS_GreenImp hp 56/56 trans 458806 scale 1.00  champion_VioletToken champion_PersistentInfo
+MONC: RS_BlueImp hp 198/197 trans 458807 scale 1.00  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_GreenToken champion_PersistentInfo
+MONC: RS_PurpleImp hp 84/84 trans 458808 scale 1.00  champion_WhiteToken champion_PersistentInfo
+MONC: RS_GreenZombie hp 96/96 trans 458758 scale 1.00  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_GreyToken champion_PersistentInfo
+MONC: RS_BlueZombie hp 48/48 trans 458759 scale 1.00  champion_YellowToken champion_PersistentInfo
+MONC: Imp hp 528/528 trans 655602 scale 1.04  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_RedToken champion_PersistentInfo
+MONC: ShotgunGuy1 hp 58/58 trans 655602 scale 0.98  champion_IndigoToken champion_PersistentInfo
+MONC: ChaingunGuy1 hp 576/576 trans 655602 scale 1.00  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_RedToken champion_PersistentInfo
+MONC: SuperImp hp 96/96 trans 655604 scale 1.04  champion_GreyToken champion_PersistentInfo
+MONC: NamiDarkImp hp 456/456 trans 655604 scale 1.04  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_OrangeToken champion_PersistentInfo
+RETIER: queued 12 monsters for tier 9
+CARRY t404: RS_BlueZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+LOOK t404: RS_GrayZombie2 its ColorfulHell colour back over a colour from its spawn event (11 so far)
+CARRY t405: RS_GreenZombie -> RS_GrayZombie2: champion built again by Champions; legendary and risen; 0 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+LOOK t405: RS_GrayZombie2 its ColorfulHell colour back over a colour from its spawn event (12 so far)
+LOOK t406: RS_GrayZombie2 its ColorfulHell colour back over a Champions tint (13 so far)
+CARRY t406: RS_GreenImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+LOOK t406: RS_GrayImp2 its ColorfulHell colour back over a colour from its spawn event (14 so far)
+CARRY t407: RS_GrayZombie2 legendary again (health 366), taken to 2 for LegenDoom to raise it
+CARRY t408: RS_GrayZombie2 risen again by LegenDoom: health 366 of 366 (share 1.00)
+CARRY t409: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+LOOK t409: RS_GrayImp2 its ColorfulHell colour back over a colour from its spawn event (15 so far)
+CARRY t413: RS_CommonImp -> RS_GrayImp2: champion built again by Champions; legendary and risen; 0 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+LOOK t413: RS_GrayImp2 its ColorfulHell colour back over a colour from its spawn event (16 so far)
+CARRY t413: RS_BlueImp -> RS_GrayImp2: champion built again by Champions; legendary and risen; 0 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+LOOK t413: RS_GrayImp2 its ColorfulHell colour back over a colour from its spawn event (17 so far)
+LOOK t414: RS_GrayImp2 its ColorfulHell colour back over a Champions tint (18 so far)
+LOOK t414: RS_GrayImp2 its ColorfulHell colour back over a Champions tint (19 so far)
+CARRY t415: RS_GrayImp2 legendary again (health 636), taken to 2 for LegenDoom to raise it
+CARRY t415: RS_GrayImp2 legendary again (health 636), taken to 2 for LegenDoom to raise it
+CARRY t416: RS_GrayImp2 risen again by LegenDoom: health 636 of 636 (share 1.00)
+CARRY t416: RS_GrayImp2 risen again by LegenDoom: health 636 of 636 (share 1.00)
+CARRYDUMP: Imp tier 9 | hp 1484 | tier tint rs_bdtier_gray | scale 1.04 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_RedToken champion_PersistentInfo
+CARRYDUMP: ShotgunGuy1 tier 9 | hp 197 | tier tint rs_bdtier_gray | scale 0.98 | champion_IndigoToken champion_PersistentInfo
+CARRYDUMP: ChaingunGuy1 tier 9 | hp 1966 | tier tint rs_bdtier_gray | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_RedToken champion_PersistentInfo
+CARRYDUMP: SuperImp tier 9 | hp 180 | tier tint rs_bdtier_gray | scale 1.04 | champion_GreyToken champion_PersistentInfo
+CARRYDUMP: NamiDarkImp tier 9 | hp 850 | tier tint rs_bdtier_gray | scale 1.04 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_OrangeToken champion_PersistentInfo
+CARRYDUMP: PistolZombiePatch tier 9 | hp 185 | tier tint rs_bdtier_gray | scale 0.98 | champion_VioletToken champion_PersistentInfo
+CARRYDUMP: RS_GrayZombie2 tier 9 | hp 123 | its ColorfulHell colour | scale 1.00 | champion_PersistentInfo champion_YellowToken
+CARRYDUMP: RS_GrayZombie2 tier 9 | hp 366 | its ColorfulHell colour | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_GreyToken champion_PersistentInfo
+CARRYDUMP: RS_GrayImp2 tier 9 | hp 212 | its ColorfulHell colour | scale 1.00 | champion_PersistentInfo champion_VioletToken
+CARRYDUMP: RS_GrayImp2 tier 9 | hp 212 | its ColorfulHell colour | scale 1.00 | champion_PersistentInfo champion_WhiteToken
+CARRYDUMP: RS_GrayImp2 tier 9 | hp 636 | its ColorfulHell colour | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_DarkRedToken champion_PersistentInfo
+CARRYDUMP: RS_GrayImp2 tier 9 | hp 636 | its ColorfulHell colour | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_GreenToken champion_PersistentInfo
+CARRYDUMP: 12 living monsters; 12 wear their tier colour; 0 wear a Champions tint
+MONC: Imp hp 1484/1484 trans 655608 scale 1.04  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_RedToken champion_PersistentInfo
+MONC: ShotgunGuy1 hp 197/197 trans 655608 scale 0.98  champion_IndigoToken champion_PersistentInfo
+MONC: ChaingunGuy1 hp 1966/1966 trans 655608 scale 1.00  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_RedToken champion_PersistentInfo
+MONC: SuperImp hp 180/180 trans 655608 scale 1.04  champion_GreyToken champion_PersistentInfo
+MONC: NamiDarkImp hp 850/850 trans 655608 scale 1.04  LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_OrangeToken champion_PersistentInfo

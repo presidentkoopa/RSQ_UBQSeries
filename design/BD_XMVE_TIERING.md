@@ -272,6 +272,11 @@ All are verified in code. None are built.
 
      Miniboss then only follows.
    - Also: the Cyan zombie gate spawns three bodies (`RS_Zombieman.zs:90-92`), and Swap makes one.
+   - **BUILT 11-13** (`Monsters/zscript/monsters/RS_Carry.zs`, called from `RS_Retier.Swap`). Rig only, not
+     headset-confirmed: runs monC_carry2 / carry3_world on his order and cvars, logs and frames in
+     `rigtest_2026-11-13/MON_CARRY_*`. A champion held dormant by Champions keeps its record and token but no controller
+     (Champions' own revive rule), except a legendary waiting to rise, which is woken at the swap. The Cyan zombie's three
+     bodies: not done.
 3. **Tier changes ignore the extra-colour gates.**
    - The problem: `ClassFor` never names a gate (`RS_Retier.zs:63-64`, 805), and Miniboss's set.class uses ClassFor too.
    - A second bug, a leak: `BuildCHFamily` (`RS_Roster.zs:244-266`) keeps gate names under the cap. A switched-off gate
@@ -305,7 +310,11 @@ All are verified in code. None are built.
    - Fix: a Monsters handler ordered after UE re-asserts the ladder look (the class default translation, or the BD tint).
      Tier gems on by default when UE, Champions or the world rule is on. Champions keeps its particles and Score's
      champion icons.
-   - **OWNER:** which wins, the champion tint or the tier tint?
+   - **OWNER:** which wins, the champion tint or the tier tint? (11-13: the tier tint, the approved body-recolour style.)
+   - **BUILT 11-13** (`RS_Carry.zs`: a first and a last handler around every other spawn handler, and a per-tic check on
+     the kit / `RS_LookKeep`). Only Champions' tints are undone after spawn; UE's at spawn. A monster in its plain look
+     (BD entry colour, ColorfulHell Common) keeps UE's and Champions' colours. Tier gems were NOT turned on by default.
+     Rig only, not headset-confirmed (frames `rigtest_2026-11-13/MON_CARRY_compare_*.jpg`).
 7. **Miniboss's map-wide tier-ups stack on the world tier.**
    - The problem: TierUp hits the whole map (`fight.zs:243-259`, `rsqmb_tier_mapwide` on). It adds 1-3 per missed window
      and +1 per life lost, capped only at 13 (`fight.zs:281,554`). At S = 10, one missed window can turn every map monster
