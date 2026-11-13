@@ -282,24 +282,42 @@ extend class RSQMB_Handler
 		if (want <= cur) return false;
 		if (s.GetInt("retier", "", want, 0, a) != 1) return false;
 		int k = tfMon.Find(a);
+		EnsureTf();
 		if (k == tfMon.Size())
 		{
 			tfMon.Push(a); tfOrig.Push(t); tfUntil.Push(0); tfRole.Push(role); tfX.Push(0); tfY.Push(0); tfZ.Push(0); tfBoss.Push(b); tfTok.Push("");
+			tfNext.Push(null); tfFrac.Push(1.0); tfCarry.Push(0); tfInfo.Push(null); tfHeldAt.Push(0);
 		}
 		tfUntil[k] = level.maptime + FOLLOW_TICS;
 		tfBoss[k] = b; tfRole[k] = role;
 		tfX[k] = a.pos.x; tfY[k] = a.pos.y; tfZ[k] = a.pos.z;
-		tfTok[k] = KeptTokens(a);
+		// a set piece's own body keeps EVERY Champions token it had (carry.zs builds its controllers again); a map monster
+		// keeps what it did before (the four by-name colours, Titan, LegenDoom's legendary)
+		tfTok[k] = KeptTokens(a, b != null);
+		tfNext[k] = null; tfCarry[k] = 0; tfHeldAt[k] = 0;
+		// its share of health (RSQ Monsters' rule: the wound is carried, rsq_mon_retier_health 2 is always full): of the most
+		// it has had (the miniboss: maxHP; a thrall: boss.zs thrPeak)
+		double full = b ? (role < 0 ? b.maxHP : b.ThrallPeak(role)) : 0;
+		tfFrac[k] = (full > 0 && CI('rsq_mon_retier_health', 1) < 2) ? clamp(a.health / full, 0.05, 1.0) : 1.0;
+		if (debug && b) Console.Printf("RSQMB tier asked t%d: %s %s tier %d -> %d, health %d of %.0f (share %.2f), tokens [%s]", level.maptime,
+			role < 0 ? "the miniboss" : String.Format("thrall %d", role), a.GetClassName(), cur, want, a.health, full, tfFrac[k], tfTok[k]);
 		return true;
 	}
 
-	// the tokens a CH swap would lose and that work when given by name
-	static String KeptTokens(Actor a)
+	// the tokens a CH swap would lose and that work when given by name; for a set piece's own body (all) every Champions
+	// colour and mutation token too (its icons and its bar colour; the powers come back with its controllers, carry.zs)
+	String KeptTokens(Actor a, bool all = false)
 	{
 		static const String KEEP[] = { "champion_YellowToken", "champion_WhiteToken", "champion_DarkGreenToken", "champion_CyanToken",
 			"champion_TitanToken", "LDLegendaryMonsterToken" };
 		String s = "";
 		for (int i = 0; i < KEEP.Size(); i++) if (Has(a, KEEP[i])) s = s .. KEEP[i] .. ",";
+		if (!all) return s;
+		for (int i = 0; i < COLOURS.Size(); i++)
+		{
+			String tk = "champion_" .. COLOURS[i] .. "Token";
+			if (s.IndexOf(tk .. ",") < 0 && Has(a, tk)) s = s .. tk .. ",";
+		}
 		return s;
 	}
 
@@ -315,13 +333,24 @@ extend class RSQMB_Handler
 	void Follow()
 	{
 		int now = level.maptime;
+		EnsureTf();
 		for (int k = 0; k < tfMon.Size(); k++)
 		{
+			// a Champions record held for a body whose spawn event never came (carry.zs): let it go
+			if (tfInfo[k] && (tfUntil[k] < now || (tfHeldAt[k] > 0 && now - tfHeldAt[k] > 10)))
+			{
+				if (!tfInfo[k].Owner) tfInfo[k].Destroy();
+				tfInfo[k] = null;
+				if (debug) Console.Printf("RSQMB carry: a Champions record held for %s was never claimed", tfRole[k] < 0 ? "the miniboss" : String.Format("thrall %d", tfRole[k]));
+			}
 			if (tfUntil[k] < now) continue;
 			let a = tfMon[k];
 			if (a) { if (a.health > 0) { tfX[k] = a.pos.x; tfY[k] = a.pos.y; tfZ[k] = a.pos.z; } else tfUntil[k] = 0; continue; }
 			let s = MnService();
 			if (!s) continue;
+			// caught as it spawned (carry.zs): that one, no search
+			Actor caught = tfNext[k];
+			if (caught && caught.health > 0 && tfMon.Find(caught) == tfMon.Size()) { FollowGot(k, caught); continue; }
 			let bi = BlockThingsIterator.CreateFromPos(tfX[k], tfY[k], tfZ[k], 64, 32, false);
 			// (rig 11-09) the new body stands where the old one was on the swap tic, and a monster on the move covers up to its
 			// speed (x1.25 for a miniboss) in the tic between: the nearest freshly swapped monster within 48 units, not 1
@@ -339,20 +368,32 @@ extend class RSQMB_Handler
 				best = d;
 			}
 			if (!got) continue;
-			tfMon[k] = got;
-			Array<String> toks;
-			String tk = tfTok[k];
-			tk.Split(toks, ",", TOK_SKIPEMPTY);
-			for (int i = 0; i < toks.Size(); i++)
-			{
-				if (toks[i] == "LDLegendaryMonsterToken") { if (!Has(got, "LDLegendaryMonsterToken")) Give(got, "LDLegendaryMonsterPickupGuaranteed"); }
-				else if (!Has(got, toks[i])) Give(got, toks[i]);
-			}
-			let b = tfBoss[k];
-			if (b && !b.done) b.Rebody(tfRole[k], got, self);
-			if (debug) Console.Printf("RSQMB tier swap followed: %s (%s) at %.0f %.0f, tokens again [%s]", got.GetClassName(),
-				b ? (tfRole[k] < 0 ? "the miniboss" : String.Format("thrall %d", tfRole[k])) : "a map monster", tfX[k], tfY[k], tfTok[k]);
+			FollowGot(k, got);
 		}
+	}
+
+	// the new body found: its tokens again, a set piece's body dressed again and made to rise (boss.zs Rebody, Reborn)
+	void FollowGot(int k, Actor got)
+	{
+		tfMon[k] = got;
+		tfNext[k] = null;
+		Array<String> toks;
+		String tk = tfTok[k];
+		tk.Split(toks, ",", TOK_SKIPEMPTY);
+		for (int i = 0; i < toks.Size(); i++)
+		{
+			if (toks[i] == "LDLegendaryMonsterToken") { if (!Has(got, "LDLegendaryMonsterToken")) Give(got, "LDLegendaryMonsterPickupGuaranteed"); }
+			else if (!Has(got, toks[i])) Give(got, toks[i]);
+		}
+		let b = tfBoss[k];
+		if (b && !b.done)
+		{
+			b.Rebody(tfRole[k], got, self);
+			b.Reborn(got, tfFrac[k], tk.IndexOf("LDLegendaryMonsterToken") >= 0);
+		}
+		if (debug) Console.Printf("RSQMB tier swap followed: %s (%s) at %.0f %.0f, tokens again [%s]%s", got.GetClassName(),
+			b ? (tfRole[k] < 0 ? "the miniboss" : String.Format("thrall %d", tfRole[k])) : "a map monster", tfX[k], tfY[k], tfTok[k],
+			b ? String.Format(", Champion %s, health share %.2f", tfCarry[k] ? "carried" : "not carried (none)", tfFrac[k]) : "");
 	}
 
 	// MINIBOSS-INDUCED TIERS RESET ON A MAP CHANGE (owner 07:15): a hub level entered again puts every monster this mod tiered
@@ -369,6 +410,8 @@ extend class RSQMB_Handler
 		}
 		if (debug && tfMon.Size()) Console.Printf("RSQMB hub re-entered: %d of %d miniboss-tiered monsters put back", n, tfMon.Size());
 		tfMon.Clear(); tfOrig.Clear(); tfUntil.Clear(); tfRole.Clear(); tfX.Clear(); tfY.Clear(); tfZ.Clear(); tfBoss.Clear(); tfTok.Clear();
+		for (int k = 0; k < tfInfo.Size(); k++) if (tfInfo[k] && !tfInfo[k].Owner) tfInfo[k].Destroy();
+		tfNext.Clear(); tfFrac.Clear(); tfCarry.Clear(); tfInfo.Clear(); tfHeldAt.Clear();
 	}
 
 	// ---- the words over them (RSQVR_Service word.hold) --------------------------------------------------------------------

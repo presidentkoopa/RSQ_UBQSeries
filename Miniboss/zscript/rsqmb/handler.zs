@@ -591,7 +591,14 @@ class RSQMB_Handler : EventHandler
 		rageCount = 0;
 	}
 
-	override void WorldThingSpawned(WorldEvent e) { if (rageCount > 0) RageOne(e.Thing); }
+	transient RSQMB_SwapCatch swapCatch;
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (rageCount > 0) RageOne(e.Thing);
+		// a swapped set-piece body has been past Champions' handler now: its temporary NullToken off (carry.zs)
+		if (!swapCatch) swapCatch = RSQMB_SwapCatch.Get();
+		if (swapCatch && swapCatch.nullTemp.Size()) swapCatch.TakeNull(e.Thing);
+	}
 	override void WorldThingRevived(WorldEvent e) { if (rageCount > 0) RageOne(e.Thing); }
 
 	private void RageFX()

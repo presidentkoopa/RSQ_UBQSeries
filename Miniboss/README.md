@@ -340,7 +340,8 @@ happen.
   killed in one window), **Rage Quit**, **Riot Control**, and combos that ask for a thrall
   or the miniboss.
 - **RSQ Monsters:** the colours, the colour changes on a missed window and on each life lost (with its flash), the
-  bodies it swaps on a colour change (Miniboss finds the new one and dresses it again), the EX roll, and **Miniboss
+  bodies it swaps on a colour change (Miniboss finds the new one and dresses it again: the same Champion, rebuilt by
+  Champions' own code, its LegenDoom legendary, risen again, and the share of health the old body had left), the EX roll, and **Miniboss
   From / Thralls From** on Monsters' page. Re-entering a hub level puts back every colour Miniboss gave.
 - **RSQ VisualRewards:** the arrival beams, "GUARD!", "TARGET!" and the pops; the miniboss fight music scene (its Scene Music
   row turns it off for you; **Miniboss Music** here turns it off for everyone); Kill Rewards' boss fountain; Top HP Bars draws a crown over the miniboss's bar, with a pip for each pick level, and a chain link over each
@@ -404,6 +405,7 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, runs `mbkeep0` before, `mbkeep5` after; probe `rig/work/mbprobe`) | A colour change keeps the miniboss and its thralls boosted legendary Champions. Before: each new body lost its Champion's controller (a Dark Green miniboss came back with a random Violet, a Black thrall came back plain or Pink) and was no longer risen. After: the miniboss stayed Indigo through four body swaps (three missed windows and a life lost) and a Bronze thrall through two, each with exactly one Champions controller of its own colour, `LDLegendaryMonsterTransformed` (risen again in 2 tics), and its share of health (0.85 and 0.41 of the new body's full). Map monsters swapped by the same windows were not touched: Champions' Override Chance stayed -1 and the only champions among them were Champions' own single rolls (10 of 19 in `mbkeep5`, 4 of 19 in the earlier `mbkeep3`, 6 of 19 before in `mbkeep0`). No script errors from the pack. Not shown: a hybrid or mutated Champion carried, Champions' Dormant option on, a save loaded mid-swap |
 | **rig only, not headset-confirmed** (2026-11-12, run `force1`, Champions' Legendoom Compatibility OFF) | Every monster of the encounter a real Champion (all four carry Champions' own record): thralls Green, Indigo, Violet after two repeats landed again; each beam in its Champion colour; Champions' Override Chance back to its own -1 after the landing |
 | **rig only, not headset-confirmed** (2026-11-12, runs `rise4`, `rise5`) | Miniboss and every thrall arrive already risen: LegenDoom's own rise (healed, stat boost, `LDLegendaryMonsterTransformed`, so Champions boosts them too) happens during the 3-second charge, 10 of 10 thralls and both minibosses risen; extra health (Champions' Red, our boost) given back after; no script errors from the pack |
 | **rig only, not headset-confirmed** (2026-11-12, runs `arr5`, `arr5r`) | The arrival is five seconds and the LED counts it from the bar's first frame (owner 19:20): the clock is on from the frame the sliver appears until the fight starts, the landings inside it, the charge filling the rest; gone in the fight. Digits not read at the rig's resolution |

@@ -96,6 +96,68 @@ class RSQMB_Boss : Thinker
 		}
 	}
 
+	// A NEW BODY RISES TOO (2026-11-12, carry.zs): RSQ Monsters' tier change swaps a set-piece monster's body; the new one gets
+	// its Champion back (carry.zs) and its legendary (fight.zs Follow), and rises here as at the arrival (RiseOne). It is held
+	// INVULNERABLE until it has risen (it stands at 2 hp for a tic), then gets its share of health back: the share of the
+	// most it had that the old body still had (the wound carried, RSQ Monsters' own rule), of the most the new body reached
+	// (its legendary health, Champions' boost). Its target, which the rise clears (LegenDoom's A_ClearTarget), back after.
+	const REBORN_WAIT = 105;       // at most this long (3 s) for LegenDoom
+	Array<Actor> rbMon, rbTarget;
+	Array<int> rbFrom, rbPeak;
+	Array<double> rbFrac;
+	Array<bool> rbOwnInv, rbLegend;
+	Array<int> thrPeak;            // the most health each thrall has had (its health share at a swap)
+	int ThrallPeak(int i)
+	{
+		int p = i < thrPeak.Size() ? thrPeak[i] : 0;
+		let t = i < thr.Size() ? thr[i] : null;
+		return t ? max(p, t.health) : p;
+	}
+	void Reborn(Actor a, double frac, bool legend)
+	{
+		if (!a || rbMon.Find(a) < rbMon.Size()) return;
+		rbMon.Push(a); rbTarget.Push(a.target); rbFrom.Push(level.maptime); rbPeak.Push(a.health); rbFrac.Push(frac);
+		rbOwnInv.Push(a.bINVULNERABLE); rbLegend.Push(legend);
+		a.bINVULNERABLE = true;
+	}
+	private void RebornStep()
+	{
+		int now = level.maptime;
+		let lm = CVar.FindCVar("LD_legendarymonsters");
+		bool ldRises = RSQMB_Handler.Loaded("LDLegendaryMonsterToken") && (!lm || lm.GetInt() == 1);
+		for (int k = rbMon.Size() - 1; k >= 0; k--)
+		{
+			let a = rbMon[k];
+			bool gone = !a || a.health <= 0;
+			int age = now - rbFrom[k];
+			bool done = gone;
+			if (!gone)
+			{
+				if (rbLegend[k]) { RiseOne(a); RiseRestore(); }
+				if (!RisePending(a)) rbPeak[k] = max(rbPeak[k], a.health);
+				bool risen = a.CountInv("LDLegendaryMonsterTransformed") > 0 && !RisePending(a);
+				done = risen || age >= REBORN_WAIT || ((!rbLegend[k] || !ldRises) && age >= 4);
+			}
+			if (!done) continue;
+			if (!gone)
+			{
+				// still held by the arrival's charge: ChargeEnd puts its own flag back
+				if (chWho.Find(a) == chWho.Size()) a.bINVULNERABLE = rbOwnInv[k];
+				int full = max(rbPeak[k], a.health);
+				a.health = max(2, int(round(full * rbFrac[k])));
+				if (a == mb) maxHP = max(maxHP, full);
+				else { int ti = thr.Find(a); if (ti < thr.Size()) { while (thrPeak.Size() <= ti) thrPeak.Push(0); thrPeak[ti] = full; } }
+				let tg = rbTarget[k];
+				if (tg && tg.health > 0 && !a.target) { a.target = tg; a.LastHeard = tg; }
+				let h = H();
+				if (h && h.debug) Console.Printf("RSQMB reborn: %s %s after %d tics, %s, health %d of %d (share %.2f)", a == mb ? "the miniboss" : "a thrall",
+					a.GetClassName(), age, a.CountInv("LDLegendaryMonsterTransformed") > 0 ? "risen" : (rbLegend[k] ? "NOT risen" : "not legendary"),
+					a.health, full, rbFrac[k]);
+			}
+			rbMon.Delete(k); rbTarget.Delete(k); rbFrom.Delete(k); rbPeak.Delete(k); rbFrac.Delete(k); rbOwnInv.Delete(k); rbLegend.Delete(k);
+		}
+	}
+
 	void ChargeEnd()
 	{
 		if (!chargeHeld) return;
@@ -231,7 +293,8 @@ class RSQMB_Boss : Thinker
 		// ARRIVE RISEN (owner 2026-11-12 18:06): while the charge runs, every legendary of the encounter rises (RiseOne)
 		if (chargeUntil > 0 && level.maptime < chargeUntil + 35) { RiseOne(mb); for (int i = 0; i < thr.Size(); i++) RiseOne(thr[i]); RiseRestore(); }
 		if (ldShPending) LDHealthDone(h);
-		if (mb.health > maxHP) maxHP = mb.health;
+		if (rbMon.Size()) RebornStep();
+		if (mb.health > maxHP && !RisePending(mb)) maxHP = mb.health;
 		// the segments follow its health until the first blow lands (LegenDoom sets a legendary's health a tic or two late)
 		if (!segTouched && total > 0 && maxHP / double(total) > segMax)
 		{
@@ -245,9 +308,11 @@ class RSQMB_Boss : Thinker
 		if (lives > 1 && mb.health <= 1 && !RisePending(mb)) LoseLife(h);
 
 		// Thralls: alive, dead, or gone (destroyed, gibbed away). Dead ones stay dead (no revive since the rework).
+		while (thrPeak.Size() < thr.Size()) thrPeak.Push(0);
 		for (int i = 0; i < thr.Size(); i++)
 		{
 			let t = thr[i];
+			if (t && !t.bDestroyed && t.health > thrPeak[i] && !RisePending(t) && rbMon.Find(t) == rbMon.Size()) thrPeak[i] = t.health;
 			if (!t || t.bDestroyed)
 			{
 				if (h && h.Following(self, i)) continue;      // its body is being swapped (a tier change)
@@ -338,7 +403,8 @@ class RSQMB_Boss : Thinker
 			for (int k = 0; k < powers.Size(); k++)
 			{
 				String n = powers[k];
-				if (k < powerAdd.Size() && powerAdd[k] != 0 && (n == "Yellow" || n == "White" || n == "DarkGreen" || n == "Cyan" || n == "Titan"))
+				if (k < powerAdd.Size() && powerAdd[k] != 0 && (n == "Yellow" || n == "White" || n == "DarkGreen" || n == "Cyan" || n == "Titan")
+					&& !RSQMB_Handler.Has(a, "champion_" .. n .. "Token"))
 					RSQMB_Handler.Give(a, "champion_" .. n .. "Token");
 			}
 		}
