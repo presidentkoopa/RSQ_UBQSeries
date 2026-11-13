@@ -1,0 +1,3303 @@
+// from BD22 VR's MODELDEF.rsqoff (RS_Brutal22WeaponsQ), by tools/port/mdl.py: the gun class names are this pack's
+
+Model RSQ_Off_RSQGW_Beretta
+{
+   Path "models/bd/BrutalPistol"
+   Model 0 "BrutalPistol.md3"
+   Skin 0 "BrutalPistol.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.820 -8.333 0.0
+   ZOffset -1.408
+   AngleOffset 3.854
+   PitchOffset 3.363
+   RollOffset 10.974	// BD 2.0 b1 (lane_c r5): gun to the FBX hand
+   Nointerpolation
+// Pose: restored 2026-10-10 -- each BD22 sprite frame takes the authored
+// BD21 pose for the same moment (tools/pose_tables.py, fill_tables.py).
+
+   FrameIndex	2IST	E	0	7
+   FrameIndex	PIST	J	0	3
+   FrameIndex	PIST	O	0	3
+   FrameIndex	PIST	P	0	23
+   FrameIndex	PIST	Q	0	23
+   FrameIndex	PIST	R	0	23
+   FrameIndex	PIST	S	0	23
+   FrameIndex	PIST	K	0	23
+   FrameIndex	PIST	L	0	23
+   FrameIndex	PIST	M	0	23
+   FrameIndex	PIST	N	0	23
+   FrameIndex	PIST	F	0	2
+   FrameIndex	PIST	E	0	7
+   FrameIndex	PISS	A	0	0
+   FrameIndex	PISS	B	0	1
+   FrameIndex	PISS	C	0	2
+   FrameIndex	PISR	A	0	3
+   FrameIndex	PISR	B	0	3
+   FrameIndex	PISR	C	0	3
+   FrameIndex	PISR	D	0	3
+   FrameIndex	PISR	E	0	8
+   FrameIndex	PISR	F	0	8
+   FrameIndex	PISR	G	0	8
+   FrameIndex	PISR	H	0	9
+   FrameIndex	PISR	I	0	9
+   FrameIndex	PISR	J	0	9
+   FrameIndex	PISR	K	0	10
+   FrameIndex	PISR	L	0	11
+   FrameIndex	PISR	M	0	12
+   FrameIndex	PISR	N	0	13
+   FrameIndex	PISR	O	0	14
+   FrameIndex	PISR	P	0	15
+   FrameIndex	PISR	Q	0	15
+   FrameIndex	PISR	R	0	16
+   FrameIndex	PISR	S	0	17
+   FrameIndex	PISR	T	0	19
+   FrameIndex	PISI	Q	0	3
+   FrameIndex	PISI	R	0	3
+   FrameIndex	PISI	S	0	3
+   FrameIndex	PISI	T	0	3
+   FrameIndex	PISI	U	0	3
+   FrameIndex	PISI	E	0	3
+   FrameIndex	PISI	F	0	8
+   FrameIndex	PISI	G	0	8
+   FrameIndex	PISI	H	0	8
+   FrameIndex	PISI	I	0	3
+   FrameIndex	PISI	J	0	3
+   FrameIndex	PISI	K	0	3
+   FrameIndex	PISI	L	0	3
+   FrameIndex	PISI	M	0	3
+   FrameIndex	PISI	N	0	3
+   FrameIndex	PISI	O	0	3
+   FrameIndex	PISI	P	0	3
+   FrameIndex	PISS	G	0	0
+   FrameIndex	PISS	H	0	1
+   FrameIndex	PISS	I	0	2
+   FrameIndex	PIST	I	0	3
+   FrameIndex	PISP	A	0	23
+   FrameIndex	PLAY	A	0	7
+   FrameIndex	PISS	E	0	1
+   FrameIndex	PISS	D	0	2
+   FrameIndex	PISS	F	0	0
+   FrameIndex	PISS	J	0	2
+   FrameIndex	PISS	K	0	1
+   FrameIndex	PISS	L	0	0
+   FrameIndex	2IST	A	0	3
+   FrameIndex	PIST	A	0	3
+   FrameIndex	PIST	B	0	4
+   FrameIndex	PIST	C	0	5
+   FrameIndex	PIST	D	0	6
+   FrameIndex	PISI	A	0	3
+   FrameIndex	PISI	B	0	3
+   FrameIndex	PISI	C	0	3
+   FrameIndex	PISI	D	0	3
+   FrameIndex	RIFR	C	0	7
+   FrameIndex	2ISR	A	0	3
+   FrameIndex	2ISR	B	0	3
+   FrameIndex	2ISR	C	0	3
+   FrameIndex	2ISR	D	0	3
+   FrameIndex	2ISR	E	0	8
+   FrameIndex	2ISR	F	0	8
+   FrameIndex	2ISR	G	0	8
+   FrameIndex	2ISR	H	0	9
+   FrameIndex	2ISR	I	0	9
+   FrameIndex	2ISR	J	0	9
+   FrameIndex	2ISR	K	0	10
+   FrameIndex	2ISR	L	0	11
+   FrameIndex	2ISR	M	0	12
+   FrameIndex	2ISR	N	0	13
+   FrameIndex	2ISR	O	0	14
+   FrameIndex	2ISR	P	0	15
+   FrameIndex	2ISR	Q	0	15
+   FrameIndex	2ISR	R	0	16
+   FrameIndex	2ISR	S	0	16
+   FrameIndex	2ISR	T	0	17
+   FrameIndex	2ISR	U	0	18
+   FrameIndex	2ISR	V	0	19
+   FrameIndex	PISR	U	0	20
+   FrameIndex	PISR	V	0	21
+   FrameIndex	PISR	W	0	22
+   FrameIndex	P3ST	K	0	7
+   // v4: frames BD22 shows that had no key (fill_tables.py SIBLING/READY)
+   FrameIndex	2IST	B	0	4
+   FrameIndex	2IST	C	0	5
+   FrameIndex	2IST	D	0	6
+   FrameIndex	2IST	I	0	3
+   FrameIndex	PI2G	G	0	3
+   FrameIndex	PI2G	H	0	2
+   FrameIndex	PI2G	I	0	1
+   FrameIndex	PI2G	J	0	1
+   FrameIndex	PI2G	K	0	0
+   FrameIndex	PI2G	L	0	0
+   FrameIndex	PI2G	S	0	3
+   FrameIndex	PI2G	T	0	2
+   FrameIndex	PI2G	U	0	1
+   FrameIndex	PI2G	V	0	1
+   FrameIndex	PI2G	W	0	0
+   FrameIndex	PI2G	X	0	0
+}
+
+Model RSQ_Off_RSQGW_PlasRifle
+{
+   Path "models/bd/Plasma_Gun"
+   Model 0 "Plasma.md3"
+   Skin 0 "Plasma.png"
+   Scale -1.0 1.0 1.0
+   Offset -0.978 -4.369 0.0
+   ZOffset -0.265
+   AngleOffset 3.854
+   PitchOffset 3.363
+   RollOffset 10.974	// r9 port (lane B): gun to the FBX hand fitted from 1.92
+   Nointerpolation
+// Pose: restored 2026-10-10 -- each BD22 sprite frame takes the authored
+// BD21 pose for the same moment (tools/pose_tables.py, fill_tables.py).
+
+   FrameIndex	2RSG	A	0	4
+   FrameIndex	PRSK	K	0	4
+   FrameIndex	PRSK	L	0	4
+   FrameIndex	PRSK	M	0	3
+   FrameIndex	PRSK	N	0	3
+   FrameIndex	PRSK	O	0	3
+   FrameIndex	PRSK	A	0	4
+   FrameIndex	PRSK	B	0	4
+   FrameIndex	PRSK	C	0	3
+   FrameIndex	PRSK	D	0	3
+   FrameIndex	PRSK	E	0	3
+   FrameIndex	PRSK	F	0	4
+   FrameIndex	PRSK	G	0	4
+   FrameIndex	PRSK	H	0	3
+   FrameIndex	PRSK	I	0	3
+   FrameIndex	PRSK	J	0	3
+   FrameIndex	PRSG	F	0	4
+   FrameIndex	PRSG	P	0	3
+   FrameIndex	PRSG	Q	0	2
+   FrameIndex	PRSG	R	0	1
+   FrameIndex	PRSG	S	0	0
+   FrameIndex	PRSG	A	0	4
+   FrameIndex	PRSG	H	0	4
+   FrameIndex	PRSG	W	0	0
+   FrameIndex	PRSG	V	0	1
+   FrameIndex	PRSG	U	0	2
+   FrameIndex	PRSG	T	0	3
+   FrameIndex	PRR1	A	0	0
+   FrameIndex	PRR1	B	0	1
+   FrameIndex	PRR1	C	0	2
+   FrameIndex	PRR1	D	0	3
+   FrameIndex	PRR1	E	0	3
+   FrameIndex	PRSR	G	0	15
+   FrameIndex	PRSR	H	0	15
+   FrameIndex	PRSR	I	0	15
+   FrameIndex	PRSR	J	0	16
+   FrameIndex	PRSR	K	0	16
+   FrameIndex	PRSR	L	0	17
+   FrameIndex	PRSR	M	0	18
+   FrameIndex	PRSR	N	0	19
+   FrameIndex	PRSR	O	0	20
+   FrameIndex	PRSR	P	0	20
+   FrameIndex	PRSR	Q	0	20
+   FrameIndex	PRSR	R	0	20
+   FrameIndex	PRSR	S	0	20
+   FrameIndex	PRSR	T	0	20
+   FrameIndex	PRSR	U	0	21
+   FrameIndex	PRSR	V	0	22
+   FrameIndex	PRSR	W	0	23
+   FrameIndex	PRSR	X	0	24
+   FrameIndex	PRSR	Y	0	25
+   FrameIndex	PRSR	C	0	14
+   FrameIndex	PRSR	Z	0	14
+   FrameIndex	PRSR	A	0	14
+   FrameIndex	PRSG	I	0	4
+   FrameIndex	PRSG	G	0	4
+   FrameIndex	PLAY	A	0	4
+   FrameIndex	PRSG	B	0	5
+   FrameIndex	PRSG	C	0	5
+   FrameIndex	PRSG	D	0	6
+   FrameIndex	PRSG	E	0	7
+   FrameIndex	PRSA	D	0	8
+   FrameIndex	PRSA	E	0	9
+   FrameIndex	PRSA	F	0	10
+   FrameIndex	PRSA	G	0	10
+   FrameIndex	PRSA	H	0	11
+   FrameIndex	PRSA	I	0	11
+   FrameIndex	2HTN	E	0	4
+   FrameIndex	PRSG	J	0	4
+   FrameIndex	PRSG	K	0	4
+   FrameIndex	PRSG	L	0	4
+   FrameIndex	PRSG	M	0	4
+   FrameIndex	PRSG	N	0	4
+   FrameIndex	PRSG	O	0	4
+   FrameIndex	PRSA	A	0	13
+   FrameIndex	PRSA	B	0	12
+   FrameIndex	PRSA	C	0	8
+   FrameIndex	PRAS	C	0	4
+   FrameIndex	PRSR	B	0	14
+   FrameIndex	PRSR	D	0	15
+   FrameIndex	PRSR	E	0	15
+   FrameIndex	PRSR	F	0	15
+   // v4: frames BD22 shows that had no key (fill_tables.py SIBLING/READY)
+   FrameIndex	2RSG	B	0	5
+   FrameIndex	2RSG	C	0	5
+   FrameIndex	2RSG	D	0	6
+   FrameIndex	2RSG	E	0	7
+   FrameIndex	2RSG	F	0	4
+   FrameIndex	DUPR	R	0	4
+   FrameIndex	DUPR	S	0	4
+   FrameIndex	DUPR	T	0	4
+   FrameIndex	DUPR	U	0	4
+   FrameIndex	DUPR	V	0	4
+   FrameIndex	DUPR	W	0	4
+   FrameIndex	DUPR	X	0	4
+   FrameIndex	DUPR	Y	0	4
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+   Path "models/bd/Rifle"
+   Model 0 "Rifle.md3"
+   Skin 0 "Rifle.png"
+   Model 1 "M203.md3"	// 1.30: the M203 (kitbash/gen_m203.py)
+   Skin 1 "M203.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.348 -5.912 0.0
+   ZOffset -1.812
+   AngleOffset 3.854
+   PitchOffset 3.363
+   RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+// Pose: restored 2026-10-10 -- each BD22 sprite frame takes the authored
+// BD21 pose for the same moment (tools/pose_tables.py, fill_tables.py).
+
+   FrameIndex	2IFG	A	0	3
+   FrameIndex	2IFG	A	1	3
+   FrameIndex	RIFG	J	0	3
+   FrameIndex	RIFG	J	1	3
+   FrameIndex	RIFG	K	0	3
+   FrameIndex	RIFG	K	1	3
+   FrameIndex	RIFG	L	0	28
+   FrameIndex	RIFG	L	1	28
+   FrameIndex	RIFG	M	0	27
+   FrameIndex	RIFG	M	1	27
+   FrameIndex	RIFG	N	0	27
+   FrameIndex	RIFG	N	1	27
+   FrameIndex	RIFG	A	0	3
+   FrameIndex	RIFG	A	1	3
+   FrameIndex	PLAY	A	0	3
+   FrameIndex	PLAY	A	1	3
+   FrameIndex	RIFG	I	0	0
+   FrameIndex	RIFG	I	1	0
+   FrameIndex	RIFG	H	0	1
+   FrameIndex	RIFG	H	1	1
+   FrameIndex	RIFG	G	0	2
+   FrameIndex	RIFG	G	1	2
+   FrameIndex	RIFG	F	0	3
+   FrameIndex	RIFG	F	1	3
+   FrameIndex	3IFR	A	0	0
+   FrameIndex	3IFR	A	1	0
+   FrameIndex	3IFR	B	0	1
+   FrameIndex	3IFR	B	1	1
+   FrameIndex	3IFR	C	0	2
+   FrameIndex	3IFR	C	1	2
+   FrameIndex	3IFR	D	0	9
+   FrameIndex	3IFR	D	1	9
+   FrameIndex	3IFR	E	0	9
+   FrameIndex	3IFR	E	1	9
+   FrameIndex	3IFR	F	0	9
+   FrameIndex	3IFR	F	1	9
+   FrameIndex	RIFR	G	0	9
+   FrameIndex	RIFR	G	1	9
+   FrameIndex	RIFR	H	0	9
+   FrameIndex	RIFR	H	1	9
+   FrameIndex	RIFR	I	0	10
+   FrameIndex	RIFR	I	1	10
+   FrameIndex	RIFR	J	0	10
+   FrameIndex	RIFR	J	1	10
+   FrameIndex	RIFR	K	0	11
+   FrameIndex	RIFR	K	1	11
+   FrameIndex	RIFR	L	0	11
+   FrameIndex	RIFR	L	1	11
+   FrameIndex	RIFR	M	0	12
+   FrameIndex	RIFR	M	1	12
+   FrameIndex	RIFR	N	0	13
+   FrameIndex	RIFR	N	1	13
+   FrameIndex	RIFR	O	0	13
+   FrameIndex	RIFR	O	1	13
+   FrameIndex	RIFR	A	0	7
+   FrameIndex	RIFR	A	1	7
+   FrameIndex	RIFR	P	0	13
+   FrameIndex	RIFR	P	1	13
+   FrameIndex	RIFR	Q	0	14
+   FrameIndex	RIFR	Q	1	14
+   FrameIndex	RIFR	R	0	15
+   FrameIndex	RIFR	R	1	15
+   FrameIndex	RIFR	S	0	15
+   FrameIndex	RIFR	S	1	15
+   FrameIndex	RIFR	T	0	15
+   FrameIndex	RIFR	T	1	15
+   FrameIndex	RIFR	U	0	16
+   FrameIndex	RIFR	U	1	16
+   FrameIndex	RIFR	V	0	16
+   FrameIndex	RIFR	V	1	16
+   FrameIndex	RIFR	W	0	16
+   FrameIndex	RIFR	W	1	16
+   FrameIndex	RIFR	X	0	16
+   FrameIndex	RIFR	X	1	16
+   FrameIndex	RIFR	Y	0	17
+   FrameIndex	RIFR	Y	1	17
+   FrameIndex	RIFR	Z	0	18
+   FrameIndex	RIFR	Z	1	18
+   FrameIndex	RIFR	[	0	8
+   FrameIndex	RIFR	[	1	8
+   FrameIndex	RIFR	B	0	8
+   FrameIndex	RIFR	B	1	8
+   FrameIndex	2IFR	A	0	22
+   FrameIndex	2IFR	A	1	22
+   FrameIndex	2IFR	B	0	22
+   FrameIndex	2IFR	B	1	22
+   FrameIndex	2IFR	C	0	22
+   FrameIndex	2IFR	C	1	22
+   FrameIndex	2IFR	D	0	22
+   FrameIndex	2IFR	D	1	22
+   FrameIndex	2IFR	E	0	22
+   FrameIndex	2IFR	E	1	22
+   FrameIndex	2IFR	F	0	22
+   FrameIndex	2IFR	F	1	22
+   FrameIndex	2IFR	G	0	22
+   FrameIndex	2IFR	G	1	22
+   FrameIndex	2IFR	H	0	22
+   FrameIndex	2IFR	H	1	22
+   FrameIndex	2IFR	I	0	21
+   FrameIndex	2IFR	I	1	21
+   FrameIndex	2IFR	J	0	19
+   FrameIndex	2IFR	J	1	19
+   FrameIndex	2IFR	K	0	20
+   FrameIndex	2IFR	K	1	20
+   FrameIndex	2IFR	L	0	22
+   FrameIndex	2IFR	L	1	22
+   FrameIndex	2IFR	M	0	22
+   FrameIndex	2IFR	M	1	22
+   FrameIndex	2IFR	N	0	22
+   FrameIndex	2IFR	N	1	22
+   FrameIndex	2IFR	O	0	22
+   FrameIndex	2IFR	O	1	22
+   FrameIndex	2IFR	P	0	23
+   FrameIndex	2IFR	P	1	23
+   FrameIndex	RI2G	A	0	3
+   FrameIndex	RI2G	A	1	3
+   FrameIndex	SMGR	A	0	3
+   FrameIndex	SMGR	A	1	3
+   FrameIndex	RIFG	E	0	3
+   FrameIndex	RIFG	E	1	3
+   FrameIndex	RIFG	D	0	2
+   FrameIndex	RIFG	D	1	2
+   FrameIndex	RIFG	C	0	1
+   FrameIndex	RIFG	C	1	1
+   FrameIndex	RIFG	B	0	0
+   FrameIndex	RIFG	B	1	0
+   FrameIndex	2IFF	A	0	4
+   FrameIndex	2IFF	A	1	4
+   FrameIndex	RIFF	A	0	4
+   FrameIndex	RIFF	A	1	4
+   FrameIndex	RIFF	D	0	4
+   FrameIndex	RIFF	D	1	4
+   FrameIndex	RIFF	B	0	5
+   FrameIndex	RIFF	B	1	5
+   FrameIndex	RIFF	C	0	6
+   FrameIndex	RIFF	C	1	6
+   FrameIndex	RI2F	A	0	4
+   FrameIndex	RI2F	A	1	4
+   FrameIndex	RI2F	D	0	4
+   FrameIndex	RI2F	D	1	4
+   FrameIndex	RI2F	B	0	5
+   FrameIndex	RI2F	B	1	5
+   FrameIndex	RI2F	C	0	6
+   FrameIndex	RI2F	C	1	6
+   FrameIndex	RIFZ	A	0	24
+   FrameIndex	RIFZ	A	1	24
+   FrameIndex	RIFZ	B	0	25
+   FrameIndex	RIFZ	B	1	25
+   FrameIndex	RIFZ	C	0	26
+   FrameIndex	RIFZ	C	1	26
+   FrameIndex	RIFR	C	0	8
+   FrameIndex	RIFR	C	1	8
+   FrameIndex	RIFR	D	0	8
+   FrameIndex	RIFR	D	1	8
+   FrameIndex	RIFR	E	0	8
+   FrameIndex	RIFR	E	1	8
+   FrameIndex	RIFR	F	0	8
+   FrameIndex	RIFR	F	1	8
+   FrameIndex	RIFL	A	0	3
+   FrameIndex	RIFL	A	1	3
+   // v4: frames BD22 shows that had no key (fill_tables.py SIBLING/READY)
+   FrameIndex	1IG2	A	0	16
+   FrameIndex	1IG2	A	1	16
+   FrameIndex	1IG2	B	0	16
+   FrameIndex	1IG2	B	1	16
+   FrameIndex	1IG2	C	0	16
+   FrameIndex	1IG2	C	1	16
+   FrameIndex	1IG2	D	0	16
+   FrameIndex	1IG2	D	1	16
+   FrameIndex	1IG2	E	0	16
+   FrameIndex	1IG2	E	1	16
+   FrameIndex	1IGL	D	0	18
+   FrameIndex	1IGL	D	1	18
+   FrameIndex	1IGL	E	0	17
+   FrameIndex	1IGL	E	1	17
+   FrameIndex	1IGL	F	0	16
+   FrameIndex	1IGL	F	1	16
+   FrameIndex	1IGL	G	0	16
+   FrameIndex	1IGL	G	1	16
+   FrameIndex	1IGL	H	0	16
+   FrameIndex	1IGL	H	1	16
+   FrameIndex	1IGL	I	0	16
+   FrameIndex	1IGL	I	1	16
+   FrameIndex	1IGL	J	0	16
+   FrameIndex	1IGL	J	1	16
+   FrameIndex	1IGL	K	0	16
+   FrameIndex	1IGL	K	1	16
+   FrameIndex	1IGL	L	0	16
+   FrameIndex	1IGL	L	1	16
+   FrameIndex	1IGL	M	0	16
+   FrameIndex	1IGL	M	1	16
+   FrameIndex	1IGL	N	0	16
+   FrameIndex	1IGL	N	1	16
+   FrameIndex	1IGL	O	0	16
+   FrameIndex	1IGL	O	1	16
+   FrameIndex	1IGL	P	0	16
+   FrameIndex	1IGL	P	1	16
+   FrameIndex	1IGL	Q	0	16
+   FrameIndex	1IGL	Q	1	16
+   FrameIndex	1IGL	R	0	16
+   FrameIndex	1IGL	R	1	16
+   FrameIndex	1IGL	S	0	16
+   FrameIndex	1IGL	S	1	16
+   FrameIndex	1IGL	T	0	16
+   FrameIndex	1IGL	T	1	16
+   FrameIndex	1IGL	U	0	16
+   FrameIndex	1IGL	U	1	16
+   FrameIndex	1IGL	V	0	16
+   FrameIndex	1IGL	V	1	16
+   FrameIndex	1IGL	W	0	16
+   FrameIndex	1IGL	W	1	16
+   FrameIndex	1IGL	X	0	16
+   FrameIndex	1IGL	X	1	16
+   FrameIndex	1IGL	Y	0	16
+   FrameIndex	1IGL	Y	1	16
+   FrameIndex	1IGL	Z	0	16
+   FrameIndex	1IGL	Z	1	16
+   FrameIndex	2IFF	B	0	5
+   FrameIndex	2IFF	B	1	5
+   FrameIndex	2IFF	C	0	6
+   FrameIndex	2IFF	C	1	6
+   FrameIndex	2IFF	D	0	4
+   FrameIndex	2IFF	D	1	4
+   FrameIndex	DURR	J	0	3
+   FrameIndex	DURR	J	1	3
+   FrameIndex	DURR	K	0	3
+   FrameIndex	DURR	K	1	3
+   FrameIndex	DURR	L	0	28
+   FrameIndex	DURR	L	1	28
+   FrameIndex	DURR	M	0	28
+   FrameIndex	DURR	M	1	28
+   FrameIndex	DURR	N	0	28
+   FrameIndex	DURR	N	1	28
+   FrameIndex	DURR	O	0	28
+   FrameIndex	DURR	O	1	28
+   FrameIndex	DURR	P	0	28
+   FrameIndex	DURR	P	1	28
+   FrameIndex	DURR	Q	0	28
+   FrameIndex	DURR	Q	1	28
+   FrameIndex	RI2F	E	0	4
+   FrameIndex	RI2F	E	1	4
+   FrameIndex	RI2F	F	0	4
+   FrameIndex	RI2F	F	1	4
+   FrameIndex	RI2F	G	0	6
+   FrameIndex	RI2F	G	1	6
+   FrameIndex	RI2F	H	0	6
+   FrameIndex	RI2F	H	1	6
+   FrameIndex	RIFF	E	0	4
+   FrameIndex	RIFF	E	1	4
+   FrameIndex	RIFF	F	0	4
+   FrameIndex	RIFF	F	1	4
+   FrameIndex	RIFF	G	0	6
+   FrameIndex	RIFF	G	1	6
+   FrameIndex	RIFF	H	0	6
+   FrameIndex	RIFF	H	1	6
+   FrameIndex	RIFF	I	0	3
+   FrameIndex	RIFF	I	1	3
+   FrameIndex	RIG2	A	0	16
+   FrameIndex	RIG2	A	1	16
+   FrameIndex	RIG2	B	0	16
+   FrameIndex	RIG2	B	1	16
+   FrameIndex	RIG2	C	0	16
+   FrameIndex	RIG2	C	1	16
+   FrameIndex	RIG2	D	0	16
+   FrameIndex	RIG2	D	1	16
+   FrameIndex	RIG2	E	0	16
+   FrameIndex	RIG2	E	1	16
+   FrameIndex	RIGL	A	0	7
+   FrameIndex	RIGL	A	1	7
+   FrameIndex	RIGL	B	0	8
+   FrameIndex	RIGL	B	1	8
+   FrameIndex	RIGL	C	0	8
+   FrameIndex	RIGL	C	1	8
+   FrameIndex	RIGL	D	0	18
+   FrameIndex	RIGL	D	1	18
+   FrameIndex	RIGL	E	0	17
+   FrameIndex	RIGL	E	1	17
+   FrameIndex	RIGL	F	0	16
+   FrameIndex	RIGL	F	1	16
+   FrameIndex	RIGL	G	0	16
+   FrameIndex	RIGL	G	1	16
+   FrameIndex	RIGL	H	0	16
+   FrameIndex	RIGL	H	1	16
+   FrameIndex	RIGL	I	0	16
+   FrameIndex	RIGL	I	1	16
+   FrameIndex	RIGL	J	0	16
+   FrameIndex	RIGL	J	1	16
+   FrameIndex	RIGL	K	0	16
+   FrameIndex	RIGL	K	1	16
+   FrameIndex	RIGL	L	0	16
+   FrameIndex	RIGL	L	1	16
+   FrameIndex	RIGL	M	0	16
+   FrameIndex	RIGL	M	1	16
+   FrameIndex	RIGL	N	0	16
+   FrameIndex	RIGL	N	1	16
+   FrameIndex	RIGL	O	0	16
+   FrameIndex	RIGL	O	1	16
+   FrameIndex	RIGL	P	0	16
+   FrameIndex	RIGL	P	1	16
+   FrameIndex	RIGL	Q	0	16
+   FrameIndex	RIGL	Q	1	16
+   FrameIndex	RIGL	R	0	16
+   FrameIndex	RIGL	R	1	16
+   FrameIndex	RIGL	S	0	16
+   FrameIndex	RIGL	S	1	16
+   FrameIndex	RIGL	T	0	16
+   FrameIndex	RIGL	T	1	16
+   FrameIndex	RIGL	U	0	16
+   FrameIndex	RIGL	U	1	16
+   FrameIndex	RIGL	V	0	16
+   FrameIndex	RIGL	V	1	16
+   FrameIndex	RIGL	W	0	16
+   FrameIndex	RIGL	W	1	16
+   FrameIndex	RIGL	X	0	16
+   FrameIndex	RIGL	X	1	16
+   FrameIndex	RIGL	Y	0	16
+   FrameIndex	RIGL	Y	1	16
+   FrameIndex	RIGL	Z	0	16
+   FrameIndex	RIGL	Z	1	16
+}
+
+Model RSQ_Off_RSQGW_DoubleSG
+{
+   Path "models/bd/SSG"
+   Model 0 "SSG.md3"
+   Skin 0 "ssg.png"
+   Scale -1.0 1.0 1.0
+   Offset -3.813 -3.959 0.0
+   ZOffset -12.773
+   AngleOffset 3.854
+   PitchOffset 3.363
+   RollOffset 10.974	// r11 port (lane B): gun to the FBX hand fitted from 1.92
+   Nointerpolation
+// Pose: restored 2026-10-10 -- each BD22 sprite frame takes the authored
+// BD21 pose for the same moment (tools/pose_tables.py, fill_tables.py).
+
+   FrameIndex	VSSG	A	0	1
+   FrameIndex	SHT2	A	0	1
+   FrameIndex	SHTN	A	0	0
+   FrameIndex	SHTZ	A	0	1
+   FrameIndex	SHTZ	B	0	12
+   FrameIndex	SHZ2	A	0	30
+   FrameIndex	SHZ2	K	0	13
+   FrameIndex	SHZ2	L	0	15
+   FrameIndex	SHZ2	M	0	17
+   FrameIndex	SHZ2	N	0	19
+   FrameIndex	SHZ2	O	0	21
+   FrameIndex	SHT2	S	0	1
+   FrameIndex	SHT2	T	0	0
+   FrameIndex	SHT2	U	0	0
+   FrameIndex	SHT2	V	0	0
+   FrameIndex	SHT2	W	0	0
+   FrameIndex	SGN2	A	0	0
+   FrameIndex	SHZ2	B	0	31
+   FrameIndex	SHZ2	C	0	32
+   FrameIndex	SHZ2	D	0	38
+   FrameIndex	SHZ2	G	0	39
+   FrameIndex	SHZ2	I	0	40
+   FrameIndex	SHZ2	J	0	41
+   FrameIndex	SHT2	K	0	42
+   FrameIndex	SHT2	L	0	43
+   FrameIndex	SHT2	M	0	44
+   FrameIndex	SHT2	N	0	45
+   FrameIndex	SHT2	O	0	45
+   FrameIndex	SHT2	P	0	44
+   FrameIndex	SHT2	Q	0	43
+   FrameIndex	SHT2	R	0	42
+   FrameIndex	SHT2	B	0	2
+   FrameIndex	SHT2	C	0	3
+   FrameIndex	SHT2	D	0	4
+   FrameIndex	SHT2	E	0	5
+   FrameIndex	SHT2	F	0	6
+   FrameIndex	SHT2	G	0	7
+   FrameIndex	SHT2	H	0	8
+   FrameIndex	SHT2	I	0	9
+   FrameIndex	SHT2	J	0	9
+   FrameIndex	SHZ3	L	0	22
+   FrameIndex	SHZ3	M	0	22
+   FrameIndex	SHZ3	N	0	22
+   FrameIndex	SHZ3	O	0	22
+   FrameIndex	SHZ3	P	0	22
+   FrameIndex	SHZ3	Q	0	33
+   FrameIndex	SHZ3	R	0	33
+   FrameIndex	SHZ3	S	0	33
+   FrameIndex	SHZ3	T	0	33
+   FrameIndex	SHZ3	U	0	33
+   FrameIndex	VSHZ	A	0	1
+   FrameIndex	SHT2	X	0	10
+   FrameIndex	SHT2	Y	0	11
+   FrameIndex	PLAY	A	0	0
+   FrameIndex	SHTZ	C	0	13
+   FrameIndex	SHTZ	D	0	14
+   FrameIndex	SHTZ	E	0	16
+   FrameIndex	SHTZ	F	0	18
+   FrameIndex	SHTZ	G	0	20
+   FrameIndex	SHTZ	H	0	21
+   FrameIndex	SHTZ	I	0	21
+   FrameIndex	SHTZ	J	0	21
+   FrameIndex	SHTZ	K	0	21
+   FrameIndex	SHTZ	L	0	22
+   FrameIndex	SHTZ	M	0	22
+   FrameIndex	SHTZ	[	0	22
+   FrameIndex	SHTZ	N	0	22
+   FrameIndex	SHTZ	O	0	22
+   FrameIndex	SHTZ	P	0	22
+   FrameIndex	SHTZ	Q	0	23
+   FrameIndex	SHTZ	S	0	24
+   FrameIndex	SHTZ	T	0	25
+   FrameIndex	SHTZ	U	0	26
+   FrameIndex	SHTZ	V	0	27
+   FrameIndex	SHTZ	W	0	27
+   FrameIndex	SHTZ	X	0	27
+   FrameIndex	SHTZ	Y	0	28
+   FrameIndex	SHTZ	Z	0	29
+   FrameIndex	V5HZ	A	0	30
+   FrameIndex	SHZ2	E	0	38
+   FrameIndex	SHZ2	F	0	38
+   FrameIndex	SHZ2	H	0	39
+   FrameIndex	SHZ3	G	0	12
+   FrameIndex	SHZ3	H	0	13
+   FrameIndex	SHZ3	I	0	16
+   FrameIndex	SHZ3	J	0	19
+   FrameIndex	SHZ3	K	0	21
+   FrameIndex	SHZ2	P	0	33
+   FrameIndex	SHZ2	Q	0	33
+   FrameIndex	SHZ2	R	0	33
+   FrameIndex	SHZ2	S	0	33
+   FrameIndex	SHZ2	T	0	33
+   FrameIndex	SHZ2	U	0	33
+   FrameIndex	SHZ2	V	0	34
+   FrameIndex	SHZ2	W	0	35
+   FrameIndex	SHZ2	X	0	36
+   FrameIndex	SHZ2	Y	0	37
+   FrameIndex	SHZ2	Z	0	27
+   FrameIndex	SHZ3	A	0	27
+   FrameIndex	SHZ3	B	0	27
+   FrameIndex	SHZ3	C	0	27
+   FrameIndex	SHZ3	D	0	28
+   FrameIndex	SHZ3	E	0	28
+   FrameIndex	SHZ3	F	0	21
+   // v4: frames BD22 shows that had no key (fill_tables.py SIBLING/READY)
+   FrameIndex	V5HZ	B	0	31
+   FrameIndex	V5HZ	C	0	32
+   FrameIndex	V5HZ	D	0	38
+   FrameIndex	V5HZ	E	0	38
+   FrameIndex	V5HZ	F	0	38
+   FrameIndex	V5HZ	G	0	39
+   FrameIndex	V5HZ	H	0	39
+   FrameIndex	V5HZ	I	0	40
+   FrameIndex	V5HZ	J	0	41
+   FrameIndex	VSHZ	B	0	12
+   FrameIndex	VSHZ	C	0	13
+   FrameIndex	VSHZ	D	0	14
+   FrameIndex	VSHZ	E	0	16
+   FrameIndex	VSHZ	F	0	18
+   FrameIndex	VSHZ	G	0	20
+   FrameIndex	VSHZ	H	0	21
+   FrameIndex	VSHZ	I	0	21
+   FrameIndex	VSHZ	J	0	21
+   FrameIndex	VSHZ	K	0	21
+   FrameIndex	VSHZ	L	0	22
+   FrameIndex	VSHZ	M	0	22
+   FrameIndex	VSHZ	N	0	22
+   FrameIndex	VSHZ	O	0	22
+   FrameIndex	VSHZ	P	0	22
+   FrameIndex	VSHZ	Q	0	23
+   FrameIndex	VSHZ	S	0	24
+   FrameIndex	VSHZ	T	0	25
+   FrameIndex	VSHZ	U	0	26
+   FrameIndex	VSHZ	V	0	27
+   FrameIndex	VSHZ	W	0	27
+   FrameIndex	VSHZ	X	0	27
+   FrameIndex	VSHZ	Y	0	28
+   FrameIndex	VSHZ	Z	0	29
+   FrameIndex	VSHZ	[	0	22
+   FrameIndex	VSSG	B	0	2
+   FrameIndex	VSSG	C	0	3
+   FrameIndex	VSSG	D	0	4
+   FrameIndex	VSSG	E	0	5
+   FrameIndex	VSSG	F	0	6
+   FrameIndex	VSSG	G	0	7
+   FrameIndex	VSSG	H	0	8
+   FrameIndex	VSSG	I	0	9
+   FrameIndex	VSSG	J	0	9
+}
+
+Model RSQ_Off_RSQGW_Riotgun
+{
+   Path "models/bd/ShotGun"
+   Model 0 "Shotgun.md3"
+   Skin 0 "Shotgun.png"
+   Scale -1.0 1.0 1.0
+   Offset -3.502 -4.257 0.0
+   ZOffset -8.973
+   AngleOffset 3.854
+   PitchOffset 3.363
+   RollOffset 10.974	// shotguns (lane B): gun to the FBX hand fitted from 1.92
+   Nointerpolation
+// Pose: restored 2026-10-10 -- each BD22 sprite frame takes the authored
+// BD21 pose for the same moment (tools/pose_tables.py, fill_tables.py).
+
+   FrameIndex	SHTN	A	0	4
+   FrameIndex	SHTN	B	0	10
+   FrameIndex	SHTN	C	0	11
+   FrameIndex	SHTN	D	0	12
+   FrameIndex	SHTN	E	0	13
+   FrameIndex	SHTN	F	0	14
+   FrameIndex	SHTN	G	0	14
+   FrameIndex	SHT6	A	0	15
+   FrameIndex	SHT6	B	0	16
+   FrameIndex	SHT6	C	0	16
+   FrameIndex	SHT6	D	0	17
+   FrameIndex	SHT6	E	0	17
+   FrameIndex	SHT6	F	0	17
+   FrameIndex	SHT6	G	0	16
+   FrameIndex	SHTN	H	0	15
+   FrameIndex	SHT6	H	0	15
+   FrameIndex	SHT6	I	0	14
+   FrameIndex	2HTN	A	0	4
+   FrameIndex	SHTA	R	0	4
+   FrameIndex	SHTA	S	0	4
+   FrameIndex	SHTA	T	0	3
+   FrameIndex	SHTA	U	0	3
+   FrameIndex	SHTA	V	0	3
+   FrameIndex	SHTC	A	0	4
+   FrameIndex	SHTA	M	0	0
+   FrameIndex	SHTA	L	0	2
+   FrameIndex	SHTA	K	0	3
+   FrameIndex	SHTN	I	0	16
+   FrameIndex	SHTN	J	0	16
+   FrameIndex	SHTN	K	0	17
+   FrameIndex	SHTN	L	0	18
+   FrameIndex	SHTN	M	0	18
+   FrameIndex	SHTN	N	0	18
+   FrameIndex	SHTN	P	0	19
+   FrameIndex	SHTN	Q	0	20
+   FrameIndex	SHTN	R	0	21
+   FrameIndex	SHTA	J	0	3
+   FrameIndex	SHT8	C	0	4
+   FrameIndex	SHTA	N	0	3
+   FrameIndex	SHTA	O	0	2
+   FrameIndex	SHTA	P	0	1
+   FrameIndex	SHTA	Q	0	0
+   FrameIndex	2HTA	A	0	4
+   FrameIndex	SHTA	A	0	4
+   FrameIndex	SHTA	B	0	5
+   FrameIndex	SHTA	C	0	6
+   FrameIndex	SHTA	D	0	7
+   FrameIndex	SHTA	E	0	8
+   FrameIndex	SHTA	W	0	9
+   FrameIndex	SHTN	W	0	23
+   FrameIndex	SHTN	T	0	21
+   FrameIndex	SHTN	S	0	14
+   FrameIndex	SHTA	F	0	9
+   FrameIndex	SHTA	G	0	9
+   FrameIndex	SHTA	H	0	9
+   FrameIndex	SHTA	I	0	9
+   FrameIndex	RIFF	A	0	4
+   FrameIndex	SHT8	D	0	5
+   FrameIndex	SHT8	E	0	6
+   FrameIndex	SHT8	F	0	8
+   FrameIndex	SHT8	G	0	26
+   FrameIndex	SHT8	H	0	27
+   FrameIndex	SHT8	I	0	28
+   FrameIndex	SHT8	J	0	29
+   FrameIndex	2HTN	E	0	13
+   FrameIndex	SHT8	A	0	4
+   FrameIndex	SHT8	B	0	4
+   FrameIndex	PLAY	A	0	4
+   FrameIndex	SHTN	U	0	21
+   FrameIndex	SHTN	V	0	22
+   FrameIndex	SHTN	X	0	24
+   FrameIndex	SHTN	Y	0	25
+   FrameIndex	SHTN	Z	0	25
+   FrameIndex	SHTN	[	0	21
+   FrameIndex	SHTN	]	0	21
+   FrameIndex	RIFG	A	0	4
+   // v4: frames BD22 shows that had no key (fill_tables.py SIBLING/READY)
+   FrameIndex	2HTA	B	0	5
+   FrameIndex	2HTA	C	0	6
+   FrameIndex	2HTA	D	0	7
+   FrameIndex	2HTA	E	0	8
+   FrameIndex	2HTA	F	0	9
+   FrameIndex	2HTA	G	0	9
+   FrameIndex	2HTA	H	0	9
+   FrameIndex	2HTA	I	0	9
+   FrameIndex	2HTA	W	0	9
+   FrameIndex	2HTN	B	0	10
+   FrameIndex	2HTN	C	0	11
+   FrameIndex	2HTN	D	0	12
+   FrameIndex	2HTN	F	0	14
+   FrameIndex	2HTN	G	0	14
+   FrameIndex	2HTN	H	0	15
+   FrameIndex	2HTN	I	0	16
+   FrameIndex	2HTN	J	0	16
+   FrameIndex	2HTN	K	0	17
+   FrameIndex	2HTN	L	0	18
+   FrameIndex	2HTN	M	0	18
+   FrameIndex	2HTN	N	0	18
+   FrameIndex	2HTN	P	0	19
+   FrameIndex	2HTN	Q	0	20
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+   Path "models/bd/Grenade"
+   Model 0 "nade.md3"
+   Skin 0 "nade.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	GRTH	A	0	3
+   FrameIndex	GRTH	B	0	4
+   FrameIndex	GRTH	C	0	5
+   FrameIndex	GRTH	D	0	6
+   FrameIndex	GRTH	E	0	7
+   FrameIndex	GRTH	F	0	8
+   FrameIndex	GRTH	G	0	9
+   FrameIndex	GRTH	H	0	10
+   FrameIndex	GRTH	I	0	11
+   FrameIndex	GRTH	J	0	12
+   FrameIndex	GRTH	K	0	13
+   FrameIndex	GRTH	L	0	14
+   FrameIndex	GRTH	M	0	15
+   FrameIndex	GRTH	N	0	15
+   FrameIndex	GRTH	O	0	15
+   FrameIndex	GRTH	P	0	15
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+   Path "models/bd/Boot"
+   Model 0 "Boot.md3"
+   Skin 0 "Boot.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	1ICK	A	0	10
+   FrameIndex	1ICK	B	0	11
+   FrameIndex	1ICK	C	0	12
+   FrameIndex	1ICK	D	0	13
+   FrameIndex	1ICK	E	0	14
+   FrameIndex	1ICK	F	0	15
+   FrameIndex	1ICK	G	0	16
+   FrameIndex	1ICK	H	0	17
+   FrameIndex	1ICK	I	0	18
+   FrameIndex	1ICK	J	0	19
+   FrameIndex	1ICK	K	0	20
+   FrameIndex	1ICK	L	0	21
+   FrameIndex	1ICK	M	0	22
+   FrameIndex	1ICK	N	0	23
+   FrameIndex	1ICK	O	0	24
+   FrameIndex	1ICK	P	0	25
+   FrameIndex	1ICK	Q	0	26
+   FrameIndex	1ICK	R	0	27
+   FrameIndex	1ICK	S	0	28
+   FrameIndex	1ICK	T	0	29
+   FrameIndex	1ICK	U	0	30
+   FrameIndex	1ICK	V	0	30
+   FrameIndex	1ICK	W	0	30
+   FrameIndex	1ICK	X	0	30
+   FrameIndex	1ICK	Y	0	30
+   FrameIndex	1ICK	Z	0	30
+   FrameIndex	1ICK	[	0	30
+   FrameIndex	1ICK	]	0	30
+   FrameIndex	1LID	A	0	14
+   FrameIndex	1LID	B	0	14
+   FrameIndex	1LID	C	0	14
+   FrameIndex	1LID	D	0	14
+   FrameIndex	1LID	E	0	14
+   FrameIndex	1LID	F	0	14
+   FrameIndex	1LID	G	0	14
+   FrameIndex	1LID	H	0	14
+   FrameIndex	1LID	I	0	14
+   FrameIndex	1LID	J	0	14
+   FrameIndex	1LID	K	0	14
+   FrameIndex	1LID	L	0	14
+   FrameIndex	1LID	M	0	14
+   FrameIndex	1LID	N	0	14
+   FrameIndex	1TOM	A	0	31
+   FrameIndex	2ICK	A	0	10
+   FrameIndex	2ICK	B	0	11
+   FrameIndex	2ICK	C	0	12
+   FrameIndex	2ICK	D	0	13
+   FrameIndex	2ICK	E	0	14
+   FrameIndex	2ICK	F	0	15
+   FrameIndex	2ICK	G	0	16
+   FrameIndex	2ICK	H	0	17
+   FrameIndex	2ICK	I	0	18
+   FrameIndex	2ICK	J	0	19
+   FrameIndex	2ICK	K	0	20
+   FrameIndex	2ICK	L	0	21
+   FrameIndex	2ICK	M	0	22
+   FrameIndex	2ICK	N	0	23
+   FrameIndex	2ICK	O	0	24
+   FrameIndex	2ICK	P	0	25
+   FrameIndex	2ICK	Q	0	26
+   FrameIndex	2ICK	R	0	27
+   FrameIndex	2ICK	S	0	28
+   FrameIndex	2ICK	T	0	29
+   FrameIndex	2ICK	U	0	30
+   FrameIndex	2ICK	V	0	30
+   FrameIndex	2ICK	W	0	30
+   FrameIndex	2ICK	X	0	30
+   FrameIndex	2ICK	Y	0	30
+   FrameIndex	2ICK	Z	0	30
+   FrameIndex	2ICK	[	0	30
+   FrameIndex	2ICK	]	0	30
+   FrameIndex	2LID	A	0	14
+   FrameIndex	2LID	B	0	14
+   FrameIndex	2LID	C	0	14
+   FrameIndex	2LID	D	0	14
+   FrameIndex	2LID	E	0	14
+   FrameIndex	2LID	F	0	14
+   FrameIndex	2LID	G	0	14
+   FrameIndex	2LID	H	0	14
+   FrameIndex	2LID	I	0	14
+   FrameIndex	2LID	J	0	14
+   FrameIndex	2LID	K	0	14
+   FrameIndex	2LID	L	0	14
+   FrameIndex	2LID	M	0	14
+   FrameIndex	2LID	N	0	14
+   FrameIndex	2TOM	A	0	31
+   FrameIndex	3ICK	A	0	10
+   FrameIndex	3ICK	B	0	11
+   FrameIndex	3ICK	C	0	12
+   FrameIndex	3ICK	D	0	13
+   FrameIndex	3ICK	E	0	14
+   FrameIndex	3ICK	F	0	15
+   FrameIndex	3ICK	G	0	16
+   FrameIndex	3ICK	H	0	17
+   FrameIndex	3ICK	I	0	18
+   FrameIndex	3ICK	J	0	19
+   FrameIndex	3ICK	K	0	20
+   FrameIndex	3ICK	L	0	21
+   FrameIndex	3ICK	M	0	22
+   FrameIndex	3ICK	N	0	23
+   FrameIndex	3ICK	O	0	24
+   FrameIndex	3ICK	P	0	25
+   FrameIndex	3ICK	Q	0	26
+   FrameIndex	3ICK	R	0	27
+   FrameIndex	3ICK	S	0	28
+   FrameIndex	3ICK	T	0	29
+   FrameIndex	3ICK	U	0	30
+   FrameIndex	3ICK	V	0	30
+   FrameIndex	3ICK	W	0	30
+   FrameIndex	3ICK	X	0	30
+   FrameIndex	3ICK	Y	0	30
+   FrameIndex	3ICK	Z	0	30
+   FrameIndex	3ICK	[	0	30
+   FrameIndex	3ICK	]	0	30
+   FrameIndex	3LID	A	0	14
+   FrameIndex	3LID	B	0	14
+   FrameIndex	3LID	C	0	14
+   FrameIndex	3LID	D	0	14
+   FrameIndex	3LID	E	0	14
+   FrameIndex	3LID	F	0	14
+   FrameIndex	3LID	G	0	14
+   FrameIndex	3LID	H	0	14
+   FrameIndex	3LID	I	0	14
+   FrameIndex	3LID	J	0	14
+   FrameIndex	3LID	K	0	14
+   FrameIndex	3LID	L	0	14
+   FrameIndex	3LID	M	0	14
+   FrameIndex	3LID	N	0	14
+   FrameIndex	3TOM	A	0	31
+   FrameIndex	KICK	A	0	10
+   FrameIndex	KICK	B	0	11
+   FrameIndex	KICK	C	0	12
+   FrameIndex	KICK	D	0	13
+   FrameIndex	KICK	E	0	14
+   FrameIndex	KICK	F	0	15
+   FrameIndex	KICK	G	0	16
+   FrameIndex	KICK	H	0	17
+   FrameIndex	KICK	I	0	18
+   FrameIndex	KICK	J	0	19
+   FrameIndex	KICK	K	0	20
+   FrameIndex	KICK	L	0	21
+   FrameIndex	KICK	M	0	22
+   FrameIndex	KICK	N	0	23
+   FrameIndex	KICK	O	0	24
+   FrameIndex	KICK	P	0	25
+   FrameIndex	KICK	Q	0	26
+   FrameIndex	KICK	R	0	27
+   FrameIndex	KICK	S	0	28
+   FrameIndex	KICK	T	0	29
+   FrameIndex	KICK	U	0	30
+   FrameIndex	KICK	V	0	30
+   FrameIndex	KICK	W	0	30
+   FrameIndex	KICK	X	0	30
+   FrameIndex	KICK	Y	0	30
+   FrameIndex	KICK	Z	0	30
+   FrameIndex	KICK	[	0	30
+   FrameIndex	KICK	]	0	30
+   FrameIndex	KIK1	A	0	0
+   FrameIndex	KIK1	B	0	1
+   FrameIndex	KIK1	C	0	2
+   FrameIndex	KIK1	D	0	3
+   FrameIndex	KIK1	E	0	4
+   FrameIndex	KIK2	A	0	5
+   FrameIndex	KIK2	B	0	6
+   FrameIndex	KIK2	C	0	7
+   FrameIndex	KIK2	D	0	8
+   FrameIndex	KIK2	E	0	9
+   FrameIndex	SLID	A	0	14
+   FrameIndex	SLID	B	0	14
+   FrameIndex	SLID	C	0	14
+   FrameIndex	SLID	D	0	14
+   FrameIndex	SLID	E	0	14
+   FrameIndex	SLID	F	0	14
+   FrameIndex	SLID	G	0	14
+   FrameIndex	SLID	H	0	14
+   FrameIndex	SLID	I	0	14
+   FrameIndex	SLID	J	0	14
+   FrameIndex	SLID	K	0	14
+   FrameIndex	SLID	L	0	14
+   FrameIndex	SLID	M	0	14
+   FrameIndex	SLID	N	0	14
+   FrameIndex	STOM	A	0	31
+   FrameIndex	STOM	B	0	32
+   FrameIndex	STOM	C	0	33
+   FrameIndex	STOM	D	0	34
+   FrameIndex	STOM	E	0	35
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "fist.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	FUCK	A	0	41
+   FrameIndex	FUCK	B	0	42
+   FrameIndex	FUCK	C	0	43
+   FrameIndex	FUCK	D	0	44
+   FrameIndex	FUCK	E	0	44
+   FrameIndex	FUCK	F	0	45
+   FrameIndex	FUCK	G	0	46
+   FrameIndex	FUCK	H	0	47
+   FrameIndex	FUCK	I	0	48
+   FrameIndex	FUCK	J	0	48
+   FrameIndex	FUCK	K	0	50
+   FrameIndex	FUCK	L	0	51
+   FrameIndex	FUCK	M	0	52
+   FrameIndex	FUCK	N	0	53
+   FrameIndex	FUCK	O	0	53
+   FrameIndex	IEHW	A	0	39
+   FrameIndex	IEHW	B	0	39
+   FrameIndex	IEHW	C	0	39
+   FrameIndex	IEHW	D	0	39
+   FrameIndex	IEHW	E	0	39
+   FrameIndex	IEHW	F	0	39
+   FrameIndex	IEHW	G	0	39
+   FrameIndex	IEHW	H	0	39
+   FrameIndex	IEHW	I	0	39
+   FrameIndex	IEHW	J	0	39
+   FrameIndex	IEHW	K	0	39
+   FrameIndex	IEHW	L	0	40
+   FrameIndex	IEHW	M	0	40
+   FrameIndex	IEHW	N	0	40
+   FrameIndex	IEHW	O	0	40
+   FrameIndex	IEHW	P	0	40
+   FrameIndex	IEHW	Q	0	40
+   FrameIndex	IEHW	R	0	40
+   FrameIndex	IEHW	S	0	40
+   FrameIndex	IEHW	T	0	40
+   FrameIndex	SALU	A	0	18
+   FrameIndex	SALU	B	0	19
+   FrameIndex	SALU	C	0	20
+   FrameIndex	SALU	D	0	21
+   FrameIndex	SALU	E	0	22
+   FrameIndex	VUCK	A	0	41
+   FrameIndex	VUCK	B	0	42
+   FrameIndex	VUCK	C	0	43
+   FrameIndex	VUCK	D	0	44
+   FrameIndex	VUCK	E	0	44
+   FrameIndex	VUCK	F	0	45
+   FrameIndex	VUCK	G	0	46
+   FrameIndex	VUCK	H	0	47
+   FrameIndex	VUCK	I	0	48
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "rsr_clear.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	1UNG	D	0	10
+   FrameIndex	1UNG	E	0	11
+   FrameIndex	1UNG	F	0	12
+   FrameIndex	1UNG	G	0	12
+   FrameIndex	1UNG	H	0	12
+   FrameIndex	1UNG	I	0	12
+   FrameIndex	1UNG	J	0	12
+   FrameIndex	4ONG	B	0	1
+   FrameIndex	4ONG	C	0	2
+   FrameIndex	4ONG	D	0	3
+   FrameIndex	4ONG	E	0	4
+   FrameIndex	4ONG	F	0	5
+   FrameIndex	4ONG	G	0	7
+   FrameIndex	4ONG	V	0	1
+   FrameIndex	4ONG	W	0	2
+   FrameIndex	4ONG	X	0	3
+   FrameIndex	4ONG	Y	0	4
+   FrameIndex	4ONG	Z	0	5
+   FrameIndex	4ONG	[	0	6
+   FrameIndex	4UNG	A	0	1
+   FrameIndex	4UNG	D	0	10
+   FrameIndex	4UNG	E	0	11
+   FrameIndex	4UNG	F	0	12
+   FrameIndex	4UNG	G	0	12
+   FrameIndex	4UNG	H	0	12
+   FrameIndex	4UNG	I	0	12
+   FrameIndex	4UNG	J	0	12
+   FrameIndex	PONG	B	0	1
+   FrameIndex	PONG	C	0	2
+   FrameIndex	PONG	D	0	3
+   FrameIndex	PONG	E	0	4
+   FrameIndex	PONG	F	0	5
+   FrameIndex	PONG	G	0	7
+   FrameIndex	PONG	V	0	1
+   FrameIndex	PONG	W	0	2
+   FrameIndex	PONG	X	0	3
+   FrameIndex	PONG	Y	0	4
+   FrameIndex	PONG	Z	0	5
+   FrameIndex	PONG	[	0	6
+   FrameIndex	PUNG	A	0	1
+   FrameIndex	PUNG	B	0	8
+   FrameIndex	PUNG	C	0	9
+}
+
+Model RSQ_Off_RSQGW_PlasRifle
+{
+   Path "models/bd/Grenade"
+   Model 0 "nade.md3"
+   Skin 0 "nade.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	GRTH	A	0	3
+   FrameIndex	GRTH	B	0	4
+   FrameIndex	GRTH	C	0	5
+   FrameIndex	GRTH	D	0	6
+   FrameIndex	GRTH	E	0	7
+   FrameIndex	GRTH	F	0	8
+   FrameIndex	GRTH	G	0	9
+   FrameIndex	GRTH	H	0	10
+   FrameIndex	GRTH	I	0	11
+   FrameIndex	GRTH	J	0	12
+   FrameIndex	GRTH	K	0	13
+   FrameIndex	GRTH	L	0	14
+   FrameIndex	GRTH	M	0	15
+   FrameIndex	GRTH	N	0	15
+   FrameIndex	GRTH	O	0	15
+   FrameIndex	GRTH	P	0	15
+}
+
+Model RSQ_Off_RSQGW_PlasRifle
+{
+   Path "models/bd/Boot"
+   Model 0 "Boot.md3"
+   Skin 0 "Boot.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	1ICK	A	0	10
+   FrameIndex	1ICK	B	0	11
+   FrameIndex	1ICK	C	0	12
+   FrameIndex	1ICK	D	0	13
+   FrameIndex	1ICK	E	0	14
+   FrameIndex	1ICK	F	0	15
+   FrameIndex	1ICK	G	0	16
+   FrameIndex	1ICK	H	0	17
+   FrameIndex	1ICK	I	0	18
+   FrameIndex	1ICK	J	0	19
+   FrameIndex	1ICK	K	0	20
+   FrameIndex	1ICK	L	0	21
+   FrameIndex	1ICK	M	0	22
+   FrameIndex	1ICK	N	0	23
+   FrameIndex	1ICK	O	0	24
+   FrameIndex	1ICK	P	0	25
+   FrameIndex	1ICK	Q	0	26
+   FrameIndex	1ICK	R	0	27
+   FrameIndex	1ICK	S	0	28
+   FrameIndex	1ICK	T	0	29
+   FrameIndex	1ICK	U	0	30
+   FrameIndex	1ICK	V	0	30
+   FrameIndex	1ICK	W	0	30
+   FrameIndex	1ICK	X	0	30
+   FrameIndex	1ICK	Y	0	30
+   FrameIndex	1ICK	Z	0	30
+   FrameIndex	1ICK	[	0	30
+   FrameIndex	1ICK	]	0	30
+   FrameIndex	1LID	A	0	14
+   FrameIndex	1LID	B	0	14
+   FrameIndex	1LID	C	0	14
+   FrameIndex	1LID	D	0	14
+   FrameIndex	1LID	E	0	14
+   FrameIndex	1LID	F	0	14
+   FrameIndex	1LID	G	0	14
+   FrameIndex	1LID	H	0	14
+   FrameIndex	1LID	I	0	14
+   FrameIndex	1LID	J	0	14
+   FrameIndex	1LID	K	0	14
+   FrameIndex	1LID	L	0	14
+   FrameIndex	1LID	M	0	14
+   FrameIndex	1LID	N	0	14
+   FrameIndex	1TOM	A	0	31
+   FrameIndex	2ICK	A	0	10
+   FrameIndex	2ICK	B	0	11
+   FrameIndex	2ICK	C	0	12
+   FrameIndex	2ICK	D	0	13
+   FrameIndex	2ICK	E	0	14
+   FrameIndex	2ICK	F	0	15
+   FrameIndex	2ICK	G	0	16
+   FrameIndex	2ICK	H	0	17
+   FrameIndex	2ICK	I	0	18
+   FrameIndex	2ICK	J	0	19
+   FrameIndex	2ICK	K	0	20
+   FrameIndex	2ICK	L	0	21
+   FrameIndex	2ICK	M	0	22
+   FrameIndex	2ICK	N	0	23
+   FrameIndex	2ICK	O	0	24
+   FrameIndex	2ICK	P	0	25
+   FrameIndex	2ICK	Q	0	26
+   FrameIndex	2ICK	R	0	27
+   FrameIndex	2ICK	S	0	28
+   FrameIndex	2ICK	T	0	29
+   FrameIndex	2ICK	U	0	30
+   FrameIndex	2ICK	V	0	30
+   FrameIndex	2ICK	W	0	30
+   FrameIndex	2ICK	X	0	30
+   FrameIndex	2ICK	Y	0	30
+   FrameIndex	2ICK	Z	0	30
+   FrameIndex	2ICK	[	0	30
+   FrameIndex	2ICK	]	0	30
+   FrameIndex	2LID	A	0	14
+   FrameIndex	2LID	B	0	14
+   FrameIndex	2LID	C	0	14
+   FrameIndex	2LID	D	0	14
+   FrameIndex	2LID	E	0	14
+   FrameIndex	2LID	F	0	14
+   FrameIndex	2LID	G	0	14
+   FrameIndex	2LID	H	0	14
+   FrameIndex	2LID	I	0	14
+   FrameIndex	2LID	J	0	14
+   FrameIndex	2LID	K	0	14
+   FrameIndex	2LID	L	0	14
+   FrameIndex	2LID	M	0	14
+   FrameIndex	2LID	N	0	14
+   FrameIndex	2TOM	A	0	31
+   FrameIndex	3ICK	A	0	10
+   FrameIndex	3ICK	B	0	11
+   FrameIndex	3ICK	C	0	12
+   FrameIndex	3ICK	D	0	13
+   FrameIndex	3ICK	E	0	14
+   FrameIndex	3ICK	F	0	15
+   FrameIndex	3ICK	G	0	16
+   FrameIndex	3ICK	H	0	17
+   FrameIndex	3ICK	I	0	18
+   FrameIndex	3ICK	J	0	19
+   FrameIndex	3ICK	K	0	20
+   FrameIndex	3ICK	L	0	21
+   FrameIndex	3ICK	M	0	22
+   FrameIndex	3ICK	N	0	23
+   FrameIndex	3ICK	O	0	24
+   FrameIndex	3ICK	P	0	25
+   FrameIndex	3ICK	Q	0	26
+   FrameIndex	3ICK	R	0	27
+   FrameIndex	3ICK	S	0	28
+   FrameIndex	3ICK	T	0	29
+   FrameIndex	3ICK	U	0	30
+   FrameIndex	3ICK	V	0	30
+   FrameIndex	3ICK	W	0	30
+   FrameIndex	3ICK	X	0	30
+   FrameIndex	3ICK	Y	0	30
+   FrameIndex	3ICK	Z	0	30
+   FrameIndex	3ICK	[	0	30
+   FrameIndex	3ICK	]	0	30
+   FrameIndex	3LID	A	0	14
+   FrameIndex	3LID	B	0	14
+   FrameIndex	3LID	C	0	14
+   FrameIndex	3LID	D	0	14
+   FrameIndex	3LID	E	0	14
+   FrameIndex	3LID	F	0	14
+   FrameIndex	3LID	G	0	14
+   FrameIndex	3LID	H	0	14
+   FrameIndex	3LID	I	0	14
+   FrameIndex	3LID	J	0	14
+   FrameIndex	3LID	K	0	14
+   FrameIndex	3LID	L	0	14
+   FrameIndex	3LID	M	0	14
+   FrameIndex	3LID	N	0	14
+   FrameIndex	3TOM	A	0	31
+   FrameIndex	KICK	A	0	10
+   FrameIndex	KICK	B	0	11
+   FrameIndex	KICK	C	0	12
+   FrameIndex	KICK	D	0	13
+   FrameIndex	KICK	E	0	14
+   FrameIndex	KICK	F	0	15
+   FrameIndex	KICK	G	0	16
+   FrameIndex	KICK	H	0	17
+   FrameIndex	KICK	I	0	18
+   FrameIndex	KICK	J	0	19
+   FrameIndex	KICK	K	0	20
+   FrameIndex	KICK	L	0	21
+   FrameIndex	KICK	M	0	22
+   FrameIndex	KICK	N	0	23
+   FrameIndex	KICK	O	0	24
+   FrameIndex	KICK	P	0	25
+   FrameIndex	KICK	Q	0	26
+   FrameIndex	KICK	R	0	27
+   FrameIndex	KICK	S	0	28
+   FrameIndex	KICK	T	0	29
+   FrameIndex	KICK	U	0	30
+   FrameIndex	KICK	V	0	30
+   FrameIndex	KICK	W	0	30
+   FrameIndex	KICK	X	0	30
+   FrameIndex	KICK	Y	0	30
+   FrameIndex	KICK	Z	0	30
+   FrameIndex	KICK	[	0	30
+   FrameIndex	KICK	]	0	30
+   FrameIndex	KIK1	A	0	0
+   FrameIndex	KIK1	B	0	1
+   FrameIndex	KIK1	C	0	2
+   FrameIndex	KIK1	D	0	3
+   FrameIndex	KIK1	E	0	4
+   FrameIndex	KIK2	A	0	5
+   FrameIndex	KIK2	B	0	6
+   FrameIndex	KIK2	C	0	7
+   FrameIndex	KIK2	D	0	8
+   FrameIndex	KIK2	E	0	9
+   FrameIndex	SLID	A	0	14
+   FrameIndex	SLID	B	0	14
+   FrameIndex	SLID	C	0	14
+   FrameIndex	SLID	D	0	14
+   FrameIndex	SLID	E	0	14
+   FrameIndex	SLID	F	0	14
+   FrameIndex	SLID	G	0	14
+   FrameIndex	SLID	H	0	14
+   FrameIndex	SLID	I	0	14
+   FrameIndex	SLID	J	0	14
+   FrameIndex	SLID	K	0	14
+   FrameIndex	SLID	L	0	14
+   FrameIndex	SLID	M	0	14
+   FrameIndex	SLID	N	0	14
+   FrameIndex	STOM	A	0	31
+   FrameIndex	STOM	B	0	32
+   FrameIndex	STOM	C	0	33
+   FrameIndex	STOM	D	0	34
+   FrameIndex	STOM	E	0	35
+}
+
+Model RSQ_Off_RSQGW_PlasRifle
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "fist.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	FUCK	A	0	41
+   FrameIndex	FUCK	B	0	42
+   FrameIndex	FUCK	C	0	43
+   FrameIndex	FUCK	D	0	44
+   FrameIndex	FUCK	E	0	44
+   FrameIndex	FUCK	F	0	45
+   FrameIndex	FUCK	G	0	46
+   FrameIndex	FUCK	H	0	47
+   FrameIndex	FUCK	I	0	48
+   FrameIndex	FUCK	J	0	48
+   FrameIndex	FUCK	K	0	50
+   FrameIndex	FUCK	L	0	51
+   FrameIndex	FUCK	M	0	52
+   FrameIndex	FUCK	N	0	53
+   FrameIndex	FUCK	O	0	53
+   FrameIndex	IEHW	A	0	39
+   FrameIndex	IEHW	B	0	39
+   FrameIndex	IEHW	C	0	39
+   FrameIndex	IEHW	D	0	39
+   FrameIndex	IEHW	E	0	39
+   FrameIndex	IEHW	F	0	39
+   FrameIndex	IEHW	G	0	39
+   FrameIndex	IEHW	H	0	39
+   FrameIndex	IEHW	I	0	39
+   FrameIndex	IEHW	J	0	39
+   FrameIndex	IEHW	K	0	39
+   FrameIndex	IEHW	L	0	40
+   FrameIndex	IEHW	M	0	40
+   FrameIndex	IEHW	N	0	40
+   FrameIndex	IEHW	O	0	40
+   FrameIndex	IEHW	P	0	40
+   FrameIndex	IEHW	Q	0	40
+   FrameIndex	IEHW	R	0	40
+   FrameIndex	IEHW	S	0	40
+   FrameIndex	IEHW	T	0	40
+   FrameIndex	SALU	A	0	18
+   FrameIndex	SALU	B	0	19
+   FrameIndex	SALU	C	0	20
+   FrameIndex	SALU	D	0	21
+   FrameIndex	SALU	E	0	22
+   FrameIndex	VUCK	A	0	41
+   FrameIndex	VUCK	B	0	42
+   FrameIndex	VUCK	C	0	43
+   FrameIndex	VUCK	D	0	44
+   FrameIndex	VUCK	E	0	44
+   FrameIndex	VUCK	F	0	45
+   FrameIndex	VUCK	G	0	46
+   FrameIndex	VUCK	H	0	47
+   FrameIndex	VUCK	I	0	48
+}
+
+Model RSQ_Off_RSQGW_PlasRifle
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "rsr_clear.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	1UNG	D	0	10
+   FrameIndex	1UNG	E	0	11
+   FrameIndex	1UNG	F	0	12
+   FrameIndex	1UNG	G	0	12
+   FrameIndex	1UNG	H	0	12
+   FrameIndex	1UNG	I	0	12
+   FrameIndex	1UNG	J	0	12
+   FrameIndex	4ONG	B	0	1
+   FrameIndex	4ONG	C	0	2
+   FrameIndex	4ONG	D	0	3
+   FrameIndex	4ONG	E	0	4
+   FrameIndex	4ONG	F	0	5
+   FrameIndex	4ONG	G	0	7
+   FrameIndex	4ONG	V	0	1
+   FrameIndex	4ONG	W	0	2
+   FrameIndex	4ONG	X	0	3
+   FrameIndex	4ONG	Y	0	4
+   FrameIndex	4ONG	Z	0	5
+   FrameIndex	4ONG	[	0	6
+   FrameIndex	4UNG	A	0	1
+   FrameIndex	4UNG	D	0	10
+   FrameIndex	4UNG	E	0	11
+   FrameIndex	4UNG	F	0	12
+   FrameIndex	4UNG	G	0	12
+   FrameIndex	4UNG	H	0	12
+   FrameIndex	4UNG	I	0	12
+   FrameIndex	4UNG	J	0	12
+   FrameIndex	PONG	B	0	1
+   FrameIndex	PONG	C	0	2
+   FrameIndex	PONG	D	0	3
+   FrameIndex	PONG	E	0	4
+   FrameIndex	PONG	F	0	5
+   FrameIndex	PONG	G	0	7
+   FrameIndex	PONG	V	0	1
+   FrameIndex	PONG	W	0	2
+   FrameIndex	PONG	X	0	3
+   FrameIndex	PONG	Y	0	4
+   FrameIndex	PONG	Z	0	5
+   FrameIndex	PONG	[	0	6
+   FrameIndex	PUNG	A	0	1
+   FrameIndex	PUNG	B	0	8
+   FrameIndex	PUNG	C	0	9
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+   Path "models/bd/Grenade"
+   Model 0 "nade.md3"
+   Skin 0 "nade.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	GRTH	A	0	3
+   FrameIndex	GRTH	B	0	4
+   FrameIndex	GRTH	C	0	5
+   FrameIndex	GRTH	D	0	6
+   FrameIndex	GRTH	E	0	7
+   FrameIndex	GRTH	F	0	8
+   FrameIndex	GRTH	G	0	9
+   FrameIndex	GRTH	H	0	10
+   FrameIndex	GRTH	I	0	11
+   FrameIndex	GRTH	J	0	12
+   FrameIndex	GRTH	K	0	13
+   FrameIndex	GRTH	L	0	14
+   FrameIndex	GRTH	M	0	15
+   FrameIndex	GRTH	N	0	15
+   FrameIndex	GRTH	O	0	15
+   FrameIndex	GRTH	P	0	15
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+   Path "models/bd/Boot"
+   Model 0 "Boot.md3"
+   Skin 0 "Boot.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	1ICK	A	0	10
+   FrameIndex	1ICK	B	0	11
+   FrameIndex	1ICK	C	0	12
+   FrameIndex	1ICK	D	0	13
+   FrameIndex	1ICK	E	0	14
+   FrameIndex	1ICK	F	0	15
+   FrameIndex	1ICK	G	0	16
+   FrameIndex	1ICK	H	0	17
+   FrameIndex	1ICK	I	0	18
+   FrameIndex	1ICK	J	0	19
+   FrameIndex	1ICK	K	0	20
+   FrameIndex	1ICK	L	0	21
+   FrameIndex	1ICK	M	0	22
+   FrameIndex	1ICK	N	0	23
+   FrameIndex	1ICK	O	0	24
+   FrameIndex	1ICK	P	0	25
+   FrameIndex	1ICK	Q	0	26
+   FrameIndex	1ICK	R	0	27
+   FrameIndex	1ICK	S	0	28
+   FrameIndex	1ICK	T	0	29
+   FrameIndex	1ICK	U	0	30
+   FrameIndex	1ICK	V	0	30
+   FrameIndex	1ICK	W	0	30
+   FrameIndex	1ICK	X	0	30
+   FrameIndex	1ICK	Y	0	30
+   FrameIndex	1ICK	Z	0	30
+   FrameIndex	1ICK	[	0	30
+   FrameIndex	1ICK	]	0	30
+   FrameIndex	1LID	A	0	14
+   FrameIndex	1LID	B	0	14
+   FrameIndex	1LID	C	0	14
+   FrameIndex	1LID	D	0	14
+   FrameIndex	1LID	E	0	14
+   FrameIndex	1LID	F	0	14
+   FrameIndex	1LID	G	0	14
+   FrameIndex	1LID	H	0	14
+   FrameIndex	1LID	I	0	14
+   FrameIndex	1LID	J	0	14
+   FrameIndex	1LID	K	0	14
+   FrameIndex	1LID	L	0	14
+   FrameIndex	1LID	M	0	14
+   FrameIndex	1LID	N	0	14
+   FrameIndex	1TOM	A	0	31
+   FrameIndex	2ICK	A	0	10
+   FrameIndex	2ICK	B	0	11
+   FrameIndex	2ICK	C	0	12
+   FrameIndex	2ICK	D	0	13
+   FrameIndex	2ICK	E	0	14
+   FrameIndex	2ICK	F	0	15
+   FrameIndex	2ICK	G	0	16
+   FrameIndex	2ICK	H	0	17
+   FrameIndex	2ICK	I	0	18
+   FrameIndex	2ICK	J	0	19
+   FrameIndex	2ICK	K	0	20
+   FrameIndex	2ICK	L	0	21
+   FrameIndex	2ICK	M	0	22
+   FrameIndex	2ICK	N	0	23
+   FrameIndex	2ICK	O	0	24
+   FrameIndex	2ICK	P	0	25
+   FrameIndex	2ICK	Q	0	26
+   FrameIndex	2ICK	R	0	27
+   FrameIndex	2ICK	S	0	28
+   FrameIndex	2ICK	T	0	29
+   FrameIndex	2ICK	U	0	30
+   FrameIndex	2ICK	V	0	30
+   FrameIndex	2ICK	W	0	30
+   FrameIndex	2ICK	X	0	30
+   FrameIndex	2ICK	Y	0	30
+   FrameIndex	2ICK	Z	0	30
+   FrameIndex	2ICK	[	0	30
+   FrameIndex	2ICK	]	0	30
+   FrameIndex	2LID	A	0	14
+   FrameIndex	2LID	B	0	14
+   FrameIndex	2LID	C	0	14
+   FrameIndex	2LID	D	0	14
+   FrameIndex	2LID	E	0	14
+   FrameIndex	2LID	F	0	14
+   FrameIndex	2LID	G	0	14
+   FrameIndex	2LID	H	0	14
+   FrameIndex	2LID	I	0	14
+   FrameIndex	2LID	J	0	14
+   FrameIndex	2LID	K	0	14
+   FrameIndex	2LID	L	0	14
+   FrameIndex	2LID	M	0	14
+   FrameIndex	2LID	N	0	14
+   FrameIndex	2TOM	A	0	31
+   FrameIndex	3ICK	A	0	10
+   FrameIndex	3ICK	B	0	11
+   FrameIndex	3ICK	C	0	12
+   FrameIndex	3ICK	D	0	13
+   FrameIndex	3ICK	E	0	14
+   FrameIndex	3ICK	F	0	15
+   FrameIndex	3ICK	G	0	16
+   FrameIndex	3ICK	H	0	17
+   FrameIndex	3ICK	I	0	18
+   FrameIndex	3ICK	J	0	19
+   FrameIndex	3ICK	K	0	20
+   FrameIndex	3ICK	L	0	21
+   FrameIndex	3ICK	M	0	22
+   FrameIndex	3ICK	N	0	23
+   FrameIndex	3ICK	O	0	24
+   FrameIndex	3ICK	P	0	25
+   FrameIndex	3ICK	Q	0	26
+   FrameIndex	3ICK	R	0	27
+   FrameIndex	3ICK	S	0	28
+   FrameIndex	3ICK	T	0	29
+   FrameIndex	3ICK	U	0	30
+   FrameIndex	3ICK	V	0	30
+   FrameIndex	3ICK	W	0	30
+   FrameIndex	3ICK	X	0	30
+   FrameIndex	3ICK	Y	0	30
+   FrameIndex	3ICK	Z	0	30
+   FrameIndex	3ICK	[	0	30
+   FrameIndex	3ICK	]	0	30
+   FrameIndex	3LID	A	0	14
+   FrameIndex	3LID	B	0	14
+   FrameIndex	3LID	C	0	14
+   FrameIndex	3LID	D	0	14
+   FrameIndex	3LID	E	0	14
+   FrameIndex	3LID	F	0	14
+   FrameIndex	3LID	G	0	14
+   FrameIndex	3LID	H	0	14
+   FrameIndex	3LID	I	0	14
+   FrameIndex	3LID	J	0	14
+   FrameIndex	3LID	K	0	14
+   FrameIndex	3LID	L	0	14
+   FrameIndex	3LID	M	0	14
+   FrameIndex	3LID	N	0	14
+   FrameIndex	3TOM	A	0	31
+   FrameIndex	KICK	A	0	10
+   FrameIndex	KICK	B	0	11
+   FrameIndex	KICK	C	0	12
+   FrameIndex	KICK	D	0	13
+   FrameIndex	KICK	E	0	14
+   FrameIndex	KICK	F	0	15
+   FrameIndex	KICK	G	0	16
+   FrameIndex	KICK	H	0	17
+   FrameIndex	KICK	I	0	18
+   FrameIndex	KICK	J	0	19
+   FrameIndex	KICK	K	0	20
+   FrameIndex	KICK	L	0	21
+   FrameIndex	KICK	M	0	22
+   FrameIndex	KICK	N	0	23
+   FrameIndex	KICK	O	0	24
+   FrameIndex	KICK	P	0	25
+   FrameIndex	KICK	Q	0	26
+   FrameIndex	KICK	R	0	27
+   FrameIndex	KICK	S	0	28
+   FrameIndex	KICK	T	0	29
+   FrameIndex	KICK	U	0	30
+   FrameIndex	KICK	V	0	30
+   FrameIndex	KICK	W	0	30
+   FrameIndex	KICK	X	0	30
+   FrameIndex	KICK	Y	0	30
+   FrameIndex	KICK	Z	0	30
+   FrameIndex	KICK	[	0	30
+   FrameIndex	KICK	]	0	30
+   FrameIndex	KIK1	A	0	0
+   FrameIndex	KIK1	B	0	1
+   FrameIndex	KIK1	C	0	2
+   FrameIndex	KIK1	D	0	3
+   FrameIndex	KIK1	E	0	4
+   FrameIndex	KIK2	A	0	5
+   FrameIndex	KIK2	B	0	6
+   FrameIndex	KIK2	C	0	7
+   FrameIndex	KIK2	D	0	8
+   FrameIndex	KIK2	E	0	9
+   FrameIndex	SLID	A	0	14
+   FrameIndex	SLID	B	0	14
+   FrameIndex	SLID	C	0	14
+   FrameIndex	SLID	D	0	14
+   FrameIndex	SLID	E	0	14
+   FrameIndex	SLID	F	0	14
+   FrameIndex	SLID	G	0	14
+   FrameIndex	SLID	H	0	14
+   FrameIndex	SLID	I	0	14
+   FrameIndex	SLID	J	0	14
+   FrameIndex	SLID	K	0	14
+   FrameIndex	SLID	L	0	14
+   FrameIndex	SLID	M	0	14
+   FrameIndex	SLID	N	0	14
+   FrameIndex	STOM	A	0	31
+   FrameIndex	STOM	B	0	32
+   FrameIndex	STOM	C	0	33
+   FrameIndex	STOM	D	0	34
+   FrameIndex	STOM	E	0	35
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "fist.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	FUCK	A	0	41
+   FrameIndex	FUCK	B	0	42
+   FrameIndex	FUCK	C	0	43
+   FrameIndex	FUCK	D	0	44
+   FrameIndex	FUCK	E	0	44
+   FrameIndex	FUCK	F	0	45
+   FrameIndex	FUCK	G	0	46
+   FrameIndex	FUCK	H	0	47
+   FrameIndex	FUCK	I	0	48
+   FrameIndex	FUCK	J	0	48
+   FrameIndex	FUCK	K	0	50
+   FrameIndex	FUCK	L	0	51
+   FrameIndex	FUCK	M	0	52
+   FrameIndex	FUCK	N	0	53
+   FrameIndex	FUCK	O	0	53
+   FrameIndex	IEHW	A	0	39
+   FrameIndex	IEHW	B	0	39
+   FrameIndex	IEHW	C	0	39
+   FrameIndex	IEHW	D	0	39
+   FrameIndex	IEHW	E	0	39
+   FrameIndex	IEHW	F	0	39
+   FrameIndex	IEHW	G	0	39
+   FrameIndex	IEHW	H	0	39
+   FrameIndex	IEHW	I	0	39
+   FrameIndex	IEHW	J	0	39
+   FrameIndex	IEHW	K	0	39
+   FrameIndex	IEHW	L	0	40
+   FrameIndex	IEHW	M	0	40
+   FrameIndex	IEHW	N	0	40
+   FrameIndex	IEHW	O	0	40
+   FrameIndex	IEHW	P	0	40
+   FrameIndex	IEHW	Q	0	40
+   FrameIndex	IEHW	R	0	40
+   FrameIndex	IEHW	S	0	40
+   FrameIndex	IEHW	T	0	40
+   FrameIndex	SALU	A	0	18
+   FrameIndex	SALU	B	0	19
+   FrameIndex	SALU	C	0	20
+   FrameIndex	SALU	D	0	21
+   FrameIndex	SALU	E	0	22
+   FrameIndex	VUCK	A	0	41
+   FrameIndex	VUCK	B	0	42
+   FrameIndex	VUCK	C	0	43
+   FrameIndex	VUCK	D	0	44
+   FrameIndex	VUCK	E	0	44
+   FrameIndex	VUCK	F	0	45
+   FrameIndex	VUCK	G	0	46
+   FrameIndex	VUCK	H	0	47
+   FrameIndex	VUCK	I	0	48
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "rsr_clear.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	1UNG	D	0	10
+   FrameIndex	1UNG	E	0	11
+   FrameIndex	1UNG	F	0	12
+   FrameIndex	1UNG	G	0	12
+   FrameIndex	1UNG	H	0	12
+   FrameIndex	1UNG	I	0	12
+   FrameIndex	1UNG	J	0	12
+   FrameIndex	4ONG	B	0	1
+   FrameIndex	4ONG	C	0	2
+   FrameIndex	4ONG	D	0	3
+   FrameIndex	4ONG	E	0	4
+   FrameIndex	4ONG	F	0	5
+   FrameIndex	4ONG	G	0	7
+   FrameIndex	4ONG	V	0	1
+   FrameIndex	4ONG	W	0	2
+   FrameIndex	4ONG	X	0	3
+   FrameIndex	4ONG	Y	0	4
+   FrameIndex	4ONG	Z	0	5
+   FrameIndex	4ONG	[	0	6
+   FrameIndex	4UNG	A	0	1
+   FrameIndex	4UNG	D	0	10
+   FrameIndex	4UNG	E	0	11
+   FrameIndex	4UNG	F	0	12
+   FrameIndex	4UNG	G	0	12
+   FrameIndex	4UNG	H	0	12
+   FrameIndex	4UNG	I	0	12
+   FrameIndex	4UNG	J	0	12
+   FrameIndex	PONG	B	0	1
+   FrameIndex	PONG	C	0	2
+   FrameIndex	PONG	D	0	3
+   FrameIndex	PONG	E	0	4
+   FrameIndex	PONG	F	0	5
+   FrameIndex	PONG	G	0	7
+   FrameIndex	PONG	V	0	1
+   FrameIndex	PONG	W	0	2
+   FrameIndex	PONG	X	0	3
+   FrameIndex	PONG	Y	0	4
+   FrameIndex	PONG	Z	0	5
+   FrameIndex	PONG	[	0	6
+   FrameIndex	PUNG	A	0	1
+   FrameIndex	PUNG	B	0	8
+   FrameIndex	PUNG	C	0	9
+}
+
+Model RSQ_Off_RSQGW_DoubleSG
+{
+   Path "models/bd/Grenade"
+   Model 0 "nade.md3"
+   Skin 0 "nade.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	GRTH	A	0	3
+   FrameIndex	GRTH	B	0	4
+   FrameIndex	GRTH	C	0	5
+   FrameIndex	GRTH	D	0	6
+   FrameIndex	GRTH	E	0	7
+   FrameIndex	GRTH	F	0	8
+   FrameIndex	GRTH	G	0	9
+   FrameIndex	GRTH	H	0	10
+   FrameIndex	GRTH	I	0	11
+   FrameIndex	GRTH	J	0	12
+   FrameIndex	GRTH	K	0	13
+   FrameIndex	GRTH	L	0	14
+   FrameIndex	GRTH	M	0	15
+   FrameIndex	GRTH	N	0	15
+   FrameIndex	GRTH	O	0	15
+   FrameIndex	GRTH	P	0	15
+}
+
+Model RSQ_Off_RSQGW_DoubleSG
+{
+   Path "models/bd/Boot"
+   Model 0 "Boot.md3"
+   Skin 0 "Boot.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	1ICK	A	0	10
+   FrameIndex	1ICK	B	0	11
+   FrameIndex	1ICK	C	0	12
+   FrameIndex	1ICK	D	0	13
+   FrameIndex	1ICK	E	0	14
+   FrameIndex	1ICK	F	0	15
+   FrameIndex	1ICK	G	0	16
+   FrameIndex	1ICK	H	0	17
+   FrameIndex	1ICK	I	0	18
+   FrameIndex	1ICK	J	0	19
+   FrameIndex	1ICK	K	0	20
+   FrameIndex	1ICK	L	0	21
+   FrameIndex	1ICK	M	0	22
+   FrameIndex	1ICK	N	0	23
+   FrameIndex	1ICK	O	0	24
+   FrameIndex	1ICK	P	0	25
+   FrameIndex	1ICK	Q	0	26
+   FrameIndex	1ICK	R	0	27
+   FrameIndex	1ICK	S	0	28
+   FrameIndex	1ICK	T	0	29
+   FrameIndex	1ICK	U	0	30
+   FrameIndex	1ICK	V	0	30
+   FrameIndex	1ICK	W	0	30
+   FrameIndex	1ICK	X	0	30
+   FrameIndex	1ICK	Y	0	30
+   FrameIndex	1ICK	Z	0	30
+   FrameIndex	1ICK	[	0	30
+   FrameIndex	1ICK	]	0	30
+   FrameIndex	1LID	A	0	14
+   FrameIndex	1LID	B	0	14
+   FrameIndex	1LID	C	0	14
+   FrameIndex	1LID	D	0	14
+   FrameIndex	1LID	E	0	14
+   FrameIndex	1LID	F	0	14
+   FrameIndex	1LID	G	0	14
+   FrameIndex	1LID	H	0	14
+   FrameIndex	1LID	I	0	14
+   FrameIndex	1LID	J	0	14
+   FrameIndex	1LID	K	0	14
+   FrameIndex	1LID	L	0	14
+   FrameIndex	1LID	M	0	14
+   FrameIndex	1LID	N	0	14
+   FrameIndex	1TOM	A	0	31
+   FrameIndex	2ICK	A	0	10
+   FrameIndex	2ICK	B	0	11
+   FrameIndex	2ICK	C	0	12
+   FrameIndex	2ICK	D	0	13
+   FrameIndex	2ICK	E	0	14
+   FrameIndex	2ICK	F	0	15
+   FrameIndex	2ICK	G	0	16
+   FrameIndex	2ICK	H	0	17
+   FrameIndex	2ICK	I	0	18
+   FrameIndex	2ICK	J	0	19
+   FrameIndex	2ICK	K	0	20
+   FrameIndex	2ICK	L	0	21
+   FrameIndex	2ICK	M	0	22
+   FrameIndex	2ICK	N	0	23
+   FrameIndex	2ICK	O	0	24
+   FrameIndex	2ICK	P	0	25
+   FrameIndex	2ICK	Q	0	26
+   FrameIndex	2ICK	R	0	27
+   FrameIndex	2ICK	S	0	28
+   FrameIndex	2ICK	T	0	29
+   FrameIndex	2ICK	U	0	30
+   FrameIndex	2ICK	V	0	30
+   FrameIndex	2ICK	W	0	30
+   FrameIndex	2ICK	X	0	30
+   FrameIndex	2ICK	Y	0	30
+   FrameIndex	2ICK	Z	0	30
+   FrameIndex	2ICK	[	0	30
+   FrameIndex	2ICK	]	0	30
+   FrameIndex	2LID	A	0	14
+   FrameIndex	2LID	B	0	14
+   FrameIndex	2LID	C	0	14
+   FrameIndex	2LID	D	0	14
+   FrameIndex	2LID	E	0	14
+   FrameIndex	2LID	F	0	14
+   FrameIndex	2LID	G	0	14
+   FrameIndex	2LID	H	0	14
+   FrameIndex	2LID	I	0	14
+   FrameIndex	2LID	J	0	14
+   FrameIndex	2LID	K	0	14
+   FrameIndex	2LID	L	0	14
+   FrameIndex	2LID	M	0	14
+   FrameIndex	2LID	N	0	14
+   FrameIndex	2TOM	A	0	31
+   FrameIndex	3ICK	A	0	10
+   FrameIndex	3ICK	B	0	11
+   FrameIndex	3ICK	C	0	12
+   FrameIndex	3ICK	D	0	13
+   FrameIndex	3ICK	E	0	14
+   FrameIndex	3ICK	F	0	15
+   FrameIndex	3ICK	G	0	16
+   FrameIndex	3ICK	H	0	17
+   FrameIndex	3ICK	I	0	18
+   FrameIndex	3ICK	J	0	19
+   FrameIndex	3ICK	K	0	20
+   FrameIndex	3ICK	L	0	21
+   FrameIndex	3ICK	M	0	22
+   FrameIndex	3ICK	N	0	23
+   FrameIndex	3ICK	O	0	24
+   FrameIndex	3ICK	P	0	25
+   FrameIndex	3ICK	Q	0	26
+   FrameIndex	3ICK	R	0	27
+   FrameIndex	3ICK	S	0	28
+   FrameIndex	3ICK	T	0	29
+   FrameIndex	3ICK	U	0	30
+   FrameIndex	3ICK	V	0	30
+   FrameIndex	3ICK	W	0	30
+   FrameIndex	3ICK	X	0	30
+   FrameIndex	3ICK	Y	0	30
+   FrameIndex	3ICK	Z	0	30
+   FrameIndex	3ICK	[	0	30
+   FrameIndex	3ICK	]	0	30
+   FrameIndex	3LID	A	0	14
+   FrameIndex	3LID	B	0	14
+   FrameIndex	3LID	C	0	14
+   FrameIndex	3LID	D	0	14
+   FrameIndex	3LID	E	0	14
+   FrameIndex	3LID	F	0	14
+   FrameIndex	3LID	G	0	14
+   FrameIndex	3LID	H	0	14
+   FrameIndex	3LID	I	0	14
+   FrameIndex	3LID	J	0	14
+   FrameIndex	3LID	K	0	14
+   FrameIndex	3LID	L	0	14
+   FrameIndex	3LID	M	0	14
+   FrameIndex	3LID	N	0	14
+   FrameIndex	3TOM	A	0	31
+   FrameIndex	KICK	A	0	10
+   FrameIndex	KICK	B	0	11
+   FrameIndex	KICK	C	0	12
+   FrameIndex	KICK	D	0	13
+   FrameIndex	KICK	E	0	14
+   FrameIndex	KICK	F	0	15
+   FrameIndex	KICK	G	0	16
+   FrameIndex	KICK	H	0	17
+   FrameIndex	KICK	I	0	18
+   FrameIndex	KICK	J	0	19
+   FrameIndex	KICK	K	0	20
+   FrameIndex	KICK	L	0	21
+   FrameIndex	KICK	M	0	22
+   FrameIndex	KICK	N	0	23
+   FrameIndex	KICK	O	0	24
+   FrameIndex	KICK	P	0	25
+   FrameIndex	KICK	Q	0	26
+   FrameIndex	KICK	R	0	27
+   FrameIndex	KICK	S	0	28
+   FrameIndex	KICK	T	0	29
+   FrameIndex	KICK	U	0	30
+   FrameIndex	KICK	V	0	30
+   FrameIndex	KICK	W	0	30
+   FrameIndex	KICK	X	0	30
+   FrameIndex	KICK	Y	0	30
+   FrameIndex	KICK	Z	0	30
+   FrameIndex	KICK	[	0	30
+   FrameIndex	KICK	]	0	30
+   FrameIndex	KIK1	A	0	0
+   FrameIndex	KIK1	B	0	1
+   FrameIndex	KIK1	C	0	2
+   FrameIndex	KIK1	D	0	3
+   FrameIndex	KIK1	E	0	4
+   FrameIndex	KIK2	A	0	5
+   FrameIndex	KIK2	B	0	6
+   FrameIndex	KIK2	C	0	7
+   FrameIndex	KIK2	D	0	8
+   FrameIndex	KIK2	E	0	9
+   FrameIndex	SLID	A	0	14
+   FrameIndex	SLID	B	0	14
+   FrameIndex	SLID	C	0	14
+   FrameIndex	SLID	D	0	14
+   FrameIndex	SLID	E	0	14
+   FrameIndex	SLID	F	0	14
+   FrameIndex	SLID	G	0	14
+   FrameIndex	SLID	H	0	14
+   FrameIndex	SLID	I	0	14
+   FrameIndex	SLID	J	0	14
+   FrameIndex	SLID	K	0	14
+   FrameIndex	SLID	L	0	14
+   FrameIndex	SLID	M	0	14
+   FrameIndex	SLID	N	0	14
+   FrameIndex	STOM	A	0	31
+   FrameIndex	STOM	B	0	32
+   FrameIndex	STOM	C	0	33
+   FrameIndex	STOM	D	0	34
+   FrameIndex	STOM	E	0	35
+}
+
+Model RSQ_Off_RSQGW_DoubleSG
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "fist.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	FUCK	A	0	41
+   FrameIndex	FUCK	B	0	42
+   FrameIndex	FUCK	C	0	43
+   FrameIndex	FUCK	D	0	44
+   FrameIndex	FUCK	E	0	44
+   FrameIndex	FUCK	F	0	45
+   FrameIndex	FUCK	G	0	46
+   FrameIndex	FUCK	H	0	47
+   FrameIndex	FUCK	I	0	48
+   FrameIndex	FUCK	J	0	48
+   FrameIndex	FUCK	K	0	50
+   FrameIndex	FUCK	L	0	51
+   FrameIndex	FUCK	M	0	52
+   FrameIndex	FUCK	N	0	53
+   FrameIndex	FUCK	O	0	53
+   FrameIndex	IEHW	A	0	39
+   FrameIndex	IEHW	B	0	39
+   FrameIndex	IEHW	C	0	39
+   FrameIndex	IEHW	D	0	39
+   FrameIndex	IEHW	E	0	39
+   FrameIndex	IEHW	F	0	39
+   FrameIndex	IEHW	G	0	39
+   FrameIndex	IEHW	H	0	39
+   FrameIndex	IEHW	I	0	39
+   FrameIndex	IEHW	J	0	39
+   FrameIndex	IEHW	K	0	39
+   FrameIndex	IEHW	L	0	40
+   FrameIndex	IEHW	M	0	40
+   FrameIndex	IEHW	N	0	40
+   FrameIndex	IEHW	O	0	40
+   FrameIndex	IEHW	P	0	40
+   FrameIndex	IEHW	Q	0	40
+   FrameIndex	IEHW	R	0	40
+   FrameIndex	IEHW	S	0	40
+   FrameIndex	IEHW	T	0	40
+   FrameIndex	SALU	A	0	18
+   FrameIndex	SALU	B	0	19
+   FrameIndex	SALU	C	0	20
+   FrameIndex	SALU	D	0	21
+   FrameIndex	SALU	E	0	22
+   FrameIndex	VUCK	A	0	41
+   FrameIndex	VUCK	B	0	42
+   FrameIndex	VUCK	C	0	43
+   FrameIndex	VUCK	D	0	44
+   FrameIndex	VUCK	E	0	44
+   FrameIndex	VUCK	F	0	45
+   FrameIndex	VUCK	G	0	46
+   FrameIndex	VUCK	H	0	47
+   FrameIndex	VUCK	I	0	48
+}
+
+Model RSQ_Off_RSQGW_DoubleSG
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "rsr_clear.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	1UNG	D	0	10
+   FrameIndex	1UNG	E	0	11
+   FrameIndex	1UNG	F	0	12
+   FrameIndex	1UNG	G	0	12
+   FrameIndex	1UNG	H	0	12
+   FrameIndex	1UNG	I	0	12
+   FrameIndex	1UNG	J	0	12
+   FrameIndex	4ONG	B	0	1
+   FrameIndex	4ONG	C	0	2
+   FrameIndex	4ONG	D	0	3
+   FrameIndex	4ONG	E	0	4
+   FrameIndex	4ONG	F	0	5
+   FrameIndex	4ONG	G	0	7
+   FrameIndex	4ONG	V	0	1
+   FrameIndex	4ONG	W	0	2
+   FrameIndex	4ONG	X	0	3
+   FrameIndex	4ONG	Y	0	4
+   FrameIndex	4ONG	Z	0	5
+   FrameIndex	4ONG	[	0	6
+   FrameIndex	4UNG	A	0	1
+   FrameIndex	4UNG	D	0	10
+   FrameIndex	4UNG	E	0	11
+   FrameIndex	4UNG	F	0	12
+   FrameIndex	4UNG	G	0	12
+   FrameIndex	4UNG	H	0	12
+   FrameIndex	4UNG	I	0	12
+   FrameIndex	4UNG	J	0	12
+   FrameIndex	PONG	B	0	1
+   FrameIndex	PONG	C	0	2
+   FrameIndex	PONG	D	0	3
+   FrameIndex	PONG	E	0	4
+   FrameIndex	PONG	F	0	5
+   FrameIndex	PONG	G	0	7
+   FrameIndex	PONG	V	0	1
+   FrameIndex	PONG	W	0	2
+   FrameIndex	PONG	X	0	3
+   FrameIndex	PONG	Y	0	4
+   FrameIndex	PONG	Z	0	5
+   FrameIndex	PONG	[	0	6
+   FrameIndex	PUNG	A	0	1
+   FrameIndex	PUNG	B	0	8
+   FrameIndex	PUNG	C	0	9
+}
+
+Model RSQ_Off_RSQGW_Riotgun
+{
+   Path "models/bd/Grenade"
+   Model 0 "nade.md3"
+   Skin 0 "nade.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	GRTH	A	0	3
+   FrameIndex	GRTH	B	0	4
+   FrameIndex	GRTH	C	0	5
+   FrameIndex	GRTH	D	0	6
+   FrameIndex	GRTH	E	0	7
+   FrameIndex	GRTH	F	0	8
+   FrameIndex	GRTH	G	0	9
+   FrameIndex	GRTH	H	0	10
+   FrameIndex	GRTH	I	0	11
+   FrameIndex	GRTH	J	0	12
+   FrameIndex	GRTH	K	0	13
+   FrameIndex	GRTH	L	0	14
+   FrameIndex	GRTH	M	0	15
+   FrameIndex	GRTH	N	0	15
+   FrameIndex	GRTH	O	0	15
+   FrameIndex	GRTH	P	0	15
+}
+
+Model RSQ_Off_RSQGW_Riotgun
+{
+   Path "models/bd/Boot"
+   Model 0 "Boot.md3"
+   Skin 0 "Boot.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   NoInterpolation
+   ZOffset -5
+
+   FrameIndex	1ICK	A	0	10
+   FrameIndex	1ICK	B	0	11
+   FrameIndex	1ICK	C	0	12
+   FrameIndex	1ICK	D	0	13
+   FrameIndex	1ICK	E	0	14
+   FrameIndex	1ICK	F	0	15
+   FrameIndex	1ICK	G	0	16
+   FrameIndex	1ICK	H	0	17
+   FrameIndex	1ICK	I	0	18
+   FrameIndex	1ICK	J	0	19
+   FrameIndex	1ICK	K	0	20
+   FrameIndex	1ICK	L	0	21
+   FrameIndex	1ICK	M	0	22
+   FrameIndex	1ICK	N	0	23
+   FrameIndex	1ICK	O	0	24
+   FrameIndex	1ICK	P	0	25
+   FrameIndex	1ICK	Q	0	26
+   FrameIndex	1ICK	R	0	27
+   FrameIndex	1ICK	S	0	28
+   FrameIndex	1ICK	T	0	29
+   FrameIndex	1ICK	U	0	30
+   FrameIndex	1ICK	V	0	30
+   FrameIndex	1ICK	W	0	30
+   FrameIndex	1ICK	X	0	30
+   FrameIndex	1ICK	Y	0	30
+   FrameIndex	1ICK	Z	0	30
+   FrameIndex	1ICK	[	0	30
+   FrameIndex	1ICK	]	0	30
+   FrameIndex	1LID	A	0	14
+   FrameIndex	1LID	B	0	14
+   FrameIndex	1LID	C	0	14
+   FrameIndex	1LID	D	0	14
+   FrameIndex	1LID	E	0	14
+   FrameIndex	1LID	F	0	14
+   FrameIndex	1LID	G	0	14
+   FrameIndex	1LID	H	0	14
+   FrameIndex	1LID	I	0	14
+   FrameIndex	1LID	J	0	14
+   FrameIndex	1LID	K	0	14
+   FrameIndex	1LID	L	0	14
+   FrameIndex	1LID	M	0	14
+   FrameIndex	1LID	N	0	14
+   FrameIndex	1TOM	A	0	31
+   FrameIndex	2ICK	A	0	10
+   FrameIndex	2ICK	B	0	11
+   FrameIndex	2ICK	C	0	12
+   FrameIndex	2ICK	D	0	13
+   FrameIndex	2ICK	E	0	14
+   FrameIndex	2ICK	F	0	15
+   FrameIndex	2ICK	G	0	16
+   FrameIndex	2ICK	H	0	17
+   FrameIndex	2ICK	I	0	18
+   FrameIndex	2ICK	J	0	19
+   FrameIndex	2ICK	K	0	20
+   FrameIndex	2ICK	L	0	21
+   FrameIndex	2ICK	M	0	22
+   FrameIndex	2ICK	N	0	23
+   FrameIndex	2ICK	O	0	24
+   FrameIndex	2ICK	P	0	25
+   FrameIndex	2ICK	Q	0	26
+   FrameIndex	2ICK	R	0	27
+   FrameIndex	2ICK	S	0	28
+   FrameIndex	2ICK	T	0	29
+   FrameIndex	2ICK	U	0	30
+   FrameIndex	2ICK	V	0	30
+   FrameIndex	2ICK	W	0	30
+   FrameIndex	2ICK	X	0	30
+   FrameIndex	2ICK	Y	0	30
+   FrameIndex	2ICK	Z	0	30
+   FrameIndex	2ICK	[	0	30
+   FrameIndex	2ICK	]	0	30
+   FrameIndex	2LID	A	0	14
+   FrameIndex	2LID	B	0	14
+   FrameIndex	2LID	C	0	14
+   FrameIndex	2LID	D	0	14
+   FrameIndex	2LID	E	0	14
+   FrameIndex	2LID	F	0	14
+   FrameIndex	2LID	G	0	14
+   FrameIndex	2LID	H	0	14
+   FrameIndex	2LID	I	0	14
+   FrameIndex	2LID	J	0	14
+   FrameIndex	2LID	K	0	14
+   FrameIndex	2LID	L	0	14
+   FrameIndex	2LID	M	0	14
+   FrameIndex	2LID	N	0	14
+   FrameIndex	2TOM	A	0	31
+   FrameIndex	3ICK	A	0	10
+   FrameIndex	3ICK	B	0	11
+   FrameIndex	3ICK	C	0	12
+   FrameIndex	3ICK	D	0	13
+   FrameIndex	3ICK	E	0	14
+   FrameIndex	3ICK	F	0	15
+   FrameIndex	3ICK	G	0	16
+   FrameIndex	3ICK	H	0	17
+   FrameIndex	3ICK	I	0	18
+   FrameIndex	3ICK	J	0	19
+   FrameIndex	3ICK	K	0	20
+   FrameIndex	3ICK	L	0	21
+   FrameIndex	3ICK	M	0	22
+   FrameIndex	3ICK	N	0	23
+   FrameIndex	3ICK	O	0	24
+   FrameIndex	3ICK	P	0	25
+   FrameIndex	3ICK	Q	0	26
+   FrameIndex	3ICK	R	0	27
+   FrameIndex	3ICK	S	0	28
+   FrameIndex	3ICK	T	0	29
+   FrameIndex	3ICK	U	0	30
+   FrameIndex	3ICK	V	0	30
+   FrameIndex	3ICK	W	0	30
+   FrameIndex	3ICK	X	0	30
+   FrameIndex	3ICK	Y	0	30
+   FrameIndex	3ICK	Z	0	30
+   FrameIndex	3ICK	[	0	30
+   FrameIndex	3ICK	]	0	30
+   FrameIndex	3LID	A	0	14
+   FrameIndex	3LID	B	0	14
+   FrameIndex	3LID	C	0	14
+   FrameIndex	3LID	D	0	14
+   FrameIndex	3LID	E	0	14
+   FrameIndex	3LID	F	0	14
+   FrameIndex	3LID	G	0	14
+   FrameIndex	3LID	H	0	14
+   FrameIndex	3LID	I	0	14
+   FrameIndex	3LID	J	0	14
+   FrameIndex	3LID	K	0	14
+   FrameIndex	3LID	L	0	14
+   FrameIndex	3LID	M	0	14
+   FrameIndex	3LID	N	0	14
+   FrameIndex	3TOM	A	0	31
+   FrameIndex	KICK	A	0	10
+   FrameIndex	KICK	B	0	11
+   FrameIndex	KICK	C	0	12
+   FrameIndex	KICK	D	0	13
+   FrameIndex	KICK	E	0	14
+   FrameIndex	KICK	F	0	15
+   FrameIndex	KICK	G	0	16
+   FrameIndex	KICK	H	0	17
+   FrameIndex	KICK	I	0	18
+   FrameIndex	KICK	J	0	19
+   FrameIndex	KICK	K	0	20
+   FrameIndex	KICK	L	0	21
+   FrameIndex	KICK	M	0	22
+   FrameIndex	KICK	N	0	23
+   FrameIndex	KICK	O	0	24
+   FrameIndex	KICK	P	0	25
+   FrameIndex	KICK	Q	0	26
+   FrameIndex	KICK	R	0	27
+   FrameIndex	KICK	S	0	28
+   FrameIndex	KICK	T	0	29
+   FrameIndex	KICK	U	0	30
+   FrameIndex	KICK	V	0	30
+   FrameIndex	KICK	W	0	30
+   FrameIndex	KICK	X	0	30
+   FrameIndex	KICK	Y	0	30
+   FrameIndex	KICK	Z	0	30
+   FrameIndex	KICK	[	0	30
+   FrameIndex	KICK	]	0	30
+   FrameIndex	KIK1	A	0	0
+   FrameIndex	KIK1	B	0	1
+   FrameIndex	KIK1	C	0	2
+   FrameIndex	KIK1	D	0	3
+   FrameIndex	KIK1	E	0	4
+   FrameIndex	KIK2	A	0	5
+   FrameIndex	KIK2	B	0	6
+   FrameIndex	KIK2	C	0	7
+   FrameIndex	KIK2	D	0	8
+   FrameIndex	KIK2	E	0	9
+   FrameIndex	SLID	A	0	14
+   FrameIndex	SLID	B	0	14
+   FrameIndex	SLID	C	0	14
+   FrameIndex	SLID	D	0	14
+   FrameIndex	SLID	E	0	14
+   FrameIndex	SLID	F	0	14
+   FrameIndex	SLID	G	0	14
+   FrameIndex	SLID	H	0	14
+   FrameIndex	SLID	I	0	14
+   FrameIndex	SLID	J	0	14
+   FrameIndex	SLID	K	0	14
+   FrameIndex	SLID	L	0	14
+   FrameIndex	SLID	M	0	14
+   FrameIndex	SLID	N	0	14
+   FrameIndex	STOM	A	0	31
+   FrameIndex	STOM	B	0	32
+   FrameIndex	STOM	C	0	33
+   FrameIndex	STOM	D	0	34
+   FrameIndex	STOM	E	0	35
+}
+
+Model RSQ_Off_RSQGW_Riotgun
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "fist.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	FUCK	A	0	41
+   FrameIndex	FUCK	B	0	42
+   FrameIndex	FUCK	C	0	43
+   FrameIndex	FUCK	D	0	44
+   FrameIndex	FUCK	E	0	44
+   FrameIndex	FUCK	F	0	45
+   FrameIndex	FUCK	G	0	46
+   FrameIndex	FUCK	H	0	47
+   FrameIndex	FUCK	I	0	48
+   FrameIndex	FUCK	J	0	48
+   FrameIndex	FUCK	K	0	50
+   FrameIndex	FUCK	L	0	51
+   FrameIndex	FUCK	M	0	52
+   FrameIndex	FUCK	N	0	53
+   FrameIndex	FUCK	O	0	53
+   FrameIndex	IEHW	A	0	39
+   FrameIndex	IEHW	B	0	39
+   FrameIndex	IEHW	C	0	39
+   FrameIndex	IEHW	D	0	39
+   FrameIndex	IEHW	E	0	39
+   FrameIndex	IEHW	F	0	39
+   FrameIndex	IEHW	G	0	39
+   FrameIndex	IEHW	H	0	39
+   FrameIndex	IEHW	I	0	39
+   FrameIndex	IEHW	J	0	39
+   FrameIndex	IEHW	K	0	39
+   FrameIndex	IEHW	L	0	40
+   FrameIndex	IEHW	M	0	40
+   FrameIndex	IEHW	N	0	40
+   FrameIndex	IEHW	O	0	40
+   FrameIndex	IEHW	P	0	40
+   FrameIndex	IEHW	Q	0	40
+   FrameIndex	IEHW	R	0	40
+   FrameIndex	IEHW	S	0	40
+   FrameIndex	IEHW	T	0	40
+   FrameIndex	SALU	A	0	18
+   FrameIndex	SALU	B	0	19
+   FrameIndex	SALU	C	0	20
+   FrameIndex	SALU	D	0	21
+   FrameIndex	SALU	E	0	22
+   FrameIndex	VUCK	A	0	41
+   FrameIndex	VUCK	B	0	42
+   FrameIndex	VUCK	C	0	43
+   FrameIndex	VUCK	D	0	44
+   FrameIndex	VUCK	E	0	44
+   FrameIndex	VUCK	F	0	45
+   FrameIndex	VUCK	G	0	46
+   FrameIndex	VUCK	H	0	47
+   FrameIndex	VUCK	I	0	48
+}
+
+Model RSQ_Off_RSQGW_Riotgun
+{
+   Path "models/bd/FIST"
+   Model 0 "fistclosed.md3"
+   Skin 0 "rsr_clear.png"
+   Scale -1.0 1.0 1.0
+   Offset 0.0 0.0 0.0
+   ZOffset -5
+   FrameIndex	1UNG	D	0	10
+   FrameIndex	1UNG	E	0	11
+   FrameIndex	1UNG	F	0	12
+   FrameIndex	1UNG	G	0	12
+   FrameIndex	1UNG	H	0	12
+   FrameIndex	1UNG	I	0	12
+   FrameIndex	1UNG	J	0	12
+   FrameIndex	4ONG	B	0	1
+   FrameIndex	4ONG	C	0	2
+   FrameIndex	4ONG	D	0	3
+   FrameIndex	4ONG	E	0	4
+   FrameIndex	4ONG	F	0	5
+   FrameIndex	4ONG	G	0	7
+   FrameIndex	4ONG	V	0	1
+   FrameIndex	4ONG	W	0	2
+   FrameIndex	4ONG	X	0	3
+   FrameIndex	4ONG	Y	0	4
+   FrameIndex	4ONG	Z	0	5
+   FrameIndex	4ONG	[	0	6
+   FrameIndex	4UNG	A	0	1
+   FrameIndex	4UNG	D	0	10
+   FrameIndex	4UNG	E	0	11
+   FrameIndex	4UNG	F	0	12
+   FrameIndex	4UNG	G	0	12
+   FrameIndex	4UNG	H	0	12
+   FrameIndex	4UNG	I	0	12
+   FrameIndex	4UNG	J	0	12
+   FrameIndex	PONG	B	0	1
+   FrameIndex	PONG	C	0	2
+   FrameIndex	PONG	D	0	3
+   FrameIndex	PONG	E	0	4
+   FrameIndex	PONG	F	0	5
+   FrameIndex	PONG	G	0	7
+   FrameIndex	PONG	V	0	1
+   FrameIndex	PONG	W	0	2
+   FrameIndex	PONG	X	0	3
+   FrameIndex	PONG	Y	0	4
+   FrameIndex	PONG	Z	0	5
+   FrameIndex	PONG	[	0	6
+   FrameIndex	PUNG	A	0	1
+   FrameIndex	PUNG	B	0	8
+   FrameIndex	PUNG	C	0	9
+}
+
+Model RSQ_Off_RSQGW_DoubleSG
+{
+	Path "models/bd/SSG"
+	Model 0 "SSG.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "ssg.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "ssg.png"
+	SurfaceSkin 0 5 "ssg.png"
+	SurfaceSkin 0 6 "ssg.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.813 -3.959 0.0
+	ZOffset -12.773
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r11 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBSG A 0 1
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	Skin 0 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQ2T A 0 3
+	FrameIndex RQ2T A 1 3
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	Skin 0 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	// Pose: restored 2026-10-10 -- each BD22 sprite frame takes the authored
+	// BD21 pose for the same moment (tools/pose_tables.py, fill_tables.py).
+	FrameIndex QT00 A 0 3
+	FrameIndex QT00 A 1 3
+	FrameIndex QT01 J 0 3
+	FrameIndex QT01 J 1 3
+	FrameIndex QT01 K 0 3
+	FrameIndex QT01 K 1 3
+	FrameIndex QT01 L 0 28
+	FrameIndex QT01 L 1 28
+	FrameIndex QT01 M 0 27
+	FrameIndex QT01 M 1 27
+	FrameIndex QT01 N 0 27
+	FrameIndex QT01 N 1 27
+	FrameIndex QT01 A 0 3
+	FrameIndex QT01 A 1 3
+	FrameIndex QT02 A 0 3
+	FrameIndex QT02 A 1 3
+	FrameIndex QT01 I 0 0
+	FrameIndex QT01 I 1 0
+	FrameIndex QT01 H 0 1
+	FrameIndex QT01 H 1 1
+	FrameIndex QT01 G 0 2
+	FrameIndex QT01 G 1 2
+	FrameIndex QT01 F 0 3
+	FrameIndex QT01 F 1 3
+	FrameIndex QT03 A 0 0
+	FrameIndex QT03 A 1 0
+	FrameIndex QT03 B 0 1
+	FrameIndex QT03 B 1 1
+	FrameIndex QT03 C 0 2
+	FrameIndex QT03 C 1 2
+	FrameIndex QT03 D 0 9
+	FrameIndex QT03 D 1 9
+	FrameIndex QT03 E 0 9
+	FrameIndex QT03 E 1 9
+	FrameIndex QT03 F 0 9
+	FrameIndex QT03 F 1 9
+	FrameIndex QT04 G 0 9
+	FrameIndex QT04 G 1 9
+	FrameIndex QT04 H 0 9
+	FrameIndex QT04 H 1 9
+	FrameIndex QT04 I 0 10
+	FrameIndex QT04 I 1 10
+	FrameIndex QT04 J 0 10
+	FrameIndex QT04 J 1 10
+	FrameIndex QT04 K 0 11
+	FrameIndex QT04 K 1 11
+	FrameIndex QT04 L 0 11
+	FrameIndex QT04 L 1 11
+	FrameIndex QT04 M 0 12
+	FrameIndex QT04 M 1 12
+	FrameIndex QT04 N 0 13
+	FrameIndex QT04 N 1 13
+	FrameIndex QT04 O 0 13
+	FrameIndex QT04 O 1 13
+	FrameIndex QT04 A 0 7
+	FrameIndex QT04 A 1 7
+	FrameIndex QT04 P 0 13
+	FrameIndex QT04 P 1 13
+	FrameIndex QT04 Q 0 14
+	FrameIndex QT04 Q 1 14
+	FrameIndex QT04 R 0 15
+	FrameIndex QT04 R 1 15
+	FrameIndex QT04 S 0 15
+	FrameIndex QT04 S 1 15
+	FrameIndex QT04 T 0 15
+	FrameIndex QT04 T 1 15
+	FrameIndex QT04 U 0 16
+	FrameIndex QT04 U 1 16
+	FrameIndex QT04 V 0 16
+	FrameIndex QT04 V 1 16
+	FrameIndex QT04 W 0 16
+	FrameIndex QT04 W 1 16
+	FrameIndex QT04 X 0 16
+	FrameIndex QT04 X 1 16
+	FrameIndex QT04 Y 0 17
+	FrameIndex QT04 Y 1 17
+	FrameIndex QT04 Z 0 18
+	FrameIndex QT04 Z 1 18
+	FrameIndex QT04 [ 0 8
+	FrameIndex QT04 [ 1 8
+	FrameIndex QT04 B 0 8
+	FrameIndex QT04 B 1 8
+	FrameIndex QT05 A 0 22
+	FrameIndex QT05 A 1 22
+	FrameIndex QT05 B 0 22
+	FrameIndex QT05 B 1 22
+	FrameIndex QT05 C 0 22
+	FrameIndex QT05 C 1 22
+	FrameIndex QT05 D 0 22
+	FrameIndex QT05 D 1 22
+	FrameIndex QT05 E 0 22
+	FrameIndex QT05 E 1 22
+	FrameIndex QT05 F 0 22
+	FrameIndex QT05 F 1 22
+	FrameIndex QT05 G 0 22
+	FrameIndex QT05 G 1 22
+	FrameIndex QT05 H 0 22
+	FrameIndex QT05 H 1 22
+	FrameIndex QT05 I 0 21
+	FrameIndex QT05 I 1 21
+	FrameIndex QT05 J 0 19
+	FrameIndex QT05 J 1 19
+	FrameIndex QT05 K 0 20
+	FrameIndex QT05 K 1 20
+	FrameIndex QT05 L 0 22
+	FrameIndex QT05 L 1 22
+	FrameIndex QT05 M 0 22
+	FrameIndex QT05 M 1 22
+	FrameIndex QT05 N 0 22
+	FrameIndex QT05 N 1 22
+	FrameIndex QT05 O 0 22
+	FrameIndex QT05 O 1 22
+	FrameIndex QT05 P 0 23
+	FrameIndex QT05 P 1 23
+	FrameIndex QT06 A 0 3
+	FrameIndex QT06 A 1 3
+	FrameIndex QT07 A 0 3
+	FrameIndex QT07 A 1 3
+	FrameIndex QT01 E 0 3
+	FrameIndex QT01 E 1 3
+	FrameIndex QT01 D 0 2
+	FrameIndex QT01 D 1 2
+	FrameIndex QT01 C 0 1
+	FrameIndex QT01 C 1 1
+	FrameIndex QT01 B 0 0
+	FrameIndex QT01 B 1 0
+	FrameIndex QT08 A 0 4
+	FrameIndex QT08 A 1 4
+	FrameIndex QT09 A 0 4
+	FrameIndex QT09 A 1 4
+	FrameIndex QT09 D 0 4
+	FrameIndex QT09 D 1 4
+	FrameIndex QT09 B 0 5
+	FrameIndex QT09 B 1 5
+	FrameIndex QT09 C 0 6
+	FrameIndex QT09 C 1 6
+	FrameIndex QT0A A 0 4
+	FrameIndex QT0A A 1 4
+	FrameIndex QT0A D 0 4
+	FrameIndex QT0A D 1 4
+	FrameIndex QT0A B 0 5
+	FrameIndex QT0A B 1 5
+	FrameIndex QT0A C 0 6
+	FrameIndex QT0A C 1 6
+	FrameIndex QT0B A 0 24
+	FrameIndex QT0B A 1 24
+	FrameIndex QT0B B 0 25
+	FrameIndex QT0B B 1 25
+	FrameIndex QT0B C 0 26
+	FrameIndex QT0B C 1 26
+	FrameIndex QT04 C 0 8
+	FrameIndex QT04 C 1 8
+	FrameIndex QT04 D 0 8
+	FrameIndex QT04 D 1 8
+	FrameIndex QT04 E 0 8
+	FrameIndex QT04 E 1 8
+	FrameIndex QT04 F 0 8
+	FrameIndex QT04 F 1 8
+	FrameIndex QT0C A 0 3
+	FrameIndex QT0C A 1 3
+	// v4: frames BD22 shows that had no key (fill_tables.py SIBLING/READY)
+	FrameIndex QT0D A 0 16
+	FrameIndex QT0D A 1 16
+	FrameIndex QT0D B 0 16
+	FrameIndex QT0D B 1 16
+	FrameIndex QT0D C 0 16
+	FrameIndex QT0D C 1 16
+	FrameIndex QT0D D 0 16
+	FrameIndex QT0D D 1 16
+	FrameIndex QT0D E 0 16
+	FrameIndex QT0D E 1 16
+	FrameIndex QT0E D 0 18
+	FrameIndex QT0E D 1 18
+	FrameIndex QT0E E 0 17
+	FrameIndex QT0E E 1 17
+	FrameIndex QT0E F 0 16
+	FrameIndex QT0E F 1 16
+	FrameIndex QT0E G 0 16
+	FrameIndex QT0E G 1 16
+	FrameIndex QT0E H 0 16
+	FrameIndex QT0E H 1 16
+	FrameIndex QT0E I 0 16
+	FrameIndex QT0E I 1 16
+	FrameIndex QT0E J 0 16
+	FrameIndex QT0E J 1 16
+	FrameIndex QT0E K 0 16
+	FrameIndex QT0E K 1 16
+	FrameIndex QT0E L 0 16
+	FrameIndex QT0E L 1 16
+	FrameIndex QT0E M 0 16
+	FrameIndex QT0E M 1 16
+	FrameIndex QT0E N 0 16
+	FrameIndex QT0E N 1 16
+	FrameIndex QT0E O 0 16
+	FrameIndex QT0E O 1 16
+	FrameIndex QT0E P 0 16
+	FrameIndex QT0E P 1 16
+	FrameIndex QT0E Q 0 16
+	FrameIndex QT0E Q 1 16
+	FrameIndex QT0E R 0 16
+	FrameIndex QT0E R 1 16
+	FrameIndex QT0E S 0 16
+	FrameIndex QT0E S 1 16
+	FrameIndex QT0E T 0 16
+	FrameIndex QT0E T 1 16
+	FrameIndex QT0E U 0 16
+	FrameIndex QT0E U 1 16
+	FrameIndex QT0E V 0 16
+	FrameIndex QT0E V 1 16
+	FrameIndex QT0E W 0 16
+	FrameIndex QT0E W 1 16
+	FrameIndex QT0E X 0 16
+	FrameIndex QT0E X 1 16
+	FrameIndex QT0E Y 0 16
+	FrameIndex QT0E Y 1 16
+	FrameIndex QT0E Z 0 16
+	FrameIndex QT0E Z 1 16
+	FrameIndex QT08 B 0 5
+	FrameIndex QT08 B 1 5
+	FrameIndex QT08 C 0 6
+	FrameIndex QT08 C 1 6
+	FrameIndex QT08 D 0 4
+	FrameIndex QT08 D 1 4
+	FrameIndex QT0F J 0 3
+	FrameIndex QT0F J 1 3
+	FrameIndex QT0F K 0 3
+	FrameIndex QT0F K 1 3
+	FrameIndex QT0F L 0 28
+	FrameIndex QT0F L 1 28
+	FrameIndex QT0F M 0 28
+	FrameIndex QT0F M 1 28
+	FrameIndex QT0F N 0 28
+	FrameIndex QT0F N 1 28
+	FrameIndex QT0F O 0 28
+	FrameIndex QT0F O 1 28
+	FrameIndex QT0F P 0 28
+	FrameIndex QT0F P 1 28
+	FrameIndex QT0F Q 0 28
+	FrameIndex QT0F Q 1 28
+	FrameIndex QT0A E 0 4
+	FrameIndex QT0A E 1 4
+	FrameIndex QT0A F 0 4
+	FrameIndex QT0A F 1 4
+	FrameIndex QT0A G 0 6
+	FrameIndex QT0A G 1 6
+	FrameIndex QT0A H 0 6
+	FrameIndex QT0A H 1 6
+	FrameIndex QT09 E 0 4
+	FrameIndex QT09 E 1 4
+	FrameIndex QT09 F 0 4
+	FrameIndex QT09 F 1 4
+	FrameIndex QT09 G 0 6
+	FrameIndex QT09 G 1 6
+	FrameIndex QT09 H 0 6
+	FrameIndex QT09 H 1 6
+	FrameIndex QT09 I 0 3
+	FrameIndex QT09 I 1 3
+	FrameIndex QT0G A 0 16
+	FrameIndex QT0G A 1 16
+	FrameIndex QT0G B 0 16
+	FrameIndex QT0G B 1 16
+	FrameIndex QT0G C 0 16
+	FrameIndex QT0G C 1 16
+	FrameIndex QT0G D 0 16
+	FrameIndex QT0G D 1 16
+	FrameIndex QT0G E 0 16
+	FrameIndex QT0G E 1 16
+	FrameIndex QT0H A 0 7
+	FrameIndex QT0H A 1 7
+	FrameIndex QT0H B 0 8
+	FrameIndex QT0H B 1 8
+	FrameIndex QT0H C 0 8
+	FrameIndex QT0H C 1 8
+	FrameIndex QT0H D 0 18
+	FrameIndex QT0H D 1 18
+	FrameIndex QT0H E 0 17
+	FrameIndex QT0H E 1 17
+	FrameIndex QT0H F 0 16
+	FrameIndex QT0H F 1 16
+	FrameIndex QT0H G 0 16
+	FrameIndex QT0H G 1 16
+	FrameIndex QT0H H 0 16
+	FrameIndex QT0H H 1 16
+	FrameIndex QT0H I 0 16
+	FrameIndex QT0H I 1 16
+	FrameIndex QT0H J 0 16
+	FrameIndex QT0H J 1 16
+	FrameIndex QT0H K 0 16
+	FrameIndex QT0H K 1 16
+	FrameIndex QT0H L 0 16
+	FrameIndex QT0H L 1 16
+	FrameIndex QT0H M 0 16
+	FrameIndex QT0H M 1 16
+	FrameIndex QT0H N 0 16
+	FrameIndex QT0H N 1 16
+	FrameIndex QT0H O 0 16
+	FrameIndex QT0H O 1 16
+	FrameIndex QT0H P 0 16
+	FrameIndex QT0H P 1 16
+	FrameIndex QT0H Q 0 16
+	FrameIndex QT0H Q 1 16
+	FrameIndex QT0H R 0 16
+	FrameIndex QT0H R 1 16
+	FrameIndex QT0H S 0 16
+	FrameIndex QT0H S 1 16
+	FrameIndex QT0H T 0 16
+	FrameIndex QT0H T 1 16
+	FrameIndex QT0H U 0 16
+	FrameIndex QT0H U 1 16
+	FrameIndex QT0H V 0 16
+	FrameIndex QT0H V 1 16
+	FrameIndex QT0H W 0 16
+	FrameIndex QT0H W 1 16
+	FrameIndex QT0H X 0 16
+	FrameIndex QT0H X 1 16
+	FrameIndex QT0H Y 0 16
+	FrameIndex QT0H Y 1 16
+	FrameIndex QT0H Z 0 16
+	FrameIndex QT0H Z 1 16
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "Rifle.png"
+	SurfaceSkin 0 1 "Rifle.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex QT0I A 0 3
+	FrameIndex QT0I A 1 3
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "Rifle.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex QT0I B 0 3
+	FrameIndex QT0I B 1 3
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex QT0I C 0 3
+	FrameIndex QT0I C 1 3
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.000 -20.820 -15.020
+	FrameIndex RQGT C 0 14
+	FrameIndex RQGU C 0 15
+}
+
+Model RSQ_Off_RSQGW_PlasRifle
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.140 -23.210 -15.040
+	FrameIndex RQGT L 0 32
+	FrameIndex RQGU L 0 33
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.760 -21.270 -14.960
+	FrameIndex RQGT O 0 38
+	FrameIndex RQGU O 0 39
+}
+
+Model RSQ_Off_RSQGW_DoubleSG
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.050 -22.340 -15.970
+	FrameIndex RQGT P 0 40
+	FrameIndex RQGU P 0 41
+}
+
+Model RSQ_Off_RSQGW_Riotgun
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.100 -24.470 -15.580
+	FrameIndex RQGT Q 0 42
+	FrameIndex RQGU Q 0 43
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "Rifle.png"
+	SurfaceSkin 0 1 "Rifle.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"	// 1.30: the M203 stays on the gun while the hand reloads it
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "M203.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQRM A 0 3
+	FrameIndex RQRM A 1 3
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "Rifle.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"	// 1.30: the M203 stays on the gun while the hand reloads it
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "M203.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQRM B 0 3
+	FrameIndex RQRM B 1 3
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+	Path "models/bd/BrutalPistol"
+	Model 0 "BrutalPistol.md3"
+	SurfaceSkin 0 0 "BrutalPistol.png"
+	SurfaceSkin 0 1 "BrutalPistol.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "BrutalPistol.png"
+	SurfaceSkin 0 5 "BrutalPistol.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.820 -8.333 0.0
+	ZOffset -1.408
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// BD 2.0 b1 (lane_c r5): gun to the FBX hand
+	NoInterpolation
+	FrameIndex RQPM A 0 3
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+	Path "models/bd/BrutalPistol"
+	Model 0 "BrutalPistol.md3"
+	SurfaceSkin 0 0 "BrutalPistol.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "BrutalPistol.png"
+	SurfaceSkin 0 3 "BrutalPistol.png"
+	SurfaceSkin 0 4 "BrutalPistol.png"
+	SurfaceSkin 0 5 "BrutalPistol.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.820 -8.333 0.0
+	ZOffset -1.408
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// BD 2.0 b1 (lane_c r5): gun to the FBX hand
+	NoInterpolation
+	FrameIndex RQPM B 0 3
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+	Path "models/bd/BrutalPistol"
+	Model 0 "BrutalPistol.md3"
+	SurfaceSkin 0 0 "BrutalPistol.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "BrutalPistol.png"
+	SurfaceSkin 0 5 "BrutalPistol.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.820 -8.333 0.0
+	ZOffset -1.408
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// BD 2.0 b1 (lane_c r5): gun to the FBX hand
+	NoInterpolation
+	FrameIndex RQPM C 0 3
+}
+
+Model RSQ_Off_RSQGW_PlasRifle
+{
+	Path "models/bd/Plasma_Gun"
+	Model 0 "Plasma.md3"
+	SurfaceSkin 0 0 "Plasma.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Plasma.png"
+	SurfaceSkin 0 3 "Plasma.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -0.978 -4.369 0.0
+	ZOffset -0.265
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r9 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQZM A 0 4
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"	// 1.30: the M203 stays on the gun while the hand reloads it
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "M203.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQRM C 0 3
+	FrameIndex RQRM C 1 3
+}
+
+Model RSQ_Off_RSQGW_Riotgun
+{
+	Path "models/bd/ShotGun"
+	Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "Shotgun.png"
+	SurfaceSkin 0 1 "Shotgun.png"
+	SurfaceSkin 0 2 "Shotgun.png"
+	SurfaceSkin 0 3 "Shotgun.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "Shotgun.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.502 -4.257 0.0
+	ZOffset -8.973
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// shotguns (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQUG A 0 4
+}
+
+Model RSQ_Off_RSQGW_Beretta
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_b1_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQFG A 7 0	// pistol, finger on the trigger
+	FrameIndex RQFG B 7 2	// pistol, squeezed
+	FrameIndex RQFG C 7 1	// flamethrower, finger on the lever
+	FrameIndex RQFG D 7 3	// flamethrower, squeezed
+}
+
+Model RSQ_Off_RSQGW_ARifle
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_b4_Rifle_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQFJ A 7 0	// Rifle, finger on the trigger
+	FrameIndex RQFJ B 7 1	// Rifle, squeezed
+}
+
+Model RSQ_Off_RSQGW_Riotgun
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_sg_Shot_Gun_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQFP A 7 0	// Shot_Gun, finger on the trigger
+	FrameIndex RQFP B 7 1	// Shot_Gun, squeezed
+}
+
+Model RSQ_Off_RSQGW_PlasRifle
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_hv_Plasma_Gun_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQV4 A 7 0	// Plasma_Gun, finger on the trigger
+	FrameIndex RQV4 B 7 1	// Plasma_Gun, squeezed
+}
+
+Model RSQ_Off_RSQGW_DoubleSG
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_hv_SSG_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQVD A 7 0	// SSG, finger on the trigger
+	FrameIndex RQVD B 7 1	// SSG, squeezed
+}

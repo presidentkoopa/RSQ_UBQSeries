@@ -1,0 +1,5 @@
+addkeysection "GNRC Reloaded VR" rsqgwvr
+addmenukey "Quick Kick" rsqgw_kickkey
+alias rsqgw_kickkey "netevent rsqgw_kick"
+addmenukey "Dual Wield" rsq_dualkey
+alias rsq_dualkey "netevent rsq_dual"

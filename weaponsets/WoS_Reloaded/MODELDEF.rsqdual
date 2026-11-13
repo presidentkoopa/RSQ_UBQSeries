@@ -1,0 +1,235 @@
+// from BD22 VR's MODELDEF.rsqdual (RS_Brutal22WeaponsQ), by tools/port/mdl.py: the gun class names are this pack's
+
+Model RSQWS_Beretta
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.000 -20.820 -15.020
+	FrameIndex RQGT C 0 14
+	FrameIndex RQGU C 0 15
+}
+
+Model RSQWS_1911
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.000 -20.820 -15.020
+	FrameIndex RQGT C 0 14
+	FrameIndex RQGU C 0 15
+}
+
+Model RSQWS_MP40
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.300 -22.670 -13.950
+	FrameIndex RQGT J 0 28
+	FrameIndex RQGU J 0 29
+}
+
+Model RSQWS_Minigun
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.250 -24.310 -13.370
+	FrameIndex RQGT E 0 18
+	FrameIndex RQGU E 0 19
+}
+
+Model RSQWS_TITAN
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.510 -19.840 -14.850
+	FrameIndex RQGT K 0 30
+	FrameIndex RQGU K 0 31
+}
+
+Model RSQWS_NovaRifle
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.210 -22.200 -14.730
+	FrameIndex RQGT M 0 34
+	FrameIndex RQGU M 0 35
+}
+
+Model RSQWS_MachineRifle
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.760 -21.270 -14.960
+	FrameIndex RQGT O 0 38
+	FrameIndex RQGU O 0 39
+}
+
+Model RSQWS_SaturnV
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.380 -23.240 -17.240
+	FrameIndex RQGT G 0 22
+	FrameIndex RQGU G 0 23
+}
+
+Model RSQWS_Coachgun
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.050 -22.340 -15.970
+	FrameIndex RQGT P 0 40
+	FrameIndex RQGU P 0 41
+}
+
+Model RSQWS_Riotgun
+{
+	Path "models/rsq"
+	Model 0 "hand.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.100 -24.470 -15.580
+	FrameIndex RQGT Q 0 42
+	FrameIndex RQGU Q 0 43
+}
+
+Model RSQWS_Knuckles
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_oh_free_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQGF A 7 1
+}
+
+Model RSQWS_Beretta
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_b1_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQFG A 7 0	// pistol, finger on the trigger
+	FrameIndex RQFG B 7 2	// pistol, squeezed
+	FrameIndex RQFG C 7 1	// flamethrower, finger on the lever
+	FrameIndex RQFG D 7 3	// flamethrower, squeezed
+}
+
+Model RSQWS_1911
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_b1_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQFG A 7 0	// pistol, finger on the trigger
+	FrameIndex RQFG B 7 2	// pistol, squeezed
+	FrameIndex RQFG C 7 1	// flamethrower, finger on the lever
+	FrameIndex RQFG D 7 3	// flamethrower, squeezed
+}
+
+Model RSQWS_MP40
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_b3_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQFI A 7 0	// MP40, finger on the trigger
+	FrameIndex RQFI B 7 1	// MP40, squeezed
+}
+
+Model RSQWS_MachineRifle
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_b4_Rifle_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQFJ A 7 0	// Rifle, finger on the trigger
+	FrameIndex RQFJ B 7 1	// Rifle, squeezed
+}
+
+Model RSQWS_Riotgun
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_sg_Shot_Gun_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQFP A 7 0	// Shot_Gun, finger on the trigger
+	FrameIndex RQFP B 7 1	// Shot_Gun, squeezed
+}
+
+Model RSQWS_SaturnV
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_hv_Rocket_Launcher_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQV6 A 7 0	// Rocket_Launcher, finger on the trigger
+	FrameIndex RQV6 B 7 1	// Rocket_Launcher, squeezed
+}
+
+Model RSQWS_NovaRifle
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_hv_RailGun_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQV5 A 7 0	// RailGun, finger on the trigger
+	FrameIndex RQV5 B 7 1	// RailGun, squeezed
+}
+
+Model RSQWS_Minigun
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_hv_Minigun_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQV3 A 7 0	// Minigun, finger on the trigger
+	FrameIndex RQV3 B 7 1	// Minigun, squeezed
+}
+
+Model RSQWS_TITAN
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_hv_NukeLauncher_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQV9 A 7 0	// NukeLauncher, finger on the trigger
+	FrameIndex RQV9 B 7 1	// NukeLauncher, squeezed
+}
+
+Model RSQWS_Coachgun
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_hv_SSG_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQVD A 7 0	// SSG, finger on the trigger
+	FrameIndex RQVD B 7 1	// SSG, squeezed
+}

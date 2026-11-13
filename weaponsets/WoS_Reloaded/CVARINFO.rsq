@@ -1,0 +1,39 @@
+// RS VR hands and real reload (from BD22 VR, RS_Brutal22WeaponsQ). Options: RSQ_Options in MENUDEF.rsq.
+user bool rsq_hands = true;			// VR hands on the controllers
+user int rsq_hand_tone = 0;			// Hand Skin Tone: 0 as drawn, 1..17 (zscript/rsq/handtone.zs)
+user int rsq_punch = 0;				// read by the hands script; no VR punching in this pack yet
+user int rsr_reload = 1;			// Reloading: 1 VR (by hand), 0 Stock (the gun's own reload, on the reload button), as BD22 VR
+user int rsr_grab_with = 0;			// Grab ammo with: 0 off trigger, 1 off grip, 2 Use key
+user string rsr_grip_keys = "443 436";
+user int rsr_grab_buttons = 67108864;	// BT_OFFHANDATTACK
+user int rsr_magrelease = 268435456;	// BT_OFFHANDRELOAD drops the magazine; the gun's own reload always does
+user int rsr_pouch = 0;				// New magazine from: 0 anywhere 20 cm from the gun, 1 low (40 cm below the eyes), 2 RSQ Tactical Rig's ammo pouch only (anywhere when the rig is not loaded)
+user bool rsr_eat_grip = true;
+user bool rsr_debug = false;
+user float rsr_assist = 1.0;
+user bool rsr_assist_debug = false;
+user int rsr_shell_credit = 1;		// Shotgun Shells Per Insert: 1 to 4
+server bool rsa_sg_slug = true;		// Shotgun Slugshot Alt Fire (it replaces the mods' iron sights)
+server int rsm_ammo = 1;			// Rifle Underbarrel Ammo: 1 RSQ Grenade's grenades (rockets when that mod is not loaded), 0 rockets
+server float sv_rsq_twohand_spread = 0.5;	// Two-Hand Spread: spread x this with the off hand steadying
+server bool sv_rsq_twohand_shotguns = false;
+server bool rsa_pistol_semi = false;	// Pistol Semi Auto: one shot per trigger pull
+server int rsq_pump_spread = 0;		// Pump Shotgun Spread: 0 the mod's, 1 Enhanced (3 x 2.5 degrees, same pellets and damage)
+user bool rsq_casing_models = true;	// Real Casing Models: off = the mod's own casing sprites
+user float rsq_casing_size = 1.0;	// a multiplier on true size
+user bool rsq_hud_nohp = false;		// Remove HUD Health and Armor (BD22 VR Reloaded's name; GBOVR reads it too): the face stays
+user bool rsq_flick = true;			// the flick is read (a lone rifle's underbarrel, the double barrel, Reloading = Flick)
+user int rsq_switch_log = 0;
+server int rsq_ballistics = 1;		// Ballistics: 0 Stock = Weapons of Saturn's own sounds and effects; 1 Low, 2 Max = RS Ballistics (+ the hand reload's Combat FX sounds)
+server int rsq_ballistics_cfg = 1;
+server bool sv_rsq_true_bullets = true;	// True Bullets: flying rounds; off = the mod's own hitscan
+server float sv_rsq_round_speed = 80.0;	// True Bullet Speed, map units a tic
+user float rsq_round_speed = 1.0;
+user bool rsq_dual_start = true;	// Start With Two Pistols
+user bool rsq_dual_0 = true;	// dual Handgun
+user bool rsq_dual_1 = true;	// dual 1911
+user bool rsq_dual_2 = true;	// dual MP40
+user bool rsq_dual_3 = true;	// dual Maschine Rifle
+user bool rsq_dual_4 = false;	// dual Nova Rifle
+user bool rsq_dual_5 = false;	// dual Riot Gun
+user bool rsq_dual_6 = false;	// dual Coach Gun

@@ -1,0 +1,140 @@
+// Plasma
+object RSQWS_Plasma
+{
+    frame PLZSA { light PLASMABALL }
+    frame PLZSB { light PLASMABALL }
+
+    frame PLZEA { light PLASMA_X1 }
+    frame PLZEB { light PLASMA_X2 }
+    frame PLZEC { light PLASMA_X2 }
+    frame PLZED { light PLASMA_X3 }
+    frame PLZEE { light PLASMA_X4 }
+}
+
+object RSQWS_PlasmaShot
+{
+    frame PLZSA { light PLASMABALL }
+    frame PLZSB { light PLASMABALL }
+
+    frame PLZEA { light PLASMA_X1 }
+    frame PLZEB { light PLASMA_X2 }
+    frame PLZEC { light PLASMA_X2 }
+    frame PLZED { light PLASMA_X3 }
+    frame PLZEE { light PLASMA_X4 }
+}
+
+object RSQWS_RotaryPlasma
+{
+    frame PLZEE { light PLASMABALL }
+
+    frame PLZEA { light PLASMA_X1 }
+    frame PLZEB { light PLASMA_X1 }
+    frame PLZEC { light PLASMA_X4 }
+    frame PLZED { light PLASMA_X4 }
+    frame PLZEE { light PLASMA_X4 }
+}
+
+object RSQWS_SaturnRocket
+{
+    frame MSLEA { light ROCKET    }
+
+    frame MACXA { light ROCKET_X1 }
+    frame MACXB { light ROCKET_X1 }
+    frame MACXC { light ROCKET_X1 }
+	frame MACXD { light ROCKET_X1 }
+    frame MACXE { light ROCKET_X2 }
+    frame MACXF { light ROCKET_X2 }
+	frame MACXG { light ROCKET_X2 }
+    frame MACXH { light ROCKET_X3 }
+    frame MACXI { light ROCKET_X3 }
+}
+
+//BFG
+
+object RSQWS_Nova
+{
+    frame BBB1E { light RSQWS_NOVA_X4 }
+	
+	frame VFX3A { light RSQWS_NOVA_X4 }
+	frame VFX3B { light RSQWS_NOVA_X4 }
+	frame VFX3C { light RSQWS_NOVA_X4 }
+	frame VFX3D { light RSQWS_NOVA_X4 }
+	frame VFX3E { light RSQWS_NOVA_X4 }
+	frame VFX3F { light RSQWS_NOVA_X4 }
+	frame VFX3G { light RSQWS_NOVA_X4 }
+	frame VFX3H { light RSQWS_NOVA_X4 }
+	frame VFX3I { light RSQWS_NOVA_X5 }
+	frame VFX3J { light RSQWS_NOVA_X5 }
+}
+
+object RSQWS_HyperNova
+{
+    frame BFS1A { light RSQWS_NOVA }
+    frame BFS1B { light RSQWS_NOVA }
+	
+    frame BBALA { light RSQWS_NOVA }
+    frame BBALB { light RSQWS_NOVA }
+	frame BBALC { light RSQWS_NOVA }
+	frame BBALD { light RSQWS_NOVA }
+	
+	frame BBB1A { light RSQWS_NOVA_X3 }
+	frame BBB1B { light RSQWS_NOVA_X2 }
+	frame BBB1C { light RSQWS_NOVA_X1 }
+	frame BBB1D { light RSQWS_NOVA_X4 }
+	frame BBB1E { light RSQWS_NOVA_X5 }
+
+    frame RR00A { light RSQWS_NOVA_X1 }
+    frame RR00B { light RSQWS_NOVA_X2 }
+    frame RR00C { light RSQWS_NOVA_X3 }
+    frame RR00D { light RSQWS_NOVA_X3 }
+    frame RR00E { light RSQWS_NOVA_X2 }
+    frame RR00F { light RSQWS_NOVA_X1 }
+	
+	frame PULSA { light RSQWS_NOVA_X5 }
+	frame PULSB { light RSQWS_NOVA_X4 }
+	frame PULSC { light RSQWS_NOVA_X1 }
+	frame PULSD { light RSQWS_NOVA_X2 }
+	frame PULSE { light RSQWS_NOVA_X3 }
+	frame PULSF { light RSQWS_NOVA_X3 }
+	frame PULSG { light RSQWS_NOVA_X2 }
+	frame PULSH { light RSQWS_NOVA_X1 }
+	frame PULSI { light RSQWS_NOVA_X2 }
+	frame PULSJ { light RSQWS_NOVA_X2 }
+	frame PULSK { light RSQWS_NOVA_X2 }
+	frame PULSL { light RSQWS_NOVA_X3 }
+	frame PULSM { light RSQWS_NOVA_X3 }
+	frame PULSN { light RSQWS_NOVA_X3 }
+	frame PULSO { light RSQWS_NOVA_X3 }
+	frame PULSP { light RSQWS_NOVA_X3 }
+	frame PULSQ { light RSQWS_NOVA_X3 }
+	frame PULSR { light RSQWS_NOVA_X2 }
+	frame PULSS { light RSQWS_NOVA_X2 }
+	frame PULST { light RSQWS_NOVA_X1 }
+}
+
+object RSQWS_Residue
+{
+	frame R044J { light RSQWS_NOVA_X5 }
+	frame R044K { light RSQWS_NOVA_X5 }
+	frame R044L { light RSQWS_NOVA_X4 }
+	frame R044M { light RSQWS_NOVA_X4 }
+	frame R044N { light RSQWS_NOVA_X4 }
+	frame R044O { light RSQWS_NOVA_X4 }
+	frame R044P { light RSQWS_NOVA_X5 }
+	frame R044Q { light RSQWS_NOVA_X5 }
+}
+
+object BFGExtra
+{
+    frame BFE2A { light BFGBALL    }
+    frame BFE2B { light BFGBALL_X1 }
+    frame BFE2C { light BFGBALL_X4 }
+    frame BFE2D { light BFGBALL_X5 }
+}
+// tools/build.py: the Titan's rounds in the Nuker's orange (the stock BFGBALL lights, recoloured)
+pointlight RSQWS_NOVA { color 1.0 0.6 0.25 size 120 attenuate 1 }
+flickerlight RSQWS_NOVA_X1 { color 1.0 0.6 0.25 size 120 secondarySize 132 chance 0.3 attenuate 1 }
+flickerlight RSQWS_NOVA_X2 { color 1.0 0.65 0.3 size 156 secondarySize 168 chance 0.3 attenuate 1 }
+flickerlight RSQWS_NOVA_X3 { color 1.0 0.7 0.35 size 180 secondarySize 192 chance 0.3 attenuate 1 }
+flickerlight RSQWS_NOVA_X4 { color 0.7 0.4 0.15 size 84 secondarySize 96 chance 0.3 attenuate 1 }
+flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance 0.3 attenuate 1 }
