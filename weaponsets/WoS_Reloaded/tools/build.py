@@ -226,10 +226,11 @@ def main(want_pk3):
             keyed[c] |= {('PIST', f) for f in 'ABCDE'} | {('PISR', f) for f in 'ABCDEFGHIJKLMNOPQRSTUVW'} | {('RQ1M', f) for f in 'ABC'}
         sprites |= {'RQ1M', 'RQ1P', 'RQ1W'}
         for f in ('bw_1911.md3', '1911.png', 'rsr_clear.png'): cp(os.path.join(MS1911, f), 'models/rsqws/1911/' + f)
-        # the 1911's pickup: the owner's voxel M1911 (2026-11-12 upload; tools/m1911_pickup.py -> assets/m1911_pickup), a model
-        # on its pickup sprite COLP A (the world actor only: the hand draws PIST / PISR / RQ1M)
-        for f in ('m1911_pickup.md3', 'm1911.png'): cp(os.path.join(ROOT, 'assets/m1911_pickup', f), 'models/rsqws/1911pickup/' + f)
-        lumps['MODELDEF.rsqws1911'] += '\n// the 1911 lying on the floor: the owner\'s voxel M1911, standing side-on as BD22\'s voxel pistol does\nModel RSQWS_1911\n{\n\tPath "models/rsqws/1911pickup"\n\tModel 0 "m1911_pickup.md3"\n\tSkin 0 "m1911.png"\n\tScale 1.0 1.0 1.0\n\tAngleOffset 90\n\tFrameIndex COLP A 0 0\n}\n'
+        # the 1911's pickup (owner: "recolor the pistol one"): BD22's voxel pistol (pistG0) with its palette recoloured to the
+        # 1911's own skin (tools/pickup_1911.py -> assets/pickup_1911), drawn as BD22 VR draws a voxel (MODELDEF.rsqvox's
+        # pistG block: the kvx as a model, scale 0.8, AngleOffset 90), on the 1911's pickup sprite COLP A
+        for f in ('pistG0.kvx', '1911pick.png'): cp(os.path.join(ROOT, 'assets/pickup_1911', f), 'models/rsqws/1911pickup/' + f)
+        lumps['MODELDEF.rsqws1911'] += '\n// the 1911 lying on the floor: BD22\'s voxel pistol in the 1911\'s colours\nModel RSQWS_1911\n{\n\tModel 0 "models/rsqws/1911pickup/pistG0.kvx"\n\tSkin 0 "models/rsqws/1911pickup/1911pick.png"\n\tScale 0.8 0.8 0.8\n\tAngleOffset 90\n\tFrameIndex COLP A 0 0\n}\n'
         note('1911: %d BD22 pistol-mesh blocks replaced by its own (MODELDEF.rsqws1911, seat %s)' % (dropped, row19['place']))
     # Real Casing Models: BD22 VR's measured casings on WoS's casing sprites (CAS1 9 mm / .45, CAS2 12 ga, CAS3 rifle)
     CASE = {'RSQ_Case9mm': 'CAS1', 'RSQ_Case556': 'CAS3', 'RSQ_Case762': 'CAS3', 'RSQ_Hull12ga': 'CAS2'}
