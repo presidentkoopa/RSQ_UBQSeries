@@ -1,0 +1,1 @@
+GameInfo { AddEventHandlers = "RSPROBE_H", "RSPROBE_Robot", "RSPROBE_Bot" }

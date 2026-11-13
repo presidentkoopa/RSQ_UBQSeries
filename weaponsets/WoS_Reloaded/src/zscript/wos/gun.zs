@@ -48,13 +48,13 @@ mixin class RSQWS_KickMix
 		KICK D 0 RSQWS_KickHit(false);
 		KICK DEEEEFGHIJ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
 		KICK KLM 1;
-		Goto Ready;
+		"####" "#" 0 A_Jump(256, "Ready");	// by name at run time: a Goto in a mixin is resolved where the mixin is, which has no Ready
 	AirKick:
 		KICK N 0 A_StartSound("weapons/foot/swing", CHAN_WEAPON);
 		KICK NOPQ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
 		KICK R 0 RSQWS_KickHit(true);
 		KICK RRSTUVWXYZ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
-		Goto Ready;
+		"####" "#" 0 A_Jump(256, "Ready");	// by name at run time: a Goto in a mixin is resolved where the mixin is, which has no Ready
 	}
 }
 

@@ -9,7 +9,6 @@ OptionValue "RSR_ReloadMode"
 {
 	1, "VR"
 	0, "Stock"
-	2, "Flick"
 }
 
 OptionValue "RSR_GrabWith"
@@ -112,6 +111,7 @@ OptionMenu "RSQ_Options"
 	Option "Two-Hand Grip (engine)", "vr_two_handed_weapons", "OnOff"
 	Submenu "Dual Options", "RSQ_DualOptions"
 	Option "HUD Ammo", "rsq_hud_ammo", "RSQ_HudAmmo"
+	Option "Remove HUD Health and Armor", "rsq_hud_nohp", "OnOff"
 	Option "Real Casing Models", "rsq_casing_models", "OnOff"
 	Slider "Casing Size", "rsq_casing_size", 0.5, 2.5, 0.1, 1
 	StaticText " "

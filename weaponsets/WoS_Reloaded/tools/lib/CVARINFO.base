@@ -2,7 +2,7 @@
 user bool rsq_hands = true;			// VR hands on the controllers
 user int rsq_hand_tone = 0;			// Hand Skin Tone: 0 as drawn, 1..17 (zscript/rsq/handtone.zs)
 user int rsq_punch = 0;				// read by the hands script; no VR punching in this pack yet
-user int rsr_reload = 1;			// Reloading: 1 VR (by hand), 0 Stock (the mod's own, on the reload button), 2 Flick (snap the barrel down: the mod's own reload)
+user int rsr_reload = 1;			// Reloading: 1 VR (by hand), 0 Stock (the gun's own reload, on the reload button), as BD22 VR
 user int rsr_grab_with = 0;			// Grab ammo with: 0 off trigger, 1 off grip, 2 Use key
 user string rsr_grip_keys = "443 436";
 user int rsr_grab_buttons = 67108864;	// BT_OFFHANDATTACK
@@ -22,7 +22,8 @@ server int rsq_pump_spread = 0;		// Pump Shotgun Spread: 0 the mod's, 1 Enhanced
 server bool rsq_start_shotgun = false;	// Start With Pistol and Shotgun
 user bool rsq_casing_models = true;	// Real Casing Models: off = the mod's own casing sprites
 user float rsq_casing_size = 1.0;	// a multiplier on true size
-user int rsq_hud_ammo = 0;			// HUD Ammo: 0 magazine + reserve, 1 reserve only, 2 off (both hands; stands down for GunBonsaiOffhandVR's HUD)
+user bool rsq_hud_nohp = false;		// Remove HUD Health and Armor (BD22 VR Reloaded's name; GBOVR reads it too): the face stays
+user int rsq_hud_ammo = 0;			// HUD (GBOVR's bottom row): 0 magazine + reserve, 1 reserve only, 2 off; stands down while GunBonsaiOffhandVR draws it
 user bool rsq_flick = true;			// the flick is read (a lone rifle's underbarrel, the double barrel, Reloading = Flick)
 user int rsq_switch_log = 0;
 server int rsq_ballistics = 1;		// Ballistics: 0 Stock (the mod's own), 1 Low, 2 Max
