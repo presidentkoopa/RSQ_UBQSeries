@@ -5,5 +5,6 @@
   Score life spent for +1 rarity on one offer ("LUCKY", a name option), drawn over a real MAP01 frame from the rig.
   Made by `kiosk_anim.py` (with `sotnfont.py`, `ext.py` and `mk.py`; the SOTN letters come from the owner's word sheet).
 - `kiosk_in_game_rig.png`: the same kiosk stood up in the engine from sprites (rig only, a throwaway test pack).
+- `kiosk_TARGET.png`: the owner's capture of that in-game render, 2026-11-13: "i want that kiosk to look like this". This is the look to build.
 - `kiosk_counter.png`: the first flat mockup ("i don't hate this").
 - `hf_weapon_screen_rig.png`: the owner's earlier weapon screen, drawn in the rig by its own code ("theres my baby").
