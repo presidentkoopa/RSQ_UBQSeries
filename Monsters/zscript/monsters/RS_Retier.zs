@@ -831,6 +831,8 @@ class RS_Retier play
 		String mn = mo.GetClassName();
 		int fam = RS_TierLadder.FamilyOfAny(mn);
 		if (fam < 0) return null;
+		// [ladder system point 3] EX is its own rung above White: an EX body is never swapped down to the plain one
+		if (RS_Ladder.On() && RS_TierLadder.IsEXName(mn)) return null;
 		// already on that tier: nothing (an EX body re-asked its own tier keeps its EX build, never swapped to the plain one)
 		if (RS_TierLadder.TierOfAny(mn) == tier) return null;
 		Name nn = RS_TierLadder.ClassFor(fam, tier);
@@ -850,8 +852,13 @@ class RS_Retier play
 		if (oldFull > 0)
 			frac = clamp(double(mo.health) / double(oldFull), 0.05, 1.0);
 
+		// [ladder system] tell RS_LadderHandler this body is a tier change, not a map spawn (no Cyan zombie trio)
+		let lh = RS_Ladder.H();
+		if (lh) lh.swapping = true;
 		Actor a = Actor.Spawn(nc, mo.pos, NO_REPLACE);
+		if (lh) lh.swapping = false;
 		if (!a) return null;
+		if (lh && RS_Ladder.On()) a.GiveInventoryType('RS_LadderTrioMark');   // in case its spawn event comes later
 
 		a.angle   = mo.angle;
 		a.pitch   = mo.pitch;
