@@ -106,8 +106,12 @@ class RSQML_Shove : StaticEventHandler
 
 	// BD22 VR Reloaded (the owner's Brutal Doom VR mod), by class name through a String: RSVR_MeleeHandler owns its butt
 	// strike (melee.zs:20), RSQ_Hands is its off-hand fists (hands.zs:138). Both are in 2.0-b1m and 1.99x-lb-r7.
+	// AND Brutal Doom itself (BrutalWeapon, every BD22 gun's base): the weapon sets (weaponsets/WoS_Reloaded,
+	// GNRC_Reloaded) carry BD22 VR's hands under the same names but no butt strike, so with them this shove is the one
+	// (owner 2026-11-13: BD keeps its melee standalone; with a weapon set RSQ Melee's shove works).
 	static bool BD22QLoaded()
 	{
+		if (Object.FindClass("BrutalWeapon") == null) return false;
 		static const String names[] = { "RSVR_MeleeHandler", "RSQ_Hands" };
 		for (int i = 0; i < names.Size(); i++)
 			if (Object.FindClass(names[i]) != null) return true;
