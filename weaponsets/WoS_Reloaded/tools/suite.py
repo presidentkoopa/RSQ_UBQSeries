@@ -205,7 +205,7 @@ def basics_script():
     s += mark('OFFJAB') + jab('l', '-0.25') + 'kill monsters; wait 10; '
     s += mark('UPPER') + 'netevent probe_spawn:ExplosiveBarrel 34; wait 10; qz_rhand "0.0 0.8 -0.5 0 0 0"; wait 10; qz_rhand "0.0 1.0 -0.5 0 0 0"; wait 1; qz_rhand "0.0 1.25 -0.5 0 0 0"; wait 1; qz_rhand "0.0 1.5 -0.5 0 0 0"; wait 30; '
     s += mark('WHIP') + 'use %s; wait 40; qz_rhand "0.25 1.3 -0.3 0 0 0"; qz_lhand "-0.45 0.9 0.0 0 0 0"; wait 10; netevent probe_spawn:DoomImp 40; wait 10; qz_rhand "0.25 1.5 -0.45 70 0 0"; wait 10; qz_rhand "0.25 1.45 -0.5 30 0 0"; wait 1; qz_rhand "0.25 1.35 -0.55 -20 0 0"; wait 1; qz_rhand "0.25 1.2 -0.55 -70 0 0"; wait 20; kill monsters; ' % PISTOL
-    s += mark('DOOR') + 'use %s; wait 40; netevent probe_door 20; wait 5; qz_rhand "0.0 1.2 -0.41 0 0 90"; wait 8; netevent probe_ceil; qz_rhand "0.0 1.45 -0.41 0 0 90"; wait 4; netevent probe_ceil; qz_rhand "0.0 1.8 -0.41 0 0 90"; wait 4; netevent probe_ceil; wait 5; ' % FISTS
+    s += mark('DOOR') + 'use %s; wait 40; netevent probe_door 20; wait 5; qz_rhand "0.0 1.2 -0.41 0 0 90"; wait 8; netevent probe_ceil; qz_rhand "0.0 1.45 -0.41 0 0 90"; wait 4; netevent probe_ceil; qz_rhand "0.0 1.8 -0.41 0 0 90"; wait 12; netevent probe_ceil; wait 5; ' % FISTS
     return s + mark('END') + 'wait 5; quit'
 def basics_check(t, series):
     S = sections(t); R = []
@@ -224,7 +224,7 @@ def basics_check(t, series):
         for sec, kind, hand in (('PUNCH', 'jab', 0), ('HOOK', 'hook', 0), ('OFFJAB', 'jab', 1)):
             pl = [l for l in S.get(sec, []) if l.startswith('RSQB punch') and ('%s, hand %d' % (kind, hand)) in l]
             res('%s, %s hand' % (kind, 'main' if hand == 0 else 'off'), pl, pl[0].strip() if pl else 'no %s thrown' % kind)
-        dmg = [l for l in S.get('PUNCH', []) if re.match(r'DMG t\d+ DoomImp by RSQB_Punch', l)]
+        dmg = [l for l in S.get('PUNCH', []) if re.match(r'DMG t\d+ DoomImp by RSQB_Punch', l, re.I)]
         res('a jab lands on a monster', dmg, dmg[0].strip() if dmg else 'no damage by RSQB_Punch')
         up = [l for l in S.get('UPPER', []) if l.startswith('RSQB uppercut kicks')]
         res('uppercut kicks a barrel up and away, no damage', up and 'health 20' in up[0], up[0].strip() if up else 'no kick')

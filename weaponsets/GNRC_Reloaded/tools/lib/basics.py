@@ -93,6 +93,7 @@ def fist_patches(fists):
         # mostly up an uppercut, each with the same speed, travel and re-arm rules along its own way
         ("\t\tif (speed < thr || v.x / speed < FORWARD || lf < FRONT * vu)\n\t\t\treturn;",
          "\t\tif (speed < thr)\n\t\t\treturn;\n"
+         "\t\tif (RSQB_Punch.HandOnDoor(mo, handIdx))\n\t\t\treturn;\t// the weapon sets: a hand on a door is lifting it, not punching\n"
          "\t\tint kind = RSQB_Punch.Kind(v / speed, FORWARD);\t// the weapon sets: 1 jab, 2 hook, 3 uppercut, 0 none\n"
          "\t\tif (kind == 0 || lf < (kind == 1 ? FRONT : FRONT * 0.5) * vu)\n\t\t\treturn;", 1),
         ("\t\tdouble back = lf;\n\t\tfor (int i = 0; i < count; i++)\n\t\t\tback = min(back, fx[(head - i + HIST) % HIST]);\n\t\tif (lf - back < JAB_LEN * vu)\n\t\t\treturn;",
@@ -143,6 +144,17 @@ class RSQB_Punch : Actor
 		if (b is 'ExplosiveBarrel') return true;
 		String cn = b.GetClassName();
 		return cn.IndexOf("Barrel") >= 0;
+	}
+
+	// a hand on a door face or lifting a door (the basics' lift, or Distance Grab's, asked by name) does not punch
+	static bool HandOnDoor(PlayerPawn mo, int h)
+	{
+		if (!mo || mo.PlayerNumber() != consoleplayer) return false;
+		let dr = RSQB_DG_Door.Get();
+		if (dr && !RSQB_DG_Door.DGLoaded() && (dr.Holding(h) || dr.Touching(h))) return true;
+		let it = ServiceIterator.Find("RSQDG_DoorService");
+		Service s = it.Next();
+		return s && s.GetInt("door.holding", "", h) == 1;
 	}
 
 	// the blow's kind from its direction in the body frame (forward, left, up): 1 jab, 2 hook, 3 uppercut, 0 none
