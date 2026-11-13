@@ -438,6 +438,17 @@ class RS_RosterHandler : EventHandler
 					if (roll < 0)
 					{
 						Class<Actor> pick = chName[start + i];
+						// [11-13 world tier, design 7.1] the natural roll + (world tier - 1), capped at White: the
+						// raised class is chosen here, so the map loads with the right bodies and nothing is swapped
+						int world = RS_Retier.WorldTier();
+						if (pick && world > 1)
+						{
+							String pn = pick.GetClassName();
+							int lf = RS_TierLadder.FamilyOfAny(pn);
+							int up = min(RS_TierLadder.MaxTier(), RS_TierLadder.TierOfAny(pn) + world - 1);
+							Class<Actor> uc = lf >= 0 ? RS_TierLadder.ClassFor(lf, up) : 'None';
+							if (uc) pick = uc;
+						}
 						if (pick) { e.Replacement = pick; e.IsFinal = true; return; }
 						break;
 					}
@@ -449,6 +460,38 @@ class RS_RosterHandler : EventHandler
 		e.Replacement = dial;
 		e.IsFinal = true;
 	}
+
+	// [11-13] the vanilla class a ladder family (RS_TierLadder's numbering) stands in for, and its number here
+	static int RosterIdOf(int ladderFam)
+	{
+		Name dial = RS_TierLadder.DialOf(ladderFam);
+		for (int i = 0; i < FAM_COUNT; i++) if (CHDial(i) == dial) return i;
+		return -1;
+	}
+
+	static Name VanillaName(int id)
+	{
+		static const Name V[] = { 'ZombieMan', 'ShotgunGuy', 'ChaingunGuy', 'DoomImp', 'Demon', 'Spectre', 'Cacodemon', 'LostSoul',
+			'PainElemental', 'HellKnight', 'BaronOfHell', 'Revenant', 'Fatso', 'Arachnotron', 'Archvile', 'CyberDemon', 'SpiderMastermind' };
+		return (id >= 0 && id < FAM_COUNT) ? V[id] : 'None';
+	}
+
+	// a ladder family whose spawns roll on the family's own dial (the caps are off, or its cap is 13): its colour is
+	// only known once the body exists
+	static bool DialUncapped(int ladderFam)
+	{
+		int id = RosterIdOf(ladderFam);
+		if (id < 0) return false;
+		let en = CVar.FindCVar('rs_roster_enable');
+		if (en && !en.GetBool()) return true;
+		let cv = CVar.FindCVar(FamilyCVar(id));
+		return cv && cv.GetInt() >= TIER_MAX;
+	}
+
+	// [11-13, design/BD_XMVE_TIERING.md 8 "map-end boss triggers"] NOT A BUG, NOTHING ADDED. The design feared that
+	// A_BossDeath never fires for ColorfulHell bodies. Rig, doom2.wad MAP07, ColorfulHell set, every monster killed: the
+	// tag 666 floors came down (112 -> 32 and 8) with this pack as it was before today. A CheckReplacee hook written
+	// for it changed nothing in that run and was taken back out. Not tried: a map whose Fatsos are Black / White.
 
 	private int FamilyCap(int fam)
 	{

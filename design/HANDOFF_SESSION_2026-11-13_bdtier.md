@@ -58,3 +58,30 @@ nor Brutal Doom's sprites. Nothing is headset-confirmed.
 - **The colour style shown to him:** XMVE's own A-frames, 14 monsters x 13 colours, tinted by the engine with the
   `rs_bdtier_*` recipes (full-bright, the rig's rig01 room). Each colour is ONE whole-sprite wash: eyes, guns and blood
   take the colour too. He has not answered whether he wants that look.
+
+## 08:17 to 10:15: the real files, the colour sheets, fix 4, the world tier for ColorfulHell
+- The owner uploaded **doom2.wad** (v1.9) and **brutal22test6.pk3** into the chat (the folder link to his PC,
+  `D:\SteamLibrary\steamapps\Common\DooM VR\__CurrentRotationDONOTDELETE`, was down from 08:17 for the rest of the
+  session; he asked that its 2 GB music file never be taken). Freedoom is no longer used.
+- **Real load, rig: doom2 + brutal22test6 + XMVE 04-07 + RSQ_Monsters: no script errors** (runs bdreal1, bdreal2). The
+  kit took on Brutal Doom's own classes on MAP01 (RifleZombie, PistolZombiePatch, Imp, Labguy / Labgal, ChainsawZombie,
+  XMVE's DarkImp / NetherDarkImp at entry Blue). World tier 2: RifleZombie 40 -> 80, Imp 80 -> 94; world tier 3:
+  RifleZombie 120, DarkImp 117 -> 176. The colour behaviours were NOT run against Brutal Doom's monsters or shots.
+  Only RSQ_Monsters of the RSQ packs was loaded; not his full order (no Champions, LegenDoom, UE, MK Crits here).
+- **Colour sheets shown to him** (engine-tinted, full-bright, rig01 room): XMVE's sprites, Doom 2's, and Brutal Doom's
+  + XMVE's real monster classes. Each colour is one whole-sprite wash. He has NOT said whether he accepts the look.
+  Seen in those frames: a Brutal Doom monster that swaps itself for a variant comes back untinted when the tint was put
+  on by hand; with the kit the variant gets its own kit as it spawns (not looked at in a frame).
+- **The world tier now moves ColorfulHell too** (design 7.1 and 7.2): a capped family's raised class is chosen in
+  `RS_RosterHandler.CheckReplacement`; a family on its own dial is swapped as the map loads (`RS_RetierHandler.
+  WorldThingSpawned`, `RS_WorldMark` keeps a changed body from being raised twice); a change during a map goes through
+  `RS_Retier.Request`. Rig, doom2 MAP01: world tier 3 loads Blue Imps and Blue Zombies; raised to 7 they flash to Yellow.
+- **Fix 4 done** (`RS_Retier.LadderHealth`, `RS_BDTierData.Envelope` from hp_drops.json): rig, the Yellow Imp above is
+  226 / 226 (class 145). At world tier 1 a natural spawn keeps Colourful Hell's health (run ch2).
+- **Fix 8, map-end boss triggers: not a bug.** Rig, doom2 MAP07, ColorfulHell set, kill monsters: the tag 666 floors came
+  down with the pack as it was before today. No hook added. Not tried with Black / White Fatsos.
+- **Still NOT done:** 2, 5, 6 (need Champions, LegenDoom, UE, MK Crits); 8's hub reset, ColorfulHell's own conversions
+  (the Abyss PE pulse, Grow) through Swap, Score's colour rows relative to S, census timing; the Cyan Zombie's three
+  bodies on a swap; where S lives.
+- Rig note: a `map` command in the rig's +script does nothing (the -warp map is the one that loads); the last netevent
+  before `quit` never runs.

@@ -59,5 +59,20 @@ for c, (f, e) in HPONLY.items():
 o.append("\t// class : family : entry colour : 1 = health curve only (an ACS health-bar boss). Family -1 = exempt (a scripted map piece).\n"
          "\tstatic int RowCount() { return %d; }\n\tstatic String Row(int i)\n\t{\n" % len(ent) + arr('T', 'String', ent, 4) +
          "\t\treturn T[i];\n\t}\n}\n")
+# fix 4 (design 8.4): ladder health. hp_drops.json "envelope": family (RS_TierLadder's numbering) : colour -> the
+# family's running maximum, +5% a step. 0 = keep the class's own health (the two KEEP verdicts).
+env = json.load(open(os.path.join(D, 'hp_drops.json')))['envelope']
+KEEP = {(5, 9), (16, 5)}   # the Gray Lost Soul hive; the Cyan Zombie (three bodies)
+ev = []
+for f in range(17):
+    for t in range(1, 14):
+        v = env.get('%d:%d' % (f, t), 0)
+        ev.append(0 if (f, t) in KEEP or t > 11 else int(v))
+o[-1] = o[-1].rstrip()[:-1].rstrip() + "\n\n"
+o.append("\t// LADDER HEALTH (design/BD_XMVE_TIERING.md 8.4): a ColorfulHell colour's health under a tier change or a world tier\n"
+         "\t// above 1, so that no step up the ladder loses health. Family in RS_TierLadder's numbering. 0 = the class's own\n"
+         "\t// (Black and White, and the two the design keeps: the Gray Lost Soul hive, the Cyan Zombie's three bodies).\n"
+         "\tstatic int Envelope(int fam, int tier)\n\t{\n" + arr('T', 'int', ev) +
+         "\t\tif (fam < 0 || fam > 16 || tier < 1 || tier > 13) return 0;\n\t\treturn T[fam * 13 + tier - 1];\n\t}\n}\n")
 open(OUT, 'w').write("".join(o))
 print("wrote", os.path.normpath(OUT), len(ent), "rows; base HP", basehp)

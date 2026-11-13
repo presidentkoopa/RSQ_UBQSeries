@@ -5,9 +5,10 @@ Pick the monsters your maps are made of: Colourful Hell's colour tiers, Brutal D
 monster stands on one ladder of thirteen colours, and when one changes tier you see it coming: it strobes white for a
 moment, then it is something worse.
 
-**On the branch `wip/2026-11-13-bdtier`, not on main (2026-11-13):** Brutal Doom's, XMVE's and plain Doom's monsters on
-the colour ladder, the same body (see *Brutal Doom's monsters on the ladder*). Loaded and run on the Linux rig with
-Freedoom's monsters only; NOT run with Brutal Doom 22 or XMVE, NOT seen on their art, not headset-confirmed.
+**New 2026-11-13:** Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, the same body (see *Brutal
+Doom's monsters on the ladder*). Loaded on the Linux rig with doom2.wad, brutal22test6 and XMVE (no script errors; the
+kit took on Brutal Doom's own classes and the numbers moved as the tables say). Its colour behaviours were run on plain
+monsters only. Not headset-confirmed.
 
 *[GIF to come: a monster strobing white, then standing up a tier higher in its new colour]*
 
@@ -92,7 +93,7 @@ A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight,
 
 *Tier Icons Above Monsters on: the gems floating up over MAP01's zombies (rig capture, not headset).*
 
-### Brutal Doom's monsters on the ladder (branch only, see the top)
+### Brutal Doom's monsters on the ladder
 
 The rule is `design/BD_XMVE_TIERING.md`. A Brutal Doom, XMVE or plain Doom monster keeps its own body and class; an
 item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
@@ -100,7 +101,9 @@ item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
 - **Its colour** is its entry colour (most enter at Common; the strong ones higher, from the design's table) plus the
   **World Tier** minus 1. At World Tier 1 every monster is exactly as its mod ships it: no tint, no change.
 - **World Tier (test)** is a row on this mod's page. It stands in for the gun turn-ins, which do not exist yet. Move it
-  during a map and every such monster follows with the tier flash. ColorfulHell's monsters do not follow it yet.
+  during a map and every monster follows with the tier flash. ColorfulHell's monsters follow it too: a map loads with
+  each one that many colours above its roll, and a ColorfulHell body that is on the ladder by a tier change or a world
+  tier above 1 gets *ladder health*, so no step up loses health (a Yellow Imp is 226, not Colourful Hell's 145).
 - **Each colour up** raises health, damage, speed and lowers pain chance by the design's tables, tints the sprite, and
   brings the colour's behaviour: Green acid patches, Blue faster shots with a zap, Purple one more shot, Cyan a hop
   off your aim and a slowing hit, Brown heals and shields its allies, Yellow sets alight, FireBlu twin shots and a
@@ -216,7 +219,7 @@ next monster that needs them.
 | Section | Rows |
 |---|---|
 | Top | Select Monster Set (Vanilla, BD22, **ColorfulHell**) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) · Tier Icons Above Monsters (**Off**, On) |
-| Brutal Doom's Monsters (branch only) | Colour Ladder On Brutal Doom's Monsters (Off, **On**) · World Tier (test) (**1** to 20) |
+| Brutal Doom's Monsters | Colour Ladder On Brutal Doom's Monsters (Off, **On**) · World Tier (test) (**1** to 20) |
 | Miniboss | Miniboss From (**Same as Monster Set**, ColorfulHell) · Thralls From (**Same as Miniboss**, ColorfulHell, Map's Own Monsters) |
 | Monster Diagnostics | A test page. Today only God Mode works: Spawn hostile, the fourteen chaingunner buttons, Spawn All Fourteen, Remove them all, DIAG and WAKE are on the page but nothing answers them |
 

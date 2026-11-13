@@ -824,6 +824,30 @@ class RS_Retier play
 		return -1;
 	}
 
+	// [11-13 fix 4, design/BD_XMVE_TIERING.md 8.4] LADDER HEALTH. 43 single steps up Colourful Hell's ladder LOSE health
+	// (Brown Imp 215 -> Yellow 145). The class defaults stay Colourful Hell's (a natural spawn at world tier 1 keeps its
+	// numbers); a body on the ladder by a tier change or a world tier above 1 gets the family's running maximum, +5% a
+	// step (RS_BDTierData.Envelope, generated from design/tiering/data/hp_drops.json). 41 are lifted; two keep their
+	// own (the Gray Lost Soul hive, the Cyan Zombie), and Black and White keep Colourful Hell's boss health.
+	static void LadderHealth(Actor a, int fam, int tier)
+	{
+		if (!a) return;
+		int env = RS_BDTierData.Envelope(fam, tier);
+		if (env <= 0 || env <= a.default.health || a.StartHealth == env) return;
+		bool fresh = a.health == a.GetSpawnHealth();
+		a.StartHealth = env;
+		if (fresh) a.health = a.GetSpawnHealth();
+	}
+
+	// the world tier (RS_BDTier.zs: rsq_mon_worldtier while no turn-in code exists), 1 with the ladder switched off
+	static int WorldTier()
+	{
+		let on = CVar.FindCVar('rsq_mon_bdtier');
+		if (on && !on.GetBool()) return 1;
+		let w = CVar.FindCVar('rsq_mon_worldtier');
+		return w ? clamp(w.GetInt(), 1, 40) : 1;
+	}
+
 	// The swap. Returns the new monster, or null if nothing changed.
 	static Actor Swap(Actor mo, int tier, bool instant = false)
 	{
@@ -852,6 +876,10 @@ class RS_Retier play
 
 		Actor a = Actor.Spawn(nc, mo.pos, NO_REPLACE);
 		if (!a) return null;
+		// [11-13 fix 4] a body that got its colour from a tier change stands on the family's ladder health, so a step
+		// up never loses health; and it is marked, so the world tier does not raise it a second time as it spawns
+		LadderHealth(a, fam, tier);
+		a.GiveInventory("RS_WorldMark", 1);
 
 		a.angle   = mo.angle;
 		a.pitch   = mo.pitch;
@@ -990,6 +1018,12 @@ class RS_RetierJob : Thinker
 // ----------------------------------------------------------------------------
 class RS_LadderMark : Thinker {}
 
+// [11-13] on a ColorfulHell body that came out of a tier change: the world tier is already in its colour
+class RS_WorldMark : Inventory
+{
+	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE +INVENTORY.UNTOSSABLE }
+}
+
 class RS_RetierHandler : EventHandler
 {
 	// CH's listing order (the numbers before 11-11) -> the strength ladder
@@ -1018,9 +1052,27 @@ class RS_RetierHandler : EventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
-		if (!a || !a.bIsMonster || a.bNOICEDEATH) return;
+		if (!a || !a.bIsMonster) return;
 		String cn = a.GetClassName();
-		if (cn.Left(3) ~== "RS_") a.bNOICEDEATH = true;
+		if (!(cn.Left(3) ~== "RS_")) return;
+		a.bNOICEDEATH = true;
+
+		// [11-13 world tier for ColorfulHell, design/BD_XMVE_TIERING.md 7.1] A ColorfulHell monster at world tier S
+		// stands S - 1 colours above its natural roll, on ladder health. A capped family got its raised class when it
+		// was chosen (RS_RosterHandler.CheckReplacement: no second body). A family rolling on its own dial is only
+		// known now, so a map-load spawn of one is swapped here, instantly. A body from a tier change carries
+		// RS_WorldMark and is left alone.
+		int world = RS_Retier.WorldTier();
+		if (world <= 1 || a.health <= 0 || a.bFRIENDLY) return;
+		int fam = RS_TierLadder.FamilyOfAny(cn);
+		if (fam < 0) return;
+		int tier = RS_TierLadder.TierOfAny(cn);
+		if (!a.FindInventory("RS_WorldMark") && level.maptime <= 1 && RS_RosterHandler.DialUncapped(fam))
+		{
+			int want = min(RS_TierLadder.MaxTier(), tier + world - 1);
+			if (want > tier && RS_Retier.Swap(a, want, true)) return;
+		}
+		RS_Retier.LadderHealth(a, fam, tier);
 	}
 
 	override void WorldLoaded(WorldEvent e)

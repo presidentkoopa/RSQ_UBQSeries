@@ -852,7 +852,21 @@ class RS_BDTierHandler : EventHandler
 			RS_Retier.RequestKit(o, max(k.entry, (j && j.kitRung > 0 ? j.kitRung : k.rung) + d), false);
 			n++;
 		}
-		if (Debug()) Console.Printf("BDTIER: world tier %d: %d monsters follow", w, n);
+		// ColorfulHell's monsters follow too (the swap, with the flash), never below Common or above White
+		int cn = 0;
+		ThinkerIterator ai = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(ai.Next()))
+		{
+			if (!a.bISMONSTER || a.health <= 0 || a.bFRIENDLY) continue;
+			String an = a.GetClassName();
+			if (!(an.Left(3) ~== "RS_") || RS_TierLadder.FamilyOfAny(an) < 0) continue;
+			let cj = RS_Retier.JobFor(a);
+			int cur = cj ? cj.targetTier : RS_TierLadder.TierOfAny(an);
+			RS_Retier.Request(a, clamp(cur + d, 1, RS_TierLadder.MaxTier()));
+			cn++;
+		}
+		if (Debug()) Console.Printf("BDTIER: world tier %d: %d kit monsters and %d ColorfulHell monsters follow", w, n, cn);
 	}
 
 	//   netevent rs_bdtier_dump    every kit monster: class, family, entry, rung, health, damage, speed, pain chance
@@ -871,5 +885,15 @@ class RS_BDTierHandler : EventHandler
 				k.rung, k.Tier(), o.health, o.GetSpawnHealth(), o.DamageMultiply, o.Speed, o.PainChance, int(o.Translation), k.hpOnly ? " hp-only" : "");
 		}
 		Console.Printf("BDTIER: %d kit monsters, world tier %d", n, WorldTier());
+		// ColorfulHell's, counted by class with their health
+		ThinkerIterator ai = ThinkerIterator.Create("Actor");
+		Actor a;
+		while (a = Actor(ai.Next()))
+		{
+			if (!a.bISMONSTER || a.health <= 0) continue;
+			String an = a.GetClassName();
+			if (!(an.Left(3) ~== "RS_") || RS_TierLadder.FamilyOfAny(an) < 0) continue;
+			Console.Printf("BDTIER: CH %s tier %d | hp %d/%d (class %d)", an, RS_TierLadder.TierOfAny(an), a.health, a.GetSpawnHealth(), a.default.health);
+		}
 	}
 }
