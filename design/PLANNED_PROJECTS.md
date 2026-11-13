@@ -36,9 +36,9 @@ speed in slow motion (the ledge save). No rope, reel, swing or climb: those are 
   off; a guarded miniboss: bounce, GUARD shakes, no damage.
 - **Slow motion in a chain (owner):** each link restarts it a little shorter than the last, so a chain fades out.
   Gun Bonsai VR's Big Pass will let it be extended, maybe a minigame: while airborne some monsters are worth more time.
-- **Assumed, owner did not answer (23:2x):** the bounce goes up and toward where you LOOK (never back into the monster),
-  so you steer the chain with your gaze; mid-air retargeting SNAPS to the nearest valid target in a small cone round
-  the off hand's line. Both to be confirmed.
+- **Bounce (owner 23:4x):** away from the monster and up: straight out from its face, whatever way you look.
+- **Mid-air aim (owner 23:4x):** the hook snaps to the nearest valid target in a small cone round the off hand's line,
+  on by default; an Aim Assist row switches it off.
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
