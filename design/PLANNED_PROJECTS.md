@@ -121,3 +121,23 @@ Parked until QuestZDoom has netplay (owner 11-09). The known items are marked TO
 Known from the 11-10 agents: the menu checker finds 29 structure problems (the orphan RS pages with the undefined
 RS_CH_OffOn, no Reset All on the front page, a sub menu not named Test and Debug); the zscript gives 256 compile
 warnings (deprecated VelX-style calls in rs_zombieman.zs, rs_shotgunner.zs). The owner scopes the rest. Not started.
+
+## Folded in 2026-11-12 22:2x (owner: "i want the Big Five / 2.0 stuff to be all that I have left")
+Everything left is in a big project. Where each leftover went:
+- **Monster Assembly:** sprite-name clashes between packs; the tier flash matched exactly to Hackfraud's HF_Monster.zs
+  (needs the owner's file from E:\oldshit\outdatedHFmaster); thrall drops checked on other monster types.
+- **The Arcade:** words over Champions monsters; fly-in crosshairs (design/refs/crosshair_flyin/); the ski-pole jump
+  kick, dash and slide (above); the yellow cross kick hit (design/mockups/kick_hits/); a SOTN look for the whole UI
+  (design/mockups/sotn_crit/, owner: "i might consider redesigning the entire UI in this fashion").
+- **Gun Bonsai VR's Big Pass:** the axe's guaranteed crit as an upgrade; the boxing gloves (more of their own, or
+  folded into fists, or removed: owner 22:2x "Gun Bonsai pass").
+- **Big Pass 5 (Options):** the holster swap default; the miniboss extras still in (Arrives By Itself and its
+  guardrails, the watch-check call-in, greed and rage, Graves Rise, room glow and heartbeat, tethers/flames/words/Xs,
+  music, Roar and Morphed, Tier From "Set"; design/MINIBOSS_CLEANUP_AUDIT.md); GunCards per-gun roll/pitch/yaw (and
+  the sliders go once the owner bakes the small card per model).
+- **Score's Big Pass:** Rage Quit and Riot Control (they live or die with greed and rage).
+- **Grapple 2.0:** the ledge save at full speed in slow motion.
+Owner-only (headset or his files): rogue voxels / monsters dropping frames (likely the frame cap, fixed 11-12), the Imp
+vanishing before it throws, holsters while DOWN, "sometimes we don't get up" (his log with rsqsm_debug 1), the whip's
+direction (parked by him) and the Whip README (his sign-off).
+
