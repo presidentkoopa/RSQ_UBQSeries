@@ -39,8 +39,9 @@ spot of their own on your belt.
 | Put a gun at a holster that is not its own | It goes to its own holster instead; if the holster you reached for holds a gun, that one comes to your hand |
 | Reach for a gun in another gun's holster with a gun in your hand | That gun comes to your hand. Yours goes by **Swap at Another Gun's Holster**: **Into the Wheel** (default; it stays with you, or goes to its own holster if it has one) or **Takes That Holster** (it goes into the holster you reached, which becomes its own). Either hand |
 | Put a gun at a holster another gun owns that has nothing in it, when your gun has no home yet | Turned away: red flash, double buzz, the owner's picture |
-| An empty hand in an empty holster whose gun you still carry but is in neither hand (in the Wheel) | Its own holster gives it to you (an axe drawn into the off hand comes out as the off-hand axe) |
-| An empty hand in an empty holster whose gun is out in the world (thrown) | Nothing comes out: a soft refusal, the red flash with that gun's picture, double buzz |
+| An empty hand at the **axe's** holster while you have axes (BD22 VR Reloaded 2.0.4r: axes are a count shared by both hands) | An axe comes out, every time: throw the one you drew and another takes its place, until you run out (into the off hand it is the off-hand axe). The axe only: any other gun's empty holster gives nothing back (owner 11-12: "this was an axe problem") |
+| Your last axe thrown | The axe's holster is unassigned (a white flash shows whose it was). Assign it again in the Wheel, or put an axe into a holster |
+| An empty hand at any other empty holster | Nothing comes out: the plain refusal (double buzz), as before 11-12 |
 | An empty hand held in an empty holster for a second | That holster is freed (a white flash shows whose it was) |
 | Squeeze at the belt buckle | Your grenade comes to your main hand. Squeeze there again with it in hand and your gun comes back |
 | Reload a Brutal Doom VR gun with your off hand at the ammo pouch | That's where the magazines, shells and rounds come from |
@@ -215,8 +216,9 @@ it drops. You and your shots move at full speed in the smoke's slow motion unles
 While Smoking). *(The switch, the holster and the level change: rig only, not headset-confirmed.)*
 
 **Cigarettes are precious.** You start a game with a full pocket, and it does **not** refill on a new level: what you
-have left comes with you. You earn more: RSQ Score gives you one every so many points, killing an RSQ Miniboss fills
-the pocket, and getting up from RSQ SlowMo's DOWN gives one back. (Turn on **Refill Each Level** for the old way.)
+have left comes with you. You earn more: RSQ Score gives you one every so many points, killing an RSQ Miniboss gives
+you one (owner 2026-11-12: "change to +1 cigarette, cigarettes are massively powerful now"; it filled the pocket before),
+and getting up from RSQ SlowMo's DOWN gives one back. (Turn on **Refill Each Level** for the old way.)
 
 *[picture to come: the whole ritual, pocket to lips to Zippo to flick (GIF)]*
 
@@ -291,7 +293,7 @@ torso fades to about half as you look down, so you can see your holsters.
 - **RSQ SlowMo:** the cigarette's slow motion; getting up from DOWN gives a cigarette back; the "Grip inside the ring" hint
   never counts while you are down.
 - **RSQ Score:** a Quick Draw bonus for a kill with a gun you just drew; cigarettes earned by score.
-- **RSQ Miniboss:** a miniboss kill fills your cigarettes; calling a miniboss fight at the watch check never also moves your gun.
+- **RSQ Miniboss:** a miniboss kill gives you one cigarette, never past the pocket's size; calling a miniboss fight at the watch check never also moves your gun.
 - **RSQ Gun Bonsai VR:** Smoker (longer smoke slow motion, and nothing can hurt you in it, across a level change too,
   ending when the slow motion ends), Chain Smoker (more
   cigarettes), Gun Toss (harder gun throws), Boomerang Gun (a thrown gun flies back to its holster or your hand).
@@ -314,7 +316,7 @@ torso fades to about half as you look down, so you can see your holsters.
 | Stored Guns | Show Stored Guns (On) · Stored Gun Size (1.0) · Ammo Light (On) · Ammo Count (Off) |
 | Gun Throwing | Throw Guns (Off) · Throw With Use (Off) · Thrown Guns Hurt (On) |
 | Body | Seated (Off) · Measure My Height · Torso (Off) · Torso Style (Doom Marine / Quake Grunt) · Helmet (On) · Torso Fades Looking Down (On) · Torso Follows Room Turns (On) · Head and Hands Turn (Off) · Torso Catches Up (Off) · Recenter by Hands (On) · Recenter Torso (a key, unbound) |
-| Cigarettes | Cigarettes (Off) · Smoke Slows Time (On) · Smoke Slow-Mo Time (15 s) · Move at Full Speed While Smoking (On) · Cigarette Every N Score (0, off) · Minibosses Refill Cigarettes (On) · Refill Each Level (Off) · Unlit Cigarette Goes Away (On) · Show Cigarettes (On) |
+| Cigarettes | Cigarettes (Off) · Smoke Slows Time (On) · Smoke Slow-Mo Time (15 s) · Move at Full Speed While Smoking (On) · Cigarette Every N Score (0, off) · Miniboss Kill Gives a Cigarette (On) · Refill Each Level (Off) · Unlit Cigarette Goes Away (On) · Show Cigarettes (On) |
 | Setup | Move Holsters by Hand (Off) · Mirror (Off / While Moving / Always; While Moving) · Mirror Shows (Front / Back / Both; Both) · Haptics (On) · Messages (Off) |
 | Holster Profiles | Save and Load: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow) |
 | Test and Debug | Stored Guns: Gun Length (0.25 m), Back Gun Length (0.70 m), Gun Turn (0°), Flip These Guns · Body: Body Turn Angle (35°), Body Turn Delay (1 s), Ignore Looking Down (25°), Mirror Distance (1.0 m) · Hands: Press Delay (3 tics), Throw Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys, Off Grip Keys, Empty Hand Weapon · Torso Fit: Torso Height, Torso Forward, Torso Size, Helmet Height, Low Health Glow (35%) · Cigarette: Mouth Zone Size, In Mouth Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Unlit Goes Away After (7 s), Slow Motion Speed (25%), Pack Size (3) · Holster Positions: Forward, Left, Up and Size for each of Left Hip, Right Hip, Grenade Spot, Left Chest, Right Chest, Keyring, Left Shoulder, Right Shoulder, Left Saber, Right Saber, Whip, Flare, Ammo Pouch · Debug: Throw Debug Log (Off) |
@@ -327,6 +329,8 @@ torso fades to about half as you look down, so you can see your holsters.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, run `mbthrall2`, the owner's full order with BD22 VR Reloaded 2.0.4q and RSQ Miniboss; Cigarettes switched on for the run, Messages on) | **A miniboss kill gives one cigarette:** the pocket set to 1 by a test probe, the called-in miniboss killed, "T_RIG cigarettes +1 (miniboss): 2 of 3" (before, run `mbdrop1`: "+3 (miniboss): 3 of 3" from an empty pocket). The menu row reads **Miniboss Kill Gives a Cigarette**. Not shown: a kill with the pocket already full (the cap is the same `CigGive` as Score's) |
+| **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2 on the owner's full order with BD22 VR Reloaded 2.0.4r; logs and scripts in `tools/rigtest/axepool/evidence/`) | **Guns' holsters as before 11-12:** the shotgun drawn from its holster and swapped for the MP40 (shotgun in the Wheel); the empty off hand pressed at the shotgun's empty holster -- refused, nothing drawn (no hand-back); held there 1 s -- freed ("freed, it was Shot_Gun's"). **The axe's holster:** after a throw (one axe left) an empty main hand at the axe's holster drew an axe (T_HOME); the last axe thrown -- "no axes left: Right hip is unassigned"; an empty hand there afterwards got the plain refusal. No script error from our packs (the 4 voxeldef errors of 02_BD22_VoxelPack pre-exist). Not run: a holstered axe left in the holster while both hands throw (Content kept), Takes That Holster with the axe |
 | **rig only, not headset-confirmed** (2026-11-12, runs ax3 and ax4 on the owner's order with BD22 VR Reloaded 2.0.4q; logs and a frame in `tools/rigtest/swapprobe/evidence/`) | **Swap at Another Gun's Holster**, Into the Wheel: an unassigned MP40 in the main hand at the shotgun's full holster -- MP40 to the Wheel, shotgun drawn; the off hand's MP40 copy at the same holster -- the shotgun to the off hand; an assigned shotgun at the SSG's holster still goes home and the SSG comes out (HOME). Takes That Holster: the MP40 at the shotgun's holster went in and the holster became the MP40's, the shotgun to the hand; an assigned SSG took the MP40's holster the same way; the off hand's Rifle copy took the SSG's holster, the SSG to the off hand. The ShieldSaw's shoulder (Mount Spot 0) still refused a gun in both modes. **The axe's holster:** the axe drawn from it into the off hand and thrown, then an empty main hand at that holster drew the off-hand axe from the Wheel as the main axe (T_HOME); with no axe carried, the press refused softly (T_EMPTY, the axe's picture over the ring: frame `ax4_f111_axe_holster_soft_refusal_picture.jpg`). No script error from our packs. Not run: the lit flare and saber refusals (their code is untouched and runs before the swap), a left-handed player, Takes That Holster with a BD22 dual pair (both copies) in the hands |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | While DOWN the holsters come down with the hands: both 26.4 units lower, the same gaps as standing. |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | `flare.home` 1 with the flare holster on; FnF's flashlight clip at the rig's torch spot (0.207 m behind the flare holster, taken and put back there); the main hand at the cigarette pocket (0.058 m) with the main grip takes a cigarette and puts it back; no holster, Distance Grab or FnF action fired there. On the rig the same grip key also flipped the pistol's burst mode (BD22 VR, as in CIG3) |

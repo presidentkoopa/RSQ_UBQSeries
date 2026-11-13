@@ -415,7 +415,7 @@ class TFLV_PerPlayerStats : Object play {
     Weapon wielded = WeaponForHand(hand);
     if (!wielded) return null;
     let info = hand == 1 ? infoForOffhandWeapon : infoForCurrentWeapon;
-    if (info && info.wpn == wielded) return info;
+    if (info && info.Holds(wielded)) return info;     // RSQ: Holds -- the one axe's record in either hand
     return null;
   }
 
@@ -526,6 +526,10 @@ class TFLV_PerPlayerStats : Object play {
         return weapons[i];
       }
     }
+    // RSQ: the one axe (TFLV_WeaponInfo.Holds): either hand's version finds the axe's record
+    for (int i = 0; i < weapons.size(); ++i) {
+      if (weapons[i].Holds(wpn)) return weapons[i];
+    }
     return null;
   }
 
@@ -603,6 +607,9 @@ class TFLV_PerPlayerStats : Object play {
     // Fast path -- we already have a WeaponInfo for the player's current weapon
     // and just need to find it.
     let info = GetInfoFor(wpn);
+    // RSQ: the one axe's record follows the axe in use -- bound again to this version when the one it names is gone or
+    // in no hand (a thrown last axe, the off hand's axe put away) -- with its XP, level and upgrades as they are
+    if (info && info.wpn != wpn && (!info.wpn || info.wpn.owner != owner || HandHolding(info.wpn) < 0)) info.wpn = wpn;
 
     // Slow path -- no associated WeaponInfo, but there might be one we can
     // re-use, depending on the upgrade binding settings.
@@ -645,6 +652,7 @@ class TFLV_PerPlayerStats : Object play {
     // can be rebound to new weapons.
     if (bonsai_upgrade_binding_mode != TFLV_BIND_WEAPON) return;
     for (int i = weapons.size() - 1; i >= 0; --i) {
+      if (TFLV_WeaponInfo.OneWeaponKey(weapons[i].wpnClass) != "") continue;   // RSQ: the one axe's record outlives its axes
       if (!weapons[i].wpn && !IsInfoReferenced(weapons[i])) {
         weapons.Delete(i);
       }

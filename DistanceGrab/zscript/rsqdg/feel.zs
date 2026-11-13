@@ -697,9 +697,11 @@ class RSQDG_Events play
 		while (s = it.Next())
 			s.GetInt("grab.event", what, hand, fromAir ? 1.0 : 0.0, a, 'RSQ_DistanceGrab');
 	}
-	// A QUESTION, not news: the same doors, and the first service that answers non-zero has the thing (owner 2026-11-12,
-	// "pickup.claim": a pickup the game refused that another pack takes by its own rule -- BD22 VR Reloaded's axe, one
-	// per hand). 0: nobody claimed it.
+	// A QUESTION, not news: the same doors, and the first service that answers non-zero has the thing (owner 2026-11-12):
+	//   "pickup.first"  asked BEFORE the pickup (flight.zs TakeInto): 1 the asker's pack gave it to this hand and took
+	//                   the thing away, -1 it refuses it (AMMO FULL) -- BD22 VR Reloaded 2.0.4r's axe pool
+	//   "pickup.claim"  a pickup the game refused that another pack takes by its own rule (2.0.4q's axe)
+	// 0: nobody answered.
 	static int Ask(String what, int hand, Actor a, bool fromAir = false)
 	{
 		let it = ServiceIterator.Find("GrabEventService");

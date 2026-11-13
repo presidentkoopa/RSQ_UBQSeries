@@ -105,6 +105,22 @@ class TFLV_WeaponInfo : Object play {
     equivalencies.copy(classes);
   }
 
+  // RSQ (owner 2026-11-12, BD22 VR Reloaded 2.0.4r): ONE AXE. BD22 VR's axe has a version for each hand (BrutalAxe in
+  // the main hand, RSQ_Off_BrutalAxe in the off hand) and the axes are one count shared by both: Gun Bonsai VR treats
+  // them as one weapon, one record -- one XP, one level, one set of upgrades -- whichever hand (or both) holds an axe,
+  // and the record outlives the axes themselves (thrown, all of them, and picked up again). wpn names whichever version
+  // it was last bound to; Holds() is the test every per-weapon lookup uses instead of wpn == w. Every other weapon: one
+  // record per weapon, exactly as before (Holds is wpn == w).
+  static clearscope String OneWeaponKey(String cls) {
+    return (cls ~== "BrutalAxe" || cls ~== "RSQ_Off_BrutalAxe") ? "BrutalAxe" : "";
+  }
+  clearscope bool Holds(Weapon w) const {
+    if (!w) return false;
+    if (wpn == w) return true;
+    String k = OneWeaponKey(wpnClass);
+    return k != "" && OneWeaponKey(w.GetClassName()) == k && stats && w.owner == stats.owner;
+  }
+
   bool IsEquivalentTo(Weapon wpn) {
     let result = wpn.GetClassName() == self.wpnClass
       || equivalencies.find(wpn.GetClassName()) != equivalencies.size();

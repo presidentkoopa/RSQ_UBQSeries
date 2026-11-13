@@ -210,6 +210,10 @@ class RSQDG_Reach
 		// distance grabbing working at all"): Brutal Doom's fists (Melee_Attacks, +MELEEWEAPON) are
 		// what the main hand holds once its gun is holstered, and the vanilla Fist the same. They reach.
 		if (n == "fist" || (w.bMELEEWEAPON && w.bCHEATNOTWEAPON)) return "";
+		// BD22 VR RELOADED'S AXE (owner 2026-11-12, its 2.0.4r axe pool: throw, Distance Grab it back, throw): after a throw
+		// the next axe is already in the hand, and that hand reaches for the one it threw. A swing still stands the reach
+		// down (the punch-speed rule above).
+		if (n == "brutalaxe" || n == "rsq_off_brutalaxe") return "";
 		if (w.bMELEEWEAPON) return "holding a melee weapon (" .. w.GetClassName() .. ")";
 		return (n.IndexOf("ssq_") == 0 || n.IndexOf("ubqs_") == 0) ? "another mod's hand (" .. w.GetClassName() .. ")" : "";
 	}

@@ -949,13 +949,31 @@ class RSQTR_Rig : EventHandler
 	// main hand X itself; either version when only one is carried (BD22 VR turns it into the right one in that hand, so a
 	// single axe stays a single axe). Not while either hand holds X or its copy, or one is on its way to a hand (one gun,
 	// one place; Dual is its own key). except: a class the asking hand holds (the gun about to be swapped out).
+	// THE AXE ONLY (owner 2026-11-12 20:4x: "why are we forgetting guns? this was an axe problem"). Every other gun's empty
+	// holster is as it was before 11-12: nothing comes out, and an empty hand held there frees it (FreeTick).
+	// THE AXE'S HOLSTER REFILLS (owner 2026-11-12 20:42-20:5x, BD22 VR Reloaded 2.0.4r: axes are a count of up to 10, shared
+	// by both hands, and owning any is owning both hands' versions): while you have axes, the axe's holster always has one
+	// for a hand that holds none -- throw the one you drew and another takes its place -- the off hand gets the off-hand
+	// axe, the main hand the axe; at 0 axes the holster is unassigned (AxeTick).
+	static bool HandsBack(String x) { return x ~== "BrutalAxe"; }     // BD22 VR's axe (RSQ_Off_BrutalAxe files as it, MainOf)
 	Weapon HomeGun(PlayerPawn pmo, int r, int h, String except = "")
 	{
 		if (!pmo || !IsGunRegion(r) || r == RSQTR_Hooks.ShieldHolster(pmo) || Content(pmo, r) != "") return null;
 		int n = pmo.PlayerNumber();
 		String x = lockCls[n * RSQTR_Region.N + r];
-		if (x == "" || (except != "" && x ~== except)) return null;
+		if (x == "" || !HandsBack(x) || (except != "" && x ~== except)) return null;
 		let p = pmo.player;
+		if (AxePool(pmo) >= 0)
+		{
+			// the axe pool: either hand, whatever the other hand holds; not into a hand that holds an axe already
+			Weapon held = h == 1 ? p.OffhandWeapon : p.ReadyWeapon;
+			if (AxePool(pmo) <= 0 || (held && MainOf(HeldAs(pmo, held)) ~== x)) return null;
+			Name axn = h == 1 ? 'RSQ_Off_BrutalAxe' : 'BrutalAxe';
+			class<Weapon> axc = axn;
+			let axw = axc ? Weapon(pmo.FindInventory(axc)) : null;
+			if (axw && h == 0 && axw.GetClass() != axc) axw = null;
+			return axw;
+		}
 		if (p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== x) return null;
 		if (p.OffhandWeapon && MainOf(p.OffhandWeapon.GetClassName()) ~== x) return null;
 		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon && MainOf(p.PendingWeapon.GetClassName()) ~== x) return null;
@@ -988,13 +1006,51 @@ class RSQTR_Rig : EventHandler
 		}
 		return HomeGun(pmo, r, h, cls);
 	}
-	// SOFT REFUSAL (owner 2026-11-12): an empty hand at an empty holster that is a gun's, the gun not carried (thrown, or
-	// out in the world): nothing comes out -- no draw is faked -- and the refusal says whose holster it is (the ring red,
-	// the gun's picture over it, the double pulse). A free, unassigned empty holster: the refusal alone, as before.
+	// BD22 VR Reloaded 2.0.4r's axe count (its ammo, RSVR_Axes, by name), or -1 without it (an older BD22 VR)
+	static int AxePool(Actor pmo)
+	{
+		Name pn = 'RSVR_Axes';
+		class<Inventory> pc = pn;
+		return pc ? pmo.CountInv(pc) : -1;
+	}
+	// AT 0 AXES THE AXE'S HOLSTER IS UNASSIGNED (owner 2026-11-12): once, as the last axe goes; assign it again in the Wheel
+	// or put an axe into a holster and it is the axe's again. Every machine (play), from WorldTick.
+	private transient bool hadAxes[MAXPLAYERS];
+	private void AxeTick()
+	{
+		for (int n = 0; n < MAXPLAYERS; n++)
+		{
+			if (!playeringame[n] || !players[n].mo) continue;
+			let pmo = players[n].mo;
+			int c = AxePool(pmo);
+			if (c < 0) return;
+			bool has = c > 0;
+			if (hadAxes[n] && !has)
+			{
+				for (int k = 0; k < RSQTR_Region.N; k++)
+				{
+					if (!HandsBack(lockCls[n * RSQTR_Region.N + k])) continue;
+					if (Flag("rsqtr_messages", players[n], false))
+						Console.Printf("T_AXE t%d: no axes left: %s is unassigned (it was the axe's)", level.maptime, RSQTR_Region.NAMES[k]);
+					if (n == consoleplayer && IsGunRegion(k)) ShowRule(pmo, k, RULE_FREE, lockCls[n * RSQTR_Region.N + k]);
+					lockCls[n * RSQTR_Region.N + k] = "";
+					lastPut[n * RSQTR_Region.N + k] = "";
+					lastPair[n * RSQTR_Region.N + k] = false;
+				}
+			}
+			hadAxes[n] = has;
+		}
+	}
+
+	// SOFT REFUSAL (owner 2026-11-12): an empty hand at the AXE's empty holster, no axe carried (thrown, out in the world):
+	// nothing comes out -- no draw is faked -- and the refusal says whose holster it is (the ring red, the axe's picture
+	// over it, the double pulse). Every other empty holster (a gun's, or a free one): the refusal alone, as before 11-12
+	// (owner 20:4x: the hand-back and this were for the axe only); held there with an empty hand it frees (FreeTick).
 	void EmptyRefused(PlayerPawn pmo, int h, int r)
 	{
 		RefuseFeel(pmo, h);
 		String x = IsGunRegion(r) ? lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r] : "";
+		if (!HandsBack(x)) x = "";
 		if (x != "") ShowRule(pmo, r, RULE_REFUSE, x);
 		if (Flag("rsqtr_messages", pmo.player, false))
 		{
@@ -2298,6 +2354,7 @@ class RSQTR_Rig : EventHandler
 	{
 		for (int gn = 0; gn < MAXPLAYERS; gn++) GbRefresh(gn);
 		ThrownTick();
+		AxeTick();
 		ReturnTick();
 		TickPairs();
 		TickLoadout();

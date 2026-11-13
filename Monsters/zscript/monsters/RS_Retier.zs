@@ -901,7 +901,11 @@ class RS_RetierJob : Thinker
 		// flash colour, FULL-BRIGHT so it reads white in any light, then the
 		// monster's own colour at its own brightness.
 		ticker++;
-		if ((ticker / 3) % 2 == 0)
+		// PHOTOSENSITIVE MODE (RSQ Accessibility rsqa_photosafe, owner 2026-11-12 "Yes, calm it"): no flicker; the monster
+		// holds the flash colour, full-bright, for the whole wait, then changes
+		bool calm = false;
+		{ Name an = "RSQA_Menu"; class<Object> ac = an; if (ac) { let pc = CVar.FindCVar('rsqa_photosafe'); calm = pc && pc.GetInt() != 0; } }
+		if (calm || (ticker / 3) % 2 == 0)
 		{
 			mo.A_SetTranslation(targetTier == 13 ? "rs_tier_flashblack" : "rs_tier_flashwhite");   // 13 White (was 11 before the 11-11 renumber)
 			mo.bBRIGHT = true;

@@ -1,0 +1,253 @@
+5699:AX STATE t0 main Rifle off none pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5705:AX STATE t1 main Rifle off rsq_hands pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5706:AX TP t42 at (-320 0 64) angle 90
+5707:AX CLEAR t42 49 removed
+5712:RSQ offhand rule t42: MP40 picked up: its off-hand version comes with it
+5713:RSQ offhand rule t42: Shotgun picked up: its off-hand version comes with it
+5717:AX STATE t42 main MP40 off rsq_hands pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5719:AX STATE t45 main Shot_Gun off rsq_hands pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5726:G1_SHOTGUN_INTO_RCHEST
+5727:AX RIG t107 tag 1 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5732:T_PRESS t117 main hand at Right chest: main Shot_Gun, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+5734:T_RULE t119 assign (bright) at Right chest, picture Shot_Gun
+5740:AX STATE t119 main Shot_Gun off rsq_hands pend Melee_Attacks | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5743:AX STATE t120 main Melee_Attacks off rsq_hands pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5746:G2_DRAW_SHOTGUN
+5747:AX RIG t153 tag 2 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=Shot_Gun a:Shot_Gun] 
+5751:T_PRESS t165 main hand at Right chest: main Melee_Attacks, off rsq_hands; holding Shot_Gun, assigned Shot_Gun; swap mode Into the Wheel
+5756:AX STATE t167 main Melee_Attacks off rsq_hands pend Shot_Gun | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5760:AX STATE t170 main Shot_Gun off rsq_hands pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5763:AX STATE t202 main MP40 off rsq_hands pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5764:G3_OFF_EMPTY_HAND_PRESS_AT_SHOTGUNS_EMPTY_HOLSTER_SHOTGUN_IN_WHEEL
+5765:AX RIG t261 tag 3 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:Shot_Gun] 
+5771:T_PRESS t274 off hand at Right chest: main MP40, off rsq_hands; holding -, assigned Shot_Gun; swap mode Into the Wheel
+5772:T_REFUSE t274 hand 1: double pulse and *usefail
+5780:G4_OFF_EMPTY_HAND_HOLD_1S_FREES
+5781:AX RIG t320 tag 4 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:Shot_Gun] 
+5787:T_PRESS t332 off hand at Right chest: main MP40, off rsq_hands; holding -, assigned Shot_Gun; swap mode Into the Wheel
+5788:T_REFUSE t332 hand 1: double pulse and *usefail
+5798:T_RULE t366 free (white) at Right chest, picture Shot_Gun
+5799:T_FREE t366 off hand held 1 s at the empty Right chest: freed, it was Shot_Gun's
+5806:G5_AFTER
+5807:AX RIG t417 tag 5 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5812:AX STATE t417 main BrutalAxe off rsq_hands pend - | Axes 1 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5813:A1_ONE_AXE_PICKED_UP
+5814:AX RIG t488 tag 10 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5816:AX SPAWN t488 BrutalAxe -> BrutalAxe at 160 ahead
+5817:A2_OFF_HAND_GRABS_A_MAP_AXE
+5818:AX RIG t492 tag 11 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5821:[RSQDG] hand 1 LOCKED BrutalAxe
+5822:AX EVENT t492 pull.lock hand=1 thing=BrutalAxe
+5825:[RSQDG] hand 1 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+5826:AX EVENT t526 pull.start hand=1 thing=BrutalAxe
+5828:RSQ axes t531: hand 1 grabbed an axe it did not throw -> +1, 2 axes
+5829:[RSQDG] hand 1: BrutalAxe given by its own pack before the pickup (pickup.first)
+5830:[RSQDG] hand 1 caught and USED BrutalAxe
+5831:AX EVENT t531 pull.caught hand=1 thing=Null
+5832:AX STATE t531 main BrutalAxe off rsq_hands pend RSQ_Off_BrutalAxe | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5835:AX STATE t532 main BrutalAxe off RSQ_Off_BrutalAxe pend - | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5836:A3_WHEEL_PICKS
+5837:AX GB t660 tag 12 main BrutalAxe -> RSQ_Off_BrutalAxe L0 XP 0 | off RSQ_Off_BrutalAxe -> RSQ_Off_BrutalAxe L0 XP 0 | same record 1 | axe records: [record RSQ_Off_BrutalAxe bound BrutalAxe level 0 XP 0] 
+5838:RSQ Wheel TEST t660 cards: Melee_Attacks BrutalAxe UBQS_Saber SSQ_ShieldSaw RSQWP_WhipWeapon MP40 Shot_Gun Rifle HandGrenades 
+5839:AX RIG t660 tag 13 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5844:AX STATE t660 main MP40 off RSQ_Off_BrutalAxe pend rsq_hands | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5846:AX STATE t661 main MP40 off rsq_hands pend - | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5847:RSQ Wheel TEST t701: hand 0 picks the BrutalAxe card
+5848:RSQ Wheel: pick BrutalAxe (card BrutalAxe) -> hand 0
+5852:AX STATE t701 main BrutalAxe off rsq_hands pend - | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5853:A4_AXE_INTO_RHIP
+5854:RSQ Wheel TEST t741 cards: Melee_Attacks BrutalAxe UBQS_Saber SSQ_ShieldSaw RSQWP_WhipWeapon MP40 Shot_Gun Rifle HandGrenades 
+5855:AX RIG t741 tag 14 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5860:T_PRESS t752 main hand at Right hip: main BrutalAxe, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+5862:T_RULE t753 assign (bright) at Right hip, picture BrutalAxe
+5865:AX STATE t753 main BrutalAxe off rsq_hands pend Melee_Attacks | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5870:AX STATE t758 main Melee_Attacks off rsq_hands pend - | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5871:A5_DRAW_AXE_FROM_RHIP
+5872:AX RIG t788 tag 15 [Left hip=- a:-] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5876:T_PRESS t800 main hand at Right hip: main Melee_Attacks, off rsq_hands; holding BrutalAxe, assigned BrutalAxe; swap mode Into the Wheel
+5880:AX STATE t801 main Melee_Attacks off rsq_hands pend BrutalAxe | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5884:AX STATE t804 main BrutalAxe off rsq_hands pend - | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5886:AX GB t857 main hand's record (RSQ_Off_BrutalAxe): level +2 -> 2, XP 25
+5887:AX GB t858 tag 16 main BrutalAxe -> RSQ_Off_BrutalAxe L2 XP 25 | off rsq_hands -> rsq_hands L0 XP 0 | same record 0 | axe records: [record RSQ_Off_BrutalAxe bound BrutalAxe level 2 XP 25] 
+5888:AX MON t858 BaronOfHell -> RS_CommonBaron at (-430 0) health 1000
+5889:AX MON t858 BaronOfHell -> RS_CommonBaron at (-400 80) health 1000
+5890:AX MON t858 BaronOfHell -> RS_CommonBaron at (-240 80) health 1000
+5891:A6_MAIN_THROWS_AT_A_BARON
+5892:AX RIG t863 tag 17 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5895:RSQ axes t892: hand 0 threw an axe: 1 left
+5896:AX STATE t892 main BrutalAxe off rsq_hands pend - | Axes 1 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5897:A7_MAIN_GRABS_ITS_THROWN_AXE_BACK_IT_HIT
+5898:AX FLOOR t987 #0 BrutalAxe at (-311 252 64) dist 253 vel 0.0 style 1 bright 0
+5899:AX MONHP t987 RS_CommonBaron health 1000 state other tics 1 dist 110
+5900:AX MONHP t987 RS_CommonBaron health 1222 state other tics 3 dist 113
+5901:AX MONHP t987 RS_CommonBaron health 953 state other tics 1 dist 113
+5902:AX GB t987 tag 17 main BrutalAxe -> RSQ_Off_BrutalAxe L2 XP 25 | off rsq_hands -> rsq_hands L0 XP 0 | same record 0 | axe records: [record RSQ_Off_BrutalAxe bound BrutalAxe level 2 XP 25] 
+5903:AX RIG t987 tag 18 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5905:AX FLOOR t987 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 style 1 bright 0
+5909:A8_CRIT_THROW
+5910:AX RIG t1147 tag 19 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5913:RSQ axes t1177: hand 0 threw an axe: 0 left
+5914:RSQ axes t1177: none left -- the off hand's axe is gone
+5915:RSQ offhand rule t1177: Axe picked up: its off-hand version comes with it
+5916:T_AXE t1177: no axes left: Right hip is unassigned (it was the axe's)
+5917:T_RULE t1177 free (white) at Right hip, picture BrutalAxe
+5920:AX STATE t1177 main BrutalAxe off rsq_hands pend - | Axes 0 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 1 OffAxeGone 0
+5921:RSQ axes t1178: none left -- the off hand's axe is gone
+5922:RSQ offhand rule t1178: Axe picked up: its off-hand version comes with it
+5923:RSQ axes t1179: none left -- the off hand's axe is gone
+5924:RSQ offhand rule t1179: Axe picked up: its off-hand version comes with it
+5925:RSQ axes t1180: none left -- the off hand's axe is gone
+5926:RSQ offhand rule t1180: Axe picked up: its off-hand version comes with it
+5927:RSQ axes t1181: none left -- the off hand's axe is gone
+5928:RSQ offhand rule t1181: Axe picked up: its off-hand version comes with it
+5929:RSQ axes t1182: none left -- the off hand's axe is gone
+5930:RSQ offhand rule t1182: Axe picked up: its off-hand version comes with it
+5931:RSQ axes t1183: none left -- the off hand's axe is gone
+5932:RSQ offhand rule t1183: Axe picked up: its off-hand version comes with it
+5933:RSQ axes t1184: none left -- the off hand's axe is gone
+5934:RSQ offhand rule t1184: Axe picked up: its off-hand version comes with it
+5935:RSQ axes t1185: none left -- the off hand's axe is gone
+5936:RSQ offhand rule t1185: Axe picked up: its off-hand version comes with it
+5937:RSQ axes t1186: none left -- the off hand's axe is gone
+5938:RSQ offhand rule t1186: Axe picked up: its off-hand version comes with it
+5939:RSQ axes t1187: none left -- the off hand's axe is gone
+5940:RSQ offhand rule t1187: Axe picked up: its off-hand version comes with it
+5941:RSQ axes t1188: none left -- the off hand's axe is gone
+5943:AX STATE t1188 main Melee_Attacks off rsq_hands pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 1 OffAxeGone 0
+5944:AX STATE t1189 main Melee_Attacks off rsq_hands pend - | Axes 0 BrutalAxe 0 Off_BrutalAxe 0 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5945:AX MONHP t1245 RS_CommonBaron health 1000 state other tics 3 dist 110
+5946:AX MONHP t1245 RS_CommonBaron health 1222 state other tics 9 dist 113
+5947:AX MONHP t1245 RS_CommonBaron health 953 state other tics 3 dist 113
+5948:A9_LET_IT_FADE
+5949:AX MONHP t1274 RS_CommonBaron health 1000 state other tics 4 dist 110
+5950:AX MONHP t1274 RS_CommonBaron health 1222 state other tics 2 dist 113
+5951:AX MONHP t1274 RS_CommonBaron health 953 state other tics 4 dist 113
+5952:AX FLOOR t1274 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 style 1 bright 0
+5953:AX FLOOR t1274 #1 BrutalAxe at (-311 255 64) dist 256 vel 0.0 style 1 bright 0
+5954:AX RIG t1274 tag 20 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5956:AX FLOOR t1474 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 style 1 bright 0
+5957:AX FLOOR t1474 #1 BrutalAxe at (-311 255 64) dist 256 vel 0.0 style 1 bright 0
+5958:AX CLEAR t1474 10 removed
+5959:A10_OFF_THROWS_AND_MISSES
+5960:AX RIG t1479 tag 21 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5963:A11_OFF_GRABS_IT_BACK_MISSED
+5964:AX FLOOR t1612 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 style 1 bright 0
+5965:AX FLOOR t1612 #1 BrutalAxe at (-311 255 64) dist 256 vel 0.0 style 1 bright 0
+5966:AX RIG t1612 tag 22 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5968:AX FLOOR t1612 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 style 1 bright 0
+5969:AX FLOOR t1612 #1 BrutalAxe at (-344 160 64) dist 162 vel 0.0 style 1 bright 0
+5970:[RSQDG] hand 1 LOCKED BrutalAxe
+5971:AX EVENT t1615 pull.lock hand=1 thing=BrutalAxe
+5974:[RSQDG] hand 1 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+5975:AX EVENT t1649 pull.start hand=1 thing=BrutalAxe
+5977:RSQ axes t1654: hand 1 grabbed an axe it did not throw -> +1, 1 axes
+5978:[RSQDG] hand 1: BrutalAxe given by its own pack before the pickup (pickup.first)
+5979:[RSQDG] hand 1 caught and USED BrutalAxe
+5980:AX EVENT t1654 pull.caught hand=1 thing=Null
+5981:AX STATE t1654 main Melee_Attacks off rsq_hands pend RSQ_Off_BrutalAxe | Axes 1 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5982:[RSQDG] hand 1 LOCKED BrutalAxe
+5983:AX EVENT t1655 pull.lock hand=1 thing=BrutalAxe
+5985:AX STATE t1655 main Melee_Attacks off RSQ_Off_BrutalAxe pend - | Axes 1 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+5986:[RSQDG] hand 1 let go of BrutalAxe (0.0 deg/tic, needed 5.0)
+5987:[RSQDG] hand 1 unlocked BrutalAxe -- opened at rest
+5988:AX EVENT t1714 pull.unlock hand=1 thing=BrutalAxe
+5989:A12_MAIN_THROWS_THEN_HOLSTER_REFILLS
+5990:AX GB t1773 tag 22 main Melee_Attacks -> Melee_Attacks L0 XP 0 | off RSQ_Off_BrutalAxe -> RSQ_Off_BrutalAxe L2 XP 25 | same record 0 | axe records: [record RSQ_Off_BrutalAxe bound RSQ_Off_BrutalAxe level 2 XP 25] 
+5991:AX RIG t1773 tag 23 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+5999:T_PRESS t1938 main hand at Right hip: main Melee_Attacks, off RSQ_Off_BrutalAxe; holding -, assigned -; swap mode Into the Wheel
+6000:T_REFUSE t1938 hand 0: double pulse and *usefail
+6012:AX AXES t1984 set 1
+6013:A13_LAST_AXE_THROWN_BOTH_HANDS_TO_FISTS
+6014:AX RIG t1987 tag 24 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+6019:AX DELFLOOR t2140 1 floor axes removed
+6020:A14_AFTER_ZERO
+6021:AX RIG t2145 tag 25 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+6023:AX GB t2145 tag 25 main Melee_Attacks -> Melee_Attacks L0 XP 0 | off RSQ_Off_BrutalAxe -> RSQ_Off_BrutalAxe L2 XP 25 | same record 0 | axe records: [record RSQ_Off_BrutalAxe bound RSQ_Off_BrutalAxe level 2 XP 25] 
+6024:AX STATE t2145 main Melee_Attacks off RSQ_Off_BrutalAxe pend - | Axes 2 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+6025:AX AXES t2155 set 10
+6026:AX STATE t2155 main Melee_Attacks off RSQ_Off_BrutalAxe pend - | Axes 10 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+6027:AX SPAWN t2158 BrutalAxe -> BrutalAxe at 160 ahead
+6028:A15_AT_10_GRAB_A_MAP_AXE_AMMO_FULL
+6029:AX RIG t2163 tag 26 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+6032:[RSQDG] hand 0 LOCKED BrutalAxe
+6033:AX EVENT t2163 pull.lock hand=0 thing=BrutalAxe
+6036:[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+6037:AX EVENT t2198 pull.start hand=0 thing=BrutalAxe
+6039:RSQ axes t2203: hand 0 grabbed an axe: 10 axes already -- AMMO FULL
+6040:[RSQDG] hand 0 refused -- its own pack says BrutalAxe is full (pickup.first): AMMO FULL
+6041:AX EVENT t2203 pull.full hand=0 thing=BrutalAxe
+6042:[RSQDG] hand 0: BrutalAxe carried, ammo full: AMMO FULL, dropped at the feet
+6043:AX WORDS t2203 [AMMO FULL on BrutalAxe] 
+6045:AX WORDS t2248 (none)
+6046:AX FLOOR t2331 #0 BrutalAxe at (-320 28 64) dist 28 vel 0.0 style 1 bright 0
+6047:AX DELFLOOR t2331 1 floor axes removed
+6051:AX STATE t2331 main BrutalAxe off RSQ_Off_BrutalAxe pend - | Axes 10 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+6052:AX MON t2371 BaronOfHell -> RS_CommonBaron at (-430 0) health 1000
+6053:AX MON t2371 BaronOfHell -> RS_CommonBaron at (-400 80) health 1000
+6054:AX MON t2371 BaronOfHell -> RS_CommonBaron at (-240 80) health 1000
+6055:A16_AT_10_THROW_HIT_GRAB_BACK_CAPPED
+6056:AX RIG t2376 tag 27 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+6059:RSQ axes t2406: hand 0 threw an axe: 9 left
+6060:AX STATE t2406 main BrutalAxe off RSQ_Off_BrutalAxe pend - | Axes 9 BrutalAxe 1 Off_BrutalAxe 1 CritNext 0 MainAxeGone 0 OffAxeGone 0
+6061:AX FLOOR t2499 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 style 1 bright 0
+6065:AX CLEAR t2660 6 removed
+6066:M1_RS_ZOMBIE_DROP
+6067:AX RIG t2666 tag 30 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+6069:AX MON t2666 RS_CommonZombie -> RS_CommonZombie at (-320 200) health 20
+6070:AX KILL t2675 RS_CommonZombie at (-320 200) health now -10
+6071:AX DROPS t2755 near the kill: BrutalAxe RSQ_KRArmorBit EasyClip2 
+6072:AX CLEAR t2755 4 removed
+6073:F1_FLASH_PHOTOSAFE_0
+6074:AX RIG t2760 tag 31 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+6076:AX MON t2760 ZombieMan -> RS_CommonZombie at (-320 160) health 20
+6077:RETIER: RS_CommonZombie -- family RS_ZombieColourset, tier 1
+6078:RETIER: RS_CommonZombie -> tier 2
+6079:FL t2770 photosafe 0 job tick 0 timer 16 RS_CommonZombie flashColour 0 bBRIGHT 0
+6080:FL t2771 photosafe 0 job tick 1 timer 15 RS_CommonZombie flashColour 1 bBRIGHT 1
+6081:FL t2772 photosafe 0 job tick 2 timer 14 RS_CommonZombie flashColour 1 bBRIGHT 1
+6082:FL t2773 photosafe 0 job tick 3 timer 13 RS_CommonZombie flashColour 0 bBRIGHT 0
+6083:FL t2774 photosafe 0 job tick 4 timer 12 RS_CommonZombie flashColour 0 bBRIGHT 0
+6084:FL t2775 photosafe 0 job tick 5 timer 11 RS_CommonZombie flashColour 0 bBRIGHT 0
+6085:FL t2776 photosafe 0 job tick 6 timer 10 RS_CommonZombie flashColour 1 bBRIGHT 1
+6086:FL t2777 photosafe 0 job tick 7 timer 9 RS_CommonZombie flashColour 1 bBRIGHT 1
+6087:FL t2778 photosafe 0 job tick 8 timer 8 RS_CommonZombie flashColour 1 bBRIGHT 1
+6088:FL t2779 photosafe 0 job tick 9 timer 7 RS_CommonZombie flashColour 0 bBRIGHT 0
+6089:FL t2780 photosafe 0 job tick 10 timer 6 RS_CommonZombie flashColour 0 bBRIGHT 0
+6090:FL t2781 photosafe 0 job tick 11 timer 5 RS_CommonZombie flashColour 0 bBRIGHT 0
+6091:FL t2782 photosafe 0 job tick 12 timer 4 RS_CommonZombie flashColour 1 bBRIGHT 1
+6092:FL t2783 photosafe 0 job tick 13 timer 3 RS_CommonZombie flashColour 1 bBRIGHT 1
+6093:FL t2784 photosafe 0 job tick 14 timer 2 RS_CommonZombie flashColour 1 bBRIGHT 1
+6094:FL t2785 photosafe 0 job tick 15 timer 1 RS_CommonZombie flashColour 0 bBRIGHT 0
+6095:AX CLEAR t2900 1 removed
+6096:F2_FLASH_PHOTOSAFE_1
+6097:AX RIG t2905 tag 32 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+6099:AX MON t2905 ZombieMan -> RS_CommonZombie at (-320 160) health 20
+6100:RETIER: RS_CommonZombie -- family RS_ZombieColourset, tier 1
+6101:RETIER: RS_CommonZombie -> tier 2
+6102:FL t2915 photosafe 1 job tick 0 timer 25 RS_CommonZombie flashColour 0 bBRIGHT 0
+6103:FL t2916 photosafe 1 job tick 1 timer 24 RS_CommonZombie flashColour 1 bBRIGHT 1
+6104:FL t2917 photosafe 1 job tick 2 timer 23 RS_CommonZombie flashColour 1 bBRIGHT 1
+6105:FL t2918 photosafe 1 job tick 3 timer 22 RS_CommonZombie flashColour 1 bBRIGHT 1
+6106:FL t2919 photosafe 1 job tick 4 timer 21 RS_CommonZombie flashColour 1 bBRIGHT 1
+6107:FL t2920 photosafe 1 job tick 5 timer 20 RS_CommonZombie flashColour 1 bBRIGHT 1
+6108:FL t2921 photosafe 1 job tick 6 timer 19 RS_CommonZombie flashColour 1 bBRIGHT 1
+6109:FL t2922 photosafe 1 job tick 7 timer 18 RS_CommonZombie flashColour 1 bBRIGHT 1
+6110:FL t2923 photosafe 1 job tick 8 timer 17 RS_CommonZombie flashColour 1 bBRIGHT 1
+6111:FL t2924 photosafe 1 job tick 9 timer 16 RS_CommonZombie flashColour 1 bBRIGHT 1
+6112:FL t2925 photosafe 1 job tick 10 timer 15 RS_CommonZombie flashColour 1 bBRIGHT 1
+6113:FL t2926 photosafe 1 job tick 11 timer 14 RS_CommonZombie flashColour 1 bBRIGHT 1
+6114:FL t2927 photosafe 1 job tick 12 timer 13 RS_CommonZombie flashColour 1 bBRIGHT 1
+6115:FL t2928 photosafe 1 job tick 13 timer 12 RS_CommonZombie flashColour 1 bBRIGHT 1
+6116:FL t2929 photosafe 1 job tick 14 timer 11 RS_CommonZombie flashColour 1 bBRIGHT 1
+6117:FL t2930 photosafe 1 job tick 15 timer 10 RS_CommonZombie flashColour 1 bBRIGHT 1
+6118:FL t2931 photosafe 1 job tick 16 timer 9 RS_CommonZombie flashColour 1 bBRIGHT 1
+6119:FL t2932 photosafe 1 job tick 17 timer 8 RS_CommonZombie flashColour 1 bBRIGHT 1
+6120:FL t2933 photosafe 1 job tick 18 timer 7 RS_CommonZombie flashColour 1 bBRIGHT 1
+6121:FL t2934 photosafe 1 job tick 19 timer 6 RS_CommonZombie flashColour 1 bBRIGHT 1
+6122:FL t2935 photosafe 1 job tick 20 timer 5 RS_CommonZombie flashColour 1 bBRIGHT 1
+6123:FL t2936 photosafe 1 job tick 21 timer 4 RS_CommonZombie flashColour 1 bBRIGHT 1
+6124:FL t2937 photosafe 1 job tick 22 timer 3 RS_CommonZombie flashColour 1 bBRIGHT 1
+6125:FL t2938 photosafe 1 job tick 23 timer 2 RS_CommonZombie flashColour 1 bBRIGHT 1
+6126:FL t2939 photosafe 1 job tick 24 timer 1 RS_CommonZombie flashColour 1 bBRIGHT 1
+6127:END
+6128:AX RIG t3045 tag 40 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 

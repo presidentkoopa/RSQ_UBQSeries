@@ -616,6 +616,7 @@ class wr_Rig : EventHandler
 	// while the fan is open and the fan is the more specific answer.
 	Class<Weapon> HoveredClass() const
 	{
+		if (mTestCard) return mTestCard;   // RSQ TEST: wr_test_pick
 		if (!mOpen || mHovered == 0) return null;
 
 		int sub = subIndexOf(mHovered);
@@ -756,6 +757,11 @@ class wr_Rig : EventHandler
 		// wears it, points at it, and receives what you pick -- so the bind you
 		// press already says which hand you meant.
 		// RSQ 11-10: console only now (the rig's probes); no key sends them. Each opens on the hand its name says.
+		// RSQ TEST (the rig's probes, wr_debug 1 only; 2026-11-12, BD22 VR's one axe): the weapon cards as the ring builds
+		// them, and a pick of a card by its class into hand Args[0] through the ring's own commit (resolvePick, commitAs) --
+		// the same path a hand pointing at the card takes, without the hand
+		if (e.Name ~== "wr_test_cards" && cvBool("wr_debug", false)) { testCards(); return; }
+		if (e.Name.Left(13) ~== "wr_test_pick:" && cvBool("wr_debug", false)) { testPick(e.Name.Mid(13), e.Args[0]); return; }
 		if (e.Name ~== "wr_toggle_off")  { if (blockOpen) return; toggle(1); return; }
 		if (e.Name ~== "wr_toggle_main") { if (blockOpen) return; toggle(0); return; }
 		if (e.Name ~== "wr_toggle")      { if (blockOpen) return; toggle(1); return; }
@@ -10212,6 +10218,33 @@ class wr_Rig : EventHandler
 	}
 
 	Class<Weapon> mPickCls;   // RSQ: what this pick equips (commit: resolvePick); null = the card's own class
+	Class<Weapon> mTestCard;  // RSQ TEST: the card wr_test_pick presses
+
+	private void testCards()
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		if (!mOpen) gatherWeaponCards(pmo);
+		String s = "";
+		for (int i = 0; i < mTypes.Size(); ++i) s = s .. (mTypes[i] ? String.Format("%s", mTypes[i].GetClassName()) : "null") .. " ";
+		Console.Printf("RSQ Wheel TEST t%d cards: %s", level.maptime, s);
+	}
+
+	private void testPick(String cn, int hand)
+	{
+		let pmo = players[consoleplayer].mo;
+		Class<Weapon> c = cn;
+		if (!pmo || !c) { Console.Printf("RSQ Wheel TEST: no card %s", cn); return; }
+		int page = mPage, rig = mRigHand, poke = mPokeHand;
+		mPage = PAGE_WEAPONS;
+		mRigHand = hand == 1 ? 1 : 0;
+		mPokeHand = mRigHand;
+		mTestCard = c;
+		Console.Printf("RSQ Wheel TEST t%d: hand %d picks the %s card", level.maptime, mRigHand, cn);
+		commit(pmo);
+		mTestCard = null;
+		if (!mOpen) { mPage = page; mRigHand = rig; mPokeHand = poke; }
+	}
 	private Class<Weapon> pickClass() const { return mPickCls ? mPickCls : HoveredClass(); }
 
 	// HOME HANDS (owner 2026-11-06: "cannot select shieldsaw from wheel, i need to select with either hand but have it

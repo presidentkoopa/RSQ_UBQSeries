@@ -269,7 +269,8 @@ class RSQDG_Near : EventHandler
 			if (took) { if (feel) feel.OnCatch(h, null, p, true, heft); return; }
 			// AMMO / HEALTH / ARMOR FULL (owner 2026-11-12): what you cannot use is not carried off either; the word over it
 			String fw = fl ? fl.RefusedWord() : "";
-			if (fw == "HEALTH FULL" || fw == "ARMOR FULL")     // (a full gun walked up to keeps today's rule)
+			// (a full gun walked up to keeps today's rule; a pack's own refusal -- 10 axes, "pickup.first" -- is left too)
+			if (fw == "HEALTH FULL" || fw == "ARMOR FULL" || (fl && fl.RefusedByPack()))
 			{
 				fl.SayFull(h, a, p, pmo, fw);
 				if (On("rsqdg_trace", p, false)) Console.Printf("[RSQDG] walk-up hand %d: %s -- %s, left where it is", h, a.GetClassName(), fw);

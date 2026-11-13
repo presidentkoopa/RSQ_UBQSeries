@@ -344,7 +344,8 @@ class RSQTR_Cig : EventHandler
 
 	// ---- the local loop ----------------------------------------------------------------
 	// MORE CIGARETTES (owner 11-05): RSQ Score's score earns one every rsqtr_cig_score points, and killing a miniboss (RSQ
-	// Miniboss, "wasboss") fills the pocket; never past the Pack Size. Both by name: nothing happens without those mods.
+	// Miniboss, "wasboss") gives ONE (owner 2026-11-12 20:4x: "change to +1 cigarette, cigarettes are massively powerful
+	// now"; it filled the pocket until then); never past the Pack Size. Both by name: nothing happens without those mods.
 	int cigScoreMark[MAXPLAYERS];
 	private void CigEarn()
 	{
@@ -389,7 +390,7 @@ class RSQTR_Cig : EventHandler
 			if (!playeringame[n] || !players[n].mo) continue;
 			let p = players[n];
 			if (!RSQTR_Rig.Flag("rsqtr_cig", p, false) || !RSQTR_Rig.Flag("rsqtr_cig_boss", p, true)) continue;
-			CigGive(players[n].mo, 99, "miniboss");
+			CigGive(players[n].mo, 1, "miniboss");
 		}
 	}
 

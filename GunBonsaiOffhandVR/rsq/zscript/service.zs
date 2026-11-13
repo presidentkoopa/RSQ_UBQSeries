@@ -73,7 +73,7 @@ class RSQGB_Read
 		for (int i = 0; i < stats.weapons.Size(); ++i)
 		{
 			let info = stats.weapons[i];
-			if (info && info.wpn == w) return info;
+			if (info && info.Holds(w)) return info;     // the one axe: either hand's version (WeaponInfo.Holds)
 		}
 		return null;
 	}
@@ -103,7 +103,7 @@ class RSQGB_Read
 		if (!stats) return null;
 		Weapon held = (hand == 1) ? pawn.player.OffhandWeapon : pawn.player.ReadyWeapon;
 		let info = (hand == 1) ? stats.infoForOffhandWeapon : stats.infoForCurrentWeapon;
-		if (held && info && info.wpn == held) return info;
+		if (held && info && info.Holds(held)) return info;
 		return null;
 	}
 

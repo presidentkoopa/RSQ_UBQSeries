@@ -30,6 +30,7 @@
 // cvar rather than deleted.
 class RSQDG_Flight : EventHandler
 {
+	private transient bool packRefused;   // TakeInto, this catch: refused by the item's own pack ("pickup.first")
 	private transient bool refusedFull;   // TakeInto, this catch: the pickup refused a gun you own, its ammo full (AMMO FULL)
 	private transient String fullSay;    // ...and the word said over it: AMMO FULL, HEALTH FULL or ARMOR FULL (owner 11-12)
 	private Actor  flyActor[2];
@@ -551,6 +552,9 @@ class RSQDG_Flight : EventHandler
 	}
 	// TakeInto refused it as full this time: the word, else "" (near.zs's walk-up grip reads it too)
 	String RefusedWord() { return refusedFull ? (fullSay != "" ? fullSay : "AMMO FULL") : ""; }
+	// TakeInto refused it this time because its own pack said so before the pickup ("pickup.first": BD22 VR Reloaded's
+	// axes at 10): near.zs's walk-up grip leaves it where it is with the word, as for HEALTH / ARMOR FULL
+	bool RefusedByPack() { return refusedFull && packRefused; }
 
 	// HEALTH OR ARMOUR YOU CANNOT USE (owner 2026-11-12). A bonus (Doom's health and armour bonuses and Brutal Doom's
 	// HealthPlus / ArmorShard are ALWAYSPICKUP) is taken by the game even when it raises nothing -- used up for nothing --
@@ -584,8 +588,30 @@ class RSQDG_Flight : EventHandler
 	bool TakeInto(int hand, Inventory inv, PlayerPawn pmo, PlayerInfo p)
 	{
 		refusedFull = false;
+		packRefused = false;
 		fullSay = "";
 		if (!inv || !pmo || !p) return false;
+		// ITS OWN PACK GIVES IT, BEFORE THE PICKUP (owner 2026-11-12, BD22 VR Reloaded 2.0.4r's axe: axes are a count of
+		// up to 10; your own thrown axe grabbed back is +2 after a hit, +1 after a miss; AMMO FULL only at 10). Asked first
+		// ("pickup.first", grab.event): 1 the pack gave it to this hand and took the thing away, -1 the pack refuses it
+		// (AMMO FULL), 0 nobody answers -- the pickup below, as before.
+		String icn0 = inv.GetClassName();
+		int first = RSQDG_Events.Ask("pickup.first", hand, inv);
+		if (first > 0)
+		{
+			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
+				Console.Printf("[RSQDG] hand %d: %s given by its own pack before the pickup (pickup.first)", hand, icn0);
+			return true;
+		}
+		if (first < 0)
+		{
+			refusedFull = true;
+			packRefused = true;
+			fullSay = "AMMO FULL";
+			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
+				Console.Printf("[RSQDG] hand %d refused -- its own pack says %s is full (pickup.first): AMMO FULL", hand, icn0);
+			return false;
+		}
 		if (RSQDG_Reach.Flag("rsqdg_catch_takes", p, true))
 		{
 			String fw = FullWord(inv, pmo, false);

@@ -273,6 +273,7 @@ Either Hand Picks on, both hands still pick from it).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2 with BD22 VR Reloaded 2.0.4r; `../TacticalRig/tools/rigtest/axepool/evidence/`) | **One axe card for both hands:** the card list (built as the ring builds it) holds BrutalAxe once, never RSQ_Off_BrutalAxe; the off hand picking that card got the off-hand axe, then the main hand picking it got the axe -- one in each hand at once. The picks went through the ring's own commit (resolvePick, commitAs) from a test event (`wr_test_cards`, `wr_test_pick:<class>`, `wr_debug 1` only, added 11-12); no hand pointed at a card |
 | **rig only, not headset-confirmed** (2026-11-12; runs voxsize, wheelvox4) | The SMG, flamethrower, grenade launcher, rocket launcher and BFG10k show their models on their cards. Their voxels carry the same short names as Brutal Doom's pickup sprites and the size was being read from the sprite |
 | **rig only, not headset-confirmed** (2026-11-12; run sheetgrow, every weapon given) | The data sheet grows with the ring |
 | **rig only at 1.5 / 1.22 / 1.08 with one card forced, not headset-confirmed** (2026-11-12; run pickbig5). Shipped at 1.8 / 1.35 / 1.12, loads clean, not shown at those sizes; picking a card by hand was not managed on the rig | The picked card is the big one and its neighbours step down |

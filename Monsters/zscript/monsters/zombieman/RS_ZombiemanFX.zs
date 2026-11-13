@@ -616,8 +616,13 @@ class RS_ScootDropChecker : Actor   // CH DECORATE.txt:851
 
 class RS_implyingclip : RS_ScootDropChecker   // CH DECORATE.txt:871
 {
+	// its OWN Spawn (2026-11-12): the inherited Spawn's "Goto DropOther" resolved to the PARENT's DropOther, so every RS
+	// zombie dropped a Chaingun 15-80 tics after dying (rig run mbthrall2, the thrall-drops agent's finding)
 	States
 	{
+	Spawn:
+		TNT1 A 0;
+		Goto DropOther;
 	DropOther:
 		TNT1 A 0 A_SpawnItemEx("RS_CH_Clip",0,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		Stop;
