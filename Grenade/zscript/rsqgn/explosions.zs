@@ -313,8 +313,15 @@ class RSQGN_Boom : Actor
 		double ko = isBarrel ? 1.0 : 0.7;            // a barrel overlay on a grenade (no grenade version was designed): smaller
 		if (isBarrel)
 		{
+			// #10 NEON CRESCENT IS THE SPIKE'S ONLY (owner 2026-11-13 00:1x, design/PLANNED_PROJECTS.md "Grapple 2.0": "Neon
+			// Crescent, spike only"): out of the barrels' random rotation and the Explosion row's picks. The rotation is the
+			// first five (#5 .. #9: ROTATION); a saved pick of 10 from an older build reads as Random (and is reset once,
+			// barrel.zs RSQGN_BarrelSwap.OnRegister). It plays only for RSQ Grenade's service "g2.neon" (RSQGN_NeonSpike,
+			// forced by the barrel's rsqgnForce).
 			int choice = RSQGN_BarrelSwap.Kind();
-			s = (choice >= 5 && choice <= 10) ? choice - 5 : random[RSQGNBarrel](0, RSQGN_BarrelData.BARRELS - 1);
+			let fb = RSQGN_Barrel(from);
+			if (fb && fb.rsqgnForce > 0) s = fb.rsqgnForce - 1;
+			else s = (choice >= 5 && choice <= 9) ? choice - 5 : random[RSQGNBarrel](0, ROTATION - 1);
 			// CHAIN (owner 11-10): the barrels down a chain grow (#5 x1.25, #6, #6 x1.2, the biggest x1.4); every Chain Mega
 			// Every'th barrel (3) is the mega blast MEGA2, every Chain Mushroom Every'th (5) the mushroom mega, big ("make it
 			// big"); the mushroom wins when both land. Their place in the barrel tables (cap, debris, light) stays the
@@ -446,6 +453,7 @@ class RSQGN_Boom : Actor
 
 	// the room's own glow hue (not its complement): the Neon Crescent's colour (Begin)
 	const NEON_CRESCENT = 5;    // barrel_data.zs: the six are 0 .. 5 in the owner's order, #10 Neon Crescent the last
+	const ROTATION = 5;         // the barrels' random rotation and the Explosion row: the first five (#5 .. #9), the Neon Crescent out
 	void RoomHueTint()
 	{
 		let s = RSQGN_Fx.Svc("RSQGD_Service");

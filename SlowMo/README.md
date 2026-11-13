@@ -143,6 +143,7 @@ the game is not slowing all the time. Heavy Hit Slowdown and the miniboss fight 
 | **Barrel Multi-Kill** | On | One barrel's blast kills two or more monsters |
 | **Chain Reaction** | On | A barrel's blast sets off another barrel |
 | **Barrel Near You** | On | Any barrel goes off within 2 m of you |
+| **Grapple-Slam** | On | Grapple 2.0's air spike hits the floor (the Neon Crescent): Blast Time, with GRAPPLE-SLAM! under the bar. Keeps out of the shared wait. The spike's blast is never Barrel Near You |
 | **Score** | On | RSQ Score's big moments and its hit-stop |
 | **Gun Bonsai VR** | On | RSQ Gun Bonsai VR's Adrenaline, Showdown and Time Dilation upgrades |
 | **Other Mods** | On | Any other mod that asks for slow motion |
@@ -252,6 +253,10 @@ SlowMo talks to most of the series, always by name: every mod still loads and pl
   map turns blood red while you are DOWN. **Fog Colour: Complementary to GITD** takes the opposite colour of each room's
   glow. If GITD is holding DarkDoomZ dark for a miniboss's landing, DOWN gives back your own setting, not GITD's.
 - **RSQ Grapple and RSQ Whip:** they read the world's speed, so a monster they pull moves at the slowed pace.
+  **Grapple 2.0** (being built) asks for its own slow motion by name: the kick-chain's slow (`g2.slow`, with its reason
+  such as KICK-CHAIN! under the world bar), more time on it (`g2.addtime`: DOUBLEJUMP!, +0.25 SEC), the Grapple-Slam
+  trigger (`g2.slam`), and your own movement at full speed while it flings you (`g2.fullspeed`). The kick-chain's slow
+  comes under **Other Mods** and keeps out of the shared wait. Rig only, not headset-confirmed.
 - **RSQ Grenade:** the Grenade Blast trigger. Thrown grenades follow the world's speed (and can run faster than it, on
   Grenade's own option); with Slow My Shots off they stay at full speed. Grenade's Only in Slow-Mo row reads
   SlowMo's clock, and Gun Bonsai VR's Skeet Window slows the world through SlowMo. Getting up on the top tier gives a grenade back.
@@ -309,7 +314,7 @@ the bars and DOWN's look are yours.
 | Slow Motion | Dodgeable Bullets · Lean Out of Bullets · Slow Me Too · Slow My Shots · Smooth Walkers · Adrenaline (off) · Keep Adrenaline · Haptics · Yield to Other Mods |
 | Look | Colour Drain (off) · Shot Trails · Missile Wakes · Stored Slow-Mo Bar · Countdown Bar · Bar Animation · Bar Colour (Green; 17 colours or Random) |
 | Your Triggers | Slow Motion Key · Crisis Dive · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block · Quick Grenade · Training Remote |
-| Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Score · Gun Bonsai VR · Other Mods |
+| Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Grapple-Slam · Score · Gun Bonsai VR · Other Mods |
 | Be Quick or Be Dead | Be Quick or Be Dead (off) · Music · Clock (9 s) · Slowest Clock Drain (0.25) · Time: Small Monster (0.25 s), Lost Soul (0.25 s), Big Monster (0.5 s), Cyberdemon / Mastermind (0.5 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
 | Heavy Hit Slowdown | Heavy Hit Slowdown · Heavy Hit Size (75% of max health) · Arch-Vile Blast · Blasted Off Your Feet · Hit From Behind · Armour Broken · Cooldown (No Limit; Once per 20 s, Once per 60 s, Use Shared) |
 | Test and Debug | Ease In (0.15 s) · Ease Out (0.4 s) · Range (3000) · Sound Follows (1.0) · Round Speed (14) · Slow Me Too Strength (1.0) · Auto Cooldown (25 s) · Crisis Dive World Speed (0.10), Leap (12), Hang (0.5) · Wrist Gap (0.16 m) · Wrist Hold (12 tics) · Reload Time (1200 ms) · Close Call Time (700 ms) · Blast Time (3000 ms) · Low Health At (25) · Adrenaline To Start (25), Full Meter (10 s), Per Kill (12), Per Near Miss (4) · Lean Needed (0.06 m) · Lean Baseline (2 s) · Smooth Range (1024) · Smooth Walkers (12) · Colour Drain Amount (0.35) · Bar Size (1.5; only without RSQ Miniboss) · Debug Log |
@@ -323,6 +328,7 @@ Bullets is greyed until you learn Lean Dodge.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-13, runs `g2sup1` and `g2sup2` in rig/work/runs, probes rig/work/g2probe and g2probe2; owner's order with BD22 VR Reloaded 2.0.4t, no script error from our packs) | **Grapple 2.0's requests, asked by name.** `g2.slow` "Kick-Chain!" 52 tics: started, pulse to t112, the world bar on, the cause line KICK-CHAIN! (read from the HUD's own cause-line function, not seen in a frame). `g2.addtime` "DoubleJump!" +18 (t112 -> t130) and "+0.25 sec" +9 (-> t139), the bar refilling. `g2.slow` 10 tics with 24 left: no change (no piling up); 42 tics: stretched to t162. `g2.addtime` with nothing running: 0. `g2.slam` with Grapple-Slam on: 3 s (105 tics), GRAPPLE-SLAM!; off: 0. `g2.slow` with Other Mods off: 0. **Your movement:** with Slow Me Too on (the default) a velocity of 3 units a tic set by a mod whose tic runs before SlowMo's moved him 0.75 a tic at a quarter speed; set after SlowMo's tic, 3.0 (so it depends on the order the mods run in); with `g2.fullspeed` asked first, 3.0, and slowed again (0.75) once its tics ran out. The spike's blast (RSQ Grenade's `g2.neon`) 5 units from the player: no Barrel Near You; a normal barrel there: Barrel Near You. The spike's blast killing two: Barrel Multi-Kill; setting off a barrel: Chain Reaction |
 | **code only, not shown** (2026-11-11 evening; loads clean on the full order, not run) | DOWN: a target that plays dead counts as killed. Champions' Dark Red champion is buddha: at 1 HP it vanishes and leaves a shootable corpse, and gets up again 3 s later unless the corpse is destroyed; DOWN saw it alive at 1 HP and never revived you (owner: "i cannot seem to revive when i kill a champion"). Now its fake death is the kill, by your hand |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R3, `design/rigtest_2026-11-10/RESULTS_R2.md`) | The green world bar for the revive and the cigarette; a smoke lit during an automatic slow is added after it (end t314 -> t489), and an automatic slow during a smoke is added after the smoke (t347 -> t452). |
 | **code only, not shown** (2026-11-11; loads clean on the full order, not run) | The green world (countdown) bar also shows for the revive's and the cigarette's slow motion, Adrenaline on or off. The cigarette and the world's slow motion add up: a cigarette lit during a slow adds its time after it; a world slow (an automatic trigger or the revive) during a smoke adds its time after the smoke's, and the smoke's full-speed walk runs to the combined end (owner 11-11) |
@@ -358,10 +364,23 @@ Bullets is greyed until you learn Lean Dodge.
   rsqsm_start:<who> <ms> <speed %> <flags>`, and `RSQSM_Service` (`start`, `start.auto`, `start.bossfight`,
   `adrenaline`, `adrenaline.add`, `slowmo.active`, `active`, `scale`, `running`, `trigger.auto`, `trigger.score`,
   `countdown`, `countdown.bottom`, `arrow.add`, `arrow.clear`, `down`, `down.hold`, `down.any`, `down.redmap`,
-  `down.left`, `down.mark`, `down.bank`). An `rsm_pulse` is told apart by what was sent with it on the same tic
+  `down.left`, `down.mark`, `down.bank`, and for Grapple 2.0 `g2.slow`, `g2.addtime`, `g2.slam`, `g2.fullspeed`, below). An `rsm_pulse` is told apart by what was sent with it on the same tic
   (`rsqml_fear`, `rsqtr_cigslowmo`) or by its length and speed; anything unrecognised is Other Mods. DOWN tells every
   service whose name contains `RSQDownJoin`: `down.start`, `down.target`, `down.time`, `down.revenge`, `down.up`,
   `down.revive`, `down.fail`.
+- **Grapple 2.0's requests** (`RSQSM_Service.GetInt(request, stringArg, intArg, 0, the player's pawn)`, from synced
+  play code):
+  - `g2.slow`, reason, tics: starts a game slow of `tics` real tics at your World Speed, or stretches the one running to
+    at least that; the reason shows under the world bar. Never added on after a running slow, so asking again never piles
+    up. Under Other Mods, no shared wait. Answers 1 let in, 0 refused (switch off, slow motion held on, stood down).
+  - `g2.addtime`, reason, tics: moves the end of the slow running now `tics` later (the bar refills) and shows the
+    reason. Answers 1 added, 0 nothing running.
+  - `g2.slam`: the Grapple-Slam trigger (its row; Blast Time at your World Speed). Answers 1 let in, 0 its row is off.
+  - `g2.fullspeed`, "", tics: **Slow Me Too slows your own movement by default** (it scales whatever velocity the tic
+    produced, the thrust and the gravity, so a mod's push is slowed too when it lands before SlowMo's own tic). Asked with
+    tics > 0, your movement stays at full speed for that many tics, and your flight and gravity are put back at full
+    time at once, so set the velocity after asking. Answers 1 (the factor to multiply your motion by is then 1). Asked
+    with 0 tics: 1 if your movement is at full speed now, 0 if Slow Me Too slows it.
 - **The ease** is linear: Ease In crosses the whole way in 0.15 s, Ease Out in 0.4 s. The countdown counts real tics
   (the map's own clock is never slowed) and ends exactly as the world reaches full speed.
 - **Slow Me Too** scales what the engine produced for your movement each tic (the step on the ground, the thrust in the

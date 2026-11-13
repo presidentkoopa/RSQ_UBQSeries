@@ -105,6 +105,7 @@ server bool  rsqsm_trig_barrel_lock  = true; // Locked Barrel: a locked barrel t
 server bool  rsqsm_trig_barrel_multi = true; // Barrel Multi-Kill: one barrel's blast kills 2 or more monsters
 server bool  rsqsm_trig_barrel_chain = true; // Chain Reaction: a barrel's blast sets off another barrel
 server bool  rsqsm_trig_barrel_near  = true; // Barrel Near You: any barrel goes off within 2 m of you
+server bool  rsqsm_trig_grappleslam  = true; // Grapple-Slam: Grapple 2.0's air spike lands (RSQSM_Service "g2.slam"): Barrel Near You's slow motion
 // (owner 11-06: the Low Health trigger is removed: rsqsm_trig_lowhp and rsqsm_lowhp_ms are gone)
 
 // ---- HEAVY HIT SLOWDOWN (owner 2026-11-06, approved spec; clock.zs HeavyHits): an automatic trigger, ON -----------

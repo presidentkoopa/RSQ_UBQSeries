@@ -35,7 +35,7 @@ user   bool   rsqgn_debug       = false;  // log the pin, the fuse, the flashes,
 // THE BARRELS (barrel.zs; owner 11-09). All SERVER: the effects are spawned in the play simulation, so every machine in
 // a netgame must read the same values (a user setting here would let two machines' games differ).
 server bool   rsqgn_barrel_on   = true;   // our barrel: the blink and one of the six explosions (off: the stock barrel, untouched)
-server int    rsqgn_barrel_kind = 0;      // 0 Random (one of the six each time), or always 5 Snap, 6 Heavy, 7 Pillar, 8 Groundbreaker, 9 Slag Column, 10 Neon Crescent
+server int    rsqgn_barrel_kind = 0;      // 0 Random (one of the five each time), or always 5 Snap, 6 Heavy, 7 Pillar, 8 Groundbreaker, 9 Slag Column (10 Neon Crescent went 11-13: Grapple 2.0's spike only; a saved 10 reads as Random)
 // Replace Brutal Doom's Barrels: off, with Brutal Doom loaded (its ExplosiveBarrel1) its barrels stay its own and ours stand
 // down; on, ours replace both ExplosiveBarrel and BD's ExplosiveBarrel1 (barrel.zs RSQGN_BarrelSwap says how and the limits)
 server bool   rsqgn_barrel_replace_bd = true;    // on by default (owner 11-10: every barrel ours, so BD's grow down a chain too)

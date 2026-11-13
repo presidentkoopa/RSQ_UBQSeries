@@ -88,8 +88,10 @@ slows them instead. Without Gun Bonsai VR every kind is yours from the start; wi
 
 ## Barrels and explosions
 
-Barrels live here too. Every barrel blinks hot, then goes off as one of **six explosions** (#5 Snap, #6 Heavy,
-#7 Pillar, #8 Groundbreaker, #9 Slag Column, #10 Neon Crescent), at random or the one you pick. Chain them: each link
+Barrels live here too. Every barrel blinks hot, then goes off as one of **five explosions** (#5 Snap, #6 Heavy,
+#7 Pillar, #8 Groundbreaker, #9 Slag Column), at random or the one you pick. The sixth, **#10 Neon Crescent**, is no
+longer a barrel's: it is Grapple 2.0's air spike's own explosion (a pick of it saved from an older build reads as Random).
+Chain them: each link
 blows bigger and blinks faster, and from the third link the screen kicks and the blast reaches further (160, 192,
 then 224 units against the stock 128). Every third barrel down a chain is **the mega blast**; every fifth is **the
 mushroom cloud**, half again as big (both counts are options).
@@ -141,6 +143,10 @@ headset.*
 - **RSQ Tactical Rig:** the grenade's own spot on your belt buckle; it never takes a holster.
 - **RSQ Glow In The Dark:** explosions can take the opposite colour of the room's glow.
 - **RSQ Accessibility:** Photosensitive Mode or a comfort vignette turns off the chain-reaction screen kick.
+- **Grapple 2.0** (being built): the air spike's landing sets off the Neon Crescent by name (`g2.neon`, below). It goes
+  off as a barrel's blast does (the room's colour, the light, the sound, the barrel's damage), credited to you. RSQ
+  SlowMo treats it as a barrel blast for Chain Reaction and Barrel Multi-Kill, but never as Barrel Near You: its slow
+  motion is SlowMo's Grapple-Slam. Rig only, not headset-confirmed.
 - **Brutal Doom VR Reloaded:** by default this grenade steps aside for Brutal Doom VR's own. Turn on **Replace Brutal
   Doom's Grenade** and this one takes over. Barrels are ours by default (**Replace Brutal Doom's Barrels** on), so
   Brutal Doom's barrels grow down a chain too; turn it off to keep Brutal Doom's own barrel kick and spilled fire.
@@ -155,7 +161,7 @@ headset.*
 |---|---|
 | Grenades | Grenades on/off · Replace Brutal Doom's Grenade · Start With (3) · Grenades in Levels · Singles a Map (4) · Packs of Three a Map (2) |
 | Throwing | Quick Grenade (BD22's Toss Grenade key) (on) · Quick Grenade Key · Pin With Your Teeth · Alt Fire Changes Type · Grenade Types (All / Frag Only) · Your Fire Burns You (Auto: yes with Brutal Doom) |
-| Barrels | Barrels on/off · Explosion (Random, or #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column, #10 Neon Crescent) · Barrel Sound (Kinetic / Combat FX / Test Candidate) · Replace Brutal Doom's Barrels (on) |
+| Barrels | Barrels on/off · Explosion (Random, or #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column) · Barrel Sound (Kinetic / Combat FX / Test Candidate) · Replace Brutal Doom's Barrels (on) |
 | Explosions | Grenade Explosion (New / Original) · Grenade Sound (Kinetic / Original) · Brutal Doom's Launchers · Explosion Colour (Normal, Room Complement, Kill Colour, Grenade Kind) · Explosion Lights (Off, Simple, Full) · Debris · Contexts: Wall, Low Ceiling, Open Sky, Water, Liquid Floors, Chain, Crowd · Chain Escalation · Chain Mega Every (3) · Chain Mushroom Every (5) · Screen Kick on Chains |
 | Shooting | Shoot Thrown Grenades · Only in Slow-Mo · Faster in Slow-Mo · Skeet Slow-Mo (Gun Bonsai VR) |
 | Test and Debug | Fuse (3 s) · Throw Speed · Throw Strength · Arc · Gravity · Floor and Wall Bounce · Ground Drag · Shot Reach · Slow-Mo Speed · the teeth's reach and hold · Effects Cap · Debug Log |
@@ -166,6 +172,7 @@ headset.*
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-13, runs `g2sup1` and `g2sup2` in rig/work/runs, probes rig/work/g2probe and g2probe2; owner's order with BD22 VR Reloaded 2.0.4t, no script error from our packs) | **#10 Neon Crescent out of the barrels:** 20 barrels set off one by one with the Explosion row's value at 10 (an old Neon Crescent pick) rolled only #5 to #9 (8, 3, 4, 3, 2 of them); the row's list has no #10. **`g2.neon`:** each call set off the Neon Crescent (in the room's Glow In The Dark hue, its light on) where the actor stood; the zombies there died to 128 damage credited to the player (his kill count went up), through intArg (1 + his number) or through the monster's target; two killed set off RSQ SlowMo's Barrel Multi-Kill, a barrel beside it went off as a Chain Reaction, and Barrel Near You was never seen for it. Not shown: whether the plain call hurts the player who set it off (he took no damage at 48 units with or without `"safe"`), and the Explosion row resetting a saved 10 to Random when a map loads |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | Your eyes as this pack reads them (the mouth the pin is pulled at) use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
 | **rig only, not headset-confirmed** (2026-11-10, G1: `design/rigtest_2026-11-10/evidence/L9_log.txt`) | The quick throw on Brutal Doom's Toss Grenade (`+user1`): out 17 tics after the press, 45.3 units a tic, one grenade spent. The **Quick Grenade** key did nothing at first (the engine marks a key's network event as typed by hand, and this pack dropped those); fixed in commit ae089395, then the key threw the same way, 17 tics out at the same speed. With BD22 VR loaded and Replace Brutal Doom's Grenade on. The pin and toss sounds and the side-by-side with BD22's own toss were not logged |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of this pack was exercised in them beyond G1 (above) |
@@ -188,6 +195,13 @@ headset.*
 - **Damage** is the grenade's own (85 over 200, then 75 over 255), credited to whoever threw it, or to whoever shot it.
 - **Barrels** keep the stock barrel's health, size, damage and timing to the tic, so chain reactions run at stock pace;
   only the look and sound change. They stay ExplosiveBarrels, so every mod that looks for barrels still finds them.
+- **Other mods ask by name** (`RSQGN_Service`): `cooked`, `teeth`, `skeet`, `impact`, `turned.by`, `kinds.owned`,
+  `kind`, `kind.set`, `kind.colour`, `kind.colour.of`, `fuse.count`, `fuse.amber`, and for Grapple 2.0 **`g2.neon`**:
+  `GetInt("g2.neon", "", 0, 0, actorAtSpot)` sets off #10 Neon Crescent where that actor stands, through the barrels'
+  own blast (128 at the heart over Barrel Blast Radius, 192 units at the default). Credit: intArg 1 + a player's number
+  names him; with 0, the actor itself if it is a player, else its target if that is a player, else nobody. stringArg
+  `"safe"` spares the credited player (a barrel's blast hurts whoever set it off). Answers 1 gone off, 0 no actor or
+  Barrels off. From synced play code.
 - **Quest-friendly:** one light per blast and at most 8 at once, no shadow maps, and a cap on effect actors (600) so a
   long chain stays cheap. Scorch marks fade out on their own instead of crowding out bullet holes.
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes.

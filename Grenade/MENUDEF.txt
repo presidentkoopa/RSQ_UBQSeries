@@ -59,7 +59,7 @@ OptionMenu "RSQGN_Options"
 	Option "Brutal Doom's Launchers", "rsqgn_bd_launchers", "OnOff"
 	Slider "Barrel Explosion Size", "rsqgn_barrel_size", 0.5, 4.0, 0.25, 2
 	Slider "Barrel Blast Radius", "rsqgn_barrel_radius", 1.0, 3.0, 0.25, 2
-	// The pink Neon Crescent takes the room's Glow In The Dark colour. Off: always pink.
+	// The pink Neon Crescent (Grapple 2.0's air spike only, no longer a barrel's) takes the room's Glow In The Dark colour. Off: always pink.
 	Option "Neon Crescent: Room Colour", "rsqgn_neon_room", "OnOff"
 	Slider "Debris", "rsqgn_barrel_debris", 0.0, 1.0, 0.1, 1
 	Option "Contexts", "rsqgn_ctx", "OnOff"
@@ -137,7 +137,6 @@ OptionValue "RSQGN_BarrelKind"
 	7, "#7 Pillar"
 	8, "#8 Groundbreaker"
 	9, "#9 Slag Column"
-	10, "#10 Neon Crescent"
 }
 
 OptionValue "RSQGN_BarrelSound"

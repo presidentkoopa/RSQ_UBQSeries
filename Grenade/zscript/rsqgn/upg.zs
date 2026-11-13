@@ -102,6 +102,23 @@ class RSQGN_Service : Service
 
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// GRAPPLE 2.0'S AIR SPIKE (owner 2026-11-13 00:1x): "g2.neon", stringArg "" (or "safe"), intArg 0 (or 1 + the number
+		// of the player to credit), objectArg the actor at the spot -> #10 Neon Crescent goes off where that actor stands,
+		// through the barrels' own blast (barrel.zs RSQGN_NeonSpike: the look, the colour, the light, the sound, the barrel's
+		// A_Explode). CREDIT: the player intArg names; with intArg 0, the actor itself if it is a player's pawn, else its
+		// `target` if that is a player's pawn (a spiked monster's target is the player it is after), else nobody. "safe":
+		// the blast spares the credited player (a barrel's own blast hurts whoever set it off). Answers 1 gone off, 0 not
+		// (no actor, or the Barrels row is off). From synced play code only. Rig only, not headset-confirmed.
+		if (request == "g2.neon")
+		{
+			let at = Actor(objectArg);
+			if (!at || !RSQGN_BarrelSwap.On()) return 0;
+			Actor who = null;
+			if (intArg > 0 && intArg <= MAXPLAYERS && playeringame[intArg - 1]) who = players[intArg - 1].mo;
+			else if (at.player) who = at;
+			else if (at.target && at.target.player) who = at.target;
+			return RSQGN_NeonSpike.SetOff(at, who, stringArg ~== "safe") ? 1 : 0;
+		}
 		if (request == "cooked")
 		{
 			let g = RSQGN_Thrown(objectArg);

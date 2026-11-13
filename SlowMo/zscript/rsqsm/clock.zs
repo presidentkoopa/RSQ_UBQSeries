@@ -266,7 +266,7 @@ class RSQSM_Clock : EventHandler
 		cdAuto = false; cdAutoTic = 0; cdCause = ""; hhLast = 0;
 		rsWho = -1; for (int i = 0; i < MAXPLAYERS * 2; i++) { rlActive[i] = false; rlW[i] = null; }
 		ClearAll();
-		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; freeUntil[i] = 0; smokeUntil[i] = 0; smokeResume[i] = 0; }
+		for (int i = 0; i < MAXPLAYERS; i++) { dodgeTic[i] = 0; meK[i] = 1; meGrav[i] = 0; meVx[i] = 0; meVy[i] = 0; freeUntil[i] = 0; g2FreeUntil[i] = 0; smokeUntil[i] = 0; smokeResume[i] = 0; }
 		// THE SMOKE GOES ON (owner 11-11): what was left of a smoke's slow motion when the last level ended (WorldUnloaded),
 		// started again on this one's first tic (SmokeKeep), at the same depth and Move at Full Speed rule. Read here, before
 		// Brutal Doom clears the inventory as a level starts.
@@ -625,7 +625,7 @@ class RSQSM_Clock : EventHandler
 	// player who sent it; server ones are the world's.
 	enum ECat { CAT_NONE, CAT_CLOSECALL, CAT_RELOAD, CAT_OTHER, CAT_MINIBOSS, CAT_KEY, CAT_WRIST, CAT_BURST, CAT_WHEEL,
 		CAT_A11Y, CAT_SHOVE, CAT_SMOKE, CAT_PARRY, CAT_BLOCK, CAT_SCORE, CAT_GBVR, CAT_DODGE, CAT_GRENADE, CAT_OU, CAT_HEAVY,
-		CAT_BLOCKON, CAT_BMULTI, CAT_BCHAIN, CAT_BNEAR, CAT_QUICKNADE, CAT_REMOTE }
+		CAT_BLOCKON, CAT_BMULTI, CAT_BCHAIN, CAT_BNEAR, CAT_QUICKNADE, CAT_REMOTE, CAT_GSLAM }
 	static double CvWho(String n, int who, double d)
 	{
 		return (who >= 0 && who < MAXPLAYERS && playeringame[who]) ? CvP(n, players[who], d) : Cv(n, d);
@@ -659,6 +659,7 @@ class RSQSM_Clock : EventHandler
 		case CAT_BNEAR:     return Cv("rsqsm_trig_barrel_near", 1) != 0;
 		case CAT_QUICKNADE: return Cv("rsqsm_trig_quicknade", 1) != 0;
 		case CAT_REMOTE:    return Cv("rsqsm_trig_remote", 1) != 0;
+		case CAT_GSLAM:     return Cv("rsqsm_trig_grappleslam", 1) != 0;
 		}
 		return true;
 	}
@@ -667,7 +668,7 @@ class RSQSM_Clock : EventHandler
 		static const String names[] = { "-", "Close-Call", "Reload Slowdown", "Other / Unknown Mods", "Miniboss Window",
 			"Manual Key", "Wrist Cross", "Burst", "Wheel", "Accessibility Button", "Melee Shove", "Cigarette",
 			"Saber Parry", "ShieldSaw Block", "Score", "Gun Bonsai VR", "Crisis Dive", "Grenade Blast", "Over-Under Blast",
-			"Heavy Hit Slowdown", "Locked Barrel", "Barrel Multi-Kill", "Chain Reaction", "Barrel Near You", "Quick Grenade", "Training Remote" };
+			"Heavy Hit Slowdown", "Locked Barrel", "Barrel Multi-Kill", "Chain Reaction", "Barrel Near You", "Quick Grenade", "Training Remote", "Grapple-Slam" };
 		return (cat >= 0 && cat < names.Size()) ? names[cat] : "?";
 	}
 	double Cooldown() { return clamp(Cv("rsqsm_auto_cooldown", 25), 0.0, 120.0); }
@@ -683,7 +684,9 @@ class RSQSM_Clock : EventHandler
 	// miniboss window re-asks each second). Answers whether it was let in.
 	// cause: the words under the countdown bar ("" = CauseWord(src)). shared: false for an automatic trigger with a cooldown
 	// of its own (Heavy Hit Slowdown, unless its Cooldown row says Use Shared): it neither waits out nor starts the shared one.
-	bool Trigger(String src, int cat, int ms, double depth, bool isAuto, int who = -1, String cause = "", bool shared = true)
+	// exact: never added on after a running slow (the smoke's adding-up below is skipped): longer wins, so a caller that asks
+	// again and again (Grapple 2.0's kick-chain, g2.slow) gets what it asks for and never more
+	bool Trigger(String src, int cat, int ms, double depth, bool isAuto, int who = -1, String cause = "", bool shared = true, bool exact = false)
 	{
 		if (StoodDown()) { Log(src, "refused: stood down (another slow-motion mod)"); return false; }
 		if (on) { Log(src, "not needed: slow motion is held on"); return false; }
@@ -703,7 +706,7 @@ class RSQSM_Clock : EventHandler
 		bool world = isAuto || src ~== "down.up";
 		bool smoking = false;
 		for (int i = 0; i < MAXPLAYERS; i++) if (smokeUntil[i] > level.maptime) smoking = true;
-		bool stack = pulseUntil > level.maptime && ((src ~== "smoke") || (world && smoking));
+		bool stack = !exact && pulseUntil > level.maptime && ((src ~== "smoke") || (world && smoking));
 		Pulse(ms, depth, stack);
 		if (stack && world)
 			for (int i = 0; i < MAXPLAYERS; i++)
@@ -753,6 +756,68 @@ class RSQSM_Clock : EventHandler
 		if (ms <= 0) ms = START_MS;
 		double depth = speed > 0 ? clamp(speed, 0.05, 1.0) : Depth();
 		return Trigger(who, CAT_OTHER, ms, depth, isAuto, sender);
+	}
+
+	// ---- GRAPPLE 2.0'S DOORS (design/PLANNED_PROJECTS.md "Grapple 2.0", owner 2026-11-12 / 11-13; RSQSM_Service "g2.*") --------
+	// Grapple 2.0 asks by name; nothing links. Rig only, not headset-confirmed.
+	//   G2Slow     the kick-chain's slow motion (1.5, 1.2, 0.9 ... s, each link asking again): a GAME slow (the world bar and
+	//              the reason line under it, Adrenaline on or off) at the World Speed slider's speed, under the Triggers page's
+	//              Other / Unknown Mods switch, with NO shared cooldown (it neither waits one out nor starts one, or the
+	//              second link of a chain would be refused), never added on after a running slow (exact): longer wins, so the
+	//              hold is at least what was asked and never more than the longest ask still running.
+	//   G2AddTime  more time on the slow running now (the double jump's +0.5 s, the time markers' +0.25 / +0.5 s): its end
+	//              moves later by exactly that much (the countdown bar refills), the reason line shows the reason. Nothing
+	//              running: nothing added. Same switch. The 30 s cap of every pulse holds.
+	//   G2Slam     the air spike's landing (Grapple-Slam, its own row beside Barrel Near You): Barrel Near You's slow
+	//              motion (Blast Time, the World Speed slider's speed), an automatic GAME slow, but with no shared cooldown:
+	//              the spike lands inside the chain's own slow motion, which a shared cooldown would refuse.
+	//   G2Free     his own movement at full speed (Slow Me Too skipped) for some tics (SlowMe): the fling and the ledge save
+	const G2_CAP_TICS = 1050;   // PULSE_MAX_MS (30 s) in tics
+	int g2FreeUntil[MAXPLAYERS];   // maptime this player's movement is left at full speed until (G2Free), 0 none
+	bool G2Slow(String reason, int tics, int who)
+	{
+		if (tics <= 0) return false;
+		// tics -> ms so that Pulse's ceil(ms x 35 / 1000) gives back exactly `tics`
+		int ms = int(min(tics, G2_CAP_TICS) * 1000.0 / TICRATE);
+		return Trigger("grapple", CAT_OTHER, ms, Depth(), true, who, reason != "" ? reason : "GRAPPLE", false, true);
+	}
+	bool G2AddTime(String reason, int tics, int who)
+	{
+		if (tics <= 0) return false;
+		if (StoodDown()) { Log("grapple.addtime", "refused: stood down (another slow-motion mod)"); return false; }
+		if (!CatOn(CAT_OTHER, who)) { Log("grapple.addtime", "refused: its switch is off (Other / Unknown Mods)"); return false; }
+		int now = level.maptime, cap = now + G2_CAP_TICS;
+		if (on)
+		{
+			// held on with a set end (Adrenaline off: Slow Motion Length): that end moves; held with no end (the Wheel, or the
+			// meter): nothing to add to
+			if (heldUntil <= now) { Log("grapple.addtime", "not added: slow motion is held on with no set end"); return false; }
+			heldUntil = min(heldUntil + tics, cap);
+		}
+		else
+		{
+			if (pulseUntil <= now) { Log("grapple.addtime", "not added: no slow motion running"); return false; }
+			pulseUntil = min(pulseUntil + tics, cap);
+		}
+		if (reason != "") cdCause = reason;
+		Log("grapple.addtime", String.Format("+%d tics, %s now until t%d, cause line \"%s\"", tics, on ? "held slow" : "pulse", on ? heldUntil : pulseUntil, cdCause));
+		return true;
+	}
+	bool G2Slam(int who)
+	{
+		return Trigger("grapple.slam", CAT_GSLAM, BlastMs(), Depth(), true, who, "Grapple-Slam!", false);
+	}
+	// tics > 0: his movement at full speed for that many real tics from now (kept to the latest end asked), his flight and
+	// gravity put back at full time AT ONCE (MeRestore), so a velocity set right after this call is never rescaled; answers 1.
+	// tics <= 0: asks only: 1 when his movement runs at full speed this tic, 0 while Slow Me Too (or a dive) slows it.
+	int G2Free(int n, int tics)
+	{
+		if (n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return 0;
+		if (tics <= 0) return (meK[n] <= 0 || meK[n] >= 0.9999) ? 1 : 0;
+		g2FreeUntil[n] = max(g2FreeUntil[n], level.maptime + min(tics, G2_CAP_TICS));
+		MeRestore(n);
+		meVx[n] = players[n].mo.vel.x; meVy[n] = players[n].mo.vel.y;
+		return 1;
 	}
 
 	// RS_SlowMo's pulse, same arguments and the same rules: hold `ms`, at `depth` of
@@ -1009,6 +1074,7 @@ class RSQSM_Clock : EventHandler
 				else if (CvWho("rsqsm_me", n, 1) != 0 && ratio > 0) k = scale ** ratio;
 			}
 			if (level.maptime < freeUntil[n]) k = 1.0;   // smoking: full speed (Tactical Rig asked, above)
+			if (level.maptime < g2FreeUntil[n]) k = 1.0; // Grapple 2.0's fling (RSQSM_Service "g2.fullspeed", G2Free below)
 			let dn = RSQSM_Down.Get();
 			// DOWN: never slowed by the clock (the crawl is its own, down.zs Crawl), EXCEPT the fall itself (owner 11-09 17:44:
 			// going down is a slow-mo moment): his own speed eases from a fifth back to full over the drop (down.zs DropK)
@@ -1908,7 +1974,9 @@ class RSQSM_Clock : EventHandler
 			int who = BarrelOwner(t);
 			if (LockedBarrel(t)) BarrelPend(BC_LOCK, who, String.Format("%s landed on its locked monster and went off", t.GetClassName()));
 			if (b && b != t) BarrelPend(BC_CHAIN, who, String.Format("%s set off by another barrel's blast (%s)", t.GetClassName(), e.Inflictor.GetClassName()));
-			int n = BarrelNear(t);
+			// RSQ Grenade's Neon Crescent spike (its service's "g2.neon", Grapple 2.0's air spike) is a barrel blast to every cue
+			// but this one: its slow motion is Grapple-Slam's (G2Slam), asked by Grapple 2.0 itself
+			int n = t.GetClassName() == 'RSQGN_NeonSpike' ? -1 : BarrelNear(t);
 			if (n >= 0) BarrelPend(BC_NEAR, n, String.Format("%s went off within %.1f m of player %d", t.GetClassName(), BARREL_NEAR_M, n));
 			return;
 		}
@@ -2242,6 +2310,7 @@ class RSQSM_AdrToken : Inventory
 // null: every arrow with that key). An arrow also goes when its actor dies or is gone, and with the map. Hidden while the
 // console player is DOWN (DOWN's own arrows first). Answers 1; arrow.add answers 0 for no living actor or a full list (32).
 // From synced play code only.
+// GRAPPLE 2.0 (2026-11-13): "g2.slow" / "g2.addtime" / "g2.slam" / "g2.fullspeed" (in GetInt below; clock.zs G2Slow ...).
 // -1: unknown request.
 // The Gun Bonsai VR patch's Adrenaline upgrade charges it on melee kills.
 class RSQSM_Service : Service
@@ -2286,6 +2355,24 @@ class RSQSM_Service : Service
 		{
 			if (c.StoodDown() || !c.Active()) return -1;
 			return (c.pulseUntil > level.maptime && c.pulseSrc == "score") ? 1 : 0;
+		}
+		// GRAPPLE 2.0 (clock.zs G2Slow / G2AddTime / G2Slam / G2Free; README "For other mods"). objectArg: the player's pawn
+		// (a PlayerPawn; anything else: no player, the switches read as the world's). From synced play code only.
+		//   "g2.slow", reason, tics      start (or extend to at least) a game slow of `tics` real tics, the reason under the
+		//                                world bar; 1 let in, 0 refused (Other / Unknown Mods off, held on, stood down)
+		//   "g2.addtime", reason, tics   `tics` more on the slow running now; 1 added, 0 nothing running (or refused)
+		//   "g2.slam"                    Grapple-Slam (its own row): Barrel Near You's slow; 1 let in, 0 its row off / refused
+		//   "g2.fullspeed", "", tics     tics > 0: his own movement at full speed for that long (1); tics 0: 1 when it is at full
+		//                                speed now, 0 while Slow Me Too slows it. The factor to multiply motion by is then 1.
+		if (request.Left(3) ~== "g2.")
+		{
+			let pmo = PlayerPawn(objectArg);
+			int pn = (pmo && pmo.player) ? pmo.PlayerNumber() : -1;
+			if (request ~== "g2.slow") return c.G2Slow(stringArg, intArg, pn) ? 1 : 0;
+			if (request ~== "g2.addtime") return c.G2AddTime(stringArg, intArg, pn) ? 1 : 0;
+			if (request ~== "g2.slam") return c.G2Slam(pn) ? 1 : 0;
+			if (request ~== "g2.fullspeed") return c.StoodDown() ? 1 : c.G2Free(pn, intArg);
+			return -1;
 		}
 		if (request ~== "start" || request ~== "start.auto")
 			return c.Start(stringArg.Length() ? stringArg : "service", intArg, doubleArg, request ~== "start.auto") ? 1 : 0;
