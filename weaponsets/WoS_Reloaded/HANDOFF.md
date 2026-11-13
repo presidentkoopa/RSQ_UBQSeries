@@ -57,3 +57,12 @@ Next, in order:
   Rig facts learned: the off hand near the gun steadies it (two-hand grip) and the gun cannot flick -> flick with the off hand
   away; the pump waits for the hand after every shot in VR (robot 3 after each shot); the robots keep the first hand turn
   they find (no search per shell).
+
+## 2026-11-12 22:15: delivered 0.1.0 (suite passed on tree 8e5014c7), owner testing
+- OG = WoS sounds only (hand reload too: zscript/wos/ogsnd.gen.zs); Enhanced = WoS shot + RS Ballistics (BD22 VR's flash.zs table), Combat FX reloads.
+- HUD = GBOVR's bottom row (tools/lib/stubs.zs RSQ_AmmoHud), stands down with GBOVR. rsq_hud_nohp option.
+- Pickups: Voxels of Saturn + BD22 voxel pack (MP40 MP40I0, Nova SRCGA, Motorsaw CSAWA); 1911 = BD pistG0 recoloured to the
+  1911 skin (tools/pickup_1911.py). The owner's voxel M1911 upload was rejected by him (removed).
+- Flick = BD22 VR's rules only (no "Reloading = Flick" mode). Pump = BD22 VR's (a trigger pull pumps it).
+- Open: Motorsaw alt fire (nothing), dry click sound (Doom 2 switch), 1911 recoil-follow rows borrowed from BrutalPistol.
+- Waiting on the owner's headset test.
