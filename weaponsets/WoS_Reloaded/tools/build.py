@@ -323,7 +323,8 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
         g = set_case(g, 'BoltRatio', 19, '%.3f' % row19['BoltRatio'])
         for fn in ('HasHandle', 'HandleLayers'): g = set_case(g, fn, 19, 'true' if row19[fn] else 'false')
         for fn in ('SprGun', 'SprPart', 'SprWorld'): g = set_case(g, fn, 19, "'%s'" % row19[fn])
-        for fn in ('ReadySprites', 'SndOut', 'SndIn', 'SndBack', 'SndFwd', 'SndLand'): g = set_case(g, fn, 19, '"%s"' % row19[fn])
+        snd19 = dict(row19, SndOut='rsqws/1911/reload1', SndIn='rsqws/1911/reload2', SndFwd='rsqws/1911/reload3')	# owner's 1911.zip, in its order
+        for fn in ('ReadySprites', 'SndOut', 'SndIn', 'SndBack', 'SndFwd', 'SndLand'): g = set_case(g, fn, 19, '"%s"' % snd19[fn])
         note('reload row 19 RSQWS_1911: its own geometry, sprites RQ1M / RQ1P / RQ1W, the card\'s (= BD22 pistol) sounds')
     # Weapon Effects = OG (owner: "all sounds come from OG WoS mod unless ballistics set to" Enhanced): the hand reload plays
     # each gun's own WoS reload sounds (WoS ACTORS' reload states, in their order); Enhanced keeps BD22 VR's row sounds
@@ -454,7 +455,10 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
        'addmenukey "Dual Wield" rsq_dualkey\nalias rsq_dualkey "netevent rsq_dual"\n')
     wr('SNDINFO.rsr', rd(os.path.join(BD, 'SNDINFO.rsr')) + "\n// the underbarrel launcher's sounds (BD22's names, Doom 2's own lumps)\nGrenadeLauncher/Open\tdsdbopn\nGrenadeLauncher/Close\tdsdbcls\nGrenadeLauncher/Load\tdsdbload\nWeapon/Empty\tdsswtchn\n"
        "\n// tools/build.py: a trigger on an empty gun (RSQWS_Gun.RSQWS_Empty): Doom 2's own click\nRSQWS/dry\tdsswtchn\n"
-       "\n// the 1911's shot at Ballistics Low / Max (owner: his sound file, to come): WoS's 1911 until then\n$alias rsqws/1911/fire weapons/1911/fire\n")
+       "\n// the 1911's own sounds at Ballistics Low / Max (owner 2026-11-13: 1911.zip; never at Stock, which is WoS's)\n"
+       "rsqws/1911/fire\t\"sounds/rsqws1911/fire.ogg\"\nrsqws/1911/reload1\t\"sounds/rsqws1911/reload1.ogg\"\n"
+       "rsqws/1911/reload2\t\"sounds/rsqws1911/reload2.ogg\"\nrsqws/1911/reload3\t\"sounds/rsqws1911/reload3.ogg\"\n")
+    for f in ('fire.ogg', 'reload1.ogg', 'reload2.ogg', 'reload3.ogg'): cp(os.path.join(ROOT, 'assets/sounds1911', f), 'sounds/rsqws1911/' + f)
     cptree(os.path.join(BD, 'sounds/rsr'), 'sounds/rsr')
     cptree(os.path.join(BD, 'sounds/rsb'), 'sounds/rsb')
     for f in ('SURFACES.rsq', 'ANIMDEFS.rsq'): cp(os.path.join(BD, f), f)
