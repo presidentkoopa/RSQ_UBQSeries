@@ -39,6 +39,13 @@ speed in slow motion (the ledge save). No rope, reel, swing or climb: those are 
 - **Bounce (owner 23:4x):** away from the monster and up: straight out from its face, whatever way you look.
 - **Mid-air aim (owner 23:4x):** the hook snaps to the nearest valid target in a small cone round the off hand's line,
   on by default; an Aim Assist row switches it off.
+- **Double jump (owner 2026-11-13 00:0x).** Reference: Castlevania: Symphony of the Night, "Part 7 - Double Jump!"
+  (youtube.com/watch?v=MFYLpiPEgmc, 06:40-06:48, watched frame by frame in the built-in browser): in the Long Library
+  Alucard dive-kicks a flying Dhuron, the hit pops a damage number, he bounces up off it and dive-kicks it again,
+  staying airborne off the enemy. The owner's version: one double jump per kick-off (every kick refreshes it). After a
+  kick-off, press jump again for more air and +0.5 s of slow motion, with **DoubleJump!** appearing under the world
+  slow-motion bar so you know why it got the boost. Once you double jump, a few enemies within the grapple's reach get
+  "+0.25 sec" or "+0.5 sec" over them: hook one to earn that much more slow motion (the start of the airborne minigame).
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
