@@ -1,11 +1,11 @@
 RSQ Grapple 2.0 -- credits
 ==========================
 
-Design: presidentkoopa (design/PLANNED_PROJECTS.md "Grapple 2.0", 2026-11-10 to 11-13): the off hand's instant hook,
+Design: presidentkoopa (design/PLANNED_PROJECTS.md "Grapple 2.0", 2026-11-10 to 11-13): the off hand's hook,
 its three results, the kick-chain, the double jump and its time markers, the air spike, Scorpion Pull.
 
 jpalomo: the hookshot this is rebuilt from (jp_grapple.pk3, kept unmodified in jp_original/ of the source repo).
-  - its feel: the wall thrust is his Hook_HitWall (hook.acs), number for number; the reach is his 780 units (about 23 m);
+  - its feel: the claw flies as his HookShot does (40 units a tic, his radius 10 and height 14); the wall thrust is his Hook_HitWall (hook.acs), number for number; the reach is his 780 units (about 23 m);
     a yank takes his distance / 12 a tic; the claw stays shut his 16 tics after a wall bite
   - its art and sound, shipped under this mod's names: claw sprites OCLW (open) and CCLW (shut) as RSGH / RSGK, the chain
     link tenda0 (the 40 px hires version) as RSGL, and dschain, dspulchn, dsmtalht, dsmeatht as RSGCHAIN, RSGPULCH,

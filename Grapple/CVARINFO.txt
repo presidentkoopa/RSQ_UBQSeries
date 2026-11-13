@@ -4,3 +4,4 @@ server bool   rsqgr_aim_assist = true;   // Aim Assist: in the air, the hook sna
 server bool   rsqgr_scorpion   = false;  // Scorpion Pull: a monster bite holds on the chain until you yank the off hand back (2 m/s); off = it goes at once
 server float  rsqgr_range      = 780;    // reach in map units (jpalomo's hook: 780, about 23 m)
 server int    rsqgr_debug      = 0;      // 1: every bite, kick, slow-motion ask and event to the console (T_G2 lines)
+server int    rsqgr_chain_look = 0;      // TEST ONLY (no menu row): 0 jpalomo's chain as shipped; 1 links a third the size, 3x as many, dark gunmetal; 2 as 1 + a ripple and a running bright link while the claw flies; 3 as 2, near-black links, the running link warm orange

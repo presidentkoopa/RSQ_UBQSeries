@@ -53,7 +53,7 @@ echo "built pk3/RSQ_LaserSight.pk3"
 # Grapple: its explicit include list (jp_original/ is source material and does not ship).
 cd "$HUB/Grapple"
 rm -f "$OUT/RSQ_Grapple.pk3"
-zip -q -r -X "$OUT/RSQ_Grapple.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt CREDITS.txt README.md zscript sprites sounds
+zip -q -r -X "$OUT/RSQ_Grapple.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt SNDINFO.txt TRNSLATE.txt CREDITS.txt README.md zscript sprites sounds
 echo "built pk3/RSQ_Grapple.pk3"
 
 # VisualRewards (was TopHPBars, RSQ_HPBars.pk3, until 2026-11-03): the mod lives in pk3/ (its bar art is generated from

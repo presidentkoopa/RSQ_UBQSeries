@@ -99,6 +99,7 @@ class G2P_Probe : EventHandler
 			Console.Printf("G2P t%d spawn tag %d %s -> %s at (%.0f %.0f %.0f) mass %d boss %d hp %d radius %.0f height %.0f", level.maptime, tag, cls, a ? a.GetClassName() : 'none', a ? a.Pos.x : 0, a ? a.Pos.y : 0, a ? a.Pos.z : 0, a ? a.Mass : 0, a ? a.bBOSS : 0, a ? a.health : 0, a ? a.radius : 0, a ? a.height : 0);
 		}
 		else if (n ~== "g2p_dormant") { let a = tags[e.Args[0]]; if (a) { a.bDORMANT = true; Console.Printf("G2P tag %d %s made dormant (heavy by the OG rule)", e.Args[0], a.GetClassName()); } }
+		else if (n ~== "g2p_mass") { let a = tags[e.Args[0]]; if (a) { a.Mass = e.Args[1]; Console.Printf("G2P t%d tag %d %s mass set to %d (species %s, boss %d)", level.maptime, e.Args[0], a.GetClassName(), a.Mass, a.GetSpecies(), a.bBOSS); } }
 		else if (n ~== "g2p_hp") { let a = tags[e.Args[0]]; if (a) { a.health = e.Args[1]; Console.Printf("G2P tag %d health %d", e.Args[0], a.health); } }
 		else if (n ~== "g2p_fireat") { let a = tags[e.Args[0]]; if (a) FireAt(p, a.Pos + (0, 0, a.Height * 0.5), e.Args[1] / 10.0, String.Format("tag %d %s", e.Args[0], a.GetClassName())); else Console.Printf("G2P fireat: no tag %d", e.Args[0]); }
 		else if (n ~== "g2p_firepoint") FireAt(p, (e.Args[0], e.Args[1], e.Args[2]), 0, "a point");

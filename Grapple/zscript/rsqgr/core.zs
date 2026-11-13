@@ -1,14 +1,16 @@
 // RSQGR_Core -- GRAPPLE 2.0 (design/PLANNED_PROJECTS.md "Grapple 2.0": every rule here is the owner's; where the plan is
 // silent the simplest thing was chosen, and Grapple/README.md lists those).
 //
-// THE OFF HAND'S INSTANT HOOK. One press of Fire Hook, from the off hand, where it points: the bite is decided on the
-// press tic by one trace out to the reach (jpalomo's 780 units, about 23 m), and the chain is drawn from the hand to
-// the claw while the result plays. Three results, decided where it bites:
+// THE OFF HAND'S HOOK. One press of Fire Hook, from the off hand, where it points: the claw FLIES out on its chain at
+// jpalomo's speed (40 units a tic, about 41 m a second) out to his reach (780 units, about 23 m), and bites where it
+// arrives; at the end of its reach it comes back empty (owner 2026-11-13 01:xx: "the claw flies, like the OG mod").
+// Three results, decided where it bites:
 //   WALL OR FLOOR    you are flung at it: jpalomo's Hook_HitWall thrust, number for number, and your momentum is yours
 //   LEDGE LIP        a bite on the top of a step you could stand on (room to stand): you are carried up and onto it
 //   LIGHT MONSTER    GET OVER HERE: it is yanked to you and lands in front of you (no catch). In the air: it is pulled up
 //                    to you and held there -- the AIR SPIKE's moment
-//   HEAVY MONSTER    (a boss, mass over 1000, dormant, or RSQ Miniboss's Can't Be Yanked) you are pulled to it, and
+//   HEAVY MONSTER    (a boss, mass over 1000, dormant, RSQ Miniboss's Can't Be Yanked, or ANY Baron of Hell whatever its
+//                    mass: owner 2026-11-13 01:xx) you are pulled to it, and
 //                    arriving IS the kick: 30 damage, knocked back, staggered, the yellow cross, KICK!, slow motion on
 //                    contact, then the kick-off: away from it and up about 1.5 m (the ceiling checked every tic)
 // THE KICK-CHAIN: in the air after a kick-off the hook fires again (Aim Assist snaps it to the nearest valid target
@@ -20,7 +22,7 @@
 // anything in them, only at this moment) spike it straight down; you hang until it hits the floor; RSQ Grenade's Neon
 // Crescent goes off there, with blood, fire and a shockwave, and RSQ SlowMo's Grapple-Slam slows your descent.
 //
-// RUNS AT FULL SPEED IN SLOW MOTION: the claw and the effects are "rsq..." classes (RSQ SlowMo runs them in real time),
+// RUNS AT FULL SPEED IN SLOW MOTION: the claw's flight is stepped in WorldTick; the claw and the effects are "rsq..." classes (RSQ SlowMo runs them in real time),
 // monsters on the hook are moved by position (a pushed velocity would be scaled by the world's clock), and every tic the
 // hook moves you it asks RSQ SlowMo for full-speed movement ("g2.fullspeed") before it sets your velocity.
 //
@@ -65,12 +67,17 @@ class RSQGR_Core : EventHandler
 	const SCORP_HOLD = 105;        // Scorpion Pull waits this long for the yank, tics (chosen)
 	const SCORP_MPS = 2.0;         // the yank back, m/s (chosen)
 	const OG_HOLD = 16;            // jp's claw stays shut 16 tics after a wall bite (CCLW A 16)
+	const FLY_SPEED = 40.0;        // jp's HookShot: FastProjectile, Speed 40 (units a tic: about 41 m a second)
+	const FLY_RADIUS = 10.0;       // ... Radius 10
+	const FLY_HEIGHT = 14.0;       // ... Height 14
 	const RGB_KICK = 0xFFC83C;
 	const RGB_MARK = 0x60E0FF;
 
 	int mode[MAXPLAYERS];
 	int modeAge[MAXPLAYERS];
-	RSQGR_Claw claw[MAXPLAYERS];
+	RSQGR_Claw claw[MAXPLAYERS];   // the claw whose bite is playing (or was last)
+	Array<RSQGR_Claw> flyers;      // claws in flight, every player's
+	int clawIds;
 	Actor victim[MAXPLAYERS];
 	bool vNoGrav[MAXPLAYERS];      // the victim's own NOGRAVITY, given back
 	int pending[MAXPLAYERS];       // M_SCORP: what the yank sets off (B_LIGHT / B_HEAVY)
@@ -140,7 +147,14 @@ class RSQGR_Core : EventHandler
 		return recMon.Size() - 1;
 	}
 
-	// ---- the press ------------------------------------------------------------------------------------------------
+	// ---- the press: the claw is fired --------------------------------------------------------------------------
+	// THE CLAW FLIES, like jpalomo's (owner 2026-11-13 01:xx): his HookShot is a FastProjectile, Speed 40, Radius 10,
+	// Height 14, that lives 10 frames x 2 tics (jp_original/decorate.txt) -- 40 units a tic (about 41 m a second) out to
+	// the reach (780 units, about 23 m: 20 tics). It bites where it arrives; at the end of its reach it comes back empty.
+	// A PRESS WHILE A CLAW FLIES does what jp's does: his Hook_Check (hook.acs) fires a new HookShot on every fresh press
+	// with no check for one in the air, so a second claw flies too, and each acts on what it reaches. Here: a claw that
+	// arrives while an earlier bite is still playing (a pull, a yank, a ledge ...) lets go and comes back; a press while
+	// the hook is busy is ignored as before.
 	void Fire(int pn, Vector3 org, Vector3 dir)
 	{
 		let pmo = players[pn].mo;
@@ -151,9 +165,13 @@ class RSQGR_Core : EventHandler
 			Log(pn, String.Format("press ignored: the hook is busy (mode %d)", m));
 			return;
 		}
-		if (m == M_YANK) EndVictim(pn, "a new press");
-		if (claw[pn]) { claw[pn].Destroy(); claw[pn] = null; }
-		mode[pn] = M_NONE;
+		if (m == M_YANK)
+		{
+			EndVictim(pn, "a new press");
+			SetMode(pn, M_NONE);
+			if (claw[pn]) claw[pn].Back();
+			claw[pn] = null;
+		}
 
 		bool air = !RSQGR_Util.OnGround(pmo);
 		double range = RSQGR_Util.Range();
@@ -169,53 +187,209 @@ class RSQGR_Core : EventHandler
 			}
 		}
 		pmo.A_StartSound("rsqgr/fire", CHAN_AUTO, CHANF_OVERLAP);
+		int already = 0;
+		for (int i = 0; i < flyers.Size(); i++) if (flyers[i] && flyers[i].pn == pn) already++;
+		let c = RSQGR_Claw.Launch(pmo, pn, org, dir, range, ++clawIds);
+		if (!c) return;
+		flyers.Push(c);
+		Log(pn, String.Format("FIRE claw #%d from (%.0f %.0f %.0f) dir (%.2f %.2f %.2f) %s: flies %.0f a tic out to %.0f%s", c.clawId, org.x, org.y, org.z, dir.x, dir.y, dir.z,
+			air ? "in the air" : "on the ground", FLY_SPEED, range, already > 0 ? String.Format(" (%d other claw%s still flying: jp fires another)", already, already > 1 ? "s" : "") : ""));
+	}
 
-		if (!tracer) tracer = new("RSQGR_Tracer");
-		tracer.shooter = pmo;
-		bool hit = tracer.Trace(org, level.PointInSector(org.xy), dir, range, TRACE_HitSky, RSQGR_Tracer.WALLMASK, false, pmo);
-		int ht = tracer.Results.HitType;
-		Log(pn, String.Format("fire from (%.0f %.0f %.0f) dir (%.2f %.2f %.2f) %s, hit type %d at %.0f", org.x, org.y, org.z, dir.x, dir.y, dir.z, air ? "in the air" : "on the ground", ht, hit ? tracer.Results.Distance : -1));
-		if (!hit || ht == TRACE_HitNone || ht == TRACE_CrossingPortal || ht == TRACE_HasHitSky)
+	// ONE TIC OF FLIGHT (every claw in the air, at the top of WorldTick, so a bite's result plays the same tic): jp's
+	// FastProjectile, 40 units along its line, stopped by the first wall, floor, ceiling or monster in that step. A monster
+	// is touched as his projectile touches one (his claw's radius 10 and height 14 against its box), a wall by the hook's
+	// tracer (blocking lines, the floor and ceiling). The sky is a miss. Runs in WorldTick, so at full speed in slow motion.
+	void StepFlight()
+	{
+		for (int i = flyers.Size() - 1; i >= 0; i--)
 		{
-			Vector3 end = (hit && ht == TRACE_HasHitSky) ? tracer.Results.HitPos : org + dir * range;
-			let c = RSQGR_Claw.Make(pmo, end, null);
-			if (c) c.Back();
-			claw[pn] = c;
-			Event(pn, "miss");
-			return;
-		}
-		Vector3 at = tracer.Results.HitPos;
-		if (ht == TRACE_HitActor)
-		{
-			let v = tracer.Results.HitActor;
-			claw[pn] = RSQGR_Claw.Make(pmo, at, v);
-			pmo.A_StartSound("rsqgr/hit/flesh", CHAN_AUTO, CHANF_OVERLAP);
-			MarkerHooked(pn, v);
-			bool heavy = RSQGR_Util.Heavy(v);
-			Log(pn, String.Format("bite %s (mass %d, boss %d, dormant %d) -> %s", v.GetClassName(), v.Mass, v.bBOSS, v.bDORMANT, heavy ? "HEAVY: you go to it" : "LIGHT: it comes"));
-			Event(pn, heavy ? "bite.heavy" : "bite.light", v);
-			if (RSQGR_Util.Flag("rsqgr_scorpion", false))
+			let c = flyers[i];
+			if (!c || c.bDestroyed || !c.Flying()) { flyers.Delete(i); continue; }
+			int pn = c.pn;
+			let pmo = players[pn].mo;
+			if (!pmo || pmo.health <= 0) { flyers.Delete(i); c.Destroy(); continue; }
+			c.flyTics++;
+			double step = min(FLY_SPEED, c.flyMax - c.flown);
+			Vector3 p0 = c.Pos, dir = c.flyDir;
+			if (!tracer) tracer = new("RSQGR_Tracer");
+			tracer.shooter = pmo;
+			bool hit = tracer.Trace(p0, level.PointInSector(p0.xy), dir, step, TRACE_HitSky, RSQGR_Tracer.WALLMASK, false, pmo);
+			int ht = TRACE_HitNone;
+			if (hit) ht = tracer.Results.HitType;
+			double limit = (hit && ht != TRACE_HitNone) ? tracer.Results.Distance : step;
+			// his claw's box against the monsters along this step (a line alone would slip past an edge his claw touches)
+			double s;
+			Actor mon;
+			[mon, s] = SweptBite(pmo, p0, dir, limit);
+			if (mon)
 			{
-				victim[pn] = v;
-				pending[pn] = heavy ? B_HEAVY : B_LIGHT;
-				SetMode(pn, M_SCORP);
-				Event(pn, "scorpion.hold", v);
-				return;
+				Vector3 at = p0 + dir * s;
+				c.flown += s;
+				flyers.Delete(i);
+				LogFly(pn, c, at, String.Format("BITES %s", mon.GetClassName()));
+				ArriveMonster(pn, pmo, c, at, mon);
+				continue;
 			}
-			if (heavy) StartPull(pn, v);
-			else StartYank(pn, v, air);
+			if (hit && ht == TRACE_HitActor)
+			{
+				Vector3 at = tracer.Results.HitPos;
+				c.flown += tracer.Results.Distance;
+				flyers.Delete(i);
+				LogFly(pn, c, at, String.Format("BITES %s", tracer.Results.HitActor.GetClassName()));
+				ArriveMonster(pn, pmo, c, at, tracer.Results.HitActor);
+				continue;
+			}
+			if (hit && (ht == TRACE_HitWall || ht == TRACE_HitFloor || ht == TRACE_HitCeiling))
+			{
+				Vector3 at = tracer.Results.HitPos;
+				c.flown += tracer.Results.Distance;
+				flyers.Delete(i);
+				LogFly(pn, c, at, ht == TRACE_HitWall ? "BITES a wall" : ht == TRACE_HitFloor ? "BITES the floor" : "BITES the ceiling");
+				ArriveWorld(pn, pmo, c, at, dir, ht, tracer.Results.HitLine, tracer.Results.Side);
+				continue;
+			}
+			if (hit && (ht == TRACE_HasHitSky || ht == TRACE_CrossingPortal))
+			{
+				c.SetOrigin(tracer.Results.HitPos, true);
+				c.flown += tracer.Results.Distance;
+				flyers.Delete(i);
+				LogFly(pn, c, c.Pos, "the sky (or a portal): a miss");
+				Missed(pn, c);
+				continue;
+			}
+			c.SetOrigin(p0 + dir * step, true);
+			c.flown += step;
+			if (c.flown >= c.flyMax - 0.01)
+			{
+				flyers.Delete(i);
+				LogFly(pn, c, c.Pos, "the end of its reach: nothing bitten");
+				Missed(pn, c);
+				continue;
+			}
+			LogFly(pn, c, c.Pos, "flying");
+		}
+	}
+
+	void LogFly(int pn, RSQGR_Claw c, Vector3 at, String what)
+	{
+		Log(pn, String.Format("claw #%d tic %d at (%.1f %.1f %.1f), flown %.1f: %s", c.clawId, c.flyTics, at.x, at.y, at.z, c.flown, what));
+	}
+
+	// the first monster his claw's box (radius 10, height 14) touches along from + dir * [0, limit]: the distance along
+	Actor, double SweptBite(PlayerPawn pmo, Vector3 p0, Vector3 dir, double limit)
+	{
+		if (limit <= 0) return null, 0;
+		Vector3 mid = p0 + dir * (limit * 0.5);
+		let it = BlockThingsIterator.CreateFromPos(mid.x, mid.y, mid.z, limit + 64, limit * 0.5 + FLY_RADIUS + 8, false);
+		Actor best = null;
+		double bestS = limit;
+		double hh = FLY_HEIGHT * 0.5;
+		while (it.Next())
+		{
+			let a = it.thing;
+			if (!RSQGR_Util.Biteable(a, pmo)) continue;
+			double r = a.radius + FLY_RADIUS;
+			// across: where the line is within r of its middle
+			Vector2 w = p0.xy - a.Pos.xy;
+			Vector2 dxy = dir.xy;
+			double qa = dxy dot dxy, qb = 2 * (w dot dxy), qc = (w dot w) - r * r;
+			double s0, s1;
+			if (qa < 1e-9)
+			{
+				if (qc > 0) continue;
+				s0 = -1e9; s1 = 1e9;
+			}
+			else
+			{
+				double disc = qb * qb - 4 * qa * qc;
+				if (disc < 0) continue;
+				double sq = sqrt(disc);
+				s0 = (-qb - sq) / (2 * qa); s1 = (-qb + sq) / (2 * qa);
+			}
+			// up and down: where his claw's height overlaps its height
+			double lo = a.Pos.z - hh, hi = a.Pos.z + a.Height + hh;
+			double z0, z1;
+			if (abs(dir.z) < 1e-9)
+			{
+				if (p0.z < lo || p0.z > hi) continue;
+				z0 = -1e9; z1 = 1e9;
+			}
+			else
+			{
+				z0 = (lo - p0.z) / dir.z; z1 = (hi - p0.z) / dir.z;
+				if (z0 > z1) { double t = z0; z0 = z1; z1 = t; }
+			}
+			double enter = max(max(s0, z0), 0.0), leave = min(min(s1, z1), limit);
+			if (enter > leave || enter >= bestS) continue;
+			best = a;
+			bestS = enter;
+		}
+		return best, bestS;
+	}
+
+	// nothing in reach: it comes back empty
+	void Missed(int pn, RSQGR_Claw c)
+	{
+		c.Back();
+		Log(pn, String.Format("MISS: claw #%d reached nothing in %d tics (%.0f units): it comes back", c.clawId, c.flyTics, c.flown));
+		Event(pn, "miss");
+	}
+
+	// a claw that arrives while an earlier bite still plays lets go (see Fire)
+	bool Busy(int pn, RSQGR_Claw c)
+	{
+		if (mode[pn] == M_NONE) return false;
+		c.Back();
+		Log(pn, String.Format("claw #%d arrived while the hook is busy (mode %d): it lets go and comes back", c.clawId, mode[pn]));
+		return true;
+	}
+
+	// the claw that bit is the one the result plays on; an earlier one still held with no timer of its own lets go
+	void TakeClaw(int pn, RSQGR_Claw c)
+	{
+		let old = claw[pn];
+		if (old && old != c && old.Held() && old.holdTics <= 0) old.Back();
+		claw[pn] = c;
+	}
+
+	// IT BIT A MONSTER: everything from here is the bite as built (light, heavy, Scorpion Pull)
+	void ArriveMonster(int pn, PlayerPawn pmo, RSQGR_Claw c, Vector3 at, Actor v)
+	{
+		if (Busy(pn, c)) return;
+		c.Bite(at, v);
+		TakeClaw(pn, c);
+		bool air = !RSQGR_Util.OnGround(pmo);
+		pmo.A_StartSound("rsqgr/hit/flesh", CHAN_AUTO, CHANF_OVERLAP);
+		MarkerHooked(pn, v);
+		bool heavy = RSQGR_Util.Heavy(v);
+		Log(pn, String.Format("bite %s after %d tics, %.0f units out (mass %d, boss %d, dormant %d, baron %d) -> %s", v.GetClassName(), c.flyTics, c.flown, v.Mass, v.bBOSS, v.bDORMANT, RSQGR_Util.Baron(v), heavy ? "HEAVY: you go to it" : "LIGHT: it comes"));
+		Event(pn, heavy ? "bite.heavy" : "bite.light", v);
+		if (RSQGR_Util.Flag("rsqgr_scorpion", false))
+		{
+			victim[pn] = v;
+			pending[pn] = heavy ? B_HEAVY : B_LIGHT;
+			SetMode(pn, M_SCORP);
+			Event(pn, "scorpion.hold", v);
 			return;
 		}
+		if (heavy) StartPull(pn, v);
+		else StartYank(pn, v, air);
+	}
 
-		// geometry: a wall, a floor, a ceiling
+	// IT BIT THE WORLD: a wall, a floor, a ceiling -- the ledge lip or jp's fling, as built
+	void ArriveWorld(int pn, PlayerPawn pmo, RSQGR_Claw c, Vector3 at, Vector3 dir, int ht, Line ln, int side)
+	{
+		if (Busy(pn, c)) return;
 		Vector3 bite = at - dir * 1.0;
-		let c = RSQGR_Claw.Make(pmo, bite, null);
-		claw[pn] = c;
+		c.Bite(bite, null);
+		TakeClaw(pn, c);
 		pmo.A_StartSound("rsqgr/hit/terrain", CHAN_AUTO, CHANF_OVERLAP);
+		Log(pn, String.Format("bite: %s after %d tics, %.0f units out", ht == TRACE_HitWall ? "a wall" : ht == TRACE_HitFloor ? "the floor" : "the ceiling", c.flyTics, c.flown));
 		double top;
 		Vector3 stand;
 		bool ledge;
-		[ledge, top, stand] = LedgeSpot(pmo, ht, tracer.Results.HitLine, tracer.Results.Side, at, dir);
+		[ledge, top, stand] = LedgeSpot(pmo, ht, ln, side, at, dir);
 		if (ledge)
 		{
 			lTop[pn] = top;
@@ -226,7 +400,7 @@ class RSQGR_Core : EventHandler
 			Event(pn, "bite.ledge");
 			return;
 		}
-		if (c) c.holdTics = OG_HOLD;
+		c.holdTics = c.age + OG_HOLD;
 		Fling(pmo, at - dir * 15.0);
 		flung[pn] = true;
 		Event(pn, ht == TRACE_HitWall ? "bite.wall" : ht == TRACE_HitFloor ? "bite.floor" : "bite.ceiling");
@@ -835,6 +1009,7 @@ class RSQGR_Core : EventHandler
 	// ---- every tic ------------------------------------------------------------------------------------------------
 	override void WorldTick()
 	{
+		StepFlight();
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
 		{
 			if (!playeringame[pn]) continue;

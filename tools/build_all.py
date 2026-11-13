@@ -29,7 +29,7 @@ MODS = {
     'LaserSight':   ('RSQ_LaserSight.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt',
                      'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'VOXELDEF.txt', 'zscript', 'sprites', 'graphics', 'models/rsqls']),
     'Grapple':      ('RSQ_Grapple.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
-                     'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sprites', 'sounds']),   # Grapple 2.0 (2026-11-13): no models
+                     'SNDINFO.txt', 'TRNSLATE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sprites', 'sounds']),   # Grapple 2.0 (2026-11-13): no models
     'VisualRewards': ('RSQ_VisualRewards.pk3', 'sub', ('pk3', ['README.md'])),   # HP bars + damage numbers + Kill Rewards (was TopHPBars / RSQ_HPBars.pk3)
     'Accessibility': ('RSQ_Accessibility.pk3', 'list', ['zscript.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'MAPINFO.txt', 'GLDEFS.txt', 'CREDITS.txt', 'README.md', 'zscript', 'shaders']),

@@ -122,11 +122,30 @@ class RSQGR_Util
 	}
 
 	// HEAVY (the OG rule, owner 2026-11-13): a boss, mass over 1000, a dormant monster, or a miniboss with RSQ Miniboss's
-	// Can't Be Yanked. Heavy: you go to it. Light: it comes to you.
+	// Can't Be Yanked -- and (owner 2026-11-13 01:xx) "BARONS ARE ALWAYS HEAVY", whatever their rolled mass. Heavy: you go
+	// to it. Light: it comes to you.
 	const MASS_MAX = 1000;
 	static play bool Heavy(Actor v)
 	{
-		return v.bBOSS || v.Mass > MASS_MAX || v.bDORMANT || MinibossAs(v, "yank");
+		return v.bBOSS || v.Mass > MASS_MAX || v.bDORMANT || Baron(v) || MinibossAs(v, "yank");
+	}
+
+	// A BARON OF HELL, any of them: the class is a BaronOfHell (Doom's, Brutal Doom's BaronofHell2 and what is built on
+	// it, XMVE's Cyberbaron / Bruiser / Pyro / Belphegor, RSQ Monsters' RS_CommonBaron ...), or its species is
+	// BaronOfHell (RSQ Monsters' Actor-based RS_ barons: RS_BrownBaron2, RS_RedBaron1 ... all say Species "BaronOfHell").
+	// HELL KNIGHTS STAY BY MASS (owner): Doom's HellKnight is itself built on BaronOfHell and shares its species (an
+	// unset species is the class under Actor), and RSQ Monsters' RS_*HK* knights say Species "BaronOfHell" too, so a
+	// knight -- anything built on HellKnight, or with "Knight" or an RS_ "HK" in its class name -- is never a Baron here.
+	static play bool Baron(Actor v)
+	{
+		if (!v || !v.bIsMonster) return false;
+		if (v is "HellKnight") return false;
+		String n = v.GetClassName();
+		String low = n.MakeLower();
+		if (low.IndexOf("knight") >= 0) return false;
+		if (low.Left(3) == "rs_" && n.IndexOf("HK") >= 0) return false;
+		if (v is "BaronOfHell") return true;
+		return v.Species == 'BaronOfHell' || v.GetSpecies() == 'BaronOfHell';
 	}
 
 	// a thing the claw may bite, and the aim assist may snap to

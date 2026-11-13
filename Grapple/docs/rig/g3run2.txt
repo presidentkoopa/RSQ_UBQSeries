@@ -1,0 +1,371 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 748 lumps
+G3_T1_FLY_IMP
+G2P t70 teleport to (0 0 -0) angle 0
+G2P t70 spawn tag 1 DoomImp -> RS_CommonImp at (400 0 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G2P t81 tag 1 RS_CommonImp at (400 0 -0) hp 82 dist 400 vel (0.0 0.0 0.0) state -
+G2P t81 player at (0 0 -0)
+T_G2 t81 p0 FIRE claw #1 from (10 9 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780
+T_G2 t81 p0 claw #1 tic 1 at (50.0 8.5 37.0), flown 40.0: flying
+T_G2 t82 p0 claw #1 tic 2 at (90.0 8.5 37.0), flown 80.0: flying
+T_G2 t83 p0 claw #1 tic 3 at (130.0 8.5 37.0), flown 120.0: flying
+T_G2 t84 p0 claw #1 tic 4 at (170.0 8.5 37.0), flown 160.0: flying
+T_G2 t85 p0 claw #1 tic 5 at (210.0 8.5 37.0), flown 200.0: flying
+T_G2 t86 p0 claw #1 tic 6 at (250.0 8.5 37.0), flown 240.0: flying
+T_G2 t87 p0 claw #1 tic 7 at (290.0 8.5 37.0), flown 280.0: flying
+T_G2 t88 p0 claw #1 tic 8 at (330.0 8.5 37.0), flown 320.0: flying
+T_G2 t89 p0 claw #1 tic 9 at (366.7 8.5 37.0), flown 356.7: BITES RS_CommonImp
+T_G2 t89 p0 bite RS_CommonImp after 9 tics, 357 units out (mass 136, boss 0, dormant 0, baron 0) -> LIGHT: it comes
+T_G2 t89 p0 EVENT bite.light RS_CommonImp
+T_G2 t89 p0 EVENT getoverhere RS_CommonImp
+T_G2 t89 p0 GET OVER HERE: RS_CommonImp from 344 units, 12 tics
+G2P t89 service event: bite.light (tic 89) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 1
+G2P t89 service event: getoverhere (tic 89) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 1
+T_G2 t100 p0 GET OVER HERE landed: RS_CommonImp 56 units in front of you
+T_G2 t100 p0 EVENT getoverhere.land RS_CommonImp
+G2P t100 service event: getoverhere.land (tic 100) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 0
+G2P t111 tag 1 RS_CommonImp at (56 0 -0) hp 82 dist 56 vel (0.0 0.0 0.0) state -
+G2P t111 player at (0 0 -0)
+G2P kill tag 1
+G3_T2_MISS_AND_A_SECOND_PRESS
+G2P t118 teleport to (0 -300 -0) angle 0
+T_G2 t120 p0 FIRE claw #2 from (10 -292 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780
+T_G2 t120 p0 claw #2 tic 1 at (50.3 -291.5 36.8), flown 40.0: flying
+T_G2 t121 p0 claw #2 tic 2 at (90.3 -291.5 36.8), flown 80.0: flying
+T_G2 t122 p0 claw #2 tic 3 at (130.3 -291.5 36.8), flown 120.0: flying
+T_G2 t123 p0 claw #2 tic 4 at (170.3 -291.5 36.8), flown 160.0: flying
+T_G2 t124 p0 FIRE claw #3 from (10 -292 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780 (1 other claw still flying: jp fires another)
+T_G2 t124 p0 claw #3 tic 1 at (50.0 -291.5 37.0), flown 40.0: flying
+T_G2 t124 p0 claw #2 tic 5 at (210.3 -291.5 36.8), flown 200.0: flying
+T_G2 t125 p0 claw #3 tic 2 at (90.0 -291.5 37.0), flown 80.0: flying
+T_G2 t125 p0 claw #2 tic 6 at (250.3 -291.5 36.8), flown 240.0: flying
+T_G2 t126 p0 claw #3 tic 3 at (130.0 -291.5 37.0), flown 120.0: flying
+T_G2 t126 p0 claw #2 tic 7 at (290.3 -291.5 36.8), flown 280.0: flying
+T_G2 t127 p0 claw #3 tic 4 at (170.0 -291.5 37.0), flown 160.0: flying
+T_G2 t127 p0 claw #2 tic 8 at (330.3 -291.5 36.8), flown 320.0: flying
+T_G2 t128 p0 claw #3 tic 5 at (210.0 -291.5 37.0), flown 200.0: flying
+T_G2 t128 p0 claw #2 tic 9 at (370.3 -291.5 36.8), flown 360.0: flying
+T_G2 t129 p0 claw #3 tic 6 at (250.0 -291.5 37.0), flown 240.0: flying
+T_G2 t129 p0 claw #2 tic 10 at (410.3 -291.5 36.8), flown 400.0: flying
+T_G2 t130 p0 claw #3 tic 7 at (290.0 -291.5 37.0), flown 280.0: flying
+T_G2 t130 p0 claw #2 tic 11 at (450.3 -291.5 36.8), flown 440.0: flying
+T_G2 t131 p0 claw #3 tic 8 at (330.0 -291.5 37.0), flown 320.0: flying
+T_G2 t131 p0 claw #2 tic 12 at (490.3 -291.5 36.8), flown 480.0: flying
+T_G2 t132 p0 claw #3 tic 9 at (370.0 -291.5 37.0), flown 360.0: flying
+T_G2 t132 p0 claw #2 tic 13 at (530.3 -291.5 36.8), flown 520.0: flying
+T_G2 t133 p0 claw #3 tic 10 at (410.0 -291.5 37.0), flown 400.0: flying
+T_G2 t133 p0 claw #2 tic 14 at (570.3 -291.5 36.8), flown 560.0: flying
+T_G2 t134 p0 claw #3 tic 11 at (450.0 -291.5 37.0), flown 440.0: flying
+T_G2 t134 p0 claw #2 tic 15 at (610.3 -291.5 36.8), flown 600.0: flying
+T_G2 t135 p0 claw #3 tic 12 at (490.0 -291.5 37.0), flown 480.0: flying
+T_G2 t135 p0 claw #2 tic 16 at (650.3 -291.5 36.8), flown 640.0: flying
+T_G2 t136 p0 claw #3 tic 13 at (530.0 -291.5 37.0), flown 520.0: flying
+T_G2 t136 p0 claw #2 tic 17 at (690.3 -291.5 36.8), flown 680.0: flying
+T_G2 t137 p0 claw #3 tic 14 at (570.0 -291.5 37.0), flown 560.0: flying
+T_G2 t137 p0 claw #2 tic 18 at (730.3 -291.5 36.8), flown 720.0: flying
+T_G2 t138 p0 claw #3 tic 15 at (610.0 -291.5 37.0), flown 600.0: flying
+T_G2 t138 p0 claw #2 tic 19 at (770.3 -291.5 36.8), flown 760.0: flying
+T_G2 t139 p0 claw #3 tic 16 at (650.0 -291.5 37.0), flown 640.0: flying
+T_G2 t139 p0 claw #2 tic 20 at (790.3 -291.5 36.8), flown 780.0: the end of its reach: nothing bitten
+T_G2 t139 p0 MISS: claw #2 reached nothing in 20 tics (780 units): it comes back
+T_G2 t139 p0 EVENT miss
+G2P t139 service event: miss (tic 139) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 0
+T_G2 t140 p0 claw #3 tic 17 at (690.0 -291.5 37.0), flown 680.0: flying
+T_G2 t141 p0 claw #3 tic 18 at (730.0 -291.5 37.0), flown 720.0: flying
+T_G2 t142 p0 claw #3 tic 19 at (770.0 -291.5 37.0), flown 760.0: flying
+T_G2 t143 p0 claw #3 tic 20 at (790.0 -291.5 37.0), flown 780.0: the end of its reach: nothing bitten
+T_G2 t143 p0 MISS: claw #3 reached nothing in 20 tics (780 units): it comes back
+T_G2 t143 p0 EVENT miss
+G2P t143 service event: miss (tic 143) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 0
+G3_T3_BARON_LOW_MASS
+G2P t169 teleport to (-600 300 -0) angle 0
+G2P t169 spawn tag 2 BaronOfHell -> RS_CommonBaron at (-200 300 -0) mass 1000 boss 0 hp 1000 radius 24 height 64
+G2P t184 tag 2 RS_CommonBaron mass set to 200 (species BaronOfHell, boss 0)
+G2P t186 tag 1 RS_CommonImp at (56 0 -0) hp -99918 dist 722 vel (0.0 0.0 0.0) state -
+G2P t186 tag 2 RS_CommonBaron at (-200 300 -0) hp 1077 dist 400 vel (0.0 0.0 0.0) state -
+G2P t186 player at (-600 300 -0)
+T_G2 t186 p0 FIRE claw #4 from (-590 309 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780
+T_G2 t186 p0 claw #4 tic 1 at (-550.0 308.5 37.0), flown 40.0: flying
+G2P t186 track pos (-600.0 300.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t187 p0 claw #4 tic 2 at (-510.0 308.5 37.0), flown 80.0: flying
+G2P t187 track pos (-600.0 300.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t188 p0 claw #4 tic 3 at (-470.0 308.5 37.0), flown 120.0: flying
+G2P t188 track pos (-600.0 300.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t189 p0 claw #4 tic 4 at (-430.0 308.5 37.0), flown 160.0: flying
+G2P t189 track pos (-600.0 300.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t190 p0 claw #4 tic 5 at (-390.0 308.5 37.0), flown 200.0: flying
+G2P t190 track pos (-600.0 300.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t191 p0 claw #4 tic 6 at (-350.0 308.5 37.0), flown 240.0: flying
+G2P t191 track pos (-600.0 300.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t192 p0 claw #4 tic 7 at (-310.0 308.5 37.0), flown 280.0: flying
+G2P t192 track pos (-600.0 300.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t193 p0 claw #4 tic 8 at (-270.0 308.5 37.0), flown 320.0: flying
+G2P t193 track pos (-600.0 300.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t194 p0 claw #4 tic 9 at (-232.8 308.5 37.0), flown 357.2: BITES RS_CommonBaron
+T_G2 t194 p0 bite RS_CommonBaron after 9 tics, 357 units out (mass 200, boss 0, dormant 0, baron 1) -> HEAVY: you go to it
+T_G2 t194 p0 EVENT bite.heavy RS_CommonBaron
+T_G2 t194 p0 PULL to RS_CommonBaron: 358 units at 29.8 a tic
+G2P t194 service event: bite.heavy (tic 194) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 5
+G2P t194 track pos (-600.0 300.0 -0.0) vel (29.84 0.00 0.55) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t195 track pos (-570.2 300.0 -0.0) vel (29.84 0.00 0.60) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t196 track pos (-540.3 300.0 -0.0) vel (29.84 0.00 0.66) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t197 track pos (-510.5 300.0 -0.0) vel (29.84 0.00 0.73) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t198 track pos (-480.6 300.0 -0.0) vel (29.83 0.00 0.82) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t199 track pos (-450.8 300.0 -0.0) vel (29.83 0.00 0.94) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t200 track pos (-421.0 300.0 -0.0) vel (29.83 0.00 1.10) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t201 track pos (-391.2 300.0 -0.0) vel (29.82 0.00 1.32) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t202 track pos (-361.3 300.0 -0.0) vel (29.80 0.00 1.64) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t203 track pos (-331.5 300.0 -0.0) vel (29.77 0.00 2.19) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t204 track pos (-301.8 300.0 2.2) vel (29.77 0.00 2.19) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t205 track pos (-272.0 300.0 4.4) vel (29.77 0.00 2.19) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t206 p0 pull arrived after 13 tics (0 units from its face)
+RSQ_SlowMo: trigger grapple t206: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t206: started 1514 ms at 25% (automatic, own cooldown), pulse until t259, cause line "KICK!"
+T_G2 t206 p0 KICK 1: RS_CommonBaron health 1077 -> 1047 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK!" -> 1, slow 53 tics -> 1
+T_G2 t206 p0 EVENT kick RS_CommonBaron
+T_G2 t206 p0 KICK-OFF: out (-1.00 0.00) at 8, up 42.5 of 42.5 units (room 447.4), vel.z 9.22
+G2P t206 service event: kick (tic 206) chain 1 kicks 1 lastkick 206 air 1 dj 1 mode 0
+G2P t206 track pos (-242.2 300.0 6.6) vel (-8.00 0.00 9.22) floor -0 ceil 512 onground 0 | slowmo scale 809 countdown 64
+G2P t207 track pos (-250.2 300.0 15.8) vel (-8.00 0.00 8.22) floor -0 ceil 512 onground 0 | slowmo scale 619 countdown 63
+G2P t208 track pos (-258.2 300.0 24.0) vel (-8.00 0.00 7.22) floor -0 ceil 512 onground 0 | slowmo scale 428 countdown 62
+G2P t209 track pos (-266.2 300.0 31.2) vel (-8.00 0.00 6.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+G2P t210 track pos (-274.2 300.0 37.4) vel (-8.00 0.00 5.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+G2P t211 track pos (-282.2 300.0 42.7) vel (-8.00 0.00 4.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 59
+G2P t212 track pos (-290.2 300.0 46.9) vel (-8.00 0.00 3.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 58
+G2P t213 track pos (-298.2 300.0 50.1) vel (-8.00 0.00 2.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 57
+G2P t214 track pos (-306.2 300.0 52.3) vel (-8.00 0.00 1.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 56
+G2P t215 track pos (-314.2 300.0 53.5) vel (-8.00 0.00 0.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 55
+G2P t216 track pos (-322.2 300.0 53.8) vel (-8.00 0.00 -0.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 54
+G2P t217 track pos (-330.2 300.0 53.0) vel (-8.00 0.00 -1.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 53
+G2P t218 track pos (-338.2 300.0 51.2) vel (-8.00 0.00 -2.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 52
+G2P t219 track pos (-346.2 300.0 48.4) vel (-8.00 0.00 -3.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 51
+G2P t220 track pos (-354.2 300.0 44.6) vel (-8.00 0.00 -4.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 50
+G2P t221 track pos (-362.2 300.0 39.9) vel (-8.00 0.00 -5.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 49
+G2P t222 track pos (-370.2 300.0 34.1) vel (-8.00 0.00 -6.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 48
+G2P t223 track pos (-378.2 300.0 27.3) vel (-8.00 0.00 -7.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 47
+G2P t224 track pos (-386.2 300.0 19.5) vel (-8.00 0.00 -8.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 46
+G2P t225 track pos (-394.2 300.0 10.7) vel (-8.00 0.00 -9.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 45
+T_G2 t226 p0 LANDED: the kick-chain ends at 1
+T_G2 t226 p0 EVENT chain.end
+G2P t226 service event: chain.end (tic 226) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P t232 tag 1 RS_CommonImp at (56 0 -0) hp -99918 dist 561 vel (0.0 0.0 0.0) state -
+G2P t232 tag 2 RS_CommonBaron at (-188 300 -0) hp 1047 dist 229 vel (0.2 0.0 0.4) state PAIN
+G2P t232 player at (-418 300 -0)
+G2P t232 ask: chain 0 best 1 kicks 1 lastkick 206 mode 0 events 8 last kick event tic 206; old names: hooked -1 swinging -1 xp.bites -1
+G2P   tag 1 RS_CommonImp kicked -1 yanked 89 spiked -1 by 0
+G2P   tag 2 RS_CommonBaron kicked 206 yanked -1 spiked -1 by 0
+G2P kill tag 2
+RSQ_SlowMo: trigger score t234: merged 600 ms at 35% (automatic), pulse until t259, cause line "SCORE"
+G3_T4_HELLKNIGHT_BY_MASS
+G2P t263 teleport to (-600 -500 0) angle 0
+G2P t263 spawn tag 3 HellKnight -> RS_CommonHK at (-200 -500 0) mass 1000 boss 0 hp 500 radius 24 height 64
+RSQ_SlowMo: trigger countdown t269: countdown bar: gone (real time)
+G2P t279 tag 3 RS_CommonHK mass set to 200 (species BaronOfHell, boss 0)
+T_G2 t279 p0 FIRE claw #5 from (-590 -492 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780
+T_G2 t279 p0 claw #5 tic 1 at (-550.0 -491.5 37.0), flown 40.0: flying
+T_G2 t280 p0 claw #5 tic 2 at (-510.0 -491.5 37.0), flown 80.0: flying
+T_G2 t281 p0 claw #5 tic 3 at (-470.0 -491.5 37.0), flown 120.0: flying
+T_G2 t282 p0 claw #5 tic 4 at (-430.0 -491.5 37.0), flown 160.0: flying
+T_G2 t283 p0 claw #5 tic 5 at (-390.0 -491.5 37.0), flown 200.0: flying
+T_G2 t284 p0 claw #5 tic 6 at (-350.0 -491.5 37.0), flown 240.0: flying
+T_G2 t285 p0 claw #5 tic 7 at (-310.0 -491.5 37.0), flown 280.0: flying
+T_G2 t286 p0 claw #5 tic 8 at (-270.0 -491.5 37.0), flown 320.0: flying
+T_G2 t287 p0 claw #5 tic 9 at (-233.6 -491.5 37.0), flown 356.4: BITES RS_CommonHK
+T_G2 t287 p0 bite RS_CommonHK after 9 tics, 356 units out (mass 200, boss 0, dormant 0, baron 0) -> LIGHT: it comes
+T_G2 t287 p0 EVENT bite.light RS_CommonHK
+T_G2 t287 p0 EVENT getoverhere RS_CommonHK
+T_G2 t287 p0 GET OVER HERE: RS_CommonHK from 343 units, 12 tics
+G2P t287 service event: bite.light (tic 287) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+G2P t287 service event: getoverhere (tic 287) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+T_G2 t298 p0 GET OVER HERE landed: RS_CommonHK 57 units in front of you
+T_G2 t298 p0 EVENT getoverhere.land RS_CommonHK
+G2P t298 service event: getoverhere.land (tic 298) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P t310 tag 1 RS_CommonImp at (56 0 -0) hp -99918 dist 825 vel (0.0 0.0 0.0) state -
+G2P t310 tag 2 RS_CommonBaron at (-188 300 -0) hp -98953 dist 900 vel (0.0 0.0 0.0) state -
+G2P t310 tag 3 RS_CommonHK at (-543 -500 0) hp 481 dist 57 vel (0.0 0.0 0.0) state -
+G2P t310 player at (-600 -500 0)
+G2P kill tag 3
+G3_T5_LEDGE
+G2P t315 teleport to (0 600 -0) angle 90
+G2P t318 fire at a point (0 768 50) from hand (10 609 37) yaw 93.7 (offset 0.0) pitch 5.6
+T_G2 t321 p0 FIRE claw #6 from (10 609 37) dir (-0.06 0.99 0.08) on the ground: flies 40 a tic out to 780
+T_G2 t321 p0 claw #6 tic 1 at (7.4 648.3 40.3), flown 40.0: flying
+T_G2 t322 p0 claw #6 tic 2 at (4.9 688.1 43.5), flown 80.0: flying
+T_G2 t323 p0 claw #6 tic 3 at (2.3 727.9 46.8), flown 120.0: flying
+T_G2 t324 p0 claw #6 tic 4 at (-0.3 767.6 50.0), flown 160.0: flying
+T_G2 t325 p0 claw #6 tic 5 at (-0.3 768.0 50.1), flown 160.4: BITES a wall
+T_G2 t325 p0 bite: a wall after 5 tics, 160 units out
+T_G2 t325 p0 bite: LEDGE LIP, top 64 (feet at -0), stand at (-0 788)
+T_G2 t325 p0 EVENT bite.ledge
+G2P t325 service event: bite.ledge (tic 325) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 6
+T_G2 t346 p0 LEDGE: on top at z 68 (top 64) after 22 tics
+T_G2 t346 p0 EVENT ledge.land
+G2P t346 service event: ledge.land (tic 346) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G3_LOOK_0
+G2P t363 tag 1 RS_CommonImp at (56 0 -0) hp -99918 dist 790 vel (0.0 0.0 0.0) state -
+G2P t363 tag 2 RS_CommonBaron at (-188 300 -0) hp -98953 dist 523 vel (0.0 0.0 0.0) state -
+G2P t363 tag 3 RS_CommonHK at (-543 -500 0) hp -99519 dist 1398 vel (0.0 0.0 0.0) state -
+G2P t363 player at (-0 788 64)
+G2P t363 teleport to (720 -220 -0) angle 0
+G3_LOOK_0_WALL
+G2P t368 fire at a point (1024 0 60) from hand (730 -212 37) yaw 35.7 (offset 0.0) pitch 4.4
+T_G2 t370 p0 FIRE claw #7 from (730 -212 37) dir (0.81 0.58 0.06) on the ground: flies 40 a tic out to 780
+T_G2 t370 p0 claw #7 tic 1 at (762.4 -188.2 39.6), flown 40.0: flying
+T_G2 t371 p0 claw #7 tic 2 at (794.8 -164.9 42.1), flown 80.0: flying
+T_G2 t372 p0 claw #7 tic 3 at (827.3 -141.6 44.7), flown 120.0: flying
+T_G2 t373 p0 claw #7 tic 4 at (859.7 -118.3 47.2), flown 160.0: flying
+T_G2 t374 p0 claw #7 tic 5 at (892.1 -95.0 49.8), flown 200.0: flying
+T_G2 t375 p0 claw #7 tic 6 at (924.5 -71.7 52.4), flown 240.0: flying
+T_G2 t376 p0 claw #7 tic 7 at (956.9 -48.4 54.9), flown 280.0: flying
+T_G2 t377 p0 claw #7 tic 8 at (989.3 -25.1 57.5), flown 320.0: flying
+T_G2 t378 p0 claw #7 tic 9 at (1021.8 -1.9 60.0), flown 360.0: flying
+T_G2 t379 p0 claw #7 tic 10 at (1024.0 -0.2 60.2), flown 362.8: BITES a wall
+T_G2 t379 p0 bite: a wall after 10 tics, 363 units out
+T_G2 t379 p0 FLING (jp): f 360 b 25 zh -59 -> vel (24.53 17.27 3.50)
+T_G2 t379 p0 EVENT bite.wall
+G2P t379 service event: bite.wall (tic 379) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P t400 teleport to (720 -220 -0) angle 0
+G2P t400 spawn tag 5 DoomImp -> RS_CommonImp at (960 -60 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G3_LOOK_0_IMP
+G2P t410 fire at tag 5 RS_CommonImp (960 -60 32) from hand (730 -212 37) yaw 33.4 (offset 0.0) pitch -1.3
+T_G2 t412 p0 FIRE claw #8 from (730 -212 37) dir (0.83 0.55 -0.02) on the ground: flies 40 a tic out to 780
+T_G2 t412 p0 claw #8 tic 1 at (763.4 -189.5 36.2), flown 40.0: flying
+T_G2 t413 p0 claw #8 tic 2 at (796.8 -167.5 35.5), flown 80.0: flying
+T_G2 t414 p0 claw #8 tic 3 at (830.2 -145.5 34.7), flown 120.0: flying
+T_G2 t415 p0 claw #8 tic 4 at (863.6 -123.4 34.0), flown 160.0: flying
+T_G2 t416 p0 claw #8 tic 5 at (896.9 -101.4 33.2), flown 200.0: flying
+T_G2 t417 p0 claw #8 tic 6 at (930.3 -79.4 32.5), flown 240.0: flying
+T_G2 t418 p0 claw #8 tic 7 at (935.1 -76.3 32.4), flown 245.7: BITES RS_CommonImp
+T_G2 t418 p0 bite RS_CommonImp after 7 tics, 246 units out (mass 112, boss 0, dormant 0, baron 0) -> LIGHT: it comes
+T_G2 t418 p0 EVENT bite.light RS_CommonImp
+T_G2 t418 p0 EVENT getoverhere RS_CommonImp
+T_G2 t418 p0 GET OVER HERE: RS_CommonImp from 237 units, 12 tics
+G2P t418 service event: bite.light (tic 418) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+G2P t418 service event: getoverhere (tic 418) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+T_G2 t429 p0 GET OVER HERE landed: RS_CommonImp 52 units in front of you
+T_G2 t429 p0 EVENT getoverhere.land RS_CommonImp
+G2P t429 service event: getoverhere.land (tic 429) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P kill tag 5
+G3_LOOK_1
+G2P t443 teleport to (720 -220 -0) angle 0
+G3_LOOK_1_WALL
+G2P t448 fire at a point (1024 0 60) from hand (730 -212 37) yaw 35.7 (offset 0.0) pitch 4.4
+T_G2 t451 p0 FIRE claw #9 from (730 -212 37) dir (0.81 0.58 0.06) on the ground: flies 40 a tic out to 780
+T_G2 t451 p0 claw #9 tic 1 at (762.4 -188.2 39.6), flown 40.0: flying
+T_G2 t452 p0 claw #9 tic 2 at (794.8 -164.9 42.1), flown 80.0: flying
+T_G2 t453 p0 claw #9 tic 3 at (827.3 -141.6 44.7), flown 120.0: flying
+T_G2 t454 p0 claw #9 tic 4 at (859.7 -118.3 47.2), flown 160.0: flying
+T_G2 t455 p0 claw #9 tic 5 at (892.1 -95.0 49.8), flown 200.0: flying
+T_G2 t456 p0 claw #9 tic 6 at (924.5 -71.7 52.4), flown 240.0: flying
+T_G2 t457 p0 claw #9 tic 7 at (956.9 -48.4 54.9), flown 280.0: flying
+T_G2 t458 p0 claw #9 tic 8 at (989.3 -25.1 57.5), flown 320.0: flying
+T_G2 t459 p0 claw #9 tic 9 at (1021.8 -1.9 60.0), flown 360.0: flying
+T_G2 t460 p0 claw #9 tic 10 at (1024.0 -0.2 60.2), flown 362.8: BITES a wall
+T_G2 t460 p0 bite: a wall after 10 tics, 363 units out
+T_G2 t460 p0 FLING (jp): f 360 b 25 zh -59 -> vel (24.53 17.27 3.50)
+T_G2 t460 p0 EVENT bite.wall
+G2P t460 service event: bite.wall (tic 460) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P t480 teleport to (720 -220 -0) angle 0
+G2P t480 spawn tag 6 DoomImp -> RS_CommonImp at (960 -60 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G3_LOOK_1_IMP
+G2P t490 fire at tag 6 RS_CommonImp (960 -60 34) from hand (730 -212 37) yaw 33.4 (offset 0.0) pitch -0.8
+T_G2 t493 p0 FIRE claw #10 from (730 -212 37) dir (0.83 0.55 -0.01) on the ground: flies 40 a tic out to 780
+T_G2 t493 p0 claw #10 tic 1 at (763.4 -189.5 36.5), flown 40.0: flying
+T_G2 t494 p0 claw #10 tic 2 at (796.8 -167.5 36.1), flown 80.0: flying
+T_G2 t495 p0 claw #10 tic 3 at (830.2 -145.4 35.6), flown 120.0: flying
+T_G2 t496 p0 claw #10 tic 4 at (863.6 -123.4 35.1), flown 160.0: flying
+T_G2 t497 p0 claw #10 tic 5 at (897.0 -101.4 34.7), flown 200.0: flying
+T_G2 t498 p0 claw #10 tic 6 at (930.3 -79.4 34.2), flown 240.0: flying
+T_G2 t499 p0 claw #10 tic 7 at (931.8 -78.4 34.2), flown 241.8: BITES RS_CommonImp
+T_G2 t499 p0 bite RS_CommonImp after 7 tics, 242 units out (mass 142, boss 0, dormant 0, baron 0) -> LIGHT: it comes
+T_G2 t499 p0 EVENT bite.light RS_CommonImp
+T_G2 t499 p0 EVENT getoverhere RS_CommonImp
+T_G2 t499 p0 GET OVER HERE: RS_CommonImp from 233 units, 12 tics
+G2P t499 service event: bite.light (tic 499) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+G2P t499 service event: getoverhere (tic 499) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+T_G2 t510 p0 GET OVER HERE landed: RS_CommonImp 56 units in front of you
+T_G2 t510 p0 EVENT getoverhere.land RS_CommonImp
+G2P t510 service event: getoverhere.land (tic 510) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P kill tag 6
+G3_LOOK_2
+G2P t524 teleport to (720 -220 -0) angle 0
+G3_LOOK_2_WALL
+G2P t528 fire at a point (1024 0 60) from hand (730 -212 37) yaw 35.7 (offset 0.0) pitch 4.4
+T_G2 t530 p0 FIRE claw #11 from (730 -212 37) dir (0.81 0.58 0.06) on the ground: flies 40 a tic out to 780
+T_G2 t530 p0 claw #11 tic 1 at (762.4 -188.2 39.6), flown 40.0: flying
+T_G2 t531 p0 claw #11 tic 2 at (794.8 -164.9 42.1), flown 80.0: flying
+T_G2 t532 p0 claw #11 tic 3 at (827.3 -141.6 44.7), flown 120.0: flying
+T_G2 t533 p0 claw #11 tic 4 at (859.7 -118.3 47.2), flown 160.0: flying
+T_G2 t534 p0 claw #11 tic 5 at (892.1 -95.0 49.8), flown 200.0: flying
+T_G2 t535 p0 claw #11 tic 6 at (924.5 -71.7 52.4), flown 240.0: flying
+T_G2 t536 p0 claw #11 tic 7 at (956.9 -48.4 54.9), flown 280.0: flying
+T_G2 t537 p0 claw #11 tic 8 at (989.3 -25.1 57.5), flown 320.0: flying
+T_G2 t538 p0 claw #11 tic 9 at (1021.8 -1.9 60.0), flown 360.0: flying
+T_G2 t539 p0 claw #11 tic 10 at (1024.0 -0.2 60.2), flown 362.8: BITES a wall
+T_G2 t539 p0 bite: a wall after 10 tics, 363 units out
+T_G2 t539 p0 FLING (jp): f 360 b 25 zh -59 -> vel (24.53 17.27 3.50)
+T_G2 t539 p0 EVENT bite.wall
+G2P t539 service event: bite.wall (tic 539) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P t560 teleport to (720 -220 -0) angle 0
+G2P t560 spawn tag 7 DoomImp -> RS_CommonImp at (960 -60 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G3_LOOK_2_IMP
+G2P t570 fire at tag 7 RS_CommonImp (960 -60 24) from hand (730 -212 37) yaw 33.4 (offset 0.0) pitch -3.1
+T_G2 t572 p0 FIRE claw #12 from (730 -212 37) dir (0.83 0.55 -0.05) on the ground: flies 40 a tic out to 780
+T_G2 t572 p0 claw #12 tic 1 at (763.4 -189.5 35.2), flown 40.0: flying
+T_G2 t573 p0 claw #12 tic 2 at (796.7 -167.5 33.4), flown 80.0: flying
+T_G2 t574 p0 claw #12 tic 3 at (830.1 -145.5 31.6), flown 120.0: flying
+T_G2 t575 p0 claw #12 tic 4 at (863.4 -123.5 29.8), flown 160.0: flying
+T_G2 t576 p0 claw #12 tic 5 at (896.8 -101.5 28.0), flown 200.0: flying
+T_G2 t577 p0 claw #12 tic 6 at (930.2 -79.5 26.2), flown 240.0: flying
+T_G2 t578 p0 claw #12 tic 7 at (934.7 -76.5 25.9), flown 245.5: BITES RS_CommonImp
+T_G2 t578 p0 bite RS_CommonImp after 7 tics, 245 units out (mass 88, boss 0, dormant 0, baron 0) -> LIGHT: it comes
+T_G2 t578 p0 EVENT bite.light RS_CommonImp
+T_G2 t578 p0 EVENT getoverhere RS_CommonImp
+T_G2 t578 p0 GET OVER HERE: RS_CommonImp from 236 units, 12 tics
+G2P t578 service event: bite.light (tic 578) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+G2P t578 service event: getoverhere (tic 578) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+T_G2 t589 p0 GET OVER HERE landed: RS_CommonImp 52 units in front of you
+T_G2 t589 p0 EVENT getoverhere.land RS_CommonImp
+G2P t589 service event: getoverhere.land (tic 589) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P kill tag 7
+G3_LOOK_3
+G2P t603 teleport to (720 -220 -0) angle 0
+G3_LOOK_3_WALL
+G2P t608 fire at a point (1024 0 60) from hand (730 -212 37) yaw 35.7 (offset 0.0) pitch 4.4
+T_G2 t611 p0 FIRE claw #13 from (730 -212 37) dir (0.81 0.58 0.06) on the ground: flies 40 a tic out to 780
+T_G2 t611 p0 claw #13 tic 1 at (762.4 -188.2 39.6), flown 40.0: flying
+T_G2 t612 p0 claw #13 tic 2 at (794.8 -164.9 42.1), flown 80.0: flying
+T_G2 t613 p0 claw #13 tic 3 at (827.3 -141.6 44.7), flown 120.0: flying
+T_G2 t614 p0 claw #13 tic 4 at (859.7 -118.3 47.2), flown 160.0: flying
+T_G2 t615 p0 claw #13 tic 5 at (892.1 -95.0 49.8), flown 200.0: flying
+T_G2 t616 p0 claw #13 tic 6 at (924.5 -71.7 52.4), flown 240.0: flying
+T_G2 t617 p0 claw #13 tic 7 at (956.9 -48.4 54.9), flown 280.0: flying
+T_G2 t618 p0 claw #13 tic 8 at (989.3 -25.1 57.5), flown 320.0: flying
+T_G2 t619 p0 claw #13 tic 9 at (1021.8 -1.9 60.0), flown 360.0: flying
+T_G2 t620 p0 claw #13 tic 10 at (1024.0 -0.2 60.2), flown 362.8: BITES a wall
+T_G2 t620 p0 bite: a wall after 10 tics, 363 units out
+T_G2 t620 p0 FLING (jp): f 360 b 25 zh -59 -> vel (24.53 17.27 3.50)
+T_G2 t620 p0 EVENT bite.wall
+G2P t620 service event: bite.wall (tic 620) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P t640 teleport to (720 -220 -0) angle 0
+G2P t640 spawn tag 8 DoomImp -> RS_CommonImp at (960 -60 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G3_LOOK_3_IMP
+G2P t650 fire at tag 8 RS_CommonImp (960 -60 30) from hand (730 -212 37) yaw 33.4 (offset 0.0) pitch -1.6
+T_G2 t652 p0 FIRE claw #14 from (730 -212 37) dir (0.83 0.55 -0.02) on the ground: flies 40 a tic out to 780
+T_G2 t652 p0 claw #14 tic 1 at (763.4 -189.5 36.1), flown 40.0: flying
+T_G2 t653 p0 claw #14 tic 2 at (796.8 -167.5 35.1), flown 80.0: flying
+T_G2 t654 p0 claw #14 tic 3 at (830.2 -145.5 34.2), flown 120.0: flying
+T_G2 t655 p0 claw #14 tic 4 at (863.5 -123.4 33.3), flown 160.0: flying
+T_G2 t656 p0 claw #14 tic 5 at (896.9 -101.4 32.3), flown 200.0: flying
+T_G2 t657 p0 claw #14 tic 6 at (930.3 -79.4 31.4), flown 240.0: flying
+T_G2 t658 p0 claw #14 tic 7 at (933.9 -77.0 31.3), flown 244.3: BITES RS_CommonImp
+T_G2 t658 p0 bite RS_CommonImp after 7 tics, 244 units out (mass 114, boss 0, dormant 0, baron 0) -> LIGHT: it comes
+T_G2 t658 p0 EVENT bite.light RS_CommonImp
+T_G2 t658 p0 EVENT getoverhere RS_CommonImp
+T_G2 t658 p0 GET OVER HERE: RS_CommonImp from 235 units, 12 tics
+G2P t658 service event: bite.light (tic 658) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+G2P t658 service event: getoverhere (tic 658) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 1
+T_G2 t669 p0 GET OVER HERE landed: RS_CommonImp 53 units in front of you
+T_G2 t669 p0 EVENT getoverhere.land RS_CommonImp
+G2P t669 service event: getoverhere.land (tic 669) chain 0 kicks 1 lastkick 206 air 0 dj 0 mode 0
+G2P kill tag 8
+G3_END
