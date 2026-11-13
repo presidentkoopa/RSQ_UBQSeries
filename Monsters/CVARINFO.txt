@@ -1191,6 +1191,12 @@ server int rsq_mon_bf_thralls = 0;
 // "On tier change" (RS_Retier.FullHealth): 0 keep health fraction, 1 full health on
 // an instant tier only (HF's rule), 2 always full health.
 server int rsq_mon_retier_health = 1;
+// [11-13] Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, in place (RS_BDTier.zs; the rule is
+// design/BD_XMVE_TIERING.md). rsq_mon_worldtier stands in for the world tier until turn-ins exist: 1 = every monster as
+// its mod ships it.
+server bool rsq_mon_bdtier = true;
+server int  rsq_mon_worldtier = 1;
+server bool rsq_mon_bdtier_debug = false;
 
 
 server int rs_roster_zombieman = 1;

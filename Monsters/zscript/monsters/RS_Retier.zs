@@ -746,6 +746,9 @@ class RS_Retier play
 	{
 		if (!mo || mo.health <= 0) return;
 		tier = clamp(tier, 1, RS_TierLadder.MaxTier());
+		// [11-13 BD tiering] a Brutal Doom / XMVE / plain monster on the ladder in place (RS_BDTier.zs): the same flash,
+		// then its kit moves; no swap
+		if (RS_BDKit.Of(mo)) { RequestKit(mo, tier, instant); return; }
 		String mn = mo.GetClassName();
 		int fam = RS_TierLadder.FamilyOfAny(mn);
 		if (fam < 0) return;              // not one of ours (the ColorfulHell ladder; an EX form by its gate)
@@ -771,6 +774,32 @@ class RS_Retier play
 		nj.origBright = mo.bBRIGHT;
 	}
 
+	// [11-13 BD tiering] The in-place tier change. `rung` is the kit's place on the ladder and may pass 13: every
+	// rung past White is an EX step (design/BD_XMVE_TIERING.md section 6). Never below the monster's entry colour.
+	static void RequestKit(Actor mo, int rung, bool instant = false)
+	{
+		let k = RS_BDKit.Of(mo);
+		if (!k || mo.health <= 0) return;
+		rung = max(k.entry, rung);
+		let j = JobFor(mo);
+		if (instant)
+		{
+			if (j) { j.RestoreLook(); j.mo = null; j.Destroy(); }
+			k.SetRung(rung, true);
+			return;
+		}
+		if (j) { j.targetTier = min(13, rung); j.kitRung = rung; return; }
+		if (rung == k.rung) return;
+		let nj = RS_RetierJob(new("RS_RetierJob"));
+		nj.mo         = mo;
+		nj.targetTier = min(13, rung);
+		nj.kitRung    = rung;
+		nj.timer      = random(5, 25);
+		nj.ticker     = 0;
+		nj.origTrans  = mo.Translation;
+		nj.origBright = mo.bBRIGHT;
+	}
+
 	// RSQ Monsters > "On tier change" (rsq_mon_retier_health, owner 2026-11-09):
 	//   0 keep the health fraction already lost
 	//   1 full health on an INSTANT tier only, the fraction on a live one (HF's rule, default)
@@ -790,6 +819,8 @@ class RS_Retier play
 		String n = mo.GetClassName();
 		if (RS_TierLadder.FamilyOfAny(n) >= 0)
 			return RS_TierLadder.TierOfAny(n);
+		let k = RS_BDKit.Of(mo);          // [11-13 BD tiering] in place: the kit's colour
+		if (k) return k.Tier();
 		return -1;
 	}
 
@@ -868,6 +899,7 @@ class RS_RetierJob : Thinker
 {
 	Actor mo;
 	int   targetTier, timer, ticker;
+	int   kitRung;             // [11-13 BD tiering] > 0: an in-place change (RS_BDKit), the rung to give; 0: the ColorfulHell swap
 	TranslationID origTrans;   // the monster's own colour, restored between flashes
 	bool  origBright;          // the monster's own bBRIGHT, restored between flashes and at every exit
 
@@ -918,6 +950,17 @@ class RS_RetierJob : Thinker
 		{
 			RestoreLook();             // before the swap: if nothing changes, the monster stays as it was
 			int was = RS_Retier.TierNowOf(mo);   // RSQ Score read-out (RS_ScoreReadout.zs): the tier it leaves
+			if (kitRung > 0)
+			{
+				// [11-13 BD tiering] the same body: its kit moves, and the job lets go of it first so that
+				// OnDestroy does not put the old tint back over the new one
+				let k = RS_BDKit.Of(mo);
+				let body = mo;
+				mo = null;
+				if (k) { k.SetRung(kitRung, false); RS_TierStamp.Put(body, was); }
+				Destroy();
+				return;
+			}
 			RS_TierStamp.Put(RS_Retier.Swap(mo, targetTier), was);          // RSQ Score read-out: stamp the new body
 			Destroy();
 		}

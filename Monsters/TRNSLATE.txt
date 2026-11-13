@@ -388,3 +388,20 @@ rs_crit_teal = "0:255=#[38,208,206]"
 // =====================================================================
 rs_tier_flashwhite = "0:255=#[255,255,255]"
 rs_tier_flashblack = "0:255=#[10,10,10]"
+
+// --- [11-13] The colour ladder on Brutal Doom's / XMVE's / plain Doom's monsters (RS_BDTier.zs) --------------------
+// One whole-sprite tint a colour, in Colourful Hell's desaturate-range syntax. The values are mine (2026-11-13), not
+// Colourful Hell's: its own recipes are per-family palette-range remaps of the id sprites and do not fit other art.
+// FireBlu is its two-tone recipe (rs_zombie_t07). NOT SEEN on Brutal Doom's art yet.
+rs_bdtier_green   = "0:255=%[0.00,0.05,0.00]:[0.55,1.70,0.60]"
+rs_bdtier_blue    = "0:255=%[0.00,0.00,0.08]:[0.55,0.75,1.95]"
+rs_bdtier_purple  = "0:255=%[0.05,0.00,0.08]:[1.55,0.50,1.85]"
+rs_bdtier_cyan    = "0:255=%[0.00,0.08,0.10]:[0.50,1.90,1.95]"
+rs_bdtier_brown   = "0:255=%[0.03,0.02,0.00]:[1.25,0.80,0.42]"
+rs_bdtier_yellow  = "0:255=%[0.10,0.05,0.00]:[2.00,1.65,0.35]"
+rs_bdtier_fireblu = "0:64=%[1.95,0.56,0.59]:[0.69,0.08,0.09]","65:128=%[0.17,0.42,1.59]:[0.02,0.07,0.41]","129:192=%[1.95,0.56,0.59]:[0.69,0.08,0.09]","193:255=%[0.17,0.42,1.59]:[0.02,0.07,0.41]"
+rs_bdtier_gray    = "0:255=%[0.04,0.04,0.04]:[1.15,1.15,1.20]"
+rs_bdtier_red     = "0:255=%[0.10,0.00,0.00]:[2.00,0.42,0.38]"
+rs_bdtier_abyss   = "0:255=%[0.02,0.00,0.05]:[0.55,0.28,0.95]"
+rs_bdtier_black   = "0:255=%[0.00,0.00,0.00]:[0.42,0.42,0.48]"
+rs_bdtier_white   = "0:255=%[0.35,0.35,0.35]:[2.30,2.30,2.30]"

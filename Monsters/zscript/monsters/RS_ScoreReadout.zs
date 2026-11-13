@@ -11,7 +11,8 @@
 //
 // THE REQUESTS (objectArg is the monster; every answer is -1 for "not ours" /
 // "unknown"):
-//   "set"          1 a CH colour-tier monster (it carries RS_ZomTierToken)
+//   "set"          1 a CH colour-tier monster (it carries RS_ZomTierToken); 2 a Brutal Doom / XMVE / plain monster tiered
+//                  in place (it carries RS_BDKit, RS_BDTier.zs, 11-13): "tier" and "retier" work for it, the rest answer -1
 //   "tier"         its RSQ ladder tier, 1 Common .. 13 White (the token's amount). THE NUMBER IS THE STRENGTH
 //                  (owner 11-11): 1 Common 2 Green 3 Blue 4 Purple 5 Cyan 6 Brown 7 Yellow 8 FireBlu 9 Gray 10 Red
 //                  11 Abyss 12 Black (boss) 13 White (boss); RS_Retier.zs RS_TierLadder
@@ -103,11 +104,16 @@ class RS_ScoreReadout play
 	static int SetOf(Actor mo)
 	{
 		if (!mo) return -1;
+		// [11-13 BD tiering] 2: a Brutal Doom / XMVE / plain monster tiered in place (RS_BDKit). It has a "tier" and
+		// takes a "retier"; it has no ColorfulHell spawn roll and no EX class, so those answer -1 as for any non-CH body.
+		if (RS_BDKit.Of(mo)) return 2;
 		return TierOf(mo) > 0 ? 1 : -1;
 	}
 
 	static int TierOf(Actor mo)
 	{
+		let k = RS_BDKit.Of(mo);          // [11-13 BD tiering]
+		if (k) return k.Tier();
 		int t = RS_Zom.GetTier(mo);
 		if (t <= 0) t = TierOfName(mo.GetClassName());   // (rig 11-09) a Common CH body carries no tier token; (11-11) nor an EX one before its PostBeginPlay
 		return t > 0 ? t : -1;

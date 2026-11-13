@@ -64,6 +64,15 @@ OptionMenu "RSQMN_Options"
 	Option "Tier Icons Above Monsters", "rs_ch_colorblind", "OnOff"
 
 	StaticText ""
+	StaticText "Brutal Doom's Monsters", "Gold"
+	// [11-13] RS_BDTier.zs: Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, the same body.
+	// World Tier stands in for the gun turn-ins until they exist; at 1 every monster is as its mod ships it.
+	Option "Colour Ladder On Brutal Doom's Monsters", "rsq_mon_bdtier", "OnOff"
+	Slider "World Tier (test)", "rsq_mon_worldtier", 1, 20, 1, 0
+	StaticText "Each step raises Brutal Doom's, XMVE's and plain", "DarkGray"
+	StaticText "Doom's monsters one colour. ColorfulHell's do not follow yet.", "DarkGray"
+
+	StaticText ""
 	StaticText "Miniboss", "Gold"
 	Option "Miniboss From", "rsq_mon_bf_boss", "RSQMN_BfBoss"
 	Option "Thralls From", "rsq_mon_bf_thralls", "RSQMN_BfThralls"
