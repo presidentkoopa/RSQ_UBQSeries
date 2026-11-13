@@ -2,7 +2,7 @@
 user bool rsq_hands = true;			// VR hands on the controllers
 user int rsq_hand_tone = 0;			// Hand Skin Tone: 0 as drawn, 1..17 (zscript/rsq/handtone.zs)
 user int rsq_punch = 0;				// read by the hands script; no VR punching in this pack yet
-user int rsr_reload = 1;			// Reloading: 1 VR (by hand), 0 Stock (the mod's own, on the reload button), 2 Flick (snap the barrel down: the mod's own reload)
+user int rsr_reload = 1;			// Reloading: 1 VR (by hand), 0 Stock (the gun's own reload, on the reload button), as BD22 VR
 user int rsr_grab_with = 0;			// Grab ammo with: 0 off trigger, 1 off grip, 2 Use key
 user string rsr_grip_keys = "443 436";
 user int rsr_grab_buttons = 67108864;	// BT_OFFHANDATTACK

@@ -42,3 +42,18 @@ Next, in order:
    port it with rsa_rl_lock on, Rocket2 -> RSQWS_SaturnRocket, RSA_Handler.AltDown stub false, RSVR_AxeLock class from rsvr/melee.zs),
    NovaRifle (charge NovaBall, scope), TITAN (Nova 5 / HyperNova 40). WoS A_SetPitch / A_ZoomFactor / Offset recoil dropped (VR).
 3. Open questions for the owner: RSQWS/dry = Doom 2 dsswtchn (my pick, confirm); Enhanced fire sounds (none mapped yet: ask).
+
+
+## 2026-11-12 evening (owner: "you do the zscript continue rebuilding. save rig test til end")
+- All twelve weapons are in src/zscript/wos: gun.zs (base + the quick kick as a mixin, RSQWS_KickMix), pistols.zs, smgs.zs,
+  shotguns.zs, heavy.zs, melee.zs. The Knuckles are a Fist (RSQ Melee punches with any Fist; triggers free).
+- Motorsaw: owner chose "Port BD22 VR's contact saw": rsvr/melee.zs is carried with KindOf = the Motorsaw only; cuts are
+  RSQWS_SawCut (WoS damage random 1-10). Needs rsq/pose.zs (RSQ_PoseHandler before RSVR_MeleeHandler). stubs_melee.zs.
+- Saturn V alt: rsq/rlock.zs (always on, Rocket2 -> RSQWS_SaturnRocket).
+- 1911: an agent re-seated it on the FBX pistol hand in one pass (grip into the hand, pad on the trigger; tools/seat_1911.*,
+  old seat kept as landmark_seat). The 1911 now has its own muzzle and ejection-port rows (row_1911.json Muzzle / CasingPort).
+- A Goto inside a mixin is resolved in the mixin (no Ready there): the kick froze the gun. Fixed with A_Jump(256, "Ready").
+- tools/suite.py + tools/suite/probe: the one rig suite (pickup, raise, fire, alt, kick, stock / hand / flick reload, dual).
+  Rig facts learned: the off hand near the gun steadies it (two-hand grip) and the gun cannot flick -> flick with the off hand
+  away; the pump waits for the hand after every shot in VR (robot 3 after each shot); the robots keep the first hand turn
+  they find (no search per shell).

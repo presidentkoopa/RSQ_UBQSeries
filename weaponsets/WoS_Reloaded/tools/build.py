@@ -293,7 +293,8 @@ def main(want_pk3):
             (re.compile(r"(override bool WorldHitscanPreFired\(WorldEvent e\)\n\t\{\n)"), r"\1\t\tif (!%s)\t// this pack: Weapon Effects = OG\n\t\t\treturn false;\n" % FXON, 1),
             (re.compile(r"(override bool WorldRailgunPreFired\(WorldEvent e\)\n\t\{\n)"), r"\1\t\tif (!%s)\n\t\t\treturn false;\n" % FXON, 1),
             (re.compile(r"(override void WorldThingSpawned\(WorldEvent e\)\n\t\{\n)"), r"\1\t\tif (!%s)\n\t\t\treturn;\n" % FXON, 1)],
-        'rsq/flick.zs': [("IsSeriesOffItem(p.OffhandWeapon) && IsGun(p.ReadyWeapon)", "(IsSeriesOffItem(p.OffhandWeapon) || RSQ.PlayerInt(mo, 'rsr_reload', 1) == 2) && IsGun(p.ReadyWeapon)\t/* this pack: Reloading = Flick */", 1)],
+        # rsq/flick.zs: BD22 VR's, unchanged but for the alias (owner: "just diff your flick reload against bd as bd works"):
+        # it reloads a gun in each hand, a lone SSG (the Coach Gun) and a lone rifle's underbarrel. No 'Reloading = Flick' mode.
         'rsq/casings.zs': [(re.compile(r"Name n = c\.GetClassName\(\);"), "Name n = c.GetClassName();\n\t\t// this pack: WoS's casings under the names BD22 VR's tables know\n\t\tif (n == 'RSQWS_9mmCasing' || n == 'RSQWS_45Casing') n = 'PistolCasing';\n\t\telse if (n == 'RSQWS_RifleCasing' || n == 'RSQWS_ChaingunCasing') n = 'EmptyBrass';\n\t\telse if (n == 'RSQWS_ShotgunCasing') n = 'ShotgunCasing';", 1),
             ("mo.player.ReadyWeapon ? mo.player.ReadyWeapon.GetClassName() : 'None'", "RSQ_Alias.BD(mo.player.ReadyWeapon)", 2),
             ("return t ? PlayerPawn(t.target) : null;", "if (t && PlayerPawn(t.target))\n\t\t\treturn PlayerPawn(t.target);\n\t\treturn multiplayer ? null : players[consoleplayer].mo;\t// this pack: WoS's casings do not always carry their shooter", 1)],

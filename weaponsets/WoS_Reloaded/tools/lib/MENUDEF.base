@@ -9,7 +9,6 @@ OptionValue "RSR_ReloadMode"
 {
 	1, "VR"
 	0, "Stock"
-	2, "Flick"
 }
 
 OptionValue "RSR_GrabWith"
