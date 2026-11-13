@@ -68,7 +68,7 @@ def script(cls, g):
     if g.get('saw'):
         s += 'kill monsters; wait 5; '
     if g['kind'] and not g.get('fire') and g['kind'] != 'break' or cls == 'RSQWS_Coachgun':	# the hitscan guns: True Bullets off too
-        s += mark('FIREHS') + 'set sv_rsq_true_bullets 0; wait 2; netevent probe_ammo; wait 2; +attack; wait %d; -attack; wait 60; ' % g['hold'] + again + 'netevent probe_ammo; wait 2; set sv_rsq_true_bullets 1; '
+        s += mark('FIREHS') + 'set sv_rsq_true_bullets 0; wait 2; netevent probe_ammo; wait 2; +attack; wait %d; -attack; wait 60; ' % g['hold'] + again + 'netevent probe_ammo; wait 2; set sv_rsq_true_bullets 1; give ammo; wait 2; '	# refilled for the alt fire
     if g['alt'] == 'lock':
         s += 'set rsq_switch_log 1; netevent probe_spawn:DoomImp 160; wait 5; '
     if g['alt'] == 'm203':	# dry in VR, the robot loads the tube, then it fires
