@@ -636,15 +636,19 @@ class RSVR_Hand play
 		let p = mo.player;
 		if (!p || !p.ReadyWeapon || p.PendingWeapon != WP_NOCHANGE || mo.health <= 0)
 			return 0;
-		// this pack: the Motorsaw is the only weapon BD22 VR's melee reads (the contact saw)
-		return p.ReadyWeapon is 'RSQWS_Motorsaw' ? SAW : 0;
+		// this pack: the saw (the contact saw) and the basics' pistol whip (owner 2026-11-13; BD22 VR's own, the BrutalPistol rows)
+		if (p.ReadyWeapon is 'RSQWS_Motorsaw') return SAW;
+		if (RSQ.PlayerInt(mo, 'rsq_pistol_whip', 1) != 0 && RSQ_Alias.BD(p.ReadyWeapon) == 'BrutalPistol') return PISTOL;
+		return 0;
 	}
 
 	// 2.0.2: what the OFF hand swings. Only the off-hand axe: the off hand's other weapons are guns, whose
 	// melee is the main hand's (and the fists' own punch, fists.zs).
 	static int KindOfOff(PlayerPawn mo)
 	{
-		return 0;	// this pack: no off-hand melee weapon (axe, pistol whip)
+		let pw = mo.player;	// this pack: the off hand's only melee is the basics' pistol whip (owner 2026-11-13)
+		if (pw && pw.OffhandWeapon && mo.health > 0 && RSQ.PlayerInt(mo, 'rsq_pistol_whip', 1) != 0 && RSQ_Alias.BD(pw.OffhandWeapon) == 'BrutalPistol') return PISTOL;
+		return 0;
 		let p = mo.player;
 		if (!p || !p.OffhandWeapon || mo.health <= 0)
 			return 0;
@@ -1312,9 +1316,9 @@ class RSVR_Hand play
 			// already land (zscript/rsq/fists.zs), so its gore decides the result.
 			if (k == PISTOL || k == REVOLVER)
 			{
-				Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'MeleeStrike1Berserked' : 'MeleeStrikeNormal', p, dir);
+				Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'RSQB_PunchBerserk' : 'RSQB_Punch', p, dir);	// this pack: the basics' strike
 				if (power >= 2.0)
-					Launch(mo, 'MeleeStrikeNormal', p, dir);
+					Launch(mo, 'RSQB_Punch', p, dir);
 			}
 			else
 			{

@@ -9,7 +9,9 @@ class RFGLoaded : RSVR_Token {}			// the rifle's underbarrel: a round in the tub
 class FiredMGGrenade : RSVR_Token {}	// ...a spent case in it
 
 
-class RSG_Handler abstract
+// BD22 VR's grenade (RSG_Handler) is not carried. NOT under its name: RSQ Grenade stands down when a class of that name
+// exists (hand.zs BDVR), so the placeholder has its own (vreload.zs is patched to ask it, build.py)
+class RSQB_GrenadeLink abstract
 {
 	clearscope static bool WantsGrab(int n) { return false; }
 }
@@ -20,13 +22,7 @@ class RSQ_Counters abstract
 	static bool NonStdOn(PlayerPawn mo) { return true; }
 }
 
-class RSQ_Fists abstract
-{
-	static Class<Actor> Cls(Name n) { class<Actor> c = n; return c; }
-	static void PunchUse(PlayerPawn mo, Vector3 from, Vector3 dir) {}
-	static void Record(Actor strike, int hand, double mps) {}	// the LegenDoom mode's strike record: not here
-	static bool LineUse(PlayerPawn mo, Vector3 hand, Vector3 prevTip, Vector3 tip, double reach, String what) { return false; }
-}
+// RSQ_Fists: BD22 VR's own (zscript/rsq/fists.zs), the basics' punches (tools/lib/basics.py)
 
 // The underbarrel's round going in by itself: out of VR, or with Reloading on Stock (the rifle's RSM_AltGrenade).
 class RSM_StockLoad : Inventory

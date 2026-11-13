@@ -200,7 +200,7 @@ def basics_script():
     s = 'god; notarget; set rsq_switch_log 1; set rsqb_punch 1; qz_rhand "0.25 1.3 -0.1 0 0 0"; qz_lhand "-0.25 1.3 -0.1 0 0 0"; wait 40; '
     s += mark('NADE') + 'netevent rsqb_gn_quick; wait 20; netevent rsqgn_quick; wait 140; '
     s += mark('BARREL2') + 'netevent probe_blasttest 175; wait 5; '
-    s += mark('PUNCH') + 'use %s; wait 40; netevent probe_spawn:DoomImp 44; wait 10; ' % FISTS + jab('r', '0.25')
+    s += mark('PUNCH') + 'give %s; wait 2; use %s; wait 40; netevent probe_spawn:DoomImp 44; wait 10; ' % (FISTS, FISTS) + jab('r', '0.25')
     s += mark('HOOK') + 'qz_rhand "0.45 1.3 -0.45 0 0 0"; wait 1; qz_rhand "0.45 1.3 -0.45 0 0 0"; wait 25; qz_rhand "0.25 1.3 -0.45 0 0 0"; wait 1; qz_rhand "0.0 1.3 -0.45 0 0 0"; wait 1; qz_rhand "-0.25 1.3 -0.45 0 0 0"; wait 10; qz_rhand "0.25 1.3 -0.1 0 0 0"; wait 20; '
     s += mark('OFFJAB') + jab('l', '-0.25') + 'kill monsters; wait 10; '
     s += mark('UPPER') + 'netevent probe_spawn:ExplosiveBarrel 34; wait 10; qz_rhand "0.0 0.8 -0.5 0 0 0"; wait 10; qz_rhand "0.0 1.0 -0.5 0 0 0"; wait 1; qz_rhand "0.0 1.25 -0.5 0 0 0"; wait 1; qz_rhand "0.0 1.5 -0.5 0 0 0"; wait 30; '
@@ -243,14 +243,20 @@ def basics_check(t, series):
 
 def main():
     only = sys.argv[1:]
+    basics_only = only == ['--basics']	# the basics again; the weapons' results kept from out/suite.json (same tree only)
+    if basics_only: only = []
     fp = open(os.path.join(OUT, 'tree.sha256')).read().strip()
     os.makedirs(LOGS, exist_ok=True)
     tmp = tempfile.mkdtemp()
     pk = os.path.join(tmp, 'wos.pk3'); pack(pk)
     probe = os.path.join(tmp, 'probe.pk3'); pack(probe, os.path.join(HERE, 'suite/probe'))
     results = {}
+    if basics_only:
+        S0 = json.load(open(os.path.join(OUT, 'suite.json')))
+        if S0.get('tree') != fp: raise SystemExit('--basics: out/suite.json is for another tree')
+        results.update({c: [tuple(r) for r in R] for c, R in S0['results'].items() if c in G})
     for cls, g in G.items():
-        if only and cls not in only: continue
+        if only and cls not in only or basics_only: continue
         name = 'suite_' + cls
         rig.run(name, [pk, probe], script(cls, g), secs=900)
         src = os.path.join(RIG, 'runs', name + '.log')

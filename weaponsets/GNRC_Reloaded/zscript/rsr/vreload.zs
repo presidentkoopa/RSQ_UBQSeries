@@ -1270,7 +1270,7 @@ class RSR_ReloadHandler : EventHandler
 				bool running = us && us.phase != RSR.IDLE || RSP_Handler.Busy(consoleplayer)
 					|| RSB_Handler.Busy(consoleplayer) || RSK_M203Handler.Busy(consoleplayer);	// 1.34: the M203 open
 				bool offers = RSP_Handler.Feedable(consoleplayer)	// 1.43: a shell to take, as the trigger would
-					|| RSG_Handler.WantsGrab(consoleplayer);		// 2026-10-23: the grenade's ring wants it too
+					|| RSQB_GrenadeLink.WantsGrab(consoleplayer);		// 2026-10-23: the grenade's ring wants it too
 				if (!running && !offers)
 					return false;
 				EventHandler.SendNetworkEvent("rsr_use", 1, k);

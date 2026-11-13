@@ -1,7 +1,8 @@
 // RS VR hands and real reload (from BD22 VR, RS_Brutal22WeaponsQ). Options: RSQ_Options in MENUDEF.rsq.
 user bool rsq_hands = true;			// VR hands on the controllers
 user int rsq_hand_tone = 0;			// Hand Skin Tone: 0 as drawn, 1..17 (zscript/rsq/handtone.zs)
-user int rsq_punch = 0;				// read by the hands script; no VR punching in this pack yet
+user int rsq_punch = 0;				// BD22 VR's VR Punching (not read here: the basics read rsqb_punch)
+user int rsqb_punch = 1;			// the basics' punches: jab, hook, uppercut with either free fist (fists.zs; RSQ Melee loaded: its own)
 user int rsr_reload = 1;			// Reloading: 1 VR (by hand), 0 Stock (the gun's own reload, on the reload button), as BD22 VR
 user int rsr_grab_with = 0;			// Grab ammo with: 0 off trigger, 1 off grip, 2 Use key
 user string rsr_grip_keys = "443 436";

@@ -1,0 +1,4 @@
+// the weapon sets' basic grenade (tools/lib/basics.py): RSQ Grenade's Quick Grenade
+alias rsqb_gn_quickthrow "netevent rsqb_gn_quick"
+addkeysection "Grenade" RSQBGrenade
+addmenukey "Quick Grenade" rsqb_gn_quickthrow

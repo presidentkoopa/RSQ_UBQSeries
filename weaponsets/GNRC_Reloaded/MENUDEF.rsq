@@ -2,7 +2,7 @@
 // Only options that do something in this build are listed.
 AddOptionMenu "OptionsMenu"
 {
-	Submenu "Weapons of Saturn VR", "RSQ_Options"
+	Submenu "GNRC Reloaded VR", "RSQ_Options"
 }
 
 OptionValue "RSR_ReloadMode"
@@ -76,9 +76,10 @@ OptionValue "RSQ_HandTone"
 
 OptionMenu "RSQ_Options"
 {
-	Title "WEAPONS OF SATURN VR"
+	Title "GNRC RELOADED VR"
 	Option "VR Hands", "rsq_hands", "OnOff"
 	Option "Hand Skin Tone", "rsq_hand_tone", "RSQ_HandTone"
+	Option "Punches (jab, hook, uppercut)", "rsqb_punch", "OnOff"
 	Option "Reloading", "rsr_reload", "RSR_ReloadMode"
 	Option "Grab ammo with", "rsr_grab_with", "RSR_GrabWith"
 	Option "New magazine from", "rsr_pouch", "RSR_Pouch"
@@ -87,7 +88,6 @@ OptionMenu "RSQ_Options"
 	Option "Pistol Semi Auto", "rsa_pistol_semi", "OnOff"
 	Option "Pump Shotgun Spread", "rsq_pump_spread", "RSQ_PumpSpread"
 	Option "Shotgun Slugshot Alt Fire", "rsa_sg_slug", "OnOff"
-	Option "Rifle Underbarrel Ammo", "rsm_ammo", "RSM_Ammo"
 	Option "Ballistics", "rsq_ballistics", "RSQ_Ballistics"
 	Option "True Bullets", "sv_rsq_true_bullets", "OnOff"
 	Slider "True Bullet Speed", "sv_rsq_round_speed", 20, 900, 10, 0
