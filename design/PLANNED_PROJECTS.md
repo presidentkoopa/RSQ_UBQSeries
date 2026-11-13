@@ -1,5 +1,12 @@
 # Planned projects (owner 2026-11-10 10:46: these are projects, not parked ideas)
 
+**FOR EVERY BIG PASS (owner 2026-11-13 01:37): the series has THREE weapon sets.** BD22 VR Reloaded
+(/home/claude/rsq_bd_vr_reloaded), Weapons of Saturn Reloaded (weaponsets/WoS_Reloaded) and GNRC Reloaded
+(weaponsets/GNRC_Reloaded, Led's Generic Weapon Mod on the WoS base). Each Big Pass has to address all three: every
+feature that reads a weapon (Gun Bonsai VR's trees and its axe crit, Score's weapon rows, GunCards, LaserSight,
+Wheel, holsters, Melee, Grapple 2.0's hand use, Miniboss's legendary drop) must say how it works with each set, or that
+it does not.
+
 THE BIG FOUR (named 11-09, design/HANDOFF_SESSION_2026-11-09_evening.md): Score (its pruning, names too: the Score Big
 Pass), Gun Bonsai VR (its pruning: the GBOVR Big Pass), Monster Assembly (the RSQ Monsters rebuild below), and the
 Arcade (design/BIG_FOURTH_ARCADE.md, design/HANDOFF_ARCADE_2026-11-09.md).
