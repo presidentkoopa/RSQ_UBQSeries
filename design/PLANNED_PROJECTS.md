@@ -9,6 +9,8 @@ The in-world arcade language: contextual challenges, arcade words and numbers in
 jackpot, time attack. Design only so far: design/BIG_FOURTH_ARCADE.md, design/HANDOFF_ARCADE_DESIGNER.md.
 
 ## Grapple 2.0 (owner 11-10: "planned project")
+**Owner 2026-11-12 23:04: "all grapple code has to be thrown out."** Grapple 2.0 is a rebuild from nothing: the current
+RSQ Grapple code is not its base. Design comes from the owner; nothing proposed 11-12 23:0x stands.
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
