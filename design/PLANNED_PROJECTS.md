@@ -191,7 +191,6 @@ warnings (deprecated VelX-style calls in rs_zombieman.zs, rs_shotgunner.zs). The
 Everything left is in a big project. Where each leftover went:
 - **Monster Assembly:** sprite-name clashes between packs; the tier flash matched exactly to Hackfraud's HF_Monster.zs
   (needs the owner's file from E:\oldshit\outdatedHFmaster); thrall drops checked on other monster types.
-  Owner 2026-11-13 04:28: "rsq is a much better implementation of an earlier project: E:\oldshit\outdatedHFmaster".
 - **The Arcade:** words over Champions monsters; fly-in crosshairs (design/refs/crosshair_flyin/); the ski-pole jump
   kick, dash and slide (above); the yellow cross kick hit (design/mockups/kick_hits/); a SOTN look for the whole UI
   (design/mockups/sotn_crit/, owner: "i might consider redesigning the entire UI in this fashion").
