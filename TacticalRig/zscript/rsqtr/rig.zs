@@ -965,9 +965,13 @@ class RSQTR_Rig : EventHandler
 		let p = pmo.player;
 		if (AxePool(pmo) >= 0)
 		{
-			// the axe pool: either hand, whatever the other hand holds; not into a hand that holds an axe already
+			// the axe pool: either hand; not into a hand that holds an axe already. 2.0.4s (BD22 VR Reloaded; owner 11-12
+			// 21:36, "why do i have 0 axes but still an axe in hand?"): the count is the axes you have, the ones in your hands
+			// included, so the holster has one only while an axe is left that the other hand is not holding
 			Weapon held = h == 1 ? p.OffhandWeapon : p.ReadyWeapon;
-			if (AxePool(pmo) <= 0 || (held && MainOf(HeldAs(pmo, held)) ~== x)) return null;
+			Weapon oth = h == 1 ? p.ReadyWeapon : p.OffhandWeapon;
+			int spare = AxePool(pmo) - ((oth && MainOf(HeldAs(pmo, oth)) ~== x) ? 1 : 0);
+			if (spare <= 0 || (held && MainOf(HeldAs(pmo, held)) ~== x)) return null;
 			Name axn = h == 1 ? 'RSQ_Off_BrutalAxe' : 'BrutalAxe';
 			class<Weapon> axc = axn;
 			let axw = axc ? Weapon(pmo.FindInventory(axc)) : null;

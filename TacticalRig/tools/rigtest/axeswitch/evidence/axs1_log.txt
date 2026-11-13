@@ -1,0 +1,298 @@
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+
+ParseSBarInfo: Loading custom status bar definition.
+D_CheckNetGame: Checking network game status.
+player 1 of 1 (1 nodes)
+
+----------------------------------------
+
+MAP01 - Entryway
+
+RSLD: LegenDoom's LD_quakes turned off (no camera quakes in VR)
+Universal Entropy 3.666b loaded
+RSQ Gun Bonsai VR: stock upgrades: Silvergun (8 pruned)
+AS GBOVR t0 main Rifle reserve 30 | off none reserve -1
+AS STATE t0 main Rifle off none pend - | Axes 0 | GunCards main L31 R30 off L-1 R-1 | Ammo1 main 30 off -1 | BD HUD 30 | neverswitch 0 | Next 0/0
+
+----------------------------------------
+TIP 46: Did you know that the new Purist+ gamemode is "PP" for short? Now play it.
+----------------------------------------
+AS GBOVR t1 main Rifle reserve 17 | off none reserve -1
+RSQ moon: map MAP01, moonlight_pistol 0 two 0: in the world Pistol 0, Shotvolver 0, Moonlight 0; pistols swapped for the Moonlight this map 0; map bullet pickups 2, Minigun ammo boxes put beside 1
+AS STATE t1 main Rifle off rsq_hands pend - | Axes 0 | GunCards main L23 R17 off L-1 R-1 | Ammo1 main 17 off -1 | BD HUD 17 | neverswitch 0 | Next 0/0
+AS GBOVR t2 main Rifle reserve 17 | off rsq_hands reserve -1
+rsqgc: watch card hand 0 built: Rifle loaded 23 reserve 17 (Ammo1 Clip2 17, Ammo2 RifleAmmo 23) shows 0, pieces 30 (cap 180), missing 0
+AS TP t40 at (-320 0 64) angle 90
+AS CLEAR t40 49 removed
+Degreelessness Mode ON 
+(Please tell me that's just for testing purposes...)
+No Target ON 
+(OooOoo, I'm a ghost!)
+RSQ offhand rule t40: MP40 picked up: its off-hand version comes with it
+RSQ offhand rule t40: Shotgun picked up: its off-hand version comes with it
+AS STATE t40 main Rifle off rsq_hands pend - | Axes 0 | GunCards main L23 R17 off L-1 R-1 | Ammo1 main 17 off -1 | BD HUD 17 | neverswitch 1 | Next 0/0
+RSQ switch t54: Rifle -> Shot_Gun: 4 deselect frames, ready after 5 select frames
+AS STATE t54 main Shot_Gun off rsq_hands pend - | Axes 0 | GunCards main L7 R0 off L-1 R-1 | Ammo1 main 0 off -1 | BD HUD 17 | neverswitch 1 | Next 0/0
+AS GBOVR t55 main Shot_Gun reserve 0 | off rsq_hands reserve -1
+AS STATE t55 main Shot_Gun off rsq_hands pend - | Axes 0 | GunCards main L7 R0 off L-1 R-1 | Ammo1 main 0 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+T_HEIGHT t70: eye height unset, standing, head still 70 tics within 0.02 m at 1.600 m: Measure My Height
+----------------------------------------
+Tactical Rig: eye height 1.60 m (rig scaled 99%)
+----------------------------------------
+W1_WALK_OVER_NEVERSWITCH1_COUNT0
+AS SUM t105 tag 1: 105 tics checked, 0 with a violation
+AS TP t105 at (-320 0 64) angle 90
+AS SPAWN t109 BrutalAxe -> BrutalAxe at 64 ahead
+AS PUSH t111 12
+W2_WALK_OVER_NEVERSWITCH1_COUNT1
+AS FLOOR t157 #0 BrutalAxe at dist 64
+AS SUM t157 tag 2: 157 tics checked, 0 with a violation
+AS TP t157 at (-320 0 64) angle 90
+AS SPAWN t159 BrutalAxe -> BrutalAxe at 64 ahead
+AS PUSH t163 12
+D1_DG_MAIN_HOLDS_SHOTGUN_PULLS_AN_AXE
+AS FLOOR t207 #0 BrutalAxe at dist 64
+AS FLOOR t207 #1 BrutalAxe at dist 64
+AS DELFLOOR t207 2 floor axes removed
+AS SUM t207 tag 3: 207 tics checked, 0 with a violation
+AS TP t207 at (-320 0 64) angle 90
+AS SPAWN t210 BrutalAxe -> BrutalAxe at 160 ahead
+[RSQDG] t215 lock-on: hand 0 -- no barrel in the other hand nor in punching reach: the cone finds items
+[RSQDG] hand 0 LOCKED BrutalAxe
+[RSQDG] arc: run 150 eta 16.2 apexT 16.5 fastT 6.4 room 153 g 1.00 -> 16 tics
+[RSQDG] path: dist 153  7 tics  arc 38 (wanted 38, room 139)
+[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+[RSQDG] t253 hand 0 refused -- this hand is already pulling something
+RSQ axes t256: Distance Grab -- hand 0 switches from Shot_Gun to the axe (always, whatever neverswitchonpickup says)
+RSQ axes t256: hand 0 grabbed an axe it did not throw -> +1, 1 axes
+[RSQDG] hand 0: BrutalAxe given by its own pack before the pickup (pickup.first)
+[RSQDG] hand 0 caught and USED BrutalAxe
+AS STATE t256 main Shot_Gun off rsq_hands pend BrutalAxe | Axes 1 | GunCards main L7 R0 off L-1 R-1 | Ammo1 main 0 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+RSQ switch t257: Shot_Gun -> BrutalAxe: 4 deselect frames, ready after 5 select frames
+[RSQDG] t257 hand 0 refused -- nothing in the cone (nearest: BDECBush is 13.9 deg off the hand's line (the cone is 12))
+AS STATE t257 main BrutalAxe off rsq_hands pend - | Axes 1 | GunCards main L1 R-1 off L-1 R-1 | Ammo1 main 1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+AS VIOLATION t257 [BD HUD 0 vs count 1] | main BrutalAxe off rsq_hands
+AS GBOVR t258 main BrutalAxe reserve 1 | off rsq_hands reserve -1
+AS STATE t258 main BrutalAxe off rsq_hands pend - | Axes 1 | GunCards main L1 R-1 off L-1 R-1 | Ammo1 main 1 off -1 | BD HUD 1 | neverswitch 1 | Next 0/0
+----------------------------------------
+Holsters in the wrong place? Bring both hands to your chest.
+----------------------------------------
+T_TIP t350: the recentre tip shown (once ever)
+RSQ Wheel TEST t383: hand 1 picks the MP40 card
+RSQ Wheel: pick RSQ_Off_MP40 (card MP40) -> hand 1
+AS GBOVR t383 main BrutalAxe reserve 1 | off RSQ_Off_MP40 reserve 0
+AS STATE t383 main BrutalAxe off RSQ_Off_MP40 pend - | Axes 1 | GunCards main L1 R-1 off L21 R0 | Ammo1 main 1 off 0 | BD HUD 1 | neverswitch 1 | Next 0/0
+D2_DG_OFF_HOLDS_MP40_PULLS_AN_AXE
+AS SUM t428 tag 4: 428 tics checked, 1 with a violation
+AS TP t428 at (-320 0 64) angle 90
+AS SPAWN t431 BrutalAxe -> BrutalAxe at 160 ahead
+[RSQDG] t437 lock-on: hand 1 -- no barrel in the other hand nor in punching reach: the cone finds items
+[RSQDG] hand 1 LOCKED BrutalAxe
+[RSQDG] arc: run 150 eta 16.2 apexT 16.5 fastT 6.4 room 153 g 1.00 -> 16 tics
+[RSQDG] path: dist 153  7 tics  arc 38 (wanted 38, room 139)
+[RSQDG] hand 1 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+[RSQDG] t474 hand 1 refused -- this hand is already pulling something
+RSQ axes t476: Distance Grab -- hand 1 switches from RSQ_Off_MP40 to the axe (always, whatever neverswitchonpickup says)
+RSQ axes t476: hand 1 grabbed an axe it did not throw -> +1, 2 axes
+[RSQDG] hand 1: BrutalAxe given by its own pack before the pickup (pickup.first)
+[RSQDG] hand 1 caught and USED BrutalAxe
+AS STATE t476 main BrutalAxe off RSQ_Off_MP40 pend RSQ_Off_BrutalAxe | Axes 2 | GunCards main L2 R-1 off L21 R0 | Ammo1 main 2 off 0 | BD HUD 1 | neverswitch 1 | Next 0/0
+AS VIOLATION t476 [BD HUD 1 vs count 2] | main BrutalAxe off RSQ_Off_MP40
+AS GBOVR t477 main BrutalAxe reserve 2 | off RSQ_Off_MP40 reserve 0
+RSQ switch t477: BrutalAxe -> None: 96 deselect frames, the old weapon never lowered; left to the engine
+[RSQDG] t477 hand 1 refused -- nothing in the cone (nearest: BDECBush is 13.1 deg off the hand's line (the cone is 12))
+AS STATE t477 main BrutalAxe off RSQ_Off_BrutalAxe pend - | Axes 2 | GunCards main L2 R-1 off L2 R-1 | Ammo1 main 2 off 2 | BD HUD 2 | neverswitch 1 | Next 0/0
+AS GBOVR t478 main BrutalAxe reserve 2 | off RSQ_Off_BrutalAxe reserve 2
+RSQ switch t604: Shot_Gun -> Shot_Gun: 0 deselect frames, ready after 5 select frames
+AS STATE t604 main Shot_Gun off RSQ_Off_BrutalAxe pend rsq_hands | Axes 2 | GunCards main L7 R0 off L2 R-1 | Ammo1 main 0 off 2 | BD HUD 0 | neverswitch 1 | Next 0/0
+AS GBOVR t605 main Shot_Gun reserve 0 | off RSQ_Off_BrutalAxe reserve 2
+AS STATE t605 main Shot_Gun off rsq_hands pend - | Axes 2 | GunCards main L7 R0 off L-1 R-1 | Ammo1 main 0 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+AS GBOVR t606 main Shot_Gun reserve 0 | off rsq_hands reserve -1
+D3_WALKUP_GRIP_MAIN_HOLDS_SHOTGUN
+AS SUM t650 tag 5: 650 tics checked, 2 with a violation
+AS TP t650 at (-320 0 64) angle 90
+AS ATPALM t661 hand 0 palm (-312 15 71) axe at z 64, 18 from the player
+RSQ axes t664: Distance Grab -- hand 0 switches from Shot_Gun to the axe (always, whatever neverswitchonpickup says)
+RSQ axes t664: hand 0 grabbed an axe it did not throw -> +1, 3 axes
+[RSQDG] hand 0: BrutalAxe given by its own pack before the pickup (pickup.first)
+RSQ switch t664: Shot_Gun -> BrutalAxe: 4 deselect frames, ready after 5 select frames
+AS STATE t664 main BrutalAxe off rsq_hands pend - | Axes 3 | GunCards main L3 R-1 off L-1 R-1 | Ammo1 main 3 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+AS VIOLATION t664 [BD HUD 0 vs count 3] | main BrutalAxe off rsq_hands
+AS GBOVR t665 main BrutalAxe reserve 3 | off rsq_hands reserve -1
+AS STATE t665 main BrutalAxe off rsq_hands pend - | Axes 3 | GunCards main L3 R-1 off L-1 R-1 | Ammo1 main 3 off -1 | BD HUD 3 | neverswitch 1 | Next 0/0
+AS UISUM t700 701 ui tics checked, 0 with a violation
+AS FLOOR t716 none
+AS DELFLOOR t716 0 floor axes removed
+AS AXES t716 set 2
+AS GBOVR t716 main BrutalAxe reserve 2 | off rsq_hands reserve -1
+AS STATE t716 main BrutalAxe off rsq_hands pend - | Axes 2 | GunCards main L2 R-1 off L-1 R-1 | Ammo1 main 2 off -1 | BD HUD 2 | neverswitch 1 | Next 0/0
+RSQ Wheel TEST t756: hand 1 picks the BrutalAxe card
+RSQ Wheel: pick RSQ_Off_BrutalAxe (card BrutalAxe) -> hand 1
+AS GBOVR t756 main BrutalAxe reserve 2 | off RSQ_Off_BrutalAxe reserve 2
+AS STATE t756 main BrutalAxe off RSQ_Off_BrutalAxe pend - | Axes 2 | GunCards main L2 R-1 off L2 R-1 | Ammo1 main 2 off 2 | BD HUD 2 | neverswitch 1 | Next 0/0
+T1_COUNT2_BOTH_HOLD_MAIN_THROWS_MAIN_EMPTY_OFF_KEEPS
+AS SUM t801 tag 10: 801 tics checked, 3 with a violation
+[RSQDG] t801 hand 0 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+RSQ axes t831: hand 0 threw an axe: 1 left, the one left is in the other hand: this hand is empty
+RSQ axes t831: the main hand's axe is gone at once (thrown; the axe left is in the other hand): 1 axes, it holds Melee_Attacks now
+RSQ switch t831: Melee_Attacks -> Melee_Attacks: 0 deselect frames, ready after 4 select frames
+AS STATE t831 main Melee_Attacks off RSQ_Off_BrutalAxe pend - | Axes 1 | GunCards main L-1 R-1 off L1 R-1 | Ammo1 main -1 off 1 | BD HUD 1 | neverswitch 1 | Next 0/0
+AS GBOVR t832 main Melee_Attacks reserve -1 | off RSQ_Off_BrutalAxe reserve 1
+RSQ axes t846: throw #1 lies as BrutalAxe (it hit nothing)
+T2_WHEEL_AXE_INTO_MAIN_WHILE_OFF_HOLDS_THE_LAST_ONE_IT_MOVES
+AS DELFLOOR t894 1 floor axes removed
+AS SUM t894 tag 11: 894 tics checked, 3 with a violation
+RSQ Wheel TEST t894: hand 0 picks the BrutalAxe card
+RSQ Wheel: pick BrutalAxe (card BrutalAxe) -> hand 0
+AS GBOVR t894 main BrutalAxe reserve 1 | off RSQ_Off_BrutalAxe reserve 1
+AS UIVIOLATION t894 [2 axes in hands, count 1] | main BrutalAxe off RSQ_Off_BrutalAxe
+RSQ axes t894: the off hand's axe is gone at once (1 axe, it went to the main hand): 1 axes, it holds rsq_hands now
+RSQ axes t894: throw #1 gone
+RSQ switch t894: BrutalAxe -> BrutalAxe: 0 deselect frames, ready after 1 select frames
+AS STATE t894 main BrutalAxe off rsq_hands pend - | Axes 1 | GunCards main L1 R-1 off L-1 R-1 | Ammo1 main 1 off -1 | BD HUD 1 | neverswitch 1 | Next 0/0
+AS GBOVR t895 main BrutalAxe reserve 1 | off rsq_hands reserve -1
+T3_MAIN_THROWS_THE_LAST_AXE
+AS SUM t939 tag 12: 939 tics checked, 3 with a violation
+[RSQDG] t939 hand 0 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+RSQ axes t968: hand 0 threw an axe: 0 left, this hand is empty
+RSQ axes t968: the main hand's axe is gone at once (thrown, the last axe): 0 axes, it holds Melee_Attacks now
+RSQ axes t968: none left -- the main hand's axe is gone
+RSQ axes t968: none left -- the off hand's axe is gone
+AS STATE t968 main Melee_Attacks off rsq_hands pend - | Axes 0 | GunCards main L-1 R-1 off L-1 R-1 | Ammo1 main -1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+AS GBOVR t969 main Melee_Attacks reserve -1 | off rsq_hands reserve -1
+RSQ axes t983: throw #2 lies as BrutalAxe (it hit nothing)
+T3B_GRAB_IT_BACK_INTO_THE_EMPTY_MAIN
+AS FLOOR t1042 #0 BrutalAxe at dist 246
+AS SUM t1042 tag 13: 1042 tics checked, 3 with a violation
+AS PUT t1042 1 axes
+[RSQDG] hand 0 LOCKED BrutalAxe
+RSQ axes t1053: throw #2 on the ground 70 tics: RED (period 10)
+RSQ axes t1063: throw #2 on the ground 80 tics: plain (period 9)
+RSQ axes t1072: throw #2 on the ground 89 tics: RED (period 9)
+[RSQDG] arc: run 150 eta 16.2 apexT 16.5 fastT 6.4 room 153 g 1.00 -> 16 tics
+[RSQDG] path: dist 153  7 tics  arc 38 (wanted 38, room 139)
+[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+RSQ axes t1081: throw #2 on the ground 98 tics: plain (period 8)
+[RSQDG] t1083 hand 0 refused -- this hand is already pulling something
+RSQ axes t1084: Distance Grab -- hand 0 switches from Melee_Attacks to the axe (always, whatever neverswitchonpickup says)
+RSQ axes t1084: hand 0 grabbed its own thrown axe #2 (it missed) -> +1, 1 axes
+[RSQDG] hand 0: BrutalAxe given by its own pack before the pickup (pickup.first)
+[RSQDG] hand 0 caught and USED BrutalAxe
+AS STATE t1084 main Melee_Attacks off rsq_hands pend BrutalAxe | Axes 1 | GunCards main L-1 R-1 off L-1 R-1 | Ammo1 main -1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+RSQ switch t1085: Melee_Attacks -> BrutalAxe: 3 deselect frames, ready after 5 select frames
+[RSQDG] t1085 hand 0 refused -- nothing in the cone (nearest: BDECBush is 14.2 deg off the hand's line (the cone is 12))
+AS STATE t1085 main BrutalAxe off rsq_hands pend - | Axes 1 | GunCards main L1 R-1 off L-1 R-1 | Ammo1 main 1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+AS VIOLATION t1085 [BD HUD 0 vs count 1] | main BrutalAxe off rsq_hands
+AS GBOVR t1086 main BrutalAxe reserve 1 | off rsq_hands reserve -1
+AS STATE t1086 main BrutalAxe off rsq_hands pend - | Axes 1 | GunCards main L1 R-1 off L-1 R-1 | Ammo1 main 1 off -1 | BD HUD 1 | neverswitch 1 | Next 0/0
+AS DELFLOOR t1213 0 floor axes removed
+AS AXES t1213 set 3
+AS GBOVR t1213 main BrutalAxe reserve 3 | off rsq_hands reserve -1
+AS STATE t1213 main BrutalAxe off rsq_hands pend - | Axes 3 | GunCards main L3 R-1 off L-1 R-1 | Ammo1 main 3 off -1 | BD HUD 3 | neverswitch 1 | Next 0/0
+RSQ Wheel TEST t1216: hand 1 picks the BrutalAxe card
+RSQ Wheel: pick RSQ_Off_BrutalAxe (card BrutalAxe) -> hand 1
+AS GBOVR t1216 main BrutalAxe reserve 3 | off RSQ_Off_BrutalAxe reserve 3
+AS STATE t1216 main BrutalAxe off RSQ_Off_BrutalAxe pend - | Axes 3 | GunCards main L3 R-1 off L3 R-1 | Ammo1 main 3 off 3 | BD HUD 3 | neverswitch 1 | Next 0/0
+T4_COUNT3_OFF_THROWS_REARMS
+AS SUM t1261 tag 14: 1261 tics checked, 4 with a violation
+[RSQDG] t1261 hand 1 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+RSQ axes t1290: hand 1 threw an axe: 2 left, the next one comes to this hand
+AS STATE t1290 main BrutalAxe off RSQ_Off_BrutalAxe pend - | Axes 2 | GunCards main L2 R-1 off L2 R-1 | Ammo1 main 2 off 2 | BD HUD 2 | neverswitch 1 | Next 0/0
+AS GBOVR t1291 main BrutalAxe reserve 2 | off RSQ_Off_BrutalAxe reserve 2
+RSQ axes t1305: throw #3 lies as BrutalAxe (it hit nothing)
+T4B_COUNT2_MAIN_THROWS_EMPTY
+AS DELFLOOR t1354 1 floor axes removed
+AS SUM t1354 tag 15: 1354 tics checked, 4 with a violation
+RSQ axes t1354: throw #3 gone
+[RSQDG] t1354 hand 0 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+RSQ axes t1383: hand 0 threw an axe: 1 left, the one left is in the other hand: this hand is empty
+RSQ axes t1383: the main hand's axe is gone at once (thrown; the axe left is in the other hand): 1 axes, it holds Melee_Attacks now
+RSQ switch t1383: Melee_Attacks -> Melee_Attacks: 0 deselect frames, ready after 4 select frames
+AS STATE t1383 main Melee_Attacks off RSQ_Off_BrutalAxe pend - | Axes 1 | GunCards main L-1 R-1 off L1 R-1 | Ammo1 main -1 off 1 | BD HUD 1 | neverswitch 1 | Next 0/0
+AS GBOVR t1384 main Melee_Attacks reserve -1 | off RSQ_Off_BrutalAxe reserve 1
+RSQ axes t1398: throw #4 lies as BrutalAxe (it hit nothing)
+AS UISUM t1400 1401 ui tics checked, 1 with a violation
+T4C_COUNT1_OFF_THROWS_THE_LAST
+AS DELFLOOR t1447 1 floor axes removed
+AS SUM t1447 tag 16: 1447 tics checked, 4 with a violation
+RSQ axes t1447: throw #4 gone
+[RSQDG] t1447 hand 1 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+RSQ axes t1476: hand 1 threw an axe: 0 left, this hand is empty
+RSQ axes t1476: the off hand's axe is gone at once (thrown, the last axe): 0 axes, it holds rsq_hands now
+RSQ axes t1476: none left -- the main hand's axe is gone
+RSQ axes t1476: none left -- the off hand's axe is gone
+AS STATE t1476 main Melee_Attacks off rsq_hands pend - | Axes 0 | GunCards main L-1 R-1 off L-1 R-1 | Ammo1 main -1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+AS GBOVR t1477 main Melee_Attacks reserve -1 | off rsq_hands reserve -1
+RSQ axes t1491: throw #5 lies as BrutalAxe (it hit nothing)
+AS DELFLOOR t1540 1 floor axes removed
+AS AXES t1540 set 3
+RSQ axes t1540: throw #5 gone
+AS STATE t1540 main Melee_Attacks off rsq_hands pend - | Axes 3 | GunCards main L-1 R-1 off L-1 R-1 | Ammo1 main -1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+RSQ Wheel TEST t1581: hand 1 picks the BrutalAxe card
+T5_COUNT3_BOTH_THROW_THE_SAME_TIC
+AS SUM t1625 tag 17: 1625 tics checked, 4 with a violation
+[RSQDG] t1625 hand 0 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t1625 hand 1 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+RSQ no trigger punch t1637: BD22's canned punch stopped
+RSQ no trigger punch t1638: BD22's canned punch stopped
+AS DELFLOOR t1718 0 floor axes removed
+AS AXES t1718 set 2
+AS STATE t1718 main Melee_Attacks off rsq_hands pend - | Axes 2 | GunCards main L-1 R-1 off L-1 R-1 | Ammo1 main -1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+RSQ Wheel TEST t1761: hand 1 picks the BrutalAxe card
+T6_COUNT2_BOTH_THROW_THE_SAME_TIC
+AS SUM t1806 tag 18: 1806 tics checked, 4 with a violation
+[RSQDG] t1806 hand 0 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+[RSQDG] t1806 hand 1 at punch speed (2.9 m/s >= 2.0): no reach for 0.75 s
+RSQ no trigger punch t1818: BD22's canned punch stopped
+RSQ no trigger punch t1819: BD22's canned punch stopped
+T6B_GRAB_BOTH_BACK_OFF_THEN_MAIN
+AS FLOOR t1909 none
+AS SUM t1909 tag 19: 1909 tics checked, 4 with a violation
+AS PUT t1909 0 axes
+AS PUT t2080 0 axes
+AS UISUM t2100 2101 ui tics checked, 1 with a violation
+T7_A_SAVED_AXE_WITH_NO_AMMO1
+AS DELFLOOR t2251 0 floor axes removed
+AS SUM t2251 tag 20: 2251 tics checked, 4 with a violation
+AS NULLAMMO t2292 Melee_Attacks Ammo1 cleared
+T8_MAIN_FIST_OFF_AXE_BD_HUD
+AS SUM t2302 tag 21: 2302 tics checked, 4 with a violation
+RSQ Wheel TEST t2341: hand 1 picks the BrutalAxe card
+T9_COUNT_SET_TO_1_BOTH_HOLD
+AS SUM t2386 tag 22: 2386 tics checked, 4 with a violation
+AS AXES t2426 set 1
+AS STATE t2426 main Melee_Attacks off rsq_hands pend - | Axes 1 | GunCards main L-1 R-1 off L-1 R-1 | Ammo1 main -1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+T10_COUNT_SET_TO_0
+AS SUM t2446 tag 23: 2446 tics checked, 4 with a violation
+AS AXES t2446 set 0
+AS STATE t2446 main Melee_Attacks off rsq_hands pend - | Axes 0 | GunCards main L-1 R-1 off L-1 R-1 | Ammo1 main -1 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+RSQ switch t2476: Melee_Attacks -> Shot_Gun: 3 deselect frames, ready after 5 select frames
+AS STATE t2476 main Shot_Gun off rsq_hands pend - | Axes 0 | GunCards main L7 R0 off L-1 R-1 | Ammo1 main 0 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0
+AS GBOVR t2477 main Shot_Gun reserve 0 | off rsq_hands reserve -1
+AS STATE t2521 main Shot_Gun off rsq_hands pend - | Axes 0 | GunCards main L7 R0 off L-1 R-1 | Ammo1 main 0 off -1 | BD HUD 0 | neverswitch 0 | Next 0/0
+C1_WALK_OVER_NEVERSWITCH0_COUNT0
+AS SUM t2526 tag 30: 2526 tics checked, 4 with a violation
+AS TP t2526 at (-320 0 64) angle 90
+AS SPAWN t2530 BrutalAxe -> BrutalAxe at 64 ahead
+AS PUSH t2532 12
+AS FLOOR t2577 #0 BrutalAxe at dist 64
+C2_WALK_OVER_NEVERSWITCH0_COUNT1_OWNED
+AS SUM t2622 tag 31: 2622 tics checked, 4 with a violation
+AS TP t2622 at (-320 0 64) angle 90
+AS SPAWN t2626 BrutalAxe -> BrutalAxe at 64 ahead
+AS PUSH t2629 12
+END
+AS FLOOR t2674 #0 BrutalAxe at dist 64
+AS FLOOR t2674 #1 BrutalAxe at dist 64
+AS SUM t2674 tag 40: 2674 tics checked, 4 with a violation
+AS STATE t2674 main Shot_Gun off rsq_hands pend - | Axes 0 | GunCards main L7 R0 off L-1 R-1 | Ammo1 main 0 off -1 | BD HUD 0 | neverswitch 1 | Next 0/0

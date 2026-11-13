@@ -1,0 +1,155 @@
+version "4.10"
+// TEST ONLY (scratch): the 2026-11-12 22:xx axe-count / Distance-Grab-switch probe (run axs1). Never ships.
+// Built on axepool/ (axp1, axp2). Every tic: each hand's weapon, the count, and what every display reads for it --
+// RSQ Gun Cards' own Loaded / Reserve (RSQGC_GunCard, the functions the cards draw from), BD22 VR's HUD number
+// (RSQ_HudRes), the weapon's Ammo1 (the Wheel's ammoLoaded reads it: no magazine on the axe), Gun Bonsai VR's
+// screens' reserve (RSQUI_Hand.Read, UiTick) -- and a VIOLATION line on any tic an axe is in a hand the count does not
+// cover, or a display disagrees with the count.
+class AS_Probe : EventHandler
+{
+	String last, lastSig;
+	int violations, checks, netTic;
+	clearscope static String WN(Weapon w) { return w ? String.Format("%s", w.GetClassName()) : "none"; }
+	clearscope static bool IsAxe(Weapon w) { if (!w) return false; Name n = w.GetClassName(); return n == 'BrutalAxe' || n == 'RSQ_Off_BrutalAxe'; }
+	static int Exact(Actor p, String cn) { class<Inventory> c = cn; if (!c) return -1; let i = p.FindInventory(c, false); return i ? i.Amount : 0; }
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		let pl = p.player;
+		int count = Exact(p, "RSVR_Axes");
+		Weapon mw = pl.ReadyWeapon, ow = pl.OffhandWeapon;
+		int gcL0 = RSQGC_GunCard.Loaded(mw), gcR0 = RSQGC_GunCard.Reserve(mw), gcL1 = RSQGC_GunCard.Loaded(ow), gcR1 = RSQGC_GunCard.Reserve(ow);
+		int a10 = mw && mw.Ammo1 ? mw.Ammo1.Amount : -1, a11 = ow && ow.Ammo1 ? ow.Ammo1.Amount : -1;
+		int hud = p.CountInv("RSQ_HudRes");
+		String s = String.Format("main %s off %s pend %s | Axes %d | GunCards main L%d R%d off L%d R%d | Ammo1 main %d off %d | BD HUD %d | neverswitch %d | Next %d/%d",
+			WN(mw), WN(ow), pl.PendingWeapon != WP_NOCHANGE ? WN(pl.PendingWeapon) : "-", count, gcL0, gcR0, gcL1, gcR1, a10, a11, hud, pl.GetNeverSwitch() ? 1 : 0,
+			Exact(p, "RSVR_MainAxeNext"), Exact(p, "RSVR_OffAxeNext"));
+		if (s != last) { Console.Printf("AS STATE t%d %s", level.maptime, s); last = s; }
+		// THE RULE: an axe in a hand means the count is at least the axes in hands; at 0 no hand holds one; every display
+		// of an axe-holding hand reads the count
+		int inHands = (IsAxe(mw) ? 1 : 0) + (IsAxe(ow) ? 1 : 0);
+		checks++;
+		String bad = "";
+		if (inHands > count) bad = bad .. String.Format("[%d axes in hands, count %d] ", inHands, count);
+		if (IsAxe(mw) && (gcL0 != count || a10 != count)) bad = bad .. String.Format("[main display %d/%d vs count %d] ", gcL0, a10, count);
+		if (IsAxe(ow) && (gcL1 != count || a11 != count)) bad = bad .. String.Format("[off display %d/%d vs count %d] ", gcL1, a11, count);
+		// (the HUD's number is set once a tic before the weapons move, so it is checked on a tic whose hands and count are
+		// the last tic's: a switch or a throw shows in it the tic after, for every weapon)
+		String sig = String.Format("%s %s %d", WN(mw), WN(ow), count);
+		bool hudAxe = IsAxe(mw) || ((!mw || !mw.Ammo1) && IsAxe(ow));
+		if (hudAxe && hud != count && sig == lastSig) bad = bad .. String.Format("[BD HUD %d vs count %d] ", hud, count);
+		lastSig = sig;
+		if (bad != "") { violations++; Console.Printf("AS VIOLATION t%d %s| main %s off %s", level.maptime, bad, WN(mw), WN(ow)); }
+	}
+	// Gun Bonsai VR's screens read their numbers in ui (rsq/ui/data.zs RSQUI_Hand.Read): read them the same way
+	ui String lastUi;
+	override void UiTick()
+	{
+		let pl = players[consoleplayer];
+		if (!pl.mo) return;
+		let h0 = new("RSQUI_Hand"); let h1 = new("RSQUI_Hand");
+		h0.Read(null, 0); h1.Read(null, 1);
+		String s = String.Format("main %s reserve %d | off %s reserve %d", WN(h0.wpn), h0.reserve, WN(h1.wpn), h1.reserve);
+		if (s != lastUi) { Console.Printf("AS GBOVR t%d %s", level.maptime, s); lastUi = s; }
+		// the same rule, seen from ui (after the tic's weapons have ticked: a throw is seen the tic it is made)
+		class<Inventory> ac = "RSVR_Axes";
+		int count = ac ? pl.mo.CountInv(ac) : -1;
+		int inHands = (IsAxe(pl.ReadyWeapon) ? 1 : 0) + (IsAxe(pl.OffhandWeapon) ? 1 : 0);
+		uiChecks++;
+		String bad = "";
+		if (inHands > count) bad = bad .. String.Format("[%d axes in hands, count %d] ", inHands, count);
+		if (IsAxe(h0.wpn) && h0.reserve != count) bad = bad .. String.Format("[GBOVR main %d vs %d] ", h0.reserve, count);
+		if (IsAxe(h1.wpn) && h1.reserve != count) bad = bad .. String.Format("[GBOVR off %d vs %d] ", h1.reserve, count);
+		// (a net event this tic -- a Wheel pick, the probe's own -- is seen here before this tic's WorldTick and is never drawn:
+		// marked, and counted apart)
+		bool net = netTic == level.maptime;
+		if (bad != "") { if (net) uiNetOnly++; else uiViolations++; Console.Printf("AS UIVIOLATION t%d %s| main %s off %s%s", level.maptime, bad, WN(pl.ReadyWeapon), WN(pl.OffhandWeapon), net ? " (net event this tic: before this tic's WorldTick, not drawn)" : ""); }
+		if (level.maptime % 350 == 0 && level.maptime != uiSumTic) { uiSumTic = level.maptime; Console.Printf("AS UISUM t%d %d ui tics checked, %d with a violation (+%d on net-event tics, not drawn)", level.maptime, uiChecks, uiViolations, uiNetOnly); }
+	}
+	ui int uiChecks, uiViolations, uiSumTic, uiNetOnly;
+	Vector3 Ahead(PlayerPawn p, double dist, double side) { return p.Vec3Offset(cos(p.angle) * dist - sin(p.angle) * side, sin(p.angle) * dist + cos(p.angle) * side, 0); }
+	static bool AxeThing(Actor a) { Name n = a.GetClassName(); return n == 'BrutalAxe' || n == 'RSQ_Off_BrutalAxe' || n == 'BrutalAxeOnWall' || n == 'ThrowedAxe' || n == 'ThrowedAxeStrong'; }
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		String n = e.Name;
+		netTic = level.maptime;	// (every net event: the Wheel's picks too)
+		if (n ~== "as_tp")
+		{
+			Vector2 xy = (e.Args[0], e.Args[1]);
+			p.SetOrigin((xy.x, xy.y, level.PointInSector(xy).floorplane.ZatPoint(xy)), false);
+			p.vel = (0, 0, 0); p.A_SetAngle(e.Args[2], SPF_INTERPOLATE);
+			Console.Printf("AS TP t%d at (%.0f %.0f %.0f) angle %.0f", level.maptime, p.pos.x, p.pos.y, p.pos.z, p.angle);
+		}
+		else if (n ~== "as_clear")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int k = 0;
+			while (a = Actor(it.Next())) if (a.bIsMonster || (Inventory(a) && !Inventory(a).owner)) { a.Destroy(); k++; }
+			Console.Printf("AS CLEAR t%d %d removed", level.maptime, k);
+		}
+		else if (n ~== "as_floor")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int k = 0;
+			while (a = Actor(it.Next()))
+			{
+				if (!AxeThing(a) || (Inventory(a) && Inventory(a).owner)) continue;
+				Console.Printf("AS FLOOR t%d #%d %s at dist %.0f", level.maptime, k, a.GetClassName(), p.Distance2D(a));
+				k++;
+			}
+			if (!k) Console.Printf("AS FLOOR t%d none", level.maptime);
+		}
+		else if (n ~== "as_put")
+		{
+			// every axe on the floor to (Args[0] ahead, Args[1] left), for a Distance Grab pull
+			let it = ThinkerIterator.Create("Inventory"); Inventory a; int k = 0;
+			while (a = Inventory(it.Next()))
+			{
+				if (a.owner || !AxeThing(a)) continue;
+				Vector3 at = Ahead(p, e.Args[0], e.Args[1] + k * 24);
+				at.z = level.PointInSector(at.xy).floorplane.ZatPoint(at.xy);
+				a.SetOrigin(at, false); a.vel = (0, 0, 0); k++;
+			}
+			Console.Printf("AS PUT t%d %d axes", level.maptime, k);
+		}
+		else if (n.Left(9) ~== "as_spawn:")
+		{
+			String cn = n.Mid(9);
+			Vector3 at = Ahead(p, e.Args[0], e.Args[1]);
+			at.z = level.PointInSector(at.xy).floorplane.ZatPoint(at.xy);
+			let a = Actor.Spawn(cn, at, NO_REPLACE);
+			Console.Printf("AS SPAWN t%d %s -> %s at %.0f ahead", level.maptime, cn, a ? String.Format("%s", a.GetClassName()) : "none", a ? p.Distance2D(a) : -1.0);
+		}
+		else if (n ~== "as_atpalm")
+		{
+			// a floor axe under hand Args[0]'s palm (the walk-up grip)
+			Vector3 hp = e.Args[0] == 1 ? p.OffhandPos : p.AttackPos;
+			Vector3 at = (hp.x, hp.y, level.PointInSector(hp.xy).floorplane.ZatPoint(hp.xy));
+			let a = Actor.Spawn("BrutalAxe", at, NO_REPLACE);
+			Console.Printf("AS ATPALM t%d hand %d palm (%.0f %.0f %.0f) axe at z %.0f, %.0f from the player", level.maptime, e.Args[0], hp.x, hp.y, hp.z, at.z, a ? p.Distance2D(a) : -1.0);
+		}
+		else if (n ~== "as_walk")
+		{
+			// walk forward Args[0] units in 4-unit steps through the engine's own move (P_TryMove: it touches pickups, as
+			// walking does; axs1's shove on the velocity did not move the pawn in VR)
+			Vector2 dir = (cos(p.angle), sin(p.angle));
+			int k = 0;
+			for (int i = 0; i < e.Args[0] / 4; i++) if (p.TryMove(p.pos.xy + dir * 4, 0)) k++;
+			Console.Printf("AS WALK t%d %d of %d steps", level.maptime, k, e.Args[0] / 4);
+		}
+		else if (n ~== "as_delfloor")
+		{
+			let it = ThinkerIterator.Create("Inventory"); Inventory a; int k = 0;
+			while (a = Inventory(it.Next())) if (!a.owner && AxeThing(a)) { a.Destroy(); k++; }
+			Console.Printf("AS DELFLOOR t%d %d floor axes removed", level.maptime, k);
+		}
+		else if (n ~== "as_axes") { p.SetInventory("RSVR_Axes", e.Args[0]); Console.Printf("AS AXES t%d set %d", level.maptime, p.CountInv("RSVR_Axes")); }
+		else if (n ~== "as_nullammo")
+		{
+			// a saved game from before 2.0.4r: the axe in hand has no Ammo1
+			let w = p.player.ReadyWeapon;
+			if (w) { w.Ammo1 = null; w.AmmoType1 = null; }
+			Console.Printf("AS NULLAMMO t%d %s Ammo1 cleared", level.maptime, WN(w));
+		}
+		else if (n ~== "as_sum") Console.Printf("AS SUM t%d tag %d: %d tics checked, %d with a violation", level.maptime, e.Args[0], checks, violations);
+	}
+}
