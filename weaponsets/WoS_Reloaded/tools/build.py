@@ -19,6 +19,9 @@ HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(HERE, 'lib'))
 import mdl, zs_port
 BD = mdl.BD
+# BD22 VR scripts this pack carries beyond the earlier port's set: the contact saw (owner: "Port BD22 VR's contact saw")
+# and the rocket lock-on (SPEC: the Saturn V's alt fire)
+zs_port.FILES = zs_port.FILES + ['rsq/pose.zs', 'rsvr/melee.zs', 'rsq/rlock.zs']
 WOS = '/home/claude/src/saturn'
 VOX = '/home/claude/src/wosvox'
 MS1911 = '/home/claude/presidentkoopa/rs_modelswapper/cards/brutalwolf/1911'
@@ -174,6 +177,7 @@ def main(want_pk3):
     gl = rd(os.path.join(WOS, 'GLDEFS'))
     names = set(c[6:] for c in C if c.startswith('RSQWS_'))
     gl, n = re.subn(r'(?im)^(\s*object\s+)(\w+)', lambda m: m.group(1) + ('RSQWS_' + m.group(2) if m.group(2) in names else m.group(2)), gl)
+    gl, ng = re.subn(r'(?is)^\s*object\s+SaturnG\s*\{.*?^\}\s*', '\n', gl, flags=re.M)     # WoS's grenade: not carried (the alt is the lock-on)
     wr('GLDEFS.wos', gl); note('GLDEFS: WoS object names on their RSQWS_ classes (%d objects)' % n)
     # the Beretta's pickup: WoS's PISTA0 is BD22's pistol HUD sprite name too, so the pickup is RQWP
     cp(os.path.join(WOS, 'SPRITES/BERETTA/PISTA0.png'), 'SPRITES/BERETTA/RQWPA0.png')
@@ -254,6 +258,14 @@ def main(want_pk3):
         g = set_case(g, 'NoMag', row, '""'); g = set_case(g, 'ReloadToken', row, '""')
         g = set_case(g, 'ChargeToken', row, '"RSR_Charge"' if racks else '""')
         note('reload row %d %s: magazine %s, reserve %s%s' % (row, c, mag, res, ', racks' if racks else ''))
+    if 'RSQWS_Riotgun' in present:      # the pump table's row 1 (the Shot_Gun mesh): the Riot Gun's tube and sounds
+        bp = os.path.join(BD, 'zscript/rsr/rsr_pump_guns.zs')
+        PUMP = (('WaitLabels', '"RSP_LoadWait RSP_LoadWaitE RSP_P1Wait RSP_P2Wait"'), ('Loaded', '"RSQWS_LoadedShell"'), ('MagAmmo', '"RSQWS_LoadedShell"'),
+                ('Reserve', '"Shell"'), ('Cap', '9'), ('SndBack', '"weapons/riotgun/pumpback"'), ('SndFwd', '"weapons/riotgun/pumpforth"'), ('SndShell', '"weapons/riotgun/load"'))
+        note('pump row 1 RSQWS_Riotgun: tube RSQWS_LoadedShell (9), reserve Shell, WoS pump sounds')
+    if 'RSQWS_Coachgun' in present:     # the break-open table's row 1 (the SSG mesh)
+        BRK = (('Loaded', '"RSQWS_LoadedShells"'), ('Reserve', '"Shell"'), ('Unloaded', '""'), ('ReloadToken', '""'), ('SndOpen', '"weapons/shellslinger/open"'))
+        note('break-open row 1 RSQWS_Coachgun: loaded RSQWS_LoadedShells, reserve Shell')
     if 'RSQWS_Minigun' in rows:
         g = set_case(g, 'WellHook', 17, '(0.558, 8.308, 0.408)\t// this pack: the ammo box is drawn at 0.12: its slide out of the well is 1 / 0.12 of (0.067, 0.997, 0.049)')
         g = set_case(g, 'HandHook', 17, '(0, 0, 0)\t// this pack: the ammo box is placed in the hand by its own MODELDEF block')
@@ -288,7 +300,30 @@ def main(want_pk3):
         'rsr/vreload.zs': [("PlayerInt(mo.player, 'rsr_rig_pouch', 1) == 0", "PlayerInt(mo.player, 'rsr_pouch', 0) != 2\t/* this pack: New magazine from = Tactical Rig's pouch */", 1),
             ('return i >= 1 && i < h.Size() ? h[i] : "RsrHold";', 'if (i == 19) i = 2;\t// this pack: row 19 is held as the pistol is\n\t\treturn i >= 1 && i < h.Size() ? h[i] : "RsrHold";', 1)],
     }
+    if 'RSQWS_1911' in present:
+        m19, c19 = row19['Muzzle'], row19['CasingPort']
+        patches['rsq/muzzle.zs'] = [("\t\tif (RSQ_Alias.BD(w) == 'BrutalPistol')\treturn",
+            "\t\tif (w is 'RSQWS_1911')\treturn (%.2f, %.2f, %.2f);\t// this pack: the 1911's own muzzle at its seat (tools/row_1911.py)\n\t\tif (RSQ_Alias.BD(w) == 'BrutalPistol')\treturn" % tuple(m19), 1)]
+        patches['rsq/casings.zs'].append(("\t\tif (RSQ_Alias.BD(w) == 'BrutalPistol')\t\treturn",
+            "\t\tif (w is 'RSQWS_1911')\t\treturn (%.1f, %.1f, %.1f);\t// this pack: the 1911's ejection port at its seat (tools/row_1911.py)\n\t\tif (RSQ_Alias.BD(w) == 'BrutalPistol')\t\treturn" % tuple(c19), 1))
+    # the contact saw only (owner: "Port BD22 VR's contact saw"): BD22 VR's melee reads no other weapon here (no axe, sword,
+    # pistol whip or butt strike: not in the SPEC), and each cut is the Motorsaw's own (RSQWS_SawCut, WoS's saw damage)
+    patches['rsvr/melee.zs'] = [
+        (re.compile(r"(static int KindOf\(PlayerPawn mo\)\n\t\{\n\t\tlet p = mo\.player;\n\t\tif \(!p \|\| !p\.ReadyWeapon \|\| p\.PendingWeapon != WP_NOCHANGE \|\| mo\.health <= 0\)\n\t\t\treturn 0;\n).*?(\n\t\}\n)", re.S),
+         r"\1\t\t// this pack: the Motorsaw is the only weapon BD22 VR's melee reads (the contact saw)\n\t\treturn p.ReadyWeapon is 'RSQWS_Motorsaw' ? SAW : 0;\2", 1),
+        (re.compile(r"(static int KindOfOff\(PlayerPawn mo\)\n\t\{\n)"), r"\1\t\treturn 0;\t// this pack: no off-hand melee weapon (axe, pistol whip)\n", 1),
+        ("Launch(mo, 'SawDamageHorizontal',", "Launch(mo, 'RSQWS_SawCut',", 1),
+        ("RSQ_Alias.Exact(a) == 'BrutalAxe'", "a.GetClassName() == 'BrutalAxe'", 1)]
+    patches['rsq/rlock.zs'] = [
+        ("let c = CVar.GetCVar('rsa_rl_lock', p);\n\t\t\tbool on = c && c.GetBool() &&", "bool on = true &&\t// this pack: the Saturn V's alt fire is always the lock-on (SPEC)\n\t\t\t\t", 1),
+        ("\n\t\t\t\t&& !RSA_Handler.AltDown(mo);", ";\t// (no LegenDoom mode here)", 1),
+        ("!(r is 'Rocket2')", "!(r is 'RSQWS_SaturnRocket')", 1)]
     zs_port.port(TREE, patches)
+    for rel, rows_ in (('zscript/rsr/rsr_pump_guns.zs', PUMP if 'RSQWS_Riotgun' in present else ()), ('zscript/rsr/rsb_guns.zs', BRK if 'RSQWS_Coachgun' in present else ())):
+        if not rows_: continue
+        bt = rd(os.path.join(TREE, rel))
+        for fn, val in rows_: bt = set_case(bt, fn, 1, val)
+        wr(rel, bt)
     wr('zscript/rsr/rsr_guns.bd.zs', g)
     al = ['// GENERATED by tools/build.py: which BD22 gun each RSQWS_ gun stands for. BD22 VR\'s tables (hands, muzzle, recoil',
           '// follow, reload geometry) are keyed by BD22\'s class names; this is the one place the two meet.',
@@ -308,16 +343,17 @@ def main(want_pk3):
           ['\t\t"%s" A 0;' % s for s in sorted(sprites)] + ['\t\tStop;', '\t}', '}', '']
     wr('zscript/rsq/alias.zs', '\n'.join(al))
     cp(os.path.join(HERE, 'lib/stubs.zs'), 'zscript/rsq/stubs.zs')
+    cp(os.path.join(HERE, 'lib/stubs_melee.zs'), 'zscript/rsq/stubs_melee.zs')
     wr('zscript/rsq/dualtable.zs', dualtable(D))
     own = sorted(os.path.relpath(p, os.path.join(ROOT, 'src')) for p in glob.glob(os.path.join(ROOT, 'src/zscript/**/*.zs'), recursive=True))
-    inc = own + ['zscript/wos/dual.gen.zs', 'zscript/rsq/alias.zs', 'zscript/rsq/stubs.zs', 'zscript/rsq/dualtable.zs'] + ['zscript/' + f for f in zs_port.FILES]
+    inc = own + ['zscript/wos/dual.gen.zs', 'zscript/rsq/alias.zs', 'zscript/rsq/stubs.zs', 'zscript/rsq/stubs_melee.zs', 'zscript/rsq/dualtable.zs'] + ['zscript/' + f for f in zs_port.FILES]
     wr('ZSCRIPT.zs', 'version "4.14"\n// %s %s: Weapons of Saturn rebuilt in ZScript for VR, on BD22 VR\'s meshes, hands and reload (RS_Brutal22WeaponsQ)\n' % (NAME, VERSION)
        + ''.join('#include "%s"\n' % i for i in inc))
 
     # 5. lumps
-    H = ['RSVR_HandSync', 'RSQ_Handler', 'RSR_ReloadHandler', 'RSB_Handler', 'RSP_Handler', 'RSK_M203Handler', 'RSQ_Muzzle', 'RSQ_HandTone',
+    H = ['RSVR_HandSync', 'RSQ_PoseHandler', 'RSVR_MeleeHandler', 'RSQ_Handler', 'RSR_ReloadHandler', 'RSB_Handler', 'RSP_Handler', 'RSK_M203Handler', 'RSQ_Muzzle', 'RSQ_HandTone',
          'RSQ_Start', 'RSA_Casings', 'RSQ_AmmoHud', 'RSQ_Flick', 'RSQ_Ballistics', 'RSQ_FlashHandler', 'RSQ_PlayerRounds', 'RSQ_ShotFX',
-         'RSQ_Dual', 'RSQ_DualHands', 'RSQ_DualKey', 'RSQ_ScopeReal', 'RSQWS_KickKey']
+         'RSQ_Dual', 'RSQ_DualHands', 'RSQ_DualKey', 'RSQ_ScopeReal', 'RSQWS_KickKey', 'RSQ_RocketLock']
     wr('MAPINFO.rsq', 'gameinfo\n{\n\tPlayerClasses = "RSQWS_PistolPlayer"\n\tAddEventHandlers = %s\n}\n' % ', '.join('"%s"' % h for h in H))
     dc = ['user bool rsq_dual_start = true;\t// Start With Two Pistols'] + ['user bool rsq_dual_%d = %s;\t// dual %s' % (k, 'true' if d[5] else 'false', d[4]) for k, d in enumerate(D)]
     wr('CVARINFO.rsq', rd(os.path.join(HERE, 'lib/CVARINFO.base')) + '\n'.join(dc) + '\n')

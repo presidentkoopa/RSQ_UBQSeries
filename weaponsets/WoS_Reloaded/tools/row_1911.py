@@ -41,5 +41,16 @@ row = dict(
     SprGun='RQ1M', SprPart='RQ1P', SprWorld='RQ1W', ReadySprites='PIST E',
     SndOut='Pistol/Reload1', SndIn='Pistol/Reload2', SndBack='rsr/slideback', SndFwd='pistol/slide2', SndLand='weapons/smallmagdrop',
     place=v(p), axis_old_frame=v(travel), card_axis_old_frame=[0.243, 0.192, 0.951])
+# the muzzle and the ejection port (rsq/muzzle.zs, rsq/casings.zs rows): measured at the landmark seat (the muzzle
+# 23.454 2.087 6.379, the port on BrutalPistol's (7.2, -0.1, 6.4): that seat matched BrutalPistol's bore to 3 degrees), then
+# moved with the gun to the current seat
+L = json.load(open(os.path.join(HERE, 'seat_1911.json'))).get('landmark_seat', {}).get('modeldef')
+if L:
+    R0, t0 = move([L['Offset'][0], L['Offset'][1], L['ZOffset'], L['AngleOffset'], L['PitchOffset'], L['RollOffset']])
+    Rr = R @ R0.T; tr = t - Rr @ t0
+else:
+    Rr, tr = np.eye(3), np.zeros(3)
+row['Muzzle'] = [round(float(x), 2) for x in Rr @ np.array([23.454, 2.087, 6.379]) + tr]
+row['CasingPort'] = [round(float(x), 1) for x in Rr @ np.array([7.2, -0.1, 6.4]) + tr]
 json.dump(row, open(os.path.join(HERE, 'row_1911.json'), 'w'), indent=1)
 print(json.dumps(row))

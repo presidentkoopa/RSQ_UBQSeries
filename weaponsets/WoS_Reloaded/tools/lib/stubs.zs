@@ -1,44 +1,13 @@
 // What BD22 VR's hands / muzzle / reload scripts ask of BD22 VR systems this pack does not carry (melee, grenade,
 // scopes, counters, fists). Same names and signatures, neutral answers, so those scripts run unedited.
-// As each system is ported its stub here goes.
+// As each system is ported its stub here goes. (rsvr/melee.zs, ported for the Motorsaw's contact saw, brings
+// RSVR_Token, RSVR_MeleeTwo / AxeTwo / SwordTwo and RSVR_Buzz itself.)
 
-class RSVR_Token : Inventory
-{
-	Default
-	{
-		Inventory.MaxAmount 1;
-		+INVENTORY.UNDROPPABLE
-		+INVENTORY.UNTOSSABLE
-	}
-}
-class RSVR_MeleeTwo : RSVR_Token {}
-class RSVR_AxeTwo : RSVR_Token {}
-class RSVR_SwordTwo : RSVR_Token {}
 class RSG_RingHand : RSVR_Token {}
 class IsPlayingAsPurist : RSVR_Token {}	// BD22's Purist class marker: never given here
 class RFGLoaded : RSVR_Token {}			// the rifle's underbarrel: a round in the tube (rsr/rsr_m203.zs)
 class FiredMGGrenade : RSVR_Token {}	// ...a spent case in it
 
-// a projectile the engine counts as a shot: spawning it buzzes the hand (rsvr/melee.zs in BD22 VR)
-class RSVR_Buzz : Actor
-{
-	Default
-	{
-		Projectile;
-		+NOCLIP
-		Radius 1;
-		Height 1;
-		Speed 1;
-		DamageType "RSVRHaptic";
-		RenderStyle "None";
-	}
-	States
-	{
-	Spawn:
-		TNT1 A 1;
-		Stop;
-	}
-}
 
 class RSG_Handler abstract
 {
@@ -55,6 +24,8 @@ class RSQ_Fists abstract
 {
 	static Class<Actor> Cls(Name n) { class<Actor> c = n; return c; }
 	static void PunchUse(PlayerPawn mo, Vector3 from, Vector3 dir) {}
+	static void Record(Actor strike, int hand, double mps) {}	// the LegenDoom mode's strike record: not here
+	static bool LineUse(PlayerPawn mo, Vector3 hand, Vector3 prevTip, Vector3 tip, double reach, String what) { return false; }
 }
 
 // The underbarrel's round going in by itself: out of VR, or with Reloading on Stock (the rifle's RSM_AltGrenade).
