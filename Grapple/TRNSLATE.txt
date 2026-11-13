@@ -1,5 +1,5 @@
-// RSQ Grapple -- TEST ONLY translations for rsqgr_chain_look (claw.zs): jpalomo's own tenda0 chain link recoloured, each
-// colour kept as its brightness. Look 1 and 2: dark gunmetal. Look 3: near-black links, and the running link warm orange.
+// RSQ Grapple -- the chain (claw.zs; owner 2026-11-13 01:32: "chain_look2 it is. i approve"): jpalomo's own tenda0 link
+// recoloured, each colour kept as its brightness. The links: dark gunmetal. The one link running out to the claw while it
+// flies: a white-steel glint (drawn fullbright, at jp's own link size), so it reads against the gunmetal.
 RSQGR_Gunmetal = "0:255=%[0.0,0.0,0.0]:[0.46,0.50,0.56]"
-RSQGR_ChainBlack = "0:255=%[0.0,0.0,0.0]:[0.17,0.17,0.19]"
-RSQGR_ChainHot = "0:255=%[0.35,0.10,0.0]:[2.0,1.15,0.40]"
+RSQGR_ChainGlint = "0:255=%[0.60,0.62,0.66]:[2.0,2.0,2.0]"

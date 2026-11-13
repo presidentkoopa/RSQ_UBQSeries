@@ -41,6 +41,8 @@ time slows down for a moment. Grab a monster with your off hand, hold it, punch 
 | Turn on **Hadouken**, then punch a fireball | It flies back at whoever fired it, faster and harder |
 | Turn on **Guard**, wear the boxing gloves and hold both fists up at your face | Blows from in front are softened |
 | A gun in your main hand, thrust it forward fast | The gun-butt shove, then a short slow-down (with RSQ SlowMo) |
+| With Brutal Doom VR: both hands on a long gun, drive the stock forward | Its butt strike, now Melee's (**Two-Handed Butt Strike**, off until you turn it on) |
+| With Brutal Doom VR: swing a pistol or revolver down into something, either hand | Its pistol whip, now Melee's (**Pistol Whip**, on) |
 | Off-hand grip on a monster within a hand's width of your palm | Headlock: it is held at your hand |
 | Holding one, swing your off hand forward hard | Thrown |
 | Let go of the grip | It drops |
@@ -183,10 +185,34 @@ as long as no wall is in the way.
 - Wakes monsters nearby, and needs a short wait (about a third of a second) before the next.
 - An orange starburst where the stock hits. A shove that hits no monster can still work a switch or a door.
 - **Always Slow Time on Shove** (on): a landed shove asks RSQ SlowMo for one second at 35% speed.
-- With **Brutal Doom VR** loaded, its own butt strike is the one and this shove stands down. A landed Brutal Doom VR
-  butt strike still gets the slow-down.
+- With **Brutal Doom VR** loaded, its guns are clubbed the Brutal Doom VR way, by Melee (next section), and this shove
+  leaves them to it. A landed butt strike gets the slow-down.
 
 *[GIF to come: a shotgun butt into a zombieman's face, the orange starburst]*
+
+## The gun as a club (Brutal Doom VR's guns)
+
+*Moved here from BD22 VR Reloaded on 2026-11-13 (owner: "GET THE MELEE INTO RSQ MELEE"). Rig only, not headset-confirmed.*
+
+With **BD22 VR Reloaded 2.0.4u** or later loaded, its butt strike, its pistol whip and its VR punch are RSQ Melee's. The
+code was ported line for line and every number carried, so they should feel exactly as they did there. BD22 VR Reloaded's
+own stand down while Melee is loaded and come back when it isn't. An older BD22 VR Reloaded keeps its own, and Melee
+leaves it alone.
+
+- **Two-Handed Butt Strike** (off): both hands on a Rifle, Shotgun, SSG, Assault Shotgun, MP40, SMG, Machinegun or MG42
+  (the engine's two-hand grip), and drive the stock forward. A pivot and a straight shove both count; swinging the barrel
+  round doesn't. It needs **Butt Strike: Swing Needed** (2.4 m/s, measured at the stock of the gun you see) and lands
+  Brutal Doom's own kick (14, 62 with a Berserk) on everything up to about 2.6 m ahead of the stock. It slows time like
+  the shove, and opens the F.E.A.R. window.
+- **Pistol Whip** (on): swing a pistol, revolver or the Moonlight down into something, in either hand. It needs **Pistol
+  Whip: Swing Needed** (5.0 m/s at the muzzle) and lands Brutal Doom's own punch (10; a second one at twice the speed).
+- **VR Punching (BD22 VR's Punch)** (off): a fast forward jab with Brutal Doom's fists, or Brutal Doom VR's free off
+  fist, lands Brutal Doom's own punch from the hand. Melee's punch reader still reads which punch it was and adds the rest.
+- **Whip, Butt, VR Punch Open Switches** (on): those blows work a switch or a door they hit.
+- They are measured on the gun's own 3D model (where the stock and muzzle are drawn), from the body, so walking,
+  strafing and turning aren't swings. Every hit has the swing sound, Brutal Doom VR's hit flash and a buzz in the gun hand.
+- **Your settings came with them.** The first time both packs load, BD22 VR Reloaded's values for these rows are
+  copied into Melee's, once.
 
 ### The F.E.A.R. Effect
 
@@ -251,9 +277,10 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 - **RSQ Grenade:** its barrels are barrels to the uppercut kick. Slappers Only stashes its hand grenade with the
   guns (it uses ammo).
 - **Brutal Doom VR (BD22 VR):** its fists punch with Melee's reader (**Punch With Brutal Doom's Fists**, on); turn
-  that off and Brutal Doom punches as it ships. With Brutal Doom VR's own **VR Punching** on, its punch does the
-  damage and Melee adds the rest (which punch, the lift, the moves). Its butt strike replaces Melee's shove; its FBX
-  hand and skin tone are Melee's FBX look.
+  that off and Brutal Doom punches as it ships. Its butt strike, pistol whip and VR punch are Melee's (2.0.4u and later:
+  *The gun as a club*), and its own stand down while Melee is loaded. With **VR Punching (BD22 VR's Punch)** on, that
+  punch does the damage and Melee adds the rest (which punch, the lift, the moves). The axe, the Dragonslayer and the
+  chainsaw stay Brutal Doom VR's: they are those weapons' own attacks. Its FBX hand and skin tone are Melee's FBX look.
 - **RSQ Accessibility** (which carries RSQ Gestures): Rumble Strength scales every knock in your hands. The Off-Hand
   Modifier lets the main controller play the off hand. Seated Play lowers the Guard. Its two-hand gesture rows
   (Both Hands Down, Both Palms Thrust) are the ones Ground Pound and Clear Out use. Without it, Melee reads both hands
@@ -272,11 +299,11 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 | Section | Rows |
 |---|---|
-| Hands | Start With Melee Hands (Off) · Punch With Brutal Doom's Fists (On) · Hand Model (Auto / Ermac / FBX (BD22 VR); Auto) · Boxing Gloves (Off) · Slappers Only (Off) · Open-Palm Swat (On) · Swat Bullets (On) · Uppercut Kicks Barrels (Off) · Hit Spark Size (1.0) |
-| Gun Butt Shove | Gun Butt Shove (On) · Always Slow Time on Shove (On) · F.E.A.R. Blood Mist (On) |
+| Hands | Start With Melee Hands (Off) · Punch With Brutal Doom's Fists (On) · VR Punching (BD22 VR's Punch) (Off) · Whip, Butt, VR Punch Open Switches (On) · Hand Model (Auto / Ermac / FBX (BD22 VR); Auto) · Boxing Gloves (Off) · Slappers Only (Off) · Open-Palm Swat (On) · Swat Bullets (On) · Uppercut Kicks Barrels (Off) · Hit Spark Size (1.0) |
+| Gun Butt Shove | Gun Butt Shove (On) · Two-Handed Butt Strike (BD22 VR) (Off) · Butt Strike: Swing Needed (2.4 m/s) · Pistol Whip (BD22 VR) (On) · Pistol Whip: Swing Needed (5.0 m/s) · Always Slow Time on Shove (On) · F.E.A.R. Blood Mist (On) |
 | Headlock | Headlock (On) · Human Shield (Off) · Extra Blood (On) |
 | Moves | Guard (Off) · Start With Guard (Gun Bonsai VR) (Off) · Hadouken (Off) · Wall Splat (Off) · Heavy Hands (Off) · Ground Pound (Off) · Clear Out (Off) |
-| Test and Debug | Punch: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise (0.50), Lift Cap (3.0 m), Extra Reach (4) · Gun Butt Shove: Shove Speed (3.6 m/s), Slow Time Length (1000 ms) · Headlock: Reach (0.30 m), Heaviest (400), Seconds (3.0), Throw At (3.0 m/s), Throw Weight % (30), Off Grip Keys (443 436) · Debug Log (Off / Each Decision / Also F.E.A.R. Hits) |
+| Test and Debug | Punch: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise (0.50), Lift Cap (3.0 m), Extra Reach (4) · Gun Butt Shove: Shove Speed (3.6 m/s), Slow Time Length (1000 ms), Gun Club Swing Strength (1.0), Butt Strike: Forward Share (0.50), Pistol Whip: Must Swing Down (0.25) · Headlock: Reach (0.30 m), Heaviest (400), Seconds (3.0), Throw At (3.0 m/s), Throw Weight % (30), Off Grip Keys (443 436) · Debug Log (Off / Each Decision / Also F.E.A.R. Hits) |
 
 **Swat Bullets** covers the fist's Hadouken on bullets too. No keys to bind.
 
@@ -288,6 +315,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-13, run `club1`: the owner's full load order with BD22 VR Reloaded 2.0.4u, `/home/claude/rig/work/runs/club1/run.log`) | **The gun as a club, in RSQ Melee.** BD22 VR's settings were copied in once at the map's start. With a Rifle held in both hands (the engine's steadying on), a straight forward shove of both hands (3.4 m/s) was Melee's butt strike: BD22's KickAttack hit a frozen Baron for 14, Melee asked RSQ SlowMo for its pulse and SlowMo slowed, and BD22 VR logged its own butt strike standing down. The same shove into a barrel launched it at a zombie, where it went off. A downward swing of a BrutalPistol (7.5 m/s at the muzzle) was Melee's pistol whip: MeleeStrikeNormal for 10, with the buzz. The off hand's pistol whip did the same (7.2 m/s), and BD22 VR logged its own standing down in both hands. A forward jab with BD22's fists (4.9 m/s) was Melee's port of BD22 VR's VR punch (one MeleeStrikeNormal for 10; Melee's punch reader called it a jab and dealt nothing of its own). Only the 4 voxeldef.txt errors from 02_BD22_VoxelPack.pk3, which were there before. Not shown: a switch worked by the whip or the butt, the Revolver / Moonlight / the other seven long guns, a Berserk blow, the feel in a headset. After the run, only the condition "Brutal Doom is loaded" (`BrutalWeapon`) was added to when the club runs (always true on that load order), for the weapon sets; it was compile-checked, not run. On the rig the one 4-tic shove counted as two swings (t161 and t165, two hits and two pulses): the rig drew no frame on some tics, and BD22 VR's code, ported unchanged, ends a swing after 3 tics without speed |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The eyes the hands and gestures are read against, and the watch check's own gesture copy use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The gesture-name line is not drawn while any menu is open (owner 11-11) |
 | **code only, not shown** (2026-11-11; loads clean on the full order, not run) | Start With Melee Hands puts the gloves in your inventory only (BD22's start weapon and BD22 VR's off-hand hands stay); the gloves are out of weapon slot 1 again, so weapon next has one fist. The rows below about slot 1 are history |
@@ -331,6 +359,13 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 - **F.E.A.R. extreme death:** a killing shotgun blow inside the window is replaced by one blow of damage type
   `Extreme`, so the monster's XDeath runs (Brutal Doom's gib burst). The kill keeps the same source and inflictor, so
   Score still reads a shotgun kill.
+- **The gun as a club** (`club.zs`) is BD22 VR Reloaded's own code under Melee's names: its per-frame hand sync
+  (`RSQML_ClubSync`, event `RSQML_cs`), its stamped pose history (`RSQML_ClubPose`, event `rsqml-cpose`), the gun's
+  striking points on its model and the move to the FBX hand. It runs only with Brutal Doom (`BrutalWeapon`) and BD22 VR
+  Reloaded 2.0.4u or later (`RSVR_MeleeHandler`, `RSVR_MeleeYield`), found by name. `RSQML_Service` answers
+  `owns` `club` / `punch` with 1 then, which is how that pack knows to stand its own down. With a weapon set
+  (WoS_Reloaded, GNRC_Reloaded: BD22 VR's hands without Brutal Doom's guns) the club stays off and Melee's own shove is
+  the one (since 2026-11-13).
 - **Network events:** the shove (`rsqml_buttshove`), the F.E.A.R. window (`rsqml_fear`), the Headlock's grip
   (`rsqml_hgrip`) and the two-hand moves (`rsqg_pair`) are sent as events and applied on every machine. The punch,
   the swat, the Guard pose and the Headlock's hold and throw are read from the hands on your own machine. QuestZDoom
@@ -350,7 +385,8 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 The full list, with every file and its source, is in **CREDITS.txt**.
 
 - **presidentkoopa:** SuperPunchOut (the glove weapons, the Arcade punch reader, Star Punch's banking), BD22 VR
-  Reloaded's butt strike (ported), RSQ Distance Grab's Headlock and throw, RS Gestures' swing reader, and the sounds
+  Reloaded's butt strike (ported twice: the shove read at the hand, and since 2026-11-13 the butt strike, the pistol
+  whip and the VR punch line for line, `zscript/rsqml/club.zs`), RSQ Distance Grab's Headlock and throw, RS Gestures' swing reader, and the sounds
   from his RS Combat FX and RS Ballistics. The FBX hand is Brutal Doom VR's free hand.
 - **Ermac** (iAmErmac): the hand model (Rusted Legacy / Doom Force Unleashed, MIT; licence in
   `credits/Ermac_RustedLegacy_LICENSE.txt`) and the boxing glove mesh and fit (PunchOutVR / Virtual Punch Out).

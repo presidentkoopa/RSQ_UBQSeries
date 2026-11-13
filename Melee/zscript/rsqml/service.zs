@@ -37,14 +37,25 @@
 //   GetInt "headlock.shield"  objectArg = the pawn: 2 holding a monster as a Human Shield, 1 holding one (no shield),
 //                             0 holding nothing (Human Shield)
 //   GetInt "fear"             objectArg = the pawn: 1 while that player's F.E.A.R. window is open, 0 not (Red Mist)
+// 2026-11-13 (owner: "GET THE MELEE INTO RSQ MELEE"), asked by BD22 VR Reloaded 2.0.4u and later:
+//   GetInt/GetIntUI "owns"    stringArg "club": 1 while RSQ Melee does BD22 VR's butt strike and pistol whip (club.zs; its
+//                             own then stand down); "punch": 1 while RSQ Melee does BD22 VR's VR punch. 0 otherwise.
 // RSQ Gun Bonsai VR's glove upgrades read "punch.*" in ModifyDamageDealt (the glove is the inflictor there).
 class RSQML_Service : Service
 {
+	// the moves RSQ Melee took over from BD22 VR Reloaded (club.zs): only while it runs them (that pack loaded and yielding)
+	static clearscope int Owns(String what)
+	{
+		if (!RSQML_Club.On()) return 0;
+		return (what ~== "club" || what ~== "punch") ? 1 : 0;
+	}
+
 	// THE MENU (MENU_PASS_BRIEF.md, owner 11-04): GetIntUI("menu.locked", <upgrade>) 1 while that Gun Bonsai VR upgrade is
 	// not learned by the console player (the row then does nothing), 0 learned. Asked by the RSQMLGbOption rows only while
 	// Gun Bonsai VR is loaded; read from RSQML_Sim's once-a-second cache (core.zs). Not in a game: 1.
 	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		if (request ~== "owns") return Owns(stringArg);
 		if (!(request ~== "menu.locked")) return 0;
 		let sim = RSQML_Sim(StaticEventHandler.Find("RSQML_Sim"));
 		if (!sim || !players[consoleplayer].mo) return 1;
@@ -62,6 +73,7 @@ class RSQML_Service : Service
 	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
 		if (request == "loaded") return 1;
+		if (request ~== "owns") return Owns(stringArg);
 		if (request.Left(6) == "punch.")
 		{
 			let g = RSQ_Glove(objectArg);

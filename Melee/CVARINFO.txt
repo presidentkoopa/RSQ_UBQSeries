@@ -45,8 +45,8 @@ server bool  rsqml_groundpound = false; // both fists swung down together: a sho
 server bool  rsqml_clearout = false;    // both palms thrust forward together: everything in front shoved back (Melee reads both hands itself, gestcopy.zs)
 
 // ---- THE GUN-BUTT SHOVE (shove.zs) -- user settings, as they were in RSQ Gestures --------------------------------
-// The main hand's shove with a gun in it hits (BD22 VR Reloaded's butt strike, ported). Stands down by itself when BD22
-// VR Reloaded is loaded (its own rsq_butt strike is the one).
+// The main hand's shove with a gun in it hits (BD22 VR Reloaded's butt strike, ported, read at the hand). With BD22 VR
+// Reloaded loaded its guns are the club's (club.zs, below), measured on the gun models; this shove leaves them to it.
 user bool    rsqml_shove = true;
 user float   rsqml_shove_mps = 3.6;     // the shove must average this to hit (BD22 VR Reloaded's butt strike was BUTT_SWING 3.6; BD22 VR now uses rsq_butt_speed, 2.4)
 // A landed butt shove (ours, or BD22 VR Reloaded's own when it is loaded) asks RSQ SlowMo for a short pulse
@@ -61,6 +61,20 @@ user int     rsqml_shove_slowmo_ms = 1000;
 // bursts into blood mist (Brutal Doom's own mist by name when it is loaded, the monster's own blood without it). Server:
 // it changes which death a monster dies.
 server bool  rsqml_fear_mist = true;
+
+// ---- THE GUN AS A CLUB AND BD22 VR'S VR PUNCH (club.zs) -- user settings, moved from BD22 VR Reloaded 2026-11-13 ----
+// They act only with BD22 VR Reloaded 2.0.4u or later loaded (its guns, its fists); that pack's own rows of the same
+// names act only without RSQ Melee. On the first map with both loaded, that pack's values are copied here once.
+user int     rsqml_butt = 0;            // Two-Handed Butt Strike (BD22 VR's rsq_butt): both hands on a long gun, drive the stock forward
+user float   rsqml_butt_speed = 2.4;    // m/s at the stock a butt strike needs (BD22 VR's rsq_butt_speed)
+user float   rsqml_butt_fwd = 0.5;      // of the stock's speed that must point forward (BD22 VR's rsvr_butt_fwd)
+user bool    rsqml_pistol_whip = true;  // Pistol Whip (BD22 VR's rsq_pistol_whip): swing a pistol or revolver into something, either hand
+user float   rsqml_whip_speed = 5.0;    // m/s at the muzzle a whip needs (BD22 VR's rsq_whip_speed)
+user float   rsqml_whip_down = 0.25;    // of the muzzle's speed that must point down (BD22 VR's rsvr_melee_down)
+user float   rsqml_club_swing = 1.0;    // x both swings needed (BD22 VR's Melee swing strength, rsvr_melee_swing)
+user int     rsqml_bd_punch = 0;        // VR Punching (BD22 VR's rsq_punch): a forward jab with BD22's fists lands BD22's own punch
+user bool    rsqml_punch_use = true;    // the whip, the butt strike and that punch work a switch or door they hit (BD22 VR's rsq_punch_use)
+user int     rsqml_club_migrated = 0;   // 1 once BD22 VR Reloaded's values were copied in (club.zs Migrate)
 
 // ---- THE HEADLOCK (headlock.zs) -- user settings, as they were in RSQ Distance Grab -------------------------------
 user bool    rsqml_headlock = true;          // the off hand's grip holds a living monster

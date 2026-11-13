@@ -1,1 +1,1 @@
-GameInfo { AddEventHandlers = "G2P_Probe" }
+GameInfo { AddEventHandlers = "G2P_Jumper", "G2P_Probe" }

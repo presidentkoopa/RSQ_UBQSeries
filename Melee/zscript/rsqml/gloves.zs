@@ -427,6 +427,9 @@ class RSQML_Gloves : StaticEventHandler
 		if (!w || !pmo || !pmo.player) return false;
 		Name n = w.GetClassName();
 		if (n != 'Melee_Attacks' && n != 'RSQ_Hands') return false;
+		// 2026-11-13 (owner: "GET THE MELEE INTO RSQ MELEE"): with BD22 VR Reloaded 2.0.4u and later that punch is RSQ
+		// Melee's own port (club.zs RSQML_BDPunch, its VR Punching row rsqml_bd_punch); an older one still punches itself
+		if (RSQML_Club.On()) return RSQML_Club.UserI(pmo, 'rsqml_bd_punch', 0) != 0;
 		let c = CVar.GetCVar("rsq_punch", pmo.player);
 		return c && c.GetInt() != 0;
 	}

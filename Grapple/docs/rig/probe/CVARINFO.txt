@@ -1,0 +1,3 @@
+// TEST ONLY. The rig's qzt_ hook (rig engine glue): a pack-defined cvar overrides the controller (the probe's swing).
+user string qzt_lhand = "";
+user string qzt_rhand = "";

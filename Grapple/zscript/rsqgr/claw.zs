@@ -5,15 +5,16 @@
 // STAT_DEFAULT) after WorldTick, so by the time this Tick runs the player has moved this tic and the chain's hand end is
 // where the hand is now, not a tic behind.
 //
-// The look is jpalomo's (jp_original/): the claw RSGH (open: in flight and coming back) / RSGK (shut: bitten), the chain
-// his tenda0 links (RSGL) at his spacing, 5 units apart from 15 units off the hand. Its class name starts "rsq", so RSQ
-// SlowMo runs it in real time.
+// The claw is jpalomo's (jp_original/): RSGH (open: in flight and coming back) / RSGK (shut: bitten). Its class name
+// starts "rsq", so RSQ SlowMo runs it in real time.
 //
-// TEST ONLY: rsqgr_chain_look (coordinator 2026-11-13, for the owner to pick a chain look from rig GIFs; no menu row,
-// 0 = the look above). Every variant is jpalomo's own art, no new art: 1 = the links a third the size, 3x as many (a
-// third the spacing), tinted dark gunmetal (TRNSLATE RSQGR_Gunmetal); 2 = as 1, plus life while the claw flies: a small
-// damped sideways ripple along the chain and one bright untinted link running from the hand out to the claw; 3 = as 2,
-// the links near-black (RSQGR_ChainBlack) and the running link warm orange (RSQGR_ChainHot). Read when the claw is fired.
+// THE CHAIN (owner 2026-11-13 01:32: "chain_look2 it is. i approve"): jpalomo's own tenda0 link (RSGL), no new art --
+//   * a third the size and three times as many: 1.67 units apart (his 5 / 3) from 15 units off the hand, at most 480;
+//   * tinted dark gunmetal (TRNSLATE RSQGR_Gunmetal);
+//   * while the claw flies, alive: a small damped sideways ripple along it, and ONE BRIGHT LINK running out from the
+//     hand to the claw. The running link is his link at his own size (5 units, three of the fine ones) in a white-steel
+//     glint (RSQGR_ChainGlint), fullbright: at the fine links' 1.67 units it was a pixel at 10 m and was never seen in
+//     the rig frames (g3run2), so it is drawn bigger and brighter than the links it runs along.
 class RSQGR_Claw : Actor
 {
 	enum EPhase
@@ -36,17 +37,18 @@ class RSQGR_Claw : Actor
 	double flown, flyMax;
 	int flyTics;
 	int clawId;
-	// the test-only chain look
-	int chainLook;
+	// the chain's look
 	int liveAge;           // tics of flight, for the ripple and the running link
-	TranslationID tLink, tHot;
+	int hotAt;             // the running link's index this tic (-1: none)
+	TranslationID tLink, tGlint;
 
 	const CHAIN_START = 15.0;   // jp_grapple, measured: the nearest link to the hand
-	const CHAIN_STEP = 5.0;     // and the spacing
-	const CHAIN_CAP = 160;      // links at most (jp_grapple peaks at 152); past it they spread
+	const CHAIN_STEP = 5.0 / 3.0; // a third of jp's spacing (5 units): three times as many links
+	const CHAIN_CAP = 480;      // links at most (three times jp_grapple's 152, rounded up); past it they spread
 	const BACK_SPEED = 64.0;    // coming back, units a tic
-	const LINK_SCALE = 0.125;   // tenda0's 40 px drawn at jp's 5 units
-	// the test-only looks 2 and 3
+	const LINK_SCALE = 0.125 / 3.0; // tenda0's 40 px drawn at a third of jp's 5 units
+	const HOT_SCALE = 0.125;    // the running link: jp's own size (5 units)
+	// alive while it flies
 	const RIPPLE_AMP = 2.5;     // units sideways at most
 	const RIPPLE_WAVE = 48.0;   // units along the chain per wave
 	const RIPPLE_SPIN = 50.0;   // degrees a tic the wave runs out
@@ -119,10 +121,9 @@ class RSQGR_Claw : Actor
 
 	void SetLook()
 	{
-		chainLook = clamp(RSQGR_Util.Opt("rsqgr_chain_look", 0), 0, 3);
-		if (chainLook == 3) tLink = Translate.GetID('RSQGR_ChainBlack');
-		else if (chainLook >= 1) tLink = Translate.GetID('RSQGR_Gunmetal');
-		if (chainLook == 3) tHot = Translate.GetID('RSQGR_ChainHot');
+		tLink = Translate.GetID('RSQGR_Gunmetal');
+		tGlint = Translate.GetID('RSQGR_ChainGlint');
+		hotAt = -1;
 	}
 
 	bool Flying() { return phase == PH_FLY; }
@@ -164,15 +165,15 @@ class RSQGR_Claw : Actor
 		Vector3 d = Pos - hand;
 		double total = d.Length();
 		double avail = total - CHAIN_START;
-		double step = chainLook >= 1 ? CHAIN_STEP / 3.0 : CHAIN_STEP;
-		int cap = chainLook >= 1 ? CHAIN_CAP * 3 : CHAIN_CAP;
+		double step = CHAIN_STEP;
 		int want = avail > 0 ? int(avail / step) + 1 : 0;
-		if (want > cap) { step = avail / (cap - 1); want = cap; }
+		if (want > CHAIN_CAP) { step = avail / (CHAIN_CAP - 1); want = CHAIN_CAP; }
 		while (links.Size() > want) { let l = links[links.Size() - 1]; if (l) l.Destroy(); links.Pop(); }
+		hotAt = -1;
 		if (total < 0.001) return;
 		Vector3 u = d / total;
-		// looks 2 and 3, while it flies: the damped ripple and the running link
-		bool live = chainLook >= 2 && phase == PH_FLY;
+		// while it flies: the damped ripple and the running link
+		bool live = phase == PH_FLY;
 		double amp = live ? RIPPLE_AMP * exp(-liveAge / RIPPLE_DAMP) : 0;
 		Vector3 side = (-u.y, u.x, 0);
 		if (side.Length() < 0.001) side = (1, 0, 0); else side = side.Unit();
@@ -180,7 +181,7 @@ class RSQGR_Claw : Actor
 		if (live && want > 0 && avail > 0)
 		{
 			double run = liveAge * HOT_SPEED, lap = avail + step;
-			hot = int((run - floor(run / lap) * lap) / step);
+			hot = min(int((run - floor(run / lap) * lap) / step), want - 1);
 		}
 		for (int k = 0; k < want; k++)
 		{
@@ -193,19 +194,27 @@ class RSQGR_Claw : Actor
 			{
 				l = RSQGR_Link(Spawn("RSQGR_Link", q, NO_REPLACE));
 				links[k] = l;
-				if (l && chainLook >= 1) { double sc = LINK_SCALE / 3.0; l.Scale = (sc, sc); }
+				if (!l) continue;
+				l.Scale = (LINK_SCALE, LINK_SCALE);
+				l.Translation = tLink;
 			}
 			else l.SetOrigin(q, true);
-			if (!l || chainLook < 1) continue;
 			bool h = k == hot;
-			if (h) l.Translation = tHot;               // look 2's running link: untinted (tHot unset); look 3's: warm orange
-			else l.Translation = tLink;
 			if (h != l.isHot)
 			{
 				l.isHot = h;
-				if (h) l.SetStateLabel("Hot");
-				else l.SetStateLabel("Spawn");
+				double sc = h ? HOT_SCALE : LINK_SCALE;
+				l.Scale = (sc, sc);
+				if (h) { l.Translation = tGlint; l.SetStateLabel("Hot"); }
+				else { l.Translation = tLink; l.SetStateLabel("Spawn"); }
 			}
+			if (h) hotAt = k;
+		}
+		if (live && RSQGR_Util.Debug() && hotAt >= 0 && links[hotAt])
+		{
+			let l = links[hotAt];
+			Console.Printf("T_G2 t%d p%d claw #%d chain: %d links %.2f apart, ripple %.2f, RUNNING LINK #%d at (%.1f %.1f %.1f) %.0f units out, scale %.3f (the others %.3f), glint, fullbright %d",
+				level.maptime, pn, clawId, want, step, amp, hotAt, l.Pos.x, l.Pos.y, l.Pos.z, (l.Pos - hand).Length(), l.Scale.x, LINK_SCALE, (l.CurState && l.CurState.bFullbright) ? 1 : 0);
 		}
 	}
 
@@ -217,7 +226,8 @@ class RSQGR_Claw : Actor
 	}
 }
 
-// One link: jpalomo's tenda0 (40 px, drawn at 0.125 = his 5 units). Placed by its claw every tic.
+// One link: jpalomo's tenda0 (40 px), drawn at a third of his 5 units and tinted gunmetal by its claw, which places it every
+// tic; the running link is drawn at his own 5 units in the glint, fullbright ("Hot").
 class RSQGR_Link : Actor
 {
 	Default
@@ -234,7 +244,7 @@ class RSQGR_Link : Actor
 		RenderStyle "Normal";
 		Scale 0.125;
 	}
-	bool isHot;            // test-only looks 2 and 3: the running link, drawn fullbright
+	bool isHot;            // the running link (while the claw flies): jp's size, the glint, fullbright
 	States
 	{
 	Spawn:

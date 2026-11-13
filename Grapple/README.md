@@ -18,6 +18,9 @@ RSQ Whip.
 - **One press, no aiming skill.** The claw flies out of your off hand on its chain at jpalomo's speed (about 41 m a
   second) and bites what it reaches, up to about 23 m away (his reach: just over half a second). Nothing there, and it
   comes back empty.
+- **The chain** (owner 2026-11-13: "chain_look2 it is"): jpalomo's own chain link, a third the size and three times as
+  many, dark gunmetal. While the claw flies the chain is alive: a small sideways ripple that dies away, and one bright
+  white-steel link running out along it from your hand.
 - **Walls and floors fling you.** You get jpalomo's shove toward where it bit and keep your momentum when you land.
 - **Hook the top of a ledge and you're on it.** Bite a wall just under the top of a step with room to stand up there,
   or the top of a floor higher than you can step up, and you are carried up and set down on top.
@@ -92,7 +95,6 @@ The hook always fires from the **off hand**. The air spike needs nothing in part
 | Top | **Aim Assist** (on) · **Scorpion Pull** (off: when on, a monster you hook is held on the chain until you yank your off hand back (2 m/s); then it comes, or you go) |
 | Controls | Fire Hook |
 | Test and Debug | Range (780 map units) · Debug Log (off: every bite, kick, slow-motion request and event goes to the console as `T_G2` lines; the claw's flight logs its position every tic) |
-| Test only, console | `rsqgr_chain_look` 0 to 3 (0: the chain as shipped). Three chain looks from jpalomo's own art for the owner to pick from (1: links a third the size, three times as many, dark gunmetal; 2: as 1, plus a damped ripple and a running bright link while the claw flies; 3: as 2 with near-black links and a warm orange running link). No menu row |
 
 Comfort versions (a lower hop, a vignette) belong in RSQ Accessibility: this mod reports every tic it moves you to
 Accessibility's **Comfort Vignette** (`RSQA_Service "vignette"`), which only shows when that row is on.
@@ -108,6 +110,7 @@ only BD_VoxelPack's four voxeldef errors, which were already there. Logs and scr
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-13, run `g4run2`, script `docs/rig/g4run2_script.txt`, log `docs/rig/g4run2.txt`) | **The air rows again, with the flying claw** (they were shown with the instant bite before). **Kick a heavy:** Fire Hook (the key) at a Cyberdemon 400 units ahead: the claw flew 9 tics and bit (346 units), pull 12 tics, **KICK 1** (3622 → 3592, MLK4, KICK!, SlowMo "started 1514 ms at 25%, cause line KICK!"), **kick-off** from z 27 (vel.z 9.22). **Retarget mid-air:** 3 tics after the kick the probe aimed 5 degrees off a second Cyberdemon; **Aim Assist** "snapped 5.9 degrees"; claw #2 fired **in the air** at z 85, flew 11 tics (409 units) and bit at t113 with you at z 65 and falling (vel.z -3.4: you would have landed about t121, 8 tics later), pull 12 tics, **KICK 2** ("KICK! x2", a kill, SlowMo "merged 1200 ms ... KICK! x2"). **Double jump** 6 tics after (the jump button, pressed by the probe): vel.z 9.22, "DoubleJump!" +18 tics, **5 markers** of 6 in reach (one +0.25 at 301 units, four +0.5 from 417 to 574). **Marker hooked:** 3 tics later Aim Assist "snapped 3.0 degrees" to the +0.25 imp; claw #3 flew 7 tics (276 units), "MARKER HOOKED ... +0.25 sec (9 tics)", AIR PULL (12 tics), AIR HOLD at 54 units. **Air spike:** both hands down 5.25 m/s → AIR SPIKE, 4 tics later "SPIKE LANDED: Neon Crescent g2.neon -> 1, blood x4, fire x6, Grapple-Slam g2.slam -> 1" (SlowMo "merged 3000 ms ... Grapple-Slam!"). **Landed:** "the kick-chain ends at 2". **The timing at the edge** (the same run): a Baron kicked (kick-off from the floor), the press 8 tics later at a Cyberdemon 21 m away: the claw flew 18 tics (699 units); you **landed first** (t381, "the kick-chain ends at 1"), it bit 5 tics later and pulled you in as a new chain (**KICK!**, not x2). See "Found on the rig" below. **The chain** (look 2, the only one now): drawn and running in every flight, logged each tic ("RUNNING LINK #n ... scale 0.125 (the others 0.042), glint, fullbright 1"), and seen in the frames below at 720 px. No new script errors (BD_VoxelPack's four voxeldef errors only). (Run `g4run1`, the same script, stopped at load on a ZScript error of this change, fixed) |
 | **rig only, not headset-confirmed** (2026-11-13, run `g3run2`) | **The claw flies** (`docs/rig/g3run2.txt`): Fire Hook (the key) at an imp 400 units ahead: the claw logged every tic at 50, 90, 130 ... 330 units (40 a tic, jp's Speed 40), and on tic 9 "BITES RS_CommonImp" 357 units out (its box against his radius-10 claw: 356.7 / 40 = 9 tics), then GET OVER HERE as before, landed 56 units in front of you. **Miss:** nothing ahead: 20 tics, 780 units, "the end of its reach: nothing bitten", the claw comes back. **A press while it flies:** a second press 4 tics later launched claw #3 while #2 flew ("1 other claw still flying: jp fires another"); both flew their 20 tics and came back. **Baron, low mass:** RSQ Monsters' `RS_CommonBaron` set to mass 200: "baron 1 -> HEAVY", the pull (358 units, 13 tics), **KICK 1** (1077 → 1047, MLK4, KICK!, slow motion 53 tics), the kick-off, landed, the chain ends at 1. **A Hell Knight by mass:** `RS_CommonHK` (species BaronOfHell) set to mass 200: "baron 0 -> LIGHT", GET OVER HERE, landed 57 units in front. **Imps still come** (masses 88 to 142). **Ledge lip** after a 5-tic flight: on top at z 68 after 22 tics. **Wall bites** at about 11 m: 10 tics, 363 units, jp's fling. The claw in flight in the frames below. No new script errors (BD_VoxelPack's four voxeldef errors only). (Run `g3run1`, the same script, stopped at load on a ZScript error of this change, fixed) |
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2run1`, `g2run2`) | **Fire Hook and the off hand:** the key (`+rsqgr_hook`) with the off hand level and forward fired along (1.00 0.00 0.00) from the hand. **Miss:** nothing within 780 units, so "miss" and the claw comes back. **GET OVER HERE:** an imp at 400 units, yanked in 12 tics, "landed: RS_CommonImp 51 units in front of you" (49 in `g2run2`). **Floor fling:** jp's thrust, f 345, vel (23.3 15.6 0). **Wall fling** (a bite 54 units below the top of the ledge, too low for a lip): vel (16.0 20.5 0.5). **Ledge lip:** a bite 14 units under the top of the 64-unit ledge: "on top at z 68 (top 64) after 22 tics", then standing at 64 (`g2run2`; in `g2run1` it overshot to z 138, fixed). **Heavy by the OG rule:** RSQ Monsters' Baron (mass 1055) and Cyberdemons (boss) pulled you in; imps (mass 66 to 130) came to you; a dormant imp was heavy |
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2run1`, `g2run2`, **with the instant bite**, before the claw flew) | **The kick-chain**, one go in the arena: hook a Cyberdemon 400 units away, pull 12 tics, **KICK 1** (health 5903 → 5873, knockback, its Pain state, RSQ Melee's MLK4 burst drawn gold, VisualRewards' word "KICK!" → 1), RSQ SlowMo "g2.slow" 53 tics → 1 ("started 1514 ms at 25%, cause line KICK!"). **Kick-off** out and up 42.5 units (1.5 m, vel.z 9.22). Four tics later, in the air, the probe aimed 5 degrees off a second Cyberdemon and **Aim Assist** snapped it ("snapped 6.3 degrees"). Pull 495 units at 41 a tic **while the world ran at 25%** (SlowMo's scale 250 each tic of the pull), **KICK 2** ("KICK! x2", slow 42 tics, the Cyberdemon set to 25 health killed it: **a kill still kicks you off**). **Double jump** (`+jump` mid-air): vel.z 9.22, "g2.addtime" +18 tics → 1 with cause line "DoubleJump!", **5 markers** of 6 monsters in reach (one +0.25 at 302 units, four +0.5 from 447 to 577; the sixth, 1293 away, none), seen over the imps in the frames. **Marker hooked:** +0.25 s, "g2.addtime" 9 tics → 1. **Air pull:** the imp pulled up in front of you (50 units), you hanging still. **Air spike:** both hands swung down 10.5 m/s ("AIR SPIKE"); the same swing during the pull, before the hold, did nothing ("not the air spike's moment"). **Impact:** "g2.neon" → 1 (the Neon Crescent in the frames), blood x4, fire x6, "g2.slam" → 1 ("Grapple-Slam!", 3000 ms). **Landed:** "the kick-chain ends at 2", markers cleared |
@@ -115,11 +118,17 @@ only BD_VoxelPack's four voxeldef errors, which were already there. Logs and scr
 | **rig only, not headset-confirmed** (2026-11-13, run `g2run3`) | **A guarded miniboss:** a called-in RSQ Miniboss fight (an RS_GreenImp, mass 80, with 4 thralls, "shielded 1", Can't Be Yanked 1) was heavy; you flew to it and bounced ("GUARD ... health 168 -> 168, bounce"), and Miniboss's own **GUARD!** showed on it (frame below). No chain link |
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2run1`, `g2run2`, `g2run3`) | **For other mods:** a probe read every event back through `RSQGR_Service` the tic it happened (`g2.events`, `g2.event`, `g2.event.tic`, `g2.chain`, `g2.kicks`, `g2.lastkick`, `g2.air`, `g2.doublejump`, `g2.mode`, `g2.chain.best` 2, `g2.last`) and per monster (`g2.kicked`, `g2.yanked`, `g2.spiked`, `g2.by`); the old grapple's request names (`hooked`, `swinging`, `xp.bites`) answer -1 |
 | **Headset-confirmed** | Nothing yet |
-| **code only, not shown** | **The kick-chain in the air with the flying claw** (the air rows above were shown with the instant bite: the claw now takes up to 20 tics to arrive while you fall; the code after the bite is unchanged); a second claw arriving while a bite plays (it lets go); `rsqgr_chain_look` 2 and 3's running bright link (in the rig frames the ripple shows, the one running link does not: too small at 480 px and about 15 frames a second); Without RSQ Melee (the gold particle puff instead of MLK4), without RSQ VisualRewards (no KICK!; particle markers), without RSQ Grenade (no Neon Crescent) or SlowMo; the hook in a real map's geometry (3D floors, slopes, portals); the collapsed-pose hold after a menu closes; two hooks on one tic; netplay |
+| **code only, not shown** | **A true side-on view of the chain** (`g4run2` viewed it from a camera beside it, but from a camera that is not your eye the series' hand sync puts the chain's hand end about 100 units low, under the floor: the claw half in those frames is true, the hand half is not; next run: the camera at your eye's height); a second claw arriving while a bite plays (it lets go); Without RSQ Melee (the gold particle puff instead of MLK4), without RSQ VisualRewards (no KICK!; particle markers), without RSQ Grenade (no Neon Crescent) or SlowMo; the hook in a real map's geometry (3D floors, slopes, portals); the collapsed-pose hold after a menu closes; two hooks on one tic; netplay |
+
+![The chain on the rig: the gunmetal links rippling out from the off hand, the bright running link on it, the claw flying at a Cyberdemon](docs/readme/rig_chain.png)
+
+*Rig frames (run `g4run2`, 720 px): the chain as shipped, flying at a Cyberdemon 400 units away: the fine gunmetal
+links rippling, the one bright link running out on them, the claw beyond.*
 
 ![The claw in flight on the rig: five frames as it flies out on its chain to an imp and bites](docs/readme/rig_flight.png)
 
-*Rig frames (run `g3run2`): the claw flying out on jpalomo's chain to an imp 400 units away; it bites on its ninth tic.*
+*Rig frames (run `g3run2`, before the chain was chosen): the claw flying out on jpalomo's chain as it was to an imp
+400 units away; it bites on its ninth tic.*
 
 ![The air spike on the rig: an imp hanging in front, the Neon Crescent going off, blood on the floor](docs/readme/rig_airspike.png)
 
@@ -147,6 +156,10 @@ The plan gives the design and the numbers above. Where it said nothing, the simp
   and comes back. No cap on claws in the air (his has none; at 20 tics a flight, few can be out at once).
 - **A press while a bite is playing** (pulling you, the air hold, the spike, the ledge, Scorpion's hold) is ignored;
   during GET OVER HERE a new press lets that monster drop where it is and fires again.
+- **The chain:** jp's tenda0 link at 1.67 units (a third of his 5), 1.67 apart from 15 units off the hand, at most 480
+  (past that they spread); tinted gunmetal. In flight: a sideways ripple of 2.5 units at most that dies away over about
+  8 tics, and the running link, drawn at jp's own 5 units in a white-steel glint, fullbright (at the fine links' size it
+  was a pixel at 10 m and never showed in the rig frames). Shut or coming back, the chain is still.
 - **Wall fling point:** jp's thrust toward a point 15 units short of the bite (his claw stopped short of a wall).
   The claw stays shut his 16 tics, then comes back at 64 units a tic.
 - **Baron of Hell** (owner 2026-11-13: "barons are always heavy"): a class built on `BaronOfHell` (Doom's, Brutal
@@ -185,6 +198,23 @@ The plan gives the design and the numbers above. Where it said nothing, the simp
   particle star.
 
 ---
+
+## Found on the rig, for the owner (not changed)
+
+- **The claw against the fall after a kick-off.** After a kick-off you are in the air about 20 tics (kicked off a
+  Baron, from near the floor) to 22 tics (off a Cyberdemon, from higher up), and the claw flies 40 units a tic. So the
+  next press reaches, before you land, about (22 - the tics you took to press - 1) x 40 units: pressing 3 tics after the
+  kick, up to about 18 tics of flight, about 720 units, nearly the whole 780 reach (`g4run2`: 409 units arrived with 8
+  tics to spare). Pressing late at something far fails: 8 tics after a Baron kick at a Cyberdemon 21 m away, you landed
+  5 tics before the claw bit; landing ended the chain at 1, and the bite then started a new one (KICK!, not x2).
+  Proposal, for the owner to choose: (a) while a claw fired in the air is still flying, landing does not end the chain
+  until it bites or misses (at most 20 tics; jp's speed kept); or (b) you hang where you are from the press until it
+  bites (as the air hold does); or (c) the claw flies faster when fired in a chain. Nothing changed.
+- **The running link creeps.** It is drawn every flight (logged and seen), but its place is worked out against a chain
+  that grows 40 units a tic, so it moves out only about 10 to 20 units a tic: the claw outruns it, and it never reaches
+  the claw (`g4run2` claw #1: 25, 62, 72, 82 ... 122 units out over 8 tics). As said, it should run from your hand out
+  to the claw. Proposal: keep its own distance along the chain, +90 units a tic, and start again at the hand when it
+  reaches the claw (about 4 tics a run on a 10 m chain). Not changed: it could not be shown on the rig in this pass.
 
 ## What the old grapple's partners lose
 
@@ -249,7 +279,7 @@ Everything is asked by name: this mod loads and plays alone, and the parts that 
 
 - **One handler** (`RSQGR_Core`) decides everything in WorldTick, the claw's flight first (so a bite's result plays
   the same tic, and at full speed in slow motion); the claw is an actor so the chain is laid after
-  you have moved each tic (jpalomo's links, 5 units apart from 15 units off the hand, at most 160).
+  you have moved each tic (jpalomo's link a third the size, 1.67 units apart from 15 units off the hand, at most 480).
 - **The press** reads the off hand on the machine that holds it and sends its pose in the network event
   (`rsqgr_fire`); the hands in play come through the series' hand sync (`tools/handsync`), so a hand read while you
   fly 30 units a tic is where your body is now.

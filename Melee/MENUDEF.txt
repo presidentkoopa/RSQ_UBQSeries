@@ -34,6 +34,8 @@ OptionMenu "RSQML_Options"
 	StaticText "Hands", "Gold"
 	Option "Start With Melee Hands", "rsqml_gloves", "OnOff"
 	Option "Punch With Brutal Doom's Fists", "rsqml_bdfists", "OnOff"
+	Option "VR Punching (BD22 VR's Punch)", "rsqml_bd_punch", "OnOff"	// 2026-11-13: moved from BD22 VR Reloaded (club.zs RSQML_BDPunch)
+	Option "Whip, Butt, VR Punch Open Switches", "rsqml_punch_use", "OnOff"	// BD22 VR's Punch Switches Open
 	Option "Hand Model", "rsqml_hands_model", "RSQML_HandsModel"
 	Option "Boxing Gloves", "rsqml_boxing", "OnOff"
 	Option "Slappers Only", "rsqml_slappers", "OnOff"
@@ -46,6 +48,10 @@ OptionMenu "RSQML_Options"
 	StaticText " "
 	StaticText "Gun Butt Shove", "Gold"
 	Option "Gun Butt Shove", "rsqml_shove", "OnOff"
+	Option "Two-Handed Butt Strike (BD22 VR)", "rsqml_butt", "OnOff"	// 2026-11-13: moved from BD22 VR Reloaded (club.zs)
+	Slider "Butt Strike: Swing Needed", "rsqml_butt_speed", 1.0, 6.0, 0.1, 1
+	Option "Pistol Whip (BD22 VR)", "rsqml_pistol_whip", "OnOff"
+	Slider "Pistol Whip: Swing Needed", "rsqml_whip_speed", 2.0, 10.0, 0.5, 1
 	Option "Always Slow Time on Shove", "rsqml_shove_slowmo", "OnOff"
 	Option "F.E.A.R. Blood Mist", "rsqml_fear_mist", "OnOff"
 	StaticText " "
@@ -82,6 +88,9 @@ OptionMenu "RSQML_Test"
 	StaticText "Gun Butt Shove", "Gold"
 	Slider "Shove Speed (m/s)", "rsqml_shove_mps", 1.0, 8.0, 0.1, 1
 	Slider "Slow Time Length (ms)", "rsqml_shove_slowmo_ms", 100, 2000, 50, 0
+	Slider "Gun Club Swing Strength", "rsqml_club_swing", 0.2, 3.0, 0.1, 1	// BD22 VR's Melee swing strength, for the whip and the butt
+	Slider "Butt Strike: Forward Share", "rsqml_butt_fwd", 0.0, 1.0, 0.05, 2
+	Slider "Pistol Whip: Must Swing Down", "rsqml_whip_down", 0.0, 0.9, 0.05, 2
 	StaticText " "
 	StaticText "Headlock", "Gold"
 	Slider "Reach (m)", "rsqml_headlock_reach", 0.1, 0.6, 0.05, 2

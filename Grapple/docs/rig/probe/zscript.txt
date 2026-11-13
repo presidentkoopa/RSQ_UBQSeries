@@ -1,11 +1,22 @@
 version "4.10"
 // TEST ONLY (rig): Grapple 2.0's probe. Spawns tagged monsters, aims the hook through RSQ Grapple's own network event
 // (the same packed pose its Fire Hook key sends), and logs what the service and RSQ SlowMo say. Not shipped.
+// g4 (2026-11-13): armed actions keyed to the n-th time an event happens (the flying claw makes fixed waits guesswork):
+//   g2p_arm  a0 = slot | event << 4 | nth << 8, a1 = delay | tag << 8, a2 = offset (decidegrees)  fire at a tag
+//   g2p_armj a0 = slot | event << 4 | nth << 8, a1 = delay                                          press jump (BT_JUMP, 2 tics)
+//   g2p_arms a0 = slot | event << 4 | nth << 8, a1 = delay, a2 = swings                             both hands down hard (qzt_)
+//   events: 1 kick / kick.kill / guard, 2 doublejump, 3 airhold, 4 kick.kill, 5 chain.end, 6 kick (alive)
+//   g2p_cam x y z: view from a camera actor there, facing angle 0 (a side-on view); g2p_camoff: back to the player
+//   every tic "G2P clk <tic> <engine ms>", and each wall-clock second "G2P epoch <s> <engine ms>": the frame dumps' file
+//   times are matched to tics with these (the latest-seen second boundary gives engine ms -> epoch ms)
 class G2P_Probe : EventHandler
 {
 	Actor tags[32];
-	int armEv[4], armDelay[4], armTag[4], armOff[4], armAt[4];
+	int armEv[8], armDelay[8], armTag[8], armOff[8], armAt[8], armNth[8], armSeen[8], armAct[8];
 	int lastEvents, trackLeft, lastKickSeen;
+	int swingFrom, swingN;
+	Actor cam;
+	ui int lastEpoch;
 	transient Service svcGr, svcSm;
 
 	Service GR() { if (!svcGr) svcGr = ServiceIterator.Find("RSQGR_Service").Next(); return svcGr; }
@@ -34,8 +45,46 @@ class G2P_Probe : EventHandler
 		EventHandler.SendNetworkEvent("rsqgr_fire", 1 | (yawd << 1), a1, Pack(org - p.Pos));
 	}
 
+	static bool EvMatch(int code, String ev)
+	{
+		switch (code)
+		{
+		case 1: return ev == "kick" || ev == "kick.kill" || ev == "guard";
+		case 2: return ev == "doublejump";
+		case 3: return ev == "airhold";
+		case 4: return ev == "kick.kill";
+		case 5: return ev == "chain.end";
+		case 6: return ev == "kick";
+		}
+		return false;
+	}
+
+	// both hands swung down hard together, as g2run2's console lines did (1.3 -> 1.0 -> 0.7 -> 0.4 m, a tic apart, held
+	// 4 tics, back up to 1.3 for 8): 14 tics a swing, through the rig's qzt_ hands
+	void Swing()
+	{
+		if (swingN <= 0 || level.maptime < swingFrom) return;
+		int t = level.maptime - swingFrom;
+		int c = t / 14, ph = t % 14;
+		let cl = CVar.FindCVar("qzt_lhand");
+		let cr = CVar.FindCVar("qzt_rhand");
+		if (!cl || !cr) { Console.Printf("G2P no qzt_ hands: swing skipped"); swingN = 0; return; }
+		if (c >= swingN) { cl.SetString(""); cr.SetString(""); swingN = 0; Console.Printf("G2P t%d swing done: hands back to the rig's", level.maptime); return; }
+		double y = ph == 0 ? 1.0 : ph == 1 ? 0.7 : ph < 6 ? 0.4 : 1.3;
+		cl.SetString(String.Format("-0.25 %.2f -0.3 30 0 0", y));
+		cr.SetString(String.Format("0.25 %.2f -0.3 30 0 0", y));
+		if (ph == 0) Console.Printf("G2P t%d swing %d down", level.maptime, c + 1);
+	}
+
+	override void UiTick()
+	{
+		int now = SystemTime.Now();
+		if (now != lastEpoch) { lastEpoch = now; Console.Printf("G2P epoch %d %d", now, int(MSTime())); }
+	}
+
 	override void WorldTick()
 	{
+		Console.Printf("G2P clk %d %d", level.maptime, int(MSTime()));
 		let p = players[consoleplayer].mo;
 		if (!p) return;
 		let g = GR();
@@ -47,26 +96,44 @@ class G2P_Probe : EventHandler
 				for (int k = n - lastEvents - 1; k >= 0; k--)
 					Console.Printf("G2P t%d service event: %s (tic %d) chain %d kicks %d lastkick %d air %d dj %d mode %d", level.maptime, g.GetString("g2.event", "", k, 0, p), g.GetInt("g2.event.tic", "", k, 0, p),
 						g.GetInt("g2.chain", "", 0, 0, p), g.GetInt("g2.kicks", "", 0, 0, p), g.GetInt("g2.lastkick", "", 0, 0, p), g.GetInt("g2.air", "", 0, 0, p), g.GetInt("g2.doublejump", "", 0, 0, p), g.GetInt("g2.mode", "", 0, 0, p));
-				// armed fires
-				String last = g.GetString("g2.event", "", 0, 0, p);
+				// armed actions
 				for (int k = n - lastEvents - 1; k >= 0; k--)
 				{
 					String ev = g.GetString("g2.event", "", k, 0, p);
-					int code = (ev == "kick" || ev == "kick.kill" || ev == "guard") ? 1 : ev == "doublejump" ? 2 : ev == "airhold" ? 3 : 0;
-					for (int a = 0; a < 4; a++) if (armEv[a] == code && code > 0 && armAt[a] == 0) { armAt[a] = level.maptime + armDelay[a]; Console.Printf("G2P t%d armed fire %d goes at t%d", level.maptime, a, armAt[a]); }
+					for (int a = 0; a < 8; a++)
+					{
+						if (armEv[a] <= 0 || armAt[a] != 0 || !EvMatch(armEv[a], ev)) continue;
+						if (++armSeen[a] < max(1, armNth[a])) continue;
+						armAt[a] = level.maptime + armDelay[a];
+						Console.Printf("G2P t%d armed %s %d (on %s #%d) goes at t%d", level.maptime, armAct[a] == 1 ? "jump" : armAct[a] == 2 ? "swing" : "fire", a, ev, armSeen[a], armAt[a]);
+					}
 				}
 				lastEvents = n;
 			}
 		}
-		for (int a = 0; a < 4; a++)
+		for (int a = 0; a < 8; a++)
 		{
 			if (armAt[a] > 0 && level.maptime >= armAt[a])
 			{
-				let t = tags[armTag[a]];
-				if (t) FireAt(p, t.Pos + (0, 0, t.Height * 0.5), armOff[a] / 10.0, String.Format("armed tag %d %s", armTag[a], t.GetClassName()));
+				if (armAct[a] == 1)
+				{
+					let j = G2P_Jumper(EventHandler.Find("G2P_Jumper"));
+					if (j) { j.jumpFrom = level.maptime + 1; Console.Printf("G2P t%d armed jump: BT_JUMP pressed t%d-t%d", level.maptime, j.jumpFrom, j.jumpFrom + 1); }
+				}
+				else if (armAct[a] == 2)
+				{
+					swingFrom = level.maptime + 1; swingN = max(1, armOff[a]);
+					Console.Printf("G2P t%d armed swing: both hands down hard, %d time(s) from t%d", level.maptime, swingN, swingFrom);
+				}
+				else
+				{
+					let t = tags[armTag[a]];
+					if (t) FireAt(p, t.Pos + (0, 0, t.Height * 0.5), armOff[a] / 10.0, String.Format("armed tag %d %s", armTag[a], t.GetClassName()));
+				}
 				armAt[a] = 0; armEv[a] = 0;
 			}
 		}
+		Swing();
 		if (trackLeft > 0)
 		{
 			trackLeft--;
@@ -103,7 +170,23 @@ class G2P_Probe : EventHandler
 		else if (n ~== "g2p_hp") { let a = tags[e.Args[0]]; if (a) { a.health = e.Args[1]; Console.Printf("G2P tag %d health %d", e.Args[0], a.health); } }
 		else if (n ~== "g2p_fireat") { let a = tags[e.Args[0]]; if (a) FireAt(p, a.Pos + (0, 0, a.Height * 0.5), e.Args[1] / 10.0, String.Format("tag %d %s", e.Args[0], a.GetClassName())); else Console.Printf("G2P fireat: no tag %d", e.Args[0]); }
 		else if (n ~== "g2p_firepoint") FireAt(p, (e.Args[0], e.Args[1], e.Args[2]), 0, "a point");
-		else if (n ~== "g2p_arm") { int a = e.Args[0] & 15; armEv[a] = e.Args[0] >> 4; armDelay[a] = e.Args[1] & 255; armTag[a] = e.Args[1] >> 8; armOff[a] = e.Args[2]; armAt[a] = 0; Console.Printf("G2P armed %d: event %d +%d tics -> tag %d offset %.1f", a, armEv[a], armDelay[a], armTag[a], armOff[a] / 10.0); }
+		else if (n ~== "g2p_arm" || n ~== "g2p_armj" || n ~== "g2p_arms")
+		{
+			int a = e.Args[0] & 7;
+			armEv[a] = (e.Args[0] >> 4) & 15; armNth[a] = max(1, (e.Args[0] >> 8) & 15); armSeen[a] = 0;
+			armDelay[a] = e.Args[1] & 255; armTag[a] = (e.Args[1] >> 8) & 31; armOff[a] = e.Args[2]; armAt[a] = 0;
+			armAct[a] = n ~== "g2p_armj" ? 1 : n ~== "g2p_arms" ? 2 : 0;
+			Console.Printf("G2P armed %d: %s on event %d #%d +%d tics%s", a, armAct[a] == 1 ? "jump" : armAct[a] == 2 ? "swing" : "fire", armEv[a], armNth[a], armDelay[a],
+				armAct[a] == 0 ? String.Format(" -> tag %d offset %.1f", armTag[a], armOff[a] / 10.0) : armAct[a] == 2 ? String.Format(" x%d", armOff[a]) : "");
+		}
+		else if (n ~== "g2p_cam")
+		{
+			if (!cam) cam = Actor.Spawn("G2P_Cam", (e.Args[0], e.Args[1], e.Args[2]), NO_REPLACE);
+			else cam.SetOrigin((e.Args[0], e.Args[1], e.Args[2]), false);
+			if (cam) { cam.angle = 0; cam.pitch = 0; p.player.camera = cam; }
+			Console.Printf("G2P t%d camera at (%d %d %d) facing angle 0: %s", level.maptime, e.Args[0], e.Args[1], e.Args[2], cam ? "on" : "FAILED");
+		}
+		else if (n ~== "g2p_camoff") { p.player.camera = p; Console.Printf("G2P t%d camera back on the player", level.maptime); }
 		else if (n ~== "g2p_track") trackLeft = e.Args[0];
 		else if (n ~== "g2p_kill") { let a = tags[e.Args[0]]; if (a && a.health > 0) a.DamageMobj(null, null, 100000, 'None', DMG_FORCED); Console.Printf("G2P kill tag %d", e.Args[0]); }
 		else if (n ~== "g2p_killall") { let it = ThinkerIterator.Create("Actor"); Actor a; int c = 0; while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { a.DamageMobj(null, null, 100000, 'None', DMG_FORCED); c++; } Console.Printf("G2P t%d killall %d", level.maptime, c); }
@@ -134,5 +217,46 @@ class G2P_Probe : EventHandler
 				g.GetInt("g2.last", "kick", 0, 0, p), g.GetInt("hooked", "", 0, 0, p), g.GetInt("swinging", "", 0, 0, p), g.GetInt("xp.bites", "", 0, 0, p));
 			for (int i = 0; i < 32; i++) { let a = tags[i]; if (a) Console.Printf("G2P   tag %d %s kicked %d yanked %d spiked %d by %d", i, a.GetClassName(), g.GetInt("g2.kicked", "", 0, 0, a), g.GetInt("g2.yanked", "", 0, 0, a), g.GetInt("g2.spiked", "", 0, 0, a), g.GetInt("g2.by", "", 0, 0, a)); }
 		}
+	}
+}
+
+// presses jump for the probe's armed jump: first of every handler (SetOrder), so RSQ Grapple's WorldTick sees the press the
+// tic it is made, exactly as the +jump key's would be
+class G2P_Jumper : EventHandler
+{
+	int jumpFrom;
+	override void OnRegister() { SetOrder(-1000); }
+	override void WorldTick()
+	{
+		if (jumpFrom <= 0) return;
+		int t = level.maptime;
+		if (t < jumpFrom) return;
+		if (t > jumpFrom + 1) { jumpFrom = 0; return; }
+		let p = players[consoleplayer];
+		p.cmd.buttons |= BT_JUMP;
+		Console.Printf("G2P t%d jump pressed (BT_JUMP)", t);
+	}
+}
+
+// the side-on view (g2p_cam)
+class G2P_Cam : Actor
+{
+	Default
+	{
+		Radius 1;
+		Height 2;
+		CameraHeight 0;
+		+NOINTERACTION
+		+NOBLOCKMAP
+		+NOGRAVITY
+		+DONTSPLASH
+		+NOTONAUTOMAP
+		RenderStyle "None";
+	}
+	States
+	{
+	Spawn:
+		TNT1 A -1;
+		Stop;
 	}
 }

@@ -19,5 +19,6 @@ version "4.14"
 #include "zscript/rsqml/slappers.zs"
 #include "zscript/rsqml/guard.zs"
 #include "zscript/rsqml/shove.zs"
+#include "zscript/rsqml/club.zs"     // BD22 VR Reloaded's butt strike, pistol whip and VR punch, moved here (2026-11-13)
 #include "zscript/rsqml/headlock.zs"
 #include "zscript/rsqml/legacy.zs"

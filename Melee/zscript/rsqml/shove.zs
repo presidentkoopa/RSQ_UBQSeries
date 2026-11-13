@@ -25,8 +25,11 @@
 //            hit: Brutal Doom's Kick/flesh (KickAttack's XDeath), or stock Doom's punch (*fist, DSPUNCH) without it
 //     wait   12 tics before the next (melee.zs:663 whooshWait)
 //     alert  A_AlertMonsters(200) on a hit (KickAttack's XDeath)
-//   STANDS DOWN when BD22 VR Reloaded is loaded (found by class name through a String at run time): its own strike is
-//                the one, whatever its rsq_butt says.
+//   STANDS DOWN when BD22 VR Reloaded is loaded (found by class name through a String at run time). Since 2026-11-13
+//                (owner: "GET THE MELEE INTO RSQ MELEE") its guns' butt strike and pistol whip are RSQ Melee's own,
+//                ported line for line into club.zs (measured on those guns' 3D models), and BD22 VR Reloaded 2.0.4u and
+//                later stand theirs down. An older BD22 VR Reloaded (no RSVR_MeleeYield) keeps its own strike, and this
+//                watches it for the slow-mo as before (WatchBDButt).
 //   SLOW-MO      (on by default) a landed shove -- ours, or BD22 VR Reloaded's own with it loaded -- asks RSQ SlowMo for
 //                a short pulse (rsm_pulse <ms> 35). Nothing hears it without SlowMo.
 //   F.E.A.R.     while the slow motion that pulse started lasts, every shotgun hit of the shover's on a monster bleeds
@@ -75,6 +78,7 @@ class RSQML_Shove : StaticEventHandler
 	// BD22 VR Reloaded is loaded (ours stands down); its KickAttacks seen spawning, the last one fired by you, and the
 	// last main-hand shove with its butt strike possible (gametics, 0 = none / used)
 	bool bdq;
+	bool clubOn;   // 2026-11-13: BD22 VR Reloaded hands its butt strike and pistol whip to RSQ Melee (club.zs RSQML_Club.On)
 	Array<Actor> bdKicks;
 	Array<int> bdKickAt;
 	int bdKickTic, bdShoveTic;
@@ -95,10 +99,10 @@ class RSQML_Shove : StaticEventHandler
 	static clearscope int Opt(String n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
 	static int Dbg() { return RSQML.Debug(); }
 
-	override void OnRegister() { bdq = BD22QLoaded(); fearPn = -1; }
+	override void OnRegister() { bdq = BD22QLoaded(); clubOn = RSQML_Club.On(); fearPn = -1; }
 	override void WorldLoaded(WorldEvent e)
 	{
-		bdq = BD22QLoaded(); fearPn = -1; fearPaid.Clear(); bdKicks.Clear(); bdKickAt.Clear(); bdKickTic = 0; bdShoveTic = 0;
+		bdq = BD22QLoaded(); clubOn = RSQML_Club.On(); fearPn = -1; fearPaid.Clear(); bdKicks.Clear(); bdKickAt.Clear(); bdKickTic = 0; bdShoveTic = 0;
 		live[0] = false; live[1] = false; ringN[0] = 0; ringN[1] = 0; pArmed = false; Reset();
 		lastButt = 0; lastSwing = 0; quietTill = 0; svcLook = 0;
 	}
@@ -133,7 +137,7 @@ class RSQML_Shove : StaticEventHandler
 	{
 		if (Wanted()) Read();
 		else if (live[0] || live[1]) { live[0] = false; live[1] = false; ringN[0] = 0; ringN[1] = 0; pArmed = false; Reset(); }
-		if (bdq) WatchBDButt();
+		if (bdq && !clubOn) WatchBDButt();
 		if (fearPn >= 0) FearTick();
 	}
 
@@ -256,9 +260,16 @@ class RSQML_Shove : StaticEventHandler
 			if (byaw < 0) byaw += 360;
 			EventHandler.SendNetworkEvent("rsqml_barrelshove", 0, 0, byaw * 1000 + clamp(int(round(asin(clamp(bd.z, -1, 1)))), -90, 90) + 90);
 		}
+		if (bdq && clubOn)
+		{
+			// BD22 VR Reloaded's guns: their butt strike and pistol whip are RSQ Melee's club (club.zs), measured on the gun
+			// model; this shove (read at the hand, for any gun) leaves them to it, so one swing is one blow
+			if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: the shove leaves BD22 VR Reloaded's guns to RSQ Melee's butt strike and pistol whip (club.zs) (t%d)", level.maptime);
+			return;
+		}
 		if (bdq)
 		{
-			// BD22 VR Reloaded is loaded: ours does nothing. Its own strike is watched for the slow-mo only.
+			// an older BD22 VR Reloaded is loaded: ours does nothing. Its own strike is watched for the slow-mo only.
 			if (Opt("rsqml_shove_slowmo", 1) && BDButtPossible(pmo)) bdShoveTic = gametic;
 			if (Dbg() >= 1) Console.Printf("\c[Gold]rsqml: butt shove stands down: BD22 VR Reloaded is loaded (t%d)", level.maptime);
 			return;
@@ -453,7 +464,7 @@ class RSQML_Shove : StaticEventHandler
 	}
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (!bdq || !e.Thing || !Opt("rsqml_shove_slowmo", 1)) return;
+		if (!bdq || clubOn || !e.Thing || !Opt("rsqml_shove_slowmo", 1)) return;
 		Name n = e.Thing.GetClassName();
 		if (n != 'KickAttack' && n != 'SuperKickAttack') return;
 		// its target is set just after it spawns (melee.zs Launch), so it is looked at from the next tic
@@ -585,7 +596,7 @@ class RSQML_Shove : StaticEventHandler
 		// RSQ Score: BD22 VR's own butt strike (its KickAttack inside RING tics of your main-hand shove, WatchBDButt) is the
 		// same tool as our shove. Named here, after its blow, so it joins the chain for the next kill; a kill by the strike
 		// itself still reads as BD's kick (BD22 VR's own code lands it, and the kill is scored inside the blow).
-		if (bdq && e.DamageType == 'Kick' && e.Thing && e.Thing.bIsMonster && PlayerPawn(e.DamageSource) && e.Inflictor
+		if (bdq && !clubOn && e.DamageType == 'Kick' && e.Thing && e.Thing.bIsMonster && PlayerPawn(e.DamageSource) && e.Inflictor
 			&& (e.Inflictor.GetClassName() == 'KickAttack' || e.Inflictor.GetClassName() == 'SuperKickAttack')
 			&& bdShoveTic > 0 && abs(gametic - bdShoveTic) <= RING)
 			RSQML.Touch("shove", PlayerPawn(e.DamageSource), e.Thing);
