@@ -33,7 +33,7 @@
 //   bossfight     BOSSFIGHT (bossfight.zs): 1 when the monster came with a Bossfight (miniboss or thrall, dead or alive,
 //                 for good: it carries RSQMB_Called); no object: 1 while a Bossfight is arriving or its miniboss lives
 //   tier          the Bossfight's tier 0..4 (bossfight.zs Tier) for a Bossfight's miniboss or thrall (dead or alive);
-//                 -1 for anything else (a classic pick, no set piece). RSQ VisualRewards draws it as up to 4 pips by the crown
+//                 -1 for anything else (no set piece). RSQ VisualRewards draws it as up to 4 pips by the crown
 //   bossfights    1 when Bossfights are on (rsqmb_enabled)
 //   meter         the Bossfight meter, permille (objectArg the player; none: the console player's), -1 none yet
 //   meter.ready   1 while it is full and waiting

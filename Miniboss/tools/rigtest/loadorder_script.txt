@@ -1,1 +1,1 @@
-wait 40; rsqmb_debug 1; rsqgb_kr_debug 1; netevent rsqmb_choose; wait 20; openmenu RSQMB_Options; wait 10; closemenu; wait 5; kill monsters; wait 40; netevent rsqmb_state; quit
+wait 40; rsqmb_debug 1; rsqgb_kr_debug 1; netevent rsqmb_fill 1000; wait 3; netevent rsqmb_callin 1; wait 200; openmenu RSQMB_Options; wait 10; closemenu; wait 5; kill monsters; wait 40; netevent rsqmb_state; quit

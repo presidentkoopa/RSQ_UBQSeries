@@ -274,7 +274,7 @@ extend class RSQMB_Handler
 		if (!bbWas || t < bbStart)
 		{
 			bbWas = true;
-			bbStart = landing ? t : t - BB_GROW;   // a fight already under way (a save, a classic pick): no grow
+			bbStart = landing ? t : t - BB_GROW;   // a fight already under way (a save): no grow
 			bbLag = 0; bbIcTic = 0; bbMbT = 0;
 			for (int i = 0; i < 8; i++) { bbThrT[i] = 0; bbThrMax[i] = 0; bbThrIc[i] = -1; }
 		}

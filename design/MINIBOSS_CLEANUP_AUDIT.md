@@ -1,7 +1,11 @@
 # RSQ Miniboss: cleanup audit (2026-11-12)
 
 The owner asked to "clean up the whole thing", and earlier said we built "three redundant systems that I will never use".
-This is an audit only. **Nothing has been deleted.** The owner decides what goes.
+This is an audit only. The owner decides what goes.
+
+**Done since (owner, 2026-11-12):** the Classic Pick at Level Load is cut (3.1 c), Miniboss's own gun / power-up drop is
+cut (3.3, recommendation 3), and the wrist card's "either wrist" comment is fixed (5). Shown on the rig in run `mbdrop1`
+(rig only, not headset-confirmed): see the README's Status. Everything else below is still as audited.
 
 Every system, option and code path in `Miniboss/` was read (zscript/rsqmb/*.zs, CVARINFO.txt, MENUDEF.txt, README.md,
 docs/). Each one is checked against **the owner's definition** of a miniboss encounter, copied here unchanged:
@@ -41,7 +45,7 @@ Each item gets one of these verdicts:
 
    The definition has one way in, the off-hand card plus Use. Cutting (a), (b) and (c) removes about 900 lines and 17 menu
    rows.
-3. **Decide the second drop.** Miniboss drops its own gun or power-up when the miniboss dies (`bossfight.zs` 1328-1389).
+3. **DONE 2026-11-12 (cut).** **Decide the second drop.** Miniboss drops its own gun or power-up when the miniboss dies (`bossfight.zs` 1328-1389).
    The definition's drop is a legendary weapon at 50/30/15/5, and that is made by BD22 VR's RSLD
    (`rsq_bd_vr_reloaded/src/zscript/rsld/handler.zs` 807-880, which asks RSQMB_Service "bossfight", "tier", "wasboss").
    So two drops fall today. Cut Miniboss's own.
@@ -59,7 +63,7 @@ Each item gets one of these verdicts:
 |---|---|---|
 | The meter: fill from kills, chains, Score style, Gun Bonsai XP, movement; Meter Speed; Fills From | `bossfight.zs` 49-68 (RSQMB_Meter), 201-220 (Fill/Ready), 265-282 (BfKill), 283-365 (BfTick fill part), 366-381 (GbStep); CVARINFO `rsqmb_bf_speed`, `rsqmb_bf_from`, `rsqmb_bf_style`, `rsqmb_bf_xp` | DEFINITION ("the meter fills") |
 | The meter on the HUD under Score (red, then gold and beating) | `hud.zs` 1-282 (MeterShown, MeterRect, SkullRect, RenderOverlay meter part); `rsqmb_bf_hud`, `rsqmb_bf_hud_size` | DEFINITION (the definition does not say where the meter is drawn; this is the only meter) |
-| Off-hand inner-wrist Start Fight card + Use | `bossfight.zs` 418-512 (WristCard, InnerDot, GazeOff), 514-536 (CallIn card branch), 1401-1418 (RSQMB_WQuad), MODELDEF.txt, graphics RSQMBWC0/1; `rsqmb_wristcard` | DEFINITION. Its header comment at 418-430 still says "either wrist"; the code is off-hand only (463, owner 15:54). Fix the comment |
+| Off-hand inner-wrist Start Fight card + Use | `bossfight.zs` 418-512 (WristCard, InnerDot, GazeOff), 514-536 (CallIn card branch), 1401-1418 (RSQMB_WQuad), MODELDEF.txt, graphics RSQMBWC0/1; `rsqmb_wristcard` | DEFINITION. Its header comment said "either wrist"; the code is off-hand only (463, owner 15:54). Comment fixed 2026-11-12 |
 | The card skips the guardrails | `bossfight.zs` 537-558 (TryArrive `m.force`) | DEFINITION |
 | Picking types from the map, the spot in view, the landing | `bossfight.zs` 144-186 (BfScan), 624-656 (Tier), 659-893 (PlanArrival, Fits, LooseSpot), 894-944 (StartArrival), 986-1068 (ArrivalStep, ArrivalFailed), 1080-1198 (Land, BeamNow), 1244-1307 (Hold, Reveal, Wake) | DEFINITION |
 | Beams: thralls V1-V3 at random, the miniboss V4, in the Champion colour | `bossfight.zs` 1166-1198, the `arrKind` line in Land | DEFINITION |
@@ -83,7 +87,7 @@ Each item gets one of these verdicts:
 |---|---|---|---|---|---|
 | a | **Watch check + Use** call-in | `bossfight.zs` 382-417 (WatchCheck, CallInput), the `CallInput` line in BfTick (343), `CallIn` non-card branch 529-535; **gestcopy.zs** (all 307 lines: RSQMB_GPose, RSQMB_GCopy, RSQMB_GCopyService); **handsync.zs** (all 160 lines: RSQMB_HandSync, used only by gestcopy.zs 183); MAPINFO's `RSQMB_HandSync`, `RSQMB_GCopy`; `rsqmb_bf_callin` + its row "Call It In: Watch Check + Use" | REDUNDANT (the card is the definition's call-in). README 11-12: "current call in method does not work" (owner 05:06, quoted at `bossfight.zs` 415) | ~500 lines, 2 event handlers, 1 menu row. **Keep** `RSQMB_GPose.IsLeft` (used by the card, `bossfight.zs` 440 and 490): move those 2 lines into bossfight.zs first | Low. RSQ Tactical Rig asks Miniboss "callin" so the watch check's Use press is not taken by the gun (README "Plays well with"). Check that `RSQMB_Service "callin"` still means "the card can call now" after the cut |
 | b | **Arrives By Itself** (60 s after full) and its guardrails | `bossfight.zs` 347-364 (due by `rsqmb_bf_auto`), 566-623 (Guard, Waits: Too Early, Map Limit, Cooldown, Low Health, Near Exit, Too Busy), 565 (IgnoreRestrictions); the wait line `hud.zs` 115-150 (MeterBottom's wait part, WaitLine); cvars `rsqmb_bf_auto`, `rsqmb_bf_first`, `rsqmb_bf_cooldown`, `rsqmb_bf_cap`, `rsqmb_bf_minhp`, `rsqmb_bf_busy`, `rsqmb_bf_exit`, `rsqmb_bf_ignore`; 9 menu rows | REDUNDANT with the card. The card already skips every guardrail (`bossfight.zs` 539-546) | ~150 lines, 8 cvars, 9 rows, the README "When it won't come" paragraph. Keep "No Monsters" and "No Room" (the card can still hit them) as debug lines | Low. If the owner wants a full meter to still come by itself one day, it goes. `rsqmb_bf_cap` and the cooldown also limit how often the card can be used: today they do not (the card skips them). No change for the card |
-| c | **Classic Pick at Level Load** (Minibosses!' original) | `handler.zs` 5-12 (header), 145-149 (Tick2 pick), 178-272 (Eligible, Choose, Choose2, TooClose, PickThralls), 630-643 (`rsqmb_choose` netevent); `hud.zs` 316-331 (StackBoss classic branch); `RSQMB_Boss.called` false path (`fight.zs` 147, `boss.zs` Rebody `if (called)`); cvars `rsqmb_classic`, `rsqmb_per_map`, `rsqmb_map_chance`, `rsqmb_radius`; 4 menu rows ("Classic" block, "Thrall Range"); README "The classic pick" (316-328) | LEGACY (off by default since 11-05; the definition has only called-in fights) | ~140 lines, 4 cvars, 4 rows, a README section and its picture. `Bind` (`handler.zs` 274-324) **stays**: the miniboss fight binds through it | Low. Score's "Miniboss" row at 1x (a miniboss in the map, `handler.zs` BossDied) only happens through the classic pick. It becomes unused, not broken |
+| c | **DONE 2026-11-12 (cut; run `mbdrop1`).** **Classic Pick at Level Load** (Minibosses!' original). Kept: `Bind`, and `Eligible` (BfScan uses it); the fields `chosen`, `called` stay for old saves. Old test scripts that call `netevent rsqmb_choose` (GlowInTheDark/tools/rigtest, Miniboss/tools/rigtest evidence) now do nothing | `handler.zs` 5-12 (header), 145-149 (Tick2 pick), 178-272 (Eligible, Choose, Choose2, TooClose, PickThralls), 630-643 (`rsqmb_choose` netevent); `hud.zs` 316-331 (StackBoss classic branch); `RSQMB_Boss.called` false path (`fight.zs` 147, `boss.zs` Rebody `if (called)`); cvars `rsqmb_classic`, `rsqmb_per_map`, `rsqmb_map_chance`, `rsqmb_radius`; 4 menu rows ("Classic" block, "Thrall Range"); README "The classic pick" (316-328) | LEGACY (off by default since 11-05; the definition has only called-in fights) | ~140 lines, 4 cvars, 4 rows, a README section and its picture. `Bind` (`handler.zs` 274-324) **stays**: the miniboss fight binds through it | Low. Score's "Miniboss" row at 1x (a miniboss in the map, `handler.zs` BossDied) only happens through the classic pick. It becomes unused, not broken |
 
 ### 3.2 Dead code
 
@@ -103,7 +107,7 @@ Each item gets one of these verdicts:
 | **The room's glow** (cold grey shield, gold window, red life lost, its colour one-on-one, the red heartbeat while full, the landing in the dark, the death wave and colour re-roll) | `fight.zs` 439-463 (RoomGlow), 129-149 (re-roll in FightTick), 466-472 (FightDeath wave); `bossfight.zs` 221-257 (GdService, Glow), 334-342 (heartbeat), 977-985 (HeartBeat), the dark-landing ask in StartArrival; `rsqmb_bf_dark`; 1 row | EXTRA (RSQ Glow In The Dark) | ~90 lines, 1 cvar, 1 row | Low. Glow In The Dark's own "Miniboss Tint" rows are separate and stay |
 | **Minibosses! effects**: tethers (30 beads a thrall), invulnerability flames, breaking bursts, teleport fog when no beams, the particle fallback | `fx.zs` (all 357 lines), `boss.zs` 505-585 (Mid, P, Burst, Shatter, FX particle fallback), `fight.zs` 474-481 (FxLink), the FxBreak/FxLifeLost/FxBossDied/FxInvulEnd calls; `rsqmb_fx`, `rsqmb_fx_density`, `rsqmb_fx_range`; 3 rows | EXTRA (the original mod's look, owner 11-05 "yes, the OG stuff") | ~500 lines, 3 cvars, 3 rows | Medium. The teleport fog is the only landing effect when RSQ VisualRewards is missing. The tethers show which thrall feeds the miniboss: nothing else in the definition does |
 | **Words over the monsters** ("TARGET!" over each thrall, "GUARD!" over the miniboss) and the **grey Xs** | `fight.zs` 56-66 (Word helpers), 417-437 (WordsStep), 483-510 (GuardHit's word and X part; **keep** its `guardHitTic` line, which shakes the HUD's GUARD); `items.zs` 82-112 (RSQMB_XFx) | EXTRA. The definition puts GUARD on the HUD bar. Owner 11-12 14:11 found them "way too big, it's all I can see"; they were made smaller | ~90 lines | Low |
-| **Miniboss's own drop** (a gun you don't have, else a power-up) | `bossfight.zs` 1328-1389 (BfPayoff's Drop, Drop) | REDUNDANT with the definition's drop (BD22 VR's RSLD legendary weapon, see recommendation 3) | ~45 lines | Low. Check first that RSLD's drop is on (`rsld_bossfight_only`) on the owner's load order |
+| **DONE 2026-11-12 (cut; run `mbdrop1`: RSLD's legendary weapon, the bits, Champions' bundle and the cigarettes all fall without it).** **Miniboss's own drop** (a gun you don't have, else a power-up) | `bossfight.zs` 1328-1389 (BfPayoff's Drop, Drop) | REDUNDANT with the definition's drop (BD22 VR's RSLD legendary weapon, see recommendation 3) | ~45 lines | Low. Check first that RSLD's drop is on (`rsld_bossfight_only`) on the owner's load order |
 | **Music** for the fight | `bossfight.zs` 1069-1079 (SceneMusic); `rsqmb_bf_music`; 1 row | EXTRA | ~12 lines, 1 cvar, 1 row | Low |
 | **Landing slow motion** (RSQ SlowMo, 4 s at its slowest) and the window's slow motion | StartArrival's SlowMo ask; `handler.zs` Tick2 `rsm_pulse` (150-161); `rsqmb_bf_slow`, `rsqmb_bf_slowest`, `rsqmb_slow_depth`; 3 rows | EXTRA | small | Low. The definition's 5-second LED count was built to match the slow motion bars |
 | **"Other Mods Treat It as a Boss"** rows: Boss Kill Rewards, Legendary Boss Health, Can't Be Yanked, Can't Be Headlocked, Can't Be Morphed, Map-wide Roar | `boss.zs` 433-475 (Flags, LogFlags, LDHealthDone), `handler.zs` 433-475 (LDBossHealth); `service.zs` "bossfor"; 6 cvars, 6 rows | EXTRA (owner 11-03). Roar and Morphed are off by default | Roar + Morphed: ~40 lines, 2 rows | Low for Roar and Morphed. The other four are read by other mods (VisualRewards, Grapple, Whip, Melee, Gun Bonsai, ShieldSaw): keep |
@@ -133,8 +137,8 @@ Each item gets one of these verdicts:
 | 1 | Old HUD stack (`hud.zs` 284-525 minus StackBoss/StackShown), `arrBeamSet`, dead CVARINFO notes | ~245 lines | None | - |
 | 2 | Watch check + Use call-in, gestcopy.zs, handsync.zs, `rsqmb_bf_callin` | ~500 lines, 2 handlers, 1 row | Low (check Tactical Rig's "callin" read) | Move `RSQMB_GPose.IsLeft` into bossfight.zs first |
 | 3 | Arrives By Itself and the guardrails, the wait line, Ignore Spawn Restrictions | ~150 lines, 8 cvars, 9 rows | Low | Step 2 (after it, only the card calls a fight in) |
-| 4 | Classic Pick at Level Load | ~140 lines, 4 cvars, 4 rows, README section | Low | - |
-| 5 | Miniboss's own gun/power-up drop | ~45 lines | Low | Confirm RSLD's legendary drop on the owner's load order |
+| 4 | **DONE 2026-11-12.** Classic Pick at Level Load | ~140 lines, 4 cvars, 4 rows, README section | Low | - |
+| 5 | **DONE 2026-11-12.** Miniboss's own gun/power-up drop | ~45 lines | Low | Confirm RSLD's legendary drop on the owner's load order |
 | 6 | Each extra in 3.3 the owner does not want (greed, Graves Rise, glow, tethers and flames, words and Xs, music, slow motion, Roar, Morphed, Tier From "Set", the off positions of Legendary Thralls and Inherit Powers) | owner's pick | see the table | Greed: Score's Rage Quit / Riot Control rows |
 
 After steps 1-5 the menu would keep: Minibosses, Meter Speed, Fills From, Inner-Wrist Card, Effects (if kept), Thralls,
@@ -151,8 +155,14 @@ Each step needs: build, then a rig run on the owner's load order with no new scr
   (`rsqmb_thralls`, MENUDEF "Thralls"). Rig runs bound 3 and 5. Nothing holds it to 3-5.
 - **"Thralls drop nothing"**: nothing in Miniboss stops a thrall's drops. Thralls are LegenDoom legendaries, and
   LegenDoom tosses a legendary drop when one dies (LEGENDMON.acs LDMonsterInit). BD22 VR's RSLD tells thralls from the
-  miniboss (`deathBoss`, "wasboss"). Whether thralls drop nothing on the owner's load order has not been checked here.
-- **"Refills cigarettes"**: done by RSQ Tactical Rig (README "Plays well with"), not by Miniboss. Not checked here.
-- **The inner-wrist card's header comment** (`bossfight.zs` 418-430) still says "either wrist"; the code is off-hand only.
+  miniboss (`deathBoss`, "wasboss"). **Seen on the rig (run `mbdrop1`, not changed):** RSLD takes each thrall's
+  legendary weapon away ("suppressed (a thrall's)"), but each thrall still drops Champions' bundle (health and armour
+  bonuses, clips), RSQ VisualRewards' Kill Rewards bits (1 to 7 a thrall) and Brutal Doom's own gun drop
+  (ChaingunSpawner from a zombie). So thralls do not drop nothing today.
+- **"Refills cigarettes"**: done by RSQ Tactical Rig (README "Plays well with"), not by Miniboss. **Shown on the rig
+  (run `mbdrop1`):** pocket 0, the miniboss killed, "cigarettes +3 (miniboss): 3 of 3". Tactical Rig's cigarettes
+  (`rsqtr_cig`) are OFF by default, so with default settings there is no pocket to refill.
+- **DONE 2026-11-12.** **The inner-wrist card's header comment** (`bossfight.zs` 418-430) still said "either wrist"; the code is
+  off-hand only. The comment now says the off-hand wrist.
 - **Tier swaps** now keep the Champion (this session, `carry.zs`). Not shown yet: a hybrid or mutated Champion carried,
   Champions' Dormant option on, and a save loaded in the tick between the old body's end and the new body's spawn.

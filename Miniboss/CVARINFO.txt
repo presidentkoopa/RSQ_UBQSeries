@@ -23,12 +23,9 @@ server int    rsqmb_bf_graves_mode = 0;     // Graves Rise Mode (owner 11-10): 0
 server float  rsqmb_bf_graves_radius = 1024; // ...that radius, map units (32 = 1 m)
 user   bool   rsqmb_bf_hud        = true;   // the meter on the HUD
 user   float  rsqmb_bf_hud_size   = 1.5;    // its size
-server bool   rsqmb_classic       = false;  // the old pick at level load (rsqmb_per_map, rsqmb_map_chance), off: Bossfights are called in
-server int    rsqmb_per_map       = 1;      // classic pick: minibosses chosen per level (0-4)
-server int    rsqmb_map_chance    = 100;    // classic pick: % chance a level gets any
 server int    rsqmb_thralls       = 3;      // thralls per miniboss (1-8)
-server int    rsqmb_radius        = 1024;   // how far from the miniboss a thrall may stand (map units)
-server bool   rsqmb_legend_thralls = true;  // with LegenDoom: every thrall is made legendary, classic pick and Bossfight alike (owner 11-10); off: a Bossfight's thralls get the plain health boost
+// CUT 2026-11-12 (owner): the classic pick at level load and its rsqmb_classic, rsqmb_per_map, rsqmb_map_chance, rsqmb_radius.
+server bool   rsqmb_legend_thralls = true;  // with LegenDoom: every thrall is made legendary (owner 11-10); off: a Bossfight's thralls get the plain health boost
 server bool   rsqmb_inherit       = true;   // the miniboss inherits its thralls' powers
 server int    rsqmb_inherit_max   = 5;      // most distinct powers inherited (legendary not counted)
 server int    rsqmb_lives         = 3;      // lives in all (3 = it dies on the third)

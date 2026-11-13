@@ -2,15 +2,8 @@
 // RSQ_Miniboss -- the set piece (an EventHandler: one per level, saved with it).
 //
 //   BOSSFIGHT  (owner 2026-11-05) the set piece is CALLED IN: bossfight.zs (the meter, the call-in, the arrival in
-//              view, the payoff). What follows under CHOOSING is the old pick at level load, kept behind
-//              rsqmb_classic ("Classic Pick at Level Load", Test and Debug, off).
-//   CHOOSING   At tic 10 (after LegenDoom Lite marks its legendaries, tic 1-2, and Champions' delayer,
-//              tic 3), rsqmb_per_map minibosses, picked from the strongest third of the level's
-//              monsters weighted by spawn health (never a BOSS-flagged one, a Dark Red or an Undying
-//              champion, whose own death tricks fight the lives), each with the rsqmb_thralls best
-//              monsters within rsqmb_radius (none stronger than it): champions first, then
-//              legendaries, then the nearest.
-//              Class names are never used, so it is the same on Doom's monsters and Brutal Doom's.
+//              view, the payoff), bound here (Bind). The old pick at level load ("Classic Pick at Level Load") was cut
+//              2026-11-12 (owner; design/MINIBOSS_CLEANUP_AUDIT.md 3.1 c): every miniboss is a called-in one.
 //   LEGENDARY  With LegenDoom Lite 4.2 or LegenDoom 3.0 (full) loaded and rsqmb_legend_thralls on, every thrall is made
 //              legendary with LegenDoom's own LDLegendaryMonsterPickupGuaranteed (by name; both ship it, with the same
 //              tokens and LDMonsterInit; 3.0's drop is a weapon, the LDL x BD22 VR patch's BD22 VR gun). A dormant
@@ -31,7 +24,7 @@ class RSQMB_Handler : EventHandler
 	const SELECT_AT = 10;
 
 	// ---- synced state (in the save) --------------------------------------------------------------
-	bool   chosen;
+	bool   chosen;          // unused since the classic pick was cut (2026-11-12); kept so old saves read the same
 	Array<RSQMB_Boss> bosses;
 	int    windowEnd, nextPulse;
 	int    rageCount;
@@ -109,7 +102,7 @@ class RSQMB_Handler : EventHandler
 		// a hub level entered again: the tiers this mod gave its monsters are put back (fight.zs TierReset; owner 07:15)
 		if (e.IsReopen) TierReset();
 		if (e.IsSaveGame || e.IsReopen) return;
-		chosen = false; bosses.Clear(); windowEnd = 0; nextPulse = 0; rageCount = 0; raged.Clear();
+		bosses.Clear(); windowEnd = 0; nextPulse = 0; rageCount = 0; raged.Clear();
 		bfScanned = false; bfCount = 0; bfLastTic = 0; bfAny = false; bfBoss = null; arrPhase = 0; arrQuiet = false; rerollAt = 0;
 	}
 
@@ -140,12 +133,6 @@ class RSQMB_Handler : EventHandler
 	{
 		int now = level.maptime;
 		if (!bfScanned && now >= SELECT_AT) BfScan();
-		if (!chosen && now >= SELECT_AT)
-		{
-			chosen = true;
-			// the old pick at level load: only with Classic Pick at Level Load on (off; Bossfights are called in)
-			if (CI('rsqmb_classic', 0) && random[rsqmb](1, 100) <= CI('rsqmb_map_chance', 100)) Choose(CI('rsqmb_per_map', 1));
-		}
 		if (bosses.Size() == 0) return;
 
 		// The slow window: SlowMo is asked again each second while it lasts (it keeps the longest hold).
@@ -174,101 +161,13 @@ class RSQMB_Handler : EventHandler
 		if (rageCount > 0 && fxOn && now % 8 == 0) RageFX();
 	}
 
-	// ---- choosing --------------------------------------------------------------------------------
+	// ---- who may be a set piece's type: a counting, hostile, non-player monster (bossfight.zs BfScan) -------------
 	static bool Eligible(Actor a)
 	{
 		return a && !a.player && a.bISMONSTER && a.bCOUNTKILL && !a.bFRIENDLY && a.health > 10
 			&& !a.FindInventory("RSQMB_Token", true) && !Has(a, "champion_CloneToken");
 	}
 
-	void Choose(int count)
-	{
-		if (count <= 0) return;
-		double t0 = MSTimeF();
-		Choose2(count);
-		if (debug) Console.Printf("RSQMB choose: %.3f ms (once)", MSTimeF() - t0);
-	}
-
-	private void Choose2(int count)
-	{
-		double radius = clamp(CI('rsqmb_radius', 1024), 256, 4096);
-		int want = clamp(CI('rsqmb_thralls', 3), 1, 8);
-
-		Array<Actor> mons;
-		let it = ThinkerIterator.Create("Actor");
-		Actor a;
-		while (a = Actor(it.Next())) if (Eligible(a)) mons.Push(a);
-
-		// Miniboss candidates, strongest first (insertion sort: once a level, a few hundred at most).
-		Array<Actor> cand;
-		for (int i = 0; i < mons.Size(); i++)
-		{
-			let m = mons[i];
-			if (m.bBOSS || Has(m, "champion_DarkRedToken") || Has(m, "champion_UndyingToken")) continue;
-			int k = cand.Size();
-			cand.Push(m);
-			while (k > 0 && cand[k - 1].SpawnHealth() < m.SpawnHealth()) { cand[k] = cand[k - 1]; k--; }
-			cand[k] = m;
-		}
-
-		Array<Actor> taken;
-		for (int placed = 0, tries = 0; placed < count && tries < 24 && cand.Size() > 0; tries++)
-		{
-			// From the strongest third, weighted by spawn health: a Baron among imps is nearly always it.
-			int pool = max(1, (cand.Size() + 2) / 3);
-			double sum = 0;
-			for (int k = 0; k < pool; k++) sum += max(1, cand[k].SpawnHealth());
-			double r = frandom[rsqmb](0, sum);
-			int pick = pool - 1;
-			for (int k = 0; k < pool; k++) { r -= max(1, cand[k].SpawnHealth()); if (r <= 0) { pick = k; break; } }
-			let mb = cand[pick];
-			cand.Delete(pick);
-			if (taken.Find(mb) < taken.Size() || TooClose(mb, radius * 1.5)) continue;
-			Array<Actor> th;
-			PickThralls(mb, mons, taken, radius, want, th);
-			if (th.Size() == 0) continue;
-			taken.Push(mb);
-			for (int k = 0; k < th.Size(); k++) taken.Push(th[k]);
-			Bind(mb, th);
-			placed++;
-		}
-	}
-
-	private bool TooClose(Actor mb, double dist)
-	{
-		for (int i = 0; i < bosses.Size(); i++)
-			if (bosses[i] && bosses[i].mb && !bosses[i].done && bosses[i].mb.Distance3D(mb) < dist) return true;
-		return false;
-	}
-
-	// Best first: a champion (+4), a legendary (+2), already transformed (+1); then the nearest.
-	private void PickThralls(Actor mb, Array<Actor> mons, Array<Actor> taken, double radius, int want, out Array<Actor> th)
-	{
-		Array<Actor> c;
-		Array<double> key;
-		for (int i = 0; i < mons.Size(); i++)
-		{
-			let m = mons[i];
-			if (m == mb || m.health <= 10 || taken.Find(m) < taken.Size()) continue;
-			if (m.SpawnHealth() > mb.SpawnHealth()) continue;     // a Baron never serves an imp
-			double d = mb.Distance3D(m);
-			if (d > radius) continue;
-			int score = 0;
-			if (m.FindInventory("RSQMB_Token", true)) continue;
-			let ct = InvClass(champTok);
-			if (ct && m.FindInventory(ct, true)) score += 4;
-			if (Has(m, "LDLegendaryMonsterToken")) score += 2;
-			if (Has(m, "LDLegendaryMonsterTransformed")) score += 1;
-			double k = score * 100000.0 - d;
-			int j = c.Size();
-			c.Push(m); key.Push(k);
-			while (j > 0 && key[j - 1] < k) { c[j] = c[j - 1]; key[j] = key[j - 1]; j--; }
-			c[j] = m; key[j] = k;
-		}
-		for (int i = 0; i < c.Size() && th.Size() < want; i++) th.Push(c[i]);
-	}
-
-	const champTok = "champion_Token";
 	static const Color PALETTE[] = { "FF3CC8", "40E0FF", "FFB020", "A060FF" };
 
 	void Bind(Actor mb, Array<Actor> th)
@@ -520,13 +419,11 @@ class RSQMB_Handler : EventHandler
 		FxBossDied(b);
 		FightDeath(b);     // fight.zs: the map-wide wave in its colour, then the re-roll
 		if (b.enraged) EndRage(b);
-		if (b.called) BfPayoff(b, killer);
-		if (b.called) SceneMusic(false);   // the fight is over: the level music crossfades back (bossfight.zs)
-		if (killer)
-		{
-			// one row, "Miniboss": 3x the kill for the called-in one, 1x for a map miniboss (owner 11-10: "one reward")
-			Award(killer, b.called ? "Miniboss Called" : "Miniboss", b.called ? 1500 : 500);
-		}
+		BfPayoff(b, killer);
+		SceneMusic(false);   // the fight is over: the level music crossfades back (bossfight.zs)
+		// one row, "Miniboss Called": 3x the kill (owner 11-10: "one reward"). Every miniboss is a called-in one now (the
+		// classic pick, which paid "Miniboss" at 1x, was cut 2026-11-12).
+		if (killer) Award(killer, "Miniboss Called", 1500);
 		if (debug) Console.Printf("RSQMB boss %d died (killer %s)%s rage %d", b.idx, killer ? "player" : "none", "", rageCount);
 	}
 
@@ -627,7 +524,6 @@ class RSQMB_Handler : EventHandler
 
 	// ---- console doors ----------------------------------------------------------------------
 	//   netevent rsqmb_state     prints every miniboss
-	//   netevent rsqmb_choose    picks minibosses again now (ignores the map chance)
 	//   netevent rsqmb_callin    calls a full Bossfight meter in (bossfight.zs CallIn)
 	//   netevent rsqmb_fill <permille>  sets the meter (test; 1000 = full now)
 	override void NetworkProcess(ConsoleEvent e)
@@ -640,7 +536,6 @@ class RSQMB_Handler : EventHandler
 			let m = MeterOf(players[e.Player].mo, true);
 			if (m) { m.ready = false; m.fill = clamp(e.Args[0], 0, 999); if (e.Args[0] >= 1000) Ready(m); }
 		}
-		else if (e.Name ~== "rsqmb_choose") { Refresh(); Choose(max(1, CI('rsqmb_per_map', 1))); PrintState(); }
 	}
 
 	void PrintState()

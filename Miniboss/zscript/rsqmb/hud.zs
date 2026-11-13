@@ -311,25 +311,15 @@ extend class RSQMB_Handler
 
 	static ui RSQMB_Handler HD() { return RSQMB_Handler(EventHandler.Find("RSQMB_Handler")); }
 
-	// whose stack is drawn once nothing is landing: the Bossfight's miniboss, else (owner 11-10: classic picks get the bars
-	// too) the nearest living classic-pick miniboss to this machine's player
+	// whose stack is drawn once nothing is landing: the called-in miniboss being fought (the classic pick's nearest-miniboss
+	// branch went with it, 2026-11-12)
 	static ui RSQMB_Boss StackBoss(RSQMB_Handler hd)
 	{
 		if (hd.bfBoss && !hd.bfBoss.done && hd.bfBoss.mb) return hd.bfBoss;
-		let pm = players[consoleplayer].mo;
-		RSQMB_Boss best = null;
-		double bd = 0;
-		for (int i = 0; i < hd.bosses.Size(); i++)
-		{
-			let o = hd.bosses[i];
-			if (!o || o.done || o.called || !o.mb || o.mb.health <= 0) continue;
-			double d = pm ? pm.Distance3D(o.mb) : 0;
-			if (!best || d < bd) { best = o; bd = d; }
-		}
-		return best;
+		return null;
 	}
 
-	// the Bossfight being fought now (landing or bound), or a classic pick's miniboss, for the stack
+	// the Bossfight being fought now (landing or bound), for the stack
 	static ui bool StackShown()
 	{
 		if (!BfOn() || UCv("rsqmb_bf_hud", 1) == 0) return false;

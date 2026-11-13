@@ -34,8 +34,8 @@ gets stronger.
   its colour gem and an icon for every Champion power it carries, its own and the ones it took from its thralls.
 - **Don't shoot it first.** Shoot it while its thralls live, and if a thrall is still standing a few seconds later, every
   monster on the map goes into a rage: twice as fast and twice as keen to attack, until the miniboss dies.
-- **When it dies.** A gun you don't have yet (or a power-up), a fountain of RSQ VisualRewards bits, RSQ Score's
-  Miniboss row.
+- **When it dies.** A legendary weapon (Brutal Doom 22 VR Reloaded's, of some rarity), a fountain of RSQ VisualRewards
+  bits, its Champion's own drops, your cigarette pocket refilled (RSQ Tactical Rig), RSQ Score's Miniboss row.
 
 ---
 
@@ -51,7 +51,7 @@ gets stronger.
 | Kill a thrall | The shield drops: a window of 1 s for each thrall it came with |
 | Hit the miniboss inside the window | The open piece of the shield bar drains; break it before the window ends |
 | Break every piece | One-on-one: its own bar takes the damage, life by life |
-| Kill it | A gun or power-up, bits and Score rows; the level's music comes back |
+| Kill it | A legendary weapon, bits, its Champion's drops, cigarettes and a Score row; the level's music comes back |
 
 **The watch check** comes from RSQ Accessibility (which carries what was RSQ Gestures). Without it, RSQ Gun Cards'
 copy or this mod's own copy does the same check, so the call-in always works.
@@ -280,18 +280,24 @@ or you leave the level, every monster is put back exactly as it was.
 
 ## The rewards
 
-**A miniboss fight's miniboss killed:**
+**The miniboss killed** (owner 2026-11-12: every drop is another mod's; this mod has no drop of its own):
 
-- **A drop:** a gun from the guns lying in this map that you don't have yet. If there is none (Brutal Doom's map
-  pickups are not guns until you touch them), a gun from your weapon slots no higher than one slot above your best;
-  otherwise a Megasphere, Soulsphere, Berserk or Blur Sphere.
-- **RSQ VisualRewards' Kill Rewards:** it counts as a boss, so it always drops bits, a boss's fountain of them.
-- **RSQ Score:** the **Miniboss** row at 3x the kill (a miniboss in the map pays it at 1x): one row, one reward.
+- **A legendary weapon** from Brutal Doom 22 VR Reloaded (its LegenDoom drop, RSLD): the miniboss's rarity is rolled
+  Common 50 / Uncommon 30 / Rare 15 / Epic 5 at the first tier, rarer ones more likely at higher tiers. It asks this mod
+  whether the monster came with a miniboss fight, the fight's tier and whether it was the miniboss ("bossfight", "tier",
+  "wasboss"). Its thralls' legendary weapons are taken away.
+- **Bits** from RSQ VisualRewards' Kill Rewards: with **Boss Kill Rewards** on it counts as a boss, so it always drops
+  bits, a boss's fountain of them.
+- **Its Champion's drops:** Champions' own item bundle (with Champions' **Spawn Item Bundles?** on, its default).
+- **Cigarettes:** RSQ Tactical Rig fills your cigarette pocket (with its cigarettes on and **Minibosses Refill
+  Cigarettes** on).
+- **RSQ Score:** the **Miniboss** row at 3x the kill: one row, one reward.
 - **A win counted** (it adds to the pick level under Tier From's "Set").
 
-*(The extra x3 bits and Score's life crate are gone for now: the drops will be balanced once the arcade systems are designed.)*
+*(The gun or power-up this mod used to drop was cut 2026-11-12: the legendary weapon is the drop. The extra x3 bits and
+Score's life crate went earlier: the drops will be balanced once the arcade systems are designed.)*
 
-**Any miniboss killed** scores RSQ Score's **Miniboss** row.
+*Rig only, not headset-confirmed (2026-11-12, run `mbdrop1`): see Status.*
 
 
 ---
@@ -313,22 +319,6 @@ heartbeat.
 
 ---
 
-## The classic pick
-
-The original Minibosses! way, kept off under Test and Debug. With **Classic Pick at Level Load** on, a moment after a
-level starts one miniboss (**Per Map**, up to 4, **Map Chance**) is picked from the strongest third of the level's own
-monsters, favouring the toughest, with up to **Thralls** monsters within **Thrall Range** of it, none stronger:
-Champions first, then legendaries, then the nearest. With LegenDoom and **Legendary Thralls** on, its thralls are made
-legendary. A classic miniboss fights by the same rules (the shield, the windows, the lives, greed, the tethers, the
-words) and shows the same HUD bars (the nearest one, when there are several), but it does not arrive boosted, has no
-room glow and none of the miniboss fight's extra drops.
-
-![A classic miniboss's HUD stack: the thrall row, the crowned skull with its bar and colour gem, two life bars](docs/readme/classic_pick_hud_stack.jpg)
-
-*A classic pick's HUD bars: the thrall row, the crowned skull with the miniboss's bar and its colour gem, two life bars under it (rig capture, not headset).*
-
----
-
 ## Plays well with
 
 Everything is asked by name: every mod still loads and plays alone, and the parts that need a missing mod simply don't
@@ -336,7 +326,7 @@ happen.
 
 - **RSQ Score:** its style points fill the meter, its lives can set the pick level, and the meter sits centred under its bar.
   Miniboss sends it the **Miniboss** and **Thrall Slow Kill** rows; Score values Miniboss as a share of the miniboss
-  kill's worth (3x for the one you called in, 1x for one in the map). Score also reads Miniboss for its own rows: **Chain Gang** (thralls
+  kill's worth (3x). Score also reads Miniboss for its own rows: **Chain Gang** (thralls
   killed in one window), **Rage Quit**, **Riot Control**, and combos that ask for a thrall
   or the miniboss.
 - **RSQ Monsters:** the colours, the colour changes on a missed window and on each life lost (with its flash), the
@@ -361,14 +351,14 @@ happen.
   its player level and your weapons' levels raise the arrival colours (the colour bonus).
 - **RSQ Accessibility and RSQ Gun Cards:** the watch check for the call-in (this mod carries its own copy too).
 - **RSQ Tactical Rig:** while a miniboss fight can be called, the watch check's Use press is the call-in's and the gun stays
-  put; killing a miniboss fills your cigarette pocket.
+  put; killing a miniboss fills your cigarette pocket (its cigarettes are off by default: Tactical Rig's own page).
 - **RSQ Grapple and RSQ Whip:** with **Can't Be Yanked** on, they refuse to yank or throw a miniboss: the line pulls you
   to it instead, as with a boss.
 - **RSQ Melee:** with **Can't Be Headlocked** on, its headlock refuses a miniboss.
 - **RSQ Graveyard and Legion of Bones:** Graves Rise, and the candles beating with the full meter.
 - **RSQ Accessibility:** Photosensitive Mode stills the meter's glint and edge, caps and dims its beat, holds the shield
   icon and the window bar still, and keeps the room's gold steady. Text Size grows the meter through Score's scale.
-- **Brutal Doom:** works on its monsters, and the drop knows its map pickups are not guns until touched.
+- **Brutal Doom:** works on its monsters.
 
 ---
 
@@ -385,8 +375,7 @@ is the host's.
 | Rules | Legendary Thralls (LegenDoom) · Tier-Up Hits the Whole Map · Tier Up Each Life · Inherit Powers · Greed Enrages Monsters · Score Awards |
 | Other Mods Treat It as a Boss | Boss Kill Rewards · Legendary Boss Health · Can't Be Yanked · Can't Be Headlocked · Can't Be Morphed (off) · Map-wide Roar (off) |
 | Test and Debug: Miniboss | Arrives By Itself (60 s; 0 only when called) · Map Start Wait (60 s) · Cooldown (90 s) · Per Map Cap (2) · Wait Under Health (40) · Wait Over Awake Monsters (3) · Nearest Arrival (384) · Farthest Arrival (1024) · Exit Distance (768) · Landing Slow Motion (4 s) · Landing At Slowest · Landing In The Dark · Miniboss Music · Score Style Fill (0.25) · Gun Bonsai XP Fill (0.2) · Score Per Tier (4000) · Show Meter · Meter Size (1.5) |
-| Test and Debug: Classic | Classic Pick at Level Load (off) · Per Map (1) · Map Chance (100) |
-| Test and Debug: Fight | Thrall Range (1024) · Power Cap (4) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own) · Rage Speed (2) · Effects Range (4000) |
+| Test and Debug: Fight | Power Cap (5) · Invulnerable (5 s) · Slow Depth (-1: SlowMo's own) · Rage Speed (2) · Effects Range (4000) |
 | Test and Debug | Debug Log (off) |
 
 The rows named Tier are of two kinds: **Tier From** and **Score Per Tier** set the pick level (which types come);
@@ -405,6 +394,7 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, run `mbdrop1`, the owner's full order with BD22 VR Reloaded 2.0.4q; probe `rig/work/mbprobe`) | **The miniboss's death drops** (a called-in fight, an RS_GreenImp miniboss with 5 thralls, killed by a probe as the player): BD22 VR Reloaded's legendary weapon ("RSLD drop: LDFistsPickupLegendary kept (the miniboss's)", "miniboss, tier 1, rolls Common", an `RSLD_LegendaryPickup` on the floor 43 units from the body); RSQ VisualRewards' boss fountain ("RS_GreenImp (64 hp, miniboss as boss) burst into 19 bits": 2 health, 7 armour, 10 ammo bits); Champions' bundle (a `champion_Bundle` at the body: 5 health bonuses, 3 armour bonuses); RSQ Tactical Rig's refill (pocket set to 0 first, then "cigarettes +3 (miniboss): 3 of 3"; with its cigarettes switched on for the run, they are off by default); RSQ Score's "Miniboss Called" row. No drop of this mod's own ("no drop of its own"). **The classic pick is gone:** with the old `rsqmb_classic 1`, `rsqmb_per_map 4`, `rsqmb_map_chance 100` set and the map loaded again, no miniboss at load and none after `netevent rsqmb_choose`; the engine's own copy of the two menus has no Classic, Per Map, Map Chance or Thrall Range row. No script error from the pack (only BD_VoxelPack's four voxeldef errors). Seen, not changed: the **thralls** still drop Champions' bundles, Kill Rewards bits and Brutal Doom's gun drops (their legendary weapons are taken away). Not shown: a save from before the cut loaded |
 | **rig only, not headset-confirmed** (2026-11-12, runs `mbkeep0` before, `mbkeep5` after; probe `rig/work/mbprobe`) | A colour change keeps the miniboss and its thralls boosted legendary Champions. Before: each new body lost its Champion's controller (a Dark Green miniboss came back with a random Violet, a Black thrall came back plain or Pink) and was no longer risen. After: the miniboss stayed Indigo through four body swaps (three missed windows and a life lost) and a Bronze thrall through two, each with exactly one Champions controller of its own colour, `LDLegendaryMonsterTransformed` (risen again in 2 tics), and its share of health (0.85 and 0.41 of the new body's full). Map monsters swapped by the same windows were not touched: Champions' Override Chance stayed -1 and the only champions among them were Champions' own single rolls (10 of 19 in `mbkeep5`, 4 of 19 in the earlier `mbkeep3`, 6 of 19 before in `mbkeep0`). No script errors from the pack. Not shown: a hybrid or mutated Champion carried, Champions' Dormant option on, a save loaded mid-swap |
 | **rig only, not headset-confirmed** (2026-11-12, run `force1`, Champions' Legendoom Compatibility OFF) | Every monster of the encounter a real Champion (all four carry Champions' own record): thralls Green, Indigo, Violet after two repeats landed again; each beam in its Champion colour; Champions' Override Chance back to its own -1 after the landing |
 | **rig only, not headset-confirmed** (2026-11-12, runs `rise4`, `rise5`) | Miniboss and every thrall arrive already risen: LegenDoom's own rise (healed, stat boost, `LDLegendaryMonsterTransformed`, so Champions boosts them too) happens during the 3-second charge, 10 of 10 thralls and both minibosses risen; extra health (Champions' Red, our boost) given back after; no script errors from the pack |
@@ -421,11 +411,11 @@ are in map units (32 to a metre).
 | **rig only, not headset-confirmed** (2026-11-11, the colour bonus in the strength order, run before the owner's "no rig test" order: `design/rigtest_2026-11-10/RESULTS_MBTIER.md` part 3) | A called-in fight on MAP01 with the levels set by a test probe; the debug line and each arriving monster's colour from RSQ Monsters agree: weapons 30 + 30 (+15 steps) stopped the thralls at Abyss and raised the miniboss (player level 0) from Green to Black, one step above; player level 10 took the miniboss from Green to Black, 20 to White; with RSQ Monsters' EX setting on Always, Black came out as the imp's EX form; weapons 4 + 2 (1.5) gave the thralls +2 (Common to Blue) and player level 3 took the miniboss from Green to Cyan (`MB_TIER2_*`) |
 | **code only, not shown** (2026-11-11, the ladder renumbered by strength; owner: "no rig test, code only until i say") | The colour bonus on RSQ Monsters' new numbers (no separate strength list); the tier-ups in a fight climbing in strength (a missed window, a life lost, the whole map); the ladder colours and tier gems (RSQMBG01-13) in the new order; an EX miniboss going up a colour when it loses a life (RSQ Monsters now finds an EX body's family; a Black EX goes to White). The rig run above was on the old numbers with the old strength list |
 | **code only, not shown** (2026-11-11, after the owner's "no rig test" order) | An EX miniboss lands in Black's colour (in the run above it read no colour on its landing tic and took the pink fallback); the EX roll only for a boss colour this mod gave; earlier: player level 3, weapons 3 + 2 = 5 (1.25) gave +1 and without Gun Bonsai VR there is no bonus (shown for the first version, `MB_TIER_*`, same code paths) |
-| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch, P3: `design/rigtest_2026-11-10/RESULTS_P3.md`, on rig02) | **B1:** a landing blocked on purpose tried again quietly and landed on its third try, with one slow motion, one music start and one darkness drop across the three (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **B2:** during the landing the life bars count an inherited life (3 bars; 2 without it) (`P3_B2_landing_life_bars.jpg`, `P3C_log.txt`). **B3:** the classic pick shows the HUD bars (`P3_B3_classic_stack.jpg`). **B4:** Legendary Thralls off: no thrall and not the miniboss legendary, each thrall at 1.5x health; on: all legendary. Run with LegenDoom 3.0 added, which is not in the owner's order (`P3D_log.txt`). **B5:** Graves Rise in all four modes, each with the count it should give (`P3A_log.txt`). **B6:** the kill drops a gun and pays "Miniboss Called", no life crate, and Kill Rewards' bits are not tripled again (`P3A_log.txt`). **A bug found, then fixed and shown:** a Bossfight's first landing often failed and landed again with nothing in the way (a thrall pushed aside on a diagonal still overlapped the miniboss); fixed (commit 2c390a65); after, 7 of 7 landings landed on the first try (`P3C_log.txt`, `P3D_log.txt`) |
+| **rig only, not headset-confirmed** (2026-11-10 night, the packed batch, P3: `design/rigtest_2026-11-10/RESULTS_P3.md`, on rig02) | **B1:** a landing blocked on purpose tried again quietly and landed on its third try, with one slow motion, one music start and one darkness drop across the three (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **B2:** during the landing the life bars count an inherited life (3 bars; 2 without it) (`P3_B2_landing_life_bars.jpg`, `P3C_log.txt`). **B3:** the classic pick shows the HUD bars (`P3_B3_classic_stack.jpg`; the classic pick was cut 2026-11-12). **B4:** Legendary Thralls off: no thrall and not the miniboss legendary, each thrall at 1.5x health; on: all legendary. Run with LegenDoom 3.0 added, which is not in the owner's order (`P3D_log.txt`). **B5:** Graves Rise in all four modes, each with the count it should give (`P3A_log.txt`). **B6:** the kill drops a gun (this mod's own drop, cut 2026-11-12) and pays "Miniboss Called", no life crate, and Kill Rewards' bits are not tripled again (`P3A_log.txt`). **A bug found, then fixed and shown:** a Bossfight's first landing often failed and landed again with nothing in the way (a thrall pushed aside on a diagonal still overlapped the miniboss); fixed (commit 2c390a65); after, 7 of 7 landings landed on the first try (`P3C_log.txt`, `P3D_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test: `design/rigtest_2026-11-10/RESULTS.md` and `evidence/`) | The rename: the menus read Minibosses, Miniboss Meter Fills From and Other Mods Treat It as a Boss (`B7_miniboss_menu.jpg`); RSQ SlowMo's landing line MINIBOSS INCOMING, and the called-in kill paying one Score row, "Miniboss Called" (`L1_log.txt`). The HUD stack: the thrall bar, the miniboss's bar with its tier gem and Champion icon on its right, three life bars (`B8_stack_before_shield_removed.png`; the shield icon in that frame was taken off the HUD afterwards). "GUARD!" on a shielded hit and during the invulnerability after a life is lost, "TARGET!" over the miniboss while it can be shot and gone when a life is lost, following it into a new body (`L5_log.txt`). Graves Rise Mode greyed with Graves Rise off (`menus_new_rows.jpg`). The fight was called in by console command in these runs, not by the watch check. Zero script errors from our packs on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series |
 | **rig only, not headset-confirmed** (2026-11-09, logs and a frame sheet from a test probe: `TestRig/bossfight_rig/evidence_2026-11-09`) | The reworked fight, called in, with RSQ Monsters: three thralls landing one by one on V2 beams and the miniboss on a V4 beam; three segments; a shot on the shield doing no damage; a thrall kill opening a three-second window; the window missed and +3 tiers asked on 11 monsters map-wide, with the swapped bodies found again; a hit in the window breaking a segment; two lives lost, each refilled with five seconds of invulnerability and +1 tier; the death and its drop. Run twice: ColorfulHell monsters, and (since removed) a MeatGrinder miniboss with ColorfulHell thralls through Miniboss From / Thralls From. The same day the reworked pack loaded on the series' load order with no script error from it (miniboss fights off in those runs) |
-| **rig only, not headset-confirmed** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up); the miniboss fight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a miniboss fight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a miniboss fight runs |
-| **rig only, not headset-confirmed, before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
+| **rig only, not headset-confirmed** (2026-11-05, logs; flat and a VR eye) | The meter filling from kills, chains and Score's style; full; called in by the watch check (this mod's own copy) and Use; arriving by itself 60 s after full; waiting on Low Health with its line drawn under the meter; a spot found in view; the drop (a map gun, the weapon-slot fallback, a power-up; cut 2026-11-12); the miniboss fight and Miniboss rows reaching Score; the bits fountain; legendary weapons only from a miniboss fight (with Brutal Doom 22 VR's LegenDoom patch); the meter's look, red and gold, its band and glint, Photosensitive Mode's look, its place under Score's bar, and hiding while a miniboss fight runs |
+| **rig only, not headset-confirmed, before the 11-09 rework** (2026-11-03 and 11-04, logs) | The Counts as a Boss rows: Map-wide Roar and Can't Be Morphed, Boss Kill Rewards, Legendary Boss Health (LegenDoom Lite 4.2 and LegenDoom 3.0), Can't Be Yanked (Grapple and Whip), Can't Be Headlocked; the classic pick (cut 2026-11-12) with Champions and LegenDoom: legendary thralls and inherited powers; greed enraging every monster on the map (its timing has changed since) |
 | **Headset-confirmed** | Nothing yet |
 | **code only, not shown** | Everything else on this page, among it: the grey Xs and the pops, the Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music beyond the log lines above, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the tethers and flames since the rework, the rage since the rework, the hub colour reset |
 | **not yet run** | Nothing from the batched rig test: B1 to B8 have run (above) |
@@ -452,7 +442,7 @@ are in map units (32 to a metre).
   sprites are missing, plain particles stand in. The HUD bars are quads cropped from their art, with no clip rectangle
   and no screen dim (neither shows on the VR HUD).
 - **Console:** `netevent rsqmb_state` prints every miniboss and the meter; `netevent rsqmb_fill 1000` fills the meter;
-  `netevent rsqmb_callin` calls a full meter in; `netevent rsqmb_choose` runs the classic pick now. **Debug Log**
+  `netevent rsqmb_callin` calls a full meter in. **Debug Log**
   prints every rule as it fires.
 - **For other mods:** `RSQMB_Service` answers `miniboss`, `thrall`, `wasboss`, `enraged`, `lives`, `invulnerable`,
   `shield`, `segments`, `shielded`, `greed`, `window`, `living`, `legendary`, `colour`, `bossfor` (`rewards`,

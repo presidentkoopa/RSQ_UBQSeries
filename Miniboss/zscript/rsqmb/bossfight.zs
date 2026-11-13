@@ -1,6 +1,6 @@
 // ============================================================================
-// RSQ_Miniboss -- BOSSFIGHT (owner 2026-11-05): the miniboss is CALLED IN, never picked at level load (the old pick is
-// "Classic Pick at Level Load" in Test and Debug, off).
+// RSQ_Miniboss -- BOSSFIGHT (owner 2026-11-05): the miniboss is CALLED IN, never picked at level load (the old pick,
+// "Classic Pick at Level Load", was cut 2026-11-12).
 //
 //   THE METER  0..1000, kept on the player (RSQMB_Meter: it rides the save and the next map). It fills from
 //              RSQ Score's style points (each kill's style bonuses and combos, read by name: RS_ScoreService
@@ -40,8 +40,11 @@
 //              and Doom's teleport sound. BIND_TICS after the last one landed (Champions has dressed them) they are bound
 //              as a set piece (handler.zs Bind: segments, shield, lives, greed, colours, FX, Boss Kill Rewards, LegenDoom /
 //              Champions inheritance; fight.zs runs the fight).
-//   PAYOFF     its miniboss killed: a guaranteed drop (a gun from this map's weapon types you don't have, else a power-up),
-//              RSQ VisualRewards' boss bits (it counts as a boss) and RSQ Score's "Bossfight" row (BfPayoff).
+//   PAYOFF     its miniboss killed: a win counted (BfPayoff) and RSQ Score's "Miniboss Called" row (handler.zs BossDied).
+//              The drops are other mods' (owner 2026-11-12): BD22 VR Reloaded's RSLD legendary weapon (50/30/15/5, it asks
+//              this mod's service "bossfight" / "tier" / "wasboss"), RSQ VisualRewards' boss bits (it counts as a boss),
+//              Champions' own bundle and RSQ Tactical Rig's cigarette refill ("wasboss"). This mod's own gun / power-up
+//              drop was cut 2026-11-12 (design/MINIBOSS_CLEANUP_AUDIT.md 3.3).
 // Rig only, not headset-confirmed.
 // ============================================================================
 
@@ -99,7 +102,7 @@ extend class RSQMB_Handler
 	Array<int>    rosterHP;
 	Array<double> spX, spY, spZ;  // monster start spots (at most 400)
 	Array<double> exX, exY;       // exit lines' middles
-	Array<String> mapWeapons;     // weapon types lying in the map
+	Array<String> mapWeapons;     // unused since this mod's own drop was cut (2026-11-12); kept so old saves read the same
 
 	// ---- the Bossfight now (in the save) ----------------------------------------------------------------------------
 	int    bfCount;               // Bossfights this map
@@ -149,12 +152,6 @@ extend class RSQMB_Handler
 		Actor a;
 		while (a = Actor(it.Next()))
 		{
-			let w = Weapon(a);
-			if (w)
-			{
-				if (!w.Owner && mapWeapons.Find(w.GetClassName()) == mapWeapons.Size()) mapWeapons.Push(w.GetClassName());
-				continue;
-			}
 			if (!Eligible(a) || a.bBOSS || Has(a, "champion_DarkRedToken") || Has(a, "champion_UndyingToken")) continue;
 			// never Wolfenstein's SS soldier or whatever stands in for it (owner 11-12 14:11: "one of them is a ss soldier?")
 			class<Actor> rpl = Actor.GetReplacee(a.GetClass());
@@ -179,7 +176,7 @@ extend class RSQMB_Handler
 		{
 			String r = "";
 			for (int i = 0; i < rosterCls.Size(); i++) r = r .. (i ? ", " : "") .. rosterCls[i] .. " " .. rosterHP[i];
-			Console.Printf("RSQMB bossfight scan: %d types [%s], %d spots, %d exits, %d weapon types", rosterCls.Size(), r, spX.Size(), exX.Size(), mapWeapons.Size());
+			Console.Printf("RSQMB bossfight scan: %d types [%s], %d spots, %d exits", rosterCls.Size(), r, spX.Size(), exX.Size());
 		}
 	}
 
@@ -411,7 +408,7 @@ extend class RSQMB_Handler
 	// ---- THE INNER-WRIST CARD (owner 2026-11-12 05:06: "We need an mainhand / offhand inner watch card (inside of wrist)
 	// that was Start (icon) Fight? So when we offhand inner wrist check we can Use to call in miniboss fight. current call
 	// in method does not work. And the icon will be our Miniboss icon, for now") ---------------------------------------
-	// Turn the INSIDE of either wrist to your face and look at it: a card stands over it, START (the crowned skull)
+	// Turn the INSIDE of the OFF-HAND wrist to your face and look at it (the off hand only, owner 11-12 15:54; WristCard): a card stands over it, START (the crowned skull)
 	// FIGHT? in gold once the METER IS FULL (and no Bossfight is running or on its way), FIGHT (skull) NOT READY in
 	// grey until then. With the gold card up, Use calls the Bossfight in at once and no guardrail holds it back (owner
 	// 05:37; the meter still decides when, 05:44). The watch check + Use stays, with the meter and the rules as before. The pose: the inner wrist's face within 60 degrees of square to your eyes (the back-of-wrist watch
@@ -1325,65 +1322,19 @@ extend class RSQMB_Handler
 		}
 	}
 	// ---- the payoff -------------------------------------------------------------------------------------------------------
+	// A win counted. The drops are other mods' (bossfight.zs top, PAYOFF); this mod's own gun / power-up drop was cut
+	// 2026-11-12 (owner).
 	void BfPayoff(RSQMB_Boss b, Actor killer)
 	{
 		bfLastTic = level.maptime;
 		if (bfBoss == b) bfBoss = null;
-		Actor who = killer;
-		if (!who) who = players[consoleplayer].mo;
 		if (killer)
 		{
-			// (its Score row is the one "Miniboss" row at 3x, sent by BossDied: owner 11-10, "one reward")
+			// (its Score row is the one "Miniboss Called" row at 3x, sent by BossDied: owner 11-10, "one reward")
 			let m = MeterOf(killer, true);
 			if (m) m.beaten++;
 		}
-		// (the x3 boss bits and Score's life crate went 11-10, owner: balanced later with the arcade systems)
-		Actor at = b.mb ? b.mb : who;
-		if (at) Drop(at, who);
-	}
-
-	// A gun from this map's weapon types the player doesn't have; else (a mod whose map pickups are not Weapons until
-	// touched, as Brutal Doom's, rig 11-05: 0 weapon types) one from the player's weapon slots, no higher than one slot above
-	// the best gun held; else a power-up.
-	void Drop(Actor at, Actor who)
-	{
-		let it = ThinkerIterator.Create("Weapon");
-		Weapon w;
-		while (w = Weapon(it.Next())) if (!w.Owner && mapWeapons.Find(w.GetClassName()) == mapWeapons.Size()) mapWeapons.Push(w.GetClassName());
-		Array<String> can;
-		for (int i = 0; i < mapWeapons.Size(); i++)
-		{
-			class<Weapon> c = mapWeapons[i];
-			if (c && !(who && who.FindInventory(c))) can.Push(mapWeapons[i]);
-		}
-		if (can.Size() == 0 && who && who.player)
-		{
-			let ws = who.player.weapons;
-			int top = 0;
-			for (int sl = 1; sl <= 9; sl++)
-				for (int k = 0; k < ws.SlotSize(sl); k++) { class<Weapon> c = ws.GetWeapon(sl, k); if (c && who.FindInventory(c)) top = max(top, sl); }
-			for (int sl = 2; sl <= min(9, top + 1); sl++)
-				for (int k = 0; k < ws.SlotSize(sl); k++)
-				{
-					class<Weapon> c = ws.GetWeapon(sl, k);
-					// not the engine's ID24 extras (QZD 17.3 lists ID24Incinerator / ID24CalamityBlade in Doom's slots: rig 11-05)
-					String cn = c ? c.GetClassName() .. "" : "";
-					if (c && !who.FindInventory(c) && !GetDefaultByType(c).bCHEATNOTWEAPON && cn.Left(4) != "ID24") can.Push(cn);
-				}
-		}
-		static const String POWER[] = { "Megasphere", "Soulsphere", "Berserk", "BlurSphere" };
-		String pick;
-		bool weap = can.Size() > 0;
-		if (weap) pick = can[random[rsqmbbf](0, can.Size() - 1)];
-		else pick = POWER[random[rsqmbbf](0, POWER.Size() - 1)];
-		class<Actor> c = pick;
-		let d = c ? Actor.Spawn(c, at.pos + (0, 0, at.height * 0.5), weap ? NO_REPLACE : ALLOW_REPLACE) : null;
-		if (d)
-		{
-			d.vel = (frandom[rsqmbbf](-2, 2), frandom[rsqmbbf](-2, 2), 6);
-			d.A_StartSound("misc/w_pkup", CHAN_AUTO, 0, 0.6);
-		}
-		if (debug) Console.Printf("RSQMB bossfight drop: %s %s (%d guns not owned of %d map types)", weap ? "gun" : "power-up", d ? d.GetClassName() : 'none', can.Size(), mapWeapons.Size());
+		if (debug) Console.Printf("RSQMB bossfight payoff: win counted (killer %s); no drop of its own", killer ? "player" : "none");
 	}
 
 	// ---- for the console (netevent) ----------------------------------------------------------------------------------
@@ -1391,9 +1342,9 @@ extend class RSQMB_Handler
 	{
 		let p = players[consoleplayer].mo;
 		let m = MeterOf(p);
-		Console.Printf("RSQMB bossfight: meter %.0f ready %d called %d won %d | map count %d active %d arriving %d waits \"%s\" | %d types %d spots %d exits %d weapons",
+		Console.Printf("RSQMB bossfight: meter %.0f ready %d called %d won %d | map count %d active %d arriving %d waits \"%s\" | %d types %d spots %d exits",
 			m ? m.fill : -1.0, m && m.ready, m && m.called, m ? m.beaten : 0, bfCount, bfBoss && !bfBoss.done, arrPhase, bfWhy,
-			rosterCls.Size(), spX.Size(), exX.Size(), mapWeapons.Size());
+			rosterCls.Size(), spX.Size(), exX.Size());
 	}
 }
 

@@ -118,13 +118,7 @@ OptionMenu "RSQMB_Test"
 	Option "Show Meter", "rsqmb_bf_hud", "OnOff"
 	Slider "Meter Size", "rsqmb_bf_hud_size", 0.5, 2.5, 0.1, 1
 	StaticText " "
-	StaticText "Classic", 1
-	Option "Classic Pick at Level Load", "rsqmb_classic", "OnOff"
-	Slider "Per Map", "rsqmb_per_map", 0, 4, 1, 0
-	Slider "Map Chance", "rsqmb_map_chance", 0, 100, 5, 0
-	StaticText " "
 	StaticText "Fight", 1
-	Slider "Thrall Range", "rsqmb_radius", 256, 4096, 128, 0
 	Slider "Power Cap", "rsqmb_inherit_max", 0, 12, 1, 0
 	Slider "Invulnerable (s)", "rsqmb_invuln", 0, 15, 0.5, 1
 	Slider "Slow Depth", "rsqmb_slow_depth", -1, 90, 5, 0

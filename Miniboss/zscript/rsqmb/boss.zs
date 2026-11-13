@@ -182,7 +182,7 @@ class RSQMB_Boss : Thinker
 	bool   done, enraged, greedArmed;
 	int    greedDeadline;
 	int    diedAt;               // the tic it died (Boss Kill Rewards counts a just-killed miniboss)
-	bool   called;               // a Bossfight (called in, bossfight.zs), not the classic pick
+	bool   called;               // a Bossfight (called in, bossfight.zs): every miniboss since the classic pick was cut (2026-11-12); kept for old saves and the service's "tier"
 	int    tier;                 // the Bossfight's tier, 0..4
 	// THE ICONS BESIDE ITS BAR (owner 11-10, design/icons style B; hud.zs DrawStack): read every half second in play
 	int    ladder;               // RSQ Monsters' tier of the miniboss's body, 1..13 (its RSQMN_RosterService "tier"), 0 none
@@ -393,12 +393,9 @@ class RSQMB_Boss : Thinker
 			ownFullSee = a.bFULLVOLSEE; ownFullDeath = a.bFULLVOLDEATH; ownDontMorph = a.bDONTMORPH;
 			roarSet = false; noMorphSet = false;
 			if (lives > 1) a.bBUDDHA = true;
-			if (called)
-			{
-				a.A_SetScale(a.Scale.X * RSQMB_Handler.MB_SCALE, a.Scale.Y * RSQMB_Handler.MB_SCALE);
-				a.A_SetSize(a.radius * RSQMB_Handler.MB_SCALE, a.height * RSQMB_Handler.MB_SCALE, false);
-				RSQMB_Handler.Aggressive(a);
-			}
+			a.A_SetScale(a.Scale.X * RSQMB_Handler.MB_SCALE, a.Scale.Y * RSQMB_Handler.MB_SCALE);
+			a.A_SetSize(a.radius * RSQMB_Handler.MB_SCALE, a.height * RSQMB_Handler.MB_SCALE, false);
+			RSQMB_Handler.Aggressive(a);
 			maxHP = max(1, a.health);
 			for (int k = 0; k < powers.Size(); k++)
 			{
@@ -413,15 +410,13 @@ class RSQMB_Boss : Thinker
 			thr[role] = a;
 			let tok = RSQMB_Thrall(a.GiveInventoryType("RSQMB_Thrall"));
 			if (tok) tok.boss = self;
-			if (called) a.A_SetScale(a.Scale.X * RSQMB_Handler.TH_SCALE, a.Scale.Y * RSQMB_Handler.TH_SCALE);
+			a.A_SetScale(a.Scale.X * RSQMB_Handler.TH_SCALE, a.Scale.Y * RSQMB_Handler.TH_SCALE);
 		}
-		if (called)
-		{
-			int rgb = h ? h.ColourOf(a, idx) : (int(col) & 0xFFFFFF);
-			a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255),
-				int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
-			a.bBRIGHT = true;
-		}
+		// boosted again (every miniboss is a called-in one since the classic pick was cut, 2026-11-12)
+		int rgb = h ? h.ColourOf(a, idx) : (int(col) & 0xFFFFFF);
+		a.A_AttachLight('RSQMB_Boost', DynamicLight.PointLight, Color(255, (rgb >> 16) & 255, (rgb >> 8) & 255, rgb & 255),
+			int(max(64, a.radius * 3)), 0, 0, (0, 0, a.Height * 0.6));
+		a.bBRIGHT = true;
 		wordState = -9;
 		glowSent = -1;
 	}

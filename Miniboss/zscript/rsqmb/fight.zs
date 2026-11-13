@@ -30,7 +30,7 @@
 //                   flash (Tier Up Each Life, rsqmb_tier_life, ON, owner 07:28); the room glows red, then its new colour
 //                   (owner 08:53). NO THRALLS RISE (owner 08:14: the original's revive is gone).
 //   ITS DEATH       a map-wide wave in its colour (RSQGD "event.wave"), then RSQ Glow In The Dark's colours re-roll
-//                   (RSQGD "event.reroll", 2 s later); the loot and Score's rows as before (bossfight.zs BfPayoff).
+//                   (RSQGD "event.reroll", 2 s later); Score's row as before (handler.zs BossDied; the loot is other mods', bossfight.zs BfPayoff).
 //   MINIBOSS TIERS  every tier this mod gave is put back when a hub level is entered again (WorldLoaded IsReopen); on any
 //                   other map change the monsters are gone with their map. Tiers from RSQ Score or Gun Bonsai VR are theirs.
 // Everything is asked BY NAME (nothing links): RSQVR_Service (words, pops, beams), RSQSM_Service (arrows, the landing slow),
@@ -144,7 +144,7 @@ extend class RSQMB_Handler
 			if (!b || b.done || !b.mb) continue;
 			WindowStep(b);
 			WordsStep(b);
-			if (b.called) RoomGlow(b);
+			RoomGlow(b);
 		}
 	}
 
@@ -466,7 +466,7 @@ extend class RSQMB_Handler
 	void FightDeath(RSQMB_Boss b)
 	{
 		if (b.mb) Wave(b.mb, int(b.col) & 0xFFFFFF);
-		if (b.called) rerollAt = level.maptime + 2 * TICRATE;
+		rerollAt = level.maptime + 2 * TICRATE;
 		for (int i = 0; i < b.thr.Size(); i++) if (b.thr[i]) WordClear("TARGET!", b.thr[i]);
 	}
 
