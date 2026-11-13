@@ -871,7 +871,7 @@ class RS_WDRock2 : Actor   // CH Demons.txt:2577 -- the lobbed boulder
 		JUBD DDDDDDD 0 A_CustomMissile("RS_WDRock4",random(-1,12),random(-12,12),random(0,360),CMF_OFFSETPITCH|CMF_ABSOLUTEPITCH|CMF_ABSOLUTEANGLE,random(0,360));
 		JUBD DDD 0 A_CustomMissile("RS_WDRock3",random(-1,12),random(-12,12),random(0,360),CMF_OFFSETPITCH|CMF_ABSOLUTEPITCH|CMF_ABSOLUTEANGLE,random(0,360));
 		JUBD DDDDDDD 0 A_CustomMissile("RS_WDRock4",random(-1,12),random(-12,12),random(0,360),CMF_OFFSETPITCH|CMF_ABSOLUTEPITCH|CMF_ABSOLUTEANGLE,random(0,360));
-		JUBD D 1 Bright Radius_Quake(40,60,0,40,0);
+		JUBD D 1 Bright { Radius_Quake(40,60,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		Stop;
 	}
 }

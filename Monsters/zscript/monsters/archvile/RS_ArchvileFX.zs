@@ -1070,7 +1070,7 @@ class RS_PsychicTangleAbyVile : Actor   // CH Archviles.txt:1548
 	Death:
 		TNT1 A 0;
 		TNT1 A 0 A_Explode(1,32);
-		TNT1 A 0 Radius_Quake(9,9,0,30,0);
+		TNT1 A 0 { Radius_Quake(9,9,0,30,0); RSQMN_QuakeFeel.Felt(self, 30 * 64); }
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssShotIdentifier",0,0,0,random(1,7),0,random(1,5),random(0,359),SXF_TRANSFERTRANSLATION|SXF_NOCHECKPOSITION);
 		SPIR ABCDE 1 Bright A_SpawnItemEx("RS_PsychicTangleAbyVile2",random(1,8),random(-12,12),random(0,3),0,0,0,0,SXF_NOCHECKPOSITION);
 		SPIR ABCDEABCDE 1 Bright A_SpawnItemEx("RS_PsychicTangleAbyVile2",random(-12,12),random(-28,28),random(0,12),0,0,0,0,SXF_NOCHECKPOSITION);
@@ -2504,11 +2504,11 @@ class RS_WVilequake : Actor   // CH Archviles.txt:4669
 		TNT1 A 0;
 		Goto Death;
 	Death:
-		TNT1 A 20 Bright Radius_Quake(180,90,0,900,0);
+		TNT1 A 20 Bright { Radius_Quake(180,90,0,900,0); RSQMN_QuakeFeel.Felt(self, 900 * 64); }
 		TNT1 A 0 A_VileTarget("RS_BrightUpVile");
-		TNT1 A 20 Bright Radius_Quake(280,90,0,1200,0);
+		TNT1 A 20 Bright { Radius_Quake(280,90,0,1200,0); RSQMN_QuakeFeel.Felt(self, 1200 * 64); }
 		TNT1 A 0 A_VileTarget("RS_BrightUpVile");
-		TNT1 A 20 Bright Radius_Quake(300,90,0,3000,0);
+		TNT1 A 20 Bright { Radius_Quake(300,90,0,3000,0); RSQMN_QuakeFeel.Felt(self, 3000 * 64); }
 		TNT1 A 0 A_VileTarget("RS_BrightUpVile");
 		Stop;
 	}

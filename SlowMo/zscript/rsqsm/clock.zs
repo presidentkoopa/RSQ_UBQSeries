@@ -2095,7 +2095,7 @@ class RSQSM_Clock : EventHandler
 				int wait = (mode == 0 ? 20 : 60) * TICRATE;
 				if (now - hhLast < wait) { Log("heavyhit", String.Format("refused: its own cooldown (Once per %d s), %.1f s left (%s)", mode == 0 ? 20 : 60, (hhLast + wait - now) / double(TICRATE), what)); continue; }
 			}
-			Log("heavyhit", String.Format("heavy hit qualifies, cause line \"%s\" (%s)%s", cause, what, fight ? ", Bossfight on: no cooldown" : ""));
+			Log("heavyhit", String.Format("heavy hit qualifies, cause line \"%s\" (%s)%s", cause, what, fight ? ", miniboss fight on: no cooldown" : ""));
 			if (Trigger("heavyhit", CAT_HEAVY, HH_MS, Depth(), true, n, cause, mode == 2 && !fight)) hhLast = now;
 		}
 	}

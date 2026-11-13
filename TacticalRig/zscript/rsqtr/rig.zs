@@ -2004,7 +2004,7 @@ class RSQTR_Rig : EventHandler
 		// gun stays; otherwise (no Miniboss, the meter not full) the press is ours as before.
 		if (BossfightCallReady(pmo))
 		{
-			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG watch move hand %d t%d: skipped, the press calls the Bossfight in (RSQ Miniboss)", h, level.maptime);
+			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_RIG watch move hand %d t%d: skipped, the press calls the miniboss fight in (RSQ Miniboss)", h, level.maptime);
 			watchTic[0] = 0; watchTic[1] = 0;
 			return;
 		}

@@ -615,7 +615,7 @@ class RS_MindGroundSpikeBrown : Actor   // CH MASTERMINDS.txt:649
 	Spawn:
 		TNT1 A 0;
 	Fly:
-		B0N8 A 3 Radius_Quake(15,15,0,40,0);
+		B0N8 A 3 { Radius_Quake(15,15,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		B0N8 A 1 A_SpawnItemEx("RS_Drt2",0,32,1,random(1,5),0,random(1,5),random(0,360));
 		B0N8 A 1 A_SpawnItemEx("RS_Drt3",-32,0,1,random(1,5),0,random(1,5),random(0,360));
 		B0N8 A 1 A_SpawnItemEx("RS_Drt1",0,-32,1,random(1,5),0,random(1,5),random(0,360));
@@ -2072,7 +2072,7 @@ class RS_PsychicAra2 : Actor   // CH MASTERMINDS.txt:4108
 	Spawn:
 	Death:
 		ARNQ C 1;
-		ARNQ B 2 Bright Radius_Quake(9,9,0,30,0);
+		ARNQ B 2 Bright { Radius_Quake(9,9,0,30,0); RSQMN_QuakeFeel.Felt(self, 30 * 64); }
 		ARNQ C 1 Bright A_RadiusGive("RS_DarknessCallwithnewphone",72,RGF_PLAYERS,1);
 		ARNQ B 1;
 		Stop;
@@ -2273,7 +2273,7 @@ class RS_QueenMindWave : Actor   // CH MASTERMINDS.txt:4269
 		TNT1 A 0 A_SpawnItemEx("RS_ZWAVE",0,0,0,0,0,0,0,128);
 		Loop;
 	Death:
-		BLST A 0 Radius_Quake(15,15,0,40,0);
+		BLST A 0 { Radius_Quake(15,15,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		BLST A 1 Bright A_SetScale(1.2,1.2);
 		BLST B 1 Bright A_Explode(random(11,50),110);
 		BLST CDEF 1 Bright A_SetScale(1.4,1.4);
@@ -2498,7 +2498,7 @@ class RS_WhiteMindRB3 : Actor   // CH MASTERMINDS.txt:4575
 		TNT1 A 0 A_Scream();
 		BFE1 AB 5 Bright;
 		BFE1 C 8 Bright A_Explode(random(30,95),128);
-		TNT1 A 0 Radius_Quake(9,9,0,30,0);
+		TNT1 A 0 { Radius_Quake(9,9,0,30,0); RSQMN_QuakeFeel.Felt(self, 30 * 64); }
 		BFE1 DEF 8 Bright;
 		Stop;
 	}

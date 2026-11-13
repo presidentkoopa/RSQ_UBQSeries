@@ -2602,7 +2602,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		Goto Crash;
 	Crash:
 		ARNQ HIJKL 9;
-		ARNQ L 2 Radius_Quake(60,60,0,80,0);
+		ARNQ L 2 { Radius_Quake(60,60,0,80,0); RSQMN_QuakeFeel.Felt(self, 80 * 64); }
 		ARNQ M -1 A_BossDeath();
 		Stop;
 	}

@@ -165,6 +165,19 @@ class RSQGN_Buzzer : Actor
 		if (s) s.GetInt("buzz", "RSQGN", who.PlayerNumber(), left ? 1 : 0);
 	}
 
+	// AN EARTHQUAKE THIS MOD STARTS (the grenade's blast, a barrel chain's kick; owner 2026-11-12: rumble backup for ALL
+	// mods): QuestZDoom sends a quake's shake to both controllers, silent at Quake Haptics 0. As the quake starts, if the
+	// console player stands inside its tremor radius (the engine's 2D test), both controllers ask RSQ_Accessibility's
+	// Rumble Backup by name (RumbleBackup above). The quake itself is unchanged.
+	static void QuakeFelt(Actor src, double radius)
+	{
+		if (!src || consoleplayer < 0 || consoleplayer >= MAXPLAYERS || !playeringame[consoleplayer]) return;
+		let pmo = players[consoleplayer].mo;
+		if (!pmo || src.Distance2D(pmo) >= radius) return;
+		RumbleBackup(pmo, true);
+		RumbleBackup(pmo, false);
+	}
+
 	override void Tick()
 	{
 		Super.Tick();

@@ -298,7 +298,7 @@ Nothing else is needed. Every other mod is found by name while the game runs.
   way Gun Cards' Card Colour does. Gun Cards' Wheel Palette and the world cards follow the Wheel's palette, font set
   and plate.
 - **RSQ Tactical Rig** and **RSQ Miniboss:** without RSQ Accessibility, both read the watch check from Gun Cards' copy
-  (the Rig's move-a-gun-at-the-watch-check, Miniboss's Bossfight call-in), so the card and their action answer to the
+  (the Rig's move-a-gun-at-the-watch-check, Miniboss's miniboss-fight call-in), so the card and their action answer to the
   same pose. The Rig's cigarette shows the cigarettes left.
 - **RSQ Saber, RSQ FlashFlare:** the saber's item card says whether its blade is lit; the road flare's says the flares
   left and whether the one in hand is lit; the flashlight's says on or off and its battery.

@@ -739,7 +739,7 @@ class RS_FireBluImp2 : DoomImp
 	XDeath:
 		ZOMG P 0 A_PlaySound("weapons/rocklx",7,1);
 		MISL B 6 Bright A_Explode(random(12,44),84);
-		MISL C 6 Bright A_Quake(20,12,0,64,0);
+		MISL C 6 Bright { A_Quake(20,12,0,64,""); RSQMN_QuakeFeel.Felt(self, 64); }
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
 		POSS AAAAAAAAAA 0 A_SpawnItemEx("RS_FireSGguy2",0,0,3,random(3,9),0,1,random(-359,359));
 		// CH: ZOMG U (Imps.txt:825-826) -- frame U ships nowhere: CH's zombieman set stops at ZOMGT0, and CHP keeps the same dangling reference (DECORATE\01\01_G.txt:62). Both states below are 0-tic, so the renderer never displays them and there is nothing invisible to see; the sprite name is a carrier for A_CustomMissile only. Left verbatim on purpose. Verified 2026-08-06 (owner: nothing invisible).

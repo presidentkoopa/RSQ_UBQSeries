@@ -962,6 +962,15 @@ class wr_VR play
 			let st = wr_VRState.Get();
 			int now = MSTime();
 			if (st && now < st.mPulseBusy[hd]) return;
+			// RSQ_ACCESSIBILITY'S RUMBLE BACKUP, asked by name (owner 2026-11-12: rumble backup for ALL mods): with it on,
+			// it sends the same engine buzz on that controller (and logs it, Debug Log); then the ring's own is not sent,
+			// one buzz, not two. Off, or without RSQ_Accessibility, the ring's own pulse below as before.
+			bool leftCtl = (hd == 0) == LeftHanded();
+			if (wr_A11y.RumbleBackup(mo, leftCtl))
+			{
+				if (st) st.mPulseBusy[hd] = now + PULSE_MS;   // not counted in mPulses: that is the ring's own
+				return;
+			}
 			mo.LineAttack(mo.angle, 0.1, 0, 1, 'None', "wr_NullPuff", LAF_NOINTERACT | (hd == 1 ? LAF_ISOFFHAND : 0));
 			if (st) st.mPulseBusy[hd] = now + PULSE_MS;
 			if (st) st.mPulses++;

@@ -57,7 +57,7 @@ Load these in this order. This is the owner's load order, and the one the rig te
 | 1 | doom2.wad | Doom II, the IWAD |
 | 2 | brutal22test6.pk3 | Brutal Doom 22 (Sergeant Mark IV) |
 | 3 | BD_VoxelPack.pk3 | Brutal Doom's voxel pack |
-| 4 | BD22 VR Reloaded 2.0.4p | the owner's VR weapons for Brutal Doom 22 (hands on every gun, reloads by hand) |
+| 4 | BD22 VR Reloaded 2.0.4t | the owner's VR weapons for Brutal Doom 22 (hands on every gun, reloads by hand) |
 | 5 | LOB_v1.05.pk3 | Legion of Bones (SpacemanStrife) |
 | 6 | mk-champions | Champions |
 | 7 | GunBonsai-0.10.6.pk3 | Gun Bonsai (ToxicFrog) |
@@ -68,7 +68,7 @@ and uses them when they are there. Gun Bonsai is needed by one pk3 (RSQ_GunBonsa
 Brutal Doom and before the RSQ pk3s (RSQ Graveyards' readme explains why).
 
 The batched rig test of 2026-11-10 ran on BD22 VR Reloaded 2.0.4f. The rig runs of 11-11 and 11-12 ran on the owner's
-full order, which also carries LegenDoom 3.0, XMVE, MK Crits and other mods, with BD22 VR Reloaded 2.0.4i to 2.0.4p.
+full order, which also carries LegenDoom 3.0, XMVE, MK Crits and other mods, with BD22 VR Reloaded 2.0.4i to 2.0.4t.
 Gun Cards' Remove HUD Health and Armor needs 2.0.4o or later.
 
 To install: take the pk3s you want from [pk3/](pk3/), put them with your other QuestZDoom mods, and add them to your

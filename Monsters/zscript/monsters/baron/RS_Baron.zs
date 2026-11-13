@@ -901,7 +901,7 @@ class RS_GrayBaron2 : Actor   // CH Barons.txt:1480
 	A2:
 		BOS4 M 4 Bright A_PlaySound("monster/ar2sit");
 		BOS4 M 3 Bright { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
-		TNT1 A 0 Radius_Quake(7,45,0,40,0);
+		TNT1 A 0 { Radius_Quake(7,45,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		BOS4 M 6 Bright A_CustomMissile("RS_BaronOfDirtCH",10,0,0,0);
 		BOS4 M 4 Bright A_PlaySound("monster/ar2sit");
 		BOS4 MMN 8 Bright A_FaceTarget();
@@ -2012,7 +2012,7 @@ class RS_RedBaron3 : Actor   // CH Barons.txt:3326
 		BOS4 M 1 Bright { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
 		BOS4 M 8 Bright A_CustomMissile("RS_RedPower",10,0,0,0);
 		BOS4 M 4 Bright A_PlaySound("monster/ar2sit");
-		BOS4 M 2 Bright A_Quake(10,30,0,256,"");   // CH: A_Quake(10,30,0,256,0)
+		BOS4 M 2 Bright { A_Quake(10,30,0,256,""); RSQMN_QuakeFeel.Felt(self, 256); }   // CH: A_Quake(10,30,0,256,0)
 		BOS4 M 8 Bright A_CustomMissile("RS_RedPower",10,0,0,0);
 		BOS4 M 3 Bright { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenMore",TRUE)
 		BOS4 MN 8 Bright;

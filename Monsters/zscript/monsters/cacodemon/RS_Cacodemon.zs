@@ -2126,7 +2126,7 @@ class RS_WhiteCaco2 : Actor
 		CACX F 90 A_SetFloorClip;
 		CACX F 10 A_PlaySound("caco/sight");
 		CACX FFFF 6 A_PlaySound("caco/sight");
-		CACX F 15 Radius_Quake(15,30,0,40,0);
+		CACX F 15 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,12,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		CACX FFFF 2 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,24,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		CACX FFFF 1 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,36,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -2135,10 +2135,10 @@ class RS_WhiteCaco2 : Actor
 		CACX FFFF 2 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,72,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		CACX FFFF 1 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,84,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,12,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CACX F 15 Radius_Quake(15,30,0,40,0);
+		CACX F 15 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		CACX FFFFFFFFFFFFFFF 2;   // CH: each F spawned a CHRandom_GibGenerator -- gore chain not imported (owner: vanilla gore ok)
 		// CH: TNT1 AAAAAAFFFFFAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
-		CACX F 1 Radius_Quake(15,30,0,40,0);
+		CACX F 1 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		TNT1 A 6 A_SpawnItemEx("RS_WhiteCacoREAL",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
 		// CH: TNT1 AAAAAAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) x2 -- gore chain not imported
 		Stop;

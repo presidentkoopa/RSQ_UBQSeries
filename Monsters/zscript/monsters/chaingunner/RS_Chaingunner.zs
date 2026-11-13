@@ -1702,7 +1702,7 @@ class RS_BlackCGuyEX : Actor
 		HCPO E 3 Bright A_FaceTarget;
 		HCPO EEEEEEE 1 Bright A_CustomMissile("RS_SparkPuff1",40,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		HCPO E 2 Bright A_FaceTarget;
-		HCPO F 0 A_Quake(2,12,0,128,"none");
+		HCPO F 0 { A_Quake(2,12,0,128,"none"); RSQMN_QuakeFeel.Felt(self, 128); }
 		TNT1 A 0 { bNOPAIN = false; }
 		HCPO F 3 Bright A_CustomMissile("RS_YellowBombCGUYEX",40,0,0);
 		HCPO E 9 Bright;
@@ -1713,7 +1713,7 @@ class RS_BlackCGuyEX : Actor
 		HCPO E 20 Fast A_FaceTarget;
 		HCPO F 0 A_CustomMissile("RS_SpiralLoadGeneEX",40,0,0);
 		HCPO E 20 Fast A_FaceTarget;
-		HCPO F 0 A_Quake(2,12,0,128,"none");
+		HCPO F 0 { A_Quake(2,12,0,128,"none"); RSQMN_QuakeFeel.Felt(self, 128); }
 		TNT1 A 0 { bNOPAIN = false; }
 		HCPO F 3 Bright A_CustomMissile("RS_CGBigEx",40,0,0);
 		HCPO E 9 Bright;
@@ -1722,7 +1722,7 @@ class RS_BlackCGuyEX : Actor
 		HCPO E 20 Fast A_FaceTarget;
 		TNT1 A 0 A_PlaySound("prox/beep");
 		HCPO E 4 A_FaceTarget;
-		HCPO F 0 A_Quake(2,12,0,128,"none");
+		HCPO F 0 { A_Quake(2,12,0,128,"none"); RSQMN_QuakeFeel.Felt(self, 128); }
 		TNT1 A 0 { bNOPAIN = false; }
 		HCPO FE 4 Bright A_CustomBulletAttack(6,5,random(1,3),random(1,4),"RS_DetoPuffCG");
 		HCPO E 2 A_MonsterRefire(188,"See");
@@ -1733,7 +1733,7 @@ class RS_BlackCGuyEX : Actor
 		HCPO E 15 Fast A_FaceTarget;
 		HCPO F 0 A_CustomMissile("RS_SpiralLoadGeneEX",40,0,0);
 		HCPO E 15 Fast A_FaceTarget;
-		HCPO F 0 A_Quake(2,12,0,128,"none");
+		HCPO F 0 { A_Quake(2,12,0,128,"none"); RSQMN_QuakeFeel.Felt(self, 128); }
 		TNT1 A 0 { bNOPAIN = false; }
 		HCPO FEFE 3 Bright A_CustomMissile("RS_SpamShotsCguyEX",40,0,random(-5,5),0,random(-4,4));
 		HCPO E 1 A_FaceTarget;

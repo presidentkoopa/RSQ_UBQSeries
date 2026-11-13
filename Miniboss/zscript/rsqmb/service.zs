@@ -42,8 +42,8 @@
 //                 CALL-IN'S then (owner 11-05: "Calling a Bossfight must never also move the gun"): RSQ Tactical Rig's
 //                 watch-check gun move asks this and leaves that Use press alone while it is 1
 //   meter.bottom  (ui) the screen pixel row just under the meter's slot while it is shown (RSQ SlowMo's countdown bar
-//                 and RSQ Score's combo rows go below it), -1 when it is off. While a Bossfight runs: under the fight's HUD
-//                 stack (hud.zs DrawStack), which takes the meter's place
+//                 and RSQ Score's combo rows go below it), -1 when it is off. While a Bossfight runs: -1 (the miniboss bar
+//                 stands where Be Quick or Be Dead is, bossbar.zs, not under Score)
 //   meter.x / meter.w / meter.h   (ui, GetDoubleUI; GetIntUI rounds) the meter's BAR in screen pixels while it is shown:
 //                 its left edge, width and thickness (the skull is 1.6 x the thickness, 0.3 x it left of the bar); -1 off.
 //                 RSQ SlowMo's countdown row under it takes these (owner 11-05: the meter and the countdown always line
@@ -140,8 +140,8 @@ class RSQMB_Service : Service
 		if (request ~== "meter.x" || request ~== "meter.w" || request ~== "meter.h") return MeterBar(request);
 		return GetIntUI(request, stringArg, intArg, doubleArg, objectArg, nameArg);
 	}
-	// the bar's rect (hud.zs MeterRect) while the meter is shown; while a Bossfight runs, its stack's own bar (StackRect);
-	// else -1
+	// the bar's rect (hud.zs MeterRect) while the meter is shown; -1 while a Bossfight runs (the miniboss bar is not under
+	// Score, bossbar.zs) or the meter is off
 	static ui double MeterBar(String request)
 	{
 		if (gamestate != GS_LEVEL) return -1;

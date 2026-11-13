@@ -603,7 +603,7 @@ class RS_FireBluZombie2 : Actor
 	XDeath:
 		ZOMG P 0 A_PlaySound("weapons/rocklx",7,1);
 		MISL B 6 Bright A_Explode(random(12,44),84);
-		MISL C 6 Bright A_Quake(20,12,0,64,0);
+		MISL C 6 Bright { A_Quake(20,12,0,64,""); RSQMN_QuakeFeel.Felt(self, 64); }
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
 		POSS AAAAA 0 A_SpawnItemEx("RS_FireSGguy2",0,0,3,random(3,9),0,1,random(-359,359));
 		ZOMG T 0 A_CustomMissile("RS_FireSGguy2",32,7);   // CH: ZOMG U -- 0-tic, frame past end of set
@@ -1780,7 +1780,7 @@ class RS_PlayerEXBFG : Actor   // CH Zombies.txt:1825
 		Loop;
 	Death:
 		BFE1 AB 8 Bright A_SetScale(1.25);
-		TNT1 A 0 Radius_Quake(15,15,0,40,0);
+		TNT1 A 0 { Radius_Quake(15,15,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		BFE1 C 8 Bright A_Explode(random(45,125),156);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("RS_PlayerEXBFG2",random(-12,12),random(-12,12),random(-1,1),random(2,19),0,random(-9,9),random(-359,359),SXF_NOCHECKPOSITION);
 		BFE1 DEF 8 Bright;

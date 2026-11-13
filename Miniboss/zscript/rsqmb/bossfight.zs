@@ -176,7 +176,7 @@ extend class RSQMB_Handler
 		{
 			String r = "";
 			for (int i = 0; i < rosterCls.Size(); i++) r = r .. (i ? ", " : "") .. rosterCls[i] .. " " .. rosterHP[i];
-			Console.Printf("RSQMB bossfight scan: %d types [%s], %d spots, %d exits", rosterCls.Size(), r, spX.Size(), exX.Size());
+			Console.Printf("RSQMB miniboss fight scan: %d types [%s], %d spots, %d exits", rosterCls.Size(), r, spX.Size(), exX.Size());
 		}
 	}
 
@@ -212,7 +212,7 @@ extend class RSQMB_Handler
 		let p = m.Owner;
 		// (no sound: it was Doom's Icon of Sin cube, "brain/spit" -- owner 11-12 14:11: "that is not needed")
 		Glow(0xFF2010, 0.6);
-		if (debug) Console.Printf("RSQMB BOSSFIGHT READY (auto in %d s)", CI('rsqmb_bf_auto', 60));
+		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT READY (auto in %d s)", CI('rsqmb_bf_auto', 60));
 	}
 
 	Service GdService()
@@ -518,13 +518,13 @@ extend class RSQMB_Handler
 			// rule holds the fight back; never on top of a running one
 			if (!m || !m.ready || BfBusy() || (m.called && m.force)) return;
 			m.force = true;
-			if (debug) Console.Printf("RSQMB BOSSFIGHT CALLED IN (the fight card: no rules) by player %d", pn);
+			if (debug) Console.Printf("RSQMB MINIBOSS FIGHT CALLED IN (the fight card: no rules) by player %d", pn);
 		}
 		if (!m || !m.ready || (m.called && !card)) return;
 		m.called = true;
 		bfNextTry = 0;
 		players[pn].mo.A_StartSound("misc/chat", CHAN_AUTO, CHANF_UI | CHANF_LOCAL, 0.8, ATTN_NONE);
-		if (debug) Console.Printf("RSQMB BOSSFIGHT CALLED IN (watch check + Use) by player %d", pn);
+		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT CALLED IN (watch check + Use) by player %d", pn);
 	}
 
 	// ---- the guardrails, then the spot ---------------------------------------------------------------------------------
@@ -539,7 +539,7 @@ extend class RSQMB_Handler
 		// Low Health, Near Exit, Too Busy). What cannot be skipped: no monster types on the map, and no spot to land on.
 		if (m.force && why != "" && why != "No Miniboss: No Monsters")
 		{
-			if (debug) Console.Printf("RSQMB bossfight: the fight card overrides \"%s\"", why);
+			if (debug) Console.Printf("RSQMB miniboss fight: the fight card overrides \"%s\"", why);
 			why = "";
 		}
 		if (why == "")
@@ -549,7 +549,7 @@ extend class RSQMB_Handler
 			else { StartArrival(p, m, tier); return; }
 		}
 		if (arrQuiet) { arrQuiet = false; SceneMusic(false); }   // a failed landing that can't retry now: the level music comes back
-		if (debug && why != bfWhy) Console.Printf("RSQMB bossfight waits: %s", why);
+		if (debug && why != bfWhy) Console.Printf("RSQMB miniboss fight waits: %s", why);
 		bfWhy = why;
 	}
 
@@ -570,7 +570,7 @@ extend class RSQMB_Handler
 		if (bfAny && now - bfLastTic < CI('rsqmb_bf_cooldown', 90) * TICRATE) return "No Miniboss: Cooldown";
 		if (ign)
 		{
-			if (debug) Console.Printf("RSQMB bossfight guardrails ignored (Ignore Spawn Restrictions): would have waited for: %s", Waits(p));
+			if (debug) Console.Printf("RSQMB miniboss fight guardrails ignored (Ignore Spawn Restrictions): would have waited for: %s", Waits(p));
 			return "";
 		}
 		if (p.health < CI('rsqmb_bf_minhp', 40)) return "No Miniboss: Low Health";
@@ -628,7 +628,7 @@ extend class RSQMB_Handler
 			int lv = scoreSvc ? max(0, scoreSvc.GetInt("lives", "", 0, 0, p)) : 0;
 			int v = from == 1 ? gl : (from == 2 ? lv : max(gl, lv));
 			int tt = clamp(v, 0, 4);
-			if (debug) Console.Printf("RSQMB bossfight tier %d from %s (Gun Bonsai VR level %d%s, Score lives %d%s)", tt,
+			if (debug) Console.Printf("RSQMB miniboss fight tier %d from %s (Gun Bonsai VR level %d%s, Score lives %d%s)", tt,
 				from == 1 ? "Gun Bonsai VR Level" : (from == 2 ? "Score Lives" : "Whichever Is Larger"),
 				gl, GbSvc() ? "" : " (not loaded)", lv, scoreSvc ? "" : " (not loaded)");
 			return tt;
@@ -645,7 +645,7 @@ extend class RSQMB_Handler
 		}
 		t += m.beaten / 2;
 		t = clamp(t, 0, 4);
-		if (debug) Console.Printf("RSQMB bossfight tier %d (Gun Bonsai level %d, map score %d, won %d)", t, gl,
+		if (debug) Console.Printf("RSQMB miniboss fight tier %d (Gun Bonsai level %d, map score %d, won %d)", t, gl,
 			(scoreSvc && m.scoreBase >= 0) ? scoreSvc.GetInt("score", "", 0, 0, p) - m.scoreBase : -1, m.beaten);
 		return t;
 	}
@@ -796,7 +796,7 @@ extend class RSQMB_Handler
 					arrForce = true;
 				}
 			}
-			if (debug) Console.Printf("RSQMB bossfight spot (Ignore Spawn Restrictions): %s", !ok ? "none at all" : arrForce ? "set down untested"
+			if (debug) Console.Printf("RSQMB miniboss fight spot (Ignore Spawn Restrictions): %s", !ok ? "none at all" : arrForce ? "set down untested"
 				: String.Format("%s at %.0f units with %d thralls, past the usual tests", arrCls[0], level.Vec2Diff(p.pos.xy, (arrX[0], arrY[0])).Length(), arrX.Size() - 1));
 		}
 		if (ok)
@@ -806,7 +806,7 @@ extend class RSQMB_Handler
 			arrProbe = pr;
 		}
 		else pr.Destroy();
-		if (debug) Console.Printf("RSQMB bossfight spot: %s after %d of %d candidates (near %.0f far %.0f)%s", ok ? "found" : "none", tries, nc, near, far,
+		if (debug) Console.Printf("RSQMB miniboss fight spot: %s after %d of %d candidates (near %.0f far %.0f)%s", ok ? "found" : "none", tries, nc, near, far,
 			ok ? String.Format(": %s at %.0f units with %d thralls", arrCls[0], level.Vec2Diff(p.pos.xy, (arrX[0], arrY[0])).Length(), arrX.Size() - 1) : "");
 		return ok;
 	}
@@ -925,7 +925,7 @@ extend class RSQMB_Handler
 			smSvc.GetInt("start", "bossfight", slowMs, landDepth);
 		let gd = GdService();
 		if (!quiet && gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, max(3.0, slowMs / 1000.0) + 0.5);
-		if (debug) Console.Printf("RSQMB BOSSFIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
+		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
 			"V1-V3 thralls (each at random) + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
 	}
 
@@ -1035,13 +1035,13 @@ extend class RSQMB_Handler
 		// the shield is up: the room's glow goes cold grey, the words go up (fight.zs RoomGlow, WordsStep)
 		b.wordState = -9;
 		b.glowSent = -1;
-		if (debug) Console.Printf("RSQMB BOSSFIGHT LANDED: boss %d %s hp %d, %d thralls, %d segments of %.0f, lives %d, map count %d", b.idx, mb.GetClassName(), mb.health,
+		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT LANDED: boss %d %s hp %d, %d thralls, %d segments of %.0f, lives %d, map count %d", b.idx, mb.GetClassName(), mb.health,
 			th.Size(), b.total, b.segMax, b.lives, bfCount);
 	}
 
 	void ArrivalFailed(String why)
 	{
-		if (debug) Console.Printf("RSQMB bossfight failed to land (%s): tries again", why);
+		if (debug) Console.Printf("RSQMB miniboss fight failed to land (%s): tries again", why);
 		// (rig 11-09) whoever already came is taken back out, uncounted: left behind, each failed try piled boosted
 		// legendary champions on the map and the next try's arrival overlapped them
 		for (int i = 0; i < arrMon.Size(); i++)
@@ -1334,7 +1334,7 @@ extend class RSQMB_Handler
 			let m = MeterOf(killer, true);
 			if (m) m.beaten++;
 		}
-		if (debug) Console.Printf("RSQMB bossfight payoff: win counted (killer %s); no drop of its own", killer ? "player" : "none");
+		if (debug) Console.Printf("RSQMB miniboss fight payoff: win counted (killer %s); no drop of its own", killer ? "player" : "none");
 	}
 
 	// ---- for the console (netevent) ----------------------------------------------------------------------------------
@@ -1342,7 +1342,7 @@ extend class RSQMB_Handler
 	{
 		let p = players[consoleplayer].mo;
 		let m = MeterOf(p);
-		Console.Printf("RSQMB bossfight: meter %.0f ready %d called %d won %d | map count %d active %d arriving %d waits \"%s\" | %d types %d spots %d exits",
+		Console.Printf("RSQMB miniboss fight: meter %.0f ready %d called %d won %d | map count %d active %d arriving %d waits \"%s\" | %d types %d spots %d exits",
 			m ? m.fill : -1.0, m && m.ready, m && m.called, m ? m.beaten : 0, bfCount, bfBoss && !bfBoss.done, arrPhase, bfWhy,
 			rosterCls.Size(), spX.Size(), exX.Size());
 	}

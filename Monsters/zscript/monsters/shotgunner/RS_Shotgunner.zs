@@ -2056,7 +2056,7 @@ class RS_WhiteSG2 : Actor   // BENELLUS, GOD OF SHOTGUNS
 		BENE A 8 A_Fall;
 		BENE AAABCDDDD 6 A_CustomMissile("RS_HKRedDeath",random(0,80),random(-30,50),CMF_AIMOFFSET,2,-10);
 		BENE DDDDDDDDDDDDDDDDDDDD 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
-		BENE D 8 Radius_Quake(40,60,0,40,0);
+		BENE D 8 { Radius_Quake(40,60,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		BENE DDDDDDDDDDDDDDDDDDDD 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
 		BENE D 6 A_SetTranslucent(0.75);
 		BENE D 6 A_SetTranslucent(0.5);
@@ -2301,7 +2301,7 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		BENE A 8 A_Fall;
 		BENE AAABCDDDD 6 A_CustomMissile("RS_HKRedDeath",random(0,80),random(-30,50),CMF_AIMOFFSET,2,-10);
 		BENE DDDDDDDDDDDDDDDDDDDD 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
-		BENE D 8 Radius_Quake(40,60,0,40,0);
+		BENE D 8 { Radius_Quake(40,60,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		BENE DDDDDDDDDDDDDDDDDDDD 1 A_SpawnItemEx("Shotgun",random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80),random(-80,80));
 		BENE D 6 A_SetTranslucent(0.75);
 		BENE D 6 A_SetTranslucent(0.5);

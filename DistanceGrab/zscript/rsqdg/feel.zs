@@ -384,6 +384,15 @@ class RSQDG_Feel : EventHandler
 		if (!pmo) return;
 		// Rumble Strength: the pulse is the engine's one fixed buzz, so the setting can only take it away (0)
 		if (RSQDG_A11y.Rumble() <= 0) return;
+		// RSQ_ACCESSIBILITY'S RUMBLE BACKUP, asked by name (owner 2026-11-12: rumble backup for ALL mods): with it on, it
+		// sends the same engine buzz on that controller (and logs it, its Debug Log); then this pulse is not sent, one
+		// buzz, not two. Off, or without RSQ_Accessibility, the pulse below as before.
+		let cs = CVar.FindCVar("vr_control_scheme");
+		if (RSQDG_A11y.RumbleBackup(pmo, (hand == 1) != (cs && cs.GetInt() >= 10)))
+		{
+			busyUntil[hand] = MSTime() + BUSY_MS;
+			return;
+		}
 		pmo.LineAttack(pmo.angle, 0.1, 0, 1, 'None', "RSQDG_NullPuff",
 			LAF_NOINTERACT | ((hand == 1) ? LAF_ISOFFHAND : 0));
 		busyUntil[hand] = MSTime() + BUSY_MS;

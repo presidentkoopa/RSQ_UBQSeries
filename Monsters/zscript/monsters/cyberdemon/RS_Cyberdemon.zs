@@ -912,7 +912,7 @@ class RS_GrayCybie2 : Actor   // CH CYBIES.txt:1576
 	BuffUP:
 		SUPR E 0 A_JumpIf(User_Doner >= 1,"Nah");
 		SUPR E 8 A_PlaySound("CybLow");
-		SUPR G 12 A_Quake(8,90,256,528,"");   // CH: a_quake(8,90,256,528,0)
+		SUPR G 12 { A_Quake(8,90,256,528,""); RSQMN_QuakeFeel.Felt(self, 528); }   // CH: a_quake(8,90,256,528,0)
 		SUPR G 12 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenmore",TRUE)
 		SUPR B 24;
 		SUPR B 2 A_SetSpeed(19);
@@ -1838,7 +1838,7 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 	Melee:
 		MOLO H 10 A_FaceTarget;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		MOLO J 4 Radius_Quake(40,60,0,40,0);
+		MOLO J 4 { Radius_Quake(40,60,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		MOLO N 2 A_PlaySound("moloch/thud");
 		MOLO N 0 A_CustomMissile("RS_MolochQuake",0,-48,0);
 		MOLO N 0 A_CustomMissile("RS_MolochQuake",0,-48,10);
@@ -1948,7 +1948,7 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 	Pain:
 		MOLO H 0 A_Pain;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		MOLO H 0 Radius_Quake(15,15,0,40,0);
+		MOLO H 0 { Radius_Quake(15,15,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		MOLO HHHHH 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(10,80),0,0,0,0,SXF_NOCHECKPOSITION);
 		MOLO H 10 A_Jump(74,"Melee");
 		Goto See;
@@ -1958,7 +1958,7 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 		MOLO L 14;
 		MOLO MNONMNONMNO 7 A_SpawnItemEx("RS_RedThingsLS",random(-60,60),random(-60,60),random(5,60),0,0,0,0,SXF_NOCHECKPOSITION);
 		MOLO PQ 6;
-		MOLO Q 0 Radius_Quake(40,60,0,40,0);
+		MOLO Q 0 { Radius_Quake(40,60,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		MOLO Q 0 A_PlaySound("moloch/thud");
 		MOLO R -1 A_BossDeath;
 		Stop;
@@ -2289,7 +2289,7 @@ class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 		BSMT F 5 A_FaceTarget;
 		BSMT G 5 A_CustomMeleeAttack(random(50,125));
 		BSMT E 0 A_SetReflectiveInvulnerable;
-		BSMT E 0 Radius_Quake(40,60,0,40,0);
+		BSMT E 0 { Radius_Quake(40,60,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		BSMT F 0 A_CustomMissile("RS_PentaLine1",0,0,-72,2);
 		BSMT F 0 A_CustomMissile("RS_PentaLine1",0,0,-144,2);
 		BSMT F 0 A_CustomMissile("RS_PentaLine1",0,0,-216,2);
@@ -2522,7 +2522,7 @@ class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 		MMDR G 8 Bright A_FaceTarget;
 		MMDR I 5 Bright A_FaceTarget;
 		MMDR EIEGGIEGIGEIG 3 Bright A_FaceTarget;
-		MMDR E 3 Radius_Quake(15,15,0,40,0);
+		MMDR E 3 { Radius_Quake(15,15,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		MMDR E 8 Bright { user_phase = 3; }   // CH: a_setuservar("user_phase",user_phase=3)
 		Goto Reposition;
 	BaronsPlease:

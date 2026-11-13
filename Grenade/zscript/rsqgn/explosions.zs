@@ -372,7 +372,10 @@ class RSQGN_Boom : Actor
 		// Accessibility's Photosensitive Mode or a Comfort Vignette set
 		if (isBarrel && depth >= 2 && RSQGN_Fx.Ctx("rsqgn_ctx_chain") && RSQGN_Fx.B("rsqgn_chain_kick", true)
 			&& !RSQGN_Fx.Photosafe() && !RSQGN_Fx.MotionSensitive())
+		{
 			A_QuakeEx(0, 0, depth >= 4 ? 2 : 1, depth >= 4 ? 7 : (depth == 3 ? 4 : 3), 0, 640, "", QF_SCALEDOWN);
+			RSQGN_Buzzer.QuakeFelt(self, 640);   // RSQ_Accessibility's Rumble Backup, by name (weapon.zs)
+		}
 
 		// ---- THE LIGHT ----
 		lightMode = RSQGN_Fx.Lights();

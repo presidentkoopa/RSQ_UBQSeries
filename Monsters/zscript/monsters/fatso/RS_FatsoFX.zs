@@ -1415,7 +1415,7 @@ class RS_WhiteFatNuke : Actor   // CH Fatsos.txt:3881
 		TNT1 A 0 A_Scream;
 		BFE1 AB 3 Bright;
 		BFE1 C 8 Bright A_Explode(random(80,155),326);
-		TNT1 A 0 Radius_Quake(15,15,0,40,0);
+		TNT1 A 0 { Radius_Quake(15,15,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		BFE1 DEF 8 Bright;
 		Stop;
 	}
@@ -1490,7 +1490,7 @@ class RS_WhiteFatRB : Actor   // CH Fatsos.txt:3958
 		TNT1 A 0 A_Scream;
 		BFE1 AB 5 Bright;
 		BFE1 C 8 Bright A_Explode(random(50,125),252);
-		TNT1 A 0 Radius_Quake(15,15,0,40,0);
+		TNT1 A 0 { Radius_Quake(15,15,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		BFE1 DEF 8 Bright;
 		Stop;
 	}
@@ -1521,7 +1521,7 @@ class RS_WhiteFatRB3 : Actor   // CH Fatsos.txt:3987
 		TNT1 A 0 A_Scream;
 		BFE1 AB 5 Bright;
 		BFE1 C 8 Bright A_Explode(random(30,95),128);
-		TNT1 A 0 Radius_Quake(9,9,0,30,0);
+		TNT1 A 0 { Radius_Quake(9,9,0,30,0); RSQMN_QuakeFeel.Felt(self, 30 * 64); }
 		BFE1 DEF 8 Bright;
 		Stop;
 	}

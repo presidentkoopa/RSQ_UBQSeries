@@ -51,4 +51,5 @@ version "4.14"
 #include "zscript/monsters/RS_Roster.zs"
 #include "zscript/monsters/RS_Retier.zs"
 #include "zscript/monsters/RS_ScoreReadout.zs"   // what RSQ Score reads by name (RSQMN_RosterService), 11-09
+#include "zscript/monsters/RSQ_QuakeFeel.zs"     // its earthquakes ask RSQ Accessibility's Rumble Backup by name (11-12)
 #include "zscript/monsters/RSQ_MonsterMenu.zs"

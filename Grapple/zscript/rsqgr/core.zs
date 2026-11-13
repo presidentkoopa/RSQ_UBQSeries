@@ -577,6 +577,18 @@ class RSQGR_Core : EventHandler
 		// (p_map.cpp:4762, no consoleplayer test), so traced on every machine it buzzed every player in a netgame. Traced
 		// only on the owner's machine, LAF_NORANDOMPUFFZ so it draws no shared random number (as RSQA_Buzz.Backup).
 		if (pmo.player != players[consoleplayer]) return;
+		// RSQ_ACCESSIBILITY'S RUMBLE BACKUP, asked by name (owner 2026-11-12: rumble backup for ALL mods): with it on, it
+		// sends the same engine buzz on that controller (and logs it, its Debug Log); then this one is not sent, one buzz,
+		// not two. Off, or without RSQ_Accessibility, the thump below as before. Left controller: the off hand's for a
+		// right-handed player (vr_control_scheme 10+ is left-handed).
+		let cs = CVar.FindCVar('vr_control_scheme');
+		bool leftCtl = (ctrl == 1) != (cs && cs.GetInt() >= 10);
+		if (RSQGR_A11y.RumbleBackup(pmo, leftCtl))
+		{
+			if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
+				Console.Printf("T_GR t%d h%d thump %s ctrl%d (RSQ Accessibility's Rumble Backup)", level.maptime, h.hand, why, ctrl);
+			return;
+		}
 		pmo.LineAttack(pmo.Angle, 0.1, 0, 1, 'None', "RSQGR_NullPuff", LAF_NOINTERACT | LAF_NORANDOMPUFFZ | (ctrl == 1 ? LAF_ISOFFHAND : 0));
 		if (RSQGR_Util.Opt("rsqgr_debug", 0) >= 1)
 			Console.Printf("T_GR t%d h%d thump %s ctrl%d", level.maptime, h.hand, why, ctrl);

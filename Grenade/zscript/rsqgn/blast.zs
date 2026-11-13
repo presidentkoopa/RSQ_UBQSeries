@@ -368,7 +368,7 @@ class RSQGN_Blast : Actor
 		TNT1 AAAAAAAAAA 0 A_SpawnProjectile("RSQGN_BlastEmber", 0, 0, random(0, 360), CMF_AIMDIRECTION, random(0, 360));
 		TNT1 AAAAAAAAAAAAAAAAAA 0 A_SpawnProjectile("RSQGN_BlastEmberFast", 0, 0, random(0, 360), CMF_AIMDIRECTION, random(0, 360));
 		TNT1 A 0 A_RSQGN_BlastShrapnel();
-		TNT1 A 0 A_QuakeEx(3, 3, 3, 30, 0, 448, "none");
+		TNT1 A 0 { A_QuakeEx(3, 3, 3, 30, 0, 448, "none"); RSQGN_Buzzer.QuakeFelt(self, 448); }   // + RSQ_Accessibility's Rumble Backup, by name (weapon.zs)
 		TNT1 AA 0 A_SpawnItemEx("RSQGN_BlastSmokeColumn", 0, 0, 0, 0, 0, 0, 0, SXF_NOCHECKPOSITION);
 		// NOTE: the source's two A_Explode calls are NOT here -- they
 		// live in the thrown grenade's own Death state, at the same

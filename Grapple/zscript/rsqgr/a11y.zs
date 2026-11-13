@@ -148,4 +148,19 @@ class RSQGR_A11y
 		let s = Svc();
 		if (s) s.GetInt("ready", "", who.PlayerNumber(), hand);
 	}
+	// RUMBLE BACKUP (RSQ_Accessibility's rsqa_rumble_backup; every series mod since 2026-11-10, owner: "Yes, all
+	// mods"). Call it as one of this mod's own rumbles starts, naming the controller its quake drives (left: the
+	// quake's X). QuestZDoom's Quake Haptics at 0 silences that quake; RSQ_Accessibility then sends the engine's
+	// 150 ms shot buzz on that controller (RSQA_Buzz.Backup). The mod's own rumble is played as before either way:
+	// Rumble Backup off, or RSQ_Accessibility not loaded, and nothing here happens. The test is a server cvar and a
+	// loaded class, the same on every machine; only the machine whose player it is sends the buzz.
+	// RETURNS TRUE when RSQ_Accessibility sent its buzz for this one (2026-11-12, owner: rumble backup for ALL mods): a
+	// mod whose own rumble is already the engine's shot buzz (RSQ Wheel at Quake Haptics 0, RSQ Grapple's thump, RSQ
+	// Distance Grab's pulse) then skips its own, so the hand gets one buzz, not two. A quake-route mod ignores it.
+	static play bool RumbleBackup(Actor who, bool left)
+	{
+		if (!who || !who.player || !I('rsqa_rumble_backup')) return false;
+		let s = Svc();
+		return s && s.GetInt("buzz", "RSQGR", who.PlayerNumber(), left ? 1 : 0) == 1;
+	}
 }

@@ -1136,7 +1136,7 @@ class RS_GreenDemon : Demon
 		ZOMG P 0 A_XScream;
 		ZOMG P 0 A_PlaySound("weapons/rocklx",7,1);
 		ZOMG P 8 Bright A_Explode(random(12,64),78);
-		ZOMG Q 6 Bright A_Quake(20,12,0,64,0);
+		ZOMG Q 6 Bright { A_Quake(20,12,0,64,""); RSQMN_QuakeFeel.Felt(self, 64); }
 		ZOMG Q 0 A_SpawnItemEx("RS_Gas14",random(-120,120),random(-120,120),random(1,32),0,0,0,SXF_NOCHECKPOSITION);
 		ZOMG Q 0 A_SpawnItemEx("RS_Splash11",random(-64,64),random(-64,64),random(3,26),random(1,24),random(1,24),random(1,64),random(-180,180));
 		ZOMG Q 0 A_SpawnItemEx("RS_Gas14",random(-80,80),random(-80,80),random(1,32),0,0,0,SXF_NOCHECKPOSITION);
@@ -2001,7 +2001,7 @@ class RS_WhiteDemon2 : Actor
 		Goto BAM;
 	BAM:
 		JUGG J 1 Bright A_PlaySound("monster/hamflr");
-		JUGG J 8 Bright Radius_Quake(30,60,0,120,0);
+		JUGG J 8 Bright { Radius_Quake(30,60,0,120,0); RSQMN_QuakeFeel.Felt(self, 120 * 64); }
 		JUGG J 0 A_CustomMissile("RS_MolochQuake",0,-48,0);
 		JUGG J 0 A_CustomMissile("RS_MolochQuake",0,-48,10);
 		JUGG J 0 A_CustomMissile("RS_MolochQuake",0,-48,20);
@@ -2057,7 +2057,7 @@ class RS_WhiteDemon2 : Actor
 		Goto See;
 	ROCKS:
 		JUGG I 8 Bright A_FaceTarget;
-		JUGG I 2 Radius_Quake(30,60,0,900,0);
+		JUGG I 2 { Radius_Quake(30,60,0,900,0); RSQMN_QuakeFeel.Felt(self, 900 * 64); }
 		JUGG I 8 Bright A_CustomMissile("RS_WDRock1",42,15);
 		JUGG I 10 Bright A_FaceTarget;
 		JUGG J 6 Bright A_CustomMissile("RS_WDRock2",56,0,random(-1,1),CMF_OFFSETPITCH|CMF_ABSOLUTEPITCH,random(2,6));
@@ -2112,7 +2112,7 @@ class RS_WhiteDemon2 : Actor
 	HOPHOP:
 		JUGG E 0 A_FaceTarget;
 		JUGG E 0 ThrustThingZ(0,16,0,0);
-		JUGG E 0 Radius_Quake(10,40,0,80,0);
+		JUGG E 0 { Radius_Quake(10,40,0,80,0); RSQMN_QuakeFeel.Felt(self, 80 * 64); }
 		JUGG CC 7 A_SkullAttack(32);
 		JUGG E 0 A_JumpIfCloser(120,"DASH");
 		Goto HOPHOP;
