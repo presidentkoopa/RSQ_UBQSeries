@@ -94,7 +94,7 @@ class RSPROBE_H : EventHandler
 			Name n = e.Name.Mid(12);
 			class<Actor> c = n;
 			if (!c) { Console.Printf("PROBE spawn %s: no such class", n); return; }
-			let a = Actor.Spawn(c, mo.Vec3Angle(e.Args[0], mo.angle, 0), NO_REPLACE);
+			let a = Actor.Spawn(c, mo.Vec3Angle(e.Args[0], mo.angle, 0) + (cos(mo.angle + 90) * e.Args[1], sin(mo.angle + 90) * e.Args[1], 0), NO_REPLACE);
 			spawnedLast = a;
 			if (a) { a.angle = mo.angle + 180; a.bNeverTarget = false; Console.Printf("PROBE spawned %s at %d sight %d pos %.0f %.0f %.0f player %.0f %.0f %.0f angle %.0f monster %d shootable %d health %d", n, e.Args[0], mo.CheckSight(a, SF_IGNOREVISIBILITY), a.pos.x, a.pos.y, a.pos.z, mo.pos.x, mo.pos.y, mo.pos.z, mo.angle, a.bIsMonster, a.bShootable, a.health); }
 			return;
