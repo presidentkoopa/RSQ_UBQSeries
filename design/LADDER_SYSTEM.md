@@ -68,8 +68,20 @@ Rig, the owner's full order with BD22 VR 2.0.4u, Black Metal (`-skill 6`), MAP01
   end (the spawn event can come after the spawn returns); fixed with a mark item.
 - **Point 7, partly shown:** every ladder monster read "own look" 60 tics after spawn, with Champions and Universal
   Entropy loaded. NOT shown: that it holds after the two seconds, or in frames.
-- **Point 3's swap guard: NOT shown.** The count after `rs_retier_all 13` never printed: Tactical Rig's "Measure My
-  Height" at tic 70 appears to stop the run (the same reason the control run with the switch off printed nothing).
+- **Point 3's swap guard, shown** (run `lad4_ex`, after main's 11-13 world-tier and ladder-health commits were merged in):
+  at world tier 14, `rs_retier_all 13` turned all 4 Blacks into Whites (White 7 -> 11) and left all 16 EX bodies EX.
+- **Point 7 past the two seconds, shown in the log** (run `lad4_tint`, world tier 8): 27 of 27 ladder monsters still
+  wore their own colour at 200 tics, with Champions and Universal Entropy loaded. Not seen in frames.
+- **Control, shown** (run `lad4_off`): switch off, the same order and map: 27 of 27 Common, as main.
+- (The missing counts in the first runs were the rig, not the game: the last console command before `quit` never runs.)
+
+**Merged with main's own world tier (11-13, the other session's f3142c4ef3).** With the switch on, RS_RetierHandler's
+world-tier raise stands down (`if (RS_Ladder.On()) return;`) so a window spawn is not raised twice, and RS_LadderHandler
+scales health against a body's existing StartHealth, so main's `LadderHealth` on a tier change and this branch's table
+never stack. Main's ladder health (section 8 fix 4) is the same envelope as point 5's table for rungs 1-11.
+
+**All measurements here used the mods' DEFAULT options** (Champions, LegenDoom, Universal Entropy and the rest as they
+ship), not the owner's own settings. With his settings the counts and health will differ.
 
 ## Found on the way (not built)
 - RS_TierLadder's family numbers (Chaingunner 0 ...) are not RS_RosterHandler.FamilyId's (ZombieMan 0 ...). RS_Ladder
