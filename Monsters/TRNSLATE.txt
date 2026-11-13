@@ -396,6 +396,7 @@ rs_tier_flashblack = "0:255=#[10,10,10]"
 // colour; steel and bone (80-111) keep their light and take a little of it; the bright reds (168-175: blood, eyes), fire
 // and plasma (160-167, 192-235) and the rest are left alone. The values are mine, not Colourful Hell's (its recipes are
 // per family, for the id sprites). FireBlu alternates red and blue across the body ranges.
+// OWNER 2026-11-13 09:49, of the rig sheets of this version: "I approve of this style."
 rs_bdtier_green   = "16:79=%[0.00,0.05,0.00]:[0.55,1.70,0.60]","112:159=%[0.00,0.05,0.00]:[0.55,1.70,0.60]","176:191=%[0.00,0.05,0.00]:[0.55,1.70,0.60]","80:111=%[0.00,0.00,0.00]:[0.92,1.22,0.93]"
 rs_bdtier_blue    = "16:79=%[0.00,0.00,0.08]:[0.55,0.75,1.95]","112:159=%[0.00,0.00,0.08]:[0.55,0.75,1.95]","176:191=%[0.00,0.00,0.08]:[0.55,0.75,1.95]","80:111=%[0.00,0.00,0.00]:[0.92,0.97,1.28]"
 rs_bdtier_purple  = "16:79=%[0.05,0.00,0.08]:[1.55,0.50,1.85]","112:159=%[0.05,0.00,0.08]:[1.55,0.50,1.85]","176:191=%[0.05,0.00,0.08]:[1.55,0.50,1.85]","80:111=%[0.00,0.00,0.00]:[1.18,0.91,1.26]"

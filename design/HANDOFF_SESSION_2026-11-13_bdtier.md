@@ -92,4 +92,5 @@ nor Brutal Doom's sprites. Nothing is headset-confirmed.
   the rest are untouched. FireBlu alternates red and blue across the body ranges.
 - Seen in rig frames on Brutal Doom's and XMVE's real monsters (full-bright, rig01): teeth, eyes, blood, guns, belts
   and flames keep their own colours. Weak spot seen: a monster in black or grey armour (XMVE's dark troopers) takes
-  the colour only on its skin and visor. Sheets sent to him; he has NOT answered yet.
+  the colour only on its skin and visor. Sheets sent to him.
+- **Owner 09:49: "I approve of this style."** The body-by-palette-range tints are signed off (from the rig sheets, not the headset).
