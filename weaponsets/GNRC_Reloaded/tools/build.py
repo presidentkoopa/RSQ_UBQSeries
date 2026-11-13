@@ -16,10 +16,10 @@ What goes in:
 import glob, hashlib, json, os, re, shutil, struct, sys, zipfile, zlib
 HERE = os.path.dirname(os.path.abspath(__file__)); ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(HERE, 'lib'))
-import mdl, zs_port
+import mdl, zs_port, basics
 BD = mdl.BD
 # BD22 VR scripts this pack carries beyond the earlier port's set: the contact saw (as WoS_Reloaded)
-zs_port.FILES = zs_port.FILES + ['rsq/pose.zs', 'rsvr/melee.zs']
+zs_port.FILES = zs_port.FILES + ['rsq/pose.zs', 'rsvr/melee.zs', 'rsq/fists.zs']	# + the basics' punches (tools/lib/basics.py)
 GNRC = '/home/claude/src/gnrc'
 VOX = '/home/claude/src/vox'
 CFX, RSBS = '/home/claude/rs_combatfx/sounds', '/home/claude/rs_ballistics/sounds/rsb'
@@ -264,17 +264,26 @@ def main(want_pk3):
         'rsq/casings.zs': [(re.compile(r"Name n = c\.GetClassName\(\);"), "Name n = c.GetClassName();\n\t\t// this pack: GNRC's casings under the names BD22 VR's tables know\n\t\tif (n == 'RSQGW_9mmCasing') n = 'PistolCasing';\n\t\telse if (n == 'RSQGW_RifleCasing' || n == 'RSQGW_ChaingunCasing') n = 'EmptyBrass';\n\t\telse if (n == 'RSQGW_ShotgunCasing') n = 'ShotgunCasing';", 1),
             ("mo.player.ReadyWeapon ? mo.player.ReadyWeapon.GetClassName() : 'None'", "RSQ_Alias.BD(mo.player.ReadyWeapon)", 2),
             ("return t ? PlayerPawn(t.target) : null;", "if (t && PlayerPawn(t.target))\n\t\t\treturn PlayerPawn(t.target);\n\t\treturn multiplayer ? null : players[consoleplayer].mo;\t// this pack: GNRC's casings do not always carry their shooter", 1)],
-        'rsr/vreload.zs': [("PlayerInt(mo.player, 'rsr_rig_pouch', 1) == 0", "PlayerInt(mo.player, 'rsr_pouch', 0) != 2\t/* this pack: New magazine from = Tactical Rig's pouch */", 1)],
+        'rsr/vreload.zs': [("RSG_Handler.WantsGrab(consoleplayer)", "RSQB_GrenadeLink.WantsGrab(consoleplayer)", 1), ("PlayerInt(mo.player, 'rsr_rig_pouch', 1) == 0", "PlayerInt(mo.player, 'rsr_pouch', 0) != 2\t/* this pack: New magazine from = Tactical Rig's pouch */", 1)],
     }
     # the contact saw only (as WoS_Reloaded): BD22 VR's melee reads no other weapon here, and each cut is the chainsaw's
     # own (RSQGW_SawCut, GNRC's saw damage)
     patches['rsvr/melee.zs'] = [
         (re.compile(r"(static int KindOf\(PlayerPawn mo\)\n\t\{\n\t\tlet p = mo\.player;\n\t\tif \(!p \|\| !p\.ReadyWeapon \|\| p\.PendingWeapon != WP_NOCHANGE \|\| mo\.health <= 0\)\n\t\t\treturn 0;\n).*?(\n\t\}\n)", re.S),
-         r"\1\t\t// this pack: the chainsaw is the only weapon BD22 VR's melee reads (the contact saw)\n\t\treturn p.ReadyWeapon is 'RSQGW_ModChainsaw' ? SAW : 0;\2", 1),
-        (re.compile(r"(static int KindOfOff\(PlayerPawn mo\)\n\t\{\n)"), r"\1\t\treturn 0;\t// this pack: no off-hand melee weapon (axe, pistol whip)\n", 1),
+         r"\1\t\t// this pack: the saw (the contact saw) and the basics' pistol whip (owner 2026-11-13; BD22 VR's own, the BrutalPistol rows)\n\t\tif (p.ReadyWeapon is 'RSQGW_ModChainsaw') return SAW;\n\t\tif (RSQ.PlayerInt(mo, 'rsq_pistol_whip', 1) != 0 && RSQ_Alias.BD(p.ReadyWeapon) == 'BrutalPistol') return PISTOL;\n\t\treturn 0;\2", 1),
+        (re.compile(r"(static int KindOfOff\(PlayerPawn mo\)\n\t\{\n)"), r"\1\t\tlet pw = mo.player;\t// this pack: the off hand's only melee is the basics' pistol whip (owner 2026-11-13)\n\t\tif (pw && pw.OffhandWeapon && mo.health > 0 && RSQ.PlayerInt(mo, 'rsq_pistol_whip', 1) != 0 && RSQ_Alias.BD(pw.OffhandWeapon) == 'BrutalPistol') return PISTOL;\n\t\treturn 0;\n", 1),
+        ("Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'MeleeStrike1Berserked' : 'MeleeStrikeNormal', p, dir);", "Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'RSQB_PunchBerserk' : 'RSQB_Punch', p, dir);\t// this pack: the basics' strike", 1),
+        ("Launch(mo, 'MeleeStrikeNormal', p, dir);", "Launch(mo, 'RSQB_Punch', p, dir);", 1),
         ("Launch(mo, 'SawDamageHorizontal',", "Launch(mo, 'RSQGW_SawCut',", 1),
         ("RSQ_Alias.Exact(a) == 'BrutalAxe'", "a.GetClassName() == 'BrutalAxe'", 1)]
+    patches['rsq/fists.zs'] = basics.fist_patches(FISTS)
     zs_port.port(TREE, patches)
+    # the basics (owner 2026-11-13): the grenade, the door lift, the punch's parts (tools/lib/basics.py)
+    BASICS = basics.common(TREE) + basics.door(TREE)
+    gz, glumps = basics.grenade(TREE)
+    BASICS += gz
+    for k, v in glumps.items(): wr(k, v)
+    note('basics: RSQ Grenade (slot 0, frag only, Doom explosion, barrels x2), Distance Grab\'s door lift, BD22 VR\'s punches (jab / hook / uppercut, barrel kick) and pistol whip')
     for rel, rows_ in (('zscript/rsr/rsr_pump_guns.zs', PUMP if 'RSQGW_Riotgun' in present else ()), ('zscript/rsr/rsb_guns.zs', BRK if 'RSQGW_DoubleSG' in present else ())):
         if not rows_: continue
         bt = rd(os.path.join(TREE, rel))
@@ -296,14 +305,14 @@ def main(want_pk3):
     cp(os.path.join(HERE, 'lib/stubs_melee.zs'), 'zscript/rsq/stubs_melee.zs')
     wr('zscript/rsq/dualtable.zs', dualtable(D))
     own = sorted(os.path.relpath(p, os.path.join(ROOT, 'src')) for p in glob.glob(os.path.join(ROOT, 'src/zscript/**/*.zs'), recursive=True))
-    inc = own + ['zscript/gnrc/dual.gen.zs', 'zscript/gnrc/ogsnd.gen.zs', 'zscript/rsq/alias.zs', 'zscript/rsq/stubs.zs', 'zscript/rsq/stubs_melee.zs', 'zscript/rsq/dualtable.zs'] + ['zscript/' + f for f in zs_port.FILES]
+    inc = own + ['zscript/gnrc/dual.gen.zs', 'zscript/gnrc/ogsnd.gen.zs', 'zscript/rsq/alias.zs', 'zscript/rsq/stubs.zs', 'zscript/rsq/stubs_melee.zs', 'zscript/rsq/dualtable.zs'] + ['zscript/' + f for f in zs_port.FILES] + BASICS
     wr('ZSCRIPT.zs', 'version "4.14"\n// %s %s: Led\'s Generic Weapon Mod rebuilt in ZScript for VR, on BD22 VR\'s meshes, hands and reload (RS_Brutal22WeaponsQ)\n' % (NAME, VERSION)
        + ''.join('#include "%s"\n' % i for i in inc))
 
     # 5. lumps
     H = ['RSVR_HandSync', 'RSQ_PoseHandler', 'RSVR_MeleeHandler', 'RSQ_Handler', 'RSR_ReloadHandler', 'RSB_Handler', 'RSP_Handler', 'RSK_M203Handler', 'RSQ_Muzzle', 'RSQ_HandTone',
          'RSA_Casings', 'RSQ_AmmoHud', 'RSQ_Flick', 'RSQ_Ballistics', 'RSQ_FlashHandler', 'RSQ_PlayerRounds', 'RSQ_ShotFX',
-         'RSQ_Dual', 'RSQ_DualHands', 'RSQ_DualKey', 'RSQ_ScopeReal', 'RSQGW_KickKey']
+         'RSQ_Dual', 'RSQ_DualHands', 'RSQ_DualKey', 'RSQ_ScopeReal', 'RSQGW_KickKey', 'RSQ_Fists', 'RSQB_GN_Handler', 'RSQB_GN_Scatter', 'RSQB_DG_Door']
     wr('MAPINFO.rsq', 'gameinfo\n{\n\tPlayerClasses = "RSQGW_Player"\n\tAddEventHandlers = %s\n}\n' % ', '.join('"%s"' % h for h in H))
     dc = ['user bool rsq_dual_start = true;\t// Start With Two Pistols'] + ['user bool rsq_dual_%d = %s;\t// dual %s' % (k, 'true' if d[5] else 'false', d[4]) for k, d in enumerate(D)]
     wr('CVARINFO.rsq', rd(os.path.join(HERE, 'lib/CVARINFO.base')) + '\n'.join(dc) + '\n')

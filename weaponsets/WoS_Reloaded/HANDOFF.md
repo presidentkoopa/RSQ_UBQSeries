@@ -66,3 +66,17 @@ Next, in order:
 - Flick = BD22 VR's rules only (no "Reloading = Flick" mode). Pump = BD22 VR's (a trigger pull pumps it).
 - Open: Motorsaw alt fire (nothing), dry click sound (Doom 2 switch), 1911 recoil-follow rows borrowed from BrutalPistol.
 - Waiting on the owner's headset test.
+
+## 2026-11-13 basics (owner 01:41)
+- The basics both weapon sets carry (tools/lib/basics.py, identical in both; owner: "the mods themselves will have basic
+  pistol whip, jab hook uppercut, lift doors, uppercut barrels, quick grenade"):
+  - Grenade: RSQ Grenade's own code (Grenade/zscript/rsqgn weapon, hand, thrown, upg, scatter) as RSQB_GN_, slot 0, the
+    frag only (no kinds, no alt fire), Doom's explosion (MISL), barrels take each blast part twice. Pin by the other
+    hand's ring or the teeth, arm throw, cook, Quick Grenade key ("Grenade" key section). Stands down for RSQ_Grenade.pk3.
+  - Punches: BD22 VR's fists.zs, reading jab / hook / uppercut by direction; an uppercut into a barrel kicks it up and
+    away with no damage (RSQ Melee's numbers). Own switch rsqb_punch (on; menu "Punches"). Stand down for RSQ Melee.
+  - Pistol whip: BD22 VR's melee.zs PISTOL kind on the pistols (BrutalPistol rows), main and off hand.
+  - Doors: Distance Grab's door.zs (palm against a manual door, Use, lift). Stands down for Distance Grab.
+- RSQ Grenade no longer stands down for the weapon sets: BD22 VR's grenade placeholder is RSQB_GrenadeLink now.
+- RSQ Melee's shove stands down only with Brutal Doom loaded (shove.zs BD22QLoaded checks BrutalWeapon); pk3 rebuilt.
+- Suite: two more runs, BASICS alone and BASICS_WITH_SERIES (RSQ Grenade, Melee, Distance Grab).

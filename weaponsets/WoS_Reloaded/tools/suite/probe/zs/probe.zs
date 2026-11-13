@@ -8,6 +8,8 @@ class RSPROBE_H : EventHandler
 		"RSP_LoadWait", "RSP_LoadWaitE", "RSP_P1Wait", "RSP_P2Wait", "RSB_Wait", "RSM_Dry", "RSM_FireGrenade", "RSA_RLLock",
 		"DoKick", "AirKick", "RSVR_SawRun", "SemiHold", "PumpStock", "Select", "Deselect" };
 	int shots;
+	int doorLine;
+	override void OnRegister() { doorLine = -1; }
 	Actor spawnedLast;
 	override void WorldTick()
 	{
@@ -52,6 +54,9 @@ class RSPROBE_H : EventHandler
 			Console.Printf("PROBE t%d missile %s", level.maptime, cn);
 		if (cn == 'RSQ_Debris' || cn == 'RSQ_ImpactLight' || cn == 'RSQ_Flash')
 			Console.Printf("PROBE t%d bfx %s", level.maptime, cn);
+		String cs = cn;
+		if (cs.Left(5) == "RSQB_" || cs.Left(6) == "RSQGN_")
+			Console.Printf("PROBE t%d basic %s", level.maptime, cn);
 		if (cn == 'RSQGN_HandBlast' || cn == 'RSQ_M203Fallback')
 			Console.Printf("PROBE t%d blast %s", level.maptime, cn);
 	}
@@ -68,10 +73,7 @@ class RSPROBE_H : EventHandler
 		{
 			if (spawnedLast)
 			{
-				Vector3 af, ad;
-				[af, ad] = RSQ_RocketLock.Aim(mo);
-				Vector3 to = spawnedLast.pos + (0, 0, spawnedLast.height * 0.5) - af;
-				Console.Printf("AIM t%d from %.0f %.0f %.0f dir %.2f %.2f %.2f to target %.0f %.0f %.0f angle %.1f", level.maptime, af.x, af.y, af.z, ad.x, ad.y, ad.z, to.x, to.y, to.z, acos(clamp(to.Unit() dot ad, -1, 1)));
+				// (GNRC_Reloaded has no rocket lock-on: the AIM line is not logged)
 			}
 			if (spawnedLast) Console.Printf("SPAWNED t%d %s health %d pos %.0f %.0f %.0f friendly %d dormant %d", level.maptime, spawnedLast.GetClassName(), spawnedLast.health, spawnedLast.pos.x, spawnedLast.pos.y, spawnedLast.pos.z, spawnedLast.bFriendly, spawnedLast.bDormant);
 			else Console.Printf("SPAWNED t%d gone", level.maptime);
@@ -89,6 +91,60 @@ class RSPROBE_H : EventHandler
 		{
 			let w = players[consoleplayer].ReadyWeapon;
 			if (w && w.Ammo2) w.Ammo2.Amount = e.Args[0];
+			return;
+		}
+		if (e.Name ~== "probe_hand")	// both hands in the body frame (forward, left, up), map units
+		{
+			for (int h = 0; h < 2; h++)
+			{
+				Vector3 d = (h == 0 ? mo.AttackPos : mo.OffhandPos) - mo.pos;
+				double c = cos(mo.angle), s = sin(mo.angle);
+				Console.Printf("HAND t%d %d fwd %.1f left %.1f up %.1f", level.maptime, h, d.x * c + d.y * s, -d.x * s + d.y * c, d.z);
+			}
+			return;
+		}
+		if (e.Name ~== "probe_door")	// the nearest manual door: the player put Args[0] units in front of its face, facing it
+		{
+			Line best = null; double bd = 1e9;
+			for (int i = 0; i < Level.Lines.Size(); i++)
+			{
+				Line l = Level.Lines[i];
+				if (!l.backsector || !RSQB_DG_Door.IsDoorSpecial(l.special) || l.args[0] != 0) continue;
+				double d = (mo.pos.xy - (l.v1.p + l.delta * 0.5)).Length();
+				if (d < bd) { bd = d; best = l; }
+			}
+			if (!best) { Console.Printf("DOOR none"); return; }
+			doorLine = best.Index();
+			Vector2 mid = best.v1.p + best.delta * 0.5;
+			Vector2 nrm = (best.delta.y, -best.delta.x).Unit();	// the front side
+			Vector2 at = mid + nrm * e.Args[0];
+			mo.SetOrigin((at.x, at.y, best.frontsector.floorplane.ZAtPoint(at)), false);
+			mo.angle = VectorAngle(-nrm.x, -nrm.y);
+			mo.vel = (0, 0, 0);
+			Console.Printf("DOOR line %d special %d ceiling %.1f floor %.1f at %.0f %.0f", doorLine, best.special, best.backsector.ceilingplane.ZAtPoint(mid), best.backsector.floorplane.ZAtPoint(mid), at.x, at.y);
+			return;
+		}
+		if (e.Name ~== "probe_blasttest")	// the basic grenade's blast (part 0) 64 units ahead, a barrel Args[0] units past it
+		{
+			Vector3 at = mo.Vec3Angle(64, mo.angle, 0);
+			let g = Actor.Spawn('RSQB_GN_Thrown', at + (0, 0, 8), NO_REPLACE);
+			let b = Actor.Spawn('ExplosiveBarrel', mo.Vec3Angle(64 + e.Args[0], mo.angle, 0), NO_REPLACE);
+			if (!g || !b) { Console.Printf("BLASTTEST no spawn"); return; }
+			g.target = mo;
+			Console.Printf("BLASTTEST barrel at %.0f from the blast, health %d", g.Distance3D(b), b.health);
+			RSQB_GN_Thrown.Blast(g, mo, 0, 1.0);
+			Console.Printf("BLASTTEST after: barrel health %d", b.health);
+			g.Destroy();
+			return;
+		}
+		if (e.Name ~== "probe_ceil" && doorLine >= 0)
+		{
+			Line l = Level.Lines[doorLine];
+			Vector2 mid = l.v1.p + l.delta * 0.5;
+			Vector3 hp = mo.AttackPos;
+			double c2 = l.delta dot l.delta;
+			double tt = clamp(((hp.xy - l.v1.p) dot l.delta) / c2, 0.0, 1.0);
+			Console.Printf("CEIL t%d %.1f hand-to-door %.1f", level.maptime, l.backsector.ceilingplane.ZAtPoint(mid), (hp.xy - (l.v1.p + l.delta * tt)).Length());
 			return;
 		}
 		if (e.Name.Left(12) ~== "probe_spawn:")	// probe_spawn:<class> with Args[0] = map units straight ahead

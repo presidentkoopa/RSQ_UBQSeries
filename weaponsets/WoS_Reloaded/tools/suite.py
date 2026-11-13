@@ -188,6 +188,59 @@ def check(cls, g, t):
             'off hand %s; off rounds %s; %d shots' % ('RSQ_Off_' + cls if offr else 'not taken', ' -> '.join(map(str, ao)), n))
     return R
 
+# ---------------------------------------------------------------------------------------- the basics (tools/lib/basics.py)
+# owner 2026-11-13: a quick grenade (RSQ Grenade's, slot 0, the frag, Doom's explosion, barrels x2), jab / hook / uppercut,
+# an uppercut kicking a barrel, the pistol whip, a door lifted by hand. Run alone, then again with RSQ Grenade, RSQ Melee
+# and RSQ Distance Grab loaded: each basic stands down for the mod that owns it. Hands: qz_rhand "x y z pitch yaw roll"
+# (x right, y up, -z forward, metres; the rig reads 0.3 m forward as 10 map units).
+FISTS, PISTOL = 'RSQWS_Knuckles', 'RSQWS_Beretta'
+SERIES = os.path.join(os.path.dirname(ROOT), '..', 'pk3')
+def jab(h, x): return 'qz_%shand "%s 1.3 -0.3 0 0 0"; wait 1; qz_%shand "%s 1.3 -0.55 0 0 0"; wait 1; qz_%shand "%s 1.3 -0.75 0 0 0"; wait 10; qz_%shand "%s 1.3 -0.1 0 0 0"; wait 20; ' % (h, x, h, x, h, x, h, x)
+def basics_script():
+    s = 'god; notarget; set rsq_switch_log 1; set rsqb_punch 1; qz_rhand "0.25 1.3 -0.1 0 0 0"; qz_lhand "-0.25 1.3 -0.1 0 0 0"; wait 40; '
+    s += mark('NADE') + 'netevent rsqb_gn_quick; wait 20; netevent rsqgn_quick; wait 140; '
+    s += mark('BARREL2') + 'netevent probe_blasttest 175; wait 5; '
+    s += mark('PUNCH') + 'use %s; wait 40; netevent probe_spawn:DoomImp 44; wait 10; ' % FISTS + jab('r', '0.25')
+    s += mark('HOOK') + 'qz_rhand "0.45 1.3 -0.45 0 0 0"; wait 1; qz_rhand "0.45 1.3 -0.45 0 0 0"; wait 25; qz_rhand "0.25 1.3 -0.45 0 0 0"; wait 1; qz_rhand "0.0 1.3 -0.45 0 0 0"; wait 1; qz_rhand "-0.25 1.3 -0.45 0 0 0"; wait 10; qz_rhand "0.25 1.3 -0.1 0 0 0"; wait 20; '
+    s += mark('OFFJAB') + jab('l', '-0.25') + 'kill monsters; wait 10; '
+    s += mark('UPPER') + 'netevent probe_spawn:ExplosiveBarrel 34; wait 10; qz_rhand "0.0 0.8 -0.5 0 0 0"; wait 10; qz_rhand "0.0 1.0 -0.5 0 0 0"; wait 1; qz_rhand "0.0 1.25 -0.5 0 0 0"; wait 1; qz_rhand "0.0 1.5 -0.5 0 0 0"; wait 30; '
+    s += mark('WHIP') + 'use %s; wait 40; qz_rhand "0.25 1.3 -0.3 0 0 0"; qz_lhand "-0.45 0.9 0.0 0 0 0"; wait 10; netevent probe_spawn:DoomImp 40; wait 10; qz_rhand "0.25 1.5 -0.45 70 0 0"; wait 10; qz_rhand "0.25 1.45 -0.5 30 0 0"; wait 1; qz_rhand "0.25 1.35 -0.55 -20 0 0"; wait 1; qz_rhand "0.25 1.2 -0.55 -70 0 0"; wait 20; kill monsters; ' % PISTOL
+    s += mark('DOOR') + 'use %s; wait 40; netevent probe_door 20; wait 5; qz_rhand "0.0 1.2 -0.41 0 0 90"; wait 8; netevent probe_ceil; qz_rhand "0.0 1.45 -0.41 0 0 90"; wait 4; netevent probe_ceil; qz_rhand "0.0 1.8 -0.41 0 0 90"; wait 4; netevent probe_ceil; wait 5; ' % FISTS
+    return s + mark('END') + 'wait 5; quit'
+def basics_check(t, series):
+    S = sections(t); R = []
+    def res(name, ok, why): R.append((name, bool(ok), why))
+    errs = [l for l in t.splitlines() if re.search(r'Script error|VM abort|aborted|FATAL', l)]
+    res('no script error / VM abort', not errs, '; '.join(e.strip()[:120] for e in errs[:3]) or 'none')
+    N = S.get('NADE', [])
+    ours = [l for l in N if 'basic RSQB_GN_Thrown' in l]; boom = [l for l in t.splitlines() if 'basic RSQB_GN_DoomBoom' in l]; theirs = [l for l in N if 'basic RSQGN_Thrown' in l]
+    P = [l for l in t.splitlines() if l.startswith('RSQB punch')]
+    if not series:
+        res('quick grenade: thrown, goes off in Doom\'s explosion', ours and boom, '%d thrown, %d Doom explosions' % (len(ours), len(boom)))
+        b = [l for l in S.get('BARREL2', []) if l.startswith('BLASTTEST')]
+        h = [int(m.group(1)) for l in b for m in [re.search(r'health (-?\d+)', l)] if m]
+        dm = [int(m.group(1)) for l in S.get('BARREL2', []) for m in [re.match(r'DMG t\d+ ExplosiveBarrel by RSQB_GN_Thrown (\d+)', l)] if m]
+        res('barrels take the blast twice', len(h) == 2 and dm and h[0] - h[1] == 2 * dm[0], 'barrel health %s, one hit %s' % (' -> '.join(map(str, h)), dm[:1]))
+        for sec, kind, hand in (('PUNCH', 'jab', 0), ('HOOK', 'hook', 0), ('OFFJAB', 'jab', 1)):
+            pl = [l for l in S.get(sec, []) if l.startswith('RSQB punch') and ('%s, hand %d' % (kind, hand)) in l]
+            res('%s, %s hand' % (kind, 'main' if hand == 0 else 'off'), pl, pl[0].strip() if pl else 'no %s thrown' % kind)
+        dmg = [l for l in S.get('PUNCH', []) if re.match(r'DMG t\d+ DoomImp by RSQB_Punch', l)]
+        res('a jab lands on a monster', dmg, dmg[0].strip() if dmg else 'no damage by RSQB_Punch')
+        up = [l for l in S.get('UPPER', []) if l.startswith('RSQB uppercut kicks')]
+        res('uppercut kicks a barrel up and away, no damage', up and 'health 20' in up[0], up[0].strip() if up else 'no kick')
+        wh = [l for l in S.get('WHIP', []) if re.match(r'DMG t\d+ DoomImp by rsqb_punch', l, re.I)]
+        res('pistol whip lands', wh, wh[0].strip() if wh else 'no whip damage')
+        c = [float(m.group(1)) for l in S.get('DOOR', []) for m in [re.match(r'CEIL t\d+ (-?[\d.]+)', l)] if m]
+        v = [l for l in S.get('DOOR', []) if 'basic RSQB_DG_DoorVoice' in l]
+        res('a door lifted by hand (the palm against it)', len(c) == 3 and c[0] < c[1] < c[2] and v, 'ceiling %s%s' % (' -> '.join('%.1f' % x for x in c), '' if v else ', not the basics\' lift'))
+    else:
+        res('with RSQ Grenade: the basic grenade stands down, RSQ Grenade throws', not ours and theirs, 'basic %d, RSQ Grenade %d' % (len(ours), len(theirs)))
+        res('with RSQ Melee: the basic punches stand down', not P, '%d basic punches' % len(P))
+        v = [l for l in S.get('DOOR', []) if 'basic RSQB_DG_DoorVoice' in l]
+        c = [float(m.group(1)) for l in S.get('DOOR', []) for m in [re.match(r'CEIL t\d+ (-?[\d.]+)', l)] if m]
+        res('with Distance Grab: the basic door lift stands down, Distance Grab lifts it', not v and len(c) == 3 and c[0] < c[2], 'basic voice %d, ceiling %s' % (len(v), ' -> '.join('%.1f' % x for x in c)))
+    return R
+
 def main():
     only = sys.argv[1:]
     fp = open(os.path.join(OUT, 'tree.sha256')).read().strip()
@@ -206,8 +259,17 @@ def main():
         results[cls] = check(cls, g, t)
         bad = [r for r in results[cls] if not r[1]]
         print('%-20s %s' % (cls, 'PASS' if not bad else 'FAIL: ' + ', '.join(r[0] for r in bad)), flush=True)
+    if not only:
+        for key, extra in (('BASICS', []), ('BASICS_WITH_SERIES', [os.path.join(SERIES, f) for f in ('RSQ_Grenade.pk3', 'RSQ_Melee.pk3', 'RSQ_DistanceGrab.pk3')])):
+            rig.run('suite_' + key, [pk, probe] + extra, basics_script(), secs=600)
+            src = os.path.join(RIG, 'runs', 'suite_' + key + '.log')
+            t = open(src, errors='replace').read() if os.path.exists(src) else ''
+            if os.path.exists(src): shutil.copyfile(src, os.path.join(LOGS, key + '.log'))
+            results[key] = basics_check(t, bool(extra))
+            bad = [r for r in results[key] if not r[1]]
+            print('%-20s %s' % (key, 'PASS' if not bad else 'FAIL: ' + ', '.join(r[0] for r in bad)), flush=True)
     shutil.rmtree(tmp)
-    allok = all(ok for R in results.values() for _, ok, _ in R) and not only and len(results) == len(G)
+    allok = all(ok for R in results.values() for _, ok, _ in R) and not only and len(results) == len(G) + 2
     rep = ['# RSQ_WeaponsOfSaturn rig suite', '', 'Tree %s. %s.' % (fp[:16], 'ALL PASSED' if allok else 'NOT PASSED'), '',
            'QuestZDoom 17.3 rig, Freedoom 2 MAP01, god + notarget, controllers driven as cvars. Raw logs: out/suite/<class>.log.', '']
     for cls, R in results.items():
