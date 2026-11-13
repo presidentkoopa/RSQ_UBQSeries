@@ -150,6 +150,9 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
 - **They don't wait.** After 7 seconds a bit is gone: it blinks, faster and faster, over its last two seconds, or fades over its last second (your choice).
 - **One monster pays once.** Brutal Doom's invisible helpers and its crawling, burning or slumped dying bodies never
   drop bits.
+- **A miniboss's thrall drops no health bits** (owner 2026-11-12: "no red bits drop"): with RSQ Miniboss loaded, a bit a
+  thrall rolls as health is not dropped; its armour and ammo bits drop as any monster's. The miniboss's own fountain
+  keeps its health bits.
 
 *[GIF to come: a baron bursting into a fountain of bits that fly to the player]*
 
@@ -259,7 +262,8 @@ While you are DOWN in RSQ SlowMo:
 - **RSQ Miniboss:** its miniboss fight calls the arrival beams (V1 thralls with a V3 miniboss, or V2 thralls with V4, picked
   per fight, each in its monster's tier colour), the GUARD! and TARGET! words, the pops, and the miniboss fight scene music
   (its **Miniboss Music** row). Here: a crown with tier pips over the miniboss's bar and a chain link over its thralls;
-  with its **Boss Kill Rewards** row on, a miniboss counts as a boss for Kill Rewards (its boss fountain). Without this pack, its monsters land in teleport fog.
+  with its **Boss Kill Rewards** row on, a miniboss counts as a boss for Kill Rewards (its boss fountain); its thralls'
+  bits are armour and ammo only (asked by name: "RSQMB_Called" and its service's "wasboss"). Without this pack, its monsters land in teleport fog.
 - **RSQ SlowMo:** the DOWN tie-ins above, and its DOWN Music (its **DOWN Music** row). Here: Numbers in Slow-Mo, and the
   optional level-up slow-motion pulse.
 - **RSQ Gun Bonsai VR** and **Gun Bonsai:** the level-up band and the weapon tag (with Gun Bonsai VR, the gun's name and
@@ -313,6 +317,7 @@ rows are each player's own.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, run `mbthrall2`, the owner's full order with BD22 VR Reloaded 2.0.4q and RSQ Miniboss; Debug Log on) | **A thrall drops no health bits:** 4 thralls of a called-in miniboss fight burst into 0, 1, 1 and 2 bits, all armour or ammo ("RS_CommonZombie (136 hp, miniboss thrall) burst into 5 bits of 14 rolled: 0 health, 2 armour, 3 ammo (1 health bits left out: a thrall drops none)" in `mbthrall1`); the test probe counted 0 `RSQ_KRHealthBit` spawned at any thrall's death. **The miniboss's fountain unchanged:** "RS_CyanImp2 (95 hp, miniboss as boss) burst into 29 bits of 29 rolled: 4 health, 4 armour, 21 ammo". A map monster's bits unchanged ("RS_CommonZombie (20 hp) burst into 2 bits"). No script error from this pack |
 | **code only, not shown** (2026-11-11 22:00; loads clean on the full order, not run) | LegenDoom: Drop Words. Over a LegenDoom drop, the rarity (EPIC, RARE, ...) and the power's name (LegenDoom's own, e.g. MURDEROUS) in the SOTN look, in the rarity's colours, until it is picked up; then they fade (owner: "the words over a LegenDoom drop (EPIC plus the power's name)"). The drop is told by the LD<Slot>Legendary<Rarity> and LD<Slot>Effect_<Power> tokens it carries. Off: the LegenDoom: Drop Words row |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f, ColorfulHell and Champions) had no script error from our packs. **The HP bar's icons:** the tier gem and the Champion power icon left of the bar; **Tier Gem and Champion Icons** off, ours go and Champions' own icon is back; on again. Champion frames logged against their tokens: all 9 colours seen match (`evidence/V3_hpbar_icons_on_off_on.jpg`, `L2_log.txt`). The Tier Gem and Champion Icons row, On (`evidence/menus_new_rows.jpg`) |
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md`, `RESULTS_P2.md`) | **V1:** the miniboss music stopped at a map change, and no track came back until the next call-in. **V2:** the music volume changed only while fading in and out, untouched in the 800-odd tics between. **The scene music** started once for a landing that retried twice (B1). **No extra multiplier for a miniboss fight:** Kill Rewards burst the miniboss into 25 bits (83 hp x 3 / 10), not tripled again (B6). All logs (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **AMMO FULL** as a word over a full gun caught by RSQ Distance Grab (`P2F_log.txt`, `P2_D3_ammo_full_dropped_at_feet_after_fix.jpg`) |

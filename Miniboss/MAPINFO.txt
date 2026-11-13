@@ -1,4 +1,4 @@
 GameInfo
 {
-	AddEventHandlers = "RSQMB_HandSync", "RSQMB_GCopy", "RSQMB_Handler", "RSQMB_SwapCatch"
+	AddEventHandlers = "RSQMB_HandSync", "RSQMB_GCopy", "RSQMB_Handler", "RSQMB_SwapCatch", "RSQMB_ThrallDrops"
 }

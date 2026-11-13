@@ -43,7 +43,7 @@
 //   PAYOFF     its miniboss killed: a win counted (BfPayoff) and RSQ Score's "Miniboss Called" row (handler.zs BossDied).
 //              The drops are other mods' (owner 2026-11-12): BD22 VR Reloaded's RSLD legendary weapon (50/30/15/5, it asks
 //              this mod's service "bossfight" / "tier" / "wasboss"), RSQ VisualRewards' boss bits (it counts as a boss),
-//              Champions' own bundle and RSQ Tactical Rig's cigarette refill ("wasboss"). This mod's own gun / power-up
+//              Champions' own bundle and RSQ Tactical Rig's one cigarette ("wasboss"). This mod's own gun / power-up
 //              drop was cut 2026-11-12 (design/MINIBOSS_CLEANUP_AUDIT.md 3.3).
 // Rig only, not headset-confirmed.
 // ============================================================================

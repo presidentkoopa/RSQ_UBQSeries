@@ -11,6 +11,7 @@ version "4.14"
 #include "zscript/rsqmb/service.zs"
 #include "zscript/rsqmb/bossfight.zs"   // BOSSFIGHT: the meter, the call-in, the arrival in view, the payoff
 #include "zscript/rsqmb/fight.zs"       // THE FIGHT, REWORKED (2026-11-09): segments, shield, window, tier-ups, words, glow
+#include "zscript/rsqmb/thralldrops.zs" // THRALLS DROP NO GUN (owner 2026-11-12): a thrall's gun pickup is taken away
 #include "zscript/rsqmb/carry.zs"       // A NEW BODY KEEPS ITS CHAMPION: a tier swap carries Champions' record, the body rises again
 #include "zscript/rsqmb/bossbar.zs"     // THE MINIBOSS BAR (owner 2026-11-12, mockup E): head, name, slanted bar, GUARD, X2, LED clock, thrall bars
 #include "zscript/rsqmb/hud.zs"         // the Bossfight meter under RSQ Score's bar; the fight's HUD stack in its place

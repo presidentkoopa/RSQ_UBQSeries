@@ -35,7 +35,8 @@ gets stronger.
 - **Don't shoot it first.** Shoot it while its thralls live, and if a thrall is still standing a few seconds later, every
   monster on the map goes into a rage: twice as fast and twice as keen to attack, until the miniboss dies.
 - **When it dies.** A legendary weapon (Brutal Doom 22 VR Reloaded's, of some rarity), a fountain of RSQ VisualRewards
-  bits, its Champion's own drops, your cigarette pocket refilled (RSQ Tactical Rig), RSQ Score's Miniboss row.
+  bits, its Champion's own drops, one cigarette (RSQ Tactical Rig), RSQ Score's Miniboss row. A thrall drops only its
+  Champion's bundle, armour and ammo: no gun, no health bits.
 
 ---
 
@@ -289,15 +290,26 @@ or you leave the level, every monster is put back exactly as it was.
 - **Bits** from RSQ VisualRewards' Kill Rewards: with **Boss Kill Rewards** on it counts as a boss, so it always drops
   bits, a boss's fountain of them.
 - **Its Champion's drops:** Champions' own item bundle (with Champions' **Spawn Item Bundles?** on, its default).
-- **Cigarettes:** RSQ Tactical Rig fills your cigarette pocket (with its cigarettes on and **Minibosses Refill
-  Cigarettes** on).
+- **A cigarette:** RSQ Tactical Rig gives you one (owner 2026-11-12: "change to +1 cigarette, cigarettes are massively
+  powerful now"; it filled the pocket before), never past your pocket's size (with its cigarettes on, they are off by
+  default, and **Miniboss Kill Gives a Cigarette** on).
 - **RSQ Score:** the **Miniboss** row at 3x the kill: one row, one reward.
 - **A win counted** (it adds to the pick level under Tier From's "Set").
 
 *(The gun or power-up this mod used to drop was cut 2026-11-12: the legendary weapon is the drop. The extra x3 bits and
 Score's life crate went earlier: the drops will be balanced once the arcade systems are designed.)*
 
-*Rig only, not headset-confirmed (2026-11-12, run `mbdrop1`): see Status.*
+**A thrall killed** (owner 2026-11-12: "no gun drop, no red bits drop. just champion bundle, armor and ammo."):
+
+- **Its Champion's drops:** Champions' own item bundle.
+- **Armour and ammo bits** from RSQ VisualRewards' Kill Rewards: a thrall's bits are never health bits (the red ones).
+- **Its ammo:** the ammo its monster drops.
+- **No gun.** The weapon its monster would drop (a zombie's chaingun, Brutal Doom's replacer for it, any Brutal Doom
+  weapon spawner) is taken away by this mod the tic after it appears (`thralldrops.zs`); its legendary weapon is taken
+  away by Brutal Doom 22 VR Reloaded. A thrall killed after its miniboss counts too (in the code; not shown on the rig).
+
+*Rig only, not headset-confirmed (2026-11-12, runs `mbdrop1` and, for the thralls and the one cigarette, `mbthrall2`):
+see Status.*
 
 
 ---
@@ -351,7 +363,7 @@ happen.
   its player level and your weapons' levels raise the arrival colours (the colour bonus).
 - **RSQ Accessibility and RSQ Gun Cards:** the watch check for the call-in (this mod carries its own copy too).
 - **RSQ Tactical Rig:** while a miniboss fight can be called, the watch check's Use press is the call-in's and the gun stays
-  put; killing a miniboss fills your cigarette pocket (its cigarettes are off by default: Tactical Rig's own page).
+  put; killing a miniboss gives you one cigarette (its cigarettes are off by default: Tactical Rig's own page).
 - **RSQ Grapple and RSQ Whip:** with **Can't Be Yanked** on, they refuse to yank or throw a miniboss: the line pulls you
   to it instead, as with a boss.
 - **RSQ Melee:** with **Can't Be Headlocked** on, its headlock refuses a miniboss.
@@ -394,7 +406,8 @@ are in map units (32 to a metre).
 
 | | |
 |---|---|
-| **rig only, not headset-confirmed** (2026-11-12, run `mbdrop1`, the owner's full order with BD22 VR Reloaded 2.0.4q; probe `rig/work/mbprobe`) | **The miniboss's death drops** (a called-in fight, an RS_GreenImp miniboss with 5 thralls, killed by a probe as the player): BD22 VR Reloaded's legendary weapon ("RSLD drop: LDFistsPickupLegendary kept (the miniboss's)", "miniboss, tier 1, rolls Common", an `RSLD_LegendaryPickup` on the floor 43 units from the body); RSQ VisualRewards' boss fountain ("RS_GreenImp (64 hp, miniboss as boss) burst into 19 bits": 2 health, 7 armour, 10 ammo bits); Champions' bundle (a `champion_Bundle` at the body: 5 health bonuses, 3 armour bonuses); RSQ Tactical Rig's refill (pocket set to 0 first, then "cigarettes +3 (miniboss): 3 of 3"; with its cigarettes switched on for the run, they are off by default); RSQ Score's "Miniboss Called" row. No drop of this mod's own ("no drop of its own"). **The classic pick is gone:** with the old `rsqmb_classic 1`, `rsqmb_per_map 4`, `rsqmb_map_chance 100` set and the map loaded again, no miniboss at load and none after `netevent rsqmb_choose`; the engine's own copy of the two menus has no Classic, Per Map, Map Chance or Thrall Range row. No script error from the pack (only BD_VoxelPack's four voxeldef errors). Seen, not changed: the **thralls** still drop Champions' bundles, Kill Rewards bits and Brutal Doom's gun drops (their legendary weapons are taken away). Not shown: a save from before the cut loaded |
+| **rig only, not headset-confirmed** (2026-11-12, run `mbthrall2`, the owner's full order with BD22 VR Reloaded 2.0.4q; probe `rig/work/mbprobe_td`, a copy of `mbprobe` that also lists what lies at each thrall's death; `mbthrall1` before the last fix) | **What a thrall drops** (a called-in fight, an RS_GreenImp miniboss with 4 RS_CommonZombie thralls, killed by the probe as the player). Each of the 4 thrall deaths: Champions' `champion_Bundle` (its health and armour bonuses), clips and shells, and RSQ VisualRewards' bits with **no health bit** ("RS_CommonZombie (42 hp, miniboss thrall) burst into 1 bits of 4 rolled: 0 health, 1 armour, 0 ammo"; across the 4: 0 health, 1 armour, 3 ammo, the probe's spawn count 0 `RSQ_KRHealthBit`). Each zombie's gun drop (`ChaingunSpawnerReplacer`, 16 to 82 tics after the death) taken away the tic after it appeared: 4 of 4, "RSQMB thrall drop: ChaingunSpawnerReplacer removed, a thrall's gun", so no `ChaingunSpawner` (the gun) came of them. Their legendary weapons still taken by BD22 VR Reloaded ("suppressed (a thrall's)"). **The miniboss's drops unchanged:** "kept (the miniboss's)" legendary weapon, its bits with health ("burst into 29 bits of 29 rolled: 4 health, 4 armour, 21 ammo"), its Champion's bundle; nothing of the miniboss's taken. **One cigarette:** pocket set to 1, the miniboss killed, "T_RIG cigarettes +1 (miniboss): 2 of 3" (Tactical Rig's cigarettes switched on for the run). No script error from the series (only BD_VoxelPack's four voxeldef errors). In `mbthrall1` one gun of 3 was missed: the killing blow threw the body 132 units from where it died; the gun is now matched to the body where it lies too. Seen, not this mod's: a chaingun and its spawner lying near one thrall's death came from a map zombie that died before any thrall did (no thrall had died when they spawned). Not shown: a thrall of another monster type (a shotgunner's, an imp's), a thrall killed after its miniboss, a save loaded within the tic between a gun appearing and its removal |
+| **rig only, not headset-confirmed** (2026-11-12, run `mbdrop1`, the owner's full order with BD22 VR Reloaded 2.0.4q; probe `rig/work/mbprobe`) | **The miniboss's death drops** (a called-in fight, an RS_GreenImp miniboss with 5 thralls, killed by a probe as the player): BD22 VR Reloaded's legendary weapon ("RSLD drop: LDFistsPickupLegendary kept (the miniboss's)", "miniboss, tier 1, rolls Common", an `RSLD_LegendaryPickup` on the floor 43 units from the body); RSQ VisualRewards' boss fountain ("RS_GreenImp (64 hp, miniboss as boss) burst into 19 bits": 2 health, 7 armour, 10 ammo bits); Champions' bundle (a `champion_Bundle` at the body: 5 health bonuses, 3 armour bonuses); RSQ Tactical Rig's refill (pocket set to 0 first, then "cigarettes +3 (miniboss): 3 of 3"; with its cigarettes switched on for the run, they are off by default; one cigarette since, run `mbthrall2`); RSQ Score's "Miniboss Called" row. No drop of this mod's own ("no drop of its own"). **The classic pick is gone:** with the old `rsqmb_classic 1`, `rsqmb_per_map 4`, `rsqmb_map_chance 100` set and the map loaded again, no miniboss at load and none after `netevent rsqmb_choose`; the engine's own copy of the two menus has no Classic, Per Map, Map Chance or Thrall Range row. No script error from the pack (only BD_VoxelPack's four voxeldef errors). Seen, then changed (run `mbthrall2`, the row above): the **thralls** still dropped Champions' bundles, Kill Rewards bits with health bits and Brutal Doom's gun drops (their legendary weapons were taken away). Not shown: a save from before the cut loaded |
 | **rig only, not headset-confirmed** (2026-11-12, runs `mbkeep0` before, `mbkeep5` after; probe `rig/work/mbprobe`) | A colour change keeps the miniboss and its thralls boosted legendary Champions. Before: each new body lost its Champion's controller (a Dark Green miniboss came back with a random Violet, a Black thrall came back plain or Pink) and was no longer risen. After: the miniboss stayed Indigo through four body swaps (three missed windows and a life lost) and a Bronze thrall through two, each with exactly one Champions controller of its own colour, `LDLegendaryMonsterTransformed` (risen again in 2 tics), and its share of health (0.85 and 0.41 of the new body's full). Map monsters swapped by the same windows were not touched: Champions' Override Chance stayed -1 and the only champions among them were Champions' own single rolls (10 of 19 in `mbkeep5`, 4 of 19 in the earlier `mbkeep3`, 6 of 19 before in `mbkeep0`). No script errors from the pack. Not shown: a hybrid or mutated Champion carried, Champions' Dormant option on, a save loaded mid-swap |
 | **rig only, not headset-confirmed** (2026-11-12, run `force1`, Champions' Legendoom Compatibility OFF) | Every monster of the encounter a real Champion (all four carry Champions' own record): thralls Green, Indigo, Violet after two repeats landed again; each beam in its Champion colour; Champions' Override Chance back to its own -1 after the landing |
 | **rig only, not headset-confirmed** (2026-11-12, runs `rise4`, `rise5`) | Miniboss and every thrall arrive already risen: LegenDoom's own rise (healed, stat boost, `LDLegendaryMonsterTransformed`, so Champions boosts them too) happens during the 3-second charge, 10 of 10 thralls and both minibosses risen; extra health (Champions' Red, our boost) given back after; no script errors from the pack |
@@ -431,6 +444,10 @@ are in map units (32 to a metre).
   itself), so they stack with Champions, LegenDoom and the monster's own. A fraction of a point carries to the next
   blow, so weak shots still count against a tough miniboss. Its lives come from holding it at 1 HP, never from the
   engine's BOSS flag: a miniboss counts as a boss only for the systems switched on under Other Mods Treat It as a Boss.
+- **A thrall's gun drop** is found by its own handler (`RSQMB_ThrallDrops`): every monster death is kept for five
+  seconds while a thrall's is recent, and a weapon pickup born then (a Weapon, a pickup that replaces one, a Brutal Doom
+  weapon spawner; never LegenDoom's or RSLD's) is judged the next tic, by the actor that spawned it or else the nearest
+  death (its spot or the body where it lies now). A thrall's is destroyed. With Debug Log on, a line for each.
 - **The arrival's room test** uses an invisible probe the size of each monster (1.25x for the miniboss): floor, ceiling,
   walls and things, plus your line of sight. The idea of trying the map's own monster start spots comes from Dynamic
   Enemy Reinforcements v3.

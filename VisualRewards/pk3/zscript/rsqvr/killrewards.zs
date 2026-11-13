@@ -145,6 +145,20 @@ class RSQ_KRHandler : EventHandler
 		return sv && sv.GetInt("bossfor", "rewards", 0, 0, a) == 1;
 	}
 
+	// A MINIBOSS FIGHT'S THRALL (owner 2026-11-12 20:4x: "no gun drop, no red bits drop. just champion bundle, armor and
+	// ammo."): its bits are armour and ammo only; a bit that rolls health is not dropped (the armour and ammo bits roll as
+	// before). Asked by name, nothing links: the monster carries "RSQMB_Called" (a called-in fight's monster, dead or
+	// alive, for good) and RSQMB_Service "wasboss" says it is not the miniboss. Without RSQ Miniboss: never.
+	static bool ThrallHere(Actor a)
+	{
+		if (!a) return false;
+		String cn = "RSQMB_Called";
+		class<Inventory> cc = cn;
+		if (!cc || !a.FindInventory(cc)) return false;
+		let sv = ServiceIterator.Find("RSQMB_Service").Next();
+		return sv && sv.GetInt("wasboss", "", 0, 0, a) == 0;
+	}
+
 	// SETTINGS GENERATIONS, each once (rsqvr_cfgver; the config saves every value, so a changed CVARINFO default never
 	// reaches a machine that has run the mod: its old value sticks). DistanceGrab's / ShieldSaw's pattern.
 	// 1 (owner, 11-04 18:16): Bits Fly to Me 2 m by default (BUGS_0.99a item 35: at the old 0 a VR player standing still
@@ -175,6 +189,7 @@ class RSQ_KRHandler : EventHandler
 		if (!killer && a.target && a.target.player) killer = a.target;
 
 		bool boss = BossHere(a);
+		bool thrall = !boss && ThrallHere(a);
 		int mult = boss ? max(0, SVI("rsqgb_kr_boss", 3)) : 1;
 		int num = 0;
 		if (SVI("rsqgb_kr_mode", 0) == 1)
@@ -210,8 +225,9 @@ class RSQ_KRHandler : EventHandler
 		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); }
 		// Debug Log (rsqgb_kr_debug, noarchive): one line a kill, the proof a run can grep for
 		if (SVB("rsqgb_kr_debug", false))
-			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo", level.maptime, cn, a.SpawnHealth(),
-				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : ""), nh + na + nm, num, nh, na, nm);
+			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo%s", level.maptime, cn, a.SpawnHealth(),
+				a.bBoss ? ", boss" : (boss ? ", miniboss as boss" : (thrall ? ", miniboss thrall" : "")), nh + na + nm, num, nh, na, nm,
+				thrall ? String.Format(" (%d health bits left out: a thrall drops none)", lastNoHealth) : "");
 	}
 
 	// RSQ SlowMo's DOWN (by name): this player is DOWN now
@@ -230,12 +246,15 @@ class RSQ_KRHandler : EventHandler
 	}
 
 	// num bits out of a body, SoM's throw; Rich Bits (the killer's) draws them glowing (additive) a level
+	transient int lastNoHealth;      // health bits a thrall's last Burst left out (the debug line)
 	int, int, int Burst(Actor a, int num, int rich, bool boss = false)
 	{
 		int wh, wa, wm;
 		[wh, wa, wm] = Mix();
 		int sum = wh + wa + wm;
+		lastNoHealth = 0;
 		if (sum <= 0) return 0, 0, 0;
+		bool thrall = !boss && ThrallHere(a);     // a miniboss fight's thrall: no health bits (ThrallHere)
 		int chance = clamp(SVI("rsqgb_kr_chance", 50), 0, 100);
 		int nh = 0, na = 0, nm = 0;
 		for (int i = 0; i < num; ++i)
@@ -243,6 +262,7 @@ class RSQ_KRHandler : EventHandler
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
 			int r = random[RSQKR](1, sum);
 			String cls;
+			if (r <= wh && thrall) { ++lastNoHealth; continue; }
 			if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
 			else if (r <= wh + wa) { cls = "RSQ_KRArmorBit"; ++na; }
 			else { cls = "RSQ_KRAmmoBit"; ++nm; }

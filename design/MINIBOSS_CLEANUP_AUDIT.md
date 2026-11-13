@@ -159,9 +159,19 @@ Each step needs: build, then a rig run on the owner's load order with no new scr
   legendary weapon away ("suppressed (a thrall's)"), but each thrall still drops Champions' bundle (health and armour
   bonuses, clips), RSQ VisualRewards' Kill Rewards bits (1 to 7 a thrall) and Brutal Doom's own gun drop
   (ChaingunSpawner from a zombie). So thralls do not drop nothing today.
+  **RESOLVED 2026-11-12 (owner 20:4x: "no gun drop, no red bits drop. just champion bundle, armor and ammo.").** A thrall
+  now drops Champions' bundle, armour and ammo bits and its ammo; no health bit (RSQ VisualRewards `killrewards.zs`
+  ThrallHere) and no gun (RSQ Miniboss `thralldrops.zs`, `RSQMB_ThrallDrops`: a weapon pickup born of a thrall's death is
+  destroyed the next tic; BD22 VR Reloaded untouched, its RSLD still takes the legendary weapon). The miniboss's drops
+  are unchanged. **Rig only, not headset-confirmed (run `mbthrall2`):** 4 of 4 thralls' `ChaingunSpawnerReplacer` removed,
+  0 health bits at 4 thrall deaths, the miniboss's legendary weapon, bundle and 4 health bits as before.
 - **"Refills cigarettes"**: done by RSQ Tactical Rig (README "Plays well with"), not by Miniboss. **Shown on the rig
   (run `mbdrop1`):** pocket 0, the miniboss killed, "cigarettes +3 (miniboss): 3 of 3". Tactical Rig's cigarettes
   (`rsqtr_cig`) are OFF by default, so with default settings there is no pocket to refill.
+  **CHANGED 2026-11-12 (owner 20:4x: "change to +1 cigarette, cigarettes are massively powerful now"):** a miniboss kill
+  gives one cigarette, never past the pocket's size (Tactical Rig `cig.zs`; the row now reads "Miniboss Kill Gives a
+  Cigarette"; Cigarettes still off by default). **Rig only, not headset-confirmed (run `mbthrall2`):** pocket 1, the
+  miniboss killed, "cigarettes +1 (miniboss): 2 of 3".
 - **DONE 2026-11-12.** **The inner-wrist card's header comment** (`bossfight.zs` 418-430) still said "either wrist"; the code is
   off-hand only. The comment now says the off-hand wrist.
 - **Tier swaps** now keep the Champion (this session, `carry.zs`). Not shown yet: a hybrid or mutated Champion carried,

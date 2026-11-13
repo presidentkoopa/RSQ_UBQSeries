@@ -83,7 +83,7 @@ class RSQMB_Service : Service
 			return n;
 		}
 		if (request ~== "thrall") return isThrall ? 1 : 0;
-		// was this the miniboss itself, alive or dead (RSQ Tactical Rig refills its cigarettes on the kill; owner 11-05)
+		// was this the miniboss itself, alive or dead (RSQ Tactical Rig gives a cigarette on the kill; owner 11-05, +1 since 11-12)
 		if (request ~== "wasboss") return (b && a && b.mb == a) ? 1 : 0;
 		if (request ~== "enraged")
 		{
