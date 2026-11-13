@@ -532,6 +532,7 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
         pk3 = os.path.join(OUT, '%s_%s.pk3' % (NAME, VERSION))
         pack(pk3)
         print(pk3, os.path.getsize(pk3) // 1024, 'KB')
+        shutil.copyfile(pk3, os.path.join(ROOT, os.path.basename(pk3)))	# owner: the pk3 lives in the set's own folder until 1.0
 
 def pack(pk3, tree=TREE):
     with zipfile.ZipFile(pk3, 'w', zipfile.ZIP_DEFLATED) as z:
