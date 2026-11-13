@@ -418,6 +418,13 @@ class RS_RosterHandler : EventHandler
 		Class<Actor> dial = CHDial(fam);
 		if (!dial) return;
 
+		// [ladder system, design/LADDER_SYSTEM.md point 1] the sliding window around the world tier, every colour
+		if (RS_Ladder.On())
+		{
+			Class<Actor> lc = RS_Ladder.ClassForRung(fam, RS_Ladder.Roll(fam));
+			if (lc) { e.Replacement = lc; e.IsFinal = true; return; }
+		}
+
 		if (!cvEnable) cvEnable = CVar.FindCVar("rs_roster_enable");
 		int cap = (cvEnable && cvEnable.GetBool()) ? FamilyCap(fam) : TIER_MAX;
 		if (cap < TIER_MAX)

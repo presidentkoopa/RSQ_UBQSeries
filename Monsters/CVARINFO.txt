@@ -1197,6 +1197,10 @@ server int rsq_mon_retier_health = 1;
 server bool rsq_mon_bdtier = true;
 server int  rsq_mon_worldtier = 1;
 server bool rsq_mon_bdtier_debug = false;
+// [ladder system, test branch wip/2026-11-13-ladder-system] design/LADDER_SYSTEM.md: one switch, default off. On:
+// ColorfulHell spawns by the sliding window around rsq_mon_worldtier, ladder health, boss-grade Black/White, EX above
+// White, the tier's colour wins over Champions' and Universal Entropy's tints.
+server bool rsq_mon_ladder = false;
 
 
 server int rs_roster_zombieman = 1;

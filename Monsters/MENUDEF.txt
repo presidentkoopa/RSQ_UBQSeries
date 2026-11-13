@@ -71,6 +71,7 @@ OptionMenu "RSQMN_Options"
 	Slider "World Tier (test)", "rsq_mon_worldtier", 1, 20, 1, 0
 	StaticText "Each step raises every monster one colour: ColorfulHell's,", "DarkGray"
 	StaticText "Brutal Doom's, XMVE's and plain Doom's.", "DarkGray"
+	Option "Ladder System (test branch)", "rsq_mon_ladder", "OnOff"
 
 	StaticText ""
 	StaticText "Miniboss", "Gold"

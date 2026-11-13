@@ -855,6 +855,8 @@ class RS_Retier play
 		String mn = mo.GetClassName();
 		int fam = RS_TierLadder.FamilyOfAny(mn);
 		if (fam < 0) return null;
+		// [ladder system point 3] EX is its own rung above White: an EX body is never swapped down to the plain one
+		if (RS_Ladder.On() && RS_TierLadder.IsEXName(mn)) return null;
 		// already on that tier: nothing (an EX body re-asked its own tier keeps its EX build, never swapped to the plain one)
 		if (RS_TierLadder.TierOfAny(mn) == tier) return null;
 		Name nn = RS_TierLadder.ClassFor(fam, tier);
@@ -874,12 +876,17 @@ class RS_Retier play
 		if (oldFull > 0)
 			frac = clamp(double(mo.health) / double(oldFull), 0.05, 1.0);
 
+		// [ladder system] tell RS_LadderHandler this body is a tier change, not a map spawn (no Cyan zombie trio)
+		let lh = RS_Ladder.H();
+		if (lh) lh.swapping = true;
 		Actor a = Actor.Spawn(nc, mo.pos, NO_REPLACE);
+		if (lh) lh.swapping = false;
 		if (!a) return null;
 		// [11-13 fix 4] a body that got its colour from a tier change stands on the family's ladder health, so a step
 		// up never loses health; and it is marked, so the world tier does not raise it a second time as it spawns
 		LadderHealth(a, fam, tier);
 		a.GiveInventory("RS_WorldMark", 1);
+		if (lh && RS_Ladder.On()) a.GiveInventoryType('RS_LadderTrioMark');   // in case its spawn event comes later
 
 		a.angle   = mo.angle;
 		a.pitch   = mo.pitch;
@@ -1056,6 +1063,9 @@ class RS_RetierHandler : EventHandler
 		String cn = a.GetClassName();
 		if (!(cn.Left(3) ~== "RS_")) return;
 		a.bNOICEDEATH = true;
+		// [ladder system, test branch] with rsq_mon_ladder on, RS_LadderHandler owns a spawn's colour (the window) and its
+		// health (RS_LadderData): nothing below, or a window spawn would be raised a second time
+		if (RS_Ladder.On()) return;
 
 		// [11-13 world tier for ColorfulHell, design/BD_XMVE_TIERING.md 7.1] A ColorfulHell monster at world tier S
 		// stands S - 1 colours above its natural roll, on ladder health. A capped family got its raised class when it
