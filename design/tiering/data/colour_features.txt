@@ -1,0 +1,676 @@
+================= Common
+Chaingunne RS_CommonCGuy        hp    70 sp 8.0 pc 170 rs=-/- flags=
+      spawns=
+      fns=A_SpawnItemEx give=[] df=[]
+Revenant   RS_CommonRevenant    hp   300 sp10.0 pc 100 rs=-/- flags=+MISSILEMORE +NOFEAR
+      spawns=RS_RevenantTracer2[fire]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Mancubus   RS_CommonFatso       hp   600 sp 8.0 pc  80 rs=-/- flags=
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Arch-Vile  RS_CommonArch        hp   700 sp15.0 pc  10 rs=-/- flags=+DONTHARMCLASS
+      spawns=
+      fns=A_SpawnItemEx A_VileChase give=[] df=['"Extinguishing", 3.0']
+Baron      RS_CommonBaron       hp  1000 sp 8.0 pc  50 rs=-/- flags=+QUICKTORETALIATE
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Lost Soul  RS_CommonLSoul       hp   100 sp 8.0 pc 256 rs=-/- flags=+MISSILEEVENMORE +MISSILEMORE
+      spawns=
+      fns=A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Pain Eleme RS_CommonPE          hp   400 sp 8.0 pc 128 rs=-/- flags=
+      spawns=
+      fns=A_CustomMeleeAttack A_PainAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Cyberdemon RS_CommonCybie       hp  4000 sp16.0 pc  20 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=Rocket
+      fns=A_CustomMeleeAttack A_CustomMissile A_RadiusThrust A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Spider Mas RS_CommonMind        hp  3000 sp12.0 pc  40 rs=-/- flags=+NOFEAR -NORADIUSDMG
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Demon      RS_CommonDemon       hp   150 sp10.0 pc 150 rs=-/- flags=
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['"Wrangler", 3.0']
+Cacodemon  RS_CommonCaco        hp   400 sp 8.0 pc 128 rs=-/- flags=
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Hell Knigh RS_CommonHK          hp   500 sp 8.0 pc  50 rs=-/- flags=+QUICKTORETALIATE
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Arachnotro RS_CommonSP1         hp   500 sp12.0 pc 128 rs=-/- flags=
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Imp        RS_CommonImp         hp    60 sp 8.0 pc 200 rs=-/- flags=
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['"Extinguishing", 3.0']
+Shotgunner RS_CommonSG          hp    30 sp 8.0 pc 170 rs=-/- flags=
+      spawns=
+      fns=A_SpawnItemEx give=[] df=[]
+Spectre    RS_CommonSpectre     hp   150 sp10.0 pc 150 rs=-/- flags=
+      spawns=
+      fns= give=[] df=['"Wrangler", 3.0']
+Zombieman  RS_CommonZombie      hp    20 sp 7.0 pc 200 rs=-/- flags=
+      spawns=
+      fns=A_SpawnItemEx give=[] df=[]
+================= Green
+Chaingunne RS_GreenCGuy         hp    85 sp 8.0 pc 150 rs=-/- flags=
+      spawns=
+      fns=A_CustomBulletAttack A_SpawnItemEx give=[] df=[]
+Revenant   RS_GreenRevenant     hp   360 sp11.0 pc  88 rs=-/- flags=+MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_AcidBlast1[Plasma], RS_Splash11
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Mancubus   RS_GreenFatso        hp   750 sp 8.0 pc  70 rs=-/- flags=+BOSSDEATH
+      spawns=RS_GreenBomb1[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Arch-Vile  RS_GreenArch         hp   750 sp16.0 pc   8 rs=-/- flags=+NOTARGET +QUICKTORETALIATE
+      spawns=
+      fns=A_SpawnItemEx A_VileChase give=[] df=['"Extinguishing", 3.0']
+Baron      RS_GreenBaron        hp  1170 sp 9.0 pc  40 rs=-/- flags=+BOSSDEATH +MISSILEMORE +QUICKTORETALIATE
+      spawns=RS_GreeniesBR[Poison], RS_Spspit2[Plasma], RS_Spspit3[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Lost Soul  RS_GreenLSoul        hp   120 sp 8.0 pc 200 rs="SoulTrans"/- flags=+DONTFALL +FLOAT +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY +NOICEDEATH
+      spawns=RS_SplasherSoul[Poison]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Pain Eleme RS_GreenPE           hp   500 sp 8.0 pc 112 rs=-/- flags=+FLOAT +NOGRAVITY
+      spawns=RS_Gas13[Poison]
+      fns=A_CustomMeleeAttack A_PainAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Cyberdemon RS_GreenCybie        hp  5000 sp16.0 pc  16 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_SplashRocket[Fire]
+      fns=A_CustomMeleeAttack A_CustomMissile A_RadiusThrust A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Spider Mas RS_GreenMind         hp  4200 sp12.0 pc  40 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_SpidieShot1[Poison]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Demon      RS_GreenDemon        hp   170 sp11.0 pc 130 rs=-/- flags=
+      spawns=
+      fns=A_CustomMeleeAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0']
+Cacodemon  RS_GreenCaco         hp   450 sp 8.0 pc 110 rs=-/- flags=+FLOAT +NOGRAVITY
+      spawns=RS_Cacospit1[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Hell Knigh RS_GreenHK           hp   600 sp 9.0 pc  50 rs=-/- flags=+QUICKTORETALIATE -BOSSDEATH
+      spawns=
+      fns=A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Arachnotro RS_GreenSP1          hp   600 sp13.0 pc 100 rs=-/- flags=+BOSSDEATH +MISSILEMORE
+      spawns=RS_Spspit[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Imp        RS_GreenImp          hp    70 sp 8.0 pc 180 rs=-/- flags=
+      spawns=RS_GreenIBall[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Extinguishing", 3.0']
+Shotgunner RS_GreenSG           hp    45 sp 8.0 pc 160 rs=-/- flags=
+      spawns=RS_SGshot1[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=[]
+Spectre    RS_GreenSpectre      hp   175 sp12.0 pc 130 rs="Add"/0.20 flags=
+      spawns=
+      fns=A_CustomMeleeAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0']
+Zombieman  RS_GreenZombie       hp    40 sp 9.0 pc 180 rs=-/- flags=+MISSILEMORE
+      spawns=RS_Gas11[Poison]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=[]
+================= Blue
+Chaingunne RS_BlueCGuy          hp   105 sp 8.0 pc 150 rs=-/- flags=
+      spawns=RS_BlueChainPuff3
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx give=[] df=[]
+Revenant   RS_BlueRevenant      hp   420 sp12.0 pc  77 rs="SoulTrans"/0.95 flags=+LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_Zap7, RS_Zap8[Plasma]
+      fns=A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"Falling", 0.0', '"Scrapper", 3.0']
+Mancubus   RS_BlueFatso         hp   850 sp 7.0 pc  60 rs=-/- flags=+BOSSDEATH +NOFEAR
+      spawns=RS_BlueFT[Plasma], RS_BlueFT2[Plasma], RS_Bluewave1[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Arch-Vile  RS_BlueArch          hp   860 sp17.0 pc   6 rs=-/- flags=+DONTHARMCLASS +NOTARGET +QUICKTORETALIATE
+      spawns=RS_BigBolt2[Plasma], RS_BlueGash
+      fns=A_CustomMissile A_SpawnItemEx A_VileChase give=[] df=['"Extinguishing", 3.0']
+Baron      RS_BlueBaron         hp  1309 sp11.0 pc  30 rs=-/- flags=+BOSSDEATH +MISSILEMORE +QUICKTORETALIATE
+      spawns=RS_SmashBall4[Plasma], RS_SmashBalls2[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Lost Soul  RS_BlueLSoul         hp   145 sp 9.0 pc 175 rs="SoulTrans"/- flags=+DONTFALL +FLOAT +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY +NOICEDEATH
+      spawns=
+      fns=A_CustomBulletAttack A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Pain Eleme RS_BluePE            hp   610 sp 8.0 pc 100 rs="SoulTrans"/0.9 flags=+FLOAT +NOGRAVITY
+      spawns=RS_PlasmaPE[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_PainAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Cyberdemon RS_BlueCybie         hp  5800 sp18.0 pc  12 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_BluCybArt[Plasma], RS_BluCybFX, RS_PlasmaBallSP5, RS_SwooshCB[Plasma], RS_SwooshCB2[Plasma]
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_RadiusThrust A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Spider Mas RS_BlueMind          hp  5600 sp18.0 pc  25 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEEVENMORE +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_FrostLong[Ice], RS_FrostMind[Ice], RS_IceOrb[Ice]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0', '"ice", 0.6']
+Demon      RS_BlueDemon         hp   205 sp13.0 pc 110 rs=-/- flags=+LAXTELEFRAGDMG
+      spawns=
+      fns=A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0', '"Fire", 1.1', '"Falling", 0.0']
+Cacodemon  RS_BlueCaco          hp   480 sp10.0 pc 100 rs=-/- flags=+FLOAT +MISSILEMORE +NOGRAVITY
+      spawns=RS_CacoFire2[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Hell Knigh RS_BlueHK            hp   666 sp10.0 pc  50 rs=-/- flags=+MISSILEMORE +QUICKTORETALIATE -BOSSDEATH
+      spawns=RS_BaronsBlueBalls[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Arachnotro RS_BlueSP1           hp   700 sp14.0 pc  80 rs=-/- flags=+BOSSDEATH +MISSILEMORE
+      spawns=RS_PlasmaBallSP3[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Imp        RS_BlueImp           hp    83 sp 9.0 pc 170 rs=-/- flags=+MISSILEMORE
+      spawns=RS_Blufier1[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Extinguishing", 3.0']
+Shotgunner RS_BlueSG            hp    55 sp 9.0 pc 150 rs=-/- flags=
+      spawns=RS_SGLance1[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=[]
+Spectre    RS_BlueSpectre       hp   210 sp14.0 pc 110 rs="Add"/- flags=+VISIBILITYPULSE
+      spawns=
+      fns=A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0']
+Zombieman  RS_BlueZombie        hp    60 sp 9.0 pc 140 rs=-/- flags=+MISSILEMORE
+      spawns=
+      fns=A_CustomBulletAttack A_SpawnItemEx give=[] df=[]
+================= Purple
+Chaingunne RS_PurpleCGuy        hp   120 sp 8.0 pc 150 rs=-/- flags=
+      spawns=RS_Boomer1[Fire], RS_Boomer2, RS_Boomer3
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=[]
+Revenant   RS_PurpleRevenant    hp   515 sp13.0 pc  66 rs="SoulTrans"/0.92 flags=+LAXTELEFRAGDMG +MISSILEEVENMORE +MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_Purp1[Plasma], RS_Zap99
+      fns=A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"Scrapper", 3.0', '"Falling", 0.0']
+Mancubus   RS_PurpleFatso       hp   950 sp 6.0 pc  20 rs=-/- flags=+BOSSDEATH +DONTHARMCLASS +NOFEAR
+      spawns=RS_PurpleBomb1[Fire]
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Arch-Vile  RS_PurpleArch        hp  1001 sp18.0 pc   4 rs=-/- flags=+DONTHARMCLASS +NOFEAR +NOTARGET +QUICKTORETALIATE +THRUSPECIES -NORADIUSDMG
+      spawns=RS_PurpleWorry, RS_SpecialRev
+      fns=A_RadiusGive A_SpawnItemEx A_VileChase give=['RS_GrowRaisin'] df=['"Extinguishing", 3.0']
+Baron      RS_PurpleBaron       hp  1500 sp11.0 pc  30 rs=-/- flags=+BOSSDEATH +MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_BaronWave[Fire], RS_Spear11[Plasma], RS_Zap88
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Lost Soul  RS_PurpleLSoul       hp   150 sp 9.0 pc 192 rs="SoulTrans"/- flags=+DONTFALL +FLOAT +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY +NOICEDEATH +NOTARGET
+      spawns=
+      fns=A_ChangeFlag A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0', '"ice", 1.2']
+Pain Eleme RS_PurplePE          hp   790 sp 6.0 pc 128 rs="Add"/0.9 flags=+FLOAT +NOGRAVITY
+      spawns=RS_PurplePE1, RS_PurplePE2
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Cyberdemon RS_PurpleCybie       hp  6400 sp13.0 pc  16 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_CBWave[Fire], RS_OrbCB, RS_Propane[Fire], RS_SpecialHK
+      fns=A_CustomMeleeAttack A_CustomMissile A_RadiusThrust A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Spider Mas RS_PurpleMind        hp  6666 sp12.0 pc  20 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR +THRUSPECIES -NORADIUSDMG
+      spawns=RS_DemoMissile[Fire], RS_OrbPurpleMind[Plasma], RS_SpecialSpider1
+      fns=A_ChangeFlag A_CustomBulletAttack A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['0.25', '"Heroic", 3.0']
+Demon      RS_PurpleDemon       hp   260 sp15.0 pc  80 rs=-/- flags=+LAXTELEFRAGDMG +NOFEAR
+      spawns=
+      fns=A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0', '"Fire", 1.2', '"Falling", 0.0']
+Cacodemon  RS_PurpleCaco        hp   528 sp11.0 pc  90 rs=-/- flags=+FLOAT +MISSILEMORE +NOGRAVITY
+      spawns=RS_Cacofire3[Fire], RS_Cacofire4[Fire]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Hell Knigh RS_PurpleHK          hp   730 sp11.0 pc  50 rs="SoulTrans"/1 flags=+MISSILEMORE +QUICKTORETALIATE -BOSSDEATH
+      spawns=RS_HKBolt2[Plasma], RS_PurpFire2
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Arachnotro RS_PurpleSP1         hp   800 sp16.0 pc  20 rs="Add"/1 flags=+BOSSDEATH +MISSILEMORE
+      spawns=
+      fns=A_CustomBulletAttack A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Imp        RS_PurpleImp         hp   105 sp10.0 pc 150 rs=-/- flags=+MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_Bounc11[Fire]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Extinguishing", 3.0']
+Shotgunner RS_PurpleSG          hp    75 sp 9.0 pc 150 rs=-/- flags=+NOFEAR
+      spawns=RS_Purpfire2[Fire]
+      fns=A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=[]
+Spectre    RS_PurpleSpectre     hp   250 sp16.0 pc  80 rs="Add"/- flags=+NOFEAR +STEALTH
+      spawns=
+      fns=A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0']
+Zombieman  RS_PurpleZombie      hp    95 sp10.0 pc 120 rs="SoulTrans"/1 flags=+MISSILEMORE
+      spawns=RS_Orbb11[Plasma]
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx give=[] df=[]
+================= Cyan
+Chaingunne RS_CyanCGuy2         hp   125 sp11.0 pc  88 rs="Add"/0.95 flags=+BRIGHT +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +NOICEDEATH
+      spawns=RS_IceZombieShot2
+      fns=A_CustomMissile A_SpawnItemEx ThrustThingZ give=[] df=['"Fire", 1.5', '"Melee", 1.5', '"Ice", 0.10', '"Falling", 0.0']
+Revenant   RS_CyanRevenant2     hp   480 sp14.0 pc 120 rs=-/- flags=+LAXTELEFRAGDMG +MISSILEEVENMORE +MISSILEMORE +NOFEAR +NOICEDEATH +QUICKTORETALIATE
+      spawns=RS_BigBallCrev[Ice], RS_ChainWhipRev[Melee], RS_IceORBCyanRev[Ice]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx ThrustThingZ give=[] df=['"Falling", 0.0', '"Scrapper", 3.0', '"Ice", 0.15', '"Melee", 1.5', '"fire", 1.5']
+Mancubus   RS_CyanFatso2        hp   720 sp11.0 pc  70 rs=-/- flags=+BOSSDEATH +BRIGHT +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +NOICEDEATH
+      spawns=RS_CyanFatBall[Ice]
+      fns=A_CustomMissile A_SkullAttack A_SpawnItemEx ThrustThingZ give=[] df=['"Scrapper", 3.0', '"Melee", 1.5', '"Fire", 1.25', '"Ice", 0.1', '"Falling", 0']
+Arch-Vile  RS_CyanVile          hp  1200 sp21.0 pc  10 rs=-/- flags=+DONTHARMCLASS +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +NOICEDEATH +NOTARGET +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_CyanLSoul2, RS_IceStartVile4, RS_IceToMeetVile1
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx A_VileChase ThrustThingZ give=['RS_GrowRaisin'] df=['"Extinguishing", 3.0', '"Ice", 0.10', '"PLWater", 0.25', '"Falling", 0.0', '"Melee", 2.5']
+Baron      RS_CyanBaron2        hp  1666 sp18.0 pc  64 rs="Add"/0.99 flags=+BOSSDEATH +BRIGHT +DONTHARMCLASS +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +NOICEDEATH +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_BaronCyanBomb[Ice], RS_BaronStarCyan[Ice], RS_FrostWingBaron, RS_FrostWingBaron2, RS_IceSeekerBaron[Ice]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx ThrustThingZ give=[] df=['"Plasma", 0.7', '"Blessed", 3.0', '"Ice", 0.15', '"PLWater", 0.25', '"Falling", 0.0']
+Lost Soul  RS_CyanLSoul2        hp    80 sp 8.0 pc 192 rs="SoulTrans"/0.66 flags=+DONTFALL +FLOAT +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY +NOICEDEATH
+      spawns=RS_BaronCyanBombTrail, RS_CyanSoulEye, RS_CyanSoulEye2
+      fns=A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0', '"ice", 0.2', '"Melee", 2.0']
+Pain Eleme RS_CyanPE2           hp   963 sp17.0 pc 128 rs=-/- flags=+BRIGHT +DONTHARMCLASS +FLOAT +FLOATBOB +MISSILEMORE +NOFEAR +NOGRAVITY +NOICEDEATH
+      spawns=RS_IceOrbCyanAra1[Ice], RS_IceOrbCyanAra2[Ice]
+      fns=A_CustomMissile A_PainAttack A_SpawnItemEx A_VileChase ThrustThingZ bNOPAIN give=[] df=['"Fire", 1.5', '"Melee", 1.5', '"Antiair", 3.0', '"ice", 0.2', '"PLWater", 0.25']
+Cyberdemon RS_CyanCybie2        hp  8083 sp31.0 pc  32 rs=-/- flags=+BOSS +BRIGHT +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR -FLOAT -FLOATBOB -NOGRAVITY -NORADIUSDMG
+      spawns=RS_BaronCyanBombTrail, RS_CyanCybieBigIce[Ice], RS_CyanCybieBigIce2, RS_CyanCybieBigIce3, RS_CyanCybieGunFlare, RS_CyanCybieHower, RS_CyanCybieSprayIce[Ice]
+      fns=A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Heroic", 3.0', '0.5', '"Melee", 2.0', '"Fire", 2.0', '"Ice", 0.35']
+Spider Mas RS_CyanMind2         hp  7777 sp21.0 pc  10 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR -FLOAT -FLOATBOB -NOGRAVITY -NORADIUSDMG
+      spawns=RS_BaronCyanBombTrail, RS_CyanSpidTrail, RS_IceOrbCyanMind[Ice], RS_IceOrbCyanMind2, RS_SpiderCyanBomb[Ice]
+      fns=A_CustomMissile A_SetTranslucent A_SpawnItemEx A_Teleport give=[] df=['"Heroic", 3.0', '0.5', '"Melee", 1.75', '"Fire", 1.75', '"Ice", 0.35']
+Demon      RS_CyanDemon2        hp   270 sp27.0 pc  64 rs=-/- flags=+DONTHARMCLASS +LAXTELEFRAGDMG +MISSILEEVENMORE +MISSILEMORE +NOICEDEATH +NOTARGET +THRUSPECIES
+      spawns=RS_SpikeCyanRev[Ice]
+      fns=A_ChangeFlag A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx bNOPAIN give=[] df=['"Wrangler", 3.0', '"Melee", 2.0', '"Fire", 1.5', '"Ice", 0.15', '"PLWater", 0.25']
+Cacodemon  RS_CyanCaco2         hp   500 sp24.0 pc 110 rs=-/- flags=+DONTHARMCLASS +FLOAT +FLOATBOB +MISSILEMORE +NOFEAR +NOGRAVITY +NOICEDEATH
+      spawns=RS_BigIceCaco[Ice], RS_SmallIceCaco[Ice]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Antiair", 3.0', '"ice", 0.2', '"Melee", 2.0', '"Fire", 1.5', '"PLWater", 0.25']
+Hell Knigh RS_CyanHK2           hp   700 sp16.0 pc  80 rs="Add"/1.0 flags=+BRIGHT +LAXTELEFRAGDMG +MISSILEEVENMORE +MISSILEMORE +NOFEAR +NOICEDEATH +QUICKTORETALIATE
+      spawns=RS_CyanHKShade, RS_IceHKShot[Ice], RS_IceOrbCyanHK[Ice], RS_SpikeCyanRev[Ice]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx ThrustThingZ give=[] df=['"Blessed", 3.0', '"Ice", 0.15', '"PLWater", 0.25', '"Falling", 0.0', '"Melee", 1.25']
+Arachnotro RS_CyanSP2           hp   777 sp20.0 pc 128 rs="Add"/1.0 flags=+BOSSDEATH +BRIGHT +MISSILEMORE +NOFEAR +NOICEDEATH -FLOAT -FLOATBOB -NOGRAVITY
+      spawns=RS_BaronCyanBombTrail, RS_IceOrbCyanAra1[Ice], RS_IceOrbCyanAra2[Ice], RS_SpiderCyanBomb[Ice]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0', '"Ice", 0.15', '"PLWater", 0.25', '"Melee", 1.25', '"fire", 2.0']
+Imp        RS_CyanImp2          hp   125 sp14.0 pc  84 rs="Add"/0.99 flags=+LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +NOICEDEATH +QUICKTORETALIATE
+      spawns=RS_CyanImpBall[Ice], RS_FrostLong2
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx ThrustThingZ give=[] df=['"Melee", 1.5', '"Extinguishing", 3.0', '"Fire", 1.5', '"Ice", 0.15', '"PLWater", 0.25']
+Shotgunner RS_CyanSG2           hp    60 sp 8.0 pc 128 rs=-/- flags=+LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +NOICEDEATH
+      spawns=RS_IceZombieShot2
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx ThrustThingZ give=[] df=['"Fire", 1.5', '"Melee", 2.0', '"Ice", 0.10', '"Falling", 0.0']
+Spectre    RS_CyanSpectre2      hp   270 sp27.0 pc  64 rs=-/- flags=+DONTHARMCLASS +LAXTELEFRAGDMG +NOICEDEATH +NOTARGET +THRUSPECIES
+      spawns=RS_SpikeCyanRev[Ice]
+      fns=A_ChangeFlag A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx bNOPAIN give=[] df=['"Wrangler", 3.0', '"Melee", 2.0', '"Fire", 1.5', '"Ice", 0.15', '"PLWater", 0.25']
+Zombieman  RS_CyanZombie2       hp    30 sp 9.0 pc  40 rs=-/- flags=+MISSILEMORE +NOICEDEATH +THRUSPECIES
+      spawns=RS_IceZombieShot[Ice]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Fire", 2.0', '"Melee", 2.0']
+================= Brown
+Chaingunne RS_BrownCGuy2        hp   250 sp 6.0 pc 102 rs=-/- flags=+MISSILEMORE +NOFEAR +NOINFIGHTING
+      spawns=RS_BrownOrbCguy[Fire], RS_BrownSandBagCGuy
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx give=[] df=[]
+Revenant   RS_BrownRevenant2    hp   666 sp12.0 pc 120 rs=-/- flags=+MISSILEEVENMORE +MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_BrownRevBall[Plasma], RS_BrownVileGas
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx give=['RS_RevSpeedBuff'] df=['"Scrapper", 3.0', '"fire", 1.25', '"PLWater", 2.0']
+Mancubus   RS_BrownFatso2       hp   850 sp11.0 pc  70 rs=-/- flags=+BOSSDEATH
+      spawns=RS_FatsoSoundWave[Plasma], RS_ZapFFAT
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Arch-Vile  RS_BrownVile         hp  1400 sp21.0 pc  12 rs=-/- flags=+DONTTHRUST +FLOAT +FLOATBOB +NODAMAGETHRUST +NOGRAVITY +NOICEDEATH +NOPAIN
+      spawns=RS_ArchRingHelp, RS_BrownBoiVile[Melee], RS_BrownVileRock, RS_BrownVileRock2, RS_BrownVileRock3, RS_Drt1, RS_Drt2, RS_Drt3, RS_MediCacoBrown
+      fns=A_RadiusGive A_SpawnItemEx give=['Health', 'RS_GrowRaisin', 'RS_ShieldUpVile'] df=['"Extinguishing", 3.0']
+Baron      RS_BrownBaron2       hp  2250 sp28.0 pc  20 rs=-/- flags=+BOSSDEATH +DONTHARMCLASS +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_BBaronCmonAndSlam, RS_BaronBrownRock[Melee], RS_BrownBaronFlame, RS_BrownBaronSpiral, RS_BrownVileGas
+      fns=A_CustomMeleeAttack A_CustomMissile A_RadiusThrust A_SpawnItemEx give=[] df=['"Blessed", 3.0', '"Fire", 0.5', '"Falling", 0.0']
+Lost Soul  RS_BrownLSoul2       hp   125 sp15.0 pc   0 rs="SoulTrans"/- flags=+DONTFALL +FLOAT +FLOATBOB +MISSILEEVENMORE +MISSILEMORE +NOBLOOD +NOGRAVITY +NOICEDEATH +NOPAIN
+      spawns=
+      fns=A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx A_VileChase give=[] df=['"Antiair", 3.0']
+Pain Eleme RS_BrownPE2          hp   800 sp12.0 pc 128 rs=-/- flags=+BRIGHT +DONTHARMCLASS +FLOAT +FLOATBOB +MISSILEMORE +NOFEAR +NOGRAVITY
+      spawns=RS_BrownPEDed, RS_BrownPEShot[Plasma], RS_SplashBrownPE
+      fns=A_CustomMeleeAttack A_CustomMissile A_PainAttack A_SpawnItemEx give=[] df=['"Fire", 1.25', '"Melee", 0.75', '"Antiair", 3.0']
+Cyberdemon RS_BrownCybie2       hp  7557 sp17.0 pc  12 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +FULLVOLACTIVE +FULLVOLDEATH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_BCybExplosionSet[plasma], RS_BCybExplosionSet2[plasma], RS_BCybExplosionSet3[plasma], RS_BCybSlimeSet[plasma], RS_BCybieGreenExpand, RS_BCybieGreenWave[Plasma], RS_BrownCybBasic[Plasma], RS_GreenBalb2[Plasma], RS_Splash11
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx bNOPAIN give=['RS_BrCybCheck'] df=['0.25', '"PLWater", 1.25', '"poison", 0.1', '"Plasma", 0.70', '"Heroic", 3.0']
+Spider Mas RS_BrownMind2        hp  8858 sp16.0 pc  64 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +FULLVOLDEATH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_BrownMindBone2[Melee], RS_BrownOrbMind[Fire], RS_MediCacoBrown, RS_RedMessMindB, RS_SpidieShotGray[Melee], RS_WindBlastMasterMind, RS_WindBlastMasterMind2, RS_WindBlastMasterMind3, RS_ZombieRock
+      fns=A_CustomMissile A_RadiusGive A_RadiusThrust A_SpawnItemEx bNOPAIN give=['RS_EatableMind', 'RS_ShieldUpMind'] df=['"Fire", 1.20', '"Heroic", 3.0', '"ice", 0.15', '0.5', '"ice", 0.50']
+Demon      RS_BrownDemon2       hp   420 sp17.0 pc  33 rs=-/- flags=+DONTHARMCLASS +NOFEAR
+      spawns=RS_BrownDemonGhost, RS_BrownOrbDemon[Fire], RS_RedDemonBloodBolt3[Fire]
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Wrangler", 3.0', '"Fire", 1.25']
+Cacodemon  RS_BrownCaco2        hp   500 sp18.0 pc  64 rs=-/- flags=+DONTHARMCLASS +FLOAT +FLOATBOB +MISSILEMORE +NOFEAR +NOGRAVITY +NOTARGET
+      spawns=RS_GrellBallBrown[Melee], RS_MediCacoBrown
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx give=['Health', 'RS_BrownImpCommand', 'RS_SpeedBuffPE'] df=['"Antiair", 3.0']
+Hell Knigh RS_BrownHK2          hp   700 sp12.0 pc  50 rs=-/- flags=+LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_BrownHKShield, RS_BrownHKShieldCheck[Melee], RS_HKRedDeath[Fire], RS_HellionBall[Fire]
+      fns=A_CustomMeleeAttack A_CustomMissile A_RadiusThrust A_SpawnItemEx give=[] df=['"Blessed", 3.0', '"PLWater", 1.5', '"Falling", 0.0', '"Melee", 0.65', '"fire", 0.80']
+Arachnotro RS_BrownSP2          hp   600 sp24.0 pc  32 rs=-/- flags=+BOSSDEATH +MISSILEMORE +NOTARGET +QUICKTORETALIATE
+      spawns=RS_BrownOrbSpiderCH[Plasma], RS_MediCacoBrown
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx give=['Health'] df=['"Scrapper", 3.0']
+Imp        RS_BrownImp2         hp   215 sp 9.0 pc 128 rs=-/- flags=+MISSILEMORE +NOFEAR
+      spawns=RS_BrownImpShieldMini, RS_FatsoSpikes2[Melee]
+      fns=A_CustomMeleeAttack A_CustomMissile A_RadiusGive A_RadiusThrust A_SpawnItemEx give=['RS_BrownImpCommand'] df=['"Melee", 0.5', '"Extinguishing", 3.0']
+Shotgunner RS_BrownSG2          hp   155 sp 9.0 pc 102 rs=-/- flags=+NOFEAR
+      spawns=RS_BrownSGshot, RS_Drt1, RS_Drt2, RS_Drt3
+      fns=A_CustomBulletAttack A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=[]
+Spectre    RS_BrownSpectre2     hp   300 sp17.0 pc  33 rs="Translucent"/0.15 flags=+DONTHARMCLASS +NOFEAR +NOINFIGHTING
+      spawns=RS_MediCacoBrown
+      fns=A_CustomMeleeAttack A_RadiusGive A_SpawnItemEx give=['Health', 'RS_BrownImpCommand', 'RS_SpeedBuffPE'] df=['"Wrangler", 3.0', '"Fire", 1.25']
+Zombieman  RS_BrownZombie2      hp   100 sp 8.0 pc 128 rs=-/- flags=+NOINFIGHTING
+      spawns=
+      fns=A_SetTranslucent A_SpawnItemEx A_Warp ThrustThingZ give=[] df=[]
+================= Yellow
+Chaingunne RS_YellowCGuy        hp   200 sp10.0 pc 135 rs=-/- flags=+MISSILEEVENMORE +MISSILEMORE
+      spawns=RS_PlasmaBallSP3[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=[]
+Revenant   RS_YellowRevenant    hp   666 sp 7.0 pc  30 rs="Add"/0.85 flags=+DONTHARMCLASS +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_FireHand1, RS_FireSpeNewYel, RS_Firespe1[Fire], RS_Homer1[Fire], RS_SparkPuff1, RS_SpecialSoul
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Fire", 0.3', '"Scrapper", 3.0', '"PLWater", 2.0', '"Falling", 0.0']
+Mancubus   RS_YellowFatso       hp  1250 sp 6.0 pc  14 rs=-/- flags=+BOSSDEATH +DONTBLAST +DONTHARMCLASS +DONTMORPH +DONTSQUASH +NOFEAR +NOTELEOTHER
+      spawns=RS_FatsoShotYE[Plasma], RS_RocketShotFatso[Fire]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Arch-Vile  RS_YellowArch        hp  1333 sp18.0 pc   4 rs="Add"/- flags=+DONTHARMCLASS +NOFEAR +NOTARGET +QUICKTORETALIATE +THRUSPECIES -NORADIUSDMG
+      spawns=RS_ArcRing1, RS_ArcRing2, RS_ArchSpawnerOrb
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx A_VileChase give=['RS_GrowRaisin'] df=['"Extinguishing", 3.0']
+Baron      RS_YellowBaron       hp  1888 sp15.0 pc  20 rs=-/- flags=+BOSSDEATH +DONTHARMCLASS +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_BaronFBomb, RS_BaronRing, RS_BaronStar[Fire], RS_BaronStar2[Fire], RS_FireHand1, RS_SparkPuff1
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0', '"Fire", 0.7', '"Plasma", 0.7', '"Falling", 0.0']
+Lost Soul  RS_YellowLSoul       hp   180 sp12.0 pc 120 rs="Add"/1 flags=+DONTFALL +FLOAT +FLOATBOB +NOBLOOD +NOFEAR +NOGRAVITY +NOICEDEATH
+      spawns=
+      fns=A_ChangeFlag A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0', '"ice", 1.2']
+Pain Eleme RS_YellowPE          hp   900 sp11.0 pc 128 rs="SoulTrans"/0.9 flags=+DONTHARMCLASS +FLOAT +MISSILEMORE +NOFEAR +NOGRAVITY
+      spawns=RS_LavaballPE[Fire]
+      fns=A_CustomMeleeAttack A_CustomMissile A_PainAttack A_SpawnItemEx give=[] df=['"Fire", 0.5', '"Antiair", 3.0', '"ice", 1.2']
+Cyberdemon RS_YellowCybie       hp  7777 sp19.0 pc   0 rs="SoulTrans"/0.95 flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +NOPAIN -NORADIUSDMG
+      spawns=RS_CybieRain[Fire], RS_CybieRainMaker[Fire], RS_SparkPuff1, RS_Vollrey[Fire], RS_Vollrey2[Fire], RS_YellowHK
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Spider Mas RS_YellowMind        hp  7777 sp12.0 pc  10 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR -FLOAT -FLOATBOB -NOGRAVITY -NORADIUSDMG
+      spawns=RS_AracnorbBall, RS_FiendPlasmaBall[Plasma], RS_PlasmaBallSP3[Plasma], RS_RemoteBombV2[Fire], RS_YellowSP1
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Demon      RS_YellowDemon       hp   325 sp18.0 pc  75 rs=-/- flags=+DONTHARMCLASS +NOFEAR
+      spawns=RS_ZapZapCB[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0', '"Fire", 1.25']
+Cacodemon  RS_YellowCaco        hp   720 sp12.0 pc  80 rs=-/- flags=+DONTHARMCLASS +FLOAT +MISSILEMORE +NOFEAR +NOGRAVITY -NORADIUSDMG
+      spawns=RS_SpitFireCaco[Fire], RS_VoidField[DIMp]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Hell Knigh RS_YellowHK          hp   999 sp10.0 pc  50 rs="SoulTrans"/1 flags=+MISSILEMORE +NOFEAR +QUICKTORETALIATE -BOSSDEATH -NORADIUSDMG
+      spawns=RS_BigHK[Fire], RS_FireHKBall1[Fire], RS_SparkPuff1
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0', '"Fire", 0.75', '"PLWater", 1.65', '"ice", 0.75', '"Fire", 0.5']
+Arachnotro RS_YellowSP1         hp   777 sp18.0 pc 150 rs=-/- flags=+BOSSDEATH +MISSILEMORE +NOFEAR +SEEINVISIBLE -FLOAT -FLOATBOB -NOGRAVITY
+      spawns=RS_AracnorbBall
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Imp        RS_YellowImp         hp   145 sp10.0 pc 120 rs=-/- flags=+MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_Firespe1[Fire], RS_SpitFireImp[Fire]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Extinguishing", 3.0', '"PLWater", 1.5', '"fire", 0.75', '"ice", 0.85']
+Shotgunner RS_YellowSG          hp    85 sp 9.0 pc 128 rs=-/- flags=+MISSILEMORE +NOFEAR
+      spawns=
+      fns=A_CustomBulletAttack A_SpawnItemEx bNOPAIN give=[] df=[]
+Spectre    RS_YellowSpectre     hp   320 sp17.0 pc  60 rs="Add"/- flags=+NOFEAR +STEALTH
+      spawns=
+      fns=A_ChangeFlag A_CustomMeleeAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0']
+Zombieman  RS_YellowZombie      hp   140 sp13.0 pc 100 rs=-/- flags=+MISSILEMORE
+      spawns=RS_MiniRKTZombie[Fire]
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Melee", 2']
+================= FireBlu
+Chaingunne RS_FireBluCGuy2      hp   450 sp18.0 pc 135 rs=-/- flags=+MISSILEMORE
+      spawns=RS_FireBCGguy[Fire]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=[]
+Revenant   RS_FireBluRevenant2  hp   720 sp 6.0 pc  12 rs=-/- flags=+DONTHARMCLASS +MISSILEEVENMORE +MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_BoomSkel1[Fire], RS_FBSkelCH01[Fire], RS_FBSkelCH02[Fire], RS_FBSkelCH03[Fire], RS_FBSkelCH04[Fire]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0', '"Ice", 0.9', '"fire", 0.75']
+Mancubus   RS_FireBluFatso2     hp  1400 sp 7.0 pc  45 rs=-/- flags=+BOSSDEATH +DONTBLAST +DONTHARMCLASS +DONTMORPH +DONTSQUASH +MISSILEMORE +NOFEAR +NOICEDEATH
+      spawns=RS_FireBluFatsoBal1[Plasma], RS_FireBluFatsoBal2[Plasma], RS_HBeastSmoke
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0', '"Fire", 0.25', '"Ice", 0.5']
+Arch-Vile  RS_FireBluArch2      hp  1000 sp19.0 pc   4 rs=-/- flags=+NOTARGET +QUICKTORETALIATE
+      spawns=RS_FireBluCGuy, RS_FireBluCaco, RS_FireBluHK, RS_FireBluLSoul, RS_FireBluRevenant, RS_FireBluSG
+      fns=A_SpawnItemEx A_VileChase give=[] df=['"Extinguishing", 3.0']
+Baron      RS_FireBluBaron2     hp  2300 sp20.0 pc  32 rs=-/- flags=+DONTHARMCLASS +MISSILEMORE +NOFEAR +NOPAIN +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_BluBBall, RS_BluPowerBomb[Plasma], RS_RedBBall[Plasma], RS_RedPower, RS_RedPowerBomb[Melee]
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Fire", 0.5', '"Blessed", 3.0']
+Lost Soul  RS_FireBluLSoul2     hp   175 sp15.0 pc   0 rs="SoulTrans"/- flags=+DONTFALL +FLOAT +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY +NOICEDEATH +NOPAIN
+      spawns=
+      fns=A_CustomMeleeAttack A_Explode A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0', '"ice", 1.2']
+Pain Eleme RS_FireBluPE2        hp   800 sp20.0 pc 110 rs=-/- flags=+DONTHARMCLASS +FLOAT +FLOATBOB +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY +SPRITEANGLE
+      spawns=RS_BoomPEBlu[Fire]
+      fns=A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Cyberdemon RS_FireBluCybie2     hp  7777 sp19.0 pc  16 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_FireBluCacoBall[Plasma], RS_FireBluCacoBall2[Fire], RS_FireBluCybMiss[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_RadiusThrust A_SkullAttack A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0']
+Spider Mas RS_FireBluMind2      hp  8007 sp21.0 pc  40 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_FireBCGguy[Fire], RS_FireBluMindFlame3[Fire]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['0.33', '"Fire", 0.25', '"Heroic", 3.0', '"ice", 0.45']
+Demon      RS_FireBluDemon2     hp   205 sp 5.0 pc 180 rs=-/- flags=+LAXTELEFRAGDMG +NOTARGET
+      spawns=
+      fns=A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0', '"Fire", 0.25', '"Falling", 0.0']
+Cacodemon  RS_FireBluCaco2      hp   800 sp13.0 pc 110 rs=-/- flags=+DONTHARMCLASS +FLOAT +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY
+      spawns=RS_FireBluCacoBall[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Hell Knigh RS_FireBluHK2        hp   900 sp13.0 pc   0 rs=-/- flags=+DONTHARMCLASS +MISSILEMORE +QUICKTORETALIATE -BOSSDEATH
+      spawns=RS_FireBluHKBall1[Plasma], RS_FireBluHKBall2[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Arachnotro RS_FireBluSP2        hp   999 sp11.0 pc 150 rs=-/- flags=+BOSSDEATH +MISSILEMORE +NOFEAR +SEEINVISIBLE -FLOAT -FLOATBOB -NOGRAVITY
+      spawns=RS_PlasmaBallSPFB1[Plasma], RS_PlasmaBallSPFB2[Plasma], RS_PlasmaBallSPFB3[Plasma], RS_PlasmaBallSPFB4[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Imp        RS_FireBluImp2       hp   125 sp 9.0 pc 150 rs=-/- flags=+MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_BluBBall, RS_RedBBall[Plasma]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Extinguishing", 3.0', '"Fire", 0.5']
+Shotgunner RS_FireBluSG2        hp   225 sp12.0 pc 110 rs=-/- flags=+DONTHARMCLASS +MISSILEMORE +NOFEAR
+      spawns=RS_FireSGguy[Fire]
+      fns=A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=[]
+Spectre    RS_FireBluDemon2     hp   205 sp 5.0 pc 180 rs=-/- flags=+LAXTELEFRAGDMG +NOTARGET
+      spawns=
+      fns=A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx give=[] df=['"Wrangler", 3.0', '"Fire", 0.25', '"Falling", 0.0']
+Zombieman  RS_FireBluZombie2    hp    70 sp12.0 pc 255 rs=-/- flags=+MISSILEMORE
+      spawns=RS_FireSGguy2[Fire]
+      fns=A_SpawnItemEx give=[] df=['"Fire", 0.25']
+================= Gray
+Chaingunne RS_GrayCGuy2         hp   275 sp10.0 pc 135 rs=-/- flags=+MISSILEEVENMORE +MISSILEMORE
+      spawns=
+      fns=A_CustomBulletAttack A_SpawnItemEx give=[] df=[]
+Revenant   RS_GrayRevenant2     hp   660 sp18.0 pc   0 rs=-/- flags=+MISSILEMORE +NOFEAR +NOPAIN +QUICKTORETALIATE
+      spawns=RS_BoneToPickGrey[Melee]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"Scrapper", 3.0']
+Mancubus   RS_GrayFatso2        hp  1000 sp 5.0 pc  70 rs=-/- flags=+BOSSDEATH
+      spawns=RS_FatsoSpikes[Melee], RS_FatsoSpikes2[Melee]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0', '0.65', '"Melee", 0.1', '"PLWater", 1.5']
+Arch-Vile  RS_GrayArch2         hp  1400 sp19.0 pc  16 rs=-/- flags=+NOTARGET +QUICKTORETALIATE
+      spawns=RS_GrayCGuy, RS_GrayCaco, RS_GrayDemon, RS_GrayHK, RS_GrayRevenant, RS_GraySpectre, RS_VileGrayDecoy, RS_VileGroundSpike
+      fns=A_CustomMissile A_SpawnItemEx A_VileChase give=[] df=['"Extinguishing", 3.0']
+Baron      RS_GrayBaron2        hp  2000 sp 8.0 pc   6 rs=-/- flags=+DONTHARMCLASS +MISSILEEVENMORE +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_BaronOfDirtCH, RS_BaronOfDirtCH2[Melee], RS_BaronOfDirtCH3[Melee], RS_WDRock1
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Fire", 0.33', '"ice", 0.2', '"plasma", 0.75', '"PLwater", 1.5', '"Blessed", 3.0']
+Lost Soul  RS_GrayLSoul2        hp    50 sp 2.0 pc   0 rs=-/- flags=+FLOAT +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY +NOICEDEATH +NOPAIN +SPAWNCEILING
+      spawns=
+      fns=A_SpawnItemEx ThrustThingZ give=[] df=['"Antiair", 3.0', '"fire", 1.7']
+Pain Eleme RS_GrayPE2           hp  1450 sp 3.0 pc  24 rs=-/- flags=+BOSS +FLOAT +NOFEAR +NOGRAVITY +NOTARGET -NORADIUSDMG
+      spawns=RS_GrayLSoul2, RS_GraySpectre2, RS_RedThingsLS
+      fns=A_PainAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0', '"Fire", 1.5']
+Cyberdemon RS_GrayCybie2        hp  8888 sp13.0 pc   0 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +NOPAIN -NORADIUSDMG
+      spawns=RS_BaronOfDirtCH3[Melee], RS_VileGroundSpike
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx give=[] df=['0.25', '"PLWater", 1.75', '"Melee", 1.1', '"Plasma", 0.90', '"Heroic", 3.0']
+Spider Mas RS_GrayMind2         hp  8007 sp 9.0 pc  40 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_BrainPainGray, RS_GrayMindNeedle[Melee], RS_MolochNail[Fire], RS_SpidieShotGray[Melee]
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx give=[] df=['0.4', '"Fire", 0.6', '"Heroic", 3.0', '"ice", 0.65', '"Melee", 0.5']
+Demon      RS_GreyDemon2        hp   700 sp16.0 pc  32 rs=-/- flags=+DONTHARMCLASS +LAXTELEFRAGDMG +MISSILEMORE +NOTARGET +SHORTMISSILERANGE +THRUSPECIES
+      spawns=RS_WormLewd[Melee]
+      fns=A_ChangeFlag A_CustomMissile A_SkullAttack A_SpawnItemEx A_Warp bNOPAIN give=[] df=['"Wrangler", 3.0', '"Falling", 0.0']
+Cacodemon  RS_GrayCaco2         hp   650 sp 9.0 pc  90 rs=-/- flags=+FLOAT +MISSILEMORE +NOGRAVITY
+      spawns=RS_CacoRockBreath
+      fns=A_CustomMeleeAttack A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Hell Knigh RS_GrayHK2           hp   800 sp15.0 pc  16 rs=-/- flags=+DONTHARMCLASS +MISSILEMORE +QUICKTORETALIATE -BOSSDEATH
+      spawns=RS_MinesHK[Fire], RS_MolochNail[Fire]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Blessed", 3.0']
+Arachnotro RS_GraySP2           hp   600 sp13.0 pc  12 rs=-/- flags=+BOSSDEATH +MISSILEMORE
+      spawns=RS_FatsoSpikes2[Melee], RS_SpiderStoneRocket[Melee]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0', '"Fire", 1.25', '"Ice", 0.6', '"Plasma", 0.6']
+Imp        RS_GrayImp2          hp   265 sp 8.0 pc 100 rs=-/- flags=+MISSILEMORE +NOFEAR
+      spawns=RS_CGNail[Melee]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Melee", 2', '"Extinguishing", 3.0']
+Shotgunner RS_GraySG2           hp   155 sp 8.0 pc 150 rs=-/- flags=+MISSILEMORE +NOFEAR
+      spawns=
+      fns=A_CustomBulletAttack A_SpawnItemEx bNOPAIN give=[] df=[]
+Spectre    RS_GraySpectre2      hp   450 sp20.0 pc 128 rs="Add"/0.25 flags=
+      spawns=RS_IceOrbCH2[Melee]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Fire", 1.2', '"Heroic", 3.0', '"ice", 0.2']
+Zombieman  RS_GrayZombie2       hp   110 sp 4.0 pc  40 rs=-/- flags=+MISSILEMORE
+      spawns=RS_ZombieRock
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Fire", 2.0', '"Melee", 2.0']
+================= Red
+Chaingunne RS_RedCGuy           hp   300 sp10.0 pc  88 rs=-/- flags=+MISSILEMORE +NOFEAR
+      spawns=
+      fns=A_CustomBulletAttack A_SpawnItemEx give=[] df=[]
+Revenant   RS_RedRevenant       hp   830 sp14.0 pc  22 rs="SoulTrans"/0.95 flags=+DONTHARMCLASS +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_MegaRedRev[Plasma], RS_RedDeathRev[Fire], RS_RedRevLoad
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Scrapper", 3.0', '"ice", 1.45']
+Mancubus   RS_RedFatso          hp  1600 sp 8.0 pc  34 rs="SoulTrans"/0.85 flags=+BOSSDEATH +DONTBLAST +DONTHARMCLASS +DONTMORPH +DONTSQUASH +MISSILEMORE +NOFEAR +NOICEDEATH +NOTELEOTHER
+      spawns=RS_HBeastShot[Fire], RS_HBeastSmoke, RS_Shot2Fatso[Fire], RS_SparkPuff1
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Scrapper", 3.0', '"PLWater", 2.0', '"Fire", 0.25']
+Arch-Vile  RS_RedArch3          hp  3200 sp15.0 pc   3 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +NOTARGET -NORADIUSDMG
+      spawns=RS_ArcRing2, RS_ArchSpawnerOrb, RS_BaronRing, RS_DFire[Fire], RS_DFlare[Fire], RS_SparkPuff1
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['0.33', '"Fire", 0.5', '"Heroic", 3.0', '"ice", 2.0']
+Baron      RS_RedBaron3         hp  2100 sp 8.0 pc  20 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +NOICEDEATH +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_ArchonComet[Fire], RS_RedBBall[Plasma], RS_RedPower
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['0.33', '"Heroic", 3.0']
+Lost Soul  RS_RedLSoul          hp   240 sp11.0 pc  88 rs="SoulTrans"/0.95 flags=+DONTFALL +FLOAT +FLOATBOB +MISSILEEVENMORE +MISSILEMORE +NOFEAR +NOGRAVITY +NOICEDEATH
+      spawns=RS_RedThingsLS, RS_SpitBoltLS[Plasma]
+      fns=A_ChangeFlag A_CustomMissile A_SkullAttack A_SpawnItemEx give=[] df=['"ice", 1.45', '"Antiair", 3.0']
+Pain Eleme RS_RedPE             hp  1111 sp11.0 pc  42 rs="SoulTrans"/0.95 flags=+FLOAT +MISSILEEVENMORE +MISSILEMORE +NOFEAR +NOGRAVITY
+      spawns=RS_CorpseBreathPE[Melee], RS_RedThingsLS, RS_SbombPE[Plasma]
+      fns=A_CustomMissile A_PainAttack A_SkullAttack A_SpawnItemEx give=[] df=['"Antiair", 3.0']
+Cyberdemon RS_RedCybie          hp 10000 sp20.0 pc  15 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +NOICEDEATH +NOTARGET +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_MolochNail[Fire], RS_MolochQuake[Melee], RS_RedCybieVolcano1[Fire], RS_RedThingsLS, RS_SoulBomb4[Melee], RS_SummonPortalCybie, RS_VolcanoBall1[Fire], RS_VolcanoBall2[Fire], RS_VolcanoBall3[Fire]
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['0.25', '"Moloch", 0', '"Heroic", 3.0', '"ice", 1.35']
+Spider Mas RS_RedMind           hp 10000 sp18.0 pc   1 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +NOPAIN -FLOAT -FLOATBOB -NOGRAVITY -NORADIUSDMG
+      spawns=RS_RedMessImp, RS_RedMindBomb[Fire], RS_RedMindRingNew[Melee], RS_RedThingsLS, RS_SpiralSawMind1[Fire]
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx give=[] df=['0.25', '"Heroic", 3.0', '"ice", 1.35']
+Demon      RS_RedDemon          hp   400 sp15.0 pc  30 rs=-/- flags=+NOFEAR
+      spawns=RS_EffectHK, RS_RedDemonBloodBolt1[Fire], RS_RedThingsLS
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Wrangler", 3.0', '"Fire", 1.25', '"ice", 1.45']
+Cacodemon  RS_RedCaco           hp   830 sp14.0 pc  64 rs=-/- flags=+DONTHARMCLASS +FLOAT +FLOATBOB +MISSILEMORE +NOFEAR +NOGRAVITY
+      spawns=RS_CrackodemonBall[Plasma], RS_EffectHK, RS_RedThingsLS, RS_SbombCaco[Plasma]
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Antiair", 3.0']
+Hell Knigh RS_RedHK             hp  1300 sp11.0 pc  50 rs="SoulTrans"/0.9 flags=+MISSILEMORE +NOFEAR +QUICKTORETALIATE -BOSSDEATH -NORADIUSDMG
+      spawns=RS_BloodBoltHK[Plasma], RS_EffectHK, RS_THEBEEHK
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Fire", 0.5', '"Plasma", 0.7', '"Blessed", 3.0', '"ice", 1.45']
+Arachnotro RS_RedSP1            hp  1000 sp16.0 pc  68 rs=-/- flags=+BOSSDEATH +MISSILEEVENMORE +MISSILEMORE +NOFEAR +SEEINVISIBLE
+      spawns=RS_RedBombSP[Plasma]
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Scrapper", 3.0']
+Imp        RS_RedImp            hp   200 sp10.0 pc 100 rs=-/- flags=+MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_RedMessImp2[Fire]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Melee", 2', '"Extinguishing", 3.0', '"ice", 1.45']
+Shotgunner RS_RedSG             hp   150 sp 9.0 pc 110 rs=-/- flags=+MISSILEMORE +NOFEAR
+      spawns=RS_RedMessImp3
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=[]
+Spectre    RS_RedSpectre        hp   394 sp16.0 pc  30 rs="Add"/- flags=+NOFEAR +STEALTH
+      spawns=RS_EffectHK, RS_RedDemonBloodBolt3[Fire], RS_RedThingsLS
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx bNOPAIN give=[] df=['"Wrangler", 3.0']
+Zombieman  RS_RedZombie         hp   186 sp 8.0 pc 100 rs=-/- flags=+EXTREMEDEATH
+      spawns=
+      fns=A_CustomBulletAttack A_SpawnItemEx give=[] df=['"Melee", 3']
+================= Abyss
+Chaingunne RS_AbyssCGuy2        hp   500 sp 8.0 pc  80 rs=-/- flags=+MISSILEEVENMORE +MISSILEMORE
+      spawns=RS_AbyssZShotCH3
+      fns=A_CustomMissile A_SetTranslucent A_SpawnItemEx give=[] df=[]
+Revenant   RS_AbyssRevenant2    hp  1000 sp11.0 pc  76 rs=-/- flags=+LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_CrackedAbyssRev[Plasma], RS_IceOrbAbyssRev, RS_SplashAbyss, RS_SplashAbyss2[Ice]
+      fns=A_CustomMissile A_SpawnItemEx ThrustThingZ bNOPAIN give=[] df=['"Falling", 0.0', '"Scrapper", 3.0', '"Ice", 0.45']
+Mancubus   RS_AbyssFatso2       hp  2150 sp11.0 pc  12 rs=-/- flags=+DONTHARMCLASS +MISSILEMORE +NOFEAR +NOINFIGHTING
+      spawns=RS_AbyssFatsoBomb[Ice], RS_FatAbysswave[Plasma], RS_SplashAbyss
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0', '"Fire", 0.45', '"Ice", 0.25']
+Arch-Vile  RS_AbyssVile         hp  2500 sp25.0 pc  32 rs=-/- flags=+NOTARGET +QUICKTORETALIATE
+      spawns=RS_AbyssBaronRing, RS_AbyssPortalVile, RS_IceABVile[Ice], RS_SplashAbyss, RS_SplashAbyss2[Ice], RS_SplashAbyssVile, RS_SplashAbyssVile2
+      fns=A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx A_VileChase ThrustThingZ give=[] df=['"Extinguishing", 3.0']
+Baron      RS_AbyssBaron2       hp  3333 sp14.0 pc  24 rs=-/- flags=+DONTHARMCLASS +DONTMORPH +MISSILEEVENMORE +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_AbyssBaronFlare[Plasma], RS_AbyssBaronHandFire, RS_AbyssBaronHandFire3, RS_AbyssBaronLightning[Plasma], RS_AbyssBaronRing, RS_AbyssBaronSoulCharge[Melee], RS_ArchRingHelp, RS_SplashAbyss2[Ice], RS_Zap88
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx A_VileChase ThrustThingZ give=[] df=['"Fire", 0.5', '"ice", 0.15', '"plasma", 0.95', '"Melee", 1.1', '"Blessed", 3.0']
+Lost Soul  RS_AbyssLSoul2       hp   380 sp 8.0 pc  32 rs=-/- flags=+FLOAT +MISSILEEVENMORE +MISSILEMORE +NOGRAVITY +NOICEDEATH +NOTARGET
+      spawns=RS_BeetleSpitAbyss[Poison], RS_WormLewd[Melee]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SkullAttack A_SpawnItemEx A_Warp ThrustThingZ give=[] df=['"Antiair", 3.0', '"fire", 1.25', '"melee", 0.25']
+Pain Eleme RS_AbyssPE2          hp  1600 sp20.0 pc  80 rs=-/- flags=+DONTHARMCLASS +FLOAT +FLOATBOB +MISSILEEVENMORE +MISSILEMORE +NOBLOOD +NOGRAVITY +NOTARGET
+      spawns=RS_AbyPECoil[Melee], RS_AbyssBaronSoul[Ice], RS_AbyssPEPulse[AbyssPE], RS_AbyssPEShadow, RS_VollreyAbyPE[Plasma]
+      fns=A_CustomMissile A_FadeOut A_RadiusGive A_SpawnItemEx give=['RS_SpeedBuffPE'] df=['"Antiair", 3.0']
+Cyberdemon RS_AbyssCybie2       hp 12000 sp15.0 pc   8 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +NOPAIN -NORADIUSDMG
+      spawns=RS_AbyCybBubProj[Plasma], RS_AbyCybWave[Melee], RS_AbyssCybRocket[Fire], RS_AbyssCybieDecoFlame, RS_SplashAbyss, RS_SplashAbyss2[Ice], RS_SplashAbyssBubbleDemon
+      fns=A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['0.33', '"PLWater", 0.4', '"Melee", 1.25', '"Heroic", 3.0']
+Spider Mas RS_AbyssMind2        hp 12222 sp21.0 pc  48 rs="Translucent"/0.85 flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +NOPAIN -FLOAT -FLOATBOB -NOGRAVITY -NORADIUSDMG
+      spawns=RS_AbyssMindBigZap, RS_AbyssMindWalk, RS_AbyssMindWave[Melee], RS_CrackedAbyssMindFall[Plasma], RS_CrackedAbyssMindFloor[Plasma], RS_WvileSpot
+      fns=A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['0.5', '"Plasma", 0.70', '"Heroic", 3.0', '"ice", 0.45', '"melee", 0.75']
+Demon      RS_AbyssDemon2       hp   600 sp19.0 pc 128 rs="Add"/0.10 flags=+DONTHARMCLASS +NOFEAR +THRUSPECIES
+      spawns=RS_AbyssDogFire[Fire], RS_SplashAbyss, RS_SplashAbyssBubbleDemon
+      fns=A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx give=[] df=['"Fire", 1.25', '"Ice", 0.75', '"Wrangler", 3.0']
+Cacodemon  RS_AbyssCaco2        hp  1100 sp20.0 pc  64 rs=-/- flags=+DONTHARMCLASS +FLOAT +FLOATBOB +MISSILEMORE +NOFEAR +NOGRAVITY
+      spawns=RS_AbyssCacoBalls[Ice], RS_AbyssCacoHidi[Plasma], RS_SplashAbyss, RS_Zap88
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx give=['Health', 'RS_SpeedBuffPE'] df=['"Antiair", 3.0']
+Hell Knigh RS_AbyssHK2          hp  1850 sp15.0 pc  64 rs=-/- flags=+MISSILEMORE +NOFEAR +QUICKTORETALIATE -BOSSDEATH -NORADIUSDMG
+      spawns=RS_AbyssHKBall[Plasma], RS_AbyssHKMist[Ice], RS_SplashAbyss, RS_SplashAbyss2[Ice]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx ThrustThingZ bNOPAIN give=[] df=['"Blessed", 3.0', '"Fire", 0.4', '"ice", 0.4']
+Arachnotro RS_AbyssSP2          hp  1850 sp24.0 pc  24 rs=-/- flags=+BOSSDEATH +MISSILEMORE +NOBLOOD +NOFEAR +NOICEDEATH
+      spawns=RS_AbyssSPBolt[Plasma], RS_AbyssSPBreath[Ice], RS_AbyssSPPain, RS_AbyssSPShoot, RS_AbyssSPwalk1, RS_AbyssSPwalk2
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Scrapper", 3.0', '"Fire", 0.65', '"Ice", 0.2', '"Plasma", 0.75']
+Imp        RS_AbyssImp2         hp   300 sp11.0 pc 120 rs=-/- flags=+CANTSEEK +MISSILEMORE +NOFEAR +QUICKTORETALIATE
+      spawns=RS_AbyssBallCH[Plasma], RS_SplashAbyss, RS_SplashAbyss2[Ice]
+      fns=A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx ThrustThingZ bNOPAIN give=[] df=['"Extinguishing", 3.0']
+Shotgunner RS_AbyssSG2          hp   300 sp13.0 pc 168 rs=-/- flags=+MISSILEMORE +NOFEAR
+      spawns=RS_AbyssZShotCH2, RS_SplashAbyss, RS_SplashAbyss2[Ice]
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx ThrustThingZ bNOPAIN give=[] df=[]
+Spectre    RS_AbyssDemon2       hp   600 sp19.0 pc 128 rs="Add"/0.10 flags=+DONTHARMCLASS +NOFEAR +THRUSPECIES
+      spawns=RS_AbyssDogFire[Fire], RS_SplashAbyss, RS_SplashAbyssBubbleDemon
+      fns=A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx give=[] df=['"Fire", 1.25', '"Ice", 0.75', '"Wrangler", 3.0']
+Zombieman  RS_AbyssZombie2      hp   200 sp14.0 pc  18 rs=-/- flags=
+      spawns=RS_AbyssZShotCH[Ice], RS_SplashAbyss, RS_SplashAbyss2[Ice]
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx give=['RS_CHAbyssMark'] df=[]
+================= Black
+Chaingunne RS_BlackCGuy2        hp  4500 sp10.0 pc  25 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR -NORADIUSDMG
+      spawns=RS_CGBigOne[Plasma], RS_GenShield[Plasma], RS_RedRevLoad, RS_SpamShotsCguy[Plasma], RS_TrailSPCguy[Plasma]
+      fns=A_CustomMissile A_SetReflective A_SpawnItemEx bNOPAIN give=[] df=['"Heroic", 3.0']
+Revenant   RS_BlackRevenant3    hp  4500 sp10.0 pc  64 rs=-/- flags=+BOSS +DONTMORPH +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +NOICEDEATH +NOTARGET +THRUSPECIES -NORADIUSDMG
+      spawns=RS_DKDart[Fire], RS_MinesRev[Fire], RS_RevShieldWalk, RS_ShieldBlastRev[Fire]
+      fns=A_CustomMeleeAttack A_CustomMissile A_KillChildren A_SkullAttack A_SpawnItemEx bNOPAIN give=[] df=['0.33', '"Melee", 0.6', '"Fire", 1.75', '"Ice", 0.80', '"Heroic", 3.0']
+Mancubus   RS_BlackFatso2       hp  9001 sp14.0 pc  24 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_BlackFatShotLongRange[Fire], RS_ShadowBeast_Ball1[Poison], RS_ShadowBeast_Ball2[Plasma], RS_ShadowBeast_Ball3[Plasma], RS_ShadowBeast_BallFire[Poison], RS_ShadowBombBig[Plasma], RS_ShadowSplash[Plasma], RS_Splash11
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['0.5', '"Heroic", 3.0', '"Fire", 2.0']
+Arch-Vile  RS_BlackVile         hp  7750 sp17.0 pc   8 rs="Stencil"/0.5 flags=+BOSS +CANTSEEK +DONTDRAIN +DONTHARMCLASS +DONTMORPH +NOFEAR +NOTARGET +NOTIMEFREEZE +QUICKTORETALIATE +SEEINVISIBLE -NO
+      spawns=RS_BVileCloud[Melee], RS_BVileCloud2, RS_BVileEye, RS_BVileEye2, RS_BVileOrb1[Fire], RS_CommonRevenant, RS_DFlamePuffVile2, RS_DarkFlameVile[Fire], RS_MrBones
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"Heroic", 3.0']
+Baron      RS_BlackBaron2       hp  8907 sp13.0 pc  42 rs=-/- flags=+BOSS +BOSSDEATH +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +QUICKTORETALIATE +THRUSPECIES -NORADIUSDMG
+      spawns=RS_DeepCharge1, RS_DeepOneBall[Plasma], RS_DeepTentacle, RS_RoseTentacle
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['"Melee", 1.5', '"Fire", 0.7', '"plasma", 0.8', '"Heroic", 3.0', '"ice", 0.5']
+Lost Soul  RS_BlackLSoul3       hp  1500 sp 9.0 pc 128 rs=-/- flags=+BOSS +DONTOVERLAP +FLOAT +MISSILEMORE +NOBLOODDECALS +NOFEAR +NOGRAVITY +SPAWNFLOAT +THRUSPECIES
+      spawns=RS_BSoulHellNo[Melee], RS_BSoulStinger1[Melee], RS_BSoulStinger2[Melee], RS_RedRevLoad, RS_SparkPuff1
+      fns=A_CheckFloor A_CustomMissile A_PainAttack A_SpawnItemEx give=[] df=['"hornet", 0', '"Heroic", 3.0', '"fire", 2.0', '0.5']
+Pain Eleme RS_BlackPE2          hp  5000 sp14.0 pc  20 rs=-/- flags=+BOSS +DONTFALL +DONTHARMCLASS +DONTMORPH +FLOAT +MISSILEEVENMORE +NOFEAR +NOGRAVITY +NOICEDEATH +NOTARGET -NORADIUSDMG
+      spawns=RS_BEESHOT[Plasma], RS_HadesBall4[Plasma], RS_LoadPE3[Plasma], RS_OverBall3[Plasma], RS_SkullBundle3, RS_SkullDeathPE[Fire], RS_StormShot1[Plasma]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"lightning", 0.2', '"hornet", 0', '"Heroic", 3.0', '0.33']
+Cyberdemon RS_BlackCybie2       hp 14500 sp17.0 pc  16 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEEVENMORE +NOFEAR +NOICEDEATH +QUICKTORETALIATE -NORADIUSDMG -NOTARGET
+      spawns=RS_BigHellshot[Fire], RS_HammerShot[Fire], RS_Hellshot2[Fire], RS_MolochQuake[Melee], RS_PentaLine1, RS_PortalSummons, RS_SmithGhost2[Melee], RS_Zap88, RS_ZappersCB[Plasma]
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_SetReflective A_SetTranslucent A_SkullAttack A_SpawnItemEx bNOPAIN give=[] df=['0.25', '"Heroic", 3.0']
+Spider Mas RS_BlackMind2        hp 11111 sp26.0 pc  45 rs=-/0.75 flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOICEDEATH +NOTARGET -NORADIUSDMG
+      spawns=RS_BlackSpidShade[Melee], RS_PortalSummons2, RS_QueenMindWave[Plasma], RS_QueenPlasmaBlast[Plasma], RS_ZWAVE3[Melee]
+      fns=A_CustomMissile A_SpawnItemEx A_Teleport bNOPAIN give=[] df=['0.33', '"Heroic", 3.0']
+Demon      RS_BlackDemon3       hp  4500 sp17.0 pc  68 rs=-/- flags=+BOSS +DONTMORPH +MISSILEMORE +NOFEAR +THRUSPECIES -NORADIUSDMG
+      spawns=RS_WHOLETTHEDOGSOUT
+      fns=A_CustomMeleeAttack A_SkullAttack A_SpawnItemEx ThrustThingZ give=[] df=['0.33', '"Melee", 0.9', '"Plasma", 1.1', '"Heroic", 3.0']
+Cacodemon  RS_BlackCaco2        hp  5000 sp16.0 pc  32 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +FLOAT +MISSILEMORE +NOFEAR +NOGRAVITY -NORADIUSDMG
+      spawns=RS_EyeBeamCaco[Plasma], RS_HadeLoad1, RS_HadesBall[Plasma], RS_HadesBall2[Plasma], RS_HadesBall3[Plasma], RS_HadesBolt[Plasma], RS_RedCaco
+      fns=A_ChangeFlag A_CustomBulletAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx bNOPAIN give=[] df=['"None", 1.5', '0.33', '"Plasma", 0.9', '"Heroic", 3.0']
+Hell Knigh RS_BlackHK2          hp  5555 sp 6.0 pc  30 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +QUICKTORETALIATE -BOSSDEATH -NORADIUSDMG
+      spawns=RS_BaronNade[Fire], RS_BluCybFX, RS_BruiserMissile[Fire], RS_SparkPuff1, RS_SpreadMisBar1[Fire], RS_SwooshCBBar1[Plasma], RocketBox, Shell
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['"None", 0.7', '0.25', '"Fire", 0.75', '"Plasma", 1.5', '"Melee", 0.7']
+Arachnotro RS_BlackSP2          hp  5342 sp21.0 pc  24 rs=-/- flags=+BOSS +BOSSDEATH +DONTHARMCLASS +DONTMORPH +LAXTELEFRAGDMG +MISSILEEVENMORE +MISSILEMORE +NOFEAR +SEEINVISIBLE -NORADIUS
+      spawns=RS_BBSP1[Fire], RS_SPMM1[Fire], RS_SPMM2[Fire], RS_SPMM3[Plasma], RS_SPMM4[Meelee], RS_SPMM5[Fire], RS_SpRocket3[Fire], RS_SpRocket4[Fire]
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx ThrustThingZ bNOPAIN give=[] df=['0.25', '"Plasma", 1.2', '"Heroic", 3.0', '"Falling", 0.0']
+Imp        RS_BlackImp1         hp  3800 sp12.0 pc  28 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEEVENMORE +MISSILEMORE +NOFEAR +NOTARGET +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_AgauresBall1[Fire], RS_AgauresBall2[Fire], RS_DIBigOne[Plasma], RS_DeathBreathDI[DIMp], RS_EffectHK
+      fns=A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx give=[] df=['0.45', '"Melee", 1.75', '"Plasma", 1.1', '"Heroic", 3.0']
+Shotgunner RS_BlackSG3          hp  1950 sp16.0 pc  96 rs="SoulTrans"/1.50 flags=+BOSS +DONTMORPH +MISSILEMORE +NOFEAR +NOINFIGHTING +THRUSPECIES -NORADIUSDMG
+      spawns=RS_AirStrikeCHBS[Fire], RS_BlackSG2, RS_SGGasNade[Fire]
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx give=[] df=['0.33', '"Plasma", 1.1', '"Heroic", 3.0']
+Spectre    RS_BlackSpectre2     hp  3000 sp15.0 pc 100 rs="Translucent"/0.45 flags=+BOSS +DONTMORPH +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_ShadowBall[Plasma], RS_ShadowBall2[Fire], RS_ShadowGhostA, RS_ShadowGhostB, RS_ShadowGhostC, RS_ShadowGhostD, RS_TeleporterSpotSH[Fire], TeleportFog
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SpawnItemEx A_Teleport A_Warp give=[] df=['0.5', '"Melee", 2.5', '"Heroic", 3.0']
+Zombieman  RS_BlackZombie1      hp  2500 sp26.0 pc  16 rs=-/- flags=+BOSS +DONTMORPH +LOOKALLAROUND +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=Cell, RS_PlasmaBallSP3[Plasma], Rocket, Shell
+      fns=A_CustomBulletAttack A_CustomMeleeAttack A_CustomMissile A_SpawnItemEx give=[] df=['"Heroic", 3.0']
+================= White
+Chaingunne RS_WhiteCguy2        hp  7777 sp14.0 pc  20 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +THRUSPECIES -NORADIUSDMG
+      spawns=RS_NeedlesCg1[Melee], RS_NeedlesCg2[Poison], RS_Puddle1[Poison], RS_SlimyWorm, RS_SpliceBaron
+      fns=A_CustomMissile A_PainAttack A_SpawnItemEx bNOPAIN give=[] df=['0.5', '"Melee", 3.75', '"Heroic", 3.0']
+Revenant   RS_WhiteRevenant2    hp  8866 sp23.0 pc 255 rs=-/- flags=+BOSS +DONTBLAST +DONTMORPH +MISSILEMORE +NODAMAGETHRUST +NOFEAR +NOICEDEATH +NOINFIGHTING +NOTARGET -FLOAT -NOGRAVITY -
+      spawns=RS_CyanCybieGunFlare, RS_EvilShadeWhiteRev[Melee], RS_EvilShadeWhiteRev2, RS_FrostWingBaron2, RS_IceGroundWhiteRev[Ice], RS_IceToMeetWhiteRev, RS_MrBones, RS_PortalSummons, RS_RedRevLoad, RS_WhiteRevCoil4
+      fns=A_CustomMissile A_RadiusGive A_SetTranslucent A_SpawnItemEx ThrustThingZ bNOPAIN give=['RS_ByeWhiteRevCast'] df=['0.5', '"Fire", 0.9', '"Melee", 0.9', '"PLWater", 0.75', '"Poison", 0.0']
+Mancubus   RS_WhiteFatso2       hp 15000 sp13.0 pc  32 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEMORE +NOFEAR +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_WhiteFatBall1[Fire], RS_WhiteFatBall2, RS_WhiteFatBall3, RS_WhiteFatBall4, RS_WhiteFatBall5, RS_WhiteFatBall6, RS_WhiteFatBall7, RS_WhiteFatMark, RS_WhiteFatNukeShow, RS_WhiteFatScatter[Melee]
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['0.5', '"Plasma", 0.60', '"Heroic", 3.0']
+Arch-Vile  RS_Whitevile         hp 13000 sp40.0 pc  64 rs=-/- flags=+BOSS +CANTSEEK +DONTDRAIN +DONTHARMCLASS +DONTMORPH +DONTTHRUST +FLOAT +NOFEAR +NOTARGET +NOTIMEFREEZE +QUICKTORETALIAT
+      spawns=RS_BrightUpVile2, RS_WVileBolt1[Plasma], RS_WVileEye1, RS_WVilequake, RS_WhiteVileResser, RS_WvileSpot
+      fns=A_CustomMissile A_RadiusGive A_SetTranslucent A_SpawnItemEx give=['RS_WVEyeGo'] df=[]
+Baron      RS_WhiteBaron2       hp 13069 sp32.0 pc  42 rs=-/- flags=+BOSS +BOSSDEATH +DONTHARMCLASS +MISSILEEVENMORE +MISSILEMORE +NOFEAR +NOINFIGHTING +NOTARGET +QUICKTORETALIATE +THRUSPE
+      spawns=RS_WhiteBaronGround, RS_WhiteBaronSlice[Fire], RS_WhiteBaronSliceHoming[Fire], RS_WhiteBaronStar[Fire]
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_SetTranslucent A_SkullAttack A_SpawnItemEx bNOPAIN give=[] df=['"Melee", 0.5', '"Fire", 0.5', '"plasma", 0.5', '"Heroic", 3.0', '"ice", 1.25']
+Lost Soul  RS_WhiteLSoul2       hp  4500 sp19.0 pc  22 rs="Add"/0.8 flags=+BOSS +DONTFALL +DONTHARMCLASS +DONTMORPH +FLOAT +MISSILEMORE +NOBLOOD +NOFEAR +NOGRAVITY +NOICEDEATH +NOTARGET -NORADIU
+      spawns=RS_AcidBlast1[Plasma], RS_ArcRing2, RS_ArchSpawnerOrb, RS_BaronWave[Fire], RS_BigBolt2[Plasma], RS_BlueGash, RS_Homer1[Fire], RS_Purp1[Plasma], RS_SmashBalls2[Plasma], RS_Spear11[Plasma]
+      fns=A_ChangeFlag A_CustomMissile A_PainAttack A_SpawnItemEx bNOPAIN give=[] df=['"Heroic", 3.0', '"ice", 0.2']
+Pain Eleme RS_WhitePE2          hp  5000 sp28.0 pc 128 rs=-/- flags=+BOSS +DONTBLAST +DONTHARMCLASS +DONTMORPH +DONTTHRUST +FLOAT +FLOATBOB +FRIGHTENED +NEVERTARGET +NOGRAVITY +NOICEDEATH 
+      spawns=RS_BufferWhitePE, RS_HealthFountainWhitePE, RS_MiniSentinelPE
+      fns=A_SpawnItemEx give=[] df=['0.33', '"Heroic", 3.0', '"plwater", 0.5']
+Cyberdemon RS_WhiteCybie2       hp 21000 sp18.0 pc  20 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +LAXTELEFRAGDMG +MISSILEEVENMORE +NOFEAR +NOICEDEATH +QUICKTORETALIATE +THRUSPECIES -NOR
+      spawns=RS_IDShieldWalk, RS_RomeroBaronsCH, RS_RomeroBeamCH[Plasma], RS_RomeroCHScatter[Plasma], RS_RomeroCHSeekBall[Plasma], RS_RomeroGroundCH[Plasma], RS_RomeroRocketCH[Fire], RS_RomeroRocketCH2[Fire], RS_RomeroRocketCH3[Fire], RS_SpamShotsCguy[Plasma]
+      fns=A_ChangeFlag A_CustomMissile A_SetReflective A_SetTranslucent A_SkullAttack A_SpawnItemEx ThrustThingZ bNOPAIN give=[] df=['0.33', '"Heroic", 3.0', '"PlayerVoid", 0.75', '"Poison", 0.33', '"Falling", 0.0']
+Spider Mas RS_WhiteMind2        hp 15000 sp28.0 pc  40 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +LAXTELEFRAGDMG +MISSILEMORE +NOBLOOD +NOFEAR +NOICEDEATH -NORADIUSDMG
+      spawns=RS_STracerWhiteSP[Fire], RS_WhiteMindCrackleOrb[Plasma], RS_WhiteMindCrackleOrb2[Plasma], RS_WhiteMindFlare, RS_WhiteMindshot1[Plasma], RS_WhiteSpidShade, RS_WhiteSpidWinder[Plasma]
+      fns=A_CustomBulletAttack A_CustomMissile A_SkullAttack A_SpawnItemEx ThrustThingZ give=[] df=['"Fire", 0.25', '"Heroic", 3.0', '"ice", 0.25', '"Plasma", 0.75', '"Melee", 0.95']
+Demon      RS_WhiteDemon2       hp  8000 sp19.0 pc  16 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +DROPOFF +JUMPDOWN +LAXTELEFRAGDMG +MISSILEMORE +NOBLOCKMONST +NOFEAR +NOTARGET +THRUSPE
+      spawns=RS_Drt1, RS_Drt2, RS_Drt3, RS_MolochQuake[Melee], RS_WDRock1, RS_WDRock2[Melee], RS_WDRock3[Melee]
+      fns=A_CustomMeleeAttack A_CustomMissile A_Explode A_SkullAttack A_SpawnItemEx A_Warp ThrustThingZ bINVULNERABLE bNOPAIN give=[] df=['0.33', '"Melee", 0.45', '"Ice", 1.5', '"Heroic", 3.0', '"Falling", 0.0']
+Cacodemon  RS_WhiteCaco2        hp  5000 sp28.0 pc 128 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +FLOAT +MISSILEMORE +NOFEAR +NOGRAVITY +NOICEDEATH -NORADIUSDMG
+      spawns=RS_CacobaldBall[Melee], RS_CacobaldBall2[Melee], RS_WhiteCacoFake
+      fns=A_CustomMissile A_SpawnItemEx bNOPAIN give=[] df=['0.33', '"Plasma", 0.9', '"Heroic", 3.0']
+Hell Knigh RS_WhiteHK3          hp  5000 sp13.0 pc  50 rs="Add"/0.75 flags=+BOSS +DONTHARMCLASS +DONTMORPH +FLOAT +MISSILEMORE +NOCLIP +NOFEAR +NOGRAVITY +THRUSPECIES -NORADIUSDMG
+      spawns=RS_PhantomEgg[Plasma], RS_SoulBomb, RS_SpecialSpectre2
+      fns=A_ChangeFlag A_CustomMissile A_SpawnItemEx give=[] df=['0.5', '"Melee", 0.25', '"Plasma", 0.85', '"None", 0.8', '"Fire", 2.0']
+Arachnotro RS_WhiteSP11         hp  7000 sp28.0 pc  32 rs=-/- flags=+BOSS +BOSSDEATH +DONTHARMCLASS +DONTMORPH +LAXTELEFRAGDMG +MISSILEMORE +NOFEAR +NOICEDEATH -NORADIUSDMG
+      spawns=RS_AbyssSPShoot, RS_SlimeBall1[Poison], RS_SlimeBall2, RS_SlimeBall3, RS_SlimeBall4, RS_SlimeBall5, RS_WHITESPIDERWEBSHOTNOTLEWD[Melee], RS_WhiteSpiderHomer[Plasma], RS_WhiteSpiderPBolt[Plasma]
+      fns=A_ChangeFlag A_CustomMissile A_PainAttack A_SpawnItemEx ThrustThingZ bNOPAIN give=[] df=['"fire", 1.2', '"ice", 0.5', '"Plasma", 0.85', '"Heroic", 3.0', '"Falling", 0.0']
+Imp        RS_WhiteImp2         hp  6666 sp18.0 pc  24 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +MISSILEEVENMORE +MISSILEMORE +NOTARGET +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_BaronRing, RS_Hel2, RS_HellionBall[Fire], RS_SparkPuff1, RS_SpecialImp2, RS_WimpBall1[Plasma], RS_WimpBall2, RS_WimpBall3, RS_WimpBall4, RS_WimpBall5
+      fns=A_CustomMissile A_SpawnItemEx give=[] df=['0.33', '"Melee", 3.3', '"Plasma", 1.1', '"Heroic", 3.0']
+Shotgunner RS_WhiteSG2          hp  5000 sp28.0 pc   8 rs=-/- flags=+BOSS +BOSSDEATH +DONTMORPH +FLOAT +FLOATBOB +LOOKALLAROUND +MISSILEEVENMORE +MISSILEMORE +NOBLOOD +NOFEAR +NOGRAVITY +S
+      spawns=RS_MineShotgun[Fire]
+      fns=A_CustomBulletAttack A_CustomMissile A_SpawnItemEx give=[] df=['"None", 0.75', '"Fire", 2.0', '"Plasma", 1.2', '"Melee", 2.0', '"Heroic", 3.0']
+Spectre    RS_WhiteSpectre2     hp  7500 sp 8.0 pc  32 rs=-/- flags=+BOSS +DONTMORPH +LOOKALLAROUND +MISSILEMORE +NOFEAR +NOTARGET -NORADIUSDMG
+      spawns=RS_SpecSlime1, RS_SpecSlime2, RS_SpecSlime3[Plasma], RS_Wakawaka
+      fns=A_ChangeFlag A_CustomMeleeAttack A_CustomMissile A_SetInvulnerable A_SpawnItemEx give=[] df=['"Fire", 0.75', '"Melee", 2', '"Plasma", 0.75', '"Heroic", 3.0']
+Zombieman  RS_WhiteZombie1      hp  2800 sp10.0 pc  16 rs=-/- flags=+BOSS +DONTHARMCLASS +DONTMORPH +LOOKALLAROUND +MISSILEMORE +NOFEAR +NOTARGET +QUICKTORETALIATE -NORADIUSDMG
+      spawns=RS_BoneProjZM, RS_BoneProjZM2, RS_BoneProjZM3, RS_BoneTorn2, RS_ShoveZM[Melee]
+      fns=A_CustomMissile A_RadiusGive A_SpawnItemEx bNOPAIN give=['RS_CHBoner'] df=['"Heroic", 3.0']

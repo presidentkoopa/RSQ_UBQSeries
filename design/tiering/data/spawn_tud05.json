@@ -1,0 +1,208 @@
+{
+ "Zombieman": {
+  "spawner": "ZombiemanSpawner",
+  "odds": {
+   "RifleZombie": 0.6829269949548689,
+   "LabGAL": 0.09027099609375,
+   "ChainsawZombie": 0.04437306895852089,
+   "SniperRifleGuy": 0.035238372220192105,
+   "LabGuy": 0.03319501876831055,
+   "LabGuyB": 0.02956431359052658,
+   "LabGuyP": 0.020583663135766983,
+   "PlasmaZombie": 0.018328428268432617,
+   "ChaingunGuy1": 0.017699169040847805,
+   "MinigunGuy": 0.011932570487260818,
+   "Major": 0.004460716795939845,
+   "RifleCommando": 0.002912251752833707,
+   "ZSpecOps": 0.0022754575567524027,
+   "ZSpecOpsRifle": 0.0020157465196963117,
+   "ZSpecOpsRail": 0.0018582663228450375,
+   "XVStealthZSpecOps": 0.0010488437175655606,
+   "EvilMarine": 0.0008913417589095814,
+   "EvilMarineLasgun": 0.00042478005698034734
+  },
+  "conditions": []
+ },
+ "ShotgunGuy": {
+  "spawner": "SergeantSpawner",
+  "odds": {
+   "ShotgunGuy1": 0.6646175987784132,
+   "RiotShieldGuy": 0.09124755859375,
+   "SuperShotgunZombie": 0.06675577163696289,
+   "ASGGuy": 0.048171043395996094,
+   "LabGuyP": 0.02844773028254366,
+   "HellTrooper": 0.027336490818381798,
+   "PyroSergeant": 0.018475111573934555,
+   "RocketGuy": 0.018042101146420464,
+   "LabGAL": 0.010644957137984079,
+   "QuadShotgunZombie": 0.00555419921875,
+   "ChainsawZombie": 0.005033791550535231,
+   "LabGuy": 0.003914430628595977,
+   "LabGuyB": 0.0038991398839530243
+  },
+  "conditions": [
+   "TNT1 A 0 A_JumpIf((CeilingZ - Height) < 8, \"Spawn\")"
+  ]
+ },
+ "DoomImp": {
+  "spawner": "ImpSpawner",
+  "odds": {
+   "Imp": 0.629048777227581,
+   "Imp3": 0.125,
+   "SuperImp": 0.1025390625,
+   "NetherDarkImp": 0.04827880859375,
+   "VoidDarkImp": 0.045261383056640625,
+   "NamiDarkImp": 0.042432546615600586,
+   "DarkImp": 0.004972564056515694,
+   "Revenant1": 0.0012695645894567065,
+   "Draugr": 0.0011563396640212886,
+   "Incarnate": 4.0953696434087306e-05
+  },
+  "conditions": []
+ },
+ "Cacodemon": {
+  "spawner": "CacodemonSpawner",
+  "odds": {
+   "Cacodemon_": 0.7974584586918354,
+   "ImpureElemental": 0.06598234176635742,
+   "Overlord": 0.03814697265625,
+   "AracnorbQueen": 0.0234375
+  },
+  "conditions": [
+   "TNT1 A 0 A_JumpIf((CeilingZ - Height) < 14, \"Cacodemon\")",
+   "TNT1 A 0 A_JumpIf((CeilingZ - Height) < 18, \"Cacodemon\")"
+  ]
+ },
+ "BaronofHell": {
+  "spawner": "BaronSpawner",
+  "odds": {
+   "BaronofHell2": 0.8043764694320998,
+   "CyberBaron": 0.07867813110351562,
+   "BruiserDemon": 0.06103515625,
+   "PyroDemon": 0.026151537895202637,
+   "TerminatorDemon": 0.0234375,
+   "Minimastermind": 0.0031667877919971943,
+   "Minimastermindx": 0.0031544175271847052
+  },
+  "conditions": [
+   "TNT1 A 0 A_JumpIf((CeilingZ - Height) < 19, \"Spawn\")",
+   "TNT1 A 0 A_JumpIf((CeilingZ - Height) < 21, \"Spawn\")"
+  ]
+ },
+ "Cyberdemon": {
+  "spawner": "CyberdemonSpawner",
+  "odds": {
+   "Annihilator": 0.28125,
+   "TheCyberdemon": 0.252685546875,
+   "SuperDemon": 0.25,
+   "Thamuz": 0.216064453125
+  },
+  "conditions": [
+   "TNT1 A 0 A_JumpIf((CeilingZ - Height) < 24, \"Spawn\")",
+   "TNT1 A 0 A_JumpIf(x == -1472, \"ReplaceForBOSS\")"
+  ]
+ },
+ "ChaingunGuy": {
+  "spawner": "CommandoSpawner",
+  "odds": {
+   "ChaingunGuy1": 0.635858311508561,
+   "Major": 0.1171875,
+   "RifleCommando": 0.07359554701577053,
+   "ZSpecOpsRifle": 0.05894903652369976,
+   "ZSpecOpsRail": 0.05480418239312712,
+   "ZSpecOps": 0.03448486328125,
+   "EvilMarine": 0.01009298907156446,
+   "XVStealthZSpecOps": 0.009941339492797852,
+   "EvilMarineLasgun": 0.005086230713229334
+  },
+  "conditions": []
+ },
+ "HellKnight": {
+  "spawner": "KnightSpawner",
+  "odds": {
+   "HellKnight2": 0.5339308874294346,
+   "BaronofHell2": 0.17939241137355566,
+   "CyberKnight": 0.078125,
+   "Mancubus": 0.07622086531000605,
+   "Daedabus": 0.04590248689055443,
+   "CyberBaron": 0.016880035400390625,
+   "BruiserDemon": 0.014404296875,
+   "PyroDemon": 0.014005154371261597,
+   "Minimastermindx": 0.012970445368409855,
+   "Volcabus": 0.009874820709228516,
+   "Arachnotron": 0.006456613540649414,
+   "TerminatorDemon": 0.005786851979792118,
+   "Minimastermind": 0.003923147384810477,
+   "CGSpider": 0.002126983366906643
+  },
+  "conditions": [
+   "TNT1 A 0 A_JumpIf((CeilingZ - Height) < 19, \"Spawn\")",
+   "TNT1 A 0 A_JumpIf((CeilingZ - Height) < 21, \"Spawn\")"
+  ]
+ },
+ "Revenant": {
+  "spawner": "RevenantSpawner",
+  "odds": {
+   "Revenant1": 0.74169921875,
+   "Draugr": 0.234375,
+   "Incarnate": 0.02392578125
+  },
+  "conditions": []
+ },
+ "Demon": {
+  "spawner": "DemonSpawner",
+  "odds": {
+   "BullDemon": 0.7168978750705719,
+   "VoidSpectre": 0.13104248046875,
+   "BloodDemon": 0.1171875,
+   "Diabloist": 0.02312573790550232,
+   "TehArchvile": 0.011746406555175781
+  },
+  "conditions": []
+ },
+ "Fatso": {
+  "spawner": "MancubiiSpawner",
+  "odds": {
+   "Mancubus": 0.5332684516906738,
+   "Daedabus": 0.3096923828125,
+   "Minimastermindx": 0.07891416549682617,
+   "Volcabus": 0.078125
+  },
+  "conditions": []
+ },
+ "SpiderMastermind": {
+  "spawner": "SpiderMasterMindSpawner",
+  "odds": {
+   "SpidermastermindX": 0.61737060546875,
+   "TheSpidermastermind": 0.31231689453125,
+   "AracnorbQueenBOSS": 0.0703125
+  },
+  "conditions": [
+   "TNT1 A 0 A_JumpIf(x == 1600, \"ReplaceForSpiderBOSS\")"
+  ]
+ },
+ "Painelemental": {
+  "spawner": "PainElementalSpawner",
+  "odds": {
+   "PainElemental1": 0.8125,
+   "SufferingElemental": 0.1875
+  },
+  "conditions": []
+ },
+ "Arachnotron": {
+  "spawner": "ArachnotronSpawner",
+  "odds": {
+   "Arachnotron1": 0.796875,
+   "CGSpider": 0.203125
+  },
+  "conditions": []
+ },
+ "Archvile": {
+  "spawner": "ArchvileSpawner",
+  "odds": {
+   "TehArchvile": 0.796875,
+   "Diabloist": 0.203125
+  },
+  "conditions": []
+ }
+}

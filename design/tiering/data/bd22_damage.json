@@ -1,0 +1,154 @@
+{
+ "RifleZombie": {
+  "volley": 142.5,
+  "state": "FallingDie"
+ },
+ "PistolZombie": {
+  "volley": 15.0,
+  "state": "FireGun"
+ },
+ "Labguy": {
+  "volley": 18.0,
+  "state": "Missile"
+ },
+ "HeadlessZombie": {
+  "volley": 15.0,
+  "state": "FireDamnGun"
+ },
+ "ShotgunGuy1": {
+  "volley": 142.5,
+  "state": "FallingDie"
+ },
+ "SMGGuy": {
+  "volley": 142.5,
+  "state": "FallingDie"
+ },
+ "ChaingunGuy1": {
+  "volley": 20.0,
+  "state": "MissileContinue"
+ },
+ "Imp": {
+  "volley": 142.5,
+  "state": "FallingDie"
+ },
+ "BullDemon": {
+  "volley": 32.0,
+  "state": "MeleeSlaughter"
+ },
+ "FatPinky": {
+  "volley": 32.0,
+  "state": "MeleeSlaughter"
+ },
+ "Spectro": {
+  "volley": 8.0,
+  "state": "Melee"
+ },
+ "Cacodemon_": {
+  "volley": 30.0,
+  "state": "Missile_Slaughter"
+ },
+ "TehLostSoul": {
+  "volley": 0,
+  "state": ""
+ },
+ "PainElemental1": {
+  "volley": 0,
+  "state": ""
+ },
+ "HellKnight2": {
+  "volley": 50.0,
+  "state": "MissileSlaughterFest"
+ },
+ "BaronofHell2": {
+  "volley": 247.5,
+  "state": "ThrowBarrel"
+ },
+ "BaronBoss1": {
+  "volley": 247.5,
+  "state": "ThrowBarrel"
+ },
+ "Belphegor2": {
+  "volley": 76.0,
+  "state": "Missile"
+ },
+ "Revenant1": {
+  "volley": 174.0,
+  "state": "SpecialAttack"
+ },
+ "Mancubus": {
+  "volley": 270.0,
+  "state": "Fireballz"
+ },
+ "Volcabus": {
+  "volley": 642.0,
+  "state": "Missile"
+ },
+ "AncientAlienMancubus": {
+  "volley": 240.0,
+  "state": "Missile"
+ },
+ "Arachnotron1": {
+  "volley": 90.0,
+  "state": "Missile"
+ },
+ "Arachnotron2": {
+  "volley": 12.0,
+  "state": "Missile"
+ },
+ "AASpider": {
+  "volley": 60.0,
+  "state": "Missile"
+ },
+ "TehArchvile": {
+  "volley": 0,
+  "state": ""
+ },
+ "TheCyberdemon": {
+  "volley": 1500.0,
+  "state": "SpecialAttack"
+ },
+ "TheSpiderMastermind": {
+  "volley": 75.0,
+  "state": "ReplaceVanilla"
+ },
+ "Motherdemon": {
+  "volley": 264.0,
+  "state": "Missile"
+ },
+ "Juggernaut": {
+  "volley": 210.0,
+  "state": "FireRockets"
+ },
+ "BDMummy": {
+  "volley": 0,
+  "state": ""
+ },
+ "Experiment": {
+  "volley": 0,
+  "state": ""
+ },
+ "Nazi": {
+  "volley": 44.0,
+  "state": "Missile"
+ },
+ "Ubersoldat": {
+  "volley": 28.0,
+  "state": "MissileContinue"
+ },
+ "EvilMarineRifle": {
+  "volley": 77.0,
+  "state": "MissileLeft"
+ },
+ "MrX": {
+  "volley": 108.0,
+  "state": "MissileLeft"
+ },
+ "IconOfSin": {
+  "volley": 240.0,
+  "state": "Fireballs"
+ },
+ "Titan": {
+  "volley": 0,
+  "state": ""
+ }
+}

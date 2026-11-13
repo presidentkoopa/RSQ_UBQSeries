@@ -1,0 +1,406 @@
+{
+ "Aracnorb": {
+  "volley": 30.0,
+  "state": "Missile"
+ },
+ "Annihilator": {
+  "volley": 1750.0,
+  "state": "Missile3"
+ },
+ "Vanilla_Annihilator": {
+  "volley": 1750.0,
+  "state": "Missile3"
+ },
+ "AracnorbQueen": {
+  "volley": 324.0,
+  "state": "SpreadFire"
+ },
+ "AracnorbQueenBOSS": {
+  "volley": 324.0,
+  "state": "SpreadFire"
+ },
+ "AracnorbQueenBOSSBOSS": {
+  "volley": 324.0,
+  "state": "SpreadFire"
+ },
+ "ASGGuy": {
+  "volley": 64.0,
+  "state": "Missile2"
+ },
+ "BloodDemon": {
+  "volley": 0,
+  "state": ""
+ },
+ "BloodSpectre": {
+  "volley": 0,
+  "state": ""
+ },
+ "BruiserDemon": {
+  "volley": 315.0,
+  "state": "Missile"
+ },
+ "CGSpider": {
+  "volley": 30.0,
+  "state": "MissileContinue"
+ },
+ "ChainsawLabguy": {
+  "volley": 4.5,
+  "state": "Melee"
+ },
+ "ChainsawZombie": {
+  "volley": 4.5,
+  "state": "Melee"
+ },
+ "Cyberbaron": {
+  "volley": 2196.0,
+  "state": "CurbstompMarine"
+ },
+ "PhasicKnightX": {
+  "volley": 60.0,
+  "state": "MissileInRage"
+ },
+ "Cybruiser": {
+  "volley": 60.0,
+  "state": "MissileInRage"
+ },
+ "CyberKnight": {
+  "volley": 60.0,
+  "state": "MissileInRage"
+ },
+ "DarkCardinal": {
+  "volley": 670.5,
+  "state": "Missile"
+ },
+ "paingasm": {
+  "volley": 0,
+  "state": ""
+ },
+ "DarkCardinalBOSS": {
+  "volley": 670.5,
+  "state": "Missile"
+ },
+ "DarkImp": {
+  "volley": 20.0,
+  "state": "Melee"
+ },
+ "NamiDarkImp": {
+  "volley": 20.0,
+  "state": "Melee"
+ },
+ "NetherDarkImp": {
+  "volley": 54.0,
+  "state": "Attack2"
+ },
+ "VoidDarkImp": {
+  "volley": 81.0,
+  "state": "Missile"
+ },
+ "Daedabus": {
+  "volley": 174.0,
+  "state": "Missile2"
+ },
+ "Vanilla_Daedabus": {
+  "volley": 174.0,
+  "state": "Missile2"
+ },
+ "SpiderMastermindX": {
+  "volley": 420.0,
+  "state": "Firing"
+ },
+ "Vanilla_Demolisher": {
+  "volley": 420.0,
+  "state": "Firing"
+ },
+ "SuperSpiderMastermindX": {
+  "volley": 420.0,
+  "state": "Firing"
+ },
+ "MiniMasterMind": {
+  "volley": 75.0,
+  "state": "ReplaceVanilla"
+ },
+ "MiniTitan": {
+  "volley": 0,
+  "state": ""
+ },
+ "MiniMastermindX": {
+  "volley": 420.0,
+  "state": "Firing"
+ },
+ "DIABloist": {
+  "volley": 162.0,
+  "state": "Missile2"
+ },
+ "Draugr": {
+  "volley": 75.0,
+  "state": "SpecialAttack"
+ },
+ "Vanilla_Draugr": {
+  "volley": 75.0,
+  "state": "SpecialAttack"
+ },
+ "Imp3": {
+  "volley": 142.5,
+  "state": "FallingDie"
+ },
+ "ImpureElemental": {
+  "volley": 180.0,
+  "state": "RapidFire"
+ },
+ "ImpureSoul": {
+  "volley": 0,
+  "state": ""
+ },
+ "StealthImpureElemental": {
+  "volley": 180.0,
+  "state": "RapidFire"
+ },
+ "Incarnate": {
+  "volley": 0,
+  "state": ""
+ },
+ "Labgal": {
+  "volley": 18.0,
+  "state": "Missile"
+ },
+ "LabguyB": {
+  "volley": 18.0,
+  "state": "Missile"
+ },
+ "LabguyP": {
+  "volley": 8.0,
+  "state": "Missile"
+ },
+ "Major": {
+  "volley": 80.0,
+  "state": "MissileContinue"
+ },
+ "MinigunGuy": {
+  "volley": 42.0,
+  "state": "SpecialAttack"
+ },
+ "OverLord": {
+  "volley": 139.0,
+  "state": "Missile2"
+ },
+ "SuperOverlord": {
+  "volley": 139.0,
+  "state": "Missile2"
+ },
+ "Vanilla_Overlord": {
+  "volley": 139.0,
+  "state": "Missile2"
+ },
+ "Phantasm": {
+  "volley": 0,
+  "state": ""
+ },
+ "Vanilla_Phantasm": {
+  "volley": 0,
+  "state": ""
+ },
+ "PistolZombiePatch": {
+  "volley": 15.0,
+  "state": "FireGun"
+ },
+ "PlasmaZombie": {
+  "volley": 8.0,
+  "state": "Missile"
+ },
+ "ZombieRailgunner": {
+  "volley": 8.0,
+  "state": "Missile"
+ },
+ "ZombieRailgunner70": {
+  "volley": 8.0,
+  "state": "Missile"
+ },
+ "ZombieRailgunner50": {
+  "volley": 8.0,
+  "state": "Missile"
+ },
+ "ZombieRailgunner30": {
+  "volley": 8.0,
+  "state": "Missile"
+ },
+ "SpreadFireZombie": {
+  "volley": 8.0,
+  "state": "Missile"
+ },
+ "PyroDemon": {
+  "volley": 263.0,
+  "state": "Missile"
+ },
+ "PyroSergeant": {
+  "volley": 45.0,
+  "state": "Missile"
+ },
+ "QuadShotgunZombie": {
+  "volley": 48.0,
+  "state": "QuadShot"
+ },
+ "Vanilla_QuadShotgunZombie": {
+  "volley": 48.0,
+  "state": "QuadShot"
+ },
+ "RifleCommando": {
+  "volley": 77.0,
+  "state": "Missile2"
+ },
+ "Vanilla_RifleCommando": {
+  "volley": 77.0,
+  "state": "Missile2"
+ },
+ "RiotShieldGuy": {
+  "volley": 30.0,
+  "state": "Missile"
+ },
+ "RocketGuy": {
+  "volley": 112.5,
+  "state": "Missile"
+ },
+ "SniperZombie": {
+  "volley": 41.5,
+  "state": "Missile"
+ },
+ "SufferingElemental": {
+  "volley": 0,
+  "state": ""
+ },
+ "Vanilla_SufferingElemental": {
+  "volley": 0,
+  "state": ""
+ },
+ "SuperDemon": {
+  "volley": 276.0,
+  "state": "SpecialAttack"
+ },
+ "SuperImp": {
+  "volley": 142.5,
+  "state": "FallingDie"
+ },
+ "SuperShotgunZombie": {
+  "volley": 24.0,
+  "state": "Missile"
+ },
+ "HelmetSergeantLastStand2": {
+  "volley": 48.0,
+  "state": "Missile"
+ },
+ "TerminatorDemon": {
+  "volley": 135.0,
+  "state": "RTshot"
+ },
+ "TerminatorBoss": {
+  "volley": 250.0,
+  "state": "RTshot"
+ },
+ "Thamuz": {
+  "volley": 880.0,
+  "state": "Missile"
+ },
+ "ThamuzBoss": {
+  "volley": 880.0,
+  "state": "Missile"
+ },
+ "VoidSpectre": {
+  "volley": 8.0,
+  "state": "Melee"
+ },
+ "ZSpecOps": {
+  "volley": 77.0,
+  "state": "Firing2"
+ },
+ "ZSpecOpsRail": {
+  "volley": 20.0,
+  "state": "MissileContinue"
+ },
+ "ZSpecOpsRifle": {
+  "volley": 33.0,
+  "state": "Firing1"
+ },
+ "HelmetRifleZombie": {
+  "volley": 142.5,
+  "state": "FallingDie"
+ },
+ "XVStealthAracnorb": {
+  "volley": 30.0,
+  "state": "Missile"
+ },
+ "XVStealthASGGuy": {
+  "volley": 64.0,
+  "state": "Missile2"
+ },
+ "XVStealthBruiser": {
+  "volley": 315.0,
+  "state": "Missile"
+ },
+ "XVStealthChainsawGuy": {
+  "volley": 4.5,
+  "state": "Melee"
+ },
+ "XVStealthCyberBaron": {
+  "volley": 2196.0,
+  "state": "CurbstompMarine"
+ },
+ "XVStealthCyberKnight": {
+  "volley": 60.0,
+  "state": "MissileInRage"
+ },
+ "XVStealthMajor": {
+  "volley": 80.0,
+  "state": "MissileContinue"
+ },
+ "XVStealthMinigungGuy": {
+  "volley": 42.0,
+  "state": "SpecialAttack"
+ },
+ "XVStealthPlasmaZombie": {
+  "volley": 8.0,
+  "state": "Missile"
+ },
+ "XVStealthPyroSergeant": {
+  "volley": 45.0,
+  "state": "Missile"
+ },
+ "XVStealthQSGZombie": {
+  "volley": 48.0,
+  "state": "QuadShot"
+ },
+ "XVStealthRifleCommando": {
+  "volley": 77.0,
+  "state": "Missile2"
+ },
+ "XVStealthRiotShieldGuy": {
+  "volley": 30.0,
+  "state": "Missile"
+ },
+ "XVStealthRocketGuy": {
+  "volley": 112.5,
+  "state": "Missile"
+ },
+ "XVStealthSSGGuy": {
+  "volley": 24.0,
+  "state": "Missile"
+ },
+ "XVStealthTerminator": {
+  "volley": 135.0,
+  "state": "RTshot"
+ },
+ "XVStealthZSpecOps": {
+  "volley": 77.0,
+  "state": "Firing2"
+ },
+ "HellTrooper": {
+  "volley": 47.5,
+  "state": "CrouchFire"
+ },
+ "BFGZombie": {
+  "volley": 47.5,
+  "state": "CrouchFire"
+ },
+ "Vanilla_HellTrooper": {
+  "volley": 47.5,
+  "state": "CrouchFire"
+ }
+}

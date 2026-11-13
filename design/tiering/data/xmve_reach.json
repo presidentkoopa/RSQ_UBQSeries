@@ -1,0 +1,432 @@
+{
+ "riflezombie": [
+  "spawner:Zombieman 68.3%"
+ ],
+ "labgal": [
+  "spawner:Zombieman 9.0%",
+  "spawner:ShotgunGuy 1.1%"
+ ],
+ "chainsawzombie": [
+  "spawner:Zombieman 4.4%",
+  "spawner:ShotgunGuy 0.5%"
+ ],
+ "sniperrifleguy": [
+  "spawner:Zombieman 3.5%"
+ ],
+ "labguy": [
+  "spawner:Zombieman 3.3%",
+  "spawner:ShotgunGuy 0.4%"
+ ],
+ "labguyb": [
+  "spawner:Zombieman 3.0%",
+  "spawner:ShotgunGuy 0.4%"
+ ],
+ "labguyp": [
+  "spawner:Zombieman 2.1%",
+  "spawner:ShotgunGuy 2.8%"
+ ],
+ "plasmazombie": [
+  "spawner:Zombieman 1.8%"
+ ],
+ "chaingunguy1": [
+  "spawner:Zombieman 1.8%",
+  "spawner:ChaingunGuy 63.6%"
+ ],
+ "minigunguy": [
+  "spawner:Zombieman 1.2%"
+ ],
+ "major": [
+  "spawner:Zombieman 0.4%",
+  "spawner:ChaingunGuy 11.7%"
+ ],
+ "riflecommando": [
+  "spawner:Zombieman 0.3%",
+  "spawner:ChaingunGuy 7.4%"
+ ],
+ "zspecops": [
+  "spawner:Zombieman 0.2%",
+  "spawner:ChaingunGuy 3.4%"
+ ],
+ "zspecopsrifle": [
+  "spawner:Zombieman 0.2%",
+  "spawner:ChaingunGuy 5.9%"
+ ],
+ "zspecopsrail": [
+  "spawner:Zombieman 0.2%",
+  "spawner:ChaingunGuy 5.5%"
+ ],
+ "xvstealthzspecops": [
+  "spawner:Zombieman 0.1%",
+  "spawner:ChaingunGuy 1.0%"
+ ],
+ "evilmarine": [
+  "spawner:Zombieman 0.1%",
+  "spawner:ChaingunGuy 1.0%"
+ ],
+ "evilmarinelasgun": [
+  "spawner:Zombieman 0.0%",
+  "spawner:ChaingunGuy 0.5%"
+ ],
+ "shotgunguy1": [
+  "spawner:ShotgunGuy 66.5%"
+ ],
+ "riotshieldguy": [
+  "spawner:ShotgunGuy 9.1%"
+ ],
+ "supershotgunzombie": [
+  "spawner:ShotgunGuy 6.7%"
+ ],
+ "asgguy": [
+  "spawner:ShotgunGuy 4.8%"
+ ],
+ "helltrooper": [
+  "spawner:ShotgunGuy 2.7%"
+ ],
+ "pyrosergeant": [
+  "spawner:ShotgunGuy 1.8%"
+ ],
+ "rocketguy": [
+  "spawner:ShotgunGuy 1.8%"
+ ],
+ "quadshotgunzombie": [
+  "spawner:ShotgunGuy 0.6%"
+ ],
+ "imp": [
+  "spawner:DoomImp 62.9%"
+ ],
+ "imp3": [
+  "spawner:DoomImp 12.5%"
+ ],
+ "superimp": [
+  "spawner:DoomImp 10.3%"
+ ],
+ "netherdarkimp": [
+  "spawner:DoomImp 4.8%"
+ ],
+ "voiddarkimp": [
+  "spawner:DoomImp 4.5%"
+ ],
+ "namidarkimp": [
+  "spawner:DoomImp 4.2%"
+ ],
+ "darkimp": [
+  "spawner:DoomImp 0.5%"
+ ],
+ "revenant1": [
+  "spawner:DoomImp 0.1%",
+  "spawner:Revenant 74.2%"
+ ],
+ "draugr": [
+  "spawner:DoomImp 0.1%",
+  "spawner:Revenant 23.4%"
+ ],
+ "incarnate": [
+  "spawner:DoomImp 0.0%",
+  "spawner:Revenant 2.4%"
+ ],
+ "cacodemon_": [
+  "spawner:Cacodemon 79.7%"
+ ],
+ "impureelemental": [
+  "spawner:Cacodemon 6.6%"
+ ],
+ "overlord": [
+  "spawner:Cacodemon 3.8%"
+ ],
+ "aracnorbqueen": [
+  "spawner:Cacodemon 2.3%"
+ ],
+ "baronofhell2": [
+  "spawner:BaronofHell 80.4%",
+  "spawner:HellKnight 17.9%"
+ ],
+ "cyberbaron": [
+  "spawner:BaronofHell 7.9%",
+  "spawner:HellKnight 1.7%"
+ ],
+ "bruiserdemon": [
+  "spawner:BaronofHell 6.1%",
+  "spawner:HellKnight 1.4%"
+ ],
+ "pyrodemon": [
+  "spawner:BaronofHell 2.6%",
+  "spawner:HellKnight 1.4%"
+ ],
+ "terminatordemon": [
+  "spawner:BaronofHell 2.3%",
+  "spawner:HellKnight 0.6%"
+ ],
+ "minimastermind": [
+  "spawner:BaronofHell 0.3%",
+  "spawner:HellKnight 0.4%"
+ ],
+ "minimastermindx": [
+  "spawner:BaronofHell 0.3%",
+  "spawner:HellKnight 1.3%",
+  "spawner:Fatso 7.9%"
+ ],
+ "annihilator": [
+  "spawner:Cyberdemon 28.1%"
+ ],
+ "thecyberdemon": [
+  "spawner:Cyberdemon 25.3%"
+ ],
+ "superdemon": [
+  "spawner:Cyberdemon 25.0%"
+ ],
+ "thamuz": [
+  "spawner:Cyberdemon 21.6%"
+ ],
+ "hellknight2": [
+  "spawner:HellKnight 53.4%"
+ ],
+ "cyberknight": [
+  "spawner:HellKnight 7.8%"
+ ],
+ "mancubus": [
+  "spawner:HellKnight 7.6%",
+  "spawner:Fatso 53.3%"
+ ],
+ "daedabus": [
+  "spawner:HellKnight 4.6%",
+  "spawner:Fatso 31.0%"
+ ],
+ "volcabus": [
+  "spawner:HellKnight 1.0%",
+  "spawner:Fatso 7.8%"
+ ],
+ "arachnotron": [
+  "spawner:HellKnight 0.6%"
+ ],
+ "cgspider": [
+  "spawner:HellKnight 0.2%",
+  "spawner:Arachnotron 20.3%"
+ ],
+ "bulldemon": [
+  "spawner:Demon 71.7%"
+ ],
+ "voidspectre": [
+  "spawner:Demon 13.1%"
+ ],
+ "blooddemon": [
+  "spawner:Demon 11.7%"
+ ],
+ "diabloist": [
+  "spawner:Demon 2.3%",
+  "spawner:Archvile 20.3%"
+ ],
+ "teharchvile": [
+  "spawner:Demon 1.2%",
+  "spawner:Archvile 79.7%"
+ ],
+ "spidermastermindx": [
+  "spawner:SpiderMastermind 61.7%"
+ ],
+ "thespidermastermind": [
+  "spawner:SpiderMastermind 31.2%"
+ ],
+ "aracnorbqueenboss": [
+  "spawner:SpiderMastermind 7.0%"
+ ],
+ "painelemental1": [
+  "spawner:Painelemental 81.2%"
+ ],
+ "sufferingelemental": [
+  "spawner:Painelemental 18.8%"
+ ],
+ "arachnotron1": [
+  "spawner:Arachnotron 79.7%"
+ ],
+ "pistolzombie": [
+  "spawned by riflezombie"
+ ],
+ "vanillazombieman": [
+  "spawned by riflezombie"
+ ],
+ "vanillachaingunguy": [
+  "spawned by chaingunguy1"
+ ],
+ "evilmarinerifle": [
+  "spawned by evilmarine"
+ ],
+ "evilmarineshotgun": [
+  "spawned by evilmarine"
+ ],
+ "evilmarinessg": [
+  "spawned by evilmarine"
+ ],
+ "evilmarineasg": [
+  "spawned by evilmarine"
+ ],
+ "evilmarinechaingun": [
+  "spawned by evilmarine"
+ ],
+ "evilmarinerocket": [
+  "spawned by evilmarine"
+ ],
+ "evilmarineplasma": [
+  "spawned by evilmarine"
+ ],
+ "tntrevilutionditeamfortress2": [
+  "spawned by evilmarine"
+ ],
+ "formermarine": [
+  "spawned by evilmarine"
+ ],
+ "invisiblealien": [
+  "spawned by evilmarine"
+ ],
+ "bdformercommander": [
+  "spawned by evilmarine"
+ ],
+ "ziobrutalwolfensteinss": [
+  "spawned by evilmarine"
+ ],
+ "alphalostsoul": [
+  "spawned by evilmarine"
+ ],
+ "silvagunner": [
+  "spawned by evilmarine"
+ ],
+ "nazi": [
+  "spawned by evilmarine"
+ ],
+ "ubersoldat": [
+  "spawned by evilmarine"
+ ],
+ "motherdemon": [
+  "spawned by evilmarine"
+ ],
+ "easymarineriflealive": [
+  "spawned by evilmarine"
+ ],
+ "mrx": [
+  "spawned by evilmarine"
+ ],
+ "smgguy": [
+  "spawned by shotgunguy1"
+ ],
+ "vanillashotgunguy": [
+  "spawned by shotgunguy1"
+ ],
+ "vanilla_helltrooper": [
+  "spawned by helltrooper"
+ ],
+ "vanillaimp": [
+  "spawned by imp"
+ ],
+ "impfish": [
+  "spawned by imp"
+ ],
+ "vanillarevenant": [
+  "spawned by revenant1"
+ ],
+ "vanilla_draugr": [
+  "spawned by draugr"
+ ],
+ "vanillacacodemon": [
+  "spawned by cacodemon_"
+ ],
+ "impuresoul": [
+  "spawned by impureelemental"
+ ],
+ "vanillabaronofhell": [
+  "spawned by baronofhell2"
+ ],
+ "baronboss1": [
+  "spawned by baronofhell2"
+ ],
+ "baronboss2": [
+  "spawned by baronofhell2"
+ ],
+ "brutalannihilator": [
+  "spawned by baronofhell2"
+ ],
+ "vanillaspidermastermind": [
+  "spawned by minimastermind"
+ ],
+ "supermastermind": [
+  "spawned by minimastermind"
+ ],
+ "vanilla_demolisher": [
+  "spawned by minimastermindx"
+ ],
+ "vanilla_annihilator": [
+  "spawned by annihilator"
+ ],
+ "vanillacyberdemon": [
+  "spawned by thecyberdemon"
+ ],
+ "cyberdemonboss": [
+  "spawned by thecyberdemon"
+ ],
+ "vanillahellknight": [
+  "spawned by hellknight2"
+ ],
+ "ancientalienmancubus": [
+  "spawned by mancubus"
+ ],
+ "vanilla_daedabus": [
+  "spawned by daedabus"
+ ],
+ "vanillademon": [
+  "spawned by bulldemon"
+ ],
+ "fatpinky": [
+  "spawned by bulldemon"
+ ],
+ "vanillaarchvile": [
+  "spawned by teharchvile"
+ ],
+ "tyrant": [
+  "spawned by thespidermastermind"
+ ],
+ "vanilla_sufferingelemental": [
+  "spawned by sufferingelemental"
+ ],
+ "phantasm": [
+  "spawned by sufferingelemental"
+ ],
+ "aaspider": [
+  "spawned by arachnotron1"
+ ],
+ "nazichecker": [
+  "spawned by nazi"
+ ],
+ "vanillarevenant2": [
+  "spawned by vanillarevenant"
+ ],
+ "vanillarevenant3": [
+  "spawned by vanillarevenant"
+ ],
+ "vanillabaronofhell3": [
+  "spawned by vanillabaronofhell"
+ ],
+ "vanillabaronofhell4": [
+  "spawned by vanillabaronofhell"
+ ],
+ "vanillacyberdemon2": [
+  "spawned by vanillacyberdemon"
+ ],
+ "vanillacyberdemon3": [
+  "spawned by vanillacyberdemon"
+ ],
+ "vanillahellknight3": [
+  "spawned by vanillahellknight"
+ ],
+ "vanillahellknight4": [
+  "spawned by vanillahellknight"
+ ],
+ "vanillaarchvile2": [
+  "spawned by vanillaarchvile"
+ ],
+ "vanillaarchvile3": [
+  "spawned by vanillaarchvile"
+ ],
+ "vanilla_phantasm": [
+  "spawned by phantasm"
+ ],
+ "nazisurrendered": [
+  "spawned by nazichecker"
+ ]
+}

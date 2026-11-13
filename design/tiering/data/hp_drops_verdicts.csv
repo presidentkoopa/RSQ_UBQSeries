@@ -1,0 +1,44 @@
+family,from,from HP,to,to HP,ladder health (proposal),to class file:line,verdict,why,est attack ratio,est threat ratio
+Chaingunner,Brown,250,Yellow,200,262,Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs:1325,LIFT to ladder health,"compensated on paper (est. attack x6.14 of the step below), still lift so HP never falls",6.14,4.91
+Chaingunner,FireBlu,450,Gray,275,472,Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs:612,LIFT to ladder health,not compensated (est. attack x0.42),0.42,0.25
+Revenant,Purple,515,Cyan,480,541,Monsters/zscript/monsters/revenant/RS_Revenant.zs:337,LIFT to ladder health,"compensated on paper (est. attack x2.66 of the step below), still lift so HP never falls; Cyan also takes x1.5-2 from Fire and Melee (DamageFactor in every Cyan class)",2.66,2.48
+Revenant,FireBlu,720,Gray,660,771,Monsters/zscript/monsters/revenant/RS_Revenant.zs:760,LIFT to ladder health,not compensated (est. attack x0.27),0.27,0.25
+Mancubus,Purple,950,Cyan,720,998,Monsters/zscript/monsters/fatso/RS_Fatso.zs:373,LIFT to ladder health,not compensated (est. attack x1.31); Cyan also takes x1.5-2 from Fire and Melee (DamageFactor in every Cyan class),1.31,0.99
+Mancubus,FireBlu,1400,Gray,1000,1470,Monsters/zscript/monsters/fatso/RS_Fatso.zs:756,LIFT to ladder health,"compensated on paper (est. attack x1.38 of the step below), still lift so HP never falls",1.38,1.52
+Arch-Vile,Brown,1400,Yellow,1333,1470,Monsters/zscript/monsters/archvile/RS_Archvile.zs:1476,LIFT to ladder health,"compensated on paper (est. attack x103.0 of the step below), still lift so HP never falls",103.0,98.07
+Arch-Vile,Yellow,1333,FireBlu,1000,1544,Monsters/zscript/monsters/archvile/RS_Archvile.zs:917,LIFT to ladder health,not compensated (est. attack x0.87),0.87,0.66
+Arch-Vile,Red,3200,Abyss,2500,3360,Monsters/zscript/monsters/archvile/RS_Archvile.zs:597,LIFT to ladder health,not compensated (est. attack x0.48),0.48,0.38
+Baron,Brown,2250,Yellow,1888,2362,Monsters/zscript/monsters/baron/RS_Baron.zs:1600,LIFT to ladder health,not compensated (est. attack x0.56),0.56,0.47
+Baron,FireBlu,2300,Gray,2000,2604,Monsters/zscript/monsters/baron/RS_Baron.zs:822,LIFT to ladder health,not compensated (est. attack x1.06),1.06,0.92
+Lost Soul,Purple,150,Cyan,80,160,Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs:326,LIFT to ladder health,not compensated (est. attack x2.0); Cyan also takes x1.5-2 from Fire and Melee (DamageFactor in every Cyan class),2.0,1.07
+Lost Soul,Yellow,180,FireBlu,175,189,Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs:690,LIFT to ladder health,not compensated (est. attack x1.0),1.0,0.97
+Lost Soul,FireBlu,175,Gray,50,198,Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs:607,KEEP,"hive: 50 HP, NOPAIN, +SPAWNCEILING, spawns 2 RS_BlackLSoul2 per attack (A_DualPainAttack, RS_LostSoul.zs:666): its strength is the swarm",0.07,0.02
+Pain Elemental,Cyan,963,Brown,800,1011,Monsters/zscript/monsters/painelemental/RS_PainElemental.zs:188,LIFT to ladder health,not compensated (est. attack x1.46),1.46,1.21
+Pain Elemental,Yellow,900,FireBlu,800,1115,Monsters/zscript/monsters/painelemental/RS_PainElemental.zs:714,LIFT to ladder health,not compensated (est. attack x1.03),1.03,0.91
+Pain Elemental,Gray,1450,Red,1111,1522,Monsters/zscript/monsters/painelemental/RS_PainElemental.zs:1260,LIFT to ladder health,"compensated on paper (est. attack x4.17 of the step below), still lift so HP never falls",4.17,3.19
+Cyberdemon,Cyan,8083,Brown,7557,8487,Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs:289,LIFT to ladder health,not compensated (est. attack x1.04),1.04,0.97
+Spider Mastermind,Brown,8858,Yellow,7777,9301,Monsters/zscript/monsters/mastermind/RS_Mastermind.zs:1880,LIFT to ladder health,not compensated (est. attack x1.3),1.3,1.14
+Spider Mastermind,Abyss,12222,Black,11111,(boss tier: see Black/White rule),Monsters/zscript/monsters/mastermind/RS_Mastermind.zs:2347,LIFT to ladder health,not compensated (est. attack x1.52),1.52,1.38
+Demon,Brown,420,Yellow,325,441,Monsters/zscript/monsters/demon/RS_Demon.zs:1402,LIFT to ladder health,"compensated on paper (est. attack x3.09 of the step below), still lift so HP never falls",3.09,2.39
+Demon,Yellow,325,FireBlu,205,463,Monsters/zscript/monsters/demon/RS_Demon.zs:590,LIFT to ladder health,not compensated (est. attack x0.86),0.86,0.54
+Demon,Gray,700,Red,400,735,Monsters/zscript/monsters/demon/RS_Demon.zs:1523,LIFT to ladder health,not compensated (est. attack x2.22),2.22,1.27
+Cacodemon,Purple,528,Cyan,500,554,Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs:329,LIFT to ladder health,not compensated (est. attack x1.27); Cyan also takes x1.5-2 from Fire and Melee (DamageFactor in every Cyan class),1.27,1.2
+Cacodemon,FireBlu,800,Gray,650,840,Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs:609,LIFT to ladder health,"compensated on paper (est. attack x5.91 of the step below), still lift so HP never falls",5.91,4.8
+Hell Knight,Purple,730,Cyan,700,766,Monsters/zscript/monsters/hellknight/RS_HellKnight.zs:375,LIFT to ladder health,"compensated on paper (est. attack x8.85 of the step below), still lift so HP never falls; Cyan also takes x1.5-2 from Fire and Melee (DamageFactor in every Cyan class)",8.85,8.48
+Hell Knight,Yellow,999,FireBlu,900,1049,Monsters/zscript/monsters/hellknight/RS_HellKnight.zs:705,LIFT to ladder health,"compensated on paper (est. attack x3.45 of the step below), still lift so HP never falls",3.45,3.11
+Hell Knight,FireBlu,900,Gray,800,1101,Monsters/zscript/monsters/hellknight/RS_HellKnight.zs:815,LIFT to ladder health,not compensated (est. attack x0.2),0.2,0.18
+Hell Knight,Black,5555,White,5000,(boss tier: see Black/White rule),Monsters/zscript/monsters/hellknight/RS_HellKnight.zs:2161,LIFT to ladder health,not compensated (est. attack x1.02),1.02,0.92
+Arachnotron,Purple,800,Cyan,777,840,Monsters/zscript/monsters/spider/RS_Spider.zs:1050,LIFT to ladder health,"compensated on paper (est. attack x6.6 of the step below), still lift so HP never falls; Cyan also takes x1.5-2 from Fire and Melee (DamageFactor in every Cyan class)",6.6,6.41
+Arachnotron,Cyan,777,Brown,600,882,Monsters/zscript/monsters/spider/RS_Spider.zs:921,LIFT to ladder health,not compensated (est. attack x0.3),0.3,0.23
+Arachnotron,FireBlu,999,Gray,600,1049,Monsters/zscript/monsters/spider/RS_Spider.zs:1336,LIFT to ladder health,not compensated (est. attack x0.59),0.59,0.35
+Imp,Brown,215,Yellow,145,226,Monsters/zscript/monsters/imp/RS_Imp.zs:1308,LIFT to ladder health,not compensated (est. attack x0.82),0.82,0.55
+Imp,Yellow,145,FireBlu,125,237,Monsters/zscript/monsters/imp/RS_Imp.zs:643,LIFT to ladder health,"compensated on paper (est. attack x2.81 of the step below), still lift so HP never falls",2.81,2.42
+Imp,Gray,265,Red,200,278,Monsters/zscript/monsters/imp/RS_Imp.zs:1438,LIFT to ladder health,not compensated (est. attack x1.01),1.01,0.76
+Shotgunner,Purple,75,Cyan,60,79,Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs:339,LIFT to ladder health,not compensated (est. attack x1.49); Cyan also takes x1.5-2 from Fire and Melee (DamageFactor in every Cyan class),1.49,1.19
+Shotgunner,Brown,155,Yellow,85,163,Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs:1277,LIFT to ladder health,not compensated (est. attack x0.19),0.19,0.1
+Shotgunner,FireBlu,225,Gray,155,236,Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs:476,LIFT to ladder health,not compensated (est. attack x0.34),0.34,0.24
+Shotgunner,Gray,155,Red,150,248,Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs:1418,LIFT to ladder health,"compensated on paper (est. attack x2.8 of the step below), still lift so HP never falls",2.8,2.71
+Spectre,Yellow,320,FireBlu,205,336,Monsters/zscript/monsters/demon/RS_Demon.zs:590,LIFT to ladder health,not compensated (est. attack x2.08),2.08,1.33
+Spectre,Gray,450,Red,394,472,Monsters/zscript/monsters/spectre/RS_Spectre.zs:1050,LIFT to ladder health,"compensated on paper (est. attack x4.74 of the step below), still lift so HP never falls",4.74,4.15
+Zombieman,Purple,95,Cyan,30,100,Monsters/zscript/monsters/zombieman/RS_Zombieman.zs:409,KEEP,"the gate spawns THREE bodies (RS_Zombieman.zs:90-92): 3x30 = 90 vs 95; fix the swap to spawn three, not lift HP",0.37,0.35
+Zombieman,Yellow,140,FireBlu,70,147,Monsters/zscript/monsters/zombieman/RS_Zombieman.zs:508,LIFT to ladder health,kamikaze: Melee goes to XDeath (RS_Zombieman.zs:563-565); lift anyway (a bomber that dies to one pellet never arrives),0.04,0.02

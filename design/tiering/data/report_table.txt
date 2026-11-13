@@ -1,0 +1,142 @@
+| BD22 | D64D2BossEye | Enemies/WCS/DoomZero.dec:399 | 10 | - | exempt |  |
+| BD22 | DopeFish | Enemies/WCS/DoomZero.dec:233 | 100 | - | exempt |  |
+| BD22 | Commander_Keen | Enemies/WCS/KeenNFriends.dec:3 | 100 | - | exempt |  |
+| BD22 | TNTRevilutionDITEAMFORTRESS2 | Enemies/WCS/KeenNFriends.dec:423 | 100 | - | exempt |  |
+| BD22 | TNTRevilutionDITEAMFORTRESS2_2 | Enemies/WCS/KeenNFriends.dec:477 | 100 | - | exempt |  |
+| BD22 | BossBrainReplacer | Enemies/Bosses/BossBrain.dec:1 | 250 | - | exempt |  |
+| BD22 | DemonWitch | Enemies/WCS/DoomZero.dec:258 | 500 | - | exempt |  |
+| BD22 | GateKeeper | Enemies/Bosses/IconOfSin.dec:334 | 20000 | - | exempt |  |
+| BD22 | IconOfSin | Enemies/Bosses/IconOfSin.dec:1 | 40000 | - | exempt |  |
+| BD22 | Titan | Enemies/Bosses/IconOfSin.dec:464 | 100000 | - | exempt |  |
+| BD22 | Arachnotron1 | Enemies/Spiders.dec:1 | 750 | Arachnotron | 1 Com | 750·900·1050·1102·1158·1216·1276·1340·1407·1500·2775·3469·4163 |
+| BD22 | AASpider | Enemies/Spiders2.dec:601 | 750 | Arachnotron | 1 Com | 750·900·1050·1102·1158·1216·1276·1340·1407·1500·2775·3469·4163 |
+| BD22 | Arachnotron2 | Enemies/Spiders2.dec:6 | 1250 | Arachnotron | 6 Bro | –·–·–·–·–·1250·1312·1378·1447·1543·2854·3567·4281 |
+| BD22 | TehArchvile | Enemies/ArchVile.dec:1 | 700 | Arch-Vile | 1 Com | 700·750·860·1001·1200·1260·1323·1389·1459·2850·2993·3741·4489 |
+| BD22 | Afrit | Enemies/WCS/KeenNFriends.dec:203 | 1000 | Baron | 1 Com | 1000·1170·1309·1500·1666·2069·2172·2281·2395·2515·3333·4166·5000 |
+| BD22 | BaronofHell2 | Enemies/Baron.dec:2 | 1200 | Baron | 1 Com | 1200·1404·1571·1800·1999·2483·2607·2737·2874·3018·4000·5000·5999 |
+| BD22 | Belphegor2 | Enemies/ST Monsters/Belphegor.dec:2 | 2000 | Baron | 5 Cya | –·–·–·–·2000·2484·2608·2738·2875·3019·4001·5002·6002 |
+| BD22 | BaronBoss1 | Enemies/Baron.dec:1352 | 4000 | Baron | 11 Aby | –·–·–·–·–·–·–·–·–·–·4000·5000·6000 |
+| BD22 | BaronBoss2 | Enemies/Baron.dec:1393 | 4000 | Baron | 11 Aby | –·–·–·–·–·–·–·–·–·–·4000·5000·6000 |
+| BD22 | Cacodemon_ | Enemies/Cacodemo.dec:1 | 400 | Cacodemon | 1 Com | 400·450·480·509·535·562·720·756·794·833·1100·1375·1650 |
+| BD22 | CacoAsshole | Enemies/WCS/Evinty.dec:518 | 400 | Cacodemon | 1 Com | 400·450·480·509·535·562·720·756·794·833·1100·1375·1650 |
+| BD22 | EasyMarineRifleAlive | Enemies/WCS/EEEVILLL.dec:1988 | 60 | Chaingunner | 1 Com | 60·73·90·103·108·193·203·293·308·323·429·536·643 |
+| BD22 | Silvagunner | Enemies/WCS/NERF.dec:1 | 70 | Chaingunner | 1 Com | 70·85·105·120·126·225·236·342·359·377·500·625·750 |
+| BD22 | ChaingunGuy1 | Enemies/Comando.dec:1 | 80 | Chaingunner | 1 Com | 80·97·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | BDFormerCommander | Enemies/WCS/Evinty.dec:1555 | 80 | Chaingunner | 1 Com | 80·97·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | Ubersoldat | Enemies/Bosses/Ubersoldat.dec:1 | 100 | Chaingunner | 2 Gre | –·100·124·141·148·265·278·402·422·443·588·735·882 |
+| BD22 | FormerMarine | Enemies/WCS/EEEVILLL.dec:821 | 100 | Chaingunner | 2 Gre | –·100·124·141·148·265·278·402·422·443·588·735·882 |
+| BD22 | EvilMarineRifle | Enemies/WCS/EEEVILLL.dec:238 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | EvilMarineShotgun | Enemies/WCS/EEEVILLL.dec:884 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | EvilMarineSSG | Enemies/WCS/EEEVILLL.dec:1067 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | EvilMarineASG | Enemies/WCS/EEEVILLL.dec:1247 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | EvilMarineChaingun | Enemies/WCS/EEEVILLL.dec:1418 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | EvilMarineRocket | Enemies/WCS/EEEVILLL.dec:1558 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | EvilMarinePlasma | Enemies/WCS/EEEVILLL.dec:1736 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| BD22 | MrX | Enemies/WCS/EEEVILLL.dec:2194 | 400 | Chaingunner | 8 Fir | –·–·–·–·–·–·–·400·420·441·585·732·878 |
+| BD22 | Tyrant | Enemies/WCS/NERF.dec:8 | 1000 | Cyberdemon | 1 Com | 1000·1250·1450·1600·1950·2047·2149·2257·2370·2500·3000·3750·4500 |
+| BD22 | BrutalAnnihilator | Enemies/WCS/Evinty.dec:258 | 1450 | Cyberdemon | 1 Com | 1450·1812·2102·2320·2827·2968·3117·3273·3436·3625·4350·5438·6525 |
+| BD22 | TheCyberdemon | Enemies/Cyberdemon.dec:1 | 5000 | Cyberdemon | 1 Com | 5000·6250·7250·8000·9748·10236·10747·11285·11849·12500·15000·18750·22500 |
+| BD22 | U_ArchangelusB | Enemies/WCS/Evinty.dec:874 | 8000 | Cyberdemon | 4 Pur | –·–·–·8000·9748·10236·10747·11285·11849·12500·15000·18750·22500 |
+| BD22 | U_ArchangelusA | Enemies/WCS/Evinty.dec:754 | 10000 | Cyberdemon | 5 Cya | –·–·–·–·10000·10500·11025·11576·12155·12823·15388·19234·23081 |
+| BD22 | BullDemon | Enemies/Demons.dec:6 | 200 | Demon | 1 Com | 200·227·273·347·364·422·443·466·733·770·809·1011·1213 |
+| BD22 | FatPinky | Enemies/Demons.dec:1322 | 200 | Demon | 1 Com | 200·227·273·347·364·422·443·466·733·770·809·1011·1213 |
+| BD22 | BrutalNightmareDemon | Enemies/WCS/Evinty.dec:1 | 400 | Demon | 5 Cya | –·–·–·–·400·464·487·512·806·846·888·1111·1333 |
+| BD22 | HellKnight2 | Enemies/Knight.dec:1 | 500 | Hell Knight | 1 Com | 500·600·666·710·745·783·900·945·992·1300·1850·2312·2775 |
+| BD22 | Imp | Enemies/Imps.dec:7 | 80 | Imp | 1 Com | 80·93·111·140·167·216·226·238·310·326·400·500·600 |
+| BD22 | TehLostSoul | Enemies/LostSoul.dec:6 | 100 | Lost Soul | 1 Com | 100·120·126·132·139·146·153·161·169·240·380·475·570 |
+| BD22 | AncientFlyingCunt | Enemies/WCS/AAliens.dec:1 | 100 | Lost Soul | 1 Com | 100·120·126·132·139·146·153·161·169·240·380·475·570 |
+| BD22 | AlphaLostSoul | Enemies/WCS/DoomZero.dec:1 | 100 | Lost Soul | 1 Com | 100·120·126·132·139·146·153·161·169·240·380·475·570 |
+| BD22 | Mancubus | Enemies/Mancubus.dec:1 | 600 | Mancubus | 1 Com | 600·750·840·882·926·972·1217·1278·1341·1600·2150·2688·3225 |
+| BD22 | AncientAlienMancubus | Enemies/Volcabus.dec:804 | 600 | Mancubus | 1 Com | 600·750·840·882·926·972·1217·1278·1341·1600·2150·2688·3225 |
+| BD22 | Volcabus | Enemies/Volcabus.dec:1 | 2500 | Mancubus | 11 Aby | –·–·–·–·–·–·–·–·–·–·2500·3125·3750 |
+| BD22 | Juggernaut | Enemies/ST Monsters/Juggernaut.dec:1 | 8000 | Mancubus | 13 Whi | –·–·–·–·–·–·–·–·–·–·–·–·8000 |
+| BD22 | PainElemental1 | Enemies/PainElemental.dec:1 | 400 | Pain Elemental | 1 Com | 400·500·610·790·866·909·954·1002·1280·1345·1600·2000·2400 |
+| BD22 | Revenant1 | Enemies/Revenant.dec:1 | 250 | Revenant | 1 Com | 250·300·350·415·435·555·583·612·642·692·833·1042·1250 |
+| BD22 | ShotgunGuy1 | Enemies/Sergeants.dec:1 | 40 | Shotgunner | 1 Com | 40·60·73·90·95·160·168·236·247·260·400·500·600 |
+| BD22 | SMGGuy | Enemies/Sergeants.dec:1917 | 40 | Shotgunner | 1 Com | 40·60·73·90·95·160·168·236·247·260·400·500·600 |
+| BD22 | InvisibleAlien | Enemies/WCS/AAliens.dec:116 | 30 | Spectre | 1 Com | 30·35·42·50·54·57·60·63·84·89·120·150·180 |
+| BD22 | Spectro | Enemies/Spectre.dec:1 | 200 | Spectre | 1 Com | 200·233·280·333·360·378·397·417·563·591·800·1000·1200 |
+| BD22 | TheSpiderMastermind | Enemies/Mastermind.dec:6 | 4000 | Spider Mastermind | 1 Com | 4000·5600·7467·8888·10369·10888·11432·12004·12604·13333·16296·20370·24444 |
+| BD22 | TheSpiderMastermindNERF | Enemies/WCS/NERF.dec:123 | 4000 | Spider Mastermind | 1 Com | 4000·5600·7467·8888·10369·10888·11432·12004·12604·13333·16296·20370·24444 |
+| BD22 | Motherdemon | Enemies/Bosses/Motherdemon.dec:1 | 10000 | Spider Mastermind | 4 Pur | –·–·–·10000·11667·12250·12863·13506·14181·15002·18335·22919·27502 |
+| BD22 | RifleZombie | Enemies/Zombiemen.dec:15 | 40 | Zombieman | 1 Com | 40·80·120·126·132·200·210·220·232·372·400·500·600 |
+| BD22 | PistolZombie | Enemies/ZombiemenVariations.dec:1 | 40 | Zombieman | 1 Com | 40·80·120·126·132·200·210·220·232·372·400·500·600 |
+| BD22 | Labguy | Enemies/LABGUY.dec:1 | 50 | Zombieman | 1 Com | 50·100·150·158·165·250·262·276·289·465·500·625·750 |
+| BD22 | Nazi | Enemies/WCS/Nazis.dec:1 | 50 | Zombieman | 1 Com | 50·100·150·158·165·250·262·276·289·465·500·625·750 |
+| BD22 | Experiment | Enemies/Mummy.dec:97 | 100 | Zombieman | 2 Gre | –·100·150·158·165·250·262·276·289·465·500·625·750 |
+| BD22 | ZioBrutalWolfensteinSS | Enemies/WCS/BWSS.dec:35 | 100 | Zombieman | 2 Gre | –·100·150·158·165·250·262·276·289·465·500·625·750 |
+| BD22 | HeadlessZombie | Enemies/ZombiemanVariation2.dec:1 | 150 | Zombieman | 5 Cya | –·–·–·–·150·227·238·250·262·422·454·567·680 |
+| BD22 | BDMummy | Enemies/Mummy.dec:1 | 200 | Zombieman | 6 Bro | –·–·–·–·–·200·210·220·232·372·400·500·600 |
+| XMVE | MiniTitan | x04/MastermindMini.txt:493 | 100000 | - | exempt |  |
+| XMVE | CGSpider | x04/CGSpider.txt:1 | 550 | Arachnotron | 1 Com | 550·660·770·808·849·891·936·983·1032·1100·2035·2544·3053 |
+| XMVE | DIABloist | x04/Diabloist.txt:1 | 1200 | Arch-Vile | 5 Cya | –·–·–·–·1200·1260·1323·1389·1459·2850·2992·3741·4489 |
+| XMVE | BruiserDemon | x04/BruiserDemon.txt:1 | 1250 | Baron | 1 Com | 1250·1462·1636·1875·2082·2586·2716·2851·2994·3144·4166·5208·6249 |
+| XMVE | Cyberbaron | x04/CyberBaron.txt:1 | 1250 | Baron | 1 Com | 1250·1462·1636·1875·2082·2586·2716·2851·2994·3144·4166·5208·6249 |
+| XMVE | TerminatorDemon | x04/Terminator.txt:1 | 1250 | Baron | 1 Com | 1250·1462·1636·1875·2082·2586·2716·2851·2994·3144·4166·5208·6249 |
+| XMVE | PyroDemon | x04/PyroDemon.txt:1 | 1500 | Baron | 2 Gre | –·1500·1678·1923·2136·2653·2785·2924·3071·3224·4273·5341·6410 |
+| XMVE | TerminatorBoss | x04/Terminator.txt:228 | 5050 | Baron | 11 Aby | –·–·–·–·–·–·–·–·–·–·5050·6312·7575 |
+| XMVE | Aracnorb | x04/Aracnorb.txt:1 | 300 | Cacodemon | 1 Com | 300·338·360·382·401·421·540·567·595·625·825·1031·1238 |
+| XMVE | ImpureElemental | x04/ImpureElemental.txt:2 | 450 | Cacodemon | 2 Gre | –·450·480·509·535·562·720·756·794·833·1100·1375·1650 |
+| XMVE | StealthImpureElemental | x04/ImpureElemental.txt:403 | 450 | Cacodemon | 2 Gre | –·450·480·509·535·562·720·756·794·833·1100·1375·1650 |
+| XMVE | OverLord | x04/Overlord.dec:3 | 600 | Cacodemon | 6 Bro | –·–·–·–·–·600·769·808·848·891·1175·1469·1763 |
+| XMVE | AracnorbQueen | x04/AracnorbQueen.txt:1 | 1000 | Cacodemon | 10 Red | –·–·–·–·–·–·–·–·–·1000·1320·1650·1980 |
+| XMVE | SuperOverlord | x04/Overlord.dec:1049 | 10000 | Cacodemon | 13 Whi | –·–·–·–·–·–·–·–·–·–·–·–·10000 |
+| XMVE | RifleCommando | x07/RifleCommando.txt:6 | 100 | Chaingunner | 2 Gre | –·100·124·141·148·265·278·402·422·443·588·735·882 |
+| XMVE | ZSpecOps | x04/ZSpecOps.txt:1 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| XMVE | ZSpecOpsRifle | x04/ZSpecOpsRifle.txt:1 | 120 | Chaingunner | 3 Blu | –·–·120·137·144·257·270·390·410·431·571·714·857 |
+| XMVE | Major | x07/Major.txt:1 | 126 | Chaingunner | 3 Blu | –·–·126·144·151·270·284·410·430·452·600·750·900 |
+| XMVE | ZSpecOpsRail | x07/ZspecopsRail.txt:1 | 140 | Chaingunner | 4 Pur | –·–·–·140·147·262·276·399·419·439·583·729·875 |
+| XMVE | DarkCardinal | x04/DarkCardinal.txt:7 | 800 | Cyberdemon | 1 Com | 800·1000·1160·1280·1560·1638·1720·1806·1896·2000·2400·3000·3600 |
+| XMVE | DarkCardinalBOSS | x04/DarkCardinalBOSS.txt:7 | 2500 | Cyberdemon | 1 Com | 2500·3125·3625·4000·4874·5118·5374·5642·5924·6250·7500·9375·11250 |
+| XMVE | Thamuz | x04/Thamuz.txt:11 | 3800 | Cyberdemon | 1 Com | 3800·4750·5510·6080·7409·7779·8168·8576·9005·9500·11400·14250·17100 |
+| XMVE | SuperDemon | x04/SuperDemon.txt:1 | 5000 | Cyberdemon | 1 Com | 5000·6250·7250·8000·9748·10236·10747·11285·11849·12500·15000·18750·22500 |
+| XMVE | Annihilator | x04/ANNIHILATOR.dec:1 | 7000 | Cyberdemon | 2 Gre | –·7000·8120·8960·10918·11464·12037·12639·13271·14000·16800·21000·25200 |
+| XMVE | ThamuzBoss | x04/ThamuzBoss.txt:11 | 8500 | Cyberdemon | 4 Pur | –·–·–·8500·10357·10875·11419·11990·12589·13281·15938·19922·23906 |
+| XMVE | VoidSpectre | x04/VOIDSPECTRE.dec:65 | 300 | Demon | 3 Blu | –·–·300·380·400·463·487·511·805·845·887·1109·1331 |
+| XMVE | BloodDemon | x04/BloodDemon.txt:1 | 401 | Demon | 5 Cya | –·–·–·–·401·465·488·513·808·848·891·1113·1336 |
+| XMVE | PhasicKnightX | x04/CyberKnight.txt:1 | 655 | Hell Knight | 3 Blu | –·–·655·698·733·770·885·929·976·1279·1819·2274·2729 |
+| XMVE | Cybruiser | x04/CyberKnight.txt:1071 | 655 | Hell Knight | 3 Blu | –·–·655·698·733·770·885·929·976·1279·1819·2274·2729 |
+| XMVE | CyberKnight | x04/CyberKnight.txt:1077 | 655 | Hell Knight | 3 Blu | –·–·655·698·733·770·885·929·976·1279·1819·2274·2729 |
+| XMVE | SuperImp | x04/SuperImp.txt:1 | 80 | Imp | 3 Blu | –·–·80·101·120·156·164·172·224·235·289·361·434 |
+| XMVE | DarkImp | x04/DarkImp.txt:1 | 117 | Imp | 3 Blu | –·–·117·148·176·228·239·251·328·344·423·529·634 |
+| XMVE | Imp3 | x04/Imp3.txt:8 | 117 | Imp | 3 Blu | –·–·117·148·176·228·239·251·328·344·423·529·634 |
+| XMVE | NamiDarkImp | x04/DarkImpNami.txt:1 | 126 | Imp | 3 Blu | –·–·126·159·190·245·258·271·353·371·455·569·683 |
+| XMVE | NetherDarkImp | x04/DarkImpNether.txt:1 | 126 | Imp | 3 Blu | –·–·126·159·190·245·258·271·353·371·455·569·683 |
+| XMVE | VoidDarkImp | x04/DarkImpVoid.txt:1 | 126 | Imp | 3 Blu | –·–·126·159·190·245·258·271·353·371·455·569·683 |
+| XMVE | ImpureSoul | x04/ImpureElemental.txt:247 | 66 | Lost Soul | 1 Com | 66·79·83·87·92·96·101·106·111·158·251·314·376 |
+| XMVE | Phantasm | x04/Phantasm.dec:2 | 70 | Lost Soul | 1 Com | 70·84·88·93·97·102·107·113·118·168·266·332·399 |
+| XMVE | Daedabus | x04/Daedabus.dec:1 | 850 | Mancubus | 3 Blu | –·–·850·893·937·984·1231·1293·1357·1619·2176·2719·3263 |
+| XMVE | paingasm | x04/DarkCardinalBOSS.txt:181 | 500 | Pain Elemental | 2 Gre | –·500·610·790·866·909·954·1002·1280·1345·1600·2000·2400 |
+| XMVE | SufferingElemental | x04/SufferingElemental.dec:2 | 525 | Pain Elemental | 2 Gre | –·525·640·830·909·954·1002·1052·1345·1412·1680·2100·2520 |
+| XMVE | Incarnate | x04/Incarnate.txt:2 | 300 | Revenant | 2 Gre | –·300·350·415·435·555·583·612·642·692·833·1042·1250 |
+| XMVE | Draugr | x04/Draugr.dec:1 | 550 | Revenant | 6 Bro | –·–·–·–·–·550·578·606·637·685·826·1032·1239 |
+| XMVE | RiotShieldGuy | x04/RiotSergeant.txt:1 | 54 | Shotgunner | 1 Com | 54·81·99·122·128·216·227·318·334·351·540·675·810 |
+| XMVE | ASGGuy | x07/ASGGuy.txt:1 | 80 | Shotgunner | 3 Blu | –·–·80·98·103·175·183·257·270·283·436·545·655 |
+| XMVE | SuperShotgunZombie | x04/SuperShotgunZombie.txt:1 | 80 | Shotgunner | 3 Blu | –·–·80·98·103·175·183·257·270·283·436·545·655 |
+| XMVE | QuadShotgunZombie | x07/QuadShotgunZombie.txt:1 | 90 | Shotgunner | 4 Pur | –·–·–·90·95·160·168·236·247·260·400·500·600 |
+| XMVE | PyroSergeant | x04/PyroSergeant.txt:1 | 100 | Shotgunner | 5 Cya | –·–·–·–·100·169·178·249·262·275·423·529·635 |
+| XMVE | RocketGuy | x07/RocketGuy.txt:1 | 126 | Shotgunner | 5 Cya | –·–·–·–·126·213·224·314·330·346·533·667·800 |
+| XMVE | HellTrooper | x04/DemonTechTroop.dec:60 | 220 | Shotgunner | 7 Yel | –·–·–·–·–·–·220·308·324·340·524·655·786 |
+| XMVE | BFGZombie | x04/DemonTechTroop.dec:1689 | 220 | Shotgunner | 7 Yel | –·–·–·–·–·–·220·308·324·340·524·655·786 |
+| XMVE | BloodSpectre | x04/BloodDemon.txt:773 | 401 | Spectre | 7 Yel | –·–·–·–·–·–·401·421·568·597·808·1010·1212 |
+| XMVE | MiniMasterMind | x04/MastermindMini.txt:1 | 2000 | Spider Mastermind | 1 Com | 2000·2800·3733·4444·5185·5444·5716·6002·6302·6667·8148·10185·12222 |
+| XMVE | MiniMastermindX | x04/DemolisherMini.dec:1 | 2500 | Spider Mastermind | 1 Com | 2500·3500·4667·5555·6481·6805·7145·7502·7877·8333·10185·12731·15278 |
+| XMVE | AracnorbQueenBOSS | x04/AracnorbQueenBoss.txt:2 | 4500 | Spider Mastermind | 1 Com | 4500·6300·8400·9999·11666·12249·12861·13504·14179·15000·18333·22916·27500 |
+| XMVE | SpiderMastermindX | x04/Demolisher.dec:3 | 5000 | Spider Mastermind | 1 Com | 5000·7000·9333·11110·12962·13610·14290·15005·15755·16667·20370·25462·30555 |
+| XMVE | AracnorbQueenBOSSBOSS | x04/AracnorbQueenBossBoss.txt:2 | 10000 | Spider Mastermind | 4 Pur | –·–·–·10000·11667·12250·12863·13506·14181·15002·18335·22919·27502 |
+| XMVE | SuperSpiderMastermindX | x04/DemolisherBoss.dec:3 | 10000 | Spider Mastermind | 4 Pur | –·–·–·10000·11667·12250·12863·13506·14181·15002·18335·22919·27502 |
+| XMVE | PistolZombiePatch | x04/PistolZombiePatch.txt:1 | 40 | Zombieman | 1 Com | 40·80·120·126·132·200·210·220·232·372·400·500·600 |
+| XMVE | ChainsawLabguy | x04/ChainsawZombie.txt:1 | 54 | Zombieman | 1 Com | 54·108·162·170·179·270·284·298·313·502·540·675·810 |
+| XMVE | ChainsawZombie | x04/ChainsawZombie.txt:1265 | 54 | Zombieman | 1 Com | 54·108·162·170·179·270·284·298·313·502·540·675·810 |
+| XMVE | Labgal | x04/LABGAL.txt:1 | 54 | Zombieman | 1 Com | 54·108·162·170·179·270·284·298·313·502·540·675·810 |
+| XMVE | LabguyB | x04/LABGUYB.txt:1 | 54 | Zombieman | 1 Com | 54·108·162·170·179·270·284·298·313·502·540·675·810 |
+| XMVE | LabguyP | x07/LabGuyP.txt:1 | 54 | Zombieman | 1 Com | 54·108·162·170·179·270·284·298·313·502·540·675·810 |
+| XMVE | HelmetRifleZombie | x04/ZombiemanHelmets.dec:1 | 54 | Zombieman | 1 Com | 54·108·162·170·179·270·284·298·313·502·540·675·810 |
+| XMVE | SniperZombie | x04/SniperRifleGuy.txt:4 | 60 | Zombieman | 1 Com | 60·120·180·189·198·300·315·331·347·558·600·750·900 |
+| XMVE | MinigunGuy | x07/MinigunGuy.txt:4 | 80 | Zombieman | 2 Gre | –·80·120·126·132·200·210·220·232·372·400·500·600 |
+| XMVE | PlasmaZombie | x07/PlasmaZombie.txt:1 | 80 | Zombieman | 2 Gre | –·80·120·126·132·200·210·220·232·372·400·500·600 |
+| XMVE | ZombieRailgunner | x07/PlasmaZombie.txt:1647 | 80 | Zombieman | 2 Gre | –·80·120·126·132·200·210·220·232·372·400·500·600 |
+| XMVE | ZombieRailgunner70 | x07/PlasmaZombie.txt:1650 | 80 | Zombieman | 2 Gre | –·80·120·126·132·200·210·220·232·372·400·500·600 |
+| XMVE | ZombieRailgunner50 | x07/PlasmaZombie.txt:1653 | 80 | Zombieman | 2 Gre | –·80·120·126·132·200·210·220·232·372·400·500·600 |
+| XMVE | ZombieRailgunner30 | x07/PlasmaZombie.txt:1656 | 80 | Zombieman | 2 Gre | –·80·120·126·132·200·210·220·232·372·400·500·600 |
+| XMVE | SpreadFireZombie | x07/PlasmaZombie.txt:1659 | 80 | Zombieman | 2 Gre | –·80·120·126·132·200·210·220·232·372·400·500·600 |

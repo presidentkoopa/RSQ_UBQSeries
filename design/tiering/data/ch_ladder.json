@@ -1,0 +1,7922 @@
+{
+ "ladder": [
+  {
+   "cls": "RS_CommonCGuy",
+   "parent": "ChaingunGuy",
+   "idroot": "ChaingunGuy",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 884,
+   "health": 70,
+   "speed": 8.0,
+   "painchance": "170",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Former Captain",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenCGuy",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 9.0
+   },
+   "volley": 9.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenCGuy",
+   "parent": "ChaingunGuy",
+   "idroot": "ChaingunGuy",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 971,
+   "health": 85,
+   "speed": 8.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Chaingunner",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_BlueCGuy",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 27.0
+   },
+   "volley": 27.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueCGuy",
+   "parent": "ChaingunGuy",
+   "idroot": "ChaingunGuy",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 1078,
+   "health": 105,
+   "speed": 8.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Chaingunner",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_PurpleCGuy",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 5.0,
+    "M1": 10.0,
+    "Closer": 60.0
+   },
+   "volley": 60.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleCGuy",
+   "parent": "ChaingunGuy",
+   "idroot": "ChaingunGuy",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 1206,
+   "health": 120,
+   "speed": 8.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Chaingunner",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 14.0,
+    "M2": 16.0,
+    "M1": 27.0
+   },
+   "volley": 27.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanCGuy2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 326,
+   "health": 125,
+   "speed": 11.0,
+   "painchance": "88",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.95",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 1.5",
+    "\"Melee\", 1.5",
+    "\"Ice\", 0.10",
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Jetpack Larry",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "translucent",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 198.0,
+    "Missile2": 18.0
+   },
+   "volley": 198.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownCGuy2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 198,
+   "health": 250,
+   "speed": 6.0,
+   "painchance": "102",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Brown Noise Maker",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_BrownSandBagCGuy,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 33.0,
+    "M1": 30.0
+   },
+   "volley": 33.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowCGuy",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 1325,
+   "health": 200,
+   "speed": 10.0,
+   "painchance": "135",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Orange Former Captain",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Spam": 202.5,
+    "Spam2": 180.0
+   },
+   "volley": 202.5,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluCGuy2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 760,
+   "health": 450,
+   "speed": 18.0,
+   "painchance": "135",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Bad makeup day",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 192.5
+   },
+   "volley": 192.5,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayCGuy2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 612,
+   "health": 275,
+   "speed": 10.0,
+   "painchance": "135",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "That is bad camo",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 35.0,
+    "M1": 55.0,
+    "M2": 65.0,
+    "M3": 80.0
+   },
+   "volley": 80.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedCGuy",
+   "parent": "ChaingunGuy",
+   "idroot": "ChaingunGuy",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 1498,
+   "health": 300,
+   "speed": 10.0,
+   "painchance": "88",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Red Chaingunner",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 9.0,
+    "M2": 9.0,
+    "M1": 24.0
+   },
+   "volley": 24.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssCGuy2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 486,
+   "health": 500,
+   "speed": 8.0,
+   "painchance": "80",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Abyss Captain",
+   "abilities": [
+    "translucent",
+    "fast",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Rapids": 79.0
+   },
+   "volley": 79.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackCGuy2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 1763,
+   "health": 4500,
+   "speed": 10.0,
+   "painchance": "25",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "ITS MR GENERAL TO YOU,MAGGOT",
+   "abilities": [],
+   "attacks": {
+    "SpamShots": 427.5,
+    "Shield": 17.5,
+    "BigOne": 63.8
+   },
+   "volley": 427.5,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteCguy2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 1879,
+   "health": 7777,
+   "speed": 14.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.5",
+    "\"Melee\", 3.75",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "The crazy lady scientist",
+   "abilities": [
+    "fast",
+    "spawns_in_fight:RS_SlimyWorm,RS_SpliceBaron"
+   ],
+   "attacks": {
+    "Puddle": 36.0,
+    "Puddle2": 72.0,
+    "Darts": 52.5,
+    "DartStorm": 254.0,
+    "Summon1": 13.5
+   },
+   "volley": 254.0,
+   "family": "Chaingunner",
+   "fam": 0,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonRevenant",
+   "parent": "Revenant",
+   "idroot": "Revenant",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 880,
+   "health": 300,
+   "speed": 10.0,
+   "painchance": "100",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Revenant",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "retier_others",
+    "spawns_on_death:RS_GreenRevenant",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 33.0,
+    "Missile": 55.0
+   },
+   "volley": 55.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenRevenant",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 1007,
+   "health": 360,
+   "speed": 11.0,
+   "painchance": "88",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Revenant",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "retier_others",
+    "spawns_on_death:RS_BlueRevenant",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 33.0,
+    "Missile": 60.0
+   },
+   "volley": 60.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueRevenant",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 1144,
+   "health": 420,
+   "speed": 12.0,
+   "painchance": "77",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.95",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Falling\", 0.0",
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Revenant",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast",
+    "retier_others",
+    "spawns_on_death:RS_PurpleRevenant",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 33.0,
+    "Falcon": 13.5,
+    "Blastings": 154.0
+   },
+   "volley": 154.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleRevenant",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 1307,
+   "health": 515,
+   "speed": 13.0,
+   "painchance": "66",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.92",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Purple Revenant",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 33.0,
+    "Falcon2": 13.5,
+    "Fireing2": 80.0
+   },
+   "volley": 80.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanRevenant2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 337,
+   "health": 480,
+   "speed": 14.0,
+   "painchance": "120",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Falling\", 0.0",
+    "\"Scrapper\", 3.0",
+    "\"Ice\", 0.15",
+    "\"Melee\", 1.5",
+    "\"fire\", 1.5",
+    "\"DIMp\", 0",
+    "\"PLWater\", 0.25"
+   ],
+   "tag": "Cyan Revenant chains",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "fast"
+   ],
+   "attacks": {
+    "Melee": 58.2,
+    "Missile": 213.0,
+    "IceBomb": 33.0
+   },
+   "volley": 213.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownRevenant2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 219,
+   "health": 666,
+   "speed": 12.0,
+   "painchance": "120",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"fire\", 1.25",
+    "\"DIMp\", 0",
+    "\"PLWater\", 2.0"
+   ],
+   "tag": "Mummy mummy",
+   "abilities": [
+    "heal_others",
+    "fast"
+   ],
+   "attacks": {
+    "Melee": 33.0,
+    "Missile": 52.5
+   },
+   "volley": 52.5,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowRevenant",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 1571,
+   "health": 666,
+   "speed": 7.0,
+   "painchance": "30",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.85",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 0.3",
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "\"PLWater\", 2.0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Terrifying Orange (NoClip?) Revenant",
+   "abilities": [
+    "fire",
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_SpecialSoul,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 33.0,
+    "Proje": 80.0,
+    "FlameSplit": 28.0
+   },
+   "volley": 80.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluRevenant2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 614,
+   "health": 720,
+   "speed": 6.0,
+   "painchance": "12",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "\"Ice\", 0.9",
+    "\"fire\", 0.75"
+   ],
+   "tag": "Skeleton on fire!",
+   "abilities": [
+    "ice",
+    "fast",
+    "retier_others",
+    "spawns_on_death:RS_PurpleRevenant",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 148.0,
+    "Spread": 276.5,
+    "Melee": 35.5
+   },
+   "volley": 276.5,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayRevenant2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 760,
+   "health": 660,
+   "speed": 18.0,
+   "painchance": "0",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Punchout master",
+   "abilities": [
+    "hop_leap",
+    "nopain_or_armour",
+    "retier_others",
+    "spawns_on_death:RS_PurpleRevenant",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 10.0,
+    "BoneIt": 75.0,
+    "Closer": 13.5
+   },
+   "volley": 75.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedRevenant",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 1791,
+   "health": 830,
+   "speed": 14.0,
+   "painchance": "22",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.95",
+   "has_translation": false,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 1.45"
+   ],
+   "tag": "a Bloody Red Revenant",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 66.0,
+    "Missile": 65.0,
+    "MegaShot": 82.5
+   },
+   "volley": 82.5,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssRevenant2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 475,
+   "health": 1000,
+   "speed": 11.0,
+   "painchance": "76",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Falling\", 0.0",
+    "\"Scrapper\", 3.0",
+    "\"Ice\", 0.45",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Abyss Revenant",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 304.0,
+    "MissileIt": 108.0
+   },
+   "volley": 304.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackRevenant3",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 1949,
+   "health": 4500,
+   "speed": 10.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"Melee\", 0.6",
+    "\"Fire\", 1.75",
+    "\"Ice\", 0.80",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "The Black Knight",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "retier_others",
+    "spawns_on_death:RS_BlackRev2",
+    "spawns_in_fight:RS_RevShieldWalk"
+   ],
+   "attacks": {
+    "Melee": 70.0,
+    "DartCleave": 187.5,
+    "Mines": 60.0,
+    "Dash": 13.5,
+    "Shield": 45.0
+   },
+   "volley": 187.5,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteRevenant2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 2682,
+   "health": 8866,
+   "speed": 23.0,
+   "painchance": "255",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.5",
+    "\"Fire\", 0.9",
+    "\"Melee\", 0.9",
+    "\"PLWater\", 0.75",
+    "\"Poison\", 0.0",
+    "\"DIMp\", 0",
+    "\"Heroic\", 3.0",
+    "\"PlayerVoid\", 0.65"
+   ],
+   "tag": "Lichest Lich",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "poison",
+    "translucent",
+    "nopain_or_armour",
+    "spawns_in_fight:RS_MrBones"
+   ],
+   "attacks": {
+    "MoreCoil": 76.5,
+    "IceBolt": 95.0
+   },
+   "volley": 95.0,
+   "family": "Revenant",
+   "fam": 1,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonFatso",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 894,
+   "health": 600,
+   "speed": 8.0,
+   "painchance": "80",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Mancubus",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenFatso",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 162.0
+   },
+   "volley": 162.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenFatso",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 990,
+   "health": 750,
+   "speed": 8.0,
+   "painchance": "70",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Mancubus",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_BlueFatso",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 352.5
+   },
+   "volley": 352.5,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueFatso",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 1107,
+   "health": 850,
+   "speed": 7.0,
+   "painchance": "60",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Mancubus",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_PurpleFatso",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Waves": 273.0,
+    "Beam": 160.0
+   },
+   "volley": 273.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleFatso",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 1242,
+   "health": 950,
+   "speed": 6.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Mancubus",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Boing1": 274.5,
+    "Swoosh": 18.0
+   },
+   "volley": 274.5,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanFatso2",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 373,
+   "health": 720,
+   "speed": 11.0,
+   "painchance": "70",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "\"Melee\", 1.5",
+    "\"Fire\", 1.25",
+    "\"Ice\", 0.1",
+    "\"Falling\", 0",
+    "\"PLWater\", 0.25"
+   ],
+   "tag": "Crystal Fatso",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "fast",
+    "retier_others"
+   ],
+   "attacks": {
+    "Missile": 360.0,
+    "MissAlt": 270.0,
+    "Butt2": 13.5
+   },
+   "volley": 360.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownFatso2",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 234,
+   "health": 850,
+   "speed": 11.0,
+   "painchance": "70",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "What big hands you got",
+   "abilities": [
+    "retier_others"
+   ],
+   "attacks": {
+    "CloseRaise2": 90.0,
+    "Missile": 287.5
+   },
+   "volley": 287.5,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowFatso",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 1366,
+   "health": 1250,
+   "speed": 6.0,
+   "painchance": "14",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Orange Mancubus",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Rocketo": 280.0,
+    "Alternative": 177.0
+   },
+   "volley": 280.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluFatso2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 629,
+   "health": 1400,
+   "speed": 7.0,
+   "painchance": "45",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.25",
+    "\"Ice\", 0.5"
+   ],
+   "tag": "Big blob of fireblu",
+   "abilities": [
+    "ice",
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 170.0,
+    "Fires": 77.5
+   },
+   "volley": 170.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayFatso2",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 756,
+   "health": 1000,
+   "speed": 5.0,
+   "painchance": "70",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "0.65",
+    "\"Melee\", 0.1",
+    "\"PLWater\", 1.5"
+   ],
+   "tag": "Big Gray and Ugly",
+   "abilities": [
+    "retier_others"
+   ],
+   "attacks": {
+    "Missile": 235.0
+   },
+   "volley": 235.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedFatso",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 1505,
+   "health": 1600,
+   "speed": 8.0,
+   "painchance": "34",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.85",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"PLWater\", 2.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.25"
+   ],
+   "tag": "Red Horned Mancubus",
+   "abilities": [
+    "fire",
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 97.0,
+    "Fires": 81.7
+   },
+   "volley": 97.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssFatso2",
+   "parent": "Fatso",
+   "idroot": "Fatso",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 531,
+   "health": 2150,
+   "speed": 11.0,
+   "painchance": "12",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.45",
+    "\"Ice\", 0.25"
+   ],
+   "tag": "Ralph Bluetawn",
+   "abilities": [
+    "ice",
+    "fire"
+   ],
+   "attacks": {
+    "Missile": 590.0,
+    "Missile2": 462.5
+   },
+   "volley": 590.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackFatso2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 1904,
+   "health": 9001,
+   "speed": 14.0,
+   "painchance": "24",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.5",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 2.0"
+   ],
+   "tag": "The thing from the swamp",
+   "abilities": [
+    "ice",
+    "fire",
+    "retier_others"
+   ],
+   "attacks": {
+    "LongRange": 75.0,
+    "GroundSplashes": 90.0,
+    "BiggerBomb": 67.5,
+    "BigBombs": 475.0,
+    "Weave1": 165.0,
+    "Breath": 256.8,
+    "Weave2": 680.0
+   },
+   "volley": 680.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteFatso2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 2126,
+   "health": 15000,
+   "speed": 13.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.5",
+    "\"Plasma\", 0.60",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Angry Mama",
+   "abilities": [
+    "ice",
+    "fire"
+   ],
+   "attacks": {
+    "SpreadShot": 540.0,
+    "A1": 43.8,
+    "A2": 43.8,
+    "A3": 43.8,
+    "A4": 43.8,
+    "A5": 43.8,
+    "A6": 43.8,
+    "A7": 43.8,
+    "Zap7": 4268.0
+   },
+   "volley": 4268.0,
+   "family": "Mancubus",
+   "fam": 2,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonArch",
+   "parent": "Archvile",
+   "idroot": "Archvile",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 1055,
+   "health": 700,
+   "speed": 15.0,
+   "painchance": "10",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Archvile",
+   "abilities": [
+    "heal_others",
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 90.0
+   },
+   "volley": 90.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenArch",
+   "parent": "Archvile",
+   "idroot": "Archvile",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 1134,
+   "health": 750,
+   "speed": 16.0,
+   "painchance": "8",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Archvile",
+   "abilities": [
+    "heal_others",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 90.0
+   },
+   "volley": 90.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueArch",
+   "parent": "Archvile",
+   "idroot": "Archvile",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 1233,
+   "health": 860,
+   "speed": 17.0,
+   "painchance": "6",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Archvile",
+   "abilities": [
+    "heal_others",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Classic1": 90.0,
+    "Boltings2": 85.0
+   },
+   "volley": 90.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleArch",
+   "parent": "Archvile",
+   "idroot": "Archvile",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 1348,
+   "health": 1001,
+   "speed": 18.0,
+   "painchance": "4",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Archvile",
+   "abilities": [
+    "heal_others",
+    "retier_others",
+    "spawns_in_fight:RS_SpecialRev,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Classic2": 90.0
+   },
+   "volley": 90.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanVile",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 434,
+   "health": 1200,
+   "speed": 21.0,
+   "painchance": "10",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0",
+    "\"Ice\", 0.10",
+    "\"PLWater\", 0.25",
+    "\"Falling\", 0.0",
+    "\"Melee\", 2.5",
+    "\"fire\", 1.0"
+   ],
+   "tag": "Barnie",
+   "abilities": [
+    "heal_others",
+    "hop_leap",
+    "ice",
+    "fire",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_CyanLSoul2,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Classical": 90.0
+   },
+   "volley": 90.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownVile",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 253,
+   "health": 1400,
+   "speed": 21.0,
+   "painchance": "12",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "That's a messy vile",
+   "abilities": [
+    "heal_others",
+    "nopain_or_armour",
+    "flying",
+    "spawns_in_fight:RS_ArchRingHelp,RS_BrownBoiVile"
+   ],
+   "attacks": {},
+   "volley": 0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowArch",
+   "parent": "Archvile",
+   "idroot": "Archvile",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 1476,
+   "health": 1333,
+   "speed": 18.0,
+   "painchance": "4",
+   "renderstyle": "\"Add\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Golden Archvile",
+   "abilities": [
+    "heal_others",
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ArchSpawnerOrb,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Fires": 103.0
+   },
+   "volley": 103.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluArch2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 917,
+   "health": 1000,
+   "speed": 19.0,
+   "painchance": "4",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Horrible sight",
+   "abilities": [
+    "heal_others",
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_FireBluLSoul,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 90.0
+   },
+   "volley": 90.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayArch2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 763,
+   "health": 1400,
+   "speed": 19.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Like a stone",
+   "abilities": [
+    "heal_others",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner,RS_VileGrayDecoy"
+   ],
+   "attacks": {},
+   "volley": 0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedArch3",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 1774,
+   "health": 3200,
+   "speed": 15.0,
+   "painchance": "3",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.33",
+    "\"Fire\", 0.5",
+    "\"Heroic\", 3.0",
+    "\"ice\", 2.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Grand Redfirevile",
+   "abilities": [
+    "fire",
+    "spawns_in_fight:RS_ArchSpawnerOrb,RS_SpecialVile"
+   ],
+   "attacks": {
+    "Missile": 2.5,
+    "Fires": 820.0,
+    "GroundVhirl": 13.0
+   },
+   "volley": 820.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssVile",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 597,
+   "health": 2500,
+   "speed": 25.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Aliens?",
+   "abilities": [
+    "heal_others",
+    "hop_leap",
+    "translucent",
+    "spawns_in_fight:RS_AbyssPortalVile"
+   ],
+   "attacks": {
+    "IceIt": 93.8,
+    "Melee": 396.0
+   },
+   "volley": 396.0,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackVile",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 1930,
+   "health": 7750,
+   "speed": 17.0,
+   "painchance": "8",
+   "renderstyle": "\"Stencil\"",
+   "alpha": "0.5",
+   "has_translation": false,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Void Gazes Back",
+   "abilities": [
+    "translucent",
+    "spawns_in_fight:RS_CommonRevenant,RS_MrBones"
+   ],
+   "attacks": {
+    "See": 4.5,
+    "Balls": 142.5,
+    "GroundFlame": 44.0
+   },
+   "volley": 142.5,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_Whitevile",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/archvile/RS_Archvile.zs",
+   "line": 2095,
+   "health": 13000,
+   "speed": 40.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [],
+   "tag": "Here I am",
+   "abilities": [
+    "translucent",
+    "fast",
+    "flying",
+    "spawns_in_fight:RS_WhiteVileResser,RS_WvileSpot"
+   ],
+   "attacks": {
+    "Bolts": 155.0,
+    "BoltVolley": 193.8,
+    "EyeSees": 125.0
+   },
+   "volley": 193.8,
+   "family": "Arch-Vile",
+   "fam": 3,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonBaron",
+   "parent": "BaronOfHell",
+   "idroot": "BaronOfHell",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 1105,
+   "health": 1000,
+   "speed": 8.0,
+   "painchance": "50",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "BaronOfHell",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenBaron",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 36.0,
+    "Miss2": 36.0
+   },
+   "volley": 36.0,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenBaron",
+   "parent": "BaronOfHell",
+   "idroot": "BaronOfHell",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 1204,
+   "health": 1170,
+   "speed": 9.0,
+   "painchance": "40",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green BaronOfHell",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_BlueBaron",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 37.5,
+    "Missile": 82.0,
+    "Spit": 79.0,
+    "Puke": 9.0
+   },
+   "volley": 82.0,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueBaron",
+   "parent": "BaronOfHell",
+   "idroot": "BaronOfHell",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 1338,
+   "health": 1309,
+   "speed": 11.0,
+   "painchance": "30",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Blood Baron",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_PurpleBaron",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Balls": 52.5,
+    "Cometto": 40.8
+   },
+   "volley": 52.5,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleBaron",
+   "parent": "BaronOfHell",
+   "idroot": "BaronOfHell",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 1459,
+   "health": 1500,
+   "speed": 11.0,
+   "painchance": "30",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Royal BaronOfHell",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Wave1": 108.5,
+    "Wave2": 108.5,
+    "Spearthingy": 95.0
+   },
+   "volley": 108.5,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanBaron2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 361,
+   "health": 1666,
+   "speed": 18.0,
+   "painchance": "64",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.99",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Plasma\", 0.7",
+    "\"Blessed\", 3.0",
+    "\"Ice\", 0.15",
+    "\"PLWater\", 0.25",
+    "\"Falling\", 0.0",
+    "\"Melee\", 1.80",
+    "\"fire\", 1.50"
+   ],
+   "tag": "Cyanide bitten BaronOfHell",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "translucent",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 50.0,
+    "Stars": 15.0,
+    "Stars2": 15.0,
+    "BigBlast": 70.5,
+    "WingBlast": 360.0
+   },
+   "volley": 360.0,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownBaron2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 227,
+   "health": 2250,
+   "speed": 28.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.5",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Brown Baron Boi",
+   "abilities": [
+    "fire"
+   ],
+   "attacks": {
+    "Melee": 55.0,
+    "Slam": 90.0,
+    "Missile": 75.0,
+    "Spiral": 7.5
+   },
+   "volley": 90.0,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowBaron",
+   "parent": "BaronOfHell",
+   "idroot": "BaronOfHell",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 1600,
+   "health": 1888,
+   "speed": 15.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.7",
+    "\"Plasma\", 0.7",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Grand Orange BaronOfHell",
+   "abilities": [
+    "fire",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 50.0,
+    "StarShot": 23.8,
+    "StarShot2": 23.8
+   },
+   "volley": 50.0,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluBaron2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 968,
+   "health": 2300,
+   "speed": 20.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 0.5",
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "How awkward!",
+   "abilities": [
+    "fire",
+    "nopain_or_armour",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "A1": 217.5,
+    "A3": 70.0,
+    "A2": 45.0
+   },
+   "volley": 217.5,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayBaron2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 822,
+   "health": 2000,
+   "speed": 8.0,
+   "painchance": "6",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 0.33",
+    "\"ice\", 0.2",
+    "\"plasma\", 0.75",
+    "\"PLwater\", 1.5",
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Statue?",
+   "abilities": [
+    "fire",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "A1": 230.0,
+    "A2": 120.0
+   },
+   "volley": 230.0,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedBaron3",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 1916,
+   "health": 2100,
+   "speed": 8.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Power Baron of Red",
+   "abilities": [
+    "spawns_on_death:RS_RedBaron2"
+   ],
+   "attacks": {
+    "Trio": 108.8,
+    "Trio2": 108.8,
+    "Bomb": 112.5
+   },
+   "volley": 112.5,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssBaron2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 630,
+   "health": 3333,
+   "speed": 14.0,
+   "painchance": "24",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 0.5",
+    "\"ice\", 0.15",
+    "\"plasma\", 0.95",
+    "\"Melee\", 1.1",
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "",
+   "abilities": [
+    "heal_others",
+    "hop_leap",
+    "fire",
+    "fast",
+    "spawns_in_fight:RS_ArchRingHelp"
+   ],
+   "attacks": {
+    "Missile": 107.5,
+    "SoulCharge": 60.5,
+    "MLeftHand": 69.0,
+    "MRightHand": 69.0,
+    "Melee": 1019.2
+   },
+   "volley": 1019.2,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackBaron2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 2235,
+   "health": 8907,
+   "speed": 13.0,
+   "painchance": "42",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Melee\", 1.5",
+    "\"Fire\", 0.7",
+    "\"plasma\", 0.8",
+    "\"Heroic\", 3.0",
+    "\"ice\", 0.5",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Baron from Abyss",
+   "abilities": [
+    "fire",
+    "spawns_in_fight:RS_DeepTentacle,RS_RoseTentacle"
+   ],
+   "attacks": {
+    "Melee": 70.5,
+    "Basic": 150.0,
+    "Basic2": 250.0
+   },
+   "volley": 250.0,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteBaron2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/baron/RS_Baron.zs",
+   "line": 2640,
+   "health": 13069,
+   "speed": 32.0,
+   "painchance": "42",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Melee\", 0.5",
+    "\"Fire\", 0.5",
+    "\"plasma\", 0.5",
+    "\"Heroic\", 3.0",
+    "\"ice\", 1.25",
+    "\"DIMp\", 0",
+    "0.25"
+   ],
+   "tag": "Hell's Slice and Dicer",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "translucent",
+    "fast"
+   ],
+   "attacks": {
+    "Melee": 87.5,
+    "Stars": 142.5,
+    "SliceHoming": 185.0,
+    "Dash": 13.5,
+    "Slice1": 434.0,
+    "Slice2": 434.0,
+    "Slice3": 434.0,
+    "SpinSlice": 2046.0
+   },
+   "volley": 2046.0,
+   "family": "Baron",
+   "fam": 4,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonLSoul",
+   "parent": "LostSoul",
+   "idroot": "LostSoul",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 770,
+   "health": 100,
+   "speed": 8.0,
+   "painchance": "256",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "LostSoul",
+   "abilities": [
+    "hop_leap",
+    "fast"
+   ],
+   "attacks": {
+    "Missile": 13.5
+   },
+   "volley": 13.5,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenLSoul",
+   "parent": "LostSoul",
+   "idroot": "LostSoul",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 813,
+   "health": 120,
+   "speed": 8.0,
+   "painchance": "200",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green LostSoul",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 13.5,
+    "Melee": 30.8
+   },
+   "volley": 30.8,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueLSoul",
+   "parent": "LostSoul",
+   "idroot": "LostSoul",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 887,
+   "health": 145,
+   "speed": 9.0,
+   "painchance": "175",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue LostSoul",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "RushIt": 13.5,
+    "Psychic": 24.0,
+    "Melee": 13.0
+   },
+   "volley": 24.0,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleLSoul",
+   "parent": "LostSoul",
+   "idroot": "LostSoul",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 974,
+   "health": 150,
+   "speed": 9.0,
+   "painchance": "192",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"ice\", 1.2",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple LostSoul",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 13.5
+   },
+   "volley": 13.5,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanLSoul2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 326,
+   "health": 80,
+   "speed": 8.0,
+   "painchance": "192",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.66",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"ice\", 0.2",
+    "\"Melee\", 2.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Cyan LostSoul",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 27.0
+   },
+   "volley": 27.0,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownLSoul2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 228,
+   "health": 125,
+   "speed": 15.0,
+   "painchance": "0",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "THE CUBE",
+   "abilities": [
+    "heal_others",
+    "hop_leap",
+    "translucent",
+    "nopain_or_armour",
+    "fast",
+    "flying",
+    "spawns_on_death:RS_ArchRingHelp"
+   ],
+   "attacks": {
+    "Missile": 27.0,
+    "Melee": 8.0
+   },
+   "volley": 27.0,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowLSoul",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 1055,
+   "health": 180,
+   "speed": 12.0,
+   "painchance": "120",
+   "renderstyle": "\"Add\"",
+   "alpha": "1",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"ice\", 1.2",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Yellow LostSoul",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "nopain_or_armour",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 13.5
+   },
+   "volley": 13.5,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluLSoul2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 690,
+   "health": 175,
+   "speed": 15.0,
+   "painchance": "0",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"ice\", 1.2",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Charred skull",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "nopain_or_armour",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 13.5,
+    "Melee": 11.0
+   },
+   "volley": 13.5,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayLSoul2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 607,
+   "health": 50,
+   "speed": 2.0,
+   "painchance": "0",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"fire\", 1.7",
+    "\"DIMp\", 0"
+   ],
+   "tag": "A hive",
+   "abilities": [
+    "hop_leap",
+    "nopain_or_armour",
+    "fast",
+    "flying"
+   ],
+   "attacks": {},
+   "volley": 0,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedLSoul",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 1145,
+   "health": 240,
+   "speed": 11.0,
+   "painchance": "88",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.95",
+   "has_translation": true,
+   "damagefactors": [
+    "\"ice\", 1.45",
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Bloody Red LostSoul",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Spit": 70.5,
+    "Charge": 13.5
+   },
+   "volley": 70.5,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssLSoul2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 415,
+   "health": 380,
+   "speed": 8.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"fire\", 1.25",
+    "\"melee\", 0.25",
+    "\"DIMp\", 0"
+   ],
+   "tag": "beetlejuice",
+   "abilities": [
+    "heal_others",
+    "hop_leap",
+    "teleport_warp",
+    "translucent",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 18.0,
+    "Rush": 13.5,
+    "Melee": 20.0,
+    "Wrap": 16.0
+   },
+   "volley": 20.0,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackLSoul3",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 1382,
+   "health": 1500,
+   "speed": 9.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"hornet\", 0",
+    "\"Heroic\", 3.0",
+    "\"fire\", 2.0",
+    "\"DIMp\", 0",
+    "0.5"
+   ],
+   "tag": "Queen Bee",
+   "abilities": [
+    "nopain_or_armour",
+    "fast",
+    "flying",
+    "spawns_in_fight:RS_BLSoulAss,RS_BlackLSoul2"
+   ],
+   "attacks": {
+    "HurtSoul": 11.5,
+    "Stinger": 122.5,
+    "FasterBee": 105.0,
+    "FasterBee2": 105.0,
+    "ThatWay": 105.0,
+    "MINIONS": 27.0
+   },
+   "volley": 122.5,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteLSoul2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 1689,
+   "health": 4500,
+   "speed": 19.0,
+   "painchance": "22",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.8",
+   "has_translation": false,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"ice\", 0.2",
+    "\"DIMp\", 0"
+   ],
+   "tag": "The shifter",
+   "abilities": [
+    "translucent",
+    "nopain_or_armour",
+    "flying",
+    "spawns_in_fight:RS_ArchSpawnerOrb"
+   ],
+   "attacks": {
+    "revform": 657.6,
+    "baronform": 680.0,
+    "archform": 269.5
+   },
+   "volley": 680.0,
+   "family": "Lost Soul",
+   "fam": 5,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonPE",
+   "parent": "PainElemental",
+   "idroot": "PainElemental",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 798,
+   "health": 400,
+   "speed": 8.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Pain elemental",
+   "abilities": [],
+   "attacks": {
+    "Melee": 24.0,
+    "Missile": 13.5
+   },
+   "volley": 24.0,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenPE",
+   "parent": "PainElemental",
+   "idroot": "PainElemental",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 868,
+   "health": 500,
+   "speed": 8.0,
+   "painchance": "112",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Bad Gas Green Pain elemental",
+   "abilities": [
+    "flying"
+   ],
+   "attacks": {
+    "Melee": 24.0,
+    "SoulIt": 13.5
+   },
+   "volley": 24.0,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BluePE",
+   "parent": "PainElemental",
+   "idroot": "PainElemental",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 972,
+   "health": 610,
+   "speed": 8.0,
+   "painchance": "100",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.9",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Pain elemental",
+   "abilities": [
+    "translucent",
+    "flying"
+   ],
+   "attacks": {
+    "Melee": 24.0,
+    "SoulIt": 27.0,
+    "Plasma": 102.5
+   },
+   "volley": 102.5,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurplePE",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 1075,
+   "health": 790,
+   "speed": 6.0,
+   "painchance": "128",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.9",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Pain elemental",
+   "abilities": [
+    "translucent",
+    "flying"
+   ],
+   "attacks": {
+    "Boom1": 45.0,
+    "Boom2": 39.2
+   },
+   "volley": 45.0,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanPE2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 337,
+   "health": 963,
+   "speed": 17.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 1.5",
+    "\"Melee\", 1.5",
+    "\"Antiair\", 3.0",
+    "\"ice\", 0.2",
+    "\"DIMp\", 0",
+    "\"PLWater\", 0.25"
+   ],
+   "tag": "Icey weird Pain elemental",
+   "abilities": [
+    "heal_others",
+    "hop_leap",
+    "fire",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 31.8,
+    "A1": 34.2,
+    "Turtle": 13.5
+   },
+   "volley": 34.2,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownPE2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 188,
+   "health": 800,
+   "speed": 12.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 1.25",
+    "\"Melee\", 0.75",
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Ball of fleshy bits",
+   "abilities": [
+    "fire",
+    "translucent",
+    "flying",
+    "spawns_on_death:RS_BrownLSoul2"
+   ],
+   "attacks": {
+    "Missile": 13.5,
+    "Shot": 27.5,
+    "Melee": 50.0
+   },
+   "volley": 50.0,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowPE",
+   "parent": "PainElemental",
+   "idroot": "PainElemental",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 1170,
+   "health": 900,
+   "speed": 11.0,
+   "painchance": "128",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.9",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 0.5",
+    "\"Antiair\", 3.0",
+    "\"ice\", 1.2",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Volcanic Orange Pain elemental",
+   "abilities": [
+    "fire",
+    "translucent",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 51.2,
+    "Melee": 28.5
+   },
+   "volley": 51.2,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluPE2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 714,
+   "health": 800,
+   "speed": 20.0,
+   "painchance": "110",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "the fuck is that",
+   "abilities": [
+    "hop_leap",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 13.5,
+    "Breath": 52.5
+   },
+   "volley": 52.5,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayPE2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 600,
+   "health": 1450,
+   "speed": 3.0,
+   "painchance": "24",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 1.5"
+   ],
+   "tag": "The nasty hive",
+   "abilities": [
+    "fire",
+    "retier_others",
+    "flying",
+    "spawns_on_death:RS_BlackLSoul2",
+    "spawns_in_fight:RS_GrayLSoul2,RS_GraySpectre2"
+   ],
+   "attacks": {
+    "Bug1": 27.0
+   },
+   "volley": 27.0,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedPE",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 1260,
+   "health": 1111,
+   "speed": 11.0,
+   "painchance": "42",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.95",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Red rage elemental",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "BadBreath": 105.8,
+    "SoulIt": 13.5,
+    "Boom1": 112.5,
+    "Dash": 13.5
+   },
+   "volley": 112.5,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssPE2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 456,
+   "health": 1600,
+   "speed": 20.0,
+   "painchance": "80",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Spooky Skull!",
+   "abilities": [
+    "translucent",
+    "nopain_or_armour",
+    "fast",
+    "flying",
+    "spawns_in_fight:RS_AbyssBaronSoul"
+   ],
+   "attacks": {
+    "MissileSpam": 52.0,
+    "Coil": 199.5,
+    "Pulse": 402.5
+   },
+   "volley": 402.5,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackPE2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 1380,
+   "health": 5000,
+   "speed": 14.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"lightning\", 0.2",
+    "\"hornet\", 0",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "0.33"
+   ],
+   "tag": "Hell Soul Elemental",
+   "abilities": [
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile1": 27.0,
+    "Missile2": 103.0,
+    "Missile3": 216.0,
+    "Missile5": 262.5
+   },
+   "volley": 262.5,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhitePE2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/painelemental/RS_PainElemental.zs",
+   "line": 1557,
+   "health": 5000,
+   "speed": 28.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.33",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"plwater\", 0.5"
+   ],
+   "tag": "Against thee wicked",
+   "abilities": [
+    "flying",
+    "spawns_on_death:RS_WhitePE3",
+    "spawns_in_fight:RS_HealthFountainWhitePE,RS_MiniSentinelPE"
+   ],
+   "attacks": {},
+   "volley": 0,
+   "family": "Pain Elemental",
+   "fam": 6,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonCybie",
+   "parent": "Cyberdemon",
+   "idroot": "Cyberdemon",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 1088,
+   "health": 4000,
+   "speed": 16.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "CyberDemon",
+   "abilities": [],
+   "attacks": {
+    "Melee": 152.5
+   },
+   "volley": 152.5,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenCybie",
+   "parent": "Cyberdemon",
+   "idroot": "Cyberdemon",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 1181,
+   "health": 5000,
+   "speed": 16.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green CyberDemon",
+   "abilities": [],
+   "attacks": {
+    "Melee": 152.5,
+    "Missile": 306.0
+   },
+   "volley": 306.0,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueCybie",
+   "parent": "Cyberdemon",
+   "idroot": "Cyberdemon",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 1271,
+   "health": 5800,
+   "speed": 18.0,
+   "painchance": "12",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue CyberDemon",
+   "abilities": [],
+   "attacks": {
+    "Melee": 152.5,
+    "Missile": 157.5,
+    "Art": 55.0,
+    "Finish": 67.5,
+    "Shockwave": 700.0
+   },
+   "volley": 700.0,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleCybie",
+   "parent": "Cyberdemon",
+   "idroot": "Cyberdemon",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 1453,
+   "health": 6400,
+   "speed": 13.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple CyberDemon",
+   "abilities": [
+    "retier_others"
+   ],
+   "attacks": {
+    "Melee": 157.5,
+    "Barrage": 892.5,
+    "LongSpam": 60.0,
+    "RocketCombo": 129.0
+   },
+   "volley": 892.5,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanCybie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 469,
+   "health": 8083,
+   "speed": 31.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "0.5",
+    "\"Melee\", 2.0",
+    "\"Fire\", 2.0",
+    "\"Ice\", 0.35",
+    "\"PLWater\", 0.5"
+   ],
+   "tag": "Akinator",
+   "abilities": [
+    "ice",
+    "fire",
+    "fast"
+   ],
+   "attacks": {
+    "Sprayit": 830.7,
+    "MissileBarrage": 340.0
+   },
+   "volley": 830.7,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownCybie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 289,
+   "health": 7557,
+   "speed": 17.0,
+   "painchance": "12",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"PLWater\", 1.25",
+    "\"poison\", 0.1",
+    "\"Plasma\", 0.70",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "ComposterDemon",
+   "abilities": [],
+   "attacks": {
+    "ClassicShot": 864.0,
+    "PoolOfDrill": 110.0
+   },
+   "volley": 864.0,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowCybie",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 1600,
+   "health": 7777,
+   "speed": 19.0,
+   "painchance": "0",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.95",
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Less cyber yellow Cybie",
+   "abilities": [
+    "translucent",
+    "nopain_or_armour"
+   ],
+   "attacks": {
+    "RainOffire": 290.0,
+    "Missiles1": 122.5,
+    "BuffUP": 36.2
+   },
+   "volley": 290.0,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluCybie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 952,
+   "health": 7777,
+   "speed": 19.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "",
+   "abilities": [
+    "hop_leap"
+   ],
+   "attacks": {
+    "Melee": 152.5,
+    "Missile2": 13.5,
+    "Missile1": 68.8,
+    "Splash": 82.5
+   },
+   "volley": 152.5,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayCybie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 815,
+   "health": 8888,
+   "speed": 13.0,
+   "painchance": "0",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"PLWater\", 1.75",
+    "\"Melee\", 1.1",
+    "\"Plasma\", 0.90",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Stoner Cybie",
+   "abilities": [
+    "nopain_or_armour"
+   ],
+   "attacks": {
+    "Missiles1": 345.0
+   },
+   "volley": 345.0,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedCybie",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 1739,
+   "health": 10000,
+   "speed": 20.0,
+   "painchance": "15",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.25",
+    "\"Moloch\", 0",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 1.35"
+   ],
+   "tag": "Red Overlord",
+   "abilities": [
+    "spawns_in_fight:RS_SummonPortalCybie"
+   ],
+   "attacks": {
+    "Melee": 866.2,
+    "Phase2": 213.8,
+    "Missile1": 40.0,
+    "Missile2": 200.7,
+    "Missile3": 52.5,
+    "Missile5": 120.0
+   },
+   "volley": 866.2,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssCybie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 629,
+   "health": 12000,
+   "speed": 15.0,
+   "painchance": "8",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"PLWater\", 0.4",
+    "\"Melee\", 1.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Unholy diver",
+   "abilities": [
+    "nopain_or_armour"
+   ],
+   "attacks": {
+    "Wave": 200.0,
+    "Rocket": 270.0,
+    "Bubble": 13.0
+   },
+   "volley": 270.0,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackCybie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 2058,
+   "health": 14500,
+   "speed": 17.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "He Will Smith You",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "fast"
+   ],
+   "attacks": {
+    "HammerMega": 445.0,
+    "BigHell": 135.0,
+    "Charge": 13.5,
+    "Missile1": 630.0,
+    "Missile2": 178.0,
+    "LightningCall": 52.0,
+    "Melee": 953.8
+   },
+   "volley": 953.8,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteCybie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cyberdemon/RS_Cyberdemon.zs",
+   "line": 2389,
+   "health": 21000,
+   "speed": 18.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"PlayerVoid\", 0.75",
+    "\"Poison\", 0.33",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "It runs doom",
+   "abilities": [
+    "hop_leap",
+    "poison",
+    "teleport_warp",
+    "translucent",
+    "fast",
+    "spawns_in_fight:RS_IDShieldWalk"
+   ],
+   "attacks": {
+    "FrontWinder": 692.5,
+    "SideWinder": 1210.0,
+    "ShotgunBreath": 1320.0,
+    "DualShots": 2212.5,
+    "Rush": 13.5,
+    "ChainMissiles": 1750.0,
+    "ChainMissiles2": 2800.0,
+    "ChainMissiles3": 2800.0,
+    "BigLaser": 1760.0,
+    "BigLaser2": 3200.0,
+    "SweepBeam": 4160.0
+   },
+   "volley": 4160.0,
+   "family": "Cyberdemon",
+   "fam": 7,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonMind",
+   "parent": "SpiderMastermind",
+   "idroot": "SpiderMastermind",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 1082,
+   "health": 3000,
+   "speed": 12.0,
+   "painchance": "40",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Spider MasterMind",
+   "abilities": [],
+   "attacks": {
+    "Missile": 27.0
+   },
+   "volley": 27.0,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenMind",
+   "parent": "SpiderMastermind",
+   "idroot": "SpiderMastermind",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 1425,
+   "health": 4200,
+   "speed": 12.0,
+   "painchance": "40",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Spider MasterMind",
+   "abilities": [],
+   "attacks": {
+    "Missile": 11.0,
+    "Sweep": 181.5
+   },
+   "volley": 181.5,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueMind",
+   "parent": "SpiderMastermind",
+   "idroot": "SpiderMastermind",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 1547,
+   "health": 5600,
+   "speed": 18.0,
+   "painchance": "25",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 0.6"
+   ],
+   "tag": "Frosty Blue Spider MasterMind",
+   "abilities": [
+    "ice",
+    "fast"
+   ],
+   "attacks": {
+    "FrostBreath": 25.0,
+    "FrostOrbs": 111.0,
+    "LongFrost": 17.0,
+    "LongFrost2": 17.0
+   },
+   "volley": 111.0,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleMind",
+   "parent": "SpiderMastermind",
+   "idroot": "SpiderMastermind",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 1719,
+   "health": 6666,
+   "speed": 12.0,
+   "painchance": "20",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Spider MasterMind",
+   "abilities": [
+    "spawns_in_fight:RS_SpecialSpider1"
+   ],
+   "attacks": {
+    "PewPew2": 101.2,
+    "HitScanHell": 48.0,
+    "Borb": 480.0
+   },
+   "volley": 480.0,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanMind2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 665,
+   "health": 7777,
+   "speed": 21.0,
+   "painchance": "10",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "0.5",
+    "\"Melee\", 1.75",
+    "\"Fire\", 1.75",
+    "\"Ice\", 0.35",
+    "\"PLWater\", 0.35"
+   ],
+   "tag": "Cyanide Master(Mind)",
+   "abilities": [
+    "ice",
+    "fire",
+    "teleport_warp",
+    "translucent",
+    "fast"
+   ],
+   "attacks": {
+    "RapidFire": 93.0,
+    "FrostMode": 990.0,
+    "Frost2": 1113.8
+   },
+   "volley": 1113.8,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownMind2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 443,
+   "health": 8858,
+   "speed": 16.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Fire\", 1.20",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 0.15",
+    "0.5",
+    "\"ice\", 0.50",
+    "\"Melee\", 1.20"
+   ],
+   "tag": "Death N Decay Master",
+   "abilities": [
+    "fire",
+    "retier_others"
+   ],
+   "attacks": {
+    "Missile2": 184.5,
+    "Boners": 90.0,
+    "Spiral": 78.8,
+    "FeelIt": 17.5
+   },
+   "volley": 184.5,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowMind",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 1880,
+   "health": 7777,
+   "speed": 12.0,
+   "painchance": "10",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Yellow MasterMind",
+   "abilities": [
+    "spawns_in_fight:RS_YellowSP1"
+   ],
+   "attacks": {
+    "PlasmaSpam": 67.5,
+    "BFGd": 112.5,
+    "HitIt": 135.0,
+    "HitIt2": 180.0,
+    "Homers": 240.0
+   },
+   "volley": 240.0,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluMind2",
+   "parent": "SpiderMastermind",
+   "idroot": "SpiderMastermind",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 1299,
+   "health": 8007,
+   "speed": 21.0,
+   "painchance": "40",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"Fire\", 0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 0.45"
+   ],
+   "tag": "It's horrifying!",
+   "abilities": [
+    "fire"
+   ],
+   "attacks": {
+    "GroundFlame": 41.2,
+    "Spam": 52.5
+   },
+   "volley": 52.5,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayMind2",
+   "parent": "SpiderMastermind",
+   "idroot": "SpiderMastermind",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 1133,
+   "health": 8007,
+   "speed": 9.0,
+   "painchance": "40",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.4",
+    "\"Fire\", 0.6",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 0.65",
+    "\"Melee\", 0.5"
+   ],
+   "tag": "Rocky Road Spider",
+   "abilities": [
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_BrainPainGray"
+   ],
+   "attacks": {
+    "Missile2": 126.0,
+    "BLECK": 78.8,
+    "Needler": 360.0,
+    "SpikeYou": 1207.5
+   },
+   "volley": 1207.5,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedMind",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 2079,
+   "health": 10000,
+   "speed": 18.0,
+   "painchance": "1",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 1.35"
+   ],
+   "tag": "Red MasterMind",
+   "abilities": [
+    "nopain_or_armour",
+    "fast",
+    "spawns_in_fight:RS_RedMindBomb"
+   ],
+   "attacks": {
+    "GroundHogs": 400.0,
+    "FireWave": 245.0
+   },
+   "volley": 400.0,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssMind2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 867,
+   "health": 12222,
+   "speed": 21.0,
+   "painchance": "48",
+   "renderstyle": "\"Translucent\"",
+   "alpha": "0.85",
+   "has_translation": false,
+   "damagefactors": [
+    "0.5",
+    "\"Plasma\", 0.70",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 0.45",
+    "\"melee\", 0.75",
+    "\"PLWater\", 0.40",
+    "\"PlayerVoid\", 0.40"
+   ],
+   "tag": "Abys$|<%#\u00a4e\u00a3Mind",
+   "abilities": [
+    "translucent",
+    "nopain_or_armour",
+    "spawns_in_fight:RS_WvileSpot"
+   ],
+   "attacks": {
+    "BigZap": 906.7,
+    "MindWave": 715.0
+   },
+   "volley": 906.7,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackMind2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 2347,
+   "health": 11111,
+   "speed": 26.0,
+   "painchance": "45",
+   "renderstyle": null,
+   "alpha": "0.75",
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Pseudo Old God",
+   "abilities": [
+    "teleport_warp",
+    "translucent"
+   ],
+   "attacks": {
+    "See": 68.0,
+    "BIGBAM": 70.2,
+    "Waves": 137.5,
+    "Waves2": 192.5,
+    "ClusterEf": 486.0,
+    "RapidFire": 1378.0,
+    "SpreadFire": 636.0
+   },
+   "volley": 1378.0,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteMind2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/mastermind/RS_Mastermind.zs",
+   "line": 2662,
+   "health": 15000,
+   "speed": 28.0,
+   "painchance": "40",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Fire\", 0.25",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 0.25",
+    "\"Plasma\", 0.75",
+    "\"Melee\", 0.95",
+    "0.2",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Heavily Armed Spidey",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "translucent",
+    "nopain_or_armour"
+   ],
+   "attacks": {
+    "HitScan": 9.0,
+    "OrbShot3": 437.5,
+    "FloorCrack3": 753.0,
+    "Dash": 13.5,
+    "FloorCrack": 240.0,
+    "FloorCrack2": 513.0,
+    "OrbShot2": 120.0,
+    "OrbShot": 98.8,
+    "RapidFire": 510.0
+   },
+   "volley": 753.0,
+   "family": "Spider Mastermind",
+   "fam": 8,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonDemon",
+   "parent": "Demon",
+   "idroot": "Demon",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 960,
+   "health": 150,
+   "speed": 10.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Pinky",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenDemon",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 22.5
+   },
+   "volley": 22.5,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenDemon",
+   "parent": "Demon",
+   "idroot": "Demon",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 1051,
+   "health": 170,
+   "speed": 11.0,
+   "painchance": "130",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Greeny",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "spawns_on_death:RS_BlueDemon",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 26.5
+   },
+   "volley": 26.5,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueDemon",
+   "parent": "Demon",
+   "idroot": "Demon",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 1171,
+   "health": 205,
+   "speed": 13.0,
+   "painchance": "110",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 1.1",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Bluey",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "retier_others",
+    "spawns_on_death:RS_PurpleDemon",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Rush": 13.5,
+    "Melee": 29.0
+   },
+   "volley": 29.0,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleDemon",
+   "parent": "Demon",
+   "idroot": "Demon",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 1288,
+   "health": 260,
+   "speed": 15.0,
+   "painchance": "80",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 1.2",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Purply",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Rush2": 13.5,
+    "Melee": 29.5
+   },
+   "volley": 29.5,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanDemon2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 454,
+   "health": 270,
+   "speed": 27.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"Melee\", 2.0",
+    "\"Fire\", 1.5",
+    "\"Ice\", 0.15",
+    "\"PLWater\", 0.25",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Ice Worm",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "fast",
+    "retier_others"
+   ],
+   "attacks": {
+    "Melee": 50.0,
+    "Hiss": 13.5
+   },
+   "volley": 50.0,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownDemon2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 289,
+   "health": 420,
+   "speed": 17.0,
+   "painchance": "33",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 1.25"
+   ],
+   "tag": "Brownie",
+   "abilities": [
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_BrownDemonGhost,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 25.5,
+    "ChainFlame2": 3.0
+   },
+   "volley": 25.5,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowDemon",
+   "parent": "Demon",
+   "idroot": "Demon",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 1402,
+   "health": 325,
+   "speed": 18.0,
+   "painchance": "75",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 1.25"
+   ],
+   "tag": "Yellowy",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 32.5,
+    "NOYOUDONT": 78.8,
+    "Calm": 11.2
+   },
+   "volley": 78.8,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluDemon2",
+   "parent": "Demon",
+   "idroot": "Demon",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 590,
+   "health": 205,
+   "speed": 5.0,
+   "painchance": "180",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.25",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "FireBluey",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "retier_others",
+    "spawns_on_death:RS_PurpleDemon"
+   ],
+   "attacks": {
+    "Rush": 67.5,
+    "Melee": 32.5
+   },
+   "volley": 67.5,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GreyDemon2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 841,
+   "health": 700,
+   "speed": 16.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Coiling menace",
+   "abilities": [
+    "heal_others",
+    "hop_leap",
+    "teleport_warp",
+    "retier_others"
+   ],
+   "attacks": {
+    "Wrap": 16.0,
+    "AllyOp": 13.5
+   },
+   "volley": 16.0,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedDemon",
+   "parent": "Demon",
+   "idroot": "Demon",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 1523,
+   "health": 400,
+   "speed": 15.0,
+   "painchance": "30",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"Fire\", 1.25",
+    "\"DIMp\", 0",
+    "\"ice\", 1.45"
+   ],
+   "tag": "Red-y",
+   "abilities": [
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 14.5,
+    "Melee": 35.5
+   },
+   "volley": 35.5,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssDemon2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 710,
+   "health": 600,
+   "speed": 19.0,
+   "painchance": "128",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.10",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 1.25",
+    "\"Ice\", 0.75",
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Bad dog",
+   "abilities": [
+    "ice",
+    "fire",
+    "translucent"
+   ],
+   "attacks": {
+    "Melee": 37.5,
+    "Missile": 82.5
+   },
+   "volley": 82.5,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackDemon3",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 1633,
+   "health": 4500,
+   "speed": 17.0,
+   "painchance": "68",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.33",
+    "\"Melee\", 0.9",
+    "\"Plasma\", 1.1",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "FRESH MEAT",
+   "abilities": [
+    "hop_leap",
+    "spawns_in_fight:RS_WHOLETTHEDOGSOUT"
+   ],
+   "attacks": {
+    "HOPHOP": 13.5,
+    "BIGHOP": 13.5,
+    "Melee": 77.5
+   },
+   "volley": 77.5,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteDemon2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 1871,
+   "health": 8000,
+   "speed": 19.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.33",
+    "\"Melee\", 0.45",
+    "\"Ice\", 1.5",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "YOU KNOW WHO I AM",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "teleport_warp",
+    "nopain_or_armour"
+   ],
+   "attacks": {
+    "Unblock": 13.5,
+    "DASH": 650.5,
+    "BAM": 866.2,
+    "ROCKS": 80.0,
+    "ROCKS2": 80.0,
+    "HOPHOP": 13.5,
+    "BIGHOP": 13.5,
+    "Melee": 160.0
+   },
+   "volley": 866.2,
+   "family": "Demon",
+   "fam": 9,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonCaco",
+   "parent": "Cacodemon",
+   "idroot": "Cacodemon",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 834,
+   "health": 400,
+   "speed": 8.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Cacodemon",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenCaco",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "(id attack)": 22.5
+   },
+   "volley": 22.5,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenCaco",
+   "parent": "Cacodemon",
+   "idroot": "Cacodemon",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 919,
+   "health": 450,
+   "speed": 8.0,
+   "painchance": "110",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Cacodemon",
+   "abilities": [
+    "retier_others",
+    "flying",
+    "spawns_on_death:RS_BlueCaco",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 27.5,
+    "Melee": 27.5
+   },
+   "volley": 27.5,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueCaco",
+   "parent": "Cacodemon",
+   "idroot": "Cacodemon",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 1028,
+   "health": 480,
+   "speed": 10.0,
+   "painchance": "100",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Cacodemon",
+   "abilities": [
+    "retier_others",
+    "flying",
+    "spawns_on_death:RS_PurpleCaco",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 82.0,
+    "Melee": 27.5
+   },
+   "volley": 82.0,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleCaco",
+   "parent": "Cacodemon",
+   "idroot": "Cacodemon",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 1142,
+   "health": 528,
+   "speed": 11.0,
+   "painchance": "90",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Cacodemon",
+   "abilities": [
+    "hop_leap",
+    "retier_others",
+    "flying",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Rusher1": 13.5,
+    "Woosh": 80.0,
+    "Melee": 27.5
+   },
+   "volley": 80.0,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanCaco2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 329,
+   "health": 500,
+   "speed": 24.0,
+   "painchance": "110",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"ice\", 0.2",
+    "\"Melee\", 2.0",
+    "\"Fire\", 1.5",
+    "\"DIMp\", 0",
+    "\"PLWater\", 0.25"
+   ],
+   "tag": "FrostBaller",
+   "abilities": [
+    "ice",
+    "fire",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 48.0,
+    "WaveIt": 101.5
+   },
+   "volley": 101.5,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownCaco2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 213,
+   "health": 500,
+   "speed": 18.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Gruelsome",
+   "abilities": [
+    "heal_others",
+    "ice",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 18.0
+   },
+   "volley": 18.0,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowCaco",
+   "parent": "Cacodemon",
+   "idroot": "Cacodemon",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 1265,
+   "health": 720,
+   "speed": 12.0,
+   "painchance": "80",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Yellow Cacolich",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "flying",
+    "spawns_in_fight:RS_ThePlanBoner,RS_VoidField"
+   ],
+   "attacks": {
+    "SpitFlame": 42.5,
+    "Melee": 34.5
+   },
+   "volley": 42.5,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluCaco2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 721,
+   "health": 800,
+   "speed": 13.0,
+   "painchance": "110",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "One Ugly Tomatoe",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "flying",
+    "spawns_on_death:RS_PurpleCaco",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 27.5
+   },
+   "volley": 27.5,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayCaco2",
+   "parent": "Cacodemon",
+   "idroot": "Cacodemon",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 609,
+   "health": 650,
+   "speed": 9.0,
+   "painchance": "90",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Stone Cold Cacodemon",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "retier_others",
+    "flying"
+   ],
+   "attacks": {
+    "Rusher1": 13.5,
+    "Woosh": 162.5,
+    "Melee": 27.5
+   },
+   "volley": 162.5,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedCaco",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 1407,
+   "health": 830,
+   "speed": 14.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Red Cacodemon",
+   "abilities": [
+    "retier_others",
+    "flying",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Spam": 90.0,
+    "SludgeBomb": 48.8,
+    "MoreSpam": 270.0
+   },
+   "volley": 270.0,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssCaco2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 450,
+   "health": 1100,
+   "speed": 20.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Antiair\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Abyssmal Tomatoe quality",
+   "abilities": [
+    "heal_others",
+    "flying",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Spam": 960.0,
+    "Hidious": 66.5
+   },
+   "volley": 960.0,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackCaco2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 1562,
+   "health": 5000,
+   "speed": 16.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"None\", 1.5",
+    "0.33",
+    "\"Plasma\", 0.9",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "SHOCKMASTER",
+   "abilities": [
+    "translucent",
+    "flying",
+    "spawns_in_fight:RS_RedCaco"
+   ],
+   "attacks": {
+    "Electro4": 27.5,
+    "Electro5": 27.5,
+    "Electro1": 87.5,
+    "Electro2": 43.5,
+    "Electro3": 18.5
+   },
+   "volley": 87.5,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteCaco2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 1981,
+   "health": 5000,
+   "speed": 28.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.33",
+    "\"Plasma\", 0.9",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "PLEASE NO",
+   "abilities": [
+    "flying",
+    "spawns_on_death:RS_WhiteCacoREAL"
+   ],
+   "attacks": {
+    "Basic": 90.0,
+    "BasicBitch": 202.5,
+    "Wonky": 540.0,
+    "Wonkier": 697.5
+   },
+   "volley": 697.5,
+   "family": "Cacodemon",
+   "fam": 10,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonHK",
+   "parent": "HellKnight",
+   "idroot": "HellKnight",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 927,
+   "health": 500,
+   "speed": 8.0,
+   "painchance": "50",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "HellKnight",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 36.0
+   },
+   "volley": 36.0,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenHK",
+   "parent": "HellKnight",
+   "idroot": "HellKnight",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 1019,
+   "health": 600,
+   "speed": 9.0,
+   "painchance": "50",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green HellKnight",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "(id attack)": 36
+   },
+   "volley": 36,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueHK",
+   "parent": "HellKnight",
+   "idroot": "HellKnight",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 1147,
+   "health": 666,
+   "speed": 10.0,
+   "painchance": "50",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue HellKnight",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 40.0,
+    "Missile": 110.0
+   },
+   "volley": 110.0,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleHK",
+   "parent": "HellKnight",
+   "idroot": "HellKnight",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 1264,
+   "health": 730,
+   "speed": 11.0,
+   "painchance": "50",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "1",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Royal Purple HellKnight",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 55.0,
+    "Bolt3": 38.8,
+    "Bolt4": 38.8
+   },
+   "volley": 55.0,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanHK2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 375,
+   "health": 700,
+   "speed": 16.0,
+   "painchance": "80",
+   "renderstyle": "\"Add\"",
+   "alpha": "1.0",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"Ice\", 0.15",
+    "\"PLWater\", 0.25",
+    "\"Falling\", 0.0",
+    "\"Melee\", 1.25",
+    "\"fire\", 2.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Cyanide HellKnight",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "translucent",
+    "fast"
+   ],
+   "attacks": {
+    "Missile": 108.0,
+    "A1": 173.1,
+    "Melee": 486.6
+   },
+   "volley": 486.6,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownHK2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 233,
+   "health": 700,
+   "speed": 12.0,
+   "painchance": "50",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"PLWater\", 1.5",
+    "\"Falling\", 0.0",
+    "\"Melee\", 0.65",
+    "\"fire\", 0.80",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Lion?",
+   "abilities": [
+    "spawns_in_fight:RS_BrownHKShield,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 35.0,
+    "Melee": 35.0,
+    "Rush": 38.8,
+    "BlastEm": 93.8
+   },
+   "volley": 93.8,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowHK",
+   "parent": "HellKnight",
+   "idroot": "HellKnight",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 1393,
+   "health": 999,
+   "speed": 10.0,
+   "painchance": "50",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "1",
+   "has_translation": false,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.75",
+    "\"PLWater\", 1.65",
+    "\"ice\", 0.75",
+    "\"Fire\", 0.5"
+   ],
+   "tag": "Orange Bruiser",
+   "abilities": [
+    "fire",
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 55.0,
+    "Rapidfire": 27.0,
+    "Rapidfire2": 27.0,
+    "Boom": 45.5
+   },
+   "volley": 55.0,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluHK2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 705,
+   "health": 900,
+   "speed": 13.0,
+   "painchance": "0",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Knight with clown armor",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Bolt1": 67.5,
+    "Fires5": 190.0
+   },
+   "volley": 190.0,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayHK2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 815,
+   "health": 800,
+   "speed": 15.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Gray knight",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Bolt3": 26.2,
+    "Bolt4": 26.2,
+    "Fire3": 37.5
+   },
+   "volley": 37.5,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedHK",
+   "parent": "HellKnight",
+   "idroot": "HellKnight",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 1524,
+   "health": 1300,
+   "speed": 11.0,
+   "painchance": "50",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "0.9",
+   "has_translation": false,
+   "damagefactors": [
+    "\"Fire\", 0.5",
+    "\"Plasma\", 0.7",
+    "\"Blessed\", 3.0",
+    "\"ice\", 1.45",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Red Knightmare",
+   "abilities": [
+    "fire",
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_SpecialImp,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 59.5,
+    "DoT": 2.8,
+    "BoilBolt": 36.0,
+    "BoilBolt2": 36.0
+   },
+   "volley": 59.5,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssHK2",
+   "parent": "HellKnight",
+   "idroot": "HellKnight",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 537,
+   "health": 1850,
+   "speed": 15.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Blessed\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.4",
+    "\"ice\", 0.4"
+   ],
+   "tag": "Abyss Bruiser",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "translucent",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 510.0,
+    "Balls": 42.0,
+    "Balls2": 42.0,
+    "BallsBar": 294.0
+   },
+   "volley": 510.0,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackHK2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 1687,
+   "health": 5555,
+   "speed": 6.0,
+   "painchance": "30",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"None\", 0.7",
+    "0.25",
+    "\"Fire\", 0.75",
+    "\"Plasma\", 1.5",
+    "\"Melee\", 0.7",
+    "\"Heroic\", 3.0",
+    "\"ice\", 1.5",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Terminator",
+   "abilities": [
+    "fire"
+   ],
+   "attacks": {
+    "LaserShot1": 168.8,
+    "BigMis": 213.8,
+    "ClusterMis": 140.0,
+    "NadeToss": 65.0
+   },
+   "volley": 213.8,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteHK3",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 2161,
+   "health": 5000,
+   "speed": 13.0,
+   "painchance": "50",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.75",
+   "has_translation": false,
+   "damagefactors": [
+    "0.5",
+    "\"Melee\", 0.25",
+    "\"Plasma\", 0.85",
+    "\"None\", 0.8",
+    "\"Fire\", 2.0",
+    "\"Heroic\", 3.0",
+    "\"ice\", 0.33",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Ghost of 1993",
+   "abilities": [
+    "fire",
+    "translucent",
+    "fast",
+    "flying",
+    "spawns_in_fight:RS_SpecialSpectre2"
+   ],
+   "attacks": {
+    "GhostBombs": 80.0,
+    "BigBomb": 217.5
+   },
+   "volley": 217.5,
+   "family": "Hell Knight",
+   "fam": 11,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonSP1",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 213,
+   "health": 500,
+   "speed": 12.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Arachnotron",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenSP1",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 22.5
+   },
+   "volley": 22.5,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenSP1",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 309,
+   "health": 600,
+   "speed": 13.0,
+   "painchance": "100",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Arachnotron",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_BlueSP1",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 58.0
+   },
+   "volley": 58.0,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueSP1",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 425,
+   "health": 700,
+   "speed": 14.0,
+   "painchance": "80",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Arachnotron",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_PurpleSP1",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 22.5
+   },
+   "volley": 22.5,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleSP1",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 541,
+   "health": 800,
+   "speed": 16.0,
+   "painchance": "20",
+   "renderstyle": "\"Add\"",
+   "alpha": "1",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Arachnotron",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 10.0
+   },
+   "volley": 10.0,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanSP2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 1050,
+   "health": 777,
+   "speed": 20.0,
+   "painchance": "128",
+   "renderstyle": "\"Add\"",
+   "alpha": "1.0",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0",
+    "\"Ice\", 0.15",
+    "\"PLWater\", 0.25",
+    "\"Melee\", 1.25",
+    "\"fire\", 2.0"
+   ],
+   "tag": "Cyan Flying Spider",
+   "abilities": [
+    "ice",
+    "fire",
+    "translucent",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "IceBombing": 31.0,
+    "IceOrbs": 66.0
+   },
+   "volley": 66.0,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownSP2",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 921,
+   "health": 600,
+   "speed": 24.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Brown Recluse",
+   "abilities": [
+    "heal_others",
+    "retier_others",
+    "spawns_on_death:RS_YellowSP1",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 20.0
+   },
+   "volley": 20.0,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowSP1",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 652,
+   "health": 777,
+   "speed": 18.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Orange Brainchoton",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Psyche2": 90.0,
+    "Psyche1": 30.0
+   },
+   "volley": 90.0,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluSP2",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 1192,
+   "health": 999,
+   "speed": 11.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Ugly floater",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Psyche2": 90.0,
+    "Psyche1": 495.0
+   },
+   "volley": 495.0,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GraySP2",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 1336,
+   "health": 600,
+   "speed": 13.0,
+   "painchance": "12",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"Fire\", 1.25",
+    "\"Ice\", 0.6",
+    "\"Plasma\", 0.6",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Metal Spider?",
+   "abilities": [
+    "ice",
+    "fire",
+    "retier_others",
+    "spawns_on_death:RS_YellowSP1",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 292.5
+   },
+   "volley": 292.5,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedSP1",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 801,
+   "health": 1000,
+   "speed": 16.0,
+   "painchance": "68",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Red Rage Arachnotron",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 45.0
+   },
+   "volley": 45.0,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssSP2",
+   "parent": "Arachnotron",
+   "idroot": "Arachnotron",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 1494,
+   "health": 1850,
+   "speed": 24.0,
+   "painchance": "24",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Scrapper\", 3.0",
+    "\"Fire\", 0.65",
+    "\"Ice\", 0.2",
+    "\"Plasma\", 0.75",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Eye see",
+   "abilities": [
+    "ice",
+    "fire",
+    "translucent",
+    "nopain_or_armour",
+    "retier_others"
+   ],
+   "attacks": {
+    "Miss2": 62.5,
+    "Voidi2": 90.0,
+    "Breath2": 94.5
+   },
+   "volley": 94.5,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackSP2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 1710,
+   "health": 5342,
+   "speed": 21.0,
+   "painchance": "24",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.25",
+    "\"Plasma\", 1.2",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Macross Missile Spam",
+   "abilities": [
+    "hop_leap",
+    "fast"
+   ],
+   "attacks": {
+    "Miss1": 67.5,
+    "Miss2": 390.0,
+    "Miss3": 1432.5,
+    "Miss4": 65.0
+   },
+   "volley": 1432.5,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteSP11",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 2159,
+   "health": 7000,
+   "speed": 28.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"fire\", 1.2",
+    "\"ice\", 0.5",
+    "\"Plasma\", 0.85",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0",
+    "0.5"
+   ],
+   "tag": "White Spider",
+   "abilities": [
+    "hop_leap"
+   ],
+   "attacks": {
+    "Web": 6.0,
+    "Atk1": 375.0,
+    "Atk5": 625.0,
+    "Atk6": 625.0,
+    "Atk7": 625.0,
+    "Atk8": 75.0,
+    "Atk4": 180.0,
+    "Atk3": 40.5
+   },
+   "volley": 625.0,
+   "family": "Arachnotron",
+   "fam": 12,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonImp",
+   "parent": "DoomImp",
+   "idroot": "DoomImp",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 872,
+   "health": 60,
+   "speed": 8.0,
+   "painchance": "200",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Imp",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenImp",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 13.5
+   },
+   "volley": 13.5,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenImp",
+   "parent": "DoomImp",
+   "idroot": "DoomImp",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 961,
+   "health": 70,
+   "speed": 8.0,
+   "painchance": "180",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Imp",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_BlueImp",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 11.0,
+    "Missile": 16.0
+   },
+   "volley": 16.0,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueImp",
+   "parent": "DoomImp",
+   "idroot": "DoomImp",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 1073,
+   "health": 83,
+   "speed": 9.0,
+   "painchance": "170",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Imp",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_PurpleImp",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 13.0,
+    "Missile": 27.5
+   },
+   "volley": 27.5,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleImp",
+   "parent": "DoomImp",
+   "idroot": "DoomImp",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 1187,
+   "health": 105,
+   "speed": 10.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "pImp",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 19.5,
+    "Missile": 55.0,
+    "Missile2": 55.0
+   },
+   "volley": 55.0,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanImp2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 347,
+   "health": 125,
+   "speed": 14.0,
+   "painchance": "84",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.99",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Melee\", 1.5",
+    "\"Extinguishing\", 3.0",
+    "\"Fire\", 1.5",
+    "\"Ice\", 0.15",
+    "\"DIMp\", 0",
+    "\"PLWater\", 0.25",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Cyanide Imp",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "translucent",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "IceWeave": 66.0,
+    "Melee": 24.0,
+    "Missile2": 22.0,
+    "OtherS": 11.0,
+    "OtherB": 66.0
+   },
+   "volley": 66.0,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownImp2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 198,
+   "health": 215,
+   "speed": 9.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Melee\", 0.5",
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "medium evil imp",
+   "abilities": [
+    "spawns_in_fight:RS_BrownImpShieldMini,RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 31.5,
+    "FireSpike": 26.2
+   },
+   "volley": 31.5,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowImp",
+   "parent": "DoomImp",
+   "idroot": "DoomImp",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 1308,
+   "health": 145,
+   "speed": 10.0,
+   "painchance": "120",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"PLWater\", 1.5",
+    "\"fire\", 0.75",
+    "\"ice\", 0.85",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Orange Imp",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 21.0,
+    "Missile": 25.8,
+    "Firey": 3.5
+   },
+   "volley": 25.8,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluImp2",
+   "parent": "DoomImp",
+   "idroot": "DoomImp",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 643,
+   "health": 125,
+   "speed": 9.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.5"
+   ],
+   "tag": "Now THATS ugly",
+   "abilities": [
+    "fire",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 19.5,
+    "Missile": 72.5
+   },
+   "volley": 72.5,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayImp2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 759,
+   "health": 265,
+   "speed": 8.0,
+   "painchance": "100",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Melee\", 2",
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Stoned Imp",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 52.0
+   },
+   "volley": 52.0,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedImp",
+   "parent": "DoomImp",
+   "idroot": "DoomImp",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 1438,
+   "health": 200,
+   "speed": 10.0,
+   "painchance": "100",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Melee\", 2",
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 1.45"
+   ],
+   "tag": "Red Imp",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 24.0,
+    "Missile": 52.5
+   },
+   "volley": 52.5,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssImp2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 516,
+   "health": 300,
+   "speed": 11.0,
+   "painchance": "120",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Extinguishing\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Abyss Imp",
+   "abilities": [
+    "hop_leap",
+    "fast",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 153.0,
+    "Missile": 75.0
+   },
+   "volley": 153.0,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackImp1",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 1739,
+   "health": 3800,
+   "speed": 12.0,
+   "painchance": "28",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"DIMp\", 0",
+    "0.45",
+    "\"Melee\", 1.75",
+    "\"Plasma\", 1.1",
+    "\"Heroic\", 3.0"
+   ],
+   "tag": "Smoking Black Imp",
+   "abilities": [
+    "translucent",
+    "fast",
+    "retier_others"
+   ],
+   "attacks": {
+    "Melee": 42.5,
+    "OneShot": 90.0,
+    "BigShot": 91.2,
+    "SpamShots": 213.0
+   },
+   "volley": 213.0,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteImp2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 2091,
+   "health": 6666,
+   "speed": 18.0,
+   "painchance": "24",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"Melee\", 3.3",
+    "\"Plasma\", 1.1",
+    "\"Heroic\", 3.0"
+   ],
+   "tag": "Imp Master",
+   "abilities": [
+    "fast",
+    "spawns_in_fight:RS_SpecialImp2"
+   ],
+   "attacks": {
+    "ColorBs": 287.2,
+    "Megaball": 186.7,
+    "NopeNopeNo": 315.0,
+    "NopeNopeNo2": 722.8
+   },
+   "volley": 722.8,
+   "family": "Imp",
+   "fam": 13,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonSG",
+   "parent": "ShotgunGuy",
+   "idroot": "ShotgunGuy",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 838,
+   "health": 30,
+   "speed": 8.0,
+   "painchance": "170",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Former Sergeant",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenSG",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 27.0
+   },
+   "volley": 27.0,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenSG",
+   "parent": "ShotgunGuy",
+   "idroot": "ShotgunGuy",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 927,
+   "health": 45,
+   "speed": 8.0,
+   "painchance": "160",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Former Sergeant",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_BlueSG",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 28.0
+   },
+   "volley": 28.0,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueSG",
+   "parent": "ShotgunGuy",
+   "idroot": "ShotgunGuy",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 1041,
+   "health": 55,
+   "speed": 9.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Former Sergeant",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_PurpleSG",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Lance": 4.5
+   },
+   "volley": 4.5,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleSG",
+   "parent": "ShotgunGuy",
+   "idroot": "ShotgunGuy",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 1158,
+   "health": 75,
+   "speed": 9.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Former Sergeant",
+   "abilities": [
+    "hop_leap",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "GetCloser": 13.5,
+    "Fire2": 32.2
+   },
+   "volley": 32.2,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanSG2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 339,
+   "health": 60,
+   "speed": 8.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 1.5",
+    "\"Melee\", 2.0",
+    "\"Ice\", 0.10",
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Cyan Shotgun dood",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 28.0,
+    "Proj": 48.0
+   },
+   "volley": 48.0,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownSG2",
+   "parent": "ShotgunGuy",
+   "idroot": "ShotgunGuy",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 211,
+   "health": 155,
+   "speed": 9.0,
+   "painchance": "102",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Muddy guy",
+   "abilities": [
+    "hop_leap",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "GetCloser": 13.5,
+    "Fire1": 378.0
+   },
+   "volley": 378.0,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowSG",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 1277,
+   "health": 85,
+   "speed": 9.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Yellow Former Sergeant",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 72.0
+   },
+   "volley": 72.0,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluSG2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 728,
+   "health": 225,
+   "speed": 12.0,
+   "painchance": "110",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Gun guy with skin condition",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 72.5
+   },
+   "volley": 72.5,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GraySG2",
+   "parent": "ShotgunGuy",
+   "idroot": "ShotgunGuy",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 476,
+   "health": 155,
+   "speed": 8.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "snipah",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Fire1": 15.0,
+    "Fire2": 25.0
+   },
+   "volley": 25.0,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedSG",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 1418,
+   "health": 150,
+   "speed": 9.0,
+   "painchance": "110",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Red RNG Former Sergeant",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 52.5,
+    "Shotgunned": 70.0
+   },
+   "volley": 70.0,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssSG2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 609,
+   "health": 300,
+   "speed": 13.0,
+   "painchance": "168",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Shotgun of the abyss",
+   "abilities": [
+    "hop_leap",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 59.2,
+    "Jumper": 202.5
+   },
+   "volley": 202.5,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackSG3",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 1544,
+   "health": 1950,
+   "speed": 16.0,
+   "painchance": "96",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "1.50",
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"Plasma\", 1.1",
+    "\"Heroic\", 3.0"
+   ],
+   "tag": "Shotgun Crew Commander",
+   "abilities": [
+    "translucent",
+    "fast",
+    "spawns_in_fight:RS_BlackSG2"
+   ],
+   "attacks": {
+    "Shotgunned": 54.0,
+    "AirStrike": 36.2,
+    "Nadetoss": 65.0
+   },
+   "volley": 65.0,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteSG2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 1936,
+   "health": 5000,
+   "speed": 28.0,
+   "painchance": "8",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"None\", 0.75",
+    "\"Fire\", 2.0",
+    "\"Plasma\", 1.2",
+    "\"Melee\", 2.0",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "1.5"
+   ],
+   "tag": "BENELLUS,GOD OF SHOTGUNS",
+   "abilities": [
+    "fire",
+    "translucent",
+    "nopain_or_armour",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Gifts": 175.0,
+    "SG": 1184.3
+   },
+   "volley": 1184.3,
+   "family": "Shotgunner",
+   "fam": 14,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonSpectre",
+   "parent": "Spectre",
+   "idroot": "Spectre",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 596,
+   "health": 150,
+   "speed": 10.0,
+   "painchance": "150",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Spectre",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_GreenSpectre",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "(id attack)": 22.5
+   },
+   "volley": 22.5,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenSpectre",
+   "parent": "Spectre",
+   "idroot": "Spectre",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 655,
+   "health": 175,
+   "speed": 12.0,
+   "painchance": "130",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.20",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Spectre",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "spawns_on_death:RS_BlueSpectre",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 26.5
+   },
+   "volley": 26.5,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueSpectre",
+   "parent": "Spectre",
+   "idroot": "Spectre",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 746,
+   "health": 210,
+   "speed": 14.0,
+   "painchance": "110",
+   "renderstyle": "\"Add\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Spectre",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "retier_others",
+    "spawns_on_death:RS_PurpleSpectre",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Rush": 13.5,
+    "Melee": 29.0
+   },
+   "volley": 29.0,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleSpectre",
+   "parent": "Spectre",
+   "idroot": "Spectre",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 845,
+   "health": 250,
+   "speed": 16.0,
+   "painchance": "80",
+   "renderstyle": "\"Add\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Spectre",
+   "abilities": [
+    "hop_leap",
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Rush2": 13.5,
+    "Melee": 29.5
+   },
+   "volley": 29.5,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanSpectre2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 342,
+   "health": 270,
+   "speed": 27.0,
+   "painchance": "64",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"Melee\", 2.0",
+    "\"Fire\", 1.5",
+    "\"Ice\", 0.15",
+    "\"PLWater\", 0.25",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Ice Worm II",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "fast",
+    "retier_others"
+   ],
+   "attacks": {
+    "Melee": 50.0,
+    "Hiss": 13.5
+   },
+   "volley": 50.0,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownSpectre2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 231,
+   "health": 300,
+   "speed": 17.0,
+   "painchance": "33",
+   "renderstyle": "\"Translucent\"",
+   "alpha": "0.15",
+   "has_translation": false,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 1.25"
+   ],
+   "tag": "Brown hide",
+   "abilities": [
+    "heal_others",
+    "fire",
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {},
+   "volley": 0,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowSpectre",
+   "parent": "Spectre",
+   "idroot": "Spectre",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 945,
+   "health": 320,
+   "speed": 17.0,
+   "painchance": "60",
+   "renderstyle": "\"Add\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Yellow Spectre",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 32.5
+   },
+   "volley": 32.5,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluDemon2",
+   "parent": "Demon",
+   "idroot": "Demon",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 590,
+   "health": 205,
+   "speed": 5.0,
+   "painchance": "180",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 0.25",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "FireBluey",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "retier_others",
+    "spawns_on_death:RS_PurpleDemon"
+   ],
+   "attacks": {
+    "Rush": 67.5,
+    "Melee": 32.5
+   },
+   "volley": 67.5,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GraySpectre2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 490,
+   "health": 450,
+   "speed": 20.0,
+   "painchance": "128",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.25",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 1.2",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"ice\", 0.2"
+   ],
+   "tag": "Uhm",
+   "abilities": [
+    "ice",
+    "fire",
+    "translucent",
+    "retier_others"
+   ],
+   "attacks": {
+    "Missile": 26.2,
+    "Melee": 24.0
+   },
+   "volley": 26.2,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedSpectre",
+   "parent": "Spectre",
+   "idroot": "Spectre",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 1050,
+   "health": 394,
+   "speed": 16.0,
+   "painchance": "30",
+   "renderstyle": "\"Add\"",
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Red Spectre",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Melee": 124.2
+   },
+   "volley": 124.2,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssDemon2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/demon/RS_Demon.zs",
+   "line": 710,
+   "health": 600,
+   "speed": 19.0,
+   "painchance": "128",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.10",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 1.25",
+    "\"Ice\", 0.75",
+    "\"Wrangler\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Bad dog",
+   "abilities": [
+    "ice",
+    "fire",
+    "translucent"
+   ],
+   "attacks": {
+    "Melee": 37.5,
+    "Missile": 82.5
+   },
+   "volley": 82.5,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackSpectre2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 1154,
+   "health": 3000,
+   "speed": 15.0,
+   "painchance": "100",
+   "renderstyle": "\"Translucent\"",
+   "alpha": "0.45",
+   "has_translation": false,
+   "damagefactors": [
+    "0.5",
+    "\"Melee\", 2.5",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Backstabber",
+   "abilities": [
+    "teleport_warp",
+    "translucent"
+   ],
+   "attacks": {
+    "BACKSTABBUU": 100.0,
+    "Melee": 45.0,
+    "Missiles": 112.5,
+    "BigOne": 60.0
+   },
+   "volley": 112.5,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteSpectre2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spectre/RS_Spectre.zs",
+   "line": 1321,
+   "health": 7500,
+   "speed": 8.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Fire\", 0.75",
+    "\"Melee\", 2",
+    "\"Plasma\", 0.75",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Tentacle monster?",
+   "abilities": [
+    "fire",
+    "spawns_in_fight:RS_Wakawaka"
+   ],
+   "attacks": {
+    "Melee": 105.0,
+    "Atk1": 120.0,
+    "Atk2": 150.0,
+    "Atk3": 30.0
+   },
+   "volley": 150.0,
+   "family": "Spectre",
+   "fam": 15,
+   "tier": 13,
+   "colour": "White"
+  },
+  {
+   "cls": "RS_CommonZombie",
+   "parent": "ZombieMan",
+   "idroot": "ZombieMan",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 927,
+   "health": 20,
+   "speed": 7.0,
+   "painchance": "200",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Zombieman",
+   "abilities": [
+    "retier_others",
+    "spawns_on_death:RS_AbyssZombie3,RS_GreenZombie",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "(id attack)": 9
+   },
+   "volley": 9,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 1,
+   "colour": "Common"
+  },
+  {
+   "cls": "RS_GreenZombie",
+   "parent": "ZombieMan",
+   "idroot": "ZombieMan",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 1040,
+   "health": 40,
+   "speed": 9.0,
+   "painchance": "180",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Green Zombie",
+   "abilities": [
+    "translucent",
+    "retier_others",
+    "spawns_on_death:RS_AbyssZombie3,RS_BlueZombie",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "See2": 2.2,
+    "Missile": 24.8
+   },
+   "volley": 24.8,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 2,
+   "colour": "Green"
+  },
+  {
+   "cls": "RS_BlueZombie",
+   "parent": "ZombieMan",
+   "idroot": "ZombieMan",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 1171,
+   "health": 60,
+   "speed": 9.0,
+   "painchance": "140",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Blue Zombieman",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_on_death:RS_AbyssZombie3,RS_PurpleZombie",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 9.0
+   },
+   "volley": 9.0,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 3,
+   "colour": "Blue"
+  },
+  {
+   "cls": "RS_PurpleZombie",
+   "parent": "ZombieMan",
+   "idroot": "ZombieMan",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 1317,
+   "health": 95,
+   "speed": 10.0,
+   "painchance": "120",
+   "renderstyle": "\"SoulTrans\"",
+   "alpha": "1",
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Purple Zombieman",
+   "abilities": [
+    "translucent",
+    "fast",
+    "retier_others",
+    "spawns_on_death:RS_AbyssZombie3",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Hitscanne": 15.0,
+    "Orbb": 30.0
+   },
+   "volley": 30.0,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 4,
+   "colour": "Purple"
+  },
+  {
+   "cls": "RS_CyanZombie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 409,
+   "health": 30,
+   "speed": 9.0,
+   "painchance": "40",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"Fire\", 2.0",
+    "\"Melee\", 2.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Cyan Zombieman",
+   "abilities": [
+    "fire",
+    "fast",
+    "retier_others"
+   ],
+   "attacks": {
+    "Missile": 11.0
+   },
+   "volley": 11.0,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 5,
+   "colour": "Cyan"
+  },
+  {
+   "cls": "RS_BrownZombie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 217,
+   "health": 100,
+   "speed": 8.0,
+   "painchance": "128",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "",
+   "abilities": [
+    "hop_leap",
+    "teleport_warp",
+    "translucent",
+    "fast",
+    "retier_others",
+    "spawns_on_death:RS_AbyssZombie2",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 9.0
+   },
+   "volley": 9.0,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 6,
+   "colour": "Brown"
+  },
+  {
+   "cls": "RS_YellowZombie",
+   "parent": "ZombieMan",
+   "idroot": "ZombieMan",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 1475,
+   "health": 140,
+   "speed": 13.0,
+   "painchance": "100",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Melee\", 2",
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Orange Zombiewoman",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Bullets": 12.0,
+    "Rockets": 27.5
+   },
+   "volley": 27.5,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 7,
+   "colour": "Yellow"
+  },
+  {
+   "cls": "RS_FireBluZombie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 508,
+   "health": 70,
+   "speed": 12.0,
+   "painchance": "255",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"Fire\", 0.25",
+    "\"DIMp\", 0"
+   ],
+   "tag": "FireBlu Zombie",
+   "abilities": [
+    "fire",
+    "retier_others",
+    "spawns_on_death:RS_AbyssZombie2,RS_PurpleZombie",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {},
+   "volley": 0,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 8,
+   "colour": "FireBlu"
+  },
+  {
+   "cls": "RS_GrayZombie2",
+   "parent": "ZombieMan",
+   "idroot": "ZombieMan",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 637,
+   "health": 110,
+   "speed": 4.0,
+   "painchance": "40",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"Fire\", 2.0",
+    "\"Melee\", 2.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Gray Zombieman",
+   "abilities": [
+    "fire",
+    "retier_others",
+    "spawns_on_death:RS_AbyssZombie2,RS_PurpleZombie",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 19.5
+   },
+   "volley": 19.5,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 9,
+   "colour": "Gray"
+  },
+  {
+   "cls": "RS_RedZombie",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 1637,
+   "health": 186,
+   "speed": 8.0,
+   "painchance": "100",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0",
+    "\"Melee\", 3"
+   ],
+   "tag": "Red ZombieUnman",
+   "abilities": [
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 30.0
+   },
+   "volley": 30.0,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 10,
+   "colour": "Red"
+  },
+  {
+   "cls": "RS_AbyssZombie2",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 823,
+   "health": 200,
+   "speed": 14.0,
+   "painchance": "18",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Exorcist\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Abyss Infected Zombie",
+   "abilities": [
+    "fast",
+    "retier_others",
+    "spawns_in_fight:RS_ThePlanBoner"
+   ],
+   "attacks": {
+    "Missile": 39.5
+   },
+   "volley": 39.5,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 11,
+   "colour": "Abyss"
+  },
+  {
+   "cls": "RS_BlackZombie1",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 2042,
+   "health": 2500,
+   "speed": 26.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "Player 9",
+   "abilities": [
+    "fire",
+    "fast"
+   ],
+   "attacks": {
+    "Melee": 50.0,
+    "Shotttgun": 96.0,
+    "PlasmaSpammer": 90.0,
+    "Rawkets": 10.0
+   },
+   "volley": 96.0,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 12,
+   "colour": "Black"
+  },
+  {
+   "cls": "RS_WhiteZombie1",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 2438,
+   "health": 2800,
+   "speed": 10.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "UNDERTAKER",
+   "abilities": [
+    "fast"
+   ],
+   "attacks": {
+    "RapidBone3": 57.0,
+    "ShotBone3": 209.0,
+    "ShotBone": 90.0,
+    "ShotBone2": 168.0,
+    "RapidBone": 20.0,
+    "RapidBone2": 28.0,
+    "Shovel": 101.2
+   },
+   "volley": 209.0,
+   "family": "Zombieman",
+   "fam": 16,
+   "tier": 13,
+   "colour": "White"
+  }
+ ],
+ "ex": [
+  {
+   "cls": "RS_BlackCGuyEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/chaingunner/RS_Chaingunner.zs",
+   "line": 1619,
+   "health": 8999,
+   "speed": 20.0,
+   "painchance": "12",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0"
+   ],
+   "tag": "LET ME SEE YOUR WARFACE",
+   "abilities": [
+    "fast"
+   ],
+   "attacks": {
+    "YE": 266.7,
+    "BigBomb": 103.5,
+    "RapidFire": 20.0,
+    "RedSpam": 863.3
+   },
+   "volley": 863.3
+  },
+  {
+   "cls": "RS_BlackCacoEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_Cacodemon.zs",
+   "line": 1748,
+   "health": 10000,
+   "speed": 21.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.5",
+    "\"Plasma\", 0.9",
+    "\"Heroic\", 3.0",
+    "\"PlayerVoid\", 0.6",
+    "\"DIMp\", 0"
+   ],
+   "tag": "SHOCKMASTER RETURNS",
+   "abilities": [
+    "translucent",
+    "flying",
+    "spawns_in_fight:RS_RedSpikeCacoEX"
+   ],
+   "attacks": {
+    "Electro4": 112.5,
+    "Electro5": 112.5,
+    "Electro1": 262.5,
+    "BonusDucks": 50.0,
+    "Electro2": 43.5,
+    "Electro3": 18.5
+   },
+   "volley": 262.5
+  },
+  {
+   "cls": "RS_BlackFatsoEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/fatso/RS_Fatso.zs",
+   "line": 1644,
+   "health": 18000,
+   "speed": 16.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "0.5",
+    "\"Plasma\", 0.80",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "\"Fire\", 2.0",
+    "\"PlayerVoid\", 0.6"
+   ],
+   "tag": "The thing from the bog",
+   "abilities": [
+    "ice",
+    "fire",
+    "retier_others"
+   ],
+   "attacks": {
+    "LongRange": 225.0,
+    "GroundSplashes": 90.0,
+    "BiggerBomb": 150.0,
+    "BigBombs": 475.0,
+    "Burp": 202.5,
+    "Breath": 256.8
+   },
+   "volley": 475.0
+  },
+  {
+   "cls": "RS_BlackHKEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/hellknight/RS_HellKnight.zs",
+   "line": 1866,
+   "health": 11000,
+   "speed": 14.0,
+   "painchance": "30",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"None\", 0.7",
+    "0.33",
+    "\"Plasma\", 1.25",
+    "\"Melee\", 0.75",
+    "\"Heroic\", 3.0",
+    "\"ice\", 1.5",
+    "\"DIMp\", 0",
+    "\"PlayerVoid\", 0.6"
+   ],
+   "tag": "Terminator MK II",
+   "abilities": [],
+   "attacks": {
+    "FastBeam": 70.0,
+    "Homing": 115.0,
+    "BigMis": 303.8,
+    "MisBar": 490.0,
+    "NadeToss": 77.5,
+    "Res2": 131.2
+   },
+   "volley": 490.0
+  },
+  {
+   "cls": "RS_BlackImpEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/imp/RS_Imp.zs",
+   "line": 1557,
+   "health": 8600,
+   "speed": 19.0,
+   "painchance": "28",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"DIMp\", 0",
+    "0.33",
+    "\"Melee\", 1.5",
+    "\"Plasma\", 1.1",
+    "\"Heroic\", 3.0",
+    "\"PlayerVoid\", 0.6"
+   ],
+   "tag": "Smoking Black Imp EX",
+   "abilities": [
+    "fast"
+   ],
+   "attacks": {
+    "OneShot": 675.0,
+    "BigShot": 98.8,
+    "SpamShotRain": 341.0
+   },
+   "volley": 675.0
+  },
+  {
+   "cls": "RS_BlackRevenantEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/revenant/RS_Revenant.zs",
+   "line": 2238,
+   "health": 7500,
+   "speed": 14.0,
+   "painchance": "32",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.33",
+    "\"Fire\", 1.8",
+    "\"Poison\", 0.25",
+    "\"Ice\", 0.6",
+    "\"Heroic\", 3.0",
+    "\"PlayerVoid\", 0.6",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "The Black Knight unleashed",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fire",
+    "poison",
+    "retier_others",
+    "spawns_on_death:RS_BlackRevEx2,RS_BlackRevEx3",
+    "spawns_in_fight:RS_RevShieldWalk,RS_RevShieldWalk2"
+   ],
+   "attacks": {
+    "Melee": 95.0,
+    "ShieldBlast": 653.4,
+    "Grap": 17.5,
+    "Grap2": 17.5,
+    "DartCleave": 337.5,
+    "Mines": 120.0,
+    "Dash": 13.5,
+    "Shield": 45.0
+   },
+   "volley": 653.4
+  },
+  {
+   "cls": "RS_BlackSPEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/spider/RS_Spider.zs",
+   "line": 1865,
+   "health": 12000,
+   "speed": 21.0,
+   "painchance": "24",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.2",
+    "\"Plasma\", 1.5",
+    "\"Heroic\", 3.0",
+    "\"Ice\", 1.8",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Macross Missile Spam EX",
+   "abilities": [
+    "hop_leap",
+    "ice",
+    "fast"
+   ],
+   "attacks": {
+    "Miss5": 1445.0,
+    "Miss8": 480.0,
+    "Miss7": 83.0,
+    "Miss9": 277.5,
+    "Miss1": 85.0,
+    "Miss6": 555.0,
+    "Miss2": 1270.0,
+    "Miss3": 2442.5,
+    "Miss4": 240.0
+   },
+   "volley": 2442.5
+  },
+  {
+   "cls": "RS_BlackZombieEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/zombieman/RS_Zombieman.zs",
+   "line": 1824,
+   "health": 5000,
+   "speed": 28.0,
+   "painchance": "16",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"PlayerVoid\", 0.5",
+    "\"DIMp\", 0",
+    "\"Falling\", 0.0"
+   ],
+   "tag": "Player X",
+   "abilities": [
+    "hop_leap",
+    "fire",
+    "fast"
+   ],
+   "attacks": {
+    "Melee": 90.0,
+    "Shootmydude": 96.0,
+    "BFGBoi": 192.5,
+    "PlasmaSpammer": 90.0,
+    "Rawkets": 10.0
+   },
+   "volley": 192.5
+  },
+  {
+   "cls": "RS_RedSpikeCacoEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/cacodemon/RS_CacodemonFX.zs",
+   "line": 1218,
+   "health": 100,
+   "speed": 20.0,
+   "painchance": "0",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": true,
+   "damagefactors": [
+    "0.33"
+   ],
+   "tag": "Spiky ouch ouch",
+   "abilities": [
+    "hop_leap",
+    "teleport_warp",
+    "nopain_or_armour",
+    "fast",
+    "flying"
+   ],
+   "attacks": {
+    "Missile": 13.5
+   },
+   "volley": 13.5
+  },
+  {
+   "cls": "RS_WhiteLSoulEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/lostsoul/RS_LostSoul.zs",
+   "line": 1903,
+   "health": 12500,
+   "speed": 19.0,
+   "painchance": "32",
+   "renderstyle": "\"Add\"",
+   "alpha": "0.95",
+   "has_translation": false,
+   "damagefactors": [
+    "\"Heroic\", 3.0",
+    "\"ice\", 0.2",
+    "\"playervoid\", 0.5",
+    "\"DIMp\", 0"
+   ],
+   "tag": "The vengeful soul",
+   "abilities": [
+    "translucent",
+    "nopain_or_armour",
+    "flying",
+    "spawns_in_fight:RS_LSoulEXShade,RS_SkullWSoulEX1"
+   ],
+   "attacks": {
+    "CACO": 825.8,
+    "REV": 737.3,
+    "HK": 758.6,
+    "Baron": 677.1,
+    "Vile": 803.0,
+    "Mancu": 2382.4,
+    "Beam": 385.0,
+    "SoulShot": 60.5
+   },
+   "volley": 2382.4
+  },
+  {
+   "cls": "RS_WhiteSGEX",
+   "parent": "Actor",
+   "idroot": "Actor",
+   "file": "Monsters/zscript/monsters/shotgunner/RS_Shotgunner.zs",
+   "line": 2069,
+   "health": 12537,
+   "speed": 31.0,
+   "painchance": "14",
+   "renderstyle": null,
+   "alpha": null,
+   "has_translation": false,
+   "damagefactors": [
+    "\"None\", 0.75",
+    "\"Fire\", 2.0",
+    "\"Plasma\", 1.25",
+    "\"Melee\", 2.0",
+    "\"PlayerVoid\", 0.5",
+    "\"Heroic\", 3.0",
+    "\"DIMp\", 0",
+    "2.0"
+   ],
+   "tag": "BENELLUS,GOD OF SHOTGUNS,ANGRIER",
+   "abilities": [
+    "fire",
+    "translucent",
+    "nopain_or_armour",
+    "fast",
+    "flying",
+    "spawns_in_fight:RS_ShotgunShrine"
+   ],
+   "attacks": {
+    "FocusedHitScan": 315.0,
+    "FocusedFire": 2007.3,
+    "Gifts": 175.0,
+    "SG": 1184.3
+   },
+   "volley": 2007.3
+  }
+ ]
+}
