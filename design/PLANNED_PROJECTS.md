@@ -11,6 +11,11 @@ jackpot, time attack. Design only so far: design/BIG_FOURTH_ARCADE.md, design/HA
 ## Grapple 2.0 (owner 11-10: "planned project")
 **Owner 2026-11-12 23:04: "all grapple code has to be thrown out."** Grapple 2.0 is a rebuild from nothing: the current
 RSQ Grapple code is not its base. Design comes from the owner; nothing proposed 11-12 23:0x stands.
+**Foundation (owner 23:10: "i love this, yes, good foundation"):** the off hand's instant hook. No skill, no rope,
+straight line. One press from the off hand, where it points (the hand the whip leaves free). Three results, decided
+where it bites: a wall or floor flings you at it; a light monster is flung to you; a heavy one, you are flung to it
+(jpalomo's feel, rewritten clean). A bite on a ledge lip with room to stand lands you on top. Fires and flings at full
+speed in slow motion (the ledge save). No rope, reel, swing or climb: those are the whip's.
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
