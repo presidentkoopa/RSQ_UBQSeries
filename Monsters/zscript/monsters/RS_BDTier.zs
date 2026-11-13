@@ -703,17 +703,101 @@ class RS_BDTierHandler : EventHandler
 		lastWorld = WorldTier();
 	}
 
+	// ---- THE COLOUR FOLLOWS THE BODY (owner 2026-11-13: "there are a lot of frames, gore frames, second wind things,
+	// final stand things ... i am concerned with a high quality result") --------------------------------------------
+	// Every frame a monster plays itself keeps its tint: the tint is on the actor. But Brutal Doom's deaths are full
+	// of OTHER actors: the dying crawlers, the last stands, the corpses, the limbs and chunks. Each is spawned by the
+	// tinted body (it is the new actor's target), or stands where the body was a tic ago (Brutal Doom spawns the next
+	// stage and removes itself in the same state, so by the new actor's first tick its maker is gone). So:
+	//   - an actor whose target wears one of the twelve tints takes that tint, and so do the ones it spawns in turn;
+	//   - a tinted body that is removed leaves a 3-tic record of where it stood, and an actor that appears within 64
+	//     units of it with no living maker takes its tint.
+	// Not blood, smoke, fire, sparks, casings, puffs or pickups: those keep their own look (by class name, below).
+	// Nothing is added to the gore: no item, no thinker; the tint IS the mark.
+	private Array<int> tintIds;
+	private Array<double> gonX, gonY, gonZ;
+	private Array<int> gonTrans, gonTic;
+
+	// which of the twelve tints a translation is: its colour 2..13, 0 none (an int cannot be made a translation
+	// again on this engine, so the colour is what is kept and A_SetTranslation puts it on)
+	private int OurTint(int tr)
+	{
+		if (tr == 0) return 0;
+		if (tintIds.Size() == 0)
+			for (int c = 2; c <= 13; c++) tintIds.Push(int(Translation.GetID(RS_BDKit.TintName(c))));
+		for (int i = 0; i < tintIds.Size(); i++) if (tintIds[i] == tr) return i + 2;
+		return 0;
+	}
+
+	// an effect or a pickup, by its class name: it keeps its own colours
+	private bool KeepsOwnLook(Actor a)
+	{
+		if (a is "Inventory") return true;
+		String n = a.GetClassName();
+		n = n.MakeLower();
+		static const String SKIP[] = { "blood", "smoke", "fire", "flame", "flare", "spark", "puff", "tracer", "casing", "shell", "explo",
+			"light", "plasma", "splash", "water", "dust", "trail", "bullet", "shock", "steam", "fog", "ring", "ember", "burn",
+			"brass", "mist", "droped", "dropped", "gun", "rifle", "weapon", "ammo", "clip", "mag" };
+		for (int i = 0; i < SKIP.Size(); i++) if (n.IndexOf(SKIP[i]) >= 0) return true;
+		return false;
+	}
+
+	// the tint (its colour, 2..13) of the body this actor came out of, 0 none
+	private int TintFrom(Actor a)
+	{
+		let t = a.target;
+		int c = (t && t != a) ? OurTint(int(t.Translation)) : 0;
+		if (c) return c;
+		c = (a.master && a.master != a) ? OurTint(int(a.master.Translation)) : 0;
+		if (c) return c;
+		if (t && !t.player && t.health > 0 && !a.bISMONSTER) return 0;      // its maker stands there, untinted
+		int best = 0; double bd = 64;
+		for (int i = gonTic.Size() - 1; i >= 0; i--)
+		{
+			if (level.maptime - gonTic[i] > 3) { gonX.Delete(i); gonY.Delete(i); gonZ.Delete(i); gonTrans.Delete(i); gonTic.Delete(i); continue; }
+			double d = (a.pos - (gonX[i], gonY[i], gonZ[i])).Length();
+			if (d < bd) { bd = d; best = gonTrans[i]; }
+		}
+		return best;
+	}
+
+	private bool Carry(Actor a)
+	{
+		if (OurTint(int(a.Translation))) return true;
+		int tr = TintFrom(a);
+		if (tr == 0 || KeepsOwnLook(a)) return false;
+		a.A_SetTranslation(RS_BDKit.TintName(tr));
+		return true;
+	}
+
+	override void WorldThingDestroyed(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || a.bMISSILE && a.GetMissileDamage(0, 1) > 0) return;
+		int tr = OurTint(int(a.Translation));
+		if (!tr) return;
+		gonX.Push(a.pos.x); gonY.Push(a.pos.y); gonZ.Push(a.pos.z); gonTrans.Push(tr); gonTic.Push(level.maptime);
+	}
+
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
 		if (!a) return;
-		if (a.bMISSILE) { Shot(a); return; }
-		if (!a.bISMONSTER || a.player || a.bFRIENDLY || a.health <= 0 || !On()) return;
+		if (a.bMISSILE)
+		{
+			if (a.GetMissileDamage(0, 1) > 0) Shot(a);    // an attack: the kit's own shot rules
+			else if (On()) Carry(a);                      // a limb or a chunk thrown off the body
+			return;
+		}
+		if (!On()) return;
+		if (!a.bISMONSTER) { if (!a.player) Carry(a); return; }          // a corpse, a dying body, a piece
+		if (a.player || a.bFRIENDLY || a.health <= 0) return;
 		if (a.FindInventory("RS_BDKit")) return;
 		String cn = a.GetClassName();
 		if (cn.Left(3) ~== "RS_") return;             // ColorfulHell's own: RS_Retier's ladder, not this one
 		int v = Resolve(a.GetClass());
-		if (v < 0) return;
+		// a monster with no family that rises out of a tinted body (a last stand, a crawler): the body's colour, no kit
+		if (v < 0) { if (level.maptime > 2) Carry(a); return; }
 
 		a.GiveInventory("RS_BDKit", 1);
 		let k = RS_BDKit.Of(a);

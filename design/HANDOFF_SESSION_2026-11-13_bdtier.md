@@ -94,3 +94,20 @@ nor Brutal Doom's sprites. Nothing is headset-confirmed.
   and flames keep their own colours. Weak spot seen: a monster in black or grey armour (XMVE's dark troopers) takes
   the colour only on its skin and visor. Sheets sent to him.
 - **Owner 09:49: "I approve of this style."** The body-by-palette-range tints are signed off (from the rig sheets, not the headset).
+
+## 09:49 to 10:40 (owner: "there are a lot of frames, gore frames, second wind things, final stand things, so i'll leave you to it ... i am not concerned with file size, i am concerned with a high quality result")
+- No sprite files are made: the tint is on the actor, so every frame the monster itself plays has it. What did NOT
+  have it were Brutal Doom's OTHER actors in a death: corpses, dying crawlers, last stands, limbs and chunks.
+- **The colour follows the body** (`RS_BDTierHandler` Carry / TintFrom / WorldThingDestroyed, RS_BDTier.zs): an actor
+  whose target (or master) wears one of the twelve tints takes it, and so on down the chain; a tinted body that is
+  removed leaves a 3-tic record and an actor appearing within 64 units of it with no living maker takes its tint; a
+  monster with no family that appears that way (a last stand) gets the tint, no kit. Blood, smoke, fire, casings, puffs,
+  dropped guns and pickups are left alone, by class name (KeepsOwnLook's list).
+- Rig, doom2 + brutal22test6 + XMVE, world tier 2 and 4 (runs gore1, gore2, one frame pair looked at):
+  - plain deaths: DeadShotgunguy1, DeadZombieman1, DeadImpMinorHeadShot tinted; Brutal_BloodSpot, GrowingBloodPool not.
+  - gib deaths: XDeath1-4, the arms, legs, heads, organs, skin pieces, Guts, the half bodies: tinted; every blood
+    actor not. EmptyBrass and DropedShotgun2 WERE tinted in that run; the name list was widened after it (brass,
+    droped, gun ...) and that widening is loaded but not re-run.
+  - NOT tinted in that run: SmearingXDeath3 (a chunk's smear, spawned after the chunk is gone and far from the body).
+  - NOT triggered in any run, so not seen: ZombiemanLastStand1, SergeantLastStand1/2, the Dying* crawlers, fatalities,
+    the frozen and burning deaths, XMVE's own death actors.
