@@ -288,6 +288,7 @@ class RSQLS_Sight : EventHandler
 	// The last measured pose each hand's gun was drawn in, and that gun (DrawHand: the beam holds it between shots).
 	private int    heldRow[2];
 	private Weapon heldGun[2];
+	private Weapon dbgGun[2];        // Debug Log: the gun last reported, per hand
 
 	// Toggle edge detection, for the haptic tick.
 
@@ -642,6 +643,27 @@ class RSQLS_Sight : EventHandler
 		double aimYaw, aimPitch;
 		bool steady;
 		[steady, muzzle, dir, aimYaw, aimPitch] = RSQLS_Hand.Steadied(pmo, h, muzzle, dir);
+
+		// DEBUG LOG (rsqls_debug): how this hand's gun was resolved, once a gun, then the dot's line every second. For the
+		// rig: a weapon set's gun names the BD22 rows it drew (tools/gen_sets.py, owner 2026-11-13).
+		if (w && RSQLS_Hand.Flag("rsqls_debug", p, false))
+		{
+			if (dbgGun[h] != w)
+			{
+				dbgGun[h] = w;
+				String st = RSQLS_Sets.SetOf(w);
+				String sbd = RSQLS_Sets.BD(w), sex = RSQLS_Sets.Exact(w);
+				bool og; double mf, ml, mu;
+				[og, mf, ml, mu] = RSQLS_BDBore.Muzzle(w);
+				Console.Printf("[RSQLS] GUN h%d %s: %s; beam row %s placement %d; shot line %s (F %.2f L %.2f U %.2f, bore %s)",
+					h, w.GetClassName(), st == "" ? "not a weapon set's gun" : String.Format("set %s as %s / %s", st, sbd, sex),
+					bt ? bt.RowClass(ci) : "none", pi, og ? "found" : "none", mf, ml, mu,
+					RSQLS_BDBore.Active() ? "active" : "inactive");
+			}
+			if (level.maptime % 35 == 0)
+				Console.Printf("[RSQLS] DOT h%d t%d %s from %.2f %.2f %.2f dir %.5f %.5f %.5f", h, level.maptime, w.GetClassName(), muzzle.x, muzzle.y, muzzle.z, dir.x, dir.y, dir.z);
+		}
+		else if (dbgGun[h]) dbgGun[h] = null;
 
 		// A THROWN WEAPON (grenades): once it has been seen firing, the line is
 		// the ballistic path its projectile will take, and the spot is where it

@@ -27,7 +27,7 @@ MODS = {
     'ShieldSaw':    ('RSQ_ShieldSaw.pk3', 'all', ['docs/*', 'tools/*', '*.sh', '.gitignore', 'HANDOFF.md', 'README_draft.md']),
     'QuestSaber':   ('RSQ_Saber.pk3', 'all', ['docs/*', '.gitignore', 'README_draft.md']),
     'LaserSight':   ('RSQ_LaserSight.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt',
-                     'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'VOXELDEF.txt', 'zscript', 'sprites', 'graphics', 'models/rsqls']),
+                     'MODELDEF.txt', 'CREDITS.txt', 'README.md', 'VOXELDEF.txt', 'VOXELDEF.sets', 'zscript', 'sprites', 'graphics', 'models/rsqls']),
     'Grapple':      ('RSQ_Grapple.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt',
                      'SNDINFO.txt', 'TRNSLATE.txt', 'CREDITS.txt', 'README.md', 'zscript', 'sprites', 'sounds']),   # Grapple 2.0 (2026-11-13): no models
     'VisualRewards': ('RSQ_VisualRewards.pk3', 'sub', ('pk3', ['README.md'])),   # HP bars + damage numbers + Kill Rewards (was TopHPBars / RSQ_HPBars.pk3)

@@ -1,0 +1,97 @@
+[RSQLS] GUN h0 Rifle: not a weapon set's gun; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+[RSQLS] DOT h0 t0 Rifle from -2.06 24.20 3.24 dir -0.06713 0.99654 0.04891
+[RSQLS] DOT h0 t35 Rifle from -89.55 815.66 82.97 dir -0.07066 0.86455 -0.49755
+LSP_GUN_BrutalPistol
+[RSQLS] GUN h0 BrutalPistol: not a weapon set's gun; beam row BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+[RSQLS] DOT h0 t70 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t105 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t140 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t175 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+LSP OLD t195 h0 BrutalPistol grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t195 probe h0 BrutalPistol from -88.25 801.81 90.09 to -99.62 941.00 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP OLD t204 h0 BrutalPistol grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t204 probe h0 BrutalPistol from -88.25 801.81 90.09 to -99.62 941.00 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+[RSQLS] DOT h0 t210 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t245 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+LSP HS t257 gun h0 BrutalPistol from -88.25 801.81 90.09 to -100.59 938.13 10.02 dir -0.07785 0.85964 -0.50494 flags 128
+[RSQLS] DOT h0 t280 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+LSP_GUN_Rifle
+[RSQLS] GUN h0 Rifle: not a weapon set's gun; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+[RSQLS] DOT h0 t315 Rifle from -89.56 815.66 82.97 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t350 Rifle from -89.56 815.66 82.97 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t385 Rifle from -89.56 815.66 82.97 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t420 Rifle from -89.56 815.66 82.97 dir -0.07066 0.86455 -0.49756
+LSP OLD t434 h0 Rifle grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t434 probe h0 Rifle from -89.56 815.71 82.88 to -99.91 942.37 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP OLD t442 h0 Rifle grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t442 probe h0 Rifle from -89.56 815.71 82.88 to -99.91 942.37 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+[RSQLS] DOT h0 t455 Rifle from -89.56 815.66 82.97 dir -0.07066 0.86455 -0.49756
+LSP HS t474 gun h0 Rifle from -89.56 815.71 82.88 to -100.79 941.25 10.00 dir -0.07711 0.86224 -0.50059 flags 128
+LSP HS t478 gun h0 Rifle from -89.56 815.71 82.88 to -101.61 940.60 10.01 dir -0.08304 0.86073 -0.50225 flags 128
+[RSQLS] DOT h0 t490 Rifle from -89.56 815.66 82.97 dir -0.07066 0.86455 -0.49756
+LSP HS t519 gun h0 Rifle from -89.56 815.71 82.88 to -99.11 940.71 10.01 dir -0.06587 0.86203 -0.50256 flags 128
+LSP HS t523 gun h0 Rifle from -89.56 815.71 82.88 to -100.11 940.25 10.01 dir -0.07293 0.86082 -0.50366 flags 128
+[RSQLS] DOT h0 t525 Rifle from -89.56 815.66 82.97 dir -0.07066 0.86455 -0.49756
+LSP_GUN_MP40
+[RSQLS] GUN h0 MP40: not a weapon set's gun; beam row MP40 placement 40; shot line found (F 66.36 L 6.54 U 11.39, bore active)
+[RSQLS] DOT h0 t560 MP40 from -89.72 814.36 83.80 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t595 MP40 from -89.72 814.36 83.80 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t630 MP40 from -89.72 814.36 83.80 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t665 MP40 from -89.72 814.36 83.80 dir -0.07066 0.86455 -0.49756
+LSP OLD t672 h0 MP40 grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t672 probe h0 MP40 from -89.72 814.41 83.72 to -100.19 942.52 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP OLD t685 h0 MP40 grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t685 probe h0 MP40 from -89.72 814.41 83.72 to -100.19 942.52 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP HS t692 gun h0 MP40 from -89.72 814.41 83.72 to -101.55 939.48 10.02 dir -0.08118 0.85871 -0.50600 flags 128
+[RSQLS] DOT h0 t700 MP40 from -89.72 814.36 83.80 dir -0.07066 0.86455 -0.49756
+LSP HS t715 gun h0 MP40 from -89.72 814.41 83.72 to -101.24 942.33 9.99 dir -0.07777 0.86377 -0.49785 flags 128
+[RSQLS] DOT h0 t735 MP40 from -89.72 814.36 83.80 dir -0.07066 0.86455 -0.49756
+LSP HS t737 gun h0 MP40 from -89.72 814.41 83.72 to -94.01 942.22 10.00 dir -0.02906 0.86587 -0.49942 flags 128
+[RSQLS] DOT h0 t770 MP40 from -89.72 814.36 83.80 dir -0.07066 0.86455 -0.49756
+LSP_GUN_Shot_Gun
+[RSQLS] GUN h0 Shot_Gun: not a weapon set's gun; beam row Shot_Gun placement 14; shot line found (F 69.20 L 9.87 U 1.83, bore active)
+[RSQLS] DOT h0 t805 Shot_Gun from -90.86 813.12 81.17 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t840 Shot_Gun from -90.86 813.12 81.17 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t875 Shot_Gun from -90.86 813.12 81.17 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t910 Shot_Gun from -90.86 813.12 81.17 dir -0.07066 0.86455 -0.49756
+LSP OLD t912 h0 Shot_Gun grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t912 probe h0 Shot_Gun from -90.86 813.17 81.09 to -100.95 936.71 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP OLD t922 h0 Shot_Gun grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t922 probe h0 Shot_Gun from -90.86 813.17 81.09 to -100.95 936.71 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP_GUN_SSG
+[RSQLS] GUN h0 SSG: not a weapon set's gun; beam row SSG placement 19; shot line found (F 40.48 L 8.12 U -2.75, bore active)
+[RSQLS] DOT h0 t945 SSG from -90.26 804.47 85.16 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t980 SSG from -90.26 804.47 85.16 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1015 SSG from -90.26 804.47 85.16 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1050 SSG from -90.26 804.47 85.16 dir -0.07066 0.86455 -0.49756
+LSP OLD t1064 h0 SSG grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t1064 probe h0 SSG from -90.26 804.52 85.07 to -100.92 934.99 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP OLD t1076 h0 SSG grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t1076 probe h0 SSG from -90.26 804.52 85.07 to -100.92 934.99 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP_GUN_Plasma_Gun
+[RSQLS] DOT h0 t1085 SSG from -90.26 804.47 85.16 dir -0.07066 0.86455 -0.49756
+[RSQLS] GUN h0 Plasma_Gun: not a weapon set's gun; beam row Plasma_Gun placement 30; shot line found (F 76.10 L 8.12 U 9.61, bore active)
+[RSQLS] DOT h0 t1120 Plasma_Gun from -90.26 816.60 81.70 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1155 Plasma_Gun from -90.26 816.60 81.70 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1190 Plasma_Gun from -90.26 816.60 81.70 dir -0.07066 0.86455 -0.49756
+LSP OLD t1216 h0 Plasma_Gun grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t1216 probe h0 Plasma_Gun from -90.26 816.65 81.62 to -100.43 941.12 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+[RSQLS] DOT h0 t1225 Plasma_Gun from -90.26 816.60 81.70 dir -0.07066 0.86455 -0.49756
+LSP OLD t1227 h0 Plasma_Gun grip -87.50 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t1227 probe h0 Plasma_Gun from -90.26 816.65 81.62 to -100.43 941.12 9.99 dir -0.07066 0.86455 -0.49756 flags 128
+LSP_DUAL_BrutalPistol
+[RSQLS] GUN h0 BrutalPistol: not a weapon set's gun; beam row BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+[RSQLS] DOT h0 t1260 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1295 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1330 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1365 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1400 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1435 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+LSP OLD t1439 h1 rsq_hands grip -107.90 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t1439 probe h1 rsq_hands from -107.90 794.20 92.83 to -107.90 921.15 10.18 dir 0.00000 0.83803 -0.54562 flags 256
+LSP OLD t1448 h1 rsq_hands grip -107.90 794.20 92.83 dir -0.00000 0.78801 -0.61566
+LSP HS t1448 probe h1 rsq_hands from -107.90 794.20 92.83 to -107.90 921.15 10.18 dir 0.00000 0.83803 -0.54562 flags 256
+[RSQLS] DOT h0 t1470 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1505 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1540 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756
+[RSQLS] DOT h0 t1575 BrutalPistol from -88.25 801.76 90.18 dir -0.07066 0.86455 -0.49756

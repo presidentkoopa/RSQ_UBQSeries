@@ -41,6 +41,7 @@ There is nothing to hold: load it, pick up a gun.
 | Do this | What happens |
 |---|---|
 | Hold a Brutal Doom gun | Beam from its muzzle, dot where it lands |
+| Hold a weapon set's gun (Weapons of Saturn Reloaded, GNRC Reloaded), either hand | The same: beam from its muzzle, dot where its shot lands (the set fires it down Brutal Doom's barrel line, and the laser now knows which line) |
 | Hold any other gun | No beam (it has no measured muzzle), but the dot still shows where you aim |
 | Point the gun down past 55 degrees | The laser goes out until you raise it |
 | Switch guns | The main hand's laser goes out at once, until the new gun is up |
@@ -255,6 +256,12 @@ The laser can be any colour from a picker. In order, each one over the last:
 - **BD22 VR Reloaded 2.0:** Follow Brutal Doom Shots uses its own shot line; its off-hand copies of the pistol,
   revolver, SMG, MP40, rifle, plasma gun, shotguns and railgun get their own beams.
 - **Brutal Doom (brutal22test6) and BD_VoxelPack:** their guns, as BD22 VR holds them, are the measured guns.
+- **The series' weapon sets, Weapons of Saturn Reloaded and GNRC Reloaded** (loaded in BD22 VR Reloaded's place): each
+  set draws its guns with BD22's meshes and fires them down BD22's barrel line under its own names (RSQWS_ / RSQGW_ and
+  their RSQ_Off_ off-hand copies). The laser looks each one up as the BD22 gun its set says it stands for, so its beam
+  and dot are that gun's, both hands. The WoS 1911, a mesh of its own fired from its own muzzle, has a beam of its own,
+  on its shot line. Found by name, no link to either set (owner 2026-11-13: "the dot doesn't match where the guns
+  shoot"; it followed the plain hand line, about 4 degrees right and 3 low of the shots).
 - **QuestZDoom's own laser sight** (M8F's Laser Sight, which QuestZDoom autoloads): RSQ Laser Sight always wins, with no
   conflict. While this pack's laser is on, M8F's is held off (its own setting is remembered); turn this pack's laser off and
   M8F's comes back as you had it. Without M8F's mod nothing happens. (This replaced the Which Laser row, 11-10: with BD22
@@ -301,6 +308,7 @@ The page ends with **Reset All**: every setting on the page and on Test and Debu
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P4.md`) | **L2, QuestZDoom's autoloaded M8F laser: found BROKEN, then fixed.** With BD22 VR loaded, picking M8F's laser gave no M8F dot and a muzzle flash and tracer every frame (BD22 VR turned M8F's per-tic trace into rounds; `design/rigtest_2026-11-10/evidence/P4_L2_which_laser_rsq_m8f_rsq.jpg`, `P4_B_log.txt`); ours on, off and on again worked. Fixed (commit decb7c22, the owner: ours always wins): the Which Laser row is gone, M8F's switch is held off while ours is on and put back when ours is turned off (a log of the switch only, `LS_M8F_quiet_log.txt`; no frames since). **L3, the greyed rows:** with Laser Sight, Show Beam, Show Dot and Dot Glow off, the rows that depend on them dimmed and the others did not (`P4_L3_greyed_rows_off_vs_on.jpg`); Range Units, below the fold, not seen. **L4, Glow Intensity 1 against 3:** the dot's bloom brighter at 3 (`P4_L4_glow_intensity_1_vs_3.jpg`); the wider light neither seen nor logged. **L5, the range readout: found BROKEN** (the value right, 341 u, but nothing drawn: a canvas, black in VR; `P4_L5_range_readout_not_seen.jpg`), then rebuilt as glyphs (row above). **At the Dot at one apparent size with distance** (commit 76dff11b): "341 u" and "11 m" readable by a ceiling dot 10.5 m away at Readout Size 1 (`LS_READOUT_at_the_dot_constant_size.jpg`) |
 | **loads only, not shown** (2026-11-12) | A gun held on its side and aimed keeps its laser through the watch check (owner 14:11: "turn on lasers when holding the gun 'gangsta style' even when two handing the gun") |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_WATCHVOX.md`) | **The watch check puts both hands' lasers out** (owner 11-11 15:05: "watch check causes phantom voxels along the sight"; 15:26: two rods, green and grey, parallel to the laser). The cause was not found, only narrowed to this pack's rods. Not run: the owner asked for code only (11-11 15:07), so neither the bug nor the fix was seen on the rig |
+| **rig only, not headset-confirmed** (2026-11-13, runs `lsset_wos`, `lsset_gnrc`, `lsset_bd`: full.sh's order through `rig/work/full_lsset.sh`, the set or BD22 VR Reloaded 2.0.4i in BD22 VR Reloaded's place, BD_VoxelPack left out with a set; `design/rigtest_2026-11-13/LS_SETS_angles.txt`, `LS_SETS_*_log.txt`) | **The weapon sets' guns.** A probe shot (one hitscan, no spread, through the set's own muzzle code) against the laser's dot line, hand held still: WoS 1911, Beretta, Machine Rifle, MP40, Riotgun, Coachgun, Minigun and GNRC Beretta, Assault Rifle, Riotgun, Double SG, Plasma Rifle, Minigun **0.000 deg** (dot was 9.03 deg off at that pose with the old line); WoS Nova Rifle 0.21 deg (the set zeroes its scoped shot on the scope line); off hand: WoS 1911 0.008, Beretta 0.04, GNRC Beretta 0.05, Assault Rifle 0.001 (one more sample 0.45 against a dot line logged 29 tics earlier, the gun still coming up). Each gun's resolved row in the Debug Log (`[RSQLS] GUN`). The 1911's own beam drawn from its muzzle to the dot (`LS_SETS_wos_1911_beam_t210.jpg`). BD22 VR Reloaded's own pistol, rifle, MP40, shotgun, SSG and plasma gun: same rows as before, 0.000 deg. No script error or warning from this pack in any run. Not run: BD22 VR's own off-hand pistol (the dual key gave no off-hand pistol in that run) |
 | **Headset-confirmed** | Nothing yet |
 | **code only, not shown** | Everything else on this page: the dot and where it sits, its glow and light, surfaces, Dot Only on Enemies, Follow Brutal Doom Shots, Target Lock, Colour on Target, Headshot Reaction and its Gun Bonsai VR levels, the grenade arc and the bent beam, the spread ring, every colour option, Infrared Only, the Main Hand / Off Hand rows, the keys gone (commit ef179dbc), Beam Sparkle's sparks (L6 looked for them at 480 and 1080 px and saw none; the sparks are about 3 cm and nothing logs one: `L9c_sparkle_1080_none_seen.png`), the beam hiding during a reload the gun plays as an animation, Range Units greyed, Glow Intensity widening the light, Off When Aimed Down, Only When Ready, the Quest look's beam, Reset All |
 | **not yet run** | Nothing from the rig test: L1 to L6 and At the Dot in Feet have run (above; L6's sparks were not seen) |
@@ -314,13 +322,21 @@ launcher) were shown on the rig; those logs and frames are not in the repo, so t
 
 - **What the engine allows, and what this uses.** Stock QuestZDoom 17.3: ZScript and data only, no engine changes. The
   beam is a weapon-layer voxel handed to the gun as its caller, so the engine draws it on that gun's controller at
-  frame rate; one voxel rod per gun placement and length (102 placements x 72 lengths), found by sprite frame alone so
+  frame rate; one voxel rod per gun placement and length (102 placements x 72 lengths, and the weapon sets' one, the WoS 1911's), found by sprite frame alone so
   it loads with or without Brutal Doom. The fade is a colour table built at run time: the rod's colours encode the
   distance from the muzzle, so one rod serves every colour and fade length. The dot, glow, ring, arc and readout are
   world actors moved 35 times a second. The readout is billboard glyphs (one actor a character, two layers deep,
   spawned once and moved; the picture set through picnum, drawn AddShaded in the dot's colour), the series' way
   (RSQ Score's wrist digits, the Saber's training-remote panel): QuestZDoom 17.3 draws a canvas texture black or not at
   all in VR, so the first readout, a canvas, was never seen.
+- **The weapon sets.** `tools/gen_sets.py` reads each set's pk3 (its `alias.zs`, `muzzle.zs`, MODELDEF and meshes) and
+  writes `zscript/rsqls/sets.zs`: each set gun -> the BD22 gun it stands for, an off-hand copy -> BD22's off-hand copy,
+  and a gun with a muzzle of its own (the WoS 1911) -> that muzzle. It checks the set's bore and every muzzle row against
+  `bdbore.zs`, and each gun's Ready frame against the BD22 beam placement it will draw (all within 0.1 mm and 0.05
+  degrees; every aliased frame drawn exactly as BD22 VR 2.0.4i draws it). A gun further off than 3 mm or 0.25 degrees
+  gets its own placement: the 1911 (8.3 mm, 1.0 degrees off BrutalPistol's) has one, its beam on its shot line from
+  its muzzle face, 72 rods (sprites LY00-LY02, `VOXELDEF.sets`, 72 sprite frames). Run it again when a set changes;
+  `docs/SETS.txt` is its table.
 - **Measured, not guessed.** `tools/gen_beams.py` reads each gun's MODELDEF and held mesh from the load order's pk3s and
   writes the voxel rods, `VOXELDEF.txt`, `zscript/rsqls/muzzles.zs` and `docs/MUZZLES.txt`; its Ready frames come from
   `tools/readyprobe` (dump in `tools/ready_bd22q.txt`). `tools/gen_halo.py` writes the PC VR halo rods

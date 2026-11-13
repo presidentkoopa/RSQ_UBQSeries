@@ -82,4 +82,4 @@ server float rsqls_spread_a     = 0.6;     // ring brightness
 server int   rsqls_readout      = 0;       // range readout: 0 off, 1 by the gun, 2 at the spot
 server int   rsqls_readout_units = 0;       // 0 metres, 1 feet, 2 map units
 server float rsqls_readout_size = 1.0;
-user bool   rsqls_debug        = false; // log what the arc learner sees (testing)
+user bool   rsqls_debug        = false; // log what the arc learner sees, and each hand's gun as resolved (BD22 or a weapon set's) with the dot's line every second (testing)

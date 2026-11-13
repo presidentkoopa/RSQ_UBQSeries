@@ -145,6 +145,8 @@ The engine indexes sprite frames with 16 bits: the whole load order must stay un
 sfcount3); LaserSight's PC VR halo removed: 64,228, headroom 1,307. Count any new baked asset first (the gdb read in
 the rig: rig/work/fullgdb3.sh, /tmp/sprites.bin, numframes at byte 8, the 16-bit start at byte 10). Big users: GunCards
 19.5k, brutal22test6 13.1k, Saber 10.7k, LaserSight 7.3k, RSQ Monsters 5.7k, XMVE 5.3k.
+- 2026-11-13: LaserSight +72 (the WoS 1911's own beam rods, LY00-LY02: 26 + 26 + 20 frames, for the weapon sets):
+  headroom 1,307 -> 1,235 by count (not re-read with the gdb probe).
 - Owner 2026-11-12 19:44: "once i bake the small card on each model we can cut those sliders completely": the small
   card's baked positions (GunCards' Q0..QE families, the 13 depths) go then, freeing most of GunCards' frames.
 - Owner 2026-11-13 02:10: "we will ditch quest and do pcvr only, i will bake wrist cards on both hands and small cards

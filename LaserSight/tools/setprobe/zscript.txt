@@ -1,0 +1,52 @@
+version "4.12"
+// TEST ONLY (never ships). The laser's dot against the shot that actually leaves the gun, for any gun in either hand.
+//   netevent lsp_shot / lsp_shotoff: the player fires ONE hitscan (no spread, damage 1, BulletPuff) from the main / off
+//   hand, the way a gun's A_FireBullets does (LineAttack at the pawn's own angles, so the engine maps it through the
+//   controller; LAF_ISOFFHAND for the off hand). Whatever the loaded weapon set or BD22 VR does to a hitscan (re-fire it
+//   from the gun's muzzle down its bore) happens to this one too. WorldHitscanFired logs where it really started and
+//   landed: LSP HS ... probe. Real gun shots are logged too (LSP HS ... gun).
+//   LSP OLD: the line the laser's dot used for an unmeasured gun before 2026-11-13 (the grip, down the plain hand line:
+//   RSQLS_Hand.Grip / Dir), at the same tic.
+//   The laser's own line comes from its Debug Log (rsqls_debug 1): [RSQLS] DOT.
+class RSLSSet_Probe : EventHandler
+{
+	bool armed;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Player < 0 || !playeringame[e.Player]) return;
+		let p = players[e.Player];
+		let mo = PlayerPawn(p.mo);
+		if (!mo) return;
+		if (e.Name ~== "lsp_shot" || e.Name ~== "lsp_shotoff")
+		{
+			int h = (e.Name ~== "lsp_shot") ? 0 : 1;
+			Weapon w = h == 0 ? p.ReadyWeapon : p.OffhandWeapon;
+			Vector3 og = RSQLS_Hand.Grip(mo, h), od = RSQLS_Hand.Dir(mo, h);
+			Console.Printf("LSP OLD t%d h%d %s grip %.2f %.2f %.2f dir %.5f %.5f %.5f", level.maptime, h, w ? w.GetClassName() : 'none',
+				og.x, og.y, og.z, od.x, od.y, od.z);
+			armed = true;
+			mo.LineAttack(mo.angle, 8192, mo.pitch, 1, 'None', 'BulletPuff', h == 1 ? LAF_ISOFFHAND : 0);
+			armed = false;
+		}
+		else if (e.Name ~== "lsp_kill")
+		{
+			let it = ThinkerIterator.Create("Actor");
+			Actor a;
+			int n = 0;
+			while (a = Actor(it.Next())) if (a.bISMONSTER && !a.player) { a.Destroy(); n++; }
+			Console.Printf("LSP KILL %d", n);
+		}
+	}
+	override void WorldHitscanFired(WorldEvent e)
+	{
+		if (!e.Thing || !e.Thing.player) return;
+		Vector3 d = e.DamagePosition - e.AttackPos;
+		double l = d.Length();
+		if (l > 0) d /= l;
+		let p = e.Thing.player;
+		Console.Printf("LSP HS t%d %s h%d %s from %.2f %.2f %.2f to %.2f %.2f %.2f dir %.5f %.5f %.5f flags %d", level.maptime, armed ? "probe" : "gun",
+			(e.AttackLineFlags & LAF_ISOFFHAND) ? 1 : 0,
+			(e.AttackLineFlags & LAF_ISOFFHAND) ? (p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none') : (p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none'),
+			e.AttackPos.x, e.AttackPos.y, e.AttackPos.z, e.DamagePosition.x, e.DamagePosition.y, e.DamagePosition.z, d.x, d.y, d.z, e.AttackLineFlags);
+	}
+}

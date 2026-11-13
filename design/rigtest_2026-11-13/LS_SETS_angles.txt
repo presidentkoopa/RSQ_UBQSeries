@@ -1,0 +1,101 @@
+=== lsset_wos
+  [RSQLS] GUN h0 Rifle: not a weapon set's gun; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+  [RSQLS] GUN h0 RSQWS_1911: set RSQ_WeaponsOfSaturn_0.1.0 as BrutalPistol / BrutalPistol; beam row RSQWS_1911 placement 102; shot line found (F 23.79 L 2.95 U 5.50, bore active)
+  [RSQLS] GUN h0 RSQWS_Beretta: set RSQ_WeaponsOfSaturn_0.1.0 as BrutalPistol / BrutalPistol; beam row BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+  [RSQLS] GUN h0 RSQWS_MachineRifle: set RSQ_WeaponsOfSaturn_0.1.0 as Rifle / Rifle; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+  [RSQLS] GUN h0 RSQWS_MP40: set RSQ_WeaponsOfSaturn_0.1.0 as MP40 / MP40; beam row MP40 placement 40; shot line found (F 66.36 L 6.54 U 11.39, bore active)
+  [RSQLS] GUN h0 RSQWS_Riotgun: set RSQ_WeaponsOfSaturn_0.1.0 as Shot_Gun / Shot_Gun; beam row Shot_Gun placement 14; shot line found (F 69.20 L 9.87 U 1.83, bore active)
+  [RSQLS] GUN h0 RSQWS_Coachgun: set RSQ_WeaponsOfSaturn_0.1.0 as SSG / SSG; beam row SSG placement 20; shot line found (F 40.48 L 8.12 U -2.75, bore active)
+  [RSQLS] GUN h0 RSQWS_NovaRifle: set RSQ_WeaponsOfSaturn_0.1.0 as Railgun / Railgun; beam row Railgun placement 57; shot line found (F 116.02 L 10.31 U 12.14, bore active)
+  [RSQLS] GUN h0 RSQWS_Minigun: set RSQ_WeaponsOfSaturn_0.1.0 as Minigun / Minigun; beam row Minigun placement 27; shot line found (F 100.86 L 11.49 U 2.74, bore active)
+  [RSQLS] GUN h0 RSQWS_1911: set RSQ_WeaponsOfSaturn_0.1.0 as BrutalPistol / BrutalPistol; beam row RSQWS_1911 placement 102; shot line found (F 23.79 L 2.95 U 5.50, bore active)
+  [RSQLS] GUN h1 RSQ_Off_RSQWS_1911: set RSQ_WeaponsOfSaturn_0.1.0 as BrutalPistol / RSQ_Off_BrutalPistol; beam row RSQ_Off_RSQWS_1911 placement 102; shot line found (F 23.79 L 2.95 U 5.50, bore active)
+  [RSQLS] GUN h0 RSQWS_Beretta: set RSQ_WeaponsOfSaturn_0.1.0 as BrutalPistol / BrutalPistol; beam row BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+  [RSQLS] GUN h1 RSQ_Off_RSQWS_Beretta: set RSQ_WeaponsOfSaturn_0.1.0 as BrutalPistol / RSQ_Off_BrutalPistol; beam row RSQ_Off_BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+  gun                      h kind      t     after   before  shot start / hit off the dot line (map units), DOT age (tics)
+  RSQWS_1911               0 probe   192    0.000d   9.032d  start 0.04  hit 0.05  age 17
+  RSQWS_1911               0 probe   203    0.000d   9.032d  start 0.04  hit 0.05  age 28
+  RSQWS_Beretta            0 probe   433    0.000d   9.032d  start 0.05  hit 0.05  age 13
+  RSQWS_Beretta            0 probe   443    0.000d   9.032d  start 0.05  hit 0.05  age 23
+  RSQWS_MachineRifle       0 probe   673    0.000d   9.032d  start 0.05  hit 0.05  age 8
+  RSQWS_MachineRifle       0 probe   683    0.000d   9.032d  start 0.05  hit 0.05  age 18
+  RSQWS_MP40               0 probe   913    0.000d   9.032d  start 0.04  hit 0.05  age 3
+  RSQWS_MP40               0 probe   922    0.000d   9.032d  start 0.04  hit 0.05  age 12
+  RSQWS_Riotgun            0 probe  1155    0.000d   9.032d  start 0.04  hit 0.05  age 35
+  RSQWS_Riotgun            0 probe  1163    0.000d   9.032d  start 0.04  hit 0.05  age 8
+  RSQWS_Coachgun           0 probe  1304    0.000d   9.032d  start 0.05  hit 0.05  age 9
+  RSQWS_Coachgun           0 probe  1315    0.000d   9.032d  start 0.05  hit 0.05  age 20
+  RSQWS_NovaRifle          0 probe  1458    0.208d   9.191d  start 0.05  hit 0.43  age 23
+  RSQWS_NovaRifle          0 probe  1468    0.208d   9.191d  start 0.05  hit 0.43  age 33
+  RSQWS_Minigun            0 probe  1609    0.000d   9.032d  start 0.04  hit 0.05  age 34
+  RSQWS_Minigun            0 probe  1618    0.000d   9.032d  start 0.04  hit 0.05  age 8
+  RSQ_Off_RSQWS_1911       1 probe  1831    0.008d   9.032d  start 0.00  hit 0.02  age 11
+  RSQ_Off_RSQWS_1911       1 probe  1840    0.008d   9.032d  start 0.00  hit 0.02  age 20
+  RSQ_Off_RSQWS_Beretta    1 probe  2188    0.037d   9.032d  start 0.01  hit 0.11  age 18
+  RSQ_Off_RSQWS_Beretta    1 probe  2199    0.037d   9.032d  start 0.01  hit 0.11  age 29
+  RSQWS_1911               0 real  n=4: mean shot direction 1.012 deg off the dot line; single shots 0.41..2.73 deg (gun spread)
+  RSQWS_Beretta            0 real  n=3: mean shot direction 0.227 deg off the dot line; single shots 0.20..1.35 deg (gun spread)
+  RSQWS_MachineRifle       0 real  n=5: mean shot direction 0.524 deg off the dot line; single shots 0.52..2.28 deg (gun spread)
+  RSQWS_MP40               0 real  n=5: mean shot direction 0.473 deg off the dot line; single shots 0.51..2.75 deg (gun spread)
+  RSQ_Off_RSQWS_1911       1 real  n=3: mean shot direction 1.270 deg off the dot line; single shots 0.23..2.97 deg (gun spread)
+  RSQ_Off_RSQWS_Beretta    1 real  n=1: mean shot direction 1.828 deg off the dot line; single shots 1.83..1.83 deg (gun spread)
+=== lsset_gnrc
+  [RSQLS] GUN h0 Rifle: not a weapon set's gun; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+  [RSQLS] GUN h0 RSQGW_Beretta: set GNRC_Reloaded_0.1.0 as BrutalPistol / BrutalPistol; beam row BrutalPistol placement 8; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+  [RSQLS] GUN h0 RSQGW_ARifle: set GNRC_Reloaded_0.1.0 as Rifle / Rifle; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+  [RSQLS] GUN h0 RSQGW_Riotgun: set GNRC_Reloaded_0.1.0 as Shot_Gun / Shot_Gun; beam row Shot_Gun placement 14; shot line found (F 69.20 L 9.87 U 1.83, bore active)
+  [RSQLS] GUN h0 RSQGW_DoubleSG: set GNRC_Reloaded_0.1.0 as SSG / SSG; beam row SSG placement 20; shot line found (F 40.48 L 8.12 U -2.75, bore active)
+  [RSQLS] GUN h0 RSQGW_PlasRifle: set GNRC_Reloaded_0.1.0 as Plasma_Gun / Plasma_Gun; beam row Plasma_Gun placement 30; shot line found (F 76.10 L 8.12 U 9.61, bore active)
+  [RSQLS] GUN h0 RSQGW_Minigun: set GNRC_Reloaded_0.1.0 as Minigun / Minigun; beam row Minigun placement 27; shot line found (F 100.86 L 11.49 U 2.74, bore active)
+  [RSQLS] GUN h0 RSQGW_Beretta: set GNRC_Reloaded_0.1.0 as BrutalPistol / BrutalPistol; beam row BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+  [RSQLS] GUN h1 RSQ_Off_RSQGW_Beretta: set GNRC_Reloaded_0.1.0 as BrutalPistol / RSQ_Off_BrutalPistol; beam row RSQ_Off_BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+  [RSQLS] GUN h0 RSQGW_ARifle: set GNRC_Reloaded_0.1.0 as Rifle / Rifle; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+  [RSQLS] GUN h1 RSQ_Off_RSQGW_ARifle: set GNRC_Reloaded_0.1.0 as Rifle / RSQ_Off_Rifle; beam row RSQ_Off_Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+  gun                      h kind      t     after   before  shot start / hit off the dot line (map units), DOT age (tics)
+  RSQGW_Beretta            0 probe   194    0.000d   9.032d  start 0.05  hit 0.05  age 19
+  RSQGW_Beretta            0 probe   202    0.000d   9.032d  start 0.05  hit 0.05  age 27
+  RSQGW_ARifle             0 probe   433    0.000d   9.032d  start 0.05  hit 0.05  age 13
+  RSQGW_ARifle             0 probe   444    0.000d   9.032d  start 0.05  hit 0.05  age 24
+  RSQGW_Riotgun            0 probe   673    0.000d   9.032d  start 0.04  hit 0.05  age 8
+  RSQGW_Riotgun            0 probe   684    0.000d   9.032d  start 0.04  hit 0.05  age 19
+  RSQGW_DoubleSG           0 probe   825    0.000d   9.032d  start 0.05  hit 0.05  age 20
+  RSQGW_DoubleSG           0 probe   834    0.000d   9.032d  start 0.05  hit 0.05  age 29
+  RSQGW_PlasRifle          0 probe   978    0.000d   9.032d  start 0.04  hit 0.04  age 33
+  RSQGW_PlasRifle          0 probe   988    0.000d   9.032d  start 0.04  hit 0.04  age 8
+  RSQGW_Minigun            0 probe  1128    0.000d   9.032d  start 0.04  hit 0.05  age 8
+  RSQGW_Minigun            0 probe  1140    0.000d   9.032d  start 0.04  hit 0.05  age 20
+  RSQ_Off_RSQGW_Beretta    1 probe  1350    0.051d   9.032d  start 0.01  hit 0.15  age 20
+  RSQ_Off_RSQGW_Beretta    1 probe  1362    0.051d   9.032d  start 0.01  hit 0.15  age 32
+  RSQ_Off_RSQGW_ARifle     1 probe  1709    0.449d   9.032d  start 0.18  hit 1.33  age 29
+  RSQ_Off_RSQGW_ARifle     1 probe  1718    0.001d   9.032d  start 0.00  hit 0.01  age 3
+  RSQGW_Beretta            0 real  n=4: mean shot direction 0.461 deg off the dot line; single shots 0.47..1.53 deg (gun spread)
+  RSQGW_ARifle             0 real  n=1: mean shot direction 0.840 deg off the dot line; single shots 0.84..0.84 deg (gun spread)
+  RSQ_Off_RSQGW_Beretta    1 real  n=2: mean shot direction 1.242 deg off the dot line; single shots 0.81..1.94 deg (gun spread)
+  RSQ_Off_RSQGW_ARifle     1 real  n=2: mean shot direction 0.204 deg off the dot line; single shots 0.64..1.02 deg (gun spread)
+=== lsset_bd
+  [RSQLS] GUN h0 Rifle: not a weapon set's gun; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+  [RSQLS] GUN h0 BrutalPistol: not a weapon set's gun; beam row BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+  [RSQLS] GUN h0 Rifle: not a weapon set's gun; beam row Rifle placement 0; shot line found (F 71.18 L 6.06 U 11.42, bore active)
+  [RSQLS] GUN h0 MP40: not a weapon set's gun; beam row MP40 placement 40; shot line found (F 66.36 L 6.54 U 11.39, bore active)
+  [RSQLS] GUN h0 Shot_Gun: not a weapon set's gun; beam row Shot_Gun placement 14; shot line found (F 69.20 L 9.87 U 1.83, bore active)
+  [RSQLS] GUN h0 SSG: not a weapon set's gun; beam row SSG placement 19; shot line found (F 40.48 L 8.12 U -2.75, bore active)
+  [RSQLS] GUN h0 Plasma_Gun: not a weapon set's gun; beam row Plasma_Gun placement 30; shot line found (F 76.10 L 8.12 U 9.61, bore active)
+  [RSQLS] GUN h0 BrutalPistol: not a weapon set's gun; beam row BrutalPistol placement 7; shot line found (F 23.30 L 2.20 U 6.30, bore active)
+  gun                      h kind      t     after   before  shot start / hit off the dot line (map units), DOT age (tics)
+  BrutalPistol             0 probe   195    0.000d   9.032d  start 0.05  hit 0.05  age 20
+  BrutalPistol             0 probe   204    0.000d   9.032d  start 0.05  hit 0.05  age 29
+  Rifle                    0 probe   434    0.000d   9.032d  start 0.05  hit 0.05  age 14
+  Rifle                    0 probe   442    0.000d   9.032d  start 0.05  hit 0.05  age 22
+  MP40                     0 probe   672    0.000d   9.032d  start 0.04  hit 0.05  age 7
+  MP40                     0 probe   685    0.000d   9.032d  start 0.04  hit 0.05  age 20
+  Shot_Gun                 0 probe   912    0.000d   9.032d  start 0.04  hit 0.05  age 2
+  Shot_Gun                 0 probe   922    0.000d   9.032d  start 0.04  hit 0.05  age 12
+  SSG                      0 probe  1064    0.000d   9.032d  start 0.05  hit 0.05  age 14
+  SSG                      0 probe  1076    0.000d   9.032d  start 0.05  hit 0.05  age 26
+  Plasma_Gun               0 probe  1216    0.000d   9.032d  start 0.04  hit 0.04  age 26
+  Plasma_Gun               0 probe  1227    0.000d   9.032d  start 0.04  hit 0.04  age 2
+  rsq_hands                1 probe  1439  no DOT line logged for this gun and hand
+  rsq_hands                1 probe  1448  no DOT line logged for this gun and hand
+  BrutalPistol             0 real  n=1: mean shot direction 0.654 deg off the dot line; single shots 0.65..0.65 deg (gun spread)
+  Rifle                    0 real  n=4: mean shot direction 0.398 deg off the dot line; single shots 0.42..0.79 deg (gun spread)
+  MP40                     0 real  n=3: mean shot direction 0.510 deg off the dot line; single shots 0.41..2.39 deg (gun spread)

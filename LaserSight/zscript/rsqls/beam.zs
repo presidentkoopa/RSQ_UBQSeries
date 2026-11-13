@@ -54,6 +54,9 @@ class RSQLS_Beams : StaticEventHandler
 	private Array<int> rkeys;        // sprite index * 64 + frame, ready-pose frames, per class
 	private Array<int> sprIdx;       // the rods' sprite indices
 	private Array<int> haloIdx;      // the halo rods' sprite indices (Laser: PC VR)
+	private Array<int> setIdx;       // the weapon sets' own rods' sprite indices (sets.zs)
+	private Array<String> fKey;      // Find's answers by class name (a set gun resolved through RSQLS_Sets)
+	private Array<int> fVal;
 	private State beamState;
 
 	// Translation cache: (colour, fade cm, brightness step) -> id
@@ -87,6 +90,27 @@ class RSQLS_Beams : StaticEventHandler
 			}
 			ccount.Push(rkeys.Size() - cfirst[i]);
 		}
+		// THE WEAPON SETS' OWN ROWS (sets.zs, tools/gen_sets.py: a set gun whose drawn muzzle is off every BD22
+		// placement, the WoS 1911): appended as rows of their own, their placements numbered after muzzles.zs's
+		int np = RSQLS_Muzzles.PLACE.Size() / 10;
+		for (int i = 0; i + 3 < RSQLS_Sets.CLASSES.Size(); i += 4)
+		{
+			if (RSQLS_Sets.CLASSES[i] == "") continue;
+			cname.Push(RSQLS_Sets.CLASSES[i]);
+			cplace.Push(np + RSQLS_Sets.CLASSES[i + 1].ToInt());
+			cmirror.Push(RSQLS_Sets.CLASSES[i + 2].ToInt());
+			cfirst.Push(rkeys.Size());
+			Array<String> codes;
+			RSQLS_Sets.CLASSES[i + 3].Split(codes, " ", TOK_SKIPEMPTY);
+			for (int k = 0; k < codes.Size(); k++)
+			{
+				int si = Actor.GetSpriteIndex(codes[k].Left(4));
+				if (si >= 0) rkeys.Push(si * 64 + codes[k].Mid(4).ToInt());
+			}
+			ccount.Push(rkeys.Size() - cfirst[cfirst.Size() - 1]);
+		}
+		for (int i = 0; i < RSQLS_Sets.SPRITES.Size(); i++)
+			setIdx.Push(Actor.GetSpriteIndex(RSQLS_Sets.SPRITES[i]));
 		for (int i = 0; i < RSQLS_Muzzles.SPRITES.Size(); i++)
 			sprIdx.Push(Actor.GetSpriteIndex(RSQLS_Muzzles.SPRITES[i]));
 		for (int i = 0; i < RSQLS_HaloSprites.SPRITES.Size(); i++)
@@ -103,13 +127,32 @@ class RSQLS_Beams : StaticEventHandler
 	}
 
 	// The measured class's first row, or -1: no measurement, no beam.
+	// A WEAPON SET'S GUN (owner 2026-11-13 01:42: "the weapon set guns don't use those names, so the dot follows the plain
+	// hand line"): its own rows when it has them (sets.zs CLASSES: the WoS 1911), else the rows of the BD22 class its set
+	// draws it as (RSQLS_Sets.BeamOf: alias.zs's Exact, so an off-hand copy gets BD22's off-hand copy's rows). Checked by
+	// tools/gen_sets.py: each such gun's Ready frame is drawn within REUSE_MM / REUSE_DEG of that row's placement. A class
+	// name matched exactly first, so Brutal Doom's own guns resolve as they always have.
 	int Find(Weapon w)
 	{
 		if (!w) return -1;
 		String n = w.GetClassName();
+		for (int i = 0; i < fKey.Size(); i++) if (fKey[i] == n) return fVal[i];
+		int r = Row(n);
+		if (r < 0)
+		{
+			String b = RSQLS_Sets.BeamOf(n);
+			if (b != "") r = Row(b);
+		}
+		fKey.Push(n); fVal.Push(r);
+		return r;
+	}
+	private int Row(String n)
+	{
 		for (int i = 0; i < cname.Size(); i++) if (cname[i] ~== n) return i;
 		return -1;
 	}
+	// the class whose rows a row belongs to (debug)
+	String RowClass(int ci) { return (ci >= 0 && ci < cname.Size()) ? cname[ci] : "none"; }
 
 	int Place(int ci) { return cplace[ci]; }
 
@@ -127,11 +170,17 @@ class RSQLS_Beams : StaticEventHandler
 		return -1;
 	}
 
-	// Placement numbers (tools/gen_beams.py): turning point, muzzle from it, barrel, layer y.
-	static Vector3 Offset(int pi) { int b = pi * 10; return (RSQLS_Muzzles.PLACE[b], RSQLS_Muzzles.PLACE[b + 1], RSQLS_Muzzles.PLACE[b + 2]); }
-	static Vector3 Muzzle(int pi) { int b = pi * 10 + 3; return (RSQLS_Muzzles.PLACE[b], RSQLS_Muzzles.PLACE[b + 1], RSQLS_Muzzles.PLACE[b + 2]); }
-	static Vector3 Barrel(int pi) { int b = pi * 10 + 6; return (RSQLS_Muzzles.PLACE[b], RSQLS_Muzzles.PLACE[b + 1], RSQLS_Muzzles.PLACE[b + 2]); }
-	static double LayerY(int pi) { return RSQLS_Muzzles.PLACE[pi * 10 + 9]; }
+	// Placement numbers (tools/gen_beams.py): turning point, muzzle from it, barrel, layer y. Past muzzles.zs's own: the
+	// weapon sets' own placements (sets.zs, tools/gen_sets.py).
+	static double P(int pi, int j)
+	{
+		int np = RSQLS_Muzzles.PLACE.Size() / 10;
+		return (pi < np) ? RSQLS_Muzzles.PLACE[pi * 10 + j] : RSQLS_Sets.PLACE[(pi - np) * 10 + j];
+	}
+	static Vector3 Offset(int pi) { return (P(pi, 0), P(pi, 1), P(pi, 2)); }
+	static Vector3 Muzzle(int pi) { return (P(pi, 3), P(pi, 4), P(pi, 5)); }
+	static Vector3 Barrel(int pi) { return (P(pi, 6), P(pi, 7), P(pi, 8)); }
+	static double LayerY(int pi) { return P(pi, 9); }
 
 	// The fade: colour rgb, brightness a (0..1, stepped), gone by fadeCm from the muzzle.
 	TranslationID Tint(int rgb, double a, double fadeCm)
@@ -201,8 +250,15 @@ class RSQLS_Beams : StaticEventHandler
 			psp.firstTic = true;
 		}
 		int pi = cplace[ci];
+		int np = RSQLS_Muzzles.PLACE.Size() / 10;
 		int g = pi * RSQLS_Muzzles.NLEN + k;
-		int si = halo ? ((g / 26 < haloIdx.Size()) ? haloIdx[g / 26] : -1) : sprIdx[g / 26];
+		int si;
+		if (pi >= np)
+		{	// a weapon set's own rods (LY..): numbered from their own first sprite; no halo was ever made for them
+			int gs = (pi - np) * RSQLS_Muzzles.NLEN + k;
+			si = (!halo && gs / 26 < setIdx.Size()) ? setIdx[gs / 26] : -1;
+		}
+		else si = halo ? ((g / 26 < haloIdx.Size()) ? haloIdx[g / 26] : -1) : sprIdx[g / 26];
 		if (si < 0) { if (halo) p.SetPsprite(id, null); return; }
 		psp.Sprite = si;
 		psp.Frame = g % 26;

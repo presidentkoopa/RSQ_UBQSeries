@@ -47,7 +47,7 @@ echo "built pk3/RSQ_Saber.pk3"
 cd "$HUB/LaserSight"
 rm -f "$OUT/RSQ_LaserSight.pk3"
 zip -q -r -X "$OUT/RSQ_LaserSight.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCONF.txt MENUDEF.txt MODELDEF.txt CREDITS.txt README.md \
-	VOXELDEF.txt VOXELDEF.halo ANIMDEFS.txt zscript sprites models/rsqls
+	VOXELDEF.txt VOXELDEF.halo VOXELDEF.sets ANIMDEFS.txt zscript sprites graphics models/rsqls
 echo "built pk3/RSQ_LaserSight.pk3"
 
 # Grapple: its explicit include list (jp_original/ is source material and does not ship).

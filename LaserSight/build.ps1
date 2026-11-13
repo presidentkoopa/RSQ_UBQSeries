@@ -17,7 +17,7 @@ $out  = Join-Path $root 'RSQ_LaserSight.pk3'
 # docs/ and tools/ stay out: docs is prose, and the generators in tools/ WRITE lumps, they are not lumps.
 # models/rsqls (the arc segment and its skins) and graphics/rsqls (the range readout's glyphs) are packed.
 $required = @('zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt')
-$optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'VOXELDEF.txt', 'SNDINFO.txt', 'MASSDEF.txt', 'VOXELDEF.halo')
+$optional = @('TRNSLATE.txt', 'KEYCONF.txt', 'MENUDEF.txt', 'MODELDEF.txt', 'VOXELDEF.txt', 'SNDINFO.txt', 'MASSDEF.txt', 'VOXELDEF.halo', 'VOXELDEF.sets')
 $dirs     = @('zscript', 'graphics', 'sprites', 'sounds', 'models/rsqls')
 
 $files = @()

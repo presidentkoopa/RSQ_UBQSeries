@@ -3,6 +3,9 @@
 
     python3 tools/gen_bdbore.py <BD22_VR-Reloaded pk3>
 
+The weapon sets (WoS / GNRC Reloaded) fire their guns from the same table under BD22's names: Muzzle() asks
+RSQLS_Sets (sets.zs, tools/gen_sets.py) for a set gun's own muzzle row and its BD22 name first.
+
 BD22 VR Reloaded 2.0 (fix-accuracy) re-fires every shot of a gun with a bore from that gun's muzzle (RSQ_Muzzle.Muzzle,
 F L U cm in the controller's frame) down its bore (RSQ_Muzzle.Bore, one unit vector for every ported gun), so the shot
 leaves 3.85 deg left and 3.36 deg up of the controller's forward, along the drawn barrel. The laser's dot has to follow
@@ -85,16 +88,25 @@ def main():
            '\tconst BORE_YAW = %.4f;' % yaw, '\tconst BORE_PITCH = %.4f;' % pitch, '',
            '\t// (found, F, L, U): the checks in Brutal Doom\'s own order',
            '\tstatic bool, double, double, double Muzzle(Weapon w)', '\t{', '\t\tif (!w) return false, 0, 0, 0;',
-           '\t\tName n = w.GetClassName();']
+           '\t\t// A WEAPON SET\'S GUN (sets.zs, tools/gen_sets.py: WoS Reloaded, GNRC Reloaded) is fired by the set\'s own copy of',
+           '\t\t// this table under the BD22 name its RSQ_Alias gives it -- or, for a gun with a muzzle of its own (the WoS 1911),',
+           '\t\t// from that muzzle. Any other gun: a = \'None\', n = its class name, and the checks are Brutal Doom\'s own.',
+           '\t\tbool own; double mf, ml, mu;',
+           '\t\t[own, mf, ml, mu] = RSQLS_Sets.OwnMuzzle(w);',
+           '\t\tif (own) return true, mf, ml, mu;',
+           '\t\tName a = RSQLS_Sets.BD(w);',
+           '\t\tName n = RSQLS_Sets.Exact(w);']
     for c in no_bore:
-        out.append("\t\tif (KindOf(w, '%s')) return false, 0, 0, 0;   // no bore: aimed its own way" % c)
+        out.append("\t\tif (KindOf(w, a, '%s')) return false, 0, 0, 0;   // no bore: aimed its own way" % c)
     for full, exact, iscls, f, l, u in rows:
         if exact:
             out.append("\t\tif (n == '%s') return true, %s, %s, %s;" % (exact, f, l, u))
         else:
-            out.append("\t\tif (KindOf(w, '%s')) return true, %s, %s, %s;" % (iscls, f, l, u))
+            out.append("\t\tif (KindOf(w, a, '%s')) return true, %s, %s, %s;" % (iscls, f, l, u))
     out += ['\t\treturn false, 0, 0, 0;', '\t}', '',
-            '\t// `w is X` by name: X may not exist without Brutal Doom loaded', '\tstatic bool KindOf(Weapon w, String c)', '\t{',
+            '\t// `w is X` by name: X may not exist without Brutal Doom loaded. A weapon set\'s gun (a: its BD22 name) is X',
+            '\t// when its set says it stands for X.', '\tstatic bool KindOf(Weapon w, Name a, String c)', '\t{',
+            '\t\tif (a != \'None\') return a == Name(c);',
             '\t\tclass<Actor> k = c;', '\t\treturn k && (w is k);', '\t}', '', TAIL, '}', '']
     open(os.path.join(ROOT, 'zscript', 'rsqls', 'bdbore.zs'), 'w').write('\n'.join(out))
     print('%d guns, bore yaw %.3f pitch %.3f, no bore: %s' % (len(rows), yaw, pitch, no_bore))
