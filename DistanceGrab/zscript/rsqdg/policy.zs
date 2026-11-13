@@ -540,8 +540,11 @@ class RSQDG_GrabRuleService : Service play
 		// has switched weapons off, a registered weapon must not slip through
 		// on a rule that names no category. Inferred from what it IS.
 		Class<Actor> wcls = 'Weapon';
-		Class<Actor> eb = 'ExplosiveBarrel';
-		Class<Actor> bb = 'BurningBarrel';
+		// by name at run time: a game without Doom's barrels (Selaco) has no such classes, and a class written
+		// here as a constant would stop the whole mod compiling there (2026-11-13, Selaco VR)
+		String ebn = "ExplosiveBarrel", bbn = "BurningBarrel";
+		Class<Actor> eb = ebn;
+		Class<Actor> bb = bbn;
 		r.category = RSQDG_Policy.StandsFor(c, wcls) ? 'Weapons'
 		           : (RSQDG_Policy.StandsFor(c, eb) || RSQDG_Policy.StandsFor(c, bb)) ? 'Barrels'
 		           : 'None';
