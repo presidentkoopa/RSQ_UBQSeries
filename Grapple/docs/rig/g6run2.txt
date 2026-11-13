@@ -1,0 +1,2075 @@
+adding /home/claude/rsq_ubqseries/pk3/RSQ_SlowMo.pk3, 748 lumps
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+G2P epoch 1794561017 27070
+G2P clk 0 27104
+G2P epoch 1794561018 27782
+G2P clk 1 27799
+G2P clk 2 27818
+G2P clk 3 27825
+G2P clk 4 27831
+G2P clk 5 27837
+G2P clk 6 27844
+G2P clk 7 27850
+G2P clk 8 27856
+G2P clk 9 27862
+G2P clk 10 27868
+G2P clk 11 27874
+G2P clk 12 27880
+G2P clk 13 27886
+G2P clk 14 27892
+G2P clk 15 27899
+G2P clk 16 27905
+G2P clk 17 27911
+G2P clk 18 28015
+G2P clk 19 28023
+G2P clk 20 28031
+G2P clk 21 28038
+G2P clk 22 28045
+G2P clk 23 28052
+G2P clk 24 28059
+G2P clk 25 28066
+G2P clk 26 28103
+G2P clk 27 28110
+G2P clk 28 28117
+G2P clk 29 28150
+G2P clk 30 28156
+G2P clk 31 28187
+G2P clk 32 28226
+G2P clk 33 28235
+G2P clk 34 28271
+G2P clk 35 28302
+G2P clk 36 28336
+G2P clk 37 28343
+G2P clk 38 28382
+G2P clk 39 28421
+G2P clk 40 28429
+G2P clk 41 28460
+G2P clk 42 28493
+G2P clk 43 28535
+G2P clk 44 28574
+G2P epoch 1794561019 28575
+G2P clk 45 28582
+G2P clk 46 28614
+G2P clk 47 28647
+G2P clk 48 28678
+G2P clk 49 28686
+G2P clk 50 28719
+G2P clk 51 28749
+G2P clk 52 28782
+G2P clk 53 28817
+G2P clk 54 28850
+G2P clk 55 28857
+G2P clk 56 28886
+G2P clk 57 28913
+G2P clk 58 28944
+G2P clk 59 28973
+G2P clk 60 29008
+G2P clk 61 29047
+G2P clk 62 29090
+G2P clk 63 29099
+G2P clk 64 29133
+G2P clk 65 29141
+G2P clk 66 29171
+G2P clk 67 29201
+G2P clk 68 29231
+G6_A_DIZZY_SNAP
+G2P clk 69 7315
+G2P t70 teleport to (-400 -300 0) angle 0
+G2P t70 spawn tag 11 BaronOfHell -> RS_CommonBaron at (0 -300 -0) mass 1000 boss 0 hp 1000 radius 24 height 64
+G2P t70 spawn tag 12 Cyberdemon -> RS_CommonCybie at (-500 200 -0) mass 1000 boss 1 hp 4000 radius 40 height 110
+G2P clk 70 7331
+G2P clk 71 7362
+G2P clk 72 7392
+G2P epoch 1794561020 7419
+G2P clk 73 7421
+G2P clk 74 7450
+G2P clk 75 7477
+G2P clk 76 7503
+G2P clk 77 7531
+G2P clk 78 7567
+G2P clk 79 7595
+G2P armed 0: jump on event 1 #1 +3 tics
+G2P armed 1: fire on event 2 #1 +4 tics -> tag 12 offset 6.0
+T_G2 t80 p0 FIRE claw #1 from (-390 -292 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780
+T_G2 t80 p0 claw #1 tic 1 at (-350.0 -291.5 37.0), flown 40.0: flying
+G2P clk 80 7616
+G2P t80 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t80 p0 claw #1 chain: 15 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561021 7644
+T_G2 t81 p0 claw #1 tic 2 at (-310.0 -291.5 37.0), flown 80.0: flying
+G2P clk 81 7646
+G2P t81 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t81 p0 claw #1 chain: 39 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t82 p0 claw #1 tic 3 at (-270.0 -291.5 37.0), flown 120.0: flying
+G2P clk 82 7675
+G2P t82 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t82 p0 claw #1 chain: 63 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t83 p0 claw #1 tic 4 at (-230.0 -291.5 37.0), flown 160.0: flying
+G2P clk 83 7709
+G2P t83 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t83 p0 claw #1 chain: 87 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t84 p0 claw #1 tic 5 at (-190.0 -291.5 37.0), flown 200.0: flying
+G2P clk 84 7734
+G2P t84 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t84 p0 claw #1 chain: 111 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t85 p0 claw #1 tic 6 at (-150.0 -291.5 37.0), flown 240.0: flying
+G2P clk 85 7768
+G2P t85 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t85 p0 claw #1 chain: 135 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t86 p0 claw #1 tic 7 at (-110.0 -291.5 37.0), flown 280.0: flying
+G2P clk 86 7792
+G2P t86 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t86 p0 claw #1 chain: 159 links 1.67 apart, ripple 1.04, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t87 p0 claw #1 tic 8 at (-70.0 -291.5 37.0), flown 320.0: flying
+G2P clk 87 7818
+G2P t87 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t87 p0 claw #1 chain: 183 links 1.67 apart, ripple 0.92, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t88 p0 claw #1 tic 9 at (-31.2 -291.5 37.0), flown 358.8: BITES RS_CommonBaron
+T_G2 t88 p0 bite RS_CommonBaron after 9 tics, 359 units out (mass 967, boss 0, dormant 0, baron 1) -> HEAVY: you go to it
+T_G2 t88 p0 EVENT bite.heavy RS_CommonBaron
+T_G2 t88 p0 PULL to RS_CommonBaron: 360 units at 30.0 a tic
+G2P clk 88 7855
+G2P t88 service event: bite.heavy (tic 88) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 5
+G2P t88 track pos (-400.0 -300.0 0.0) vel (29.98 0.00 0.44) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 89 7876
+G2P t89 track pos (-370.0 -300.0 0.0) vel (29.98 0.00 0.48) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561022 7908
+G2P clk 90 7911
+G2P t90 track pos (-340.0 -300.0 0.0) vel (29.97 0.00 0.53) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 91 7934
+G2P t91 track pos (-310.1 -300.0 0.0) vel (29.97 0.00 0.59) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 92 7967
+G2P t92 track pos (-280.1 -300.0 0.0) vel (29.97 0.00 0.67) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 93 7987
+G2P t93 track pos (-250.1 -300.0 0.0) vel (29.97 0.00 0.76) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 94 8017
+G2P t94 track pos (-220.2 -300.0 0.0) vel (29.97 0.00 0.89) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 95 8052
+G2P t95 track pos (-190.2 -300.0 0.0) vel (29.96 0.00 1.06) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 96 8074
+G2P t96 track pos (-160.2 -300.0 0.0) vel (29.95 0.00 1.33) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 97 8104
+G2P t97 track pos (-130.3 -300.0 0.0) vel (29.93 0.00 1.77) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 98 8139
+G2P t98 track pos (-100.4 -300.0 0.0) vel (29.86 0.00 2.65) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561023 8159
+G2P clk 99 8162
+G2P t99 track pos (-70.5 -300.0 2.6) vel (29.86 0.00 2.65) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t100 p0 pull arrived after 13 tics (0 units from its face)
+T_G2 t100 p0 DIZZY: RS_CommonBaron stunned 53 tics, RSQ Melee's chicks and stars -> 1
+RSQ_SlowMo: trigger grapple t100: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t100: started 1514 ms at 25% (automatic, own cooldown), pulse until t153, cause line "KICK!"
+T_G2 t100 p0 KICK 1: RS_CommonBaron health 967 -> 937 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK!" -> 1, slow 53 tics -> 1
+T_G2 t100 p0 EVENT kick RS_CommonBaron
+T_G2 t100 p0 KICK-OFF: out (-1.00 0.00) at 8, up 42.5 of 42.5 units (room 448.7), vel.z 9.22
+G2P clk 100 8196
+G2P t100 service event: kick (tic 100) chain 1 kicks 1 lastkick 100 air 1 dj 1 mode 0
+G2P t100 armed jump 0 (on kick #1) goes at t103
+G2P t100 track pos (-40.6 -300.0 5.3) vel (-8.00 0.00 9.22) floor 0 ceil 512 onground 0 | slowmo scale 809 countdown 64
+G2P clk 101 8215
+G2P t101 track pos (-48.6 -300.0 14.5) vel (-8.00 0.00 8.22) floor 0 ceil 512 onground 0 | slowmo scale 619 countdown 63
+G2P clk 102 8248
+G2P t102 track pos (-56.6 -300.0 22.7) vel (-8.00 0.00 7.22) floor 0 ceil 512 onground 0 | slowmo scale 428 countdown 62
+G2P clk 103 8279
+G2P t103 armed jump: BT_JUMP pressed t104-t105
+G2P t103 track pos (-64.6 -300.0 30.0) vel (-8.00 0.00 6.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+G2P t104 jump pressed (BT_JUMP)
+RSQ_SlowMo: trigger grapple.addtime t104: +18 tics, pulse now until t171, cause line "DoubleJump!"
+T_G2 t104 p0 DOUBLE JUMP: up 42.5 units (vel.z 9.22), +0.5 s g2.addtime -> 1
+T_G2 t104 p0 EVENT doublejump
+T_G2 t104 p0 MARKERS: 2 of 2 in reach: RS_CommonBaron@82=+0.25 RS_CommonCybie@659=+0.5
+T_G2 t104 p0 EVENT markers
+RSQ_SlowMo: trigger grapple t104: countdown bar: refilled, 2.2 s to real time
+G2P clk 104 8304
+G2P t104 service event: doublejump (tic 104) chain 1 kicks 1 lastkick 100 air 1 dj 0 mode 0
+G2P t104 service event: markers (tic 104) chain 1 kicks 1 lastkick 100 air 1 dj 0 mode 0
+G2P t104 armed fire 1 (on doublejump #1) goes at t108
+G2P t104 track pos (-72.6 -300.0 36.2) vel (-8.00 0.00 9.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 78
+G2P t105 jump pressed (BT_JUMP)
+G2P clk 105 8334
+G2P t105 track pos (-80.6 -300.0 45.4) vel (-8.00 0.00 8.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 77
+G2P clk 106 8362
+G2P t106 track pos (-88.6 -300.0 53.6) vel (-8.00 0.00 7.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 76
+G2P clk 107 8390
+G2P t107 track pos (-96.6 -300.0 60.8) vel (-8.00 0.00 6.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 75
+G2P epoch 1794561024 8418
+G2P clk 108 8420
+G2P t108 fire at armed tag 12 RS_CommonCybie (-500 200 51) from hand (-94 -292 97) yaw 135.5 (offset 6.0) pitch -4.9
+G2P t108 track pos (-104.6 -300.0 67.0) vel (-8.00 0.00 5.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 74
+T_G2 t109 p0 aim assist: snapped 6.5 degrees to marked RS_CommonCybie
+T_G2 t109 p0 FIRE claw #2 from (-103 -292 102) dir (-0.63 0.78 -0.08) in the air: flies 40 a tic out to 780
+T_G2 t109 p0 HANG: fired in the air in kick-chain 1: you hang at z 72.3 until claw #2 bites
+T_G2 t109 p0 EVENT hang
+T_G2 t109 p0 claw #2 tic 1 at (-127.7 -260.5 98.6), flown 40.0: flying
+T_G2 t109 p0 HANG tic 0: z 72.27 (held at 72.27), vel (0.00 0.00 0.00), waiting for the bite
+G2P clk 109 8446
+G2P t109 service event: hang (tic 109) chain 1 kicks 1 lastkick 100 air 1 dj 0 mode 0
+G2P t109 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 73
+T_G2 t109 p0 claw #2 chain: 16 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t110 p0 claw #2 tic 2 at (-152.8 -229.5 95.4), flown 80.0: flying
+T_G2 t110 p0 HANG tic 1: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 110 8482
+G2P t110 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 72
+T_G2 t110 p0 claw #2 chain: 40 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t111 p0 claw #2 tic 3 at (-177.8 -198.5 92.2), flown 120.0: flying
+T_G2 t111 p0 HANG tic 2: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 111 8505
+G2P t111 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 71
+T_G2 t111 p0 claw #2 chain: 64 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t112 p0 claw #2 tic 4 at (-202.9 -167.5 89.0), flown 160.0: flying
+T_G2 t112 p0 HANG tic 3: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 112 8536
+G2P t112 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 70
+T_G2 t112 p0 claw #2 chain: 88 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t113 p0 claw #2 tic 5 at (-228.0 -136.5 85.8), flown 200.0: flying
+T_G2 t113 p0 HANG tic 4: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 113 8568
+G2P t113 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 69
+T_G2 t113 p0 claw #2 chain: 112 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t114 p0 claw #2 tic 6 at (-253.0 -105.5 82.6), flown 240.0: flying
+T_G2 t114 p0 HANG tic 5: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 114 8588
+G2P t114 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 68
+T_G2 t114 p0 claw #2 chain: 136 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t115 p0 claw #2 tic 7 at (-278.1 -74.5 79.5), flown 280.0: flying
+T_G2 t115 p0 HANG tic 6: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 115 8624
+G2P t115 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 67
+T_G2 t115 p0 claw #2 chain: 160 links 1.67 apart, ripple 1.04, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561025 8651
+T_G2 t116 p0 claw #2 tic 8 at (-303.2 -43.4 76.3), flown 320.0: flying
+T_G2 t116 p0 HANG tic 7: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 116 8653
+G2P t116 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 66
+T_G2 t116 p0 claw #2 chain: 184 links 1.67 apart, ripple 0.92, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t117 p0 claw #2 tic 9 at (-328.2 -12.4 73.1), flown 360.0: flying
+T_G2 t117 p0 HANG tic 8: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 117 8674
+G2P t117 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 65
+T_G2 t117 p0 claw #2 chain: 208 links 1.67 apart, ripple 0.81, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t118 p0 claw #2 tic 10 at (-353.3 18.6 69.9), flown 400.0: flying
+T_G2 t118 p0 HANG tic 9: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 118 8707
+G2P t118 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 64
+T_G2 t118 p0 claw #2 chain: 232 links 1.67 apart, ripple 0.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t119 p0 claw #2 tic 11 at (-378.4 49.6 66.7), flown 440.0: flying
+T_G2 t119 p0 HANG tic 10: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 119 8734
+G2P t119 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 63
+T_G2 t119 p0 claw #2 chain: 256 links 1.67 apart, ripple 0.63, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t120 p0 claw #2 tic 12 at (-403.5 80.6 63.5), flown 480.0: flying
+T_G2 t120 p0 HANG tic 11: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 120 8764
+G2P t120 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 62
+T_G2 t120 p0 claw #2 chain: 280 links 1.67 apart, ripple 0.56, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t121 p0 claw #2 tic 13 at (-428.5 111.6 60.3), flown 520.0: flying
+T_G2 t121 p0 HANG tic 12: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 121 8787
+G2P t121 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+T_G2 t121 p0 claw #2 chain: 304 links 1.67 apart, ripple 0.49, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t122 p0 claw #2 tic 14 at (-453.6 142.6 57.1), flown 560.0: flying
+T_G2 t122 p0 HANG tic 13: z 72.27 (held at 72.27), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 122 8824
+G2P t122 track pos (-112.6 -300.0 72.3) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+T_G2 t122 p0 claw #2 chain: 328 links 1.67 apart, ripple 0.43, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t123 p0 claw #2 tic 15 at (-472.6 166.1 54.7), flown 590.4: BITES RS_CommonCybie
+T_G2 t123 p0 HANG over: claw #2 bit after 14 tics of hanging (z 72.3, held at 72.3): the bite plays
+RSQ_SlowMo: trigger grapple.addtime t123: +18 tics, pulse now until t189, cause line "+0.5 sec"
+T_G2 t123 p0 MARKER HOOKED: RS_CommonCybie, +0.5 sec (18 tics) -> g2.addtime 1
+T_G2 t123 p0 EVENT marker RS_CommonCybie
+T_G2 t123 p0 bite RS_CommonCybie after 15 tics, 590 units out (mass 781, boss 1, dormant 0, baron 0) -> HEAVY: you go to it
+T_G2 t123 p0 EVENT bite.heavy RS_CommonCybie
+T_G2 t123 p0 PULL to RS_CommonCybie: 583 units at 48.6 a tic
+RSQ_SlowMo: trigger grapple t123: countdown bar: refilled, 2.2 s to real time
+G2P clk 123 8847
+G2P t123 service event: marker (tic 123) chain 1 kicks 1 lastkick 100 air 1 dj 0 mode 5
+G2P t123 service event: bite.heavy (tic 123) chain 1 kicks 1 lastkick 100 air 1 dj 0 mode 5
+G2P t123 track pos (-112.6 -300.0 72.3) vel (-29.65 38.27 -4.09) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 77
+G2P clk 124 8884
+G2P t124 track pos (-142.3 -261.7 68.2) vel (-29.65 38.27 -4.09) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 76
+G2P epoch 1794561026 8904
+G2P clk 125 8907
+G2P t125 track pos (-171.9 -223.5 64.1) vel (-29.65 38.27 -4.09) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 75
+G2P clk 126 8931
+G2P t126 track pos (-201.6 -185.2 60.0) vel (-29.65 38.27 -4.09) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 74
+G2P clk 127 8962
+G2P t127 track pos (-231.2 -146.9 55.9) vel (-29.65 38.27 -4.09) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 73
+G2P clk 128 8995
+G2P t128 track pos (-260.9 -108.6 51.8) vel (-29.65 38.27 -4.09) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 72
+G2P clk 129 9016
+G2P t129 track pos (-290.5 -70.4 47.7) vel (-29.65 38.27 -4.09) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 71
+G2P clk 130 9045
+G2P t130 track pos (-320.2 -32.1 43.7) vel (-29.65 38.27 -4.09) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 70
+G2P clk 131 9075
+G2P t131 track pos (-349.8 6.2 39.6) vel (-29.65 38.27 -4.09) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 69
+G2P clk 132 9107
+G2P t132 track pos (-379.5 44.4 35.5) vel (-29.65 38.27 -4.09) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 68
+G2P clk 133 9132
+G2P t133 track pos (-409.1 82.7 31.4) vel (-29.65 38.27 -4.09) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 67
+G2P epoch 1794561027 9161
+T_G2 t134 p0 pull arrived after 12 tics (49 units from its face)
+T_G2 t134 p0 DIZZY: RS_CommonCybie stunned 42 tics, RSQ Melee's chicks and stars -> 1
+RSQ_SlowMo: trigger grapple t134: merged 1200 ms at 25% (automatic, own cooldown), pulse until t189, cause line "KICK! x2"
+T_G2 t134 p0 KICK 2: RS_CommonCybie health 3125 -> 2825 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK! x2" -> 1, slow 42 tics -> 1
+T_G2 t134 p0 EVENT kick RS_CommonCybie
+T_G2 t134 p0 KICK-OFF: out (0.59 -0.80) at 8, up 42.5 of 42.5 units (room 426.7), vel.z 9.22
+G2P clk 134 9166
+G2P t134 service event: kick (tic 134) chain 2 kicks 2 lastkick 134 air 1 dj 1 mode 0
+G2P t134 track pos (-438.8 121.0 27.3) vel (4.75 -6.44 9.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 66
+G2P clk 135 9187
+G2P t135 track pos (-434.0 114.5 36.5) vel (4.75 -6.44 8.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 65
+G2P clk 136 9222
+G2P t136 track pos (-429.3 108.1 44.8) vel (4.75 -6.44 7.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 64
+G2P clk 137 9251
+G2P t137 track pos (-424.5 101.7 52.0) vel (4.75 -6.44 6.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 63
+G2P clk 138 9272
+G2P t138 track pos (-419.8 95.2 58.2) vel (4.75 -6.44 5.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 62
+G2P clk 139 9302
+G2P t139 track pos (-415.0 88.8 63.4) vel (4.75 -6.44 4.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+G2P clk 140 9339
+G2P t140 track pos (-410.3 82.3 67.6) vel (4.75 -6.44 3.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+G2P clk 141 9364
+G2P t141 track pos (-405.6 75.9 70.9) vel (4.75 -6.44 2.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 59
+G2P clk 142 9388
+G2P t142 track pos (-400.8 69.5 73.1) vel (4.75 -6.44 1.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 58
+G2P epoch 1794561028 9420
+G2P clk 143 9422
+G2P t143 track pos (-396.1 63.0 74.3) vel (4.75 -6.44 0.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 57
+G2P clk 144 9453
+G2P t144 track pos (-391.3 56.6 74.5) vel (4.75 -6.44 -0.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 56
+G2P clk 145 9472
+G2P t145 track pos (-386.6 50.1 73.7) vel (4.75 -6.44 -1.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 55
+G2P clk 146 9509
+G2P t146 track pos (-381.8 43.7 72.0) vel (4.75 -6.44 -2.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 54
+G2P clk 147 9538
+G2P t147 track pos (-377.1 37.3 69.2) vel (4.75 -6.44 -3.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 53
+G2P clk 148 9570
+G2P t148 track pos (-372.3 30.8 65.4) vel (4.75 -6.44 -4.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 52
+G2P clk 149 9590
+G2P t149 track pos (-367.6 24.4 60.6) vel (4.75 -6.44 -5.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 51
+G2P clk 150 9622
+G2P t150 track pos (-362.8 17.9 54.8) vel (4.75 -6.44 -6.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 50
+G2P epoch 1794561029 9644
+G2P clk 151 9646
+G2P t151 track pos (-358.1 11.5 48.0) vel (4.75 -6.44 -7.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 49
+G2P clk 152 9681
+G2P t152 track pos (-353.3 5.1 40.3) vel (4.75 -6.44 -8.78) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 48
+G2P clk 153 9705
+G2P t153 track pos (-348.6 -1.4 31.5) vel (4.75 -6.44 -9.78) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 47
+G2P clk 154 9729
+G2P t154 track pos (-343.8 -7.8 21.7) vel (4.75 -6.44 -10.78) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 46
+G2P clk 155 9762
+G2P t155 track pos (-339.1 -14.3 10.9) vel (4.75 -6.44 -11.78) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 45
+T_G2 t156 p0 LANDED: the kick-chain ends at 2
+T_G2 t156 p0 EVENT chain.end
+G2P clk 156 9798
+G2P t156 service event: chain.end (tic 156) chain 0 kicks 2 lastkick 134 air 0 dj 0 mode 0
+G2P t156 track pos (-334.4 -20.7 0.0) vel (4.75 -6.44 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 44
+G2P clk 157 9818
+G2P t157 track pos (-329.6 -27.1 0.0) vel (1.08 -1.46 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 43
+G2P clk 158 9848
+G2P t158 track pos (-328.5 -28.6 0.0) vel (0.97 -1.32 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 42
+G2P clk 159 9881
+G2P t159 track pos (-327.6 -29.9 0.0) vel (0.88 -1.20 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 41
+G2P epoch 1794561030 9903
+G2P clk 160 9906
+G2P t160 track pos (-326.7 -31.1 0.0) vel (0.80 -1.09 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 40
+G2P clk 161 9936
+G2P t161 track pos (-325.9 -32.2 0.0) vel (0.18 -0.25 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 39
+G2P clk 162 9964
+G2P t162 track pos (-325.7 -32.4 0.0) vel (0.00 -0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 38
+G2P clk 163 9994
+G2P t163 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 37
+G2P clk 164 10016
+G2P t164 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 36
+G2P clk 165 10046
+G2P t165 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 35
+G2P clk 166 10074
+G2P t166 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 34
+G2P clk 167 10102
+G2P t167 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 33
+G2P clk 168 10130
+G2P t168 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 32
+G2P epoch 1794561031 10163
+G2P clk 169 10165
+G2P t169 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 31
+G2P clk 170 10194
+G2P t170 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 30
+G2P clk 171 10225
+G2P t171 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 29
+G2P clk 172 10246
+G2P t172 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 28
+G2P clk 173 10280
+G2P t173 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 27
+G2P clk 174 10305
+G2P t174 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 26
+G2P clk 175 10332
+G2P t175 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 25
+G2P clk 176 10358
+G2P t176 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 24
+G2P clk 177 10387
+G2P t177 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 23
+G2P epoch 1794561032 10415
+G2P clk 178 10418
+G2P t178 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 22
+G2P clk 179 10453
+G2P t179 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 21
+G2P clk 180 10479
+G2P t180 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 20
+G2P clk 181 10503
+G2P t181 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 19
+G2P clk 182 10534
+G2P t182 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 18
+G2P clk 183 10566
+G2P t183 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 17
+G2P clk 184 10595
+G2P t184 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 16
+G2P clk 185 10623
+G2P t185 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 15
+G2P epoch 1794561033 10644
+G2P clk 186 10647
+G2P t186 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 14
+G2P clk 187 10680
+G2P t187 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 13
+G2P clk 188 10705
+G2P t188 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 12
+G2P clk 189 10736
+G2P t189 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 321 countdown 10
+G2P clk 190 10765
+G2P t190 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 392 countdown 9
+G2P clk 191 10789
+G2P t191 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 464 countdown 8
+G2P clk 192 10820
+G2P t192 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 535 countdown 7
+G2P clk 193 10850
+G2P t193 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 607 countdown 6
+G2P clk 194 10880
+G2P t194 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 678 countdown 5
+G2P epoch 1794561034 10899
+G2P clk 195 10901
+G2P t195 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 749 countdown 4
+G2P clk 196 10932
+G2P t196 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 821 countdown 3
+G2P clk 197 10963
+G2P t197 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 892 countdown 2
+G2P clk 198 10996
+G2P t198 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 964 countdown 1
+RSQ_SlowMo: trigger countdown t199: countdown bar: gone (real time)
+G2P clk 199 11020
+G2P t199 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 200 11051
+G2P t200 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 201 11073
+G2P t201 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 202 11104
+G2P t202 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 203 11137
+G2P t203 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561035 11157
+G2P clk 204 11160
+G2P t204 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 205 11195
+G2P t205 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 206 11221
+G2P t206 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 207 11250
+G2P t207 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 208 11283
+G2P t208 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 209 11307
+G2P t209 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 210 11341
+G2P t210 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 211 11368
+G2P t211 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561036 11392
+G2P clk 212 11394
+G2P t212 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 213 11420
+G2P t213 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 214 11445
+G2P t214 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 215 11487
+G2P t215 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 216 11503
+G2P t216 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 217 11542
+G2P t217 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 218 11569
+G2P t218 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 219 11593
+G2P t219 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 220 11615
+G2P t220 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561037 11650
+G2P clk 221 11653
+G2P t221 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 222 11679
+G2P t222 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 223 11705
+G2P t223 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 224 11742
+G2P t224 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 225 11769
+G2P t225 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 226 11794
+G2P t226 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 227 11817
+G2P t227 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 228 11851
+G2P t228 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 229 11873
+G2P t229 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561038 11903
+G2P clk 230 11905
+G2P t230 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 231 11940
+G2P t231 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 232 11960
+G2P t232 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 233 11997
+G2P t233 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 234 12016
+G2P t234 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 235 12045
+G2P t235 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 236 12074
+G2P t236 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 237 12101
+G2P t237 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 238 12129
+G2P t238 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561039 12163
+G2P clk 239 12165
+G2P t239 track pos (-325.7 -32.4 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 240 12194
+G2P clk 241 12215
+G2P clk 242 12248
+G2P clk 243 12277
+G2P clk 244 12306
+G2P clk 245 12336
+G2P clk 246 12363
+G2P clk 247 12394
+G2P epoch 1794561040 12420
+G2P clk 248 12422
+G2P clk 249 12453
+G2P clk 250 12474
+G2P clk 251 12506
+G2P clk 252 12531
+G2P clk 253 12571
+G2P clk 254 12592
+G2P clk 255 12625
+G2P epoch 1794561041 12647
+G2P clk 256 12650
+G2P clk 257 12675
+G2P clk 258 12709
+G2P clk 259 12741
+G2P clk 260 12766
+G2P clk 261 12791
+G2P clk 262 12827
+G2P clk 263 12852
+G2P clk 264 12877
+G2P epoch 1794561042 12905
+G2P clk 265 12907
+G2P clk 266 12931
+G2P clk 267 12963
+G2P clk 268 12993
+G2P clk 269 13017
+G2P clk 270 13057
+G2P clk 271 13080
+G2P clk 272 13106
+G2P clk 273 13140
+G2P epoch 1794561043 13160
+G2P clk 274 13162
+G2P clk 275 13193
+G2P clk 276 13224
+G2P clk 277 13253
+G2P clk 278 13278
+G2P clk 279 13309
+G2P clk 280 13330
+G2P clk 281 13365
+G2P epoch 1794561044 13393
+G2P clk 282 13398
+G2P clk 283 13429
+G2P clk 284 13456
+G2P clk 285 13477
+G2P clk 286 13506
+G2P clk 287 13532
+G2P clk 288 13559
+G2P clk 289 13589
+G2P clk 290 13623
+G2P clk 291 13644
+G2P epoch 1794561045 13672
+G2P clk 292 13675
+G2P clk 293 13708
+G2P clk 294 13733
+G2P clk 295 13770
+G2P clk 296 13792
+G2P clk 297 13827
+G2P clk 298 13853
+G2P clk 299 13878
+G2P epoch 1794561046 13905
+G6_B_MISS_FALL
+G2P clk 300 13907
+G2P t301 ask: chain 0 best 2 kicks 2 lastkick 134 mode 0 events 9 last kick event tic 134; old names: hooked -1 swinging -1 xp.bites -1
+G2P   tag 11 RS_CommonBaron kicked 100 yanked -1 spiked -1 by 0
+G2P   tag 12 RS_CommonCybie kicked 134 yanked -1 spiked -1 by 0
+G2P t301 tag 11 RS_CommonBaron at (-128 -170 0) hp 937 dist 241 vel (0.0 0.0 0.3) state -
+G2P t301 tag 12 RS_CommonCybie at (-491 192 -0) hp 2825 dist 278 vel (0.0 0.0 0.5) state PAIN
+G2P t301 player at (-326 -32 0)
+G2P t301 killall 2
+G2P clk 301 13941
+G2P clk 302 13978
+G2P clk 303 14005
+G2P clk 304 14035
+G2P clk 305 14066
+G2P clk 306 14099
+G2P clk 307 14135
+G2P epoch 1794561047 14151
+G2P clk 308 14153
+G2P clk 309 14183
+G2P clk 310 14212
+G2P clk 311 14246
+G2P clk 312 14265
+G2P clk 313 14298
+G2P clk 314 14328
+G2P clk 315 14360
+G2P clk 316 14378
+G2P epoch 1794561048 14406
+G2P clk 317 14408
+G2P clk 318 14435
+G2P clk 319 14462
+G2P clk 320 14487
+G2P clk 321 14514
+G2P clk 322 14548
+G2P clk 323 14578
+G2P clk 324 14608
+G2P clk 325 14633
+G2P epoch 1794561049 14655
+G2P clk 326 14657
+G2P clk 327 14681
+G2P clk 328 14704
+G2P clk 329 14731
+G2P clk 330 14777
+G2P t331 teleport to (-400 -300 0) angle 0
+G2P t331 spawn tag 13 BaronOfHell -> RS_CommonBaron at (0 -300 -0) mass 1000 boss 0 hp 1000 radius 24 height 64
+G2P clk 331 14809
+G2P clk 332 14838
+G2P clk 333 14862
+G2P clk 334 14885
+G2P epoch 1794561050 14905
+G2P clk 335 14908
+G2P clk 336 14937
+G2P clk 337 14961
+G2P clk 338 15007
+G2P clk 339 15032
+G2P clk 340 15057
+G2P armed 5: fire on event 1 #1 +3 tics
+T_G2 t341 p0 FIRE claw #3 from (-390 -292 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780
+T_G2 t341 p0 claw #3 tic 1 at (-350.0 -291.5 37.0), flown 40.0: flying
+G2P clk 341 15082
+G2P t341 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t341 p0 claw #3 chain: 15 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t342 p0 claw #3 tic 2 at (-310.0 -291.5 37.0), flown 80.0: flying
+G2P clk 342 15105
+G2P t342 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t342 p0 claw #3 chain: 39 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561051 15153
+T_G2 t343 p0 claw #3 tic 3 at (-270.0 -291.5 37.0), flown 120.0: flying
+G2P clk 343 15155
+G2P t343 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t343 p0 claw #3 chain: 63 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t344 p0 claw #3 tic 4 at (-230.0 -291.5 37.0), flown 160.0: flying
+G2P clk 344 15176
+G2P t344 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t344 p0 claw #3 chain: 87 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t345 p0 claw #3 tic 5 at (-190.0 -291.5 37.0), flown 200.0: flying
+G2P clk 345 15200
+G2P t345 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t345 p0 claw #3 chain: 111 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t346 p0 claw #3 tic 6 at (-150.0 -291.5 37.0), flown 240.0: flying
+G2P clk 346 15225
+G2P t346 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t346 p0 claw #3 chain: 135 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t347 p0 claw #3 tic 7 at (-110.0 -291.5 37.0), flown 280.0: flying
+G2P clk 347 15254
+G2P t347 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t347 p0 claw #3 chain: 159 links 1.67 apart, ripple 1.04, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t348 p0 claw #3 tic 8 at (-70.0 -291.5 37.0), flown 320.0: flying
+G2P clk 348 15276
+G2P t348 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t348 p0 claw #3 chain: 183 links 1.67 apart, ripple 0.92, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t349 p0 claw #3 tic 9 at (-30.0 -291.5 37.0), flown 360.0: flying
+G2P clk 349 15306
+G2P t349 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t349 p0 claw #3 chain: 207 links 1.67 apart, ripple 0.81, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t350 p0 claw #3 tic 10 at (-27.2 -291.5 37.0), flown 362.8: BITES RS_CommonBaron
+T_G2 t350 p0 bite RS_CommonBaron after 10 tics, 363 units out (mass 849, boss 0, dormant 0, baron 1) -> HEAVY: you go to it
+T_G2 t350 p0 EVENT bite.heavy RS_CommonBaron
+T_G2 t350 p0 PULL to RS_CommonBaron: 364 units at 30.3 a tic
+G2P clk 350 15333
+G2P t350 service event: bite.heavy (tic 350) chain 0 kicks 2 lastkick 134 air 0 dj 0 mode 5
+G2P t350 track pos (-400.0 -300.0 0.0) vel (30.30 0.00 0.61) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 351 15360
+G2P t351 track pos (-369.7 -300.0 0.0) vel (30.29 0.00 0.67) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561052 15411
+G2P clk 352 15414
+G2P t352 track pos (-339.4 -300.0 0.0) vel (30.29 0.00 0.73) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 353 15440
+G2P t353 track pos (-309.1 -300.0 0.0) vel (30.29 0.00 0.82) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 354 15462
+G2P t354 track pos (-278.8 -300.0 0.0) vel (30.29 0.00 0.92) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 355 15481
+G2P t355 track pos (-248.5 -300.0 0.0) vel (30.28 0.00 1.05) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 356 15518
+G2P t356 track pos (-218.3 -300.0 0.0) vel (30.28 0.00 1.22) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 357 15536
+G2P t357 track pos (-188.0 -300.0 0.0) vel (30.27 0.00 1.47) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 358 15569
+G2P t358 track pos (-157.7 -300.0 0.0) vel (30.25 0.00 1.83) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 359 15587
+G2P t359 track pos (-127.5 -300.0 0.0) vel (30.20 0.00 2.43) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 360 15624
+G2P t360 track pos (-97.3 -300.0 2.4) vel (30.20 0.00 2.43) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P epoch 1794561053 15643
+G2P clk 361 15646
+G2P t361 track pos (-67.1 -300.0 4.9) vel (30.20 0.00 2.43) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t362 p0 pull arrived after 13 tics (0 units from its face)
+T_G2 t362 p0 DIZZY: RS_CommonBaron stunned 53 tics, RSQ Melee's chicks and stars -> 1
+RSQ_SlowMo: trigger grapple t362: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t362: started 1514 ms at 25% (automatic, own cooldown), pulse until t415, cause line "KICK!"
+T_G2 t362 p0 KICK 1: RS_CommonBaron health 849 -> 819 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK!" -> 1, slow 53 tics -> 1
+T_G2 t362 p0 EVENT kick RS_CommonBaron
+T_G2 t362 p0 KICK-OFF: out (-1.00 0.00) at 8, up 42.5 of 42.5 units (room 446.7), vel.z 9.22
+G2P clk 362 15681
+G2P t362 service event: kick (tic 362) chain 1 kicks 3 lastkick 362 air 1 dj 1 mode 0
+G2P t362 armed fire 5 (on kick #1) goes at t365
+G2P t362 track pos (-36.9 -300.0 7.3) vel (-8.00 0.00 9.22) floor 0 ceil 512 onground 0 | slowmo scale 809 countdown 64
+G2P clk 363 15704
+G2P t363 track pos (-44.9 -300.0 16.5) vel (-8.00 0.00 8.22) floor 0 ceil 512 onground 0 | slowmo scale 619 countdown 63
+G2P clk 364 15746
+G2P t364 track pos (-52.9 -300.0 24.7) vel (-8.00 0.00 7.22) floor 0 ceil 512 onground 0 | slowmo scale 428 countdown 62
+G2P clk 365 15764
+G2P t365 armed fire along yaw 90.0 pitch 5.0 from hand (-51 -292 58)
+G2P t365 track pos (-60.9 -300.0 32.0) vel (-8.00 0.00 6.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+T_G2 t366 p0 aim assist: no marked monster near your line: the claw flies where you aim
+T_G2 t366 p0 FIRE claw #4 from (-59 -292 64) dir (-0.00 1.00 0.07) in the air: flies 40 a tic out to 780
+T_G2 t366 p0 HANG: fired in the air in kick-chain 1: you hang at z 38.2 until claw #4 bites
+T_G2 t366 p0 EVENT hang
+T_G2 t366 p0 claw #4 tic 1 at (-58.9 -251.6 67.1), flown 40.0: flying
+T_G2 t366 p0 HANG tic 0: z 38.18 (held at 38.18), vel (0.00 0.00 0.00), waiting for the bite
+G2P clk 366 15804
+G2P t366 service event: hang (tic 366) chain 1 kicks 3 lastkick 362 air 1 dj 1 mode 0
+G2P t366 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+T_G2 t366 p0 claw #4 chain: 16 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t367 p0 claw #4 tic 2 at (-58.9 -211.7 70.0), flown 80.0: flying
+T_G2 t367 p0 HANG tic 1: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 367 15830
+G2P t367 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 59
+T_G2 t367 p0 claw #4 chain: 39 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t368 p0 claw #4 tic 3 at (-58.9 -171.8 72.9), flown 120.0: flying
+T_G2 t368 p0 HANG tic 2: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 368 15853
+G2P t368 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 58
+T_G2 t368 p0 claw #4 chain: 63 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t369 p0 claw #4 tic 4 at (-58.9 -131.9 75.8), flown 160.0: flying
+T_G2 t369 p0 HANG tic 3: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 369 15880
+G2P t369 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 57
+T_G2 t369 p0 claw #4 chain: 87 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561054 15916
+T_G2 t370 p0 claw #4 tic 5 at (-58.9 -92.0 78.7), flown 200.0: flying
+T_G2 t370 p0 HANG tic 4: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 370 15919
+G2P t370 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 56
+T_G2 t370 p0 claw #4 chain: 111 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t371 p0 claw #4 tic 6 at (-58.9 -52.1 81.6), flown 240.0: flying
+T_G2 t371 p0 HANG tic 5: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 371 15942
+G2P t371 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 55
+T_G2 t371 p0 claw #4 chain: 135 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t372 p0 claw #4 tic 7 at (-58.9 -12.2 84.5), flown 280.0: flying
+T_G2 t372 p0 HANG tic 6: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 372 15962
+G2P t372 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 54
+T_G2 t372 p0 claw #4 chain: 159 links 1.67 apart, ripple 1.04, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t373 p0 claw #4 tic 8 at (-58.9 27.7 87.5), flown 320.0: flying
+T_G2 t373 p0 HANG tic 7: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 373 16002
+G2P t373 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 53
+T_G2 t373 p0 claw #4 chain: 183 links 1.67 apart, ripple 0.92, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t374 p0 claw #4 tic 9 at (-58.9 67.5 90.4), flown 360.0: flying
+T_G2 t374 p0 HANG tic 8: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 374 16021
+G2P t374 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 52
+T_G2 t374 p0 claw #4 chain: 207 links 1.67 apart, ripple 0.81, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t375 p0 claw #4 tic 10 at (-58.9 107.4 93.3), flown 400.0: flying
+T_G2 t375 p0 HANG tic 9: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 375 16060
+G2P t375 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 51
+T_G2 t375 p0 claw #4 chain: 231 links 1.67 apart, ripple 0.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t376 p0 claw #4 tic 11 at (-58.9 147.3 96.2), flown 440.0: flying
+T_G2 t376 p0 HANG tic 10: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 376 16077
+G2P t376 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 50
+T_G2 t376 p0 claw #4 chain: 255 links 1.67 apart, ripple 0.63, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t377 p0 claw #4 tic 12 at (-58.9 187.2 99.1), flown 480.0: flying
+T_G2 t377 p0 HANG tic 11: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 377 16119
+G2P t377 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 49
+T_G2 t377 p0 claw #4 chain: 279 links 1.67 apart, ripple 0.56, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t378 p0 claw #4 tic 13 at (-58.9 227.1 102.0), flown 520.0: flying
+T_G2 t378 p0 HANG tic 12: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 378 16144
+G2P t378 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 48
+T_G2 t378 p0 claw #4 chain: 303 links 1.67 apart, ripple 0.49, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561055 16166
+T_G2 t379 p0 claw #4 tic 14 at (-58.9 267.0 104.9), flown 560.0: flying
+T_G2 t379 p0 HANG tic 13: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 379 16169
+G2P t379 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 47
+T_G2 t379 p0 claw #4 chain: 327 links 1.67 apart, ripple 0.43, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t380 p0 claw #4 tic 15 at (-58.9 306.9 107.8), flown 600.0: flying
+T_G2 t380 p0 HANG tic 14: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 380 16188
+G2P t380 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 46
+T_G2 t380 p0 claw #4 chain: 351 links 1.67 apart, ripple 0.38, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t381 p0 claw #4 tic 16 at (-58.9 346.8 110.7), flown 640.0: flying
+T_G2 t381 p0 HANG tic 15: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 381 16222
+G2P t381 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 45
+T_G2 t381 p0 claw #4 chain: 375 links 1.67 apart, ripple 0.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t382 p0 claw #4 tic 17 at (-58.9 386.7 113.6), flown 680.0: flying
+T_G2 t382 p0 HANG tic 16: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 382 16263
+G2P t382 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 44
+T_G2 t382 p0 claw #4 chain: 399 links 1.67 apart, ripple 0.30, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t383 p0 claw #4 tic 18 at (-58.9 426.6 116.5), flown 720.0: flying
+T_G2 t383 p0 HANG tic 17: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 383 16288
+G2P t383 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 43
+T_G2 t383 p0 claw #4 chain: 423 links 1.67 apart, ripple 0.26, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t384 p0 claw #4 tic 19 at (-58.9 466.5 119.4), flown 760.0: flying
+T_G2 t384 p0 HANG tic 18: z 38.18 (held at 38.18), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 384 16312
+G2P t384 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 42
+T_G2 t384 p0 claw #4 chain: 447 links 1.67 apart, ripple 0.23, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t385 p0 claw #4 tic 20 at (-58.9 486.4 120.9), flown 780.0: the end of its reach: nothing bitten
+T_G2 t385 p0 MISS: claw #4 reached nothing in 20 tics (780 units): it comes back
+T_G2 t385 p0 EVENT miss
+T_G2 t385 p0 HANG over: no claw bit (a miss) after 19 tics of hanging: you fall from z 38.2
+T_G2 t385 p0 MISS IN THE AIR: the kick-chain ends at 1
+T_G2 t385 p0 EVENT chain.end
+RSQ_SlowMo: trigger grapple t385: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+T_G2 t385 p0 CHAIN CANCELLED (MISS IN THE AIR): falling in slow motion from z 38.2 (floor 0.0), g2.slow -> 1
+T_G2 t385 p0 EVENT chain.cancel
+RSQ_SlowMo: trigger grapple t385: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 385 16332
+G2P t385 service event: miss (tic 385) chain 0 kicks 3 lastkick 362 air 0 dj 0 mode 0
+G2P t385 service event: chain.end (tic 385) chain 0 kicks 3 lastkick 362 air 0 dj 0 mode 0
+G2P t385 service event: chain.cancel (tic 385) chain 0 kicks 3 lastkick 362 air 0 dj 0 mode 0
+G2P t385 track pos (-68.9 -300.0 38.2) vel (0.00 0.00 -1.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 41
+RSQ_SlowMo: trigger grapple t386: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 386 16378
+G2P t386 track pos (-68.9 -300.0 37.2) vel (0.00 0.00 -0.50) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 40
+G2P epoch 1794561056 16399
+RSQ_SlowMo: trigger grapple t387: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 387 16402
+G2P t387 track pos (-68.9 -300.0 36.7) vel (0.00 0.00 -0.56) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 39
+RSQ_SlowMo: trigger grapple t388: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 388 16422
+G2P t388 track pos (-68.9 -300.0 36.1) vel (0.00 0.00 -0.63) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 38
+RSQ_SlowMo: trigger grapple t389: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 389 16464
+G2P t389 track pos (-68.9 -300.0 35.5) vel (0.00 0.00 -0.69) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 37
+RSQ_SlowMo: trigger grapple t390: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 390 16487
+G2P t390 track pos (-68.9 -300.0 34.8) vel (0.00 0.00 -0.75) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 36
+RSQ_SlowMo: trigger grapple t391: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 391 16510
+G2P t391 track pos (-68.9 -300.0 34.1) vel (0.00 0.00 -0.81) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 35
+RSQ_SlowMo: trigger grapple t392: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 392 16530
+G2P t392 track pos (-68.9 -300.0 33.2) vel (0.00 0.00 -0.88) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 34
+RSQ_SlowMo: trigger grapple t393: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 393 16571
+G2P t393 track pos (-68.9 -300.0 32.4) vel (0.00 0.00 -0.94) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 33
+RSQ_SlowMo: trigger grapple t394: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 394 16595
+G2P t394 track pos (-68.9 -300.0 31.4) vel (0.00 0.00 -1.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 32
+RSQ_SlowMo: trigger grapple t395: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 395 16633
+G2P t395 track pos (-68.9 -300.0 30.4) vel (0.00 0.00 -1.06) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 31
+G2P epoch 1794561057 16654
+RSQ_SlowMo: trigger grapple t396: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 396 16657
+G2P t396 track pos (-68.9 -300.0 29.4) vel (0.00 0.00 -1.13) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 30
+RSQ_SlowMo: trigger grapple t397: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 397 16681
+G2P t397 track pos (-68.9 -300.0 28.2) vel (0.00 0.00 -1.19) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 29
+RSQ_SlowMo: trigger grapple t398: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 398 16704
+G2P t398 track pos (-68.9 -300.0 27.1) vel (0.00 0.00 -1.25) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 28
+RSQ_SlowMo: trigger grapple t399: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 399 16751
+G2P t399 track pos (-68.9 -300.0 25.8) vel (0.00 0.00 -1.31) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 27
+RSQ_SlowMo: trigger grapple t400: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 400 16771
+G2P t400 track pos (-68.9 -300.0 24.5) vel (0.00 0.00 -1.38) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 26
+RSQ_SlowMo: trigger grapple t401: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 401 16788
+G2P t401 track pos (-68.9 -300.0 23.1) vel (0.00 0.00 -1.44) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 25
+RSQ_SlowMo: trigger grapple t402: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 402 16828
+G2P t402 track pos (-68.9 -300.0 21.7) vel (0.00 0.00 -1.50) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 24
+RSQ_SlowMo: trigger grapple t403: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 403 16855
+G2P t403 track pos (-68.9 -300.0 20.2) vel (0.00 0.00 -1.56) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 23
+RSQ_SlowMo: trigger grapple t404: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 404 16875
+G2P t404 track pos (-68.9 -300.0 18.6) vel (0.00 0.00 -1.63) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 22
+G2P epoch 1794561058 16915
+RSQ_SlowMo: trigger grapple t405: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 405 16919
+G2P t405 track pos (-68.9 -300.0 17.0) vel (0.00 0.00 -1.69) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 21
+RSQ_SlowMo: trigger grapple t406: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 406 16943
+G2P t406 track pos (-68.9 -300.0 15.3) vel (0.00 0.00 -1.75) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 20
+RSQ_SlowMo: trigger grapple t407: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 407 16967
+G2P t407 track pos (-68.9 -300.0 13.6) vel (0.00 0.00 -1.81) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 19
+RSQ_SlowMo: trigger grapple t408: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 408 16990
+G2P t408 track pos (-68.9 -300.0 11.7) vel (0.00 0.00 -1.88) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 18
+RSQ_SlowMo: trigger grapple t409: merged 171 ms at 25% (automatic, own cooldown), pulse until t415, cause line "Chain Cancelled!"
+G2P clk 409 17037
+G2P t409 track pos (-68.9 -300.0 9.9) vel (0.00 0.00 -1.94) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t410: merged 171 ms at 25% (automatic, own cooldown), pulse until t416, cause line "Chain Cancelled!"
+G2P clk 410 17052
+G2P t410 track pos (-68.9 -300.0 7.9) vel (0.00 0.00 -2.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t411: merged 171 ms at 25% (automatic, own cooldown), pulse until t417, cause line "Chain Cancelled!"
+G2P clk 411 17074
+G2P t411 track pos (-68.9 -300.0 5.9) vel (0.00 0.00 -2.06) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t412: merged 171 ms at 25% (automatic, own cooldown), pulse until t418, cause line "Chain Cancelled!"
+G2P clk 412 17125
+G2P t412 track pos (-68.9 -300.0 3.9) vel (0.00 0.00 -2.13) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+G2P epoch 1794561059 17146
+T_G2 t413 p0 CHAIN CANCELLED fall over: landed at z 0.0; the slow ends in 6 tics
+G2P clk 413 17148
+G2P t413 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 16
+G2P clk 414 17166
+G2P t414 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 15
+G2P clk 415 17191
+G2P t415 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 14
+G2P clk 416 17223
+G2P t416 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 13
+G2P clk 417 17258
+G2P t417 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 12
+G2P clk 418 17274
+G2P t418 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 321 countdown 10
+G2P clk 419 17315
+G2P t419 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 392 countdown 9
+G2P clk 420 17334
+G2P t420 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 464 countdown 8
+G2P clk 421 17379
+G2P t421 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 535 countdown 7
+G2P epoch 1794561060 17395
+G2P clk 422 17397
+G2P t422 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 607 countdown 6
+G2P clk 423 17418
+G2P t423 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 678 countdown 5
+G2P clk 424 17457
+G2P t424 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 749 countdown 4
+G2P clk 425 17477
+G2P t425 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 821 countdown 3
+G2P clk 426 17513
+G2P t426 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 892 countdown 2
+G2P clk 427 17532
+G2P t427 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 964 countdown 1
+RSQ_SlowMo: trigger countdown t428: countdown bar: gone (real time)
+G2P clk 428 17564
+G2P t428 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 429 17604
+G2P t429 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 430 17619
+G2P t430 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561061 17656
+G2P clk 431 17659
+G2P t431 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 432 17678
+G2P t432 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 433 17720
+G2P t433 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 434 17742
+G2P t434 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 435 17764
+G2P t435 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 436 17806
+G2P t436 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 437 17824
+G2P t437 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 438 17863
+G2P t438 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 439 17882
+G2P t439 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561062 17923
+G2P clk 440 17927
+G2P t440 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 441 17948
+G2P t441 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 442 17964
+G2P t442 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 443 18002
+G2P t443 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 444 18022
+G2P t444 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 445 18058
+G2P t445 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 446 18074
+G2P t446 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 447 18126
+G2P t447 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561063 18145
+G2P clk 448 18148
+G2P t448 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 449 18169
+G2P t449 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 450 18192
+G2P t450 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 451 18229
+G2P t451 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 452 18244
+G2P t452 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 453 18276
+G2P t453 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 454 18311
+G2P t454 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 455 18330
+G2P t455 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 456 18367
+G2P t456 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561064 18405
+G2P clk 457 18408
+G2P t457 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 458 18425
+G2P t458 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 459 18459
+G2P t459 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 460 18474
+G2P t460 track pos (-68.9 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 461 18504
+G2P clk 462 18536
+G2P clk 463 18569
+G2P clk 464 18587
+G2P clk 465 18625
+G2P epoch 1794561065 18653
+G2P clk 466 18655
+G2P clk 467 18688
+G2P clk 468 18702
+G2P clk 469 18736
+G2P clk 470 18780
+G2P clk 471 18801
+G2P clk 472 18817
+G2P clk 473 18852
+G2P clk 474 18884
+G2P epoch 1794561066 18899
+G2P clk 475 18901
+G2P clk 476 18936
+G2P clk 477 18970
+G2P clk 478 18999
+G2P clk 479 19015
+G2P clk 480 19047
+G2P clk 481 19084
+G2P clk 482 19103
+G2P clk 483 19136
+G2P epoch 1794561067 19173
+G2P clk 484 19176
+G2P clk 485 19197
+G2P clk 486 19219
+G2P clk 487 19257
+G2P clk 488 19273
+G2P clk 489 19311
+G2P clk 490 19343
+G2P clk 491 19359
+G2P clk 492 19391
+G2P epoch 1794561068 19429
+G2P clk 493 19431
+G2P clk 494 19451
+G2P clk 495 19497
+G2P clk 496 19519
+G2P clk 497 19541
+G2P clk 498 19574
+G2P clk 499 19588
+G2P clk 500 19617
+G2P epoch 1794561069 19649
+G6_C_CANCEL
+G2P clk 501 19652
+G2P t502 ask: chain 0 best 2 kicks 3 lastkick 362 mode 0 events 15 last kick event tic 362; old names: hooked -1 swinging -1 xp.bites -1
+G2P   tag 11 RS_CommonBaron kicked 100 yanked -1 spiked -1 by 0
+G2P   tag 12 RS_CommonCybie kicked 134 yanked -1 spiked -1 by 0
+G2P   tag 13 RS_CommonBaron kicked 362 yanked -1 spiked -1 by 0
+G2P t502 tag 11 RS_CommonBaron at (-128 -170 0) hp -99063 dist 143 vel (0.0 0.0 0.0) state -
+G2P t502 tag 12 RS_CommonCybie at (-491 192 -0) hp -97175 dist 648 vel (0.0 0.0 0.5) state -
+G2P t502 tag 13 RS_CommonBaron at (3 -300 -0) hp 819 dist 72 vel (0.0 0.0 0.4) state -
+G2P t502 player at (-69 -300 0)
+G2P t502 killall 1
+G2P clk 502 19678
+G2P clk 503 19704
+G2P clk 504 19743
+G2P clk 505 19764
+G2P clk 506 19803
+G2P clk 507 19820
+G2P clk 508 19849
+G2P clk 509 19888
+G2P epoch 1794561070 19905
+G2P clk 510 19907
+G2P clk 511 19943
+G2P clk 512 19963
+G2P clk 513 19996
+G2P clk 514 20028
+G2P clk 515 20046
+G2P clk 516 20087
+G2P clk 517 20104
+G2P clk 518 20134
+G2P epoch 1794561071 20164
+G2P clk 519 20167
+G2P clk 520 20196
+G2P clk 521 20227
+G2P clk 522 20257
+G2P clk 523 20276
+G2P clk 524 20307
+G2P clk 525 20340
+G2P clk 526 20370
+G2P epoch 1794561072 20400
+G2P clk 527 20402
+G2P clk 528 20417
+G2P clk 529 20452
+G2P clk 530 20487
+G2P clk 531 20510
+G2P t532 teleport to (-400 -300 0) angle 0
+G2P t532 spawn tag 15 BaronOfHell -> RS_CommonBaron at (0 -300 -0) mass 1000 boss 0 hp 1000 radius 24 height 64
+G2P t532 spawn tag 16 Cyberdemon -> RS_CommonCybie at (-600 260 -0) mass 1000 boss 1 hp 4000 radius 40 height 110
+G2P clk 532 20545
+G2P clk 533 20566
+G2P clk 534 20597
+G2P clk 535 20631
+G2P epoch 1794561073 20649
+G2P clk 536 20652
+G2P clk 537 20691
+G2P clk 538 20714
+G2P clk 539 20731
+G2P clk 540 20764
+G2P clk 541 20796
+G2P armed 3: fire on event 1 #1 +7 tics -> tag 16 offset 0.0
+G2P armed 4: fire on event 7 #1 +5 tics
+T_G2 t542 p0 FIRE claw #5 from (-390 -292 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780
+T_G2 t542 p0 claw #5 tic 1 at (-350.0 -291.5 37.0), flown 40.0: flying
+G2P clk 542 20828
+G2P t542 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t542 p0 claw #5 chain: 15 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t543 p0 claw #5 tic 2 at (-310.0 -291.5 37.0), flown 80.0: flying
+G2P clk 543 20845
+G2P t543 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t543 p0 claw #5 chain: 39 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t544 p0 claw #5 tic 3 at (-270.0 -291.5 37.0), flown 120.0: flying
+G2P clk 544 20878
+G2P t544 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t544 p0 claw #5 chain: 63 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561074 20911
+T_G2 t545 p0 claw #5 tic 4 at (-230.0 -291.5 37.0), flown 160.0: flying
+G2P clk 545 20914
+G2P t545 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t545 p0 claw #5 chain: 87 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t546 p0 claw #5 tic 5 at (-190.0 -291.5 37.0), flown 200.0: flying
+G2P clk 546 20930
+G2P t546 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t546 p0 claw #5 chain: 111 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t547 p0 claw #5 tic 6 at (-150.0 -291.5 37.0), flown 240.0: flying
+G2P clk 547 20959
+G2P t547 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t547 p0 claw #5 chain: 135 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t548 p0 claw #5 tic 7 at (-110.0 -291.5 37.0), flown 280.0: flying
+G2P clk 548 20991
+G2P t548 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t548 p0 claw #5 chain: 159 links 1.67 apart, ripple 1.04, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t549 p0 claw #5 tic 8 at (-70.0 -291.5 37.0), flown 320.0: flying
+G2P clk 549 21020
+G2P t549 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t549 p0 claw #5 chain: 183 links 1.67 apart, ripple 0.92, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t550 p0 claw #5 tic 9 at (-31.8 -291.5 37.0), flown 358.2: BITES RS_CommonBaron
+T_G2 t550 p0 bite RS_CommonBaron after 9 tics, 358 units out (mass 1102, boss 0, dormant 0, baron 1) -> HEAVY: you go to it
+T_G2 t550 p0 EVENT bite.heavy RS_CommonBaron
+T_G2 t550 p0 PULL to RS_CommonBaron: 359 units at 29.9 a tic
+G2P clk 550 21048
+G2P t550 service event: bite.heavy (tic 550) chain 0 kicks 3 lastkick 362 air 0 dj 0 mode 5
+G2P t550 track pos (-400.0 -300.0 0.0) vel (29.92 0.00 0.74) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 551 21075
+G2P t551 track pos (-370.1 -300.0 0.0) vel (29.92 0.00 0.81) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 552 21106
+G2P t552 track pos (-340.2 -300.0 0.0) vel (29.92 0.00 0.89) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 553 21132
+G2P t553 track pos (-310.2 -300.0 0.0) vel (29.92 0.00 0.99) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561075 21156
+G2P clk 554 21158
+G2P t554 track pos (-280.3 -300.0 0.0) vel (29.91 0.00 1.11) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 555 21197
+G2P t555 track pos (-250.4 -300.0 0.0) vel (29.90 0.00 1.27) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 556 21224
+G2P t556 track pos (-220.5 -300.0 0.0) vel (29.90 0.00 1.48) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 557 21249
+G2P t557 track pos (-190.6 -300.0 0.0) vel (29.88 0.00 1.78) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 558 21273
+G2P t558 track pos (-160.7 -300.0 0.0) vel (29.85 0.00 2.22) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 559 21312
+G2P t559 track pos (-130.9 -300.0 2.2) vel (29.85 0.00 2.22) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P clk 560 21342
+G2P t560 track pos (-101.0 -300.0 4.4) vel (29.85 0.00 2.22) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P clk 561 21360
+G2P t561 track pos (-71.2 -300.0 6.7) vel (29.85 0.00 2.22) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t562 p0 pull arrived after 13 tics (0 units from its face)
+T_G2 t562 p0 DIZZY: RS_CommonBaron stunned 53 tics, RSQ Melee's chicks and stars -> 1
+RSQ_SlowMo: trigger grapple t562: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t562: started 1514 ms at 25% (automatic, own cooldown), pulse until t615, cause line "KICK!"
+T_G2 t562 p0 KICK 1: RS_CommonBaron health 1102 -> 1072 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK!" -> 1, slow 53 tics -> 1
+T_G2 t562 p0 EVENT kick RS_CommonBaron
+T_G2 t562 p0 KICK-OFF: out (-1.00 0.00) at 8, up 42.5 of 42.5 units (room 445.1), vel.z 9.22
+G2P clk 562 21395
+G2P t562 service event: kick (tic 562) chain 1 kicks 4 lastkick 562 air 1 dj 1 mode 0
+G2P t562 armed fire 3 (on kick #1) goes at t569
+G2P t562 track pos (-41.3 -300.0 8.9) vel (-8.00 0.00 9.22) floor 0 ceil 512 onground 0 | slowmo scale 809 countdown 64
+G2P epoch 1794561076 21427
+G2P clk 563 21429
+G2P t563 track pos (-49.3 -300.0 18.1) vel (-8.00 0.00 8.22) floor 0 ceil 512 onground 0 | slowmo scale 619 countdown 63
+G2P clk 564 21454
+G2P t564 track pos (-57.3 -300.0 26.3) vel (-8.00 0.00 7.22) floor 0 ceil 512 onground 0 | slowmo scale 428 countdown 62
+G2P clk 565 21483
+G2P t565 track pos (-65.3 -300.0 33.5) vel (-8.00 0.00 6.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+G2P clk 566 21507
+G2P t566 track pos (-73.3 -300.0 39.8) vel (-8.00 0.00 5.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+G2P clk 567 21533
+G2P t567 track pos (-81.3 -300.0 45.0) vel (-8.00 0.00 4.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 59
+G2P clk 568 21563
+G2P t568 track pos (-89.3 -300.0 49.2) vel (-8.00 0.00 3.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 58
+G2P clk 569 21595
+G2P t569 fire at armed tag 16 RS_CommonCybie (-600 260 60) from hand (-87 -292 85) yaw 132.9 (offset 0.0) pitch -2.2
+G2P t569 track pos (-97.3 -300.0 52.4) vel (-8.00 0.00 2.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 57
+T_G2 t570 p0 aim assist: no marked monster near your line: the claw flies where you aim
+T_G2 t570 p0 FIRE claw #6 from (-95 -292 87) dir (-0.68 0.73 -0.03) in the air: flies 40 a tic out to 780
+T_G2 t570 p0 HANG: fired in the air in kick-chain 1: you hang at z 54.6 until claw #6 bites
+T_G2 t570 p0 EVENT hang
+T_G2 t570 p0 claw #6 tic 1 at (-122.5 -262.2 85.4), flown 40.0: flying
+T_G2 t570 p0 HANG tic 0: z 54.64 (held at 54.64), vel (0.00 0.00 0.00), waiting for the bite
+G2P clk 570 21626
+G2P t570 service event: hang (tic 570) chain 1 kicks 4 lastkick 562 air 1 dj 1 mode 0
+G2P t570 armed fire 4 (on hang #1) goes at t575
+G2P t570 track pos (-105.3 -300.0 54.6) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 56
+T_G2 t570 p0 claw #6 chain: 16 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561077 21650
+T_G2 t571 p0 claw #6 tic 2 at (-149.8 -232.9 84.1), flown 80.0: flying
+T_G2 t571 p0 HANG tic 1: z 54.64 (held at 54.64), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 571 21652
+G2P t571 track pos (-105.3 -300.0 54.6) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 55
+T_G2 t571 p0 claw #6 chain: 40 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t572 p0 claw #6 tic 3 at (-177.0 -203.6 82.8), flown 120.0: flying
+T_G2 t572 p0 HANG tic 2: z 54.64 (held at 54.64), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 572 21677
+G2P t572 track pos (-105.3 -300.0 54.6) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 54
+T_G2 t572 p0 claw #6 chain: 64 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t573 p0 claw #6 tic 4 at (-204.2 -174.4 81.5), flown 160.0: flying
+T_G2 t573 p0 HANG tic 3: z 54.64 (held at 54.64), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 573 21704
+G2P t573 track pos (-105.3 -300.0 54.6) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 53
+T_G2 t573 p0 claw #6 chain: 88 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t574 p0 claw #6 tic 5 at (-231.4 -145.1 80.2), flown 200.0: flying
+T_G2 t574 p0 HANG tic 4: z 54.64 (held at 54.64), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 574 21730
+G2P t574 track pos (-105.3 -300.0 54.6) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 52
+T_G2 t574 p0 claw #6 chain: 112 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t575 p0 claw #6 tic 6 at (-258.6 -115.8 79.0), flown 240.0: flying
+T_G2 t575 p0 HANG tic 5: z 54.64 (held at 54.64), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 575 21770
+G2P t575 armed fire along yaw 90.0 pitch 0.0 from hand (-95 -292 91)
+G2P t575 track pos (-105.3 -300.0 54.6) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 51
+T_G2 t575 p0 claw #6 chain: 136 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t576 p0 HANG over: a press while hanging (after 6 tics): 1 claw reeled in, you fall from z 54.6
+T_G2 t576 p0 CANCEL PRESS: the kick-chain ends at 1
+T_G2 t576 p0 EVENT chain.end
+RSQ_SlowMo: trigger grapple t576: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+T_G2 t576 p0 CHAIN CANCELLED (CANCEL PRESS): falling in slow motion from z 54.6 (floor 0.0), g2.slow -> 1
+T_G2 t576 p0 EVENT chain.cancel
+RSQ_SlowMo: trigger grapple t576: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 576 21789
+G2P t576 service event: chain.end (tic 576) chain 0 kicks 4 lastkick 562 air 0 dj 0 mode 0
+G2P t576 service event: chain.cancel (tic 576) chain 0 kicks 4 lastkick 562 air 0 dj 0 mode 0
+G2P t576 track pos (-105.3 -300.0 54.6) vel (0.00 0.00 -1.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 50
+RSQ_SlowMo: trigger grapple t577: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 577 21825
+G2P t577 track pos (-105.3 -300.0 53.6) vel (0.00 0.00 -0.50) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 49
+RSQ_SlowMo: trigger grapple t578: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 578 21853
+G2P t578 track pos (-105.3 -300.0 53.1) vel (0.00 0.00 -0.56) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 48
+RSQ_SlowMo: trigger grapple t579: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 579 21890
+G2P t579 track pos (-105.3 -300.0 52.6) vel (0.00 0.00 -0.63) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 47
+G2P epoch 1794561078 21906
+RSQ_SlowMo: trigger grapple t580: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 580 21908
+G2P t580 track pos (-105.3 -300.0 51.9) vel (0.00 0.00 -0.69) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 46
+RSQ_SlowMo: trigger grapple t581: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 581 21944
+G2P t581 track pos (-105.3 -300.0 51.3) vel (0.00 0.00 -0.75) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 45
+RSQ_SlowMo: trigger grapple t582: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 582 21963
+G2P t582 track pos (-105.3 -300.0 50.5) vel (0.00 0.00 -0.81) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 44
+RSQ_SlowMo: trigger grapple t583: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 583 22000
+G2P t583 track pos (-105.3 -300.0 49.7) vel (0.00 0.00 -0.88) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 43
+RSQ_SlowMo: trigger grapple t584: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 584 22027
+G2P t584 track pos (-105.3 -300.0 48.8) vel (0.00 0.00 -0.94) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 42
+RSQ_SlowMo: trigger grapple t585: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 585 22054
+G2P t585 track pos (-105.3 -300.0 47.9) vel (0.00 0.00 -1.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 41
+RSQ_SlowMo: trigger grapple t586: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 586 22085
+G2P t586 track pos (-105.3 -300.0 46.9) vel (0.00 0.00 -1.06) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 40
+RSQ_SlowMo: trigger grapple t587: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 587 22111
+G2P t587 track pos (-105.3 -300.0 45.8) vel (0.00 0.00 -1.13) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 39
+RSQ_SlowMo: trigger grapple t588: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 588 22137
+G2P t588 track pos (-105.3 -300.0 44.7) vel (0.00 0.00 -1.19) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 38
+G2P epoch 1794561079 22159
+RSQ_SlowMo: trigger grapple t589: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 589 22161
+G2P t589 track pos (-105.3 -300.0 43.5) vel (0.00 0.00 -1.25) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 37
+RSQ_SlowMo: trigger grapple t590: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 590 22198
+G2P t590 track pos (-105.3 -300.0 42.3) vel (0.00 0.00 -1.31) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 36
+RSQ_SlowMo: trigger grapple t591: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 591 22222
+G2P t591 track pos (-105.3 -300.0 40.9) vel (0.00 0.00 -1.38) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 35
+RSQ_SlowMo: trigger grapple t592: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 592 22247
+G2P t592 track pos (-105.3 -300.0 39.6) vel (0.00 0.00 -1.44) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 34
+RSQ_SlowMo: trigger grapple t593: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 593 22273
+G2P t593 track pos (-105.3 -300.0 38.1) vel (0.00 0.00 -1.50) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 33
+RSQ_SlowMo: trigger grapple t594: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 594 22314
+G2P t594 track pos (-105.3 -300.0 36.6) vel (0.00 0.00 -1.56) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 32
+RSQ_SlowMo: trigger grapple t595: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 595 22339
+G2P t595 track pos (-105.3 -300.0 35.1) vel (0.00 0.00 -1.63) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 31
+RSQ_SlowMo: trigger grapple t596: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 596 22370
+G2P t596 track pos (-105.3 -300.0 33.4) vel (0.00 0.00 -1.69) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 30
+G2P epoch 1794561080 22399
+RSQ_SlowMo: trigger grapple t597: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 597 22402
+G2P t597 track pos (-105.3 -300.0 31.8) vel (0.00 0.00 -1.75) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 29
+RSQ_SlowMo: trigger grapple t598: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 598 22416
+G2P t598 track pos (-105.3 -300.0 30.0) vel (0.00 0.00 -1.81) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 28
+RSQ_SlowMo: trigger grapple t599: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 599 22455
+G2P t599 track pos (-105.3 -300.0 28.2) vel (0.00 0.00 -1.88) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 27
+RSQ_SlowMo: trigger grapple t600: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 600 22481
+G2P t600 track pos (-105.3 -300.0 26.3) vel (0.00 0.00 -1.94) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 26
+RSQ_SlowMo: trigger grapple t601: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 601 22510
+G2P t601 track pos (-105.3 -300.0 24.4) vel (0.00 0.00 -2.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 25
+RSQ_SlowMo: trigger grapple t602: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 602 22538
+G2P t602 track pos (-105.3 -300.0 22.4) vel (0.00 0.00 -2.06) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 24
+RSQ_SlowMo: trigger grapple t603: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 603 22566
+G2P t603 track pos (-105.3 -300.0 20.3) vel (0.00 0.00 -2.13) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 23
+RSQ_SlowMo: trigger grapple t604: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 604 22594
+G2P t604 track pos (-105.3 -300.0 18.2) vel (0.00 0.00 -2.19) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 22
+RSQ_SlowMo: trigger grapple t605: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 605 22621
+G2P t605 track pos (-105.3 -300.0 16.0) vel (0.00 0.00 -2.25) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 21
+G2P epoch 1794561081 22643
+RSQ_SlowMo: trigger grapple t606: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 606 22646
+G2P t606 track pos (-105.3 -300.0 13.8) vel (0.00 0.00 -2.31) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 20
+RSQ_SlowMo: trigger grapple t607: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 607 22674
+G2P t607 track pos (-105.3 -300.0 11.4) vel (0.00 0.00 -2.38) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 19
+RSQ_SlowMo: trigger grapple t608: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 608 22708
+G2P t608 track pos (-105.3 -300.0 9.1) vel (0.00 0.00 -2.44) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 18
+RSQ_SlowMo: trigger grapple t609: merged 171 ms at 25% (automatic, own cooldown), pulse until t615, cause line "Chain Cancelled!"
+G2P clk 609 22732
+G2P t609 track pos (-105.3 -300.0 6.6) vel (0.00 0.00 -2.50) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t610: merged 171 ms at 25% (automatic, own cooldown), pulse until t616, cause line "Chain Cancelled!"
+G2P clk 610 22769
+G2P t610 track pos (-105.3 -300.0 4.1) vel (0.00 0.00 -2.56) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+T_G2 t611 p0 CHAIN CANCELLED fall over: landed at z 0.0; the slow ends in 6 tics
+G2P clk 611 22795
+G2P t611 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 16
+G2P clk 612 22822
+G2P t612 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 15
+G2P clk 613 22850
+G2P t613 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 14
+G2P clk 614 22877
+G2P t614 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 13
+G2P epoch 1794561082 22912
+G2P clk 615 22914
+G2P t615 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 12
+G2P clk 616 22939
+G2P t616 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 321 countdown 10
+G2P clk 617 22964
+G2P t617 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 392 countdown 9
+G2P clk 618 22994
+G2P t618 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 464 countdown 8
+G2P clk 619 23023
+G2P t619 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 535 countdown 7
+G2P clk 620 23047
+G2P t620 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 607 countdown 6
+G2P clk 621 23084
+G2P t621 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 678 countdown 5
+G2P clk 622 23112
+G2P t622 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 749 countdown 4
+G2P clk 623 23142
+G2P t623 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 821 countdown 3
+G2P epoch 1794561083 23165
+G2P clk 624 23167
+G2P t624 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 892 countdown 2
+G2P clk 625 23191
+G2P t625 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 964 countdown 1
+RSQ_SlowMo: trigger countdown t626: countdown bar: gone (real time)
+G2P clk 626 23216
+G2P t626 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 627 23249
+G2P t627 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 628 23282
+G2P t628 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 629 23305
+G2P t629 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 630 23339
+G2P t630 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 631 23362
+G2P t631 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561084 23394
+G2P clk 632 23396
+G2P t632 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 633 23420
+G2P t633 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 634 23444
+G2P t634 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 635 23479
+G2P t635 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 636 23501
+G2P t636 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 637 23536
+G2P t637 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 638 23560
+G2P t638 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 639 23598
+G2P t639 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 640 23625
+G2P t640 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561085 23649
+G2P clk 641 23651
+G2P t641 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 642 23683
+G2P t642 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 643 23709
+G2P t643 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 644 23735
+G2P t644 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 645 23759
+G2P t645 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 646 23794
+G2P t646 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 647 23827
+G2P t647 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 648 23859
+G2P t648 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 649 23877
+G2P t649 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561086 23910
+G2P clk 650 23912
+G2P t650 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 651 23940
+G2P t651 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 652 23969
+G2P t652 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 653 23999
+G2P t653 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 654 24025
+G2P t654 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 655 24059
+G2P t655 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 656 24075
+G2P t656 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 657 24111
+G2P t657 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 658 24135
+G2P t658 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561087 24158
+G2P clk 659 24160
+G2P t659 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 660 24202
+G2P t660 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 661 24217
+G2P t661 track pos (-105.3 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 662 24260
+G2P clk 663 24277
+G2P clk 664 24304
+G2P clk 665 24329
+G2P clk 666 24372
+G2P epoch 1794561088 24398
+G2P clk 667 24401
+G2P clk 668 24417
+G2P clk 669 24446
+G2P clk 670 24480
+G2P clk 671 24504
+G2P clk 672 24541
+G2P clk 673 24564
+G2P clk 674 24590
+G2P clk 675 24626
+G2P epoch 1794561089 24652
+G2P clk 676 24654
+G2P clk 677 24680
+G2P clk 678 24705
+G2P clk 679 24730
+G2P clk 680 24769
+G2P clk 681 24794
+G2P clk 682 24817
+G2P clk 683 24853
+G2P clk 684 24878
+G2P epoch 1794561090 24899
+G2P clk 685 24901
+G2P clk 686 24932
+G2P clk 687 24966
+G2P clk 688 24999
+G2P clk 689 25016
+G2P clk 690 25047
+G2P clk 691 25078
+G2P clk 692 25103
+G2P clk 693 25142
+G2P epoch 1794561091 25165
+G2P clk 694 25167
+G2P clk 695 25194
+G2P clk 696 25229
+G2P clk 697 25246
+G2P clk 698 25280
+G2P clk 699 25304
+G2P clk 700 25333
+G2P clk 701 25364
+G6_D_NODJ_NOSNAP
+G2P clk 702 25394
+G2P t703 ask: chain 0 best 2 kicks 4 lastkick 562 mode 0 events 20 last kick event tic 562; old names: hooked -1 swinging -1 xp.bites -1
+G2P   tag 11 RS_CommonBaron kicked 100 yanked -1 spiked -1 by 0
+G2P   tag 12 RS_CommonCybie kicked 134 yanked -1 spiked -1 by 0
+G2P   tag 13 RS_CommonBaron kicked 362 yanked -1 spiked -1 by 0
+G2P   tag 15 RS_CommonBaron kicked 562 yanked -1 spiked -1 by 0
+G2P   tag 16 RS_CommonCybie kicked -1 yanked -1 spiked -1 by -1
+G2P t703 tag 11 RS_CommonBaron at (-128 -170 0) hp -99063 dist 132 vel (0.0 0.0 0.0) state -
+G2P t703 tag 12 RS_CommonCybie at (-491 192 -0) hp -97175 dist 625 vel (0.0 0.0 0.5) state -
+G2P t703 tag 13 RS_CommonBaron at (3 -300 -0) hp -99181 dist 108 vel (0.0 0.0 0.0) state -
+G2P t703 tag 15 RS_CommonBaron at (2 -300 -0) hp 1072 dist 107 vel (0.0 0.0 0.3) state -
+G2P t703 tag 16 RS_CommonCybie at (-600 260 -0) hp 4445 dist 747 vel (0.0 0.0 0.0) state -
+G2P t703 player at (-105 -300 0)
+G2P t703 killall 2
+G2P epoch 1794561092 25434
+G2P clk 703 25437
+G2P epoch 1794561093 25673
+G2P clk 704 25676
+G2P clk 705 25865
+G2P epoch 1794561094 25980
+G2P clk 706 25982
+G2P clk 707 26068
+G2P clk 708 26133
+G2P epoch 1794561095 26188
+G2P clk 709 26190
+G2P clk 710 26239
+G2P clk 711 26284
+G2P clk 712 26321
+G2P clk 713 26373
+G2P epoch 1794561096 26406
+G2P clk 714 26409
+G2P clk 715 26441
+G2P clk 716 26468
+G2P clk 717 26490
+G2P clk 718 26509
+G2P clk 719 26526
+G2P clk 720 26541
+G2P clk 721 26555
+G2P clk 722 26567
+G2P clk 723 26580
+G2P clk 724 26592
+G2P clk 725 26604
+G2P clk 726 26615
+G2P clk 727 26627
+G2P clk 728 26638
+G2P epoch 1794561097 26649
+G2P clk 729 26653
+G2P clk 730 26683
+G2P clk 731 26695
+G2P clk 732 26706
+G2P clk 733 26719
+G2P clk 734 26730
+G2P clk 735 26746
+G2P clk 736 26759
+G2P clk 737 26775
+G2P clk 738 26787
+G2P clk 739 26803
+G2P clk 740 26815
+G2P t741 teleport to (-400 -300 0) angle 0
+G2P t741 spawn tag 17 BaronOfHell -> RS_CommonBaron at (0 -300 -0) mass 1000 boss 0 hp 1000 radius 24 height 64
+G2P t741 spawn tag 18 Cyberdemon -> RS_CommonCybie at (-500 200 -0) mass 1000 boss 1 hp 4000 radius 40 height 110
+G2P clk 741 26841
+G2P clk 742 26852
+G2P clk 743 26866
+G2P clk 744 26878
+G2P clk 745 26888
+G2P armed 6: fire on event 1 #1 +7 tics -> tag 18 offset 6.0
+T_G2 t746 p0 FIRE claw #7 from (-390 -292 37) dir (1.00 0.00 0.00) on the ground: flies 40 a tic out to 780
+G2P epoch 1794561098 26911
+T_G2 t746 p0 claw #7 tic 1 at (-349.8 -291.5 36.8), flown 40.0: flying
+G2P clk 746 26913
+G2P t746 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t746 p0 claw #7 chain: 16 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t747 p0 claw #7 tic 2 at (-309.8 -291.5 36.8), flown 80.0: flying
+G2P clk 747 26923
+G2P t747 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t747 p0 claw #7 chain: 40 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t748 p0 claw #7 tic 3 at (-269.8 -291.5 36.8), flown 120.0: flying
+G2P clk 748 26931
+G2P t748 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t748 p0 claw #7 chain: 64 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t749 p0 claw #7 tic 4 at (-229.8 -291.5 36.8), flown 160.0: flying
+G2P clk 749 26954
+G2P t749 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t749 p0 claw #7 chain: 88 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t750 p0 claw #7 tic 5 at (-189.8 -291.5 36.8), flown 200.0: flying
+G2P clk 750 26977
+G2P t750 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t750 p0 claw #7 chain: 112 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t751 p0 claw #7 tic 6 at (-149.8 -291.5 36.8), flown 240.0: flying
+G2P clk 751 27012
+G2P t751 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t751 p0 claw #7 chain: 136 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t752 p0 claw #7 tic 7 at (-109.8 -291.5 36.8), flown 280.0: flying
+G2P clk 752 27043
+G2P t752 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t752 p0 claw #7 chain: 160 links 1.67 apart, ripple 1.04, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t753 p0 claw #7 tic 8 at (-69.8 -291.5 36.8), flown 320.0: flying
+G2P clk 753 27074
+G2P t753 track pos (-400.0 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t753 p0 claw #7 chain: 184 links 1.67 apart, ripple 0.92, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t754 p0 claw #7 tic 9 at (-33.4 -291.5 36.8), flown 356.3: BITES RS_CommonBaron
+T_G2 t754 p0 bite RS_CommonBaron after 9 tics, 356 units out (mass 835, boss 0, dormant 0, baron 1) -> HEAVY: you go to it
+T_G2 t754 p0 EVENT bite.heavy RS_CommonBaron
+T_G2 t754 p0 PULL to RS_CommonBaron: 358 units at 29.8 a tic
+G2P clk 754 27080
+G2P t754 service event: bite.heavy (tic 754) chain 0 kicks 4 lastkick 562 air 0 dj 0 mode 5
+G2P t754 track pos (-400.0 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 755 27102
+G2P t755 track pos (-370.2 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 756 27142
+G2P t756 track pos (-340.4 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561099 27165
+G2P clk 757 27167
+G2P t757 track pos (-310.6 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 758 27187
+G2P t758 track pos (-280.8 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 759 27228
+G2P t759 track pos (-251.0 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 760 27249
+G2P t760 track pos (-221.2 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 761 27274
+G2P t761 track pos (-191.5 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 762 27312
+G2P t762 track pos (-161.7 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 763 27330
+G2P t763 track pos (-131.9 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 764 27365
+G2P t764 track pos (-102.1 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561100 27398
+G2P clk 765 27401
+G2P t765 track pos (-72.3 -300.0 0.0) vel (29.79 0.00 -0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t766 p0 pull arrived after 13 tics (0 units from its face)
+T_G2 t766 p0 DIZZY: RS_CommonBaron stunned 53 tics, RSQ Melee's chicks and stars -> 1
+RSQ_SlowMo: trigger grapple t766: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t766: started 1514 ms at 25% (automatic, own cooldown), pulse until t819, cause line "KICK!"
+T_G2 t766 p0 KICK 1: RS_CommonBaron health 835 -> 805 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK!" -> 1, slow 53 tics -> 1
+T_G2 t766 p0 EVENT kick RS_CommonBaron
+T_G2 t766 p0 KICK-OFF: out (-1.00 0.00) at 8, up 42.5 of 42.5 units (room 454.0), vel.z 9.22
+G2P clk 766 27417
+G2P t766 service event: kick (tic 766) chain 1 kicks 5 lastkick 766 air 1 dj 1 mode 0
+G2P t766 armed fire 6 (on kick #1) goes at t773
+G2P t766 track pos (-42.5 -300.0 0.0) vel (-8.00 0.00 9.22) floor 0 ceil 512 onground 1 | slowmo scale 809 countdown 64
+G2P clk 767 27452
+G2P t767 track pos (-50.5 -300.0 9.2) vel (-7.25 0.00 8.22) floor 0 ceil 512 onground 0 | slowmo scale 619 countdown 63
+G2P clk 768 27485
+G2P t768 track pos (-57.7 -300.0 17.4) vel (-7.25 0.00 7.22) floor 0 ceil 512 onground 0 | slowmo scale 428 countdown 62
+G2P clk 769 27502
+G2P t769 track pos (-65.0 -300.0 24.7) vel (-7.25 0.00 6.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+G2P clk 770 27542
+G2P t770 track pos (-72.2 -300.0 30.9) vel (-7.25 0.00 5.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+G2P clk 771 27560
+G2P t771 track pos (-79.5 -300.0 36.1) vel (-7.25 0.00 4.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 59
+G2P clk 772 27594
+G2P t772 track pos (-86.7 -300.0 40.3) vel (-7.25 0.00 3.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 58
+G2P clk 773 27620
+G2P t773 fire at armed tag 18 RS_CommonCybie (-500 200 49) from hand (-84 -292 74) yaw 136.3 (offset 6.0) pitch -2.7
+G2P t773 track pos (-94.0 -300.0 43.5) vel (-7.25 0.00 2.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 57
+T_G2 t774 p0 aim assist: no marked monster near your line: the claw flies where you aim
+T_G2 t774 p0 FIRE claw #8 from (-91 -292 76) dir (-0.72 0.69 -0.04) in the air: flies 40 a tic out to 780
+T_G2 t774 p0 HANG: fired in the air in kick-chain 1: you hang at z 45.8 until claw #8 bites
+T_G2 t774 p0 EVENT hang
+G2P epoch 1794561101 27662
+T_G2 t774 p0 claw #8 tic 1 at (-120.1 -263.9 74.7), flown 40.0: flying
+T_G2 t774 p0 HANG tic 0: z 45.76 (held at 45.76), vel (0.00 0.00 0.00), waiting for the bite
+G2P clk 774 27665
+G2P t774 service event: hang (tic 774) chain 1 kicks 5 lastkick 766 air 1 dj 1 mode 0
+G2P t774 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 56
+T_G2 t774 p0 claw #8 chain: 16 links 1.67 apart, ripple 2.21, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t775 p0 claw #8 tic 2 at (-149.0 -236.3 73.1), flown 80.0: flying
+T_G2 t775 p0 HANG tic 1: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 775 27684
+G2P t775 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 55
+T_G2 t775 p0 claw #8 chain: 40 links 1.67 apart, ripple 1.95, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t776 p0 claw #8 tic 3 at (-177.9 -208.7 71.5), flown 120.0: flying
+T_G2 t776 p0 HANG tic 2: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 776 27702
+G2P t776 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 54
+T_G2 t776 p0 claw #8 chain: 64 links 1.67 apart, ripple 1.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t777 p0 claw #8 tic 4 at (-206.8 -181.0 70.0), flown 160.0: flying
+T_G2 t777 p0 HANG tic 3: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 777 27740
+G2P t777 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 53
+T_G2 t777 p0 claw #8 chain: 88 links 1.67 apart, ripple 1.52, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t778 p0 claw #8 tic 5 at (-235.7 -153.4 68.4), flown 200.0: flying
+T_G2 t778 p0 HANG tic 4: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 778 27780
+G2P t778 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 52
+T_G2 t778 p0 claw #8 chain: 112 links 1.67 apart, ripple 1.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t779 p0 claw #8 tic 6 at (-264.6 -125.8 66.8), flown 240.0: flying
+T_G2 t779 p0 HANG tic 5: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 779 27805
+G2P t779 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 51
+T_G2 t779 p0 claw #8 chain: 136 links 1.67 apart, ripple 1.18, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t780 p0 claw #8 tic 7 at (-293.5 -98.2 65.3), flown 280.0: flying
+T_G2 t780 p0 HANG tic 6: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 780 27830
+G2P t780 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 50
+T_G2 t780 p0 claw #8 chain: 160 links 1.67 apart, ripple 1.04, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t781 p0 claw #8 tic 8 at (-322.4 -70.6 63.7), flown 320.0: flying
+T_G2 t781 p0 HANG tic 7: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 781 27849
+G2P t781 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 49
+T_G2 t781 p0 claw #8 chain: 184 links 1.67 apart, ripple 0.92, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t782 p0 claw #8 tic 9 at (-351.3 -43.0 62.1), flown 360.0: flying
+T_G2 t782 p0 HANG tic 8: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 782 27881
+G2P t782 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 48
+T_G2 t782 p0 claw #8 chain: 208 links 1.67 apart, ripple 0.81, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561102 27899
+T_G2 t783 p0 claw #8 tic 10 at (-380.2 -15.4 60.5), flown 400.0: flying
+T_G2 t783 p0 HANG tic 9: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 783 27902
+G2P t783 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 47
+T_G2 t783 p0 claw #8 chain: 232 links 1.67 apart, ripple 0.72, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t784 p0 claw #8 tic 11 at (-409.1 12.3 59.0), flown 440.0: flying
+T_G2 t784 p0 HANG tic 10: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 784 27940
+G2P t784 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 46
+T_G2 t784 p0 claw #8 chain: 256 links 1.67 apart, ripple 0.63, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t785 p0 claw #8 tic 12 at (-438.0 39.9 57.4), flown 480.0: flying
+T_G2 t785 p0 HANG tic 11: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 785 27977
+G2P t785 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 45
+T_G2 t785 p0 claw #8 chain: 280 links 1.67 apart, ripple 0.56, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t786 p0 claw #8 tic 13 at (-466.9 67.5 55.8), flown 520.0: flying
+T_G2 t786 p0 HANG tic 12: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 786 27996
+G2P t786 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 44
+T_G2 t786 p0 claw #8 chain: 304 links 1.67 apart, ripple 0.49, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t787 p0 claw #8 tic 14 at (-495.8 95.1 54.3), flown 560.0: flying
+T_G2 t787 p0 HANG tic 13: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 787 28020
+G2P t787 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 43
+T_G2 t787 p0 claw #8 chain: 328 links 1.67 apart, ripple 0.43, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t788 p0 claw #8 tic 15 at (-524.7 122.7 52.7), flown 600.0: flying
+T_G2 t788 p0 HANG tic 14: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 788 28064
+G2P t788 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 42
+T_G2 t788 p0 claw #8 chain: 352 links 1.67 apart, ripple 0.38, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t789 p0 claw #8 tic 16 at (-553.6 150.3 51.1), flown 640.0: flying
+T_G2 t789 p0 HANG tic 15: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 789 28085
+G2P t789 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 41
+T_G2 t789 p0 claw #8 chain: 376 links 1.67 apart, ripple 0.34, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t790 p0 claw #8 tic 17 at (-582.5 177.9 49.6), flown 680.0: flying
+T_G2 t790 p0 HANG tic 16: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 790 28103
+G2P t790 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 40
+T_G2 t790 p0 claw #8 chain: 400 links 1.67 apart, ripple 0.30, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t791 p0 claw #8 tic 18 at (-611.4 205.6 48.0), flown 720.0: flying
+T_G2 t791 p0 HANG tic 17: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 791 28138
+G2P t791 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 39
+T_G2 t791 p0 claw #8 chain: 424 links 1.67 apart, ripple 0.26, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+G2P epoch 1794561103 28172
+T_G2 t792 p0 claw #8 tic 19 at (-640.3 233.2 46.4), flown 760.0: flying
+T_G2 t792 p0 HANG tic 18: z 45.76 (held at 45.76), vel (0.00 0.00 -1.00), waiting for the bite
+G2P clk 792 28175
+G2P t792 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 38
+T_G2 t792 p0 claw #8 chain: 448 links 1.67 apart, ripple 0.23, all at scale 0.042: larger 0, fullbright 0, not gunmetal 0
+T_G2 t793 p0 claw #8 tic 20 at (-654.7 247.0 45.6), flown 780.0: the end of its reach: nothing bitten
+T_G2 t793 p0 MISS: claw #8 reached nothing in 20 tics (780 units): it comes back
+T_G2 t793 p0 EVENT miss
+T_G2 t793 p0 HANG over: no claw bit (a miss) after 19 tics of hanging: you fall from z 45.8
+T_G2 t793 p0 MISS IN THE AIR: the kick-chain ends at 1
+T_G2 t793 p0 EVENT chain.end
+RSQ_SlowMo: trigger grapple t793: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+T_G2 t793 p0 CHAIN CANCELLED (MISS IN THE AIR): falling in slow motion from z 45.8 (floor 0.0), g2.slow -> 1
+T_G2 t793 p0 EVENT chain.cancel
+RSQ_SlowMo: trigger grapple t793: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 793 28201
+G2P t793 service event: miss (tic 793) chain 0 kicks 5 lastkick 766 air 0 dj 0 mode 0
+G2P t793 service event: chain.end (tic 793) chain 0 kicks 5 lastkick 766 air 0 dj 0 mode 0
+G2P t793 service event: chain.cancel (tic 793) chain 0 kicks 5 lastkick 766 air 0 dj 0 mode 0
+G2P t793 track pos (-101.2 -300.0 45.8) vel (0.00 0.00 -1.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 37
+RSQ_SlowMo: trigger grapple t794: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 794 28225
+G2P t794 track pos (-101.2 -300.0 44.8) vel (0.00 0.00 -0.50) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 36
+RSQ_SlowMo: trigger grapple t795: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 795 28249
+G2P t795 track pos (-101.2 -300.0 44.3) vel (0.00 0.00 -0.56) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 35
+RSQ_SlowMo: trigger grapple t796: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 796 28282
+G2P t796 track pos (-101.2 -300.0 43.7) vel (0.00 0.00 -0.63) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 34
+RSQ_SlowMo: trigger grapple t797: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 797 28305
+G2P t797 track pos (-101.2 -300.0 43.1) vel (0.00 0.00 -0.69) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 33
+RSQ_SlowMo: trigger grapple t798: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 798 28339
+G2P t798 track pos (-101.2 -300.0 42.4) vel (0.00 0.00 -0.75) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 32
+RSQ_SlowMo: trigger grapple t799: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 799 28359
+G2P t799 track pos (-101.2 -300.0 41.6) vel (0.00 0.00 -0.81) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 31
+G2P epoch 1794561104 28392
+RSQ_SlowMo: trigger grapple t800: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 800 28395
+G2P t800 track pos (-101.2 -300.0 40.8) vel (0.00 0.00 -0.88) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 30
+RSQ_SlowMo: trigger grapple t801: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 801 28432
+G2P t801 track pos (-101.2 -300.0 39.9) vel (0.00 0.00 -0.94) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 29
+RSQ_SlowMo: trigger grapple t802: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 802 28447
+G2P t802 track pos (-101.2 -300.0 39.0) vel (0.00 0.00 -1.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 28
+RSQ_SlowMo: trigger grapple t803: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 803 28482
+G2P t803 track pos (-101.2 -300.0 38.0) vel (0.00 0.00 -1.06) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 27
+RSQ_SlowMo: trigger grapple t804: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 804 28512
+G2P t804 track pos (-101.2 -300.0 36.9) vel (0.00 0.00 -1.13) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 26
+RSQ_SlowMo: trigger grapple t805: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 805 28546
+G2P t805 track pos (-101.2 -300.0 35.8) vel (0.00 0.00 -1.19) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 25
+RSQ_SlowMo: trigger grapple t806: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 806 28563
+G2P t806 track pos (-101.2 -300.0 34.6) vel (0.00 0.00 -1.25) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 24
+RSQ_SlowMo: trigger grapple t807: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 807 28598
+G2P t807 track pos (-101.2 -300.0 33.4) vel (0.00 0.00 -1.31) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 23
+RSQ_SlowMo: trigger grapple t808: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 808 28629
+G2P t808 track pos (-101.2 -300.0 32.1) vel (0.00 0.00 -1.38) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 22
+G2P epoch 1794561105 28644
+RSQ_SlowMo: trigger grapple t809: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 809 28646
+G2P t809 track pos (-101.2 -300.0 30.7) vel (0.00 0.00 -1.44) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 21
+RSQ_SlowMo: trigger grapple t810: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 810 28680
+G2P t810 track pos (-101.2 -300.0 29.3) vel (0.00 0.00 -1.50) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 20
+RSQ_SlowMo: trigger grapple t811: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 811 28716
+G2P t811 track pos (-101.2 -300.0 27.8) vel (0.00 0.00 -1.56) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 19
+RSQ_SlowMo: trigger grapple t812: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 812 28731
+G2P t812 track pos (-101.2 -300.0 26.2) vel (0.00 0.00 -1.63) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 18
+RSQ_SlowMo: trigger grapple t813: merged 171 ms at 25% (automatic, own cooldown), pulse until t819, cause line "Chain Cancelled!"
+G2P clk 813 28766
+G2P t813 track pos (-101.2 -300.0 24.6) vel (0.00 0.00 -1.69) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t814: merged 171 ms at 25% (automatic, own cooldown), pulse until t820, cause line "Chain Cancelled!"
+G2P clk 814 28789
+G2P t814 track pos (-101.2 -300.0 22.9) vel (0.00 0.00 -1.75) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t815: merged 171 ms at 25% (automatic, own cooldown), pulse until t821, cause line "Chain Cancelled!"
+G2P clk 815 28831
+G2P t815 track pos (-101.2 -300.0 21.1) vel (0.00 0.00 -1.81) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t816: merged 171 ms at 25% (automatic, own cooldown), pulse until t822, cause line "Chain Cancelled!"
+G2P clk 816 28848
+G2P t816 track pos (-101.2 -300.0 19.3) vel (0.00 0.00 -1.88) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t817: merged 171 ms at 25% (automatic, own cooldown), pulse until t823, cause line "Chain Cancelled!"
+G2P clk 817 28885
+G2P t817 track pos (-101.2 -300.0 17.4) vel (0.00 0.00 -1.94) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+G2P epoch 1794561106 28899
+RSQ_SlowMo: trigger grapple t818: merged 171 ms at 25% (automatic, own cooldown), pulse until t824, cause line "Chain Cancelled!"
+G2P clk 818 28901
+G2P t818 track pos (-101.2 -300.0 15.5) vel (0.00 0.00 -2.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t819: merged 171 ms at 25% (automatic, own cooldown), pulse until t825, cause line "Chain Cancelled!"
+G2P clk 819 28934
+G2P t819 track pos (-101.2 -300.0 13.5) vel (0.00 0.00 -2.06) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t820: merged 171 ms at 25% (automatic, own cooldown), pulse until t826, cause line "Chain Cancelled!"
+G2P clk 820 28967
+G2P t820 track pos (-101.2 -300.0 11.4) vel (0.00 0.00 -2.13) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t821: merged 171 ms at 25% (automatic, own cooldown), pulse until t827, cause line "Chain Cancelled!"
+G2P clk 821 29002
+G2P t821 track pos (-101.2 -300.0 9.3) vel (0.00 0.00 -2.19) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t822: merged 171 ms at 25% (automatic, own cooldown), pulse until t828, cause line "Chain Cancelled!"
+G2P clk 822 29018
+G2P t822 track pos (-101.2 -300.0 7.1) vel (0.00 0.00 -2.25) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t823: merged 171 ms at 25% (automatic, own cooldown), pulse until t829, cause line "Chain Cancelled!"
+G2P clk 823 29051
+G2P t823 track pos (-101.2 -300.0 4.9) vel (0.00 0.00 -2.31) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+RSQ_SlowMo: trigger grapple t824: merged 171 ms at 25% (automatic, own cooldown), pulse until t830, cause line "Chain Cancelled!"
+G2P clk 824 29082
+G2P t824 track pos (-101.2 -300.0 2.6) vel (0.00 0.00 -2.38) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 17
+T_G2 t825 p0 CHAIN CANCELLED fall over: landed at z 0.0; the slow ends in 6 tics
+G2P clk 825 29120
+G2P t825 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 16
+G2P clk 826 29137
+G2P t826 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 15
+G2P epoch 1794561107 29172
+G2P clk 827 29175
+G2P t827 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 14
+G2P clk 828 29193
+G2P t828 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 13
+G2P clk 829 29237
+G2P t829 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 12
+G2P clk 830 29252
+G2P t830 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 321 countdown 10
+G2P clk 831 29287
+G2P t831 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 392 countdown 9
+G2P clk 832 29304
+G2P t832 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 464 countdown 8
+G2P clk 833 29339
+G2P t833 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 535 countdown 7
+G2P clk 834 29371
+G2P t834 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 607 countdown 6
+G2P clk 835 29388
+G2P t835 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 678 countdown 5
+G2P epoch 1794561108 29415
+G2P clk 836 29418
+G2P t836 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 749 countdown 4
+G2P clk 837 29451
+G2P t837 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 821 countdown 3
+G2P clk 838 29482
+G2P t838 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 892 countdown 2
+G2P clk 839 29516
+G2P t839 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 964 countdown 1
+RSQ_SlowMo: trigger countdown t840: countdown bar: gone (real time)
+G2P clk 840 29531
+G2P t840 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 841 29566
+G2P t841 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 842 29588
+G2P t842 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 843 29621
+G2P t843 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561109 29648
+G2P clk 844 29650
+G2P t844 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 845 29686
+G2P t845 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 846 29701
+G2P t846 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 847 29733
+G2P t847 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 848 29767
+G2P t848 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 849 29804
+G2P t849 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 850 29823
+G2P t850 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 851 29866
+G2P t851 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 852 29887
+G2P t852 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561110 29902
+G2P clk 853 29904
+G2P t853 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 854 29946
+G2P t854 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 855 29964
+G2P t855 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 856 29998
+G2P t856 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 857 30015
+G2P t857 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 858 30046
+G2P t858 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 859 30081
+G2P t859 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 860 30118
+G2P t860 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 861 30138
+G2P t861 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P epoch 1794561111 30173
+G2P clk 862 30175
+G2P t862 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 863 30192
+G2P t863 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 864 30224
+G2P t864 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 865 30263
+G2P t865 track pos (-101.2 -300.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P clk 866 30279
+G2P clk 867 30313
+G2P clk 868 30345
+G2P clk 869 30363
+G2P epoch 1794561112 30392
+G2P clk 870 30395
+G2P clk 871 30430
+G2P clk 872 30445
+G2P clk 873 30485
+G2P clk 874 30504
+G2P clk 875 30540
+G2P clk 876 30571
+G2P clk 877 30587
+G2P clk 878 30620
+G2P epoch 1794561113 30655
+G2P clk 879 30657
+G2P clk 880 30673
+G2P clk 881 30707
+G2P clk 882 30741
+G2P clk 883 30760
+G2P clk 884 30792
+G2P clk 885 30826
+G2P clk 886 30844
+G2P clk 887 30877
+G2P epoch 1794561114 30908
+G2P clk 888 30911
+G2P clk 889 30945
+G2P clk 890 30961
+G2P clk 891 30997
+G2P clk 892 31027
+G2P clk 893 31058
+G2P clk 894 31073
+G2P clk 895 31105
+G2P clk 896 31136
+G2P epoch 1794561115 31168
+G2P clk 897 31170
+G2P clk 898 31188
+G2P clk 899 31229
+G2P clk 900 31251
+G2P clk 901 31284
+G2P clk 902 31302
+G6_END

@@ -29,17 +29,22 @@ RSQ Whip.
 - **Big ones, you go to them, and arriving is the kick.** A boss, anything over 1000 mass, any Baron of Hell (whatever
   its mass), a dormant monster, or an RSQ Miniboss miniboss with Can't Be Yanked on pulls you in. Hell Knights go by
   their mass. Arriving kicks it: 30 damage (as RSQ Melee's Ground
-  Pound), knockback, a stagger, a gold cross burst and **KICK!** over it, and slow motion starts.
-- **Then you kick off.** You bounce away from it and up about 1.5 m. Under a low ceiling the bounce is cut short.
+  Pound), knockback, a gold cross burst and **KICK!** over it, and slow motion starts. It is **dizzy** for that kick's
+  slow motion (1.5 s on the first kick, less on each next one), with RSQ Melee's chicks and stars circling its head
+  (without RSQ Melee: the stun alone).
+- **Then you kick off**, by itself. You bounce away from it and up about 1.5 m. Under a low ceiling the bounce is cut
+  short.
 - **Keep the chain going.** In the air, hook again: **you hang where you are from the press until the claw bites**
   (no falling, at full speed in slow motion; owner 2026-11-13: "Hang until it bites"), then: another big one is another
-  kick (**KICK! x2**, x3 ...), a small one is pulled up to you, a wall or ledge lands you. If the claw reaches the end of
-  its reach or the sky without biting, the hang ends, you fall, and the chain ends there, as if you had landed
-  ("If fired hook misses or does not bite, we drop"). Each kick's slow motion
+  kick (**KICK! x2**, x3 ...), a small one is pulled up to you, a wall or ledge lands you. **Chain Cancelled!** If the
+  claw reaches the end of its reach or the sky without biting, or you press Fire Hook again while you hang (the claw
+  comes back), the chain ends: "Chain Cancelled!" under the slow-motion bar, and you fall in slow motion until you land.
+  Each kick's slow motion
   is 0.3 s shorter than the last (1.5, 1.2, 0.9, 0.6, 0.3 s), so a chain winds down by itself.
 - **Double jump.** After each kick-off you get one jump in the air: more height, **+0.5 s** of slow motion
   (*DoubleJump!* under the slow-motion bar), and up to five monsters in reach get **+0.25 sec** (nearer) or
-  **+0.5 sec** (farther) over them. Hook one of those and you get that much more slow motion.
+  **+0.5 sec** (farther) over them. Hook one of those and you get that much more slow motion. The double jump is how
+  you pick the next target: Aim Assist snaps only to those marked monsters.
 - **The air spike.** Hook a small monster while you're in the air and it is pulled up in front of you. Swing both
   hands down hard together and you spike it into the floor. You hang in the air until it lands, then RSQ Grenade's
   Neon Crescent goes off where it hits, with blood, fire and a shockwave, and RSQ SlowMo slows your fall
@@ -65,14 +70,16 @@ RSQ Whip.
 | ... at a big one | You fly to it; arriving is the **kick**, and then you bounce away and up |
 | In the air after a kick, press **Fire Hook** | You hang where you are, not falling, until the claw bites; then the bite plays |
 | ... and it bites another big one | Another kick: the chain goes up by one, **KICK! x2** (however far it flew) |
-| ... and it bites nothing (its reach, or the sky) | The hang ends: you fall, and the kick-chain ends there |
+| ... and it bites nothing (its reach, or the sky) | **Chain Cancelled!**: the chain ends and you fall in slow motion until you land |
+| ... press **Fire Hook** again while you hang | The claw comes back: **Chain Cancelled!**, the same as a miss |
 | In the air after a kick, press **jump** | The double jump: more air, +0.5 s of slow motion, time markers over up to 5 monsters |
 | Hook a monster with a time marker | +0.25 s or +0.5 s more slow motion |
 | In the air, hook a small one, then swing both hands down hard together | **The air spike**: Neon Crescent, blood, fire, a shockwave, Grapple-Slam slow motion |
 | Land | The kick-chain ends; the markers go |
 
-**Aim Assist** (on by default): in the air, the hook snaps to the monster nearest your off hand's line, within
-10 degrees, if you can see it.
+**Aim Assist** (on by default): after your double jump, the hook snaps only to the monsters the double jump marked
+(+0.25 / +0.5 sec): the one nearest your off hand's line, within 10 degrees, if you can see it. None of them near your
+line, or no double jump: the claw flies where you aim and may hit nothing, another monster or a barrel.
 
 **A guarded miniboss** (RSQ Miniboss: its shield is up, or it just lost a life): you still fly to it and bounce
 off, but the kick does no damage. Its own GUARD! shows instead, and there is no stagger, no slow motion and no chain
@@ -115,6 +122,7 @@ only BD_VoxelPack's four voxeldef errors, which were already there. Logs and scr
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-13, run `g6run2`, script `docs/rig/g6run2_script.txt`, log `docs/rig/g6run2.txt`; BD22 VR Reloaded 2.0.4u) | **Marked-only Aim Assist and the dizzy stun:** Baron kicked (KICK 1, "DIZZY: RS_CommonBaron stunned 53 tics, RSQ Melee's chicks and stars -> 1"), double jump, "MARKERS: 2 of 2", the probe fired 6 degrees off the marked Cyberdemon: "aim assist: snapped 6.5 degrees to marked RS_CommonCybie", hung 14 tics, bit, "MARKER HOOKED ... +0.5 sec", **KICK 2** ("KICK! x2", dizzy 42 tics). **No double jump, no snap:** three kicks with no jump, then a fire: "aim assist: no marked monster near your line: the claw flies where you aim". **A miss:** "MISS IN THE AIR", "CHAIN CANCELLED ... g2.slow -> 1", SlowMo's cause line "Chain Cancelled!"; the fall from z 38 took 28 tics (8 before this change, at full speed). **The cancel press:** hanging for a claw, a second press 6 tics in: "1 claw reeled in", "CANCEL PRESS", Chain Cancelled!, a 35-tic slow fall from z 55. **Until you land:** in the last case the kick's own slow motion ended at t819; Chain Cancelled kept the world at 25% to the landing at t825, and it began to speed up at t831 (6 tics later). No new script errors (BD_VoxelPack's four voxeldef errors only). (Run `g6run1`, the same script: everything but the slow fall, which was still at full speed; fixed) |
 | **rig only, not headset-confirmed** (2026-11-13, run `g5run1`, script `docs/rig/g5run1_script.txt`, log `docs/rig/g5run1.txt`; BD22 VR Reloaded 2.0.4u) | **Hang until it bites.** **The far one, after the old landing time:** Fire Hook (the key) at a Baron 400 units ahead, **KICK 1** at t101, kick-off from the floor; the probe's press 8 tics later, in the air, at a Cyberdemon 21 m away (the same set-up as `g4run2`'s edge case, where you landed first): "HANG: fired in the air in kick-chain 1: you hang at z 48.5", and every tic t109 to t125 logged "HANG tic n: z 48.45 (held at 48.45)" (the probe's own track: z 48.5 every tic, vel 0, the world at 25%); the claw flew 18 tics (703 units) and bit at t126; on its old ballistic path (z 46.2 and vel.z 2.2 at t108) you would have landed about t121, 5 tics before the bite. Then "HANG over: claw #2 bit after 17 tics of hanging", the pull (697 units, 13 tics), **KICK 2** (**"KICK! x2"**, SlowMo "merged 1200 ms ... KICK! x2"), kick-off, landed at t161: "the kick-chain ends at 2". **A miss in the air:** a Baron kicked (KICK 1, t285), 3 tics later the probe fired along an empty line (north, 5 degrees up): HANG at z 30.9, held 19 tics (30.88 every tic), the claw reached the end of its reach ("reached nothing in 20 tics (780 units)"), then "HANG over: no claw bit (a miss) ... you fall from z 30.9", "MISS IN THE AIR: the kick-chain ends at 1" (event `chain.end`, the service's chain 0 the same tic), and the fall: z 29.9, 27.9, 24.9 ... on the floor 8 tics later. **No white orb:** the claw in flight at a Cyberdemon 400 units away (frames below, 720 px, your own view): the gunmetal links and jp's claw at the end, nothing white; every chain line of the run (61) logged "larger 0, fullbright 0, not gunmetal 0". No new script errors (BD_VoxelPack's four voxeldef errors only) |
 | **rig only, not headset-confirmed** (2026-11-13, run `g4run2`, script `docs/rig/g4run2_script.txt`, log `docs/rig/g4run2.txt`) | **The air rows again, with the flying claw** (they were shown with the instant bite before). **Kick a heavy:** Fire Hook (the key) at a Cyberdemon 400 units ahead: the claw flew 9 tics and bit (346 units), pull 12 tics, **KICK 1** (3622 → 3592, MLK4, KICK!, SlowMo "started 1514 ms at 25%, cause line KICK!"), **kick-off** from z 27 (vel.z 9.22). **Retarget mid-air:** 3 tics after the kick the probe aimed 5 degrees off a second Cyberdemon; **Aim Assist** "snapped 5.9 degrees"; claw #2 fired **in the air** at z 85, flew 11 tics (409 units) and bit at t113 with you at z 65 and falling (vel.z -3.4: you would have landed about t121, 8 tics later), pull 12 tics, **KICK 2** ("KICK! x2", a kill, SlowMo "merged 1200 ms ... KICK! x2"). **Double jump** 6 tics after (the jump button, pressed by the probe): vel.z 9.22, "DoubleJump!" +18 tics, **5 markers** of 6 in reach (one +0.25 at 301 units, four +0.5 from 417 to 574). **Marker hooked:** 3 tics later Aim Assist "snapped 3.0 degrees" to the +0.25 imp; claw #3 flew 7 tics (276 units), "MARKER HOOKED ... +0.25 sec (9 tics)", AIR PULL (12 tics), AIR HOLD at 54 units. **Air spike:** both hands down 5.25 m/s → AIR SPIKE, 4 tics later "SPIKE LANDED: Neon Crescent g2.neon -> 1, blood x4, fire x6, Grapple-Slam g2.slam -> 1" (SlowMo "merged 3000 ms ... Grapple-Slam!"). **Landed:** "the kick-chain ends at 2". **The timing at the edge** (the same run): a Baron kicked (kick-off from the floor), the press 8 tics later at a Cyberdemon 21 m away: the claw flew 18 tics (699 units); you **landed first** (t381, "the kick-chain ends at 1"), it bit 5 tics later and pulled you in as a new chain (**KICK!**, not x2). (Fixed since: the hang, `g5run1`.) **The chain** (look 2, the only one now): drawn in every flight, with the running link logged each tic ("RUNNING LINK #n ... scale 0.125 (the others 0.042), glint, fullbright 1"; removed since: `g5run1`). No new script errors (BD_VoxelPack's four voxeldef errors only). (Run `g4run1`, the same script, stopped at load on a ZScript error of this change, fixed) |
 | **rig only, not headset-confirmed** (2026-11-13, run `g3run2`) | **The claw flies** (`docs/rig/g3run2.txt`): Fire Hook (the key) at an imp 400 units ahead: the claw logged every tic at 50, 90, 130 ... 330 units (40 a tic, jp's Speed 40), and on tic 9 "BITES RS_CommonImp" 357 units out (its box against his radius-10 claw: 356.7 / 40 = 9 tics), then GET OVER HERE as before, landed 56 units in front of you. **Miss:** nothing ahead: 20 tics, 780 units, "the end of its reach: nothing bitten", the claw comes back. **A press while it flies:** a second press 4 tics later launched claw #3 while #2 flew ("1 other claw still flying: jp fires another"); both flew their 20 tics and came back. **Baron, low mass:** RSQ Monsters' `RS_CommonBaron` set to mass 200: "baron 1 -> HEAVY", the pull (358 units, 13 tics), **KICK 1** (1077 → 1047, MLK4, KICK!, slow motion 53 tics), the kick-off, landed, the chain ends at 1. **A Hell Knight by mass:** `RS_CommonHK` (species BaronOfHell) set to mass 200: "baron 0 -> LIGHT", GET OVER HERE, landed 57 units in front. **Imps still come** (masses 88 to 142). **Ledge lip** after a 5-tic flight: on top at z 68 after 22 tics. **Wall bites** at about 11 m: 10 tics, 363 units, jp's fling. The claw in flight in the frames below. No new script errors (BD_VoxelPack's four voxeldef errors only). (Run `g3run1`, the same script, stopped at load on a ZScript error of this change, fixed) |
@@ -170,10 +178,17 @@ The plan gives the design and the numbers above. Where it said nothing, the simp
   kick-off, before you land) holds you where you are from that press: no velocity, your height held each tic, RSQ
   SlowMo's full speed asked each tic. It ends the moment a claw from it bites (the bite then plays as built: a pull, an
   air pull with its own hang, a fling from rest, a ledge), or when no claw from it is still flying ("we drop": the end
-  of its reach, the sky, or it is gone), which ends the chain as landing does (`chain.end`, the markers go, no double
-  jump left) and you fall at full speed. A second press while hanging fires another claw and you keep hanging until
-  one of them bites or all of them miss. The double jump is not taken while you hang (it stays yours for after the
-  bite). A press in the air with no chain going (after a wall fling, say) does not hang you.
+  of its reach, the sky, or it is gone). A second press while hanging reels every claw from it back in (owner
+  2026-11-13: "Cancel and drop"). A miss and that press both CANCEL THE CHAIN (owner: "fall in slow mo. HUD message in
+  our font, Chain Cancelled!"): the chain ends as landing does (`chain.end`, the markers go, no double jump left), then
+  `chain.cancel`; "Chain Cancelled!" is the reason line under RSQ SlowMo's world bar (`g2.slow`), asked again every tic
+  of the fall for 6 tics, so the slow motion lasts until you land and ends 6 tics after; the kick-off's full-speed air
+  is over, so your own fall slows with the world (RSQ SlowMo's Slow Me Too, on by default). Jump does nothing while you
+  hang (the order is kick, kick-off, double jump, then the hook). A press in the air with no chain going (after a wall
+  fling, say) does not hang you; you keep falling.
+- **The dizzy stun** (owner 2026-11-13: "dizzy / bird sprites ... for an extended stun"): a kicked monster is held in its
+  Pain state for that kick's slow motion (53 tics on the first kick, 42 on the second ..., never under 15), with RSQ
+  Melee's chicks and stars (its Heavy Hands sprites, `RSQML_Service` "dizzy") circling its head as long.
 - **Wall fling point:** jp's thrust toward a point 15 units short of the bite (his claw stopped short of a wall).
   The claw stays shut his 16 tics, then comes back at 64 units a tic.
 - **Baron of Hell** (owner 2026-11-13: "barons are always heavy"): a class built on `BaronOfHell` (Doom's, Brutal
@@ -193,7 +208,8 @@ The plan gives the design and the numbers above. Where it said nothing, the simp
   or after 2 s; your body ends against the side of it facing you, at its middle height.
 - **The kick-off's direction:** away from the monster's centre, out toward where you hit it (its face when it faces
   you); 8 units a tic outward.
-- **Aim Assist:** only in the air, a 10-degree cone, the target nearest the line (smallest angle), in sight.
+- **Aim Assist:** only in the air, only the monsters your double jump marked (owner 2026-11-13), a 10-degree cone, the
+  marked one nearest the line (smallest angle), in sight.
 - **Air pull and hold:** a small monster hooked while you are in the air (not only after a double jump) is pulled
   up to chest height in front of you; you hang still while it comes and while it is held; the hold lasts 1 s, then
   it drops and you fall.
@@ -286,7 +302,8 @@ Everything is asked by name: this mod loads and plays alone, and the parts that 
   `bite.ceiling`, `bite.ledge`, `ledge.land`, `ledge.fail`, `bite.light`, `getoverhere`, `getoverhere.land`, `airpull`,
   `airhold`, `airspike`, `spike.land`, `air.drop`, `bite.heavy`, `kick`, `kick.kill`, `guard`, `pull.lost`,
   `pull.blocked`, `doublejump`, `markers`, `marker`, `hang` (fired in the air in a kick-chain: you hang until it bites),
-  `chain.end` (you landed, or the claw you hung for bit nothing), `scorpion.hold`, `scorpion.yank`, `scorpion.timeout`.
+  `chain.end` (you landed, or the chain was cancelled), `chain.cancel` (a miss while you hung, or a press while you
+  hung: Chain Cancelled!), `scorpion.hold`, `scorpion.yank`, `scorpion.timeout`.
 - Anything else answers -1 or "".
 
 ---

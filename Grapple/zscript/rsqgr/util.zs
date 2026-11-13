@@ -86,6 +86,14 @@ class RSQGR_Util
 		return s.GetInt(req, reason, tics, 0, pmo);
 	}
 
+	// RSQ MELEE (RSQML_Service): e.g. "dizzy", tics, a monster -- its chicks and stars. 0 = no RSQ Melee (or refused).
+	static play int Melee(String req, int arg, Actor who)
+	{
+		let s = Svc("RSQML_Service");
+		if (!s) return 0;
+		return s.GetInt(req, "", arg, 0, who);
+	}
+
 	// RSQ VISUALREWARDS' words (RSQVR_Service "word", "word.hold", "word.clear"). 0 = no VisualRewards (or no actor).
 	static play int Word(String req, String text, int rgb, double arg, Actor who)
 	{

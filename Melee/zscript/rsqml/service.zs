@@ -40,6 +40,8 @@
 // 2026-11-13 (owner: "GET THE MELEE INTO RSQ MELEE"), asked by BD22 VR Reloaded 2.0.4u and later:
 //   GetInt/GetIntUI "owns"    stringArg "club": 1 while RSQ Melee does BD22 VR's butt strike and pistol whip (club.zs; its
 //                             own then stand down); "punch": 1 while RSQ Melee does BD22 VR's VR punch. 0 otherwise.
+//   GetInt "dizzy"            objectArg = a monster, intArg = tics: Heavy Hands' chicks and stars circle its head that long
+//                             (sparks.zs RSQML_Spark.Dizzy); 1 done, 0 no monster. RSQ Grapple's kick stun (owner 2026-11-13).
 // RSQ Gun Bonsai VR's glove upgrades read "punch.*" in ModifyDamageDealt (the glove is the inflictor there).
 class RSQML_Service : Service
 {
@@ -118,7 +120,14 @@ class RSQML_Service : Service
 			if (!gl || !v || intArg < 0 || intArg >= MAXPLAYERS || !playeringame[intArg]) return 0;
 			return gl.AutoPunch(players[intArg].mo, v, doubleArg) ? 1 : 0;
 		}
-		if (request == "guard")
+		if (request == "dizzy")
+		{
+			let v = Actor(objectArg);
+			if (!v || v.health <= 0 || intArg <= 0) return 0;
+			RSQML_Spark.Dizzy(v, intArg);
+			return 1;
+		}
+				if (request == "guard")
 		{
 			let a = Actor(objectArg);
 			let gd = RSQML_Guard.Get();

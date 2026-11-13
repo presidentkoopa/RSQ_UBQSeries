@@ -351,7 +351,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
   the trace, with the hand between the shooter and you.
 - **Who deals the blow:** Melee's own hands are the inflictor (Gun Bonsai VR credits the weapon). Any other fist's
   punch goes through a per-hand helper, `RSQ_GloveFist`, that carries the punch's record, so RSQ Score can tell a jab
-  from a hook. `RSQML_Service` answers `punch.*`, `guard`, `headlock.*`, `returned.by`, `launch.age`, `autopunch`,
+  from a hook. `RSQML_Service` answers `punch.*`, `guard`, `headlock.*`, `returned.by`, `launch.age`, `autopunch`, `dizzy` (chicks and stars over a monster for some tics: RSQ Grapple's kick stun),
   `guarded`, `barrel.kicked` and `fear` to any mod that asks.
 - **The Headlock** freezes the monster (`freezetics`, re-applied every tic) and moves it to the hand with eased
   `SetOrigin`, never into you or a wall. The flags it borrows (no gravity, forced infighting) are kept on the monster

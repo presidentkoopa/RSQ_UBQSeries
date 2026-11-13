@@ -13,12 +13,17 @@
 //                    mass: owner 2026-11-13 01:xx) you are pulled to it, and
 //                    arriving IS the kick: 30 damage, knocked back, staggered, the yellow cross, KICK!, slow motion on
 //                    contact, then the kick-off: away from it and up about 1.5 m (the ceiling checked every tic)
-// THE KICK-CHAIN: in the air after a kick-off the hook fires again (Aim Assist snaps it to the nearest valid target
-// round the off hand's line); a big one kicks again (chain +1, KICK! x2 ...), a light one comes up to you, a wall or a
+// THE KICK-CHAIN: in the air after a kick-off the hook fires again (Aim Assist snaps it only to the monsters the double
+// jump marked, the one nearest the off hand's line inside ASSIST_CONE; none marked or none near it: the claw flies where
+// you aim, owner 2026-11-13 03:56); a big one kicks again (chain +1, KICK! x2 ...), a light one comes up to you, a wall or a
 // lip lands you, nothing in reach lets you fall. Each link's slow motion is 0.3 s shorter (1.5, 1.2, 0.9, 0.6, 0.3 s).
 // HANG UNTIL IT BITES (owner 2026-11-13 02:0x): a press in the air during a kick-chain hangs you where you are from the
 // press (no falling, full speed in slow motion) until the claw bites; then the bite plays as built. "If fired hook misses
-// or does not bite, we drop": the end of its reach or the sky ends the hang, you fall, and the chain ends as on landing.
+// or does not bite, we drop": the end of its reach or the sky ends the hang. A second press while hanging reels the
+// claw in. Either way: CHAIN CANCELLED (owner 03:08): the chain ends, "Chain Cancelled!" under RSQ SlowMo's world bar,
+// and you fall in slow motion until you land (g2.slow asked again every tic of the fall, CANCEL_KEEP tics each).
+// THE DIZZY STUN (owner 03:56): a kicked monster is stunned for that link's slow motion (at least KICK_STAGGER), with
+// RSQ Melee's chicks and stars circling its head (RSQML_Service "dizzy"; without RSQ Melee, the stun alone).
 // THE DOUBLE JUMP: one per kick-off; jump in the air for more air and +0.5 s ("DoubleJump!"), and up to 5 monsters in
 // reach get a time marker (+0.25 s nearer, +0.5 s farther) that hooking them pays.
 // THE AIR SPIKE: a light monster held up in front of you in the air: both hands swung down hard together (3 m/s,
@@ -73,6 +78,7 @@ class RSQGR_Core : EventHandler
 	const FLY_SPEED = 40.0;        // jp's HookShot: FastProjectile, Speed 40 (units a tic: about 41 m a second)
 	const FLY_RADIUS = 10.0;       // ... Radius 10
 	const FLY_HEIGHT = 14.0;       // ... Height 14
+	const CANCEL_KEEP = 6;         // Chain Cancelled's fall: each tic's g2.slow ask, tics (the slow ends this long after you land)
 	const RGB_KICK = 0xFFC83C;
 	const RGB_MARK = 0x60E0FF;
 
@@ -96,6 +102,7 @@ class RSQGR_Core : EventHandler
 	double hangZ[MAXPLAYERS];
 	bool airWait[MAXPLAYERS];      // hanging for a claw fired in the air in a kick-chain, until it bites (or misses)
 	int waitFrom[MAXPLAYERS];
+	bool cancelFall[MAXPLAYERS];   // Chain Cancelled: falling in slow motion until you land
 	bool flung[MAXPLAYERS];        // the hook sent you into the air: full speed and comfort until you land
 	// the kick-chain
 	int chain[MAXPLAYERS];
@@ -164,6 +171,8 @@ class RSQGR_Core : EventHandler
 	{
 		let pmo = players[pn].mo;
 		if (!pmo || pmo.health <= 0) return;
+		// CANCEL: a press while you hang for a claw reels it in and cancels the chain (owner 2026-11-13 03:08)
+		if (airWait[pn]) { CancelHang(pn, pmo); return; }
 		int m = mode[pn];
 		if (m == M_PULL || m == M_MANTLE || m == M_AIRPULL || m == M_AIRHOLD || m == M_SPIKE || m == M_SCORP)
 		{
@@ -188,8 +197,9 @@ class RSQGR_Core : EventHandler
 			if (t)
 			{
 				dir = (RSQGR_Util.Mid(t) - org).Unit();
-				Log(pn, String.Format("aim assist: snapped %.1f degrees to %s", off, t.GetClassName()));
+				Log(pn, String.Format("aim assist: snapped %.1f degrees to marked %s", off, t.GetClassName()));
 			}
+			else Log(pn, "aim assist: no marked monster near your line: the claw flies where you aim");
 		}
 		pmo.A_StartSound("rsqgr/fire", CHAN_AUTO, CHANF_OVERLAP);
 		int already = 0;
@@ -246,7 +256,35 @@ class RSQGR_Core : EventHandler
 		airWait[pn] = false;
 		HangEnd(pn);
 		Log(pn, String.Format("HANG over: no claw bit (a miss) after %d tics of hanging: you fall from z %.1f", level.maptime - waitFrom[pn], pmo.Pos.z));
-		EndChain(pn, "MISS IN THE AIR");
+		ChainCancel(pn, pmo, "MISS IN THE AIR");
+	}
+
+	// A PRESS WHILE HANGING: every claw you hang for comes back, the hang ends, the chain is cancelled
+	void CancelHang(int pn, PlayerPawn pmo)
+	{
+		int n = 0;
+		for (int i = 0; i < flyers.Size(); i++)
+		{
+			let f = flyers[i];
+			if (!f || f.bDestroyed || f.pn != pn || !f.hangOn) continue;
+			f.hangOn = false;
+			if (f.Flying()) { f.Back(); n++; }
+		}
+		airWait[pn] = false;
+		HangEnd(pn);
+		Log(pn, String.Format("HANG over: a press while hanging (after %d tics): %d claw%s reeled in, you fall from z %.1f", level.maptime - waitFrom[pn], n, n == 1 ? "" : "s", pmo.Pos.z));
+		ChainCancel(pn, pmo, "CANCEL PRESS");
+	}
+
+	// CHAIN CANCELLED: the chain ends, the words under the world bar, and the fall is in slow motion until you land
+	void ChainCancel(int pn, PlayerPawn pmo, String why)
+	{
+		EndChain(pn, why);
+		cancelFall[pn] = true;
+		flung[pn] = false;      // the kick-off's full-speed air is over: your fall slows with the world (RSQ SlowMo's Slow Me Too)
+		int r = RSQGR_Util.SlowMo("g2.slow", "Chain Cancelled!", CANCEL_KEEP, pmo);
+		Log(pn, String.Format("CHAIN CANCELLED (%s): falling in slow motion from z %.1f (floor %.1f), g2.slow -> %d", why, pmo.Pos.z, pmo.floorz, r));
+		Event(pn, "chain.cancel");
 	}
 
 	// the kick-chain ends (you landed, or a claw fired from the hang bit nothing)
@@ -480,10 +518,12 @@ class RSQGR_Core : EventHandler
 	{
 		Actor best = null;
 		double bestOff = ASSIST_CONE;
-		let it = BlockThingsIterator.Create(pmo, range);
-		while (it.Next())
+		int pn = pmo.PlayerNumber();
+		// only the monsters the double jump marked for this player (owner 2026-11-13 03:56)
+		for (int i = 0; i < markOn.Size(); i++)
 		{
-			let a = it.thing;
+			let a = markOn[i];
+			if (markPn[i] != pn || !a || a.health <= 0) continue;
 			if (!RSQGR_Util.Biteable(a, pmo) || !a.bIsMonster || a.bFRIENDLY) continue;
 			Vector3 to = RSQGR_Util.Mid(a) - org;
 			double l = to.Length();
@@ -822,7 +862,12 @@ class RSQGR_Core : EventHandler
 				if (l > 0.5) v.vel.xy += d / l * 4.0 * Heft(v);
 				v.vel.z += 3.0 * Heft(v);
 			}
-			Stagger(v, KICK_STAGGER);
+			// THE DIZZY STUN: as long as this link's slow motion (at least KICK_STAGGER), chicks and stars by RSQ Melee
+			double ss = SLOW_FIRST - SLOW_STEP * (chain[pn] - 1);
+			int stun = max(KICK_STAGGER, ss > 0.001 ? int(ss * TICRATE + 0.5) : 0);
+			Stagger(v, stun);
+			int dz = RSQGR_Util.Melee("dizzy", stun, v);
+			Log(pn, String.Format("DIZZY: %s stunned %d tics, RSQ Melee's chicks and stars -> %d", v.GetClassName(), stun, dz));
 		}
 		// the yellow cross: RSQ Melee's own MLK4 burst by name, gold; without Melee, a puff of gold
 		String bn = "RSQML_Burst4";
@@ -1086,7 +1131,7 @@ class RSQGR_Core : EventHandler
 			if (!pmo || pmo.health <= 0)
 			{
 				if (mode[pn] != M_NONE || claw[pn]) { EndVictim(pn, "you died"); SetMode(pn, M_NONE); HangEnd(pn); if (claw[pn]) claw[pn].Destroy(); claw[pn] = null; }
-				chain[pn] = 0; airChain[pn] = false; djReady[pn] = false; flung[pn] = false;
+				chain[pn] = 0; airChain[pn] = false; djReady[pn] = false; flung[pn] = false; cancelFall[pn] = false;
 				if (airWait[pn]) { airWait[pn] = false; HangEnd(pn); }
 				continue;
 			}
@@ -1120,6 +1165,15 @@ class RSQGR_Core : EventHandler
 	void AirTick(int pn, PlayerPawn pmo)
 	{
 		bool ground = RSQGR_Util.OnGround(pmo);
+		if (cancelFall[pn])
+		{
+			if (ground || mode[pn] != M_NONE || airWait[pn])
+			{
+				cancelFall[pn] = false;
+				Log(pn, String.Format("CHAIN CANCELLED fall over: %s at z %.1f; the slow ends in %d tics", ground ? "landed" : "the hook took you", pmo.Pos.z, CANCEL_KEEP));
+			}
+			else RSQGR_Util.SlowMo("g2.slow", "Chain Cancelled!", CANCEL_KEEP, pmo);
+		}
 		if (mode[pn] == M_NONE && flung[pn] && !ground)
 		{
 			FullSpeed(pmo);

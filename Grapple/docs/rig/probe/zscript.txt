@@ -7,7 +7,7 @@ version "4.10"
 //   g2p_arms a0 = slot | event << 4 | nth << 8, a1 = delay, a2 = swings                             both hands down hard (qzt_)
 //   g2p_armd a0 = slot | event << 4 | nth << 8, a1 = delay | (pitch + 90) << 8, a2 = yaw (decidegrees)   fire along a line
 //     (g5, 2026-11-13: the miss in the air -- out into an empty part of the room, to the end of the reach)
-//   events: 1 kick / kick.kill / guard, 2 doublejump, 3 airhold, 4 kick.kill, 5 chain.end, 6 kick (alive)
+//   events: 1 kick / kick.kill / guard, 2 doublejump, 3 airhold, 4 kick.kill, 5 chain.end, 6 kick (alive), 7 hang, 8 chain.cancel
 //   g2p_cam x y z: view from a camera actor there, facing angle 0 (a side-on view); g2p_camoff: back to the player
 //   every tic "G2P clk <tic> <engine ms>", and each wall-clock second "G2P epoch <s> <engine ms>": the frame dumps' file
 //   times are matched to tics with these (the latest-seen second boundary gives engine ms -> epoch ms)
@@ -57,6 +57,8 @@ class G2P_Probe : EventHandler
 		case 4: return ev == "kick.kill";
 		case 5: return ev == "chain.end";
 		case 6: return ev == "kick";
+		case 7: return ev == "hang";
+		case 8: return ev == "chain.cancel";
 		}
 		return false;
 	}
