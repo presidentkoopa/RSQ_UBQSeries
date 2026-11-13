@@ -54,6 +54,13 @@ speed in slow motion (the ledge save). No rope, reel, swing or climb: those are 
   the spike's own explosion), blood, fire and a shockwave round the impact. The blast counts as a close explosion and
   triggers contextual slow motion on your descent: a new RSQ SlowMo trigger **Grapple-Slam: On / Off** beside its
   Barrel Near You (owner 00:19).
+- **Build numbers (owner 2026-11-13 00:2x):** fired by a bound key only (Fire Hook, from the off hand); available from
+  the start (no Gun Bonsai VR gate; its Big Pass gates upgrades later); the kick hits like Melee's Ground Pound (30
+  damage, knocked back and staggered); range jpalomo's ~23 m; kick-chain slow motion 1.5 s on the first kick, 0.3 s
+  shorter each next link (1.5, 1.2, 0.9, 0.6, 0.3); kick-off bounce about 1.5 m up, mindful of ceilings; after a
+  double jump up to 5 enemies in reach get a time marker (nearer +0.25 s, farther +0.5 s); RSQ Score rows wait for
+  Score's Big Pass (Grapple 2.0 reports its events by name now). Light vs heavy keeps the OG rule (a boss, mass over
+  1000, a dormant monster, or a miniboss with Can't Be Yanked is heavy). Comfort versions live in RSQ Accessibility.
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
