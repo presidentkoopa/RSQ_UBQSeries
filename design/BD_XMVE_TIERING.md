@@ -146,6 +146,10 @@ projectiles are never edited.
 
 ## 5. Where BD22 and XMVE monsters enter
 
+**Overridden by the owner (2026-11-13 09:57, 10:00: "0 is neutral, 1 is green, etc ... i told you what my order is"):
+every monster enters at Common and its colour is the world tier. The table below is the earlier proposal and is not
+built. Black and White stay as section 6 B ("Leave them different").**
+
 The full table covers every BD22 and live XMVE monster. For each it gives the class, file:line, base HP, family, entry colour, how it
 appears and its HP at all 13 colours: **[`tiering/data/bd_xmve_ladders.md`](tiering/data/bd_xmve_ladders.md)**
 (CSV: `bd_xmve_ladders.csv`).

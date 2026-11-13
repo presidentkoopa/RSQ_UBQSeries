@@ -106,7 +106,10 @@ name list was widened afterwards and that widening was not re-run.
    - ColorfulHell colours are hand-made creatures; everything else gets one generic kit per colour.
    - ColorfulHell's recolours and my tints are different greens, blues, and so on.
    - Strong BD / XMVE monsters start above Common, so at one world tier they stand on different colours.
+     **ANSWERED (owner 09:57, 10:00): "0 is neutral, 1 is green, etc ... i told you what my order is".** Every monster
+     now enters at Common; see section 6.
    I do not know whether he wants these made the same. Ask him before building more on top.
+   **Black / White ANSWERED: "Leave them different"** (ColorfulHell's huge bosses, the mild grade on everything else).
 8. **I do not know what he wants next.** His messages after 10:00 ("what is going on", the uniformity question, this
    handoff) read like he is deciding whether this lane is worth continuing. Do not assume the plan in section 3 is his.
 
@@ -123,3 +126,33 @@ name list was widened afterwards and that widening was not re-run.
   `quit` never runs; several netevents in one tic arrive one tic apart; ZScript names are case-blind (`T` and `t` are
   one variable, `N` and `n` too: both bit me).
 - The test probes and the sprite-sheet builders were session scratch and are not in the repo.
+
+---
+
+## 6. Follow-up the same day: the owner's order, and his real set on the rig
+
+The owner's decisions (2026-11-13; they override `design/BD_XMVE_TIERING.md`):
+- **Every monster as its mod ships it is the neutral step, Common; each world tier is the next colour** (Common, Green,
+  Blue, Purple, Cyan, Brown, Yellow, FireBlu, Gray, Red, Abyss, Black, White). No monster starts higher because it is
+  stronger. Built: `RS_BDKit.entry` is always 1; `gen_zs.py` writes entry 1 on every row (the CSV's "entry tier" column
+  is the old proposal and is no longer read); the health-guessing entry (`EntryByHealth`) is gone. The ACS health-bar
+  bosses keep "health curve only".
+- **Black and White: "Leave them different."** Unchanged.
+
+Checked on the rig with his full order (doom2, TUD, LegenDoom, brutal22test6, BD_VoxelPack, BD22 VR 2.0.4x, XMVE
+04/06/05/07, Legion of Bones, Champions, NoMoreHitscans, Universal Entropy, SpawnAdjuster, the environment mods,
+mk-crits, RegenShield, ShotgunSpawner, Gun Bonsai, every RSQ pk3), his saved ini's mod settings (Monster Set BD22,
+Champions, LegenDoom, UE, LoB as he has them), Black Metal (`-skill 6`). Rig only, not headset-confirmed:
+- No script errors from our packs (only BD_VoxelPack's own four voxeldef.txt lines).
+- World tiers 1, 2, 5, 9, 12, 13 on MAP01 and MAP10 (runs `monA_m01_w*`, `monA_m10_w*`): every kit monster entry 1,
+  colour = world tier; full health, damage, speed and pain chance match the tables for 27/27 (MAP01) and 279/279
+  (MAP10) at every tier, but for 1 to 5 MAP10 monsters a run whose speed differs (they spawned with their own speed).
+  E.g. a Black Metal Imp: 64, 75, 132, 248, 400, 480; damage x1.00, 1.11, 1.47, 1.65, 2.70, 3.06.
+- 0 living monsters without a kit in any of those runs. On his order Legion of Bones takes NO spawns: XMVE's TUD
+  spawners win every id slot (`ZombieMan -> ZombiemanSpawner@05_XMVE...`). LoB's monsters spawned by hand all took the
+  tint and the kit (`monA_lob2`) once its seven orphans were given families (gen_zs.py `EXTRA`).
+- `netevent rs_bdtier_classes` lists every loaded monster class the lookup cannot place. On his order the Doom-side
+  ones left are Brutal Doom's own map pieces: ZombieMainBattleTank, ZombieArtilleryTank, ZombieHelicopter, ZombieMech,
+  Epic2Alien, MarineEattenByDemon. None spawns in doom2's maps; whether they should be tiered is the owner's call.
+- Colours on his real monsters at six world tiers: `Monsters/docs/readme/bdtier_world_tiers_rig.jpg`.
+- Not run: any colour behaviour (acid, zap, hop, heal ...) against Brutal Doom's monsters; Miniboss with his order.

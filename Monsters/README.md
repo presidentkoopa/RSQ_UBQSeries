@@ -6,9 +6,10 @@ monster stands on one ladder of thirteen colours, and when one changes tier you 
 moment, then it is something worse.
 
 **New 2026-11-13:** Brutal Doom's, XMVE's and plain Doom's monsters on the colour ladder, the same body (see *Brutal
-Doom's monsters on the ladder*). Loaded on the Linux rig with doom2.wad, brutal22test6 and XMVE (no script errors; the
-kit took on Brutal Doom's own classes and the numbers moved as the tables say). Its colour behaviours were run on plain
-monsters only. Not headset-confirmed.
+Doom's monsters on the ladder*). Every monster enters at Common and its colour is the world tier (the owner's order).
+Loaded on the Linux rig with the owner's full order and settings at Black Metal (no script errors from our packs; at
+six world tiers on MAP01 and MAP10 every monster's colour, health and damage were as the tables say). Its colour
+behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 
 *[GIF to come: a monster strobing white, then standing up a tier higher in its new colour]*
 
@@ -98,8 +99,17 @@ A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight,
 The rule is `design/BD_XMVE_TIERING.md`. A Brutal Doom, XMVE or plain Doom monster keeps its own body and class; an
 item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
 
-- **Its colour** is its entry colour (most enter at Common; the strong ones higher, from the design's table) plus the
-  **World Tier** minus 1. At World Tier 1 every monster is exactly as its mod ships it: no tint, no change.
+- **Its colour is the World Tier** (owner, 2026-11-13: "0 is neutral, 1 is green, etc ... i told you what my order
+  is"). Every monster as its mod ships it is the neutral step, Common, and each World Tier is the next colour: Common,
+  Green, Blue, Purple, Cyan, Brown, Yellow, FireBlu, Gray, Red, Abyss, Black, White. No monster starts higher because
+  it is stronger: a Juggernaut and a zombie stand on the same colour. At World Tier 1 every monster is exactly as its
+  mod ships it: no tint, no change. (The design's table of higher entry colours is no longer used.)
+- **Black and White stay different on purpose** (owner, 2026-11-13: "Leave them different"): ColorfulHell keeps its
+  huge Black and White bosses; on Brutal Doom's, XMVE's and plain monsters they are a mild grade, health x1.25 and
+  x1.5 of Abyss (a Black Metal Imp: 64 at Common, 400 at Black, 480 at White).
+- **Which monsters get it:** every monster whose family is found (its own row, its parents, what it replaces), Legion
+  of Bones' own monsters included. In the owner's order Legion of Bones' spawners lose to XMVE's, so its monsters only
+  come from maps that place them. The ACS health-bar bosses get the health curve only.
 - **World Tier (test)** is a row on this mod's page. It stands in for the gun turn-ins, which do not exist yet. Move it
   during a map and every monster follows with the tier flash. ColorfulHell's monsters follow it too: a map loads with
   each one that many colours above its roll, and a ColorfulHell body that is on the ladder by a tier change or a world
@@ -113,6 +123,12 @@ item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
   flash, no new body: a champion power or a legendary stays).
 - **Not built from the design:** the by-kind variants (hitscan spread, Arch-Vile flames and raises, bite and charge
   versions), and everything in its section 8 (the ColorfulHell fixes).
+
+![Brutal Doom's and XMVE's monsters at world tiers 1, 2, 5, 9, 12 and 13](docs/readme/bdtier_world_tiers_rig.jpg)
+
+*Brutal Doom's and XMVE's own monsters on the owner's full order and settings, Black Metal, MAP01, at world tiers 1, 2,
+5, 9, 12 and 13 (rig capture, the floor lit for the picture; rig only, not headset-confirmed). Left: RifleZombie,
+ShotgunGuy1, ChaingunGuy1, Imp, SuperImp. Right: BullDemon, Cacodemon_, HellKnight2, BaronofHell2, Revenant1, Mancubus.*
 
 ### Colourful Hell's own surprises
 
@@ -233,6 +249,7 @@ Defaults are in bold.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-13, runs `monA_m01_w*`, `monA_m10_w*`, `monA_final`, `monA_lob2`; the owner's full order with his saved settings, Monster Set BD22, Black Metal) | **Brutal Doom's and XMVE's monsters on the ladder, every one entering at Common.** No script error from our packs. At world tiers 1, 2, 5, 9, 12 and 13 on MAP01 (27 map monsters, 33 with the test row) and MAP10 (279): every kit monster's entry 1 and its colour the world tier; health, damage, speed and pain chance as the tables say for all of them (a few speeds differ where a monster spawned with its own speed). 0 living monsters left without a kit. Frames: the picture above. A world tier raised mid-map (1 to 4) moved all 27 MAP01 monsters. Legion of Bones' monsters, spawned by hand, take the tint and the kit |
 | **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2, logged every tic; `../TacticalRig/tools/rigtest/axepool/evidence/` FL lines) | **The tier flash in Photosensitive Mode** (RSQ Accessibility loaded): with `rsqa_photosafe 0` an aimed zombie's tier change flickered -- 3 tics in the flash colour and full-bright, 3 tics its own look, over and over; with `rsqa_photosafe 1` it held the flash colour full-bright every tic of the wait (22 and 24 tics), no flicker, then changed tier. Loaded with no script error |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | The ladder renumbered by strength: the zombie family's 13 tiers each read their own number; no map monster's class is off its colour; with the colour-blind aid every gem's frame is its monster's tier, all 13 colours (frame `R2_gems_line_crop.jpg`). |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **The floating tier gems** (`rs_ch_colorblind`, set from the console in that run): drawn over the monsters (they drew nothing before 11-10: no art), busy with the colour-blind aid on (`evidence/V3_hpbar_icons_on_off_on.jpg`). ColorfulHell was the Monster Set in the miniboss runs (`evidence/L1_log.txt`, `L2_log.txt`) |
