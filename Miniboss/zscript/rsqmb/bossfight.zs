@@ -109,6 +109,13 @@ extend class RSQMB_Handler
 	int    arrPhase;              // 0 none, 1 landing (StartArrival .. Bind)
 	bool   arrQuiet;              // a landing failed and is being retried: its slow, dark and music already played (owner 11-10: once)
 	int    arrTic, arrPn, arrTier;
+	// THE ARRIVAL IS FIVE SECONDS, COUNTED ON THE LED (owner 2026-11-12 19:20: "the time extended to maybe 5 seconds and have
+	// it begin once the bar begins ... if we're drawing attention away from the center of action i want there to be a
+	// countdown to when player can refocus on the action, that's how our worldslomo and adrenaline bars function"): from the
+	// tic the bar appears the LED counts 05:00 down to the fight; the landings happen inside it and the charge fills the
+	// rest. A landing that runs late still gets a one-second charge, and the clock follows it.
+	const ARRIVE_TOTAL = 175;
+	int    arrEnd;
 	Array<double> arrX, arrY, arrZ;
 	Array<String> arrCls;
 	Array<Actor>  arrMon;         // [0] the miniboss, then the thralls (null until landed)
@@ -889,6 +896,7 @@ extend class RSQMB_Handler
 		ChampForce(true);
 		arrPhase = 1;
 		arrTic = level.maptime;
+		arrEnd = arrTic + ARRIVE_TOTAL;   // the fight starts here; the LED counts down to it from the bar's first tic
 		arrPn = p.PlayerNumber();
 		arrTier = tier;
 		arrMon.Clear(); arrAt.Clear(); arrState.Clear(); arrReveal.Clear(); arrCol.Clear(); arrTics.Clear(); arrBorn.Clear(); arrOwnInv.Clear(); arrTries.Clear(); arrKind.Clear();
@@ -1018,7 +1026,8 @@ extend class RSQMB_Handler
 		let b = bosses[bosses.Size() - 1];
 		b.called = true;
 		b.tier = arrTier;
-		b.ChargeStart(BB_CHARGE);   // three seconds: nobody acts, nobody is hurt, the bar charges (boss.zs, bossbar.zs)
+		arrEnd = max(arrEnd, level.maptime + 35);
+		b.ChargeStart(arrEnd - level.maptime);   // to the end of the five seconds: nobody acts, nobody is hurt, the bar charges (boss.zs, bossbar.zs)
 		Graves(arrTier, mb, th.Size());
 		bfBoss = b;
 		bfCount++;

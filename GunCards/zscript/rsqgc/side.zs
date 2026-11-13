@@ -41,12 +41,13 @@ class RSQGC_SideCard play
 	int laid;
 	int lastRow;
 
-	void Clear() { ops.Clear(); lastRow = 0; }
+	void Clear() { ops.Clear(); lastRow = 0; missing = 0; }
 	int Fam() { return rot * 2 + (mir ? 1 : 0); }
 
+	int missing;   // pieces asked for that have no baked state (rsqgc_debug_log)
 	private void Add(State s, int col, double y = 0)
 	{
-		if (!s) return;
+		if (!s) { missing++; return; }
 		let o = new("RSQGC_SideOp");
 		o.st = s; o.col = col; o.y = y;
 		ops.Push(o);

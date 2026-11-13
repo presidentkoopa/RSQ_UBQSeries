@@ -1044,6 +1044,7 @@ class RSQGC_GunCard : EventHandler
 			bool physLeft = hand == 1 ? ci("vr_control_scheme", 0) < 10 : ci("vr_control_scheme", 0) >= 10;
 			if (isItem) c.BuildItem(pmo, w, CardColour(p, w), self, physLeft);
 			else c.Build(pmo, hand, w, CardColour(p, w), self, shows);
+			if (ci("rsqgc_debug_log", 0)) Console.Printf("rsqgc: watch card hand %d built: %s loaded %d reserve %d (Ammo1 %s %d, Ammo2 %s %d) shows %d, pieces %d (cap %d), missing %d", hand, w ? w.GetClassName() : 'none', Loaded(w), Reserve(w), w && w.Ammo1 ? w.Ammo1.GetClassName() : 'none', w && w.Ammo1 ? w.Ammo1.Amount : -1, w && w.Ammo2 ? w.Ammo2.GetClassName() : 'none', w && w.Ammo2 ? w.Ammo2.Amount : -1, shows, c.ops.Size(), RSQGC_SideCard.MAXL, c.missing);
 		}
 		c.Sync(p, owner, mShow[hand] * CardAlpha(hand), WatchNudge(true), self);
 	}

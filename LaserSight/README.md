@@ -104,6 +104,8 @@ Simulated headset, not a capture from a real headset.*
 
 ### Quest or PC VR
 
+> **PC VR is gone (owner 2026-11-12: "im willing to give it up for the previous beam").** Its halo rods were 7,344 sprite frames, and the series was 6,037 over the engine's 65,535-frame cap (read from the engine on the rig, runs `sfcount3` / `sfcount4`): sprites past the cap shared frame slots, which drew rogue voxels, dropped letters off the watch card and put wrong frames on monsters. With it gone the load order is at 64,228, nothing shares a slot. Every laser is the Quest beam; the Laser row is out of the menu. The rest of this section is history.
+
 The **Laser** row picks one look for every beam, both hands, straight or bent along an arc:
 
 | | |

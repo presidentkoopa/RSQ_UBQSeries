@@ -33,7 +33,7 @@ class RSQMB_Boss : Thinker
 	// time, let's say all miniboss and thralls are invuln but not attacking. the miniboss bar takes 3 seconds to charge up"):
 	// until chargeUntil the miniboss and its thralls are DORMANT (they do not act) and INVULNERABLE; their own flags are
 	// kept and put back (ChargeEnd). The HUD's bar fills and its clock counts down over the same tics (bossbar.zs).
-	int    chargeUntil;
+	int    chargeUntil, chargeLen;
 	bool   chargeHeld;
 	Array<Actor> chWho;
 	Array<bool>  chDorm, chInv;
@@ -41,6 +41,7 @@ class RSQMB_Boss : Thinker
 	{
 		if (chargeHeld || tics <= 0) return;
 		chargeUntil = level.maptime + tics;
+		chargeLen = tics;
 		chargeHeld = true;
 		chWho.Clear(); chDorm.Clear(); chInv.Clear();
 		for (int i = -1; i < thr.Size(); i++)

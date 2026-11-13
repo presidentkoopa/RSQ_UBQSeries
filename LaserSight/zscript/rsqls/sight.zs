@@ -779,9 +779,9 @@ class RSQLS_Sight : EventHandler
 				if (hostile && Lock(p)) a *= 1.35;
 				// LASER: QUEST / PC VR (owner 2026-11-06; once "Beam Type"): Quest is the plain beam (no halo layer), PC VR the whiter core inside its
 				// halo (beam.zs ShowGlow). One server setting, so both hands always match.
-				if (RSQLS_Hand.Opt("rsqls_beam_type", p, 0) == 1) bt.ShowGlow(p, h, w, row, gp, k, beamRgb, a, fadeCm);
+				if (0 /* Laser: PC VR removed 2026-11-12 (sprite-frame cap) */ == 1) bt.ShowGlow(p, h, w, row, gp, k, beamRgb, a, fadeCm);
 				else { bt.Show(p, h, w, row, gp, k, bt.Tint(beamRgb, a, fadeCm)); RSQLS_Beams.HideHalo(p, h); }
-				if (RSQLS_Hand.Opt("rsqls_beam_type", p, 0) == 0 && RSQLS_Hand.Flag("rsqls_beam_sparkle", p, false))
+				if (0 /* Laser: PC VR removed 2026-11-12 (sprite-frame cap) */ == 0 && RSQLS_Hand.Flag("rsqls_beam_sparkle", p, false))
 					Sparkle(h, beamAt, beamDir, (hitCm >= 0 ? min(hitCm, fadeCm) : fadeCm) * RSQLS_Hand.Upm() / 100.0, beamRgb, a);
 				beamOn = true;
 			}
@@ -1007,7 +1007,7 @@ class RSQLS_Sight : EventHandler
 		int segs = clamp(int(ceil(total / SEG_LEN)), 1, SEG_N);
 		double step = total / segs;
 		double thick = 0.5 * RSQLS_A11y.Cue();
-		bool glow = RSQLS_Hand.Opt("rsqls_beam_type", p, 0) == 1;
+		bool glow = 0 /* Laser: PC VR removed 2026-11-12 (sprite-frame cap) */ == 1;
 		TranslationID coreTint, haloTint;
 		double coreA, haloA;
 		if (glow)

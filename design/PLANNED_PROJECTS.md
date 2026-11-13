@@ -57,6 +57,21 @@ after the rig test and the README controls pass.
 **Built 2026-11-10 as Whip and Gun** (rig only, not headset-confirmed): Whip/README.md "Whip and Gun", RESULTS.md BINDWHIP.
 
 
+## Big Pass 5: Options
+Named by the owner 2026-11-12 19:2x ("when i go through my options (ADD BIG PASS 5, OPTIONS) I can sort it out then"):
+a pass over every option row in the series. Items waiting for it:
+- RSQ Tactical Rig, drawing a holstered gun with a gun already in that hand: the gun in hand goes into the Wheel
+  (default; keeps the assignment system) or takes that holster (a straight swap, so you always know what is where).
+  Built as a toggle; the default is for this pass to settle.
+
+## The sprite-frame budget (2026-11-12)
+The engine indexes sprite frames with 16 bits: the whole load order must stay under 65,535. It was 71,572 (runs
+sfcount3); LaserSight's PC VR halo removed: 64,228, headroom 1,307. Count any new baked asset first (the gdb read in
+the rig: rig/work/fullgdb3.sh, /tmp/sprites.bin, numframes at byte 8, the 16-bit start at byte 10). Big users: GunCards
+19.5k, brutal22test6 13.1k, Saber 10.7k, LaserSight 7.3k, RSQ Monsters 5.7k, XMVE 5.3k.
+- Owner 2026-11-12 19:44: "once i bake the small card on each model we can cut those sliders completely": the small
+  card's baked positions (GunCards' Q0..QE families, the 13 depths) go then, freeing most of GunCards' frames.
+
 ## RSQ Score's Big Pass
 Named by the owner 11-10 10:46 as a planned project beside Gun Bonsai VR's. Not yet scoped.
 

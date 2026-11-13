@@ -16,7 +16,7 @@
 //   GUARD        silver (MBFS glyphs), 22 high, ending at 706, over the bar's right end, while it cannot be hurt;
 //   X2           gold, 30 high at 744, 90, while it has more than one bar;
 //   the clock    96 x 38 at 826, 86: #1a0606 inside a #5a1410 rim, red (#ff3b30) seven-segment SS:hh (RSQ SlowMo's DOWN
-//                readout's digits), ONLY while the arrival's charge counts 03:00 down (owner 15:36: not during the fight);
+//                readout's digits), from the bar's first frame to the fight's start, five seconds (owner 19:20; never in the fight, 15:36);
 //   the thralls  a 150 x 16 bar each (rim 3) at y 238, 40 apart, centred under the miniboss bar; over each, side by side
 //                and centred, its crosshair (RSQ SlowMo's DOWN crosshairs, RSQMBX, in its colour) and its Champion icon.
 // THE ARRIVAL (owner 14:11): the bar appears as a sliver and grows outward, empty (BB_GROW); each thrall's bar and icons pop
@@ -302,7 +302,7 @@ extend class RSQMB_Handler
 			double left = b.chargeUntil - t;
 			if (b.chargeUntil > 0 && left > 0)
 			{
-				frac = clamp(1.0 - left / BB_CHARGE, 0.0, 1.0);   // charging: grey, filling smoothly, the clock counting down
+				frac = clamp(1.0 - left / max(1, b.chargeLen), 0.0, 1.0);   // charging: grey, filling smoothly, the clock counting down
 				clock = left / TICRATE;
 				guard = true;
 				bbLag = 0;
@@ -371,8 +371,10 @@ extend class RSQMB_Handler
 			BBWord(nm, "MBFG", 190, 44 + (32 - nh), nh, ar);
 			int lives = b ? b.lives : (clamp(CI('rsqmb_lives', 3), 1, 9) + hd.LifeBonusPreview());
 			if (lives > 1) BBWord(String.Format("X%d", lives), "MBFG", 744, 90, 30, ar);
-			if (clock >= 0) BBClock(wh, 826, 86, 96, 38, clock, photo || ((now / 17) & 1) == 0, ar);
 		}
+		// THE LED from the bar's first tic (owner 19:20): the landing counts down to the fight's start too
+		if (landing && hd.arrEnd > 0) clock = max(0.0, (hd.arrEnd - t) / TICRATE);
+		if (clock >= 0) BBClock(wh, 826, 86, 96, 38, clock, photo || ((now / 17) & 1) == 0, g);
 
 		// ---- the thralls: a small bar each, its crosshair and its power icon over it ----
 		int n = landing ? max(0, hd.arrState.Size() - 1) : (b ? b.thr.Size() : 0);
