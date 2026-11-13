@@ -30,6 +30,8 @@ for now; the Big Pass decides the rest. Needs the Arcade brain designed first.
 
 
 Part of it (owner 11-10):
+- The axe's guaranteed critical (a thrown axe that hit, grabbed back: the next throw is an MK Crits critical; built into
+  BD22 VR Reloaded 2.0.4r's axe) becomes a Gun Bonsai VR UPGRADE for the axe in this pass (owner 2026-11-12 20:54).
 - Close-call slow motion (below, as first noted).
 - Condition bits, Gold bits and weapon wear (Big Arcade, owner 11-09 02:56).
 
