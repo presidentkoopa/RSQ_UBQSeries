@@ -6,6 +6,50 @@ family (its body, deaths, crawlers, gibs, fatality and frozen death) in all twel
 
 **rig only, not headset-confirmed.** Nothing here has been seen in the owner's headset.
 
+## The art: recoloured per part, not tinted (2026-11-13, replaces the first bake)
+
+The owner (11-13): "i thought we agreed to step away from a flat tinting?" The first bake ran the approved tint recipes
+over each pixel, so every recoloured pixel went through one hue: a flat tint in a PNG. The art in `rsrecolour/` is now
+painted by `Monsters/tools/recolour/paint.py` with each colour's own palettes (`ramps.py`):
+
+- **Parts.** Each pixel's nearest Doom palette index says which part it is: skin (the brown ramp 64-79 and its darkest
+  and lightest neighbours), horn (spikes, claws and teeth: the grays 80-111). Everything else keeps its own pixels: eyes,
+  mouth, blood and guts (the reds; the owner's rule 11-13 09:49), fire and its light on the hand (TRO1), the near-black
+  outlines, the marine in the fatality, the frozen imp's ice. Where the ranges overlap, the family file's group rules
+  and hand-written masks decide (`families/imp.txt`, `families/imp_masks.txt`): grays touching red are teeth or bone and
+  stay white; near-black pixels inside the body are its deepest skin shadow; the fatality's marine (tans 128-159, his
+  gun and belt) and the frozen imp's ice highlights are kept.
+- **A palette per part per colour, with hue shifts.** Five colours per part (deepest shadow, shadow, base, light,
+  highlight) whose hues move the way sprite artists move them: Green goes blue-green in the shadows and yellow-green in
+  the lights, Yellow burnt orange-red to cream, Red wine-purple to hot orange-pink, White blue-gray to cream.
+- **Spikes contrast the skin**, as ColorfulHell's hand-made imps do (its Yellow has red spikes, its Black silver ones;
+  learnt from, not copied): Green yellowed bone, Blue steel, Purple gold, Cyan frost, Brown ivory, Yellow blood red,
+  FireBlu flame, Gray dark basalt, Red black-to-bone, Abyss spectral teal, Black bright silver, White charcoal.
+- **The original shading is kept.** The pixel's own lightness (Oklab L) across the part's range in the whole family picks
+  its place on the ramp, so every shade the artist drew stays a separate shade; Black and White get steeper mid tones so
+  they keep their muscles. The source's own painted variation (a flush, a dirty patch: saturation and hue lean against the
+  part's average at that shade) is carried over.
+- **FireBlu, no speckle.** The recipe alternated red and blue by palette row, which speckled. FireBlu is now a burning
+  top (flame red-orange) that cools down the body into a blue-flame lower half, blended smoothly down the sprite's own
+  height (through magenta, not gray), with flame spikes and claws.
+- **Kept on the flat tint, on purpose:** `BOSBA0`-`BOSBE0` (BD22's Hell Knight art, listed in the family by its sprite
+  name; only `BOSBF0` is an imp gib) and `X728` (XMVE's Dark Imp grabbing a marine: its own black look). `manifest.txt`'s
+  last column says `paint` or `tint` per lump.
+
+Shown on the rig (runs `rc2_old`, `rc2_new`: the owner's full order with his saved ini, `-skill 6`, rig01, sector light
+224; no script error from these packs; the frames were cut into the sheets and the runs deleted). Test-only settings for
+the sheets, not his: Universal Entropy's random recolour off (`ue_recolour 0`, else the as-shipped imp is a random
+colour), the weapon, laser sight and Kill Rewards hidden, Legion of Bones' skeletons taken away by the test handler
+(`Monsters/tools/recolour/rig/rc2demo`), static RNG.
+
+| Sheet | What |
+|---|---|
+| `docs/imp_01_green_old_vs_new.jpg` .. `docs/imp_12_white_old_vs_new.jpg` | one per colour: as shipped, old tint bake, new art; front, side, plain death (frozen mid-fall, then dead), legs shot off (crawler, then dead) |
+| `docs/imp_12colours_new_art_closeup.jpg` | the twelve colours side by side, front and side, in good light |
+
+BD picks each death at random, so a death pose can differ between the old and new runs, and a body thrown sideways can
+leave its tile (Black's mid-fall tile, for one).
+
 ## Why not new sprites: the frame cap (measured 2026-11-13)
 
 | | frames |
@@ -38,7 +82,7 @@ One colour of the full set (7,620) is already six times the headroom. The static
 - **Fallback.** A frame with no baked copy keeps the live tint, so families can be added one at a time.
 - **Single player:** the art is picked for the console player's view in play code.
 
-## Shown on the rig
+## Shown on the rig (the driver; these runs drew the FIRST, tint-baked art)
 
 | What | Run | Result |
 |---|---|---|
@@ -55,10 +99,9 @@ the tint, and the colours whose recipe lifts black (FireBlu, Red, Gray) paint it
 
 ## Not done / open
 
-- The art is the owner's approved recipes baked per pixel (from the pixel's own shade, not the palette entry's), plus
-  one Imp rule (`Monsters/tools/recolour/families/imp.txt`: its blood and guts, palette 16-47 and 176-191, keep their
-  red). It is a starting point for painting, frame by frame; nothing is painted by hand yet. FireBlu's recipe
-  alternates red and blue by palette row, which speckles the Imp's death frames.
+- The art is made by rule, per part (above). Nothing is painted by hand yet; a frame painted by hand goes in
+  `hand/<colour>/<LUMP>.png` and wins over the bake (`hand/README.txt`). Claws share the spikes' palette (same gray
+  ramp in the source); a `claw` part exists for masks that split them. The frozen imp keeps its ice in every colour.
 - Generic gore, burnt (`PBR1`, `XBRN`) and Brutal Doom's shared pieces are not baked: they keep the live tint.
 - Each tic re-picks every tracked actor; still corpses could skip until their frame or the view changes.
 - All BD22 + XMVE: 11,261 source lumps, 135,132 PNGs, about 300 MB. A plain zip holds 65,535 entries, so it would be
@@ -70,5 +113,6 @@ the tint, and the colours whose recipe lifts black (FireBlu, Red, Gray) paint it
         Monsters/TRNSLATE.txt $(cat Monsters/tools/recolour/out/bake_load_order.txt)
     cd MonsterRecolour && zip -qr ../RSQ_MonsterRecolour_proto.pk3 zscript.txt zscript MAPINFO.txt CVARINFO.txt GLDEFS.txt rsrecolour -x rsrecolour/manifest.txt
 
-Load it after RSQ_Monsters. `rsrc_on 0` turns the art off (the live tint only); `rsrc_debug 1` logs what it draws.
+The bake reads `families/imp.txt` (parts, group rules, masks, tint-kept lumps) and `ramps.py` (the palettes), then
+copies `hand/` over its output. Load it after RSQ_Monsters. `rsrc_on 0` turns the art off (the live tint only); `rsrc_debug 1` logs what it draws.
 Rig probes: `Monsters/tools/recolour/rig/` (test only).

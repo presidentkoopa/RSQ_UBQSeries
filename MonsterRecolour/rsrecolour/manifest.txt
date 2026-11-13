@@ -1,476 +1,476 @@
-2136A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/2136A0.png	1797
-2M40A0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40A0.png	2659
-2M40B0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40B0.png	2899
-2M40C0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40C0.png	2671
-2M40D0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40D0.png	2903
-2M40E0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40E0.png	2710
-2M40F0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40F0.png	2769
-2M40G0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40G0.png	2641
-2M40H0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40H0.png	1544
-2M40I0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40I0.png	1802
-2M40J0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40J0.png	1977
-2M40K0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40K0.png	2060
-2M40L0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40L0.png	2101
-2M40M0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40M0.png	2098
-2M40N0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40N0.png	2269
-BOSBA0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBA0.png	1174
-BOSBB0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBB0.png	1123
-BOSBC0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBC0.png	1039
-BOSBD0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBD0.png	643
-BOSBE0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBE0.png	643
-BOSBF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BOSBF0.png	705
-BR94A1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A1.png	2833
-BR94A2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A2A8.png	2776
-BR94A3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A3A7.png	2342
-BR94A4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A4A6.png	2785
-BR94A5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A5.png	2610
-BR94B1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B1.png	2600
-BR94B2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B2B8.png	2490
-BR94B3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B3B7.png	2274
-BR94B4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B4B6.png	2749
-BR94B5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B5.png	2610
-FZD4A0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/Freezedeaths/FZD4A0.png	2042
-FZD4B0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/Freezedeaths/FZD4B0.png	2042
-FZD4C0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/Freezedeaths/FZD4C0.png	1380
-HND4A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4A0.png	797
-HND4B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4B0.png	974
-HND4C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4C0.png	817
-HND4D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4D0.png	897
-HND4E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4E0.png	798
-HND4F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4F0.png	866
-HND4G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4G0.png	834
-HND4H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4H0.png	885
-HND4I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4I0.png	827
-HND4J0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4J0.png	1546
-HND4K0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4K0.png	1542
-HND4L0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4L0.png	1544
-HND4M0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4M0.png	1531
-HND4N0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4N0.png	1528
-HND4O0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4O0.png	1548
-HND4P0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4P0.png	1544
-HND4Q0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4Q0.png	1464
-HND4X0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/BODYPARTS/HND4X0.lmp	519
-HND4Y0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4Y0.png	318
-HND4Z0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4Z0.png	469
-IFZDA1	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA1.png	3797
-IFZDA2	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA2.png	3176
-IFZDA3	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA3.png	3477
-IFZDA4	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA4.png	3594
-IFZDA5	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA5.png	3685
-IFZDA6	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA6.png	3190
-IFZDA7	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA7.png	3522
-IFZDA8	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA8.png	3956
-IFZDB1	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB1.png	3697
-IFZDB2	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB2.png	3099
-IFZDB3	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB3.png	3405
-IFZDB4	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB4.png	3535
-IFZDB5	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB5.png	3625
-IFZDB6	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB6.png	3104
-IFZDB7	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB7.png	3459
-IFZDB8	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB8.png	3881
-IFZDC0	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDC0.png	1131
-IHEDA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IHEDA0.png	421
-IMPCA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCA0.png	2028
-IMPCB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCB0.png	1987
-IMPCC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCC0.png	1945
-IMPCI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCI0.png	1538
-IMPCJ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCJ0.png	1142
-IMPCK0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCK0.png	999
-IMPCL0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCL0.png	1630
-IPFPA0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPA0.png	2084
-IPFPB0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPB0.png	2016
-IPFPC0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPC0.png	1886
-IPFPD0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPD0.png	1827
-IPFPE0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPE0.png	1782
-IPFPF0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPF0.png	1520
-IPFPG0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPG0.png	1522
-IPFPH0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPH0.png	1486
-IPFPI0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPI0.png	1351
-IPFPJ0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPJ0.png	1401
-IPFPK0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPK0.png	1490
-IPFPL0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPL0.png	1571
-IPFPM0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPM0.png	1576
-IPFPN0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPN0.png	1435
-IPFPO0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPO0.png	1477
-IPFPP0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPP0.png	997
-IUSAA1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA1.png	1835
-IUSAA2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA2A8.png	936
-IUSAA3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA3A7.png	832
-IUSAA4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA4A6.png	832
-IUSAA5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA5.png	1810
-IUSAB1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB1.png	1799
-IUSAB2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB2B8.png	939
-IUSAB3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB3B7.png	808
-IUSAB4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB4B6.png	808
-IUSAB5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB5.png	1838
-IUSAC1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC1.png	1838
-IUSAC2C8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC2C8.png	1032
-IUSAC3C7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC3C7.png	839
-IUSAC4C6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC4C6.png	839
-IUSAC5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC5.png	1799
-IUSAD1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD1.png	1810
-IUSAD2D8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD2D8.png	939
-IUSAD3D7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD3D7.png	771
-IUSAD4D6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD4D6.png	771
-IUSAD5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD5.png	1835
-IUSAE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAE0.png	1708
-IZD1A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1A0.png	1078
-IZD1B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1B0.png	1044
-IZD1C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1C0.png	899
-IZD1D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1D0.png	1009
-IZD1E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1E0.png	1058
-IZD1F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1F0.png	909
-IZD1G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1G0.png	894
-IZD1H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1H0.png	876
-IZD2A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD2A0.png	1014
-IZD2B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD2B0.png	997
-IZD2C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD2C0.png	872
-IZD3A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD3A0.png	936
-IZD3B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD3B0.png	894
-IZD3C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD3C0.png	782
-IZD3D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD3D0.png	872
-IZD4A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4A0.png	1014
-IZD4B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4B0.png	842
-IZD4C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4C0.png	1673
-IZD4D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4D0.png	1673
-IZD4E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4E0.png	1652
-IZD4F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4F0.png	1674
-IZD4G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4G0.png	1665
-IZD4H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4H0.png	1681
-IZD4I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4I0.png	1803
-IZD4J0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4J0.png	1788
-IZD4K0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4K0.png	1671
-IZD4L0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4L0.png	1668
-IZD4M0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4M0.png	1570
-IZD4N0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4N0.png	1796
-IZD4O0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4O0.png	1890
-LEG4A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4A0.png	870
-LEG4B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4B0.png	829
-LEG4C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4C0.png	859
-LEG4D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4D0.png	873
-LEG4E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4E0.png	832
-LEG4F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4F0.png	812
-LEG4G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4G0.png	867
-LEG4H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4H0.png	837
-LEG4I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4I0.png	667
-LEG4Y0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4Y0.png	478
-LEG4Z0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4Z0.png	365
-T6SWA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWA0.png	2411
-T6SWB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWB0.png	985
-T6SWC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWC0.png	1813
-T6SWD0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWD0.png	2408
-T6SWE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWE0.png	2403
-T6SWF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWF0.png	1857
-T6SWG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWG0.png	2807
-TR06A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06A0.png	1724
-TR06B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06B0.png	2001
-TR06C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06C0.png	1851
-TR06D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06D0.png	1791
-TR06E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06E0.png	1856
-TR06F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06F0.png	1725
-TR06G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06G0.png	1763
-TR06H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06H0.png	1744
-TR06I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06I0.png	1838
-TR06J0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06J0.png	1817
-TR06K0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06K0.png	1682
-TR06L0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06L0.png	1727
-TR06M0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06M0.png	1971
-TR06N0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06N0.png	1835
-TR06O0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06O0.png	1825
-TR06P0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06P0.png	1878
-TR06Q0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06Q0.png	1759
-TR06R0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06R0.png	1805
-TR06S0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06S0.png	1719
-TR06T0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06T0.png	1857
-TR06U0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06U0.png	1797
-TR06V0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06V0.png	1669
-TR08A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08A0.png	3142
-TR08B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08B0.png	2675
-TR08C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08C0.png	2662
-TR08D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08D0.png	1051
-TR08E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08E0.png	1598
-TR08F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08F0.png	2597
-TR08G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08G0.png	1769
-TR08H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08H0.png	1820
-TR08I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08I0.png	1790
-TR08J0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08J0.png	1706
-TR08K0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08K0.png	892
-TR09A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09A0.png	1080
-TR09B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09B0.png	1150
-TR09C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09C0.png	1128
-TR09D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09D0.png	1226
-TR09E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09E0.png	934
-TR09F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09F0.png	1234
-TR09G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09G0.png	1108
-TR09H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09H0.png	1112
-TR09I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09I0.png	1075
-TR97A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97A0.png	1940
-TR97B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97B0.png	1920
-TR97C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97C0.png	1814
-TR97D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97D0.png	1763
-TR97E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97E0.png	1677
-TRO1A1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A1.png	5744
-TRO1A2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A2.png	4514
-TRO1A3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A3.png	4201
-TRO1A4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A4.png	4458
-TRO1A5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A5.png	4890
-TRO1A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A6.png	4794
-TRO1A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A7.png	4783
-TRO1A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A8.png	5176
-TRO1B1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B1.png	5151
-TRO1B2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B2.png	5229
-TRO1B3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B3.png	4255
-TRO1B4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B4.png	3931
-TRO1B5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B5.png	4161
-TRO1B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B6.png	4811
-TRO1B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B7.png	4704
-TRO1B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B8.png	4565
-TRO2D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO2D0.png	1232
-TRO2E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO2E0.png	1235
-TRO2F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO2F0.png	1921
-TRO2G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO2G0.png	1797
-TRO3A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3A0.png	1283
-TRO3B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3B0.png	2576
-TRO3C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3C0.png	950
-TRO3D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3D0.png	831
-TRO3E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3E0.png	874
-TRO4A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4A0.png	2013
-TRO4B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4B0.png	2632
-TRO4C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4C0.png	1722
-TRO4D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4D0.png	1610
-TRO4E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4E0.png	1604
-TROAH1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH1.png	1835
-TROAH2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH2.png	1866
-TROAH3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH3.png	1772
-TROAH4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH4.png	1701
-TROAH5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH5.png	1693
-TROAH6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROAH6.png	1709
-TROAH7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROAH7.png	1868
-TROAH8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROAH8.png	1899
-TRODA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODA0.png	1831
-TRODB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODB0.png	1807
-TRODC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODC0.png	1776
-TRODD0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODD0.png	1798
-TRODE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODE0.png	1749
-TRODF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODF0.png	1751
-TRODG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODG0.png	1726
-TRODH0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODH0.png	1705
-TRODI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODI0.png	1646
-TRODJ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODJ0.png	1660
-TROGA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGA0.png	670
-TROGB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGB0.png	614
-TROGC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGC0.png	595
-TROGD0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGD0.png	677
-TROGE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGE0.png	843
-TROGF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGF0.png	843
-TROGG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGG0.png	843
-TROGH0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGH0.png	843
-TROGK0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGK0.png	1630
-TROGL0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGL0.png	1583
-TROHA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHA0.png	1103
-TROHB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHB0.png	1079
-TROHC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHC0.png	1037
-TROHD0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHD0.png	999
-TROHE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHE0.png	1630
-TROHF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHF0.png	1027
-TROHG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHG0.png	1762
-TROHH0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHH0.png	972
-TROHI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHI0.png	1739
-TROHK0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHK0.png	1320
-TROHL0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHL0.png	1567
-TROHM0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHM0.png	1530
-TROHN0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHN0.png	1280
-TROHO0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHO0.png	904
-TROHQ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHQ0.png	1894
-TROHR0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHR0.png	1847
-TROHS0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHS0.png	1878
-TROHT0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHT0.png	1884
-TROOA1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA1.png	1940
-TROOA2A8	doom2.wad	wad	1564
-TROOA2C8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA2C8.png	1901
-TROOA3A7	doom2.wad	wad	1144
-TROOA3C7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA3C7.png	1666
-TROOA4A6	doom2.wad	wad	1048
-TROOA4C6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA4C6.png	1624
-TROOA5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA5.png	1706
-TROOB1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB1.png	1894
-TROOB2B8	doom2.wad	wad	1420
-TROOB2D8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB2D8.png	1850
-TROOB3B7	doom2.wad	wad	1304
-TROOB3D7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB3D7.png	1720
-TROOB4B6	doom2.wad	wad	1228
-TROOB4D6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB4D6.png	1711
-TROOB5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB5.png	1653
-TROOC1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC1.png	1916
-TROOC2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC2A8.png	1880
-TROOC2C8	doom2.wad	wad	1528
-TROOC3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC3A7.png	1682
-TROOC3C7	doom2.wad	wad	1148
-TROOC4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC4A6.png	1639
-TROOC4C6	doom2.wad	wad	1060
-TROOC5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC5.png	1711
-TROOD1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD1.png	1877
-TROOD2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD2B8.png	1897
-TROOD2D8	doom2.wad	wad	1652
-TROOD3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD3B7.png	1715
-TROOD3D7	doom2.wad	wad	1320
-TROOD4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD4B6.png	1584
-TROOD4D6	doom2.wad	wad	1012
-TROOD5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD5.png	1655
-TROOE1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE1.png	1952
-TROOE2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE2.png	1770
-TROOE2E8	doom2.wad	wad	1260
-TROOE3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE3.png	1714
-TROOE3E7	doom2.wad	wad	1284
-TROOE4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE4.png	1734
-TROOE4E6	doom2.wad	wad	1252
-TROOE5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE5.png	1704
-TROOE6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE6.png	1651
-TROOE7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE7.png	1795
-TROOE8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE8.png	1928
-TROOF1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF1.png	1916
-TROOF2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF2.png	1829
-TROOF2F8	doom2.wad	wad	1476
-TROOF3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF3.png	1696
-TROOF3F7	doom2.wad	wad	1380
-TROOF4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF4.png	1657
-TROOF4F6	doom2.wad	wad	1180
-TROOF5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF5.png	1683
-TROOF6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF6.png	1676
-TROOF7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF7.png	1772
-TROOF8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF8.png	1790
-TROOG1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG1.png	1837
-TROOG2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG2.png	1888
-TROOG2G8	doom2.wad	wad	1644
-TROOG3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG3.png	1851
-TROOG3G7	doom2.wad	wad	1700
-TROOG4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG4.png	1713
-TROOG4G6	doom2.wad	wad	1380
-TROOG5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG5.png	1695
-TROOG6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG6.png	1717
-TROOG7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG7.png	1789
-TROOG8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG8.png	1869
-TROOH1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH1.png	1845
-TROOH2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH2.png	1679
-TROOH2H8	doom2.wad	wad	1144
-TROOH3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH3.png	1777
-TROOH3H7	doom2.wad	wad	1328
-TROOH4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH4.png	1796
-TROOH4H6	doom2.wad	wad	1336
-TROOH5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH5.png	1789
-TROOH6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH6.png	1592
-TROOH7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH7.png	1818
-TROOH8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH8.png	1990
-TROOI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI0.png	1940
-TROOI1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI1.png	1919
-TROOI2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI2.png	1797
-TROOI3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI3.png	1770
-TROOI4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI4.png	1661
-TROOI5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI5.png	1682
-TROOI6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI6.png	1662
-TROOI7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI7.png	1700
-TROOI8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI8.png	1836
-TROOJ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOJ0.png	1920
-TROOK0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOK0.png	1783
-TROOL0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOL0.png	1764
-TROOM0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOM0.png	1677
-TROON0	doom2.wad	wad	2212
-TROON1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON1.png	1207
-TROON2N8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON2N8.png	916
-TROON3N7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON3N7.png	814
-TROON4N6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON4N6.png	813
-TROON5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON5.png	766
-TROOO0	doom2.wad	wad	2548
-TROOO1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO1.png	1156
-TROOO2O8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO2O8.png	947
-TROOO3O7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO3O7.png	776
-TROOO4O6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO4O6.png	705
-TROOO5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO5.png	746
-TROOP0	doom2.wad	wad	2852
-TROOQ0	doom2.wad	wad	2576
-TROOR0	doom2.wad	wad	2008
-TROOS0	doom2.wad	wad	1824
-TROOT0	doom2.wad	wad	1456
-TROOU0	doom2.wad	wad	1240
-TROOV0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROOV0.png	1801
-TROOW0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROOW0.png	1727
-TROOX0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROOX0.png	1711
-TROOY0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROOY0.png	1620
-TROSA1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA1.png	1894
-TROSA2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA2A8.png	1850
-TROSA3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA3A7.png	1720
-TROSA4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA4A6.png	1711
-TROSA5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA5.png	1653
-TROSB1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB1.png	1030
-TROSB2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB2B8.png	985
-TROSB3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB3B7.png	817
-TROSB4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB4B6.png	815
-TROSB5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB5.png	754
-TROTA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTA0.png	2435
-TROTB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTB0.png	2560
-TROTC1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC1.png	1162
-TROTC2C8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC2C8.png	1897
-TROTC3C7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC3C7.png	1745
-TROTC4C6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC4C6.png	1769
-TROTC5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC5.png	1749
-TROTD1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD1.png	1132
-TROTD2D8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD2D8.png	1888
-TROTD3D7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD3D7.png	1737
-TROTD4D6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD4D6.png	1751
-TROTD5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD5.png	1723
-TROTE1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE1.png	1259
-TROTE2E8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE2E8.png	1785
-TROTE3E7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE3E7.png	1666
-TROTE4E6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE4E6.png	1717
-TROTE5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE5.png	1669
-TROTF1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF1.png	1270
-TROTF2F8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF2F8.png	1802
-TROTF3F7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF3F7.png	1702
-TROTF4F6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF4F6.png	1707
-TROTF5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF5.png	1675
-TROTG1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG1.png	2957
-TROTG2G8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG2G8.png	952
-TROTG3G7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG3G7.png	1779
-TROTG4G6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG4G6.png	705
-TROTG5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG5.png	1637
-TROTH1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH1.png	2374
-TROTH2H8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH2H8.png	1981
-TROTH3H7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH3H7.png	2691
-TROTH4H6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH4H6.png	1661
-TROTH5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH5.png	1682
-TROZA1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA1.png	1162
-TROZA2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA2A8.png	1897
-TROZA3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA3A7.png	1745
-TROZA4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA4A6.png	1761
-TROZA5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA5.png	1749
-TROZB1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB1.png	1144
-TROZB2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB2B8.png	1888
-TROZB3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB3B7.png	1737
-TROZB4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB4B6.png	1751
-TROZB5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB5.png	855
-X728A0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728A0.png	1583
-X728B0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728B0.png	3379
-X728C0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728C0.png	1777
-X728D0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728D0.png	3214
-X728E0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728E0.png	1574
-X728F0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728F0.png	3696
-X728G0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728G0.png	1727
-X728H0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728H0.png	3207
-XHE4A0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4A0	523
-XHE4B0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4B0	544
-XHE4C0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4C0	525
-XHE4D0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4D0	541
-XHE4E0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4E0	526
-XHE4F0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4F0	554
-XHE4G0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4G0	530
-XHE4H0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4H0	534
-ZL3EA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EA0.png	1080
-ZL3EB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EB0.png	1075
-ZL3EC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EC0.png	1071
-ZL3ED0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3ED0.png	1088
-ZL3EE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EE0.png	1040
-ZL3EF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EF0.png	922
-ZL3EG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EG0.png	884
-ZL3EH0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EH0.png	1078
-ZL3EI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EI0.png	1035
-ZL3EJ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EJ0.png	898
+2136A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/2136A0.png	1797	paint
+2M40A0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40A0.png	2659	paint
+2M40B0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40B0.png	2899	paint
+2M40C0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40C0.png	2671	paint
+2M40D0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40D0.png	2903	paint
+2M40E0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40E0.png	2710	paint
+2M40F0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40F0.png	2769	paint
+2M40G0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40G0.png	2641	paint
+2M40H0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40H0.png	1544	paint
+2M40I0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40I0.png	1802	paint
+2M40J0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40J0.png	1977	paint
+2M40K0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40K0.png	2060	paint
+2M40L0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40L0.png	2101	paint
+2M40M0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40M0.png	2098	paint
+2M40N0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/IMP/2M40N0.png	2269	paint
+BOSBA0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBA0.png	1174	tint
+BOSBB0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBB0.png	1123	tint
+BOSBC0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBC0.png	1039	tint
+BOSBD0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBD0.png	643	tint
+BOSBE0	1_00_brutal22test6.pk3	sprites/Monsters/BruiserBrothers/HellKnight/BOSBE0.png	643	tint
+BOSBF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BOSBF0.png	705	paint
+BR94A1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A1.png	2833	paint
+BR94A2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A2A8.png	2776	paint
+BR94A3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A3A7.png	2342	paint
+BR94A4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A4A6.png	2785	paint
+BR94A5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94A5.png	2610	paint
+BR94B1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B1.png	2600	paint
+BR94B2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B2B8.png	2490	paint
+BR94B3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B3B7.png	2274	paint
+BR94B4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B4B6.png	2749	paint
+BR94B5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/BR94B5.png	2610	paint
+FZD4A0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/Freezedeaths/FZD4A0.png	2042	paint
+FZD4B0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/Freezedeaths/FZD4B0.png	2042	paint
+FZD4C0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/Freezedeaths/FZD4C0.png	1380	paint
+HND4A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4A0.png	797	paint
+HND4B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4B0.png	974	paint
+HND4C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4C0.png	817	paint
+HND4D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4D0.png	897	paint
+HND4E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4E0.png	798	paint
+HND4F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4F0.png	866	paint
+HND4G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4G0.png	834	paint
+HND4H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4H0.png	885	paint
+HND4I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4I0.png	827	paint
+HND4J0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4J0.png	1546	paint
+HND4K0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4K0.png	1542	paint
+HND4L0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4L0.png	1544	paint
+HND4M0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4M0.png	1531	paint
+HND4N0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4N0.png	1528	paint
+HND4O0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4O0.png	1548	paint
+HND4P0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4P0.png	1544	paint
+HND4Q0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4Q0.png	1464	paint
+HND4X0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/BODYPARTS/HND4X0.lmp	519	paint
+HND4Y0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4Y0.png	318	paint
+HND4Z0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/HND4Z0.png	469	paint
+IFZDA1	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA1.png	3797	paint
+IFZDA2	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA2.png	3176	paint
+IFZDA3	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA3.png	3477	paint
+IFZDA4	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA4.png	3594	paint
+IFZDA5	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA5.png	3685	paint
+IFZDA6	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA6.png	3190	paint
+IFZDA7	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA7.png	3522	paint
+IFZDA8	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDA8.png	3956	paint
+IFZDB1	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB1.png	3697	paint
+IFZDB2	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB2.png	3099	paint
+IFZDB3	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB3.png	3405	paint
+IFZDB4	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB4.png	3535	paint
+IFZDB5	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB5.png	3625	paint
+IFZDB6	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB6.png	3104	paint
+IFZDB7	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB7.png	3459	paint
+IFZDB8	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDB8.png	3881	paint
+IFZDC0	1_00_brutal22test6.pk3	sprites/Monsters/FreezeDeaths/FrozenImp/IFZDC0.png	1131	paint
+IHEDA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IHEDA0.png	421	paint
+IMPCA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCA0.png	2028	paint
+IMPCB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCB0.png	1987	paint
+IMPCC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCC0.png	1945	paint
+IMPCI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCI0.png	1538	paint
+IMPCJ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCJ0.png	1142	paint
+IMPCK0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCK0.png	999	paint
+IMPCL0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IMPCL0.png	1630	paint
+IPFPA0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPA0.png	2084	paint
+IPFPB0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPB0.png	2016	paint
+IPFPC0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPC0.png	1886	paint
+IPFPD0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPD0.png	1827	paint
+IPFPE0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPE0.png	1782	paint
+IPFPF0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPF0.png	1520	paint
+IPFPG0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPG0.png	1522	paint
+IPFPH0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPH0.png	1486	paint
+IPFPI0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPI0.png	1351	paint
+IPFPJ0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPJ0.png	1401	paint
+IPFPK0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPK0.png	1490	paint
+IPFPL0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPL0.png	1571	paint
+IPFPM0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPM0.png	1576	paint
+IPFPN0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPN0.png	1435	paint
+IPFPO0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPO0.png	1477	paint
+IPFPP0	1_00_brutal22test6.pk3	sprites/MonsterFatality/Imp_Fatality/IPFPP0.png	997	paint
+IUSAA1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA1.png	1835	paint
+IUSAA2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA2A8.png	936	paint
+IUSAA3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA3A7.png	832	paint
+IUSAA4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA4A6.png	832	paint
+IUSAA5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAA5.png	1810	paint
+IUSAB1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB1.png	1799	paint
+IUSAB2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB2B8.png	939	paint
+IUSAB3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB3B7.png	808	paint
+IUSAB4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB4B6.png	808	paint
+IUSAB5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAB5.png	1838	paint
+IUSAC1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC1.png	1838	paint
+IUSAC2C8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC2C8.png	1032	paint
+IUSAC3C7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC3C7.png	839	paint
+IUSAC4C6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC4C6.png	839	paint
+IUSAC5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAC5.png	1799	paint
+IUSAD1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD1.png	1810	paint
+IUSAD2D8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD2D8.png	939	paint
+IUSAD3D7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD3D7.png	771	paint
+IUSAD4D6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD4D6.png	771	paint
+IUSAD5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAD5.png	1835	paint
+IUSAE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IUSAE0.png	1708	paint
+IZD1A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1A0.png	1078	paint
+IZD1B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1B0.png	1044	paint
+IZD1C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1C0.png	899	paint
+IZD1D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1D0.png	1009	paint
+IZD1E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1E0.png	1058	paint
+IZD1F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1F0.png	909	paint
+IZD1G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1G0.png	894	paint
+IZD1H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD1H0.png	876	paint
+IZD2A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD2A0.png	1014	paint
+IZD2B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD2B0.png	997	paint
+IZD2C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD2C0.png	872	paint
+IZD3A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD3A0.png	936	paint
+IZD3B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD3B0.png	894	paint
+IZD3C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD3C0.png	782	paint
+IZD3D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD3D0.png	872	paint
+IZD4A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4A0.png	1014	paint
+IZD4B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4B0.png	842	paint
+IZD4C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4C0.png	1673	paint
+IZD4D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4D0.png	1673	paint
+IZD4E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4E0.png	1652	paint
+IZD4F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4F0.png	1674	paint
+IZD4G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4G0.png	1665	paint
+IZD4H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4H0.png	1681	paint
+IZD4I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4I0.png	1803	paint
+IZD4J0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/IZD4J0.png	1788	paint
+IZD4K0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4K0.png	1671	paint
+IZD4L0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4L0.png	1668	paint
+IZD4M0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4M0.png	1570	paint
+IZD4N0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4N0.png	1796	paint
+IZD4O0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/IZD4O0.png	1890	paint
+LEG4A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4A0.png	870	paint
+LEG4B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4B0.png	829	paint
+LEG4C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4C0.png	859	paint
+LEG4D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4D0.png	873	paint
+LEG4E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4E0.png	832	paint
+LEG4F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4F0.png	812	paint
+LEG4G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4G0.png	867	paint
+LEG4H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4H0.png	837	paint
+LEG4I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4I0.png	667	paint
+LEG4Y0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4Y0.png	478	paint
+LEG4Z0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/LEG4Z0.png	365	paint
+T6SWA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWA0.png	2411	paint
+T6SWB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWB0.png	985	paint
+T6SWC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWC0.png	1813	paint
+T6SWD0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWD0.png	2408	paint
+T6SWE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWE0.png	2403	paint
+T6SWF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWF0.png	1857	paint
+T6SWG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/T6SWG0.png	2807	paint
+TR06A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06A0.png	1724	paint
+TR06B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06B0.png	2001	paint
+TR06C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06C0.png	1851	paint
+TR06D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06D0.png	1791	paint
+TR06E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06E0.png	1856	paint
+TR06F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06F0.png	1725	paint
+TR06G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06G0.png	1763	paint
+TR06H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06H0.png	1744	paint
+TR06I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06I0.png	1838	paint
+TR06J0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06J0.png	1817	paint
+TR06K0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06K0.png	1682	paint
+TR06L0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06L0.png	1727	paint
+TR06M0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06M0.png	1971	paint
+TR06N0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06N0.png	1835	paint
+TR06O0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06O0.png	1825	paint
+TR06P0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06P0.png	1878	paint
+TR06Q0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06Q0.png	1759	paint
+TR06R0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06R0.png	1805	paint
+TR06S0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06S0.png	1719	paint
+TR06T0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06T0.png	1857	paint
+TR06U0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06U0.png	1797	paint
+TR06V0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR06V0.png	1669	paint
+TR08A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08A0.png	3142	paint
+TR08B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08B0.png	2675	paint
+TR08C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08C0.png	2662	paint
+TR08D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08D0.png	1051	paint
+TR08E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08E0.png	1598	paint
+TR08F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08F0.png	2597	paint
+TR08G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08G0.png	1769	paint
+TR08H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08H0.png	1820	paint
+TR08I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08I0.png	1790	paint
+TR08J0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08J0.png	1706	paint
+TR08K0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR08K0.png	892	paint
+TR09A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09A0.png	1080	paint
+TR09B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09B0.png	1150	paint
+TR09C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09C0.png	1128	paint
+TR09D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09D0.png	1226	paint
+TR09E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09E0.png	934	paint
+TR09F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09F0.png	1234	paint
+TR09G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09G0.png	1108	paint
+TR09H0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09H0.png	1112	paint
+TR09I0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR09I0.png	1075	paint
+TR97A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97A0.png	1940	paint
+TR97B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97B0.png	1920	paint
+TR97C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97C0.png	1814	paint
+TR97D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97D0.png	1763	paint
+TR97E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TR97E0.png	1677	paint
+TRO1A1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A1.png	5744	paint
+TRO1A2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A2.png	4514	paint
+TRO1A3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A3.png	4201	paint
+TRO1A4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A4.png	4458	paint
+TRO1A5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A5.png	4890	paint
+TRO1A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A6.png	4794	paint
+TRO1A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A7.png	4783	paint
+TRO1A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1A8.png	5176	paint
+TRO1B1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B1.png	5151	paint
+TRO1B2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B2.png	5229	paint
+TRO1B3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B3.png	4255	paint
+TRO1B4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B4.png	3931	paint
+TRO1B5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B5.png	4161	paint
+TRO1B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B6.png	4811	paint
+TRO1B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B7.png	4704	paint
+TRO1B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TRO1B8.png	4565	paint
+TRO2D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO2D0.png	1232	paint
+TRO2E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO2E0.png	1235	paint
+TRO2F0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO2F0.png	1921	paint
+TRO2G0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO2G0.png	1797	paint
+TRO3A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3A0.png	1283	paint
+TRO3B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3B0.png	2576	paint
+TRO3C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3C0.png	950	paint
+TRO3D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3D0.png	831	paint
+TRO3E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO3E0.png	874	paint
+TRO4A0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4A0.png	2013	paint
+TRO4B0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4B0.png	2632	paint
+TRO4C0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4C0.png	1722	paint
+TRO4D0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4D0.png	1610	paint
+TRO4E0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRO4E0.png	1604	paint
+TROAH1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH1.png	1835	paint
+TROAH2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH2.png	1866	paint
+TROAH3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH3.png	1772	paint
+TROAH4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH4.png	1701	paint
+TROAH5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROaH5.png	1693	paint
+TROAH6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROAH6.png	1709	paint
+TROAH7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROAH7.png	1868	paint
+TROAH8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROAH8.png	1899	paint
+TRODA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODA0.png	1831	paint
+TRODB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODB0.png	1807	paint
+TRODC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODC0.png	1776	paint
+TRODD0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODD0.png	1798	paint
+TRODE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODE0.png	1749	paint
+TRODF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODF0.png	1751	paint
+TRODG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODG0.png	1726	paint
+TRODH0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODH0.png	1705	paint
+TRODI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODI0.png	1646	paint
+TRODJ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TRODJ0.png	1660	paint
+TROGA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGA0.png	670	paint
+TROGB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGB0.png	614	paint
+TROGC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGC0.png	595	paint
+TROGD0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGD0.png	677	paint
+TROGE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGE0.png	843	paint
+TROGF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGF0.png	843	paint
+TROGG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGG0.png	843	paint
+TROGH0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGH0.png	843	paint
+TROGK0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGK0.png	1630	paint
+TROGL0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROGL0.png	1583	paint
+TROHA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHA0.png	1103	paint
+TROHB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHB0.png	1079	paint
+TROHC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHC0.png	1037	paint
+TROHD0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHD0.png	999	paint
+TROHE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHE0.png	1630	paint
+TROHF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHF0.png	1027	paint
+TROHG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHG0.png	1762	paint
+TROHH0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHH0.png	972	paint
+TROHI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHI0.png	1739	paint
+TROHK0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHK0.png	1320	paint
+TROHL0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHL0.png	1567	paint
+TROHM0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHM0.png	1530	paint
+TROHN0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHN0.png	1280	paint
+TROHO0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHO0.png	904	paint
+TROHQ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHQ0.png	1894	paint
+TROHR0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHR0.png	1847	paint
+TROHS0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHS0.png	1878	paint
+TROHT0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROHT0.png	1884	paint
+TROOA1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA1.png	1940	paint
+TROOA2A8	doom2.wad	wad	1564	paint
+TROOA2C8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA2C8.png	1901	paint
+TROOA3A7	doom2.wad	wad	1144	paint
+TROOA3C7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA3C7.png	1666	paint
+TROOA4A6	doom2.wad	wad	1048	paint
+TROOA4C6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA4C6.png	1624	paint
+TROOA5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOA5.png	1706	paint
+TROOB1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB1.png	1894	paint
+TROOB2B8	doom2.wad	wad	1420	paint
+TROOB2D8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB2D8.png	1850	paint
+TROOB3B7	doom2.wad	wad	1304	paint
+TROOB3D7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB3D7.png	1720	paint
+TROOB4B6	doom2.wad	wad	1228	paint
+TROOB4D6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB4D6.png	1711	paint
+TROOB5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOB5.png	1653	paint
+TROOC1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC1.png	1916	paint
+TROOC2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC2A8.png	1880	paint
+TROOC2C8	doom2.wad	wad	1528	paint
+TROOC3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC3A7.png	1682	paint
+TROOC3C7	doom2.wad	wad	1148	paint
+TROOC4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC4A6.png	1639	paint
+TROOC4C6	doom2.wad	wad	1060	paint
+TROOC5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOC5.png	1711	paint
+TROOD1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD1.png	1877	paint
+TROOD2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD2B8.png	1897	paint
+TROOD2D8	doom2.wad	wad	1652	paint
+TROOD3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD3B7.png	1715	paint
+TROOD3D7	doom2.wad	wad	1320	paint
+TROOD4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD4B6.png	1584	paint
+TROOD4D6	doom2.wad	wad	1012	paint
+TROOD5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOD5.png	1655	paint
+TROOE1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE1.png	1952	paint
+TROOE2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE2.png	1770	paint
+TROOE2E8	doom2.wad	wad	1260	paint
+TROOE3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE3.png	1714	paint
+TROOE3E7	doom2.wad	wad	1284	paint
+TROOE4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE4.png	1734	paint
+TROOE4E6	doom2.wad	wad	1252	paint
+TROOE5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE5.png	1704	paint
+TROOE6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE6.png	1651	paint
+TROOE7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE7.png	1795	paint
+TROOE8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOE8.png	1928	paint
+TROOF1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF1.png	1916	paint
+TROOF2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF2.png	1829	paint
+TROOF2F8	doom2.wad	wad	1476	paint
+TROOF3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF3.png	1696	paint
+TROOF3F7	doom2.wad	wad	1380	paint
+TROOF4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF4.png	1657	paint
+TROOF4F6	doom2.wad	wad	1180	paint
+TROOF5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF5.png	1683	paint
+TROOF6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF6.png	1676	paint
+TROOF7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF7.png	1772	paint
+TROOF8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOF8.png	1790	paint
+TROOG1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG1.png	1837	paint
+TROOG2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG2.png	1888	paint
+TROOG2G8	doom2.wad	wad	1644	paint
+TROOG3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG3.png	1851	paint
+TROOG3G7	doom2.wad	wad	1700	paint
+TROOG4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG4.png	1713	paint
+TROOG4G6	doom2.wad	wad	1380	paint
+TROOG5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG5.png	1695	paint
+TROOG6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG6.png	1717	paint
+TROOG7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG7.png	1789	paint
+TROOG8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOG8.png	1869	paint
+TROOH1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH1.png	1845	paint
+TROOH2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH2.png	1679	paint
+TROOH2H8	doom2.wad	wad	1144	paint
+TROOH3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH3.png	1777	paint
+TROOH3H7	doom2.wad	wad	1328	paint
+TROOH4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH4.png	1796	paint
+TROOH4H6	doom2.wad	wad	1336	paint
+TROOH5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH5.png	1789	paint
+TROOH6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH6.png	1592	paint
+TROOH7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH7.png	1818	paint
+TROOH8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOH8.png	1990	paint
+TROOI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI0.png	1940	paint
+TROOI1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI1.png	1919	paint
+TROOI2	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI2.png	1797	paint
+TROOI3	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI3.png	1770	paint
+TROOI4	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI4.png	1661	paint
+TROOI5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI5.png	1682	paint
+TROOI6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI6.png	1662	paint
+TROOI7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI7.png	1700	paint
+TROOI8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOI8.png	1836	paint
+TROOJ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOJ0.png	1920	paint
+TROOK0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOK0.png	1783	paint
+TROOL0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOL0.png	1764	paint
+TROOM0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOM0.png	1677	paint
+TROON0	doom2.wad	wad	2212	paint
+TROON1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON1.png	1207	paint
+TROON2N8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON2N8.png	916	paint
+TROON3N7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON3N7.png	814	paint
+TROON4N6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON4N6.png	813	paint
+TROON5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROON5.png	766	paint
+TROOO0	doom2.wad	wad	2548	paint
+TROOO1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO1.png	1156	paint
+TROOO2O8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO2O8.png	947	paint
+TROOO3O7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO3O7.png	776	paint
+TROOO4O6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO4O6.png	705	paint
+TROOO5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROOO5.png	746	paint
+TROOP0	doom2.wad	wad	2852	paint
+TROOQ0	doom2.wad	wad	2576	paint
+TROOR0	doom2.wad	wad	2008	paint
+TROOS0	doom2.wad	wad	1824	paint
+TROOT0	doom2.wad	wad	1456	paint
+TROOU0	doom2.wad	wad	1240	paint
+TROOV0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROOV0.png	1801	paint
+TROOW0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROOW0.png	1727	paint
+TROOX0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROOX0.png	1711	paint
+TROOY0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/TROOY0.png	1620	paint
+TROSA1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA1.png	1894	paint
+TROSA2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA2A8.png	1850	paint
+TROSA3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA3A7.png	1720	paint
+TROSA4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA4A6.png	1711	paint
+TROSA5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSA5.png	1653	paint
+TROSB1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB1.png	1030	paint
+TROSB2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB2B8.png	985	paint
+TROSB3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB3B7.png	817	paint
+TROSB4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB4B6.png	815	paint
+TROSB5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROSB5.png	754	paint
+TROTA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTA0.png	2435	paint
+TROTB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTB0.png	2560	paint
+TROTC1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC1.png	1162	paint
+TROTC2C8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC2C8.png	1897	paint
+TROTC3C7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC3C7.png	1745	paint
+TROTC4C6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC4C6.png	1769	paint
+TROTC5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTC5.png	1749	paint
+TROTD1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD1.png	1132	paint
+TROTD2D8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD2D8.png	1888	paint
+TROTD3D7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD3D7.png	1737	paint
+TROTD4D6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD4D6.png	1751	paint
+TROTD5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTD5.png	1723	paint
+TROTE1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE1.png	1259	paint
+TROTE2E8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE2E8.png	1785	paint
+TROTE3E7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE3E7.png	1666	paint
+TROTE4E6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE4E6.png	1717	paint
+TROTE5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTE5.png	1669	paint
+TROTF1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF1.png	1270	paint
+TROTF2F8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF2F8.png	1802	paint
+TROTF3F7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF3F7.png	1702	paint
+TROTF4F6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF4F6.png	1707	paint
+TROTF5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTF5.png	1675	paint
+TROTG1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG1.png	2957	paint
+TROTG2G8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG2G8.png	952	paint
+TROTG3G7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG3G7.png	1779	paint
+TROTG4G6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG4G6.png	705	paint
+TROTG5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTG5.png	1637	paint
+TROTH1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH1.png	2374	paint
+TROTH2H8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH2H8.png	1981	paint
+TROTH3H7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH3H7.png	2691	paint
+TROTH4H6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH4H6.png	1661	paint
+TROTH5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROTH5.png	1682	paint
+TROZA1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA1.png	1162	paint
+TROZA2A8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA2A8.png	1897	paint
+TROZA3A7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA3A7.png	1745	paint
+TROZA4A6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA4A6.png	1761	paint
+TROZA5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZA5.png	1749	paint
+TROZB1	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB1.png	1144	paint
+TROZB2B8	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB2B8.png	1888	paint
+TROZB3B7	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB3B7.png	1737	paint
+TROZB4B6	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB4B6.png	1751	paint
+TROZB5	1_00_brutal22test6.pk3	sprites/Monsters/Imp/TROZB5.png	855	paint
+X728A0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728A0.png	1583	tint
+X728B0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728B0.png	3379	tint
+X728C0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728C0.png	1777	tint
+X728D0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728D0.png	3214	tint
+X728E0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728E0.png	1574	tint
+X728F0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728F0.png	3696	tint
+X728G0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728G0.png	1727	tint
+X728H0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/DarkImps/GRABTHINGS/X728H0.png	3207	tint
+XHE4A0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4A0	523	paint
+XHE4B0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4B0	544	paint
+XHE4C0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4C0	525	paint
+XHE4D0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4D0	541	paint
+XHE4E0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4E0	526	paint
+XHE4F0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4F0	554	paint
+XHE4G0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4G0	530	paint
+XHE4H0	04_XMVE_MonsterExpansion1.3.1-BD22.pk3	Sprites/Monsters/GORE/XHE4H0	534	paint
+ZL3EA0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EA0.png	1080	paint
+ZL3EB0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EB0.png	1075	paint
+ZL3EC0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EC0.png	1071	paint
+ZL3ED0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3ED0.png	1088	paint
+ZL3EE0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EE0.png	1040	paint
+ZL3EF0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EF0.png	922	paint
+ZL3EG0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EG0.png	884	paint
+ZL3EH0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EH0.png	1078	paint
+ZL3EI0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EI0.png	1035	paint
+ZL3EJ0	1_00_brutal22test6.pk3	sprites/Monsters/Imp/GIBS/ZL3EJ0.png	898	paint
