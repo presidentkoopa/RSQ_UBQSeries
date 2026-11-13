@@ -85,3 +85,11 @@ nor Brutal Doom's sprites. Nothing is headset-confirmed.
   bodies on a swap; where S lives.
 - Rig note: a `map` command in the rig's +script does nothing (the -warp map is the one that loads); the last netevent
   before `quit` never runs.
+
+## 09:45 (owner, of the one-wash tints: "one flat wash is the most effort youre gonna put into this huh?")
+- The 12 `rs_bdtier_*` recipes are rewritten BY PALETTE RANGE (TRNSLATE.txt): the body ranges (16-79, 112-159, 176-191)
+  take the colour; steel and bone (80-111) keep their light with a quarter of the colour; bright reds, fire, plasma and
+  the rest are untouched. FireBlu alternates red and blue across the body ranges.
+- Seen in rig frames on Brutal Doom's and XMVE's real monsters (full-bright, rig01): teeth, eyes, blood, guns, belts
+  and flames keep their own colours. Weak spot seen: a monster in black or grey armour (XMVE's dark troopers) takes
+  the colour only on its skin and visor. Sheets sent to him; he has NOT answered yet.
