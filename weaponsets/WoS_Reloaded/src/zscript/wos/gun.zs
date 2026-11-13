@@ -9,8 +9,59 @@
 
 class RSQWS_Kicking : Inventory { Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE; +INVENTORY.UNTOSSABLE; } }
 
+// BD's quick kick (a key, any time a WoS weapon is up), shared by the guns and the Knuckles (a Fist: RSQ Melee punches
+// with it), so it is a mixin, not a base class.
+mixin class RSQWS_KickMix
+{
+	// ---------------------------------------------------------------- the kick (BD's quick kick)
+	// WoS's own kick numbers (KNUCKLES.txt / PISTOL.txt AltFire: 2*random(5,15), 96 units, FootPuff, the 1911's thrust);
+	// berserk x10 as WoS. Ground kick, air kick in the air.
+	action void RSQWS_KickHit(bool air)
+	{
+		int dmg = 2 * random(5, 15);
+		if (FindInventory('PowerStrength', true)) dmg *= 10;
+		A_CustomPunch(dmg, true, CPF_NOTURN, 'RSQWS_FootPuff', air ? 112 : 96);
+		A_RadiusThrust(5000, 64, RTF_NOIMPACTDAMAGE | RTF_NOTMISSILE);
+	}
+
+	// the kick token, checked by every Ready tic (RSQWS_Gun.RSQWS_Ready, RSQWS_Knuckles' Ready)
+	action state RSQWS_KickCheck()
+	{
+		if (CountInv('RSQWS_Kicking') > 0 && !invoker.bOffhandWeapon)
+			return ResolveState("DoKick");
+		return null;
+	}
+
+	States
+	{
+	// ---- the quick kick: a key (KEYCONF "Quick Kick"), any time the gun is up
+	DoKick:
+		"####" "#" 0
+		{
+			A_TakeInventory("RSQWS_Kicking", 1);
+			if (!player || player.onground == false && vel.z != 0)
+				return ResolveState("AirKick");
+			A_StartSound("weapons/foot/swing", CHAN_WEAPON);
+			return ResolveState(null);
+		}
+		KICK ABC 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
+		KICK D 0 RSQWS_KickHit(false);
+		KICK DEEEEFGHIJ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
+		KICK KLM 1;
+		Goto Ready;
+	AirKick:
+		KICK N 0 A_StartSound("weapons/foot/swing", CHAN_WEAPON);
+		KICK NOPQ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
+		KICK R 0 RSQWS_KickHit(true);
+		KICK RRSTUVWXYZ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
+		Goto Ready;
+	}
+}
+
 class RSQWS_Gun : Weapon abstract
 {
+	mixin RSQWS_KickMix;
+
 	bool chambered;		// a round in the chamber: empty, the magazine takes one less (WoS's 10 / 11)
 	bool racks;			// emptied, the hand reload ends with the slide / bolt / handle (RSR_Charge)
 	bool semiOption;	// "Pistol Semi Auto" (rsa_pistol_semi) applies to this gun
@@ -60,6 +111,25 @@ class RSQWS_Gun : Weapon abstract
 			if (!inf) Ammo1.Amount--;
 		}
 	}
+	// one round from the reserve into the gun (a shell into a tube or a barrel); false: full, or nothing to load
+	bool LoadOne()
+	{
+		if (!Ammo2 || !Ammo1 || !Owner || Ammo2.Amount >= Ammo2.MaxAmount) return false;
+		bool inf = sv_infiniteammo || Owner.FindInventory('PowerInfiniteAmmo', true);
+		if (Ammo1.Amount <= 0 && !inf) return false;
+		Ammo2.Amount++;
+		if (!inf) Ammo1.Amount--;
+		return true;
+	}
+	// up to n rounds out of the gun, as WoS's A_TakeInventory(mag, n) (the Titan, the Nova Rifle's charge); how many
+	int TakeUpTo(int n)
+	{
+		if (!Ammo2) return 0;
+		int k = min(n, Ammo2.Amount);
+		if (!(sv_infiniteammo || (Owner && Owner.FindInventory('PowerInfiniteAmmo', true))))
+			Ammo2.Amount -= k;
+		return k;
+	}
 	// fire one round from the gun (false: it is empty)
 	bool TakeRound(int n = 1)
 	{
@@ -89,8 +159,9 @@ class RSQWS_Gun : Weapon abstract
 	// the kick, then A_WeaponReady (reload offered only when there is room and rounds to put in)
 	action state RSQWS_Ready(int flags = 0)
 	{
-		if (CountInv('RSQWS_Kicking') > 0 && !invoker.InOffHand())
-			return ResolveState("DoKick");
+		state k = RSQWS_KickCheck();
+		if (k)
+			return k;
 		A_WeaponReady(flags | (invoker.CanReload() ? WRF_ALLOWRELOAD : 0));
 		return null;
 	}
@@ -113,17 +184,6 @@ class RSQWS_Gun : Weapon abstract
 			A_FireProjectile('RSQWS_GunSmokeSpawner', 0, false, 0, up);
 		if (casing)
 			A_FireProjectile(casing, 0, false, side, up);
-	}
-
-	// ---------------------------------------------------------------- the kick (BD's quick kick)
-	// WoS's own kick numbers (KNUCKLES.txt / PISTOL.txt AltFire: 2*random(5,15), 96 units, FootPuff, the 1911's thrust);
-	// berserk x10 as WoS. Ground kick, air kick in the air.
-	action void RSQWS_KickHit(bool air)
-	{
-		int dmg = 2 * random(5, 15);
-		if (FindInventory('PowerStrength', true)) dmg *= 10;
-		A_CustomPunch(dmg, true, CPF_NOTURN, 'RSQWS_FootPuff', air ? 112 : 96);
-		A_RadiusThrust(5000, 64, RTF_NOIMPACTDAMAGE | RTF_NOTMISSILE);
 	}
 
 	States
@@ -182,27 +242,6 @@ class RSQWS_Gun : Weapon abstract
 		"####" "#" 8;
 		Goto Ready;
 
-	// ---- the quick kick: a key (KEYCONF "Quick Kick"), any time the gun is up
-	DoKick:
-		"####" "#" 0
-		{
-			A_TakeInventory("RSQWS_Kicking", 1);
-			if (!player || player.onground == false && vel.z != 0)
-				return ResolveState("AirKick");
-			A_StartSound("weapons/foot/swing", CHAN_WEAPON);
-			return ResolveState(null);
-		}
-		KICK ABC 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
-		KICK D 0 RSQWS_KickHit(false);
-		KICK DEEEEFGHIJ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
-		KICK KLM 1;
-		Goto Ready;
-	AirKick:
-		KICK N 0 A_StartSound("weapons/foot/swing", CHAN_WEAPON);
-		KICK NOPQ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
-		KICK R 0 RSQWS_KickHit(true);
-		KICK RRSTUVWXYZ 1 A_WeaponReady(WRF_NOFIRE | WRF_NOSWITCH);
-		Goto Ready;
 	}
 }
 
@@ -214,7 +253,7 @@ class RSQWS_KickKey : EventHandler
 		if (!(e.Name ~== "rsqws_kick") || e.Player < 0 || e.Player >= MAXPLAYERS || !playeringame[e.Player])
 			return;
 		let mo = players[e.Player].mo;
-		if (mo && mo.health > 0 && players[e.Player].ReadyWeapon is 'RSQWS_Gun')
+		if (mo && mo.health > 0 && (players[e.Player].ReadyWeapon is 'RSQWS_Gun' || players[e.Player].ReadyWeapon is 'RSQWS_Knuckles'))
 			mo.GiveInventory('RSQWS_Kicking', 1);
 	}
 }
