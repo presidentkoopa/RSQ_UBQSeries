@@ -15,8 +15,19 @@
 // THE COLOUR. rung = entry colour + (world tier - 1) + what a fight added.
 // Colour = min(13, rung); every rung past White is an EX step. A monster AT its
 // entry colour is exactly as its mod ships it: no tint, no kit, every multiplier
-// 1.0 (the rule's "relative to the entry colour"; my reading for kits and tint,
-// the document does not say).
+// 1.0.
+//
+// THE ENTRY IS ALWAYS COMMON (owner 2026-11-13 09:57, 10:00: "0 is neutral, 1 is
+// green, etc ... i told you what my order is"). Every monster as its mod ships it
+// is the neutral step, and each world tier is the next colour: Common, Green,
+// Blue, Purple, Cyan, Brown, Yellow, FireBlu, Gray, Red, Abyss, Black, White. No
+// monster starts higher because it is stronger (this overrides the entry table of
+// design/BD_XMVE_TIERING.md section 5). The ACS health-bar bosses keep "health
+// curve only".
+//
+// BLACK AND WHITE stay different on purpose (owner 2026-11-13: "Leave them
+// different"): ColorfulHell keeps its huge Black / White bosses; here they are the
+// mild grade (health x1.25 and x1.5 of Abyss).
 //
 // THE WORLD TIER has no home yet (no turn-in code exists): it is the server cvar
 // rsq_mon_worldtier, a row on the RSQ Monsters page. Raised or lowered during a
@@ -42,6 +53,9 @@ class RS_BDKit : Inventory
 	int  phaseTics, phaseStyle;
 	double phaseAlpha;
 	int  nextBlink, lastPuddle, lastVolley;
+	int  tintId;                // [11-13 fix 6] the tier tint it wears (Look), 0 none; a Champions tint over it is taken off
+	int  flashTic, seenTr;      // the tier flash is running (RS_LookKeep.Hold); the last translation checked for Champions'
+	bool seenChamp;
 
 	Default
 	{
@@ -119,9 +133,11 @@ class RS_BDKit : Inventory
 		for (int i = 0; i < ex; i++) { exh *= 1.10; exd *= 1.05; }
 
 		// health (design 2.4): base x M(colour) / M(entry); every EX step +10%
+		// [11-13 fix 2] health ABOVE its spawn health is kept in proportion (a LegenDoom legendary's x3, which LegenDoom
+		// puts in its health and never in its StartHealth; Universal Entropy's size): it was cut back to 1x before
 		double nh = RS_BDTierData.HP(fam, t) / RS_BDTierData.HP(fam, entry) * exh;
 		int oldFull = o.GetSpawnHealth();
-		double frac = oldFull > 0 ? clamp(double(o.health) / oldFull, 0.05, 1.0) : 1.0;
+		double frac = oldFull > 0 ? max(0.05, double(o.health) / oldFull) : 1.0;
 		int sh = o.StartHealth > 0 ? o.StartHealth : o.default.health;
 		if (hpF <= 0) hpF = 1.0;
 		o.StartHealth = max(1, int(round(sh / hpF * nh)));
@@ -129,7 +145,8 @@ class RS_BDKit : Inventory
 		if (o.health > 0)
 		{
 			int full = o.GetSpawnHealth();
-			o.health = (!first && RS_Retier.FullHealth(instant)) ? full : max(1, int(round(full * frac)));
+			int share = max(1, int(round(full * frac)));
+			o.health = (!first && RS_Retier.FullHealth(instant)) ? max(full, share) : share;
 		}
 		if (hpOnly) { Look(); return; }
 
@@ -171,8 +188,8 @@ class RS_BDKit : Inventory
 	{
 		let o = owner;
 		if (!o) return;
-		if (rung > entry) o.A_SetTranslation(TintName(Tier()));
-		else o.Translation = baseTrans;
+		if (rung > entry) { o.A_SetTranslation(TintName(Tier())); tintId = int(o.Translation); }
+		else { o.Translation = baseTrans; tintId = 0; }
 	}
 
 	// a new place on the ladder (the flash has already run, or the change is instant)
@@ -235,6 +252,19 @@ class RS_BDKit : Inventory
 		if (o.health <= 0) { EndPhase(); return; }
 		if (level.isFrozen()) return;
 		age++;
+		// [11-13 fix 6, RS_Carry.zs] a Champions tint put over its tier tint (a champion's controller starting, a revive,
+		// Gold's own re-tint) is taken off on the next tic; never while the tier flash runs
+		int tr = int(o.Translation);
+		if (tintId && tr != tintId && level.maptime - flashTic > 1)
+		{
+			if (tr != seenTr) { seenTr = tr; seenChamp = RS_CarryLast.IsChampTint(tr); }
+			if (seenChamp)
+			{
+				Look();
+				let h = RS_CarryLast.Get();
+				if (h) h.Fixed(o, "tier tint back over a Champions tint");
+			}
+		}
 		if (age == 1) SummonerLink();
 
 		// the tier gem (Colourful Hell's colour-blind aid, Tier Icons Above Monsters), once a second
@@ -605,24 +635,12 @@ class RS_BDTierHandler : EventHandler
 
 	private CVar cvOn, cvWorld, cvDebug;
 	private int lastWorld;
-	private int bdState;
 	private Array<Actor> risers;
 	private Array<int>   riseTic;
 
 	bool On()       { if (!cvOn) cvOn = CVar.FindCVar('rsq_mon_bdtier'); return !cvOn || cvOn.GetBool(); }
 	int  WorldTier(){ if (!cvWorld) cvWorld = CVar.FindCVar('rsq_mon_worldtier'); return cvWorld ? clamp(cvWorld.GetInt(), 1, 40) : 1; }
 	bool Debug()    { if (!cvDebug) cvDebug = CVar.FindCVar('rsq_mon_bdtier_debug'); return cvDebug && cvDebug.GetBool(); }
-
-	private bool BDLoaded()
-	{
-		if (bdState == 0)
-		{
-			static const String BDCLS[] = { "BrutalWeapon", "Brutal_Blood", "BD_Token" };
-			bdState = -1;
-			for (int i = 0; i < BDCLS.Size(); i++) { class<Actor> c = BDCLS[i]; if (c) { bdState = 1; break; } }
-		}
-		return bdState > 0;
-	}
 
 	private void BuildRows()
 	{
@@ -642,26 +660,6 @@ class RS_BDTierHandler : EventHandler
 		}
 	}
 
-	// design 2.2 for a monster the table does not name: the highest colour whose family multiplier is at or below
-	// its health / the family's base (tools/build_ladders.py entry())
-	private int EntryByHealth(int fam, int hp, Name vanilla)
-	{
-		int base = BDLoaded() ? RS_BDTierData.BDBaseHP(fam) : 0;
-		if (base <= 0)
-		{
-			class<Actor> vc = vanilla;
-			if (vc) base = GetDefaultByType(vc).health;
-		}
-		if (base <= 0 || hp <= 0) return 1;
-		// (ZScript names are case-blind: a `T` here and the loop's `t` would be one variable)
-		double ratio = double(hp) / base;
-		int n0 = 1;
-		for (int c = 1; c <= 11; c++) if (RS_BDTierData.HP(fam, c) <= ratio * 1.02) n0 = c;
-		double aby = RS_BDTierData.HP(fam, 11);
-		if (ratio > aby * 1.3) n0 = ratio < aby * 1.5 * 1.3 ? 12 : 13;
-		return n0;
-	}
-
 	// design 2.1: the family is the one it acts like: its own row, else up its parents (a row, an id class, what a
 	// class replaces)
 	private int Resolve(class<Actor> cls)
@@ -673,6 +671,11 @@ class RS_BDTierHandler : EventHandler
 		{
 			Name kn = k.GetClassName();
 			if (kn == 'Actor') break;
+			// a class defined twice is renamed by the engine to "name@file@lump" (XMVE's second paingasm, in
+			// darkcardinalboss.txt): it is still that monster
+			String ks = kn;
+			int at = ks.IndexOf("@");
+			if (at > 0) kn = ks.Left(at);
 			for (int r = 0; r < rowName.Size(); r++)
 			{
 				if (rowName[r] != kn) continue;
@@ -689,8 +692,8 @@ class RS_BDTierHandler : EventHandler
 			}
 			if (vn != 'None')
 			{
-				int f = RS_RosterHandler.FamilyId(vn);
-				val = f * 1000 + EntryByHealth(f, GetDefaultByType(cls).health, vn) * 10;
+				// every monster enters at the neutral step, Common (the owner's order, see the top of this file)
+				val = RS_RosterHandler.FamilyId(vn) * 1000 + 1 * 10;
 			}
 		}
 		seenCls.Push(cls);
@@ -797,13 +800,19 @@ class RS_BDTierHandler : EventHandler
 		if (cn.Left(3) ~== "RS_") return;             // ColorfulHell's own: RS_Retier's ladder, not this one
 		int v = Resolve(a.GetClass());
 		// a monster with no family that rises out of a tinted body (a last stand, a crawler): the body's colour, no kit
-		if (v < 0) { if (level.maptime > 2) Carry(a); return; }
+		if (v < 0)
+		{
+			if (v == -1 && Debug() && !(a is "Inventory")) Console.Printf("BDTIER: MISS %s (parent %s, replaces %s)", cn, a.GetParentClass().GetClassName(),
+				Actor.GetReplacee(a.GetClass()).GetClassName());
+			if (level.maptime > 2) Carry(a);
+			return;
+		}
 
 		a.GiveInventory("RS_BDKit", 1);
 		let k = RS_BDKit.Of(a);
 		if (!k) return;
 		k.fam = v / 1000;
-		k.entry = clamp((v % 1000) / 10, 1, 13);
+		k.entry = 1;                                 // the owner's order: as shipped is the neutral step, for every monster
 		k.hpOnly = (v % 10) != 0;
 		k.helper = a.FindInventory("RS_BDHelperMark") != null;
 		k.basePain = a.PainChance;
@@ -954,8 +963,36 @@ class RS_BDTierHandler : EventHandler
 	}
 
 	//   netevent rs_bdtier_dump    every kit monster: class, family, entry, rung, health, damage, speed, pain chance
+	//   netevent rs_bdtier_classes every monster class loaded that would get NO kit (no family found), with its parent and
+	//                              what it replaces: the missed classes, whether or not this map spawns them
 	override void NetworkProcess(ConsoleEvent e)
 	{
+		if (e.Name ~== "rs_bdtier_classes")
+		{
+			int all = 0, kit = 0, ex = 0, miss = 0, unc = 0;
+			for (int i = 0; i < AllActorClasses.Size(); i++)
+			{
+				class<Actor> c = AllActorClasses[i];
+				if (!c) continue;
+				let d = GetDefaultByType(c);
+				if (!d || !d.bISMONSTER) continue;
+				String n = c.GetClassName();
+				if (n.Left(3) ~== "RS_") continue;
+				all++;
+				int v = Resolve(c);
+				if (v >= 0) { kit++; continue; }
+				if (v == -2) { ex++; continue; }
+				// one that does not count as a kill is a death stage, a decoy, a helper or a pickup: the tint follows the
+				// body onto those (Carry), no kit; listed only by count
+				if (!d.bCOUNTKILL) { unc++; continue; }
+				miss++;
+				Console.Printf("BDTIER: NOFAMILY %s (parent %s, replaces %s, health %d)", n, c.GetParentClass().GetClassName(),
+					Actor.GetReplacee(c).GetClassName(), d.health);
+			}
+			Console.Printf("BDTIER: %d monster classes loaded: %d get a kit, %d exempt, %d counted with no family, %d not counted with no family",
+				all, kit, ex, miss, unc);
+			return;
+		}
 		if (!(e.Name ~== "rs_bdtier_dump")) return;
 		int n = 0;
 		ThinkerIterator it = ThinkerIterator.Create("RS_BDKit");
@@ -965,10 +1002,36 @@ class RS_BDTierHandler : EventHandler
 			let o = k.owner;
 			if (!o) continue;
 			n++;
-			Console.Printf("BDTIER: %s fam %d entry %d rung %d tier %d | hp %d/%d dm %.2f spd %.2f pain %d trans %d%s", o.GetClassName(), k.fam, k.entry,
-				k.rung, k.Tier(), o.health, o.GetSpawnHealth(), o.DamageMultiply, o.Speed, o.PainChance, int(o.Translation), k.hpOnly ? " hp-only" : "");
+			// what else rides on it (Champions, LegenDoom change the same fields)
+			String also = "";
+			for (let it2 = o.Inv; it2; it2 = it2.Inv)
+			{
+				String inn = it2.GetClassName();
+				String low = inn.MakeLower();
+				if (low.IndexOf("champion") >= 0 || low.IndexOf("ldlegendary") >= 0) also = also .. " " .. inn;
+			}
+			Console.Printf("BDTIER: %s fam %d entry %d rung %d tier %d | hp %d/%d base %d dm %.2f spd %.2f/%.2f pain %d/%d trans %d%s%s", o.GetClassName(), k.fam, k.entry,
+				k.rung, k.Tier(), o.health, o.GetSpawnHealth(), o.default.health, o.DamageMultiply, o.Speed, o.default.Speed, o.PainChance, o.default.PainChance,
+				int(o.Translation), k.hpOnly ? " hp-only" : "", also);
 		}
 		Console.Printf("BDTIER: %d kit monsters, world tier %d", n, WorldTier());
+		// every living monster that is not ColorfulHell's and has NO kit, by class (-1 no family found, -2 exempt)
+		Array<Name> mn; Array<int> mc, mv;
+		ThinkerIterator mi = ThinkerIterator.Create("Actor");
+		Actor m;
+		while (m = Actor(mi.Next()))
+		{
+			if (!m.bISMONSTER || m.health <= 0 || m.player || m.bFRIENDLY || m.FindInventory("RS_BDKit")) continue;
+			String mcn = m.GetClassName();
+			if (mcn.Left(3) ~== "RS_") continue;
+			Name nm = m.GetClassName();
+			int at = mn.Find(nm);
+			if (at < mn.Size()) { mc[at]++; continue; }
+			mn.Push(nm); mc.Push(1); mv.Push(Resolve(m.GetClass()));
+		}
+		int miss = 0;
+		for (int i = 0; i < mn.Size(); i++) { miss += mc[i]; Console.Printf("BDTIER: NOKIT %s x%d (lookup %d)", mn[i], mc[i], mv[i]); }
+		Console.Printf("BDTIER: %d living monsters with no kit, %d classes", miss, mn.Size());
 		// ColorfulHell's, counted by class with their health
 		ThinkerIterator ai = ThinkerIterator.Create("Actor");
 		Actor a;

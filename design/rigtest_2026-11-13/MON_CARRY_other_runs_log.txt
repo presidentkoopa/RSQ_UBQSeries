@@ -1,0 +1,81 @@
+# rig run monC_carry3_world: same order and cvars, world tier 1 -> 6 mid-map (rsq_mon_worldtier 6)
+CARRYDUMP: RS_CommonImp tier 1 | hp 144 | CHAMPIONS TINT champion_blue | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_BlueToken champion_PersistentInfo
+CARRYDUMP: RS_GreenImp tier 2 | hp 56 | its ColorfulHell colour | scale 1.00 | champion_VioletToken champion_PersistentInfo
+CARRYDUMP: RS_BlueImp tier 3 | hp 66 | its ColorfulHell colour | scale 1.00 | champion_RedToken champion_PersistentInfo
+CARRYDUMP: RS_PurpleImp tier 4 | hp 252 | its ColorfulHell colour | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_CyanToken champion_PersistentInfo
+CARRYDUMP: RS_GreenZombie tier 2 | hp 32 | its ColorfulHell colour | scale 1.00 | champion_WhiteToken champion_PersistentInfo
+CARRYDUMP: RS_BlueZombie tier 3 | hp 48 | its ColorfulHell colour | scale 1.00 | champion_WhiteToken champion_PersistentInfo
+CARRYDUMP: Imp tier 1 | hp 192 | CHAMPIONS TINT champion_violet | scale 1.04 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_VioletToken champion_PersistentInfo
+CARRYDUMP: ShotgunGuy1 tier 1 | hp 32 | plain (entry colour), recoloured by another mod | scale 0.98 | champion_PinkToken champion_PersistentInfo
+CARRYDUMP: ChaingunGuy1 tier 1 | hp 64 | plain (entry colour), recoloured by another mod | scale 1.00 | champion_VioletToken champion_PersistentInfo
+CARRYDUMP: SuperImp tier 3 | hp 192 | CHAMPIONS TINT champion_indigo | scale 1.04 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_IndigoToken champion_PersistentInfo
+CARRYDUMP: NamiDarkImp tier 3 | hp 100 | plain (entry colour), recoloured by another mod | scale 1.04 | champion_BronzeToken champion_PersistentInfo
+CARRYDUMP: PistolZombiePatch tier 1 | hp 32 | plain (entry colour), recoloured by another mod | scale 0.98 | champion_GreenToken champion_PersistentInfo
+CARRYDUMP: 12 living monsters; 5 wear their tier colour; 3 wear a Champions tint
+BDTIER: world tier 6: 6 kit monsters and 6 ColorfulHell monsters follow
+CARRY t296: RS_CommonImp -> RS_BrownImp2: champion built again by Champions; legendary and risen; 0 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t298: RS_BrownImp2 legendary again (health 516), taken to 2 for LegenDoom to raise it
+CARRY t299: RS_BrownImp2 risen again by LegenDoom: health 516 of 516 (share 1.00)
+CARRY t300: RS_BlueZombie -> RS_FireBluZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t301: RS_PurpleImp -> RS_GrayImp2: champion built again by Champions; legendary and risen; 0 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t303: RS_GrayImp2 legendary again (health 636), taken to 2 for LegenDoom to raise it
+CARRY t304: RS_GrayImp2 risen again by LegenDoom: health 636 of 636 (share 1.00)
+CARRY t308: RS_GreenImp -> RS_YellowImp: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t309: RS_BlueImp -> RS_FireBluImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t312: RS_GreenZombie -> RS_YellowZombie: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRYDUMP: Imp tier 6 | hp 516 | tier tint rs_bdtier_brown | scale 1.04 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_VioletToken champion_PersistentInfo
+CARRYDUMP: ShotgunGuy1 tier 6 | hp 128 | tier tint rs_bdtier_brown | scale 0.98 | champion_PinkToken champion_PersistentInfo
+CARRYDUMP: ChaingunGuy1 tier 6 | hp 205 | tier tint rs_bdtier_brown | scale 1.00 | champion_VioletToken champion_PersistentInfo
+CARRYDUMP: SuperImp tier 8 | hp 413 | tier tint rs_bdtier_fireblu | scale 1.04 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_IndigoToken champion_PersistentInfo
+CARRYDUMP: NamiDarkImp tier 8 | hp 216 | tier tint rs_bdtier_fireblu | scale 1.04 | champion_BronzeToken champion_PersistentInfo
+CARRYDUMP: PistolZombiePatch tier 6 | hp 160 | tier tint rs_bdtier_brown | scale 0.98 | champion_GreenToken champion_PersistentInfo
+CARRYDUMP: RS_BrownImp2 tier 6 | hp 516 | its ColorfulHell colour | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_BlueToken champion_PersistentInfo
+CARRYDUMP: RS_FireBluZombie2 tier 8 | hp 117 | its ColorfulHell colour | scale 1.00 | champion_PersistentInfo champion_WhiteToken
+CARRYDUMP: RS_GrayImp2 tier 9 | hp 636 | its ColorfulHell colour | scale 1.00 | LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_CyanToken champion_PersistentInfo
+CARRYDUMP: RS_YellowImp tier 7 | hp 180 | its ColorfulHell colour | scale 1.00 | champion_PersistentInfo champion_VioletToken
+CARRYDUMP: RS_FireBluImp2 tier 8 | hp 189 | its ColorfulHell colour | scale 1.00 | champion_PersistentInfo champion_RedToken
+CARRYDUMP: RS_YellowZombie tier 7 | hp 112 | its ColorfulHell colour | scale 1.00 | champion_PersistentInfo champion_WhiteToken
+CARRYDUMP: 12 living monsters; 12 wear their tier colour; 0 wear a Champions tint
+
+# rig run monC_carry4_chset_resize: NOT his settings (rsq_monster_set 3, ue_resize 5, world tier 4), doom2 MAP01 natural spawns, rs_retier_all 9
+CARRYDUMP: 27 living monsters; 27 wear their tier colour; 0 wear a Champions tint
+CARRY t79: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 0.98 x 1.10, scale 0.98 x 1.10
+CARRY t81: RS_PurpleZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.16 x 0.95, scale 1.16 x 0.95
+CARRY t81: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.03 x 1.00, scale 1.03 x 1.00
+CARRY t82: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.01 x 0.91, scale 1.01 x 0.91
+CARRY t84: RS_PurpleZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.24 x 1.11, scale 1.24 x 1.11
+CARRY t85: RS_PurpleZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.22 x 1.17, scale 1.22 x 1.17
+CARRY t85: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.08 x 1.04, scale 1.08 x 1.04
+CARRY t86: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t86: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 0.80 x 0.86, scale 0.80 x 0.86
+CARRY t87: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t88: RS_PurpleZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.23 x 1.15, scale 1.23 x 1.15
+CARRY t88: RS_PurpleZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 0.90 x 0.93, scale 0.90 x 0.93
+CARRY t88: RS_PurpleZombie -> RS_GrayZombie2: champion built again by Champions; legendary yes; 0 items moved; size 0.85 x 0.94, scale 0.85 x 0.94
+CARRY t88: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.14 x 0.97, scale 1.14 x 0.97
+CARRY t89: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t89: RS_PurpleZombie -> RS_GrayZombie2: champion built again by Champions; legendary yes; 0 items moved; size 0.88 x 1.08, scale 0.88 x 1.08
+CARRY t90: RS_GrayZombie2 legendary again: health 366 of 366 (share 1.00)
+CARRY t91: RS_GrayZombie2 legendary again: health 348 of 348 (share 1.00)
+CARRY t91: RS_PurpleZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 0.91 x 1.05, scale 0.91 x 1.05
+CARRY t91: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.15 x 1.23, scale 1.15 x 1.23
+CARRY t92: RS_PurpleZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 0.90 x 1.14, scale 0.90 x 1.14
+CARRY t92: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.13 x 0.90, scale 1.13 x 0.90
+CARRY t93: RS_PurpleZombie -> RS_GrayZombie2: champion kept, asleep (Champions' dormant rule); legendary no; 2 items moved; size 1.04 x 0.93, scale 1.04 x 0.93
+CARRY t94: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.00 x 1.00, scale 1.00 x 1.00
+CARRY t95: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 0.93 x 1.11, scale 0.93 x 1.11
+CARRY t97: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 0.96 x 0.90, scale 0.96 x 0.90
+CARRY t97: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.22 x 0.94, scale 1.22 x 0.94
+CARRY t97: RS_PurpleImp -> RS_GrayImp2: champion built again by Champions; legendary yes; 0 items moved; size 1.04 x 1.01, scale 1.04 x 1.01
+CARRY t99: RS_GrayImp2 legendary again: health 660 of 660 (share 1.00)
+CARRY t99: RS_PurpleImp -> RS_GrayImp2: champion kept, asleep (Champions' dormant rule); legendary no; 1 items moved; size 1.21 x 0.96, scale 1.21 x 0.96
+CARRYDUMP: 27 living monsters; 27 wear their tier colour; 0 wear a Champions tint
+
+# rig run monC_carry5_mapload: NOT his settings (rsq_monster_set 3, rs_roster_enable 0, world tier 4): swaps inside the spawn event at map load
+CARRY t0: RS_CommonImp -> RS_PurpleImp in its own spawn event: the other mods roll the new body
+CARRY t0: RS_GreenImp -> RS_CyanImp2 in its own spawn event: the other mods roll the new body
+CARRY t0: RS_GreenZombie -> RS_CyanZombie2 in its own spawn event: the other mods roll the new body
+CARRY t0: RS_CommonZombie -> RS_PurpleZombie in its own spawn event: the other mods roll the new body
+CARRY t0: RS_CommonZombie -> RS_PurpleZombie in its own spawn event: the other mods roll the new body
+27
+CARRYDUMP: 35 living monsters; 27 wear their tier colour; 0 wear a Champions tint

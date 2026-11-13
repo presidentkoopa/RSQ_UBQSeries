@@ -38,7 +38,11 @@ always free:
 | Point the whip hand | A pale dotted ray runs from it all the time. It turns gold, with the gold diamond, where the whip can anchor |
 | Whip hand's trigger, a press | Marks the nearest monster in front of the whip hand. Press again: the next one. The ray then runs gold from your hand to the mark |
 | Crack while a monster is marked | The thong flies to it, stuns it and comes back. The mark stays on it through your cracks while it lives, stays in reach and in sight |
-| Whip hand's alt-fire on a gold spot | Locks that spot (the diamond stays there). Your next crack flies to it and becomes a rope |
+| Whip hand's alt-fire on a gold spot | Locks that spot (the diamond stays there). Your next crack flies to it and becomes a rope. Alt-fire again lets the spot go |
+| Snagged from the ground: jump, or close your empty off hand near the whip or the rope | The swing starts |
+| On the rope: lean the stick; haul down on the whip in the air | Pump the swing; add speed |
+| On the rope: whip hand's alt-fire, held | Reel in |
+| On the rope: whip hand's trigger, a fresh press | Let go. You keep your speed (**On a Rope, Fire Lets Go**, on; owner 11-11; code only, not shown on the rig) |
 | On the rope: close your off hand on it and pull down, then hold **Use** and pull the whip hand down | Climb hand over hand: off hand, whip hand, off hand |
 
 **Crack Wraps Monsters** (off) brings back the old wrap: a crack on a monster wraps it, for the yank and the flail.
@@ -57,8 +61,8 @@ Lock-On Controls off gives the controls in the table below.
 | Crack while the ray is gold (or within 1 s of letting go of a gold spot) | The whip flies to the spot and becomes a rope |
 | On the rope, in the air | You swing. Lean the stick to pump, haul down on the whip to add speed |
 | Snagged while standing: jump, or close your empty off hand on the whip (or hold it still on the rope) | The swing starts |
-| On the rope: hold the whip hand's trigger | Reel in, like climbing |
-| On the rope: whip hand's alt-fire | Let go. You keep your speed |
+| On the rope: hold the whip hand's alt-fire | Reel in, like climbing |
+| On the rope: whip hand's trigger, a fresh press | Let go. You keep your speed |
 | Empty hand on the rope: close its grip, press RSQ Distance Grab's grab key, or just hold it still there a moment | Take hold and climb hand over hand |
 | Reel up to a ledge lip, or lay a free hand on it | Mantle up and over |
 | Main-hand whip: close your off hand's grip on the handle or thong | The lasso: the off hand holds the thong. Circle it to whirl, let go of the grip to throw |
@@ -69,8 +73,12 @@ Lock-On Controls off gives the controls in the table below.
 
 **No keys** (owner, 2026-11-10: the whip is attack and alt attack). Select it in slot 1.
 
-- **Whip hand, trigger:** hold to mark a target; on the rope, hold to reel in.
-- **Whip hand, alt fire:** with the trigger held, move the mark on; on the rope, let go.
+- **Whip hand, trigger:** Lock-On Controls: a press marks the nearest monster, again the next one. Lock-On Controls
+  off: hold to mark a target. On the rope (either way): a fresh press lets go.
+- **Whip hand, alt fire:** Lock-On Controls: on a gold spot, lock it for the next crack; again, let it go. Lock-On
+  Controls off: with the trigger held, move the mark on. On the rope (either way): hold to reel in.
+- **On a Rope, Fire Lets Go** (on, owner 11-11) gives the rope buttons above. Off: on the rope the trigger held reels
+  and alt-fire lets go, as before 11-11.
 - **Whip and Gun** (a gun in the other hand, the row on): no button aims. The whip hand's own ray is the cursor whenever
   its trigger is up; the trigger held marks as above. The other hand's trigger and alt-fire stay the gun's.
 - **Other hand, alt fire:** hold for the aim ray (with the whip in the main hand and the off hand empty or a fist, its
@@ -239,9 +247,9 @@ Snagged in the air, you swing at once. Snagged from the ground, you stand on the
 - **The swing** is a real pendulum from the anchor. It loses about 12% of its swing each half swing and comes to rest
   hanging under the anchor. Lean the movement stick to pump it (**Stick Lean**). Haul down on the whip in the air to add
   speed (**Arm Pump**). **Top Speed** is 30.
-- **Reel** (hold the whip hand's trigger, a fresh press): the rope comes in at **Reel Speed** (3 a tic, about 3 m/s),
+- **Reel** (hold the whip hand's alt-fire; with On a Rope, Fire Lets Go off, the trigger, a fresh press): the rope comes in at **Reel Speed** (3 a tic, about 3 m/s),
   easing in over 6 tics. Shortest rope: 32.
-- **Let go** with the whip hand's alt-fire. You fly off with the fastest of your last 3 tics' speed, so a late let-go at
+- **Let go** with the whip hand's trigger, a fresh press (with On a Rope, Fire Lets Go off, its alt-fire). You fly off with the fastest of your last 3 tics' speed, so a late let-go at
   the bottom still counts. **Keep Momentum** (on): you keep the swing's speed when you land. Let go just under a high
   anchor and you get a small hop (**Ledge Hop**, 6) to get a foot over.
 - **Chain swings.** Let go of an aimed swing and the whip is back in your hand at once, thong out, ready for the next
@@ -407,7 +415,7 @@ resets every Whip setting; the console alias `rsqwp_reset` does the same.
 | Whip | Whip (On) · Whip in Slot 1 (On) · Whip In (Main Hand / Off Hand; Main Hand) · Show Whip (On) · Hand on the Handle (On) · Whip Aim (Free / Assist; Assist) · Whip Reach (m) (20; 3 to 60) · Switches First (On) |
 | Crack | Stun (On) · Knockback (Off) · Hit-Stop (Off) · Throws Switches (On) · Fetches Pickups (On) · Crack Fireballs (Off) · Cracked Fireballs (Explode There / Knocked Away; Explode There) · Lock-On Controls (On) · Crack Wraps Monsters (Off) |
 | Monsters | Lasso (On) · Flail (On) · Keep the Mark (On) · Yank Grace (Off) |
-| Swinging | Catch Edges (On) · Aimed Swing (On) · Aim With Off Hand (On) · Beam Beats Lock-On (On) · Off Hand Stays Free (On) · Grip Starts Swing (On) · Swing Assist: Grab Snag (On) · Jump Starts Swing (On) · Mantle (On) · Keep Momentum (On) |
+| Swinging | Catch Edges (On) · Aimed Swing (On) · On a Rope, Fire Lets Go (On) · Aim With Off Hand (On) · Beam Beats Lock-On (On) · Off Hand Stays Free (On) · Grip Starts Swing (On) · Swing Assist: Grab Snag (On) · Jump Starts Swing (On) · Mantle (On) · Keep Momentum (On) |
 | Climbing | Rope Climbing (On) · Free Hand Only (On) · Grab Keys Grip Rope (On) |
 | Whip and Gun | Whip and Gun (On) · Leash (On) |
 | Controls | none (owner 11-10) |

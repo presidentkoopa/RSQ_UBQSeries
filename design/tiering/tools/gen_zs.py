@@ -14,8 +14,12 @@ BASE = {'riflezombie': 'Zombieman', 'shotgunguy1': 'Shotgunner', 'chaingunguy1':
         'painelemental1': 'Pain Elemental', 'hellknight2': 'Hell Knight', 'baronofhell2': 'Baron',
         'revenant1': 'Revenant', 'mancubus': 'Mancubus', 'arachnotron1': 'Arachnotron', 'teharchvile': 'Arch-Vile',
         'thecyberdemon': 'Cyberdemon', 'thespidermastermind': 'Spider Mastermind'}
-# design 5: ACS health-bar bosses get the HP curve only, no kit (entry from the document)
-HPONLY = {'CyberdemonBoss': ('Cyberdemon', 12), 'GreatCyberdemon': ('Cyberdemon', 5), 'SuperMastermind': ('Spider Mastermind', 4)}
+# design 5: ACS health-bar bosses get the HP curve only, no kit
+HPONLY = {'CyberdemonBoss': 'Cyberdemon', 'GreatCyberdemon': 'Cyberdemon', 'SuperMastermind': 'Spider Mastermind'}
+# THE OWNER'S ORDER (2026-11-13 09:57, 10:00: "0 is neutral, 1 is green, etc ... i told you what my order is"): every
+# monster as its mod ships it is the neutral step; no monster starts higher because it is stronger. So every row's
+# entry colour is 1 (Common). The CSV's "entry tier" column is the design's earlier proposal and is no longer used.
+ENTRY = 1
 cur = {}
 for r in csv.reader(open(os.path.join(D, 'family_curves.csv'))):
     if r[0] == 'family': continue
@@ -52,11 +56,28 @@ for r in rows:
     seen.add(c.lower())
     if r['entry tier'] == 'exempt': ent.append(f'"{c}:-1:0:0"'); continue
     if r['family'] not in FAM: continue
-    ent.append(f'"{c}:{FAM.index(r["family"])}:{r["entry tier"]}:0"')
-for c, (f, e) in HPONLY.items():
+    ent.append(f'"{c}:{FAM.index(r["family"])}:{ENTRY}:0"')
+# Monsters of the other mods in the owner's load order that no parent or replacement chain leads to a family (found
+# on the rig 2026-11-13 with `netevent rs_bdtier_classes`, his full order). Legion of Bones' own monsters (its spawners
+# lose to XMVE's in his order, so today they only come from maps that place them); the Wolfenstein SS slot (BD's Nazi is
+# in the zombie family); EvilMarine, the SS slot's spawner, which is gone a tic later; Keen and LoB's decoys: exempt.
+EXTRA = [('DragonSoul', 'Lost Soul'), ('HotHead', 'Lost Soul'), ('ReaperBloodSkull', 'Lost Soul'), ('SlayerKnight', 'Hell Knight'),
+         ('CacoLich', 'Cacodemon'), ('PhantomRevenant2', 'Revenant'), ('RetroSkeleton', 'Zombieman'),
+         ('WolfensteinSS', 'Zombieman'), ('EvilMarine', None), ('CommanderKeen', None), ('FakeGhostSpectre', None),
+         ('ConqCube', None),
+         # Brutal Doom's own non-monsters that carry MONSTER and count as kills: 1-health helpers, a critter, the tank
+         # hulls (99999), the friendly dogs, and a last stand (a death stage: the body's tint follows it, no kit)
+         ('RevenantMissileFriendAttackSummon', None), ('MonsterSightAlert', None), ('LiveSkull', None),
+         ('BDCritterMouse', None), ('ZombieMainBattleTankBody1', None), ('ZombieArtilleryTankBody1', None),
+         ('MBFHelperDog', None), ('BrutalMBFHelperDog', None), ('HelmetSergeantLastStand2', None)]
+for c, f in EXTRA:
+    if any(x.lower().startswith('"' + c.lower() + ':') for x in ent): continue
+    ent.append(f'"{c}:-1:0:0"' if f is None else f'"{c}:{FAM.index(f)}:{ENTRY}:0"')
+for c, f in HPONLY.items():
     ent = [x for x in ent if not x.lower().startswith('"' + c.lower() + ':')]
-    ent.append(f'"{c}:{FAM.index(f)}:{e}:1"')
-o.append("\t// class : family : entry colour : 1 = health curve only (an ACS health-bar boss). Family -1 = exempt (a scripted map piece).\n"
+    ent.append(f'"{c}:{FAM.index(f)}:{ENTRY}:1"')
+o.append("\t// class : family : entry colour (always 1: the owner's order, every monster as shipped is the neutral step) :\n"
+         "\t// 1 = health curve only (an ACS health-bar boss). Family -1 = exempt (a scripted map piece).\n"
          "\tstatic int RowCount() { return %d; }\n\tstatic String Row(int i)\n\t{\n" % len(ent) + arr('T', 'String', ent, 4) +
          "\t\treturn T[i];\n\t}\n}\n")
 # fix 4 (design 8.4): ladder health. hp_drops.json "envelope": family (RS_TierLadder's numbering) : colour -> the
