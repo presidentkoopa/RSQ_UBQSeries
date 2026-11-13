@@ -27,6 +27,18 @@ speed in slow motion (the ledge save). No rope, reel, swing or climb: those are 
 - **The pull is automatic by default (owner 23:1x):** on the bite, a light monster comes and a big one pulls you, no
   gesture. Option **Scorpion Pull: On / Off** (Off by default): On, the hook holds on the chain until you yank your
   hand back, and that yank sets it off.
+- **The kick-chain, step by step (talked through 23:2x):** hook a big one, fly in (walls checked every tic), arriving IS
+  the kick (the jump kick's strike, the yellow cross, KICK!), slow motion starts on contact (asked of RSQ SlowMo; to
+  check first: that a slowed world leaves the player's own movement at full speed), then the kick-off: a fixed launch
+  up and away, the hang at the top in slow motion; in the air the off hand retargets; the next bite decides: a big one
+  = another kick (chain +1, KICK! x2, x3...), a light one = GET OVER HERE in mid-air and finish it as you fall, a wall
+  or ledge lip = land or mantle, nothing in reach = you fall. A low ceiling cuts the arc short; a kill still kicks you
+  off; a guarded miniboss: bounce, GUARD shakes, no damage.
+- **Slow motion in a chain (owner):** each link restarts it a little shorter than the last, so a chain fades out.
+  Gun Bonsai VR's Big Pass will let it be extended, maybe a minigame: while airborne some monsters are worth more time.
+- **Assumed, owner did not answer (23:2x):** the bounce goes up and toward where you LOOK (never back into the monster),
+  so you steer the chain with your gaze; mid-air retargeting SNAPS to the nearest valid target in a small cone round
+  the off hand's line. Both to be confirmed.
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
