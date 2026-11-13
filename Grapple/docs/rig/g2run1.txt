@@ -1,0 +1,470 @@
+G2_T1_MISS
+T_G2 t70 p0 fire from (10 9 37) dir (1.00 0.00 0.00) on the ground, hit type 0 at -1
+T_G2 t70 p0 EVENT miss
+G2P t70 service event: miss (tic 70) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 0
+G2_T2_YANK_KEY
+G2P t102 spawn tag 1 DoomImp -> RS_CommonImp at (400 0 -0) mass 100 boss 0 hp 60 radius 20 height 56
+T_G2 t112 p0 fire from (10 9 37) dir (1.00 0.00 0.00) on the ground, hit type 4 at 371
+T_G2 t112 p0 bite RS_CommonImp (mass 100, boss 0, dormant 0) -> LIGHT: it comes
+T_G2 t112 p0 EVENT bite.light RS_CommonImp
+T_G2 t112 p0 EVENT getoverhere RS_CommonImp
+T_G2 t112 p0 GET OVER HERE: RS_CommonImp from 349 units, 12 tics
+G2P t112 service event: bite.light (tic 112) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 1
+G2P t112 service event: getoverhere (tic 112) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 1
+G2P t112 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t113 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t114 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t115 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t116 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t117 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t118 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t119 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t120 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t121 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t122 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t123 p0 GET OVER HERE landed: RS_CommonImp 51 units in front of you
+T_G2 t123 p0 EVENT getoverhere.land RS_CommonImp
+G2P t123 service event: getoverhere.land (tic 123) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 0
+G2P t123 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t124 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t125 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t126 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t127 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t137 tag 1 RS_CommonImp at (51 0 -0) hp 60 dist 51 vel (0.0 0.0 0.0) state -
+G2P t137 player at (0 0 -0)
+G2P kill tag 1
+G2_T2B_BARON
+G2P t148 teleport to (0 0 -0) angle 0
+G2P t148 spawn tag 12 BaronOfHell -> RS_CommonBaron at (350 150 -0) mass 1000 boss 0 hp 1000 radius 24 height 64
+G2P t152 fire at tag 12 RS_CommonBaron (350 150 36) from hand (10 9 37) yaw 22.6 (offset 0.0) pitch -0.1
+T_G2 t154 p0 fire from (10 9 37) dir (0.92 0.38 -0.00) on the ground, hit type 4 at 344
+T_G2 t154 p0 bite RS_CommonBaron (mass 1055, boss 0, dormant 0) -> HEAVY: you go to it
+T_G2 t154 p0 EVENT bite.heavy RS_CommonBaron
+T_G2 t154 p0 PULL to RS_CommonBaron: 340 units at 28.4 a tic
+G2P t154 service event: bite.heavy (tic 154) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 5
+T_G2 t166 p0 pull arrived after 13 tics (13 units from its face)
+RSQ_SlowMo: trigger grapple t166: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t166: started 1514 ms at 25% (automatic, own cooldown), pulse until t219, cause line "KICK!"
+T_G2 t166 p0 KICK 1: RS_CommonBaron health 1055 -> 1025 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK!" -> 1, slow 53 tics -> 1
+T_G2 t166 p0 EVENT kick RS_CommonBaron
+T_G2 t166 p0 KICK-OFF: out (-0.95 -0.30) at 8, up 42.5 of 42.5 units (room 445.9), vel.z 9.22
+G2P t166 service event: kick (tic 166) chain 1 kicks 1 lastkick 166 air 1 dj 1 mode 0
+G2P t177 tag 1 RS_CommonImp at (51 0 -0) hp -99940 dist 196 vel (0.0 0.0 0.0) state -
+G2P t177 tag 12 RS_CommonBaron at (351 150 -0) hp 1025 dist 142 vel (0.1 0.0 0.1) state PAIN
+G2P t177 player at (216 107 54)
+G2P kill tag 12
+G2_T3_FLOOR
+T_G2 t187 p0 LANDED: the kick-chain ends at 1
+T_G2 t187 p0 EVENT chain.end
+G2P t187 service event: chain.end (tic 187) chain 0 kicks 1 lastkick 166 air 0 dj 0 mode 0
+G2P t188 teleport to (0 0 -0) angle 0
+G2P t193 fire at a point (300 200 0) from hand (10 9 33) yaw 33.5 (offset 0.0) pitch -6.5
+G2P t193 track pos (0.0 0.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 37
+T_G2 t194 p0 fire from (10 9 33) dir (0.83 0.55 -0.09) on the ground, hit type 1 at 349
+T_G2 t194 p0 FLING (jp): f 345 b 24 zh -1 -> vel (23.28 15.56 0.00)
+T_G2 t194 p0 EVENT bite.floor
+G2P t194 service event: bite.floor (tic 194) chain 0 kicks 1 lastkick 166 air 0 dj 0 mode 0
+G2P t194 track pos (0.0 0.0 -0.0) vel (23.28 15.56 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 36
+G2P t195 track pos (23.3 15.6 -0.0) vel (21.10 14.10 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 35
+G2P t196 track pos (44.4 29.7 -0.0) vel (4.78 3.19 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 34
+G2P t197 track pos (49.2 32.8 -0.0) vel (4.33 2.89 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 33
+G2P t198 track pos (53.5 35.7 -0.0) vel (3.93 2.62 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 32
+G2P t199 track pos (57.4 38.4 -0.0) vel (3.56 2.38 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 31
+G2P t200 track pos (61.0 40.7 -0.0) vel (3.22 2.15 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 30
+G2P t201 track pos (64.2 42.9 -0.0) vel (2.92 1.95 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 29
+G2P t202 track pos (67.1 44.8 -0.0) vel (2.65 1.77 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 28
+G2P t203 track pos (69.8 46.6 -0.0) vel (2.40 1.60 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 27
+G2P t204 track pos (72.2 48.2 -0.0) vel (2.17 1.45 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 26
+G2P t205 track pos (74.3 49.7 -0.0) vel (1.97 1.32 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 25
+G2P t206 track pos (76.3 51.0 -0.0) vel (1.79 1.19 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 24
+G2P t207 track pos (78.1 52.2 -0.0) vel (1.62 1.08 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 23
+G2P t208 track pos (79.7 53.3 -0.0) vel (1.47 0.98 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 22
+G2P t209 track pos (81.2 54.2 -0.0) vel (1.33 0.89 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 21
+G2P t210 track pos (82.5 55.1 -0.0) vel (1.20 0.81 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 20
+G2P t211 track pos (83.7 55.9 -0.0) vel (1.09 0.73 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 19
+G2P t212 track pos (84.8 56.7 -0.0) vel (0.25 0.17 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 18
+G2P t213 track pos (85.1 56.8 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 17
+G2P t214 track pos (85.1 56.8 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 16
+G2P t215 track pos (85.1 56.8 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 15
+G2P t216 track pos (85.1 56.8 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 14
+G2P t217 track pos (85.1 56.8 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 250 countdown 13
+G2_T4_LEDGE
+G2P t233 teleport to (0 600 -0) angle 90
+G2P t237 fire at a point (0 768 50) from hand (10 609 37) yaw 93.7 (offset 0.0) pitch 5.6
+G2P t237 track pos (0.0 600.0 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t238 p0 fire from (10 609 37) dir (-0.06 0.99 0.08) on the ground, hit type 3 at 160
+T_G2 t238 p0 bite: LEDGE LIP, top 64 (feet at -0), stand at (-0 788)
+T_G2 t238 p0 EVENT bite.ledge
+G2P t238 service event: bite.ledge (tic 238) chain 0 kicks 1 lastkick 166 air 0 dj 0 mode 6
+G2P t238 track pos (0.0 600.0 -0.0) vel (-0.00 2.00 12.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t239 track pos (-0.0 602.0 12.0) vel (-0.00 2.00 12.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t240 track pos (-0.0 604.0 24.0) vel (-0.00 2.00 12.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t241 track pos (-0.0 606.0 36.0) vel (-0.00 2.00 12.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t242 track pos (-0.0 608.0 48.0) vel (-0.00 2.00 12.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t243 track pos (-0.0 610.0 60.0) vel (-0.00 2.00 12.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t244 track pos (-0.0 612.0 72.0) vel (-0.02 12.00 11.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t245 track pos (-0.0 624.0 83.0) vel (-0.02 12.00 10.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t246 track pos (-0.1 636.0 93.0) vel (-0.02 12.00 9.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t247 track pos (-0.1 648.0 102.0) vel (-0.02 12.00 8.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t248 track pos (-0.1 660.0 110.0) vel (-0.02 12.00 7.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t249 track pos (-0.1 672.0 117.0) vel (-0.02 12.00 6.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t250 track pos (-0.1 684.0 123.0) vel (-0.02 12.00 5.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t251 track pos (-0.2 696.0 128.0) vel (-0.02 12.00 4.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t252 track pos (-0.2 708.0 132.0) vel (-0.02 12.00 3.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t253 track pos (-0.2 720.0 135.0) vel (-0.02 12.00 2.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t254 track pos (-0.2 732.0 137.0) vel (-0.02 12.00 1.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t255 track pos (-0.2 744.0 138.0) vel (-0.02 12.00 0.00) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t256 track pos (-0.3 756.0 138.0) vel (-0.02 12.00 0.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t257 track pos (-0.3 768.0 138.0) vel (-0.02 12.00 0.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t258 track pos (-0.3 780.0 138.0) vel (-0.01 8.00 0.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t259 p0 LEDGE: on top at z 138 (top 64) after 22 tics
+T_G2 t259 p0 EVENT ledge.land
+G2P t259 service event: ledge.land (tic 259) chain 0 kicks 1 lastkick 166 air 0 dj 0 mode 0
+G2P t259 track pos (-0.3 788.0 138.0) vel (0.00 0.00 -1.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t260 track pos (-0.3 788.0 137.0) vel (0.00 0.00 -2.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t261 track pos (-0.3 788.0 135.0) vel (0.00 0.00 -3.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t262 track pos (-0.3 788.0 132.0) vel (0.00 0.00 -4.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t263 track pos (-0.3 788.0 128.0) vel (0.00 0.00 -5.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t264 track pos (-0.3 788.0 123.0) vel (0.00 0.00 -6.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t265 track pos (-0.3 788.0 117.0) vel (0.00 0.00 -7.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t266 track pos (-0.3 788.0 110.0) vel (0.00 0.00 -8.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t267 track pos (-0.3 788.0 102.0) vel (0.00 0.00 -9.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t268 track pos (-0.3 788.0 93.0) vel (0.00 0.00 -10.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t269 track pos (-0.3 788.0 83.0) vel (0.00 0.00 -11.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t270 track pos (-0.3 788.0 72.0) vel (0.00 0.00 -12.00) floor 64 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t271 track pos (-0.3 788.0 64.0) vel (0.00 0.00 0.00) floor 64 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2_T5_WALLFLING
+G2P t287 tag 1 RS_CommonImp at (51 0 -0) hp -99940 dist 790 vel (0.0 0.0 0.0) state -
+G2P t287 tag 12 RS_CommonBaron at (351 150 -0) hp -98975 dist 728 vel (0.0 0.0 0.0) state -
+G2P t287 player at (-0 788 64)
+G2P t287 teleport to (0 500 -0) angle 90
+G2P t292 fire at a point (200 768 10) from hand (10 509 37) yaw 53.8 (offset 0.0) pitch -5.7
+T_G2 t294 p0 fire from (10 509 37) dir (0.59 0.80 -0.08) on the ground, hit type 3 at 323
+T_G2 t294 p0 FLING (jp): f 319 b 37 zh -11 -> vel (16.00 20.50 0.50)
+T_G2 t294 p0 EVENT bite.wall
+G2P t294 service event: bite.wall (tic 294) chain 0 kicks 1 lastkick 166 air 0 dj 0 mode 0
+G2_T6_CHAIN
+G2P t328 killall 0
+G2P t328 teleport to (-400 -300 0) angle 0
+G2P t328 spawn tag 2 Cyberdemon -> RS_CommonCybie at (0 -300 -0) mass 1000 boss 1 hp 4000 radius 40 height 110
+G2P t328 spawn tag 3 Cyberdemon -> RS_CommonCybie at (-500 100 -0) mass 1000 boss 1 hp 4000 radius 40 height 110
+G2P tag 3 health 25
+G2P t328 spawn tag 4 DoomImp -> RS_CommonImp at (-300 400 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G2P t328 spawn tag 5 DoomImp -> RS_CommonImp at (-200 200 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G2P t328 spawn tag 6 DoomImp -> RS_CommonImp at (0 400 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G2P t328 spawn tag 7 DoomImp -> RS_CommonImp at (300 0 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G2P t328 spawn tag 8 DoomImp -> RS_CommonImp at (-800 -200 0) mass 100 boss 0 hp 60 radius 20 height 56
+G2P t328 spawn tag 10 DoomImp -> RS_CommonImp at (700 700 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G2P armed 0: event 1 +4 tics -> tag 3 offset 5.0
+G2P armed 1: event 2 +4 tics -> tag 5 offset 0.0
+T_G2 t338 p0 fire from (-390 -292 37) dir (1.00 0.00 0.00) on the ground, hit type 4 at 356
+T_G2 t338 p0 bite RS_CommonCybie (mass 944, boss 1, dormant 0) -> HEAVY: you go to it
+T_G2 t338 p0 EVENT bite.heavy RS_CommonCybie
+T_G2 t338 p0 PULL to RS_CommonCybie: 349 units at 29.1 a tic
+G2P t338 service event: bite.heavy (tic 338) chain 0 kicks 1 lastkick 166 air 0 dj 0 mode 5
+G2P t338 track pos (-400.0 -300.0 0.0) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t339 track pos (-371.0 -300.0 2.7) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t340 track pos (-342.1 -300.0 5.4) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t341 track pos (-313.1 -300.0 8.1) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t342 track pos (-284.1 -300.0 10.8) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t343 track pos (-255.2 -300.0 13.5) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t344 track pos (-226.2 -300.0 16.2) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t345 track pos (-197.2 -300.0 18.9) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t346 track pos (-168.3 -300.0 21.6) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t347 track pos (-139.3 -300.0 24.3) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t348 track pos (-110.3 -300.0 27.0) vel (28.97 0.00 2.70) floor 0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t349 p0 pull arrived after 12 tics (29 units from its face)
+RSQ_SlowMo: trigger grapple t349: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t349: started 1514 ms at 25% (automatic, own cooldown), pulse until t402, cause line "KICK!"
+T_G2 t349 p0 KICK 1: RS_CommonCybie health 3776 -> 3746 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK!" -> 1, slow 53 tics -> 1
+T_G2 t349 p0 EVENT kick RS_CommonCybie
+T_G2 t349 p0 KICK-OFF: out (-1.00 0.00) at 8, up 42.5 of 42.5 units (room 424.4), vel.z 9.22
+G2P t349 service event: kick (tic 349) chain 1 kicks 2 lastkick 349 air 1 dj 1 mode 0
+G2P t349 armed fire 0 goes at t353
+G2P t349 track pos (-81.4 -300.0 29.6) vel (-8.00 0.00 9.22) floor 0 ceil 512 onground 0 | slowmo scale 809 countdown 64
+G2P t350 track pos (-89.4 -300.0 38.9) vel (-8.00 0.00 8.22) floor 0 ceil 512 onground 0 | slowmo scale 619 countdown 63
+G2P t351 track pos (-97.4 -300.0 47.1) vel (-8.00 0.00 7.22) floor 0 ceil 512 onground 0 | slowmo scale 428 countdown 62
+G2P t352 track pos (-105.4 -300.0 54.3) vel (-8.00 0.00 6.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+G2P t353 fire at armed tag 3 RS_CommonCybie (-500 100 54) from hand (-95 -292 82) yaw 141.0 (offset 5.0) pitch -3.5
+G2P t353 track pos (-113.4 -300.0 60.5) vel (-8.00 0.00 5.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+T_G2 t354 p0 aim assist: snapped 5.6 degrees to RS_CommonCybie
+T_G2 t354 p0 fire from (-103 -292 87) dir (-0.71 0.70 -0.06) in the air, hit type 4 at 501
+T_G2 t354 p0 bite RS_CommonCybie (mass 991, boss 1, dormant 0) -> HEAVY: you go to it
+T_G2 t354 p0 EVENT bite.heavy RS_CommonCybie
+T_G2 t354 p0 PULL to RS_CommonCybie: 494 units at 41.2 a tic
+G2P t354 service event: bite.heavy (tic 354) chain 1 kicks 2 lastkick 349 air 1 dj 1 mode 5
+G2P t354 track pos (-121.4 -300.0 65.7) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 59
+G2P t355 track pos (-149.6 -270.2 62.4) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 58
+G2P t356 track pos (-177.8 -240.4 59.1) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 57
+G2P t357 track pos (-206.0 -210.6 55.7) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 56
+G2P t358 track pos (-234.2 -180.8 52.4) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 55
+G2P t359 track pos (-262.4 -151.1 49.1) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 54
+G2P t360 track pos (-290.6 -121.3 45.7) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 53
+G2P t361 track pos (-318.8 -91.5 42.4) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 52
+G2P t362 track pos (-347.0 -61.7 39.1) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 51
+G2P t363 track pos (-375.2 -31.9 35.8) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 50
+G2P t364 track pos (-403.4 -2.1 32.4) vel (-28.20 29.79 -3.33) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 49
+G2P t365 track pos (-431.6 27.7 29.1) vel (-28.20 29.79 -3.33) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 48
+T_G2 t366 p0 pull arrived after 13 tics (12 units from its face)
+RSQ_SlowMo: trigger grapple t366: merged 1200 ms at 25% (automatic, own cooldown), pulse until t408, cause line "KICK! x2"
+T_G2 t366 p0 KICK 2: RS_CommonCybie health 25 -> -275 (a kill), knockback no, burst MLK4 (RSQ Melee), word "KICK! x2" -> 1, slow 42 tics -> 1
+T_G2 t366 p0 EVENT kick.kill RS_CommonCybie
+T_G2 t366 p0 KICK-OFF: out (0.57 -0.82) at 8, up 42.5 of 42.5 units (room 428.2), vel.z 9.22
+RSQ_SlowMo: trigger grapple t366: countdown bar: refilled, 1.5 s to real time
+G2P t366 service event: kick.kill (tic 366) chain 2 kicks 3 lastkick 366 air 1 dj 1 mode 0
+G2P t366 track pos (-459.7 42.6 25.8) vel (4.59 -6.55 9.22) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 53
+G2P t367 track pos (-455.2 36.0 35.0) vel (4.75 -6.77 10.19) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 52
+G2P t368 track pos (-450.4 29.3 45.2) vel (4.75 -6.77 9.19) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 51
+G2P t369 track pos (-445.7 22.5 54.3) vel (4.75 -6.77 8.19) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 50
+G2P t370 track pos (-440.9 15.7 62.5) vel (4.75 -6.77 7.19) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 49
+G2P t371 track pos (-436.2 9.0 69.7) vel (4.75 -6.77 6.19) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 48
+G2P t372 track pos (-431.4 2.2 75.9) vel (4.75 -6.77 5.19) floor -0 ceil 512 onground 0 | slowmo scale 250 countdown 47
+G2P t373 track pos (-426.7 -4.6 81.1) vel (4.75 -6.77 4.19) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 46
+G2P t374 track pos (-421.9 -11.4 85.3) vel (4.75 -6.77 3.19) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 45
+G2P t375 track pos (-417.2 -18.1 88.5) vel (4.75 -6.77 2.19) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 44
+RSQ_SlowMo: trigger grapple.addtime t376: +18 tics, pulse now until t426, cause line "DoubleJump!"
+T_G2 t376 p0 DOUBLE JUMP: up 42.5 units (vel.z 9.22), +0.5 s g2.addtime -> 1
+T_G2 t376 p0 EVENT doublejump
+T_G2 t376 p0 MARKERS: 5 of 6 in reach: RS_CommonImp@322=+0.25 RS_CommonImp@435=+0.5 RS_CommonImp@449=+0.5 RS_CommonCybie@504=+0.5 RS_CommonImp@599=+0.5
+T_G2 t376 p0 EVENT markers
+RSQ_SlowMo: trigger grapple t376: countdown bar: refilled, 1.7 s to real time
+G2P t376 service event: doublejump (tic 376) chain 2 kicks 3 lastkick 366 air 1 dj 0 mode 0
+G2P t376 service event: markers (tic 376) chain 2 kicks 3 lastkick 366 air 1 dj 0 mode 0
+G2P t376 armed fire 1 goes at t380
+G2P t376 track pos (-412.5 -24.9 90.7) vel (4.75 -6.77 9.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+G2P t377 track pos (-407.7 -31.7 99.9) vel (4.75 -6.77 8.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+G2P t378 track pos (-403.0 -38.4 108.1) vel (4.75 -6.77 7.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 59
+G2P t379 track pos (-398.2 -45.2 115.3) vel (4.75 -6.77 6.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 58
+G2P t380 fire at armed tag 5 RS_CommonImp (-200 200 30) from hand (-388 -37 134) yaw 51.5 (offset 0.0) pitch -22.5
+G2P t380 track pos (-393.5 -52.0 121.5) vel (4.75 -6.77 5.22) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 57
+T_G2 t381 p0 aim assist: snapped 1.6 degrees to RS_CommonImp
+T_G2 t381 p0 fire from (-383 -43 139) dir (0.57 0.75 -0.34) in the air, hit type 4 at 291
+RSQ_SlowMo: trigger grapple.addtime t381: +9 tics, pulse now until t435, cause line "+0.25 sec"
+T_G2 t381 p0 MARKER HOOKED: RS_CommonImp, +0.25 sec (9 tics) -> g2.addtime 1
+T_G2 t381 p0 EVENT marker RS_CommonImp
+T_G2 t381 p0 bite RS_CommonImp (mass 130, boss 0, dormant 0) -> LIGHT: it comes
+T_G2 t381 p0 EVENT bite.light RS_CommonImp
+T_G2 t381 p0 EVENT airpull RS_CommonImp
+T_G2 t381 p0 AIR PULL: RS_CommonImp from 293 units, 12 tics
+RSQ_SlowMo: trigger grapple t381: countdown bar: refilled, 1.8 s to real time
+G2P t381 service event: marker (tic 381) chain 2 kicks 3 lastkick 366 air 1 dj 0 mode 2
+G2P t381 service event: bite.light (tic 381) chain 2 kicks 3 lastkick 366 air 1 dj 0 mode 2
+G2P t381 service event: airpull (tic 381) chain 2 kicks 3 lastkick 366 air 1 dj 0 mode 2
+G2P t381 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 65
+G2P t382 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 64
+T_G2 t383 p0 both hands down at 5.25 / 5.25 m/s: not the air spike's moment (mode 2), nothing
+G2P t383 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 63
+T_G2 t384 p0 both hands down at 10.50 / 10.50 m/s: not the air spike's moment (mode 2), nothing
+G2P t384 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 62
+T_G2 t385 p0 both hands down at 5.25 / 5.25 m/s: not the air spike's moment (mode 2), nothing
+G2P t385 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 61
+T_G2 t386 p0 both hands down at 5.25 / 5.25 m/s: not the air spike's moment (mode 2), nothing
+G2P t386 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 60
+T_G2 t387 p0 both hands down at 5.25 / 5.25 m/s: not the air spike's moment (mode 2), nothing
+G2P t387 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 59
+G2P t388 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 58
+G2P t389 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 57
+G2P t390 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 56
+G2P t391 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 55
+T_G2 t392 p0 AIR HOLD: RS_CommonImp in front of you (56 units), swing both hands down
+T_G2 t392 p0 EVENT airhold RS_CommonImp
+G2P t392 service event: airhold (tic 392) chain 2 kicks 3 lastkick 366 air 1 dj 0 mode 3
+G2P t392 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 54
+G2P t393 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 53
+G2P t394 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 52
+G2P t395 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 51
+G2P t396 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 50
+T_G2 t397 p0 AIR SPIKE: both hands down at 5.25 and 5.25 m/s
+T_G2 t397 p0 EVENT airspike RS_CommonImp
+G2P t397 service event: airspike (tic 397) chain 2 kicks 3 lastkick 366 air 1 dj 0 mode 4
+G2P t397 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 49
+T_G2 t398 p0 both hands down at 10.50 / 10.50 m/s: not the air spike's moment (mode 4), nothing
+G2P t398 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 48
+T_G2 t399 p0 both hands down at 10.50 / 10.50 m/s: not the air spike's moment (mode 4), nothing
+G2P t399 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 47
+T_G2 t400 p0 both hands down at 5.25 / 5.25 m/s: not the air spike's moment (mode 4), nothing
+G2P t400 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 46
+G2P t401 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 45
+RSQ_SlowMo: trigger grapple.slam t402: merged 3000 ms at 25% (automatic, own cooldown), pulse until t507, cause line "Grapple-Slam!"
+T_G2 t402 p0 SPIKE LANDED at (-356 -13 0): Neon Crescent g2.neon -> 1, blood x4, fire x6, shockwave pushed 0, Grapple-Slam g2.slam -> 1
+T_G2 t402 p0 EVENT spike.land RS_CommonImp
+RSQ_SlowMo: trigger grapple.slam t402: countdown bar: refilled, 3.3 s to real time
+G2P t402 service event: spike.land (tic 402) chain 2 kicks 3 lastkick 366 air 1 dj 0 mode 0
+G2P t402 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 116
+G2P t403 track pos (-388.7 -58.7 126.8) vel (0.00 0.00 -1.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 115
+G2P t404 track pos (-388.7 -58.7 125.8) vel (0.00 0.00 -2.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 114
+G2P t405 track pos (-388.7 -58.7 123.8) vel (0.00 0.00 -3.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 113
+G2P t406 track pos (-388.7 -58.7 120.8) vel (0.00 0.00 -4.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 112
+G2P t407 track pos (-388.7 -58.7 116.8) vel (0.00 0.00 -5.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 111
+G2P t408 track pos (-388.7 -58.7 111.8) vel (0.00 0.00 -6.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 110
+G2P t409 track pos (-388.7 -58.7 105.8) vel (0.00 0.00 -7.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 109
+G2P t410 track pos (-388.7 -58.7 98.8) vel (0.00 0.00 -8.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 108
+G2P t411 track pos (-388.7 -58.7 90.8) vel (0.00 0.00 -9.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 107
+G2P t412 track pos (-388.7 -58.7 81.8) vel (0.00 0.00 -10.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 106
+G2P t413 track pos (-388.7 -58.7 71.8) vel (0.00 0.00 -11.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 105
+G2P t414 track pos (-388.7 -58.7 60.8) vel (0.00 0.00 -12.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 104
+G2P t415 track pos (-388.7 -58.7 48.8) vel (0.00 0.00 -13.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 103
+G2P t416 track pos (-388.7 -58.7 35.8) vel (0.00 0.00 -14.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 102
+G2P t417 track pos (-388.7 -58.7 21.8) vel (0.00 0.00 -15.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 101
+G2P t418 track pos (-388.7 -58.7 6.8) vel (0.00 0.00 -16.00) floor 0 ceil 512 onground 0 | slowmo scale 250 countdown 100
+T_G2 t419 p0 LANDED: the kick-chain ends at 2
+T_G2 t419 p0 EVENT chain.end
+G2P t419 service event: chain.end (tic 419) chain 0 kicks 3 lastkick 366 air 0 dj 0 mode 0
+G2P t419 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 99
+G2P t420 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 98
+G2P t421 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 97
+G2P t422 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 96
+G2P t423 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 95
+G2P t424 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 94
+G2P t425 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 93
+T_G2 t426 p0 both hands down at 10.50 / 10.50 m/s: not the air spike's moment (mode 0), nothing
+G2P t426 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 92
+T_G2 t427 p0 both hands down at 15.75 / 15.75 m/s: not the air spike's moment (mode 0), nothing
+G2P t427 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 91
+T_G2 t428 p0 both hands down at 5.25 / 5.25 m/s: not the air spike's moment (mode 0), nothing
+G2P t428 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 90
+G2P t429 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 89
+G2P t430 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 88
+G2P t431 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 87
+G2P t432 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 86
+G2P t433 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 85
+G2P t434 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 84
+G2P t435 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 83
+G2P t436 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 82
+G2P t437 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 81
+G2P t438 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 80
+G2P t439 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 79
+G2P t440 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 78
+G2P t441 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 77
+G2P t442 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 76
+G2P t443 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 75
+G2P t444 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 74
+G2P t445 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 73
+G2P t446 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 72
+G2P t447 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 71
+G2P t448 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 70
+G2P t449 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 69
+G2P t450 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 68
+G2P t451 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 67
+G2P t452 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 66
+G2P t453 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 65
+G2P t454 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 64
+G2P t455 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 63
+G2P t456 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 62
+G2P t457 track pos (-388.7 -58.7 0.0) vel (0.00 0.00 0.00) floor 0 ceil 512 onground 1 | slowmo scale 250 countdown 61
+G2_T7_LOWCEIL
+G2P t492 ask: chain 0 best 2 kicks 3 lastkick 366 mode 0 events 24 last kick event tic 349; old names: hooked -1 swinging -1 xp.bites -1
+G2P   tag 1 RS_CommonImp kicked -1 yanked 112 spiked -1 by 0
+G2P   tag 2 RS_CommonCybie kicked 349 yanked -1 spiked -1 by 0
+G2P   tag 3 RS_CommonCybie kicked 366 yanked -1 spiked -1 by 0
+G2P   tag 4 RS_CommonImp kicked -1 yanked -1 spiked -1 by -1
+G2P   tag 5 RS_CommonImp kicked -1 yanked 381 spiked 397 by 0
+G2P   tag 6 RS_CommonImp kicked -1 yanked -1 spiked -1 by -1
+G2P   tag 7 RS_CommonImp kicked -1 yanked -1 spiked -1 by -1
+G2P   tag 8 RS_CommonImp kicked -1 yanked -1 spiked -1 by -1
+G2P   tag 10 RS_CommonImp kicked -1 yanked -1 spiked -1 by -1
+G2P   tag 12 RS_CommonBaron kicked 166 yanked -1 spiked -1 by 0
+G2P t492 tag 1 RS_CommonImp at (51 0 -0) hp -99940 dist 444 vel (0.0 0.0 0.0) state -
+G2P t492 tag 2 RS_CommonCybie at (-45 -255 0) hp 3746 dist 396 vel (0.0 0.0 0.0) state -
+G2P t492 tag 3 RS_CommonCybie at (-500 100 -0) hp -275 dist 194 vel (0.0 0.0 0.0) state -
+G2P t492 tag 4 RS_CommonImp at (-300 400 -0) hp 63 dist 467 vel (0.0 0.0 0.0) state -
+G2P t492 tag 5 RS_CommonImp at (-289 -115 0) hp -50 dist 114 vel (0.2 -0.3 0.0) state -
+G2P t492 tag 6 RS_CommonImp at (0 400 -0) hp 45 dist 601 vel (0.0 0.0 0.0) state -
+G2P t492 tag 7 RS_CommonImp at (300 0 -0) hp 67 dist 691 vel (0.0 0.0 0.0) state -
+G2P t492 tag 8 RS_CommonImp at (-800 -200 0) hp 49 dist 435 vel (0.0 0.0 0.0) state -
+G2P t492 tag 10 RS_CommonImp at (700 700 -0) hp 57 dist 1327 vel (0.0 0.0 0.0) state -
+G2P t492 tag 12 RS_CommonBaron at (351 150 -0) hp -98975 dist 769 vel (0.0 0.0 0.0) state -
+G2P t492 player at (-389 -59 0)
+G2P t492 killall 6
+G2P t592 teleport to (-300 -850 0) angle 0
+G2P t592 spawn tag 9 DoomImp -> RS_CommonImp at (100 -850 -0) mass 100 boss 0 hp 60 radius 20 height 56
+G2P tag 9 RS_CommonImp made dormant (heavy by the OG rule)
+G2P t598 fire at tag 9 RS_CommonImp (100 -850 33) from hand (-290 -842 37) yaw 358.8 (offset 0.0) pitch -0.7
+G2P t598 track pos (-300.0 -850.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t599 track pos (-300.0 -850.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t600 track pos (-300.0 -850.0 0.0) vel (0.00 0.00 0.00) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t601 p0 fire from (-290 -842 37) dir (1.00 -0.02 -0.01) on the ground, hit type 4 at 371
+T_G2 t601 p0 bite RS_CommonImp (mass 114, boss 0, dormant 1) -> HEAVY: you go to it
+T_G2 t601 p0 EVENT bite.heavy RS_CommonImp
+T_G2 t601 p0 PULL to RS_CommonImp: 363 units at 30.2 a tic
+G2P t601 service event: bite.heavy (tic 601) chain 0 kicks 3 lastkick 366 air 0 dj 0 mode 5
+G2P t601 track pos (-300.0 -850.0 0.0) vel (30.21 0.00 0.41) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t602 track pos (-269.8 -850.0 0.0) vel (30.21 0.00 0.45) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t603 track pos (-239.6 -850.0 0.0) vel (30.21 0.00 0.50) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t604 track pos (-209.4 -850.0 0.0) vel (30.21 0.00 0.55) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t605 track pos (-179.2 -850.0 0.0) vel (30.21 0.00 0.62) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t606 track pos (-148.9 -850.0 0.0) vel (30.21 0.00 0.71) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t607 track pos (-118.7 -850.0 0.0) vel (30.20 0.00 0.83) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t608 track pos (-88.5 -850.0 0.0) vel (30.20 0.00 0.99) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t609 track pos (-58.3 -850.0 0.0) vel (30.19 0.00 1.24) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t610 track pos (-28.1 -850.0 0.0) vel (30.17 0.00 1.65) floor 0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t611 track pos (2.0 -850.0 -0.0) vel (30.11 0.00 2.48) floor -0 ceil 90 onground 1 | slowmo scale 1000 countdown -1
+G2P t612 track pos (32.1 -850.0 2.5) vel (30.11 0.00 2.48) floor -0 ceil 90 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t613 p0 pull arrived after 13 tics (0 units from its face)
+RSQ_SlowMo: trigger grapple t613: countdown bar: slow motion, counting down to real time
+RSQ_SlowMo: trigger grapple t613: started 1514 ms at 25% (automatic, own cooldown), pulse until t666, cause line "KICK!"
+T_G2 t613 p0 KICK 1: RS_CommonImp health 69 -> 69 (alive), knockback yes, burst MLK4 (RSQ Melee), word "KICK!" -> 1, slow 53 tics -> 1
+T_G2 t613 p0 EVENT kick RS_CommonImp
+T_G2 t613 p0 KICK-OFF: out (-1.00 0.00) at 8, up 27.0 of 42.5 units (room 27.0) CEILING CUT at launch, vel.z 7.36
+G2P t613 service event: kick (tic 613) chain 1 kicks 4 lastkick 613 air 1 dj 1 mode 0
+G2P t613 track pos (62.3 -850.0 5.0) vel (-8.00 0.00 7.36) floor -0 ceil 90 onground 0 | slowmo scale 809 countdown 64
+G2P t614 track pos (54.3 -850.0 12.3) vel (-8.00 0.00 6.36) floor -0 ceil 90 onground 0 | slowmo scale 619 countdown 63
+G2P t615 track pos (46.3 -850.0 18.7) vel (-8.00 0.00 5.36) floor -0 ceil 90 onground 0 | slowmo scale 428 countdown 62
+G2P t616 track pos (38.3 -850.0 24.0) vel (-8.00 0.00 4.36) floor -0 ceil 90 onground 0 | slowmo scale 250 countdown 61
+G2P t617 track pos (30.3 -850.0 28.4) vel (-8.00 0.00 3.36) floor -0 ceil 90 onground 0 | slowmo scale 250 countdown 60
+T_G2 t618 p0 CEILING CUT: rising 2.36, 2.3 units under the ceiling (z 32, ceiling 90): vel.z -> 1.27
+G2P t618 track pos (22.3 -850.0 31.7) vel (-8.00 0.00 1.27) floor -0 ceil 90 onground 0 | slowmo scale 250 countdown 59
+T_G2 t619 p0 CEILING CUT: rising 0.27, 1.0 units under the ceiling (z 33, ceiling 90): vel.z -> 0.00
+G2P t619 track pos (14.3 -850.0 33.0) vel (-8.00 0.00 0.00) floor -0 ceil 90 onground 0 | slowmo scale 250 countdown 58
+G2P t620 track pos (6.3 -850.0 33.0) vel (-8.00 0.00 -1.00) floor -0 ceil 90 onground 0 | slowmo scale 250 countdown 57
+G2P t621 track pos (-1.7 -850.0 32.0) vel (-8.00 0.00 -2.00) floor 0 ceil 90 onground 0 | slowmo scale 250 countdown 56
+G2P t622 track pos (-9.7 -850.0 30.0) vel (-8.00 0.00 -3.00) floor 0 ceil 90 onground 0 | slowmo scale 250 countdown 55
+G2P t623 track pos (-17.7 -850.0 27.0) vel (-8.00 0.00 -4.00) floor 0 ceil 90 onground 0 | slowmo scale 250 countdown 54
+G2P t624 track pos (-25.7 -850.0 23.0) vel (-8.00 0.00 -5.00) floor 0 ceil 90 onground 0 | slowmo scale 250 countdown 53
+G2P t625 track pos (-33.7 -850.0 18.0) vel (-8.00 0.00 -6.00) floor 0 ceil 90 onground 0 | slowmo scale 250 countdown 52
+G2P t626 track pos (-41.7 -850.0 12.0) vel (-8.00 0.00 -7.00) floor 0 ceil 90 onground 0 | slowmo scale 250 countdown 51
+G2P t627 track pos (-49.7 -850.0 5.0) vel (-8.00 0.00 -8.00) floor 0 ceil 90 onground 0 | slowmo scale 250 countdown 50
+T_G2 t628 p0 LANDED: the kick-chain ends at 1
+T_G2 t628 p0 EVENT chain.end
+G2P t628 service event: chain.end (tic 628) chain 0 kicks 4 lastkick 613 air 0 dj 0 mode 0
+G2_T8_SCORPION
+G2P t656 killall 1
+G2P t656 teleport to (0 0 -0) angle 0
+G2P t656 spawn tag 11 DoomImp -> RS_CommonImp at (400 0 -0) mass 100 boss 0 hp 60 radius 20 height 56
+T_G2 t668 p0 fire from (10 9 37) dir (1.00 0.00 0.00) on the ground, hit type 4 at 373
+T_G2 t668 p0 bite RS_CommonImp (mass 79, boss 0, dormant 0) -> LIGHT: it comes
+T_G2 t668 p0 EVENT bite.light RS_CommonImp
+T_G2 t668 p0 EVENT scorpion.hold RS_CommonImp
+G2P t668 service event: bite.light (tic 668) chain 0 kicks 4 lastkick 613 air 0 dj 0 mode 7
+G2P t668 service event: scorpion.hold (tic 668) chain 0 kicks 4 lastkick 613 air 0 dj 0 mode 7
+T_G2 t688 p0 SCORPION: the off hand yanked back at 5.28 m/s after 21 tics
+T_G2 t688 p0 EVENT scorpion.yank RS_CommonImp
+T_G2 t688 p0 EVENT getoverhere RS_CommonImp
+T_G2 t688 p0 GET OVER HERE: RS_CommonImp from 351 units, 12 tics
+G2P t688 service event: scorpion.yank (tic 688) chain 0 kicks 4 lastkick 613 air 0 dj 0 mode 1
+G2P t688 service event: getoverhere (tic 688) chain 0 kicks 4 lastkick 613 air 0 dj 0 mode 1
+T_G2 t700 p0 GET OVER HERE landed: RS_CommonImp 49 units in front of you
+T_G2 t700 p0 EVENT getoverhere.land RS_CommonImp
+G2P t700 service event: getoverhere.land (tic 700) chain 0 kicks 4 lastkick 613 air 0 dj 0 mode 0
+G2_T9_MINIBOSS
+G2P t721 tag 1 RS_CommonImp at (51 0 -0) hp -99940 dist 51 vel (0.0 0.0 0.0) state -
+G2P t721 tag 2 RS_CommonCybie at (-45 -255 0) hp -96254 dist 259 vel (0.0 0.0 0.1) state -
+G2P t721 tag 3 RS_CommonCybie at (-500 100 -0) hp -275 dist 510 vel (0.0 0.0 0.0) state -
+G2P t721 tag 4 RS_CommonImp at (-300 400 -0) hp -99937 dist 500 vel (0.0 0.0 0.0) state -
+G2P t721 tag 5 RS_CommonImp at (-281 -126 0) hp -50 dist 308 vel (0.0 0.0 0.0) state -
+G2P t721 tag 6 RS_CommonImp at (0 400 -0) hp -99955 dist 400 vel (0.0 0.0 0.0) state -
+G2P t721 tag 7 RS_CommonImp at (300 0 -0) hp -99933 dist 300 vel (0.0 0.0 0.0) state -
+G2P t721 tag 8 RS_CommonImp at (-800 -200 0) hp -99951 dist 825 vel (0.0 0.0 0.0) state -
+G2P t721 tag 9 RS_CommonImp at (153 -850 -0) hp -99931 dist 864 vel (0.0 0.0 0.0) state -
+G2P t721 tag 10 RS_CommonImp at (700 700 -0) hp -99943 dist 990 vel (0.0 0.0 0.0) state -
+G2P t721 tag 11 RS_CommonImp at (49 0 -0) hp 47 dist 49 vel (0.0 0.0 0.0) state -
+G2P t721 tag 12 RS_CommonBaron at (351 150 -0) hp -98975 dist 382 vel (0.0 0.0 0.0) state -
+G2P t721 player at (0 0 -0)
+G2P t721 killall 1
+G2P t721 teleport to (0 0 -0) angle 0
+RSQMB MINIBOSS FIGHT READY (auto in 60 s)
+RSQMB MINIBOSS FIGHT CALLED IN (the fight card: no rules) by player 0
+RSQMB MINIBOSS FIGHT CALLED IN (watch check + Use) by player 0
+G2P t1056 no miniboss
+G2P fireat: no tag 20
+G2_END

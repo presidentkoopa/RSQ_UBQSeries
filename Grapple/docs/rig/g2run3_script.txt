@@ -1,0 +1,1 @@
+wait 70; god; notarget; set rsqgr_debug 1; set rsqsm_debug 1; set rsqmb_debug 1; echo G2_T9_MINIBOSS; netevent rsqmb_fill 1000; wait 5; netevent rsqmb_callin 1; wait 350; netevent g2p_mb; wait 3; netevent g2p_track 40; netevent g2p_fireat 20 0; wait 60; netevent g2p_ask; netevent g2p_mb; echo G2_END; quit

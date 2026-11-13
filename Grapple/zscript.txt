@@ -1,22 +1,13 @@
 version "4.14"
 
-#include "zscript/rsqgr/rsmenu.zs"   // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
-#include "zscript/rsqgr/menurows.zs" // RSQ Grapple rows greyed while their rope or monster mode is off
-// RSQ_Grapple -- a grappling hook for stock QuestZDoom 17.3 (VR). No engine change.
-// Part of the Radiant Silvergun Quest series. Credits: CREDITS.txt.
+// RSQ Grapple 2.0 -- the off hand's instant hook, for stock QuestZDoom 17.3 (VR). No engine change.
+// Part of the Radiant Silvergun Quest series. A rebuild from nothing (owner 2026-11-12 23:04); the design is the
+// owner's, design/PLANNED_PROJECTS.md "Grapple 2.0". Credits: CREDITS.txt.
 
-#include "zscript/rsqgr/cb.zs"
-#include "zscript/rsqgr/a11y.zs"
-#include "zscript/rsqgr/util.zs"
-#include "zscript/rsqgr/input.zs"
-#include "zscript/rsqgr/core.zs"
-#include "zscript/rsqgr/hook.zs"
-#include "zscript/rsqgr/climb.zs"
-#include "zscript/rsqgr/monster.zs"
-#include "zscript/rsqgr/looks.zs"
-#include "zscript/rsqgr/service.zs"
-// ==== monster side ====
-#include "zscript/rsqgr/whip.zs"
-// ==== end monster side ====
-// Gun Bonsai VR patch upgrades and the hook's XP ledger (asked by name; nothing without the patch)
-#include "zscript/rsqgr/perks.zs"
+#include "zscript/rsqgr/rsmenu.zs"     // Radiant Silvergun Options: the series' shared menu pieces (tools/rsmenu)
+#include "zscript/rsqgr/handsync.zs"   // the hands, frame to tic (tools/handsync)
+#include "zscript/rsqgr/util.zs"       // settings, the hand, the other mods asked by name
+#include "zscript/rsqgr/claw.zs"       // the claw, its chain, the tracer, the effects
+#include "zscript/rsqgr/input.zs"      // Fire Hook -> a network event with the off hand's pose
+#include "zscript/rsqgr/core.zs"       // the bite and its three results, the kick-chain, the double jump, the air spike
+#include "zscript/rsqgr/service.zs"    // RSQGR_Service: what happened, by name (for RSQ Score's Big Pass)

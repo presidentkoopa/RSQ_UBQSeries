@@ -1,1 +1,0 @@
-server int grp_log = 0;

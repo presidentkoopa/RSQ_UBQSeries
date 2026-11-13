@@ -1,0 +1,61 @@
+G2_T9_MINIBOSS
+RSQMB MINIBOSS FIGHT CALLED IN (the fight card: no rules) by player 0
+RSQMB MINIBOSS FIGHT CALLED IN (watch check + Use) by player 0
+RSQMB MINIBOSS FIGHT ARRIVING: tier 0, RS_GreenImp + 4 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB MINIBOSS FIGHT LANDED: boss 0 RS_GreenImp hp 56, 4 thralls, 4 segments of 14, lives 3, map count 1
+G2P t426 miniboss RS_GreenImp at (696 -178 -0) hp 168 shielded 1 invulnerable 0 bossfor yank 1; player put 250 away
+G2P t429 fire at tag 20 RS_GreenImp (696 -178 34) from hand (464 -108 37) yaw 343.1 (offset 0.0) pitch -0.9
+G2P t429 track pos (453.7 -116.2 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t430 track pos (453.7 -116.2 -0.0) vel (0.00 0.00 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+T_G2 t431 p0 fire from (464 -108 37) dir (0.96 -0.29 -0.01) on the ground, hit type 4 at 221
+T_G2 t431 p0 bite RS_GreenImp (mass 80, boss 0, dormant 0) -> HEAVY: you go to it
+T_G2 t431 p0 EVENT bite.heavy RS_GreenImp
+T_G2 t431 p0 PULL to RS_GreenImp: 211 units at 20.0 a tic
+G2P t431 service event: bite.heavy (tic 431) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 5
+G2P t431 track pos (453.7 -116.2 -0.0) vel (19.37 -4.96 0.55) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t432 track pos (473.1 -121.1 -0.0) vel (19.37 -4.96 0.60) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t433 track pos (492.4 -126.1 -0.0) vel (19.36 -4.96 0.67) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t434 track pos (511.8 -131.1 -0.0) vel (19.36 -4.96 0.76) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t435 track pos (531.1 -136.0 -0.0) vel (19.36 -4.96 0.88) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t436 track pos (550.5 -141.0 -0.0) vel (19.35 -4.96 1.03) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t437 track pos (569.8 -145.9 -0.0) vel (19.34 -4.95 1.26) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t438 track pos (589.2 -150.9 -0.0) vel (19.31 -4.95 1.61) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t439 track pos (608.5 -155.8 -0.0) vel (19.25 -4.93 2.23) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t440 track pos (627.7 -160.8 2.2) vel (19.25 -4.93 2.23) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t441 p0 pull arrived after 11 tics (12 units from its face)
+T_G2 t441 p0 GUARD: RS_GreenImp is guarded (RSQ Miniboss): health 168 -> 168, bounce
+T_G2 t441 p0 EVENT guard RS_GreenImp
+T_G2 t441 p0 KICK-OFF: out (-0.97 0.25) at 8, up 42.5 of 42.5 units (room 449.5), vel.z 9.22
+G2P t441 service event: guard (tic 441) chain 0 kicks 0 lastkick -1 air 1 dj 1 mode 0
+G2P t441 track pos (647.0 -165.7 4.5) vel (-7.75 1.98 9.22) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t442 track pos (639.3 -163.7 13.7) vel (-7.65 1.93 8.22) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t443 track pos (631.6 -161.8 21.9) vel (-7.57 1.88 7.22) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t444 track pos (624.0 -159.9 29.1) vel (-7.50 1.84 6.22) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t445 track pos (616.5 -158.1 35.3) vel (-7.44 1.81 5.22) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t446 track pos (609.1 -156.3 40.5) vel (-7.39 1.78 4.22) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t447 track pos (601.7 -154.5 44.8) vel (-7.36 1.76 3.22) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t448 track pos (594.3 -152.7 48.0) vel (-7.34 1.75 2.35) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t449 track pos (587.0 -151.0 50.3) vel (-7.33 1.75 1.35) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t450 track pos (579.7 -149.2 51.7) vel (-7.33 1.75 0.35) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t451 track pos (572.3 -147.5 52.0) vel (-7.33 1.75 -0.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t452 track pos (565.0 -145.7 51.4) vel (-7.33 1.75 -1.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t453 track pos (557.7 -144.0 49.7) vel (-7.33 1.75 -2.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t454 track pos (550.3 -142.2 47.1) vel (-7.33 1.75 -3.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t455 track pos (543.0 -140.5 43.4) vel (-7.33 1.75 -4.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t456 track pos (535.7 -138.7 38.8) vel (-7.33 1.75 -5.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t457 track pos (528.3 -137.0 33.1) vel (-7.33 1.75 -6.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t458 track pos (521.0 -135.2 26.5) vel (-7.33 1.75 -7.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t459 track pos (513.7 -133.5 18.8) vel (-7.33 1.75 -8.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+G2P t460 track pos (506.3 -131.7 10.2) vel (-7.33 1.75 -9.65) floor -0 ceil 512 onground 0 | slowmo scale 1000 countdown -1
+T_G2 t461 p0 LANDED: the kick-chain ends at 0
+T_G2 t461 p0 EVENT chain.end
+G2P t461 service event: chain.end (tic 461) chain 0 kicks 0 lastkick -1 air 0 dj 0 mode 0
+G2P t461 track pos (499.0 -130.0 -0.0) vel (-7.33 1.75 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t462 track pos (491.7 -128.2 -0.0) vel (-6.65 1.58 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t463 track pos (485.0 -126.7 -0.0) vel (-6.02 1.44 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t464 track pos (479.0 -125.2 -0.0) vel (-5.46 1.30 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t465 track pos (473.5 -123.9 -0.0) vel (-4.95 1.18 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t466 track pos (468.6 -122.7 -0.0) vel (-4.48 1.07 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t467 track pos (464.1 -121.7 -0.0) vel (-4.06 0.97 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2P t468 track pos (460.0 -120.7 -0.0) vel (-3.68 0.88 0.00) floor -0 ceil 512 onground 1 | slowmo scale 1000 countdown -1
+G2_END

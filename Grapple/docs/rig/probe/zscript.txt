@@ -1,0 +1,137 @@
+version "4.10"
+// TEST ONLY (rig): Grapple 2.0's probe. Spawns tagged monsters, aims the hook through RSQ Grapple's own network event
+// (the same packed pose its Fire Hook key sends), and logs what the service and RSQ SlowMo say. Not shipped.
+class G2P_Probe : EventHandler
+{
+	Actor tags[32];
+	int armEv[4], armDelay[4], armTag[4], armOff[4], armAt[4];
+	int lastEvents, trackLeft, lastKickSeen;
+	transient Service svcGr, svcSm;
+
+	Service GR() { if (!svcGr) svcGr = ServiceIterator.Find("RSQGR_Service").Next(); return svcGr; }
+	Service SM() { if (!svcSm) svcSm = ServiceIterator.Find("RSQSM_Service").Next(); return svcSm; }
+
+	static int Pack(Vector3 off)
+	{
+		int ox = clamp(int(off.x * 2 + 512.5), 0, 1023), oy = clamp(int(off.y * 2 + 512.5), 0, 1023), oz = clamp(int(off.z * 2 + 512.5), 0, 1023);
+		return ox | (oy << 10) | (oz << 20);
+	}
+	Vector3 Hand(PlayerPawn p)
+	{
+		if (p.OverrideAttackPosDir && p.AttackPos != p.OffhandPos) return p.OffhandPos;
+		return p.Pos + (0, 0, p.player.viewz - p.Pos.z - 8);
+	}
+	void FireAt(PlayerPawn p, Vector3 target, double offDeg, String what)
+	{
+		Vector3 org = Hand(p);
+		Vector3 m = target - org;
+		double yaw = atan2(m.y, m.x) + offDeg;
+		double pit = atan2(m.z * 1.2, m.xy.Length());
+		yaw = yaw % 360.0; if (yaw < 0) yaw += 360.0;
+		int yawd = clamp(int(yaw * 10 + 0.5), 0, 3599);
+		int a1 = clamp(int(pit * 10 + (pit >= 0 ? 0.5 : -0.5)), -900, 900) + 1000;
+		Console.Printf("G2P t%d fire at %s (%.0f %.0f %.0f) from hand (%.0f %.0f %.0f) yaw %.1f (offset %.1f) pitch %.1f", level.maptime, what, target.x, target.y, target.z, org.x, org.y, org.z, yaw, offDeg, pit);
+		EventHandler.SendNetworkEvent("rsqgr_fire", 1 | (yawd << 1), a1, Pack(org - p.Pos));
+	}
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		let g = GR();
+		if (g)
+		{
+			int n = g.GetInt("g2.events", "", 0, 0, p);
+			if (n != lastEvents)
+			{
+				for (int k = n - lastEvents - 1; k >= 0; k--)
+					Console.Printf("G2P t%d service event: %s (tic %d) chain %d kicks %d lastkick %d air %d dj %d mode %d", level.maptime, g.GetString("g2.event", "", k, 0, p), g.GetInt("g2.event.tic", "", k, 0, p),
+						g.GetInt("g2.chain", "", 0, 0, p), g.GetInt("g2.kicks", "", 0, 0, p), g.GetInt("g2.lastkick", "", 0, 0, p), g.GetInt("g2.air", "", 0, 0, p), g.GetInt("g2.doublejump", "", 0, 0, p), g.GetInt("g2.mode", "", 0, 0, p));
+				// armed fires
+				String last = g.GetString("g2.event", "", 0, 0, p);
+				for (int k = n - lastEvents - 1; k >= 0; k--)
+				{
+					String ev = g.GetString("g2.event", "", k, 0, p);
+					int code = (ev == "kick" || ev == "kick.kill" || ev == "guard") ? 1 : ev == "doublejump" ? 2 : ev == "airhold" ? 3 : 0;
+					for (int a = 0; a < 4; a++) if (armEv[a] == code && code > 0 && armAt[a] == 0) { armAt[a] = level.maptime + armDelay[a]; Console.Printf("G2P t%d armed fire %d goes at t%d", level.maptime, a, armAt[a]); }
+				}
+				lastEvents = n;
+			}
+		}
+		for (int a = 0; a < 4; a++)
+		{
+			if (armAt[a] > 0 && level.maptime >= armAt[a])
+			{
+				let t = tags[armTag[a]];
+				if (t) FireAt(p, t.Pos + (0, 0, t.Height * 0.5), armOff[a] / 10.0, String.Format("armed tag %d %s", armTag[a], t.GetClassName()));
+				armAt[a] = 0; armEv[a] = 0;
+			}
+		}
+		if (trackLeft > 0)
+		{
+			trackLeft--;
+			let s = SM();
+			Console.Printf("G2P t%d track pos (%.1f %.1f %.1f) vel (%.2f %.2f %.2f) floor %.0f ceil %.0f onground %d | slowmo scale %d countdown %d", level.maptime, p.Pos.x, p.Pos.y, p.Pos.z, p.vel.x, p.vel.y, p.vel.z, p.floorz, p.ceilingz, p.player.onground,
+				s ? s.GetInt("scale") : -9, s ? s.GetInt("countdown") : -9);
+		}
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		String n = e.Name;
+		if (n ~== "g2p_tp")
+		{
+			Vector2 xy = (e.Args[0], e.Args[1]);
+			double fz = level.PointInSector(xy).floorplane.ZatPoint(xy);
+			p.SetOrigin((xy.x, xy.y, fz), false);
+			p.angle = e.Args[2]; p.vel = (0, 0, 0);
+			Console.Printf("G2P t%d teleport to (%d %d %.0f) angle %d", level.maptime, e.Args[0], e.Args[1], fz, e.Args[2]);
+		}
+		else if (n.Left(10) ~== "g2p_spawn:")
+		{
+			// g2p_spawn:<class> tag x y   (z = the floor); hp via g2p_hp
+			String cls = n.Mid(10);
+			int tag = e.Args[0];
+			let a = Actor.Spawn(cls, (e.Args[1], e.Args[2], 0), ALLOW_REPLACE);
+			if (a) { a.SetZ(a.floorz); a.angle = a.AngleTo(p); tags[tag] = a; }
+			Console.Printf("G2P t%d spawn tag %d %s -> %s at (%.0f %.0f %.0f) mass %d boss %d hp %d radius %.0f height %.0f", level.maptime, tag, cls, a ? a.GetClassName() : 'none', a ? a.Pos.x : 0, a ? a.Pos.y : 0, a ? a.Pos.z : 0, a ? a.Mass : 0, a ? a.bBOSS : 0, a ? a.health : 0, a ? a.radius : 0, a ? a.height : 0);
+		}
+		else if (n ~== "g2p_dormant") { let a = tags[e.Args[0]]; if (a) { a.bDORMANT = true; Console.Printf("G2P tag %d %s made dormant (heavy by the OG rule)", e.Args[0], a.GetClassName()); } }
+		else if (n ~== "g2p_hp") { let a = tags[e.Args[0]]; if (a) { a.health = e.Args[1]; Console.Printf("G2P tag %d health %d", e.Args[0], a.health); } }
+		else if (n ~== "g2p_fireat") { let a = tags[e.Args[0]]; if (a) FireAt(p, a.Pos + (0, 0, a.Height * 0.5), e.Args[1] / 10.0, String.Format("tag %d %s", e.Args[0], a.GetClassName())); else Console.Printf("G2P fireat: no tag %d", e.Args[0]); }
+		else if (n ~== "g2p_firepoint") FireAt(p, (e.Args[0], e.Args[1], e.Args[2]), 0, "a point");
+		else if (n ~== "g2p_arm") { int a = e.Args[0] & 15; armEv[a] = e.Args[0] >> 4; armDelay[a] = e.Args[1] & 255; armTag[a] = e.Args[1] >> 8; armOff[a] = e.Args[2]; armAt[a] = 0; Console.Printf("G2P armed %d: event %d +%d tics -> tag %d offset %.1f", a, armEv[a], armDelay[a], armTag[a], armOff[a] / 10.0); }
+		else if (n ~== "g2p_track") trackLeft = e.Args[0];
+		else if (n ~== "g2p_kill") { let a = tags[e.Args[0]]; if (a && a.health > 0) a.DamageMobj(null, null, 100000, 'None', DMG_FORCED); Console.Printf("G2P kill tag %d", e.Args[0]); }
+		else if (n ~== "g2p_killall") { let it = ThinkerIterator.Create("Actor"); Actor a; int c = 0; while (a = Actor(it.Next())) if (a.bIsMonster && a.health > 0) { a.DamageMobj(null, null, 100000, 'None', DMG_FORCED); c++; } Console.Printf("G2P t%d killall %d", level.maptime, c); }
+		else if (n ~== "g2p_where")
+		{
+			for (int i = 0; i < 32; i++) { let a = tags[i]; if (a) Console.Printf("G2P t%d tag %d %s at (%.0f %.0f %.0f) hp %d dist %.0f vel (%.1f %.1f %.1f) state %s", level.maptime, i, a.GetClassName(), a.Pos.x, a.Pos.y, a.Pos.z, a.health, p.Distance2D(a), a.vel.x, a.vel.y, a.vel.z, a.CurState && a.InStateSequence(a.CurState, a.FindState("Pain")) ? "PAIN" : "-"); }
+			Console.Printf("G2P t%d player at (%.0f %.0f %.0f)", level.maptime, p.Pos.x, p.Pos.y, p.Pos.z);
+		}
+		else if (n ~== "g2p_mb")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; Actor mb = null;
+			String wn = "RSQMB_Ward"; class<Inventory> wc = wn;
+			while (a = Actor(it.Next())) if (wc && a.bIsMonster && a.health > 0 && a.FindInventory(wc)) { let s = ServiceIterator.Find("RSQMB_Service").Next(); if (s && s.GetInt("miniboss", "", 0, 0, a) == 1) mb = a; }
+			if (!mb) { Console.Printf("G2P t%d no miniboss", level.maptime); return; }
+			tags[20] = mb;
+			let s = ServiceIterator.Find("RSQMB_Service").Next();
+			Vector2 d = (p.Pos.xy - mb.Pos.xy); if (d.Length() < 1) d = (1, 0); d = d.Unit();
+			Vector2 to = mb.Pos.xy + d * 250;
+			p.SetOrigin((to.x, to.y, mb.floorz), false); p.angle = p.AngleTo(mb); p.vel = (0, 0, 0);
+			Console.Printf("G2P t%d miniboss %s at (%.0f %.0f %.0f) hp %d shielded %d invulnerable %d bossfor yank %d; player put 250 away", level.maptime, mb.GetClassName(), mb.Pos.x, mb.Pos.y, mb.Pos.z, mb.health,
+				s.GetInt("shielded", "", 0, 0, mb), s.GetInt("invulnerable", "", 0, 0, mb), s.GetInt("bossfor", "yank", 0, 0, mb));
+		}
+		else if (n ~== "g2p_ask")
+		{
+			let g = GR();
+			Console.Printf("G2P t%d ask: chain %d best %d kicks %d lastkick %d mode %d events %d last kick event tic %d; old names: hooked %d swinging %d xp.bites %d", level.maptime,
+				g.GetInt("g2.chain", "", 0, 0, p), g.GetInt("g2.chain.best", "", 0, 0, p), g.GetInt("g2.kicks", "", 0, 0, p), g.GetInt("g2.lastkick", "", 0, 0, p), g.GetInt("g2.mode", "", 0, 0, p), g.GetInt("g2.events", "", 0, 0, p),
+				g.GetInt("g2.last", "kick", 0, 0, p), g.GetInt("hooked", "", 0, 0, p), g.GetInt("swinging", "", 0, 0, p), g.GetInt("xp.bites", "", 0, 0, p));
+			for (int i = 0; i < 32; i++) { let a = tags[i]; if (a) Console.Printf("G2P   tag %d %s kicked %d yanked %d spiked %d by %d", i, a.GetClassName(), g.GetInt("g2.kicked", "", 0, 0, a), g.GetInt("g2.yanked", "", 0, 0, a), g.GetInt("g2.spiked", "", 0, 0, a), g.GetInt("g2.by", "", 0, 0, a)); }
+		}
+	}
+}

@@ -1,148 +1,143 @@
-// RSQGR_Util -- reads only: settings, the hand, the world's clock.
+// RSQGR_Util -- reads only: settings, the off hand, the world's numbers, and every other series mod, asked BY NAME
+// (ServiceIterator), so this pack loads and plays alone and a missing mod is simply no answer.
 //
-// THE HAND. On stock QuestZDoom 17.3 the OpenXR layer writes the real controller
-// pose into AttackPos/OffhandPos and AttackAngle/AttackPitch (hw_openxrdevice.cpp
-// 587-609), for the camera player only, once per rendered frame. Two engine
-// conventions: the yaw is stored minus 90 degrees and the pitch is positive UP
-// (hw_vrmodes.cpp 443-444 writes AttackAngle = viewYaw - 90, AttackPitch =
-// -viewPitch). The direction is a ROOM direction; map space is the room squashed
-// by pixelstretch (1.2) vertically, so in map units the hand points along
-// (x, y, z / 1.2) -- measured in the rig against the engine's own AttackDir.
-//
-// NOT SERIALIZED, and that is the trap after a load: AttackPos, the angles and
-// OverrideAttackPosDir are plain fields with no Serialize entry (p_mobj.cpp), so
-// until the first frame renders after a load they hold zero and AttackDir (a
-// function pointer the renderer installs, hw_vrmodes.cpp 439) is null. Nothing
-// here calls AttackDir, and a pose that is not believable (override off, or the
-// hand further than ARM_MAX from the body) falls back to the body's own aim.
+// THE HAND. Stock QuestZDoom 17.3 writes the controllers into AttackPos / OffhandPos and their angles (yaw stored minus
+// 90 degrees, pitch positive UP) once per rendered frame, for the camera player only. Map space is the room squashed by
+// pixelstretch (1.2) vertically, so a room direction is (x, y, z / 1.2) in map units. In play code a hand is read
+// through RSQGR_HandSync.Fix (tools/handsync): the frame's hand carried to where the body is this tic -- at 30 units a
+// tic of flight, the raw field trails the body by a whole step.
 class RSQGR_Util
 {
-	const ARM_MAX = 96.0;           // map units; a real arm reaches ~0.8 m = 27 u
+	const ARM_MAX = 96.0;
 	const PIXELSTRETCH = 1.2;
+	const OFF = 1;               // the hook is the off hand's (OffhandPos); the main hand's is never read here
 
-	static clearscope double Num(String n, double d)
-	{
-		let c = CVar.FindCVar(n);
-		return c ? c.GetFloat() : d;
-	}
-	static clearscope int Opt(String n, int d)
-	{
-		let c = CVar.FindCVar(n);
-		return c ? c.GetInt() : d;
-	}
-	static clearscope bool Flag(String n, bool d)
-	{
-		let c = CVar.FindCVar(n);
-		return c ? c.GetBool() : d;
-	}
+	static clearscope double Num(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
+	static clearscope int Opt(String n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
+	static clearscope bool Flag(String n, bool d) { let c = CVar.FindCVar(n); return c ? c.GetBool() : d; }
+	static clearscope bool Debug() { return Opt("rsqgr_debug", 0) >= 1; }
+	static clearscope double Range() { return clamp(Num("rsqgr_range", 780), 64, 8192); }
 
-	// RSQ MINIBOSS, by name (nothing links; each mod still works alone): Miniboss wants this monster treated as a
-	// boss for one system (owner 2026-11-03: a miniboss never gets the engine's BOSS flag; each such system has its
-	// own switch in the RSQ Miniboss menu). Cheap first: it carries "RSQMB_Ward"; only then RSQMB_Service "bossfor".
-	static play bool MinibossAs(Actor v, String sys)
-	{
-		String wn = "RSQMB_Ward";
-		class<Inventory> wc = wn;
-		if (!v || !wc || !v.FindInventory(wc)) return false;
-		let sv = ServiceIterator.Find("RSQMB_Service").Next();
-		return sv && sv.GetInt("bossfor", sys, 0, 0, v) == 1;
-	}
+	// map units in a metre (the engine's VR scale; the series' gesture readers use the same)
+	static clearscope double UPM() { let c = CVar.FindCVar("vr_vunits_per_meter"); double u = c ? c.GetFloat() : 34.0; return u > 1.0 ? u : 34.0; }
+	// a height in metres, in map units (the room is squashed by pixelstretch vertically)
+	static clearscope double MetresUp(double m) { return m * UPM() / PIXELSTRETCH; }
+	// a map-space vector in room metres
+	static clearscope Vector3 Metric(Vector3 v) { return (v.x, v.y, v.z * PIXELSTRETCH) / UPM(); }
 
-	// Map-space unit direction from a room yaw (degrees, engine sense restored)
-	// and a room pitch (positive up).
+	// Map-space unit direction from a room yaw (engine degrees) and a room pitch (positive up).
 	static clearscope Vector3 MapDir(double yaw, double pitchUp)
 	{
 		Vector3 d = (cos(pitchUp) * cos(yaw), cos(pitchUp) * sin(yaw), sin(pitchUp) / PIXELSTRETCH);
 		return d.Unit();
 	}
 
-	// RSQ_Accessibility's Off-Hand Modifier (One-Handed): while it is held the off hook is fired
-	// from the main controller, so one hand reaches both hooks. Absent / off: hand is hand.
-	static clearscope int Ctrl(PlayerPawn pmo, int hand) { return RSQGR_A11y.Ctrl(pmo, hand); }
-
-	static clearscope bool PoseGood(PlayerPawn pmo, int hand)
+	// a real off-hand pose: VR on, the hands not collapsed to one point (a menu just closed, a level just began), and the
+	// hand within reach of the body
+	static clearscope bool PoseGood(PlayerPawn pmo)
 	{
-		if (!pmo || !pmo.OverrideAttackPosDir) return false;
-		hand = Ctrl(pmo, hand);
-		// BOTH HANDS AT ONE POINT is the engine's collapsed pose (a menu just closed, a level just began --
-		// hw_vrmodes.cpp writes both hands to the body): never a real pose, and a press read there fired from the
-		// chest (Quest teardown apply/01 2.1b; Gun Bonsai's gloves.zs already guards it).
+		if (!pmo || !pmo.player || !pmo.OverrideAttackPosDir) return false;
 		if (pmo.AttackPos == pmo.OffhandPos) return false;
-		Vector3 h = hand == 0 ? pmo.AttackPos : pmo.OffhandPos;
-		Vector3 d = h - pmo.Pos;
+		Vector3 d = pmo.OffhandPos - pmo.Pos;
 		if (d.xy.Length() > ARM_MAX) return false;
 		if (d.z < -ARM_MAX || d.z > pmo.Height + ARM_MAX) return false;
 		return true;
 	}
 
-	// Where the hand is, in the world. Body fallback: the shooting point.
-	static clearscope Vector3 HandPos(PlayerPawn pmo, int hand)
+	// the body's fallback point (no VR pose): just under the eyes
+	static clearscope Vector3 ChestPos(PlayerPawn pmo)
 	{
-		if (PoseGood(pmo, hand)) return Ctrl(pmo, hand) == 0 ? pmo.AttackPos : pmo.OffhandPos;
-		double z = pmo.Height * 0.5 + 8;
-		if (pmo.player) z = pmo.player.viewz - pmo.Pos.z - 8;
+		double z = pmo.player ? pmo.player.viewz - pmo.Pos.z - 8 : pmo.Height * 0.5 + 8;
 		return pmo.Pos + (0, 0, z);
 	}
 
-	// Yaw (engine degrees) and pitch (positive up) of the hand, or of the view.
-	static clearscope double HandYaw(PlayerPawn pmo, int hand)
+	// where the off hand is this tic (play code)
+	static play Vector3 HandPos(PlayerPawn pmo)
 	{
-		if (PoseGood(pmo, hand)) return (Ctrl(pmo, hand) == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
-		return pmo.Angle;
+		if (!PoseGood(pmo)) return ChestPos(pmo);
+		return RSQGR_HandSync.Fix(pmo, pmo.OffhandPos, OFF);
 	}
-	static clearscope double HandPitch(PlayerPawn pmo, int hand)
+	static clearscope double HandYaw(PlayerPawn pmo) { return PoseGood(pmo) ? pmo.OffhandAngle + 90 : pmo.Angle; }
+	static clearscope double HandPitch(PlayerPawn pmo) { return PoseGood(pmo) ? pmo.OffhandPitch : -pmo.Pitch; }
+
+	// both hands against the body this tic, in map units (the gesture readers': the air spike, the Scorpion yank)
+	static play Vector3 HandOff(PlayerPawn pmo, int ctrl)
 	{
-		if (PoseGood(pmo, hand)) return Ctrl(pmo, hand) == 0 ? pmo.AttackPitch : pmo.OffhandPitch;
-		return -pmo.Pitch;
+		Vector3 raw = ctrl == 0 ? pmo.AttackPos : pmo.OffhandPos;
+		return RSQGR_HandSync.Fix(pmo, raw, ctrl) - RSQGR_HandSync.Body(pmo);
 	}
 
-	// STEADY HANDS (RSQ_Accessibility AC6, a11y.zs): the hand's smoothed pose, for AIMING only -- where the hook is
-	// fired (input.zs SendPress) and the aim dot. Never the climb, the rope's pull, the lasso or the lash (they follow
-	// the raw hand). The controller is the one playing the hand's part (Ctrl). Any scope: RSQ_Accessibility's
-	// clearscope answer, brought up to date in its WorldTick (a press is read in ui scope after it). Off, absent, or
-	// a pose PoseGood refuses: exactly HandPos / HandYaw / HandPitch.
-	static clearscope bool SteadyOn(PlayerPawn pmo, int hand)
+	static play bool OnGround(PlayerPawn pmo)
 	{
-		return PoseGood(pmo, hand) && RSQGR_A11y.SteadyOn(pmo);
-	}
-	static clearscope Vector3 AimPos(PlayerPawn pmo, int hand)
-	{
-		if (!SteadyOn(pmo, hand)) return HandPos(pmo, hand);
-		return RSQGR_A11y.SteadyPos(pmo, Ctrl(pmo, hand));
-	}
-	static clearscope double AimYaw(PlayerPawn pmo, int hand)
-	{
-		if (!SteadyOn(pmo, hand)) return HandYaw(pmo, hand);
-		return RSQGR_A11y.SteadyAngle(pmo, Ctrl(pmo, hand), "angle") + 90;   // the engine's yaw - 90, filtered
-	}
-	static clearscope double AimPitch(PlayerPawn pmo, int hand)
-	{
-		if (!SteadyOn(pmo, hand)) return HandPitch(pmo, hand);
-		return RSQGR_A11y.SteadyAngle(pmo, Ctrl(pmo, hand), "pitch");
+		return pmo.player && (pmo.player.onground || pmo.bOnMobj || pmo.Pos.z <= pmo.floorz + 0.5);
 	}
 
-	// THE WORLD'S CLOCK. RSQ_SlowMo slows every thing near a player that is not the
-	// player's own (RSQSM_Service "scale", permille; -1 or absent = full speed). The
-	// player and this mod's own actors run in real time (its RealTime test passes any
-	// class whose name starts "rsq"). So: a monster moved BY POSITION here must be
-	// moved scale times as far per tic; a velocity GIVEN to a monster is a push, and
-	// RSQ_SlowMo's Impulses() scales a push by the factor itself -- so a velocity is
-	// given at full-time size and never pre-scaled, or it would be scaled twice.
-	static play double WorldScale()
+	// one tic of the player's gravity, map units a tic per tic (Doom: 1)
+	static play double Grav(Actor a) { return a.GetGravity(); }
+
+	// ---- the other mods, by name ------------------------------------------------------------------------------
+	static clearscope Service Svc(String n) { let it = ServiceIterator.Find(n); return it.Next(); }
+
+	// RSQ SLOWMO (SlowMo/zscript/rsqsm/clock.zs, RSQSM_Service "g2.*", the contract of 2026-11-13). -2 = no SlowMo.
+	static play int SlowMo(String req, String reason, int tics, PlayerPawn pmo)
 	{
-		let it = ServiceIterator.Find("RSQSM_Service");
-		Service s;
-		while (s = it.Next())
-		{
-			int v = s.GetInt("scale", "", 0, 0, null);
-			if (v >= 0) return clamp(v / 1000.0, 0.01, 1.0);
-		}
-		return 1.0;
+		let s = Svc("RSQSM_Service");
+		if (!s) return -2;
+		return s.GetInt(req, reason, tics, 0, pmo);
 	}
 
-	static clearscope double Metres(Vector3 v)
+	// RSQ VISUALREWARDS' words (RSQVR_Service "word", "word.hold", "word.clear"). 0 = no VisualRewards (or no actor).
+	static play int Word(String req, String text, int rgb, double arg, Actor who)
 	{
-		double z = v.z * PIXELSTRETCH;
-		return sqrt(v.x * v.x + v.y * v.y + z * z) / 34.0;
+		let s = Svc("RSQVR_Service");
+		if (!s || !who) return 0;
+		return s.GetInt(req, text, rgb, arg, who);
 	}
+
+	// RSQ MINIBOSS: wants this monster treated as a boss for "yank" (Can't Be Yanked). Cheap first: its ward, by name.
+	static play bool MinibossAs(Actor v, String sys)
+	{
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		if (!v || !wc || !v.FindInventory(wc)) return false;
+		let sv = Svc("RSQMB_Service");
+		return sv && sv.GetInt("bossfor", sys, 0, 0, v) == 1;
+	}
+	// a GUARDED miniboss: its shield is up (a thrall stands) or it is invulnerable after a lost life
+	static play bool MinibossGuarded(Actor v)
+	{
+		String wn = "RSQMB_Ward";
+		class<Inventory> wc = wn;
+		if (!v || !wc || !v.FindInventory(wc)) return false;
+		let sv = Svc("RSQMB_Service");
+		return sv && (sv.GetInt("shielded", "", 0, 0, v) == 1 || sv.GetInt("invulnerable", "", 0, 0, v) == 1);
+	}
+
+	// RSQ ACCESSIBILITY's Comfort Vignette: a comfort moment this tic (its own row decides whether anything shows)
+	static play void Comfort(PlayerPawn pmo, double strength)
+	{
+		if (!pmo || !pmo.player) return;
+		let s = Svc("RSQA_Service");
+		if (s) s.GetInt("vignette", "", pmo.PlayerNumber(), strength, null);
+	}
+
+	// HEAVY (the OG rule, owner 2026-11-13): a boss, mass over 1000, a dormant monster, or a miniboss with RSQ Miniboss's
+	// Can't Be Yanked. Heavy: you go to it. Light: it comes to you.
+	const MASS_MAX = 1000;
+	static play bool Heavy(Actor v)
+	{
+		return v.bBOSS || v.Mass > MASS_MAX || v.bDORMANT || MinibossAs(v, "yank");
+	}
+
+	// a thing the claw may bite, and the aim assist may snap to
+	static clearscope bool Biteable(Actor a, Actor shooter)
+	{
+		if (!a || a == shooter || a.player || a.bDestroyed) return false;
+		if (!a.bSHOOTABLE || a.bNONSHOOTABLE || a.Health <= 0 || a.bMISSILE) return false;
+		String n = a.GetClassName();
+		if (n.Left(6) ~== "RSQGR_") return false;
+		return true;
+	}
+
+	static play Vector3 Mid(Actor a) { return a.Pos + (0, 0, a.Height * 0.5); }
 }

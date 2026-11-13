@@ -1,32 +1,23 @@
-RSQ_Grapple -- credits
-======================
+RSQ Grapple 2.0 -- credits
+==========================
 
-The hook's art and sound are jpalomo's, from the grappling hook in his mod pack
-(jp_grapple.pk3, kept unmodified in jp_original/ of the source repo):
-  - claw sprites OCLW (open) and CCLW (shut), shipped here as RSGH / RSGK
-  - chain link tenda0 (the 40 px hires version), shipped here as RSGR
-  - sounds dschain, dsswish, dspulchn, dsmtalht, dsmeatht, shipped here as
-    RSGCHAIN, RSGSWISH, RSGPULCH, RSGMETAL, RSGMEAT
-  - the OG wall and monster modes (the defaults) reproduce his Hook_HitWall and
-    Hook_HitEnemy thrusts (hook.acs) and his HookShot's flight, number for number.
+Design: presidentkoopa (design/PLANNED_PROJECTS.md "Grapple 2.0", 2026-11-10 to 11-13): the off hand's instant hook,
+its three results, the kick-chain, the double jump and its time markers, the air spike, Scorpion Pull.
+
+jpalomo: the hookshot this is rebuilt from (jp_grapple.pk3, kept unmodified in jp_original/ of the source repo).
+  - its feel: the wall thrust is his Hook_HitWall (hook.acs), number for number; the reach is his 780 units (about 23 m);
+    a yank takes his distance / 12 a tic; the claw stays shut his 16 tics after a wall bite
+  - its art and sound, shipped under this mod's names: claw sprites OCLW (open) and CCLW (shut) as RSGH / RSGK, the chain
+    link tenda0 (the 40 px hires version) as RSGL, and dschain, dspulchn, dsmtalht, dsmeatht as RSGCHAIN, RSGPULCH,
+    RSGMETAL, RSGMEAT
 Thank you, jpalomo.
 
-SLATED FOR REPLACEMENT (owner, 10-27): this hook is the series' own rebuild, so its look and sound
-should be ours too. jpalomo's art and sounds stay as the default until replacements are made from
-the owner's RS_CombatFX library (and other cleared sources); then the JP set becomes optional or goes.
+Asked by name from other series packs (none shipped here): RSQ Melee's MLK4 hit burst (kiddolink's "VFX Hit Impact",
+the owner's licence) drawn gold for the kick, and its thud; RSQ VisualRewards' words (KICK!, the time markers); RSQ Grenade's
+Neon Crescent; RSQ SlowMo's slow motion; RSQ Miniboss's guard and Can't Be Yanked; RSQ Accessibility's Comfort Vignette.
+The air spike's flames are the IWAD's own (Doom II's FIRE), read from the IWAD, not shipped.
 
-Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for
-stock QuestZDoom 17.3 by Emawind84 and Team Beef. No engine change.
+The "GET OVER HERE" pull is named after a fighting-game move; no sound, voice, art or other asset from Mortal Kombat is used.
 
-==== monster side (the throw, the whip, the look sets) ====
-The Yank is RSQ_DistanceGrab's WorldHands path ported number for number (its path,
-arc, timing, tumble, 0.27 air, MeasureArc, the voxel table and the voxel turn fix):
-the owner's RS_WorldHands design, as RSQ_DistanceGrab carries it.
-Look sets (rsqgr_looks), all the owner's own libraries:
-  - Combat FX: RS_CombatFX's shared draw (WEAPDRAW), holster x3 (HOLSTR, HOLSTR2,
-    HOLSTR3) and unsorted foley x3 (FOLEY1-3), shipped as RSGXDRAW, RSGXHOL1-3,
-    RSGXFOL1-3. The well records no further provenance for these takes.
-  - Ballistics: RS_Ballistics' near-miss whiz x4 (whizby1/5/9/14) and near crack x2
-    (bullet_crack_near_01/04), shipped as RSGBWZ1-4 and RSGBCRK1-2, and its tracer
-    mesh (models/bullet/btracer.obj/.png, shipped as models/rsqgr/btracer.*).
-  - RSGBA0 is a 1x1 transparent placeholder: the sprite name the tracer mesh is bound to.
+Code: ZScript written for the Radiant Silvergun Quest series (presidentkoopa), for stock QuestZDoom 17.3 by Emawind84
+and Team Beef. No engine change. The menu pieces (tools/rsmenu) and the hand sync (tools/handsync) are the series' own.
