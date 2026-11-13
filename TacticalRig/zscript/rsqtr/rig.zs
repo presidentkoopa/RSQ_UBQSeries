@@ -1386,8 +1386,25 @@ class RSQTR_Rig : EventHandler
 	String nadePrev[MAXPLAYERS];
 	// The hand grenade the spot hands out ("" for none), and its ammo. Looked up from Strings at run time: a const
 	// or quoted class name would be resolved at compile time and fail without that pk3 ("Unknown class name").
+	// ANOTHER GAME'S GRENADE (2026-11-13, Selaco VR): a pack whose grenade is not Brutal Doom's or RSQ Grenade's answers
+	// as a Service named RSQTR_NadeService (its class name contains that): GetString("nade.weapon") the weapon the spot
+	// hands out, GetString("nade.ammo", "", 0, 0, pawn) what it counts for that player. Asked first; "" from it (or no
+	// such service) leaves the rules below exactly as they were.
+	static Service NadeService()
+	{
+		return ServiceIterator.Find("RSQTR_NadeService").Next();
+	}
 	static String NadeWeapon()
 	{
+		{
+			let ns = NadeService();
+			if (ns)
+			{
+				String sn = ns.GetString("nade.weapon");
+				class<Weapon> sc = sn;
+				if (sc) return sn;
+			}
+		}
 		// BD22 VR's grenade standing down for RSQ Grenade's (BD22's rsg_rsq_nade, or RSQ Grenade's rsqgn_replace_bd, with
 		// RSQ Grenade's handler there): the spot hands out RSQ Grenade's grenades
 		{
@@ -1415,6 +1432,13 @@ class RSQTR_Rig : EventHandler
 	}
 	static int Grenades(PlayerPawn pmo)
 	{
+		let ns = NadeService();
+		if (ns && pmo)
+		{
+			String sa = ns.GetString("nade.ammo", "", 0, 0, pmo);
+			class<Inventory> sac = sa;
+			if (sac) return pmo.CountInv(sac);
+		}
 		String an = NadeAmmo();        // run-time, as above
 		class<Inventory> ac = an;
 		return ac ? pmo.CountInv(ac) : 0;

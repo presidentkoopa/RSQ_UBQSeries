@@ -23,6 +23,9 @@
 //                                           whip: 11, its own holster, while that is on and it is not in a hand)
 //   GetString("rig.regionname", "", region)              that region's name ("Left hip" ...)
 // (RSQ Wheel badges a holstered gun's card with where it hangs.)
+//   GetDouble("region.x" / ".y" / ".z", "", region, 0, pawn)  that place's centre, world coordinates (1e9: unknown)
+// And the rig asks a pack's own grenade of a Service named RSQTR_NadeService (rig.zs NadeService): "nade.weapon",
+// "nade.ammo".
 // rig.drawtic, rig.drawn and rig.holster are synced play state (the draw is a network event), so they answer for any
 // player, not only the console player. More requests are answered below (rig.locked, rig.regionname, ...): each is
 // described where it is answered.
@@ -161,6 +164,16 @@ class RSQTR_RigService : Service
 	// then hangs it at its own place). FnF keeps the grab and its radius.
 	override double GetDouble(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
 	{
+		// A PLACE'S CENTRE (2026-11-13, Selaco VR draws its own grenade at the grenade spot): "region.x" / ".y" / ".z" for
+		// place intArg (RSQTR_Region), world coordinates, that player (objectArg); 1e9 when the rig cannot say
+		if (request == "region.x" || request == "region.y" || request == "region.z")
+		{
+			let rg = RSQTR_Rig.Get();
+			let pw = PlayerPawn(objectArg);
+			if (!rg || !pw || !pw.player || intArg < 0 || intArg >= RSQTR_Region.N || !RSQTR_Rig.Flag("rsqtr_on", pw.player, true)) return 1e9;
+			Vector3 at = rg.RegionAt(pw, intArg);
+			return request == "region.x" ? at.x : request == "region.y" ? at.y : at.z;
+		}
 		if (request != "torch.x" && request != "torch.y" && request != "torch.z") return 1e9;
 		let rig = RSQTR_Rig.Get();
 		let pm = PlayerPawn(objectArg);
