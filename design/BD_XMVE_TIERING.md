@@ -340,15 +340,142 @@ All are verified in code. None are built.
 
 ---
 
-## 9. Open calls for the owner
+## 9. The challenge check: how strong each colour really is (same day)
+
+A second pass measured every ladder class by challenge, not HP. Its data is in [`tiering/ladder/`](tiering/ladder/).
+All of it is a model: nothing was run in the engine.
+
+**The model.** `tiering/ladder/scripts/sim.py` steps through each class's own states over 20-second fights at 256 and
+512 units and in contact, on Black Metal. It models:
+- the player dodging (so of the Abyss Caco's 32-ball Spam about 11 hit at 256, not 32)
+- spreads, homing, splash, summons, healing, raises and invulnerable phases
+
+**Challenge index** CI = √(effective HP × fight DPS) × mobility, with the Common Imp = 1.
+
+| # | Colour | CI ×Common (median of 17 families) | HP ×Common | DPS ×Common |
+|---|---|---|---|---|
+| 1 | Common | 1.00 | 1.00 | 1.00 |
+| 2 | Green | 1.37 | 1.20 | 1.25 |
+| 3 | Blue | 1.76 | 1.40 | 1.87 |
+| 4 | Purple | 2.39 | 1.67 | 2.90 |
+| 5 | Cyan | 3.32 | 1.71 | 3.81 |
+| 6 | Brown | 1.95 | 2.00 | 0.96 |
+| 7 | Yellow | 2.18 | 2.13 | 1.82 |
+| 8 | FireBlu | 2.31 | 2.00 | 2.08 |
+| 9 | Gray | 2.08 | 2.22 | 2.11 |
+| 10 | Red | 3.59 | 2.67 | 3.88 |
+| 11 | Abyss | 5.49 | 3.80 | 5.02 |
+| 12 | Black | 8.99 | 15.0 | 7.00 |
+| 13 | White | 9.31 | 25.0 | 4.57 |
+
+**What it shows:**
+- **Common → Purple climbs cleanly, and so does Red → Abyss → Black → White.**
+- **Purple through Gray is a flat band** at about 2-3.3× Common. Those six colours (Purple, Cyan, Brown, Yellow, FireBlu,
+  Gray) are about equal in strength and differ in *kind*.
+- **Cyan is the strong one in the band.** It sits above Brown, Yellow and Gray in 12 of 17 families, because it has ice
+  damage in 15 families and strafing/dashes (A_FastChase) in 15.
+- **The colour order is mostly an HP order.** Inside each family it matches HP almost exactly (rank correlation 0.945),
+  but not damage (0.50). The worst breaks:
+  - Cyberdemon: Cyan, Green and Blue out-damage everything from Brown to Abyss.
+  - Demon and Spectre: Purple's charge beats every colour from Cyan to Red.
+- **White is weaker than Black** in five families: Arachnotron, Hell Knight, Cacodemon, Revenant and Arch-Vile.
+- **Every EX is the strongest form in its family.** But a Black EX that goes +1 becomes the plain White
+  (`RS_Retier.zs:673-700`), which is a **drop** in all 8 Black-EX families. For example, Chaingunner EX scores 165 and
+  White 107. A world tier needs EX to be its own rung above White.
+- **Least-trusted rows** (15, flagged `confidence: low` in `tiers.json`): Gray Arch-Vile (it attacks through helper actors
+  the model can't read), FireBlu Zombie, Abyss Lost Soul, Green Pain Elemental, the melee-heavy Lost Souls and Demons,
+  and the huge-volley Whites.
+
+### BD22 and XMVE against ColorfulHell's colours
+Section 5 enters each BD/XMVE monster on **its own family's BD ladder**: BD's Imp is that ladder's Common. This pass asks
+a different question: **how strong is it next to ColorfulHell's colours?** That matters whenever both sets are on a map
+at once. Data: `bd22_on_ladder.json` and `xmve_on_ladder.json` (each has a `place_by_ci`, a `place_by_hp` and a
+`place_by_dps`).
+
+**BD22, as strong as ColorfulHell's:**
+
+| Colour | BD22 monsters |
+|---|---|
+| Common | Arachnotron, Arch-Vile, BullDemon (low confidence) |
+| Green | Caco, Hell Knight, Baron |
+| Blue | SMG guy, Cyberdemon |
+| Green-Purple | Shotgunner |
+| Purple | **Imp** (80 HP) |
+| Brown | Pain Elemental |
+| Yellow | Revenant, BaronBoss1 |
+| Yellow-Red | **RifleZombie** (hits like Red, with 2× Common HP) |
+| Gray | Pistol zombie, Chaingunner, Mancubus, Mastermind |
+| Abyss | Lost Soul, Volcabus |
+
+**XMVE, as strong as ColorfulHell's:**
+
+| Colour | XMVE monsters |
+|---|---|
+| Purple | Imp3, TerminatorDemon |
+| Brown | NetherDarkImp |
+| Brown-Cyan | ImpureElemental |
+| Cyan | Annihilator |
+| Cyan-Abyss | AracnorbQueen |
+| Yellow | SuperImp, Diabloist |
+| FireBlu | CyberKnight |
+| Gray | CyberBaron, QuadShotgunZombie, SuperShotgunZombie |
+| Gray-Red | Draugr |
+| Red | Overlord, RifleCommando |
+| Abyss | RocketGuy |
+| Abyss-Black | MiniMastermindX |
+| Yellow-White | SpiderMastermindX |
+| White | MiniMastermind |
+
+Six XMVE monsters the model couldn't read: DarkImp, NamiDarkImp, LabGAL, Incarnate, SniperRifleGuy and EvilMarine.
+
+**XMVE spawner bug:** `MancubiiSpawner` jumps to labels that don't exist (`xmve_06/Decorate.txt:799-800`). Those rolls are
+about 7.3%; they probably fall through to the Mancubus. Not checked in the engine.
+
+**Smoothed per-colour multipliers** (medians, never weaker on +1; `colour_multipliers.json`):
+- HP: 1, 1.2, 1.4, 1.67, 1.71, 2.0, 2.06, 2.06, 2.22, 2.67, 3.8, 15, 25
+- DPS: 1, 1.25, 1.87, then 2.09 from Purple to FireBlu, 2.11, 3.88, 5.02, 5.66, 5.66
+- Speed: 1, 1.03, 1.2, 1.26, then 1.33 from Cyan to Gray, 1.43, 1.87, 1.87, 2.26
+
+### How a spawn picks its colour today (from code)
+- `RS_RosterHandler.CheckReplacement` maps the id monster to its family (`RS_Roster.zs:351-357`).
+- **The roster caps all default to 1, so 100% of spawns are Common** (CVARINFO.txt:1196-1212; `RS_Roster.zs:398-421`).
+- With a cap of 13, the family's dial rolls by weight. For example the Imp (`RS_Imp.zs:15-27`) is Common 630 … White 1.
+  That gives about 39-49% Common, Black 0.12-0.58%, White 0.07-0.12%, EX 0.01-0.04%.
+- **The gates:**
+  - An extra colour that is switched off re-rolls the whole dial (`RS_Imp.zs:48`).
+  - 24/256 of Black rolls become EX (`:169`).
+  - Shotgunner and Lost Soul roll their EX on the White gate.
+- **The cap leak** (fix 3): under a cap of 5-11, 0.4-1% of spawns land above the cap.
+
+### Four ways "+1 tier per turn-in" can shape the spawn mix
+Data: `spawn_proposals.json`. No performance limits are assumed or proposed.
+
+| | How it works | Black / White / EX share | How the colours get used |
+|---|---|---|---|
+| **A. Hard shift** | spawn colour = 1 + S | none until S = 11, then almost all | one colour at a time: every map is all one colour |
+| **B. Shift the dial** | roll the full dial with every extra on, then add S | S = 4: 2.6 / 7.5 / 0.2%. S = 9: 11 / 31 / 0.8% | all 13 from the start, but bosses flood fast (the old Abyss share lands on Black at S = 1) |
+| **C. Sliding window** | centre = 1 + S; weights 0.55^steps below the centre, 0.30^steps above; Black and White ×0.15 until the centre reaches them | under 2% through S = 10; S = 12: 24 / 45 / 1.6% | each colour is the most common for exactly one turn-in; 8-10 colours on a map at once |
+| **D. C over each family's own strength order** | the same window over each family's colours sorted by CI, with EX as a 14th rung | under 1.5% through S = 8; S = 13: 23 / 25 / 26% | every colour every time (10-12 colours at 1% or more); EX is a real rung |
+
+- All four run out after 12 turn-ins (13 where EX is its own rung).
+- D inherits the model's blind spots: at S = 0 FireBlu takes 14% and Gray 9%, partly from the low-confidence rows.
+
+---
+
+## 10. Open calls for the owner
 
 1. Black and White under the world rule: boss-grade (B, recommended) or literal ColorfulHell boss HP (A).
 2. Which tint wins: the champion's or the tier's.
 3. DarkCardinal and Tyrant: keep the Cyberdemon curve, or borrow a smaller family's.
 4. The miniboss map-wide tier-up cap: min(13, S + 3), or something else.
 5. Where S lives (it belongs with whatever records turn-ins).
+6. The spawn mix for "+1 per turn-in": A, B, C or D (section 9).
+7. Placing BD/XMVE monsters: on their own family's ladder (section 5), or by strength against ColorfulHell's colours
+   (section 9). The second matters when both sets share a map.
+8. EX as a 14th rung above White, so a Black EX never steps down.
+9. The middle band (Purple to Gray) is equal in strength and differs in kind. Keep your order, or re-order by strength.
 
-## 10. Unknowns
+## 11. Unknowns
 - Whether tinting works on BD and XMVE art.
 - The A_BossDeath replacee rule on 17.3.
 - Whether handler state survives a hub snapshot.

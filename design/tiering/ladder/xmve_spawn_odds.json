@@ -1,0 +1,177 @@
+{
+ "Zombieman": {
+  "spawner": "ZombiemanSpawner",
+  "line": 9,
+  "odds": {
+   "LabGAL": 0.08544921875,
+   "ChainsawZombie": 0.04292964586056769,
+   "LabGuy": 0.033473968505859375,
+   "LabGuyB": 0.029812753200531006,
+   "LabGuyP": 0.02565008751116693,
+   "PlasmaZombie": 0.01834416389465332,
+   "MinigunGuy": 0.017914222553372383,
+   "SniperRifleGuy": 0.034988715924555436,
+   "RifleZombie": 0.7114372237992939
+  }
+ },
+ "ShotgunGuy": {
+  "spawner": "SergeantSpawner",
+  "line": 104,
+  "odds": {
+   "QuadShotgunZombie": 0.00555419921875,
+   "SuperShotgunZombie": 0.06675577163696289,
+   "ASGGuy": 0.048171043395996094,
+   "RiotShieldGuy": 0.09124755859375,
+   "PyroSergeant": 0.018475111573934555,
+   "RocketGuy": 0.018042101146420464,
+   "LabGAL": 0.010644957137984079,
+   "ChainsawZombie": 0.005171408252321809,
+   "LabGuy": 0.003914430628595977,
+   "LabGuyB": 0.003761523182166447,
+   "LabGuyP": 0.02844773028254366,
+   "EvilMarine": 0.00546729816367636,
+   "EvilMarineLasgun": 0.0027122924483863192,
+   "ShotgunGuy1": 0.6916345743385114
+  }
+ },
+ "DoomImp": {
+  "spawner": "ImpSpawner",
+  "line": 229,
+  "odds": {
+   "Imp3": 0.125,
+   "SuperImp": 0.1025390625,
+   "NetherDarkImp": 0.04827880859375,
+   "VoidDarkImp": 0.045261383056640625,
+   "NamiDarkImp": 0.042432546615600586,
+   "DarkImp": 0.004972564056515694,
+   "Imp": 0.6315156351774931
+  }
+ },
+ "Cacodemon": {
+  "spawner": "CacodemonSpawner",
+  "line": 312,
+  "odds": {
+   "AracnorbQueen": 0.0234375,
+   "Overlord": 0.0457763671875,
+   "ImpureElemental": 0.07635354995727539,
+   "Cacodemon_": 0.8544325828552246
+  }
+ },
+ "BaronofHell": {
+  "spawner": "BaronSpawner",
+  "line": 384,
+  "odds": {
+   "TerminatorDemon": 0.0234375,
+   "BruiserDemon": 0.06103515625,
+   "CyberBaron": 0.07867813110351562,
+   "PyroDemon": 0.026151537895202637,
+   "Minimastermind": 0.0031667877919971943,
+   "Minimastermindx": 0.0031544175271847052,
+   "BaronofHell2": 0.8043764694320998
+  }
+ },
+ "Cyberdemon": {
+  "spawner": "CyberdemonSpawner",
+  "line": 444,
+  "odds": {
+   "SuperDemon": 0.25,
+   "Annihilator": 0.28125,
+   "Thamuz": 0.216064453125,
+   "TheCyberdemon": 0.252685546875
+  }
+ },
+ "ChaingunGuy": {
+  "spawner": "CommandoSpawner",
+  "line": 534,
+  "odds": {
+   "Major": 0.13671875,
+   "ZSpecOps": 0.060699462890625,
+   "XVStealthZSpecOps": 0.03135085105895996,
+   "ZSpecOpsRail": 0.05422717519104481,
+   "ZSpecOpsRifle": 0.05041432693542447,
+   "RifleCommando": 0.07290821933543157,
+   "HellTrooper": 0.027828806933836603,
+   "EvilMarineLasgun": 0.008841443869604337,
+   "EvilMarine": 0.01740659261828354,
+   "ChaingunGuy1": 0.5396043711667897
+  }
+ },
+ "HellKnight": {
+  "spawner": "KnightSpawner",
+  "line": 618,
+  "odds": {
+   "CyberKnight": 0.078125,
+   "TerminatorDemon": 0.005401611328125,
+   "BruiserDemon": 0.014066696166992188,
+   "CyberBaron": 0.01648440957069397,
+   "PyroDemon": 0.013676908565685153,
+   "Minimastermind": 0.0034072084936269675,
+   "MinimastermindX": 0.0007036434435114813,
+   "BaronofHell2": 0.17942907809542774,
+   "HellKnight2": 0.6887054443359375
+  }
+ },
+ "Revenant": {
+  "spawner": "RevenantSpawner",
+  "line": 715,
+  "odds": {
+   "Draugr": 0.17578125,
+   "Incarnate": 0.0257568359375,
+   "Revenant1": 0.7984619140625
+  }
+ },
+ "Demon": {
+  "spawner": "DemonSpawner",
+  "line": 747,
+  "odds": {
+   "BloodDemon": 0.1171875,
+   "VoidSpectre": 0.13104248046875,
+   "TehArchvile": 0.005873203277587891,
+   "BullDemon": 0.7458968162536621
+  }
+ },
+ "Fatso": {
+  "spawner": "MancubiiSpawner",
+  "line": 789,
+  "odds": {
+   "Daedabus": 0.171875,
+   "Volcabus": 0.064697265625,
+   "?MISSING:minimastermindx": 0.05367851257324219,
+   "?MISSING:minimastermind": 0.019407205283641815,
+   "Mancubus": 0.690342016518116
+  }
+ },
+ "SpiderMastermind": {
+  "spawner": "SpiderMasterMindSpawner",
+  "line": 823,
+  "odds": {
+   "AracnorbQueenBOSS": 0.0703125,
+   "SpidermastermindX": 0.61737060546875,
+   "TheSpidermastermind": 0.31231689453125
+  }
+ },
+ "Painelemental": {
+  "spawner": "PainElementalSpawner",
+  "line": 888,
+  "odds": {
+   "SufferingElemental": 0.1875,
+   "PainElemental1": 0.8125
+  }
+ },
+ "Arachnotron": {
+  "spawner": "ArachnotronSpawner",
+  "line": 913,
+  "odds": {
+   "CGSpider": 0.203125,
+   "Arachnotron1": 0.796875
+  }
+ },
+ "Archvile": {
+  "spawner": "ArchvileSpawner",
+  "line": 938,
+  "odds": {
+   "Diabloist": 0.203125,
+   "TehArchvile": 0.796875
+  }
+ }
+}

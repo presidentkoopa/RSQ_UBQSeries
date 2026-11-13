@@ -15,6 +15,16 @@ Every value here was read from the mods' code by the scripts in `tools/`. Nothin
 | `data/bd22.json`, `xmve.json`, `xmve_live.json`, `*_damage.json` | Raw parses of BD22 and XMVE monster code |
 | `data/report_table.txt` | The per-monster table as plain text |
 
+`ladder/` holds the challenge-check pass (section 9 of the rule):
+- `tiers.json` and `tables.md`: 231 rows (per family colour, plus the EX forms) with modelled DPS, effective HP,
+  abilities, the challenge index and confidence
+- `ladder_stats.json`: per-tier medians, the ordering check, and each family's CI order
+- `colour_multipliers.json`: the smoothed per-colour multipliers
+- `bd22_on_ladder.json` and `xmve_on_ladder.json`: placement against ColorfulHell's colours by CI, HP and DPS
+- `spawn_today.json`, `cap_leak.json` and `spawn_proposals.json`: today's spawn mix, the cap leak, and options A-D
+- `scripts/`: `sim.py` holds every model constant. The large class caches (`*.pkl`) were left out; the scripts rebuild
+  them.
+
 `tools/` holds the parsers and generators. They were written for one-off scratch work and still read and write
 `/tmp/econ3/tiering/data`, `/tmp/bd22src` (BD22 unpacked) and `/tmp/xmve_0x` (XMVE unpacked). To re-run them, unpack the
 pk3s to those paths, or change the path constants at the top of each script.

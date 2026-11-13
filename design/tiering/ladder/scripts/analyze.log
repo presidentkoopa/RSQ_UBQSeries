@@ -1,0 +1,25 @@
+0 229 RS_AbyssCGuy2 8
+10 229 RS_AbyssMind2 66
+20 229 RS_BlackCybie2 143
+30 229 RS_BlackPE2 203
+40 229 RS_BlueArch 240
+50 229 RS_BlueLSoul 267
+60 229 RS_BrownCGuy2 289
+70 229 RS_BrownSP2 326
+80 229 RS_CommonFatso 340
+90 229 RS_CommonZombie 348
+100 229 RS_CyanHK2 395
+110 229 RS_FireBluBaron2 418
+120 229 RS_FireBluRevenant2 449
+130 229 RS_GrayHK2 482
+140 229 RS_GreenArch 513
+150 229 RS_GreenLSoul 530
+160 229 RS_PurpleBaron 543
+170 229 RS_PurpleRevenant 574
+180 229 RS_RedDemon 609
+190 229 RS_RedSP1 638
+200 229 RS_WhiteLSoul2 722
+210 229 RS_Whitevile 836
+220 229 RS_YellowLSoul 886
+summons to sim 49 ['RS_HealthFountainWhitePE', 'RS_SpecialImp7', 'RS_MiniSentinelPE', 'RS_RoseTentacle', 'RS_SpecialRev', 'RS_SpecialImp3', 'RS_HKEgg', 'RS_AbyssBaronSoul', 'RS_BrownHKShield', 'RS_ShotgunShrine', 'RS_BrownBoiVile', 'RS_Wakawaka', 'RS_VileGrayDecoy', 'RS_MiniSP1', 'RS_RevEgg', 'RS_ArchRingHelp', 'RS_RedSpikeCacoEX', 'RS_WHOLETTHEDOGSOUT', 'RS_SlimyWorm', 'RS_VolativeCaco', 'RS_SpecialImp4', 'RS_BlackLSoul2', 'RS_BrownImpShieldMini', 'RS_BrownDemonGhost', 'RS_ABVileTentacle', 'RS_SkullWSoulEX2', 'RS_WhiteVileResser', 'RS_RomeroBaronsCH', 'RS_MolochWraith', 'RS_BlackSG2', 'RS_SpliceBaron', 'RS_SkullWSoulEX1', 'RS_RevShieldWalk2', 'RS_WhiteSpidegg', 'RS_IDShieldWalk', 'RS_SpecialImp6', 'RS_BrownSandBagCGuy', 'RS_WvileSpot', 'RS_DeepTentacle', 'RS_SummonPortalCybie']
+done 1068

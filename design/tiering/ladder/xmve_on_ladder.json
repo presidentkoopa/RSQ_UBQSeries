@@ -1,0 +1,7094 @@
+[
+ {
+  "family": "Shotgunner",
+  "class": "ASGGuy",
+  "hp": 80.0,
+  "hp_src": "/tmp/xmve_07/ASGGuy.txt:5",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_07/ASGGuy.txt:9",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Sergeants.txt:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_07/ASGGuy.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 33.1,
+  "attack_dps_hold_512": 18.4,
+  "attack_dps_contact": 67.9,
+  "attacks_per_s_256": 11.95,
+  "dps_by_attack_256": {
+   "ShotgunguyTracer": 33.1,
+   "Brutal_FlyingBlood": 0.0,
+   "DistantFireSoundShotgun": 0.0,
+   "OrangeLensFlareAlt": 0.0,
+   "ShotgunParticles": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 80,
+  "dps_256": 33.1,
+  "dps_512": 18.4,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.99,
+   "hops": true,
+   "charges": true,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_07/ASGGuy.txt:402",
+   "hops/leaps": "/tmp/xmve_07/ASGGuy.txt:471",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/ASGGuy.txt:521",
+   "spawns monsters on death (BrutalizedASGGuyLeg)": "/tmp/xmve_07/ASGGuy.txt:680",
+   "summons (SMGGuy)": "/tmp/xmve_04/Sergeants.txt:80",
+   "summons (VanillaShotgunguy)": "/tmp/xmve_04/Sergeants.txt:86",
+   "self-heal": "/tmp/xmve_04/Sergeants.txt:492",
+   "spawns monsters on death (DeadShotgunguy)": "/tmp/xmve_04/Sergeants.txt:563",
+   "spawns monsters on death (ShotgunGuy)": "/tmp/xmve_04/Sergeants.txt:576",
+   "summons (SergeantGotHisLegBlowed)": "/tmp/xmve_04/Sergeants.txt:765",
+   "summons (DyingSergeantNoLeg)": "/tmp/xmve_04/Sergeants.txt:770",
+   "spawns monsters on death (DyingSergeant)": "/tmp/xmve_04/Sergeants.txt:781",
+   "spawns monsters on death (DyingShotgunguyHitInEye)": "/tmp/xmve_04/Sergeants.txt:822",
+   "spawns monsters on death (DeadShotgunguyNoHeadContinue)": "/tmp/xmve_04/Sergeants.txt:856",
+   "spawns monsters on death (BrutalizedSergeant1)": "/tmp/xmve_04/Sergeants.txt:943",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/Sergeants.txt:952",
+   "spawns monsters on death (SergeantFallingHoleOnStomach)": "/tmp/xmve_04/Sergeants.txt:974",
+   "spawns monsters on death (SergeantFallingSplattered)": "/tmp/xmve_04/Sergeants.txt:994",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/Sergeants.txt:1197"
+  },
+  "sim_tags": [
+   "dashes"
+  ],
+  "set": "xmve",
+  "challenge_index": 5.12,
+  "place_by_ci": {
+   "below": [
+    "Gray",
+    4.57
+   ],
+   "above": [
+    "Brown",
+    6.38
+   ],
+   "fractional_tier": 7.59,
+   "iso_colour": "FireBlu"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    75.0
+   ],
+   "above": [
+    "Yellow",
+    85.0
+   ],
+   "fractional_tier": 5.33,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Yellow",
+    20.65
+   ],
+   "above": [
+    "White",
+    26.0
+   ],
+   "fractional_tier": 10.66,
+   "iso_colour": "Abyss"
+  }
+ },
+ {
+  "family": "Cyberdemon",
+  "class": "Annihilator",
+  "hp": 7000.0,
+  "hp_src": "/tmp/xmve_04/ANNIHILATOR.dec:25",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/xmve_04/ANNIHILATOR.dec:36",
+   "fastspeed": 12.0,
+   "fastspeed_src": "/tmp/xmve_04/ANNIHILATOR.dec:38"
+  },
+  "painchance": 55.0,
+  "painchance_src": "/tmp/xmve_04/ANNIHILATOR.dec:40",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "DONTRIP",
+   "MISSILEEVENMORE",
+   "MISSILEMORE",
+   "NORADIUSDMG"
+  ],
+  "attack_dps_hold_256": 267.6,
+  "attack_dps_hold_512": 95.5,
+  "attack_dps_contact": 356.2,
+  "attacks_per_s_256": 2.21,
+  "dps_by_attack_256": {
+   "CyberBalls": 267.6
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 1583,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 8583,
+  "dps_256": 267.6,
+  "dps_512": 95.5,
+  "mobility": {
+   "ground_speed_u_per_tic": 5.98,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "spawns monsters on death (TheCyberdemon)": "/tmp/xmve_04/ANNIHILATOR.dec:74",
+   "summons (Vanilla_Annihilator)": "/tmp/xmve_04/ANNIHILATOR.dec:80",
+   "summons (TheCyberdemon)": "/tmp/xmve_04/ANNIHILATOR.dec:86",
+   "self-heal": "/tmp/xmve_04/ANNIHILATOR.dec:117"
+  },
+  "sim_tags": [
+   "self-heal"
+  ],
+  "set": "xmve",
+  "challenge_index": 129.89,
+  "place_by_ci": {
+   "below": [
+    "Blue",
+    80.42
+   ],
+   "above": [
+    "Cyan",
+    138.62
+   ],
+   "fractional_tier": 11.78,
+   "iso_colour": "Black"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    6400.0
+   ],
+   "above": [
+    "Brown",
+    7557.0
+   ],
+   "fractional_tier": 4.45,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "Cyan",
+    160.65
+   ],
+   "above": [
+    "White",
+    472.54999999999995
+   ],
+   "fractional_tier": 12.43,
+   "iso_colour": "Black"
+  }
+ },
+ {
+  "family": "Arachnotron",
+  "class": "Arachnotron1",
+  "hp": 750.0,
+  "hp_src": "/tmp/xmve_04/Spiders.txt:30",
+  "speed": {
+   "speed": 7.0,
+   "src": "/tmp/xmve_04/Spiders.txt:26"
+  },
+  "painchance": 128.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/arachnotron.zs:15",
+  "flags": [
+   "BOSSDEATH"
+  ],
+  "attack_dps_hold_256": 13.1,
+  "attack_dps_hold_512": 3.6,
+  "attack_dps_contact": 22.8,
+  "attacks_per_s_256": 1.29,
+  "dps_by_attack_256": {
+   "EnemyPlasmaBall": 13.1
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 750,
+  "dps_256": 13.1,
+  "dps_512": 3.6,
+  "mobility": {
+   "ground_speed_u_per_tic": 6.86,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "spawns monsters on death (Arachnotron1)": "/tmp/xmve_04/Spiders.txt:39",
+   "summons (Arachnotron2)": "/tmp/xmve_04/Spiders.txt:51",
+   "self-heal": "/tmp/xmve_04/Spiders.txt:60",
+   "summons via BigBloodSpot (BootSmearerRed)": "/tmp/xmve_04/Spiders.txt:181",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Spiders.txt:185",
+   "fire damage": "/tmp/xmve_04/Spiders.txt:220"
+  },
+  "sim_tags": [
+   "plasma damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 8.52,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    7.71
+   ],
+   "above": [
+    "Yellow",
+    11.12
+   ],
+   "fractional_tier": 1.19,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Blue",
+    700.0
+   ],
+   "above": [
+    "Cyan",
+    777.0
+   ],
+   "fractional_tier": 6.55,
+   "iso_colour": "Yellow"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Brown",
+    10.05
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Cacodemon",
+  "class": "AracnorbQueen",
+  "hp": 1000.0,
+  "hp_src": "/tmp/xmve_04/AracnorbQueen.txt:10",
+  "speed": {
+   "speed": 15.0,
+   "src": "/tmp/xmve_04/AracnorbQueen.txt:14"
+  },
+  "painchance": 45.0,
+  "painchance_src": "/tmp/xmve_04/AracnorbQueen.txt:15",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "FLOAT"
+  ],
+  "attack_dps_hold_256": 78.7,
+  "attack_dps_hold_512": 33.3,
+  "attack_dps_contact": 31.7,
+  "attacks_per_s_256": 4.67,
+  "dps_by_attack_256": {
+   "QueenPlasmaBlast": 71.0,
+   "QueenBFG": 7.2,
+   "QueenPainPlasmaBlast": 0.5
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1000,
+  "dps_256": 78.7,
+  "dps_512": 33.3,
+  "mobility": {
+   "ground_speed_u_per_tic": 7.42,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": true
+  },
+  "threat_abilities": {
+   "homing projectiles": "/tmp/xmve_04/AracnorbQueen.txt:71",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/AracnorbQueen.txt:178"
+  },
+  "sim_tags": [
+   "homing projectiles"
+  ],
+  "set": "xmve",
+  "challenge_index": 27.29,
+  "place_by_ci": {
+   "below": [
+    "Cyan",
+    19.25
+   ],
+   "above": [
+    "Abyss",
+    43.2
+   ],
+   "fractional_tier": 10.49,
+   "iso_colour": "Red"
+  },
+  "place_by_hp": {
+   "below": [
+    "Red",
+    830.0
+   ],
+   "above": [
+    "Abyss",
+    1100.0
+   ],
+   "fractional_tier": 10.66,
+   "iso_colour": "Abyss"
+  },
+  "place_by_dps": {
+   "below": [
+    "Gray",
+    48.45
+   ],
+   "above": [
+    "Abyss",
+    60.95
+   ],
+   "fractional_tier": 13.0,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Mastermind",
+  "class": "AracnorbQueenBOSS",
+  "hp": 4500.0,
+  "hp_src": "/tmp/xmve_04/AracnorbQueenBoss.txt:12",
+  "speed": {
+   "speed": 15.0,
+   "src": "/tmp/xmve_04/AracnorbQueenBoss.txt:16"
+  },
+  "painchance": 45.0,
+  "painchance_src": "/tmp/xmve_04/AracnorbQueenBoss.txt:17",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "FLOAT",
+   "NORADIUSDMG"
+  ],
+  "attack_dps_hold_256": 74.3,
+  "attack_dps_hold_512": 36.4,
+  "attack_dps_contact": 31.0,
+  "attacks_per_s_256": 4.55,
+  "dps_by_attack_256": {
+   "BOSSQueenPlasmaBlast": 54.3,
+   "BOSSQueenBFG": 19.2,
+   "BOSSQueenPainPlasmaBlast": 0.8
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 4500,
+  "dps_256": 74.3,
+  "dps_512": 36.4,
+  "mobility": {
+   "ground_speed_u_per_tic": 7.41,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": true
+  },
+  "threat_abilities": {
+   "homing projectiles": "/tmp/xmve_04/AracnorbQueenBoss.txt:84",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/AracnorbQueenBoss.txt:194"
+  },
+  "sim_tags": [
+   "homing projectiles"
+  ],
+  "set": "xmve",
+  "challenge_index": 57.53,
+  "place_by_ci": {
+   "below": [
+    "Blue",
+    56.62
+   ],
+   "above": [
+    "Red",
+    57.73
+   ],
+   "fractional_tier": 4.12,
+   "iso_colour": "Purple"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    4200.0
+   ],
+   "above": [
+    "Blue",
+    5600.0
+   ],
+   "fractional_tier": 2.24,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "FireBlu",
+    54.3
+   ],
+   "above": [
+    "Yellow",
+    64.2
+   ],
+   "fractional_tier": 4.9,
+   "iso_colour": "Cyan"
+  }
+ },
+ {
+  "family": "Baron",
+  "class": "BaronofHell2",
+  "hp": 1200.0,
+  "hp_src": "/tmp/xmve_04/Baron.txt:9",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/Baron.txt:35"
+  },
+  "painchance": 25.0,
+  "painchance_src": "/tmp/xmve_04/Baron.txt:37",
+  "flags": [
+   "BOSSDEATH",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 15.4,
+  "attack_dps_hold_512": 6.0,
+  "attack_dps_contact": 134.4,
+  "attacks_per_s_256": 11.38,
+  "dps_by_attack_256": {
+   "BaronBall": 15.4,
+   "SmallGreenFlameTrails": 0.0,
+   "BallGettingReadyGreen": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 183,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1383,
+  "dps_256": 15.4,
+  "dps_512": 6.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.98,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaBaronOfHell)": "/tmp/xmve_04/Baron.txt:48",
+   "summons (BaronBoss1)": "/tmp/xmve_04/Baron.txt:64",
+   "summons (BaronBoss2)": "/tmp/xmve_04/Baron.txt:75",
+   "summons (Belphegor2)": "/tmp/xmve_04/Baron.txt:97",
+   "self-heal": "/tmp/xmve_04/Baron.txt:121",
+   "fire damage": "/tmp/xmve_04/Baron.txt:342",
+   "hops/leaps": "/tmp/xmve_04/Baron.txt:496",
+   "spawns monsters on death (BaronOfHell)": "/tmp/xmve_04/Baron.txt:782",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Baron.txt:835",
+   "summons via GreenGrowingBloodPool (BootSmearerGreen)": "/tmp/xmve_04/Baron.txt:913"
+  },
+  "sim_tags": [
+   "fire damage",
+   "self-heal"
+  ],
+  "set": "xmve",
+  "challenge_index": 11.7,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    10.57
+   ],
+   "above": [
+    "Gray",
+    18.92
+   ],
+   "fractional_tier": 3.16,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    1170.0
+   ],
+   "above": [
+    "Blue",
+    1309.0
+   ],
+   "fractional_tier": 2.23,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "Green",
+    10.3
+   ],
+   "above": [
+    "Common",
+    15.6
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Demon",
+  "class": "BloodDemon",
+  "hp": 401.0,
+  "hp_src": "/tmp/xmve_04/BloodDemon.txt:5",
+  "speed": {
+   "speed": 20.0,
+   "src": "/tmp/xmve_04/BloodDemon.txt:6",
+   "fastspeed": 22.0,
+   "fastspeed_src": "/tmp/xmve_04/BloodDemon.txt:7"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_04/BloodDemon.txt:14",
+  "flags": [],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 14.8,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.47,
+  "contact_share_512": 0.43,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 401,
+  "dps_256": 7.0,
+  "dps_512": 6.4,
+  "mobility": {
+   "ground_speed_u_per_tic": 10.49,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "spawns monsters on death (PoorBPinkyLostHisArm)": "/tmp/xmve_04/BloodDemon.txt:104",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/BloodDemon.txt:114",
+   "spawns monsters on death (BurningDemon)": "/tmp/xmve_04/BloodDemon.txt:439",
+   "hops/leaps": "/tmp/xmve_04/BloodDemon.txt:549",
+   "self-heal": "/tmp/xmve_04/BloodDemon.txt:592",
+   "spawns monsters on death (Demon)": "/tmp/xmve_04/BloodDemon.txt:597"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 6.83,
+  "place_by_ci": {
+   "below": [
+    "Cyan",
+    6.8
+   ],
+   "above": [
+    "Green",
+    8.25
+   ],
+   "fractional_tier": 1.4,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Red",
+    400.0
+   ],
+   "above": [
+    "Brown",
+    420.0
+   ],
+   "fractional_tier": 8.5,
+   "iso_colour": "Gray"
+  },
+  "place_by_dps": {
+   "below": [
+    "Red",
+    5.45
+   ],
+   "above": [
+    "Cyan",
+    9.3
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Baron",
+  "class": "BruiserDemon",
+  "hp": 1250.0,
+  "hp_src": "/tmp/xmve_04/BruiserDemon.txt:5",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/BruiserDemon.txt:10"
+  },
+  "painchance": 25.0,
+  "painchance_src": "/tmp/xmve_04/BruiserDemon.txt:11",
+  "flags": [
+   "BOSSDEATH",
+   "MISSILEMORE",
+   "NORADIUSDMG"
+  ],
+  "attack_dps_hold_256": 6.5,
+  "attack_dps_hold_512": 2.5,
+  "attack_dps_contact": 0.0,
+  "attacks_per_s_256": 2.59,
+  "dps_by_attack_256": {
+   "BruiserBall2": 6.5,
+   "BruiserFireSpawner": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1250,
+  "dps_256": 6.5,
+  "dps_512": 2.5,
+  "mobility": {
+   "ground_speed_u_per_tic": 1.98,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "fire damage": "/tmp/xmve_04/BruiserDemon.txt:54"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 5.92,
+  "place_by_ci": {
+   "below": null,
+   "above": [
+    "Green",
+    9.57
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    1170.0
+   ],
+   "above": [
+    "Blue",
+    1309.0
+   ],
+   "fractional_tier": 2.59,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Blue",
+    8.65
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Demon",
+  "class": "BullDemon",
+  "hp": 200.0,
+  "hp_src": "/tmp/xmve_04/Demons.txt:12",
+  "speed": {
+   "speed": 14.0,
+   "src": "/tmp/xmve_04/Demons.txt:17",
+   "fastspeed": 22.0,
+   "fastspeed_src": "/tmp/xmve_04/Demons.txt:19"
+  },
+  "painchance": 180.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/demon.zs:11",
+  "flags": [
+   "NEVERFAST"
+  ],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 8.0,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.47,
+  "contact_share_512": 0.43,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 200,
+  "dps_256": 3.8,
+  "dps_512": 3.5,
+  "mobility": {
+   "ground_speed_u_per_tic": 10.52,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaDemon)": "/tmp/xmve_04/Demons.txt:53",
+   "hops/leaps": "/tmp/xmve_04/Demons.txt:195",
+   "spawns monsters on death (PoorPinkyLostHisArm)": "/tmp/xmve_04/Demons.txt:308",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Demons.txt:318",
+   "spawns monsters on death (BurningDemon)": "/tmp/xmve_04/Demons.txt:616",
+   "self-heal": "/tmp/xmve_04/Demons.txt:764",
+   "spawns monsters on death (Demon)": "/tmp/xmve_04/Demons.txt:769"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 3.56,
+  "place_by_ci": {
+   "below": null,
+   "above": [
+    "FireBlu",
+    5.04
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    170.0
+   ],
+   "above": [
+    "Blue",
+    205.0
+   ],
+   "fractional_tier": 2.87,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Red",
+    5.45
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Arachnotron",
+  "class": "CGSpider",
+  "hp": 550.0,
+  "hp_src": "/tmp/xmve_04/CGSpider.txt:4",
+  "speed": {
+   "speed": 12.0,
+   "src": "/tmp/xmve_04/CGSpider.txt:9"
+  },
+  "painchance": 128.0,
+  "painchance_src": "/tmp/xmve_04/CGSpider.txt:10",
+  "flags": [
+   "BOSSDEATH"
+  ],
+  "attack_dps_hold_256": 30.2,
+  "attack_dps_hold_512": 15.1,
+  "attack_dps_contact": 26.0,
+  "attacks_per_s_256": 7.02,
+  "dps_by_attack_256": {
+   "MonsterMinigunTracer": 30.2,
+   "EnemyMinigunBrass": 0.0,
+   "EmptyBrass": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 550,
+  "dps_256": 30.2,
+  "dps_512": 15.1,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.8,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons via BigBloodSpot (BootSmearerRed)": "/tmp/xmve_04/CGSpider.txt:137",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/CGSpider.txt:141",
+   "fire damage": "/tmp/xmve_04/CGSpider.txt:176"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 10.37,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    7.71
+   ],
+   "above": [
+    "Yellow",
+    11.12
+   ],
+   "fractional_tier": 1.55,
+   "iso_colour": "Green"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    500.0
+   ],
+   "above": [
+    "Brown",
+    600.0
+   ],
+   "fractional_tier": 1.52,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "Purple",
+    19.65
+   ],
+   "above": [
+    "Blue",
+    23.049999999999997
+   ],
+   "fractional_tier": 7.0,
+   "iso_colour": "Yellow"
+  }
+ },
+ {
+  "family": "Cacodemon",
+  "class": "Cacodemon_",
+  "hp": 400.0,
+  "hp_src": "/tmp/xmve_04/Cacodemo.txt:14",
+  "speed": {
+   "speed": 10.0,
+   "src": "/tmp/xmve_04/Cacodemo.txt:13"
+  },
+  "painchance": 128.0,
+  "painchance_src": "/tmp/xmve_04/Cacodemo.txt:15",
+  "flags": [
+   "FLOAT"
+  ],
+  "attack_dps_hold_256": 10.6,
+  "attack_dps_hold_512": 3.6,
+  "attack_dps_contact": 40.1,
+  "attacks_per_s_256": 1.17,
+  "dps_by_attack_256": {
+   "CacodemonBall": 9.8,
+   "a_headattack": 0.9
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 400,
+  "dps_256": 10.6,
+  "dps_512": 3.6,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.49,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": true
+  },
+  "threat_abilities": {
+   "summons (VanillaCacoDemon)": "/tmp/xmve_04/Cacodemo.txt:60",
+   "strafes (A_FastChase)": "/tmp/xmve_04/Cacodemo.txt:221",
+   "fire damage": "/tmp/xmve_04/Cacodemo.txt:389",
+   "spawns monsters on death (BurningCacoDemon)": "/tmp/xmve_04/Cacodemo.txt:402",
+   "self-heal": "/tmp/xmve_04/Cacodemo.txt:454",
+   "spawns monsters on death (CacoDemon)": "/tmp/xmve_04/Cacodemo.txt:459"
+  },
+  "sim_tags": [
+   "strafes (A_FastChase)"
+  ],
+  "set": "xmve",
+  "challenge_index": 5.09,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    4.64
+   ],
+   "above": [
+    "Green",
+    5.2
+   ],
+   "fractional_tier": 1.81,
+   "iso_colour": "Green"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    400.0
+   ],
+   "above": [
+    "Green",
+    450.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": [
+    "Common",
+    6.95
+   ],
+   "above": [
+    "Yellow",
+    7.25
+   ],
+   "fractional_tier": 1.21,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "ChaingunGuy1",
+  "hp": 100.0,
+  "hp_src": "/tmp/xmve_07/Comando.txt:3",
+  "speed": {
+   "speed": 5.0,
+   "src": "/tmp/xmve_07/Comando.txt:7"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_07/Comando.txt:8",
+  "flags": [
+   "MISSILEEVENMORE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 19.6,
+  "attack_dps_hold_512": 16.0,
+  "attack_dps_contact": 23.1,
+  "attacks_per_s_256": 7.57,
+  "dps_by_attack_256": {
+   "MonsterMinigunTracer": 19.6,
+   "EnemyMinigunBrass": 0.0,
+   "Tracer": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 100,
+  "dps_256": 19.6,
+  "dps_512": 16.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.5,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaChaingunguy)": "/tmp/xmve_07/Comando.txt:53",
+   "hops/leaps": "/tmp/xmve_07/Comando.txt:309",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/Comando.txt:456",
+   "spawns monsters on death (BrutalizedCommando1)": "/tmp/xmve_07/Comando.txt:488",
+   "spawns monsters on death (BrutalizedCommandoLostHead)": "/tmp/xmve_07/Comando.txt:549",
+   "spawns monsters on death (BrutalizedCommandoLostHead2)": "/tmp/xmve_07/Comando.txt:562",
+   "spawns monsters on death (BurningcHAINGUNGUY)": "/tmp/xmve_07/Comando.txt:699",
+   "self-heal": "/tmp/xmve_07/Comando.txt:835",
+   "spawns monsters on death (ChaingunGuy)": "/tmp/xmve_07/Comando.txt:840",
+   "spawns monsters on death (BrutalizedCommandoBlasted)": "/tmp/xmve_07/Comando.txt:879"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 3.88,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    2.89
+   ],
+   "above": [
+    "Gray",
+    4.14
+   ],
+   "fractional_tier": 3.62,
+   "iso_colour": "Purple"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    85.0
+   ],
+   "above": [
+    "Blue",
+    105.0
+   ],
+   "fractional_tier": 2.77,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "Green",
+    14.100000000000001
+   ],
+   "above": [
+    "Cyan",
+    26.5
+   ],
+   "fractional_tier": 6.3,
+   "iso_colour": "Brown"
+  }
+ },
+ {
+  "family": "Demon",
+  "class": "ChainsawZombie",
+  "hp": 54.0,
+  "hp_src": "/tmp/xmve_04/ChainsawZombie.txt:5",
+  "speed": {
+   "speed": 12.0,
+   "src": "/tmp/xmve_04/ChainsawZombie.txt:10",
+   "fastspeed": 14.0,
+   "fastspeed_src": "/tmp/xmve_04/LABGUY.txt:8"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/ChainsawZombie.txt:11",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 11.6,
+  "attacks_per_s_256": 1.57,
+  "dps_by_attack_256": {
+   "Brutal_FlyingBlood": 0.0
+  },
+  "contact_share_256": 0.33,
+  "contact_share_512": 0.03,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 54,
+  "dps_256": 3.8,
+  "dps_512": 0.4,
+  "mobility": {
+   "ground_speed_u_per_tic": 6.58,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "spawns monsters on death (Labguy)": "/tmp/xmve_04/ChainsawZombie.txt:402",
+   "hops/leaps": "/tmp/xmve_04/ChainsawZombie.txt:444",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_04/ChainsawZombie.txt:485",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/ChainsawZombie.txt:497",
+   "summons via BigBloodSpot (BootSmearerRed)": "/tmp/xmve_04/ChainsawZombie.txt:507",
+   "spawns monsters on death (ZombieScientistDyingGuts)": "/tmp/xmve_04/ChainsawZombie.txt:699",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/ChainsawZombie.txt:937",
+   "invulnerable phase": "/tmp/xmve_04/LABGUY.txt:26",
+   "self-heal": "/tmp/xmve_04/LABGUY.txt:306",
+   "summons (PistolZombie)": "/tmp/xmve_04/Zombiemen.txt:101",
+   "summons (HelmetRifleZombie)": "/tmp/xmve_04/Zombiemen.txt:107",
+   "summons (RifleZombie)": "/tmp/xmve_04/Zombiemen.txt:114",
+   "summons (Labguy)": "/tmp/xmve_04/Zombiemen.txt:120",
+   "summons (VanillaZombieman)": "/tmp/xmve_04/Zombiemen.txt:126",
+   "spawns monsters on death (ZombieMan)": "/tmp/xmve_04/Zombiemen.txt:434",
+   "spawns monsters on death (DyingZombiemanNoArm)": "/tmp/xmve_04/Zombiemen.txt:895",
+   "summons (ZombiemanGotHisLegBlowed)": "/tmp/xmve_04/Zombiemen.txt:955",
+   "summons (ZombiemanSacilol)": "/tmp/xmve_04/Zombiemen.txt:960",
+   "spawns monsters on death (BrutalizedZombieMan1)": "/tmp/xmve_04/Zombiemen.txt:1006",
+   "spawns monsters on death (BrutalizedZombieManLeg)": "/tmp/xmve_04/Zombiemen.txt:1016",
+   "spawns monsters on death (DyingZombiemanLostTeeth)": "/tmp/xmve_04/Zombiemen.txt:1150",
+   "spawns monsters on death (Zombiemanfallingbeheaded)": "/tmp/xmve_04/Zombiemen.txt:1190",
+   "spawns monsters on death (ZombiemanFallingHoleOnStomach)": "/tmp/xmve_04/Zombiemen.txt:1455",
+   "spawns monsters on death (ZombiemanFallingSplattered)": "/tmp/xmve_04/Zombiemen.txt:1515"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 1.25,
+  "place_by_ci": {
+   "below": null,
+   "above": [
+    "FireBlu",
+    5.04
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": null,
+   "above": [
+    "Common",
+    150.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Red",
+    5.45
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Baron",
+  "class": "CyberBaron",
+  "hp": 1250.0,
+  "hp_src": "/tmp/xmve_04/CyberBaron.txt:8",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/CyberBaron.txt:13"
+  },
+  "painchance": 25.0,
+  "painchance_src": "/tmp/xmve_04/CyberBaron.txt:14",
+  "flags": [
+   "BOSSDEATH",
+   "DONTRIP",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 34.5,
+  "attack_dps_hold_512": 20.9,
+  "attack_dps_contact": 177.9,
+  "attacks_per_s_256": 3.17,
+  "dps_by_attack_256": {
+   "AGLMissileMonster": 20.8,
+   "BaronBall": 10.2,
+   "XV_FlamethrowerMissile": 3.5,
+   "RealFlameTrailsSmall": 0.0,
+   "SmallFlameTrails": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1250,
+  "dps_256": 34.5,
+  "dps_512": 20.9,
+  "mobility": {
+   "ground_speed_u_per_tic": 1.98,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "fire damage": "/tmp/xmve_04/CyberBaron.txt:150",
+   "invulnerable phase": "/tmp/xmve_04/CyberBaron.txt:183",
+   "summons (VanillaBaronOfHell)": "/tmp/xmve_04/Baron.txt:48",
+   "summons (BaronBoss1)": "/tmp/xmve_04/Baron.txt:64",
+   "summons (BaronBoss2)": "/tmp/xmve_04/Baron.txt:75",
+   "summons (Belphegor2)": "/tmp/xmve_04/Baron.txt:97",
+   "self-heal": "/tmp/xmve_04/Baron.txt:121",
+   "hops/leaps": "/tmp/xmve_04/Baron.txt:496",
+   "spawns monsters on death (BaronOfHell)": "/tmp/xmve_04/Baron.txt:782",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Baron.txt:835",
+   "summons via GreenGrowingBloodPool (BootSmearerGreen)": "/tmp/xmve_04/Baron.txt:913"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 16.16,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    10.57
+   ],
+   "above": [
+    "Gray",
+    18.92
+   ],
+   "fractional_tier": 3.47,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    1170.0
+   ],
+   "above": [
+    "Blue",
+    1309.0
+   ],
+   "fractional_tier": 2.59,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "Abyss",
+    25.049999999999997
+   ],
+   "above": [
+    "Yellow",
+    28.45
+   ],
+   "fractional_tier": 3.67,
+   "iso_colour": "Purple"
+  }
+ },
+ {
+  "family": "Hell Knight",
+  "class": "CyberKnight",
+  "hp": 655.0,
+  "hp_src": "/tmp/xmve_04/CyberKnight.txt:3",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/xmve_04/CyberKnight.txt:8"
+  },
+  "painchance": 25.0,
+  "painchance_src": "/tmp/xmve_04/CyberKnight.txt:9",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 45.2,
+  "attack_dps_hold_512": 27.8,
+  "attack_dps_contact": 68.3,
+  "attacks_per_s_256": 3.97,
+  "dps_by_attack_256": {
+   "MonsterMinigunTracer": 17.9,
+   "EnemyPlasmaBall": 13.8,
+   "CyberKnightMissile": 13.6,
+   "RedFlareSpawn": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 655,
+  "dps_256": 45.2,
+  "dps_512": 27.8,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.98,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/CyberKnight.txt:175",
+   "hops/leaps": "/tmp/xmve_04/CyberKnight.txt:210",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/CyberKnight.txt:346"
+  },
+  "sim_tags": [
+   "plasma damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 15.99,
+  "place_by_ci": {
+   "below": [
+    "Purple",
+    12.77
+   ],
+   "above": [
+    "FireBlu",
+    17.17
+   ],
+   "fractional_tier": 10.18,
+   "iso_colour": "Red"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    600.0
+   ],
+   "above": [
+    "Blue",
+    666.0
+   ],
+   "fractional_tier": 2.84,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "FireBlu",
+    35.55
+   ],
+   "above": [
+    "Abyss",
+    63.8
+   ],
+   "fractional_tier": 10.85,
+   "iso_colour": "Abyss"
+  }
+ },
+ {
+  "family": "Mancubus",
+  "class": "Daedabus",
+  "hp": 850.0,
+  "hp_src": "/tmp/xmve_04/Daedabus.dec:5",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/xmve_04/Daedabus.dec:12"
+  },
+  "painchance": 40.0,
+  "painchance_src": "/tmp/xmve_04/Daedabus.dec:23",
+  "flags": [
+   "BOSSDEATH"
+  ],
+  "attack_dps_hold_256": 27.8,
+  "attack_dps_hold_512": 9.6,
+  "attack_dps_contact": 26.8,
+  "attacks_per_s_256": 7.83,
+  "dps_by_attack_256": {
+   "GreenCloudMissile_Enemy": 27.8
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 850,
+  "dps_256": 27.8,
+  "dps_512": 9.6,
+  "mobility": {
+   "ground_speed_u_per_tic": 1.97,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (Vanilla_Daedabus)": "/tmp/xmve_04/Daedabus.dec:78",
+   "summons (Mancubus)": "/tmp/xmve_04/Daedabus.dec:85",
+   "hops/leaps": "/tmp/xmve_04/Daedabus.dec:153",
+   "invulnerable phase": "/tmp/xmve_04/Daedabus.dec:181",
+   "fire damage": "/tmp/xmve_04/Daedabus.dec:268"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 10.93,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    10.7
+   ],
+   "above": [
+    "Gray",
+    13.06
+   ],
+   "fractional_tier": 2.07,
+   "iso_colour": "Green"
+  },
+  "place_by_hp": {
+   "below": [
+    "Brown",
+    850.0
+   ],
+   "above": [
+    "Purple",
+    950.0
+   ],
+   "fractional_tier": 6.0,
+   "iso_colour": "Brown"
+  },
+  "place_by_dps": {
+   "below": [
+    "Common",
+    16.55
+   ],
+   "above": [
+    "Green",
+    24.799999999999997
+   ],
+   "fractional_tier": 1.3,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Imp",
+  "class": "DarkImp",
+  "hp": 117.0,
+  "hp_src": "/tmp/xmve_04/DarkImp.txt:7",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/DarkImp.txt:12"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/DarkImp.txt:14",
+  "flags": [],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 12.1,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 117,
+  "dps_256": 0.0,
+  "dps_512": 0.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.88,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/DarkImp.txt:238",
+   "hops/leaps": "/tmp/xmve_04/DarkImp.txt:252",
+   "spawns monsters on death (BurningDarkImpRunning)": "/tmp/xmve_04/DarkImp.txt:281",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/DarkImp.txt:327",
+   "spawns monsters on death (DarkImpDyingOfBloodLoss)": "/tmp/xmve_04/DarkImp.txt:469",
+   "summons via MediumBloodSpot (BootSmearerRed)": "/tmp/xmve_04/DarkImp.txt:799"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 0.33,
+  "place_by_ci": {
+   "below": null,
+   "above": [
+    "Common",
+    1.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    105.0
+   ],
+   "above": [
+    "Cyan",
+    125.0
+   ],
+   "fractional_tier": 4.62,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Brown",
+    1.8
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Arch-Vile",
+  "class": "Diabloist",
+  "hp": 1200.0,
+  "hp_src": "/tmp/xmve_04/Diabloist.txt:4",
+  "speed": {
+   "speed": 15.0,
+   "src": "/tmp/xmve_04/Diabloist.txt:8"
+  },
+  "painchance": 10.0,
+  "painchance_src": "/tmp/xmve_04/Diabloist.txt:9",
+  "flags": [
+   "BOSS",
+   "MISSILEMORE",
+   "NORADIUSDMG",
+   "NOTARGET",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 24.4,
+  "attack_dps_hold_512": 14.2,
+  "attack_dps_contact": 38.8,
+  "attacks_per_s_256": 3.99,
+  "dps_by_attack_256": {
+   "DFlare": 13.7,
+   "DTracer": 6.1,
+   "vileattack": 4.6,
+   "SmallFlameTrails": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 375,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1575,
+  "dps_256": 24.4,
+  "dps_512": 14.2,
+  "mobility": {
+   "ground_speed_u_per_tic": 7.45,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "fire damage": "/tmp/xmve_04/Diabloist.txt:44",
+   "homing projectiles": "/tmp/xmve_04/Diabloist.txt:117",
+   "resurrects corpses (A_VileChase)": "QuestZDoom 17.3 zscript/actors/doom/archvile.zs:36"
+  },
+  "sim_tags": [
+   "fire damage",
+   "homing projectiles",
+   "vile fire (hitscan-like)"
+  ],
+  "set": "xmve",
+  "challenge_index": 19.17,
+  "place_by_ci": {
+   "below": [
+    "Red",
+    18.7
+   ],
+   "above": [
+    "Yellow",
+    19.45
+   ],
+   "fractional_tier": 10.02,
+   "iso_colour": "Red"
+  },
+  "place_by_hp": {
+   "below": [
+    "Cyan",
+    1200.0
+   ],
+   "above": [
+    "Yellow",
+    1333.0
+   ],
+   "fractional_tier": 5.0,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "FireBlu",
+    19.0
+   ],
+   "above": [
+    "Blue",
+    19.4
+   ],
+   "fractional_tier": 13.0,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Revenant",
+  "class": "Draugr",
+  "hp": 550.0,
+  "hp_src": "/tmp/xmve_04/Draugr.dec:3",
+  "speed": {
+   "speed": 10.0,
+   "src": "QuestZDoom 17.3 zscript/actors/doom/revenant.zs:14"
+  },
+  "painchance": 100.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/revenant.zs:15",
+  "flags": [
+   "MISSILEEVENMORE"
+  ],
+  "attack_dps_hold_256": 45.8,
+  "attack_dps_hold_512": 41.5,
+  "attack_dps_contact": 24.5,
+  "attacks_per_s_256": 13.01,
+  "dps_by_attack_256": {
+   "RevanentBeam": 32.1,
+   "DraugrDemonMeteorNonSeeker": 9.3,
+   "DraugrDemonMeteorSeeker": 4.4,
+   "railgun": 0.0,
+   "RedFlareSmall": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 550,
+  "dps_256": 45.8,
+  "dps_512": 41.5,
+  "mobility": {
+   "ground_speed_u_per_tic": 5.04,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (Vanilla_Draugr)": "/tmp/xmve_04/Draugr.dec:43",
+   "railgun": "/tmp/xmve_04/Draugr.dec:175",
+   "homing projectiles": "/tmp/xmve_04/Draugr.dec:257",
+   "invulnerable phase": "/tmp/xmve_04/Draugr.dec:282",
+   "spawns monsters on death (Draugr)": "/tmp/xmve_04/Draugr.dec:585",
+   "summons (VanillaRevenant)": "/tmp/xmve_04/Revenant.txt:46",
+   "hops/leaps": "/tmp/xmve_04/Revenant.txt:179",
+   "summons (RevenantU)": "/tmp/xmve_04/Revenant.txt:534",
+   "spawns monsters on death (RevenantU)": "/tmp/xmve_04/Revenant.txt:628",
+   "self-heal": "/tmp/xmve_04/Revenant.txt:639",
+   "spawns monsters on death (Revenant)": "/tmp/xmve_04/Revenant.txt:644"
+  },
+  "sim_tags": [
+   "homing projectiles",
+   "railgun"
+  ],
+  "set": "xmve",
+  "challenge_index": 16.99,
+  "place_by_ci": {
+   "below": [
+    "Gray",
+    16.73
+   ],
+   "above": [
+    "Red",
+    22.11
+   ],
+   "fractional_tier": 9.06,
+   "iso_colour": "Gray"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    515.0
+   ],
+   "above": [
+    "Gray",
+    660.0
+   ],
+   "fractional_tier": 5.35,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Purple",
+    36.95
+   ],
+   "above": [
+    "Blue",
+    47.900000000000006
+   ],
+   "fractional_tier": 9.77,
+   "iso_colour": "Red"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "EvilMarine",
+  "hp": 120.0,
+  "hp_src": "/tmp/xmve_04/EEEVILLL.txt:7",
+  "speed": {
+   "speed": 0.0,
+   "src": null
+  },
+  "painchance": 0.0,
+  "painchance_src": null,
+  "flags": [],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 0.0,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {
+   "EvilMarineLasGun": {
+    "per_20s": 10.21,
+    "hp_each": 120.0,
+    "dps_each_256": 28.4,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "fire damage",
+     "hops/leaps",
+     "railgun",
+     "spawns monsters on death (BurningZombieMan)"
+    ]
+   },
+   "EvilMarinePlasma": {
+    "per_20s": 23.33,
+    "hp_each": 120.0,
+    "dps_each_256": 30.0,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "hops/leaps",
+     "spawns monsters on death (BurningZombieMan)"
+    ]
+   },
+   "EvilMarineLasgun": {
+    "per_20s": 11.67,
+    "hp_each": 120.0,
+    "dps_each_256": 29.1,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "fire damage",
+     "hops/leaps",
+     "railgun",
+     "spawns monsters on death (BurningZombieMan)"
+    ]
+   },
+   "EvilMarineRifle": {
+    "per_20s": 24.79,
+    "hp_each": 120.0,
+    "dps_each_256": 35.7,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "hops/leaps",
+     "spawns monsters on death (BurningZombieMan)"
+    ]
+   }
+  },
+  "added_threat": {
+   "summoned_hp_20s": 8400,
+   "summoned_dps_256": 305.7,
+   "summoned_dps_512": 258.5
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 8520,
+  "dps_256": 305.7,
+  "dps_512": 258.5,
+  "mobility": {
+   "ground_speed_u_per_tic": 0.0,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (EvilMarineRifle)": "/tmp/xmve_04/EEEVILLL.txt:41",
+   "summons (EvilMarineLasGun)": "/tmp/xmve_04/EEEVILLL.txt:46",
+   "summons (EvilMarinePlasma)": "/tmp/xmve_04/EEEVILLL.txt:51",
+   "summons (EvilMarineLasgun)": "/tmp/xmve_04/EEEVILLL.txt:66",
+   "summons (Nazi)": "/tmp/xmve_04/EEEVILLL.txt:88",
+   "summons (Ubersoldat)": "/tmp/xmve_04/EEEVILLL.txt:94",
+   "buffs others (BarrelExpMeasure)": "/tmp/xmve_04/EEEVILLL.txt:103",
+   "summons (MOtherdemon)": "/tmp/xmve_04/EEEVILLL.txt:104",
+   "summons (Epic2Alien)": "/tmp/xmve_04/EEEVILLL.txt:113",
+   "summons (EasyMarineRifleAlive)": "/tmp/xmve_04/EEEVILLL.txt:122",
+   "summons (MrX)": "/tmp/xmve_04/EEEVILLL.txt:131"
+  },
+  "sim_tags": [
+   "summons"
+  ],
+  "set": "xmve",
+  "challenge_index": 86.75,
+  "place_by_ci": {
+   "below": [
+    "Black",
+    45.52
+   ],
+   "above": [
+    "White",
+    106.82
+   ],
+   "fractional_tier": 12.76,
+   "iso_colour": "White"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    120.0
+   ],
+   "above": [
+    "Cyan",
+    125.0
+   ],
+   "fractional_tier": 4.0,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "White",
+    92.45
+   ],
+   "above": null,
+   "fractional_tier": 13.0,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "EvilMarineLasgun",
+  "hp": 120.0,
+  "hp_src": "/tmp/xmve_04/EEEVILLL.txt:1286",
+  "speed": {
+   "speed": 5.0,
+   "src": "/tmp/xmve_04/EEEVILLL.txt:1289",
+   "fastspeed": 4.0,
+   "fastspeed_src": "/tmp/xmve_04/EEEVILLL.txt:1290"
+  },
+  "painchance": 200.0,
+  "painchance_src": "/tmp/xmve_04/EEEVILLL.txt:1291",
+  "flags": [
+   "MISSILEMORE",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 29.1,
+  "attack_dps_hold_512": 29.4,
+  "attack_dps_contact": 28.4,
+  "attacks_per_s_256": 12.94,
+  "dps_by_attack_256": {
+   "EvilLasbullet": 29.1,
+   "railgun": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 120,
+  "dps_256": 29.1,
+  "dps_512": 29.4,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.94,
+   "hops": true,
+   "charges": true,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "railgun": "/tmp/xmve_04/EEEVILLL.txt:1396",
+   "fire damage": "/tmp/xmve_04/EEEVILLL.txt:1397",
+   "hops/leaps": "/tmp/xmve_04/EEEVILLL.txt:1455",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/EEEVILLL.txt:1749"
+  },
+  "sim_tags": [
+   "dashes",
+   "fire damage",
+   "railgun"
+  ],
+  "set": "xmve",
+  "challenge_index": 6.66,
+  "place_by_ci": {
+   "below": [
+    "Purple",
+    4.99
+   ],
+   "above": [
+    "Cyan",
+    6.99
+   ],
+   "fractional_tier": 4.86,
+   "iso_colour": "Cyan"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    120.0
+   ],
+   "above": [
+    "Cyan",
+    125.0
+   ],
+   "fractional_tier": 4.0,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "Red",
+    26.85
+   ],
+   "above": [
+    "Purple",
+    29.65
+   ],
+   "fractional_tier": 10.02,
+   "iso_colour": "Red"
+  }
+ },
+ {
+  "family": "Hell Knight",
+  "class": "HellKnight2",
+  "hp": 500.0,
+  "hp_src": "/tmp/xmve_04/Knight.txt:5",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/xmve_04/Knight.txt:4"
+  },
+  "painchance": 25.0,
+  "painchance_src": "/tmp/xmve_04/Knight.txt:13",
+  "flags": [],
+  "attack_dps_hold_256": 11.4,
+  "attack_dps_hold_512": 3.8,
+  "attack_dps_contact": 70.8,
+  "attacks_per_s_256": 10.72,
+  "dps_by_attack_256": {
+   "BaronBall": 11.4,
+   "MonsterTargetCheck": 0.0,
+   "MonsterTargetCheckFaster": 0.0,
+   "SmallGreenFlameTrails": 0.0,
+   "BallGettingReadyGreen": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 154,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 654,
+  "dps_256": 11.4,
+  "dps_512": 3.8,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.97,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaHellKnight)": "/tmp/xmve_04/Knight.txt:57",
+   "self-heal": "/tmp/xmve_04/Knight.txt:141",
+   "fire damage": "/tmp/xmve_04/Knight.txt:252",
+   "homing projectiles": "/tmp/xmve_04/Knight.txt:283",
+   "hops/leaps": "/tmp/xmve_04/Knight.txt:349",
+   "invulnerable phase": "/tmp/xmve_04/Knight.txt:593",
+   "spawns monsters on death (HellKnight)": "/tmp/xmve_04/Knight.txt:646"
+  },
+  "sim_tags": [
+   "fire damage",
+   "homing projectiles",
+   "self-heal"
+  ],
+  "set": "xmve",
+  "challenge_index": 7.28,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    5.64
+   ],
+   "above": [
+    "Green",
+    7.83
+   ],
+   "fractional_tier": 1.78,
+   "iso_colour": "Green"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    500.0
+   ],
+   "above": [
+    "Green",
+    600.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Brown",
+    8.5
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "HellTrooper",
+  "hp": 220.0,
+  "hp_src": "/tmp/xmve_04/DemonTechTroop.dec:63",
+  "speed": {
+   "speed": 9.0,
+   "src": "/tmp/xmve_04/DemonTechTroop.dec:66",
+   "fastspeed": 14.0,
+   "fastspeed_src": "/tmp/xmve_04/DemonTechTroop.dec:67"
+  },
+  "painchance": 150.0,
+  "painchance_src": "/tmp/xmve_04/DemonTechTroop.dec:69",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 16.3,
+  "attack_dps_hold_512": 8.8,
+  "attack_dps_contact": 31.4,
+  "attacks_per_s_256": 7.61,
+  "dps_by_attack_256": {
+   "Trooperbullet": 16.3,
+   "RedFlareSmall": 0.0,
+   "Brutal_FlyingBlood": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 220,
+  "dps_256": 16.3,
+  "dps_512": 8.8,
+  "mobility": {
+   "ground_speed_u_per_tic": 6.86,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (Vanilla_HellTrooper)": "/tmp/xmve_04/DemonTechTroop.dec:126",
+   "fire damage": "/tmp/xmve_04/DemonTechTroop.dec:198",
+   "spawns monsters on death (HellTrooper)": "/tmp/xmve_04/DemonTechTroop.dec:349",
+   "invulnerable phase": "/tmp/xmve_04/DemonTechTroop.dec:382",
+   "hops/leaps": "/tmp/xmve_04/DemonTechTroop.dec:437",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_04/DemonTechTroop.dec:475",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/DemonTechTroop.dec:487",
+   "spawns monsters on death (BurningZombie)": "/tmp/xmve_04/DemonTechTroop.dec:941",
+   "summons (SMGGuy)": "/tmp/xmve_04/Sergeants.txt:80",
+   "summons (VanillaShotgunguy)": "/tmp/xmve_04/Sergeants.txt:86",
+   "self-heal": "/tmp/xmve_04/Sergeants.txt:492",
+   "spawns monsters on death (DeadShotgunguy)": "/tmp/xmve_04/Sergeants.txt:563",
+   "spawns monsters on death (ShotgunGuy)": "/tmp/xmve_04/Sergeants.txt:576",
+   "summons (SergeantGotHisLegBlowed)": "/tmp/xmve_04/Sergeants.txt:765",
+   "summons (DyingSergeantNoLeg)": "/tmp/xmve_04/Sergeants.txt:770",
+   "spawns monsters on death (DyingSergeant)": "/tmp/xmve_04/Sergeants.txt:781",
+   "spawns monsters on death (DyingShotgunguyHitInEye)": "/tmp/xmve_04/Sergeants.txt:822",
+   "spawns monsters on death (DeadShotgunguyNoHeadContinue)": "/tmp/xmve_04/Sergeants.txt:856",
+   "spawns monsters on death (BrutalizedSergeant1)": "/tmp/xmve_04/Sergeants.txt:943",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/Sergeants.txt:952",
+   "spawns monsters on death (SergeantFallingHoleOnStomach)": "/tmp/xmve_04/Sergeants.txt:974",
+   "spawns monsters on death (SergeantFallingSplattered)": "/tmp/xmve_04/Sergeants.txt:994",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/Sergeants.txt:1197"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 6.22,
+  "place_by_ci": {
+   "below": [
+    "Purple",
+    4.99
+   ],
+   "above": [
+    "Cyan",
+    6.99
+   ],
+   "fractional_tier": 4.65,
+   "iso_colour": "Cyan"
+  },
+  "place_by_hp": {
+   "below": [
+    "Yellow",
+    200.0
+   ],
+   "above": [
+    "Brown",
+    250.0
+   ],
+   "fractional_tier": 5.97,
+   "iso_colour": "Brown"
+  },
+  "place_by_dps": {
+   "below": [
+    "Gray",
+    9.3
+   ],
+   "above": [
+    "Green",
+    14.100000000000001
+   ],
+   "fractional_tier": 3.62,
+   "iso_colour": "Purple"
+  }
+ },
+ {
+  "family": "Imp",
+  "class": "Imp",
+  "hp": 100.0,
+  "hp_src": "/tmp/xmve_04/Imps.txt:88",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/Imps.txt:126",
+   "fastspeed": 12.0,
+   "fastspeed_src": "/tmp/xmve_04/Imps.txt:127"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/Imps.txt:95",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 6.0,
+  "attack_dps_hold_512": 2.1,
+  "attack_dps_contact": 18.0,
+  "attacks_per_s_256": 11.46,
+  "dps_by_attack_256": {
+   "FireBall_": 6.0,
+   "SmallFlameTrails": 0.0,
+   "ImBallGettingReady": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 100,
+  "dps_256": 6.0,
+  "dps_512": 2.1,
+  "mobility": {
+   "ground_speed_u_per_tic": 5.85,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaImp)": "/tmp/xmve_04/Imps.txt:140",
+   "hops/leaps": "/tmp/xmve_04/Imps.txt:265",
+   "fire damage": "/tmp/xmve_04/Imps.txt:377",
+   "self-heal": "/tmp/xmve_04/Imps.txt:710",
+   "spawns monsters on death (Imp)": "/tmp/xmve_04/Imps.txt:716",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Imps.txt:909",
+   "spawns monsters on death (BurningImpRunning)": "/tmp/xmve_04/Imps.txt:982",
+   "spawns monsters on death (ImpDyingOfBloodLoss)": "/tmp/xmve_04/Imps.txt:1036",
+   "spawns monsters on death (DyingImpNoArm)": "/tmp/xmve_04/Imps.txt:1047",
+   "spawns monsters on death (DyingImpNoLeg)": "/tmp/xmve_04/Imps.txt:1064",
+   "spawns monsters on death (ImpSaciLol)": "/tmp/xmve_04/Imps.txt:1073",
+   "spawns monsters on death (DyingImpHalfFace)": "/tmp/xmve_04/Imps.txt:1189",
+   "spawns monsters on death (DyingImpNoHeadClean)": "/tmp/xmve_04/Imps.txt:1202",
+   "spawns monsters on death (DyingImpNoHeadLikeChicken)": "/tmp/xmve_04/Imps.txt:1220",
+   "spawns monsters on death (BrutalizedImp1)": "/tmp/xmve_04/Imps.txt:1296",
+   "spawns monsters on death (ImpBrutalizedWithNoLeg)": "/tmp/xmve_04/Imps.txt:1305",
+   "spawns monsters on death (DyingImp)": "/tmp/xmve_04/Imps.txt:1372",
+   "summons (ImpFish)": "/tmp/xmve_04/Imps.txt:1720"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 2.29,
+  "place_by_ci": {
+   "below": [
+    "Gray",
+    2.08
+   ],
+   "above": [
+    "Purple",
+    2.39
+   ],
+   "fractional_tier": 3.8,
+   "iso_colour": "Purple"
+  },
+  "place_by_hp": {
+   "below": [
+    "Blue",
+    83.0
+   ],
+   "above": [
+    "Purple",
+    105.0
+   ],
+   "fractional_tier": 3.79,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "Common",
+    2.4
+   ],
+   "above": [
+    "Yellow",
+    5.800000000000001
+   ],
+   "fractional_tier": 1.58,
+   "iso_colour": "Green"
+  }
+ },
+ {
+  "family": "Imp",
+  "class": "Imp3",
+  "hp": 117.0,
+  "hp_src": "/tmp/xmve_04/Imp3.txt:13",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/Imp3.txt:51",
+   "fastspeed": 12.0,
+   "fastspeed_src": "/tmp/xmve_04/Imp3.txt:52"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/Imp3.txt:20",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 5.9,
+  "attack_dps_hold_512": 1.9,
+  "attack_dps_contact": 17.1,
+  "attacks_per_s_256": 11.78,
+  "dps_by_attack_256": {
+   "FireBall_": 5.9,
+   "SmallFlameTrails": 0.0,
+   "ImBallGettingReady": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 117,
+  "dps_256": 5.9,
+  "dps_512": 1.9,
+  "mobility": {
+   "ground_speed_u_per_tic": 5.85,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaImp)": "/tmp/xmve_04/Imp3.txt:65",
+   "hops/leaps": "/tmp/xmve_04/Imp3.txt:190",
+   "fire damage": "/tmp/xmve_04/Imp3.txt:302",
+   "self-heal": "/tmp/xmve_04/Imp3.txt:635",
+   "spawns monsters on death (Imp)": "/tmp/xmve_04/Imp3.txt:641",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Imp3.txt:834",
+   "spawns monsters on death (ImpDyingOfBloodLoss)": "/tmp/xmve_04/Imp3.txt:918",
+   "spawns monsters on death (DyingImpNoArm)": "/tmp/xmve_04/Imp3.txt:929",
+   "spawns monsters on death (DyingImpNoLeg)": "/tmp/xmve_04/Imp3.txt:946",
+   "spawns monsters on death (ImpSaciLol)": "/tmp/xmve_04/Imp3.txt:955",
+   "spawns monsters on death (DyingImpHalfFace)": "/tmp/xmve_04/Imp3.txt:1071",
+   "spawns monsters on death (DyingImpNoHeadClean)": "/tmp/xmve_04/Imp3.txt:1084",
+   "spawns monsters on death (DyingImpNoHeadLikeChicken)": "/tmp/xmve_04/Imp3.txt:1102",
+   "spawns monsters on death (BrutalizedImp1)": "/tmp/xmve_04/Imp3.txt:1178",
+   "spawns monsters on death (ImpBrutalizedWithNoLeg)": "/tmp/xmve_04/Imp3.txt:1187",
+   "spawns monsters on death (DyingImp)": "/tmp/xmve_04/Imp3.txt:1254",
+   "summons (ImpFish)": "/tmp/xmve_04/Imp3.txt:1602",
+   "spawns monsters on death (BurningImpRunning)": "/tmp/xmve_04/Imps.txt:982"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 2.43,
+  "place_by_ci": {
+   "below": [
+    "Purple",
+    2.39
+   ],
+   "above": [
+    "Yellow",
+    2.58
+   ],
+   "fractional_tier": 4.05,
+   "iso_colour": "Purple"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    105.0
+   ],
+   "above": [
+    "Cyan",
+    125.0
+   ],
+   "fractional_tier": 4.62,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Common",
+    2.4
+   ],
+   "above": [
+    "Yellow",
+    5.800000000000001
+   ],
+   "fractional_tier": 1.54,
+   "iso_colour": "Green"
+  }
+ },
+ {
+  "family": "Pain Elemental",
+  "class": "ImpureElemental",
+  "hp": 450.0,
+  "hp_src": "/tmp/xmve_04/ImpureElemental.txt:4",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/xmve_04/ImpureElemental.txt:5"
+  },
+  "painchance": 100.0,
+  "painchance_src": "/tmp/xmve_04/ImpureElemental.txt:9",
+  "flags": [
+   "FLOAT",
+   "MISSILEEVENMORE",
+   "MISSILEMORE",
+   "NOTARGET",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 62.5,
+  "attack_dps_hold_512": 23.2,
+  "attack_dps_contact": 87.9,
+  "attacks_per_s_256": 2.72,
+  "dps_by_attack_256": {
+   "DarkRipper": 36.3,
+   "PainLordDarkMatteRDBLl": 26.0,
+   "PainLordDarkMatteRDBLlHoming": 0.2
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {
+   "ImpureSoul": {
+    "per_20s": 2.77,
+    "hp_each": 66.0,
+    "dps_each_256": 16.7,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "charges (skull attack)"
+    ]
+   }
+  },
+  "added_threat": {
+   "summoned_hp_20s": 183,
+   "summoned_dps_256": 5.4,
+   "summoned_dps_512": 2.5
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 633,
+  "dps_256": 67.8,
+  "dps_512": 25.7,
+  "mobility": {
+   "ground_speed_u_per_tic": 1.94,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": true
+  },
+  "threat_abilities": {
+   "summons (ImpureSoul)": "/tmp/xmve_04/ImpureElemental.txt:125"
+  },
+  "sim_tags": [
+   "summons"
+  ],
+  "set": "xmve",
+  "challenge_index": 14.18,
+  "place_by_ci": {
+   "below": [
+    "Brown",
+    12.68
+   ],
+   "above": [
+    "Cyan",
+    18.2
+   ],
+   "fractional_tier": 2.8,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    400.0
+   ],
+   "above": [
+    "Green",
+    500.0
+   ],
+   "fractional_tier": 1.53,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "Yellow",
+    32.0
+   ],
+   "above": [
+    "Gray",
+    47.55
+   ],
+   "fractional_tier": 7.6,
+   "iso_colour": "FireBlu"
+  }
+ },
+ {
+  "family": "Revenant",
+  "class": "Incarnate",
+  "hp": 300.0,
+  "hp_src": "/tmp/xmve_04/Incarnate.txt:6",
+  "speed": {
+   "speed": 25.0,
+   "src": "/tmp/xmve_04/Incarnate.txt:10"
+  },
+  "painchance": 64.0,
+  "painchance_src": "/tmp/xmve_04/Incarnate.txt:12",
+  "flags": [
+   "NOINFIGHTING"
+  ],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 30.7,
+  "attacks_per_s_256": 6.19,
+  "dps_by_attack_256": {
+   "PlasmaSmoke": 0.0,
+   "SmokeSpawner": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 300,
+  "dps_256": 0.0,
+  "dps_512": 0.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 12.28,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (Revenant1)": "/tmp/xmve_04/Incarnate.txt:47",
+   "summons (HS)": "/tmp/xmve_04/Incarnate.txt:70",
+   "turns invisible": "/tmp/xmve_04/Incarnate.txt:104",
+   "summons (Incarnate)": "/tmp/xmve_04/Incarnate.txt:136",
+   "spawns monsters on death (HS)": "/tmp/xmve_04/Incarnate.txt:210"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 0.68,
+  "place_by_ci": {
+   "below": null,
+   "above": [
+    "FireBlu",
+    7.52
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    300.0
+   ],
+   "above": [
+    "Green",
+    360.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "FireBlu",
+    10.25
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Zombieman",
+  "class": "LabGAL",
+  "hp": 54.0,
+  "hp_src": "/tmp/xmve_04/LABGAL.txt:4",
+  "speed": {
+   "speed": 12.0,
+   "src": "/tmp/xmve_04/LABGAL.txt:9",
+   "fastspeed": 14.0,
+   "fastspeed_src": "/tmp/xmve_04/LABGAL.txt:10"
+  },
+  "painchance": 250.0,
+  "painchance_src": "/tmp/xmve_04/LABGAL.txt:11",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 16.9,
+  "attacks_per_s_256": 1.04,
+  "dps_by_attack_256": {
+   "Brutal_FlyingBlood": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 54,
+  "dps_256": 0.0,
+  "dps_512": 0.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 6.58,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/LABGAL.txt:30",
+   "self-heal": "/tmp/xmve_04/LABGAL.txt:339",
+   "spawns monsters on death (Labgal)": "/tmp/xmve_04/LABGAL.txt:348",
+   "hops/leaps": "/tmp/xmve_04/LABGAL.txt:427",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_04/LABGAL.txt:472",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/LABGAL.txt:485",
+   "summons via BigBloodSpot (BootSmearerRed)": "/tmp/xmve_04/LABGAL.txt:502",
+   "spawns monsters on death (BurningFemZombie)": "/tmp/xmve_04/LABGAL.txt:969",
+   "spawns monsters on death (Labguy)": "/tmp/xmve_04/LABGUY.txt:314",
+   "spawns monsters on death (ZombieScientistDyingGuts)": "/tmp/xmve_04/LABGUY.txt:605",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/LABGUY.txt:697",
+   "summons (PistolZombie)": "/tmp/xmve_04/Zombiemen.txt:101",
+   "summons (HelmetRifleZombie)": "/tmp/xmve_04/Zombiemen.txt:107",
+   "summons (RifleZombie)": "/tmp/xmve_04/Zombiemen.txt:114",
+   "summons (Labguy)": "/tmp/xmve_04/Zombiemen.txt:120",
+   "summons (VanillaZombieman)": "/tmp/xmve_04/Zombiemen.txt:126",
+   "spawns monsters on death (ZombieMan)": "/tmp/xmve_04/Zombiemen.txt:434",
+   "spawns monsters on death (DyingZombiemanNoArm)": "/tmp/xmve_04/Zombiemen.txt:895",
+   "summons (ZombiemanGotHisLegBlowed)": "/tmp/xmve_04/Zombiemen.txt:955",
+   "summons (ZombiemanSacilol)": "/tmp/xmve_04/Zombiemen.txt:960",
+   "spawns monsters on death (BrutalizedZombieMan1)": "/tmp/xmve_04/Zombiemen.txt:1006",
+   "spawns monsters on death (BrutalizedZombieManLeg)": "/tmp/xmve_04/Zombiemen.txt:1016",
+   "spawns monsters on death (DyingZombiemanLostTeeth)": "/tmp/xmve_04/Zombiemen.txt:1150",
+   "spawns monsters on death (Zombiemanfallingbeheaded)": "/tmp/xmve_04/Zombiemen.txt:1190",
+   "spawns monsters on death (ZombiemanFallingHoleOnStomach)": "/tmp/xmve_04/Zombiemen.txt:1455",
+   "spawns monsters on death (ZombiemanFallingSplattered)": "/tmp/xmve_04/Zombiemen.txt:1515"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 0.27,
+  "place_by_ci": {
+   "below": [
+    "FireBlu",
+    0.27
+   ],
+   "above": [
+    "Common",
+    0.43
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    40.0
+   ],
+   "above": [
+    "Blue",
+    60.0
+   ],
+   "fractional_tier": 2.92,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "FireBlu",
+    0.0
+   ],
+   "above": [
+    "Brown",
+    1.55
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Zombieman",
+  "class": "LabGuy",
+  "hp": 54.0,
+  "hp_src": "/tmp/xmve_04/LABGUY.txt:4",
+  "speed": {
+   "speed": 12.0,
+   "src": "/tmp/xmve_04/LABGUY.txt:7",
+   "fastspeed": 14.0,
+   "fastspeed_src": "/tmp/xmve_04/LABGUY.txt:8"
+  },
+  "painchance": 190.0,
+  "painchance_src": "/tmp/xmve_04/LABGUY.txt:9",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 6.6,
+  "attack_dps_hold_512": 2.2,
+  "attack_dps_contact": 24.2,
+  "attacks_per_s_256": 1.55,
+  "dps_by_attack_256": {
+   "ZombieAxeAttack": 6.6,
+   "Brutal_FlyingBlood": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 54,
+  "dps_256": 6.6,
+  "dps_512": 2.2,
+  "mobility": {
+   "ground_speed_u_per_tic": 6.66,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/LABGUY.txt:26",
+   "self-heal": "/tmp/xmve_04/LABGUY.txt:306",
+   "spawns monsters on death (Labguy)": "/tmp/xmve_04/LABGUY.txt:314",
+   "hops/leaps": "/tmp/xmve_04/LABGUY.txt:376",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_04/LABGUY.txt:419",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/LABGUY.txt:431",
+   "summons via BigBloodSpot (BootSmearerRed)": "/tmp/xmve_04/LABGUY.txt:442",
+   "spawns monsters on death (ZombieScientistDyingGuts)": "/tmp/xmve_04/LABGUY.txt:605",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/LABGUY.txt:697",
+   "summons (PistolZombie)": "/tmp/xmve_04/Zombiemen.txt:101",
+   "summons (HelmetRifleZombie)": "/tmp/xmve_04/Zombiemen.txt:107",
+   "summons (RifleZombie)": "/tmp/xmve_04/Zombiemen.txt:114",
+   "summons (Labguy)": "/tmp/xmve_04/Zombiemen.txt:120",
+   "summons (VanillaZombieman)": "/tmp/xmve_04/Zombiemen.txt:126",
+   "spawns monsters on death (ZombieMan)": "/tmp/xmve_04/Zombiemen.txt:434",
+   "spawns monsters on death (DyingZombiemanNoArm)": "/tmp/xmve_04/Zombiemen.txt:895",
+   "summons (ZombiemanGotHisLegBlowed)": "/tmp/xmve_04/Zombiemen.txt:955",
+   "summons (ZombiemanSacilol)": "/tmp/xmve_04/Zombiemen.txt:960",
+   "spawns monsters on death (BrutalizedZombieMan1)": "/tmp/xmve_04/Zombiemen.txt:1006",
+   "spawns monsters on death (BrutalizedZombieManLeg)": "/tmp/xmve_04/Zombiemen.txt:1016",
+   "spawns monsters on death (DyingZombiemanLostTeeth)": "/tmp/xmve_04/Zombiemen.txt:1150",
+   "spawns monsters on death (Zombiemanfallingbeheaded)": "/tmp/xmve_04/Zombiemen.txt:1190",
+   "spawns monsters on death (ZombiemanFallingHoleOnStomach)": "/tmp/xmve_04/Zombiemen.txt:1455",
+   "spawns monsters on death (ZombiemanFallingSplattered)": "/tmp/xmve_04/Zombiemen.txt:1515"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 1.81,
+  "place_by_ci": {
+   "below": [
+    "Blue",
+    1.31
+   ],
+   "above": [
+    "Cyan",
+    1.87
+   ],
+   "fractional_tier": 8.55,
+   "iso_colour": "Gray"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    40.0
+   ],
+   "above": [
+    "Blue",
+    60.0
+   ],
+   "fractional_tier": 2.92,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "Green",
+    1.85
+   ],
+   "above": [
+    "Blue",
+    4.45
+   ],
+   "fractional_tier": 8.5,
+   "iso_colour": "Gray"
+  }
+ },
+ {
+  "family": "Zombieman",
+  "class": "LabGuyB",
+  "hp": 54.0,
+  "hp_src": "/tmp/xmve_04/LABGUYB.txt:4",
+  "speed": {
+   "speed": 12.0,
+   "src": "/tmp/xmve_04/LABGUYB.txt:7",
+   "fastspeed": 14.0,
+   "fastspeed_src": "/tmp/xmve_04/LABGUYB.txt:8"
+  },
+  "painchance": 190.0,
+  "painchance_src": "/tmp/xmve_04/LABGUYB.txt:9",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 6.4,
+  "attack_dps_hold_512": 2.3,
+  "attack_dps_contact": 23.8,
+  "attacks_per_s_256": 1.5,
+  "dps_by_attack_256": {
+   "ZombieAxeAttack": 6.4,
+   "Brutal_FlyingBlood": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 54,
+  "dps_256": 6.4,
+  "dps_512": 2.3,
+  "mobility": {
+   "ground_speed_u_per_tic": 6.67,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/LABGUYB.txt:26",
+   "self-heal": "/tmp/xmve_04/LABGUYB.txt:306",
+   "spawns monsters on death (LabguyB)": "/tmp/xmve_04/LABGUYB.txt:314",
+   "hops/leaps": "/tmp/xmve_04/LABGUYB.txt:376",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_04/LABGUYB.txt:419",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/LABGUYB.txt:431",
+   "summons via BigBloodSpot (BootSmearerRed)": "/tmp/xmve_04/LABGUYB.txt:442",
+   "spawns monsters on death (ZombieBScientistDyingGuts)": "/tmp/xmve_04/LABGUYB.txt:604",
+   "spawns monsters on death (Labguy)": "/tmp/xmve_04/LABGUY.txt:314",
+   "spawns monsters on death (ZombieScientistDyingGuts)": "/tmp/xmve_04/LABGUY.txt:605",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/LABGUY.txt:697",
+   "summons (PistolZombie)": "/tmp/xmve_04/Zombiemen.txt:101",
+   "summons (HelmetRifleZombie)": "/tmp/xmve_04/Zombiemen.txt:107",
+   "summons (RifleZombie)": "/tmp/xmve_04/Zombiemen.txt:114",
+   "summons (Labguy)": "/tmp/xmve_04/Zombiemen.txt:120",
+   "summons (VanillaZombieman)": "/tmp/xmve_04/Zombiemen.txt:126",
+   "spawns monsters on death (ZombieMan)": "/tmp/xmve_04/Zombiemen.txt:434",
+   "spawns monsters on death (DyingZombiemanNoArm)": "/tmp/xmve_04/Zombiemen.txt:895",
+   "summons (ZombiemanGotHisLegBlowed)": "/tmp/xmve_04/Zombiemen.txt:955",
+   "summons (ZombiemanSacilol)": "/tmp/xmve_04/Zombiemen.txt:960",
+   "spawns monsters on death (BrutalizedZombieMan1)": "/tmp/xmve_04/Zombiemen.txt:1006",
+   "spawns monsters on death (BrutalizedZombieManLeg)": "/tmp/xmve_04/Zombiemen.txt:1016",
+   "spawns monsters on death (DyingZombiemanLostTeeth)": "/tmp/xmve_04/Zombiemen.txt:1150",
+   "spawns monsters on death (Zombiemanfallingbeheaded)": "/tmp/xmve_04/Zombiemen.txt:1190",
+   "spawns monsters on death (ZombiemanFallingHoleOnStomach)": "/tmp/xmve_04/Zombiemen.txt:1455",
+   "spawns monsters on death (ZombiemanFallingSplattered)": "/tmp/xmve_04/Zombiemen.txt:1515"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 1.8,
+  "place_by_ci": {
+   "below": [
+    "Blue",
+    1.31
+   ],
+   "above": [
+    "Cyan",
+    1.87
+   ],
+   "fractional_tier": 8.54,
+   "iso_colour": "Gray"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    40.0
+   ],
+   "above": [
+    "Blue",
+    60.0
+   ],
+   "fractional_tier": 2.92,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "Green",
+    1.85
+   ],
+   "above": [
+    "Blue",
+    4.45
+   ],
+   "fractional_tier": 8.5,
+   "iso_colour": "FireBlu"
+  }
+ },
+ {
+  "family": "Zombieman",
+  "class": "LabGuyP",
+  "hp": 54.0,
+  "hp_src": "/tmp/xmve_07/LabGuyP.txt:5",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_07/LabGuyP.txt:7",
+   "fastspeed": 10.0,
+   "fastspeed_src": "/tmp/xmve_07/LabGuyP.txt:8"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_07/LabGuyP.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 8.4,
+  "attack_dps_hold_512": 3.0,
+  "attack_dps_contact": 11.9,
+  "attacks_per_s_256": 3.82,
+  "dps_by_attack_256": {
+   "ZombiePlasma": 8.4,
+   "SmokeSpawner": 0.0,
+   "BlueFlareSpawn": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 54,
+  "dps_256": 8.4,
+  "dps_512": 3.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 4.72,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_07/LabGuyP.txt:36",
+   "self-heal": "/tmp/xmve_07/LabGuyP.txt:276",
+   "spawns monsters on death (LabguyB)": "/tmp/xmve_07/LabGuyP.txt:284",
+   "hops/leaps": "/tmp/xmve_07/LabGuyP.txt:335",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_07/LabGuyP.txt:378",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/LabGuyP.txt:390",
+   "summons via BigBloodSpot (BootSmearerRed)": "/tmp/xmve_07/LabGuyP.txt:401",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_07/LabGuyP.txt:514",
+   "spawns monsters on death (ZombieBScientistDyingGuts)": "/tmp/xmve_07/LabGuyP.txt:621",
+   "spawns monsters on death (Labguy)": "/tmp/xmve_04/LABGUY.txt:314",
+   "spawns monsters on death (ZombieScientistDyingGuts)": "/tmp/xmve_04/LABGUY.txt:605",
+   "summons (PistolZombie)": "/tmp/xmve_04/Zombiemen.txt:101",
+   "summons (HelmetRifleZombie)": "/tmp/xmve_04/Zombiemen.txt:107",
+   "summons (RifleZombie)": "/tmp/xmve_04/Zombiemen.txt:114",
+   "summons (Labguy)": "/tmp/xmve_04/Zombiemen.txt:120",
+   "summons (VanillaZombieman)": "/tmp/xmve_04/Zombiemen.txt:126",
+   "spawns monsters on death (ZombieMan)": "/tmp/xmve_04/Zombiemen.txt:434",
+   "spawns monsters on death (DyingZombiemanNoArm)": "/tmp/xmve_04/Zombiemen.txt:895",
+   "summons (ZombiemanGotHisLegBlowed)": "/tmp/xmve_04/Zombiemen.txt:955",
+   "summons (ZombiemanSacilol)": "/tmp/xmve_04/Zombiemen.txt:960",
+   "spawns monsters on death (BrutalizedZombieMan1)": "/tmp/xmve_04/Zombiemen.txt:1006",
+   "spawns monsters on death (BrutalizedZombieManLeg)": "/tmp/xmve_04/Zombiemen.txt:1016",
+   "spawns monsters on death (DyingZombiemanLostTeeth)": "/tmp/xmve_04/Zombiemen.txt:1150",
+   "spawns monsters on death (Zombiemanfallingbeheaded)": "/tmp/xmve_04/Zombiemen.txt:1190",
+   "spawns monsters on death (ZombiemanFallingHoleOnStomach)": "/tmp/xmve_04/Zombiemen.txt:1455",
+   "spawns monsters on death (ZombiemanFallingSplattered)": "/tmp/xmve_04/Zombiemen.txt:1515"
+  },
+  "sim_tags": [
+   "plasma damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 1.89,
+  "place_by_ci": {
+   "below": [
+    "Cyan",
+    1.87
+   ],
+   "above": [
+    "Purple",
+    2.0
+   ],
+   "fractional_tier": 8.61,
+   "iso_colour": "Gray"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    40.0
+   ],
+   "above": [
+    "Blue",
+    60.0
+   ],
+   "fractional_tier": 2.92,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "Blue",
+    4.45
+   ],
+   "above": [
+    "Purple",
+    6.2
+   ],
+   "fractional_tier": 8.62,
+   "iso_colour": "Gray"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "Major",
+  "hp": 126.0,
+  "hp_src": "/tmp/xmve_07/Major.txt:5",
+  "speed": {
+   "speed": 5.0,
+   "src": "/tmp/xmve_07/Major.txt:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_07/Major.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEEVENMORE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 11.2,
+  "attack_dps_hold_512": 5.9,
+  "attack_dps_contact": 25.0,
+  "attacks_per_s_256": 4.28,
+  "dps_by_attack_256": {
+   "MonsterMinigunTracer": 11.2,
+   "OrangeLensFlareAltFast": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 126,
+  "dps_256": 11.2,
+  "dps_512": 5.9,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.49,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_07/Major.txt:256",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/Major.txt:371",
+   "hops/leaps": "/tmp/xmve_07/Major.txt:623",
+   "summons (VanillaChaingunguy)": "/tmp/xmve_07/Comando.txt:53",
+   "spawns monsters on death (BrutalizedCommando1)": "/tmp/xmve_07/Comando.txt:488",
+   "spawns monsters on death (BrutalizedCommandoLostHead)": "/tmp/xmve_07/Comando.txt:549",
+   "spawns monsters on death (BrutalizedCommandoLostHead2)": "/tmp/xmve_07/Comando.txt:562",
+   "spawns monsters on death (BurningcHAINGUNGUY)": "/tmp/xmve_07/Comando.txt:699",
+   "self-heal": "/tmp/xmve_07/Comando.txt:835",
+   "spawns monsters on death (ChaingunGuy)": "/tmp/xmve_07/Comando.txt:840",
+   "spawns monsters on death (BrutalizedCommandoBlasted)": "/tmp/xmve_07/Comando.txt:879"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 3.02,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    2.89
+   ],
+   "above": [
+    "Gray",
+    4.14
+   ],
+   "fractional_tier": 3.24,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Cyan",
+    125.0
+   ],
+   "above": [
+    "Yellow",
+    200.0
+   ],
+   "fractional_tier": 5.01,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Blue",
+    7.1
+   ],
+   "above": [
+    "Gray",
+    9.3
+   ],
+   "fractional_tier": 1.58,
+   "iso_colour": "Green"
+  }
+ },
+ {
+  "family": "Mancubus",
+  "class": "Mancubus",
+  "hp": 600.0,
+  "hp_src": "/tmp/xmve_04/Mancubus.txt:24",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/xmve_04/Mancubus.txt:26",
+   "fastspeed": 12.0,
+   "fastspeed_src": "/tmp/xmve_04/Mancubus.txt:27"
+  },
+  "painchance": 80.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/fatso.zs:15",
+  "flags": [
+   "BOSSDEATH"
+  ],
+  "attack_dps_hold_256": 42.0,
+  "attack_dps_hold_512": 18.2,
+  "attack_dps_contact": 56.8,
+  "attacks_per_s_256": 1.94,
+  "dps_by_attack_256": {
+   "BigFireBall": 42.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 600,
+  "dps_256": 42.0,
+  "dps_512": 18.2,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.93,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (Volcabus)": "/tmp/xmve_04/Mancubus.txt:136",
+   "fire damage": "/tmp/xmve_04/Mancubus.txt:243",
+   "hops/leaps": "/tmp/xmve_04/Mancubus.txt:313",
+   "self-heal": "/tmp/xmve_04/Mancubus.txt:555",
+   "spawns monsters on death (Fatso)": "/tmp/xmve_04/Mancubus.txt:560"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 12.87,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    10.7
+   ],
+   "above": [
+    "Gray",
+    13.06
+   ],
+   "fractional_tier": 2.62,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    600.0
+   ],
+   "above": [
+    "Cyan",
+    720.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": [
+    "Green",
+    24.799999999999997
+   ],
+   "above": [
+    "FireBlu",
+    34.35
+   ],
+   "fractional_tier": 2.36,
+   "iso_colour": "Green"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "MinigunGuy",
+  "hp": 80.0,
+  "hp_src": "/tmp/xmve_07/MinigunGuy.txt:8",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_07/MinigunGuy.txt:13",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Zombiemen.txt:22"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_07/MinigunGuy.txt:14",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 7.4,
+  "attack_dps_hold_512": 3.5,
+  "attack_dps_contact": 57.7,
+  "attacks_per_s_256": 8.03,
+  "dps_by_attack_256": {
+   "MonsterMinigunTracer": 7.4,
+   "OrangeLensFlareAltFast": 0.0,
+   "Tracer": 0.0,
+   "Brutal_FlyingBlood": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 80,
+  "dps_256": 7.4,
+  "dps_512": 3.5,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.98,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_07/MinigunGuy.txt:28",
+   "spawns monsters on death (MinigunGuy)": "/tmp/xmve_07/MinigunGuy.txt:336",
+   "hops/leaps": "/tmp/xmve_07/MinigunGuy.txt:384",
+   "summons (PistolZombie)": "/tmp/xmve_04/Zombiemen.txt:101",
+   "summons (HelmetRifleZombie)": "/tmp/xmve_04/Zombiemen.txt:107",
+   "summons (RifleZombie)": "/tmp/xmve_04/Zombiemen.txt:114",
+   "summons (Labguy)": "/tmp/xmve_04/Zombiemen.txt:120",
+   "summons (VanillaZombieman)": "/tmp/xmve_04/Zombiemen.txt:126",
+   "self-heal": "/tmp/xmve_04/Zombiemen.txt:285",
+   "spawns monsters on death (ZombieMan)": "/tmp/xmve_04/Zombiemen.txt:434",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Zombiemen.txt:744",
+   "spawns monsters on death (DyingZombiemanNoArm)": "/tmp/xmve_04/Zombiemen.txt:895",
+   "summons (ZombiemanGotHisLegBlowed)": "/tmp/xmve_04/Zombiemen.txt:955",
+   "summons (ZombiemanSacilol)": "/tmp/xmve_04/Zombiemen.txt:960",
+   "spawns monsters on death (BrutalizedZombieMan1)": "/tmp/xmve_04/Zombiemen.txt:1006",
+   "spawns monsters on death (BrutalizedZombieManLeg)": "/tmp/xmve_04/Zombiemen.txt:1016",
+   "spawns monsters on death (DyingZombiemanLostTeeth)": "/tmp/xmve_04/Zombiemen.txt:1150",
+   "spawns monsters on death (Zombiemanfallingbeheaded)": "/tmp/xmve_04/Zombiemen.txt:1190",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/Zombiemen.txt:1244",
+   "spawns monsters on death (ZombiemanFallingHoleOnStomach)": "/tmp/xmve_04/Zombiemen.txt:1455",
+   "spawns monsters on death (ZombiemanFallingSplattered)": "/tmp/xmve_04/Zombiemen.txt:1515"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 2.16,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    1.83
+   ],
+   "above": [
+    "Blue",
+    2.29
+   ],
+   "fractional_tier": 1.49,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    70.0
+   ],
+   "above": [
+    "Green",
+    85.0
+   ],
+   "fractional_tier": 1.69,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "Brown",
+    3.8
+   ],
+   "above": [
+    "Common",
+    6.9
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Arachnotron",
+  "class": "Minimastermind",
+  "hp": 2000.0,
+  "hp_src": "/tmp/xmve_04/MastermindMini.txt:17",
+  "speed": {
+   "speed": 20.0,
+   "src": "/tmp/xmve_04/MastermindMini.txt:23"
+  },
+  "painchance": 30.0,
+  "painchance_src": "/tmp/xmve_04/MastermindMini.txt:24",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "DONTRIP",
+   "MISSILEEVENMORE",
+   "MISSILEMORE",
+   "NORADIUSDMG"
+  ],
+  "attack_dps_hold_256": 90.7,
+  "attack_dps_hold_512": 52.0,
+  "attack_dps_contact": 90.8,
+  "attacks_per_s_256": 3.92,
+  "dps_by_attack_256": {
+   "MastermindTracer": 90.7
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 2000,
+  "dps_256": 90.7,
+  "dps_512": 52.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 9.89,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "self-heal": "/tmp/xmve_04/MastermindMini.txt:59",
+   "summons (VanillaSpiderMasterMind)": "/tmp/xmve_04/MastermindMini.txt:64",
+   "summons (SuperMasterMind)": "/tmp/xmve_04/MastermindMini.txt:86",
+   "summons (MotherDemon)": "/tmp/xmve_04/MastermindMini.txt:97",
+   "strafes (A_FastChase)": "/tmp/xmve_04/MastermindMini.txt:160",
+   "summons (VanillaSpiderMastermind)": "/tmp/xmve_04/Mastermind.txt:68",
+   "summons (SuperMastermind)": "/tmp/xmve_04/Mastermind.txt:90"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 44.58,
+  "place_by_ci": {
+   "below": [
+    "Red",
+    29.22
+   ],
+   "above": [
+    "White",
+    46.74
+   ],
+   "fractional_tier": 10.72,
+   "iso_colour": "Abyss"
+  },
+  "place_by_hp": {
+   "below": [
+    "Abyss",
+    1850.0
+   ],
+   "above": [
+    "Black",
+    5342.0
+   ],
+   "fractional_tier": 11.07,
+   "iso_colour": "Abyss"
+  },
+  "place_by_dps": {
+   "below": [
+    "Gray",
+    58.5
+   ],
+   "above": [
+    "Red",
+    84.75
+   ],
+   "fractional_tier": 9.67,
+   "iso_colour": "Red"
+  }
+ },
+ {
+  "family": "Arachnotron",
+  "class": "Minimastermindx",
+  "hp": 2500.0,
+  "hp_src": "/tmp/xmve_04/DemolisherMini.dec:9",
+  "speed": {
+   "speed": 20.0,
+   "src": "/tmp/xmve_04/MastermindMini.txt:23"
+  },
+  "painchance": 50.0,
+  "painchance_src": "/tmp/xmve_04/DemolisherMini.dec:15",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "DONTRIP",
+   "MISSILEEVENMORE",
+   "MISSILEMORE",
+   "NORADIUSDMG"
+  ],
+  "attack_dps_hold_256": 160.4,
+  "attack_dps_hold_512": 87.2,
+  "attack_dps_contact": 167.1,
+  "attacks_per_s_256": 10.95,
+  "dps_by_attack_256": {
+   "MastermindTracer": 141.9,
+   "MiniMastermindBFGSmallSphere": 18.5,
+   "SmallGreenFlameTrails": 0.0,
+   "BallGettingReadyGreen": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 2500,
+  "dps_256": 160.4,
+  "dps_512": 87.2,
+  "mobility": {
+   "ground_speed_u_per_tic": 9.99,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (Vanilla_Demolisher)": "/tmp/xmve_04/DemolisherMini.dec:54",
+   "fire damage": "/tmp/xmve_04/DemolisherMini.dec:175",
+   "strafes (A_FastChase)": "/tmp/xmve_04/DemolisherMini.dec:239",
+   "self-heal": "/tmp/xmve_04/MastermindMini.txt:59",
+   "summons (VanillaSpiderMasterMind)": "/tmp/xmve_04/MastermindMini.txt:64",
+   "summons (SuperMasterMind)": "/tmp/xmve_04/MastermindMini.txt:86",
+   "summons (MotherDemon)": "/tmp/xmve_04/MastermindMini.txt:97",
+   "summons (VanillaSpiderMastermind)": "/tmp/xmve_04/Mastermind.txt:68",
+   "summons (SuperMastermind)": "/tmp/xmve_04/Mastermind.txt:90"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 65.81,
+  "place_by_ci": {
+   "below": [
+    "Abyss",
+    52.69
+   ],
+   "above": [
+    "Black",
+    133.54
+   ],
+   "fractional_tier": 11.55,
+   "iso_colour": "Black"
+  },
+  "place_by_hp": {
+   "below": [
+    "Abyss",
+    1850.0
+   ],
+   "above": [
+    "Black",
+    5342.0
+   ],
+   "fractional_tier": 11.28,
+   "iso_colour": "Abyss"
+  },
+  "place_by_dps": {
+   "below": [
+    "Abyss",
+    119.85000000000001
+   ],
+   "above": [
+    "Black",
+    237.05
+   ],
+   "fractional_tier": 13.0,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Imp",
+  "class": "NamiDarkImp",
+  "hp": 126.0,
+  "hp_src": "/tmp/xmve_04/DarkImpNami.txt:7",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/DarkImpNami.txt:12"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/DarkImpNami.txt:14",
+  "flags": [],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 12.6,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 126,
+  "dps_256": 0.0,
+  "dps_512": 0.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.87,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/DarkImpNami.txt:228",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/DarkImpNami.txt:258",
+   "hops/leaps": "/tmp/xmve_04/DarkImpNami.txt:289",
+   "spawns monsters on death (BurningDarkImpRunning)": "/tmp/xmve_04/DarkImpNami.txt:336",
+   "spawns monsters on death (DarkImpDyingOfBloodLoss)": "/tmp/xmve_04/DarkImpNami.txt:492",
+   "summons via MediumBloodSpot (BootSmearerRed)": "/tmp/xmve_04/DarkImpNami.txt:765"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 0.34,
+  "place_by_ci": {
+   "below": null,
+   "above": [
+    "Common",
+    1.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "FireBlu",
+    125.0
+   ],
+   "above": [
+    "Yellow",
+    145.0
+   ],
+   "fractional_tier": 5.03,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Brown",
+    1.8
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Imp",
+  "class": "NetherDarkImp",
+  "hp": 126.0,
+  "hp_src": "/tmp/xmve_04/DarkImpNether.txt:7",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/DarkImpNether.txt:12"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_04/DarkImpNether.txt:14",
+  "flags": [
+   "DONTRIP",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 14.9,
+  "attack_dps_hold_512": 4.9,
+  "attack_dps_contact": 17.4,
+  "attacks_per_s_256": 0.85,
+  "dps_by_attack_256": {
+   "InfernoBall": 9.8,
+   "NetherLightning": 5.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 126,
+  "dps_256": 14.9,
+  "dps_512": 4.9,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.91,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/DarkImpNether.txt:264",
+   "hops/leaps": "/tmp/xmve_04/DarkImpNether.txt:277",
+   "spawns monsters on death (BurningDarkImpRunningGreen)": "/tmp/xmve_04/DarkImpNether.txt:306",
+   "summons via GreenGrowingBloodPool (BootSmearerGreen)": "/tmp/xmve_04/DarkImpNether.txt:352",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/DarkImpNether.txt:480",
+   "summons via GreenMediumBloodSpot (BootSmearerRed)": "/tmp/xmve_04/DarkImpNether.txt:494",
+   "spawns monsters on death (DarkImpDyingOfBloodLossGreen)": "/tmp/xmve_04/DarkImpNether.txt:529"
+  },
+  "sim_tags": [
+   "plasma damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 3.38,
+  "place_by_ci": {
+   "below": [
+    "Brown",
+    3.26
+   ],
+   "above": [
+    "FireBlu",
+    4.19
+   ],
+   "fractional_tier": 9.03,
+   "iso_colour": "Gray"
+  },
+  "place_by_hp": {
+   "below": [
+    "FireBlu",
+    125.0
+   ],
+   "above": [
+    "Yellow",
+    145.0
+   ],
+   "fractional_tier": 5.03,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Purple",
+    6.949999999999999
+   ],
+   "above": [
+    "Cyan",
+    15.149999999999999
+   ],
+   "fractional_tier": 9.32,
+   "iso_colour": "Gray"
+  }
+ },
+ {
+  "family": "Cacodemon",
+  "class": "Overlord",
+  "hp": 600.0,
+  "hp_src": "/tmp/xmve_04/Overlord.dec:7",
+  "speed": {
+   "speed": 13.0,
+   "src": "/tmp/xmve_04/Overlord.dec:11"
+  },
+  "painchance": 64.0,
+  "painchance_src": "/tmp/xmve_04/Overlord.dec:14",
+  "flags": [
+   "BOSS",
+   "FLOAT",
+   "MISSILEEVENMORE",
+   "NORADIUSDMG",
+   "NOTARGET"
+  ],
+  "attack_dps_hold_256": 49.6,
+  "attack_dps_hold_512": 16.3,
+  "attack_dps_contact": 59.0,
+  "attacks_per_s_256": 4.27,
+  "dps_by_attack_256": {
+   "CacodemonBall": 34.6,
+   "StormShot1": 10.3,
+   "OverBall": 4.7,
+   "HadesBall": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.042,
+  "reflective_share": 0.0,
+  "ehp": 626,
+  "dps_256": 49.6,
+  "dps_512": 16.3,
+  "mobility": {
+   "ground_speed_u_per_tic": 4.25,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": true
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/Overlord.dec:130"
+  },
+  "sim_tags": [
+   "invulnerable phase",
+   "plasma damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 14.41,
+  "place_by_ci": {
+   "below": [
+    "Purple",
+    11.19
+   ],
+   "above": [
+    "Red",
+    17.25
+   ],
+   "fractional_tier": 8.65,
+   "iso_colour": "Gray"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    528.0
+   ],
+   "above": [
+    "Gray",
+    650.0
+   ],
+   "fractional_tier": 6.47,
+   "iso_colour": "Brown"
+  },
+  "place_by_dps": {
+   "below": [
+    "White",
+    31.75
+   ],
+   "above": [
+    "Black",
+    37.3
+   ],
+   "fractional_tier": 8.87,
+   "iso_colour": "Gray"
+  }
+ },
+ {
+  "family": "Pain Elemental",
+  "class": "PainElemental1",
+  "hp": 400.0,
+  "hp_src": "/tmp/xmve_04/PainElemental.txt:3",
+  "speed": {
+   "speed": 9.0,
+   "src": "/tmp/xmve_04/PainElemental.txt:8"
+  },
+  "painchance": 128.0,
+  "painchance_src": "/tmp/xmve_04/PainElemental.txt:9",
+  "flags": [
+   "FLOAT"
+  ],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 0.0,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {
+   "TehLostSoul": {
+    "per_20s": 11.1,
+    "hp_each": 100.0,
+    "dps_each_256": 11.6,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "buffs others (SlaughterCounter)",
+     "charges (skull attack)",
+     "self-heal",
+     "spawns monsters on death (LostSoul)",
+     "strafes (A_FastChase)"
+    ]
+   }
+  },
+  "added_threat": {
+   "summoned_hp_20s": 1110,
+   "summoned_dps_256": 17.8,
+   "summoned_dps_512": 3.7
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1510,
+  "dps_256": 17.8,
+  "dps_512": 3.7,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.92,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": true
+  },
+  "threat_abilities": {
+   "summons (LostSoul)": "/tmp/xmve_04/PainElemental.txt:85",
+   "self-heal": "/tmp/xmve_04/PainElemental.txt:151",
+   "spawns monsters on death (PainElemental)": "/tmp/xmve_04/PainElemental.txt:156"
+  },
+  "sim_tags": [
+   "summons"
+  ],
+  "set": "xmve",
+  "challenge_index": 11.64,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    7.41
+   ],
+   "above": [
+    "Brown",
+    12.68
+   ],
+   "fractional_tier": 2.63,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    400.0
+   ],
+   "above": [
+    "Green",
+    500.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": [
+    "Brown",
+    7.199999999999999
+   ],
+   "above": [
+    "Cyan",
+    13.299999999999999
+   ],
+   "fractional_tier": 2.81,
+   "iso_colour": "Blue"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "PlasmaZombie",
+  "hp": 80.0,
+  "hp_src": "/tmp/xmve_07/PlasmaZombie.txt:5",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_07/PlasmaZombie.txt:10",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Zombiemen.txt:22"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_07/PlasmaZombie.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 21.0,
+  "attack_dps_hold_512": 7.1,
+  "attack_dps_contact": 31.7,
+  "attacks_per_s_256": 9.38,
+  "dps_by_attack_256": {
+   "ZombiePlasma": 21.0,
+   "Brutal_FlyingBlood": 0.0,
+   "SmokeSpawner": 0.0,
+   "BlueFlareSpawn": 0.0,
+   "PlasmaCaseSpawn": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 80,
+  "dps_256": 21.0,
+  "dps_512": 7.1,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.99,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "strafes (A_FastChase)": "/tmp/xmve_07/PlasmaZombie.txt:261",
+   "hops/leaps": "/tmp/xmve_07/PlasmaZombie.txt:272",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_07/PlasmaZombie.txt:307",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/PlasmaZombie.txt:318",
+   "spawns monsters on death (PlasmaZombie)": "/tmp/xmve_07/PlasmaZombie.txt:368",
+   "spawns monsters on death (PlasmaZombiemanGotHisLegBlowed)": "/tmp/xmve_07/PlasmaZombie.txt:691",
+   "invulnerable phase": "/tmp/xmve_07/PlasmaZombie.txt:850",
+   "summons (PistolZombie)": "/tmp/xmve_04/Zombiemen.txt:101",
+   "summons (HelmetRifleZombie)": "/tmp/xmve_04/Zombiemen.txt:107",
+   "summons (RifleZombie)": "/tmp/xmve_04/Zombiemen.txt:114",
+   "summons (Labguy)": "/tmp/xmve_04/Zombiemen.txt:120",
+   "summons (VanillaZombieman)": "/tmp/xmve_04/Zombiemen.txt:126",
+   "self-heal": "/tmp/xmve_04/Zombiemen.txt:285",
+   "spawns monsters on death (ZombieMan)": "/tmp/xmve_04/Zombiemen.txt:434",
+   "spawns monsters on death (DyingZombiemanNoArm)": "/tmp/xmve_04/Zombiemen.txt:895",
+   "summons (ZombiemanGotHisLegBlowed)": "/tmp/xmve_04/Zombiemen.txt:955",
+   "summons (ZombiemanSacilol)": "/tmp/xmve_04/Zombiemen.txt:960",
+   "spawns monsters on death (BrutalizedZombieMan1)": "/tmp/xmve_04/Zombiemen.txt:1006",
+   "spawns monsters on death (BrutalizedZombieManLeg)": "/tmp/xmve_04/Zombiemen.txt:1016",
+   "spawns monsters on death (DyingZombiemanLostTeeth)": "/tmp/xmve_04/Zombiemen.txt:1150",
+   "spawns monsters on death (Zombiemanfallingbeheaded)": "/tmp/xmve_04/Zombiemen.txt:1190",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/Zombiemen.txt:1244",
+   "spawns monsters on death (ZombiemanFallingHoleOnStomach)": "/tmp/xmve_04/Zombiemen.txt:1455",
+   "spawns monsters on death (ZombiemanFallingSplattered)": "/tmp/xmve_04/Zombiemen.txt:1515"
+  },
+  "sim_tags": [
+   "plasma damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 3.47,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    2.89
+   ],
+   "above": [
+    "Gray",
+    4.14
+   ],
+   "fractional_tier": 3.45,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    70.0
+   ],
+   "above": [
+    "Green",
+    85.0
+   ],
+   "fractional_tier": 1.69,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "Gray",
+    9.3
+   ],
+   "above": [
+    "Green",
+    14.100000000000001
+   ],
+   "fractional_tier": 3.93,
+   "iso_colour": "Purple"
+  }
+ },
+ {
+  "family": "Baron",
+  "class": "PyroDemon",
+  "hp": 1500.0,
+  "hp_src": "/tmp/xmve_04/PyroDemon.txt:5",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/xmve_04/PyroDemon.txt:9"
+  },
+  "painchance": 20.0,
+  "painchance_src": "/tmp/xmve_04/PyroDemon.txt:10",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "MISSILEMORE",
+   "NORADIUSDMG",
+   "NOTARGET"
+  ],
+  "attack_dps_hold_256": 27.4,
+  "attack_dps_hold_512": 9.3,
+  "attack_dps_contact": 238.8,
+  "attacks_per_s_256": 3.35,
+  "dps_by_attack_256": {
+   "FireShot": 27.2,
+   "PyroBlast": 0.2,
+   "EscapeExplosion": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1500,
+  "dps_256": 27.4,
+  "dps_512": 9.3,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.65,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (BaronofHell2)": "/tmp/xmve_04/PyroDemon.txt:40",
+   "fire damage": "/tmp/xmve_04/PyroDemon.txt:71",
+   "homing projectiles": "/tmp/xmve_04/PyroDemon.txt:84",
+   "invulnerable phase": "/tmp/xmve_04/PyroDemon.txt:101"
+  },
+  "sim_tags": [
+   "fire damage",
+   "homing projectiles"
+  ],
+  "set": "xmve",
+  "challenge_index": 14.09,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    10.57
+   ],
+   "above": [
+    "Gray",
+    18.92
+   ],
+   "fractional_tier": 3.34,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    1500.0
+   ],
+   "above": [
+    "Cyan",
+    1666.0
+   ],
+   "fractional_tier": 4.0,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "Common",
+    15.6
+   ],
+   "above": [
+    "Abyss",
+    25.049999999999997
+   ],
+   "fractional_tier": 3.37,
+   "iso_colour": "Blue"
+  }
+ },
+ {
+  "family": "Shotgunner",
+  "class": "PyroSergeant",
+  "hp": 100.0,
+  "hp_src": "/tmp/xmve_04/PyroSergeant.txt:5",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_04/PyroSergeant.txt:10",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Sergeants.txt:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_04/PyroSergeant.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "DONTRIP",
+   "MISSILEMORE",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 9.9,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 15.9,
+  "attacks_per_s_256": 7.5,
+  "dps_by_attack_256": {
+   "XV_FlamethrowerMissile": 9.9,
+   "RealFlameTrailsSmall": 0.0,
+   "SmallFlameTrails": 0.0,
+   "OrangeLensFlareAlt": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 100,
+  "dps_256": 9.9,
+  "dps_512": 0.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 1.91,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "fire damage": "/tmp/xmve_04/PyroSergeant.txt:282",
+   "hops/leaps": "/tmp/xmve_04/PyroSergeant.txt:400",
+   "summons (SMGGuy)": "/tmp/xmve_04/Sergeants.txt:80",
+   "summons (VanillaShotgunguy)": "/tmp/xmve_04/Sergeants.txt:86",
+   "self-heal": "/tmp/xmve_04/Sergeants.txt:492",
+   "spawns monsters on death (DeadShotgunguy)": "/tmp/xmve_04/Sergeants.txt:563",
+   "spawns monsters on death (ShotgunGuy)": "/tmp/xmve_04/Sergeants.txt:576",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Sergeants.txt:614",
+   "summons (SergeantGotHisLegBlowed)": "/tmp/xmve_04/Sergeants.txt:765",
+   "summons (DyingSergeantNoLeg)": "/tmp/xmve_04/Sergeants.txt:770",
+   "spawns monsters on death (DyingSergeant)": "/tmp/xmve_04/Sergeants.txt:781",
+   "spawns monsters on death (DyingShotgunguyHitInEye)": "/tmp/xmve_04/Sergeants.txt:822",
+   "spawns monsters on death (DeadShotgunguyNoHeadContinue)": "/tmp/xmve_04/Sergeants.txt:856",
+   "spawns monsters on death (BrutalizedSergeant1)": "/tmp/xmve_04/Sergeants.txt:943",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/Sergeants.txt:952",
+   "spawns monsters on death (SergeantFallingHoleOnStomach)": "/tmp/xmve_04/Sergeants.txt:974",
+   "spawns monsters on death (SergeantFallingSplattered)": "/tmp/xmve_04/Sergeants.txt:994",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/Sergeants.txt:1197"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 1.91,
+  "place_by_ci": {
+   "below": [
+    "Blue",
+    1.52
+   ],
+   "above": [
+    "Green",
+    2.14
+   ],
+   "fractional_tier": 3.1,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Yellow",
+    85.0
+   ],
+   "above": [
+    "Red",
+    150.0
+   ],
+   "fractional_tier": 5.74,
+   "iso_colour": "Brown"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Common",
+    5.3
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Shotgunner",
+  "class": "QuadShotgunZombie",
+  "hp": 90.0,
+  "hp_src": "/tmp/xmve_07/QuadShotgunZombie.txt:5",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_07/QuadShotgunZombie.txt:10",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Sergeants.txt:10"
+  },
+  "painchance": 220.0,
+  "painchance_src": "/tmp/xmve_07/QuadShotgunZombie.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 26.0,
+  "attack_dps_hold_512": 13.3,
+  "attack_dps_contact": 75.8,
+  "attacks_per_s_256": 7.93,
+  "dps_by_attack_256": {
+   "ShotgunguyTracer": 26.0,
+   "OrangeLensFlareAlt": 0.0,
+   "ShotgunParticles": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 90,
+  "dps_256": 26.0,
+  "dps_512": 13.3,
+  "mobility": {
+   "ground_speed_u_per_tic": 4.0,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_07/QuadShotgunZombie.txt:338",
+   "hops/leaps": "/tmp/xmve_07/QuadShotgunZombie.txt:353",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_07/QuadShotgunZombie.txt:395",
+   "summons via BigBloodSpot (BootSmearerRed)": "/tmp/xmve_07/QuadShotgunZombie.txt:406",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_07/QuadShotgunZombie.txt:811",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/QuadShotgunZombie.txt:935",
+   "summons (SMGGuy)": "/tmp/xmve_04/Sergeants.txt:80",
+   "summons (VanillaShotgunguy)": "/tmp/xmve_04/Sergeants.txt:86",
+   "self-heal": "/tmp/xmve_04/Sergeants.txt:492",
+   "spawns monsters on death (DeadShotgunguy)": "/tmp/xmve_04/Sergeants.txt:563",
+   "spawns monsters on death (ShotgunGuy)": "/tmp/xmve_04/Sergeants.txt:576",
+   "summons (SergeantGotHisLegBlowed)": "/tmp/xmve_04/Sergeants.txt:765",
+   "summons (DyingSergeantNoLeg)": "/tmp/xmve_04/Sergeants.txt:770",
+   "spawns monsters on death (DyingSergeant)": "/tmp/xmve_04/Sergeants.txt:781",
+   "spawns monsters on death (DyingShotgunguyHitInEye)": "/tmp/xmve_04/Sergeants.txt:822",
+   "spawns monsters on death (DeadShotgunguyNoHeadContinue)": "/tmp/xmve_04/Sergeants.txt:856",
+   "spawns monsters on death (BrutalizedSergeant1)": "/tmp/xmve_04/Sergeants.txt:943",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/Sergeants.txt:952",
+   "spawns monsters on death (SergeantFallingHoleOnStomach)": "/tmp/xmve_04/Sergeants.txt:974",
+   "spawns monsters on death (SergeantFallingSplattered)": "/tmp/xmve_04/Sergeants.txt:994"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 4.35,
+  "place_by_ci": {
+   "below": [
+    "Red",
+    4.01
+   ],
+   "above": [
+    "Gray",
+    4.57
+   ],
+   "fractional_tier": 5.63,
+   "iso_colour": "Brown"
+  },
+  "place_by_hp": {
+   "below": [
+    "Yellow",
+    85.0
+   ],
+   "above": [
+    "Red",
+    150.0
+   ],
+   "fractional_tier": 5.55,
+   "iso_colour": "Brown"
+  },
+  "place_by_dps": {
+   "below": [
+    "Gray",
+    19.2
+   ],
+   "above": [
+    "Yellow",
+    20.65
+   ],
+   "fractional_tier": 5.12,
+   "iso_colour": "Cyan"
+  }
+ },
+ {
+  "family": "Revenant",
+  "class": "Revenant1",
+  "hp": 300.0,
+  "hp_src": "/tmp/xmve_04/Revenant.txt:4",
+  "speed": {
+   "speed": 10.0,
+   "src": "QuestZDoom 17.3 zscript/actors/doom/revenant.zs:14"
+  },
+  "painchance": 100.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/revenant.zs:15",
+  "flags": [],
+  "attack_dps_hold_256": 32.9,
+  "attack_dps_hold_512": 22.0,
+  "attack_dps_contact": 48.2,
+  "attacks_per_s_256": 0.87,
+  "dps_by_attack_256": {
+   "revenantseekermissiles": 23.5,
+   "RevenantMissile": 9.4
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 300,
+  "dps_256": 32.9,
+  "dps_512": 22.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 4.9,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaRevenant)": "/tmp/xmve_04/Revenant.txt:46",
+   "hops/leaps": "/tmp/xmve_04/Revenant.txt:179",
+   "homing projectiles": "/tmp/xmve_04/Revenant.txt:220",
+   "summons (RevenantU)": "/tmp/xmve_04/Revenant.txt:534",
+   "spawns monsters on death (RevenantU)": "/tmp/xmve_04/Revenant.txt:628",
+   "self-heal": "/tmp/xmve_04/Revenant.txt:639",
+   "spawns monsters on death (Revenant)": "/tmp/xmve_04/Revenant.txt:644"
+  },
+  "sim_tags": [
+   "homing projectiles"
+  ],
+  "set": "xmve",
+  "challenge_index": 9.88,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    8.66
+   ],
+   "above": [
+    "Yellow",
+    9.99
+   ],
+   "fractional_tier": 1.58,
+   "iso_colour": "Green"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    300.0
+   ],
+   "above": [
+    "Green",
+    360.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": [
+    "Gray",
+    26.4
+   ],
+   "above": [
+    "Yellow",
+    28.9
+   ],
+   "fractional_tier": 9.01,
+   "iso_colour": "Gray"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "RifleCommando",
+  "hp": 100.0,
+  "hp_src": "/tmp/xmve_07/RifleCommando.txt:10",
+  "speed": {
+   "speed": 5.0,
+   "src": "/tmp/xmve_07/RifleCommando.txt:14"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_07/RifleCommando.txt:16",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEEVENMORE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 21.4,
+  "attack_dps_hold_512": 9.8,
+  "attack_dps_contact": 40.6,
+  "attacks_per_s_256": 7.42,
+  "dps_by_attack_256": {
+   "ZombieManTracer": 21.4,
+   "OrangeLensFlareAlt": 0.0,
+   "EmptyClipSpawn": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {
+   "HelmetRifleZombie": {
+    "per_20s": 4.0,
+    "hp_each": 54.0,
+    "dps_each_256": 27.0,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "hops/leaps",
+     "self-heal",
+     "spawns monsters on death (BrutalizedHelmetZombieManLeg)",
+     "spawns monsters on death (BurningZombieMan)",
+     "spawns monsters on death (DyingHelmetZombiemanLostTeeth)",
+     "spawns monsters on death (DyingHelmetZombiemanNoArm)"
+    ]
+   },
+   "ShotgunGuy1": {
+    "per_20s": 2.0,
+    "hp_each": 80.0,
+    "dps_each_256": 12.5,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "hops/leaps",
+     "self-heal",
+     "spawns monsters on death (BrutalizedSergeant1)",
+     "spawns monsters on death (BrutalizedSergeantLeg)",
+     "spawns monsters on death (BurningZombieMan)",
+     "spawns monsters on death (DeadShotgunguy)"
+    ]
+   }
+  },
+  "added_threat": {
+   "summoned_hp_20s": 376,
+   "summoned_dps_256": 15.3,
+   "summoned_dps_512": 12.5
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 476,
+  "dps_256": 36.7,
+  "dps_512": 22.4,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.49,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons via CommandoSpawnBeacon (Zombieman, ShotgunGuy)": "/tmp/xmve_07/RifleCommando.txt:390",
+   "invulnerable phase": "/tmp/xmve_07/RifleCommando.txt:410",
+   "spawns monsters on death (BurningZombie)": "/tmp/xmve_07/RifleCommando.txt:659",
+   "spawns monsters on death (ChaingunGuy)": "/tmp/xmve_07/RifleCommando.txt:716",
+   "summons (VanillaChaingunguy)": "/tmp/xmve_07/Comando.txt:53",
+   "hops/leaps": "/tmp/xmve_07/Comando.txt:309",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/Comando.txt:456",
+   "spawns monsters on death (BrutalizedCommando1)": "/tmp/xmve_07/Comando.txt:488",
+   "spawns monsters on death (BrutalizedCommandoLostHead)": "/tmp/xmve_07/Comando.txt:549",
+   "spawns monsters on death (BrutalizedCommandoLostHead2)": "/tmp/xmve_07/Comando.txt:562",
+   "spawns monsters on death (BurningcHAINGUNGUY)": "/tmp/xmve_07/Comando.txt:699",
+   "self-heal": "/tmp/xmve_07/Comando.txt:835",
+   "spawns monsters on death (BrutalizedCommandoBlasted)": "/tmp/xmve_07/Comando.txt:879"
+  },
+  "sim_tags": [
+   "summons (via CommandoSpawnBeacon)"
+  ],
+  "set": "xmve",
+  "challenge_index": 10.9,
+  "place_by_ci": {
+   "below": [
+    "Red",
+    8.8
+   ],
+   "above": [
+    "Abyss",
+    13.53
+   ],
+   "fractional_tier": 10.5,
+   "iso_colour": "Red"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    85.0
+   ],
+   "above": [
+    "Blue",
+    105.0
+   ],
+   "fractional_tier": 2.77,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "Red",
+    26.85
+   ],
+   "above": [
+    "Purple",
+    29.65
+   ],
+   "fractional_tier": 10.03,
+   "iso_colour": "Red"
+  }
+ },
+ {
+  "family": "Zombieman",
+  "class": "RifleZombie",
+  "hp": 54.0,
+  "hp_src": "/tmp/xmve_04/Zombiemen.txt:17",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_04/Zombiemen.txt:20",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Zombiemen.txt:22"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/Zombiemen.txt:23",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 27.1,
+  "attack_dps_hold_512": 22.0,
+  "attack_dps_contact": 27.7,
+  "attacks_per_s_256": 4.97,
+  "dps_by_attack_256": {
+   "ZombieManTracer": 27.1,
+   "DistantFireSoundRifle": 0.0,
+   "EmptyClipSpawn": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 54,
+  "dps_256": 27.1,
+  "dps_512": 22.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.96,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (PistolZombie)": "/tmp/xmve_04/Zombiemen.txt:101",
+   "summons (HelmetRifleZombie)": "/tmp/xmve_04/Zombiemen.txt:107",
+   "summons (RifleZombie)": "/tmp/xmve_04/Zombiemen.txt:114",
+   "summons (Labguy)": "/tmp/xmve_04/Zombiemen.txt:120",
+   "summons (VanillaZombieman)": "/tmp/xmve_04/Zombiemen.txt:126",
+   "self-heal": "/tmp/xmve_04/Zombiemen.txt:285",
+   "spawns monsters on death (ZombieMan)": "/tmp/xmve_04/Zombiemen.txt:434",
+   "hops/leaps": "/tmp/xmve_04/Zombiemen.txt:543",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Zombiemen.txt:744",
+   "spawns monsters on death (DyingZombiemanNoArm)": "/tmp/xmve_04/Zombiemen.txt:895",
+   "summons (ZombiemanGotHisLegBlowed)": "/tmp/xmve_04/Zombiemen.txt:955",
+   "summons (ZombiemanSacilol)": "/tmp/xmve_04/Zombiemen.txt:960",
+   "spawns monsters on death (BrutalizedZombieMan1)": "/tmp/xmve_04/Zombiemen.txt:1006",
+   "spawns monsters on death (BrutalizedZombieManLeg)": "/tmp/xmve_04/Zombiemen.txt:1016",
+   "spawns monsters on death (DyingZombiemanLostTeeth)": "/tmp/xmve_04/Zombiemen.txt:1150",
+   "spawns monsters on death (Zombiemanfallingbeheaded)": "/tmp/xmve_04/Zombiemen.txt:1190",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/Zombiemen.txt:1244",
+   "spawns monsters on death (ZombiemanFallingHoleOnStomach)": "/tmp/xmve_04/Zombiemen.txt:1455",
+   "spawns monsters on death (ZombiemanFallingSplattered)": "/tmp/xmve_04/Zombiemen.txt:1515"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 3.76,
+  "place_by_ci": {
+   "below": [
+    "Yellow",
+    3.24
+   ],
+   "above": [
+    "Red",
+    5.44
+   ],
+   "fractional_tier": 9.55,
+   "iso_colour": "Red"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    40.0
+   ],
+   "above": [
+    "Blue",
+    60.0
+   ],
+   "fractional_tier": 2.92,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "Black",
+    23.1
+   ],
+   "above": [
+    "White",
+    71.85
+   ],
+   "fractional_tier": 12.05,
+   "iso_colour": "Black"
+  }
+ },
+ {
+  "family": "Shotgunner",
+  "class": "RiotShieldGuy",
+  "hp": 54.0,
+  "hp_src": "/tmp/xmve_04/RiotSergeant.txt:6",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_04/RiotSergeant.txt:11",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Sergeants.txt:10"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/Sergeants.txt:12",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 3.1,
+  "attack_dps_hold_512": 1.9,
+  "attack_dps_contact": 16.6,
+  "attacks_per_s_256": 0.5,
+  "dps_by_attack_256": {
+   "MonsterRiotRevolverTracer": 3.1,
+   "OrangeLensFlareAlt": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 54,
+  "dps_256": 3.1,
+  "dps_512": 1.9,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.93,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/RiotSergeant.txt:330",
+   "summons (SMGGuy)": "/tmp/xmve_04/Sergeants.txt:80",
+   "summons (VanillaShotgunguy)": "/tmp/xmve_04/Sergeants.txt:86",
+   "hops/leaps": "/tmp/xmve_04/Sergeants.txt:440",
+   "self-heal": "/tmp/xmve_04/Sergeants.txt:492",
+   "spawns monsters on death (DeadShotgunguy)": "/tmp/xmve_04/Sergeants.txt:563",
+   "spawns monsters on death (ShotgunGuy)": "/tmp/xmve_04/Sergeants.txt:576",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Sergeants.txt:614",
+   "summons (SergeantGotHisLegBlowed)": "/tmp/xmve_04/Sergeants.txt:765",
+   "summons (DyingSergeantNoLeg)": "/tmp/xmve_04/Sergeants.txt:770",
+   "spawns monsters on death (DyingSergeant)": "/tmp/xmve_04/Sergeants.txt:781",
+   "spawns monsters on death (DyingShotgunguyHitInEye)": "/tmp/xmve_04/Sergeants.txt:822",
+   "spawns monsters on death (DeadShotgunguyNoHeadContinue)": "/tmp/xmve_04/Sergeants.txt:856",
+   "spawns monsters on death (BrutalizedSergeant1)": "/tmp/xmve_04/Sergeants.txt:943",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/Sergeants.txt:952",
+   "spawns monsters on death (SergeantFallingHoleOnStomach)": "/tmp/xmve_04/Sergeants.txt:974",
+   "spawns monsters on death (SergeantFallingSplattered)": "/tmp/xmve_04/Sergeants.txt:994",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/Sergeants.txt:1197"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 1.2,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    1.05
+   ],
+   "above": [
+    "Blue",
+    1.52
+   ],
+   "fractional_tier": 1.25,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    45.0
+   ],
+   "above": [
+    "Blue",
+    55.0
+   ],
+   "fractional_tier": 2.91,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Common",
+    5.3
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Imp",
+  "class": "RocketGuy",
+  "hp": 126.0,
+  "hp_src": "/tmp/xmve_07/RocketGuy.txt:5",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_07/RocketGuy.txt:10",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Sergeants.txt:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_07/RocketGuy.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 39.9,
+  "attack_dps_hold_512": 22.8,
+  "attack_dps_contact": 0.0,
+  "attacks_per_s_256": 0.4,
+  "dps_by_attack_256": {
+   "ZombieRocket": 35.6,
+   "ZombieRocket2": 4.3
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 126,
+  "dps_256": 39.9,
+  "dps_512": 22.8,
+  "mobility": {
+   "ground_speed_u_per_tic": 4.0,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "homing projectiles": "/tmp/xmve_07/RocketGuy.txt:92",
+   "hops/leaps": "/tmp/xmve_07/RocketGuy.txt:181",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/RocketGuy.txt:256",
+   "summons (DeadShotgunguy)": "/tmp/xmve_07/RocketGuy.txt:257",
+   "spawns monsters on death (ShotgunGuy)": "/tmp/xmve_07/RocketGuy.txt:273",
+   "spawns monsters on death (DeadShotgunguy)": "/tmp/xmve_07/RocketGuy.txt:399",
+   "spawns monsters on death (SergeantGotHisLegBlowed)": "/tmp/xmve_07/RocketGuy.txt:434",
+   "summons (DyingSergeantNoLeg)": "/tmp/xmve_07/RocketGuy.txt:439",
+   "spawns monsters on death (DyingSergeant)": "/tmp/xmve_07/RocketGuy.txt:449",
+   "spawns monsters on death (DyingShotgunguyHitInEye)": "/tmp/xmve_07/RocketGuy.txt:484",
+   "spawns monsters on death (BrutalizedSergeant1)": "/tmp/xmve_07/RocketGuy.txt:596",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_07/RocketGuy.txt:604",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_07/RocketGuy.txt:838",
+   "summons (SMGGuy)": "/tmp/xmve_04/Sergeants.txt:80",
+   "summons (VanillaShotgunguy)": "/tmp/xmve_04/Sergeants.txt:86",
+   "self-heal": "/tmp/xmve_04/Sergeants.txt:492",
+   "summons (SergeantGotHisLegBlowed)": "/tmp/xmve_04/Sergeants.txt:765",
+   "spawns monsters on death (DeadShotgunguyNoHeadContinue)": "/tmp/xmve_04/Sergeants.txt:856",
+   "spawns monsters on death (SergeantFallingHoleOnStomach)": "/tmp/xmve_04/Sergeants.txt:974",
+   "spawns monsters on death (SergeantFallingSplattered)": "/tmp/xmve_04/Sergeants.txt:994"
+  },
+  "sim_tags": [
+   "homing projectiles"
+  ],
+  "set": "xmve",
+  "challenge_index": 6.51,
+  "place_by_ci": {
+   "below": [
+    "Cyan",
+    5.18
+   ],
+   "above": [
+    "Abyss",
+    7.89
+   ],
+   "fractional_tier": 9.71,
+   "iso_colour": "Red"
+  },
+  "place_by_hp": {
+   "below": [
+    "FireBlu",
+    125.0
+   ],
+   "above": [
+    "Yellow",
+    145.0
+   ],
+   "fractional_tier": 5.03,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "FireBlu",
+    19.0
+   ],
+   "above": [
+    "White",
+    33.9
+   ],
+   "fractional_tier": 12.78,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Shotgunner",
+  "class": "ShotgunGuy1",
+  "hp": 80.0,
+  "hp_src": "/tmp/xmve_04/Sergeants.txt:4",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_04/Sergeants.txt:9",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/Sergeants.txt:10"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/Sergeants.txt:12",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 12.5,
+  "attack_dps_hold_512": 7.1,
+  "attack_dps_contact": 21.0,
+  "attacks_per_s_256": 4.9,
+  "dps_by_attack_256": {
+   "ShotgunguyTracer": 12.5,
+   "DistantFireSoundShotgun": 0.0,
+   "ShotgunParticles": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 80,
+  "dps_256": 12.5,
+  "dps_512": 7.1,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.98,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (SMGGuy)": "/tmp/xmve_04/Sergeants.txt:80",
+   "summons (VanillaShotgunguy)": "/tmp/xmve_04/Sergeants.txt:86",
+   "hops/leaps": "/tmp/xmve_04/Sergeants.txt:440",
+   "self-heal": "/tmp/xmve_04/Sergeants.txt:492",
+   "spawns monsters on death (DeadShotgunguy)": "/tmp/xmve_04/Sergeants.txt:563",
+   "spawns monsters on death (ShotgunGuy)": "/tmp/xmve_04/Sergeants.txt:576",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Sergeants.txt:614",
+   "summons (SergeantGotHisLegBlowed)": "/tmp/xmve_04/Sergeants.txt:765",
+   "summons (DyingSergeantNoLeg)": "/tmp/xmve_04/Sergeants.txt:770",
+   "spawns monsters on death (DyingSergeant)": "/tmp/xmve_04/Sergeants.txt:781",
+   "spawns monsters on death (DyingShotgunguyHitInEye)": "/tmp/xmve_04/Sergeants.txt:822",
+   "spawns monsters on death (DeadShotgunguyNoHeadContinue)": "/tmp/xmve_04/Sergeants.txt:856",
+   "spawns monsters on death (BrutalizedSergeant1)": "/tmp/xmve_04/Sergeants.txt:943",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/Sergeants.txt:952",
+   "spawns monsters on death (SergeantFallingHoleOnStomach)": "/tmp/xmve_04/Sergeants.txt:974",
+   "spawns monsters on death (SergeantFallingSplattered)": "/tmp/xmve_04/Sergeants.txt:994",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/Sergeants.txt:1197"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 2.89,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    2.14
+   ],
+   "above": [
+    "Purple",
+    3.24
+   ],
+   "fractional_tier": 3.8,
+   "iso_colour": "Purple"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    75.0
+   ],
+   "above": [
+    "Yellow",
+    85.0
+   ],
+   "fractional_tier": 5.33,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Blue",
+    5.699999999999999
+   ],
+   "above": [
+    "Green",
+    14.55
+   ],
+   "fractional_tier": 3.14,
+   "iso_colour": "Blue"
+  }
+ },
+ {
+  "family": "Zombieman",
+  "class": "SniperRifleGuy",
+  "hp": 1000.0,
+  "hp_src": "QuestZDoom 17.3 zscript/actors/actor.zs:411",
+  "speed": {
+   "speed": 0.0,
+   "src": "QuestZDoom 17.3 zscript/actors/shared/randomspawner.zs:136"
+  },
+  "painchance": 0.0,
+  "painchance_src": null,
+  "flags": [],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 0.0,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1000,
+  "dps_256": 0.0,
+  "dps_512": 0.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 0.0,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {},
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 0.56,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    0.43
+   ],
+   "above": [
+    "Green",
+    0.68
+   ],
+   "fractional_tier": 1.58,
+   "iso_colour": "Green"
+  },
+  "place_by_hp": {
+   "below": [
+    "Abyss",
+    200.0
+   ],
+   "above": [
+    "Black",
+    2500.0
+   ],
+   "fractional_tier": 11.64,
+   "iso_colour": "Black"
+  },
+  "place_by_dps": {
+   "below": [
+    "FireBlu",
+    0.0
+   ],
+   "above": [
+    "Brown",
+    1.55
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Spectre",
+  "class": "Spectro",
+  "hp": 200.0,
+  "hp_src": "/tmp/xmve_04/Demons.txt:12",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/bd22src/actors/Enemies/Spectre.dec:9",
+   "fastspeed": 6.0,
+   "fastspeed_src": "/tmp/bd22src/actors/Enemies/Spectre.dec:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/demon.zs:11",
+  "flags": [
+   "NEVERFAST"
+  ],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 7.7,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.34,
+  "contact_share_512": 0.14,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 200,
+  "dps_256": 2.6,
+  "dps_512": 1.1,
+  "mobility": {
+   "ground_speed_u_per_tic": 5.85,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaSpectre)": "/tmp/bd22src/actors/Enemies/Spectre.dec:18",
+   "buffs others (SlaughterCounter)": "/tmp/bd22src/actors/Enemies/Spectre.dec:26",
+   "self-heal": "/tmp/bd22src/actors/Enemies/Spectre.dec:55",
+   "summons (VanillaDemon)": "/tmp/xmve_04/Demons.txt:53",
+   "hops/leaps": "/tmp/xmve_04/Demons.txt:195",
+   "spawns monsters on death (PoorPinkyLostHisArm)": "/tmp/xmve_04/Demons.txt:308",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Demons.txt:318",
+   "spawns monsters on death (BurningDemon)": "/tmp/xmve_04/Demons.txt:616",
+   "spawns monsters on death (Demon)": "/tmp/xmve_04/Demons.txt:769"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 2.19,
+  "place_by_ci": {
+   "below": null,
+   "above": [
+    "Cyan",
+    4.68
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    175.0
+   ],
+   "above": [
+    "FireBlu",
+    205.0
+   ],
+   "fractional_tier": 2.73,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": null,
+   "above": [
+    "Cyan",
+    5.1
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Mastermind",
+  "class": "SpidermastermindX",
+  "hp": 5000.0,
+  "hp_src": "/tmp/xmve_04/Demolisher.dec:11",
+  "speed": {
+   "speed": 12.0,
+   "src": "QuestZDoom 17.3 zscript/actors/doom/spidermaster.zs:14"
+  },
+  "painchance": 40.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/spidermaster.zs:15",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "NORADIUSDMG"
+  ],
+  "attack_dps_hold_256": 204.8,
+  "attack_dps_hold_512": 94.8,
+  "attack_dps_contact": 204.5,
+  "attacks_per_s_256": 11.63,
+  "dps_by_attack_256": {
+   "MastermindTracer": 180.5,
+   "MastermindBFGSmallSphere": 24.3,
+   "SmallGreenFlameTrails": 0.0,
+   "BallGettingReadyGreen": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 5000,
+  "dps_256": 204.8,
+  "dps_512": 94.8,
+  "mobility": {
+   "ground_speed_u_per_tic": 5.99,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "spawns monsters on death (TheSpiderMastermind)": "/tmp/xmve_04/Demolisher.dec:45",
+   "summons (Vanilla_Demolisher)": "/tmp/xmve_04/Demolisher.dec:51",
+   "fire damage": "/tmp/xmve_04/Demolisher.dec:161",
+   "strafes (A_FastChase)": "/tmp/xmve_04/Demolisher.dec:216"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 90.09,
+  "place_by_ci": {
+   "below": [
+    "Yellow",
+    87.06
+   ],
+   "above": [
+    "White",
+    163.24
+   ],
+   "fractional_tier": 11.17,
+   "iso_colour": "Abyss"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    4200.0
+   ],
+   "above": [
+    "Blue",
+    5600.0
+   ],
+   "fractional_tier": 2.61,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "White",
+    70.9
+   ],
+   "above": [
+    "Black",
+    152.60000000000002
+   ],
+   "fractional_tier": 13.0,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Pain Elemental",
+  "class": "SufferingElemental",
+  "hp": 525.0,
+  "hp_src": "/tmp/xmve_04/SufferingElemental.dec:5",
+  "speed": {
+   "speed": 11.0,
+   "src": "/tmp/xmve_04/SufferingElemental.dec:10"
+  },
+  "painchance": 128.0,
+  "painchance_src": "/tmp/xmve_04/SufferingElemental.dec:11",
+  "flags": [
+   "FLOAT",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 0.0,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {
+   "Phantasm": {
+    "per_20s": 11.11,
+    "hp_each": 70.0,
+    "dps_each_256": 1.8,
+    "helper (unshootable/invulnerable, HP not counted)": false,
+    "reflects": false,
+    "its_abilities": [
+     "charges (skull attack)",
+     "invulnerable phase",
+     "summons (Vanilla_Phantasm)"
+    ]
+   }
+  },
+  "added_threat": {
+   "summoned_hp_20s": 777,
+   "summoned_dps_256": 2.5,
+   "summoned_dps_512": 2.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1302,
+  "dps_256": 2.5,
+  "dps_512": 2.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.46,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": true
+  },
+  "threat_abilities": {
+   "summons (Vanilla_SufferingElemental)": "/tmp/xmve_04/SufferingElemental.dec:52",
+   "summons (Phantasm)": "/tmp/xmve_04/SufferingElemental.dec:68",
+   "invulnerable phase": "/tmp/xmve_04/SufferingElemental.dec:78",
+   "summons (LostSoul)": "QuestZDoom 17.3 zscript/actors/doom/painelemental.zs:37"
+  },
+  "sim_tags": [
+   "summons"
+  ],
+  "set": "xmve",
+  "challenge_index": 5.16,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    3.96
+   ],
+   "above": [
+    "Common",
+    7.41
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    500.0
+   ],
+   "above": [
+    "Blue",
+    610.0
+   ],
+   "fractional_tier": 2.25,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "Green",
+    1.35
+   ],
+   "above": [
+    "Common",
+    3.55
+   ],
+   "fractional_tier": 2.01,
+   "iso_colour": "Green"
+  }
+ },
+ {
+  "family": "Cyberdemon",
+  "class": "SuperDemon",
+  "hp": 5000.0,
+  "hp_src": "/tmp/xmve_04/SuperDemon.txt:5",
+  "speed": {
+   "speed": 16.0,
+   "src": "/tmp/xmve_04/SuperDemon.txt:10"
+  },
+  "painchance": 20.0,
+  "painchance_src": "/tmp/xmve_04/SuperDemon.txt:14",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "DONTRIP",
+   "MISSILEEVENMORE",
+   "MISSILEMORE",
+   "NORADIUSDMG",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 131.7,
+  "attack_dps_hold_512": 44.9,
+  "attack_dps_contact": 157.1,
+  "attacks_per_s_256": 19.99,
+  "dps_by_attack_256": {
+   "SuperDemonBall": 131.7,
+   "SmallFlameTrails": 0.0,
+   "ImBallGettingReady": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 5000,
+  "dps_256": 131.7,
+  "dps_512": 44.9,
+  "mobility": {
+   "ground_speed_u_per_tic": 7.94,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "spawns monsters on death (SuperDemon)": "/tmp/xmve_04/SuperDemon.txt:51",
+   "fire damage": "/tmp/xmve_04/SuperDemon.txt:84"
+  },
+  "sim_tags": [
+   "fire damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 74.22,
+  "place_by_ci": {
+   "below": [
+    "Purple",
+    69.37
+   ],
+   "above": [
+    "Green",
+    78.06
+   ],
+   "fractional_tier": 11.09,
+   "iso_colour": "Abyss"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    5000.0
+   ],
+   "above": [
+    "Blue",
+    5800.0
+   ],
+   "fractional_tier": 2.0,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "Purple",
+    81.8
+   ],
+   "above": [
+    "Black",
+    88.9
+   ],
+   "fractional_tier": 11.98,
+   "iso_colour": "Black"
+  }
+ },
+ {
+  "family": "Imp",
+  "class": "SuperImp",
+  "hp": 100.0,
+  "hp_src": "/tmp/xmve_04/Imps.txt:88",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/Imps.txt:126",
+   "fastspeed": 12.0,
+   "fastspeed_src": "/tmp/xmve_04/Imps.txt:127"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/Imps.txt:95",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 9.4,
+  "attack_dps_hold_512": 3.1,
+  "attack_dps_contact": 16.2,
+  "attacks_per_s_256": 0.65,
+  "dps_by_attack_256": {
+   "a_bruisattack": 9.4
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 100,
+  "dps_256": 9.4,
+  "dps_512": 3.1,
+  "mobility": {
+   "ground_speed_u_per_tic": 5.87,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "hops/leaps": "/tmp/xmve_04/SuperImp.txt:34",
+   "summons (VanillaImp)": "/tmp/xmve_04/Imps.txt:140",
+   "fire damage": "/tmp/xmve_04/Imps.txt:377",
+   "self-heal": "/tmp/xmve_04/Imps.txt:710",
+   "spawns monsters on death (Imp)": "/tmp/xmve_04/Imps.txt:716",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Imps.txt:909",
+   "spawns monsters on death (BurningImpRunning)": "/tmp/xmve_04/Imps.txt:982",
+   "spawns monsters on death (ImpDyingOfBloodLoss)": "/tmp/xmve_04/Imps.txt:1036",
+   "spawns monsters on death (DyingImpNoArm)": "/tmp/xmve_04/Imps.txt:1047",
+   "spawns monsters on death (DyingImpNoLeg)": "/tmp/xmve_04/Imps.txt:1064",
+   "spawns monsters on death (ImpSaciLol)": "/tmp/xmve_04/Imps.txt:1073",
+   "spawns monsters on death (DyingImpHalfFace)": "/tmp/xmve_04/Imps.txt:1189",
+   "spawns monsters on death (DyingImpNoHeadClean)": "/tmp/xmve_04/Imps.txt:1202",
+   "spawns monsters on death (DyingImpNoHeadLikeChicken)": "/tmp/xmve_04/Imps.txt:1220",
+   "spawns monsters on death (BrutalizedImp1)": "/tmp/xmve_04/Imps.txt:1296",
+   "spawns monsters on death (ImpBrutalizedWithNoLeg)": "/tmp/xmve_04/Imps.txt:1305",
+   "spawns monsters on death (DyingImp)": "/tmp/xmve_04/Imps.txt:1372",
+   "summons (ImpFish)": "/tmp/xmve_04/Imps.txt:1720"
+  },
+  "sim_tags": [
+   "hops"
+  ],
+  "set": "xmve",
+  "challenge_index": 2.85,
+  "place_by_ci": {
+   "below": [
+    "Yellow",
+    2.58
+   ],
+   "above": [
+    "Brown",
+    3.26
+   ],
+   "fractional_tier": 4.56,
+   "iso_colour": "Cyan"
+  },
+  "place_by_hp": {
+   "below": [
+    "Blue",
+    83.0
+   ],
+   "above": [
+    "Purple",
+    105.0
+   ],
+   "fractional_tier": 3.79,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "Blue",
+    6.0
+   ],
+   "above": [
+    "Green",
+    6.300000000000001
+   ],
+   "fractional_tier": 7.52,
+   "iso_colour": "FireBlu"
+  }
+ },
+ {
+  "family": "Shotgunner",
+  "class": "SuperShotgunZombie",
+  "hp": 80.0,
+  "hp_src": "/tmp/xmve_04/SuperShotgunZombie.txt:5",
+  "speed": {
+   "speed": 4.0,
+   "src": "/tmp/xmve_04/SuperShotgunZombie.txt:9",
+   "fastspeed": 8.0,
+   "fastspeed_src": "/tmp/xmve_04/SuperShotgunZombie.txt:10"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/xmve_04/SuperShotgunZombie.txt:12",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 32.4,
+  "attack_dps_hold_512": 16.9,
+  "attack_dps_contact": 54.0,
+  "attacks_per_s_256": 9.9,
+  "dps_by_attack_256": {
+   "ShotgunguyTracer": 32.4,
+   "OrangeLensFlareAlt": 0.0,
+   "ShotgunParticles": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 80,
+  "dps_256": 32.4,
+  "dps_512": 16.9,
+  "mobility": {
+   "ground_speed_u_per_tic": 3.75,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "hops/leaps": "/tmp/xmve_04/SuperShotgunZombie.txt:142",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/SuperShotgunZombie.txt:207",
+   "spawns monsters on death (ShotgunGuy)": "/tmp/xmve_04/SuperShotgunZombie.txt:224",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/SuperShotgunZombie.txt:384",
+   "spawns monsters on death (DeadShotgunguy)": "/tmp/xmve_04/SuperShotgunZombie.txt:422",
+   "spawns monsters on death (DyingHelmetSergeant)": "/tmp/xmve_04/SuperShotgunZombie.txt:445",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/SuperShotgunZombie.txt:614",
+   "summons (SMGGuy)": "/tmp/xmve_04/Sergeants.txt:80",
+   "summons (VanillaShotgunguy)": "/tmp/xmve_04/Sergeants.txt:86",
+   "self-heal": "/tmp/xmve_04/Sergeants.txt:492",
+   "summons (SergeantGotHisLegBlowed)": "/tmp/xmve_04/Sergeants.txt:765",
+   "summons (DyingSergeantNoLeg)": "/tmp/xmve_04/Sergeants.txt:770",
+   "spawns monsters on death (DyingSergeant)": "/tmp/xmve_04/Sergeants.txt:781",
+   "spawns monsters on death (DyingShotgunguyHitInEye)": "/tmp/xmve_04/Sergeants.txt:822",
+   "spawns monsters on death (DeadShotgunguyNoHeadContinue)": "/tmp/xmve_04/Sergeants.txt:856",
+   "spawns monsters on death (BrutalizedSergeant1)": "/tmp/xmve_04/Sergeants.txt:943",
+   "spawns monsters on death (SergeantFallingHoleOnStomach)": "/tmp/xmve_04/Sergeants.txt:974",
+   "spawns monsters on death (SergeantFallingSplattered)": "/tmp/xmve_04/Sergeants.txt:994"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 4.52,
+  "place_by_ci": {
+   "below": [
+    "Red",
+    4.01
+   ],
+   "above": [
+    "Gray",
+    4.57
+   ],
+   "fractional_tier": 5.86,
+   "iso_colour": "Brown"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    75.0
+   ],
+   "above": [
+    "Yellow",
+    85.0
+   ],
+   "fractional_tier": 5.33,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Yellow",
+    20.65
+   ],
+   "above": [
+    "White",
+    26.0
+   ],
+   "fractional_tier": 10.07,
+   "iso_colour": "Red"
+  }
+ },
+ {
+  "family": "Arch-Vile",
+  "class": "TehArchvile",
+  "hp": 700.0,
+  "hp_src": "/tmp/xmve_04/ArchVile.txt:11",
+  "speed": {
+   "speed": 15.0,
+   "src": "/tmp/xmve_04/ArchVile.txt:10"
+  },
+  "painchance": 10.0,
+  "painchance_src": "/tmp/xmve_04/ArchVile.txt:13",
+  "flags": [
+   "NOTARGET",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 26.5,
+  "attack_dps_hold_512": 25.3,
+  "attack_dps_contact": 25.7,
+  "attacks_per_s_256": 7.81,
+  "dps_by_attack_256": {
+   "vileattack": 26.5,
+   "SmallFlameTrails": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 375,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1075,
+  "dps_256": 26.5,
+  "dps_512": 25.3,
+  "mobility": {
+   "ground_speed_u_per_tic": 7.49,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaArchvile)": "/tmp/xmve_04/ArchVile.txt:45",
+   "resurrects corpses (A_VileChase)": "/tmp/xmve_04/ArchVile.txt:58",
+   "fire damage": "/tmp/xmve_04/ArchVile.txt:78",
+   "spawns monsters on death (DyingArchvileNoArm)": "/tmp/xmve_04/ArchVile.txt:178",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/ArchVile.txt:247",
+   "self-heal": "/tmp/xmve_04/ArchVile.txt:347",
+   "spawns monsters on death (ArchVile)": "/tmp/xmve_04/ArchVile.txt:352"
+  },
+  "sim_tags": [
+   "fire damage",
+   "resurrects (A_VileChase)",
+   "vile fire (hitscan-like)"
+  ],
+  "set": "xmve",
+  "challenge_index": 18.37,
+  "place_by_ci": {
+   "below": [
+    "Blue",
+    17.59
+   ],
+   "above": [
+    "Red",
+    18.7
+   ],
+   "fractional_tier": 9.93,
+   "iso_colour": "Red"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    700.0
+   ],
+   "above": [
+    "Green",
+    750.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": [
+    "Purple",
+    20.85
+   ],
+   "above": [
+    "Abyss",
+    52.4
+   ],
+   "fractional_tier": 13.0,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Lost Soul",
+  "class": "TehLostSoul",
+  "hp": 100.0,
+  "hp_src": "/tmp/bd22src/actors/Enemies/LostSoul.dec:9",
+  "speed": {
+   "speed": 12.0,
+   "src": "/tmp/bd22src/actors/Enemies/LostSoul.dec:13"
+  },
+  "painchance": 255.0,
+  "painchance_src": "/tmp/bd22src/actors/Enemies/LostSoul.dec:17",
+  "flags": [
+   "FLOAT"
+  ],
+  "attack_dps_hold_256": 11.6,
+  "attack_dps_hold_512": 2.6,
+  "attack_dps_contact": 58.5,
+  "attacks_per_s_256": 1.7,
+  "dps_by_attack_256": {
+   "SkullAttack": 11.6
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 100,
+  "dps_256": 11.6,
+  "dps_512": 2.6,
+  "mobility": {
+   "ground_speed_u_per_tic": 5.95,
+   "hops": false,
+   "charges": true,
+   "teleports": false,
+   "floats": true
+  },
+  "threat_abilities": {
+   "buffs others (SlaughterCounter)": "/tmp/bd22src/actors/Enemies/LostSoul.dec:69",
+   "charges (skull attack)": "/tmp/bd22src/actors/Enemies/LostSoul.dec:128",
+   "strafes (A_FastChase)": "/tmp/bd22src/actors/Enemies/LostSoul.dec:154",
+   "self-heal": "/tmp/bd22src/actors/Enemies/LostSoul.dec:198",
+   "spawns monsters on death (LostSoul)": "/tmp/bd22src/actors/Enemies/LostSoul.dec:204"
+  },
+  "sim_tags": [
+   "charges (skull attack)",
+   "strafes (A_FastChase)"
+  ],
+  "set": "xmve",
+  "challenge_index": 3.18,
+  "place_by_ci": {
+   "below": [
+    "Purple",
+    2.22
+   ],
+   "above": [
+    "Abyss",
+    3.34
+   ],
+   "fractional_tier": 4.53,
+   "iso_colour": "Cyan"
+  },
+  "place_by_hp": {
+   "below": [
+    "Common",
+    100.0
+   ],
+   "above": [
+    "Green",
+    120.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": [
+    "Purple",
+    4.65
+   ],
+   "above": [
+    "Brown",
+    8.9
+   ],
+   "fractional_tier": 4.66,
+   "iso_colour": "Cyan"
+  }
+ },
+ {
+  "family": "Baron",
+  "class": "TerminatorDemon",
+  "hp": 1250.0,
+  "hp_src": "/tmp/xmve_04/Terminator.txt:5",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/Terminator.txt:10"
+  },
+  "painchance": 25.0,
+  "painchance_src": "/tmp/xmve_04/Terminator.txt:11",
+  "flags": [
+   "MISSILEEVENMORE",
+   "MISSILEMORE",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 106.5,
+  "attack_dps_hold_512": 59.0,
+  "attack_dps_contact": 68.9,
+  "attacks_per_s_256": 11.1,
+  "dps_by_attack_256": {
+   "AGLMissileMonster": 53.4,
+   "MonsterMinigunTracer": 53.1,
+   "OrangeLensFlareAlt": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1250,
+  "dps_256": 106.5,
+  "dps_512": 59.0,
+  "mobility": {
+   "ground_speed_u_per_tic": 1.99,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {},
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 25.42,
+  "place_by_ci": {
+   "below": [
+    "Yellow",
+    23.04
+   ],
+   "above": [
+    "Purple",
+    27.92
+   ],
+   "fractional_tier": 3.91,
+   "iso_colour": "Purple"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    1170.0
+   ],
+   "above": [
+    "Blue",
+    1309.0
+   ],
+   "fractional_tier": 2.59,
+   "iso_colour": "Blue"
+  },
+  "place_by_dps": {
+   "below": [
+    "Purple",
+    61.7
+   ],
+   "above": [
+    "Black",
+    109.25
+   ],
+   "fractional_tier": 13.0,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Cyberdemon",
+  "class": "Thamuz",
+  "hp": 3800.0,
+  "hp_src": "/tmp/xmve_04/Thamuz.txt:14",
+  "speed": {
+   "speed": 32.0,
+   "src": "/tmp/xmve_04/Thamuz.txt:35"
+  },
+  "painchance": 70.0,
+  "painchance_src": "/tmp/xmve_04/Thamuz.txt:36",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "NORADIUSDMG"
+  ],
+  "attack_dps_hold_256": 120.2,
+  "attack_dps_hold_512": 61.9,
+  "attack_dps_contact": 130.1,
+  "attacks_per_s_256": 3.48,
+  "dps_by_attack_256": {
+   "DCBMiss2": 73.7,
+   "DCBMiss1": 33.9,
+   "DCBMiss3": 12.6
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.373,
+  "reflective_share": 0.0,
+  "ehp": 6057,
+  "dps_256": 120.2,
+  "dps_512": 61.9,
+  "mobility": {
+   "ground_speed_u_per_tic": 10.34,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "homing projectiles": "/tmp/xmve_04/Thamuz.txt:84",
+   "invulnerable phase": "/tmp/xmve_04/Thamuz.txt:88"
+  },
+  "sim_tags": [
+   "homing projectiles",
+   "invulnerable phase"
+  ],
+  "set": "xmve",
+  "challenge_index": 88.61,
+  "place_by_ci": {
+   "below": [
+    "Blue",
+    80.42
+   ],
+   "above": [
+    "Cyan",
+    138.62
+   ],
+   "fractional_tier": 11.31,
+   "iso_colour": "Abyss"
+  },
+  "place_by_hp": {
+   "below": null,
+   "above": [
+    "Common",
+    4000.0
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  },
+  "place_by_dps": {
+   "below": [
+    "Black",
+    88.9
+   ],
+   "above": [
+    "Common",
+    97.55000000000001
+   ],
+   "fractional_tier": 12.01,
+   "iso_colour": "Black"
+  }
+ },
+ {
+  "family": "Cyberdemon",
+  "class": "TheCyberdemon",
+  "hp": 5000.0,
+  "hp_src": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:12",
+  "speed": {
+   "speed": 16.0,
+   "src": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:27",
+   "fastspeed": 22.0,
+   "fastspeed_src": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:28"
+  },
+  "painchance": 20.0,
+  "painchance_src": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:31",
+  "flags": [
+   "BOSS",
+   "BOSSDEATH",
+   "DONTRIP",
+   "MISSILEEVENMORE",
+   "MISSILEMORE",
+   "NORADIUSDMG",
+   "QUICKTORETALIATE"
+  ],
+  "attack_dps_hold_256": 162.7,
+  "attack_dps_hold_512": 60.4,
+  "attack_dps_contact": 379.7,
+  "attacks_per_s_256": 1.35,
+  "dps_by_attack_256": {
+   "CyberBalls": 162.7
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 5000,
+  "dps_256": 162.7,
+  "dps_512": 60.4,
+  "mobility": {
+   "ground_speed_u_per_tic": 10.94,
+   "hops": false,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "summons (VanillaCyberdemon)": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:53",
+   "summons (CyberdemonBoss)": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:64",
+   "buffs others (SlaughterCounter)": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:72",
+   "summons (NewCybersHitBox)": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:105",
+   "self-heal": "/tmp/bd22src/actors/Enemies/Cyberdemon.dec:309"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 90.38,
+  "place_by_ci": {
+   "below": [
+    "Blue",
+    80.42
+   ],
+   "above": [
+    "Cyan",
+    138.62
+   ],
+   "fractional_tier": 11.33,
+   "iso_colour": "Abyss"
+  },
+  "place_by_hp": {
+   "below": [
+    "Green",
+    5000.0
+   ],
+   "above": [
+    "Blue",
+    5800.0
+   ],
+   "fractional_tier": 2.0,
+   "iso_colour": "Green"
+  },
+  "place_by_dps": {
+   "below": [
+    "Blue",
+    103.25
+   ],
+   "above": [
+    "Green",
+    119.55
+   ],
+   "fractional_tier": 12.14,
+   "iso_colour": "Black"
+  }
+ },
+ {
+  "family": "Imp",
+  "class": "VoidDarkImp",
+  "hp": 126.0,
+  "hp_src": "/tmp/xmve_04/DarkImpVoid.txt:7",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_04/DarkImpVoid.txt:12"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_04/DarkImpVoid.txt:14",
+  "flags": [
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 2.7,
+  "attack_dps_hold_512": 1.2,
+  "attack_dps_contact": 18.4,
+  "attacks_per_s_256": 1.16,
+  "dps_by_attack_256": {
+   "DarkNormal": 1.5,
+   "DarkStrong": 1.2
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 126,
+  "dps_256": 2.7,
+  "dps_512": 1.2,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.97,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/DarkImpVoid.txt:253",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/DarkImpVoid.txt:283",
+   "hops/leaps": "/tmp/xmve_04/DarkImpVoid.txt:314",
+   "spawns monsters on death (BurningImpRunning)": "/tmp/xmve_04/DarkImpVoid.txt:343",
+   "spawns monsters on death (DarkImpDyingOfBloodLoss)": "/tmp/xmve_04/DarkImpVoid.txt:530",
+   "summons via MediumBloodSpot (BootSmearerRed)": "/tmp/xmve_04/DarkImpVoid.txt:797"
+  },
+  "sim_tags": [
+   "plasma damage"
+  ],
+  "set": "xmve",
+  "challenge_index": 1.51,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    1.0
+   ],
+   "above": [
+    "Green",
+    1.75
+   ],
+   "fractional_tier": 1.74,
+   "iso_colour": "Green"
+  },
+  "place_by_hp": {
+   "below": [
+    "FireBlu",
+    125.0
+   ],
+   "above": [
+    "Yellow",
+    145.0
+   ],
+   "fractional_tier": 5.03,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Brown",
+    1.8
+   ],
+   "above": [
+    "Gray",
+    2.3
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Spectre",
+  "class": "VoidSpectre",
+  "hp": 300.0,
+  "hp_src": "/tmp/xmve_04/VOIDSPECTRE.dec:68",
+  "speed": {
+   "speed": 18.0,
+   "src": "/tmp/xmve_04/VOIDSPECTRE.dec:73",
+   "fastspeed": 20.0,
+   "fastspeed_src": "/tmp/xmve_04/VOIDSPECTRE.dec:74"
+  },
+  "painchance": 180.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/demon.zs:11",
+  "flags": [
+   "NEVERFAST"
+  ],
+  "attack_dps_hold_256": 0.0,
+  "attack_dps_hold_512": 0.0,
+  "attack_dps_contact": 17.0,
+  "attacks_per_s_256": 0.0,
+  "dps_by_attack_256": {},
+  "contact_share_256": 0.46,
+  "contact_share_512": 0.42,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 300,
+  "dps_256": 7.9,
+  "dps_512": 7.1,
+  "mobility": {
+   "ground_speed_u_per_tic": 9.53,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/VOIDSPECTRE.dec:246",
+   "spawns monsters on death (VoidSpectreLostHisArm)": "/tmp/xmve_04/VOIDSPECTRE.dec:321",
+   "summons via GreenGrowingBloodPool (BootSmearerGreen)": "/tmp/xmve_04/VOIDSPECTRE.dec:333",
+   "spawns monsters on death (BurningDemon)": "/tmp/xmve_04/VOIDSPECTRE.dec:673",
+   "hops/leaps": "/tmp/xmve_04/VOIDSPECTRE.dec:749",
+   "spawns monsters on death (VoidSpectre)": "/tmp/xmve_04/VOIDSPECTRE.dec:795",
+   "summons (VanillaDemon)": "/tmp/xmve_04/Demons.txt:53",
+   "spawns monsters on death (PoorPinkyLostHisArm)": "/tmp/xmve_04/Demons.txt:308",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Demons.txt:318",
+   "self-heal": "/tmp/xmve_04/Demons.txt:764",
+   "spawns monsters on death (Demon)": "/tmp/xmve_04/Demons.txt:769"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 6.1,
+  "place_by_ci": {
+   "below": [
+    "Common",
+    6.03
+   ],
+   "above": [
+    "Gray",
+    8.06
+   ],
+   "fractional_tier": 1.03,
+   "iso_colour": "Common"
+  },
+  "place_by_hp": {
+   "below": [
+    "Brown",
+    300.0
+   ],
+   "above": [
+    "Yellow",
+    320.0
+   ],
+   "fractional_tier": 8.24,
+   "iso_colour": "FireBlu"
+  },
+  "place_by_dps": {
+   "below": [
+    "Cyan",
+    5.1
+   ],
+   "above": [
+    "Black",
+    8.4
+   ],
+   "fractional_tier": 1.0,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Mancubus",
+  "class": "Volcabus",
+  "hp": 1400.0,
+  "hp_src": "/tmp/xmve_04/Volcabus.txt:4",
+  "speed": {
+   "speed": 8.0,
+   "src": "/tmp/xmve_04/Mancubus.txt:26",
+   "fastspeed": 12.0,
+   "fastspeed_src": "/tmp/xmve_04/Mancubus.txt:27"
+  },
+  "painchance": 80.0,
+  "painchance_src": "QuestZDoom 17.3 zscript/actors/doom/fatso.zs:15",
+  "flags": [
+   "BOSSDEATH"
+  ],
+  "attack_dps_hold_256": 155.1,
+  "attack_dps_hold_512": 57.2,
+  "attack_dps_contact": 449.5,
+  "attacks_per_s_256": 2.22,
+  "dps_by_attack_256": {
+   "VolcabusBall": 155.1
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 1400,
+  "dps_256": 155.1,
+  "dps_512": 57.2,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.92,
+   "hops": true,
+   "charges": false,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "self-heal": "/tmp/xmve_04/Volcabus.txt:39",
+   "hops/leaps": "/tmp/xmve_04/Volcabus.txt:223",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/Volcabus.txt:448",
+   "summons (Volcabus)": "/tmp/xmve_04/Mancubus.txt:136",
+   "fire damage": "/tmp/xmve_04/Mancubus.txt:243",
+   "spawns monsters on death (Fatso)": "/tmp/xmve_04/Mancubus.txt:560"
+  },
+  "sim_tags": [],
+  "set": "xmve",
+  "challenge_index": 36.88,
+  "place_by_ci": {
+   "below": [
+    "Red",
+    27.92
+   ],
+   "above": [
+    "Abyss",
+    47.82
+   ],
+   "fractional_tier": 10.52,
+   "iso_colour": "Abyss"
+  },
+  "place_by_hp": {
+   "below": [
+    "FireBlu",
+    1400.0
+   ],
+   "above": [
+    "Red",
+    1600.0
+   ],
+   "fractional_tier": 9.53,
+   "iso_colour": "Red"
+  },
+  "place_by_dps": {
+   "below": [
+    "Red",
+    64.6
+   ],
+   "above": [
+    "White",
+    108.85
+   ],
+   "fractional_tier": 12.91,
+   "iso_colour": "White"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "XVStealthZSpecOps",
+  "hp": 120.0,
+  "hp_src": "/tmp/xmve_04/ZSpecOps.txt:5",
+  "speed": {
+   "speed": 5.0,
+   "src": "/tmp/xmve_04/ZSpecOps.txt:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_04/ZSpecOps.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEEVENMORE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 10.5,
+  "attack_dps_hold_512": 4.8,
+  "attack_dps_contact": 36.3,
+  "attacks_per_s_256": 9.86,
+  "dps_by_attack_256": {
+   "ZombieManTracer": 10.5,
+   "OrangeLensFlareAlt": 0.0,
+   "SmokeSpawner": 0.0,
+   "EmptyClipSpawn": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 120,
+  "dps_256": 10.5,
+  "dps_512": 4.8,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.49,
+   "hops": true,
+   "charges": true,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/ZSpecOps.txt:510",
+   "hops/leaps": "/tmp/xmve_04/ZSpecOps.txt:526",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_04/ZSpecOps.txt:577",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/ZSpecOps.txt:588",
+   "spawns monsters on death (ZSpecOps)": "/tmp/xmve_04/ZSpecOps.txt:605",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/ZSpecOps.txt:875",
+   "spawns monsters on death (DeadShotgunGuy)": "/tmp/xmve_04/ZSpecOps.txt:1070",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/ZSpecOps.txt:1119",
+   "summons (VanillaChaingunguy)": "/tmp/xmve_07/Comando.txt:53",
+   "spawns monsters on death (BrutalizedCommando1)": "/tmp/xmve_07/Comando.txt:488",
+   "spawns monsters on death (BrutalizedCommandoLostHead)": "/tmp/xmve_07/Comando.txt:549",
+   "spawns monsters on death (BrutalizedCommandoLostHead2)": "/tmp/xmve_07/Comando.txt:562",
+   "spawns monsters on death (BurningcHAINGUNGUY)": "/tmp/xmve_07/Comando.txt:699",
+   "self-heal": "/tmp/xmve_07/Comando.txt:835",
+   "spawns monsters on death (ChaingunGuy)": "/tmp/xmve_07/Comando.txt:840",
+   "spawns monsters on death (BrutalizedCommandoBlasted)": "/tmp/xmve_07/Comando.txt:879"
+  },
+  "sim_tags": [
+   "dashes"
+  ],
+  "set": "xmve",
+  "challenge_index": 3.04,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    2.89
+   ],
+   "above": [
+    "Gray",
+    4.14
+   ],
+   "fractional_tier": 3.25,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    120.0
+   ],
+   "above": [
+    "Cyan",
+    125.0
+   ],
+   "fractional_tier": 4.0,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "Blue",
+    7.1
+   ],
+   "above": [
+    "Gray",
+    9.3
+   ],
+   "fractional_tier": 1.28,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "ZSpecOps",
+  "hp": 120.0,
+  "hp_src": "/tmp/xmve_04/ZSpecOps.txt:5",
+  "speed": {
+   "speed": 5.0,
+   "src": "/tmp/xmve_04/ZSpecOps.txt:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_04/ZSpecOps.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEEVENMORE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 10.5,
+  "attack_dps_hold_512": 4.7,
+  "attack_dps_contact": 37.4,
+  "attacks_per_s_256": 9.78,
+  "dps_by_attack_256": {
+   "ZombieManTracer": 10.5,
+   "OrangeLensFlareAlt": 0.0,
+   "SmokeSpawner": 0.0,
+   "EmptyClipSpawn": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 120,
+  "dps_256": 10.5,
+  "dps_512": 4.7,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.48,
+   "hops": true,
+   "charges": true,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/ZSpecOps.txt:510",
+   "hops/leaps": "/tmp/xmve_04/ZSpecOps.txt:526",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_04/ZSpecOps.txt:577",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/ZSpecOps.txt:588",
+   "spawns monsters on death (ZSpecOps)": "/tmp/xmve_04/ZSpecOps.txt:605",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/ZSpecOps.txt:875",
+   "spawns monsters on death (DeadShotgunGuy)": "/tmp/xmve_04/ZSpecOps.txt:1070",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/ZSpecOps.txt:1119",
+   "summons (VanillaChaingunguy)": "/tmp/xmve_07/Comando.txt:53",
+   "spawns monsters on death (BrutalizedCommando1)": "/tmp/xmve_07/Comando.txt:488",
+   "spawns monsters on death (BrutalizedCommandoLostHead)": "/tmp/xmve_07/Comando.txt:549",
+   "spawns monsters on death (BrutalizedCommandoLostHead2)": "/tmp/xmve_07/Comando.txt:562",
+   "spawns monsters on death (BurningcHAINGUNGUY)": "/tmp/xmve_07/Comando.txt:699",
+   "self-heal": "/tmp/xmve_07/Comando.txt:835",
+   "spawns monsters on death (ChaingunGuy)": "/tmp/xmve_07/Comando.txt:840",
+   "spawns monsters on death (BrutalizedCommandoBlasted)": "/tmp/xmve_07/Comando.txt:879"
+  },
+  "sim_tags": [
+   "dashes"
+  ],
+  "set": "xmve",
+  "challenge_index": 3.03,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    2.89
+   ],
+   "above": [
+    "Gray",
+    4.14
+   ],
+   "fractional_tier": 3.25,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    120.0
+   ],
+   "above": [
+    "Cyan",
+    125.0
+   ],
+   "fractional_tier": 4.0,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "Blue",
+    7.1
+   ],
+   "above": [
+    "Gray",
+    9.3
+   ],
+   "fractional_tier": 1.26,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "ZSpecOpsRail",
+  "hp": 140.0,
+  "hp_src": "/tmp/xmve_07/ZspecopsRail.txt:5",
+  "speed": {
+   "speed": 6.0,
+   "src": "/tmp/xmve_07/ZspecopsRail.txt:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_07/ZspecopsRail.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEEVENMORE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 9.6,
+  "attack_dps_hold_512": 4.8,
+  "attack_dps_contact": 16.9,
+  "attacks_per_s_256": 0.78,
+  "dps_by_attack_256": {
+   "railgun": 9.6,
+   "SmokeSpawner": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 140,
+  "dps_256": 9.6,
+  "dps_512": 4.8,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.99,
+   "hops": true,
+   "charges": true,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "railgun": "/tmp/xmve_07/ZspecopsRail.txt:181",
+   "invulnerable phase": "/tmp/xmve_07/ZspecopsRail.txt:304",
+   "hops/leaps": "/tmp/xmve_07/ZspecopsRail.txt:320",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_07/ZspecopsRail.txt:371",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_07/ZspecopsRail.txt:382",
+   "spawns monsters on death (ZSpecOps)": "/tmp/xmve_07/ZspecopsRail.txt:400",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_07/ZspecopsRail.txt:670",
+   "spawns monsters on death (DeadShotgunGuy)": "/tmp/xmve_07/ZspecopsRail.txt:866",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_07/ZspecopsRail.txt:918",
+   "summons (VanillaChaingunguy)": "/tmp/xmve_07/Comando.txt:53",
+   "spawns monsters on death (BrutalizedCommando1)": "/tmp/xmve_07/Comando.txt:488",
+   "spawns monsters on death (BrutalizedCommandoLostHead)": "/tmp/xmve_07/Comando.txt:549",
+   "spawns monsters on death (BrutalizedCommandoLostHead2)": "/tmp/xmve_07/Comando.txt:562",
+   "spawns monsters on death (BurningcHAINGUNGUY)": "/tmp/xmve_07/Comando.txt:699",
+   "self-heal": "/tmp/xmve_07/Comando.txt:835",
+   "spawns monsters on death (ChaingunGuy)": "/tmp/xmve_07/Comando.txt:840",
+   "spawns monsters on death (BrutalizedCommandoBlasted)": "/tmp/xmve_07/Comando.txt:879"
+  },
+  "sim_tags": [
+   "dashes",
+   "railgun"
+  ],
+  "set": "xmve",
+  "challenge_index": 3.33,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    2.89
+   ],
+   "above": [
+    "Gray",
+    4.14
+   ],
+   "fractional_tier": 3.39,
+   "iso_colour": "Blue"
+  },
+  "place_by_hp": {
+   "below": [
+    "Cyan",
+    125.0
+   ],
+   "above": [
+    "Yellow",
+    200.0
+   ],
+   "fractional_tier": 5.19,
+   "iso_colour": "Cyan"
+  },
+  "place_by_dps": {
+   "below": [
+    "Blue",
+    7.1
+   ],
+   "above": [
+    "Gray",
+    9.3
+   ],
+   "fractional_tier": 1.11,
+   "iso_colour": "Common"
+  }
+ },
+ {
+  "family": "Chaingunner",
+  "class": "ZSpecOpsRifle",
+  "hp": 120.0,
+  "hp_src": "/tmp/xmve_04/ZSpecOpsRifle.txt:5",
+  "speed": {
+   "speed": 5.0,
+   "src": "/tmp/xmve_04/ZSpecOpsRifle.txt:10"
+  },
+  "painchance": 180.0,
+  "painchance_src": "/tmp/xmve_04/ZSpecOpsRifle.txt:11",
+  "flags": [
+   "AVOIDMELEE",
+   "MISSILEEVENMORE",
+   "MISSILEMORE"
+  ],
+  "attack_dps_hold_256": 16.0,
+  "attack_dps_hold_512": 7.4,
+  "attack_dps_contact": 56.4,
+  "attacks_per_s_256": 15.09,
+  "dps_by_attack_256": {
+   "ZombieManTracer": 16.0,
+   "OrangeLensFlareAlt": 0.0,
+   "SmokeSpawner": 0.0,
+   "EmptyClipSpawn": 0.0
+  },
+  "contact_share_256": 0.0,
+  "contact_share_512": 0.0,
+  "summons": {},
+  "added_threat": {
+   "summoned_hp_20s": 0,
+   "summoned_dps_256": 0.0,
+   "summoned_dps_512": 0.0
+  },
+  "reflecting_shield_helper": false,
+  "heal_others_20s": 0,
+  "self_heal_20s": 0,
+  "raise_hp_20s": 0,
+  "invulnerable_share": 0.0,
+  "reflective_share": 0.0,
+  "ehp": 120,
+  "dps_256": 16.0,
+  "dps_512": 7.4,
+  "mobility": {
+   "ground_speed_u_per_tic": 2.43,
+   "hops": true,
+   "charges": true,
+   "teleports": false,
+   "floats": false
+  },
+  "threat_abilities": {
+   "invulnerable phase": "/tmp/xmve_04/ZSpecOpsRifle.txt:403",
+   "hops/leaps": "/tmp/xmve_04/ZSpecOpsRifle.txt:419",
+   "summons via SplatteredSmall (BootSmearerRed)": "/tmp/xmve_04/ZSpecOpsRifle.txt:470",
+   "summons via GrowingBloodPool (BootSmearerRed)": "/tmp/xmve_04/ZSpecOpsRifle.txt:481",
+   "spawns monsters on death (ZSpecOps)": "/tmp/xmve_04/ZSpecOpsRifle.txt:498",
+   "spawns monsters on death (BrutalizedSergeantLeg)": "/tmp/xmve_04/ZSpecOpsRifle.txt:768",
+   "spawns monsters on death (DeadShotgunGuy)": "/tmp/xmve_04/ZSpecOpsRifle.txt:963",
+   "spawns monsters on death (BurningZombieMan)": "/tmp/xmve_04/ZSpecOpsRifle.txt:1014",
+   "railgun": "/tmp/xmve_07/ZspecopsRail.txt:181",
+   "summons (VanillaChaingunguy)": "/tmp/xmve_07/Comando.txt:53",
+   "spawns monsters on death (BrutalizedCommando1)": "/tmp/xmve_07/Comando.txt:488",
+   "spawns monsters on death (BrutalizedCommandoLostHead)": "/tmp/xmve_07/Comando.txt:549",
+   "spawns monsters on death (BrutalizedCommandoLostHead2)": "/tmp/xmve_07/Comando.txt:562",
+   "spawns monsters on death (BurningcHAINGUNGUY)": "/tmp/xmve_07/Comando.txt:699",
+   "self-heal": "/tmp/xmve_07/Comando.txt:835",
+   "spawns monsters on death (ChaingunGuy)": "/tmp/xmve_07/Comando.txt:840",
+   "spawns monsters on death (BrutalizedCommandoBlasted)": "/tmp/xmve_07/Comando.txt:879"
+  },
+  "sim_tags": [
+   "dashes"
+  ],
+  "set": "xmve",
+  "challenge_index": 3.74,
+  "place_by_ci": {
+   "below": [
+    "Green",
+    2.89
+   ],
+   "above": [
+    "Gray",
+    4.14
+   ],
+   "fractional_tier": 3.56,
+   "iso_colour": "Purple"
+  },
+  "place_by_hp": {
+   "below": [
+    "Purple",
+    120.0
+   ],
+   "above": [
+    "Cyan",
+    125.0
+   ],
+   "fractional_tier": 4.0,
+   "iso_colour": "Purple"
+  },
+  "place_by_dps": {
+   "below": [
+    "Gray",
+    9.3
+   ],
+   "above": [
+    "Green",
+    14.100000000000001
+   ],
+   "fractional_tier": 3.43,
+   "iso_colour": "Blue"
+  }
+ }
+]

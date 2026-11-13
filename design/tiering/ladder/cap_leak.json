@@ -1,0 +1,80 @@
+{
+ "1": {
+  "mean_share_above_cap": 0.0,
+  "max_share_above_cap": 0.0,
+  "max_family": "Chaingunner",
+  "mean_boss_share": 0.0
+ },
+ "2": {
+  "mean_share_above_cap": 0.0,
+  "max_share_above_cap": 0.0,
+  "max_family": "Chaingunner",
+  "mean_boss_share": 0.0
+ },
+ "3": {
+  "mean_share_above_cap": 0.0,
+  "max_share_above_cap": 0.0,
+  "max_family": "Chaingunner",
+  "mean_boss_share": 0.0
+ },
+ "4": {
+  "mean_share_above_cap": 0.0,
+  "max_share_above_cap": 0.0,
+  "max_family": "Chaingunner",
+  "mean_boss_share": 0.0
+ },
+ "5": {
+  "mean_share_above_cap": 0.005827751393109555,
+  "max_share_above_cap": 0.010268857356235997,
+  "max_family": "Shotgunner",
+  "mean_boss_share": 0.00037605020696907426
+ },
+ "6": {
+  "mean_share_above_cap": 0.009483538260685853,
+  "max_share_above_cap": 0.013779870922728067,
+  "max_family": "Imp",
+  "mean_boss_share": 0.000610692650885485
+ },
+ "7": {
+  "mean_share_above_cap": 0.003580935328276084,
+  "max_share_above_cap": 0.005201658297262949,
+  "max_family": "Demon",
+  "mean_boss_share": 0.0005905955581267528
+ },
+ "8": {
+  "mean_share_above_cap": 0.004235874166496668,
+  "max_share_above_cap": 0.006541996180417591,
+  "max_family": "Demon",
+  "mean_boss_share": 0.0006908755809931883
+ },
+ "9": {
+  "mean_share_above_cap": 0.004922269561234226,
+  "max_share_above_cap": 0.007639218165533955,
+  "max_family": "Imp",
+  "mean_boss_share": 0.0007975792667598055
+ },
+ "10": {
+  "mean_share_above_cap": 0.000784890794462133,
+  "max_share_above_cap": 0.001412751068640557,
+  "max_family": "Cyberdemon",
+  "mean_boss_share": 0.000784890794462133
+ },
+ "11": {
+  "mean_share_above_cap": 0.0008671360889602666,
+  "max_share_above_cap": 0.0015415376676986585,
+  "max_family": "Cyberdemon",
+  "mean_boss_share": 0.0008671360889602666
+ },
+ "12": {
+  "mean_share_above_cap": 0.00018730283089979195,
+  "max_share_above_cap": 0.00025758969641214346,
+  "max_family": "Mancubus",
+  "mean_boss_share": 0.0033862829352913244
+ },
+ "13": {
+  "mean_share_above_cap": 0.0,
+  "max_share_above_cap": 0,
+  "max_family": "Chaingunner",
+  "mean_boss_share": 0.0040839922965998695
+ }
+}
