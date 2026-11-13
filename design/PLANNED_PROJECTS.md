@@ -52,8 +52,8 @@ speed in slow motion (the ledge save). No rope, reel, swing or climb: those are 
   Pound stays Melee's, fists only, so it is not triggered by accident) and it is SPIKED straight down. You hang in the
   air until it hits the floor. On impact: RSQ Grenade's #10 Neon Crescent (taken OUT of the barrels' random rotation:
   the spike's own explosion), blood, fire and a shockwave round the impact. The blast counts as a close explosion and
-  triggers contextual slow motion on your descent. (To build: RSQ SlowMo's Close Call today is a rocket or fireball
-  about to hit you, not an explosion near you; that trigger has to be added for this.)
+  triggers contextual slow motion on your descent: a new RSQ SlowMo trigger **Grapple-Slam: On / Off** beside its
+  Barrel Near You (owner 00:19).
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
