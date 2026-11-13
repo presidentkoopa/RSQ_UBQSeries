@@ -1,0 +1,307 @@
+AX STATE t0 main Rifle off none pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+AX STATE t1 main Rifle off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+RSQ offhand rule t43: MP40 picked up: its off-hand version comes with it
+RSQ offhand rule t43: Shotgun picked up: its off-hand version comes with it
+RSQ offhand rule t43: Super shotgun picked up: its off-hand version comes with it
+RSQ offhand rule t43: Axe picked up: its off-hand version comes with it
+AX STATE t43 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t48 main Shot_Gun off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+S1_SHOTGUN_TO_RCHEST
+AX RIG t105 tag 1 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+AX INV t105 tag 1 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t117 main hand at Right chest: main Shot_Gun, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_RULE t119 assign (bright) at Right chest, picture Shot_Gun
+AX STATE t119 main Shot_Gun off rsq_hands pend Melee_Attacks | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t120 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t153 main SSG off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+S2_SSG_TO_LCHEST
+AX RIG t213 tag 2 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=Shot_Gun a:Shot_Gun] 
+AX INV t213 tag 2 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t226 main hand at Left chest: main SSG, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_RULE t227 assign (bright) at Left chest, picture SSG
+AX STATE t227 main SSG off rsq_hands pend Melee_Attacks | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t236 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t261 main MP40 off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+A1_MAIN_UNASSIGNED_MP40_AT_SHOTGUN_HOLSTER
+AX RIG t322 tag 3 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=SSG a:SSG] [Right chest=Shot_Gun a:Shot_Gun] 
+AX INV t322 tag 3 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t334 main hand at Right chest: main MP40, off rsq_hands; holding Shot_Gun, assigned Shot_Gun; swap mode Into the Wheel
+T_SWAP t337 main hand, Into the Wheel: MP40 leaves the hand (carried, no holster), Shot_Gun comes out of Right chest; [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=SSG a:SSG] [Right chest=- a:Shot_Gun] 
+AX STATE t337 main MP40 off rsq_hands pend Shot_Gun | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t338 main Shot_Gun off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+A2_MAIN_ASSIGNED_SHOTGUN_AT_SSG_HOLSTER
+AX RIG t400 tag 4 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=SSG a:SSG] [Right chest=- a:Shot_Gun] 
+AX INV t400 tag 4 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t411 main hand at Left chest: main Shot_Gun, off rsq_hands; holding SSG, assigned SSG; swap mode Into the Wheel
+T_LOCK t413: Shot_Gun is locked to Right chest: it goes there, not to Left chest (SSG comes out)
+AX STATE t413 main SSG off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t477 main SSG off RSQ_Off_MP40 pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+A3_OFF_MP40COPY_AT_SHOTGUN_HOLSTER
+AX RIG t537 tag 5 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:SSG] [Right chest=Shot_Gun a:Shot_Gun] 
+AX INV t537 tag 5 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t549 off hand at Right chest: main SSG, off RSQ_Off_MP40; holding Shot_Gun, assigned Shot_Gun; swap mode Into the Wheel
+T_SWAP t551 off hand, Into the Wheel: RSQ_Off_MP40 leaves the hand (carried, no holster), Shot_Gun comes out of Right chest to the off hand; [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:SSG] [Right chest=- a:Shot_Gun] 
+AX STATE t554 main SSG off RSQ_Off_MP40 pend Shot_Gun | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+RSQ offhand rule t555: Shot_Gun on its way to the off hand -> RSQ_Off_Shot_Gun
+AX STATE t555 main SSG off RSQ_Off_Shot_Gun pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+B0_SET_MODE_1_OFF_SHOTGUN_HOME
+AX RIG t645 tag 6 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:SSG] [Right chest=- a:Shot_Gun] 
+AX INV t645 tag 6 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t658 off hand at Right chest: main SSG, off RSQ_Off_Shot_Gun; holding -, assigned Shot_Gun; swap mode Takes That Holster
+AX STATE t663 main SSG off RSQ_Off_Shot_Gun pend rsq_hands | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t664 main SSG off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t723 main MP40 off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+B1_MAIN_UNASSIGNED_MP40_AT_SHOTGUN_HOLSTER
+AX RIG t783 tag 7 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:SSG] [Right chest=Shot_Gun a:Shot_Gun] 
+AX INV t783 tag 7 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t795 main hand at Right chest: main MP40, off rsq_hands; holding Shot_Gun, assigned Shot_Gun; swap mode Takes That Holster
+T_RULE t797 assign (bright) at Right chest, picture MP40
+T_SWAP t797 main hand, Takes That Holster: MP40 goes into Right chest (now MP40's; it was Shot_Gun's), Shot_Gun comes to the main hand
+AX STATE t797 main Shot_Gun off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t862 main SSG off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+B2_MAIN_ASSIGNED_SSG_AT_MP40_HOLSTER
+AX RIG t922 tag 8 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:SSG] [Right chest=MP40 a:MP40] 
+AX INV t922 tag 8 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t933 main hand at Right chest: main SSG, off rsq_hands; holding MP40, assigned MP40; swap mode Takes That Holster
+T_RULE t935 assign (bright) at Right chest, picture SSG
+T_SWAP t935 main hand, Takes That Holster: SSG goes into Right chest (now SSG's; it was MP40's), MP40 comes to the main hand
+AX STATE t935 main SSG off rsq_hands pend MP40 | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t939 main MP40 off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t999 main MP40 off RSQ_Off_Rifle pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+B3_OFF_RIFLECOPY_AT_SSG_HOLSTER
+AX RIG t1060 tag 9 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=SSG a:SSG] 
+AX INV t1060 tag 9 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t1072 off hand at Right chest: main MP40, off RSQ_Off_Rifle; holding SSG, assigned SSG; swap mode Takes That Holster
+T_RULE t1074 assign (bright) at Right chest, picture Rifle
+T_SWAP t1074 off hand, Takes That Holster: Rifle goes into Right chest (now Rifle's; it was SSG's), SSG comes to the off hand
+AX STATE t1076 main MP40 off RSQ_Off_Rifle pend SSG | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+RSQ offhand rule t1077: SSG on its way to the off hand -> RSQ_Off_SSG
+AX STATE t1077 main MP40 off RSQ_Off_SSG pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t1167 main Shot_Gun off RSQ_Off_SSG pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+K1_GUN_AT_SHIELDSAW_SHOULDER_R
+AX RIG t1229 tag 10 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t1229 tag 10 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t1239 main hand at Right shoulder: main Shot_Gun, off RSQ_Off_SSG; holding -, assigned -; swap mode Takes That Holster
+T_RULE t1242 assign (bright) at Right shoulder, picture Shot_Gun
+AX STATE t1242 main Shot_Gun off RSQ_Off_SSG pend Melee_Attacks | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t1249 main Melee_Attacks off RSQ_Off_SSG pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+K2_GUN_AT_SHIELDSAW_SHOULDER_L
+AX RIG t1296 tag 11 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t1296 tag 11 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t1307 main hand at Left shoulder: main Melee_Attacks, off RSQ_Off_SSG; holding -, assigned -; swap mode Takes That Holster
+T_REFUSE t1307 hand 0: double pulse and *usefail
+K3_DONE
+AX RIG t1363 tag 12 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t1363 tag 12 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX STATE t1363 main BrutalAxe off RSQ_Off_SSG pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+X1_AXE_TO_RHIP
+AX RIG t1424 tag 20 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t1424 tag 20 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t1436 main hand at Right hip: main BrutalAxe, off RSQ_Off_SSG; holding -, assigned -; swap mode Into the Wheel
+T_RULE t1438 assign (bright) at Right hip, picture BrutalAxe
+AX STATE t1438 main BrutalAxe off RSQ_Off_SSG pend Melee_Attacks | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t1440 main Melee_Attacks off RSQ_Off_SSG pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t1492 main MP40 off RSQ_Off_SSG pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+X2_MP40_TO_LHIP
+AX RIG t1553 tag 21 [Left hip=- a:-] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t1553 tag 21 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t1564 main hand at Left hip: main MP40, off RSQ_Off_SSG; holding -, assigned -; swap mode Into the Wheel
+T_RULE t1566 assign (bright) at Left hip, picture MP40
+AX STATE t1566 main Melee_Attacks off RSQ_Off_SSG pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+X3_OFF_DRAWS_AXE_FROM_RHIP
+AX RIG t1620 tag 22 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t1620 tag 22 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t1631 off hand at Right hip: main Melee_Attacks, off RSQ_Off_SSG; holding BrutalAxe, assigned BrutalAxe; swap mode Into the Wheel
+T_SWAP t1632 off hand, Into the Wheel: RSQ_Off_SSG leaves the hand (carried, no holster), BrutalAxe comes out of Right hip to the off hand; [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX STATE t1632 main Melee_Attacks off RSQ_Off_SSG pend BrutalAxe | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+RSQ offhand rule t1633: BrutalAxe on its way to the off hand -> RSQ_Off_BrutalAxe
+AX STATE t1633 main Melee_Attacks off RSQ_Off_BrutalAxe pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+X4_THROW_OFF_AXE
+AX RIG t1728 tag 23 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t1728 tag 23 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX STATE t1756 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 1
+AX STATE t1757 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+X5_PULL_OFF_THROWN_AXE_WITH_OFF_HAND
+AX FLOOR t1860 #0 BrutalAxe at (-330 255 64) dist 256 vel 0.0 special 1
+AX RIG t1860 tag 24 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t1860 tag 24 RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX FLOOR t1860 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 special 1
+[RSQDG] hand 1 LOCKED BrutalAxe
+[RSQDG] hand 1 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+RSQ axegrab t1902: hand 1 pulled an axe -> claimed: the off hand's axe again, held in the off hand
+[RSQDG] hand 1: the pickup refused BrutalAxe, its own pack claimed it (pickup.claim): taken, no AMMO FULL
+[RSQDG] hand 1 caught and USED BrutalAxe
+AX STATE t1902 main Melee_Attacks off rsq_hands pend RSQ_Off_BrutalAxe | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t1903 main Melee_Attacks off RSQ_Off_BrutalAxe pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+X6_THROW_OFF_AXE_AGAIN
+AX FLOOR t2011 none
+AX RIG t2011 tag 25 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t2011 tag 25 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX STATE t2040 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 1
+AX STATE t2041 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+X7_PULL_WITH_MAIN_HAND
+AX FLOOR t2144 #0 BrutalAxe at (-330 255 64) dist 256 vel 0.0 special 1
+AX RIG t2144 tag 26 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t2144 tag 26 RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX FLOOR t2144 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 special 1
+[RSQDG] hand 0 LOCKED BrutalAxe
+[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+RSQ axegrab t2186: hand 0 pulled an axe -> claimed: the main hand holds its axe, this one is the off hand's
+[RSQDG] hand 0: the pickup refused BrutalAxe, its own pack claimed it (pickup.claim): taken, no AMMO FULL
+[RSQDG] hand 0 caught and USED BrutalAxe
+AX STATE t2186 main Melee_Attacks off rsq_hands pend BrutalAxe | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t2187 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+Distance Grab: the main hand does not reach -- holding a melee weapon (BrutalAxe)
+AX FLOOR t2295 none
+X8_MAIN_AXE_HOME_RHIP
+AX RIG t2325 tag 27 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t2325 tag 27 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t2337 main hand at Right hip: main BrutalAxe, off rsq_hands; holding -, assigned BrutalAxe; swap mode Into the Wheel
+AX STATE t2338 main BrutalAxe off rsq_hands pend Melee_Attacks | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t2342 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+X9_THIRD_AXE_BOTH_CARRIED
+AX RIG t2393 tag 28 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t2393 tag 28 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX FLOOR t2398 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 special 1
+[RSQDG] hand 0 LOCKED BrutalAxe
+[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+RSQ axegrab t2440: hand 0 pulled an axe -> refused: both axes carried, one per hand (AMMO FULL)
+Distance Grab: Axe: you have it and its ammo is full -- left at your feet
+[RSQDG] hand 0 refused -- the pickup refused BrutalAxe (owned, ammo full)
+[RSQDG] hand 0: BrutalAxe carried, ammo full: AMMO FULL, dropped at the feet
+AX FLOOR t2549 #0 BrutalAxe at (-320 28 64) dist 28 vel 0.0 special 1
+AX DELFLOOR t2549 1 floor axes removed
+X10_DRAW_MAIN_AXE_THEN_THROW
+AX RIG t2560 tag 29 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t2560 tag 29 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) BrutalAxe MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t2571 main hand at Right hip: main Melee_Attacks, off rsq_hands; holding BrutalAxe, assigned BrutalAxe; swap mode Into the Wheel
+AX STATE t2572 main Melee_Attacks off rsq_hands pend BrutalAxe | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t2575 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t2666 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 1 OffAxeGone 0
+AX STATE t2677 main Melee_Attacks off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+X11_EMPTY_AXE_HOLSTER_MAIN_COPY_IN_WHEEL
+AX FLOOR t2770 #0 BrutalAxe at (-311 206 64) dist 206 vel 0.0 special 1
+AX RIG t2770 tag 30 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t2770 tag 30 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t2782 main hand at Right hip: main Melee_Attacks, off rsq_hands; holding -, assigned BrutalAxe; swap mode Into the Wheel
+T_HOME t2783 main hand at the empty Right hip: BrutalAxe's own holster gives it from the Wheel -> RSQ_Off_BrutalAxe
+RSQ offhand rule t2783: RSQ_Off_BrutalAxe on its way to the main hand -> BrutalAxe
+AX STATE t2783 main Melee_Attacks off rsq_hands pend BrutalAxe | BrutalAxe 1 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+AX STATE t2786 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+X12_THROW_LAST_AXE
+AX RIG t2858 tag 31 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t2858 tag 31 BrutalAxe RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX STATE t2887 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 0 MainAxeGone 1 OffAxeGone 0
+AX STATE t2898 main Melee_Attacks off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+X13_EMPTY_AXE_HOLSTER_NO_AXE
+AX FLOOR t2991 #0 BrutalAxe at (-311 206 64) dist 206 vel 0.0 special 1
+AX FLOOR t2991 #1 BrutalAxe at (-311 243 64) dist 243 vel 0.0 special 1
+AX RIG t2991 tag 32 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t2991 tag 32 RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t3003 main hand at Right hip: main Melee_Attacks, off rsq_hands; holding -, assigned BrutalAxe; swap mode Into the Wheel
+T_REFUSE t3003 hand 0: double pulse and *usefail
+T_RULE t3003 refuse (red) at Right hip, picture BrutalAxe
+T_EMPTY t3003 hand 0: Right hip is BrutalAxe's, and BrutalAxe is not carried (out in the world): refused, nothing drawn
+X14_PULL_MAIN_NO_AXE
+AX RIG t3059 tag 33 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t3059 tag 33 RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX FLOOR t3059 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 special 1
+AX FLOOR t3059 #1 BrutalAxe at (-344 160 64) dist 162 vel 0.0 special 1
+[RSQDG] hand 0 LOCKED BrutalAxe
+[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+[RSQDG] hand 0 took BrutalAxe: not moved between hands -- a melee weapon (BD22 VR hands its own axe to the grabbing hand)
+[RSQDG] hand 0 caught and USED BrutalAxe
+RSQ axegrab t3102: hand 0 pulled an axe -> main hand
+AX STATE t3102 main Melee_Attacks off rsq_hands pend BrutalAxe | BrutalAxe 1 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+RSQ offhand rule t3103: Axe picked up: its off-hand version comes with it
+AX STATE t3103 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+Distance Grab: the main hand does not reach -- holding a melee weapon (BrutalAxe)
+X15_THROW_AGAIN
+AX RIG t3230 tag 34 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t3230 tag 34 RSQ_Off_BrutalAxe(OFF) BrutalAxe RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX STATE t3259 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 1 OffAxeGone 0
+AX STATE t3270 main Melee_Attacks off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+X16_PULL_AGAIN
+AX RIG t3363 tag 35 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t3363 tag 35 RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX FLOOR t3363 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 special 1
+AX FLOOR t3363 #1 BrutalAxe at (-344 160 64) dist 162 vel 0.0 special 1
+[RSQDG] hand 0 LOCKED BrutalAxe
+[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+[RSQDG] hand 0 took BrutalAxe: not moved between hands -- a melee weapon (BD22 VR hands its own axe to the grabbing hand)
+[RSQDG] hand 0 caught and USED BrutalAxe
+RSQ axegrab t3406: hand 0 pulled an axe -> main hand
+AX STATE t3406 main Melee_Attacks off rsq_hands pend BrutalAxe | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t3407 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+H0_AXE_HOME
+AX RIG t3534 tag 40 [Left hip=MP40 a:MP40] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t3534 tag 40 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+T_PRESS t3546 main hand at Right hip: main BrutalAxe, off rsq_hands; holding -, assigned BrutalAxe; swap mode Into the Wheel
+AX STATE t3547 main BrutalAxe off rsq_hands pend Melee_Attacks | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t3551 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+H1_FULL_HEALTHPLUS
+AX HP t3602 health set 300
+AX ARMOR t3602 armour set 300
+AX STATUS t3602 tag 41 health 300 armour 300 | floor near: HeavyArmor@320 
+AX RIG t3602 tag 42 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t3602 tag 42 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX SPAWN t3602 HealthPlus -> HealthPlus at 160 ahead
+[RSQDG] hand 0 LOCKED HealthPlus
+[RSQDG] hand 0 LAUNCHED HealthPlus  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+[RSQDG] hand 0 refused -- HealthPlus would raise nothing (health 300, armour 299): HEALTH FULL
+[RSQDG] hand 0: HealthPlus carried, health full: HEALTH FULL, dropped at the feet
+[RSQDG] hand 0 LOCKED BrutalAxe
+[RSQDG] hand 0 let go of BrutalAxe (0.0 deg/tic, needed 5.0)
+[RSQDG] hand 0 unlocked BrutalAxe -- opened at rest
+AX STATUS t3755 tag 42 health 300 armour 297 | floor near: HealthPlus@28 
+AX DELFLOOR t3755 2 floor axes removed
+H2_FULL_STIMPACK2
+AX RIG t3760 tag 43 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t3760 tag 43 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX SPAWN t3760 Stimpack2 -> Stimpack2 at 160 ahead
+[RSQDG] hand 0 LOCKED Stimpack2
+[RSQDG] hand 0 LAUNCHED Stimpack2  dist=153  0.20kg  share=0.98  cruise=11.9m/s  limit=140  r=19->2
+[RSQDG] hand 0 refused -- the pickup refused Stimpack2 (health 300, armour 296): HEALTH FULL
+[RSQDG] hand 0: Stimpack2 carried, health full: HEALTH FULL, dropped at the feet
+AX STATUS t3913 tag 43 health 300 armour 294 | floor near: Stimpack2@28 
+AX DELFLOOR t3913 1 floor axes removed
+H3_FULL_ARMORSHARD
+AX RIG t3918 tag 44 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t3918 tag 44 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX SPAWN t3918 ArmorShard -> ArmorShard at 160 ahead
+[RSQDG] hand 0 LOCKED ArmorShard
+[RSQDG] hand 0 LAUNCHED ArmorShard  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+[RSQDG] hand 0 caught and USED ArmorShard
+AX STATUS t4071 tag 44 health 300 armour 294 | floor near: none
+AX DELFLOOR t4071 0 floor axes removed
+H4_FULL_HEAVYARMOR
+AX RIG t4077 tag 45 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t4077 tag 45 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX SPAWN t4077 HeavyArmor -> HeavyArmor at 160 ahead
+[RSQDG] hand 0 LOCKED HeavyArmor
+[RSQDG] hand 0 LAUNCHED HeavyArmor  dist=153  12.00kg  share=0.45  cruise=8.1m/s  limit=140  r=16->2
+[RSQDG] hand 0 refused -- the pickup refused HeavyArmor (health 300, armour 293): ARMOR FULL
+[RSQDG] hand 0: HeavyArmor carried, armor full: ARMOR FULL, dropped at the feet
+AX STATUS t4230 tag 45 health 300 armour 291 | floor near: HeavyArmor@28 
+AX DELFLOOR t4230 1 floor axes removed
+H5_STIMPACK_AT_50
+AX HP t4234 health set 50
+AX ARMOR t4234 armour set 0
+AX RIG t4234 tag 50 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t4234 tag 50 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX SPAWN t4234 Stimpack2 -> Stimpack2 at 160 ahead
+[RSQDG] hand 0 LOCKED Stimpack2
+[RSQDG] hand 0 LAUNCHED Stimpack2  dist=153  0.20kg  share=0.98  cruise=11.9m/s  limit=140  r=20->2
+[RSQDG] hand 0 caught and USED Stimpack2
+H6_SHARD_AT_0_ARMOUR
+AX STATUS t4387 tag 50 health 60 armour 0 | floor near: none
+AX RIG t4387 tag 51 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t4387 tag 51 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX SPAWN t4387 ArmorShard -> ArmorShard at 160 ahead
+[RSQDG] hand 0 LOCKED ArmorShard
+[RSQDG] hand 0 LAUNCHED ArmorShard  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+[RSQDG] hand 0 caught and USED ArmorShard
+END
+AX STATUS t4541 tag 51 health 60 armour 68 | floor near: none
+AX RIG t4541 tag 60 [Left hip=MP40 a:MP40] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=Shot_Gun a:Shot_Gun] [Left chest=- a:-] [Right chest=Rifle a:Rifle] 
+AX INV t4541 tag 60 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQ_Off_SSG(OFF) RSQ_Off_Shot_Gun(OFF) RSQ_Off_MP40(OFF) MP40 SSG Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 

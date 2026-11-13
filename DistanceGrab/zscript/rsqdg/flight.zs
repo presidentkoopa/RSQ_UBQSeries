@@ -31,6 +31,7 @@
 class RSQDG_Flight : EventHandler
 {
 	private transient bool refusedFull;   // TakeInto, this catch: the pickup refused a gun you own, its ammo full (AMMO FULL)
+	private transient String fullSay;    // ...and the word said over it: AMMO FULL, HEALTH FULL or ARMOR FULL (owner 11-12)
 	private Actor  flyActor[2];
 	private int    flyTic[2];
 	private int    flyHold[2];
@@ -403,19 +404,19 @@ class RSQDG_Flight : EventHandler
 		// gets a soft buzz, and it drops at your feet, there for when you are low. The flight ends here.
 		// (Rig 11-10, P2 D3: this sat after the carry below, which takes anything a free hand catches, so it was never
 		// reached and the full gun was carried. It now runs first, on the pickup's own refusal in TakeInto above.)
+		// HEALTH FULL / ARMOR FULL (owner 2026-11-12: "distance grab should not pick up armor shards if we cannot use them,
+		// same for health bonuses, or ... say armor full or health full"): the same refusal for health and armour you
+		// cannot use (TakeInto, FullWord): the word over it, the soft buzz, at your feet -- never used up for nothing.
 		if (refusedFull)
 		{
 			refusedFull = false;
+			String word = fullSay != "" ? fullSay : "AMMO FULL";
 			Restore(hand);
 			a.SetOrigin(pmo.Vec3Angle(pmo.radius + 12, pmo.angle, 0), false);
 			a.Vel = (0, 0, 0);
-			let vsvc = ServiceIterator.Find("RSQVR_Service").Next();
-			int said = vsvc ? vsvc.GetInt("word", "AMMO FULL", 0xFFD040, 1.0, a) : 0;
-			if (!said && p == players[consoleplayer]) pmo.A_Print("Ammo full", 1.0);
-			let feel = RSQDG_Feel.Get();
-			if (feel) { feel.Spike(hand, 0.35, 4); feel.OnDrop(hand, a, p, "pull.full"); }
+			SayFull(hand, a, p, pmo, word);
 			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
-				Console.Printf("[RSQDG] hand %d: %s carried, ammo full: AMMO FULL, dropped at the feet", hand, a.GetClassName());
+				Console.Printf("[RSQDG] hand %d: %s carried, %s: %s, dropped at the feet", hand, a.GetClassName(), word.MakeLower(), word);
 			return false;
 		}
 
@@ -538,10 +539,65 @@ class RSQDG_Flight : EventHandler
 	}
 
 	// The pickup, watched: took or not, and the gun it gave goes to this hand.
+	// The word over a caught thing you cannot use, said once (RSQ VisualRewards' "word", by name; a short print without
+	// it), with the soft buzz and the "pull.full" event.
+	void SayFull(int hand, Actor a, PlayerInfo p, PlayerPawn pmo, String word)
+	{
+		let vsvc = ServiceIterator.Find("RSQVR_Service").Next();
+		int said = vsvc ? vsvc.GetInt("word", word, 0xFFD040, 1.0, a) : 0;
+		if (!said && p == players[consoleplayer]) pmo.A_Print(word.Left(1) .. word.Mid(1).MakeLower(), 1.0);
+		let feel = RSQDG_Feel.Get();
+		if (feel) { feel.Spike(hand, 0.35, 4); feel.OnDrop(hand, a, p, "pull.full"); }
+	}
+	// TakeInto refused it as full this time: the word, else "" (near.zs's walk-up grip reads it too)
+	String RefusedWord() { return refusedFull ? (fullSay != "" ? fullSay : "AMMO FULL") : ""; }
+
+	// HEALTH OR ARMOUR YOU CANNOT USE (owner 2026-11-12). A bonus (Doom's health and armour bonuses and Brutal Doom's
+	// HealthPlus / ArmorShard are ALWAYSPICKUP) is taken by the game even when it raises nothing -- used up for nothing --
+	// so it is judged here, before the pickup: health at the bonus's own ceiling (its MaxAmount, else your max health),
+	// armour at the bonus's MaxSaveAmount. The rest (a stimpack, a medikit, an armour suit) the game refuses itself when it
+	// cannot help (Health / BasicArmorPickup TryPickup), and that refusal is named after the pickup. "" when it can be used.
+	static String FullWord(Inventory inv, PlayerPawn pmo, bool afterRefusal)
+	{
+		if (!inv || !pmo) return "";
+		let hp = Health(inv);
+		if (hp)
+		{
+			if (afterRefusal) return "HEALTH FULL";
+			if (!inv.bALWAYSPICKUP) return "";
+			int top = inv.MaxAmount > 0 ? inv.MaxAmount : pmo.GetMaxHealth(true);
+			return pmo.health >= top ? "HEALTH FULL" : "";
+		}
+		if (Armor(inv))
+		{
+			if (afterRefusal) return "ARMOR FULL";
+			let ab = BasicArmorBonus(inv);
+			if (!ab || !inv.bALWAYSPICKUP) return "";
+			let ba = BasicArmor(pmo.FindInventory("BasicArmor"));
+			int cur = ba ? ba.Amount : 0;
+			int top = ab.MaxSaveAmount + (ba ? ba.BonusCount : 0);     // BasicArmorBonus.Use's own ceiling
+			return cur >= top ? "ARMOR FULL" : "";
+		}
+		return "";
+	}
+
 	bool TakeInto(int hand, Inventory inv, PlayerPawn pmo, PlayerInfo p)
 	{
 		refusedFull = false;
+		fullSay = "";
 		if (!inv || !pmo || !p) return false;
+		if (RSQDG_Reach.Flag("rsqdg_catch_takes", p, true))
+		{
+			String fw = FullWord(inv, pmo, false);
+			if (fw != "")
+			{
+				refusedFull = true;
+				fullSay = fw;
+				if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
+					Console.Printf("[RSQDG] hand %d refused -- %s would raise nothing (health %d, armour %d): %s", hand, inv.GetClassName(), pmo.health, pmo.CountInv("BasicArmor"), fw);
+				return false;
+			}
+		}
 		Array<Weapon> had;
 		for (let it = pmo.Inv; it; it = it.Inv) { let ow = Weapon(it); if (ow) had.Push(ow); }
 		class<Inventory> icls = inv.GetClass();
@@ -555,7 +611,27 @@ class RSQDG_Flight : EventHandler
 		Array<class<Weapon> > seen;
 		if (watch) { seen.Copy(watch.seen); watch.Destroy(); }
 		Weapon w = WhichGave(pmo, seen, had);
+		// CLAIMED BY ITS OWN PACK (owner 2026-11-12, the axe: "when i try to distance grab my axe it says ammo full"). A
+		// pickup the game refused may still be one another pack hands out by its own rule: BD22 VR Reloaded's axe, refused
+		// because you still carry the other hand's axe, is that pack's to give to the hand that grabbed it (one axe per
+		// hand, rsvr/axegrab.zs). It is asked first ("pickup.claim", grab.event); a claim is a catch that was used (the
+		// claimer gives the weapon and takes the thing away). Nobody claims: AMMO FULL, as before.
+		String icn = inv.GetClassName();
+		if (!took && RSQDG_Events.Ask("pickup.claim", hand, inv) > 0)
+		{
+			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
+				Console.Printf("[RSQDG] hand %d: the pickup refused %s, its own pack claimed it (pickup.claim): taken, no AMMO FULL", hand, icn);
+			return true;
+		}
 		if (took) HandKeep(pmo, p, hand, w);
+		else if (!w && RSQDG_Reach.Flag("rsqdg_catch_takes", p, true) && FullWord(inv, pmo, true) != "")
+		{
+			// health or armour the game refused: it cannot help you now (HEALTH FULL / ARMOR FULL)
+			refusedFull = true;
+			fullSay = FullWord(inv, pmo, true);
+			if (RSQDG_Reach.Flag("rsqdg_trace", p, false))
+				Console.Printf("[RSQDG] hand %d refused -- the pickup refused %s (health %d, armour %d): %s", hand, icn, pmo.health, pmo.CountInv("BasicArmor"), fullSay);
+		}
 		else if (w && RSQDG_Reach.Flag("rsqdg_catch_takes", p, true))
 		{
 			// EQUIPPED ANYWAY (owner 11-06, BUGS_1.0 item 16: "a weapon caught in the off hand is equipped, every time"):

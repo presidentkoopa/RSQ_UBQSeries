@@ -1,0 +1,62 @@
+AX STATE t0 main Rifle off none pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+AX STATE t1 main Rifle off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+RSQ offhand rule t41: Shotgun picked up: its off-hand version comes with it
+RSQ offhand rule t41: Axe picked up: its off-hand version comes with it
+AX STATE t41 main Shot_Gun off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t45 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+R1_AXE_TO_RHIP
+AX RIG t106 tag 1 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_PRESS t117 main hand at Right hip: main BrutalAxe, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_RULE t119 assign (bright) at Right hip, picture BrutalAxe
+AX STATE t119 main BrutalAxe off rsq_hands pend Melee_Attacks | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t122 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t163 main Melee_Attacks off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+R2_SOFT_REFUSAL_NO_AXE_LOOKING_DOWN
+AX INV t174 tag 2 RSQ_Off_Shot_Gun(OFF) Shot_Gun RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX RIG t174 tag 2 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_PRESS t195 main hand at Right hip: main Melee_Attacks, off rsq_hands; holding -, assigned BrutalAxe; swap mode Into the Wheel
+T_REFUSE t195 hand 0: double pulse and *usefail
+T_RULE t195 refuse (red) at Right hip, picture BrutalAxe
+T_EMPTY t195 hand 0: Right hip is BrutalAxe's, and BrutalAxe is not carried (out in the world): refused, nothing drawn
+AX STATE t240 main Shot_Gun off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+R3_GUN_AT_SHIELDSAW_SHOULDER
+AX RIG t300 tag 3 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_PRESS t313 main hand at Left shoulder: main Shot_Gun, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_REFUSE t313 hand 0: double pulse and *usefail
+T_RULE t313 refuse (red) at Left shoulder, picture SSQ_ShieldSaw
+T_ASSIGN t313: Shot_Gun may not go into Left shoulder (assigned to , holding )
+R4_GUN_AT_SHIELDSAW_SHOULDER_MODE_B
+AX RIG t369 tag 4 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_PRESS t381 main hand at Left shoulder: main Shot_Gun, off rsq_hands; holding -, assigned -; swap mode Takes That Holster
+T_REFUSE t381 hand 0: double pulse and *usefail
+T_RULE t381 refuse (red) at Left shoulder, picture SSQ_ShieldSaw
+T_ASSIGN t381: Shot_Gun may not go into Left shoulder (assigned to , holding )
+T_PRESS t454 main hand at Right chest: main Shot_Gun, off rsq_hands; holding -, assigned -; swap mode Into the Wheel
+T_RULE t457 assign (bright) at Right chest, picture Shot_Gun
+AX STATE t457 main Melee_Attacks off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+R5_FULL_ARMORSHARD_AT_400
+AX HP t510 health set 300
+AX ARMOR t510 armour set 400
+AX STATUS t510 tag 5 health 300 armour 400 | floor near: HeavyArmor@320 
+AX RIG t510 tag 5 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=Shot_Gun a:Shot_Gun] 
+AX SPAWN t510 ArmorShard -> ArmorShard at 160 ahead
+[RSQDG] hand 0 LOCKED ArmorShard
+[RSQDG] hand 0 LAUNCHED ArmorShard  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+[RSQDG] hand 0 refused -- ArmorShard would raise nothing (health 300, armour 399): ARMOR FULL
+[RSQDG] hand 0: ArmorShard carried, armor full: ARMOR FULL, dropped at the feet
+AX WORDS t553 [ARMOR FULL on ArmorShard] 
+AX WORDS t598 (none)
+R6_FULL_HEALTHPLUS_AT_300
+AX STATUS t663 tag 5 health 300 armour 398 | floor near: ArmorShard@28 
+AX DELFLOOR t663 1 floor axes removed
+AX RIG t663 tag 6 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=Shot_Gun a:Shot_Gun] 
+AX SPAWN t663 HealthPlus -> HealthPlus at 160 ahead
+[RSQDG] hand 0 LOCKED HealthPlus
+[RSQDG] hand 0 LAUNCHED HealthPlus  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+[RSQDG] hand 0 refused -- HealthPlus would raise nothing (health 300, armour 397): HEALTH FULL
+[RSQDG] hand 0: HealthPlus carried, health full: HEALTH FULL, dropped at the feet
+AX WORDS t706 [HEALTH FULL on HealthPlus] 
+AX WORDS t751 (none)
+END
+AX STATUS t816 tag 6 health 300 armour 395 | floor near: HealthPlus@28 
+AX RIG t816 tag 9 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=Shot_Gun a:Shot_Gun] 

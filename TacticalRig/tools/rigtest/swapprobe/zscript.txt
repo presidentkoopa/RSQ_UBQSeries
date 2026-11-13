@@ -1,0 +1,108 @@
+version "4.10"
+// TEST ONLY (scratch): axe / holster-swap probe for the 2026-11-12 lane. Never ships.
+class AX_GrabEventService : Service
+{
+	override int GetInt(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request ~== "grab.event")
+		{
+			let a = Actor(objectArg);
+			Console.Printf("AX EVENT t%d %s hand=%d thing=%s", level.maptime, stringArg, intArg, a ? a.GetClassName() : 'null');
+		}
+		return 0;
+	}
+}
+class AX_Probe : EventHandler
+{
+	String last, lastWords;
+	static String WN(Weapon w) { return w ? String.Format("%s", w.GetClassName()) : "none"; }
+	static int Exact(Actor p, String cn) { class<Inventory> c = cn; if (!c) return -1; let i = p.FindInventory(c, false); return i ? i.Amount : 0; }
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		let pl = p.player;
+		String s = String.Format("main %s off %s pend %s | BrutalAxe %d Off_BrutalAxe %d MainAxeGone %d OffAxeGone %d", WN(pl.ReadyWeapon), WN(pl.OffhandWeapon),
+			pl.PendingWeapon != WP_NOCHANGE ? WN(pl.PendingWeapon) : "-", Exact(p, "BrutalAxe"), Exact(p, "RSQ_Off_BrutalAxe"), Exact(p, "RSVR_MainAxeGone"), Exact(p, "RSVR_OffAxeGone"));
+		if (s != last) { Console.Printf("AX STATE t%d %s", level.maptime, s); last = s; }
+		let fh = RSQVR_FxHandler(EventHandler.Find("RSQVR_FxHandler"));
+		if (fh)
+		{
+			String ws = "";
+			for (int i = 0; i < fh.words.Size(); i++) { let w = fh.words[i]; if (w) ws = ws .. String.Format("[%s on %s] ", w.text, w.who ? w.who.GetClassName() : 'none'); }
+			if (ws != lastWords) { Console.Printf("AX WORDS t%d %s", level.maptime, ws == "" ? "(none)" : ws); lastWords = ws; }
+		}
+	}
+	Vector3 Ahead(PlayerPawn p, double dist, double side) { return p.Vec3Offset(cos(p.angle) * dist - sin(p.angle) * side, sin(p.angle) * dist + cos(p.angle) * side, 0); }
+	static bool AxeThing(Actor a) { Name n = a.GetClassName(); return n == 'BrutalAxe' || n == 'RSQ_Off_BrutalAxe' || n == 'BrutalAxeOnWall' || n == 'ThrowedAxe' || n == 'ThrowedAxeStrong'; }
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		String n = e.Name;
+		if (n ~== "ax_tp")
+		{
+			Vector2 xy = (e.Args[0], e.Args[1]);
+			p.SetOrigin((xy.x, xy.y, level.PointInSector(xy).floorplane.ZatPoint(xy)), false);
+			p.vel = (0, 0, 0); p.A_SetAngle(e.Args[2], SPF_INTERPOLATE);
+			Console.Printf("AX TP t%d at (%.0f %.0f %.0f) angle %.0f", level.maptime, p.pos.x, p.pos.y, p.pos.z, p.angle);
+		}
+		else if (n ~== "ax_clear")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int k = 0;
+			while (a = Actor(it.Next())) if (a.bIsMonster || (Inventory(a) && !Inventory(a).owner && !AxeThing(a))) { a.Destroy(); k++; }
+			Console.Printf("AX CLEAR t%d %d removed", level.maptime, k);
+		}
+		else if (n ~== "ax_floor" || n ~== "ax_put")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int k = 0;
+			while (a = Actor(it.Next()))
+			{
+				if (!AxeThing(a) || (Inventory(a) && Inventory(a).owner)) continue;
+				if (n ~== "ax_put" && Inventory(a))
+				{
+					Vector3 at = Ahead(p, e.Args[0], e.Args[1] + k * 24);
+					at.z = level.PointInSector(at.xy).floorplane.ZatPoint(at.xy);
+					a.SetOrigin(at, false); a.vel = (0, 0, 0);
+				}
+				Console.Printf("AX FLOOR t%d #%d %s at (%.0f %.0f %.0f) dist %.0f vel %.1f special %d", level.maptime, k, a.GetClassName(), a.pos.x, a.pos.y, a.pos.z, p.Distance2D(a), a.vel.Length(), a.bSPECIAL);
+				k++;
+			}
+			if (!k) Console.Printf("AX FLOOR t%d none", level.maptime);
+		}
+		else if (n.Left(9) ~== "ax_spawn:")
+		{
+			String cn = n.Mid(9);
+			Vector3 at = Ahead(p, e.Args[0], e.Args[1]);
+			at.z = level.PointInSector(at.xy).floorplane.ZatPoint(at.xy);
+			let a = Actor.Spawn(cn, at, NO_REPLACE);
+			Console.Printf("AX SPAWN t%d %s -> %s at %.0f ahead", level.maptime, cn, a ? String.Format("%s", a.GetClassName()) : "none", a ? p.Distance2D(a) : -1.0);
+		}
+		else if (n ~== "ax_hp") { p.A_SetHealth(e.Args[0]); Console.Printf("AX HP t%d health set %d", level.maptime, p.health); }
+		else if (n ~== "ax_armor")
+		{
+			p.GiveInventory("HeavyArmor", 1);
+			let ba = BasicArmor(p.FindInventory("BasicArmor"));
+			if (ba) ba.Amount = e.Args[0];
+			Console.Printf("AX ARMOR t%d armour set %d", level.maptime, ba ? ba.Amount : -1);
+		}
+		else if (n ~== "ax_status")
+		{
+			let ba = BasicArmor(p.FindInventory("BasicArmor"));
+			String fl = "";
+			let it = ThinkerIterator.Create("Inventory"); Inventory a;
+			while (a = Inventory(it.Next())) if (!a.owner && (Health(a) || Armor(a)) && p.Distance2D(a) < 400) fl = fl .. String.Format("%s@%.0f ", a.GetClassName(), p.Distance2D(a));
+			Console.Printf("AX STATUS t%d tag %d health %d armour %d | floor near: %s", level.maptime, e.Args[0], p.health, ba ? ba.Amount : 0, fl == "" ? "none" : fl);
+		}
+		else if (n ~== "ax_delfloor")
+		{
+			let it = ThinkerIterator.Create("Inventory"); Inventory a; int k = 0;
+			while (a = Inventory(it.Next())) if (!a.owner && (AxeThing(a) || ((Health(a) || Armor(a)) && p.Distance2D(a) < 400))) { a.Destroy(); k++; }
+			Console.Printf("AX DELFLOOR t%d %d floor axes removed", level.maptime, k);
+		}
+		else if (n ~== "ax_rig")
+		{
+			let rig = RSQTR_Rig(EventHandler.Find("RSQTR_Rig"));
+			Console.Printf("AX RIG t%d tag %d %s", level.maptime, e.Args[0], rig ? rig.HolsterList(p) : "(no rig)");
+		}
+		else if (n ~== "ax_inv") { String s = ""; for (let i = p.Inv; i; i = i.Inv) if (Weapon(i)) s = s .. i.GetClassName() .. (Weapon(i).bOffhandWeapon ? "(OFF)" : "") .. " "; Console.Printf("AX INV t%d tag %d %s", level.maptime, e.Args[0], s); }
+	}
+}

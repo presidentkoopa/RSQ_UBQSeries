@@ -119,6 +119,14 @@ A thing in the air is yours to catch once it is close to your palm. If your palm
   there until you move it. Not melee weapons, off-hand-only or two-handed guns, the saber or the ShieldSaw.
 - **A gun you already have with full ammo** cannot be picked up. **AMMO FULL** floats over it and it drops at your feet,
   there for when you are low. Caught in the off hand, your own copy of that gun comes up in the off hand as well.
+- **Health and armour you cannot use** are not wasted. A health bonus at the bonus's ceiling, a stimpack or medikit at
+  full health, an armour bonus at its ceiling, an armour suit no better than what you wear: **HEALTH FULL** or
+  **ARMOR FULL** floats over it, a soft buzz, and it drops at your feet for later. Walking up and gripping it does the
+  same, and leaves it where it is. What you can use still comes to you and is used.
+- **Brutal Doom VR's axe, one per hand.** Throw the off-hand axe while you still carry the main one (in your hand, in a
+  holster, in the Wheel) and grab it back: it is your off-hand axe again, in the hand that grabbed it -- no AMMO FULL.
+  Carrying both axes already, a third says AMMO FULL and stays at your feet (Brutal Doom VR Reloaded 2.0.4q decides;
+  it answers this pack's `pickup.claim`).
 - **Missed it?** It stops on your palm for a moment (4 tics), then drops. A miss never hurts you or spends the item.
 
 ![AMMO FULL over a full shotgun pulled to the hand, the shotgun dropped at your feet](docs/readme/ammo_full_dropped_at_feet.jpg)
@@ -335,6 +343,7 @@ the server's settings; everything else is each player's own.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, runs ax1 / ax3 / ax4 on the owner's order; `tools/rigtest/evidence_full_and_axe_1112.txt`, `tools/rigtest/ax4_f249_ARMOR_FULL.jpg`, `ax4_f303_HEALTH_FULL.jpg`) | **The axe's AMMO FULL, found and fixed.** Before (ax1, BD22 VR Reloaded 2.0.4p): the off-hand axe thrown, the main axe still carried, the off hand pulled it back: "the pickup refused BrutalAxe (owned, ammo full)", AMMO FULL, dropped at the feet. After (ax3, 2.0.4q): the same pull -- "its own pack claimed it (pickup.claim)", the off hand holding its axe; a main-hand pull of the thrown off axe -- the main hand holding the axe, the other one the off hand's; with both axes carried, a third: AMMO FULL, dropped at the feet; no axe carried: the pull gave the main hand its axe, thrown and pulled back twice. **HEALTH FULL / ARMOR FULL:** at 300 health a health bonus (HEALTH FULL, before the pickup) and a stimpack (the game's refusal: HEALTH FULL), at 300+ armour an armour bonus (ARMOR FULL, at 400; at 294 armour it was used, as it should be) and the heavy armour (ARMOR FULL), each left at the feet; the word in frames (VisualRewards'). At 50 health a stimpack was caught and used (60); at 0 armour an armour bonus was used. Not shown: the walk-up grip's HEALTH / ARMOR FULL, Brutal Doom's spheres (CustomInventory: not judged), the off hand's HEALTH FULL |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of the grab was exercised in them (the packed batch, next row, did). Those launches came before the G / H binds were taken out (commit 09243dd8) |
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P2.md` D1 to D3) | **D1, the heavy throw's weight:** a killed zombie (100 kg) with Corpses on, locked by the palm, pulled by a flick, caught, carried and thrown at 6.0 m/s: the throw logged as 100 kg (a medikit's as 2) (`design/rigtest_2026-11-10/evidence/P2E_log.txt`, `P2C_log.txt`). **D2, Palm Gate off:** palms not turned out, Palm Gate off and Grab Keys off: no reach in 45 tics; Grab Keys on: a barrel locked; Palm Gate back on: let go (`P2E_log.txt`). **D3, AMMO FULL: found BROKEN, then fixed and shown.** Before, a full shotgun you carry was caught and carried, and AMMO FULL never showed (`P2B_log.txt`); fixed (commit a218d76a); after, AMMO FULL over the gun and the gun dropped at your feet (`P2F_log.txt`, `P2_D3_ammo_full_dropped_at_feet_after_fix.jpg`). RSQ Melee's Headlock throw went through this pack's throw (`P1_D_log.txt`). Not shown: the corpse's landing (none was recorded) |
 | **rig only, not headset-confirmed** (2026-11-09) | The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series, and its row appears under Radiant Silvergun Options (`design/rigtest_2026-11-09/logs/main_A-G_I.log`). Nothing of the grab itself was exercised in that run |
@@ -385,7 +394,9 @@ The 11-03 log is a picture of what the code did then. It is not proof of the cur
   pulse.
 - **Told to other mods**, found by name, nothing linked: every service whose name contains `GrabEventService` hears
   `pull.lock`, `pull.unlock`, `pull.start`, `pull.caught`, `pull.refused`, `pull.missed`, `pull.blocked`, `pull.aborted`,
-  `hold.throw`, `hold.drop`, `hold.hit`, `hold.block`, `throw.hit` and `throw.impact`. `RSQDG_ThrowService` answers who
+  `hold.throw`, `hold.drop`, `hold.hit`, `hold.block`, `throw.hit` and `throw.impact`, and one question: `pickup.claim`
+  (a pickup the game refused; a service that answers non-zero has taken it by its own rule, and the catch counts as used:
+  BD22 VR Reloaded's axe, 11-12). `RSQDG_ThrowService` answers who
   threw a thing, how hard it landed, whether its throw set it off and how often it was caught back (for ten seconds), and
   carries the Headlock throw, `near.dist` and the Barrel Lock-On requests. `RSQDG_DoorService` answers `door.holding`.
 - **Netplay.** Doors, switches and the walk-up grip travel as network events and run on every machine. The palm-out

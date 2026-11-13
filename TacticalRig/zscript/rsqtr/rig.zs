@@ -926,8 +926,93 @@ class RSQTR_Rig : EventHandler
 			cls = MainOf(p.OffhandWeapon.GetClassName());
 		}
 		if (r == RSQTR_Hooks.ShieldHolster(pmo)) return cls;
-		if (LockedTo(pmo.PlayerNumber(), cls) < 0 && !MayEnter(pmo, cls, r)) return cls;
+		if (LockedTo(pmo.PlayerNumber(), cls) < 0 && !MayEnter(pmo, cls, r) && !SwapGun(pmo, cls, r, h)) return cls;
 		return "";
+	}
+
+	// ---- A GUN IN THE HAND AT ANOTHER GUN'S HOLSTER (owner 2026-11-12: "with a weapon in hand, trying to go for a gun in
+	// holster, i seem to be refused ... when i really want the gun in hand to return home (to holster or to wheel) and swap
+	// for the gun in the holster i am trying to get at"). Until then an unassigned gun at a holster that is another gun's
+	// was refused (MayEnter). Now the holster's gun comes to the hand that reached, and the gun that hand held goes by the
+	// player's choice, Swap at Another Gun's Holster (rsqtr_swap; to be revisited in Big Pass 5: Options):
+	//   0 Into the Wheel (default): it leaves the hand and stays carried (the Wheel); a gun with its own holster goes home
+	//     to it, as before (LockedHome, the HOME streak).
+	//   1 Takes That Holster: a straight swap -- it goes into the holster you reached, which becomes its own; the gun that
+	//     was there is now unassigned (put it anywhere free and that holster becomes its own).
+	// The deliberate refusals stay: a lit flare, the ShieldSaw's shoulder, the saber's rules (all tested before this in
+	// Press); and a holster with nothing to hand out refuses as before (SOFT REFUSAL, below).
+	static int SwapMode(PlayerInfo p) { return clamp(Opt("rsqtr_swap", p, 0), 0, 1); }
+	// THE GUN'S OWN HOLSTER GIVES IT BACK (owner 2026-11-12, the axe: "i can't get one out of my holster"). An EMPTY gun
+	// holster that is gun X's, while X is carried but in neither hand and in no holster (the Wheel: drawn out of the
+	// holster into one hand, then that hand's copy thrown or put away elsewhere), hands X out as if it were in it. For hand
+	// h: the off hand takes X's off-hand version when you carry one (BD22 VR's RSQ_Off_<gun>, filed as X by MainOf), the
+	// main hand X itself; either version when only one is carried (BD22 VR turns it into the right one in that hand, so a
+	// single axe stays a single axe). Not while either hand holds X or its copy, or one is on its way to a hand (one gun,
+	// one place; Dual is its own key). except: a class the asking hand holds (the gun about to be swapped out).
+	Weapon HomeGun(PlayerPawn pmo, int r, int h, String except = "")
+	{
+		if (!pmo || !IsGunRegion(r) || r == RSQTR_Hooks.ShieldHolster(pmo) || Content(pmo, r) != "") return null;
+		int n = pmo.PlayerNumber();
+		String x = lockCls[n * RSQTR_Region.N + r];
+		if (x == "" || (except != "" && x ~== except)) return null;
+		let p = pmo.player;
+		if (p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== x) return null;
+		if (p.OffhandWeapon && MainOf(p.OffhandWeapon.GetClassName()) ~== x) return null;
+		if (p.PendingWeapon != WP_NOCHANGE && p.PendingWeapon && MainOf(p.PendingWeapon.GetClassName()) ~== x) return null;
+		if (offNext[n] != "" && MainOf(offNext[n]) ~== x) return null;
+		for (int k = 0; k < RSQTR_Region.N; k++) if (k != r && IsGunRegion(k) && Content(pmo, k) ~== x) return null;
+		class<Weapon> xc = x;
+		Weapon mainW = xc ? Weapon(pmo.FindInventory(xc)) : null;
+		Weapon copyW = null;
+		for (let it = pmo.Inv; it; it = it.Inv)
+		{
+			let w = Weapon(it);
+			if (!w || w.GetClass() == xc) continue;
+			String wn = w.GetClassName();
+			if (MainOf(wn) ~== x) { copyW = w; break; }
+		}
+		if (h == 1) return copyW ? copyW : mainW;
+		return mainW ? mainW : copyW;
+	}
+	// The gun a swap at gun holster r hands out to hand h (holding gun cls): the gun in r, else r's own gun from the Wheel
+	// (HomeGun); null when there is none, or it is cls itself.
+	Weapon SwapGun(PlayerPawn pmo, String cls, int r, int h)
+	{
+		if (!IsGunRegion(r) || r == RSQTR_Hooks.ShieldHolster(pmo)) return null;
+		String c = Content(pmo, r);
+		if (c != "")
+		{
+			if (c ~== cls) return null;
+			class<Weapon> wc = c;
+			return wc ? Weapon(pmo.FindInventory(wc)) : null;
+		}
+		return HomeGun(pmo, r, h, cls);
+	}
+	// SOFT REFUSAL (owner 2026-11-12): an empty hand at an empty holster that is a gun's, the gun not carried (thrown, or
+	// out in the world): nothing comes out -- no draw is faked -- and the refusal says whose holster it is (the ring red,
+	// the gun's picture over it, the double pulse). A free, unassigned empty holster: the refusal alone, as before.
+	void EmptyRefused(PlayerPawn pmo, int h, int r)
+	{
+		RefuseFeel(pmo, h);
+		String x = IsGunRegion(r) ? lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r] : "";
+		if (x != "") ShowRule(pmo, r, RULE_REFUSE, x);
+		if (Flag("rsqtr_messages", pmo.player, false))
+		{
+			if (x != "")
+			{
+				class<Weapon> xc = x;
+				bool carried = xc && pmo.FindInventory(xc);
+				for (let it = pmo.Inv; it && !carried; it = it.Inv)
+				{
+					if (!Weapon(it)) continue;
+					String wn = it.GetClassName();
+					if (MainOf(wn) ~== x) carried = true;
+				}
+				Console.Printf("T_EMPTY t%d hand %d: %s is %s's, and %s is %s: refused, nothing drawn", level.maptime, h, RSQTR_Region.NAMES[r], x, x,
+					carried ? "carried but in a hand or on its way" : "not carried (out in the world)");
+			}
+			pmo.A_Print(String.Format("%s: empty", RSQTR_Region.NAMES[r]), 0, RSQTR_A11y.PrintFont());
+		}
 	}
 
 	// ---- RULES SHOWN AS THEY HAPPEN (owner 2026-11-08; all on this machine only, about a second, fading) ---------------
@@ -1596,7 +1681,51 @@ class RSQTR_Rig : EventHandler
 		String cls = MainOf(w.GetClassName());     // BD22 VR's off-hand version goes in under its gun's name
 		if (r == RSQTR_Hooks.ShieldHolster(pmo)) { Refused(pmo, 1, cls, r); return; }   // the ShieldSaw's shoulder
 		int lockHome = LockedTo(n, cls);
-		if (lockHome < 0 && !MayEnter(pmo, cls, r)) { Refused(pmo, 1, cls, r); return; }
+		// A GUN IN THE HAND AT ANOTHER GUN'S HOLSTER (owner 11-12, SwapMode; Holster's rule, for the off hand)
+		Weapon swapW = SwapGun(pmo, cls, r, 1);
+		bool takes = swapW && SwapMode(p) == 1 && !OwnHome(cls) && lockHome != r;
+		bool toWheel = swapW && !takes && lockHome < 0 && !MayEnter(pmo, cls, r);
+		if (!takes && !toWheel && lockHome < 0 && !MayEnter(pmo, cls, r)) { Refused(pmo, 1, cls, r); return; }
+		String offCn0 = w.GetClassName();
+		bool dual0 = !(cls ~== offCn0) && p.ReadyWeapon && MainOf(HeldAs(pmo, p.ReadyWeapon)) ~== cls;
+		if (takes)
+		{
+			String was = lockCls[n * RSQTR_Region.N + r];
+			ShowRule(pmo, r, RULE_ASSIGN, cls);
+			Assign(n, cls, r, false);
+			lockHome = r;
+			if (Flag("rsqtr_messages", p, false))
+				Console.Printf("T_SWAP t%d off hand, Takes That Holster: %s goes into %s (now %s's; it was %s's), %s comes to the %s hand",
+					level.maptime, cls, RSQTR_Region.NAMES[r], cls, was == "" ? "nobody" : was, swapW.GetClassName(), dual0 ? "main (both copies went in)" : "off");
+		}
+		if (toWheel)
+		{
+			// INTO THE WHEEL: the off hand's gun stays carried, out of every holster; the gun comes to the off hand -- or, when
+			// the off hand held the off-hand copy of the main hand's gun (BD22 VR dual), both copies leave and the gun comes to
+			// the MAIN hand, the off hand to its fist (the dual rule of 11-04, below)
+			if (Content(pmo, r) != "") { lastPut[n * RSQTR_Region.N + r] = ""; lastPair[n * RSQTR_Region.N + r] = false; }
+			if (dual0)
+			{
+				EmptyOff(pmo);
+				if (IsMovedGun(swapW)) swapW.bOffhandWeapon = false;
+				p.PendingWeapon = swapW;
+				drawTic[n * 2] = level.maptime + 1;
+				drawClass[n * 2] = swapW.GetClassName();
+			}
+			else
+			{
+				swapW.bOffhandWeapon = true;
+				QueueOff(n, swapW.GetClassName());
+				drawTic[n * 2 + 1] = level.maptime + 1;
+				drawClass[n * 2 + 1] = swapW.GetClassName();
+			}
+			pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			if (Flag("rsqtr_messages", p, false))
+				Console.Printf("T_SWAP t%d off hand, Into the Wheel: %s leaves the hand (carried, no holster), %s comes out of %s to the %s hand; %s",
+					level.maptime, offCn0, swapW.GetClassName(), RSQTR_Region.NAMES[r], dual0 ? "main (dual copy: both leave)" : "off", HolsterList(pmo));
+			return;
+		}
 		// BD22 VR DUAL WIELD AND ASSIGNED HOLSTERS (owner 11-04-11:06, design/PARKED.md): the off hand holds assigned gun G's
 		// off-hand copy (RSQ_Off_<gun>, filed as G by MainOf) while the main hand holds G itself. Put away, the copy takes G
 		// with it: G goes home to its own holster, and
@@ -1614,9 +1743,10 @@ class RSQTR_Rig : EventHandler
 		{
 			String before = DualHands(pmo);
 			Weapon outW = null;
-			if (lockHome != r) outW = LockedHome(pmo, cls, r, lockHome, 1);
+			if (lockHome != r) { outW = LockedHome(pmo, cls, r, lockHome, 1); if (!outW && swapW) outW = swapW; }
 			else
 			{
+				if (takes) outW = swapW;     // Takes That Holster: the gun that was there (or its own, from the Wheel) to the main hand
 				for (int k = 0; k < RSQTR_Region.N; k++)
 					if (k != r && lastPut[n * RSQTR_Region.N + k] ~== cls) { lastPut[n * RSQTR_Region.N + k] = ""; lastPair[n * RSQTR_Region.N + k] = false; }
 				lastPut[n * RSQTR_Region.N + r] = cls;
@@ -1648,6 +1778,7 @@ class RSQTR_Rig : EventHandler
 		if (lockHome >= 0 && lockHome != r)
 		{
 			let outW = LockedHome(pmo, cls, r, lockHome, 1);
+			if (!outW && swapW) outW = swapW;      // the holster's own gun from the Wheel (HomeGun)
 			if (outW && outW != p.ReadyWeapon) { outW.bOffhandWeapon = true; QueueOff(n, outW.GetClassName()); }
 			else EmptyOff(pmo);
 			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
@@ -1661,10 +1792,11 @@ class RSQTR_Rig : EventHandler
 		Assign(n, cls, r);
 		class<Weapon> ic = was;
 		let incoming = (was != "" && was != cls && ic) ? Weapon(pmo.FindInventory(ic)) : null;
+		if (!incoming && takes && swapW != w) incoming = swapW;      // Takes That Holster: its own gun from the Wheel
 		if (incoming && incoming != p.ReadyWeapon)
 		{
 			incoming.bOffhandWeapon = true;
-			QueueOff(n, was);
+			QueueOff(n, incoming.GetClassName());
 		}
 		else EmptyOff(pmo);
 		pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
@@ -1695,9 +1827,20 @@ class RSQTR_Rig : EventHandler
 	{
 		let p = pmo.player;
 		String c = Content(pmo, r);
-		if (c == "") return;
-		class<Weapon> wc = c;
-		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
+		Weapon w = null;
+		if (c == "")
+		{
+			// THE GUN'S OWN HOLSTER GIVES IT BACK (HomeGun): its gun from the Wheel
+			w = HomeGun(pmo, r, 1);
+			if (!w) return;
+			c = w.GetClassName();
+			if (Flag("rsqtr_messages", p, false)) Console.Printf("T_HOME t%d off hand at the empty %s: %s's own holster gives it from the Wheel -> %s", level.maptime, RSQTR_Region.NAMES[r], lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r], c);
+		}
+		else
+		{
+			class<Weapon> wc = c;
+			w = wc ? Weapon(pmo.FindInventory(wc)) : null;
+		}
 		if (!w || w == p.ReadyWeapon) return;
 		w.bOffhandWeapon = true;
 		lastPut[pmo.PlayerNumber() * RSQTR_Region.N + r] = "";
@@ -1887,11 +2030,43 @@ class RSQTR_Rig : EventHandler
 		}
 		if (IsGunRegion(r) && HoldsGun(pmo) && r == RSQTR_Hooks.ShieldHolster(pmo)) { Refused(pmo, 0, cls, r); return; }   // the ShieldSaw's shoulder
 		int lockHome = IsGunRegion(r) && HoldsGun(pmo) ? LockedTo(n, cls) : -1;
+		// A GUN IN THE HAND AT ANOTHER GUN'S HOLSTER (owner 11-12, SwapMode): the gun there (or the holster's own gun from
+		// the Wheel) comes to this hand; cls goes into the Wheel (0) or takes that holster (1)
+		Weapon swapW = IsGunRegion(r) && HoldsGun(pmo) ? SwapGun(pmo, cls, r, 0) : null;
+		bool takes = swapW && SwapMode(p) == 1 && !OwnHome(cls) && lockHome != r;
+		bool toWheel = swapW && !takes && lockHome < 0 && !MayEnter(pmo, cls, r);
 		// ASSIGNMENT (11-07): an unassigned gun enters only an unassigned, empty holster (and is assigned to it)
-		if (lockHome < 0 && IsGunRegion(r) && HoldsGun(pmo) && !MayEnter(pmo, cls, r)) { Refused(pmo, 0, cls, r); return; }
+		if (!takes && !toWheel && lockHome < 0 && IsGunRegion(r) && HoldsGun(pmo) && !MayEnter(pmo, cls, r)) { Refused(pmo, 0, cls, r); return; }
+		if (takes)
+		{
+			// TAKES THAT HOLSTER: cls is assigned to r (its old holster freed), and goes in below as at its own holster
+			String was = lockCls[n * RSQTR_Region.N + r];
+			ShowRule(pmo, r, RULE_ASSIGN, cls);
+			Assign(n, cls, r, false);
+			lockHome = r;
+			if (Flag("rsqtr_messages", p, false))
+				Console.Printf("T_SWAP t%d main hand, Takes That Holster: %s goes into %s (now %s's; it was %s's), %s comes to the main hand",
+					level.maptime, cls, RSQTR_Region.NAMES[r], cls, was == "" ? "nobody" : was, swapW.GetClassName());
+		}
+		if (toWheel)
+		{
+			// INTO THE WHEEL: cls stays carried, out of every holster; the gun comes to the main hand
+			if (Content(pmo, r) != "") { lastPut[n * RSQTR_Region.N + r] = ""; lastPair[n * RSQTR_Region.N + r] = false; }
+			if (IsMovedGun(swapW)) swapW.bOffhandWeapon = false;
+			p.PendingWeapon = swapW;
+			drawTic[n * 2] = level.maptime + 1;
+			drawClass[n * 2] = swapW.GetClassName();
+			pmo.A_StartSound("rsqtr/draw", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			pmo.A_StartSound("rsqtr/holster", CHAN_AUTO, CHANF_LOCAL, 0.8);
+			if (Flag("rsqtr_messages", p, false))
+				Console.Printf("T_SWAP t%d main hand, Into the Wheel: %s leaves the hand (carried, no holster), %s comes out of %s; %s",
+					level.maptime, cls, swapW.GetClassName(), RSQTR_Region.NAMES[r], HolsterList(pmo));
+			return;
+		}
 		if (lockHome >= 0 && lockHome != r)
 		{
 			incoming = LockedHome(pmo, cls, r, lockHome, 0);
+			if (!incoming && swapW && swapW != w) incoming = swapW;    // the holster's own gun from the Wheel (HomeGun)
 			if (incoming && incoming != w)
 			{
 				if (IsMovedGun(incoming)) incoming.bOffhandWeapon = false;
@@ -1923,6 +2098,7 @@ class RSQTR_Rig : EventHandler
 				class<Weapon> ic = was;
 				incoming = ic ? Weapon(pmo.FindInventory(ic)) : null;
 			}
+			if (!incoming && takes && swapW != w) incoming = swapW;      // Takes That Holster: its own gun from the Wheel
 			// one gun, one place: put here, it leaves wherever else it was
 			for (int k = 0; k < RSQTR_Region.N; k++)
 				if (k != r && lastPut[n * RSQTR_Region.N + k] == cls) { lastPut[n * RSQTR_Region.N + k] = ""; lastPair[n * RSQTR_Region.N + k] = false; }
@@ -1959,11 +2135,18 @@ class RSQTR_Rig : EventHandler
 		int n = pmo.PlayerNumber();
 		int slot = n * RSQTR_Region.N + r;
 		class<Weapon> wc = null;
+		Weapon home = null;
 		if (IsGunRegion(r))
 		{
 			String c = Content(pmo, r);
-			if (c == "") return;
-			wc = c;
+			if (c == "")
+			{
+				// THE GUN'S OWN HOLSTER GIVES IT BACK (HomeGun): its gun from the Wheel
+				home = HomeGun(pmo, r, 0);
+				if (!home) return;
+				if (Flag("rsqtr_messages", p, false)) Console.Printf("T_HOME t%d main hand at the empty %s: %s's own holster gives it from the Wheel -> %s", level.maptime, RSQTR_Region.NAMES[r], lockCls[slot], home.GetClassName());
+			}
+			else wc = c;
 		}
 		else
 		{
@@ -1972,7 +2155,8 @@ class RSQTR_Rig : EventHandler
 			if (idx < 0 || idx >= own.Size()) return;
 			wc = own[idx];
 		}
-		let w = wc ? Weapon(pmo.FindInventory(wc)) : null;
+		Weapon w = home;
+		if (!w && wc) w = Weapon(pmo.FindInventory(wc));
 		if (!w) return;
 		if (IsSaber(w) && IsSecondSaber(w)) return;     // the saber moves its own second hilt (Press)
 		if (w == p.OffhandWeapon) return;               // already in the other hand
@@ -2326,7 +2510,7 @@ class RSQTR_Rig : EventHandler
 	private transient String overlapSaid[2];
 	bool SpotHolds(PlayerPawn pmo, PlayerInfo p, int r)
 	{
-		if (IsGunRegion(r)) return Content(pmo, r) != "";
+		if (IsGunRegion(r)) return Content(pmo, r) != "" || HomeGun(pmo, r, 0);
 		if (IsGrenadeRegion(r)) return Grenades(pmo) > 0 && !NadeInHand(p);
 		if (IsSaberRegion(r))
 		{
@@ -2762,6 +2946,11 @@ class RSQTR_Rig : EventHandler
 
 	private void Press(PlayerPawn pmo, PlayerInfo p, int h, int r, Vector3 hp)
 	{
+		if (Flag("rsqtr_messages", p, false))
+			Console.Printf("T_PRESS t%d %s hand at %s: main %s, off %s; holding %s, assigned %s; swap mode %s", level.maptime, h ? "off" : "main", RSQTR_Region.NAMES[r],
+				p.ReadyWeapon ? p.ReadyWeapon.GetClassName() : 'none', p.OffhandWeapon ? p.OffhandWeapon.GetClassName() : 'none',
+				Content(pmo, r) == "" ? "-" : Content(pmo, r), IsGunRegion(r) && lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r] != "" ? lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r] : "-",
+				SwapMode(p) == 1 ? "Takes That Holster" : "Into the Wheel");
 		// WITH THE CIGARETTE OUT, A HOLSTER ENDS IT AND IS CARRIED OUT (cig.zs "the end", the owner 11-03): either hand's
 		// grip at a holster ends the ritual (unlit: the pocket, lit: flicked, the Zippo gone that tic), then the press does
 		// what it does with the hands as they are, in the events after the end's: a hand holding the cigarette (or the
@@ -2892,12 +3081,12 @@ class RSQTR_Rig : EventHandler
 				EventHandler.SendNetworkEvent("rsqtr_holster_off", r);
 				StoreDrawFeel(pmo, h, false);
 			}
-			else if (Content(pmo, r) != "")
+			else if (Content(pmo, r) != "" || HomeGun(pmo, r, 1))
 			{
 				EventHandler.SendNetworkEvent("rsqtr_draw_off", r);
 				StoreDrawFeel(pmo, h, true);
 			}
-			else RefuseFeel(pmo, h);
+			else EmptyRefused(pmo, h, r);
 			return;
 		}
 		if (IsGunRegion(r))
@@ -2908,16 +3097,12 @@ class RSQTR_Rig : EventHandler
 				EventHandler.SendNetworkEvent("rsqtr_holster", r);
 				StoreDrawFeel(pmo, h, false);
 			}
-			else if (Content(pmo, r) != "")
+			else if (Content(pmo, r) != "" || HomeGun(pmo, r, 0))
 			{
 				EventHandler.SendNetworkEvent("rsqtr_draw", r, 0);
 				StoreDrawFeel(pmo, h, true);
 			}
-			else
-			{
-				RefuseFeel(pmo, h);
-				if (Flag("rsqtr_messages", p, false)) pmo.A_Print(String.Format("%s: empty", RSQTR_Region.NAMES[r]), 0, RSQTR_A11y.PrintFont());
-			}
+			else EmptyRefused(pmo, h, r);
 			return;
 		}
 		String cur = HeldAs(pmo, p.ReadyWeapon);
@@ -3216,7 +3401,7 @@ class RSQTR_Rig : EventHandler
 		if (IsGunRegion(r))
 		{
 			if (gunIn) return WouldRefuse(pmo, h, r) == "";          // in it goes, or a swap / sent home
-			if (Content(pmo, r) != "") return true;                 // a draw
+			if (Content(pmo, r) != "" || HomeGun(pmo, r, h)) return true;   // a draw (or its own gun from the Wheel)
 			// FREE A HOLSTER BY HAND (FreeTick): an empty hand at an empty holster that is a gun's
 			return HandKind(pmo, h) == 0 && r != RSQTR_Hooks.ShieldHolster(pmo) && lockCls[pmo.PlayerNumber() * RSQTR_Region.N + r] != "";
 		}

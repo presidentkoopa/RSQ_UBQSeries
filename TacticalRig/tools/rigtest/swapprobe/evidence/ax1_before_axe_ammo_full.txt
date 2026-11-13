@@ -1,0 +1,49 @@
+AX STATE t0 main Rifle off none pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+AX STATE t1 main Rifle off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+RSQ offhand rule t40: Axe picked up: its off-hand version comes with it
+AX STATE t40 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX INV t105 tag 0 RSQ_Off_BrutalAxe(OFF) BrutalAxe RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX RIG t105 tag 0 [Left hip=- a:-] [Right hip=- a:-] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_RULE t118 assign (bright) at Right hip, picture BrutalAxe
+AX STATE t118 main BrutalAxe off rsq_hands pend Melee_Attacks | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t122 main Melee_Attacks off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX RIG t154 tag 1 [Left hip=- a:-] [Right hip=BrutalAxe a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+AX STATE t166 main Melee_Attacks off rsq_hands pend BrutalAxe | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t169 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX RIG t201 tag 2 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+AX STATE t230 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 1 OffAxeGone 0
+AX STATE t241 main Melee_Attacks off rsq_hands pend - | BrutalAxe 0 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX FLOOR t334 #0 BrutalAxe at (-311 206 64) dist 206 vel 0.0 special 1
+AX INV t334 tag 3 RSQ_Off_BrutalAxe(OFF) RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX RIG t334 tag 3 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+T_REFUSE t346 hand 0: double pulse and *usefail
+AX RIG t382 tag 4 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+AX FLOOR t382 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 special 1
+[RSQDG] hand 0 LOCKED BrutalAxe
+[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+[RSQDG] hand 0 took BrutalAxe: not moved between hands -- a melee weapon (BD22 VR hands its own axe to the grabbing hand)
+[RSQDG] hand 0 caught and USED BrutalAxe
+RSQ axegrab t424: hand 0 pulled an axe -> main hand
+AX STATE t424 main Melee_Attacks off rsq_hands pend BrutalAxe | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX STATE t425 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+Distance Grab: the main hand does not reach -- holding a melee weapon (BrutalAxe)
+AX FLOOR t533 none
+AX INV t533 tag 5 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX RIG t533 tag 5 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 
+AX STATE t533 main BrutalAxe off RSQ_Off_BrutalAxe pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX INV t593 tag 6 BrutalAxe RSQ_Off_BrutalAxe(OFF) RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX STATE t622 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 1
+AX STATE t623 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 0 MainAxeGone 0 OffAxeGone 0
+AX FLOOR t726 #0 BrutalAxe at (-330 206 64) dist 206 vel 0.0 special 1
+AX INV t726 tag 7 BrutalAxe RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX FLOOR t726 #0 BrutalAxe at (-320 160 64) dist 160 vel 0.0 special 1
+[RSQDG] hand 1 LOCKED BrutalAxe
+[RSQDG] hand 1 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+[RSQDG] hand 1 took BrutalAxe: not moved between hands -- a melee weapon (BD22 VR hands its own axe to the grabbing hand)
+Distance Grab: Axe: you have it and its ammo is full -- yours is in your off hand, this one is at your feet
+[RSQDG] hand 1 refused -- the pickup refused BrutalAxe (owned, ammo full)
+[RSQDG] hand 1: BrutalAxe carried, ammo full: AMMO FULL, dropped at the feet
+AX STATE t769 main BrutalAxe off rsq_hands pend - | BrutalAxe 1 Off_BrutalAxe 1 MainAxeGone 0 OffAxeGone 0
+AX FLOOR t877 none
+AX INV t877 tag 8 RSQ_Off_BrutalAxe(OFF) BrutalAxe RSQWP_WhipWeapon rsq_hands(OFF) UBQS_ForceHand(OFF) UBQS_Saber RSQ_Off_Rifle(OFF) SSQ_ShieldSaw(OFF) Rifle Melee_Attacks HandGrenades AmmoDroper 
+AX RIG t877 tag 8 [Left hip=- a:-] [Right hip=- a:BrutalAxe] [Left shoulder=- a:-] [Right shoulder=- a:-] [Left chest=- a:-] [Right chest=- a:-] 

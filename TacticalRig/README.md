@@ -37,7 +37,10 @@ spot of their own on your belt.
 | A gun in your hand, squeeze the grip (or press Use) inside a holster's ring | The gun goes in. The first time, that holster becomes this gun's |
 | An empty hand, squeeze inside a full holster | You draw its gun |
 | Put a gun at a holster that is not its own | It goes to its own holster instead; if the holster you reached for holds a gun, that one comes to your hand |
-| Put a gun at a holster another gun owns, or that is full, when your gun has no home yet | Turned away: red flash, double buzz, the owner's picture |
+| Reach for a gun in another gun's holster with a gun in your hand | That gun comes to your hand. Yours goes by **Swap at Another Gun's Holster**: **Into the Wheel** (default; it stays with you, or goes to its own holster if it has one) or **Takes That Holster** (it goes into the holster you reached, which becomes its own). Either hand |
+| Put a gun at a holster another gun owns that has nothing in it, when your gun has no home yet | Turned away: red flash, double buzz, the owner's picture |
+| An empty hand in an empty holster whose gun you still carry but is in neither hand (in the Wheel) | Its own holster gives it to you (an axe drawn into the off hand comes out as the off-hand axe) |
+| An empty hand in an empty holster whose gun is out in the world (thrown) | Nothing comes out: a soft refusal, the red flash with that gun's picture, double buzz |
 | An empty hand held in an empty holster for a second | That holster is freed (a white flash shows whose it was) |
 | Squeeze at the belt buckle | Your grenade comes to your main hand. Squeeze there again with it in hand and your gun comes back |
 | Reload a Brutal Doom VR gun with your off hand at the ammo pouch | That's where the magazines, shells and rounds come from |
@@ -306,7 +309,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 | Section | Rows |
 |---|---|
-| Holsters | Tactical Rig (On) · Grip Holsters (On) · Use Holsters (On) · Holster Rings (Never / Hand Nearby / Always While Moving Holsters; Hand Nearby) · Holster Reach (1.0) · Quick Swap (On) · Keep Between Levels (On) · Move Gun at Watch (Off) · Hang From Neck (On) |
+| Holsters | Tactical Rig (On) · Grip Holsters (On) · Use Holsters (On) · Holster Rings (Never / Hand Nearby / Always While Moving Holsters; Hand Nearby) · Holster Reach (1.0) · Quick Swap (On) · Swap at Another Gun's Holster (Into the Wheel / Takes That Holster; Into the Wheel) · Keep Between Levels (On) · Move Gun at Watch (Off) · Hang From Neck (On) |
 | Spots | Grenade Spot (On) · Show Grenade (On) · Saber on Hip Too (Off) · Whip Holster (On) · Flare Holster (On) · Ammo Pouch (Off: Grab Anywhere) (On) · Pouch Reaches for Your Hand (On) · Show Ammo Pouch (On) · Shoulder to ShieldSaw (On) · Keyring (On) · Keys Open Doors (Off) |
 | Stored Guns | Show Stored Guns (On) · Stored Gun Size (1.0) · Ammo Light (On) · Ammo Count (Off) |
 | Gun Throwing | Throw Guns (Off) · Throw With Use (Off) · Thrown Guns Hurt (On) |
@@ -324,6 +327,7 @@ torso fades to about half as you look down, so you can see your holsters.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-12, runs ax3 and ax4 on the owner's order with BD22 VR Reloaded 2.0.4q; logs and a frame in `tools/rigtest/swapprobe/evidence/`) | **Swap at Another Gun's Holster**, Into the Wheel: an unassigned MP40 in the main hand at the shotgun's full holster -- MP40 to the Wheel, shotgun drawn; the off hand's MP40 copy at the same holster -- the shotgun to the off hand; an assigned shotgun at the SSG's holster still goes home and the SSG comes out (HOME). Takes That Holster: the MP40 at the shotgun's holster went in and the holster became the MP40's, the shotgun to the hand; an assigned SSG took the MP40's holster the same way; the off hand's Rifle copy took the SSG's holster, the SSG to the off hand. The ShieldSaw's shoulder (Mount Spot 0) still refused a gun in both modes. **The axe's holster:** the axe drawn from it into the off hand and thrown, then an empty main hand at that holster drew the off-hand axe from the Wheel as the main axe (T_HOME); with no axe carried, the press refused softly (T_EMPTY, the axe's picture over the ring: frame `ax4_f111_axe_holster_soft_refusal_picture.jpg`). No script error from our packs. Not run: the lit flare and saber refusals (their code is untouched and runs before the swap), a left-handed player, Takes That Holster with a BD22 dual pair (both copies) in the hands |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | While DOWN the holsters come down with the hands: both 26.4 units lower, the same gaps as standing. |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | `flare.home` 1 with the flare holster on; FnF's flashlight clip at the rig's torch spot (0.207 m behind the flare holster, taken and put back there); the main hand at the cigarette pocket (0.058 m) with the main grip takes a cigarette and puts it back; no holster, Distance Grab or FnF action fired there. On the rig the same grip key also flipped the pistol's burst mode (BD22 VR, as in CIG3) |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The room floor the rig hangs from (the holsters follow the hands down while you are DOWN) and its gesture copy's eyes use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |

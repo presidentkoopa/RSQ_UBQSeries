@@ -697,4 +697,18 @@ class RSQDG_Events play
 		while (s = it.Next())
 			s.GetInt("grab.event", what, hand, fromAir ? 1.0 : 0.0, a, 'RSQ_DistanceGrab');
 	}
+	// A QUESTION, not news: the same doors, and the first service that answers non-zero has the thing (owner 2026-11-12,
+	// "pickup.claim": a pickup the game refused that another pack takes by its own rule -- BD22 VR Reloaded's axe, one
+	// per hand). 0: nobody claimed it.
+	static int Ask(String what, int hand, Actor a, bool fromAir = false)
+	{
+		let it = ServiceIterator.Find("GrabEventService");
+		Service s;
+		while (s = it.Next())
+		{
+			int r = s.GetInt("grab.event", what, hand, fromAir ? 1.0 : 0.0, a, 'RSQ_DistanceGrab');
+			if (r != 0) return r;
+		}
+		return 0;
+	}
 }

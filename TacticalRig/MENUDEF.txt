@@ -44,6 +44,12 @@ OptionValue "RSQTR_VestStyle"
 	1, "Quake Grunt"
 }
 
+OptionValue "RSQTR_Swap"
+{
+	0, "Into the Wheel"
+	1, "Takes That Holster"
+}
+
 OptionValue "RSQTR_Markers"
 {
 	0, "Never"
@@ -61,6 +67,7 @@ OptionMenu "RSQTR_Options"
 	Option "Holster Rings", "rsqtr_markers", "RSQTR_Markers"
 	Slider "Holster Reach", "rsqtr_reach", 0.5, 2.0, 0.05, 2
 	Option "Quick Swap", "rsqtr_quickswap", "OnOff"
+	Option "Swap at Another Gun's Holster", "rsqtr_swap", "RSQTR_Swap"
 	Option "Keep Between Levels", "rsqtr_keep", "OnOff"
 	Option "Move Gun at Watch", "rsqtr_watch_move", "OnOff"
 	Option "Hang From Neck", "rsqtr_neck", "OnOff"

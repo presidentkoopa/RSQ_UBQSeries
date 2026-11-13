@@ -104,6 +104,7 @@ server bool rsqtr_vest_fade = true;   // the torso fades as you look down (local
 server bool rsqtr_helmet    = true;   // a helmet on your head with the marine torso (seen only in mirrors)
 server float rsqtr_helmet_u = 0.0;    // metres to raise (+) or lower (-) the helmet from where it rests on the torso
 user int    rsqtr_cfgver      = 0;       // settings version this machine has been moved to (internal)
+user int   rsqtr_swap        = 0;       // a gun in the hand at another gun's holster: that gun comes to the hand; yours goes 0 Into the Wheel (its own holster if it has one), 1 Takes That Holster (owner 11-12; Big Pass 5: Options revisits it)
 user bool  rsqtr_quickswap   = true;    // a gun in the hand at a full holster acts at once, a swap or a refusal (no Press Delay)
 user bool  rsqtr_keep        = true;    // what each holster holds is kept from level to level
 user bool  rsqtr_ammo_light  = true;    // a full holster shows its gun's ammo: green, yellow (low / reload), red (empty)

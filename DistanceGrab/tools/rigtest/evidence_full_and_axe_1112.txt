@@ -1,0 +1,95 @@
+ax4/run.log:R5_FULL_ARMORSHARD_AT_400
+ax4/run.log:AX HP t510 health set 300
+ax4/run.log:AX ARMOR t510 armour set 400
+ax4/run.log:AX STATUS t510 tag 5 health 300 armour 400 | floor near: HeavyArmor@320 
+ax4/run.log:AX SPAWN t510 ArmorShard -> ArmorShard at 160 ahead
+ax4/run.log:[RSQDG] hand 0 LAUNCHED ArmorShard  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+ax4/run.log:[RSQDG] hand 0 refused -- ArmorShard would raise nothing (health 300, armour 399): ARMOR FULL
+ax4/run.log:[RSQDG] hand 0: ArmorShard carried, armor full: ARMOR FULL, dropped at the feet
+ax4/run.log:AX WORDS t553 [ARMOR FULL on ArmorShard] 
+ax4/run.log:AX WORDS t598 (none)
+ax4/run.log:R6_FULL_HEALTHPLUS_AT_300
+ax4/run.log:AX STATUS t663 tag 5 health 300 armour 398 | floor near: ArmorShard@28 
+ax4/run.log:AX SPAWN t663 HealthPlus -> HealthPlus at 160 ahead
+ax4/run.log:[RSQDG] hand 0 LAUNCHED HealthPlus  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+ax4/run.log:[RSQDG] hand 0 refused -- HealthPlus would raise nothing (health 300, armour 397): HEALTH FULL
+ax4/run.log:[RSQDG] hand 0: HealthPlus carried, health full: HEALTH FULL, dropped at the feet
+ax4/run.log:AX WORDS t706 [HEALTH FULL on HealthPlus] 
+ax4/run.log:AX WORDS t751 (none)
+ax4/run.log:END
+ax4/run.log:AX STATUS t816 tag 6 health 300 armour 395 | floor near: HealthPlus@28 
+ax3/run.log:X1_AXE_TO_RHIP
+ax3/run.log:X2_MP40_TO_LHIP
+ax3/run.log:X3_OFF_DRAWS_AXE_FROM_RHIP
+ax3/run.log:X4_THROW_OFF_AXE
+ax3/run.log:X5_PULL_OFF_THROWN_AXE_WITH_OFF_HAND
+ax3/run.log:RSQ axegrab t1902: hand 1 pulled an axe -> claimed: the off hand's axe again, held in the off hand
+ax3/run.log:[RSQDG] hand 1: the pickup refused BrutalAxe, its own pack claimed it (pickup.claim): taken, no AMMO FULL
+ax3/run.log:X6_THROW_OFF_AXE_AGAIN
+ax3/run.log:X7_PULL_WITH_MAIN_HAND
+ax3/run.log:[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+ax3/run.log:RSQ axegrab t2186: hand 0 pulled an axe -> claimed: the main hand holds its axe, this one is the off hand's
+ax3/run.log:[RSQDG] hand 0: the pickup refused BrutalAxe, its own pack claimed it (pickup.claim): taken, no AMMO FULL
+ax3/run.log:[RSQDG] hand 0 caught and USED BrutalAxe
+ax3/run.log:X8_MAIN_AXE_HOME_RHIP
+ax3/run.log:X9_THIRD_AXE_BOTH_CARRIED
+ax3/run.log:[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+ax3/run.log:RSQ axegrab t2440: hand 0 pulled an axe -> refused: both axes carried, one per hand (AMMO FULL)
+ax3/run.log:[RSQDG] hand 0 refused -- the pickup refused BrutalAxe (owned, ammo full)
+ax3/run.log:[RSQDG] hand 0: BrutalAxe carried, ammo full: AMMO FULL, dropped at the feet
+ax3/run.log:X10_DRAW_MAIN_AXE_THEN_THROW
+ax3/run.log:X11_EMPTY_AXE_HOLSTER_MAIN_COPY_IN_WHEEL
+ax3/run.log:X12_THROW_LAST_AXE
+ax3/run.log:X13_EMPTY_AXE_HOLSTER_NO_AXE
+ax3/run.log:X14_PULL_MAIN_NO_AXE
+ax3/run.log:[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+ax3/run.log:[RSQDG] hand 0 caught and USED BrutalAxe
+ax3/run.log:RSQ axegrab t3102: hand 0 pulled an axe -> main hand
+ax3/run.log:X15_THROW_AGAIN
+ax3/run.log:X16_PULL_AGAIN
+ax3/run.log:[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+ax3/run.log:[RSQDG] hand 0 caught and USED BrutalAxe
+ax3/run.log:RSQ axegrab t3406: hand 0 pulled an axe -> main hand
+ax3/run.log:H0_AXE_HOME
+ax3/run.log:H1_FULL_HEALTHPLUS
+ax3/run.log:AX HP t3602 health set 300
+ax3/run.log:AX ARMOR t3602 armour set 300
+ax3/run.log:AX STATUS t3602 tag 41 health 300 armour 300 | floor near: HeavyArmor@320 
+ax3/run.log:AX SPAWN t3602 HealthPlus -> HealthPlus at 160 ahead
+ax3/run.log:[RSQDG] hand 0 LAUNCHED HealthPlus  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+ax3/run.log:[RSQDG] hand 0 refused -- HealthPlus would raise nothing (health 300, armour 299): HEALTH FULL
+ax3/run.log:[RSQDG] hand 0: HealthPlus carried, health full: HEALTH FULL, dropped at the feet
+ax3/run.log:AX STATUS t3755 tag 42 health 300 armour 297 | floor near: HealthPlus@28 
+ax3/run.log:H2_FULL_STIMPACK2
+ax3/run.log:AX SPAWN t3760 Stimpack2 -> Stimpack2 at 160 ahead
+ax3/run.log:[RSQDG] hand 0 LAUNCHED Stimpack2  dist=153  0.20kg  share=0.98  cruise=11.9m/s  limit=140  r=19->2
+ax3/run.log:[RSQDG] hand 0 refused -- the pickup refused Stimpack2 (health 300, armour 296): HEALTH FULL
+ax3/run.log:[RSQDG] hand 0: Stimpack2 carried, health full: HEALTH FULL, dropped at the feet
+ax3/run.log:AX STATUS t3913 tag 43 health 300 armour 294 | floor near: Stimpack2@28 
+ax3/run.log:H3_FULL_ARMORSHARD
+ax3/run.log:AX SPAWN t3918 ArmorShard -> ArmorShard at 160 ahead
+ax3/run.log:[RSQDG] hand 0 LAUNCHED ArmorShard  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+ax3/run.log:[RSQDG] hand 0 caught and USED ArmorShard
+ax3/run.log:AX STATUS t4071 tag 44 health 300 armour 294 | floor near: none
+ax3/run.log:H4_FULL_HEAVYARMOR
+ax3/run.log:AX SPAWN t4077 HeavyArmor -> HeavyArmor at 160 ahead
+ax3/run.log:[RSQDG] hand 0 LAUNCHED HeavyArmor  dist=153  12.00kg  share=0.45  cruise=8.1m/s  limit=140  r=16->2
+ax3/run.log:[RSQDG] hand 0 refused -- the pickup refused HeavyArmor (health 300, armour 293): ARMOR FULL
+ax3/run.log:[RSQDG] hand 0: HeavyArmor carried, armor full: ARMOR FULL, dropped at the feet
+ax3/run.log:AX STATUS t4230 tag 45 health 300 armour 291 | floor near: HeavyArmor@28 
+ax3/run.log:H5_STIMPACK_AT_50
+ax3/run.log:AX HP t4234 health set 50
+ax3/run.log:AX ARMOR t4234 armour set 0
+ax3/run.log:AX SPAWN t4234 Stimpack2 -> Stimpack2 at 160 ahead
+ax3/run.log:[RSQDG] hand 0 LAUNCHED Stimpack2  dist=153  0.20kg  share=0.98  cruise=11.9m/s  limit=140  r=20->2
+ax3/run.log:[RSQDG] hand 0 caught and USED Stimpack2
+ax3/run.log:H6_SHARD_AT_0_ARMOUR
+ax3/run.log:AX STATUS t4387 tag 50 health 60 armour 0 | floor near: none
+ax3/run.log:AX SPAWN t4387 ArmorShard -> ArmorShard at 160 ahead
+ax3/run.log:[RSQDG] hand 0 LAUNCHED ArmorShard  dist=153  0.10kg  share=0.99  cruise=11.9m/s  limit=140  r=20->2
+ax3/run.log:[RSQDG] hand 0 caught and USED ArmorShard
+ax3/run.log:END
+ax3/run.log:AX STATUS t4541 tag 51 health 60 armour 68 | floor near: none
+ax1/run.log:[RSQDG] hand 0 LAUNCHED BrutalAxe  dist=153  5.00kg (guessed)  share=0.67  cruise=9.8m/s  limit=140  r=20->2
+ax1/run.log:[RSQDG] hand 0 caught and USED BrutalAxe
+ax1/run.log:RSQ axegrab t424: hand 0 pulled an axe -> main hand

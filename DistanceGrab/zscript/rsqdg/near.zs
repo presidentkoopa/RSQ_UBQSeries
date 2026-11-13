@@ -267,6 +267,14 @@ class RSQDG_Near : EventHandler
 			if (fl) took = fl.TakeInto(h, inv, pmo, p);
 			else { Actor res; [took, res] = inv.CallTryPickup(pmo); }
 			if (took) { if (feel) feel.OnCatch(h, null, p, true, heft); return; }
+			// AMMO / HEALTH / ARMOR FULL (owner 2026-11-12): what you cannot use is not carried off either; the word over it
+			String fw = fl ? fl.RefusedWord() : "";
+			if (fw == "HEALTH FULL" || fw == "ARMOR FULL")     // (a full gun walked up to keeps today's rule)
+			{
+				fl.SayFull(h, a, p, pmo, fw);
+				if (On("rsqdg_trace", p, false)) Console.Printf("[RSQDG] walk-up hand %d: %s -- %s, left where it is", h, a.GetClassName(), fw);
+				return;
+			}
 		}
 		if (hold && hold.Take(h, a, p))
 		{
