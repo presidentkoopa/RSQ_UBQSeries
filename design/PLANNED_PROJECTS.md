@@ -16,6 +16,14 @@ straight line. One press from the off hand, where it points (the hand the whip l
 where it bites: a wall or floor flings you at it; a light monster is flung to you; a heavy one, you are flung to it
 (jpalomo's feel, rewritten clean). A bite on a ledge lip with room to stand lands you on top. Fires and flings at full
 speed in slow motion (the ledge save). No rope, reel, swing or climb: those are the whip's.
+**The two monster results (owner 23:1x):**
+- **Too big, so you fly to it: the KICK-CHAIN.** On arrival you execute the jump kick, the game enters slow motion, and
+  you "kick off" the enemy: an opposing arc with some height, a moment in the air to grapple the next enemy and kick
+  again, building a kick-chain. (The kick's strike is the ski-pole jump kick's payload: knockback, stagger, the yellow
+  cross hit.)
+- **Light enough, so it comes to you: GET OVER HERE.** The hook shoots out of your hand like Scorpion's spear and the
+  monster is yanked to you. No grip, no catch: it arrives in front of you and you shoot, punch, shove, saw, whatever.
+  (Any word or sound for it is our own, not Mortal Kombat's voice line.)
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
