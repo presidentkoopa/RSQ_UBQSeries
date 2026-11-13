@@ -19,16 +19,13 @@ server float sv_rsq_twohand_spread = 0.5;	// Two-Hand Spread: spread x this with
 server bool sv_rsq_twohand_shotguns = false;
 server bool rsa_pistol_semi = false;	// Pistol Semi Auto: one shot per trigger pull
 server int rsq_pump_spread = 0;		// Pump Shotgun Spread: 0 the mod's, 1 Enhanced (3 x 2.5 degrees, same pellets and damage)
-server bool rsq_start_shotgun = false;	// Start With Pistol and Shotgun
 user bool rsq_casing_models = true;	// Real Casing Models: off = the mod's own casing sprites
 user float rsq_casing_size = 1.0;	// a multiplier on true size
 user bool rsq_hud_nohp = false;		// Remove HUD Health and Armor (BD22 VR Reloaded's name; GBOVR reads it too): the face stays
-user int rsq_hud_ammo = 0;			// HUD (GBOVR's bottom row): 0 magazine + reserve, 1 reserve only, 2 off; stands down while GunBonsaiOffhandVR draws it
 user bool rsq_flick = true;			// the flick is read (a lone rifle's underbarrel, the double barrel, Reloading = Flick)
 user int rsq_switch_log = 0;
-server int rsq_ballistics = 1;		// Ballistics: 0 Stock (the mod's own), 1 Low, 2 Max
+server int rsq_ballistics = 1;		// Ballistics: 0 Stock = Weapons of Saturn's own sounds and effects; 1 Low, 2 Max = RS Ballistics (+ the hand reload's Combat FX sounds)
 server int rsq_ballistics_cfg = 1;
 server bool sv_rsq_true_bullets = true;	// True Bullets: flying rounds; off = the mod's own hitscan
 server float sv_rsq_round_speed = 80.0;	// True Bullet Speed, map units a tic
 user float rsq_round_speed = 1.0;
-server int rsqws_fx = 1;			// Weapon Effects: 0 OG (WoS's own smoke and sounds), 1 Enhanced (RS Ballistics + RS Combat FX)

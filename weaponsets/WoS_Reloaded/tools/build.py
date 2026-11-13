@@ -50,7 +50,6 @@ BDCOPY = {'BrutalPistol': 'RSQ_Off_BrutalPistol', 'MP40': 'RSQ_Off_MP40', 'Rifle
           'Shot_Gun': 'RSQ_Off_Shot_Gun', 'SSG': 'RSQ_Off_SSG'}
 PICKUPS = {'RQWP', 'COLP', 'CSAW', 'MPIC', 'SHAT', 'DBBL', 'RIFL', 'MNIG', 'LAWN', 'PLAS', 'DEBF'}	# world sprites (voxels), not HUD frames
 FISTS = 'RSQWS_Knuckles'
-SHOTGUN = 'RSQWS_Riotgun'
 HELPERS = ['RSQ_GunSide', 'RSQ_Hands', 'RSR_GunParts', 'RSR_DroppedMag', 'RSP_DroppedShell', 'RSM_SpentCase', 'RSB_GunParts', 'RSB_Round', 'RSQ_Debris', 'RSQ_Bullet']
 
 REPORT = []
@@ -178,6 +177,23 @@ def main(want_pk3):
     names = set(c[6:] for c in C if c.startswith('RSQWS_'))
     gl, n = re.subn(r'(?im)^(\s*object\s+)(\w+)', lambda m: m.group(1) + ('RSQWS_' + m.group(2) if m.group(2) in names else m.group(2)), gl)
     gl, ng = re.subn(r'(?is)^\s*object\s+SaturnG\s*\{.*?^\}\s*', '\n', gl, flags=re.M)     # WoS's grenade: not carried (the alt is the lock-on)
+    # the Titan's rounds in orange (owner): its three objects lit by orange copies of the stock BFGBALL lights (lights.pk3
+    # filter/doom.id/gldefs.txt: same sizes and flicker, green -> orange)
+    def orange(m):
+        body = re.sub(r'\blight BFGBALL(_X\d)?\b', lambda k: 'light RSQWS_NOVA' + (k.group(1) or ''), m.group(2))
+        return m.group(1) + body
+    gl, no = re.subn(r'(?s)(object\s+RSQWS_(?:Nova|HyperNova|Residue)\s*\{)(.*?\n\})', orange, gl)
+    if no != 3: raise SystemExit('Titan lights: %d of 3 objects' % no)
+    gl += """
+// tools/build.py: the Titan's rounds in the Nuker's orange (the stock BFGBALL lights, recoloured)
+pointlight RSQWS_NOVA { color 1.0 0.6 0.25 size 120 attenuate 1 }
+flickerlight RSQWS_NOVA_X1 { color 1.0 0.6 0.25 size 120 secondarySize 132 chance 0.3 attenuate 1 }
+flickerlight RSQWS_NOVA_X2 { color 1.0 0.65 0.3 size 156 secondarySize 168 chance 0.3 attenuate 1 }
+flickerlight RSQWS_NOVA_X3 { color 1.0 0.7 0.35 size 180 secondarySize 192 chance 0.3 attenuate 1 }
+flickerlight RSQWS_NOVA_X4 { color 0.7 0.4 0.15 size 84 secondarySize 96 chance 0.3 attenuate 1 }
+flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance 0.3 attenuate 1 }
+"""
+    wr('TRNSLATE.rsqws', '// the Titan\'s rounds (zscript/wos/novacolor.zs): Doom\'s green ramp onto its orange ramp\nRSQWS_NovaOrange = "112:127=208:223"\n')
     wr('GLDEFS.wos', gl); note('GLDEFS: WoS object names on their RSQWS_ classes (%d objects)' % n)
     # the Beretta's pickup: WoS's PISTA0 is BD22's pistol HUD sprite name too, so the pickup is RQWP
     cp(os.path.join(WOS, 'SPRITES/BERETTA/PISTA0.png'), 'SPRITES/BERETTA/RQWPA0.png')
@@ -232,14 +248,53 @@ def main(want_pk3):
         for f in ('pistG0.kvx', '1911pick.png'): cp(os.path.join(ROOT, 'assets/pickup_1911', f), 'models/rsqws/1911pickup/' + f)
         lumps['MODELDEF.rsqws1911'] += '\n// the 1911 lying on the floor: BD22\'s voxel pistol in the 1911\'s colours\nModel RSQWS_1911\n{\n\tModel 0 "models/rsqws/1911pickup/pistG0.kvx"\n\tSkin 0 "models/rsqws/1911pickup/1911pick.png"\n\tScale 0.8 0.8 0.8\n\tAngleOffset 90\n\tFrameIndex COLP A 0 0\n}\n'
         note('1911: %d BD22 pistol-mesh blocks replaced by its own (MODELDEF.rsqws1911, seat %s)' % (dropped, row19['place']))
+    # the Rotary Cannon's magazine (owner: "when we 'grab a magazine' I want to see a half sized voxel ammo box in my hand";
+    # "if the chaingun drops an ammo box, recolor it brown or grey so it looks empty"): BD22's voxel ammo box as an MD3
+    # (tools/ammobox_md3.py: 18 units long, half its pickup; its middle at the origin), in BD22 VR's own three blocks for
+    # the minigun's magazine piece -- at the gun, in the off hand, dropped -- with BD22 VR's own placements, hooks and
+    # hold, each block's Offset / ZOffset solved (port_gun.chain) so the box's middle is where the magazine piece's
+    # middle was (Minigun_rsr.md3 surface 2, frame 4). The dropped one wears the empty skin.
+    sys.path.insert(0, '/home/claude/presidentkoopa/rsq_bd_vr_reloaded/tools/handfit/port')
+    _argv = sys.argv; sys.argv = sys.argv[:1]
+    import numpy as np, port_gun as pg
+    sys.argv = _argv
+    Pm = pg.raw(os.path.join(BD, 'models/bd/Minigun/Minigun_rsr.md3'), 4, [2]); Cm = (Pm.min(0) + Pm.max(0)) / 2
+    def solve(scale, off, ao):
+        want = pg.chain(scale, off, ao)(Cm[None, :])[0]
+        f = lambda o: pg.chain(scale, o, ao)(np.zeros((1, 3)))[0]
+        f0 = f((0, 0, 0)); J = np.stack([f(tuple(np.eye(3)[k])) - f0 for k in range(3)], 1)
+        return np.linalg.solve(J, want - f0)
+    BOXB = {('RSR_GunParts', 'RQCP'): ((-1, 1, 1), (-1.156, -5.106, -1.923), (3.854, 3.363, 10.974), 'ammoa.png', '\tNoInterpolation\n'),
+            ('RSQ_Hands', 'RQCP'): ((-1, 1, 1), (0, 0, -5), (0, 0, 0), 'ammoa.png', '\tNoInterpolation\n'),
+            ('RSR_DroppedMag', 'RQCW'): ((0.3468, 0.3468, 0.3468), (-21.527, 1.3567, 6.3229), (0, 0, 0), 'ammoa_empty.png', '\tUSEACTORPITCH\n\tUSEACTORROLL\n')}
+    box = {}
+    for key, (sc, off, ao, skin, tail) in BOXB.items():
+        o = solve(sc, off, ao)
+        box[key] = ('\tPath "models/rsqws/ammobox"\n\tModel 0 "ammobox.md3"\n\tSkin 0 "%s"\n\tScale %.4f %.4f %.4f\n\tOffset %.3f %.3f 0.0\n\tZOffset %.3f\n'
+                    % ((skin,) + tuple(sc) + tuple(o)) + ('\tAngleOffset %.3f\n\tPitchOffset %.3f\n\tRollOffset %.3f\n' % ao if any(ao) else '') + tail
+                    + '\tFrameIndex %s A 0 0\n' % key[1])
+    hit = set()
+    def boxed(m):
+        for (cls, spr), body in box.items():
+            if m.group(1) == cls and re.search(r'FrameIndex\s+%s\s+A\s' % spr, m.group(2)):
+                hit.add((cls, spr)); return 'Model %s\n{\n%s}' % (cls, body)
+        return m.group(0)
+    lumps['MODELDEF.rsr'] = re.sub(r'Model (\w+)\n\{(.*?)\n\}', boxed, lumps['MODELDEF.rsr'], flags=re.S)
+    if len(hit) != 3: raise SystemExit('minigun ammo box: %d of 3 blocks replaced' % len(hit))
+    for f in ('ammobox.md3', 'ammoa.png', 'ammoa_empty.png'): cp(os.path.join(ROOT, 'assets/ammobox', f), 'models/rsqws/ammobox/' + f)
+    note('Rotary Cannon magazine: BD22 voxel ammo box as an MD3 (18 units), in BD22 VR\'s three magazine blocks; dropped = empty skin')
     # Real Casing Models: BD22 VR's measured casings on WoS's casing sprites (CAS1 9 mm / .45, CAS2 12 ga, CAS3 rifle)
     CASE = {'RSQ_Case9mm': 'CAS1', 'RSQ_Case556': 'CAS3', 'RSQ_Case762': 'CAS3', 'RSQ_Hull12ga': 'CAS2'}
     def recase(m):
         body = re.sub(r'^[ \t]*FrameIndex[^\n]*\n?', '', m.group(3), flags=re.M).rstrip()
         return 'Model %s%s\n{%s\n%s\n}' % (m.group(1), m.group(2), body, '\n'.join('\tFrameIndex %s %s 0 0' % (CASE[m.group(1)], f) for f in 'ABCDEFGHIJKLMN'))
     lumps['MODELDEF.rsqcase'], nb = re.subn(r'Model (\w+)([^\n{]*)\n\{(.*?)\n\}', recase, rd(os.path.join(BD, 'MODELDEF.rsqcase')), flags=re.S)
+    lumps['MODELDEF.rsqcase'] += ('\n// this pack: the 1911\'s .45 (RS Ballistics models/casings/casing_45.md3, its own scale), on WoS\'s casing sprite CAS1\n'
+        'Model RSQ_Case45\n{\n\tPath "models/rsq/casings"\n\tModel 0 "casing_45.md3"\n\tSurfaceSkin 0 0 "casing_brass.png"\n\tSurfaceSkin 0 1 "casing_inner.png"\n'
+        '\tSurfaceSkin 0 2 "casing_primer.png"\n\tScale 0.03279 0.03279 0.03279\n\tUSEACTORPITCH\n\tUSEACTORROLL\n' + ''.join('\tFrameIndex CAS1 %s 0 0\n' % f for f in 'ABCDEFGHIJKLMN') + '}\n')
     note('casing model blocks: %d' % nb)
     cptree(os.path.join(BD, 'models/rsq/casings'), 'models/rsq/casings')
+    cp('/home/claude/rs_ballistics/models/casings/casing_45.md3', 'models/rsq/casings/casing_45.md3')
     sprites |= {'CAS1', 'CAS2', 'CAS3'}
     for k, txt in lumps.items(): wr(k, txt)
     for rel in sorted(files): cp(os.path.join(BD, rel), rel)
@@ -306,10 +361,6 @@ def main(want_pk3):
     if 'RSQWS_Coachgun' in present:     # the break-open table's row 1 (the SSG mesh)
         BRK = (('Loaded', '"RSQWS_LoadedShells"'), ('Reserve', '"Shell"'), ('Unloaded', '""'), ('ReloadToken', '""'), ('SndOpen', '"weapons/shellslinger/open"'))
         note('break-open row 1 RSQWS_Coachgun: loaded RSQWS_LoadedShells, reserve Shell')
-    if 'RSQWS_Minigun' in rows:
-        g = set_case(g, 'WellHook', 17, '(0.558, 8.308, 0.408)\t// this pack: the ammo box is drawn at 0.12: its slide out of the well is 1 / 0.12 of (0.067, 0.997, 0.049)')
-        g = set_case(g, 'HandHook', 17, '(0, 0, 0)\t// this pack: the ammo box is placed in the hand by its own MODELDEF block')
-    FXON = "RSQWS_FX.Enhanced()"
     patches = {
         'rsr/rsr_m203.zs': [("Name n = cv && cv.GetInt() == 1 ? 'GrenadeAmmo' : 'AmmoRocket';\n\t\tclass<Inventory> c = n;",
             "Name n = cv && cv.GetInt() == 1 ? 'RSQGN_Ammo' : 'RocketAmmo';\t// this pack: RSQ Grenade's grenades, or rockets\n\t\tclass<Inventory> c = n;\n\t\tif (!c)\n\t\t\tc = 'RocketAmmo';\t// RSQ Grenade is not loaded: rockets", 1)],
@@ -320,19 +371,11 @@ def main(want_pk3):
         'rsq/scope.zs': [("static const bool v[] = { false, true, true };", "static const bool v[] = { false, false, false };\t// this pack: always on, alt fire is the gun's own", 1)],
         'rsq/scope_real.zs': [("double mag = (cv && cv.GetInt() == 1) ? RSQ_ScopeTable.Mag(i) : 1.0;", "double mag = RSQ_ScopeTable.Mag(i);\t// this pack: always the real 3x", 1)],
         'rsq/hands.zs': [("if (sci > 0 && RSQ.PlayerInt(mo, RSQ_ScopeTable.ModeCVar(sci), 0) != 0)", "if (sci > 0)\t// this pack: the real scope always, never the dot", 1)],
-        # Weapon effects and sounds (owner: "OG or our Enhanced"): every BD22 VR effect system stands down on OG
+        # Ballistics (owner: one option, not a second "Weapon Effects"): BD22 VR's own gates, unchanged. Stock = WoS's own
+        # look and sounds; Low / Max = RS Ballistics (flash, tail, crack, impacts) on True Bullets or hitscan alike.
         'rsq/ballistics.zs': [("e.Thing.player.ReadyWeapon.GetClassName()", "RSQ_Alias.BD(e.Thing.player.ReadyWeapon)", 1),
-            ("tracer.player.ReadyWeapon.GetClassName()", "RSQ_Alias.BD(tracer.player.ReadyWeapon)", 1),
-            ("\t\tlet cv = CVar.FindCVar('rsq_ballistics');\n\t\treturn cv ? clamp(cv.GetInt(), 0, 2) : 0;",
-             "\t\tif (!%s)\t// this pack: Weapon Effects = OG\n\t\t\treturn 0;\n\t\tlet cv = CVar.FindCVar('rsq_ballistics');\n\t\treturn cv ? clamp(cv.GetInt(), 0, 2) : 0;" % FXON, 1)],
-        'rsq/shotfx.zs': [("let cv = CVar.FindCVar('sv_rsq_true_bullets');\t// \"True Bullets: On / Off\": one switch for the rounds and their look\n\t\treturn cv && cv.GetBool();",
-            "let cv = CVar.FindCVar('sv_rsq_true_bullets');\t// \"True Bullets: On / Off\": one switch for the rounds and their look\n\t\treturn cv && cv.GetBool() && %s;\t// this pack: and Weapon Effects = Enhanced" % FXON, 1)],
-        'rsq/playerrounds.zs': [("let cv = CVar.FindCVar('sv_rsq_true_bullets');\t// \"True Bullets: On / Off\" (CVARINFO.rsx)\n\t\treturn cv && cv.GetBool();",
-            "let cv = CVar.FindCVar('sv_rsq_true_bullets');\t// \"True Bullets: On / Off\" (CVARINFO.rsx)\n\t\treturn cv && cv.GetBool() && %s;\t// this pack: and Weapon Effects = Enhanced" % FXON, 1)],
-        'rsq/flash.zs': [("String n = w.GetClassName();", "String n = RSQ_Alias.BD(w);", 1),
-            (re.compile(r"(override bool WorldHitscanPreFired\(WorldEvent e\)\n\t\{\n)"), r"\1\t\tif (!%s)\t// this pack: Weapon Effects = OG\n\t\t\treturn false;\n" % FXON, 1),
-            (re.compile(r"(override bool WorldRailgunPreFired\(WorldEvent e\)\n\t\{\n)"), r"\1\t\tif (!%s)\n\t\t\treturn false;\n" % FXON, 1),
-            (re.compile(r"(override void WorldThingSpawned\(WorldEvent e\)\n\t\{\n)"), r"\1\t\tif (!%s)\n\t\t\treturn;\n" % FXON, 1)],
+            ("tracer.player.ReadyWeapon.GetClassName()", "RSQ_Alias.BD(tracer.player.ReadyWeapon)", 1)],
+        'rsq/flash.zs': [("String n = w.GetClassName();", "String n = RSQ_Alias.BD(w);", 1)],
         # rsq/flick.zs: BD22 VR's, unchanged but for the alias (owner: "just diff your flick reload against bd as bd works"):
         # it reloads a gun in each hand, a lone SSG (the Coach Gun) and a lone rifle's underbarrel. No 'Reloading = Flick' mode.
         'rsq/casings.zs': [(re.compile(r"Name n = c\.GetClassName\(\);"), "Name n = c.GetClassName();\n\t\t// this pack: WoS's casings under the names BD22 VR's tables know\n\t\tif (n == 'RSQWS_9mmCasing' || n == 'RSQWS_45Casing') n = 'PistolCasing';\n\t\telse if (n == 'RSQWS_RifleCasing' || n == 'RSQWS_ChaingunCasing') n = 'EmptyBrass';\n\t\telse if (n == 'RSQWS_ShotgunCasing') n = 'ShotgunCasing';", 1),
@@ -359,6 +402,11 @@ def main(want_pk3):
         ("let c = CVar.GetCVar('rsa_rl_lock', p);\n\t\t\tbool on = c && c.GetBool() &&", "bool on = true &&\t// this pack: the Saturn V's alt fire is always the lock-on (SPEC)\n\t\t\t\t", 1),
         ("\n\t\t\t\t&& !RSA_Handler.AltDown(mo);", ";\t// (no LegenDoom mode here)", 1),
         ("!(r is 'Rocket2')", "!(r is 'RSQWS_SaturnRocket')", 1)]
+    # the 1911's brass: RS Ballistics' .45 (owner), lent when the 1911 throws it
+    patches['rsq/casings.zs'].append(("bool lent = RSQ_CaseModels.Lend(c, RSQ_Alias.BD(mo.player.ReadyWeapon), n);",
+        "bool lent = RSQ_CaseModels.Lend(c, mo.player.ReadyWeapon is 'RSQWS_1911' ? Name('RSQWS_1911') : RSQ_Alias.BD(mo.player.ReadyWeapon), n);\t// this pack: the 1911's own .45", 1))
+    patches['rsq/casemodels.zs'] = [("\tstatic Name Holder(Name gun, Name casing)\n\t{\n",
+        "\tstatic Name Holder(Name gun, Name casing)\n\t{\n\t\tif (gun == 'RSQWS_1911')\t// this pack: RS Ballistics' .45 (src/zscript/wos/case45.zs)\n\t\t\treturn 'RSQ_Case45';\n", 1)]
     zs_port.port(TREE, patches)
     for rel, rows_ in (('zscript/rsr/rsr_pump_guns.zs', PUMP if 'RSQWS_Riotgun' in present else ()), ('zscript/rsr/rsb_guns.zs', BRK if 'RSQWS_Coachgun' in present else ())):
         if not rows_: continue
@@ -373,12 +421,13 @@ def main(want_pk3):
     al += ["\t\treturn 'None';", '\t}', '', '\t// by exact class: an off-hand version is BD22 VR\'s off-hand version, not the gun',
            '\tclearscope static Name Exact(Weapon w)', '\t{', '\t\tif (!w)', "\t\t\treturn 'None';", '\t\tName n = w.GetClassName();'] + \
           ["\t\tif (n == 'RSQ_Off_%s')\treturn '%s';" % (d[0], BDCOPY[GUNS[d[0]]]) for d in D] + ['\t\treturn BD(w);', '\t}', '}', '',
-           '// Start With Pistol and Shotgun (rsq_start_shotgun): the shotgun at the start, once a life',
+           '// the underbarrel\'s ammo at the start (owner: "ensure player starts with 3 missiles if RSQ Grenade not loaded"): without',
+           '// RSQ Grenade the underbarrel fires rockets (rsr_m203.zs AmmoClass, this pack), so each life starts with three',
            'class RSQ_Started : Inventory { Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE } }',
            'class RSQ_Start : EventHandler', '{', '\toverride void PlayerEntered(PlayerEvent e)', '\t{',
            '\t\tlet mo = players[e.PlayerNumber].mo;', "\t\tif (!mo || mo.CountInv('RSQ_Started') > 0)", '\t\t\treturn;',
-           "\t\tmo.GiveInventory('RSQ_Started', 1);", "\t\tlet cv = CVar.FindCVar('rsq_start_shotgun');", '\t\tif (!cv || !cv.GetBool())', '\t\t\treturn;',
-           "\t\tName sn = '%s';" % SHOTGUN, '\t\tclass<Inventory> c = sn;', '\t\tif (c && mo.CountInv(c) <= 0)', '\t\t\tmo.GiveInventory(c, 1);', '\t}', '}', '',
+           "\t\tmo.GiveInventory('RSQ_Started', 1);", "\t\tName gn = 'RSQGN_Ammo';", '\t\tclass<Inventory> g = gn;', '\t\tif (!g)',
+           "\t\t\tmo.GiveInventory('RocketAmmo', 3);", '\t}', '}', '',
            '// every sprite name the model definitions key, named once so MODELDEF knows them',
            'class RSQ_BDSprites : Actor', '{', '\tStates', '\t{', '\tSpawn:', '\t\tTNT1 A 0;'] + \
           ['\t\t"%s" A 0;' % s for s in sorted(sprites)] + ['\t\tStop;', '\t}', '}', '']
@@ -394,8 +443,8 @@ def main(want_pk3):
     # 5. lumps
     H = ['RSVR_HandSync', 'RSQ_PoseHandler', 'RSVR_MeleeHandler', 'RSQ_Handler', 'RSR_ReloadHandler', 'RSB_Handler', 'RSP_Handler', 'RSK_M203Handler', 'RSQ_Muzzle', 'RSQ_HandTone',
          'RSQ_Start', 'RSA_Casings', 'RSQ_AmmoHud', 'RSQ_Flick', 'RSQ_Ballistics', 'RSQ_FlashHandler', 'RSQ_PlayerRounds', 'RSQ_ShotFX',
-         'RSQ_Dual', 'RSQ_DualHands', 'RSQ_DualKey', 'RSQ_ScopeReal', 'RSQWS_KickKey', 'RSQ_RocketLock']
-    wr('MAPINFO.rsq', 'gameinfo\n{\n\tPlayerClasses = "RSQWS_PistolPlayer"\n\tAddEventHandlers = %s\n}\n' % ', '.join('"%s"' % h for h in H))
+         'RSQ_Dual', 'RSQ_DualHands', 'RSQ_DualKey', 'RSQ_ScopeReal', 'RSQWS_KickKey', 'RSQ_RocketLock', 'RSQWS_NovaColor']
+    wr('MAPINFO.rsq', 'gameinfo\n{\n\tPlayerClasses = "RSQWS_PistolShotgunPlayer", "RSQWS_Pistol1911Player", "RSQWS_ShotgunMP40Player"\n\tAddEventHandlers = %s\n}\n' % ', '.join('"%s"' % h for h in H))
     dc = ['user bool rsq_dual_start = true;\t// Start With Two Pistols'] + ['user bool rsq_dual_%d = %s;\t// dual %s' % (k, 'true' if d[5] else 'false', d[4]) for k, d in enumerate(D)]
     wr('CVARINFO.rsq', rd(os.path.join(HERE, 'lib/CVARINFO.base')) + '\n'.join(dc) + '\n')
     dm = ['', 'OptionMenu "RSQ_DualOptions"', '{', '\tTitle "DUAL OPTIONS"', '\tOption "Start With Two Pistols", "rsq_dual_start", "OnOff"'] + \
@@ -404,7 +453,8 @@ def main(want_pk3):
     wr('KEYCONF.rsq', 'addkeysection "Weapons of Saturn VR" rsqwsvr\naddmenukey "Quick Kick" rsqws_kickkey\nalias rsqws_kickkey "netevent rsqws_kick"\n'
        'addmenukey "Dual Wield" rsq_dualkey\nalias rsq_dualkey "netevent rsq_dual"\n')
     wr('SNDINFO.rsr', rd(os.path.join(BD, 'SNDINFO.rsr')) + "\n// the underbarrel launcher's sounds (BD22's names, Doom 2's own lumps)\nGrenadeLauncher/Open\tdsdbopn\nGrenadeLauncher/Close\tdsdbcls\nGrenadeLauncher/Load\tdsdbload\nWeapon/Empty\tdsswtchn\n"
-       "\n// tools/build.py: a trigger on an empty gun (RSQWS_Gun.RSQWS_Empty): Doom 2's own click\nRSQWS/dry\tdsswtchn\n")
+       "\n// tools/build.py: a trigger on an empty gun (RSQWS_Gun.RSQWS_Empty): Doom 2's own click\nRSQWS/dry\tdsswtchn\n"
+       "\n// the 1911's shot at Ballistics Low / Max (owner: his sound file, to come): WoS's 1911 until then\n$alias rsqws/1911/fire weapons/1911/fire\n")
     cptree(os.path.join(BD, 'sounds/rsr'), 'sounds/rsr')
     cptree(os.path.join(BD, 'sounds/rsb'), 'sounds/rsb')
     for f in ('SURFACES.rsq', 'ANIMDEFS.rsq'): cp(os.path.join(BD, f), f)

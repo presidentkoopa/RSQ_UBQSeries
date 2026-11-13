@@ -33,24 +33,11 @@ OptionValue "RSR_ShellCredit"
 	4, "4"
 }
 
-OptionValue "RSQWS_FX"
-{
-	0, "OG"
-	1, "Enhanced"
-}
-
 OptionValue "RSQ_Ballistics"
 {
-	0, "Stock"
+	0, "Stock (WoS)"
 	1, "Low"
 	2, "Max"
-}
-
-OptionValue "RSQ_HudAmmo"
-{
-	0, "Magazine + Reserve"
-	1, "Reserve Only"
-	2, "Off"
 }
 
 OptionValue "RSQ_PumpSpread"
@@ -98,11 +85,9 @@ OptionMenu "RSQ_Options"
 	Option "Shotgun Shells Per Insert", "rsr_shell_credit", "RSR_ShellCredit"
 	Slider "Reload assist", "rsr_assist", 0.5, 3.0, 0.1
 	Option "Pistol Semi Auto", "rsa_pistol_semi", "OnOff"
-	Option "Start With Pistol and Shotgun", "rsq_start_shotgun", "OnOff"
 	Option "Pump Shotgun Spread", "rsq_pump_spread", "RSQ_PumpSpread"
 	Option "Shotgun Slugshot Alt Fire", "rsa_sg_slug", "OnOff"
 	Option "Rifle Underbarrel Ammo", "rsm_ammo", "RSM_Ammo"
-	Option "Weapon Effects", "rsqws_fx", "RSQWS_FX"
 	Option "Ballistics", "rsq_ballistics", "RSQ_Ballistics"
 	Option "True Bullets", "sv_rsq_true_bullets", "OnOff"
 	Slider "True Bullet Speed", "sv_rsq_round_speed", 20, 900, 10, 0
@@ -110,7 +95,6 @@ OptionMenu "RSQ_Options"
 	Option "Two-Hand Tightens Shotguns", "sv_rsq_twohand_shotguns", "OnOff"
 	Option "Two-Hand Grip (engine)", "vr_two_handed_weapons", "OnOff"
 	Submenu "Dual Options", "RSQ_DualOptions"
-	Option "HUD Ammo", "rsq_hud_ammo", "RSQ_HudAmmo"
 	Option "Remove HUD Health and Armor", "rsq_hud_nohp", "OnOff"
 	Option "Real Casing Models", "rsq_casing_models", "OnOff"
 	Slider "Casing Size", "rsq_casing_size", 0.5, 2.5, 0.1, 1

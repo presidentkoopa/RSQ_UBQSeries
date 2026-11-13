@@ -41,9 +41,29 @@ class RSQWS_Riotgun : RSQWS_Gun replaces Shotgun
 	Deselect:
 		SHTN A 1 A_Lower;
 		Loop;
-	Ready:
-		SHTN A 1 RSQWS_Ready();
+	Ready:	// BD22 VR: a shell the hand pushes home with the gun simply up is fed here (rsr_pump.zs FreeFeed)
+		SHTN A 1
+		{
+			if (CountInv("RSP_ShellIn") > 0)
+				return ResolveState("RSP_Feed");
+			return RSQWS_Ready();
+		}
 		Loop;
+	RSP_Feed:	// BD22 VR Shotgun.dec RSP_Feed: one pass per credited shell (Shotgun Shells Per Insert, rsr_shell_credit)
+		SHTN A 0
+		{
+			if (invoker.Loaded() <= 0)
+				A_GiveInventory("RSQ_ShotgunWasEmpty", 1);	// fed into an empty gun: nothing in the chamber
+			while (CountInv("RSP_ShellIn") > 0)
+			{
+				A_TakeInventory("RSP_ShellIn", 1);
+				invoker.LoadOne();
+			}
+			// loaded into an empty gun: nothing is chambered, so it waits for the pump now (no trigger pull first)
+			if (invoker.Loaded() > 0 && CountInv("RSQ_ShotgunWasEmpty") > 0)
+				return ResolveState("RSP_P2");
+			return ResolveState("Ready");
+		}
 	Fire:
 		SHTN A 0
 		{

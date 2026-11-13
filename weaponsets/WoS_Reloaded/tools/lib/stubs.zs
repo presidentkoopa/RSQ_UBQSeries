@@ -134,7 +134,7 @@ class RSQ_ShotgunWasEmpty : RSVR_Token {}
 // and its reads from rsq/ui/data.zs): one ammo counter per hand on that hand's side (reserve dim gold, the magazine in
 // the hand's colour, the ammo's icon under the reserve), and in the middle health | face | armour, in the game's HUD
 // font. Its numbers are GBOVR's (units of the safe area's height / 540, x 1.5, inset 4 %). With GBOVR loaded this stands
-// down: GBOVR draws the same row itself. HUD Ammo (rsq_hud_ammo): 0 magazine + reserve, 1 reserve only, 2 the row off.
+// down: GBOVR draws the same row itself. Always magazine + reserve (owner: no other choices).
 // Remove HUD Health and Armor (rsq_hud_nohp, BD22 VR Reloaded's name, which GBOVR reads too): the face stays.
 class RSQ_AmmoHud : EventHandler
 {
@@ -208,10 +208,6 @@ class RSQ_AmmoHud : EventHandler
 		let p = players[consoleplayer];
 		if (!p.mo || Other())
 			return;
-		let cv = CVar.GetCVar('rsq_hud_ammo', p);
-		int mode = cv ? cv.GetInt() : 0;
-		if (mode == 2)
-			return;
 		HudFrame();
 		double W = sw / u, H = sh / u;
 		Font big = Font.GetFont("HUDFONT_DOOM");
@@ -223,7 +219,6 @@ class RSQ_AmmoHud : EventHandler
 			TextureID icon;
 			[mag, reserve, icon] = ReadAmmo(wpn);
 			if (!wpn || reserve < 0) continue;
-			if (mode == 1) mag = -1;
 			int mc = s == 1 ? Font.CR_GOLD : Font.CR_ORANGE;
 			if (OnLeft(s))
 			{
