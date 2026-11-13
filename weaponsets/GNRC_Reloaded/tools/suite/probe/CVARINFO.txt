@@ -1,0 +1,8 @@
+user string qzt_lhand = "";
+user float qzt_ltrigger = -1;
+user int rsprobe_robot = 0;
+user string rsprobe_seed = "";
+user float qzt_lgrip = -1;
+user int rsprobe_shells = 99;
+user int rsprobe_pumpgrip = 0;
+user int rsprobe_elev = 0;
