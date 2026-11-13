@@ -64,6 +64,21 @@ a pass over every option row in the series. Items waiting for it:
   (default; keeps the assignment system) or takes that holster (a straight swap, so you always know what is where).
   Built as a toggle; the default is for this pass to settle.
 
+## Movement: the ski-pole jump kick (owner 2026-11-12 20:07-20:21, design only)
+- Home: cigarette slow-mo (it switches close-call slow-mo off so they never stack); each move burns a slice of the smoke.
+- Trigger: both hands sweep back hard together (ski poles), guns in hand, no button.
+- The leap: full action by default (owner 20:15: "i am advanced vr user don't baby me"): real air, head height plus,
+  the view travels the whole arc, momentum carried out of the landing. Softened versions (lower hop, vignette, blink)
+  live in Accessibility only.
+- COMMITTED (owner 20:21): the boot swings out sideways at the top of the arc every time, whiffs included; you aim
+  the leap and own the result. Whatever it hits flies: monsters bowl into monsters, barrels go off on impact (Melee's
+  Barrel Launch).
+- Ledges do not stop it: overshoot and Grapple 2.0 saves you; the grapple fires at normal speed during slow-mo.
+- Also talked about, not chosen: a double-flick stick dash, a head-lunge dash, a slide kick on a quick head dip
+  while running.
+- Not built. First step when it is: measure on the rig how fast normal play moves the hands (reloads, holsters) so
+  the push-off never fires by accident.
+
 ## The sprite-frame budget (2026-11-12)
 The engine indexes sprite frames with 16 bits: the whole load order must stay under 65,535. It was 71,572 (runs
 sfcount3); LaserSight's PC VR halo removed: 64,228, headroom 1,307. Count any new baked asset first (the gdb read in
