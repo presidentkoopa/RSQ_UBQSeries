@@ -46,6 +46,14 @@ speed in slow motion (the ledge save). No rope, reel, swing or climb: those are 
   kick-off, press jump again for more air and +0.5 s of slow motion, with **DoubleJump!** appearing under the world
   slow-motion bar so you know why it got the boost. Once you double jump, a few enemies within the grapple's reach get
   "+0.25 sec" or "+0.5 sec" over them: hook one to earn that much more slow motion (the start of the airborne minigame).
+- **The air spike (owner 00:1x).** Mid-air (after a double jump) you hook a light monster: GET OVER HERE pulls it up
+  to you in slow motion; swing both hands down hard together (Ground Pound's gesture, read by Grapple 2.0 itself,
+  ANYTHING in your hands, but only at this one moment: an air-pulled light monster in front of you; elsewhere Ground
+  Pound stays Melee's, fists only, so it is not triggered by accident) and it is SPIKED straight down. You hang in the
+  air until it hits the floor. On impact: RSQ Grenade's #10 Neon Crescent (taken OUT of the barrels' random rotation:
+  the spike's own explosion), blood, fire and a shockwave round the impact. The blast counts as a close explosion and
+  triggers contextual slow motion on your descent. (To build: RSQ SlowMo's Close Call today is a rocket or fireball
+  about to hit you, not an explosion near you; that trigger has to be added for this.)
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
