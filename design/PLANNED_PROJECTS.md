@@ -147,6 +147,10 @@ the rig: rig/work/fullgdb3.sh, /tmp/sprites.bin, numframes at byte 8, the 16-bit
 19.5k, brutal22test6 13.1k, Saber 10.7k, LaserSight 7.3k, RSQ Monsters 5.7k, XMVE 5.3k.
 - Owner 2026-11-12 19:44: "once i bake the small card on each model we can cut those sliders completely": the small
   card's baked positions (GunCards' Q0..QE families, the 13 depths) go then, freeing most of GunCards' frames.
+- Owner 2026-11-13 02:10: "we will ditch quest and do pcvr only, i will bake wrist cards on both hands and small cards
+  on all guns. i will let you know when i do that". Waits on his word. When he gives it: GunCards drops its Quest text
+  quality (about half the glyph pieces), the small card's depth copies and sliders, and the watch card is fitted to
+  his baked wrist cards; then recount frames and file size on the rig.
 
 ## RSQ Score's Big Pass
 Named by the owner 11-10 10:46 as a planned project beside Gun Bonsai VR's. Not yet scoped.
