@@ -720,6 +720,10 @@ class RS_BDTierHandler : EventHandler
 		if (!k) return;
 		k.fam = v / 1000;
 		k.entry = clamp((v % 1000) / 10, 1, 13);
+		// [ladder system, owner 11-13: "there 0 is neutral, 1 is green, etc"] with rsq_mon_ladder on, EVERY monster as its
+		// mod ships it is the neutral step (Common) and each world tier is the next colour, the same pattern for all: no
+		// monster starts higher on the ladder because it is stronger
+		if (RS_Ladder.On()) k.entry = 1;
 		k.hpOnly = (v % 10) != 0;
 		k.helper = a.FindInventory("RS_BDHelperMark") != null;
 		k.basePain = a.PainChance;

@@ -14,7 +14,7 @@ The numbers and the reasons are in `design/BD_XMVE_TIERING.md` (the rule) and th
 | 1 | **Spawn mix C, the sliding window.** The world tier S is the centre colour. Colours below it weigh 0.55 per step, colours above 0.30 per step; Black and White ×0.15 until the centre reaches them. Every colour is used. | to build (ColorfulHell has no world tier yet) |
 | 2 | **Black and White are boss-grade under the world rule:** health 1.25× and 1.5× the family's Abyss, not ColorfulHell's literal boss health. | BD/XMVE: built on main (RS_BDTier). ColorfulHell: to build |
 | 3 | **EX is its own step above White.** A Black EX never steps down to the plain White. | BD/XMVE: built on main (EX steps). ColorfulHell: to build |
-| 4 | **BD22 and XMVE monsters are placed by strength against ColorfulHell's colours** (the challenge check, `design/tiering/ladder/bd22_on_ladder.json`, `xmve_on_ladder.json`), so both sets can share a map and a colour means the same strength. | to build, as a choice beside main's placement by health |
+| 4 | ~~Placed by strength~~ **REPLACED by the owner's rule (11-13 09:57): "0 is neutral, 1 is green, etc".** Every BD22 / XMVE monster as its mod ships it is the neutral step; each world tier is the next colour, the same for all. No monster enters higher. | built: `RS_BDTier.zs`, entry 1 for every monster while the switch is on |
 | 5 | **Ladder health:** the 43 ColorfulHell steps where health drops are lifted to the family's running maximum ×1.05 a step; two are kept (the Gray Lost Soul hive, the Cyan zombie trio). | to build |
 | 6 | **The owner's colour order stays.** | nothing to build |
 | 7 | **The tier tint wins over Champions' and Universal Entropy's tints;** Champions keep their particles and icons. | to build |
@@ -80,6 +80,11 @@ world-tier raise stands down (`if (RS_Ladder.On()) return;`) so a window spawn i
 scales health against a body's existing StartHealth, so main's `LadderHealth` on a tier change and this branch's table
 never stack. Main's ladder health (section 8 fix 4) is the same envelope as point 5's table for rungs 1-11.
 
+**Point 4, the owner's rule, shown** (run `lad5_bd`, Select Monster Set Brutal Doom, world tier 3, switch on): every kit
+monster entered at 1 (neutral) and stood on rung 3 (Blue). On the full order the BD22 slots spawned Legion of Bones'
+SkullZombie and SkeletonImp (Legion of Bones loads last and takes the spawns, as the load-order study said); they took
+the kit like any other.
+
 **All measurements here used the mods' DEFAULT options** (Champions, LegenDoom, Universal Entropy and the rest as they
 ship), not the owner's own settings. With his settings the counts and health will differ.
 
@@ -89,7 +94,7 @@ ship), not the owner's own settings. With his settings the counts and health wil
 - With the switch on, the window spawns ColorfulHell classes directly, so the Cyberdemon's extra-colour gates (invisible
   BossDeath holders) are not made: map-end boss triggers then rest on section 8's CheckReplacee fix (not built).
 - A tier change INTO the Cyan zombie step still makes one 30-health body (section 8's swap-trio fix, not built).
-- **Point 4 is blocked on data:** `bd22_on_ladder.json` and `xmve_on_ladder.json` give different colours for the same
+- (Point 4 was blocked on data; the owner's rule replaced it, so this no longer matters:) `bd22_on_ladder.json` and `xmve_on_ladder.json` give different colours for the same
   class (RifleZombie Gray vs Red, BaronofHell2 Common vs Blue), and each row has three readings that disagree because the
   challenge index is not in order along the ladder (TheCyberdemon: below Blue, above Cyan, "iso" Abyss). Needs the
   owner's call before it is built (rule 1).
