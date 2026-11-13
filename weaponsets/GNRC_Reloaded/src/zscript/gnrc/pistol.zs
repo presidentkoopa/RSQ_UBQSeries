@@ -54,7 +54,7 @@ class RSQGW_Beretta : RSQGW_Gun replaces Pistol
 		PIST B 1;
 		PIST C 1;
 		PIST D 1;
-		PIST A 1;
+		PIST A 2;	// 6 tics to the A_ReFire (which jumps on the tic it is reached)
 		PIST E 0 { if (RSQGW_SemiOn()) return ResolveState("SemiHold"); return ResolveState(null); }
 		PIST E 1 A_ReFire;
 		Goto Ready;

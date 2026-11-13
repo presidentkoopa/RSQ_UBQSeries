@@ -68,10 +68,7 @@ class RSPROBE_H : EventHandler
 		{
 			if (spawnedLast)
 			{
-				Vector3 af, ad;
-				[af, ad] = RSQ_RocketLock.Aim(mo);
-				Vector3 to = spawnedLast.pos + (0, 0, spawnedLast.height * 0.5) - af;
-				Console.Printf("AIM t%d from %.0f %.0f %.0f dir %.2f %.2f %.2f to target %.0f %.0f %.0f angle %.1f", level.maptime, af.x, af.y, af.z, ad.x, ad.y, ad.z, to.x, to.y, to.z, acos(clamp(to.Unit() dot ad, -1, 1)));
+				// (GNRC_Reloaded has no rocket lock-on: the AIM line is not logged)
 			}
 			if (spawnedLast) Console.Printf("SPAWNED t%d %s health %d pos %.0f %.0f %.0f friendly %d dormant %d", level.maptime, spawnedLast.GetClassName(), spawnedLast.health, spawnedLast.pos.x, spawnedLast.pos.y, spawnedLast.pos.z, spawnedLast.bFriendly, spawnedLast.bDormant);
 			else Console.Printf("SPAWNED t%d gone", level.maptime);

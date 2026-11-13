@@ -117,7 +117,7 @@ class RSQGW_Minigun : RSQGW_Gun replaces Chaingun
 }
 
 // ------------------------------------------------------------------------------------------------ Rocket Launcher
-// GNRC: one Rocket2 a shot (A_FireLedRL) from a 5-rocket magazine, 7 tics a shot. No alt fire (owner: "no rocket
+// GNRC: one Rocket2 a shot (A_FireLedRL) from a 5-rocket magazine, 8 tics a shot. No alt fire (owner: "no rocket
 // altfire").
 class RSQGW_Rlauncher : RSQGW_Gun replaces RocketLauncher
 {
@@ -170,7 +170,8 @@ class RSQGW_Rlauncher : RSQGW_Gun replaces RocketLauncher
 		MISF D 1;
 		MISF E 1;
 		MISF G 1 A_StartSound("weapons/rocket/cycle", CHAN_AUTO);
-		MISG A 1 A_ReFire;
+		MISG A 2;
+		MISG A 0 A_ReFire;	// 8 tics a rocket, as GNRC
 		Goto Ready;
 	AltFire:	// none (owner)
 		MISG A 1;
@@ -190,7 +191,7 @@ class RSQGW_Rlauncher : RSQGW_Gun replaces RocketLauncher
 }
 
 // ------------------------------------------------------------------------------------------------ Plasma Rifle
-// GNRC: a Plasma bolt every 5 tics while held (A_FireLedPLRifle), a cooldown when let go; alt charges and fires a rail
+// GNRC: a Plasma bolt every 4 tics while held (A_FireLedPLRifle), a cooldown when let go; alt charges and fires a rail
 // for 20 cells (A_LedPLAltFire, 250-350 damage). Its 60-cell magazine. BD22's Plasma_Gun frames: PRSG G ready,
 // PRSG B / C the shot, D E after, PRSA the cooldown, PRSG J K the charge, PRSR the stock reload.
 class RSQGW_PlasRifle : RSQGW_Gun replaces PlasmaRifle
@@ -225,7 +226,7 @@ class RSQGW_PlasRifle : RSQGW_Gun replaces PlasmaRifle
 	Ready:
 		PRSG G 1 RSQGW_Ready();
 		Loop;
-	Fire:	// 5 tics a bolt
+	Fire:	// 4 tics a bolt (A_ReFire jumps on the tic it is reached), as GNRC
 		PRSG G 0 { if (!invoker.TakeRound()) return RSQGW_Empty(); return ResolveState(null); }
 		PRSG B 1 Bright
 		{

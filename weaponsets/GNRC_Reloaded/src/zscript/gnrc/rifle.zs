@@ -58,7 +58,8 @@ class RSQGW_ARifle : RSQGW_Gun
 		RIFF A 1 Bright RSQGW_Shot();
 		RIFF B 1;
 		RIFF C 1;
-		RIFG A 1 A_ReFire;
+		RIFG A 1;
+		RIFG A 0 A_ReFire;	// 4 tics a round (A_ReFire jumps on the tic it is reached)
 		Goto Ready;
 	Burst:	// three rounds, 4 tics apart (fewer if the magazine runs out), one burst per pull
 		RIFF A 1 Bright RSQGW_Shot();

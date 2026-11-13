@@ -35,7 +35,7 @@ FLICK = 'set rsprobe_elev 1; qz_rhand "0.25 1.3 -0.3 40 0 0"; wait 8; qz_rhand "
 G = {
     'RSQGW_Knuckle':     dict(kind=None, cap=None, alt=None, hold=3),
     'RSQGW_ModChainsaw': dict(kind=None, cap=None, alt=None, hold=70, saw=True),
-    'RSQGW_Beretta':     dict(kind='mag', cap=10, alt='shot', hold=3, dual=True),		# alt: the 3-round burst
+    'RSQGW_Beretta':     dict(kind='mag', cap=10, alt='shot', hold=3, dual=True, rof=(5, 6)),		# alt: the 3-round burst
     'RSQGW_ARifle':      dict(kind='mag', cap=30, alt='burst', hold=3, dual=True),	# alt: full auto <-> 3-round burst
     'RSQGW_Minigun':     dict(kind='mag', cap=150, alt=None, hold=40),
     'RSQGW_Rlauncher':   dict(kind='mag', cap=5, alt=None, hold=3, fire=('missile', 'RSQGW_Rocket2')),
@@ -69,6 +69,8 @@ def script(cls, g):
         s += mark('FIREHS') + 'set sv_rsq_true_bullets 0; wait 2; netevent probe_ammo; wait 2; +attack; wait %d; -attack; wait 60; ' % g['hold'] + again + 'netevent probe_ammo; wait 2; set sv_rsq_true_bullets 1; give ammo; wait 2; '	# refilled for the alt fire
     if g['alt'] == 'lock':
         s += 'set rsq_switch_log 1; netevent probe_spawn:DoomImp 160; wait 5; '
+    if g.get('rof'):	# owner: "pistol ROF is 5 or 6 per second": the trigger held one second (35 tics), semi auto off
+        s += mark('ROF') + 'set rsa_pistol_semi 0; give ammo; wait 2; +attack; wait 35; -attack; wait 40; set rsa_pistol_semi 1; '
     if g['alt'] == 'burst':	# switch to burst, hold the trigger long: three rounds and it stops; then back to full auto
         s += mark('ALT') + 'give ammo; wait 2; +altattack; wait 3; -altattack; wait 20; netevent probe_ammo; wait 2; +attack; wait 60; -attack; wait 20; netevent probe_ammo; wait 2; +altattack; wait 3; -altattack; wait 20; '
     else:
@@ -146,6 +148,11 @@ def check(cls, g, t):
         if sec not in S or g['kind'] is None or g.get('fire'): continue
         fx = [l for l in S[sec] if re.match(r'PROBE t\d+ bfx ', l)]
         res('RS Ballistics impact / flash effects, %s' % what, fx, '%d effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)' % len(fx))
+    if g.get('rof'):
+        ts = [int(m.group(1)) for l in S.get('ROF', []) for m in [re.match(r'PROBE t(\d+) (hitscan|round )', l)] if m]
+        # the shots' spacing while held (35 tics a second)
+        rate = 35.0 * (len(ts) - 1) / (ts[-1] - ts[0]) if len(ts) >= 3 and ts[-1] > ts[0] else 0
+        res('rate of fire held: %d-%d a second' % g['rof'], g['rof'][0] <= rate <= g['rof'][1] + 0.99, '%.2f a second (%d shots, tics %s)' % (rate, len(ts), ' '.join(map(str, ts))))
     A = S.get('ALT', [])
     alt = g['alt']
     if alt is None:
