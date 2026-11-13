@@ -50,6 +50,8 @@ class RSPROBE_H : EventHandler
 			Console.Printf("PROBE t%d round %s", level.maptime, cn);
 		else if (a.bMissile && a.target && a.target.player)
 			Console.Printf("PROBE t%d missile %s", level.maptime, cn);
+		if (cn == 'RSQ_Debris' || cn == 'RSQ_ImpactLight' || cn == 'RSQ_Flash')
+			Console.Printf("PROBE t%d bfx %s", level.maptime, cn);
 		if (cn == 'RSQGN_HandBlast' || cn == 'RSQ_M203Fallback')
 			Console.Printf("PROBE t%d blast %s", level.maptime, cn);
 	}

@@ -67,6 +67,8 @@ def script(cls, g):
     s += mark('FIRE') + 'netevent probe_ammo; wait 2; +attack; wait %d; -attack; wait 60; ' % g['hold'] + again + 'netevent probe_ammo; wait 2; '
     if g.get('saw'):
         s += 'kill monsters; wait 5; '
+    if g['kind'] and not g.get('fire') and g['kind'] != 'break' or cls == 'RSQWS_Coachgun':	# the hitscan guns: True Bullets off too
+        s += mark('FIREHS') + 'set sv_rsq_true_bullets 0; wait 2; netevent probe_ammo; wait 2; +attack; wait %d; -attack; wait 60; ' % g['hold'] + again + 'netevent probe_ammo; wait 2; set sv_rsq_true_bullets 1; '
     if g['alt'] == 'lock':
         s += 'set rsq_switch_log 1; netevent probe_spawn:DoomImp 160; wait 5; '
     if g['alt'] == 'm203':	# dry in VR, the robot loads the tube, then it fires
@@ -80,10 +82,12 @@ def script(cls, g):
     s += mark('KICK') + 'netevent rsqws_kick; wait 30; '
     if g['kind']:
         s += mark('STOCK') + 'give ammo; set rsr_reload 0; netevent probe_empty 0; wait 2; netevent probe_ammo; wait 2; +reload; wait 4; -reload; wait 250; netevent probe_ammo; wait 2; '
-        s += mark('HAND') + 'give ammo; set rsr_reload 1; netevent probe_empty 0; wait 2; netevent probe_ammo; wait 2; set rsprobe_robot %d; +reload; wait 4; -reload; wait %d; set rsprobe_robot 0; wait 30; ' % (ROBOT[g['kind']], 3300 if g['kind'] == 'pump' else 1100)	# the pump: 9 shells one at a time
+        s += mark('HAND') + ('set rsr_shell_credit 4; ' if g['kind'] == 'pump' else '') + 'give ammo; set rsr_reload 1; netevent probe_empty 0; wait 2; netevent probe_ammo; wait 2; set rsprobe_robot %d; +reload; wait 4; -reload; wait %d; set rsprobe_robot 0; wait 30; ' % (ROBOT[g['kind']], 3300 if g['kind'] == 'pump' else 1100)	# the pump: 9 shells one at a time
         if g['kind'] == 'break':	# shut by a flick of the gun, BD22 VR's way
             s += RH + '; ' + LAWAY + '; wait 20; ' + FLICK + 'wait 30; '
         s += 'netevent probe_ammo; wait 2; ' + RH + '; ' + LH + '; wait 20; '
+        if g['kind'] == 'pump':
+            s += 'set rsr_shell_credit 1; '
         if g['kind'] == 'pump':	# counted above; then, if it still waits for the pump (the robot may or may not have worked it),
             s += '+attack; wait 3; -attack; wait 40; '	# a trigger pull pumps it itself (BD22 VR) -- no count after this
         if cls == 'RSQWS_Coachgun':	# BD22 VR: a lone SSG flicks into its own reload
@@ -141,6 +145,10 @@ def check(cls, g, t):
         need = 2 if g['kind'] == 'pump' else 1	# the pump gun: a second pull pumps it itself and fires again (BD22 VR)
         selfpump = [l for l in F if "fire: the set's own pump" in l]
         res('fire' + (', then a pull pumps it itself (no hand), then it fires again' if need == 2 else ''), n >= need and len(a) >= 2 and a[0] - a[-1] >= need and (need == 1 or selfpump), '%d shots (%s), rounds %s' % (n, (g.get('fire') or ('hitscan/round',))[-1], ' -> '.join(map(str, a))))
+    for sec, what in (('FIRE', 'True Bullets on'), ('FIREHS', 'True Bullets off (hitscan)')):
+        if sec not in S or g['kind'] is None or g.get('fire'): continue
+        fx = [l for l in S[sec] if re.match(r'PROBE t\d+ bfx ', l)]
+        res('RS Ballistics impact / flash effects, %s' % what, fx, '%d effect actors (RSQ_Flash / RSQ_ImpactLight / RSQ_Debris)' % len(fx))
     A = S.get('ALT', [])
     alt = g['alt']
     if alt is None:
@@ -169,6 +177,9 @@ def check(cls, g, t):
             back = [l for l in S.get(sec, []) if re.match(r'STATE t\d+ %s Ready' % cls, l)]
             ok = len(a) >= 2 and a[0] == 0 and a[-1] == g['cap'] and back
             res(what, ok, 'rounds %s (want 0 -> %d)%s' % (' -> '.join(map(str, a)), g['cap'], '' if back else ', the gun never came back to Ready'))
+    if g['kind'] == 'pump':
+        ins = [l for l in S.get('HAND', []) if re.search(r'rsp t\d+ .*shell \d+ home', l)]
+        res('Shotgun Shells Per Insert = 4: the tube fills in 3 inserts', 0 < len(ins) <= 3, '%d shells pushed home' % len(ins))
     if g.get('dual'):
         D = S.get('DUAL', [])
         offr = [l for l in D if re.match(r'AMMO t\d+ off RSQ_Off_%s ' % cls, l)]

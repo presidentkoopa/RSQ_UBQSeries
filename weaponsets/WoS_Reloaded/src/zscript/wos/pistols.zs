@@ -78,7 +78,7 @@ class RSQWS_1911 : RSQWS_Gun
 	Default
 	{
 		Weapon.SelectionOrder 1911;
-		Weapon.SlotNumber 8;
+		Weapon.SlotNumber 2;	// owner 2026-11-12: a slot-2 pistol (WoS had it on 8)
 		Weapon.AmmoType1 "RSQWS_Bullets";
 		Weapon.AmmoGive1 4;
 		Weapon.AmmoType2 "RSQWS_ACP";
@@ -109,7 +109,7 @@ class RSQWS_1911 : RSQWS_Gun
 	Fire:
 		PIST E 0 { if (!invoker.TakeRound()) return RSQWS_Empty(); return ResolveState(null); }
 		PIST A 1 A_GunFlash;
-		PIST A 0 A_StartSound("weapons/1911/fire", 7);
+		PIST A 0 A_StartSound(RSQWS_FX.Enhanced() ? "rsqws/1911/fire" : "weapons/1911/fire", 7);	// Ballistics Stock: WoS's 1911; Low / Max: the 1911's own (owner's file; WoS's until it comes)
 		PIST A 1 Bright A_FireBullets(4, 4, -1, 18, "RSQWS_AltPuff2", 0);
 		PIST B 1 A_AlertMonsters;
 		PIST B 0 RSQWS_ShotFX('RSQWS_45CasingSpawner');

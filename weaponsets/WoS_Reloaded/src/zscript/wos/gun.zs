@@ -175,9 +175,8 @@ class RSQWS_Gun : Weapon abstract
 	}
 
 	// ---------------------------------------------------------------- a shot's effects
-	// Weapon effects and sounds (owner 17:51): rsqws_fx 0 = WoS's own (OG: its smoke; casings always, Real Casing
-	// Models decides what they look like), 1 = Enhanced (BD22 VR's ballistics / flash / shot fx from RS Ballistics and
-	// RS Combat FX, zscript/rsq/*: they read rsqws_fx through RSQWS_FX.Enhanced and take over the smoke).
+	// Ballistics Stock: WoS's own smoke (casings always; Real Casing Models decides their look). Low / Max: RS Ballistics
+	// (BD22 VR's zscript/rsq/*) takes over the smoke.
 	action void RSQWS_ShotFX(class<Actor> casing = null, double side = 0, double up = 8)
 	{
 		if (!RSQWS_FX.Enhanced(player))
@@ -258,12 +257,13 @@ class RSQWS_KickKey : EventHandler
 	}
 }
 
-// the effects option (rsqws_fx)
+// Ballistics (rsq_ballistics, BD22 VR's one option; owner: no separate "Weapon Effects"): 0 Stock = Weapons of Saturn's
+// own sounds and smoke, 1 Low / 2 Max = RS Ballistics (and the hand reload's RS Combat FX sounds)
 class RSQWS_FX abstract
 {
-	clearscope static bool Enhanced(PlayerInfo p = null)	// a server option: one look for everyone
+	clearscope static bool Enhanced(PlayerInfo p = null)
 	{
-		let c = CVar.FindCVar('rsqws_fx');
-		return c && c.GetInt() == 1;
+		let c = CVar.FindCVar('rsq_ballistics');
+		return c && c.GetInt() > 0;
 	}
 }
