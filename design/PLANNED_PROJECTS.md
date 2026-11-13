@@ -24,6 +24,9 @@ speed in slow motion (the ledge save). No rope, reel, swing or climb: those are 
 - **Light enough, so it comes to you: GET OVER HERE.** The hook shoots out of your hand like Scorpion's spear and the
   monster is yanked to you. No grip, no catch: it arrives in front of you and you shoot, punch, shove, saw, whatever.
   (Any word or sound for it is our own, not Mortal Kombat's voice line.)
+- **The pull is automatic by default (owner 23:1x):** on the bite, a light monster comes and a big one pulls you, no
+  gesture. Option **Scorpion Pull: On / Off** (Off by default): On, the hook holds on the chain until you yank your
+  hand back, and that yank sets it off.
 jp's OG hookshot rebuilt in ZScript, the weight rule both ways, air steering. Its open questions (the Revenant; how you
 arrive at a big monster; the +user1 clash with BD's Toss Grenade / our Quick Grenade) are part of the project.
 See Grapple/ROADMAP.md (the banner at the top).
