@@ -241,6 +241,23 @@ class RS_RosterHandler : EventHandler
 		return 1;
 	}
 
+	// an extra colour whose menu gate is off (CVARINFO: 1 = off and re-rolled)
+	static bool GateOff(int tier)
+	{
+		Name cv = 'None';
+		switch (tier)
+		{
+			case 5:  cv = 'rs_ch_cyan'; break;
+			case 6:  cv = 'rs_ch_brown'; break;
+			case 8:  cv = 'rs_ch_fireblu'; break;
+			case 9:  cv = 'rs_ch_gray'; break;
+			case 11: cv = 'rs_ch_abyss'; break;
+		}
+		if (cv == 'None') return false;
+		let c = CVar.FindCVar(cv);
+		return c && c.GetInt() == 1;
+	}
+
 	private void BuildCHFamily(int fam, Class<Actor> dial, int cap)
 	{
 		famStart[fam] = chName.Size();
@@ -253,7 +270,13 @@ class RS_RosterHandler : EventHandler
 		for (DropItem di = def.GetDropItems(); di != null; di = di.Next)
 		{
 			if (di.Name == 'None') continue;
-			if (TierOf(di.Name) > cap) continue;
+			int dt = TierOf(di.Name);
+			if (dt > cap) continue;
+			// [11-13 fix 3, design/BD_XMVE_TIERING.md 8.3] A SWITCHED-OFF EXTRA COLOUR IS NOT IN THE CAPPED LIST. Its gate
+			// stub re-rolls into the family's WHOLE dial, uncapped, so under a cap of 5 or more a Cyan / Brown / FireBlu /
+			// Gray / Abyss entry could come out as anything, Black and White included. (The boss gates are safe: off, they
+			// turn into Red / Black, never the dial.)
+			if (GateOff(dt)) continue;
 
 			int w = di.Amount;
 			if (w <= 0) w = 1;   // dial default is -1; RandomSpawner reads it the same way

@@ -38,3 +38,23 @@ nor Brutal Doom's sprites. Nothing is headset-confirmed.
 - Not built: the by-kind grid (`colour_kits.csv`), hitscan spread, Arch-Vile variants, all of section 8, the world tier
   for ColorfulHell, where S lives.
 - Main gained 6fd1965f (the design's challenge check) during this session: its text was NOT read; the CSVs are unchanged.
+
+## 07:43 to 08:10 (owner: "GET THE FIXES DONE ... WHY IS THIS ON ITS OWN BRANCH ... SHOW ME THE GREEN BD ROSTER AND XMVE")
+- **On main now** (he wants it on main). Still never loaded with Brutal Doom 22; brutal22test6.pk3 and doom2.wad are not
+  reachable from the cloud (ModDB is blocked, folder access to his PC was refused by the session, not by him).
+- **Section 8 fixes done: 1, 3 (the leak), 7.** Loaded on the rig (Freedoom) with Monsters + Miniboss; a map-wide
+  rs_retier_all swapped 18 monsters with no abort. Their effect was NOT measured (no skill with MonsterHealth != 1 run,
+  no capped roll counted, no miniboss fight run).
+  - 1: `RS_Retier.Swap` takes the wound share from `GetSpawnHealth()` and gives the new body its own `GetSpawnHealth()`.
+  - 3: `RS_RosterHandler.BuildCHFamily` leaves a switched-off extra colour out of the capped list (`GateOff`).
+  - 7: `Miniboss fight.zs RetierBy`: a map monster outside the fight stops at world tier + 3, and at Abyss until the
+    world tier is 12. THE PROPOSAL'S NUMBERS, his open call 4. At world tier 1 that is Purple: a change from today,
+    where a missed window could take the whole map to 13.
+- **NOT done: 2, 4, 5, 6, 8.** 2, 5 and 6 need Champions, LegenDoom, Universal Entropy and MK Crits loaded to write
+  and check (none reachable here). 4 and 8 need the world tier for ColorfulHell first.
+- **RSQ_Miniboss.pk3 does not load alone** (before this session too): boss.zs 69-154 and bossfight.zs 1272 name
+  LDLegendaryMonsterToken, LDLegendaryMonsterTransformed and champion_PersistentInfo as class literals. The rig check
+  used three empty stand-in classes.
+- **The colour style shown to him:** XMVE's own A-frames, 14 monsters x 13 colours, tinted by the engine with the
+  `rs_bdtier_*` recipes (full-bright, the rig's rig01 room). Each colour is ONE whole-sprite wash: eyes, guns and blood
+  take the colour too. He has not answered whether he wants that look.

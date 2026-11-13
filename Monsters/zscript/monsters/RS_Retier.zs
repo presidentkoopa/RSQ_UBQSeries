@@ -842,10 +842,13 @@ class RS_Retier play
 		// tier-up must take the new class's health -- that is the point. What
 		// survives is the fraction already lost, so a retier is neither a free
 		// heal nor an instant kill.
-		let od = GetDefaultByType(mo.GetClass());
+		// [11-13 fix 1, design/BD_XMVE_TIERING.md 8.1] against the body's REAL full health (the skill's MonsterHealth and
+		// any StartHealth another mod set), not the class default: on a skill with MonsterHealth 0.5 the old sum read a
+		// healthy monster as half dead.
 		double frac = 1.0;
-		if (od && od.Health > 0)
-			frac = clamp(double(mo.health) / double(od.Health), 0.05, 1.0);
+		int oldFull = mo.GetSpawnHealth();
+		if (oldFull > 0)
+			frac = clamp(double(mo.health) / double(oldFull), 0.05, 1.0);
 
 		Actor a = Actor.Spawn(nc, mo.pos, NO_REPLACE);
 		if (!a) return null;
@@ -863,9 +866,11 @@ class RS_Retier play
 		a.bFRIENDLY = mo.bFRIENDLY;
 		if (mo.tid != 0) a.ChangeTid(mo.tid);
 
-		let nd = GetDefaultByType(nc);
-		if (nd && nd.Health > 0)
-			a.health = FullHealth(instant) ? nd.Health : max(1, int(nd.Health * frac));
+		// [11-13 fix 1] the new body's own full health as the engine spawned it (skill-scaled), not the class default
+		// written over it: Black Metal (0.8) bodies came out 25% too tough, Realism (0.5) ones twice as tough.
+		int newFull = a.GetSpawnHealth();
+		if (newFull > 0)
+			a.health = FullHealth(instant) ? newFull : max(1, int(newFull * frac));
 
 		// [11-09 score-fix] RSQ Score's census: the new body takes the old one's place (design/SCORE_EXPANSION.md
 		// A2). Score pays a full base only for a monster on its map census and the fraction for anything spawned

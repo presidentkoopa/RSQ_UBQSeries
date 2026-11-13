@@ -279,6 +279,17 @@ extend class RSQMB_Handler
 		int nx = s.GetInt("tier.next", "", 0, 0, a);
 		int cur = max(t, nx);
 		int want = min(TOP_TIER, cur + by);   // the ladder is the strength order (11-11): +by is that many steps stronger
+		// [11-13 fix 7, design/BD_XMVE_TIERING.md 8.7, the PROPOSAL's numbers] A MAP MONSTER THAT IS NOT PART OF THE FIGHT
+		// stops at world tier + 3, and at Abyss until the world tier itself is Black: one missed window no longer turns a
+		// whole map into Black and White bosses. The world tier is RSQ Monsters' rsq_mon_worldtier, read by name (1 without it).
+		if (!b)
+		{
+			let wc = CVar.FindCVar('rsq_mon_worldtier');
+			int world = wc ? clamp(wc.GetInt(), 1, 40) : 1;
+			int cap = min(TOP_TIER, world + 3);
+			if (world < FIRST_BOSS_TIER) cap = min(cap, THRALL_TIER_CAP);
+			want = min(want, cap);
+		}
 		if (want <= cur) return false;
 		if (s.GetInt("retier", "", want, 0, a) != 1) return false;
 		int k = tfMon.Find(a);
