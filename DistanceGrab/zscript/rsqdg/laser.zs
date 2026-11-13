@@ -33,6 +33,17 @@
 // tics, so these trail the controller by about a tic. DXR drew in C++ every
 // frame and did not. If that reads in the headset, the fallback is a weapon
 // psprite layer, which tracks every frame but draws over walls.
+//
+// THE ENGINE LASER, WHERE THERE IS ONE (owner 2026-11-13: "UZDXREMA has a much
+// nicer laser that i want, for the laser sight and our distancegrab"). An engine
+// that offers RSLaserService (RemaSelaco: UZDXREMA's laser sight, ported to its
+// hwrenderer) draws the beam and its dot in C++ every frame, per eye: a hot core
+// in a soft tapered halo, energy travelling along it, a flare at its bright end,
+// a dot that keeps one size on screen and breathes on what it found -- and its
+// hand end rides the controller at frame rate, so nothing trails. Found by name
+// (nothing links against it); stock QuestZDoom has no such service and draws the
+// model beam and sprite dot below, exactly as before. The cone and the catch
+// bloom are this file's either way.
 
 class RSQDG_Beam : Actor
 {
@@ -125,6 +136,64 @@ class RSQDG_Laser : EventHandler
 	private bool  shown[6];   // beam0 beam1 dot0 dot1 cone0 cone1: visible last tic
 
 	private SpriteID sprCone, sprConeWide;
+
+	// ---- THE ENGINE LASER (see the header) ----
+	const ENGINE_SLOT = 24;   // RSLaserService beam slots 24 (hand 0) and 25 (hand 1)
+	const RSL_TRACE = 8; const RSL_DOT = 16; const RSL_LOCK = 32; const RSL_REVERSE = 64; const RSL_SCROLL = 128; const RSL_FLARE = 256;
+	private Service engineSvc;
+	private bool engineLooked;
+	private bool engineOn[2];      // the engine drew this hand's beam this tic
+	private bool engineWas[2];     // ... and last tic
+
+	private Service EngineLaser()
+	{
+		if (!engineLooked)
+		{
+			engineSvc = ServiceIterator.Find("RSLaserService").Next();
+			engineLooked = true;
+		}
+		return (engineSvc && engineSvc.GetInt("available") == 1) ? engineSvc : null;
+	}
+
+	// The state colours of the model beam's translations (TRNSLATE.txt), as plain colours, through the series'
+	// colour-blind table (RSQ_Accessibility) like every cue.
+	static int EngineColor(int state)
+	{
+		if (state == 2) return RSQDG_CB.Pick(RSQDG_CB.CB_HAVE, 0x38FF48);
+		if (state == 1) return RSQDG_CB.Pick(RSQDG_CB.CB_COULD, 0xFF9638);
+		return RSQDG_CB.Pick(RSQDG_CB.CB_IDLE, 0x4080FF);
+	}
+
+	// One hand's beam (and its dot) by the engine. False: no engine laser, draw the model beam.
+	private bool EngineBeam(int h, PlayerPawn pmo, Vector3 from, Vector3 to, Actor thing, int state, double w, double a, bool wantDot)
+	{
+		let s = EngineLaser();
+		if (!s) return false;
+		int flags = RSL_SCROLL;
+		if (wantDot) flags |= RSL_DOT;
+		if (thing) flags |= RSL_LOCK | RSL_FLARE;
+		else flags |= RSL_TRACE;
+		// LOCKED IS REELED: drawn from the thing to the palm, the halo blooming and the flare burning in your hand
+		// (UZDXREMA's grab beam, GRAB_DESIGN 10.1).
+		if (state == 2) flags |= RSL_REVERSE;
+		int ctrl = RSQDG_Reach.Ctrl(pmo, h);
+		String data = String.Format("%.3f %.3f %.3f %.3f %.3f %.3f %06x %.3f %d %d",
+			from.x, from.y, from.z, to.x, to.y, to.z, EngineColor(state) & 0xFFFFFF, w * 0.9, ctrl, flags);
+		if (s.GetInt("beam", data, ENGINE_SLOT + h, a, thing) != 1) return false;
+		engineOn[h] = true;
+		return true;
+	}
+
+	// Put out an engine beam the tic it stops being asked for, not two tics later.
+	private void EngineFlush()
+	{
+		for (int h = 0; h < 2; h++)
+		{
+			if (engineWas[h] && !engineOn[h] && engineSvc) engineSvc.GetInt("beam.off", "", ENGINE_SLOT + h);
+			engineWas[h] = engineOn[h];
+			engineOn[h] = false;
+		}
+	}
 
 	// ---- LEADING THE HAND ----------------------------------------------------
 	//
@@ -284,6 +353,12 @@ class RSQDG_Laser : EventHandler
 
 	override void WorldTick()
 	{
+		TickHands();
+		EngineFlush();
+	}
+
+	private void TickHands()
+	{
 		let p = players[consoleplayer];
 		if (!p || !p.mo) { HideAll(); return; }
 		let pmo = p.mo;
@@ -386,7 +461,7 @@ class RSQDG_Laser : EventHandler
 		if (!armed) { HideHand(h); return; }
 
 		// ---- where the line ends ----
-		Vector3 to;
+		Vector3 to, rawTo;
 		bool onThing = (aimed != null);
 		if (onThing)
 		{
@@ -421,9 +496,10 @@ class RSQDG_Laser : EventHandler
 			bool hit = pmo.LineTrace(RSQDG_Reach.SteadyOn(pmo) ? atan2(rd.y, rd.x) : RSQDG_Reach.Yaw(pmo, h), reach * md.Length(), mpit,
 				TRF_ABSPOSITION | TRF_THRUACTORS, ap.z, ap.x, ap.y, t);
 			to = hit ? t.HitLocation : (ap + md * reach);
+			rawTo = to;
 			to = LeadTo(h, to);
 		}
-		if (onThing) toPrimed[h] = false;   // a thing's middle does not slide
+		if (onThing) { toPrimed[h] = false; rawTo = to; }   // a thing's middle does not slide
 
 		double yaw, pit, len;
 		[yaw, pit, len] = RoomAim(to - palm);
@@ -432,6 +508,21 @@ class RSQDG_Laser : EventHandler
 		// Dimmer when it has found nothing, so "considering something" is a
 		// change the eye catches rather than a colour you have to read.
 		double dim = onThing ? 1.0 : 0.5;
+
+		// ---- the engine laser: beam and dot in one, from the REAL palm (the engine carries it with the hand
+		// every frame, so the one-tic lead is not wanted), widths and opacities as the model beam's below ----
+		if (wantBeam && len > 2)
+		{
+			double ew = RSQDG_Reach.Num("rsqdg_beam_w", p, 1.0) * ((state == 2) ? 1.0 : ((state == 1) ? 0.7 / 0.9 : 0.4 / 0.9)) * RSQDG_A11y.Cue();
+			double ea = RSQDG_Reach.Num("rsqdg_beam_a", p, 0.8) * ((state == 0) ? 0.35 : 1.0);
+			if (EngineBeam(h, pmo, realPalm, rawTo, onThing ? aimed : null, state, ew, ea, wantDot))
+			{
+				Hide(beam[h], h);
+				Hide(pip[h], 2 + h);
+				DrawCone(h, pmo, p, palm, wantCone, state);
+				return;
+			}
+		}
 
 		// ---- the beam ----
 		if (wantBeam && len > 2)

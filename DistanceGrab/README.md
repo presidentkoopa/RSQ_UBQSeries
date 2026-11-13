@@ -264,6 +264,21 @@ also clearly brighter and wider than "on something", so colour is never the only
 
 *[Still to come: the three beam states side by side, and the amber and green glows on a barrel]*
 
+### In Selaco VR (RemaSelaco): the engine laser
+
+When the engine draws lasers itself (RemaSelaco's RS laser, UZDXREMA's laser sight ported), this pack's beam and dot
+come from it instead of the model beam:
+
+- **The look:** a white-hot core in a soft halo, with energy travelling along it.
+  - It flares where the energy arrives.
+  - When locked it reels into your palm.
+  - The dot keeps one size on screen and breathes on the thing it found.
+- **The hand end follows your hand at frame rate,** so nothing trails behind it.
+- **Same colours, widths and switches** as above.
+
+On QuestZDoom, or with `rs_laser 0`, you get the model beam as always. The pack asks for the engine laser by service
+name and links against nothing.
+
 ---
 
 ## Plays well with
