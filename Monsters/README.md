@@ -73,7 +73,8 @@ were Colourful Hell's listing order (5 Yellow, 6 Red, 7 FireBlu, 8 Gray, 9 Abyss
 A monster changes tier when something asks it to: RSQ Miniboss's miniboss fight, or the test commands under the hood.
 
 - **The flash.** The monster waits a moment (a random 5 to 25 tics, so a room full of them ripples instead of
-  turning at once), and every 3 tics it swaps between pure white and its own colour. A monster becoming White
+  turning at once), and every 3 tics it swaps between white (the sprite's own shading, in white) and its own colour. The white is
+  full-bright, so it reads as a light white-grey in a dark room or a coloured light, not as the room's dim grey. A monster becoming White
   flashes black instead. Then it turns.
 - **ColorfulHell swaps the creature.** Every colour is its own monster, so the old body steps out and the new one
   steps in on the same spot, facing the same way, still after you. The old body does not count as a kill.
@@ -210,13 +211,14 @@ Defaults are in bold.
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | The ladder renumbered by strength: the zombie family's 13 tiers each read their own number; no map monster's class is off its colour; with the colour-blind aid every gem's frame is its monster's tier, all 13 colours (frame `R2_gems_line_crop.jpg`). |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **The floating tier gems** (`rs_ch_colorblind`, set from the console in that run): drawn over the monsters (they drew nothing before 11-10: no art), busy with the colour-blind aid on (`evidence/V3_hpbar_icons_on_off_on.jpg`). ColorfulHell was the Monster Set in the miniboss runs (`evidence/L1_log.txt`, `L2_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-12, runs `candle4` before, `candle5` after) | Brutal Doom's floor candle no longer wears a floating monster: our Wicked Archvile's sprite had the name its candle flame draws (WICK, now RVWK). Three effects (the spider's and zombieman's blasts, the Hell Knight's blood burst) no longer flash Brutal Doom's barrel voxel for a frame as they appear (their first frames were the barrel sprite, which the voxel pack draws as a barrel) |
+| **rig only, not headset-confirmed** (2026-11-12, runs `flashfb2` and `flashfb3`; the owner's complaint was seen in `flash1`) | **The tier-change flash is full-bright.** In a dark room (sector light 40) the flashing imp's white phase is a light white-grey against the dark, where an imp in the same white translation without full-bright (the pre-fix look, put beside it by the test probe) is a dim olive-grey and in a red-lit room all but vanishes (`docs/readme/monsters_flash_fullbright.png`). The log shows bBRIGHT on with the flash translation on every flash phase and the monster's own translation and brightness back on every own-colour phase and after the swap, in the dark room, in the red-lit room and for the black flash (target White). The red-room and black flashes are log only (flame effects hid the imp in those frames); a monster killed mid-flash getting its own look back is code only (the test kill landed in an own-colour phase) |
 | **rig only, not headset-confirmed** (2026-11-12, runs `ice0` before and `ice1` after) | A monster of this pack killed by ice damage (LegenDoom's Freezing guns, a cyan monster's hit) dies its own death. Before, it stood where it died as a dark blue statue for good (owner: "dies as a frozen purple imp") |
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch: `design/rigtest_2026-11-10/RESULTS_P3.md` R1, `RESULTS_P4.md` N5) | **R1:** a Monster Set saved as 2 (the old MeatGrinder pick) read as ColorfulHell: every monster a ColorfulHell class with a tier; in a miniboss fight the tier-ups swapped bodies and the miniboss was followed into each (`design/rigtest_2026-11-10/evidence/P3A_log.txt`). **N5:** Tier Icons Above Monsters on the RSQ Monsters page, off by default; off, no gems; on, the gems float up over MAP01's zombies (`P4_N5_menu_row_and_gems_off_on.jpg`, `P4_A_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-09, the TestRig miniboss-fight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss fight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red, under the old numbering; on the strength ladder the same steps go Purple to Cyan to Brown, code only). This was a log: the flash itself was not looked at in frames |
 | **rig only, not headset-confirmed** (2026-11-09, RSQ Score's head-shot frames and log) | A ColorfulHell imp judged head against chest |
 | **Headset-confirmed** | Nothing yet |
 | **Known not to work** (from reading the code) | The **Monster Diagnostics** page: only God Mode works. The chaingunner spawns, Spawn All, Remove, DIAG and WAKE send commands nothing in the pk3 answers, and Spawn hostile changes nothing. |
-| **code only, not shown** | Everything else on this page: the look of the flash, On tier change, the Vanilla and BD22 sets, Brutal Doom's load order, Colourful Hell's extra colours, bosses and EX forms, its fireball swaps, other old saved settings reading as ColorfulHell |
+| **code only, not shown** | Everything else on this page: the flash beyond the full-bright row above, On tier change, the Vanilla and BD22 sets, Brutal Doom's load order, Colourful Hell's extra colours, bosses and EX forms, its fireball swaps, other old saved settings reading as ColorfulHell |
 | **code only, not shown** (2026-11-11, owner: "no rig test, code only until i say") | The ladder numbered by strength: the ladder table, every colour's tier, the caps, the spawn odds, the boss and EX numbers, the flash's White, the gems' order, an older save's tiers moved once on load; an EX form changing tier (it could not before: its class was in no table) |
 | **not yet run** | Nothing from the batched rig test: R1 and N5 have run (above) |
 
@@ -261,8 +263,10 @@ the row and the gems in frames, N5 above).
   cleared before it is removed. With RSQ Score loaded, the old body's census place moves to the new one
   (`RS_ScoreService` "census.take", then "census.add").
 - **The flash** is a job per monster (`RS_RetierJob`): a second request while it flashes re-aims it instead of
-  queueing another. The two flash colours are plain translations (`rs_tier_flashwhite`, `rs_tier_flashblack`); no
-  lights.
+  queueing another. The two flash colours are plain translations (`rs_tier_flashwhite`, `rs_tier_flashblack`), drawn
+  full-bright (`bBRIGHT` on for the flash phase, so the sector's light does not dim it); no dynamic lights. The
+  monster's own `bBRIGHT` and translation are saved when the job starts and given back on each own-colour phase and
+  whenever the job ends: the swap, the monster dying mid-flash, or the job destroyed (`OnDestroy`).
 - **The service** `RSQMN_RosterService`, asked by name: `set`, `tier`, `ex`, `spawn.odds`, `tier.next`, `tier.ago`,
   `tier.from`, `headshot`, `retier`, `class.set`,
   `class.tier`, and the strings `set.class` and `set.class.ex`. Every tier number it gives or takes is the strength

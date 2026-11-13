@@ -720,7 +720,15 @@ class RS_TierLadder
 // or rs_tier_flashblack when the target tier is White, 13) and its ORIGINAL
 // translation, saved at job start and restored (some CH colours carry one).
 // Then the swap.
-// It replaced a bBRIGHT flicker (45..105 tics).
+// The flash phase is FULL-BRIGHT (bBRIGHT on; 2026-11-12, owner: "why don't the
+// monsters flash like they're supposed to?"). A sprite is lit by its sector, so
+// without it the white phase was dim grey in a dark room and all but vanished in
+// coloured light (rig run flash1: in a red room the imp seemed to blink out).
+// The own-colour phase gives back the monster's own bBRIGHT, saved at job start
+// like origTrans, and every way the job ends (the swap, the monster dying or
+// vanishing mid-flash, the job destroyed) gives back both. Black (target White)
+// stays black: a bright black is still black.
+// (Before HF's flash this was a bBRIGHT flicker alone, 45..105 tics.)
 // ============================================================================
 class RS_Retier play
 {
@@ -760,6 +768,7 @@ class RS_Retier play
 		nj.timer      = random(5, 25);   // HF: load-balancer AND "charging" beat
 		nj.ticker     = 0;
 		nj.origTrans  = mo.Translation;
+		nj.origBright = mo.bBRIGHT;
 	}
 
 	// RSQ Monsters > "On tier change" (rsq_mon_retier_health, owner 2026-11-09):
@@ -860,29 +869,50 @@ class RS_RetierJob : Thinker
 	Actor mo;
 	int   targetTier, timer, ticker;
 	TranslationID origTrans;   // the monster's own colour, restored between flashes
+	bool  origBright;          // the monster's own bBRIGHT, restored between flashes and at every exit
+
+	// The monster's own look: its colour and its own brightness.
+	void RestoreLook()
+	{
+		if (!mo) return;
+		mo.Translation = origTrans;
+		mo.bBRIGHT     = origBright;
+	}
+
+	// Every exit path ends here, including a job destroyed from outside (a level
+	// change, a save loaded over it): the monster never keeps the flash's full-bright.
+	// After the swap mo is the destroyed old body and reads null: nothing to do.
+	override void OnDestroy()
+	{
+		RestoreLook();
+		Super.OnDestroy();
+	}
 
 	override void Tick()
 	{
 		if (!mo || mo.health <= 0)
 		{
-			if (mo) mo.Translation = origTrans;
-			Destroy();
+			Destroy();                 // OnDestroy gives a monster that died mid-flash its own look back
 			return;
 		}
 		if (level.isFrozen()) return;
 
 		// HF_Monster.Tick, verbatim in shape: every 3 tics the target tier's
-		// flash colour, then the monster's own colour.
+		// flash colour, FULL-BRIGHT so it reads white in any light, then the
+		// monster's own colour at its own brightness.
 		ticker++;
 		if ((ticker / 3) % 2 == 0)
+		{
 			mo.A_SetTranslation(targetTier == 13 ? "rs_tier_flashblack" : "rs_tier_flashwhite");   // 13 White (was 11 before the 11-11 renumber)
+			mo.bBRIGHT = true;
+		}
 		else
-			mo.Translation = origTrans;
+			RestoreLook();
 
 		if (timer > 0) timer--;
 		if (timer <= 0)
 		{
-			mo.Translation = origTrans;
+			RestoreLook();             // before the swap: if nothing changes, the monster stays as it was
 			int was = RS_Retier.TierNowOf(mo);   // RSQ Score read-out (RS_ScoreReadout.zs): the tier it leaves
 			RS_TierStamp.Put(RS_Retier.Swap(mo, targetTier), was);          // RSQ Score read-out: stamp the new body
 			Destroy();
