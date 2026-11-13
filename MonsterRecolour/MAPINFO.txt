@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RSRC_Handler"
+}

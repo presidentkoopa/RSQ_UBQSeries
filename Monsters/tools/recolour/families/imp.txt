@@ -1,0 +1,11 @@
+# The Imp family (BD22's Imp, its deaths, crawlers, gibs, fatality and frozen death), for bake.py.
+# sprites: every sprite name whose lumps are the Imp's own art (BD22 sprites/Monsters/Imp, Imp/GIBS,
+# MonsterFatality/Imp_Fatality, FreezeDeaths/FrozenImp; XMVE's copies of the same names). Every lump of these names
+# in the load order is baked (the rig's engine listing, RCL lines, is a subset of it).
+sprites 2136 2M40 BOSB BR94 FZD4 HND4 IFZD IHED IMPC IPFP IUSA IZD1 IZD2 IZD3 IZD4 LEG4 T6SW TR06 TR08 TR09 TR97 TRO1
+sprites TRO2 TRO3 TRO4 TROA TROD TROG TROH TROO TROS TROT TROZ X728 XHE4 ZL3E
+# keep: palette ranges this family keeps in every colour, on top of the recipe's own (eyes, fire, bright reds).
+# The Imp's hide is palette 48-79 (browns) and its spikes and claws 80-111; its blood and guts are the pinks and reds
+# 16-47 and the dark reds 176-191, which the shared recipe recolours (it was made for bodies that ARE those colours).
+# Kept here, so blood stays blood (the owner's approved style, 11-13 09:49: "blood ... keep their own").
+keep 16:47 176:191

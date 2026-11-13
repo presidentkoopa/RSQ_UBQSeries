@@ -1,0 +1,103 @@
+version "4.14"
+// TEST ONLY: the recolour prototype's demonstration on the owner's full load order (rig). Thirteen BD22 imps in a row:
+// the first as shipped, then Green .. White through RSQ Monsters' own tier change (RS_Retier.RequestKit, instant).
+class RCD_Demo : EventHandler
+{
+	Array<Actor> row;
+	int watchT;
+	override void WorldTick()
+	{
+		if (watchT <= 0) return;
+		watchT--;
+		for (int i = 4; i < 7 && i < row.Size(); i++)
+		{
+			let a = row[i]; if (!a) continue;
+			let j = RS_Retier.JobFor(a); let k = RS_BDKit.Of(a);
+			Console.Printf("RCDW t%d imp %d trans %d bright %d job %s origTrans %d target %d rung %d", level.maptime, i, int(a.Translation), a.bBRIGHT, j ? "yes" : "no", j ? int(j.origTrans) : -1, j ? j.targetTier : -1, k ? k.rung : -1);
+		}
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		if (e.Name ~== "rcd_row")       // Args: x, spacing, 1 = frozen
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) row[i].Destroy();
+			row.Clear();
+			double x = e.Args[0] ? e.Args[0] : -120, sp = e.Args[1] ? e.Args[1] : 52;
+			for (int i = 0; i < 13; i++)
+			{
+				let a = Actor.Spawn("Imp", (x, -6 * sp + sp * i, 0));
+				if (!a) continue;
+				a.angle = a.AngleTo(p);
+				a.bDORMANT = true;
+				if (e.Args[2]) { a.SetState(a.SpawnState); a.tics = -1; }
+				row.Push(a);
+			}
+			Console.Printf("RCD row %d imps (%s) at t%d", row.Size(), row.Size() ? row[0].GetClassName() : 'none', level.maptime);
+		}
+		if (e.Name ~== "rcd_tier")      // colours: imp i -> rung i + 1 (imp 0 stays as shipped)
+		{
+			for (int i = 1; i < row.Size(); i++) if (row[i]) RS_Retier.RequestKit(row[i], i + 1, true);
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { let k = RS_BDKit.Of(row[i]); Console.Printf("RCD imp %d %s rung %d tier %d hp %d trans %d", i, row[i].GetClassName(), k ? k.rung : -1, k ? k.Tier() : -1, row[i].health, int(row[i].Translation)); }
+		}
+		if (e.Name ~== "rcd_walk")      // the walking frame: TROO, frame Args[0]
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].sprite = Actor.GetSpriteIndex('TROO'); row[i].frame = e.Args[0]; row[i].tics = -1; }
+		}
+		if (e.Name ~== "rcd_kill")      // 0 plain death, 1 gibbed (XDeath), 2 plasma, 3 ice, 4 explosive
+		{
+			static const Name DT[] = { 'None', 'None', 'Plasma', 'Ice', 'Explosive', 'Leg', 'Cut', 'Shotgun' };
+			for (int i = 0; i < row.Size(); i++)
+				if (row[i] && row[i].health > 0)
+				{
+					row[i].bDORMANT = false;
+					if (row[i].tics < 0) row[i].tics = 1;
+					row[i].DamageMobj(p, p, e.Args[0] == 1 ? 2000 : row[i].health + 1, DT[e.Args[0]], DMG_FORCED | DMG_NO_ARMOR);
+				}
+			Console.Printf("RCD kill %d at t%d", e.Args[0], level.maptime);
+		}
+		if (e.Name ~== "rcd_tierall")   // every imp the demo spawned: colour 2 + i % 12
+		{
+			int n = 0;
+			for (int i = 0; i < row.Size(); i++) if (row[i] && row[i].health > 0 && RS_BDKit.Of(row[i])) { RS_Retier.RequestKit(row[i], 2 + i % 12, true); n++; }
+			Console.Printf("RCD tierall %d at t%d", n, level.maptime);
+		}
+		if (e.Name ~== "rcd_light") { p.CurSector.SetLightLevel(e.Args[0]); if (row.Size() && row[0]) row[0].CurSector.SetLightLevel(e.Args[0]); Console.Printf("RCD light %d at t%d", e.Args[0], level.maptime); }
+		if (e.Name ~== "rcd_watch") { watchT = e.Args[0]; }
+		if (e.Name ~== "rcd_calm")      // the colour without its behaviours (kit as an ACS health-bar boss: health and tint only)
+		{
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k) k.hpOnly = true; }
+			Console.Printf("RCD calm at t%d", level.maptime);
+		}
+		if (e.Name ~== "rcd_look") { p.angle = e.Args[0]; p.pitch = e.Args[1]; Console.Printf("RCD look %d %d at t%d", e.Args[0], e.Args[1], level.maptime); }
+		if (e.Name ~== "rcd_mark") Console.Printf("RCD mark %d at t%d", e.Args[0], level.maptime);
+		if (e.Name ~== "rcd_scan")      // every actor near the row: class, sprite, translation, picnum
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a; int n = 0, art = 0, tinted = 0;
+			while (a = Actor(it.Next()))
+			{
+				if (a == p || a.Distance2D(p) > 600 || a.bNOSECTOR) continue;
+				n++; if (a.picnum.IsValid()) art++; if (int(a.Translation)) tinted++;
+				if (e.Args[0])
+				{
+					TextureID tx; bool mm; Vector2 ss;
+					if (a.CurState) [tx, mm, ss] = a.CurState.GetSpriteTexture(0, 0, (0, 0), a.sprite, a.frame);
+					String tn = (a.CurState && tx.IsValid()) ? TexMan.GetName(tx) : "-";
+					if (e.Args[0] == 2 && (int(a.Translation) || tn.Left(4) == "TNT1")) continue;   // 2: only the untinted, visible ones
+					Console.Printf("RCDS t%d %s tex %s trans %d target %s at %.0f %.0f", level.maptime, a.GetClassName(), tn, int(a.Translation), a.target ? a.target.GetClassName() : 'none', a.pos.x, a.pos.y);
+				}
+			}
+			Console.Printf("RCD scan t%d actors %d with art %d with a translation %d", level.maptime, n, art, tinted);
+		}
+		if (e.Name ~== "rcd_crowd")     // stress: Args[0] imps in a grid far ahead, each a random colour
+		{
+			for (int i = 0; i < e.Args[0]; i++)
+			{
+				let a = Actor.Spawn("Imp", (200 + (i % 10) * 40, -200 + (i / 10) * 40, 120));
+				if (a) { a.bDORMANT = true; RS_Retier.RequestKit(a, 2 + i % 12, true); row.Push(a); }
+			}
+			Console.Printf("RCD crowd %d at t%d", e.Args[0], level.maptime);
+		}
+	}
+}
