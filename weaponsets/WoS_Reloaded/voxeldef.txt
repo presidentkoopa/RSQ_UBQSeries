@@ -1,0 +1,262 @@
+cas1a="cas1a"
+{
+angleoffset = 45
+}
+
+cas1b="cas1b"
+{
+angleoffset = 45
+}
+
+cas1d="cas1d"
+{
+angleoffset = 45
+}
+
+cas1f="cas1f"
+{
+angleoffset = 45
+}
+
+cas1h="cas1h"
+{
+angleoffset = 45
+}
+
+cas1i="cas1i"
+{
+angleoffset = 135
+}
+
+cas1j="cas1j"
+{
+angleoffset = 315
+}
+
+cas1k="cas1k"
+{
+angleoffset = 225
+}
+
+cas1m="cas1m"
+{
+angleoffset = 45
+}
+
+cas1n="cas1n"
+{
+angleoffset = 180
+}
+
+cas2a="cas2a"
+{
+	Scale = 0.5
+}
+
+cas2a="cas2a"
+{
+	Scale = 0.5
+}
+
+cas2b="cas2b"
+{
+	Scale = 0.5
+}
+
+cas2c="cas2c"
+{
+	Scale = 0.5
+}
+
+cas2d="cas2d"
+{
+	Scale = 0.5
+}
+
+cas2e="cas2e"
+{
+	Scale = 0.5
+}
+
+cas2f="cas2f"
+{
+	Scale = 0.5
+}
+
+cas2g="cas2g"
+{
+	Scale = 0.5
+}
+
+cas2h="cas2h"
+{
+	Scale = 0.5
+}
+
+cas2i="cas2i"
+{
+	Scale = 0.5
+}
+
+cas2j="cas2j"
+{
+	Scale = 0.5
+}
+
+cas2k="cas2k"
+{
+	Scale = 0.5
+}
+
+cas2l="cas2l"
+{
+	Scale = 0.5
+}
+
+cas2m="cas2m"
+{
+	Scale = 0.5
+}
+
+cas2n="cas2n"
+{
+	Scale = 0.5
+	AngleOffset = 180
+}
+
+
+cas3a="cas3a"
+{
+	Scale = 0.5
+}
+
+cas3b="cas3b"
+{
+	Scale = 0.5
+}
+
+cas3c="cas3c"
+{
+	Scale = 0.5
+}
+
+cas3d="cas3d"
+{
+	Scale = 0.5
+}
+
+cas3e="cas3e"
+{
+	Scale = 0.5
+}
+
+cas3f="cas3f"
+{
+	Scale = 0.5
+}
+
+cas3g="cas3g"
+{
+	Scale = 0.5
+}
+
+cas3h="cas3h"
+{
+	Scale = 0.5
+}
+
+cas3i="cas3i"
+{
+	Scale = 0.5
+}
+
+cas3j="cas3j"
+{
+	Scale = 0.5
+}
+
+cas3k="cas3k"
+{
+	Scale = 0.5
+}
+
+cas3l="cas3l"
+{
+	Scale = 0.5
+}
+
+cas3m="cas3m"
+{
+	Scale = 0.5
+}
+
+cas3n="cas3n"
+{
+	Scale = 0.5
+	AngleOffset = 180
+}
+
+clipa="clipa"
+{
+	Scale = 0.5
+}
+
+clipb="clipb"
+{
+	Scale = 0.5
+}
+dbbla="dbbla"
+{
+	Scale = 0.5
+}
+debfa="debfa"
+{
+	Scale = 0.5
+}
+lawna="lawna"
+{
+	Scale = 0.5
+}
+mniga="mniga"
+{
+	Scale = 0.5
+}
+
+pista = "pista"
+{
+	Scale= 0.5
+}
+
+rifla="rifla"
+{
+	Scale = 0.5
+}
+shata="shata"
+{
+	Scale = 0.5
+}
+
+
+// tools/build.py: the Beretta's pickup sprite is RQWP (PIST is a HUD sprite name)
+rqwpa = "pista"
+{
+	Scale = 0.5
+}
+
+// MP40: BD22 voxel pack Voxels/Weapons/MP40I0.kvx
+mpica = "MP40I0"
+{
+	Scale = 0.8
+}
+
+// Nova Rifle (BD22 railgun): BD22 voxel pack Voxels/Weapons/SRCGA.kvx
+plasa = "SRCGA"
+{
+	Scale = 0.8
+}
+
+// Motorsaw (BD22 chainsaw): BD22 voxel pack Voxels/Weapons/CSAWA.kvx
+csawz = "CSAWA"
+{
+	Scale = 0.9
+}

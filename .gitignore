@@ -1,6 +1,8 @@
 # working pk3s inside the mod folders are build output; only pk3/ is kept
 *.pk3
 !pk3/*.pk3
+# owner 2026-11-13: each weapon set's pk3 lives in its own weaponsets/ folder until it is 1.0
+!weaponsets/*/*.pk3
 
 # agent worktrees (temporary, never committed)
 .claude/

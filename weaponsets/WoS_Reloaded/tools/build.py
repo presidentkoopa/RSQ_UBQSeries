@@ -532,6 +532,23 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
         pk3 = os.path.join(OUT, '%s_%s.pk3' % (NAME, VERSION))
         pack(pk3)
         print(pk3, os.path.getsize(pk3) // 1024, 'KB')
+        shutil.copyfile(pk3, os.path.join(ROOT, os.path.basename(pk3)))	# owner: the pk3 lives in the set's own folder until 1.0
+        to_folder()
+
+def to_folder():
+    """The pack's own files in the set's folder, as every RSQ series mod keeps them (owner: "the data goes in that repo,
+    in the /weaponsets/ folder into the correct subfolders"): the suite-passed tree copied to the folder root. The files
+    a previous pack put there and this one does not have are removed (PACK_FILES.txt lists the pack's files)."""
+    man = os.path.join(ROOT, 'PACK_FILES.txt')
+    new = sorted(os.path.relpath(os.path.join(r, f), TREE).replace(os.sep, '/') for r, d, fs in os.walk(TREE) for f in fs)
+    old = open(man).read().split('\n') if os.path.exists(man) else []
+    for rel in set(old) - set(new):
+        p = os.path.join(ROOT, rel)
+        if rel and os.path.isfile(p): os.remove(p)
+    for rel in new:
+        p = os.path.join(ROOT, rel); os.makedirs(os.path.dirname(p), exist_ok=True); shutil.copyfile(os.path.join(TREE, rel), p)
+    open(man, 'w').write('\n'.join(new) + '\n')
+    print('pack files in the set folder:', len(new))
 
 def pack(pk3, tree=TREE):
     with zipfile.ZipFile(pk3, 'w', zipfile.ZIP_DEFLATED) as z:

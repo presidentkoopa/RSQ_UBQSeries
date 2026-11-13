@@ -1,0 +1,297 @@
+fader Gbye
+{
+	DecayStart	0.01
+	DecayTime	0.35
+}
+
+decal BulletChip01
+{
+	pic CHIP1
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.25
+	y-scale 0.25
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip02
+{
+	pic CHIP2
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.25
+	y-scale 0.25
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip03
+{
+	pic CHIP3
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.25
+	y-scale 0.25
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip04
+{
+	pic CHIP4
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.25
+	y-scale 0.25
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip05
+{
+	pic CHIP5
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.25
+	y-scale 0.25
+	randomflipx
+	randomflipy
+}
+
+decalgroup BulletChips
+{
+	BulletChip01	1
+	BulletChip02	1
+	BulletChip03	1
+	BulletChip04	1
+	BulletChip05	1
+}
+
+decal BulletChip06
+{
+	pic CHIP1
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip07
+{
+	pic CHIP2
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip08
+{
+	pic CHIP3
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip09
+{
+	pic CHIP4
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+}
+
+decal BulletChip10
+{
+	pic CHIP5
+	translucent 0.75
+	shade "00 00 00"
+	x-scale 0.4
+	y-scale 0.4
+	randomflipx
+	randomflipy
+}
+
+decalgroup BulletChip2
+{
+	BulletChip06	1
+	BulletChip07	1
+	BulletChip08	1
+	BulletChip09	1
+	BulletChip10	1
+}
+
+decal BulletGlow
+{
+	pic PUFFA0
+	add 1.0
+	fullbright
+	x-scale 0.125
+	y-scale 0.125
+	animator Gbye
+	lowerdecal BulletChips
+}
+
+decal BulletGlow2
+{
+	pic PUFFA0
+	add 1.0
+	fullbright
+	x-scale 0.15
+	y-scale 0.15
+	animator Gbye
+	lowerdecal BulletChip2
+}
+
+decal PlasmaScorchLower1
+{
+	pic PLASMA1
+	shade "00 00 00"
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+}
+
+decal PlasmaScorch1
+{
+	pic PLZEA0
+	add 0.9
+	fullbright
+	x-scale 0.15
+	y-scale 0.15
+	animator GoAway
+	lowerdecal PlasmaScorchLower1
+}
+
+decal PlasmaScorchLower2
+{
+	pic PLASMA2
+	shade "00 00 00"
+	x-scale 0.3
+	y-scale 0.3
+	randomflipx
+	randomflipy
+}
+
+decal PlasmaScorch2
+{
+	pic PLZEA0
+	add 0.4
+	fullbright
+	x-scale 0.15
+	y-scale 0.15
+	animator GoAway
+	lowerdecal PlasmaScorchLower2
+}
+
+decalgroup PlasmaScorchLower
+{
+	PlasmaScorchLower1	1
+	PlasmaScorchLower2	1
+}
+
+decalgroup PlasmaScorchFast
+{
+	PlasmaScorch1	1
+	PlasmaScorch2	1
+}
+
+decal PlasmaCrack1
+{
+	pic BFGLITE1
+	shade "2F 4F 4F"
+	fullbright
+	randomflipy
+	x-scale 0.4
+	y-scale 0.4
+	lowerdecal Scorch
+}
+
+decal PlasmaCrack2
+{
+	pic BFGLITE1
+	shade "2F 4F 4F"
+	fullbright
+	randomflipy
+	x-scale 0.4
+	y-scale 0.4
+	lowerdecal Scorch
+}
+
+decal PlasmaResidue1
+{
+	pic BFGLITE1
+	shade "00 00 F9"
+	fullbright
+	randomflipx
+	x-scale 0.6
+	y-scale 0.6
+	animator GoAway2
+	lowerdecal PlasmaCrack1
+}
+
+decal PlasmaResidue2
+{
+	pic BFGLITE1
+	shade "00 00 F9"
+	fullbright
+	randomflipx
+	x-scale 0.6
+	y-scale 0.6
+	animator GoAway2
+	lowerdecal PlasmaCrack2
+}
+
+decalgroup PlasmaResidue
+{
+	PlasmaResidue1	1
+	PlasmaResidue2	1
+}
+
+decal TitanScorch1
+{
+	pic BFGLITE1
+	shade "80 ff 80"
+	fullbright
+	randomflipy
+	x-scale 0.4
+	y-scale 0.4
+	animator GoAway2
+	lowerdecal Scorch
+}
+
+decal TitanScorch2
+{
+	pic BFGLITE1
+	shade "80 ff 80"
+	fullbright
+	randomflipy
+	x-scale 0.4
+	y-scale 0.4
+	animator GoAway2
+	lowerdecal Scorch
+}
+
+decalgroup TitanScorch
+{
+	TitanScorch1	1
+	TitanScorch2	1
+}
+
+generator ZombieMan				BulletChips
+generator ShotgunGuy			BulletChips
+generator ChaingunGuy			BulletChip2
+generator WolfensteinSS			BulletChips
+generator SpiderMastermind		BulletChip2

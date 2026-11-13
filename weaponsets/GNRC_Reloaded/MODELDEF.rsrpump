@@ -1,0 +1,132 @@
+// from BD22 VR's MODELDEF.rsrpump (RS_Brutal22WeaponsQ), by tools/port/mdl.py: the gun class names are this pack's
+
+Model RSQGW_Riotgun
+{
+	Path "models/bd/ShotGun"
+	Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "Shotgun.png"
+	SurfaceSkin 0 1 "Shotgun.png"
+	SurfaceSkin 0 2 "Shotgun.png"
+	SurfaceSkin 0 3 "Shotgun.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "Shotgun.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.502 -4.257 0.0
+	ZOffset -8.973
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// shotguns (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQUG A 0 4
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/ShotGun"
+	Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "Shotgun.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.502 -4.257 0.0
+	ZOffset -8.973
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// shotguns (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQUP A 0 4
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/ShotGun"
+	Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "Shotgun.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.502 -4.257 0.0
+	ZOffset -8.973
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// shotguns (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQUP B 0 4
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/ShotGun"
+	Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Shotgun.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.502 -4.257 0.0
+	ZOffset -8.973
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// shotguns (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQUP C 0 4
+}
+
+Model RSQ_Hands
+{
+	Path "models/bd/ShotGun"
+	Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Shotgun.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.0000 0.0000 0.0
+	ZOffset -5.0000
+	NoInterpolation
+	FrameIndex RQUP C 0 4
+}
+
+Model RSP_DroppedShell
+{
+	Path "models/bd/ShotGun"
+	Model 0 "Shotgun.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Shotgun.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale 0.3468 0.3468 0.3468
+	Offset -16.2756 -0.0080 0.0
+	ZOffset -0.0527
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RQUW A 0 4
+}
+
+Model RSQ_Hands
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_oh_hold_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQUN A 7 23	// off-hand FBX lane: the FBX hand round the shell (RQHF X); was Ermac ammo_hand 1
+}

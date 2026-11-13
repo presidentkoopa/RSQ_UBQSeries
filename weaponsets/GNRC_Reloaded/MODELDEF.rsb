@@ -1,0 +1,416 @@
+// from BD22 VR's MODELDEF.rsb (RS_Brutal22WeaponsQ), by tools/port/mdl.py: the gun class names are this pack's
+
+Model RSQGW_DoubleSG
+{
+	Path "models/bd/SSG"
+	Model 0 "SSG.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "ssg.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "ssg.png"
+	SurfaceSkin 0 5 "ssg.png"
+	SurfaceSkin 0 6 "ssg.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.813 -3.959 0.0
+	ZOffset -12.773
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r11 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBSG A 0 1
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/SSG"
+	Model 0 "SSG.md3"
+	SurfaceSkin 0 0 "ssg.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.813 -3.959 0.0
+	ZOffset -12.773
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r11 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBSP A 0 1
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/SSG"
+	Model 0 "SSG.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "ssg.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.813 -3.959 0.0
+	ZOffset -12.773
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r11 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBSP B 0 1
+}
+
+Model RSQ_Hands
+{
+	Path "models/bd/SSG"
+	Model 0 "SSG.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "ssg.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.813 -3.959 0.0
+	ZOffset -12.773
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r11 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBSP H 0 1
+}
+
+Model RSB_Round
+{
+	Path "models/bd/SSG"
+	Model 0 "SSG.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "ssg.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale 0.3468 0.3468 0.3468
+	Offset -13.1917 -0.4859 0.0
+	ZOffset -0.3264
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RBSW A 0 1
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/SSG"
+	Model 0 "SSG.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "ssg.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -3.813 -3.959 0.0
+	ZOffset -12.773
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r11 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBSP C 0 1
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/M79"
+	Model 0 "M79.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "M79.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -4.954 -4.624 0.0
+	ZOffset -14.013
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r9 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBGP A 0 3
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/M79"
+	Model 0 "M79.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "M79.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -4.954 -4.624 0.0
+	ZOffset -14.013
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r9 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBGP B 0 3
+}
+
+Model RSQ_Hands
+{
+	Path "models/bd/M79"
+	Model 0 "M79.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "M79.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset -4.954 -4.624 0.0
+	ZOffset -14.013
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r9 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RBGP H 0 3
+}
+
+Model RSB_Round
+{
+	Path "models/bd/M79"
+	Model 0 "M79.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "M79.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	Scale 0.3468 0.3468 0.3468
+	Offset -14.5526 0.0001 0.0
+	ZOffset 0.0024
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RBGW A 0 3
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "Revolver.png"
+	SurfaceSkin 0 2 "Revolver.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	SurfaceSkin 0 7 "rsr_clear.png"
+	SurfaceSkin 0 8 "rsr_clear.png"
+	SurfaceSkin 0 9 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.466 -5.416 0.0
+	ZOffset -2.801
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	FrameIndex RBRP A 0 0
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "Revolver.png"
+	SurfaceSkin 0 6 "Revolver.png"
+	SurfaceSkin 0 7 "Revolver.png"
+	SurfaceSkin 0 8 "Revolver.png"
+	SurfaceSkin 0 9 "Revolver.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.466 -5.416 0.0
+	ZOffset -2.801
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	FrameIndex RBRP B 0 0
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "Revolver.png"
+	SurfaceSkin 0 6 "Revolver.png"
+	SurfaceSkin 0 7 "Revolver.png"
+	SurfaceSkin 0 8 "Revolver.png"
+	SurfaceSkin 0 9 "Revolver.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.466 -5.416 0.0
+	ZOffset -2.801
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	FrameIndex RBRP I 0 0
+}
+
+Model RSQ_Hands
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "Revolver.png"
+	SurfaceSkin 0 6 "Revolver.png"
+	SurfaceSkin 0 7 "Revolver.png"
+	SurfaceSkin 0 8 "Revolver.png"
+	SurfaceSkin 0 9 "Revolver.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.466 -5.416 0.0
+	ZOffset -2.801
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	FrameIndex RBRP H 0 0
+}
+
+Model RSB_Round
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "Revolver.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	SurfaceSkin 0 7 "rsr_clear.png"
+	SurfaceSkin 0 8 "rsr_clear.png"
+	SurfaceSkin 0 9 "rsr_clear.png"
+	Scale 0.3468 0.3468 0.3468
+	Offset -12.8939 0.5606 0.0
+	ZOffset -0.2249
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RBRW A 0 0
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "Revolver.png"
+	SurfaceSkin 0 7 "rsr_clear.png"
+	SurfaceSkin 0 8 "rsr_clear.png"
+	SurfaceSkin 0 9 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.466 -5.416 0.0
+	ZOffset -2.801
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	FrameIndex RBRP C 0 0
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	SurfaceSkin 0 7 "Revolver.png"
+	SurfaceSkin 0 8 "rsr_clear.png"
+	SurfaceSkin 0 9 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.466 -5.416 0.0
+	ZOffset -2.801
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	FrameIndex RBRP D 0 0
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	SurfaceSkin 0 7 "rsr_clear.png"
+	SurfaceSkin 0 8 "Revolver.png"
+	SurfaceSkin 0 9 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.466 -5.416 0.0
+	ZOffset -2.801
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	FrameIndex RBRP E 0 0
+}
+
+Model RSB_GunParts
+{
+	Path "models/bd/Revolver"
+	Model 0 "Revolver.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	SurfaceSkin 0 6 "rsr_clear.png"
+	SurfaceSkin 0 7 "rsr_clear.png"
+	SurfaceSkin 0 8 "rsr_clear.png"
+	SurfaceSkin 0 9 "Revolver.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.466 -5.416 0.0
+	ZOffset -2.801
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	FrameIndex RBRP F 0 0
+}
+
+Model RSQ_Hands
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_oh_hold_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQHN J 7 18	// off-hand FBX lane: was Ermac ammo_hand 1; = the FBX SSG shell hold (RQHF S)
+	FrameIndex RQHN L 7 21	// was Ermac ammo_hand 5; = the FBX Moonlight speedloader hold (RQHF V)
+}

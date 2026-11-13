@@ -1,0 +1,556 @@
+// from BD22 VR's MODELDEF.rsm (RS_Brutal22WeaponsQ), by tools/port/mdl.py: the gun class names are this pack's
+
+Model RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	Skin 0 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQ2T A 0 3
+	FrameIndex RQ2T A 1 3
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/Rifle"
+	Model 0 "M203.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "M203.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQ2P A 0 3
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/Rifle"
+	Model 0 "m203_round.md3"
+	Skin 0 "m203_round.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQ2P B 0 0
+}
+
+Model RSQ_Hands
+{
+	Path "models/rsq"	// one Path for both models: the round stays in models/rsq
+	Model 1 "m203_round_hand.md3"
+	Skin 1 "models/bd/Rifle/m203_round.png"
+	// 2.0.2 (owner item 33): the hand's Model line LAST. The build moves it to slot 7 (Hand Skin Tone) and QZD 17.3
+	// sizes a block by its last Model line, so with the round's line last the block was too small ("Too many models").
+	Model 7 "fbx/fbx_oh_hold_R.md3"
+	Skin 7 "fbx/fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQ2H A 7 24	// off-hand FBX lane: the FBX hand round the 40 mm round (RQHF Y); was Ermac ammo_hand 5
+	FrameIndex RQ2H A 1 0
+}
+
+Model RSQ_Hands
+{
+	Path "models/rsq/fbx"
+	Model 7 "fbx_oh_hold_R.md3"
+	Skin 7 "fbx_hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQ2H B 7 24	// the same FBX grip, the round on the gun
+}
+
+Model RSM_SpentCase
+{
+	Path "models/bd/Rifle"
+	Model 0 "m203_spent.md3"
+	Skin 0 "m203_spent.png"
+	Scale 0.3468 0.3468 0.3468
+	ZOffset 0.8
+	USEACTORPITCH
+	USEACTORROLL
+	FrameIndex RQ2C A 0 0
+}
+
+Model RSQ_GunSide
+{
+	Path "models/rsq"
+	Model 0 "m203_support.md3"
+	Skin 0 "hand.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.0 -24.0 -10.0
+	FrameIndex RQ2S A 0 0
+	FrameIndex RQ2S B 0 1
+}
+
+Model RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	Skin 0 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0 1.0 1.0
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	// Pose: restored 2026-10-10 -- each BD22 sprite frame takes the authored
+	// BD21 pose for the same moment (tools/pose_tables.py, fill_tables.py).
+	FrameIndex QT00 A 0 3
+	FrameIndex QT00 A 1 3
+	FrameIndex QT01 J 0 3
+	FrameIndex QT01 J 1 3
+	FrameIndex QT01 K 0 3
+	FrameIndex QT01 K 1 3
+	FrameIndex QT01 L 0 28
+	FrameIndex QT01 L 1 28
+	FrameIndex QT01 M 0 27
+	FrameIndex QT01 M 1 27
+	FrameIndex QT01 N 0 27
+	FrameIndex QT01 N 1 27
+	FrameIndex QT01 A 0 3
+	FrameIndex QT01 A 1 3
+	FrameIndex QT02 A 0 3
+	FrameIndex QT02 A 1 3
+	FrameIndex QT01 I 0 0
+	FrameIndex QT01 I 1 0
+	FrameIndex QT01 H 0 1
+	FrameIndex QT01 H 1 1
+	FrameIndex QT01 G 0 2
+	FrameIndex QT01 G 1 2
+	FrameIndex QT01 F 0 3
+	FrameIndex QT01 F 1 3
+	FrameIndex QT03 A 0 0
+	FrameIndex QT03 A 1 0
+	FrameIndex QT03 B 0 1
+	FrameIndex QT03 B 1 1
+	FrameIndex QT03 C 0 2
+	FrameIndex QT03 C 1 2
+	FrameIndex QT03 D 0 9
+	FrameIndex QT03 D 1 9
+	FrameIndex QT03 E 0 9
+	FrameIndex QT03 E 1 9
+	FrameIndex QT03 F 0 9
+	FrameIndex QT03 F 1 9
+	FrameIndex QT04 G 0 9
+	FrameIndex QT04 G 1 9
+	FrameIndex QT04 H 0 9
+	FrameIndex QT04 H 1 9
+	FrameIndex QT04 I 0 10
+	FrameIndex QT04 I 1 10
+	FrameIndex QT04 J 0 10
+	FrameIndex QT04 J 1 10
+	FrameIndex QT04 K 0 11
+	FrameIndex QT04 K 1 11
+	FrameIndex QT04 L 0 11
+	FrameIndex QT04 L 1 11
+	FrameIndex QT04 M 0 12
+	FrameIndex QT04 M 1 12
+	FrameIndex QT04 N 0 13
+	FrameIndex QT04 N 1 13
+	FrameIndex QT04 O 0 13
+	FrameIndex QT04 O 1 13
+	FrameIndex QT04 A 0 7
+	FrameIndex QT04 A 1 7
+	FrameIndex QT04 P 0 13
+	FrameIndex QT04 P 1 13
+	FrameIndex QT04 Q 0 14
+	FrameIndex QT04 Q 1 14
+	FrameIndex QT04 R 0 15
+	FrameIndex QT04 R 1 15
+	FrameIndex QT04 S 0 15
+	FrameIndex QT04 S 1 15
+	FrameIndex QT04 T 0 15
+	FrameIndex QT04 T 1 15
+	FrameIndex QT04 U 0 16
+	FrameIndex QT04 U 1 16
+	FrameIndex QT04 V 0 16
+	FrameIndex QT04 V 1 16
+	FrameIndex QT04 W 0 16
+	FrameIndex QT04 W 1 16
+	FrameIndex QT04 X 0 16
+	FrameIndex QT04 X 1 16
+	FrameIndex QT04 Y 0 17
+	FrameIndex QT04 Y 1 17
+	FrameIndex QT04 Z 0 18
+	FrameIndex QT04 Z 1 18
+	FrameIndex QT04 [ 0 8
+	FrameIndex QT04 [ 1 8
+	FrameIndex QT04 B 0 8
+	FrameIndex QT04 B 1 8
+	FrameIndex QT05 A 0 22
+	FrameIndex QT05 A 1 22
+	FrameIndex QT05 B 0 22
+	FrameIndex QT05 B 1 22
+	FrameIndex QT05 C 0 22
+	FrameIndex QT05 C 1 22
+	FrameIndex QT05 D 0 22
+	FrameIndex QT05 D 1 22
+	FrameIndex QT05 E 0 22
+	FrameIndex QT05 E 1 22
+	FrameIndex QT05 F 0 22
+	FrameIndex QT05 F 1 22
+	FrameIndex QT05 G 0 22
+	FrameIndex QT05 G 1 22
+	FrameIndex QT05 H 0 22
+	FrameIndex QT05 H 1 22
+	FrameIndex QT05 I 0 21
+	FrameIndex QT05 I 1 21
+	FrameIndex QT05 J 0 19
+	FrameIndex QT05 J 1 19
+	FrameIndex QT05 K 0 20
+	FrameIndex QT05 K 1 20
+	FrameIndex QT05 L 0 22
+	FrameIndex QT05 L 1 22
+	FrameIndex QT05 M 0 22
+	FrameIndex QT05 M 1 22
+	FrameIndex QT05 N 0 22
+	FrameIndex QT05 N 1 22
+	FrameIndex QT05 O 0 22
+	FrameIndex QT05 O 1 22
+	FrameIndex QT05 P 0 23
+	FrameIndex QT05 P 1 23
+	FrameIndex QT06 A 0 3
+	FrameIndex QT06 A 1 3
+	FrameIndex QT07 A 0 3
+	FrameIndex QT07 A 1 3
+	FrameIndex QT01 E 0 3
+	FrameIndex QT01 E 1 3
+	FrameIndex QT01 D 0 2
+	FrameIndex QT01 D 1 2
+	FrameIndex QT01 C 0 1
+	FrameIndex QT01 C 1 1
+	FrameIndex QT01 B 0 0
+	FrameIndex QT01 B 1 0
+	FrameIndex QT08 A 0 4
+	FrameIndex QT08 A 1 4
+	FrameIndex QT09 A 0 4
+	FrameIndex QT09 A 1 4
+	FrameIndex QT09 D 0 4
+	FrameIndex QT09 D 1 4
+	FrameIndex QT09 B 0 5
+	FrameIndex QT09 B 1 5
+	FrameIndex QT09 C 0 6
+	FrameIndex QT09 C 1 6
+	FrameIndex QT0A A 0 4
+	FrameIndex QT0A A 1 4
+	FrameIndex QT0A D 0 4
+	FrameIndex QT0A D 1 4
+	FrameIndex QT0A B 0 5
+	FrameIndex QT0A B 1 5
+	FrameIndex QT0A C 0 6
+	FrameIndex QT0A C 1 6
+	FrameIndex QT0B A 0 24
+	FrameIndex QT0B A 1 24
+	FrameIndex QT0B B 0 25
+	FrameIndex QT0B B 1 25
+	FrameIndex QT0B C 0 26
+	FrameIndex QT0B C 1 26
+	FrameIndex QT04 C 0 8
+	FrameIndex QT04 C 1 8
+	FrameIndex QT04 D 0 8
+	FrameIndex QT04 D 1 8
+	FrameIndex QT04 E 0 8
+	FrameIndex QT04 E 1 8
+	FrameIndex QT04 F 0 8
+	FrameIndex QT04 F 1 8
+	FrameIndex QT0C A 0 3
+	FrameIndex QT0C A 1 3
+	// v4: frames BD22 shows that had no key (fill_tables.py SIBLING/READY)
+	FrameIndex QT0D A 0 16
+	FrameIndex QT0D A 1 16
+	FrameIndex QT0D B 0 16
+	FrameIndex QT0D B 1 16
+	FrameIndex QT0D C 0 16
+	FrameIndex QT0D C 1 16
+	FrameIndex QT0D D 0 16
+	FrameIndex QT0D D 1 16
+	FrameIndex QT0D E 0 16
+	FrameIndex QT0D E 1 16
+	FrameIndex QT0E D 0 18
+	FrameIndex QT0E D 1 18
+	FrameIndex QT0E E 0 17
+	FrameIndex QT0E E 1 17
+	FrameIndex QT0E F 0 16
+	FrameIndex QT0E F 1 16
+	FrameIndex QT0E G 0 16
+	FrameIndex QT0E G 1 16
+	FrameIndex QT0E H 0 16
+	FrameIndex QT0E H 1 16
+	FrameIndex QT0E I 0 16
+	FrameIndex QT0E I 1 16
+	FrameIndex QT0E J 0 16
+	FrameIndex QT0E J 1 16
+	FrameIndex QT0E K 0 16
+	FrameIndex QT0E K 1 16
+	FrameIndex QT0E L 0 16
+	FrameIndex QT0E L 1 16
+	FrameIndex QT0E M 0 16
+	FrameIndex QT0E M 1 16
+	FrameIndex QT0E N 0 16
+	FrameIndex QT0E N 1 16
+	FrameIndex QT0E O 0 16
+	FrameIndex QT0E O 1 16
+	FrameIndex QT0E P 0 16
+	FrameIndex QT0E P 1 16
+	FrameIndex QT0E Q 0 16
+	FrameIndex QT0E Q 1 16
+	FrameIndex QT0E R 0 16
+	FrameIndex QT0E R 1 16
+	FrameIndex QT0E S 0 16
+	FrameIndex QT0E S 1 16
+	FrameIndex QT0E T 0 16
+	FrameIndex QT0E T 1 16
+	FrameIndex QT0E U 0 16
+	FrameIndex QT0E U 1 16
+	FrameIndex QT0E V 0 16
+	FrameIndex QT0E V 1 16
+	FrameIndex QT0E W 0 16
+	FrameIndex QT0E W 1 16
+	FrameIndex QT0E X 0 16
+	FrameIndex QT0E X 1 16
+	FrameIndex QT0E Y 0 16
+	FrameIndex QT0E Y 1 16
+	FrameIndex QT0E Z 0 16
+	FrameIndex QT0E Z 1 16
+	FrameIndex QT08 B 0 5
+	FrameIndex QT08 B 1 5
+	FrameIndex QT08 C 0 6
+	FrameIndex QT08 C 1 6
+	FrameIndex QT08 D 0 4
+	FrameIndex QT08 D 1 4
+	FrameIndex QT0F J 0 3
+	FrameIndex QT0F J 1 3
+	FrameIndex QT0F K 0 3
+	FrameIndex QT0F K 1 3
+	FrameIndex QT0F L 0 28
+	FrameIndex QT0F L 1 28
+	FrameIndex QT0F M 0 28
+	FrameIndex QT0F M 1 28
+	FrameIndex QT0F N 0 28
+	FrameIndex QT0F N 1 28
+	FrameIndex QT0F O 0 28
+	FrameIndex QT0F O 1 28
+	FrameIndex QT0F P 0 28
+	FrameIndex QT0F P 1 28
+	FrameIndex QT0F Q 0 28
+	FrameIndex QT0F Q 1 28
+	FrameIndex QT0A E 0 4
+	FrameIndex QT0A E 1 4
+	FrameIndex QT0A F 0 4
+	FrameIndex QT0A F 1 4
+	FrameIndex QT0A G 0 6
+	FrameIndex QT0A G 1 6
+	FrameIndex QT0A H 0 6
+	FrameIndex QT0A H 1 6
+	FrameIndex QT09 E 0 4
+	FrameIndex QT09 E 1 4
+	FrameIndex QT09 F 0 4
+	FrameIndex QT09 F 1 4
+	FrameIndex QT09 G 0 6
+	FrameIndex QT09 G 1 6
+	FrameIndex QT09 H 0 6
+	FrameIndex QT09 H 1 6
+	FrameIndex QT09 I 0 3
+	FrameIndex QT09 I 1 3
+	FrameIndex QT0G A 0 16
+	FrameIndex QT0G A 1 16
+	FrameIndex QT0G B 0 16
+	FrameIndex QT0G B 1 16
+	FrameIndex QT0G C 0 16
+	FrameIndex QT0G C 1 16
+	FrameIndex QT0G D 0 16
+	FrameIndex QT0G D 1 16
+	FrameIndex QT0G E 0 16
+	FrameIndex QT0G E 1 16
+	FrameIndex QT0H A 0 7
+	FrameIndex QT0H A 1 7
+	FrameIndex QT0H B 0 8
+	FrameIndex QT0H B 1 8
+	FrameIndex QT0H C 0 8
+	FrameIndex QT0H C 1 8
+	FrameIndex QT0H D 0 18
+	FrameIndex QT0H D 1 18
+	FrameIndex QT0H E 0 17
+	FrameIndex QT0H E 1 17
+	FrameIndex QT0H F 0 16
+	FrameIndex QT0H F 1 16
+	FrameIndex QT0H G 0 16
+	FrameIndex QT0H G 1 16
+	FrameIndex QT0H H 0 16
+	FrameIndex QT0H H 1 16
+	FrameIndex QT0H I 0 16
+	FrameIndex QT0H I 1 16
+	FrameIndex QT0H J 0 16
+	FrameIndex QT0H J 1 16
+	FrameIndex QT0H K 0 16
+	FrameIndex QT0H K 1 16
+	FrameIndex QT0H L 0 16
+	FrameIndex QT0H L 1 16
+	FrameIndex QT0H M 0 16
+	FrameIndex QT0H M 1 16
+	FrameIndex QT0H N 0 16
+	FrameIndex QT0H N 1 16
+	FrameIndex QT0H O 0 16
+	FrameIndex QT0H O 1 16
+	FrameIndex QT0H P 0 16
+	FrameIndex QT0H P 1 16
+	FrameIndex QT0H Q 0 16
+	FrameIndex QT0H Q 1 16
+	FrameIndex QT0H R 0 16
+	FrameIndex QT0H R 1 16
+	FrameIndex QT0H S 0 16
+	FrameIndex QT0H S 1 16
+	FrameIndex QT0H T 0 16
+	FrameIndex QT0H T 1 16
+	FrameIndex QT0H U 0 16
+	FrameIndex QT0H U 1 16
+	FrameIndex QT0H V 0 16
+	FrameIndex QT0H V 1 16
+	FrameIndex QT0H W 0 16
+	FrameIndex QT0H W 1 16
+	FrameIndex QT0H X 0 16
+	FrameIndex QT0H X 1 16
+	FrameIndex QT0H Y 0 16
+	FrameIndex QT0H Y 1 16
+	FrameIndex QT0H Z 0 16
+	FrameIndex QT0H Z 1 16
+}
+
+Model RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "Rifle.png"
+	SurfaceSkin 0 1 "Rifle.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex QT0I A 0 3
+	FrameIndex QT0I A 1 3
+}
+
+Model RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "Rifle.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex QT0I B 0 3
+	FrameIndex QT0I B 1 3
+}
+
+Model RSQGW_ARifle
+{
+	Path "models/bd/Rifle"
+	Model 0 "Rifle.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "Rifle.png"
+	SurfaceSkin 0 3 "rsr_clear.png"
+	SurfaceSkin 0 4 "Rifle.png"
+	SurfaceSkin 0 5 "Rifle.png"
+	Model 1 "M203.md3"
+	SurfaceSkin 1 0 "M203.png"
+	SurfaceSkin 1 1 "M203.png"
+	SurfaceSkin 1 2 "M203.png"
+	SurfaceSkin 1 3 "rsr_clear.png"
+	Scale -1.0000 1.0000 1.0000
+	Offset 0.348 -5.912 0.0
+	ZOffset -1.812
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// batch 4 (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex QT0I C 0 3
+	FrameIndex QT0I C 1 3
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/Machinegun"
+	Model 0 "Machinegun.md3"
+	SurfaceSkin 0 0 "rsr_clear.png"
+	SurfaceSkin 0 1 "rsr_clear.png"
+	SurfaceSkin 0 2 "rsr_clear.png"
+	SurfaceSkin 0 3 "Machinegun.png"
+	SurfaceSkin 0 4 "rsr_clear.png"
+	SurfaceSkin 0 5 "rsr_clear.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.612 -3.967 0.0
+	ZOffset -2.037
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r10 port (lane B): gun to the FBX hand fitted from 1.92
+	NoInterpolation
+	FrameIndex RQ3P A 0 4
+}
+
+Model RSR_GunParts
+{
+	Path "models/bd/Rifle"
+	Model 0 "m203_round.md3"
+	Skin 0 "m203_round.png"
+	Scale -1.0 1.0 1.0
+	Offset -0.387 -4.908 0.0
+	ZOffset -3.587
+	AngleOffset 3.854
+	PitchOffset 3.363
+	RollOffset 10.974	// r10 port (lane B): the Machinegun's seated 40 mm round, moved with the gun (was Offset 0.588 -0.832, ZOffset -6.517)
+	NoInterpolation
+	FrameIndex RQ3P B 0 0
+}
