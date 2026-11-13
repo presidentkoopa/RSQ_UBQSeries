@@ -5,6 +5,8 @@ version "4.10"
 //   g2p_arm  a0 = slot | event << 4 | nth << 8, a1 = delay | tag << 8, a2 = offset (decidegrees)  fire at a tag
 //   g2p_armj a0 = slot | event << 4 | nth << 8, a1 = delay                                          press jump (BT_JUMP, 2 tics)
 //   g2p_arms a0 = slot | event << 4 | nth << 8, a1 = delay, a2 = swings                             both hands down hard (qzt_)
+//   g2p_armd a0 = slot | event << 4 | nth << 8, a1 = delay | (pitch + 90) << 8, a2 = yaw (decidegrees)   fire along a line
+//     (g5, 2026-11-13: the miss in the air -- out into an empty part of the room, to the end of the reach)
 //   events: 1 kick / kick.kill / guard, 2 doublejump, 3 airhold, 4 kick.kill, 5 chain.end, 6 kick (alive)
 //   g2p_cam x y z: view from a camera actor there, facing angle 0 (a side-on view); g2p_camoff: back to the player
 //   every tic "G2P clk <tic> <engine ms>", and each wall-clock second "G2P epoch <s> <engine ms>": the frame dumps' file
@@ -115,7 +117,14 @@ class G2P_Probe : EventHandler
 		{
 			if (armAt[a] > 0 && level.maptime >= armAt[a])
 			{
-				if (armAct[a] == 1)
+				if (armAct[a] == 3)
+				{
+					double yaw = armOff[a] / 10.0, pit = armTag[a] - 90;
+					Vector3 org = Hand(p);
+					Console.Printf("G2P t%d armed fire along yaw %.1f pitch %.1f from hand (%.0f %.0f %.0f)", level.maptime, yaw, pit, org.x, org.y, org.z);
+					EventHandler.SendNetworkEvent("rsqgr_fire", 1 | (clamp(int(yaw * 10 + 0.5), 0, 3599) << 1), clamp(int(pit * 10), -900, 900) + 1000, Pack(org - p.Pos));
+				}
+				else if (armAct[a] == 1)
 				{
 					let j = G2P_Jumper(EventHandler.Find("G2P_Jumper"));
 					if (j) { j.jumpFrom = level.maptime + 1; Console.Printf("G2P t%d armed jump: BT_JUMP pressed t%d-t%d", level.maptime, j.jumpFrom, j.jumpFrom + 1); }
@@ -170,12 +179,12 @@ class G2P_Probe : EventHandler
 		else if (n ~== "g2p_hp") { let a = tags[e.Args[0]]; if (a) { a.health = e.Args[1]; Console.Printf("G2P tag %d health %d", e.Args[0], a.health); } }
 		else if (n ~== "g2p_fireat") { let a = tags[e.Args[0]]; if (a) FireAt(p, a.Pos + (0, 0, a.Height * 0.5), e.Args[1] / 10.0, String.Format("tag %d %s", e.Args[0], a.GetClassName())); else Console.Printf("G2P fireat: no tag %d", e.Args[0]); }
 		else if (n ~== "g2p_firepoint") FireAt(p, (e.Args[0], e.Args[1], e.Args[2]), 0, "a point");
-		else if (n ~== "g2p_arm" || n ~== "g2p_armj" || n ~== "g2p_arms")
+		else if (n ~== "g2p_arm" || n ~== "g2p_armj" || n ~== "g2p_arms" || n ~== "g2p_armd")
 		{
 			int a = e.Args[0] & 7;
 			armEv[a] = (e.Args[0] >> 4) & 15; armNth[a] = max(1, (e.Args[0] >> 8) & 15); armSeen[a] = 0;
-			armDelay[a] = e.Args[1] & 255; armTag[a] = (e.Args[1] >> 8) & 31; armOff[a] = e.Args[2]; armAt[a] = 0;
-			armAct[a] = n ~== "g2p_armj" ? 1 : n ~== "g2p_arms" ? 2 : 0;
+			armDelay[a] = e.Args[1] & 255; armTag[a] = (e.Args[1] >> 8) & (n ~== "g2p_armd" ? 255 : 31); armOff[a] = e.Args[2]; armAt[a] = 0;
+			armAct[a] = n ~== "g2p_armj" ? 1 : n ~== "g2p_arms" ? 2 : n ~== "g2p_armd" ? 3 : 0;
 			Console.Printf("G2P armed %d: %s on event %d #%d +%d tics%s", a, armAct[a] == 1 ? "jump" : armAct[a] == 2 ? "swing" : "fire", armEv[a], armNth[a], armDelay[a],
 				armAct[a] == 0 ? String.Format(" -> tag %d offset %.1f", armTag[a], armOff[a] / 10.0) : armAct[a] == 2 ? String.Format(" x%d", armOff[a]) : "");
 		}

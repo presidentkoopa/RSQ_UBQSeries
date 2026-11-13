@@ -16,6 +16,9 @@
 // THE KICK-CHAIN: in the air after a kick-off the hook fires again (Aim Assist snaps it to the nearest valid target
 // round the off hand's line); a big one kicks again (chain +1, KICK! x2 ...), a light one comes up to you, a wall or a
 // lip lands you, nothing in reach lets you fall. Each link's slow motion is 0.3 s shorter (1.5, 1.2, 0.9, 0.6, 0.3 s).
+// HANG UNTIL IT BITES (owner 2026-11-13 02:0x): a press in the air during a kick-chain hangs you where you are from the
+// press (no falling, full speed in slow motion) until the claw bites; then the bite plays as built. "If fired hook misses
+// or does not bite, we drop": the end of its reach or the sky ends the hang, you fall, and the chain ends as on landing.
 // THE DOUBLE JUMP: one per kick-off; jump in the air for more air and +0.5 s ("DoubleJump!"), and up to 5 monsters in
 // reach get a time marker (+0.25 s nearer, +0.5 s farther) that hooking them pays.
 // THE AIR SPIKE: a light monster held up in front of you in the air: both hands swung down hard together (3 m/s,
@@ -91,6 +94,8 @@ class RSQGR_Core : EventHandler
 	double lTop[MAXPLAYERS];
 	bool hanging[MAXPLAYERS];
 	double hangZ[MAXPLAYERS];
+	bool airWait[MAXPLAYERS];      // hanging for a claw fired in the air in a kick-chain, until it bites (or misses)
+	int waitFrom[MAXPLAYERS];
 	bool flung[MAXPLAYERS];        // the hook sent you into the air: full speed and comfort until you land
 	// the kick-chain
 	int chain[MAXPLAYERS];
@@ -194,6 +199,68 @@ class RSQGR_Core : EventHandler
 		flyers.Push(c);
 		Log(pn, String.Format("FIRE claw #%d from (%.0f %.0f %.0f) dir (%.2f %.2f %.2f) %s: flies %.0f a tic out to %.0f%s", c.clawId, org.x, org.y, org.z, dir.x, dir.y, dir.z,
 			air ? "in the air" : "on the ground", FLY_SPEED, range, already > 0 ? String.Format(" (%d other claw%s still flying: jp fires another)", already, already > 1 ? "s" : "") : ""));
+		// HANG UNTIL IT BITES: fired in the air during a kick-chain, you hang where you are from this press
+		if (air && airChain[pn])
+		{
+			c.hangOn = true;
+			if (!airWait[pn])
+			{
+				airWait[pn] = true;
+				waitFrom[pn] = level.maptime;
+				HangStart(pn);
+				rising[pn] = false;
+				FullSpeed(pmo);
+				pmo.player.keepmomentum = true;
+				pmo.vel = (0, 0, 0);
+			}
+			Log(pn, String.Format("HANG: fired in the air in kick-chain %d: you hang at z %.1f until claw #%d bites", chain[pn], hangZ[pn], c.clawId));
+			Event(pn, "hang");
+		}
+	}
+
+	// THE HANG IS OVER: a claw you were hanging for bit. The bite plays as built from here (an air pull hangs you again;
+	// a pull, a fling or a ledge moves you); any other claw still flying from the hang no longer holds you up.
+	void WaitBit(int pn, RSQGR_Claw c)
+	{
+		if (!c.hangOn) return;
+		c.hangOn = false;
+		if (!airWait[pn]) return;
+		airWait[pn] = false;
+		for (int i = 0; i < flyers.Size(); i++) if (flyers[i] && flyers[i].pn == pn) flyers[i].hangOn = false;
+		int m = mode[pn];
+		if (m != M_AIRPULL && m != M_AIRHOLD && m != M_SPIKE) HangEnd(pn);
+		let pmo = players[pn].mo;
+		Log(pn, String.Format("HANG over: claw #%d bit after %d tics of hanging (z %.1f, held at %.1f): the bite plays", c.clawId, level.maptime - waitFrom[pn], pmo ? pmo.Pos.z : 0, hangZ[pn]));
+	}
+
+	// NO CLAW YOU HANG FOR IS STILL FLYING (it reached the end of its reach, or the sky, or it is gone): "we drop". The hang
+	// ends, you fall, and the kick-chain ends as it does on landing.
+	void CheckWait(int pn, PlayerPawn pmo)
+	{
+		if (!airWait[pn]) return;
+		for (int i = 0; i < flyers.Size(); i++)
+		{
+			let f = flyers[i];
+			if (f && !f.bDestroyed && f.pn == pn && f.hangOn && f.Flying()) return;
+		}
+		airWait[pn] = false;
+		HangEnd(pn);
+		Log(pn, String.Format("HANG over: no claw bit (a miss) after %d tics of hanging: you fall from z %.1f", level.maptime - waitFrom[pn], pmo.Pos.z));
+		EndChain(pn, "MISS IN THE AIR");
+	}
+
+	// the kick-chain ends (you landed, or a claw fired from the hang bit nothing)
+	void EndChain(int pn, String why)
+	{
+		if (airChain[pn])
+		{
+			Log(pn, String.Format("%s: the kick-chain ends at %d", why, chain[pn]));
+			Event(pn, "chain.end");
+			ClearMarkers(pn);
+		}
+		chain[pn] = 0;
+		airChain[pn] = false;
+		djReady[pn] = false;
 	}
 
 	// ONE TIC OF FLIGHT (every claw in the air, at the top of WorldTick, so a bite's result plays the same tic): jp's
@@ -356,6 +423,7 @@ class RSQGR_Core : EventHandler
 	// IT BIT A MONSTER: everything from here is the bite as built (light, heavy, Scorpion Pull)
 	void ArriveMonster(int pn, PlayerPawn pmo, RSQGR_Claw c, Vector3 at, Actor v)
 	{
+		WaitBit(pn, c);
 		if (Busy(pn, c)) return;
 		c.Bite(at, v);
 		TakeClaw(pn, c);
@@ -380,6 +448,7 @@ class RSQGR_Core : EventHandler
 	// IT BIT THE WORLD: a wall, a floor, a ceiling -- the ledge lip or jp's fling, as built
 	void ArriveWorld(int pn, PlayerPawn pmo, RSQGR_Claw c, Vector3 at, Vector3 dir, int ht, Line ln, int side)
 	{
+		WaitBit(pn, c);
 		if (Busy(pn, c)) return;
 		Vector3 bite = at - dir * 1.0;
 		c.Bite(bite, null);
@@ -1018,11 +1087,15 @@ class RSQGR_Core : EventHandler
 			{
 				if (mode[pn] != M_NONE || claw[pn]) { EndVictim(pn, "you died"); SetMode(pn, M_NONE); HangEnd(pn); if (claw[pn]) claw[pn].Destroy(); claw[pn] = null; }
 				chain[pn] = 0; airChain[pn] = false; djReady[pn] = false; flung[pn] = false;
+				if (airWait[pn]) { airWait[pn] = false; HangEnd(pn); }
 				continue;
 			}
 			ReadHands(pn, pmo);
+			CheckWait(pn, pmo);
 			if (hanging[pn])
 			{
+				// where the last tic left you (before the hold puts you back): the hang's proof, every tic of it
+				if (airWait[pn]) Log(pn, String.Format("HANG tic %d: z %.2f (held at %.2f), vel (%.2f %.2f %.2f), waiting for the bite", level.maptime - waitFrom[pn], pmo.Pos.z, hangZ[pn], pmo.vel.x, pmo.vel.y, pmo.vel.z));
 				pmo.vel = (0, 0, 0);
 				if (pmo.Pos.z < hangZ[pn]) pmo.SetZ(hangZ[pn]);
 				FullSpeed(pmo);
@@ -1065,7 +1138,7 @@ class RSQGR_Core : EventHandler
 				if (vz <= 0) rising[pn] = false;
 			}
 		}
-		if (airChain[pn] && djReady[pn] && !ground && mode[pn] == M_NONE)
+		if (airChain[pn] && djReady[pn] && !ground && mode[pn] == M_NONE && !airWait[pn])
 		{
 			int b = players[pn].cmd.buttons;
 			if ((b & BT_JUMP) && !(prevButtons[pn] & BT_JUMP))
@@ -1082,17 +1155,9 @@ class RSQGR_Core : EventHandler
 				PlaceMarkers(pn, pmo);
 			}
 		}
-		if (ground && mode[pn] == M_NONE && !rising[pn])
+		if (ground && mode[pn] == M_NONE && !rising[pn] && !airWait[pn])
 		{
-			if (airChain[pn])
-			{
-				Log(pn, String.Format("LANDED: the kick-chain ends at %d", chain[pn]));
-				Event(pn, "chain.end");
-				ClearMarkers(pn);
-			}
-			chain[pn] = 0;
-			airChain[pn] = false;
-			djReady[pn] = false;
+			EndChain(pn, "LANDED");
 			flung[pn] = false;
 		}
 	}

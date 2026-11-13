@@ -35,7 +35,9 @@
 //   guard                                   a guarded miniboss: the bounce, no damage
 //   pull.lost / pull.blocked                the pull ended short (it died first / a wall)
 //   doublejump, markers, marker             the double jump, the time markers placed, a marked monster hooked
-//   chain.end                               you landed: the kick-chain ends (g2.chain read just before is its length)
+//   hang                                    fired in the air in a kick-chain: you hang where you are until it bites
+//   chain.end                               you landed, or the claw you hung for bit nothing: the kick-chain ends
+//                                           (g2.chain read just before is its length)
 //   scorpion.hold, scorpion.yank, scorpion.timeout   Scorpion Pull
 // Anything else: -1 (GetInt) or "" (GetString) -- including every request name of the old RSQ Grapple (hooked, swinging,
 // climbing, xp.*, ...), so a mod still asking those reads "no grapple".

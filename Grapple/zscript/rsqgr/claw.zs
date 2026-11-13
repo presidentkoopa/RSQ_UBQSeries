@@ -11,10 +11,10 @@
 // THE CHAIN (owner 2026-11-13 01:32: "chain_look2 it is. i approve"): jpalomo's own tenda0 link (RSGL), no new art --
 //   * a third the size and three times as many: 1.67 units apart (his 5 / 3) from 15 units off the hand, at most 480;
 //   * tinted dark gunmetal (TRNSLATE RSQGR_Gunmetal);
-//   * while the claw flies, alive: a small damped sideways ripple along it, and ONE BRIGHT LINK running out from the
-//     hand to the claw. The running link is his link at his own size (5 units, three of the fine ones) in a white-steel
-//     glint (RSQGR_ChainGlint), fullbright: at the fine links' 1.67 units it was a pixel at 10 m and was never seen in
-//     the rig frames (g3run2), so it is drawn bigger and brighter than the links it runs along.
+//   * while the claw flies, alive: a small damped sideways ripple along it.
+//   (The bright running link of g4run2 is gone, owner 2026-11-13 02:0x: "There seems to be a white orb on the hook? but it
+//   does already have a unique sprite at the end of it to show where it bites." It was his link at 3x the fine size in a
+//   white glint, fullbright, and it crept: the claw's own sprite is what marks the bite.)
 class RSQGR_Claw : Actor
 {
 	enum EPhase
@@ -37,23 +37,21 @@ class RSQGR_Claw : Actor
 	double flown, flyMax;
 	int flyTics;
 	int clawId;
+	bool hangOn;           // fired in the air in a kick-chain: you hang until it bites (RSQGR_Core.Fire)
 	// the chain's look
-	int liveAge;           // tics of flight, for the ripple and the running link
-	int hotAt;             // the running link's index this tic (-1: none)
-	TranslationID tLink, tGlint;
+	int liveAge;           // tics of flight, for the ripple
+	TranslationID tLink;
 
 	const CHAIN_START = 15.0;   // jp_grapple, measured: the nearest link to the hand
 	const CHAIN_STEP = 5.0 / 3.0; // a third of jp's spacing (5 units): three times as many links
 	const CHAIN_CAP = 480;      // links at most (three times jp_grapple's 152, rounded up); past it they spread
 	const BACK_SPEED = 64.0;    // coming back, units a tic
 	const LINK_SCALE = 0.125 / 3.0; // tenda0's 40 px drawn at a third of jp's 5 units
-	const HOT_SCALE = 0.125;    // the running link: jp's own size (5 units)
 	// alive while it flies
 	const RIPPLE_AMP = 2.5;     // units sideways at most
 	const RIPPLE_WAVE = 48.0;   // units along the chain per wave
 	const RIPPLE_SPIN = 50.0;   // degrees a tic the wave runs out
 	const RIPPLE_DAMP = 8.0;    // tics: the ripple dies away over the flight
-	const HOT_SPEED = 90.0;     // the running link, units a tic from the hand out
 
 	Default
 	{
@@ -122,8 +120,6 @@ class RSQGR_Claw : Actor
 	void SetLook()
 	{
 		tLink = Translate.GetID('RSQGR_Gunmetal');
-		tGlint = Translate.GetID('RSQGR_ChainGlint');
-		hotAt = -1;
 	}
 
 	bool Flying() { return phase == PH_FLY; }
@@ -169,20 +165,13 @@ class RSQGR_Claw : Actor
 		int want = avail > 0 ? int(avail / step) + 1 : 0;
 		if (want > CHAIN_CAP) { step = avail / (CHAIN_CAP - 1); want = CHAIN_CAP; }
 		while (links.Size() > want) { let l = links[links.Size() - 1]; if (l) l.Destroy(); links.Pop(); }
-		hotAt = -1;
 		if (total < 0.001) return;
 		Vector3 u = d / total;
-		// while it flies: the damped ripple and the running link
+		// while it flies: the damped ripple
 		bool live = phase == PH_FLY;
 		double amp = live ? RIPPLE_AMP * exp(-liveAge / RIPPLE_DAMP) : 0;
 		Vector3 side = (-u.y, u.x, 0);
 		if (side.Length() < 0.001) side = (1, 0, 0); else side = side.Unit();
-		int hot = -1;
-		if (live && want > 0 && avail > 0)
-		{
-			double run = liveAge * HOT_SPEED, lap = avail + step;
-			hot = min(int((run - floor(run / lap) * lap) / step), want - 1);
-		}
 		for (int k = 0; k < want; k++)
 		{
 			double s = k * step;
@@ -199,22 +188,21 @@ class RSQGR_Claw : Actor
 				l.Translation = tLink;
 			}
 			else l.SetOrigin(q, true);
-			bool h = k == hot;
-			if (h != l.isHot)
-			{
-				l.isHot = h;
-				double sc = h ? HOT_SCALE : LINK_SCALE;
-				l.Scale = (sc, sc);
-				if (h) { l.Translation = tGlint; l.SetStateLabel("Hot"); }
-				else { l.Translation = tLink; l.SetStateLabel("Spawn"); }
-			}
-			if (h) hotAt = k;
 		}
-		if (live && RSQGR_Util.Debug() && hotAt >= 0 && links[hotAt])
+		if (live && RSQGR_Util.Debug())
 		{
-			let l = links[hotAt];
-			Console.Printf("T_G2 t%d p%d claw #%d chain: %d links %.2f apart, ripple %.2f, RUNNING LINK #%d at (%.1f %.1f %.1f) %.0f units out, scale %.3f (the others %.3f), glint, fullbright %d",
-				level.maptime, pn, clawId, want, step, amp, hotAt, l.Pos.x, l.Pos.y, l.Pos.z, (l.Pos - hand).Length(), l.Scale.x, LINK_SCALE, (l.CurState && l.CurState.bFullbright) ? 1 : 0);
+			// every link as drawn: the one scale, the gunmetal, none fullbright (no running link, no orb)
+			int big = 0, bright = 0, other = 0;
+			for (int k = 0; k < links.Size(); k++)
+			{
+				let l = links[k];
+				if (!l) continue;
+				if (l.Scale.x > LINK_SCALE + 0.0001) big++;
+				if (l.CurState && l.CurState.bFullbright) bright++;
+				if (l.Translation != tLink) other++;
+			}
+			Console.Printf("T_G2 t%d p%d claw #%d chain: %d links %.2f apart, ripple %.2f, all at scale %.3f: larger %d, fullbright %d, not gunmetal %d",
+				level.maptime, pn, clawId, want, step, amp, LINK_SCALE, big, bright, other);
 		}
 	}
 
@@ -227,7 +215,7 @@ class RSQGR_Claw : Actor
 }
 
 // One link: jpalomo's tenda0 (40 px), drawn at a third of his 5 units and tinted gunmetal by its claw, which places it every
-// tic; the running link is drawn at his own 5 units in the glint, fullbright ("Hot").
+// tic.
 class RSQGR_Link : Actor
 {
 	Default
@@ -244,14 +232,10 @@ class RSQGR_Link : Actor
 		RenderStyle "Normal";
 		Scale 0.125;
 	}
-	bool isHot;            // the running link (while the claw flies): jp's size, the glint, fullbright
 	States
 	{
 	Spawn:
 		RSGL A -1;
-		Stop;
-	Hot:
-		RSGL A -1 Bright;
 		Stop;
 	}
 	override void Tick() {}
