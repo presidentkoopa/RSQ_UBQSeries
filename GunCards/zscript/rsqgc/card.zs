@@ -569,16 +569,36 @@ class RSQGC_GunCard : EventHandler
 	// And only while you are looking its way: the wrist within GAZE_MAX of where your head points (a hand resting at
 	// your side with its card half turned to you is not being read).
 	const FACE_MIN = 0.50;      // 60 degrees off square
+	static bool FightCardUp()
+	{
+		let it = ServiceIterator.Find("RSQMB_Service");
+		Service sv;
+		while (sv = it.Next()) if (sv.GetInt("fightcard.up", "", 1) == 1) return true;
+		return false;
+	}
 	const TWOHAND_NEAR = 16.0;  // map units between the hands (about 45 cm) under which the off hand is taken to be on the gun
 	bool wchk[2];               // this hand's watch pose is held this tic (Watching), not just lingering or Always On
+	// THE OFF HAND ON THE GUN, not just near it (owner 11-13: "offhand watch check does not show card, why?"): the 11-12 test
+	// took any off hand within TWOHAND_NEAR (45 cm) of a gun hand as two-handing, and a watch check made with the gun hand
+	// lowered beside the body is often that close, so the off hand's watch card never came up. Now the off hand must lie on
+	// the gun's own line, ahead of the grip (TWOHAND_ALONG) and within TWOHAND_OFF of it: a hand on a foregrip or under the
+	// barrel in the "freeze, police!" pose, which is what the 11-12 rule was for. Reading the gun's line as InnerDot does
+	// (miniboss), the hand's forward from AttackAngle + 90 and AttackPitch.
+	const TWOHAND_ALONG = 26.0; // map units ahead of the grip (about 75 cm)
+	const TWOHAND_OFF = 8.0;    // map units off the gun's line (about 23 cm)
 	static bool TwoHanding(PlayerInfo p, PlayerPawn pmo)
 	{
 		if (!p.ReadyWeapon) return false;
 		if ((p.WeaponState & WF_TWOHANDSTABILIZED) != 0) return true;
 		if (!pmo.OverrideAttackPosDir) return false;
-		Vector3 d = pmo.AttackPos - pmo.OffhandPos;
+		Vector3 d = pmo.OffhandPos - pmo.AttackPos;
 		d.z *= level.pixelstretch;
-		return d.Length() < TWOHAND_NEAR;
+		if (d.Length() >= TWOHAND_NEAR) return false;
+		double y = pmo.AttackAngle + 90, pt = pmo.AttackPitch;
+		Vector3 f = (cos(pt) * cos(y), cos(pt) * sin(y), sin(pt));
+		double along = d dot f;
+		if (abs(along) > TWOHAND_ALONG) return false;
+		return (d - f * along).Length() < TWOHAND_OFF;
 	}
 	const GAZE_MAX = 45.0;
 	static double GazeOff(PlayerPawn pmo, int hand)
@@ -910,6 +930,9 @@ class RSQGC_GunCard : EventHandler
 				if (ci("rsqgc_debug_log", 0) && (level.maptime % 10) == 0) Console.Printf("rsqgc: hand %d watch card face %.2f, %.0f degrees off your gaze%s", hand, fd, go, cull ? " (not drawn)" : "");
 				if (cull) show[hand] = false;
 			}
+			// RSQ Miniboss's START FIGHT? card takes its turn on the off-hand watch (owner 11-13: the two cards switch every
+			// 2 s while a fight waits to be called): this hand's watch card fades out for it, and back in after (by name)
+			if (hand == 1 && watching[1] && FightCardUp()) show[1] = false;
 			// a cooking grenade's count shows whatever Show Cards says, unless it says Off
 			if (!show[hand] && w && ci("rsqgc_card", 1) > 0 && FuseCount(p, hand) >= 0) show[hand] = true;
 			// THE LEVEL CARD IN ITS PLACE (owner 11-12; Level-Up Card Replaces Small Card, rsqgc_lvlcard): the small card fades

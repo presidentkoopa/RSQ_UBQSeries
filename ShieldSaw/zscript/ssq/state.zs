@@ -807,6 +807,11 @@ class SSQ_Handler : EventHandler
 			// ... unless the player cycled to it (Next / Prev Offhand Weapon, ssq_offhand_cycle): then it is drawn
 			if (mState[i] == SS_STOWED && (p.OffhandWeapon == saw || p.PendingWeapon == saw) && CycledLately(i)) { mCycleTic[i] = 0; Draw(i); }
 			if (mState[i] != SS_DRAWN && p.OffhandWeapon == saw) Unstow(i);
+			// A WHEEL PICK IN THE OFF HAND IS THE PLAYER PUTTING THE SHIELD DOWN (owner 11-13: "when we have the shieldsaw in hand
+			// i want to be able to select from the wheel with my offhand and have it equip, the saw is fighting me"): RSQ Wheel
+			// put a weapon in the off hand in the last 2 tics (wr_RigService "offhand.pick", by name). The shield goes to the
+			// shoulder and the picked weapon stays, under either Off-Hand Switch setting.
+			if (mState[i] == SS_DRAWN && p.OffhandWeapon && p.OffhandWeapon != saw && WheelPickedOff()) YieldToPick(i, saw);
 			if (mState[i] == SS_DRAWN) { if (SVI('ssq_yield_offhand', 0) != 0) HoldOrYield(i, saw); else PinHands(i, saw); }
 			if (mState[i] == SS_FLYING && !mDisc[i]) { mState[i] = SS_STOWED; }
 			if (mStartDrawn[i] > 0 && mState[i] == SS_STOWED && --mStartDrawn[i] == 0) Draw(i);
@@ -1018,6 +1023,31 @@ class SSQ_Handler : EventHandler
 		mPrevOff[i] = null; mPrevMain[i] = null;
 		Stow(i, true);
 	}
+	static bool WheelPickedOff()
+	{
+		let it = ServiceIterator.Find("wr_RigService");
+		Service sv;
+		while (sv = it.Next())
+		{
+			int ago = sv.GetInt("offhand.pick");
+			if (ago >= 0 && ago <= 2) return true;
+		}
+		return false;
+	}
+
+	// the Wheel's pick keeps the off hand; the shield only leaves (no slot handed back, unlike Stow / Unstow)
+	void YieldToPick(int i, SSQ_ShieldSaw saw)
+	{
+		let p = players[i];
+		if (p.PendingWeapon == saw) p.PendingWeapon = WP_NOCHANGE;
+		saw.StopRev();
+		ClearLocks(i);
+		mPrevOff[i] = null; mPrevMain[i] = null;
+		mState[i] = SS_STOWED;
+		p.mo.A_StartSound("ssq/stow", CHAN_6);
+		if (UVI(p, 'ssq_debug', 0)) Console.Printf("ssq: p%d the Wheel put %s in the off hand -- shield to the shoulder", i, p.OffhandWeapon.GetClassName());
+	}
+
 	void ShownLocks(int i, out Array<Actor> found)
 	{
 		found.Clear();

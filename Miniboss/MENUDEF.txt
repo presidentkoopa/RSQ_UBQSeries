@@ -62,7 +62,7 @@ OptionMenu "RSQMB_Options"
 	Slider "Meter Speed", "rsqmb_bf_speed", 0.25, 4, 0.25, 2
 	Option "Miniboss Meter Fills From", "rsqmb_bf_from", "RSQMB_FillFrom"
 	Option "Call It In: Watch Check + Use", "rsqmb_bf_callin", "OnOff"
-	Option "Inner-Wrist Card: Start Fight?", "rsqmb_wristcard", "OnOff"
+	Option "Start Fight Card on the Off-Hand Watch", "rsqmb_wristcard", "OnOff"
 	Option "Ignore Spawn Restrictions", "rsqmb_bf_ignore", "OnOff"
 	Option "Effects", "rsqmb_fx", "OnOff"
 	Option "Effects Density", "rsqmb_fx_density", "RSQMB_Density"

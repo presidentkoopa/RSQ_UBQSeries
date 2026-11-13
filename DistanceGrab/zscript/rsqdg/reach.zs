@@ -367,7 +367,10 @@ class RSQDG_Reach
 		{
 			String n = w.GetClassName();
 			n = n.MakeLower();
-			if (n.IndexOf("rsq_glove") == 0) return true;
+			// RSQ Melee's RSQ_Glove / RSQ_GloveOff are its HANDS (every look: bare, FBX or the boxing gloves), so the
+			// class alone is not "wearing gloves": only Boxing Gloves or Slappers Only is (rsqml_boxing / rsqml_slappers,
+			// read by name). Before this, every empty hand counted as gloved and Distance Grab never armed (owner 11-13).
+			if (n.IndexOf("rsq_glove") == 0 && (SVOn("rsqml_boxing") || SVOn("rsqml_slappers"))) return true;
 		}
 		return Punching(p, hand);
 	}
@@ -515,6 +518,13 @@ class RSQDG_Reach
 	{
 		let c = CVar.GetCVar(n, p);
 		return c ? c.GetFloat() : d;
+	}
+
+	// a server cvar of another mod, by name: nonzero = on (absent = off)
+	static bool SVOn(String n)
+	{
+		let c = CVar.FindCVar(n);
+		return c && c.GetInt() != 0;
 	}
 
 	static bool Flag(String n, PlayerInfo p, bool d)

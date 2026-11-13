@@ -188,6 +188,10 @@ class wr_RigService : Service
 		// nothing else triggers a rebuild afterward -- confirmed as the
 		// actual cause of "the card never shows up at all".
 		if (request == "HasAnchor") return rig.HasAnchor() ? 1 : 0;
+		// RSQ (owner 11-13: "when we have the shieldsaw in hand i want to be able to select from the wheel with my offhand and
+		// have it equip, the saw is fighting me"): tics since the Wheel last put a weapon in the OFF hand (-1 never). RSQ
+		// ShieldSaw reads it, so a Wheel pick is the player putting the shield down, not a hand to pin back.
+		if (request == "offhand.pick") return rig.mOffPickTic > 0 ? level.maptime - rig.mOffPickTic : -1;
 		return 0;
 	}
 
@@ -313,7 +317,7 @@ class wr_Rig : EventHandler
 	Vector3    mLightLastPos;     // where it was, so a graced tic has somewhere to sit
 	color      mLightLastHue;
 	Array<Actor> mModels;         // a real weapon model per card, when enabled
-	Array<double> mCardMul;       // RSQ: each card's size now, easing to PICK_BIG / PICK_NEXT / PICK_NEXT2 around the picked card
+	Array<double> mCardMul;       // RSQ: each card's size now, easing to PICK_BIG / PICK_NEXT / PICK_NEXT2 / PICK_NEXT3 around the picked card
 	Array<double> mModelFit;      // RSQ: per model, the scale that fits it on its card
 	Array<double> mModelDrop;     // RSQ: ...and how far below the card's centre its base sits, at that scale
 	Array<double> mModelCX;       // RSQ: a mesh prop's middle off its origin, forward and left at scale 1 (wr_CardProp)
@@ -7005,7 +7009,10 @@ class wr_Rig : EventHandler
 			{
 				int away = abs(i - pickAt);
 				if (n - away < away) away = n - away;
+				// (owner 11-13: "the card i hover over has to be quite large, with the next three cards in either direction
+				// descending in size until the wheel normalizes. bd has a lot of guns"): three steps down each side now
 				if (away == 0) wantMul = PICK_BIG; else if (away == 1) wantMul = PICK_NEXT; else if (away == 2) wantMul = PICK_NEXT2;
+				else if (away == 3) wantMul = PICK_NEXT3;
 			}
 			mCardMul[i] += (wantMul - mCardMul[i]) * 0.4;
 			if (abs(wantMul - mCardMul[i]) < 0.004) mCardMul[i] = wantMul;
@@ -10050,7 +10057,7 @@ class wr_Rig : EventHandler
 		weap.bOffhandWeapon = wantOffhand;
 		if (weap.SisterWeapon != null) weap.SisterWeapon.bOffhandWeapon = wantOffhand;
 
-		if (wantOffhand) player.OffhandWeapon = weap;
+		if (wantOffhand) { player.OffhandWeapon = weap; mOffPickTic = level.maptime; }   // RSQ: for ShieldSaw ("offhand.pick")
 		else             player.ReadyWeapon   = weap;
 
 		player.PendingWeapon = WP_NOCHANGE;
@@ -10218,6 +10225,7 @@ class wr_Rig : EventHandler
 	}
 
 	Class<Weapon> mPickCls;   // RSQ: what this pick equips (commit: resolvePick); null = the card's own class
+	int mOffPickTic;          // RSQ: level.maptime the Wheel last put a weapon in the off hand (wr_RigService "offhand.pick")
 	Class<Weapon> mTestCard;  // RSQ TEST: the card wr_test_pick presses
 
 	private void testCards()
@@ -10696,9 +10704,10 @@ class wr_Rig : EventHandler
 	// How often a shown sheet is restrung, in tics. Ten is roughly three times
 	// a second -- finer than a countdown printed in whole seconds can show, and
 	// nine tics in ten still skip the rebuild entirely.
-	const PICK_BIG   = 1.8;    // RSQ: the picked card's size, the card either side of it, and the next one out
-	const PICK_NEXT  = 1.35;
-	const PICK_NEXT2 = 1.12;
+	const PICK_BIG   = 2.2;    // RSQ: the picked card's size, then the three either side of it stepping down (owner 11-13; was
+	const PICK_NEXT  = 1.75;   // 1.8 / 1.35 / 1.12 with two steps, 11-12)
+	const PICK_NEXT2 = 1.45;
+	const PICK_NEXT3 = 1.2;
 	const SHEET_TICK       = 10;
 	const SHEET_W_CARDS    = 2.6;
 	// Grown from 3.2 -- the stat tracker (wr_stattracker.zs) added three

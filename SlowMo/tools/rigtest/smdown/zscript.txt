@@ -160,7 +160,7 @@ class RSQSMD_Probe : EventHandler
 		{
 			God(true);
 			SetI("rsqsm_debug", 1); SetI("rs_score_debug", 1); SetI("rsqgb_kr_debug", 1); SetI("rsqmb_debug", 1); SetI("gy_bones_debug", 1); SetI("gy_bones", 1);
-			SetI("rsqsm_down", 1); SetI("rsqsm_down_redmap", 1); SetI("rsqsm_down_lowview", 1); SetI("rsqsm_down_marker", 2);
+			SetI("rsqsm_down", 1); SetI("rsqsm_down_redmap", 1); SetI("rsqsm_down_kneel", 1); SetI("rsqsm_down_marker", 2);
 			SetI("rsqgb_kr_enabled", 1); SetI("rsqgb_kr_chance", 100); SetI("rsqgb_kr_magnet", 0);
 			SetI("rsqtr_cig", 1); SetI("rsqthp_dmg", 1);
 		}

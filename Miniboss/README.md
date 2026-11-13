@@ -76,11 +76,12 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 - **Calling the fight in:** hold a watch check with either hand (the back of the wrist turned to your face, held still)
   and press **Use** while it holds, or a moment after. **Call It In: Watch Check + Use** on the page switches this off;
   the fight still comes by itself 60 s after the meter is full (**Arrives By Itself**).
-- **Or from the inside of your off-hand wrist.** Turn the inside of your off-hand wrist to your face and look at it: a card lies along it.
-  Once the meter is full it is gold, **START (skull) FIGHT?**, and **Use** calls the fight in at once: none of the rules
-  below hold it back (only a map with no monster types, or no room to land, can). Until the meter is full, or while a
-  fight is running, it is grey: **FIGHT (skull) NOT READY**. **Inner-Wrist Card: Start Fight?** on the page switches it off. *Rig only, not
-  headset-confirmed (2026-11-12).*
+- **Or from the Start Fight card on your off-hand watch.** Once the meter is full (and no fight is called or running), a
+  watch check with your off hand shows **START (skull) FIGHT?** and your Gun Cards watch card in turn, 2 seconds each,
+  each fading into the other, until the fight is called (by you, or by itself). **Use** while START FIGHT? is up calls the
+  fight in at once: none of the rules below hold it back (only a map with no monster types, or no room to land, can).
+  **Start Fight Card on the Off-Hand Watch** on the page switches it off. (It was on the inside of the wrist until
+  2026-11-13.) *Code only, not shown yet (2026-11-13).*
 - **The fight itself** is your guns, fists and the other mods: this mod reads no trigger, grip or gesture of its own.
 - **Menu buttons:** Reset All. The console commands listed in Under the hood are for testing.
 

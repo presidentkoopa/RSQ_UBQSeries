@@ -517,6 +517,31 @@ class RSQVR_FxHandler : EventHandler
 		return sum;
 	}
 
+	transient RSQVR_WallTracer wallT;
+	Vector3 OutOfWalls(Vector3 at, Vector3 toEye, double toEyeDist, double halfW)
+	{
+		if (halfW <= 0.5 || toEye == (0, 0, 0)) return at;
+		if (!wallT) wallT = new("RSQVR_WallTracer");
+		Vector3 side = (toEye.y, -toEye.x, 0);
+		double sl = side.Length();
+		if (sl < 0.01) return at;
+		side /= sl;
+		double need[2]; need[0] = 0; need[1] = 0;
+		let sec = level.PointInSector(at.xy);
+		if (!sec) return at;
+		for (int s = 0; s < 2; s++)
+		{
+			Vector3 dir = s == 0 ? side : -side;
+			if (wallT.Trace(at, sec, dir, halfW + 1.0, 0) && wallT.Results.HitType != TRACE_HitNone && wallT.Results.HitType != TRACE_HitActor)
+				need[s] = halfW + 1.0 - wallT.Results.Distance;
+		}
+		if (need[0] <= 0 && need[1] <= 0) return at;
+		// a wall on one side: the line slides sideways off it. Walls on both sides (narrower than the line): it steps toward
+		// your eye instead, where the walls' gap looks wider, never past halfway to you.
+		if (need[0] > 0 && need[1] > 0) return at + toEye * min(max(need[0], need[1]) * 2.0, toEyeDist * 0.5);
+		return at - side * need[0] + side * need[1];
+	}
+
 	void DrawWord(RSQVR_Word w, Vector3 eye, double heldUp, double ps, double stackAll)
 	{
 		int n = int(w.text.Length());
@@ -564,6 +589,12 @@ class RSQVR_FxHandler : EventHandler
 		// the line's width, font pixels
 		double width = 0;
 		for (int i = 0; i < n; i++) width += RSQVR_BeamData.FONT_ADV(Code(w.text.ByteAt(i)));
+		// OUT OF THE WALLS (owner 11-13: "lots of text has a hard time respecting boundaries, like legendary weapon text clips
+		// through walls"): the word is a flat line facing you; where a wall is nearer its middle, sideways, than half the
+		// line's width, the line would cut into it. It is moved toward your eye until its ends clear the wall, never past
+		// halfway to you.
+		anchor = OutOfWalls(anchor, toEye, dl, width * k * 0.5);
+		d = eye - anchor; dl = d.Length(); toEye = dl > 0.01 ? d / dl : (0, 0, 0);
 		double cx = -width * 0.5;
 		for (int i = 0; i < n; i++)
 		{
@@ -620,5 +651,15 @@ class RSQVR_FxHandler : EventHandler
 		// the map's thinkers (glyphs, the driver, the beams) go with it
 		words.Clear(); pops.Clear(); pool.Clear(); freeG.Clear(); beams.Clear();
 		driver = null;
+	}
+}
+
+// the sideways test of OutOfWalls: walls, floors and ceilings stop it, actors do not
+class RSQVR_WallTracer : LineTracer
+{
+	override ETraceStatus TraceCallback()
+	{
+		if (Results.HitType == TRACE_HitActor) return TRACE_Skip;
+		return TRACE_Stop;
 	}
 }

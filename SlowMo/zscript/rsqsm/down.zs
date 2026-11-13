@@ -209,7 +209,7 @@ class RSQSM_Down : EventHandler
 	static clearscope double StepTics() { return clamp(Cv("rsqsm_down_step", 3), 0.5, 10) * TICRATE; }
 	static clearscope double StartShare(int downs) { return downs <= 1 ? 1.0 : (downs == 2 ? 2.0 / 3.0 : 1.0 / 3.0); }
 	static double MinDrain() { return clamp(Cv("rsqsm_down_drain", 0.25), 0.0, 1.0); }
-	static bool LowView(int n) { return CvP("rsqsm_down_lowview", n, 1) != 0; }
+	static bool LowView(int n) { return CvP("rsqsm_down_kneel", n, 0) != 0; }   // off by default from 11-13 (owner: stay on your feet)
 	static bool Debug() { return Cv("rsqsm_debug", 0) != 0; }
 	static void Log(String s) { if (Debug()) Console.Printf("RSQ_SlowMo: DOWN t%d: %s", level.maptime, s); }
 
@@ -1306,6 +1306,10 @@ class RSQSM_Down : EventHandler
 		if (c && sloS > 0)
 		{
 			bool ok = c.Trigger("down.up", RSQSM_Clock.CAT_NONE, int(sloS * 1000), c.Depth(), false, n, "REVIVE");
+			// INSTANT (owner 11-13: "when we Revive, we need instant slowmo. it takes a few tics to kick in"): End() above
+			// gave him full speed for the world's ramp out of DOWN (freeUntil, ~0.4 s), so his own slow started only after it.
+			// With the revive's slow motion running he is slowed from this tic; a lit cigarette keeps its full-speed walk.
+			if (ok && c.smokeUntil[n] <= level.maptime) c.freeUntil[n] = min(c.freeUntil[n], level.maptime);
 			Log(String.Format("player %d revive slow motion %.1f s: %s", n, sloS, ok ? "started" : "refused (see the clock's line)"));
 		}
 	}

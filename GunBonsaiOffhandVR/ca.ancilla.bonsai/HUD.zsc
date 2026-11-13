@@ -240,6 +240,57 @@ class TFLV_HUD : Object ui {
       DTA_Color, colour, DTA_Alpha, alpha);
   }
 
+  // RSQ PATCH (owner 11-13: "it would be nice to see GBOVR text like the weapon name and the x/y xp numerals get the kind
+  // of life our SCORE word has"): the same text, each letter its bar's breath (RSQGB_BarLife.Tint) a step on from the last,
+  // as RS Score's "Score:" word with Letters on Wave (55 degrees a letter). Kicks and flares light the whole line, as they
+  // light the bar. Photosensitive Mode: Tint gives the steady colour, so the line is still.
+  void TextLive(string text, uint colour, uint x, uint y, TFLV_HUD_Gravity grav, RSQGB_BarLife lf, double frac, double phase,
+                double kick, double flare, double t, int cb, bool ready, bool cyc) {
+    let thefont = NewSmallFont;
+    // Apply mirroring settings.
+    if (mirror & HUD_MIRROR_H) x = HUD_WIDTH - x;
+    if (mirror & HUD_MIRROR_V) y = HUD_HEIGHT - y + 10; // A bit of padding
+    grav ^= mirror;
+
+    // Convert to framebuffer coordinate space. hudx/y are already in framebuffer
+    // coordinates.
+    // x/y are in texture coordinates, which we need to convert based on both the
+    // ratio between the texture size (1536x512) and the framebuffer size, and
+    // the configured scale factor.
+    x = hudx + x * scale * screenscale;
+    y = hudy + y * scale * screenscale;
+
+    // Adjust for gravity based on the as-rendered size of the text.
+    switch (grav) {
+      case HUD_GRAV_NW:
+        // No changes needed.
+        break;
+      case HUD_GRAV_SE:
+        x = x - thefont.StringWidth(text);
+        y = y - thefont.GetHeight();
+        break;
+      case HUD_GRAV_NE:
+        x = x - thefont.StringWidth(text);
+        break;
+      case HUD_GRAV_SW:
+        y = y - thefont.GetHeight();
+        break;
+    }
+
+    double lx = x;
+    int n = text.CodePointCount();
+    for (int ci = 0, pos = 0; ci < n; ci++) {
+      int ch; [ch, pos] = text.GetNextCodePoint(pos);
+      string one = string.Format("%c", ch);
+      uint c = lf.Tint(colour, frac, phase + 55.0 * ci, kick, flare, t, cb, ready, cyc);
+      screen.DrawText(thefont, thefont.CR_WHITE, lx, y, one,
+        DTA_VirtualWidth, fbw, DTA_VirtualHeight, fbh, DTA_KeepRatio, true,
+        DTA_Color, c, DTA_Alpha, alpha);
+      lx += thefont.StringWidth(one);
+    }
+  }
+
+
   // Draw a progress bar overlay using the given texture and colour, starting at
   // texture coordinate tx and with a maximum width of tw.
   void DrawProgressBar(TextureID texture, uint colour, double progress, uint tx, uint tw) {
@@ -406,14 +457,32 @@ class TFLV_HUD : Object ui {
         tex(player_tex..face), pcol,
         double(stats.pxp)/(stats.pmax), HUD_PXP_X, HUD_PXP_W);
 
+    // RSQ PATCH (11-13): with GBOVR Menus and HUD On the words and numbers breathe too, letter by letter (TextLive)
+    bool live = RSQGB_BarLife.MockupOn();
+    let lfT = Life(lifeSlot);
+    double tT = gametic + fracTic;
+    double wfT = stats.wmax > 0 ? stats.wxp / stats.wmax : 0;
+    double pfT = stats.pmax > 0 ? double(stats.pxp) / stats.pmax : 0;
+    if (live) {
+      TextLive(string.format(StringTable.Localize("$TFLV_HUD_LV"), stats.plvl),
+        player_rgb, HUD_TOPTEXT_X, HUD_TOPTEXT_Y, HUD_GRAV_NW, lfT, pfT, lfT.phaseP, lfT.kickP, lfT.flareP, tT, cb, LevelUp(stats), cyc);
+      TextLive(string.format("%d/%d", stats.pxp, stats.pmax),
+        player_rgb, HUD_BOTTEXT_X, HUD_BOTTEXT_Y, HUD_GRAV_SE, lfT, pfT, lfT.phaseP, lfT.kickP, lfT.flareP, tT, cb, LevelUp(stats), cyc);
+    } else {
     Text(
       string.format(StringTable.Localize("$TFLV_HUD_LV"), stats.plvl),
       player_rgb, HUD_TOPTEXT_X, HUD_TOPTEXT_Y, HUD_GRAV_NW);
     Text(
       string.format("%d/%d", stats.pxp, stats.pmax),
       player_rgb, HUD_BOTTEXT_X, HUD_BOTTEXT_Y, HUD_GRAV_SE);
+    }
 
     let spacer = stats.effect == "" ? "" : " ";
+    if (live)
+      TextLive(string.format("%s%s%s", stats.effect, spacer, stats.wname),
+        weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y - NewSmallFont.GetHeight()/scale/screenscale, HUD_GRAV_SW,
+        lfT, wfT, lfT.phaseW, lfT.kickW, lfT.flareW, tT, cb, LevelUp(stats), cyc);
+    else
     Text(
       string.format("%s%s%s", stats.effect, spacer, stats.wname),
       weapon_rgb, HUD_INFOTEXT_X,
@@ -426,6 +495,9 @@ class TFLV_HUD : Object ui {
         StringTable.Localize("$TFLV_HUD_LV_IGNORED"),
         weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y, HUD_GRAV_SW);
       DrawProgressBar(tex(weapon_tex..face), 0xFF808080, 1.0, HUD_WXP_X, HUD_WXP_W);
+    } else if (live) {
+      TextLive(string.format(StringTable.Localize("$TFLV_HUD_LVXP"), stats.wlvl, stats.wxp, stats.wmax),
+        weapon_rgb, HUD_INFOTEXT_X, HUD_INFOTEXT_Y, HUD_GRAV_SW, lfT, wfT, lfT.phaseW, lfT.kickW, lfT.flareW, tT, cb, LevelUp(stats), cyc);
     } else {
       Text(
         string.format(StringTable.Localize("$TFLV_HUD_LVXP"),

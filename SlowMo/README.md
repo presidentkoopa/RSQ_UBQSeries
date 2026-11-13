@@ -25,8 +25,8 @@ your revenge.
   boss: each can slow the world for a moment. Every one has its own on/off switch.
 - **A bar that tells you when real time is back.** A green bar under your score drains with the real seconds left and
   names what slowed the world.
-- **DOWN (optional).** A monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you sink
-  to the floor, and you have 9 seconds to kill the monster marked TARGET and get up. Go down again before spending a
+- **DOWN (optional).** A monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you stay
+  on your feet, and you have 9 seconds to kill the monster marked TARGET and get up. Go down again before spending a
   Score life and the clock starts at 6 seconds, then 3. Ten of the nearest monsters carry a small crosshair and +0.25 SEC or +0.5 SEC:
   damage to those (and to the target) adds time, and as one dies another takes its place. The target's crosshair flies
   in from offscreen. What a whole one is worth: +0.25 SEC small, +0.5 SEC bigger (*rig only 2026-11-12: three DOWNs in a row started at 9, 6 and 3 s and each ended on the one kill; the labels were not seen in a frame*).
@@ -177,7 +177,8 @@ own shot, a barrel nobody set off or a hazard still kills you as normal.
 
 ![Going down: the colour drains, the DOWN panel appears big in the middle and sinks to its place (rig frames)](docs/readme/down_going_down.jpg)
 
-- **You go down in slow motion.** About a second of slow fall, your view sinking to 40% of your standing height. The world
+- **You go down in slow motion.** About a second of slow fall; your view stays where it is (from 11-13: Lower View When Down,
+  off by default, sinks it to 40% of your standing height as before). The world
   drops to its slowest (5%). You can still crawl, at a third of your speed, and your own shots fly at full speed. While
   you are DOWN, hits cannot kill you.
 - **DEATH IN.** A clock of 9 real seconds. Damage you deal buys time back, as a share of a whole monster: 1 second for a
@@ -315,7 +316,7 @@ the bars and DOWN's look are yours.
 | Look | Colour Drain (off) · Shot Trails · Missile Wakes · Stored Slow-Mo Bar · Countdown Bar · Bar Animation · Bar Colour (Green; 17 colours or Random) |
 | Your Triggers | Slow Motion Key · Crisis Dive · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block · Quick Grenade · Training Remote |
 | Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Grapple-Slam · Score · Gun Bonsai VR · Other Mods |
-| Be Quick or Be Dead | Be Quick or Be Dead (off) · Music · Clock (9 s) · Slowest Clock Drain (0.25) · Time: Small Monster (0.25 s), Lost Soul (0.25 s), Big Monster (0.5 s), Cyberdemon / Mastermind (0.5 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
+| Be Quick or Be Dead | Be Quick or Be Dead (off) · Music · Clock (9 s) · Slowest Clock Drain (0.25) · Time: Small Monster (0.25 s), Lost Soul (0.25 s), Big Monster (0.5 s), Cyberdemon / Mastermind (0.5 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down (off) · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
 | Heavy Hit Slowdown | Heavy Hit Slowdown · Heavy Hit Size (75% of max health) · Arch-Vile Blast · Blasted Off Your Feet · Hit From Behind · Armour Broken · Cooldown (No Limit; Once per 20 s, Once per 60 s, Use Shared) |
 | Test and Debug | Ease In (0.15 s) · Ease Out (0.4 s) · Range (3000) · Sound Follows (1.0) · Round Speed (14) · Slow Me Too Strength (1.0) · Auto Cooldown (25 s) · Crisis Dive World Speed (0.10), Leap (12), Hang (0.5) · Wrist Gap (0.16 m) · Wrist Hold (12 tics) · Reload Time (1200 ms) · Close Call Time (700 ms) · Blast Time (3000 ms) · Low Health At (25) · Adrenaline To Start (25), Full Meter (10 s), Per Kill (12), Per Near Miss (4) · Lean Needed (0.06 m) · Lean Baseline (2 s) · Smooth Range (1024) · Smooth Walkers (12) · Colour Drain Amount (0.35) · Bar Size (1.5; only without RSQ Miniboss) · Debug Log |
 

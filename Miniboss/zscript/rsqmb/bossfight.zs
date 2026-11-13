@@ -405,16 +405,10 @@ extend class RSQMB_Handler
 		}
 	}
 
-	// ---- THE INNER-WRIST CARD (owner 2026-11-12 05:06: "We need an mainhand / offhand inner watch card (inside of wrist)
-	// that was Start (icon) Fight? So when we offhand inner wrist check we can Use to call in miniboss fight. current call
-	// in method does not work. And the icon will be our Miniboss icon, for now") ---------------------------------------
-	// Turn the INSIDE of the OFF-HAND wrist to your face and look at it (the off hand only, owner 11-12 15:54; WristCard): a card stands over it, START (the crowned skull)
-	// FIGHT? in gold once the METER IS FULL (and no Bossfight is running or on its way), FIGHT (skull) NOT READY in
-	// grey until then. With the gold card up, Use calls the Bossfight in at once and no guardrail holds it back (owner
-	// 05:37; the meter still decides when, 05:44). The watch check + Use stays, with the meter and the rules as before. The pose: the inner wrist's face within 60 degrees of square to your eyes (the back-of-wrist watch
-	// check turned over: RSQ Gun Cards' FaceDot, negated), the wrist within 45 degrees of your gaze, held WC_HOLD tics.
-	// One textured quad in the world (RSQMB_WQuad, a flat model laid on the wrist), this machine only. Inner-Wrist Card
-	// (rsqmb_wristcard, user, on). Rig only for the pose and the card; not headset-confirmed.
+	// ---- THE START FIGHT CARD (owner 2026-11-12 05:06: "We need an mainhand / offhand inner watch card (inside of wrist)
+	// that was Start (icon) Fight? So when we offhand inner wrist check we can Use to call in miniboss fight"; moved onto the
+	// off-hand watch, taking turns with Gun Cards' watch card, 11-13: WristCard below). One textured quad in the world
+	// (RSQMB_WQuad, a flat model laid on the wrist), this machine only. Start Fight Card (rsqmb_wristcard, user, on).
 	const WC_HOLD = 4;
 	const WC_WIDE = 7.0;        // the card's length along the forearm, map units (about 21 cm)
 	transient Actor wcCard;
@@ -450,45 +444,51 @@ extend class RSQMB_Handler
 		Vector3 look = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
 		return acos(clamp((to / d) dot look, -1.0, 1.0));
 	}
+	// THE START FIGHT CARD ON THE OFF-HAND WATCH (owner 2026-11-13: "the start fight card needs to take the place of the
+	// offhand watch check card (we are moving it from where it is), and we switch between the offhand watch card and Start
+	// Fight smoothly every 2 seconds until the player calls in the fight, OR, the fight calls in itself"). It no longer has
+	// a pose of its own (the inner wrist, 11-12): while the OFF hand's watch check is held (WatchCheck, the same reader RSQ
+	// Gun Cards' watch card uses) and the meter is full with no fight called or running, the back of the wrist shows START
+	// FIGHT? for 2 s, then Gun Cards' watch card for 2 s, and round again, each fading into the other. Gun Cards asks
+	// "fightcard.up" (service.zs) and fades its off-hand watch card out while this one is up. Use while START FIGHT? is up
+	// calls the fight in with no rules (CallIn's card call). Called (by the card, the watch check + Use, or by itself):
+	// only the watch card. Which comes first: START FIGHT? (my call: a ready fight is the news). Rig only for the
+	// geometry; not headset-confirmed.
+	const WC_PHASE = 70;          // tics each card holds (2 s)
+	transient int wcStart, wcLast;
+	transient bool wcUp;          // START FIGHT? is the card this phase (Gun Cards' "fightcard.up")
 	void WristCard(PlayerPawn p, RSQMB_Meter m)
 	{
 		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
-		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
-		int shown = -1;
-		// THE OFF HAND ONLY (owner 2026-11-12 15:54: "I had wanted the Start Fight card on the inside of the offhand wrist")
-		wcHold[0] = 0;
-		for (int h = 1; h >= 1; h--)
-		{
-			bool pose = want && InnerDot(p, h) >= 0.5 && GazeOff(p, h) <= 45.0;
-			wcHold[h] = pose ? min(wcHold[h] + 1, 100) : 0;
-			if (wcHold[h] >= WC_HOLD) shown = h;
-		}
-		if (debug && level.maptime % 35 == 0)
-			Console.Printf("RSQMB wrist card: inner wrist main %.2f off %.2f, gaze %.0f / %.0f degrees, held %d / %d, meter %s", InnerDot(p, 0), InnerDot(p, 1), GazeOff(p, 0), GazeOff(p, 1), wcHold[0], wcHold[1], m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
-		if (shown >= 0) wcHand = shown;
-		wcAlpha = clamp(wcAlpha + (shown >= 0 ? 0.25 : -0.25), 0.0, 1.0);
-		bool gold = m.ready && !BfBusy() && !(m.called && m.force);     // the meter full, no Bossfight running or already on its way
-		if (wcAlpha <= 0) { if (wcCard) wcCard.bInvisible = true; return; }
-		String tn = gold ? "RSQMBWC1" : "RSQMBWC0";
+		int now = level.maptime;
+		bool gold = m.ready && !BfBusy() && !m.called;      // the meter full, nothing called, running or on its way
+		bool check = (!wc || wc.GetBool()) && BfOn() && p.health > 0 && WatchCheck(p, 1) >= 2;
+		if (check) { if (wcStart <= 0) wcStart = now; wcLast = now; }
+		else if (now - wcLast > 8) wcStart = 0;              // a short slip of the pose keeps the cycle
+		wcUp = gold && wcStart > 0 && ((now - wcStart) / WC_PHASE) % 2 == 0;
+		wcHand = 1;
+		wcAlpha = clamp(wcAlpha + (wcUp ? 0.125 : -0.125), 0.0, 1.0);    // 8 tics each way: the two cards cross-fade
+		if (debug && now % 35 == 0 && wcStart > 0)
+			Console.Printf("RSQMB start fight card: off-hand watch check %d, meter %s, %s", WatchCheck(p, 1), m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))), wcUp ? "START FIGHT? up" : "the watch card's turn");
+		if (wcAlpha <= 0) { if (wcCard) wcCard.bInvisible = true; wcUse = (p.player.cmd.buttons & BT_USE) != 0; return; }
+		String tn = "RSQMBWC1";
 		TextureID tx = TexMan.CheckForTexture(tn, TexMan.Type_Any);
 		if (!tx.IsValid()) return;
 		int tw, th; [tw, th] = TexMan.GetSize(tx);
-		// FLAT ALONG THE INSIDE OF THE WRIST (owner 05:26: "why is the fight card not along the inside of the wrist? it's
-		// like the watch check card just on the other side of the wrist"): the quad lies on the inner wrist's own plane
-		// (its face is the inner wrist's normal, InnerDot's n), its long side along the forearm, read left to right as
-		// you see it; it sits a little down the forearm from the hand and just off the skin.
-		int hh = wcHand;
-		double hy = ((hh == 1) ? p.OffhandAngle : p.AttackAngle) + 90;
-		double hpt = (hh == 1) ? p.OffhandPitch : p.AttackPitch;
+		// FLAT ON THE BACK OF THE WRIST, where the watch card lies: the inner wrist's normal turned over (InnerDot's n,
+		// negated), its long side along the forearm, read left to right as you see it, a little down the forearm from the
+		// hand and just off the skin.
+		int hh = 1;
+		double hy = p.OffhandAngle + 90;
+		double hpt = p.OffhandPitch;
 		Vector3 f = (cos(hpt) * cos(hy), cos(hpt) * sin(hy), sin(hpt));
 		Vector3 r0 = (sin(hy), -cos(hy), 0);
 		Vector3 u0 = r0 cross f;
-		double rl = Actor.Normalize180(hh == 1 ? p.OffhandRoll : p.AttackRoll);
+		double rl = Actor.Normalize180(p.OffhandRoll);
 		double bb = RSQMB_GPose.IsLeft(hh) ? rl : -rl;
-		Vector3 n = -(r0 * cos(bb) + u0 * sin(bb));
-		Vector3 hp = hh == 1 ? p.OffhandPos : p.AttackPos;
+		Vector3 n = r0 * cos(bb) + u0 * sin(bb);       // the back of the wrist (the inner face's normal, turned over)
+		Vector3 hp = p.OffhandPos;
 		Vector3 at = hp - f * WC_BACK + n * WC_OFF;
-		// the quad's own frame for that face (as RSQ SlowMo's plate: angle and pitch aim its face, roll turns it in its plane)
 		double qy = atan2(n.y, n.x), qt = atan2(n.z, n.xy.Length());
 		Vector3 qr = (-sin(qy), cos(qy), 0);
 		Vector3 qu = (-cos(qy) * sin(qt), -sin(qy) * sin(qt), cos(qt));
@@ -502,9 +502,9 @@ extend class RSQMB_Handler
 		wcCard.scale = (WC_WIDE, WC_WIDE * th / max(1, tw));
 		wcCard.bInvisible = false;
 		wcCard.A_SetRenderStyle(wcAlpha, STYLE_Translucent);
-		// the gold card up: Use calls it in, with no rules (CallIn's card call)
+		// START FIGHT? up: Use calls it in, with no rules (CallIn's card call)
 		bool use = (p.player.cmd.buttons & BT_USE) != 0;
-		if (gold && shown >= 0 && use && !wcUse) EventHandler.SendNetworkEvent("rsqmb_callin", 1);
+		if (wcUp && wcAlpha >= 0.5 && use && !wcUse) EventHandler.SendNetworkEvent("rsqmb_callin", 1);
 		wcUse = use;
 	}
 

@@ -132,7 +132,7 @@ The 21 pk3s that `tools/build_all.py` builds, in the order the shared menu shows
 |---|---|
 | RSQ_SlowMo.pk3 | The world slows, you don't: dodgeable bullets, a Crisis Dive, and Be Quick or Be Dead (DOWN), one last stand when a killing blow puts you on the floor: kill the monster marked TARGET to get up. Other mods slow the world through it. |
 | RSQ_Score.pk3 | Points for every kill and a bonus for how you made it, combos, a target per map, and extra lives you earn. Built on ijon's Dakka scoring. |
-| RSQ_Miniboss.pk3 | Fill the meter, then press Use at your watch or on the Start Fight card inside your off-hand wrist: a miniboss lands with three to five thralls, each a boosted legendary champion with a power of its own. Kill a thrall to open its shield for a few seconds. Built on Tartlman's Minibosses!. |
+| RSQ_Miniboss.pk3 | Fill the meter, then press Use at your watch or on the Start Fight card on your off-hand watch: a miniboss lands with three to five thralls, each a boosted legendary champion with a power of its own. Kill a thrall to open its shield for a few seconds. Built on Tartlman's Minibosses!. |
 | RSQ_VisualRewards.pk3 | Health bars over monsters, damage numbers that fly, kill bits that come to you, level-up banners, and the four arrival beams. |
 | RSQ_GunCards.pk3 | Ammo cards on your guns, a status card on your wrist when you check your watch, and a switch that takes health and armour off the HUD. |
 | RSQ_Wheel.pk3 | Every gun you carry on a ring of cards; point and let go to pick one. With RSQ Tactical Rig, it is where you choose which holster each gun lives in. |
@@ -212,7 +212,7 @@ Keys as they are in the code after the keys pass of 2026-11-10 (`design/KEYBINDS
 | Laser Sight | none | |
 | SlowMo | Slow motion on/off, Crisis Dive (Shootdodge renamed) | the wrist cross |
 | Score | none | |
-| Miniboss | none | the call-in is Use during a watch check, or Use on the Start Fight card inside the off-hand wrist |
+| Miniboss | none | the call-in is Use during a watch check, or Use on the Start Fight card on the off-hand watch |
 | VisualRewards | none | |
 | Gun Cards | none | |
 | Wheel | Open Wheel (hold, point, release; left thumbstick click by default) | |

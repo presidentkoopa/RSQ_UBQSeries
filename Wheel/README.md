@@ -71,8 +71,8 @@ been off the controls list since 11-09, while ModelSwapper support is parked.
 
 ## The ring
 
-**The card you are on is the big one.** It grows to 1.8 times its size, the card either side of it to 1.35 and the
-next one out to 1.12, so you can read what is next to your pick. No card leaves its place on the ring.
+**The card you are on is the big one.** It grows to 2.2 times its size, and the three cards either side of it step
+down, to 1.75, 1.45 and 1.2, before the ring is back to normal, so you can read what is next to your pick. No card leaves its place on the ring.
 
 **One card per gun, or one per slot.** With up to ten guns every gun has its own card and the ring grows to fit them.
 Past ten, each weapon slot gets one card, so slot 4 is always in the same direction; a card that hides others shows a
