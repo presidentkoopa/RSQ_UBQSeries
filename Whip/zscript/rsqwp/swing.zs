@@ -179,8 +179,8 @@ extend class RSQWP_Whip
 	//             held; another press moves it to the next. The crack flies to the mark (Mark, Crack, Reach).
 	//   ALT-FIRE  a press on a gold cursor locks that spot (the diamond stays there); the crack flies to it and snags
 	//             (SwingCast). A press again lets the spot go. One lock at a time: a mark lets the spot go, a spot the mark.
-	//   ON A ROPE alt-fire held reels, fire lets go (On a Rope, Fire Lets Go).
-	//   NO LOCK   a crack is a plain crack at what the tip meets.
+	//   ON A ROPE the trigger held reels, a fresh Jump lets go (On a Rope, Jump Lets Go, 11-13; off: On a Rope, Fire Lets Go).
+	//   NO LOCK   a crack while the ray is gold flies there and snags (Crack at Gold, 11-13; SwingCast); else a plain crack.
 	// The other hand is never read: it keeps its buttons, its weapon, the Wheel and the holsters. It is Whip and Gun's
 	// machinery (indy[], the cursor from the whip hand) with these buttons; off, the controls are as they were on 11-11.
 	static clearscope bool LockWhipOn() { return RSQWP_Util.Flag("rsqwp_lockwhip", true); }
@@ -450,7 +450,46 @@ extend class RSQWP_Whip
 	bool SwingCast(int i, PlayerPawn pmo, int hand, Vector3 at)
 	{
 		if (!byWeapon[i] || !RSQWP_Util.Flag("rsqwp_swing", true)) return false;
-		if (indy[i] && LockWhipOn() && !geoLock[i]) return false;     // the Lock-On Whip: no spot locked, an ordinary crack
+		// THE LOCK-ON WHIP, no spot locked. CRACK AT GOLD (owner 11-13 17:52, his pick "No button: crack at gold";
+		// rsqwp_lock_goldcrack, on): a crack while the whip hand's ray is gold flies there and becomes a rope, no alt-fire
+		// first (the cursor is held through the wind-up, AimTick). A marked monster still wins. Off: an ordinary crack
+		// unless alt-fire locked the spot.
+		if (indy[i] && LockWhipOn() && !geoLock[i])
+		{
+			if (!RSQWP_Util.Flag("rsqwp_lock_goldcrack", true)) return false;
+			if (markHeld[i] && (lockOn[i] || lockLine[i])) return false;
+			// ... and a crack whose peak comes a few tics after the swing lets go still takes the gold the cursor held through
+			// the gesture (rig 11-13, run wp13_inway: the crack 5 tics after RELEASE, the hold over and the cursor already on
+			// the floor -- an ordinary crack). The cursor's last INDY_BACK tics (AimKeep's ring) are looked at.
+			if (!aimOk[i])
+			{
+				for (int b = 1; b <= INDY_BACK; b++)
+				{
+					int kb = AimSlot(i, b);
+					if (kb < 0 || !rgOk[kb]) continue;
+					aimOk[i] = true; aimWhy[i] = rgWhy[kb]; aimEnd[i] = rgAt[kb]; aimM[i] = rgM[kb];
+					okAt[i] = rgAt[kb]; okHit[i] = rgHit[kb]; okN[i] = rgN[kb]; okSec[i] = rgSec[kb]; okPlane[i] = rgPlane[kb];
+					if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d CAST t%d the cursor was gold %d tic(s) ago (%s, %.1f m): that spot", i, level.maptime, b, aimWhy[i], aimM[i]);
+					break;
+				}
+			}
+			// ... and a living monster on the line from the hand to the gold spot is in the way: the crack is for it, not
+			// the wall behind it (the ray itself runs through actors)
+			Vector3 h1 = RSQWP_Util.HandPos(pmo, hand);
+			Vector3 to = okAt[i] - h1;
+			double dl = to.Length();
+			if (dl > 1 && aimOk[i])
+			{
+				Vector3 u = to / dl;
+				FLineTraceData t;
+				pmo.LineTrace(atan2(u.y, u.x), dl, -asin(clamp(u.z, -1.0, 1.0)), TRF_ABSPOSITION, h1.z, h1.x, h1.y, t);
+				if (t.HitType == TRACE_HitActor && t.HitActor && t.HitActor.bIsMonster && t.HitActor.health > 0)
+				{
+					if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d CAST t%d gold spot not taken: %s is in the way -- an ordinary crack", i, level.maptime, t.HitActor.GetClassName());
+					return false;
+				}
+			}
+		}
 		bool held = BeamHeld(i);
 		bool use = held ? aimOk[i] : BeamMemory(i);
 		if (!use)

@@ -1,0 +1,29 @@
+TEST ONLY (never ships). 2026-11-13: On a Rope, Jump Lets Go (rsqwp_rope_jump) and Crack at Gold (rsqwp_lock_goldcrack),
+Lock-On Controls on. Rig only, not headset-confirmed. QuestZDoom 17.3 Linux rig, doom2 + SWINGTST + RSQ_Whip + the whp
+probe (tools/rigtest/whp, scenario 11), unless said. Scripts: lock1113.py <scenario> (the console script), sw.sh (the
+launcher), full.sh (the owner's full order). Each wp13_<run>.txt: the whip's T_WPW log, then whp_S a tic (z, grounded,
+hook phase, rope length L, buttons) and whp_H (waiting / started).
+
+wp13_gold   ray gold on the pit's ceiling 9.3 m, no alt-fire: CAST -> ceiling anchor, SWING LATCH (waiting); Jump t80:
+            START by JUMP from the ground, no let-go; alt-fire held t120-t149: L stays 323.1; trigger held t165-t214:
+            L 323.1 -> 180.5; Jump t240: ROPE let go by jump. Frames: wp13_gold_sheet.jpg
+wp13_step   the same snag, stepped off the lip (stick t80-t95), no start: the first Jump in the air (t140) lets go
+            (ROPE let go by jump). Before the 11-13 fix the same run gave "START by JUMP in the air" and kept the rope;
+            only a second Jump let go
+wp13_old    +set rsqwp_rope_jump 0: Jump starts; Jump t120 in the air does nothing; alt-fire held t140-t169 reels
+            323.1 -> 240.6; trigger t190: ROPE let go by fire
+wp13_mark   an imp 150 ahead on the line to a gold wall, the trigger pressed: MARK -> DoomImp; crack: CRACK LOCKED -> DoomImp
+wp13_mark2  the imp marked, then hand and view turned 30 deg onto another gold wall (11.1 m) off the imp's line: the
+            crack still CRACK LOCKED -> DoomImp, no rope. Frames: wp13_mark2_sheet.jpg
+wp13_inway  the imp unmarked on the line to the gold wall: "CAST ... gold spot not taken: DoomImp is in the way -- an
+            ordinary crack"; 96 east, off its line, the same wall: CAST -> wall anchor, SWING LATCH. Frames:
+            wp13_inway_sheet.jpg (repeated 9 more times, same result but once: in rep4 the cursor held through the wind-up's
+            rise was the ceiling above the imp and that crack roped the ceiling)
+wp13_full2  the owner's full order, -skill 6, MAP01: the only script errors are BD_VoxelPack's voxeldef.txt; a crack at a
+            gold wall snagged it (SWING LATCH, waiting), Jump started the swing; the next tic the jump carried the player
+            onto a Pump-Action Shotgun pickup, the game switched to it and the whip was put away (that let the rope go)
+
+Seen once and not reproduced (an earlier wp13_inway, before the swing.zs look-back): the crack came 5 tics after RELEASE,
+the cursor hold was over and the cursor on the floor: "CAST t187 refused: Floor (3.1 m) -- an ordinary crack". The
+look-back (a crack takes the gold the cursor had up to 3 tics before) is code only: the late crack did not happen again
+in 18 runs, so it is not shown.

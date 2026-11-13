@@ -1,0 +1,42 @@
+# run wp13_full2: the owner's full order (full_monA.sh list, owner_base.ini, -skill 6, MAP01) with this worktree's RSQ pk3s and the whp probe. Script errors (all of them):
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+# T_WPW (no AIM lines)
+T_WPW 0 CURSOR t222 held (GOLD Wall, 14.8 m): the hand sweeps
+T_WPW 0 WIND-UP t223: the thong stiffens
+T_WPW 0 UNCOIL t223: paying out from 21.0 to 0
+T_WPW 0 SWING t239: hand 40.2
+T_WPW 0 RELEASE t240: hand 0.0 of peak 40.2
+T_WPW 0 CAST #1 t242 -> wall anchor (-89 1276 201), 14.5 m, flies 8 tics (beam held)
+T_WPW 0 SWING LATCH t250 wall at (-89 1260 201), rope 489, take-up to 0, hop 0, player (-96 784 56) vel (0.0 0.0 0.0) -- waiting for a start (grip / jump), its take-up 112
+T_WPW 0 CURSOR t256 held (RED Floor, 8.1 m): the hand sweeps
+T_WPW 0 CURSOR t275 held (RED out of reach, 20.0 m): the hand sweeps
+T_WPW START t307 by JUMP from the ground: rope 489, take-up to 112; vel (0.0 0.0 7.4) 7.4 flat 0.0 -> (0.0 8.0 10.0) 12.8 flat 8.0; push dir (-0.00 1.00 0.00); off hand rsq_hands
+T_WPW 0 BEAM t310 off: every target path as before
+# around the jump
+whp_WEAP t0 main RSQWP_WhipWeapon off rsq_hands
+You got the Pump-Action Shotgun! (slot 3)
+whp_TOKEN t120 GoSpecial 0 -> 1 (player state -149)
+whp_WEAP t120 main Shot_Gun off rsq_hands
+whp_TOKEN t123 GoSpecial 1 -> 0 (player state -469)
+S 112 z 56.0 gr 1 hook 1 L 489.0 btn 0
+S 113 z 56.0 gr 1 hook 1 L 489.0 btn 0
+S 114 z 56.0 gr 1 hook 1 L 489.0 btn 0
+S 115 z 56.0 gr 1 hook 1 L 489.0 btn 0
+S 116 z 56.0 gr 1 hook 1 L 489.0 btn 0
+S 117 z 56.0 gr 1 hook 1 L 489.0 btn 0
+S 118 z 56.0 gr 1 hook 1 L 489.0 btn 0
+S 119 z 56.0 gr 1 hook 1 L 488.0 btn 4
+S 120 z 64.0 gr 0 hook 4 L 488.0 btn 4
+S 121 z 71.1 gr 0 hook 4 L 488.0 btn 4
+S 122 z 77.1 gr 0 hook 4 L 488.0 btn 4
+S 123 z 82.2 gr 0 hook 4 L 488.0 btn 4
+S 124 z 86.2 gr 0 hook 4 L 488.0 btn 4
+S 125 z 89.3 gr 0 hook 4 L 488.0 btn 4
+S 126 z 91.3 gr 0 hook 4 L 488.0 btn 4
+S 127 z 92.3 gr 0 hook 4 L 488.0 btn 4
+S 128 z 92.4 gr 0 hook -1 L 0.0 btn 4
+S 129 z 91.4 gr 0 hook -1 L 0.0 btn 4
+S 130 z 89.5 gr 0 hook -1 L 0.0 btn 4

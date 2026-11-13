@@ -1,0 +1,168 @@
+# run wp13_mark2 (rig only, not headset-confirmed). T_WPW = the whip's debug log (t = level.maptime); whp_S columns: t(from whp_go) z grounded hook-phase(1 latched, 4 let go, -1 none) L(rope length) btn(1 fire, 4 jump, 0x20 alt-fire)
+whp_go t135 scen 11
+whp_tp t135 pos(200 400 96) ang 0
+whp_summon t139 DoomImp at (200 250 96) d 150
+T_WPW 0 LOCK t141 fire: mark the nearest along the hand
+T_WPW 0 MARK t141 -> DoomImp (1 of 1)
+T_WPW 0 CURSOR t148 held (GOLD Wall, 11.5 m): the hand sweeps
+T_WPW 0 MARK t148 kept on DoomImp (locked: the hand points away, 0 other candidate(s) there)
+T_WPW 0 CURSOR t177 held (GOLD Wall, 11.1 m): the hand sweeps
+T_WPW 0 WIND-UP t185: the thong stiffens
+T_WPW 0 UNCOIL t185: paying out from 21.0 to 0
+T_WPW 0 SWING t197: hand 9.9
+T_WPW 0 RELEASE t201: hand 0.1 of peak 9.9
+T_WPW 0 CRACK #1 t202 LOCKED -> DoomImp at 138 units
+whp_CRACK t67 hand 0 tip speed 44.9
+T_WPW 0 CRACK hit DoomImp at speed 44.9 (k 1.00): dmg 12, hp 60 -> 48, pain 1, hit-stop 0
+T_WPW 0 MARK t208 kept on DoomImp (locked: the hand points away, 0 other candidate(s) there)
+T_WPW 0 REEL t260: quiet 30 tics, back into the coil
+# whp_S (compact) and whp_H (the rope waiting / started)
+S 0 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 1 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 2 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 3 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 4 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 5 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 6 z 96.0 gr 1 hook -1 L 0.0 btn 1
+S 7 z 96.0 gr 1 hook -1 L 0.0 btn 1
+S 8 z 96.0 gr 1 hook -1 L 0.0 btn 1
+S 9 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 10 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 11 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 12 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 13 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 14 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 15 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 16 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 17 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 18 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 19 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 20 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 21 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 22 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 23 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 24 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 25 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 26 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 27 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 28 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 29 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 30 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 31 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 32 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 33 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 34 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 35 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 36 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 37 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 38 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 39 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 40 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 41 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 42 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 43 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 44 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 45 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 46 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 47 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 48 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 49 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 50 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 51 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 52 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 53 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 54 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 55 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 56 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 57 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 58 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 59 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 60 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 61 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 62 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 63 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 64 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 65 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 66 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 67 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 68 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 69 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 70 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 71 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 72 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 73 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 74 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 75 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 76 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 77 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 78 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 79 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 80 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 81 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 82 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 83 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 84 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 85 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 86 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 87 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 88 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 89 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 90 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 91 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 92 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 93 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 94 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 95 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 96 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 97 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 98 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 99 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 100 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 101 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 102 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 103 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 104 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 105 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 106 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 107 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 108 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 109 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 110 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 111 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 112 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 113 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 114 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 115 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 116 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 117 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 118 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 119 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 120 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 121 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 122 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 123 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 124 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 125 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 126 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 127 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 128 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 129 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 130 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 131 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 132 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 133 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 134 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 135 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 136 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 137 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 138 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 139 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 140 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 141 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 142 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 143 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 144 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 145 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 146 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 147 z 96.0 gr 1 hook -1 L 0.0 btn 0
+S 148 z 96.0 gr 1 hook -1 L 0.0 btn 0

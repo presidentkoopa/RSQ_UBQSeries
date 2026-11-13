@@ -74,8 +74,12 @@ OptionMenu "RSQWP_Options"
 	StaticText "Swinging", "Gold"
 	RSQWPGbOption "Catch Edges", "rsqwp_whip_snag", "OnOff", "RSQWP_Service", "Snag"
 	Option "Aimed Swing", "rsqwp_swing", "OnOff"
-	// On a rope: the whip hand's fire lets go and its alt-fire reels. Off: trigger reels, alt-fire lets go.
+	// On a rope: trigger held reels, Jump lets go (owner 11-13). Off: the row below decides.
+	Option "On a Rope, Jump Lets Go", "rsqwp_rope_jump", "OnOff"
+	// (Jump Lets Go off) on a rope: the whip hand's fire lets go and its alt-fire reels. Off: trigger reels, alt-fire lets go.
 	Option "On a Rope, Fire Lets Go", "rsqwp_rope_fire", "OnOff"
+	// Lock-On Controls: crack while the ray is gold and the whip snags there; no alt-fire lock needed (owner 11-13).
+	Option "Crack at Gold", "rsqwp_lock_goldcrack", "OnOff"
 	Option "Aim With Off Hand", "rsqwp_swing_ohfire", "OnOff"
 	Option "Beam Beats Lock-On", "rsqwp_swing_beamwins", "OnOff"
 	Option "Off Hand Stays Free", "rsqwp_swing_offfree", "OnOff"

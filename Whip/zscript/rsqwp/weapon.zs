@@ -14,7 +14,7 @@
 //   * THE LASSO: close the off hand on the whip -- its grip with the controller at the handle or the thong (any
 //     headset, the Quest's too), or the engine's two-hand grip (SteamVR) -- and the off hand holds the thong; it
 //     whirls as fast as the off hand drives it (the same simulated whip, nothing canned). Let go of the grip and it flies out the way it was going, and ropes the monster nearest that way.
-//   * On a rope (the whip caught an edge): trigger held = reel in, alt-fire = let go.
+//   * On a rope (the whip caught an edge): trigger held = reel in, Jump = let go (owner 11-13; Tend has the switches).
 // Either hand, ONE whip: Whip In (rsqwp_whip_hand) picks the hand (whip.zs WhipIn); in the off hand it reads the off-hand
 // trigger and alt-fire (BT_OFFHANDATTACK / BT_OFFHANDALTATTACK).
 //
@@ -30,6 +30,8 @@ class RSQWP_WhipWeapon : Weapon
 	Actor latchOn;      // the monster the latched mark is on (put back after a crack spends the mark)
 	bool hadHook;
 	bool reelArmed;
+	bool jumpWas;       // On a Rope, Jump Lets Go: the jump button last tic (its fresh press lets go)
+	int  waitSeen;      // ... the last tic this rope was still waiting for its start (that jump starts it, never lets go)
 
 	Default
 	{
@@ -130,13 +132,28 @@ class RSQWP_WhipWeapon : Weapon
 			// FIRE LETS GO (owner 11-11 23:56: "using mainhand alt fire to dismount is strange, can we change it to primary
 			// fire dismounts (when snagged)?"; rsqwp_rope_fire, on): on a rope the whip hand's trigger, in a fresh press,
 			// lets go, and its alt-fire held reels. Off: as before, the trigger reels and alt-fire lets go.
-			bool fireDrops = RSQWP_Util.Flag("rsqwp_rope_fire", true);
+			// JUMP LETS GO (owner 11-13 17:52: "the controls are fucked up and super uncomfortable. fire is trigger and alt fire
+			// is grip+trigger": alt-fire to reel needs the grip down first, and a trigger landing a hair early was a fire
+			// press that let go; his pick: "Trigger reels, Jump lets go"; rsqwp_rope_jump, on): on a rope the whip hand's
+			// trigger held reels (a fresh press, as ever), a fresh Jump lets go, alt-fire does nothing. The jump that starts
+			// a rope waiting on the ground is that rope's start, never its let-go. Off: On a Rope, Fire Lets Go decides.
+			bool jumpDrops = RSQWP_Util.Flag("rsqwp_rope_jump", true);
+			bool fireDrops = !jumpDrops && RSQWP_Util.Flag("rsqwp_rope_fire", true);
+			bool jmp = (pmo.player.cmd.buttons & BT_JUMP) != 0;
+			bool jumpPress = jmp && !jumpWas;
+			jumpWas = jmp;
+			// (only ON THE GROUND, and only while Jump Starts Swing is on: rig 11-13, run wp13_step -- a rope stepped off a lip
+			// with no start is still "waiting" in the air, and its first Jump was a start in the air, not the let-go; and with
+			// Jump Starts Swing off a jump never starts it, so it lets go)
+			bool grounded = pmo.pos.z <= pmo.floorz + 0.5 || pmo.bOnMobj;
+			if (h.waiting && grounded && RSQWP_Util.Flag("rsqwp_swing_jump", true)) waitSeen = level.maptime;
+			bool drop = jumpDrops ? (jumpPress && level.maptime - waitSeen > 1) : (fireDrops ? (trig && reelArmed) : altPress);
 			core.held[i] = fireDrops ? alt : (trig && reelArmed);
 			core.pressFired[i] = true;
-			if (fireDrops ? (trig && reelArmed) : altPress)
+			if (drop)
 			{
 				core.held[i] = false; core.LetGo(h, true);
-				if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d ROPE let go t%d by %s", i, level.maptime, fireDrops ? "fire" : "alt-fire");
+				if (RSQWP_Util.Flag("rsqwp_debug", false)) Console.Printf("T_WPW %d ROPE let go t%d by %s", i, level.maptime, jumpDrops ? "jump" : (fireDrops ? "fire" : "alt-fire"));
 			}
 			w.markHeld[i] = false;
 			w.lassoOn[i] = false;
@@ -144,6 +161,7 @@ class RSQWP_WhipWeapon : Weapon
 			return;
 		}
 		if (hadHook) { hadHook = false; core.held[i] = false; core.pressFired[i] = false; }
+		jumpWas = (pmo.player.cmd.buttons & BT_JUMP) != 0;
 		// the whip is this weapon's BEFORE it starts, so Start lays the thong out from the DRAWN handle's tip (Hand on the
 		// Handle, whip.zs Handle) and not from the controller's aim line, as it did until 11-05; and a whip still out when the
 		// weapon comes (back) into the hand is seated on that hand's handle at once, every link snapped there (whip.zs Seat)
