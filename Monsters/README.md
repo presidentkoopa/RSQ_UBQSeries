@@ -268,6 +268,11 @@ Defaults are in bold.
 
 ## Status
 
+> **Owner to check (noted 2026-11-14 03:26): the BD22 fire bug.** On the rig, a Brutal Doom scientist (`Labguy`)
+> killed by fire turns into BD22's own `BurningZombie`, whose spawn state is a 0-tic loop
+> (`Spawn: BDT1 B 0 ... Loop`): the engine logs "Infinite state loop" and the game stalls. It is Brutal Doom 22's
+> code, not RSQ's, and it may hit a real game on his order. Seen on the rig only.
+
 | | |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-13, runs `monA_m01_w*`, `monA_m10_w*`, `monA_final`, `monA_lob2`; the owner's full order with his saved settings, Monster Set BD22, Black Metal) | **Brutal Doom's and XMVE's monsters on the ladder, every one entering at Common.** No script error from our packs. At world tiers 1, 2, 5, 9, 12 and 13 on MAP01 (27 map monsters, 33 with the test row) and MAP10 (279): every kit monster's entry 1 and its colour the world tier; health, damage, speed and pain chance as the tables say for all of them (a few speeds differ where a monster spawned with its own speed). 0 living monsters left without a kit. Frames: the picture above. A world tier raised mid-map (1 to 4) moved all 27 MAP01 monsters. Legion of Bones' monsters, spawned by hand, take the tint and the kit |
