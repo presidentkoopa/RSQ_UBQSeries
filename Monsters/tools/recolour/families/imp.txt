@@ -1,0 +1,40 @@
+# The Imp family (BD22's Imp, its deaths, crawlers, gibs, fatality and frozen death), for bake.py.
+# sprites: every sprite name whose lumps are the Imp's own art (BD22 sprites/Monsters/Imp, Imp/GIBS,
+# MonsterFatality/Imp_Fatality, FreezeDeaths/FrozenImp; XMVE's copies of the same names). Every lump of these names
+# in the load order is baked (the rig's engine listing, RCL lines, is a subset of it).
+sprites 2136 2M40 BOSB BR94 FZD4 HND4 IFZD IHED IMPC IPFP IUSA IZD1 IZD2 IZD3 IZD4 LEG4 T6SW TR06 TR08 TR09 TR97 TRO1
+sprites TRO2 TRO3 TRO4 TROA TROD TROG TROH TROO TROS TROT TROZ XHE4 ZL3E
+
+# ---- parts, by the pixel's nearest Doom palette index (paint.py). Anything not listed keeps its own pixels. ----
+# skin: the Imp's hide is the brown ramp 64-79 (70% of its pixels), with its darkest browns 1-2, 13-15, 151, 236-239
+# and its few light tans 48-63 and 128-159 (face and highlights).
+part skin 1:2 13:15 48:79 128:159 236:239
+# horn: spikes, claws and teeth are the gray ramp 80-111 with its gray 3 and white 4 tips.
+part horn 3:4 80:111
+# kept, by not being listed (the owner's rule 11-13 09:49: guns, metal, eyes, blood and fire keep their own):
+#   0, 5-8 the near-black outlines; 9-12, 112-127 greens (a marine); 16-47, 168-191 reds and pinks: eyes, mouth,
+#   blood and guts (the Imp's blood keeps its red); 160-167, 208-235 yellows and oranges: fire (TRO1 holds a fireball,
+#   and the hand beside it is lit orange: that light is the fire's); 192-207, 240-255 blues and the rest (ice).
+
+# ---- group rules: where the palette ranges overlap (applied in this order) ----
+# (* = every lump) The source's near-black pixels inside the body are its deepest skin shadows, not outlines: on a
+# White or Gray imp they would show as dirt. A near-black pixel with 5 or more skin neighbours is skin.
+group * absorb 0:0,5:8 skin 5
+# Grays touching red are teeth in a mouth, or bone in a wound: they keep their own white (a Yellow imp's red spikes
+# must not give it red teeth or red bones).
+group * keepnear 16:47,168:191 1 horn
+# The fatality (IPFP) has a marine in it: his helmet and boots are the tans 128-159, his armour the greens; his
+# gun and belt are grays touching him.
+group IPFP keep 128:159
+group IPFP keepnear 112:159 2 horn
+# The frozen imp is under ice: the grays are the ice's highlights, not spikes.
+group IFZD,FZD4 keep 80:111 3:4
+
+# ---- lumps that keep the old flat tint (paint.py does not know their parts) ----
+# (X728, XMVE's Dark Imp art, moved to families/imp_xmve.txt 2026-11-13: painted there with the Dark Imps.)
+# BOSBA0-E0 are BD22's Hell Knight art (sprites/Monsters/BruiserBrothers/HellKnight, the Knight burnt): the Hell Knight
+# family's (hellknight.txt) since 11-13; only BOSBF0 is an imp gib. Not baked here, so this bake never overwrites them.
+skip BOSBA,BOSBB,BOSBC,BOSBD,BOSBE
+
+# ---- hand-written masks (rectangles in the lump's pixels) ----
+masks imp_masks.txt

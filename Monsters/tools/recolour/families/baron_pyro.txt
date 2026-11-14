@@ -1,0 +1,9 @@
+# The Baron family's XMVE PyroDemon (Sprites/Monsters/PyroDemon): body, attacks, death (PYRO), for bake.py. Its fire
+# and projectiles (FRME, NKXP, SBLL, FSHT, DECL, RBAL, TSM1-4, ZAP5, COMT, FRTB, FRTF) are fire, not baked.
+sprites PYRO FBPY
+# skin: the PyroDemon's hide is black: the near-blacks 5-8 and the grays 96-111 are its body (no metal on it). Painted
+# as skin, so its colour shows through its own black shading. The glowing cracks (oranges 208-235, yellows 160-167)
+# are its fire: kept.
+part skin 1:2 5:8 13:15 80:111 236:239
+part horn 3:4
+group FBPY keep 80:111 3:4 5:8

@@ -1,0 +1,63 @@
+# The Zombieman family (tier family "Zombieman": BD22 RifleZombie, PistolZombie, HeadlessZombie, Labguy, Nazi,
+# ZioBrutalWolfensteinSS, Experiment, BDMummy; XMVE PistolZombiePatch, ChainsawLabguy, ChainsawZombie, Labgal, LabguyB,
+# LabguyP, HelmetRifleZombie, SniperZombie, MinigunGuy, PlasmaZombie, ZombieRailgunner*, SpreadFireZombie and their
+# stealth versions), for bake.py. Their bodies, last stands, crawlers, rolls, deaths, gibs, fatalities, frozen and
+# burnt deaths.
+# sprites: every sprite name whose lumps live in these monsters' own art folders (BD22 sprites/Monsters/Zombieman/*,
+# ZombieScientist, Nazis, Mummy, WCS/BrutalWolfensteinSS, Fatality/Fatality_Zombieman, _Nazi, _Scientist,
+# FreezeDeaths/FrozenLabGuy, FrozenPistolZombie, FrozenRifleZombie; XMVE Sprites/Monsters/Zombie Men/*, PistolZombie,
+# PlasmaZombie, MinigunGuy, SniperRifleGuy, Chainsaw Zombie, Labgal, LabguyP, Zombie Scientist Black, NAZIS/*, their
+# Fatality and StealthKills folders), plus the pieces in shared folders that only this family's monsters reach
+# (out/frame_measure_2026-11-13.json: ExtraSprites ID12 ID13 ID15 ID31, ThrownMonsters X721 X727, frozen F6D6 F8C8
+# FSSK FZM3, Incinerate Z8RN, XMVE GORE POSC: a zombie's head). Left out: the Labgal's Grabthings (GRZ9 GRZZ WSHF WSHG
+# YSHF YSHG: the player's first-person hostage view, never on a monster), the axe (AXE, AXE1: a weapon), FZM1 FZM2
+# (BD22 files them under FrozenPinky). Brutal Doom's generic gore, blood, burnt bodies (BDT*, CARB, PBR1, XBRN, ...)
+# are shared by every family and keep the live tint.
+sprites 01CB 12DG 1D31 2D11 4OSX 4P2X 4S11 4SAD 5BLS 5CZA 5L1E 5MAM 5RO2 5X52 5ZD5 9OS2 9OT2 9OTL BFZL BK11 BK14 BK16 BKAD BKD1
+sprites BKD2 BKD3 BKD4 BKD5 BKF3 BKHD BKMS BKMX BKS3 BKS7 BKSH BR88 BR8B BR92 BR99 BRZ1 BRZ2 BWG3 BWHD BWSS F1CR F6D6 F8C8 FF14
+sprites FFD1 FFD2 FFD3 FFHD FFZL FNZB FPMA FPPP FPZ2 FPZ3 FPZ4 FQQQ FRAA FRRR FS11 FS14 FS16 FSAD FSD1 FSD2 FSD3 FSD4 FSD5 FSF1
+sprites FSF2 FSF3 FSHD FSMS FSMX FSP7 FSS3 FSS7 FSSH FSSK FSSS FST1 FSZK FTTT FTYZ FUUU FVVV FWWW FXXA FYYY FZD1 FZFZ FZM3 FZZK
+sprites FZZZ GERH HED1 HEI1 HEIL HFZD HZD1 ID12 ID13 ID15 ID19 ID31 ID94 IDP2 IDP3 KNSS LEG1 LFZD LGFZ MAYH MGZM MHEA MUMA NAKC
+sprites NAZ1 NAZ2 NAZ4 NAZ5 NAZ9 NAZH NAZI NAZW NPB2 NPBK P056 P05G P05K P05R PMAH POEX POS3 POS4 POS7 POS8 POSC POSG POSH POSL
+sprites POSR POSX PP2X PSPO PSPR PSSS PXS2 PXSX SAZI SCZ4 SCZ5 SCZA SCZB SCZP SFNZ SFRH SFRP SFZL SFZM SS2X SSAL SSAS SSBR SSD2
+sprites SSD3 SSDT SSFA SSHD SSIM SSRL U4M5 U4M6 U4M7 U4M8 U4M9 U5M5 U5M6 U6M6 UZD1 X721 X727 XHE2 YRO1 YRO2 Z3Z7 Z3Z8 Z4Z7 Z6Z7
+sprites Z6Z8 Z8RN ZBLD ZBLS ZFZD ZIV1 ZKEL ZL1E ZM4Y ZM5Y ZMAB ZMAC ZMAD ZMAK ZMAM ZMAY ZMS1 ZMS2 ZMS3 ZMS4 ZMS5 ZMS6 ZMS7 ZMS8
+sprites ZMS9 ZMV1 ZPV1 ZRO1 ZRO2 ZSLD ZSNP ZSP1 ZSV1 ZXZ1 ZXZ2 ZZD1 ZZD2 ZZD3 ZZD4 ZZD5 ZZD6
+
+# ---- what is the body (the owner's rule 11-13 09:49: the BODY is recoloured; guns, metal, eyes, blood and fire keep
+# their own). These are humans: the body is their uniform and their skin (the plainest reading). ----
+# skin: the uniform's khaki, olive and gold (128-159) and the skin's tans and browns (48-79), with the darkest browns
+# 1-2, 13-15, 236-239. One part: there are no spikes or claws on a man (the horn part is not used by this family).
+part skin 1:2 13:15 48:79 128:159 236:239
+# kept, by not being listed: 0, 5-8 outlines; the grays 80-111 and 3-4 (guns, helmets' metal, teeth); 9-12, 112-127
+# greens (hair, the marine in the fatalities); 16-47 and 168-191 reds and pinks: Brutal Doom paints the zombies'
+# wounds and blood into their bodies with these; 160-167, 208-235 yellows and oranges (muzzle flashes, fire);
+# 192-207, 240-255 blues (eyes, the frozen deaths' ice).
+
+# ---- looks: each keeps its own shading statistics (a blue SS uniform and a white lab coat are not a khaki one) ----
+statgroup ss BWG3,BWHD,BWSS,BR8B,FNZB,GERH,HEI1,HEIL,KNSS,NAKC,NAZ1,NAZ2,NAZ4,NAZ5,NAZ9,NAZH,NAZI,NAZW,NPB2,NPBK,SAZI,SS2X,SSAL,SSAS,SSBR,SSD2,SSD3,SSDT,SSFA,SSHD,SSIM,SSRL,SFNZ
+statgroup lab FS11,FS14,FS16,FSAD,FSD1,FSD2,FSD3,FSD4,FSD5,FSHD,FSMS,FSMX,FSS3,FSS7,FSSH,LGFZ,SCZ4,SCZA,SCZ5,SCZB,SCZP,BK,BFZL,FF14,FFD1,FFD2,FFD3,FFHD,FPPP,FQQQ,FRRR,FSSS,FSZK,FTTT,FUUU,FVVV,FWWW,FXXA,FYYY,FZFZ,FZZK,FZZZ,F1CR,FSF1,FSF2,FSF3,SFZL,FFZL
+statgroup mummy MUMA,ZKEL
+
+# ---- group rules (applied in this order) ----
+# The SS (BD22 ZioBrutalWolfensteinSS, Nazi; XMVE NAZIS): their uniform is blue (192-207 and the dark blues 240-247).
+group BWG3,BWHD,BWSS,BR8B,FNZB,GERH,HEI1,HEIL,KNSS,NAKC,NAZ1,NAZ2,NAZ4,NAZ5,NAZ9,NAZH,NAZI,NAZW,NPB2,NPBK,SAZI,SS2X,SSAL,SSAS,SSBR,SSD2,SSD3,SSDT,SSFA,SSHD,SSIM,SSRL,SFNZ set skin 192:207 240:247
+# The scientists (BD22 Labguy, XMVE Labgal, LabguyB, LabguyP, ChainsawLabguy): the lab coat is white and gray
+# (80-111, 3-4). It is the body. LabguyP's pistol is drawn in the same grays and takes the colour with the coat.
+group FS11,FS14,FS16,FSAD,FSD1,FSD2,FSD3,FSD4,FSD5,FSHD,FSMS,FSMX,FSS3,FSS7,FSSH,LGFZ,SCZ4,SCZA,SCZ5,SCZB,SCZP,BK,BFZL,FF14,FFD1,FFD2,FFD3,FFHD,FPPP,FQQQ,FRRR,FSSS,FSZK,FTTT,FUUU,FVVV,FWWW,FXXA,FYYY,FZFZ,FZZK,FZZZ,F1CR set skin 80:111 3:4
+# The mummy and the Experiment's flayed body (MUMA, ZKEL): their dried flesh is the reds 16-47; their blood the
+# bright reds 168-191 keeps.
+group MUMA,ZKEL set skin 16:47
+# Near-black pixels inside the body are its deepest shadows, not outlines (as the Imp).
+group * absorb 0:0,5:8 skin 5
+# The skin's lightest pinks (16-23) inside the face and arms are highlights, not wounds: a pink pixel with 5 or more
+# skin neighbours is skin (a wound is a cluster of reds and keeps its own).
+group * absorb 16:23 skin 5
+# The fatalities and stealth kills have the player's marine in them: his armour is green (kept), his helmet, boots and
+# belt the tans 128-159. Those stay his; so in these frames only the zombie's skin (and an SS's blue, a scientist's
+# coat) takes the colour, his khaki uniform stays as shipped.
+group 01CB,FPZ2,FPZ3,FPZ4,FRAA,FST1,FTYZ,SFZM,SFNZ,FSF1,FSF2,FSF3,SFZL,FSP7,FPMA,SFRH,SFRP,FFZL,BFZL,BKF3,SSFA keep 128:159
+# The frozen deaths are under ice: the grays and whites are the ice's highlights (as the Imp's).
+group FZD1,ZFZD,HFZD,LFZD,F6D6,F8C8,FSSK,FZM3 keep 80:111 3:4
+
+# ---- lumps that keep the old flat tint: none ----

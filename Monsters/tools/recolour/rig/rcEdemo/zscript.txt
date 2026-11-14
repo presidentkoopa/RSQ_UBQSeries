@@ -1,0 +1,172 @@
+version "4.14"
+// TEST ONLY (rig): the recolour integration's proofs. Rows and pairs of BD22 imps given colours through RSQ Monsters' own
+// tier change, posed, killed in Brutal Doom's ways, and counted: which pieces hold which colour, which blood wears a
+// tier tint, what the art driver draws. Nothing here ships.
+class RCE_Demo : EventHandler
+{
+	Array<Actor> row;
+	Array<double> rowX, rowY;
+	Array<int> rowCol;      // each imp's colour when it was last given one (rce_tier)
+	int freezeAt;
+	bool clean;
+	override void WorldTick()
+	{
+		// test only: Legion of Bones' skeletons (raised out of the corpses) taken away, so the row stays alone in view
+		if (clean)
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+			{
+				String cn = a.GetClassName(); cn = cn.MakeLower();
+				if (cn.IndexOf("skel") >= 0 || cn.IndexOf("undead") >= 0 || cn.IndexOf("skullzombie") >= 0) a.Destroy();
+			}
+		}
+		if (freezeAt > 0 && level.maptime >= freezeAt)
+		{
+			freezeAt = 0;
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (!a.player && !(a is "Inventory") && abs(a.pos.x - (-140)) < 260 && abs(a.pos.y) < 520) a.tics = -1;
+			Console.Printf("RCE froze t%d", level.maptime);
+		}
+	}
+
+	static const String CN[] = { "", "shipped", "green", "blue", "purple", "cyan", "brown", "yellow", "fireblu", "gray", "red", "abyss", "black", "white" };
+
+	int ColOf(Actor a)
+	{
+		for (let i = a.Inv; i; i = i.Inv)
+		{
+			let k = RS_BDKit(i); if (k) return k.rung > k.entry ? k.Tier() : 1;
+			let h = RS_BDHue(i); if (h) return h.col;
+		}
+		return 0;
+	}
+
+	void Wipe(Actor p)
+	{
+		for (int i = 0; i < row.Size(); i++) if (row[i]) row[i].Destroy();
+		row.Clear(); rowX.Clear(); rowY.Clear(); rowCol.Clear();
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+			if (a != p && !a.player && a.pos.x > -250 && abs(a.pos.x - (-140)) < 260 && abs(a.pos.y) < 520 && !(a is "Inventory" && Inventory(a).owner)) a.Destroy();
+	}
+
+	Actor Imp(double x, double y, Actor p)
+	{
+		let a = Actor.Spawn("Imp", (x, y, 0));
+		if (!a) return null;
+		a.angle = a.AngleTo(p);
+		a.bDORMANT = true;
+		a.SetState(a.SpawnState); a.tics = -1;
+		row.Push(a); rowX.Push(x); rowY.Push(y); rowCol.Push(1);
+		return a;
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		if (e.Name ~== "rce_row")       // Args: x, spacing, first rung + 100 * how many (0 = to White)
+		{
+			Wipe(p);
+			double x = e.Args[0], sp = e.Args[1];
+			int first = e.Args[2] % 100, n = e.Args[2] / 100;
+			if (n <= 0) n = 13 - (first - 1);
+			for (int i = 0; i < n; i++) Imp(x, -(n - 1) * sp / 2. + sp * i, p);
+			Console.Printf("RCE row %d at t%d", row.Size(), level.maptime);
+		}
+		if (e.Name ~== "rce_pairs")     // Args: x, spacing between pairs, gap inside a pair. Pairs: Green|Red, shipped|Red, FireBlu|Gray, Red|shipped
+		{
+			Wipe(p);
+			double x = e.Args[0], sp = e.Args[1], gap = e.Args[2];
+			for (int i = 0; i < 4; i++)
+			{
+				double yc = -1.5 * sp + sp * i;
+				Imp(x, yc - gap / 2, p); Imp(x, yc + gap / 2, p);
+			}
+			Console.Printf("RCE pairs %d at t%d", row.Size(), level.maptime);
+		}
+		if (e.Name ~== "rce_tier")      // Args: first rung (imp i -> first + i); 0 = the pairs' colours
+		{
+			static const int PAIRS[] = { 2, 10, 1, 10, 8, 9, 10, 1 };
+			for (int i = 0; i < row.Size(); i++)
+			{
+				int r = e.Args[0] ? e.Args[0] + i : (i < 8 ? PAIRS[i] : 1);
+				if (r > 1 && row[i]) RS_Retier.RequestKit(row[i], r, true);
+			}
+			for (int i = 0; i < row.Size(); i++) rowCol[i] = row[i] ? ColOf(row[i]) : 1;
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; Console.Printf("RCE t%d imp %d %s at %d,%d rung %d trans %d", level.maptime, i, row[i] ? row[i].GetClassName() : 'none', row[i] ? int(row[i].pos.x) : 0, row[i] ? int(row[i].pos.y) : 0, k ? k.rung : -1, row[i] ? int(row[i].Translation) : -1); }
+		}
+		if (e.Name ~== "rce_calm") { for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k) k.hpOnly = true; } }
+		if (e.Name ~== "rce_face")      // Args: degrees added to facing the player; frame letter (0 = A)
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].angle = row[i].AngleTo(p) + e.Args[0]; row[i].frame = e.Args[1]; row[i].tics = -1; }
+			Console.Printf("RCE face %d at t%d", e.Args[0], level.maptime);
+		}
+		if (e.Name ~== "rce_kill")      // Args: 0 plain, 1 gibbed, 2 legs shot off, 3 explosive; freeze after Args[1] tics (0 = never)
+		{
+			static const Name DT[] = { 'None', 'None', 'Leg', 'Explosive' };
+			for (int i = 0; i < row.Size(); i++)
+				if (row[i] && row[i].health > 0)
+				{
+					row[i].bDORMANT = false; row[i].angle = row[i].AngleTo(p);
+					if (row[i].tics < 0) row[i].tics = 1;
+					row[i].DamageMobj(p, p, (e.Args[0] == 1 || e.Args[0] == 3) ? 2000 : row[i].health + 1, DT[e.Args[0]], DMG_FORCED | DMG_NO_ARMOR);
+				}
+			freezeAt = e.Args[1] ? level.maptime + e.Args[1] : 0;
+			Console.Printf("RCE kill %d at t%d", e.Args[0], level.maptime);
+		}
+		if (e.Name ~== "rce_clean") clean = e.Args[0];
+		if (e.Name ~== "rce_go") { let it = ThinkerIterator.Create("Actor"); Actor a; while (a = Actor(it.Next())) if (!a.player && !(a is "Inventory") && a.tics < 0 && abs(a.pos.x - (-140)) < 260) a.tics = 1; Console.Printf("RCE go t%d", level.maptime); }
+		if (e.Name ~== "rce_light") { p.CurSector.SetLightLevel(e.Args[0]); if (row.Size() && row[0]) row[0].CurSector.SetLightLevel(e.Args[0]); }
+		if (e.Name ~== "rce_look") { p.angle = e.Args[0]; p.pitch = e.Args[1]; }
+		if (e.Name ~== "rce_at") { p.SetOrigin((e.Args[0], e.Args[1], p.floorz), false); p.angle = 0; }   // the viewer's place (x, y)
+		if (e.Name ~== "rce_mark") Console.Printf("RCE mark %d at t%d", e.Args[0], level.maptime);
+		if (e.Name ~== "rce_census") Census(p);
+	}
+
+	// every actor near the test area: what colour it holds, what it wears, whether the art draws it; per class
+	void Census(Actor p)
+	{
+		Array<Name> cls; Array<String> what; Array<int> cnt;
+		int tintedBlood = 0, wrong = 0, pieces = 0, art = 0;
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (a.player || (a is "Inventory" && Inventory(a).owner) || abs(a.pos.x - (-140)) > 400 || abs(a.pos.y) > 600) continue;
+			int col = ColOf(a);
+			int tr = int(a.Translation);
+			int worn = 0;
+			for (int c = 2; c <= 13; c++) if (tr != 0 && tr == int(Translation.GetID(RS_BDKit.TintName(c)))) worn = c;
+			bool drawn = a.picnum.IsValid();
+			String low = a.GetClassName(); low = low.MakeLower();
+			bool blood = low.IndexOf("blood") >= 0 || low.IndexOf("gore") >= 0 || low.IndexOf("mist") >= 0;
+			if (blood && worn) tintedBlood++;
+			if (col >= 2) pieces++;
+			if (drawn) art++;
+			// a body or a piece lying within 12 units (across the floor) of where one imp of the row stood, and nearer to it
+			// than to any other: does it hold THAT imp's colour (none for an imp as shipped)?
+			String near = "";
+			if (!a.bMISSILE && (!a.bISMONSTER || a.health <= 0) && (col >= 2 || a.bCORPSE || !(a is "Inventory")))
+			{
+				double bd = 1e9; int bi = -1;
+				for (int i = 0; i < rowX.Size(); i++) { double d = (a.pos.xy - (rowX[i], rowY[i])).Length(); if (d < bd) { bd = d; bi = i; } }
+				if (bi >= 0 && bd < 12)
+				{
+					int want = rowCol[bi] >= 2 ? rowCol[bi] : 0;
+					int have = col >= 2 ? col : 0;
+					bool bodyLike = have || a.bCORPSE || a.bISMONSTER || low.IndexOf("dead") >= 0 || low.IndexOf("dying") >= 0;
+					if (bodyLike && !blood && want != have) { wrong++; near = String.Format(" STANDS-ON %s (imp %d, %d units)", want ? CN[want] : "shipped", bi, int(bd)); }
+				}
+			}
+			String w = String.Format("hue %s wears %s%s%s", col ? CN[col] : "none", worn ? CN[worn] : (tr ? "other" : "none"), drawn ? " ART" : "", near);
+			Name n = a.GetClassName();
+			int j;
+			for (j = 0; j < cls.Size(); j++) if (cls[j] == n && what[j] == w) break;
+			if (j == cls.Size()) { cls.Push(n); what.Push(w); cnt.Push(0); }
+			cnt[j]++;
+		}
+		for (int j = 0; j < cls.Size(); j++) Console.Printf("RCECENSUS %s x%d: %s", cls[j], cnt[j], what[j]);
+		Console.Printf("RCECENSUS t%d: %d coloured things, %d drawn from art, %d blood/mist wearing a tier tint, %d pieces held a colour other than the imp they lie on", level.maptime, pieces, art, tintedBlood, wrong);
+	}
+}

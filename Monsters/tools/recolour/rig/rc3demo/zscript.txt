@@ -1,0 +1,102 @@
+version "4.14"
+// TEST ONLY (rig): the recolour art sheets (rc2demo with the class to spawn named: netevent rc3_cls_<Class>, and a
+// pose in the attack: rc3_attack). A row of monsters, the first as shipped, then Green .. White through
+// RSQ Monsters' own tier change; posed (front, side), killed and frozen mid-death, so two runs (old art, new art) can be
+// cut into side-by-side sheets.
+class RC3_Demo : EventHandler
+{
+	Array<Actor> row;
+	String cls;
+	int attackFreeze;
+	int freezeAt, rowFirst;
+	bool clean;
+	override void WorldTick()
+	{
+		// test only: Legion of Bones' skeletons (it raises them out of the corpses) are taken away, so the
+		// row stays the only thing in front of the camera
+		if (clean)
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+			{
+				String cn = a.GetClassName(); cn = cn.MakeLower();
+				if (cn.IndexOf("skel") >= 0 || cn.IndexOf("undead") >= 0 || cn.IndexOf("skullzombie") >= 0) a.Destroy();
+			}
+		}
+		if (freezeAt > 0 && level.maptime >= freezeAt)
+		{
+			freezeAt = 0;
+			for (int i = 0; i < row.Size(); i++) if (row[i]) row[i].tics = -1;
+			Console.Printf("RC3 froze t%d", level.maptime);
+		}
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		if (e.Name.Left(8) ~== "rc3_cls_") { cls = e.Name.Mid(8); Console.Printf("RC3 class %s", cls); }
+		if (e.Name ~== "rc3_attack")    // Args: freeze after this many tics
+		{
+			for (int i = 0; i < row.Size(); i++)
+				if (row[i] && row[i].health > 0)
+				{
+					row[i].bDORMANT = false; row[i].target = p; row[i].angle = row[i].AngleTo(p);
+					if (row[i].MissileState) row[i].SetState(row[i].MissileState);
+				}
+			freezeAt = level.maptime + e.Args[0];
+			Console.Printf("RC3 attack at t%d", level.maptime);
+		}
+		if (e.Name ~== "rc3_row")       // Args: x, spacing, first rung (1 = as shipped) + 100 * how many (0 = to White)
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) row[i].Destroy();
+			row.Clear();
+			// and whatever the last row left there: corpses (Brutal Doom's dying bodies are new actors), crawlers, gore
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+				if (a != p && !a.player && abs(a.pos.x - e.Args[0]) < 140 && abs(a.pos.y) < 420 && !(a is "Inventory" && Inventory(a).owner)) a.Destroy();
+			double x = e.Args[0], sp = e.Args[1];
+			int first = e.Args[2] % 100, n = e.Args[2] / 100;
+			if (n <= 0) n = 13 - (first - 1);
+			for (int i = 0; i < n; i++)
+			{
+				class<Actor> ccls = (class<Actor>)(cls); let a = Actor.Spawn(ccls, (x, -(n - 1) * sp / 2. + sp * i, 0));
+				if (!a) continue;
+				a.angle = a.AngleTo(p);
+				a.bDORMANT = true;
+				a.SetState(a.SpawnState); a.tics = -1;
+				row.Push(a);
+			}
+			rowFirst = first;
+			Console.Printf("RC3 row %d at t%d", row.Size(), level.maptime);
+		}
+		if (e.Name ~== "rc3_tier")      // the colours (the kit is given a tic after the spawn): imp i -> rung first + i
+		{
+			for (int i = 0; i < row.Size(); i++) { int r = rowFirst + i; if (r > 1 && row[i]) RS_Retier.RequestKit(row[i], r, true); }
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; Console.Printf("RC3 imp %d rung %d trans %d", i, k ? k.rung : -1, row[i] ? int(row[i].Translation) : -1); }
+		}
+		if (e.Name ~== "rc3_calm") { for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k) k.hpOnly = true; } }
+		if (e.Name ~== "rc3_face")      // Args: degrees added to facing the player; frame letter (0 = A)
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].angle = row[i].AngleTo(p) + e.Args[0]; row[i].frame = e.Args[1]; row[i].tics = -1; }
+			Console.Printf("RC3 face %d at t%d", e.Args[0], level.maptime);
+		}
+		if (e.Name ~== "rc3_kill")      // Args: 0 plain, 1 gibbed, 2 legs shot off; freeze after Args[1] tics (0 = never)
+		{
+			static const Name DT[] = { 'None', 'None', 'Leg' };
+			for (int i = 0; i < row.Size(); i++)
+				if (row[i] && row[i].health > 0)
+				{
+					row[i].bDORMANT = false; row[i].angle = row[i].AngleTo(p);
+					if (row[i].tics < 0) row[i].tics = 1;
+					row[i].DamageMobj(p, p, e.Args[0] == 1 ? 2000 : row[i].health + 1, DT[e.Args[0]], DMG_FORCED | DMG_NO_ARMOR);
+				}
+			freezeAt = e.Args[1] ? level.maptime + e.Args[1] : 0;
+			Console.Printf("RC3 kill %d at t%d", e.Args[0], level.maptime);
+		}
+		if (e.Name ~== "rc3_clean") clean = e.Args[0];
+		if (e.Name ~== "rc3_go") { for (int i = 0; i < row.Size(); i++) if (row[i] && row[i].tics < 0) row[i].tics = 1; Console.Printf("RC3 go t%d", level.maptime); }
+		if (e.Name ~== "rc3_light") { p.CurSector.SetLightLevel(e.Args[0]); if (row.Size() && row[0]) row[0].CurSector.SetLightLevel(e.Args[0]); }
+		if (e.Name ~== "rc3_look") { p.angle = e.Args[0]; p.pitch = e.Args[1]; }
+		if (e.Name ~== "rc3_mark") Console.Printf("RC3 mark %d at t%d", e.Args[0], level.maptime);
+	}
+}

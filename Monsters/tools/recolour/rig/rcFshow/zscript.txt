@@ -1,0 +1,105 @@
+version "4.14"
+// TEST ONLY (rig): frames for the dying-body census (rcf_census.py). On rig01 (TestRig/maps, the frames' room, player at -320,0): a row of one class
+// in front of the player, each its own colour through RSQ Monsters' own tier change, killed with one damage type, then
+// frozen (every actor in the area) so the frame shows the dying bodies, crawlers, corpses and pieces.
+//   rcs_row <class index in CLS> <first colour 2..13> <how many>   (at x -60, 260 units from the player, spacing 72)
+//   rcs_kill <damage type index in DT> <freeze after tics, 0 never>
+//   rcs_go     unfreeze      rcs_view <yaw> <pitch>     rcs_mark <n> (a log line)
+class RCS_Show : EventHandler
+{
+	static const String SCLS[] = { "ChaingunGuy1", "TehArchvile", "Arachnotron1", "BloodDemon", "VoidSpectre", "Revenant1", "Cacodemon_", "BullDemon", "Imp", "HellKnight2", "BaronofHell2", "BDFormerCommander" };
+	static const String SDT[] = { "None", "XDeath", "Fire", "Blast", "headExplode", "Fatality", "Taunt", "Leg", "decaptate", "Ice", "SSG", "Saw", "Plasma", "Railgun" };
+	static const String SCN[] = { "", "shipped", "green", "blue", "purple", "cyan", "brown", "yellow", "fireblu", "gray", "red", "abyss", "black", "white" };
+	Array<Actor> row; Array<int> rcol;
+	int freezeAt;
+	Actor mark;
+	override void WorldTick()
+	{
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			String cn = a.GetClassName(); cn = cn.MakeLower();
+			if (cn.IndexOf("skel") >= 0 || cn.IndexOf("undead") >= 0 || cn.IndexOf("skullzombie") >= 0) a.Destroy();
+		}
+		if (freezeAt > 0 && level.maptime >= freezeAt)
+		{
+			freezeAt = 0;
+			it = ThinkerIterator.Create("Actor");
+			while (a = Actor(it.Next())) if (!a.player && !(a is "Inventory") && a != mark && abs(a.pos.x + 60) < 400 && abs(a.pos.y) < 500) { a.tics = -1; a.vel = (0, 0, 0); }
+			Console.Printf("RCS froze t%d", level.maptime);
+		}
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		if (e.Name ~== "rcs_row")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (a != p && !a.player && !(a is "Inventory" && Inventory(a).owner) && abs(a.pos.x + 60) < 400 && abs(a.pos.y) < 500 && a != mark) a.Destroy();
+			row.Clear(); rcol.Clear();
+			p.angle = 0; p.pitch = 0; p.vel = (0, 0, 0);
+			p.CurSector.SetLightLevel(224);
+			int n = e.Args[2];
+			Class<Actor> cls = SCLS[e.Args[0]];
+			for (int i = 0; i < n; i++)
+			{
+				let m = Actor.Spawn(cls, (-60, -(n - 1) * 36. + 72 * i, 0));
+				if (!m) continue;
+				m.angle = m.AngleTo(p); m.bDORMANT = true;
+				row.Push(m); rcol.Push(e.Args[1] + i);
+			}
+			Console.Printf("RCS row %s x%d from %s at t%d", SCLS[e.Args[0]], row.Size(), SCN[e.Args[1]], level.maptime);
+		}
+		if (e.Name ~== "rcs_tier")
+		{
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k && k.entry > 1) { k.entry = 1; k.rung = 1; } }
+			for (int i = 0; i < row.Size(); i++) if (row[i]) RS_Retier.RequestKit(row[i], rcol[i], true);
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k) k.hpOnly = true; }
+		}
+		if (e.Name ~== "rcs_kill")
+		{
+			String dt = SDT[e.Args[0]];
+			for (int i = 0; i < row.Size(); i++)
+			{
+				let a = row[i];
+				if (!a || a.health <= 0) continue;
+				a.bDORMANT = false; a.angle = a.AngleTo(p);
+				if (dt ~== "XDeath") a.DamageMobj(p, p, a.health + max(1000, a.GetSpawnHealth() * 3), 'None', DMG_FORCED | DMG_NO_ARMOR);
+				else a.DamageMobj(p, p, a.health + 1, dt, DMG_FORCED | DMG_NO_ARMOR);
+			}
+			freezeAt = e.Args[1] ? level.maptime + e.Args[1] : 0;
+			Console.Printf("RCS kill %s at t%d", dt, level.maptime);
+		}
+		if (e.Name ~== "rcs_go") { let it = ThinkerIterator.Create("Actor"); Actor a; while (a = Actor(it.Next())) if (!a.player && !(a is "Inventory") && a.tics < 0 && abs(a.pos.x + 60) < 400) a.tics = 1; }
+		if (e.Name ~== "rcs_fists") { String fs = "FistsSelected"; class<Inventory> fc = fs; if (fc) p.GiveInventory(fc, 1); Console.Printf("RCS fists %d", fc != null); }
+		if (e.Name ~== "rcs_view") { p.angle = e.Args[0]; p.pitch = e.Args[1]; }
+		if (e.Name ~== "rcs_mark") Console.Printf("RCS mark %d at t%d", e.Args[0], level.maptime);
+		if (e.Name ~== "rcs_phase")     // the scene code 1-124 (0 = none) as a solid shape above the row: R, G, B = 48 * its base-5 digits
+		{
+			if (!mark) mark = Actor.Spawn("RCS_Mark", (-170, 0, 110));
+			int c = e.Args[0];
+			mark.bINVISIBLE = c <= 0;
+			mark.SetShade(Color(255, (c % 5) * 48, ((c / 5) % 5) * 48, (c / 25) * 48));
+		}
+		// the census of the area: per class, what it shows
+		if (e.Name ~== "rcs_census")
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+			{
+				if (a.player || (a is "Inventory" && Inventory(a).owner) || abs(a.pos.x + 60) > 400 || abs(a.pos.y) > 500) continue;
+				int col = RS_BDHue.ColourOf(a);
+				TextureID t; bool m; Vector2 sc; String lump = "-";
+				if (a.CurState) { [t, m, sc] = a.CurState.GetSpriteTexture(0, 0, (0, 0), a.sprite, a.frame); if (t.IsValid()) lump = TexMan.GetName(t); }
+				Console.Printf("RCSC %s %s col %s %s x%d y%d", a.GetClassName(), lump, SCN[col], a.picnum.IsValid() ? "ART" : (col ? "tint" : "-"), int(a.pos.x), int(a.pos.y));
+			}
+		}
+	}
+}
+
+class RCS_Mark : Actor
+{
+	Default { +NOGRAVITY; +NOINTERACTION; +BRIGHT; RenderStyle "Stencil"; Scale 0.6; }
+	States { Spawn: BAR1 A -1; Stop; }
+}

@@ -1,0 +1,34 @@
+# The Hell Knight family, BD22 (HellKnight2: its body, deaths, crawlers, gibs, fatality, frozen and burnt deaths), for
+# bake.py. sprites: every sprite name in BD22's sprites/Monsters/BruiserBrothers/HellKnight (and its Gibs), the Hell
+# Knight's MonsterFatality (KTFP) and its frozen body (FZD6). XMVE's Hell Knight tier classes (CyberKnight, Cybruiser,
+# PhasicKnightX, the stealth one) are in hellknight_cyber.txt (their own art, mostly metal).
+# Left out, on purpose: generic gore and burnt bodies other families share (CARB, XBRN, BR7B, XARM ...: they keep the live
+# tint, as the Imp's do); other families' pieces the walk reaches (TROO, HND4, LEG4 ...); sprites/Fatality/Fatality_
+# HellKnight (HKF1-3: the player's first-person fatality, drawn on the weapon, never an actor the driver can colour).
+sprites BOS2 BOSB BOSC BAS2 BAH3 BBO1 BOH2 BTC1 BTCK BTN1 BTN2 BTN3 BTN4 BTN5 BTO1 BTS2 DAHK HKDD KAD1 KNRJ KSA1 KSA7
+sprites GG71 GHKA GHKL GHKT HKHE KTFP FZD6
+# BOSBF0 is an imp gib (sprites/Monsters/Imp/GIBS): the Imp's (families/imp.txt), not ours.
+skip BOSBF
+
+# ---- parts, by the pixel's nearest Doom palette index (paint.py). Anything not listed keeps its own pixels. ----
+# skin: the Knight's tan hide and his brown furred legs are one ramp in the source: the tans 48-63 and 128-151 (chest,
+# arms, face, horns), the browns 64-79 (legs), their darkest browns 1-2, 13-15, 236-239. His horns are drawn in the same
+# tans as his skin (no gray), so they take the skin's palette: the source draws no separate horn colour.
+part skin 1:2 13:15 48:79 128:159 236:239
+# horn: the few grays (claw tips, teeth): the gray ramp 80-111 and its tips 3-4.
+part horn 3:4 80:111
+# kept, by not being listed (the owner's rule 11-13 09:49): 0, 5-8 outlines; the greens 9-12 and 112-127 are the
+# Knight's green blood and the green fire in his hands (and the fatality's marine); reds 16-47, 168-191 (eyes, mouth,
+# wounds); yellows, oranges, blues (ice, fire light).
+
+# ---- group rules (applied in this order) ----
+group * absorb 0:0,5:8 skin 5
+group * keepnear 16:47,168:191 1 horn
+# Burnt deaths: BOSBA-E (the Knight burnt to char) and BOSC (half burnt). The char IS his body: its near-blacks and
+# grays are painted as skin, so the burnt Knight is charred in his own colour (dark, from the ramp's deepest steps);
+# the green blood on it keeps its green.
+group BOSBA,BOSBB,BOSBC,BOSBD,BOSBE,BOSC set skin 0:0 3:8 80:111 240:247
+# The frozen Knight (FZD6) is under ice: everything blue and gray is the ice. Only tans/browns showing through are skin.
+group FZD6 keep 80:111 3:4
+# The fatality (KTFP) has a marine in it: masks below.
+masks hellknight_masks.txt

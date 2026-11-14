@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RC3_Demo"
+}

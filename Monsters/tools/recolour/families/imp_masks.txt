@@ -1,0 +1,10 @@
+# Hand-written part masks for the Imp family, read by paint.py after the family's palette and group rules.
+#   LUMP|PREFIX* <part> x0 y0 x1 y1 [from=<part>,<part>]
+# Sets the pixels inside the rectangle (inclusive, lump pixels, origin top left) to <part> (keep, skin, horn, claw);
+# with from=, only the pixels that were one of those parts. Use it where palette ranges cannot tell parts apart.
+# A frame that needs more than rectangles is a frame for a human painter: put it in MonsterRecolour/hand/<colour>/.
+
+# The fatality's first two frames: the marine stands apart, right of x 35 and below y 52; his brown hands and face
+# (palette 64-79, the imp's skin ramp) keep his own colours.
+IPFPA0 keep 36 53 99 99 from=skin,horn
+IPFPB0 keep 36 53 99 99 from=skin,horn

@@ -1,0 +1,24 @@
+# The Arachnotron family, part 1: BD22's Arachnotron (Arachnotron1; AASpider draws the same art) and XMVE's CGSpider
+# (CSPI), their deaths, gore, the brain that runs away, frozen death and the marine's fatalities on it; for bake.py.
+# Part 2 (BD22's Arachnotron2, a different, darker design) is arachnotron2.txt.
+# sprites/Monsters/Arachnotron (BSPI), Arachnotron/Gore (ARXD NAHA XBSP XDSL), Arachnotron/Runaway (NAHC),
+# FreezeDeaths/FrozenArachnotron (FZD8 TFZD), Fatality/Fatality_Arachnotron (ARF1 ARF2 ARF3), XMVE Monsters/SPIDERCG
+# (CSPI; BMBL and BMCS there are brightmaps, not art).
+sprites BSPI ARXD NAHA XBSP XDSL NAHC FZD8 TFZD ARF1 ARF2 ARF3 CSPI
+
+# ---- parts ----
+# skin: the brain, the tans 128-159 (its bulk) and browns 48-79 with the darkest browns 1-2, 13-15, 236-239.
+part skin 1:2 13:15 48:79 128:159 236:239
+# Kept, by not being listed: the chassis, legs and plasma gun (metal: grays 80-111, 3-4), the blue eyes (192-207),
+# blood and guts (reds), fire, outlines, ice, the marine (greens).
+
+# ---- group rules ----
+group * absorb 0:0,5:8 skin 5
+# rust and brown shading on the metal legs and chassis (as the Mancubus's cannons)
+group * keepmajor 3:4,80:111 3 0.25 skin 2
+# The frozen Arachnotron is under ice: its grays are the ice's highlights.
+group FZD8,TFZD keep 80:111 3:4
+# The fatalities have a marine in them: his helmet, face, hands and boots are tans and olives touching his green
+# armour; within 3 pixels of it they keep their own colours (the brain is further away in most frames).
+group ARF1,ARF2,ARF3 keepnear 112:127 3 skin
+masks arachnotron_masks.txt

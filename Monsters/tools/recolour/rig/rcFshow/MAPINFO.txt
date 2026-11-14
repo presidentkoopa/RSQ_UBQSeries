@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RCS_Show"
+}

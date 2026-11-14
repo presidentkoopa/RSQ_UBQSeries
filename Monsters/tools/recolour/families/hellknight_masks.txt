@@ -1,0 +1,30 @@
+# Hand-written part masks for the Hell Knight family (format: see imp_masks.txt; idx=<ranges> limits a mask to pixels
+# of those palette indices).
+# The fatality (KTFP): the marine keeps his own colours. A: he stands left of the Knight; B: held up by the throat
+# (head, then legs); C: thrown down across the Knight's feet; D-M: he lies on the floor (his olive and tan, below y 86).
+KTFPA0 keep 16 28 41 86 from=skin,horn
+KTFPB0 keep 16 24 33 50 from=skin,horn
+KTFPB0 keep 26 60 46 90 from=skin,horn
+KTFPC0 keep 22 64 48 96 from=skin,horn
+KTFPC0 keep 48 66 92 86 from=skin,horn idx=80:111,128:159
+KTFPD0 keep 22 72 44 99 from=skin,horn
+KTFPD* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPE* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPF* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPG* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPH* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPI* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPJ* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPK* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPL* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPM* keep 0 86 99 99 from=skin,horn idx=80:111,128:159
+KTFPD* keep 0 88 30 99 from=skin,horn
+KTFPE* keep 0 88 30 99 from=skin,horn
+KTFPF* keep 0 88 30 99 from=skin,horn
+KTFPG* keep 0 88 30 99 from=skin,horn
+KTFPH* keep 0 88 30 99 from=skin,horn
+KTFPI* keep 0 88 30 99 from=skin,horn
+KTFPJ* keep 0 88 30 99 from=skin,horn
+KTFPK* keep 0 88 30 99 from=skin,horn
+KTFPL* keep 0 88 30 99 from=skin,horn
+KTFPM* keep 0 88 30 99 from=skin,horn

@@ -1,0 +1,60 @@
+# Hand-written part masks for the Arachnotron (arachnotron.txt).   LUMP|PREFIX* <part> x0 y0 x1 y1 [from=<part>,<part>]
+# The fatalities' marine: his boots (below his green armour) and helmet (above it) are tans and olives, the brain's
+# own ramps. Rectangles measured from his armour (the biggest blob of palette greens 112-127) in each frame.
+ARF1A0 keep 17 71 41 89 from=skin   # boots
+ARF1A0 keep 18 33 42 47 from=skin   # helmet
+ARF1B0 keep 17 71 41 89 from=skin   # boots
+ARF1B0 keep 18 33 40 47 from=skin   # helmet
+ARF1C0 keep 14 72 46 89 from=skin   # boots
+ARF1C0 keep 22 51 44 65 from=skin   # helmet
+ARF1D0 keep 17 54 44 89 from=skin   # boots
+ARF1D0 keep 16 35 43 49 from=skin   # helmet
+ARF1E0 keep 17 54 44 89 from=skin   # boots
+ARF1E0 keep 16 35 43 49 from=skin   # helmet
+ARF1F0 keep 17 54 44 89 from=skin   # boots
+ARF1F0 keep 16 35 43 49 from=skin   # helmet
+ARF1G0 keep 24 53 51 89 from=skin   # boots
+ARF1G0 keep 23 35 50 49 from=skin   # helmet
+ARF1H0 keep 30 54 56 89 from=skin   # boots
+ARF1H0 keep 31 35 54 49 from=skin   # helmet
+ARF1I0 keep 31 54 58 89 from=skin   # boots
+ARF1I0 keep 30 35 57 49 from=skin   # helmet
+ARF1J0 keep 42 72 66 89 from=skin   # boots
+ARF1J0 keep 45 54 66 68 from=skin   # helmet
+ARF1K0 keep 40 73 64 89 from=skin   # boots
+ARF1K0 keep 42 35 67 49 from=skin   # helmet
+ARF1L0 keep 40 73 64 89 from=skin   # boots
+ARF1L0 keep 42 35 67 49 from=skin   # helmet
+ARF1M0 keep 40 73 64 89 from=skin   # boots
+ARF1M0 keep 42 35 67 49 from=skin   # helmet
+ARF1N0 keep 40 73 64 89 from=skin   # boots
+ARF1N0 keep 42 35 67 49 from=skin   # helmet
+# ARF1O0 no marine
+ARF2A0 keep 12 14 33 56 from=skin   # boots
+ARF2A0 keep 13 0 31 12 from=skin   # helmet
+ARF2B0 keep 10 32 20 56 from=skin   # boots
+ARF2B0 keep 11 0 35 12 from=skin   # helmet
+ARF2C0 keep 10 32 20 56 from=skin   # boots
+ARF2C0 keep 12 0 35 12 from=skin   # helmet
+ARF2D0 keep 10 39 20 63 from=skin   # boots
+ARF2D0 keep 12 5 35 19 from=skin   # helmet
+ARF2E0 keep 8 52 21 78 from=skin   # boots
+ARF2E0 keep 9 15 38 29 from=skin   # helmet
+# ARF2F0 no marine
+# ARF2G0 no marine
+# ARF2H0 no marine (1)
+ARF2I0 keep 10 32 20 56 from=skin   # boots
+ARF2I0 keep 11 0 35 12 from=skin   # helmet
+ARF3G0 keep 16 74 41 89 from=skin   # boots
+ARF3G0 keep 19 37 42 51 from=skin   # helmet
+ARF3H0 keep 16 74 41 89 from=skin   # boots
+ARF3H0 keep 20 33 42 47 from=skin   # helmet
+ARF3I0 keep 24 74 50 89 from=skin   # boots
+ARF3I0 keep 28 40 50 54 from=skin   # helmet
+ARF3J0 keep 24 74 50 89 from=skin   # boots
+ARF3J0 keep 28 40 50 54 from=skin   # helmet
+ARF3K0 keep 24 74 51 89 from=skin   # boots
+ARF3K0 keep 28 41 49 55 from=skin   # helmet
+ARF3L0 keep 24 74 51 89 from=skin   # boots
+ARF3L0 keep 28 41 49 55 from=skin   # helmet
+# ARF3O0 no marine (1)

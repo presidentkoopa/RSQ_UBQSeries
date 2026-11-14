@@ -1,0 +1,213 @@
+version "4.14"
+// TEST ONLY (rig): the shared gore's painted art (families/gore.txt). Rows of BD22 / XMVE monsters given colours through
+// RSQ Monsters' own tier change, killed in Brutal Doom's ways (each one by another damage type), and, every tic, every
+// piece in the test area counted by its sprite: which hold a colour (RS_BDHue), which the art driver draws, which keep
+// their own look. Posed for frames (rcg_freeze, rcg_look). Nothing here ships.
+class RCG_Demo : EventHandler
+{
+	static const String CLS[] = {
+		"RifleZombie", "PistolZombie", "Labguy", "Nazi", "ShotgunGuy1", "SMGGuy", "ASGGuy", "ChaingunGuy1", "BDFormerCommander",
+		"Imp", "DarkImp", "SuperImp", "BullDemon", "BloodDemon", "Spectro", "Cacodemon_", "Aracnorb", "TehLostSoul",
+		"PainElemental1", "Revenant1", "Mancubus", "Arachnotron1", "HellKnight2", "CyberKnight", "BaronofHell2", "Belphegor2",
+		"TehArchvile", "TheCyberdemon", "TheSpiderMastermind", "MiniMasterMind", "Draugr", "Daedabus" };
+	static const Name DT[] = { 'None', 'ExplosiveImpact', 'Explosives', 'SSG', 'Saw', 'Fire', 'Burn', 'Plasma',
+		'Desintegrate', 'Head', 'Massacre', 'Cut', 'Extremepunches', 'Blast', 'Shotgun', 'Flames' };
+	// gore pieces for the close-up grid (rcg_pieces): Brutal Doom's own classes, as its deaths throw them
+	static const String PIECES[] = { "Guts", "XDeathArm1", "XDeathOrgan1", "XDeathStomach", "Brains4", "BrainsSergeantHeadPiece",
+		"XDeathSkinPiece1", "Teeth", "Gib_Arm", "XDeathGuts", "SmallBrainPiece", "XDeath2", "XDeathArm2", "GutsPile", "Guts2", "XDeathOrgan2" };
+	Array<Actor> pc; Array<double> pcX, pcY;
+	static const String CN[] = { "", "shipped", "green", "blue", "purple", "cyan", "brown", "yellow", "fireblu", "gray", "red", "abyss", "black", "white" };
+	Array<Actor> row;
+	Actor mark;
+	Array<int> rowRung;
+	int freezeAt;
+	bool clean, sampling;
+	int holdUntil;
+	Map<String, int> seen;          // "SPR|class|hue|art" -> tics seen
+	Array<String> keys;
+
+	int ColOf(Actor a)
+	{
+		for (let i = a.Inv; i; i = i.Inv)
+		{
+			let k = RS_BDKit(i); if (k) return k.rung > k.entry ? k.Tier() : 1;
+			let h = RS_BDHue(i); if (h) return h.col;
+		}
+		return 0;
+	}
+	bool IsKit(Actor a) { return a.FindInventory("RS_BDKit") != null; }
+	bool InArea(Actor a) { return abs(a.pos.x - (-140)) < 380 && abs(a.pos.y) < 520; }
+
+	override void WorldTick()
+	{
+		if (clean)
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+			{
+				String cn = a.GetClassName(); cn = cn.MakeLower();
+				// test only: Legion of Bones' risers (SkullZombieSpawn, SkeletonImpSpawn, SkeletonDemonSpawn, ...) and its undead
+				bool lob = cn.IndexOf("undead") >= 0 || cn.IndexOf("skullzombie") >= 0 || cn.IndexOf("skullshotgun") >= 0 || cn.IndexOf("cacolich") >= 0
+					|| (cn.IndexOf("skeleton") >= 0 && cn.IndexOf("spawn") >= 0);
+				if (lob && !IsKit(a)) a.Destroy();
+			}
+		}
+		if (freezeAt > 0 && level.maptime >= freezeAt)
+		{
+			freezeAt = 0;
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (a != mark && !a.player && !(a is "Inventory") && InArea(a)) { a.tics = -1; a.vel = (0, 0, 0); a.bNOGRAVITY = true; }
+			Console.Printf("RCG froze t%d", level.maptime);
+		}
+		if (holdUntil > level.maptime)
+		{
+			// the pieces (and what they turn into) fall straight down on their spots: no sideways throw
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (!a.player && !a.bISMONSTER && !(a is "Inventory") && InArea(a)) a.vel.xy = (0, 0);
+		}
+		if (!sampling) return;
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (a.player || a is "Inventory" || !InArea(a) || (IsKit(a) && a.health > 0) || a.bINVISIBLE || !a.CurState || a == mark) continue;
+			if (a.bISMONSTER && a.health > 0 && ColOf(a) == 0) continue;     // another live monster (not ours)
+			TextureID t; bool mi; Vector2 sc;
+			[t, mi, sc] = a.CurState.GetSpriteTexture(0, 0, (0, 0), a.sprite, a.frame);
+			if (!t.IsValid()) continue;
+			String tn = TexMan.GetName(t);
+			if (tn.Left(4) ~== "TNT1" || tn.Left(4) ~== "NULL") continue;
+			int col = ColOf(a);
+			String hn = "none"; if (col >= 2) hn = CN[col];
+			String how = "-"; if (a.picnum.IsValid()) how = "ART"; else if (int(a.Translation) != 0) how = (col >= 2 && int(a.Translation) == int(Translation.GetID(RS_BDKit.TintName(col)))) ? "tint" : "tr";
+			if (IsKit(a)) how = how .. "+kit";
+			String k = String.Format("%s|%s|%s|%s", tn.Left(4), a.GetClassName(), hn, how);
+			int v; bool ok; [v, ok] = seen.CheckValue(k);
+			if (!ok) keys.Push(k);
+			seen.Insert(k, (ok ? v : 0) + 1);
+		}
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		if (e.Name ~== "rcg_row")       // Args: x, spacing, class + 100 * how many; rungs from rcg_rungs
+		{
+			Wipe(p, e.Args[0]);
+			double x = e.Args[0], sp = e.Args[1];
+			int ci = e.Args[2] % 100, n = e.Args[2] / 100;
+			String cn = CLS[ci];
+			Class<Actor> cls = cn;
+			if (!cls) { Console.Printf("RCG no class %s", cn); return; }
+			for (int i = 0; i < n; i++)
+			{
+				let a = Actor.Spawn(cls, (x, -(n - 1) * sp / 2. + sp * i, 0));
+				if (!a) continue;
+				a.angle = a.AngleTo(p); a.bDORMANT = true; a.SetState(a.SpawnState); a.tics = -1;
+				row.Push(a);
+			}
+			Console.Printf("RCG row %s x%d at t%d", cn, row.Size(), level.maptime);
+		}
+		if (e.Name ~== "rcg_rungs")     // Args: up to 3 packed rung lists: each arg 4 rungs, 2 decimal digits each (e.g. 8100912 -> 8,10,9,12)
+		{
+			rowRung.Clear();
+			for (int j = 0; j < 3; j++) { int v = e.Args[j]; if (!v) continue; Array<int> r; for (int k = 0; k < 4; k++) { r.Insert(0, v % 100); v /= 100; } for (int k = 0; k < 4; k++) if (r[k]) rowRung.Push(r[k]); }
+		}
+		if (e.Name ~== "rcg_tier")
+		{
+			for (int i = 0; i < row.Size(); i++)
+			{
+				int r = rowRung.Size() ? rowRung[i % rowRung.Size()] : 1;
+				if (r > 1 && row[i]) RS_Retier.RequestKit(row[i], r, true);
+			}
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k) k.hpOnly = true; }
+			String s = ""; for (int i = 0; i < row.Size(); i++) { String c = "-"; if (row[i]) c = CN[max(1, ColOf(row[i]))]; s.AppendFormat(" %s", c); }
+			Console.Printf("RCG t%d colours%s", level.maptime, s);
+		}
+		if (e.Name ~== "rcg_face") { for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].angle = row[i].AngleTo(p) + e.Args[0]; row[i].tics = -1; } }
+		if (e.Name ~== "rcg_kill")      // Args: damage type index (-1: each monster of the row its own, i % 16), damage, freeze after Args[2] tics (0 never)
+		{
+			for (int i = 0; i < row.Size(); i++)
+				if (row[i] && row[i].health > 0)
+				{
+					int d = e.Args[0] < 0 ? i % 16 : e.Args[0];
+					Name dn = DT[d];
+					row[i].bDORMANT = false; row[i].angle = row[i].AngleTo(p);
+					if (row[i].tics < 0) row[i].tics = 1;
+					row[i].DamageMobj(p, p, e.Args[1] ? e.Args[1] : row[i].health + 1, dn, DMG_FORCED | DMG_NO_ARMOR);
+				}
+			freezeAt = e.Args[2] ? level.maptime + e.Args[2] : 0;
+			Console.Printf("RCG kill %d at t%d", e.Args[0], level.maptime);
+		}
+		if (e.Name ~== "rcg_hold") holdUntil = level.maptime + e.Args[0];   // pieces fall straight down for N tics
+		if (e.Name ~== "rcg_freeze") freezeAt = level.maptime + max(1, e.Args[0]);
+		if (e.Name ~== "rcg_go") { let it = ThinkerIterator.Create("Actor"); Actor a; while (a = Actor(it.Next())) if (a != mark && !a.player && !(a is "Inventory") && a.tics < 0 && InArea(a)) { a.tics = 1; a.bNOGRAVITY = a.default.bNOGRAVITY; } }
+		if (e.Name ~== "rcg_clean") clean = e.Args[0];
+		if (e.Name ~== "rcg_sample") sampling = e.Args[0];
+		if (e.Name ~== "rcg_light") { p.CurSector.SetLightLevel(e.Args[0]); Sector s = level.PointInSector((-140, 0)); if (s) s.SetLightLevel(e.Args[0]); }
+		if (e.Name ~== "rcg_look") { p.angle = e.Args[0]; p.pitch = e.Args[1]; }
+		if (e.Name ~== "rcg_at") { p.SetOrigin((e.Args[0], e.Args[1], p.floorz), false); p.angle = 0; }
+		if (e.Name ~== "rcg_pieces")    // Args: front piece + 100 * back piece (+1 each; 0 none), spacing; one of each per colour of rcg_rungs
+		{
+			Wipe(p, -140);
+			for (int i = 0; i < pc.Size(); i++) if (pc[i]) pc[i].Destroy();
+			pc.Clear(); pcX.Clear(); pcY.Clear();
+			int n = rowRung.Size(); double sp = e.Args[1] ? e.Args[1] : 44;
+			for (int r = 0; r < 2; r++)
+			{
+				int pi = (r == 0 ? e.Args[0] % 100 : e.Args[0] / 100) - 1;
+				if (pi < 0) continue;
+				String cn = PIECES[pi]; Class<Actor> cls = cn;
+				if (!cls) { Console.Printf("RCG no piece %s", cn); continue; }
+				double x = (r == 0 ? -250 : -210) + e.Args[2];
+				for (int i = 0; i < n; i++)
+				{
+					double y = -(n - 1) * sp / 2. + sp * i;
+					let a = Actor.Spawn(cls, (x, y, 24));
+					if (!a) continue;
+					a.angle = 90 + 37 * i;
+					if (rowRung[i] > 1) RS_BDHue.Put(a, rowRung[i]);
+					pc.Push(a); pcX.Push(x); pcY.Push(y);
+				}
+				Console.Printf("RCG pieces %s x%d at t%d", cn, n, level.maptime);
+			}
+			holdUntil = level.maptime + 60;
+		}
+		if (e.Name ~== "rcg_place")     // freeze the pieces where they landed, then put each back on its grid spot
+		{
+			for (int i = 0; i < pc.Size(); i++) if (pc[i]) { let a = pc[i]; a.SetOrigin((pcX[i], pcY[i], a.floorz), false); a.vel = (0, 0, 0); a.tics = -1; a.bNOGRAVITY = true; }
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (!a.player && !(a is "Inventory") && InArea(a) && pc.Find(a) == pc.Size()) a.Destroy();   // the blood they shed
+			Console.Printf("RCG placed t%d", level.maptime);
+		}
+		if (e.Name ~== "rcg_phase")     // Args: the code 1-124 (0 = none), shown as a solid shape above the scene: R, G, B = 48 * its base-5 digits (as rcfam's)
+		{
+			if (!mark) mark = Actor.Spawn("RCG_Mark", (-170, 0, 110));
+			int c = e.Args[0];
+			mark.bINVISIBLE = c <= 0;
+			mark.SetShade(Color(255, (c % 5) * 48, ((c / 5) % 5) * 48, (c / 25) * 48));
+		}
+		if (e.Name ~== "rcg_mark") Console.Printf("RCG mark %d at t%d", e.Args[0], level.maptime);
+		if (e.Name ~== "rcg_wipe") Wipe(p, -140);
+		if (e.Name ~== "rcg_dump")
+		{
+			for (int i = 0; i < keys.Size(); i++) Console.Printf("RCGSPR %s|%d", keys[i], seen.Get(keys[i]));
+			Console.Printf("RCGSPR end %d keys", keys.Size());
+		}
+	}
+
+	void Wipe(Actor p, double x)
+	{
+		for (int i = 0; i < row.Size(); i++) if (row[i]) row[i].Destroy();
+		row.Clear();
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+			if (a != p && a != mark && !a.player && InArea(a) && !(a is "Inventory" && Inventory(a).owner)) a.Destroy();
+	}
+}
+
+class RCG_Mark : Actor
+{
+	Default { +NOGRAVITY; +NOINTERACTION; +BRIGHT; RenderStyle "Stencil"; Scale 0.6; }
+	States { Spawn: BAR1 A -1; Stop; }
+}

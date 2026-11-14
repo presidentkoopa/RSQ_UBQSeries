@@ -1,0 +1,127 @@
+version "4.14"
+// TEST ONLY (rig): rc2demo (the Imp's sheets) for any monster: rcf_row's third arg carries the class (CLS below) in its ten-thousands.
+// A row of one class, the first as shipped, then Green .. White through RSQ Monsters' own tier change; posed (front,
+// side, attack), killed and frozen mid-death, so the runs can be cut into sheets (rcf_sheets.py).
+class RCF_Demo : EventHandler
+{
+	static const String CLS[] = {
+		"Imp", "DarkImp", "NamiDarkImp", "NetherDarkImp", "VoidDarkImp", "SuperImp", "Imp3",
+		"BullDemon", "Spectro", "BrutalNightmareDemon", "BloodDemon", "BloodSpectre", "VoidSpectre", "InvisibleAlien",
+		"TehLostSoul", "AlphaLostSoul", "AncientFlyingCunt", "ImpureSoul", "Phantasm",
+		"Cacodemon_", "CacoAsshole", "Aracnorb", "ImpureElemental", "OverLord", "AracnorbQueen",
+		"PainElemental1", "SufferingElemental", "FatPinky" };
+	Array<Actor> row;
+	Actor mark;     // the pose being held, shown as a solid coloured shape above the row (the sheet cutter reads it;
+	                // the rig's frame dump has no 2D layer)
+	int freezeAt, rowFirst;
+	bool clean;
+	override void WorldTick()
+	{
+		// test only: Legion of Bones' skeletons (it raises them out of the corpses) are taken away, so the
+		// row stays the only thing in front of the camera
+		if (clean)
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+			{
+				String cn = a.GetClassName(); cn = cn.MakeLower();
+				if (cn.IndexOf("skel") >= 0 || cn.IndexOf("undead") >= 0 || cn.IndexOf("skullzombie") >= 0) a.Destroy();
+				// and the Lost Souls a Pain Elemental spits (they fly into the camera); a row of Lost Souls stays
+				else if (cn.IndexOf("soul") >= 0 && a.bISMONSTER && row.Find(a) == row.Size()) a.Destroy();
+			}
+		}
+		if (freezeAt > 0 && level.maptime >= freezeAt)
+		{
+			freezeAt = 0;
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].tics = -1; row[i].vel = (0, 0, 0); }
+			Console.Printf("RCF froze t%d", level.maptime);
+		}
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		if (e.Name ~== "rcf_row")       // Args: x, spacing, first rung (1 = as shipped) + 100 * how many (0 = to White) + 10000 * class
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) row[i].Destroy();
+			row.Clear();
+			// and whatever the last row left there: corpses (Brutal Doom's dying bodies are new actors), crawlers, gore
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+				if (a != p && a != mark && !a.player && abs(a.pos.x - e.Args[0]) < 140 && abs(a.pos.y) < 420 && !(a is "Inventory" && Inventory(a).owner)) a.Destroy();
+			double x = e.Args[0], sp = e.Args[1];
+			int first = e.Args[2] % 100, n = (e.Args[2] / 100) % 100, ci = e.Args[2] / 10000;
+			String cn = CLS[ci];
+			Class<Actor> cls = cn;
+			if (n <= 0) n = 13 - (first - 1);
+			for (int i = 0; i < n; i++)
+			{
+				if (!cls) { Console.Printf("RCF no class %s", cn); break; }
+				let a = Actor.Spawn(cls, (x, -(n - 1) * sp / 2. + sp * i, 0));
+				if (!a) continue;
+				a.angle = a.AngleTo(p);
+				a.bDORMANT = true;
+				a.SetState(a.SpawnState); a.tics = -1;
+				row.Push(a);
+			}
+			rowFirst = first;
+			Console.Printf("RCF row %d at t%d", row.Size(), level.maptime);
+		}
+		if (e.Name ~== "rcf_tier")      // the colours (the kit is given a tic after the spawn): imp i -> rung first + i
+		{
+			// test only: the kit's entry colour is lowered to 1, so a monster that enters the ladder higher (a Dark Imp
+			// enters at 3) still shows every colour on the sheet (in play it never wears the colours below its entry)
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k && k.entry > 1) { k.entry = 1; k.rung = 1; } }
+			for (int i = 0; i < row.Size(); i++) { int r = rowFirst + i; if (r > 1 && row[i]) RS_Retier.RequestKit(row[i], r, true); }
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; Console.Printf("RCF imp %d rung %d trans %d", i, k ? k.rung : -1, row[i] ? int(row[i].Translation) : -1); }
+		}
+		if (e.Name ~== "rcf_calm") { for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k) k.hpOnly = true; } }
+		if (e.Name ~== "rcf_face")      // Args: degrees added to facing the player; frame letter (0 = A)
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].angle = row[i].AngleTo(p) + e.Args[0]; row[i].frame = e.Args[1]; row[i].tics = -1; }
+			Console.Printf("RCF face %d at t%d", e.Args[0], level.maptime);
+		}
+		if (e.Name ~== "rcf_kill")      // Args: 0 plain, 1 gibbed, 2 legs shot off; freeze after Args[1] tics (0 = never)
+		{
+			static const Name DT[] = { 'None', 'None', 'Leg' };
+			for (int i = 0; i < row.Size(); i++)
+				if (row[i] && row[i].health > 0)
+				{
+					row[i].bDORMANT = false; row[i].angle = row[i].AngleTo(p);
+					if (row[i].tics < 0) row[i].tics = 1;
+					row[i].DamageMobj(p, p, e.Args[0] == 1 ? 2000 : row[i].health + 1, DT[e.Args[0]], DMG_FORCED | DMG_NO_ARMOR);
+				}
+			freezeAt = e.Args[1] ? level.maptime + e.Args[1] : 0;
+			Console.Printf("RCF kill %d at t%d", e.Args[0], level.maptime);
+		}
+		if (e.Name ~== "rcf_attack")    // Args: tics to run the attack state before freezing it
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i])
+			{
+				let a = row[i]; a.angle = a.AngleTo(p);
+				State s = a.MissileState ? a.MissileState : a.MeleeState;
+				if (s) { a.bDORMANT = false; a.SetState(s); a.tics = max(a.tics, 1); }
+			}
+			freezeAt = e.Args[0] ? level.maptime + e.Args[0] : 0;
+			Console.Printf("RCF attack at t%d", level.maptime);
+		}
+		if (e.Name ~== "rcf_clean") clean = e.Args[0];
+		if (e.Name ~== "rcf_go") { for (int i = 0; i < row.Size(); i++) if (row[i] && row[i].tics < 0) row[i].tics = 1; Console.Printf("RCF go t%d", level.maptime); }
+		if (e.Name ~== "rcf_light") { p.CurSector.SetLightLevel(e.Args[0]); if (row.Size() && row[0]) row[0].CurSector.SetLightLevel(e.Args[0]); }
+		if (e.Name ~== "rcf_look") { p.angle = e.Args[0]; p.pitch = e.Args[1]; }
+		if (e.Name ~== "rcf_phase")     // Args: the code 1-124 (0 = none): R, G, B = 48 * its three base-5 digits
+		{
+			if (!mark) mark = Actor.Spawn("RCF_Mark", (-170, 0, 110));
+			int c = e.Args[0];
+			mark.bINVISIBLE = c <= 0;
+			mark.SetShade(Color(255, (c % 5) * 48, ((c / 5) % 5) * 48, (c / 25) * 48));
+		}
+		if (e.Name ~== "rcf_mark") Console.Printf("RCF mark %d at t%d", e.Args[0], level.maptime);
+	}
+}
+
+class RCF_Mark : Actor
+{
+	Default { +NOGRAVITY; +NOINTERACTION; +BRIGHT; RenderStyle "Stencil"; Scale 0.6; }
+	States { Spawn: BAR1 A -1; Stop; }
+}

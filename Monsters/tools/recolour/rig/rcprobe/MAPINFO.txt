@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RCP_Probe"
+}

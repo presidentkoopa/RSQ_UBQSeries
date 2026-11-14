@@ -1,0 +1,42 @@
+# Brutal Doom 22's and XMVE's SHARED GORE (every family's guts, chunks, organs, brains, teeth, flesh bits, blood gibs and
+# burnt remains), for bake.py. Owner 2026-11-13: the shared gore took the tier tint (on FireBlu the red guts turned
+# blue); asked what it should do, he picked "Paint it": art per colour that keeps its reds and colours only the flesh
+# bits. rig only, not headset-confirmed.
+#
+# sprites: the shared gore sprite names that RSQ Monsters' Carry (RS_BDTier.zs) colours today, i.e. drawn by a piece
+# that gets an RS_BDHue from a coloured body, minus what already keeps its own look by class name (SuperGore, the
+# BloodMist family, Brutal_Blood, BloodTrails, LiquidBlood, the Burning* runners, XDeathBurned* meat ...). Found two ways:
+#   - on the rig (run rcG_census: Imp, RifleZombie, ShotgunGuy1, BullDemon, Cacodemon_, Revenant1, Mancubus,
+#     BaronofHell2, DarkImp, 13 each in FireBlu Red Gray Black White Green, each killed by another Brutal Doom damage
+#     type; every coloured piece counted by sprite): BLHT BPDL BR7B BR7N BRIB BRIN GUTS XARM XDB5 XDB6 XDT1 XDT5 XME2
+#     XME4 XME5 XME8 XMT1 XMT2 XSKI XSTO XTET ID50 ASHY ASHZ;
+#   - by a static walk of every tierable class's DECORATE (rig/rcg_gore_scan.py: the actors each reaches that Carry does
+#     not leave on their own look, and the gore-folder sprites they draw): also BLOD BLUD CRS1 CRS2 CRS3 CRSB GIBD GIBS
+#     GORX TGIB XDT3 XDMG and the burnt CARB XBRN PBR1 BRZ3 (a corpse class burnt again: its Burn states).
+# Folders: BD22 sprites/GoreGeneric (and /Blood, /Carbonized), sprites/Decorations/Gore, sprites/SFX (the ashes),
+# ExtraSprites ID50; XMVE Sprites/Monsters/GORE (and /CARBONIZED), which overrides most of BD22's copies.
+# Not here: pieces one family owns (heads XHE*, HKHE, the Caco's CCP*, the Dark Imps' D1S*, the Mancubus' MAN*, the
+# Demon's HND8 LEG8 ...): their families. The burning runners (BDT1-3, BRZ3's running frames on a Burning* actor,
+# CRB7, SBRG, TRBR, NJEX, XME1) keep their own look today (Carry leaves "burn" classes alone): not tinted, not baked.
+sprites ASHY ASHZ BLHT BLOD BLUD BPDL BR7B BR7N BRIB BRIN BRZ3 CARB CRS1 CRS2 CRS3 CRSB GIBD GIBS GORX GUTS ID50 PBR1
+sprites TGIB XARM XBRN XDB5 XDB6 XDMG XDT1 XDT3 XDT5 XME2 XME4 XME5 XME8 XMT1 XMT2 XSKI XSTO XTET
+
+# ---- what is the body here (the owner's words: keep its reds, colour only the flesh bits; bone and teeth stay bone) ----
+# skin: the skin's tans and browns (48-79, the same ramp the Imp's and the zombies' skin are drawn in) and the darkest
+# browns 236-239: the arms (XARM, XDT5), the scalp and skull skin on the brain and jaw pieces (BRIB, BRIN, BR7B, BR7N),
+# the flesh chunks (XDT3, GORX, CRS3), the flesh on the disintegrating man (ID50), the bits on a marine's gibs (XDMG).
+part skin 48:79 236:239
+# kept, by not being listed: every red and pink (16-47, 168-191: blood, muscle, guts, brains), bone and teeth (the
+# grays 80-111, the pale yellows and whites 160-167, 208-235, 4), hair (BR7B's green, 112-127), a marine's armour
+# (greens, the tans 128-159), the outlines 0-15, the blue and green blood of other monsters (192-207, 112-127).
+
+# ---- whole pieces that keep every pixel: guts, organs, blood, teeth, burnt remains ----
+# Guts and organs (GUTS, XME4 XDeathGuts, XME5, XME8 organs, XSTO stomach): the intestines are drawn in browns (64-79,
+# 128-143) as well as reds; they are guts, not skin, so they stay as shipped. Teeth (XTET): bone. Blood gibs and pools
+# (BLHT, BLOD, BLUD, BPDL, XDT1, XMT1, XMT2, XME2, XDB5 brain bits, XDB6, CRS1, CRS2, CRSB, GIBS: their red, blue,
+# green, purple variants are other monsters' blood). Burnt (CARB, XBRN, PBR1, BRZ3, GIBD gory ashes, ASHY, ASHZ):
+# charred, ash and fire keep their own (the owner's rule: fire keeps its colours). These are painted as shipped, so the
+# driver draws them with no tint.
+group GUTS,XME4,XME5,XME8,XSTO,XTET,BLHT,BLOD,BLUD,BPDL,XDT1,XMT1,XMT2,XME2,XDB5,XDB6,CRS1,CRS2,CRSB,GIBS,CARB,XBRN,PBR1,BRZ3,GIBD,ASHY,ASHZ keep 0:255
+
+# ---- lumps that keep the old flat tint: none ----

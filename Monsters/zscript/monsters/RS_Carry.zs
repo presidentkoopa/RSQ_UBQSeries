@@ -429,7 +429,13 @@ class RS_CarryLast : EventHandler
 			String look;
 			int ct = ChampTint(tr);
 			if (ct >= 0) { look = String.Format("CHAMPIONS TINT %s", CHAMP_TINTS[ct]); champTinted++; }
-			else if (k && k.rung > k.entry) { look = tr == k.tintId ? String.Format("tier tint %s", RS_BDKit.TintName(k.Tier())) : "NOT its tier tint"; if (tr == k.tintId) onTop++; }
+			else if (k && k.rung > k.entry)
+			{
+				// its tier colour: the tint, or (tr 0) the painted frame drawn for it (RS_BDArt.zs)
+				bool art = tr == 0 && a.picnum.IsValid();
+				look = tr == k.tintId ? String.Format("tier tint %s", RS_BDKit.TintName(k.Tier())) : (art ? String.Format("tier colour %s, painted art", RS_BDKit.TintName(k.Tier())) : "NOT its tier tint");
+				if (tr == k.tintId || art) onTop++;
+			}
 			else if (k) look = tr == 0 ? "plain (entry colour)" : "plain (entry colour), recoloured by another mod";
 			else if (CHColoured(a)) { let lk = RS_LookKeep(a.FindInventory("RS_LookKeep")); look = (lk && tr == lk.wantId) ? "its ColorfulHell colour" : "NOT its ColorfulHell colour"; if (lk && tr == lk.wantId) onTop++; }
 			else look = tr == 0 ? "plain" : "plain, recoloured by another mod";

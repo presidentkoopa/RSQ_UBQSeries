@@ -1,0 +1,25 @@
+# The Mancubus family, part 3: XMVE's Daedabus and Vanilla_Daedabus (its body, deaths, gibs, the marine's fatalities
+# on it, frozen death); for bake.py. Its own file because its hide is green, not brown.
+# XMVE Sprites/Monsters/Daedabus (D4AT D4T1-5 DA3D-DA9D DAED; DB57 is its acid ball: not body), Daedabus/Gibs (M4N4
+# M4NA), Fatality/Daedabus (FDA1 FDAE FDX1 FDXE), Monsters/Freezedeaths FZ6D (the frozen Daedabus).
+sprites D4AT D4T1 D4T2 D4T3 D4T4 D4T5 DA3D DA4D DA5D DA6D DA7D DA8D DA9D DAED M4N4 M4NA FDA1 FDAE FDX1 FDXE FZ6D
+
+# ---- parts ----
+# skin: the green hide, the olive-greens 144-159 (40% of its pixels) and greens 112-127 with the dark olives 9-12.
+part skin 9:12 112:127 144:159
+# Kept, by not being listed: the arm cannons (grays 80-111, 3-4: metal), the mouth, blood and guts (reds 16-47,
+# 168-191), the browns (its harness), outlines, the ice (blues), the marine in the fatalities (below).
+
+# ---- group rules ----
+group * absorb 0:0,5:8 skin 5
+# The hide's lights are a pale gray-green that the palette files under the grays 80-111 (the cannons' metal): a pixel
+# whose own colour is green (Oklab hue 100-175 degrees, chroma 0.025 or more) is hide, whatever its palette index.
+group * hue skin 100 175 0.025 80:111,3:4
+# A tinge of green on the cannons' metal: skin pixels where half or more of the opaque pixels within 2 are not skin
+# keep their own colour.
+group * lonely skin 2 0.5
+group FZ6D keep 80:111 3:4
+# The fatality is two actors: the marine alone (FDA1 A-G, every FDAE frame) and the Daedabus (FDA1 I, FDX1, FDXE).
+# The marine's frames are not the Daedabus's body: they are baked unchanged (a frame with no baked copy would show
+# the live tint), so his green armour and his skin keep their own colours.
+group FDAE,FDA1A,FDA1B,FDA1C,FDA1D,FDA1E,FDA1F,FDA1G keep 0:255

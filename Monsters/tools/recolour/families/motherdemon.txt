@@ -1,0 +1,15 @@
+# The Spider Mastermind family, part 2: BD22's Motherdemon (its body and its death); for bake.py.
+# sprites/Monsters/Motherdemon (MOTH; FATB, which it fires, is Doom 2's Mancubus fireball: not body).
+sprites MOTH
+
+# ---- parts ----
+# skin: the Motherdemon's hide IS red: the reds 16-47 are 74% of its pixels, with the pinks 168-191 and browns. The
+# owner's rule keeps blood red, but on this monster red is the body, so the reds are skin here; its death (MOTH O-T)
+# is its own body torn apart, and that flesh is painted with it. (The plainest choice: the alternative, keeping the
+# reds, would leave the whole monster as shipped.)
+part skin 1:2 13:15 16:47 48:79 128:159 168:191 236:239
+# Kept, by not being listed: the yellow eyes and teeth and the orange glow of its attack (yellows and oranges 160-167,
+# 208-231: the fire's light), the grays (its spine plates), outlines.
+
+# ---- group rules ----
+group * absorb 0:0,5:8 skin 5

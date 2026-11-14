@@ -1,0 +1,2 @@
+# Hand-written part masks for the Draugr. FDR4 (it carries a marine on its shoulders): the marine is above y 30.
+FDR4* keep 0 0 99 30 from=skin

@@ -1,0 +1,9 @@
+/home/claude/rig/packs/doom2.wad
+/mnt/user-data/uploads/975b943c-0.99-LegenDoom_3.0.pk3
+/mnt/user-data/uploads/1_00_brutal22test6.pk3
+/home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/02_BD22_VoxelPack.pk3
+/home/claude/presidentkoopa/rsq_bd_vr_reloaded/BD22_VR-Reloaded_2.0.4i.pk3
+/home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/04_XMVE_MonsterExpansion1.3.1-BD22.pk3
+/home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/06_XMVE_MonsterExpansion_Doom2.pk3
+/home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/05_XMVE_MonsterExpansion_TUD.pk3
+/home/claude/presidentkoopa/rsq_bd_vr_reloaded/pk3/07_XMVE_MonstersNoDropGuns-BD22.pk3

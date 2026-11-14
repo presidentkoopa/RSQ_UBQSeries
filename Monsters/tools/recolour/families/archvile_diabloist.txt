@@ -1,0 +1,9 @@
+# The Arch-vile family's XMVE Diabloist (DIABloist; Sprites/Monsters/Diabloist): body and death (D1AB, D1A2), for
+# bake.py. Its fire and shots (HLFR, VBAL, CBAL, CFCF, CFFX, FDFX, FTRA) are fire: not baked.
+sprites D1AB D1A2
+# skin: the Diabloist's red hide (reds 16-47, 168-191) and its darkest browns. Its fire and the light of its fire on
+# its body (yellows 160-167, oranges 208-235, whites 248-255) keep their own (the owner's rule, as the Arch-vile's).
+# Its eyes are bright yellow: kept.
+part skin 1:2 13:15 16:79 168:191 236:239
+part horn 3:4 80:111
+group * absorb 0:0,5:8 skin 5

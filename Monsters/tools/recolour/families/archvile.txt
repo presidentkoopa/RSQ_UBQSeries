@@ -1,0 +1,14 @@
+# The Arch-vile family, BD22 (TehArchvile): body (DIAB), its burnt-by-its-own-fire death (XVIP, DIBR), gibs and pieces
+# (DIAG, VID2, VID3, VILP), frozen (AFZD, FZDB), for bake.py. sprites: BD22 sprites/Monsters/Archvile (and GORE, Burns),
+# FreezeDeaths/FrozenArchVile. Left out on purpose: PNTG (its pentagram: an effect), shared gore, the player's
+# first-person fatality (AVF1, AVF2). XMVE's Diabloist has its own art: archvile_diabloist.txt.
+sprites DIAB DIBR DIAG VID2 VID3 VILP XVIP AFZD FZDB
+# skin: the Arch-vile's pale hide is the tans and browns 48-79, 128-159 and their darkest browns.
+part skin 1:2 13:15 48:79 128:159 236:239
+part horn 3:4 80:111
+# KEPT, by the owner's rule (fire keeps its own colours): when it casts (DIAB G-P) its body is lit gold by its own fire:
+# those pixels are the yellows 160-167 and oranges 208-235, and they keep their gold. The live tint left them gold too.
+# Reds (wounds, burns), outlines, ice are kept.
+group * absorb 0:0,5:8 skin 5
+group * keepnear 16:47,168:191 1 horn
+group AFZD,FZDB keep 80:111 3:4

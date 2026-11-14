@@ -1,0 +1,52 @@
+# The Chaingunner family (tier family "Chaingunner": BD22 ChaingunGuy1, BDFormerCommander, Ubersoldat, Silvagunner,
+# EvilMarineRifle/Shotgun/SSG/ASG/Chaingun/Rocket/Plasma, FormerMarine, EasyMarineRifleAlive, MrX; XMVE RifleCommando,
+# ZSpecOps, ZSpecOpsRifle, ZSpecOpsRail, Major and their stealth and Vanilla versions), for bake.py. Their bodies,
+# deaths, gibs, fatalities, frozen and burnt deaths.
+# sprites: every sprite name whose lumps live in these monsters' own art folders (BD22 sprites/Monsters/Chaingunner/*,
+# Fatality/Fatality_Chaingunner, FreezeDeaths/FrozenMajor, WCS/Eviternity/Former Commander; XMVE Sprites/Monsters/
+# Major, RifleCommando, ZSpecOps, ZSpecOpsRail, their Fatality and StealthKills folders), plus the pieces in shared
+# folders that only this family reaches (out/frame_measure_2026-11-13.json: ExtraSprites ID14 ID18, ThrownMonsters
+# X724 X725, frozen C2FZ FZZ2, Incinerate CB06, carbonized CPBR, Z2Z7: a ZSpecOps death filed under XMVE's Zombie Men).
+# The Evil Marines draw the player's own marine sprites (EEEVILLL.dec: PLAY, MARN, MAR5, MAR6, MASG, MRSG, MSSG, PLA3,
+# PLA6, PLA9, PL42, PL5S, PROL, PMET); they are baked too. That costs the player nothing: the driver draws the art only
+# on an actor that wears a tier tint, and the player never does. Left out: 9MBX 9MLS (the Former Commander's shots).
+# Brutal Doom's generic gore and burnt bodies are shared by every family and keep the live tint.
+sprites 1CH9 2CH9 3CH9 4CH1 4CH2 4CH3 4CH4 4CH5 4CH6 4CH7 4CH8 4CH9 99ST ACB0 ACHS ACP0 ACP1 ACPS ANWV BEAC BR95 C2FZ C8MF CB06
+sprites CFTA CFTB CFTC CHHE CPBK CPBR CPD4 CPD5 CPDE CPDR CPHD CPHM CPHS CPOD CPOP CPOS CPOW CPS2 CPSC FZD3 FZZ2 HND3 ID14 ID18
+sprites LEG3 MAR5 MAR6 MARN MASG MPOS MPSD MRSG MSSG PL42 PL5S PLA3 PLA6 PLA9 PLAY PMET PROL RM19 SFCG SFCM SFZS X724 X725 XFZD
+sprites Z2Z7 Z2Z8 Z2Z9 ZHE2 ZID9 ZOLS ZP03 ZP04 ZP3X ZPFT ZPO3 ZPO5 ZSP2 ZSP3 ZSP4 ZSP5 ZSP6
+
+# ---- what is the body (the owner's rule 11-13 09:49: the BODY is recoloured; guns, metal, eyes, blood and fire keep
+# their own). These are humans: the body is their armour and their skin (the plainest reading). ----
+# skin: the chaingunner's red armour (the dark reds 32-47 with their highlights 16-31) and the skin's tans and browns
+# (48-79), with the darkest browns 1-2, 13-15, 236-239. His blood and wounds are the bright reds 168-191 and keep.
+part skin 1:2 13:15 16:79 236:239
+# kept, by not being listed: 0, 5-8 outlines; 3-4, 80-111 grays (the chaingun, every gun's metal); 9-12, 112-159 greens
+# and tans (the marine in the fatalities; the Evil Marines' own, below); 160-167, 208-235 yellows and oranges (the
+# ammo belt, muzzle flashes, fire); 168-191 bright reds (blood); 192-207, 240-255 blues (the chaingunner's eyes, ice).
+
+# ---- looks, each with its own shading statistics ----
+# The Former Commander (BD22 BDFormerCommander) and the Major (XMVE Major): their armour is also in the bright reds
+# 168-191, so for them those take the colour; blood drawn in the same reds in their own deaths takes it too.
+statgroup major 1CH9,2CH9,3CH9,4CH,CPS2,C8MF,SFCM,XFZD,ANWV,99ST
+# THE CHOICE FOR THE OWNER: the ZSpecOps (XMVE ZSpecOps, ZSpecOpsRifle, ZSpecOpsRail) wear black and gray armour in the
+# SAME grays as their guns (as the shotgunner): the grays keep, their skin (hands, any bare face) carries the colour;
+# their red visor and wounds (16-47) keep. Painting their armour needs per-frame masks or a human painter.
+statgroup specops Z2Z7,Z2Z8,Z2Z9,ZHE2,ZID9,ZOLS,ZP03,ZP04,ZP3X,ZPFT,ZPO3,ZPO5,ZSP,SFZS
+# The Evil Marines (BD22, the player's marine): green armour (112-127), khaki and gold (128-159), skin (48-79).
+statgroup marine PLAY,MARN,MAR5,MAR6,MASG,MRSG,MSSG,PLA3,PLA6,PLA9,PL42,PL5S,PROL,PMET,X725
+
+# ---- group rules (applied in this order) ----
+group 1CH9,2CH9,3CH9,4CH,CPS2,C8MF,SFCM,XFZD,ANWV,99ST set skin 168:191
+group Z2Z7,Z2Z8,Z2Z9,ZHE2,ZID9,ZOLS,ZP03,ZP04,ZP3X,ZPFT,ZPO3,ZPO5,ZSP,SFZS keep 16:47
+# The marines: their armour is the greens and tans; their blood and wounds (16-47, 168-191) keep.
+group PLAY,MARN,MAR5,MAR6,MASG,MRSG,MSSG,PLA3,PLA6,PLA9,PL42,PL5S,PROL,PMET,X725 set skin 9:12 112:159
+group PLAY,MARN,MAR5,MAR6,MASG,MRSG,MSSG,PLA3,PLA6,PLA9,PL42,PL5S,PROL,PMET,X725 keep 16:47
+# Near-black pixels inside the body are its deepest shadows, not outlines (as the Imp).
+group * absorb 0:0,5:8 skin 5
+# The fatalities and stealth kills have the player's marine in them (green armour, tan helmet, boots and belt 112-159,
+# kept by not being listed); his few brown skin pixels (48-79, his arms) take the colour with the victim's.
+# The frozen deaths are under ice: the grays and whites are the ice's highlights (as the Imp's).
+group FZD3,XFZD,C2FZ,FZZ2 keep 80:111 3:4
+
+# ---- lumps that keep the old flat tint: none ----

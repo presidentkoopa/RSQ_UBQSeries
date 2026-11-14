@@ -1,0 +1,94 @@
+version "4.14"
+// TEST ONLY: recolour probe (rig). Lists what the engine draws for the imp family; lines up imps for the driver.
+class RCP_Probe : EventHandler
+{
+	Array<Actor> row;
+	Actor xt;
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (e.Name ~== "rcp_list")
+		{
+			static const String L[] = { "2136:0", "2M40:14", "BOSB:18", "BR94:2", "FZD4:3", "HND4:26", "IFZD:0", "IHED:0", "IMPC:12", "IPFP:16", "IUSA:5", "IZD1:8", "IZD2:3", "IZD3:4", "IZD4:15", "LEG4:26", "T6SW:7", "TR06:22", "TR08:11", "TR09:9", "TR97:5", "TRO1:2", "TRO2:7", "TRO3:21", "TRO4:21", "TROA:8", "TROD:10", "TROG:12", "TROH:20", "TROO:25", "TROS:2", "TROT:8", "TROZ:0", "X728:8", "XHE4:8", "ZL3E:10" };
+			State st = p.SpawnState;
+			for (int i = 0; i < L.Size(); i++)
+			{
+				Array<String> q; L[i].Split(q, ":");
+				int nf = q[1].ToInt();
+				int spr = Actor.GetSpriteIndex(Name(q[0]));
+				for (int f = 0; f < nf; f++)
+					for (int r = 0; r < 16; r++)
+					{
+						TextureID t; bool m; Vector2 sc;
+						[t, m, sc] = st.GetSpriteTexture(r, 0, (0, 0), spr, f);
+						if (!t.IsValid()) continue;
+						String tn = TexMan.GetName(t);
+						int lump = Wads.CheckNumForName(tn, Wads.ns_sprites);
+						Console.Printf("RCL %s %d %d %s %d %d", q[0], f, r, tn, m, lump >= 0 ? Wads.GetLumpLength(lump) : -1);
+					}
+			}
+		}
+		if (e.Name ~== "rcp_paths")
+		{
+			static const String P[] = { "rsrecolour/green/TROOA1.png", "rsrecolour/green/TROOA1", "RSRECOLOUR/GREEN/TROOA1.PNG", "rsrecolour/red/TROOA2C8.png", "rsrecolour/green/NOPE.png" };
+			for (int i = 0; i < P.Size(); i++) { TextureID t = TexMan.CheckForTexture(P[i], TexMan.Type_Any); int w, h; if (t.IsValid()) [w, h] = TexMan.GetSize(t); Console.Printf("RCP path %s valid %d size %d %d", P[i], t.IsValid(), w, h); }
+		}
+		// a row of eight imps, each turned 45 degrees more, all wearing colour e.Args[0] (2..13), frozen in Spawn's first frame
+		if (e.Name ~== "rcp_row")
+		{
+			static const String C[] = { "", "", "green", "blue", "purple", "cyan", "brown", "yellow", "fireblu", "gray", "red", "abyss", "black", "white" };
+			for (int i = 0; i < 8; i++)
+			{
+				Vector3 at = (e.Args[1] ? e.Args[1] : -40, e.Args[2] ? (-3.5 * e.Args[2] + e.Args[2] * i) : (-196 + 56 * i), 0);
+				let a = Actor.Spawn("DoomImp", at, ALLOW_REPLACE);
+				if (!a) continue;
+				a.bDORMANT = true;
+				a.angle = a.AngleTo(p) + 45 * i;
+				a.SetState(a.SpawnState); a.tics = -1;
+				if (e.Args[0] >= 2) a.A_SetTranslation(Name("rs_bdtier_" .. C[e.Args[0]]));
+				row.Push(a);
+				Console.Printf("RCP row %d %s at %.0f %.0f angle %.0f spr %d fr %d trans %d", i, a.GetClassName(), a.pos.x, a.pos.y, a.angle, int(a.sprite), a.frame, int(a.Translation));
+			}
+		}
+		if (e.Name ~== "rcp_recolour")
+		{
+			static const String C2[] = { "", "", "green", "blue", "purple", "cyan", "brown", "yellow", "fireblu", "gray", "red", "abyss", "black", "white" };
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { if (e.Args[0] >= 2) row[i].A_SetTranslation(Name("rs_bdtier_" .. C2[e.Args[0]])); else row[i].A_SetTranslation('None'); }
+			Console.Printf("RCP recolour %d", e.Args[0]);
+		}
+		if (e.Name ~== "rcp_frame")    // every row imp to sprite frame e.Args[0] of its current sprite (or a named state)
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].frame = e.Args[0]; }
+			Console.Printf("RCP frame %d", e.Args[0]);
+		}
+		// picnum + a translation on an UNtracked imp: does the translation apply on a picnum texture? (x test)
+		if (e.Name ~== "rcp_xt")
+		{
+			xt = Actor.Spawn("DoomImp", (-40, 260, 0), ALLOW_REPLACE);
+			if (xt) { xt.bDORMANT = true; xt.angle = xt.AngleTo(p); xt.SetState(xt.SpawnState); xt.tics = -1;
+				xt.picnum = TexMan.CheckForTexture("rsrecolour/white/TROOA1.png", TexMan.Type_Any);
+				if (e.Args[0]) xt.A_SetTranslation("rcp_red");
+				Console.Printf("RCP xt picnum %d trans %d", int(xt.picnum), int(xt.Translation)); }
+		}
+		if (e.Name ~== "rcp_kill")    // kill the row: e.Args[0] 0 plain, 1 extreme (gib), 2 fire, 3 ice
+		{
+			static const Name DT[] = { 'None', 'Extreme', 'Fire', 'Ice' };
+			for (int i = 0; i < row.Size(); i++) if (row[i] && row[i].health > 0) { row[i].bDORMANT = false; row[i].tics = 1; row[i].DamageMobj(p, p, e.Args[0] == 1 ? 1000 : 100000, DT[e.Args[0]], DMG_FORCED); }
+			Console.Printf("RCP kill %d", e.Args[0]);
+		}
+		if (e.Name ~== "rcp_state")
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) Console.Printf("RCPS %d %s hp %d spr %d fr %d trans %d picnum %d xflip %d", i, row[i].GetClassName(), row[i].health, int(row[i].sprite), row[i].frame, int(row[i].Translation), int(row[i].picnum), row[i].bXFLIP);
+		}
+		if (e.Name ~== "rcp_sprite")   // every row imp: sprite TROO (1) or TROS (0), frame e.Args[1]
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].sprite = Actor.GetSpriteIndex(e.Args[0] == 1 ? 'TROO' : 'TROS'); row[i].frame = e.Args[1]; }
+			Console.Printf("RCP sprite %d frame %d at t%d gametic %d", e.Args[0], e.Args[1], level.maptime, gametic);
+		}
+		if (e.Name ~== "rcp_mark") Console.Printf("RCP mark %d at t%d gametic %d", e.Args[0], level.maptime, gametic);
+		if (e.Name ~== "rcp_look")    // the view: angle e.Args[0], pitch e.Args[1]
+		{
+			p.angle = e.Args[0]; p.pitch = e.Args[1];
+		}
+	}
+}

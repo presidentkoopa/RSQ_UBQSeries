@@ -56,7 +56,7 @@ MODS = {
                      'SNDINFO.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sprites', 'graphics',
                      'VOXELDEF.txt', 'voxels', 'sounds', 'MODELDEF.torch']),
     'Graveyard':    ('RSQ_Graveyard.pk3', 'all', ['.gitignore', 'tools/*', 'add-ons/*', 'docs/*']),   # m8f's Graveyard (GPLv3), RSQ Edition: the whole folder ships (copying.txt, credits.txt, README.md included)
-    'Monsters':     ('RSQ_Monsters.pk3', 'all', ['*.md', '.gitignore', 'EXCLUDED.txt', 'ELITE_SYSTEMS.txt', 'docs/*']),   # RS Monsters (owner's), Quest edition
+    'Monsters':     ('RSQ_Monsters.pk3', 'all', ['*.md', '.gitignore', 'EXCLUDED.txt', 'ELITE_SYSTEMS.txt', 'docs/*', 'tools/*']),   # RS Monsters (owner's), Quest edition; tools/: the recolour bake and its rig probes (2026-11-13), never shipped
     'GunBonsaiOffhandVR': ('RSQ_GunBonsaiVR.pk3', 'all', ['.git*', 'build.ps1', 'NOTES.md', 'readme.txt', 'README_draft.md', 'tools/*', 'docs/*', '*.pk3']),  # readme.txt: the old pre-README notes (0.99a item 30), not shipped; README_draft.md: not yet approved
 }
 
@@ -99,10 +99,26 @@ def build(folder):
     print('built pk3/%s (%d files)' % (name, len(entries)))
 
 
+# MonsterRecolour: the painted colour art for RSQ Monsters, one pk3 per colour (pk3/RSQ_BDXMTiers_<Colour>.pk3), built
+# by tools/build_monster_art.py from whatever is painted in MonsterRecolour/rsrecolour/ (2026-11-13).
+EXTRA = ['MonsterRecolour']
+
+
+def build_art():
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import build_monster_art as bma
+    bm = bma.read_brightmaps()
+    for c in bma.COLOURS:
+        bma.build(c, bm)
+
+
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
-    want = sys.argv[1:] or list(MODS)
+    want = sys.argv[1:] or list(MODS) + EXTRA
     for m in want:
+        if m in EXTRA:
+            build_art()
+            continue
         if m not in MODS:
-            sys.exit('unknown mod folder: %s (one of: %s)' % (m, ', '.join(MODS)))
+            sys.exit('unknown mod folder: %s (one of: %s)' % (m, ', '.join(list(MODS) + EXTRA)))
         build(m)

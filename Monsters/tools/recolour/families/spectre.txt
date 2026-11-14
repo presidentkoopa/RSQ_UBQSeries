@@ -1,0 +1,14 @@
+# The Spectre family (bake.py). BD22's Spectre (Spectro) is NOT drawn as fuzz: it is BD22's Demon drawn additive
+# (RenderStyle Add, Alpha 0.45) with the Demon's own lumps (SARG and the rest: families/demon.txt), and SPEC, its
+# lurking frames, is only a pair of red eyes (eyes keep their own: nothing to paint, left out). XMVE's BloodSpectre is
+# the Blood Demon's lumps drawn additive (demon.txt). So the Spectre family's own art is BD22's Invisible Alien
+# (InvisibleAlien, WCS/AncientAliens: its body and its gore AlienGore 1AAG-12AG).
+# Left out, on the live tint: PBR2 (its burnt body: Carbonized, embers), A6AG (its cloaked shimmer: no body drawn).
+sprites AACA 1AAG 2AAG 3AAG 4AAG 5AAG 6AAG 7AAG 8AAG 9AAG 10AG 11AG 12AG
+# the black hide: near-blacks 5-8 (half its pixels), the dark grays 96-111, 0-2 and 247 (its deepest shadow). It has
+# no horns. Kept: its purple blood and goo, red eyes, the light grays and blues of its cloak's shimmer.
+part skin 0:2 5:8 96:111 247
+group * keepnear 16:47,168:191 1 skin
+# its purple goo is drawn in true colour and its nearest palette entries are the grays: the goo is told apart by its own
+# colour (Oklab chroma 0.09-0.11; the black hide is under 0.01) and kept.
+group * keepsat 0.04

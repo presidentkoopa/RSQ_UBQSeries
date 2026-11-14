@@ -1,0 +1,25 @@
+# The Lost Soul family (bake.py): BD22's Lost Soul (TehLostSoul: LSOL, LSO9 burning), Alpha Lost Soul (WCS/DoomZero:
+# SSKL, gibs ALG1-3), Ancient Flying (AncientFlyingCunt, WCS AlienGuardian: AAAG, A1AG), XMVE's Impure Soul (ISUL,
+# its bone shards LGI1-3, which win BD22's LGI) and Phantasm (Phantasm, Vanilla_Phantasm: STLK, its bits LG11-13).
+# The body is the skull (bone and horns); the flames keep their own colour (the owner's rule: fire keeps its own).
+# Left out, on the live tint: KFZD (the frozen Lost Soul: all ice).
+sprites LSOL LSO9 SSKL ALG1 ALG2 ALG3 AAAG A1AG ISUL LGI1 LGI2 LGI3 STLK LG11 LG12 LG13
+statgroup lsol LSOL,LSO9
+statgroup alpha SSKL,ALG
+statgroup ancient AAAG,A1AG
+statgroup impure ISUL,LGI
+statgroup phantasm STLK,LG1
+# BD22 Lost Soul: a brown skull and horns (1-2, 13-15, 48-79, 128-151, 236-239). Kept: its flames (the yellows and
+# oranges 160-167, 208-235 and the reds 16-47 inside them), red eyes, the smoke (247).
+group LSOL,LSO9 set skin 1:2,13:15,48:79,128:151,236:239
+group LSOL,LSO9 absorb 0:0,5:8 skin 5
+# Alpha Lost Soul: a white skull (the grays 80-111, 3-4). Kept: its eyes, its green death blast (112-127).
+group SSKL,ALG set skin 3:4,80:111
+# Ancient Flying: a brown shell (5-8, 13-15, 64-79, 128-143, 236-239). Kept: its red flesh and eyes, its fire.
+group AAAG,A1AG set skin 5:8,13:15,64:79,128:151,236:239
+# Impure Soul: a white skull with black shadows (0, 5-8, 80-111, 3-4, 247). Kept: its blue flame (192-207).
+group ISUL,LGI set skin 0:0,3:8,80:111,247
+# Phantasm: a gray-teal skull (3-8, 80-111, 247). Kept: its green flame and blast (112-127).
+group STLK,LG1 set skin 0:0,3:8,80:111,247
+# teeth: grays touching a red mouth stay white (as on the Imp)
+group SSKL,ALG,ISUL,LGI,STLK,LG1 keepnear 16:47,168:191 1 skin

@@ -1,0 +1,36 @@
+# The Baron of Hell family, the pink-skinned Barons: BD22 BaronofHell2 and its bosses BaronBoss1/2 (the same art), and
+# XMVE's Cyberbaron (a Baron with a metal arm and leg), for bake.py: bodies, deaths, crawlers, gibs, fatalities, frozen
+# deaths. The Baron family's other tier classes have their own art and their own files: baron_belphegor.txt (Belphegor2),
+# baron_afrit.txt (Afrit), baron_bruiser.txt (XMVE BruiserDemon), baron_pyro.txt (XMVE PyroDemon),
+# baron_terminator.txt (XMVE TerminatorDemon, TerminatorBoss).
+# sprites: BD22 sprites/Monsters/BruiserBrothers/BARONOFHELL (and GIBS), MonsterFatality/BaronOfHell_Fatality,
+# FreezeDeaths/FrozenBaron; XMVE Sprites/Monsters/CyberBaron, MonsterFatality/CyberBaron, FrozenDeads FBCY.
+# Left out, on purpose: generic gore and burnt bodies other families share (CARB, XBRN ...: the live tint, as the Imp's);
+# other families' pieces the walk reaches (TROO, HND4, SPOS, POSR ...); sprites/Fatality/* (the player's first-person
+# fatalities, drawn on the weapon: never an actor the driver can colour).
+# BOSS: doom2.wad's own Baron art, which BaronofHell2 still draws (its corpse and its raise: BD22 actors/Enemies/
+# Baron.dec 'BOSS O', 'BOSS NMLKJI'); the static walk missed it (an IWAD sprite), the rig showed it on the tint (rc3_bar).
+sprites BOSS
+sprites BARO BDSS BNRJ BOBA BOH3 BTS3 BADD BADH BBO2 BTO2 GORD KSA8 XHE5 3HF1 3HF2 KNTF FZD7 BFZD FZG1 FZG2
+sprites CBOS CB4R CY8D CB4F P19D FBCY
+
+# ---- parts, by the pixel's nearest Doom palette index (paint.py). Anything not listed keeps its own pixels. ----
+# skin: the Baron's pink hide is the pinks and reds 16-47 (his upper body, face, horns' roots), his furred legs are the
+# browns 48-79 and their darkest browns 1-2, 13-15, 236-239; the few olives 128-159 are leg shading. All one body.
+# His horns are drawn in the same browns/pinks (no gray of their own), so they take the skin's palette.
+part skin 1:2 13:15 16:79 128:159 236:239
+# horn: the grays (claws, teeth).
+part horn 3:4 80:111
+# kept, by not being listed (the owner's rule 11-13 09:49): 0, 5-8 outlines; greens 9-12, 112-127: the Baron's green
+# blood and the green fire in his hands; dark reds 168-191: the Cyberbaron's red lights; yellows, oranges (fire), blues
+# (ice).
+# NOTE the Baron's skin IS the reds 16-47, so a wound's red is painted with it: his blood is green, his red is skin.
+
+# ---- group rules (applied in this order) ----
+group * absorb 0:0,5:8 skin 5
+group * keepnear 168:191 1 horn
+# The Cyberbaron's arm, leg and gun are metal: every gray on his sprites is metal, not horn (metal keeps its own).
+group CBOS,CB4R,CY8D,CB4F,P19D,FBCY keep 3:4 80:111
+# Frozen bodies are under ice: grays and blues are ice.
+group FZD7,BFZD,FZG1,FZG2,FBCY keep 80:111 3:4
+masks baron_masks.txt

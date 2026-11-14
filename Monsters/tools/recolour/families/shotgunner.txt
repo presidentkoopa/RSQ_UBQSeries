@@ -1,0 +1,53 @@
+# The Shotgunner family (tier family "Shotgunner": BD22 ShotgunGuy1, SMGGuy; XMVE RiotShieldGuy, ASGGuy,
+# SuperShotgunZombie, QuadShotgunZombie, PyroSergeant, RocketGuy, HellTrooper, BFGZombie and their stealth and Vanilla
+# versions), for bake.py. Their bodies, rolls, deaths, gibs, fatalities and frozen deaths.
+# sprites: every sprite name whose lumps live in these monsters' own art folders (BD22 sprites/Monsters/Shotgunner/*,
+# Fatality/Fatality_ShotgunGuy, FreezeDeaths/FrozenShotgunGuy, FrozenSMGGuy; XMVE Sprites/Monsters/ShotgunGuy, ASGGuy,
+# SSGGuy, QSGGuy, RiotSergeant, PyroSergeant, RocketGuy, Demon Tech Trooper, their Fatality and StealthKills folders),
+# plus the pieces in shared folders that only this family reaches (out/frame_measure_2026-11-13.json: ExtraSprites
+# ID16, ThrownMonsters X722, frozen FZ5D FZHT FZQ2 FZQ3 FZQ4). Brutal Doom's generic gore and burnt bodies are shared
+# by every family and keep the live tint.
+sprites 02CB 13DG 1D11 1F11 5L1D AD12 AD14 AD16 AGLS AS11 AS32 ASAK ASAM ASG1 ASG3 ASG5 ASG6 ASG7 ASG8 ASG9 ASGA ASGH ASGS ASGZ
+sprites BR93 BR97 BR98 F4SG FRSA FSP3 FSP6 FTYS FZ5D FZD2 FZHT FZQ2 FZQ3 FZQ4 H3DG HEDQ HP2X HPO5 HSLS HT11 HT14 HT16 HTAD HTD1
+sprites HTD2 HTD3 HTD4 HTD5 HTD6 HTDH HTF1 HTMS HTMX HTPA HTS7 HTSH HTWA HTZA HXZ6 HZD2 HZD3 ID16 ID32 IQ14 IQ16 IR11 LEG2 LEGQ
+sprites PSS3 Q3CB QARM QHED QMAK QMAM QP3X QPDH QPO3 QPO4 QPO5 QPO6 QPXS QSZM QSZX QXXZ QZD1 QZD2 QZD3 QZD4 QZFT QZHS QZLF QZRF
+sprites QZY1 QZY2 QZY3 RPOS RPSZ RSP6 S1V1 S2V1 S3V1 SFAS SFSZ SFV1 SFZD SGF8 SHID SMAK SMAM SMBM SOSL SP2X SPDH SPO3 SPO4 SPO5
+sprites SPOS SPSR SPSS SPSX SPSY SPV4 SXS2 SXSX SZD1 SZD3 SZD4 U6M5 UDM2 UDMI UFZD X722 XHE1 XHEQ YRO3 YRO4 Z1Z7 Z5Z7 ZP05 ZQLS
+sprites ZRO3 ZRO4 ZRO5 ZRO6 ZSLS ZSS9 ZXZ6 ZXZ7
+
+# ---- what is the body (the owner's rule 11-13 09:49: the BODY is recoloured; guns, metal, eyes, blood and fire keep
+# their own). These are humans: the body is their uniform and their skin (the plainest reading). ----
+# skin: the skin's tans and browns (48-79) with the darkest browns 1-2, 13-15, 236-239.
+part skin 1:2 13:15 48:79 236:239
+# THE CHOICE FOR THE OWNER: the shotgunner's uniform (BD22 ShotgunGuy, SMGGuy; XMVE QSG, rocket, riot and pyro
+# sergeants) is black and dark gray, drawn in the SAME grays (96-111, 5-8) as his shotgun and every gun's metal (rig
+# frames, palette maps 2026-11-13: the two cannot be told apart by colour). The guns keep their own colour, so these
+# men's grays are kept and their skin (face, bare arms) carries the colour. Painting their uniforms needs per-frame
+# masks or a human painter. Also kept: 0, 5-8 outlines; 3-4, 80-111 grays; 9-12, 112-127 greens; 16-47, 168-191 reds
+# (Brutal Doom's wounds and blood in the body); 160-167, 208-235 yellows and oranges (muzzle flashes); the blues.
+
+# ---- looks with uniforms of their own colour, each with its own shading statistics ----
+# The ASG guy (XMVE ASGGuy): an olive and khaki vest and webbing (112-159). The SSG guy (XMVE SSGGuy, a helmeted
+# zombie): khaki and olive (128-159).
+statgroup asg AD12,AD14,AD16,AGLS,AS11,AS32,ASAK,ASAM,ASG,BR97,YRO3,YRO4,Z5Z7,F4SG,SFAS
+statgroup ssg BR98,H3DG,HP2X,HPO5,HSLS,HXZ6,HZD2,HZD3,ID32,S1V1,S2V1,S3V1,SPV4,UDM2,UDMI,ZP05,U6M5,Z1Z7,1D11
+# The Hell Trooper (XMVE HellTrooper, BFGZombie: Demon Tech Trooper): a hooded robe in the bright reds 168-191 and the
+# reds 32-47. The robe is the body, so for him those reds take the colour; the blood drawn into his own deaths
+# (HTD*) is in the same reds and takes it too (a human painter could split them).
+statgroup trooper HT
+
+# ---- group rules (applied in this order) ----
+group AD12,AD14,AD16,AGLS,AS11,AS32,ASAK,ASAM,ASG,BR97,YRO3,YRO4,Z5Z7,F4SG,SFAS set skin 112:159
+group BR98,H3DG,HP2X,HPO5,HSLS,HXZ6,HZD2,HZD3,ID32,S1V1,S2V1,S3V1,SPV4,UDM2,UDMI,ZP05,U6M5,Z1Z7,1D11 set skin 128:159
+group HT set skin 32:47 168:191
+# Near-black pixels inside the body are its deepest shadows, not outlines (as the Imp).
+group * absorb 0:0,5:8 skin 5
+# The skin's lightest pinks (16-23) inside the face and arms are highlights, not wounds (a wound is a cluster).
+group * absorb 16:23 skin 5
+# The fatalities and stealth kills have the player's marine in them (green armour, tan helmet, boots and belt 112-159):
+# those stay his.
+group 02CB,FRSA,FSP3,FTYS,SFSZ,SGF8,F4SG,Q3CB,QZY1,QZY2,QZY3,FSP6,SFAS keep 112:159
+# The frozen deaths are under ice: the grays and whites are the ice's highlights (as the Imp's).
+group FZD2,SFZD,UFZD,FZ5D,FZHT,FZQ2,FZQ3,FZQ4 keep 80:111 3:4
+
+# ---- lumps that keep the old flat tint: none ----

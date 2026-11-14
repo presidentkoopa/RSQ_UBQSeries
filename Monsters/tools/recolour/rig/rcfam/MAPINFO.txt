@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RCF_Demo"
+}

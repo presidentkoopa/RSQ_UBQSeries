@@ -1,0 +1,43 @@
+# The Cacodemon family (bake.py): BD22's Cacodemon (Cacodemon_: HEAD, its gibs and fatalities), Caco Asshole (WCS
+# Eviternity: BCAC, gore ACA1-4), XMVE's Aracnorb (Aracnorb, XVStealthAracnorb: ACNB, ACNF), Impure Elemental
+# (ImpureElemental, StealthImpureElemental: IMCC) and Overlord (OverLord, SuperOverlord, Vanilla_Overlord: OVER, OVF1-8,
+# OF31, fatality O78F). The Aracnorb Queen (AracnorbQueen; ARNQ) is painted by spidermastermind.txt (its BOSS kinds are
+# that family's; the same lumps), not here.
+# Left out: their projectiles and effects (PLDB PLDC BLST CBTS EBLT AFX1 DLIT HADE HEFX LFX1 LFX2 and ACNF's sparks are
+# drawn but are not body: ACNF is listed, its sparks D-F are kept by the parts), XDT6 (XMVE's generic gore wins it).
+# On the live tint: frozen bodies (FZDC CFZD: all ice), FTAC (the Aracnorb's fatality: the marine's tan skin and the
+# Aracnorb's brown hide are the same palette ramp; a frame for a human painter or masks).
+sprites HEAD HEDC CACB CACL CACX CCD1 CCD2 CCD3 CCD5 CCP1 CCP2 CCP3 CCP4 CCP5 CFPF CA2F CACF
+sprites BCAC ACA1 ACA2 ACA3 ACA4 ACNB ACNF IMCC OVER OVF1 OVF2 OVF3 OVF4 OVF5 OVF6 OVF8 OF31 O78F
+statgroup caco HEAD,HEDC,CACB,CACL,CACX,CCD,CCP,CFPF,CA2F,CACF
+statgroup asshole BCAC,ACA
+statgroup aracnorb ACNB,ACNF
+statgroup impure IMCC
+statgroup overlord OVER,OVF,OF31,O78F
+# Cacodemon: the red hide is the reds 16-47 and 168-191; its horns and teeth the grays 80-111 and 3-4. Kept: its blue
+# blood and mouth (192-207, 240-247), its green eye, the marine in the fatalities (greens, tans). Teeth touching the
+# blue mouth stay white.
+group HEAD,HEDC,CACB,CACL,CACX,CCD,CCP,CFPF,CA2F,CACF set skin 16:47,168:191
+group HEAD,HEDC,CACB,CACL,CACX,CCD,CCP,CFPF,CA2F,CACF set horn 3:4,80:111
+group HEAD,HEDC,CACB,CACL,CACX,CCD,CCP,CFPF,CA2F,CACF absorb 0:0,5:8 skin 5
+group HEAD,HEDC,CACB,CACL,CACX,CCD,CCP,CFPF,CA2F,CACF keepnear 192:207,240:247 1 horn
+group CFPF,CA2F,CACF keepnear 9:12,48:79,112:159 2 horn
+# Caco Asshole: a gray stone hide, horns of the same stone (0, 3-8, 80-111): all skin. Kept: red eyes and mouth.
+group BCAC,ACA set skin 0:0,3:8,80:111
+# Aracnorb: a brown hide and legs (1-2, 13-15, 64-79, 128-159, 236-239); the light grays 80-111, 3-4 its claws and
+# teeth. Kept: its green eye, red gore, yellow sparks.
+group ACNB,ACNF set skin 1:2,13:15,48:79,128:159,236:239
+group ACNB,ACNF set horn 3:4,80:111
+group ACNB,ACNF absorb 0:0,5:8 skin 5
+group ACNB,ACNF keepnear 16:47,168:191 1 horn
+# Impure Elemental: a black hide (0, 5-8, 96-111), silver horns (80-95, 3-4). Kept: its blue glow and innards.
+group IMCC set skin 0:0,5:8,96:111
+group IMCC set horn 3:4,80:95
+# Overlord: the flesh is the reds and pinks 16-47 and 168-191; its horns the browns 64-79, 128-151. Its black spiked
+# shell (0-8, 96-111) is armour: kept (the owner's rule: metal keeps its own). Its death bursts into blood (OVER N-V,
+# masked: kept). The fatality's marine keeps his own.
+group OVER,OVF,OF31,O78F set skin 16:47,168:191
+group OVER,OVF,OF31,O78F set horn 64:79,128:151
+group O78F,OVF8 keepnear 112:127 3 horn
+group O78F,OVF8 keepnear 112:127 1 skin
+masks caco_masks.txt

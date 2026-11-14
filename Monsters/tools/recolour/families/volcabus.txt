@@ -1,0 +1,22 @@
+# The Mancubus family, part 2: BD22's Volcabus (its body, deaths, gibs, the marine's fatalities on it); for bake.py.
+# Its own file because its hide is grayer than the Mancubus's (the bake reads a family's shading range per part).
+# sprites/Monsters/Volcabus (FAT2 A-J, F4T2 F5T2 F6T2 F7T2 F8T2 FA72 FATO; S4BA is its fireball: not body),
+# Volcabus/Gibs (VOLA; V0LC is an empty lump), Fatality/Fatality_Volcabus and XMVE Fatality/Volcabus (FA2F FA3F).
+# F7T2 J is XMVE's frozen Volcabus (Monsters/Freezedeaths); F7T2 G is its burning death.
+sprites FAT2 F4T2 F5T2 F6T2 F7T2 F8T2 FA72 FATO VOLA FA2F FA3F
+# FAT2 K-R are the brown Mancubus's gore (mancubus.txt).
+skip FAT2K,FAT2L,FAT2M,FAT2N,FAT2O,FAT2P,FAT2Q,FAT2R
+
+# ---- parts ----
+# skin: the gray-tan hide, the tans 128-159 (a third of its pixels) and the browns 48-79, with the darkest browns
+# 1-2, 13-15, 236-239. Its arms are flesh (ribbed, the same tans as the body), not metal: they are skin.
+part skin 1:2 13:15 48:79 128:159 236:239
+# Kept, by not being listed: the chain harness (grays 80-111, 3-4: metal), the arms' red muzzles, the mouth, blood and
+# guts (reds), fire (F7T2 G burns: its flames keep their colours), the marine (greens), outlines, ice (blues).
+
+# ---- group rules ----
+group * absorb 0:0,5:8 skin 5
+# The frozen Volcabus is under ice: its grays are the ice's highlights.
+group F7T2J keep 80:111 3:4
+# The fatalities have a marine in them: his helmet and boots are olives 144-159 touching his green armour.
+group FA2F,FA3F keepnear 112:127 3 skin

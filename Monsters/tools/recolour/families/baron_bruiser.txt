@@ -1,0 +1,12 @@
+# The Baron family's XMVE BruiserDemon (Sprites/Monsters/BruiserDemon): body (BRUS) and death (BRUD),
+# for bake.py. XXBF, BRBA and BRB2 are its fireballs and their bursts: fire, not baked.
+sprites BRUS BRUD
+# The Bruiser is a fire demon whose hide is drawn in the fire's own palette: red-orange skin (reds 16-47, 176-191 and
+# the oranges 208-223, 232-235), black legs (near-blacks and grays: dark hide, no metal on it). The plainest choice:
+# all of that is its body and is painted; the fire on its hands and feet is the bright yellows and whites (160-167,
+# 224-231, 248-255) and the oranges within 3 pixels of them (the flames' edges): kept, as fire.
+part skin 1:2 13:15 16:47 64:79 176:191 208:223 232:239
+part horn 3:4
+group * absorb 0:0,5:8 skin 5
+group * set skin 80:111
+group * keepnear 160:167,224:231,248:255 3 skin
