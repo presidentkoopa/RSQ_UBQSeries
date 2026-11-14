@@ -1,0 +1,14 @@
+# The Pain Elemental family (bake.py): BD22's Pain Elemental (PainElemental1: PAIN, its gibs CAGI) and XMVE's
+# Suffering Elemental (SufferingElemental, Vanilla_SufferingElemental: PL3M). (paingasm draws the Cacodemon's HEAD:
+# caco.txt.)
+# On the live tint: frozen bodies (EFZD FZDP: all ice), the fatalities PA1F (BD22) and TA1F (XMVE): the marine's tan
+# skin and gray gun share the palette ramps of the Pain Elemental's brown and gray hide; frames for a human painter.
+sprites PAIN CAGI PL3M
+statgroup pain PAIN,CAGI
+statgroup suffering PL3M
+# the brown hide (1-2, 13-15, 48-79, 128-159, 236-239: the Imp's skin ranges); claws and teeth the grays 80-111, 3-4.
+# Kept: its red mouth, eye and blood, the Suffering Elemental's green eye and blast (112-127), the smoke (247).
+part skin 1:2 13:15 48:79 128:159 236:239
+part horn 3:4 80:111
+group * absorb 0:0,5:8 skin 5
+group * keepnear 16:47,168:191 1 horn

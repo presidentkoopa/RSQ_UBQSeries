@@ -3,7 +3,7 @@
 # MonsterFatality/Imp_Fatality, FreezeDeaths/FrozenImp; XMVE's copies of the same names). Every lump of these names
 # in the load order is baked (the rig's engine listing, RCL lines, is a subset of it).
 sprites 2136 2M40 BOSB BR94 FZD4 HND4 IFZD IHED IMPC IPFP IUSA IZD1 IZD2 IZD3 IZD4 LEG4 T6SW TR06 TR08 TR09 TR97 TRO1
-sprites TRO2 TRO3 TRO4 TROA TROD TROG TROH TROO TROS TROT TROZ X728 XHE4 ZL3E
+sprites TRO2 TRO3 TRO4 TROA TROD TROG TROH TROO TROS TROT TROZ XHE4 ZL3E
 
 # ---- parts, by the pixel's nearest Doom palette index (paint.py). Anything not listed keeps its own pixels. ----
 # skin: the Imp's hide is the brown ramp 64-79 (70% of its pixels), with its darkest browns 1-2, 13-15, 151, 236-239
@@ -31,8 +31,7 @@ group IPFP keepnear 112:159 2 horn
 group IFZD,FZD4 keep 80:111 3:4
 
 # ---- lumps that keep the old flat tint (paint.py does not know their parts) ----
-# X728 is XMVE's Dark Imp grabbing a marine (black body, its own look): it keeps what it had.
-tint X728
+# (X728, XMVE's Dark Imp art, moved to families/imp_xmve.txt 2026-11-13: painted there with the Dark Imps.)
 # BOSBA0-E0 are BD22's Hell Knight art (sprites/Monsters/BruiserBrothers/HellKnight, the Knight burnt): the Hell Knight
 # family's (hellknight.txt) since 11-13; only BOSBF0 is an imp gib. Not baked here, so this bake never overwrites them.
 skip BOSBA,BOSBB,BOSBC,BOSBD,BOSBE

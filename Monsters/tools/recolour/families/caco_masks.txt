@@ -1,0 +1,11 @@
+# Hand-written part masks for the Cacodemon family (see imp_masks.txt for the format).
+# The Overlord's death (OVER N-V) is a burst of its blood: every pixel keeps its own.
+OVERN* keep 0 0 4095 4095
+OVERO* keep 0 0 4095 4095
+OVERP* keep 0 0 4095 4095
+OVERQ* keep 0 0 4095 4095
+OVERR* keep 0 0 4095 4095
+OVERS* keep 0 0 4095 4095
+OVERT* keep 0 0 4095 4095
+OVERU* keep 0 0 4095 4095
+OVERV* keep 0 0 4095 4095

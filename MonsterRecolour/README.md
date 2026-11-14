@@ -58,8 +58,8 @@ painted by `Monsters/tools/recolour/paint.py` with each colour's own palettes (`
 - **FireBlu, no speckle.** The recipe alternated red and blue by palette row, which speckled. FireBlu is now a burning
   top (flame red-orange) that cools down the body into a blue-flame lower half, blended smoothly down the sprite's own
   height (through magenta, not gray), with flame spikes and claws.
-- **Kept on the flat tint, on purpose:** `X728` (XMVE's Dark Imp grabbing a marine: its own black look). `manifest.txt`'s
-  last column says `paint` or `tint` per lump. `BOSBA0`-`BOSBE0` (BD22's Hell Knight burnt, listed in the Imp family by
+- **Kept on the flat tint:** nothing now (`X728`, XMVE's Dark Imp, was; it is painted with the Dark Imps in
+  `families/imp_xmve.txt` since 2026-11-13). `manifest.txt`'s last column says `paint` or `tint` per lump. `BOSBA0`-`BOSBE0` (BD22's Hell Knight burnt, listed in the Imp family by
   its sprite name; only `BOSBF0` is an imp gib) are the Hell Knight family's since 11-13 (`imp.txt` skips them).
 
 Shown on the rig (runs `rc2_old`, `rc2_new`: the owner's full order with his saved ini, `-skill 6`, rig01, sector light
@@ -75,6 +75,87 @@ colour), the weapon, laser sight and Kill Rewards hidden, Legion of Bones' skele
 
 BD picks each death at random, so a death pose can differ between the old and new runs, and a body thrown sideways can
 leave its tile (Black's mid-fall tile, for one).
+
+## The Imp's XMVE kinds, Demon, Spectre, Lost Soul, Cacodemon, Pain Elemental (2026-11-13)
+
+Same method, palettes (`ramps.py`) and driver as the Imp. Each family file says what is body and what keeps its own.
+**rig only, not headset-confirmed.**
+
+| Family file | Classes (BD22 + XMVE) | Lumps |
+|---|---|---|
+| `families/imp_xmve.txt` | DarkImp, NamiDarkImp, NetherDarkImp, VoidDarkImp, SuperImp, Imp3 (BD22's Imp: `imp.txt`) | 556 |
+| `families/demon.txt` | BullDemon, FatPinky, Spectro (draws the Demon's lumps), BrutalNightmareDemon, BloodDemon, BloodSpectre (draws its lumps), VoidSpectre | 669 |
+| `families/spectre.txt` | InvisibleAlien (the Spectre family's only art of its own; see below) | 173 |
+| `families/lostsoul.txt` | TehLostSoul, AlphaLostSoul, AncientFlyingCunt, ImpureSoul, Phantasm, Vanilla_Phantasm | 246 |
+| `families/caco.txt` | Cacodemon_, CacoAsshole, Aracnorb, XVStealthAracnorb, ImpureElemental, StealthImpureElemental, OverLord, SuperOverlord, Vanilla_Overlord (AracnorbQueen's ARNQ: `spidermastermind.txt`) | 455 |
+| `families/painelemental.txt` | PainElemental1, SufferingElemental, Vanilla_SufferingElemental (paingasm draws the Cacodemon's HEAD) | 101 |
+
+Tools: these families use `statgroup` (a monster's own shading statistics inside a family that holds several) and one
+new group rule, `keepsat <chroma>` (a pixel whose own colour is at least that saturated keeps it: the Invisible Alien's
+purple goo is drawn in true colour and its nearest palette entries are grays). The Imp's bake is unchanged, byte for
+byte. `imp.txt` lost only `X728` (XMVE's Dark Imp art): it is painted in `imp_xmve.txt` now, not kept on the tint.
+
+Choices made (the plainest; written in the family files):
+- **The Spectre is not drawn as fuzz.** BD22's Spectre (`Spectro`) is the Demon drawn additive (RenderStyle Add, alpha
+  0.45) with the Demon's own lumps, so it gets the Demon's art; its lurking frames `SPEC` are only red eyes (eyes keep
+  their own: nothing to paint). XMVE's BloodSpectre is the Blood Demon's lumps drawn additive. The Spectre family's own
+  art is BD22's Invisible Alien.
+- **Each monster keeps its own range of shading** (`statgroup`). The black monsters (the Dark Imps, the Void Spectre,
+  the Invisible Alien) read as darker shades of each colour; Gray and Black stay close to their shipped black. The brown
+  XMVE imps match the Imp. A black hide's few dark browns (the Void Spectre's belly) keep their own: painted, they turned
+  into saturated blotches (rig, first run).
+- **Metal and armour keep their own:** the Blood Demon's legs, dorsal blade and jaw plates; the Overlord's black spiked
+  shell (its flesh and horns are painted).
+- **Fire, blood, goo and ice keep their own:** the Lost Souls' flames, the Nether Dark Imp's and Void Spectre's green
+  goo, the Invisible Alien's purple goo, the Cacodemon's blue blood and mouth, the Overlord's death burst of blood
+  (masked: `caco_masks.txt`), the Suffering Elemental's green eye and blast.
+- **Teeth:** grays touching a red mouth stay white (as on the Imp); the Demon's horns and claws (its dark grays) are
+  painted and its teeth (light grays) stay white; the Cacodemon's teeth touching its blue mouth stay white.
+- **Shared lumps painted by another family:** `XHE5` (the Demon's head torn off; BD throws it from Barons and Hell
+  Knights too) is `baron.txt`'s; `ARNQ` (the Aracnorb Queen, a Cacodemon-family monster whose BOSS kinds are the Spider
+  Mastermind family's) is `spidermastermind.txt`'s. The Aracnorb Queen sheet below was cut before that (my ARNQ art);
+  in the branch its frames are the Spider Mastermind family's.
+
+Left on the live tint (not baked), and why:
+- frozen deaths that are all ice (Demon FZD5 PFZD FZM1 FZM2 F6D4, Cacodemon FZDC CFZD, Pain Elemental EFZD FZDP, Lost
+  Soul KFZD): nothing of the body shows under the ice;
+- burnt deaths (TRBR, SBRG, CRB7, S6RN, PBR2 and the generic Carbonized and BurningMan): glowing embers, which is fire;
+- fatalities where the marine and the monster share palette ramps (Pain Elemental PA1F, Suffering Elemental TA1F,
+  Aracnorb FTAC): **frames for a human painter** (`hand/<colour>/`) or masks;
+- not body art: projectiles, trails and lights (DKB1 DKB2 DKBT IBAL ITRL NLIT PLDB PLDC BLST CBTS EBLT AFX1 DLIT HADE
+  HEFX LFX1 LFX2), the first-person grab view (DSHF DSHG GRZ8), the Invisible Alien's cloak shimmer (A6AG);
+- other families' pieces BD throws from these monsters (Hell Knight and Baron gibs GHK* HKHE GG71, generic gore).
+
+Shown on the rig (his full order with his saved ini, `-skill 6`, rig01 at sector light 224, 260 units, 480x480 frames;
+test handler `Monsters/tools/recolour/rig/rcfam/`, `rcf_script.py`, cut by `rcf_sheets.py`; the runs deleted after).
+Every pose is frozen and shown twice in the same run, with the art on and off (the live tint), so "old" and "new" are
+the same pose. **No script error from our packs** in any run (only BD22 VoxelPack's own VOXELDEF lines, as on main).
+The Overlord, Aracnorb Queen, Impure Elemental and both Pain Elementals were run on the integrated pipeline (RSQ Monsters'
+`RS_BDArt.zs` drawing from the per-colour art pk3s built by `tools/build_monster_art.py`); the others on the prototype
+driver just before the integration landed (the same PNGs). Test-only settings: `ue_recolour 0`, weapon, laser sight,
+health bars and Kill Rewards off; the kit's entry colour lowered to 1 so every colour shows; Legion of Bones' skeletons
+and a Pain Elemental's spat Lost Souls removed. BD picks each death at random; a body thrown out of its tile leaves it
+empty, and a few dying tiles are blank where the frame finder missed the pose.
+
+| Sheet (`docs/`) | What |
+|---|---|
+| `impxmve_darkimp_12colours.jpg`, `_netherdarkimp_`, `_voiddarkimp_`, `_superimp_`, `_imp3_` | as shipped and the twelve colours: front, side, attack, dying |
+| `impxmve_darkimp_blue_shipped_tint_art.jpg` | Blue: as shipped, the live tint, the art |
+| `demon_bulldemon_12colours.jpg`, `_nightmaredemon_`, `_blooddemon_`, `_voidspectre_` | the twelve colours |
+| `demon_bulldemon_blue_shipped_tint_art.jpg` | Blue: shipped, tint, art |
+| `spectre_spectro_12colours.jpg`, `_bloodspectre_`, `_invisiblealien_` | the twelve colours (the Spectres additive; the Invisible Alien is cloaked until it attacks) |
+| `spectre_spectro_blue_shipped_tint_art.jpg` | Blue: shipped, tint, art (its eyes have no art: they keep the tint) |
+| `lostsoul_lostsoul_12colours.jpg`, `_alphalostsoul_`, `_ancientflying_`, `_impuresoul_`, `_phantasm_` | the twelve colours |
+| `lostsoul_lostsoul_blue_shipped_tint_art.jpg` | Blue: shipped, tint, art |
+| `caco_cacodemon_12colours.jpg`, `_cacoasshole_`, `_aracnorb_`, `_impureelemental_`, `_overlord_`, `_aracnorbqueen_` | the twelve colours |
+| `caco_cacodemon_blue_shipped_tint_art.jpg` | Blue: shipped, tint, art |
+| `painelemental_painelemental_12colours.jpg`, `_sufferingelemental_` | the twelve colours |
+| `painelemental_painelemental_blue_shipped_tint_art.jpg` | Blue: shipped, tint, art |
+
+Seen in those frames, not this art's doing: some dying bodies show the live tint (a death frame from a sprite outside
+these families, e.g. part of the Demon's and the Cacodemon's death sets), and a few show no colour at all (a dying
+body that is a new actor holding no colour: some Blood Demon and Void Spectre deaths at Gray, Red, Abyss, White). The
+Lost Soul's skull top and one side are lit by its own flame in the source (oranges): they keep the flame's colour.
 
 ## Why not new sprites: the frame cap (measured 2026-11-13)
 

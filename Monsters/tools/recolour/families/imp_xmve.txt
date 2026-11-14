@@ -1,0 +1,36 @@
+# The Imp family's XMVE kinds (bake.py): the Dark Imps (DarkImp, NamiDarkImp, NetherDarkImp, VoidDarkImp: XMVE
+# Sprites/Monsters/DarkImps, Fatality/DarkImps, MonsterFatality/DarkImp) and the brown XMVE imps (SuperImp: IMP3,
+# Imp3: TRO5, their gibs ID17 in ExtraSprites). BD22's Imp is families/imp.txt and is not touched here.
+# Not body art, left out: DKB1 DKB2 DKBT IBAL ITRL NLIT (fireballs, trails, lights), DSHF DSHG GRZ8 (the first-person
+# view of a grab: weapon sprites, never on a monster).
+# Not here, already the Imp's (imp.txt): 2M40, FZD4, HND4 (XMVE's Dark Imp body parts win HND4: imp.txt bakes them).
+# Burnt (TRBR, Carbonized: a glowing ember body, fire) and the Dark Imps' frozen death (FZD4, imp.txt) keep the tint.
+sprites DRKD DRKS DRKI DRKV DRKF D1S0 D1S1 D1S2 D1S3 D1S4 D1S5 D1S6 D1S7 D1S8 D1S9 D2S1 D2S2 D2S3 D2S4 D3S1 D3S2
+sprites D3S3 D4S1 D4S9 D8S1 D8S2 D8S3 D8S4 BR96 X728 D1F1 D1F2 D2F1 D2F2 F1D1
+sprites IMP3 TRO5 ID17
+
+# ---- statgroups: each kind's shading fills the colour's ramp on its own ----
+# CHOICE MADE (plainest): the Dark Imp's own black shading is spread over each colour's ramp by its own statistics.
+# Most of its hide is near-black, so it reads as a darker shade of each colour (its own dark look; on the rig the colour
+# reads at a glance, Gray and Black stay close to the shipped black). Spikes, glowing eyes, fire and goo keep their own.
+statgroup dark DRK,D1S,D2S,D3S,D4S,D8S,X728,BR96,D1F,D2F,F1D
+statgroup brown IMP3,TRO5,ID17
+
+# ---- parts (no family-wide 'part' lines: each kind sets its own) ----
+# Dark Imps: the hide is the near-blacks 5-8 (about 60% of the pixels) with the dark grays 96-111 as its lights (and
+# 0-2, 236-239, 247 as its deepest shadow); the spikes are the light grays 80-95 with 3-4 tips. Kept: red, yellow and
+# orange eyes, blood, the blue, magenta and green fire, the Nether Dark Imp's green goo, the Void Dark Imp's orbs.
+# X728 (thrown/grabbed, XMVE's art) is a Dark Imp: painted here (imp.txt used to keep it on the tint).
+group DRK,D1S,D2S,D3S,D4S,D8S,X728,BR96,D1F,D2F,F1D set skin 0:2,5:8,96:111,236:239,247
+group DRK,D1S,D2S,D3S,D4S,D8S,X728,BR96,D1F,D2F,F1D set horn 3:4,80:95
+# grays touching red are teeth or bone: they stay white (as on the Imp)
+group DRK,D1S,D2S,D3S,D4S,D8S,X728,BR96,D1F,D2F,F1D keepnear 16:47,168:191 1 horn
+# the fatalities hold a marine (green armour 112-127, tan skin 48-79 and 128-159): his gun and boots are grays and
+# near-blacks touching him; they keep their own.
+group D1F,D2F,F1D keepnear 9:12,48:79,112:159 2 skin
+group D1F,D2F,F1D keepnear 9:12,48:79,112:159 2 horn
+# brown XMVE imps: the BD22 Imp's own parts (imp.txt)
+group IMP3,TRO5,ID17 set skin 1:2,13:15,48:79,128:159,236:239
+group IMP3,TRO5,ID17 set horn 3:4,80:111
+group IMP3,TRO5,ID17 absorb 0:0,5:8 skin 5
+group IMP3,TRO5,ID17 keepnear 16:47,168:191 1 horn

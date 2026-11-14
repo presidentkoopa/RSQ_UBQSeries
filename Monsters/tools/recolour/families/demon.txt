@@ -1,0 +1,45 @@
+# The Demon family (bake.py): BD22's Demon (BullDemon, FatPinky; and Spectro, BD22's Spectre, which draws the same
+# lumps), BD22's Nightmare Demon (BrutalNightmareDemon, WCS/Eviternity), XMVE's Blood Demon (BloodDemon; and
+# BloodSpectre, which draws its lumps) and XMVE's Void Spectre (VoidSpectre). Their deaths, gibs and fatalities.
+# Left out, on the live tint: frozen bodies (FZD5 PFZD FZM1 FZM2 F6D4 ICH*: all ice, nothing of the body shows), burnt
+# bodies (SBRG CRB7 S6RN: Carbonized and Incinerate, glowing embers: fire), the Hell Knight's and Baron's gibs that BD
+# also throws from demons (GHK* HKHE GG71: their own families). XHE5 (the Demon's head torn off; BD throws it from Barons
+# and Hell Knights too) is painted by baron.txt.
+sprites SARG S2RG SAPC SG1A DEMH HND8 LEG8 PDG1 SAAR SAGB SARC SARH SPRG SRRD PDEV SARK
+sprites NDMN ZDM1 ZDM2 ZDM3 ZDM4 ZDMN
+sprites SRG2 SRG3 SRG4 SRG5 SRG6 SRG7 SRG8 SRG9 S4RK S6RH SG2A FD3M
+sprites ND3M ND4M ND5M ND6M ND7M NDEM E3G9 L3G8
+
+# ---- statgroups (first match wins: the Void Spectre's lumps that share a name with another's go first) ----
+# SPRG G-K and FD3M L-O are XMVE's Void Spectre (its folders win those lumps); SPRG A-F is BD22's Demon, FD3M A-K the
+# Blood Demon's fatality.
+statgroup void ND3M,ND4M,ND5M,ND6M,ND7M,NDEM,E3G9,L3G8,SPRGG,SPRGH,SPRGI,SPRGJ,SPRGK,FD3ML,FD3MM,FD3MN,FD3MO
+statgroup pinky SARG,S2RG,SAPC,SG1A,DEMH,HND8,LEG8,PDG1,SAAR,SAGB,SARC,SARH,SPRG,SRRD,PDEV,SARK
+statgroup nightmare NDMN,ZDM
+statgroup blood SRG,S4RK,S6RH,SG2A,FD3M
+
+# ---- parts ----
+# BD22 Demon: the pink hide is the pinks and reds 16-47 (82% of its pixels); its blood is the bright reds 176-191
+# (kept), and a dark red touching it is the blood's edge (kept). Horns and claws are the grays 96-111; the teeth are
+# the light grays 80-95 with 3-4 and stay white. Kept: yellow eyes, the marine in the fatality (tans, greens).
+group SARG,S2RG,SAPC,SG1A,DEMH,HND8,LEG8,PDG1,SAAR,SAGB,SARC,SARH,SPRGA,SPRGB,SPRGC,SPRGD,SPRGE,SPRGF,SRRD,PDEV,SARK set skin 16:47
+group SARG,S2RG,SAPC,SG1A,DEMH,HND8,LEG8,PDG1,SAAR,SAGB,SARC,SARH,SPRGA,SPRGB,SPRGC,SPRGD,SPRGE,SPRGF,SRRD,PDEV,SARK set horn 96:111
+group SARG,S2RG,SAPC,SG1A,DEMH,HND8,LEG8,PDG1,SAAR,SAGB,SARC,SARH,SPRGA,SPRGB,SPRGC,SPRGD,SPRGE,SPRGF,SRRD,PDEV,SARK absorb 0:0,5:8 skin 5
+group SARG,S2RG,SAPC,SG1A,DEMH,HND8,LEG8,PDG1,SAAR,SAGB,SARC,SARH,SPRGA,SPRGB,SPRGC,SPRGD,SPRGE,SPRGF,SRRD,PDEV,SARK keepnear 176:191 1 skin
+# Nightmare Demon: a dark teal hide drawn in true colour, whose pixels fall on the near-blacks, dark grays, dark
+# greens and dark browns; all of that is its hide (it has no light horns). Kept: its eyes and blood (reds).
+group NDMN,ZDM set skin 1:2,5:8,13:15,64:79,96:111,112:127,128:151,236:239
+# Blood Demon: the red hide is 1-2, 13-47 (its darkest reds and browns included); its legs, dorsal blade and jaw
+# plates are metal (the grays 80-111 and 3-4: kept, the owner's rule). Blood 176-191 kept, and its edge.
+# Fatality FD3M A-K: the marine keeps his own (greens, tans).
+group SRG,S4RK,S6RH,SG2A,FD3MA,FD3MB,FD3MC,FD3MD,FD3ME,FD3MF,FD3MG,FD3MH,FD3MI,FD3MJ,FD3MK set skin 1:2,13:47
+group SRG,S4RK,S6RH,SG2A,FD3MA,FD3MB,FD3MC,FD3MD,FD3ME,FD3MF,FD3MG,FD3MH,FD3MI,FD3MJ,FD3MK absorb 0:0,5:8 skin 5
+group SRG,S4RK,S6RH,SG2A,FD3MA,FD3MB,FD3MC,FD3MD,FD3ME,FD3MF,FD3MG,FD3MH,FD3MI,FD3MJ,FD3MK keepnear 176:191 1 skin
+# Void Spectre: a black hide (near-blacks 5-8 and the dark grays 96-111, 0 and 247 its deepest shadows) with light
+# gray horns (80-95, 3-4). Its few dark browns (1-2, under the belly) keep their own: on a hide whose average colour is
+# gray they read as strongly coloured, and the paint carried that into saturated blotches (rig, demon_12 first run). Kept: its green goo (112-127, its blood), red eyes, the marine in FD3M L-O.
+group ND3M,ND4M,ND5M,ND6M,ND7M,NDEM,E3G9,L3G8,SPRGG,SPRGH,SPRGI,SPRGJ,SPRGK,FD3ML,FD3MM,FD3MN,FD3MO set skin 0:0,5:8,96:111,247
+group ND3M,ND4M,ND5M,ND6M,ND7M,NDEM,E3G9,L3G8,SPRGG,SPRGH,SPRGI,SPRGJ,SPRGK,FD3ML,FD3MM,FD3MN,FD3MO set horn 3:4,80:95
+group ND3M,ND4M,ND5M,ND6M,ND7M,NDEM,E3G9,L3G8,SPRGG,SPRGH,SPRGI,SPRGJ,SPRGK,FD3ML,FD3MM,FD3MN,FD3MO keepnear 16:47,168:191 1 horn
+group FD3ML,FD3MM,FD3MN,FD3MO keepnear 9:12,48:79,128:159 2 skin
+group FD3ML,FD3MM,FD3MN,FD3MO keepnear 9:12,48:79,128:159 2 horn

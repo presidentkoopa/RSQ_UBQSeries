@@ -140,6 +140,9 @@ class Family:
                 tot = np.maximum(_disk_sum(opaque.astype(np.float64), int(args[1])), 1)       # <radius> are not
                 part[(part == PARTS[args[0]]) & (_disk_sum(inp.astype(np.float64), int(args[1])) >= float(args[2]) * tot)] = KEEP
                                                        # <part> keep their own (a tinge of colour on a gun's metal)
+            elif rule == 'keepsat' and rgba is not None:  # keepsat <chroma>: pixels whose own colour is at least
+                if lab is None: lab = to_oklab(rgba[..., :3])   # this saturated (Oklab chroma) keep theirs: a coloured
+                part[opaque & (np.hypot(lab[..., 1], lab[..., 2]) >= float(args[0]))] = KEEP   # goo nearest a gray index
             elif rule == 'absorb':                     # absorb <ranges> <part> <n>: these kept pixels join <part>
                 cand = np.isin(idx, list(parse_ranges([args[0]]))) & opaque & (part == KEEP)   # where >= n of their
                 tgt = PARTS[args[1]]; nb = np.zeros(part.shape, np.int8)                     # 8 neighbours are it
