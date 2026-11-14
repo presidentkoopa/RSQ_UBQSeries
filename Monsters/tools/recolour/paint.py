@@ -61,6 +61,7 @@ class Family:
         import os
         self.sprites, self.part_of, self.groups, self.tint, self.masks, self.skip = set(), {}, [], set(), [], set()
         self.statgroups = []                           # (name, prefixes): lumps whose shading statistics are their own
+        self.skip = set()
         self.dir = os.path.dirname(os.path.abspath(path))
         for line in open(path):
             w = line.split('#')[0].split()
@@ -76,6 +77,8 @@ class Family:
                 self.skip |= set(p.upper() for p in w[1].split(','))    # another family's art: not baked here
             elif w[0] == 'masks':                      # masks <file>: hand-written rectangles (see masks file)
                 self.masks += self._masks(os.path.join(self.dir, w[1]))
+            elif w[0] == 'skip':                       # skip <prefixes,>: lumps of these names that are another
+                self.skip |= set(p.upper() for p in w[1].split(','))   # family's art (one sprite name, two folders)
             elif w[0] == 'statgroup':                  # statgroup <name> <prefixes,>: these lumps get their own
                 self.statgroups.append((w[1], tuple(p.upper() for p in w[2].split(','))))   # shading statistics
         self.lut = np.zeros(256, np.int8)
@@ -107,8 +110,8 @@ class Family:
     def is_tint(self, name):
         return any(name.startswith(p) for p in self.tint)
 
-    def classify(self, name, idx, opaque):
-        part = self.lut[idx].astype(np.int8)
+    def classify(self, name, idx, opaque, rgba=None):
+        part = self.lut[idx].astype(np.int8); lab = None   # rgba: only the 'hue' rule needs the pixels themselves
         part[~opaque] = KEEP
         for pref, rule, args in self.groups:
             if '*' not in pref and not name.startswith(pref): continue
@@ -120,6 +123,23 @@ class Family:
                 src = np.isin(idx, list(parse_ranges([args[0]]))) & opaque
                 near = _dilate(src, int(args[1]))
                 part[near & (part == PARTS[args[2]])] = KEEP
+            elif rule == 'keepmajor':                  # keepmajor <ranges> <radius> <frac> <part> [passes]: <part>
+                src = np.isin(idx, list(parse_ranges([args[0]]))) & opaque       # pixels where, within <radius>, at
+                tot = np.maximum(_disk_sum(opaque.astype(np.float64), int(args[1])), 1)   # least <frac> of the opaque
+                for _ in range(int(args[4]) if len(args) > 4 else 1):             # pixels are <ranges>, keep their
+                    hit = (part == PARTS[args[3]]) & (_disk_sum(src.astype(np.float64), int(args[1])) >= float(args[2]) * tot)
+                    part[hit] = KEEP; src = src | hit          # own (rust on a gun); each pass, the kept count as <ranges>
+            elif rule == 'hue':                        # hue <part> <deg0> <deg1> <chroma> [ranges]: pixels whose own
+                if lab is None: lab = to_oklab(rgba[..., :3])     # colour (Oklab hue angle in deg0..deg1, chroma at
+                C = np.hypot(lab[..., 1], lab[..., 2]); H = np.degrees(np.arctan2(lab[..., 2], lab[..., 1]))  # least
+                sel = opaque & (C >= float(args[3])) & (H >= float(args[1])) & (H <= float(args[2]))   # <chroma>) says
+                if len(args) > 4: sel &= np.isin(idx, list(parse_ranges([args[4]])))     # they are <part>: where the
+                part[sel] = PARTS[args[0]]             # palette cannot tell (a green hide drawn in the grays' indices)
+            elif rule == 'lonely':                     # lonely <part> <radius> <frac>: <part> pixels where at least
+                inp = (part != PARTS[args[0]]) & opaque                           # <frac> of the opaque pixels within
+                tot = np.maximum(_disk_sum(opaque.astype(np.float64), int(args[1])), 1)       # <radius> are not
+                part[(part == PARTS[args[0]]) & (_disk_sum(inp.astype(np.float64), int(args[1])) >= float(args[2]) * tot)] = KEEP
+                                                       # <part> keep their own (a tinge of colour on a gun's metal)
             elif rule == 'absorb':                     # absorb <ranges> <part> <n>: these kept pixels join <part>
                 cand = np.isin(idx, list(parse_ranges([args[0]]))) & opaque & (part == KEEP)   # where >= n of their
                 tgt = PARTS[args[1]]; nb = np.zeros(part.shape, np.int8)                     # 8 neighbours are it
@@ -143,6 +163,13 @@ def _shift(m, dy, dx):
     if dx > 0: s[:, :dx] = False
     if dx < 0: s[:, dx:] = False
     return s
+
+def _disk_sum(v, r):
+    out = np.zeros(v.shape)
+    for dy in range(-r, r + 1):
+        for dx in range(-r, r + 1):
+            if dx * dx + dy * dy <= r * r: out += _shift(v, dy, dx)
+    return out
 
 def _dilate(m, r):
     out = m.copy()

@@ -1,0 +1,29 @@
+# The Cyberdemon family: BD22's Cyberdemon (TheCyberdemon; Tyrant draws the same art), XMVE's Annihilator and
+# Vanilla_Annihilator, XMVE's SuperDemon, with their deaths, gibs, the leg left standing, frozen death and the marine's
+# fatality on it; for bake.py.
+# BD22 sprites/Monsters/Cyberdemon (CYBR CYBT CYMA; WYVB there is a fireball: not body), Cyberdemon/GIBS (CYBB CYGA
+# CYGG CYGP CYGT XHE8), Cyberdemon/PAWS (PATA, the legs left standing), FreezeDeaths/FrozenCyberDemon (CYFZ),
+# Fatality/Fatality_Cyberdemon (FTCY); XMVE Monsters/ANNIHILATOR (4NNI ANBT ANMA), Monsters/SuperDemon (SUPR SUPH;
+# BAL9 is its fireball).
+sprites CYBR CYBT CYMA CYBB CYGA CYGG CYGP CYGT XHE8 PATA CYFZ FTCY 4NNI ANBT ANMA SUPR SUPH
+# NOT here, on purpose: the gray- and black-bodied cyberdemons, whose hide is drawn in the same grays as their metal,
+# so the palette cannot tell body from gun: BD22's Eviternity Annihilator (EVAN; BrutalAnnihilator), XMVE's Dark
+# Cardinal (CARD; DarkCardinal, DarkCardinalBOSS) and Thamuz (DCYB; Thamuz, ThamuzBoss). They keep the live tint (the
+# driver's fallback) until a human paints them. The Archangelus (U_ArchangelusA/B) draws the Cyberdemon's art (CYBR)
+# with a shield effect (SHLD, ZFOG: not body). BTS3 (a Baron, BrutalAnnihilator's summon) is the Baron family's art.
+
+# ---- parts ----
+# skin: the hide, the brown ramp 64-79 and tans 48-63, 128-159, with the darkest browns 1-2, 13-15, 236-239.
+part skin 1:2 13:15 48:79 128:159 236:239
+# Kept, by not being listed: the rocket arm, the metal leg and the hoses (grays 80-111, 3-4), the horns (the dark grays
+# and blacks of the same ramps: they keep their own), the mouth, the open belly, blood and guts (reds 16-47, 168-191),
+# the rocket's muzzle flash and its light on the body (oranges and yellows 160-167, 208-231: as the Imp's fireball
+# hand, the fire's light is the fire's), outlines, ice, the marine (greens).
+
+# ---- group rules ----
+group * absorb 0:0,5:8 skin 5
+# rust and brown shading on the metal (as the Mancubus's cannons)
+group * keepmajor 3:4,80:111 3 0.25 skin 2
+# The frozen Cyberdemon is under ice.
+group CYFZ keep 80:111 3:4
+masks cyberdemon_masks.txt

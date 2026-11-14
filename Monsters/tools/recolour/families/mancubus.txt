@@ -1,0 +1,33 @@
+# The Mancubus family, part 1: BD22's Mancubus (and AncientAlienMancubus, which draws the same art), its deaths, gibs,
+# gore, burning death, frozen death and the marine's fatality on it; for bake.py (see imp.txt for the rules' syntax).
+# The rest of the family: volcabus.txt (BD22's Volcabus), daedabus.txt (XMVE's Daedabus); each has its own skin, so
+# each is its own file (the bake reads a family's shading range per part from all of that file's lumps).
+# sprites/Monsters/Mancubus (FATT FAT4 FATR; MANF is its fireball: not body), Mancubus/Burn (BF4T), Mancubus/GIBS
+# (MAN4 MANA MANE XHE7), Mancubus/GORE (FAT2 K-R, FAT3 FATK XFAT XFBT XFT1-4), FreezeDeaths/FrozenMancubus (FZD9 MFZD),
+# Fatality/Fatality_Volcabus's FATF (the marine's fatality on the brown Mancubus).
+sprites FATT FAT4 FATR BF4T MAN4 MANA MANE XHE7 FAT2 FAT3 FATK XFAT XFBT XFT1 XFT2 XFT3 XFT4 FZD9 MFZD FATF
+# FAT2 A-J are the Volcabus's (sprites/Monsters/Volcabus); only K-R are this Mancubus's gore.
+skip FAT2A,FAT2B,FAT2C,FAT2D,FAT2E,FAT2F,FAT2G,FAT2H,FAT2I,FAT2J
+# NOT here, on purpose: BD22's Juggernaut (sprites/Monsters/Juggernaut, BS1B BS1T BS1W), a tank with a Mancubus torso:
+# its flesh and its metal are drawn in the same browns and grays, so palette rules cannot split them. It keeps the live
+# tint (the driver's fallback) until a human paints it.
+
+# ---- parts ----
+# skin: the hide is the brown ramp 64-79 (about 40% of its pixels) and the tans 48-63, 128-159, with the darkest
+# browns 1-2, 13-15, 236-239 (the same ramps as the Imp's).
+part skin 1:2 13:15 48:79 128:159 236:239
+# no horn part: the Mancubus has no spikes or claws. Kept, by not being listed (the owner's rule 11-13 09:49): the arm
+# cannons and the hoses (metal: the grays 80-111 and 3-4), the green eyes (112-127), the mouth, blood and guts (reds
+# 16-47, 168-191), fire (yellows and oranges: the burning death BF4T keeps its flames), outlines, ice (blues).
+
+# ---- group rules ----
+# near-black pixels inside the body are its deepest skin shadows (as the Imp)
+group * absorb 0:0,5:8 skin 5
+# The arm cannons are rusty: brown pixels inside the gray metal. A skin pixel where a quarter or more of the pixels
+# within 3 are metal grays is the gun's rust and keeps its own colour (two passes, so the rust inside the gun joins).
+group * keepmajor 3:4,80:111 3 0.25 skin 2
+# The fatality (FATF) has a marine in it: his helmet and boots are the tans and olives 128-159 (the Mancubus's own
+# hide in these frames is the browns 48-79), his armour the greens (kept). As the Imp's fatality.
+group FATF keep 128:159
+# The frozen Mancubus is under ice: its grays are the ice's highlights.
+group FZD9,MFZD keep 80:111 3:4

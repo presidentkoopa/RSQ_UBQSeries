@@ -124,7 +124,7 @@ def main():
         if not w: print('MISSING', nm); continue
         rgba, offs = decode(lo.read(nm), pal)
         idx = nearest_index(rgba, P, cache)
-        part = fam.classify(nm, idx, rgba[..., 3] > 0)
+        part = fam.classify(nm, idx, rgba[..., 3] > 0, rgba)
         src[nm] = (rgba, offs, idx, part, w)
         if not fam.is_tint(nm): sts.setdefault(fam.statgroup(nm), paint.Stats()).add(paint.to_oklab(rgba[..., :3]), part)
     for st in sts.values(): st.finish()

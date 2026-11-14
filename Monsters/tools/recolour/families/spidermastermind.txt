@@ -1,0 +1,27 @@
+# The Spider Mastermind family: BD22's Spider Mastermind (TheSpiderMastermind, TheSpiderMastermindNERF; XMVE's
+# MiniMasterMind, MiniMastermindX, SpiderMastermindX and SuperSpiderMastermindX draw the same art or the Demolisher's),
+# XMVE's Demolisher (DEMO; Vanilla_Demolisher) and Arachnorb Queen (ARNQ; AracnorbQueenBOSS), with their deaths, gore,
+# frozen death and the marine's fatalities on it; for bake.py. The Motherdemon is motherdemon.txt (a red hide).
+# BD22 sprites/Monsters/SpiderMastermind (SPID), SpiderMastermind/Gore (SPIP SPIY SPP4 SPP5 TRP1-6: the brain, the
+# wreck, its legs and pieces), FreezeDeaths/FrozenMastermind (SPFZ), Fatality/Fatality_SpiderMastermind (FTS2 FTSM);
+# XMVE Monsters/SuperSpiderMastermind (DEMO), Monsters/Arachnorb queen (ARNQ; BLST, EBLT are its shots and CBTS the
+# Thamuz's, not body). The legs and pieces (SPP4 SPP5 TRP*) are metal: baked unchanged by the rules, so they keep
+# their own colours instead of the live tint.
+sprites SPID SPIP SPIY SPP4 SPP5 TRP1 TRP2 TRP3 TRP4 TRP5 TRP6 SPFZ FTS2 FTSM DEMO ARNQ
+
+# ---- parts ----
+# skin: the brain, the tans 128-159 and browns 48-79 with the darkest browns 1-2, 13-15, 236-239. The Arachnorb
+# Queen's tentacle legs are the same browns: flesh, so skin.
+part skin 1:2 13:15 48:79 128:159 236:239
+# Kept, by not being listed: the chassis, legs and chaingun (metal: grays 80-111, 3-4), the eyes, veins, mouth, blood
+# and guts (reds), the Demolisher's green eye and core (greens), its glowing missile pods (yellows, oranges),
+# outlines, ice, the marine (greens).
+
+# ---- group rules ----
+group * absorb 0:0,5:8 skin 5
+# rust and brown reflections on the chrome legs (as the Mancubus's cannons)
+group * keepmajor 3:4,80:111 3 0.25 skin 2
+group SPFZ keep 80:111 3:4
+# The fatalities' broken leg is pale pink chrome (tans 128-159 between its grays): a wider look at the metal there.
+group FTS2,FTSM keepmajor 3:4,80:111 5 0.2 skin 3
+masks spidermastermind_masks.txt
