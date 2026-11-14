@@ -54,6 +54,7 @@ class RS_BDKit : Inventory
 	double phaseAlpha;
 	int  nextBlink, lastPuddle, lastVolley;
 	int  tintId;                // [11-13 fix 6] the tier tint it wears (Look), 0 none; a Champions tint over it is taken off
+	TranslationID tierTrans;    // that tint (the tier flash puts it back between flashes: the painted frame shows none)
 	int  flashTic, seenTr;      // the tier flash is running (RS_LookKeep.Hold); the last translation checked for Champions'
 	bool seenChamp;
 
@@ -188,7 +189,8 @@ class RS_BDKit : Inventory
 	{
 		let o = owner;
 		if (!o) return;
-		if (rung > entry) { o.A_SetTranslation(TintName(Tier())); tintId = int(o.Translation); }
+		// the tier tint is the look with no painted frame; RS_BDArt.zs draws the painted frame over it where one exists
+		if (rung > entry) { o.A_SetTranslation(TintName(Tier())); tintId = int(o.Translation); tierTrans = o.Translation; }
 		else { o.Translation = baseTrans; tintId = 0; }
 	}
 
@@ -708,21 +710,30 @@ class RS_BDTierHandler : EventHandler
 
 	// ---- THE COLOUR FOLLOWS THE BODY (owner 2026-11-13: "there are a lot of frames, gore frames, second wind things,
 	// final stand things ... i am concerned with a high quality result") --------------------------------------------
-	// Every frame a monster plays itself keeps its tint: the tint is on the actor. But Brutal Doom's deaths are full
-	// of OTHER actors: the dying crawlers, the last stands, the corpses, the limbs and chunks. Each is spawned by the
-	// tinted body (it is the new actor's target), or stands where the body was a tic ago (Brutal Doom spawns the next
-	// stage and removes itself in the same state, so by the new actor's first tick its maker is gone). So:
-	//   - an actor whose target wears one of the twelve tints takes that tint, and so do the ones it spawns in turn;
-	//   - a tinted body that is removed leaves a 3-tic record of where it stood, and an actor that appears within 64
-	//     units of it with no living maker takes its tint.
-	// Not blood, smoke, fire, sparks, casings, puffs or pickups: those keep their own look (by class name, below).
-	// Nothing is added to the gore: no item, no thinker; the tint IS the mark.
+	// A monster's colour is its kit's, and every frame it plays itself shows it. But Brutal Doom's deaths are full of
+	// OTHER actors: the dying crawlers, the last stands, the corpses, the limbs and chunks. Each piece that came out of a
+	// coloured body gets an RS_BDHue with the body's colour (RS_BDArt.zs: the painted frames where they exist, the tier
+	// tint where they do not). Which body it came out of:
+	//   - its master (a summoner, SXF_SETMASTER);
+	//   - for a thing that is not a monster, its target: Brutal Doom throws its pieces (A_CustomMissile, A_SpawnItem) and
+	//     the thrower is the new thing's target. A maker that is still there and holds no colour (a monster at its entry
+	//     colour, dead or alive, or one of its pieces) gives none: its pieces never take a neighbour's colour (fault found
+	//     2026-11-13: imps closer than 64 units handed each other their colour). A monster's target is its enemy, never
+	//     its maker (SXF_TRANSFERPOINTERS copies the body's), so a monster piece skips this step;
+	//   - its maker already removed (Brutal Doom spawns the next stage and removes itself in the same state, so by the
+	//     new thing's first tick its maker is gone): the NEAREST body removed within 64 units in the last 3 tics, coloured
+	//     or not (a body at its entry colour leaves a record too, so a neighbour's colour is not taken when it is nearer).
+	// Blood (the owner's rule: blood keeps its own colour), smoke, fire, sparks, casings, puffs and pickups keep their own
+	// look, by class name (below, cached per class); one that arrives wearing a tier tint (SXF_TRANSFERTRANSLATION) has
+	// it taken off again. Brutal Doom's blood mist (SuperGore and its kin) was missed by the names before (2026-11-13:
+	// it took the tint, and on FireBlu, Red and Gray it showed as coloured squares).
 	private Array<int> tintIds;
 	private Array<double> gonX, gonY, gonZ;
-	private Array<int> gonTrans, gonTic;
+	private Array<int> gonCol, gonTic;
+	private Map<Name, int> ownLook;          // class -> 1 keeps its own look, 0 follows the body
+	private Map<Name, int> logged;           // debug: classes already logged this map
 
-	// which of the twelve tints a translation is: its colour 2..13, 0 none (an int cannot be made a translation
-	// again on this engine, so the colour is what is kept and A_SetTranslation puts it on)
+	// which of the twelve tints a translation is: its colour 2..13, 0 none
 	private int OurTint(int tr)
 	{
 		if (tr == 0) return 0;
@@ -732,54 +743,153 @@ class RS_BDTierHandler : EventHandler
 		return 0;
 	}
 
-	// an effect or a pickup, by its class name: it keeps its own colours
+	// an effect or a pickup, by its class name (cached per class): it keeps its own colours. Partly by WORDS, not only by
+	// substrings: "gun" in DeadChaingunGuy, "ring" in SmearingXDeath, "explo" in ImpHeadExplode (a gore group) made bodies
+	// and gore keep their own look before (found 2026-11-13). Checked against every BD22 + XMVE class name (rig tool
+	// Monsters/tools/recolour/rig/ownlook_names.py).
+	//   another mod's (champion_, LD, RSQ, RS_, SSQ, UE_ at the start of the name);
+	//   anywhere in the name: blood, gore, mist, smoke, flame, spark, puff, particle, explosion, bullet, ...
+	//   a word that starts so: fire, light, shell, water, dust, trail, ring, burn, drop, rifle, ammo, clip, mag, ...
+	//   a word holding "gun" (shotgun, chaingun) when no word names a body (guy, gunner, zombie, dead, head, arm, ...):
+	//   FakeChaingunSprite and ChaingunDrop keep their look, DeadChaingunGuy follows the body
 	private bool KeepsOwnLook(Actor a)
 	{
 		if (a is "Inventory") return true;
-		String n = a.GetClassName();
-		n = n.MakeLower();
-		static const String SKIP[] = { "blood", "smoke", "fire", "flame", "flare", "spark", "puff", "tracer", "casing", "shell", "explo",
-			"light", "plasma", "splash", "water", "dust", "trail", "bullet", "shock", "steam", "fog", "ring", "ember", "burn",
-			"brass", "mist", "droped", "dropped", "gun", "rifle", "weapon", "ammo", "clip", "mag" };
-		for (int i = 0; i < SKIP.Size(); i++) if (n.IndexOf(SKIP[i]) >= 0) return true;
-		return false;
+		Name cn = a.GetClassName();
+		int v; bool ok;
+		[v, ok] = ownLook.CheckValue(cn);
+		if (ok) return v != 0;
+		v = OwnLookName(cn) ? 1 : 0;
+		// and anything a blood class is the parent of, named so or not
+		if (!v) for (class<Actor> k = a.GetClass(); k; k = (class<Actor>)(k.GetParentClass()))
+		{
+			String kn = k.GetClassName();
+			if (kn ~== "Actor") break;
+			if (kn ~== "Blood" || kn ~== "SuperGore" || kn ~== "BloodMist") { v = 1; break; }
+		}
+		ownLook.Insert(cn, v);
+		return v != 0;
 	}
 
-	// the tint (its colour, 2..13) of the body this actor came out of, 0 none
-	private int TintFrom(Actor a)
+	static bool OwnLookName(String n)
 	{
+		static const String SUB[] = { "blood", "gore", "smearer", "smoke", "flame", "flare", "spark", "puff", "tracer", "casing",
+			"plasma", "splash", "steam", "brass", "fog", "particle", "flashlight", "shrapnel", "explosion", "bullet", "mist" };
+		static const String WORD[] = { "fire", "light", "shell", "water", "dust", "trail", "shock", "ring", "ember", "burn", "drop",
+			"rifle", "weapon", "ammo", "clip", "mag" };
+		static const String BODYW[] = { "guy", "gunner", "zombie", "man", "marine", "dead", "head", "gib", "death", "half", "dying",
+			"frozen", "major", "soldier", "trooper", "corpse", "body", "torso", "arm", "leg", "grabbed", "throwed", "punched", "execute" };
+		// other mods' things that ride on a monster (Champions' icons, leaves and balloons, LegenDoom's, Universal Entropy's,
+		// the series' own): never a piece of its body (rig rcE_p3: Champions' icons took the tier tint through their master)
+		static const String MODS[] = { "champion_", "ld", "rsq", "rs_", "ssq", "ue_" };
+		String low = n.MakeLower();
+		for (int i = 0; i < MODS.Size(); i++) if (low.Left(MODS[i].Length()) == MODS[i]) return true;
+		for (int i = 0; i < SUB.Size(); i++) if (low.IndexOf(SUB[i]) >= 0) return true;
+		String w = " " .. Words(n) .. " ";
+		for (int i = 0; i < WORD.Size(); i++) if (w.IndexOf(" " .. WORD[i]) >= 0) return true;
+		Array<String> ws;
+		w.Split(ws, " ", TOK_SKIPEMPTY);
+		bool gun = false, isBody = false;
+		for (int i = 0; i < ws.Size(); i++)
+		{
+			if (ws[i].IndexOf("gun") >= 0) gun = true;
+			for (int j = 0; j < BODYW.Size() && !isBody; j++) if (ws[i].IndexOf(BODYW[j]) >= 0) isBody = true;
+		}
+		return gun && !isBody;
+	}
+
+	// a class name as lower-case words: a break at _ and digits, before a capital after a small letter, and before the
+	// last capital of a run that a small letter follows ("BDExplosion" -> "bd explosion")
+	static String Words(String n)
+	{
+		String w = "";
+		int len = n.Length();
+		for (int i = 0; i < len; i++)
+		{
+			int c = n.ByteAt(i);
+			bool up = c >= 65 && c <= 90, lo = c >= 97 && c <= 122;
+			if (!up && !lo) { w = w .. " "; continue; }
+			if (up && i > 0)
+			{
+				int p = n.ByteAt(i - 1), q = i + 1 < len ? n.ByteAt(i + 1) : 0;
+				bool pLo = p >= 97 && p <= 122, pUp = p >= 65 && p <= 90, qLo = q >= 97 && q <= 122;
+				if (pLo || (pUp && qLo)) w = w .. " ";
+			}
+			w.AppendCharacter(up ? c + 32 : c);
+		}
+		return w;
+	}
+
+	// a thing's colour: its kit's or hue's; a thing with neither, its tier tint (a kit monster's tinted shot)
+	private int Col(Actor m)
+	{
+		if (RS_BDHue.Known(m)) return RS_BDHue.ColourOf(m);
+		return OurTint(int(m.Translation));
+	}
+
+	// the colour (2..13) of the body this actor came out of, 0 none
+	private int TintFrom(Actor a, out String why)
+	{
+		let m = a.master;
+		if (m && m != a) { int c = Col(m); if (c) { why = "master " .. m.GetClassName(); return c; } }
 		let t = a.target;
-		int c = (t && t != a) ? OurTint(int(t.Translation)) : 0;
-		if (c) return c;
-		c = (a.master && a.master != a) ? OurTint(int(a.master.Translation)) : 0;
-		if (c) return c;
-		if (t && !t.player && t.health > 0 && !a.bISMONSTER) return 0;      // its maker stands there, untinted
-		int best = 0; double bd = 64;
+		// (a maker that is itself an effect, blood or a pickup is no authority: its pieces go by where they stand)
+		if (t && t != a && !a.bISMONSTER && !t.player && !(RS_BDHue.ColourOf(t) == 0 && !t.bISMONSTER && KeepsOwnLook(t)))
+		{
+			int c = Col(t);
+			why = (c ? "maker " : "maker holds none ") .. t.GetClassName();
+			return c;
+		}
+		// across the floor, not through the air: Brutal Doom throws a body's pieces from 30 to 60 units above where it stood,
+		// so a 3D distance could favour a neighbour standing 40 units to the side (rig rcE_gp, 2026-11-13)
+		int best = 0, bt = -1; double bd = 64.0001;
 		for (int i = gonTic.Size() - 1; i >= 0; i--)
 		{
-			if (level.maptime - gonTic[i] > 3) { gonX.Delete(i); gonY.Delete(i); gonZ.Delete(i); gonTrans.Delete(i); gonTic.Delete(i); continue; }
-			double d = (a.pos - (gonX[i], gonY[i], gonZ[i])).Length();
-			if (d < bd) { bd = d; best = gonTrans[i]; }
+			if (level.maptime - gonTic[i] > 3) { gonX.Delete(i); gonY.Delete(i); gonZ.Delete(i); gonCol.Delete(i); gonTic.Delete(i); continue; }
+			if (abs(a.pos.z - gonZ[i]) > 96) continue;
+			double d = (a.pos.xy - (gonX[i], gonY[i])).Length();
+			// the nearest; at the same distance, the latest
+			if (d < bd || (d == bd && gonTic[i] > bt)) { bd = d; best = gonCol[i]; bt = gonTic[i]; }
 		}
+		why = bt >= 0 ? String.Format("removed body %d units away", int(bd)) : "no maker";
 		return best;
 	}
 
-	private bool Carry(Actor a)
+	private void Carry(Actor a)
 	{
-		if (OurTint(int(a.Translation))) return true;
-		int tr = TintFrom(a);
-		if (tr == 0 || KeepsOwnLook(a)) return false;
-		a.A_SetTranslation(RS_BDKit.TintName(tr));
-		return true;
+		if (RS_BDHue.Known(a)) return;
+		int worn = OurTint(int(a.Translation));
+		String why = "worn";
+		if (KeepsOwnLook(a))
+		{
+			// blood and the rest keep their own look, even when they arrive in the body's tint
+			if (worn) a.Translation = GetDefaultByType(a.GetClass()).Translation;
+			if (worn && Debug()) LogOnce(a, 0, "keeps its own look: the tier tint it arrived in taken off");
+			return;
+		}
+		int c = worn ? worn : TintFrom(a, why);
+		if (c) RS_BDHue.Put(a, c);
+		if (Debug()) LogOnce(a, c, why);
+	}
+
+	// debug (rsq_mon_bdtier_debug): each class's first carry this map
+	private void LogOnce(Actor a, int c, String why)
+	{
+		Name cn = a.GetClassName();
+		let every = CVar.FindCVar('rsq_mon_art_debug');
+		if (logged.CheckKey(cn) && !(every && every.GetBool())) return;
+		logged.Insert(cn, 1);
+		Console.Printf("BDCARRY t%d %s -> %s (%s)", level.maptime, cn, c ? RS_BDArt.COLOUR[c] : "none", why);
 	}
 
 	override void WorldThingDestroyed(WorldEvent e)
 	{
 		let a = e.Thing;
 		if (!a || a.bMISSILE && a.GetMissileDamage(0, 1) > 0) return;
-		int tr = OurTint(int(a.Translation));
-		if (!tr) return;
-		gonX.Push(a.pos.x); gonY.Push(a.pos.y); gonZ.Push(a.pos.z); gonTrans.Push(tr); gonTic.Push(level.maptime);
+		// a body or a coloured piece leaves a record of where it stood (a body at its entry colour too, with no colour)
+		bool known = RS_BDHue.Known(a);
+		if (!known && !a.bISMONSTER) return;
+		gonX.Push(a.pos.x); gonY.Push(a.pos.y); gonZ.Push(a.pos.z); gonCol.Push(known ? RS_BDHue.ColourOf(a) : 0); gonTic.Push(level.maptime);
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -822,6 +932,7 @@ class RS_BDTierHandler : EventHandler
 		k.rung = k.entry;
 		int r = k.entry + WorldTier() - 1;
 		if (r > k.entry) { k.rung = r; k.Apply(true, true); }
+		RS_BDArt.Watch(a, k);                        // the painted frames for its colour (RS_BDArt.zs), now or after a change
 		if (Debug()) Console.Printf("BDTIER: %s family %d entry %d rung %d hp %d", cn, k.fam, k.entry, k.rung, a.health);
 	}
 

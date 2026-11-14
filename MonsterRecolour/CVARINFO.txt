@@ -1,4 +1,0 @@
-// 1: draw the hand-made recolours where a frame has one (the rest keep the live tint). 0: the live tint only.
-server bool rsrc_on = true;
-// 1: log what the driver draws (RSRC lines), for the rig.
-server bool rsrc_debug = false;

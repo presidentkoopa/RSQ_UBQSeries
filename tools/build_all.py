@@ -99,10 +99,26 @@ def build(folder):
     print('built pk3/%s (%d files)' % (name, len(entries)))
 
 
+# MonsterRecolour: the painted colour art for RSQ Monsters, one pk3 per colour (pk3/RSQ_MonsterArt_<Colour>.pk3), built
+# by tools/build_monster_art.py from whatever is painted in MonsterRecolour/rsrecolour/ (2026-11-13).
+EXTRA = ['MonsterRecolour']
+
+
+def build_art():
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import build_monster_art as bma
+    bm = bma.read_brightmaps()
+    for c in bma.COLOURS:
+        bma.build(c, bm)
+
+
 if __name__ == '__main__':
     os.makedirs(OUT, exist_ok=True)
-    want = sys.argv[1:] or list(MODS)
+    want = sys.argv[1:] or list(MODS) + EXTRA
     for m in want:
+        if m in EXTRA:
+            build_art()
+            continue
         if m not in MODS:
-            sys.exit('unknown mod folder: %s (one of: %s)' % (m, ', '.join(MODS)))
+            sys.exit('unknown mod folder: %s (one of: %s)' % (m, ', '.join(list(MODS) + EXTRA)))
         build(m)

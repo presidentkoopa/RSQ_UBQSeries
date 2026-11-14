@@ -796,7 +796,9 @@ class RS_Retier play
 		nj.kitRung    = rung;
 		nj.timer      = random(5, 25);
 		nj.ticker     = 0;
-		nj.origTrans  = mo.Translation;
+		// its look between flashes: its tier tint (with a painted frame drawn it wears no translation at all; RS_BDArt.zs
+		// draws the painted frame again over the tint)
+		nj.origTrans  = k.rung > k.entry ? k.tierTrans : mo.Translation;
 		nj.origBright = mo.bBRIGHT;
 	}
 

@@ -71,6 +71,10 @@ OptionMenu "RSQMN_Options"
 	Slider "World Tier (test)", "rsq_mon_worldtier", 1, 20, 1, 0
 	StaticText "Each step raises every monster one colour: ColorfulHell's,", "DarkGray"
 	StaticText "Brutal Doom's, XMVE's and plain Doom's.", "DarkGray"
+	// [11-13] RS_BDArt.zs: the painted colour art (pk3/RSQ_MonsterArt_<Colour>.pk3) over the tier tint. Off: the tint only.
+	Option "Painted Colour Art", "rsq_mon_art", "OnOff"
+	StaticText "On: frames that have painted art for their colour", "DarkGray"
+	StaticText "are drawn from it; the rest keep the tint. Off: the tint.", "DarkGray"
 
 	StaticText ""
 	StaticText "Miniboss", "Gold"

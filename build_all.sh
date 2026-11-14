@@ -145,3 +145,8 @@ cd "$HUB/GunBonsaiOffhandVR"
 rm -f "$OUT/RSQ_GunBonsaiVR.pk3"
 zip -q -r -X "$OUT/RSQ_GunBonsaiVR.pk3" . -x '.git*' 'build.ps1' 'NOTES.md' 'readme.txt' 'tools/*' 'docs/*' '*.pk3'
 echo "built pk3/RSQ_GunBonsaiVR.pk3"
+
+# RSQ_MonsterArt_<Colour> (the painted colour art for RSQ Monsters, one pk3 per colour, 2026-11-13): tools/build_monster_art.py
+# (a zip holds 65,535 entries and GitHub 100 MB a file; it checks both and writes each colour's GLDEFS brightmaps).
+cd "$HUB"
+python3 tools/build_monster_art.py

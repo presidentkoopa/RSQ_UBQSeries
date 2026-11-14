@@ -1,10 +1,25 @@
-# RSQ Monster Recolour (PROTOTYPE, branch `wip/2026-11-13-recolour`, not in `pk3/`, not built by `build_all`)
+# RSQ Monster Recolour: the painted colour art (branch `wip/2026-11-13-recolour`, not on main)
 
 Hand-made recoloured frames for Brutal Doom's and XMVE's monsters on the colour ladder, drawn **without new sprite
-names**, so they cost **no sprite frames** under QuestZDoom 17.3's 65,535-frame cap. The prototype is BD22's Imp
-family (its body, deaths, crawlers, gibs, fatality and frozen death) in all twelve colours.
+names**, so they cost **no sprite frames** under QuestZDoom 17.3's 65,535-frame cap. Approved by the owner for the BD
+and XMVE series (2026-11-13 18:01). The first family is BD22's Imp (its body, deaths, crawlers, gibs, fatality and frozen
+death) in all twelve colours; the other families are being painted on this branch.
 
 **rig only, not headset-confirmed.** Nothing here has been seen in the owner's headset.
+
+**Since 2026-11-13 (integration) this folder holds the ART and its tools only.** The code that draws it is RSQ Monsters'
+(`Monsters/zscript/monsters/RS_BDArt.zs`; see "How it works" below and `Monsters/README.md`), and the art ships as one
+pk3 per colour, `pk3/RSQ_MonsterArt_<Colour>.pk3`, built by `tools/build_monster_art.py` (also run by
+`tools/build_all.py` and `build_all.sh`). The prototype's own pack files (its `zscript/`, `MAPINFO`, `CVARINFO`, `GLDEFS`)
+are gone; `rsrc_on` / `rsrc_debug` are now RSQ Monsters' `rsq_mon_art` / `rsq_mon_art_debug`.
+
+| Folder / file | What |
+|---|---|
+| `rsrecolour/<colour>/<LUMP>.png` | the art, written by the bake (`Monsters/tools/recolour/bake.py`), one PNG per source sprite lump per colour |
+| `hand/<colour>/<LUMP>.png` | frames painted by hand: the bake copies them over its own output, so they always win |
+| `brightmaps.txt` | every BD22 + XMVE sprite's GLDEFS brightmap, read once from the load order (`tools/build_monster_art.py --brightmaps`), so the art build needs nothing outside the repo |
+| `rsrecolour/GLDEFS.rsrecolour`, `rsrecolour/manifest.txt` | the bake's own lists for the family it last baked; not shipped (the art build writes each colour's GLDEFS from `brightmaps.txt` and whatever PNGs exist) |
+| `docs/` | the sheets |
 
 ## The art: recoloured per part, not tinted (2026-11-13, replaces the first bake)
 
@@ -64,25 +79,75 @@ leave its tile (Black's mid-fall tile, for one).
 One colour of the full set (7,620) is already six times the headroom. The static walk is approximate (it found 30 of the
 36 sprite names in the Imp's own folders; ACS and runtime names escape it), so the true numbers are a little higher.
 
-## How it works (`zscript/rsrecolour/driver.zs`)
+## How it works (RSQ Monsters, `Monsters/zscript/monsters/RS_BDArt.zs`, since 2026-11-13)
 
+- **Who holds the colour.** A Brutal Doom / XMVE monster's colour is its kit's (`RS_BDKit`). A piece that came out of a
+  coloured body (a corpse that is a new actor, a crawler, a last stand, a limb, a gib) holds it in an `RS_BDHue`, put on by
+  RSQ Monsters' Carry (`RS_BDTier.zs`). The translation is now only what the renderer shows: the tier tint
+  (`rs_bdtier_*`) where there is no painted frame, no translation where the painted frame is drawn. The prototype's
+  trick (take the tint off for the renderer, put it back at the top of every tic, because the tint WAS the colour) is
+  gone: nothing reads the colour back from the translation.
 - **picnum.** An actor whose `picnum` is set draws that texture instead of its sprite frame. A texture is not a sprite
-  frame: the baked PNGs live in a plain folder of the pk3 (`rsrecolour/<colour>/<LUMP>.png`), are made into textures
-  only when first asked for by full path (`TexMan.CheckForTexture("rsrecolour/green/TROOA1.png")`), and count against
-  nothing.
-- **Rotations and mirroring.** picnum has neither, so every tic, after every actor has moved (a Thinker at statnum
-  120), the driver asks the engine which lump the actor's frame shows from the console player's view
-  (`State.GetSpriteTexture`, the engine's own rotation and mirror tables) and points picnum at that lump's baked copy,
-  setting X-flip when the engine would mirror it.
-- **The colour.** RSQ Monsters' tier tint is the mark: an actor wearing an `rs_bdtier_*` translation is that colour
-  (RS_BDTier puts it on the monster and carries it to corpses, crawlers and gore). A translation also applies to a
-  picnum texture (rig `rc_t1`: a white baked imp under a red translation drew red), so the driver takes the tint off for
-  the renderer and puts it back first thing next tic (its handler has the lowest Order and restores in NetworkProcess
-  and WorldTick): Brutal Doom, Carry and the tier flash only ever see the tint.
-- **Fallback.** A frame with no baked copy keeps the live tint, so families can be added one at a time.
+  frame: the PNGs live in a plain folder of a pk3 (`rsrecolour/<colour>/<LUMP>.png`), are made into textures only when
+  first asked for by full path, and count against nothing.
+- **Rotations and mirroring.** picnum has neither, so after every actor has moved (a Thinker at statnum 120) the driver
+  asks the engine which lump the actor's frame shows from the console player's view (`State.GetSpriteTexture`, the
+  engine's own rotation and mirror tables) and points picnum at that lump's copy, with X-flip when the engine mirrors it.
+- **Only its own look.** The art is drawn while the actor shows its tier colour (the tint, or no translation). The tier
+  flash, a Champions tint before the kit takes it off (fix 6), or a colour a monster's own states set are left on
+  screen. The tier flash's own-colour phase puts the tier tint back (not "no translation"), and the art follows.
+- **Fallback.** A frame with no copy for its colour (a family not painted yet, an art pk3 not loaded, RSQ Monsters >
+  Painted Colour Art off) shows the live tint, so families arrive one at a time.
+- **Cost.** A corpse or a monster whose frame, colour and rotation from the viewer are what they were last tic is
+  skipped (one angle and a few compares). A sprite with no art in its colour at all (another family) costs one Map
+  lookup: each art pk3 carries `rsrecolour/<colour>/sprites.txt`, the sprite names it holds, read once.
 - **Single player:** the art is picked for the console player's view in play code.
 
-## Shown on the rig (the driver; these runs drew the FIRST, tint-baked art)
+## Packaging (2026-11-13)
+
+`python3 tools/build_monster_art.py` (or `tools/build_all.py`, `build_all.sh`) writes `pk3/RSQ_MonsterArt_<Colour>.pk3`
+for each colour that has art: its PNGs (stored, not deflated), its `GLDEFS.txt` (each painted frame gets its source
+sprite's brightmap, from `brightmaps.txt`) and its `sprites.txt`. It works with whatever families are painted at the
+time. It stops if a colour would pass a zip's 65,535 entries or GitHub's 100 MB a file: all of BD22 + XMVE is about
+11,300 lumps a colour (about 25 MB), so one pk3 per colour fits both. With the Imp only, each is about 1.1 MB, 476
+frames of 36 sprites. Load them after `RSQ_Monsters.pk3` (the lookups are by full path, so the order among them does
+not matter). To refresh the brightmap table: `python3 -I tools/build_monster_art.py --brightmaps <the load order's
+archives>` (`Monsters/tools/recolour/out/bake_load_order.txt` lists them).
+
+## Shown on the rig: the integration (2026-11-13, RSQ Monsters' driver and the per-colour art pk3s)
+
+All on the owner's full order (`rig/work/full_monA.sh`'s list: his saved ini, every pack of his order, this branch's RSQ
+pk3s with `RSQ_MonsterArt_<Colour>.pk3`), `-skill 6`, rig01 at sector light 224 for the frames, through
+`Monsters/tools/recolour/rig/rcE_full.sh` and its test handler `rcEdemo/`. **No script error from our packs** in any run
+(the only `Script error` lines are BD22 VoxelPack's own VOXELDEF, as on main; 2161 warnings, the same count as main's).
+Test-only settings for the frames, not his: Kill Rewards off (`rsqgb_kr_enabled 0`), weapon and laser sight hidden;
+in `rcE_final2` also every imp a champion, awake (`champion_OverrideChance 256`, `champion_dormant 0`). Runs deleted
+after the sheets were cut (`Monsters/tools/recolour/rig/rcE_sheets.py`).
+
+| Sheet | What it shows | Log |
+|---|---|---|
+| `docs/integ_01_twelve_colours_drawn_by_rsq_monsters.jpg` (run `rcE_final`) | the Imp's twelve colours drawn from the art pk3s by RSQ Monsters' driver, front and side | census: every coloured imp "hue <colour> wears none ART" |
+| `docs/integ_02_blood_mist_red_pieces_coloured.jpg` (`rcE_final`) | Red, Gray, FireBlu imps gibbed: the mist red (no coloured squares), the pieces in their imps' colours | 93 coloured things, 0 blood or mist wearing a tier tint; `XDeathImpArm` per imp: its imp's colour, drawn from the art |
+| `docs/integ_03_pairs_side_by_side.jpg` (`rcE_final`) | imps 36 units apart in pairs (Green\|Red, as shipped\|Red, FireBlu\|Gray, Red\|as shipped): alive, plain deaths, one explosive hit on all | 0 bodies or pieces on one imp's spot holding another's colour; the as-shipped imps' pieces hold none |
+| `docs/integ_04_champions_flash_art_toggle.jpg` (`rcE_final2`) | World Tier 3 from the start under Champions (and Universal Entropy, his `ue_recolour 5`): the tier colour from the art; World Tier 4 mid-map: the flash, then the new colour from the art; Painted Colour Art off (the tint) and on again (the art) | 7 "tier tint back over a Champions tint"; `rs_carry_dump`: 7 wear their tier colour, 0 a Champions tint; Champions' icons hold no colour |
+
+Cost (`rsq_mon_art_debug 1`: the driver's own time, `MSTimeF` around its tick; **rig CPU, two cores shared with other
+runs, not Quest: Quest numbers need his headset**). God mode, 600 tics of the map, then `kill monsters` and 420 tics of
+the bodies:
+
+| Map, World Tier | Tracked | Drawn from art | Driver, ms per tic (avg of each 35-tic window; worst tic) |
+|---|---|---|---|
+| MAP01, 4 (Purple), first measurement (see below) | 27 alive, 46 to 53 after | 12, then 13 | 0.03 to 0.06 (0.87) |
+| MAP10, 4 (Purple) | 283 alive; 351 after the kill, 468 at the end | 65, then 52 | 0.18 to 0.22 (0.50) alive; 0.32 the second after the kill (0.61), then 0.18 to 0.24 |
+| MAP10, 1 (as shipped: nothing coloured) | 279 alive, 128 after | 0 | 0.05 to 0.07 (0.32) |
+
+The MAP10 rows are the final code. Before the per-sprite list and the kit's colour read straight off the kit (the first measurement, which is also the MAP01 row): MAP10 World
+Tier 4 was 0.27 to 0.33 alive and 1.49 (6.9 worst) the second after the kill. Texture memory: the art pk3s add no sprite
+frames; the art in use on MAP10 was 35 textures, 0.23 MB as 32-bit (the frames loaded on demand, logged by the driver;
+the engine's own texture memory could not be read on the rig). The Imp art is about 7 KB a frame as 32-bit, so even a
+few hundred painted frames in view at once stay in single megabytes.
+
+## Shown on the rig (the prototype driver, before it moved to RSQ Monsters; these runs drew the FIRST, tint-baked art)
 
 | What | Run | Result |
 |---|---|---|
@@ -93,29 +158,31 @@ One colour of the full set (7,620) is already six times the headroom. The static
 | The tier flash | `rc_flash` | World Tier 1 to 3 mid-map: the flash kept the tint as the monster's own (origTrans = the tint id every tic), flashed, landed on the new colour, drawn from the art |
 | Cost | `rc_stress` | 120 coloured imps: 0.23 to 0.60 ms per tic for the driver; 333 tracked after their deaths: 0.33 to 0.98 ms (rig CPU, not Quest) |
 
-Seen in those frames, NOT this prototype's doing (RSQ Monsters on main): BD's blood mist (`SuperGore` and others) takes
-the tint, and the colours whose recipe lifts black (FireBlu, Red, Gray) paint it as coloured squares; a thrown imp arm
-(`XDeathImpArm`, no maker) stays as shipped; imps closer than 64 units can hand each other their colour through Carry.
+Seen in those frames, NOT the prototype's doing (RSQ Monsters on main): BD's blood mist (`SuperGore` and others) took
+the tint, and the colours whose recipe lifts black (FireBlu, Red, Gray) painted it as coloured squares; a thrown imp arm
+(`XDeathImpArm`, no maker) stayed as shipped; imps closer than 64 units could hand each other their colour through Carry.
+All three are fixed in RSQ Monsters on this branch (2026-11-13, see `Monsters/README.md` and the integration rows below).
 
 ## Not done / open
 
 - The art is made by rule, per part (above). Nothing is painted by hand yet; a frame painted by hand goes in
   `hand/<colour>/<LUMP>.png` and wins over the bake (`hand/README.txt`). Claws share the spikes' palette (same gray
   ramp in the source); a `claw` part exists for masks that split them. The frozen imp keeps its ice in every colour.
-- Generic gore, burnt (`PBR1`, `XBRN`) and Brutal Doom's shared pieces are not baked: they keep the live tint.
-- Each tic re-picks every tracked actor; still corpses could skip until their frame or the view changes.
-- All BD22 + XMVE: 11,261 source lumps, 135,132 PNGs, about 300 MB. A plain zip holds 65,535 entries, so it would be
-  several pk3s (one per colour fits). A hand-painted frame must live in a folder the bake does not overwrite.
+- Generic gore (`Guts`, `XDeath1`-`4`, organs, brains, teeth), burnt (`PBR1`, `XBRN`) and Brutal Doom's shared pieces
+  are not baked: they keep the live tint (on main too). FireBlu's tint turns their red to blue. For the owner: paint
+  them (they would keep their reds, as the Imp art does), or leave them uncoloured.
+- All BD22 + XMVE: about 11,300 source lumps, 135,000 PNGs, 300 MB. One pk3 per colour (above) holds it.
 
 ## Build and bake
 
     python3 -I Monsters/tools/recolour/bake.py Monsters/tools/recolour/families/imp.txt MonsterRecolour/rsrecolour \
         Monsters/TRNSLATE.txt $(cat Monsters/tools/recolour/out/bake_load_order.txt)
-    cd MonsterRecolour && zip -qr ../RSQ_MonsterRecolour_proto.pk3 zscript.txt zscript MAPINFO.txt CVARINFO.txt GLDEFS.txt rsrecolour -x rsrecolour/manifest.txt
+    python3 tools/build_monster_art.py
 
 The bake reads `families/imp.txt` (parts, group rules, masks, tint-kept lumps) and `ramps.py` (the palettes), then
-copies `hand/` over its output. Load it after RSQ_Monsters. `rsrc_on 0` turns the art off (the live tint only); `rsrc_debug 1` logs what it draws.
-Rig probes: `Monsters/tools/recolour/rig/` (test only).
+copies `hand/` over its output. The art build packs every colour. RSQ Monsters > Painted Colour Art (`rsq_mon_art`)
+0 turns the art off (the live tint only); `rsq_mon_art_debug 1` logs what it draws and its time (RSART lines).
+Rig probes: `Monsters/tools/recolour/rig/` (test only; `rcE_full.sh` + `rcEdemo/` are the integration's).
 
 ## The Zombieman, Shotgunner and Chaingunner families (2026-11-13, owner-approved method: "lets use that, i approve for the bd and xmve series")
 
@@ -141,7 +208,7 @@ What is the body, for men (the plainest reading; each choice is in its family fi
 - **Fatalities and stealth kills** show the player's marine: his green armour and tan helmet, boots and belt keep; in
   the zombieman fatalities that also keeps the zombie's khaki uniform (same palette), only his skin takes the colour.
 - **Evil Marines** draw the player's own sprites (PLAY, MARN, ...); they are baked too. The driver draws the art only on
-  an actor wearing a tier tint, so the player is never drawn from it.
+  a kit monster or a coloured piece (RSQ Monsters' `RS_BDArt.zs`), so the player is never drawn from it.
 - **Left on the live tint (not baked):** Brutal Doom's shared gore, blood and burnt bodies (BDT*, CARB, PBR1, XBRN, BRZ3,
   BLOD, XME*, ...), pieces another family owns by folder (the Imp's LEG4 HND4 XHE4 TROO TROG; the Revenant's SKEL SPIC
   BNP*; the Lost Soul's LGI*; ID11 ID50), the Labgal's first-person hostage frames (never on a monster).

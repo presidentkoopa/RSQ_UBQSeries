@@ -1197,6 +1197,11 @@ server int rsq_mon_retier_health = 1;
 server bool rsq_mon_bdtier = true;
 server int  rsq_mon_worldtier = 1;
 server bool rsq_mon_bdtier_debug = false;
+// [11-13] The painted colour art (RS_BDArt.zs; the art itself is pk3/RSQ_MonsterArt_<Colour>.pk3, one per colour):
+// 1 a frame that has a painted copy for its colour is drawn from it, the rest keep the live tier tint; 0 the tint only.
+server bool rsq_mon_art = true;
+// 1: log what the art driver draws and its time per tic (RSART lines), for the rig.
+server bool rsq_mon_art_debug = false;
 
 
 server int rs_roster_zombieman = 1;
