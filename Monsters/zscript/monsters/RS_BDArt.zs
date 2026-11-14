@@ -84,6 +84,38 @@ class RS_BDHue : Inventory
 	}
 }
 
+// [11-13 dying-body census] On a PLAYER while it plays a Brutal Doom fatality (RS_BDTierHandler.Fatalities): the colour of
+// the monster being killed. Its fatality frames (ARF1 and the rest, painted with the monster's family) are drawn from the
+// art; a frame with no art shows the player as it is (never the tint), and its own translation is put back after.
+class RS_BDFatalHue : RS_BDHue
+{
+	TranslationID keepTr;
+
+	static void Put(Actor p, int col)
+	{
+		if (!p || col < 2 || col > 13) return;
+		let h = RS_BDFatalHue(p.FindInventory("RS_BDFatalHue"));
+		if (!h)
+		{
+			p.GiveInventory("RS_BDFatalHue", 1);
+			h = RS_BDFatalHue(p.FindInventory("RS_BDFatalHue"));
+			if (!h) return;
+			h.keepTr = p.Translation;
+		}
+		h.col = col;
+		RS_BDArt.Watch(p, h);
+	}
+
+	static void TakeOff(Actor p)
+	{
+		if (!p) return;
+		let h = RS_BDFatalHue(p.FindInventory("RS_BDFatalHue"));
+		if (!h) return;
+		RS_BDArt.Get().Release(p, h.keepTr);
+		h.Destroy();
+	}
+}
+
 class RS_BDArt : Thinker
 {
 	// the tracked actors, and what the driver did to each
@@ -230,6 +262,45 @@ class RS_BDArt : Thinker
 		lArt[i].SetNull();
 	}
 
+	// a player's fatality is over: its own look back, and no longer watched
+	void Release(Actor a, TranslationID tr)
+	{
+		int i = who.Find(a);
+		if (i == who.Size()) return;
+		if (drawn[i])
+		{
+			a.picnum.SetNull();
+			if (setX[i] >= 0 && (a.bXFLIP ? 1 : 0) == setX[i]) a.bXFLIP = ownX[i] != 0;
+		}
+		a.Translation = tr;
+		Forget(i);
+	}
+
+	// [11-13 census] whether a class's states (from its spawn, current and death states, a few steps each) draw a sprite
+	// that has painted art in a colour whose art pk3 is loaded (only listed sprites count: with no art loaded, never)
+	bool ClassHasArt(Actor a)
+	{
+		if (!listsRead) ReadLists();
+		if (!listedCols) return false;
+		State starts[3];
+		starts[0] = a.SpawnState; starts[1] = a.CurState; starts[2] = a.FindState("Death");
+		for (int j = 0; j < 3; j++)
+		{
+			State s = starts[j];
+			for (int n = 0; s && n < 24; n++, s = s.NextState)
+			{
+				TextureID t; bool mi; Vector2 sc;
+				[t, mi, sc] = s.GetSpriteTexture(0, 0, (0, 0), s.sprite, s.Frame);
+				if (!t.IsValid()) continue;
+				String nm = TexMan.GetName(t);
+				int b; bool ok;
+				[b, ok] = artSprites.CheckValue(Name(nm.Left(4).MakeUpper()));
+				if (ok && (b & listedCols)) return true;
+			}
+		}
+		return false;
+	}
+
 	void Forget(int i)
 	{
 		who.Delete(i); src.Delete(i); drawn.Delete(i); ownX.Delete(i); setX.Delete(i); lSprite.Delete(i); lFrame.Delete(i);
@@ -243,12 +314,20 @@ class RS_BDArt : Thinker
 		nDrawn = 0; nTint = 0; nSkip = 0; nLook = 0;
 		bool on = On();
 		let cam = players[consoleplayer].camera;
-		if (!on || !cam)
+		// [11-13 census] no camera for a tic (Brutal Doom's fatality camera going away): nothing changes this tic (it put
+		// every painted body back on the tint for that tic before: rig rcF, every dying body at once 35 tics into a fatality)
+		if (on && !cam) return;
+		if (!on)
 		{
 			// the option turned off: every painted frame back to the live tint, once
 			if (anyDrawn)
 				for (int i = who.Size() - 1; i >= 0; i--)
-					if (who[i] && drawn[i]) Undraw(i, RS_BDHue.ColourOf(who[i]), true);
+					if (who[i] && drawn[i])
+					{
+						let fh = RS_BDFatalHue(src[i]);
+						Undraw(i, RS_BDHue.ColourOf(who[i]), !fh);
+						if (fh) who[i].Translation = fh.keepTr;
+					}
 			anyDrawn = false;
 			wasOff = true;
 			return;
@@ -269,16 +348,24 @@ class RS_BDArt : Thinker
 			let kit = RS_BDKit(src[i]);
 			if (kit) col = kit.rung > kit.entry ? kit.Tier() : 0; else col = RS_BDHue(src[i]).col;
 			int tr = int(a.Translation);
+			// a player in a fatality: the art only (never the tint), whatever translation the player wears
+			let fat = RS_BDFatalHue(src[i]);
 			// our look: the tier tint, or no translation (the painted frame, or a look put back with none); not the flash,
 			// not a Champions tint the kit has not taken off yet, not a colour from the monster's own states
-			bool ours = col && (tr == 0 || tr == TintOf(col));
+			bool ours = col && (fat || tr == 0 || tr == TintOf(col));
 			if (!ours || a.bINVISIBLE || !a.CurState)
 			{
-				if (drawn[i]) Undraw(i, col, ours);
+				if (drawn[i]) { Undraw(i, col, ours && !fat); if (fat) a.Translation = fat.keepTr; }
 				lCol[i] = -1;
 				continue;
 			}
 			int spr = a.sprite, frm = a.frame;
+			if (fat && !(SpriteMask(a, spr) & listedCols & (1 << col)))
+			{
+				if (drawn[i]) { Undraw(i, col, false); a.Translation = fat.keepTr; }
+				lCol[i] = -1;
+				continue;
+			}
 			// a sprite with no art in this colour at all (another family, not painted yet): the tint, and nothing more
 			if (!(SpriteMask(a, spr) & (1 << col)))
 			{
@@ -290,7 +377,7 @@ class RS_BDArt : Thinker
 			// what the renderer would draw: the angle from the viewer to the thing, against the thing's yaw
 			double ang = VectorAngle(a.pos.x - vp.x, a.pos.y - vp.y) - a.angle;
 			// nothing changed since it was last looked at: the same frame, colour and view, and the look it was left with
-			bool kept = drawn[i] ? (tr == 0 && a.picnum == lArt[i] && (a.bXFLIP ? 1 : 0) == setX[i]) : tr == TintOf(col);
+			bool kept = drawn[i] ? (tr == 0 && a.picnum == lArt[i] && (a.bXFLIP ? 1 : 0) == setX[i]) : (fat ? true : tr == TintOf(col));
 			bool same = spr == lSprite[i] && frm == lFrame[i] && col == lCol[i];
 			if (kept && same && abs(Actor.deltaangle(ang, lAng[i])) < 0.5)
 			{
@@ -316,6 +403,7 @@ class RS_BDArt : Thinker
 			if (tex.IsValid()) art = Art(tex, col); else art.SetNull();
 			if (!art.IsValid())
 			{
+				if (fat) { if (drawn[i]) { Undraw(i, col, false); a.Translation = fat.keepTr; } continue; }
 				// no painted frame (or an empty frame): the live tint
 				Undraw(i, col, true);
 				nTint++;

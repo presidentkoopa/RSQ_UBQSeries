@@ -133,6 +133,13 @@ item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
   its body's colour (`RS_BDHue`). Blood, blood mist, smoke, fire, casings, pickups and other mods' things (Champions'
   icons and auras, LegenDoom's) keep their own look. Generic gore (guts, chunks, organs, brains, teeth) takes the tint,
   so on FireBlu its red turns blue: an open choice for the owner (paint it, or leave it uncoloured).
+  Since the dying-body census (2026-11-13, rig only, not headset-confirmed; `../MonsterRecolour/README.md`, "Every dying
+  body"): also the crawlers and corpses a body spawns while it lies there (Brutal Doom's men end a death on an invisible
+  body that never goes away), death stages that are monsters of the family (the Arch-vile's armless crawler; friendly
+  ones such as the burning Cacodemon), a monster born again on the spot (a captured marine's Taunt), bodies thrown as
+  missiles that hurt, a player's fatality (its gore, its corpse and the player's own fatality frames), and pieces named
+  like effects whose sprites are painted (the Revenant's bone dust). Craters, metal shards, scrap, ice chunks and Legion
+  of Bones' risers keep their own look.
 - **RSQ Miniboss and RSQ Score** now get a tier for these monsters, so a miniboss fight's tier-ups reach them (the same
   flash, no new body: a champion power or a legendary stays).
 - **Not built from the design:** the by-kind variants (hitscan spread, Arch-Vile flames and raises, bite and charge
@@ -343,7 +350,10 @@ the row and the gems in frames, N5 above).
 - **The painted colour art** (`RS_BDArt.zs`, branch `wip/2026-11-13-recolour`). A Brutal Doom monster's colour is its
   kit's; a piece's is its `RS_BDHue` (put on by Carry in `RS_BDTier.zs`: its master; else, for a thing that is not a
   monster, its target, the body that threw it, and a maker that holds no colour gives none; else the nearest body
-  removed within 64 units across the floor in the last 3 tics, coloured or not). The translation is only what is shown:
+  removed within 64 units across the floor in the last 3 tics, or that died there in the last 4 s and still lies there,
+  coloured or not; else, for what a player throws during a Brutal Doom fatality, the colour of that player's last kill).
+  A family monster rising out of a body mid-map (a death stage with no kill of its own, or one of the same family born
+  on the spot) takes the body's rung, not the world tier's. The translation is only what is shown:
   the tier tint where no painted frame exists, none where one is drawn. After every actor has moved (a Thinker at
   statnum 120) the driver asks the engine which lump each tracked actor's frame shows from the console player's view
   (`State.GetSpriteTexture`) and points `picnum` at `rsrecolour/<colour>/<LUMP>.png` (X-flip when the engine mirrors).

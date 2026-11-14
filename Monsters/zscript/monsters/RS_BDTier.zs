@@ -722,14 +722,36 @@ class RS_BDTierHandler : EventHandler
 	//     its maker (SXF_TRANSFERPOINTERS copies the body's), so a monster piece skips this step;
 	//   - its maker already removed (Brutal Doom spawns the next stage and removes itself in the same state, so by the
 	//     new thing's first tick its maker is gone): the NEAREST body removed within 64 units in the last 3 tics, coloured
-	//     or not (a body at its entry colour leaves a record too, so a neighbour's colour is not taken when it is nearer).
+	//     or not (a body at its entry colour leaves a record too, so a neighbour's colour is not taken when it is nearer);
+	//   - [11-13 dying-body census, rig rcF] or a body that DIED within 64 units in the last 4 s and is still there: Brutal
+	//     Doom's men end a death on `TNT1 A -1` (never removed) after spawning their crawler or corpse, and a death stage
+	//     can spawn its corpse seconds later (the Chaingunner's blasted, burning and headless crawlers and their corpses,
+	//     the Arch-vile's armless crawler's corpse held no colour before);
+	//   - a player's fatality (Brutal Doom: the monster dies and gives the player GoFatality; the PLAYER then plays the kill
+	//     and throws the gore and the corpse, RapedArachnotron and its kin, as their maker): the colour of the monster that
+	//     player killed last, while the player holds GoFatality and 2 tics after. The player's own fatality frames (ARF1 ...)
+	//     are drawn from the art while it lasts (RS_BDFatalHue: the art only, never the tint, the player's colours put back).
+	// A family monster that rises out of a body mid-map (a death stage that counts no kill, such as the Arch-vile's armless
+	// crawler; or the same class born again on the spot, as Brutal Doom's taunt does: Death.Taunt spawns a fresh copy and
+	// removes itself) gets the body's place on the ladder, not the world tier's (it came back as shipped before).
+	// A thing named like an effect ("dust", "burn", "rifle" ...) whose states draw a sprite that has painted art is a body
+	// (RevenantDust is the Revenant's painted bone dust, BurningCacodemon its own HEAD frames, the Evil Marines' "Rifle"
+	// corpses): it follows the body. Blood (by its parent class) and other mods' things keep their own look always.
 	// Blood (the owner's rule: blood keeps its own colour), smoke, fire, sparks, casings, puffs and pickups keep their own
 	// look, by class name (below, cached per class); one that arrives wearing a tier tint (SXF_TRANSFERTRANSLATION) has
 	// it taken off again. Brutal Doom's blood mist (SuperGore and its kin) was missed by the names before (2026-11-13:
 	// it took the tint, and on FireBlu, Red and Gray it showed as coloured squares).
 	private Array<int> tintIds;
 	private Array<double> gonX, gonY, gonZ;
-	private Array<int> gonCol, gonTic;
+	private Array<int> gonCol, gonTic, gonRung;
+	private Array<int> gonFam;               // the removed body's family (its kit's), -1 none
+	private Array<Actor> diedA;              // bodies that died lately and may still be there (pieces' makers)
+	private Array<int> diedCol, diedRung, diedTic;
+	private int lastKillCol[MAXPLAYERS], lastKillTic[MAXPLAYERS], fatCol[MAXPLAYERS], fatSeen[MAXPLAYERS];
+	private bool fatOn[MAXPLAYERS];
+	private transient class<Inventory> fatTok;
+	private transient bool fatTokRead;
+	const DIED_TICS = 140;
 	private Map<Name, int> ownLook;          // class -> 1 keeps its own look, 0 follows the body
 	private Map<Name, int> logged;           // debug: classes already logged this map
 
@@ -761,29 +783,35 @@ class RS_BDTierHandler : EventHandler
 		if (ok) return v != 0;
 		v = OwnLookName(cn) ? 1 : 0;
 		// and anything a blood class is the parent of, named so or not
-		if (!v) for (class<Actor> k = a.GetClass(); k; k = (class<Actor>)(k.GetParentClass()))
+		bool blood = false;
+		for (class<Actor> k = a.GetClass(); k; k = (class<Actor>)(k.GetParentClass()))
 		{
 			String kn = k.GetClassName();
 			if (kn ~== "Actor") break;
-			if (kn ~== "Blood" || kn ~== "SuperGore" || kn ~== "BloodMist") { v = 1; break; }
+			if (kn ~== "Blood" || kn ~== "SuperGore" || kn ~== "BloodMist") { v = 1; blood = true; break; }
 		}
+		// [11-13 census] named like an effect, but its states draw painted body art: a body (see "the colour follows the body")
+		// (never blood, mist or gore by name, nor fire, smoke and the other effects: Brutal Doom's blood mist draws the gore
+		// sprites XDT1 that the gore pass painted; the owner's rule keeps blood its own colour)
+		if (v && !blood && !OtherModName(cn) && !EffectName(cn) && RS_BDArt.Get().ClassHasArt(a)) v = 0;
 		ownLook.Insert(cn, v);
 		return v != 0;
 	}
 
 	static bool OwnLookName(String n)
 	{
+		// [11-13] + "crater" (BD's floor and ceiling craters, DetectFloorCraterSmall), "shard" (MetalShard1-3, CrashMetalShards),
+		// words "junk" (XJunk1-5: machine scrap) and "metal": not a body (the gore pass's census, commit c1db29d98b);
+		// "icechunk" (XIceChunk1-3, the ice of a shattered frozen body: ice keeps its own, as in the family files)
 		static const String SUB[] = { "blood", "gore", "smearer", "smoke", "flame", "flare", "spark", "puff", "tracer", "casing",
-			"plasma", "splash", "steam", "brass", "fog", "particle", "flashlight", "shrapnel", "explosion", "bullet", "mist" };
+			"plasma", "splash", "steam", "brass", "fog", "particle", "flashlight", "shrapnel", "explosion", "bullet", "mist",
+			"crater", "shard", "icechunk" };
 		static const String WORD[] = { "fire", "light", "shell", "water", "dust", "trail", "shock", "ring", "ember", "burn", "drop",
-			"rifle", "weapon", "ammo", "clip", "mag" };
+			"rifle", "weapon", "ammo", "clip", "mag", "junk", "metal" };
 		static const String BODYW[] = { "guy", "gunner", "zombie", "man", "marine", "dead", "head", "gib", "death", "half", "dying",
 			"frozen", "major", "soldier", "trooper", "corpse", "body", "torso", "arm", "leg", "grabbed", "throwed", "punched", "execute" };
-		// other mods' things that ride on a monster (Champions' icons, leaves and balloons, LegenDoom's, Universal Entropy's,
-		// the series' own): never a piece of its body (rig rcE_p3: Champions' icons took the tier tint through their master)
-		static const String MODS[] = { "champion_", "ld", "rsq", "rs_", "ssq", "ue_" };
+		if (OtherModName(n)) return true;
 		String low = n.MakeLower();
-		for (int i = 0; i < MODS.Size(); i++) if (low.Left(MODS[i].Length()) == MODS[i]) return true;
 		for (int i = 0; i < SUB.Size(); i++) if (low.IndexOf(SUB[i]) >= 0) return true;
 		String w = " " .. Words(n) .. " ";
 		for (int i = 0; i < WORD.Size(); i++) if (w.IndexOf(" " .. WORD[i]) >= 0) return true;
@@ -796,6 +824,48 @@ class RS_BDTierHandler : EventHandler
 			for (int j = 0; j < BODYW.Size() && !isBody; j++) if (ws[i].IndexOf(BODYW[j]) >= 0) isBody = true;
 		}
 		return gun && !isBody;
+	}
+
+	// other mods' things that ride on a monster (Champions' icons, leaves and balloons, LegenDoom's, Universal Entropy's,
+	// the series' own): never a piece of its body (rig rcE_p3: Champions' icons took the tier tint through their master)
+	// [11-13] and Legion of Bones' classes by name (in his order; it has no prefix): its risers (SkullZombieSpawn and
+	// kin: a skeleton climbing out of a corpse, then its own monster, which gets its own kit if it has a family), its
+	// bones, fire and shots: another mod's, never a piece of the body it rises from
+	static bool OtherModName(String n)
+	{
+		static const String MODS[] = { "champion_", "ld", "rsq", "rs_", "ssq", "ue_" };
+		static const String LOB[] = {
+			"Abhorrent", "AbhorrentShot", "AbhorrentShotTrail", "AbhorrentSpawn", "AbhorrentSpawner", "Arachnobone", "ArachnoboneShot", "ArachnoboneSpawn",
+			"ArachnoboneSpawner", "Balrog", "BalrogBall", "BalrogBuffEffectSpawner", "BalrogFire", "BalrogFireBuffEffect", "BalrogFireGiver", "BalrogFireSpawner",
+			"BalrogSpawn", "BalrogSpawner", "BloodSpitTrail", "Bone", "Bone1", "Bone2", "BoneGib", "CacoLich",
+			"CacoLichBall", "CacoLichFlame", "CacoLichSpawn", "CacoLichSpawner", "ChaingunnerSkull", "ConqCountdown", "ConqCube", "ConqCubeShot",
+			"ConqMiniNuke", "ConqNuke", "ConqRailPow", "ConqRailShot", "ConqRailTrail", "ConqSpawnCube", "Conqueror", "ConquerorSpawn",
+			"ConquerorSpawner", "DragonSoul", "DragonSoulFlame", "DragonSoulSpawner", "FakeGhostSpectre", "GhostBlood", "GhostSpectre", "GhostSpectreSpawn",
+			"GhostSpectreSpawner", "GhostSpectreTrail1", "GhostSpectreTrail2", "GhostSpectreTrail3", "GhostSpectreTrail4", "HotHead", "InfightController", "LOBArachnotron",
+			"LOBArchvile", "LOBBaronOfHell", "LOBCacodemon", "LOBChaingunGuy", "LOBDeadDoomImp", "LOBDeadShotgunGuy", "LOBDeadZombieMan", "LOBDemon",
+			"LOBDoomImp", "LOBHellKnight", "LOBLostSoul", "LOBMancubus", "LOBRevenant", "LOBShotgunGuy", "LOBSpectre", "LOBSpiderMastermind",
+			"LOBZombieMan", "MonsterTracer", "Painbringer", "PainbringerSpawner", "PhantomRevenant", "PhantomRevenant2", "PhantomRevenantSpawn", "PhantomRevenantSpawner",
+			"PhantomRevenantTrail1", "PhantomRevenantTrail2", "PhantomRevenantTrail3", "PhantomRevenantTrail4", "PhantomRevenantTrail5", "PhantomRevenantTrail6", "PowerBalrogFireBuff", "PowerBalrogFireBuffGiver",
+			"Reaper", "ReaperBloodSkull", "ReaperBloodSkullGiver", "ReaperBloodSkullSpawner", "ReaperBloodSpit", "ReaperFire", "ReaperFireStart", "ReaperFireTrail",
+			"ReaperSpawn", "ReaperSpawner", "ReaperStealthFire", "RetroSkeleton", "RetroSkeletonFlame", "RetroSkeletonSpawner", "SKFlameTrail", "SkeletonDemon",
+			"SkeletonDemonSpawn", "SkeletonDemonSpawner", "SkeletonImp", "SkeletonImpArm", "SkeletonImpBall", "SkeletonImpLeg", "SkeletonImpSpawn", "SkeletonImpSpawner",
+			"SkullBloodDrip", "SkullChaingunner", "SkullChaingunnerSpawn", "SkullChaingunnerSpawner", "SkullChaingunnerTracer", "SkullShotgunner", "SkullShotgunnerSpawn", "SkullShotgunnerSpawner",
+			"SkullShotgunnerTracer", "SkullZombie", "SkullZombieSpawn", "SkullZombieSpawner", "SkullZombieTracer", "SlayerKnight", "SlayerKnightFlame", "SlayerKnightFlame2",
+			"SlayerKnightSpawn", "SlayerKnightSpawner", "SoulBallHoming", "SoulBallNormal", "SoulTrail", "Tracer", "UndeadSpawnFire", "ZombieTracer" };
+		String low = n.MakeLower();
+		for (int i = 0; i < MODS.Size(); i++) if (low.Left(MODS[i].Length()) == MODS[i]) return true;
+		for (int i = 0; i < LOB.Size(); i++) if (n ~== LOB[i]) return true;
+		return false;
+	}
+
+	// blood, mist, gore, fire and the effects by name: never taken for a body by the art test above
+	static bool EffectName(String n)
+	{
+		static const String FX[] = { "blood", "mist", "gore", "smearer", "smoke", "flame", "flare", "spark", "puff", "splash",
+			"steam", "fog", "particle", "explosion", "fire", "ember", "crater", "shard", "junk", "metal", "plasma", "shock", "icechunk" };
+		String low = n.MakeLower();
+		for (int i = 0; i < FX.Size(); i++) if (low.IndexOf(FX[i]) >= 0) return true;
+		return false;
 	}
 
 	// a class name as lower-case words: a break at _ and digits, before a capital after a small letter, and before the
@@ -842,17 +912,78 @@ class RS_BDTierHandler : EventHandler
 		}
 		// across the floor, not through the air: Brutal Doom throws a body's pieces from 30 to 60 units above where it stood,
 		// so a 3D distance could favour a neighbour standing 40 units to the side (rig rcE_gp, 2026-11-13)
-		int best = 0, bt = -1; double bd = 64.0001;
+		int best, br, bt; double bd; String bw;
+		[best, br, bt, bd, bw] = NearestBody(a, true);
+		if (bt >= 0) { why = String.Format("%s %d units away", bw, int(bd)); return best; }
+		// no body here: a player in a fatality throws the victim's gore and corpse where the player stands, seconds after
+		// the victim was removed: the victim's colour (none: the player's own things)
+		if (t && t.player && !a.bISMONSTER)
+		{
+			int pn = t.PlayerNumber();
+			if (pn >= 0 && pn < MAXPLAYERS && fatOn[pn]) { why = "fatality of a body " .. (fatCol[pn] ? RS_BDArt.COLOUR[fatCol[pn]] : "with no colour"); return fatCol[pn]; }
+		}
+		why = "no maker";
+		return 0;
+	}
+
+	// the nearest body (across the floor, within 64 units) removed in the last 3 tics, or (withDied) that died in the last
+	// DIED_TICS and is still there; fam >= 0: only a removed body of that family. Returns colour, rung (0: none), tic (-1:
+	// none found), distance, which.
+	private int, int, int, double, String NearestBody(Actor a, bool withDied, int fam = -1, double reach = 64.0001)
+	{
+		int best = 0, brung = 0, bt = -1; double bd = reach; String bw = "";
 		for (int i = gonTic.Size() - 1; i >= 0; i--)
 		{
-			if (level.maptime - gonTic[i] > 3) { gonX.Delete(i); gonY.Delete(i); gonZ.Delete(i); gonCol.Delete(i); gonTic.Delete(i); continue; }
+			if (level.maptime - gonTic[i] > 3) { gonX.Delete(i); gonY.Delete(i); gonZ.Delete(i); gonCol.Delete(i); gonTic.Delete(i); gonRung.Delete(i); gonFam.Delete(i); continue; }
 			if (abs(a.pos.z - gonZ[i]) > 96) continue;
+			if (fam >= 0 && gonFam[i] != fam) continue;
 			double d = (a.pos.xy - (gonX[i], gonY[i])).Length();
 			// the nearest; at the same distance, the latest
-			if (d < bd || (d == bd && gonTic[i] > bt)) { bd = d; best = gonCol[i]; bt = gonTic[i]; }
+			if (d < bd || (d == bd && gonTic[i] > bt)) { bd = d; best = gonCol[i]; brung = gonRung[i]; bt = gonTic[i]; bw = "removed body"; }
 		}
-		why = bt >= 0 ? String.Format("removed body %d units away", int(bd)) : "no maker";
-		return best;
+		for (int i = diedTic.Size() - 1; i >= 0; i--)
+		{
+			let b = diedA[i];
+			if (!b || level.maptime - diedTic[i] > DIED_TICS || b.health > 0) { diedA.Delete(i); diedCol.Delete(i); diedRung.Delete(i); diedTic.Delete(i); continue; }
+			if (!withDied || b == a || abs(a.pos.z - b.pos.z) > 96) continue;
+			double d = (a.pos.xy - b.pos.xy).Length();
+			if (d < bd || (d == bd && diedTic[i] > bt)) { bd = d; best = diedCol[i]; brung = diedRung[i]; bt = diedTic[i]; bw = "body that died"; }
+		}
+		return best, brung, bt, bd, bw;
+	}
+
+	// a body's place on the ladder, as a rung that shows its colour (0: it holds none)
+	static int RungOf(Actor b)
+	{
+		if (!b) return 0;
+		for (let i = b.Inv; i; i = i.Inv)
+		{
+			let k = RS_BDKit(i);
+			if (k) return k.rung > k.entry ? k.rung : 0;
+			let h = RS_BDHue(i);
+			if (h) return h.col;
+		}
+		return 0;
+	}
+
+	// a family monster that rises out of a body mid-map: the body's rung (0: none, or not such a monster). A death stage
+	// (counts no kill): its dead master, or the nearest body removed or died. Any other: only a body of its own family
+	// removed on the spot (16 units) in the last 3 tics: born again (Brutal Doom's Death.Taunt spawns the replaced class,
+	// "ChaingunGuy", which his order's random spawners can turn into a Major: the same family, not the same class).
+	private int BodyRung(Actor a, int fam)
+	{
+		if (level.maptime <= 2) return 0;
+		bool stage = !a.bCOUNTKILL;
+		if (stage)
+		{
+			let m = a.master;
+			if (m && m != a && m.health <= 0 && RS_BDHue.Known(m)) return RungOf(m);
+		}
+		int c, r, t; double d; String w;
+		if (stage) { [c, r, t, d, w] = NearestBody(a, true); }
+		else { [c, r, t, d, w] = NearestBody(a, false, fam, 16.0001); }
+		if (t >= 0 && r > 0 && Debug()) Console.Printf("BDTIER: %s rose out of a %s (rung %d, %s %d units away)", a.GetClassName(), stage ? "body" : "body of its own family", r, w, int(d));
+		return t >= 0 ? r : 0;
 	}
 
 	private void Carry(Actor a)
@@ -890,6 +1021,8 @@ class RS_BDTierHandler : EventHandler
 		bool known = RS_BDHue.Known(a);
 		if (!known && !a.bISMONSTER) return;
 		gonX.Push(a.pos.x); gonY.Push(a.pos.y); gonZ.Push(a.pos.z); gonCol.Push(known ? RS_BDHue.ColourOf(a) : 0); gonTic.Push(level.maptime);
+		let gk = RS_BDKit.Of(a);
+		gonRung.Push(known ? RungOf(a) : 0); gonFam.Push(gk ? gk.fam : -1);
 	}
 
 	override void WorldThingSpawned(WorldEvent e)
@@ -898,12 +1031,28 @@ class RS_BDTierHandler : EventHandler
 		if (!a) return;
 		if (a.bMISSILE)
 		{
-			if (a.GetMissileDamage(0, 1) > 0) Shot(a);    // an attack: the kit's own shot rules
+			// an attack: the kit's own shot rules. [11-13 census] But a body THROWN as a missile that hurts (Brutal Doom's
+			// ExtremePunchedChaingunguy: the punched body flies off its dead maker) is a piece of the body: its maker is gone
+			// or dead and it draws painted art (a fireball draws none)
+			if (a.GetMissileDamage(0, 1) > 0)
+			{
+				if (On() && (!a.target || a.target.health <= 0) && RS_BDArt.Get().ClassHasArt(a)) Carry(a);
+				else Shot(a);
+			}
 			else if (On()) Carry(a);                      // a limb or a chunk thrown off the body
 			return;
 		}
 		if (!On()) return;
 		if (!a.bISMONSTER) { if (!a.player) Carry(a); return; }          // a corpse, a dying body, a piece
+		// [11-13 census] a FRIENDLY death stage (Brutal Doom's BurningCacodemon: +FRIENDLY so the others leave it be, no
+		// kill of its own) follows the body it rose out of; a friendly that counts as a kill is an ally, and so is any
+		// "marine" (Brutal Doom's helper marines Marine_Fist and kin are friendly with no kill too): left alone
+		if (a.bFRIENDLY && !a.player && !a.bCOUNTKILL && a.health > 0 && level.maptime > 2)
+		{
+			String fl = a.GetClassName(); fl = fl.MakeLower();
+			if (fl.IndexOf("marine") < 0) Carry(a);
+			return;
+		}
 		if (a.player || a.bFRIENDLY || a.health <= 0) return;
 		if (a.FindInventory("RS_BDKit")) return;
 		String cn = a.GetClassName();
@@ -931,6 +1080,10 @@ class RS_BDTierHandler : EventHandler
 		k.hpF = 1.0; k.dmF = 1.0; k.spF = 1.0;
 		k.rung = k.entry;
 		int r = k.entry + WorldTier() - 1;
+		// [11-13 census] risen out of a body (a death stage, or born again on the spot): the body's place on the ladder; a
+		// death stage never calls for help (it is the same monster, dying)
+		int br = BodyRung(a, k.fam);
+		if (br > 0) { r = br; if (!a.bCOUNTKILL) k.helper = true; }
 		if (r > k.entry) { k.rung = r; k.Apply(true, true); }
 		RS_BDArt.Watch(a, k);                        // the painted frames for its colour (RS_BDArt.zs), now or after a change
 		if (Debug()) Console.Printf("BDTIER: %s family %d entry %d rung %d hp %d", cn, k.fam, k.entry, k.rung, a.health);
@@ -996,6 +1149,22 @@ class RS_BDTierHandler : EventHandler
 	override void WorldThingDied(WorldEvent e)
 	{
 		let a = e.Thing;
+		if (!a) return;
+		// [11-13 census] a body that died: a maker for the pieces it spawns while it lies there (see TintFrom), and a
+		// player's last kill (a fatality's colour)
+		bool known = RS_BDHue.Known(a);
+		if (known || a.bISMONSTER)
+		{
+			diedA.Push(a); diedCol.Push(known ? RS_BDHue.ColourOf(a) : 0); diedRung.Push(known ? RungOf(a) : 0); diedTic.Push(level.maptime);
+			Actor by = e.Inflictor;
+			if (by && !by.player && by.target && by.target.player) by = by.target;
+			if (!by || !by.player) by = a.target;
+			if (by && by.player)
+			{
+				int pn = by.PlayerNumber();
+				if (pn >= 0 && pn < MAXPLAYERS) { lastKillCol[pn] = known ? RS_BDHue.ColourOf(a) : 0; lastKillTic[pn] = level.maptime; }
+			}
+		}
 		let k = RS_BDKit.Of(a);
 		if (!k) return;
 		k.EndPhase();                                 // a body that died mid-phase gets its own look back
@@ -1028,8 +1197,40 @@ class RS_BDTierHandler : EventHandler
 		k.Look();
 	}
 
+	// [11-13 census] a player's fatality: from the tic the player holds Brutal Doom's GoFatality (given by the monster's
+	// fatality death) to 2 tics after it is taken: the colour of the body that player killed last (in the 8 tics before),
+	// for the gore and corpse the player throws (TintFrom), and the player's own fatality frames drawn from the art
+	private void Fatalities()
+	{
+		if (!fatTokRead) { fatTokRead = true; String tn = "GoFatality"; fatTok = tn; }
+		if (!fatTok) return;
+		for (int pn = 0; pn < MAXPLAYERS; pn++)
+		{
+			if (!playeringame[pn]) continue;
+			let pm = players[pn].mo;
+			if (!pm) continue;
+			if (pm.FindInventory(fatTok))
+			{
+				if (!fatOn[pn])
+				{
+					fatOn[pn] = true;
+					fatCol[pn] = level.maptime - lastKillTic[pn] <= 8 ? lastKillCol[pn] : 0;
+					if (fatCol[pn] && On()) RS_BDFatalHue.Put(pm, fatCol[pn]);
+					if (Debug()) Console.Printf("BDCARRY t%d player %d fatality: %s", level.maptime, pn, fatCol[pn] ? RS_BDArt.COLOUR[fatCol[pn]] : "no colour");
+				}
+				fatSeen[pn] = level.maptime;
+			}
+			else if (fatOn[pn] && level.maptime - fatSeen[pn] > 2)
+			{
+				fatOn[pn] = false;
+				RS_BDFatalHue.TakeOff(pm);
+			}
+		}
+	}
+
 	override void WorldTick()
 	{
+		Fatalities();
 		for (int i = risers.Size() - 1; i >= 0; i--)
 		{
 			if (level.maptime < riseTic[i]) continue;

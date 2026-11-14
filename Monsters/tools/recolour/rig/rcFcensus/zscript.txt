@@ -1,0 +1,519 @@
+version "4.14"
+// TEST ONLY (rig): the dying-body census (rcf_census.py writes zscript.txt from this and the class table).
+// For each tierable BD22 / XMVE class: one monster a cell on the arena (rcf_arena.py), one cell per death its
+// DECORATE has (Death.<type>), plus two plain deaths and one gib; each cell its own colour through RSQ Monsters' own
+// tier change (the colours cycle, a pass moves them on by 5). All killed in the same tic with that damage type
+// (DMG_FORCED), then every actor on the arena is looked at five times (4 to 140 tics after): what it shows.
+//   ART      holds the colour, drawn from the painted art
+//   TINT-L   holds the colour, shows the tint: its sprite has art in this colour, this lump has none
+//   TINT-S   holds the colour, shows the tint: its sprite has no art in this colour at all
+//   OTHER    holds the colour, wears another translation (a flash, a Champions tint, its own)
+//   MISS     a body or a piece (not blood, fire, smoke, effects or pickups by RSQ Monsters' own name rule) holding NO colour
+//   LIVE-*   a live monster (an Abyss rise, a summon): with or without colour
+//   OWNART   keeps its own look by the name rule, but its sprite has painted art (a body taken for an effect?)
+//   +WRONG   holds a colour other than the cell it lies in (within 120 units of its centre; ~far: further, not judged)
+class RCC_Census : EventHandler
+{
+	static const String TAB[] = {
+		"Arachnotron|Arachnotron1|None,XDeath,None,Cut,Fatality,Fatality2,Fire,Freeze,Frost,Ice,KillMe,Massacre,Plasma,Saw,Stomp,SuperPlasma,Taunt",
+		"Arachnotron|AASpider|None,XDeath,None,BlackHole,Crush,Cut,Cutless,Fatality,Fatality2,Fire,Freeze,Frost,Ice,KillMe,LavaSplash,Massacre,Plasma,Plasma2,QuadBlast,Saw,Stomp,SuperPlasma,Taunt,Tear",
+		"Arachnotron|Arachnotron2|None,XDeath,None,BlackHole,Crush,Cut,Cutless,Fatality,Fatality2,Fire,Freeze,Frost,Ice,KillMe,LavaSplash,Massacre,Plasma,Plasma2,QuadBlast,Saw,Stomp,SuperPlasma,Taunt,Tear",
+		"Arch-Vile|TehArchvile|None,XDeath,None,Arm,Blast,Cut,Deletus,Desintegrate,ExplosiveImpact,Explosives,Fatality,Fatality2,Fire,Freeze,Frost,Head,Ice,KillMe,Minigun,Plasma,Saw,Shotgun,Simple,SSG,SuperPlasma,Taunt",
+		"Baron|Afrit|None,XDeath,None",
+		"Baron|BaronofHell2|None,XDeath,None,Cut,decaptate,Desintegrate,ExplosiveImpact,ExplosiveImpact1,ExplosiveImpact2,Fatality,Fire,Freeze,Frost,GreenFire,head,Ice,KillMe,Massacre,Minigun,Plasma,Railgun,Saw,Shotgun,SSG,Stomp,SuperPlasma",
+		"Baron|BaronofHell2|Taunt,Vanish",
+		"Baron|Belphegor2|None,XDeath,None,Eat,head,Railgun,SSG",
+		"Baron|BaronBoss1|None,XDeath,None,Cut,decaptate,Desintegrate,ExplosiveImpact,ExplosiveImpact1,ExplosiveImpact2,Fatality,Fire,Freeze,Frost,GreenFire,head,Ice,KillMe,Massacre,Minigun,Plasma,Railgun,Saw,Shotgun,SSG,Stomp,SuperPlasma",
+		"Baron|BaronBoss1|Taunt,Vanish",
+		"Baron|BaronBoss2|None,XDeath,None,Cut,decaptate,Desintegrate,ExplosiveImpact,ExplosiveImpact1,ExplosiveImpact2,Fatality,Fire,Freeze,Frost,GreenFire,head,Ice,KillMe,Massacre,Minigun,Plasma,Railgun,Saw,Shotgun,SSG,Stomp,SuperPlasma",
+		"Baron|BaronBoss2|Taunt,Vanish",
+		"Cacodemon|Cacodemon_|None,XDeath,None,Blast,Brutal,cut,Desintegrate,ExplosiveImpact,Explosives,ExtremePunches,Fatality,fire,Freeze,Frost,Ice,KillMe,Massacre,Minigun,Plasma,Railgun,saw,Shotgun,SSG,SuperPlasma,Taunt",
+		"Cacodemon|CacoAsshole|None,XDeath,None,Blast,Brutal,Desintegrate,Explosive,ExplosiveImpact,Explosives,ExtremeKicks,ExtremePunches,Fatality,Fire,Plasma,Railgun,saw,SHOTGUN,SSG,SuperPlasma",
+		"Chaingunner|EasyMarineRifleAlive|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip,RVFT,Saw",
+		"Chaingunner|EasyMarineRifleAlive|Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|Silvagunner|None,XDeath,None,Arm,Blast,burn,cut,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,fire,flames,Freeze,Frost,GreenFire,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice",
+		"Chaingunner|Silvagunner|Incinerate,Kick,KillMe,Landmine,LandMine2,Massacre,Melee,Minigun,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,Railgun,Rare,Saw,Shotgun,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Throwable",
+		"Chaingunner|ChaingunGuy1|None,XDeath,None,Arm,Blast,burn,cut,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,fire,flames,Freeze,Frost,GreenFire,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice",
+		"Chaingunner|ChaingunGuy1|Incinerate,Kick,KillMe,Landmine,LandMine2,Massacre,Melee,Minigun,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,Railgun,Rare,Saw,Shotgun,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Throwable",
+		"Chaingunner|BDFormerCommander|None,XDeath,None,Arm,Blast,burn,cut,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremeKicks,ExtremePunches,Fatality,Fire,flames,Freeze,Frost,GreenFire,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT",
+		"Chaingunner|BDFormerCommander|Ice,Kick,KillMe,Landmine,LandMine2,LavaSplash,Massacre,Melee,Minigun,MonsterShotgunBullet,OriginalGibz,Plasma,Plasma2,PussyGrab,Railgun,Saw,Shotgun,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Throwable",
+		"Chaingunner|Ubersoldat|None,XDeath,None,Arm,Blast,burn,cut,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,Fatality,fire,flames,Freeze,Frost,GreenFire,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Kick",
+		"Chaingunner|Ubersoldat|KillMe,Landmine,LandMine2,Massacre,Melee,Minigun,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,Rare,Saw,Shotgun,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Throwable",
+		"Chaingunner|FormerMarine|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip,RVFT,Saw",
+		"Chaingunner|FormerMarine|Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|EvilMarineRifle|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip,RVFT,Saw",
+		"Chaingunner|EvilMarineRifle|Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|EvilMarineShotgun|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,ExtremeKicks,ExtremePunches,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip",
+		"Chaingunner|EvilMarineShotgun|RVFT,Saw,Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|EvilMarineSSG|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,ExtremeKicks,ExtremePunches,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip",
+		"Chaingunner|EvilMarineSSG|RVFT,Saw,Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|EvilMarineASG|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,ExtremeKicks,ExtremePunches,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip",
+		"Chaingunner|EvilMarineASG|RVFT,Saw,Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|EvilMarineChaingun|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,ExtremeKicks,ExtremePunches,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip",
+		"Chaingunner|EvilMarineChaingun|RVFT,Saw,Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|EvilMarineRocket|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,ExtremeKicks,ExtremePunches,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip",
+		"Chaingunner|EvilMarineRocket|RVFT,Saw,Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|EvilMarinePlasma|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,ExtremePunches,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip,RVFT",
+		"Chaingunner|EvilMarinePlasma|Saw,Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Chaingunner|MrX|None,XDeath,None,BHFT,Blast,Bullet,Burn,Cut,Desintegrate,Eat,ExplosiveImpact,Explosives,ExtremePunches,FatalityMarine,Fire,Flames,GreenFire,HKFT,Incinerate,Massacre,Minigun,plasma,PussyGrab,Rape,Rip,RVFT",
+		"Chaingunner|MrX|Saw,Shotgun,Slime,SSG,Stomp,SuperPunch",
+		"Cyberdemon|Tyrant|None,XDeath,None,Decaptate,Deletus,Fatality,Fatality2,Head,Vanish",
+		"Cyberdemon|BrutalAnnihilator|None,XDeath,None,Fatality,Head",
+		"Cyberdemon|TheCyberdemon|None,XDeath,None,Decaptate,Deletus,Fatality,Fatality2,Head,Vanish",
+		"Cyberdemon|U_ArchangelusB|None,XDeath,None",
+		"Cyberdemon|U_ArchangelusA|None,XDeath,None",
+		"Demon|BullDemon|None,XDeath,None,BHFT,Blast,Burn,Cut,Cut2,Desintegrate,Eat,Explosive,ExplosiveImpact,ExtremePunches,Fatality,Fire,Flames,Freeze,Frost,GreenFire,Ice,Incinerate,Kick,KillMe,Massacre,Melee,Minigun",
+		"Demon|BullDemon|Minor,Plasma,Railgun,RVFT,Saw,Shotgun,Shrapnel,SSG,Stomp,Strong,Strong2,SuperKick,SuperPlasma,SuperPunch,Taunt",
+		"Demon|FatPinky|None,XDeath,None,BHFT,Blast,Burn,Cut,Cut2,Desintegrate,Eat,Explosive,ExplosiveImpact,ExtremePunches,Fatality,Fire,Flames,Freeze,Frost,GreenFire,Ice,Incinerate,Kick,KillMe,Massacre,Melee,Minigun",
+		"Demon|FatPinky|Minor,Plasma,Railgun,RVFT,Saw,Shotgun,Shrapnel,SSG,Stomp,Strong,Strong2,SuperKick,SuperPlasma,SuperPunch,Taunt",
+		"Demon|BrutalNightmareDemon|None,XDeath,None,Blast,Cut,Cut2,Cutless,Desintegrate,Explosive,ExplosiveImpact,ExtremeKicks,ExtremePunches,Fatality,Fire,GreenFire,Kick,LavaSplash,Melee,Minigun,Plasma,Plasma2,Railgun,Saw,Shotgun,SSG,Strong",
+		"Demon|BrutalNightmareDemon|SuperKick,SuperPlasma,SuperPunch",
+		"Hell Knight|HellKnight2|None,XDeath,None,Arm,Blast,Crush,Cut,decaptate,ExplosiveImpact,ExplosiveImpact1,ExplosiveImpact2,Fatality,Fatality3,Fire,Freeze,Frost,GreenFire,head,headExplode,Ice,KillMe,Massacre,Minigun,Plasma,Railgun,Saw",
+		"Hell Knight|HellKnight2|Shotgun,SSG,Stomp,SuperPlasma,Taunt",
+		"Imp|Imp|None,XDeath,None,Arm,Avoid,BHFT,Blast,Blast2,cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fire,Freeze,Frost,GreenFire",
+		"Imp|Imp|head,headExplode,HeadMinor,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,Landmine,LandMine2,Leg,LegInTheAir,LegMassacre,Massacre,Melee,Minigun,Minor,MonsterShotgunBullet,Plasma,PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface",
+		"Imp|Imp|Shrapnel,SSG,Stealthy,Stomp,StompWall,SuperPlasma,Taunt,Trample,Vanish",
+		"Lost Soul|TehLostSoul|None,XDeath,None,KillMe,PussyGrab,Taunt",
+		"Lost Soul|AncientFlyingCunt|None,XDeath,None",
+		"Lost Soul|AlphaLostSoul|None,XDeath,None,KillMe,Taunt",
+		"Mancubus|Mancubus|None,XDeath,None,Arm,Cut,decaptate,ExplosiveImpact,Explosives,ExtremePunches,Fatality,Fire,Freeze,Frost,head,Ice,KillMe,Landmine,Massacre,Minigun,minorhead,Plasma,Railgun,Saw,Shotgun,SSG,SuperPlasma",
+		"Mancubus|Mancubus|Taunt",
+		"Mancubus|AncientAlienMancubus|None,XDeath,None,Arm,Blast,Cut,cutless,decaptate,Desintegrate,ExplosiveImpact,Explosives,ExtremeKicks,ExtremePunches,Fatality,Fire,Freeze,Frost,GreenFire,head,Ice,KillMe,Landmine,Massacre,Minigun,minorhead,Plasma",
+		"Mancubus|AncientAlienMancubus|Plasma2,QuadBlast,Railgun,Saw,Shotgun,SSG,SuperPlasma,Taunt,Tear",
+		"Mancubus|Volcabus|None,XDeath,None,Arm,Blast,Cut,cutless,decaptate,Desintegrate,ExplosiveImpact,Explosives,ExtremePunches,Fatality,Fire,Freeze,Frost,GreenFire,head,Ice,KillMe,Landmine,Massacre,Minigun,minorhead,Plasma,QuadBlast",
+		"Mancubus|Volcabus|Railgun,Saw,Shotgun,SSG,SuperPlasma,Taunt,Tear",
+		"Mancubus|Juggernaut|None,XDeath,None",
+		"Pain Elemental|PainElemental1|None,XDeath,None,Cut,Fatality,Freeze,Frost,Ice,KillMe,Saw,Taunt,Telefrag",
+		"Revenant|Revenant1|None,XDeath,None,Blast,Cut,Decaptate,Deletus,ExplosiveImpact,ExtremePunches,Fatality,Fire,Freeze,Frost,Head,HelperMarineFatallity,Ice,KillMe,Massacre,Minigun,Minorhead,Plasma,Rare,Saw,Shotgun,SSG,SuperPlasma",
+		"Revenant|Revenant1|Taunt",
+		"Shotgunner|ShotgunGuy1|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,flames,Freeze",
+		"Shotgunner|ShotgunGuy1|Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma,PussyGrab",
+		"Shotgunner|ShotgunGuy1|Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|SMGGuy|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,flames,Freeze",
+		"Shotgunner|SMGGuy|Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma,PussyGrab",
+		"Shotgunner|SMGGuy|Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Spectre|InvisibleAlien|None,XDeath,None,Arm,Blast,Desintegrate,ExplosiveImpact,ExplosiveImpact2,ExtremeKicks,ExtremePunches,Fire,GreenFire,Head,HeavyImpact,Kick,LavaSplash,Leg,Low,Minigun,MonsterShotgunBullet,Plasma,Plasma2,Railgun,Shotgun,Shotgunontheface,SSG",
+		"Spectre|Spectro|None,XDeath,None,BHFT,Blast,Burn,Cut,Cut2,Desintegrate,Eat,Explosive,ExplosiveImpact,ExtremePunches,Fatality,Fire,Flames,Freeze,Frost,GreenFire,Ice,Incinerate,Kick,KillMe,Massacre,Melee,Minigun",
+		"Spectre|Spectro|Minor,Plasma,Railgun,RVFT,Saw,Shotgun,Shrapnel,SSG,Stomp,Strong,Strong2,SuperKick,SuperPlasma,SuperPunch,Taunt",
+		"Spider Mastermind|TheSpiderMastermind|None,XDeath,None,Cut,decaptate,Fatality,Massacre,Saw,Stomp,Telefrag",
+		"Spider Mastermind|TheSpiderMastermindNERF|None,XDeath,None,Cut,decaptate,Fatality,Massacre,Saw,Stomp,Telefrag",
+		"Spider Mastermind|Motherdemon|None,XDeath,None",
+		"Zombieman|RifleZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|RifleZombie|Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorLeg",
+		"Zombieman|RifleZombie|MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|PistolZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|PistolZombie|Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorLeg",
+		"Zombieman|PistolZombie|MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|Labguy|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|Labguy|Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHead",
+		"Zombieman|Labguy|MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,QuadBlast,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|Nazi|None,XDeath,None,Arm,Blast,BrutalDoomImpStyle,Burn,Cut,cutless,Desintegrate,Eat,ExplosiveImpact,ExtremePunches,fire,Flames,GreenFire,head,Incinerate,Kick,leg,Melee,Number2,Number3,Number4,Plasma,PussyGrab",
+		"Zombieman|Nazi|rail,railgun,Saw,Shotgun,Shotgunontheface,SSG,Stealthy,WorldAtWarStyle",
+		"Zombieman|Experiment|None,XDeath,None,Burn,ExplosiveImpact,Fire,GreenFire,LavaSplash,PLasma",
+		"Zombieman|ZioBrutalWolfensteinSS|None,XDeath,None,Arm,Blast,Desintegrate,ExplosiveImpact,ExtremeKicks,ExtremePunches,Fire,GreenFire,head,Kick,leg,Low,Minigun,NUMBER2,Number3,Number4,Plasma,Railgun,Shotgun,SSG",
+		"Zombieman|HeadlessZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,Cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|HeadlessZombie|Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorLeg",
+		"Zombieman|HeadlessZombie|MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|BDMummy|None,XDeath,None,Burn,ExplosiveImpact,Fire,GreenFire,LavaSplash,PLasma",
+		"Arachnotron|CGSpider|None,XDeath,None,Cut,Fatality,Fatality2,Fire,Freeze,Frost,Ice,Massacre,Plasma,Saw,Stomp,SuperPlasma",
+		"Arch-Vile|DIABloist|None,XDeath,None,Cut,Saw",
+		"Baron|BruiserDemon|None,XDeath,None,Cut,Saw",
+		"Baron|Cyberbaron|None,XDeath,None,Blast,Cut,CutLess,decaptate,Desintegrate,ExplosiveImpact,ExplosiveImpact1,ExplosiveImpact2,ExtremePunches,Fatality,Fire,Freeze,Frost,GreenFire,Head,Ice,KillMe,Massacre,Minigun,Nailgun,Plasma,QuadBlast,Railgun",
+		"Baron|Cyberbaron|Saw,Shotgun,SSG,Stomp,SuperPlasma,Taunt,Vanish",
+		"Baron|TerminatorDemon|None,XDeath,None",
+		"Baron|XVStealthBruiser|None,XDeath,None,Cut,Saw",
+		"Baron|XVStealthCyberBaron|None,XDeath,None,Blast,Cut,CutLess,decaptate,Desintegrate,ExplosiveImpact,ExplosiveImpact1,ExplosiveImpact2,ExtremePunches,Fatality,Fire,Freeze,Frost,GreenFire,Head,Ice,KillMe,Massacre,Minigun,Nailgun,Plasma,QuadBlast,Railgun",
+		"Baron|XVStealthCyberBaron|Saw,Shotgun,SSG,Stomp,SuperPlasma,Taunt,Vanish",
+		"Baron|XVStealthTerminator|None,XDeath,None",
+		"Baron|PyroDemon|None,XDeath,None,Cut,Saw",
+		"Baron|TerminatorBoss|None,XDeath,None",
+		"Cacodemon|Aracnorb|None,XDeath,None,Blast,Crush,Cut,ExplosiveImpact,Fatality,Fire,Freeze,Frost,GreenFire,Ice,Plasma,Plasma2,Saw,SSG,SuperPlasma,XDeath",
+		"Cacodemon|XVStealthAracnorb|None,XDeath,None,Blast,Crush,Cut,ExplosiveImpact,Fatality,Fire,Freeze,Frost,GreenFire,Ice,Plasma,Plasma2,Saw,SSG,SuperPlasma,XDeath",
+		"Cacodemon|ImpureElemental|None,XDeath,None,Cut,Saw,Sniper",
+		"Cacodemon|StealthImpureElemental|None,XDeath,None,Cut,Saw,Sniper",
+		"Cacodemon|OverLord|None,XDeath,None,Blackhole,Cut,Saw",
+		"Cacodemon|Vanilla_Overlord|None,XDeath,None,Blackhole,Cut,Saw",
+		"Cacodemon|AracnorbQueen|None,XDeath,None,Cut,Saw",
+		"Cacodemon|SuperOverlord|None,XDeath,None,Blackhole,Cut,Saw",
+		"Chaingunner|RifleCommando|None,XDeath,None,Arm,Blast,burn,Cut,Cutless,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,fire,flames,Freeze,Frost,GreenFire,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT",
+		"Chaingunner|RifleCommando|Ice,Incinerate,Kick,KillMe,Landmine,LandMine2,Massacre,Melee,Minigun,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast,Railgun,Rare,Saw,Shotgun,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Throwable",
+		"Chaingunner|Vanilla_RifleCommando|None,XDeath,None,Arm,Blast,burn,Cut,Cutless,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,fire,flames,Freeze,Frost,GreenFire,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT",
+		"Chaingunner|Vanilla_RifleCommando|Ice,Incinerate,Kick,KillMe,Landmine,LandMine2,Massacre,Melee,Minigun,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast,Railgun,Rare,Saw,Shotgun,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Throwable",
+		"Chaingunner|XVStealthRifleCommando|None,XDeath,None,Arm,Blast,burn,Cut,Cutless,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,fire,flames,Freeze,Frost,GreenFire,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT",
+		"Chaingunner|XVStealthRifleCommando|Ice,Incinerate,Kick,KillMe,Landmine,LandMine2,Massacre,Melee,Minigun,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast,Railgun,Rare,Saw,Shotgun,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Throwable",
+		"Chaingunner|ZSpecOps|None,XDeath,None,Arm,BHFT,Blast,Blast2,Blast3,Burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,Fatality1,fire,Flames,Freeze,Frost,GreenFire",
+		"Chaingunner|ZSpecOps|Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,LandMine2,Leg,LegMassacre,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong,MinorLeg,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast",
+		"Chaingunner|ZSpecOps|Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Throwable",
+		"Chaingunner|ZSpecOpsRifle|None,XDeath,None,Arm,BHFT,Blast,Blast2,Blast3,Burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,Fatality1,fire,Flames,Freeze,Frost,GreenFire",
+		"Chaingunner|ZSpecOpsRifle|Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,LandMine2,Leg,LegMassacre,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong,MinorLeg,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast",
+		"Chaingunner|ZSpecOpsRifle|Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Throwable",
+		"Chaingunner|XVStealthZSpecOps|None,XDeath,None,Arm,BHFT,Blast,Blast2,Blast3,Burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,Fatality1,fire,Flames,Freeze,Frost,GreenFire",
+		"Chaingunner|XVStealthZSpecOps|Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,LandMine2,Leg,LegMassacre,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong,MinorLeg,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast",
+		"Chaingunner|XVStealthZSpecOps|Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Throwable",
+		"Chaingunner|Major|None,XDeath,None,Alternate,Arm,Blast,Blast2,burn,cut,Cutless,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,fire,flames,Freeze,Frost,GreenFire,Head,HeadExplode,HeadMinor,HeavyImpact",
+		"Chaingunner|Major|HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,Landmine,LandMine2,Massacre,Melee,Minigun,Minor,minorhead,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast,Railgun,Rare,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,Stealthy",
+		"Chaingunner|Major|Stomp,SuperPlasma,SuperPunch,Taunt,Throwable",
+		"Chaingunner|XVStealthMajor|None,XDeath,None,Alternate,Arm,Blast,Blast2,burn,cut,Cutless,decaptate,Desintegrate,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,fire,flames,Freeze,Frost,GreenFire,Head,HeadExplode,HeadMinor,HeavyImpact",
+		"Chaingunner|XVStealthMajor|HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,Landmine,LandMine2,Massacre,Melee,Minigun,Minor,minorhead,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast,Railgun,Rare,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,Stealthy",
+		"Chaingunner|XVStealthMajor|Stomp,SuperPlasma,SuperPunch,Taunt,Throwable",
+		"Chaingunner|ZSpecOpsRail|None,XDeath,None,Arm,BHFT,Blast,Blast2,Blast3,Burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,DropedChaingunSpawner,Eat,ExplosiveImpact,ExtremePunches,Fatality,Fatality1,fire,Flames,Freeze,Frost,GreenFire",
+		"Chaingunner|ZSpecOpsRail|Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,LandMine2,Leg,LegMassacre,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong,MinorLeg,MonsterShotgunBullet,OriginalGibz,Plasma,PussyGrab,QuadBlast",
+		"Chaingunner|ZSpecOpsRail|Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,Shrapnel,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Throwable",
+		"Cyberdemon|DarkCardinal|None,XDeath,None",
+		"Cyberdemon|DarkCardinalBOSS|None,XDeath,None",
+		"Cyberdemon|Thamuz|None,XDeath,None,Cut,Saw",
+		"Cyberdemon|SuperDemon|None,XDeath,None,Cut,KillMe,Saw,Taunt",
+		"Cyberdemon|Annihilator|None,XDeath,None,cut,Decaptate,Head,KillMe,MinorHead,Saw,Taunt",
+		"Cyberdemon|Vanilla_Annihilator|None,XDeath,None,cut,Decaptate,Head,KillMe,MinorHead,Saw,Taunt",
+		"Cyberdemon|ThamuzBoss|None,XDeath,None,Cut,Saw",
+		"Demon|VoidSpectre|None,XDeath,None,Arm,BHFT,Blackhole,Blast,Burn,Cut,Cut2,CutLEss,Desintegrate,Eat,Explosive,ExplosiveImpact,ExtremePunches,Fatality,Fire,Flames,Freeze,Frost,GreenFire,Ice,Incinerate,Kick,KillMe",
+		"Demon|VoidSpectre|Massacre,Melee,Minigun,Minor,Plasma,Railgun,RVFT,Saw,Shotgun,Shrapnel,Shrink,SSG,Stomp,Strong,Strong2,SuperKick,SuperPlasma,SuperPunch,Taunt,Tear",
+		"Demon|BloodDemon|None,XDeath,None,BHFT,Blast,Burn,Cut,Cut2,Desintegrate,Eat,Explosive,ExplosiveImpact,ExtremePunches,Fatality,Fire,Flames,Freeze,Frost,GreenFire,Ice,Incinerate,Kick,KillMe,Massacre,Melee,Minigun",
+		"Demon|BloodDemon|Minor,Plasma,Railgun,RVFT,Saw,Shotgun,Shrapnel,SSG,Stomp,Strong,Strong2,SuperKick,SuperPlasma,SuperPunch,Taunt",
+		"Hell Knight|PhasicKnightX|None,XDeath,None,Alt,Alt2,Alt3,Arm,Blast,Cut,Decapitate,Explosive,ExplosiveImpact,ExplosiveImpact1,ExtremePunches,Fatality,Freeze,Frost,Head,Ice,Landmine,Plasma,Plasma2,QuadBlast,Saw,Shotgun,SSG",
+		"Hell Knight|PhasicKnightX|SuperKick,SuperPlasma,Tear",
+		"Hell Knight|Cybruiser|None,XDeath,None,Alt,Alt2,Alt3,Arm,Blast,Cut,Decapitate,Explosive,ExplosiveImpact,ExplosiveImpact1,ExtremePunches,Fatality,Freeze,Frost,Head,Ice,Landmine,Plasma,Plasma2,QuadBlast,Saw,Shotgun,SSG",
+		"Hell Knight|Cybruiser|SuperKick,SuperPlasma,Tear",
+		"Hell Knight|CyberKnight|None,XDeath,None,Alt,Alt2,Alt3,Arm,Blast,Cut,Decapitate,Explosive,ExplosiveImpact,ExplosiveImpact1,ExtremePunches,Fatality,Freeze,Frost,Head,Ice,Landmine,Plasma,Plasma2,QuadBlast,Saw,Shotgun,SSG",
+		"Hell Knight|CyberKnight|SuperKick,SuperPlasma,Tear",
+		"Hell Knight|XVStealthCyberKnight|None,XDeath,None,Alt,Alt2,Alt3,Arm,Blast,Cut,Decapitate,Explosive,ExplosiveImpact,ExplosiveImpact1,ExtremePunches,Fatality,Freeze,Frost,Head,Ice,Landmine,Plasma,Plasma2,QuadBlast,Saw,Shotgun,SSG",
+		"Hell Knight|XVStealthCyberKnight|SuperKick,SuperPlasma,Tear",
+		"Imp|SuperImp|None,XDeath,None,Arm,Avoid,BHFT,Blast,Blast2,cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fire,Freeze,Frost,GreenFire",
+		"Imp|SuperImp|head,headExplode,HeadMinor,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,Landmine,LandMine2,Leg,LegInTheAir,LegMassacre,Massacre,Melee,Minigun,Minor,MonsterShotgunBullet,Plasma,PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface",
+		"Imp|SuperImp|Shrapnel,SSG,Stealthy,Stomp,StompWall,SuperPlasma,Taunt,Trample,Vanish",
+		"Imp|DarkImp|None,XDeath,None,Arm,Blast,Cut,cutless,Decaptate,Desintegrate,Eat,ExplosiveImpact,ExtremePunches,Fatality,Fire,Freeze,Frost,GreenFire,head,HeadExplode,Ice,Incinerate,LandMine,Leg,LegMassacre,Massacre,Minigun",
+		"Imp|DarkImp|MinorHead,Plasma,Plasma2,PussyGrab,Quadblast,Railgun,Saw,Shotgun,Shotgunontheface,SSG,SuperKick,SuperPlasma,SuperPunch,Tear",
+		"Imp|Imp3|None,XDeath,None,Arm,Avoid,BHFT,Blast,Blast2,cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fire,Freeze,Frost,GreenFire",
+		"Imp|Imp3|head,headExplode,HeadMinor,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,Landmine,LandMine2,Leg,LegInTheAir,LegMassacre,Massacre,Melee,Minigun,Minor,MonsterShotgunBullet,Plasma,PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface",
+		"Imp|Imp3|Shrapnel,SSG,Stealthy,Stomp,StompWall,SuperPlasma,Taunt,Trample,Vanish",
+		"Imp|NamiDarkImp|None,XDeath,None,Arm,Blast,Cut,cutless,Decaptate,Desintegrate,Eat,ExplosiveImpact,ExtremePunches,Fatality,Fire,Freeze,Frost,GreenFire,head,HeadExplode,Ice,Incinerate,LandMine,Leg,LegMassacre,Massacre,Minigun",
+		"Imp|NamiDarkImp|MinorHead,Plasma,Plasma2,PussyGrab,Quadblast,Railgun,Saw,Shotgun,Shotgunontheface,SSG,SuperKick,SuperPlasma,SuperPunch,Tear",
+		"Imp|NetherDarkImp|None,XDeath,None,Arm,Blast,Cut,cutless,Decaptate,Desintegrate,Eat,ExplosiveImpact,ExtremePunches,Fatality,Fire,Freeze,Frost,GreenFire,head,HeadExplode,Ice,Incinerate,LandMine,Leg,LegMassacre,Massacre,Minigun",
+		"Imp|NetherDarkImp|MinorHead,Plasma,Plasma2,PussyGrab,Quadblast,Railgun,Saw,Shotgun,Shotgunontheface,SSG,SuperKick,SuperPlasma,SuperPunch,Tear",
+		"Imp|VoidDarkImp|None,XDeath,None,Arm,Blast,Cut,cutless,Decaptate,Desintegrate,Eat,ExplosiveImpact,ExtremePunches,Fatality,Fire,Freeze,Frost,GreenFire,head,HeadExplode,Ice,Incinerate,LandMine,Leg,LegMassacre,Massacre,Minigun",
+		"Imp|VoidDarkImp|MinorHead,Plasma,Plasma2,PussyGrab,Quadblast,Railgun,Saw,Shotgun,Shotgunontheface,SSG,SuperKick,SuperPlasma,SuperPunch,Tear",
+		"Lost Soul|ImpureSoul|None,XDeath,None",
+		"Lost Soul|Phantasm|None,XDeath,None,Blackhole",
+		"Lost Soul|Vanilla_Phantasm|None,XDeath,None,Blackhole",
+		"Mancubus|Daedabus|None,XDeath,None,Arm,Blackhole,Blast,Burn,cut,cutless,Desintegrate,ExplosiveImpact,Explosives,Fatality,Fire,Flames,Freeze,Frost,GreenFire,Head,Ice,Landmine,Plasma,QuadBlast,Railgun,Saw,Shotgun",
+		"Mancubus|Daedabus|Shrink,SSG,SuperPlasma,Tear",
+		"Mancubus|Vanilla_Daedabus|None,XDeath,None,Arm,Blackhole,Blast,Burn,cut,cutless,Desintegrate,ExplosiveImpact,Explosives,Fatality,Fire,Flames,Freeze,Frost,GreenFire,Head,Ice,Landmine,Plasma,QuadBlast,Railgun,Saw,Shotgun",
+		"Mancubus|Vanilla_Daedabus|Shrink,SSG,SuperPlasma,Tear",
+		"Pain Elemental|paingasm|None,XDeath,None",
+		"Pain Elemental|SufferingElemental|None,XDeath,None,Blackhole,Cut,Fatality,Freeze,Frost,Ice,Saw",
+		"Pain Elemental|Vanilla_SufferingElemental|None,XDeath,None,Blackhole,Cut,Fatality,Freeze,Frost,Ice,Saw",
+		"Revenant|Incarnate|None,XDeath,None,cut,Fire,Flames,Plasma,Saw",
+		"Revenant|Draugr|None,XDeath,None,Blackhole,Blast,Burn,Cut,Cutless,Decaptate,Deletus,Desintegrate,ExplosiveImpact,ExtremePunches,Fatality,Fire,Flames,Freeze,Frost,Head,HelperMarineFatallity,Ice,Incinerate,KillMe,Massacre,Minigun,Minorhead",
+		"Revenant|Draugr|Plasma,QuadBlast,Rare,Saw,Shotgun,Shrink,SSG,SuperPlasma,Taunt,Tear",
+		"Revenant|Vanilla_Draugr|None,XDeath,None,Blackhole,Blast,Burn,Cut,Cutless,Decaptate,Deletus,Desintegrate,ExplosiveImpact,ExtremePunches,Fatality,Fire,Flames,Freeze,Frost,Head,HelperMarineFatallity,Ice,Incinerate,KillMe,Massacre,Minigun,Minorhead",
+		"Revenant|Vanilla_Draugr|Plasma,QuadBlast,Rare,Saw,Shotgun,Shrink,SSG,SuperPlasma,Taunt,Tear",
+		"Shotgunner|RiotShieldGuy|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,flames,Freeze",
+		"Shotgunner|RiotShieldGuy|Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma,PussyGrab",
+		"Shotgunner|RiotShieldGuy|Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|XVStealthRiotShieldGuy|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,flames,Freeze",
+		"Shotgunner|XVStealthRiotShieldGuy|Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma,PussyGrab",
+		"Shotgunner|XVStealthRiotShieldGuy|Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|ASGGuy|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire",
+		"Shotgunner|ASGGuy|flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Massacre2,Melee,Minigun,Minor,MinorHead,MinorHeadLong",
+		"Shotgunner|ASGGuy|MinorLeg,MonsterShotgunBullet,Plasma,PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|SuperShotgunZombie|None,XDeath,None,Arm,BHFT,Blast,Blast2,Burn,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,Flames",
+		"Shotgunner|SuperShotgunZombie|Freeze,Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma",
+		"Shotgunner|SuperShotgunZombie|PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|XVStealthASGGuy|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire",
+		"Shotgunner|XVStealthASGGuy|flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Massacre2,Melee,Minigun,Minor,MinorHead,MinorHeadLong",
+		"Shotgunner|XVStealthASGGuy|MinorLeg,MonsterShotgunBullet,Plasma,PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|XVStealthSSGGuy|None,XDeath,None,Arm,BHFT,Blast,Blast2,Burn,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,Flames",
+		"Shotgunner|XVStealthSSGGuy|Freeze,Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma",
+		"Shotgunner|XVStealthSSGGuy|PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|QuadShotgunZombie|None,XDeath,None,Arm,BHFT,Blast,Blast2,Burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire",
+		"Shotgunner|QuadShotgunZombie|Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong,MinorLeg",
+		"Shotgunner|QuadShotgunZombie|MonsterShotgunBullet,Plasma,PussyGrab,QuadBlast,Railgun,RVFT,Saw,Shotgun,ShotgunontheFace,ShotgunontheFace2,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|Vanilla_QuadShotgunZombie|None,XDeath,None,Arm,BHFT,Blast,Blast2,Burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire",
+		"Shotgunner|Vanilla_QuadShotgunZombie|Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong,MinorLeg",
+		"Shotgunner|Vanilla_QuadShotgunZombie|MonsterShotgunBullet,Plasma,PussyGrab,QuadBlast,Railgun,RVFT,Saw,Shotgun,ShotgunontheFace,ShotgunontheFace2,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|XVStealthQSGZombie|None,XDeath,None,Arm,BHFT,Blast,Blast2,Burn,Crush,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire",
+		"Shotgunner|XVStealthQSGZombie|Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong,MinorLeg",
+		"Shotgunner|XVStealthQSGZombie|MonsterShotgunBullet,Plasma,PussyGrab,QuadBlast,Railgun,RVFT,Saw,Shotgun,ShotgunontheFace,ShotgunontheFace2,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|PyroSergeant|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,flames,Freeze",
+		"Shotgunner|PyroSergeant|Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma,PussyGrab",
+		"Shotgunner|PyroSergeant|Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|XVStealthPyroSergeant|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Cut,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,flames,Freeze",
+		"Shotgunner|XVStealthPyroSergeant|Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma,PussyGrab",
+		"Shotgunner|XVStealthPyroSergeant|Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|RocketGuy|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,flames",
+		"Shotgunner|RocketGuy|Freeze,Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma",
+		"Shotgunner|RocketGuy|PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|XVStealthRocketGuy|None,XDeath,None,Arm,BHFT,Blast,Blast2,burn,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5,fire,flames",
+		"Shotgunner|XVStealthRocketGuy|Freeze,Frost,GreenFire,Hammered,Head,headExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHeadLong,MinorLeg,MonsterShotgunBullet,Plasma",
+		"Shotgunner|XVStealthRocketGuy|PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|HellTrooper|None,XDeath,None,Arm,Avoid,BHFT,BlackHole,Blast,Blast2,Burn,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5",
+		"Shotgunner|HellTrooper|fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,Headexplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong",
+		"Shotgunner|HellTrooper|MinorLeg,MonsterShotgunBullet,Nailgun,Plasma,PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,Shrink,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|BFGZombie|None,XDeath,None,Arm,Avoid,BHFT,BlackHole,Blast,Blast2,Burn,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5",
+		"Shotgunner|BFGZombie|fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,Headexplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong",
+		"Shotgunner|BFGZombie|MinorLeg,MonsterShotgunBullet,Nailgun,Plasma,PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,Shrink,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Shotgunner|Vanilla_HellTrooper|None,XDeath,None,Arm,Avoid,BHFT,BlackHole,Blast,Blast2,Burn,Cut,cutless,decaptate,Desintegrate,Down,Eat,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5",
+		"Shotgunner|Vanilla_HellTrooper|fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,Headexplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHead,MinorHeadLong",
+		"Shotgunner|Vanilla_HellTrooper|MinorLeg,MonsterShotgunBullet,Nailgun,Plasma,PussyGrab,Railgun,RVFT,Saw,Shotgun,Shotgunontheface,ShotgunonthefaceArm,Shrink,SSG,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Spectre|BloodSpectre|None,XDeath,None,BHFT,Blast,Burn,Cut,Cut2,Desintegrate,Eat,Explosive,ExplosiveImpact,ExtremePunches,Fatality,Fire,Flames,Freeze,Frost,GreenFire,Ice,Incinerate,Kick,KillMe,Massacre,Melee,Minigun",
+		"Spectre|BloodSpectre|Minor,Plasma,Railgun,RVFT,Saw,Shotgun,Shrapnel,SSG,Stomp,Strong,Strong2,SuperKick,SuperPlasma,SuperPunch,Taunt",
+		"Spider Mastermind|MiniMasterMind|None,XDeath,None,Cut,decaptate,Fatality,Massacre,Saw,Stomp,Telefrag",
+		"Spider Mastermind|MiniMastermindX|None,XDeath,None,Cut,decaptate,Fatality,KillMe,Massacre,Saw,Stomp,Taunt,Telefrag",
+		"Spider Mastermind|AracnorbQueenBOSS|None,XDeath,None,Cut,Saw",
+		"Spider Mastermind|SpiderMastermindX|None,XDeath,None,Cut,decaptate,KillMe,Taunt",
+		"Spider Mastermind|Vanilla_Demolisher|None,XDeath,None,Cut,decaptate,KillMe,Taunt",
+		"Spider Mastermind|AracnorbQueenBOSSBOSS|None,XDeath,None,Cut,Saw",
+		"Spider Mastermind|SuperSpiderMastermindX|None,XDeath,None,Cut,decaptate,KillMe,Taunt",
+		"Zombieman|PistolZombiePatch|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|PistolZombiePatch|Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorLeg",
+		"Zombieman|PistolZombiePatch|MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|ChainsawLabguy|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blackhole,Blast,Blast2,Blast3,Burn,cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2",
+		"Zombieman|ChainsawLabguy|Fatality3,Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun",
+		"Zombieman|ChainsawLabguy|Minor,MinorHead,MinorLeg,MonsterShotgunBullet,Nailgun,Pierced,Plasma,PussyGrab,QuadBlast,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|ChainsawZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blackhole,Blast,Blast2,Blast3,Burn,cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2",
+		"Zombieman|ChainsawZombie|Fatality3,Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun",
+		"Zombieman|ChainsawZombie|Minor,MinorHead,MinorLeg,MonsterShotgunBullet,Nailgun,Pierced,Plasma,PussyGrab,QuadBlast,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|Labgal|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|Labgal|Fatality5,Fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorHead",
+		"Zombieman|Labgal|MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,QuadBlast,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|LabguyB|None,XDeath,None,Arm,ArmB,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExplosiveImpactB,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2",
+		"Zombieman|LabguyB|Fatality3,Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,LandMineB,Leg,LegB,LegMassacre,LegMassacreB,LowKick",
+		"Zombieman|LabguyB|Massacre,MassacreB,Melee,Minigun,Minor,MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,QuadBlast,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear",
+		"Zombieman|LabguyB|Trample,Vanish",
+		"Zombieman|LabguyP|None,XDeath,None,Arm,ArmB,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExplosiveImpactB,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2",
+		"Zombieman|LabguyP|Fatality3,Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,IncinerateP,Kick,KillMe,LandMine,LandMineB,Leg,LegB,LegMassacre,LegMassacreB",
+		"Zombieman|LabguyP|LowKick,Massacre,MassacreB,Melee,Minigun,Minor,MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,QuadBlast,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt",
+		"Zombieman|LabguyP|Tear,Trample,Vanish",
+		"Zombieman|HelmetRifleZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,Fatality,Fatality1,Fatality2,Fatality3,Fatality4,Fatality5",
+		"Zombieman|HelmetRifleZombie|fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorLeg,MonsterShotgunBullet",
+		"Zombieman|HelmetRifleZombie|Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|XVStealthChainsawGuy|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blackhole,Blast,Blast2,Blast3,Burn,cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2",
+		"Zombieman|XVStealthChainsawGuy|Fatality3,Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun",
+		"Zombieman|XVStealthChainsawGuy|Minor,MinorHead,MinorLeg,MonsterShotgunBullet,Nailgun,Pierced,Plasma,PussyGrab,QuadBlast,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|SniperZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|SniperZombie|Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorLeg",
+		"Zombieman|SniperZombie|MonsterShotgunBullet,Pierced,Plasma,Plasma2,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|MinigunGuy|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|MinigunGuy|Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorLeg",
+		"Zombieman|MinigunGuy|MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|PlasmaZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,Cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3",
+		"Zombieman|PlasmaZombie|Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor",
+		"Zombieman|PlasmaZombie|MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|ZombieRailgunner|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,Cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3",
+		"Zombieman|ZombieRailgunner|Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor",
+		"Zombieman|ZombieRailgunner|MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|ZombieRailgunner70|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,Cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3",
+		"Zombieman|ZombieRailgunner70|Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor",
+		"Zombieman|ZombieRailgunner70|MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|ZombieRailgunner50|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,Cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3",
+		"Zombieman|ZombieRailgunner50|Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor",
+		"Zombieman|ZombieRailgunner50|MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|ZombieRailgunner30|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,Cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3",
+		"Zombieman|ZombieRailgunner30|Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor",
+		"Zombieman|ZombieRailgunner30|MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|SpreadFireZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,Cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3",
+		"Zombieman|SpreadFireZombie|Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor",
+		"Zombieman|SpreadFireZombie|MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish",
+		"Zombieman|XVStealthMinigungGuy|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,cut,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3,Fatality4",
+		"Zombieman|XVStealthMinigungGuy|Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor,MinorLeg",
+		"Zombieman|XVStealthMinigungGuy|MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,Taunt,Tear,Trample,Vanish",
+		"Zombieman|XVStealthPlasmaZombie|None,XDeath,None,Arm,ArmFly,Avoid,BHFT,Blast,Blast2,Blast3,Burn,Cut,cutless,Decaptate,Desintegrate,Down,Eat,EnvAcidShower,ExplosiveImpact,ExtremePunches,Fall,FallInLava,Fatality,Fatality1,Fatality2,Fatality3",
+		"Zombieman|XVStealthPlasmaZombie|Fatality4,Fatality5,fire,Flames,Freeze,Frost,GreenFire,Hammered,Head,HeadExplode,HeadMinor,HeavyImpact,HelperMarineFatallity,HKFT,Ice,Incinerate,Kick,KillMe,LandMine,Leg,LegMassacre,LowKick,Massacre,Melee,Minigun,Minor",
+		"Zombieman|XVStealthPlasmaZombie|MinorHead,MinorLeg,MonsterShotgunBullet,Pierced,Plasma,PussyGrab,Railgun,Rare,RVFT,Saw,Shotgun,Shotgunontheface,Shrapnel,SSG,SSGHead,Stealthy,Stomp,SuperPlasma,SuperPunch,Taunt,Tear,Trample,Vanish"
+	};
+	// Legion of Bones' classes (another mod in his order: it raises its own undead out of corpses), taken away
+	static const String LOB[] = { "Abhorrent", "AbhorrentShot", "AbhorrentShotTrail", "AbhorrentSpawn", "AbhorrentSpawner", "Arachnobone", "ArachnoboneShot", "ArachnoboneSpawn", "ArachnoboneSpawner", "Balrog", "BalrogBall", "BalrogBuffEffectSpawner", "BalrogFire", "BalrogFireBuffEffect", "BalrogFireGiver", "BalrogFireSpawner", "BalrogSpawn", "BalrogSpawner", "BloodSpitTrail", "Bone", "Bone1", "Bone2", "BoneGib", "CacoLich", "CacoLichBall", "CacoLichFlame", "CacoLichSpawn", "CacoLichSpawner", "ChaingunnerSkull", "ConqCountdown", "ConqCube", "ConqCubeShot", "ConqMiniNuke", "ConqNuke", "ConqRailPow", "ConqRailShot", "ConqRailTrail", "ConqSpawnCube", "Conqueror", "ConquerorSpawn", "ConquerorSpawner", "DragonSoul", "DragonSoulFlame", "DragonSoulSpawner", "FakeGhostSpectre", "GhostBlood", "GhostSpectre", "GhostSpectreSpawn", "GhostSpectreSpawner", "GhostSpectreTrail1", "GhostSpectreTrail2", "GhostSpectreTrail3", "GhostSpectreTrail4", "HotHead", "InfightController", "LOBArachnotron", "LOBArchvile", "LOBBaronOfHell", "LOBCacodemon", "LOBChaingunGuy", "LOBDeadDoomImp", "LOBDeadShotgunGuy", "LOBDeadZombieMan", "LOBDemon", "LOBDoomImp", "LOBHellKnight", "LOBLostSoul", "LOBMancubus", "LOBRevenant", "LOBShotgunGuy", "LOBSpectre", "LOBSpiderMastermind", "LOBZombieMan", "MonsterTracer", "Painbringer", "PainbringerSpawner", "PhantomRevenant", "PhantomRevenant2", "PhantomRevenantSpawn", "PhantomRevenantSpawner", "PhantomRevenantTrail1", "PhantomRevenantTrail2", "PhantomRevenantTrail3", "PhantomRevenantTrail4", "PhantomRevenantTrail5", "PhantomRevenantTrail6", "PowerBalrogFireBuff", "PowerBalrogFireBuffGiver", "Reaper", "ReaperBloodSkull", "ReaperBloodSkullGiver", "ReaperBloodSkullSpawner", "ReaperBloodSpit", "ReaperFire", "ReaperFireStart", "ReaperFireTrail", "ReaperSpawn", "ReaperSpawner", "ReaperStealthFire", "RetroSkeleton", "RetroSkeletonFlame", "RetroSkeletonSpawner", "SKFlameTrail", "SkeletonDemon", "SkeletonDemonSpawn", "SkeletonDemonSpawner", "SkeletonImp", "SkeletonImpArm", "SkeletonImpBall", "SkeletonImpLeg", "SkeletonImpSpawn", "SkeletonImpSpawner", "SkullBloodDrip", "SkullChaingunner", "SkullChaingunnerSpawn", "SkullChaingunnerSpawner", "SkullChaingunnerTracer", "SkullShotgunner", "SkullShotgunnerSpawn", "SkullShotgunnerSpawner", "SkullShotgunnerTracer", "SkullZombie", "SkullZombieSpawn", "SkullZombieSpawner", "SkullZombieTracer", "SlayerKnight", "SlayerKnightFlame", "SlayerKnightFlame2", "SlayerKnightSpawn", "SlayerKnightSpawner", "SoulBallHoming", "SoulBallNormal", "SoulTrail", "Tracer", "UndeadSpawnFire", "ZombieTracer" };
+	Map<Name, int> lobSet; bool lobBuilt;
+	bool IsLob(Name n)
+	{
+		if (!lobBuilt) { lobBuilt = true; for (int i = 0; i < LOB.Size(); i++) lobSet.Insert(Name(LOB[i]), 1); }
+		return lobSet.CheckKey(n);
+	}
+	static const String CN[] = { "", "shipped", "green", "blue", "purple", "cyan", "brown", "yellow", "fireblu", "gray", "red", "abyss", "black", "white" };
+	const SP = 288;
+	const PER = 12;
+	const BLEN = 148;
+	Array<Actor> cell;
+	Array<double> cx, cy;
+	Array<int> ccol;
+	Array<String> cdt;
+	int first, last, pass, cur, t0, batch;
+	bool running;
+	Array<String> keys; Array<int> cnt;
+
+	override void WorldTick()
+	{
+		// Legion of Bones' skeletons (raised out of the corpses) and a Pain Elemental's spat souls are other monsters
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			String cn = a.GetClassName(); cn = cn.MakeLower();
+			if (cn.IndexOf("skel") >= 0 || cn.IndexOf("undead") >= 0 || cn.IndexOf("skullzombie") >= 0 || IsLob(a.GetClassName())) a.Destroy();
+		}
+		if (!running) return;
+		int dt = level.maptime - t0;
+		if (dt == 0) Lay();
+		else if (dt == 3) Colour();
+		else if (dt == 6) Kill();
+		else if (dt == 10) Snap(0);
+		else if (dt == 20) Snap(1);
+		else if (dt == 41) Snap(2);
+		else if (dt == 76) Snap(3);
+		else if (dt == 146) Snap(4);
+		else if (dt >= BLEN)
+		{
+			cur++;
+			if (cur > last) { running = false; Wipe(); Console.Printf("RCC end t%d", level.maptime); return; }
+			t0 = level.maptime;
+			Lay();
+		}
+	}
+
+	void Wipe()
+	{
+		let p = players[consoleplayer].mo;
+		cell.Clear(); cx.Clear(); cy.Clear(); ccol.Clear(); cdt.Clear();
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+			if (a != p && !a.player && !(a is "Inventory" && Inventory(a).owner) && abs(a.pos.x) < 2300 && abs(a.pos.y) < 2300) a.Destroy();
+	}
+
+	void Lay()
+	{
+		Wipe();
+		let p = players[consoleplayer].mo;
+		p.angle = 225; p.pitch = 0;          // facing the corner: the rig draws next to nothing (the census needs no frames)
+		Array<String> f; TAB[cur].Split(f, "|");
+		Array<String> d; f[2].Split(d, ",");
+		Class<Actor> cls = f[1];
+		batch++;
+		if (!cls) { Console.Printf("RCC b%d %s|%s no class", batch, f[0], f[1]); return; }
+		int n = d.Size();
+		for (int i = 0; i < n; i++)
+		{
+			double x = -1584 + SP * (i % PER), y = -1584 + SP * (i / PER);
+			let a = Actor.Spawn(cls, (x, y, 0));
+			if (!a) continue;
+			a.angle = a.AngleTo(p);
+			a.bDORMANT = true;
+			cell.Push(a); cx.Push(x); cy.Push(y); ccol.Push(2 + (i + pass * 5) % 12); cdt.Push(d[i]);
+		}
+		Console.Printf("RCC b%d %s|%s cells %d t%d", batch, f[0], f[1], cell.Size(), level.maptime);
+	}
+
+	void Colour()
+	{
+		// a class that replaces itself at spawn (the cell's actor is gone): the live monster now standing in the cell
+		for (int i = 0; i < cell.Size(); i++)
+		{
+			if (cell[i] && cell[i].health > 0) continue;
+			Actor best = null; double bd = 64;
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+				if (a.bISMONSTER && a.health > 0 && !a.player && cell.Find(a) == cell.Size() && (a.pos.xy - (cx[i], cy[i])).Length() < bd) { bd = (a.pos.xy - (cx[i], cy[i])).Length(); best = a; }
+			if (best) { Console.Printf("RCC b%d cell %d is now %s", batch, i, best.GetClassName()); cell[i] = best; best.bDORMANT = true; }
+		}
+		for (int i = 0; i < cell.Size(); i++) { let k = cell[i] ? RS_BDKit.Of(cell[i]) : null; if (k && k.entry > 1) { k.entry = 1; k.rung = 1; } }
+		for (int i = 0; i < cell.Size(); i++) if (cell[i]) RS_Retier.RequestKit(cell[i], ccol[i], true);
+		int ok = 0;
+		for (int i = 0; i < cell.Size(); i++) if (cell[i] && RS_BDHue.ColourOf(cell[i]) == ccol[i]) ok++;
+		Console.Printf("RCC b%d coloured %d of %d", batch, ok, cell.Size());
+	}
+
+	void Kill()
+	{
+		let p = players[consoleplayer].mo;
+		int dead = 0;
+		for (int i = 0; i < cell.Size(); i++)
+		{
+			let a = cell[i];
+			if (!a || a.health <= 0) continue;
+			a.bDORMANT = false;
+			a.angle = a.AngleTo(p);
+			if (cdt[i] ~== "XDeath") a.DamageMobj(p, p, a.health + max(1000, a.GetSpawnHealth() * 3), 'None', DMG_FORCED | DMG_NO_ARMOR);
+			else a.DamageMobj(p, p, a.health + 1, cdt[i], DMG_FORCED | DMG_NO_ARMOR);
+			if (!a || a.health <= 0) dead++;
+		}
+		Console.Printf("RCC b%d killed %d of %d t%d", batch, dead, cell.Size(), level.maptime);
+	}
+
+	static bool BloodKin(Actor a)
+	{
+		for (class<Actor> k = a.GetClass(); k; k = (class<Actor>)(k.GetParentClass()))
+		{
+			String kn = k.GetClassName();
+			if (kn ~== "Actor") break;
+			if (kn ~== "Blood" || kn ~== "SuperGore" || kn ~== "BloodMist") return true;
+		}
+		return false;
+	}
+
+	void Add(String k) { int j = keys.Find(k); if (j == keys.Size()) { keys.Push(k); cnt.Push(1); } else cnt[j]++; }
+
+	void Snap(int s)
+	{
+		keys.Clear(); cnt.Clear();
+		let p = players[consoleplayer].mo;
+		let drv = RS_BDArt.Get();
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (a == p || a.player || (a is "Inventory" && Inventory(a).owner) || abs(a.pos.x) > 2300 || abs(a.pos.y) > 2300) continue;
+			if (a is "RCC_Nothing") continue;
+			String nm = a.GetClassName();
+			// what is on screen: a sprite with a texture, not invisible, not drawn with no style
+			bool vis = a.CurState && !a.bINVISIBLE && a.GetRenderStyle() != STYLE_None && a.alpha > 0.001;
+			String lump = "-";
+			if (vis)
+			{
+				TextureID t; bool m; Vector2 sc;
+				[t, m, sc] = a.CurState.GetSpriteTexture(0, 0, (0, 0), a.sprite, a.frame);
+				if (!t.IsValid()) vis = false; else { lump = TexMan.GetName(t); String l4 = lump.Left(4); l4 = l4.MakeUpper(); if (l4 == "TNT1" || l4 == "NULL") vis = false; }
+			}
+			// the cell it lies in
+			int bi = -1; double bd = 1e9;
+			for (int i = 0; i < cx.Size(); i++) { double d = (a.pos.xy - (cx[i], cy[i])).Length(); if (d < bd) { bd = d; bi = i; } }
+			int want = bi >= 0 ? ccol[bi] : 0;
+			String dt = bi >= 0 ? cdt[bi] : "?";
+			int col = RS_BDHue.ColourOf(a);
+			bool own = (a is "Inventory") || RS_BDTierHandler.OwnLookName(nm) || BloodKin(a);
+			bool live = a.bISMONSTER && a.health > 0;
+			String st;
+			bool detail = true;
+			if (!vis) { st = col ? "hidden-col" : "hidden"; detail = false; }
+			else if (live) { st = col ? "LIVE-col" : (RS_BDHue.Known(a) ? "LIVE-entry" : "LIVE-none"); }
+			else if (own)
+			{
+				int mk = drv.SpriteMask(a, a.sprite);
+				st = (mk & 0x3FFC) ? "OWNART" : "ownlook";
+				if (col) st = st .. "-col";
+				detail = (mk & 0x3FFC) != 0;
+			}
+			else if (!col) st = "MISS";
+			else
+			{
+				int tr = int(a.Translation);
+				if (a.picnum.IsValid() && tr == 0) { st = "ART"; detail = false; }
+				else if (tr == drv.TintOf(col)) st = (drv.SpriteMask(a, a.sprite) & (1 << col)) ? "TINT-L" : "TINT-S";
+				else st = "OTHER";
+			}
+			if (col && col != want && !live) { if (bd <= 120) st = st .. "+WRONG"; else st = st .. "~far"; detail = true; }
+			String why = "";
+			if (st == "MISS" || st.Left(5) == "LIVE-" && st != "LIVE-col") why = String.Format(" m:%s t:%s d%d", a.master ? a.master.GetClassName() : '-', a.target ? a.target.GetClassName() : '-', int(bd));
+			String k = detail ? String.Format("%s %s %s %s %s%s", st, nm, lump, dt, col ? CN[col] : CN[want], why) : String.Format("%s %s", st, nm);
+			Add(k);
+		}
+		for (int j = 0; j < keys.Size(); j++) Console.Printf("RCCS b%d s%d x%d %s", batch, s, cnt[j], keys[j]);
+	}
+
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		if (e.Name ~== "rcc_run")       // Args: first class, last class, pass
+		{
+			first = e.Args[0]; last = min(e.Args[1], TAB.Size() - 1); pass = e.Args[2];
+			cur = first; t0 = level.maptime; running = true;
+			Console.Printf("RCC run %d..%d pass %d of %d classes", first, last, pass, TAB.Size());
+		}
+	}
+}
+class RCC_Nothing : Actor {}

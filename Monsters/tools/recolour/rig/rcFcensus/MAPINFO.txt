@@ -1,0 +1,4 @@
+GameInfo
+{
+	AddEventHandlers = "RCC_Census"
+}
