@@ -29,5 +29,9 @@ group * keepmajor 3:4,80:111 3 0.25 skin 2
 # The fatality (FATF) has a marine in it: his helmet and boots are the tans and olives 128-159 (the Mancubus's own
 # hide in these frames is the browns 48-79), his armour the greens (kept). As the Imp's fatality.
 group FATF keep 128:159
+# The attack frame (FATT H) holds the cannons' muzzle flash: its soft glow is half-transparent pixels over the body;
+# they keep their own (else the glow takes the body's colour). The body lit orange by the flash keeps that light (the
+# oranges and yellows are fire's: as the Imp's fireball hand).
+group FATTH keepalpha 250
 # The frozen Mancubus is under ice: its grays are the ice's highlights.
 group FZD9,MFZD keep 80:111 3:4

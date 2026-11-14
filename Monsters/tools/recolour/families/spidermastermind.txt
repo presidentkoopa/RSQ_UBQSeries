@@ -22,6 +22,8 @@ group * absorb 0:0,5:8 skin 5
 # rust and brown reflections on the chrome legs (as the Mancubus's cannons)
 group * keepmajor 3:4,80:111 3 0.25 skin 2
 group SPFZ keep 80:111 3:4
+# The chaingun's muzzle flash (SPID H) is half-transparent glow: it keeps its own colours.
+group SPIDH keepalpha 250
 # The fatalities' broken leg is pale pink chrome (tans 128-159 between its grays): a wider look at the metal there.
 group FTS2,FTSM keepmajor 3:4,80:111 5 0.2 skin 3
 masks spidermastermind_masks.txt

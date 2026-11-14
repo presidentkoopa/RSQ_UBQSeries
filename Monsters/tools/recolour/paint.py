@@ -135,6 +135,8 @@ class Family:
                 sel = opaque & (C >= float(args[3])) & (H >= float(args[1])) & (H <= float(args[2]))   # <chroma>) says
                 if len(args) > 4: sel &= np.isin(idx, list(parse_ranges([args[4]])))     # they are <part>: where the
                 part[sel] = PARTS[args[0]]             # palette cannot tell (a green hide drawn in the grays' indices)
+            elif rule == 'keepalpha':                  # keepalpha <alpha>: half-transparent pixels (alpha below it)
+                part[opaque & (rgba[..., 3] < int(args[0]))] = KEEP   # keep their own: a muzzle flash's glow
             elif rule == 'lonely':                     # lonely <part> <radius> <frac>: <part> pixels where at least
                 inp = (part != PARTS[args[0]]) & opaque                           # <frac> of the opaque pixels within
                 tot = np.maximum(_disk_sum(opaque.astype(np.float64), int(args[1])), 1)       # <radius> are not
