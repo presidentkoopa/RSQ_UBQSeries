@@ -264,9 +264,7 @@ All three are fixed in RSQ Monsters on this branch (2026-11-13, see `Monsters/RE
 - The art is made by rule, per part (above). Nothing is painted by hand yet; a frame painted by hand goes in
   `hand/<colour>/<LUMP>.png` and wins over the bake (`hand/README.txt`). Claws share the spikes' palette (same gray
   ramp in the source); a `claw` part exists for masks that split them. The frozen imp keeps its ice in every colour.
-- Generic gore (`Guts`, `XDeath1`-`4`, organs, brains, teeth), burnt (`PBR1`, `XBRN`) and Brutal Doom's shared pieces
-  are not baked: they keep the live tint (on main too). FireBlu's tint turns their red to blue. For the owner: paint
-  them (they would keep their reds, as the Imp art does), or leave them uncoloured.
+- Generic gore: painted since 2026-11-13 (the owner picked "Paint it"; see "The shared gore" below).
 - All BD22 + XMVE: about 11,300 source lumps, 135,000 PNGs, 300 MB. One pk3 per colour (above) holds it.
 
 ## Build and bake
@@ -415,3 +413,51 @@ per row, the 13th as shipped); no script error from our packs (BD_VoxelPack's ow
 - `PLYCU0` on a BaronofHell2 (the player's crouch sprite, BD's fatality pose) and generic gore (`XDT1`, `XMT1-2`, `BAL1`,
   `JNK1-3`, `BPDL`, `GUTS`) keep the live tint.
 - Legion of Bones' SlayerKnight (and others) rise among the rows; the Belphegor's purple aura covers his head in the strip.
+
+## The shared gore (2026-11-13, owner: "Paint it")
+
+The owner (11-13): Brutal Doom's shared gore took the tier tint (on FireBlu the red guts turned blue); asked what it should
+do, he picked **"Paint it"**: art per colour that keeps its reds and colours only the flesh bits. `families/gore.txt`,
+40 sprite names, 330 lumps x 12 colours (3,960 PNGs, about 0.4 MB a colour). **rig only, not headset-confirmed.**
+
+- **Which pieces.** The shared gore that RSQ Monsters' Carry colours today: found on the rig (run `rcG_census`: nine
+  families, 13 each in FireBlu Red Gray Black White Green, each killed by another Brutal Doom damage type, every coloured
+  piece counted by its sprite: `rig/rcGdemo` `rcg_sample`/`rcg_dump`, `rig/rcg_script.py census`) and by a static walk of
+  every tierable class's DECORATE (`rig/rcg_gore_scan.py`): guts, organs, stomach (GUTS XME4 XME5 XME8 XSTO), brains and
+  head pieces (BRIB BRIN BR7B BR7N XDB5), arms and flesh chunks (XARM XDT3 XDT5 XSKI GORX CRS3), teeth (XTET), the blood
+  gibs and pools that are pieces, not blood actors (BLHT BLOD BLUD BPDL XDT1 XMT1 XMT2 XME2 XDB6 CRS1 CRS2 CRSB GIBS), the
+  disintegrating man (ID50), the zombie and marine gibs (TGIB XDMG), and the burnt remains a corpse can show (CARB XBRN
+  PBR1 BRZ3 GIBD ASHY ASHZ). The list and why is at the top of the family file. The blood actors and mist (SuperGore,
+  BloodMist, Brutal_Blood ...) and the burning runners (BDT1-3, CRB7, SBRG, TRBR: Burning* classes) keep their own look by
+  class name already and are not baked.
+- **What takes the colour** (the plainest reading of "keeps its reds and colours only the flesh bits"): only the skin's
+  tans and browns (palette 48-79, 236-239: the ramp the Imp's and the zombies' skin are drawn in), so an arm, a scalp, a
+  jaw's skin, a flesh chunk take the piece's colour. Kept: every red and pink (blood, muscle, guts, brains), bone and
+  teeth (grays, pale yellows, whites), hair (BR7B's green), a marine's armour, other monsters' blue and green blood.
+- **Whole pieces kept as shipped**: guts and organs (their intestines are drawn in browns as well as reds: they are guts,
+  not skin), teeth, the blood gibs, the burnt remains (charred, ash and fire keep their own). Their art is the shipped
+  frame (checked pixel-identical), so the driver draws them with no tint.
+- **The driver reaches them unchanged**: a coloured piece gets an RS_BDHue from Carry and `RS_BDHue.Put` hands it to
+  `RS_BDArt`; no code change was needed. Census with the art (`rcG_census2`): every gore sprite on a coloured piece drawn
+  from the art (e.g. GUTS 2,238 piece-tics ART, XMT2 3,830, XDB5 2,772), the rest is the one tic a new piece wears the
+  tint before the driver's first look at it (about 3%, as for the families' pieces).
+
+Shown on the rig (owner's full order, his ini, `-skill 6`, rig01, light 224, `ue_recolour 0`, weapon, laser and bars
+hidden, Legion of Bones' risers removed by the test handler; RSQ_BDXMTiers_<Colour> pk3s built with the gore art, and the
+same without it for "old"; no script error from our packs; runs deleted after the sheets were cut by `rig/rcg_sheets.py`):
+
+| Sheet | What |
+|---|---|
+| `docs/gore_01_pieces_six_colours_old_vs_new.jpg` (runs `rcG_pc_old`, `rcG_pc_new`) | eleven Brutal Doom gore pieces (Guts, two arms, Gib_Arm, organ, stomach, XDeathGuts, brains, a scalp piece, teeth, a skin piece), one per colour Green, White, Black, Gray, Red, FireBlu: in the air and landed, old (the tint) against new (the art) |
+| `docs/gore_02_gibbed_monsters_old_vs_new.jpg` (runs `rcG_gib_old`, `rcG_gib_new`) | RifleZombie, Imp, ShotgunGuy1, BullDemon rows in the six colours, gibbed: bursting and landed, old against new |
+
+Seen on the rig, not this family's (for the owner / other families):
+- On the tint in these runs because their families' art landed after the runs' pk3s were built: the Demon's pieces (DEMH
+  HND8 LEG8 PDG1 S2RG SRRD, now in `demon.txt`), the Imp's ID17 (now in `imp_xmve.txt`). Also some TRO3 frames on a
+  coloured BD22 imp were drawn with the tint (22 tics in `rcG_census2`; TRO3 is in `imp.txt`: a rotation or frame
+  with no painted copy, not looked into).
+- Not gore but coloured by Carry today (its class names miss them): BD's floor crater (`DetectFloorCraterSmall`, XXX1)
+  and metal shards (`MetalShard1-3`, JNK1-3); Legion of Bones' risers (`SkullZombieSpawn`, `SkeletonImpSpawn`,
+  `SkeletonDemonSpawn`, `SkullShotgunnerSpawn`, `CacoLichSpawn`). Left as they are (an RSQ Monsters Carry question, not
+  art).
+
