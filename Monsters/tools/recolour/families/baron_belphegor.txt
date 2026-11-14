@@ -1,0 +1,16 @@
+# The Baron family's Belphegor (BD22 Belphegor2): the brown Baron, his angry phase (B0S3), deaths, gibs, fatality and
+# frozen death, for bake.py. sprites: BD22 sprites/Monsters/Belphegor (and ANGERY), MonsterFatality/Belphegor_Fatality,
+# FreezeDeaths/FrozenBelphegor. Left out on purpose as in baron.txt (shared gore, other families' pieces, the player's
+# first-person fatality BS4F).
+sprites BOS3 B0S3 BO3G BFS3 BS3F
+
+# skin: his tan upper body, his brown furred lower body and his darkest browns: one ramp in the source (as the Hell
+# Knight's). His horns are drawn in the same tans, so they take the skin's palette.
+part skin 1:2 13:15 48:79 128:159 236:239
+part horn 3:4 80:111
+# kept, by not being listed: outlines; the greens (his green blood and the green fire of his hands); reds (eyes,
+# wounds); fire colours; blues (ice).
+group * absorb 0:0,5:8 skin 5
+group * keepnear 16:47,168:191 1 horn
+group BFS3 keep 80:111 3:4
+masks baron_belphegor_masks.txt

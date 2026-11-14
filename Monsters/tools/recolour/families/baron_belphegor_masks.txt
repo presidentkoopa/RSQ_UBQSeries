@@ -1,0 +1,34 @@
+# Hand-written part masks for the Belphegor (format: see hellknight_masks.txt). BS3F, his fatality: the marine keeps
+# his own colours: grabbed at his left (A-D), then thrown down and lying on the floor (E-Q: his olive and grays).
+BS3FA0 keep 10 44 38 88 from=skin,horn
+BS3FB0 keep 8 8 32 48 from=skin,horn
+BS3FC0 keep 12 8 34 45 from=skin,horn
+BS3FD0 keep 10 30 30 52 from=skin,horn
+BS3FE0 keep 18 62 42 92 from=skin,horn
+BS3FG0 keep 18 70 42 92 from=skin,horn
+BS3FE0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FE0 keep 0 78 30 99 from=skin,horn
+BS3FF0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FF0 keep 0 78 30 99 from=skin,horn
+BS3FG0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FG0 keep 0 78 30 99 from=skin,horn
+BS3FH0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FH0 keep 0 78 30 99 from=skin,horn
+BS3FI0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FI0 keep 0 78 30 99 from=skin,horn
+BS3FJ0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FJ0 keep 0 78 30 99 from=skin,horn
+BS3FK0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FK0 keep 0 78 30 99 from=skin,horn
+BS3FL0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FL0 keep 0 78 30 99 from=skin,horn
+BS3FM0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FM0 keep 0 78 30 99 from=skin,horn
+BS3FN0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FN0 keep 0 78 30 99 from=skin,horn
+BS3FO0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FO0 keep 0 78 30 99 from=skin,horn
+BS3FP0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FP0 keep 0 78 30 99 from=skin,horn
+BS3FQ0 keep 0 78 99 99 from=skin,horn idx=80:111,128:159
+BS3FQ0 keep 0 78 30 99 from=skin,horn

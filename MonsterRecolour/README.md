@@ -58,9 +58,9 @@ painted by `Monsters/tools/recolour/paint.py` with each colour's own palettes (`
 - **FireBlu, no speckle.** The recipe alternated red and blue by palette row, which speckled. FireBlu is now a burning
   top (flame red-orange) that cools down the body into a blue-flame lower half, blended smoothly down the sprite's own
   height (through magenta, not gray), with flame spikes and claws.
-- **Kept on the flat tint, on purpose:** `BOSBA0`-`BOSBE0` (BD22's Hell Knight art, listed in the family by its sprite
-  name; only `BOSBF0` is an imp gib) and `X728` (XMVE's Dark Imp grabbing a marine: its own black look). `manifest.txt`'s
-  last column says `paint` or `tint` per lump.
+- **Kept on the flat tint, on purpose:** `X728` (XMVE's Dark Imp grabbing a marine: its own black look). `manifest.txt`'s
+  last column says `paint` or `tint` per lump. `BOSBA0`-`BOSBE0` (BD22's Hell Knight burnt, listed in the Imp family by
+  its sprite name; only `BOSBF0` is an imp gib) are the Hell Knight family's since 11-13 (`imp.txt` skips them).
 
 Shown on the rig (runs `rc2_old`, `rc2_new`: the owner's full order with his saved ini, `-skill 6`, rig01, sector light
 224; no script error from these packs; the frames were cut into the sheets and the runs deleted). Test-only settings for
@@ -247,3 +247,90 @@ previews. In the chaingunner's live-tint run (`rcA_cg_old`) the second row (Fire
 answered rung -1), so its old/new sheet is cut for Purple, from the first row. In the last frames of some runs as-shipped men rose from
 the corpses (the full order's own, not this art); the sheets' frames are picked before that.
 The art is more than one zip can hold (71,517 entries with the Imp): the rig loaded it as two pk3s split by colour.
+
+## Hell Knight, Baron, Revenant, Arch-vile families (2026-11-13, same method as the Imp)
+
+**rig only, not headset-confirmed.** Thirteen family files (`Monsters/tools/recolour/families/`), each one art set with
+its own shading statistics, baked with the Imp's palettes (`ramps.py`, unchanged):
+
+| File | Classes (tier family) | Lumps |
+|---|---|---|
+| `hellknight.txt` (+ `_masks`) | BD22 HellKnight2 (Hell Knight): body, deaths, crawlers, gibs, burnt (BOSB A-E, BOSC), fatality KTFP, frozen FZD6 | 310 |
+| `hellknight_cyber.txt` | XMVE CyberKnight, Cybruiser, PhasicKnightX, XVStealthCyberKnight (Hell Knight) | 181 |
+| `baron.txt` (+ `_masks`) | BD22 BaronofHell2, BaronBoss1/2; XMVE Cyberbaron, XVStealthCyberBaron (Baron); doom2's BOSS (its corpse) | 435 |
+| `baron_belphegor.txt` (+ `_masks`) | BD22 Belphegor2 | 102 |
+| `baron_afrit.txt` | BD22 Afrit | 77 |
+| `baron_bruiser.txt` | XMVE BruiserDemon, XVStealthBruiser | 114 |
+| `baron_pyro.txt` | XMVE PyroDemon | 86 |
+| `baron_terminator.txt` | XMVE TerminatorDemon, TerminatorBoss, XVStealthTerminator | 135 |
+| `revenant.txt` (+ `_masks`) | BD22 Revenant1: body, crawler, legs, gibs, fatalities REFP and SKF1-3, frozen | 313 |
+| `revenant_draugr.txt` (+ `_masks`) | XMVE Draugr, Vanilla_Draugr | 170 |
+| `revenant_incarnate.txt` | XMVE Incarnate | 96 |
+| `archvile.txt` | BD22 TehArchvile: body, burnt death (XVIP, DIBR), gibs, frozen | 252 |
+| `archvile_diabloist.txt` | XMVE DIABloist | 145 |
+
+**Choices made (plainest reading; each is written in its family file, for the owner to confirm or change):**
+- **Revenant: its bones are its body** (painted); its white armour and launchers are metal (kept); its red flesh and tunic
+  are drawn in the blood's own reds, so they stay red as blood does. Draugr the same (its black armour is metal).
+- **Hell Knight, Baron, Belphegor:** hide and furred legs are one body; their horns are drawn in the hide's own colours
+  (no gray), so they take the skin's palette. The Baron's green blood and the green fire in his hands stay green; his
+  skin IS the reds 16-47, so a wound's red on him is painted with the skin.
+- **Burnt Hell Knight (BOSB A-E, BOSC):** the char is his body: painted from the deepest steps of his ramp (charred in his
+  colour). BOSB A-E moved here from the Imp family (`imp.txt` now `skip`s them; the Imp's other files bake identically).
+- **Fire keeps its colours (the owner's rule), also where it lights the body:** the Arch-vile's and Diabloist's casting
+  frames, where the whole body is lit gold/orange by their own fire, keep that gold (the live tint left it gold too);
+  the Afrit's and Bruiser's flames stay fire. The Bruiser's hide is drawn in the fire's own oranges: its hide is painted,
+  the bright flames and the oranges within 3 pixels of them are kept.
+- **Mostly-metal monsters:** the Terminator's gray plates, limbs and guns are metal (kept), the red flesh between them is
+  its body (painted). The CyberKnight's hide and its metal limbs are one gray ramp: the gray is painted as its hide, the
+  gray within 3 pixels of a red light is taken as metal and kept (a heuristic; a human painter could do better).
+- **Black-hided monsters** (PyroDemon, Death Incarnate): the black is their body and is painted, so their colour shows
+  through their own black shading; their glowing cracks/core keep their fire.
+- **Fatalities:** the victim keeps his own colours (rectangle masks per frame, `idx=` limits a mask to palette indices
+  where the victim and the monster share browns). Left to the paint, a few pixels: the marine in REFP A-D (in front of
+  the Revenant's legs, same browns), the marine inside the Baron's grip in 3HF2 A-C.
+- **Not baked, on purpose:** projectiles, flames and effects in these monsters' folders; generic gore and burnt bodies
+  other families share (CARB, XBRN, XDT1, XMT1-2, BR7B ...: live tint, as for the Imp); the player's first-person
+  fatalities (sprites/Fatality/*: drawn on the weapon, never an actor).
+
+**Tool changes (generic, backward compatible; the Imp's bake is byte-identical except BOSBA0-E0, checked):** `skip <prefixes>`
+in a family file; masks take `idx=<ranges>`; a part with only a few pixels no longer breaks the statistics or divides by
+zero.
+
+**Shown on the rig, through the PROTOTYPE driver** (`MonsterRecolour/zscript`, before the integration moved it into RSQ
+Monsters; the owner's full order, `-skill 6`, rig01, sector light 224, no script error from these packs: only
+BD_VoxelPack's own four voxeldef lines; test-only settings as for the Imp, plus `rig/rcCdemo`, a row of any class; sheets
+cut by `rig/rcC_sheets.py`, `rig/rcC_strip_sheet.py`). Runs
+`rc3_hk2`, `rc3_bar2`, `rc3_rev2`, `rc3_av` (art switched off and on in one run for the old/new sheets), `rc3_strip` (XMVE
+and the other Barons, rows of thirteen), `rc3_dbg1`/`rc3_dbg2` (the prototype's `rsrc_debug 1`, all 15 classes alive, attacking, killed and
+gibbed: the log names every frame left to the tint). Frames cut into the sheets, runs deleted.
+
+| Sheet | What |
+|---|---|
+| `docs/hellknight_12colours_new_art.jpg`, `docs/hellknight_07_fireblu_old_vs_new.jpg` | BD22 Hell Knight: front, side, attack, dead; FireBlu as shipped / live tint / art |
+| `docs/baron_12colours_new_art.jpg`, `docs/baron_07_fireblu_old_vs_new.jpg` | BD22 Baron of Hell, the same |
+| `docs/revenant_12colours_new_art.jpg`, `docs/revenant_07_fireblu_old_vs_new.jpg` | BD22 Revenant (dying, not dead: BD's Revenant falls to bones that the test handler clears) |
+| `docs/archvile_12colours_new_art.jpg`, `docs/archvile_07_fireblu_old_vs_new.jpg` | BD22 Arch-vile |
+| `docs/baron_others_12colours_strip.jpg` | Belphegor2, Afrit, Cyberbaron, BruiserDemon, PyroDemon, TerminatorDemon: front and dead, rows of 13 |
+| `docs/knight_revenant_archvile_xmve_12colours_strip.jpg` | CyberKnight, PhasicKnightX, Draugr, Incarnate, DIABloist: the same |
+
+**Shown again through the integration** (run `rcC_integ`, after rebasing on it: RSQ Monsters' `RS_BDArt.zs` and the twelve
+`pk3/RSQ_MonsterArt_<Colour>.pk3` built by `tools/build_monster_art.py` with every family painted so far, 8,369 frames of
+647 sprites a colour; the owner's full order, `-skill 6`, `rig/rcE_full.sh` + `rig/rcCdemo`, `rsq_mon_art_debug 1`): rows of
+thirteen HellKnight2, BaronofHell2, Revenant1, TehArchvile, CyberKnight, Draugr, art on then `rsq_mon_art 0`, and four
+deaths: `docs/integ_hk_baron_rev_av_xmve_art_vs_tint.jpg`. All twelve colours drawn from the art (debug: 12 of 13 drawn
+per row, the 13th as shipped); no script error from our packs (BD_VoxelPack's own four voxeldef lines only).
+
+**Seen in the prototype runs, not the art's doing:**
+- **Ladder entry rungs (stale).** With RSQ Monsters as it was before main's "every BD / XMVE monster enters at Common",
+  some classes got no tint below their entry rung; the strips mark those tiles "no tint (ladder)". In the integration
+  run every class took all twelve colours.
+- **RSQ_Monsters ships its own sprites under the same names** (BOS2, BOS3, BOSB, BOSC, BOSS, BRUD, BRUS, BRUR, DIAB, INCA,
+  INCX, SKEL, TERM, VILP among 74 names shared with BD22/XMVE), so in the full order its lump wins over BD22's. 583 such
+  lumps have a baked copy of BD22's/XMVE's lump of that name (the art draws BD22's look there, as before RSQ_Monsters
+  replaced it); 472 have none (e.g. `BOS3*C*`/`*D*` rotation pairs, `VILP*`, `BOSB`/`BOSC` rotations, `BRUR`) and keep the
+  live tint. The rig showed two: `BOS3B1D1` (Belphegor walking) and `DIABZ0` (Arch-vile corpse), both RSQ_Monsters lumps.
+  Whether RSQ_Monsters' own sprites should be baked instead is a choice for the owner (see the final report).
+- `PLYCU0` on a BaronofHell2 (the player's crouch sprite, BD's fatality pose) and generic gore (`XDT1`, `XMT1-2`, `BAL1`,
+  `JNK1-3`, `BPDL`, `GUTS`) keep the live tint.
+- Legion of Bones' SlayerKnight (and others) rise among the rows; the Belphegor's purple aura covers his head in the strip.

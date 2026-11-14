@@ -1,0 +1,8 @@
+# The Baron family's Afrit (BD22 Afrit, sprites/Monsters/WCS/Afrit): a red fire demon, for bake.py: body, attacks, death.
+# Its fireballs and flames (COMT, FRTB, FRTF, FRTM) are fire, not body: not baked. Left out on purpose as in baron.txt.
+sprites FRIT
+# skin: its red hide is the reds 168-191 and 16-47 with its darkest browns 1-2, 13-15. The fire it burns with and its
+# light (yellows 160-167, oranges 208-235, whites 248-255) keep their own colours: the owner's rule, fire is fire.
+part skin 1:2 13:15 16:47 168:191 236:239
+part horn 3:4 80:111
+group * absorb 0:0,5:8 skin 5

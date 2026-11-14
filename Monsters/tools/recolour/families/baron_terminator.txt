@@ -1,0 +1,8 @@
+# The Baron family's XMVE TerminatorDemon and TerminatorBoss (Sprites/Monsters/Terminator): body (TERM) and its pieces
+# (TARM arm, THAD head, TSHO shoulder), for bake.py. BLST, STAR, TGBL, TGND, TGTR, TPUF are its shots: not baked.
+sprites TERM TARM THAD TSHO
+# A cyborg, mostly metal: the plainest choice is that its gray armour, limbs and guns are metal and keep their own
+# colours (the owner's rule), and its body is the red flesh between the plates (reds 16-47 and its dark browns), painted.
+# Its glowing eye and chest light are the bright dark-reds 176-191: kept, as eyes.
+part skin 1:2 13:15 16:47 64:79 128:143 236:239
+group * absorb 0:0,5:8 skin 6

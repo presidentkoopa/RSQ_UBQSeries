@@ -112,7 +112,7 @@ def main():
     pal = lo.palette
     P = np.frombuffer(pal, np.uint8).reshape(256, 3).astype(np.int32)
     rec = recipes.load(trn)
-    names = sorted(n for n in lo.index if n[:4] in fam.sprites)
+    names = sorted(n for n in lo.index if n[:4] in fam.sprites and not fam.is_skip(n))
     os.makedirs(outdir, exist_ok=True)
     cache = {}
     # pass 1: decode, find the parts, gather the family's shading statistics per part (per statgroup, if the family

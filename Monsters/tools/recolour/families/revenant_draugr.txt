@@ -1,0 +1,10 @@
+# The Revenant family's XMVE Draugr and Vanilla_Draugr (Sprites/Monsters/Draugr): body (SKE2), its deaths and pieces
+# (SK14, SK3L, SKL5, D43L, DYVB, R3D5, R3DP, R3V4, BNP4), frozen (FZDD) and its fatality on a marine (FDR4), for bake.py.
+# Its fatality from the player's side (Sprites/Fatality/Draugr 5KF2) is drawn on the weapon: not an actor, not baked.
+sprites SKE2 SK14 SK3L SKL5 D43L DYVB R3D5 R3DP R3V4 BNP4 FZDD FDR4
+# As the Revenant (revenant.txt): its BONES are its body (the browns 48-79, 128-159, darkest browns), painted. Its black
+# armour and launchers (near-blacks, grays: metal) keep their own; its red loincloth and flesh (reds) keep their red, as
+# blood does; its eyes and rocket fire are kept.
+part skin 1:2 13:15 48:79 128:159 236:239
+group FZDD keep 80:111 3:4
+masks revenant_draugr_masks.txt

@@ -1,0 +1,43 @@
+# Hand-written part masks for the Revenant (format: see hellknight_masks.txt).
+# SKF1-3: the Revenant kills another monster (a zombie, a chaingunner, an imp-like brute): the victim keeps its own
+# colours. The three share one choreography, so one rectangle per frame letter (where the victim is in that frame).
+# REFP: the Revenant kills a marine. In A-D the marine stands in front of the Revenant's legs, drawn in the same
+# browns as its bones: those few pixels of his are left to the paint (a frame for a human painter if it matters).
+SKF1A0 keep 140 145 199 199 from=skin
+SKF1B0 keep 100 85 155 138 from=skin
+SKF1C0 keep 40 105 92 168 from=skin
+SKF1D0 keep 15 175 98 199 from=skin
+SKF1E0 keep 0 145 58 199 from=skin
+SKF1F0 keep 35 90 88 143 from=skin
+SKF1G0 keep 106 115 155 168 from=skin
+SKF1H0 keep 110 175 180 199 from=skin
+SKF2A0 keep 140 145 199 199 from=skin
+SKF2B0 keep 100 85 155 138 from=skin
+SKF2C0 keep 40 105 92 168 from=skin
+SKF2D0 keep 15 175 98 199 from=skin
+SKF2E0 keep 0 145 58 199 from=skin
+SKF2F0 keep 35 90 88 143 from=skin
+SKF2G0 keep 106 115 155 168 from=skin
+SKF2H0 keep 110 175 180 199 from=skin
+SKF3A0 keep 140 145 199 199 from=skin
+SKF3B0 keep 100 85 155 138 from=skin
+SKF3C0 keep 40 105 92 168 from=skin
+SKF3D0 keep 15 175 98 199 from=skin
+SKF3E0 keep 0 145 58 199 from=skin
+SKF3F0 keep 35 90 88 143 from=skin
+SKF3G0 keep 106 115 155 168 from=skin
+SKF3H0 keep 110 175 180 199 from=skin
+SKF1I0 keep 0 8 48 71 from=skin
+SKF2I0 keep 0 8 48 71 from=skin
+SKF3I0 keep 0 8 52 71 from=skin
+REFPE0 keep 0 8 26 58 from=skin
+REFPF0 keep 0 62 48 80 from=skin
+REFPF0 keep 78 56 97 80 from=skin
+REFPG0 keep 0 62 48 80 from=skin
+REFPG0 keep 78 56 97 80 from=skin
+REFPH0 keep 0 62 48 80 from=skin
+REFPH0 keep 78 56 97 80 from=skin
+REFPI0 keep 0 62 48 80 from=skin
+REFPI0 keep 78 56 97 80 from=skin
+REFPJ0 keep 0 62 48 80 from=skin
+REFPJ0 keep 78 56 97 80 from=skin

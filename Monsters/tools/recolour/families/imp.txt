@@ -31,9 +31,11 @@ group IPFP keepnear 112:159 2 horn
 group IFZD,FZD4 keep 80:111 3:4
 
 # ---- lumps that keep the old flat tint (paint.py does not know their parts) ----
-# BOSBA0-E0 are BD22's Hell Knight art (sprites/Monsters/BruiserBrothers/HellKnight), not the Imp's; only BOSBF0 is an
-# imp gib. X728 is XMVE's Dark Imp grabbing a marine (black body, its own look). Both keep what they had.
-tint BOSBA,BOSBB,BOSBC,BOSBD,BOSBE,X728
+# X728 is XMVE's Dark Imp grabbing a marine (black body, its own look): it keeps what it had.
+tint X728
+# BOSBA0-E0 are BD22's Hell Knight art (sprites/Monsters/BruiserBrothers/HellKnight, the Knight burnt): the Hell Knight
+# family's (hellknight.txt) since 11-13; only BOSBF0 is an imp gib. Not baked here, so this bake never overwrites them.
+skip BOSBA,BOSBB,BOSBC,BOSBD,BOSBE
 
 # ---- hand-written masks (rectangles in the lump's pixels) ----
 masks imp_masks.txt

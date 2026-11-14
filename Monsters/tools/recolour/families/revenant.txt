@@ -1,0 +1,21 @@
+# The Revenant family, BD22 (Revenant1): body, deaths, legless crawler (UKEL), the legs left standing (DKEL), gibs and
+# bones (Revenant/GORE), its fatalities (REFP on a marine, SKF1-3 on other monsters), frozen death (RFZD, FZDA), for
+# bake.py. sprites: BD22 sprites/Monsters/Revenant (and GORE, Legless, LegsOnly), MonsterFatality/Revenant_Fatality,
+# FreezeDeaths/FrozenRevenant. XMVE's Draugr and Death Incarnate have their own art: revenant_draugr.txt,
+# revenant_incarnate.txt. Left out on purpose as in the other families (shared gore, other families' pieces, the
+# player's first-person fatality FRE2/FREV/FRVX).
+sprites SKEL REDX SKLA BNP1 BNP2 BNP3 FATB REVH RVDP SKEX SKL4 SPIC XHE6 UKEL DKEL REFP SKF1 SKF2 SKF3 FZDA RFZD
+
+# THE REVENANT'S BODY (the plainest choice, for the owner): the Revenant is mostly bone, so its BONES are its body and
+# are painted: the tans and browns 48-79, 128-159 and their darkest browns 1-2, 13-15, 236-239 (skull, ribs, arms, legs,
+# teeth drawn in the bone ramp). Kept, by the owner's rule: its white-gray armour and shoulder launchers (grays 80-111
+# and 3-4: metal), the red flesh and tunic hanging on it (reds 16-47, 168-191: drawn in the blood's own reds, so they
+# stay red as blood does), its eyes, rocket fire, ice.
+part skin 1:2 13:15 48:79 128:159 236:239
+group * absorb 0:0,5:8 skin 5
+# SKLA (BD22's darker-armoured Revenant look) draws browns and tans as reflections in its armour plates: browns within
+# 2 pixels of the armour's grays are the armour's, not bone (kept with the metal).
+group SKLA keepnear 80:111,3:4 2 skin
+# The frozen Revenant is under ice: everything but the bone showing through is ice.
+group RFZD,FZDA keep 80:111 3:4
+masks revenant_masks.txt

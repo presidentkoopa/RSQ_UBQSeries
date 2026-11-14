@@ -1,0 +1,14 @@
+# The Hell Knight family's XMVE classes, the CyberKnight art (Sprites/Monsters/CyberKnight; CyberKnight, Cybruiser,
+# PhasicKnightX and its stealth one): body (CYUS), its deaths and pieces, fatality (CYFA) and frozen death (FBC1),
+# for bake.py.
+sprites CYUS BRUR C1MS C91D C92D C93D C94D C95D C96D C97D CNRJ CP4L CP5L CP6L CP7L CP8L CP9L G0RA G0RB G0RC CYFA FBC1
+# The CyberKnight is a Hell Knight with a steel-gray hide and metal limbs, both drawn in the same gray ramp. The plainest
+# choice: the gray hide is its body and is painted; its metal limbs and guns carry the red lights (reds 168-191) and
+# the gray within 3 pixels of a red light is taken as metal and kept. Its brown loincloth/legs (128-159, 64-79) are
+# body too.
+part skin 1:2 13:15 48:79 80:111 128:159 236:239
+part horn 3:4
+group * absorb 0:0,5:8 skin 5
+group * keepnear 168:191 3 skin
+group * keepnear 16:47 1 skin
+group FBC1 keep 80:111 3:4

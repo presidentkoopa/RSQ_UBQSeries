@@ -1,0 +1,58 @@
+# Hand-written part masks for the pink Barons (format: see imp_masks.txt; idx=<ranges> limits a mask to pixels of those
+# palette indices). The marine in the Baron's fatalities keeps his own colours. His skin and fatigues are the browns and
+# olives the Baron's legs are drawn in, so where he overlaps the Baron the mask takes only those (idx=, never the
+# Baron's pinks). Where he is hidden inside the Baron's grip (3HF2 A-C) he is left to the paint: a few pixels.
+# 3HF1: the Baron tears the marine's head off.
+3HF1A0 keep 24 48 42 96 from=skin,horn
+3HF1B0 keep 24 50 42 96 from=skin,horn
+3HF1C0 keep 24 50 42 96 from=skin,horn
+3HF1D0 keep 14 58 42 96 from=skin,horn
+3HF1E0 keep 14 58 42 96 from=skin,horn
+3HF1E0 keep 80 16 96 38 from=skin,horn
+3HF1F0 keep 14 58 42 96 from=skin,horn
+3HF1G0 keep 20 24 47 66 from=skin,horn
+3HF1H0 keep 20 24 47 66 from=skin,horn
+3HF1I0 keep 24 22 45 70 from=skin,horn idx=48:63,128:159
+3HF1J0 keep 18 20 34 44 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF1K0 keep 20 48 37 66 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF1L0 keep 36 18 51 37 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF1M0 keep 36 18 51 37 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF1N0 keep 18 30 48 60 from=skin,horn idx=48:63,128:159
+3HF1O0 keep 18 30 48 60 from=skin,horn idx=48:63,128:159
+3HF1P0 keep 18 30 48 60 from=skin,horn idx=48:63,128:159
+3HF1Q0 keep 18 30 48 60 from=skin,horn idx=48:63,128:159
+# 3HF2: the Baron tears the marine in two and holds the halves out.
+3HF2D0 keep 14 24 45 62 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2D0 keep 80 24 106 60 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2E0 keep 8 14 31 52 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2E0 keep 85 22 106 54 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2F0 keep 0 4 26 46 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2F0 keep 75 18 101 56 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2G0 keep 0 14 30 70 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2G0 keep 75 18 101 76 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2H0 keep 0 14 30 70 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2H0 keep 75 18 101 76 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2I0 keep 0 14 30 70 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2I0 keep 75 18 101 76 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2J0 keep 0 14 30 70 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2J0 keep 75 18 101 76 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+3HF2K0 keep 0 0 120 99 from=skin,horn
+# KNTF: the marine in front of the Baron, then his remains at the Baron's feet.
+KNTFA0 keep 37 52 61 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+KNTFB0 keep 37 52 61 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+KNTFC0 keep 37 62 63 100 from=skin,horn idx=128:159
+KNTFD0 keep 37 62 63 100 from=skin,horn idx=128:159
+KNTFE0 keep 37 62 63 100 from=skin,horn idx=128:159
+KNTFF0 keep 37 62 63 100 from=skin,horn idx=128:159
+KNTFG0 keep 37 62 63 100 from=skin,horn idx=128:159
+# CB4F (Cyberbaron): the marine in front of him (A-H), burnt black under him (I); P19D is the marine's burnt remains.
+CB4FA0 keep 15 46 56 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+CB4FB0 keep 15 46 56 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+CB4FC0 keep 15 46 56 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+CB4FD0 keep 15 46 56 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+CB4FE0 keep 15 46 56 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+CB4FF0 keep 15 46 56 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+CB4FG0 keep 15 46 56 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+CB4FH0 keep 15 46 56 100 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+CB4FI0 keep 4 38 38 70 from=skin,horn idx=1:2,13:15,48:79,128:159,236:239
+P19DA0 keep 0 0 60 60 from=skin,horn

@@ -59,7 +59,7 @@ class Family:
     """The family file's art rules (see families/imp.txt): part, group, tint, mask."""
     def __init__(self, path):
         import os
-        self.sprites, self.part_of, self.groups, self.tint, self.masks = set(), {}, [], set(), []
+        self.sprites, self.part_of, self.groups, self.tint, self.masks, self.skip = set(), {}, [], set(), [], set()
         self.statgroups = []                           # (name, prefixes): lumps whose shading statistics are their own
         self.dir = os.path.dirname(os.path.abspath(path))
         for line in open(path):
@@ -72,6 +72,8 @@ class Family:
                 self.groups.append((tuple(p.upper() for p in w[1].split(',')), w[2], w[3:]))
             elif w[0] == 'tint':                       # tint <prefixes,>: lumps that keep the old flat tint (not ours)
                 self.tint |= set(p.upper() for p in w[1].split(','))
+            elif w[0] == 'skip':                       # skip <prefixes,>: lumps of the family's sprite names that are
+                self.skip |= set(p.upper() for p in w[1].split(','))    # another family's art: not baked here
             elif w[0] == 'masks':                      # masks <file>: hand-written rectangles (see masks file)
                 self.masks += self._masks(os.path.join(self.dir, w[1]))
             elif w[0] == 'statgroup':                  # statgroup <name> <prefixes,>: these lumps get their own
@@ -84,10 +86,13 @@ class Family:
         for line in open(path):
             w = line.split('#')[0].split()
             if not w: continue
-            # LUMP|PREFIX* <part> x0 y0 x1 y1 [from=<part>,<part>]
-            frm = None
-            if w[-1].startswith('from='): frm = [PARTS[p] for p in w[-1][5:].split(',')]; w = w[:-1]
-            out.append((w[0].upper(), PARTS[w[1]], tuple(int(v) for v in w[2:6]), frm))
+            # LUMP|PREFIX* <part> x0 y0 x1 y1 [from=<part>,<part>] [idx=<ranges>]
+            frm = None; ix = None
+            while w[-1].startswith(('from=', 'idx=')):
+                if w[-1].startswith('from='): frm = [PARTS[p] for p in w[-1][5:].split(',')]
+                else: ix = list(parse_ranges([w[-1][4:]]))      # only pixels of these palette indices
+                w = w[:-1]
+            out.append((w[0].upper(), PARTS[w[1]], tuple(int(v) for v in w[2:6]), frm) + ((ix,) if ix else ()))
         return out
 
     def statgroup(self, name):
@@ -95,6 +100,9 @@ class Family:
         for g, pref in self.statgroups:
             if any(name.startswith(p) for p in pref): return g
         return ''
+
+    def is_skip(self, name):
+        return any(name.startswith(p) for p in self.skip)
 
     def is_tint(self, name):
         return any(name.startswith(p) for p in self.tint)
@@ -119,10 +127,12 @@ class Family:
                     for dx in (-1, 0, 1):
                         if dx or dy: nb += _shift(part == tgt, dy, dx)
                 part[cand & (nb >= int(args[2]))] = tgt
-        for nm, p, (x0, y0, x1, y1), frm in self.masks:
+        for mk in self.masks:
+            nm, p, (x0, y0, x1, y1), frm = mk[:4]
             if not (name == nm or (nm.endswith('*') and name.startswith(nm[:-1]))): continue
             sub = part[y0:y1 + 1, x0:x1 + 1]; op = opaque[y0:y1 + 1, x0:x1 + 1]
             sel = op if frm is None else (op & np.isin(sub, frm))
+            if len(mk) > 4: sel = sel & np.isin(idx[y0:y1 + 1, x0:x1 + 1], mk[4])
             sub[sel] = p
         return part
 
@@ -174,7 +184,9 @@ class Stats:
                 if len(s) < 8: ma[k] = mb[k] = mc[k] = np.nan; continue
                 ma[k], mb[k] = s[:, 1].mean(), s[:, 2].mean(); mc[k] = np.hypot(s[:, 1], s[:, 2]).mean()
             for arr in (ma, mb, mc):                   # fill thin bins from their neighbours
-                ok = ~np.isnan(arr); arr[~ok] = np.interp(c[~ok], c[ok], arr[ok])
+                ok = ~np.isnan(arr)
+                if not ok.any(): arr[:] = 0.0; continue        # a part with only a few pixels: no lean to carry
+                arr[~ok] = np.interp(c[~ok], c[ok], arr[ok])
             self.mean_a[p], self.mean_b[p], self.mean_c[p], self.edges[p] = ma, mb, mc, c
         return self
 
@@ -215,7 +227,7 @@ def paint(rgba, part, look, st):
         spec = look.get(key) or look['horn']
         x = lab[m]; L = x[:, 0]
         lo, hi = st.range[p]
-        t = _curve(np.clip((L - lo) / (hi - lo), 0, 1), spec.get('contrast', 1.0))
+        t = _curve(np.clip((L - lo) / max(hi - lo, 1e-6), 0, 1), spec.get('contrast', 1.0))   # (a part of one shade)
         new = _ramp(spec['stops'], t)
         if 'split' in spec and y_rel is not None:
             at, soft = spec['split']
