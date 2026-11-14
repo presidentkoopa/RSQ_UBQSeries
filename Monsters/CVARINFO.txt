@@ -1178,14 +1178,17 @@ server bool rs_roster_enable = true;
 //   (2 was MeatGrinder, removed 2026-11-10: a saved 2 reads as ColorfulHell)
 //   3 ColorfulHell  the CH colour tiers, capped per family below (today's behaviour)
 // Menu: Radiant Silvergun Options > RSQ Monsters > Select Monster Set.
-server int rsq_monster_set = 3;
+// 2026-11-13 19:30 (owner): Brutal Doom 22 + XMVE on the colour tiers, with the painted colour art, is the DEFAULT
+// monster set going forward ("this will be our default monster set going forward and we will use the CH stuff for
+// encounters and minibosses n setpieces"); ColorfulHell stays selectable here.
+server int rsq_monster_set = 1;
 
 // BOSSFIGHT (RSQ Minibosses, owner 2026-11-09 07:45). Where a Bossfight's miniboss and thralls come from; read by
 // RSQ Minibosses through RSQMN_RosterService "set.class".
 //   rsq_mon_bf_boss    0 Same as Monster Set (the map's own monsters), 1 ColorfulHell (old 2 / 3: ColorfulHell)
 //   rsq_mon_bf_thralls 0 Same as Miniboss (a Brutal Doom or Vanilla miniboss gets ColorfulHell thralls, owner 06:39),
 //                      1 ColorfulHell, 4 Map's Own Monsters (old 2 / 3: ColorfulHell)
-server int rsq_mon_bf_boss = 0;
+server int rsq_mon_bf_boss = 1;     // default ColorfulHell (owner 11-13 19:30: "we will use the CH stuff for encounters and minibosses")
 server int rsq_mon_bf_thralls = 0;
 
 // "On tier change" (RS_Retier.FullHealth): 0 keep health fraction, 1 full health on
@@ -1197,7 +1200,7 @@ server int rsq_mon_retier_health = 1;
 server bool rsq_mon_bdtier = true;
 server int  rsq_mon_worldtier = 1;
 server bool rsq_mon_bdtier_debug = false;
-// [11-13] The painted colour art (RS_BDArt.zs; the art itself is pk3/RSQ_MonsterArt_<Colour>.pk3, one per colour):
+// [11-13] The painted colour art (RS_BDArt.zs; the art itself is pk3/RSQ_BDXMTiers_<Colour>.pk3, one per colour):
 // 1 a frame that has a painted copy for its colour is drawn from it, the rest keep the live tier tint; 0 the tint only.
 server bool rsq_mon_art = true;
 // 1: log what the art driver draws and its time per tic (RSART lines), for the rig.

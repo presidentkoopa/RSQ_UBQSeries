@@ -31,7 +31,7 @@ def main():
     os.makedirs(out, exist_ok=True)
     band = (0, 250, 640, 450)
     sheet(os.path.join(out, 'integ_01_twelve_colours_drawn_by_rsq_monsters.jpg'),
-          "The Imp's painted art drawn by RSQ Monsters' own driver (RS_BDArt.zs) from pk3/RSQ_MonsterArt_<Colour>.pk3",
+          "The Imp's painted art drawn by RSQ Monsters' own driver (RS_BDArt.zs) from pk3/RSQ_BDXMTiers_<Colour>.pk3",
           [('as shipped (Universal Entropy colours it, his ue_recolour 5), Green .. Yellow, front (run rcE_final f65)', frame(f1, 65, band, 1.5)),
            ('the same, side (f75)', frame(f1, 75, band, 1.5)),
            ('FireBlu .. White, front (f100)', frame(f1, 100, band, 1.5)),

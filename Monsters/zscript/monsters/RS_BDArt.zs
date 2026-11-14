@@ -12,7 +12,7 @@
 // was 1,240 under it on 2026-11-13 (rig, engine read). Twelve recoloured copies under new sprite names can never fit.
 //
 // THE TRICK. An actor whose `picnum` is set draws that texture instead of its sprite frame. A PNG in a plain folder of
-// a pk3 (rsrecolour/<colour>/<LUMP>.png, one pk3 per colour: pk3/RSQ_MonsterArt_<Colour>.pk3) is made into a texture
+// a pk3 (rsrecolour/<colour>/<LUMP>.png, one pk3 per colour: pk3/RSQ_BDXMTiers_<Colour>.pk3) is made into a texture
 // only when first asked for by its full path, and counts against nothing. picnum has no rotations and no mirroring,
 // so after every actor has moved (a Thinker at statnum 120) this asks the engine which lump the actor's frame shows
 // from the console player's view (State.GetSpriteTexture: the engine's own rotation and mirror tables) and points

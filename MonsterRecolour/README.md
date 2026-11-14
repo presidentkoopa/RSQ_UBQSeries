@@ -20,7 +20,7 @@ death) in all twelve colours; the other families are being painted on this branc
 
 **Since 2026-11-13 (integration) this folder holds the ART and its tools only.** The code that draws it is RSQ Monsters'
 (`Monsters/zscript/monsters/RS_BDArt.zs`; see "How it works" below and `Monsters/README.md`), and the art ships as one
-pk3 per colour, `pk3/RSQ_MonsterArt_<Colour>.pk3`, built by `tools/build_monster_art.py` (also run by
+pk3 per colour, `pk3/RSQ_BDXMTiers_<Colour>.pk3`, built by `tools/build_monster_art.py` (also run by
 `tools/build_all.py` and `build_all.sh`). The prototype's own pack files (its `zscript/`, `MAPINFO`, `CVARINFO`, `GLDEFS`)
 are gone; `rsrc_on` / `rsrc_debug` are now RSQ Monsters' `rsq_mon_art` / `rsq_mon_art_debug`.
 
@@ -116,7 +116,7 @@ One colour of the full set (7,620) is already six times the headroom. The static
 
 ## Packaging (2026-11-13)
 
-`python3 tools/build_monster_art.py` (or `tools/build_all.py`, `build_all.sh`) writes `pk3/RSQ_MonsterArt_<Colour>.pk3`
+`python3 tools/build_monster_art.py` (or `tools/build_all.py`, `build_all.sh`) writes `pk3/RSQ_BDXMTiers_<Colour>.pk3`
 for each colour that has art: its PNGs (stored, not deflated), its `GLDEFS.txt` (each painted frame gets its source
 sprite's brightmap, from `brightmaps.txt`) and its `sprites.txt`. It works with whatever families are painted at the
 time. It stops if a colour would pass a zip's 65,535 entries or GitHub's 100 MB a file. One zip of every colour no
@@ -130,7 +130,7 @@ archives>` (`Monsters/tools/recolour/out/bake_load_order.txt` lists them).
 ## Shown on the rig: the integration (2026-11-13, RSQ Monsters' driver and the per-colour art pk3s)
 
 All on the owner's full order (`rig/work/full_monA.sh`'s list: his saved ini, every pack of his order, this branch's RSQ
-pk3s with `RSQ_MonsterArt_<Colour>.pk3`), `-skill 6`, rig01 at sector light 224 for the frames, through
+pk3s with `RSQ_BDXMTiers_<Colour>.pk3`), `-skill 6`, rig01 at sector light 224 for the frames, through
 `Monsters/tools/recolour/rig/rcE_full.sh` and its test handler `rcEdemo/`. **No script error from our packs** in any run
 (the only `Script error` lines are BD22 VoxelPack's own VOXELDEF, as on main; 2161 warnings, the same count as main's).
 Test-only settings for the frames, not his: Kill Rewards off (`rsqgb_kr_enabled 0`), weapon and laser sight hidden;
@@ -315,7 +315,7 @@ gibbed: the log names every frame left to the tint). Frames cut into the sheets,
 | `docs/knight_revenant_archvile_xmve_12colours_strip.jpg` | CyberKnight, PhasicKnightX, Draugr, Incarnate, DIABloist: the same |
 
 **Shown again through the integration** (run `rcC_integ`, after rebasing on it: RSQ Monsters' `RS_BDArt.zs` and the twelve
-`pk3/RSQ_MonsterArt_<Colour>.pk3` built by `tools/build_monster_art.py` with every family painted so far, 8,369 frames of
+`pk3/RSQ_BDXMTiers_<Colour>.pk3` built by `tools/build_monster_art.py` with every family painted so far, 8,369 frames of
 647 sprites a colour; the owner's full order, `-skill 6`, `rig/rcE_full.sh` + `rig/rcCdemo`, `rsq_mon_art_debug 1`): rows of
 thirteen HellKnight2, BaronofHell2, Revenant1, TehArchvile, CyberKnight, Draugr, art on then `rsq_mon_art 0`, and four
 deaths: `docs/integ_hk_baron_rev_av_xmve_art_vs_tint.jpg`. All twelve colours drawn from the art (debug: 12 of 13 drawn

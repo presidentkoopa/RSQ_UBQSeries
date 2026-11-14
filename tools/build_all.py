@@ -99,7 +99,7 @@ def build(folder):
     print('built pk3/%s (%d files)' % (name, len(entries)))
 
 
-# MonsterRecolour: the painted colour art for RSQ Monsters, one pk3 per colour (pk3/RSQ_MonsterArt_<Colour>.pk3), built
+# MonsterRecolour: the painted colour art for RSQ Monsters, one pk3 per colour (pk3/RSQ_BDXMTiers_<Colour>.pk3), built
 # by tools/build_monster_art.py from whatever is painted in MonsterRecolour/rsrecolour/ (2026-11-13).
 EXTRA = ['MonsterRecolour']
 

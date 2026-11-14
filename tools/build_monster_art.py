@@ -6,7 +6,7 @@
     python -I tools/build_monster_art.py --brightmaps A.wad B.pk3 ...
                                                            (re)write MonsterRecolour/brightmaps.txt from a load order
 
-Writes pk3/RSQ_MonsterArt_<Colour>.pk3: rsrecolour/<colour>/<LUMP>.png (whatever families are painted at the time),
+Writes pk3/RSQ_BDXMTiers_<Colour>.pk3: rsrecolour/<colour>/<LUMP>.png (whatever families are painted at the time),
 rsrecolour/<colour>/sprites.txt (the sprite names that have art: the driver's quick test) and a GLDEFS.txt giving each painted frame its source sprite's brightmap (MonsterRecolour/brightmaps.txt, read once from
 Brutal Doom 22 + XMVE's own GLDEFS by --brightmaps, so this build needs nothing outside the repo). RSQ Monsters'
 RS_BDArt.zs finds the frames by full path; load the art pk3s after RSQ_Monsters.pk3.
@@ -27,7 +27,7 @@ MAX_BYTES = 100 * 1000 * 1000
 
 
 def pk3_name(col):
-    return 'RSQ_MonsterArt_%s.pk3' % TITLE.get(col, col.capitalize())
+    return 'RSQ_BDXMTiers_%s.pk3' % TITLE.get(col, col.capitalize())
 
 
 def write_brightmaps(archives):

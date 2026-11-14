@@ -42,6 +42,11 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 **Select Monster Set** decides what each Doom monster in a map becomes as it spawns. A change takes hold on the next
 map, or when the map restarts.
 
+**The default set is BD22 + XMVE Tiers** (owner, 2026-11-13 19:30: "this will be our default monster set going forward
+and we will use the CH stuff for encounters and minibosses n setpieces"): Brutal Doom 22's and XMVE's own monsters on
+the colour tiers, drawn from the painted colour art (`pk3/RSQ_BDXMTiers_<Colour>.pk3`, one per colour, loaded after
+RSQ_Monsters). ColorfulHell stays selectable, and is the default for minibosses (**Miniboss From: ColorfulHell**).
+
 | Set | What spawns |
 |---|---|
 | **ColorfulHell** (the default) | Colourful Hell's colour tiers. Doom's stock fireballs, plasma and rockets become Colourful Hell's versions too |
@@ -120,7 +125,7 @@ item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
   death blast, Gray stone skin, Red rage and death bolts, Abyss phases, blinks and rises once, Black and White take
   less, call two of their kind and (White) blink. Past White every step is +10% health and +5% damage.
 - **Painted colour art** (branch `wip/2026-11-13-recolour`, not on main; rig only, not headset-confirmed). Where a
-  frame has a hand-made copy in its colour (`pk3/RSQ_MonsterArt_<Colour>.pk3`, one pk3 per colour, made in
+  frame has a hand-made copy in its colour (`pk3/RSQ_BDXMTiers_<Colour>.pk3`, one pk3 per colour, made in
   `../MonsterRecolour/`), the monster, its corpse and its pieces are drawn from that art; everywhere else they keep the
   tier tint. No sprite frames are added (the art is drawn through `picnum`). RSQ Monsters > Painted Colour Art turns it
   off. Today the Imp family is painted; the other families are being painted.
@@ -243,9 +248,9 @@ next monster that needs them.
 
 | Section | Rows |
 |---|---|
-| Top | Select Monster Set (Vanilla, BD22, **ColorfulHell**) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) · Tier Icons Above Monsters (**Off**, On) |
+| Top | Select Monster Set (Vanilla, **BD22 + XMVE Tiers**, ColorfulHell) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) · Tier Icons Above Monsters (**Off**, On) |
 | Brutal Doom's Monsters | Colour Ladder On Brutal Doom's Monsters (Off, **On**) · World Tier (test) (**1** to 20) · Painted Colour Art (Off, **On**; branch only: on, the frames that have painted art in their colour are drawn from it, the rest keep the tint; off, the tint everywhere) |
-| Miniboss | Miniboss From (**Same as Monster Set**, ColorfulHell) · Thralls From (**Same as Miniboss**, ColorfulHell, Map's Own Monsters) |
+| Miniboss | Miniboss From (Same as Monster Set, **ColorfulHell**) · Thralls From (**Same as Miniboss**, ColorfulHell, Map's Own Monsters) |
 | Monster Diagnostics | A test page. Today only God Mode works: Spawn hostile, the fourteen chaingunner buttons, Spawn All Fourteen, Remove them all, DIAG and WAKE are on the page but nothing answers them |
 
 Defaults are in bold.
@@ -259,7 +264,7 @@ Defaults are in bold.
 | | |
 |---|---|
 | **rig only, not headset-confirmed** (2026-11-13, runs `monA_m01_w*`, `monA_m10_w*`, `monA_final`, `monA_lob2`; the owner's full order with his saved settings, Monster Set BD22, Black Metal) | **Brutal Doom's and XMVE's monsters on the ladder, every one entering at Common.** No script error from our packs. At world tiers 1, 2, 5, 9, 12 and 13 on MAP01 (27 map monsters, 33 with the test row) and MAP10 (279): every kit monster's entry 1 and its colour the world tier; health, damage, speed and pain chance as the tables say for all of them (a few speeds differ where a monster spawned with its own speed). 0 living monsters left without a kit. Frames: the picture above. A world tier raised mid-map (1 to 4) moved all 27 MAP01 monsters. Legion of Bones' monsters, spawned by hand, take the tint and the kit |
-| **rig only, not headset-confirmed** (2026-11-13, branch `wip/2026-11-13-recolour`, runs `rcE_final`, `rcE_final2`, `rcE_cost2_*`; the owner's full order with his saved settings, Black Metal; sheets `../MonsterRecolour/docs/integ_0*.jpg`) | **The painted colour art, drawn by this pack** (`RS_BDArt.zs`) from `RSQ_MonsterArt_<Colour>.pk3`: the Imp's twelve colours alive and dead; Champions' and Universal Entropy's tints still under the tier colour (7 of 7 put back, 0 left), the tier flash and the colour after it, the Painted Colour Art row off (tint) and on (art). **Three faults fixed:** Brutal Doom's blood mist keeps its red (0 blood or mist things wearing a tier tint in a census of 93 coloured things); a thrown imp arm (`XDeathImpArm`) takes its imp's colour; imps 36 units apart, killed together, keep their own colours on their corpses and pieces (0 wrong). No script error from our packs. Cost (rig CPU, not Quest): 0.17 to 0.24 ms a tic for the art driver on MAP10 at World Tier 4 with the Imp and the three men's families painted (279 monsters, 174 drawn from art), 0.41 the second after killing them all, 0.05 to 0.07 at World Tier 1 |
+| **rig only, not headset-confirmed** (2026-11-13, branch `wip/2026-11-13-recolour`, runs `rcE_final`, `rcE_final2`, `rcE_cost2_*`; the owner's full order with his saved settings, Black Metal; sheets `../MonsterRecolour/docs/integ_0*.jpg`) | **The painted colour art, drawn by this pack** (`RS_BDArt.zs`) from `RSQ_BDXMTiers_<Colour>.pk3`: the Imp's twelve colours alive and dead; Champions' and Universal Entropy's tints still under the tier colour (7 of 7 put back, 0 left), the tier flash and the colour after it, the Painted Colour Art row off (tint) and on (art). **Three faults fixed:** Brutal Doom's blood mist keeps its red (0 blood or mist things wearing a tier tint in a census of 93 coloured things); a thrown imp arm (`XDeathImpArm`) takes its imp's colour; imps 36 units apart, killed together, keep their own colours on their corpses and pieces (0 wrong). No script error from our packs. Cost (rig CPU, not Quest): 0.17 to 0.24 ms a tic for the art driver on MAP10 at World Tier 4 with the Imp and the three men's families painted (279 monsters, 174 drawn from art), 0.41 the second after killing them all, 0.05 to 0.07 at World Tier 1 |
 | **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2, logged every tic; `../TacticalRig/tools/rigtest/axepool/evidence/` FL lines) | **The tier flash in Photosensitive Mode** (RSQ Accessibility loaded): with `rsqa_photosafe 0` an aimed zombie's tier change flickered -- 3 tics in the flash colour and full-bright, 3 tics its own look, over and over; with `rsqa_photosafe 1` it held the flash colour full-bright every tic of the wait (22 and 24 tics), no flicker, then changed tier. Loaded with no script error |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | The ladder renumbered by strength: the zombie family's 13 tiers each read their own number; no map monster's class is off its colour; with the colour-blind aid every gem's frame is its monster's tier, all 13 colours (frame `R2_gems_line_crop.jpg`). |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test, `design/rigtest_2026-11-10/RESULTS.md`) | Every launch on the owner's order (with BD22 VR Reloaded 2.0.4f) had no script error from our packs. **The floating tier gems** (`rs_ch_colorblind`, set from the console in that run): drawn over the monsters (they drew nothing before 11-10: no art), busy with the colour-blind aid on (`evidence/V3_hpbar_icons_on_off_on.jpg`). ColorfulHell was the Monster Set in the miniboss runs (`evidence/L1_log.txt`, `L2_log.txt`) |
