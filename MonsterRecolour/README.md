@@ -461,3 +461,118 @@ Seen on the rig, not this family's (for the owner / other families):
   `SkeletonDemonSpawn`, `SkullShotgunnerSpawn`, `CacoLichSpawn`). Left as they are (an RSQ Monsters Carry question, not
   art).
 
+
+## Every dying body (2026-11-13/14, the dying-body census; rig only, not headset-confirmed)
+
+The question: does every BD22 and XMVE body a tier-coloured monster turns into or spawns carry its colour? The census
+(`Monsters/tools/recolour/rig/rcf_census.py`, handler template `rcf_census_zs.tpl` -> `rcFcensus/`, class table
+`rcf_classes.txt` from `rcf_classes.py`, arena `rcf_arena.py`): on his full order (`rcE_full.sh`, `-skill 6`), every
+tierable class of the ladder is killed by EVERY death its DECORATE has (`Death.<type>`, its parents' included; plus two
+plain deaths and a gib), one monster a cell, each cell its own colour (the twelve cycle), all in the same tic (`DMG_FORCED`
+with that damage type), and every actor on the arena is looked at 4, 14, 35, 70 and 140 tics after: drawn from the art,
+on the tint, or holding NO colour (blood, mist, fire, smoke, effects and pickups by RSQ Monsters' own name rule are not
+counted: they keep their own). Counts are actor-snapshots. Legion of Bones' undead are taken away by the handler.
+"before" = the branch at ea87f7fd16 (its art), "after" = this commit with the art at d732bbe908 (the gore pass in: most of
+the art/tint shift is the new art, the NONE column is this work). "summon" = Lost Souls, Phantasms, Impure Souls and
+Aracnorbs that other monsters spit, alive or as pieces: separate monsters at the world tier, not the killed body (design
+2.8 gives a summon its summoner's colour only for the Pain Elemental's Lost Souls; not changed here).
+
+```
+family                cls             art b|a            tint b|a            none b|a          summon b|a     none %b|a
+Arachnotron             4          665 | 1910          5713 | 913              93 | 0               0 | 0       1.4|0.0
+Arch-Vile               2           167 | 629             516 | 1              22 | 0               0 | 0       3.1|0.0
+Baron                  13         1170 | 4183          5039 | 123              59 | 9               0 | 0       0.9|0.2
+Cacodemon               9         4317 | 5726          4424 | 717           1427 | 22         1576 | 1595      12.2|0.3
+Chaingunner            23        3425 | 15399         13628 | 470           551 | 139               0 | 0       3.1|0.9
+Cyberdemon             12           204 | 863          1584 | 154            120 | 14               0 | 0       6.3|1.4
+Demon                   5         1243 | 5271          4462 | 243            170 | 59               0 | 0       2.9|1.1
+Hell Knight             5         1093 | 7314          5705 | 488           119 | 213               0 | 0       1.7|2.7
+Imp                     7         1922 | 9670           7943 | 99           179 | 197               0 | 0       1.8|2.0
+Lost Soul               6           691 | 750             69 | 94              20 | 0               0 | 0       2.6|0.0
+Mancubus                6          997 | 6049           5598 | 65             56 | 13               0 | 0       0.8|0.2
+Pain Elemental          4           132 | 612          1950 | 127             10 | 42           343 | 676       0.4|2.9
+Revenant                4         1986 | 3356           4140 | 49          1268 | 202          115 | 1518      16.9|3.9
+Shotgunner             18        4111 | 15250         15125 | 276          1664 | 191              15 | 0       8.0|1.2
+Spectre                 3          513 | 1906           1404 | 66             85 | 40               0 | 0       4.2|2.0
+Spider Mastermind       8          605 | 2263          3140 | 471              21 | 0           225 | 225       0.5|0.0
+Zombieman              26        4609 | 22018         17911 | 223         2066 | 1147               0 | 0       8.4|4.9
+ALL                   155      27850 | 103169        98351 | 4579         7930 | 2288         2274 | 4014       5.8|2.0
+```
+
+Holding no colour, by death type (actor-snapshots, summons left out), before | after:
+
+```
+  plain             647 | 406
+  gib/explosion    1914 | 380
+  fire              810 | 392
+  ice               145 | 94
+  head              634 | 155
+  legs               73 | 44
+  fatality/grab     690 | 174
+  other            3019 | 643
+```
+
+What was missing, and the fix (all in `RS_BDTier.zs` / `RS_BDArt.zs`):
+- **Bodies that never go away.** Brutal Doom's men end many deaths on `TNT1 A -1` after spawning their crawler or
+  corpse, so the maker is never removed and Carry found no body (the Chaingunner's blasted, burning and headless
+  crawlers `BrutalizedCommandoBlasted`, `BurningChaingunguy`, `BrutalizedCommandoLostHead*` and their corpses). Fix: a body that died within 64 units in the last 4 s and still
+  lies there counts as the maker (nearest wins, with the removed bodies; a body at its entry colour still gives none).
+- **Death stages that are family monsters** got a fresh kit at the world tier (as shipped): the Arch-vile's armless
+  crawler `DyingArchvileNoArm`, the Demon's `PoorPinkyLostHisArm` / `ArmlessDemon`, `DyingHellKnight1`. Fix: a family
+  monster spawned mid-map that counts no kill takes the body's rung (and never calls for help).
+- **Born again.** `Death.Taunt` / `Death.KillMe` (a captured marine's hit) removes the monster and spawns a fresh copy of
+  the replaced class (his random spawners can make it another kind of the same family): it came back as shipped, at the
+  world tier's numbers. Fix: one of the same family spawned on the spot (16 units, 3 tics) takes the body's rung.
+- **Friendly death stages** (`BurningCacodemon`, `BurningZombieMan`, `DyingZombieman` ... are `+FRIENDLY -COUNTKILL`)
+  were skipped entirely. Fix: they follow the body (anything named "marine" stays out: the helper marines).
+- **Bodies thrown as missiles that hurt** (`ExtremePunchedChaingunguy`) were taken for attacks. Fix: a damaging missile
+  whose maker is gone or dead and whose states draw painted art follows the body (fireballs draw none).
+- **Fatalities.** The monster dies and gives the player `GoFatality`; the PLAYER plays the kill (`ARF1` and kin, painted
+  with the families) and throws the gore and the corpse (`RapedArachnotron`). None of it held a colour. Fix: while the
+  player holds `GoFatality` (and 2 tics after) what it throws takes the colour of that player's last kill, and the
+  player's own fatality frames are drawn from the art (`RS_BDFatalHue`: art only, never the tint; the player's own
+  translation is put back). `docs/deathcarry_fatality_arachnotron_red_before_after.jpg`.
+- **Named like an effect, painted like a body**: `RevenantDust` (the Revenant's bone dust, `SPIC`, painted with its
+  family), `BurningCacodemon` (its own `HEAD` frames), `XDeathBurnedBlueMeat` (`CACB`). Fix: a thing the name rule calls an
+  effect follows the body when its states draw a sprite that has painted art, never when its name says blood, mist, gore,
+  fire, smoke or another effect (Brutal Doom's blood mist draws the painted gore sprites `XDT1`: it stays blood).
+- **Kept their own look now** (the gore pass's note and this census): craters (`DetectFloorCrater*`), metal shards
+  (`MetalShard1-3`), scrap (`XJunk1-5`), the ice chunks of a shattered frozen body (`XIceChunk1-3`: ice keeps its own, as
+  in the family files), the Arachnotron's blue spark (`ShoqueAzul`), and every Legion of Bones class by name (its risers
+  `SkullZombieSpawn` and kin: when a riser becomes a monster with a family, that monster gets its own kit).
+- **The driver** put every painted body back on the tint for a tic when the camera went away (Brutal Doom's fatality
+  camera ending: every dying body at once, 35 tics into a fatality). Fix: no camera, no change that tic.
+
+**The tint where art exists (the Demon's, Cacodemon's and others' death sets): a sprite clash, not the driver.**
+RSQ Monsters' ColorfulHell port ships 51 sprites under BD22 / XMVE names (`BOSB BOSC BOS2 BOS3 VILP DIAB TRO3 TRO4 CACB
+CACF CACX FAT2 FAT3 FAT4 FATF ARAC BSPI CSPI DEMO SKEL ZKEL TERM SRG2 ASGZ MPOS CYBB ...`, 584 frame letters; about 17 are
+byte-identical copies, the rest ColorfulHell's own pictures) and loads after BD22 and XMVE, so the engine draws ColorfulHell's
+frame for every letter both define: BD22's Hell Knight's burnt death shows a blue CH Baron, the Arch-vile's head gib a
+magenta CH Arch-vile, `TRO3` (the coordinator's 22 tics of TRO3 on the tint) CH's imp, and so on; their lump names
+carry rotations (`BOSBE1`) where the art has `BOSBE0`, so no art was found. The owner's call (11-14 01:05): **"Bd22 look
+is right"**: RSQ Monsters' versions are not painted. The driver now falls back to the frame's single-rotation art
+(`BOSBE1` -> `BOSBE0`, unmirrored), so a coloured body draws BD22's look. Still open (not colour, so not done here): the
+same clash makes those frames show ColorfulHell's picture on monsters at their entry colour (as shipped), and on frames
+where both sides have rotations under different letters. `docs/deathcarry_sprite_clash_bd_vs_rsqmonsters.jpg`.
+
+Frames (rig01, sector light 224, 260 units; test-only: weapon, laser, bars, Kill Rewards off, `ue_recolour 0`):
+`docs/deathcarry_scenes_before_after.jpg` (FireBlu to White, frozen: the burning man, the blasted crawler, the
+Arch-vile's armless crawler (BD22's look now, not ColorfulHell's magenta), the Revenant gibbed, the burning Cacodemon,
+the Taunt rebirth, the Blood Demon's and Void Spectre's plain deaths), `docs/deathcarry_fatality_arachnotron_red_before_after.jpg`.
+No script error and no VM abort from our packs in any census or frame run (BD22 VoxelPack's own VOXELDEF lines as on main).
+
+Left (after):
+- **Not censused: they stop the rig, before and after alike** (killed by all their deaths at once the engine hangs or the
+  level ends): `SuperOverlord`, `AracnorbQueenBOSSBOSS`, `SuperSpiderMastermindX` (a boss death ends the map), and some
+  batches of `Labguy` (its fire deaths: BD22's `BurningZombie` has `Spawn: BDT1 B 0 ... Loop`, a 0-tic loop: "Infinite
+  state loop", then the rig stalls), `RifleCommando` and its two XMVE kinds, `HellTrooper`, `BFGZombie`,
+  `Vanilla_HellTrooper`, `Annihilator`, `Vanilla_Demolisher`, `LabguyB` (one batch each). For the owner: a fire kill of a
+  BD22 scientist may stall the game on his order too (seen on the rig only).
+- A few pieces still hold no colour (2,288 actor-snapshots of 110,036): the Void Spectre's `VoidSpectreHeadPiece`
+  thrown far from the body by Draugr / Incarnate deaths, some `BurningZombieMan` (Red, Black, White cells), generic gore
+  whose maker is a summon at the world tier, some zombie falling / splattered stages (`ZombiemanFallingSplattered`,
+  `DeadZombieMan_Blasted`), `Ricochet` (an effect, correctly none).
+- On the tint (no art, by the families' choices): Brutal Doom's generic flesh parts `ID22` (`SpiderPart*`, `PEPart*`,
+  `Aracnorb_Brain`), frozen bodies that are all ice (`FZD5` ...), ashes (`ASHZ`, `ASHY`), the marine half `HPLA`.
+- Summons (Lost Souls, Phantasms, Impure Souls, Aracnorbs spat by other monsters) come at the world tier: design 2.8 only
+  covers the Pain Elemental's Lost Souls. Not a body question; the owner's call.

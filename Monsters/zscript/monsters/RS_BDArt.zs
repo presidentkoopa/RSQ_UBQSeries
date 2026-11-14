@@ -223,29 +223,41 @@ class RS_BDArt : Thinker
 		return m;
 	}
 
-	// the painted copy of a lump for a colour, by its full path, cached
-	TextureID Art(TextureID tex, int col)
+	// the painted copy of a lump for a colour, by its full path, cached. [11-14] When there is none and the lump names a
+	// rotation (BOSBE1), the frame's single-rotation copy (BOSBE0) is used, unmirrored: RSQ Monsters' ColorfulHell port
+	// ships 51 sprites under Brutal Doom 22's and XMVE's names with rotations of its own, loads later and so wins those
+	// frames; the art is BD22's look, and the owner chose it ("Bd22 look is right", 11-14 01:05). Second result: true
+	// when that copy was used.
+	TextureID, bool Art(TextureID tex, int col)
 	{
 		int key = int(tex) * 16 + col;
 		int v; bool ok;
 		[v, ok] = artCache.CheckValue(key);
 		if (!ok)
 		{
-			String path = String.Format("rsrecolour/%s/%s.png", COLOUR[col], TexMan.GetName(tex));
+			String nm = TexMan.GetName(tex);
+			String path = String.Format("rsrecolour/%s/%s.png", COLOUR[col], nm);
 			TextureID t = TexMan.CheckForTexture(path, TexMan.Type_Any);
+			int fb = 0;
+			if (!t.IsValid() && nm.Length() >= 6 && nm.Mid(5, 1) != "0")
+			{
+				path = String.Format("rsrecolour/%s/%s0.png", COLOUR[col], nm.Left(5));
+				t = TexMan.CheckForTexture(path, TexMan.Type_Any);
+				fb = 1;
+			}
 			v = -1;
 			if (t.IsValid())
 			{
-				v = artTex.Size(); artTex.Push(t);
+				v = (artTex.Size() << 1) | fb; artTex.Push(t);
 				int w, h; [w, h] = TexMan.GetSize(t);
 				artPixels += double(w) * h;           // debug: what the painted frames in use cost as 32-bit textures
 			}
 			artCache.Insert(key, v);
 			if (Debug()) Console.Printf("RSART art %s -> %s", path, v >= 0 ? "found" : "none");
 		}
-		if (v >= 0) return artTex[v];
+		if (v >= 0) return artTex[v >> 1], (v & 1) != 0;
 		TextureID none; none.SetNull();
-		return none;
+		return none, false;
 	}
 
 	// the painted frame off: its own X-flip back, and (when it shows our look) the live tint
@@ -399,8 +411,9 @@ class RS_BDArt : Thinker
 			if (kept && same && rot == lRot[i]) { if (drawn[i]) { nDrawn++; any = true; } else nTint++; continue; }
 			lRot[i] = rot;
 			[tex, mir, sc] = a.CurState.GetSpriteTexture(rot, 0, (0, 0), spr, frm);
-			TextureID art;
-			if (tex.IsValid()) art = Art(tex, col); else art.SetNull();
+			TextureID art; bool single = false;
+			if (tex.IsValid()) [art, single] = Art(tex, col); else art.SetNull();
+			if (single) mir = false;
 			if (!art.IsValid())
 			{
 				if (fat) { if (drawn[i]) { Undraw(i, col, false); a.Translation = fat.keepTr; } continue; }

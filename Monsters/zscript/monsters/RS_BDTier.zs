@@ -802,10 +802,11 @@ class RS_BDTierHandler : EventHandler
 	{
 		// [11-13] + "crater" (BD's floor and ceiling craters, DetectFloorCraterSmall), "shard" (MetalShard1-3, CrashMetalShards),
 		// words "junk" (XJunk1-5: machine scrap) and "metal": not a body (the gore pass's census, commit c1db29d98b);
-		// "icechunk" (XIceChunk1-3, the ice of a shattered frozen body: ice keeps its own, as in the family files)
+		// "icechunk" (XIceChunk1-3, the ice of a shattered frozen body: ice keeps its own, as in the family files); "shoque"
+		// (ShoqueAzul, the Arachnotron's blue electric spark)
 		static const String SUB[] = { "blood", "gore", "smearer", "smoke", "flame", "flare", "spark", "puff", "tracer", "casing",
 			"plasma", "splash", "steam", "brass", "fog", "particle", "flashlight", "shrapnel", "explosion", "bullet", "mist",
-			"crater", "shard", "icechunk" };
+			"crater", "shard", "icechunk", "shoque" };
 		static const String WORD[] = { "fire", "light", "shell", "water", "dust", "trail", "shock", "ring", "ember", "burn", "drop",
 			"rifle", "weapon", "ammo", "clip", "mag", "junk", "metal" };
 		static const String BODYW[] = { "guy", "gunner", "zombie", "man", "marine", "dead", "head", "gib", "death", "half", "dying",
@@ -862,7 +863,7 @@ class RS_BDTierHandler : EventHandler
 	static bool EffectName(String n)
 	{
 		static const String FX[] = { "blood", "mist", "gore", "smearer", "smoke", "flame", "flare", "spark", "puff", "splash",
-			"steam", "fog", "particle", "explosion", "fire", "ember", "crater", "shard", "junk", "metal", "plasma", "shock", "icechunk" };
+			"steam", "fog", "particle", "explosion", "fire", "ember", "crater", "shard", "junk", "metal", "plasma", "shock", "icechunk", "shoque" };
 		String low = n.MakeLower();
 		for (int i = 0; i < FX.Size(); i++) if (low.IndexOf(FX[i]) >= 0) return true;
 		return false;
