@@ -34,8 +34,8 @@ OptionValue "RSQMN_RetierHealth"
 OptionValue "RSQMN_MonsterSet"
 {
 	0, "Vanilla"
-	1, "BD22 + XMVE Tiers (default)"
-	3, "ColorfulHell"
+	1, "BD22 + XMVE Tiers"
+	3, "ColorfulHell (default)"
 }
 
 OptionValue "RSQMN_BfBoss"

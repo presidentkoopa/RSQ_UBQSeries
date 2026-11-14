@@ -1,5 +1,9 @@
 # RSQ Monster Recolour: the painted colour art (on main since 2026-11-14; built as `pk3/RSQ_BDXMTiers_<Colour>.pk3`)
 
+> **Where this set is used (owner, 2026-11-14 03:32):** "Ubqs sticks with current colorful hell monsters but understand
+> that the move to REMA will fundamentally change our arcade approach, and will require this set." UBQ's default monster
+> set stays ColorfulHell; this art (BD22 + XMVE Tiers) is kept on main, selectable in RSQ Monsters, for the move to REMA.
+
 Hand-made recoloured frames for Brutal Doom's and XMVE's monsters on the colour ladder, drawn **without new sprite
 names**, so they cost **no sprite frames** under QuestZDoom 17.3's 65,535-frame cap. Approved by the owner for the BD
 and XMVE series (2026-11-13 18:01). The first family is BD22's Imp (its body, deaths, crawlers, gibs, fatality and frozen

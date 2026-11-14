@@ -1178,10 +1178,11 @@ server bool rs_roster_enable = true;
 //   (2 was MeatGrinder, removed 2026-11-10: a saved 2 reads as ColorfulHell)
 //   3 ColorfulHell  the CH colour tiers, capped per family below (today's behaviour)
 // Menu: Radiant Silvergun Options > RSQ Monsters > Select Monster Set.
-// 2026-11-13 19:30 (owner): Brutal Doom 22 + XMVE on the colour tiers, with the painted colour art, is the DEFAULT
-// monster set going forward ("this will be our default monster set going forward and we will use the CH stuff for
-// encounters and minibosses n setpieces"); ColorfulHell stays selectable here.
-server int rsq_monster_set = 1;
+// 2026-11-14 03:32 (owner): "Ubqs sticks with current colorful hell monsters but understand that the move to REMA will
+// fundamentally change our arcade approach, and will require this set." So UBQ's default stays ColorfulHell; the
+// Brutal Doom 22 + XMVE set with the painted colour art (BD22 + XMVE Tiers) is kept, selectable, for the move to REMA.
+// (11-13 19:30 had made BD22 + XMVE the default; this replaces that.)
+server int rsq_monster_set = 3;
 
 // BOSSFIGHT (RSQ Minibosses, owner 2026-11-09 07:45). Where a Bossfight's miniboss and thralls come from; read by
 // RSQ Minibosses through RSQMN_RosterService "set.class".

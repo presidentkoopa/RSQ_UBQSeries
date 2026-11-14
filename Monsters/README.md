@@ -42,10 +42,11 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 **Select Monster Set** decides what each Doom monster in a map becomes as it spawns. A change takes hold on the next
 map, or when the map restarts.
 
-**The default set is BD22 + XMVE Tiers** (owner, 2026-11-13 19:30: "this will be our default monster set going forward
-and we will use the CH stuff for encounters and minibosses n setpieces"): Brutal Doom 22's and XMVE's own monsters on
-the colour tiers, drawn from the painted colour art (`pk3/RSQ_BDXMTiers_<Colour>.pk3`, one per colour, loaded after
-RSQ_Monsters). ColorfulHell stays selectable, and is the default for minibosses (**Miniboss From: ColorfulHell**).
+**UBQ's default set is ColorfulHell** (owner, 2026-11-14 03:32: "Ubqs sticks with current colorful hell monsters but
+understand that the move to REMA will fundamentally change our arcade approach, and will require this set").
+**BD22 + XMVE Tiers** (Brutal Doom 22's and XMVE's own monsters on the colour tiers, drawn from the painted colour art,
+`pk3/RSQ_BDXMTiers_<Colour>.pk3`, one per colour, loaded after RSQ_Monsters) is kept and selectable here: it is the set
+the move to REMA will need. ColorfulHell is also the default for minibosses (**Miniboss From: ColorfulHell**).
 
 | Set | What spawns |
 |---|---|
@@ -255,7 +256,7 @@ next monster that needs them.
 
 | Section | Rows |
 |---|---|
-| Top | Select Monster Set (Vanilla, **BD22 + XMVE Tiers**, ColorfulHell) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) · Tier Icons Above Monsters (**Off**, On) |
+| Top | Select Monster Set (Vanilla, BD22 + XMVE Tiers, **ColorfulHell**) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) · Tier Icons Above Monsters (**Off**, On) |
 | Brutal Doom's Monsters | Colour Ladder On Brutal Doom's Monsters (Off, **On**) · World Tier (test) (**1** to 20) · Painted Colour Art (Off, **On**; on, the frames that have painted art in their colour are drawn from it, the rest keep the tint; off, the tint everywhere) |
 | Miniboss | Miniboss From (Same as Monster Set, **ColorfulHell**) · Thralls From (**Same as Miniboss**, ColorfulHell, Map's Own Monsters) |
 | Monster Diagnostics | A test page. Today only God Mode works: Spawn hostile, the fourteen chaingunner buttons, Spawn All Fourteen, Remove them all, DIAG and WAKE are on the page but nothing answers them |
