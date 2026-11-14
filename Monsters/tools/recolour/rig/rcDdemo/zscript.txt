@@ -1,0 +1,126 @@
+version "4.14"
+// TEST ONLY (rig): the recolour sheets of the big families (Mancubus, Arachnotron, Cyberdemon, Spider Mastermind).
+// As rc2demo (the Imp's), with the class named in the event and the player moved back for the big bodies:
+//   netevent rcd_row:<Class> x spacing first+100*n   a row of n of <Class> at x, from rung `first` (1 = as shipped)
+//   netevent rcd_rowy y                             the next rows are centred at y (away from rig01's pillar)
+//   netevent rcd_place x y angle                    the player stands there
+//   netevent rcd_tier / rcd_calm / rcd_face deg frame / rcd_kill 0 freezeAfter / rcd_go / rcd_light l / rcd_look a p
+// The freeze also stops the pieces a death spawns (Brutal Doom's dying bodies are new actors) near the row.
+class RCD_Demo : EventHandler
+{
+	Array<Actor> row;
+	Actor marker;
+	int freezeAt, rowFirst, spawnFrame;
+	bool hold;
+	double rowX, rowY;
+	override void WorldTick()
+	{
+		// test only: Legion of Bones' risen bones (its own classes, by name) are taken away, so the row stays the only thing in front of the camera
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			String cn = a.GetClassName(); cn = cn.MakeLower();
+			static const String LOB[] = { "skel", "undead", "skullzombie", "skullchaingunner", "skullshotgunner", "abhorrent",
+				"arachnobone", "balrog", "conqueror", "reaper", "painbringer", "cacolich", "phantomrevenant", "ghostspectre",
+				"slayerknight", "dragonsoul" };
+			for (int j = 0; j < LOB.Size(); j++) if (cn.IndexOf(LOB[j]) >= 0) { a.Destroy(); break; }
+		}
+		if (freezeAt > 0 && level.maptime >= freezeAt) { freezeAt = 0; hold = true; Console.Printf("RCD froze t%d", level.maptime); }
+		if (hold)    // every tic while held: a death's new actors (Brutal Doom's dying bodies, pieces) stop too
+		{
+			let p = players[consoleplayer].mo;
+			it = ThinkerIterator.Create("Actor");
+			while (a = Actor(it.Next()))
+				if (a != p && !a.player && abs(a.pos.x - rowX) < 400 && !(a is "Inventory" && Inventory(a).owner) && a.tics >= 0) { a.tics = -1; a.vel = (0, 0, 0); }
+		}
+	}
+	override void NetworkProcess(ConsoleEvent e)
+	{
+		let p = players[consoleplayer].mo;
+		if (!p) return;
+		String nm = e.Name; nm = nm.MakeLower();
+		if (nm.IndexOf("rcd_row:") == 0)
+		{
+			hold = false;
+			String en = e.Name; String cls = en.Mid(8);
+			for (int i = 0; i < row.Size(); i++) if (row[i]) row[i].Destroy();
+			row.Clear();
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+				if (a != p && !a.player && abs(a.pos.x - e.Args[0]) < 400 && !(a is "Inventory" && Inventory(a).owner)) a.Destroy();
+			double x = e.Args[0], sp = e.Args[1];
+			int first = e.Args[2] % 100, n = e.Args[2] / 100;
+			if (n <= 0) n = 13 - (first - 1);
+			for (int i = 0; i < n; i++)
+			{
+				Class<Actor> ca = cls; let a = ca ? Actor.Spawn(ca, (x, rowY - (n - 1) * sp / 2. + sp * i, 0)) : null;
+				if (!a) { Console.Printf("RCD no class %s", cls); continue; }
+				a.angle = a.AngleTo(p);
+				a.SetZ(a.floorz);
+				a.bDORMANT = true;
+				a.SetState(a.SpawnState); a.tics = -1;
+				spawnFrame = a.frame;
+				row.Push(a);
+			}
+			rowFirst = first; rowX = x;
+			Console.Printf("RCD row %s %d at t%d", cls, row.Size(), level.maptime);
+		}
+		if (nm == "rcd_place") { Vector2 xy = (e.Args[0], e.Args[1]); p.SetOrigin((xy, level.PointInSector(xy).floorplane.ZatPoint(xy)), false); p.angle = e.Args[2]; p.vel = (0, 0, 0); }
+		if (nm == "rcd_tier")
+		{
+			for (int i = 0; i < row.Size(); i++) { int r = rowFirst + i; if (r > 1 && row[i]) RS_Retier.RequestKit(row[i], r, true); }
+			for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; Console.Printf("RCD %d %s rung %d trans %d mon %d hp %d fr %d", i, row[i] ? row[i].GetClassName() : 'none', k ? k.rung : -1, row[i] ? int(row[i].Translation) : -1, row[i] ? row[i].bISMONSTER : -1, row[i] ? row[i].health : -1, row[i] ? row[i].bFRIENDLY : -1); }
+		}
+		if (nm == "rcd_calm") { for (int i = 0; i < row.Size(); i++) { let k = row[i] ? RS_BDKit.Of(row[i]) : null; if (k) k.hpOnly = true; } }
+		if (nm == "rcd_face")      // Args: degrees added to facing the player; frame letter (0 = A); sprite name kept
+		{
+			for (int i = 0; i < row.Size(); i++) if (row[i]) { row[i].angle = row[i].AngleTo(p) + e.Args[0]; if (e.Args[1] >= 0) row[i].frame = e.Args[1]; row[i].tics = -1; }
+			Console.Printf("RCD face %d frame %d at t%d", e.Args[0], e.Args[1], level.maptime);
+		}
+		if (nm == "rcd_kill")      // Args: 0 plain, 1 gibbed; freeze after Args[1] tics (0 = never)
+		{
+			for (int i = 0; i < row.Size(); i++)
+				if (row[i] && row[i].health > 0)
+				{
+					row[i].bDORMANT = false; row[i].angle = row[i].AngleTo(p);
+					if (row[i].tics < 0) row[i].tics = 1;
+					row[i].DamageMobj(p, p, e.Args[0] == 1 ? 20000 : row[i].health + 1, 'None', DMG_FORCED | DMG_NO_ARMOR | DMG_THRUSTLESS);
+				}
+			freezeAt = e.Args[1] ? level.maptime + e.Args[1] : 0;
+			Console.Printf("RCD kill %d at t%d", e.Args[0], level.maptime);
+		}
+		if (nm == "rcd_list")      // test only: what stands near the row, and its colour
+		{
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next()))
+				if (a != p && !a.player && abs(a.pos.x - rowX) < 400 && !(a is "Inventory" && Inventory(a).owner))
+					Console.Printf("RCD list %s at %d,%d,%d trans %d hue %d spr %s fr %d inv %d rs %d tgt %s mst %s", a.GetClassName(), int(a.pos.x), int(a.pos.y), int(a.pos.z), int(a.Translation), RS_BDHue.ColourOf(a), a.sprite.."", a.frame, a.bINVISIBLE, a.GetRenderStyle(), a.target ? a.target.GetClassName() : 'none', a.master ? a.master.GetClassName() : 'none');
+		}
+		if (nm == "rcd_rowy") rowY = e.Args[0];     // the row's centre across the room (default 0)
+		if (nm == "rcd_freeze") freezeAt = level.maptime;
+		if (nm == "rcd_go")
+		{
+			hold = false;
+			let it = ThinkerIterator.Create("Actor"); Actor a;
+			while (a = Actor(it.Next())) if (a != p && !a.player && a.tics < 0 && abs(a.pos.x - rowX) < 400) a.tics = 1;
+			Console.Printf("RCD go t%d", level.maptime);
+		}
+		if (nm == "rcd_light") { p.CurSector.SetLightLevel(e.Args[0]); if (row.Size() && row[0]) row[0].CurSector.SetLightLevel(e.Args[0]); }
+		if (nm == "rcd_look") { p.angle = e.Args[0]; p.pitch = e.Args[1]; }
+		if (nm == "rcd_mark" || nm == "rcd_unmark")    // the marker in the view's lower left: red while an art window
+		{                                               // is held, blue while a tint window is, hidden between (so the
+			Vector3 mp = (p.pos.x + 100, p.pos.y + 72, p.pos.z + p.player.viewheight - 30);              // frames
+			if (!marker) marker = Actor.Spawn("RCD_Marker", mp);                                       // can be cut)
+			marker.SetOrigin(mp, false);
+			marker.bINVISIBLE = nm == "rcd_unmark";
+			marker.frame = e.Args[0] % 2;
+			if (nm == "rcd_mark") Console.Printf("RCD mark %d at t%d", e.Args[0], level.maptime);
+		}
+	}
+}
+
+class RCD_Marker : Actor
+{
+	Default { +NOINTERACTION +NOGRAVITY +BRIGHT +INVISIBLE Radius 2; Height 2; Scale 1.0; }
+	States { Spawn: RCDM A -1; Stop; }
+}
