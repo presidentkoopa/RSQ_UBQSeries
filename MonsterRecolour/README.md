@@ -7,6 +7,17 @@ death) in all twelve colours; the other families are being painted on this branc
 
 **rig only, not headset-confirmed.** Nothing here has been seen in the owner's headset.
 
+**Status (owner's words, relayed by the main session 2026-11-13):**
+- **The art style is approved for every BD22 and XMVE monster** (11-13 18:01: "The new art you have is lovely lets use
+  that, i approve for the bd and xmve series").
+- **The Zombieman, Shotgunner and Chaingunner families are approved as baked** (commits 2ef01fbe2b and f7f1a74ca2;
+  11-13 19:19: "i approve."), with the choices written in their family files: the black and gray uniforms keep their
+  gray (only the skin takes the colour), bloodstains stay red.
+- **Later** (11-13 19:20: "the grey guys could use some blood, it's fine, we'll come back to it in some later update i
+  guess but the rest look amazing"): the gray-uniformed men, BD22 ShotgunGuy and SMGGuy, XMVE's QSG, Rocket, Riot and
+  Pyro sergeants, and ZSpecOps. Their uniforms keep their gray today; to be revisited with per-frame masks or a human
+  painter.
+
 **Since 2026-11-13 (integration) this folder holds the ART and its tools only.** The code that draws it is RSQ Monsters'
 (`Monsters/zscript/monsters/RS_BDArt.zs`; see "How it works" below and `Monsters/README.md`), and the art ships as one
 pk3 per colour, `pk3/RSQ_MonsterArt_<Colour>.pk3`, built by `tools/build_monster_art.py` (also run by
@@ -108,9 +119,11 @@ One colour of the full set (7,620) is already six times the headroom. The static
 `python3 tools/build_monster_art.py` (or `tools/build_all.py`, `build_all.sh`) writes `pk3/RSQ_MonsterArt_<Colour>.pk3`
 for each colour that has art: its PNGs (stored, not deflated), its `GLDEFS.txt` (each painted frame gets its source
 sprite's brightmap, from `brightmaps.txt`) and its `sprites.txt`. It works with whatever families are painted at the
-time. It stops if a colour would pass a zip's 65,535 entries or GitHub's 100 MB a file: all of BD22 + XMVE is about
-11,300 lumps a colour (about 25 MB), so one pk3 per colour fits both. With the Imp only, each is about 1.1 MB, 476
-frames of 36 sprites. Load them after `RSQ_Monsters.pk3` (the lookups are by full path, so the order among them does
+time. It stops if a colour would pass a zip's 65,535 entries or GitHub's 100 MB a file. One zip of every colour no
+longer fits (71,517 files with the Imp and the three men's families); one per colour does: with those four families each
+is 5,958 frames of 510 sprites, about 16 MB, and all of BD22 + XMVE would be about 11,300 lumps (about 30 MB) a colour.
+The art pk3s are not committed on this branch (they are rebuilt from `rsrecolour/` whenever a family lands); they go in
+at the merge. Load them after `RSQ_Monsters.pk3` (the lookups are by full path, so the order among them does
 not matter). To refresh the brightmap table: `python3 -I tools/build_monster_art.py --brightmaps <the load order's
 archives>` (`Monsters/tools/recolour/out/bake_load_order.txt` lists them).
 
@@ -139,11 +152,13 @@ the bodies:
 |---|---|---|---|
 | MAP01, 4 (Purple), first measurement (see below) | 27 alive, 46 to 53 after | 12, then 13 | 0.03 to 0.06 (0.87) |
 | MAP10, 4 (Purple) | 283 alive; 351 after the kill, 468 at the end | 65, then 52 | 0.18 to 0.22 (0.50) alive; 0.32 the second after the kill (0.61), then 0.18 to 0.24 |
+| MAP10, 4 (Purple), with the Imp, Zombieman, Shotgunner and Chaingunner art (run `rcE_cost3_m10_w4`) | 279 alive; 364 after the kill, 469 at the end | 174, then 128 | 0.17 to 0.24 (0.68; 1.67 in the first second, the art first loaded) alive; 0.41 the second after the kill (1.03), then 0.19 to 0.24 |
 | MAP10, 1 (as shipped: nothing coloured) | 279 alive, 128 after | 0 | 0.05 to 0.07 (0.32) |
 
 The MAP10 rows are the final code. Before the per-sprite list and the kit's colour read straight off the kit (the first measurement, which is also the MAP01 row): MAP10 World
 Tier 4 was 0.27 to 0.33 alive and 1.49 (6.9 worst) the second after the kill. Texture memory: the art pk3s add no sprite
-frames; the art in use on MAP10 was 35 textures, 0.23 MB as 32-bit (the frames loaded on demand, logged by the driver;
+frames; the art in use on MAP10 was 35 textures, 0.23 MB as 32-bit with the Imp alone, 183 textures, 1.29 MB with the four
+families (the frames loaded on demand, logged by the driver;
 the engine's own texture memory could not be read on the rig). The Imp art is about 7 KB a frame as 32-bit, so even a
 few hundred painted frames in view at once stay in single megabytes.
 
