@@ -9,7 +9,7 @@ Writes OUTDIR/<colour>/<LUMP>.png for the twelve colours, and OUTDIR/manifest.tx
 Each frame is painted per part with the colour's own palettes (paint.py, ramps.py), not tinted; lumps the family marks
 'tint' keep the old flat tint. Frames painted by hand live in HAND/<colour>/<LUMP>.png (default: OUTDIR/../hand, or
 $RSRC_HAND); the bake never writes there and copies them over its own output last, so a hand frame always wins."""
-import sys, os, io, struct, zlib
+import sys, os, io, re, struct, zlib
 import numpy as np
 from PIL import Image
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -89,6 +89,21 @@ def tint_bake(rgba, pix_idx, t):
             out[m, ch] = np.clip(s * 255 + inten[m] * (e - s), 0, 255).astype(np.uint8)
     return out.reshape(rgba.shape)
 
+_JOB = None
+
+def _paint_one(nm):
+    """all twelve colours of one lump (pass 2; run in worker processes when RSRC_JOBS > 1: the same files either way)"""
+    src, fam, rec, keep, sts, outdir = _JOB
+    rgba, offs, idx, part, w = src[nm]
+    for col in recipes.COLOURS:
+        if fam.is_tint(nm):
+            t = recipes.table(rec[col])
+            for k in keep: t.pop(k, None)
+            out = tint_bake(rgba, idx, t)
+        else:
+            out = paint.paint(rgba, part, ramps.LOOKS[col], sts[fam.statgroup(nm)])
+        write_png(os.path.join(outdir, col, nm + '.png'), out, offs)
+
 def main():
     famfile, outdir, trn = sys.argv[1:4]
     lo = lumps.LoadOrder(sys.argv[4:])
@@ -100,9 +115,10 @@ def main():
     names = sorted(n for n in lo.index if n[:4] in fam.sprites)
     os.makedirs(outdir, exist_ok=True)
     cache = {}
-    # pass 1: decode, find the parts, gather the family's shading statistics per part
+    # pass 1: decode, find the parts, gather the family's shading statistics per part (per statgroup, if the family
+    # file has any: a family whose looks differ, a blue uniform and a tan one, gets each look's own)
     src = {}
-    st = paint.Stats()
+    sts = {}
     for nm in names:
         w = lo.where(nm)
         if not w: print('MISSING', nm); continue
@@ -110,23 +126,29 @@ def main():
         idx = nearest_index(rgba, P, cache)
         part = fam.classify(nm, idx, rgba[..., 3] > 0)
         src[nm] = (rgba, offs, idx, part, w)
-        if not fam.is_tint(nm): st.add(paint.to_oklab(rgba[..., :3]), part)
-    st.finish()
-    # pass 2: paint every colour
-    man = open(os.path.join(outdir, 'manifest.txt'), 'w')
+        if not fam.is_tint(nm): sts.setdefault(fam.statgroup(nm), paint.Stats()).add(paint.to_oklab(rgba[..., :3]), part)
+    for st in sts.values(): st.finish()
+    # pass 2: paint every colour. OUTDIR is shared by every family: manifest.txt and GLDEFS.rsrecolour keep the lines of
+    # the lumps this bake does not make (another family's), and are written in lump order.
+    mpath = os.path.join(outdir, 'manifest.txt')
+    lines = {}
+    if os.path.exists(mpath):
+        for l in open(mpath):
+            if l.strip() and l.split('\t')[0] not in src: lines[l.split('\t')[0]] = l
     for nm, (rgba, offs, idx, part, w) in src.items():
-        man.write('%s\t%s\t%s\t%d\t%s\n' % (nm, os.path.basename(w[0]), w[1] if isinstance(w[1], str) else 'wad', w[2],
-                                            'tint' if fam.is_tint(nm) else 'paint'))
-        for col in recipes.COLOURS:
-            if fam.is_tint(nm):
-                t = recipes.table(rec[col])
-                for k in keep: t.pop(k, None)
-                out = tint_bake(rgba, idx, t)
-            else:
-                out = paint.paint(rgba, part, ramps.LOOKS[col], st)
-            os.makedirs(os.path.join(outdir, col), exist_ok=True)
-            write_png(os.path.join(outdir, col, nm + '.png'), out, offs)
-    man.close()
+        lines[nm] = '%s\t%s\t%s\t%d\t%s\n' % (nm, os.path.basename(w[0]), w[1] if isinstance(w[1], str) else 'wad', w[2],
+                                              'tint' if fam.is_tint(nm) else 'paint')
+    with open(mpath, 'w') as man:
+        for k in sorted(lines): man.write(lines[k])
+    for col in recipes.COLOURS: os.makedirs(os.path.join(outdir, col), exist_ok=True)
+    global _JOB
+    _JOB = (src, fam, rec, keep, sts, outdir)
+    jobs = int(os.environ.get('RSRC_JOBS', '1'))
+    if jobs > 1:
+        import multiprocessing as mp
+        with mp.get_context('fork').Pool(jobs) as pool: pool.map(_paint_one, list(src), chunksize=8)
+    else:
+        for nm in src: _paint_one(nm)
     # frames painted by hand win: HAND/<colour>/<LUMP>.png is copied over the bake (the bake never writes into HAND)
     hand = os.environ.get('RSRC_HAND') or os.path.join(os.path.dirname(os.path.abspath(outdir)), 'hand')
     nh = 0
@@ -140,13 +162,20 @@ def main():
                     shutil.copyfile(os.path.join(d, f), os.path.join(outdir, col, f.upper()[:-4] + '.png')); nh += 1
     # the lumps' own brightmaps, for the baked copies (GLDEFS takes the full path of a texture; rig rc_t4: with these
     # the driver's frames are pixel-identical to the engine's own sprite)
-    with open(os.path.join(outdir, 'GLDEFS.rsrecolour'), 'w') as g:
+    gpath = os.path.join(outdir, 'GLDEFS.rsrecolour')
+    bm = {}                                                    # lump -> its lines, in colour order
+    if os.path.exists(gpath):
+        for l in open(gpath):
+            m = re.match(r'brightmap texture "rsrecolour/[^/]+/([^.]+)\.png"', l)
+            if m and m.group(1) not in src: bm.setdefault(m.group(1), []).append(l)
+    n = 0
+    for nm in names:
+        if nm not in lo.brightmaps: continue
+        bm[nm] = ['brightmap texture "rsrecolour/%s/%s.png" { %s }\n' % (col, nm, lo.brightmaps[nm]) for col in recipes.COLOURS]
+        n += len(recipes.COLOURS)
+    with open(gpath, 'w') as g:
         g.write('// GENERATED by Monsters/tools/recolour/bake.py: the source sprites brightmaps on their baked copies\n')
-        n = 0
-        for nm in names:
-            if nm not in lo.brightmaps: continue
-            for col in recipes.COLOURS:
-                g.write('brightmap texture "rsrecolour/%s/%s.png" { %s }\n' % (col, nm, lo.brightmaps[nm])); n += 1
+        for k in sorted(bm): g.writelines(bm[k])
     print('baked', len(src), 'lumps x', len(recipes.COLOURS), 'colours (painted %d, tint %d); hand frames %d; brightmaps %d'
           % (sum(1 for k in src if not fam.is_tint(k)), sum(1 for k in src if fam.is_tint(k)), nh, n))
 

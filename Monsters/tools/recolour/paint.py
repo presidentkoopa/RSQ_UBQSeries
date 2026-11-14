@@ -60,6 +60,7 @@ class Family:
     def __init__(self, path):
         import os
         self.sprites, self.part_of, self.groups, self.tint, self.masks = set(), {}, [], set(), []
+        self.statgroups = []                           # (name, prefixes): lumps whose shading statistics are their own
         self.dir = os.path.dirname(os.path.abspath(path))
         for line in open(path):
             w = line.split('#')[0].split()
@@ -73,6 +74,8 @@ class Family:
                 self.tint |= set(p.upper() for p in w[1].split(','))
             elif w[0] == 'masks':                      # masks <file>: hand-written rectangles (see masks file)
                 self.masks += self._masks(os.path.join(self.dir, w[1]))
+            elif w[0] == 'statgroup':                  # statgroup <name> <prefixes,>: these lumps get their own
+                self.statgroups.append((w[1], tuple(p.upper() for p in w[2].split(','))))   # shading statistics
         self.lut = np.zeros(256, np.int8)
         for i, p in self.part_of.items(): self.lut[i] = p
 
@@ -86,6 +89,12 @@ class Family:
             if w[-1].startswith('from='): frm = [PARTS[p] for p in w[-1][5:].split(',')]; w = w[:-1]
             out.append((w[0].upper(), PARTS[w[1]], tuple(int(v) for v in w[2:6]), frm))
         return out
+
+    def statgroup(self, name):
+        """the statistics group of a lump: the first statgroup whose prefix it starts with, else '' (the family's)"""
+        for g, pref in self.statgroups:
+            if any(name.startswith(p) for p in pref): return g
+        return ''
 
     def is_tint(self, name):
         return any(name.startswith(p) for p in self.tint)
