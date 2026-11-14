@@ -26,6 +26,8 @@ class RCF_Demo : EventHandler
 			{
 				String cn = a.GetClassName(); cn = cn.MakeLower();
 				if (cn.IndexOf("skel") >= 0 || cn.IndexOf("undead") >= 0 || cn.IndexOf("skullzombie") >= 0) a.Destroy();
+				// and the Lost Souls a Pain Elemental spits (they fly into the camera); a row of Lost Souls stays
+				else if (cn.IndexOf("soul") >= 0 && a.bISMONSTER && row.Find(a) == row.Size()) a.Destroy();
 			}
 		}
 		if (freezeAt > 0 && level.maptime >= freezeAt)
