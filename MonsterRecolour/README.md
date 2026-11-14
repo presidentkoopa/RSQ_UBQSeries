@@ -116,3 +116,52 @@ the tint, and the colours whose recipe lifts black (FireBlu, Red, Gray) paint it
 The bake reads `families/imp.txt` (parts, group rules, masks, tint-kept lumps) and `ramps.py` (the palettes), then
 copies `hand/` over its output. Load it after RSQ_Monsters. `rsrc_on 0` turns the art off (the live tint only); `rsrc_debug 1` logs what it draws.
 Rig probes: `Monsters/tools/recolour/rig/` (test only).
+
+## The Zombieman, Shotgunner and Chaingunner families (2026-11-13, owner-approved method: "lets use that, i approve for the bd and xmve series")
+
+Every BD22 and XMVE class of the three tier families, with their last stands, crawlers, rolls, deaths, gibs,
+fatalities, frozen and burnt deaths: `families/zombieman.txt` (233 sprite names, 2,447 lumps), `shotgunner.txt`
+(152, 1,505), `chaingunner.txt` (89, 1,530). 5,482 lumps x 12 colours, painted per part as the Imp (no lump on the flat
+tint), 282 MB of PNGs. Which sprite names, and why, is written at the top of each family file. **rig only, not
+headset-confirmed.**
+
+What is the body, for men (the plainest reading; each choice is in its family file):
+- **The uniform and the skin.** Zombiemen: the khaki, olive and gold uniform (128-159) and the skin (48-79). SS: the
+  blue uniform. Scientists: the white lab coat. Chaingunner, Rifle Commando: the red armour (16-47); Former Commander
+  and Major also the bright reds 168-191. ASG guy, SSG guy: the olive/khaki gear. Hell Trooper: the red robe (168-191).
+  Evil Marines: the green armour.
+- **Kept:** guns and metal (the grays 80-111), the reds Brutal Doom paints its wounds and blood with (16-47 and 168-191
+  for the zombies and shotgunners; 168-191 for the chaingunners), eyes, the ammo belt, muzzle flashes, hair, ice.
+- **For the owner: gray uniforms.** The shotgunner's black uniform (BD22 ShotgunGuy, SMGGuy; XMVE QSG, Rocket, Riot and
+  Pyro sergeants) and the ZSpecOps' armour are drawn in the same grays as their guns, so they are kept with the guns and
+  only these men's skin carries the colour (see the shotgunner sheet). Colouring those uniforms needs per-frame masks
+  or a human painter. Likewise the Plasma Zombie's gray-and-blue camo trousers keep, LabguyP's pistol takes the lab
+  coat's colour, and the blood in the Hell Trooper's, Former Commander's and Major's own death frames is in their
+  armour's reds and takes the colour.
+- **Fatalities and stealth kills** show the player's marine: his green armour and tan helmet, boots and belt keep; in
+  the zombieman fatalities that also keeps the zombie's khaki uniform (same palette), only his skin takes the colour.
+- **Evil Marines** draw the player's own sprites (PLAY, MARN, ...); they are baked too. The driver draws the art only on
+  an actor wearing a tier tint, so the player is never drawn from it.
+- **Left on the live tint (not baked):** Brutal Doom's shared gore, blood and burnt bodies (BDT*, CARB, PBR1, XBRN, BRZ3,
+  BLOD, XME*, ...), pieces another family owns by folder (the Imp's LEG4 HND4 XHE4 TROO TROG; the Revenant's SKEL SPIC
+  BNP*; the Lost Soul's LGI*; ID11 ID50), the Labgal's first-person hostage frames (never on a monster).
+
+Tool changes (generic; the Imp's bake is byte-identical, checked): `statgroup <name> <prefixes>` gives a look its own
+shading statistics (a blue SS and a white coat are not a khaki uniform); the bake keeps the other families' lines in the
+shared `manifest.txt` and `GLDEFS.rsrecolour`; `RSRC_JOBS=n` paints in n processes.
+
+Shown on the rig (owner's full order, his ini, -skill 6, rig01, light 224, `ue_recolour 0`, weapon, laser and bars
+hidden; runs `rcA_*` with `rig/rc3_run.sh` + `rig/rc3demo`, cut by `rig/rc3_sheets.py`, then deleted; no script error
+from these packs). One row of each family's base class (BD22 RifleZombie, ShotgunGuy1, ChaingunGuy1), as shipped then
+Green .. White through RSQ Monsters' own tier change:
+
+| Sheet | What |
+|---|---|
+| `docs/zombieman_12colours_new_art.jpg`, `docs/shotgunner_12colours_new_art.jpg`, `docs/chaingunner_12colours_new_art.jpg` | as shipped and the twelve colours: front, side, attack, dying (frozen mid-fall), dead |
+| `docs/zombieman_07_fireblu_old_vs_new.jpg`, `docs/shotgunner_01_green_old_vs_new.jpg`, `docs/chaingunner_03_purple_old_vs_new.jpg` | as shipped, old (the live tint), new art, for one colour |
+
+The other classes of the families (SS, scientists, Evil Marines, XMVE's) are not shown on the rig yet: only in bake
+previews. In the chaingunner's live-tint run (`rcA_cg_old`) the second row (FireBlu .. White) got no tier (RS_Retier
+answered rung -1), so its old/new sheet is cut for Purple, from the first row. In the last frames of some runs as-shipped men rose from
+the corpses (the full order's own, not this art); the sheets' frames are picked before that.
+The art is more than one zip can hold (71,517 entries with the Imp): the rig loaded it as two pk3s split by colour.
