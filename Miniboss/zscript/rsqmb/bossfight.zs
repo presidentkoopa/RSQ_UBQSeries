@@ -410,11 +410,12 @@ extend class RSQMB_Handler
 	// off-hand watch, taking turns with Gun Cards' watch card, 11-13: WristCard below). One textured quad in the world
 	// (RSQMB_WQuad, a flat model laid on the wrist), this machine only. Start Fight Card (rsqmb_wristcard, user, on).
 	const WC_HOLD = 4;
-	const WC_WIDE = 7.0;        // the card's length along the forearm, map units (about 21 cm)
+	const WC_WIDE = 6.0;        // the card's width, map units (about 18 cm), facing your eyes
+	const WC_LIFT = 8.0;        // how far toward your eyes from the wrist it floats, map units
 	transient Actor wcCard;
 	transient String wcSkin;
-	const WC_BACK = 5.0;        // how far down the forearm from the hand it lies, map units
-	const WC_OFF = 1.2;         // and how far off the skin
+	const WC_BACK = 5.0;        // how far down the forearm from the hand it sits, map units
+	const WC_OFF = 1.5;         // and how far off the inside of the wrist
 	transient int wcHold[2];
 	transient double wcAlpha;
 	transient int wcHand;
@@ -444,63 +445,93 @@ extend class RSQMB_Handler
 		Vector3 look = (cos(pmo.angle) * cos(pmo.pitch), sin(pmo.angle) * cos(pmo.pitch), -sin(pmo.pitch));
 		return acos(clamp((to / d) dot look, -1.0, 1.0));
 	}
-	// THE START FIGHT CARD ON THE INSIDE OF THE OFF-HAND WRIST (owner 2026-11-15 07:33-07:35: "offhand watch check (inside
-	// wrist Call Fight card) rarely shows" ... "always shown, but greyed until it can be used" ... "always shown on off hand
-	// inside watch check" ... "like looking at pulse"). Its own pose again, as on 11-12: the inside of the OFF wrist turned
-	// to your eyes (InnerDot >= 0.35) within 45 degrees of your gaze, held WC_HOLD tics. It no longer takes turns with Gun
-	// Cards' watch card (11-13): that card is the BACK of the wrist, this one the inside. ALWAYS shown in that pose (with
-	// Start Fight Card on and minibosses on): gold (RSQMBWC1) when Use would call the fight in (the meter full, nothing
-	// called, running or on its way), grey (RSQMBWC0) otherwise, and Use does nothing on the grey card. Use on the gold card
-	// calls the fight in with no rules (CallIn's card call). Gun Cards still asks "fightcard.up" (service.zs): true while this
-	// card is shown, so its off-hand watch card stands back if both poses are ever read at once. Rig only; not
-	// headset-confirmed.
+	// THE START FIGHT CARD ON THE INSIDE OF THE OFF-HAND WRIST (owner 2026-11-15 07:33-07:35: "always shown, but greyed
+	// until it can be used", "always shown on off hand inside watch check", "like looking at pulse"; 16:08: "it's literally
+	// the same logic as the watch card just inside the wrist"; the 07:35 version laid a long strip flat along the forearm
+	// and read the pose its own way: "like i have to break my wrist to get it in that position to see it").
+	// THE POSE is the watch check's own reader (RSQ Accessibility's InspectPose, the copy in gestcopy.zs: the hand in front
+	// of the eyes at chest-to-face height, pitch within 60 degrees, still, the wrist twisted 35 degrees to enter and kept
+	// while it stays past 20, held 6 tics), with the twist the other way: the INSIDE of the wrist (its rsqg_inspect_way 1)
+	// instead of the back (way 2, the watch check). It lingers 35 tics after the pose is let go, as Gun Cards' watch card.
+	// THE CARD sits just off the inside of the wrist and faces your eyes, upright, so it reads at once (the way the watch
+	// card reads in its pose). ALWAYS shown in that pose (Start Fight Card on, minibosses on): gold (RSQMBWC1, START FIGHT?)
+	// when Use would call the fight in (the meter full, nothing called, running or on its way), grey (RSQMBWC0) otherwise;
+	// Use on the gold card calls the fight in with no rules (CallIn's card call), Use on the grey card does nothing. Gun
+	// Cards asks "fightcard.up" (service.zs): true while this card is shown. Rig only; not headset-confirmed.
 	transient bool wcUp;          // the card is shown this tic (Gun Cards' "fightcard.up")
+	transient int wcTill;         // the pose's linger: shown until this tic
+	const WC_LINGER = 35;         // as Gun Cards' rsqgc_linger
+	transient int wcIns, wcInsTics;   // the inside check: 0 not, 1 entering, 2 held (as the reader's insState)
+	static bool InsidePose(PlayerPawn pmo, int h, double slack, double need)
+	{
+		Vector3 b = RSQMB_GPose.Body(pmo, h);
+		double hs = RSQMB_GCopy.HScale(), vs = RSQMB_GCopy.VScale();
+		if (b.x < RSQMB_GCopy.Num("rsqg_inspect_near", 0.15) * hs - slack || b.x > RSQMB_GCopy.Num("rsqg_inspect_far", 0.65) * hs + slack) return false;
+		if (b.z < -RSQMB_GCopy.Num("rsqg_inspect_low", 0.30) * vs - slack || b.z > RSQMB_GCopy.Num("rsqg_inspect_high", 0.20) * vs + slack) return false;
+		if (abs(b.y) > RSQMB_GCopy.Num("rsqg_inspect_side", 0.35) * hs + slack) return false;
+		if (abs(Actor.Normalize180(RSQMB_GPose.Pitch(pmo, h))) > RSQMB_GCopy.Num("rsqg_inspect_pitch", 60) + slack * 100) return false;
+		double r = Actor.Normalize180(RSQMB_GPose.Roll(pmo, h));
+		double sg = RSQMB_GPose.IsLeft(h) ? -1 : 1;
+		return r * sg >= need;            // the inside of the wrist (the watch check is -r * sg)
+	}
+	bool InsideCheck(PlayerPawn p)
+	{
+		if (!p.OverrideAttackPosDir || !p.player) { wcIns = 0; wcInsTics = 0; return false; }
+		let gc = RSQMB_GCopy.Get();
+		bool still = !gc || gc.SpeedNow(1) < RSQMB_GCopy.Num("rsqg_inspect_still", 1.2);
+		if (wcIns == 0)
+		{
+			if (still && InsidePose(p, 1, 0, RSQMB_GCopy.Num("rsqg_inspect_twist", 35))) { wcIns = 1; wcInsTics = 1; }
+			return false;
+		}
+		bool keep = InsidePose(p, 1, RSQMB_GCopy.Num("rsqg_inspect_slack", 0.05), RSQMB_GCopy.Num("rsqg_inspect_untwist", 20));
+		if (!keep || (wcIns == 1 && !still)) { wcIns = 0; wcInsTics = 0; return false; }
+		wcInsTics++;
+		if (wcIns == 1 && wcInsTics >= RSQMB_GCopy.Opt("rsqg_inspect_hold", 6)) wcIns = 2;
+		return wcIns == 2;
+	}
 	void WristCard(PlayerPawn p, RSQMB_Meter m)
 	{
 		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
 		int now = level.maptime;
 		bool gold = m.ready && !BfBusy() && !m.called;      // usable: the meter full, nothing called, running or on its way
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
-		bool pose = want && InnerDot(p, 1) >= 0.35 && GazeOff(p, 1) <= 45.0;   // 0.35 (about 70 degrees), easier than 11-12's 0.5: "rarely shows"
-		wcHold[1] = pose ? min(wcHold[1] + 1, 100) : 0;
-		bool shown = wcHold[1] >= WC_HOLD;
+		bool pose = want && InsideCheck(p);
+		if (pose) wcTill = now + WC_LINGER;
+		bool shown = want && now < wcTill;
 		wcUp = shown;
 		wcHand = 1;
 		wcAlpha = clamp(wcAlpha + (shown ? 0.25 : -0.25), 0.0, 1.0);
 		if (debug && now % 35 == 0)
-			Console.Printf("RSQMB start fight card: off-hand inner wrist %.2f, gaze %.0f degrees, held %d, %s, meter %s", InnerDot(p, 1), GazeOff(p, 1), wcHold[1], shown ? (gold ? "SHOWN GOLD (Use calls it in)" : "SHOWN GREY") : "not shown", m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
+			Console.Printf("RSQMB start fight card: off-hand inside check %s, %s, meter %s", pose ? "HELD" : "no", shown ? (gold ? "SHOWN GOLD (Use calls it in)" : "SHOWN GREY") : "not shown", m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
 		if (wcAlpha <= 0) { if (wcCard) wcCard.bInvisible = true; wcUse = (p.player.cmd.buttons & BT_USE) != 0; return; }
 		String tn = gold ? "RSQMBWC1" : "RSQMBWC0";
 		TextureID tx = TexMan.CheckForTexture(tn, TexMan.Type_Any);
 		if (!tx.IsValid()) return;
 		int tw, th; [tw, th] = TexMan.GetSize(tx);
-		// FLAT ON THE INSIDE OF THE WRIST, where you would feel a pulse: InnerDot's normal, its long side along the forearm,
-		// read left to right as you see it, a little down the forearm from the hand and just off the skin.
-		int hh = 1;
+		// just off the inside of the wrist, facing your eyes, upright
 		double hy = p.OffhandAngle + 90;
 		double hpt = p.OffhandPitch;
 		Vector3 f = (cos(hpt) * cos(hy), cos(hpt) * sin(hy), sin(hpt));
 		Vector3 r0 = (sin(hy), -cos(hy), 0);
 		Vector3 u0 = r0 cross f;
 		double rl = Actor.Normalize180(p.OffhandRoll);
-		double bb = RSQMB_GPose.IsLeft(hh) ? rl : -rl;
-		Vector3 n = -(r0 * cos(bb) + u0 * sin(bb));    // the inside of the wrist (InnerDot's n)
-		Vector3 hp = p.OffhandPos;
-		Vector3 at = hp - f * WC_BACK + n * WC_OFF;
-		double qy = atan2(n.y, n.x), qt = atan2(n.z, n.xy.Length());
-		Vector3 qr = (-sin(qy), cos(qy), 0);
-		Vector3 qu = (-cos(qy) * sin(qt), -sin(qy) * sin(qt), cos(qt));
-		Vector3 right = (sin(p.angle), -cos(p.angle), 0);          // your right
-		Vector3 w = (f dot right) >= 0 ? f : -f;
-		double roll = atan2(w dot qu, w dot qr);
+		double bb = RSQMB_GPose.IsLeft(1) ? rl : -rl;
+		Vector3 n = -(r0 * cos(bb) + u0 * sin(bb));    // the inside of the wrist
+		Vector3 at = p.OffhandPos - f * WC_BACK + n * WC_OFF;
+		Vector3 e = (p.pos.xy, p.player.viewz) - at;
+		e.z *= level.pixelstretch;
+		// a little toward your eyes from the wrist, so the hand never covers it (rig 11-15: the hand hid half of it)
+		double el = e.Length();
+		if (el > WC_LIFT * 2) { Vector3 eu = e / el; at += (eu.x, eu.y, eu.z / level.pixelstretch) * WC_LIFT; e -= eu * WC_LIFT; }
+		double qy = atan2(e.y, e.x), qt = atan2(e.z, e.xy.Length());
 		if (!wcCard) { class<Actor> qc = "RSQMB_WQuad"; if (qc) wcCard = Actor.Spawn(qc, at, NO_REPLACE); if (!wcCard) return; wcSkin = ""; }
 		if (wcSkin != tn) { wcCard.A_ChangeModel("", 0, "", "", 0, "", tn); wcSkin = tn; }
 		wcCard.SetOrigin(at, true);
-		wcCard.angle = qy; wcCard.pitch = -qt; wcCard.roll = roll;
+		wcCard.angle = qy; wcCard.pitch = -qt; wcCard.roll = 0;
 		wcCard.scale = (WC_WIDE, WC_WIDE * th / max(1, tw));
 		wcCard.bInvisible = false;
 		wcCard.A_SetRenderStyle(wcAlpha, STYLE_Translucent);
-		// the gold card: Use calls it in, with no rules (CallIn's card call); the grey card: nothing
 		bool use = (p.player.cmd.buttons & BT_USE) != 0;
 		if (debug && use && !wcUse) Console.Printf("RSQMB start fight card: Use pressed, card %s, alpha %.2f", shown ? (gold ? "gold" : "grey") : "not shown", wcAlpha);
 		if (shown && gold && wcAlpha >= 0.5 && use && !wcUse) EventHandler.SendNetworkEvent("rsqmb_callin", 1);
