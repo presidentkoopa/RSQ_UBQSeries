@@ -136,6 +136,33 @@ It lets go when the twist drops under 20 degrees.
 
 *[GIF to come: moving the Up slider with the pistol in hand, then switching to the shotgun and its own spot]*
 
+### The small card drawn by models (proof, 2026-11-15: BD22 VR's rifle only)
+
+The owner's pick from the mockups (option B, "Same card, drawn by models"): the same card in the same spot, with the same
+JFO glyphs, Ermac's panels and the same colours, but each piece is a model whose animation frames are its glyphs (the way
+RemaSelaco draws its ammo digits), so it costs **no sprite frames** (the voxel small card costs 9,929 of the engine's
+65,535). His one change: on the card with the word, the big count and RELOAD sit **centred between the word and the
+reserve** (gaps 0.66 cm above and below; the voxel card's are 0.93 and 0.45).
+
+- **Only one gun so far:** BD22 VR's rifle, `Rifle` in the main hand and `RSQ_Off_Rifle` in the off hand. Every other gun
+  keeps the voxel card. Small Card Font: Ermac keeps the voxel card too (only JFO is built as models).
+- **The off hand needs a second pk3,** `RSQ_GunCards_BD22VR.pk3` (`bridge_bd22vr/`, built by
+  `tools/build_modelcard_bridge.sh`), loaded with BD22 VR. A layer on the off hand belongs to the off-hand gun, and
+  MODELDEF finds its model by that gun's class; QuestZDoom 17.3 stops with a fatal error on a MODELDEF block for a class
+  that is not loaded, so those blocks cannot sit in RSQ_GunCards.pk3, which must load without BD22 VR. Without the bridge
+  the off hand keeps the voxel card.
+- `rsqgc_modelcard 0` (console only, not in the menu) puts the voxel card back on the rifle, to compare.
+- Built by `tools/gen_modelcard.py`: `models/rsqgc/mc/` (26 MD3s and their skins), the MODEL CARD part of
+  `MODELDEF.txt`, `bridge_bd22vr/MODELDEF.txt`, `zscript/rsqgc/mcard_states.zs`; picked in `zscript/rsqgc/modelcard.zs`.
+
+![The rifle's small card, voxel and model, both hands](docs/modelcard/20261115_rifle_voxel_vs_model_defaults_full_order.png)
+
+*Rig frames, 2026-11-15, the owner's full load order at -skill 6: today's voxel card and the model card on the rifle, main
+hand and off hand, full (green), half (yellow), quarter (red), and empty (RELOAD, then a red 0). Simulated headset, not a
+capture from a real headset. More in `docs/modelcard/`: the same with the owner's saved settings (the short cyan card),
+the options (PCVR text, word off, In +12 / -12, Card Glow in a dark room, "+20"), another gun keeping the voxel card, and
+the sprite-frame read.*
+
 ---
 
 ## The watch card
@@ -344,6 +371,10 @@ spots are kept (use Reset All Saved Spots).
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-15, branch `wip/2026-11-15-modelcard`; `docs/modelcard/`) | **The small card drawn by models, on BD22 VR's rifle.** Shown on the owner's full order (doom2, brutal22test6, BD_VoxelPack, BD22 VR 2.0.4x, the bridge, the series), -skill 6, main hand and off hand: the count green / yellow / red at full / half / quarter, RELOAD and the red 0 in turn when empty, the gold reserve, MAGAZINE, his panel colours (by slot, and his saved cyan short card); and on the main hand PCVR text, word off, In +12 / -12, Card Glow Quest in the dark, "+20". Engine sprite-frame read: 64,367 before and after (the model card's 247 sprites hold 0). No script error from Gun Cards or the bridge (only BD_VoxelPack's own four). Not shown: the Wheel Palette, Tilt to Your Eyes, Hide at Your Eye, Both Guns on One Card, left-handed play, a cooking grenade's count on it |
+
+| | |
+|---|---|
 | **rig only, not headset-confirmed** (2026-11-12, runs `watch5` before, `watch8` after, `sfcount3` / `sfcount4` engine reads) | **The watch card's missing letters: the engine's sprite-frame cap.** The load order was at 71,572 sprite frames, 6,037 over the engine's 16-bit 65,535; 875 sprites shared frame slots, the watch card's glyphs among them (before: the S of RESERVE, the last 0 of H 100, A and G:n broken). LaserSight's PC VR halo (7,344 frames) removed: 64,228, no shared slot, and the Both card reads MAG 27 RESERVE 15, H 100, A 100, G:1 in full. Headroom is 1,307 frames: anything baked from here must be counted. ![before and after](docs/readme/watch_card_before_after_framecap.png) |
 
 | | |
@@ -379,6 +410,10 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
   voxels with their place on the hand baked in (`tools/gen_cards.py`, `tools/gen_side.py`; the Card Glow twins from
   `tools/gen_bright.py`), mirrored twins for the left hand, two turns of the watch card, and the small card at 9 depths.
   A tic only decides which piece each layer shows; Up / Side and Tilt are the layer's two turns about the model origin.
+  The proof gun's small card (BD22 VR's rifle) is drawn by MD3 models instead (*The small card drawn by models*): the same
+  layers and translations; its glyphs are quads on one JFO atlas per Text Quality, folded to a point unless shown, and
+  each glyph has a mirror twin in the same frame, wound the other way, so back-face culling shows the right one on either
+  hand.
 - **The world cards** are quad and text-strip models (`models/rsqgc`) placed every tic, coloured by palette
   translations, with their own fonts in `TEXTURES.txt` (the loaded IWAD's small font for words, Ermac's digits for
   numbers) and Ermac's plate (the IWAD's status bar instead when RSQ Wheel's plate setting asks for it).

@@ -744,9 +744,10 @@ class RSQGC_GunCard : EventHandler
 
 	// ---- colour --------------------------------------------------------------------------------------------
 	// A translation that recolours a piece by brightness into one colour (dark stays dark).
+	bool mTransM;   // the translation is for the model card (modelcard.zs): colour 0 stays see-through
 	int TransFor(color c)
 	{
-		int key = (c.r << 16) | (c.g << 8) | c.b;
+		int key = (c.r << 16) | (c.g << 8) | c.b | (mTransM ? 0x1000000 : 0);
 		for (int i = 0; i < mTransKey.Size(); i++) if (mTransKey[i] == key) return mTransId[i];
 		if (mLum.Size() == 0) ReadPalette();
 		Translation t;
@@ -756,6 +757,9 @@ class RSQGC_GunCard : EventHandler
 			l = min(1.0, l * 1.35);
 			t.colors[i] = color(255, int(c.r * l), int(c.g * l), int(c.b * l));
 		}
+		// a model's skin: its see-through pixels come through the palette as colour 0, which must stay see-through (a voxel
+		// has no see-through pixels, so the voxel cards' translations are left as they were)
+		if (mTransM) t.colors[0] = color(0, 0, 0, 0);
 		int id = int(t.AddTranslation());
 		mTransKey.Push(key); mTransId.Push(id);
 		return id;
@@ -1129,6 +1133,11 @@ class RSQGC_GunCard : EventHandler
 		bool mir = Mirrored(p, hand);
 		int base = L_FIRST + hand * PER_HAND;
 		double alpha = mShow[hand] * CardAlpha(hand);
+		// THE CARD DRAWN BY MODELS (owner 2026-11-15, option B; modelcard.zs): the same layers, the same pieces, each a model
+		// whose frames are its glyphs; one set serves both hands (no mirror twins to pick). Its translations keep colour 0
+		// see-through (TransFor): a model's skin has see-through pixels, a voxel has none.
+		bool mdl = McUse(hand, owner, w);
+		mTransM = mdl;
 
 		int loaded = Loaded(w);
 		// the magazine big, the reserve small under it (owner 02:47); on a both-guns card the small row is the other gun
@@ -1166,16 +1175,20 @@ class RSQGC_GunCard : EventHandler
 		mSpotSide[hand] = spS; mSpotUp[hand] = spU; mSpotIn[hand] = spI;
 		TiltTo(pmo, hand, mir);
 		mCurTilt = hand;
+		int dep = Depth();
+		bool word = ci("rsqgc_label", 1) != 0;
 
 		// the panel
 		int style = StyleFor(p, w);
 		// with the AMMO / MAGAZINE word off the panel is the short one (owner 08:40): no empty strip, the numbers stay put
 		// NO BACKGROUND (Material: No Background, owner 11-06): the panel is left out, only the words and numbers show
 		if (RSQGC_Glow.NoPanel()) Kill(p, base + P_PANEL);
+		else if (mdl) Put(p, base + P_PANEL, Nth(McPiece(word ? 0 : 1, 0, dep), style), owner, alpha, tPanel);
 		else Put(p, base + P_PANEL, Nth(RSQGC_Glow.CPiece(ci("rsqgc_label", 1) ? 0 : 7, mir, 0, Depth()), style), owner, alpha, tPanel);
 		// the word: MAGAZINE on a gun with one, AMMO otherwise
 		int lab = HasMagazine(w) ? 1 : 0;
-		if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_Glow.CPiece(1, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_LABEL + lab : q * RSQGC_CardStates.LABELS + lab), owner, alpha, tLabel);
+		if (word && mdl) Put(p, base + P_LABEL, Nth(McPiece(2, 0, dep), q * 2 + lab), owner, alpha, tLabel);
+		else if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_Glow.CPiece(1, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_LABEL + lab : q * RSQGC_CardStates.LABELS + lab), owner, alpha, tLabel);
 		else Kill(p, base + P_LABEL);
 		// the big number, centred in the five slots (Digits); GC3: RELOAD in its place on an empty magazine with rounds to
 		// load (Ermac's lettering, tools/gen_cards.py), in the empty colour
@@ -1194,20 +1207,23 @@ class RSQGC_GunCard : EventHandler
 			for (int k = 1; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_BIG + k);
 			// on the short card (word off) its own RELOAD, top on the big count's top, so RELOAD and the reserve sit
 			// centred as the count and the reserve do (gen_cards.py RELOAD_SHORT_AT, owner 11-05 03:26)
-			Put(p, base + P_BIG, Nth(RSQGC_Glow.CPiece(ci("rsqgc_label", 1) ? 4 : 8, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
+			// (the model card's RELOAD on the card with the word is centred between the word and the reserve, as its count)
+			if (mdl) Put(p, base + P_BIG, Nth(McPiece(3, 0, dep), q * 2 + (word ? 0 : 1)), owner, alpha, TransFor(MAG_RED));
+			else Put(p, base + P_BIG, Nth(RSQGC_Glow.CPiece(ci("rsqgc_label", 1) ? 4 : 8, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
 		}
-		else if (reloadNow) Digits(p, 2, mir, base + P_BIG, owner, "0", false, alpha, TransFor(MAG_RED));
-		else Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999).."", false, alpha, tLow >= 0 ? tLow : tDigits);
+		else if (reloadNow) Digits(p, 2, mir, base + P_BIG, owner, "0", false, alpha, TransFor(MAG_RED), mdl);
+		else Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999).."", false, alpha, tLow >= 0 ? tLow : tDigits, mdl);
 		// the small number: the reserve (or the other gun's rounds on a both-guns card); GC2: "+N" for a moment after
 		// ammo for this gun is picked up
 		int plus = both ? 0 : PlusNow(hand);
-		if (plus > 0) Digits(p, 3, mir, base + P_SMALL, owner, "+" .. clamp(plus, 1, 99), true, alpha, tDigits);
+		if (plus > 0) Digits(p, 3, mir, base + P_SMALL, owner, "+" .. clamp(plus, 1, 99), true, alpha, tDigits, mdl);
 		// THE RESERVE IN GOLD (owner 2026-11-03 08:31), both fonts; the Wheel palette (Small Card Colours) keeps its own
-		else if (reserve >= 0) Digits(p, 3, mir, base + P_SMALL, owner, clamp(reserve, 0, 999).."", true, alpha, tinted ? tDigits : TransFor(RESERVE_GOLD));
+		else if (reserve >= 0) Digits(p, 3, mir, base + P_SMALL, owner, clamp(reserve, 0, 999).."", true, alpha, tinted ? tDigits : TransFor(RESERVE_GOLD), mdl);
 		else for (int k = 0; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_SMALL + k);
+		mTransM = false;
 	}
 
-	private void Digits(PlayerInfo p, int kind, bool mir, int base, Actor owner, string s, bool small, double alpha, int trans)
+	private void Digits(PlayerInfo p, int kind, bool mir, int base, Actor owner, string s, bool small, double alpha, int trans, bool mc = false)
 	{
 		int slots = RSQGC_CardStates.SLOTS;
 		int len = min(s.Length(), (slots + 1) / 2);
@@ -1220,7 +1236,10 @@ class RSQGC_GunCard : EventHandler
 			int ch = s.ByteAt(ci0);
 			int g = ch == 43 ? RSQGC_CardStates.GLYPH_PLUS : ch - 48;   // '+' (GC2)
 			// JFO: kind 2 / 3, frame Text Quality * GLYPHS + glyph; Ermac (Small Card Font): kind 5 / 6, frame glyph
-			if (ci("rsqgc_small_font", 0) == 1) Put(p, base + k, Nth(RSQGC_Glow.CPiece(kind + 3, mir, k, Depth()), g), owner, alpha, trans);
+			// the model card (modelcard.zs): kind 4 big digit on the card with the word (centred, owner 11-15), 5 on the short
+			// card, 6 small; frame Text Quality * GLYPHS + glyph
+			if (mc) Put(p, base + k, Nth(McPiece(kind == 3 ? 6 : ci("rsqgc_label", 1) ? 4 : 5, k, Depth()), Quality() * RSQGC_CardStates.GLYPHS + g), owner, alpha, trans);
+			else if (ci("rsqgc_small_font", 0) == 1) Put(p, base + k, Nth(RSQGC_Glow.CPiece(kind + 3, mir, k, Depth()), g), owner, alpha, trans);
 			else Put(p, base + k, Nth(RSQGC_Glow.CPiece(kind, mir, k, Depth()), Quality() * RSQGC_CardStates.GLYPHS + g), owner, alpha, trans);
 		}
 	}

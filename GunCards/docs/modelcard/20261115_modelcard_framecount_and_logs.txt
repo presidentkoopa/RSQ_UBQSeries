@@ -1,0 +1,48 @@
+RSQ Gun Cards, the small card drawn by models (option B), proof on BD22 VR 2.0.4x's rifle. Rig only, not headset-confirmed.
+QuestZDoom 17.3 rig (meshturbator rig/bin, engine 4.14.3), 2026-11-15. Load order: the owner's full order (rig/work/full_monA.sh's list,
+his saved ini, -skill 6, +set rsqtr_eye_m 1.6, sv_cheats 1, god, notarget), the series' pk3s from origin/main 1f8d9c96 with
+RSQ_GunCards.pk3 built from this branch, RSQ_GunCards_BD22VR.pk3 (the bridge) after BD22 VR, and a scratch probe pk3 last.
+
+== SPRITE FRAMES (engine read under gdb at exit: SpriteFrames.Size(), and every sprite's numframes)
+before (origin/main's RSQ_GunCards.pk3, no bridge):
+  SPRITES count=5535
+  SPRITEFRAMES size=64367
+after (this branch's RSQ_GunCards.pk3 + RSQ_GunCards_BD22VR.pk3):
+  SPRITES count=5782
+  SPRITEFRAMES size=64367
+  -> the model card's 247 sprite names (QPT/QPS/QLW/QRW + depth, QK/QH/QS + slot + depth) hold 0 sprite frames between them.
+  -> the voxel small card (VOXELDEF >>> CARD: 9,906 entries, 650 sprites) holds 9,929 sprite frames in that read (letter gaps
+     included); the watch card (>>> SIDE: 9,584 entries, 516 sprites) 9,584.
+
+== SCRIPT ERRORS on the full order (both reads and every frame run): only BD_VoxelPack's own 4 (voxeldef.txt lines 66 72 77 892,
+   'No sprites specified for voxel', present before this branch too); no VM abort; none from RSQ_GunCards or the bridge.
+  mc_sf_before: 4 script error lines, 0 VM aborts; ours: 0
+  mc_sf_after: 4 script error lines, 0 VM aborts; ours: 0
+  mc_fullA: 4 script error lines, 0 VM aborts; ours: 0
+  mc_fullB2: 4 script error lines, 0 VM aborts; ours: 0
+  mc_other: 4 script error lines, 0 VM aborts; ours: 0
+  plain doom2 + this RSQ_GunCards.pk3 alone (no BD22 VR, no bridge): 0 script errors
+  (the bridge without BD22 VR is fatal by design of the engine: 'MODELDEF: Unknown actor type' -- rig probe mc_unk, a block for RSQ_Off_Rifle on plain doom2)
+
+== THE PROOF RUN, defaults (mc_fullB2): what each hand's card layers show (layer:caller/sprite-index+frame; QPT6=2490 is the model
+   panel, Q6PN=1618 / Q6PM=1643 the voxel panels in this order's sprite table; QB26/QB16 are names no longer used, -1). Each hand's
+   MC_LOG falls in that hand's last phase, the VOXEL one (rsqgc_modelcard 0), so it shows voxel pieces; the model pieces' ids
+   show in mc_other's Rifle line below, and in the frames)
+  MC_MAG 249 hand 0 Rifle RifleAmmo 31 / 31, reserve Clip2 130
+  MC_MAG 318 hand 0 Rifle RifleAmmo 15 / 31, reserve Clip2 130
+  MC_MAG 390 hand 0 Rifle RifleAmmo 7 / 31, reserve Clip2 130
+  MC_MAG 460 hand 0 Rifle RifleAmmo 0 / 31, reserve Clip2 130
+  MC_LOG 559 hand 0 Rifle loaded 0 reserve 130 | 0:RSQGC_CardItem/1618A 1:RSQGC_CardItem/1620B 4:RSQGC_CardItem/1635A 7:RSQGC_CardItem/1638B 9:RSQGC_CardItem/1640D 11:RSQGC_CardItem/1642A
+  MC_REF QPT6=2490 Q6PN=1618 QB26=-1 QB16=-1 Q6PM=1643
+  MC_LOG 559 hand 1 RSQ_Off_Rifle loaded 31 reserve 130 | 0:RSQ_Off_Rifle/1643B 1:RSQ_Off_Rifle/1645B 3:RSQ_Off_Rifle/1659D 5:RSQ_Off_Rifle/1661B 7:RSQ_Off_Rifle/1663B 9:RSQ_Off_Rifle/1665D 11:RSQ_Off_Rifle/1667A
+  MC_MAG 595 hand 1 RSQ_Off_Rifle RifleAmmoOff 31 / 31, reserve Clip2 130
+  MC_MAG 660 hand 1 RSQ_Off_Rifle RifleAmmoOff 15 / 31, reserve Clip2 130
+  MC_MAG 736 hand 1 RSQ_Off_Rifle RifleAmmoOff 7 / 31, reserve Clip2 130
+  MC_MAG 812 hand 1 RSQ_Off_Rifle RifleAmmoOff 0 / 31, reserve Clip2 130
+  MC_LOG 914 hand 0 Rifle loaded 0 reserve 130 | 0:RSQGC_CardItem/1618A 1:RSQGC_CardItem/1620B 2:RSQGC_CardItem/1621A 7:RSQGC_CardItem/1638B 9:RSQGC_CardItem/1640D 11:RSQGC_CardItem/1642A
+  MC_LOG 914 hand 1 RSQ_Off_Rifle loaded 0 reserve 130 | 0:RSQ_Off_Rifle/1643B 1:RSQ_Off_Rifle/1645B 4:RSQ_Off_Rifle/1660A 7:RSQ_Off_Rifle/1663B 9:RSQ_Off_Rifle/1665D 11:RSQ_Off_Rifle/1667A
+
+== another gun keeps the voxel card with the model card on (mc_other):
+  MC_LOG 181 hand 0 BrutalPistol loaded 16 reserve 18 | 0:RSQGC_CardItem/1618D 1:RSQGC_CardItem/1620B 3:RSQGC_CardItem/1634B 5:RSQGC_CardItem/1636G 8:RSQGC_CardItem/1639B 10:RSQGC_CardItem/1641I
+  MC_LOG 303 hand 0 BrutalPistol loaded 16 reserve 18 | 0:RSQGC_CardItem/1618D 1:RSQGC_CardItem/1620B 3:RSQGC_CardItem/1634B 5:RSQGC_CardItem/1636G 8:RSQGC_CardItem/1639B 10:RSQGC_CardItem/1641I
+  MC_LOG 423 hand 0 Rifle loaded 31 reserve 130 | 0:RSQGC_CardItem/2490A 1:RSQGC_CardItem/2516B 3:RSQGC_CardItem/2574D 5:RSQGC_CardItem/2626B 7:RSQGC_CardItem/2672B 9:RSQGC_CardItem/2698D 11:RSQGC_CardItem/2724A

@@ -1,6 +1,6 @@
 // RSQ Gun Cards -- the quads the cards drawn in the world (rsqgc_world) are made of (bb.zs). Copied from RSQ Wheel
 // (Wheel/tools/gen_assets.py). Skins are set per actor at run time (A_ChangeModel). The cards on the guns are
-// voxels (VOXELDEF.txt) and need no MODELDEF.
+// voxels (VOXELDEF.txt), except the proof gun's small card drawn by models (MODEL CARD below, tools/gen_modelcard.py).
 
 Model RSQGC_BBQuad
 {
@@ -21,3 +21,5588 @@ Model RSQGC_BBStrip
 	USEACTORROLL
 	FrameIndex GCBQ A 0 0
 }
+
+// >>> MODEL CARD (tools/gen_modelcard.py) -- the small card drawn by models, the main hand (RSQGC_CardItem owns its
+// layers). The off hand's blocks are keyed by the off-hand gun's class: bridge_bd22vr/MODELDEF.txt.
+// panel 1 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt01.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 A 0 0
+	FrameIndex QPT1 A 0 1
+	FrameIndex QPT2 A 0 2
+	FrameIndex QPT3 A 0 3
+	FrameIndex QPT4 A 0 4
+	FrameIndex QPT5 A 0 5
+	FrameIndex QPT6 A 0 6
+	FrameIndex QPT7 A 0 7
+	FrameIndex QPT8 A 0 8
+	FrameIndex QPT9 A 0 9
+	FrameIndex QPTA A 0 10
+	FrameIndex QPTB A 0 11
+	FrameIndex QPTC A 0 12
+}
+
+// panel 2 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt02.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 B 0 0
+	FrameIndex QPT1 B 0 1
+	FrameIndex QPT2 B 0 2
+	FrameIndex QPT3 B 0 3
+	FrameIndex QPT4 B 0 4
+	FrameIndex QPT5 B 0 5
+	FrameIndex QPT6 B 0 6
+	FrameIndex QPT7 B 0 7
+	FrameIndex QPT8 B 0 8
+	FrameIndex QPT9 B 0 9
+	FrameIndex QPTA B 0 10
+	FrameIndex QPTB B 0 11
+	FrameIndex QPTC B 0 12
+}
+
+// panel 3 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt03.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 C 0 0
+	FrameIndex QPT1 C 0 1
+	FrameIndex QPT2 C 0 2
+	FrameIndex QPT3 C 0 3
+	FrameIndex QPT4 C 0 4
+	FrameIndex QPT5 C 0 5
+	FrameIndex QPT6 C 0 6
+	FrameIndex QPT7 C 0 7
+	FrameIndex QPT8 C 0 8
+	FrameIndex QPT9 C 0 9
+	FrameIndex QPTA C 0 10
+	FrameIndex QPTB C 0 11
+	FrameIndex QPTC C 0 12
+}
+
+// panel 4 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt04.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 D 0 0
+	FrameIndex QPT1 D 0 1
+	FrameIndex QPT2 D 0 2
+	FrameIndex QPT3 D 0 3
+	FrameIndex QPT4 D 0 4
+	FrameIndex QPT5 D 0 5
+	FrameIndex QPT6 D 0 6
+	FrameIndex QPT7 D 0 7
+	FrameIndex QPT8 D 0 8
+	FrameIndex QPT9 D 0 9
+	FrameIndex QPTA D 0 10
+	FrameIndex QPTB D 0 11
+	FrameIndex QPTC D 0 12
+}
+
+// panel 5 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt05.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 E 0 0
+	FrameIndex QPT1 E 0 1
+	FrameIndex QPT2 E 0 2
+	FrameIndex QPT3 E 0 3
+	FrameIndex QPT4 E 0 4
+	FrameIndex QPT5 E 0 5
+	FrameIndex QPT6 E 0 6
+	FrameIndex QPT7 E 0 7
+	FrameIndex QPT8 E 0 8
+	FrameIndex QPT9 E 0 9
+	FrameIndex QPTA E 0 10
+	FrameIndex QPTB E 0 11
+	FrameIndex QPTC E 0 12
+}
+
+// panel 6 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt06.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 F 0 0
+	FrameIndex QPT1 F 0 1
+	FrameIndex QPT2 F 0 2
+	FrameIndex QPT3 F 0 3
+	FrameIndex QPT4 F 0 4
+	FrameIndex QPT5 F 0 5
+	FrameIndex QPT6 F 0 6
+	FrameIndex QPT7 F 0 7
+	FrameIndex QPT8 F 0 8
+	FrameIndex QPT9 F 0 9
+	FrameIndex QPTA F 0 10
+	FrameIndex QPTB F 0 11
+	FrameIndex QPTC F 0 12
+}
+
+// panel 7 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt07.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 G 0 0
+	FrameIndex QPT1 G 0 1
+	FrameIndex QPT2 G 0 2
+	FrameIndex QPT3 G 0 3
+	FrameIndex QPT4 G 0 4
+	FrameIndex QPT5 G 0 5
+	FrameIndex QPT6 G 0 6
+	FrameIndex QPT7 G 0 7
+	FrameIndex QPT8 G 0 8
+	FrameIndex QPT9 G 0 9
+	FrameIndex QPTA G 0 10
+	FrameIndex QPTB G 0 11
+	FrameIndex QPTC G 0 12
+}
+
+// panel 8 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt08.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 H 0 0
+	FrameIndex QPT1 H 0 1
+	FrameIndex QPT2 H 0 2
+	FrameIndex QPT3 H 0 3
+	FrameIndex QPT4 H 0 4
+	FrameIndex QPT5 H 0 5
+	FrameIndex QPT6 H 0 6
+	FrameIndex QPT7 H 0 7
+	FrameIndex QPT8 H 0 8
+	FrameIndex QPT9 H 0 9
+	FrameIndex QPTA H 0 10
+	FrameIndex QPTB H 0 11
+	FrameIndex QPTC H 0 12
+}
+
+// panel 9 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt09.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 I 0 0
+	FrameIndex QPT1 I 0 1
+	FrameIndex QPT2 I 0 2
+	FrameIndex QPT3 I 0 3
+	FrameIndex QPT4 I 0 4
+	FrameIndex QPT5 I 0 5
+	FrameIndex QPT6 I 0 6
+	FrameIndex QPT7 I 0 7
+	FrameIndex QPT8 I 0 8
+	FrameIndex QPT9 I 0 9
+	FrameIndex QPTA I 0 10
+	FrameIndex QPTB I 0 11
+	FrameIndex QPTC I 0 12
+}
+
+// panel 11 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt11.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 J 0 0
+	FrameIndex QPT1 J 0 1
+	FrameIndex QPT2 J 0 2
+	FrameIndex QPT3 J 0 3
+	FrameIndex QPT4 J 0 4
+	FrameIndex QPT5 J 0 5
+	FrameIndex QPT6 J 0 6
+	FrameIndex QPT7 J 0 7
+	FrameIndex QPT8 J 0 8
+	FrameIndex QPT9 J 0 9
+	FrameIndex QPTA J 0 10
+	FrameIndex QPTB J 0 11
+	FrameIndex QPTC J 0 12
+}
+
+// panel 12 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt12.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 K 0 0
+	FrameIndex QPT1 K 0 1
+	FrameIndex QPT2 K 0 2
+	FrameIndex QPT3 K 0 3
+	FrameIndex QPT4 K 0 4
+	FrameIndex QPT5 K 0 5
+	FrameIndex QPT6 K 0 6
+	FrameIndex QPT7 K 0 7
+	FrameIndex QPT8 K 0 8
+	FrameIndex QPT9 K 0 9
+	FrameIndex QPTA K 0 10
+	FrameIndex QPTB K 0 11
+	FrameIndex QPTC K 0 12
+}
+
+// panel 13 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt13.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 L 0 0
+	FrameIndex QPT1 L 0 1
+	FrameIndex QPT2 L 0 2
+	FrameIndex QPT3 L 0 3
+	FrameIndex QPT4 L 0 4
+	FrameIndex QPT5 L 0 5
+	FrameIndex QPT6 L 0 6
+	FrameIndex QPT7 L 0 7
+	FrameIndex QPT8 L 0 8
+	FrameIndex QPT9 L 0 9
+	FrameIndex QPTA L 0 10
+	FrameIndex QPTB L 0 11
+	FrameIndex QPTC L 0 12
+}
+
+// panel 14 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt14.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 M 0 0
+	FrameIndex QPT1 M 0 1
+	FrameIndex QPT2 M 0 2
+	FrameIndex QPT3 M 0 3
+	FrameIndex QPT4 M 0 4
+	FrameIndex QPT5 M 0 5
+	FrameIndex QPT6 M 0 6
+	FrameIndex QPT7 M 0 7
+	FrameIndex QPT8 M 0 8
+	FrameIndex QPT9 M 0 9
+	FrameIndex QPTA M 0 10
+	FrameIndex QPTB M 0 11
+	FrameIndex QPTC M 0 12
+}
+
+// panel 15 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt15.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 N 0 0
+	FrameIndex QPT1 N 0 1
+	FrameIndex QPT2 N 0 2
+	FrameIndex QPT3 N 0 3
+	FrameIndex QPT4 N 0 4
+	FrameIndex QPT5 N 0 5
+	FrameIndex QPT6 N 0 6
+	FrameIndex QPT7 N 0 7
+	FrameIndex QPT8 N 0 8
+	FrameIndex QPT9 N 0 9
+	FrameIndex QPTA N 0 10
+	FrameIndex QPTB N 0 11
+	FrameIndex QPTC N 0 12
+}
+
+// panel 16 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt16.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 O 0 0
+	FrameIndex QPT1 O 0 1
+	FrameIndex QPT2 O 0 2
+	FrameIndex QPT3 O 0 3
+	FrameIndex QPT4 O 0 4
+	FrameIndex QPT5 O 0 5
+	FrameIndex QPT6 O 0 6
+	FrameIndex QPT7 O 0 7
+	FrameIndex QPT8 O 0 8
+	FrameIndex QPT9 O 0 9
+	FrameIndex QPTA O 0 10
+	FrameIndex QPTB O 0 11
+	FrameIndex QPTC O 0 12
+}
+
+// panel 17 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt17.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 P 0 0
+	FrameIndex QPT1 P 0 1
+	FrameIndex QPT2 P 0 2
+	FrameIndex QPT3 P 0 3
+	FrameIndex QPT4 P 0 4
+	FrameIndex QPT5 P 0 5
+	FrameIndex QPT6 P 0 6
+	FrameIndex QPT7 P 0 7
+	FrameIndex QPT8 P 0 8
+	FrameIndex QPT9 P 0 9
+	FrameIndex QPTA P 0 10
+	FrameIndex QPTB P 0 11
+	FrameIndex QPTC P 0 12
+}
+
+// panel 18 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt18.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 Q 0 0
+	FrameIndex QPT1 Q 0 1
+	FrameIndex QPT2 Q 0 2
+	FrameIndex QPT3 Q 0 3
+	FrameIndex QPT4 Q 0 4
+	FrameIndex QPT5 Q 0 5
+	FrameIndex QPT6 Q 0 6
+	FrameIndex QPT7 Q 0 7
+	FrameIndex QPT8 Q 0 8
+	FrameIndex QPT9 Q 0 9
+	FrameIndex QPTA Q 0 10
+	FrameIndex QPTB Q 0 11
+	FrameIndex QPTC Q 0 12
+}
+
+// panel 19 tall
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_s.md3"
+	Skin 0 "pt19.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPT0 R 0 0
+	FrameIndex QPT1 R 0 1
+	FrameIndex QPT2 R 0 2
+	FrameIndex QPT3 R 0 3
+	FrameIndex QPT4 R 0 4
+	FrameIndex QPT5 R 0 5
+	FrameIndex QPT6 R 0 6
+	FrameIndex QPT7 R 0 7
+	FrameIndex QPT8 R 0 8
+	FrameIndex QPT9 R 0 9
+	FrameIndex QPTA R 0 10
+	FrameIndex QPTB R 0 11
+	FrameIndex QPTC R 0 12
+}
+
+// panel 1 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps01.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 A 0 0
+	FrameIndex QPS1 A 0 1
+	FrameIndex QPS2 A 0 2
+	FrameIndex QPS3 A 0 3
+	FrameIndex QPS4 A 0 4
+	FrameIndex QPS5 A 0 5
+	FrameIndex QPS6 A 0 6
+	FrameIndex QPS7 A 0 7
+	FrameIndex QPS8 A 0 8
+	FrameIndex QPS9 A 0 9
+	FrameIndex QPSA A 0 10
+	FrameIndex QPSB A 0 11
+	FrameIndex QPSC A 0 12
+}
+
+// panel 2 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps02.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 B 0 0
+	FrameIndex QPS1 B 0 1
+	FrameIndex QPS2 B 0 2
+	FrameIndex QPS3 B 0 3
+	FrameIndex QPS4 B 0 4
+	FrameIndex QPS5 B 0 5
+	FrameIndex QPS6 B 0 6
+	FrameIndex QPS7 B 0 7
+	FrameIndex QPS8 B 0 8
+	FrameIndex QPS9 B 0 9
+	FrameIndex QPSA B 0 10
+	FrameIndex QPSB B 0 11
+	FrameIndex QPSC B 0 12
+}
+
+// panel 3 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps03.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 C 0 0
+	FrameIndex QPS1 C 0 1
+	FrameIndex QPS2 C 0 2
+	FrameIndex QPS3 C 0 3
+	FrameIndex QPS4 C 0 4
+	FrameIndex QPS5 C 0 5
+	FrameIndex QPS6 C 0 6
+	FrameIndex QPS7 C 0 7
+	FrameIndex QPS8 C 0 8
+	FrameIndex QPS9 C 0 9
+	FrameIndex QPSA C 0 10
+	FrameIndex QPSB C 0 11
+	FrameIndex QPSC C 0 12
+}
+
+// panel 4 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps04.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 D 0 0
+	FrameIndex QPS1 D 0 1
+	FrameIndex QPS2 D 0 2
+	FrameIndex QPS3 D 0 3
+	FrameIndex QPS4 D 0 4
+	FrameIndex QPS5 D 0 5
+	FrameIndex QPS6 D 0 6
+	FrameIndex QPS7 D 0 7
+	FrameIndex QPS8 D 0 8
+	FrameIndex QPS9 D 0 9
+	FrameIndex QPSA D 0 10
+	FrameIndex QPSB D 0 11
+	FrameIndex QPSC D 0 12
+}
+
+// panel 5 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps05.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 E 0 0
+	FrameIndex QPS1 E 0 1
+	FrameIndex QPS2 E 0 2
+	FrameIndex QPS3 E 0 3
+	FrameIndex QPS4 E 0 4
+	FrameIndex QPS5 E 0 5
+	FrameIndex QPS6 E 0 6
+	FrameIndex QPS7 E 0 7
+	FrameIndex QPS8 E 0 8
+	FrameIndex QPS9 E 0 9
+	FrameIndex QPSA E 0 10
+	FrameIndex QPSB E 0 11
+	FrameIndex QPSC E 0 12
+}
+
+// panel 6 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps06.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 F 0 0
+	FrameIndex QPS1 F 0 1
+	FrameIndex QPS2 F 0 2
+	FrameIndex QPS3 F 0 3
+	FrameIndex QPS4 F 0 4
+	FrameIndex QPS5 F 0 5
+	FrameIndex QPS6 F 0 6
+	FrameIndex QPS7 F 0 7
+	FrameIndex QPS8 F 0 8
+	FrameIndex QPS9 F 0 9
+	FrameIndex QPSA F 0 10
+	FrameIndex QPSB F 0 11
+	FrameIndex QPSC F 0 12
+}
+
+// panel 7 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps07.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 G 0 0
+	FrameIndex QPS1 G 0 1
+	FrameIndex QPS2 G 0 2
+	FrameIndex QPS3 G 0 3
+	FrameIndex QPS4 G 0 4
+	FrameIndex QPS5 G 0 5
+	FrameIndex QPS6 G 0 6
+	FrameIndex QPS7 G 0 7
+	FrameIndex QPS8 G 0 8
+	FrameIndex QPS9 G 0 9
+	FrameIndex QPSA G 0 10
+	FrameIndex QPSB G 0 11
+	FrameIndex QPSC G 0 12
+}
+
+// panel 8 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps08.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 H 0 0
+	FrameIndex QPS1 H 0 1
+	FrameIndex QPS2 H 0 2
+	FrameIndex QPS3 H 0 3
+	FrameIndex QPS4 H 0 4
+	FrameIndex QPS5 H 0 5
+	FrameIndex QPS6 H 0 6
+	FrameIndex QPS7 H 0 7
+	FrameIndex QPS8 H 0 8
+	FrameIndex QPS9 H 0 9
+	FrameIndex QPSA H 0 10
+	FrameIndex QPSB H 0 11
+	FrameIndex QPSC H 0 12
+}
+
+// panel 9 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps09.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 I 0 0
+	FrameIndex QPS1 I 0 1
+	FrameIndex QPS2 I 0 2
+	FrameIndex QPS3 I 0 3
+	FrameIndex QPS4 I 0 4
+	FrameIndex QPS5 I 0 5
+	FrameIndex QPS6 I 0 6
+	FrameIndex QPS7 I 0 7
+	FrameIndex QPS8 I 0 8
+	FrameIndex QPS9 I 0 9
+	FrameIndex QPSA I 0 10
+	FrameIndex QPSB I 0 11
+	FrameIndex QPSC I 0 12
+}
+
+// panel 11 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps11.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 J 0 0
+	FrameIndex QPS1 J 0 1
+	FrameIndex QPS2 J 0 2
+	FrameIndex QPS3 J 0 3
+	FrameIndex QPS4 J 0 4
+	FrameIndex QPS5 J 0 5
+	FrameIndex QPS6 J 0 6
+	FrameIndex QPS7 J 0 7
+	FrameIndex QPS8 J 0 8
+	FrameIndex QPS9 J 0 9
+	FrameIndex QPSA J 0 10
+	FrameIndex QPSB J 0 11
+	FrameIndex QPSC J 0 12
+}
+
+// panel 12 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps12.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 K 0 0
+	FrameIndex QPS1 K 0 1
+	FrameIndex QPS2 K 0 2
+	FrameIndex QPS3 K 0 3
+	FrameIndex QPS4 K 0 4
+	FrameIndex QPS5 K 0 5
+	FrameIndex QPS6 K 0 6
+	FrameIndex QPS7 K 0 7
+	FrameIndex QPS8 K 0 8
+	FrameIndex QPS9 K 0 9
+	FrameIndex QPSA K 0 10
+	FrameIndex QPSB K 0 11
+	FrameIndex QPSC K 0 12
+}
+
+// panel 13 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps13.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 L 0 0
+	FrameIndex QPS1 L 0 1
+	FrameIndex QPS2 L 0 2
+	FrameIndex QPS3 L 0 3
+	FrameIndex QPS4 L 0 4
+	FrameIndex QPS5 L 0 5
+	FrameIndex QPS6 L 0 6
+	FrameIndex QPS7 L 0 7
+	FrameIndex QPS8 L 0 8
+	FrameIndex QPS9 L 0 9
+	FrameIndex QPSA L 0 10
+	FrameIndex QPSB L 0 11
+	FrameIndex QPSC L 0 12
+}
+
+// panel 14 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps14.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 M 0 0
+	FrameIndex QPS1 M 0 1
+	FrameIndex QPS2 M 0 2
+	FrameIndex QPS3 M 0 3
+	FrameIndex QPS4 M 0 4
+	FrameIndex QPS5 M 0 5
+	FrameIndex QPS6 M 0 6
+	FrameIndex QPS7 M 0 7
+	FrameIndex QPS8 M 0 8
+	FrameIndex QPS9 M 0 9
+	FrameIndex QPSA M 0 10
+	FrameIndex QPSB M 0 11
+	FrameIndex QPSC M 0 12
+}
+
+// panel 15 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps15.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 N 0 0
+	FrameIndex QPS1 N 0 1
+	FrameIndex QPS2 N 0 2
+	FrameIndex QPS3 N 0 3
+	FrameIndex QPS4 N 0 4
+	FrameIndex QPS5 N 0 5
+	FrameIndex QPS6 N 0 6
+	FrameIndex QPS7 N 0 7
+	FrameIndex QPS8 N 0 8
+	FrameIndex QPS9 N 0 9
+	FrameIndex QPSA N 0 10
+	FrameIndex QPSB N 0 11
+	FrameIndex QPSC N 0 12
+}
+
+// panel 16 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps16.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 O 0 0
+	FrameIndex QPS1 O 0 1
+	FrameIndex QPS2 O 0 2
+	FrameIndex QPS3 O 0 3
+	FrameIndex QPS4 O 0 4
+	FrameIndex QPS5 O 0 5
+	FrameIndex QPS6 O 0 6
+	FrameIndex QPS7 O 0 7
+	FrameIndex QPS8 O 0 8
+	FrameIndex QPS9 O 0 9
+	FrameIndex QPSA O 0 10
+	FrameIndex QPSB O 0 11
+	FrameIndex QPSC O 0 12
+}
+
+// panel 17 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps17.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 P 0 0
+	FrameIndex QPS1 P 0 1
+	FrameIndex QPS2 P 0 2
+	FrameIndex QPS3 P 0 3
+	FrameIndex QPS4 P 0 4
+	FrameIndex QPS5 P 0 5
+	FrameIndex QPS6 P 0 6
+	FrameIndex QPS7 P 0 7
+	FrameIndex QPS8 P 0 8
+	FrameIndex QPS9 P 0 9
+	FrameIndex QPSA P 0 10
+	FrameIndex QPSB P 0 11
+	FrameIndex QPSC P 0 12
+}
+
+// panel 18 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps18.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 Q 0 0
+	FrameIndex QPS1 Q 0 1
+	FrameIndex QPS2 Q 0 2
+	FrameIndex QPS3 Q 0 3
+	FrameIndex QPS4 Q 0 4
+	FrameIndex QPS5 Q 0 5
+	FrameIndex QPS6 Q 0 6
+	FrameIndex QPS7 Q 0 7
+	FrameIndex QPS8 Q 0 8
+	FrameIndex QPS9 Q 0 9
+	FrameIndex QPSA Q 0 10
+	FrameIndex QPSB Q 0 11
+	FrameIndex QPSC Q 0 12
+}
+
+// panel 19 short
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "panel_t.md3"
+	Skin 0 "ps19.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QPS0 R 0 0
+	FrameIndex QPS1 R 0 1
+	FrameIndex QPS2 R 0 2
+	FrameIndex QPS3 R 0 3
+	FrameIndex QPS4 R 0 4
+	FrameIndex QPS5 R 0 5
+	FrameIndex QPS6 R 0 6
+	FrameIndex QPS7 R 0 7
+	FrameIndex QPS8 R 0 8
+	FrameIndex QPS9 R 0 9
+	FrameIndex QPSA R 0 10
+	FrameIndex QPSB R 0 11
+	FrameIndex QPSC R 0 12
+}
+
+// the word, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "label_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QLW0 A 0 0
+	FrameIndex QLW0 B 0 1
+	FrameIndex QLW1 A 0 2
+	FrameIndex QLW1 B 0 3
+	FrameIndex QLW2 A 0 4
+	FrameIndex QLW2 B 0 5
+	FrameIndex QLW3 A 0 6
+	FrameIndex QLW3 B 0 7
+	FrameIndex QLW4 A 0 8
+	FrameIndex QLW4 B 0 9
+	FrameIndex QLW5 A 0 10
+	FrameIndex QLW5 B 0 11
+	FrameIndex QLW6 A 0 12
+	FrameIndex QLW6 B 0 13
+	FrameIndex QLW7 A 0 14
+	FrameIndex QLW7 B 0 15
+	FrameIndex QLW8 A 0 16
+	FrameIndex QLW8 B 0 17
+	FrameIndex QLW9 A 0 18
+	FrameIndex QLW9 B 0 19
+	FrameIndex QLWA A 0 20
+	FrameIndex QLWA B 0 21
+	FrameIndex QLWB A 0 22
+	FrameIndex QLWB B 0 23
+	FrameIndex QLWC A 0 24
+	FrameIndex QLWC B 0 25
+}
+
+// RELOAD, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "reload_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QRW0 A 0 0
+	FrameIndex QRW0 B 0 1
+	FrameIndex QRW1 A 0 2
+	FrameIndex QRW1 B 0 3
+	FrameIndex QRW2 A 0 4
+	FrameIndex QRW2 B 0 5
+	FrameIndex QRW3 A 0 6
+	FrameIndex QRW3 B 0 7
+	FrameIndex QRW4 A 0 8
+	FrameIndex QRW4 B 0 9
+	FrameIndex QRW5 A 0 10
+	FrameIndex QRW5 B 0 11
+	FrameIndex QRW6 A 0 12
+	FrameIndex QRW6 B 0 13
+	FrameIndex QRW7 A 0 14
+	FrameIndex QRW7 B 0 15
+	FrameIndex QRW8 A 0 16
+	FrameIndex QRW8 B 0 17
+	FrameIndex QRW9 A 0 18
+	FrameIndex QRW9 B 0 19
+	FrameIndex QRWA A 0 20
+	FrameIndex QRWA B 0 21
+	FrameIndex QRWB A 0 22
+	FrameIndex QRWB B 0 23
+	FrameIndex QRWC A 0 24
+	FrameIndex QRWC B 0 25
+}
+
+// big digit slot 0, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big0_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK00 A 0 0
+	FrameIndex QK00 B 0 1
+	FrameIndex QK00 C 0 2
+	FrameIndex QK00 D 0 3
+	FrameIndex QK00 E 0 4
+	FrameIndex QK00 F 0 5
+	FrameIndex QK00 G 0 6
+	FrameIndex QK00 H 0 7
+	FrameIndex QK00 I 0 8
+	FrameIndex QK00 J 0 9
+	FrameIndex QK00 K 0 10
+	FrameIndex QH00 A 0 11
+	FrameIndex QH00 B 0 12
+	FrameIndex QH00 C 0 13
+	FrameIndex QH00 D 0 14
+	FrameIndex QH00 E 0 15
+	FrameIndex QH00 F 0 16
+	FrameIndex QH00 G 0 17
+	FrameIndex QH00 H 0 18
+	FrameIndex QH00 I 0 19
+	FrameIndex QH00 J 0 20
+	FrameIndex QH00 K 0 21
+	FrameIndex QK01 A 0 22
+	FrameIndex QK01 B 0 23
+	FrameIndex QK01 C 0 24
+	FrameIndex QK01 D 0 25
+	FrameIndex QK01 E 0 26
+	FrameIndex QK01 F 0 27
+	FrameIndex QK01 G 0 28
+	FrameIndex QK01 H 0 29
+	FrameIndex QK01 I 0 30
+	FrameIndex QK01 J 0 31
+	FrameIndex QK01 K 0 32
+	FrameIndex QH01 A 0 33
+	FrameIndex QH01 B 0 34
+	FrameIndex QH01 C 0 35
+	FrameIndex QH01 D 0 36
+	FrameIndex QH01 E 0 37
+	FrameIndex QH01 F 0 38
+	FrameIndex QH01 G 0 39
+	FrameIndex QH01 H 0 40
+	FrameIndex QH01 I 0 41
+	FrameIndex QH01 J 0 42
+	FrameIndex QH01 K 0 43
+	FrameIndex QK02 A 0 44
+	FrameIndex QK02 B 0 45
+	FrameIndex QK02 C 0 46
+	FrameIndex QK02 D 0 47
+	FrameIndex QK02 E 0 48
+	FrameIndex QK02 F 0 49
+	FrameIndex QK02 G 0 50
+	FrameIndex QK02 H 0 51
+	FrameIndex QK02 I 0 52
+	FrameIndex QK02 J 0 53
+	FrameIndex QK02 K 0 54
+	FrameIndex QH02 A 0 55
+	FrameIndex QH02 B 0 56
+	FrameIndex QH02 C 0 57
+	FrameIndex QH02 D 0 58
+	FrameIndex QH02 E 0 59
+	FrameIndex QH02 F 0 60
+	FrameIndex QH02 G 0 61
+	FrameIndex QH02 H 0 62
+	FrameIndex QH02 I 0 63
+	FrameIndex QH02 J 0 64
+	FrameIndex QH02 K 0 65
+	FrameIndex QK03 A 0 66
+	FrameIndex QK03 B 0 67
+	FrameIndex QK03 C 0 68
+	FrameIndex QK03 D 0 69
+	FrameIndex QK03 E 0 70
+	FrameIndex QK03 F 0 71
+	FrameIndex QK03 G 0 72
+	FrameIndex QK03 H 0 73
+	FrameIndex QK03 I 0 74
+	FrameIndex QK03 J 0 75
+	FrameIndex QK03 K 0 76
+	FrameIndex QH03 A 0 77
+	FrameIndex QH03 B 0 78
+	FrameIndex QH03 C 0 79
+	FrameIndex QH03 D 0 80
+	FrameIndex QH03 E 0 81
+	FrameIndex QH03 F 0 82
+	FrameIndex QH03 G 0 83
+	FrameIndex QH03 H 0 84
+	FrameIndex QH03 I 0 85
+	FrameIndex QH03 J 0 86
+	FrameIndex QH03 K 0 87
+	FrameIndex QK04 A 0 88
+	FrameIndex QK04 B 0 89
+	FrameIndex QK04 C 0 90
+	FrameIndex QK04 D 0 91
+	FrameIndex QK04 E 0 92
+	FrameIndex QK04 F 0 93
+	FrameIndex QK04 G 0 94
+	FrameIndex QK04 H 0 95
+	FrameIndex QK04 I 0 96
+	FrameIndex QK04 J 0 97
+	FrameIndex QK04 K 0 98
+	FrameIndex QH04 A 0 99
+	FrameIndex QH04 B 0 100
+	FrameIndex QH04 C 0 101
+	FrameIndex QH04 D 0 102
+	FrameIndex QH04 E 0 103
+	FrameIndex QH04 F 0 104
+	FrameIndex QH04 G 0 105
+	FrameIndex QH04 H 0 106
+	FrameIndex QH04 I 0 107
+	FrameIndex QH04 J 0 108
+	FrameIndex QH04 K 0 109
+	FrameIndex QK05 A 0 110
+	FrameIndex QK05 B 0 111
+	FrameIndex QK05 C 0 112
+	FrameIndex QK05 D 0 113
+	FrameIndex QK05 E 0 114
+	FrameIndex QK05 F 0 115
+	FrameIndex QK05 G 0 116
+	FrameIndex QK05 H 0 117
+	FrameIndex QK05 I 0 118
+	FrameIndex QK05 J 0 119
+	FrameIndex QK05 K 0 120
+	FrameIndex QH05 A 0 121
+	FrameIndex QH05 B 0 122
+	FrameIndex QH05 C 0 123
+	FrameIndex QH05 D 0 124
+	FrameIndex QH05 E 0 125
+	FrameIndex QH05 F 0 126
+	FrameIndex QH05 G 0 127
+	FrameIndex QH05 H 0 128
+	FrameIndex QH05 I 0 129
+	FrameIndex QH05 J 0 130
+	FrameIndex QH05 K 0 131
+	FrameIndex QK06 A 0 132
+	FrameIndex QK06 B 0 133
+	FrameIndex QK06 C 0 134
+	FrameIndex QK06 D 0 135
+	FrameIndex QK06 E 0 136
+	FrameIndex QK06 F 0 137
+	FrameIndex QK06 G 0 138
+	FrameIndex QK06 H 0 139
+	FrameIndex QK06 I 0 140
+	FrameIndex QK06 J 0 141
+	FrameIndex QK06 K 0 142
+	FrameIndex QH06 A 0 143
+	FrameIndex QH06 B 0 144
+	FrameIndex QH06 C 0 145
+	FrameIndex QH06 D 0 146
+	FrameIndex QH06 E 0 147
+	FrameIndex QH06 F 0 148
+	FrameIndex QH06 G 0 149
+	FrameIndex QH06 H 0 150
+	FrameIndex QH06 I 0 151
+	FrameIndex QH06 J 0 152
+	FrameIndex QH06 K 0 153
+	FrameIndex QK07 A 0 154
+	FrameIndex QK07 B 0 155
+	FrameIndex QK07 C 0 156
+	FrameIndex QK07 D 0 157
+	FrameIndex QK07 E 0 158
+	FrameIndex QK07 F 0 159
+	FrameIndex QK07 G 0 160
+	FrameIndex QK07 H 0 161
+	FrameIndex QK07 I 0 162
+	FrameIndex QK07 J 0 163
+	FrameIndex QK07 K 0 164
+	FrameIndex QH07 A 0 165
+	FrameIndex QH07 B 0 166
+	FrameIndex QH07 C 0 167
+	FrameIndex QH07 D 0 168
+	FrameIndex QH07 E 0 169
+	FrameIndex QH07 F 0 170
+	FrameIndex QH07 G 0 171
+	FrameIndex QH07 H 0 172
+	FrameIndex QH07 I 0 173
+	FrameIndex QH07 J 0 174
+	FrameIndex QH07 K 0 175
+	FrameIndex QK08 A 0 176
+	FrameIndex QK08 B 0 177
+	FrameIndex QK08 C 0 178
+	FrameIndex QK08 D 0 179
+	FrameIndex QK08 E 0 180
+	FrameIndex QK08 F 0 181
+	FrameIndex QK08 G 0 182
+	FrameIndex QK08 H 0 183
+	FrameIndex QK08 I 0 184
+	FrameIndex QK08 J 0 185
+	FrameIndex QK08 K 0 186
+	FrameIndex QH08 A 0 187
+	FrameIndex QH08 B 0 188
+	FrameIndex QH08 C 0 189
+	FrameIndex QH08 D 0 190
+	FrameIndex QH08 E 0 191
+	FrameIndex QH08 F 0 192
+	FrameIndex QH08 G 0 193
+	FrameIndex QH08 H 0 194
+	FrameIndex QH08 I 0 195
+	FrameIndex QH08 J 0 196
+	FrameIndex QH08 K 0 197
+	FrameIndex QK09 A 0 198
+	FrameIndex QK09 B 0 199
+	FrameIndex QK09 C 0 200
+	FrameIndex QK09 D 0 201
+	FrameIndex QK09 E 0 202
+	FrameIndex QK09 F 0 203
+	FrameIndex QK09 G 0 204
+	FrameIndex QK09 H 0 205
+	FrameIndex QK09 I 0 206
+	FrameIndex QK09 J 0 207
+	FrameIndex QK09 K 0 208
+	FrameIndex QH09 A 0 209
+	FrameIndex QH09 B 0 210
+	FrameIndex QH09 C 0 211
+	FrameIndex QH09 D 0 212
+	FrameIndex QH09 E 0 213
+	FrameIndex QH09 F 0 214
+	FrameIndex QH09 G 0 215
+	FrameIndex QH09 H 0 216
+	FrameIndex QH09 I 0 217
+	FrameIndex QH09 J 0 218
+	FrameIndex QH09 K 0 219
+	FrameIndex QK0A A 0 220
+	FrameIndex QK0A B 0 221
+	FrameIndex QK0A C 0 222
+	FrameIndex QK0A D 0 223
+	FrameIndex QK0A E 0 224
+	FrameIndex QK0A F 0 225
+	FrameIndex QK0A G 0 226
+	FrameIndex QK0A H 0 227
+	FrameIndex QK0A I 0 228
+	FrameIndex QK0A J 0 229
+	FrameIndex QK0A K 0 230
+	FrameIndex QH0A A 0 231
+	FrameIndex QH0A B 0 232
+	FrameIndex QH0A C 0 233
+	FrameIndex QH0A D 0 234
+	FrameIndex QH0A E 0 235
+	FrameIndex QH0A F 0 236
+	FrameIndex QH0A G 0 237
+	FrameIndex QH0A H 0 238
+	FrameIndex QH0A I 0 239
+	FrameIndex QH0A J 0 240
+	FrameIndex QH0A K 0 241
+	FrameIndex QK0B A 0 242
+	FrameIndex QK0B B 0 243
+	FrameIndex QK0B C 0 244
+	FrameIndex QK0B D 0 245
+	FrameIndex QK0B E 0 246
+	FrameIndex QK0B F 0 247
+	FrameIndex QK0B G 0 248
+	FrameIndex QK0B H 0 249
+	FrameIndex QK0B I 0 250
+	FrameIndex QK0B J 0 251
+	FrameIndex QK0B K 0 252
+	FrameIndex QH0B A 0 253
+	FrameIndex QH0B B 0 254
+	FrameIndex QH0B C 0 255
+	FrameIndex QH0B D 0 256
+	FrameIndex QH0B E 0 257
+	FrameIndex QH0B F 0 258
+	FrameIndex QH0B G 0 259
+	FrameIndex QH0B H 0 260
+	FrameIndex QH0B I 0 261
+	FrameIndex QH0B J 0 262
+	FrameIndex QH0B K 0 263
+	FrameIndex QK0C A 0 264
+	FrameIndex QK0C B 0 265
+	FrameIndex QK0C C 0 266
+	FrameIndex QK0C D 0 267
+	FrameIndex QK0C E 0 268
+	FrameIndex QK0C F 0 269
+	FrameIndex QK0C G 0 270
+	FrameIndex QK0C H 0 271
+	FrameIndex QK0C I 0 272
+	FrameIndex QK0C J 0 273
+	FrameIndex QK0C K 0 274
+	FrameIndex QH0C A 0 275
+	FrameIndex QH0C B 0 276
+	FrameIndex QH0C C 0 277
+	FrameIndex QH0C D 0 278
+	FrameIndex QH0C E 0 279
+	FrameIndex QH0C F 0 280
+	FrameIndex QH0C G 0 281
+	FrameIndex QH0C H 0 282
+	FrameIndex QH0C I 0 283
+	FrameIndex QH0C J 0 284
+	FrameIndex QH0C K 0 285
+}
+
+// big digit slot 1, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big1_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK10 A 0 0
+	FrameIndex QK10 B 0 1
+	FrameIndex QK10 C 0 2
+	FrameIndex QK10 D 0 3
+	FrameIndex QK10 E 0 4
+	FrameIndex QK10 F 0 5
+	FrameIndex QK10 G 0 6
+	FrameIndex QK10 H 0 7
+	FrameIndex QK10 I 0 8
+	FrameIndex QK10 J 0 9
+	FrameIndex QK10 K 0 10
+	FrameIndex QH10 A 0 11
+	FrameIndex QH10 B 0 12
+	FrameIndex QH10 C 0 13
+	FrameIndex QH10 D 0 14
+	FrameIndex QH10 E 0 15
+	FrameIndex QH10 F 0 16
+	FrameIndex QH10 G 0 17
+	FrameIndex QH10 H 0 18
+	FrameIndex QH10 I 0 19
+	FrameIndex QH10 J 0 20
+	FrameIndex QH10 K 0 21
+	FrameIndex QK11 A 0 22
+	FrameIndex QK11 B 0 23
+	FrameIndex QK11 C 0 24
+	FrameIndex QK11 D 0 25
+	FrameIndex QK11 E 0 26
+	FrameIndex QK11 F 0 27
+	FrameIndex QK11 G 0 28
+	FrameIndex QK11 H 0 29
+	FrameIndex QK11 I 0 30
+	FrameIndex QK11 J 0 31
+	FrameIndex QK11 K 0 32
+	FrameIndex QH11 A 0 33
+	FrameIndex QH11 B 0 34
+	FrameIndex QH11 C 0 35
+	FrameIndex QH11 D 0 36
+	FrameIndex QH11 E 0 37
+	FrameIndex QH11 F 0 38
+	FrameIndex QH11 G 0 39
+	FrameIndex QH11 H 0 40
+	FrameIndex QH11 I 0 41
+	FrameIndex QH11 J 0 42
+	FrameIndex QH11 K 0 43
+	FrameIndex QK12 A 0 44
+	FrameIndex QK12 B 0 45
+	FrameIndex QK12 C 0 46
+	FrameIndex QK12 D 0 47
+	FrameIndex QK12 E 0 48
+	FrameIndex QK12 F 0 49
+	FrameIndex QK12 G 0 50
+	FrameIndex QK12 H 0 51
+	FrameIndex QK12 I 0 52
+	FrameIndex QK12 J 0 53
+	FrameIndex QK12 K 0 54
+	FrameIndex QH12 A 0 55
+	FrameIndex QH12 B 0 56
+	FrameIndex QH12 C 0 57
+	FrameIndex QH12 D 0 58
+	FrameIndex QH12 E 0 59
+	FrameIndex QH12 F 0 60
+	FrameIndex QH12 G 0 61
+	FrameIndex QH12 H 0 62
+	FrameIndex QH12 I 0 63
+	FrameIndex QH12 J 0 64
+	FrameIndex QH12 K 0 65
+	FrameIndex QK13 A 0 66
+	FrameIndex QK13 B 0 67
+	FrameIndex QK13 C 0 68
+	FrameIndex QK13 D 0 69
+	FrameIndex QK13 E 0 70
+	FrameIndex QK13 F 0 71
+	FrameIndex QK13 G 0 72
+	FrameIndex QK13 H 0 73
+	FrameIndex QK13 I 0 74
+	FrameIndex QK13 J 0 75
+	FrameIndex QK13 K 0 76
+	FrameIndex QH13 A 0 77
+	FrameIndex QH13 B 0 78
+	FrameIndex QH13 C 0 79
+	FrameIndex QH13 D 0 80
+	FrameIndex QH13 E 0 81
+	FrameIndex QH13 F 0 82
+	FrameIndex QH13 G 0 83
+	FrameIndex QH13 H 0 84
+	FrameIndex QH13 I 0 85
+	FrameIndex QH13 J 0 86
+	FrameIndex QH13 K 0 87
+	FrameIndex QK14 A 0 88
+	FrameIndex QK14 B 0 89
+	FrameIndex QK14 C 0 90
+	FrameIndex QK14 D 0 91
+	FrameIndex QK14 E 0 92
+	FrameIndex QK14 F 0 93
+	FrameIndex QK14 G 0 94
+	FrameIndex QK14 H 0 95
+	FrameIndex QK14 I 0 96
+	FrameIndex QK14 J 0 97
+	FrameIndex QK14 K 0 98
+	FrameIndex QH14 A 0 99
+	FrameIndex QH14 B 0 100
+	FrameIndex QH14 C 0 101
+	FrameIndex QH14 D 0 102
+	FrameIndex QH14 E 0 103
+	FrameIndex QH14 F 0 104
+	FrameIndex QH14 G 0 105
+	FrameIndex QH14 H 0 106
+	FrameIndex QH14 I 0 107
+	FrameIndex QH14 J 0 108
+	FrameIndex QH14 K 0 109
+	FrameIndex QK15 A 0 110
+	FrameIndex QK15 B 0 111
+	FrameIndex QK15 C 0 112
+	FrameIndex QK15 D 0 113
+	FrameIndex QK15 E 0 114
+	FrameIndex QK15 F 0 115
+	FrameIndex QK15 G 0 116
+	FrameIndex QK15 H 0 117
+	FrameIndex QK15 I 0 118
+	FrameIndex QK15 J 0 119
+	FrameIndex QK15 K 0 120
+	FrameIndex QH15 A 0 121
+	FrameIndex QH15 B 0 122
+	FrameIndex QH15 C 0 123
+	FrameIndex QH15 D 0 124
+	FrameIndex QH15 E 0 125
+	FrameIndex QH15 F 0 126
+	FrameIndex QH15 G 0 127
+	FrameIndex QH15 H 0 128
+	FrameIndex QH15 I 0 129
+	FrameIndex QH15 J 0 130
+	FrameIndex QH15 K 0 131
+	FrameIndex QK16 A 0 132
+	FrameIndex QK16 B 0 133
+	FrameIndex QK16 C 0 134
+	FrameIndex QK16 D 0 135
+	FrameIndex QK16 E 0 136
+	FrameIndex QK16 F 0 137
+	FrameIndex QK16 G 0 138
+	FrameIndex QK16 H 0 139
+	FrameIndex QK16 I 0 140
+	FrameIndex QK16 J 0 141
+	FrameIndex QK16 K 0 142
+	FrameIndex QH16 A 0 143
+	FrameIndex QH16 B 0 144
+	FrameIndex QH16 C 0 145
+	FrameIndex QH16 D 0 146
+	FrameIndex QH16 E 0 147
+	FrameIndex QH16 F 0 148
+	FrameIndex QH16 G 0 149
+	FrameIndex QH16 H 0 150
+	FrameIndex QH16 I 0 151
+	FrameIndex QH16 J 0 152
+	FrameIndex QH16 K 0 153
+	FrameIndex QK17 A 0 154
+	FrameIndex QK17 B 0 155
+	FrameIndex QK17 C 0 156
+	FrameIndex QK17 D 0 157
+	FrameIndex QK17 E 0 158
+	FrameIndex QK17 F 0 159
+	FrameIndex QK17 G 0 160
+	FrameIndex QK17 H 0 161
+	FrameIndex QK17 I 0 162
+	FrameIndex QK17 J 0 163
+	FrameIndex QK17 K 0 164
+	FrameIndex QH17 A 0 165
+	FrameIndex QH17 B 0 166
+	FrameIndex QH17 C 0 167
+	FrameIndex QH17 D 0 168
+	FrameIndex QH17 E 0 169
+	FrameIndex QH17 F 0 170
+	FrameIndex QH17 G 0 171
+	FrameIndex QH17 H 0 172
+	FrameIndex QH17 I 0 173
+	FrameIndex QH17 J 0 174
+	FrameIndex QH17 K 0 175
+	FrameIndex QK18 A 0 176
+	FrameIndex QK18 B 0 177
+	FrameIndex QK18 C 0 178
+	FrameIndex QK18 D 0 179
+	FrameIndex QK18 E 0 180
+	FrameIndex QK18 F 0 181
+	FrameIndex QK18 G 0 182
+	FrameIndex QK18 H 0 183
+	FrameIndex QK18 I 0 184
+	FrameIndex QK18 J 0 185
+	FrameIndex QK18 K 0 186
+	FrameIndex QH18 A 0 187
+	FrameIndex QH18 B 0 188
+	FrameIndex QH18 C 0 189
+	FrameIndex QH18 D 0 190
+	FrameIndex QH18 E 0 191
+	FrameIndex QH18 F 0 192
+	FrameIndex QH18 G 0 193
+	FrameIndex QH18 H 0 194
+	FrameIndex QH18 I 0 195
+	FrameIndex QH18 J 0 196
+	FrameIndex QH18 K 0 197
+	FrameIndex QK19 A 0 198
+	FrameIndex QK19 B 0 199
+	FrameIndex QK19 C 0 200
+	FrameIndex QK19 D 0 201
+	FrameIndex QK19 E 0 202
+	FrameIndex QK19 F 0 203
+	FrameIndex QK19 G 0 204
+	FrameIndex QK19 H 0 205
+	FrameIndex QK19 I 0 206
+	FrameIndex QK19 J 0 207
+	FrameIndex QK19 K 0 208
+	FrameIndex QH19 A 0 209
+	FrameIndex QH19 B 0 210
+	FrameIndex QH19 C 0 211
+	FrameIndex QH19 D 0 212
+	FrameIndex QH19 E 0 213
+	FrameIndex QH19 F 0 214
+	FrameIndex QH19 G 0 215
+	FrameIndex QH19 H 0 216
+	FrameIndex QH19 I 0 217
+	FrameIndex QH19 J 0 218
+	FrameIndex QH19 K 0 219
+	FrameIndex QK1A A 0 220
+	FrameIndex QK1A B 0 221
+	FrameIndex QK1A C 0 222
+	FrameIndex QK1A D 0 223
+	FrameIndex QK1A E 0 224
+	FrameIndex QK1A F 0 225
+	FrameIndex QK1A G 0 226
+	FrameIndex QK1A H 0 227
+	FrameIndex QK1A I 0 228
+	FrameIndex QK1A J 0 229
+	FrameIndex QK1A K 0 230
+	FrameIndex QH1A A 0 231
+	FrameIndex QH1A B 0 232
+	FrameIndex QH1A C 0 233
+	FrameIndex QH1A D 0 234
+	FrameIndex QH1A E 0 235
+	FrameIndex QH1A F 0 236
+	FrameIndex QH1A G 0 237
+	FrameIndex QH1A H 0 238
+	FrameIndex QH1A I 0 239
+	FrameIndex QH1A J 0 240
+	FrameIndex QH1A K 0 241
+	FrameIndex QK1B A 0 242
+	FrameIndex QK1B B 0 243
+	FrameIndex QK1B C 0 244
+	FrameIndex QK1B D 0 245
+	FrameIndex QK1B E 0 246
+	FrameIndex QK1B F 0 247
+	FrameIndex QK1B G 0 248
+	FrameIndex QK1B H 0 249
+	FrameIndex QK1B I 0 250
+	FrameIndex QK1B J 0 251
+	FrameIndex QK1B K 0 252
+	FrameIndex QH1B A 0 253
+	FrameIndex QH1B B 0 254
+	FrameIndex QH1B C 0 255
+	FrameIndex QH1B D 0 256
+	FrameIndex QH1B E 0 257
+	FrameIndex QH1B F 0 258
+	FrameIndex QH1B G 0 259
+	FrameIndex QH1B H 0 260
+	FrameIndex QH1B I 0 261
+	FrameIndex QH1B J 0 262
+	FrameIndex QH1B K 0 263
+	FrameIndex QK1C A 0 264
+	FrameIndex QK1C B 0 265
+	FrameIndex QK1C C 0 266
+	FrameIndex QK1C D 0 267
+	FrameIndex QK1C E 0 268
+	FrameIndex QK1C F 0 269
+	FrameIndex QK1C G 0 270
+	FrameIndex QK1C H 0 271
+	FrameIndex QK1C I 0 272
+	FrameIndex QK1C J 0 273
+	FrameIndex QK1C K 0 274
+	FrameIndex QH1C A 0 275
+	FrameIndex QH1C B 0 276
+	FrameIndex QH1C C 0 277
+	FrameIndex QH1C D 0 278
+	FrameIndex QH1C E 0 279
+	FrameIndex QH1C F 0 280
+	FrameIndex QH1C G 0 281
+	FrameIndex QH1C H 0 282
+	FrameIndex QH1C I 0 283
+	FrameIndex QH1C J 0 284
+	FrameIndex QH1C K 0 285
+}
+
+// big digit slot 2, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big2_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK20 A 0 0
+	FrameIndex QK20 B 0 1
+	FrameIndex QK20 C 0 2
+	FrameIndex QK20 D 0 3
+	FrameIndex QK20 E 0 4
+	FrameIndex QK20 F 0 5
+	FrameIndex QK20 G 0 6
+	FrameIndex QK20 H 0 7
+	FrameIndex QK20 I 0 8
+	FrameIndex QK20 J 0 9
+	FrameIndex QK20 K 0 10
+	FrameIndex QH20 A 0 11
+	FrameIndex QH20 B 0 12
+	FrameIndex QH20 C 0 13
+	FrameIndex QH20 D 0 14
+	FrameIndex QH20 E 0 15
+	FrameIndex QH20 F 0 16
+	FrameIndex QH20 G 0 17
+	FrameIndex QH20 H 0 18
+	FrameIndex QH20 I 0 19
+	FrameIndex QH20 J 0 20
+	FrameIndex QH20 K 0 21
+	FrameIndex QK21 A 0 22
+	FrameIndex QK21 B 0 23
+	FrameIndex QK21 C 0 24
+	FrameIndex QK21 D 0 25
+	FrameIndex QK21 E 0 26
+	FrameIndex QK21 F 0 27
+	FrameIndex QK21 G 0 28
+	FrameIndex QK21 H 0 29
+	FrameIndex QK21 I 0 30
+	FrameIndex QK21 J 0 31
+	FrameIndex QK21 K 0 32
+	FrameIndex QH21 A 0 33
+	FrameIndex QH21 B 0 34
+	FrameIndex QH21 C 0 35
+	FrameIndex QH21 D 0 36
+	FrameIndex QH21 E 0 37
+	FrameIndex QH21 F 0 38
+	FrameIndex QH21 G 0 39
+	FrameIndex QH21 H 0 40
+	FrameIndex QH21 I 0 41
+	FrameIndex QH21 J 0 42
+	FrameIndex QH21 K 0 43
+	FrameIndex QK22 A 0 44
+	FrameIndex QK22 B 0 45
+	FrameIndex QK22 C 0 46
+	FrameIndex QK22 D 0 47
+	FrameIndex QK22 E 0 48
+	FrameIndex QK22 F 0 49
+	FrameIndex QK22 G 0 50
+	FrameIndex QK22 H 0 51
+	FrameIndex QK22 I 0 52
+	FrameIndex QK22 J 0 53
+	FrameIndex QK22 K 0 54
+	FrameIndex QH22 A 0 55
+	FrameIndex QH22 B 0 56
+	FrameIndex QH22 C 0 57
+	FrameIndex QH22 D 0 58
+	FrameIndex QH22 E 0 59
+	FrameIndex QH22 F 0 60
+	FrameIndex QH22 G 0 61
+	FrameIndex QH22 H 0 62
+	FrameIndex QH22 I 0 63
+	FrameIndex QH22 J 0 64
+	FrameIndex QH22 K 0 65
+	FrameIndex QK23 A 0 66
+	FrameIndex QK23 B 0 67
+	FrameIndex QK23 C 0 68
+	FrameIndex QK23 D 0 69
+	FrameIndex QK23 E 0 70
+	FrameIndex QK23 F 0 71
+	FrameIndex QK23 G 0 72
+	FrameIndex QK23 H 0 73
+	FrameIndex QK23 I 0 74
+	FrameIndex QK23 J 0 75
+	FrameIndex QK23 K 0 76
+	FrameIndex QH23 A 0 77
+	FrameIndex QH23 B 0 78
+	FrameIndex QH23 C 0 79
+	FrameIndex QH23 D 0 80
+	FrameIndex QH23 E 0 81
+	FrameIndex QH23 F 0 82
+	FrameIndex QH23 G 0 83
+	FrameIndex QH23 H 0 84
+	FrameIndex QH23 I 0 85
+	FrameIndex QH23 J 0 86
+	FrameIndex QH23 K 0 87
+	FrameIndex QK24 A 0 88
+	FrameIndex QK24 B 0 89
+	FrameIndex QK24 C 0 90
+	FrameIndex QK24 D 0 91
+	FrameIndex QK24 E 0 92
+	FrameIndex QK24 F 0 93
+	FrameIndex QK24 G 0 94
+	FrameIndex QK24 H 0 95
+	FrameIndex QK24 I 0 96
+	FrameIndex QK24 J 0 97
+	FrameIndex QK24 K 0 98
+	FrameIndex QH24 A 0 99
+	FrameIndex QH24 B 0 100
+	FrameIndex QH24 C 0 101
+	FrameIndex QH24 D 0 102
+	FrameIndex QH24 E 0 103
+	FrameIndex QH24 F 0 104
+	FrameIndex QH24 G 0 105
+	FrameIndex QH24 H 0 106
+	FrameIndex QH24 I 0 107
+	FrameIndex QH24 J 0 108
+	FrameIndex QH24 K 0 109
+	FrameIndex QK25 A 0 110
+	FrameIndex QK25 B 0 111
+	FrameIndex QK25 C 0 112
+	FrameIndex QK25 D 0 113
+	FrameIndex QK25 E 0 114
+	FrameIndex QK25 F 0 115
+	FrameIndex QK25 G 0 116
+	FrameIndex QK25 H 0 117
+	FrameIndex QK25 I 0 118
+	FrameIndex QK25 J 0 119
+	FrameIndex QK25 K 0 120
+	FrameIndex QH25 A 0 121
+	FrameIndex QH25 B 0 122
+	FrameIndex QH25 C 0 123
+	FrameIndex QH25 D 0 124
+	FrameIndex QH25 E 0 125
+	FrameIndex QH25 F 0 126
+	FrameIndex QH25 G 0 127
+	FrameIndex QH25 H 0 128
+	FrameIndex QH25 I 0 129
+	FrameIndex QH25 J 0 130
+	FrameIndex QH25 K 0 131
+	FrameIndex QK26 A 0 132
+	FrameIndex QK26 B 0 133
+	FrameIndex QK26 C 0 134
+	FrameIndex QK26 D 0 135
+	FrameIndex QK26 E 0 136
+	FrameIndex QK26 F 0 137
+	FrameIndex QK26 G 0 138
+	FrameIndex QK26 H 0 139
+	FrameIndex QK26 I 0 140
+	FrameIndex QK26 J 0 141
+	FrameIndex QK26 K 0 142
+	FrameIndex QH26 A 0 143
+	FrameIndex QH26 B 0 144
+	FrameIndex QH26 C 0 145
+	FrameIndex QH26 D 0 146
+	FrameIndex QH26 E 0 147
+	FrameIndex QH26 F 0 148
+	FrameIndex QH26 G 0 149
+	FrameIndex QH26 H 0 150
+	FrameIndex QH26 I 0 151
+	FrameIndex QH26 J 0 152
+	FrameIndex QH26 K 0 153
+	FrameIndex QK27 A 0 154
+	FrameIndex QK27 B 0 155
+	FrameIndex QK27 C 0 156
+	FrameIndex QK27 D 0 157
+	FrameIndex QK27 E 0 158
+	FrameIndex QK27 F 0 159
+	FrameIndex QK27 G 0 160
+	FrameIndex QK27 H 0 161
+	FrameIndex QK27 I 0 162
+	FrameIndex QK27 J 0 163
+	FrameIndex QK27 K 0 164
+	FrameIndex QH27 A 0 165
+	FrameIndex QH27 B 0 166
+	FrameIndex QH27 C 0 167
+	FrameIndex QH27 D 0 168
+	FrameIndex QH27 E 0 169
+	FrameIndex QH27 F 0 170
+	FrameIndex QH27 G 0 171
+	FrameIndex QH27 H 0 172
+	FrameIndex QH27 I 0 173
+	FrameIndex QH27 J 0 174
+	FrameIndex QH27 K 0 175
+	FrameIndex QK28 A 0 176
+	FrameIndex QK28 B 0 177
+	FrameIndex QK28 C 0 178
+	FrameIndex QK28 D 0 179
+	FrameIndex QK28 E 0 180
+	FrameIndex QK28 F 0 181
+	FrameIndex QK28 G 0 182
+	FrameIndex QK28 H 0 183
+	FrameIndex QK28 I 0 184
+	FrameIndex QK28 J 0 185
+	FrameIndex QK28 K 0 186
+	FrameIndex QH28 A 0 187
+	FrameIndex QH28 B 0 188
+	FrameIndex QH28 C 0 189
+	FrameIndex QH28 D 0 190
+	FrameIndex QH28 E 0 191
+	FrameIndex QH28 F 0 192
+	FrameIndex QH28 G 0 193
+	FrameIndex QH28 H 0 194
+	FrameIndex QH28 I 0 195
+	FrameIndex QH28 J 0 196
+	FrameIndex QH28 K 0 197
+	FrameIndex QK29 A 0 198
+	FrameIndex QK29 B 0 199
+	FrameIndex QK29 C 0 200
+	FrameIndex QK29 D 0 201
+	FrameIndex QK29 E 0 202
+	FrameIndex QK29 F 0 203
+	FrameIndex QK29 G 0 204
+	FrameIndex QK29 H 0 205
+	FrameIndex QK29 I 0 206
+	FrameIndex QK29 J 0 207
+	FrameIndex QK29 K 0 208
+	FrameIndex QH29 A 0 209
+	FrameIndex QH29 B 0 210
+	FrameIndex QH29 C 0 211
+	FrameIndex QH29 D 0 212
+	FrameIndex QH29 E 0 213
+	FrameIndex QH29 F 0 214
+	FrameIndex QH29 G 0 215
+	FrameIndex QH29 H 0 216
+	FrameIndex QH29 I 0 217
+	FrameIndex QH29 J 0 218
+	FrameIndex QH29 K 0 219
+	FrameIndex QK2A A 0 220
+	FrameIndex QK2A B 0 221
+	FrameIndex QK2A C 0 222
+	FrameIndex QK2A D 0 223
+	FrameIndex QK2A E 0 224
+	FrameIndex QK2A F 0 225
+	FrameIndex QK2A G 0 226
+	FrameIndex QK2A H 0 227
+	FrameIndex QK2A I 0 228
+	FrameIndex QK2A J 0 229
+	FrameIndex QK2A K 0 230
+	FrameIndex QH2A A 0 231
+	FrameIndex QH2A B 0 232
+	FrameIndex QH2A C 0 233
+	FrameIndex QH2A D 0 234
+	FrameIndex QH2A E 0 235
+	FrameIndex QH2A F 0 236
+	FrameIndex QH2A G 0 237
+	FrameIndex QH2A H 0 238
+	FrameIndex QH2A I 0 239
+	FrameIndex QH2A J 0 240
+	FrameIndex QH2A K 0 241
+	FrameIndex QK2B A 0 242
+	FrameIndex QK2B B 0 243
+	FrameIndex QK2B C 0 244
+	FrameIndex QK2B D 0 245
+	FrameIndex QK2B E 0 246
+	FrameIndex QK2B F 0 247
+	FrameIndex QK2B G 0 248
+	FrameIndex QK2B H 0 249
+	FrameIndex QK2B I 0 250
+	FrameIndex QK2B J 0 251
+	FrameIndex QK2B K 0 252
+	FrameIndex QH2B A 0 253
+	FrameIndex QH2B B 0 254
+	FrameIndex QH2B C 0 255
+	FrameIndex QH2B D 0 256
+	FrameIndex QH2B E 0 257
+	FrameIndex QH2B F 0 258
+	FrameIndex QH2B G 0 259
+	FrameIndex QH2B H 0 260
+	FrameIndex QH2B I 0 261
+	FrameIndex QH2B J 0 262
+	FrameIndex QH2B K 0 263
+	FrameIndex QK2C A 0 264
+	FrameIndex QK2C B 0 265
+	FrameIndex QK2C C 0 266
+	FrameIndex QK2C D 0 267
+	FrameIndex QK2C E 0 268
+	FrameIndex QK2C F 0 269
+	FrameIndex QK2C G 0 270
+	FrameIndex QK2C H 0 271
+	FrameIndex QK2C I 0 272
+	FrameIndex QK2C J 0 273
+	FrameIndex QK2C K 0 274
+	FrameIndex QH2C A 0 275
+	FrameIndex QH2C B 0 276
+	FrameIndex QH2C C 0 277
+	FrameIndex QH2C D 0 278
+	FrameIndex QH2C E 0 279
+	FrameIndex QH2C F 0 280
+	FrameIndex QH2C G 0 281
+	FrameIndex QH2C H 0 282
+	FrameIndex QH2C I 0 283
+	FrameIndex QH2C J 0 284
+	FrameIndex QH2C K 0 285
+}
+
+// big digit slot 3, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big3_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK30 A 0 0
+	FrameIndex QK30 B 0 1
+	FrameIndex QK30 C 0 2
+	FrameIndex QK30 D 0 3
+	FrameIndex QK30 E 0 4
+	FrameIndex QK30 F 0 5
+	FrameIndex QK30 G 0 6
+	FrameIndex QK30 H 0 7
+	FrameIndex QK30 I 0 8
+	FrameIndex QK30 J 0 9
+	FrameIndex QK30 K 0 10
+	FrameIndex QH30 A 0 11
+	FrameIndex QH30 B 0 12
+	FrameIndex QH30 C 0 13
+	FrameIndex QH30 D 0 14
+	FrameIndex QH30 E 0 15
+	FrameIndex QH30 F 0 16
+	FrameIndex QH30 G 0 17
+	FrameIndex QH30 H 0 18
+	FrameIndex QH30 I 0 19
+	FrameIndex QH30 J 0 20
+	FrameIndex QH30 K 0 21
+	FrameIndex QK31 A 0 22
+	FrameIndex QK31 B 0 23
+	FrameIndex QK31 C 0 24
+	FrameIndex QK31 D 0 25
+	FrameIndex QK31 E 0 26
+	FrameIndex QK31 F 0 27
+	FrameIndex QK31 G 0 28
+	FrameIndex QK31 H 0 29
+	FrameIndex QK31 I 0 30
+	FrameIndex QK31 J 0 31
+	FrameIndex QK31 K 0 32
+	FrameIndex QH31 A 0 33
+	FrameIndex QH31 B 0 34
+	FrameIndex QH31 C 0 35
+	FrameIndex QH31 D 0 36
+	FrameIndex QH31 E 0 37
+	FrameIndex QH31 F 0 38
+	FrameIndex QH31 G 0 39
+	FrameIndex QH31 H 0 40
+	FrameIndex QH31 I 0 41
+	FrameIndex QH31 J 0 42
+	FrameIndex QH31 K 0 43
+	FrameIndex QK32 A 0 44
+	FrameIndex QK32 B 0 45
+	FrameIndex QK32 C 0 46
+	FrameIndex QK32 D 0 47
+	FrameIndex QK32 E 0 48
+	FrameIndex QK32 F 0 49
+	FrameIndex QK32 G 0 50
+	FrameIndex QK32 H 0 51
+	FrameIndex QK32 I 0 52
+	FrameIndex QK32 J 0 53
+	FrameIndex QK32 K 0 54
+	FrameIndex QH32 A 0 55
+	FrameIndex QH32 B 0 56
+	FrameIndex QH32 C 0 57
+	FrameIndex QH32 D 0 58
+	FrameIndex QH32 E 0 59
+	FrameIndex QH32 F 0 60
+	FrameIndex QH32 G 0 61
+	FrameIndex QH32 H 0 62
+	FrameIndex QH32 I 0 63
+	FrameIndex QH32 J 0 64
+	FrameIndex QH32 K 0 65
+	FrameIndex QK33 A 0 66
+	FrameIndex QK33 B 0 67
+	FrameIndex QK33 C 0 68
+	FrameIndex QK33 D 0 69
+	FrameIndex QK33 E 0 70
+	FrameIndex QK33 F 0 71
+	FrameIndex QK33 G 0 72
+	FrameIndex QK33 H 0 73
+	FrameIndex QK33 I 0 74
+	FrameIndex QK33 J 0 75
+	FrameIndex QK33 K 0 76
+	FrameIndex QH33 A 0 77
+	FrameIndex QH33 B 0 78
+	FrameIndex QH33 C 0 79
+	FrameIndex QH33 D 0 80
+	FrameIndex QH33 E 0 81
+	FrameIndex QH33 F 0 82
+	FrameIndex QH33 G 0 83
+	FrameIndex QH33 H 0 84
+	FrameIndex QH33 I 0 85
+	FrameIndex QH33 J 0 86
+	FrameIndex QH33 K 0 87
+	FrameIndex QK34 A 0 88
+	FrameIndex QK34 B 0 89
+	FrameIndex QK34 C 0 90
+	FrameIndex QK34 D 0 91
+	FrameIndex QK34 E 0 92
+	FrameIndex QK34 F 0 93
+	FrameIndex QK34 G 0 94
+	FrameIndex QK34 H 0 95
+	FrameIndex QK34 I 0 96
+	FrameIndex QK34 J 0 97
+	FrameIndex QK34 K 0 98
+	FrameIndex QH34 A 0 99
+	FrameIndex QH34 B 0 100
+	FrameIndex QH34 C 0 101
+	FrameIndex QH34 D 0 102
+	FrameIndex QH34 E 0 103
+	FrameIndex QH34 F 0 104
+	FrameIndex QH34 G 0 105
+	FrameIndex QH34 H 0 106
+	FrameIndex QH34 I 0 107
+	FrameIndex QH34 J 0 108
+	FrameIndex QH34 K 0 109
+	FrameIndex QK35 A 0 110
+	FrameIndex QK35 B 0 111
+	FrameIndex QK35 C 0 112
+	FrameIndex QK35 D 0 113
+	FrameIndex QK35 E 0 114
+	FrameIndex QK35 F 0 115
+	FrameIndex QK35 G 0 116
+	FrameIndex QK35 H 0 117
+	FrameIndex QK35 I 0 118
+	FrameIndex QK35 J 0 119
+	FrameIndex QK35 K 0 120
+	FrameIndex QH35 A 0 121
+	FrameIndex QH35 B 0 122
+	FrameIndex QH35 C 0 123
+	FrameIndex QH35 D 0 124
+	FrameIndex QH35 E 0 125
+	FrameIndex QH35 F 0 126
+	FrameIndex QH35 G 0 127
+	FrameIndex QH35 H 0 128
+	FrameIndex QH35 I 0 129
+	FrameIndex QH35 J 0 130
+	FrameIndex QH35 K 0 131
+	FrameIndex QK36 A 0 132
+	FrameIndex QK36 B 0 133
+	FrameIndex QK36 C 0 134
+	FrameIndex QK36 D 0 135
+	FrameIndex QK36 E 0 136
+	FrameIndex QK36 F 0 137
+	FrameIndex QK36 G 0 138
+	FrameIndex QK36 H 0 139
+	FrameIndex QK36 I 0 140
+	FrameIndex QK36 J 0 141
+	FrameIndex QK36 K 0 142
+	FrameIndex QH36 A 0 143
+	FrameIndex QH36 B 0 144
+	FrameIndex QH36 C 0 145
+	FrameIndex QH36 D 0 146
+	FrameIndex QH36 E 0 147
+	FrameIndex QH36 F 0 148
+	FrameIndex QH36 G 0 149
+	FrameIndex QH36 H 0 150
+	FrameIndex QH36 I 0 151
+	FrameIndex QH36 J 0 152
+	FrameIndex QH36 K 0 153
+	FrameIndex QK37 A 0 154
+	FrameIndex QK37 B 0 155
+	FrameIndex QK37 C 0 156
+	FrameIndex QK37 D 0 157
+	FrameIndex QK37 E 0 158
+	FrameIndex QK37 F 0 159
+	FrameIndex QK37 G 0 160
+	FrameIndex QK37 H 0 161
+	FrameIndex QK37 I 0 162
+	FrameIndex QK37 J 0 163
+	FrameIndex QK37 K 0 164
+	FrameIndex QH37 A 0 165
+	FrameIndex QH37 B 0 166
+	FrameIndex QH37 C 0 167
+	FrameIndex QH37 D 0 168
+	FrameIndex QH37 E 0 169
+	FrameIndex QH37 F 0 170
+	FrameIndex QH37 G 0 171
+	FrameIndex QH37 H 0 172
+	FrameIndex QH37 I 0 173
+	FrameIndex QH37 J 0 174
+	FrameIndex QH37 K 0 175
+	FrameIndex QK38 A 0 176
+	FrameIndex QK38 B 0 177
+	FrameIndex QK38 C 0 178
+	FrameIndex QK38 D 0 179
+	FrameIndex QK38 E 0 180
+	FrameIndex QK38 F 0 181
+	FrameIndex QK38 G 0 182
+	FrameIndex QK38 H 0 183
+	FrameIndex QK38 I 0 184
+	FrameIndex QK38 J 0 185
+	FrameIndex QK38 K 0 186
+	FrameIndex QH38 A 0 187
+	FrameIndex QH38 B 0 188
+	FrameIndex QH38 C 0 189
+	FrameIndex QH38 D 0 190
+	FrameIndex QH38 E 0 191
+	FrameIndex QH38 F 0 192
+	FrameIndex QH38 G 0 193
+	FrameIndex QH38 H 0 194
+	FrameIndex QH38 I 0 195
+	FrameIndex QH38 J 0 196
+	FrameIndex QH38 K 0 197
+	FrameIndex QK39 A 0 198
+	FrameIndex QK39 B 0 199
+	FrameIndex QK39 C 0 200
+	FrameIndex QK39 D 0 201
+	FrameIndex QK39 E 0 202
+	FrameIndex QK39 F 0 203
+	FrameIndex QK39 G 0 204
+	FrameIndex QK39 H 0 205
+	FrameIndex QK39 I 0 206
+	FrameIndex QK39 J 0 207
+	FrameIndex QK39 K 0 208
+	FrameIndex QH39 A 0 209
+	FrameIndex QH39 B 0 210
+	FrameIndex QH39 C 0 211
+	FrameIndex QH39 D 0 212
+	FrameIndex QH39 E 0 213
+	FrameIndex QH39 F 0 214
+	FrameIndex QH39 G 0 215
+	FrameIndex QH39 H 0 216
+	FrameIndex QH39 I 0 217
+	FrameIndex QH39 J 0 218
+	FrameIndex QH39 K 0 219
+	FrameIndex QK3A A 0 220
+	FrameIndex QK3A B 0 221
+	FrameIndex QK3A C 0 222
+	FrameIndex QK3A D 0 223
+	FrameIndex QK3A E 0 224
+	FrameIndex QK3A F 0 225
+	FrameIndex QK3A G 0 226
+	FrameIndex QK3A H 0 227
+	FrameIndex QK3A I 0 228
+	FrameIndex QK3A J 0 229
+	FrameIndex QK3A K 0 230
+	FrameIndex QH3A A 0 231
+	FrameIndex QH3A B 0 232
+	FrameIndex QH3A C 0 233
+	FrameIndex QH3A D 0 234
+	FrameIndex QH3A E 0 235
+	FrameIndex QH3A F 0 236
+	FrameIndex QH3A G 0 237
+	FrameIndex QH3A H 0 238
+	FrameIndex QH3A I 0 239
+	FrameIndex QH3A J 0 240
+	FrameIndex QH3A K 0 241
+	FrameIndex QK3B A 0 242
+	FrameIndex QK3B B 0 243
+	FrameIndex QK3B C 0 244
+	FrameIndex QK3B D 0 245
+	FrameIndex QK3B E 0 246
+	FrameIndex QK3B F 0 247
+	FrameIndex QK3B G 0 248
+	FrameIndex QK3B H 0 249
+	FrameIndex QK3B I 0 250
+	FrameIndex QK3B J 0 251
+	FrameIndex QK3B K 0 252
+	FrameIndex QH3B A 0 253
+	FrameIndex QH3B B 0 254
+	FrameIndex QH3B C 0 255
+	FrameIndex QH3B D 0 256
+	FrameIndex QH3B E 0 257
+	FrameIndex QH3B F 0 258
+	FrameIndex QH3B G 0 259
+	FrameIndex QH3B H 0 260
+	FrameIndex QH3B I 0 261
+	FrameIndex QH3B J 0 262
+	FrameIndex QH3B K 0 263
+	FrameIndex QK3C A 0 264
+	FrameIndex QK3C B 0 265
+	FrameIndex QK3C C 0 266
+	FrameIndex QK3C D 0 267
+	FrameIndex QK3C E 0 268
+	FrameIndex QK3C F 0 269
+	FrameIndex QK3C G 0 270
+	FrameIndex QK3C H 0 271
+	FrameIndex QK3C I 0 272
+	FrameIndex QK3C J 0 273
+	FrameIndex QK3C K 0 274
+	FrameIndex QH3C A 0 275
+	FrameIndex QH3C B 0 276
+	FrameIndex QH3C C 0 277
+	FrameIndex QH3C D 0 278
+	FrameIndex QH3C E 0 279
+	FrameIndex QH3C F 0 280
+	FrameIndex QH3C G 0 281
+	FrameIndex QH3C H 0 282
+	FrameIndex QH3C I 0 283
+	FrameIndex QH3C J 0 284
+	FrameIndex QH3C K 0 285
+}
+
+// big digit slot 4, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big4_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK40 A 0 0
+	FrameIndex QK40 B 0 1
+	FrameIndex QK40 C 0 2
+	FrameIndex QK40 D 0 3
+	FrameIndex QK40 E 0 4
+	FrameIndex QK40 F 0 5
+	FrameIndex QK40 G 0 6
+	FrameIndex QK40 H 0 7
+	FrameIndex QK40 I 0 8
+	FrameIndex QK40 J 0 9
+	FrameIndex QK40 K 0 10
+	FrameIndex QH40 A 0 11
+	FrameIndex QH40 B 0 12
+	FrameIndex QH40 C 0 13
+	FrameIndex QH40 D 0 14
+	FrameIndex QH40 E 0 15
+	FrameIndex QH40 F 0 16
+	FrameIndex QH40 G 0 17
+	FrameIndex QH40 H 0 18
+	FrameIndex QH40 I 0 19
+	FrameIndex QH40 J 0 20
+	FrameIndex QH40 K 0 21
+	FrameIndex QK41 A 0 22
+	FrameIndex QK41 B 0 23
+	FrameIndex QK41 C 0 24
+	FrameIndex QK41 D 0 25
+	FrameIndex QK41 E 0 26
+	FrameIndex QK41 F 0 27
+	FrameIndex QK41 G 0 28
+	FrameIndex QK41 H 0 29
+	FrameIndex QK41 I 0 30
+	FrameIndex QK41 J 0 31
+	FrameIndex QK41 K 0 32
+	FrameIndex QH41 A 0 33
+	FrameIndex QH41 B 0 34
+	FrameIndex QH41 C 0 35
+	FrameIndex QH41 D 0 36
+	FrameIndex QH41 E 0 37
+	FrameIndex QH41 F 0 38
+	FrameIndex QH41 G 0 39
+	FrameIndex QH41 H 0 40
+	FrameIndex QH41 I 0 41
+	FrameIndex QH41 J 0 42
+	FrameIndex QH41 K 0 43
+	FrameIndex QK42 A 0 44
+	FrameIndex QK42 B 0 45
+	FrameIndex QK42 C 0 46
+	FrameIndex QK42 D 0 47
+	FrameIndex QK42 E 0 48
+	FrameIndex QK42 F 0 49
+	FrameIndex QK42 G 0 50
+	FrameIndex QK42 H 0 51
+	FrameIndex QK42 I 0 52
+	FrameIndex QK42 J 0 53
+	FrameIndex QK42 K 0 54
+	FrameIndex QH42 A 0 55
+	FrameIndex QH42 B 0 56
+	FrameIndex QH42 C 0 57
+	FrameIndex QH42 D 0 58
+	FrameIndex QH42 E 0 59
+	FrameIndex QH42 F 0 60
+	FrameIndex QH42 G 0 61
+	FrameIndex QH42 H 0 62
+	FrameIndex QH42 I 0 63
+	FrameIndex QH42 J 0 64
+	FrameIndex QH42 K 0 65
+	FrameIndex QK43 A 0 66
+	FrameIndex QK43 B 0 67
+	FrameIndex QK43 C 0 68
+	FrameIndex QK43 D 0 69
+	FrameIndex QK43 E 0 70
+	FrameIndex QK43 F 0 71
+	FrameIndex QK43 G 0 72
+	FrameIndex QK43 H 0 73
+	FrameIndex QK43 I 0 74
+	FrameIndex QK43 J 0 75
+	FrameIndex QK43 K 0 76
+	FrameIndex QH43 A 0 77
+	FrameIndex QH43 B 0 78
+	FrameIndex QH43 C 0 79
+	FrameIndex QH43 D 0 80
+	FrameIndex QH43 E 0 81
+	FrameIndex QH43 F 0 82
+	FrameIndex QH43 G 0 83
+	FrameIndex QH43 H 0 84
+	FrameIndex QH43 I 0 85
+	FrameIndex QH43 J 0 86
+	FrameIndex QH43 K 0 87
+	FrameIndex QK44 A 0 88
+	FrameIndex QK44 B 0 89
+	FrameIndex QK44 C 0 90
+	FrameIndex QK44 D 0 91
+	FrameIndex QK44 E 0 92
+	FrameIndex QK44 F 0 93
+	FrameIndex QK44 G 0 94
+	FrameIndex QK44 H 0 95
+	FrameIndex QK44 I 0 96
+	FrameIndex QK44 J 0 97
+	FrameIndex QK44 K 0 98
+	FrameIndex QH44 A 0 99
+	FrameIndex QH44 B 0 100
+	FrameIndex QH44 C 0 101
+	FrameIndex QH44 D 0 102
+	FrameIndex QH44 E 0 103
+	FrameIndex QH44 F 0 104
+	FrameIndex QH44 G 0 105
+	FrameIndex QH44 H 0 106
+	FrameIndex QH44 I 0 107
+	FrameIndex QH44 J 0 108
+	FrameIndex QH44 K 0 109
+	FrameIndex QK45 A 0 110
+	FrameIndex QK45 B 0 111
+	FrameIndex QK45 C 0 112
+	FrameIndex QK45 D 0 113
+	FrameIndex QK45 E 0 114
+	FrameIndex QK45 F 0 115
+	FrameIndex QK45 G 0 116
+	FrameIndex QK45 H 0 117
+	FrameIndex QK45 I 0 118
+	FrameIndex QK45 J 0 119
+	FrameIndex QK45 K 0 120
+	FrameIndex QH45 A 0 121
+	FrameIndex QH45 B 0 122
+	FrameIndex QH45 C 0 123
+	FrameIndex QH45 D 0 124
+	FrameIndex QH45 E 0 125
+	FrameIndex QH45 F 0 126
+	FrameIndex QH45 G 0 127
+	FrameIndex QH45 H 0 128
+	FrameIndex QH45 I 0 129
+	FrameIndex QH45 J 0 130
+	FrameIndex QH45 K 0 131
+	FrameIndex QK46 A 0 132
+	FrameIndex QK46 B 0 133
+	FrameIndex QK46 C 0 134
+	FrameIndex QK46 D 0 135
+	FrameIndex QK46 E 0 136
+	FrameIndex QK46 F 0 137
+	FrameIndex QK46 G 0 138
+	FrameIndex QK46 H 0 139
+	FrameIndex QK46 I 0 140
+	FrameIndex QK46 J 0 141
+	FrameIndex QK46 K 0 142
+	FrameIndex QH46 A 0 143
+	FrameIndex QH46 B 0 144
+	FrameIndex QH46 C 0 145
+	FrameIndex QH46 D 0 146
+	FrameIndex QH46 E 0 147
+	FrameIndex QH46 F 0 148
+	FrameIndex QH46 G 0 149
+	FrameIndex QH46 H 0 150
+	FrameIndex QH46 I 0 151
+	FrameIndex QH46 J 0 152
+	FrameIndex QH46 K 0 153
+	FrameIndex QK47 A 0 154
+	FrameIndex QK47 B 0 155
+	FrameIndex QK47 C 0 156
+	FrameIndex QK47 D 0 157
+	FrameIndex QK47 E 0 158
+	FrameIndex QK47 F 0 159
+	FrameIndex QK47 G 0 160
+	FrameIndex QK47 H 0 161
+	FrameIndex QK47 I 0 162
+	FrameIndex QK47 J 0 163
+	FrameIndex QK47 K 0 164
+	FrameIndex QH47 A 0 165
+	FrameIndex QH47 B 0 166
+	FrameIndex QH47 C 0 167
+	FrameIndex QH47 D 0 168
+	FrameIndex QH47 E 0 169
+	FrameIndex QH47 F 0 170
+	FrameIndex QH47 G 0 171
+	FrameIndex QH47 H 0 172
+	FrameIndex QH47 I 0 173
+	FrameIndex QH47 J 0 174
+	FrameIndex QH47 K 0 175
+	FrameIndex QK48 A 0 176
+	FrameIndex QK48 B 0 177
+	FrameIndex QK48 C 0 178
+	FrameIndex QK48 D 0 179
+	FrameIndex QK48 E 0 180
+	FrameIndex QK48 F 0 181
+	FrameIndex QK48 G 0 182
+	FrameIndex QK48 H 0 183
+	FrameIndex QK48 I 0 184
+	FrameIndex QK48 J 0 185
+	FrameIndex QK48 K 0 186
+	FrameIndex QH48 A 0 187
+	FrameIndex QH48 B 0 188
+	FrameIndex QH48 C 0 189
+	FrameIndex QH48 D 0 190
+	FrameIndex QH48 E 0 191
+	FrameIndex QH48 F 0 192
+	FrameIndex QH48 G 0 193
+	FrameIndex QH48 H 0 194
+	FrameIndex QH48 I 0 195
+	FrameIndex QH48 J 0 196
+	FrameIndex QH48 K 0 197
+	FrameIndex QK49 A 0 198
+	FrameIndex QK49 B 0 199
+	FrameIndex QK49 C 0 200
+	FrameIndex QK49 D 0 201
+	FrameIndex QK49 E 0 202
+	FrameIndex QK49 F 0 203
+	FrameIndex QK49 G 0 204
+	FrameIndex QK49 H 0 205
+	FrameIndex QK49 I 0 206
+	FrameIndex QK49 J 0 207
+	FrameIndex QK49 K 0 208
+	FrameIndex QH49 A 0 209
+	FrameIndex QH49 B 0 210
+	FrameIndex QH49 C 0 211
+	FrameIndex QH49 D 0 212
+	FrameIndex QH49 E 0 213
+	FrameIndex QH49 F 0 214
+	FrameIndex QH49 G 0 215
+	FrameIndex QH49 H 0 216
+	FrameIndex QH49 I 0 217
+	FrameIndex QH49 J 0 218
+	FrameIndex QH49 K 0 219
+	FrameIndex QK4A A 0 220
+	FrameIndex QK4A B 0 221
+	FrameIndex QK4A C 0 222
+	FrameIndex QK4A D 0 223
+	FrameIndex QK4A E 0 224
+	FrameIndex QK4A F 0 225
+	FrameIndex QK4A G 0 226
+	FrameIndex QK4A H 0 227
+	FrameIndex QK4A I 0 228
+	FrameIndex QK4A J 0 229
+	FrameIndex QK4A K 0 230
+	FrameIndex QH4A A 0 231
+	FrameIndex QH4A B 0 232
+	FrameIndex QH4A C 0 233
+	FrameIndex QH4A D 0 234
+	FrameIndex QH4A E 0 235
+	FrameIndex QH4A F 0 236
+	FrameIndex QH4A G 0 237
+	FrameIndex QH4A H 0 238
+	FrameIndex QH4A I 0 239
+	FrameIndex QH4A J 0 240
+	FrameIndex QH4A K 0 241
+	FrameIndex QK4B A 0 242
+	FrameIndex QK4B B 0 243
+	FrameIndex QK4B C 0 244
+	FrameIndex QK4B D 0 245
+	FrameIndex QK4B E 0 246
+	FrameIndex QK4B F 0 247
+	FrameIndex QK4B G 0 248
+	FrameIndex QK4B H 0 249
+	FrameIndex QK4B I 0 250
+	FrameIndex QK4B J 0 251
+	FrameIndex QK4B K 0 252
+	FrameIndex QH4B A 0 253
+	FrameIndex QH4B B 0 254
+	FrameIndex QH4B C 0 255
+	FrameIndex QH4B D 0 256
+	FrameIndex QH4B E 0 257
+	FrameIndex QH4B F 0 258
+	FrameIndex QH4B G 0 259
+	FrameIndex QH4B H 0 260
+	FrameIndex QH4B I 0 261
+	FrameIndex QH4B J 0 262
+	FrameIndex QH4B K 0 263
+	FrameIndex QK4C A 0 264
+	FrameIndex QK4C B 0 265
+	FrameIndex QK4C C 0 266
+	FrameIndex QK4C D 0 267
+	FrameIndex QK4C E 0 268
+	FrameIndex QK4C F 0 269
+	FrameIndex QK4C G 0 270
+	FrameIndex QK4C H 0 271
+	FrameIndex QK4C I 0 272
+	FrameIndex QK4C J 0 273
+	FrameIndex QK4C K 0 274
+	FrameIndex QH4C A 0 275
+	FrameIndex QH4C B 0 276
+	FrameIndex QH4C C 0 277
+	FrameIndex QH4C D 0 278
+	FrameIndex QH4C E 0 279
+	FrameIndex QH4C F 0 280
+	FrameIndex QH4C G 0 281
+	FrameIndex QH4C H 0 282
+	FrameIndex QH4C I 0 283
+	FrameIndex QH4C J 0 284
+	FrameIndex QH4C K 0 285
+}
+
+// small digit slot 0, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small0_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS00 A 0 0
+	FrameIndex QS00 B 0 1
+	FrameIndex QS00 C 0 2
+	FrameIndex QS00 D 0 3
+	FrameIndex QS00 E 0 4
+	FrameIndex QS00 F 0 5
+	FrameIndex QS00 G 0 6
+	FrameIndex QS00 H 0 7
+	FrameIndex QS00 I 0 8
+	FrameIndex QS00 J 0 9
+	FrameIndex QS00 K 0 10
+	FrameIndex QS01 A 0 11
+	FrameIndex QS01 B 0 12
+	FrameIndex QS01 C 0 13
+	FrameIndex QS01 D 0 14
+	FrameIndex QS01 E 0 15
+	FrameIndex QS01 F 0 16
+	FrameIndex QS01 G 0 17
+	FrameIndex QS01 H 0 18
+	FrameIndex QS01 I 0 19
+	FrameIndex QS01 J 0 20
+	FrameIndex QS01 K 0 21
+	FrameIndex QS02 A 0 22
+	FrameIndex QS02 B 0 23
+	FrameIndex QS02 C 0 24
+	FrameIndex QS02 D 0 25
+	FrameIndex QS02 E 0 26
+	FrameIndex QS02 F 0 27
+	FrameIndex QS02 G 0 28
+	FrameIndex QS02 H 0 29
+	FrameIndex QS02 I 0 30
+	FrameIndex QS02 J 0 31
+	FrameIndex QS02 K 0 32
+	FrameIndex QS03 A 0 33
+	FrameIndex QS03 B 0 34
+	FrameIndex QS03 C 0 35
+	FrameIndex QS03 D 0 36
+	FrameIndex QS03 E 0 37
+	FrameIndex QS03 F 0 38
+	FrameIndex QS03 G 0 39
+	FrameIndex QS03 H 0 40
+	FrameIndex QS03 I 0 41
+	FrameIndex QS03 J 0 42
+	FrameIndex QS03 K 0 43
+	FrameIndex QS04 A 0 44
+	FrameIndex QS04 B 0 45
+	FrameIndex QS04 C 0 46
+	FrameIndex QS04 D 0 47
+	FrameIndex QS04 E 0 48
+	FrameIndex QS04 F 0 49
+	FrameIndex QS04 G 0 50
+	FrameIndex QS04 H 0 51
+	FrameIndex QS04 I 0 52
+	FrameIndex QS04 J 0 53
+	FrameIndex QS04 K 0 54
+	FrameIndex QS05 A 0 55
+	FrameIndex QS05 B 0 56
+	FrameIndex QS05 C 0 57
+	FrameIndex QS05 D 0 58
+	FrameIndex QS05 E 0 59
+	FrameIndex QS05 F 0 60
+	FrameIndex QS05 G 0 61
+	FrameIndex QS05 H 0 62
+	FrameIndex QS05 I 0 63
+	FrameIndex QS05 J 0 64
+	FrameIndex QS05 K 0 65
+	FrameIndex QS06 A 0 66
+	FrameIndex QS06 B 0 67
+	FrameIndex QS06 C 0 68
+	FrameIndex QS06 D 0 69
+	FrameIndex QS06 E 0 70
+	FrameIndex QS06 F 0 71
+	FrameIndex QS06 G 0 72
+	FrameIndex QS06 H 0 73
+	FrameIndex QS06 I 0 74
+	FrameIndex QS06 J 0 75
+	FrameIndex QS06 K 0 76
+	FrameIndex QS07 A 0 77
+	FrameIndex QS07 B 0 78
+	FrameIndex QS07 C 0 79
+	FrameIndex QS07 D 0 80
+	FrameIndex QS07 E 0 81
+	FrameIndex QS07 F 0 82
+	FrameIndex QS07 G 0 83
+	FrameIndex QS07 H 0 84
+	FrameIndex QS07 I 0 85
+	FrameIndex QS07 J 0 86
+	FrameIndex QS07 K 0 87
+	FrameIndex QS08 A 0 88
+	FrameIndex QS08 B 0 89
+	FrameIndex QS08 C 0 90
+	FrameIndex QS08 D 0 91
+	FrameIndex QS08 E 0 92
+	FrameIndex QS08 F 0 93
+	FrameIndex QS08 G 0 94
+	FrameIndex QS08 H 0 95
+	FrameIndex QS08 I 0 96
+	FrameIndex QS08 J 0 97
+	FrameIndex QS08 K 0 98
+	FrameIndex QS09 A 0 99
+	FrameIndex QS09 B 0 100
+	FrameIndex QS09 C 0 101
+	FrameIndex QS09 D 0 102
+	FrameIndex QS09 E 0 103
+	FrameIndex QS09 F 0 104
+	FrameIndex QS09 G 0 105
+	FrameIndex QS09 H 0 106
+	FrameIndex QS09 I 0 107
+	FrameIndex QS09 J 0 108
+	FrameIndex QS09 K 0 109
+	FrameIndex QS0A A 0 110
+	FrameIndex QS0A B 0 111
+	FrameIndex QS0A C 0 112
+	FrameIndex QS0A D 0 113
+	FrameIndex QS0A E 0 114
+	FrameIndex QS0A F 0 115
+	FrameIndex QS0A G 0 116
+	FrameIndex QS0A H 0 117
+	FrameIndex QS0A I 0 118
+	FrameIndex QS0A J 0 119
+	FrameIndex QS0A K 0 120
+	FrameIndex QS0B A 0 121
+	FrameIndex QS0B B 0 122
+	FrameIndex QS0B C 0 123
+	FrameIndex QS0B D 0 124
+	FrameIndex QS0B E 0 125
+	FrameIndex QS0B F 0 126
+	FrameIndex QS0B G 0 127
+	FrameIndex QS0B H 0 128
+	FrameIndex QS0B I 0 129
+	FrameIndex QS0B J 0 130
+	FrameIndex QS0B K 0 131
+	FrameIndex QS0C A 0 132
+	FrameIndex QS0C B 0 133
+	FrameIndex QS0C C 0 134
+	FrameIndex QS0C D 0 135
+	FrameIndex QS0C E 0 136
+	FrameIndex QS0C F 0 137
+	FrameIndex QS0C G 0 138
+	FrameIndex QS0C H 0 139
+	FrameIndex QS0C I 0 140
+	FrameIndex QS0C J 0 141
+	FrameIndex QS0C K 0 142
+}
+
+// small digit slot 1, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small1_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS10 A 0 0
+	FrameIndex QS10 B 0 1
+	FrameIndex QS10 C 0 2
+	FrameIndex QS10 D 0 3
+	FrameIndex QS10 E 0 4
+	FrameIndex QS10 F 0 5
+	FrameIndex QS10 G 0 6
+	FrameIndex QS10 H 0 7
+	FrameIndex QS10 I 0 8
+	FrameIndex QS10 J 0 9
+	FrameIndex QS10 K 0 10
+	FrameIndex QS11 A 0 11
+	FrameIndex QS11 B 0 12
+	FrameIndex QS11 C 0 13
+	FrameIndex QS11 D 0 14
+	FrameIndex QS11 E 0 15
+	FrameIndex QS11 F 0 16
+	FrameIndex QS11 G 0 17
+	FrameIndex QS11 H 0 18
+	FrameIndex QS11 I 0 19
+	FrameIndex QS11 J 0 20
+	FrameIndex QS11 K 0 21
+	FrameIndex QS12 A 0 22
+	FrameIndex QS12 B 0 23
+	FrameIndex QS12 C 0 24
+	FrameIndex QS12 D 0 25
+	FrameIndex QS12 E 0 26
+	FrameIndex QS12 F 0 27
+	FrameIndex QS12 G 0 28
+	FrameIndex QS12 H 0 29
+	FrameIndex QS12 I 0 30
+	FrameIndex QS12 J 0 31
+	FrameIndex QS12 K 0 32
+	FrameIndex QS13 A 0 33
+	FrameIndex QS13 B 0 34
+	FrameIndex QS13 C 0 35
+	FrameIndex QS13 D 0 36
+	FrameIndex QS13 E 0 37
+	FrameIndex QS13 F 0 38
+	FrameIndex QS13 G 0 39
+	FrameIndex QS13 H 0 40
+	FrameIndex QS13 I 0 41
+	FrameIndex QS13 J 0 42
+	FrameIndex QS13 K 0 43
+	FrameIndex QS14 A 0 44
+	FrameIndex QS14 B 0 45
+	FrameIndex QS14 C 0 46
+	FrameIndex QS14 D 0 47
+	FrameIndex QS14 E 0 48
+	FrameIndex QS14 F 0 49
+	FrameIndex QS14 G 0 50
+	FrameIndex QS14 H 0 51
+	FrameIndex QS14 I 0 52
+	FrameIndex QS14 J 0 53
+	FrameIndex QS14 K 0 54
+	FrameIndex QS15 A 0 55
+	FrameIndex QS15 B 0 56
+	FrameIndex QS15 C 0 57
+	FrameIndex QS15 D 0 58
+	FrameIndex QS15 E 0 59
+	FrameIndex QS15 F 0 60
+	FrameIndex QS15 G 0 61
+	FrameIndex QS15 H 0 62
+	FrameIndex QS15 I 0 63
+	FrameIndex QS15 J 0 64
+	FrameIndex QS15 K 0 65
+	FrameIndex QS16 A 0 66
+	FrameIndex QS16 B 0 67
+	FrameIndex QS16 C 0 68
+	FrameIndex QS16 D 0 69
+	FrameIndex QS16 E 0 70
+	FrameIndex QS16 F 0 71
+	FrameIndex QS16 G 0 72
+	FrameIndex QS16 H 0 73
+	FrameIndex QS16 I 0 74
+	FrameIndex QS16 J 0 75
+	FrameIndex QS16 K 0 76
+	FrameIndex QS17 A 0 77
+	FrameIndex QS17 B 0 78
+	FrameIndex QS17 C 0 79
+	FrameIndex QS17 D 0 80
+	FrameIndex QS17 E 0 81
+	FrameIndex QS17 F 0 82
+	FrameIndex QS17 G 0 83
+	FrameIndex QS17 H 0 84
+	FrameIndex QS17 I 0 85
+	FrameIndex QS17 J 0 86
+	FrameIndex QS17 K 0 87
+	FrameIndex QS18 A 0 88
+	FrameIndex QS18 B 0 89
+	FrameIndex QS18 C 0 90
+	FrameIndex QS18 D 0 91
+	FrameIndex QS18 E 0 92
+	FrameIndex QS18 F 0 93
+	FrameIndex QS18 G 0 94
+	FrameIndex QS18 H 0 95
+	FrameIndex QS18 I 0 96
+	FrameIndex QS18 J 0 97
+	FrameIndex QS18 K 0 98
+	FrameIndex QS19 A 0 99
+	FrameIndex QS19 B 0 100
+	FrameIndex QS19 C 0 101
+	FrameIndex QS19 D 0 102
+	FrameIndex QS19 E 0 103
+	FrameIndex QS19 F 0 104
+	FrameIndex QS19 G 0 105
+	FrameIndex QS19 H 0 106
+	FrameIndex QS19 I 0 107
+	FrameIndex QS19 J 0 108
+	FrameIndex QS19 K 0 109
+	FrameIndex QS1A A 0 110
+	FrameIndex QS1A B 0 111
+	FrameIndex QS1A C 0 112
+	FrameIndex QS1A D 0 113
+	FrameIndex QS1A E 0 114
+	FrameIndex QS1A F 0 115
+	FrameIndex QS1A G 0 116
+	FrameIndex QS1A H 0 117
+	FrameIndex QS1A I 0 118
+	FrameIndex QS1A J 0 119
+	FrameIndex QS1A K 0 120
+	FrameIndex QS1B A 0 121
+	FrameIndex QS1B B 0 122
+	FrameIndex QS1B C 0 123
+	FrameIndex QS1B D 0 124
+	FrameIndex QS1B E 0 125
+	FrameIndex QS1B F 0 126
+	FrameIndex QS1B G 0 127
+	FrameIndex QS1B H 0 128
+	FrameIndex QS1B I 0 129
+	FrameIndex QS1B J 0 130
+	FrameIndex QS1B K 0 131
+	FrameIndex QS1C A 0 132
+	FrameIndex QS1C B 0 133
+	FrameIndex QS1C C 0 134
+	FrameIndex QS1C D 0 135
+	FrameIndex QS1C E 0 136
+	FrameIndex QS1C F 0 137
+	FrameIndex QS1C G 0 138
+	FrameIndex QS1C H 0 139
+	FrameIndex QS1C I 0 140
+	FrameIndex QS1C J 0 141
+	FrameIndex QS1C K 0 142
+}
+
+// small digit slot 2, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small2_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS20 A 0 0
+	FrameIndex QS20 B 0 1
+	FrameIndex QS20 C 0 2
+	FrameIndex QS20 D 0 3
+	FrameIndex QS20 E 0 4
+	FrameIndex QS20 F 0 5
+	FrameIndex QS20 G 0 6
+	FrameIndex QS20 H 0 7
+	FrameIndex QS20 I 0 8
+	FrameIndex QS20 J 0 9
+	FrameIndex QS20 K 0 10
+	FrameIndex QS21 A 0 11
+	FrameIndex QS21 B 0 12
+	FrameIndex QS21 C 0 13
+	FrameIndex QS21 D 0 14
+	FrameIndex QS21 E 0 15
+	FrameIndex QS21 F 0 16
+	FrameIndex QS21 G 0 17
+	FrameIndex QS21 H 0 18
+	FrameIndex QS21 I 0 19
+	FrameIndex QS21 J 0 20
+	FrameIndex QS21 K 0 21
+	FrameIndex QS22 A 0 22
+	FrameIndex QS22 B 0 23
+	FrameIndex QS22 C 0 24
+	FrameIndex QS22 D 0 25
+	FrameIndex QS22 E 0 26
+	FrameIndex QS22 F 0 27
+	FrameIndex QS22 G 0 28
+	FrameIndex QS22 H 0 29
+	FrameIndex QS22 I 0 30
+	FrameIndex QS22 J 0 31
+	FrameIndex QS22 K 0 32
+	FrameIndex QS23 A 0 33
+	FrameIndex QS23 B 0 34
+	FrameIndex QS23 C 0 35
+	FrameIndex QS23 D 0 36
+	FrameIndex QS23 E 0 37
+	FrameIndex QS23 F 0 38
+	FrameIndex QS23 G 0 39
+	FrameIndex QS23 H 0 40
+	FrameIndex QS23 I 0 41
+	FrameIndex QS23 J 0 42
+	FrameIndex QS23 K 0 43
+	FrameIndex QS24 A 0 44
+	FrameIndex QS24 B 0 45
+	FrameIndex QS24 C 0 46
+	FrameIndex QS24 D 0 47
+	FrameIndex QS24 E 0 48
+	FrameIndex QS24 F 0 49
+	FrameIndex QS24 G 0 50
+	FrameIndex QS24 H 0 51
+	FrameIndex QS24 I 0 52
+	FrameIndex QS24 J 0 53
+	FrameIndex QS24 K 0 54
+	FrameIndex QS25 A 0 55
+	FrameIndex QS25 B 0 56
+	FrameIndex QS25 C 0 57
+	FrameIndex QS25 D 0 58
+	FrameIndex QS25 E 0 59
+	FrameIndex QS25 F 0 60
+	FrameIndex QS25 G 0 61
+	FrameIndex QS25 H 0 62
+	FrameIndex QS25 I 0 63
+	FrameIndex QS25 J 0 64
+	FrameIndex QS25 K 0 65
+	FrameIndex QS26 A 0 66
+	FrameIndex QS26 B 0 67
+	FrameIndex QS26 C 0 68
+	FrameIndex QS26 D 0 69
+	FrameIndex QS26 E 0 70
+	FrameIndex QS26 F 0 71
+	FrameIndex QS26 G 0 72
+	FrameIndex QS26 H 0 73
+	FrameIndex QS26 I 0 74
+	FrameIndex QS26 J 0 75
+	FrameIndex QS26 K 0 76
+	FrameIndex QS27 A 0 77
+	FrameIndex QS27 B 0 78
+	FrameIndex QS27 C 0 79
+	FrameIndex QS27 D 0 80
+	FrameIndex QS27 E 0 81
+	FrameIndex QS27 F 0 82
+	FrameIndex QS27 G 0 83
+	FrameIndex QS27 H 0 84
+	FrameIndex QS27 I 0 85
+	FrameIndex QS27 J 0 86
+	FrameIndex QS27 K 0 87
+	FrameIndex QS28 A 0 88
+	FrameIndex QS28 B 0 89
+	FrameIndex QS28 C 0 90
+	FrameIndex QS28 D 0 91
+	FrameIndex QS28 E 0 92
+	FrameIndex QS28 F 0 93
+	FrameIndex QS28 G 0 94
+	FrameIndex QS28 H 0 95
+	FrameIndex QS28 I 0 96
+	FrameIndex QS28 J 0 97
+	FrameIndex QS28 K 0 98
+	FrameIndex QS29 A 0 99
+	FrameIndex QS29 B 0 100
+	FrameIndex QS29 C 0 101
+	FrameIndex QS29 D 0 102
+	FrameIndex QS29 E 0 103
+	FrameIndex QS29 F 0 104
+	FrameIndex QS29 G 0 105
+	FrameIndex QS29 H 0 106
+	FrameIndex QS29 I 0 107
+	FrameIndex QS29 J 0 108
+	FrameIndex QS29 K 0 109
+	FrameIndex QS2A A 0 110
+	FrameIndex QS2A B 0 111
+	FrameIndex QS2A C 0 112
+	FrameIndex QS2A D 0 113
+	FrameIndex QS2A E 0 114
+	FrameIndex QS2A F 0 115
+	FrameIndex QS2A G 0 116
+	FrameIndex QS2A H 0 117
+	FrameIndex QS2A I 0 118
+	FrameIndex QS2A J 0 119
+	FrameIndex QS2A K 0 120
+	FrameIndex QS2B A 0 121
+	FrameIndex QS2B B 0 122
+	FrameIndex QS2B C 0 123
+	FrameIndex QS2B D 0 124
+	FrameIndex QS2B E 0 125
+	FrameIndex QS2B F 0 126
+	FrameIndex QS2B G 0 127
+	FrameIndex QS2B H 0 128
+	FrameIndex QS2B I 0 129
+	FrameIndex QS2B J 0 130
+	FrameIndex QS2B K 0 131
+	FrameIndex QS2C A 0 132
+	FrameIndex QS2C B 0 133
+	FrameIndex QS2C C 0 134
+	FrameIndex QS2C D 0 135
+	FrameIndex QS2C E 0 136
+	FrameIndex QS2C F 0 137
+	FrameIndex QS2C G 0 138
+	FrameIndex QS2C H 0 139
+	FrameIndex QS2C I 0 140
+	FrameIndex QS2C J 0 141
+	FrameIndex QS2C K 0 142
+}
+
+// small digit slot 3, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small3_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS30 A 0 0
+	FrameIndex QS30 B 0 1
+	FrameIndex QS30 C 0 2
+	FrameIndex QS30 D 0 3
+	FrameIndex QS30 E 0 4
+	FrameIndex QS30 F 0 5
+	FrameIndex QS30 G 0 6
+	FrameIndex QS30 H 0 7
+	FrameIndex QS30 I 0 8
+	FrameIndex QS30 J 0 9
+	FrameIndex QS30 K 0 10
+	FrameIndex QS31 A 0 11
+	FrameIndex QS31 B 0 12
+	FrameIndex QS31 C 0 13
+	FrameIndex QS31 D 0 14
+	FrameIndex QS31 E 0 15
+	FrameIndex QS31 F 0 16
+	FrameIndex QS31 G 0 17
+	FrameIndex QS31 H 0 18
+	FrameIndex QS31 I 0 19
+	FrameIndex QS31 J 0 20
+	FrameIndex QS31 K 0 21
+	FrameIndex QS32 A 0 22
+	FrameIndex QS32 B 0 23
+	FrameIndex QS32 C 0 24
+	FrameIndex QS32 D 0 25
+	FrameIndex QS32 E 0 26
+	FrameIndex QS32 F 0 27
+	FrameIndex QS32 G 0 28
+	FrameIndex QS32 H 0 29
+	FrameIndex QS32 I 0 30
+	FrameIndex QS32 J 0 31
+	FrameIndex QS32 K 0 32
+	FrameIndex QS33 A 0 33
+	FrameIndex QS33 B 0 34
+	FrameIndex QS33 C 0 35
+	FrameIndex QS33 D 0 36
+	FrameIndex QS33 E 0 37
+	FrameIndex QS33 F 0 38
+	FrameIndex QS33 G 0 39
+	FrameIndex QS33 H 0 40
+	FrameIndex QS33 I 0 41
+	FrameIndex QS33 J 0 42
+	FrameIndex QS33 K 0 43
+	FrameIndex QS34 A 0 44
+	FrameIndex QS34 B 0 45
+	FrameIndex QS34 C 0 46
+	FrameIndex QS34 D 0 47
+	FrameIndex QS34 E 0 48
+	FrameIndex QS34 F 0 49
+	FrameIndex QS34 G 0 50
+	FrameIndex QS34 H 0 51
+	FrameIndex QS34 I 0 52
+	FrameIndex QS34 J 0 53
+	FrameIndex QS34 K 0 54
+	FrameIndex QS35 A 0 55
+	FrameIndex QS35 B 0 56
+	FrameIndex QS35 C 0 57
+	FrameIndex QS35 D 0 58
+	FrameIndex QS35 E 0 59
+	FrameIndex QS35 F 0 60
+	FrameIndex QS35 G 0 61
+	FrameIndex QS35 H 0 62
+	FrameIndex QS35 I 0 63
+	FrameIndex QS35 J 0 64
+	FrameIndex QS35 K 0 65
+	FrameIndex QS36 A 0 66
+	FrameIndex QS36 B 0 67
+	FrameIndex QS36 C 0 68
+	FrameIndex QS36 D 0 69
+	FrameIndex QS36 E 0 70
+	FrameIndex QS36 F 0 71
+	FrameIndex QS36 G 0 72
+	FrameIndex QS36 H 0 73
+	FrameIndex QS36 I 0 74
+	FrameIndex QS36 J 0 75
+	FrameIndex QS36 K 0 76
+	FrameIndex QS37 A 0 77
+	FrameIndex QS37 B 0 78
+	FrameIndex QS37 C 0 79
+	FrameIndex QS37 D 0 80
+	FrameIndex QS37 E 0 81
+	FrameIndex QS37 F 0 82
+	FrameIndex QS37 G 0 83
+	FrameIndex QS37 H 0 84
+	FrameIndex QS37 I 0 85
+	FrameIndex QS37 J 0 86
+	FrameIndex QS37 K 0 87
+	FrameIndex QS38 A 0 88
+	FrameIndex QS38 B 0 89
+	FrameIndex QS38 C 0 90
+	FrameIndex QS38 D 0 91
+	FrameIndex QS38 E 0 92
+	FrameIndex QS38 F 0 93
+	FrameIndex QS38 G 0 94
+	FrameIndex QS38 H 0 95
+	FrameIndex QS38 I 0 96
+	FrameIndex QS38 J 0 97
+	FrameIndex QS38 K 0 98
+	FrameIndex QS39 A 0 99
+	FrameIndex QS39 B 0 100
+	FrameIndex QS39 C 0 101
+	FrameIndex QS39 D 0 102
+	FrameIndex QS39 E 0 103
+	FrameIndex QS39 F 0 104
+	FrameIndex QS39 G 0 105
+	FrameIndex QS39 H 0 106
+	FrameIndex QS39 I 0 107
+	FrameIndex QS39 J 0 108
+	FrameIndex QS39 K 0 109
+	FrameIndex QS3A A 0 110
+	FrameIndex QS3A B 0 111
+	FrameIndex QS3A C 0 112
+	FrameIndex QS3A D 0 113
+	FrameIndex QS3A E 0 114
+	FrameIndex QS3A F 0 115
+	FrameIndex QS3A G 0 116
+	FrameIndex QS3A H 0 117
+	FrameIndex QS3A I 0 118
+	FrameIndex QS3A J 0 119
+	FrameIndex QS3A K 0 120
+	FrameIndex QS3B A 0 121
+	FrameIndex QS3B B 0 122
+	FrameIndex QS3B C 0 123
+	FrameIndex QS3B D 0 124
+	FrameIndex QS3B E 0 125
+	FrameIndex QS3B F 0 126
+	FrameIndex QS3B G 0 127
+	FrameIndex QS3B H 0 128
+	FrameIndex QS3B I 0 129
+	FrameIndex QS3B J 0 130
+	FrameIndex QS3B K 0 131
+	FrameIndex QS3C A 0 132
+	FrameIndex QS3C B 0 133
+	FrameIndex QS3C C 0 134
+	FrameIndex QS3C D 0 135
+	FrameIndex QS3C E 0 136
+	FrameIndex QS3C F 0 137
+	FrameIndex QS3C G 0 138
+	FrameIndex QS3C H 0 139
+	FrameIndex QS3C I 0 140
+	FrameIndex QS3C J 0 141
+	FrameIndex QS3C K 0 142
+}
+
+// small digit slot 4, Quest
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small4_q.md3"
+	Skin 0 "jfo_q.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS40 A 0 0
+	FrameIndex QS40 B 0 1
+	FrameIndex QS40 C 0 2
+	FrameIndex QS40 D 0 3
+	FrameIndex QS40 E 0 4
+	FrameIndex QS40 F 0 5
+	FrameIndex QS40 G 0 6
+	FrameIndex QS40 H 0 7
+	FrameIndex QS40 I 0 8
+	FrameIndex QS40 J 0 9
+	FrameIndex QS40 K 0 10
+	FrameIndex QS41 A 0 11
+	FrameIndex QS41 B 0 12
+	FrameIndex QS41 C 0 13
+	FrameIndex QS41 D 0 14
+	FrameIndex QS41 E 0 15
+	FrameIndex QS41 F 0 16
+	FrameIndex QS41 G 0 17
+	FrameIndex QS41 H 0 18
+	FrameIndex QS41 I 0 19
+	FrameIndex QS41 J 0 20
+	FrameIndex QS41 K 0 21
+	FrameIndex QS42 A 0 22
+	FrameIndex QS42 B 0 23
+	FrameIndex QS42 C 0 24
+	FrameIndex QS42 D 0 25
+	FrameIndex QS42 E 0 26
+	FrameIndex QS42 F 0 27
+	FrameIndex QS42 G 0 28
+	FrameIndex QS42 H 0 29
+	FrameIndex QS42 I 0 30
+	FrameIndex QS42 J 0 31
+	FrameIndex QS42 K 0 32
+	FrameIndex QS43 A 0 33
+	FrameIndex QS43 B 0 34
+	FrameIndex QS43 C 0 35
+	FrameIndex QS43 D 0 36
+	FrameIndex QS43 E 0 37
+	FrameIndex QS43 F 0 38
+	FrameIndex QS43 G 0 39
+	FrameIndex QS43 H 0 40
+	FrameIndex QS43 I 0 41
+	FrameIndex QS43 J 0 42
+	FrameIndex QS43 K 0 43
+	FrameIndex QS44 A 0 44
+	FrameIndex QS44 B 0 45
+	FrameIndex QS44 C 0 46
+	FrameIndex QS44 D 0 47
+	FrameIndex QS44 E 0 48
+	FrameIndex QS44 F 0 49
+	FrameIndex QS44 G 0 50
+	FrameIndex QS44 H 0 51
+	FrameIndex QS44 I 0 52
+	FrameIndex QS44 J 0 53
+	FrameIndex QS44 K 0 54
+	FrameIndex QS45 A 0 55
+	FrameIndex QS45 B 0 56
+	FrameIndex QS45 C 0 57
+	FrameIndex QS45 D 0 58
+	FrameIndex QS45 E 0 59
+	FrameIndex QS45 F 0 60
+	FrameIndex QS45 G 0 61
+	FrameIndex QS45 H 0 62
+	FrameIndex QS45 I 0 63
+	FrameIndex QS45 J 0 64
+	FrameIndex QS45 K 0 65
+	FrameIndex QS46 A 0 66
+	FrameIndex QS46 B 0 67
+	FrameIndex QS46 C 0 68
+	FrameIndex QS46 D 0 69
+	FrameIndex QS46 E 0 70
+	FrameIndex QS46 F 0 71
+	FrameIndex QS46 G 0 72
+	FrameIndex QS46 H 0 73
+	FrameIndex QS46 I 0 74
+	FrameIndex QS46 J 0 75
+	FrameIndex QS46 K 0 76
+	FrameIndex QS47 A 0 77
+	FrameIndex QS47 B 0 78
+	FrameIndex QS47 C 0 79
+	FrameIndex QS47 D 0 80
+	FrameIndex QS47 E 0 81
+	FrameIndex QS47 F 0 82
+	FrameIndex QS47 G 0 83
+	FrameIndex QS47 H 0 84
+	FrameIndex QS47 I 0 85
+	FrameIndex QS47 J 0 86
+	FrameIndex QS47 K 0 87
+	FrameIndex QS48 A 0 88
+	FrameIndex QS48 B 0 89
+	FrameIndex QS48 C 0 90
+	FrameIndex QS48 D 0 91
+	FrameIndex QS48 E 0 92
+	FrameIndex QS48 F 0 93
+	FrameIndex QS48 G 0 94
+	FrameIndex QS48 H 0 95
+	FrameIndex QS48 I 0 96
+	FrameIndex QS48 J 0 97
+	FrameIndex QS48 K 0 98
+	FrameIndex QS49 A 0 99
+	FrameIndex QS49 B 0 100
+	FrameIndex QS49 C 0 101
+	FrameIndex QS49 D 0 102
+	FrameIndex QS49 E 0 103
+	FrameIndex QS49 F 0 104
+	FrameIndex QS49 G 0 105
+	FrameIndex QS49 H 0 106
+	FrameIndex QS49 I 0 107
+	FrameIndex QS49 J 0 108
+	FrameIndex QS49 K 0 109
+	FrameIndex QS4A A 0 110
+	FrameIndex QS4A B 0 111
+	FrameIndex QS4A C 0 112
+	FrameIndex QS4A D 0 113
+	FrameIndex QS4A E 0 114
+	FrameIndex QS4A F 0 115
+	FrameIndex QS4A G 0 116
+	FrameIndex QS4A H 0 117
+	FrameIndex QS4A I 0 118
+	FrameIndex QS4A J 0 119
+	FrameIndex QS4A K 0 120
+	FrameIndex QS4B A 0 121
+	FrameIndex QS4B B 0 122
+	FrameIndex QS4B C 0 123
+	FrameIndex QS4B D 0 124
+	FrameIndex QS4B E 0 125
+	FrameIndex QS4B F 0 126
+	FrameIndex QS4B G 0 127
+	FrameIndex QS4B H 0 128
+	FrameIndex QS4B I 0 129
+	FrameIndex QS4B J 0 130
+	FrameIndex QS4B K 0 131
+	FrameIndex QS4C A 0 132
+	FrameIndex QS4C B 0 133
+	FrameIndex QS4C C 0 134
+	FrameIndex QS4C D 0 135
+	FrameIndex QS4C E 0 136
+	FrameIndex QS4C F 0 137
+	FrameIndex QS4C G 0 138
+	FrameIndex QS4C H 0 139
+	FrameIndex QS4C I 0 140
+	FrameIndex QS4C J 0 141
+	FrameIndex QS4C K 0 142
+}
+
+// the word, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "label_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QLW0 C 0 0
+	FrameIndex QLW0 D 0 1
+	FrameIndex QLW1 C 0 2
+	FrameIndex QLW1 D 0 3
+	FrameIndex QLW2 C 0 4
+	FrameIndex QLW2 D 0 5
+	FrameIndex QLW3 C 0 6
+	FrameIndex QLW3 D 0 7
+	FrameIndex QLW4 C 0 8
+	FrameIndex QLW4 D 0 9
+	FrameIndex QLW5 C 0 10
+	FrameIndex QLW5 D 0 11
+	FrameIndex QLW6 C 0 12
+	FrameIndex QLW6 D 0 13
+	FrameIndex QLW7 C 0 14
+	FrameIndex QLW7 D 0 15
+	FrameIndex QLW8 C 0 16
+	FrameIndex QLW8 D 0 17
+	FrameIndex QLW9 C 0 18
+	FrameIndex QLW9 D 0 19
+	FrameIndex QLWA C 0 20
+	FrameIndex QLWA D 0 21
+	FrameIndex QLWB C 0 22
+	FrameIndex QLWB D 0 23
+	FrameIndex QLWC C 0 24
+	FrameIndex QLWC D 0 25
+}
+
+// RELOAD, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "reload_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QRW0 C 0 0
+	FrameIndex QRW0 D 0 1
+	FrameIndex QRW1 C 0 2
+	FrameIndex QRW1 D 0 3
+	FrameIndex QRW2 C 0 4
+	FrameIndex QRW2 D 0 5
+	FrameIndex QRW3 C 0 6
+	FrameIndex QRW3 D 0 7
+	FrameIndex QRW4 C 0 8
+	FrameIndex QRW4 D 0 9
+	FrameIndex QRW5 C 0 10
+	FrameIndex QRW5 D 0 11
+	FrameIndex QRW6 C 0 12
+	FrameIndex QRW6 D 0 13
+	FrameIndex QRW7 C 0 14
+	FrameIndex QRW7 D 0 15
+	FrameIndex QRW8 C 0 16
+	FrameIndex QRW8 D 0 17
+	FrameIndex QRW9 C 0 18
+	FrameIndex QRW9 D 0 19
+	FrameIndex QRWA C 0 20
+	FrameIndex QRWA D 0 21
+	FrameIndex QRWB C 0 22
+	FrameIndex QRWB D 0 23
+	FrameIndex QRWC C 0 24
+	FrameIndex QRWC D 0 25
+}
+
+// big digit slot 0, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big0_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK00 L 0 0
+	FrameIndex QK00 M 0 1
+	FrameIndex QK00 N 0 2
+	FrameIndex QK00 O 0 3
+	FrameIndex QK00 P 0 4
+	FrameIndex QK00 Q 0 5
+	FrameIndex QK00 R 0 6
+	FrameIndex QK00 S 0 7
+	FrameIndex QK00 T 0 8
+	FrameIndex QK00 U 0 9
+	FrameIndex QK00 V 0 10
+	FrameIndex QH00 L 0 11
+	FrameIndex QH00 M 0 12
+	FrameIndex QH00 N 0 13
+	FrameIndex QH00 O 0 14
+	FrameIndex QH00 P 0 15
+	FrameIndex QH00 Q 0 16
+	FrameIndex QH00 R 0 17
+	FrameIndex QH00 S 0 18
+	FrameIndex QH00 T 0 19
+	FrameIndex QH00 U 0 20
+	FrameIndex QH00 V 0 21
+	FrameIndex QK01 L 0 22
+	FrameIndex QK01 M 0 23
+	FrameIndex QK01 N 0 24
+	FrameIndex QK01 O 0 25
+	FrameIndex QK01 P 0 26
+	FrameIndex QK01 Q 0 27
+	FrameIndex QK01 R 0 28
+	FrameIndex QK01 S 0 29
+	FrameIndex QK01 T 0 30
+	FrameIndex QK01 U 0 31
+	FrameIndex QK01 V 0 32
+	FrameIndex QH01 L 0 33
+	FrameIndex QH01 M 0 34
+	FrameIndex QH01 N 0 35
+	FrameIndex QH01 O 0 36
+	FrameIndex QH01 P 0 37
+	FrameIndex QH01 Q 0 38
+	FrameIndex QH01 R 0 39
+	FrameIndex QH01 S 0 40
+	FrameIndex QH01 T 0 41
+	FrameIndex QH01 U 0 42
+	FrameIndex QH01 V 0 43
+	FrameIndex QK02 L 0 44
+	FrameIndex QK02 M 0 45
+	FrameIndex QK02 N 0 46
+	FrameIndex QK02 O 0 47
+	FrameIndex QK02 P 0 48
+	FrameIndex QK02 Q 0 49
+	FrameIndex QK02 R 0 50
+	FrameIndex QK02 S 0 51
+	FrameIndex QK02 T 0 52
+	FrameIndex QK02 U 0 53
+	FrameIndex QK02 V 0 54
+	FrameIndex QH02 L 0 55
+	FrameIndex QH02 M 0 56
+	FrameIndex QH02 N 0 57
+	FrameIndex QH02 O 0 58
+	FrameIndex QH02 P 0 59
+	FrameIndex QH02 Q 0 60
+	FrameIndex QH02 R 0 61
+	FrameIndex QH02 S 0 62
+	FrameIndex QH02 T 0 63
+	FrameIndex QH02 U 0 64
+	FrameIndex QH02 V 0 65
+	FrameIndex QK03 L 0 66
+	FrameIndex QK03 M 0 67
+	FrameIndex QK03 N 0 68
+	FrameIndex QK03 O 0 69
+	FrameIndex QK03 P 0 70
+	FrameIndex QK03 Q 0 71
+	FrameIndex QK03 R 0 72
+	FrameIndex QK03 S 0 73
+	FrameIndex QK03 T 0 74
+	FrameIndex QK03 U 0 75
+	FrameIndex QK03 V 0 76
+	FrameIndex QH03 L 0 77
+	FrameIndex QH03 M 0 78
+	FrameIndex QH03 N 0 79
+	FrameIndex QH03 O 0 80
+	FrameIndex QH03 P 0 81
+	FrameIndex QH03 Q 0 82
+	FrameIndex QH03 R 0 83
+	FrameIndex QH03 S 0 84
+	FrameIndex QH03 T 0 85
+	FrameIndex QH03 U 0 86
+	FrameIndex QH03 V 0 87
+	FrameIndex QK04 L 0 88
+	FrameIndex QK04 M 0 89
+	FrameIndex QK04 N 0 90
+	FrameIndex QK04 O 0 91
+	FrameIndex QK04 P 0 92
+	FrameIndex QK04 Q 0 93
+	FrameIndex QK04 R 0 94
+	FrameIndex QK04 S 0 95
+	FrameIndex QK04 T 0 96
+	FrameIndex QK04 U 0 97
+	FrameIndex QK04 V 0 98
+	FrameIndex QH04 L 0 99
+	FrameIndex QH04 M 0 100
+	FrameIndex QH04 N 0 101
+	FrameIndex QH04 O 0 102
+	FrameIndex QH04 P 0 103
+	FrameIndex QH04 Q 0 104
+	FrameIndex QH04 R 0 105
+	FrameIndex QH04 S 0 106
+	FrameIndex QH04 T 0 107
+	FrameIndex QH04 U 0 108
+	FrameIndex QH04 V 0 109
+	FrameIndex QK05 L 0 110
+	FrameIndex QK05 M 0 111
+	FrameIndex QK05 N 0 112
+	FrameIndex QK05 O 0 113
+	FrameIndex QK05 P 0 114
+	FrameIndex QK05 Q 0 115
+	FrameIndex QK05 R 0 116
+	FrameIndex QK05 S 0 117
+	FrameIndex QK05 T 0 118
+	FrameIndex QK05 U 0 119
+	FrameIndex QK05 V 0 120
+	FrameIndex QH05 L 0 121
+	FrameIndex QH05 M 0 122
+	FrameIndex QH05 N 0 123
+	FrameIndex QH05 O 0 124
+	FrameIndex QH05 P 0 125
+	FrameIndex QH05 Q 0 126
+	FrameIndex QH05 R 0 127
+	FrameIndex QH05 S 0 128
+	FrameIndex QH05 T 0 129
+	FrameIndex QH05 U 0 130
+	FrameIndex QH05 V 0 131
+	FrameIndex QK06 L 0 132
+	FrameIndex QK06 M 0 133
+	FrameIndex QK06 N 0 134
+	FrameIndex QK06 O 0 135
+	FrameIndex QK06 P 0 136
+	FrameIndex QK06 Q 0 137
+	FrameIndex QK06 R 0 138
+	FrameIndex QK06 S 0 139
+	FrameIndex QK06 T 0 140
+	FrameIndex QK06 U 0 141
+	FrameIndex QK06 V 0 142
+	FrameIndex QH06 L 0 143
+	FrameIndex QH06 M 0 144
+	FrameIndex QH06 N 0 145
+	FrameIndex QH06 O 0 146
+	FrameIndex QH06 P 0 147
+	FrameIndex QH06 Q 0 148
+	FrameIndex QH06 R 0 149
+	FrameIndex QH06 S 0 150
+	FrameIndex QH06 T 0 151
+	FrameIndex QH06 U 0 152
+	FrameIndex QH06 V 0 153
+	FrameIndex QK07 L 0 154
+	FrameIndex QK07 M 0 155
+	FrameIndex QK07 N 0 156
+	FrameIndex QK07 O 0 157
+	FrameIndex QK07 P 0 158
+	FrameIndex QK07 Q 0 159
+	FrameIndex QK07 R 0 160
+	FrameIndex QK07 S 0 161
+	FrameIndex QK07 T 0 162
+	FrameIndex QK07 U 0 163
+	FrameIndex QK07 V 0 164
+	FrameIndex QH07 L 0 165
+	FrameIndex QH07 M 0 166
+	FrameIndex QH07 N 0 167
+	FrameIndex QH07 O 0 168
+	FrameIndex QH07 P 0 169
+	FrameIndex QH07 Q 0 170
+	FrameIndex QH07 R 0 171
+	FrameIndex QH07 S 0 172
+	FrameIndex QH07 T 0 173
+	FrameIndex QH07 U 0 174
+	FrameIndex QH07 V 0 175
+	FrameIndex QK08 L 0 176
+	FrameIndex QK08 M 0 177
+	FrameIndex QK08 N 0 178
+	FrameIndex QK08 O 0 179
+	FrameIndex QK08 P 0 180
+	FrameIndex QK08 Q 0 181
+	FrameIndex QK08 R 0 182
+	FrameIndex QK08 S 0 183
+	FrameIndex QK08 T 0 184
+	FrameIndex QK08 U 0 185
+	FrameIndex QK08 V 0 186
+	FrameIndex QH08 L 0 187
+	FrameIndex QH08 M 0 188
+	FrameIndex QH08 N 0 189
+	FrameIndex QH08 O 0 190
+	FrameIndex QH08 P 0 191
+	FrameIndex QH08 Q 0 192
+	FrameIndex QH08 R 0 193
+	FrameIndex QH08 S 0 194
+	FrameIndex QH08 T 0 195
+	FrameIndex QH08 U 0 196
+	FrameIndex QH08 V 0 197
+	FrameIndex QK09 L 0 198
+	FrameIndex QK09 M 0 199
+	FrameIndex QK09 N 0 200
+	FrameIndex QK09 O 0 201
+	FrameIndex QK09 P 0 202
+	FrameIndex QK09 Q 0 203
+	FrameIndex QK09 R 0 204
+	FrameIndex QK09 S 0 205
+	FrameIndex QK09 T 0 206
+	FrameIndex QK09 U 0 207
+	FrameIndex QK09 V 0 208
+	FrameIndex QH09 L 0 209
+	FrameIndex QH09 M 0 210
+	FrameIndex QH09 N 0 211
+	FrameIndex QH09 O 0 212
+	FrameIndex QH09 P 0 213
+	FrameIndex QH09 Q 0 214
+	FrameIndex QH09 R 0 215
+	FrameIndex QH09 S 0 216
+	FrameIndex QH09 T 0 217
+	FrameIndex QH09 U 0 218
+	FrameIndex QH09 V 0 219
+	FrameIndex QK0A L 0 220
+	FrameIndex QK0A M 0 221
+	FrameIndex QK0A N 0 222
+	FrameIndex QK0A O 0 223
+	FrameIndex QK0A P 0 224
+	FrameIndex QK0A Q 0 225
+	FrameIndex QK0A R 0 226
+	FrameIndex QK0A S 0 227
+	FrameIndex QK0A T 0 228
+	FrameIndex QK0A U 0 229
+	FrameIndex QK0A V 0 230
+	FrameIndex QH0A L 0 231
+	FrameIndex QH0A M 0 232
+	FrameIndex QH0A N 0 233
+	FrameIndex QH0A O 0 234
+	FrameIndex QH0A P 0 235
+	FrameIndex QH0A Q 0 236
+	FrameIndex QH0A R 0 237
+	FrameIndex QH0A S 0 238
+	FrameIndex QH0A T 0 239
+	FrameIndex QH0A U 0 240
+	FrameIndex QH0A V 0 241
+	FrameIndex QK0B L 0 242
+	FrameIndex QK0B M 0 243
+	FrameIndex QK0B N 0 244
+	FrameIndex QK0B O 0 245
+	FrameIndex QK0B P 0 246
+	FrameIndex QK0B Q 0 247
+	FrameIndex QK0B R 0 248
+	FrameIndex QK0B S 0 249
+	FrameIndex QK0B T 0 250
+	FrameIndex QK0B U 0 251
+	FrameIndex QK0B V 0 252
+	FrameIndex QH0B L 0 253
+	FrameIndex QH0B M 0 254
+	FrameIndex QH0B N 0 255
+	FrameIndex QH0B O 0 256
+	FrameIndex QH0B P 0 257
+	FrameIndex QH0B Q 0 258
+	FrameIndex QH0B R 0 259
+	FrameIndex QH0B S 0 260
+	FrameIndex QH0B T 0 261
+	FrameIndex QH0B U 0 262
+	FrameIndex QH0B V 0 263
+	FrameIndex QK0C L 0 264
+	FrameIndex QK0C M 0 265
+	FrameIndex QK0C N 0 266
+	FrameIndex QK0C O 0 267
+	FrameIndex QK0C P 0 268
+	FrameIndex QK0C Q 0 269
+	FrameIndex QK0C R 0 270
+	FrameIndex QK0C S 0 271
+	FrameIndex QK0C T 0 272
+	FrameIndex QK0C U 0 273
+	FrameIndex QK0C V 0 274
+	FrameIndex QH0C L 0 275
+	FrameIndex QH0C M 0 276
+	FrameIndex QH0C N 0 277
+	FrameIndex QH0C O 0 278
+	FrameIndex QH0C P 0 279
+	FrameIndex QH0C Q 0 280
+	FrameIndex QH0C R 0 281
+	FrameIndex QH0C S 0 282
+	FrameIndex QH0C T 0 283
+	FrameIndex QH0C U 0 284
+	FrameIndex QH0C V 0 285
+}
+
+// big digit slot 1, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big1_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK10 L 0 0
+	FrameIndex QK10 M 0 1
+	FrameIndex QK10 N 0 2
+	FrameIndex QK10 O 0 3
+	FrameIndex QK10 P 0 4
+	FrameIndex QK10 Q 0 5
+	FrameIndex QK10 R 0 6
+	FrameIndex QK10 S 0 7
+	FrameIndex QK10 T 0 8
+	FrameIndex QK10 U 0 9
+	FrameIndex QK10 V 0 10
+	FrameIndex QH10 L 0 11
+	FrameIndex QH10 M 0 12
+	FrameIndex QH10 N 0 13
+	FrameIndex QH10 O 0 14
+	FrameIndex QH10 P 0 15
+	FrameIndex QH10 Q 0 16
+	FrameIndex QH10 R 0 17
+	FrameIndex QH10 S 0 18
+	FrameIndex QH10 T 0 19
+	FrameIndex QH10 U 0 20
+	FrameIndex QH10 V 0 21
+	FrameIndex QK11 L 0 22
+	FrameIndex QK11 M 0 23
+	FrameIndex QK11 N 0 24
+	FrameIndex QK11 O 0 25
+	FrameIndex QK11 P 0 26
+	FrameIndex QK11 Q 0 27
+	FrameIndex QK11 R 0 28
+	FrameIndex QK11 S 0 29
+	FrameIndex QK11 T 0 30
+	FrameIndex QK11 U 0 31
+	FrameIndex QK11 V 0 32
+	FrameIndex QH11 L 0 33
+	FrameIndex QH11 M 0 34
+	FrameIndex QH11 N 0 35
+	FrameIndex QH11 O 0 36
+	FrameIndex QH11 P 0 37
+	FrameIndex QH11 Q 0 38
+	FrameIndex QH11 R 0 39
+	FrameIndex QH11 S 0 40
+	FrameIndex QH11 T 0 41
+	FrameIndex QH11 U 0 42
+	FrameIndex QH11 V 0 43
+	FrameIndex QK12 L 0 44
+	FrameIndex QK12 M 0 45
+	FrameIndex QK12 N 0 46
+	FrameIndex QK12 O 0 47
+	FrameIndex QK12 P 0 48
+	FrameIndex QK12 Q 0 49
+	FrameIndex QK12 R 0 50
+	FrameIndex QK12 S 0 51
+	FrameIndex QK12 T 0 52
+	FrameIndex QK12 U 0 53
+	FrameIndex QK12 V 0 54
+	FrameIndex QH12 L 0 55
+	FrameIndex QH12 M 0 56
+	FrameIndex QH12 N 0 57
+	FrameIndex QH12 O 0 58
+	FrameIndex QH12 P 0 59
+	FrameIndex QH12 Q 0 60
+	FrameIndex QH12 R 0 61
+	FrameIndex QH12 S 0 62
+	FrameIndex QH12 T 0 63
+	FrameIndex QH12 U 0 64
+	FrameIndex QH12 V 0 65
+	FrameIndex QK13 L 0 66
+	FrameIndex QK13 M 0 67
+	FrameIndex QK13 N 0 68
+	FrameIndex QK13 O 0 69
+	FrameIndex QK13 P 0 70
+	FrameIndex QK13 Q 0 71
+	FrameIndex QK13 R 0 72
+	FrameIndex QK13 S 0 73
+	FrameIndex QK13 T 0 74
+	FrameIndex QK13 U 0 75
+	FrameIndex QK13 V 0 76
+	FrameIndex QH13 L 0 77
+	FrameIndex QH13 M 0 78
+	FrameIndex QH13 N 0 79
+	FrameIndex QH13 O 0 80
+	FrameIndex QH13 P 0 81
+	FrameIndex QH13 Q 0 82
+	FrameIndex QH13 R 0 83
+	FrameIndex QH13 S 0 84
+	FrameIndex QH13 T 0 85
+	FrameIndex QH13 U 0 86
+	FrameIndex QH13 V 0 87
+	FrameIndex QK14 L 0 88
+	FrameIndex QK14 M 0 89
+	FrameIndex QK14 N 0 90
+	FrameIndex QK14 O 0 91
+	FrameIndex QK14 P 0 92
+	FrameIndex QK14 Q 0 93
+	FrameIndex QK14 R 0 94
+	FrameIndex QK14 S 0 95
+	FrameIndex QK14 T 0 96
+	FrameIndex QK14 U 0 97
+	FrameIndex QK14 V 0 98
+	FrameIndex QH14 L 0 99
+	FrameIndex QH14 M 0 100
+	FrameIndex QH14 N 0 101
+	FrameIndex QH14 O 0 102
+	FrameIndex QH14 P 0 103
+	FrameIndex QH14 Q 0 104
+	FrameIndex QH14 R 0 105
+	FrameIndex QH14 S 0 106
+	FrameIndex QH14 T 0 107
+	FrameIndex QH14 U 0 108
+	FrameIndex QH14 V 0 109
+	FrameIndex QK15 L 0 110
+	FrameIndex QK15 M 0 111
+	FrameIndex QK15 N 0 112
+	FrameIndex QK15 O 0 113
+	FrameIndex QK15 P 0 114
+	FrameIndex QK15 Q 0 115
+	FrameIndex QK15 R 0 116
+	FrameIndex QK15 S 0 117
+	FrameIndex QK15 T 0 118
+	FrameIndex QK15 U 0 119
+	FrameIndex QK15 V 0 120
+	FrameIndex QH15 L 0 121
+	FrameIndex QH15 M 0 122
+	FrameIndex QH15 N 0 123
+	FrameIndex QH15 O 0 124
+	FrameIndex QH15 P 0 125
+	FrameIndex QH15 Q 0 126
+	FrameIndex QH15 R 0 127
+	FrameIndex QH15 S 0 128
+	FrameIndex QH15 T 0 129
+	FrameIndex QH15 U 0 130
+	FrameIndex QH15 V 0 131
+	FrameIndex QK16 L 0 132
+	FrameIndex QK16 M 0 133
+	FrameIndex QK16 N 0 134
+	FrameIndex QK16 O 0 135
+	FrameIndex QK16 P 0 136
+	FrameIndex QK16 Q 0 137
+	FrameIndex QK16 R 0 138
+	FrameIndex QK16 S 0 139
+	FrameIndex QK16 T 0 140
+	FrameIndex QK16 U 0 141
+	FrameIndex QK16 V 0 142
+	FrameIndex QH16 L 0 143
+	FrameIndex QH16 M 0 144
+	FrameIndex QH16 N 0 145
+	FrameIndex QH16 O 0 146
+	FrameIndex QH16 P 0 147
+	FrameIndex QH16 Q 0 148
+	FrameIndex QH16 R 0 149
+	FrameIndex QH16 S 0 150
+	FrameIndex QH16 T 0 151
+	FrameIndex QH16 U 0 152
+	FrameIndex QH16 V 0 153
+	FrameIndex QK17 L 0 154
+	FrameIndex QK17 M 0 155
+	FrameIndex QK17 N 0 156
+	FrameIndex QK17 O 0 157
+	FrameIndex QK17 P 0 158
+	FrameIndex QK17 Q 0 159
+	FrameIndex QK17 R 0 160
+	FrameIndex QK17 S 0 161
+	FrameIndex QK17 T 0 162
+	FrameIndex QK17 U 0 163
+	FrameIndex QK17 V 0 164
+	FrameIndex QH17 L 0 165
+	FrameIndex QH17 M 0 166
+	FrameIndex QH17 N 0 167
+	FrameIndex QH17 O 0 168
+	FrameIndex QH17 P 0 169
+	FrameIndex QH17 Q 0 170
+	FrameIndex QH17 R 0 171
+	FrameIndex QH17 S 0 172
+	FrameIndex QH17 T 0 173
+	FrameIndex QH17 U 0 174
+	FrameIndex QH17 V 0 175
+	FrameIndex QK18 L 0 176
+	FrameIndex QK18 M 0 177
+	FrameIndex QK18 N 0 178
+	FrameIndex QK18 O 0 179
+	FrameIndex QK18 P 0 180
+	FrameIndex QK18 Q 0 181
+	FrameIndex QK18 R 0 182
+	FrameIndex QK18 S 0 183
+	FrameIndex QK18 T 0 184
+	FrameIndex QK18 U 0 185
+	FrameIndex QK18 V 0 186
+	FrameIndex QH18 L 0 187
+	FrameIndex QH18 M 0 188
+	FrameIndex QH18 N 0 189
+	FrameIndex QH18 O 0 190
+	FrameIndex QH18 P 0 191
+	FrameIndex QH18 Q 0 192
+	FrameIndex QH18 R 0 193
+	FrameIndex QH18 S 0 194
+	FrameIndex QH18 T 0 195
+	FrameIndex QH18 U 0 196
+	FrameIndex QH18 V 0 197
+	FrameIndex QK19 L 0 198
+	FrameIndex QK19 M 0 199
+	FrameIndex QK19 N 0 200
+	FrameIndex QK19 O 0 201
+	FrameIndex QK19 P 0 202
+	FrameIndex QK19 Q 0 203
+	FrameIndex QK19 R 0 204
+	FrameIndex QK19 S 0 205
+	FrameIndex QK19 T 0 206
+	FrameIndex QK19 U 0 207
+	FrameIndex QK19 V 0 208
+	FrameIndex QH19 L 0 209
+	FrameIndex QH19 M 0 210
+	FrameIndex QH19 N 0 211
+	FrameIndex QH19 O 0 212
+	FrameIndex QH19 P 0 213
+	FrameIndex QH19 Q 0 214
+	FrameIndex QH19 R 0 215
+	FrameIndex QH19 S 0 216
+	FrameIndex QH19 T 0 217
+	FrameIndex QH19 U 0 218
+	FrameIndex QH19 V 0 219
+	FrameIndex QK1A L 0 220
+	FrameIndex QK1A M 0 221
+	FrameIndex QK1A N 0 222
+	FrameIndex QK1A O 0 223
+	FrameIndex QK1A P 0 224
+	FrameIndex QK1A Q 0 225
+	FrameIndex QK1A R 0 226
+	FrameIndex QK1A S 0 227
+	FrameIndex QK1A T 0 228
+	FrameIndex QK1A U 0 229
+	FrameIndex QK1A V 0 230
+	FrameIndex QH1A L 0 231
+	FrameIndex QH1A M 0 232
+	FrameIndex QH1A N 0 233
+	FrameIndex QH1A O 0 234
+	FrameIndex QH1A P 0 235
+	FrameIndex QH1A Q 0 236
+	FrameIndex QH1A R 0 237
+	FrameIndex QH1A S 0 238
+	FrameIndex QH1A T 0 239
+	FrameIndex QH1A U 0 240
+	FrameIndex QH1A V 0 241
+	FrameIndex QK1B L 0 242
+	FrameIndex QK1B M 0 243
+	FrameIndex QK1B N 0 244
+	FrameIndex QK1B O 0 245
+	FrameIndex QK1B P 0 246
+	FrameIndex QK1B Q 0 247
+	FrameIndex QK1B R 0 248
+	FrameIndex QK1B S 0 249
+	FrameIndex QK1B T 0 250
+	FrameIndex QK1B U 0 251
+	FrameIndex QK1B V 0 252
+	FrameIndex QH1B L 0 253
+	FrameIndex QH1B M 0 254
+	FrameIndex QH1B N 0 255
+	FrameIndex QH1B O 0 256
+	FrameIndex QH1B P 0 257
+	FrameIndex QH1B Q 0 258
+	FrameIndex QH1B R 0 259
+	FrameIndex QH1B S 0 260
+	FrameIndex QH1B T 0 261
+	FrameIndex QH1B U 0 262
+	FrameIndex QH1B V 0 263
+	FrameIndex QK1C L 0 264
+	FrameIndex QK1C M 0 265
+	FrameIndex QK1C N 0 266
+	FrameIndex QK1C O 0 267
+	FrameIndex QK1C P 0 268
+	FrameIndex QK1C Q 0 269
+	FrameIndex QK1C R 0 270
+	FrameIndex QK1C S 0 271
+	FrameIndex QK1C T 0 272
+	FrameIndex QK1C U 0 273
+	FrameIndex QK1C V 0 274
+	FrameIndex QH1C L 0 275
+	FrameIndex QH1C M 0 276
+	FrameIndex QH1C N 0 277
+	FrameIndex QH1C O 0 278
+	FrameIndex QH1C P 0 279
+	FrameIndex QH1C Q 0 280
+	FrameIndex QH1C R 0 281
+	FrameIndex QH1C S 0 282
+	FrameIndex QH1C T 0 283
+	FrameIndex QH1C U 0 284
+	FrameIndex QH1C V 0 285
+}
+
+// big digit slot 2, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big2_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK20 L 0 0
+	FrameIndex QK20 M 0 1
+	FrameIndex QK20 N 0 2
+	FrameIndex QK20 O 0 3
+	FrameIndex QK20 P 0 4
+	FrameIndex QK20 Q 0 5
+	FrameIndex QK20 R 0 6
+	FrameIndex QK20 S 0 7
+	FrameIndex QK20 T 0 8
+	FrameIndex QK20 U 0 9
+	FrameIndex QK20 V 0 10
+	FrameIndex QH20 L 0 11
+	FrameIndex QH20 M 0 12
+	FrameIndex QH20 N 0 13
+	FrameIndex QH20 O 0 14
+	FrameIndex QH20 P 0 15
+	FrameIndex QH20 Q 0 16
+	FrameIndex QH20 R 0 17
+	FrameIndex QH20 S 0 18
+	FrameIndex QH20 T 0 19
+	FrameIndex QH20 U 0 20
+	FrameIndex QH20 V 0 21
+	FrameIndex QK21 L 0 22
+	FrameIndex QK21 M 0 23
+	FrameIndex QK21 N 0 24
+	FrameIndex QK21 O 0 25
+	FrameIndex QK21 P 0 26
+	FrameIndex QK21 Q 0 27
+	FrameIndex QK21 R 0 28
+	FrameIndex QK21 S 0 29
+	FrameIndex QK21 T 0 30
+	FrameIndex QK21 U 0 31
+	FrameIndex QK21 V 0 32
+	FrameIndex QH21 L 0 33
+	FrameIndex QH21 M 0 34
+	FrameIndex QH21 N 0 35
+	FrameIndex QH21 O 0 36
+	FrameIndex QH21 P 0 37
+	FrameIndex QH21 Q 0 38
+	FrameIndex QH21 R 0 39
+	FrameIndex QH21 S 0 40
+	FrameIndex QH21 T 0 41
+	FrameIndex QH21 U 0 42
+	FrameIndex QH21 V 0 43
+	FrameIndex QK22 L 0 44
+	FrameIndex QK22 M 0 45
+	FrameIndex QK22 N 0 46
+	FrameIndex QK22 O 0 47
+	FrameIndex QK22 P 0 48
+	FrameIndex QK22 Q 0 49
+	FrameIndex QK22 R 0 50
+	FrameIndex QK22 S 0 51
+	FrameIndex QK22 T 0 52
+	FrameIndex QK22 U 0 53
+	FrameIndex QK22 V 0 54
+	FrameIndex QH22 L 0 55
+	FrameIndex QH22 M 0 56
+	FrameIndex QH22 N 0 57
+	FrameIndex QH22 O 0 58
+	FrameIndex QH22 P 0 59
+	FrameIndex QH22 Q 0 60
+	FrameIndex QH22 R 0 61
+	FrameIndex QH22 S 0 62
+	FrameIndex QH22 T 0 63
+	FrameIndex QH22 U 0 64
+	FrameIndex QH22 V 0 65
+	FrameIndex QK23 L 0 66
+	FrameIndex QK23 M 0 67
+	FrameIndex QK23 N 0 68
+	FrameIndex QK23 O 0 69
+	FrameIndex QK23 P 0 70
+	FrameIndex QK23 Q 0 71
+	FrameIndex QK23 R 0 72
+	FrameIndex QK23 S 0 73
+	FrameIndex QK23 T 0 74
+	FrameIndex QK23 U 0 75
+	FrameIndex QK23 V 0 76
+	FrameIndex QH23 L 0 77
+	FrameIndex QH23 M 0 78
+	FrameIndex QH23 N 0 79
+	FrameIndex QH23 O 0 80
+	FrameIndex QH23 P 0 81
+	FrameIndex QH23 Q 0 82
+	FrameIndex QH23 R 0 83
+	FrameIndex QH23 S 0 84
+	FrameIndex QH23 T 0 85
+	FrameIndex QH23 U 0 86
+	FrameIndex QH23 V 0 87
+	FrameIndex QK24 L 0 88
+	FrameIndex QK24 M 0 89
+	FrameIndex QK24 N 0 90
+	FrameIndex QK24 O 0 91
+	FrameIndex QK24 P 0 92
+	FrameIndex QK24 Q 0 93
+	FrameIndex QK24 R 0 94
+	FrameIndex QK24 S 0 95
+	FrameIndex QK24 T 0 96
+	FrameIndex QK24 U 0 97
+	FrameIndex QK24 V 0 98
+	FrameIndex QH24 L 0 99
+	FrameIndex QH24 M 0 100
+	FrameIndex QH24 N 0 101
+	FrameIndex QH24 O 0 102
+	FrameIndex QH24 P 0 103
+	FrameIndex QH24 Q 0 104
+	FrameIndex QH24 R 0 105
+	FrameIndex QH24 S 0 106
+	FrameIndex QH24 T 0 107
+	FrameIndex QH24 U 0 108
+	FrameIndex QH24 V 0 109
+	FrameIndex QK25 L 0 110
+	FrameIndex QK25 M 0 111
+	FrameIndex QK25 N 0 112
+	FrameIndex QK25 O 0 113
+	FrameIndex QK25 P 0 114
+	FrameIndex QK25 Q 0 115
+	FrameIndex QK25 R 0 116
+	FrameIndex QK25 S 0 117
+	FrameIndex QK25 T 0 118
+	FrameIndex QK25 U 0 119
+	FrameIndex QK25 V 0 120
+	FrameIndex QH25 L 0 121
+	FrameIndex QH25 M 0 122
+	FrameIndex QH25 N 0 123
+	FrameIndex QH25 O 0 124
+	FrameIndex QH25 P 0 125
+	FrameIndex QH25 Q 0 126
+	FrameIndex QH25 R 0 127
+	FrameIndex QH25 S 0 128
+	FrameIndex QH25 T 0 129
+	FrameIndex QH25 U 0 130
+	FrameIndex QH25 V 0 131
+	FrameIndex QK26 L 0 132
+	FrameIndex QK26 M 0 133
+	FrameIndex QK26 N 0 134
+	FrameIndex QK26 O 0 135
+	FrameIndex QK26 P 0 136
+	FrameIndex QK26 Q 0 137
+	FrameIndex QK26 R 0 138
+	FrameIndex QK26 S 0 139
+	FrameIndex QK26 T 0 140
+	FrameIndex QK26 U 0 141
+	FrameIndex QK26 V 0 142
+	FrameIndex QH26 L 0 143
+	FrameIndex QH26 M 0 144
+	FrameIndex QH26 N 0 145
+	FrameIndex QH26 O 0 146
+	FrameIndex QH26 P 0 147
+	FrameIndex QH26 Q 0 148
+	FrameIndex QH26 R 0 149
+	FrameIndex QH26 S 0 150
+	FrameIndex QH26 T 0 151
+	FrameIndex QH26 U 0 152
+	FrameIndex QH26 V 0 153
+	FrameIndex QK27 L 0 154
+	FrameIndex QK27 M 0 155
+	FrameIndex QK27 N 0 156
+	FrameIndex QK27 O 0 157
+	FrameIndex QK27 P 0 158
+	FrameIndex QK27 Q 0 159
+	FrameIndex QK27 R 0 160
+	FrameIndex QK27 S 0 161
+	FrameIndex QK27 T 0 162
+	FrameIndex QK27 U 0 163
+	FrameIndex QK27 V 0 164
+	FrameIndex QH27 L 0 165
+	FrameIndex QH27 M 0 166
+	FrameIndex QH27 N 0 167
+	FrameIndex QH27 O 0 168
+	FrameIndex QH27 P 0 169
+	FrameIndex QH27 Q 0 170
+	FrameIndex QH27 R 0 171
+	FrameIndex QH27 S 0 172
+	FrameIndex QH27 T 0 173
+	FrameIndex QH27 U 0 174
+	FrameIndex QH27 V 0 175
+	FrameIndex QK28 L 0 176
+	FrameIndex QK28 M 0 177
+	FrameIndex QK28 N 0 178
+	FrameIndex QK28 O 0 179
+	FrameIndex QK28 P 0 180
+	FrameIndex QK28 Q 0 181
+	FrameIndex QK28 R 0 182
+	FrameIndex QK28 S 0 183
+	FrameIndex QK28 T 0 184
+	FrameIndex QK28 U 0 185
+	FrameIndex QK28 V 0 186
+	FrameIndex QH28 L 0 187
+	FrameIndex QH28 M 0 188
+	FrameIndex QH28 N 0 189
+	FrameIndex QH28 O 0 190
+	FrameIndex QH28 P 0 191
+	FrameIndex QH28 Q 0 192
+	FrameIndex QH28 R 0 193
+	FrameIndex QH28 S 0 194
+	FrameIndex QH28 T 0 195
+	FrameIndex QH28 U 0 196
+	FrameIndex QH28 V 0 197
+	FrameIndex QK29 L 0 198
+	FrameIndex QK29 M 0 199
+	FrameIndex QK29 N 0 200
+	FrameIndex QK29 O 0 201
+	FrameIndex QK29 P 0 202
+	FrameIndex QK29 Q 0 203
+	FrameIndex QK29 R 0 204
+	FrameIndex QK29 S 0 205
+	FrameIndex QK29 T 0 206
+	FrameIndex QK29 U 0 207
+	FrameIndex QK29 V 0 208
+	FrameIndex QH29 L 0 209
+	FrameIndex QH29 M 0 210
+	FrameIndex QH29 N 0 211
+	FrameIndex QH29 O 0 212
+	FrameIndex QH29 P 0 213
+	FrameIndex QH29 Q 0 214
+	FrameIndex QH29 R 0 215
+	FrameIndex QH29 S 0 216
+	FrameIndex QH29 T 0 217
+	FrameIndex QH29 U 0 218
+	FrameIndex QH29 V 0 219
+	FrameIndex QK2A L 0 220
+	FrameIndex QK2A M 0 221
+	FrameIndex QK2A N 0 222
+	FrameIndex QK2A O 0 223
+	FrameIndex QK2A P 0 224
+	FrameIndex QK2A Q 0 225
+	FrameIndex QK2A R 0 226
+	FrameIndex QK2A S 0 227
+	FrameIndex QK2A T 0 228
+	FrameIndex QK2A U 0 229
+	FrameIndex QK2A V 0 230
+	FrameIndex QH2A L 0 231
+	FrameIndex QH2A M 0 232
+	FrameIndex QH2A N 0 233
+	FrameIndex QH2A O 0 234
+	FrameIndex QH2A P 0 235
+	FrameIndex QH2A Q 0 236
+	FrameIndex QH2A R 0 237
+	FrameIndex QH2A S 0 238
+	FrameIndex QH2A T 0 239
+	FrameIndex QH2A U 0 240
+	FrameIndex QH2A V 0 241
+	FrameIndex QK2B L 0 242
+	FrameIndex QK2B M 0 243
+	FrameIndex QK2B N 0 244
+	FrameIndex QK2B O 0 245
+	FrameIndex QK2B P 0 246
+	FrameIndex QK2B Q 0 247
+	FrameIndex QK2B R 0 248
+	FrameIndex QK2B S 0 249
+	FrameIndex QK2B T 0 250
+	FrameIndex QK2B U 0 251
+	FrameIndex QK2B V 0 252
+	FrameIndex QH2B L 0 253
+	FrameIndex QH2B M 0 254
+	FrameIndex QH2B N 0 255
+	FrameIndex QH2B O 0 256
+	FrameIndex QH2B P 0 257
+	FrameIndex QH2B Q 0 258
+	FrameIndex QH2B R 0 259
+	FrameIndex QH2B S 0 260
+	FrameIndex QH2B T 0 261
+	FrameIndex QH2B U 0 262
+	FrameIndex QH2B V 0 263
+	FrameIndex QK2C L 0 264
+	FrameIndex QK2C M 0 265
+	FrameIndex QK2C N 0 266
+	FrameIndex QK2C O 0 267
+	FrameIndex QK2C P 0 268
+	FrameIndex QK2C Q 0 269
+	FrameIndex QK2C R 0 270
+	FrameIndex QK2C S 0 271
+	FrameIndex QK2C T 0 272
+	FrameIndex QK2C U 0 273
+	FrameIndex QK2C V 0 274
+	FrameIndex QH2C L 0 275
+	FrameIndex QH2C M 0 276
+	FrameIndex QH2C N 0 277
+	FrameIndex QH2C O 0 278
+	FrameIndex QH2C P 0 279
+	FrameIndex QH2C Q 0 280
+	FrameIndex QH2C R 0 281
+	FrameIndex QH2C S 0 282
+	FrameIndex QH2C T 0 283
+	FrameIndex QH2C U 0 284
+	FrameIndex QH2C V 0 285
+}
+
+// big digit slot 3, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big3_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK30 L 0 0
+	FrameIndex QK30 M 0 1
+	FrameIndex QK30 N 0 2
+	FrameIndex QK30 O 0 3
+	FrameIndex QK30 P 0 4
+	FrameIndex QK30 Q 0 5
+	FrameIndex QK30 R 0 6
+	FrameIndex QK30 S 0 7
+	FrameIndex QK30 T 0 8
+	FrameIndex QK30 U 0 9
+	FrameIndex QK30 V 0 10
+	FrameIndex QH30 L 0 11
+	FrameIndex QH30 M 0 12
+	FrameIndex QH30 N 0 13
+	FrameIndex QH30 O 0 14
+	FrameIndex QH30 P 0 15
+	FrameIndex QH30 Q 0 16
+	FrameIndex QH30 R 0 17
+	FrameIndex QH30 S 0 18
+	FrameIndex QH30 T 0 19
+	FrameIndex QH30 U 0 20
+	FrameIndex QH30 V 0 21
+	FrameIndex QK31 L 0 22
+	FrameIndex QK31 M 0 23
+	FrameIndex QK31 N 0 24
+	FrameIndex QK31 O 0 25
+	FrameIndex QK31 P 0 26
+	FrameIndex QK31 Q 0 27
+	FrameIndex QK31 R 0 28
+	FrameIndex QK31 S 0 29
+	FrameIndex QK31 T 0 30
+	FrameIndex QK31 U 0 31
+	FrameIndex QK31 V 0 32
+	FrameIndex QH31 L 0 33
+	FrameIndex QH31 M 0 34
+	FrameIndex QH31 N 0 35
+	FrameIndex QH31 O 0 36
+	FrameIndex QH31 P 0 37
+	FrameIndex QH31 Q 0 38
+	FrameIndex QH31 R 0 39
+	FrameIndex QH31 S 0 40
+	FrameIndex QH31 T 0 41
+	FrameIndex QH31 U 0 42
+	FrameIndex QH31 V 0 43
+	FrameIndex QK32 L 0 44
+	FrameIndex QK32 M 0 45
+	FrameIndex QK32 N 0 46
+	FrameIndex QK32 O 0 47
+	FrameIndex QK32 P 0 48
+	FrameIndex QK32 Q 0 49
+	FrameIndex QK32 R 0 50
+	FrameIndex QK32 S 0 51
+	FrameIndex QK32 T 0 52
+	FrameIndex QK32 U 0 53
+	FrameIndex QK32 V 0 54
+	FrameIndex QH32 L 0 55
+	FrameIndex QH32 M 0 56
+	FrameIndex QH32 N 0 57
+	FrameIndex QH32 O 0 58
+	FrameIndex QH32 P 0 59
+	FrameIndex QH32 Q 0 60
+	FrameIndex QH32 R 0 61
+	FrameIndex QH32 S 0 62
+	FrameIndex QH32 T 0 63
+	FrameIndex QH32 U 0 64
+	FrameIndex QH32 V 0 65
+	FrameIndex QK33 L 0 66
+	FrameIndex QK33 M 0 67
+	FrameIndex QK33 N 0 68
+	FrameIndex QK33 O 0 69
+	FrameIndex QK33 P 0 70
+	FrameIndex QK33 Q 0 71
+	FrameIndex QK33 R 0 72
+	FrameIndex QK33 S 0 73
+	FrameIndex QK33 T 0 74
+	FrameIndex QK33 U 0 75
+	FrameIndex QK33 V 0 76
+	FrameIndex QH33 L 0 77
+	FrameIndex QH33 M 0 78
+	FrameIndex QH33 N 0 79
+	FrameIndex QH33 O 0 80
+	FrameIndex QH33 P 0 81
+	FrameIndex QH33 Q 0 82
+	FrameIndex QH33 R 0 83
+	FrameIndex QH33 S 0 84
+	FrameIndex QH33 T 0 85
+	FrameIndex QH33 U 0 86
+	FrameIndex QH33 V 0 87
+	FrameIndex QK34 L 0 88
+	FrameIndex QK34 M 0 89
+	FrameIndex QK34 N 0 90
+	FrameIndex QK34 O 0 91
+	FrameIndex QK34 P 0 92
+	FrameIndex QK34 Q 0 93
+	FrameIndex QK34 R 0 94
+	FrameIndex QK34 S 0 95
+	FrameIndex QK34 T 0 96
+	FrameIndex QK34 U 0 97
+	FrameIndex QK34 V 0 98
+	FrameIndex QH34 L 0 99
+	FrameIndex QH34 M 0 100
+	FrameIndex QH34 N 0 101
+	FrameIndex QH34 O 0 102
+	FrameIndex QH34 P 0 103
+	FrameIndex QH34 Q 0 104
+	FrameIndex QH34 R 0 105
+	FrameIndex QH34 S 0 106
+	FrameIndex QH34 T 0 107
+	FrameIndex QH34 U 0 108
+	FrameIndex QH34 V 0 109
+	FrameIndex QK35 L 0 110
+	FrameIndex QK35 M 0 111
+	FrameIndex QK35 N 0 112
+	FrameIndex QK35 O 0 113
+	FrameIndex QK35 P 0 114
+	FrameIndex QK35 Q 0 115
+	FrameIndex QK35 R 0 116
+	FrameIndex QK35 S 0 117
+	FrameIndex QK35 T 0 118
+	FrameIndex QK35 U 0 119
+	FrameIndex QK35 V 0 120
+	FrameIndex QH35 L 0 121
+	FrameIndex QH35 M 0 122
+	FrameIndex QH35 N 0 123
+	FrameIndex QH35 O 0 124
+	FrameIndex QH35 P 0 125
+	FrameIndex QH35 Q 0 126
+	FrameIndex QH35 R 0 127
+	FrameIndex QH35 S 0 128
+	FrameIndex QH35 T 0 129
+	FrameIndex QH35 U 0 130
+	FrameIndex QH35 V 0 131
+	FrameIndex QK36 L 0 132
+	FrameIndex QK36 M 0 133
+	FrameIndex QK36 N 0 134
+	FrameIndex QK36 O 0 135
+	FrameIndex QK36 P 0 136
+	FrameIndex QK36 Q 0 137
+	FrameIndex QK36 R 0 138
+	FrameIndex QK36 S 0 139
+	FrameIndex QK36 T 0 140
+	FrameIndex QK36 U 0 141
+	FrameIndex QK36 V 0 142
+	FrameIndex QH36 L 0 143
+	FrameIndex QH36 M 0 144
+	FrameIndex QH36 N 0 145
+	FrameIndex QH36 O 0 146
+	FrameIndex QH36 P 0 147
+	FrameIndex QH36 Q 0 148
+	FrameIndex QH36 R 0 149
+	FrameIndex QH36 S 0 150
+	FrameIndex QH36 T 0 151
+	FrameIndex QH36 U 0 152
+	FrameIndex QH36 V 0 153
+	FrameIndex QK37 L 0 154
+	FrameIndex QK37 M 0 155
+	FrameIndex QK37 N 0 156
+	FrameIndex QK37 O 0 157
+	FrameIndex QK37 P 0 158
+	FrameIndex QK37 Q 0 159
+	FrameIndex QK37 R 0 160
+	FrameIndex QK37 S 0 161
+	FrameIndex QK37 T 0 162
+	FrameIndex QK37 U 0 163
+	FrameIndex QK37 V 0 164
+	FrameIndex QH37 L 0 165
+	FrameIndex QH37 M 0 166
+	FrameIndex QH37 N 0 167
+	FrameIndex QH37 O 0 168
+	FrameIndex QH37 P 0 169
+	FrameIndex QH37 Q 0 170
+	FrameIndex QH37 R 0 171
+	FrameIndex QH37 S 0 172
+	FrameIndex QH37 T 0 173
+	FrameIndex QH37 U 0 174
+	FrameIndex QH37 V 0 175
+	FrameIndex QK38 L 0 176
+	FrameIndex QK38 M 0 177
+	FrameIndex QK38 N 0 178
+	FrameIndex QK38 O 0 179
+	FrameIndex QK38 P 0 180
+	FrameIndex QK38 Q 0 181
+	FrameIndex QK38 R 0 182
+	FrameIndex QK38 S 0 183
+	FrameIndex QK38 T 0 184
+	FrameIndex QK38 U 0 185
+	FrameIndex QK38 V 0 186
+	FrameIndex QH38 L 0 187
+	FrameIndex QH38 M 0 188
+	FrameIndex QH38 N 0 189
+	FrameIndex QH38 O 0 190
+	FrameIndex QH38 P 0 191
+	FrameIndex QH38 Q 0 192
+	FrameIndex QH38 R 0 193
+	FrameIndex QH38 S 0 194
+	FrameIndex QH38 T 0 195
+	FrameIndex QH38 U 0 196
+	FrameIndex QH38 V 0 197
+	FrameIndex QK39 L 0 198
+	FrameIndex QK39 M 0 199
+	FrameIndex QK39 N 0 200
+	FrameIndex QK39 O 0 201
+	FrameIndex QK39 P 0 202
+	FrameIndex QK39 Q 0 203
+	FrameIndex QK39 R 0 204
+	FrameIndex QK39 S 0 205
+	FrameIndex QK39 T 0 206
+	FrameIndex QK39 U 0 207
+	FrameIndex QK39 V 0 208
+	FrameIndex QH39 L 0 209
+	FrameIndex QH39 M 0 210
+	FrameIndex QH39 N 0 211
+	FrameIndex QH39 O 0 212
+	FrameIndex QH39 P 0 213
+	FrameIndex QH39 Q 0 214
+	FrameIndex QH39 R 0 215
+	FrameIndex QH39 S 0 216
+	FrameIndex QH39 T 0 217
+	FrameIndex QH39 U 0 218
+	FrameIndex QH39 V 0 219
+	FrameIndex QK3A L 0 220
+	FrameIndex QK3A M 0 221
+	FrameIndex QK3A N 0 222
+	FrameIndex QK3A O 0 223
+	FrameIndex QK3A P 0 224
+	FrameIndex QK3A Q 0 225
+	FrameIndex QK3A R 0 226
+	FrameIndex QK3A S 0 227
+	FrameIndex QK3A T 0 228
+	FrameIndex QK3A U 0 229
+	FrameIndex QK3A V 0 230
+	FrameIndex QH3A L 0 231
+	FrameIndex QH3A M 0 232
+	FrameIndex QH3A N 0 233
+	FrameIndex QH3A O 0 234
+	FrameIndex QH3A P 0 235
+	FrameIndex QH3A Q 0 236
+	FrameIndex QH3A R 0 237
+	FrameIndex QH3A S 0 238
+	FrameIndex QH3A T 0 239
+	FrameIndex QH3A U 0 240
+	FrameIndex QH3A V 0 241
+	FrameIndex QK3B L 0 242
+	FrameIndex QK3B M 0 243
+	FrameIndex QK3B N 0 244
+	FrameIndex QK3B O 0 245
+	FrameIndex QK3B P 0 246
+	FrameIndex QK3B Q 0 247
+	FrameIndex QK3B R 0 248
+	FrameIndex QK3B S 0 249
+	FrameIndex QK3B T 0 250
+	FrameIndex QK3B U 0 251
+	FrameIndex QK3B V 0 252
+	FrameIndex QH3B L 0 253
+	FrameIndex QH3B M 0 254
+	FrameIndex QH3B N 0 255
+	FrameIndex QH3B O 0 256
+	FrameIndex QH3B P 0 257
+	FrameIndex QH3B Q 0 258
+	FrameIndex QH3B R 0 259
+	FrameIndex QH3B S 0 260
+	FrameIndex QH3B T 0 261
+	FrameIndex QH3B U 0 262
+	FrameIndex QH3B V 0 263
+	FrameIndex QK3C L 0 264
+	FrameIndex QK3C M 0 265
+	FrameIndex QK3C N 0 266
+	FrameIndex QK3C O 0 267
+	FrameIndex QK3C P 0 268
+	FrameIndex QK3C Q 0 269
+	FrameIndex QK3C R 0 270
+	FrameIndex QK3C S 0 271
+	FrameIndex QK3C T 0 272
+	FrameIndex QK3C U 0 273
+	FrameIndex QK3C V 0 274
+	FrameIndex QH3C L 0 275
+	FrameIndex QH3C M 0 276
+	FrameIndex QH3C N 0 277
+	FrameIndex QH3C O 0 278
+	FrameIndex QH3C P 0 279
+	FrameIndex QH3C Q 0 280
+	FrameIndex QH3C R 0 281
+	FrameIndex QH3C S 0 282
+	FrameIndex QH3C T 0 283
+	FrameIndex QH3C U 0 284
+	FrameIndex QH3C V 0 285
+}
+
+// big digit slot 4, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "big4_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QK40 L 0 0
+	FrameIndex QK40 M 0 1
+	FrameIndex QK40 N 0 2
+	FrameIndex QK40 O 0 3
+	FrameIndex QK40 P 0 4
+	FrameIndex QK40 Q 0 5
+	FrameIndex QK40 R 0 6
+	FrameIndex QK40 S 0 7
+	FrameIndex QK40 T 0 8
+	FrameIndex QK40 U 0 9
+	FrameIndex QK40 V 0 10
+	FrameIndex QH40 L 0 11
+	FrameIndex QH40 M 0 12
+	FrameIndex QH40 N 0 13
+	FrameIndex QH40 O 0 14
+	FrameIndex QH40 P 0 15
+	FrameIndex QH40 Q 0 16
+	FrameIndex QH40 R 0 17
+	FrameIndex QH40 S 0 18
+	FrameIndex QH40 T 0 19
+	FrameIndex QH40 U 0 20
+	FrameIndex QH40 V 0 21
+	FrameIndex QK41 L 0 22
+	FrameIndex QK41 M 0 23
+	FrameIndex QK41 N 0 24
+	FrameIndex QK41 O 0 25
+	FrameIndex QK41 P 0 26
+	FrameIndex QK41 Q 0 27
+	FrameIndex QK41 R 0 28
+	FrameIndex QK41 S 0 29
+	FrameIndex QK41 T 0 30
+	FrameIndex QK41 U 0 31
+	FrameIndex QK41 V 0 32
+	FrameIndex QH41 L 0 33
+	FrameIndex QH41 M 0 34
+	FrameIndex QH41 N 0 35
+	FrameIndex QH41 O 0 36
+	FrameIndex QH41 P 0 37
+	FrameIndex QH41 Q 0 38
+	FrameIndex QH41 R 0 39
+	FrameIndex QH41 S 0 40
+	FrameIndex QH41 T 0 41
+	FrameIndex QH41 U 0 42
+	FrameIndex QH41 V 0 43
+	FrameIndex QK42 L 0 44
+	FrameIndex QK42 M 0 45
+	FrameIndex QK42 N 0 46
+	FrameIndex QK42 O 0 47
+	FrameIndex QK42 P 0 48
+	FrameIndex QK42 Q 0 49
+	FrameIndex QK42 R 0 50
+	FrameIndex QK42 S 0 51
+	FrameIndex QK42 T 0 52
+	FrameIndex QK42 U 0 53
+	FrameIndex QK42 V 0 54
+	FrameIndex QH42 L 0 55
+	FrameIndex QH42 M 0 56
+	FrameIndex QH42 N 0 57
+	FrameIndex QH42 O 0 58
+	FrameIndex QH42 P 0 59
+	FrameIndex QH42 Q 0 60
+	FrameIndex QH42 R 0 61
+	FrameIndex QH42 S 0 62
+	FrameIndex QH42 T 0 63
+	FrameIndex QH42 U 0 64
+	FrameIndex QH42 V 0 65
+	FrameIndex QK43 L 0 66
+	FrameIndex QK43 M 0 67
+	FrameIndex QK43 N 0 68
+	FrameIndex QK43 O 0 69
+	FrameIndex QK43 P 0 70
+	FrameIndex QK43 Q 0 71
+	FrameIndex QK43 R 0 72
+	FrameIndex QK43 S 0 73
+	FrameIndex QK43 T 0 74
+	FrameIndex QK43 U 0 75
+	FrameIndex QK43 V 0 76
+	FrameIndex QH43 L 0 77
+	FrameIndex QH43 M 0 78
+	FrameIndex QH43 N 0 79
+	FrameIndex QH43 O 0 80
+	FrameIndex QH43 P 0 81
+	FrameIndex QH43 Q 0 82
+	FrameIndex QH43 R 0 83
+	FrameIndex QH43 S 0 84
+	FrameIndex QH43 T 0 85
+	FrameIndex QH43 U 0 86
+	FrameIndex QH43 V 0 87
+	FrameIndex QK44 L 0 88
+	FrameIndex QK44 M 0 89
+	FrameIndex QK44 N 0 90
+	FrameIndex QK44 O 0 91
+	FrameIndex QK44 P 0 92
+	FrameIndex QK44 Q 0 93
+	FrameIndex QK44 R 0 94
+	FrameIndex QK44 S 0 95
+	FrameIndex QK44 T 0 96
+	FrameIndex QK44 U 0 97
+	FrameIndex QK44 V 0 98
+	FrameIndex QH44 L 0 99
+	FrameIndex QH44 M 0 100
+	FrameIndex QH44 N 0 101
+	FrameIndex QH44 O 0 102
+	FrameIndex QH44 P 0 103
+	FrameIndex QH44 Q 0 104
+	FrameIndex QH44 R 0 105
+	FrameIndex QH44 S 0 106
+	FrameIndex QH44 T 0 107
+	FrameIndex QH44 U 0 108
+	FrameIndex QH44 V 0 109
+	FrameIndex QK45 L 0 110
+	FrameIndex QK45 M 0 111
+	FrameIndex QK45 N 0 112
+	FrameIndex QK45 O 0 113
+	FrameIndex QK45 P 0 114
+	FrameIndex QK45 Q 0 115
+	FrameIndex QK45 R 0 116
+	FrameIndex QK45 S 0 117
+	FrameIndex QK45 T 0 118
+	FrameIndex QK45 U 0 119
+	FrameIndex QK45 V 0 120
+	FrameIndex QH45 L 0 121
+	FrameIndex QH45 M 0 122
+	FrameIndex QH45 N 0 123
+	FrameIndex QH45 O 0 124
+	FrameIndex QH45 P 0 125
+	FrameIndex QH45 Q 0 126
+	FrameIndex QH45 R 0 127
+	FrameIndex QH45 S 0 128
+	FrameIndex QH45 T 0 129
+	FrameIndex QH45 U 0 130
+	FrameIndex QH45 V 0 131
+	FrameIndex QK46 L 0 132
+	FrameIndex QK46 M 0 133
+	FrameIndex QK46 N 0 134
+	FrameIndex QK46 O 0 135
+	FrameIndex QK46 P 0 136
+	FrameIndex QK46 Q 0 137
+	FrameIndex QK46 R 0 138
+	FrameIndex QK46 S 0 139
+	FrameIndex QK46 T 0 140
+	FrameIndex QK46 U 0 141
+	FrameIndex QK46 V 0 142
+	FrameIndex QH46 L 0 143
+	FrameIndex QH46 M 0 144
+	FrameIndex QH46 N 0 145
+	FrameIndex QH46 O 0 146
+	FrameIndex QH46 P 0 147
+	FrameIndex QH46 Q 0 148
+	FrameIndex QH46 R 0 149
+	FrameIndex QH46 S 0 150
+	FrameIndex QH46 T 0 151
+	FrameIndex QH46 U 0 152
+	FrameIndex QH46 V 0 153
+	FrameIndex QK47 L 0 154
+	FrameIndex QK47 M 0 155
+	FrameIndex QK47 N 0 156
+	FrameIndex QK47 O 0 157
+	FrameIndex QK47 P 0 158
+	FrameIndex QK47 Q 0 159
+	FrameIndex QK47 R 0 160
+	FrameIndex QK47 S 0 161
+	FrameIndex QK47 T 0 162
+	FrameIndex QK47 U 0 163
+	FrameIndex QK47 V 0 164
+	FrameIndex QH47 L 0 165
+	FrameIndex QH47 M 0 166
+	FrameIndex QH47 N 0 167
+	FrameIndex QH47 O 0 168
+	FrameIndex QH47 P 0 169
+	FrameIndex QH47 Q 0 170
+	FrameIndex QH47 R 0 171
+	FrameIndex QH47 S 0 172
+	FrameIndex QH47 T 0 173
+	FrameIndex QH47 U 0 174
+	FrameIndex QH47 V 0 175
+	FrameIndex QK48 L 0 176
+	FrameIndex QK48 M 0 177
+	FrameIndex QK48 N 0 178
+	FrameIndex QK48 O 0 179
+	FrameIndex QK48 P 0 180
+	FrameIndex QK48 Q 0 181
+	FrameIndex QK48 R 0 182
+	FrameIndex QK48 S 0 183
+	FrameIndex QK48 T 0 184
+	FrameIndex QK48 U 0 185
+	FrameIndex QK48 V 0 186
+	FrameIndex QH48 L 0 187
+	FrameIndex QH48 M 0 188
+	FrameIndex QH48 N 0 189
+	FrameIndex QH48 O 0 190
+	FrameIndex QH48 P 0 191
+	FrameIndex QH48 Q 0 192
+	FrameIndex QH48 R 0 193
+	FrameIndex QH48 S 0 194
+	FrameIndex QH48 T 0 195
+	FrameIndex QH48 U 0 196
+	FrameIndex QH48 V 0 197
+	FrameIndex QK49 L 0 198
+	FrameIndex QK49 M 0 199
+	FrameIndex QK49 N 0 200
+	FrameIndex QK49 O 0 201
+	FrameIndex QK49 P 0 202
+	FrameIndex QK49 Q 0 203
+	FrameIndex QK49 R 0 204
+	FrameIndex QK49 S 0 205
+	FrameIndex QK49 T 0 206
+	FrameIndex QK49 U 0 207
+	FrameIndex QK49 V 0 208
+	FrameIndex QH49 L 0 209
+	FrameIndex QH49 M 0 210
+	FrameIndex QH49 N 0 211
+	FrameIndex QH49 O 0 212
+	FrameIndex QH49 P 0 213
+	FrameIndex QH49 Q 0 214
+	FrameIndex QH49 R 0 215
+	FrameIndex QH49 S 0 216
+	FrameIndex QH49 T 0 217
+	FrameIndex QH49 U 0 218
+	FrameIndex QH49 V 0 219
+	FrameIndex QK4A L 0 220
+	FrameIndex QK4A M 0 221
+	FrameIndex QK4A N 0 222
+	FrameIndex QK4A O 0 223
+	FrameIndex QK4A P 0 224
+	FrameIndex QK4A Q 0 225
+	FrameIndex QK4A R 0 226
+	FrameIndex QK4A S 0 227
+	FrameIndex QK4A T 0 228
+	FrameIndex QK4A U 0 229
+	FrameIndex QK4A V 0 230
+	FrameIndex QH4A L 0 231
+	FrameIndex QH4A M 0 232
+	FrameIndex QH4A N 0 233
+	FrameIndex QH4A O 0 234
+	FrameIndex QH4A P 0 235
+	FrameIndex QH4A Q 0 236
+	FrameIndex QH4A R 0 237
+	FrameIndex QH4A S 0 238
+	FrameIndex QH4A T 0 239
+	FrameIndex QH4A U 0 240
+	FrameIndex QH4A V 0 241
+	FrameIndex QK4B L 0 242
+	FrameIndex QK4B M 0 243
+	FrameIndex QK4B N 0 244
+	FrameIndex QK4B O 0 245
+	FrameIndex QK4B P 0 246
+	FrameIndex QK4B Q 0 247
+	FrameIndex QK4B R 0 248
+	FrameIndex QK4B S 0 249
+	FrameIndex QK4B T 0 250
+	FrameIndex QK4B U 0 251
+	FrameIndex QK4B V 0 252
+	FrameIndex QH4B L 0 253
+	FrameIndex QH4B M 0 254
+	FrameIndex QH4B N 0 255
+	FrameIndex QH4B O 0 256
+	FrameIndex QH4B P 0 257
+	FrameIndex QH4B Q 0 258
+	FrameIndex QH4B R 0 259
+	FrameIndex QH4B S 0 260
+	FrameIndex QH4B T 0 261
+	FrameIndex QH4B U 0 262
+	FrameIndex QH4B V 0 263
+	FrameIndex QK4C L 0 264
+	FrameIndex QK4C M 0 265
+	FrameIndex QK4C N 0 266
+	FrameIndex QK4C O 0 267
+	FrameIndex QK4C P 0 268
+	FrameIndex QK4C Q 0 269
+	FrameIndex QK4C R 0 270
+	FrameIndex QK4C S 0 271
+	FrameIndex QK4C T 0 272
+	FrameIndex QK4C U 0 273
+	FrameIndex QK4C V 0 274
+	FrameIndex QH4C L 0 275
+	FrameIndex QH4C M 0 276
+	FrameIndex QH4C N 0 277
+	FrameIndex QH4C O 0 278
+	FrameIndex QH4C P 0 279
+	FrameIndex QH4C Q 0 280
+	FrameIndex QH4C R 0 281
+	FrameIndex QH4C S 0 282
+	FrameIndex QH4C T 0 283
+	FrameIndex QH4C U 0 284
+	FrameIndex QH4C V 0 285
+}
+
+// small digit slot 0, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small0_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS00 L 0 0
+	FrameIndex QS00 M 0 1
+	FrameIndex QS00 N 0 2
+	FrameIndex QS00 O 0 3
+	FrameIndex QS00 P 0 4
+	FrameIndex QS00 Q 0 5
+	FrameIndex QS00 R 0 6
+	FrameIndex QS00 S 0 7
+	FrameIndex QS00 T 0 8
+	FrameIndex QS00 U 0 9
+	FrameIndex QS00 V 0 10
+	FrameIndex QS01 L 0 11
+	FrameIndex QS01 M 0 12
+	FrameIndex QS01 N 0 13
+	FrameIndex QS01 O 0 14
+	FrameIndex QS01 P 0 15
+	FrameIndex QS01 Q 0 16
+	FrameIndex QS01 R 0 17
+	FrameIndex QS01 S 0 18
+	FrameIndex QS01 T 0 19
+	FrameIndex QS01 U 0 20
+	FrameIndex QS01 V 0 21
+	FrameIndex QS02 L 0 22
+	FrameIndex QS02 M 0 23
+	FrameIndex QS02 N 0 24
+	FrameIndex QS02 O 0 25
+	FrameIndex QS02 P 0 26
+	FrameIndex QS02 Q 0 27
+	FrameIndex QS02 R 0 28
+	FrameIndex QS02 S 0 29
+	FrameIndex QS02 T 0 30
+	FrameIndex QS02 U 0 31
+	FrameIndex QS02 V 0 32
+	FrameIndex QS03 L 0 33
+	FrameIndex QS03 M 0 34
+	FrameIndex QS03 N 0 35
+	FrameIndex QS03 O 0 36
+	FrameIndex QS03 P 0 37
+	FrameIndex QS03 Q 0 38
+	FrameIndex QS03 R 0 39
+	FrameIndex QS03 S 0 40
+	FrameIndex QS03 T 0 41
+	FrameIndex QS03 U 0 42
+	FrameIndex QS03 V 0 43
+	FrameIndex QS04 L 0 44
+	FrameIndex QS04 M 0 45
+	FrameIndex QS04 N 0 46
+	FrameIndex QS04 O 0 47
+	FrameIndex QS04 P 0 48
+	FrameIndex QS04 Q 0 49
+	FrameIndex QS04 R 0 50
+	FrameIndex QS04 S 0 51
+	FrameIndex QS04 T 0 52
+	FrameIndex QS04 U 0 53
+	FrameIndex QS04 V 0 54
+	FrameIndex QS05 L 0 55
+	FrameIndex QS05 M 0 56
+	FrameIndex QS05 N 0 57
+	FrameIndex QS05 O 0 58
+	FrameIndex QS05 P 0 59
+	FrameIndex QS05 Q 0 60
+	FrameIndex QS05 R 0 61
+	FrameIndex QS05 S 0 62
+	FrameIndex QS05 T 0 63
+	FrameIndex QS05 U 0 64
+	FrameIndex QS05 V 0 65
+	FrameIndex QS06 L 0 66
+	FrameIndex QS06 M 0 67
+	FrameIndex QS06 N 0 68
+	FrameIndex QS06 O 0 69
+	FrameIndex QS06 P 0 70
+	FrameIndex QS06 Q 0 71
+	FrameIndex QS06 R 0 72
+	FrameIndex QS06 S 0 73
+	FrameIndex QS06 T 0 74
+	FrameIndex QS06 U 0 75
+	FrameIndex QS06 V 0 76
+	FrameIndex QS07 L 0 77
+	FrameIndex QS07 M 0 78
+	FrameIndex QS07 N 0 79
+	FrameIndex QS07 O 0 80
+	FrameIndex QS07 P 0 81
+	FrameIndex QS07 Q 0 82
+	FrameIndex QS07 R 0 83
+	FrameIndex QS07 S 0 84
+	FrameIndex QS07 T 0 85
+	FrameIndex QS07 U 0 86
+	FrameIndex QS07 V 0 87
+	FrameIndex QS08 L 0 88
+	FrameIndex QS08 M 0 89
+	FrameIndex QS08 N 0 90
+	FrameIndex QS08 O 0 91
+	FrameIndex QS08 P 0 92
+	FrameIndex QS08 Q 0 93
+	FrameIndex QS08 R 0 94
+	FrameIndex QS08 S 0 95
+	FrameIndex QS08 T 0 96
+	FrameIndex QS08 U 0 97
+	FrameIndex QS08 V 0 98
+	FrameIndex QS09 L 0 99
+	FrameIndex QS09 M 0 100
+	FrameIndex QS09 N 0 101
+	FrameIndex QS09 O 0 102
+	FrameIndex QS09 P 0 103
+	FrameIndex QS09 Q 0 104
+	FrameIndex QS09 R 0 105
+	FrameIndex QS09 S 0 106
+	FrameIndex QS09 T 0 107
+	FrameIndex QS09 U 0 108
+	FrameIndex QS09 V 0 109
+	FrameIndex QS0A L 0 110
+	FrameIndex QS0A M 0 111
+	FrameIndex QS0A N 0 112
+	FrameIndex QS0A O 0 113
+	FrameIndex QS0A P 0 114
+	FrameIndex QS0A Q 0 115
+	FrameIndex QS0A R 0 116
+	FrameIndex QS0A S 0 117
+	FrameIndex QS0A T 0 118
+	FrameIndex QS0A U 0 119
+	FrameIndex QS0A V 0 120
+	FrameIndex QS0B L 0 121
+	FrameIndex QS0B M 0 122
+	FrameIndex QS0B N 0 123
+	FrameIndex QS0B O 0 124
+	FrameIndex QS0B P 0 125
+	FrameIndex QS0B Q 0 126
+	FrameIndex QS0B R 0 127
+	FrameIndex QS0B S 0 128
+	FrameIndex QS0B T 0 129
+	FrameIndex QS0B U 0 130
+	FrameIndex QS0B V 0 131
+	FrameIndex QS0C L 0 132
+	FrameIndex QS0C M 0 133
+	FrameIndex QS0C N 0 134
+	FrameIndex QS0C O 0 135
+	FrameIndex QS0C P 0 136
+	FrameIndex QS0C Q 0 137
+	FrameIndex QS0C R 0 138
+	FrameIndex QS0C S 0 139
+	FrameIndex QS0C T 0 140
+	FrameIndex QS0C U 0 141
+	FrameIndex QS0C V 0 142
+}
+
+// small digit slot 1, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small1_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS10 L 0 0
+	FrameIndex QS10 M 0 1
+	FrameIndex QS10 N 0 2
+	FrameIndex QS10 O 0 3
+	FrameIndex QS10 P 0 4
+	FrameIndex QS10 Q 0 5
+	FrameIndex QS10 R 0 6
+	FrameIndex QS10 S 0 7
+	FrameIndex QS10 T 0 8
+	FrameIndex QS10 U 0 9
+	FrameIndex QS10 V 0 10
+	FrameIndex QS11 L 0 11
+	FrameIndex QS11 M 0 12
+	FrameIndex QS11 N 0 13
+	FrameIndex QS11 O 0 14
+	FrameIndex QS11 P 0 15
+	FrameIndex QS11 Q 0 16
+	FrameIndex QS11 R 0 17
+	FrameIndex QS11 S 0 18
+	FrameIndex QS11 T 0 19
+	FrameIndex QS11 U 0 20
+	FrameIndex QS11 V 0 21
+	FrameIndex QS12 L 0 22
+	FrameIndex QS12 M 0 23
+	FrameIndex QS12 N 0 24
+	FrameIndex QS12 O 0 25
+	FrameIndex QS12 P 0 26
+	FrameIndex QS12 Q 0 27
+	FrameIndex QS12 R 0 28
+	FrameIndex QS12 S 0 29
+	FrameIndex QS12 T 0 30
+	FrameIndex QS12 U 0 31
+	FrameIndex QS12 V 0 32
+	FrameIndex QS13 L 0 33
+	FrameIndex QS13 M 0 34
+	FrameIndex QS13 N 0 35
+	FrameIndex QS13 O 0 36
+	FrameIndex QS13 P 0 37
+	FrameIndex QS13 Q 0 38
+	FrameIndex QS13 R 0 39
+	FrameIndex QS13 S 0 40
+	FrameIndex QS13 T 0 41
+	FrameIndex QS13 U 0 42
+	FrameIndex QS13 V 0 43
+	FrameIndex QS14 L 0 44
+	FrameIndex QS14 M 0 45
+	FrameIndex QS14 N 0 46
+	FrameIndex QS14 O 0 47
+	FrameIndex QS14 P 0 48
+	FrameIndex QS14 Q 0 49
+	FrameIndex QS14 R 0 50
+	FrameIndex QS14 S 0 51
+	FrameIndex QS14 T 0 52
+	FrameIndex QS14 U 0 53
+	FrameIndex QS14 V 0 54
+	FrameIndex QS15 L 0 55
+	FrameIndex QS15 M 0 56
+	FrameIndex QS15 N 0 57
+	FrameIndex QS15 O 0 58
+	FrameIndex QS15 P 0 59
+	FrameIndex QS15 Q 0 60
+	FrameIndex QS15 R 0 61
+	FrameIndex QS15 S 0 62
+	FrameIndex QS15 T 0 63
+	FrameIndex QS15 U 0 64
+	FrameIndex QS15 V 0 65
+	FrameIndex QS16 L 0 66
+	FrameIndex QS16 M 0 67
+	FrameIndex QS16 N 0 68
+	FrameIndex QS16 O 0 69
+	FrameIndex QS16 P 0 70
+	FrameIndex QS16 Q 0 71
+	FrameIndex QS16 R 0 72
+	FrameIndex QS16 S 0 73
+	FrameIndex QS16 T 0 74
+	FrameIndex QS16 U 0 75
+	FrameIndex QS16 V 0 76
+	FrameIndex QS17 L 0 77
+	FrameIndex QS17 M 0 78
+	FrameIndex QS17 N 0 79
+	FrameIndex QS17 O 0 80
+	FrameIndex QS17 P 0 81
+	FrameIndex QS17 Q 0 82
+	FrameIndex QS17 R 0 83
+	FrameIndex QS17 S 0 84
+	FrameIndex QS17 T 0 85
+	FrameIndex QS17 U 0 86
+	FrameIndex QS17 V 0 87
+	FrameIndex QS18 L 0 88
+	FrameIndex QS18 M 0 89
+	FrameIndex QS18 N 0 90
+	FrameIndex QS18 O 0 91
+	FrameIndex QS18 P 0 92
+	FrameIndex QS18 Q 0 93
+	FrameIndex QS18 R 0 94
+	FrameIndex QS18 S 0 95
+	FrameIndex QS18 T 0 96
+	FrameIndex QS18 U 0 97
+	FrameIndex QS18 V 0 98
+	FrameIndex QS19 L 0 99
+	FrameIndex QS19 M 0 100
+	FrameIndex QS19 N 0 101
+	FrameIndex QS19 O 0 102
+	FrameIndex QS19 P 0 103
+	FrameIndex QS19 Q 0 104
+	FrameIndex QS19 R 0 105
+	FrameIndex QS19 S 0 106
+	FrameIndex QS19 T 0 107
+	FrameIndex QS19 U 0 108
+	FrameIndex QS19 V 0 109
+	FrameIndex QS1A L 0 110
+	FrameIndex QS1A M 0 111
+	FrameIndex QS1A N 0 112
+	FrameIndex QS1A O 0 113
+	FrameIndex QS1A P 0 114
+	FrameIndex QS1A Q 0 115
+	FrameIndex QS1A R 0 116
+	FrameIndex QS1A S 0 117
+	FrameIndex QS1A T 0 118
+	FrameIndex QS1A U 0 119
+	FrameIndex QS1A V 0 120
+	FrameIndex QS1B L 0 121
+	FrameIndex QS1B M 0 122
+	FrameIndex QS1B N 0 123
+	FrameIndex QS1B O 0 124
+	FrameIndex QS1B P 0 125
+	FrameIndex QS1B Q 0 126
+	FrameIndex QS1B R 0 127
+	FrameIndex QS1B S 0 128
+	FrameIndex QS1B T 0 129
+	FrameIndex QS1B U 0 130
+	FrameIndex QS1B V 0 131
+	FrameIndex QS1C L 0 132
+	FrameIndex QS1C M 0 133
+	FrameIndex QS1C N 0 134
+	FrameIndex QS1C O 0 135
+	FrameIndex QS1C P 0 136
+	FrameIndex QS1C Q 0 137
+	FrameIndex QS1C R 0 138
+	FrameIndex QS1C S 0 139
+	FrameIndex QS1C T 0 140
+	FrameIndex QS1C U 0 141
+	FrameIndex QS1C V 0 142
+}
+
+// small digit slot 2, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small2_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS20 L 0 0
+	FrameIndex QS20 M 0 1
+	FrameIndex QS20 N 0 2
+	FrameIndex QS20 O 0 3
+	FrameIndex QS20 P 0 4
+	FrameIndex QS20 Q 0 5
+	FrameIndex QS20 R 0 6
+	FrameIndex QS20 S 0 7
+	FrameIndex QS20 T 0 8
+	FrameIndex QS20 U 0 9
+	FrameIndex QS20 V 0 10
+	FrameIndex QS21 L 0 11
+	FrameIndex QS21 M 0 12
+	FrameIndex QS21 N 0 13
+	FrameIndex QS21 O 0 14
+	FrameIndex QS21 P 0 15
+	FrameIndex QS21 Q 0 16
+	FrameIndex QS21 R 0 17
+	FrameIndex QS21 S 0 18
+	FrameIndex QS21 T 0 19
+	FrameIndex QS21 U 0 20
+	FrameIndex QS21 V 0 21
+	FrameIndex QS22 L 0 22
+	FrameIndex QS22 M 0 23
+	FrameIndex QS22 N 0 24
+	FrameIndex QS22 O 0 25
+	FrameIndex QS22 P 0 26
+	FrameIndex QS22 Q 0 27
+	FrameIndex QS22 R 0 28
+	FrameIndex QS22 S 0 29
+	FrameIndex QS22 T 0 30
+	FrameIndex QS22 U 0 31
+	FrameIndex QS22 V 0 32
+	FrameIndex QS23 L 0 33
+	FrameIndex QS23 M 0 34
+	FrameIndex QS23 N 0 35
+	FrameIndex QS23 O 0 36
+	FrameIndex QS23 P 0 37
+	FrameIndex QS23 Q 0 38
+	FrameIndex QS23 R 0 39
+	FrameIndex QS23 S 0 40
+	FrameIndex QS23 T 0 41
+	FrameIndex QS23 U 0 42
+	FrameIndex QS23 V 0 43
+	FrameIndex QS24 L 0 44
+	FrameIndex QS24 M 0 45
+	FrameIndex QS24 N 0 46
+	FrameIndex QS24 O 0 47
+	FrameIndex QS24 P 0 48
+	FrameIndex QS24 Q 0 49
+	FrameIndex QS24 R 0 50
+	FrameIndex QS24 S 0 51
+	FrameIndex QS24 T 0 52
+	FrameIndex QS24 U 0 53
+	FrameIndex QS24 V 0 54
+	FrameIndex QS25 L 0 55
+	FrameIndex QS25 M 0 56
+	FrameIndex QS25 N 0 57
+	FrameIndex QS25 O 0 58
+	FrameIndex QS25 P 0 59
+	FrameIndex QS25 Q 0 60
+	FrameIndex QS25 R 0 61
+	FrameIndex QS25 S 0 62
+	FrameIndex QS25 T 0 63
+	FrameIndex QS25 U 0 64
+	FrameIndex QS25 V 0 65
+	FrameIndex QS26 L 0 66
+	FrameIndex QS26 M 0 67
+	FrameIndex QS26 N 0 68
+	FrameIndex QS26 O 0 69
+	FrameIndex QS26 P 0 70
+	FrameIndex QS26 Q 0 71
+	FrameIndex QS26 R 0 72
+	FrameIndex QS26 S 0 73
+	FrameIndex QS26 T 0 74
+	FrameIndex QS26 U 0 75
+	FrameIndex QS26 V 0 76
+	FrameIndex QS27 L 0 77
+	FrameIndex QS27 M 0 78
+	FrameIndex QS27 N 0 79
+	FrameIndex QS27 O 0 80
+	FrameIndex QS27 P 0 81
+	FrameIndex QS27 Q 0 82
+	FrameIndex QS27 R 0 83
+	FrameIndex QS27 S 0 84
+	FrameIndex QS27 T 0 85
+	FrameIndex QS27 U 0 86
+	FrameIndex QS27 V 0 87
+	FrameIndex QS28 L 0 88
+	FrameIndex QS28 M 0 89
+	FrameIndex QS28 N 0 90
+	FrameIndex QS28 O 0 91
+	FrameIndex QS28 P 0 92
+	FrameIndex QS28 Q 0 93
+	FrameIndex QS28 R 0 94
+	FrameIndex QS28 S 0 95
+	FrameIndex QS28 T 0 96
+	FrameIndex QS28 U 0 97
+	FrameIndex QS28 V 0 98
+	FrameIndex QS29 L 0 99
+	FrameIndex QS29 M 0 100
+	FrameIndex QS29 N 0 101
+	FrameIndex QS29 O 0 102
+	FrameIndex QS29 P 0 103
+	FrameIndex QS29 Q 0 104
+	FrameIndex QS29 R 0 105
+	FrameIndex QS29 S 0 106
+	FrameIndex QS29 T 0 107
+	FrameIndex QS29 U 0 108
+	FrameIndex QS29 V 0 109
+	FrameIndex QS2A L 0 110
+	FrameIndex QS2A M 0 111
+	FrameIndex QS2A N 0 112
+	FrameIndex QS2A O 0 113
+	FrameIndex QS2A P 0 114
+	FrameIndex QS2A Q 0 115
+	FrameIndex QS2A R 0 116
+	FrameIndex QS2A S 0 117
+	FrameIndex QS2A T 0 118
+	FrameIndex QS2A U 0 119
+	FrameIndex QS2A V 0 120
+	FrameIndex QS2B L 0 121
+	FrameIndex QS2B M 0 122
+	FrameIndex QS2B N 0 123
+	FrameIndex QS2B O 0 124
+	FrameIndex QS2B P 0 125
+	FrameIndex QS2B Q 0 126
+	FrameIndex QS2B R 0 127
+	FrameIndex QS2B S 0 128
+	FrameIndex QS2B T 0 129
+	FrameIndex QS2B U 0 130
+	FrameIndex QS2B V 0 131
+	FrameIndex QS2C L 0 132
+	FrameIndex QS2C M 0 133
+	FrameIndex QS2C N 0 134
+	FrameIndex QS2C O 0 135
+	FrameIndex QS2C P 0 136
+	FrameIndex QS2C Q 0 137
+	FrameIndex QS2C R 0 138
+	FrameIndex QS2C S 0 139
+	FrameIndex QS2C T 0 140
+	FrameIndex QS2C U 0 141
+	FrameIndex QS2C V 0 142
+}
+
+// small digit slot 3, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small3_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS30 L 0 0
+	FrameIndex QS30 M 0 1
+	FrameIndex QS30 N 0 2
+	FrameIndex QS30 O 0 3
+	FrameIndex QS30 P 0 4
+	FrameIndex QS30 Q 0 5
+	FrameIndex QS30 R 0 6
+	FrameIndex QS30 S 0 7
+	FrameIndex QS30 T 0 8
+	FrameIndex QS30 U 0 9
+	FrameIndex QS30 V 0 10
+	FrameIndex QS31 L 0 11
+	FrameIndex QS31 M 0 12
+	FrameIndex QS31 N 0 13
+	FrameIndex QS31 O 0 14
+	FrameIndex QS31 P 0 15
+	FrameIndex QS31 Q 0 16
+	FrameIndex QS31 R 0 17
+	FrameIndex QS31 S 0 18
+	FrameIndex QS31 T 0 19
+	FrameIndex QS31 U 0 20
+	FrameIndex QS31 V 0 21
+	FrameIndex QS32 L 0 22
+	FrameIndex QS32 M 0 23
+	FrameIndex QS32 N 0 24
+	FrameIndex QS32 O 0 25
+	FrameIndex QS32 P 0 26
+	FrameIndex QS32 Q 0 27
+	FrameIndex QS32 R 0 28
+	FrameIndex QS32 S 0 29
+	FrameIndex QS32 T 0 30
+	FrameIndex QS32 U 0 31
+	FrameIndex QS32 V 0 32
+	FrameIndex QS33 L 0 33
+	FrameIndex QS33 M 0 34
+	FrameIndex QS33 N 0 35
+	FrameIndex QS33 O 0 36
+	FrameIndex QS33 P 0 37
+	FrameIndex QS33 Q 0 38
+	FrameIndex QS33 R 0 39
+	FrameIndex QS33 S 0 40
+	FrameIndex QS33 T 0 41
+	FrameIndex QS33 U 0 42
+	FrameIndex QS33 V 0 43
+	FrameIndex QS34 L 0 44
+	FrameIndex QS34 M 0 45
+	FrameIndex QS34 N 0 46
+	FrameIndex QS34 O 0 47
+	FrameIndex QS34 P 0 48
+	FrameIndex QS34 Q 0 49
+	FrameIndex QS34 R 0 50
+	FrameIndex QS34 S 0 51
+	FrameIndex QS34 T 0 52
+	FrameIndex QS34 U 0 53
+	FrameIndex QS34 V 0 54
+	FrameIndex QS35 L 0 55
+	FrameIndex QS35 M 0 56
+	FrameIndex QS35 N 0 57
+	FrameIndex QS35 O 0 58
+	FrameIndex QS35 P 0 59
+	FrameIndex QS35 Q 0 60
+	FrameIndex QS35 R 0 61
+	FrameIndex QS35 S 0 62
+	FrameIndex QS35 T 0 63
+	FrameIndex QS35 U 0 64
+	FrameIndex QS35 V 0 65
+	FrameIndex QS36 L 0 66
+	FrameIndex QS36 M 0 67
+	FrameIndex QS36 N 0 68
+	FrameIndex QS36 O 0 69
+	FrameIndex QS36 P 0 70
+	FrameIndex QS36 Q 0 71
+	FrameIndex QS36 R 0 72
+	FrameIndex QS36 S 0 73
+	FrameIndex QS36 T 0 74
+	FrameIndex QS36 U 0 75
+	FrameIndex QS36 V 0 76
+	FrameIndex QS37 L 0 77
+	FrameIndex QS37 M 0 78
+	FrameIndex QS37 N 0 79
+	FrameIndex QS37 O 0 80
+	FrameIndex QS37 P 0 81
+	FrameIndex QS37 Q 0 82
+	FrameIndex QS37 R 0 83
+	FrameIndex QS37 S 0 84
+	FrameIndex QS37 T 0 85
+	FrameIndex QS37 U 0 86
+	FrameIndex QS37 V 0 87
+	FrameIndex QS38 L 0 88
+	FrameIndex QS38 M 0 89
+	FrameIndex QS38 N 0 90
+	FrameIndex QS38 O 0 91
+	FrameIndex QS38 P 0 92
+	FrameIndex QS38 Q 0 93
+	FrameIndex QS38 R 0 94
+	FrameIndex QS38 S 0 95
+	FrameIndex QS38 T 0 96
+	FrameIndex QS38 U 0 97
+	FrameIndex QS38 V 0 98
+	FrameIndex QS39 L 0 99
+	FrameIndex QS39 M 0 100
+	FrameIndex QS39 N 0 101
+	FrameIndex QS39 O 0 102
+	FrameIndex QS39 P 0 103
+	FrameIndex QS39 Q 0 104
+	FrameIndex QS39 R 0 105
+	FrameIndex QS39 S 0 106
+	FrameIndex QS39 T 0 107
+	FrameIndex QS39 U 0 108
+	FrameIndex QS39 V 0 109
+	FrameIndex QS3A L 0 110
+	FrameIndex QS3A M 0 111
+	FrameIndex QS3A N 0 112
+	FrameIndex QS3A O 0 113
+	FrameIndex QS3A P 0 114
+	FrameIndex QS3A Q 0 115
+	FrameIndex QS3A R 0 116
+	FrameIndex QS3A S 0 117
+	FrameIndex QS3A T 0 118
+	FrameIndex QS3A U 0 119
+	FrameIndex QS3A V 0 120
+	FrameIndex QS3B L 0 121
+	FrameIndex QS3B M 0 122
+	FrameIndex QS3B N 0 123
+	FrameIndex QS3B O 0 124
+	FrameIndex QS3B P 0 125
+	FrameIndex QS3B Q 0 126
+	FrameIndex QS3B R 0 127
+	FrameIndex QS3B S 0 128
+	FrameIndex QS3B T 0 129
+	FrameIndex QS3B U 0 130
+	FrameIndex QS3B V 0 131
+	FrameIndex QS3C L 0 132
+	FrameIndex QS3C M 0 133
+	FrameIndex QS3C N 0 134
+	FrameIndex QS3C O 0 135
+	FrameIndex QS3C P 0 136
+	FrameIndex QS3C Q 0 137
+	FrameIndex QS3C R 0 138
+	FrameIndex QS3C S 0 139
+	FrameIndex QS3C T 0 140
+	FrameIndex QS3C U 0 141
+	FrameIndex QS3C V 0 142
+}
+
+// small digit slot 4, PCVR
+Model RSQGC_CardItem
+{
+	Path "models/rsqgc/mc"
+	Model 0 "small4_p.md3"
+	Skin 0 "jfo_p.png"
+	Scale 1.0 1.0 1.0
+	AngleOffset 90
+	NoInterpolation
+	ForceCullBackfaces
+	FrameIndex QS40 L 0 0
+	FrameIndex QS40 M 0 1
+	FrameIndex QS40 N 0 2
+	FrameIndex QS40 O 0 3
+	FrameIndex QS40 P 0 4
+	FrameIndex QS40 Q 0 5
+	FrameIndex QS40 R 0 6
+	FrameIndex QS40 S 0 7
+	FrameIndex QS40 T 0 8
+	FrameIndex QS40 U 0 9
+	FrameIndex QS40 V 0 10
+	FrameIndex QS41 L 0 11
+	FrameIndex QS41 M 0 12
+	FrameIndex QS41 N 0 13
+	FrameIndex QS41 O 0 14
+	FrameIndex QS41 P 0 15
+	FrameIndex QS41 Q 0 16
+	FrameIndex QS41 R 0 17
+	FrameIndex QS41 S 0 18
+	FrameIndex QS41 T 0 19
+	FrameIndex QS41 U 0 20
+	FrameIndex QS41 V 0 21
+	FrameIndex QS42 L 0 22
+	FrameIndex QS42 M 0 23
+	FrameIndex QS42 N 0 24
+	FrameIndex QS42 O 0 25
+	FrameIndex QS42 P 0 26
+	FrameIndex QS42 Q 0 27
+	FrameIndex QS42 R 0 28
+	FrameIndex QS42 S 0 29
+	FrameIndex QS42 T 0 30
+	FrameIndex QS42 U 0 31
+	FrameIndex QS42 V 0 32
+	FrameIndex QS43 L 0 33
+	FrameIndex QS43 M 0 34
+	FrameIndex QS43 N 0 35
+	FrameIndex QS43 O 0 36
+	FrameIndex QS43 P 0 37
+	FrameIndex QS43 Q 0 38
+	FrameIndex QS43 R 0 39
+	FrameIndex QS43 S 0 40
+	FrameIndex QS43 T 0 41
+	FrameIndex QS43 U 0 42
+	FrameIndex QS43 V 0 43
+	FrameIndex QS44 L 0 44
+	FrameIndex QS44 M 0 45
+	FrameIndex QS44 N 0 46
+	FrameIndex QS44 O 0 47
+	FrameIndex QS44 P 0 48
+	FrameIndex QS44 Q 0 49
+	FrameIndex QS44 R 0 50
+	FrameIndex QS44 S 0 51
+	FrameIndex QS44 T 0 52
+	FrameIndex QS44 U 0 53
+	FrameIndex QS44 V 0 54
+	FrameIndex QS45 L 0 55
+	FrameIndex QS45 M 0 56
+	FrameIndex QS45 N 0 57
+	FrameIndex QS45 O 0 58
+	FrameIndex QS45 P 0 59
+	FrameIndex QS45 Q 0 60
+	FrameIndex QS45 R 0 61
+	FrameIndex QS45 S 0 62
+	FrameIndex QS45 T 0 63
+	FrameIndex QS45 U 0 64
+	FrameIndex QS45 V 0 65
+	FrameIndex QS46 L 0 66
+	FrameIndex QS46 M 0 67
+	FrameIndex QS46 N 0 68
+	FrameIndex QS46 O 0 69
+	FrameIndex QS46 P 0 70
+	FrameIndex QS46 Q 0 71
+	FrameIndex QS46 R 0 72
+	FrameIndex QS46 S 0 73
+	FrameIndex QS46 T 0 74
+	FrameIndex QS46 U 0 75
+	FrameIndex QS46 V 0 76
+	FrameIndex QS47 L 0 77
+	FrameIndex QS47 M 0 78
+	FrameIndex QS47 N 0 79
+	FrameIndex QS47 O 0 80
+	FrameIndex QS47 P 0 81
+	FrameIndex QS47 Q 0 82
+	FrameIndex QS47 R 0 83
+	FrameIndex QS47 S 0 84
+	FrameIndex QS47 T 0 85
+	FrameIndex QS47 U 0 86
+	FrameIndex QS47 V 0 87
+	FrameIndex QS48 L 0 88
+	FrameIndex QS48 M 0 89
+	FrameIndex QS48 N 0 90
+	FrameIndex QS48 O 0 91
+	FrameIndex QS48 P 0 92
+	FrameIndex QS48 Q 0 93
+	FrameIndex QS48 R 0 94
+	FrameIndex QS48 S 0 95
+	FrameIndex QS48 T 0 96
+	FrameIndex QS48 U 0 97
+	FrameIndex QS48 V 0 98
+	FrameIndex QS49 L 0 99
+	FrameIndex QS49 M 0 100
+	FrameIndex QS49 N 0 101
+	FrameIndex QS49 O 0 102
+	FrameIndex QS49 P 0 103
+	FrameIndex QS49 Q 0 104
+	FrameIndex QS49 R 0 105
+	FrameIndex QS49 S 0 106
+	FrameIndex QS49 T 0 107
+	FrameIndex QS49 U 0 108
+	FrameIndex QS49 V 0 109
+	FrameIndex QS4A L 0 110
+	FrameIndex QS4A M 0 111
+	FrameIndex QS4A N 0 112
+	FrameIndex QS4A O 0 113
+	FrameIndex QS4A P 0 114
+	FrameIndex QS4A Q 0 115
+	FrameIndex QS4A R 0 116
+	FrameIndex QS4A S 0 117
+	FrameIndex QS4A T 0 118
+	FrameIndex QS4A U 0 119
+	FrameIndex QS4A V 0 120
+	FrameIndex QS4B L 0 121
+	FrameIndex QS4B M 0 122
+	FrameIndex QS4B N 0 123
+	FrameIndex QS4B O 0 124
+	FrameIndex QS4B P 0 125
+	FrameIndex QS4B Q 0 126
+	FrameIndex QS4B R 0 127
+	FrameIndex QS4B S 0 128
+	FrameIndex QS4B T 0 129
+	FrameIndex QS4B U 0 130
+	FrameIndex QS4B V 0 131
+	FrameIndex QS4C L 0 132
+	FrameIndex QS4C M 0 133
+	FrameIndex QS4C N 0 134
+	FrameIndex QS4C O 0 135
+	FrameIndex QS4C P 0 136
+	FrameIndex QS4C Q 0 137
+	FrameIndex QS4C R 0 138
+	FrameIndex QS4C S 0 139
+	FrameIndex QS4C T 0 140
+	FrameIndex QS4C U 0 141
+	FrameIndex QS4C V 0 142
+}
+// <<< MODEL CARD
