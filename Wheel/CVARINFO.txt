@@ -49,6 +49,16 @@ user int  wr_wheel_mode = 1;
 // the hand you opened it with is the only one that points, and the gun goes there.
 user bool wr_either_hand = true;
 
+// RSQ (owner 2026-11-15: "our massive wheel... when we display all weapons it's huge and clips into shit"; his picks 1
+// and 3). GROUP BY SLOT: the ring opens on your weapon slots, one card per slot that holds a gun you have (a slot of one
+// gun is that gun's own card, taken directly). Take a slot card (trigger, Use, let go of the wheel button on it, or push
+// the stick into it and hold it there a moment) and the ring holds only that slot's guns, with a BACK card; BACK, or a
+// tap of the wheel button, returns to the slots. Off: one ring of every gun, as before (wr_subcards_max still applies).
+user bool wr_group_slots = true;
+// KEEP OUT OF WALLS: where the ring would open into a wall, floor or ceiling, it slides away from it; with walls on both
+// sides it steps toward your eyes (at most halfway) and, if it still does not fit, shrinks to the gap. Off: as before.
+user bool wr_walls = true;
+
 // RSQ: HOLD, POINT, RELEASE (the +wr_wheel bind, left thumbstick click by default). Held at least
 // wr_hold_tics, letting go picks the card under a hand, or closes the ring over nothing. A
 // shorter tap leaves the ring up. A second tap within wr_doubletap tics of a tap that opened it

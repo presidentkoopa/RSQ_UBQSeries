@@ -135,7 +135,7 @@ The 21 pk3s that `tools/build_all.py` builds, in the order the shared menu shows
 | RSQ_Miniboss.pk3 | Fill the meter, then press Use at your watch or on the Start Fight card inside your off-hand wrist: a miniboss lands with three to five thralls, each a boosted legendary champion with a power of its own. Kill a thrall to open its shield for a few seconds. Built on Tartlman's Minibosses!. |
 | RSQ_VisualRewards.pk3 | Health bars over monsters, damage numbers that fly, kill bits that come to you, level-up banners, and the four arrival beams. |
 | RSQ_GunCards.pk3 | Ammo cards on your guns, a status card on your wrist when you check your watch, and a switch that takes health and armour off the HUD. |
-| RSQ_Wheel.pk3 | Every gun you carry on a ring of cards; point and let go to pick one. With RSQ Tactical Rig, it is where you choose which holster each gun lives in. |
+| RSQ_Wheel.pk3 | Your weapon slots on a small ring of cards; take a slot and its guns take the ring; point and let go to pick one. It keeps out of walls. With RSQ Tactical Rig, it is where you choose which holster each gun lives in. |
 | RSQ_GlowInTheDark.pk3 | Coloured light up every wall, liquids that breathe, and DarkDoomZ's darkness built in. The owner's Glow In The Dark 1.1 rebuilt, with More Lights' glowing flats. |
 | RSQ_GunBonsaiVR.pk3 | Gun Bonsai rebuilt for two hands: each hand earns its own XP and upgrades, with more than 170 new upgrades for what you do with your body. |
 | RSQ_Monsters.pk3 | The owner's RS Monsters, Quest edition: Colourful Hell's thirteen-colour ladder, numbered by strength (11-11), and monsters that flash white and come back a tier higher. |

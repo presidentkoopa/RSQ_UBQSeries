@@ -1,0 +1,51 @@
+# RSQ Wheel, Group by Slot, rig run wsS2 (2026-11-15). Full order + test map rswalltest.wad as MAP01. Frames: docs/slots/slot_flow.jpg
+SSTATE slots
+RSQ Wheel walls: 10 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 31.5 up 33.3; clear; (moved 0.0)
+SSTATE push slot1
+RSQ Wheel TEST t148 hands: main Shot_Gun, off rsq_hands; open 1, on slot -1, size 1.00
+RSQ Wheel TEST hand 0 at 5.8 294.9 36.8 aims yaw 90.0 pitch 0.0 (player angle 90.0) -> card 3
+RSQ Wheel TEST hand 1 at -11.2 291.5 28.3 aims yaw 90.0 pitch -70.0 (player angle 90.0) -> card -1
+RSQ Wheel t153: stick pushed into card 1 (0.00, 0.38) for 6 tics
+RSQ Wheel walls: 6 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 31.5 up 33.3; clear; (moved 0.0)
+RSQ Wheel t153: into slot 1: 6 cards: BACK BrutalAxe Chain_saw UBQS_Saber SSQ_ShieldSaw RSQWP_WhipWeapon 
+SSTATE stick chainsaw
+RSQ Wheel TEST t223 hands: main Shot_Gun, off rsq_hands; open 1, on slot 1, size 1.00
+RSQ Wheel TEST hand 0 at 5.8 294.9 36.8 aims yaw 90.0 pitch 0.0 (player angle 90.0) -> card 2
+RSQ Wheel TEST hand 1 at -11.2 291.5 28.3 aims yaw 90.0 pitch -70.0 (player angle 90.0) -> card -1
+RSQ Wheel t269: take: card 2 under hand 0
+RSQ Wheel: pick Chain_saw (card Chain_saw) -> hand 0
+SSTATE reopen
+RSQ Wheel TEST t307 hands: main Chain_saw, off rsq_hands; open 0, on slot -1, size 1.00
+RSQ Wheel walls: 10 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 25.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel t344: stick pushed into card 1 (0.00, 0.38) for 6 tics
+RSQ Wheel walls: 6 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 25.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel t344: into slot 1: 6 cards: BACK BrutalAxe Chain_saw UBQS_Saber SSQ_ShieldSaw RSQWP_WhipWeapon 
+SSTATE tap back
+RSQ Wheel walls: 10 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 25.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel t392: back to the slots: 10 cards: RSQ_Glove [slot 1: 5 guns, wears Chain_saw] [slot 2: 5 guns, wears BrutalPistol] [slot 3: 3 guns, wears Shot_Gun] [slot 4: 4 guns, wears Rifle] [slot 5: 4 guns, wears IncendiaryLauncher] [slot 6: 2 guns, wears Plasma_Gun] [slot 7: 3 guns, wears NukeLauncher] [slot 8: 2 guns, wears HellishMissileLauncher] [slot 9: 2 guns, wears FlameCannon] 
+RSQ Wheel TEST t444 hands: main Chain_saw, off rsq_hands; open 1, on slot -1, size 1.00
+RSQ Wheel TEST hand 0 at 5.8 294.9 36.8 aims yaw 90.0 pitch 0.0 (player angle 90.0) -> card 1
+RSQ Wheel TEST hand 1 at -11.2 291.5 28.3 aims yaw 90.0 pitch -70.0 (player angle 90.0) -> card -1
+RSQ Wheel t449: stick pushed into card 1 (0.00, 0.38) for 6 tics
+RSQ Wheel walls: 6 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 25.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel t449: into slot 1: 6 cards: BACK BrutalAxe Chain_saw UBQS_Saber SSQ_ShieldSaw RSQWP_WhipWeapon 
+SSTATE stick BACK
+RSQ Wheel t499: stick pushed into card 0 (-0.33, 0.26) for 6 tics
+RSQ Wheel walls: 10 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 25.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel t499: back to the slots: 10 cards: RSQ_Glove [slot 1: 5 guns, wears Chain_saw] [slot 2: 5 guns, wears BrutalPistol] [slot 3: 3 guns, wears Shot_Gun] [slot 4: 4 guns, wears Rifle] [slot 5: 4 guns, wears IncendiaryLauncher] [slot 6: 2 guns, wears Plasma_Gun] [slot 7: 3 guns, wears NukeLauncher] [slot 8: 2 guns, wears HellishMissileLauncher] [slot 9: 2 guns, wears FlameCannon] 
+SSTATE offhand
+RSQ Wheel TEST t563 hands: main Chain_saw, off rsq_hands; open 1, on slot -1, size 1.00
+RSQ Wheel TEST hand 0 at 5.8 294.9 36.8 aims yaw 90.0 pitch 0.0 (player angle 90.0) -> card 1
+RSQ Wheel TEST hand 1 at -11.2 291.5 28.3 aims yaw 90.0 pitch -70.0 (player angle 90.0) -> card -1
+RSQ Wheel t568: stick pushed into card 1 (0.00, 0.38) for 6 tics
+RSQ Wheel walls: 6 cards, ring 34.6 across x 33.3 up at size 1.00; room left 34.6 right 34.6 down 25.3 up 33.3; clear; (moved 0.0)
+RSQ Wheel t568: into slot 1: 6 cards: BACK BrutalAxe Chain_saw UBQS_Saber SSQ_ShieldSaw RSQWP_WhipWeapon 
+RSQ Wheel TEST t613 hands: main Chain_saw, off rsq_hands; open 1, on slot 1, size 1.00
+RSQ Wheel TEST hand 0 at 5.8 294.9 36.8 aims yaw 90.0 pitch -60.0 (player angle 90.0) -> card -1
+RSQ Wheel TEST hand 1 at -11.2 294.9 36.8 aims yaw 56.7 pitch -0.3 (player angle 90.0) -> card 1
+RSQ Wheel TEST t661 hands: main Chain_saw, off rsq_hands; open 1, on slot 1, size 1.00
+RSQ Wheel TEST hand 0 at 5.8 294.9 36.8 aims yaw 90.0 pitch -60.0 (player angle 90.0) -> card -1
+RSQ Wheel TEST hand 1 at -11.2 294.9 36.8 aims yaw 56.7 pitch -0.3 (player angle 90.0) -> card 1
+RSQ Wheel t661: take: card 1 under hand 1
+RSQ Wheel: pick RSQ_Off_BrutalAxe (card BrutalAxe) -> hand 1
+RSQ Wheel TEST t700 hands: main Chain_saw, off RSQ_Off_BrutalAxe; open 0, on slot -1, size 1.00

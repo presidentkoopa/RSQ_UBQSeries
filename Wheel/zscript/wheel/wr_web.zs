@@ -254,7 +254,7 @@ extend class wr_Rig
 		if (h == mPokeHand) return mHovered;
 		int oid; Vector2 ouv;
 		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, h), aimDir(pmo, h), POINTER_RANGE);
-		double touchR = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
+		double touchR = cv("wr_touch", 7.0) * ringSc();
 		if (touchR > 0.0)
 		{
 			int tid; Vector2 tuv; double td;
@@ -270,6 +270,7 @@ extend class wr_Rig
 		int sub = subIndexOf(id);
 		if (sub >= 0 && sub < mSubTypes.Size()) return webKey(mSubTypes[sub]);
 		int i = cardIndexOf(id);
+		if (i >= 0 && roleOf(i) != ROLE_GUN) return null;   // RSQ GROUP BY SLOT: a slot's card, or BACK, is no one gun
 		if (i >= 0 && i < mTypes.Size()) return webKey(mTypes[i]);
 		return null;
 	}

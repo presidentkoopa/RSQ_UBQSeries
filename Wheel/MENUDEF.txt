@@ -118,6 +118,10 @@ OptionMenu wr_Options
 	// hands back an engine wheel.
 	Option "Weapon Wheel",              "wr_wheel_mode",   "wr_WheelMode"
 	Option "Either Hand Picks",         "wr_either_hand",  "OnOff"
+	// The ring opens on your weapon slots; take a slot to see its guns, BACK (or a tap of the key) to return.
+	Option "Group by Slot",             "wr_group_slots",  "OnOff"
+	// Where the ring would open into a wall, it slides away, steps toward you, or shrinks to fit.
+	Option "Keep Out of Walls",         "wr_walls",        "OnOff"
 	Option "Opens On",                  "wr_toggle_prefer_hand", "wr_ToggleHandPref"
 	Option "Sound",                     "wr_sound",        "OnOff"
 	// vr_enable_haptics still overrules this.

@@ -273,6 +273,21 @@ class wr_Rig : EventHandler
 	// already spawned, not a setting that can change out from under them
 	// mid-ring. expandSlot()'s dwell trigger reads this, not the cvar.
 	bool         mFansEnabled;
+
+	// RSQ GROUP BY SLOT (owner 2026-11-15, wr_group_slots). Parallel to mTypes: what taking the card does.
+	const ROLE_GUN  = 0;   // a gun: taking it puts it in the hand, as always
+	const ROLE_SLOT = 1;   // a slot of two or more guns: taking it opens the slot (its guns on the ring)
+	const ROLE_BACK = 2;   // the open slot's way back to the slots
+	Array<int>   mCardRole;
+	int          mSlotOpen;        // 0: the slots (or grouping off); else the slot on the ring, plus one
+	int          mStickRimCard;    // the card the stick has been pushed to the rim on...
+	int          mStickRimTics;    // ...for this many tics
+	bool         mStickLatch;      // a push just opened or left a slot: nothing more until the stick comes back in
+	double       mStickFull;       // the farthest the stick has been pushed yet (its "all the way out")
+	// RSQ KEEP OUT OF WALLS (owner 2026-11-15, his pick 3, wr_walls): the ring's size against the walls round it (1 full
+	// size; 0 before the first fit, read as 1), and where it would stand with no walls at all (the fit starts from there).
+	double       mWallK;
+	Vector3      mBaseAnchor;
 	Array<int>   mCardColor;      // resolved once at build -- see cardColorFor()
 
 	// The card's colour when nothing is happening to it. Not a constant, because
@@ -670,11 +685,28 @@ class wr_Rig : EventHandler
 	// as-yet-unbuilt ring anyway.
 	double RingClearance() const
 	{
-		double baseRadius = cv("wr_radius", 5.0) * cv("wr_scale", 1.0);
+		double baseRadius = cv("wr_radius", 5.0) * ringSc();
 		double radius = (mLastRingR > 0.0) ? mLastRingR : baseRadius;
-		double panelHalfW = cv("wr_panel_w", 4.2) * cv("wr_scale", 1.0) * 0.5;
+		double panelHalfW = cv("wr_panel_w", 4.2) * ringSc() * 0.5;
 		return radius + panelHalfW;
 	}
+
+	// RSQ GROUP BY SLOT helpers
+	bool groupBySlots() const { return mPage == PAGE_WEAPONS && cvBool("wr_group_slots", true); }
+	int roleOf(int i) const { return (i >= 0 && i < mCardRole.Size()) ? mCardRole[i] : ROLE_GUN; }
+	int roleOfId(int id) const { return id == 0 ? ROLE_GUN : roleOf(cardIndexOf(id)); }
+	// the slot on the ring (-1: the slots)
+	int OpenSlot() const { return mSlotOpen - 1; }
+	int backCardIndex() const { for (int i = 0; i < mCardRole.Size(); ++i) if (mCardRole[i] == ROLE_BACK) return i; return -1; }
+
+	// RSQ KEEP OUT OF WALLS: Size (wr_scale) times the ring's fit to the walls round it. Everything the ring sizes by
+	// Size reads this instead, so a ring shrunk to a gap is the same ring, smaller: cards, sheet, models and reach.
+	static double wallK()
+	{
+		let r = wr_Rig(EventHandler.Find("wr_Rig"));
+		return (r && r.mWallK > 0.0) ? r.mWallK : 1.0;
+	}
+	static double ringSc() { return cv("wr_scale", 1.0) * wallK(); }
 
 	//==========================================================================
 	// Open / close
@@ -823,6 +855,7 @@ class wr_Rig : EventHandler
 		if (e.Name ~== "wr_grab")
 		{
 			let pmo = players[consoleplayer].mo;
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel t%d: take: card %d under hand %d", level.maptime, cardIndexOf(mHovered), mPokeHand);
 			if (pmo != null && mOpen && mHovered != 0) commit(pmo);
 			return;
 		}
@@ -1010,6 +1043,14 @@ class wr_Rig : EventHandler
 		if (down)
 		{
 			mPressTic = now;
+			// RSQ GROUP BY SLOT: a press while a slot is open goes back to the slots (the ring stays up)
+			if (mOpen && mSlotOpen > 0)
+			{
+				mPressOpened = false;
+				mTapTic = 0;
+				navigate(pmo, backCardIndex());
+				return;
+			}
 			if (mOpen)
 			{
 				// a second quick press on a ring a quick tap just opened: back to the last gun
@@ -1032,6 +1073,10 @@ class wr_Rig : EventHandler
 		if (held >= wr_A11y.Tap(int(cv("wr_hold_tics", 9.0))))   // Slower Taps: a slower tap is still a tap
 		{
 			// a card under a hand takes it; the sheet, or nothing, just closes
+			// RSQ GROUP BY SLOT: let go on a slot's card, and the slot opens; on BACK, the slots. The ring stays up to pick
+			// from (as after a tap)
+			if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel t%d: let go after %d tics on card %d (role %d, hand %d)", now, held, cardIndexOf(mHovered), roleOfId(mHovered), mPokeHand);
+			if (mPage == PAGE_WEAPONS && navigate(pmo, cardIndexOf(mHovered))) { mTapTic = 0; return; }
 			bool onCard = mHovered != 0 && mHovered != mSheetHit && (mPage != PAGE_WEAPONS || HoveredClass() != null);
 			if (onCard)
 			{
@@ -1056,7 +1101,7 @@ class wr_Rig : EventHandler
 		int other = (mPokeHand == 1) ? 0 : 1;
 		int oid; Vector2 ouv;
 		[oid, ouv] = wr_BB.AimBillboard(aimPos(pmo, other), aimDir(pmo, other), POINTER_RANGE);   // Steady Hands
-		double touchR = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
+		double touchR = cv("wr_touch", 7.0) * ringSc();
 		if (touchR > 0.0)
 		{
 			int tid; Vector2 tuv; double td;
@@ -1064,6 +1109,7 @@ class wr_Rig : EventHandler
 			if (tid != 0) oid = tid;
 		}
 		if (oid == 0 || oid == mHovered || oid == mSheetHit) return null, 0;
+		if (roleOfId(oid) != ROLE_GUN || roleOfId(mHovered) != ROLE_GUN) return null, 0;   // RSQ GROUP BY SLOT: no gun there
 		Class<Weapon> ca = HoveredClass();
 		int keep = mHovered; mHovered = oid;
 		Class<Weapon> cb = HoveredClass();
@@ -1186,10 +1232,17 @@ class wr_Rig : EventHandler
 		mHaveAnchor = false;
 		mTwoCmp     = false;
 		mPage       = PAGE_WEAPONS;
+		mSlotOpen   = 0;      // RSQ GROUP BY SLOT: every opening starts on the slots
+		mStickLatch = false;
+		mStickRimTics = 0;
+		mWallK      = 1.0;    // RSQ KEEP OUT OF WALLS: fitted below, before the cards are made at that size
 
 		resetOwnIcons();   // RSQ 11-05: the own-icon cache, resolved again once for this opening
 		gatherWeapons(pmo);
 		if (mTypes.Size() == 0) return;
+
+		// RSQ: where it stands and how big, now that the card count is known (it was the first layout()'s job)
+		solveAnchor(pmo);
 
 		spawnPanels();
 		spawnCardModels(pmo);
@@ -3178,6 +3231,10 @@ class wr_Rig : EventHandler
 
 		resetOwnIcons();   // RSQ 11-05: the own-icon cache, resolved again once for this page
 		gatherWeapons(pmo);
+		// RSQ KEEP OUT OF WALLS: a ring of a different size (the slots, or one slot's guns) is fitted again, from where
+		// the ring would stand with no walls, before its cards are made
+		if (mHaveAnchor) fitToWalls(pmo, true);
+		mCardMul.Clear();   // the picked-card sizes belonged to the old cards
 
 		spawnPanels();
 		spawnCardModels(pmo);
@@ -3309,6 +3366,7 @@ class wr_Rig : EventHandler
 		mCardColor.Clear();
 		mSlotCount.Clear();
 		mSlotAllDry.Clear();
+		mCardRole.Clear();
 
 		// Hover state goes with the teardown rather than with the close: it
 		// names a card that no longer exists either way, and a page change has
@@ -3332,6 +3390,8 @@ class wr_Rig : EventHandler
 
 		mOpen      = false;
 		mOpenTics  = 0;
+		mSlotOpen  = 0;     // RSQ GROUP BY SLOT
+		mWallK     = 1.0;   // RSQ KEEP OUT OF WALLS: a closed ring is full size (the inspect card reads the same sizes)
 	}
 
 	// THE RIG NO LONGER TOUCHES THE HELD WEAPON AT ALL.
@@ -3693,6 +3753,13 @@ class wr_Rig : EventHandler
 		mCardColor.Clear();
 		mSlotCount.Clear();
 		mSlotAllDry.Clear();
+		mCardRole.Clear();
+
+		// RSQ GROUP BY SLOT (owner 2026-11-15, his pick 1 of "what do we do about our massive wheel"): the ring is the
+		// slots, and a slot opens into a ring of its own guns. No fans while it is on: a slot's guns have their ring.
+		bool group = groupBySlots();
+		if (group && mSlotOpen > 0 && gatherOneSlot(pmo, mSlotOpen - 1)) return;
+		if (group) mSlotOpen = 0;   // the slot it was in has fewer than two guns now: the slots
 
 		// FLAT WHILE IT CAN AFFORD TO, COLLAPSED ONCE IT HAS TO.
 		//
@@ -3703,7 +3770,7 @@ class wr_Rig : EventHandler
 		// readable, fifty collapses to the same nine learnable bearings it
 		// always would have, and nothing has to be reconfigured crossing that
 		// line because the ring crosses it by itself.
-		mFansEnabled = countAdmissible(pmo) > max(0, cv("wr_subcards_max", 99.0));
+		mFansEnabled = !group && countAdmissible(pmo) > max(0, cv("wr_subcards_max", 99.0));
 
 		// Every slot Doom has, not the eight a 3x3 happened to hold. Slot 0 is
 		// walked last because that is where the engine's own cycling puts it.
@@ -3722,6 +3789,34 @@ class wr_Rig : EventHandler
 			// a fan from this same ordering and was reading the unpromoted
 			// list. See the note on the helper for what that cost.
 			promoteLastPicked(slot, variants);
+
+			// RSQ GROUP BY SLOT: a slot of two or more guns is ONE card that opens the slot (ROLE_SLOT). It wears the gun
+			// you last had in a hand from that slot (the slot's first, in its own order, if none yet) and says how many
+			// guns it holds. A slot of one gun is that gun's own card, taken directly, as on the flat ring.
+			if (group && variants.Size() > 1)
+			{
+				Class<Weapon> face = variants[0];
+				int faceAt = usedAt(face);
+				for (int vi = 1; vi < variants.Size(); ++vi)
+				{
+					int at = usedAt(variants[vi]);
+					if (at > faceAt) { face = variants[vi]; faceAt = at; }
+				}
+				let fheld = Weapon(pmo.FindInventory(face));
+				mTypes.Push(face);
+				mCardSlots.Push(slot);
+				mCardColor.Push(cardColorFor(fheld, slot));
+				mSlotCount.Push(variants.Size());
+				bool sDry = true;
+				for (int vi = 0; vi < variants.Size(); ++vi)
+				{
+					let vHeld = Weapon(pmo.FindInventory(variants[vi]));
+					if (vHeld != null && ammoLoaded(vHeld) != 0) { sDry = false; break; }
+				}
+				mSlotAllDry.Push(sDry);
+				mCardRole.Push(ROLE_SLOT);
+				continue;
+			}
 
 			// FANS, OR EVERYTHING ON THE RING -- decided once, above, for the
 			// whole ring, so two slots can never disagree about which mode
@@ -3784,10 +3879,44 @@ class wr_Rig : EventHandler
 					}
 				}
 				mSlotAllDry.Push(allDry);
+				mCardRole.Push(ROLE_GUN);
 			}
 		}
 
 		ensureFistCards(pmo);
+	}
+
+	// RSQ GROUP BY SLOT: THE WEAPON LEVEL. The BACK card first (always at the ring's first bearing, top left), then every
+	// gun of this slot this hand may take, in the slot's own order (a dragged order, wr_slot_order, when there is one), so
+	// each gun keeps its bearing from one opening to the next. False (nothing built) when the slot has fewer than two guns.
+	private bool gatherOneSlot(PlayerPawn pmo, int slot)
+	{
+		Array<Class<Weapon> > variants;
+		slotWeapons(pmo, slot, variants);
+		dropFists(variants);   // the fist keeps its one card, on the slots
+		if (variants.Size() < 2) return false;
+		promoteLastPicked(slot, variants);   // with fans off: the saved order only
+
+		mFansEnabled = false;
+		mTypes.Push((class<Inventory>)('wr_BackCard'));
+		mCardSlots.Push(slot);
+		mCardColor.Push(COLOR_BACK);
+		mSlotCount.Push(variants.Size());
+		mSlotAllDry.Push(false);
+		mCardRole.Push(ROLE_BACK);
+
+		for (int k = 0; k < variants.Size(); ++k)
+		{
+			let held = Weapon(pmo.FindInventory(variants[k]));
+			if (held == null) continue;
+			mTypes.Push(variants[k]);
+			mCardSlots.Push(slot);
+			mCardColor.Push(cardColorFor(held, slot));
+			mSlotCount.Push(1);
+			mSlotAllDry.Push(false);
+			mCardRole.Push(ROLE_GUN);
+		}
+		return true;
 	}
 
 	// Every weapon of one slot this hand may take, in slot order.
@@ -4446,8 +4575,11 @@ class wr_Rig : EventHandler
 		// value ever reaches script, so wr_stickdead only needs to add
 		// margin on top of that, not define the deadzone from scratch.
 		Vector2 stick = wr_VR.GetRawStickMove();
-		double sx = stick.Y;
-		double sy = stick.X;
+		// RSQ (2026-11-15, rig): x across, y up, as the ring's bearings are (0 right, 90 up). The stick's X is its
+		// sideways push and Y its forward push (wr_VR.GetRawStickMove); the two were swapped here, so the stick chose
+		// the card a quarter turn round from where it pointed (forward picked the card on the right).
+		double sx = stick.X;
+		double sy = stick.Y;
 
 		double dead = cv("wr_stickdead", 0.2);
 		if (sx * sx + sy * sy < dead * dead) return 0;
@@ -4472,6 +4604,30 @@ class wr_Rig : EventHandler
 			if (d < bestOff) { bestOff = d; best = mIds[i]; }
 		}
 		return best;
+	}
+
+	// RSQ GROUP BY SLOT: the stick pushed into a slot's card (see WorldTick). True when it opened or left a slot.
+	private bool tickStickPush(PlayerPawn pmo, int stickHit)
+	{
+		Vector2 st = wr_VR.GetRawStickMove();
+		double len = st.Length();
+		if (len > 0.2 && level.maptime % 10 == 0 && cvBool("wr_debug", false))
+			Console.Printf("RSQ Wheel t%d: stick (%.2f, %.2f) on card %d%s", level.maptime, st.x, st.y, cardIndexOf(stickHit), mStickLatch ? ", waiting for it to come back in" : "");
+		if (mStickLatch)
+		{
+			if (len < STICK_REARM * max(mStickFull, STICK_FULL_MIN)) mStickLatch = false;
+			mStickRimTics = 0;
+			return false;
+		}
+		// "All the way out" is learned: the engine scales the stick by walk or run and by the player class's speed before
+		// script sees it (rig: about 0.38 forward, 0.45 sideways at full deflection), so the rim is a share of the
+		// farthest push seen yet, never less than STICK_FULL_MIN
+		mStickFull = max(mStickFull, max(len, STICK_FULL_MIN));
+		if (stickHit == 0 || len < STICK_RIM * mStickFull || roleOfId(stickHit) == ROLE_GUN) { mStickRimTics = 0; mStickRimCard = 0; return false; }
+		if (stickHit != mStickRimCard) { mStickRimCard = stickHit; mStickRimTics = 0; }
+		if (++mStickRimTics < STICK_PUSH_TICS) return false;
+		if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel t%d: stick pushed into card %d (%.2f, %.2f) for %d tics", level.maptime, cardIndexOf(stickHit), st.x, st.y, mStickRimTics);
+		return navigate(pmo, cardIndexOf(stickHit));
 	}
 
 	// BulletTimeX, if it happens to be loaded.
@@ -4668,7 +4824,7 @@ class wr_Rig : EventHandler
 		// below turns N re-reads (plus wr_glow's own double-read, once for
 		// the plate and once for the label) into one.
 		double hSubDim        = cv("wr_dim", 0.55);
-		double hSubShadowOff  = cv("wr_shadow_offset", 0.35) * cv("wr_scale", 1.0) * 0.55;
+		double hSubShadowOff  = cv("wr_shadow_offset", 0.35) * ringSc() * 0.55;
 		double hSubShadow     = clamp(cv("wr_shadow", 0.5), 0.0, 1.0);
 		double hSubGlow       = cv("wr_glow", 1.0);
 		double hSubLowAmmo    = cv("wr_lowammo_pulse", 0.35);
@@ -4768,7 +4924,7 @@ class wr_Rig : EventHandler
 			// RSQ HOLSTER WEB (11-07): a holster-assigned gun's card sits back (wr_web.zs)
 			int wst = (mPage == PAGE_WEAPONS && i < mSubTypes.Size()) ? webState(mSubTypes[i]) : -1;
 			Vector3 subEye = players[consoleplayer].mo ? players[consoleplayer].mo.Pos + (0, 0, players[consoleplayer].viewheight) : pos;
-			if (wst == WST_HOLSTER) pos = webSitBack(pos, subEye, cv("wr_scale", 1.0));
+			if (wst == WST_HOLSTER) pos = webSitBack(pos, subEye, ringSc());
 
 			if (i < mSubX.Size()) { mSubX[i] = pos.X; mSubY[i] = pos.Y; mSubZ[i] = pos.Z; }
 
@@ -5358,6 +5514,7 @@ class wr_Rig : EventHandler
 		for (int i = 0; i < mTypes.Size(); ++i) if (isFistClass(mTypes[i])) return;
 		let held = Weapon(pmo.FindInventory(f));
 		mTypes.Insert(0, f);
+		if (mCardRole.Size() > 0) mCardRole.Insert(0, ROLE_GUN);   // RSQ GROUP BY SLOT: parallel to mTypes
 		mCardSlots.Insert(0, 1);
 		mCardColor.Insert(0, cardColorFor(held, 1));
 		mSlotCount.Insert(0, 1);
@@ -5778,8 +5935,8 @@ class wr_Rig : EventHandler
 	// only the solved one reads.
 	// The live card size, for the places that need it OUTSIDE layout() -- the
 	// label fitter runs at spawn, before layout has computed anything.
-	private static double panelWNow() { return cv("wr_panel_w", 4.2) * cv("wr_scale", 1.0); }
-	private static double panelHNow() { return cv("wr_panel_h", 3.0) * cv("wr_scale", 1.0); }
+	private static double panelWNow() { return cv("wr_panel_w", 4.2) * ringSc(); }
+	private static double panelHNow() { return cv("wr_panel_h", 3.0) * ringSc(); }
 
 	private static int plateKind()
 	{
@@ -6144,8 +6301,8 @@ class wr_Rig : EventHandler
 		mAmmoW.Clear();
 		mLowAmmo.Clear();
 
-		double panelW = cv("wr_panel_w", 4.2) * cv("wr_scale", 1.0);
-		double panelH = cv("wr_panel_h", 3.0) * cv("wr_scale", 1.0);
+		double panelW = cv("wr_panel_w", 4.2) * ringSc();
+		double panelH = cv("wr_panel_h", 3.0) * ringSc();
 
 		// PAINTED FACES ARE ALL OR NOTHING, decided here for the whole ring
 		// rather than per card in the loop.
@@ -6264,6 +6421,11 @@ class wr_Rig : EventHandler
 			                  ? mCardLabel[i]
 			                  : (heldNow != null ? ("" .. heldNow.GetTag())
 			                                     : ("" .. GetDefaultByType(mTypes[i]).GetTag()));
+			// RSQ GROUP BY SLOT: a slot's card says how many guns it holds (its picture is the one you last had from it,
+			// its corner the slot number, as on every card); the open slot's way back says BACK
+			int role = roleOf(i);
+			if (role == ROLE_SLOT && i < mSlotCount.Size()) rawTag = String.Format("%d GUNS", mSlotCount[i]);
+			else if (role == ROLE_BACK) rawTag = "BACK";
 			string tag = wrapLabel(rawTag, panelW * LABEL_FIT_FRAC, panelH);
 			int lid = wr_BB.AddBillboardPersistent(
 				(0, 0, 0), 3.5, 2.5, 0, 0,
@@ -6429,7 +6591,7 @@ class wr_Rig : EventHandler
 			// BB_DIGITS rather than BB_TEXT: it takes the value in `data` and
 			// needs no string, which is the entire payload for a single number.
 			int nid = 0;
-			if (cv("wr_slotnum", 1.0) > 0.0 && mCardSlots[i] > 0)
+			if (cv("wr_slotnum", 1.0) > 0.0 && mCardSlots[i] > 0 && role != ROLE_BACK)
 			{
 				nid = wr_BB.AddBillboardPersistent(
 					(0, 0, 0), 0.8, 0.8, 0, 0,
@@ -6457,7 +6619,7 @@ class wr_Rig : EventHandler
 			// below is what actually gates this, mFansEnabled is what makes
 			// that test possible to fail safely.
 			int bid = 0;
-			if (mFansEnabled && i < mSlotCount.Size() && mSlotCount[i] > 1)
+			if (mFansEnabled && role == ROLE_GUN && i < mSlotCount.Size() && mSlotCount[i] > 1)
 			{
 				// Red instead of the neutral stack colour when every
 				// hidden variant is dry -- computed once, in gatherWeapons,
@@ -6544,6 +6706,279 @@ class wr_Rig : EventHandler
 	// tracked hand, which is not one.
 	// Geometry is read fresh every tic rather than baked at spawn, so every cvar
 	// below is live: change one with the rig open and the next tic has it.
+	// THE RING'S RADIUS for n cards at Size sc: the same sum layout() makes every tic (count, then the sheet's floor), so
+	// the wall fit can know how big the ring will be before its cards exist.
+	private double ringRadiusFor(int n, double sc) const
+	{
+		double radius = cv("wr_radius", 5.0); if (radius < 0.5) radius = 5.0;
+		double panelW = cv("wr_panel_w", 4.2); if (panelW < 0.5) panelW = 4.2;
+		radius *= sc; panelW *= sc;
+		double r = radius;
+		double minR = (panelW * 1.25 * 0.5) / max(sin(180.0 / max(n, 2)), 0.05);
+		if (minR > r) r = minR;
+		if (cv("wr_sheet", 1.0) > 0.0)
+		{
+			double sheetR = panelW * (SHEET_W_CARDS * sheetScale() * 0.5 + 0.5 + SHEET_GAP_CARDS);
+			if (sheetR > r) r = sheetR;
+		}
+		return r;
+	}
+
+	// RSQ KEEP OUT OF WALLS (owner 2026-11-15: "it's huge and clips into shit since it draws from our wrist"; his pick 3).
+	// The approach of RSQ VisualRewards' words (OutOfWalls, VisualRewards/pk3/zscript/rsqvr/words.zs), copied, not linked:
+	// rays from the ring's centre along its own plane find the walls round it; walls, floors and ceilings stop them,
+	// actors do not (wr_WallTracer). The ring is measured at its biggest: its radius plus half the picked card at
+	// PICK_BIG. A wall on one side: the ring slides sideways off it. Walls on both sides (a gap narrower than the ring):
+	// it steps toward your eye, never past halfway to you; still too narrow there, it shrinks to the gap (mWallK, never
+	// below WALL_K_MIN) and stands in the gap's middle. The same up and down against floor and ceiling (no step: a step
+	// toward the eye changes nothing about a floor). Starts from mBaseAnchor every time; shrink false keeps the size (a
+	// ring whose cards are already made can only move).
+	private void fitToWalls(PlayerPawn pmo, bool shrink)
+	{
+		mAnchor = mBaseAnchor;
+		if (shrink) mWallK = 1.0;
+		if (!pmo || !pmo.player || !cvBool("wr_walls", true)) return;
+		double sc = cv("wr_scale", 1.0); if (sc < 0.05) sc = 1.0;
+		double pw = cv("wr_panel_w", 4.2); if (pw < 0.5) pw = 4.2;
+		double ph = cv("wr_panel_h", 3.0); if (ph < 0.5) ph = 3.0;
+		double k = (mWallK > 0.0) ? mWallK : 1.0;
+		double r = ringRadiusFor(mTypes.Size(), sc);
+		// at k 1: from the centre to the ring's outer edge, across and up (the picked card is the biggest a card gets)
+		double halfW = r + pw * sc * PICK_BIG * 0.5 + WALL_GAP;
+		double halfH = r + ph * sc * CARD_STRETCH * PICK_BIG * 0.5 + WALL_GAP;
+		double rise = cv("wr_rise", 2.0) * sc;
+		Vector3 side = (cos(mAnchorYaw - 90), sin(mAnchorYaw - 90), 0);
+		Vector3 eye = pmo.Pos + (0, 0, pmo.player.viewheight);
+		Vector3 c = mAnchor + (0, 0, rise * k);
+		bool dbg = cvBool("wr_debug", false);
+		string what = "";
+
+		// ACROSS
+		double hw = halfW * k;
+		double fl = wallRoom(c, -side, hw * 2.0), fr = wallRoom(c, side, hw * 2.0);
+		if (fl + fr < hw * 2.0)
+		{
+			// both sides: toward the eye, at most halfway (OutOfWalls: twice the deeper overlap)
+			Vector3 toEye = eye - c;
+			double dl = toEye.Length();
+			if (dl > 0.01)
+			{
+				double over = max(hw - fl, hw - fr);
+				c += toEye / dl * min(over * 2.0, dl * 0.5);
+				fl = wallRoom(c, -side, hw * 2.0); fr = wallRoom(c, side, hw * 2.0);
+				what = what .. String.Format("stepped %.1f toward the eye; ", min(over * 2.0, dl * 0.5));
+			}
+		}
+		if (fl + fr < hw * 2.0)
+		{
+			if (shrink)
+			{
+				k = max(WALL_K_MIN, min(k, (fl + fr) * 0.5 / halfW));
+				hw = halfW * k;
+				what = what .. String.Format("gap %.1f across: shrunk to %.2f; ", fl + fr, k);
+			}
+			c += side * ((fr - fl) * 0.5);   // the middle of the gap
+		}
+		else if (fl < hw) { c += side * (hw - fl); what = what .. String.Format("slid %.1f off the left wall; ", hw - fl); }
+		else if (fr < hw) { c -= side * (hw - fr); what = what .. String.Format("slid %.1f off the right wall; ", hw - fr); }
+
+		// UP AND DOWN
+		double hh = halfH * k;
+		double fd = wallRoom(c, (0, 0, -1), hh * 2.0), fu = wallRoom(c, (0, 0, 1), hh * 2.0);
+		if (fd + fu < hh * 2.0)
+		{
+			if (shrink)
+			{
+				double kv = max(WALL_K_MIN, (fd + fu) * 0.5 / halfH);
+				if (kv < k)
+				{
+					k = kv;
+					what = what .. String.Format("gap %.1f floor to ceiling: shrunk to %.2f; ", fd + fu, k);
+				}
+				hh = halfH * k;
+			}
+			c.z += (fu - fd) * 0.5;
+		}
+		else if (fd < hh) { c.z += hh - fd; what = what .. String.Format("rose %.1f off the floor; ", hh - fd); }
+		else if (fu < hh) { c.z -= hh - fu; what = what .. String.Format("dropped %.1f off the ceiling; ", hh - fu); }
+
+		if (shrink) mWallK = k;
+		mAnchor = c - (0, 0, rise * mWallK);
+		// the fingertip still stops just short of the ring where it now stands (solveAnchor's reach)
+		Vector3 hp = handPos(pmo, mRigHand);
+		mTouchReach = max(0.0, (mAnchor - hp).Length() - cv("wr_touch", 7.0) * sc * mWallK * 1.2);
+		if (dbg && (shrink || what != ""))
+			Console.Printf("RSQ Wheel walls: %d cards, ring %.1f across x %.1f up at size %.2f; room left %.1f right %.1f down %.1f up %.1f; %s(moved %.1f)",
+				mTypes.Size(), halfW * 2.0 * mWallK, halfH * 2.0 * mWallK, mWallK, fl, fr, fd, fu,
+				what == "" ? "clear; " : what, (mAnchor - mBaseAnchor).Length());
+	}
+
+	// How far from p along dir the first wall, floor or ceiling is (actors do not count), up to len; len when none.
+	private double wallRoom(Vector3 p, Vector3 dir, double len)
+	{
+		let sec = level.PointInSector(p.xy);
+		if (!sec || len <= 0.0) return len;
+		let t = new("wr_WallTracer");
+		if (t.Trace(p, sec, dir, len, TRACE_NoSky | TRACE_PortalRestrict, Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING)
+			&& t.Results.HitType != TRACE_HitNone && t.Results.HitType != TRACE_HitActor)
+			return t.Results.Distance;
+		return len;
+	}
+
+	// WHERE THE RING STANDS, worked out once per opening (openRig, before the cards are made, so the fit to the walls
+	// below can size them). Lifted out of layout() unchanged but for its last lines (2026-11-15).
+	private void solveAnchor(PlayerPawn pmo)
+	{
+		// THE RING GOES IN FRONT OF THE HAND, not around it.
+		//
+		// A ring of radius 5 centred on your hand is 15cm away and wrapped
+		// around you: it subtends nearly 180 degrees, so reaching a card
+		// meant rotating almost ninety or physically walking your arm over
+		// there. That is the thing that made it feel like miles, and no
+		// amount of cursor gain could fix it -- gain multiplies a rotation
+		// that was always going to be enormous.
+		//
+		// Pushed a metre out along the aim, the whole ring subtends about
+		// twenty degrees. A flick of the wrist crosses it.
+		double aimY, aimP;
+		[aimY, aimP] = handAim(pmo, mRigHand);
+
+		double cp = cos(aimP);
+		Vector3 ahead = (cp * cos(aimY), cp * sin(aimY), sin(aimP));
+
+		// DON'T OPEN THE RING INSIDE A WALL. wr_forward is a distance
+		// tuned in the open -- point your hand at a wall closer than
+		// that (a corner, a low corridor, a locker room) and the ring
+		// used to plant its centre past the wall's own face, so half
+		// of it rendered on the far side of geometry the player can
+		// never see through. Checked ONCE here, at the same moment
+		// the anchor itself freezes (mHaveAnchor), not every tic --
+		// the facing-lock fix on the token card tonight is the same
+		// lesson: a live geometry re-check every tic would fight the
+		// player's hand for the ring's position exactly the way live
+		// re-facing fought their head.
+		double wantForward = cv("wr_forward", 34.0);
+		// Same guard idiom as radius/panelW/panelH below: an unset or
+		// fat-fingered cvar resets to the shipped default rather than
+		// doing something with 0 or a negative number. Unguarded, 0
+		// collapsed the ring into the fist -- the exact failure this
+		// whole block exists to prevent, just uncovered here -- and a
+		// negative value put the anchor behind the player, inside
+		// their own body, for the rest of the session.
+		if (wantForward < 0.5) wantForward = 34.0;
+		Vector3 handP = handPos(pmo, mRigHand);
+
+		double clearForward = wantForward;
+		// The SECTOR AT THE TRACE'S OWN START, not the player's. handP
+		// can sit well away from pmo.Pos -- 20+ units even outside real
+		// VR tracking -- and Trace() uses whatever sector it's handed
+		// for the initial floor/ceiling/3D-floor plane tests before any
+		// line is crossed. Near a doorway or a 3D-floor edge with a
+		// different floor/ceiling height, pmo's own sector could answer
+		// a question the trace never actually asked.
+		Sector handSector = level.PointInSector((handP.X, handP.Y));
+		let tracer = new("LineTracer");
+		// ignoreAllActors: true -- this is a WALL check. Left at its
+		// default false, the trace's actor mask is 0xFFFFFFFF (match
+		// anything) with no SOLID filter underneath, so a monster, a
+		// corpse, or a dropped pickup within wr_forward reported a hit
+		// exactly like a wall. Because the anchor freezes once per
+		// ring-open and is never rechecked, that pull-in used to
+		// outlive the actor that caused it -- the ring stayed clamped
+		// close for the rest of the session even after the monster
+		// walked off, died, or the item was picked up.
+		//
+		// TRACE_PortalRestrict -- without it the trace silently crosses
+		// a sector/line portal (a mirror, a window, a linked hallway)
+		// and keeps going in the DESTINATION room's frame, which can be
+		// rotated and offset from this one. clearForward below is a
+		// plain scalar walked forward from handP in THIS room -- it has
+		// no idea the trace ever left it -- so a portal within
+		// wr_forward used to report a "wall" that was really on the far
+		// side of the portal, and the ring still got planted straight
+		// ahead in the near room, unrelated to whatever the trace
+		// actually hit. Restricted, the trace simply stops AT the
+		// portal instead, which the existing pull-in below already
+		// treats correctly -- a portal boundary is exactly the kind of
+		// thing the ring should not be planted through.
+		if (tracer.Trace(handP, handSector, ahead, wantForward,
+			TRACE_NoSky | TRACE_PortalRestrict, Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING, true))
+		{
+			// Pulled in short of the hit, not onto it, so the ring's
+			// own plates (which have real thickness once drawn) don't
+			// immediately re-clip the same wall they were pulled back
+			// from. Floored well above zero -- a wall right in the
+			// player's face still gets a ring, just a close one,
+			// rather than one collapsed into their hand.
+			clearForward = max(wantForward * 0.35, tracer.Results.Distance - 6.0);
+
+			// WALL-CLAMP TELL. wr_debug only -- this fires every time
+			// the anchor is pulled in, which is ordinary, not an
+			// error, so it does not belong on by default the way an
+			// actual fault would. Marks exactly where the trace
+			// actually hit, so it is obvious at a glance whether a
+			// pullback landed on real geometry, on an actor this
+			// trace should be ignoring (see ignoreAllActors above --
+			// if this marker keeps appearing over a monster, that is
+			// the bug, not the marker), or somewhere that makes no
+			// sense at all. Non-persistent, self-expiring -- purely a
+			// diagnostic, never a permanent fixture.
+			if (cv("wr_debug", 0.0) > 0.0)
+			{
+				wr_BB.AddBillboard(tracer.Results.HitPos, 6.0, 6.0,
+					pmo.angle + 180, 0, wr_BB.BBF_FIXED,
+					wr_BB.BB_SEAM, 0, color(255, 255, 200, 60),
+					wr_BB.BBFL_NOHIT, 2.0);
+			}
+		}
+
+		mAnchor     = handP + ahead * clearForward;
+
+		// THE REACH, frozen with the anchor and for the same reason: it
+		// has to be a fixed extension of the hand, not a distance
+		// recomputed against the ring. Recomputed, pushing your hand
+		// forward would move the fingertip and the ring's remaining gap
+		// by the same amount and you could never close it.
+		//
+		// Set so the fingertip rests just SHORT of the card plane -- a
+		// touch radius and a bit. Standing still with your arm where it
+		// was therefore touches nothing; a real push forward of a few
+		// centimetres is what carries it in. Derived from clearForward
+		// rather than from wr_forward so a ring the wall pulled in close
+		// gets a correspondingly short reach instead of a fingertip
+		// parked permanently past its own cards.
+		double treach = cv("wr_touch", 7.0) * ringSc();
+		mTouchReach = clearForward - treach * 1.2;
+		if (mTouchReach < 0.0) mTouchReach = 0.0;
+		mAnchorYaw  = pmo.angle;
+		mHaveAnchor = true;
+		mCentrePending = false;
+
+		// RSQ WH6 (Open on Your Gun), moved here from layout() (2026-11-15) so the wall fit below sees the ring where it
+		// will really stand: the card of the gun this hand holds where the hand points. Same sum as before.
+		if (cvBool("wr_centre_held", false))
+		{
+			int hc = heldCardIndex(pmo);
+			if (hc >= 0)
+			{
+				double sc0 = cv("wr_scale", 1.0); if (sc0 < 0.05) sc0 = 1.0;
+				double r0 = ringRadiusFor(mTypes.Size(), sc0);
+				double hb = bearingForIndex(hc, mTypes.Size()) + handRollOf(pmo, mRigHand) * cv("wr_roll", 0.0);
+				Vector3 vr = (cos(pmo.angle - 90), sin(pmo.angle - 90), 0);
+				mAnchor -= vr * (cos(hb) * r0) + (0, 0, sin(hb) * r0 + cv("wr_rise", 2.0) * sc0);
+				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: opened centred on card %d (bearing %.0f, radius %.1f)", hc, hb, r0);
+			}
+		}
+
+		// RSQ KEEP OUT OF WALLS (owner 2026-11-15): the two side rays that only capped the ring's radius (never below what
+		// its cards need, so a crowded ring still went through the wall) are replaced by fitToWalls, below: the whole
+		// ring, at its biggest (the picked card at PICK_BIG), slides off a wall, steps toward the eye between two, and
+		// shrinks to the gap when even that is not enough. Up and down too.
+		mMaxRingR = -1.0;
+		mBaseAnchor = mAnchor;
+		fitToWalls(pmo, true);
+	}
+
 	private void layout(PlayerPawn pmo)
 	{
 		// THE TRAIL, and it is the whole mechanic rather than a side effect.
@@ -6574,175 +7009,7 @@ class wr_Rig : EventHandler
 		// same direction and your arm learns it. The centre is where your hand
 		// already is, which is why the centre means "what I am holding" and
 		// staying put means "no change".
-		if (!mHaveAnchor)
-		{
-			// THE RING GOES IN FRONT OF THE HAND, not around it.
-			//
-			// A ring of radius 5 centred on your hand is 15cm away and wrapped
-			// around you: it subtends nearly 180 degrees, so reaching a card
-			// meant rotating almost ninety or physically walking your arm over
-			// there. That is the thing that made it feel like miles, and no
-			// amount of cursor gain could fix it -- gain multiplies a rotation
-			// that was always going to be enormous.
-			//
-			// Pushed a metre out along the aim, the whole ring subtends about
-			// twenty degrees. A flick of the wrist crosses it.
-			double aimY, aimP;
-			[aimY, aimP] = handAim(pmo, mRigHand);
-
-			double cp = cos(aimP);
-			Vector3 ahead = (cp * cos(aimY), cp * sin(aimY), sin(aimP));
-
-			// DON'T OPEN THE RING INSIDE A WALL. wr_forward is a distance
-			// tuned in the open -- point your hand at a wall closer than
-			// that (a corner, a low corridor, a locker room) and the ring
-			// used to plant its centre past the wall's own face, so half
-			// of it rendered on the far side of geometry the player can
-			// never see through. Checked ONCE here, at the same moment
-			// the anchor itself freezes (mHaveAnchor), not every tic --
-			// the facing-lock fix on the token card tonight is the same
-			// lesson: a live geometry re-check every tic would fight the
-			// player's hand for the ring's position exactly the way live
-			// re-facing fought their head.
-			double wantForward = cv("wr_forward", 34.0);
-			// Same guard idiom as radius/panelW/panelH below: an unset or
-			// fat-fingered cvar resets to the shipped default rather than
-			// doing something with 0 or a negative number. Unguarded, 0
-			// collapsed the ring into the fist -- the exact failure this
-			// whole block exists to prevent, just uncovered here -- and a
-			// negative value put the anchor behind the player, inside
-			// their own body, for the rest of the session.
-			if (wantForward < 0.5) wantForward = 34.0;
-			Vector3 handP = handPos(pmo, mRigHand);
-
-			double clearForward = wantForward;
-			// The SECTOR AT THE TRACE'S OWN START, not the player's. handP
-			// can sit well away from pmo.Pos -- 20+ units even outside real
-			// VR tracking -- and Trace() uses whatever sector it's handed
-			// for the initial floor/ceiling/3D-floor plane tests before any
-			// line is crossed. Near a doorway or a 3D-floor edge with a
-			// different floor/ceiling height, pmo's own sector could answer
-			// a question the trace never actually asked.
-			Sector handSector = level.PointInSector((handP.X, handP.Y));
-			let tracer = new("LineTracer");
-			// ignoreAllActors: true -- this is a WALL check. Left at its
-			// default false, the trace's actor mask is 0xFFFFFFFF (match
-			// anything) with no SOLID filter underneath, so a monster, a
-			// corpse, or a dropped pickup within wr_forward reported a hit
-			// exactly like a wall. Because the anchor freezes once per
-			// ring-open and is never rechecked, that pull-in used to
-			// outlive the actor that caused it -- the ring stayed clamped
-			// close for the rest of the session even after the monster
-			// walked off, died, or the item was picked up.
-			//
-			// TRACE_PortalRestrict -- without it the trace silently crosses
-			// a sector/line portal (a mirror, a window, a linked hallway)
-			// and keeps going in the DESTINATION room's frame, which can be
-			// rotated and offset from this one. clearForward below is a
-			// plain scalar walked forward from handP in THIS room -- it has
-			// no idea the trace ever left it -- so a portal within
-			// wr_forward used to report a "wall" that was really on the far
-			// side of the portal, and the ring still got planted straight
-			// ahead in the near room, unrelated to whatever the trace
-			// actually hit. Restricted, the trace simply stops AT the
-			// portal instead, which the existing pull-in below already
-			// treats correctly -- a portal boundary is exactly the kind of
-			// thing the ring should not be planted through.
-			if (tracer.Trace(handP, handSector, ahead, wantForward,
-				TRACE_NoSky | TRACE_PortalRestrict, Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING, true))
-			{
-				// Pulled in short of the hit, not onto it, so the ring's
-				// own plates (which have real thickness once drawn) don't
-				// immediately re-clip the same wall they were pulled back
-				// from. Floored well above zero -- a wall right in the
-				// player's face still gets a ring, just a close one,
-				// rather than one collapsed into their hand.
-				clearForward = max(wantForward * 0.35, tracer.Results.Distance - 6.0);
-
-				// WALL-CLAMP TELL. wr_debug only -- this fires every time
-				// the anchor is pulled in, which is ordinary, not an
-				// error, so it does not belong on by default the way an
-				// actual fault would. Marks exactly where the trace
-				// actually hit, so it is obvious at a glance whether a
-				// pullback landed on real geometry, on an actor this
-				// trace should be ignoring (see ignoreAllActors above --
-				// if this marker keeps appearing over a monster, that is
-				// the bug, not the marker), or somewhere that makes no
-				// sense at all. Non-persistent, self-expiring -- purely a
-				// diagnostic, never a permanent fixture.
-				if (cv("wr_debug", 0.0) > 0.0)
-				{
-					wr_BB.AddBillboard(tracer.Results.HitPos, 6.0, 6.0,
-						pmo.angle + 180, 0, wr_BB.BBF_FIXED,
-						wr_BB.BB_SEAM, 0, color(255, 255, 200, 60),
-						wr_BB.BBFL_NOHIT, 2.0);
-				}
-			}
-
-			mAnchor     = handP + ahead * clearForward;
-
-			// THE REACH, frozen with the anchor and for the same reason: it
-			// has to be a fixed extension of the hand, not a distance
-			// recomputed against the ring. Recomputed, pushing your hand
-			// forward would move the fingertip and the ring's remaining gap
-			// by the same amount and you could never close it.
-			//
-			// Set so the fingertip rests just SHORT of the card plane -- a
-			// touch radius and a bit. Standing still with your arm where it
-			// was therefore touches nothing; a real push forward of a few
-			// centimetres is what carries it in. Derived from clearForward
-			// rather than from wr_forward so a ring the wall pulled in close
-			// gets a correspondingly short reach instead of a fingertip
-			// parked permanently past its own cards.
-			double treach = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
-			mTouchReach = clearForward - treach * 1.2;
-			if (mTouchReach < 0.0) mTouchReach = 0.0;
-			mAnchorYaw  = pmo.angle;
-			mHaveAnchor = true;
-			mCentrePending = cvBool("wr_centre_held", false);   // RSQ WH6
-
-			// A wall the FORWARD ray can't see: one straight ahead of the
-			// hand says nothing about a corner immediately to the player's
-			// left or right, and the ring is a wide GRID (see ringR below),
-			// not a point -- most of it lives off to the sides of mAnchor,
-			// not in front of it. Two more rays, once, from the now-frozen
-			// centre, cap how far ringR is later allowed to grow instead of
-			// repositioning anything -- a size ceiling can't fight the
-			// player's hand the way moving mAnchor live would, since the
-			// space around a stationary anchor doesn't change tic to tic.
-			// Vertical is NOT checked here -- a low ceiling or a step can
-			// still clip the grid. Left/right covers the failure this was
-			// actually reported for; treat this as a partial fix, not full
-			// geometry awareness.
-			Vector3 sideDir = (-sin(mAnchorYaw), cos(mAnchorYaw), 0);
-			double sideMax = 60.0;
-			// Same card-thickness clearance the forward check already
-			// subtracts (Distance - 6.0) -- a ring sized to the raw hit
-			// distance, with no margin, can still visually clip the wall
-			// the trace just found, the same problem the forward check's
-			// own pullback exists to prevent.
-			double sideMargin = 6.0;
-			// -1, not 0 -- 0.0 is a REAL, reachable cap (something sits
-			// close enough that the margin-adjusted distance floors to
-			// exactly zero), and the old 0.0 sentinel could not tell that
-			// apart from "no wall found at all", silently treating a
-			// wall right at the anchor as uncapped.
-			mMaxRingR = -1.0;
-			Sector anchorSector = level.PointInSector((mAnchor.X, mAnchor.Y));
-			let sideTracer = new("LineTracer");
-			if (sideTracer.Trace(mAnchor, anchorSector, sideDir, sideMax,
-				TRACE_NoSky | TRACE_PortalRestrict, Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING, true))
-			{
-				mMaxRingR = max(0.0, sideTracer.Results.Distance - sideMargin);
-			}
-			let sideTracer2 = new("LineTracer");
-			if (sideTracer2.Trace(mAnchor, anchorSector, (0,0,0) - sideDir, sideMax,
-				TRACE_NoSky | TRACE_PortalRestrict, Line.ML_BLOCKING | Line.ML_BLOCKEVERYTHING, true))
-			{
-				double d = max(0.0, sideTracer2.Results.Distance - sideMargin);
-				if (mMaxRingR < 0.0 || d < mMaxRingR) mMaxRingR = d;
-			}
-		}
+		if (!mHaveAnchor) solveAnchor(pmo);
 
 		// RSQ: THE RING STAYS IN VIEW (wr_follow). REMA leaves it where it opened; turned well away
 		// from it (more than wr_follow degrees), it swings round the head to sit ahead again,
@@ -6760,6 +7027,11 @@ class wr_Rig : EventHandler
 				double c = cos(turn), s2 = sin(turn);
 				mAnchor = (eye.x + rel.x * c - rel.y * s2, eye.y + rel.x * s2 + rel.y * c, mAnchor.z);
 				mAnchorYaw += turn;
+				// RSQ KEEP OUT OF WALLS: the unfitted spot swings the same way, and the ring is fitted again there (where it
+				// stands only; its size was set when its cards were made)
+				Vector2 brel = mBaseAnchor.xy - eye.xy;
+				mBaseAnchor = (eye.x + brel.x * c - brel.y * s2, eye.y + brel.x * s2 + brel.y * c, mBaseAnchor.z);
+				fitToWalls(pmo, false);
 			}
 		}
 
@@ -6773,7 +7045,7 @@ class wr_Rig : EventHandler
 		// One dial that grows the whole rig -- distance, card size and reach
 		// together. Scaling them independently just breaks the proportions you
 		// already tuned, and "make it bigger" is one thought, not four.
-		double sc = cv("wr_scale", 1.0);
+		double sc = ringSc();
 		if (sc < 0.05) sc = 1.0;
 
 		double radius = cv("wr_radius",   5.0);
@@ -6884,21 +7156,7 @@ class wr_Rig : EventHandler
 		// ring needs the count-grown extent, not the tuned base value.
 		mLastRingR = ringR;
 
-		// RSQ WH6 (owner's QoL pick, an option): the ring opens with the card of the gun this hand holds where the hand
-		// points, so the hand starts on it. Once per anchoring (the ring's radius is known from here); the ring then
-		// stays put as always.
-		if (mCentrePending)
-		{
-			mCentrePending = false;
-			int hc = heldCardIndex(pmo);
-			if (hc >= 0)
-			{
-				double hb = bearingForIndex(hc, ringCount) + handRoll;
-				mAnchor -= viewRight * (cos(hb) * ringR) + (0, 0, sin(hb) * ringR + rise);
-				wrist = mAnchor;
-				if (cvBool("wr_debug", false)) Console.Printf("RSQ Wheel: opened centred on card %d (bearing %.0f, radius %.1f)", hc, hb, ringR);
-			}
-		}
+		// RSQ WH6 (Open on Your Gun) is applied once, in solveAnchor, before the wall fit (2026-11-15).
 
 		Vector3 eye = pmo.Pos + (0, 0, pmo.player.viewheight);
 
@@ -7042,7 +7300,7 @@ class wr_Rig : EventHandler
 				if (toEye.Length() > 0.01) pos += toEye.Unit() * cv("wr_pop", 1.5);
 			}
 			// RSQ HOLSTER WEB (11-07): a holster-assigned gun's card sits back on the ring (wr_web.zs)
-			int wst = (mPage == PAGE_WEAPONS) ? webState(mTypes[i]) : -1;
+			int wst = (mPage == PAGE_WEAPONS && roleOf(i) == ROLE_GUN) ? webState(mTypes[i]) : -1;   // RSQ: a slot card has no holster
 			if (wst == WST_HOLSTER) pos = webSitBack(pos, eye, sc);
 
 			// EVERY CARD LOOKS AT YOU INDIVIDUALLY.
@@ -8717,7 +8975,7 @@ class wr_Rig : EventHandler
 		if (eitherHand())
 		{
 			int other = (mPokeHand == 1) ? 0 : 1;
-			double tr = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
+			double tr = cv("wr_touch", 7.0) * ringSc();
 			if (!handOnRing(pmo, mPokeHand, tr) && handOnRing(pmo, other, tr))
 			{
 				mPokeHand = other;
@@ -8793,7 +9051,7 @@ class wr_Rig : EventHandler
 		// way in. Skipped rather than called with a zero radius, because "no
 		// radius" and "do not ask" are different things and only one of them is
 		// free.
-		double touchR = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
+		double touchR = cv("wr_touch", 7.0) * ringSc();
 		mTouching = false;
 
 		if (touchR > 0.0)
@@ -8805,11 +9063,18 @@ class wr_Rig : EventHandler
 			double tdist;
 			[touched, tuv, tdist] = wr_BB.TouchBillboard(tip, touchR);
 
+			// RSQ (2026-11-15, rig): a fingertip resting in the data sheet (the middle of the ring, where a hand held still
+			// often is) no longer outvotes a stick that is choosing a card -- it took the pick off the stick every tic
+			if (touched != 0 && touched == mSheetHit && stickHit != 0) touched = 0;
 			mTouching = (touched != 0);
 			if (mTouching) hit = touched;
 		}
 
 		updateHover(hit);
+		// RSQ GROUP BY SLOT: PUSH THE STICK INTO A SLOT. The stick held out at its rim on a slot's card (or on BACK) for
+		// STICK_PUSH_TICS opens it (or goes back); sweeping round the rim passes each card too quickly to. After that the
+		// stick must come back in before it can do it again.
+		if (tickStickPush(pmo, stickHit)) return;
 		if (mDragging) tickDrag(pmo);   // RSQ WH7
 		tickTwoHand(pmo);   // RSQ: a card under each hand -> the two side by side
 		if (!mOpen) return;
@@ -8854,7 +9119,7 @@ class wr_Rig : EventHandler
 			// Measured from the standoff the ring is actually placed at, plus a
 			// little so the miss case reads as slightly past the cards rather than
 			// stopping short of them. Audit finding #22.
-			reach = (cv("wr_forward", 34.0) + cv("wr_radius", 5.0) * cv("wr_scale", 1.0)) * 1.15;
+			reach = (cv("wr_forward", 34.0) + cv("wr_radius", 5.0) * ringSc()) * 1.15;
 		}
 
 		// Only the dot is ours now; the beam is the engine laser.
@@ -9001,7 +9266,7 @@ class wr_Rig : EventHandler
 	{
 		if (mPage != PAGE_WEAPONS || !mHaveAnchor) return;
 		if (mGestureCool > 0) mGestureCool--;
-		double touchR = cv("wr_touch", 7.0) * cv("wr_scale", 1.0);
+		double touchR = cv("wr_touch", 7.0) * ringSc();
 		for (int h = 0; h < 2; h++)
 		{
 			Vector3 hp = handPos(pmo, h);
@@ -9613,6 +9878,8 @@ class wr_Rig : EventHandler
 
 		for (int i = 0; i < mTypes.Size(); ++i)
 		{
+			// RSQ GROUP BY SLOT: the BACK card has no gun to stand on it
+			if (roleOf(i) == ROLE_BACK) { pushCardModel(null, 1.0, 0, 0, 0); continue; }
 			// RSQ: a card with the Wheel's own icon (ownIconOf) has no pickup to show: the saber, the shield saw, the whip
 			// and the fist (and the gloves) show their own pack's mesh instead (spawnOwnProp, owner 11-11); the icon
 			// stays when that pack is not loaded or the card has no prop (the flare, the torch, the Force hand)
@@ -10205,12 +10472,51 @@ class wr_Rig : EventHandler
 		mRebuildTics = 2;
 	}
 
+	// RSQ GROUP BY SLOT: card ci is a slot's card (open that slot) or BACK (the slots again). False: it is a gun's card,
+	// which is taken as always. The ring stays up and where it is; only its cards change, and they grow out again from
+	// the middle so you see the ring become the other one.
+	private bool navigate(PlayerPawn pmo, int ci)
+	{
+		int role = roleOf(ci);
+		if (role == ROLE_GUN || !pmo || !mOpen) return false;
+		int from = mSlotOpen;
+		if (role == ROLE_SLOT && ci < mCardSlots.Size()) mSlotOpen = mCardSlots[ci] + 1;
+		else mSlotOpen = 0;
+		rebuildPage(pmo);
+		mOpenTics = 0;
+		int growTics = int(cv("wr_growtics", 6.0));
+		if (growTics > 0) for (int i = 0; i < mGroups.Size(); ++i) wr_BB.AnimateBillboardGroup(mGroups[i], 0.0, 1.0, growTics);
+		mLockTics = int(cv("wr_locktics", 140.0)); if (mLockTics <= 0) mLockTics = 140;
+		mWarnedThisOpen = false;
+		mInCard[0] = 0; mInCard[1] = 0; mInCardTics[0] = 0; mInCardTics[1] = 0;
+		mStickRimTics = 0;
+		mStickLatch = true;   // a stick still pushed out does nothing more until it comes back in
+		feedback(Sound("wristrig/open"), 0.30, 45);
+		if (cvBool("wr_debug", false))
+		{
+			string cs = "";
+			for (int i = 0; i < mTypes.Size(); ++i)
+			{
+				int r = roleOf(i);
+				string nm = r == ROLE_BACK ? "BACK" : String.Format("%s", mTypes[i].GetClassName());
+				if (r == ROLE_SLOT) nm = String.Format("[slot %d: %d guns, wears %s]", mCardSlots[i], mSlotCount[i], nm);
+				cs = cs .. nm .. " ";
+			}
+			if (mSlotOpen > 0) Console.Printf("RSQ Wheel t%d: into slot %d: %d cards: %s", level.maptime, mSlotOpen - 1, mTypes.Size(), cs);
+			else Console.Printf("RSQ Wheel t%d: back to the slots: %d cards: %s", level.maptime, mTypes.Size(), cs);
+		}
+		return true;
+	}
+
 	// RSQ: the gun goes into the hand that picked it. A gun that only fits one hand
 	// (bNoHandSwitch) goes to that hand whichever hand pointed at it.
 	// RSQ (owner 2026-11-06, BUGS_1.0 items 1 and 15, and the BD22 VR one-entry rule): resolvePick says what the card
 	// gives the hand that picked it -- that hand's fist, a weapon's home hand, or that hand's version of a BD22 VR gun.
 	private void commit(PlayerPawn pmo)
 	{
+		// RSQ GROUP BY SLOT: taking a slot's card opens the slot; taking BACK returns to the slots. Every way of taking a
+		// card comes through here (trigger, Use, a pull out of the card), so all of them do it.
+		if (mPage == PAGE_WEAPONS && !mTestCard && navigate(pmo, cardIndexOf(mHovered))) return;
 		mPickCls = null;
 		if (mPage == PAGE_WEAPONS)
 		{
@@ -10236,6 +10542,23 @@ class wr_Rig : EventHandler
 		String s = "";
 		for (int i = 0; i < mTypes.Size(); ++i) s = s .. (mTypes[i] ? String.Format("%s", mTypes[i].GetClassName()) : "null") .. " ";
 		Console.Printf("RSQ Wheel TEST t%d cards: %s", level.maptime, s);
+		// RSQ (2026-11-15, the rig's probe for Group by Slot): what each hand holds, the slot on the ring, where each card
+		// stands, and where each hand is and points (map units, angles in degrees) -- so a test can aim a hand at a card
+		let p = pmo.player;
+		Console.Printf("RSQ Wheel TEST t%d hands: main %s, off %s; open %d, on slot %d, size %.2f",
+			level.maptime, p.ReadyWeapon ? String.Format("%s", p.ReadyWeapon.GetClassName()) : "none",
+			p.OffhandWeapon ? String.Format("%s", p.OffhandWeapon.GetClassName()) : "none", mOpen, mSlotOpen - 1, wallK());
+		if (!mOpen) return;
+		for (int i = 0; i < mTypes.Size() && i < mCardX.Size(); ++i)
+			Console.Printf("RSQ Wheel TEST card %d (%s, role %d) at %.1f %.1f %.1f", i, roleOf(i) == ROLE_BACK ? "BACK" : String.Format("%s", mTypes[i].GetClassName()), roleOf(i), mCardX[i], mCardY[i], mCardZ[i]);
+		for (int h = 0; h < 2; ++h)
+		{
+			Vector3 hp = handPos(pmo, h), hd = handDir(pmo, h);
+			int aid; Vector2 auv;
+			[aid, auv] = wr_BB.AimBillboard(hp, hd, POINTER_RANGE);
+			Console.Printf("RSQ Wheel TEST hand %d at %.1f %.1f %.1f aims yaw %.1f pitch %.1f (player angle %.1f) -> card %d",
+				h, hp.x, hp.y, hp.z, atan2(hd.y, hd.x), asin(clamp(hd.z, -1.0, 1.0)), pmo.angle, cardIndexOf(aid));
+		}
 	}
 
 	private void testPick(String cn, int hand)
@@ -10704,6 +11027,13 @@ class wr_Rig : EventHandler
 	// How often a shown sheet is restrung, in tics. Ten is roughly three times
 	// a second -- finer than a countdown printed in whole seconds can show, and
 	// nine tics in ten still skip the rebuild entirely.
+	const STICK_RIM       = 0.75;  // RSQ GROUP BY SLOT: the stick this share of the way out is pushed into a card...
+	const STICK_PUSH_TICS = 6;     // ...for this long (a sixth of a second) to open it...
+	const STICK_REARM     = 0.45;  // ...and must come back inside this share before it can push again
+	const STICK_FULL_MIN  = 0.3;   // ...all the way out is never taken as less than this
+	const WALL_K_MIN = 0.35;   // RSQ KEEP OUT OF WALLS: the smallest the ring shrinks to in a gap
+	const WALL_GAP   = 1.0;    // ...and the daylight it keeps from a wall (map units, at full size)
+	const COLOR_BACK = 0x5A5A5A;   // RSQ GROUP BY SLOT: the BACK card
 	const PICK_BIG   = 2.2;    // RSQ: the picked card's size, then the three either side of it stepping down (owner 11-13; was
 	const PICK_NEXT  = 1.75;   // 1.8 / 1.35 / 1.12 with two steps, 11-12)
 	const PICK_NEXT2 = 1.45;
@@ -10880,5 +11210,27 @@ class WR_CardLight : Actor
 	Spawn:
 		TNT1 A -1;
 		Stop;
+	}
+}
+
+// RSQ KEEP OUT OF WALLS: the ring's wall rays (wr_Rig.wallRoom). Walls, floors and ceilings stop them, actors do not.
+// A copy of RSQ VisualRewards' RSQVR_WallTracer (words.zs), not a link: the Wheel loads and plays alone.
+class wr_WallTracer : LineTracer
+{
+	override ETraceStatus TraceCallback()
+	{
+		if (Results.HitType == TRACE_HitActor) return TRACE_Skip;
+		return TRACE_Stop;
+	}
+}
+
+// RSQ GROUP BY SLOT: the BACK card's class. Never given to anyone; it only gives the card a class to stand for, so the
+// card code that asks a card's class (and casts it to a weapon, getting none) has one.
+class wr_BackCard : Inventory
+{
+	Default
+	{
+		Tag "BACK";
+		+INVENTORY.UNDROPPABLE
 	}
 }

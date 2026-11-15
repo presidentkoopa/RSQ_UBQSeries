@@ -1,0 +1,19 @@
+# RSQ Wheel, Keep Out of Walls, rig runs wwall4A (after) / wwall4B (before), 2026-11-15. Test map rswalltest.wad (400-wide room, 48-wide corridor) as MAP01 on the full order. Frames: docs/slots/walls_before_after.jpg
+## after
+WSTATE nearwall slots
+RSQ Wheel walls: 10 cards, ring 34.6 across x 33.3 up at size 1.00; room left 12.0 right 34.6 down 33.3 up 33.3; slid 5.3 off the left wall; (moved 5.3)
+WSTATE nearwall flat
+RSQ Wheel walls: 31 cards, ring 63.1 across x 61.8 up at size 1.00; room left 3.4 right 63.1 down 53.2 up 61.8; slid 28.2 off the left wall; (moved 28.2)
+WSTATE narrow slots
+RSQ Wheel walls: 10 cards, ring 34.6 across x 33.3 up at size 1.00; room left 21.0 right 27.0 down 33.3 up 33.3; clear; (moved 0.0)
+WSTATE narrow flat
+RSQ Wheel walls: 31 cards, ring 48.0 across x 47.0 up at size 0.76; room left 18.2 right 29.8 down 47.0 up 47.0; stepped 23.3 toward the eye; gap 48.0 across: shrunk to 0.76; (moved 25.3)
+## before (pre-change Wheel: no fit; 31-card ring with the owner's wr_subcards_max 99)
+WSTATE nearwall slots
+RSQ Wheel: opened centred on card 15 (bearing -39, radius 25.9)
+WSTATE nearwall flat
+RSQ Wheel: opened centred on card 15 (bearing -39, radius 25.9)
+WSTATE narrow slots
+RSQ Wheel: opened centred on card 15 (bearing -39, radius 25.9)
+WSTATE narrow flat
+RSQ Wheel: opened centred on card 15 (bearing -39, radius 25.9)
