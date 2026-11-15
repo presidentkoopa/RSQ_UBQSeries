@@ -8,8 +8,8 @@
 //
 // WHO DRAWS IT. The main hand's card is owned by RSQGC_CardItem: blocks in MODELDEF.txt, for every gun. The off hand's is
 // owned by the off-hand gun (the engine picks the hand by that), and MODELDEF finds its model by that gun's class, so a
-// gun has an off-hand card only when a bridge pk3 carrying its blocks is loaded (RSQ_GunCards_<pack>.pk3: BD22 VR, RSQ
-// FlashFlare, RSQ Tactical Rig, RSQ Grenade). Each bridge lists its classes in a lump RSQGCOFF, read here.
+// gun has an off-hand card only when a bridge pk3 carrying its blocks is loaded (RSQ_GunCards_<pack>.pk3: BD22 VR,
+// RSQ Grenade). Each bridge lists its classes in a lump RSQGCOFF, read here.
 //
 // THE IN SLIDER. Each glyph is baked at In 0, +14 and -14 cm; a piece's two states (In 0, then +14 or -14) last
 // RSQGC_MC.TICS tics, and the engine draws a model blended between its state's frame and the next state's by the tics left

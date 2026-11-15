@@ -142,8 +142,8 @@ class RSQGC_Spots
 		let p = players[consoleplayer];
 		if (!p.mo) return null;
 		Weapon w = EditHand() == 1 ? p.OffhandWeapon : p.ReadyWeapon;
-		// no small card without something to count: a gun's ammo, or an item's count (items.zs: flares, cigarettes)
-		if (!w || !(w.Ammo1 || RSQGC_Items.SmallCount(w))) return null;
+		// no small card without something to count: a gun's ammo (no item has one, owner 11-15 16:09)
+		if (!w || !w.Ammo1) return null;
 		return w;
 	}
 

@@ -101,7 +101,7 @@ zip -q -r -X "$OUT/RSQ_GunCards.pk3" zscript.txt MAPINFO.txt CVARINFO.txt KEYCON
 echo "built pk3/RSQ_GunCards.pk3"
 # Gun Cards' bridges (2026-11-15): the small card's blocks for one pack's off-hand guns each, loaded with that pack
 # (GunCards/tools/gen_modelcard.py; QZD 17.3 stops on a MODELDEF block for a class that is not loaded)
-for b in BD22VR:bd22vr FlashFlare:flashflare TacticalRig:tacticalrig Grenade:grenade; do
+for b in BD22VR:bd22vr Grenade:grenade; do
 	cd "$HUB/GunCards/bridge_${b#*:}"
 	rm -f "$OUT/RSQ_GunCards_${b%%:*}.pk3"
 	zip -q -r -X "$OUT/RSQ_GunCards_${b%%:*}.pk3" MODELDEF.txt RSQGCOFF.txt

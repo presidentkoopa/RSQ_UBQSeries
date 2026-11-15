@@ -1,0 +1,20 @@
+No small card on the cigarette or the road flare (owner 11-15 16:09). Rig only, not headset-confirmed.
+Owner full order, -skill 6, QZD 17.3 rig; RSQ_GunCards.pk3 + RSQ_GunCards_BD22VR.pk3 + RSQ_GunCards_Grenade.pk3 from this commit.
+Script error lines: 4 (all BD_VoxelPack's own 'No sprites specified for voxel'); from our packs: 0
+Card layers per hand (layer:caller/sprite+frame; empty = no small card):
+  MC_LOG 155 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 7:RSQGC_CardItem/1876C 9:RSQGC_CardItem/1882A 11:RSQGC_CardItem/1888A
+  MC_LOG 155 hand 1 rsq_hands loaded -1 reserve -1 |
+  MC_LOG 224 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 7:RSQGC_CardItem/1876C 9:RSQGC_CardItem/1882A 11:RSQGC_CardItem/1888A
+  MC_LOG 224 hand 1 RSQFF_Held loaded -1 reserve -1 |
+  MC_LOG 248 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 7:RSQGC_CardItem/1876C 9:RSQGC_CardItem/1882A 11:RSQGC_CardItem/1888A
+  MC_LOG 248 hand 1 RSQFF_Held loaded -1 reserve -1 |
+  MC_LOG 376 hand 0 RSQTR_CigWeapon loaded -1 reserve -1 |
+  MC_LOG 376 hand 1 RSQTR_ZippoWeapon loaded -1 reserve -1 |
+  MC_LOG 401 hand 0 RSQTR_CigWeapon loaded -1 reserve -1 |
+  MC_LOG 401 hand 1 RSQTR_ZippoWeapon loaded -1 reserve -1 |
+  MC_LOG 666 hand 0 RSQGN_Grenade loaded 8 reserve -1 | 0:RSQGC_CardItem/1834B 1:RSQGC_CardItem/1840A 4:RSQGC_CardItem/1858I
+  MC_LOG 666 hand 1 RSQ_Off_Rifle loaded 31 reserve 200 | 0:RSQ_Off_Rifle/1834B 1:RSQ_Off_Rifle/1840B 3:RSQ_Off_Rifle/1852D 5:RSQ_Off_Rifle/1864B 7:RSQ_Off_Rifle/1876C 9:RSQ_Off_Rifle/1882A 11:RSQ_Off_Rifle/1888A
+  MC_COOK 690 hand 0 fuse.count 3
+  MC_LOG 704 hand 0 RSQGN_Grenade loaded 8 reserve -1 | 0:RSQGC_CardItem/1834B 1:RSQGC_CardItem/1840A 4:RSQGC_CardItem/1858D
+  MC_LOG 704 hand 1 RSQ_Off_Rifle loaded 31 reserve 200 | 0:RSQ_Off_Rifle/1834B 1:RSQ_Off_Rifle/1840B 3:RSQ_Off_Rifle/1852D 5:RSQ_Off_Rifle/1864B 7:RSQ_Off_Rifle/1876C 9:RSQ_Off_Rifle/1882A 11:RSQ_Off_Rifle/1888A
+(The step that put the cigarette in the off hand with a script was undone by the mods' own hand rules: the off hand got the rifle back. The Rig itself puts the cigarette in the main hand, shown above.)

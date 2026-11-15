@@ -59,7 +59,7 @@ PATH = 'models/rsqgc/mc'
 # THE OFF HAND'S GUNS, by the pack that defines them: one bridge pk3 each (see the module comment). BD22 VR's: its off-hand
 # copies (RSQ_DualTable) and every Brutal Doom 22 gun with ammo that can go in the off hand as itself, Purist versions too
 # (rig class read 2026-11-15: brutal22test6 + BD22 VR 2.0.4x; the Dual* guns, vehicles, shields and HUD guns are main-hand
-# only). The series' own: the road flare, the cigarette, the grenade.
+# only). The series' own: the grenade. (No small card on the cigarette or the road flare, owner 11-15 16:09.)
 BRIDGES = {
     'BD22VR': ['RSQ_Off_BrutalPistol', 'RSQ_Off_Revolver', 'RSQ_Off_BrutalSMG', 'RSQ_Off_MP40', 'RSQ_Off_Rifle',
                'RSQ_Off_Plasma_Gun', 'RSQ_Off_Shot_Gun', 'RSQ_Off_SSG', 'RSQ_Off_AssaultShotgun', 'RSQ_Off_RailGun',
@@ -73,8 +73,6 @@ BRIDGES = {
                'PuristRocket_Launcher', 'PuristGrenadeLauncher', 'PuristIncendiaryLauncher', 'PuristFlamethrower2',
                'PuristFlameCannon', 'PuristUnmaker', 'PuristDevastator', 'PuristNukeLauncher', 'PuristHellishMissileLauncher',
                'PuristBIG_FUCKING_GUN', 'PuristBFG10k', 'PuristHandGrenades'],
-    'FlashFlare': ['RSQFF_Held'],
-    'TacticalRig': ['RSQTR_CigWeapon'],
     'Grenade': ['RSQGN_Grenade'],
 }
 

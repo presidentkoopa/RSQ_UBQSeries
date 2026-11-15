@@ -284,11 +284,10 @@ class RSQGC_GunCard : EventHandler
 		if (real >= 0) return real == 1;
 		return w.Ammo2 && w.Ammo2 != w.Ammo1;
 	}
-	// rounds you can fire now; an item's count (items.zs: flares, cigarettes); -1 for a weapon with nothing to count
+	// rounds you can fire now; -1 for a weapon with nothing to count (an item: no small card, owner 11-15 16:09)
 	static int Loaded(Weapon w)
 	{
-		if (!w) return -1;
-		if (!w.Ammo1) return RSQGC_Items.SmallCount(w) ? RSQGC_Items.Count(w) : -1;
+		if (!w || !w.Ammo1) return -1;
 		int real, m, cap, res;
 		[real, m, cap, res] = RealMag(w);
 		if (real == 1) return m;

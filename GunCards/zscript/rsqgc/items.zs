@@ -4,8 +4,8 @@
 // A gun's card counts its rounds (card.zs Loaded). A weapon with no ammo pile (no Ammo1) is an ITEM: a melee weapon or a
 // tool held in the hand. Checking your watch with one shows its item card (side.zs BuildItem): its name and what it holds,
 // asked of the mod that made it by name, with the status rows (health, armour, keys) under them, as the status card gave
-// these weapons before (owner 11-06, BUGS_1.0 #24). Two items have a count that also goes on the small card in a gun's
-// place: the road flares left and the cigarettes left.
+// these weapons before (owner 11-06, BUGS_1.0 #24). No item has a small card (owner 11-15 16:09: none on the cigarette or
+// the road flare); their counts are on the item card only.
 //
 //   class                        top row                  big count            asked of (by name)
 //   UBQS_Saber, UBQS_SaberOff    SABER                    -                    - (LIT / OFF taken off 11-12: you can see the blade)
@@ -22,14 +22,6 @@ class RSQGC_Items play
 {
 	// an item: a weapon with no ammo pile to count
 	static clearscope bool IsItem(Weapon w) { return w && !w.Ammo1; }
-
-	// an item whose count also goes on the small card, as a gun's rounds (the Advanced spot rows edit its card too)
-	static clearscope bool SmallCount(Weapon w)
-	{
-		if (!IsItem(w)) return false;
-		Name n = w.GetClassName();
-		return n == 'RSQFF_Held' || n == 'RSQTR_CigWeapon';
-	}
 
 	private static int Pn(Weapon w) { return (w && w.Owner && w.Owner.player) ? w.Owner.PlayerNumber() : -1; }
 	private static int Hand(Weapon w) { return (w.Owner && w.Owner.player && w.Owner.player.OffhandWeapon == w) ? 1 : 0; }
