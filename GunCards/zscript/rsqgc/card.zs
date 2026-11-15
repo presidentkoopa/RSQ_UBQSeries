@@ -12,19 +12,20 @@
 // Each gun has its own colour (by weapon slot), or one simple colour for every card (rsqgc_color).
 //
 // HOW THEY DRAW. Every piece (panel, word, each digit or letter) is a weapon layer drawn as a HUD model at the hand.
-// The engine picks the hand by who owns the layer: the off hand when the owner is the off-hand gun
-// (models.cpp:221). Because MODELDEF is keyed by the owner's class and the off-hand gun is any pack's gun, the
-// pieces are VOXELDEF voxels (FindModelFrameRaw falls back to voxels for every class), built by tools/gen_cards.py
-// and tools/gen_side.py with their place on the hand baked in. The main-hand card is owned by RSQGC_CardItem, the
-// off-hand card by the off-hand gun itself, and the states live on Weapon classes (RSQGC_CardStates,
-// RSQGC_SideStates, generated) so the gun's layer accepts them (p_pspr.cpp:544-551).
+// The engine picks the hand by who owns the layer: the off hand when the owner is the off-hand gun (models.cpp:221).
+// The SMALL CARD's pieces are MD3 models whose frames are their glyphs (owner 2026-11-15, option B; modelcard.zs,
+// tools/gen_modelcard.py): MODELDEF is keyed by the owner's class, so the main hand's card, owned by RSQGC_CardItem, has
+// its blocks here, and the off hand's, owned by the off-hand gun, has them in a bridge pk3 for that gun's pack. The WATCH
+// card's pieces are VOXELDEF voxels (FindModelFrameRaw falls back to voxels for every class), built by tools/gen_side.py
+// with their place on the hand baked in. The states live on Weapon classes (RSQGC_MCStates, RSQGC_SideStates,
+// generated) so the gun's layer accepts them (p_pspr.cpp:544-551).
 //
 // NO LAG. The pieces are part of the hand's own draw: the same transform, the same frame, as the gun. Nothing here
 // moves them per tic; the tic only decides which piece each layer shows. (rsqgc_world 1 draws the same cards as
 // world quads instead, worldcard.zs: no gun can cover them, but they can trail a fast hand.)
 //
 // MIRRORING. The physical left hand is drawn mirrored (hw_vrmodes.cpp:467) unless its gun is NoAutoReverse, so
-// every piece has a mirrored twin and the card picks per hand. Left-handed (vr_control_scheme 10+) follows.
+// every watch-card piece has a mirrored twin and the card picks per hand; the small card's models carry both in one frame. Left-handed (vr_control_scheme 10+) follows.
 //
 // NUDGE. A layer's x / y turn its model about the model origin, a quarter degree a unit (hw_weapon.cpp:108), about
 // a millimetre at the card: rsqgc_side / rsqgc_up move the small card (or the gun's own spot, spots.zs), rsqgc_watch_up
@@ -820,7 +821,7 @@ class RSQGC_GunCard : EventHandler
 	static int StyleFor(PlayerInfo p, Weapon w)
 	{
 		int st = ci("rsqgc_style", 0);
-		if (st > 0) return clamp(st, 1, RSQGC_CardStates.STYLES) - 1;
+		if (st > 0) return clamp(st, 1, RSQGC_MC.STYLES) - 1;
 		int slot = 0;
 		if (w)
 		{
@@ -1133,11 +1134,11 @@ class RSQGC_GunCard : EventHandler
 		bool mir = Mirrored(p, hand);
 		int base = L_FIRST + hand * PER_HAND;
 		double alpha = mShow[hand] * CardAlpha(hand);
-		// THE CARD DRAWN BY MODELS (owner 2026-11-15, option B; modelcard.zs): the same layers, the same pieces, each a model
-		// whose frames are its glyphs; one set serves both hands (no mirror twins to pick). Its translations keep colour 0
-		// see-through (TransFor): a model's skin has see-through pixels, a voxel has none.
-		bool mdl = McUse(hand, owner, w);
-		mTransM = mdl;
+		// THE CARD IS DRAWN BY MODELS (owner 2026-11-15, option B, and 07:32 "do all that in this style"; modelcard.zs): each
+		// piece a model whose frames are its glyphs; one set serves both hands. The off hand's card needs its gun's blocks (a
+		// bridge pk3): a gun without them has no small card in the off hand.
+		if (!McUse(hand, owner, w)) { ClearHand(p, hand); return; }
+		mTransM = true;   // the translations keep colour 0 see-through (TransFor): a model's skin has see-through pixels
 
 		int loaded = Loaded(w);
 		// the magazine big, the reserve small under it (owner 02:47); on a both-guns card the small row is the other gun
@@ -1175,23 +1176,22 @@ class RSQGC_GunCard : EventHandler
 		mSpotSide[hand] = spS; mSpotUp[hand] = spU; mSpotIn[hand] = spI;
 		TiltTo(pmo, hand, mir);
 		mCurTilt = hand;
-		int dep = Depth();
+		McIn(Depth());
 		bool word = ci("rsqgc_label", 1) != 0;
+		int font = ermac ? 2 : q;   // the model card's fonts: 0 JFO Quest, 1 JFO PCVR, 2 Ermac
 
 		// the panel
 		int style = StyleFor(p, w);
 		// with the AMMO / MAGAZINE word off the panel is the short one (owner 08:40): no empty strip, the numbers stay put
 		// NO BACKGROUND (Material: No Background, owner 11-06): the panel is left out, only the words and numbers show
 		if (RSQGC_Glow.NoPanel()) Kill(p, base + P_PANEL);
-		else if (mdl) Put(p, base + P_PANEL, Nth(McPiece(word ? 0 : 1, 0, dep), style), owner, alpha, tPanel);
-		else Put(p, base + P_PANEL, Nth(RSQGC_Glow.CPiece(ci("rsqgc_label", 1) ? 0 : 7, mir, 0, Depth()), style), owner, alpha, tPanel);
+		else Put(p, base + P_PANEL, McNth(McPiece(word ? 0 : 1, 0), style), owner, alpha, tPanel);
 		// the word: MAGAZINE on a gun with one, AMMO otherwise
 		int lab = HasMagazine(w) ? 1 : 0;
-		if (word && mdl) Put(p, base + P_LABEL, Nth(McPiece(2, 0, dep), q * 2 + lab), owner, alpha, tLabel);
-		else if (ci("rsqgc_label", 1)) Put(p, base + P_LABEL, Nth(RSQGC_Glow.CPiece(1, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_LABEL + lab : q * RSQGC_CardStates.LABELS + lab), owner, alpha, tLabel);
+		if (word) Put(p, base + P_LABEL, McNth(McPiece(2, 0), font * 2 + lab), owner, alpha, tLabel);
 		else Kill(p, base + P_LABEL);
 		// the big number, centred in the five slots (Digits); GC3: RELOAD in its place on an empty magazine with rounds to
-		// load (Ermac's lettering, tools/gen_cards.py), in the empty colour
+		// load, in the empty colour
 		// RELOAD AND 0 IN TURN (owner 2026-11-03 09:42): an empty magazine with rounds to load shows RELOAD, then a red "0"
 		// (centred like any count), switching every RELOAD_FLIP tics from the tic it emptied; empty with nothing to load
 		// shows the count as before
@@ -1204,28 +1204,30 @@ class RSQGC_GunCard : EventHandler
 		mFlipWas[hand] = reloadNow ? flip + 1 : 0;
 		if (reloadNow && flip == 0)
 		{
-			for (int k = 1; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_BIG + k);
-			// on the short card (word off) its own RELOAD, top on the big count's top, so RELOAD and the reserve sit
-			// centred as the count and the reserve do (gen_cards.py RELOAD_SHORT_AT, owner 11-05 03:26)
-			// (the model card's RELOAD on the card with the word is centred between the word and the reserve, as its count)
-			if (mdl) Put(p, base + P_BIG, Nth(McPiece(3, 0, dep), q * 2 + (word ? 0 : 1)), owner, alpha, TransFor(MAG_RED));
-			else Put(p, base + P_BIG, Nth(RSQGC_Glow.CPiece(ci("rsqgc_label", 1) ? 4 : 8, mir, 0, Depth()), ermac ? RSQGC_CardStates.ERMAC_RELOAD : q), owner, alpha, TransFor(MAG_RED));
+			for (int k = 1; k < RSQGC_MC.SLOTS; k++) Kill(p, base + P_BIG + k);
+			// on the card with the word RELOAD is centred between the word and the reserve, as the count is (owner 11-15); on
+			// the short card (word off) its top is on the big count's top, so RELOAD and the reserve sit centred as the count
+			// and the reserve do (owner 11-05 03:26)
+			Put(p, base + P_BIG, McNth(McPiece(3, 0), font * 2 + (word ? 0 : 1)), owner, alpha, TransFor(MAG_RED));
 		}
-		else if (reloadNow) Digits(p, 2, mir, base + P_BIG, owner, "0", false, alpha, TransFor(MAG_RED), mdl);
-		else Digits(p, 2, mir, base + P_BIG, owner, clamp(loaded, 0, 999).."", false, alpha, tLow >= 0 ? tLow : tDigits, mdl);
+		else if (reloadNow) Digits(p, 2, base + P_BIG, owner, "0", alpha, TransFor(MAG_RED), font, word);
+		else Digits(p, 2, base + P_BIG, owner, clamp(loaded, 0, 999).."", alpha, tLow >= 0 ? tLow : tDigits, font, word);
 		// the small number: the reserve (or the other gun's rounds on a both-guns card); GC2: "+N" for a moment after
 		// ammo for this gun is picked up
 		int plus = both ? 0 : PlusNow(hand);
-		if (plus > 0) Digits(p, 3, mir, base + P_SMALL, owner, "+" .. clamp(plus, 1, 99), true, alpha, tDigits, mdl);
+		if (plus > 0) Digits(p, 3, base + P_SMALL, owner, "+" .. clamp(plus, 1, 99), alpha, tDigits, font, word);
 		// THE RESERVE IN GOLD (owner 2026-11-03 08:31), both fonts; the Wheel palette (Small Card Colours) keeps its own
-		else if (reserve >= 0) Digits(p, 3, mir, base + P_SMALL, owner, clamp(reserve, 0, 999).."", true, alpha, tinted ? tDigits : TransFor(RESERVE_GOLD), mdl);
-		else for (int k = 0; k < RSQGC_CardStates.SLOTS; k++) Kill(p, base + P_SMALL + k);
+		else if (reserve >= 0) Digits(p, 3, base + P_SMALL, owner, clamp(reserve, 0, 999).."", alpha, tinted ? tDigits : TransFor(RESERVE_GOLD), font, word);
+		else for (int k = 0; k < RSQGC_MC.SLOTS; k++) Kill(p, base + P_SMALL + k);
 		mTransM = false;
+		mMcTics = 0;
 	}
 
-	private void Digits(PlayerInfo p, int kind, bool mir, int base, Actor owner, string s, bool small, double alpha, int trans, bool mc = false)
+	// kind 2 the big count, 3 the small row; font 0 JFO Quest, 1 JFO PCVR, 2 Ermac; word: the card with the word (its big
+	// count centred between the word and the reserve, owner 11-15) or the short card
+	private void Digits(PlayerInfo p, int kind, int base, Actor owner, string s, double alpha, int trans, int font, bool word)
 	{
-		int slots = RSQGC_CardStates.SLOTS;
+		int slots = RSQGC_MC.SLOTS;
 		int len = min(s.Length(), (slots + 1) / 2);
 		int first = (slots - 1) / 2 - (len - 1);   // CENTRED (owner 08:20): the slots are half a digit apart
 		for (int k = 0; k < slots; k++)
@@ -1234,13 +1236,12 @@ class RSQGC_GunCard : EventHandler
 			int ci0 = (k - first) % 2 == 0 && k >= first ? (k - first) / 2 : -1;
 			if (ci0 < 0 || ci0 >= len) { Kill(p, base + k); continue; }
 			int ch = s.ByteAt(ci0);
-			int g = ch == 43 ? RSQGC_CardStates.GLYPH_PLUS : ch - 48;   // '+' (GC2)
-			// JFO: kind 2 / 3, frame Text Quality * GLYPHS + glyph; Ermac (Small Card Font): kind 5 / 6, frame glyph
-			// the model card (modelcard.zs): kind 4 big digit on the card with the word (centred, owner 11-15), 5 on the short
-			// card, 6 small; frame Text Quality * GLYPHS + glyph
-			if (mc) Put(p, base + k, Nth(McPiece(kind == 3 ? 6 : ci("rsqgc_label", 1) ? 4 : 5, k, Depth()), Quality() * RSQGC_CardStates.GLYPHS + g), owner, alpha, trans);
-			else if (ci("rsqgc_small_font", 0) == 1) Put(p, base + k, Nth(RSQGC_Glow.CPiece(kind + 3, mir, k, Depth()), g), owner, alpha, trans);
-			else Put(p, base + k, Nth(RSQGC_Glow.CPiece(kind, mir, k, Depth()), Quality() * RSQGC_CardStates.GLYPHS + g), owner, alpha, trans);
+			int g = ch == 43 ? RSQGC_MC.GLYPH_PLUS : ch - 48;   // '+' (GC2)
+			// pieces (mcard_states.zs): JFO big 4 (card with the word) / 5 (short card), small 6, letter quality * GLYPHS + glyph;
+			// Ermac 7 / 8 / 9, letter glyph
+			int pk = kind == 3 ? 6 : word ? 4 : 5;
+			if (font == 2) Put(p, base + k, McNth(McPiece(pk + 3, k), g), owner, alpha, trans);
+			else Put(p, base + k, McNth(McPiece(pk, k), font * RSQGC_MC.GLYPHS + g), owner, alpha, trans);
 		}
 	}
 
@@ -1268,6 +1269,8 @@ class RSQGC_GunCard : EventHandler
 		ps.y = 32 + mSpotUp[mCurTilt] * 4 + mTiltY[mCurTilt];
 		ps.alpha = alpha;
 		ps.Translation = trans >= 0 ? TranslationID(trans) : TranslationID(0);
+		// the In blend (modelcard.zs McIn): the tics left in the piece's state set where between its two baked places it is drawn
+		if (mMcTics > 0) ps.Tics = mMcTics;
 	}
 
 	// ---- TILT TO YOUR EYES (owner's pick 43, rsqgc_tilt) --------------------------------------------------
@@ -1335,13 +1338,13 @@ class RSQGC_GunCard : EventHandler
 	}
 	// the watch card's sliders: degrees about the hand (drawn with it), cm (drawn in the world)
 	double WatchNudge(bool up) { return cv(up ? "rsqgc_watch_up" : "rsqgc_watch_side", 0); }
-	// IN AND OUT (owner 2026-10-31): rsqgc_in cm along the forearm, + toward you; the card is baked at
-	// RSQGC_CardStates.DEPTHS places DEPTH_STEP apart, and this picks the nearest
+	// IN AND OUT (owner 2026-10-31): rsqgc_in cm along the forearm, + toward you, in RSQGC_MC.DEPTHS places DEPTH_STEP
+	// apart (-12..12, as the voxel card had them); this picks the nearest (drawn by modelcard.zs McIn)
 	int Depth()
 	{
-		int mid = RSQGC_CardStates.DEPTHS / 2;
-		int k = int(floor(mSpotIn[mCurTilt] / RSQGC_CardStates.DEPTH_STEP + 0.5)) + mid;   // this gun's In (spots.zs)
-		return clamp(k, 0, RSQGC_CardStates.DEPTHS - 1);
+		int mid = RSQGC_MC.DEPTHS / 2;
+		int k = int(floor(mSpotIn[mCurTilt] / RSQGC_MC.DEPTH_STEP + 0.5)) + mid;   // this gun's In (spots.zs)
+		return clamp(k, 0, RSQGC_MC.DEPTHS - 1);
 	}
 
 	private static void Kill(PlayerInfo p, int id)

@@ -44,6 +44,12 @@ MODS = {
     'GunCards':     ('RSQ_GunCards.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt',
                      'MODELDEF.txt', 'TEXTURES.txt', 'VOXELDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models',
                      'sprites', 'graphics', 'voxels']),
+    # Gun Cards' BRIDGES (2026-11-15): the small card's MODELDEF blocks for the off-hand guns of one pack each, loaded with
+    # that pack (QZD 17.3 stops on a MODELDEF block for a class that is not loaded); GunCards/tools/gen_modelcard.py
+    'GunCards/bridge_bd22vr':     ('RSQ_GunCards_BD22VR.pk3', 'list', ['MODELDEF.txt', 'RSQGCOFF.txt']),
+    'GunCards/bridge_flashflare': ('RSQ_GunCards_FlashFlare.pk3', 'list', ['MODELDEF.txt', 'RSQGCOFF.txt']),
+    'GunCards/bridge_tacticalrig': ('RSQ_GunCards_TacticalRig.pk3', 'list', ['MODELDEF.txt', 'RSQGCOFF.txt']),
+    'GunCards/bridge_grenade':    ('RSQ_GunCards_Grenade.pk3', 'list', ['MODELDEF.txt', 'RSQGCOFF.txt']),
     'Grenade':      ('RSQ_Grenade.pk3', 'list', ['zscript.txt', 'MAPINFO.txt', 'CVARINFO.txt', 'MENUDEF.txt', 'KEYCONF.txt', 'MODELDEF.txt', 'MODELDEF.kinds.txt',
                      'SNDINFO.txt', 'TRNSLATE.txt', 'DECALDEF.txt', 'CREDITS.txt', 'README.md', 'zscript', 'models', 'sounds',
                      'sprites', 'graphics']),   # DECALDEF + graphics/: the explosions' wall scorch (11-09)

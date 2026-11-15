@@ -14,7 +14,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ZS = os.path.join(os.path.dirname(HERE), 'zscript', 'rsqgc')
 FRAME = re.compile(r'^(\t\t[A-Z0-9]{4} [A-Z\[\]\\^]+ -?\d+);$')
 
-for src, cls in (('card_states.zs', 'RSQGC_CardStates'), ('side_states.zs', 'RSQGC_SideStates')):
+for src, cls in (('side_states.zs', 'RSQGC_SideStates'),):   # (the small card's are made by gen_modelcard.py, 2026-11-15)
     lines = open(os.path.join(ZS, src)).read().split('\n')
     out, n = [], 0
     for ln in lines:

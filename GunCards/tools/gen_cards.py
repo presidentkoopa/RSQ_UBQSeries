@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-"""RSQ Gun Cards: build the SMALL CARD voxels (the card beside the wrist stub) from Ermac's Force Unleashed holo art.
+"""RSQ Gun Cards: THE SMALL CARD'S LAYOUT (used by tools/gen_modelcard.py, which builds the card as models since
+2026-11-15) and, below, the old voxel bake it replaced (no longer run). Originally: build the SMALL CARD voxels (the card
+beside the wrist stub) from Ermac's Force Unleashed holo art.
 
     python3 tools/gen_cards.py [--art <folder with ammo_bg*.png, digit_*.png, ammo.png ...>]
 
@@ -404,4 +406,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    # 2026-11-15: the small card is drawn by models now (tools/gen_modelcard.py); its voxels, VOXELDEF's CARD section and
+    # card_states*.zs are gone. This file keeps the card's layout (CARD, the slots, the sizes, SHORT_*, DEPTHS) and
+    # write_kvx, which gen_modelcard.py and gen_side.py import. main() above is the old voxel bake, kept for reference.
+    sys.exit('gen_cards.py: the small card is built by tools/gen_modelcard.py now (2026-11-15); nothing to do here')

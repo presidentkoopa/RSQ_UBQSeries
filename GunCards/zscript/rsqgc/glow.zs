@@ -2,7 +2,7 @@
 // background'", "could these get any kind of emissive glow or light on a kind of Quest / PCVR setting").
 //
 // CARD GLOW (rsqgc_glow): 0 Off, as before: the cards are lit by the room like the gun. 1 Quest: the cards are fullbright,
-// they keep their colours in the dark (the Bright twins of the card states, tools/gen_bright.py; the cards drawn in the
+// they keep their colours in the dark (the Bright twins of the card states: the small card's from tools/gen_modelcard.py, the watch card's from tools/gen_bright.py; the cards drawn in the
 // world get the actor's +BRIGHT); nothing else is drawn, so it costs nothing. 2 PCVR: the same, plus a small dynamic
 // light at each hand whose card shows, in the card's colour, fading with it (needs the renderer's dynamic lights on).
 // NO BACKGROUND (Material: No Background, rsqgc_look 3): the panel is left out of every card, only the text shows (as glass).
@@ -22,10 +22,6 @@ class RSQGC_Glow play
 	// for the watch cards' signatures: a change rebuilds them with the other states
 	static clearscope string Sig() { return String.Format(" gl%d np%d", Mode() > 0, NoPanel()); }
 
-	static State CPiece(int kind, bool mirrored, int slot, int depth)
-	{
-		return Mode() > 0 ? RSQGC_CardStatesB.Piece(kind, mirrored, slot, depth) : RSQGC_CardStates.Piece(kind, mirrored, slot, depth);
-	}
 	static State SGlyph(int set, int fam, int pos, int code)
 	{
 		return Mode() > 0 ? RSQGC_SideStatesB.Glyph(set, fam, pos, code) : RSQGC_SideStates.Glyph(set, fam, pos, code);

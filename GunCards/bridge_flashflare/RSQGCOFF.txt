@@ -1,0 +1,2 @@
+// the off-hand guns whose small card this bridge carries (RSQ Gun Cards modelcard.zs)
+RSQFF_Held

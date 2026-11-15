@@ -1,0 +1,55 @@
+RSQ Gun Cards, the small card drawn by models on every gun (owner 2026-11-15 07:32). Rig only, not headset-confirmed.
+QuestZDoom 17.3 rig, the owner's full order (rig/work/full_monA.sh's list, his saved ini, -skill 6, rsqtr_eye_m 1.6,
+sv_cheats 1, god, notarget), series pk3s from origin/main 1f8d9c96 with RSQ_GunCards.pk3 and its four bridges from this branch.
+
+== SPRITE FRAMES (engine read under gdb at exit)
+before (origin/main's RSQ_GunCards.pk3: the voxel small card; run mc_sf_before, earlier today):
+  SPRITES count=5535
+  SPRITEFRAMES size=64367
+after (this branch, voxel small card dropped, all four bridges):
+  SPRITES count=4988
+  SPRITEFRAMES size=54464
+  -> 9,903 sprite frames freed; 54,464 used of 65,535 (11,071 to spare).
+
+== PEAK MEMORY (VmHWM of the engine process, the same order, 'wait 200; quit'):
+  before 1393880 kB, after 1411220 kB (the bridges' 68 classes x 1,629 model entries)
+
+== SCRIPT ERRORS from our packs: none (each run: only BD_VoxelPack's own four 'No sprites specified for voxel')
+  mc_guns: 4 script error lines, 0 VM aborts; ours: 0
+  mc_core: 4 script error lines, 0 VM aborts; ours: 0
+  mc_opts2: 4 script error lines, 0 VM aborts; ours: 0
+  mc_opts3: 4 script error lines, 0 VM aborts; ours: 0
+  mc_tilt: 4 script error lines, 0 VM aborts; ours: 0
+  mc_items: 4 script error lines, 0 VM aborts; ours: 0
+  mc_fl: 4 script error lines, 0 VM aborts; ours: 0
+  mc_sf_final: 4 script error lines, 0 VM aborts; ours: 0
+  plain doom2 + RSQ_GunCards.pk3 alone (mc_plain2): 0 errors
+
+== HIDE AT YOUR EYE (mc_opts3; the card sits by the eye, out of the frame, so the log shows it)
+  MC_EYE 224 ateye 1 dist 7.5 dot 1.00 attackpitch 0 angle 90/90
+  MC_LOG 224 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 7:RSQGC_CardItem/1876C 9:RSQGC_CardItem/1882A 11:RSQGC_CardItem/1888A
+  MC_MARK 2 224
+  MC_EYE 258 ateye 1 dist 7.5 dot 1.00 attackpitch 0 angle 90/90
+  MC_LOG 258 hand 0 Rifle loaded 31 reserve 200 |
+  MC_MARK 3 258
+  MC_LOG 296 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 7:RSQGC_CardItem/1876C 9:RSQGC_CardItem/1882A 11:RSQGC_CardItem/1888A
+  MC_MARK 4 296
+
+== BOTH GUNS ON ONE CARD and LEFT-HANDED (mc_opts2): layer:caller/sprite+frame
+  MC_LOG 562 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 9:RSQGC_CardItem/1882H
+  MC_LOG 562 hand 1 RSQ_Off_Rifle loaded 7 reserve 200 |
+  MC_LOG 599 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 9:RSQGC_CardItem/1882H
+  MC_LOG 599 hand 1 RSQ_Off_Rifle loaded 7 reserve 200 |
+  MC_LOG 650 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 7:RSQGC_CardItem/1876C 9:RSQGC_CardItem/1882A 11:RSQGC_CardItem/1888A
+  MC_LOG 650 hand 1 RSQ_Off_Rifle loaded 7 reserve 200 | 0:RSQ_Off_Rifle/1834B 1:RSQ_Off_Rifle/1840B 4:RSQ_Off_Rifle/1858H 7:RSQ_Off_Rifle/1876C 9:RSQ_Off_Rifle/1882A 11:RSQ_Off_Rifle/1888A
+  MC_LOG 691 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 7:RSQGC_CardItem/1876C 9:RSQGC_CardItem/1882A 11:RSQGC_CardItem/1888A
+  MC_LOG 691 hand 1 RSQ_Off_Rifle loaded 7 reserve 200 | 0:RSQ_Off_Rifle/1834B 1:RSQ_Off_Rifle/1840B 4:RSQ_Off_Rifle/1858H 7:RSQ_Off_Rifle/1876C 9:RSQ_Off_Rifle/1882A 11:RSQ_Off_Rifle/1888A
+
+== THE COOKING GRENADE (mc_opts3)
+  MC_COOK 407 hand 0 fuse.count 3
+
+== THE ROAD FLARE AND THE CIGARETTE (mc_items)
+  MC_LOG 185 hand 0 Rifle loaded 31 reserve 200 | 0:RSQGC_CardItem/1834A 1:RSQGC_CardItem/1840B 3:RSQGC_CardItem/1852D 5:RSQGC_CardItem/1864B 7:RSQGC_CardItem/1876C 9:RSQGC_CardItem/1882A 11:RSQGC_CardItem/1888A
+  MC_LOG 185 hand 1 RSQFF_Held loaded 6 reserve -1 | 0:RSQFF_Held/1834B 1:RSQFF_Held/1840A 4:RSQFF_Held/1858G
+  MC_LOG 305 hand 0 RSQTR_CigWeapon loaded 7 reserve -1 | 0:RSQGC_CardItem/1834B 1:RSQGC_CardItem/1840A 4:RSQGC_CardItem/1858H
+  MC_LOG 305 hand 1 RSQTR_ZippoWeapon loaded -1 reserve -1 |

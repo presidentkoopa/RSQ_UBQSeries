@@ -8,7 +8,6 @@ user int    rsqgc_watch = 1;           // the watch card, the full card flat on 
 user int    rsqgc_watch_shows = 0;     // what the watch card shows with a gun (owner 2026-11-03): 0 the Weapon card, 1 the Status card, 2 both on one card (an empty hand always shows the Status card)
 user int    rsqgc_watch_bonsai = 0;    // Option: 1 = Gun Bonsai's level, XP and upgrades below the Weapon card (with Gun Bonsai)
 user int    rsqgc_small_font = 0;      // Option: the small card's font: 0 JFO, 1 Ermac's (his digits and words; the colours work the same)
-user int    rsqgc_modelcard = 1;       // the small card drawn by models (owner 2026-11-15, option B) on the guns built for it (the proof: BD22 VR's rifle, both hands); 0 the voxel card on every gun (to compare). Rig only, not headset-confirmed
 user int    rsqgc_text_q = 0;          // Text Quality: 0 Quest (JFO glyphs at half resolution, a quarter of the voxels), 1 PCVR (full resolution)
 user int    rsqgc_world = 0;           // 1: the cards drawn in the world at the hand (no gun can cover them; may trail a fast hand)
 user int    rsqgc_hide_eye = 0;        // QoL GC1 (Option): 1 = the small card hides while the gun is up at your eye (sights or a scope)
