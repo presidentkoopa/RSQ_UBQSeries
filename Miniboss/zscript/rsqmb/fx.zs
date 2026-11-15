@@ -13,7 +13,11 @@
 //     of our own (the IWAD's sprites are looked up as textures). They sit on a NON-TICKING statnum: the engine never
 //     ticks them; one driver after every actor has moved places them, setting Prev and Pos itself (glyphs.zs' fixed
 //     Put: the parameter is not named "prev", or it hides the field).
-//   - The tethers are the original's in full (30 beads a link, every tic): owner 1.0 #3 (11-06).
+//   - The tethers are the original's beads (APLS, scale 1, alpha 0.3, every tic): owner 1.0 #3 (11-06). A SOLID CHAIN AT
+//     ANY LENGTH (11-15): the original's fixed 30 a link spread a long link into a row of separate dots (shown on the rig:
+//     Miniboss/docs/tethers_2026-11-15, runs longOld/longNew and live1/live2), so a link now gets one bead every
+//     BEAD_STEP units (30 at the least, the link's share of the cap at the most), and past that share its beads grow
+//     until they touch again. Each link keeps a fixed block of slots, so its beads stay interpolated as it stretches.
 //   - THE SPHERES ARE GONE (the rework, 2026-11-09, design/MINIBOSS_REWORK.md "Spheres"): no life orbs circling it (the HUD's
 //     thin life bars replace them: "the spheres get lost in the tether art", owner) and no BFG ball over each thrall
 //     ("TARGET!" over it replaces it). A lost life and its death burst in the original's BFE1 instead of BAL2.
@@ -75,7 +79,10 @@ class RSQMB_FxPool play
 	// The tether is the ORIGINAL's at every density (owner 1.0 #3, 11-06: "use the miniboss art from the OG mod, not
 	// the weak ass dotted tethers"): mbos_thralldensity 30 APLS beads a link, boss to thrall, placed every tic and
 	// interpolated (the original's WARPF_INTERPOLATE), so it reads as a solid chain, never a few dots.
-	const BEADS = 30;
+	const BEADS = 30;          // the original's mbos_thralldensity: the fewest beads a link ever has
+	const BEAD_STEP = 9.0;     // at most this far apart (map units): the 15-unit APLS ball overlaps the next, a solid chain
+	const BEAD_MAXSCALE = 2.5; // past its share of the cap a link's beads grow (to this) so they still touch
+	const SHOT_ROOM = 64;      // slots kept free of links for the one-shots (a thrall's link breaking is 30 to 60 of them)
 	// Effects Density: Low (Quest-safe, the default) / Medium / High: the flames and the cap only
 	static const int FLAMES[] = { 6, 10, 16 };     // invulnerability flames (the original: 20)
 	static const int CAP[] = { 280, 320, 380 };    // most effects drawn in the map at once (8 thralls x 30 beads fit at Low)
@@ -159,25 +166,32 @@ class RSQMB_FxPool play
 		if (f.Alpha != alpha) f.Alpha = alpha;
 	}
 
-	// One link's 30 beads in one tight loop (1.0 opt, 11-06: "i do not want to lose quality but let's try and optimize
-	// this"). Draws exactly what 30 Show() calls drew (same spots, frame, colour, scale 1, alpha 0.3, Prev = last tic's
-	// spot), with the work done once a link instead of once a bead: the frame and its texture once, the link's start and
-	// step once (bead j = start + step * j, BeadPos's own arithmetic), and a bead that did not move is not written and not
-	// re-sectored (UpdateSector, a BSP walk, only for a bead that moved). Rig-measured before/after: proof/miniboss/opt_*.
-	void BeadLink(RSQMB_Handler h, int k0, Vector3 start, Vector3 step, int nb, int t, Color c, int cap)
+	// The beads one link of length len is drawn with: one every BEAD_STEP units, at least the original's 30, at most share.
+	static int LinkBeads(double len, int share)
+	{
+		return clamp(int(ceil(len / BEAD_STEP)), BEADS, max(BEADS, share));
+	}
+
+	// One link's beads in one tight loop (1.0 opt, 11-06: "i do not want to lose quality but let's try and optimize
+	// this"). Bead j sits where the original warped it (start + step * j, BeadPos's own arithmetic), every tic, Prev = last
+	// tic's spot; a bead that did not move is not written and not re-sectored (UpdateSector, a BSP walk, only for a bead
+	// that moved). The link owns nslots slots (its block: the same slots every tic while the count of links holds, so a
+	// stretching link stays interpolated); nb of them are shown, the rest of the block is dark.
+	void BeadLink(RSQMB_Handler h, int k0, Vector3 start, Vector3 step, int nb, int nslots, Vector2 sc, int t, Color c, int cap)
 	{
 		int s = SQ_BEAD;
 		int fi = Frame(s, t);
 		TextureID bt = tex[seqStart[s] + fi];
-		for (int j = 0; j < nb; j++)
+		for (int j = 0; j < nslots; j++)
 		{
 			if (used >= cap) return;
+			bool on = j < nb;
 			Vector3 at = start + step * j;
 			RSQMB_Fx f;
 			if (used < int(pool.Size())) f = pool[used];
 			else
 			{
-				f = RSQMB_Fx(VisualThinker.Spawn("RSQMB_Fx", bt, at, (0, 0, 0), 0.3, SPF_FULLBRIGHT, 0, (1, 1), (0, 0), STYLE_AddStencil));
+				f = RSQMB_Fx(VisualThinker.Spawn("RSQMB_Fx", bt, at, (0, 0, 0), on ? 0.3 : 0.0, SPF_FULLBRIGHT, 0, sc, (0, 0), STYLE_AddStencil));
 				if (!f) return;
 				f.ChangeStatNum(RSQMB_Fx.STAT_FX);
 				f.key = -1;
@@ -186,23 +200,31 @@ class RSQMB_FxPool play
 			}
 			used++;
 			int key = k0 | j;
-			if (f.key != key)
+			if (!on)
 			{
-				// a slot taking this bead over: everything set, as Show did
+				// a slot of this link's block not needed at this length: dark (the renderer skips Alpha 0)
+				if (f.key != key) { f.key = key; f.seqShown = -1; }
+				if (f.Alpha != 0) f.Alpha = 0;
+				continue;
+			}
+			if (f.key != key || f.Alpha == 0)
+			{
+				// a slot taking this bead over (or lit again): everything set, placed without a slide
 				f.key = key;
 				f.Put(at, at);
 				f.seqShown = s; f.frameShown = fi; f.Texture = bt;
 				f.colShown = c; f.scolor = c;
-				f.Scale = (1, 1);
+				f.Scale = sc;
 				f.Alpha = 0.3;
 				if (h.debug) h.fxWrites++;
 				continue;
 			}
-			// Show's Put(at, Pos): Prev = last tic's spot, Pos = this one. Unmoved and settled: nothing to write.
+			// Put(at, Pos): Prev = last tic's spot, Pos = this one. Unmoved and settled: nothing to write.
 			if (!(f.Pos == at)) { f.Put(at, f.Pos); if (h.debug) h.fxWrites++; }
 			else if (!(f.Prev == at)) f.Prev = at;
 			if (f.frameShown != fi || f.seqShown != s) { f.seqShown = s; f.frameShown = fi; f.Texture = bt; }
 			if (f.colShown != c) { f.colShown = c; f.scolor = c; }
+			if (f.Scale != sc) f.Scale = sc;
 		}
 	}
 
@@ -261,7 +283,13 @@ extend class RSQMB_Handler
 		if (!b.mb || !UseSprites()) { if (b.mb) b.Shatter(RSQMB_Boss.Mid(th), RSQMB_Boss.Mid(b.mb)); return; }
 		int cap = RSQMB_FxPool.CAP[fxDensity];
 		fxp.Shot(th.pos + (0, 0, th.height), RSQMB_FxPool.SQ_BREAK, b.col, (0.5, 0.5), 0.5, cap);
-		int nb = RSQMB_FxPool.BEADS;
+		LinkBurst(b, th, cap);
+	}
+
+	// A link breaking: its beads burst where they were (APBX, the original's explode), as many as the link had, up to 60.
+	void LinkBurst(RSQMB_Boss b, Actor th, int cap)
+	{
+		int nb = RSQMB_FxPool.LinkBeads(level.Vec3Diff(b.mb.pos, th.pos).Length(), 60);
 		for (int j = 0; j < nb; j++) fxp.Shot(BeadPos(b.mb, th, j, nb), RSQMB_FxPool.SQ_BEADX, b.col, (1, 1), 0.3, cap);
 	}
 
@@ -307,8 +335,21 @@ extend class RSQMB_Handler
 		let view = players[consoleplayer].mo;
 		if (fxOn && view)
 		{
-			int d = fxDensity, cap = RSQMB_FxPool.CAP[d], nb = RSQMB_FxPool.BEADS, nf = RSQMB_FxPool.FLAMES[d];
+			int d = fxDensity, cap = RSQMB_FxPool.CAP[d], nf = RSQMB_FxPool.FLAMES[d];
 			int t = level.maptime;
+			// each living link's share of the cap (the flames and the one-shots' room kept out): its block of slots
+			int links = 0, flames = 0;
+			for (int bi = 0; bi < bosses.Size(); bi++)
+			{
+				let b = bosses[bi];
+				if (!b || b.done || !b.mb || b.mb.health <= 0) continue;
+				Vector3 dv = level.Vec3Diff(view.pos, RSQMB_Boss.Mid(b.mb));
+				if (dv dot dv > fxRange2) continue;
+				for (int i = 0; i < b.thr.Size() && i < 14; i++) if (b.thr[i] && b.thrState[i] == RSQMB_Boss.ST_ALIVE) links++;
+				if (b.Invulnerable()) flames += nf;
+			}
+			int share = links ? (cap - flames - RSQMB_FxPool.SHOT_ROOM) / links : 0;
+			share = clamp(share, RSQMB_FxPool.BEADS, 200);
 			for (int bi = 0; bi < bosses.Size(); bi++)
 			{
 				let b = bosses[bi];
@@ -323,9 +364,13 @@ extend class RSQMB_Handler
 					let th = b.thr[i];
 					if (!th || b.thrState[i] != RSQMB_Boss.ST_ALIVE) continue;
 					int ki = kb | (i << 10);
-					// the original's trail: 30 APLS beads (scale 1, alpha 0.3), every tic, interpolated; BeadPos's spots,
-					// worked out once a link (BeadLink)
-					fxp.BeadLink(self, ki | (1 << 9), b.mb.pos + (0, 0, b.mb.height * 0.5), level.Vec3Diff(b.mb.pos, th.pos) / double(nb), nb, t, b.col, cap);
+					// the original's trail: APLS beads (alpha 0.3), every tic, interpolated, BeadPos's spots worked out once a
+					// link (BeadLink); one every BEAD_STEP units up to the link's share, then bigger beads so they touch
+					Vector3 dl = level.Vec3Diff(b.mb.pos, th.pos);
+					int nb = RSQMB_FxPool.LinkBeads(dl.Length(), share);
+					double gap = dl.Length() / nb;
+					double bs = clamp(gap / RSQMB_FxPool.BEAD_STEP, 1.0, RSQMB_FxPool.BEAD_MAXSCALE);
+					fxp.BeadLink(self, ki | (1 << 9), b.mb.pos + (0, 0, b.mb.height * 0.5), dl / double(nb), nb, share, (bs, bs), t, b.col, cap);
 				}
 				// (no life orbs since the rework: the HUD's thin life bars)
 				// invulnerable: the flames circling it, lit from the moment it lost the life

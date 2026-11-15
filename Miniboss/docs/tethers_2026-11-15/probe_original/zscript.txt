@@ -1,0 +1,81 @@
+version "4.14"
+// TEST ONLY (2026-11-15): the original Minibosses! v0.1.1 on the rig, for its tether's look. Puts the player south of the
+// miniboss with the most thralls (the view's yaw is held at 90 by the VR code), close then farther. Rig only.
+class OGP_Probe : EventHandler
+{
+	minibosscontroller pick;
+	override void WorldTick()
+	{
+		int t = level.maptime;
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		pmo.player.cheats |= CF_GODMODE | CF_NOTARGET;
+		if (t == 12) Make();
+		if (t == 20)
+		{
+			let it = ThinkerIterator.Create("minibosscontroller");
+			minibosscontroller c; int n = 0;
+			while (c = minibosscontroller(it.Next()))
+			{
+				n++;
+				if (c.a && c.thralls.Size() > 0 && (!pick || c.thralls.Size() > pick.thralls.Size())) pick = c;
+			}
+			Console.Printf("OGP t%d %d minibosses, picked %s with %d thralls, trail beads %d", t, n, pick && pick.a ? pick.a.GetClassName() : 'none', pick ? pick.thralls.Size() : 0, pick ? pick.thrallfxtrails.Size() : 0);
+		}
+		if (!pick || !pick.a) return;
+		if (t == 160) Put(pmo, pick.a, 300);
+		if (t % 20 == 0 && pick.thrallfxtrails.Size())
+		{
+			let f = pick.thrallfxtrails[0];
+			if (f) Console.Printf("OGP t%d bead0 %s style %d alpha %.2f scale %.2f fill %08X at (%.0f %.0f %.0f) dist %.0f", t, f.GetClassName(), f.GetRenderStyle(), f.alpha, f.scale.x, f.fillcolor, f.pos.x, f.pos.y, f.pos.z, pmo.Distance3D(pick.a));
+		}
+	}
+	// the original handler's own steps (minibosshandler.txt WorldTick), for a monster with neighbours: on this order the
+	// map's monsters are spawned before its WorldLoaded arms it, so it makes none by itself
+	void Make()
+	{
+		Actor best; int bestN = 0;
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bISMONSTER || a.health <= 10 || a.bFRIENDLY) continue;
+			let pm = players[consoleplayer].mo;
+			Vector2 dd = a.pos.xy - pm.pos.xy;
+			if (dd.Length() < 200 || dd.Length() > 1400 || Actor.absangle(atan2(dd.y, dd.x), 90) > 35 || !pm.CheckSight(a, SF_IGNOREVISIBILITY)) continue;
+			int n = 0;
+			let bi = BlockThingsIterator.Create(a, 512);
+			while (bi.Next()) { let o = bi.thing; if (o != a && o.bISMONSTER && o.health > 10 && a.Distance2D(o) < 512) n++; }
+			if (n > bestN && n <= 6) { bestN = n; best = a; }
+		}
+		if (!best) return;
+		Array<Actor> th;
+		let bi = BlockThingsIterator.Create(best, 512);
+		while (bi.Next()) { let o = bi.thing; if (o != best && o.bISMONSTER && o.health > 10 && best.Distance2D(o) < 512 && th.Size() < 5) { th.Push(o); o.GiveInventoryType("minibossthrallinfo"); } }
+		best.GiveInventoryType("minibossinfo");
+		let c = new("minibosscontroller");
+		c.a = best; c.lives = 3; c.minibossname = "rig"; c.thralls.Copy(th);
+		Console.Printf("OGP t%d MADE %s with %d thralls", level.maptime, best.GetClassName(), th.Size());
+	}
+	void Put(Actor pmo, Actor mb, double want)
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			double a = 270 + ((i % 2) ? 1 : -1) * ((i + 1) / 2) * 10;
+			FLineTraceData lt;
+			mb.LineTrace(a, 2000, 0, TRF_THRUACTORS, 40, data: lt);
+			double dist = min(want, lt.Distance - 40);
+			if (dist < 150) continue;
+			Vector3 home = pmo.pos;
+			if (!pmo.TeleportMove((mb.pos.xy + (cos(a), sin(a)) * dist, mb.pos.z), false)) continue;
+			pmo.SetZ(pmo.floorz);
+			if (!pmo.CheckSight(mb, SF_IGNOREVISIBILITY)) { pmo.TeleportMove(home, false); continue; }
+			Console.Printf("OGP t%d PLACE %.0f south of %s", level.maptime, pmo.Distance2D(mb), mb.GetClassName());
+			return;
+		}
+		Console.Printf("OGP t%d PLACE failed", level.maptime);
+	}
+	override void RenderOverlay(RenderEvent e)
+	{
+		Screen.DrawText(bigfont, Font.CR_GOLD, 40, 40, String.Format("t%d", level.maptime), DTA_VirtualWidth, 320, DTA_VirtualHeight, 200);
+	}
+}

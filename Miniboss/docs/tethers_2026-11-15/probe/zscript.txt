@@ -1,0 +1,181 @@
+version "4.14"
+// TEST ONLY (RSQ Miniboss tethers, 2026-11-15): rig only. Calls a miniboss fight in, puts the player close to and far from
+// it facing it, kills one thrall, takes one life (the flames), and logs what fx.zs draws. Tic stamped on screen.
+class TTH_Probe : EventHandler
+{
+	int landT, nextRep; Vector3 dir; double free, pd;
+	ui int uiT;
+	override void WorldTick()
+	{
+		int t = level.maptime;
+		let pmo = players[consoleplayer].mo;
+		if (!pmo) return;
+		pmo.player.cheats |= CF_GODMODE;
+		if (CVar.FindCVar('tth_mode').GetInt() != 2) pmo.player.cheats |= CF_NOTARGET;
+		if (t == 40) { Console.Printf("TTH t%d netevent rsqmb_fill 1000", t); EventHandler.SendNetworkEvent("rsqmb_fill", 1000); }
+		if (t == 42) { Console.Printf("TTH t%d netevent rsqmb_callin 1", t); EventHandler.SendNetworkEvent("rsqmb_callin", 1); }
+		if (t == 41) Tex();
+		let h = RSQMB_Handler.Get();
+		if (!h) return;
+		RSQMB_Boss b = h.bosses.Size() ? h.bosses[0] : null;
+		if (!b || !b.mb) { if (t % 35 == 0 && t > 40) Console.Printf("TTH t%d no boss yet (bosses %d arrPhase %d)", t, h.bosses.Size(), h.arrPhase); return; }
+		let mb = b.mb;
+		if (!landT)
+		{
+			landT = t;
+			Vector2 d = pmo.pos.xy - mb.pos.xy;
+			if (d.Length() < 1) d = (1, 0);
+			dir = (d.Unit(), 0);
+			FLineTraceData lt;
+			mb.LineTrace(atan2(dir.y, dir.x), 2000, 0, TRF_THRUACTORS, mb.height * 0.5, data: lt);
+			free = lt.Distance;
+			Console.Printf("TTH t%d LANDED %s at (%.0f %.0f %.0f), player %.0f away, free line %.0f, thralls %d", t, mb.GetClassName(), mb.pos.x, mb.pos.y, mb.pos.z, d.Length(), free, b.thr.Size());
+		}
+		int k = t - landT;
+		if (CVar.FindCVar('tth_mode').GetInt() == 1) { ModeAB(h, b, mb, k); return; }
+		if (CVar.FindCVar('tth_mode').GetInt() == 3) { ModeLong(h, b, mb, k); return; }
+		if (CVar.FindCVar('tth_mode').GetInt() == 2) { if (k % 20 == 0) Report(h, b, pmo); return; }
+		if (k == 90 && CVar.FindCVar('tth_retier').GetInt() > 0) { bool ok = h.RetierBy(mb, CVar.FindCVar('tth_retier').GetInt(), b, -1); Console.Printf("TTH t%d RETIER miniboss +%d asked %d (tier now %d)", t, CVar.FindCVar('tth_retier').GetInt(), ok, h.TierOfMon(mb)); }
+		if (k == 130) Put(pmo, b, mb, 300, 200);
+		if (k == 210 && CVar.FindCVar('tth_white').GetInt() > 0) { bool ok = h.RetierBy(mb, 1, b, -1); Console.Printf("TTH t%d RETIER miniboss +1 asked %d", t, ok); }
+		if (k == 230) Put(pmo, b, mb, 1400, 500);
+		if (k == 330) Put(pmo, b, mb, 360, 200);
+		if (k == 380) KillOne(pmo, b);
+		if (k == 470) { Console.Printf("TTH t%d LIFE: %s hp %d -> 1", t, mb.GetClassName(), mb.health); mb.health = 1; }
+		if (k == 560) EventHandler.SendNetworkEvent("rsqmb_state");
+		// keep facing the miniboss
+		if (k >= 130 && Actor.absangle(pmo.angle, pmo.AngleTo(mb)) > 2) pmo.A_SetAngle(pmo.AngleTo(mb));
+		if (k % 10 == 0) Report(h, b, pmo);
+	}
+	// Put the player `want` units from the miniboss (or as far as the room allows), facing it, on the side with the most
+	// living thralls in a 70 degree view; only a spot the player fits in and sees the miniboss from.
+	void Put(Actor pmo, RSQMB_Boss b, Actor mb, double want, double minD)
+	{
+		Array<double> sc, ang, dst;
+		for (int i = 0; i < 9; i++)
+		{
+			double a = 230 + i * 10;     // the view's yaw is held at the map start's 90 by the VR code: stand south of it
+			FLineTraceData lt;
+			mb.LineTrace(a, 2000, 0, TRF_THRUACTORS, 40, data: lt);
+			double dist = min(want, lt.Distance - 40);
+			if (dist < minD) continue;
+			Vector2 spot = mb.pos.xy + (cos(a), sin(a)) * dist;
+			int seen = 0;
+			for (int t = 0; t < b.thr.Size(); t++)
+			{
+				let th = b.thr[t];
+				if (!th || th.health <= 0) continue;
+				Vector2 d = th.pos.xy - spot;
+				if (Actor.absangle(atan2(d.y, d.x), 90) < 38) seen++;
+			}
+			Vector2 db = mb.pos.xy - spot;
+			if (Actor.absangle(atan2(db.y, db.x), 90) > 30) continue;
+			sc.Push(seen * 10000 + dist); ang.Push(a); dst.Push(dist);
+		}
+		Vector3 home = pmo.pos;
+		for (int n = 0; n < sc.Size(); n++)
+		{
+			int bi = 0;
+			for (int i = 1; i < sc.Size(); i++) if (sc[i] > sc[bi]) bi = i;
+			double a = ang[bi], dist = dst[bi];
+			sc[bi] = -1;
+			Vector3 to = (mb.pos.xy + (cos(a), sin(a)) * dist, mb.pos.z);
+			if (!pmo.TeleportMove(to, false)) continue;
+			pmo.SetZ(pmo.floorz);
+			pmo.vel = (0, 0, 0);
+			pmo.A_SetAngle(pmo.AngleTo(mb));
+			if (!pmo.CheckSight(mb, SF_IGNOREVISIBILITY)) { pmo.TeleportMove(home, false); continue; }
+			Console.Printf("TTH t%d PLACE player %.0f from the miniboss, dir %.0f, sees it", level.maptime, pmo.Distance2D(mb), a);
+			return;
+		}
+		Console.Printf("TTH t%d PLACE failed for %.0f", level.maptime, want);
+	}
+	// mode 1: the arrival's charge (everyone held DORMANT: a still scene), tethers on, then off, then on, the fight's colour
+	// set by tth_retier; the corner square says which (green on, red off) so a frame can be told apart
+	void ModeAB(RSQMB_Handler h, RSQMB_Boss b, Actor mb, int k)
+	{
+		let fx = CVar.GetCVar('rsqmb_fx', players[consoleplayer]);
+		int rt = CVar.FindCVar('tth_retier').GetInt();
+		if (k == 1 && rt > 0) { bool ok = h.RetierBy(mb, rt, b, -1); Console.Printf("TTH t%d RETIER miniboss +%d asked %d", level.maptime, rt, ok); }
+		if (k == 50) { fx.SetBool(false); Console.Printf("TTH t%d FX OFF col %08X %s tier %d", level.maptime, b.col, mb.GetClassName(), h.TierOfMon(mb)); }
+		if (k == 75) { fx.SetBool(true); Console.Printf("TTH t%d FX ON col %08X %s tier %d", level.maptime, b.col, mb.GetClassName(), h.TierOfMon(mb)); }
+		if (k % 10 == 0) Report(h, b, players[consoleplayer].mo);
+	}
+	// mode 3: during the charge (all held still) the thralls are moved out along the room, west and east of the miniboss,
+	// so the links are long; then held there (DORMANT) for the frames
+	void ModeLong(RSQMB_Handler h, RSQMB_Boss b, Actor mb, int k)
+	{
+		static const double OX[] = { -620, 640, -360, 380, -200, 220 };
+		if (k == 3)
+		{
+			for (int i = 0; i < b.thr.Size() && i < 6; i++)
+			{
+				let th = b.thr[i];
+				if (!th) continue;
+				bool ok = false;
+				for (double f = 1.0; f > 0.3 && !ok; f -= 0.1)
+				{
+					Vector3 to = (mb.pos.x + OX[i] * f, mb.pos.y + 40 + i * 24, mb.pos.z);
+					ok = th.TeleportMove(to, false);
+					if (ok) th.SetZ(th.floorz);
+				}
+				Console.Printf("TTH t%d LONG thrall %d %s %s, link %.0f", level.maptime, i, th.GetClassName(), ok ? "moved" : "stays", th.Distance3D(mb));
+			}
+		}
+		if (k > 3 && k < 100) { mb.bDORMANT = true; for (int i = 0; i < b.thr.Size(); i++) if (b.thr[i]) { b.thr[i].bDORMANT = true; b.thr[i].vel = (0, 0, 0); } }
+		if (k % 10 == 0) Report(h, b, players[consoleplayer].mo);
+	}
+	void KillOne(Actor pmo, RSQMB_Boss b)
+	{
+		for (int i = 0; i < b.thr.Size(); i++)
+		{
+			let a = b.thr[i];
+			if (!a || a.health <= 0) continue;
+			Console.Printf("TTH t%d KILL thrall %d %s at (%.0f %.0f)", level.maptime, i, a.GetClassName(), a.pos.x, a.pos.y);
+			a.bINVULNERABLE = false; a.bBUDDHA = false;
+			a.DamageMobj(pmo, pmo, a.health + 100000, 'None', DMG_FORCED);
+			return;
+		}
+	}
+	void Tex()
+	{
+		static const String N[] = { "APLSA0", "APLSB0", "FIREA0", "FIREH0", "BFE1A0", "BFE1F0", "APBXA0", "APBXE0" };
+		String s = "";
+		for (int i = 0; i < N.Size(); i++)
+		{
+			TextureID tx = TexMan.CheckForTexture(N[i], TexMan.Type_Sprite);
+			Vector2 sz = tx.IsValid() ? TexMan.GetScaledSize(tx) : (0, 0);
+			s = s .. String.Format(" %s:%d(%dx%d)", N[i], tx.IsValid(), int(sz.x), int(sz.y));
+		}
+		Console.Printf("TTH TEX%s", s);
+	}
+	void Report(RSQMB_Handler h, RSQMB_Boss b, Actor pmo)
+	{
+		let p = h.fxp;
+		int living = 0;
+		for (int i = 0; i < b.thrState.Size(); i++) if (b.thrState[i] == RSQMB_Boss.ST_ALIVE) living++;
+		String s = String.Format("TTH t%d fxOn %d range %.0f dens %d dbg %d | pool %s made %d ok %d slots %d used %d shots %d | driver %d | dist %.0f living %d/%d invul %d col %08X %s tier %d",
+			level.maptime, h.fxOn, sqrt(h.fxRange2), h.fxDensity, h.debug, p ? "y" : "n", p ? p.made : -1, p ? p.ok : -1, p ? p.pool.Size() : -1, p ? p.used : -1,
+			p ? p.shots.Size() : -1, h.fxDriver != null, pmo.Distance3D(b.mb), living, b.thr.Size(), b.Invulnerable(), b.col, b.mb.GetClassName(), h.TierOfMon(b.mb));
+		Console.Printf("%s", s);
+		if (p && p.pool.Size())
+		{
+			for (int i = 0; i < p.pool.Size() && i < 62; i += 30)
+			{
+				let f = p.pool[i];
+				if (!f) { Console.Printf("TTH   slot %d null", i); continue; }
+				Console.Printf("TTH   slot %d key %X pos (%.0f %.0f %.0f) prev (%.0f %.0f %.0f) alpha %.2f scale %.2f tex %d '%s' scolor %08X style %d flags %X vtf %X sector %d",
+					i, f.key, f.Pos.x, f.Pos.y, f.Pos.z, f.Prev.x, f.Prev.y, f.Prev.z, f.Alpha, f.Scale.x, f.Texture.IsValid(), TexMan.GetName(f.Texture), f.scolor, f.GetRenderStyle(), f.Flags, f.VisualThinkerFlags,
+					f.CurSector ? f.CurSector.Index() : -1);
+			}
+		}
+	}
+	ui int lastLog;
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (level.maptime >= lastLog + 20) { lastLog = level.maptime; let pm = players[consoleplayer].mo; Console.Printf("TTH VIEW t%d view angle %.1f pitch %.1f pos (%.0f %.0f %.0f) | player angle %.1f pos (%.0f %.0f)", level.maptime, e.ViewAngle, e.ViewPitch, e.ViewPos.x, e.ViewPos.y, e.ViewPos.z, pm ? pm.angle : 0, pm ? pm.pos.x : 0, pm ? pm.pos.y : 0); }
+		let fc = CVar.GetCVar('rsqmb_fx', players[consoleplayer]);
+		Screen.Clear(0, 0, 24, 24, fc && fc.GetBool() ? Color(255, 0, 255, 0) : Color(255, 255, 0, 0));
+		Screen.DrawText(bigfont, Font.CR_GOLD, 40, 40, String.Format("t%d", level.maptime), DTA_VirtualWidth, 320, DTA_VirtualHeight, 200);
+	}
+}

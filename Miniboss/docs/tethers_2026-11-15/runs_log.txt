@@ -1,0 +1,44 @@
+RSQ Miniboss tethers, rig runs 2026-11-15 (TEST ONLY; rig only, not headset-confirmed).
+Rig: QuestZDoom qzd17.3 (9afc750), OpenXR mobile path (vr_mode 15), llvmpipe GLES 3.2. Owner's full order (full_monA.sh with Q = this branch),
+his saved ini (monA/owner_base.ini), -skill 6, BD22 VR Reloaded 2.0.4x, Debug Log on (rsqmb_debug 1). Call-in: netevent rsqmb_fill 1000, rsqmb_callin 1.
+Probe: probe/ (tth_mode 0 close/far/kill/life, 1 fx off-on A/B, 2 live fight without notarget, 3 thralls moved out to make long links).
+
+== the IWAD sprites the pool draws, all found on this order (so UseSprites() is true; no particle fallback):
+TTH TEX APLSA0:1(15x15) APLSB0:1(13x13) FIREA0:1(36x30) FIREH0:1(16x17) BFE1A0:1(64x50) BFE1F0:1(102x1) APBXA0:1(23x23) APBXE0:1(7x7)
+
+== BEFORE (main 1f8d9c9), run tth5: the pool draws (3 links x 30 beads + 6 flames), AddStencil (12), alpha 0.3, the fight's colour:
+TTH t206 fxOn 1 range 4000 dens 0 dbg 1 | pool y made 1 ok 1 slots 96 used 96 shots 0 | driver 1 | dist 475 living 3/3 invul 1 col FF3CDC46
+TTH   slot 0 key 200 pos (50 1234 59) prev (50 1234 59) alpha 0.30 scale 1.00 tex 1 'APLSB0' scolor FF3CDC46 style 12 flags 1 vtf 0 sector 3
+RSQMB cost: 0.1142 ms/tic script over 711 tics, particles 0.0/tic, sprites 49.4/tic shown (peak 96, pool 96, density 0), 18.7 moves/tic, 96 spawned
+
+== BEFORE, run longOld (mode 3): links of 375-645 units drawn with 30 beads each, 12.5-21.5 units apart (a row of dots):
+RSQMB MINIBOSS FIGHT LANDED: boss 0 RS_GreenImp hp 56, 3 thralls, 3 segments of 19, lives 3, map count 1
+TTH t151 LONG thrall 0 RS_CommonZombie moved, link 624
+TTH t151 LONG thrall 1 RS_CommonZombie moved, link 645
+TTH t151 LONG thrall 2 RS_CommonZombie moved, link 375
+
+== AFTER, run longNew (mode 3), same scene: a bead every 9 units, up to the link's share of the cap ((280 - flames - 64) / 4 links = 54):
+RSQMB MINIBOSS FIGHT LANDED: boss 0 RS_GreenImp hp 56, 4 thralls, 4 segments of 14, lives 3, map count 1
+TTH t151 LONG thrall 0 RS_CommonZombie moved, link 623
+TTH t151 LONG thrall 1 RS_CommonZombie moved, link 644
+TTH t151 LONG thrall 2 RS_CommonZombie moved, link 372
+TTH t151 LONG thrall 3 RS_CommonZombie moved, link 397
+TTH t208 fxOn 1 range 4000 dens 0 dbg 1 | pool y made 1 ok 1 slots 214 used 214 shots 0 | driver 1 | dist 475 living 4/4 invul 1 col FF3CDC46 RS_GreenImp tier 2
+TTH t218 fxOn 1 range 4000 dens 0 dbg 1 | pool y made 1 ok 1 slots 214 used 214 shots 0 | driver 1 | dist 475 living 4/4 invul 1 col FF3CDC46 RS_GreenImp tier 2
+
+== AFTER, run fixA (mode 0): called in, 5 thralls; thralls killed (links burst); a life lost (flames); cost with Debug Log:
+RSQMB MINIBOSS FIGHT LANDED: boss 0 RS_GreenImp hp 56, 5 thralls, 5 segments of 11, lives 3, map count 1
+RSQMB thrall 2 of boss 0 killed: power colour 40F040, segments left 5, window open, credits 0
+RSQMB thrall 3 of boss 0 killed: power colour B050F0, segments left 5, window open, credits 1
+TTH t532 KILL thrall 0 RS_CommonZombie at (80 1173)
+RSQMB thrall 0 of boss 0 killed: power colour 20A030, segments left 5, window open, credits 1
+TTH t622 LIFE: RS_CyanImp2 hp 936 -> 1
+RSQMB life lost: boss 0 lives 2 hp 936 invuln 175 tics, tier +1 asked
+RSQMB cost: 0.1445 ms/tic script over 716 tics, particles 0.0/tic, sprites 172.2/tic shown (peak 246, pool 246, density 0), 21.8 moves/tic, 246 spawned
+RSQMB cost: 0.1491 ms/tic script over 288 tics, particles 0.0/tic, sprites 215.0/tic shown (peak 222, pool 246, density 0), 16.2 moves/tic, 0 spawned
+
+== Other runs (frames looked at, not kept): tth1-tth4 (camera aiming), tthB (miniboss retiered to Black 505058 then White: both draw),
+   abA (Abyss 46146E, tethers off/on during the charge: a purple chain), tthL (+gl_lights 1 +gl_bloom 1 as in his ini: draws),
+   tthS (save at t~330 and load mid-fight: pool adopted, 156 slots, links drawn on), live1 (live fight, notarget off: long links as dots),
+   live2 (same, after: solid), og1 (the original Minibosses! v0.1.1 built from Miniboss/original, a miniboss made by its handler's own steps).
+No script error and no VM abort from our packs in any run (the only script errors are BD22 VoxelPack's own four voxeldef lines).

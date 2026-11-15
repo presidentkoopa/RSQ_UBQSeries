@@ -1,0 +1,3 @@
+server int tth_retier = 0;
+server int tth_white = 0;
+server int tth_mode = 0;

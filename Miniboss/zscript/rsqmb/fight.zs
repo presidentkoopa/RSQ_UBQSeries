@@ -486,8 +486,7 @@ extend class RSQMB_Handler
 	{
 		if (!fxOn || !b || !th || !b.mb || !UseSprites()) return;
 		int cap = RSQMB_FxPool.CAP[fxDensity];
-		int nb = RSQMB_FxPool.BEADS;
-		for (int j = 0; j < nb; j++) fxp.Shot(BeadPos(b.mb, th, j, nb), RSQMB_FxPool.SQ_BEADX, b.col, (1, 1), 0.3, cap);
+		LinkBurst(b, th, cap);
 	}
 
 	// ---- the grey Xs and "GUARD!" (items.zs RSQMB_Ward, a blow on the shielded miniboss) ------------------------------------
