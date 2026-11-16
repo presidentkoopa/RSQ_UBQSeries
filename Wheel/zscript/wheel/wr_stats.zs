@@ -311,6 +311,39 @@ static play int, int, int Magazine(Weapon w)
 		return SRC_UNKNOWN, 0.0;
 	}
 
+	// THE SERIES' OWN WEAPON CONDITION (D3, 2026-11-16): RSQ Gun Cards' (cnd.zs), asked by name -- RSQGC_Service
+	// GetInt("cnd.get", objectArg = the gun): 0-100, -1 while it is off or for a thing that is not a gun. RS Weapon's
+	// Condition above is a field this engine cannot read (wr_Field: no reflection on QuestZDoom 17.3), so on the Quest
+	// this is the condition the sheet can show. -1: none.
+	static play int GunCardsCondition(Weapon w)
+	{
+		if (!w) return -1;
+		let it = ServiceIterator.Find("RSQGC_Service");
+		Service s;
+		while (s = it.Next())
+		{
+			if (s.GetClassName() != 'RSQGC_Service') continue;
+			return s.GetInt("cnd.get", "", 0, 0, w);
+		}
+		return -1;
+	}
+
+	// A GUN'S FIRE MODE (D3, 2026-11-16), as RSQ Gun Cards reads it (card.zs ModeOf): any service whose class name has
+	// "GunModeService" in it answers GetString("firemode", objectArg = the gun) with a short word ("AUTO", "BURST"), or
+	// "" for a gun it does not know. GNRC Reloaded's rifle answers (gnrc/rifle.zs RSQGW_GunModeService). "": none.
+	static play String FireMode(Weapon w)
+	{
+		if (!w) return "";
+		let it = ServiceIterator.Find("GunModeService");
+		Service s;
+		while (s = it.Next())
+		{
+			String m = s.GetString("firemode", "", 0, 0, w);
+			if (m != "") return m.MakeUpper();
+		}
+		return "";
+	}
+
 	//==========================================================================
 	// DPS, derived rather than resolved.
 	//

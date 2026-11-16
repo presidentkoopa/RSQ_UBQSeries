@@ -2600,6 +2600,23 @@ class wr_Rig : EventHandler
 
 			setSheetBar(pct, ccol, true);
 		}
+		else
+		{
+			// D3 (11-16): RSQ Gun Cards' Weapon Condition, when it is on (the series' own; RS Weapon's is not readable on
+			// QuestZDoom). Its own bands: worn below 50 (a backfire chance starts there), badly below 20. No BACKFIRE word:
+			// that edge is RS Weapon's, and Gun Cards' card says its own.
+			int gcc = wr_Stats.GunCardsCondition(w);
+			if (gcc >= 0)
+			{
+				color gcol = (gcc < 20) ? color(SHEET_LOCK) : (gcc < 50) ? color(SHEET_HOT) : color(SHEET_MEAS);
+				sheetRow(String.Format("CONDITION %d%%", gcc), gcol);
+				setSheetBar(gcc, gcol, true);
+			}
+		}
+
+		// D3 (11-16): the gun's fire mode, from any weapon set that says it by name (GNRC Reloaded's rifle: AUTO / BURST)
+		String fmode = wr_Stats.FireMode(w);
+		if (fmode != "") sheetRow("FIRE MODE " .. fmode, SHEET_TEXT);
 
 		// DPS, masked with damage rather than independently -- see
 		// wr_Stats.Dps.
