@@ -187,6 +187,7 @@ The owner: "we need to rethink the EX tier boss arrival, maybe conceptually it i
     `mockups/weak_points/weak_points_real.gif`).
   - After the window: GUARD for a time, with the Boss fight's shield.
   - A break staggers it ("let's talk about this more").
+- **Every Big Boss has its arrival card** (owner 12:13): the WEAK POINT card with its sketch and its weak points circled.
 - **Personalities:** each EX boss gets its own; a dossier of all 19 EX / Plus bosses (attacks, tells, weak-point spots,
   a natural window trigger) is being written to go through with the owner.
 - **Open:** what opens the window (the "something"); its name; 50% of the current life bar or of all its health; how
@@ -256,3 +257,29 @@ stay dead. His own kit gives three lives as three bodies.
   shadow with the wraith behind it (the shadow walks at you through walls; break the wraith's weak points and the
   shadow falls with it, as in his original).
 - Mockup (life 1): `mockups/big_boss_blackknight/blackknight_exposed_real.gif`.
+
+## 14. Big Boss #4: the thing from the bog (proposed 2026-11-16 12:1x; not yet approved, not built)
+`RS_BlackFatsoEX` (18,000 before boosts; dossier 7). Personality: a swamp god with indigestion. Resists plasma.
+- **Arrival:** the WEAK POINT card circles his belly, head and shoulder.
+- **What opens EXPOSED!:** his Burp wind-up (GULP... GULP..., the belly glows green: BDEM H/I frames).
+- **Weak points:** BELLY!, head, shoulder. **Break the belly and the burp BACKFIREs** on him (he chokes on his own
+  acid); all three: PERFECT!. Miss: the burp comes out at you as crawling blobs and acid puddles.
+- **The challenge during EXPOSED!:** BURP BLOBS! crawl at you and leave acid puddles you must step around.
+- **GUARD:** his swamp spawn (Mancubus-family thralls) are the wave.
+- **Lives:** 1 the weaving orb fans and bombs; 2 adds ground splashes and the Burp; 3 the swamp rises: puddles spread
+  and merge, he's faster.
+- Mockup: `mockups/big_boss_bog/bog_exposed_real.gif`.
+
+## 15. Big Boss #5: BENELLUS, GOD OF SHOTGUNS, ANGRIER (proposed 2026-11-16 12:1x; not yet approved, not built)
+`RS_WhiteSGEX` (12,537 before boosts; dossier 9). Floating, winged. Personality: a deity whose only sacrament is
+buckshot.
+- **Arrival:** the WEAK POINT card circles his face, and the two ghost guns that will appear beside you.
+- **What opens EXPOSED!:** his ShotgunRounded: a spark charge (BEHOLD!), then **two ghost shotguns appear either side
+  of YOU** and fire after a beat (his own move).
+- **Weak points:** the two GHOST GUN!s beside you (turn your head and shoot left and right, a VR move) and his face.
+  Break both guns before they fire: UNLOADED!; all three: PERFECT!.
+- **The challenge during EXPOSED!:** his two Shotgun Shrines (800 HP turrets) spray sparks at you.
+- **GUARD:** the Shrines are the wave: SHOOT THE SHRINES! to drop the shield. He teleports on pain.
+- **Lives:** 1 focused blasts and the wild spray; 2 adds his bouncing shotgun mines (Gifts); 3 ANGRIER: four ghost
+  guns, two of them behind you. On death he rains shotguns.
+- Mockup: `mockups/big_boss_benellus/benellus_exposed_real.gif`.
