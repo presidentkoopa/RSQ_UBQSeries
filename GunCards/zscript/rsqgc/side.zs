@@ -242,7 +242,10 @@ class RSQGC_SideCard play
 			Panel(panelCol);
 			return;
 		}
-		// WEAPON: GC4 Brutal Doom's grenades (not the mines); GC7 this gun's kills this level, the count in red
+		// WEAPON: the gun's fire mode when its pack tells (RSQGC_GunCard.ModeOf, by name); GC4 Brutal Doom's grenades (not the
+		// mines); GC7 this gun's kills this level, the count in red
+		string mode = RSQGC_GunCard.ModeOf(w);
+		if (mode != "") Pair("MODE", mode, C_GREY, C_WHITE);
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0) Pair("GRENADES", String.Format("%d", gren), C_GREY, gren > 0 ? C_ORANGE : C_DARK);
 		if (gc) Pair("KILLS", String.Format("%d", gc.KillsWith(w)), C_GREY, C_RED);

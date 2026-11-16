@@ -520,10 +520,26 @@ class RSQGC_GunCard : EventHandler
 		return n;
 	}
 
+	// A GUN'S FIRE MODE, by name (owner 2026-11-16, GNRC Reloaded's rifle): any service whose class name has
+	// "GunModeService" in it answers GetString("firemode", objectArg = the gun) with a short word ("AUTO", "BURST"), or ""
+	// for a gun it does not know. "" when nobody answers: the card shows no mode row.
+	static string ModeOf(Weapon w)
+	{
+		if (!w) return "";
+		let it = ServiceIterator.Find("GunModeService");
+		Service s;
+		while (s = it.Next())
+		{
+			string m = s.GetString("firemode", "", 0, 0, w);
+			if (m != "") return m.MakeUpper();
+		}
+		return "";
+	}
+
 	// the facts as one string: when it changes the card is laid out again
 	static string Signature(PlayerPawn pmo, Weapon w, int kind, int style)
 	{
-		string s = String.Format("%d %d %s %d %d", kind, style, w ? w.GetClassName() : 'none', Loaded(w), Reserve(w));
+		string s = String.Format("%d %d %s %d %d %s", kind, style, w ? w.GetClassName() : 'none', Loaded(w), Reserve(w), ModeOf(w));
 		let e = RSQGC_Bonsai.Entry(pmo, w);
 		if (e && e.lvl >= 0)
 		{

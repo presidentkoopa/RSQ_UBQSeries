@@ -77,6 +77,8 @@ class RSQGC_WorldCard play
 		Array<string> txt; Array<int> col;
 		txt.Push((reload ? "RELOAD" : RSQGC_GunCard.HasMagazine(w) ? "MAGAZINE" : "AMMO") .. (reserve >= 0 ? "        RESERVE" : "")); col.Push(reload ? 0xFF5A46 : 0xC8C8C8);
 		if (gc.PlusNow(hand) > 0) { txt.Push(String.Format("PICKED UP +%d", gc.PlusNow(hand))); col.Push(0x80E040); }
+		string mode = RSQGC_GunCard.ModeOf(w);   // the gun's fire mode when its pack tells (card.zs ModeOf, by name)
+		if (mode != "") { txt.Push("MODE  " .. mode); col.Push(0xF0F0F0); }
 		if (shows == 2)
 		{
 			// BOTH ON ONE CARD (as side.zs Build): health (red at 25 or less) and armour, the map's keys, grenades
