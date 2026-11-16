@@ -226,6 +226,20 @@ class RSQGC_SideCard play
 	}
 	static int ci(string n, int f) { let c = CVar.FindCVar(n); return c ? c.GetInt() : f; }
 
+	// WEAPON CONDITION (cnd.zs, off by default): "CND", a bar of 5 in the band's colour, the number right; on the next
+	// small line (row -1) or on the row given. Nothing while Weapon Condition or Condition on Card is off.
+	private void CndRow(Weapon w, int row)
+	{
+		int cnd = RSQGC_Cnd.CardValue(w);
+		if (cnd < 0) return;
+		if (row < 0) row = Line();
+		if (row < 0) return;
+		int col = RSQGC_Cnd.Colour(cnd);
+		int bars = (RSQGC_SideStates.SMALL_UNITS - SmallWidth("CND ") - SmallWidth("100") - 1) / 2;   // the same length whatever the number
+		SText(row, "CND " .. RSQGC_Cnd.Bar(cnd, bars), 0, col);
+		SRight(row, String.Format("%d", cnd), col);
+	}
+
 	// ---- the three cards -------------------------------------------------------------------------------------
 	void Build(PlayerPawn pmo, int hnd, Weapon w, int panelCol, RSQGC_GunCard gc, int shows)
 	{
@@ -240,6 +254,7 @@ class RSQGC_SideCard play
 			SText(RSQGC_SideStates.R_LINE2, String.Format("%d", clamp(hp, 0, 999)), 3, hp <= 25 ? C_RED : C_WHITE);
 			SRight(RSQGC_SideStates.R_LINE2, String.Format("A %d", RSQGC_GunCard.ArmorOf(pmo)), C_BLUE);
 			KeyRow(pmo, RSQGC_SideStates.R_KEYS3, RSQGC_SideStates.R_KEYS3TEXT, gc);
+			CndRow(w, RSQGC_SideStates.R_GB0);   // Weapon Condition: under the keys
 			Panel(panelCol);
 			return;
 		}
@@ -251,18 +266,7 @@ class RSQGC_SideCard play
 		if (gren >= 0) Pair("GRENADES", String.Format("%d", gren), C_GREY, gren > 0 ? C_ORANGE : C_DARK);
 		if (gc) Pair("KILLS", String.Format("%d", gc.KillsWith(w)), C_GREY, C_RED);
 		// WEAPON CONDITION (cnd.zs, off by default): CND, a bar in the band's colour, the number
-		int cnd = RSQGC_Cnd.CardValue(w);
-		if (cnd >= 0)
-		{
-			int row = Line();
-			if (row >= 0)
-			{
-				string num = String.Format("%d", cnd);
-				int bars = (RSQGC_SideStates.SMALL_UNITS - SmallWidth("CND ") - SmallWidth("100") - 1) / 2;   // the same length whatever the number
-				SText(row, "CND " .. RSQGC_Cnd.Bar(cnd, bars), 0, RSQGC_Cnd.Colour(cnd));
-				SRight(row, num, RSQGC_Cnd.Colour(cnd));
-			}
-		}
+		CndRow(w, -1);
 		int gold = RSQGC_GunCard.Gold(pmo, hnd);
 		if (gold >= 0) Pair("GOLD", String.Format("%d", gold), C_GREY, C_GOLD);
 		let e = ci("rsqgc_watch_bonsai", 0) ? RSQGC_Bonsai.Entry(pmo, w) : null;

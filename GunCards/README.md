@@ -272,6 +272,48 @@ for the hand). RSQ Distance Grab gives no weapon of its own.
 
 ---
 
+## Weapon Condition (off by default)
+
+*design/WEAPON_CONDITION.md, owner 2026-11-16. Rig only, not headset-confirmed (design/condition/rig/).*
+
+Turn on **Weapon Condition** and every gun you carry keeps a condition from 0 to 100, shown as a **CND** row on its watch
+card: the word, a bar of five, the number, in the band's colour (green 90+, lime 70+, yellow 50+, orange 30+, red under
+30). It works for every gun of every weapon set (BD22 VR Reloaded, GNRC, WoS, any mod), with or without LegenDoom: it
+knows a gun by its class (BD22 VR's off-hand copy of a gun is a gun of its own).
+
+- **What wears a gun:** only a **big hit**, one blow of more than 20 damage to you (**Big Hit Over**) takes **Wear per Big
+  Hit** (3) off the gun in each hand. Shooting never wears a gun.
+- **What a worn gun does** (the owner's curve, five profiles by the gun's kind: Workhorse for pistols and rifles, Bruiser
+  for shotguns and chainguns, Precision for revolvers, rails and snipers, Overheat for plasma, BFG and flame, Volatile for
+  rockets and grenade launchers): it loses damage and accuracy and fires slower down to 30; **under 30 it turns wild**:
+  more damage (+20 % to +80 % on a Workhorse gun), faster, its spread wider still, and it can **backfire** (a small chip,
+  1 to 5) or **misfire** (4 to 12; an Overheat gun's overload 8 to 20) on you, shown as a toast low in the view. Neither
+  kills you by itself.
+- **The damage is applied on hit,** to whatever the gun fired: bullets, pellets, rockets, plasma and their blasts.
+- **Fire Rate Follows Condition** (On): where a gun's frames allow it, its fire sequence is stretched or shortened. A
+  frame of one tic cannot be shortened, so a fast gun such as BD22's Rifle gets slower when worn but not faster when wild.
+- **Accuracy** needs the gun's own spread: a weapon set asks Gun Cards by name and widens it (BD22 VR Reloaded 2.0.4z
+  does). A gun whose set does not ask keeps its spread and gets the rest.
+- **Repair:** RSQ VisualRewards' **steel bits** (Kill Rewards) add 1 to each gun in your hands; the Boss kiosk (RSQ
+  Miniboss) repairs every gun you carry for gold.
+- **Lose the Gun at 0** (Off): a gun worn to 0 breaks and is taken. Off, it stays at its worst until repaired.
+
+| Measured on the rig (BD22 Rifle, Workhorse, 20 a bullet) | 100 | 75 | 55 | 45 | 25 | 5 |
+|---|---|---|---|---|---|---|
+| Damage a bullet on the target | 20 | 18 | | 14 | 24 | 36 |
+| Spread (degrees from the shots' mean direction) | 0.74 | | 0.87 | | 1.03 | |
+| Fire cycle (tics) | 4 | | 6 | | 4 | |
+
+With Weapon Condition off the same run gives 20 at every condition, no wear, no steel bits and no REPAIR.
+
+**For weapon sets (asked by name, nothing links):** `ServiceIterator.Find("RSQGC_Service")`, then GetDouble `"cnd.spread"`
+(objectArg the gun: multiply your own spread by it), GetInt `"cnd.pellets"` / GetDouble `"cnd.pelletmul"` (pellets to add
+/ multiply under 30, the hook for later), GetInt `"cnd.get"`, `"cnd.on"`; for repairs `"cnd.repair"`, `"cnd.worn"`,
+`"cnd.worn.guns"`, `"cnd.fix"`. The list is at the end of `zscript/rsqgc/cnd.zs`. Do not scale damage again: the layer
+does it on hit.
+
+---
+
 ## Draw in the World
 
 **Draw in the World** (off) draws the same cards as flat pieces in the world at your hand, every tic, facing your
@@ -356,7 +398,8 @@ without it, the engine stops at startup.
 | Behaviour | Draw in the World (Off) · Tilt to Your Eyes (Off) · Hide at Your Eye (Off) |
 | Placement | Small Card Up (0; -100 to 100) · Small Card Side (0; -100 to 100) · Small Card In (0; -12 to 12, steps of 2) · Watch Card Up (0; -30 to 30) · Watch Card Side (0; -30 to 30) · World Card Size (1.40; 0.50 to 2.50) |
 | Advanced: This Gun's Small Card | Edit Spot For (Main Hand Gun; Off-Hand Gun) · This gun / Off-hand gun: (its name; its own spot, its gun's spot or the Placement spot) · Up (pitch) · Side (yaw) · In (cm) · Reset This Gun's Card · Reset All Saved Spots |
-| Test and Debug | Panel (0 = per gun) (0; 0 to 18) · Low Below (share) (0.25) · Fade (tics) (4) · Look: Reach (m) (0.70) · Look: Cone (deg) (30) · Watch Check Shows (Once It Is Held; As the Twist Starts) · Stays After (tics) (35) · Tilt: Most (deg) (20) · Eye Reach (m) (0.30) · Pickup +N (tics) (52) · Hand Numbers on Screen (Off) · Debug Log (Off) |
+| Weapon Condition | Weapon Condition (Off) · Big Hit Over (20; 5 to 100) · Wear per Big Hit (3; 1 to 20) · Fire Rate Follows Condition (On) · Lose the Gun at 0 (Off) · Condition on Card (On); the rows under it are greyed while it is off |
+| Test and Debug | Panel (0 = per gun) (0; 0 to 18) · Low Below (share) (0.25) · Fade (tics) (4) · Look: Reach (m) (0.70) · Look: Cone (deg) (30) · Watch Check Shows (Once It Is Held; As the Twist Starts) · Stays After (tics) (35) · Tilt: Most (deg) (20) · Eye Reach (m) (0.30) · Pickup +N (tics) (52) · Hand Numbers on Screen (Off) · Debug Log (Off) · Condition Log (Off; Hits and Repairs, And Every Shot) |
 
 - The Advanced rows are greyed when the hand Edit Spot For picks holds nothing with a small card (no gun with ammo).
 - **Watch Card Side** is greyed unless Draw in the World is on: it moves only the world watch card. The hand-drawn

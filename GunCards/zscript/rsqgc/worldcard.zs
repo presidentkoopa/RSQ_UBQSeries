@@ -85,6 +85,8 @@ class RSQGC_WorldCard play
 			int hp = max(pmo.Health, 0);
 			txt.Push(String.Format("HEALTH %d   ARMOUR %d", clamp(hp, 0, 999), clamp(RSQGC_GunCard.ArmorOf(pmo), 0, 999))); col.Push(hp <= 25 ? 0xFF5A46 : 0xF0F0F0);
 			KeyRows(pmo, gc, txt, col);
+			int bc = RSQGC_Cnd.CardValue(w);   // Weapon Condition (cnd.zs)
+			if (bc >= 0) { txt.Push(String.Format("CND %s %d", RSQGC_Cnd.Bar(bc, 10), bc)); col.Push(RSQGC_Cnd.Colour(bc)); }
 			SetRows(txt, col);
 			return;
 		}

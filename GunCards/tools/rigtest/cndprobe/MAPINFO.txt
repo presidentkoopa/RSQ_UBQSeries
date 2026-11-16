@@ -1,0 +1,2 @@
+// TEST ONLY (rig, never shipped): the Weapon Condition probe
+GameInfo { AddEventHandlers = "CNP_Probe" }

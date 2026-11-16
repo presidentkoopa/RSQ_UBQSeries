@@ -1,0 +1,124 @@
+# Weapon Condition: rig evidence, 2026-11-16 (rig only, not headset-confirmed)
+# The owner's full order (doom2 -> LegenDoom 3.0 -> brutal22test6 -> BD_VoxelPack -> BD22 VR Reloaded 2.0.4z -> XMVE ... -> every
+# RSQ pk3, this lane's GunCards / VisualRewards / Score / Miniboss built from the commit), his ini (rig/work/monA/owner_base.ini),
+# -skill 6 (Black Metal), MAP01, the QZD 17.3 Linux rig with its faked OpenXR headset and controllers (qz_rhand / qz_rtrigger).
+# Probe: GunCards/tools/rigtest/cndprobe (TEST ONLY). Script errors from our packs: none (only BD_VoxelPack's own 4 voxeldef lines).
+# The BD22 Rifle in the main hand, its trigger held by the faked controller; a shootable post 112 units down the hand's ray.
+
+## cnd_m1 (Weapon Condition ON): the bands on hit (the Rifle is a Workhorse gun; BD22's Rifle bullet does 20)
+C_PHASE t40 Rifle set to condition 100 (Weapon Condition 1)
+C_SUM t130 Rifle at condition 100 (book 100): 6 hits on the post, 120 damage, mean 20.0; 6 tics with a hit
+C_PHASE t130 Rifle set to condition 75 (Weapon Condition 1)
+C_SUM t220 Rifle at condition 75 (book 75): 10 hits on the post, 180 damage, mean 18.0; 10 tics with a hit
+C_PHASE t220 Rifle set to condition 45 (Weapon Condition 1)
+C_SUM t310 Rifle at condition 45 (book 45): 5 hits on the post, 70 damage, mean 14.0; 5 tics with a hit
+C_PHASE t310 Rifle set to condition 25 (Weapon Condition 1)
+C_SUM t400 Rifle at condition 25 (book 25): 8 hits on the post, 192 damage, mean 24.0; 8 tics with a hit
+C_PHASE t400 Rifle set to condition 5 (Weapon Condition 1)
+C_SUM t490 Rifle at condition 5 (book 5): 6 hits on the post, 216 damage, mean 36.0; 6 tics with a hit
+# one hit of each band, as the layer logged it:
+RSQGC cnd t145: hit CNP_Post with Rifle (cnd 75, Workhorse, band 70): x0.90 20 -> 18 (HitPuffDM)
+RSQGC cnd t226: hit CNP_Post with Rifle (cnd 45, Workhorse, band 40): x0.70 20 -> 14 (HitPuffDM)
+RSQGC cnd t316: hit CNP_Post with Rifle (cnd 25, Workhorse, band 20): x1.20 20 -> 24 (HitPuffDM)
+RSQGC cnd t416: hit CNP_Post with Rifle (cnd 5, Workhorse, band 0): x1.80 20 -> 36 (HitPuff)
+
+## cnd_m1: backfire and misfire (a natural one at 5, then forced by rsqgc_cnd_force) -> toasts (rig_CND_backfire_misfire_toasts.png)
+RSQGC cnd t376: BACKFIRE! main hand Rifle (cnd 25, Workhorse): -4 health (now 494), toast shown
+RSQGC cnd t412: BACKFIRE! main hand Rifle (cnd 5, Workhorse): -2 health (now 491), toast shown
+RSQGC cnd t465: BACKFIRE! main hand Rifle (cnd 5, Workhorse): -4 health (now 485), toast shown
+C_FORCE t492 backfire on the next shot at 25 (health 485)
+RSQGC cnd t500: BACKFIRE! main hand Rifle (cnd 25, Workhorse): -2 health (now 482), toast shown
+C_FORCE t530 misfire on the next shot at 25 (health 482)
+RSQGC cnd t536: MISFIRE! main hand Rifle (cnd 25, Workhorse): -7 health (now 472), toast shown
+
+## cnd_m1: big hits (a monster blow of 30 -> 45 on Black Metal: wears; of 12 -> 18: does not)
+C_BIGHIT t600 Rifle at 100; a blow of 30 from ImpSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt
+RSQGC cnd t600: big hit 45 (over 20) from ImpSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt on player 0: main Rifle 100 -> 97;
+C_PLAYERHIT t600 45 from ImpSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt (health 427)
+C_BIGHIT t600 after: Rifle 97
+C_PLAYERHIT t600 18 from ImpSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt (health 409)
+C_SMALLHIT t600 a blow of 12: Rifle 97 (no wear)
+
+## cnd_m1: steel bits (four kills beside the player, Steel Share 100 for the test) repair the gun in hand +1 a bit
+C_STEEL t640 Shot_Gun set to 50; the kills beside the player
+RSQ KR steel t640: SuperImp threw 5 steel bit(s), +1 condition each to the guns in hand
+C_STEEL t640 SuperImp killed 141 away
+RSQ KR steel t640: RifleZombie threw 3 steel bit(s), +1 condition each to the guns in hand
+C_STEEL t640 RifleZombie killed 64 away
+RSQ KR steel t640: SniperZombie threw 4 steel bit(s), +1 condition each to the guns in hand
+C_STEEL t640 SniperZombie killed 64 away
+RSQ KR steel t640: PistolZombiePatch threw 3 steel bit(s), +1 condition each to the guns in hand
+C_STEEL t640 PistolZombiePatch killed 64 away
+RSQGC cnd t646: repair +1 (steel bit): Shot_Gun 50 -> 51;
+RSQ KR steel t646: a steel bit picked up by player 0: +1 to 1 gun(s) in hand
+RSQGC cnd t646: repair +1 (steel bit): Shot_Gun 51 -> 52;
+RSQ KR steel t646: a steel bit picked up by player 0: +1 to 1 gun(s) in hand
+RSQGC cnd t648: repair +1 (steel bit): Shot_Gun 52 -> 53;
+RSQ KR steel t648: a steel bit picked up by player 0: +1 to 1 gun(s) in hand
+RSQGC cnd t648: repair +1 (steel bit): Shot_Gun 53 -> 54;
+RSQ KR steel t648: a steel bit picked up by player 0: +1 to 1 gun(s) in hand
+RSQGC cnd t648: repair +1 (steel bit): Shot_Gun 54 -> 55;
+RSQ KR steel t648: a steel bit picked up by player 0: +1 to 1 gun(s) in hand
+RSQGC cnd t652: repair +1 (steel bit): Shot_Gun 55 -> 56;
+RSQ KR steel t652: a steel bit picked up by player 0: +1 to 1 gun(s) in hand
+C_STEEL t720 after the bits flew in: Shot_Gun 56 (weapon in hand Shot_Gun)
+
+## cnd_m1: the Boss kiosk's REPAIR (rig_KIOSK_repair_button_and_toast.png: the REPAIR button left of LUCKY, then the toast)
+RSQMB kiosk t870: dropped at -91 856 for a tier 2 Boss (RSQMB_KWordSpot); bank 5 G; offers [ROCKET LAUNCHER COMMON TRICKY 150 G] [CHAINSAW EPIC CONVINCING 900 G] [PISTOL COMMON TRAILBLAZING 150 G]
+C_KIOSK t870 kiosk down; bank 400; Shot_Gun 40, RSQ_Off_Shot_Gun 60; worn points 103 on 3 gun(s)
+RSQMB kiosk t939: opened (player 0 stood still 2.0 s within 2.5 m)
+C_KIOSK t960 open 1; REPAIR shows 103 points for 103 G; bank 400
+C_KIOSK t975 the trigger on REPAIR (network event, as the trigger sends)
+RSQGC cnd t979: full repair (kiosk): 103 points: RSQ_Off_Shot_Gun 60 -> 100; Shot_Gun 40 -> 100; Rifle 97 -> 100;
+RSQMB kiosk t979: REPAIRED with the main hand: 103 points on 3 gun(s) for 103 G (bank 400 -> 297); 103 points restored
+C_KIOSK t985 after: bank 297; Shot_Gun 100, RSQ_Off_Shot_Gun 100; worn points 0
+
+## cnd_m2 (Weapon Condition OFF, the same probe): the damage as made, no wear, no steel bits, no REPAIR, no RSQGC line
+C_SUM t130 Rifle at condition 100 (book 100): 10 hits on the post, 200 damage, mean 20.0; 10 tics with a hit; spread: 69 puffs 8.54 deg off the aim on average (most 11.01)
+C_SUM t220 Rifle at condition 75 (book 75): 8 hits on the post, 160 damage, mean 20.0; 8 tics with a hit; spread: 65 puffs 8.55 deg off the aim on average (most 10.31)
+C_SUM t310 Rifle at condition 45 (book 45): 4 hits on the post, 80 damage, mean 20.0; 4 tics with a hit; spread: 67 puffs 8.56 deg off the aim on average (most 11.77)
+C_SUM t400 Rifle at condition 25 (book 25): 6 hits on the post, 120 damage, mean 20.0; 6 tics with a hit; spread: 69 puffs 8.51 deg off the aim on average (most 11.02)
+C_SUM t490 Rifle at condition 5 (book 5): 3 hits on the post, 60 damage, mean 20.0; 3 tics with a hit; spread: 66 puffs 8.34 deg off the aim on average (most 9.98)
+C_BIGHIT t600 Rifle at 100; a blow of 30 from ImpSpawner@05_XMVE_MonsterExpansion_TUD.pk3@decorate.txt
+C_BIGHIT t600 after: Rifle 100
+C_SMALLHIT t600 a blow of 12: Rifle 100 (no wear)
+C_STEEL t720 after the bits flew in: Shot_Gun 50 (weapon in hand Shot_Gun)
+C_CARD t725 Shot_Gun at 25 (card value -1)
+C_CARD t800 Shot_Gun at 72 (card value -1)
+C_KIOSK t870 kiosk down; bank 400; Shot_Gun 40, RSQ_Off_Shot_Gun 60; worn points 0 on 0 gun(s)
+C_KIOSK t960 open 1; REPAIR shows 0 points for 0 G; bank 400
+C_KIOSK t975 the trigger on REPAIR (network event, as the trigger sends)
+C_KIOSK t985 after: bank 400; Shot_Gun 40, RSQ_Off_Shot_Gun 60; worn points 0
+RSQGC lines in the OFF run: 0; steel lines: 0
+
+## cnd_m3on / cnd_m3off: the trigger held, 105 tics a phase. Rate (puffs a phase) and spread (each puff's angle from the
+## phase's mean direction): BD22 VR Reloaded 2.0.4z asks cnd.spread (x1.20 at 55, x1.50 at 25)
+# ON:
+C_SUM t145 Rifle at condition 100 (book 100): 0 hits on the post, 0 damage, mean 0.0; 0 tics with a hit; spread: 77 puffs 8.62 deg off the aim on average (most 10.27)
+C_SPREAD t145 condition 100: 77 puffs, 0.74 deg from their mean direction on average, 1.85 at most
+C_SUM t250 Rifle at condition 55 (book 55): 0 hits on the post, 0 damage, mean 0.0; 0 tics with a hit; spread: 55 puffs 8.50 deg off the aim on average (most 10.04)
+C_SPREAD t250 condition 55: 55 puffs, 0.87 deg from their mean direction on average, 1.89 at most
+C_SUM t355 Rifle at condition 25 (book 25): 0 hits on the post, 0 damage, mean 0.0; 0 tics with a hit; spread: 77 puffs 8.53 deg off the aim on average (most 10.13)
+C_SPREAD t355 condition 25: 77 puffs, 1.03 deg from their mean direction on average, 2.14 at most
+# OFF:
+C_SUM t145 Rifle at condition 100 (book 100): 0 hits on the post, 0 damage, mean 0.0; 0 tics with a hit; spread: 77 puffs 8.50 deg off the aim on average (most 9.76)
+C_SPREAD t145 condition 100: 77 puffs, 0.73 deg from their mean direction on average, 1.84 at most
+C_SUM t250 Rifle at condition 55 (book 55): 0 hits on the post, 0 damage, mean 0.0; 0 tics with a hit; spread: 79 puffs 8.48 deg off the aim on average (most 9.77)
+C_SPREAD t250 condition 55: 79 puffs, 0.69 deg from their mean direction on average, 1.66 at most
+C_SUM t355 Rifle at condition 25 (book 25): 0 hits on the post, 0 damage, mean 0.0; 0 tics with a hit; spread: 78 puffs 8.53 deg off the aim on average (most 9.77)
+C_SPREAD t355 condition 25: 78 puffs, 0.71 deg from their mean direction on average, 1.69 at most
+# ON: the gaps between shot tics at 100 / 55 / 25 (the Rifle's 4-tic cycle; 6 tics at 55 = x0.67; at 25 the x1.20 cannot
+# shorten it: its frames are 1 tic, so the faster rate is not reached on this gun)
+1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 11 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 2 4 2 4 2
+ 4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 1 5 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3
+ 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 3 1 
+
+## cnd_m4: the watch card (owner's Watch Card Shows: Both on One Card) with the CND row: 25 red, 72 lime (rig_CARD_cnd_25_and_72.png)
+POSE_1
+C_CARD t40 Rifle at 25 (card value 25)
+rsqgc: watch card hand 0 built: Rifle loaded 31 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 31) shows 2, pieces 37 (cap 180), missing 0
+rsqgc: watch card hand 0 built: Rifle loaded 31 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 31) shows 2, pieces 37 (cap 180), missing 0
+POSE_2
+rsqgc: watch card hand 0 built: Rifle loaded 31 reserve 200 (Ammo1 Clip2 200, Ammo2 RifleAmmo 31) shows 2, pieces 37 (cap 180), missing 0
+# (pieces 37 with the CND row; 27 without it in the run before the row was on the Both card)
+# aborts / script errors outside BD_VoxelPack in every run (cnd_m1, cnd_m2, cnd_m3on, cnd_m3off, cnd_m4): 0

@@ -58,8 +58,38 @@ Workhorse (accuracy = spread multiplier, so higher is worse; rate > 1 = faster):
   the hook gets damage and backfire only.
 - Legendaries and Gun Bonsai may later wear slower or repair better; not in the first version.
 
+## My readings (where the doc left it open; numbers to tune in the headset)
+
+- **How much a big hit wears:** Wear per Big Hit, 3 (1-20). A gun goes from 100 into the wild flip in 24 big hits.
+- **Steel bits:** Steel Share 15 % of a kill's bits that are not gold (Gold Share is rolled first), +1 each (the decision).
+- **The kiosk's price:** 1 gold a missing condition point over every gun carried, at least 10 (a cycle between Bosses is
+  ~250-280 gold, design/KIOSK.md: one gun from 30 back to 100 is 70 gold). It repairs every gun carried, not only the held ones.
+- **Misfire:** not lethal by itself either (the doc says so only of the backfire). At most one backfire or misfire a
+  second a hand (so a chaingun at 5 does not chip every shot), and the toasts say the health lost.
+- **A shot,** for the backfire roll, is a tic in which a hand fired (a hitscan, a rail or a missile born at that hand).
+- **The bar:** on the watch card's Weapon card and on Both on One Card (the owner's own setting), not on the small card.
+
 ## Built / not built (2026-11-16)
+
+Where it lives: **RSQ Gun Cards** (`GunCards/zscript/rsqgc/cnd.zs`), no new pk3. Gun Cards already rides with every weapon
+set, knows both hands' guns and draws the gun's card the bar goes on; the layer is one file plus a few lines in the cards
+(`side.zs`, `worldcard.zs`, `card.zs`). Other mods ask it by name (`RSQGC_Service "cnd.*"`, the list at the end of cnd.zs).
+Evidence: `design/condition/rig/` (`evidence_2026-11-16.txt` and the frames). Nothing here has been seen in the headset.
 
 | Part | State |
 |---|---|
-| Everything above | Not built (after the kiosk) |
+| Master option | **Built, rig only, not headset-confirmed**: Weapon Condition (`rsqgc_cnd`), **off by default**, on Gun Cards' page. Off: no tracking, no wear, no scaling, no steel bits, no REPAIR, no CND row (rig `cnd_m2`: 20 damage a bullet at every condition, no wear, 0 condition log lines) |
+| Condition per gun | **Built, rig only, not headset-confirmed**: 0-100 by the gun's class, kept on the player (`RSQGC_CndBook`, saved, carried across maps); a gun first seen is 100. Every gun of every pack (a weapon with ammo that is not melee, a tool or a thrown grenade), with or without LegenDoom. BD22 VR's off-hand copy (`RSQ_Off_<gun>`) is a gun of its own |
+| Wear | **Built, rig only, not headset-confirmed**: a blow of more than Big Hit Over (20) to the player takes Wear per Big Hit (3) off the gun in each hand (rig: a monster's 30, 45 on Black Metal, `Rifle 100 -> 97`; its 12, 18 on Black Metal, no wear). Shooting never wears |
+| The curve and profiles | **Built, rig only, not headset-confirmed**: the owner's numbers as they are (`RSQGC_Cnd.Curve`); the profile by the gun's name, then its ammo (Precision: rail, sniper, revolver...; Bruiser: shot, SSG, minigun, chaingun, MG42, machinegun; Volatile: rocket, grenade launcher, missile, nuke...; Overheat: plasma, BFG, unmaker, flame...; else Workhorse) |
+| Damage on hit | **Built, rig only, not headset-confirmed**: the player's damage scaled by the gun that fired it (`ModifyDamage`): hitscans and rails by their hand (the engine's off-hand flags), missiles by the hand they were born at with its trigger down, their bursts' missiles inherit. Rig `cnd_m1`, the Rifle's 20: 100 -> 20, 75 -> 18, 45 -> 14, 25 -> 24, 5 -> 36 |
+| Accuracy | **Built for BD22 VR Reloaded, rig only, not headset-confirmed**: the hook is `RSQGC_Service` GetDouble `"cnd.spread"` (a gun's spread multiplier). BD22 VR Reloaded 2.0.4z's `muzzle.zs` widens BD22's own spread by it (main-hand hitscans, either hand's missiles). Rig `cnd_m3on`: 0.74 deg at 100, 0.87 at 55 (x1.18; the table x1.20), 1.03 at 25 (x1.39; x1.50); off: 0.73 / 0.69 / 0.71. GNRC and WoS do not ask yet: their guns keep their spread |
+| Pellets | **Hook only** (`"cnd.pellets"`, `"cnd.pelletmul"`): no weapon set asks yet, so no gun gets the wild pellets |
+| Rate | **Built where the gun's frames allow, rig only, not headset-confirmed**: Fire Rate Follows Condition (on). Rig `cnd_m3on`: the Rifle's 4-tic cycle is 6 tics at 55 (x0.67, as the table); at 25 its x1.20 is not reached (its frames are 1 tic and cannot be shortened). Off: 4 tics throughout |
+| Backfire / misfire | **Built, rig only, not headset-confirmed**: rolled once a tic a hand fired; never lethal by itself (my reading for the misfire too); at most one a second a hand; a sound and a toast (`RSQVR_Service "toast"`, `down|BACKFIRE -n`, `MISFIRE -n`, `OVERLOAD -n`), never a centre print. Rig: natural backfires at 25 and 5, then forced ones (`rsqgc_cnd_force`), `rig_CND_backfire_misfire_toasts.png` |
+| Steel bits | **Built, rig only, not headset-confirmed** (VisualRewards `RSQ_KRSteelBit`, sprite KRBS, `tools/gen_steel_bit.py`): Steel Share (15 %) of a kill's non-gold bits, +1 a bit to each gun in hand (`"cnd.repair"`), only with Weapon Condition on. Rig: four kills, 15 steel bits, six picked up in the window, `Shot_Gun 50 -> 56` |
+| Kiosk REPAIR | **Built, rig only, not headset-confirmed** (Miniboss `kiosk.zs`): a REPAIR button left of LUCKY with its price (Repair Gold per Point 1, Repair Minimum 10), the trigger on it: every carried gun to 100 (`"cnd.fix"`) after `gold.spend`; refused with a toast when short. Rig: `103 points on 3 gun(s) for 103 G (bank 400 -> 297)`, `rig_KIOSK_repair_button_and_toast.png`. The rig pressed it through the kiosk's own network event (what its trigger sends), not by pointing |
+| The card | **Built, rig only, not headset-confirmed**: a CND row (the word, a bar of 5, the number, in the band's colour) on the watch card's Weapon card and Both on One Card (under the keys), and on the world card. Rig `cnd_m4`: `rig_CARD_cnd_25_and_72.png` |
+| Lose the Gun at 0 | **Built, not shown** (off by default): the gun is taken with a toast `<GUN> BROKE`; not run on the rig |
+| Netplay | Play state per player (the book on each pawn; per-player arrays in the handler); not tested in netplay |
+| Legendaries / Gun Bonsai wearing slower | Not built (not in the first version) |

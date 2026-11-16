@@ -1,0 +1,236 @@
+version "4.10"
+// TEST ONLY (rig, never shipped). Weapon Condition (design/WEAPON_CONDITION.md; GunCards/zscript/rsqgc/cnd.zs). Lines start C_.
+// The run's script holds the faked right controller level (qz_rhand) and works its trigger (qz_rtrigger); this probe gives
+// the BD22 Rifle, puts a shootable post 112 units down the gun hand's ray, and steps the gun's condition through the
+// bands, counting what the post takes. The player is in Buddha and notarget (the map's monsters leave him alone).
+//   cnp_mode 1  phases 100 / 75 / 45 / 25 / 5 (damage on hit), a forced backfire and misfire (toasts), big hits (a
+//               monster's blow of 30 and of 12: only the 30 wears), steel bits from three kills (Steel Share 100 for the
+//               test), the Boss kiosk's REPAIR for gold, then the watch card at 25 and at 100
+//   cnp_mode 2  the same phases with Weapon Condition off: the damage as made, no wear, no steel bits, no REPAIR, no CND row
+//   cnp_mode 3  the trigger held: shots a phase at 100 / 55 / 25 (Fire Rate Follows Condition), and the spread
+//   cnp_mode 4  the card: the gun at 25, then 72, while the script turns the wrist (the watch check)
+class CNP_Post : Actor
+{
+	Default { Health 1000000; Radius 20; Height 72; +SHOOTABLE; +SOLID; +NOGRAVITY; +NOBLOOD; +DONTTHRUST; Mass 100000; }
+	States { Spawn: PLAY A -1; Stop; }
+}
+
+class CNP_Probe : EventHandler
+{
+	int mode, phase, ph0, hits, total, shotTics, lastHitTic, phCnd;
+	bool started, lastTrig;
+	CNP_Post post;
+	Array<int> conds;
+	RSQMB_Kiosk kiosk;
+	String other;
+
+	Service Svc(String n) { let it = ServiceIterator.Find(n); Service s; while (s = it.Next()) if (s.GetClassName() == n) return s; return null; }
+	int Gold(Actor p, String r = "gold") { let s = Svc("RS_ScoreService"); return s ? s.GetInt(r, "", 0, 0, p) : -9; }
+	int Cnd(Actor p, String cls) { let b = RSQGC_CndBook(p.FindInventory("RSQGC_CndBook")); return b ? b.Get(cls) : -1; }
+	void SetCnd(Actor p, String cls, int v) { let b = RSQGC_CndBook.Of(p, true); if (b) b.Set(cls, v); }
+	void Refill(Actor p)
+	{
+		let w = p.player.ReadyWeapon;
+		if (!w) return;
+		if (w.AmmoType1) p.GiveInventory(w.AmmoType1, 999);
+		if (w.AmmoType2) p.GiveInventory(w.AmmoType2, 999);
+	}
+
+	// THE SPREAD: every puff of his shots, its angle off the gun hand's aim line (AttackAngle / AttackPitch), per phase
+	int nPuff, nDbg; double sumOff, maxOff;
+	Array<double> dx, dy, dz;
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		let a = e.Thing;
+		if (!a || phCnd < 0) return;
+		String cn = a.GetClassName();
+		if (!a.bIsPuff && cn.IndexOf("Puff") < 0) return;
+		let pp = PlayerPawn(players[consoleplayer].mo);
+		if (!pp || !pp.OverrideAttackPosDir) return;
+		Vector3 d = a.pos - pp.AttackPos;
+		double l = d.Length();
+		if (l < 32) return;
+		double ya = pp.AttackAngle + 90, pi = pp.AttackPitch;
+		Vector3 aim = (cos(pi) * cos(ya), cos(pi) * sin(ya), sin(pi));
+		double off = acos(clamp((d / l) dot aim, -1, 1));
+		if (nDbg++ < 4) Console.Printf("C_PUFF t%d %s %.0f away, %.2f deg off the aim", level.maptime, cn, l, off);
+		if (off > 30) return;
+		nPuff++; sumOff += off; maxOff = max(maxOff, off);
+		dx.Push(d.x / l); dy.Push(d.y / l); dz.Push(d.z / l);
+	}
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.Thing && e.Thing == post)
+		{
+			hits++; total += e.Damage;
+			if (lastHitTic != level.maptime) { shotTics++; lastHitTic = level.maptime; }
+			if (mode != 3) Console.Printf("C_HIT t%d the post took %d (%s, inflictor %s)", level.maptime, e.Damage, e.DamageType, e.Inflictor ? e.Inflictor.GetClassName() : 'none');
+			post.health = 1000000;
+		}
+		if (e.Thing && e.Thing.player && e.DamageType != 'RSQBackfire')
+			Console.Printf("C_PLAYERHIT t%d %d from %s (health %d)", level.maptime, e.Damage, e.DamageSource ? e.DamageSource.GetClassName() : 'nothing', e.Thing.health);
+	}
+
+	void PhaseEnd(Actor p, int t)
+	{
+		if (phCnd < 0) return;
+		let w = p.player.ReadyWeapon;
+		Console.Printf("C_SUM t%d %s at condition %d (book %d): %d hits on the post, %d damage, mean %.1f; %d tics with a hit; spread: %d puffs %.2f deg off the aim on average (most %.2f)",
+			t, w ? w.GetClassName() : 'none', phCnd, w ? Cnd(p, w.GetClassName()) : -1, hits, total, hits ? double(total) / hits : 0, shotTics,
+			nPuff, nPuff ? sumOff / nPuff : 0, maxOff);
+		// the spread itself: each puff's angle off the phase's mean direction (the bore's own offset taken out)
+		int nd = dx.Size();
+		if (nd > 1)
+		{
+			Vector3 m = (0, 0, 0);
+			for (int i = 0; i < nd; i++) m += (dx[i], dy[i], dz[i]);
+			m /= m.Length();
+			double sum = 0, most = 0;
+			for (int i = 0; i < nd; i++) { double o = acos(clamp((dx[i], dy[i], dz[i]) dot m, -1, 1)); sum += o; most = max(most, o); }
+			Console.Printf("C_SPREAD t%d condition %d: %d puffs, %.2f deg from their mean direction on average, %.2f at most", t, phCnd, nd, sum / nd, most);
+		}
+		phCnd = -1;
+	}
+	void PhaseStart(Actor p, int t, int c)
+	{
+		hits = 0; total = 0; shotTics = 0; phCnd = c; nPuff = 0; sumOff = 0; maxOff = 0; dx.Clear(); dy.Clear(); dz.Clear();
+		let w = p.player.ReadyWeapon;
+		if (w) SetCnd(p, w.GetClassName(), c);
+		Refill(p);
+		Console.Printf("C_PHASE t%d %s set to condition %d (Weapon Condition %d)", t, w ? w.GetClassName() : 'none', c, CVar.FindCVar('rsqgc_cnd').GetInt());
+	}
+
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		let pp = PlayerPawn(p);
+		int t = level.maptime;
+		if (!started) { started = true; mode = CVar.FindCVar('cnp_mode').GetInt(); phCnd = -1; Console.Printf("C_START %s mode %d", level.mapname, mode); }
+		p.player.cheats |= CF_NOTARGET | CF_BUDDHA;
+		if (t == 3) { p.GiveInventory("Rifle", 1); p.A_SelectWeapon("Rifle"); }
+		if (t == 30 && mode != 3)
+		{
+			p.A_SetHealth(500);
+			Console.Printf("C_GUN t%d main %s off %s; override %d; hand angle %.1f pitch %.1f", t, p.player.ReadyWeapon ? p.player.ReadyWeapon.GetClassName() : 'none',
+				p.player.OffhandWeapon ? p.player.OffhandWeapon.GetClassName() : 'none', pp.OverrideAttackPosDir, pp.AttackAngle, pp.AttackPitch);
+			double a = pp.AttackAngle + 90;
+			for (int d = 112; d >= 64 && !post; d -= 16)
+			{
+				Vector3 at = (pp.AttackPos.xy + (cos(a), sin(a)) * d, pp.AttackPos.z - 36);
+				let c = CNP_Post(Actor.Spawn("CNP_Post", at, NO_REPLACE));
+				if (c && !c.TestMobjLocation()) { c.Destroy(); continue; }
+				post = c;
+				if (post) Console.Printf("C_POST t%d %d units down the hand's ray at %.0f %.0f %.0f", t, d, at.x, at.y, at.z);
+			}
+		}
+		if (t % 15 == 0 && t >= 40) Refill(p);
+		bool trig = (p.player.cmd.buttons & BT_ATTACK) != 0;
+		if (trig != lastTrig) { lastTrig = trig; Console.Printf("C_TRIG t%d %s", t, trig ? "pulled" : "let go"); }
+		if (mode == 3) { Rate(p, t); return; }
+		if (mode == 4)
+		{
+			// THE CARD: the gun at 25 from t40, at 72 from t300 (the script turns the wrist)
+			let w = p.player.ReadyWeapon;
+			if (w && t == 40) { SetCnd(p, w.GetClassName(), 25); Console.Printf("C_CARD t%d %s at 25 (card value %d)", t, w.GetClassName(), RSQGC_Cnd.CardValue(w)); }
+			if (w && t == 300) { SetCnd(p, w.GetClassName(), 72); Console.Printf("C_CARD t%d %s at 72 (card value %d)", t, w.GetClassName(), RSQGC_Cnd.CardValue(w)); }
+			return;
+		}
+		Main(p, t);
+	}
+
+	// the bands: 90 tics each from t40
+	void Main(Actor p, int t)
+	{
+		static const int C[] = { 100, 75, 45, 25, 5 };
+		for (int i = 0; i < 5; i++)
+		{
+			if (t == 40 + 90 * i) { PhaseEnd(p, t); PhaseStart(p, t, C[i]); }
+		}
+		if (t == 490) { PhaseEnd(p, t); }
+		let w = p.player.ReadyWeapon;
+		String gun = "";
+		if (w) gun = w.GetClassName();
+		// a forced backfire, then a forced misfire (the toasts)
+		if (t == 492) { SetCnd(p, gun, 25); Refill(p); CVar.FindCVar('rsqgc_cnd_force').SetInt(1); Console.Printf("C_FORCE t%d backfire on the next shot at 25 (health %d)", t, p.health); }
+		if (t == 530) { CVar.FindCVar('rsqgc_cnd_force').SetInt(2); Console.Printf("C_FORCE t%d misfire on the next shot at 25 (health %d)", t, p.health); }
+		// big hits: a monster's blow of 30, then of 12 (only the first wears)
+		if (t == 600)
+		{
+			SetCnd(p, gun, 100);
+			let imp = Actor.Spawn("DoomImp", p.Vec3Angle(48, p.angle + 90, 0), ALLOW_REPLACE);
+			Console.Printf("C_BIGHIT t%d %s at 100; a blow of 30 from %s", t, gun, imp ? imp.GetClassName() : 'none');
+			p.DamageMobj(imp, imp, 30, 'Fire', DMG_NO_ARMOR);
+			Console.Printf("C_BIGHIT t%d after: %s %d", t, gun, Cnd(p, gun));
+			p.DamageMobj(imp, imp, 12, 'Fire', DMG_NO_ARMOR);
+			Console.Printf("C_SMALLHIT t%d a blow of 12: %s %d (no wear)", t, gun, Cnd(p, gun));
+			if (imp) imp.Destroy();
+			p.A_SetHealth(500);
+		}
+		// steel bits: three zombiemen beside him (Brutal Doom's spawners make them a few tics later), killed by him at t640
+		// (Kill Rewards bursts them; Steel Share 100 for the test)
+		if (t == 620)
+		{
+			for (int n = 0; n < 3; n++) Actor.Spawn("ZombieMan", p.Vec3Angle(64, p.angle + 120 + n * 60, 0), ALLOW_REPLACE);
+		}
+		if (t == 640)
+		{
+			SetCnd(p, gun, 50);
+			Console.Printf("C_STEEL t%d %s set to 50; the kills beside the player", t, gun);
+			let it = ThinkerIterator.Create("Actor"); Actor m;
+			while (m = Actor(it.Next()))
+				if (m.bIsMonster && m.health > 0 && !m.player && p.Distance2D(m) < 150)
+				{ String cn = m.GetClassName(); m.DamageMobj(p, p, m.health + 1000, 'Bullet', DMG_FORCED); Console.Printf("C_STEEL t%d %s killed %.0f away", t, cn, p.Distance2D(m)); }
+		}
+		if (t == 720) Console.Printf("C_STEEL t%d after the bits flew in: %s %d (weapon in hand %s)", t, gun, Cnd(p, gun), gun);
+		// THE KIOSK'S REPAIR: a kiosk put 70 units down the hand's ray (the kiosk probe's way), 400 gold banked, the rifle at 40
+		// and the pistol at 60; he stands still: it opens; REPAIR through the kiosk's own network event (the trigger on the button)
+		if (t == 870 && mode != 3)
+		{
+			let pp = PlayerPawn(p);
+			let dummy = Actor.Spawn("RSQMB_KWordSpot", p.pos, NO_REPLACE);
+			kiosk = RSQMB_Kiosk.Drop(dummy, 1, p);
+			if (dummy) dummy.Destroy();
+			if (!kiosk) { Console.Printf("C_NOKIOSK t%d", t); return; }
+			double a = pp.AttackAngle + 90;
+			kiosk.home = (pp.AttackPos.xy + (cos(a), sin(a)) * 70, p.floorz);
+			kiosk.SetOrigin(kiosk.home, false);
+			kiosk.fy = a + 180; kiosk.lastFy = kiosk.fy + 1;
+			kiosk.Layout(true);
+			if (post) post.Destroy();
+			SetCnd(p, gun, 40);
+			String pistol = "";
+			for (let i = p.Inv; i; i = i.Inv) { let w2 = Weapon(i); if (w2 && w2 != p.player.ReadyWeapon && RSQGC_Cnd.IsGun(w2)) { pistol = w2.GetClassName(); break; } }
+			if (pistol != "") SetCnd(p, pistol, 60);
+			other = pistol;
+			int b = Gold(p);
+			if (b < 400) Svc("RS_ScoreService").GetInt("gold.add", "rig probe", 400 - b, 0, p);
+			let cs = Svc("RSQGC_Service");
+			Console.Printf("C_KIOSK t%d kiosk down; bank %d; %s %d, %s %d; worn points %d on %d gun(s)", t, Gold(p), gun, Cnd(p, gun), pistol, Cnd(p, pistol),
+				cs ? cs.GetInt("cnd.worn", "", 0, 0, p) : -1, cs ? cs.GetInt("cnd.worn.guns", "", 0, 0, p) : -1);
+		}
+		if (kiosk && t == 960)
+		{
+			int w, pr; [w, pr] = RSQMB_Kiosk.RepairCost(p);
+			Console.Printf("C_KIOSK t%d open %d; REPAIR shows %d points for %d G; bank %d", t, kiosk.open, w, pr, Gold(p));
+		}
+		if (kiosk && t == 975) { Console.Printf("C_KIOSK t%d the trigger on REPAIR (network event, as the trigger sends)", t); EventHandler.SendNetworkEvent("rsqmb_kiosk", 1, 0, 4); }
+		if (kiosk && t == 985)
+		{
+			let cs = Svc("RSQGC_Service");
+			Console.Printf("C_KIOSK t%d after: bank %d; %s %d, %s %d; worn points %d", t, Gold(p), gun, Cnd(p, gun), other, Cnd(p, other),
+				cs ? cs.GetInt("cnd.worn", "", 0, 0, p) : -1);
+		}
+		// the watch card: at 25 (the script turns the wrist at ~t735), then at 72
+		if (t == 725) { SetCnd(p, gun, 25); Console.Printf("C_CARD t%d %s at 25 (card value %d)", t, gun, RSQGC_Cnd.CardValue(p.player.ReadyWeapon)); }
+		if (t == 800) { SetCnd(p, gun, 72); Console.Printf("C_CARD t%d %s at 72 (card value %d)", t, gun, RSQGC_Cnd.CardValue(p.player.ReadyWeapon)); }
+	}
+
+	// the fire rate: the trigger held; 105 tics a phase from t40 at 100, 55, 25
+	void Rate(Actor p, int t)
+	{
+		static const int C[] = { 100, 55, 25 };
+		for (int i = 0; i < 3; i++) if (t == 40 + 105 * i) { PhaseEnd(p, t); PhaseStart(p, t, C[i]); }
+		if (t == 40 + 105 * 3) PhaseEnd(p, t);
+	}
+}

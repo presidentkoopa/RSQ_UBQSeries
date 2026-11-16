@@ -1,0 +1,3 @@
+// TEST ONLY: cnp_mode 1 the bands on hit, backfire / misfire, wear, steel bits, the kiosk's REPAIR, the card;
+// 2 the same with Weapon Condition off (nothing changes); 3 the fire rate at 100 / 55 / 25
+server int cnp_mode = 1;
