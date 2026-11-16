@@ -51,7 +51,9 @@ def mark(m): return 'echo MARK_%s; ' % m
 def script(cls, g):
     # the pack's own defaults (the rig's saved config holds other packs' choices: rsa_sg_slug false, rsm_ammo 0,
     # rsq_ballistics 0 were found there); logs on
-    s = 'set rsa_sg_slug 1; set rsm_ammo 1; set rsq_ballistics 1; set rsq_switch_log 1; '
+    # Start With Two Pistols off here (0.8: on, the off hand holds the second Beretta from the start, and the Dual key
+    # below would put it away instead of taking this gun's copy); the BASICS run checks the two-pistol start itself
+    s = 'set rsa_sg_slug 1; set rsm_ammo 1; set rsq_ballistics 1; set rsq_switch_log 1; set rsq_dual_start 0; '
     s += 'set rsr_debug 1; god; notarget; give ammo; %s; %s; wait 40; ' % (RH, LH)
     s += mark('PICKUP') + 'take %s; wait 5; netevent probe:%s; wait 5; ' % (cls, cls)
     s += mark('RAISE') + 'give %s; wait 2; use %s; wait 70; netevent probe_ammo; wait 2; ' % (cls, cls)
@@ -198,7 +200,7 @@ FISTS, PISTOL = 'RSQGW_Knuckle', 'RSQGW_Beretta'
 SERIES = os.path.join(os.path.dirname(ROOT), '..', 'pk3')
 def jab(h, x): return 'qz_%shand "%s 1.3 -0.3 0 0 0"; wait 1; qz_%shand "%s 1.3 -0.55 0 0 0"; wait 1; qz_%shand "%s 1.3 -0.75 0 0 0"; wait 10; qz_%shand "%s 1.3 -0.1 0 0 0"; wait 20; ' % (h, x, h, x, h, x, h, x)
 def basics_script():
-    s = 'god; notarget; set rsq_switch_log 1; set rsqb_punch 1; qz_rhand "0.25 1.3 -0.1 0 0 0"; qz_lhand "-0.25 1.3 -0.1 0 0 0"; wait 40; '
+    s = 'god; notarget; set rsq_switch_log 1; set rsqb_punch 1; qz_rhand "0.25 1.3 -0.1 0 0 0"; qz_lhand "-0.25 1.3 -0.1 0 0 0"; wait 40; netevent probe_ammo; wait 2; netevent rsq_dual; wait 30; '	# the two-pistol start checked, the off Beretta put away (the off hand's basics need it empty)
     s += mark('NADE') + 'netevent rsqb_gn_quick; wait 20; netevent rsqgn_quick; wait 140; '
     s += mark('BARREL2') + 'netevent probe_blasttest 175; wait 5; '
     s += mark('PUNCH') + 'give %s; wait 2; use %s; wait 40; netevent probe_spawn:DoomImp 44; wait 10; ' % (FISTS, FISTS) + jab('r', '0.25')
@@ -217,6 +219,8 @@ def basics_check(t, series):
     ours = [l for l in N if 'basic RSQB_GN_Thrown' in l]; boom = [l for l in t.splitlines() if 'basic RSQB_GN_DoomBoom' in l]; theirs = [l for l in N if 'basic RSQGN_Thrown' in l]
     P = [l for l in t.splitlines() if l.startswith('RSQB punch')]
     if not series:
+        two = [l for l in S.get('START', []) if re.match(r'AMMO t\d+ off RSQ_Off_RSQGW_Beretta ', l)]
+        res('Start With Two Pistols (0.8, on by default): the second Beretta in the off hand at the start', two, two[0].strip() if two else 'off hand empty at the start')
         res('quick grenade: thrown, goes off in Doom\'s explosion', ours and boom, '%d thrown, %d Doom explosions' % (len(ours), len(boom)))
         b = [l for l in S.get('BARREL2', []) if l.startswith('BLASTTEST')]
         h = [int(m.group(1)) for l in b for m in [re.search(r'health (-?\d+)', l)] if m]
