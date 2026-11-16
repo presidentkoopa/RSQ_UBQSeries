@@ -217,7 +217,7 @@ class RSQ_KRHandler : EventHandler
 		if (killer && !bankFor && DownNow(killer.PlayerNumber()) && SVB("rsqgb_kr_debug", false))
 			Console.Printf("RSQ KR t%d: player %d is DOWN but %s died %.0f units away (3x Bits Fly to Me: %.0f): ordinary bits", level.maptime,
 				killer.PlayerNumber(), cn, a.Distance3D(killer), 3.0 * MagnetM(killer) * 34.0);
-		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss);
+		[nh, na, nm] = Burst(a, num, Perk(killer, "RichBits"), boss, thrall ? 1 : 0);
 		int shared = lastGold;
 		int steelN = lastSteel;
 		if (steelN > 0 && RSQ_KRSteelBit.LogOn())
@@ -231,7 +231,7 @@ class RSQ_KRHandler : EventHandler
 		bankFor = 0;
 		// LUCKY KILL: decided next tic (RSQ Score calls a big moment in its own WorldThingDied, which may run after this one)
 		int lucky = Perk(killer, "LuckyKill");
-		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); }
+		if (lucky > 0) { luckyBody.Push(a); luckyBy.Push(killer); luckyNum.Push(num); luckyTic.Push(level.maptime); luckyBoss.Push(boss); luckyThrall.Push(thrall); }
 		// Debug Log (rsqgb_kr_debug, noarchive): one line a kill, the proof a run can grep for
 		if (SVB("rsqgb_kr_debug", false))
 			Console.Printf("RSQ KR t%d: %s (%d hp%s) burst into %d bits of %d rolled: %d health, %d armour, %d ammo, %d gold%s", level.maptime, cn, a.SpawnHealth(),
@@ -258,14 +258,15 @@ class RSQ_KRHandler : EventHandler
 	transient int lastNoHealth;      // health bits a thrall's last Burst left out (the debug line)
 	transient int lastGold;          // gold bits the last Burst made in place of other bits
 	transient int lastSteel;         // steel bits the last Burst made in place of other bits
-	int, int, int Burst(Actor a, int num, int rich, bool boss = false)
+	// thr: 1 a thrall's, 0 not, -1 ask the body now (ThrallHere): the callers pass what they read at the death
+	int, int, int Burst(Actor a, int num, int rich, bool boss = false, int thr = -1)
 	{
 		int wh, wa, wm;
 		[wh, wa, wm] = Mix();
 		int sum = wh + wa + wm;
 		lastNoHealth = 0;
 		if (sum <= 0) return 0, 0, 0;
-		bool thrall = !boss && ThrallHere(a);     // a miniboss fight's thrall: no health bits (ThrallHere)
+		bool thrall = !boss && (thr >= 0 ? thr > 0 : ThrallHere(a));     // a miniboss fight's thrall: no health bits (ThrallHere)
 		int chance = clamp(SVI("rsqgb_kr_chance", 50), 0, 100);
 		int nh = 0, na = 0, nm = 0;
 		int gold = RSQ_KRGoldBit.Share();
@@ -304,6 +305,9 @@ class RSQ_KRHandler : EventHandler
 	Array<Actor> luckyBody, luckyBy;
 	Array<int> luckyNum, luckyTic;
 	Array<bool> luckyBoss;
+	Array<bool> luckyThrall;      // a thrall's, read at its death (owner 11-16 09:58: a lucky kill's extra bits a tic later
+	                              // asked the body, whose inventory Brutal Doom's death can have emptied by then, and a
+	                              // thrall's health bit came out: Monsters/docs/ASSEMBLY_AUDIT_2026-11-16.md item 8)
 	override void WorldTick()
 	{
 		for (int i = luckyBody.Size() - 1; i >= 0; i--)
@@ -312,14 +316,16 @@ class RSQ_KRHandler : EventHandler
 			Actor a = luckyBody[i], by = luckyBy[i];
 			int num = luckyNum[i], died = luckyTic[i];
 			bool boss = i < luckyBoss.Size() && luckyBoss[i];
+			bool thr = i < luckyThrall.Size() && luckyThrall[i];
 			luckyBody.Delete(i); luckyBy.Delete(i); luckyNum.Delete(i); luckyTic.Delete(i);
 			if (i < luckyBoss.Size()) luckyBoss.Delete(i);
+			if (i < luckyThrall.Size()) luckyThrall.Delete(i);
 			if (!a || !by || !by.player) continue;
 			String why = LuckyWhy(a, died);
 			if (why == "") continue;
 			int lv = clamp(Perk(by, "LuckyKill"), 1, 3);
 			int nh, na, nm;
-			[nh, na, nm] = Burst(a, num * lv, Perk(by, "RichBits"), boss);
+			[nh, na, nm] = Burst(a, num * lv, Perk(by, "RichBits"), boss, thr ? 1 : 0);
 			// the big burst, its thump and Score's "lucky" touch are Gun Bonsai VR's (it owns the node), asked by name
 			let gs = ServiceIterator.Find("RSQ_MeleeUpgradeService").Next();
 			if (gs) gs.GetInt("kr.luckyfx", "", by.PlayerNumber(), lv, a);

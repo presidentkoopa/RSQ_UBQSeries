@@ -15,6 +15,12 @@
 // nearest recent death within NEAR units owns it, measured from the death spot or from the body where it lies now (the
 // miniboss first when it is within BOSS_NEAR). A
 // thrall's is destroyed, before Brutal Doom's replacer can spawn its own spawner. Debug lines with rsqmb_debug.
+// THRALLS WIN (owner 2026-11-16 09:58, "thralls should drop no weapons"; Monsters/docs/ASSEMBLY_AUDIT_2026-11-16.md item 8):
+// by distance, a thrall's death within NEAR owns the gun before any other monster's (rig asm_thrB: a LabguyB thrall's
+// BrutalAxe was put on another monster's older death 39 units off and kept). And every gun pickup born while a thrall died
+// in the last WINDOW tics is judged, the deaths of its own tic included: a drop spawned in the dying tic itself, before the
+// engine reports the death (WorldThingDied), was let through when it was the fight's first thrall death (the same run: a
+// ShotgunSpawnerReplacer, then its ShotgunSpawner, at that thrall's death).
 // ============================================================================
 
 class RSQMB_ThrallDrops : EventHandler
@@ -32,6 +38,7 @@ class RSQMB_ThrallDrops : EventHandler
 	Array<int> dT, dKind;
 	int lastThrall;            // maptime + 1 of the last thrall death (0: none yet)
 	Array<Inventory> pend;     // gun pickups born near a recent thrall death, judged next tic
+	transient RSQMB_Handler mh;
 
 	// what the dying monster is to a called-in fight: its miniboss, a thrall (bound or freed: it carries RSQMB_Called for
 	// good), or nothing
@@ -86,7 +93,13 @@ class RSQMB_ThrallDrops : EventHandler
 
 	override void WorldThingSpawned(WorldEvent e)
 	{
-		if (lastThrall <= 0 || level.maptime + 1 - lastThrall > WINDOW) return;
+		// (no thrall death yet this tic is no reason to let it pass: it is judged next tic, when this tic's deaths are known;
+		// with no called-in fight on the map nothing is pended)
+		if (lastThrall <= 0 || level.maptime + 1 - lastThrall > WINDOW)
+		{
+			if (!mh) mh = RSQMB_Handler.Get();
+			if (!mh || (!mh.bosses.Size() && !mh.arrPhase)) return;
+		}
 		let it = Inventory(e.Thing);
 		if (!it || it.Owner || !IsGun(it)) return;
 		pend.Push(it);
@@ -129,8 +142,8 @@ class RSQMB_ThrallDrops : EventHandler
 			if (t.player) return -1, "a player's";
 			t = t.target;
 		}
-		int best = -1, boss = -1;
-		double bd = NEAR, bb = BOSS_NEAR;
+		int best = -1, boss = -1, thr = -1;
+		double bd = NEAR, bb = BOSS_NEAR, bt = NEAR;
 		for (int i = 0; i < dT.Size(); i++)
 		{
 			// from the death spot, or from the body where it lies now (a body thrown by the killing blow drops its gun
@@ -138,9 +151,11 @@ class RSQMB_ThrallDrops : EventHandler
 			double d = (it.pos.xy - (dX[i], dY[i])).Length();
 			if (dBody[i]) d = min(d, (it.pos.xy - dBody[i].pos.xy).Length());
 			if (dKind[i] == K_BOSS && d <= bb) { bb = d; boss = i; }
+			if (dKind[i] == K_THRALL && d <= bt) { bt = d; thr = i; }
 			if (d <= bd) { bd = d; best = i; }
 		}
 		if (boss >= 0) return boss, "near the miniboss's death spot";
+		if (thr >= 0) return thr, best == thr ? "the nearest recent death" : "a thrall's recent death near it (thralls first)";
 		if (best >= 0) return best, "the nearest recent death";
 		return -1, "no recent death near it";
 	}
