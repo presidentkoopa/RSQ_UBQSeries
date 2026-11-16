@@ -7,20 +7,23 @@
 //   THE BAR       the Big Boss bar ("EX bar"), on the player (RSQMB_Meter.exFill 0..1000: it rides the save and every map
 //                 change, as RSQ Score's gold bank does, and is kept through a death's reload the same way: rsqmb_ex_keep).
 //                 +25% (EX_STEP) for every Boss won (tierup.zs TierUpOnKill: the BOSSWIN moment, a called-in fight's Boss
-//                 killed by a player). A Big Boss won adds nothing. Drawn beside the Boss meter (hud.zs DrawExBar).
-//   FULL          a Big Boss is due (exReady). It is not called in: it COMES BY ITSELF as soon as the Boss fight's
-//                 guardrails let it (bossfight.zs Guard: Too Early, Cooldown, Low Health, Near Exit, Too Busy, No Room;
-//                 Ignore Spawn Restrictions works on it as on a Boss), but never held by the Map Limit (it would often wait a
-//                 whole map). It goes before a full Boss meter; the Boss meter waits (and its Start Fight card stays grey)
-//                 until the Big Boss fight is over.
+//                 killed by a player). A Big Boss won adds nothing. Drawn beside the Boss meter (hud.zs DrawExBar):
+//                 black with a red edge (owner 11-16 09:5x).
+//   FULL          a Big Boss is due (exReady). THE SAME RULES AS A BOSS (owner 11-16 09:5x: "both, same rules. on a timer
+//                 or we call"): the player calls it in as he calls a Boss (the watch check + Use; the Start Fight card on the
+//                 inside of the off wrist, which then reads BIG (skull) BOSS! in black and red and skips the guardrails), or
+//                 it comes by itself Arrives By Itself (rsqmb_bf_auto) after the bar filled; then the Boss fight's guardrails
+//                 (Too Early, Cooldown, Low Health, Near Exit, Too Busy, No Room; Ignore Spawn Restrictions works on it),
+//                 never the Map Limit. It goes before a full Boss meter: while it is due the call is the Big Boss's.
 //   THE FIGHT     the Boss fight's own machinery (bossfight.zs PlanArrival / StartArrival / ArrivalStep, handler.zs Bind,
 //                 fight.zs): the same thralls, beams, slow motion, charge, segments, shield, lives and rules. Only the
 //                 monster differs: an EX-tier monster of RSQ Monsters (BigClass below). Its health is on the Boss bar
 //                 (bossbar.zs, unchanged). The Big Boss bar empties when the fight starts (its bind).
 //   BANNERS       RSQ VisualRewards' (by name): BIGBOSSINCOMING (BIG BOSS INCOMING!, with BOSS INCOMING!'s siren),
 //                 BIGBOSSWIN (BIG BOSS DEFEATED!), BIGBOSSLOSS (BIG BOSS WINS!); the chips as the Boss's.
-//   THE WIN       as a Boss win (the world tier +1, RSQ Score's life crate, the Score row) and the Boss kiosk, every offer
-//                 Epic (kiosk.zs Drop: LegenDoom's top rarity) in place of its one legendary weapon.
+//   THE WIN       as a Boss win (the world tier +1, RSQ Score's life crate, the Score row) and the Boss kiosk with FIVE
+//                 offers, every one Epic, on five guns where it can, no LUCKY (kiosk.zs Drop; owner 11-16 09:5x), in place of
+//                 its one legendary weapon.
 //   THE LOSS      as a Boss fight's (tierup.zs FightLost: a Score life spent in it, or the map left with it on): the
 //                 monsters leave on beams, the world tier -1, BIG BOSS WINS!; the Big Boss bar stays empty (it emptied when
 //                 the fight started), so four more Bosses bring the next one.
@@ -32,7 +35,7 @@
 extend class RSQMB_Handler
 {
 	const EX_STEP = 250;          // a Boss won: +25% of the Big Boss bar
-	const RGB_EX = 0xFFC830;      // the Big Boss bar's colour (gold, the legendary colour; provisional, owner 11-16)
+	const RGB_EX = 0xD01818;      // the Big Boss bar's red (black with a red edge, owner 11-16 09:5x)
 
 	bool arrBig;                  // the arrival under way is a Big Boss's (in the save)
 
@@ -59,17 +62,21 @@ extend class RSQMB_Handler
 		m.exFill = 1000;
 		m.exReady = true;
 		m.exReadyAt = level.maptime;
-		Glow(RGB_EX, 0.8);      // RSQ Glow In The Dark's map glow in the bar's gold (the Boss meter's red, full)
+		m.exCalled = false; m.exForce = false;
+		Glow(RGB_EX, 0.8);      // RSQ Glow In The Dark's map glow in the bar's red
 	}
 
 	// empty (the Big Boss fight's bind; the test door)
 	static void ExEmpty(RSQMB_Meter m)
 	{
 		if (!m) return;
-		m.exFill = 0; m.exReady = false; m.exReadyAt = 0;
+		m.exFill = 0; m.exReady = false; m.exReadyAt = 0; m.exCalled = false; m.exForce = false;
 	}
 
-	// ---- BfTick: a due Big Boss comes by itself, ahead of a full Boss meter. True: a Big Boss is due (the Boss waits) ------
+	// ---- BfTick: a full Big Boss bar, ahead of a full Boss meter. True: a Big Boss is due (the Boss waits) -----------------
+	// THE SAME RULES AS A BOSS (owner 11-16 09:5x: "both, same rules. on a timer or we call"): it comes when the player calls
+	// it in (CallIn: the watch check + Use, or the Start Fight card, which skips the guardrails) or by itself Arrives By
+	// Itself (rsqmb_bf_auto, 60 s) after the bar filled; then through the guardrails, never held by the Map Limit.
 	bool ExTick()
 	{
 		if (!ExOn()) return false;
@@ -78,10 +85,27 @@ extend class RSQMB_Handler
 			if (!playeringame[pn] || !players[pn].mo) continue;
 			let m = MeterOf(players[pn].mo);
 			if (!ExDue(m)) continue;
+			int autoS = CI('rsqmb_bf_auto', 60);
+			bool due = m.exCalled || (autoS > 0 && level.maptime - m.exReadyAt >= autoS * TICRATE);
+			if (!due) { bfWhy = ""; return true; }
 			if (level.maptime >= bfNextTry) { bfNextTry = level.maptime + 10; TryArrive(players[pn].mo, m, true); }
 			return true;
 		}
 		return false;
+	}
+
+	// THE CALL (bossfight.zs CallIn, while a Big Boss is due): the watch check + Use, or the Start Fight card (no rules, as
+	// for a Boss). The player tells which he calls by the card: BIG (skull) BOSS! in black and red while a Big Boss is due,
+	// START (skull) FIGHT? in gold for a Boss; the bar beside the meter is full and beating.
+	void ExCallIn(int pn, RSQMB_Meter m, bool card)
+	{
+		if (!m || !ExDue(m) || BfBusy()) return;
+		if (card) { if (m.exCalled && m.exForce) return; m.exForce = true; }
+		else if (m.exCalled) return;
+		m.exCalled = true;
+		bfNextTry = 0;
+		players[pn].mo.A_StartSound("misc/chat", CHAN_AUTO, CHANF_UI | CHANF_LOCAL, 0.8, ATTN_NONE);
+		if (debug) Console.Printf("RSQMB BIG BOSS CALLED IN (%s) by player %d", card ? "the Start Fight card: no rules" : "watch check + Use", pn);
 	}
 
 	// ---- WHICH EX MONSTER: THE BIG BOSS POOL ------------------------------------------------------------------------------

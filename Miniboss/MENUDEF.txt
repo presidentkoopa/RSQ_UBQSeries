@@ -85,7 +85,7 @@ OptionMenu "RSQMB_Options"
 	StaticText " "
 	StaticText "Big Boss", 1
 	// The Big Boss bar beside the Boss meter fills 25% for every Boss you beat; full, a Big Boss (an EX monster of RSQ
-	// Monsters, with thralls) comes. Its kiosk's offers are all Epic.
+	// Monsters, with thralls): call it in as a Boss, or it comes by itself. Its kiosk has five offers, all Epic.
 	Option "Big Boss", "rsqmb_ex", "OnOff"
 	StaticText " "
 	StaticText "Boss Kiosk", 1

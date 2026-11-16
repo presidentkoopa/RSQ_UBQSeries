@@ -72,6 +72,8 @@ class RSQMB_Meter : RSQMB_Token
 	bool   exReady;        // ...full: a Big Boss is due (it comes by itself)
 	int    exReadyAt;      // level.maptime it filled
 	bool   lossBig;        // the fight lost by leaving the last map was a Big Boss's (the next map's banner: BIG BOSS WINS!)
+	bool   exCalled;       // the player called the due Big Boss in (watch check + Use, or the Start Fight card; bigboss.zs)
+	bool   exForce;        // ...from the Start Fight card: no guardrail holds it back (as a Boss called from the card)
 }
 
 // ON EVERY MONSTER A BOSSFIGHT BROUGHT (miniboss and thralls, dead or alive, for good): RSQMB_Service "bossfight".
@@ -301,7 +303,7 @@ extend class RSQMB_Handler
 			{
 				// a new map: the wait for auto-arrival starts again, nothing called yet, this map's score from here
 				m.mapStamp = level.levelnum + 1;
-				m.readyAt = now; m.called = false; m.force = false; m.scoreBase = -1; m.seenSerial = 0; m.chain = 0; m.lastKill = -1000;
+				m.readyAt = now; m.called = false; m.force = false; m.exReadyAt = now; m.exCalled = false; m.exForce = false; m.scoreBase = -1; m.seenSerial = 0; m.chain = 0; m.lastKill = -1000;
 				m.lastX = p.pos.x; m.lastY = p.pos.y; m.gbGun = null;
 			}
 			if (!on) continue;
@@ -336,15 +338,18 @@ extend class RSQMB_Handler
 				if (dx * dx + dy * dy >= 96.0 * 96.0) Fill(m, 2, "time");
 			}
 			if (pn == consoleplayer) WristCard(p, m);
-			if (!m.ready) continue;
+			// A BIG BOSS DUE (bigboss.zs): called in the same way as a Boss (owner 11-16 09:5x: "both, same rules. on a timer or
+			// we call"); it goes first, so while it is due the call is the Big Boss's
+			bool exDue = ExDue(m);
+			if (!m.ready && !exDue) continue;
 			// the telegraph: the glow's heartbeat (lub-dub) while it waits
 			if (!BfBusy())
 			{
-				int ph = (now - m.readyAt) % HEART;
+				int ph = (now - (exDue ? m.exReadyAt : m.readyAt)) % HEART;
 				if (ph == 0) HeartBeat(0xFF1810, 0.25);
 				else if (ph == 9) HeartBeat(0xC01008, 0.2);
 			}
-			if (pn == consoleplayer && !m.called && CI('rsqmb_bf_callin', 1)) CallInput(p, m);
+			if (pn == consoleplayer && (exDue ? !m.exCalled : !m.called) && CI('rsqmb_bf_callin', 1)) CallInput(p, m);
 		}
 		if (!on) { bfWhy = ""; return; }
 		if (arrPhase) { ArrivalStep(); return; }
@@ -502,7 +507,10 @@ extend class RSQMB_Handler
 	{
 		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
 		int now = level.maptime;
-		bool gold = m.ready && !BfBusy() && !m.called && !ExDue(m);      // usable: the meter full, nothing called, running or on its way, no Big Boss due
+		// usable: the meter full, nothing called, running or on its way; or a Big Boss due and not yet called (then the card is
+		// the Big Boss's: BIG (skull) BOSS!, black and red, RSQMBWC2: bigboss.zs)
+		bool exCard = ExDue(m);
+		bool gold = !BfBusy() && (exCard ? !m.exCalled : (m.ready && !m.called));
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		bool pose = want && InsideCheck(p);
 		if (pose) wcTill = now + WC_LINGER;
@@ -513,7 +521,7 @@ extend class RSQMB_Handler
 		if (debug && now % 35 == 0)
 			Console.Printf("RSQMB start fight card: off-hand inside check %s, %s, meter %s", pose ? "HELD" : "no", shown ? (gold ? "SHOWN GOLD (Use calls it in)" : "SHOWN GREY") : "not shown", m.called ? "called" : (m.ready ? "READY" : String.Format("%d%%", int(m.fill / 10))));
 		if (wcAlpha <= 0) { if (wcCard) wcCard.bInvisible = true; wcUse = (p.player.cmd.buttons & BT_USE) != 0; return; }
-		String tn = gold ? "RSQMBWC1" : "RSQMBWC0";
+		String tn = gold ? (exCard ? "RSQMBWC2" : "RSQMBWC1") : "RSQMBWC0";
 		TextureID tx = TexMan.CheckForTexture(tn, TexMan.Type_Any);
 		if (!tx.IsValid()) return;
 		int tw, th; [tw, th] = TexMan.GetSize(tx);
@@ -550,7 +558,8 @@ extend class RSQMB_Handler
 	{
 		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
 		let m = MeterOf(players[pn].mo);
-		if (ExDue(m)) { if (debug) Console.Printf("RSQMB call-in: a Big Boss is due: it comes first (by itself)"); return; }
+		// a Big Boss due: the call is its (bigboss.zs ExCallIn), by the same rules
+		if (ExDue(m)) { ExCallIn(pn, m, card); return; }
 		if (card)
 		{
 			// the inner-wrist card: THE METER MUST BE FULL (owner 11-12 05:44; it is the meter's own button), and then no
@@ -576,7 +585,7 @@ extend class RSQMB_Handler
 		// THE FIGHT CARD DOES NOT CARE ABOUT THE RULES (owner 11-12 05:37: "it calls in the fight wherever the player presses
 		// it without restrictions"): a call from the inner-wrist card skips every guardrail (Too Early, Map Limit, Cooldown,
 		// Low Health, Near Exit, Too Busy). What cannot be skipped: no monster types on the map, and no spot to land on.
-		if (!big && m.force && why != "" && why != "No Boss: No Monsters")
+		if ((big ? m.exForce : m.force) && why != "" && why != "No Boss: No Monsters")
 		{
 			if (debug) Console.Printf("RSQMB miniboss fight: the fight card overrides \"%s\"", why);
 			why = "";

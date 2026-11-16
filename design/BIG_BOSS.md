@@ -6,7 +6,12 @@ legendary kiosk with all epic or legendary loot or whatever." The EX-tier ones a
 
 Built in RSQ Miniboss (`Miniboss/zscript/rsqmb/bigboss.zs`, with small changes to `bossfight.zs`, `tierup.zs`, `kiosk.zs`,
 `hud.zs`, `service.zs`, `boss.zs`, `handler.zs`) and RSQ VisualRewards' banners (`rsqvr/banners.zs`: three new moments).
-**Rig only, not headset-confirmed** (evidence: `Miniboss/docs/rig_2026-11-16_bigboss/`).
+**Rig only, not headset-confirmed** (evidence: `Miniboss/docs/rig_2026-11-16_bigboss/`, and for the owner's answers of
+09:5x `Miniboss/docs/rig_2026-11-16_bigboss_v2/`).
+
+**Owner's answers (2026-11-16 09:5x)** on the first build's choices: the fight stays as built (a full Boss fight: EX health,
+3 lives, 3-5 thralls); **arrival: "both, same rules. on a timer or we call"**; **the bar black with a red edge** (gold was
+provisional); **the kiosk: five Epic offers instead of LUCKY**. Everything else as built.
 
 ## 1. The Big Boss bar
 
@@ -17,10 +22,12 @@ Built in RSQ Miniboss (`Miniboss/zscript/rsqmb/bigboss.zs`, with small changes t
 - **How it is made:** exactly as the Boss meter (one shared draw, `hud.zs` BarBody / BarIcon): coldcite's well and fill
   (`RSQMBHE` / `RSQMBHW`), 8 tinted steps, the sweeping band, the breathing edge; full, the beat, the brighter band and
   the glint. Photosensitive Mode as the meter.
-- **Colour: gold** (the legendary colour), dark amber empty to pale gold; brighter gold when full. **Provisional: the owner
-  may change it.**
-- **Icon:** the Boss meter's crowned skull made the Big Boss's: the skull gold, a ruby in the crown, white-hot eyes
-  (`RSQMBEK0` dim / `RSQMBEK1` lit, 16 x 16, `Miniboss/tools/gen_exbar.py`); it fills from the bottom with the bar.
+- **Colour: black with a red edge** (owner 09:5x): the fill near black in its 8 steps (the blocks still read), a red border
+  round the bar, the sweeping band, the breathing edge and the full beat in red; the red border beats when full. Beside the
+  Boss meter (red while it fills, gold when full) the two never read alike.
+- **Icon:** the Boss meter's crowned skull made the Big Boss's: the skull and crown black, its outline red, a ruby in the
+  crown, red eyes (`RSQMBEK0` dim / `RSQMBEK1` lit, 16 x 16, `Miniboss/tools/gen_exbar.py`); it fills from the bottom with
+  the bar.
 - **Fills:** +25% for every Boss won (the BOSSWIN moment: a called-in fight's Boss killed by a player, `tierup.zs`
   TierUpOnKill). A Big Boss won adds nothing. Full, it stays full until its Big Boss comes. The fill glides up over 20 tics
   as the meter's does; on a new map or a load it shows what it holds at once.
@@ -33,11 +40,16 @@ Built in RSQ Miniboss (`Miniboss/zscript/rsqmb/bigboss.zs`, with small changes t
 
 ## 2. The Big Boss fight
 
-- **When:** the bar full makes a Big Boss due. **It comes by itself** (not called in), as soon as the Boss fight's
-  guardrails let it: Too Early, Cooldown, Low Health, Near Exit, Too Busy, No Room (and Ignore Spawn Restrictions works on
-  it as on a Boss); **never held by the Map Limit**, and it does not count against it. While it waits the line under the
-  pair says why: `No Big Boss: Cooldown`. It goes before a full Boss meter: the Boss meter keeps filling, but its call-in
-  and its Start Fight card (grey) wait until the Big Boss fight is over.
+- **When (owner 09:5x: "both, same rules. on a timer or we call"):** the bar full makes a Big Boss due, and it comes by
+  exactly a Boss's rules: **called in** (the watch check + Use; or the Start Fight card on the inside of the off wrist,
+  which skips the guardrails) **or by itself** Arrives By Itself (`rsqmb_bf_auto`, 60 s) after the bar filled. Then the
+  Boss fight's guardrails: Too Early, Cooldown, Low Health, Near Exit, Too Busy, No Room (Ignore Spawn Restrictions works
+  on it as on a Boss); **never held by the Map Limit**, and it does not count against it. While it waits the line under
+  the pair says why: `No Big Boss: Cooldown`.
+- **Which one the player calls:** while a Big Boss is due, every call is the Big Boss's (it goes before a full Boss meter;
+  the Boss meter keeps filling and waits). The Start Fight card says so: **BIG (skull) BOSS!**, the banners' red letters
+  and the black skull edged red on a red-bordered card (`RSQMBWC2`, `gen_exbar.py`), in place of the gold **START (skull)
+  FIGHT?** of a Boss; grey **FIGHT NOT READY** when nothing can be called. The full Big Boss bar beats beside the meter.
 - **The machinery is the Boss fight's** (`bossfight.zs` PlanArrival / StartArrival / ArrivalStep, `handler.zs` Bind,
   `fight.zs`): the same thralls (3-5, the world tier's colours), beams, landing slow motion and dark, the charge, the
   segments and shield, the lives, greed, inherited powers, legendary thralls, music. Only the monster is different.
@@ -78,10 +90,14 @@ WINS! over the monster, as the Boss's words.
 ## 4. The win
 
 As a Boss win (world tier +1 with its words, RSQ Score's life crate, the "Miniboss Called" Score row), and **the Boss
-kiosk** (`kiosk.zs`, the SOTN look) in place of its one legendary weapon (no separate legendary drop), with **every offer
-Epic**: LegenDoom's top rarity (each offer is a legendary weapon already). Three offers on three different guns: BD22 VR
-Reloaded rolls six as for a Boss (`roll`) and raises each to Epic by its own `raise` (an effect LegenDoom rolls at Epic on
-that gun); a gun with no Epic effect is passed over (up to eight rolls). Epic's price (900 to start). No LUCKY button (nothing to
+kiosk** (`kiosk.zs`, the SOTN look) in place of its one legendary weapon (no separate legendary drop), with **five offers,
+every one Epic** (owner 09:5x: "MORE offers instead of LUCKY"): LegenDoom's top rarity (each offer is a legendary weapon
+already), **on five different guns where possible**: BD22 VR Reloaded rolls six as for a Boss (`roll`) and raises each to
+Epic by its own `raise` (an effect LegenDoom rolls at Epic on that gun); up to ten rolls; with fewer than five guns that
+have an Epic effect, a second Epic effect on a gun already offered fills the row. The five stand in one row 92 mockup
+pixels apart, a little smaller than a Boss kiosk's three (guns x0.38, their boxes 88 wide, long effect names shrink to fit).
+The LUCKY and REPAIR buttons are numbered apart from the offers now (8 and 9; the console door still takes 3 and 4 on a
+three-offer kiosk). Epic's price (900 to start). No LUCKY button (nothing to
 raise); the note line reads BIG BOSS: EVERY OFFER EPIC (both shown on the rig). The sign's second line reads BIG BOSS -
 EPIC (in the code; above the rig frames' view, not shown).
 
@@ -117,15 +133,36 @@ it was at death comes back with the reload).
   lives and +1UPs piling up) a banner can show later than its moment; with the 20 s cooldown BIG BOSS INCOMING! showed
   with its arrival.
 
-## 8. Choices to confirm (owner)
+## 7b. Shown on the rig after the owner's answers (rig only, not headset-confirmed)
 
-- The bar's **gold** (provisional) and its **icon** (the gold skull with a ruby).
-- **The pair layout:** the Boss meter moves left to sit beside the Big Boss bar (the pair centred under Score).
-- **The Big Boss comes by itself** when the bar fills (no call-in), after the usual guardrails (the 90 s Cooldown after the
-  fourth Boss included), never held by the Map Limit, and goes before a full Boss meter.
-- **A Big Boss win also pays as a Boss win:** the world tier +1, Score's life crate, the same Score row.
-- **The fight is a Boss fight in full** with an EX monster: 3-5 thralls, 3 lives, legendary health when a thrall is
-  legendary. EX monsters have 5000-18000 health of their own (x LegenDoom's factor), so the fight is long.
-- **Epic is the top rarity** (LegenDoom has no rarity above Epic): every offer is an Epic legendary weapon; no LUCKY.
-- **The bar hides during every fight** (with the Boss meter).
-- **The loss** leaves the bar empty (it emptied at the fight's start).
+`Miniboss/docs/rig_2026-11-16_bigboss_v2/` (`run_log.txt`):
+- `bars_black_red_beside_red_boss_meter.png` (run bb_m4): the Boss meter 50% red beside the Big Boss bar 50% black with its
+  red border; the Big Boss bar full (red band, beat) beside the meter at 50%; both full (the meter gold).
+- `card_BIG_BOSS_inside_off_wrist_f00073.png`: the rig's off hand turned inside-wrist (qz_lhand), the card **BIG (skull)
+  BOSS!**; Use (+use): "BIG BOSS CALLED IN (the Start Fight card: no rules)", the arrival (`after_card_use_*`: BIG BOSS
+  INCOMING!, IMP WARLORD, TIER 12, 4 thralls).
+- Run bb_m3: the watch-check call (`rsqmb_callin`): "BIG BOSS CALLED IN (watch check + Use)"; its kiosk
+  `kiosk_five_epic_offers_*`: five offers, all EPIC at 900 G, on five guns (rocket launcher, pistol, plasma gun, shotgun,
+  BFG), readable in the SOTN look.
+- Run bb_m2t: the timer (Arrives By Itself 8 s): the bar full at t41, the Big Boss arriving by itself by t350.
+- Every run: script errors only BD_VoxelPack's four; no VM abort.
+
+## 8. Choices
+
+Answered by the owner (09:5x): the fight as built (EX health, 3 lives, 3-5 thralls); both arrivals by a Boss's rules
+(called in, or Arrives By Itself); the bar black with a red edge and a matching icon; five Epic offers instead of LUCKY.
+
+Still standing, as built (the owner said "everything else as you built it"): the pair layout (the Boss meter moves left to
+sit beside the Big Boss bar, the pair centred under Score); never held by the Map Limit; a Big Boss win also pays as a Boss
+win (world tier +1, Score's life crate, the same Score row); Epic is the top rarity (LegenDoom has none above it); the bar
+hides during every fight with the Boss meter; a loss leaves the bar empty.
+
+## 9. screenblocks on the rig and in the headset
+
+The rig's own ini has `screenblocks=12`; the owner's own `qzdoom.ini` has `screenblocks=11` (and `hud_toggled=false`). Every
+HUD of this pack, and RSQ Score's, draws nothing at 12 by its own choice (`hud.zs` RenderOverlay: `screenblocks > 11`;
+Score hides at 12): the full-screen, no-HUD setting (`togglehud` sets it). QuestZDoom's OpenXR mode
+(`hw_openxrdevice.cpp`) sets screenblocks to 12 itself only while it renders the 3D scene and puts the player's own value
+back in TearDown, before the HUD layer draws; the rig is that same unmodified engine code. So it is a setting, not a rig
+artifact of the flat screen: with the owner's 11 the HUD draws in the headset as on the rig with 11; it would vanish there
+too only if he chose 12 (or pressed togglehud).

@@ -86,7 +86,12 @@ class RSQMB_Kiosk : Actor
 	const BIGK = 0.50;        // map units a SOTN pixel, the big gold words (KIOSK, prices, LUCKY: the mockup's twice-size)
 	const POPT = 2;           // tics a frame of the pop (PRESENTATION_GUIDE.md 2: 0.2 -> 1.35 -> 1.0 over 4 frames)
 
-	enum EGroup { G_BASE, G_OFF0, G_OFF1, G_OFF2, G_CARD, G_NOTE, G_BEAM, G_FX, G_WORD, G_NUM }
+	enum EGroup { G_BASE, G_OFF0, G_OFF1, G_OFF2, G_OFF3, G_OFF4, G_CARD, G_NOTE, G_BEAM, G_FX, G_WORD, G_NUM }
+	const NOFF = 5;           // the most offers a kiosk holds (a Big Boss's: 5; a Boss's: 3)
+	const BOSS_OFFERS = 3;
+	const BIG_OFFERS = 5;     // owner 2026-11-16 09:5x: "5 Epic offers (no LUCKY)"
+	const B_LUCKY = 8;        // what a hand points at besides an offer (0 .. NOFF-1): the LUCKY button ...
+	const B_REPAIR = 9;       // ... and the REPAIR button
 
 	// ---- the offers
 	Array<String> offer;      // "slot|rarity|effect" (RSLD_KioskService)
@@ -138,7 +143,7 @@ class RSQMB_Kiosk : Actor
 	RSQMB_KPart pip;                     // the Score life flying to an offer (LUCKY)
 	Vector3 pipFrom;
 	int pipT0, luckyFx;
-	RSQMB_KPart gun[3];
+	RSQMB_KPart gun[NOFF];
 	RSQMB_KPart beam[8];
 	bool dirty;
 	double lastFy;
@@ -230,7 +235,7 @@ class RSQMB_Kiosk : Actor
 		k.lastFy = k.fy;
 		k.cardFor = -1; k.sel = -1;
 		k.hover[0] = -1; k.hover[1] = -1;
-		for (int i = 0; i < o.Size() && i < 3; i++)
+		for (int i = 0; i < o.Size() && i < (big ? BIG_OFFERS : BOSS_OFFERS); i++)
 		{
 			int r = 0;
 			Array<String> f; o[i].Split(f, "|");
@@ -265,13 +270,13 @@ class RSQMB_Kiosk : Actor
 	// over. Up to eight rolls; "" when no gun has an Epic effect (then no kiosk: the Big Boss drops its legendary).
 	static String EpicRoll(Service lg, int t)
 	{
-		Array<String> got;
+		Array<String> got, spare;
 		Array<int> slots;
-		for (int tries = 0; tries < 8 && got.Size() < 3; tries++)
+		for (int tries = 0; tries < 10 && got.Size() < BIG_OFFERS; tries++)
 		{
 			String all = lg.GetString("roll", "", 6, max(t, 5), null);
 			Array<String> o; all.Split(o, ";");
-			for (int i = 0; i < o.Size() && got.Size() < 3; i++)
+			for (int i = 0; i < o.Size() && got.Size() < BIG_OFFERS; i++)
 			{
 				String of = o[i];
 				for (int step = 0; step < 4 && of != ""; step++)
@@ -282,15 +287,18 @@ class RSQMB_Kiosk : Actor
 					{
 						int sl = f[0].ToInt();
 						if (slots.Find(sl) == slots.Size()) { slots.Push(sl); got.Push(of); }
+						else if (spare.Find(of) == spare.Size()) spare.Push(of);     // a second Epic on a gun already offered
 						break;
 					}
 					of = lg.GetString("raise", of, 0, 0, null);
 				}
 			}
 		}
+		// FIVE DIFFERENT GUNS WHERE POSSIBLE (owner 11-16 09:5x): too few guns with an Epic effect, a second Epic effect on one
+		for (int i = 0; i < spare.Size() && got.Size() < BIG_OFFERS; i++) if (got.Find(spare[i]) == got.Size()) got.Push(spare[i]);
 		String res = "";
 		for (int i = 0; i < got.Size(); i++) res = res .. (i ? ";" : "") .. got[i];
-		if (LogOn()) Console.Printf("RSQMB kiosk: a Big Boss's offers, every one Epic: %s", res != "" ? res : "none (no gun has an Epic effect)");
+		if (LogOn()) Console.Printf("RSQMB kiosk: a Big Boss's %d offers, every one Epic, on %d different guns: %s", got.Size(), slots.Size(), res != "" ? res : "none (no gun has an Epic effect)");
 		return res;
 	}
 
@@ -326,7 +334,7 @@ class RSQMB_Kiosk : Actor
 			parts.Delete(i); pX.Delete(i); pZ.Delete(i); pD.Delete(i); pS.Delete(i); pSY.Delete(i); pG.Delete(i);
 			pSprA.Delete(i); pSprB.Delete(i); pSprC.Delete(i); pShow.Delete(i); pA.Delete(i);
 		}
-		if (g >= G_OFF0 && g <= G_OFF2) gun[g - G_OFF0] = null;
+		if (g >= G_OFF0 && g <= G_OFF4) gun[g - G_OFF0] = null;
 	}
 
 	// A LINE OF SOTN LETTERS (the owner's word sheet, tools/gen_kiosk.py), one sprite a letter, neighbours sharing one
@@ -439,8 +447,8 @@ class RSQMB_Kiosk : Actor
 		String l3 = gold >= 0 ? String.Format("GOLD %d G   LIVES %d", gold, max(0, lives)) : "";
 		int worn, rprice;
 		[worn, rprice] = RepairCost(customer);
-		String sig = String.Format("%s|%s|%s|%d|%d|%d|%d|%d|%d|%d", l1, l2, l3, open, luckyArmed, hover[0] == 3 || hover[1] == 3, worn, rprice,
-			hover[0] == 4 || hover[1] == 4, gold >= rprice);
+		String sig = String.Format("%s|%s|%s|%d|%d|%d|%d|%d|%d|%d", l1, l2, l3, open, luckyArmed, hover[0] == B_LUCKY || hover[1] == B_LUCKY, worn, rprice,
+			hover[0] == B_REPAIR || hover[1] == B_REPAIR, gold >= rprice);
 		if (sig == noteSig) return;
 		noteSig = sig;
 		Clear(G_NOTE);
@@ -449,14 +457,14 @@ class RSQMB_Kiosk : Actor
 		// THE LUCKY BUTTON (point at it and pull the trigger, then pull it on an offer; or alt fire straight on an offer)
 		if (open && any && !luckyUsed && !big)
 		{
-			bool lit = luckyArmed || hover[0] == 3 || hover[1] == 3;
+			bool lit = luckyArmed || hover[0] == B_LUCKY || hover[1] == B_LUCKY;
 			Part(G_NOTE, "KQPP", lit ? 4 : 1, 0, LZ(LUCKY_Y), 0.6, tk * 1.6, tk * 2.2);
 			Text(G_NOTE, "LUCKY", "Y", 1, 0, LZ(LUCKY_Y), 1.0, BIGK * 0.8);
 		}
 		// THE REPAIR BUTTON (Weapon Condition): left of LUCKY; its price under the word, red when the bank is short
 		if (open && worn > 0)
 		{
-			bool rl = hover[0] == 4 || hover[1] == 4;
+			bool rl = hover[0] == B_REPAIR || hover[1] == B_REPAIR;
 			Part(G_NOTE, "KQPP", rl ? 4 : 0, REPAIR_X, LZ(LUCKY_Y), 0.6, tk * 1.3, tk * 2.2);
 			Text(G_NOTE, "REPAIR", "W", 0, REPAIR_X, LZ(LUCKY_Y) + 1.8, 1.0, SMALLK * 1.3);
 			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 1.15);
@@ -470,6 +478,12 @@ class RSQMB_Kiosk : Actor
 	const REPAIR_X = -26.0;   // the REPAIR button's middle, map units right of the counter's middle (left of LUCKY)
 
 	static const double XS[] = { 150, 270, 390 };
+	// FIVE OFFERS (a Big Boss's kiosk): one row, 92 mockup pixels apart, centred on the counter; each a little smaller
+	static const double XS5[] = { 87, 179, 271, 363, 455 };
+	double OX(int i) { return offer.Size() > BOSS_OFFERS ? LX(XS5[clamp(i, 0, 4)]) : LX(XS[clamp(i, 0, 2)]); }
+	double OHalf() { return (offer.Size() > BOSS_OFFERS ? 44 : 50) * K; }    // an offer's box, half its width
+	// a line no wider than the offer's room (five offers: long effect names shrink to fit)
+	double OFit(String s, double k) { double w = TextW(s, 0, k), room = OHalf() * 2 - 4 * K; return w > room ? k * room / w : k; }
 
 	// one offer: its glow and light, the gun, the price plate, the rarity and the effect
 	void BuildOffer(int i)
@@ -477,9 +491,10 @@ class RSQMB_Kiosk : Actor
 		int g = G_OFF0 + i;
 		Clear(g);
 		let lg = Legend();
-		double x = LX(XS[i]);
+		double x = OX(i);
 		double tk = K / RSQMB_KioskFont.TEX;
 		int r = rarity[i];
+		double gk = offer.Size() > BOSS_OFFERS ? 0.38 : 0.45;   // the gun's size (smaller, five abreast)
 		if (!sold[i])
 		{
 			Part(g, "KQCL", r, x, LZ(258), 0.3, tk, 0, "", STYLE_Add, 0.55);
@@ -491,17 +506,17 @@ class RSQMB_Kiosk : Actor
 			{
 				let d = GetDefaultByType(gc);
 				if (d.SpawnState) { gp.sprite = d.SpawnState.sprite; gp.frame = d.SpawnState.frame; }
-				pS[pS.Size() - 1] = d.scale.x * 0.45;
-				pSY[pSY.Size() - 1] = d.scale.y * 0.45;
+				pS[pS.Size() - 1] = d.scale.x * gk;
+				pSY[pSY.Size() - 1] = d.scale.y * gk;
 				gun[i] = gp;
 			}
 		}
 		Part(g, "KQPP", sold[i] ? 4 : r, x, LZ(252), 3, tk);
 		if (sold[i]) Text(g, "SOLD", "R", 0, x, LZ(252), 4, BIGK * 0.8);
 		else Text(g, String.Format("%d G", price[i]), "Y", 1, x, LZ(252), 4, BIGK * 0.8);
-		Text(g, RarName(r), sold[i] ? "D" : RarCol(r), 0, x, LZ(267), 3, SMALLK * 0.8);
+		Text(g, RarName(r), sold[i] ? "D" : RarCol(r), 0, x, LZ(267), 3, OFit(RarName(r), SMALLK * 0.8));
 		String eff = lg ? lg.GetString("effect", offer[i], 0, 0, null) : "";
-		Text(g, eff, sold[i] ? "D" : "N", 0, x, LZ(280), 3, SMALLK * 0.85);
+		Text(g, eff, sold[i] ? "D" : "N", 0, x, LZ(280), 3, OFit(eff, SMALLK * 0.85));
 		gCX[g] = x; gCZ[g] = LZ(250);
 	}
 
@@ -620,7 +635,7 @@ class RSQMB_Kiosk : Actor
 				s = Photo() ? 1.0 : PopAt(age);
 				if (age < 4 * POPT + 2) anim = true;
 			}
-			if (g >= G_OFF0 && g <= G_OFF2 && (hover[0] == g - G_OFF0 || hover[1] == g - G_OFF0)) s *= 1.12;
+			if (g >= G_OFF0 && g <= G_OFF4 && (hover[0] == g - G_OFF0 || hover[1] == g - G_OFF0)) s *= 1.12;
 			if (s != gS[g] || a != gAlpha[g]) anim = true;
 			gS[g] = s; gAlpha[g] = a;
 		}
@@ -769,10 +784,14 @@ class RSQMB_Kiosk : Actor
 	// an offer's box in the kiosk's plane: from above its gun to under its effect line, 100 mockup pixels wide
 	bool InBox(int i, double lx, double lz)
 	{
-		if (i == 3) return open && !luckyUsed && !big && abs(lx) <= 60 * K && abs(lz - LZ(LUCKY_Y)) <= 30 * K;
-		if (i == 4) { int w, p; [w, p] = RepairCost(customer); return open && w > 0 && abs(lx - REPAIR_X) <= 50 * K && abs(lz - LZ(LUCKY_Y)) <= 24 * K; }
-		return abs(lx - LX(XS[i])) <= 50 * K && lz <= LZ(200) && lz >= LZ(290);
+		if (i == B_LUCKY) return open && !luckyUsed && !big && abs(lx) <= 60 * K && abs(lz - LZ(LUCKY_Y)) <= 30 * K;
+		if (i == B_REPAIR) { int w, p; [w, p] = RepairCost(customer); return open && w > 0 && abs(lx - REPAIR_X) <= 50 * K && abs(lz - LZ(LUCKY_Y)) <= 24 * K; }
+		if (i < 0 || i >= offer.Size()) return false;
+		return abs(lx - OX(i)) <= OHalf() && lz <= LZ(200) && lz >= LZ(290);
 	}
+
+	// what a hand can point at, in turn: the offers, then the LUCKY and REPAIR buttons
+	int Target(int j) { return j < offer.Size() ? j : (j == offer.Size() ? B_LUCKY : B_REPAIR); }
 
 	void Interact()
 	{
@@ -790,7 +809,7 @@ class RSQMB_Kiosk : Actor
 			// touching: the hand in an offer's box
 			Vector3 rel = o - home;
 			double ld = rel dot F, lx = rel dot R, lz = rel.z;
-			for (int i = 0; i < 5 && abs(ld) < 12; i++) if ((i >= 3 || i < offer.Size()) && InBox(i, lx, lz)) { hover[h] = i; SetHit(h, o); }
+			for (int j = 0; j < offer.Size() + 2 && abs(ld) < 12; j++) { int i = Target(j); if (InBox(i, lx, lz)) { hover[h] = i; SetHit(h, o); } }
 			// pointing: the ray into the kiosk's plane
 			double dn = dir dot F;
 			if (hover[h] < 0 && dn < -0.05)
@@ -801,21 +820,21 @@ class RSQMB_Kiosk : Actor
 					Vector3 hit = o + dir * t;
 					Vector3 hr = hit - home;
 					double hx = hr dot R, hz = hr.z;
-					for (int i = 0; i < 5; i++) if ((i >= 3 || i < offer.Size()) && InBox(i, hx, hz)) { hover[h] = i; SetHit(h, hit); }
+					for (int j = 0; j < offer.Size() + 2; j++) { int i = Target(j); if (InBox(i, hx, hz)) { hover[h] = i; SetHit(h, hit); } }
 					if (LogOn() && level.maptime % 35 == 0)
 						Console.Printf("RSQMB kiosk t%d: %s hand's ray meets the kiosk %.1f right, %.1f up (%.0f out) -> %d", level.maptime, h ? "off" : "main", hx, hz, t, hover[h]);
 				}
 			}
 			if (hover[h] >= 0 && hover[h] != was)
 			{
-				if (hover[h] < 3) { sel = hover[h]; selTic = level.maptime; }
+				if (hover[h] < NOFF) { sel = hover[h]; selTic = level.maptime; }
 				A_StartSound("misc/chat2", CHAN_AUTO, CHANF_OVERLAP, 0.25, ATTN_NONE, 2.0);
 				if (LogOn()) Console.Printf("RSQMB kiosk t%d: %s hand points at offer %d", level.maptime, h ? "off" : "main", hover[h]);
 			}
 			if (hover[h] >= 0 && beamHand < 0) beamHand = h;
 		}
 		// the card follows what is pointed at; it stays on the last one a second after the hand moves off
-		int h0 = hover[0] < 3 ? hover[0] : -1, h1 = hover[1] < 3 ? hover[1] : -1;
+		int h0 = hover[0] < NOFF ? hover[0] : -1, h1 = hover[1] < NOFF ? hover[1] : -1;
 		int want = h0 >= 0 ? h0 : (h1 >= 0 ? h1 : (level.maptime - selTic < TICRATE ? sel : -1));
 		if (want != cardFor || (want >= 0 && CardKey(want) != cardSig))
 		{
@@ -866,7 +885,7 @@ class RSQMB_Kiosk : Actor
 			p.sprite = k == 0 ? pSprA[i] : (k == 1 ? pSprB[i] : pSprC[i]);
 		}
 		Vector3 F = (cos(fy), sin(fy), 0), R = (-sin(fy), cos(fy), 0);
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < NOFF; i++)
 		{
 			let g = gun[i];
 			if (!g) continue;
@@ -903,7 +922,7 @@ class RSQMB_Kiosk : Actor
 	{
 		int at = level.maptime + delay;
 		if (wordAt.Size()) at = max(at, wordAt[wordAt.Size() - 1] + delay);
-		wordQ.Push(s); wordC.Push(col); wordAt.Push(at); wordX.Push(LX(XS[i]));
+		wordQ.Push(s); wordC.Push(col); wordAt.Push(at); wordX.Push(OX(i));
 	}
 	void WordTick()
 	{
@@ -927,7 +946,7 @@ class RSQMB_Kiosk : Actor
 		double q = clamp((t - pipT0) / (6.0 * POPT), 0.0, 1.0);
 		double e = 1 - (1 - q) ** 3;
 		Vector3 F = (cos(fy), sin(fy), 0), R = (-sin(fy), cos(fy), 0);
-		Vector3 to = home + R * LX(XS[luckyFx]) + F * 6 + (0, 0, LZ(222));
+		Vector3 to = home + R * OX(luckyFx) + F * 6 + (0, 0, LZ(222));
 		pip.SetOrigin(pipFrom + (to - pipFrom) * e + (0, 0, 60 * K * sin(q * 180)), true);
 		if (q < 1) return;
 		pip.Destroy();
@@ -950,16 +969,16 @@ class RSQMB_Kiosk : Actor
 		Clear(G_FX);
 		flashTic = level.maptime;
 		double tk = K / RSQMB_KioskFont.TEX;
-		Part(G_FX, "KQFL", 0, LX(XS[i]), LZ(222), 6, tk, 0, "", STYLE_Add, Photo() ? 0.3 : 0.9);
-		gCX[G_FX] = LX(XS[i]); gCZ[G_FX] = LZ(222);
+		Part(G_FX, "KQFL", 0, OX(i), LZ(222), 6, tk, 0, "", STYLE_Add, Photo() ? 0.3 : 0.9);
+		gCX[G_FX] = OX(i); gCZ[G_FX] = LZ(222);
 		gPop[G_FX] = level.maptime; gGone[G_FX] = level.maptime + 4;
 		Layout(true);
 	}
 
 	void Buy(int i, int hand)
 	{
-		if (open && i == 4) { Repair(hand); return; }
-		if (open && i == 3)
+		if (open && i == B_REPAIR) { Repair(hand); return; }
+		if (open && i == B_LUCKY)
 		{
 			if (luckyUsed) return;
 			luckyArmed = !luckyArmed;
@@ -1128,6 +1147,8 @@ class RSQMB_KioskInput : EventHandler
 		int i = e.Args[2];
 		if (e.IsManual && !k.open) { Console.Printf("RSQMB kiosk: not open"); return; }
 		if (i < 0) i = k.hover[hand];
+		// (the door's old numbers: 3 LUCKY, 4 REPAIR, on a kiosk of three offers)
+		else if (k.offer.Size() <= RSQMB_Kiosk.BOSS_OFFERS && (i == 3 || i == 4)) i = i == 3 ? RSQMB_Kiosk.B_LUCKY : RSQMB_Kiosk.B_REPAIR;
 		if (e.Args[0] == 1) k.Buy(i, hand);
 		else if (e.Args[0] == 2) k.Lucky(i, hand);
 	}

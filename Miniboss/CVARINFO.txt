@@ -69,7 +69,7 @@ server bool   rsqmb_kiosk_log      = false;  // Kiosk Log: the drop, opening, ev
 server float  rsqmb_kiosk_repair_per = 1.0;   // REPAIR (with RSQ Gun Cards' Weapon Condition): gold a missing condition point, over every gun carried
 server int    rsqmb_kiosk_repair_min = 10;    // REPAIR: the least a repair costs
 // THE BIG BOSS (owner 2026-11-16 08:40; bigboss.zs, design/BIG_BOSS.md): the Big Boss bar beside the Boss meter fills 25% for
-// every Boss won; full, an EX-tier monster of RSQ Monsters comes with thralls (the Boss fight's machinery), and its kiosk's
-// offers are all Epic.
+// every Boss won; full, an EX-tier monster of RSQ Monsters comes with thralls (the Boss fight's machinery: called in, or by
+// itself after Arrives By Itself), and its kiosk has five offers, all Epic.
 server bool   rsqmb_ex             = true;   // Big Boss: the Big Boss bar and its fight (off: no bar, nothing fills, no Big Boss)
 server noarchive string rsqmb_ex_keep = "";  // the Big Boss bar at a death, given back when that map reloads ("<map>|<fill>"; bigboss.zs, as RSQ Score's gold)

@@ -201,7 +201,7 @@ extend class RSQMB_Handler
 		Color lo, mid, hi;
 		if (ready) { lo = Color(255, 190, 120, 10); mid = Color(255, 255, 190, 30); hi = Color(255, 255, 228, 130); }
 		else { lo = Color(255, 90, 10, 8); mid = Color(255, 220, 40, 30); hi = Color(255, 255, 150, 120); }
-		BarBody(te, tw, x, y, w, h, hudShown, full, lo, mid, hi, t, e.FracTic, photo);
+		BarBody(te, tw, x, y, w, h, hudShown, full, lo, mid, hi, hi, t, e.FracTic, photo);
 		BarIcon("RSQMBSK0", "RSQMBSK1", x, y, h, hudShown, full, hi, t, photo);
 		if (exOn) DrawExBar(e, te, tw, ex, y, w, h, t, dt, photo);
 
@@ -226,7 +226,8 @@ extend class RSQMB_Handler
 	// THE BAR ITSELF (the series' bars, PRESENTATION_GUIDE.md 4): coldcite's well and fill (RSQMBHE / RSQMBHW), the fill
 	// tinted in SLICES steps, a beat when full, the band sweeping through the fill, the breathing edge (filling) or the
 	// glint (full). Shared by the Boss meter and the Big Boss bar, so the two are drawn exactly alike.
-	ui void BarBody(TextureID te, TextureID tw, double x, double y, double w, double h, double shown, bool full, Color lo, Color mid, Color hi, double t, double frac, bool photo)
+	// glow: the colour of the band, the edge and the beat (the Boss meter: its fill's top colour; the Big Boss bar: its red)
+	ui void BarBody(TextureID te, TextureID tw, double x, double y, double w, double h, double shown, bool full, Color lo, Color mid, Color hi, Color glow, double t, double frac, bool photo)
 	{
 		double beat = full ? 0.5 + 0.5 * sin(t * RSQMB_A11y.Deg(BEAT)) : 0.0;
 		double beatK = photo ? 0.5 : 1.0;
@@ -240,19 +241,19 @@ extend class RSQMB_Handler
 			double k01 = (i + 0.5) / SLICES;
 			Slab(tw, x, y, w, h, int(s0), int(ceil(min(right, s1))), ByLevel(lo, mid, hi, min(k01, max(shown, 0.75))), 1.0, false);
 		}
-		if (full) Slab(tw, x, y, w, h, x, right, hi, 0.28 * beat * beatK, true);
+		if (full) Slab(tw, x, y, w, h, x, right, glow, 0.28 * beat * beatK, true);
 		// the band: an eighth of the bar wide, sweeping left to right through the fill (brighter when full)
 		double ph = (t % SWEEP) / SWEEP;
 		double bw = w * 0.125;
 		double bR = x + (w * shown + bw) * ph;
 		double bL = bR - bw;
 		if (bL < right)
-			Slab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), hi, (photo ? 0.25 : (full ? 0.55 : 0.45)), true);
+			Slab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), glow, (photo ? 0.25 : (full ? 0.55 : 0.45)), true);
 		if (!full)
 		{
 			// the edge: a bright line where the fill ends, breathing (held still in Photosensitive Mode)
-			double glow = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
-			Screen.DrawThickLine(int(right), int(y), int(right), int(y + h), max(1.0, w / 90.0), hi, int(255 * glow));
+			double ga0 = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
+			Screen.DrawThickLine(int(right), int(y), int(right), int(y + h), max(1.0, w / 90.0), glow, int(255 * ga0));
 		}
 		else if (!photo)
 		{
@@ -294,9 +295,9 @@ extend class RSQMB_Handler
 	}
 
 	// ---- THE BIG BOSS BAR (bigboss.zs; owner 2026-11-16 08:40) -------------------------------------------------------------
-	// Beside the Boss meter, the same size and made the same way (BarBody, BarIcon): GOLD, the legendary colour (provisional:
-	// the owner may change it), dark amber empty to pale gold; its icon the Big Boss's skull (RSQMBEK0 dim / RSQMBEK1 lit,
-	// tools/gen_exbar.py: the crowned skull in gold with a ruby in its crown), filling with it. +25% a Boss won: the fill
+	// Beside the Boss meter, the same size and made the same way (BarBody, BarIcon): BLACK WITH A RED EDGE (owner 11-16
+	// 09:5x; gold before, provisional); its icon the Big Boss's skull (RSQMBEK0 dim / RSQMBEK1 lit, tools/gen_exbar.py: the
+	// crowned skull in black, edged red, a ruby in its crown), filling with it. +25% a Boss won: the fill
 	// glides up over 20 tics as the meter's does. Full (a Big Boss due): the beat, the brighter band and the glint, as the
 	// Boss meter full. Hidden with the meter (during a fight, Show Meter off), and with Big Boss (rsqmb_ex) off.
 	ui double exHud;
@@ -329,11 +330,20 @@ extend class RSQMB_Handler
 		if (fill > exHud) exHud = min(fill, exHud + dt / 20.0);
 		else exHud = fill;
 		bool full = ready && exHud >= 0.999;
-		Color lo, mid, hi;
-		if (ready) { lo = Color(255, 200, 130, 20); mid = Color(255, 255, 214, 70); hi = Color(255, 255, 246, 190); }
-		else { lo = Color(255, 110, 62, 4); mid = Color(255, 236, 170, 24); hi = Color(255, 255, 232, 130); }
-		BarBody(te, tw, x, y, w, h, exHud, full, lo, mid, hi, t, e.FracTic, photo);
-		BarIcon("RSQMBEK0", "RSQMBEK1", x, y, h, exHud, full, hi, t, photo);
+		// BLACK WITH A RED EDGE (owner 11-16 09:5x; was gold, provisional): the fill near black in its steps (the blocks still
+		// read), the band, the breathing edge and the beat in red, and a red border round the bar, so it never reads as the
+		// Boss meter beside it (red while it fills, gold when full)
+		Color lo = Color(255, 8, 6, 8), mid = Color(255, 26, 20, 24), hi = Color(255, 54, 40, 46);
+		Color red = ready ? Color(255, 255, 44, 30) : Color(255, 230, 28, 22);
+		BarBody(te, tw, x, y, w, h, exHud, full, lo, mid, hi, red, t, e.FracTic, photo);
+		// the red border (thick lines: no clip rectangle, it shows on the projected HUD in VR)
+		double bt = max(1.0, h / 7.0);
+		int ba = int(255 * (full ? (photo ? 0.85 : 0.75 + 0.25 * sin(t * RSQMB_A11y.Deg(BEAT))) : 0.85));
+		Screen.DrawThickLine(x, y, x + w, y, bt, red, ba);
+		Screen.DrawThickLine(x, y + h, x + w, y + h, bt, red, ba);
+		Screen.DrawThickLine(x, y, x, y + h, bt, red, ba);
+		Screen.DrawThickLine(x + w, y, x + w, y + h, bt, red, ba);
+		BarIcon("RSQMBEK0", "RSQMBEK1", x, y, h, exHud, full, red, t, photo);
 	}
 
 	// ============================================================================
