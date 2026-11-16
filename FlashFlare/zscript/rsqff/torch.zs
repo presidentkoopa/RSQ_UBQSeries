@@ -319,7 +319,7 @@ class RSQFF_Torches : EventHandler
 		if (!w) return;
 		RSQFF_Handler.RaiseOff(p, w);
 		phase[n] = T_OFF;
-		pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);
+		if (SInt("rsqff_sound", 1) > 0) pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);   // FF1: Sounds gates it
 		RSQFF_Buzzer.Start(pmo, 1, 0.25, 3);
 		if (Debug(p)) Console.Printf("RSQFF torch take t%d: the flashlight in the off hand (had %s)", level.maptime, prevOff[n] == "" ? "nothing" : prevOff[n]);
 		SetOn(pmo, n, true);
@@ -332,7 +332,7 @@ class RSQFF_Torches : EventHandler
 		resume[n] = false;
 		LightsOff(n);
 		OffBack(pmo, n);
-		pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);
+		if (SInt("rsqff_sound", 1) > 0) pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);   // FF1: Sounds gates it
 		if (Debug(pmo.player)) Console.Printf("RSQFF torch back t%d: on the clip again", level.maptime);
 	}
 
@@ -342,16 +342,22 @@ class RSQFF_Torches : EventHandler
 		// THE BATTERY (battery.zs): an empty one does not switch on (the click, and it stays off)
 		if (on && RSQFF_Battery.Empty(n))
 		{
-			pmo.A_StartSound("rsqff/click", CHAN_AUTO, CHANF_LOCAL, 0.6);
+			if (SInt("rsqff_sound", 1) > 0) pmo.A_StartSound("rsqff/click", CHAN_AUTO, CHANF_LOCAL, 0.6);
 			if (Debug(pmo.player)) Console.Printf("RSQFF torch t%d: the battery is empty: it stays off", level.maptime);
 			on = false;
 			if (phase[n] == T_OFF) return;
 		}
 		phase[n] = on ? T_ON : T_OFF;
-		if (on && SInt("rsqff_fl_color", 20) == RANDOM_COL) pick[n] = Six(random[rsqff_torch](0, 5));
+		if (on && SInt("rsqff_fl_color", 20) == RANDOM_COL)
+		{
+			// FF10 (11-16): a new colour at each switch-on, never the one it had
+			int was = pick[n], nw = was;
+			for (int t = 0; t < 8 && nw == was; t++) nw = Six(random[rsqff_torch](0, 5));
+			pick[n] = nw;
+		}
 		if (!on) LightsOff(n);
 		traceAt[n] = 0;
-		pmo.A_StartSound("rsqff/click", CHAN_AUTO, CHANF_LOCAL, 0.6);
+		if (SInt("rsqff_sound", 1) > 0) pmo.A_StartSound("rsqff/click", CHAN_AUTO, CHANF_LOCAL, 0.6);
 		RSQFF_Buzzer.Start(pmo, 1, 0.15, 2);
 		if (Debug(pmo.player))
 		{
@@ -548,8 +554,9 @@ class RSQFF_Torches : EventHandler
 			k.pitch = 90 + realPitch;
 			// BEAM LENGTH (owner 11-05 08:30: "can the cone taper off after a few meters"): the visible cone is its own
 			// length, Beam Length metres (default 4), and fades out over it; the light still reaches the whole range.
-			double coneLen = clamp(SFloat("rsqff_fl_cone_m", 4.0), 1.0, 15.0) * RSQFF_Geo.Vu();
-			coneLen = min(coneLen, double(range));
+			// FF3 (11-16): the cone is no longer cut at the light's range (Quest quality 13.2 m made 14 and 15 m the same as
+			// 13); a low battery still shortens it, as it shortens the light.
+			double coneLen = clamp(SFloat("rsqff_fl_cone_m", 4.0), 1.0, 15.0) * RSQFF_Geo.Vu() * clamp(dimI, 0.1, 1.0);
 			double len = coneLen;
 			if (hitDist[n] > 0)
 			{

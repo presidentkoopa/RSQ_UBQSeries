@@ -151,9 +151,18 @@ class RSQFF_Battery play
 		return h.dimI[n], h.dimIn[n], h.dimOut[n];
 	}
 
-	// Legion of Bones' monsters (LOB_v1.05 decorate, read): its living Double Death copies and every undead
+	// Legion of Bones' monsters (LOB_v1.05 decorate, read): its living Double Death copies and every undead.
+	// FF7 (11-16): only with Legion of Bones loaded (two of its own classes no other set names: LOBDoomImp, ConqCube), so
+	// another mod's "Reaper" or "Balrog" drops nothing.
+	static bool LobLoaded()
+	{
+		String a = "LOBDoomImp", b = "ConqCube";
+		Class<Actor> ca = a, cb = b;
+		return ca != null || cb != null;
+	}
 	static bool IsLob(Actor a)
 	{
+		if (!LobLoaded()) return false;
 		static const Name LOBS[] = { 'LOBZombieMan', 'LOBShotgunGuy', 'LOBChaingunGuy', 'LOBDoomImp', 'LOBDemon', 'LOBSpectre',
 			'LOBLostSoul', 'LOBHellKnight', 'LOBBaronOfHell', 'LOBCacodemon', 'LOBRevenant', 'LOBMancubus', 'LOBArachnotron',
 			'LOBArchvile', 'LOBSpiderMastermind', 'SkullZombie', 'SkullShotgunner', 'SkullChaingunner', 'SkeletonImp',

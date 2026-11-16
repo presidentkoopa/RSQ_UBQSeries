@@ -61,6 +61,9 @@ OptionMenu "RSQFF_Options"
 	Option "Beam Look", "rsqff_fl_style", "RSQFF_LightStyle"
 	Option "DarkDoomZ Beam Type", "rsqff_fl_ddz_type", "RSQFF_DdzType", "rsqff_fl_style", 0, 0
 	Option "DarkDoomZ Spill Light", "rsqff_fl_ddz_spill", "OnOff", "rsqff_fl_style", 0, 0
+	// FF2 (11-16): under the DarkDoomZ look its type sets how far the light reaches; Beam Quality still sets the cone,
+	// its dust and the trace (so the row stays live), and this line says so
+	StaticText "With DarkDoomZ: Beam Type sets the reach, Quality the cone", "DarkGray"
 	StaticText " "
 	Submenu "Test and Debug", "RSQFF_Test"
 	RSQFFResetAll "Reset All", "Reset all RSQ FnF settings?"
@@ -82,15 +85,17 @@ OptionMenu "RSQFF_Test"
 	TextField "Off Grip Keys", "rsqff_keys_off"
 	StaticText " "
 	StaticText "Pocket", "Gold"
-	Slider "Forward (m)", "rsqff_pocket_f", -0.10, 0.40, 0.01, 2
-	Slider "Toward Main Hand (m)", "rsqff_pocket_l", -0.40, 0.40, 0.01, 2
-	Slider "Height (m)", "rsqff_pocket_u", -0.90, 0.10, 0.01, 2
-	Slider "Reach (m)", "rsqff_pocket_r", 0.04, 0.30, 0.01, 2
+	// FF5 (11-16): these grey while RSQ Tactical Rig's flare holster holds the flares (the pocket is off then); the clip's
+	// place below greys while the rig hangs the flashlight beside it (Clip Reach still applies)
+	RSQFFRigSlider "Forward (m)", "rsqff_pocket_f", -0.10, 0.40, 0.01, 2, 1
+	RSQFFRigSlider "Toward Main Hand (m)", "rsqff_pocket_l", -0.40, 0.40, 0.01, 2, 1
+	RSQFFRigSlider "Height (m)", "rsqff_pocket_u", -0.90, 0.10, 0.01, 2, 1
+	RSQFFRigSlider "Reach (m)", "rsqff_pocket_r", 0.04, 0.30, 0.01, 2, 1
 	StaticText " "
 	StaticText "Flashlight Clip", "Gold"
-	Slider "Forward (m)", "rsqff_fl_clip_f", -0.10, 0.40, 0.01, 2
-	Slider "Toward Off Hand (m)", "rsqff_fl_clip_l", -0.40, 0.40, 0.01, 2
-	Slider "Height (m)", "rsqff_fl_clip_u", -0.90, 0.10, 0.01, 2
+	RSQFFRigSlider "Forward (m)", "rsqff_fl_clip_f", -0.10, 0.40, 0.01, 2, 2
+	RSQFFRigSlider "Toward Off Hand (m)", "rsqff_fl_clip_l", -0.40, 0.40, 0.01, 2, 2
+	RSQFFRigSlider "Height (m)", "rsqff_fl_clip_u", -0.90, 0.10, 0.01, 2, 2
 	Slider "Reach (m)", "rsqff_fl_clip_r", 0.04, 0.30, 0.01, 2
 	StaticText " "
 	Option "Debug Log", "rsqff_debug", "OnOff"

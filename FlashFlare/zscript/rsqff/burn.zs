@@ -27,6 +27,7 @@ class RSQFF_Burner : Actor
 	int green;                 // the current colour step
 	bool lightOn;
 	bool held;                 // the flare in a hand (the budget keeps it lit first)
+	bool crackle;              // its looping crackle is playing (FF13: it follows Sounds while it burns)
 	transient TextureID texFlame, texSpark, texSmoke;
 	transient bool texReady;
 
@@ -43,7 +44,8 @@ class RSQFF_Burner : Actor
 		litTic = level.maptime;
 		flick = 1.0;
 		green = 70;
-		if (SFlag("rsqff_sound", true)) A_StartSound("rsqff/burn", CHAN_BODY, CHANF_LOOPING, 0.28, 1.4);
+		crackle = SFlag("rsqff_sound", true);
+		if (crackle) A_StartSound("rsqff/burn", CHAN_BODY, CHANF_LOOPING, 0.28, 1.4);
 	}
 
 	// carried on from another burner (the hand's light into the thrown flare)
@@ -51,7 +53,8 @@ class RSQFF_Burner : Actor
 	{
 		burnTotal = from.burnTotal; burnLeft = from.burnLeft; sput = from.sput; litTic = from.litTic;
 		dark = from.dark; darkFade = from.darkFade; flick = from.flick; green = from.green;
-		if (SFlag("rsqff_sound", true)) A_StartSound("rsqff/burn", CHAN_BODY, CHANF_LOOPING, 0.28, 1.4);
+		crackle = SFlag("rsqff_sound", true);
+		if (crackle) A_StartSound("rsqff/burn", CHAN_BODY, CHANF_LOOPING, 0.28, 1.4);
 	}
 
 	virtual Vector3 TipOffset() { return (0, 0, 0); }
@@ -75,8 +78,9 @@ class RSQFF_Burner : Actor
 		spent = true;
 		LightOff();
 		A_StopSound(CHAN_BODY);
+		crackle = false;
 		if (SFlag("rsqff_sound", true)) A_StartSound("rsqff/out", CHAN_BODY, 0, 0.5, 1.4);
-		Smoke(6, true);
+		Smoke(6, false);   // FF11 (11-16): the burn-out puff only with Smoke on
 	}
 
 	// one burning tic
@@ -86,6 +90,17 @@ class RSQFF_Burner : Actor
 		if (burnLeft <= 0) { Spend(); return; }
 		burnLeft--;
 		if (sput > 0) sput--;
+		// FF13 (11-16): Sounds turned off while it burns stops the crackle, turned on starts it (checked twice a second)
+		if ((level.maptime & 15) == 0)
+		{
+			bool want = SFlag("rsqff_sound", true);
+			if (want != crackle)
+			{
+				crackle = want;
+				if (want) A_StartSound("rsqff/burn", CHAN_BODY, CHANF_LOOPING, 0.28, 1.4);
+				else A_StopSound(CHAN_BODY);
+			}
+		}
 		Lamp();
 		Particles();
 	}
@@ -196,7 +211,7 @@ class RSQFF_Flare : RSQFF_Burner
 	const HUSK = 10;           // seconds a spent flare lies before it goes
 	int age, spentAt;
 	int ownerNum;
-	Actor lastHit;             // the monster this flight already struck (once each)
+	Array<Actor> hitThisFlight;   // the monsters this flight already struck (once each; FF9: was only the last one)
 
 	Default
 	{
@@ -227,10 +242,10 @@ class RSQFF_Flare : RSQFF_Burner
 	// FnF's own throw (a missile): the first touch of each monster this flight, while it really flies
 	override int SpecialMissileHit(Actor victim)
 	{
-		if (victim && victim != target && victim != lastHit && victim.bSHOOTABLE && victim.bISMONSTER && victim.Health > 0
-			&& vel.Length() > 2.0)
+		if (victim && victim != target && hitThisFlight.Find(victim) == hitThisFlight.Size() && victim.bSHOOTABLE && victim.bISMONSTER
+			&& victim.Health > 0 && vel.Length() > 2.0)
 		{
-			lastHit = victim;
+			hitThisFlight.Push(victim);
 			RSQFF_Fire.Hit(self, victim, target, true, !spent);
 		}
 		return -1;
@@ -268,6 +283,8 @@ class RSQFF_Flare : RSQFF_Burner
 		Super.Tick();
 		if (bDestroyed || IsFrozen()) return;
 		age++;
+		// FF1 (11-16): Sounds off silences the bounce knock too
+		if (age % 16 == 1) BounceSound = SFlag("rsqff_sound", true) ? Sound("rsqff/bounce") : Sound("");
 		// SHOOT OUT FLARES (rsqff_shootout): shootable while it burns, unless something holds it (pass-through)
 		if (age % 8 == 1)
 		{
@@ -276,7 +293,7 @@ class RSQFF_Flare : RSQFF_Burner
 		}
 		bool grounded = pos.z <= floorz + 0.25 || bOnMobj;
 		// at rest it is no longer a missile (RSQ Grenade thrown.zs: a missile that rolls into a wall would die on it)
-		if (bMissile && (!bBOUNCEONWALLS || (grounded && abs(vel.z) < 0.6))) { bMissile = false; lastHit = null; }
+		if (bMissile && (!bBOUNCEONWALLS || (grounded && abs(vel.z) < 0.6))) { bMissile = false; hitThisFlight.Clear(); }
 		if (!grounded)
 		{
 			pitch += 3.5;           // RSQ Grenade thrown.zs: about one lazy turn per two seconds

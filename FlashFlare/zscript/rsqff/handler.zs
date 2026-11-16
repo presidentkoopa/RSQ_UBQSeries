@@ -55,6 +55,7 @@ class RSQFF_Handler : EventHandler
 	RSQFF_HeldLight carrier[MAXPLAYERS];
 	String prevOff[MAXPLAYERS];
 	int takeTic[MAXPLAYERS];
+	const TAKE_WAIT = 6 * TICRATE;   // FF4: how long a take waits for the two-hand steadying to let go
 	int takeWant[MAXPLAYERS];         // a take asked for while the engine steadies the gun (level.maptime + 1), done when it lets go
 	bool gripDown[MAXPLAYERS];
 	int trigKeyTic[MAXPLAYERS];       // when a key bound to +oh_attack last went down with a flare out (InputProcess)
@@ -175,7 +176,7 @@ class RSQFF_Handler : EventHandler
 		phase[n] = PH_UNLIT;
 		RSQFF_Held(w).burning = false;
 		takeTic[n] = level.maptime;
-		pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);
+		if (SNum("rsqff_sound", 1) > 0) pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);   // FF1: Sounds gates it
 		RSQFF_Buzzer.Start(pmo, 1, 0.25, 3);
 		if (Debug(p)) Console.Printf("RSQFF take t%d: a flare in the off hand (had %s), %d left in the pocket", level.maptime, prevOff[n] == "" ? "nothing" : prevOff[n], pmo.CountInv("RSQFF_Ammo"));
 	}
@@ -187,7 +188,7 @@ class RSQFF_Handler : EventHandler
 		phase[n] = PH_NONE;
 		pmo.GiveInventory("RSQFF_Ammo", 1);
 		OffBack(pmo, n);
-		if (sound) pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);
+		if (sound && SNum("rsqff_sound", 1) > 0) pmo.A_StartSound("rsqff/take", CHAN_AUTO, CHANF_LOCAL, 0.5);
 		if (Debug(pmo.player)) Console.Printf("RSQFF back t%d: in the pocket again (%d)", level.maptime, pmo.CountInv("RSQFF_Ammo"));
 	}
 
@@ -294,7 +295,17 @@ class RSQFF_Handler : EventHandler
 		Budget();
 		let me = players[consoleplayer];
 		if (me && me.mo && On()) Hands(me.mo);
+		// FF5 (11-16): what RSQ Tactical Rig answers, kept for the menu (ui code reads it, cannot ask a service): the
+		// pocket rows and the clip's place rows grey while the rig holds the flares / hangs the clip
+		if ((level.maptime % 17) == 0 && me && me.mo)
+		{
+			menuRigPocket = RSQFF_Geo.RigFlareHome(me.mo);
+			bool says; Vector3 at;
+			[says, at] = RSQFF_Geo.RigTorch(me.mo);
+			menuRigClip = says;
+		}
 	}
+	bool menuRigPocket, menuRigClip;
 
 	// the held flare's state against what the hand really holds; the light kept at the drawn burning end
 	private void Keep(PlayerPawn pmo, int n)
@@ -303,11 +314,18 @@ class RSQFF_Handler : EventHandler
 		// THE TAKE WAITS FOR THE ENGINE'S TWO-HAND STEADYING: the off grip with the hands under 0.5 m apart (the pocket is
 		// across the chest, near the gun hand) latches it on the grip's rising edge (QuestZDoom VrInputDefault.cpp) and
 		// hides whatever the off hand holds until the grip is let go (hw_weapon.cpp); an off-hand weapon raised meanwhile
-		// can arrive invisible (RSQ Tactical Rig's finding). So the flare comes up the tic the grip lets go (2 s at most).
+		// can arrive invisible (RSQ Tactical Rig's finding). So the flare comes up the tic the grip lets go. FF4 (11-16): it
+		// waits as long as the grip is held, up to TAKE_WAIT (was 2 s, then dropped without a word); past that a low double
+		// buzz on the off hand says the take was let go.
 		if (takeWant[n] > 0)
 		{
-			if (level.maptime - takeWant[n] > 2 * TICRATE) takeWant[n] = 0;
-			else if ((p.WeaponState & WF_TWOHANDSTABILIZED) == 0) { takeWant[n] = 0; Take(pmo, n); }
+			if ((p.WeaponState & WF_TWOHANDSTABILIZED) == 0) { takeWant[n] = 0; Take(pmo, n); }
+			else if (level.maptime - takeWant[n] > TAKE_WAIT)
+			{
+				takeWant[n] = 0;
+				RSQFF_Buzzer.Start(pmo, 1, 0.5, 6);
+				if (Debug(p)) Console.Printf("RSQFF take t%d: let go (the grip held the gun steady for %d s)", level.maptime, TAKE_WAIT / TICRATE);
+			}
 		}
 		if (phase[n] == PH_NONE)
 		{
@@ -729,6 +747,13 @@ class RSQFF_Handler : EventHandler
 		let it = ThinkerIterator.Create("Inventory");
 		Inventory i;
 		while (i = Inventory(it.Next())) if (!i.Owner && i.bSpecial && !(i is "RSQFF_Ammo")) items.Push(i);
+		// FF13 (11-16): shuffled first (the synced table, so netplay agrees), so the cap does not fill up beside the items
+		// the map happens to list first
+		for (int k = items.Size() - 1; k > 0; k--)
+		{
+			int r = random[RSQFF_Scatter](0, k);
+			let tmp = items[k]; items[k] = items[r]; items[r] = tmp;
+		}
 		int got = 0;
 		for (int j = 0; j < items.Size() && got < cap; j++)
 		{
@@ -807,5 +832,26 @@ class RSQFF_Service : Service
 			return h.phase[intArg];
 		}
 		return -1;
+	}
+}
+
+// FF5 (11-16): a Test and Debug slider that greys while RSQ Tactical Rig has taken its job over (which 1: the flare pocket,
+// the rig's flare holster holds the flares; 2: the flashlight clip's place, the rig hangs it). Read from the handler's
+// copy of the rig's answer (RSQFF_Handler.menuRigPocket / menuRigClip, refreshed twice a second in play).
+class OptionMenuItemRSQFFRigSlider : OptionMenuItemSlider
+{
+	int mWhich;
+	OptionMenuItemRSQFFRigSlider Init(String label, Name command, double min, double max, double step, int showval, int which)
+	{
+		Super.Init(label, command, min, max, step, showval);
+		mWhich = which;
+		return self;
+	}
+	override bool IsGrayed()
+	{
+		if (Super.IsGrayed()) return true;
+		let h = RSQFF_Handler(EventHandler.Find("RSQFF_Handler"));
+		if (!h) return false;
+		return mWhich == 1 ? h.menuRigPocket : (mWhich == 2 ? h.menuRigClip : false);
 	}
 }
