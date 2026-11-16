@@ -8,26 +8,40 @@
 // placed after every actor has moved, Prev and Pos set so it is interpolated). Score's font is grey with a dark
 // outline: it is coloured by brightness through one runtime translation per colour (dark outline, lit face), as
 // Score's own font colours paint it.
-//   "word"        a one-off: it pops (a small overshoot), flickers between its colour and white for its first 14 tics,
-//                 drifts up, holds about a second (doubleArg seconds; 0 = 1 s), fades over 10 tics. The same word on
-//                 the same actor while it is still up pops again in place (a burst of shots is one lively word, not a
-//                 stack). If the actor goes, the word finishes where it was.
+//   "word"        a one-off: it comes in with the SOTN entrance (below), drifts up, holds about a second (doubleArg
+//                 seconds; 0 = 1 s), fades over 10 tics. The same word on the same actor while it is still up pops again
+//                 in place (a small overshoot, 0.45 -> 1.35 -> 1.15 -> 1.0, and its flash between looks starts again; no
+//                 second smear: a burst of shots is one lively word, not a stack). If the actor goes, the word finishes
+//                 where it was.
 //   "word.hold"   kept over the actor until "word.clear" with the same text, or the actor dies or is removed. Size 1
-//                 normal, 2 large and pulsing (about one pulse a second), 0.6 small. Asked again with the same text on
-//                 the same actor: its colour and size change in place. Held words stack upward; one-off words start
-//                 above them.
+//                 normal, 2 large and pulsing (about one pulse a second), 0.6 small. It does the SOTN entrance once;
+//                 asked again with the same text on the same actor: its colour and size change in place (a held word
+//                 asked back while it fades pops in place, as a repeated one-off word). Held words stack upward; one-off
+//                 words start above them.
+// THE SOTN ENTRANCE (owner 11-16 07:59, "sotn style": design/mockups/word_motion/, the right column; the banners' SOTN
+// letters, banners.zs SotnHead): counted from the first tic a word is drawn, tics 0-3 it is stretched wide and slanted
+// forward (smear k = 1 - tic/4: width x (1 + 0.3k), the top 0.45k of its height ahead of the foot), at tic 4 it snaps
+// upright at its normal size; tics 4-27 it flashes between its two looks every 4 tics (4-7 the light look, 8-11 its own,
+// ...; the light look is each colour, both bands of the two-tone look, lightened halfway to white), from tic 28 its own
+// look. This replaced (11-16) the first pop 0.45 -> 1.35 -> 1.15 -> 1.0 and the flicker to white. A quad cannot be
+// sheared: in the smear tics each letter is drawn as FOUR horizontal slices (tools/gen_word_slices.py, TEXTURES.rsqvrsl:
+// cut on whole font rows, slices 1-2 the top half and 3-4 the bottom half, so the two-tone look keeps its colours), each
+// moved sideways by the slant at its own middle, as the banners' SlantTex slices their letters; each slice a hair nearer
+// than the one above it (the letters' depth nudge kept). Photosensitive Mode: no flash between looks (the word holds its
+// own look); the smear and the snap stay, as the banners keep theirs (a change of shape over 4 tics, no change of
+// brightness), and a repeated word never smears again.
 //   "pop"         a pixel ring and an eight-point star burst (drawn in code, tools/gen_beams.py) at the actor's middle,
 //                 in the colour's four bands, 18 tics. Size scales it (1 = for a monster as tall as an imp).
 // THE WORD FONT (owner 11-16, PRESENTATION_GUIDE.md 4b): Word Font (rsqvr_wordfont, user) picks the letters every word here
 // is drawn in: 0 Score Small (RS Score's RSSCFN2; the default), 1 SOTN (the letters cut from the owner's word sheet), 2 JFO
 // (the damage numbers' font), 3 Score Big (RSSCFON, the font until 11-16), 4 Doom small (the IWAD's own STCFN). Only the
-// glyphs change: the pop, the flicker, the drift, the fade, the colours, the two-tone SOTN look and each word's size are
+// glyphs change: the entrance, the pop, the drift, the fade, the colours, the two-tone SOTN look and each word's size are
 // the same in every font; each font is sized so its capital letters stand as tall as Score Big's (WF_FH). The glyphs are
 // VisualRewards' own textures (tools/gen_word_fonts.py: graphics/rsqvrwf/, TEXTURES.rsqvrwf; Score Big gen_beams.py's
 // QVWnnn), so every font works without RS Score loaded. A character a font lacks is drawn as its '?', or left a space.
 // Above the HP bar and its markers (a tenth of the actor's height and 10 units over its top). Words grow with distance
-// like the bars (Far Size) and follow Word Size. Photosensitive Mode (rsqa_photosafe): no white flicker (a word holds its
-// colour), a pulse at most once a second, the pop's white first frames at 40%. Monster Words / Pops off (user rows):
+// like the bars (Far Size) and follow Word Size. Photosensitive Mode (rsqa_photosafe): no flash between looks (a word holds
+// its colour), a pulse at most once a second, the pop's white first frames at 40%. Monster Words / Pops off (user rows):
 // nothing is drawn; the service still answers 1 (an answer never depends on a player's own setting: netplay).
 // Every word and pop is local to the console player's view; the requests come from synced play code on every machine.
 
@@ -62,6 +76,11 @@ class RSQVR_Word play
 	double lastH;
 	double lastCeil;      // the ceiling over it (owner 11-11 23:56: the word and the bar "get clipped into ceilings")
 	Array<RSQVR_WGlyph> gl;
+	// the SOTN entrance (see the header): et counts tics from the first tic it is drawn (-1 not drawn yet); repop: it was
+	// asked again while up (pops in place, never smears again); gs the smear's slices (4 per letter, only in the smear tics)
+	int et;
+	bool repop;
+	Array<RSQVR_WGlyph> gs;
 }
 
 class RSQVR_Pop play
@@ -81,7 +100,7 @@ class RSQVR_FxDriver : Thinker
 
 class RSQVR_FxHandler : EventHandler
 {
-	const GLYPH_CAP = 160;
+	const GLYPH_CAP = 256;     // (160 until 11-16: a word smearing in takes four quads a letter for its first 4 tics)
 	const WORD_CAP = 24;
 	const POP_CAP = 12;
 	const BASE_H = 6.0;        // a word's letters, map units tall at size 1 (17 cm): readable across a room in the headset
@@ -97,7 +116,7 @@ class RSQVR_FxHandler : EventHandler
 	transient Array<int> tKey;
 	transient Array<TranslationID> tId;
 	transient Array<double> palLum;
-	transient Array<TextureID> wfGlyph;      // [font][part: full, top half, bottom half][character 32..96]
+	transient Array<TextureID> wfGlyph;      // [font][part: full, top half, bottom half, slices 1..4][character 32..96]
 	transient Array<int> wfWid;              // [font][character]: the full glyph's width, texture pixels (0: none)
 	transient int wfont;                      // Word Font (rsqvr_wordfont), this tic
 	transient Array<TextureID> popFrames;
@@ -120,6 +139,12 @@ class RSQVR_FxHandler : EventHandler
 		g = (g + (255 - g) * m) * mul * k;
 		b = (b + (255 - b) * m) * mul * k;
 		return Color(255, clamp(int(r), 0, 255), clamp(int(g), 0, 255), clamp(int(b), 0, 255));
+	}
+	// the SOTN entrance's light look (words.zs DrawWord): a colour lightened halfway to white
+	static int Lighter(int rgb)
+	{
+		int r = (rgb >> 16) & 255, g = (rgb >> 8) & 255, b = rgb & 255;
+		return (((r + 255) / 2) << 16) | (((g + 255) / 2) << 8) | ((b + 255) / 2);
 	}
 	// the ladder's Black tier and its like: drawn see-through, not added (adding near-black shows nothing)
 	static bool IsDark(int rgb)
@@ -240,7 +265,7 @@ class RSQVR_FxHandler : EventHandler
 		for (int i = 0; i < words.Size(); i++)
 		{
 			let w = words[i];
-			if (w && !w.held && w.who == a && w.text == txt && w.t < w.life) { w.t = 0; w.rgb = rgb & 0xFFFFFF; return 1; }
+			if (w && !w.held && w.who == a && w.text == txt && w.t < w.life) { w.t = 0; w.rgb = rgb & 0xFFFFFF; Repop(w); return 1; }
 		}
 		let w = NewWord(txt, rgb, a);
 		w.life = secs > 0 ? int(clamp(secs, 0.2, 10.0) * 35) : 35;
@@ -259,7 +284,7 @@ class RSQVR_FxHandler : EventHandler
 			if (w && w.held && w.who == a && w.text == txt)
 			{
 				w.rgb = rgb & 0xFFFFFF; w.size = clamp(sizeArg, 0.3, 4.0);
-				if (w.clearing) { w.clearing = false; w.t = 0; }
+				if (w.clearing) { w.clearing = false; w.t = 0; Repop(w); }
 				return 1;
 			}
 		}
@@ -281,6 +306,15 @@ class RSQVR_FxHandler : EventHandler
 			if (w && w.held && w.who == a && w.text == txt) { w.sotn = true; w.rgb2 = bot & 0xFFFFFF; w.tag = tag; }
 		}
 		return 1;
+	}
+
+	// asked again while it is up: it pops in place and its flash between looks starts again, and it never smears again
+	// (a burst of shots is one lively word); its smear's slices, if it was still smearing, go back to the pool
+	void Repop(RSQVR_Word w)
+	{
+		w.repop = true;
+		w.et = -1;
+		FreeSlices(w);
 	}
 
 	int ClearWord(String txt, Actor a)
@@ -317,6 +351,7 @@ class RSQVR_FxHandler : EventHandler
 		}
 		let w = new("RSQVR_Word");
 		w.who = a; w.text = txt; w.rgb = rgb & 0xFFFFFF;
+		w.et = -1;
 		w.lastPos = a.Pos; w.lastH = a.Height; w.lastCeil = a.ceilingz;
 		words.Push(w);
 		return w;
@@ -350,6 +385,12 @@ class RSQVR_FxHandler : EventHandler
 		w.gl.Clear();
 		for (int i = 0; i < w.gl2.Size(); i++) Release(w.gl2[i]);
 		w.gl2.Clear();
+		FreeSlices(w);
+	}
+	void FreeSlices(RSQVR_Word w)
+	{
+		for (int i = 0; i < w.gs.Size(); i++) Release(w.gs[i]);
+		w.gs.Clear();
 	}
 	void FreePop(RSQVR_Pop p) { if (p && p.g) { Release(p.g); p.g = null; } }
 
@@ -358,11 +399,26 @@ class RSQVR_FxHandler : EventHandler
 	// advance (the glyph's width x ADVK + KERN, font pixels; JFO's bevelled cells overlap as the damage numbers set them)
 	// and the space's advance.
 	enum EWordFont { WF_SMALL, WF_SOTN, WF_JFO, WF_BIG, WF_DOOM, WF_N }
+	const WF_PARTS = 7;       // full, top half, bottom half (the SOTN look), the smear's slices 1..4 (WF_SLICE + j)
+	const WF_SLICE = 3;
+	const WF_CH = 65;         // characters 32..96
+	// the smear's slices' cuts (tools/gen_word_slices.py cuts(), the same rule): cut j (0..4) of a cell th texture pixels
+	// tall, texture pixels from its top: on whole font rows, cut 2 the SOTN halves' split
+	static int SliceB(int f, int th, int j)
+	{
+		int k = WF_K(f), r = th / k, t = r / 2;
+		if (j <= 0) return 0;
+		if (j == 1) return ((t + 1) / 2) * k;
+		if (j == 2) return t * k;
+		if (j == 3) return (t + (r - t + 1) / 2) * k;
+		return th;
+	}
 	static String WF_NAME(int f, int part)
 	{
-		static const String T[] = { "QWSW", "QWST", "QWSB", "QWOW", "QWOT", "QWOB", "QWJW", "QWJT", "QWJB",
-			"QVW", "QVT", "QVB", "QWDW", "QWDT", "QWDB" };
-		return T[clamp(f, 0, WF_N - 1) * 3 + clamp(part, 0, 2)];
+		static const String T[] = { "QWSW", "QWST", "QWSB", "QWS1", "QWS2", "QWS3", "QWS4",
+			"QWOW", "QWOT", "QWOB", "QWO1", "QWO2", "QWO3", "QWO4", "QWJW", "QWJT", "QWJB", "QWJ1", "QWJ2", "QWJ3", "QWJ4",
+			"QVW", "QVT", "QVB", "QV1", "QV2", "QV3", "QV4", "QWDW", "QWDT", "QWDB", "QWD1", "QWD2", "QWD3", "QWD4" };
+		return T[clamp(f, 0, WF_N - 1) * WF_PARTS + clamp(part, 0, WF_PARTS - 1)];
 	}
 	static int WF_K(int f) { static const int T[] = { 4, 4, 1, 4, 1 }; return T[clamp(f, 0, WF_N - 1)]; }
 	static double WF_FH(int f) { static const double T[] = { 6, 7, 32, 12, 7 }; return T[clamp(f, 0, WF_N - 1)]; }
@@ -374,7 +430,7 @@ class RSQVR_FxHandler : EventHandler
 	{
 		wfGlyph.Clear(); wfWid.Clear();
 		for (int f = 0; f < WF_N; f++)
-			for (int part = 0; part < 3; part++)
+			for (int part = 0; part < WF_PARTS; part++)
 				for (int c = 32; c <= 96; c++)
 				{
 					TextureID t = TexMan.CheckForTexture(String.Format("%s%03d", WF_NAME(f, part), c), TexMan.Type_Any);
@@ -387,13 +443,13 @@ class RSQVR_FxHandler : EventHandler
 	}
 	TextureID WfTex(int f, int part, int c)
 	{
-		if (wfGlyph.Size() != WF_N * 195) WfInit();
-		return wfGlyph[clamp(f, 0, WF_N - 1) * 195 + clamp(part, 0, 2) * 65 + clamp(c, 32, 96) - 32];
+		if (wfGlyph.Size() != WF_N * WF_PARTS * WF_CH) WfInit();
+		return wfGlyph[(clamp(f, 0, WF_N - 1) * WF_PARTS + clamp(part, 0, WF_PARTS - 1)) * WF_CH + clamp(c, 32, 96) - 32];
 	}
 	// the character this font draws for c (Code(c) first): its own, else its '?', else 32 (a space)
 	int WfChar(int f, int c)
 	{
-		if (wfGlyph.Size() != WF_N * 195) WfInit();
+		if (wfGlyph.Size() != WF_N * WF_PARTS * WF_CH) WfInit();
 		c = Code(c);
 		if (c == 32) return 32;
 		f = clamp(f, 0, WF_N - 1);
@@ -406,7 +462,7 @@ class RSQVR_FxHandler : EventHandler
 	// the font this tic: the menu's, or Score Big when the chosen one is not there (Doom small with an IWAD with no STCFN)
 	int WfPick(int f)
 	{
-		if (wfGlyph.Size() != WF_N * 195) WfInit();
+		if (wfGlyph.Size() != WF_N * WF_PARTS * WF_CH) WfInit();
 		f = clamp(f, 0, WF_N - 1);
 		return wfWid[f * 65 + 65 - 32] > 0 ? f : WF_BIG;
 	}
@@ -472,7 +528,7 @@ class RSQVR_FxHandler : EventHandler
 			if (w.who) { w.lastPos = w.who.Pos; w.lastH = w.who.Height; w.lastCeil = w.who.ceilingz; }
 			// a held word goes with its actor (dead or gone): a quick fade
 			if (w.held && !w.clearing && (!w.who || w.who.health <= 0)) { w.clearing = true; w.clearT = 0; }
-			if (!frozen) { w.t++; if (w.clearing) w.clearT++; }
+			if (!frozen) { w.t++; if (w.et >= 0) w.et++; if (w.clearing) w.clearT++; }
 			bool done = w.held ? (w.clearing && w.clearT >= 6) : (w.t >= w.life + 10);
 			if (done) { FreeWord(w); words.Delete(i); continue; }
 		}
@@ -547,6 +603,7 @@ class RSQVR_FxHandler : EventHandler
 	{
 		for (int i = 0; i < w.gl.Size(); i++) if (w.gl[i]) w.gl[i].Alpha = 0;
 		for (int i = 0; i < w.gl2.Size(); i++) if (w.gl2[i]) w.gl2[i].Alpha = 0;
+		for (int i = 0; i < w.gs.Size(); i++) if (w.gs[i]) w.gs[i].Alpha = 0;
 	}
 
 	// UNDER THE CEILING (owner 11-11 23:56: LEGENDARY "is large with a large hp bar and gets clipped into ceilings"): the
@@ -636,8 +693,14 @@ class RSQVR_FxHandler : EventHandler
 		while (w.gl.Size() < n) w.gl.Push(null);
 		if (w.sotn) while (w.gl2.Size() < n) w.gl2.Push(null);
 		double u = Unit(w, eye);
-		// the life: pop (overshoot) over 4 tics; a held big word pulses (about once a second)
-		double popK = w.t == 0 ? 0.45 : (w.t == 1 ? 1.35 : (w.t == 2 ? 1.15 : 1.0));
+		// THE SOTN ENTRANCE (the header): et from this, the first tic it is drawn; smear sm 1, 0.75, 0.5, 0.25 over its first
+		// 4 tics (never again once it has been asked again: repop), then upright
+		if (w.et < 0) w.et = 0;
+		double sm = w.repop ? 0.0 : clamp(1.0 - w.et / 4.0, 0.0, 1.0);
+		double sxk = 1.0 + 0.3 * sm, shear = 0.45 * sm;
+		if (sm <= 0 && w.gs.Size()) FreeSlices(w);
+		// the life: a word asked again pops in place (overshoot) over 4 tics; a held big word pulses (about once a second)
+		double popK = !w.repop ? 1.0 : (w.t == 0 ? 0.45 : (w.t == 1 ? 1.35 : (w.t == 2 ? 1.15 : 1.0)));
 		double pulse = 1.0;
 		if (w.held && w.size >= 1.5) pulse = 1.0 + 0.08 * sin(w.t * 10.3);
 		double k = u * popK * pulse;
@@ -649,9 +712,10 @@ class RSQVR_FxHandler : EventHandler
 			rise = BASE_H * wordSize * 1.4 * (1.0 - exp(-w.t / 10.0));
 			if (w.t > w.life) a = 1.0 - (w.t - w.life) / 10.0;
 		}
-		// colour: Castlevania's flicker to white for the first 14 tics (2 tics each); never with Photosensitive Mode
-		bool white = !w.held && !photo && w.t < 14 && ((w.t / 2) & 1) == 1;
-		TranslationID tr = Trans(white ? 0xFFFFFF : w.rgb, true);
+		// colour: the flash between its two looks, tics 4-27 (4 tics each, the light look first; the banners' SOTN letters'
+		// shine); never with Photosensitive Mode
+		bool light = !photo && w.et >= 4 && w.et < 28 && (((w.et - 4) / 4) & 1) == 0;
+		TranslationID tr = Trans(light ? Lighter(w.rgb) : w.rgb, true);
 		TranslationID trTop, trBot;
 		if (w.sotn)
 		{
@@ -664,6 +728,7 @@ class RSQVR_FxHandler : EventHandler
 				int r = (top >> 16) & 255, g = (top >> 8) & 255, b = top & 255;
 				bot = (((r + 255) / 2) << 16) | (((g + 255) / 2) << 8) | ((b + 255) / 2);
 			}
+			if (light) { top = Lighter(top); bot = Lighter(bot); }
 			trTop = TransSotn(top);
 			trBot = TransSotn(bot);
 		}
@@ -682,8 +747,12 @@ class RSQVR_FxHandler : EventHandler
 		// through walls"): the word is a flat line facing you; where a wall is nearer its middle, sideways, than half the
 		// line's width, the line would cut into it. It is moved toward your eye until its ends clear the wall, never past
 		// halfway to you.
-		anchor = OutOfWalls(anchor, toEye, dl, width * k * 0.5);
+		// (in the smear: stretched wide, and the slant reaches half its height's 0.45 x sm past each end)
+		double cellH = 0;
+		{ int tw0, th0; [tw0, th0] = TexMan.GetSize(WfTex(f, 0, WfChar(f, 65))); cellH = th0; }
+		anchor = OutOfWalls(anchor, toEye, dl, width * k * 0.5 * sxk + shear * cellH / WF_K(f) * k * 0.5);
 		d = eye - anchor; dl = d.Length(); toEye = dl > 0.01 ? d / dl : (0, 0, 0);
+		if (sm > 0) while (w.gs.Size() < n * 4) w.gs.Push(null);
 		double cx = -width * 0.5;
 		for (int i = 0; i < n; i++)
 		{
@@ -691,6 +760,37 @@ class RSQVR_FxHandler : EventHandler
 			double adv = WfAdv(f, c), gw = WfW(f, c);
 			let g = w.gl[i];
 			if (c == 32 || gw <= 0) { if (g) g.Alpha = 0; if (w.sotn && w.gl2[i]) w.gl2[i].Alpha = 0; cx += adv; continue; }
+			if (sm > 0)
+			{
+				// the smear: four slices (TEXTURES.rsqvrsl) in place of the letter, stretched sxk wide and each moved forward
+				// by the slant at its own middle (shear x its height above the cell's middle: the word leans about its middle,
+				// as the mockup's sheared word, centred). Slices 1-2 the top colour, 3-4 the bottom, in the SOTN look.
+				if (g) g.Alpha = 0;
+				if (w.sotn && w.gl2[i]) w.gl2[i].Alpha = 0;
+				double sc = k / WF_K(f);
+				int twid = wfWid[f * 65 + c - 32];
+				int tw, th; [tw, th] = TexMan.GetSize(WfTex(f, 0, c));
+				double ox = ((cx + gw * 0.5) * k - (twid & 1) * 0.5 * sc) * sxk;
+				for (int j = 0; j < 4; j++)
+				{
+					let gj = w.gs[i * 4 + j];
+					bool freshJ = false;
+					if (!gj) { gj = Acquire(anchor); w.gs[i * 4 + j] = gj; freshJ = true; if (!gj) continue; }
+					TextureID tj = WfTex(f, WF_SLICE + j, c);
+					if (gj.Texture != tj) gj.Texture = tj;
+					gj.Translation = w.sotn ? (j < 2 ? trTop : trBot) : tr;
+					gj.SetRenderStyle(STYLE_Translucent);
+					gj.Scale = (sc * sxk, sc);
+					double mid = (SliceB(f, th, j) + SliceB(f, th, j + 1)) * 0.5;      // texture pixels from the cell's top
+					gj.Offset = (ox + shear * (th * 0.5 - mid) * sc, 0);
+					gj.Alpha = clamp(a, 0.0, 1.0);
+					// the letter's depth nudge, each slice a hair nearer than the one above it (inside the next letter's)
+					Vector3 atj = anchor + toEye * (i * 0.03 + j * 0.0075);
+					gj.Put(atj, freshJ ? atj : gj.Pos);
+				}
+				cx += adv;
+				continue;
+			}
 			bool fresh = false;
 			if (!g) { g = Acquire(anchor); w.gl[i] = g; fresh = true; if (!g) { cx += adv; continue; } }
 			TextureID tx = WfTex(f, w.sotn ? 1 : 0, c);

@@ -29,7 +29,7 @@
 //                        nameArg (optional, a role): accepted and ignored; each beam has its own sound (SNDINFO.txt,
 //                        RVQB1-4).
 //   GetInt "word"        stringArg the word, intArg 0xRRGGBB, doubleArg seconds (0 = 1 s), objectArg the actor: a one-off word
-//                        over it in RS Score's font (rsqvr/words.zs): pops, flickers to white, drifts up, holds, fades.
+//                        over it in the Word Font (rsqvr/words.zs): the SOTN entrance, drifts up, holds, fades.
 //                        Returns 1 (0: no actor).
 //   GetInt "word.hold"   stringArg the word, intArg 0xRRGGBB, doubleArg size (1 normal, 2 large and pulsing, 0.6 small; 0 = 1),
 //                        objectArg the actor: kept over it until "word.clear" with the same text or it dies; asked again

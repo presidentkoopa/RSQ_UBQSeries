@@ -1,0 +1,125 @@
+version "4.10"
+// TEST ONLY (never ships): the word-motion lane's rig probe (the SOTN entrance, rsqvr/words.zs). From tic 20: three still,
+// hurt zombiemen ahead; at tic 40 THREAT! (ldword.zs's held SOTN look, Epic gold) over the left one, UNCOMMON (a LegenDoom drop
+// word's SOTN look, Uncommon's colours) over the right one, and KICK! (a one-off word, one colour) over the middle one.
+// TIC BY TIC: from then on the world is frozen (level.setFrozen) and let run ONE tic every wmp_hold + 1 tics, wmp_steps
+// times, so every word tic is held still long enough for the rig to draw it; the words' own clock (et) counts only the
+// unfrozen tics. The step is written on the screen (WMP step N) and in the log with what each word draws.
+// A repeat: KICK! is asked again before step 11's tic (it must pop in place, not smear again).
+class WMP_Probe : StaticEventHandler
+{
+	Array<Actor> mons;
+	int step, c, holdLeft;
+	bool stepping;
+	WMP_Late late;
+
+	override void WorldLoaded(WorldEvent e)
+	{
+		late = new("WMP_Late");
+		late.p = self;
+		late.ChangeStatNum(126);          // after the words' driver (125): its freeze takes effect from the next tic
+		Console.Printf("WMP registered");
+	}
+	void Spawn3()
+	{
+		let mo = players[consoleplayer].mo;
+		double ang[3]; ang[0] = 24; ang[1] = 0; ang[2] = -24;
+		for (int i = 0; i < 3; i++)
+		{
+			let m = Actor.Spawn("ZombieMan", mo.Vec3Angle(i == 1 ? 190 : 150, mo.angle + ang[i], 0));
+			if (!m) continue;
+			m.angle = mo.angle + 180;
+			m.DamageMobj(mo, mo, 3, 'None');
+			m.Deactivate(null);
+			m.bNoTarget = true;
+			mons.Push(m);
+		}
+		Console.Printf("WMP spawned %d", mons.Size());
+	}
+	void Words(bool kickOnly)
+	{
+		let s = ServiceIterator.Find("RSQVR_Service").Next();
+		let h = RSQVR_FxHandler.Get();
+		if (!s || !h || mons.Size() < 3) { Console.Printf("WMP no service / handler"); return; }
+		if (!kickOnly)
+		{
+			h.WordHoldSotn("THREAT!", 0xF09614, 0xFFEC78, 1.0, mons[0], 'legendary');     // ldword.zs's THREAT!
+			h.WordHoldSotn("UNCOMMON", 0x6496FF, 0xAAD2FF, 1.0, mons[2], 'lddrop');       // a drop word, Uncommon's colours
+		}
+		s.GetInt("word", "KICK!", 0x40C0FF, 1.0, mons[1]);
+	}
+	void Report()
+	{
+		let h = RSQVR_FxHandler.Get();
+		if (!h) return;
+		for (int i = 0; i < h.words.Size(); i++)
+		{
+			let w = h.words[i];
+			if (!w) continue;
+			int nS = 0, nG = 0;
+			String sl = "";
+			for (int j = 0; j < w.gs.Size(); j++) if (w.gs[j] && w.gs[j].Alpha > 0)
+			{
+				nS++;
+				if (j < 4) sl = sl .. String.Format("%s off %.2f sx %.3f sy %.3f; ", TexMan.GetName(w.gs[j].Texture), w.gs[j].Offset.X, w.gs[j].Scale.X, w.gs[j].Scale.Y);
+			}
+			for (int j = 0; j < w.gl.Size(); j++) if (w.gl[j] && w.gl[j].Alpha > 0) nG++;
+			for (int j = 0; j < w.gl2.Size(); j++) if (w.gl2[j] && w.gl2[j].Alpha > 0) nG++;
+			String g0 = "";
+			if (w.gl.Size() && w.gl[0] && w.gl[0].Alpha > 0) g0 = String.Format("%s off %.2f sx %.3f", TexMan.GetName(w.gl[0].Texture), w.gl[0].Offset.X, w.gl[0].Scale.X);
+			Console.Printf("WMP step %d font %d %s t %d et %d repop %d held %d: slices %d glyphs %d alpha %.2f | %s%s", step, h.wfont, w.text, w.t, w.et, w.repop, w.held, nS, nG,
+				w.gl.Size() && w.gl[0] ? w.gl[0].Alpha : (w.gs.Size() && w.gs[0] ? w.gs[0].Alpha : 0), sl, g0);
+		}
+	}
+	// called once a tic, after the words are drawn
+	void LateTick()
+	{
+		c++;
+		if (c == 20) Spawn3();
+		if (c == 40) Words(false);
+		if (c == 41) { stepping = true; step = 0; holdLeft = 0; }
+		if (!stepping) return;
+		if (holdLeft == 0)
+		{
+			// this tic drew a new state (the words' first tic, or the one tic let run): it is step N, the words' et N - 1;
+			// report it, then hold it still for wmp_hold tics
+			let ch = CVar.FindCVar('wmp_hold'), cs = CVar.FindCVar('wmp_steps');
+			if (step >= (cs ? cs.GetInt() : 48)) { level.setFrozen(false); stepping = false; Console.Printf("WMP done"); return; }
+			step++;
+			Report();
+			holdLeft = ch ? ch.GetInt() : 24;
+			level.setFrozen(true);
+			return;
+		}
+		holdLeft--;
+		if (holdLeft > 0) return;
+		// the last held tic: let the next one run. Before step 11's tic: KICK! asked again while it is up (as a play-code
+		// request in a running tic), so step 11 shows its pop in place
+		if (step == 10) Words(true);
+		level.setFrozen(false);
+	}
+	// the step on the screen: its number in words, and as 7 bits (white 1, black 0) in a row of squares low on the left, which
+	// the sheet's script reads from the frame (bit 7, the last square: white while the tic runs, black while it is held)
+	override void RenderOverlay(RenderEvent e)
+	{
+		if (!stepping && step == 0) return;
+		bool held = level.isFrozen();
+		int sw = Screen.GetWidth(), sh = Screen.GetHeight();
+		String s = String.Format("WMP step %d (tic %d) %s", step, step - 1, held ? "held" : "RUN");
+		Screen.DrawText(NewSmallFont, Font.CR_GOLD, sw * 0.36, sh * 0.80, s, DTA_ScaleX, 2.0, DTA_ScaleY, 2.0);
+		TextureID fl = TexMan.CheckForTexture("FLOOR0_1", TexMan.Type_Any);
+		if (!fl.IsValid()) return;
+		double bs = sh * 0.035;
+		for (int b = 0; b < 8; b++)
+		{
+			bool on = b < 7 ? ((step >> b) & 1) == 1 : !held;
+			Screen.DrawTexture(fl, false, sw * 0.30 + b * bs * 1.5, sh * 0.86, DTA_DestWidthF, bs, DTA_DestHeightF, bs,
+				DTA_FillColor, on ? Color(255, 255, 255) : Color(0, 0, 0));
+		}
+	}
+}
+class WMP_Late : Thinker
+{
+	WMP_Probe p;
+	override void Tick() { if (p) p.LateTick(); }
+}

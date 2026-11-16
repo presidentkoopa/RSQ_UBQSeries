@@ -65,7 +65,18 @@ Player-facing text never shows a code name (DEMON1, PE…), never says "miniboss
 
 ## 4b. Words over monsters (owner, 2026-11-16 03:15)
 
-- RSQ VisualRewards' words (`words.zs`), in the world over the monster: the Word Font / the SOTN look, the pop, the flicker, the drift.
+- RSQ VisualRewards' words (`words.zs`), in the world over the monster: the Word Font / the SOTN look, the entrance, the drift.
+- **The SOTN entrance** (owner 11-16 07:59, "sotn style"; mockup `design/mockups/word_motion/`, its right column): every
+  word (THREAT!, the LegenDoom drop words, TARGET!, GUARD!, KICK! and every service word) comes in as the banners' SOTN
+  letters do. Counted from its first drawn tic: tics 0-3 stretched wide and slanted forward (k = 1 - tic/4: width
+  x (1 + 0.3k), the top 0.45k of its height ahead), tic 4 upright at its normal size; tics 4-27 it flashes between its own
+  look and a light look (each colour, both bands of a two-tone word, halfway to white) every 4 tics, light first; from tic
+  28 its own look. Then as before: drift up, hold, fade over 10 tics. A held word does it once and keeps its pulse; the same
+  word asked again while it is up pops in place (0.45 -> 1.35 -> 1.15 -> 1.0) and flashes again, never smears again.
+  In the world a letter is a flat quad and cannot be sheared: in the smear tics each letter is four horizontal slices (on
+  whole font rows; slices 1-2 the top half, 3-4 the bottom, so the two-tone look keeps its colours), each moved sideways by
+  the slant at its middle. **Photosensitive Mode:** no flash between looks; the smear and the snap stay (shape only, no
+  change of brightness, as the banners). Rig only, not headset-confirmed (`VisualRewards/test/evidence/wordmotion_*`).
 - **Word Font** (owner 11-16, VisualRewards menu, `rsqvr_wordfont`): Score Small (RSSCFN2) the default, then SOTN (the
   owner's word sheet), JFO, Score Big (RSSCFON) and Doom Small. Only the letters change (motion, colours, two-tone look and
   sizes are the same in each); every font is VisualRewards' own and works without RS Score.

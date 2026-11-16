@@ -1,0 +1,278 @@
+RSQ VisualRewards: the words' SOTN entrance (rsqvr/words.zs), 2026-11-16 -- RIG ONLY, NOT HEADSET-CONFIRMED
+QZD 17.3 rig, /home/claude/rig/work/boss/boss_full.sh (the owner's full order: doom2, TUD wad, LegenDoom 3.0, brutal22test6,
+BD_VoxelPack, BD22 VR-Reloaded 2.0.4z, XMVE x4, Enemies x5, Environmental x9, Gameplay x4, every RSQ pk3 of gate_rel3 with this
+lane's RSQ_VisualRewards.pk3), his ini, skill 6, MAP01, sv_cheats 1, rsqtr_eye_m 1.6, flock /home/claude/rig.lock, 'wait 10' before quit.
+Probe test/wordmotion (never ships): THREAT! (held SOTN look, Epic gold), UNCOMMON (a drop word's SOTN look, Uncommon's colours),
+KICK! (one-off, asked again before tic 10). The world is frozen and let run one tic at a time (wmp_hold 24 tics held per tic);
+'WMP step N' = the words' tic N-1 (et), with what each word draws: slices (the smear's quads) or glyphs, the first letter's
+slice textures, offsets (map units) and scales (x stretched in the smear).
+
+Runs (all -nomonsters except wm_final):
+  wm_small    Score Small (default), tics 0-47: the sheet's rows and the real-speed GIF
+  wm_sotn     SOTN font, tics 0-7
+  wm_jfo      JFO, tics 0-7
+  wm_big      Score Big, tics 0-7
+  wm_doom_ws  Doom Small with Word Size (rsqthp_dn_wordsize) 1.6, tics 0-7
+  wm_photo    Score Small, Photosensitive Mode (rsqa_photosafe 1), tics 0-13
+  wm_final    the final pk3 (sha256 below), monsters on, Score Small, tics 0-7
+
+wm_small: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wm_sotn: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wm_jfo: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wm_big: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wm_doom_ws: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wm_photo: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+wm_final: 4 script errors, 0 VM aborts
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+    Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+
+final RSQ_VisualRewards.pk3 sha256 8c53deefeb86dd7b9cd326a12c7fadb4a2bec017218fe2e4ff3c7f60987edc63
+(wm_small .. wm_photo ran the pk3 before the last comment/README edits: words.zs code identical)
+
+== wm_small ==
+WMP spawned 3
+WMP step 1 font 0 THREAT! t 1 et 0 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWS1084 off -36.34 sx 0.488 sy 0.375; QWS2084 off -37.35 sx 0.488 sy 0.375; QWS3084 off -38.36 sx 0.488 sy 0.375; QWS4084 off -39.71 sx 0.488 sy 0.375; 
+WMP step 1 font 0 UNCOMMON t 1 et 0 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWS1085 off -49.99 sx 0.488 sy 0.375; QWS2085 off -51.00 sx 0.488 sy 0.375; QWS3085 off -52.01 sx 0.488 sy 0.375; QWS4085 off -53.36 sx 0.488 sy 0.375; 
+WMP step 1 font 0 KICK! t 1 et 0 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWS1075 off -17.81 sx 0.488 sy 0.375; QWS2075 off -18.82 sx 0.488 sy 0.375; QWS3075 off -19.84 sx 0.488 sy 0.375; QWS4075 off -21.19 sx 0.488 sy 0.375; 
+WMP step 2 font 0 THREAT! t 2 et 1 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWS1084 off -34.57 sx 0.459 sy 0.375; QWS2084 off -35.33 sx 0.459 sy 0.375; QWS3084 off -36.08 sx 0.459 sy 0.375; QWS4084 off -37.10 sx 0.459 sy 0.375; 
+WMP step 2 font 0 UNCOMMON t 2 et 1 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWS1085 off -47.43 sx 0.459 sy 0.375; QWS2085 off -48.19 sx 0.459 sy 0.375; QWS3085 off -48.95 sx 0.459 sy 0.375; QWS4085 off -49.96 sx 0.459 sy 0.375; 
+WMP step 2 font 0 KICK! t 2 et 1 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWS1075 off -17.11 sx 0.459 sy 0.375; QWS2075 off -17.87 sx 0.459 sy 0.375; QWS3075 off -18.63 sx 0.459 sy 0.375; QWS4075 off -19.64 sx 0.459 sy 0.375; 
+WMP step 3 font 0 THREAT! t 3 et 2 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWS1084 off -32.79 sx 0.431 sy 0.375; QWS2084 off -33.30 sx 0.431 sy 0.375; QWS3084 off -33.81 sx 0.431 sy 0.375; QWS4084 off -34.48 sx 0.431 sy 0.375; 
+WMP step 3 font 0 UNCOMMON t 3 et 2 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWS1085 off -44.87 sx 0.431 sy 0.375; QWS2085 off -45.38 sx 0.431 sy 0.375; QWS3085 off -45.88 sx 0.431 sy 0.375; QWS4085 off -46.56 sx 0.431 sy 0.375; 
+WMP step 3 font 0 KICK! t 3 et 2 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWS1075 off -16.41 sx 0.431 sy 0.375; QWS2075 off -16.91 sx 0.431 sy 0.375; QWS3075 off -17.42 sx 0.431 sy 0.375; QWS4075 off -18.09 sx 0.431 sy 0.375; 
+WMP step 4 font 0 THREAT! t 4 et 3 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWS1084 off -31.02 sx 0.403 sy 0.375; QWS2084 off -31.27 sx 0.403 sy 0.375; QWS3084 off -31.53 sx 0.403 sy 0.375; QWS4084 off -31.87 sx 0.403 sy 0.375; 
+WMP step 4 font 0 UNCOMMON t 4 et 3 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWS1085 off -42.31 sx 0.403 sy 0.375; QWS2085 off -42.56 sx 0.403 sy 0.375; QWS3085 off -42.82 sx 0.403 sy 0.375; QWS4085 off -43.15 sx 0.403 sy 0.375; 
+WMP step 4 font 0 KICK! t 4 et 3 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWS1075 off -15.70 sx 0.403 sy 0.375; QWS2075 off -15.96 sx 0.403 sy 0.375; QWS3075 off -16.21 sx 0.403 sy 0.375; QWS4075 off -16.55 sx 0.403 sy 0.375; 
+WMP step 5 font 0 THREAT! t 5 et 4 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 5 font 0 UNCOMMON t 5 et 4 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 5 font 0 KICK! t 5 et 4 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 6 font 0 THREAT! t 6 et 5 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 6 font 0 UNCOMMON t 6 et 5 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 6 font 0 KICK! t 6 et 5 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 7 font 0 THREAT! t 7 et 6 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 7 font 0 UNCOMMON t 7 et 6 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 7 font 0 KICK! t 7 et 6 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 8 font 0 THREAT! t 8 et 7 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 8 font 0 UNCOMMON t 8 et 7 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 8 font 0 KICK! t 8 et 7 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 9 font 0 THREAT! t 9 et 8 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 9 font 0 UNCOMMON t 9 et 8 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 9 font 0 KICK! t 9 et 8 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 10 font 0 THREAT! t 10 et 9 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 10 font 0 UNCOMMON t 10 et 9 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 10 font 0 KICK! t 10 et 9 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 11 font 0 THREAT! t 11 et 10 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 11 font 0 UNCOMMON t 11 et 10 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 11 font 0 KICK! t 1 et 0 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -20.25 sx 0.506
+WMP step 12 font 0 THREAT! t 12 et 11 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 12 font 0 UNCOMMON t 12 et 11 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 12 font 0 KICK! t 2 et 1 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -17.25 sx 0.431
+WMP step 13 font 0 THREAT! t 13 et 12 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 13 font 0 UNCOMMON t 13 et 12 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 13 font 0 KICK! t 3 et 2 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 14 font 0 THREAT! t 14 et 13 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 14 font 0 UNCOMMON t 14 et 13 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 14 font 0 KICK! t 4 et 3 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 15 font 0 THREAT! t 15 et 14 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 15 font 0 UNCOMMON t 15 et 14 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 15 font 0 KICK! t 5 et 4 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 16 font 0 THREAT! t 16 et 15 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 16 font 0 UNCOMMON t 16 et 15 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 16 font 0 KICK! t 6 et 5 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 17 font 0 THREAT! t 17 et 16 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 17 font 0 UNCOMMON t 17 et 16 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 17 font 0 KICK! t 7 et 6 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 18 font 0 THREAT! t 18 et 17 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 18 font 0 UNCOMMON t 18 et 17 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 18 font 0 KICK! t 8 et 7 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 19 font 0 THREAT! t 19 et 18 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 19 font 0 UNCOMMON t 19 et 18 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 19 font 0 KICK! t 9 et 8 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 20 font 0 THREAT! t 20 et 19 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 20 font 0 UNCOMMON t 20 et 19 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 20 font 0 KICK! t 10 et 9 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 21 font 0 THREAT! t 21 et 20 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 21 font 0 UNCOMMON t 21 et 20 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 21 font 0 KICK! t 11 et 10 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 22 font 0 THREAT! t 22 et 21 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 22 font 0 UNCOMMON t 22 et 21 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 22 font 0 KICK! t 12 et 11 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 23 font 0 THREAT! t 23 et 22 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 23 font 0 UNCOMMON t 23 et 22 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 23 font 0 KICK! t 13 et 12 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 24 font 0 THREAT! t 24 et 23 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 24 font 0 UNCOMMON t 24 et 23 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 24 font 0 KICK! t 14 et 13 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 25 font 0 THREAT! t 25 et 24 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 25 font 0 UNCOMMON t 25 et 24 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 25 font 0 KICK! t 15 et 14 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 26 font 0 THREAT! t 26 et 25 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 26 font 0 UNCOMMON t 26 et 25 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 26 font 0 KICK! t 16 et 15 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 27 font 0 THREAT! t 27 et 26 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 27 font 0 UNCOMMON t 27 et 26 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 27 font 0 KICK! t 17 et 16 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 28 font 0 THREAT! t 28 et 27 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 28 font 0 UNCOMMON t 28 et 27 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 28 font 0 KICK! t 18 et 17 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 29 font 0 THREAT! t 29 et 28 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 29 font 0 UNCOMMON t 29 et 28 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 29 font 0 KICK! t 19 et 18 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 30 font 0 THREAT! t 30 et 29 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 30 font 0 UNCOMMON t 30 et 29 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 30 font 0 KICK! t 20 et 19 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 31 font 0 THREAT! t 31 et 30 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 31 font 0 UNCOMMON t 31 et 30 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 31 font 0 KICK! t 21 et 20 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 32 font 0 THREAT! t 32 et 31 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 32 font 0 UNCOMMON t 32 et 31 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 32 font 0 KICK! t 22 et 21 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 33 font 0 THREAT! t 33 et 32 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 33 font 0 UNCOMMON t 33 et 32 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 33 font 0 KICK! t 23 et 22 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 34 font 0 THREAT! t 34 et 33 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 34 font 0 UNCOMMON t 34 et 33 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 34 font 0 KICK! t 24 et 23 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 35 font 0 THREAT! t 35 et 34 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 35 font 0 UNCOMMON t 35 et 34 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 35 font 0 KICK! t 25 et 24 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 36 font 0 THREAT! t 36 et 35 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 36 font 0 UNCOMMON t 36 et 35 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 36 font 0 KICK! t 26 et 25 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 37 font 0 THREAT! t 37 et 36 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 37 font 0 UNCOMMON t 37 et 36 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 37 font 0 KICK! t 27 et 26 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 38 font 0 THREAT! t 38 et 37 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 38 font 0 UNCOMMON t 38 et 37 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 38 font 0 KICK! t 28 et 27 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 39 font 0 THREAT! t 39 et 38 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 39 font 0 UNCOMMON t 39 et 38 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 39 font 0 KICK! t 29 et 28 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 40 font 0 THREAT! t 40 et 39 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 40 font 0 UNCOMMON t 40 et 39 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 40 font 0 KICK! t 30 et 29 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 41 font 0 THREAT! t 41 et 40 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 41 font 0 UNCOMMON t 41 et 40 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 41 font 0 KICK! t 31 et 30 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 42 font 0 THREAT! t 42 et 41 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 42 font 0 UNCOMMON t 42 et 41 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 42 font 0 KICK! t 32 et 31 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 43 font 0 THREAT! t 43 et 42 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 43 font 0 UNCOMMON t 43 et 42 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 43 font 0 KICK! t 33 et 32 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 44 font 0 THREAT! t 44 et 43 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 44 font 0 UNCOMMON t 44 et 43 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 44 font 0 KICK! t 34 et 33 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 45 font 0 THREAT! t 45 et 44 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 45 font 0 UNCOMMON t 45 et 44 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 45 font 0 KICK! t 35 et 34 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 46 font 0 THREAT! t 46 et 45 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 46 font 0 UNCOMMON t 46 et 45 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 46 font 0 KICK! t 36 et 35 repop 1 held 0: slices 0 glyphs 5 alpha 0.90 | QWSW075 off -15.00 sx 0.375
+WMP step 47 font 0 THREAT! t 47 et 46 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 47 font 0 UNCOMMON t 47 et 46 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 47 font 0 KICK! t 37 et 36 repop 1 held 0: slices 0 glyphs 5 alpha 0.80 | QWSW075 off -15.00 sx 0.375
+WMP step 48 font 0 THREAT! t 48 et 47 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 48 font 0 UNCOMMON t 48 et 47 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 48 font 0 KICK! t 38 et 37 repop 1 held 0: slices 0 glyphs 5 alpha 0.70 | QWSW075 off -15.00 sx 0.375
+WMP done
+
+== wm_photo ==
+WMP spawned 3
+WMP step 1 font 0 THREAT! t 1 et 0 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWS1084 off -36.34 sx 0.488 sy 0.375; QWS2084 off -37.35 sx 0.488 sy 0.375; QWS3084 off -38.36 sx 0.488 sy 0.375; QWS4084 off -39.71 sx 0.488 sy 0.375; 
+WMP step 1 font 0 UNCOMMON t 1 et 0 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWS1085 off -49.99 sx 0.488 sy 0.375; QWS2085 off -51.00 sx 0.488 sy 0.375; QWS3085 off -52.01 sx 0.488 sy 0.375; QWS4085 off -53.36 sx 0.488 sy 0.375; 
+WMP step 1 font 0 KICK! t 1 et 0 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWS1075 off -17.81 sx 0.488 sy 0.375; QWS2075 off -18.82 sx 0.488 sy 0.375; QWS3075 off -19.84 sx 0.488 sy 0.375; QWS4075 off -21.19 sx 0.488 sy 0.375; 
+WMP step 2 font 0 THREAT! t 2 et 1 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWS1084 off -34.57 sx 0.459 sy 0.375; QWS2084 off -35.33 sx 0.459 sy 0.375; QWS3084 off -36.08 sx 0.459 sy 0.375; QWS4084 off -37.10 sx 0.459 sy 0.375; 
+WMP step 2 font 0 UNCOMMON t 2 et 1 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWS1085 off -47.43 sx 0.459 sy 0.375; QWS2085 off -48.19 sx 0.459 sy 0.375; QWS3085 off -48.95 sx 0.459 sy 0.375; QWS4085 off -49.96 sx 0.459 sy 0.375; 
+WMP step 2 font 0 KICK! t 2 et 1 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWS1075 off -17.11 sx 0.459 sy 0.375; QWS2075 off -17.87 sx 0.459 sy 0.375; QWS3075 off -18.63 sx 0.459 sy 0.375; QWS4075 off -19.64 sx 0.459 sy 0.375; 
+WMP step 3 font 0 THREAT! t 3 et 2 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWS1084 off -32.79 sx 0.431 sy 0.375; QWS2084 off -33.30 sx 0.431 sy 0.375; QWS3084 off -33.81 sx 0.431 sy 0.375; QWS4084 off -34.48 sx 0.431 sy 0.375; 
+WMP step 3 font 0 UNCOMMON t 3 et 2 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWS1085 off -44.87 sx 0.431 sy 0.375; QWS2085 off -45.38 sx 0.431 sy 0.375; QWS3085 off -45.88 sx 0.431 sy 0.375; QWS4085 off -46.56 sx 0.431 sy 0.375; 
+WMP step 3 font 0 KICK! t 3 et 2 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWS1075 off -16.41 sx 0.431 sy 0.375; QWS2075 off -16.91 sx 0.431 sy 0.375; QWS3075 off -17.42 sx 0.431 sy 0.375; QWS4075 off -18.09 sx 0.431 sy 0.375; 
+WMP step 4 font 0 THREAT! t 4 et 3 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWS1084 off -31.02 sx 0.403 sy 0.375; QWS2084 off -31.27 sx 0.403 sy 0.375; QWS3084 off -31.53 sx 0.403 sy 0.375; QWS4084 off -31.87 sx 0.403 sy 0.375; 
+WMP step 4 font 0 UNCOMMON t 4 et 3 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWS1085 off -42.31 sx 0.403 sy 0.375; QWS2085 off -42.56 sx 0.403 sy 0.375; QWS3085 off -42.82 sx 0.403 sy 0.375; QWS4085 off -43.15 sx 0.403 sy 0.375; 
+WMP step 4 font 0 KICK! t 4 et 3 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWS1075 off -15.70 sx 0.403 sy 0.375; QWS2075 off -15.96 sx 0.403 sy 0.375; QWS3075 off -16.21 sx 0.403 sy 0.375; QWS4075 off -16.55 sx 0.403 sy 0.375; 
+WMP step 5 font 0 THREAT! t 5 et 4 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 5 font 0 UNCOMMON t 5 et 4 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 5 font 0 KICK! t 5 et 4 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 6 font 0 THREAT! t 6 et 5 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 6 font 0 UNCOMMON t 6 et 5 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 6 font 0 KICK! t 6 et 5 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 7 font 0 THREAT! t 7 et 6 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 7 font 0 UNCOMMON t 7 et 6 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 7 font 0 KICK! t 7 et 6 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 8 font 0 THREAT! t 8 et 7 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 8 font 0 UNCOMMON t 8 et 7 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 8 font 0 KICK! t 8 et 7 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 9 font 0 THREAT! t 9 et 8 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 9 font 0 UNCOMMON t 9 et 8 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 9 font 0 KICK! t 9 et 8 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 10 font 0 THREAT! t 10 et 9 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 10 font 0 UNCOMMON t 10 et 9 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 10 font 0 KICK! t 10 et 9 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 11 font 0 THREAT! t 11 et 10 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 11 font 0 UNCOMMON t 11 et 10 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 11 font 0 KICK! t 1 et 0 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -20.25 sx 0.506
+WMP step 12 font 0 THREAT! t 12 et 11 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 12 font 0 UNCOMMON t 12 et 11 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 12 font 0 KICK! t 2 et 1 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -17.25 sx 0.431
+WMP step 13 font 0 THREAT! t 13 et 12 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 13 font 0 UNCOMMON t 13 et 12 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 13 font 0 KICK! t 3 et 2 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP step 14 font 0 THREAT! t 14 et 13 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWST084 off -29.25 sx 0.375
+WMP step 14 font 0 UNCOMMON t 14 et 13 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWST085 off -39.75 sx 0.375
+WMP step 14 font 0 KICK! t 4 et 3 repop 1 held 0: slices 0 glyphs 5 alpha 1.00 | QWSW075 off -15.00 sx 0.375
+WMP done
+
+== wm_sotn ==
+WMP spawned 3
+WMP step 1 font 1 THREAT! t 1 et 0 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWO1084 off -15.81 sx 0.418 sy 0.321; QWO2084 off -16.97 sx 0.418 sy 0.321; QWO3084 off -18.13 sx 0.418 sy 0.321; QWO4084 off -19.29 sx 0.418 sy 0.321; 
+WMP step 1 font 1 UNCOMMON t 1 et 0 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWO1085 off -22.50 sx 0.418 sy 0.321; QWO2085 off -23.66 sx 0.418 sy 0.321; QWO3085 off -24.81 sx 0.418 sy 0.321; QWO4085 off -25.97 sx 0.418 sy 0.321; 
+WMP step 1 font 1 KICK! t 1 et 0 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWO1075 off -7.46 sx 0.418 sy 0.321; QWO2075 off -8.61 sx 0.418 sy 0.321; QWO3075 off -9.77 sx 0.418 sy 0.321; QWO4075 off -10.93 sx 0.418 sy 0.321; 
+WMP step 2 font 1 THREAT! t 2 et 1 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWO1084 off -15.24 sx 0.394 sy 0.321; QWO2084 off -16.10 sx 0.394 sy 0.321; QWO3084 off -16.97 sx 0.394 sy 0.321; QWO4084 off -17.84 sx 0.394 sy 0.321; 
+WMP step 2 font 1 UNCOMMON t 2 et 1 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWO1085 off -21.54 sx 0.394 sy 0.321; QWO2085 off -22.40 sx 0.394 sy 0.321; QWO3085 off -23.27 sx 0.394 sy 0.321; QWO4085 off -24.14 sx 0.394 sy 0.321; 
+WMP step 2 font 1 KICK! t 2 et 1 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWO1075 off -7.36 sx 0.394 sy 0.321; QWO2075 off -8.23 sx 0.394 sy 0.321; QWO3075 off -9.10 sx 0.394 sy 0.321; QWO4075 off -9.96 sx 0.394 sy 0.321; 
+WMP step 3 font 1 THREAT! t 3 et 2 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWO1084 off -14.66 sx 0.370 sy 0.321; QWO2084 off -15.24 sx 0.370 sy 0.321; QWO3084 off -15.81 sx 0.370 sy 0.321; QWO4084 off -16.39 sx 0.370 sy 0.321; 
+WMP step 3 font 1 UNCOMMON t 3 et 2 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWO1085 off -20.57 sx 0.370 sy 0.321; QWO2085 off -21.15 sx 0.370 sy 0.321; QWO3085 off -21.73 sx 0.370 sy 0.321; QWO4085 off -22.31 sx 0.370 sy 0.321; 
+WMP step 3 font 1 KICK! t 3 et 2 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWO1075 off -7.26 sx 0.370 sy 0.321; QWO2075 off -7.84 sx 0.370 sy 0.321; QWO3075 off -8.42 sx 0.370 sy 0.321; QWO4075 off -9.00 sx 0.370 sy 0.321; 
+WMP step 4 font 1 THREAT! t 4 et 3 repop 0 held 1: slices 28 glyphs 0 alpha 1.00 | QWO1084 off -14.08 sx 0.346 sy 0.321; QWO2084 off -14.37 sx 0.346 sy 0.321; QWO3084 off -14.66 sx 0.346 sy 0.321; QWO4084 off -14.95 sx 0.346 sy 0.321; 
+WMP step 4 font 1 UNCOMMON t 4 et 3 repop 0 held 1: slices 32 glyphs 0 alpha 1.00 | QWO1085 off -19.61 sx 0.346 sy 0.321; QWO2085 off -19.90 sx 0.346 sy 0.321; QWO3085 off -20.19 sx 0.346 sy 0.321; QWO4085 off -20.48 sx 0.346 sy 0.321; 
+WMP step 4 font 1 KICK! t 4 et 3 repop 0 held 0: slices 20 glyphs 0 alpha 1.00 | QWO1075 off -7.17 sx 0.346 sy 0.321; QWO2075 off -7.46 sx 0.346 sy 0.321; QWO3075 off -7.75 sx 0.346 sy 0.321; QWO4075 off -8.04 sx 0.346 sy 0.321; 
+WMP step 5 font 1 THREAT! t 5 et 4 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWOT084 off -13.50 sx 0.321
+WMP step 5 font 1 UNCOMMON t 5 et 4 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWOT085 off -18.64 sx 0.321
+WMP step 5 font 1 KICK! t 5 et 4 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWOW075 off -7.07 sx 0.321
+WMP step 6 font 1 THREAT! t 6 et 5 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWOT084 off -13.50 sx 0.321
+WMP step 6 font 1 UNCOMMON t 6 et 5 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWOT085 off -18.64 sx 0.321
+WMP step 6 font 1 KICK! t 6 et 5 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWOW075 off -7.07 sx 0.321
+WMP step 7 font 1 THREAT! t 7 et 6 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWOT084 off -13.50 sx 0.321
+WMP step 7 font 1 UNCOMMON t 7 et 6 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWOT085 off -18.64 sx 0.321
+WMP step 7 font 1 KICK! t 7 et 6 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWOW075 off -7.07 sx 0.321
+WMP step 8 font 1 THREAT! t 8 et 7 repop 0 held 1: slices 0 glyphs 14 alpha 1.00 | QWOT084 off -13.50 sx 0.321
+WMP step 8 font 1 UNCOMMON t 8 et 7 repop 0 held 1: slices 0 glyphs 16 alpha 1.00 | QWOT085 off -18.64 sx 0.321
+WMP step 8 font 1 KICK! t 8 et 7 repop 0 held 0: slices 0 glyphs 5 alpha 1.00 | QWOW075 off -7.07 sx 0.321
+WMP done

@@ -230,12 +230,14 @@ from the headset.*
 
 ### Words and pops
 
-Another mod can put a word over a monster: a one-off word that pops, flickers to white,
+Another mod can put a word over a monster: a one-off word that comes in as the banners' SOTN letters do (stretched wide
+and slanted forward for 4 tics, then upright, flashing between its colour and a lighter one until about 0.8 s), then
 drifts up and fades, or a word held over it until it is cleared (normal, small, or large and pulsing). **Word Font**
 (2026-11-16) picks its letters: Score Small (RSQ Score's small font, the default), SOTN (letters cut from the owner's
 Symphony of the Night word sheet), JFO (the damage numbers' font), Score Big (RSQ Score's score-line font, the words' only
 font before) or Doom Small (the game's own small font). Only the letters change; each works without RSQ Score loaded.
-Rig only, not headset-confirmed: `test/evidence/wordfont_sheet.png`, `test/evidence/wordfont_small_sotn.gif`. RSQ Miniboss uses
+Rig only, not headset-confirmed: `test/evidence/wordfont_sheet.png`, `test/evidence/wordfont_small_sotn.gif`; the SOTN
+entrance (2026-11-16): `test/evidence/wordmotion_tic_by_tic_sheet.png`, `test/evidence/wordmotion_real_speed.gif`. RSQ Miniboss uses
 GUARD! (silver) when its shield turns a shot, and TARGET! (gold) over what you should shoot. A **pop** is a pixel ring and
 star burst in a colour, at the monster's middle (RSQ Miniboss: a thrall's death).
 
@@ -297,7 +299,7 @@ While you are DOWN in RSQ SlowMo:
 - **RSQ Grapple, RSQ ShieldSaw, RSQ Saber, RSQ Whip, RSQ DistanceGrab:** their hooked, stunned, locked, gripped, whipped
   and held markers on the bars. RSQ Whip leaves Kill Rewards bits alone.
 - **RSQ Score:** the words use its font, and the combo's 3-second window is the same as its chain's.
-- **RSQ Accessibility:** Photosensitive Mode dims the bars', pops' and beams' flashes to 40%, slows the shimmer, stops the words' white flicker,
+- **RSQ Accessibility:** Photosensitive Mode dims the bars', pops' and beams' flashes to 40%, slows the shimmer, stops the words' flash between looks,
   makes bits fade instead of blink, and draws the beams' white silhouettes in a light colour. Its colour-blind palette
   overrides the bar colours and swaps the default combo colours for a safe set.
 - **Brutal Doom:** its head hits are HEADSHOTs, its damage types colour the numbers, its helpers and dying bodies get no

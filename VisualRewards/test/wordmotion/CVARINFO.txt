@@ -1,0 +1,2 @@
+server int wmp_hold = 24;
+server int wmp_steps = 48;
