@@ -23,8 +23,11 @@
 //                 hand's ray, from QuestZDoom's hand poses (AttackPos / OffhandPos), against the offers' boxes in the
 //                 kiosk's plane; a hand inside a box counts too. A dotted beam runs from the pointing hand to the offer.
 //   HOW IT IS DRAWN  sprites, as the owner's in-engine target was (kiosk_TARGET.png, a sprite render): pre-made panels and
-//                 one sprite a letter (RS Score's fonts as sprites), laid out in the kiosk's plane, which turns to face the
-//                 player when it opens. The guns are their own pickup sprites (BD_VoxelPack's voxels where loaded), turning.
+//                 one sprite a letter, laid out in the kiosk's plane, which turns to face the player when it opens. EVERY
+//                 WORD AND NUMBER IS THE OWNER'S SOTN LETTERS (owner 2026-11-16 06:30: "what I liked the most"): his word
+//                 sheet cut into letters with their two tones (tools/gen_kiosk.py), with the mockup's motion
+//                 (kiosk_anim.py): the gold words shimmer through three shades, the card pops and its rows come in one by
+//                 one, a Score life flies to the offer on LUCKY, and LUCKY! then the new rarity land, rise and fade. The guns are their own pickup sprites (BD_VoxelPack's voxels where loaded), turning.
 //   REPAIR        (design/WEAPON_CONDITION.md, owner 2026-11-16) with RSQ Gun Cards' Weapon Condition on and a gun worn: a
 //                 REPAIR button on the counter, left of LUCKY, with its price: every gun he carries back to 100 for
 //                 Repair Gold per Point (1) a missing condition point, at least Repair Minimum (10) gold. Point at it and
@@ -57,10 +60,10 @@ class RSQMB_KPart : Actor
 		Stop;
 	// every kiosk sprite named once, so the engine loads it (never entered)
 	Names:
-		KQHD A 0; KQCD A 0; KQPP A 0; KQCT A 0; KQCL A 0; KQGL A 0; KQFL A 0; KQSD A 0; KQDT A 0;
+		KQHD A 0; KQCD A 0; KQPP A 0; KQCT A 0; KQCL A 0; KQGL A 0; KQFL A 0; KQDT A 0; KQLF A 0;
 		KQW0 A 0; KQW1 A 0; KQN0 A 0; KQN1 A 0; KQD0 A 0; KQD1 A 0; KQY0 A 0; KQY1 A 0; KQG0 A 0; KQG1 A 0;
 		KQB0 A 0; KQB1 A 0; KQP0 A 0; KQP1 A 0; KQO0 A 0; KQO1 A 0; KQC0 A 0; KQC1 A 0; KQR0 A 0; KQR1 A 0;
-		KQK0 A 0; KQK1 A 0; KQH0 A 0; KQH1 A 0;
+		KQY2 A 0; KQY3 A 0; KQY4 A 0; KQY5 A 0;
 		Stop;
 	}
 }
@@ -79,11 +82,11 @@ class RSQMB_Kiosk : Actor
 	// ---- the layout, in the mockup's pixels (kiosk_anim.py: a 540 canvas; the counter's top at y 292, its middle x 271)
 	const K = 0.20;           // map units a mockup pixel
 	const CT = 34.0;          // the counter's top, map units above the floor (about a metre)
-	const SMALLK = 0.27;      // map units a small-font pixel (1.35 x the mockup's, for reading in the headset)
-	const BIGK = 0.21;        // map units a big-font pixel
+	const SMALLK = 0.27;      // map units a SOTN pixel, small words (1.35 x the mockup's, for reading in the headset)
+	const BIGK = 0.50;        // map units a SOTN pixel, the big gold words (KIOSK, prices, LUCKY: the mockup's twice-size)
 	const POPT = 2;           // tics a frame of the pop (PRESENTATION_GUIDE.md 2: 0.2 -> 1.35 -> 1.0 over 4 frames)
 
-	enum EGroup { G_BASE, G_OFF0, G_OFF1, G_OFF2, G_CARD, G_NOTE, G_BEAM, G_FX, G_NUM }
+	enum EGroup { G_BASE, G_OFF0, G_OFF1, G_OFF2, G_CARD, G_NOTE, G_BEAM, G_FX, G_WORD, G_NUM }
 
 	// ---- the offers
 	Array<String> offer;      // "slot|rarity|effect" (RSLD_KioskService)
@@ -119,13 +122,21 @@ class RSQMB_Kiosk : Actor
 	Array<RSQMB_KPart> parts;
 	Array<double> pX, pZ, pD, pS, pSY;   // local offsets (right, up, toward the player), base scale (x, y)
 	Array<int> pG;                       // group
-	Array<int> pSprA, pSprB;             // two looks (the SOTN flicker), 0 none
+	Array<int> pSprA, pSprB, pSprC;      // the SOTN shimmer's three shades (gold), pSprB 0 none; pSprC -3: blink with pSprB
+	Array<int> pShow;                    // the tic a part first shows (the card's rows come in one by one), 0 at once
 	Array<double> pA;                    // base alpha
 	double gS[G_NUM];                    // each group's pop scale
 	double gCX[G_NUM], gCZ[G_NUM];       // its middle (what it scales about)
 	double gAlpha[G_NUM];
 	int gPop[G_NUM];                     // the tic its pop began (0 none)
 	int gGone[G_NUM];                    // the tic it began to fold away (0 none)
+	double gRise[G_NUM];                 // map units it has risen (the words)
+	int revealUntil;                     // the last tic a part is waiting to show
+	int wordT0;                          // the word on now began (0 none)
+	Array<String> wordQ; Array<String> wordC; Array<int> wordAt; Array<double> wordX;   // the words to come
+	RSQMB_KPart pip;                     // the Score life flying to an offer (LUCKY)
+	Vector3 pipFrom;
+	int pipT0, luckyFx;
 	RSQMB_KPart gun[3];
 	RSQMB_KPart beam[8];
 	bool dirty;
@@ -261,7 +272,8 @@ class RSQMB_Kiosk : Actor
 		p.A_SetRenderStyle(alpha, style);
 		parts.Push(p);
 		pX.Push(lx); pZ.Push(lz); pD.Push(ld); pS.Push(sc); pSY.Push(scy > 0 ? scy : sc);
-		pG.Push(g); pSprA.Push(sprB != "" ? sa : 0); pSprB.Push(sprB != "" ? GetSpriteIndex(sprB) : 0);
+		pG.Push(g); pSprA.Push(sprB != "" ? sa : 0); pSprB.Push(sprB != "" ? GetSpriteIndex(sprB) : 0); pSprC.Push(0);
+		pShow.Push(0);
 		pA.Push(alpha);
 		dirty = true;
 		return p;
@@ -274,64 +286,61 @@ class RSQMB_Kiosk : Actor
 			if (pG[i] != g) continue;
 			if (parts[i]) parts[i].Destroy();
 			parts.Delete(i); pX.Delete(i); pZ.Delete(i); pD.Delete(i); pS.Delete(i); pSY.Delete(i); pG.Delete(i);
-			pSprA.Delete(i); pSprB.Delete(i); pA.Delete(i);
+			pSprA.Delete(i); pSprB.Delete(i); pSprC.Delete(i); pShow.Delete(i); pA.Delete(i);
 		}
 		if (g >= G_OFF0 && g <= G_OFF2) gun[g - G_OFF0] = null;
 	}
 
-	// a line of text, one sprite a letter: font 0 small (colour c: W N D Y G B P O C R), 1 big gold (with the white-hot
-	// look for the flicker); align 0 centre, 1 left, 2 right; k map units a font pixel. Returns its width (map units).
-	double Text(int g, String s, String c, int font, double x, double z, double d, double k, int align = 0)
+	// A LINE OF SOTN LETTERS (the owner's word sheet, tools/gen_kiosk.py), one sprite a letter, neighbours sharing one
+	// outline column as the sheet's words do (sotnfont.py sotn_text). Colour c: W N D Y G B P O C R. font 1: the big gold
+	// words, with the mockup's shimmer (three shades, kiosk_anim.py SH); shimmer: that shimmer on a small gold line too.
+	// align 0 centre, 1 left, 2 right; k map units a SOTN pixel; delay: tics before it shows (the card's rows); blink: it
+	// trades colour with white (the armed LUCKY line). Returns its width (map units).
+	double Text(int g, String s, String c, int font, double x, double z, double d, double k, int align = 0, int delay = 0, bool shimmer = false, bool blink = false)
 	{
 		s = s.MakeUpper();
-		int n = s.Length();
-		double w = 0;
-		double gap = font == 1 ? -2.0 : 1.0;    // the big font's letters share their outlines; the small one's stand a pixel apart
-		for (int i = 0; i < n; i++)
-		{
-			int ch = s.ByteAt(i);
-			int cw = font == 1 ? RSQMB_KioskFont.BigW(ch) : RSQMB_KioskFont.SmallW(ch);
-			if (ch == 32 || cw == 0) { w += (font == 1 ? 6 : 4) * k; continue; }
-			w += (cw + (i < n - 1 ? gap : 0)) * k;
-		}
+		if (font == 1) { c = "Y"; shimmer = true; }
+		double w = TextW(s, 0, k);
 		double sx = align == 0 ? x - w * 0.5 : (align == 1 ? x : x - w);
+		int n = s.Length();
 		for (int i = 0; i < n; i++)
 		{
 			int ch = s.ByteAt(i);
-			int cw = font == 1 ? RSQMB_KioskFont.BigW(ch) : RSQMB_KioskFont.SmallW(ch);
-			if (ch == 32 || cw == 0) { sx += (font == 1 ? 6 : 4) * k; continue; }
+			int cw = RSQMB_KioskFont.W(ch);
+			if (ch == 32 || cw == 0) { sx += 3 * k; continue; }
 			int grp, fr;
 			if (ch >= 65 && ch <= 90) { grp = 0; fr = ch - 65; }
 			else
 			{
 				String G1 = "0123456789-.!%/:+?()',=&#*";
 				int at = G1.IndexOf(String.Format("%c", ch));
-				if (at < 0) { sx += cw * k; continue; }
+				if (at < 0) { sx += (cw - 1) * k; continue; }
 				grp = 1; fr = at;
 			}
 			double cx = sx + cw * k * 0.5;
 			double sc = k / RSQMB_KioskFont.TEX;
-			if (font == 1)
-				Part(g, String.Format("KQK%d", grp), fr, cx, z, d, sc, 0, String.Format("KQH%d", grp));
-			else
-				Part(g, String.Format("KQ%s%d", c, grp), fr, cx, z, d, sc);
-			sx += (cw + gap) * k;
+			let p = Part(g, String.Format("KQ%s%d", c, grp), fr, cx, z, d, sc, 0, shimmer && c == "Y" ? String.Format("KQY%d", grp + 2) : (blink ? String.Format("KQW%d", grp) : ""));
+			int last = parts.Size() - 1;
+			if (shimmer && c == "Y") pSprC[last] = GetSpriteIndex(String.Format("KQY%d", grp + 4));
+			if (blink) pSprC[last] = -3;
+			if (delay > 0) { pShow[last] = level.maptime + delay; revealUntil = max(revealUntil, pShow[last]); if (p) p.bInvisible = true; }
+			sx += (cw - 1) * k;
 		}
 		return w;
 	}
 
-	// a line's width in map units (Text's own measure)
+	// a line's width in map units (Text's own measure: SOTN letters sharing their outline columns)
 	static double TextW(String s, int font, double k)
 	{
 		s = s.MakeUpper();
 		int n = s.Length();
-		double w = 0, gap = font == 1 ? -2.0 : 1.0;
+		double w = 0;
 		for (int i = 0; i < n; i++)
 		{
 			int ch = s.ByteAt(i);
-			int cw = font == 1 ? RSQMB_KioskFont.BigW(ch) : RSQMB_KioskFont.SmallW(ch);
-			if (ch == 32 || cw == 0) { w += (font == 1 ? 6 : 4) * k; continue; }
-			w += (cw + (i < n - 1 ? gap : 0)) * k;
+			int cw = RSQMB_KioskFont.W(ch);
+			if (ch == 32 || cw == 0) { w += 3 * k; continue; }
+			w += (cw - (i < n - 1 ? 1 : 0)) * k;
 		}
 		return w;
 	}
@@ -368,11 +377,12 @@ class RSQMB_Kiosk : Actor
 		double tk = K / RSQMB_KioskFont.TEX;
 		// the counter: its top edge at CT, stretched down to the floor
 		Part(G_BASE, "KQCT", 0, 0, CT, 0, tk, CT / (75.0 * RSQMB_KioskFont.TEX));
-		Part(G_BASE, "KQHD", 0, 0, LZ(24), -4, tk, 0, "KQHD");
-		// (the header's second look is its frame B: the same sprite)
-		pSprB[pSprB.Size() - 1] = -2;
-		String sub = String.Format("BOSS TIER %d", tier);
-		Text(G_BASE, sub, "N", 0, 0, LZ(37), -3.5, SMALLK * 0.8);
+		Part(G_BASE, "KQHD", 0, 0, LZ(24), -4, tk);
+		Text(G_BASE, "KIOSK", "Y", 1, 0, LZ(19), -3.5, BIGK * 0.95);
+		// the mockup's second line, "TIER 2 - UNCOMMON" in that rarity's colour: the Boss's tier and its best offer
+		int best = 0;
+		for (int i = 0; i < rarity.Size(); i++) best = max(best, rarity[i]);
+		Text(G_BASE, String.Format("BOSS TIER %d - %s", tier, RarName(best)), RarCol(best), 0, 0, LZ(37), -3.5, SMALLK * 0.8);
 		gCX[G_BASE] = 0; gCZ[G_BASE] = CT;
 		Note();
 		Layout(true);
@@ -403,7 +413,7 @@ class RSQMB_Kiosk : Actor
 		{
 			bool lit = luckyArmed || hover[0] == 3 || hover[1] == 3;
 			Part(G_NOTE, "KQPP", lit ? 4 : 1, 0, LZ(LUCKY_Y), 0.6, tk * 1.6, tk * 2.2);
-			Text(G_NOTE, "LUCKY", "Y", 1, 0, LZ(LUCKY_Y), 1.0, BIGK * 1.1);
+			Text(G_NOTE, "LUCKY", "Y", 1, 0, LZ(LUCKY_Y), 1.0, BIGK * 0.8);
 		}
 		// THE REPAIR BUTTON (Weapon Condition): left of LUCKY; its price under the word, red when the bank is short
 		if (open && worn > 0)
@@ -414,7 +424,7 @@ class RSQMB_Kiosk : Actor
 			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 0.8);
 		}
 		Text(G_NOTE, l2, luckyUsed ? "D" : "C", 0, 0, CT - 19, 0.8, SMALLK * 0.6);
-		if (l3 != "") Text(G_NOTE, l3, "Y", 0, 0, CT - 25, 0.8, SMALLK * 0.75);
+		if (l3 != "") Text(G_NOTE, l3, "Y", 0, 0, CT - 25, 0.8, SMALLK * 0.8, 0, 0, true);
 		gCX[G_NOTE] = 0; gCZ[G_NOTE] = CT - 14;
 	}
 
@@ -449,8 +459,8 @@ class RSQMB_Kiosk : Actor
 			}
 		}
 		Part(g, "KQPP", sold[i] ? 4 : r, x, LZ(252), 3, tk);
-		if (sold[i]) Part(g, "KQSD", 0, x, LZ(252), 4.5, tk * 0.9);
-		else Text(g, String.Format("%d G", price[i]), "Y", 1, x, LZ(252), 4, BIGK);
+		if (sold[i]) Text(g, "SOLD", "R", 0, x, LZ(252), 4, BIGK * 0.8);
+		else Text(g, String.Format("%d G", price[i]), "Y", 1, x, LZ(252), 4, BIGK * 0.8);
 		Text(g, RarName(r), sold[i] ? "D" : RarCol(r), 0, x, LZ(267), 3, SMALLK * 0.8);
 		String eff = lg ? lg.GetString("effect", offer[i], 0, 0, null) : "";
 		Text(g, eff, sold[i] ? "D" : "N", 0, x, LZ(280), 3, SMALLK * 0.85);
@@ -458,7 +468,7 @@ class RSQMB_Kiosk : Actor
 	}
 
 	// the compare card for offer i (THIS / YOURS)
-	void BuildCard(int i)
+	void BuildCard(int i, bool reveal = true)
 	{
 		Clear(G_CARD);
 		cardFor = i;
@@ -469,17 +479,19 @@ class RSQMB_Kiosk : Actor
 		int r = rarity[i];
 		double cz = LZ(132), d = 8;
 		double left = -116 * K, top = cz + 56 * K;   // the card's top left (map units)
+		// THE ROWS COME IN ONE BY ONE after the card's pop (kiosk_anim.py: a row every 2 frames), on a fresh card only
+		int rv = reveal ? 1 : 0;
 		Part(G_CARD, "KQCD", r, 0, cz, d, tk);
 		String gun = lg.GetString("gun", offer[i], 0, 0, null);
 		Text(G_CARD, gun, "W", 0, left + 8 * K, top - 11 * K, d + 0.5, min(SMALLK * 1.2, 150 * K / max(1.0, TextW(gun, 0, 1.0))), 1);
 		Text(G_CARD, RarName(r), RarCol(r), 0, -left - 8 * K, top - 11 * K, d + 0.5, SMALLK * 0.8, 2);
 		String eff = lg.GetString("effect", offer[i], 0, 0, null);
 		String desc = lg.GetString("desc", offer[i], 0, 0, null);
-		Text(G_CARD, eff, "W", 0, left + 8 * K, top - 25 * K, d + 0.5, SMALLK, 1);
+		Text(G_CARD, eff, "W", 0, left + 8 * K, top - 25 * K, d + 0.5, SMALLK, 1, rv * 8);
 		// the description, in up to two lines across the card
 		Array<String> dl;
 		Wrap(desc, 214 * K, SMALLK * 0.8, 2, dl);
-		for (int l = 0; l < dl.Size(); l++) Text(G_CARD, dl[l], "N", 0, left + 8 * K, top - (34 + 8 * l) * K, d + 0.5, SMALLK * 0.8, 1);
+		for (int l = 0; l < dl.Size(); l++) Text(G_CARD, dl[l], "N", 0, left + 8 * K, top - (34 + 8 * l) * K, d + 0.5, SMALLK * 0.8, 1, rv * (10 + 2 * l));
 		// THIS / YOURS
 		String yours = customer ? lg.GetString("yours", offer[i], 0, 0, customer) : "";
 		Array<String> y; yours.Split(y, "|");
@@ -487,16 +499,16 @@ class RSQMB_Kiosk : Actor
 		String ye = y.Size() >= 2 ? y[1] : "";
 		bool owns = y.Size() >= 3 && y[2].ToInt() == 1;
 		double c1 = left + 140 * K, c2 = left + 196 * K, rz = top - 54 * K;
-		Text(G_CARD, "THIS", "W", 0, c1, rz, d + 0.5, SMALLK * 0.8);
-		Text(G_CARD, "YOURS", "D", 0, c2, rz, d + 0.5, SMALLK * 0.8);
-		Text(G_CARD, "RARITY", "N", 0, left + 8 * K, rz - 9 * K, d + 0.5, SMALLK * 0.8, 1);
-		Text(G_CARD, RarName(r), RarCol(r), 0, c1, rz - 9 * K, d + 0.5, SMALLK * 0.7);
-		Text(G_CARD, yr >= 0 ? RarName(yr) : "NONE", yr >= 0 ? RarCol(yr) : "D", 0, c2, rz - 9 * K, d + 0.5, SMALLK * 0.7);
-		Text(G_CARD, "EFFECT", "N", 0, left + 8 * K, rz - 17 * K, d + 0.5, SMALLK * 0.8, 1);
-		Text(G_CARD, eff, "W", 0, c1, rz - 17 * K, d + 0.5, SMALLK * 0.6);
-		Text(G_CARD, ye != "" ? ye : "NONE", "D", 0, c2, rz - 17 * K, d + 0.5, SMALLK * 0.6);
-		Text(G_CARD, "GUN", "N", 0, left + 8 * K, rz - 25 * K, d + 0.5, SMALLK * 0.8, 1);
-		Text(G_CARD, owns ? "HAVE IT" : "NEW", owns ? "D" : "G", 0, c1, rz - 25 * K, d + 0.5, SMALLK * 0.7);
+		Text(G_CARD, "THIS", "W", 0, c1, rz, d + 0.5, SMALLK * 0.8, 0, rv * 14);
+		Text(G_CARD, "YOURS", "D", 0, c2, rz, d + 0.5, SMALLK * 0.8, 0, rv * 14);
+		Text(G_CARD, "RARITY", "N", 0, left + 8 * K, rz - 9 * K, d + 0.5, SMALLK * 0.8, 1, rv * 18);
+		Text(G_CARD, RarName(r), RarCol(r), 0, c1, rz - 9 * K, d + 0.5, SMALLK * 0.7, 0, rv * 18);
+		Text(G_CARD, yr >= 0 ? RarName(yr) : "NONE", yr >= 0 ? RarCol(yr) : "D", 0, c2, rz - 9 * K, d + 0.5, SMALLK * 0.7, 0, rv * 18);
+		Text(G_CARD, "EFFECT", "N", 0, left + 8 * K, rz - 17 * K, d + 0.5, SMALLK * 0.8, 1, rv * 22);
+		Text(G_CARD, eff, "W", 0, c1, rz - 17 * K, d + 0.5, SMALLK * 0.6, 0, rv * 22);
+		Text(G_CARD, ye != "" ? ye : "NONE", "D", 0, c2, rz - 17 * K, d + 0.5, SMALLK * 0.6, 0, rv * 22);
+		Text(G_CARD, "GUN", "N", 0, left + 8 * K, rz - 25 * K, d + 0.5, SMALLK * 0.8, 1, rv * 26);
+		Text(G_CARD, owns ? "HAVE IT" : "NEW", owns ? "D" : "G", 0, c1, rz - 25 * K, d + 0.5, SMALLK * 0.7, 0, rv * 26);
 		// the bottom line: the price and how to buy, or why not
 		int gold = (Bank() && customer) ? Bank().GetInt("gold", "", 0, 0, customer) : 0;
 		int lives = (Bank() && customer) ? Bank().GetInt("lives", "", 0, 0, customer) : 0;
@@ -505,10 +517,10 @@ class RSQMB_Kiosk : Actor
 		else if (luckyArmed) { bl = r < 3 ? "LUCKY: TRIGGER, 1 LIFE = +1 RARITY" : "EPIC: LUCKY CANNOT RAISE IT"; bc = r < 3 ? "C" : "D"; }
 		else if (gold >= price[i]) { bl = String.Format("%d G   PULL TRIGGER TO BUY", price[i]); bc = "Y"; }
 		else { bl = String.Format("%d G   NEED %d G MORE", price[i], price[i] - gold); bc = "R"; }
-		Text(G_CARD, bl, bc, 0, left + 8 * K, top - 91 * K, d + 0.5, SMALLK * 0.85, 1);
+		Text(G_CARD, bl, bc, 0, left + 8 * K, top - 91 * K, d + 0.5, SMALLK * 0.85, 1, rv * 30, false, luckyArmed && r < 3);
 		if (!sold[i] && !luckyUsed && r < 3)
 			Text(G_CARD, lives > 0 ? "LUCKY: THE BUTTON BELOW, 1 LIFE" : "LUCKY: NO LIFE TO SPEND", lives > 0 ? "C" : "D", 0,
-				left + 8 * K, top - 102 * K, d + 0.5, SMALLK * 0.75, 1);
+				left + 8 * K, top - 102 * K, d + 0.5, SMALLK * 0.75, 1, rv * 32);
 		gCX[G_CARD] = 0; gCZ[G_CARD] = LZ(190);   // it grows out of the offers' row
 		gPop[G_CARD] = level.maptime; gGone[G_CARD] = 0;
 		cardTic = level.maptime;
@@ -545,6 +557,25 @@ class RSQMB_Kiosk : Actor
 				a = 1.0 - clamp(t, 0.0, 1.0);
 				anim = true;
 			}
+			else if (g == G_WORD && wordT0 > 0)
+			{
+				// THE MOCKUP'S WORD (kiosk_anim.py: LUCKY, then the new rarity): it lands from 1.6 to 1.0 in 4 frames, rises a
+				// little each frame, and after 18 frames fades over 4
+				int age = level.maptime - wordT0;
+				double e = clamp(age / (4.0 * POPT), 0.0, 1.0);
+				s = Photo() ? 1.0 : 1.6 - 0.6 * (1 - (1 - e) ** 3);
+				a = age < 18 * POPT ? 1.0 : max(0.0, 1.0 - (age - 18 * POPT) / (4.0 * POPT));
+				gRise[g] = age * 0.2;
+				anim = true;
+			}
+			else if (g == G_CARD && gPop[g] > 0)
+			{
+				// THE CARD'S POP (kiosk_anim.py: 0.35 -> 1 with a small overshoot over 7 frames)
+				int age = level.maptime - gPop[g];
+				double q = clamp(age / (7.0 * POPT), 0.0, 1.0);
+				s = Photo() ? 1.0 : 0.35 + 0.65 * (1 - (1 - q) ** 3) + (q < 1 ? 0.08 * sin(q * 180) : 0);
+				if (age < 7 * POPT + 2) anim = true;
+			}
 			else if (gPop[g] > 0)
 			{
 				int age = level.maptime - gPop[g];
@@ -555,6 +586,7 @@ class RSQMB_Kiosk : Actor
 			if (s != gS[g] || a != gAlpha[g]) anim = true;
 			gS[g] = s; gAlpha[g] = a;
 		}
+		if (level.maptime <= revealUntil + 1) anim = true;
 		bool turned = abs(Actor.DeltaAngle(fy, lastFy)) > 0.01;
 		lastFy = fy;
 		if (!anim && !turned && !dirty) return;
@@ -568,12 +600,12 @@ class RSQMB_Kiosk : Actor
 			int g = pG[i];
 			double s = gS[g];
 			double lx = gCX[g] + (pX[i] - gCX[g]) * s;
-			double lz = gCZ[g] + (pZ[i] - gCZ[g]) * s;
+			double lz = gCZ[g] + (pZ[i] - gCZ[g]) * s + gRise[g];
 			p.SetOrigin(home + R * lx + F * pD[i] + (0, 0, lz), true);
 			if (p.bWallSprite) p.angle = fy;
 			p.scale = (pS[i] * s, pSY[i] * s);
 			p.alpha = pA[i] * gAlpha[g];
-			p.bInvisible = s <= 0.01 || gAlpha[g] <= 0.01;
+			p.bInvisible = s <= 0.01 || gAlpha[g] <= 0.01 || level.maptime < pShow[i];
 		}
 	}
 
@@ -585,6 +617,8 @@ class RSQMB_Kiosk : Actor
 		if (open) Interact();
 		else { hover[0] = -1; hover[1] = -1; }
 		Animate();
+		PipTick();
+		WordTick();
 		// the folds that have finished
 		for (int g = 0; g < G_NUM; g++)
 		{
@@ -750,7 +784,7 @@ class RSQMB_Kiosk : Actor
 			if (want >= 0)
 			{
 				bool same = want == cardFor;
-				BuildCard(want);
+				BuildCard(want, !same);
 				if (same) gPop[G_CARD] = 0;      // only its words changed: no second pop
 			}
 			else if (cardFor >= 0 && gGone[G_CARD] == 0) gGone[G_CARD] = level.maptime;
@@ -780,18 +814,18 @@ class RSQMB_Kiosk : Actor
 	{
 		int t = level.maptime;
 		bool ph = Photo();
+		static const int SH[] = { 0, 1, 2, 1, 2, 1 };
 		for (int i = 0; i < parts.Size(); i++)
 		{
 			let p = parts[i];
 			if (!p) continue;
-			// the SOTN flicker: the gold letters and the sign trade looks every 6 tics, each offer out of step
-			if (pSprB[i] != 0 && !ph)
-			{
-				int k = (t / 6 + pG[i] * 2) % 2;
-				if (pSprB[i] == -2) p.frame = k;
-				else p.sprite = k ? pSprB[i] : pSprA[i];
-			}
-			else if (pSprB[i] == -2) p.frame = 0;
+			// THE SOTN SHIMMER (kiosk_anim.py SH: shades 1.0 1.25 0.8 1.15 0.7 1.3, a step every 3 frames, each offer out of
+			// step): the gold words trade their three shades; the armed LUCKY line blinks with white. Photosensitive Mode: still
+			if (pSprB[i] == 0) continue;
+			if (pSprC[i] == -3) { p.sprite = (!ph && (t / 4) % 2) ? pSprB[i] : pSprA[i]; continue; }
+			if (ph) { p.sprite = pSprA[i]; continue; }
+			int k = SH[(t / 7 + pG[i] * 2) % 6];
+			p.sprite = k == 0 ? pSprA[i] : (k == 1 ? pSprB[i] : pSprC[i]);
 		}
 		Vector3 F = (cos(fy), sin(fy), 0), R = (-sin(fy), cos(fy), 0);
 		for (int i = 0; i < 3; i++)
@@ -825,15 +859,52 @@ class RSQMB_Kiosk : Actor
 	}
 
 	// ================================================================ buying, LUCKY
-	void Word(int i, String s, int rgb, double size)
+	// A WORD OVER AN OFFER in the SOTN letters (SOLD!, LUCKY!, the new rarity: kiosk_anim.py's LUCKY / RARE), one after
+	// another, delay tics after the one before (Layout gives them the mockup's landing, rise and fade)
+	void Word(int i, String s, String col, int delay = 0)
 	{
-		let vr = Svc("RSQVR_Service");
-		if (!vr) return;
+		int at = level.maptime + delay;
+		if (wordAt.Size()) at = max(at, wordAt[wordAt.Size() - 1] + delay);
+		wordQ.Push(s); wordC.Push(col); wordAt.Push(at); wordX.Push(LX(XS[i]));
+	}
+	void WordTick()
+	{
+		int t = level.maptime;
+		if (wordT0 > 0 && t - wordT0 > 22 * POPT) { Clear(G_WORD); wordT0 = 0; gRise[G_WORD] = 0; }
+		if (!wordQ.Size() || t < wordAt[0]) return;
+		Clear(G_WORD);
+		Text(G_WORD, wordQ[0], wordC[0], 0, wordX[0], LZ(205), 9, BIGK, 0, 0, wordC[0] == "Y");
+		gCX[G_WORD] = wordX[0]; gCZ[G_WORD] = LZ(205);
+		wordT0 = t; gRise[G_WORD] = 0;
+		wordQ.Delete(0); wordC.Delete(0); wordAt.Delete(0); wordX.Delete(0);
+		Layout(true);
+	}
+
+	// THE LIFE FLIES TO THE OFFER (kiosk_anim.py: the pip from the wrist, an arc over 6 frames); the offer's jump, its
+	// flash and the words when it lands
+	void PipTick()
+	{
+		if (!pip) return;
+		int t = level.maptime;
+		double q = clamp((t - pipT0) / (6.0 * POPT), 0.0, 1.0);
+		double e = 1 - (1 - q) ** 3;
 		Vector3 F = (cos(fy), sin(fy), 0), R = (-sin(fy), cos(fy), 0);
-		let a = RSQMB_KWordSpot(Actor.Spawn("RSQMB_KWordSpot", home + R * LX(XS[i]) + F * 6 + (0, 0, LZ(232)), NO_REPLACE));
-		if (!a) return;
-		a.life = 105;
-		vr.GetInt("word", s, rgb, size, a);
+		Vector3 to = home + R * LX(XS[luckyFx]) + F * 6 + (0, 0, LZ(222));
+		pip.SetOrigin(pipFrom + (to - pipFrom) * e + (0, 0, 60 * K * sin(q * 180)), true);
+		if (q < 1) return;
+		pip.Destroy();
+		pip = null;
+		LuckyLand(luckyFx);
+	}
+	void LuckyLand(int i)
+	{
+		BuildOffer(i);
+		gPop[G_OFF0 + i] = level.maptime;
+		Flash(i);
+		Word(i, "LUCKY!", "Y");
+		Word(i, RarName(rarity[i]) .. "!", RarCol(rarity[i]), 10 * POPT);
+		cardSig = "";
+		noteSig = "";
 	}
 
 	void Flash(int i)
@@ -879,7 +950,7 @@ class RSQMB_Kiosk : Actor
 		sold[i] = true;
 		A_StartSound("misc/p_pkup", CHAN_AUTO, 0, 1.0);
 		Flash(i);
-		Word(i, "SOLD!", 0xFFC830, 1.2);
+		Word(i, "SOLD!", "Y");
 		BuildOffer(i);
 		gPop[G_OFF0 + i] = level.maptime;
 		noteSig = "";
@@ -924,11 +995,14 @@ class RSQMB_Kiosk : Actor
 		luckyUsed = true;
 		A_StartSound("misc/p_pkup", CHAN_AUTO, 0, 1.0);
 		A_StartSound("misc/teleport", CHAN_AUTO, CHANF_OVERLAP, 0.5);
-		Flash(i);
-		Word(i, "LUCKY!", 0xFFC830, 1.2);
-		Word(i, RarName(rarity[i]) .. "!", RarRGB(rarity[i]), 1.0);
-		BuildOffer(i);
-		gPop[G_OFF0 + i] = level.maptime;
+		// the Score life flies from the hand to the offer; it jumps when it lands (PipTick)
+		if (pip) pip.Destroy();
+		pip = RSQMB_KPart(Actor.Spawn("RSQMB_KPart", home, NO_REPLACE));
+		pipFrom = PlayerPawn(customer) ? HandPos(PlayerPawn(customer), hand) : customer.pos + (0, 0, 40);
+		if (pip) { pip.sprite = GetSpriteIndex("KQLF"); pip.frame = 0; pip.scale = (0.1, 0.1); pip.SetOrigin(pipFrom, false); }
+		pipT0 = level.maptime;
+		luckyFx = i;
+		if (!pip) LuckyLand(i);
 		noteSig = "";
 		cardSig = "";
 		if (LogOn()) Console.Printf("RSQMB kiosk t%d: LUCKY on offer %d with the %s hand: a Score life spent (%d left); %s %s -> %s %s, price %d G",

@@ -32,6 +32,7 @@ class RSQGC_SideCard play
 	const C_RED = 0xFF5040;
 	const C_ORANGE = 0xF08030;
 	const C_GREEN = 0x80E040;
+	const C_GOLD = 0xFFC828;    // the Boss kiosk's gold (RSQ Score's), off-hand watch card only
 	Array<RSQGC_SideOp> ops;
 	string sig;
 	int hand;
@@ -262,6 +263,8 @@ class RSQGC_SideCard play
 				SRight(row, num, RSQGC_Cnd.Colour(cnd));
 			}
 		}
+		int gold = RSQGC_GunCard.Gold(pmo, hnd);
+		if (gold >= 0) Pair("GOLD", String.Format("%d", gold), C_GREY, C_GOLD);
 		let e = ci("rsqgc_watch_bonsai", 0) ? RSQGC_Bonsai.Entry(pmo, w) : null;
 		if (e && e.lvl >= 0)
 		{
@@ -334,6 +337,8 @@ class RSQGC_SideCard play
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0 && (row = Line()) >= 0) HText(row, String.Format("G:%d", gren), gren > 0 ? C_ORANGE : C_DARK);
 		if ((row = Line()) >= 0) KeyRow(pmo, row, row, gc, true);
+		int gold = RSQGC_GunCard.Gold(pmo, hand);
+		if (gold >= 0 && (row = Line()) >= 0) HText(row, String.Format("GOLD %d", gold), C_GOLD);
 		Panel(panelCol);
 	}
 
@@ -348,6 +353,8 @@ class RSQGC_SideCard play
 		BText(RSQGC_SideStates.R_COUNTS, String.Format("%d", clamp(hp, 0, 999)), 0, hp <= 25 ? C_RED : C_WHITE);
 		BRight(RSQGC_SideStates.R_COUNTS, String.Format("%d", clamp(RSQGC_GunCard.ArmorOf(pmo), 0, 999)), C_BLUE);
 		KeyRow(pmo, RSQGC_SideStates.R_KEYS2, RSQGC_SideStates.R_KEYS2TEXT, gc);
+		int gold = RSQGC_GunCard.Gold(pmo, hnd);
+		if (gold >= 0) { SText(RSQGC_SideStates.R_LINE3, "GOLD", 0, C_GREY); SRight(RSQGC_SideStates.R_LINE3, String.Format("%d", gold), C_GOLD); }
 		Panel(panelCol);
 	}
 }

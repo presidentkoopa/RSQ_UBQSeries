@@ -240,6 +240,14 @@ class KQP_Probe : EventHandler
 			Console.Printf("K_T t%d open %d still %d; main hand angle %.1f pitch %.1f -> offer %d; off hand -> %d; card %d; sold %d %d %d; bank %d lives %d lucky %d",
 				t, k.open, k.stillTics, pp.AttackAngle, pp.AttackPitch, k.hover[0], k.hover[1], k.cardFor, k.sold[0], k.sold[1], k.sold[2], Gold(p), Gold(p, "lives"), k.luckyUsed);
 		if (t == 320) Console.Printf("K_GIFT t%d 2000 gold for the test: bank %d", t, Svc("RS_ScoreService").GetInt("gold.add", "rig probe", 2000, 0, p));
+		// RSQ Gun Cards' world cards (rsqgc_world 1): every line they show (the off hand's GOLD row)
+		if (t % 20 == 0 && CVar.FindCVar('kqp_cards').GetInt())
+		{
+			let bb = RSQGC_BB.Get();
+			string all = "";
+			for (int i = 0; bb && i < bb.mList.Size(); i++) if (bb.mList[i] && bb.mList[i].text != "") all = all .. " [" .. bb.mList[i].text .. "]";
+			Console.Printf("K_CARD t%d bank %d; Gun Cards' world card lines:%s", t, Gold(p), all);
+		}
 		if (t == 380) { p.SetOrigin(p.pos - (cos(k.fy + 180), sin(k.fy + 180), 0) * 180, true); Console.Printf("K_AWAY t%d he steps 180 units back", t); }
 	}
 

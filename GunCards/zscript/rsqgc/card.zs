@@ -176,6 +176,17 @@ class RSQGC_GunCard : EventHandler
 	// GC4 Brutal Doom's GRENADE count (GrenadeAmmo, brutal22test6 actors/MISC/Ammo.dec: the hand grenades; the mines
 	// are another pile and are NOT shown, owner). Without Brutal Doom's, RSQ Grenade's own (RSQGN_Ammo, 11-01) when that
 	// pk3 is loaded. -1 when neither exists.
+	// THE BOSS KIOSK'S GOLD (design/KIOSK.md; owner 2026-11-16 06:30: "on the off-hand watch card"): RSQ Score's bank, asked by
+	// name (RS_ScoreService "gold"); -1 on the main hand, or without RSQ Score
+	static int Gold(PlayerPawn pmo, int hand)
+	{
+		if (hand != 1 || !pmo) return -1;
+		let it = ServiceIterator.Find("RS_ScoreService");
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') return s.GetInt("gold", "", 0, 0, pmo);
+		return -1;
+	}
+
 	static int Grenades(PlayerPawn pmo)
 	{
 		// a String first: a quoted class name is resolved when the script compiles, and without Brutal
@@ -210,7 +221,7 @@ class RSQGC_GunCard : EventHandler
 	// what the extra lines say, for the watch card's signature
 	string ExtraSig(PlayerPawn pmo, int hand, Weapon w)
 	{
-		return String.Format(" +%d k%d g%d c%d", PlusNow(hand), KillsWith(w), Grenades(pmo), RSQGC_Cnd.CardValue(w));
+		return String.Format(" +%d k%d g%d c%d au%d", PlusNow(hand), KillsWith(w), Grenades(pmo), RSQGC_Cnd.CardValue(w), Gold(pmo, hand));
 	}
 
 	// GC1 (Option): the gun up at your eye (sights or a scope): the hand within rsqgc_eye_reach metres of the eye and
@@ -481,7 +492,7 @@ class RSQGC_GunCard : EventHandler
 		[mask, others] = HeldKeys(pmo);
 		bool c, k;
 		[c, k] = MapKeys(pmo);
-		return String.Format(" st%d %d k%d %d %d%d a%d g%d s%d", pmo.Health, ArmorOf(pmo), mask, others, c, k, KeyArt(), Grenades(pmo), ci("rsqgc_keys", 1));
+		return String.Format(" st%d %d k%d %d %d%d a%d g%d s%d au%d", pmo.Health, ArmorOf(pmo), mask, others, c, k, KeyArt(), Grenades(pmo), ci("rsqgc_keys", 1), Gold(pmo, 1));
 	}
 
 	// Gun Bonsai's colour codes (the colour it gives an upgrade's name), to RGB

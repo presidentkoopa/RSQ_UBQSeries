@@ -93,6 +93,8 @@ class RSQGC_WorldCard play
 		txt.Push(String.Format("KILLS %d", gc.KillsWith(w))); col.Push(0xC8C8C8);
 		int cnd = RSQGC_Cnd.CardValue(w);   // Weapon Condition (cnd.zs)
 		if (cnd >= 0) { txt.Push(String.Format("CND %s %d", RSQGC_Cnd.Bar(cnd, 10), cnd)); col.Push(RSQGC_Cnd.Colour(cnd)); }
+		int gold = RSQGC_GunCard.Gold(pmo, hand);
+		if (gold >= 0) { txt.Push(String.Format("GOLD %d", gold)); col.Push(0xFFC828); }
 		// Gun Bonsai's rows only with Gun Bonsai on Card, as the hand-drawn card (fixed 2026-11-10: always shown here)
 		let e = bonsai ? RSQGC_Bonsai.Entry(pmo, w) : null;
 		if (e && e.lvl >= 0)
@@ -145,6 +147,8 @@ class RSQGC_WorldCard play
 		if (others > 0) { txt.Push(String.Format("KEYS +%d", others)); col.Push(0xC8C8C8); }
 		int gren = RSQGC_GunCard.Grenades(pmo);
 		if (gren >= 0) { txt.Push(String.Format("GRENADES %d", gren)); col.Push(gren > 0 ? 0xFFB428 : 0x707070); }
+		int gold = RSQGC_GunCard.Gold(pmo, hand);
+		if (gold >= 0) { txt.Push(String.Format("GOLD %d", gold)); col.Push(0xFFC828); }
 	}
 
 	// GC5, the status card (what side.zs BuildStatus draws with the hand): HEALTH big (red at 25 or less), ARMOUR

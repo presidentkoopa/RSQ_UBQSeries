@@ -127,3 +127,20 @@ K_DEATH t40 killed (no monster): health -9900
 RS_Score gold: MAP01 reloaded after a death: bank 0 -> 300 (kept)
 K_DEATH t5 map MAP01 loaded: bank 300, lives 0
 RS_Score gold: died on MAP01 with 300 banked: kept for the reload
+
+## kq_sotn1 / kq_sotn2 (MAP01): the kiosk in the SOTN letters, the faked controller (as kq_in7)
+RSQMB kiosk t74: opened (player 0 stood still 2.0 s within 2.4 m)
+RSQMB kiosk t103: BOUGHT offer 1 with the main hand: PLASMA RIFLE UNCOMMON PROXIMITY for 250 G (bank 350 -> 100); the legendary taken
+RSQMB kiosk t174: the LUCKY button armed with the main hand
+RSQMB kiosk t240: LUCKY on offer 0 with the main hand: a Score life spent (1 left); RARE SCRAPPER'S -> EPIC TRIPLE THREAT, price 900 G
+RSQMB kiosk t296: refused offer 0 (ROCKET LAUNCHER EPIC, 900 G): the bank has 100 G
+RSQMB kiosk t337: BOUGHT offer 0 with the main hand: ROCKET LAUNCHER EPIC TRIPLE THREAT for 900 G (bank 2100 -> 1200); the legendary taken
+RSQMB kiosk t380: closed (walked away (8.0 m))
+
+## kq_watch5 (MAP01, rsqgc_world 1, rsqgc_watch 2): Gun Cards' world cards, every line (the main hand's Rifle card, the off hand's status card with GOLD)
+K_CARD t20 bank 350; Gun Cards' world card lines: [R  Rifle] [MAGAZINE        RESERVE] [HEALTH 100   ARMOUR 100] [GRENADES 1] [HEALTH        ARMOUR] [GRENADES 1] [GOLD 350]
+K_CARD t40 bank 350; Gun Cards' world card lines: [R  Rifle] [MAGAZINE        RESERVE] [HEALTH 100   ARMOUR 100] [GRENADES 1] [HEALTH        ARMOUR] [GRENADES 1] [GOLD 350]
+K_CARD t60 bank 350; Gun Cards' world card lines: [R  Rifle] [MAGAZINE        RESERVE] [HEALTH 100   ARMOUR 100] [GRENADES 1] [HEALTH        ARMOUR] [GRENADES 1] [GOLD 350]
+K_CARD t80 bank 350; Gun Cards' world card lines: [R  Rifle] [MAGAZINE        RESERVE] [HEALTH 100   ARMOUR 100] [GRENADES 1] [HEALTH        ARMOUR] [GRENADES 1] [GOLD 350]
+K_CARD t100 bank 355; Gun Cards' world card lines: [R  Rifle] [MAGAZINE        RESERVE] [HEALTH 100   ARMOUR 100] [GRENADES 1] [HEALTH        ARMOUR] [GRENADES 1] [GOLD 355]
+K_CARD t120 bank 355; Gun Cards' world card lines: [R  Rifle] [MAGAZINE        RESERVE] [HEALTH 100   ARMOUR 100] [GRENADES 1] [HEALTH        ARMOUR] [GRENADES 1] [GOLD 355]

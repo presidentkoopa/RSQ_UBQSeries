@@ -116,7 +116,6 @@ class RS_ScoreHUD : EventHandler
 		DrawScoreLine(tr, handler, pln, vw, vh, centerX, centerY, max(flashAlpha, glow));
 		DrawBar(tr, handler, pln, vw, vh, centerX, centerY, flashAlpha, glow);
 		DrawLives(tr, vw, vh, centerX, centerY);
-		DrawGold(tr, pln, vw, vh, centerX, centerY);
 
 		if (!hideBonuses) { DrawBreakdown(tr, handler, pln, vw, vh, centerX, centerY); }
 	}
@@ -375,49 +374,6 @@ class RS_ScoreHUD : EventHandler
 			if (a >= 0 && a < FALL)
 				DrawFace("STFOUCH0", fallX + a * 0.2, fallY + 0.045 * a * a, vw, vh, 1.0, 0, 255, 1.0 - a / FALL, true);
 		}
-	}
-
-	// ---- GOLD (gold.zs, design/KIOSK.md): a coin and the bank in Score's gold, right of the score line, in the same font
-	// and size. A deposit pops it as the banners' chips pop (PRESENTATION_GUIDE.md 2: 0.2 -> 1.35 -> 1.0 over 4 frames of 2
-	// tics) and lights it a moment; a spend flashes it red-gold. Shown once any gold has been banked (Gold on the HUD).
-	private ui void DrawGold(RS_ScoreTracker tr, int pln, double vw, double vh, double cx, double cy)
-	{
-		if (!UserBool(pln, "rs_score_gold_hud", true)) return;
-		if (tr.goldEarned <= 0 && tr.gold <= 0) return;
-		Font fnt = Font.GetFont("RSSCFON");
-		if (!fnt) fnt = smallfont;
-		String num = String.Format("%d", tr.displayScore);
-		double total = fnt.StringWidth("Score: " .. num);
-		double y = (cy + 7) - fnt.GetHeight();
-		double x = cx + total * 0.5 + 8;
-		// the pop
-		double sc = 1.0;
-		int age = level.maptime - tr.goldTic;
-		if (tr.goldTic > 0 && age >= 0 && age < 8 && !RSSC_A11y.Photo())
-		{
-			static const double POP[] = { 0.6, 1.35, 1.15, 1.0 };
-			sc = POP[clamp(age / 2, 0, 3)];
-		}
-		double h = fnt.GetHeight();
-		double cs = h * 0.9 * sc;
-		TextureID coin = TexMan.CheckForTexture("RSSCGOLD", TexMan.Type_Any);
-		if (coin.IsValid())
-			Screen.DrawTexture(coin, false, x + cs * 0.5, y + h * 0.5,
-				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-				DTA_DestWidthF, cs, DTA_DestHeightF, cs, DTA_CenterOffset, true);
-		String g = String.Format("%d", tr.gold);
-		double nx = x + h * 0.9 + 3;
-		double ny = y + h * 0.5 * (1.0 - sc);
-		Screen.DrawText(fnt, Font.FindFontColor("RSScore_Gold"), nx, ny, g,
-			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_ScaleX, sc, DTA_ScaleY, sc);
-		double lit = RSSC_A11y.Dim(FadeAlpha(tr.goldTic, 0.05, 0.4));
-		double spent = RSSC_A11y.Dim(FadeAlpha(tr.goldSpendTic, 0.1, 0.6));
-		if (lit > 0)
-			Screen.DrawText(fnt, Font.FindFontColor("RSScore_GoldFlash"), nx, ny, g,
-				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_ScaleX, sc, DTA_ScaleY, sc, DTA_Alpha, lit);
-		if (spent > 0)
-			Screen.DrawText(fnt, Font.CR_RED, nx, ny, g,
-				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, spent * 0.7);
 	}
 
 	// a face centred on (fx, fy), FACE_H x scale tall, lit (added) by lit; desat 255 greys it

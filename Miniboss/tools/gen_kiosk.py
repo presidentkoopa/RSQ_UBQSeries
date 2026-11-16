@@ -13,16 +13,20 @@ kiosk_lucky_anim.gif, drawn by kiosk_anim.py / mk.py). Tool only; never ships. W
       KQFL A       the LUCKY flash (additive, white)
       KQSD A       the SOLD stamp (red bands, tilted)
       KQDT A       a dot of the pointing beam (additive, red)
-    and two fonts as sprites, one picture a letter (the kiosk spells its words letter by letter, as the Wheel does):
-      KQ<c>0 / KQ<c>1  RS Score's small font (RSSCFN2), tinted by brightness (its dark outline kept) in colour <c>:
-                   W white, N neutral, D dim, Y gold, G Common green, B Uncommon blue, P Rare purple, O Epic orange,
-                   C cyan (LUCKY), R red. Group 0: A-Z as frames A-Z; group 1: 0-9 as A-J, then - . ! % / : + ? ( ) ' , = & # *
-      KQK0 / KQK1  RS Score's big font (RSSCFON) in the banners' gold bands (gen_banners.py glyph); KQH0 / KQH1 its
-                   white-hot look (the prices' SOTN flicker)
-  zscript/rsqmb/kiosk_font.zs   the letters' widths (font pixels) for the layout
-
+      KQLF A       a Score life pip (Score/graphics/HUD_LIF1), flying to an offer on LUCKY (the mockup's)
+    and THE SOTN FONT as sprites (owner 2026-11-16 06:30: the kiosk's SOTN letters were "what I liked the most"): every
+    word and number on the kiosk is the owner's SOTN word sheet (design/mockups/kiosk/sotn_word_sheet.png, his upload
+    16c02e30-image.png; kiosk_anim.py / sotnfont.py / ext.py cut it the same way), one picture a letter. The sheet's
+    glyphs are cut out (ext.py's bands and columns), each pixel read as outline, top tone or bottom tone (the SOTN two
+    tones, top half and bottom half); the letters the sheet lacks (B J Q V X Z and the marks) are drawn on the same 3 x 5
+    grid in the same box. Then every glyph is painted in each colour's two tones (the sheet's own where it has the colour):
+      KQ<c>0 / KQ<c>1  c: W white, N silver (neutral), D dim, Y gold, G green (Common), B blue (Uncommon), P purple (Rare),
+                   O orange (Epic), C cyan (LUCKY), R red. Group 0: A-Z as frames A-Z; group 1: 0-9 as A-J, then
+                   - . ! % / : + ? ( ) ' , = & # *
+      KQY2 / KQY3, KQY4 / KQY5   gold's two other shades (sotnfont.py shade 1.25 and 0.8): the mockup's shimmer
 LegenDoom's rarity colours are mk.py's (rsld/data.zs). The fonts are RS Score's own (Score/RSSCFON.fon2, RSSCFN2.fon2), read
-with VisualRewards/tools/gen_banners.py's reader.   python3 -I Miniboss/tools/gen_kiosk.py"""
+with VisualRewards/tools/gen_banners.py's reader (the SOLD stamp, gone since the SOTN letters, used RSSCFON).
+    python3 -I Miniboss/tools/gen_kiosk.py"""
 import io
 import math
 import os
@@ -127,11 +131,8 @@ def bandword(font, s, bands, px):
 
 
 def header(f1, look):
-    im = rrect(148, 38, 4, (20, 16, 8, 235), GOLD, 1)
-    bands = GOLDBANDS if look == 0 else hot(GOLDBANDS)
-    w = bandword(f1, 'KIOSK', bands, 5)
-    im.alpha_composite(w, ((im.width - w.width) // 2, 4 * T))
-    return im
+    """the sign's plate; KIOSK itself is SOTN letters laid over it (kiosk.zs)"""
+    return rrect(148, 38, 4, (20, 16, 8, 235), GOLD, 1)
 
 
 def card(r):
@@ -188,15 +189,190 @@ def dot():
     return im.filter(ImageFilter.GaussianBlur(1.5))
 
 
+# ---- THE SOTN FONT (the owner's word sheet, cut as ext.py / sotnfont.py cut it) --------------------------------------
+SHEET = os.path.join(SERIES, 'design', 'mockups', 'kiosk', 'sotn_word_sheet.png')
+LINES = ['CRITICAL!! GUARD MISS!!', 'CURSE STONE POISON -DOWN', '-UP STRENGTH INTELLIGENCE',
+         'LUCKY DEFENCE OFFENCE', 'PROTECTION FROM FIRE DARK', 'HOLY ICE THUNDER PHYSICAL']
+SHEET_COLS = [['white', 'cyan', 'green'], ['gold', 'violet', 'red'], ['silver', 'orange', 'lime']]
+
+
+def cut_sheet():
+    """ext.py: the sheet's 3 x 3 blocks, each a digit row then six word rows; sotnfont.py: words into letters"""
+    S = Image.open(SHEET).convert('RGBA')
+    bg = S.getpixel((1, 1))
+    SP = S.load()
+
+    def ink(p):
+        return abs(p[0] - bg[0]) + abs(p[1] - bg[1]) + abs(p[2] - bg[2]) >= 40
+
+    def key(im):
+        im = im.copy()
+        px = im.load()
+        for y in range(im.height):
+            for x in range(im.width):
+                if not ink(px[x, y]):
+                    px[x, y] = (0, 0, 0, 0)
+        bb = im.getbbox()
+        return im.crop(bb) if bb else im
+
+    def bands(x0, x1, y0, y1, axis, gap=1):
+        out = []
+        on = False
+        miss = 0
+        rng = range(y0, y1) if axis == 'y' else range(x0, x1)
+        for v in rng:
+            hit = any(ink(SP[x, v]) for x in range(x0, x1)) if axis == 'y' else any(ink(SP[v, y]) for y in range(y0, y1))
+            if hit:
+                if not on:
+                    s0 = v
+                    on = True
+                miss = 0
+                last = v
+            elif on:
+                miss += 1
+                if miss > gap:
+                    out.append((s0, last + 1))
+                    on = False
+        if on:
+            out.append((s0, last + 1))
+        return out
+
+    def letters(im, s):
+        px = im.load()
+        bright = [any(px[x, y][3] and max(px[x, y][:3]) > 110 for y in range(im.height)) for x in range(im.width)]
+        runs = []
+        on = False
+        for x, b in enumerate(bright):
+            if b and not on:
+                s0 = x
+                on = True
+            if not b and on:
+                runs.append((s0, x))
+                on = False
+        if on:
+            runs.append((s0, len(bright)))
+        chars = [c for c in s if c != ' ']
+        if len(runs) != len(chars):
+            return {}
+        return {c: im.crop((max(0, x0 - 1), 0, min(im.width, x1 + 1), im.height)) for (x0, x1), c in zip(runs, chars)}
+
+    cols = [(0, 106), (106, 212), (212, 318)]
+    font = {}
+    for ci, (x0, x1) in enumerate(cols):
+        yb = bands(x0, x1, 0, S.height, 'y', 0)
+        for ri in range(3):
+            nm = SHEET_COLS[ri][ci]
+            rows = yb[ri * 7:ri * 7 + 7]
+            gl = {}
+            for k, (a, b) in enumerate(rows[1:7]):
+                segs = bands(x0, x1, a, b, 'x', 2)
+                for j, (s0, s1) in enumerate(segs[:1]):
+                    for c, g in letters(key(S.crop((s0, a, s1, b))), LINES[k]).items():
+                        gl.setdefault(c, g)
+            dy = rows[0]
+            for i, (s0, s1) in enumerate(bands(x0, x1, dy[0], dy[1], 'x', 0)):
+                gl['1234567890'[i]] = key(S.crop((s0, dy[0], s1, dy[1])))
+            font[nm] = gl
+    return font
+
+
+def classes(g):
+    """a sheet glyph as a grid: '#' outline, 't' top tone (the darker), 'b' bottom tone, ' ' clear"""
+    px = g.load()
+    tones = sorted(set(sum(px[x, y][:3]) for x in range(g.width) for y in range(g.height) if px[x, y][3] and max(px[x, y][:3]) >= 60))
+    cut = (tones[0] + tones[-1]) / 2.0 if tones else 0
+    rows = []
+    for y in range(g.height):
+        r = ''
+        for x in range(g.width):
+            p = px[x, y]
+            if not p[3]:
+                r += ' '
+            elif max(p[:3]) < 60:
+                r += '#'
+            else:
+                r += 't' if sum(p[:3]) < cut else 'b'
+        rows.append(r)
+    return rows
+
+
+# the letters and marks the sheet does not have, on its 3 x 5 grid (1 lit); boxed and toned as the sheet's
+EXTRA = {
+    'B': ['11 ', '1 1', '11 ', '1 1', '11 '], 'J': ['  1', '  1', '  1', '1 1', '111'], 'Q': ['111', '1 1', '1 1', '111', '  1'],
+    'V': ['1 1', '1 1', '1 1', '1 1', ' 1 '], 'X': ['1 1', '1 1', ' 1 ', '1 1', '1 1'], 'Z': ['111', '  1', ' 1 ', '1  ', '111'],
+    '.': [' ', ' ', ' ', ' ', '1'], ',': [' ', ' ', ' ', '1', '1'], "'": ['1', '1', ' ', ' ', ' '], ':': [' ', '1', ' ', '1', ' '],
+    '/': ['  1', '  1', ' 1 ', '1  ', '1  '], '%': ['1 1', '  1', ' 1 ', '1  ', '1 1'], '+': ['   ', ' 1 ', '111', ' 1 ', '   '],
+    '?': ['111', '  1', ' 11', '   ', ' 1 '], '(': [' 1', '1 ', '1 ', '1 ', ' 1'], ')': ['1 ', ' 1', ' 1', ' 1', '1 '],
+    '=': ['   ', '111', '   ', '111', '   '], '&': [' 1 ', '1 1', ' 1 ', '1 1', ' 11'], '#': ['1 1', '111', '1 1', '111', '1 1'],
+    '*': ['   ', '1 1', ' 1 ', '1 1', '   '],
+}
+
+
+def drawn(mask):
+    """a 3 x 5 (or narrower) mask in the sheet's box: a 1-pixel outline all round, top two rows the top tone"""
+    w = len(mask[0]) + 2
+    rows = ['#' * w]
+    for y, m in enumerate(mask):
+        rows.append('#' + ''.join(('t' if y < 2 else 'b') if c == '1' else '#' for c in m) + '#')
+    rows.append('#' * w)
+    return rows
+
+
+def paint(rows, top, bot, f=1.0):
+    """the grid in two tones; f: sotnfont.py's shade (brighter above 1, with a touch of white)"""
+    def sh(c):
+        v = [min(255, int(k * f + (255 * (f - 1) if f > 1 else 0) * 0.25)) for k in c]
+        return tuple(v) + (255,)
+    im = Image.new('RGBA', (len(rows[0]), len(rows)), (0, 0, 0, 0))
+    for y, r in enumerate(rows):
+        for x, c in enumerate(r):
+            if c == '#':
+                im.putpixel((x, y), (8, 8, 8, 255))
+            elif c == 't':
+                im.putpixel((x, y), sh(top))
+            elif c == 'b':
+                im.putpixel((x, y), sh(bot))
+    return im
+
+
+def tones(gl):
+    """a sheet colour's (top, bottom) tones, read off its 0"""
+    rows = classes(gl['0'])
+    px = gl['0'].load()
+    t = b = None
+    for y, r in enumerate(rows):
+        for x, c in enumerate(r):
+            if c == 't' and t is None:
+                t = px[x, y][:3]
+            if c == 'b' and b is None:
+                b = px[x, y][:3]
+    return t or b, b or t       # one tone only (the sheet's green): both halves alike
+
+
+def sotn_set():
+    """{char: grid}, and every colour's tones"""
+    font = cut_sheet()
+    grids = {c: classes(g) for c, g in font['white'].items()}
+    for c, m in EXTRA.items():
+        grids.setdefault(c, drawn(m))
+    st = {nm: tones(font[nm]) for nm in font}
+    def mix(c, k):
+        return tuple(int(v * k) for v in c)
+    pal = {
+        'W': st['white'], 'N': (mix(st['silver'][0], 0.85), mix(st['silver'][1], 0.92)), 'D': (mix(st['silver'][0], 0.5), mix(st['silver'][1], 0.55)),
+        'Y': st['gold'], 'G': st['lime'], 'B': ((56, 100, 232), (110, 170, 255)), 'P': ((150, 70, 220), (210, 140, 255)),
+        'O': st['orange'], 'C': st['cyan'], 'R': st['red'],
+    }
+    return grids, pal
+
+
 def main():
     os.makedirs(OUT, exist_ok=True)
     for f in os.listdir(OUT):
         if f.endswith('.png'):
             os.remove(os.path.join(OUT, f))
     f1, h1 = gb.fon2(open(os.path.join(SERIES, 'Score', 'RSSCFON.fon2'), 'rb').read())
-    f2, h2 = gb.fon2(open(os.path.join(SERIES, 'Score', 'RSSCFN2.fon2'), 'rb').read())
     save(header(f1, 0), 'KQHDA0')
-    save(header(f1, 1), 'KQHDB0')
     for r in range(4):
         L = 'ABCD'[r]
         save(card(r), 'KQCD%s0' % L)
@@ -206,45 +382,35 @@ def main():
     save(plate(GOLD), 'KQPPE0')
     save(counter(), 'KQCTA0', 190 * T, 0)          # its top edge on the counter's height
     save(glow((255, 255, 255), 140, 70, 230), 'KQFLA0')
-    save(sold(f1), 'KQSDA0')
     save(dot(), 'KQDTA0')
-    # the small font in ten colours
-    widths2 = {}
-    for c, col in COLS.items():
-        for code, g in f2.items():
-            ch = chr(code)
+    pip = Image.open(os.path.join(SERIES, 'Score', 'graphics', 'HUD_LIF1.png')).convert('RGBA')
+    save(up(pip, T), 'KQLFA0')
+    # THE SOTN FONT
+    grids, pal = sotn_set()
+    widths = {}
+    for c, (top, bot) in pal.items():
+        for ch, rows in grids.items():
             fr = frame_of(ch)
             if not fr:
                 continue
-            widths2[ch] = g.width
-            save(up(tint(g, col), T), 'KQ%s%d%s0' % (c, fr[0], fr[1]))
-    # the big banded font, two looks
-    widths1 = {}
-    for code in f1:
-        ch = chr(code)
-        fr = frame_of(ch)
-        if not fr:
-            continue
-        for look, bands in (('K', GOLDBANDS), ('H', hot(GOLDBANDS))):
-            g = gb.glyph(f1, ch, bands)
-            if g is None:
-                continue
-            widths1[ch] = g.width
-            save(up(g, T), 'KQ%s%d%s0' % (look, fr[0], fr[1]))
-    # the widths, for the layout (kiosk.zs)
+            widths[ch] = len(rows[0])
+            save(up(paint(rows, top, bot), T), 'KQ%s%d%s0' % (c, fr[0], fr[1]))
+            if c == 'Y':   # the shimmer's two other shades
+                save(up(paint(rows, top, bot, 1.25), T), 'KQY%d%s0' % (fr[0] + 2, fr[1]))
+                save(up(paint(rows, top, bot, 0.8), T), 'KQY%d%s0' % (fr[0] + 4, fr[1]))
+    heights = sorted(set(len(r) for r in grids.values()))
     chars = ''.join(chr(c) for c in range(33, 91))
-    def table(wd):
-        return ', '.join(str(wd.get(ch, 0)) for ch in chars)
     with open(ZS, 'w') as f:
-        f.write('// GENERATED by tools/gen_kiosk.py -- do not hand-edit. The kiosk\'s two sprite fonts: each letter\'s width in\n')
-        f.write('// font pixels, for the characters 33 (!) .. 90 (Z); 0 = not in the font. SMALL_H / BIG_H: the cell heights.\n')
+        f.write('// GENERATED by tools/gen_kiosk.py -- do not hand-edit. The kiosk\'s SOTN letters (the owner\'s word sheet): each\n')
+        f.write('// letter\'s width in font pixels, outline included (neighbours share one outline column), for the characters 33 (!)\n')
+        f.write('// .. 90 (Z); 0 = not in the font. H: a letter\'s height (digits are a pixel taller; centred alike).\n')
         f.write('class RSQMB_KioskFont\n{\n')
-        f.write('\tconst SMALL_H = %d;\n\tconst BIG_H = %d;\n\tconst TEX = %d;\n' % (h2, h1 + 2, T))
-        f.write('\tstatic int SmallW(int c)\n\t{\n\t\tstatic const int W[] = { %s };\n\t\treturn (c >= 33 && c <= 90) ? W[c - 33] : 0;\n\t}\n' % table(widths2))
-        f.write('\tstatic int BigW(int c)\n\t{\n\t\tstatic const int W[] = { %s };\n\t\treturn (c >= 33 && c <= 90) ? W[c - 33] : 0;\n\t}\n' % table(widths1))
+        f.write('\tconst H = %d;\n\tconst TEX = %d;\n' % (heights[0], T))
+        f.write('\tstatic int W(int c)\n\t{\n\t\tstatic const int T[] = { %s };\n\t\treturn (c >= 33 && c <= 90) ? T[c - 33] : 0;\n\t}\n'
+                % ', '.join(str(widths.get(ch, 0)) for ch in chars))
         f.write('}\n')
     n = len([f for f in os.listdir(OUT) if f.endswith('.png')])
-    print('wrote %d sprites to %s and %s' % (n, OUT, ZS))
+    print('wrote %d sprites to %s and %s; %d SOTN letters (%d cut from the sheet)' % (n, OUT, ZS, len(grids), len(grids) - len(EXTRA)))
 
 
 if __name__ == '__main__':

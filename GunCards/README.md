@@ -176,6 +176,10 @@ Simulated headset on the Linux rig, not a capture from a real headset.*
 The full card lies flat on the back-of-the-hand side of the wrist. It turns itself the right way up from how you hold
 your arm.
 
+**Your gold** (2026-11-16, with RSQ Score): the off hand's watch card has a **GOLD n** line in gold, what you have to spend
+at the RSQ Miniboss Boss kiosk (asked of RSQ Score by name). On the Weapon card it comes after KILLS, on the Status card
+under the keys, on an item card last. The main hand's card has none. *Rig only, not headset-confirmed.*
+
 **Watch Card:** When I Check My Watch (default), Always On, or Off. With Always On the watch card is always on both
 
 A watch card is drawn only while it faces you and you are looking its way (within 60 degrees of square on, the wrist

@@ -335,8 +335,10 @@ in place of its one legendary weapon, beside the 1UP crate:
   yours. Buy as many as you can afford, each once. While a hand points at an offer, its trigger is the kiosk's, not the gun's.
 - **LUCKY:** point at the LUCKY button on the counter and pull the trigger, then pull it on an offer: one Score life
   spent, that offer one rarity up (its price follows). Once per kiosk. Alt fire on an offer does the same.
+- **The look** is the approved mockup's: every word and number in the owner's SOTN letters, gold words shimmering, the
+  card popping in with its rows one by one, and on LUCKY a life flying to the offer, then LUCKY! and the new rarity.
 - **Gold** comes from RSQ VisualRewards' gold bits (a share of every kill's bits, a fountain from a Boss) and is banked by
-  RSQ Score, shown by your score, kept across maps and on death.
+  RSQ Score, shown on your off hand's watch card (RSQ Gun Cards) and the kiosk's counter, kept across maps and on death.
 - Without BD22 VR Reloaded, LegenDoom or RSQ Score, or with **Boss Kiosk** off, the Boss drops its legendary as before.
 
 *Rig only, not headset-confirmed (2026-11-16, runs `kq_e2e3`, `kq_in7`: design/mockups/kiosk/rig/).*

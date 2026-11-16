@@ -135,8 +135,8 @@ Score keeps your **gold**: what the RSQ Miniboss Boss kiosk sells legendary weap
 
 - **Where it comes from:** RSQ VisualRewards' gold bits (a share of every kill's bits, and a fountain from a Boss), which
   fly to you like any bit. Score makes no gold of its own.
-- **On the HUD:** a gold coin and your gold right of the score line, in the same font. It pops when gold comes in and
-  flashes red when you spend it. **Gold on the HUD** turns it off.
+- **Where you see it:** on your off hand's watch card (RSQ Gun Cards: GOLD n, in gold), and on the Boss kiosk's counter.
+  It is not on Score's line (owner 2026-11-16).
 - **Kept:** across maps, and when you die with no life left (the map reloads; your gold at the moment you died comes
   back).
 - **Spent** at the Boss kiosk, and a Score **life** spent there for LUCKY (one rarity up on one offer).
@@ -145,7 +145,7 @@ Score keeps your **gold**: what the RSQ Miniboss Boss kiosk sells legendary weap
   `gold`, `gold.earned`, `gold.map`.
 
 *Rig only, not headset-confirmed (runs `kq_bits1`, `kq_in7`, `kq_death1`: 300 gold banked, a death with no life, the
-map reloaded with the 300 back; design/mockups/kiosk/rig/rig_HUD_gold_counter.png).*
+map reloaded with the 300 back; `kq_watch5`: GOLD on the off-hand watch card).*
 
 ---
 

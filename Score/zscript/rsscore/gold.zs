@@ -11,7 +11,8 @@
 //                         straight after dying on that same map keeps it too; rare, and harmless.)
 //   SPENDING              the kiosk asks by name: "gold.spend" (all or nothing) and "life.spend" (one Score life, for LUCKY).
 //   THE LOG               Gold Log (rs_score_gold_log): every deposit and spend, and the gold earned on each map as it ends.
-//   THE HUD               hud.zs DrawGold: a coin and the bank in Score's gold, right of the score line; it pops on a deposit.
+//   ON SHOW               RSQ Gun Cards' off-hand watch card (GOLD n), asked by name ("gold"); and the Boss kiosk's counter.
+//                         Not on Score's line (owner 2026-11-16 06:30: the readout moved to the watch card).
 // Rig only, not headset-confirmed.
 // ============================================================================
 

@@ -140,9 +140,7 @@ server int  rs_score_hs_unknown = 80;
 server noarchive bool rs_score_hs_log = false;
 
 // ---- [11-16] GOLD, the Boss kiosk's bank (gold.zs, design/KIOSK.md)
-//   rs_score_gold_hud   the bank on the HUD, right of the score line (a coin and the number in Score's gold)
 //   rs_score_gold_log   one console line per deposit and spend, and the gold earned on each map as it ends (Test and Debug)
 //   rs_score_gold_keep  (internal) the bank at a death, given back when that map reloads: "<map>|<gold>|<earned>"
-user   bool rs_score_gold_hud = true;
 server bool rs_score_gold_log = false;
 server noarchive string rs_score_gold_keep = "";
