@@ -246,8 +246,7 @@ class RS_BrownLSoul2 : Actor
 		+NOGRAVITY
 		+DONTHARMSPECIES
 		+NOBLOOD
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTFALL
 		+NOICEDEATH
 		+FLOATBOB
@@ -346,8 +345,7 @@ class RS_CyanLSoul2 : Actor
 		Monster;
 		+FLOAT
 		+NOGRAVITY
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTFALL
 		+NOICEDEATH
 		AttackSound "";
@@ -438,8 +436,7 @@ class RS_AbyssLSoul2 : Actor
 		+NOGRAVITY
 		+NOTARGET
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOICEDEATH
 		PainSound "beetl/ow";
 		SeeSound "BETLESEE";
@@ -627,8 +624,7 @@ class RS_GrayLSoul2 : Actor
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+SPAWNCEILING
 		+NOICEDEATH
 		+NOPAIN
@@ -709,8 +705,7 @@ class RS_FireBluLSoul2 : Actor
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTFALL
 		+NOICEDEATH
 		+NOPAIN
@@ -778,8 +773,7 @@ class RS_CommonLSoul : LostSoul
 		PainChance "DIMp", 0;
 		Monster;
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		Tag "LostSoul";
 	}
 	States
@@ -832,8 +826,7 @@ class RS_GreenLSoul : LostSoul
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTFALL
 		+NOICEDEATH
 		AttackSound "skull/melee";
@@ -906,8 +899,7 @@ class RS_BlueLSoul : LostSoul
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTFALL
 		+NOICEDEATH
 		AttackSound "skull/melee";
@@ -994,8 +986,7 @@ class RS_PurpleLSoul : LostSoul
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOTARGET
 		+DONTFALL
 		+NOICEDEATH
@@ -1167,8 +1158,7 @@ class RS_RedLSoul : Actor
 		DropItem "HealthBonus", 128;
 		Damage 5;   // bare constant stays bare
 		Monster;
-		+MISSILEEVENMORE
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+FLOORCLIP
 		+FLOAT
 		+NOGRAVITY
@@ -1287,7 +1277,7 @@ class RS_BlackLSoulOld3 : Actor
 		+FLOATBOB
 		+NOBLOODDECALS
 		+SPAWNFLOAT
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTOVERLAP
 		+BOSS
 		+NORADIUSDMG
@@ -1410,7 +1400,7 @@ class RS_BlackLSoul3 : Actor
 		+NOGRAVITY
 		+NOBLOODDECALS
 		+SPAWNFLOAT
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTOVERLAP
 		+BOSS
 		+NOFEAR
@@ -1717,7 +1707,7 @@ class RS_WhiteLSoul2 : Actor
 		-NORADIUSDMG
 		+NOGRAVITY
 		+NOICEDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTFALL
 		+NOBLOOD
 		+DONTMORPH
@@ -1773,33 +1763,33 @@ class RS_WhiteLSoul2 : Actor
 		ETHS R 1 Bright A_Jump(256,"revform","archform","baronform");
 		Goto See;
 	revform:
-		SKEL L 0 { bFLOAT = false; }   // CH: A_Changeflag(Float,false)
-		SKEL L 0 { bNOGRAVITY = false; }   // CH: A_Changeflag(nogravity,false)
-		SKEL L 0 { bDONTFALL = false; }   // CH: A_Changeflag(dontfall,false)
-		SKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		SKEL L 5 A_PlaySound("skeleton/sight");
-		SKEL L 4;
-		SKEL ABGG 2 A_FaceTarget;
-		SKEL J 6 A_FaceTarget;
-		SKEL K 0 A_CustomMissile("RevenantTracer",50,7,5);   // vanilla RevenantTracer, as in CH
-		SKEL K 0 A_CustomMissile("RevenantTracer",50,-7,-5);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_AcidBlast1",50,7,12);
-		SKEL K 0 A_CustomMissile("RS_AcidBlast1",50,-7,-12);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_zap7",50,7,1);
-		SKEL K 0 A_CustomMissile("RS_zap7",50,-7,-1);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_Purp1",50,7,9);
-		SKEL K 0 A_CustomMissile("RS_Purp1",50,-7,-9);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_Homer1",50,7,15);
-		SKEL K 4 A_CustomMissile("RS_Homer1",50,-7,-15);
-		SKEL L 4 A_PainAttack("RS_RevEgg",0,PAF_NOSKULLATTACK);
-		SKEL L 0 { bFLOAT = true; }   // CH: A_Changeflag(Float,true)
-		SKEL L 0 { bNOGRAVITY = true; }   // CH: A_Changeflag(nogravity,true)
-		SKEL L 0 { bDONTFALL = true; }   // CH: A_Changeflag(dontfall,true)
-		SKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RKEL L 0 { bFLOAT = false; }   // CH: A_Changeflag(Float,false)
+		RKEL L 0 { bNOGRAVITY = false; }   // CH: A_Changeflag(nogravity,false)
+		RKEL L 0 { bDONTFALL = false; }   // CH: A_Changeflag(dontfall,false)
+		RKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RKEL L 5 A_PlaySound("skeleton/sight");
+		RKEL L 4;
+		RKEL ABGG 2 A_FaceTarget;
+		RKEL J 6 A_FaceTarget;
+		RKEL K 0 A_CustomMissile("RevenantTracer",50,7,5);   // vanilla RevenantTracer, as in CH
+		RKEL K 0 A_CustomMissile("RevenantTracer",50,-7,-5);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_AcidBlast1",50,7,12);
+		RKEL K 0 A_CustomMissile("RS_AcidBlast1",50,-7,-12);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_zap7",50,7,1);
+		RKEL K 0 A_CustomMissile("RS_zap7",50,-7,-1);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_Purp1",50,7,9);
+		RKEL K 0 A_CustomMissile("RS_Purp1",50,-7,-9);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_Homer1",50,7,15);
+		RKEL K 4 A_CustomMissile("RS_Homer1",50,-7,-15);
+		RKEL L 4 A_PainAttack("RS_RevEgg",0,PAF_NOSKULLATTACK);
+		RKEL L 0 { bFLOAT = true; }   // CH: A_Changeflag(Float,true)
+		RKEL L 0 { bNOGRAVITY = true; }   // CH: A_Changeflag(nogravity,true)
+		RKEL L 0 { bDONTFALL = true; }   // CH: A_Changeflag(dontfall,true)
+		RKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		Goto See;
 	baronform:
 		BOSS H 0 { bFLOAT = false; }   // CH: A_Changeflag(Float,false)
@@ -1883,8 +1873,8 @@ class RS_WhiteLSoul2 : Actor
 		ETHS F 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		ETHS F 2 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		ETHS F 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		SKEL L 0 A_PlaySound("Skeleton/death");
-		SKEL LMNOP 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RKEL L 0 A_PlaySound("Skeleton/death");
+		RKEL LMNOP 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		BOSS I 0 A_PlaySound("Baron/death");
 		BOSS IJKLMNO 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		VILE Q 0 A_PlaySound("Vile/death");
@@ -1931,7 +1921,7 @@ class RS_WhiteLSoulEX : Actor
 		+NOGRAVITY
 		+NOICEDEATH
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BOSS
 		-NORADIUSDMG
 		+DONTFALL
@@ -2024,7 +2014,7 @@ class RS_WhiteLSoulEX : Actor
 		TNT1 A 0 A_Jump(255,"HK","REV","CACO");
 		Goto See;
 	CACO:
-		SKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		HEAD D 5 A_PlaySound("caco/sight");
 		HEAD ABCC 2 A_FaceTarget;
 		HEAD B 5 A_FaceTarget;
@@ -2069,67 +2059,67 @@ class RS_WhiteLSoulEX : Actor
 		HEAD D 0 A_FaceTarget;
 		HEAD D 6 Bright A_CustomMissile("RS_CrackodemonBall",24,0,-16,1);
 		HEAD D 5 Bright A_CustomMissile("RS_SBombCaco",24,0,0,1);
-		SKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		HEAD A 4;
 		Goto See;
 	REV:
-		SKEL L 0 { bFLOAT = false; }   // CH: A_Changeflag(Float,false)
-		SKEL L 0 { bNOGRAVITY = false; }   // CH: A_Changeflag(nogravity,false)
-		SKEL L 0 { bDONTFALL = false; }   // CH: A_Changeflag(dontfall,false)
-		SKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		SKEL L 5 A_PlaySound("skeleton/sight");
-		SKEL L 4;
-		SKEL ABGG 2 A_FaceTarget;
-		SKEL J 6 A_FaceTarget;
-		SKEL K 0 A_CustomMissile("RevenantTracer",50,7,5);   // vanilla RevenantTracer, as in CH
-		SKEL K 0 A_CustomMissile("RevenantTracer",50,-7,-5);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_AcidBlast1",50,7,12);
-		SKEL K 0 A_CustomMissile("RS_AcidBlast1",50,-7,-12);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_zap7",50,7,1);
-		SKEL K 0 A_CustomMissile("RS_zap7",50,-7,-1);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_Purp1",50,7,9);
-		SKEL K 0 A_CustomMissile("RS_Purp1",50,-7,-9);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_Homer1",50,7,15);
-		SKEL K 0 A_CustomMissile("RS_Homer1",50,-7,-15);
-		SKEL J 4 A_FaceTarget;
-		SKEL K 7 A_CustomMissile("RS_RedDeathRev",50,0,0);
-		SKEL KL 4;
-		SKEL L 0 { bFLOAT = true; }   // CH: A_Changeflag(Float,true)
-		SKEL L 0 { bNOGRAVITY = true; }   // CH: A_Changeflag(nogravity,true)
-		SKEL L 0 { bDONTFALL = true; }   // CH: A_Changeflag(dontfall,true)
-		SKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RKEL L 0 { bFLOAT = false; }   // CH: A_Changeflag(Float,false)
+		RKEL L 0 { bNOGRAVITY = false; }   // CH: A_Changeflag(nogravity,false)
+		RKEL L 0 { bDONTFALL = false; }   // CH: A_Changeflag(dontfall,false)
+		RKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RKEL L 5 A_PlaySound("skeleton/sight");
+		RKEL L 4;
+		RKEL ABGG 2 A_FaceTarget;
+		RKEL J 6 A_FaceTarget;
+		RKEL K 0 A_CustomMissile("RevenantTracer",50,7,5);   // vanilla RevenantTracer, as in CH
+		RKEL K 0 A_CustomMissile("RevenantTracer",50,-7,-5);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_AcidBlast1",50,7,12);
+		RKEL K 0 A_CustomMissile("RS_AcidBlast1",50,-7,-12);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_zap7",50,7,1);
+		RKEL K 0 A_CustomMissile("RS_zap7",50,-7,-1);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_Purp1",50,7,9);
+		RKEL K 0 A_CustomMissile("RS_Purp1",50,-7,-9);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_Homer1",50,7,15);
+		RKEL K 0 A_CustomMissile("RS_Homer1",50,-7,-15);
+		RKEL J 4 A_FaceTarget;
+		RKEL K 7 A_CustomMissile("RS_RedDeathRev",50,0,0);
+		RKEL KL 4;
+		RKEL L 0 { bFLOAT = true; }   // CH: A_Changeflag(Float,true)
+		RKEL L 0 { bNOGRAVITY = true; }   // CH: A_Changeflag(nogravity,true)
+		RKEL L 0 { bDONTFALL = true; }   // CH: A_Changeflag(dontfall,true)
+		RKEL LLLLLLLL 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		Goto See;
 	HK:
-		BOS2 H 0 { bFLOAT = false; }   // CH: A_Changeflag(Float,false)
-		BOS2 H 0 { bNOGRAVITY = false; }   // CH: A_Changeflag(nogravity,false)
-		BOS2 H 0 { bDONTFALL = false; }   // CH: A_Changeflag(dontfall,false)
-		BOS2 HHHHHHHH 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		BOS2 H 8 A_PlaySound("knight/sight");
-		BOS2 EEF 8 A_FaceTarget;
-		BOS2 G 7 A_BruisAttack;   // vanilla BaronBall, as in CH
-		BOS2 PQ 5 A_FaceTarget;
-		BOS2 R 5;   // CH: ACS_NamedExecuteWithResult("BaronMissile",1) -- ACS lead-predicted BaronBall shot (CHACS.acs:54); ACS not ported, flagged for owner
-		BOS2 EF 5 A_FaceTarget;
-		BOS2 GGGGG 1 A_CustomMissile("RS_BaronsBlueBalls",32,5,random(-1,1));
-		BOS2 PQ 5 A_FaceTarget;
-		BOS2 RRR 1 A_CustomMissile("RS_BaronsBlueBalls",32,5,random(-8,8));
-		BOS2 EF 3 A_FaceTarget;
-		BOS2 G 3 A_CustomMissile("RS_HKBolt2",32,5,random(-8,8));
-		BOS2 PQ 6 A_FaceTarget;
-		BOS2 R 6 A_CustomMissile("RS_HKBolt2",32,5,random(-1,1));
-		BOS2 EF 5 A_FaceTarget;
-		BOS2 G 5 A_CustomMissile("RS_BigHK",32,5,1);
-		BOS2 PQ 5 A_FaceTarget;
-		BOS2 R 5 A_CustomMissile("RS_THEBEEHK",32,5,random(-1,1));
-		BOS2 H 8;
-		BOS2 H 0 { bFLOAT = true; }   // CH: A_Changeflag(Float,true)
-		BOS2 H 0 { bNOGRAVITY = true; }   // CH: A_Changeflag(nogravity,true)
-		BOS2 H 0 { bDONTFALL = true; }   // CH: A_Changeflag(dontfall,true)
-		BOS2 HHHHHHHH 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		ROS2 H 0 { bFLOAT = false; }   // CH: A_Changeflag(Float,false)
+		ROS2 H 0 { bNOGRAVITY = false; }   // CH: A_Changeflag(nogravity,false)
+		ROS2 H 0 { bDONTFALL = false; }   // CH: A_Changeflag(dontfall,false)
+		ROS2 HHHHHHHH 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		ROS2 H 8 A_PlaySound("knight/sight");
+		ROS2 EEF 8 A_FaceTarget;
+		ROS2 G 7 A_BruisAttack;   // vanilla BaronBall, as in CH
+		ROS2 PQ 5 A_FaceTarget;
+		ROS2 R 5;   // CH: ACS_NamedExecuteWithResult("BaronMissile",1) -- ACS lead-predicted BaronBall shot (CHACS.acs:54); ACS not ported, flagged for owner
+		ROS2 EF 5 A_FaceTarget;
+		ROS2 GGGGG 1 A_CustomMissile("RS_BaronsBlueBalls",32,5,random(-1,1));
+		ROS2 PQ 5 A_FaceTarget;
+		ROS2 RRR 1 A_CustomMissile("RS_BaronsBlueBalls",32,5,random(-8,8));
+		ROS2 EF 3 A_FaceTarget;
+		ROS2 G 3 A_CustomMissile("RS_HKBolt2",32,5,random(-8,8));
+		ROS2 PQ 6 A_FaceTarget;
+		ROS2 R 6 A_CustomMissile("RS_HKBolt2",32,5,random(-1,1));
+		ROS2 EF 5 A_FaceTarget;
+		ROS2 G 5 A_CustomMissile("RS_BigHK",32,5,1);
+		ROS2 PQ 5 A_FaceTarget;
+		ROS2 R 5 A_CustomMissile("RS_THEBEEHK",32,5,random(-1,1));
+		ROS2 H 8;
+		ROS2 H 0 { bFLOAT = true; }   // CH: A_Changeflag(Float,true)
+		ROS2 H 0 { bNOGRAVITY = true; }   // CH: A_Changeflag(nogravity,true)
+		ROS2 H 0 { bDONTFALL = true; }   // CH: A_Changeflag(dontfall,true)
+		ROS2 HHHHHHHH 0 A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		Goto See;
 	RollOut:
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
@@ -2331,10 +2321,10 @@ class RS_WhiteLSoulEX : Actor
 		ETHS F 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		ETHS F 2 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		ETHS F 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		SKEL L 0 A_PlaySound("pain/death");
+		RKEL L 0 A_PlaySound("pain/death");
 		PAIN HIJKLM 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		BOSS I 0 A_PlaySound("baby/death");
-		BSPI JKLMNOP 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RSPI JKLMNOP 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		VILE Q 0 A_PlaySound("Vile/death");
 		VILE QRSTUVWXYZ 1 Bright A_CustomMissile("RS_WSSmore",16,0,CMF_AIMOFFSET,random(0,360),random(0,360));
 		ETHS HIJKLMN 6 Bright;

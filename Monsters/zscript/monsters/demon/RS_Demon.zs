@@ -490,8 +490,7 @@ class RS_CyanDemon2 : Actor
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		+NOTARGET
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOICEDEATH
 		+LAXTELEFRAGDMG
 		DamageFactor "Falling", 0.0;   // CH lists Falling twice
@@ -577,7 +576,7 @@ class RS_CyanDemon2 : Actor
 		WORM K 4;
 		WORM L 4 A_NoBlocking(false);   // CH: A_NoBlocking(FALSE) -- deliberately drops nothing on plain death
 		WORM M 4;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
 		WORM N 1 A_IceGuyDie;
 		Stop;
 	}
@@ -868,8 +867,8 @@ class RS_GreyDemon2 : Actor
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		+NOTARGET
-		+MISSILEMORE
-		+SHORTMISSILERANGE
+		MissileChanceMult 0.5;
+		MaxTargetRange 896;
 		+LAXTELEFRAGDMG
 		DamageFactor "Falling", 0.0;   // CH lists Falling twice
 		DropItem "RS_implyingclip", 174;
@@ -1437,30 +1436,30 @@ class RS_YellowDemon : Demon
 	States
 	{
 	Spawn:
-		SRG2 AB 10 A_Look;
+		RRG2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SRG2 A 0 A_PlaySound("blooddemon/walk");
-		SRG2 AABB 2 A_Chase;
+		RRG2 A 0 A_PlaySound("blooddemon/walk");
+		RRG2 AABB 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 C 0 A_PlaySound("blooddemon/walk");
-		SRG2 CCDD 2 A_Chase;
+		RRG2 C 0 A_PlaySound("blooddemon/walk");
+		RRG2 CCDD 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 A 0 A_JumpIf(user_Calm == 1,"Calm");
+		RRG2 A 0 A_JumpIf(user_Calm == 1,"Calm");
 		Loop;
 	Melee:
-		SRG2 EF 7 A_FaceTarget;
-		SRG2 G 6 A_CustomMeleeAttack(random(13,52),"blooddemon/melee","none");
-		SRG2 G 1 { user_Calm = (user_Calm == 1) ? 1 : 0; }   // CH: A_SetUserVar("User_Calm",User_Calm == 1)
+		RRG2 EF 7 A_FaceTarget;
+		RRG2 G 6 A_CustomMeleeAttack(random(13,52),"blooddemon/melee","none");
+		RRG2 G 1 { user_Calm = (user_Calm == 1) ? 1 : 0; }   // CH: A_SetUserVar("User_Calm",User_Calm == 1)
 		Goto NOYOUDONT;
 	NOYOUDONT:
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 G 8 A_SkullAttack(30);
-		SRG2 GGGGG 2 A_CustomMissile("RS_ZapZapCB",32,random(-32,32),random(-32,32));
-		SRG2 G 0 A_PlaySound("Litn/litn3");
-		SRG2 G 4 A_Stop;
-		SRG2 G 0 A_SetSpeed(16);
+		RRG2 G 8 A_SkullAttack(30);
+		RRG2 GGGGG 2 A_CustomMissile("RS_ZapZapCB",32,random(-32,32),random(-32,32));
+		RRG2 G 0 A_PlaySound("Litn/litn3");
+		RRG2 G 4 A_Stop;
+		RRG2 G 0 A_SetSpeed(16);
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_ChangeFlag("Nopain",true)
@@ -1479,39 +1478,39 @@ class RS_YellowDemon : Demon
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SRG2 H 2;
+		RRG2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 H 2 A_Pain;
-		SRG2 H 1 A_Jump(174,"SpeedBuff");
+		RRG2 H 2 A_Pain;
+		RRG2 H 1 A_Jump(174,"SpeedBuff");
 		Goto See;
 	Pain.fire:
-		SRG2 H 3 Bright A_Pain;
+		RRG2 H 3 Bright A_Pain;
 		Goto SpeedBuff;
 	SpeedBuff:
-		SRG2 E 1 A_SetSpeed(30);
-		SRG2 E 1 { user_Calm = (user_Calm == 0) ? 1 : 0; }   // CH: A_SetUserVar("User_Calm",User_Calm == 0)
+		RRG2 E 1 A_SetSpeed(30);
+		RRG2 E 1 { user_Calm = (user_Calm == 0) ? 1 : 0; }   // CH: A_SetUserVar("User_Calm",User_Calm == 0)
 		Goto See;
 	Calm:
-		SRG2 E 1 A_SetSpeed(16);
-		SRG2 E 1 A_PlaySound("Litn/litn3");
-		SRG2 EEEEE 0 A_CustomMissile("RS_ZapZapCB",32,random(-32,32),random(-32,32));
+		RRG2 E 1 A_SetSpeed(16);
+		RRG2 E 1 A_PlaySound("Litn/litn3");
+		RRG2 EEEEE 0 A_CustomMissile("RS_ZapZapCB",32,random(-32,32),random(-32,32));
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SRG2 I 8;
-		SRG2 I 0 A_FaceTarget;
-		SRG2 J 0 A_SpawnItemEx("RS_BloodDemonArm",10,0,32,0,8,0,0,128);
-		SRG2 J 8 A_Scream;
-		SRG2 K 4;
-		SRG2 L 4 A_NoBlocking;
-		SRG2 M 4;
-		SRG2 N -1;
+		RRG2 I 8;
+		RRG2 I 0 A_FaceTarget;
+		RRG2 J 0 A_SpawnItemEx("RS_BloodDemonArm",10,0,32,0,8,0,0,128);
+		RRG2 J 8 A_Scream;
+		RRG2 K 4;
+		RRG2 L 4 A_NoBlocking;
+		RRG2 M 4;
+		RRG2 N -1;
 		Stop;
 	Raise:
-		SRG2 NMLKJI 5;
+		RRG2 NMLKJI 5;
 		Goto See;
 	}
 }
@@ -1556,28 +1555,28 @@ class RS_RedDemon : Demon
 	States
 	{
 	Spawn:
-		SRG2 AB 10 A_Look;
+		RRG2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SRG2 A 0 A_PlaySound("blooddemon/walk");
-		SRG2 AABB 2 A_Chase;
+		RRG2 A 0 A_PlaySound("blooddemon/walk");
+		RRG2 AABB 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 C 0 A_PlaySound("blooddemon/walk");
-		SRG2 CCDD 2 A_Chase;
+		RRG2 C 0 A_PlaySound("blooddemon/walk");
+		RRG2 CCDD 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 EF 7 Bright A_FaceTarget;
-		SRG2 F 3 Bright A_CustomMissile("RS_RedDemonBloodBolt1",32);
-		SRG2 G 4;
+		RRG2 EF 7 Bright A_FaceTarget;
+		RRG2 F 3 Bright A_CustomMissile("RS_RedDemonBloodBolt1",32);
+		RRG2 G 4;
 		Goto See;
 	Melee:
-		SRG2 EF 7 A_FaceTarget;
-		SRG2 G 7 A_CustomMeleeAttack(random(13,58),"blooddemon/melee","none");
-		SRG2 G 1 A_SpawnItemEx("RS_RedThingsLS",1,3,15,0,0,0,0,SXF_NOCHECKPOSITION);
-		SRG2 G 0 A_SpawnItemEx("RS_RedThingsLS",6,3,15,0,0,0,0,SXF_NOCHECKPOSITION);
+		RRG2 EF 7 A_FaceTarget;
+		RRG2 G 7 A_CustomMeleeAttack(random(13,58),"blooddemon/melee","none");
+		RRG2 G 1 A_SpawnItemEx("RS_RedThingsLS",1,3,15,0,0,0,0,SXF_NOCHECKPOSITION);
+		RRG2 G 0 A_SpawnItemEx("RS_RedThingsLS",6,3,15,0,0,0,0,SXF_NOCHECKPOSITION);
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_ChangeFlag("Nopain",true)
@@ -1596,33 +1595,33 @@ class RS_RedDemon : Demon
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SRG2 H 2;
+		RRG2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 H 2 A_Pain;
-		SRG2 H 1 A_Jump(174,"BuffUP");
+		RRG2 H 2 A_Pain;
+		RRG2 H 1 A_Jump(174,"BuffUP");
 		Goto See;
 	BuffUP:
-		SRG2 E 1 A_SetSpeed(25);
-		SRG2 EF 6 A_CustomMissile("RS_EffectHK",24,0);
-		SRG2 G 5 { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
-		SRG2 G 0 { bMISSILEMORE = true; }   // CH: A_ChangeFlag("Missilemore",TRUE)
+		RRG2 E 1 A_SetSpeed(25);
+		RRG2 EF 6 A_CustomMissile("RS_EffectHK",24,0);
+		RRG2 G 5 { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
+		RRG2 G 0 { RS_MissileChance.SetMore(self, true); }   // CH: A_ChangeFlag("Missilemore",TRUE)
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SRG2 I 8;
-		SRG2 I 0 A_FaceTarget;
-		SRG2 J 0 A_SpawnItemEx("RS_BloodDemonArm2",10,0,32,0,8,0,0,128);
-		SRG2 J 8 A_Scream;
-		SRG2 K 4;
-		SRG2 L 4 A_NoBlocking;
-		SRG2 M 4;
-		SRG2 N -1;
+		RRG2 I 8;
+		RRG2 I 0 A_FaceTarget;
+		RRG2 J 0 A_SpawnItemEx("RS_BloodDemonArm2",10,0,32,0,8,0,0,128);
+		RRG2 J 8 A_Scream;
+		RRG2 K 4;
+		RRG2 L 4 A_NoBlocking;
+		RRG2 M 4;
+		RRG2 N -1;
 		Stop;
 	Raise:
-		SRG2 NMLKJI 5;
+		RRG2 NMLKJI 5;
 		Goto See;
 	}
 }
@@ -1665,7 +1664,7 @@ class RS_BlackDemon3 : Actor
 		+BOSS
 		-NORADIUSDMG
 		+DONTMORPH   // CH lists +dontmorph twice
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		DropItem "RS_CH_MegaSphere", 34;
 		DropItem "RS_CH_Berserk";
@@ -1899,7 +1898,7 @@ class RS_WhiteDemon2 : Actor
 		+BOSS
 		-NORADIUSDMG
 		+DONTMORPH   // CH lists +dontmorph twice
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOTARGETSWITCH
 		+NOTARGET
 		+NOFEAR

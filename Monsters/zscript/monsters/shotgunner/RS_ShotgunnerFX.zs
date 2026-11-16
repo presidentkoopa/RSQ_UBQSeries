@@ -799,7 +799,7 @@ class RS_PufFCHBS : Actor   // CH Shotgunners.txt:1794
 	States
 	{
 	Spawn:
-		SMK2 ABCDE 2;
+		RMK2 ABCDE 2;
 		Stop;
 	}
 }
@@ -964,8 +964,7 @@ class RS_ShotgunShrine : Actor   // CH Shotgunners.txt:2783
 		Health 800;
 		Monster;
 		+NOTRIGGER
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+THRUSPECIES
 		+DONTHARMCLASS
 		+DONTHARMSPECIES

@@ -1,0 +1,256 @@
+# Monster Assembly rig logs, 2026-11-16 (rig only, not headset-confirmed). Extracts of run.log; runner rig/work/boss/boss_full.sh
+# P = gate_rel4 hardlinks with this run's RSQ_Monsters.pk3; BDVR = BD22_VR-Reloaded_2.0.5a.pk3; MAP01, skill 6 (Black Metal); +set rsqtr_eye_m 1.6; sv_cheats 1
+
+## asm_gate2: script errors and VM aborts (all packs)
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+## asm_gate2: RSQ_Monsters compile warnings
+lines naming RSQ_Monsters.pk3 with a warning: 0
+no 'warnings while compiling RSQ_Monsters.pk3' line
+
+## asm_order3: script errors and VM aborts (all packs)
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+## asm_order3: RSQ_Monsters compile warnings
+lines naming RSQ_Monsters.pk3 with a warning: 0
+no 'warnings while compiling RSQ_Monsters.pk3' line
+
+## the base pk3 (origin/main 79e8edf519, run rel4_m01 of the 11-16 release gate)
+256 warnings while compiling RSQ_Monsters.pk3:zscript.txt
+Script warnings naming RSQ_Monsters: 162
+
+## asm_gate2: load order (RSQ and art pk3s)
+RSQ_Accessibility.pk3, 18 lumps
+RSQ_DistanceGrab.pk3, 88 lumps
+RSQ_FnF.pk3, 140 lumps
+RSQ_GlowInTheDark.pk3, 25 lumps
+RSQ_Grapple.pk3, 33 lumps
+RSQ_Graveyard.pk3, 23 lumps
+RSQ_Grenade.pk3, 1719 lumps
+RSQ_GunBonsaiVR.pk3, 64 lumps
+RSQ_GunCards.pk3, 19256 lumps
+RSQ_LaserSight.pk3, 7459 lumps
+RSQ_Melee.pk3, 321 lumps
+RSQ_Miniboss.pk3, 854 lumps
+RSQ_Monsters.pk3, 21992 lumps
+RSQ_Saber.pk3, 10967 lumps
+RSQ_Score.pk3, 79 lumps
+RSQ_ShieldSaw.pk3, 242 lumps
+RSQ_SlowMo.pk3, 833 lumps
+RSQ_TacticalRig.pk3, 166 lumps
+RSQ_VisualRewards.pk3, 1315 lumps
+RSQ_Wheel.pk3, 275 lumps
+RSQ_Whip.pk3, 49 lumps
+RSQ_BDXMTiers_Abyss.pk3, 12544 lumps
+RSQ_BDXMTiers_Black.pk3, 12544 lumps
+RSQ_BDXMTiers_Blue.pk3, 12544 lumps
+RSQ_BDXMTiers_Brown.pk3, 12544 lumps
+RSQ_BDXMTiers_Cyan.pk3, 12544 lumps
+RSQ_BDXMTiers_FireBlu.pk3, 12544 lumps
+RSQ_BDXMTiers_Gray.pk3, 12544 lumps
+RSQ_BDXMTiers_Green.pk3, 12544 lumps
+RSQ_BDXMTiers_Purple.pk3, 12544 lumps
+RSQ_BDXMTiers_Red.pk3, 12544 lumps
+RSQ_BDXMTiers_White.pk3, 12544 lumps
+RSQ_BDXMTiers_Yellow.pk3, 12544 lumps
+
+## asm_order3: the same with the 12 art pk3s sorted BEFORE RSQ_Monsters (the PK3TEST order)
+RSQ_Accessibility.pk3, 18 lumps
+RSQ_BDXMTiers_Abyss.pk3, 12544 lumps
+RSQ_BDXMTiers_Black.pk3, 12544 lumps
+RSQ_BDXMTiers_Blue.pk3, 12544 lumps
+RSQ_BDXMTiers_Brown.pk3, 12544 lumps
+RSQ_BDXMTiers_Cyan.pk3, 12544 lumps
+RSQ_BDXMTiers_FireBlu.pk3, 12544 lumps
+RSQ_BDXMTiers_Gray.pk3, 12544 lumps
+RSQ_BDXMTiers_Green.pk3, 12544 lumps
+RSQ_BDXMTiers_Purple.pk3, 12544 lumps
+RSQ_BDXMTiers_Red.pk3, 12544 lumps
+RSQ_BDXMTiers_White.pk3, 12544 lumps
+RSQ_BDXMTiers_Yellow.pk3, 12544 lumps
+RSQ_DistanceGrab.pk3, 88 lumps
+## RSART, both orders (the art driver: tracked / drawn)
+asm_gate2/run.log:RSART t70 tracked 29 drawn 27 tint 2 skipped 27 looked-up 0 | driver 0.0321 ms/tic avg, 0.1525 max over 35 tics | art textures 29, 0.22 MB as RGBA8
+asm_gate2/run.log:RSART t420 tracked 28 drawn 27 tint 1 skipped 27 looked-up 0 | driver 0.0272 ms/tic avg, 0.0641 max over 35 tics | art textures 32, 0.25 MB as RGBA8
+asm_order3/run.log:RSART t70 tracked 27 drawn 27 tint 0 skipped 27 looked-up 0 | driver 0.0280 ms/tic avg, 0.2478 max over 35 tics | art textures 31, 0.25 MB as RGBA8
+asm_order3/run.log:RSART t420 tracked 27 drawn 27 tint 0 skipped 27 looked-up 0 | driver 0.0291 ms/tic avg, 0.0622 max over 35 tics | art textures 36, 0.29 MB as RGBA8
+
+## Red zombieman and the map census at World Tier 10 (asm_gate2 / asm_order3)
+ASMP RED t71 RifleZombie health 32 spawnhealth 32 set -1 tier -1 lump PSSSA1 world 10
+ASMP MAP Imp health 260 of 260 set 2 tier 10
+ASMP MAP Imp health 260 of 260 set 2 tier 10
+ASMP MAP RifleZombie health 297 of 297 set 2 tier 10
+ASMP MAP RifleZombie health 297 of 297 set 2 tier 10
+ASMP MAP RifleZombie health 297 of 297 set 2 tier 10
+ASMP MAP Imp health 260 of 260 set 2 tier 10
+ASMP MAP Imp health 780 of 260 set 2 tier 10
+ASMP MAP NetherDarkImp health 410 of 410 set 2 tier 10
+ASMP MAP Imp health 780 of 260 set 2 tier 10
+ASMP MAP VoidDarkImp health 410 of 410 set 2 tier 10
+ASMP MAP VoidDarkImp health 410 of 410 set 2 tier 10
+ASMP FLASH t171 request RifleZombie -> tier 11 (from 10), retarget test 1; now health 297 of 297 set 2
+
+## the tier flash, per tic (asm_gate2)
+ASMP FLASH t170 request RifleZombie -> tier 11 (from 10), retarget test 1
+ASMP FLASH t170 tick 1 trans 0 bright 0 job yes target 11 timer 9 ticker 0 tier 10
+ASMP FLASH t171 tick 2 trans 655460 bright 1 job yes target 11 timer 8 ticker 1 tier 10
+ASMP FLASH t172 tick 3 trans 655460 bright 1 job yes target 11 timer 7 ticker 2 tier 10
+ASMP FLASH t173 tick 4 trans 0 bright 0 job yes target 11 timer 6 ticker 3 tier 10
+ASMP FLASH t174 tick 5 trans 0 bright 0 job yes target 11 timer 5 ticker 4 tier 10
+ASMP FLASH t175 tick 6 trans 0 bright 0 job yes target 11 timer 4 ticker 5 tier 10
+ASMP FLASH t176 tick 7 trans 655460 bright 1 job yes target 11 timer 3 ticker 6 tier 10
+ASMP FLASH retarget at tick 7 -> 12
+ASMP FLASH t177 tick 8 trans 655460 bright 1 job yes target 12 timer 11 ticker 1 tier 10
+ASMP FLASH t178 tick 9 trans 655460 bright 1 job yes target 12 timer 10 ticker 2 tier 10
+ASMP FLASH t179 tick 10 trans 0 bright 0 job yes target 12 timer 9 ticker 3 tier 10
+ASMP FLASH t180 tick 11 trans 0 bright 0 job yes target 12 timer 8 ticker 4 tier 10
+ASMP FLASH t181 tick 12 trans 0 bright 0 job yes target 12 timer 7 ticker 5 tier 10
+ASMP FLASH t182 tick 13 trans 655460 bright 1 job yes target 12 timer 6 ticker 6 tier 10
+ASMP FLASH t183 tick 14 trans 655460 bright 1 job yes target 12 timer 5 ticker 7 tier 10
+ASMP FLASH t184 tick 15 trans 655460 bright 1 job yes target 12 timer 4 ticker 8 tier 10
+ASMP FLASH t185 tick 16 trans 0 bright 0 job yes target 12 timer 3 ticker 9 tier 10
+ASMP FLASH t186 tick 17 trans 0 bright 0 job yes target 12 timer 2 ticker 10 tier 10
+ASMP FLASH t187 tick 18 trans 0 bright 0 job yes target 12 timer 1 ticker 11 tier 10
+ASMP FLASH t188 tick 19 trans 0 bright 0 job no target -1 timer -1 ticker -1 tier 12
+
+## Colourful Hell 1.04 sprites drawn (asm_order3)
+ASMP CH Pain.AbyssPE set 1
+ASMP CH t260 RS_CommonImp now draws AYPBA0
+ASMP AYPB t261 RS_CommonImp draws AYPBA0
+ASMP AYPB t264 RS_CommonImp draws AYPBA0
+ASMP AYPB t267 RS_CommonImp draws AYPBA0
+ASMP AYPB t270 RS_CommonImp draws AYPBB0
+ASMP AYPB t273 RS_CommonImp draws AYPBB0
+ASMP AYPB t276 RS_CommonImp draws AYPBB0
+ASMP CH t277 RS_AbyssImp2 "Abyss Imp" draws ROACA1 health 240
+ASMP CH t277 RS_AbyssCaco2 "Abyssmal Tomatoe quality" draws VCCMA1 health 880
+ASMP CH t277 RS_MrBones "The ride" draws SKLTR1 health 40
+ASMP CH t277 RS_CommonImp "Imp" draws AYPBB0 health 48
+ASMP AYPB t279 RS_CommonImp draws AYPBB0
+ASMP AYPB t282 RS_CommonImp draws AYPBB0
+ASMP AYPB t285 RS_CommonImp draws AYPBB0
+ASMP AYPB t288 RS_CommonImp draws AYPBB0
+ASMP AYPB t291 RS_CommonImp draws AYPBA0
+ASMP AYPB t294 RS_CommonImp draws AYPBA0
+ASMP AYPB t297 RS_CommonImp draws AYPBC0
+ASMP AYPB t300 RS_CommonImp draws AYPBD0
+ASMP AYPB t303 RS_CommonImp draws AYPBD0
+ASMP AYPB t306 RS_CommonImp draws AYPBE0
+ASMP AYPB t309 RS_CommonImp draws AYPBE0
+ASMP AYPB t312 RS_CommonImp draws AYPBF0
+ASMP AYPB t315 RS_CommonImp draws AYPBG0
+ASMP AYPB t318 RS_CommonImp draws AYPBH0
+ASMP AYPB t321 RS_CommonImp draws AYPBI0
+ASMP AYPB t324 RS_CommonImp draws AYPBH0
+ASMP AYPB t327 RS_CommonImp draws AYPBH0
+ASMP CH t368 RS_AbyssImp2 "Abyss Imp" draws ROACA1 health 240
+
+## Test and Debug (Monster Diagnostics) buttons (asm_gate2)
+RSDIAG spawned C0001 RS_CommonCGuy (Former Captain)
+RSDIAG spawned T0001 RS_GreenCGuy (Green Chaingunner)
+RSDIAG spawned T0002 RS_BlueCGuy (Blue Chaingunner)
+RSDIAG spawned T0004 RS_PurpleCGuy (Purple Chaingunner)
+RSDIAG spawned T0005 RS_YellowCGuy (Orange Former Captain)
+RSDIAG spawned T0010 RS_RedCGuy (Red Chaingunner)
+RSDIAG spawned T0003 RS_CyanCGuy2 (Jetpack Larry)
+RSDIAG spawned T0007 RS_GrayCGuy2 (That is bad camo)
+RSDIAG spawned T0006 RS_BrownCGuy2 (Brown Noise Maker)
+RSDIAG spawned T0008 RS_AbyssCGuy2 (Abyss Captain)
+RSDIAG spawned T0009 RS_FireBluCGuy2 (Bad makeup day)
+RSDIAG spawned B0001 RS_BlackCGuy2 (ITS MR GENERAL TO YOU,MAGGOT)
+RSDIAG spawned B0002 RS_WhiteCguy2 (The crazy lady scientist)
+RSDIAG spawned X0001 RS_BlackCGuyEX (LET ME SEE YOUR WARFACE)
+RSDIAG C0001 RS_CommonCGuy "Former Captain" health 56 of 56, ladder tier 1, dormant
+RSDIAG T0001 RS_GreenCGuy "Green Chaingunner" health 68 of 68, ladder tier 2, dormant
+RSDIAG T0002 RS_BlueCGuy "Blue Chaingunner" health 84 of 84, ladder tier 3, dormant
+RSDIAG T0004 RS_PurpleCGuy "Purple Chaingunner" health 96 of 96, ladder tier 4, dormant
+RSDIAG T0005 RS_YellowCGuy "Orange Former Captain" health 209 of 209, ladder tier 7, dormant
+RSDIAG T0010 RS_RedCGuy "Red Chaingunner" health 396 of 396, ladder tier 10, dormant
+RSDIAG T0003 RS_CyanCGuy2 "Jetpack Larry" health 100 of 100, ladder tier 5, dormant
+RSDIAG T0007 RS_GrayCGuy2 "That is bad camo" health 377 of 377, ladder tier 9, dormant
+RSDIAG T0006 RS_BrownCGuy2 "Brown Noise Maker" health 200 of 200, ladder tier 6, dormant
+RSDIAG T0008 RS_AbyssCGuy2 "Abyss Captain" health 416 of 416, ladder tier 11, dormant
+RSDIAG T0009 RS_FireBluCGuy2 "Bad makeup day" health 360 of 360, ladder tier 8, dormant
+RSDIAG B0001 RS_BlackCGuy2 "ITS MR GENERAL TO YOU,MAGGOT" health 3600 of 3600, ladder tier 12, dormant
+RSDIAG B0002 RS_WhiteCguy2 "The crazy lady scientist" health 6221 of 6221, ladder tier 13, dormant
+RSDIAG X0001 RS_BlackCGuyEX "LET ME SEE YOUR WARFACE" health 7199 of 7199, ladder tier 12, dormant
+RSDIAG rs_cg_diag: 14
+RSDIAG rs_cg_clear: 14
+
+## engine sprite-frame count (gdb, SpriteFrames.Count; boss_full order + the 12 art pk3s)
+asm_sfc_new/run.out:SFCOUNT SpriteFrames +8=55746 +12=83034 sprites +8=5051 +12=6927
+asm_sfc_base/run.out:SFCOUNT SpriteFrames +8=55114 +12=55356 sprites +8=5023 +12=6927
+
+## thrall drops run asm_thrA (rsqmb_callin 1; mbprobe_td.pk3)
+RSQMB fight colours t75: world tier 1 -> miniboss Blue(3) (RS_BlueZombie), thralls Green(2) Green(2) Green(2) Green(2)
+RSQMB Miniboss From 1 / Thralls From 2: RS_BlueZombie
+MBK 1 THRALL RS_GreenZombie hp 78 bright 1 scale 1.15: LDLegendaryMonsterResistances LDLegendaryMonsterTransformed RSQMB_Thrall champion_PinkToken champion_PersistentInfo LDLegendaryMonsterToken RSQMB_Called | ctl [champion_PinkController setup 1 mut 0 sec 0 dorm 0]
+MBK 1 THRALL RS_GreenZombie hp 96 bright 1 scale 1.15: LDLegendaryMonsterResistances LDLegendaryMonsterTransformed RSQMB_Thrall champion_CyanToken champion_PersistentInfo LDLegendaryMonsterToken RSQMB_Called | ctl [champion_CyanController setup 1 mut 0 sec 0 dorm 0]
+MBK 1 THRALL RS_GreenZombie hp 96 bright 1 scale 1.15: LDLegendaryMonsterResistances LDLegendaryMonsterTransformed RSQMB_Thrall champion_IndigoToken champion_PersistentInfo LDLegendaryMonsterToken RSQMB_Called | ctl [champion_IndigoController setup 1 mut 0 sec 0 dorm 0]
+MBK 1 MINIBOSS RS_BlueZombie hp 144 bright 1 scale 1.25: LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_CyanToken RSQMB_Ward champion_GreenToken champion_PersistentInfo RSQMB_Called | ctl [champion_GreenController setup 1 mut 0 sec 0 dorm 0]
+MBD REPORT t745: 3 set-piece deaths, 452 items spawned near them; cigarettes now 3
+MBD REPORT death 0 THRALL RS_GreenZombie t496: RSQ_KRArmorBit x5; RSQ_KRGoldBit x9; champion_Bundle x1; LDLegendaryMonsterVisualEffectPink x1; LDRandomLegendaryDropNormal x1; champion_HealthBonus x16; Clip2 x1; ShieldBonus x3; LDPistolPickupLegendary x1;
+MBD REPORT death 1 THRALL RS_GreenZombie t496: RSQ_KRArmorBit x8; RSQ_KRGoldBit x6; champion_Bundle x1; LDLegendaryMonsterVisualEffectCyan x1; LDRandomLegendaryDropNormal x1; champion_HealthBonus x10; ShieldBonus x7; Clip2 x5; AmmoShell x1; LDFistsPickupLegendary x1;
+MBD REPORT death 2 THRALL RS_GreenZombie t496: RSQ_KRArmorBit x13; RSQ_KRGoldBit x12; champion_Bundle x1; LDLegendaryMonsterVisualEffectMaker x144; LDLegendaryMonsterVisualEffectGreen x141; LDLegendaryMonsterVisualEffectIndigo x1; LDRandomLegendaryDropNormal x1; LDLegendaryMonsterDed x3; champion_HealthBonus x12; ShieldBonus x4; Clip2 x14; LDPistolPickupLegendary x1; LDPistolRandomLegendary x2; LDFistsRandomLegendary x1; csh_critController x3; csh_Brain x3; LDPistolEffectActive x2; LDPistolEffect_Pristine x1; LDPistolLegendaryCommon x1; LDFistsEffectActive x1; LDFistsLegendaryUncommon x1; LDFistsEffect_Berserker x1; LDPistolEffect_Improbable x1; LDPistolLegendaryRare x1; HitLeg x3; RSQ_KRAmmoBit x4; RSQ_KRHealthBit x1;
+MBD LYING within 96 of THRALL death 0 now: champion_HealthBonus x26; Clip2 x7; ShieldBonus x9; RSQ_KRAmmoBit x3; RSQ_KRHealthBit x1; RSQ_KRGoldBit x1;
+MBD LYING within 96 of THRALL death 1 now: ShieldBonus x11; RSQFF_Box x1; champion_HealthBonus x25; Clip2 x5; AmmoShell x1; RSQ_KRAmmoBit x2;
+MBD LYING within 96 of THRALL death 2 now: ShieldBonus x7; champion_HealthBonus x13; Clip2 x12; RSQ_KRHealthBit x2; RSQ_KRArmorBit x4; RSQ_KRAmmoBit x2; RSQ_KRGoldBit x1; HealthPlus x1;
+
+## thrall drops run asm_thrB (rsqmb_callin 1; mbprobe_td.pk3)
+RSQMB fight colours t75: world tier 1 -> miniboss Blue(3) (RS_BlueImp), thralls - - - - -
+RSQMB Miniboss From 1 / Thralls From 4: RS_BlueImp
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall PistolZombiePatch died 19 tics ago, 59 units from where it died)
+RSQMB thrall drop: BrutalAxe removed, a thrall's gun (the nearest recent death; thrall LabguyB died 2 tics ago, 20 units from where it died)
+RSQMB thrall drop: BrutalAxe removed, a thrall's gun (the nearest recent death; thrall LabguyB died 41 tics ago, 40 units from where it died)
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall PistolZombiePatch died 8 tics ago, 15 units from where it died)
+RSQMB thrall drop: BrutalAxe kept (the nearest recent death; another monster gone died 72 tics ago, 39 units from where it died)
+RSQMB thrall drop: BrutalAxe removed, a thrall's gun (the nearest recent death; thrall gone died 106 tics ago, 43 units from where it died)
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall PistolZombiePatch died 9 tics ago, 20 units from where it died)
+MBK 1 THRALL PistolZombiePatch hp 96 bright 1 scale 1.13: LDLegendaryMonsterResistances LDLegendaryMonsterTransformed RSQMB_Thrall champion_DarkGreenToken champion_PersistentInfo LDLegendaryMonsterToken RSQMB_Called | ctl [champion_DarkGreenController setup 1 mut 4 sec 0 dorm 0]
+MBK 1 THRALL LabguyB hp 93 bright 1 scale 1.13: LDLegendaryMonsterResistances LDLegendaryMonsterTransformed RSQMB_Thrall champion_BlackToken champion_PersistentInfo LDLegendaryMonsterToken RSQMB_Called | ctl [champion_BlackController setup 1 mut 0 sec 0 dorm 0]
+MBK 1 THRALL PistolZombiePatch hp 96 bright 1 scale 1.13: LDLegendaryMonsterResistances LDLegendaryMonsterTransformed RSQMB_Thrall champion_OrangeToken champion_PersistentInfo LDLegendaryMonsterToken RSQMB_Called | ctl [champion_OrangeController setup 1 mut 0 sec 0 dorm 0]
+MBK 1 MINIBOSS RS_BlueImp hp 198 bright 1 scale 1.25: LDLegendaryMonsterResistances LDLegendaryMonsterTransformed LDLegendaryMonsterToken champion_DarkGreenToken RSQMB_Ward champion_PinkToken champion_PersistentInfo RSQMB_Called | ctl [champion_PinkController setup 1 mut 0 sec 0 dorm 0]
+RSQMB thrall drop: BrutalAxe removed, a thrall's gun (the nearest recent death; thrall gone died 150 tics ago, 31 units from where it died)
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall gone died 15 tics ago, 72 units from where it died)
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall gone died 20 tics ago, 94 units from where it died)
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall PistolZombiePatch died 40 tics ago, 56 units from where it died)
+MBD REPORT t747: 4 set-piece deaths, 716 items spawned near them; cigarettes now 3
+MBD REPORT death 0 THRALL PistolZombiePatch t499: RSQ_KRGoldBit x7; RSQ_KRArmorBit x5; LDLegendaryMonsterVisualEffectPink x91; PistolSpawner x1;
+MBD REPORT death 1 THRALL LabguyB t499: RSQ_KRGoldBit x11; RSQ_KRArmorBit x5; RSQ_KRAmmoBit x1; SoulAmmo x3; LDLegendaryMonsterVisualEffectMaker x144; LDLegendaryMonsterVisualEffectStandard x2; LDRandomLegendaryDropNormal x3; LDLegendaryMonsterDed x3; LDLegendaryMonsterVisualEffectStandard2 x1; LDFistsPickupLegendary x2; LDPistolPickupLegendary x1; LDFistsRandomLegendary x2; LDPistolRandomLegendary x1; csh_critController x3; csh_Brain x3; LDFistsEffectActive x2; LDFistsEffect_RazorEdge x1; LDFistsLegendaryCommon x1; LDFistsLegendaryUncommon x1; LDFistsEffect_Hunting x1; LDPistolEffectActive x1; LDPistolEffect_Sustained x1; LDPistolLegendaryCommon x1; LDLegendaryCommonPickupEffect x47; LDLegendaryRarePickupEffect x47; Clip2 x1; RSQ_HudRes x1; BrutalAxe x1;
+MBD REPORT death 2 THRALL PistolZombiePatch t499: RSQ_KRArmorBit x6; RSQ_KRGoldBit x7; PistolSpawner x1;
+MBD REPORT death 3 THRALL PistolZombiePatch t590: RSQ_KRArmorBit x2; RSQ_KRAmmoBit x1; RSQ_KRGoldBit x6; LDLegendaryMonsterVisualEffectPink x141; champion_Bundle x1; champion_HealthBonus x2; ShieldBonus x1; PistolSpawner x1; LDLegendaryMonsterVisualEffectMaker x91; LDLegendaryCommonPickupEffect x30; LDLegendaryRarePickupEffect x30; SoulAmmo x1;
+MBD LYING within 96 of THRALL death 0 now: ShieldBonus x4; champion_HealthBonus x7; Clip2 x1; RSQ_KRArmorBit x1; RSQ_KRGoldBit x3;
+MBD LYING within 96 of THRALL death 1 now: ShotgunSpawnerReplacer x1; ShotgunSpawner x1; champion_HealthBonus x18; ShieldBonus x4; Clip2 x5; AmmoShell x1; BrutalAxe x1;
+MBD LYING within 96 of THRALL death 2 now: champion_HealthBonus x3; ShieldBonus x8; RSQ_KRArmorBit x1; RSQ_KRAmmoBit x1;
+MBD LYING within 96 of THRALL death 3 now: ShieldBonus x12; champion_HealthBonus x10; Clip2 x1; RSQ_KRArmorBit x1; RSQ_KRAmmoBit x1; RSQ_KRGoldBit x2;
+
+## asm_final: the final pk3 (md5 9c2ee4ce2b04...), the same order
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+No sprites specified for voxel.
+Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+No sprites specified for voxel.
+RSQ_Monsters warning lines: 0
+ASMP FLASH t132 request RifleZombie -> tier 11 (from 10), retarget test 0; now health 297 of 297 set 2
+ASMP CH t172 RS_CommonImp now draws AYPBA0
+ASMP CH t210 RS_AbyssImp2 "Abyss Imp" draws ROACA1 health 240
+ASMP CH t210 RS_AbyssCaco2 "Abyssmal Tomatoe quality" draws VCCMA1 health 880
+ASMP CH t210 RS_MrBones "The ride" draws SKLTR1 health 40
+ASMP CH t210 RS_CommonImp "Imp" draws AYPBC0 health 48
+RSDIAG rs_cg_diag: 14
+RSDIAG rs_cg_clear: 14

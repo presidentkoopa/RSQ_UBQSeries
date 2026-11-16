@@ -229,7 +229,7 @@ class RS_BrownCaco2 : Actor
 		Monster;
 		+DONTHARMCLASS
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOGRAVITY
 		+FLOAT
 		+FLOATBOB
@@ -356,7 +356,7 @@ class RS_CyanCaco2 : Actor
 		Monster;
 		+DONTHARMCLASS
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOGRAVITY
 		+FLOAT
 		+FLOATBOB
@@ -436,7 +436,7 @@ class RS_CyanCaco2 : Actor
 		HELE I 5 Bright A_Scream;
 		HELE JKL 5 Bright;
 		HELE M 5 Bright A_NoBlocking(false);
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
 		HELE M 0 A_IceGuyDie;
 		HELE V -1 A_SetFloorClip;
 		Stop;
@@ -487,7 +487,7 @@ class RS_AbyssCaco2 : Actor
 		Monster;
 		+DONTHARMCLASS
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOGRAVITY
 		+FLOAT
 		+FLOATBOB
@@ -626,7 +626,7 @@ class RS_GrayCaco2 : Cacodemon
 		PainChance 90;
 		Damage 5;   // bare constant stays bare
 		Monster;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
@@ -739,8 +739,7 @@ class RS_FireBluCaco2 : Actor
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEEVENMORE
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+DONTHARMCLASS
 		SeeSound "caco/sight";
 		PainSound "caco/pain";
@@ -1043,7 +1042,7 @@ class RS_BlueCaco : Cacodemon
 		DamageFactor "DIMp", 0;
 		PainChance "DIMp", 0;
 		Monster;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOAT
 		+NOGRAVITY
 		SeeSound "caco/sight";
@@ -1159,7 +1158,7 @@ class RS_PurpleCaco : Cacodemon
 		PainChance 90;
 		Damage 3;   // bare constant stays bare
 		Monster;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
@@ -1291,7 +1290,7 @@ class RS_YellowCaco : Cacodemon
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOGRAVITY
 		+FLOAT
 		+NOFEAR
@@ -1301,12 +1300,12 @@ class RS_YellowCaco : Cacodemon
 	States
 	{
 	Spawn:
-		CALI A 1 A_Look;
+		RALI A 1 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		CALI A 0 A_SetTranslucent(1);
-		CALI A 4 A_Chase;
+		RALI A 0 A_SetTranslucent(1);
+		RALI A 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Pain.AbyssPE:
@@ -1326,76 +1325,76 @@ class RS_YellowCaco : Cacodemon
 		TNT1 A 0 A_Die;
 		Stop;
 	Dodge1:
-		CALI A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
+		RALI A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
 		Goto See;
 	Dodge2:
-		CALI A 5 ThrustThing(int(angle*256/360+192),20,0,0);
+		RALI A 5 ThrustThing(int(angle*256/360+192),20,0,0);
 		Goto See;
 	Missile:
-		CALI B 6 A_FaceTarget;
+		RALI B 6 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CALI B 0 A_JumpIf(user_VoidField == 0,"VoidField");
-		CALI B 0 A_JumpIfCloser(1000,"SpitFlame");
-		CALI B 0 A_Jump(255,"SeekAndKill");
+		RALI B 0 A_JumpIf(user_VoidField == 0,"VoidField");
+		RALI B 0 A_JumpIfCloser(1000,"SpitFlame");
+		RALI B 0 A_Jump(255,"SeekAndKill");
 		Goto See;
 	SpitFlame:
-		CALI DEF 8 Bright A_FaceTarget;
-		CALI G 6 A_CustomMissile("RS_SpitFireCaco",35,0,random(-3,3));
-		CALI FED 6 A_FaceTarget;
-		CALI E 1 A_JumpIfTargetInLOS("RefireYes");
+		RALI DEF 8 Bright A_FaceTarget;
+		RALI G 6 A_CustomMissile("RS_SpitFireCaco",35,0,random(-3,3));
+		RALI FED 6 A_FaceTarget;
+		RALI E 1 A_JumpIfTargetInLOS("RefireYes");
 		Goto See;
 	RefireYes:
-		CALI F 1 A_Jump(176,"SpitFlame");
+		RALI F 1 A_Jump(176,"SpitFlame");
 		Goto See;
 	SeekAndKill:
-		CALI A 5 A_SetTranslucent(0.3);
-		CALI A 5 A_SetSpeed(42);
-		CALI AAAAAAAAAAA 2 A_Wander;
-		CALI A 5 A_SetTranslucent(0.1);
-		CALI AAAAAAAAAAA 2 A_Wander;
-		CALI A 5 A_SetTranslucent(0.3);
-		CALI AAAAAAAAAAA 2 A_Wander;
-		CALI A 5 A_SetSpeed(12);
-		CALI A 2 A_JumpIfCloser(1000,"See");
-		CALI A 2 A_Jump(12,"See");
+		RALI A 5 A_SetTranslucent(0.3);
+		RALI A 5 A_SetSpeed(42);
+		RALI AAAAAAAAAAA 2 A_Wander;
+		RALI A 5 A_SetTranslucent(0.1);
+		RALI AAAAAAAAAAA 2 A_Wander;
+		RALI A 5 A_SetTranslucent(0.3);
+		RALI AAAAAAAAAAA 2 A_Wander;
+		RALI A 5 A_SetSpeed(12);
+		RALI A 2 A_JumpIfCloser(1000,"See");
+		RALI A 2 A_Jump(12,"See");
 		Loop;
 	Melee:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CALI EF 7 A_FaceTarget;
-		CALI G 6 A_CustomMeleeAttack(random(5,64),"bite/bite4");
-		CALI FE 6;
+		RALI EF 7 A_FaceTarget;
+		RALI G 6 A_CustomMeleeAttack(random(5,64),"bite/bite4");
+		RALI FE 6;
 		Goto See;
 	VoidField:
-		CALI EF 8 Bright;
-		CALI G 6 A_SpawnItemEx("RS_VoidField",random(-180,180),random(-180,180),random(1,32),0,0,0,SXF_NOCHECKPOSITION);
-		CALI G 0 A_SpawnItemEx("RS_VoidField",random(-280,280),random(-280,280),random(-16,32),0,0,0,SXF_NOCHECKPOSITION);
-		CALI G 0 A_SpawnItemEx("RS_VoidField",random(-280,280),random(-280,280),random(-16,32),0,0,0,SXF_NOCHECKPOSITION);
-		CALI G 0 A_SpawnItemEx("RS_VoidField",random(-380,380),random(-380,380),random(-32,32),0,0,0,SXF_NOCHECKPOSITION);
-		CALI G 0 A_SpawnItemEx("RS_VoidField",random(-380,380),random(-380,380),random(-32,32),0,0,0,SXF_NOCHECKPOSITION);
-		CALI FE 6 { user_VoidField = user_VoidField + 1; }   // CH: A_SetUserVar("User_VoidField",User_VoidField+1) -- fires once per frame, twice, as in CH
+		RALI EF 8 Bright;
+		RALI G 6 A_SpawnItemEx("RS_VoidField",random(-180,180),random(-180,180),random(1,32),0,0,0,SXF_NOCHECKPOSITION);
+		RALI G 0 A_SpawnItemEx("RS_VoidField",random(-280,280),random(-280,280),random(-16,32),0,0,0,SXF_NOCHECKPOSITION);
+		RALI G 0 A_SpawnItemEx("RS_VoidField",random(-280,280),random(-280,280),random(-16,32),0,0,0,SXF_NOCHECKPOSITION);
+		RALI G 0 A_SpawnItemEx("RS_VoidField",random(-380,380),random(-380,380),random(-32,32),0,0,0,SXF_NOCHECKPOSITION);
+		RALI G 0 A_SpawnItemEx("RS_VoidField",random(-380,380),random(-380,380),random(-32,32),0,0,0,SXF_NOCHECKPOSITION);
+		RALI FE 6 { user_VoidField = user_VoidField + 1; }   // CH: A_SetUserVar("User_VoidField",User_VoidField+1) -- fires once per frame, twice, as in CH
 		Goto Missile;
 	Pain:
-		CALI H 0 A_SetSpeed(12);
-		CALI H 0 A_SetTranslucent(1);
+		RALI H 0 A_SetSpeed(12);
+		RALI H 0 A_SetTranslucent(1);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CALI H 3 { user_VoidField = (user_VoidField == 0) ? 1 : 0; }   // CH: A_SetUserVar("User_VoidField",User_VoidField==0)
-		CALI I 6 A_Pain;
-		CALI I 0 A_Jump(128,"Dodge1","Dodge2");
+		RALI H 3 { user_VoidField = (user_VoidField == 0) ? 1 : 0; }   // CH: A_SetUserVar("User_VoidField",User_VoidField==0)
+		RALI I 6 A_Pain;
+		RALI I 0 A_Jump(128,"Dodge1","Dodge2");
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		CALI J 0 A_SetFloorClip;
-		CALI J 6 A_Scream;
-		CALI KLMN 6;
+		RALI J 0 A_SetFloorClip;
+		RALI J 6 A_Scream;
+		RALI KLMN 6;
 		Wait;
 	Crash:
-		CALI OP 6;
-		CALI Q 6 A_NoBlocking;
-		CALI R 6;
-		CALI S -1;
+		RALI OP 6;
+		RALI Q 6 A_NoBlocking;
+		RALI R 6;
+		RALI S -1;
 		Stop;
 	}
 }
@@ -1438,7 +1437,7 @@ class RS_RedCaco : Actor
 		DropItem "RS_CH_Berserk", 82;
 		Monster;
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOGRAVITY
 		+FLOAT
 		+FLOATBOB
@@ -1535,7 +1534,7 @@ class RS_RedCaco : Actor
 		HED9 D 4 { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
 		HED9 D 4 A_CustomMissile("RS_EffectHK",32,0);
 		HED9 D 4 A_SetSpeed(34);
-		HED9 D 12 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileevenMore",TRUE)
+		HED9 D 12 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileevenMore",TRUE)
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
@@ -1590,7 +1589,7 @@ class RS_BlackCaco2 : Actor
 		+NOGRAVITY
 		+BOSS
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		-NORADIUSDMG
 		+NOFEAR
@@ -1674,7 +1673,7 @@ class RS_BlackCaco2 : Actor
 		HELE D 8 A_PlaySound("monster/helsit");
 		HELE D 12 A_SpawnItemEx("RS_RedCaco",random(-128,128),random(-128,128),0,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
 		HELE D 12 A_SpawnItemEx("RS_RedCaco",random(-128,128),random(-128,128),0,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		HELE C 8 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MISSILEEVENMORE",True)
+		HELE C 8 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MISSILEEVENMORE",True)
 		HELE C 4 { user_DO2 = user_DO2 + 1; }   // CH: A_SetUserVar("User_DO2",User_DO2+1)
 		HELE B 4 { bNOPAIN = false; }   // CH: A_ChangeFlag("NOPAIN",FALSE)
 		HELE A 8 A_SetSpeed(20);
@@ -1775,7 +1774,7 @@ class RS_BlackCacoEX : Actor
 		+NOGRAVITY
 		+BOSS
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		-NORADIUSDMG
 		+NOFEAR
@@ -1869,7 +1868,7 @@ class RS_BlackCacoEX : Actor
 		HELE DDD 12 A_SpawnItemEx("RS_RedSpikeCacoEX",12,128,32,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
 		HELE DDDD 12 A_SpawnItemEx("RS_RedSpikeCacoEX",12,128,32,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
-		HELE C 8 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MISSILEEVENMORE",True)
+		HELE C 8 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MISSILEEVENMORE",True)
 		TNT1 A 0 A_SpawnItemEx("RS_BlackCacoEXShade",0,0,random(22,44),random(-1,1),0,random(-1,1),random(160,200),SXF_NOCHECKPOSITION);
 		HELE C 4 { user_DO2 = user_DO2 + 1; }   // CH: A_SetUserVar("User_DO2",User_DO2+1)
 		HELE B 4;
@@ -2002,7 +2001,7 @@ class RS_WhiteCaco2 : Actor
 		+DONTHARMSPECIES
 		+DONTMORPH
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		-NORADIUSDMG
 		+NOFEAR
@@ -2119,26 +2118,26 @@ class RS_WhiteCaco2 : Actor
 		Goto See;
 	XDeath:
 	Death:
-		CACX A 5 A_Scream;
-		CACX B 5 A_XScream;
-		CACX CD 5;
-		CACX E 5 A_NoBlocking;
-		CACX F 90 A_SetFloorClip;
-		CACX F 10 A_PlaySound("caco/sight");
-		CACX FFFF 6 A_PlaySound("caco/sight");
-		CACX F 15 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
+		RACX A 5 A_Scream;
+		RACX B 5 A_XScream;
+		RACX CD 5;
+		RACX E 5 A_NoBlocking;
+		RACX F 90 A_SetFloorClip;
+		RACX F 10 A_PlaySound("caco/sight");
+		RACX FFFF 6 A_PlaySound("caco/sight");
+		RACX F 15 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,12,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CACX FFFF 2 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,24,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CACX FFFF 1 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,36,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CACX FFFF 2 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,48,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CACX FFFF 1 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,60,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CACX FFFF 2 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,72,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CACX FFFF 1 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,84,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
+		RACX FFFF 2 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,24,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
+		RACX FFFF 1 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,36,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
+		RACX FFFF 2 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,48,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
+		RACX FFFF 1 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,60,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
+		RACX FFFF 2 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,72,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
+		RACX FFFF 1 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,84,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,12,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CACX F 15 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
-		CACX FFFFFFFFFFFFFFF 2;   // CH: each F spawned a CHRandom_GibGenerator -- gore chain not imported (owner: vanilla gore ok)
+		RACX F 15 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
+		RACX FFFFFFFFFFFFFFF 2;   // CH: each F spawned a CHRandom_GibGenerator -- gore chain not imported (owner: vanilla gore ok)
 		// CH: TNT1 AAAAAAFFFFFAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
-		CACX F 1 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
+		RACX F 1 { Radius_Quake(15,30,0,40,0); RSQMN_QuakeFeel.Felt(self, 40 * 64); }
 		TNT1 A 6 A_SpawnItemEx("RS_WhiteCacoREAL",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
 		// CH: TNT1 AAAAAAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) x2 -- gore chain not imported
 		Stop;
@@ -2173,7 +2172,7 @@ class RS_WhiteCacoREAL : Actor
 		+NOGRAVITY
 		+DONTHARMSPECIES
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		-NORADIUSDMG
 		+NOFEAR
@@ -2239,7 +2238,7 @@ class RS_WhiteCacoREAL : Actor
 		CDW2 L 3 A_Pain;
 		TNT1 A 0 { bNOPAIN = false; }         // CH: A_changeflag("Nopain",false)
 		TNT1 A 0 { bINVULNERABLE = false; }   // CH: A_changeflag("Invulnerable",false)
-		TNT1 A 0 { bMISSILEEVENMORE = true; } // CH: A_changeflag("MissileEvenMore",true)
+		TNT1 A 0 { RS_MissileChance.SetEvenMore(self, true); } // CH: A_changeflag("MissileEvenMore",true)
 		TNT1 A 0 { user_mad = user_mad + 1; } // CH: A_setuservar("User_mad",user_mad+1)
 		CDW2 M 3 A_SetSpeed(24);
 		Goto See;

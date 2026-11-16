@@ -245,48 +245,48 @@ class RS_BrownSG2 : ShotgunGuy
 	States
 	{
 	Spawn:
-		QSZM AB 10 A_Look;
+		RSZM AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		QSZM AABB 3 A_Chase;
+		RSZM AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_SpawnItemEx("RS_Drt1",0,0,0,5,0,3,random(0,360),0,32);
-		QSZM CCDD 3 A_Chase;
+		RSZM CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_SpawnItemEx("RS_Drt2",0,0,0,5,0,3,random(0,360),0,32);
 		Loop;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		QSZM E 2 A_JumpIfCloser(400,"Fire1");
+		RSZM E 2 A_JumpIfCloser(400,"Fire1");
 		TNT1 A 0 A_JumpIfInTargetLOS("Fire1",0,JLOSF_DEADNOJUMP|JLOSF_CLOSENOSIGHT,1200,700);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		QSZM E 2 A_Jump(255,"GetCloser");
+		RSZM E 2 A_Jump(255,"GetCloser");
 		Goto See;
 	GetCloser:
-		QSZM A 0 A_PlaySound("gas/gas1");
-		QSZM A 3 A_SkullAttack(28);
+		RSZM A 0 A_PlaySound("gas/gas1");
+		RSZM A 3 A_SkullAttack(28);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_SpawnItemEx("RS_Drt3",0,0,0,5,0,3,random(0,360),0,32);
-		QSZM B 6 A_SpawnItemEx("RS_Drt2",0,0,0,5,0,3,random(0,360),0,32);
+		RSZM B 6 A_SpawnItemEx("RS_Drt2",0,0,0,5,0,3,random(0,360),0,32);
 		TNT1 A 0 A_SpawnItemEx("RS_Drt3",0,0,0,5,0,3,random(0,360),0,32);
-		QSZM AB 6 A_SpawnItemEx("RS_Drt1",0,0,0,5,0,3,random(0,360),0,32);
+		RSZM AB 6 A_SpawnItemEx("RS_Drt1",0,0,0,5,0,3,random(0,360),0,32);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		QSZM E 2 A_Stop;
+		RSZM E 2 A_Stop;
 		TNT1 A 0 A_JumpIfInTargetLOS("Fire1",0,JLOSF_DEADNOJUMP|JLOSF_CLOSENOSIGHT,1200,700);
-		QSZM A 2 A_SetSpeed(9);
+		RSZM A 2 A_SetSpeed(9);
 		Goto See;
 	Fire1:
-		QSZM E 10 A_FaceTarget;
+		RSZM E 10 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		QSZM F 4 Bright;
+		RSZM F 4 Bright;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		QSZM FFFFFFFFFF 0 A_CustomMissile("RS_BrownSGshot",32,random(-5,5),random(-15,15),CMF_OFFSETPITCH,random(-9,1));
-		QSZM FFFFFFFFFF 0 A_CustomMissile("RS_BrownSGshot",32,random(-5,5),random(-15,15),CMF_OFFSETPITCH,random(-1,9));
-		QSZM F 1 A_CustomBulletAttack(11.2,7.1,random(7,17),random(1,3),"BulletPuff");
+		RSZM FFFFFFFFFF 0 A_CustomMissile("RS_BrownSGshot",32,random(-5,5),random(-15,15),CMF_OFFSETPITCH,random(-9,1));
+		RSZM FFFFFFFFFF 0 A_CustomMissile("RS_BrownSGshot",32,random(-5,5),random(-15,15),CMF_OFFSETPITCH,random(-1,9));
+		RSZM F 1 A_CustomBulletAttack(11.2,7.1,random(7,17),random(1,3),"BulletPuff");
 		TNT1 A 0 A_PlaySound("SSGUNER/SSG");
-		QSZM F 4 Bright;
-		QSZM E 2 A_FaceTarget;
+		RSZM F 4 Bright;
+		RSZM E 2 A_FaceTarget;
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -305,30 +305,30 @@ class RS_BrownSG2 : ShotgunGuy
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		QSZM G 3;
+		RSZM G 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		QSZM G 3 A_Pain;
+		RSZM G 3 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		QSZM H 5;
-		QSZM I 5 A_Scream;
-		QSZM J 5 A_NoBlocking;
-		QSZM K 5;
-		QSZM L -1;
+		RSZM H 5;
+		RSZM I 5 A_Scream;
+		RSZM J 5 A_NoBlocking;
+		RSZM K 5;
+		RSZM L -1;
 		Stop;
 	XDeath:
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported (owner: vanilla gore ok)
-		QSZM N 5 A_XScream;
-		QSZM O 5 A_NoBlocking;
-		QSZM PQRST 5;
-		QSZM U -1;
+		RSZM N 5 A_XScream;
+		RSZM O 5 A_NoBlocking;
+		RSZM PQRST 5;
+		RSZM U -1;
 		Stop;
 	Raise:
-		QSZM LKJIH 5;
+		RSZM LKJIH 5;
 		Goto See;
 	}
 }
@@ -358,7 +358,7 @@ class RS_CyanSG2 : Actor
 		Monster;
 		+FLOORCLIP
 		+NOICEDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+LAXTELEFRAGDMG
 		SeeSound "ZSpecOps/Sight";
@@ -464,7 +464,7 @@ class RS_CyanSG2 : Actor
 		CNSG I 5 A_Scream;
 		CNSG J 5;
 		CNSG K 5 A_NoBlocking(false);
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
 		TNT1 A 0 A_IceGuyDie;
 		CNSG L -1;
 	}
@@ -491,7 +491,7 @@ class RS_GraySG2 : ShotgunGuy
 		Monster;
 		+FLOORCLIP
 		+AVOIDMELEE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		SeeSound "SGUY2/See";
 		AttackSound "SNPRFIRE";
@@ -543,13 +543,13 @@ class RS_GraySG2 : ShotgunGuy
 		Goto See;
 	Fire2:
 		GRSH E 6 A_FaceTarget;
-		GRSH E 6 A_CustomRailgun(0,0,"none","red",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,"",-12);
+		GRSH E 6 A_CustomRailgun(0,0,0,"red",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,"",-12);
 		GRSH E 5 A_FaceTarget;
-		GRSH E 5 A_CustomRailgun(0,0,"none","red",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,"",-12);
+		GRSH E 5 A_CustomRailgun(0,0,0,"red",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,"",-12);
 		GRSH E 4 A_FaceTarget;
-		GRSH E 4 A_CustomRailgun(0,0,"none","red",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,"",-12);
+		GRSH E 4 A_CustomRailgun(0,0,0,"red",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,"",-12);
 		GRSH E 3 A_FaceTarget;
-		GRSH E 3 A_CustomRailgun(0,0,"none","red",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,"",-12);
+		GRSH E 3 A_CustomRailgun(0,0,0,"red",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,"",-12);
 		GRSH F 6 Bright A_CustomBulletAttack(0,0,1,random(5,20));
 		GRSH E 2 A_FaceTarget;
 		GRSH E 24;
@@ -623,7 +623,7 @@ class RS_AbyssSG2 : Actor
 		PainChance "DIMp", 0;
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		SeeSound "SGUY2/See";
 		AttackSound "asgguy/asgfir";
@@ -742,7 +742,7 @@ class RS_FireBluSG2 : Actor
 		PainChance "DIMp", 0;
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+DONTHARMCLASS
 		SeeSound "SSGUNER/sight";
@@ -1090,9 +1090,9 @@ class RS_BlueSG : ShotgunGuy
 		SPOS E 10 A_FaceTarget;
 		SPOS E 5 A_JumpIfCloser(350,"Lance");
 		SPOS F 5;
-		SPOS F 0 A_CustomRailgun(random(2,8),1,"none","White",RGF_NOPIERCING,1,25,"none",0,0,0,0,3);
-		SPOS F 0 A_CustomRailgun(random(2,8),1,"none","Blue",RGF_NOPIERCING,1,12,"none",0,0,0,0,1);
-		SPOS F 0 A_CustomRailgun(random(2,8),1,"none","White",RGF_NOPIERCING,1,33,"none",0,0,0,0,1);
+		SPOS F 0 A_CustomRailgun(random(2,8),1,0,"White",RGF_NOPIERCING,1,25,"none",0,0,0,0,3);
+		SPOS F 0 A_CustomRailgun(random(2,8),1,0,"Blue",RGF_NOPIERCING,1,12,"none",0,0,0,0,1);
+		SPOS F 0 A_CustomRailgun(random(2,8),1,0,"White",RGF_NOPIERCING,1,33,"none",0,0,0,0,1);
 		SPOS E 9;
 		Goto See;
 	Lance:
@@ -1290,7 +1290,7 @@ class RS_YellowSG : Actor
 		PainChance "DIMp", 0;
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		SeeSound "SGUY2/See";
 		AttackSound "asgguy/asgfir";
@@ -1310,57 +1310,57 @@ class RS_YellowSG : Actor
 	States
 	{
 	Spawn:
-		ASGZ AB 10 A_Look;
+		RSGZ AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Dodger:
-		ASGZ AABB 4 A_FastChase;
+		RSGZ AABB 4 A_FastChase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ASGZ CCDD 4 A_FastChase;
+		RSGZ CCDD 4 A_FastChase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ASGZ A 0 A_Jump(88,"See");
+		RSGZ A 0 A_Jump(88,"See");
 		Loop;
 	See:
-		ASGZ AABB 4 A_Chase;
+		RSGZ AABB 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ASGZ CCDD 4 A_Chase;
+		RSGZ CCDD 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ASGZ A 0 A_Jump(88,"Dodger");
+		RSGZ A 0 A_Jump(88,"Dodger");
 		Loop;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_JumpIfInventory("RS_ASGZAmmo",16,"Reload");
 		TNT1 A 0 A_Stop;
-		ASGZ E 5 A_FaceTarget;
+		RSGZ E 5 A_FaceTarget;
 		TNT1 A 0 A_GiveInventory("RS_ASGZAmmo",1);
-		ASGZ F 5 Bright A_CustomBulletAttack(5,4,3,3,"BulletPuff",0);
-		ASGZ E 7;
+		RSGZ F 5 Bright A_CustomBulletAttack(5,4,3,3,"BulletPuff",0);
+		RSGZ E 7;
 		TNT1 A 0 A_JumpIfInventory("RS_ASGZAmmo",16,"Reload");
 		TNT1 A 0 A_PlaySound("asgguy/asgld1");
-		ASGZ E 5 A_CPosRefire;
+		RSGZ E 5 A_CPosRefire;
 		TNT1 A 0 A_GiveInventory("RS_ASGZAmmo",1);
-		ASGZ F 5 Bright A_CustomBulletAttack(5,4,3,3,"BulletPuff",0);
-		ASGZ E 7;
+		RSGZ F 5 Bright A_CustomBulletAttack(5,4,3,3,"BulletPuff",0);
+		RSGZ E 7;
 		TNT1 A 0 A_JumpIfInventory("RS_ASGZAmmo",16,"Reload");
 		TNT1 A 0 A_PlaySound("asgguy/asgld1");
-		ASGZ E 5 A_CPosRefire;
+		RSGZ E 5 A_CPosRefire;
 		TNT1 A 0 A_GiveInventory("RS_ASGZAmmo",1);
-		ASGZ F 5 Bright A_CustomBulletAttack(5,4,3,3,"BulletPuff",0);
-		ASGZ E 7;
+		RSGZ F 5 Bright A_CustomBulletAttack(5,4,3,3,"BulletPuff",0);
+		RSGZ E 7;
 		TNT1 A 0 A_JumpIfInventory("RS_ASGZAmmo",16,"Reload");
 		TNT1 A 0 A_PlaySound("asgguy/asgld1");
-		ASGZ E 5 A_CPosRefire;
+		RSGZ E 5 A_CPosRefire;
 		TNT1 A 0 A_GiveInventory("RS_ASGZAmmo",1);
-		ASGZ F 5 Bright A_CustomBulletAttack(5,4,3,3,"BulletPuff",0);
-		ASGZ E 7;
+		RSGZ F 5 Bright A_CustomBulletAttack(5,4,3,3,"BulletPuff",0);
+		RSGZ E 7;
 		TNT1 A 0 A_PlaySound("asgguy/asgld1");
 		TNT1 A 0 A_JumpIfInventory("RS_ASGZAmmo",16,"Reload");
 		Goto See;
 	Reload:
 		TNT1 A 0 { bNOPAIN = true; }
 		TNT1 A 0 A_PlaySound("asgguy/asgout");
-		ASGZ E 60 A_TakeInventory("RS_ASGZAmmo",16);
-		ASGZ E 8 A_PlaySound("asgguy/asgin");
+		RSGZ E 60 A_TakeInventory("RS_ASGZAmmo",16);
+		RSGZ E 8 A_PlaySound("asgguy/asgin");
 		TNT1 A 0 { bNOPAIN = false; }
 		Goto See;
 	Pain.AbyssPE:
@@ -1380,34 +1380,34 @@ class RS_YellowSG : Actor
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		ASGZ G 3;
+		RSGZ G 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ASGZ G 3 A_Pain;
-		ASGZ G 3 A_Jump(88,"Dodger");
+		RSGZ G 3 A_Pain;
+		RSGZ G 3 A_Jump(88,"Dodger");
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		ASGZ H 5;
-		ASGZ I 5 A_Scream;
-		ASGZ J 5 A_Fall;
-		ASGZ KLM 5;
-		ASGZ N -1;
+		RSGZ H 5;
+		RSGZ I 5 A_Scream;
+		RSGZ J 5 A_Fall;
+		RSGZ KLM 5;
+		RSGZ N -1;
 		Stop;
 	XDeath:
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
-		ASGZ O 5;
-		ASGZ P 5 A_XScream;
+		RSGZ O 5;
+		RSGZ P 5 A_XScream;
 		TNT1 AAA 0 A_SpawnParticle("Yellow",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		ASGZ Q 5 A_Fall;
-		ASGZ RSTUV 5;
+		RSGZ Q 5 A_Fall;
+		RSGZ RSTUV 5;
 		TNT1 AAA 0 A_SpawnParticle("Yellow",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		ASGZ W -1;
+		RSGZ W -1;
 		Stop;
 	Raise:
-		ASGZ NMLKJIH 5;
+		RSGZ NMLKJIH 5;
 		Goto See;
 	}
 }
@@ -1432,7 +1432,7 @@ class RS_RedSG : Actor
 		PainChance "DIMp", 0;
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		SeeSound "SSGUNER/sight";
 		AttackSound "SSGUNER/SSG";
@@ -1561,7 +1561,7 @@ class RS_BlackSG3 : Actor   // Shotgun Crew Commander
 		+FLOORCLIP
 		+DONTMORPH
 		+NOINFIGHTING
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+THRUSPECIES
 		+DONTHARMSPECIES
 		+NOFEAR
@@ -1592,86 +1592,86 @@ class RS_BlackSG3 : Actor   // Shotgun Crew Commander
 	States
 	{
 	Spawn:
-		ZSP1 A 0;
-		ZSP1 A 0 A_SpawnItemEx("RS_BlackSG2",0,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		ZSP1 A 0 A_SpawnItemEx("RS_BlackSG2",0,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		QSP1 A 0;
+		QSP1 A 0 A_SpawnItemEx("RS_BlackSG2",0,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		QSP1 A 0 A_SpawnItemEx("RS_BlackSG2",0,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
 		Goto Scripted;
 	Scripted:
-		ZSP1 A 0;   // CH: ACS_NamedExecuteAlways("AnnounceBlackSG") -- announcers dropped per owner
+		QSP1 A 0;   // CH: ACS_NamedExecuteAlways("AnnounceBlackSG") -- announcers dropped per owner
 		Goto Idle;
 	Idle:
-		ZSP1 AAAAAAAAAABBBBBBBBBB 1 A_Look;
+		QSP1 AAAAAAAAAABBBBBBBBBB 1 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		ZSP1 ABCD 3 A_Chase;
+		QSP1 ABCD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ZSP1 A 0 A_Jump(64,"Odd");
+		QSP1 A 0 A_Jump(64,"Odd");
 		Loop;
 	Odd:
-		ZSP1 A 2 A_Wander;
+		QSP1 A 2 A_Wander;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ZSP1 BC 3 A_FastChase;
-		ZSP1 D 2 A_Wander;
+		QSP1 BC 3 A_FastChase;
+		QSP1 D 2 A_Wander;
 		Goto See;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ZSP1 A 0 A_JumpIfCloser(500,"Shotgunned");
-		ZSP1 A 0 A_Jump(128,"AirStrike","Snipe");
-		ZSP1 A 0 A_Jump(255,"Summon","AirStrike","Snipe");
+		QSP1 A 0 A_JumpIfCloser(500,"Shotgunned");
+		QSP1 A 0 A_Jump(128,"AirStrike","Snipe");
+		QSP1 A 0 A_Jump(255,"Summon","AirStrike","Snipe");
 		Goto See;
 	Summon:
-		ZSP1 G 3 Bright A_PlaySound("ZSpecOps/Sight",7,2,false,ATTN_NONE);
-		ZSP1 G 3 Bright A_PlaySound("ZSpecOps/Sight",7,2,false,ATTN_NONE);
-		ZSP1 G 3 Bright A_PlaySound("ZSpecOps/Sight",7,2,false,ATTN_NONE);
-		ZSP1 A 9 Bright A_FaceTarget;
-		ZSP1 A 0 A_SpawnItemEx("RS_BlackSG2",0,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		ZSP1 A 1 Bright A_SpawnItemEx("RS_BlackSG2",0,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		ZSP1 A 1 Bright A_SpawnItemEx("RS_BlackSG2",5,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		ZSP1 A 1 Bright A_SpawnItemEx("RS_BlackSG2",-5,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		QSP1 G 3 Bright A_PlaySound("ZSpecOps/Sight",7,2,false,ATTN_NONE);
+		QSP1 G 3 Bright A_PlaySound("ZSpecOps/Sight",7,2,false,ATTN_NONE);
+		QSP1 G 3 Bright A_PlaySound("ZSpecOps/Sight",7,2,false,ATTN_NONE);
+		QSP1 A 9 Bright A_FaceTarget;
+		QSP1 A 0 A_SpawnItemEx("RS_BlackSG2",0,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		QSP1 A 1 Bright A_SpawnItemEx("RS_BlackSG2",0,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		QSP1 A 1 Bright A_SpawnItemEx("RS_BlackSG2",5,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		QSP1 A 1 Bright A_SpawnItemEx("RS_BlackSG2",-5,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
 		Goto See;
 	Shotgunned:
-		ZSP1 EEE 4 A_FaceTarget;
-		ZSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
-		ZSP1 F 2 Bright A_CustomBulletAttack(random(1,12),random(1,12),random(3,9),random(1,8),"RS_DetoPuffCG");
-		ZSP1 F 0 A_Jump(64,"Nadetoss");
-		ZSP1 EE 2 A_FaceTarget;
-		ZSP1 E 2 A_CheckSight("See");
-		ZSP1 E 0 A_JumpIfCloser(450,"Missile");
+		QSP1 EEE 4 A_FaceTarget;
+		QSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
+		QSP1 F 2 Bright A_CustomBulletAttack(random(1,12),random(1,12),random(3,9),random(1,8),"RS_DetoPuffCG");
+		QSP1 F 0 A_Jump(64,"Nadetoss");
+		QSP1 EE 2 A_FaceTarget;
+		QSP1 E 2 A_CheckSight("See");
+		QSP1 E 0 A_JumpIfCloser(450,"Missile");
 		Goto See;
 	Snipe:
-		ZSP1 EEE 8 Bright A_FaceTarget;
-		ZSP1 E 1 A_CheckSight("See");
-		ZSP1 E 5 Bright A_PlaySound("ZSpecOps/Sight",7,2,false,ATTN_NONE);
-		ZSP1 E 1 A_CheckSight("See");
-		ZSP1 E 1 A_FaceTarget;
-		ZSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
-		ZSP1 F 4 Bright A_VileTarget("RS_DetoPuffCG2");
+		QSP1 EEE 8 Bright A_FaceTarget;
+		QSP1 E 1 A_CheckSight("See");
+		QSP1 E 5 Bright A_PlaySound("ZSpecOps/Sight",7,2,false,ATTN_NONE);
+		QSP1 E 1 A_CheckSight("See");
+		QSP1 E 1 A_FaceTarget;
+		QSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
+		QSP1 F 4 Bright A_VileTarget("RS_DetoPuffCG2");
 		Goto See;
 	AirStrike:
-		ZSP1 GG 6 Bright A_FaceTarget;
-		ZSP1 E 8 Bright A_VileTarget("RS_CHBSTarget");
-		ZSP1 EF 5 Bright;
-		ZSP1 F 4 Bright A_CustomMissile("RS_AirStrikeCHBS",64,0,1);
-		ZSP1 E 2;
+		QSP1 GG 6 Bright A_FaceTarget;
+		QSP1 E 8 Bright A_VileTarget("RS_CHBSTarget");
+		QSP1 EF 5 Bright;
+		QSP1 F 4 Bright A_CustomMissile("RS_AirStrikeCHBS",64,0,1);
+		QSP1 E 2;
 		Goto See;
 	Nadetoss:
-		ZSP1 E 8 A_FaceTarget;
-		ZSP1 E 2 A_PlaySound("fire/fire4");
-		ZSP1 E 4 A_CustomMissile("RS_SGGasNade",48,0,random(-3,3),0,random(3,12));
+		QSP1 E 8 A_FaceTarget;
+		QSP1 E 2 A_PlaySound("fire/fire4");
+		QSP1 E 4 A_CustomMissile("RS_SGGasNade",48,0,random(-3,3),0,random(3,12));
 		Goto See;
 	Pain:
-		ZSP1 G 4;
+		QSP1 G 4;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ZSP1 G 4 A_Pain;
-		ZSP1 G 0 A_Jump(96,"See");
+		QSP1 G 4 A_Pain;
+		QSP1 G 0 A_Jump(96,"See");
 		Goto Odd;
 	Death:
-		ZSP1 H 5;
-		ZSP1 I 5 A_Scream;
-		ZSP1 J 5;
-		ZSP1 K 5 A_NoBlocking;
-		ZSP1 L -1;
+		QSP1 H 5;
+		QSP1 I 5 A_Scream;
+		QSP1 J 5;
+		QSP1 K 5 A_NoBlocking;
+		QSP1 L -1;
 		Stop;
 	}
 }
@@ -1697,7 +1697,7 @@ class RS_BlackSG2 : Actor   // CH Shotgunners.txt:1994 -- the spec-ops troop.
 		+DONTHARMSPECIES
 		+NOINFIGHTING
 		+THRUSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		-ACTIVATEMCROSS
 		+NOFEAR
 		SeeSound "ZSpecOps/Sight";
@@ -1716,29 +1716,29 @@ class RS_BlackSG2 : Actor   // CH Shotgunners.txt:1994 -- the spec-ops troop.
 	States
 	{
 	Spawn:
-		ZSP1 AAAAAAAAAABBBBBBBBBB 1 A_Look;
+		QSP1 AAAAAAAAAABBBBBBBBBB 1 A_Look;
 		Loop;
 	See:
-		ZSP1 A 0 A_TakeInventory("RS_ZSpecOpAggressive",1);
-		ZSP1 A 0 A_TakeInventory("RS_ZSpecOpSprint",1);
-		ZSP1 A 0 A_TakeInventory("RS_ZSpecOpWander",1);
-		ZSP1 A 0 A_TakeInventory("RS_ZSpecOpCreep",1);
-		ZSP1 A 0 A_TakeInventory("RS_ZSpecOpBerserk",1);
-		ZSP1 A 0 { bMISSILEMORE = false; }
-		ZSP1 A 0 { bMISSILEEVENMORE = false; }
-		ZSP1 A 0 { bAVOIDMELEE = false; }
-		ZSP1 A 0 { bNOPAIN = false; }
-		ZSP1 A 0 A_GiveInventory("RS_ZSpecOpsSGSitRep",1);
-		ZSP1 A 0 A_JumpIfInventory("RS_ZSpecOpAggressive",1,"AggressiveSwitch");
-		ZSP1 A 0 A_JumpIfInventory("RS_ZSpecOpSprint",1,"SprintSwitch");
-		ZSP1 A 0 A_JumpIfInventory("RS_ZSpecOpWander",1,"WanderSwitch");
-		ZSP1 A 0 A_JumpIfInventory("RS_ZSpecOpCreep",1,"CreepSwitch");
-		ZSP1 A 0 A_JumpIfInventory("RS_ZSpecOpBerserk",1,"BerserkSwitch");
-		ZSP1 A 0 A_JumpIfMasterCloser(1000,"See");   // CH's own ZPS1 typo for ZSP1; 0-tic, renders nothing either way
-		ZSP1 A 0 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QSP1 A 0 A_TakeInventory("RS_ZSpecOpAggressive",1);
+		QSP1 A 0 A_TakeInventory("RS_ZSpecOpSprint",1);
+		QSP1 A 0 A_TakeInventory("RS_ZSpecOpWander",1);
+		QSP1 A 0 A_TakeInventory("RS_ZSpecOpCreep",1);
+		QSP1 A 0 A_TakeInventory("RS_ZSpecOpBerserk",1);
+		QSP1 A 0 { RS_MissileChance.SetMore(self, false); }
+		QSP1 A 0 { RS_MissileChance.SetEvenMore(self, false); }
+		QSP1 A 0 { bAVOIDMELEE = false; }
+		QSP1 A 0 { bNOPAIN = false; }
+		QSP1 A 0 A_GiveInventory("RS_ZSpecOpsSGSitRep",1);
+		QSP1 A 0 A_JumpIfInventory("RS_ZSpecOpAggressive",1,"AggressiveSwitch");
+		QSP1 A 0 A_JumpIfInventory("RS_ZSpecOpSprint",1,"SprintSwitch");
+		QSP1 A 0 A_JumpIfInventory("RS_ZSpecOpWander",1,"WanderSwitch");
+		QSP1 A 0 A_JumpIfInventory("RS_ZSpecOpCreep",1,"CreepSwitch");
+		QSP1 A 0 A_JumpIfInventory("RS_ZSpecOpBerserk",1,"BerserkSwitch");
+		QSP1 A 0 A_JumpIfMasterCloser(1000,"See");   // CH's own ZPS1 typo for ZSP1; 0-tic, renders nothing either way
+		QSP1 A 0 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
 	AggressiveSwitch:
-		ZSP1 A 0 { bMISSILEMORE = true; }
-		ZSP1 A 0 { bMISSILEEVENMORE = true; }
+		QSP1 A 0 { RS_MissileChance.SetMore(self, true); }
+		QSP1 A 0 { RS_MissileChance.SetEvenMore(self, true); }
 		Goto AggressiveSee;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -1756,173 +1756,173 @@ class RS_BlackSG2 : Actor   // CH Shotgunners.txt:1994 -- the spec-ops troop.
 		AYPB H 5 Bright A_SetScale(1,0.05);
 		Stop;
 	AggressiveSee:
-		ZSP1 A 3 A_Chase(null,"AggressiveMissile");
-		ZSP1 A 0 A_Jump(192,2);
-		ZSP1 A 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 A 0 A_Jump(32,2);
-		ZSP1 A 0 A_JumpIfCloser(768,1);
-		ZSP1 A 0 A_JumpIfMasterCloser(1000,"See");   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
-		ZSP1 A 0 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QSP1 A 3 A_Chase(null,"AggressiveMissile");
+		QSP1 A 0 A_Jump(192,2);
+		QSP1 A 0 A_JumpIfHealthLower(50,"See");
+		QSP1 A 0 A_Jump(32,2);
+		QSP1 A 0 A_JumpIfCloser(768,1);
+		QSP1 A 0 A_JumpIfMasterCloser(1000,"See");   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QSP1 A 0 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
 		Goto See;
-		ZSP1 A 3 A_Chase(null,"AggressiveMissile");
-		ZSP1 A 0 A_Jump(192,2);
-		ZSP1 A 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 A 0 A_Jump(32,2);
-		ZSP1 A 0 A_JumpIfCloser(768,1);
-		ZSP1 A 0 A_JumpIfMasterCloser(1000,"See");   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
-		ZSP1 A 0 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QSP1 A 3 A_Chase(null,"AggressiveMissile");
+		QSP1 A 0 A_Jump(192,2);
+		QSP1 A 0 A_JumpIfHealthLower(50,"See");
+		QSP1 A 0 A_Jump(32,2);
+		QSP1 A 0 A_JumpIfCloser(768,1);
+		QSP1 A 0 A_JumpIfMasterCloser(1000,"See");   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QSP1 A 0 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
 		Goto See;
-		ZSP1 B 3 A_Chase(null,"AggressiveMissile");
-		ZSP1 B 0 A_Jump(192,2);
-		ZSP1 B 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 B 0 A_Jump(32,2);
-		ZSP1 B 0 A_JumpIfCloser(768,1);
+		QSP1 B 3 A_Chase(null,"AggressiveMissile");
+		QSP1 B 0 A_Jump(192,2);
+		QSP1 B 0 A_JumpIfHealthLower(50,"See");
+		QSP1 B 0 A_Jump(32,2);
+		QSP1 B 0 A_JumpIfCloser(768,1);
 		Goto See;
-		ZSP1 B 3 A_Chase(null,"AggressiveMissile");
-		ZSP1 B 0 A_Jump(192,2);
-		ZSP1 B 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 B 0 A_Jump(32,2);
-		ZSP1 B 0 A_JumpIfCloser(768,1);
-		ZSP1 A 0 A_JumpIfMasterCloser(1000,"See");   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
-		ZSP1 A 0 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QSP1 B 3 A_Chase(null,"AggressiveMissile");
+		QSP1 B 0 A_Jump(192,2);
+		QSP1 B 0 A_JumpIfHealthLower(50,"See");
+		QSP1 B 0 A_Jump(32,2);
+		QSP1 B 0 A_JumpIfCloser(768,1);
+		QSP1 A 0 A_JumpIfMasterCloser(1000,"See");   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QSP1 A 0 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);   // CH: ZPS1 -- CH typo; ZSP1 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
 		Goto See;
-		ZSP1 C 3 A_Chase(null,"AggressiveMissile");
-		ZSP1 C 0 A_Jump(192,2);
-		ZSP1 C 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 C 0 A_Jump(32,2);
-		ZSP1 C 0 A_JumpIfCloser(768,1);
+		QSP1 C 3 A_Chase(null,"AggressiveMissile");
+		QSP1 C 0 A_Jump(192,2);
+		QSP1 C 0 A_JumpIfHealthLower(50,"See");
+		QSP1 C 0 A_Jump(32,2);
+		QSP1 C 0 A_JumpIfCloser(768,1);
 		Goto See;
-		ZSP1 C 3 A_Chase(null,"AggressiveMissile");
-		ZSP1 C 0 A_Jump(192,2);
-		ZSP1 C 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 C 0 A_Jump(32,2);
-		ZSP1 C 0 A_JumpIfCloser(768,1);
+		QSP1 C 3 A_Chase(null,"AggressiveMissile");
+		QSP1 C 0 A_Jump(192,2);
+		QSP1 C 0 A_JumpIfHealthLower(50,"See");
+		QSP1 C 0 A_Jump(32,2);
+		QSP1 C 0 A_JumpIfCloser(768,1);
 		Goto See;
-		ZSP1 D 3 A_Chase(null,"AggressiveMissile");
-		ZSP1 D 0 A_Jump(192,2);
-		ZSP1 D 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 D 0 A_Jump(32,2);
-		ZSP1 D 0 A_JumpIfCloser(768,1);
+		QSP1 D 3 A_Chase(null,"AggressiveMissile");
+		QSP1 D 0 A_Jump(192,2);
+		QSP1 D 0 A_JumpIfHealthLower(50,"See");
+		QSP1 D 0 A_Jump(32,2);
+		QSP1 D 0 A_JumpIfCloser(768,1);
 		Goto See;
-		ZSP1 D 3 A_Chase(null,"AggressiveMissile");
-		ZSP1 D 0 A_Jump(192,2);
-		ZSP1 D 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 D 0 A_Jump(32,2);
-		ZSP1 D 0 A_JumpIfCloser(768,1);
+		QSP1 D 3 A_Chase(null,"AggressiveMissile");
+		QSP1 D 0 A_Jump(192,2);
+		QSP1 D 0 A_JumpIfHealthLower(50,"See");
+		QSP1 D 0 A_Jump(32,2);
+		QSP1 D 0 A_JumpIfCloser(768,1);
 		Goto See;
-		ZSP1 A 0;
+		QSP1 A 0;
 		Loop;
 	AggressiveMissile:
-		ZSP1 EEE 4 A_FaceTarget;
-		ZSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
-		ZSP1 F 2 Bright A_CustomBulletAttack(8,6,7,4,"RS_DetoPuffCG");
-		ZSP1 F 0 A_Jump(64,"NadeToss");
-		ZSP1 EEE 2 A_FaceTarget;
+		QSP1 EEE 4 A_FaceTarget;
+		QSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
+		QSP1 F 2 Bright A_CustomBulletAttack(8,6,7,4,"RS_DetoPuffCG");
+		QSP1 F 0 A_Jump(64,"NadeToss");
+		QSP1 EEE 2 A_FaceTarget;
 		Goto AggressiveSee;
 	NadeToss:
-		ZSP1 E 8 A_FaceTarget;
-		ZSP1 E 2 A_PlaySound("fire/fire4");
-		ZSP1 E 4 A_CustomMissile("RS_SGGasNade",48,0,random(-3,3),0,random(3,12));
+		QSP1 E 8 A_FaceTarget;
+		QSP1 E 2 A_PlaySound("fire/fire4");
+		QSP1 E 4 A_CustomMissile("RS_SGGasNade",48,0,random(-3,3),0,random(3,12));
 		Goto AggressiveSee;
 	SprintSwitch:
-		ZSP1 A 0 { bNOPAIN = true; }
+		QSP1 A 0 { bNOPAIN = true; }
 		Goto SprintSee;
 	SprintSee:
-		ZSP1 A 2 A_Chase(null,null);
-		ZSP1 A 0 A_JumpIfCloser(384,"See");
-		ZSP1 A 2 A_Chase(null,null);
-		ZSP1 A 0 A_JumpIfCloser(384,"See");
-		ZSP1 B 2 A_Chase(null,null);
-		ZSP1 B 0 A_JumpIfCloser(384,"See");
-		ZSP1 B 2 A_Chase(null,null);
-		ZSP1 B 0 A_JumpIfCloser(384,"See");
-		ZSP1 C 2 A_Chase(null,null);
-		ZSP1 C 0 A_JumpIfCloser(384,"See");
-		ZSP1 C 2 A_Chase(null,null);
-		ZSP1 C 0 A_JumpIfCloser(384,"See");
-		ZSP1 D 2 A_Chase(null,null);
-		ZSP1 D 0 A_JumpIfCloser(384,"See");
-		ZSP1 D 2 A_Chase(null,null);
-		ZSP1 D 0 A_JumpIfCloser(384,"See");
+		QSP1 A 2 A_Chase(null,null);
+		QSP1 A 0 A_JumpIfCloser(384,"See");
+		QSP1 A 2 A_Chase(null,null);
+		QSP1 A 0 A_JumpIfCloser(384,"See");
+		QSP1 B 2 A_Chase(null,null);
+		QSP1 B 0 A_JumpIfCloser(384,"See");
+		QSP1 B 2 A_Chase(null,null);
+		QSP1 B 0 A_JumpIfCloser(384,"See");
+		QSP1 C 2 A_Chase(null,null);
+		QSP1 C 0 A_JumpIfCloser(384,"See");
+		QSP1 C 2 A_Chase(null,null);
+		QSP1 C 0 A_JumpIfCloser(384,"See");
+		QSP1 D 2 A_Chase(null,null);
+		QSP1 D 0 A_JumpIfCloser(384,"See");
+		QSP1 D 2 A_Chase(null,null);
+		QSP1 D 0 A_JumpIfCloser(384,"See");
 		Loop;
 	WanderSwitch:
-		ZSP1 A 0 A_ClearTarget;
+		QSP1 A 0 A_ClearTarget;
 		Goto WanderSee;
 	WanderSee:
-		ZSP1 A 4 A_Wander;
-		ZSP1 A 0 A_LookEx(10,0,0,0,360,"See");
-		ZSP1 A 4 A_Wander;
-		ZSP1 A 0 A_LookEx(10,0,0,0,360,"See");
-		ZSP1 B 4 A_Wander;
-		ZSP1 A 0 A_LookEx(10,0,0,0,360,"See");
-		ZSP1 B 4 A_Wander;
-		ZSP1 A 0 A_LookEx(10,0,0,0,360,"See");
-		ZSP1 C 4 A_Wander;
-		ZSP1 A 0 A_LookEx(10,0,0,0,360,"See");
-		ZSP1 C 4 A_Wander;
-		ZSP1 A 0 A_LookEx(10,0,0,0,360,"See");
-		ZSP1 D 4 A_Wander;
-		ZSP1 A 0 A_LookEx(10,0,0,0,360,"See");
-		ZSP1 D 4 A_Wander;
-		ZSP1 A 0 A_LookEx(10,0,0,0,360,"See");
+		QSP1 A 4 A_Wander;
+		QSP1 A 0 A_LookEx(10,0,0,0,360,"See");
+		QSP1 A 4 A_Wander;
+		QSP1 A 0 A_LookEx(10,0,0,0,360,"See");
+		QSP1 B 4 A_Wander;
+		QSP1 A 0 A_LookEx(10,0,0,0,360,"See");
+		QSP1 B 4 A_Wander;
+		QSP1 A 0 A_LookEx(10,0,0,0,360,"See");
+		QSP1 C 4 A_Wander;
+		QSP1 A 0 A_LookEx(10,0,0,0,360,"See");
+		QSP1 C 4 A_Wander;
+		QSP1 A 0 A_LookEx(10,0,0,0,360,"See");
+		QSP1 D 4 A_Wander;
+		QSP1 A 0 A_LookEx(10,0,0,0,360,"See");
+		QSP1 D 4 A_Wander;
+		QSP1 A 0 A_LookEx(10,0,0,0,360,"See");
 		Loop;
 	CreepSwitch:
-		ZSP1 A 0 { bMISSILEMORE = true; }
-		ZSP1 A 0 { bAVOIDMELEE = true; }
+		QSP1 A 0 { RS_MissileChance.SetMore(self, true); }
+		QSP1 A 0 { bAVOIDMELEE = true; }
 		Goto CreepSee;
 	CreepSee:
-		ZSP1 A 0 A_CheckSight("CreepCheck");
-		ZSP1 A 0 A_JumpIfHealthLower(50,"See");
-		ZSP1 AABBCCDD 5 A_Chase(null,"CreepMissile",2);
+		QSP1 A 0 A_CheckSight("CreepCheck");
+		QSP1 A 0 A_JumpIfHealthLower(50,"See");
+		QSP1 AABBCCDD 5 A_Chase(null,"CreepMissile",2);
 		Loop;
 	CreepCheck:
-		ZSP1 A 0 A_Jump(32,"See");
+		QSP1 A 0 A_Jump(32,"See");
 		Goto CreepSee+1;
 	CreepMissile:
-		ZSP1 EEE 4 A_FaceTarget;
-		ZSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
-		ZSP1 F 2 Bright A_CustomBulletAttack(8,6,7,4,"RS_DetoPuffCG");
-		ZSP1 EEE 2 A_FaceTarget;
+		QSP1 EEE 4 A_FaceTarget;
+		QSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
+		QSP1 F 2 Bright A_CustomBulletAttack(8,6,7,4,"RS_DetoPuffCG");
+		QSP1 EEE 2 A_FaceTarget;
 		Goto CreepSee;
 	BerserkSwitch:
-		ZSP1 A 0 { bMISSILEMORE = true; }
-		ZSP1 A 0 { bMISSILEEVENMORE = true; }
-		ZSP1 A 0 { bNOPAIN = true; }
+		QSP1 A 0 { RS_MissileChance.SetMore(self, true); }
+		QSP1 A 0 { RS_MissileChance.SetEvenMore(self, true); }
+		QSP1 A 0 { bNOPAIN = true; }
 		Goto BerserkSee;
 	BerserkSee:
-		ZSP1 AABBCCDD 3 A_Chase(null,"BerserkMissile");
-		ZSP1 A 0 A_JumpIfCloser(768,1);
+		QSP1 AABBCCDD 3 A_Chase(null,"BerserkMissile");
+		QSP1 A 0 A_JumpIfCloser(768,1);
 		Goto See;
-		ZSP1 A 0;
+		QSP1 A 0;
 		Loop;
 	BerserkMissile:
-		ZSP1 EE 4 A_FaceTarget;
-		ZSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
-		ZSP1 F 2 Bright A_CustomBulletAttack(8,6,7,4,"RS_DetoPuffCG");
-		ZSP1 EEE 2 A_FaceTarget;
-		ZSP1 F 0 A_Jump(192,"BerserkSee");
-		ZSP1 F 0 A_MonsterRefire(40,"BerserkSee");
+		QSP1 EE 4 A_FaceTarget;
+		QSP1 F 0 A_PlayWeaponSound("Weapons/ShotGF");
+		QSP1 F 2 Bright A_CustomBulletAttack(8,6,7,4,"RS_DetoPuffCG");
+		QSP1 EEE 2 A_FaceTarget;
+		QSP1 F 0 A_Jump(192,"BerserkSee");
+		QSP1 F 0 A_MonsterRefire(40,"BerserkSee");
 		Loop;
 	Pain:
-		ZSP1 G 4;
-		ZSP1 G 4 A_Pain;
-		ZSP1 G 0 A_Jump(96,"See");
+		QSP1 G 4;
+		QSP1 G 4 A_Pain;
+		QSP1 G 0 A_Jump(96,"See");
 		Goto WhatPainState;
 	WhatPainState:
-		ZSP1 G 0 A_JumpIfInventory("RS_ZSpecOpAggressive",1,"AggressiveSee");
-		ZSP1 G 0 A_JumpIfInventory("RS_ZSpecOpSprint",1,"SprintSee");
-		ZSP1 G 0 A_JumpIfInventory("RS_ZSpecOpWander",1,"WanderSee");
-		ZSP1 G 0 A_JumpIfInventory("RS_ZSpecOpCreep",1,"CreepSee");
-		ZSP1 G 0 A_JumpIfInventory("RS_ZSpecOpBerserk",1,"BerserkSee");
+		QSP1 G 0 A_JumpIfInventory("RS_ZSpecOpAggressive",1,"AggressiveSee");
+		QSP1 G 0 A_JumpIfInventory("RS_ZSpecOpSprint",1,"SprintSee");
+		QSP1 G 0 A_JumpIfInventory("RS_ZSpecOpWander",1,"WanderSee");
+		QSP1 G 0 A_JumpIfInventory("RS_ZSpecOpCreep",1,"CreepSee");
+		QSP1 G 0 A_JumpIfInventory("RS_ZSpecOpBerserk",1,"BerserkSee");
 		Goto AggressiveSee;
 	Death:
-		ZSP1 H 5;
-		ZSP1 I 5 A_Scream;
-		ZSP1 J 5;
-		ZSP1 K 5 A_NoBlocking;
-		ZSP1 L -1;
+		QSP1 H 5;
+		QSP1 I 5 A_Scream;
+		QSP1 J 5;
+		QSP1 K 5 A_NoBlocking;
+		QSP1 L -1;
 	Raise:
-		ZSP1 LKJIH 5;
+		QSP1 LKJIH 5;
 		Goto See;
 	}
 }
@@ -1948,8 +1948,7 @@ class RS_WhiteSG2 : Actor   // BENELLUS, GOD OF SHOTGUNS
 		+NOBLOOD
 		+NOFEAR
 		+LOOKALLAROUND
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+BOSS
 		-NORADIUSDMG
 		Health 5000;
@@ -2061,7 +2060,7 @@ class RS_WhiteSG2 : Actor   // BENELLUS, GOD OF SHOTGUNS
 		BENE D 6 A_SetTranslucent(0.75);
 		BENE D 6 A_SetTranslucent(0.5);
 		BENE D 6 A_SetTranslucent(0.25);
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cactus",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,232);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cactus",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,232);
 		Stop;
 	}
 }
@@ -2082,8 +2081,7 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		+NOFEAR
 		+NOTIMEFREEZE
 		+LOOKALLAROUND
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+THRUSPECIES
 		+BOSS
 		-NORADIUSDMG
@@ -2306,7 +2304,7 @@ class RS_WhiteSGEX : Actor   // CH Shotgunners.txt:2532 -- BENELLUS, ANGRIER
 		BENE D 6 A_SetTranslucent(0.75);
 		BENE D 6 A_SetTranslucent(0.5);
 		BENE D 6 A_SetTranslucent(0.25);
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cactus",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,128);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cactus",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,128);
 		Stop;
 	}
 }

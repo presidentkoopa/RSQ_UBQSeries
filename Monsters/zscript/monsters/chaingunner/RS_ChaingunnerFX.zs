@@ -167,7 +167,7 @@ class RS_PuffCybieRed : Actor   // CH CYBIES.txt:3988
 	States
 	{
 	Spawn:
-		SMK2 ABCDE 2;
+		RMK2 ABCDE 2;
 		Stop;
 	}
 }
@@ -1225,8 +1225,8 @@ class RS_SlimyWorm : Actor   // CH Chaingunners.txt:2855
 		Monster;
 		+THRUSPECIES
 		+FLOORCLIP
-		+MISSILEMORE
-		+SHORTMISSILERANGE
+		MissileChanceMult 0.5;
+		MaxTargetRange 896;
 		+NOCLIP
 		DropItem "RS_CH_Shell", 128;
 		DropItem "RS_implyingclip", 174;
@@ -1289,8 +1289,7 @@ class RS_VolativeCaco : Actor   // CH Chaingunners.txt:2957 -- walking bomb
 		Speed 11;
 		PainChance 90;
 		Monster;
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+TOUCHY
 		+LOOKALLAROUND
 		+FLOAT
@@ -1365,8 +1364,7 @@ class RS_SpliceBaron : Actor   // CH Chaingunners.txt:3020
 		+FLOORCLIP
 		+THRUSPECIES
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTMORPH
 		+NOCLIP
 		Obituary "what has science done; %o was killed by a horrible abomination";
@@ -1442,32 +1440,32 @@ class RS_BabyCaco : Cacodemon   // CH Chaingunners.txt:3085
 	States
 	{
 	Spawn:
-		CACB A 10 A_Look;
+		RACB A 10 A_Look;
 		Loop;
 	See:
-		CACB A 3 A_Chase;
+		RACB A 3 A_Chase;
 		Loop;
 	Melee:
 	Missile:
-		CACB AB 5 A_FaceTarget;
-		CACB C 5 Bright A_CustomComboAttack("RS_BabyCacoBall",17,random(1,8) * 3,"BabyCaco/Melee");
+		RACB AB 5 A_FaceTarget;
+		RACB C 5 Bright A_CustomComboAttack("RS_BabyCacoBall",17,random(1,8) * 3,"BabyCaco/Melee");
 		Goto See;
 	Pain:
-		CACB D 3;
-		CACB D 3 A_Pain;
-		CACB E 6;
+		RACB D 3;
+		RACB D 3 A_Pain;
+		RACB E 6;
 		Goto See;
 	Death:
-		CACB F 8;
-		CACB G 8 A_Scream;
-		CACB HI 8;
-		CACB J 8 A_NoBlocking;
-		CACB K 8;
-		CACB L -1 A_SetFloorClip;
+		RACB F 8;
+		RACB G 8 A_Scream;
+		RACB HI 8;
+		RACB J 8 A_NoBlocking;
+		RACB K 8;
+		RACB L -1 A_SetFloorClip;
 		Stop;
 	Raise:
-		CACB L 8 A_UnSetFloorClip;
-		CACB KJIHGF 8;
+		RACB L 8 A_UnSetFloorClip;
+		RACB KJIHGF 8;
 		Goto See;
 	}
 }

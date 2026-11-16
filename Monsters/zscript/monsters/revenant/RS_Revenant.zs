@@ -232,8 +232,7 @@ class RS_BrownRevenant2 : Actor   // CH Revenants.txt:57
 		Monster;
 		MeleeThreshold 106;
 		MeleeRange 102;
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -349,8 +348,7 @@ class RS_CyanRevenant2 : Actor   // CH Revenants.txt:271
 		Monster;
 		MeleeThreshold 106;
 		MeleeRange 102;
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -487,7 +485,7 @@ class RS_AbyssRevenant2 : Actor   // CH Revenants.txt:586
 		PainChance 76;
 		Monster;
 		MeleeThreshold 100;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -527,83 +525,83 @@ class RS_AbyssRevenant2 : Actor   // CH Revenants.txt:586
 	States
 	{
 	Spawn:
-		SKEL AB 10 A_Look;
+		RKEL AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SKEL AAB 1 A_Chase;
+		RKEL AAB 1 A_Chase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
-		SKEL BCC 1 A_Chase;
+		RKEL BCC 1 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
-		SKEL DDE 1 A_Chase;
+		RKEL DDE 1 A_Chase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(5,32));
-		SKEL EFF 1 A_Chase;
+		RKEL EFF 1 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
-		SKEL G 2 A_FaceTarget;
-		SKEL G 3 A_SkelWhoosh;
-		SKEL H 2 A_FaceTarget;
-		SKEL I 4 A_SkelFist;
+		RKEL G 2 A_FaceTarget;
+		RKEL G 3 A_SkelWhoosh;
+		RKEL H 2 A_FaceTarget;
+		RKEL I 4 A_SkelFist;
 		TNT1 AAAAAAAA 0 A_CustomMissile("RS_SplashAbyss2",56,3,random(-15,15),CMF_OFFSETPITCH,random(-25,-5));
 		TNT1 A 0 A_Jump(86,"Missile");
 		Goto See;
 	Missile:
-		SKEL G 2 A_FaceTarget;
+		RKEL G 2 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL G 0 A_JumpIfCloser(900,"StepDance");
+		RKEL G 0 A_JumpIfCloser(900,"StepDance");
 	MissileIt:
-		SKEL J 0 A_FaceTarget;
-		SKEL J 12 Bright A_FaceTarget;
-		SKEL J 1 A_CustomMissile("RS_CrackedAbyssRev",50,8,random(-10,1));
-		SKEL J 5 A_CustomMissile("RS_CrackedAbyssRev",50,-8,random(-1,10));
-		SKEL K 8;
+		RKEL J 0 A_FaceTarget;
+		RKEL J 12 Bright A_FaceTarget;
+		RKEL J 1 A_CustomMissile("RS_CrackedAbyssRev",50,8,random(-10,1));
+		RKEL J 5 A_CustomMissile("RS_CrackedAbyssRev",50,-8,random(-1,10));
+		RKEL K 8;
 		Goto See;
 	StepDance:
-		SKEL G 1;
-		SKEL G 1 A_Jump(162,"MissileIt");
-		SKEL G 1 ThrustThingZ(0,64,0,0);
+		RKEL G 1;
+		RKEL G 1 A_Jump(162,"MissileIt");
+		RKEL G 1 ThrustThingZ(0,64,0,0);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("RS_SplashAbyss2",random(-328,328),random(-328,328),random(6,16),0,0,2,0,SXF_NOCHECKPOSITION);
-		SKEL J 1 Bright A_FaceTarget;
-		SKEL JJJJKK 2 A_CustomMissile("RS_IceOrbAbyssRev",42,0,random(-50,50),CMF_OFFSETPITCH,random(-35,15));
-		SKEL K 8;
+		RKEL J 1 Bright A_FaceTarget;
+		RKEL JJJJKK 2 A_CustomMissile("RS_IceOrbAbyssRev",42,0,random(-50,50),CMF_OFFSETPITCH,random(-35,15));
+		RKEL K 8;
 		Goto See;
 	Phase:
-		SKEL A 1;
-		SKEL A 1 { bNOPAIN = true; }   // CH: a_changeflag("NOPAIN",TRUE)
-		SKEL A 1 A_SetSpeed(99);
+		RKEL A 1;
+		RKEL A 1 { bNOPAIN = true; }   // CH: a_changeflag("NOPAIN",TRUE)
+		RKEL A 1 A_SetSpeed(99);
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("RS_SplashAbyss2",random(-128,128),random(-128,128),random(6,16),0,0,2,0,SXF_NOCHECKPOSITION);
-		SKEL ABCDEFABCDEFABCDEF 1 A_Wander;
+		RKEL ABCDEFABCDEFABCDEF 1 A_Wander;
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("RS_SplashAbyss2",random(-128,128),random(-128,128),random(6,16),0,0,2,0,SXF_NOCHECKPOSITION);
-		SKEL A 1 A_SetSpeed(11);
-		SKEL A 1 { bNOPAIN = false; }   // CH: a_changeflag("NOPAIN",False)
+		RKEL A 1 A_SetSpeed(11);
+		RKEL A 1 { bNOPAIN = false; }   // CH: a_changeflag("NOPAIN",False)
 		Goto See;
 	Pain:
-		SKEL L 5;
-		SKEL L 5 A_Pain;
-		SKEL L 1 A_Jump(76,"Phase");
+		RKEL L 5;
+		RKEL L 5 A_Pain;
+		RKEL L 1 A_Jump(76,"Phase");
 		Goto See;
 	Pain.Ice:
-		SKEL A 1;
-		SKEL A 2 A_PlaySound("RESISTCH");
-		SKEL A 1;
+		RKEL A 1;
+		RKEL A 2 A_PlaySound("RESISTCH");
+		RKEL A 1;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
-		SKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SKEL LM 7;
-		SKEL N 7 A_Scream;
-		SKEL O 7 A_NoBlocking;
-		SKEL P 7;
+		RKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
+		RKEL LM 7;
+		RKEL N 7 A_Scream;
+		RKEL O 7 A_NoBlocking;
+		RKEL P 7;
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnItemEx("RS_SplashAbyss2",random(-128,128),random(-128,128),random(6,16),0,0,2,0,SXF_NOCHECKPOSITION);
-		SKEL Q -1;
+		RKEL Q -1;
 		Stop;
 	Raise:
-		SKEL Q 5;
-		SKEL PONML 5;
+		RKEL Q 5;
+		RKEL PONML 5;
 		Goto See;
 	}
 }
@@ -631,13 +629,12 @@ class RS_FireBluRevenant2 : Actor   // CH Revenants.txt:824
 		Speed 6;
 		Monster;
 		MeleeThreshold 255;
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
 		+NOFEAR
 		+DONTHARMCLASS
-		+MISSILEEVENMORE
 		SeeSound "skeleton/sight";
 		PainSound "skeleton/pain";
 		DeathSound "skeleton/death";
@@ -652,60 +649,60 @@ class RS_FireBluRevenant2 : Actor   // CH Revenants.txt:824
 	States
 	{
 	Spawn:
-		SKEL AB 10 A_Look;
+		RKEL AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SKEL AABBCC 2 A_Chase;
+		RKEL AABBCC 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL DDEEFF 2 A_Chase;
+		RKEL DDEEFF 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Missile:
 		TNT1 A 0 A_JumpIfCloser(500,"Spread");
-		SKEL J 0 A_FaceTarget;
+		RKEL J 0 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL J 9 Bright A_FaceTarget;
-		SKEL J 7;
-		SKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,7,1);
-		SKEL K 0 A_CustomMissile("RS_FBSkelCH04",56,-7,-1);
-		SKEL K 14 Bright A_FaceTarget;
-		SKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,9,random(1,5));
-		SKEL K 0 A_CustomMissile("RS_FBSkelCH04",56,-9,random(-5,-1));
-		SKEL K 14 Bright A_FaceTarget;
-		SKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,9,random(2,8));
-		SKEL K 0 A_CustomMissile("RS_FBSkelCH04",56,-9,random(-8,-2));
-		SKEL K 14 Bright A_FaceTarget;
-		SKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,9,random(3,11));
-		SKEL K 0 A_CustomMissile("RS_FBSkelCH04",56,-9,random(-11,-3));
-		SKEL K 20 A_FaceTarget;
+		RKEL J 9 Bright A_FaceTarget;
+		RKEL J 7;
+		RKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,7,1);
+		RKEL K 0 A_CustomMissile("RS_FBSkelCH04",56,-7,-1);
+		RKEL K 14 Bright A_FaceTarget;
+		RKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,9,random(1,5));
+		RKEL K 0 A_CustomMissile("RS_FBSkelCH04",56,-9,random(-5,-1));
+		RKEL K 14 Bright A_FaceTarget;
+		RKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,9,random(2,8));
+		RKEL K 0 A_CustomMissile("RS_FBSkelCH04",56,-9,random(-8,-2));
+		RKEL K 14 Bright A_FaceTarget;
+		RKEL K 0 A_CustomMissile("RS_FBSkelCH03",56,9,random(3,11));
+		RKEL K 0 A_CustomMissile("RS_FBSkelCH04",56,-9,random(-11,-3));
+		RKEL K 20 A_FaceTarget;
 		Goto See;
 	Spread:
-		SKEL G 10;
-		SKEL L 10 Bright;
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,5,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,15,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,45,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,75,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,105,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,135,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,165,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,195,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,225,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,255,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,285,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,315,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,345,0);
-		SKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,355,0);
-		SKEL L 20;
+		RKEL G 10;
+		RKEL L 10 Bright;
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,5,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,15,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,45,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,75,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,105,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,135,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,165,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,195,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,225,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,255,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,285,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,315,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH02",42,0,345,0);
+		RKEL F 0 A_CustomMissile("RS_FBSkelCH01",42,0,355,0);
+		RKEL L 20;
 		Goto See;
 	Melee:
-		SKEL G 6 A_FaceTarget;
-		SKEL G 1 A_SkelWhoosh;
-		SKEL H 1 A_FaceTarget;
-		SKEL H 0 A_PlaySound("weapons/rocklx");
-		SKEL I 1 Bright;
-		SKEL I 0 A_CustomMissile("RS_BoomSkel1",42);
+		RKEL G 6 A_FaceTarget;
+		RKEL G 1 A_SkelWhoosh;
+		RKEL H 1 A_FaceTarget;
+		RKEL H 0 A_PlaySound("weapons/rocklx");
+		RKEL I 1 Bright;
+		RKEL I 0 A_CustomMissile("RS_BoomSkel1",42);
 		Goto See;
 	Pain.AbyssPE:
 		AYPB A 3 Bright;
@@ -722,33 +719,33 @@ class RS_FireBluRevenant2 : Actor   // CH Revenants.txt:824
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SKEL L 5;
-		SKEL L 5 A_Pain;
+		RKEL L 5;
+		RKEL L 5 A_Pain;
 		Goto Spread;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Pain.Fire:
 	Pain.Ice:
-		SKEL L 4 A_PlaySound("ResistCH",7);
-		SKEL L 2;
-		SKEL L 2 A_Pain;
+		RKEL L 4 A_PlaySound("ResistCH",7);
+		RKEL L 2;
+		RKEL L 2 A_Pain;
 		Goto See;
 	Death:
-		SKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SKEL LM 7;
-		SKEL N 7 A_Scream;
-		SKEL O 7 A_NoBlocking;
-		SKEL P 7;
-		SKEL Q -1;
+		RKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
+		RKEL LM 7;
+		RKEL N 7 A_Scream;
+		RKEL O 7 A_NoBlocking;
+		RKEL P 7;
+		RKEL Q -1;
 		Stop;
 	Raise:
-		SKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		SKEL PONML 5;
+		RKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RKEL PONML 5;
 		Goto See;
 	Grow:
-		SKEL PONML 5;
-		SKEL A 0 A_SpawnItemEx("RS_PurpleRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
+		RKEL PONML 5;
+		RKEL A 0 A_SpawnItemEx("RS_PurpleRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -774,7 +771,7 @@ class RS_GrayRevenant2 : Actor   // CH Revenants.txt:1173
 		Speed 18;
 		Monster;
 		MeleeThreshold 255;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -794,42 +791,42 @@ class RS_GrayRevenant2 : Actor   // CH Revenants.txt:1173
 	States
 	{
 	Spawn:
-		ZKEL AB 10 A_Look;
+		QKEL AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
 		TNT1 A 0 A_SetScale(1.0,1.0);
-		ZKEL AABBCC 2 A_Chase;
+		QKEL AABBCC 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ZKEL DDEEFF 2 A_Chase;
+		QKEL DDEEFF 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
-		ZKEL G 1 A_FaceTarget;
-		ZKEL G 1 A_SkelWhoosh;
-		ZKEL H 1 A_FaceTarget;
-		ZKEL I 1 A_CustomMeleeAttack(random(2,8));
-		ZKEL G 1 A_SetScale(-1.0,1.0);
-		ZKEL G 1 A_SkelWhoosh;
-		ZKEL H 1 A_FaceTarget;
-		ZKEL I 1 A_CustomMeleeAttack(random(2,8));
+		QKEL G 1 A_FaceTarget;
+		QKEL G 1 A_SkelWhoosh;
+		QKEL H 1 A_FaceTarget;
+		QKEL I 1 A_CustomMeleeAttack(random(2,8));
+		QKEL G 1 A_SetScale(-1.0,1.0);
+		QKEL G 1 A_SkelWhoosh;
+		QKEL H 1 A_FaceTarget;
+		QKEL I 1 A_CustomMeleeAttack(random(2,8));
 		Goto See;
 	Missile:
-		ZKEL G 0 A_JumpIfCloser(1000,"Closer");
+		QKEL G 0 A_JumpIfCloser(1000,"Closer");
 	BoneIt:
-		ZKEL G 8 A_FaceTarget;
-		ZKEL H 2 A_CustomMissile("RS_BoneToPickGrey",42,3,0);
-		ZKEL I 2;
-		ZKEL G 6 A_FaceTarget;
-		ZKEL H 2 A_CustomMissile("RS_BoneToPickGrey",42,3,random(-1,1));
-		ZKEL I 2;
-		ZKEL G 4 A_FaceTarget;
-		ZKEL H 2 A_CustomMissile("RS_BoneToPickGrey",42,3,random(-3,3));
-		ZKEL I 2;
+		QKEL G 8 A_FaceTarget;
+		QKEL H 2 A_CustomMissile("RS_BoneToPickGrey",42,3,0);
+		QKEL I 2;
+		QKEL G 6 A_FaceTarget;
+		QKEL H 2 A_CustomMissile("RS_BoneToPickGrey",42,3,random(-1,1));
+		QKEL I 2;
+		QKEL G 4 A_FaceTarget;
+		QKEL H 2 A_CustomMissile("RS_BoneToPickGrey",42,3,random(-3,3));
+		QKEL I 2;
 		Goto See;
 	Closer:
 		TNT1 A 0 A_Jump(32,"BoneIt");
-		ZKEL G 2 Bright A_SkullAttack(45);
+		QKEL G 2 Bright A_SkullAttack(45);
 		Goto Melee;
 	Pain.AbyssPE:
 		AYPB A 3 Bright;
@@ -846,27 +843,27 @@ class RS_GrayRevenant2 : Actor   // CH Revenants.txt:1173
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		ZKEL L 5;
-		ZKEL L 5 A_Pain;
+		QKEL L 5;
+		QKEL L 5 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
-		ZKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		ZKEL LM 7;
-		ZKEL N 7 A_Scream;
-		ZKEL O 7 A_NoBlocking;
-		ZKEL P 7;
-		ZKEL Q -1;
+		QKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
+		QKEL LM 7;
+		QKEL N 7 A_Scream;
+		QKEL O 7 A_NoBlocking;
+		QKEL P 7;
+		QKEL Q -1;
 		Stop;
 	Raise:
-		ZKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		ZKEL PONML 5;
+		QKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		QKEL PONML 5;
 		Goto See;
 	Grow:
-		ZKEL PONML 5;
-		SKEL A 0 A_SpawnItemEx("RS_PurpleRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
+		QKEL PONML 5;
+		RKEL A 0 A_SpawnItemEx("RS_PurpleRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -895,7 +892,7 @@ class RS_CommonRevenant : Revenant   // CH Revenants.txt:1341
 		PainChance 100;
 		Monster;
 		MeleeThreshold 196;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+DONTHARMSPECIES
 		+NOFEAR
@@ -912,29 +909,29 @@ class RS_CommonRevenant : Revenant   // CH Revenants.txt:1341
 	States
 	{
 	Spawn:
-		SKEL AB 10 A_Look;
+		RKEL AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SKEL AABBCC 2 A_Chase;
+		RKEL AABBCC 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL DDEEFF 2 A_Chase;
+		RKEL DDEEFF 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
-		SKEL G 1 A_FaceTarget;
-		SKEL G 6 A_SkelWhoosh;
-		SKEL H 6 A_FaceTarget;
-		SKEL I 6 A_SkelFist;
+		RKEL G 1 A_FaceTarget;
+		RKEL G 6 A_SkelWhoosh;
+		RKEL H 6 A_FaceTarget;
+		RKEL I 6 A_SkelFist;
 		Goto See;
 	Missile:
-		SKEL J 0 A_FaceTarget;
+		RKEL J 0 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL J 10 Bright A_FaceTarget;
-		SKEL J 9;
-		SKEL K 0 A_CustomMissile("RS_RevenantTracer2",50,7,1);
-		SKEL K 0 A_CustomMissile("RS_RevenantTracer2",50,-7,-1);
-		SKEL K 10 A_FaceTarget;
+		RKEL J 10 Bright A_FaceTarget;
+		RKEL J 9;
+		RKEL K 0 A_CustomMissile("RS_RevenantTracer2",50,7,1);
+		RKEL K 0 A_CustomMissile("RS_RevenantTracer2",50,-7,-1);
+		RKEL K 10 A_FaceTarget;
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -954,20 +951,20 @@ class RS_CommonRevenant : Revenant   // CH Revenants.txt:1341
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SKEL L 5;
+		RKEL L 5;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL L 5 A_Pain;
+		RKEL L 5 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
-		SKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SKEL LM 7;
-		SKEL N 7 A_Scream;
-		SKEL O 7 A_NoBlocking;
-		SKEL P 7;
-		SKEL Q -1;
+		RKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
+		RKEL LM 7;
+		RKEL N 7 A_Scream;
+		RKEL O 7 A_NoBlocking;
+		RKEL P 7;
+		RKEL Q -1;
 		Stop;
 	XDeath:
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -990,12 +987,12 @@ class RS_CommonRevenant : Revenant   // CH Revenants.txt:1341
 		REVB A -1;
 		Stop;
 	Raise:
-		SKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		SKEL PONML 5;
+		RKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RKEL PONML 5;
 		Goto See;
 	Grow:
-		SKEL PONML 5;
-		SKEL A 0 A_SpawnItemEx("RS_GreenRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RKEL PONML 5;
+		RKEL A 0 A_SpawnItemEx("RS_GreenRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -1023,7 +1020,7 @@ class RS_GreenRevenant : Actor   // CH Revenants.txt:1464
 		PainChance 88;
 		Monster;
 		MeleeThreshold 255;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -1043,32 +1040,32 @@ class RS_GreenRevenant : Actor   // CH Revenants.txt:1464
 	States
 	{
 	Spawn:
-		SKEL AB 10 A_Look;
+		RKEL AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SKEL AABBCC 2 A_Chase;
+		RKEL AABBCC 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL DDEEFF 2 A_Chase;
+		RKEL DDEEFF 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL AA 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
+		RKEL AA 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
 		Loop;
 	Melee:
-		SKEL G 3 A_FaceTarget;
-		SKEL GG 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
-		SKEL G 6 A_SkelWhoosh;
-		SKEL H 6 A_FaceTarget;
-		SKEL I 6 A_SkelFist;
+		RKEL G 3 A_FaceTarget;
+		RKEL GG 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
+		RKEL G 6 A_SkelWhoosh;
+		RKEL H 6 A_FaceTarget;
+		RKEL I 6 A_SkelFist;
 		Goto See;
 	Missile:
-		SKEL J 0 A_FaceTarget;
+		RKEL J 0 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL J 9 Bright A_FaceTarget;
-		SKEL JJ 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
-		SKEL J 7;
-		SKEL K 0 A_CustomMissile("RS_AcidBlast1",50,7,1);
-		SKEL K 0 A_CustomMissile("RS_AcidBlast1",50,-7,-1);
-		SKEL K 8 A_FaceTarget;
+		RKEL J 9 Bright A_FaceTarget;
+		RKEL JJ 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
+		RKEL J 7;
+		RKEL K 0 A_CustomMissile("RS_AcidBlast1",50,7,1);
+		RKEL K 0 A_CustomMissile("RS_AcidBlast1",50,-7,-1);
+		RKEL K 8 A_FaceTarget;
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -1088,23 +1085,23 @@ class RS_GreenRevenant : Actor   // CH Revenants.txt:1464
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SKEL L 5;
+		RKEL L 5;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL LL 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
-		SKEL L 5 A_Pain;
+		RKEL LL 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
+		RKEL L 5 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
-		SKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SKEL LM 7;
-		SKEL N 7 A_Scream;
-		SKEL N 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
-		SKEL O 7 A_NoBlocking;
-		SKEL P 7;
-		SKEL P 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
-		SKEL Q -1;
+		RKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
+		RKEL LM 7;
+		RKEL N 7 A_Scream;
+		RKEL N 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
+		RKEL O 7 A_NoBlocking;
+		RKEL P 7;
+		RKEL P 0 A_SpawnItemEx("RS_Splash11",random(-5,5),random(-5,5),random(5,56));
+		RKEL Q -1;
 		Stop;
 	XDeath:
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -1127,12 +1124,12 @@ class RS_GreenRevenant : Actor   // CH Revenants.txt:1464
 		REVB A -1;
 		Stop;
 	Raise:
-		SKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		SKEL PONML 5;
+		RKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RKEL PONML 5;
 		Goto See;
 	Grow:
-		SKEL PONML 5;
-		SKEL A 0 A_SpawnItemEx("RS_BlueRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RKEL PONML 5;
+		RKEL A 0 A_SpawnItemEx("RS_BlueRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -1158,7 +1155,7 @@ class RS_BlueRevenant : Actor   // CH Revenants.txt:1697
 		PainChance 77;
 		Monster;
 		MeleeThreshold 300;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -1189,52 +1186,52 @@ class RS_BlueRevenant : Actor   // CH Revenants.txt:1697
 	States
 	{
 	Spawn:
-		SKEL AB 10 A_Look;
+		RKEL AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SKEL AABBCC 2 A_Chase;
+		RKEL AABBCC 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL DDEEFF 2 A_Chase;
+		RKEL DDEEFF 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Jumper:
-		SKEL AABBCCDDEEFF 2 A_FastChase;
-		SKEL A 0 A_Jump(158,"See");
+		RKEL AABBCCDDEEFF 2 A_FastChase;
+		RKEL A 0 A_Jump(158,"See");
 		Loop;
 	Melee:
-		SKEL G 3 A_FaceTarget;
-		SKEL G 5 A_SkelWhoosh;
-		SKEL H 5 A_FaceTarget;
-		SKEL I 4 A_SkelFist;
+		RKEL G 3 A_FaceTarget;
+		RKEL G 5 A_SkelWhoosh;
+		RKEL H 5 A_FaceTarget;
+		RKEL I 4 A_SkelFist;
 		Goto See;
 	Missile:
-		SKEL G 4 A_FaceTarget;
+		RKEL G 4 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL G 0 A_JumpIfCloser(300,"Falcon");
-		SKEL G 0 A_Jump(255,"Blastings");
+		RKEL G 0 A_JumpIfCloser(300,"Falcon");
+		RKEL G 0 A_Jump(255,"Blastings");
 		Goto See;
 	Falcon:
-		SKEL G 0 A_JumpIf(user_nodash1 >= 11,"Blastings");
-		SKEL G 0 { user_nodash1 = user_nodash1 + 5; }   // CH: A_SetUserVar("User_nodash1",User_nodash1+5)
-		SKEL G 2 Bright A_SkullAttack(30);
+		RKEL G 0 A_JumpIf(user_nodash1 >= 11,"Blastings");
+		RKEL G 0 { user_nodash1 = user_nodash1 + 5; }   // CH: A_SetUserVar("User_nodash1",User_nodash1+5)
+		RKEL G 2 Bright A_SkullAttack(30);
 		Goto Melee;
 	Blastings:
-		SKEL J 0 A_FaceTarget;
-		SKEL J 12 Bright A_FaceTarget;
-		SKEL J 5;
-		SKEL K 0 A_CustomMissile("RS_Zap7",50,7,random(0,2));
-		SKEL K 0 A_CustomMissile("RS_Zap7",50,-7,random(-2,0));
-		SKEL J 12 Bright A_FaceTarget;
-		SKEL K 0 A_CustomMissile("RS_Zap8",50,-7,random(4,7));
-		SKEL K 0 A_CustomMissile("RS_Zap8",50,7,random(-7,-4));
-		SKEL K 0 A_CustomMissile("RS_Zap8",50,7);
-		SKEL K 0 A_CustomMissile("RS_Zap8",50,-7);
-		SKEL K 0 A_CustomMissile("RS_Zap8",50,-7,random(4,7));
-		SKEL K 0 A_CustomMissile("RS_Zap8",50,7,random(-7,-4));
-		SKEL K 0 A_CustomMissile("RS_Zap8",50,-7,random(-7,7));
-		SKEL G 0 { user_nodash1 = user_nodash1 - 2; }   // CH: A_SetUserVar("User_nodash1",User_nodash1-2)
-		SKEL K 8 A_FaceTarget;
+		RKEL J 0 A_FaceTarget;
+		RKEL J 12 Bright A_FaceTarget;
+		RKEL J 5;
+		RKEL K 0 A_CustomMissile("RS_Zap7",50,7,random(0,2));
+		RKEL K 0 A_CustomMissile("RS_Zap7",50,-7,random(-2,0));
+		RKEL J 12 Bright A_FaceTarget;
+		RKEL K 0 A_CustomMissile("RS_Zap8",50,-7,random(4,7));
+		RKEL K 0 A_CustomMissile("RS_Zap8",50,7,random(-7,-4));
+		RKEL K 0 A_CustomMissile("RS_Zap8",50,7);
+		RKEL K 0 A_CustomMissile("RS_Zap8",50,-7);
+		RKEL K 0 A_CustomMissile("RS_Zap8",50,-7,random(4,7));
+		RKEL K 0 A_CustomMissile("RS_Zap8",50,7,random(-7,-4));
+		RKEL K 0 A_CustomMissile("RS_Zap8",50,-7,random(-7,7));
+		RKEL G 0 { user_nodash1 = user_nodash1 - 2; }   // CH: A_SetUserVar("User_nodash1",User_nodash1-2)
+		RKEL K 8 A_FaceTarget;
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -1254,20 +1251,20 @@ class RS_BlueRevenant : Actor   // CH Revenants.txt:1697
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SKEL L 5;
+		RKEL L 5;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL L 5 A_Pain;
+		RKEL L 5 A_Pain;
 		Goto Jumper;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
-		SKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SKEL LM 7;
-		SKEL N 7 A_Scream;
-		SKEL O 7 A_NoBlocking;
-		SKEL P 7;
-		SKEL Q -1;
+		RKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
+		RKEL LM 7;
+		RKEL N 7 A_Scream;
+		RKEL O 7 A_NoBlocking;
+		RKEL P 7;
+		RKEL Q -1;
 		Stop;
 	XDeath:
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnParticle("Blue",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -1290,12 +1287,12 @@ class RS_BlueRevenant : Actor   // CH Revenants.txt:1697
 		REVB A -1;
 		Stop;
 	Raise:
-		SKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		SKEL PONML 5;
+		RKEL Q 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RKEL PONML 5;
 		Goto See;
 	Grow:
-		SKEL PONML 5;
-		SKEL A 0 A_SpawnItemEx("RS_PurpleRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RKEL PONML 5;
+		RKEL A 0 A_SpawnItemEx("RS_PurpleRevenant",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -1324,8 +1321,7 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 		PainChance 66;
 		Monster;
 		MeleeThreshold 200;
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -1353,71 +1349,71 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 	States
 	{
 	Spawn:
-		SKEL AB 10 A_Look;
+		RKEL AB 10 A_Look;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SKEL AABB 3 A_Chase;
-		SKEL B 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL AABB 3 A_Chase;
+		RKEL B 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL CCDD 3 A_Chase;
-		SKEL D 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL CCDD 3 A_Chase;
+		RKEL D 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL EEFF 3 A_Chase;
-		SKEL F 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL EEFF 3 A_Chase;
+		RKEL F 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Jumper2:
-		SKEL AABB 3 A_FastChase;
-		SKEL B 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		SKEL CCDD 3 A_FastChase;
-		SKEL D 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		SKEL EEFF 3 A_FastChase;
-		SKEL F 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		SKEL A 0 A_Jump(158,"See");
+		RKEL AABB 3 A_FastChase;
+		RKEL B 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL CCDD 3 A_FastChase;
+		RKEL D 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL EEFF 3 A_FastChase;
+		RKEL F 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL A 0 A_Jump(158,"See");
 		Loop;
 	Melee:
-		SKEL G 3 A_FaceTarget;
-		SKEL G 4 A_SkelWhoosh;
-		SKEL G 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		SKEL H 4 A_FaceTarget;
-		SKEL I 4 A_SkelFist;
+		RKEL G 3 A_FaceTarget;
+		RKEL G 4 A_SkelWhoosh;
+		RKEL G 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL H 4 A_FaceTarget;
+		RKEL I 4 A_SkelFist;
 		Goto See;
 	Missile:
-		SKEL G 4 A_FaceTarget;
+		RKEL G 4 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL G 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		SKEL G 0 A_JumpIfCloser(300,"Falcon2");
-		SKEL G 0 A_JumpIfCloser(1800,"Fireing2");
-		SKEL G 0 A_Jump(255,"Fireing1");
+		RKEL G 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL G 0 A_JumpIfCloser(300,"Falcon2");
+		RKEL G 0 A_JumpIfCloser(1800,"Fireing2");
+		RKEL G 0 A_Jump(255,"Fireing1");
 		Goto See;
 	Falcon2:
-		SKEL G 0 A_JumpIf(user_nodash2 >= 11,"Fireing2");
-		SKEL G 0 { user_nodash2 = user_nodash2 + 5; }   // CH: A_SetUserVar("User_nodash2",User_nodash2+5)
-		SKEL G 2 Bright A_SkullAttack(40);
+		RKEL G 0 A_JumpIf(user_nodash2 >= 11,"Fireing2");
+		RKEL G 0 { user_nodash2 = user_nodash2 + 5; }   // CH: A_SetUserVar("User_nodash2",User_nodash2+5)
+		RKEL G 2 Bright A_SkullAttack(40);
 		Goto Melee;
 	Fireing2:
-		SKEL J 0 A_FaceTarget;
-		SKEL J 9 Bright A_FaceTarget;
-		SKEL J 5 Bright A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		SKEL K 0 A_CustomMissile("RS_Purp1",50,7,random(0,2));
-		SKEL K 0 A_CustomMissile("RS_Purp1",50,-7,random(-2,0));
-		SKEL J 8 Bright A_FaceTarget;
-		SKEL J 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		SKEL G 0 { user_nodash2 = user_nodash2 - 2; }   // CH: A_SetUserVar("User_nodash2",User_nodash2-2)
-		SKEL K 8 A_FaceTarget;
+		RKEL J 0 A_FaceTarget;
+		RKEL J 9 Bright A_FaceTarget;
+		RKEL J 5 Bright A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL K 0 A_CustomMissile("RS_Purp1",50,7,random(0,2));
+		RKEL K 0 A_CustomMissile("RS_Purp1",50,-7,random(-2,0));
+		RKEL J 8 Bright A_FaceTarget;
+		RKEL J 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL G 0 { user_nodash2 = user_nodash2 - 2; }   // CH: A_SetUserVar("User_nodash2",User_nodash2-2)
+		RKEL K 8 A_FaceTarget;
 		Goto See;
 	Fireing1:
-		SKEL J 0 A_FaceTarget;
-		SKEL G 15 Bright;
-		SKEL J 15 Bright A_FaceTarget;
-		SKEL J 5 Bright A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL J 0 A_FaceTarget;
+		RKEL G 15 Bright;
+		RKEL J 15 Bright A_FaceTarget;
+		RKEL J 5 Bright A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
 		TNT1 A 0 A_CheckSight("See");
-		SKEL K 0 A_CustomRailgun(random(2,20),7,"purple","white",RGF_FULLBRIGHT,1,0,"RS_FatsoPuff3",0,0,10000,0,1,1,null,20);
-		SKEL K 0 A_CustomRailgun(random(2,20),-7,"purple","white",RGF_FULLBRIGHT,1,0,"RS_FatsoPuff3",0,0,10000,0,1,1,null,20);
-		SKEL J 10 Bright A_FaceTarget;
-		SKEL JJJ 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
-		SKEL K 8 A_MonsterRefire(120,"See");
+		RKEL K 0 A_CustomRailgun(random(2,20),7,"purple","white",RGF_FULLBRIGHT,1,0,"RS_FatsoPuff3",0,0,10000,0,1,1,null,20);
+		RKEL K 0 A_CustomRailgun(random(2,20),-7,"purple","white",RGF_FULLBRIGHT,1,0,"RS_FatsoPuff3",0,0,10000,0,1,1,null,20);
+		RKEL J 10 Bright A_FaceTarget;
+		RKEL JJJ 0 A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL K 8 A_MonsterRefire(120,"See");
 		Goto Missile;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -1437,20 +1433,20 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SKEL L 5 Bright A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
+		RKEL L 5 Bright A_CustomMissile("RS_Zap99",random(20,64),random(-15,15));
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL L 5 A_Pain;
+		RKEL L 5 A_Pain;
 		Goto Jumper2;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
-		SKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SKEL LM 7;
-		SKEL N 7 A_Scream;
-		SKEL O 7 A_NoBlocking;
-		SKEL P 7;
-		SKEL Q -1;
+		RKEL L 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
+		RKEL LM 7;
+		RKEL N 7 A_Scream;
+		RKEL O 7 A_NoBlocking;
+		RKEL P 7;
+		RKEL Q -1;
 		Stop;
 	XDeath:
 		TNT1 AAAAAAAAAAAAAAAAAAAAAAAAAAA 0 A_SpawnParticle("purple",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -1473,8 +1469,8 @@ class RS_PurpleRevenant : Actor   // CH Revenants.txt:1908
 		REVB A -1;
 		Stop;
 	Raise:
-		SKEL Q 5;
-		SKEL PONML 5;
+		RKEL Q 5;
+		RKEL PONML 5;
 		Goto See;
 	}
 }
@@ -1505,8 +1501,7 @@ class RS_SpecialSoul : Actor   // CH Revenants.txt:2207
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTFALL
 		+NOICEDEATH
 		+THRUSPECIES
@@ -1592,7 +1587,7 @@ class RS_YellowRevenant : Actor   // CH Revenants.txt:2311
 		PainChance "ice", 2;
 		Monster;
 		MeleeThreshold 200;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -1745,7 +1740,7 @@ class RS_YellowRevenant : Actor   // CH Revenants.txt:2311
 	Whatthe:
 		REVN K 1;
 		REVN H 1 A_PlaySound("skeleton/sight");
-		SKEL L 1;
+		RKEL L 1;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
@@ -1809,7 +1804,7 @@ class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 		PainChance 22;
 		Monster;
 		MeleeThreshold 200;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -1900,7 +1895,7 @@ class RS_RedRevenant : Actor   // CH Revenants.txt:2706
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		RASK L 5 A_Pain;
 		RASK L 5 { bNOPAIN = true; }          // CH: A_ChangeFlag("NOPAIN",TRUE)
-		RASK L 5 { bMISSILEEVENMORE = true; } // CH: A_changeFlag("MissileEvenMore",TRUE)
+		RASK L 5 { RS_MissileChance.SetEvenMore(self, true); } // CH: A_changeFlag("MissileEvenMore",TRUE)
 		RASK L 5;
 		Goto See;
 	Tickles:
@@ -1975,7 +1970,7 @@ class RS_BlackRevenant3 : Actor   // CH Revenants.txt:2989
 		+NOTARGET
 		+BOSS
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+DONTMORPH
 		+NOICEDEATH
@@ -2141,8 +2136,7 @@ class RS_BlackRev2 : Actor   // CH Revenants.txt:3452
 		+BOSS
 		-NORADIUSDMG
 		+DONTMORPH
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOFEAR
 		+NOCLIP
 		+DONTBLAST
@@ -2263,7 +2257,7 @@ class RS_BlackRevenantEX : Actor   // CH Revenants.txt:3667
 		+BOSS
 		+DONTMORPH
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+NOICEDEATH
 		+THRUSPECIES
@@ -2479,7 +2473,7 @@ class RS_BlackRevEx3 : Actor   // CH Revenants.txt:4221
 		+NOTARGET
 		+BOSS
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOCLIP
 		+DONTMORPH
 		+NOFEAR
@@ -2568,9 +2562,8 @@ class RS_BlackRevEx2 : Actor   // CH Revenants.txt:4293
 		+DONTTHRUST
 		+DONTMORPH
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+NOICEDEATH
-		+MISSILEEVENMORE
 		+NOFEAR
 		+NOCLIP
 		+NODAMAGETHRUST
@@ -2712,7 +2705,7 @@ class RS_WhiteRevenant2 : Actor   // CH Revenants.txt:4476
 		+DONTBLAST
 		+DONTMORPH
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOICEDEATH
 		+NOFEAR
 		+NODAMAGETHRUST

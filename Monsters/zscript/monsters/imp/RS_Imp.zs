@@ -215,7 +215,7 @@ class RS_BrownImp2 : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		DropItem "RS_HealthBundle", 128;
 		DropItem "HealthBonus";
@@ -370,7 +370,7 @@ class RS_CyanImp2 : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+QUICKTORETALIATE
 		+NOICEDEATH
 		+NOFEAR
@@ -504,7 +504,7 @@ class RS_CyanImp2 : Actor
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
 		CIMP N 5 A_Fall;
 		CIMP O 5 A_XScream;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
 		CIMP P 5 A_IceGuyDie;
 		Stop;
 	}
@@ -533,7 +533,7 @@ class RS_AbyssImp2 : Actor
 		+FLOORCLIP
 		+NOFEAR
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+CANTSEEK
 		+QUICKTORETALIATE
 		SeeSound "Roach/Sight";
@@ -661,7 +661,7 @@ class RS_FireBluImp2 : DoomImp
 		+FLOORCLIP
 		+NOFEAR
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+QUICKTORETALIATE
 		SeeSound "imp2/see";
 		PainSound "imp2/hurt";
@@ -730,11 +730,11 @@ class RS_FireBluImp2 : DoomImp
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		IMPP I 8;
-		IMPP J 8 A_Scream;
-		IMPP K 6;
-		IMPP L 6 A_NoBlocking;
-		IMPP M -1;
+		IMPP A 8;
+		IMPP B 8 A_Scream;
+		IMPP C 6;
+		IMPP D 6 A_NoBlocking;
+		IMPP E -1;
 		Stop;
 	XDeath:
 		ZOMG P 0 A_PlaySound("weapons/rocklx",7,1);
@@ -748,7 +748,7 @@ class RS_FireBluImp2 : DoomImp
 		MISL D 6 A_NoBlocking;
 		Stop;
 	Raise:
-		IMPP MLKJI 8;
+		IMPP EDCBA 8;
 		Goto See;
 	}
 }
@@ -776,7 +776,7 @@ class RS_GrayImp2 : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		SeeSound "imp2/see";
 		PainSound "imp2/hurt";
@@ -1089,7 +1089,7 @@ class RS_BlueImp : DoomImp
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "imp2/see";
 		PainSound "imp2/hurt";
 		DeathSound "imp2/die";
@@ -1151,31 +1151,31 @@ class RS_BlueImp : DoomImp
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		IMPB I 8;
-		IMPB J 8 A_Scream;
-		IMPB K 6;
-		IMPB L 6 A_NoBlocking;
-		IMPB M -1;
+		RMPB B 8;
+		RMPB C 8 A_Scream;
+		RMPB D 6;
+		RMPB E 6 A_NoBlocking;
+		RMPB F -1;
 		Stop;
 	XDeath:
-		TNT1 AAAAA 0 A_SpawnItemEx("RS_Blutrail1",0,0,32,VelX,VelY,VelZ,random(-180,180),SXF_NOCHECKPOSITION);
+		TNT1 AAAAA 0 A_SpawnItemEx("RS_Blutrail1",0,0,32,Vel.X,Vel.Y,Vel.Z,random(-180,180),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_PlaySound("weapons/plasmax");
-		IMPB N 5;
-		IMPB O 5 A_XScream;
-		IMPB P 5;
+		RMPB G 5;
+		RMPB H 5 A_XScream;
+		RMPB I 5;
 		// CH: TNT1 AAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
-		IMPB Q 5 A_NoBlocking;
-		IMPB RST 5;
+		RMPB J 5 A_NoBlocking;
+		RMPB KLM 5;
 		TNT1 AAAAAA 0 A_SpawnParticle("Blue",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		IMPB U -1;
+		RMPB N -1;
 		Stop;
 	Raise:
-		IMPB M 1 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		IMPB MLKJI 8;
+		RMPB F 1 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RMPB FEDCB 8;
 		Goto See;
 	Grow:
-		IMPB MLKJI 5;
-		IMPB A 0 A_SpawnItemEx("RS_PurpleImp",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RMPB FEDCB 5;
+		RMPB A 0 A_SpawnItemEx("RS_PurpleImp",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -1204,7 +1204,7 @@ class RS_PurpleImp : DoomImp
 		+FLOORCLIP
 		+NOFEAR
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+QUICKTORETALIATE
 		SeeSound "imp2/see";
 		PainSound "imp2/hurt";
@@ -1279,25 +1279,25 @@ class RS_PurpleImp : DoomImp
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		IMPP I 8;
-		IMPP J 8 A_Scream;
-		IMPP K 6;
-		IMPP L 6 A_NoBlocking;
-		IMPP M -1;
+		IMPP A 8;
+		IMPP B 8 A_Scream;
+		IMPP C 6;
+		IMPP D 6 A_NoBlocking;
+		IMPP E -1;
 		Stop;
 	XDeath:
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
-		IMPP N 5;
-		IMPP O 5 A_XScream;
-		TNT1 A 0 A_SpawnItemEx("RS_CHgold_teeth",0,0,32,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,128);
-		IMPP P 5;
-		IMPP Q 5 A_NoBlocking;
-		IMPP RST 5;
+		IMPP F 5;
+		IMPP G 5 A_XScream;
+		TNT1 A 0 A_SpawnItemEx("RS_CHgold_teeth",0,0,32,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,128);
+		IMPP H 5;
+		IMPP I 5 A_NoBlocking;
+		IMPP JKL 5;
 		TNT1 AAA 0 A_SpawnParticle("Purple",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		IMPP U -1;
+		IMPP M -1;
 		Stop;
 	Raise:
-		IMPP MLKJI 8;
+		IMPP EDCBA 8;
 		Goto See;
 	}
 }
@@ -1328,7 +1328,7 @@ class RS_YellowImp : DoomImp
 		+FLOORCLIP
 		+NOFEAR
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+QUICKTORETALIATE
 		SeeSound "imp2/see";
 		PainSound "imp2/hurt";
@@ -1347,30 +1347,30 @@ class RS_YellowImp : DoomImp
 	States
 	{
 	Spawn:
-		TRO4 AB 10 A_Look;
+		RRO4 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		TRO4 AABB 3 A_Chase;
+		RRO4 AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TRO4 CCDD 3 A_Chase;
+		RRO4 CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TRO4 A 0 A_Jump(34,"Dodger");
+		RRO4 A 0 A_Jump(34,"Dodger");
 		Loop;
 	Dodger:
-		TRO4 AABB 3 A_FastChase;
+		RRO4 AABB 3 A_FastChase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TRO4 CCDD 3 A_FastChase;
+		RRO4 CCDD 3 A_FastChase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TRO4 A 0 A_Jump(64,"See");
+		RRO4 A 0 A_Jump(64,"See");
 		Loop;
 	Melee:
-		TRO4 EF 8;
-		TRO4 G 6 A_CustomMeleeAttack(random(10,32),"imp/melee");
+		RRO4 EF 8;
+		RRO4 G 6 A_CustomMeleeAttack(random(10,32),"imp/melee");
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TRO4 EF 8 A_FaceTarget;
-		TRO4 G 6 A_CustomMissile("RS_SpitFireImp",42,3,random(-1,1));
+		RRO4 EF 8 A_FaceTarget;
+		RRO4 G 6 A_CustomMissile("RS_SpitFireImp",42,3,random(-1,1));
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 A_SetScale(0.8,0.8);
@@ -1389,28 +1389,28 @@ class RS_YellowImp : DoomImp
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		TRO4 H 1;
+		RRO4 H 1;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TRO4 H 2 A_Pain;
-		TRO4 H 1 A_Jump(64,"Firey");
+		RRO4 H 2 A_Pain;
+		RRO4 H 1 A_Jump(64,"Firey");
 		Goto See;
 	Pain.fire:
-		TRO4 H 0;
+		RRO4 H 0;
 		Goto Dodger;
 	Firey:
-		TRO4 E 5 Bright;
-		TRO4 H 6 A_CustomMissile("RS_Firespe1",42,0,random(-360,360));
+		RRO4 E 5 Bright;
+		RRO4 H 6 A_CustomMissile("RS_Firespe1",42,0,random(-360,360));
 		Goto Dodger;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		TRO4 I 8;
-		TRO4 J 8 A_Scream;
-		TRO4 K 6;
-		TRO4 L 6 A_NoBlocking;
-		TRO4 M -1;
+		RRO4 I 8;
+		RRO4 J 8 A_Scream;
+		RRO4 K 6;
+		RRO4 L 6 A_NoBlocking;
+		RRO4 M -1;
 		Stop;
 	XDeath:
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
@@ -1426,8 +1426,8 @@ class RS_YellowImp : DoomImp
 		TROO U -1;
 		Stop;
 	Raise:
-		TRO4 ML 8;
-		TRO4 KJI 6;
+		RRO4 ML 8;
+		RRO4 KJI 6;
 		Goto See;
 	}
 }
@@ -1455,7 +1455,7 @@ class RS_RedImp : DoomImp
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+QUICKTORETALIATE
 		+NOFEAR
 		SeeSound "imp2/see";
@@ -1516,7 +1516,7 @@ class RS_RedImp : DoomImp
 		PRIM H 3 A_Pain;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		PRIM H 3 { bNOPAIN = true; }
-		PRIM H 3 { bMISSILEEVENMORE = true; }
+		PRIM H 3 { RS_MissileChance.SetEvenMore(self, true); }
 		PRIM H 2 A_PlaySound("imp/pain");
 		PRIM H 2 A_SetSpeed(14);
 		PRIM H 2;
@@ -1583,8 +1583,7 @@ class RS_BlackImpEX : Actor
 		+BOSS
 		+DONTMORPH
 		-NORADIUSDMG
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+QUICKTORETALIATE
 		+NOTARGET
 		+NOFEAR
@@ -1763,8 +1762,7 @@ class RS_BlackImp1 : Actor   // CH Imps.txt:2300 -- Smoking Black Imp
 		+DONTHARMSPECIES
 		+BOSS
 		-NORADIUSDMG
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTMORPH
 		+QUICKTORETALIATE
 		+NOTARGET
@@ -1905,7 +1903,7 @@ class RS_SpecialImp7 : RS_RedImp   // CH Imps.txt:2577 -- Ghost Red Imp
 		+FLOORCLIP
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOCLIP
 		+NOTARGETSWITCH
 		-COUNTKILL
@@ -1944,7 +1942,7 @@ class RS_SpecialImp6 : RS_YellowImp   // CH Imps.txt:2613 -- Ghost Yellow Imp
 		+FLOORCLIP
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOCLIP
 		+NOTARGETSWITCH
 		-COUNTKILL
@@ -1962,11 +1960,11 @@ class RS_SpecialImp6 : RS_YellowImp   // CH Imps.txt:2613 -- Ghost Yellow Imp
 	States
 	{
 	See:
-		TRO4 ABBCC 3 A_Chase;
+		RRO4 ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TRO4 DEEFF 3 A_Chase;
-		TRO4 A 0 A_JumpIfMasterCloser(800,"See");
-		TRO4 A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
+		RRO4 DEEFF 3 A_Chase;
+		RRO4 A 0 A_JumpIfMasterCloser(800,"See");
+		RRO4 A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
 		Loop;
 	}
 }
@@ -1983,7 +1981,7 @@ class RS_SpecialImp5 : RS_PurpleImp   // CH Imps.txt:2649 -- Ghost Purple Imp
 		+FLOORCLIP
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOCLIP
 		+NOTARGETSWITCH
 		-COUNTKILL
@@ -2022,7 +2020,7 @@ class RS_SpecialImp4 : RS_GreenImp   // CH Imps.txt:2685 -- Ghost Green Imp
 		+FLOORCLIP
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOCLIP
 		+NOTARGETSWITCH
 		-COUNTKILL
@@ -2061,7 +2059,7 @@ class RS_SpecialImp3 : RS_BlueImp   // CH Imps.txt:2721 -- Ghost Blue Imp
 		+FLOORCLIP
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOCLIP
 		+NOTARGETSWITCH
 		-COUNTKILL
@@ -2114,8 +2112,7 @@ class RS_WhiteImp2 : Actor   // CH Imps.txt:2776 -- Imp Master
 		+DONTHARMCLASS
 		+BOSS
 		-NORADIUSDMG
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTMORPH
 		+NOTARGET
 		+QUICKTORETALIATE

@@ -142,8 +142,8 @@
 // anonymous blocks over real members; A_ChangeFlag -> { bFLAG = x; };
 // ThrustThing angle expressions wrapped in int(); +DOOMBOUNCE ->
 // BounceType "Doom"; bare DONTHURTSHOOTER -> +DONTHURTSHOOTER; bracket frame
-// letters quoted. Deprecation warnings (MISSILEMORE, VelX, A_CustomMissile,
-// A_PlaySound, A_ChangeFlag) are CH's idiom kept verbatim, not errors.
+// letters quoted. The deprecated MISSILEMORE / MISSILEEVENMORE flags and VelX
+// reads were replaced 2026-11-16 (MissileChanceMult, RS_MissileChance, Vel.X).
 // ============================================================================
 
 // ---------------------------------------------------------------------------
@@ -971,8 +971,8 @@ class RS_AbyssCybieDecoFlame : Actor   // CH CYBIES.txt:1442
 	States
 	{
 	Spawn:
-		FRFX ABCD 3 Bright;
-		FRFX HIJKLMNO 2 Bright;
+		RRFX ABCD 3 Bright;
+		RRFX HIJKLMNO 2 Bright;
 		Stop;
 	}
 }
@@ -2418,7 +2418,7 @@ class RS_SmithDeathFire : Actor   // CH CYBIES.txt:4638
 	States
 	{
 	Spawn:
-		FRFX JKLMNOP 2 Bright;
+		RRFX JKLMNOP 2 Bright;
 		Stop;
 	Death:
 		TNT1 A 1;

@@ -212,7 +212,7 @@ class RS_BrownPE2 : Actor   // CH thepains.txt:40
 		+DONTHARMSPECIES
 		+FLOAT
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+FLOATBOB
 		+BRIGHT
@@ -365,7 +365,7 @@ class RS_CyanPE2 : Actor   // CH thepains.txt:471
 		+DONTHARMSPECIES
 		+FLOAT
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+NOICEDEATH
 		+FLOATBOB
@@ -443,7 +443,7 @@ class RS_CyanPE2 : Actor   // CH thepains.txt:471
 		INFR I 8 Bright;
 		INFR J 8 Bright A_PainDie("RS_CyanLSoul2");
 		INFR K 8 Bright A_NoBlocking(false);
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
 		INFR K 1 A_SetFloorClip;
 		INFR K 1 A_IceGuyDie;
 		Stop;
@@ -473,8 +473,7 @@ class RS_AbyssPE2 : Actor   // CH thepains.txt:609
 		+NOBLOOD
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEEVENMORE
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+FLOATBOB
 		+NOTARGETSWITCH
 		+NOTARGET
@@ -733,8 +732,7 @@ class RS_FireBluPE2 : Actor   // CH thepains.txt:1045
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEEVENMORE
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+FLOATBOB
 		+NOTARGETSWITCH
 		+SPRITEANGLE
@@ -860,7 +858,7 @@ class RS_CommonPE : PainElemental   // CH thepains.txt:1156
 		TNT1 AAAAAA 0 A_SpawnParticle("Red",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		// CH: A_SpawnItemEx("CH_Soul",...) -- CH_Soul is defined NOWHERE in CH
 		// (only CH_SoulSphere exists); dead spawn kept dead via the guard.
-		TNT1 A 0 { class<Actor> cls = (class<Actor>)(String.Format("%s","CH_Soul")); if (cls) A_SpawnItemEx(cls,0,0,32,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION); }
+		TNT1 A 0 { class<Actor> cls = (class<Actor>)(String.Format("%s","CH_Soul")); if (cls) A_SpawnItemEx(cls,0,0,32,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION); }
 		Stop;
 	}
 }
@@ -961,7 +959,7 @@ class RS_GreenPE : PainElemental   // CH thepains.txt:1223
 		TNT1 AAAAAA 0 A_SpawnParticle("Green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		PAIN M 8 Bright;
 		TNT1 AAAAAA 0 A_SpawnParticle("Green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		TNT1 A 0 { class<Actor> cls = (class<Actor>)(String.Format("%s","CH_Soul")); if (cls) A_SpawnItemEx(cls,0,0,32,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION); }   // CH: CH_Soul, undefined in CH
+		TNT1 A 0 { class<Actor> cls = (class<Actor>)(String.Format("%s","CH_Soul")); if (cls) A_SpawnItemEx(cls,0,0,32,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION); }   // CH: CH_Soul, undefined in CH
 		Stop;
 	Raise:
 		PAIN MLKJIH 8;
@@ -1064,7 +1062,7 @@ class RS_BluePE : PainElemental   // CH thepains.txt:1351
 		TNT1 AAAAAA 0 A_SpawnParticle("Blue",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		PAIN M 8 Bright;
 		TNT1 AAAAAA 0 A_SpawnParticle("Blue",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		TNT1 A 0 { class<Actor> cls = (class<Actor>)(String.Format("%s","CH_Soul")); if (cls) A_SpawnItemEx(cls,0,0,32,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION); }   // CH: CH_Soul, undefined in CH
+		TNT1 A 0 { class<Actor> cls = (class<Actor>)(String.Format("%s","CH_Soul")); if (cls) A_SpawnItemEx(cls,0,0,32,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION); }   // CH: CH_Soul, undefined in CH
 		Stop;
 	Raise:
 		PAIN MLKJIH 8;
@@ -1191,7 +1189,7 @@ class RS_YellowPE : PainElemental   // CH thepains.txt:1635
 		+DONTHARMSPECIES
 		+FLOAT
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		RenderStyle "SoulTrans";
 		Alpha 0.9;
@@ -1276,8 +1274,7 @@ class RS_RedPE : Actor   // CH thepains.txt:1769
 		+NOGRAVITY
 		+DONTHARMSPECIES
 		+FLOAT
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOFEAR
 		Obituary "%o felt a big red raging pain in the ass";
 		SeeSound "wraith/wraith2";
@@ -1403,7 +1400,7 @@ class RS_BlackPE2 : Actor   // CH thepains.txt:1977
 		-NORADIUSDMG
 		+NOFEAR
 		+NOTARGET
-		+MISSILEEVENMORE
+		MissileChanceMult 0.125;
 		+DONTMORPH
 		+FLOAT
 		+DONTHARMCLASS

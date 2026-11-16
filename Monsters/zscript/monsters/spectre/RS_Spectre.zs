@@ -471,7 +471,7 @@ class RS_CyanSpectre2 : Actor
 		WORM K 4;
 		WORM L 4 A_NoBlocking(false);
 		WORM M 4;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,253);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,253);
 		WORM N 1 A_IceGuyDie;
 		Stop;
 	}
@@ -977,20 +977,20 @@ class RS_YellowSpectre : Spectre
 	States
 	{
 	Spawn:
-		SRG2 AB 10 A_Look;
+		RRG2 AB 10 A_Look;
 		Loop;
 	See:
-		SRG2 A 0 A_PlaySound("blooddemon/walk");
-		SRG2 AABB 2 A_Chase;
-		SRG2 C 0 A_PlaySound("blooddemon/walk");
-		SRG2 CCDD 2 A_Chase;
-		SRG2 A 0 A_JumpIf(User_Calm == 1,"Calm");
+		RRG2 A 0 A_PlaySound("blooddemon/walk");
+		RRG2 AABB 2 A_Chase;
+		RRG2 C 0 A_PlaySound("blooddemon/walk");
+		RRG2 CCDD 2 A_Chase;
+		RRG2 A 0 A_JumpIf(User_Calm == 1,"Calm");
 		Loop;
 	Melee:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 EF 8 A_FaceTarget;
-		SRG2 G 8 A_CustomMeleeAttack(random(13,52),"blooddemon/melee","none");
-		SRG2 G 1 { User_Calm = (User_Calm == 1) ? 1 : 0; }   // CH: SPG2 G -- CH typo; SRG2 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).   // CH: A_SetUserVar("User_Calm",User_Calm == 1)
+		RRG2 EF 8 A_FaceTarget;
+		RRG2 G 8 A_CustomMeleeAttack(random(13,52),"blooddemon/melee","none");
+		RRG2 G 1 { User_Calm = (User_Calm == 1) ? 1 : 0; }   // CH: SPG2 G -- CH typo; SRG2 is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).   // CH: A_SetUserVar("User_Calm",User_Calm == 1)
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -1009,36 +1009,36 @@ class RS_YellowSpectre : Spectre
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SRG2 H 2;
+		RRG2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 H 2 A_Pain;
-		SRG2 H 1 A_Jump(128,"SpeedBuff");
+		RRG2 H 2 A_Pain;
+		RRG2 H 1 A_Jump(128,"SpeedBuff");
 		Goto See;
 	SpeedBuff:
-		SRG2 E 1 A_SetSpeed(31);
-		SRG2 E 1 { bSTEALTH = false; }   // CH: A_ChangeFlag("STEALTH",FALSE)
-		SRG2 E 1 { User_Calm = (User_Calm == 0) ? 1 : 0; }   // CH: A_SetUserVar("User_Calm",User_Calm == 0)
+		RRG2 E 1 A_SetSpeed(31);
+		RRG2 E 1 { bSTEALTH = false; }   // CH: A_ChangeFlag("STEALTH",FALSE)
+		RRG2 E 1 { User_Calm = (User_Calm == 0) ? 1 : 0; }   // CH: A_SetUserVar("User_Calm",User_Calm == 0)
 		Goto See;
 	Calm:
-		SRG2 E 1 A_SetSpeed(17);
-		SRG2 E 1 { bSTEALTH = true; }   // CH: A_ChangeFlag("STEALTH",True)
+		RRG2 E 1 A_SetSpeed(17);
+		RRG2 E 1 { bSTEALTH = true; }   // CH: A_ChangeFlag("STEALTH",True)
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SRG2 I 8;
-		SRG2 I 0 A_FaceTarget;
-		SRG2 J 0 A_SpawnItemEx("RS_BloodDemonArm",10,0,32,0,8,0,0,128);
-		SRG2 J 8 A_Scream;
-		SRG2 K 4;
-		SRG2 L 4 A_NoBlocking;
-		SRG2 M 4;
-		SRG2 N -1;
+		RRG2 I 8;
+		RRG2 I 0 A_FaceTarget;
+		RRG2 J 0 A_SpawnItemEx("RS_BloodDemonArm",10,0,32,0,8,0,0,128);
+		RRG2 J 8 A_Scream;
+		RRG2 K 4;
+		RRG2 L 4 A_NoBlocking;
+		RRG2 M 4;
+		RRG2 N -1;
 		Stop;
 	Raise:
-		SRG2 NMLKJI 5;
+		RRG2 NMLKJI 5;
 		Goto See;
 	}
 }
@@ -1082,21 +1082,21 @@ class RS_RedSpectre : Spectre
 	States
 	{
 	Spawn:
-		SRG2 AB 10 A_Look;
+		RRG2 AB 10 A_Look;
 		Loop;
 	See:
-		SRG2 A 0 A_PlaySound("blooddemon/walk");
-		SRG2 AABB 2 A_Chase;
-		SRG2 C 0 A_PlaySound("blooddemon/walk");
-		SRG2 CCDD 2 A_Chase;
+		RRG2 A 0 A_PlaySound("blooddemon/walk");
+		RRG2 AABB 2 A_Chase;
+		RRG2 C 0 A_PlaySound("blooddemon/walk");
+		RRG2 CCDD 2 A_Chase;
 		Loop;
 	Melee:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 EF 6 A_FaceTarget;
-		SRG2 G 4 A_CustomMeleeAttack(random(10,55),"blooddemon/melee","none");
-		SRG2 G 1 A_SpawnItemEx("RS_RedThingsLS",1,3,15,0,0,0,0,SXF_NOCHECKPOSITION);
-		SRG2 G 0 A_SpawnItemEx("RS_RedThingsLS",6,3,15,0,0,0,0,SXF_NOCHECKPOSITION);
-		SRG2 GGGGGG 0 A_CustomMissile("RS_RedDemonBloodBolt3",random(32,48),0,random(-17,17));
+		RRG2 EF 6 A_FaceTarget;
+		RRG2 G 4 A_CustomMeleeAttack(random(10,55),"blooddemon/melee","none");
+		RRG2 G 1 A_SpawnItemEx("RS_RedThingsLS",1,3,15,0,0,0,0,SXF_NOCHECKPOSITION);
+		RRG2 G 0 A_SpawnItemEx("RS_RedThingsLS",6,3,15,0,0,0,0,SXF_NOCHECKPOSITION);
+		RRG2 GGGGGG 0 A_CustomMissile("RS_RedDemonBloodBolt3",random(32,48),0,random(-17,17));
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -1115,34 +1115,34 @@ class RS_RedSpectre : Spectre
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		SRG2 H 2;
+		RRG2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SRG2 H 2 A_Pain;
-		SRG2 H 1 A_Jump(174,"BuffUP");
+		RRG2 H 2 A_Pain;
+		RRG2 H 1 A_Jump(174,"BuffUP");
 		Goto See;
 	BuffUP:
-		SRG2 E 1 A_SetSpeed(25);
-		SRG2 EF 6 A_CustomMissile("RS_EffectHK",24,0);
-		SRG2 G 5 { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
-		SRG2 E 1 { bSTEALTH = false; }   // CH: A_ChangeFlag("STEALTH",FALSE)
-		SRG2 E 1 A_SetTranslucent(1);
+		RRG2 E 1 A_SetSpeed(25);
+		RRG2 EF 6 A_CustomMissile("RS_EffectHK",24,0);
+		RRG2 G 5 { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
+		RRG2 E 1 { bSTEALTH = false; }   // CH: A_ChangeFlag("STEALTH",FALSE)
+		RRG2 E 1 A_SetTranslucent(1);
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		SRG2 I 8;
-		SRG2 I 0 A_FaceTarget;
-		SRG2 J 0 A_SpawnItemEx("RS_BloodDemonArm2",10,0,32,0,8,0,0,128);
-		SRG2 J 8 A_Scream;
-		SRG2 K 4;
-		SRG2 L 4 A_NoBlocking;
-		SRG2 M 4;
-		SRG2 N -1;
+		RRG2 I 8;
+		RRG2 I 0 A_FaceTarget;
+		RRG2 J 0 A_SpawnItemEx("RS_BloodDemonArm2",10,0,32,0,8,0,0,128);
+		RRG2 J 8 A_Scream;
+		RRG2 K 4;
+		RRG2 L 4 A_NoBlocking;
+		RRG2 M 4;
+		RRG2 N -1;
 		Stop;
 	Raise:
-		SRG2 NMLKJI 5;
+		RRG2 NMLKJI 5;
 		Goto See;
 	}
 }
@@ -1304,7 +1304,7 @@ class RS_BlackSpectre2 : Actor
 		SHDX C 13;
 		SHDX D 13 A_Fall;
 		SHDX EF 13;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
 		SHDX G -1;
 		Stop;
 	}
@@ -1332,7 +1332,7 @@ class RS_WhiteSpectre2 : Actor
 		Monster;
 		+FLOORCLIP
 		+LOOKALLAROUND
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOTARGET
 		+BOSS
 		-NORADIUSDMG

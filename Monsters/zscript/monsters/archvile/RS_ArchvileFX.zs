@@ -137,8 +137,7 @@ class RS_BrownBoiVile : Actor   // CH Archviles.txt:323
 		+NOTARGETSWITCH
 		+NOGRAVITY
 		+LOOKALLAROUND
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOPAIN
 		+NOBLOOD
 		+BOUNCEONWALLS
@@ -1245,7 +1244,7 @@ class RS_ABVileTentacle : Actor   // CH Archviles.txt:1704 -- minion, no tier to
 		+LOOKALLAROUND
 		+NOTARGET
 		+THRUACTORS
-		+MISSILEEVENMORE
+		MissileChanceMult 0.125;
 		-NORADIUSDMG
 		-COUNTKILL
 		Translation "0:255=%[0.02,0.02,0.03]:[0.29,0.49,0.65]";
@@ -1825,7 +1824,7 @@ class RS_SpecialRev : RS_CommonRevenant   // CH Archviles.txt:3005 -- summon, no
 		RenderStyle "Add";
 		Monster;
 		MeleeThreshold 236;
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+DONTHARMSPECIES
 		+THRUSPECIES
@@ -1845,10 +1844,10 @@ class RS_SpecialRev : RS_CommonRevenant   // CH Archviles.txt:3005 -- summon, no
 	States
 	{
 	See:
-		SKEL AABBCCDDEEFF 2 A_Chase;
+		RKEL AABBCCDDEEFF 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SKEL A 0 A_JumpIfMasterCloser(1000,"See");
-		SKEL A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
+		RKEL A 0 A_JumpIfMasterCloser(1000,"See");
+		RKEL A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
 		Loop;
 	}
 }
@@ -2731,8 +2730,7 @@ class RS_WvileSpot : Actor   // CH Archviles.txt:4877 -- minion, no tier token
 		+NOTARGET
 		+NEVERTARGET
 		+THRUACTORS
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		RenderStyle "Stencil";
 		StencilColor "black";
 		SeeSound "Fire/fire3";
@@ -2855,14 +2853,14 @@ class RS_WvileSpot : Actor   // CH Archviles.txt:4877 -- minion, no tier token
 	Ded7:
 		RNGG C 12 Bright;
 		TNT1 AAAAA 0 A_SpawnParticle("Black",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,52,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
-		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		RNGG D 12 Bright A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
 		RNGG C 0 A_KillChildren("extreme",KILS_FOILINVUL|KILS_KILLMISSILES);
 		Stop;
 	}

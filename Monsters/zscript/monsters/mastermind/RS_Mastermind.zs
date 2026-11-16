@@ -463,7 +463,7 @@ class RS_BrownMind2 : Actor   // CH MASTERMINDS.txt:70
 		DamageFactor "Melee", 1.20;
 		PainChance "DIMp", 0;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -692,7 +692,7 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 		-FLOATBOB
 		-NORADIUSDMG
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+DONTHARMCLASS
 		SeeSound "fiend/see";
@@ -846,7 +846,7 @@ class RS_CyanMind2 : Actor   // CH MASTERMINDS.txt:804
 		SUPS N 10 A_SetScale(1.0,0.25);
 		SUPS N 10 A_SetScale(0.66,0.1);
 		SUPS N 10 A_SetScale(0.44,0.05);
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,242);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,242);
 		SUPS N 10 A_SetScale(0.22,0.03);
 		Stop;
 	}
@@ -893,7 +893,7 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 		-FLOAT
 		-NORADIUSDMG
 		+NOFEAR
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTMORPH
 		+DONTHARMCLASS
 		SeeSound "arachnophyte/sight";
@@ -939,9 +939,9 @@ class RS_AbyssMind2 : Actor   // CH MASTERMINDS.txt:1143
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		ARNQ A 0 { bFLOAT = true; }
-		ARNQ A 0 { bFLOATBOB = true; }
-		ARNQ A 0 { bNOGRAVITY = true; }
+		RRNQ A 0 { bFLOAT = true; }
+		RRNQ A 0 { bFLOATBOB = true; }
+		RRNQ A 0 { bNOGRAVITY = true; }
 		TNT1 A 0 A_Jump(99,"See2","See3");
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssMindWalk",12,0,0,0,0,0,0,SXF_NOCHECKPOSITION);
 		AMIN A 3 A_Chase();
@@ -1152,7 +1152,7 @@ class RS_GrayMind2 : SpiderMastermind   // CH MASTERMINDS.txt:1807
 		DamageFactor "Melee", 0.5;
 		PainChance "DIMp", 0;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1318,7 +1318,7 @@ class RS_FireBluMind2 : SpiderMastermind   // CH MASTERMINDS.txt:2114
 		DamageFactor "ice", 0.45;
 		PainChance "DIMp", 0;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1442,7 +1442,7 @@ class RS_GreenMind : SpiderMastermind   // CH MASTERMINDS.txt:2337
 		DamageFactor "DIMp", 0;
 		PainChance "DIMp", 0;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1565,12 +1565,11 @@ class RS_BlueMind : SpiderMastermind   // CH MASTERMINDS.txt:2488
 		DamageFactor "ice", 0.6;
 		PainChance "DIMp", 0;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
 		+BOSSDEATH
-		+MISSILEEVENMORE
 		+DONTHARMSPECIES
 		+NOFEAR
 		SeeSound "spider/sight";
@@ -1662,7 +1661,7 @@ class RS_BlueMind : SpiderMastermind   // CH MASTERMINDS.txt:2488
 		SPIB K 10 A_NoBlocking();
 		SPIB LMNOPQR 10;
 		SPIB S 30;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,232);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,232);
 		SPIB S -1 A_BossDeath();
 		Stop;
 	}
@@ -1685,8 +1684,7 @@ class RS_SpecialSpider1 : RS_BlueSP1   // CH MASTERMINDS.txt:2724
 		+FLOORCLIP
 		+BOSSDEATH
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+THRUSPECIES
 		+NOTARGETSWITCH
 		-COUNTKILL
@@ -1700,15 +1698,15 @@ class RS_SpecialSpider1 : RS_BlueSP1   // CH MASTERMINDS.txt:2724
 	States
 	{
 	See:
-		BSPI A 20;
-		BSPI A 3 A_BabyMetal();
-		BSPI ABBCC 3 A_Chase();
+		RSPI A 20;
+		RSPI A 3 A_BabyMetal();
+		RSPI ABBCC 3 A_Chase();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI D 3 A_BabyMetal();
-		BSPI DEEFF 3 A_Chase();
+		RSPI D 3 A_BabyMetal();
+		RSPI DEEFF 3 A_Chase();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI A 0 A_JumpIfMasterCloser(1000,"See");
-		BSPI A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
+		RSPI A 0 A_JumpIfMasterCloser(1000,"See");
+		RSPI A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
 		Loop;
 	}
 }
@@ -1738,7 +1736,7 @@ class RS_PurpleMind : SpiderMastermind   // CH MASTERMINDS.txt:2764
 		PainChance "DIMp", 0;
 		MinMissileChance 160;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1774,102 +1772,102 @@ class RS_PurpleMind : SpiderMastermind   // CH MASTERMINDS.txt:2764
 		SKUL A 1 Bright A_SpawnItemEx("RS_SpecialSpider1",0,-5,6,0,0,0,0,SXF_TRANSFERAMBUSHFLAG|SXF_SETMASTER|SXF_NOCHECKPOSITION);
 		SKUL A 1 Bright A_SpawnItemEx("RS_SpecialSpider1",0,-5,6,0,0,0,0,SXF_TRANSFERAMBUSHFLAG|SXF_SETMASTER|SXF_NOCHECKPOSITION);
 	Idle:
-		DEMO AB 10 A_Look();
+		REMO AB 10 A_Look();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		DEMO A 3 A_Metal();
-		DEMO ABB 3 A_Chase();
+		REMO A 3 A_Metal();
+		REMO ABB 3 A_Chase();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DEMO C 3 A_Metal();
-		DEMO CDD 3 A_Chase();
+		REMO C 3 A_Metal();
+		REMO CDD 3 A_Chase();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DEMO E 3 A_Metal();
-		DEMO EFF 3 A_Chase();
+		REMO E 3 A_Metal();
+		REMO EFF 3 A_Chase();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Missile:
-		DEMO A 10 A_FaceTarget();
+		REMO A 10 A_FaceTarget();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DEMO A 0 A_JumpIf(user_ragemind >= 10,"RageSummon");
-		DEMO A 0 A_JumpIfCloser(1000,"PewPew");
-		DEMO A 0 A_Jump(255,"HitScanHell","Borb");
+		REMO A 0 A_JumpIf(user_ragemind >= 10,"RageSummon");
+		REMO A 0 A_JumpIfCloser(1000,"PewPew");
+		REMO A 0 A_Jump(255,"HitScanHell","Borb");
 		Goto See;
 	PewPew:
-		DEMO A 0 A_Jump(64,"PewPew2","Borb");
-		DEMO A 0 A_Jump(255,"PewPew2","HitScanHell");
+		REMO A 0 A_Jump(64,"PewPew2","Borb");
+		REMO A 0 A_Jump(255,"PewPew2","HitScanHell");
 		Goto See;
 	PewPew2:
-		DEMO T 12 Bright A_FaceTarget();
-		DEMO T 8 Bright A_PlaySound("Spider/Sight");
-		DEMO U 10 Bright A_CustomMissile("RS_DemoMissile",32,0,0);
-		DEMO U 10;
-		DEMO A 8 A_Jump(88,"Missile");
+		REMO T 12 Bright A_FaceTarget();
+		REMO T 8 Bright A_PlaySound("Spider/Sight");
+		REMO U 10 Bright A_CustomMissile("RS_DemoMissile",32,0,0);
+		REMO U 10;
+		REMO A 8 A_Jump(88,"Missile");
 		Goto See;
 	HitScanHell:
-		DEMO G 5 A_FaceTarget();
-		DEMO G 0 A_PlaySound("spider/attack");
-		DEMO G 0 A_CustomBulletAttack(8,8,random(1,7),random(1,2));
-		DEMO G 0 A_PlaySound("spider/attack");
-		DEMO G 4 Bright A_CustomBulletAttack(5,5,random(1,7),random(1,2));
-		DEMO G 0 A_PlaySound("spider/attack");
-		DEMO H 0 A_CustomBulletAttack(12,12,random(1,7),random(1,2));
-		DEMO G 0 A_PlaySound("spider/attack");
-		DEMO H 4 Bright A_CustomBulletAttack(2,2,random(1,7),random(1,2));
-		DEMO G 0 A_PlaySound("spider/attack");
-		DEMO H 1 Bright A_SpidRefire();
+		REMO G 5 A_FaceTarget();
+		REMO G 0 A_PlaySound("spider/attack");
+		REMO G 0 A_CustomBulletAttack(8,8,random(1,7),random(1,2));
+		REMO G 0 A_PlaySound("spider/attack");
+		REMO G 4 Bright A_CustomBulletAttack(5,5,random(1,7),random(1,2));
+		REMO G 0 A_PlaySound("spider/attack");
+		REMO H 0 A_CustomBulletAttack(12,12,random(1,7),random(1,2));
+		REMO G 0 A_PlaySound("spider/attack");
+		REMO H 4 Bright A_CustomBulletAttack(2,2,random(1,7),random(1,2));
+		REMO G 0 A_PlaySound("spider/attack");
+		REMO H 1 Bright A_SpidRefire();
 		Goto HitScanHell;
 	Borb:
-		DEMO G 5 A_FaceTarget();
-		DEMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO G 3 Bright A_FaceTarget();
-		DEMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO G 3 Bright A_FaceTarget();
-		DEMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
-		DEMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
-		DEMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO G 5 A_FaceTarget();
+		REMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO G 3 Bright A_FaceTarget();
+		REMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO G 3 Bright A_FaceTarget();
+		REMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO G 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO G 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
+		REMO H 2 Bright A_CustomMissile("RS_OrbPurpleMind",32,12,random(-1,1));
+		REMO H 3 Bright A_CustomMissile("RS_OrbPurpleMind",32,-12,random(-1,1));
 		Goto See;
 	RageSummon:
-		DEMO A 12 Bright A_PlaySound("Spider/Sight");
-		DEMO I 8 Bright { bNOPAIN = true; }    // CH: A_ChangeFlag("NoPain",TRUE)
-		DEMO I 12 Bright A_PlaySound("Spider/Sight");
-		DEMO G 4 Bright A_SpawnItemEx("RS_SpecialSpider1",0,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		DEMO G 4 Bright A_SpawnItemEx("RS_SpecialSpider1",0,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		DEMO G 4 Bright A_SpawnItemEx("RS_SpecialSpider1",5,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		DEMO G 4 Bright A_SpawnItemEx("RS_SpecialSpider1",-5,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		DEMO A 4 { user_ragemind = user_ragemind - 8; }   // CH: A_SetUserVar("User_RageMind",User_Ragemind-8)
-		DEMO I 8 Bright { bNOPAIN = false; }   // CH: A_ChangeFlag("NoPain",FALSE)
+		REMO A 12 Bright A_PlaySound("Spider/Sight");
+		REMO I 8 Bright { bNOPAIN = true; }    // CH: A_ChangeFlag("NoPain",TRUE)
+		REMO I 12 Bright A_PlaySound("Spider/Sight");
+		REMO G 4 Bright A_SpawnItemEx("RS_SpecialSpider1",0,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		REMO G 4 Bright A_SpawnItemEx("RS_SpecialSpider1",0,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		REMO G 4 Bright A_SpawnItemEx("RS_SpecialSpider1",5,-5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		REMO G 4 Bright A_SpawnItemEx("RS_SpecialSpider1",-5,5,6,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		REMO A 4 { user_ragemind = user_ragemind - 8; }   // CH: A_SetUserVar("User_RageMind",User_Ragemind-8)
+		REMO I 8 Bright { bNOPAIN = false; }   // CH: A_ChangeFlag("NoPain",FALSE)
 		Goto See;
 	Pain:
-		DEMO I 3 { user_ragemind = user_ragemind + 1; }   // CH: A_SetUserVar("User_RageMind",User_Ragemind+1)
+		REMO I 3 { user_ragemind = user_ragemind + 1; }   // CH: A_SetUserVar("User_RageMind",User_Ragemind+1)
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DEMO I 3 A_Pain();
+		REMO I 3 A_Pain();
 		Goto See;
 	Death:
-		DEMO J 20 Bright A_Scream();
-		DEMO K 10 Bright A_NoBlocking();
-		DEMO LMNOPQR 10 Bright;
-		DEMO S 30;
-		DEMO S -1 A_BossDeath();
+		REMO J 20 Bright A_Scream();
+		REMO K 10 Bright A_NoBlocking();
+		REMO LMNOPQR 10 Bright;
+		REMO S 30;
+		REMO S -1 A_BossDeath();
 		Stop;
 	}
 }
@@ -1903,7 +1901,7 @@ class RS_YellowMind : Actor   // CH MASTERMINDS.txt:3037
 		-FLOATBOB
 		-NORADIUSDMG
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+DONTHARMCLASS
 		SeeSound "fiend/see";
@@ -1962,7 +1960,7 @@ class RS_YellowMind : Actor   // CH MASTERMINDS.txt:3037
 	Halp:
 		SUPS E 0 A_JumpIf(user_halpme >= 1,"Nah");
 		SUPS E 12 A_PlaySound("fiend/see");
-		SUPS B 24 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenmore",TRUE)
+		SUPS B 24 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileEvenmore",TRUE)
 		SUPS B 4 A_SpawnItemEx("RS_YellowSP1",0,-55,56,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
 		SUPS B 4 A_SpawnItemEx("RS_YellowSP1",0,55,-56,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
 		SUPS B 4 A_SpawnItemEx("RS_YellowSP1",0,-25,26,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
@@ -2105,7 +2103,7 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		-NORADIUSDMG
 		+NOFEAR
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		SeeSound "arachnophyte/sight";
 		PainSound "arachnophyte/pain";
@@ -2199,13 +2197,13 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		APYT BABAB 1 A_FaceTarget();
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT A 0 A_PlaySound("arachnophyte/engine");
-		APYT CD 5 A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		APYT CD 5 A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
 		APYT D 0 A_Jump(64,"Blobs");
 		APYT D 2 A_MonsterRefire(128,"See");
 		Goto Chaingunlasers2+1;
 	Phase2:
 		APYT A 6 A_PlaySound("arachnophyte/sight");
-		APYT A 2 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenMore",True)
+		APYT A 2 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileEvenMore",True)
 		APYT ABABABABABAB 4 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT AB 4 A_FaceTarget();
 		APYT ABABABABABAB 4 A_CustomMissile("RS_RedMessImp",32,0,CMF_AIMOFFSET,random(0,360),random(0,360));
@@ -2232,7 +2230,7 @@ class RS_RedMind : Actor   // CH MASTERMINDS.txt:3359
 		APYT BABAB 1 A_FaceTarget();
 		APYT AAABBB 0 A_SpawnItemEx("RS_RedThingsLS",random(-40,40),random(-40,40),random(-15,40),0,0,0,0,SXF_NOCHECKPOSITION);
 		APYT A 0 A_PlaySound("arachnophyte/engine");
-		APYT CD 5 A_CustomRailgun(random(2,10),0,"none","red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
+		APYT CD 5 A_CustomRailgun(random(2,10),0,0,"red",RGF_FULLBRIGHT,1,12,"none",0,0,0,34,1,15,"none",0);
 		APYT D 0 A_Jump(24,"Blobs");
 		APYT D 2 A_MonsterRefire(128,"See");
 		Goto Chaingunlasers+1;
@@ -2358,7 +2356,7 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		+DONTMORPH
 		-NORADIUSDMG
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOICEDEATH
 		Health 11111;
 		Radius 40;
@@ -2413,26 +2411,26 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 	States
 	{
 	Spawn:
-		ARNQ A 0;
+		RRNQ A 0;
 		Goto Announce;
 	Announce:
-		ARNQ A 2;
-		ARNQ A 4;   // CH: ACS_NamedExecuteAlways("AnnounceSpidie3") -- announcer stripped
+		RRNQ A 2;
+		RRNQ A 4;   // CH: ACS_NamedExecuteAlways("AnnounceSpidie3") -- announcer stripped
 		Goto Idle;
 	Idle:
-		ARNQ A 1 A_Look();
+		RRNQ A 1 A_Look();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		ARNQ A 0 { bFLOAT = true; }
-		ARNQ A 0 { bFLOATBOB = true; }
-		ARNQ A 0 { bNOGRAVITY = true; }
-		ARNQ A 2 A_Chase();
-		ARNQ A 0 A_CustomMissile("RS_BlackSpidShade",random(-5,55),random(-15,15),CMF_AIMOFFSET,random(0,360),random(0,360));
-		ARNQ A 2 A_Chase();
+		RRNQ A 0 { bFLOAT = true; }
+		RRNQ A 0 { bFLOATBOB = true; }
+		RRNQ A 0 { bNOGRAVITY = true; }
+		RRNQ A 2 A_Chase();
+		RRNQ A 0 A_CustomMissile("RS_BlackSpidShade",random(-5,55),random(-15,15),CMF_AIMOFFSET,random(0,360),random(0,360));
+		RRNQ A 2 A_Chase();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ARNQ A 0 A_CustomMissile("RS_BlackSpidShade",random(-5,55),random(-15,15),CMF_AIMOFFSET,random(0,360),random(0,360));
-		ARNQ A 0 A_Jump(12,"PainTele");
+		RRNQ A 0 A_CustomMissile("RS_BlackSpidShade",random(-5,55),random(-15,15),CMF_AIMOFFSET,random(0,360),random(0,360));
+		RRNQ A 0 A_Jump(12,"PainTele");
 		Loop;
 	Missile:
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
@@ -2450,14 +2448,14 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		TNT1 A 0 A_Jump(256,"Psyche2");
 		Goto Missile+7;
 	SCREEE:
-		ARNQ E 0 A_JumpIf(user_sce >= 1,"Miss2");
-		ARNQ E 0 { bNOPAIN = true; }              // CH: A_changeFlag("NOPAIN",true)
-		ARNQ E 10 Bright { bMISSILEEVENMORE = true; }   // CH: A_changeFlag("MISSILEEVENMORE",true)
-		ARNQ E 10 Bright A_PlaySound("DeepOne/active",7,2,false,ATTN_NONE);
-		ARNQ E 10 Bright { user_sce = user_sce + 1; }   // CH: A_SetUserVar("user_sce",user_sce+1)
-		ARNQ EEEEEE 2 Bright A_SpawnParticle("Black",SPF_FULLBRIGHT,70,2,random(-180,180),random(-180,180),random(-180,180),random(-180,180));
-		ARNQ E 10 Bright A_SetSpeed(24);
-		ARNQ E 8 Bright { bNOPAIN = false; }      // CH: A_changeFlag("NOPAIN",False)
+		RRNQ E 0 A_JumpIf(user_sce >= 1,"Miss2");
+		RRNQ E 0 { bNOPAIN = true; }              // CH: A_changeFlag("NOPAIN",true)
+		RRNQ E 10 Bright { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_changeFlag("MISSILEEVENMORE",true)
+		RRNQ E 10 Bright A_PlaySound("DeepOne/active",7,2,false,ATTN_NONE);
+		RRNQ E 10 Bright { user_sce = user_sce + 1; }   // CH: A_SetUserVar("user_sce",user_sce+1)
+		RRNQ EEEEEE 2 Bright A_SpawnParticle("Black",SPF_FULLBRIGHT,70,2,random(-180,180),random(-180,180),random(-180,180),random(-180,180));
+		RRNQ E 10 Bright A_SetSpeed(24);
+		RRNQ E 8 Bright { bNOPAIN = false; }      // CH: A_changeFlag("NOPAIN",False)
 		Goto See;
 	CloseRange2:
 		TNT1 A 0 A_Jump(200,"RapidFire","Waves2","Psyche2","Summons");
@@ -2473,137 +2471,137 @@ class RS_BlackMind2 : Actor   // CH MASTERMINDS.txt:3839
 		Goto RapidFire;
 	BIGBAM:
 		TNT1 A 0 A_PlaySound("queen/fire");
-		ARNQ BCD 6 A_FaceTarget();
-		ARNQ E 10 Bright A_CustomMissile("RS_QueenMindWave",64,0,0);
+		RRNQ BCD 6 A_FaceTarget();
+		RRNQ E 10 Bright A_CustomMissile("RS_QueenMindWave",64,0,0);
 		Goto See;
 	Waves:
 		TNT1 A 0 A_PlaySound("queen/fire");
-		ARNQ BCD 4 A_FaceTarget();
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",30,-10,0);
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",54,-2,random(-5,5));
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",72,10,random(-8,8));
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",64,-10,random(-12,12));
-		ARNQ E 6 Bright A_CustomMissile("RS_ZWAVE3",44,18,random(-15,15));
-		ARNQ E 0 A_Jump(72,"Missile");
+		RRNQ BCD 4 A_FaceTarget();
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",30,-10,0);
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",54,-2,random(-5,5));
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",72,10,random(-8,8));
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",64,-10,random(-12,12));
+		RRNQ E 6 Bright A_CustomMissile("RS_ZWAVE3",44,18,random(-15,15));
+		RRNQ E 0 A_Jump(72,"Missile");
 		Goto See;
 	Waves2:
 		TNT1 A 0 A_PlaySound("queen/fire");
-		ARNQ BCD 4 A_FaceTarget();
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",64,-10,random(-12,12));
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",54,10,random(-12,12));
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",44,-0,random(-1,1));
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",74,20,random(-12,12));
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",64,-30,random(-4,4));
-		ARNQ E 0 A_CustomMissile("RS_ZWAVE3",54,30,random(-12,12));
-		ARNQ E 6 Bright A_CustomMissile("RS_ZWAVE3",64,-20,random(-12,12));
-		ARNQ E 0 A_Jump(84,"BIGBAM","ClusterEf");
+		RRNQ BCD 4 A_FaceTarget();
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",64,-10,random(-12,12));
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",54,10,random(-12,12));
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",44,-0,random(-1,1));
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",74,20,random(-12,12));
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",64,-30,random(-4,4));
+		RRNQ E 0 A_CustomMissile("RS_ZWAVE3",54,30,random(-12,12));
+		RRNQ E 6 Bright A_CustomMissile("RS_ZWAVE3",64,-20,random(-12,12));
+		RRNQ E 0 A_Jump(84,"BIGBAM","ClusterEf");
 		Goto Waves;
 	ClusterEf:
-		ARNQ BCD 4 A_FaceTarget();
-		ARNQ EEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 1 Bright A_CustomMissile("RS_ZWAVE3",62,0,random(-11,11));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 1 Bright A_CustomMissile("RS_ZWAVE3",62,0,random(-11,11));
+		RRNQ BCD 4 A_FaceTarget();
+		RRNQ EEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 1 Bright A_CustomMissile("RS_ZWAVE3",62,0,random(-11,11));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 1 Bright A_CustomMissile("RS_ZWAVE3",62,0,random(-11,11));
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 1 Bright A_CustomMissile("RS_ZWAVE3",62,0,random(-11,11));
-		ARNQ D 0 A_FaceTarget();
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 1 Bright A_CustomMissile("RS_ZWAVE3",62,0,random(-11,11));
+		RRNQ D 0 A_FaceTarget();
 		Goto See;
 	Summons:
-		ARNQ E 10 Bright A_FaceTarget();
-		ARNQ E 10 Bright A_PlaySound("DeepOne/active",7,2,false,ATTN_NONE);
-		ARNQ DC 8 Bright;
+		RRNQ E 10 Bright A_FaceTarget();
+		RRNQ E 10 Bright A_PlaySound("DeepOne/active",7,2,false,ATTN_NONE);
+		RRNQ DC 8 Bright;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ARNQ BABAB 3 Bright A_SpawnItemEx("RS_PortalSummons2",random(-178,178),random(-178,178),random(5,64),0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
-		ARNQ C 7 Bright;
+		RRNQ BABAB 3 Bright A_SpawnItemEx("RS_PortalSummons2",random(-178,178),random(-178,178),random(5,64),0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
+		RRNQ C 7 Bright;
 		Goto See;
 	RapidFire:
-		ARNQ BCD 4 A_FaceTarget();
-		ARNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-4,4));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,7));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
+		RRNQ BCD 4 A_FaceTarget();
+		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-4,4));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,7));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ARNQ D 0 A_FaceTarget();   // CH: ARNQ P -- ARNQ ships A-M only. This is one line in a run of eleven otherwise-identical "ARNQ D 0 A_FaceTarget" facing-resets in the same state; P is a slip for D. 0 tics, so it never rendered either way. Fixed 2026-08-06 (owner: nothing invisible).
-		ARNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,7));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,7));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-4,4));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-4,7));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,4));
+		RRNQ D 0 A_FaceTarget();   // CH: ARNQ P -- ARNQ ships A-M only. This is one line in a run of eleven otherwise-identical "ARNQ D 0 A_FaceTarget" facing-resets in the same state; P is a slip for D. 0 tics, so it never rendered either way. Fixed 2026-08-06 (owner: nothing invisible).
+		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,7));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,7));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEE 2 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-4,4));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-4,7));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-11,11));
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-7,4));
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ARNQ D 0 A_FaceTarget();
-		ARNQ EEEEEEEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-3,3));
-		ARNQ D 5 A_FaceTarget();
-		ARNQ D 1 A_CheckSight("PainTele");
-		ARNQ D 1 A_Jump(72,"BIGBAM","ClusterEf");
-		ARNQ D 1 A_Jump(94,"Missile");
+		RRNQ D 0 A_FaceTarget();
+		RRNQ EEEEEEEEEEEE 1 Bright A_CustomMissile("RS_QueenPlasmaBlast",62,0,random(-3,3));
+		RRNQ D 5 A_FaceTarget();
+		RRNQ D 1 A_CheckSight("PainTele");
+		RRNQ D 1 A_Jump(72,"BIGBAM","ClusterEf");
+		RRNQ D 1 A_Jump(94,"Missile");
 		Goto See;
 	Psyche2:
-		ARNQ E 5 Bright A_FaceTarget();
-		ARNQ E 9 Bright A_PlaySound("queen/sight",7,2,false,ATTN_NONE);
-		ARNQ E 9 Bright A_FaceTarget();
-		ARNQ E 3 Bright A_FaceTarget();
-		ARNQ E 0 A_CheckSight("See");
-		ARNQ E 4 Bright A_VileTarget("RS_PsychicAra2");
-		ARNQ E 2 A_MonsterRefire(128,"See");
+		RRNQ E 5 Bright A_FaceTarget();
+		RRNQ E 9 Bright A_PlaySound("queen/sight",7,2,false,ATTN_NONE);
+		RRNQ E 9 Bright A_FaceTarget();
+		RRNQ E 3 Bright A_FaceTarget();
+		RRNQ E 0 A_CheckSight("See");
+		RRNQ E 4 Bright A_VileTarget("RS_PsychicAra2");
+		RRNQ E 2 A_MonsterRefire(128,"See");
 		Goto Psyche2+3;
 	SpreadFire:
-		ARNQ BCD 6 A_FaceTarget();
+		RRNQ BCD 6 A_FaceTarget();
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-7,1),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-1,7),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-15,-7),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(7,15),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-7,7),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
-		ARNQ E 5 Bright A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-4,4));
-		ARNQ B 1 Bright A_CheckSight("See");
-		ARNQ BCD 5 A_FaceTarget();
+		RRNQ E 5 Bright A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-4,4));
+		RRNQ B 1 Bright A_CheckSight("See");
+		RRNQ BCD 5 A_FaceTarget();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-7,1),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-1,7),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AAAA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-15,15),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-7,17),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
 		TNT1 AA 0 A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-17,7),CMF_AIMOFFSET|CMF_OFFSETPITCH,random(-3,3));
-		ARNQ E 5 Bright A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-4,4));
-		ARNQ D 5 A_FaceTarget();
+		RRNQ E 5 Bright A_CustomMissile("RS_QueenPlasmaBlast",64,0,random(-4,4));
+		RRNQ D 5 A_FaceTarget();
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ARNQ D 1 A_Jump(64,"Missile","ClusterEf");
+		RRNQ D 1 A_Jump(64,"Missile","ClusterEf");
 		Goto See;
 	Pain:
 		TNT1 A 0 A_Jump(142,"PainTele");
-		ARNQ F 4;
+		RRNQ F 4;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		ARNQ F 4 A_Pain();
+		RRNQ F 4 A_Pain();
 		Goto See;
 	PainTele:
-		ARNQ E 2 A_Teleport("See","RS_BlackSpidShade","RS_ZWAVE2",TF_KEEPVELOCITY);
+		RRNQ E 2 A_Teleport("See","RS_BlackSpidShade","RS_ZWAVE2",TF_KEEPVELOCITY);
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH10",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See;
 	Death:
 		TNT1 A 0 A_NoBlocking();
-		ARNQ G 0 A_PlaySound("deepone/death",7,2,false,ATTN_NONE);
-		ARNQ G 0 { bFLOATBOB = false; }   // CH: A_ChangeFlag("FLOATBOB",0)
-		ARNQ G 9 A_Scream();
+		RRNQ G 0 A_PlaySound("deepone/death",7,2,false,ATTN_NONE);
+		RRNQ G 0 { bFLOATBOB = false; }   // CH: A_ChangeFlag("FLOATBOB",0)
+		RRNQ G 9 A_Scream();
 		TNT1 A 0 A_KillMaster("extreme",KILS_FOILINVUL|KILS_KILLMISSILES);
-		ARNQ G 3;
+		RRNQ G 3;
 		Goto Crash;
 	Crash:
-		ARNQ HIJKL 9;
-		ARNQ L 2 { Radius_Quake(60,60,0,80,0); RSQMN_QuakeFeel.Felt(self, 80 * 64); }
-		ARNQ M -1 A_BossDeath();
+		RRNQ HIJKL 9;
+		RRNQ L 2 { Radius_Quake(60,60,0,80,0); RSQMN_QuakeFeel.Felt(self, 80 * 64); }
+		RRNQ M -1 A_BossDeath();
 		Stop;
 	}
 }
@@ -2636,7 +2634,7 @@ class RS_CH_OrbOfChaos : Actor   // CH MASTERMINDS.txt:4477 -- UNUSED in CH
 		+LOOKALLAROUND
 		+THRUSPECIES
 		+NOTARGET
-		+MISSILEEVENMORE
+		MissileChanceMult 0.125;
 		-NORADIUSDMG
 		Tag "Devil's Machine";
 	}
@@ -2685,7 +2683,7 @@ class RS_WhiteMind2 : Actor   // CH MASTERMINDS.txt:4925
 		PainChance "DIMp", 0;
 		DamageFactor "Falling", 0.0;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		+NOBLOOD
 		-NORADIUSDMG
@@ -2909,8 +2907,8 @@ class RS_WhiteMind2 : Actor   // CH MASTERMINDS.txt:4925
 	EyeBeam:
 		W5PD F 5 Bright A_FaceTarget();
 		TNT1 A 0 A_PlaySound("ECHOIMPB",0);
-		W5PD F 6 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
-		W5PD F 6 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		W5PD F 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
+		W5PD F 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		W5PD E 4 Bright A_CustomRailgun(random(10,40),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_WhiteMindRB3",0,0,0,66,0.7,0.9,"RS_WhiteMindRB4",7,10);
 		W5PD F 20;
 		Goto See;
@@ -2957,7 +2955,7 @@ class RS_MiniSentinelSpider : Actor   // CH MASTERMINDS.txt:5210
 		+DONTHARMSPECIES
 		+NOBLOCKMONST
 		+INCOMBAT
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+LOOKALLAROUND
 		+NEVERRESPAWN
 		SeeSound "";

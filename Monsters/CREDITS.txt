@@ -5,13 +5,18 @@ COLOURFUL HELL
   Every ColorfulHell monster here -- its colours, names, numbers, attacks, sounds and option switches -- is Hege Cactus'
   Colourful Hell, rebuilt in ZScript from its DECORATE for stock QuestZDoom 17.3. The code also follows its CHP
   (Colourful Hell Plus) edition in places; that edition's author is still to be credited here.
+  Its sprites: the ones this pack's monsters draw. 670 of them (49 sprite sets our monsters named but the pack never
+  carried, among them the Abyss Imp, the Abyss Cacodemon, Mr Bones, the Moloch Wraith, the Abyss Arch-vile's tentacles
+  and portals, the Black Knight's weapons and the Abyss conversion) were added 2026-11-16 from Colourful Hell 1.04
+  (Enemies_ColourfulHell_1_04.pk3, sprites/monsters/ch104/). Where a Colourful Hell sprite had the same name as one in
+  Brutal Doom 22, XMVE, Legion of Bones or Champions and a different picture, ours was renamed (Monsters/docs/
+  SPRITE_CLASHES_2026-11-16.md), so both packs draw their own.
 
 THE TIER FLASH AND THE TIER-CHANGE HEALTH RULE
   presidentkoopa's Hackfraud (HF) tree.
 
 ALSO IN THE PACK
-  coldcite (Top HP Bars): the health-bar pictures (graphics/HP_*; unused by this mod).
   id Software: the Doom monsters, sprites and sounds the Common forms use, read from the IWAD.
-  The voxel models, the brightmaps and the decal pictures in the pack: their makers are still to be credited here.
+  The voxel models, the brightmaps, the decal and score pictures in the pack: their makers are still to be credited here.
 
 RSQ Monsters is presidentkoopa's, for the RSQ UBQ Series on QuestZDoom (Emawind and Team Beef).

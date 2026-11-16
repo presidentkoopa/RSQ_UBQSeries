@@ -514,7 +514,7 @@ class RS_FatsoArmed : Actor   // CH Fatsos.txt:1265
 	States
 	{
 	Spawn:
-		FAT2 I -1;
+		RAT2 I -1;
 		Stop;
 	Death:
 		TNT1 A 0;
@@ -564,7 +564,7 @@ class RS_FatsoArmed2 : Actor   // CH Fatsos.txt:1418
 	States
 	{
 	Spawn:
-		FAT2 I -1;
+		RAT2 I -1;
 		Stop;
 	Death:
 		TNT1 A 0;
@@ -585,7 +585,7 @@ class RS_FatsoArmed3 : Actor   // CH Fatsos.txt:1592
 	States
 	{
 	Spawn:
-		FAT2 I -1;
+		RAT2 I -1;
 		Stop;
 	Death:
 		TNT1 A 0;
@@ -606,7 +606,7 @@ class RS_FatsoArmed4 : Actor   // CH Fatsos.txt:1906
 	States
 	{
 	Spawn:
-		FAT2 I -1;
+		RAT2 I -1;
 		Stop;
 	Death:
 		TNT1 A 0;
@@ -633,8 +633,8 @@ class RS_HBeastSmoke : Actor   // CH Fatsos.txt:2390
 	States
 	{
 	Spawn:
-		BISH QRSTUVW 3;
-		BISH W 3 A_FadeOut(0.50);
+		BISH ABCDEFG 3;
+		BISH G 3 A_FadeOut(0.50);
 		Stop;
 	}
 }

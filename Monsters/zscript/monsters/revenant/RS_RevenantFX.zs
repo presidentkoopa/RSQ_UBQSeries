@@ -88,8 +88,8 @@
 // real members; A_ChangeFlag -> { bFLAG = x; }; ThrustThing angle
 // expressions wrapped in int(); A_RadiusGive filter 0 -> null; "none"
 // spawnclass -> null; +DOOMBOUNCE -> BounceType "Doom".
-// Deprecation warnings (MISSILEMORE, VelX, A_CustomMissile, A_ChangeFlag)
-// are CH's idiom kept verbatim and are not errors.
+// The deprecated MISSILEMORE / MISSILEEVENMORE flags and VelX reads were
+// replaced 2026-11-16 (MissileChanceMult, RS_MissileChance, Vel.X).
 // ============================================================================
 
 // ---------------------------------------------------------------------------
@@ -999,18 +999,18 @@ class RS_DKSword : Actor   // CH Revenants.txt:3405
 	States
 	{
 	Spawn:
-		SWRD KLMNOPQ 3 Bright;
+		SWRD ABCDEFG 3 Bright;
 		Goto Death;
 	Death:
-		SWRD RS 4 Bright;
-		SWRD T 4 Bright;
-		SWRD U 4;
-		SWRD T 4 Bright;
-		SWRD U 8;
-		SWRD T 4 Bright;
-		SWRD U 16;
-		SWRD T 4 Bright;
-		SWRD U -1;
+		SWRD HI 4 Bright;
+		SWRD J 4 Bright;
+		SWRD K 4;
+		SWRD J 4 Bright;
+		SWRD K 8;
+		SWRD J 4 Bright;
+		SWRD K 16;
+		SWRD J 4 Bright;
+		SWRD K -1;
 		Stop;
 	}
 }
@@ -1030,10 +1030,10 @@ class RS_DKShield : Actor   // CH Revenants.txt:3432
 	States
 	{
 	Spawn:
-		SHLD ABCDEFGHI 3;
+		RHLD ABCDEFGHI 3;
 		Goto Death;
 	Death:
-		SHLD H -1;
+		RHLD H -1;
 		Stop;
 	}
 }

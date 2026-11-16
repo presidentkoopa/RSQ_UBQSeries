@@ -227,39 +227,39 @@ class RS_CommonSP1 : Arachnotron   // CH Spiders.txt:1457
 	States
 	{
 	Spawn:
-		BSPI AB 10 A_Look;
+		RSPI AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BSPI A 20;
-		BSPI A 3 A_BabyMetal;
-		BSPI ABBCC 3 A_Chase;
+		RSPI A 20;
+		RSPI A 3 A_BabyMetal;
+		RSPI ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI D 3 A_BabyMetal;
-		BSPI DEEFF 3 A_Chase;
+		RSPI D 3 A_BabyMetal;
+		RSPI DEEFF 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See+1;
 	Missile:
-		BSPI A 20 Bright A_FaceTarget;
-		BSPI G 4 Bright A_BspiAttack;
+		RSPI A 20 Bright A_FaceTarget;
+		RSPI G 4 Bright A_BspiAttack;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI H 4 Bright;
-		BSPI H 1 Bright A_SpidRefire;
+		RSPI H 4 Bright;
+		RSPI H 1 Bright A_SpidRefire;
 		Goto Missile+1;
 	Pain:
-		BSPI I 3;
+		RSPI I 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI I 3 A_Pain;
+		RSPI I 3 A_Pain;
 		Goto See+1;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BSPI J 20 A_Scream;
-		BSPI K 7 A_NoBlocking;
-		BSPI LMNO 7;
-		BSPI P -1 A_BossDeath;
+		RSPI J 20 A_Scream;
+		RSPI K 7 A_NoBlocking;
+		RSPI LMNO 7;
+		RSPI P -1 A_BossDeath;
 		Stop;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -278,12 +278,12 @@ class RS_CommonSP1 : Arachnotron   // CH Spiders.txt:1457
 		TNT1 A 0 A_Die();
 		Stop;
 	XDeath:
-		BSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("RS_HomingRocketTrailFatso",random(-32,32),random(-32,32),random(10,64),0,0,0,0,0);
-		BSPI J 20 A_Scream;
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI J 20 A_Scream;
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		TNT1 A 8 A_SpawnItemEx("RS_AraBoom1",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- NashGore chain stripped, animation stays
 		TNT1 AAAAAA 0 A_SpawnParticle("Red",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -292,12 +292,12 @@ class RS_CommonSP1 : Arachnotron   // CH Spiders.txt:1457
 		ARAG A -1 A_BossDeath;
 		Stop;
 	Raise:
-		BSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		BSPI ONMLKJ 5;
+		RSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RSPI ONMLKJ 5;
 		Goto See+1;
 	Grow:
-		BSPI ONMLKJ 5;
-		BSPI A 0 A_SpawnItemEx("RS_GreenSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RSPI ONMLKJ 5;
+		RSPI A 0 A_SpawnItemEx("RS_GreenSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die();
 		Stop;
 	}
@@ -327,7 +327,7 @@ class RS_GreenSP1 : Arachnotron   // CH Spiders.txt:1611
 		+FLOORCLIP
 		+BOSSDEATH
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "baby/sight";
 		PainSound "baby/pain";
 		DeathSound "baby/death";
@@ -343,24 +343,24 @@ class RS_GreenSP1 : Arachnotron   // CH Spiders.txt:1611
 	States
 	{
 	Spawn:
-		BSPI AB 10 A_Look;
+		RSPI AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BSPI A 20;
-		BSPI A 3 A_BabyMetal;
-		BSPI ABBCC 3 A_Chase;
+		RSPI A 20;
+		RSPI A 3 A_BabyMetal;
+		RSPI ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI D 3 A_BabyMetal;
-		BSPI DEEFF 3 A_Chase;
+		RSPI D 3 A_BabyMetal;
+		RSPI DEEFF 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See+1;
 	Missile:
-		BSPI A 8 Bright A_FaceTarget;
+		RSPI A 8 Bright A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI G 7 Bright A_CustomMissile("RS_Spspit",32,0);
-		BSPI G 7 Bright A_CustomMissile("RS_Spspit",32,0,random(-1,1));
-		BSPI H 2 Bright A_Jump(128,"Missile");
+		RSPI G 7 Bright A_CustomMissile("RS_Spspit",32,0);
+		RSPI G 7 Bright A_CustomMissile("RS_Spspit",32,0,random(-1,1));
+		RSPI H 2 Bright A_Jump(128,"Missile");
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -379,36 +379,36 @@ class RS_GreenSP1 : Arachnotron   // CH Spiders.txt:1611
 		TNT1 A 0 A_Die();
 		Stop;
 	Pain:
-		BSPI I 3;
+		RSPI I 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI I 3 A_Pain;
+		RSPI I 3 A_Pain;
 		Goto See+1;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BSPI J 20 A_Scream;
-		BSPI K 7 A_NoBlocking;
-		BSPI LMNO 7;
-		BSPI P -1 A_BossDeath;
+		RSPI J 20 A_Scream;
+		RSPI K 7 A_NoBlocking;
+		RSPI LMNO 7;
+		RSPI P -1 A_BossDeath;
 		Stop;
 	Raise:
-		BSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		BSPI ONMLKJ 5;
+		RSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RSPI ONMLKJ 5;
 		Goto See+1;
 	Grow:
-		BSPI ONMLKJ 5;
-		BSPI A 0 A_SpawnItemEx("RS_BlueSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RSPI ONMLKJ 5;
+		RSPI A 0 A_SpawnItemEx("RS_BlueSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die();
 		Stop;
 	XDeath:
-		BSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("RS_HomingRocketTrailFatso",random(-32,32),random(-32,32),random(10,64),0,0,0,0,0);
-		BSPI J 20 A_Scream;
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI J 20 A_Scream;
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		TNT1 A 8 A_SpawnItemEx("RS_AraBoom1",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		// CH: CHRandom_GibGenerator spam stripped (gore chain), animation stays
 		TNT1 AAAAAA 0 A_SpawnParticle("Green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -443,7 +443,7 @@ class RS_BlueSP1 : Arachnotron   // CH Spiders.txt:1776
 		+FLOORCLIP
 		+BOSSDEATH
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "baby/sight";
 		PainSound "baby/pain";
 		DeathSound "baby/death";
@@ -460,23 +460,23 @@ class RS_BlueSP1 : Arachnotron   // CH Spiders.txt:1776
 	States
 	{
 	Spawn:
-		BSPI AB 10 A_Look;
+		RSPI AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BSPI A 20;
-		BSPI A 3 A_BabyMetal;
-		BSPI ABBCC 3 A_Chase;
+		RSPI A 20;
+		RSPI A 3 A_BabyMetal;
+		RSPI ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI D 3 A_BabyMetal;
-		BSPI DEEFF 3 A_Chase;
+		RSPI D 3 A_BabyMetal;
+		RSPI DEEFF 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See+1;
 	Missile:
-		BSPI A 20 Bright A_FaceTarget;
+		RSPI A 20 Bright A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI G 4 Bright A_CustomMissile("RS_PlasmaBallSP3",22,0,random(-1,1));
-		BSPI H 3 Bright A_MonsterRefire(128,"See");
+		RSPI G 4 Bright A_CustomMissile("RS_PlasmaBallSP3",22,0,random(-1,1));
+		RSPI H 3 Bright A_MonsterRefire(128,"See");
 		Goto Missile+1;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -495,36 +495,36 @@ class RS_BlueSP1 : Arachnotron   // CH Spiders.txt:1776
 		TNT1 A 0 A_Die();
 		Stop;
 	Pain:
-		BSPI I 3;
+		RSPI I 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI I 3 A_Pain;
+		RSPI I 3 A_Pain;
 		Goto See+1;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BSPI J 20 A_Scream;
-		BSPI K 7 A_NoBlocking;
-		BSPI LMNO 7;
-		BSPI P -1 A_BossDeath;
+		RSPI J 20 A_Scream;
+		RSPI K 7 A_NoBlocking;
+		RSPI LMNO 7;
+		RSPI P -1 A_BossDeath;
 		Stop;
 	Raise:
-		BSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		BSPI ONMLKJ 5;
+		RSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RSPI ONMLKJ 5;
 		Goto See+1;
 	Grow:
-		BSPI ONMLKJ 5;
-		BSPI A 0 A_SpawnItemEx("RS_PurpleSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RSPI ONMLKJ 5;
+		RSPI A 0 A_SpawnItemEx("RS_PurpleSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die();
 		Stop;
 	XDeath:
-		BSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("RS_HomingRocketTrailFatso",random(-32,32),random(-32,32),random(10,64),0,0,0,0,0);
-		BSPI J 20 A_Scream;
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI J 20 A_Scream;
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		TNT1 A 8 A_SpawnItemEx("RS_AraBoom1",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		// CH: CHRandom_GibGenerator spam stripped (gore chain), animation stays
 		TNT1 AAAAAA 0 A_SpawnParticle("Blue",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -556,7 +556,7 @@ class RS_PurpleSP1 : Arachnotron   // CH Spiders.txt:1912
 		Monster;
 		+FLOORCLIP
 		+BOSSDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		RenderStyle "Add";
 		Alpha 1;
 		SeeSound "baby/sight";
@@ -576,24 +576,24 @@ class RS_PurpleSP1 : Arachnotron   // CH Spiders.txt:1912
 	States
 	{
 	Spawn:
-		BSPI AB 10 A_Look;
+		RSPI AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BSPI A 20;
-		BSPI A 3 A_BabyMetal;
-		BSPI ABBCC 3 A_Chase;
+		RSPI A 20;
+		RSPI A 3 A_BabyMetal;
+		RSPI ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI D 3 A_BabyMetal;
-		BSPI DEEFF 3 A_Chase;
+		RSPI D 3 A_BabyMetal;
+		RSPI DEEFF 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See+1;
 	Missile:
-		BSPI A 20 Bright A_FaceTarget;
+		RSPI A 20 Bright A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI G 0 A_PlaySound("grunt/attack");   // CH: sound "grunt/attack" is in no CH SNDINFO -- silent in CH too
-		BSPI G 3 Bright A_CustomBulletAttack(6,4,random(1,4),random(1,3));
-		BSPI H 2 Bright A_MonsterRefire(200,"See");
+		RSPI G 0 A_PlaySound("grunt/attack");   // CH: sound "grunt/attack" is in no CH SNDINFO -- silent in CH too
+		RSPI G 3 Bright A_CustomBulletAttack(6,4,random(1,4),random(1,3));
+		RSPI H 2 Bright A_MonsterRefire(200,"See");
 		Goto Missile+1;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -612,30 +612,30 @@ class RS_PurpleSP1 : Arachnotron   // CH Spiders.txt:1912
 		TNT1 A 0 A_Die();
 		Stop;
 	Pain:
-		BSPI I 3;
+		RSPI I 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI I 3 A_Pain;
+		RSPI I 3 A_Pain;
 		Goto See+1;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BSPI J 20 A_Scream;
-		BSPI K 7 A_NoBlocking;
-		BSPI LMNO 7;
-		BSPI P -1 A_BossDeath;
+		RSPI J 20 A_Scream;
+		RSPI K 7 A_NoBlocking;
+		RSPI LMNO 7;
+		RSPI P -1 A_BossDeath;
 		Stop;
 	Raise:
-		BSPI PONMLKJ 5;
+		RSPI PONMLKJ 5;
 		Goto See+1;
 	XDeath:
-		BSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("RS_HomingRocketTrailFatso",random(-32,32),random(-32,32),random(10,64),0,0,0,0,0);
-		BSPI J 20 A_Scream;
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI J 20 A_Scream;
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		TNT1 A 8 A_SpawnItemEx("RS_AraBoom1",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		// CH: CHRandom_GibGenerator spam stripped (gore chain), animation stays
 		TNT1 AAAAAA 0 A_SpawnParticle("Purple",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -665,7 +665,7 @@ class RS_YellowSP1 : Arachnotron   // CH Spiders.txt:2016
 		-FLOATBOB
 		+DONTHARMSPECIES
 		+BOSSDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+SEEINVISIBLE
 		+NOFEAR
 		Health 777;
@@ -818,9 +818,8 @@ class RS_RedSP1 : Actor   // CH Spiders.txt:2294
 		+DONTHARMSPECIES
 		+FLOORCLIP
 		+BOSSDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+SEEINVISIBLE
-		+MISSILEEVENMORE
 		+NOFEAR
 		PainChance 68;
 		SeeSound "baby/sight";
@@ -941,7 +940,7 @@ class RS_BrownSP2 : Arachnotron   // CH Spiders.txt:40
 		+DONTHARMSPECIES
 		+QUICKTORETALIATE
 		+NOTARGET
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "baby/sight";
 		PainSound "baby/pain";
 		DeathSound "baby/death";
@@ -963,28 +962,28 @@ class RS_BrownSP2 : Arachnotron   // CH Spiders.txt:40
 	States
 	{
 	Spawn:
-		BSPI AB 10 A_Look;
+		RSPI AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BSPI A 20;
-		BSPI A 3 A_BabyMetal;
-		BSPI ABBCC 3 A_Chase;
+		RSPI A 20;
+		RSPI A 3 A_BabyMetal;
+		RSPI ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI D 3 A_BabyMetal;
-		BSPI DEEFF 3 A_Chase;
+		RSPI D 3 A_BabyMetal;
+		RSPI DEEFF 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See+1;
 	Missile:
-		BSPI A 8 Bright A_FaceTarget;
+		RSPI A 8 Bright A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_RadiusGive("Health",320,RGF_MONSTERS,200);
 		TNT1 AAAAA 0 A_SpawnItemEx("RS_MediCacoBrown",random(-164,164),random(-164,164),random(8,64),random(1,9),0,random(-5,5),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI GG 2 Bright A_CustomMissile("RS_BrownOrbSpiderCH",32,0,random(-1,1));
-		BSPI GG 2 Bright A_CustomMissile("RS_BrownOrbSpiderCH",32,0,random(-7,-2));
-		BSPI GH 2 Bright A_CustomMissile("RS_BrownOrbSpiderCH",32,0,random(2,7));
+		RSPI GG 2 Bright A_CustomMissile("RS_BrownOrbSpiderCH",32,0,random(-1,1));
+		RSPI GG 2 Bright A_CustomMissile("RS_BrownOrbSpiderCH",32,0,random(-7,-2));
+		RSPI GH 2 Bright A_CustomMissile("RS_BrownOrbSpiderCH",32,0,random(2,7));
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI HH 2 Bright A_CustomMissile("RS_BrownOrbSpiderCH",32,0,random(-1,1));
+		RSPI HH 2 Bright A_CustomMissile("RS_BrownOrbSpiderCH",32,0,random(-1,1));
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -1003,36 +1002,36 @@ class RS_BrownSP2 : Arachnotron   // CH Spiders.txt:40
 		TNT1 A 0 A_Die();
 		Stop;
 	Pain:
-		BSPI I 3;
+		RSPI I 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH13",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI I 3 A_Pain;
+		RSPI I 3 A_Pain;
 		Goto See+1;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BSPI J 20 A_Scream;
-		BSPI K 7 A_NoBlocking;
-		BSPI LMNO 7;
-		BSPI P -1 A_BossDeath;
+		RSPI J 20 A_Scream;
+		RSPI K 7 A_NoBlocking;
+		RSPI LMNO 7;
+		RSPI P -1 A_BossDeath;
 		Stop;
 	Raise:
-		BSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		BSPI ONMLKJ 5;
+		RSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RSPI ONMLKJ 5;
 		Goto See+1;
 	Grow:
-		BSPI ONMLKJ 5;
-		BSPI A 0 A_SpawnItemEx("RS_YellowSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RSPI ONMLKJ 5;
+		RSPI A 0 A_SpawnItemEx("RS_YellowSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die();
 		Stop;
 	XDeath:
-		BSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("RS_HomingRocketTrailFatso",random(-32,32),random(-32,32),random(10,64),0,0,0,0,0);
-		BSPI J 20 A_Scream;
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI J 20 A_Scream;
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		TNT1 A 8 A_SpawnItemEx("RS_AraBoom1",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		// CH: CHRandom_GibGenerator spam stripped (gore chain), animation stays
 		TNT1 AAAAAA 0 A_SpawnParticle("Green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -1071,7 +1070,7 @@ class RS_CyanSP2 : Actor   // CH Spiders.txt:250
 		-FLOATBOB
 		+DONTHARMSPECIES
 		+BOSSDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOICEDEATH
 		+NOFEAR
 		+BRIGHT
@@ -1179,7 +1178,7 @@ class RS_CyanSP2 : Actor   // CH Spiders.txt:250
 		ACNB D 6 A_NoBlocking(false);
 		ACNB D 10 A_BossDeath;
 		ACNB EFGH 8;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,250);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,250);
 		ACNB H 1 A_IceGuyDie;
 		ACNB H -1;
 		Stop;
@@ -1205,7 +1204,7 @@ class RS_FireBluSP2 : Arachnotron   // CH Spiders.txt:976
 		-FLOATBOB
 		+DONTHARMSPECIES
 		+BOSSDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+SEEINVISIBLE
 		+NOFEAR
 		Health 999;
@@ -1357,7 +1356,7 @@ class RS_GraySP2 : Arachnotron   // CH Spiders.txt:1240
 		+FLOORCLIP
 		+BOSSDEATH
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "baby/sight";
 		PainSound "baby/pain";
 		DeathSound "baby/death";
@@ -1379,42 +1378,42 @@ class RS_GraySP2 : Arachnotron   // CH Spiders.txt:1240
 	States
 	{
 	Spawn:
-		BSPI AB 10 A_Look;
+		RSPI AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BSPI A 20;
-		BSPI A 3 A_BabyMetal;
-		BSPI ABBCC 3 A_Chase;
+		RSPI A 20;
+		RSPI A 3 A_BabyMetal;
+		RSPI ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI D 3 A_BabyMetal;
-		BSPI DEEFF 3 A_Chase;
+		RSPI D 3 A_BabyMetal;
+		RSPI DEEFF 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See+1;
 	Missile:
-		BSPI A 8 Bright A_FaceTarget;
+		RSPI A 8 Bright A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI A 0 A_JumpIfCloser(500,"Scrap");
-		BSPI G 11 Bright A_VileTarget("RS_CHBSTarget");
-		BSPI G 11 Bright A_FaceTarget;
-		BSPI G 11 Bright A_VileTarget("RS_CHBSTarget");
-		BSPI G 7 Bright;
-		BSPI GG 2 Bright A_CustomMissile("RS_SpiderStoneRocket",32,0,random(-2,2),0,random(-1,1));
-		BSPI G 2 Bright A_CustomMissile("RS_SpiderStoneRocket",32,0,0);
+		RSPI A 0 A_JumpIfCloser(500,"Scrap");
+		RSPI G 11 Bright A_VileTarget("RS_CHBSTarget");
+		RSPI G 11 Bright A_FaceTarget;
+		RSPI G 11 Bright A_VileTarget("RS_CHBSTarget");
+		RSPI G 7 Bright;
+		RSPI GG 2 Bright A_CustomMissile("RS_SpiderStoneRocket",32,0,random(-2,2),0,random(-1,1));
+		RSPI G 2 Bright A_CustomMissile("RS_SpiderStoneRocket",32,0,0);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI H 2 Bright;
+		RSPI H 2 Bright;
 		Goto See;
 	Scrap:
-		BSPI G 10 Bright A_FaceTarget;
+		RSPI G 10 Bright A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI GGGGG 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-9,9));
-		BSPI GGG 0 A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-5,5));
-		BSPI GGGGG 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,21,24,random(12,33),0,random(1,3),frandom(-13,13));
-		BSPI GGG 0 A_SpawnItemEx("RS_FatsoSpikes2",12,21,24,random(12,33),0,random(1,3),frandom(-9,9));
-		BSPI GGGG 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-5,5));
-		BSPI GGG 0 A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-11,11));
-		BSPI GGGG 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,21,24,random(12,33),0,random(1,3),frandom(-5,5));
-		BSPI H 6 Bright;
+		RSPI GGGGG 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-9,9));
+		RSPI GGG 0 A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-5,5));
+		RSPI GGGGG 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,21,24,random(12,33),0,random(1,3),frandom(-13,13));
+		RSPI GGG 0 A_SpawnItemEx("RS_FatsoSpikes2",12,21,24,random(12,33),0,random(1,3),frandom(-9,9));
+		RSPI GGGG 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-5,5));
+		RSPI GGG 0 A_SpawnItemEx("RS_FatsoSpikes2",12,-21,24,random(12,33),0,random(1,3),frandom(-11,11));
+		RSPI GGGG 1 Bright A_SpawnItemEx("RS_FatsoSpikes2",12,21,24,random(12,33),0,random(1,3),frandom(-5,5));
+		RSPI H 6 Bright;
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -1433,51 +1432,51 @@ class RS_GraySP2 : Arachnotron   // CH Spiders.txt:1240
 		TNT1 A 0 A_Die();
 		Stop;
 	Pain:
-		BSPI I 3;
+		RSPI I 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI I 3 A_Pain;
+		RSPI I 3 A_Pain;
 		Goto See+1;
 	Pain.Fire:
-		BSPI I 3 A_Pain;
+		RSPI I 3 A_Pain;
 		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("RS_HomingRocketTrailFatso",random(-32,32),random(-32,32),random(10,64),0,0,0,0,0);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI I 3;
-		BSPI I 3 A_Pain;
+		RSPI I 3;
+		RSPI I 3 A_Pain;
 		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("RS_HomingRocketTrailFatso",random(-32,32),random(-32,32),random(10,64),0,0,0,0,0);
 		Goto See+1;
 	Pain.Plasma:
 	Pain.Ice:
-		BSPI I 2 A_PlaySound("ResistCH",7);
+		RSPI I 2 A_PlaySound("ResistCH",7);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BSPI I 2;
-		BSPI I 2 A_Pain;
+		RSPI I 2;
+		RSPI I 2 A_Pain;
 		Goto See+1;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BSPI J 20 A_Scream;
-		BSPI K 7 A_NoBlocking;
-		BSPI LMNO 7;
-		BSPI P -1 A_BossDeath;
+		RSPI J 20 A_Scream;
+		RSPI K 7 A_NoBlocking;
+		RSPI LMNO 7;
+		RSPI P -1 A_BossDeath;
 		Stop;
 	Raise:
-		BSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		BSPI ONMLKJ 5;
+		RSPI P 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RSPI ONMLKJ 5;
 		Goto See+1;
 	Grow:
-		BSPI ONMLKJ 5;
-		BSPI A 0 A_SpawnItemEx("RS_YellowSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RSPI ONMLKJ 5;
+		RSPI A 0 A_SpawnItemEx("RS_YellowSP1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die();
 		Stop;
 	XDeath:
-		BSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI J 1 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
 		TNT1 AAAAAAAAAAA 0 A_SpawnItemEx("RS_HomingRocketTrailFatso",random(-32,32),random(-32,32),random(10,64),0,0,0,0,0);
-		BSPI J 20 A_Scream;
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
-		BSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI J 20 A_Scream;
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		RSPI I 4 A_SpawnItemEx("RS_AraBoom3",0,0,21,0,0,0,0,SXF_NOCHECKPOSITION);
+		RSPI JI 4 A_SpawnItemEx("RS_AraBoom2",random(-5,5),random(-32,32),random(2,42),0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		TNT1 A 8 A_SpawnItemEx("RS_AraBoom1",0,0,30,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
 		// CH: CHRandom_GibGenerator spam stripped (gore chain), animation stays
 		TNT1 AAAAAA 0 A_SpawnParticle("Green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
@@ -1514,7 +1513,7 @@ class RS_AbyssSP2 : Arachnotron   // CH Spiders.txt:518
 		+NOBLOOD
 		+BOSSDEATH
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+NOICEDEATH
 		SeeSound "eatiidle";
@@ -1735,9 +1734,8 @@ class RS_BlackSP2 : Actor   // CH Spiders.txt:2499
 		+BOSSDEATH
 		+BOSS
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+SEEINVISIBLE
-		+MISSILEEVENMORE
 		+NOFEAR
 		PainChance 24;
 		SeeSound "baby/sight";
@@ -1891,9 +1889,8 @@ class RS_BlackSPEX : Actor   // CH Spiders.txt:2649
 		+BOSSDEATH
 		+BOSS
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+SEEINVISIBLE
-		+MISSILEEVENMORE
 		+NOFEAR
 		PainChance 24;
 		SeeSound "baby/sight";
@@ -2011,17 +2008,17 @@ class RS_BlackSPEX : Actor   // CH Spiders.txt:2649
 		BSP2 A 0 A_Jump(128,"Miss1","Miss2","Miss3","Miss4");
 		BSP2 A 10 Bright A_FaceTarget;
 		BSP2 G 2 Bright A_FaceTarget;
-		BSP2 R 6 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING|RGF_SILENT);
+		BSP2 R 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING|RGF_SILENT);
 		TNT1 A 0 A_FaceTarget;
-		BSP2 H 6 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING|RGF_SILENT);
+		BSP2 H 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING|RGF_SILENT);
 		TNT1 A 0 A_FaceTarget;
-		BSP2 Q 6 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING|RGF_SILENT);
+		BSP2 Q 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING|RGF_SILENT);
 		TNT1 A 0 A_FaceTarget;
-		BSP2 R 6 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING|RGF_SILENT);
+		BSP2 R 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING|RGF_SILENT);
 		TNT1 A 0 A_FaceTarget;
-		BSP2 H 6 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING|RGF_SILENT);
+		BSP2 H 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING|RGF_SILENT);
 		TNT1 A 0 A_FaceTarget;
-		BSP2 Q 6 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING|RGF_SILENT);
+		BSP2 Q 6 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING|RGF_SILENT);
 		BSP2 GGGGGG 10 Bright A_CustomMissile("RS_YellowBombEXSpidie",random(34,50),random(-10,10),random(-3,3));
 		Goto See;
 	Miss7:
@@ -2187,7 +2184,7 @@ class RS_WhiteSP11 : Actor   // CH Spiders.txt:3765
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+LAXTELEFRAGDMG
 		+NOFEAR
 		+NOICEDEATH
@@ -2274,11 +2271,11 @@ class RS_WhiteSP11 : Actor   // CH Spiders.txt:3765
 		TNT1 A 0 A_JumpIfCloser(400,"Atk4",true);
 		TRIT A 12 Bright;
 		TRIT E 12 Bright A_FaceTarget;
-		TRIT E 6 Bright A_CustomRailgun(0,0,"none","white",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,null,-12);
+		TRIT E 6 Bright A_CustomRailgun(0,0,0,"white",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,null,-12);
 		TRIT E 12 Bright A_PlaySound("SHARPST1",7,2,false,ATTN_NONE);
 		TRIT E 12 Bright A_FaceTarget;
-		TRIT E 6 Bright A_CustomRailgun(0,0,"none","white",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,null,-12);
-		TRIT E 6 Bright A_CustomRailgun(0,0,"none","white",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,null,-12);
+		TRIT E 6 Bright A_CustomRailgun(0,0,0,"white",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,null,-12);
+		TRIT E 6 Bright A_CustomRailgun(0,0,0,"white",RGF_FULLBRIGHT|RGF_SILENT,0,0,"RS_RedDotSGPuff",0,0,0,15,0.5,0.5,null,-12);
 		TRIT E 6 Bright;
 		// CH: WhiteFatRB / WhiteFatRB2, Fatsos.txt:3958/4047 -- shipped by the fatso lane.
 		TRIT E 12 Bright A_CustomRailgun(random(40,90),0,"white","white",RGF_NOPIERCING,1,0,"RS_WhiteFatRB",0,0,0,0,0.4,1.0,"RS_WhiteFatRB2",0);
@@ -2495,8 +2492,7 @@ class RS_WhiteSP11Old : Actor   // CH Spiders.txt:4159
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		+DONTMORPH
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOFEAR
 		+NOICEDEATH
 		SeeSound "kawai/sight";
@@ -2603,8 +2599,7 @@ class RS_WhiteSP2 : Actor   // CH Spiders.txt:4335
 		-NORADIUSDMG
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOICEDEATH
 		+NOFEAR
 		SeeSound "kawai/sight";
@@ -2690,8 +2685,7 @@ class RS_WhiteSP3 : Actor   // CH Spiders.txt:4264
 		+BOSSDEATH
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOICEDEATH
 		+NOFEAR
 		SeeSound "kawai/sight";
@@ -2760,8 +2754,7 @@ class RS_MiniSP1 : Actor   // CH Spiders.txt:4499
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		SeeSound "kawai/sight";
 		PainSound "kawai/pain";   // CH: SNDINFO has Kawai/hurt, never Kawai/pain -- silent in CH too
 		DeathSound "kawai/death";

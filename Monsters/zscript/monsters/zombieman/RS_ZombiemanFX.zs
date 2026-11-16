@@ -783,14 +783,14 @@ class RS_AbyssShotIdentifier : Actor
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_abyssmark', 0) == 1, "Show");
 		Stop;
 	Show:
-		A8Y5 S 6 Bright;
+		A8Y5 A 6 Bright;
 		Goto Death;
 	Death:
-		A8Y5 S 6 Bright A_SetScale(0.8,0.8);
-		A8Y5 S 6 Bright A_SetScale(0.6,0.6);
-		A8Y5 S 6 Bright A_SetScale(0.4,0.4);
-		A8Y5 S 6 Bright A_SetScale(0.2,0.2);
-		A8Y5 S 6 Bright A_SetScale(0.05,0.05);
+		A8Y5 A 6 Bright A_SetScale(0.8,0.8);
+		A8Y5 A 6 Bright A_SetScale(0.6,0.6);
+		A8Y5 A 6 Bright A_SetScale(0.4,0.4);
+		A8Y5 A 6 Bright A_SetScale(0.2,0.2);
+		A8Y5 A 6 Bright A_SetScale(0.05,0.05);
 		Stop;
 	}
 }

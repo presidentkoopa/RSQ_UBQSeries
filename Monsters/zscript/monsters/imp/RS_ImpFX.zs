@@ -377,10 +377,10 @@ class RS_EffectHK : Actor   // CH Hellknights.txt:2088 -- red spark burst shell.
 	States
 	{
 	Spawn:
-		CBAL A 1;   // CH: VBAL -- CH typo; CBAL is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QBAL A 1;   // CH: VBAL -- CH typo; CBAL is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
 		Goto Death;
 	Death:
-		CBAL A 1 A_Burst("RS_RedThingsHK");   // CH: VBAL -- CH typo; CBAL is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
+		QBAL A 1 A_Burst("RS_RedThingsHK");   // CH: VBAL -- CH typo; CBAL is the real prefix and has this frame. Fixed 2026-08-06 (owner: nothing invisible).
 		Stop;
 	}
 }

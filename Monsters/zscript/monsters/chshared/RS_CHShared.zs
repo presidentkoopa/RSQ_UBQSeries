@@ -368,3 +368,27 @@ class RS_CH_VoidOrb : Actor   // RS build -- fills CH's dangling MASTERMINDS.txt
 		Stop;
 	}
 }
+
+// ============================================================================
+// RS_MissileChance (2026-11-16, Monster Assembly): Colourful Hell's
+// A_ChangeFlag("MissileMore" / "MissileEvenMore") without the flags, which the
+// engine deprecated in 4.13 for the MissileChanceMult property. QuestZDoom 17.3
+// keeps the old flags only as a view of MissileChanceMult; these four do exactly
+// what writing bMISSILEMORE / bMISSILEEVENMORE does there (measured on the rig,
+// every start value: 1, 0.5, 0.125, 0.0625, 0.25), so nothing plays differently.
+// ============================================================================
+class RS_MissileChance play
+{
+	static void SetMore(Actor a, bool on)
+	{
+		if (!a) return;
+		if (on) a.MissileChanceMult = (a.MissileChanceMult == 0.125) ? 0.0625 : 0.5;
+		else    a.MissileChanceMult = (a.MissileChanceMult == 0.0625) ? 0.125 : 1.0;
+	}
+	static void SetEvenMore(Actor a, bool on)
+	{
+		if (!a) return;
+		if (on) a.MissileChanceMult = (a.MissileChanceMult == 0.5) ? 0.0625 : 0.125;
+		else    a.MissileChanceMult = (a.MissileChanceMult == 0.0625) ? 0.5 : 1.0;
+	}
+}

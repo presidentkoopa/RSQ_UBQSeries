@@ -462,7 +462,7 @@ class RS_CyanVile : Actor   // CH Archviles.txt:921
 		+FLOORCLIP
 		+NOTARGET
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		+NOFEAR
@@ -484,65 +484,65 @@ class RS_CyanVile : Actor   // CH Archviles.txt:921
 	States
 	{
 	Spawn:
-		DIAB AB 10 A_Look;
+		RIAB AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		DIAB AABBCC 2 A_VileChase;
+		RIAB AABBCC 2 A_VileChase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB DDEEFF 2 A_VileChase;
+		RIAB DDEEFF 2 A_VileChase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		LOHS A 0 A_Jump(128,"Dodger");
 		LOHS A 0 A_Jump(32,"DashBack");
 		Loop;
 	DashBack:
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_cyanbounce', 0) == 1, "Dodger");
-		DIAB G 3 ThrustThingZ(0,72,0,0);
+		RIAB G 3 ThrustThingZ(0,72,0,0);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB G 3 ThrustThing(int(angle-180),18,0,0);   // CH: thrustthing(angle-180,18,0,0)
+		RIAB G 3 ThrustThing(int(angle-180),18,0,0);   // CH: thrustthing(angle-180,18,0,0)
 		Goto See;
 	Dodger:
-		DIAB AABB 2 A_FastChase;
+		RIAB AABB 2 A_FastChase;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		LOHS A 0 A_Jump(64,"See");
-		DIAB CCDD 2 A_FastChase;
+		RIAB CCDD 2 A_FastChase;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		LOHS A 0 A_Jump(64,"DashBack");
 		Goto See;
 	Missile:
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB A 0 A_JumpIfCloser(900,"Choice");
+		RIAB A 0 A_JumpIfCloser(900,"Choice");
 		Goto Classical;
 	Choice:
-		DIAB A 0 A_Jump(256,"Classical","Floor");
+		RIAB A 0 A_Jump(256,"Classical","Floor");
 		Goto See;
 	Floor:
-		DIAB HH 3 Bright A_FaceTarget;
-		DIAB I 6 Bright A_CustomMissile("RS_IceStartVile4",64,0);
-		DIAB PON 7 Bright A_FaceTarget;
-		DIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0);
-		DIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0,33);
-		DIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0,-33);
-		DIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0,66);
-		DIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0,-66);
+		RIAB HH 3 Bright A_FaceTarget;
+		RIAB I 6 Bright A_CustomMissile("RS_IceStartVile4",64,0);
+		RIAB PON 7 Bright A_FaceTarget;
+		RIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0);
+		RIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0,33);
+		RIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0,-33);
+		RIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0,66);
+		RIAB N 0 A_CustomMissile("RS_IceToMeetVile1",32,0,-66);
 		Goto See;
 	Classical:
-		DIAB G 0 A_FaceTarget;
-		DIAB GH 3 Bright A_FaceTarget;
-		DIAB I 3 Bright A_VileTarget("RS_IceStartVile1");
-		DIAB HG 3 Bright A_FaceTarget;
+		RIAB G 0 A_FaceTarget;
+		RIAB GH 3 Bright A_FaceTarget;
+		RIAB I 3 Bright A_VileTarget("RS_IceStartVile1");
+		RIAB HG 3 Bright A_FaceTarget;
 		TNT1 A 0 A_CheckSight("See");
-		DIAB HIH 3 Bright A_FaceTarget;
+		RIAB HIH 3 Bright A_FaceTarget;
 		TNT1 A 0 A_CheckSight("Dodger");
-		DIAB G 3 Bright A_FaceTarget;
-		DIAB H 3 Bright A_VileTarget("RS_IceStartVile2");
-		DIAB IH 3 Bright A_FaceTarget;
+		RIAB G 3 Bright A_FaceTarget;
+		RIAB H 3 Bright A_VileTarget("RS_IceStartVile2");
+		RIAB IH 3 Bright A_FaceTarget;
 		TNT1 A 0 A_CheckSight("See");
-		DIAB GHI 3 Bright A_FaceTarget;
+		RIAB GHI 3 Bright A_FaceTarget;
 		TNT1 A 0 A_CheckSight("Dodger");
-		DIAB G 3 Bright A_VileAttack("Ice/hit",random(10,60),random(10,60),64,-5,"ice");
-		DIAB H 0 A_VileTarget("RS_IceStartVile3");
-		DIAB HI 3 Bright A_FaceTarget;
+		RIAB G 3 Bright A_VileAttack("Ice/hit",random(10,60),random(10,60),64,-5,"ice");
+		RIAB H 0 A_VileTarget("RS_IceStartVile3");
+		RIAB HI 3 Bright A_FaceTarget;
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNoPain = true; }
@@ -561,15 +561,15 @@ class RS_CyanVile : Actor   // CH Archviles.txt:921
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		DIAB Q 5;
+		RIAB Q 5;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB Q 5 A_Pain;
-		DIAB Q 0 A_Jump(128,"DashBack");
+		RIAB Q 5 A_Pain;
+		RIAB Q 0 A_Jump(128,"DashBack");
 		Goto See;
 	Heal:
 		DIA2 A 0 A_RadiusGive("RS_GrowRaisin",100,RGF_MONSTERS|RGF_CORPSES,3);
 		DIA2 A 10 Bright;
-		DIAB B 2 Bright;
+		RIAB B 2 Bright;
 		DIA2 BB 5 Bright A_SpawnItemEx("RS_CyanLSoul2",random(-16,16),random(-16,16),random(12,64),0,0,0,0,SXF_NOCHECKPOSITION);
 		DIA2 C 4 Bright;
 		DIA2 CC 2;
@@ -579,14 +579,14 @@ class RS_CyanVile : Actor   // CH Archviles.txt:921
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		DIAB Q 7;
-		DIAB R 7 A_Scream;
-		DIAB S 7 A_NoBlocking(false);
-		DIAB TUVW 7;
-		DIAB XY 5;
-		DIAB Z 10;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,246);
-		DIAB Z 1 A_IceGuyDie;
+		RIAB Q 7;
+		RIAB R 7 A_Scream;
+		RIAB S 7 A_NoBlocking(false);
+		RIAB TUVW 7;
+		RIAB XY 5;
+		RIAB Z 10;
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,246);
+		RIAB Z 1 A_IceGuyDie;
 		Stop;
 	}
 }
@@ -1669,7 +1669,7 @@ class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 		+FLOORCLIP
 		+NOTARGET
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		+NOFEAR
@@ -1690,40 +1690,40 @@ class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 	States
 	{
 	Spawn:
-		DIAB AB 10 A_Look;
+		RIAB AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		DIAB AABBCC 2 A_Chase(null,"Missile",CHF_RESURRECT);
+		RIAB AABBCC 2 A_Chase(null,"Missile",CHF_RESURRECT);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB DDEEFF 2 A_Chase(null,"Missile",CHF_RESURRECT);
+		RIAB DDEEFF 2 A_Chase(null,"Missile",CHF_RESURRECT);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB A 0 A_JumpIfCloser(420,"Breath",true);
-		DIAB A 0 A_Jump(256,"Classical","Meteorr");
+		RIAB A 0 A_JumpIfCloser(420,"Breath",true);
+		RIAB A 0 A_Jump(256,"Classical","Meteorr");
 		Goto See;
 	Breath:
 		DIA2 A 0 A_PlaySound("Spell/SpellCast1");
 		DIA2 A 9 A_FaceTarget;
 		DIA2 C 5 A_FaceTarget;
-		DIAB A 0 A_FaceTarget;
-		DIAB ACE 2 A_CustomMissile("RS_ReABreath",38,0,random(-5,5));
-		DIAB A 1 A_CheckRange(420,"See",true);
-		DIAB A 1 A_MonsterRefire(128,"See");
+		RIAB A 0 A_FaceTarget;
+		RIAB ACE 2 A_CustomMissile("RS_ReABreath",38,0,random(-5,5));
+		RIAB A 1 A_CheckRange(420,"See",true);
+		RIAB A 1 A_MonsterRefire(128,"See");
 		Goto Breath+3;
 	Meteorr:
-		DIAB HH 3 Bright A_FaceTarget;
-		DIAB I 6 Bright A_CustomMissile("RS_BaronRing",64,0);
-		DIAB PON 7 Bright A_FaceTarget;
-		DIAB N 0 A_CustomMissile("RS_ReAComet",42,0);
+		RIAB HH 3 Bright A_FaceTarget;
+		RIAB I 6 Bright A_CustomMissile("RS_BaronRing",64,0);
+		RIAB PON 7 Bright A_FaceTarget;
+		RIAB N 0 A_CustomMissile("RS_ReAComet",42,0);
 		Goto See;
 	Classical:
-		DIAB G 0 A_FaceTarget;
-		DIAB GH 3 Bright A_FaceTarget;
-		DIAB I 3 A_CustomMissile("RS_DFire",32,0,0);
-		DIAB HGHIHGHIHGHIGHI 3 Bright A_FaceTarget;
+		RIAB G 0 A_FaceTarget;
+		RIAB GH 3 Bright A_FaceTarget;
+		RIAB I 3 A_CustomMissile("RS_DFire",32,0,0);
+		RIAB HGHIHGHIHGHIGHI 3 Bright A_FaceTarget;
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNoPain = true; }
@@ -1741,14 +1741,14 @@ class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 		AYPB H 5 Bright A_SetScale(1,0.05);
 		Stop;   // CH ends this one WITHOUT the A_die the other tiers have
 	Pain:
-		DIAB Q 5;
+		RIAB Q 5;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB Q 5 A_Pain;
+		RIAB Q 5 A_Pain;
 		Goto See;
 	Heal:
 		DIA2 A 0 A_RadiusGive("RS_GrowRaisin",100,RGF_MONSTERS|RGF_CORPSES,3);
 		DIA2 A 10 Bright A_SpawnItemEx("RS_ArcRing1",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
-		DIAB B 2 Bright;
+		RIAB B 2 Bright;
 		DIA2 BB 5 Bright;
 		DIA2 C 4 Bright;
 		DIA2 CC 6 A_SpawnItemEx("RS_ArchSpawnerOrb",0,-5,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
@@ -1758,12 +1758,12 @@ class RS_RedArch2 : Actor   // CH Archviles.txt:3490
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		DIAB Q 7;
-		DIAB R 7 A_Scream;
-		DIAB S 7 A_NoBlocking;
-		DIAB TUVW 7;
-		DIAB XY 5;
-		DIAB Z -1;
+		RIAB Q 7;
+		RIAB R 7 A_Scream;
+		RIAB S 7 A_NoBlocking;
+		RIAB TUVW 7;
+		RIAB XY 5;
+		RIAB Z -1;
 		Stop;
 	}
 }
@@ -1798,7 +1798,7 @@ class RS_RedArch3 : Actor   // CH Archviles.txt:3699
 		Monster;
 		+FLOORCLIP
 		+NOTARGET
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTMORPH
 		+BOSS
 		+DONTHARMSPECIES
@@ -1832,47 +1832,47 @@ class RS_RedArch3 : Actor   // CH Archviles.txt:3699
 		SKUL A 1;
 		Goto Idle;
 	Idle:
-		DIAB AB 10 A_Look;
+		RIAB AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		DIAB AABBCC 2 A_Chase;
+		RIAB AABBCC 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB DDEEFF 2 A_Chase;
+		RIAB DDEEFF 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Missile:
-		DIAB G 0 A_JumpIfHealthLower(1650,"AggroUP");
+		RIAB G 0 A_JumpIfHealthLower(1650,"AggroUP");
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB G 0 A_Jump(60,"Fires");
-		DIAB G 0 A_Jump(132,"Fires","SummonSouls","GroundVhirl");
-		DIAB G 0 A_FaceTarget;
-		DIAB GH 3 Bright A_FaceTarget;
-		DIAB I 3 A_CustomMissile("RS_DFire",32,0,0);
-		DIAB HGHIHGHIHGHIGHI 3 Bright A_FaceTarget;
+		RIAB G 0 A_Jump(60,"Fires");
+		RIAB G 0 A_Jump(132,"Fires","SummonSouls","GroundVhirl");
+		RIAB G 0 A_FaceTarget;
+		RIAB GH 3 Bright A_FaceTarget;
+		RIAB I 3 A_CustomMissile("RS_DFire",32,0,0);
+		RIAB HGHIHGHIHGHIGHI 3 Bright A_FaceTarget;
 		Goto See;
 	Fires:
 		DIA2 A 2 Bright A_CustomMissile("RS_BaronRing",1,0);
 		DIA2 ABC 10 Bright A_PlaySound("Spell/SpellCast1");
-		DIAB PON 9 Bright A_FaceTarget;
-		DIAB I 6 Bright A_CustomMissile("RS_BaronRing",64,0);
-		DIAB IH 7 Bright;
-		DIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(-12,12));
-		DIAB GHGH 1 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
-		DIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
-		DIAB GHGH 1 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
-		DIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
-		DIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(-12,12));
-		DIAB GHGH 1 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
-		DIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
-		DIAB GHGH 1 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
-		DIAB GHI 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
-		DIAB I 1 Bright A_Jump(48,"GroundVhirl");
-		DIAB I 1 Bright A_Jump(24,"SummonSouls");
+		RIAB PON 9 Bright A_FaceTarget;
+		RIAB I 6 Bright A_CustomMissile("RS_BaronRing",64,0);
+		RIAB IH 7 Bright;
+		RIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(-12,12));
+		RIAB GHGH 1 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
+		RIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
+		RIAB GHGH 1 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
+		RIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
+		RIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(-12,12));
+		RIAB GHGH 1 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
+		RIAB GHGH 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
+		RIAB GHGH 1 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
+		RIAB GHI 2 Bright A_CustomMissile("RS_DFlare",random(20,46),0,random(180,-180));
+		RIAB I 1 Bright A_Jump(48,"GroundVhirl");
+		RIAB I 1 Bright A_Jump(24,"SummonSouls");
 		Goto See;
 	SummonSouls:
 		DIA2 A 10 Bright A_FaceTarget;
-		DIAB B 2 Bright A_PlaySound("Forgotten/Pain");
+		RIAB B 2 Bright A_PlaySound("Forgotten/Pain");
 		DIA2 BB 6 Bright A_SpawnItemEx("RS_ArchSpawnerOrb",0,-5,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 		DIA2 C 4 Bright A_FaceTarget;
 		DIA2 CC 6 A_SpawnItemEx("RS_ArchSpawnerOrb",0,-5,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
@@ -1886,40 +1886,40 @@ class RS_RedArch3 : Actor   // CH Archviles.txt:3699
 		DIA2 C 0 A_CustomMissile("RS_ArcRing2",12,0,random(3,13));
 		Goto See;
 	AggroUP:
-		DIAB G 1;
-		DIAB G 2 A_JumpIf(User_Rage >= 1, "Nah");
-		DIAB G 0 { bNoPain = true; }
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 9 A_PlaySound("Monster/diasit");
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
-		DIAB G 1 { bMissileEvenMore = true; }
-		DIAB G 2 { User_Rage = User_Rage + 1; }
+		RIAB G 1;
+		RIAB G 2 A_JumpIf(User_Rage >= 1, "Nah");
+		RIAB G 0 { bNoPain = true; }
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 9 A_PlaySound("Monster/diasit");
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 A_CustomMissile("RS_SparkPuff1",34,0,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RIAB G 1 { RS_MissileChance.SetEvenMore(self, true); }
+		RIAB G 2 { User_Rage = User_Rage + 1; }
 		Goto Missile+1;
 	Nah:
-		DIAB G 1;
+		RIAB G 1;
 		Goto Missile+1;
 	Pain:
-		DIAB Q 5;
+		RIAB Q 5;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		DIAB Q 5 A_Pain;
+		RIAB Q 5 A_Pain;
 		Goto See;
 	Death:
-		DIAB Q 7;
-		DIAB R 7 A_Scream;
-		DIAB S 7 A_NoBlocking;
-		DIAB TUVW 7;
-		DIAB XY 5;
-		DIAB Z -1;
+		RIAB Q 7;
+		RIAB R 7 A_Scream;
+		RIAB S 7 A_NoBlocking;
+		RIAB TUVW 7;
+		RIAB XY 5;
+		RIAB Z -1;
 		Stop;
 	}
 }
@@ -2230,7 +2230,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 	Agro:
 		LMWZ E 0 A_SetSpeed(30);
 		TNT1 A 0 A_SpawnItemEx("RS_WhiteVileResser");
-		LMWZ E 0 { bMissileMore = true; }
+		LMWZ E 0 { RS_MissileChance.SetMore(self, true); }
 		LMWZ EE 6 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		LMWZ E 4 A_FastChase;
@@ -2243,7 +2243,7 @@ class RS_Whitevile : Actor   // CH Archviles.txt:5033
 	Agro2:
 		LMWZ E 0 A_SetSpeed(38);
 		TNT1 A 0 A_SpawnItemEx("RS_WhiteVileResser");
-		LMWZ E 0 { bMissileEvenMore = true; }
+		LMWZ E 0 { RS_MissileChance.SetEvenMore(self, true); }
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH11",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		LMWZ E 0 { user_courage = user_courage + 100; }
 		LMWZ EEEEE 0 A_SpawnParticle("White",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);

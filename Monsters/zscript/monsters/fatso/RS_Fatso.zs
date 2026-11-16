@@ -361,8 +361,8 @@ class RS_BrownFatso2 : Fatso   // CH Fatsos.txt:40
 		FFAT T -1;
 		Stop;
 	Raise:
-		FAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
-		FAT2 HGFEDCBA 5;
+		RAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
+		RAT2 HGFEDCBA 5;
 		Goto See;
 	}
 }
@@ -401,7 +401,7 @@ class RS_CyanFatso2 : Fatso   // CH Fatsos.txt:321
 		+BOSSDEATH
 		+NOICEDEATH
 		+NOFEAR
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BRIGHT
 		+DONTHARMSPECIES
 		SeeSound "fatso/sight";
@@ -517,10 +517,10 @@ class RS_CyanFatso2 : Fatso   // CH Fatsos.txt:321
 		FATT L 6 A_Scream;
 		FATT M 6 A_NoBlocking(false);
 		FATT NOPQRS 6;
-		FATT T 1 A_BossDeath;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,250);
-		FATT T 1 A_IceGuyDie;
-		FATT T -1;
+		RATT A 1 A_BossDeath;
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,250);
+		RATT A 1 A_IceGuyDie;
+		RATT A -1;
 		Stop;
 	}
 }
@@ -539,7 +539,7 @@ class RS_AbyssFatso2 : Fatso   // CH Fatsos.txt:547
 		Mass 600;
 		Speed 11;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOINFIGHTING
 		+DONTHARMCLASS
 		+DONTHARMCLASS
@@ -651,7 +651,7 @@ class RS_FireBluFatso2 : Actor   // CH Fatsos.txt:746
 		+DONTHARMCLASS
 		+BOSSDEATH
 		+NOICEDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		DamageFactor "Fire", 0.25;   // CH lists Fire twice, both 0.25
 		DamageFactor "Ice", 0.5;     // CH lists ice twice, both 0.5
@@ -878,12 +878,12 @@ class RS_GrayFatso2 : Fatso   // CH Fatsos.txt:984
 		// CH: TNT1 AAAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
 		TNT1 AAAAAA 0 A_SpawnParticle("white",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		FATT NOPQRS 6;
-		FATT T 1 A_BossDeath;
-		FATT T -1;
+		RATT A 1 A_BossDeath;
+		RATT A -1;
 		Stop;
 	Raise:
-		FAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
-		FAT2 HGFEDCBA 5;
+		RAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
+		RAT2 HGFEDCBA 5;
 		Goto See;
 	}
 }
@@ -937,13 +937,13 @@ class RS_CommonFatso : Fatso   // CH Fatsos.txt:1175
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		FAT2 A 5;
-		FAT2 B 5 A_Scream;
-		FAT2 C 5 A_NoBlocking;
-		FAT2 DE 5;
-		FAT2 F 5 A_SpawnItemEx("RS_FatsoArmed",0,0,3,0,0,0,0,SXF_SETMASTER);
-		FAT2 G 5 A_BossDeath;
-		FAT2 H -1;
+		RAT2 A 5;
+		RAT2 B 5 A_Scream;
+		RAT2 C 5 A_NoBlocking;
+		RAT2 DE 5;
+		RAT2 F 5 A_SpawnItemEx("RS_FatsoArmed",0,0,3,0,0,0,0,SXF_SETMASTER);
+		RAT2 G 5 A_BossDeath;
+		RAT2 H -1;
 		Stop;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -968,17 +968,17 @@ class RS_CommonFatso : Fatso   // CH Fatsos.txt:1175
 		// CH: TNT1 AAAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported (XDeath animation kept)
 		TNT1 AAAAAA 0 A_SpawnParticle("red",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		FATT NOPQRS 6;
-		FATT T 1 A_BossDeath;
-		FATT T -1;
+		RATT A 1 A_BossDeath;
+		RATT A -1;
 		Stop;
 	Raise:
-		FAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
-		FAT2 H 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		FAT2 GFEDCBA 5;
+		RAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
+		RAT2 H 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RAT2 GFEDCBA 5;
 		Goto See;
 	Grow:
-		FAT2 GFEDCBA 5;
-		FAT2 A 0 A_SpawnItemEx("RS_GreenFatso",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RAT2 GFEDCBA 5;
+		RAT2 A 0 A_SpawnItemEx("RS_GreenFatso",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -1068,13 +1068,13 @@ class RS_GreenFatso : Fatso   // CH Fatsos.txt:1309
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		FAT2 A 5;
-		FAT2 B 5 A_Scream;
-		FAT2 C 5 A_NoBlocking;
-		FAT2 DE 5;
-		FAT2 F 5 A_SpawnItemEx("RS_FatsoArmed2",0,0,3,0,0,0,0,SXF_SETMASTER);
-		FAT2 G 5 A_BossDeath;
-		FAT2 H -1;
+		RAT2 A 5;
+		RAT2 B 5 A_Scream;
+		RAT2 C 5 A_NoBlocking;
+		RAT2 DE 5;
+		RAT2 F 5 A_SpawnItemEx("RS_FatsoArmed2",0,0,3,0,0,0,0,SXF_SETMASTER);
+		RAT2 G 5 A_BossDeath;
+		RAT2 H -1;
 		Stop;
 	XDeath:
 		FATT K 6;
@@ -1083,17 +1083,17 @@ class RS_GreenFatso : Fatso   // CH Fatsos.txt:1309
 		// CH: TNT1 AAAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported (XDeath animation kept)
 		TNT1 AAAAAA 0 A_SpawnParticle("green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		FATT NOPQRS 6;
-		FATT T 1 A_BossDeath;
-		FATT T -1;
+		RATT A 1 A_BossDeath;
+		RATT A -1;
 		Stop;
 	Raise:
-		FAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
-		FAT2 H 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		FAT2 GFEDCBA 5;
+		RAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
+		RAT2 H 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RAT2 GFEDCBA 5;
 		Goto See;
 	Grow:
-		FAT2 GFEDCBA 5;
-		FAT2 A 0 A_SpawnItemEx("RS_BlueFatso",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RAT2 GFEDCBA 5;
+		RAT2 A 0 A_SpawnItemEx("RS_BlueFatso",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -1203,13 +1203,13 @@ class RS_BlueFatso : Fatso   // CH Fatsos.txt:1465
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		FAT2 A 5;
-		FAT2 B 5 A_Scream;
-		FAT2 C 5 A_NoBlocking;
-		FAT2 DE 5;
-		FAT2 F 5 A_SpawnItemEx("RS_FatsoArmed3",0,0,3,0,0,0,0,SXF_SETMASTER);
-		FAT2 G 5 A_BossDeath;
-		FAT2 H -1;
+		RAT2 A 5;
+		RAT2 B 5 A_Scream;
+		RAT2 C 5 A_NoBlocking;
+		RAT2 DE 5;
+		RAT2 F 5 A_SpawnItemEx("RS_FatsoArmed3",0,0,3,0,0,0,0,SXF_SETMASTER);
+		RAT2 G 5 A_BossDeath;
+		RAT2 H -1;
 		Stop;
 	XDeath:
 		FATT K 6;
@@ -1218,17 +1218,17 @@ class RS_BlueFatso : Fatso   // CH Fatsos.txt:1465
 		// CH: TNT1 AAAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported (XDeath animation kept)
 		TNT1 AAAAAA 0 A_SpawnParticle("blue",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		FATT NOPQRS 6;
-		FATT T 1 A_BossDeath;
-		FATT T -1;
+		RATT A 1 A_BossDeath;
+		RATT A -1;
 		Stop;
 	Raise:
-		FAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
-		FAT2 H 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		FAT2 GFEDCBA 5;
+		RAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
+		RAT2 H 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		RAT2 GFEDCBA 5;
 		Goto See;
 	Grow:
-		FAT2 GFEDCBA 5;
-		FAT2 A 0 A_SpawnItemEx("RS_PurpleFatso",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		RAT2 GFEDCBA 5;
+		RAT2 A 0 A_SpawnItemEx("RS_PurpleFatso",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	}
@@ -1333,13 +1333,13 @@ class RS_PurpleFatso : Fatso   // CH Fatsos.txt:1764
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		FAT2 A 5;
-		FAT2 B 5 A_Scream;
-		FAT2 C 5 A_NoBlocking;
-		FAT2 DE 5;
-		FAT2 F 5 A_SpawnItemEx("RS_FatsoArmed4",0,0,3,0,0,0,0,SXF_SETMASTER);
-		FAT2 G 5 A_BossDeath;
-		FAT2 H -1;
+		RAT2 A 5;
+		RAT2 B 5 A_Scream;
+		RAT2 C 5 A_NoBlocking;
+		RAT2 DE 5;
+		RAT2 F 5 A_SpawnItemEx("RS_FatsoArmed4",0,0,3,0,0,0,0,SXF_SETMASTER);
+		RAT2 G 5 A_BossDeath;
+		RAT2 H -1;
 		Stop;
 	XDeath:
 		FATT K 6;
@@ -1348,11 +1348,11 @@ class RS_PurpleFatso : Fatso   // CH Fatsos.txt:1764
 		// CH: TNT1 AAAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported (XDeath animation kept)
 		TNT1 AAAAAA 0 A_SpawnParticle("purple",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		FATT NOPQRS 6;
-		FATT T 1 A_BossDeath;
-		FATT T -1;
+		RATT A 1 A_BossDeath;
+		RATT A -1;
 		Stop;
 	Raise:
-		FAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
+		RAT2 H 0 A_RemoveChildren(true,RMVF_EVERYTHING);
 		FATT RQPONMLK 5;
 		Goto See;
 	}
@@ -1531,7 +1531,7 @@ class RS_RedFatso : Actor   // CH Fatsos.txt:2223
 		+DONTHARMCLASS
 		+BOSSDEATH
 		+NOICEDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		PainChance "PLWater", 172;
 		PainChance "Fire", 1;
@@ -1616,7 +1616,7 @@ class RS_RedFatso : Actor   // CH Fatsos.txt:2223
 	Buffs:
 		HBST F 1 Bright A_PlaySound("Horn/Sight");
 		HBST F 12 Bright { bNOPAIN = true; }             // CH: A_ChangeFlag("NOPAIN",TRUE)
-		HBST F 12 Bright { bMISSILEEVENMORE = true; }    // CH: A_ChangeFlag("MISSILEEVENMORE",TRUE)
+		HBST F 12 Bright { RS_MissileChance.SetEvenMore(self, true); }    // CH: A_ChangeFlag("MISSILEEVENMORE",TRUE)
 		HBST F 9 Bright A_SetSpeed(16);
 		HBST F 5 { user_Rage5 = user_Rage5 - 50; }       // CH: A_SetUserVar("User_Rage5",User_Rage5-50)
 		HBST A 1;
@@ -1674,7 +1674,7 @@ class RS_BlackFatsoEX : Actor   // CH Fatsos.txt:2550
 		ActiveSound "shadowbeast/active";
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BOSS
 		+DONTMORPH
 		-NORADIUSDMG
@@ -1931,7 +1931,7 @@ class RS_BlackFatso2 : Actor   // CH Fatsos.txt:2805
 		ActiveSound "shadowbeast/active";
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BOSS
 		+DONTMORPH
 		-NORADIUSDMG
@@ -2149,7 +2149,7 @@ class RS_WhiteFatso2 : Actor   // CH Fatsos.txt:3462
 		Monster;
 		+DONTMORPH
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BOSS
 		-NORADIUSDMG
 		+DONTHARMCLASS

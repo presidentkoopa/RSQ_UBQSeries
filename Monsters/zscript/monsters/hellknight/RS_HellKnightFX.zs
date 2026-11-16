@@ -630,7 +630,7 @@ class RS_SpecialImp : RS_BlueImp   // CH Hellknights.txt:2186 -- red knight's wa
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+THRUSPECIES
 		+NOTARGETSWITCH
 		-COUNTKILL

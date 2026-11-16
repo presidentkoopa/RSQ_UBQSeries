@@ -36,8 +36,8 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 
 **No keys.** Nothing to hold or press: the monsters change as they spawn and as fights change their tier.
 
-- **Menu buttons:** the **Monster Diagnostics** page (a row on this mod's page) has God Mode and the test spawns; see
-  *Status* for what answers them.
+- **Menu buttons:** the **Test and Debug** page (Monster Diagnostics; a row on this mod's page) has God Mode and the
+  test spawns (`docs/MONSTER_DIAGNOSTICS.md`).
 
 ### Which monsters a map gets
 
@@ -49,13 +49,18 @@ and we will use the CH stuff for encounters and minibosses n setpieces"): Brutal
 the colour tiers, drawn from the painted colour art (`pk3/RSQ_BDXMTiers_<Colour>.pk3`, one per colour, loaded after
 RSQ_Monsters). ColorfulHell stays selectable, and is the default for minibosses (**Boss From: ColorfulHell**).
 
-| Set | What spawns |
+| Set (`rsq_monster_set`) | What spawns |
 |---|---|
-| **ColorfulHell** (the default) | Colourful Hell's colour tiers. Doom's stock fireballs, plasma and rockets become Colourful Hell's versions too |
-| **BD22** | Nothing is replaced: Brutal Doom's own monsters. Without Brutal Doom loaded, the same as Vanilla |
-| **Vanilla** | The id monsters themselves, even with Brutal Doom loaded |
+| **BD22 + XMVE Tiers** (1, the default) | Nothing is replaced: Brutal Doom's and XMVE's own monsters, on the colour ladder (*Brutal Doom's monsters on the ladder*), drawn from the painted colour art where it is loaded. Without Brutal Doom loaded, the id monsters on the ladder |
+| **ColorfulHell** (3) | Colourful Hell's colour tiers. Doom's stock fireballs, plasma and rockets become Colourful Hell's versions too. The default for a miniboss fight's Boss (**Boss From**) |
+| **Vanilla** (0) | The id monsters themselves, even with Brutal Doom loaded |
 
-**Out of the box every ColorfulHell monster spawns at Common**, which plays close to vanilla Doom. The colours come in
+**What to load:** `RSQ_Monsters.pk3` is the whole mod (code, Colourful Hell's sprites and sounds). The twelve
+`RSQ_BDXMTiers_<Colour>.pk3` (Green ... White; there is no Common one) are art only: the painted frames of Brutal Doom 22's
+and XMVE's monsters in that colour. Load them if you want the painted look; without one, that colour is the tint. Their
+place in the order does not matter (rig, 11-16: the same art drawn with them before or after RSQ_Monsters).
+
+**With ColorfulHell as the set, out of the box every monster spawns at Common**, which plays close to vanilla Doom. The colours come in
 when monsters change tier: a miniboss fight from RSQ Miniboss tiers the whole map up when you miss its window. A
 setting saved from an older version that picked MeatGrinder (now removed) reads as ColorfulHell.
 
@@ -130,11 +135,11 @@ item on it (`RS_BDKit`, `RS_BDTier.zs`) holds its colour.
   frame has a hand-made copy in its colour (`pk3/RSQ_BDXMTiers_<Colour>.pk3`, one pk3 per colour, made in
   `../MonsterRecolour/`), the monster, its corpse and its pieces are drawn from that art; everywhere else they keep the
   tier tint. No sprite frames are added (the art is drawn through `picnum`). RSQ Monsters > Painted Colour Art turns it
-  off. Today the Imp family is painted; the other families are being painted.
+  off. Every Brutal Doom 22 and XMVE family is painted (the merge gate of 11-14, Status).
 - **The colour follows the body** onto Brutal Doom's dying bodies, corpses, crawlers, limbs and gibs: each piece holds
   its body's colour (`RS_BDHue`). Blood, blood mist, smoke, fire, casings, pickups and other mods' things (Champions'
-  icons and auras, LegenDoom's) keep their own look. Generic gore (guts, chunks, organs, brains, teeth) takes the tint,
-  so on FireBlu its red turns blue: an open choice for the owner (paint it, or leave it uncoloured).
+  icons and auras, LegenDoom's) keep their own look. Brutal Doom's shared gore (guts, chunks, organs, brains, teeth)
+  is painted per colour with its reds kept (owner: "Paint it", 11-13).
   Since the dying-body census (2026-11-13, rig only, not headset-confirmed; `../MonsterRecolour/README.md`, "Every dying
   body"): also the crawlers and corpses a body spawns while it lies there (Brutal Doom's men end a death on an invisible
   body that never goes away), death stages that are monsters of the family (the Arch-vile's armless crawler; friendly
@@ -262,9 +267,9 @@ next monster that needs them.
 | Top | Select Monster Set (Vanilla, **BD22 + XMVE Tiers**, ColorfulHell) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) · Tier Icons Above Monsters (**Off**, On) |
 | Brutal Doom's Monsters | Colour Ladder On Brutal Doom's Monsters (Off, **On**) · World Tier (test) (**1** to 20) · Painted Colour Art (Off, **On**; on, the frames that have painted art in their colour are drawn from it, the rest keep the tint; off, the tint everywhere) |
 | Boss | Boss From (Same as Monster Set, **ColorfulHell**) · Thralls From (**Same as Boss**, ColorfulHell, Map's Own Monsters) |
-| Monster Diagnostics | A test page. Today only God Mode works: Spawn hostile, the fourteen chaingunner buttons, Spawn All Fourteen, Remove them all, DIAG and WAKE are on the page but nothing answers them |
+| Foot | **Test and Debug** (Monster Diagnostics: God Mode, Spawn hostile (**Off**), the fourteen Chaingunner rows C0001 to X0001, Spawn All Fourteen, Remove Them All, DIAG, WAKE; `docs/MONSTER_DIAGNOSTICS.md`) · **Reset All** |
 
-Defaults are in bold.
+Defaults are in bold. The menu redone from scratch is proposed in `docs/MENU_PROPOSAL.md` and waits for the owner.
 
 *[Still to come: the options page]*
 
@@ -279,6 +284,7 @@ Defaults are in bold.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-16, Monster Assembly: runs `asm_gate2`, `asm_order3`, `asm_ev4`, `asm_thrA` / `asm_thrB`, `asm_sfc_*`; the owner's full order with BD22 VR Reloaded 2.0.5a and the 12 `RSQ_BDXMTiers_<Colour>.pk3`, Black Metal, MAP01; `docs/rig_2026-11-16_assembly/`) | **The pack cleaned up and its sprites made its own** (`docs/ASSEMBLY_AUDIT_2026-11-16.md`). No script error from our packs (only BD22 VoxelPack's own four voxeldef lines), no VM abort; **0 compile warnings from RSQ_Monsters** (256 + 162 before; every class's MissileChanceMult and MaxTargetRange read back identical before and after over 3,007 classes). The menu checker: 0 problems (29 before). A Brutal Doom RifleZombie at World Tier 10: Red, 297 health (32 x 9.30, Colourful Hell's Red zombie ratio), painted Red, its Red gem floating up (`bd_red_zombieman_and_tier_gem.png`). The tier flash logged tic by tic: 2 tics flash, 3 own, 3 flash ..., a new target mid-flash starting the wait over, as Hackfraud's (`tier_flash_next_to_hf.png`). Colourful Hell 1.04's missing sprites drawn: the Abyss Imp, Abyss Cacodemon, Mr Bones, the AYPB conversion ending in an Abyss Imp (`ch104_sprites_drawn.png`). The Test and Debug page's fourteen spawned, listed live by DIAG, removed. The art pk3s loaded before or after RSQ_Monsters: the same art drawn. Sprite frames (engine): 55,114 -> 55,746 |
 | **rig only, not headset-confirmed** (2026-11-13, runs `monA_m01_w*`, `monA_m10_w*`, `monA_final`, `monA_lob2`; the owner's full order with his saved settings, Monster Set BD22, Black Metal) | **Brutal Doom's and XMVE's monsters on the ladder, every one entering at Common.** No script error from our packs. At world tiers 1, 2, 5, 9, 12 and 13 on MAP01 (27 map monsters, 33 with the test row) and MAP10 (279): every kit monster's entry 1 and its colour the world tier; health, damage, speed and pain chance as the tables say for all of them (a few speeds differ where a monster spawned with its own speed). 0 living monsters left without a kit. Frames: the picture above. A world tier raised mid-map (1 to 4) moved all 27 MAP01 monsters. Legion of Bones' monsters, spawned by hand, take the tint and the kit |
 | **rig only, not headset-confirmed** (2026-11-14, main, run `gate_m10`; his full order with his saved settings, Black Metal, the 12 `RSQ_BDXMTiers_<Colour>.pk3` loaded) | **The merge gate:** every Brutal Doom and XMVE family painted (BD22 look over RSQ Monsters' own same-named sprites, owner 11-14 01:05); MAP10 at World Tier 5: 279 kit monsters, 0 living monsters with no kit; no script error from our packs (only BD22 VoxelPack's own four voxeldef lines). Each colour pk3 holds 12,542 frames of 938 sprites (51 to 54 MB) |
 | **rig only, not headset-confirmed** (2026-11-13, branch `wip/2026-11-13-recolour`, runs `rcE_final`, `rcE_final2`, `rcE_cost2_*`; the owner's full order with his saved settings, Black Metal; sheets `../MonsterRecolour/docs/integ_0*.jpg`) | **The painted colour art, drawn by this pack** (`RS_BDArt.zs`) from `RSQ_BDXMTiers_<Colour>.pk3`: the Imp's twelve colours alive and dead; Champions' and Universal Entropy's tints still under the tier colour (7 of 7 put back, 0 left), the tier flash and the colour after it, the Painted Colour Art row off (tint) and on (art). **Three faults fixed:** Brutal Doom's blood mist keeps its red (0 blood or mist things wearing a tier tint in a census of 93 coloured things); a thrown imp arm (`XDeathImpArm`) takes its imp's colour; imps 36 units apart, killed together, keep their own colours on their corpses and pieces (0 wrong). No script error from our packs. Cost (rig CPU, not Quest): 0.17 to 0.24 ms a tic for the art driver on MAP10 at World Tier 4 with the Imp and the three men's families painted (279 monsters, 174 drawn from art), 0.41 the second after killing them all, 0.05 to 0.07 at World Tier 1 |
@@ -292,7 +298,7 @@ Defaults are in bold.
 | **rig only, not headset-confirmed** (2026-11-09, the TestRig miniboss-fight log `b4_own.txt`, run before MeatGrinder was removed) | ColorfulHell spawned a map's monsters at Common. A missed window in an RSQ Miniboss fight turned every ColorfulHell monster on the map (eleven) from Common to Purple, and the miniboss and thralls were found again in their new bodies; each life the miniboss lost took it up once more (Purple Imp to Yellow to Red, under the old numbering; on the strength ladder the same steps go Purple to Cyan to Brown, code only). This was a log: the flash itself was not looked at in frames |
 | **rig only, not headset-confirmed** (2026-11-09, RSQ Score's head-shot frames and log) | A ColorfulHell imp judged head against chest |
 | **Headset-confirmed** | Nothing yet |
-| **Known not to work** (from reading the code) | The **Monster Diagnostics** page: only God Mode works. The chaingunner spawns, Spawn All, Remove, DIAG and WAKE send commands nothing in the pk3 answers, and Spawn hostile changes nothing. |
+| **Known not to work** (from reading the code) | Nothing listed (the Monster Diagnostics page answers since 11-16, above) |
 | **code only, not shown** | Everything else on this page: the flash beyond the full-bright row above, On tier change, the Vanilla and BD22 sets, Brutal Doom's load order, Colourful Hell's extra colours, bosses and EX forms, its fireball swaps, other old saved settings reading as ColorfulHell |
 | **code only, not shown** (2026-11-11, owner: "no rig test, code only until i say") | The ladder numbered by strength: the ladder table, every colour's tier, the caps, the spawn odds, the boss and EX numbers, the flash's White, the gems' order, an older save's tiers moved once on load; an EX form changing tier (it could not before: its class was in no table) |
 | **not yet run** | Nothing from the batched rig test: R1 and N5 have run (above) |
@@ -348,15 +354,23 @@ the row and the gems in frames, N5 above).
   ladder's. RSQ Score, RSQ Miniboss and RSQ Grenade use it. MeatGrinder's `mg.death`,
   `mg.behave`, `split.group`, `split.child` and `family` went with it on 2026-11-10 and are no longer answered.
 - **Test commands** (console): `netevent rs_tierof` (what the aimed monster is), `netevent rs_retier N`,
-  `netevent rs_retier_up`, `netevent rs_retier_all N`. All go through the flash.
+  `netevent rs_retier_up`, `netevent rs_retier_all N`. All go through the flash. The Test and Debug page's buttons:
+  `netevent rs_cg_spawn N` (0-13), `rs_cg_line`, `rs_cg_clear`, `rs_cg_diag`, `rs_cg_wake` (`RS_Diagnostics.zs`).
+- **A second request while a monster flashes** (since 11-16, as Hackfraud's SetTier): the same target changes
+  nothing; a new target rolls the 5-25-tic wait again and starts the flash over.
+- **Sprite names are this pack's own** (since 11-16): Colourful Hell sprites that shared a name with Brutal Doom 22,
+  XMVE, Legion of Bones or Champions and drew a different picture are renamed (SKEL -> RKEL, DIAB -> RIAB ...), and
+  frames our code never drew under such names are gone, so every pack draws its own art
+  (`docs/SPRITE_CLASHES_2026-11-16.md`). 49 sprite sets our monsters named but the pack lacked came from Colourful Hell
+  1.04 (`sprites/monsters/ch104/`).
 - **Settings that change what spawns or how a monster fights are server settings**, and tier changes run in play code,
   from network events, so every machine does the same thing.
-- **Also in the pk3**, carried over from the RS mod this was cut from and not part of the sets above: the old RS
-  Monsters option pages (Monster Control Center, Elites, Reserve Squads, Health Bars, No More Hitscans, Monster
-  Tiers), defined but with no row that opens them, and most of their settings read by nothing; settings comments,
-  sounds (`SNDINFO`, many pointing at files not in the pk3), strings and font colours from RS_Main's weapon, Gun Bonsai
-  and Score systems; voxel models for pickups and decorations (`VOXELDEF.txt`), brightmaps, health-bar pictures and
-  decal pictures.
+- **Also in the pk3**, carried over from the RS mod this was cut from and not part of the sets above (still to be
+  decided, see the audit): sounds (`SNDINFO`, many aliases pointing at files not in the pk3), font colours from
+  RS_Main's Score (`TEXTCOLO.txt`), voxel models for pickups and decorations (`VOXELDEF.txt`; loaded after Brutal
+  Doom's voxel pack, they draw over its pickups), wall brightmaps nothing points at, decal and score pictures. Gone
+  11-16: the old RS Monsters option pages and the 101 settings only they named, Gun Bonsai's and RS_Main's strings,
+  two unused lights, the health-bar sprites and pictures, 167 colour recipes nothing used.
 - **The painted colour art** (`RS_BDArt.zs`; built on the branch `wip/2026-11-13-recolour`, merged 2026-11-14). A Brutal Doom monster's colour is its
   kit's; a piece's is its `RS_BDHue` (put on by Carry in `RS_BDTier.zs`: its master; else, for a thing that is not a
   monster, its target, the body that threw it, and a maker that holds no colour gives none; else the nearest body

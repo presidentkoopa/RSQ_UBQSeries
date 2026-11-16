@@ -2071,10 +2071,10 @@ class RS_PsychicAra2 : Actor   // CH MASTERMINDS.txt:4108
 	{
 	Spawn:
 	Death:
-		ARNQ C 1;
-		ARNQ B 2 Bright { Radius_Quake(9,9,0,30,0); RSQMN_QuakeFeel.Felt(self, 30 * 64); }
-		ARNQ C 1 Bright A_RadiusGive("RS_DarknessCallwithnewphone",72,RGF_PLAYERS,1);
-		ARNQ B 1;
+		RRNQ C 1;
+		RRNQ B 2 Bright { Radius_Quake(9,9,0,30,0); RSQMN_QuakeFeel.Felt(self, 30 * 64); }
+		RRNQ C 1 Bright A_RadiusGive("RS_DarknessCallwithnewphone",72,RGF_PLAYERS,1);
+		RRNQ B 1;
 		Stop;
 	}
 }
@@ -2119,26 +2119,26 @@ class RS_BlackSpidShade : SpecialSpot   // CH MASTERMINDS.txt:4151
 	States
 	{
 	Spawn:
-		ARNQ A 24;
+		RRNQ A 24;
 		TNT1 A 0 A_RadiusGive("RS_DarknessCallwithnewphone",22,RGF_PLAYERS,1);
-		ARNQ A 0 A_Jump(88,"What","What2");
-		ARNQ D 3 A_FadeOut(0.10);
+		RRNQ A 0 A_Jump(88,"What","What2");
+		RRNQ D 3 A_FadeOut(0.10);
 		Goto Spawn+1;
 	What:
-		ARNQ A 3 A_SetScale(1.5,1.5);
-		ARNQ D 2 A_FadeOut(0.10);
-		ARNQ A 3 A_SetScale(1.75,1.75);
-		ARNQ D 2 A_FadeOut(0.10);
-		ARNQ A 3 A_SetScale(2,2);
-		ARNQ D 2 A_FadeOut(0.10);
+		RRNQ A 3 A_SetScale(1.5,1.5);
+		RRNQ D 2 A_FadeOut(0.10);
+		RRNQ A 3 A_SetScale(1.75,1.75);
+		RRNQ D 2 A_FadeOut(0.10);
+		RRNQ A 3 A_SetScale(2,2);
+		RRNQ D 2 A_FadeOut(0.10);
 		Goto Spawn+1;
 	What2:
-		ARNQ A 3 A_SetScale(1.25,1.25);
-		ARNQ D 2 A_FadeOut(0.10);
-		ARNQ A 3 A_SetScale(1,1);
-		ARNQ D 2 A_FadeOut(0.10);
-		ARNQ A 3 A_SetScale(0.75,0.75);
-		ARNQ D 2 A_FadeOut(0.10);
+		RRNQ A 3 A_SetScale(1.25,1.25);
+		RRNQ D 2 A_FadeOut(0.10);
+		RRNQ A 3 A_SetScale(1,1);
+		RRNQ D 2 A_FadeOut(0.10);
+		RRNQ A 3 A_SetScale(0.75,0.75);
+		RRNQ D 2 A_FadeOut(0.10);
 		Goto Spawn+1;
 	}
 }

@@ -213,7 +213,7 @@ class RS_BrownCGuy2 : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+AVOIDMELEE
 		+NOINFIGHTING
 		+NOFEAR
@@ -356,7 +356,7 @@ class RS_CyanCGuy2 : Actor
 		+FLOORCLIP
 		+AVOIDMELEE
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		+NOICEDEATH
 		+BRIGHT
@@ -373,75 +373,75 @@ class RS_CyanCGuy2 : Actor
 	States
 	{
 	Spawn:
-		CPS2 AB 10 A_Look;
+		RPS2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		CPS2 AABB 2 A_Chase;
+		RPS2 AABB 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 CCDD 2 A_Chase;
+		RPS2 CCDD 2 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_Jump(64,"Dodge1","Dodge2");
 		TNT1 A 0 A_Jump(232,"SeeMe","See2");
 		Loop;
 	See2:
-		CPS2 AABBCCDD 1 A_FastChase;
+		RPS2 AABBCCDD 1 A_FastChase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See;
 	SeeMe:
-		CPS2 A 0 A_JumpIfInTargetLOS("Jumpy",0,JLOSF_DEADNOJUMP,750);
+		RPS2 A 0 A_JumpIfInTargetLOS("Jumpy",0,JLOSF_DEADNOJUMP,750);
 		Goto See;
 	Jumpy:
-		CPS2 A 2 A_FastChase;
+		RPS2 A 2 A_FastChase;
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_cyanbounce', 0) == 1, "See2");
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 A 1 ThrustThingZ(0,64,0,0);
-		CPS2 A 3 ThrustThing(int(angle-randompick(130,180,230)),12,0,0);   // CH: thrustthing(angle-randompick(130,180,230),12,0,0)
-		CPS2 A 1 ThrustThingZ(0,32,0,0);
-		CPS2 A 1 ThrustThing(int(angle),24,0,0);   // CH: thrustthing(angle,24,0,0)
+		RPS2 A 1 ThrustThingZ(0,64,0,0);
+		RPS2 A 3 ThrustThing(int(angle-randompick(130,180,230)),12,0,0);   // CH: thrustthing(angle-randompick(130,180,230),12,0,0)
+		RPS2 A 1 ThrustThingZ(0,32,0,0);
+		RPS2 A 1 ThrustThing(int(angle),24,0,0);   // CH: thrustthing(angle,24,0,0)
 		Goto See;
 	Dodge1:
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_cyanbounce', 0) == 1, "See2");
 		TNT1 A 0 ThrustThingZ(0,68,0,0);
-		CPS2 A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
+		RPS2 A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
 		Goto See;
 	Dodge2:
 		TNT1 A 0 A_JumpIf(RS_Zom.CV('rs_ch_cyanbounce', 0) == 1, "See2");
 		TNT1 A 0 ThrustThingZ(0,68,0,0);
-		CPS2 A 5 ThrustThing(int(angle*256/360+192),20,0,0);   // CH: ThrustThing(angle*256/360+192,20,0,0)
+		RPS2 A 5 ThrustThing(int(angle*256/360+192),20,0,0);   // CH: ThrustThing(angle*256/360+192,20,0,0)
 		Goto See;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 E 11 A_FaceTarget;
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-11,11),0,random(-5,5));
+		RPS2 E 11 A_FaceTarget;
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-11,11),0,random(-5,5));
 		TNT1 A 0 A_CheckSight("See");
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-10,10),0,random(-4,4));
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-10,10),0,random(-4,4));
 		TNT1 A 0 A_CheckSight("See");
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-9,9),0,random(-4,4));
-		TNT1 A 0 A_CheckSight("See");
-		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-8,8),0,random(-3,3));
-		TNT1 A 0 A_CheckSight("See");
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-7,7),0,random(-3,3));
-		TNT1 A 0 A_CheckSight("See");
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-6,6),0,random(-2,2));
-		TNT1 A 0 A_CheckSight("See");
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-5,5),0,random(-2,2));
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-9,9),0,random(-4,4));
 		TNT1 A 0 A_CheckSight("See");
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-4,4),0,random(-1,1));
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-8,8),0,random(-3,3));
 		TNT1 A 0 A_CheckSight("See");
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-3,3),0,random(-1,1));
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-7,7),0,random(-3,3));
 		TNT1 A 0 A_CheckSight("See");
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-2,2));
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-6,6),0,random(-2,2));
 		TNT1 A 0 A_CheckSight("See");
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-1,1));
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-5,5),0,random(-2,2));
+		TNT1 A 0 A_CheckSight("See");
+		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-4,4),0,random(-1,1));
+		TNT1 A 0 A_CheckSight("See");
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-3,3),0,random(-1,1));
+		TNT1 A 0 A_CheckSight("See");
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-2,2));
+		TNT1 A 0 A_CheckSight("See");
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,random(-1,1));
 		TNT1 A 0 A_CheckSight("See");
 	Missile2:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 E 1 A_FaceTarget;
-		CPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,0);
-		CPS2 F 1 A_MonsterRefire(64,"See");
+		RPS2 E 1 A_FaceTarget;
+		RPS2 FE 3 A_CustomMissile("RS_IceZombieShot2",32,0,0);
+		RPS2 F 1 A_MonsterRefire(64,"See");
 		Goto Missile2+1;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -460,22 +460,22 @@ class RS_CyanCGuy2 : Actor
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		CPS2 G 3;
+		RPS2 G 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 G 3 A_Pain;
-		CPS2 G 1 A_Jump(128,"Dodge1","Dodge2");
+		RPS2 G 3 A_Pain;
+		RPS2 G 1 A_Jump(128,"Dodge1","Dodge2");
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		CPS2 H 5;
-		CPS2 I 5 A_Scream;
-		CPS2 J 5 A_NoBlocking(false);
-		CPS2 KLMNO 5;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
-		CPS2 P 5 A_IceGuyDie;
+		RPS2 H 5;
+		RPS2 I 5 A_Scream;
+		RPS2 J 5 A_NoBlocking(false);
+		RPS2 KLMNO 5;
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,254);
+		RPS2 P 5 A_IceGuyDie;
 		Stop;
 	}
 }
@@ -501,8 +501,7 @@ class RS_AbyssCGuy2 : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		SeeSound "lady/aggro";
 		PainSound "science/pain";
 		DeathSound "science/die";
@@ -597,7 +596,7 @@ class RS_AbyssCGuy2 : Actor
 		PZOW Q 5 A_Fall;
 		TNT1 AAA 0 A_SpawnParticle("Black",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,12,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		PZOW RSTUV 5;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
 		PZOW W -1;
 		Stop;
 	Raise:
@@ -626,8 +625,7 @@ class RS_GrayCGuy2 : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		SeeSound "lady/aggro";
 		PainSound "lady/hurt";
 		DeathSound "lady/die";
@@ -745,7 +743,7 @@ class RS_GrayCGuy2 : Actor
 		PZOW P 5 A_XScream;
 		PZOW Q 5 A_Fall;
 		PZOW RSTUV 5;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
 		PZOW W -1;
 		Stop;
 	Raise:
@@ -775,7 +773,7 @@ class RS_FireBluCGuy2 : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "lady/aggro";
 		PainSound "lady/hurt";
 		DeathSound "lady/die";
@@ -869,7 +867,7 @@ class RS_FireBluCGuy2 : Actor
 		PZOW P 5 A_XScream;
 		PZOW Q 5 A_Fall;
 		PZOW RSTUV 5;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
 		PZOW W -1;
 		Stop;
 	Raise:
@@ -1128,14 +1126,14 @@ class RS_BlueCGuy : ChaingunGuy
 		CPOS E 0 A_JumpIfCloser(600,"Closer",false);
 		CPOS E 0 A_JumpIfCloser(1200,"M1",false);
 		CPOS E 3 Bright;
-		CPOS F 6 Bright A_CustomRailgun(random(1,2),0,"none","Blue",RGF_NOPIERCING);
+		CPOS F 6 Bright A_CustomRailgun(random(1,2),0,0,"Blue",RGF_NOPIERCING);
 		CPOS E 0 A_CustomBulletAttack(0,0,1,random(1,4),"RS_BlueChainPuff2");
 		CPOS E 5 Bright;
 		CPOS F 1 A_MonsterRefire(150,"See");
 		Goto Missile+1;
 	M1:
 		CPOS E 3 Bright;
-		CPOS F 6 Bright A_CustomRailgun(random(1,3),0,"none","Blue",RGF_NOPIERCING);
+		CPOS F 6 Bright A_CustomRailgun(random(1,3),0,0,"Blue",RGF_NOPIERCING);
 		CPOS E 0 A_CustomBulletAttack(0,0,1,random(2,8),"RS_BlueChainPuff2");
 		CPOS E 5 Bright;
 		CPOS F 1 A_MonsterRefire(150,"See");
@@ -1306,12 +1304,12 @@ class RS_PurpleCGuy : ChaingunGuy
 		Stop;
 	XDeath:
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
-		CGUP O 5;
-		CGUP P 5 A_XScream;
-		CGUP Q 5 A_NoBlocking;
-		CGUP RS 5;
+		CGUP A 5;
+		CGUP B 5 A_XScream;
+		CGUP C 5 A_NoBlocking;
+		CGUP DE 5;
 		TNT1 AAA 0 A_SpawnParticle("Purple",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CGUP T -1;
+		CGUP F -1;
 		Stop;
 	Raise:
 		CPOS NMLKJIH 5;
@@ -1340,8 +1338,7 @@ class RS_YellowCGuy : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		SeeSound "lady/aggro";
 		PainSound "lady/hurt";
 		DeathSound "lady/die";
@@ -1384,35 +1381,35 @@ class RS_YellowCGuy : Actor
 		TNT1 A 0 A_JumpIfCloser(750,"Spam");
 		TNT1 A 0 A_JumpIfCloser(1250,"M1");
 		TNT1 A 0 A_JumpIfCloser(1900,"M2");
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 5 Bright A_CustomRailgun(random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 4 A_FaceTarget;
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 5 Bright A_CustomRailgun(random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",3,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 4 A_FaceTarget;
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 5 Bright A_CustomRailgun(random(1,2),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",3,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 2;
 		Goto See;
 	M2:
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 4 Bright A_CustomRailgun(random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",1,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 3 A_FaceTarget;
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 4 Bright A_CustomRailgun(random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 3 A_FaceTarget;
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 4 Bright A_CustomRailgun(random(1,3),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,1,0,"RS_CGRailBuff",2,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 2;
 		Goto See;
 	M1:
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 4 Bright A_CustomRailgun(random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 2 A_FaceTarget;
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 4 Bright A_CustomRailgun(random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 2 A_FaceTarget;
-		PZOW F 5 Bright A_CustomRailgun(0,0,"none","Blue",RGF_NOPIERCING);
+		PZOW F 5 Bright A_CustomRailgun(0,0,0,"Blue",RGF_NOPIERCING);
 		PZOW F 4 Bright A_CustomRailgun(random(1,4),0,"blue","blue",RGF_FULLBRIGHT|RGF_NORANDOMPUFFZ,0,0,"RS_CGRailBuff",0,0,0,66,0.7,0.9,"RS_CGRailBuff",7,10);
 		PZOW E 2;
 		Goto See;
@@ -1483,7 +1480,7 @@ class RS_YellowCGuy : Actor
 		PZOW Q 5 A_Fall;
 		TNT1 AAA 0 A_SpawnParticle("Yellow",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,12,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		PZOW RSTUV 5;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
 		PZOW W -1;
 		Stop;
 	Raise:
@@ -1519,7 +1516,7 @@ class RS_RedCGuy : ChaingunGuy
 		+FLOORCLIP
 		+AVOIDMELEE
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		SeeSound "cguy2/see";
 		PainSound "form2/hurt";
@@ -1533,36 +1530,36 @@ class RS_RedCGuy : ChaingunGuy
 	States
 	{
 	Spawn:
-		CPS2 AB 10 A_Look;
+		RPS2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		CPS2 AABB 3 A_Chase;
+		RPS2 AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 CCDD 3 A_Chase;
+		RPS2 CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Dodge1:
-		CPS2 A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
+		RPS2 A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
 		Goto See;
 	Dodge2:
-		CPS2 A 5 ThrustThing(int(angle*256/360+192),20,0,0);   // CH: ThrustThing(angle*256/360+192,20,0,0)
+		RPS2 A 5 ThrustThing(int(angle*256/360+192),20,0,0);   // CH: ThrustThing(angle*256/360+192,20,0,0)
 		Goto See;
 	Missile:
-		CPS2 E 11 A_FaceTarget;
+		RPS2 E 11 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_JumpIfCloser(500,"M1");
 		TNT1 A 0 A_JumpIfCloser(1300,"M2");
-		CPS2 FE 4 A_CustomBulletAttack(random(3,14),0,random(1,2),random(1,2),"RS_DetoPuff3");
-		CPS2 F 1 A_MonsterRefire(64,"See");
+		RPS2 FE 4 A_CustomBulletAttack(random(3,14),0,random(1,2),random(1,2),"RS_DetoPuff3");
+		RPS2 F 1 A_MonsterRefire(64,"See");
 		Goto Missile+1;
 	M2:
-		CPS2 FE 4 A_CustomBulletAttack(random(2,11),0,random(1,2),random(1,2),"RS_DetoPuff2");
-		CPS2 F 1 A_MonsterRefire(64,"See");
+		RPS2 FE 4 A_CustomBulletAttack(random(2,11),0,random(1,2),random(1,2),"RS_DetoPuff2");
+		RPS2 F 1 A_MonsterRefire(64,"See");
 		Goto Missile+1;
 	M1:
-		CPS2 FE 4 A_CustomBulletAttack(random(1,8),0,random(1,3),random(2,4),"RS_DetoPuffCG");
-		CPS2 F 1 A_MonsterRefire(64,"See");
+		RPS2 FE 4 A_CustomBulletAttack(random(1,8),0,random(1,3),random(2,4),"RS_DetoPuffCG");
+		RPS2 F 1 A_MonsterRefire(64,"See");
 		Goto Missile+1;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -1581,33 +1578,33 @@ class RS_RedCGuy : ChaingunGuy
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		CPS2 G 3;
+		RPS2 G 3;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CPS2 G 3 A_Pain;
-		CPS2 G 1 A_Jump(128,"Dodge1","Dodge2");
+		RPS2 G 3 A_Pain;
+		RPS2 G 1 A_Jump(128,"Dodge1","Dodge2");
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		CPS2 H 5;
-		CPS2 I 5 A_Scream;
-		CPS2 J 5 A_Fall;
-		CPS2 KLMNO 5;
-		CPS2 P -1;
+		RPS2 H 5;
+		RPS2 I 5 A_Scream;
+		RPS2 J 5 A_Fall;
+		RPS2 KLMNO 5;
+		RPS2 P -1;
 		Stop;
 	XDeath:
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
-		CPS2 Q 5;
-		CPS2 R 5 A_XScream;
-		CPS2 S 5 A_Fall;
-		CPS2 TUVW 5;
+		RPS2 Q 5;
+		RPS2 R 5 A_XScream;
+		RPS2 S 5 A_Fall;
+		RPS2 TUVW 5;
 		TNT1 AAA 0 A_SpawnParticle("Red",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		CPS2 X -1;
+		RPS2 X -1;
 		Stop;
 	Raise:
-		CPS2 PONMLKJIH 5;
+		RPS2 PONMLKJIH 5;
 		Goto See;
 	}
 }
@@ -1651,7 +1648,7 @@ class RS_BlackCGuyEX : Actor
 		PainChance "DIMp", 0;
 		Monster;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		+DONTMORPH
 		-NORADIUSDMG
@@ -1693,7 +1690,7 @@ class RS_BlackCGuyEX : Actor
 		TNT1 A 0 A_JumpIfCloser(1200,"YE");
 		Goto Missile;
 	Phase2:
-		TNT1 A 0 { bMISSILEEVENMORE = true; }
+		TNT1 A 0 { RS_MissileChance.SetEvenMore(self, true); }
 		TNT1 A 0 { bALWAYSFAST = true; }
 		Goto Missile+2;
 	YE:
@@ -1794,7 +1791,7 @@ class RS_BlackCGuy2 : Actor   // CH Chaingunners.txt:2280 -- The General
 		PainChance "DIMp", 0;
 		Monster;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		+DONTMORPH
 		-NORADIUSDMG
@@ -1906,7 +1903,7 @@ class RS_WhiteCguy2 : Actor
 		+BOSS
 		-NORADIUSDMG
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		+NOFEAR
 		DropItem "RS_CH_SoulSphere";
@@ -2059,7 +2056,7 @@ class RS_WhiteCguy2 : Actor
 		FSZS I 11 A_Scream;
 		FSZS J 11 A_NoBlocking;
 		FSZS KLM 11;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cactus",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,128);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cactus",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,128);
 		FSZS N -1;
 		Stop;
 	}

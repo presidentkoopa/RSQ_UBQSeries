@@ -929,10 +929,10 @@ class RS_AbyssBaronHandFire3 : Actor   // CH Barons.txt:1367
 	States
 	{
 	Spawn:
-		FRFX ABCD 8 Bright;
+		RRFX ABCD 8 Bright;
 		Goto Death;
 	Death:
-		FRFX HIJKLMNO 1 Bright;
+		RRFX HIJKLMNO 1 Bright;
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssBaronSoul",0,0,32,0,0,0,0);
 		Stop;
 	}
@@ -959,10 +959,10 @@ class RS_AbyssBaronHandFire2 : Actor   // CH Barons.txt:1391
 	States
 	{
 	Spawn:
-		FRFX ABCD 1 Bright;
+		RRFX ABCD 1 Bright;
 		Goto Death;
 	Death:
-		FRFX HIJKLMNO 1 Bright A_Explode(random(1,7),32,0);
+		RRFX HIJKLMNO 1 Bright A_Explode(random(1,7),32,0);
 		Stop;
 	}
 }
@@ -995,9 +995,9 @@ class RS_AbyssBaronFlare : Actor   // CH Barons.txt:1417
 		Loop;
 	Death:
 		TNT1 A 0 A_SetScale(2.5,1.75);
-		CBAL CD 3 Bright;
+		QBAL CD 3 Bright;
 		TNT1 A 0 A_Explode(random(20,80),128);
-		CBAL EFG 3 Bright;
+		QBAL EFG 3 Bright;
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssBaronHandFire2",232,0,0,0,0,0,0);
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssBaronHandFire2",64,0,0,0,0,0,0);
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssBaronHandFire2",128,0,0,0,0,0,0);

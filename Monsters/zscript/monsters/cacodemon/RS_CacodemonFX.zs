@@ -105,7 +105,7 @@ class RS_DFlare : Actor   // CH Archviles.txt:3927 -- the orb's laser dart
 		VBA3 AB 3 Bright A_SpawnItemEx("RS_MFlareFX",0,0,0,0,0,0,0,128);
 		Loop;
 	Death:
-		CBAL CDEFG 3 Bright;   // CBAL ships in sprites/monsters/fx (10 lumps, matches CH's sprites/fx)
+		QBAL CDEFG 3 Bright;   // CBAL ships in sprites/monsters/fx (10 lumps, matches CH's sprites/fx)
 		Stop;
 	}
 }
@@ -591,25 +591,25 @@ class RS_AbyssCacoHidi : Actor   // CH Cacodemons.txt:676 -- abyss seeker flame
 	States
 	{
 	Spawn:
-		FRFX A 1 Bright A_SeekerMissile(2,2);
+		RRFX A 1 Bright A_SeekerMissile(2,2);
 		TNT1 AAA 0 A_SpawnItemEx("RS_AbyssCacoZap2",random(-12,12),random(-12,12),random(-1,1),0,0,0,0);
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssShotIdentifier",0,0,0,random(1,7),0,random(-5,5),random(0,359),SXF_TRANSFERTRANSLATION|SXF_NOCHECKPOSITION);
-		FRFX B 1 Bright A_Weave(3,1,5,0);
+		RRFX B 1 Bright A_Weave(3,1,5,0);
 		TNT1 AAA 0 A_SpawnItemEx("RS_AbyssCacoZap2",random(-12,12),random(-12,12),random(-1,1),0,0,0,0);
-		FRFX C 1 Bright A_SeekerMissile(2,2);
+		RRFX C 1 Bright A_SeekerMissile(2,2);
 		TNT1 AAA 0 A_SpawnItemEx("RS_AbyssCacoZap2",random(-12,12),random(-12,12),random(-1,1),0,0,0,0);
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssShotIdentifier",0,0,0,random(1,7),0,random(-5,5),random(0,359),SXF_TRANSFERTRANSLATION|SXF_NOCHECKPOSITION);
-		FRFX D 1 Bright A_Weave(3,1,5,0);
+		RRFX D 1 Bright A_Weave(3,1,5,0);
 		TNT1 AAA 0 A_SpawnItemEx("RS_AbyssCacoZap2",random(-12,12),random(-12,12),random(-1,1),0,0,0,0);
 		Loop;
 	Death:
 		TNT1 AAAAAAAAA 0 A_SpawnItemEx("RS_AbyssCacoZap2",random(-64,64),random(-64,64),random(-32,32),0,0,0,0);
 		TNT1 A 0 A_SetScale(1.5,1.5);
-		FRFX HIJ 2 Bright A_Explode(random(4,10),88);   // per-frame explode: CH's flame burst, deliberate
+		RRFX HIJ 2 Bright A_Explode(random(4,10),88);   // per-frame explode: CH's flame burst, deliberate
 		TNT1 AAAAAAAAA 0 A_SpawnItemEx("RS_AbyssCacoZap2",random(-64,64),random(-64,64),random(-32,32),0,0,0,0);
-		FRFX KLM 2 Bright A_Explode(random(4,12),128);
+		RRFX KLM 2 Bright A_Explode(random(4,12),128);
 		TNT1 AAAAAAAAA 0 A_SpawnItemEx("RS_AbyssCacoZap2",random(-64,64),random(-64,64),random(-32,32),0,0,0,0);
-		FRFX NO 2 Bright;
+		RRFX NO 2 Bright;
 		Stop;
 	}
 }
@@ -1233,8 +1233,7 @@ class RS_RedSpikeCacoEX : Actor   // CH Cacodemons.txt:2662 -- EX orbiting spike
 		+FLOAT
 		+NOGRAVITY
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+NOTRIGGER
 		+NOICEDEATH
 		+NOBLOOD

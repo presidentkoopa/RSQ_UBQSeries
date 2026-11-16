@@ -308,17 +308,17 @@ class RS_AbyssDogFire : Actor   // CH Demons.txt:792 -- abyss hound's seeker fla
 	States
 	{
 	Spawn:
-		FRFX A 1 Bright A_SeekerMissile(2,2);
+		RRFX A 1 Bright A_SeekerMissile(2,2);
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssShotIdentifier",0,0,0,random(1,7),0,random(-5,5),random(0,359),SXF_TRANSFERTRANSLATION|SXF_NOCHECKPOSITION);
-		FRFX B 1 Bright A_Weave(3,1,5,0);
-		FRFX C 1 Bright A_SeekerMissile(2,2);
+		RRFX B 1 Bright A_Weave(3,1,5,0);
+		RRFX C 1 Bright A_SeekerMissile(2,2);
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssShotIdentifier",0,0,0,random(1,7),0,random(-5,5),random(0,359),SXF_TRANSFERTRANSLATION|SXF_NOCHECKPOSITION);
-		FRFX D 1 Bright A_Weave(3,1,5,0);
+		RRFX D 1 Bright A_Weave(3,1,5,0);
 		Loop;
 	Death:
-		FRFX HIJ 2 Bright A_Explode(random(1,9),32);
-		FRFX KLM 2 Bright A_Explode(random(1,7),64);
-		FRFX NO 2 Bright;
+		RRFX HIJ 2 Bright A_Explode(random(1,9),32);
+		RRFX KLM 2 Bright A_Explode(random(1,7),64);
+		RRFX NO 2 Bright;
 		Stop;
 	}
 }
@@ -434,10 +434,10 @@ class RS_BloodDemonArm : Actor   // CH Demons.txt:1580 -- yellow's severed arm (
 	States
 	{
 	Spawn:
-		SG2A ABCDEFGH 2;
+		RG2A ABCDEFGH 2;
 		Loop;
 	Death:
-		SG2A I -1;
+		RG2A I -1;
 		Loop;
 	}
 }
@@ -489,7 +489,7 @@ class RS_RedDemonBloodBolt2 : Actor   // CH Demons.txt:1734 -- the droplet spray
 	States
 	{
 	Spawn:
-		BLUD CBA 8;
+		RLUD CBA 8;
 		// OWNER RULING 2026-08-06: "i want it visually consistent, so use BAL1".
 		// SPRY was proven unresolvable (see header) -- the art exists in neither
 		// CH nor CHP, and CHP retypes the same dead token. CH's three OTHER blood
@@ -503,7 +503,7 @@ class RS_RedDemonBloodBolt2 : Actor   // CH Demons.txt:1734 -- the droplet spray
 		BAL1 E 5;       // CH: SPRY G 2
 		Stop;
 	Death:
-		BLUD C 0;
+		RLUD C 0;
 		Stop;
 	}
 }
@@ -526,7 +526,7 @@ class RS_RedDemonBloodBolt3 : Actor   // CH spectres.txt:1031 -- fired by both f
 	States
 	{
 	Spawn:
-		BLUD CBA 8;
+		RLUD CBA 8;
 		// OWNER RULING 2026-08-06 -- same as RS_RedDemonBloodBolt2 above; see the
 		// note there and the header. CH's 6+1 at 4/3 tics (27 total) becomes 5+1
 		// over the same span: ABCDE at 4, E held 7. Deliberate departure, not a
@@ -535,7 +535,7 @@ class RS_RedDemonBloodBolt3 : Actor   // CH spectres.txt:1031 -- fired by both f
 		BAL1 E 7;       // CH: SPRY G 3
 		Stop;
 	Death:
-		BLUD C 0;
+		RLUD C 0;
 		Stop;
 	}
 }
@@ -554,10 +554,10 @@ class RS_BloodDemonArm2 : Actor   // CH Demons.txt:1756 -- red's severed arm (sp
 	States
 	{
 	Spawn:
-		SG2A ABCDEFGH 2;
+		RG2A ABCDEFGH 2;
 		Loop;
 	Death:
-		SG2A I -1;
+		RG2A I -1;
 		Loop;
 	}
 }
@@ -602,17 +602,17 @@ class RS_DogFire : Actor   // CH Demons.txt:2034 -- butcher hound's flame lick
 	{
 	Spawn:
 		TNT1 A 2 Bright;
-		FRFX ABCD 2 Bright A_Explode(1,8);   // per-frame explode: CH's growing fireburst, deliberate
-		FRFX D 0 A_LowGravity;
-		FRFX EFG 2 Bright A_Explode(1,16);
-		FRFX HIJ 2 Bright A_Explode(1,32);
-		FRFX KLM 2 Bright A_Explode(1,64);
-		FRFX NO 2 Bright;
+		RRFX ABCD 2 Bright A_Explode(1,8);   // per-frame explode: CH's growing fireburst, deliberate
+		RRFX D 0 A_LowGravity;
+		RRFX EFG 2 Bright A_Explode(1,16);
+		RRFX HIJ 2 Bright A_Explode(1,32);
+		RRFX KLM 2 Bright A_Explode(1,64);
+		RRFX NO 2 Bright;
 		Stop;
 	Death:
-		FRFX HIJ 2 Bright A_Explode(1,32);
-		FRFX KLM 2 Bright A_Explode(1,64);
-		FRFX NO 2 Bright;
+		RRFX HIJ 2 Bright A_Explode(1,32);
+		RRFX KLM 2 Bright A_Explode(1,64);
+		RRFX NO 2 Bright;
 		Stop;
 	}
 }

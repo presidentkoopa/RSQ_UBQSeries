@@ -761,9 +761,15 @@ class RS_Retier play
 		}
 
 		// Already queued? Re-target instead of stacking a second job, so
-		// repeated calls cannot double-swap.
+		// repeated calls cannot double-swap. As HF_Monster.SetTier does it (Monster Assembly 2026-11-16): the same
+		// target changes nothing; a new target starts the wait and the flash over (a fresh 5..25-tic roll, ticker 0).
 		let j = JobFor(mo);
-		if (j) { j.targetTier = tier; return; }
+		if (j)
+		{
+			if (j.targetTier == tier) return;
+			j.targetTier = tier; j.timer = random(5, 25); j.ticker = 0;
+			return;
+		}
 
 		let nj = RS_RetierJob(new("RS_RetierJob"));
 		nj.mo         = mo;
@@ -788,7 +794,12 @@ class RS_Retier play
 			k.SetRung(rung, true);
 			return;
 		}
-		if (j) { j.targetTier = min(13, rung); j.kitRung = rung; return; }
+		if (j)
+		{
+			if (j.kitRung == rung) return;   // HF_Monster.SetTier: the same target changes nothing
+			j.targetTier = min(13, rung); j.kitRung = rung; j.timer = random(5, 25); j.ticker = 0;   // a new one starts over
+			return;
+		}
 		if (rung == k.rung) return;
 		let nj = RS_RetierJob(new("RS_RetierJob"));
 		nj.mo         = mo;

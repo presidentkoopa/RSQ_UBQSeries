@@ -254,7 +254,7 @@ class RS_BrownBaron2 : Actor   // CH Barons.txt:40
 		+DONTHARMSPECIES
 		+QUICKTORETALIATE
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		-NORADIUSDMG
 		+NOFEAR
 		+LAXTELEFRAGDMG
@@ -378,7 +378,7 @@ class RS_CyanBaron2 : Actor   // CH Barons.txt:397
 		+DONTHARMSPECIES
 		+QUICKTORETALIATE
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		-NORADIUSDMG
 		+NOFEAR
 		+BRIGHT
@@ -618,7 +618,7 @@ class RS_CyanBaron2 : Actor   // CH Barons.txt:397
 		LOHS L 8 A_NoBlocking(false);
 		LOHS MN 8;
 		LOHS O 10 A_BossDeath();
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,246);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,246);
 		LOHS O 10 A_IceGuyDie();
 		Stop;
 	}
@@ -649,8 +649,7 @@ class RS_AbyssBaron2 : Actor   // CH Barons.txt:978
 		PainChance "DIMp", 0;
 		+DONTMORPH
 		+FLOORCLIP
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		-NORADIUSDMG
 		+NOFEAR
 		+DONTHARMSPECIES
@@ -841,8 +840,7 @@ class RS_GrayBaron2 : Actor   // CH Barons.txt:1480
 		PainChance "DIMp", 0;
 		Obituary "%o got broken down by the stoney baron";
 		+FLOORCLIP
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		-NORADIUSDMG
 		+NOFEAR
 		+DONTHARMSPECIES
@@ -984,7 +982,7 @@ class RS_FireBluBaron2 : Actor   // CH Barons.txt:1757
 		PainChance "DIMp", 0;
 		Obituary "%o was dunked by FireBlu Baron";
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		-NORADIUSDMG
 		+NOFEAR
 		+DONTHARMSPECIES
@@ -1223,7 +1221,7 @@ class RS_GreenBaron : BaronOfHell   // CH Barons.txt:2040
 		+BOSSDEATH
 		+DONTHARMSPECIES
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "baron/sight";
 		PainSound "baron/pain";
 		DeathSound "baron/death";
@@ -1355,7 +1353,7 @@ class RS_BlueBaron : BaronOfHell   // CH Barons.txt:2264
 		Monster;
 		+FLOORCLIP
 		+BOSSDEATH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		+QUICKTORETALIATE
 		SeeSound "baron/sight";
@@ -1478,7 +1476,7 @@ class RS_PurpleBaron : BaronOfHell   // CH Barons.txt:2524
 		+BOSSDEATH
 		+DONTHARMSPECIES
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOFEAR
 		SeeSound "baron/sight";
 		PainSound "baron/pain";
@@ -1621,7 +1619,7 @@ class RS_YellowBaron : BaronOfHell   // CH Barons.txt:2793
 		+DONTHARMSPECIES
 		+QUICKTORETALIATE
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		-NORADIUSDMG
 		+NOFEAR
 		+LAXTELEFRAGDMG
@@ -1774,7 +1772,7 @@ class RS_RedBaron1 : Actor   // CH Barons.txt:3172
 		Obituary "%o was firepowered by Red Baron";
 		HitObituary "%o got maimed by Red Baron";
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		-NORADIUSDMG
 		+NOFEAR
 		+DONTHARMSPECIES
@@ -1879,7 +1877,7 @@ class RS_RedBaron1 : Actor   // CH Barons.txt:3172
 		BOS4 M 4 Bright A_PlaySound("monster/ar2sit");
 		BOS4 M 1 Bright { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
 		BOS4 M 8 Bright A_CustomMissile("RS_RedPower",10,0,0,0);
-		BOS4 M 3 Bright { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenMore",TRUE)
+		BOS4 M 3 Bright { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileEvenMore",TRUE)
 		BOS4 MN 5 Bright;
 		BOS4 O 5 Bright A_CustomMissile("RS_RedPower",10,0,0,0);
 		BOS4 O 2 Bright A_SetSpeed(28);
@@ -1936,7 +1934,7 @@ class RS_RedBaron3 : Actor   // CH Barons.txt:3326
 		Obituary "%o was shot down by Red Baron";
 		HitObituary "%o got maimed by Red Baron";
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BOSS
 		-NORADIUSDMG
 		+DONTMORPH
@@ -2014,7 +2012,7 @@ class RS_RedBaron3 : Actor   // CH Barons.txt:3326
 		BOS4 M 4 Bright A_PlaySound("monster/ar2sit");
 		BOS4 M 2 Bright { A_Quake(10,30,0,256,""); RSQMN_QuakeFeel.Felt(self, 256); }   // CH: A_Quake(10,30,0,256,0)
 		BOS4 M 8 Bright A_CustomMissile("RS_RedPower",10,0,0,0);
-		BOS4 M 3 Bright { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenMore",TRUE)
+		BOS4 M 3 Bright { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileEvenMore",TRUE)
 		BOS4 MN 8 Bright;
 		BOS4 O 6 Bright A_CustomMissile("RS_RedPower",10,0,0,0);
 		BOS4 O 2 Bright A_SetSpeed(28);
@@ -2088,7 +2086,7 @@ class RS_RedBaron2 : Actor   // CH Barons.txt:3602
 		+NOGRAVITY
 		+FLOAT
 		+DONTHARMCLASS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTMORPH
 		+QUICKTORETALIATE
 		-NORADIUSDMG
@@ -2276,7 +2274,7 @@ class RS_BlackBaron2 : Actor   // CH Barons.txt:3876
 		+BOSS
 		+DONTHARMCLASS
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+QUICKTORETALIATE
 		-NORADIUSDMG
 		+DONTHARMSPECIES
@@ -2386,7 +2384,7 @@ class RS_BlackBaron2 : Actor   // CH Barons.txt:3876
 		CUTH D 0 A_JumpIf(user_uhoh >= 1, "Nah");
 		CUTH DDDDD 1 Bright A_CustomMissile("RS_DeepCharge1",random(5,76),random(-88,88));
 		CUTH D 1 Bright { bNOPAIN = true; }            // CH: A_ChangeFlag("NoPain",TRUE)
-		CUTH D 1 Bright { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("Missileevenmore",TRUE)
+		CUTH D 1 Bright { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("Missileevenmore",TRUE)
 		CUTH D 1 Bright A_SetSpeed(17);
 		CUTH D 8 Bright A_PlaySound("deepone/pain");
 		CUTH D 1 { user_uhoh += 1; }   // CH: A_SetUserVar("User_uhoh",User_uhoh+1)
@@ -2448,7 +2446,7 @@ class RS_DeepTentacle : Actor   // CH Barons.txt:4061
 		+LOOKALLAROUND
 		+THRUSPECIES
 		+NOTARGET
-		+MISSILEEVENMORE
+		MissileChanceMult 0.125;
 		-NORADIUSDMG
 		Translation "231:231=112:112","161:162=115:117","163:165=119:122","166:167=125:127","16:31=98:109","32:42=105:111","43:46=9:11","47:47=0:0","255:255=103:103","65:76=100:105","128:134=96:101","144:151=104:111";
 		DropItem "RS_HealthBundle", 128;
@@ -2674,8 +2672,7 @@ class RS_WhiteBaron2 : Actor   // CH Barons.txt:4646
 		+THRUSPECIES
 		+BOSS
 		+DONTHARMCLASS
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+QUICKTORETALIATE
 		-NORADIUSDMG
 		+DONTHARMSPECIES

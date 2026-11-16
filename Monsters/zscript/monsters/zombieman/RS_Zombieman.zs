@@ -425,7 +425,7 @@ class RS_CyanZombie2 : Actor   // CH Zombies.txt:245
 		Monster;
 		+FLOORCLIP
 		+THRUSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+AVOIDMELEE
 		+NOICEDEATH
 		SeeSound "Zom2/see";
@@ -524,7 +524,7 @@ class RS_FireBluZombie2 : Actor
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "grunt/sight";
 		AttackSound "grunt/attack";
 		PainSound "grunt/pain";
@@ -652,7 +652,7 @@ class RS_GrayZombie2 : ZombieMan
 		PainChance "DIMp", 0;
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+AVOIDMELEE
 		SeeSound "Zom2/see";
 		AttackSound "grunt/attack";
@@ -1056,7 +1056,7 @@ class RS_GreenZombie : ZombieMan
 		Monster;
 		+FLOORCLIP
 		+DONTHARMSPECIES
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		SeeSound "grunt/sight";
 		AttackSound "grunt/attack";
 		PainSound "grunt/pain";
@@ -1183,7 +1183,7 @@ class RS_BlueZombie : ZombieMan
 		PainChance "DIMp", 0;
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+AVOIDMELEE
 		SeeSound "Zom2/see";
 		AttackSound "grunt/attack";
@@ -1330,7 +1330,7 @@ class RS_PurpleZombie : ZombieMan
 		PainChance 120;
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+AVOIDMELEE
 		SeeSound "Zom2/see";
 		AttackSound "grunt/attack";
@@ -1423,12 +1423,12 @@ class RS_PurpleZombie : ZombieMan
 		Goto Death+1;
 	XDeath:
 		// CH: TNT1 AAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain not imported
-		ZOMP N 5;   // CH: ZOMP M -- the lump does not exist (ZOMP ships N-U only, in CH too, and M is in no IWAD). Unlike SGUP M this state is 5 TICS, so the gib animation opened with 5 tics of nothing. Held N, the set's real first gib frame, so N now plays 5+5. Frame count and tic count both unchanged. Fixed 2026-08-06 (owner: nothing invisible).
-		ZOMP N 5 A_XScream;
-		ZOMP O 5 A_NoBlocking;
-		ZOMP PQRST 5;
+		ZOMP A 5;   // CH: ZOMP M -- the lump does not exist (ZOMP ships N-U only, in CH too, and M is in no IWAD). Unlike SGUP M this state is 5 TICS, so the gib animation opened with 5 tics of nothing. Held N, the set's real first gib frame, so N now plays 5+5. Frame count and tic count both unchanged. Fixed 2026-08-06 (owner: nothing invisible).
+		ZOMP A 5 A_XScream;
+		ZOMP B 5 A_NoBlocking;
+		ZOMP CDEFG 5;
 		TNT1 AAAA 0 A_SpawnParticle("Purple",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,24,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		ZOMP U -1;
+		ZOMP H -1;
 		Stop;
 	Raise:
 		POSS KJIH 5;
@@ -1504,7 +1504,7 @@ class RS_YellowZombie : ZombieMan
 		// CH: DropItem "RLDuelistArmorPickup",32 -- DRLA stripped per owner 2026-08-05
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+AVOIDMELEE
 		+DONTHARMSPECIES
 		Translation "168:191=160:167","152:159=164:167","40:47=232:235","32:39=213:223","26:31=248:248";
@@ -1603,7 +1603,7 @@ class RS_YellowZombie : ZombieMan
 		CZOW Q 5 A_Fall;
 		CZOW RSTUV 5;
 		TNT1 AAAAA 0 A_SpawnParticle("Yellow",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,24,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Pantsu",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,248);
 		CZOW W -1;
 		Stop;
 	Raise:
@@ -1847,7 +1847,7 @@ class RS_BlackZombieEX : Actor   // CH Zombies.txt:1607 -- Player X
 		+QUICKTORETALIATE
 		+FLOORCLIP
 		+LOOKALLAROUND
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTMORPH
 		-NORADIUSDMG
 		+NOFEAR
@@ -2062,7 +2062,7 @@ class RS_BlackZombie1 : Actor   // CH Zombies.txt:1888 -- Player 9
 		+QUICKTORETALIATE
 		+FLOORCLIP
 		+LOOKALLAROUND
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTMORPH
 		-NORADIUSDMG
 		+NOFEAR
@@ -2456,7 +2456,7 @@ class RS_WhiteZombie1 : Actor   // CH Zombies.txt:2282 -- UNDERTAKER
 		+QUICKTORETALIATE
 		+FLOORCLIP
 		+LOOKALLAROUND
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOTARGET
 		-NORADIUSDMG
 		+NOFEAR
@@ -2593,7 +2593,7 @@ class RS_WhiteZombie1 : Actor   // CH Zombies.txt:2282 -- UNDERTAKER
 		MAGE A 0 A_JumpIf(user_skel1 >= 2,"Reset");
 		MAGE A 0 A_PlaySound("Under/Goodie",7,2,false,ATTN_NONE);
 		MAGE AAAAAAAAAAAAAAA 0 A_SpawnParticle("Green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,12,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
-		MAGE E 1 { bMISSILEEVENMORE = true; }
+		MAGE E 1 { RS_MissileChance.SetEvenMore(self, true); }
 		MAGE E 1 { user_skel1 = user_skel1 + 2; }
 		MAGE E 5 A_SetSpeed(16);
 		MAGE E 0 A_SetScale(1.1,1.1);

@@ -328,7 +328,7 @@ class RS_BrownCybie2 : Actor   // CH CYBIES.txt:69
 		+DONTMORPH
 		+FULLVOLDEATH
 		+FULLVOLACTIVE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		+NOFEAR
 		Tag "ComposterDemon";
@@ -336,7 +336,7 @@ class RS_BrownCybie2 : Actor   // CH CYBIES.txt:69
 	States
 	{
 	Spawn:
-		SUPR A 0;
+		RUPR A 0;
 	KillIt:
 		TNT1 A 0;
 		Goto Idle;
@@ -497,7 +497,7 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 		-FLOATBOB
 		-NORADIUSDMG
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BRIGHT
 		+NOFEAR
 		+DONTHARMCLASS
@@ -527,10 +527,10 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 	States
 	{
 	Spawn:
-		CARD A 1;
+		RARD A 1;
 		Goto Idle;
 	Idle:
-		CARD AB 4 Bright A_Look;
+		RARD AB 4 Bright A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
@@ -539,20 +539,20 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 		SUPS A 0 { bNOGRAVITY = true; }   // CH: A_Changeflag("NOGRAVITY",TRUE)
 		TNT1 A 0 A_SetTranslation("CYANCYB02");
 		TNT1 A 0 A_SpawnItemEx("RS_CyanCybieHower",0,0,46,0,0,-2,0,SXF_NOCHECKPOSITION);
-		CARD AB 4 A_Chase;
+		RARD AB 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_Jump(12,"Dodge");
 		TNT1 A 0 A_SpawnItemEx("RS_CyanCybieHower",0,0,42,0,0,-1,0,SXF_NOCHECKPOSITION);
-		CARD AB 4 A_Chase;
+		RARD AB 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_Jump(12,"Dodge");
 		Loop;
 	Dodge:
 		TNT1 A 0 A_SpawnItemEx("RS_CyanCybieHower",0,0,42,0,0,-2,0,SXF_NOCHECKPOSITION);
-		CARD AB 3 A_FastChase;
+		RARD AB 3 A_FastChase;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_SpawnItemEx("RS_CyanCybieHower",0,0,42,0,0,-1,0,SXF_NOCHECKPOSITION);
-		CARD AB 3 A_FastChase;
+		RARD AB 3 A_FastChase;
 		TNT1 AA 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Goto See+3;
 	PhaseBack:
@@ -560,65 +560,65 @@ class RS_CyanCybie2 : Actor   // CH CYBIES.txt:788
 		TNT1 AAAAAAAAAA 0 A_SpawnItemEx("RS_BaronCyanBombTrail",0,0,32,random(4,33),0,random(-25,25),random(135,270),SXF_NOCHECKPOSITION);
 		TNT1 AAAAAAAAAA 0 A_SpawnItemEx("RS_BaronCyanBombTrail",0,0,32,random(4,33),0,random(-25,25),random(270,359),SXF_NOCHECKPOSITION);
 		TNT1 A 0 A_SetTranslation("CYANCYB01");
-		CARD D 8 ThrustThing(int(angle-randompick(180,200,160)),80,1,0);   // CH: thrustthing(angle-randompick(180,200,160),80,1,0)
-		CARD D 8 ThrustThing(int(angle-random(120,240)),80,1,0);
-		CARD D 8 ThrustThing(int(angle-random(80,280)),80,1,0);
-		CARD D 8 ThrustThing(int(angle-randompick(20,0,40)),34,1,0);
+		RARD D 8 ThrustThing(int(angle-randompick(180,200,160)),80,1,0);   // CH: thrustthing(angle-randompick(180,200,160),80,1,0)
+		RARD D 8 ThrustThing(int(angle-random(120,240)),80,1,0);
+		RARD D 8 ThrustThing(int(angle-random(80,280)),80,1,0);
+		RARD D 8 ThrustThing(int(angle-randompick(20,0,40)),34,1,0);
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CARD D 6 { bNOPAIN = true; }   // CH: A_changeflag(NOPAIN,TRUE)
+		RARD D 6 { bNOPAIN = true; }   // CH: A_changeflag(NOPAIN,TRUE)
 		TNT1 A 0 A_SetTranslation("CYANCYB02");
 		Goto See+3;
 	Pain:
-		CARD A 2 A_SetTranslation("CYANCYB01");
+		RARD A 2 A_SetTranslation("CYANCYB01");
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CARD A 2 A_Pain;
-		CARD A 2 A_SetTranslation("CYANCYB02");
+		RARD A 2 A_Pain;
+		RARD A 2 A_SetTranslation("CYANCYB02");
 		Goto PhaseBack;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH12",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		CARD B 0 A_JumpIfCloser(1500,"MissileBarrage");
+		RARD B 0 A_JumpIfCloser(1500,"MissileBarrage");
 	Sprayit:
-		CARD C 6 A_FaceTarget;
-		CARD C 4 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
-		CARD C 1 A_FaceTarget;
-		CARD DDDDDDDDDDDD 1 A_CustomMissile("RS_CyanCybieSprayIce",72,-30,random(-4,4),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
-		CARD DDDDDDDDDDDD 0 A_CustomMissile("RS_CyanCybieSprayIce",72,-30,random(-4,4),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
-		CARD DDDDDDDDDDDD 1 A_CustomMissile("RS_CyanCybieSprayIce",72,-30,random(-4,4),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
-		CARD DDDDDDDDDDDD 0 A_CustomMissile("RS_CyanCybieSprayIce",72,-30,random(-4,4),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
-		CARD C 1 A_FaceTarget;
-		CARD DDDDDDDDDD 1 A_CustomMissile("RS_CyanCybieSprayIce",random(69,75),-30,random(-2,2),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
-		CARD DDDDDDDDDD 0 A_CustomMissile("RS_CyanCybieSprayIce",random(69,75),-30,random(-2,2),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
-		CARD DDDDDDDDDD 1 A_CustomMissile("RS_CyanCybieSprayIce",random(69,75),-30,random(-2,2),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
-		CARD DDDDDDDDDD 0 A_CustomMissile("RS_CyanCybieSprayIce",random(69,75),-30,random(-2,2),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
-		CARD D 0 { bNOPAIN = false; }   // CH: A_changeflag(NOPAIN,FALSE)
+		RARD C 6 A_FaceTarget;
+		RARD C 4 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
+		RARD C 1 A_FaceTarget;
+		RARD DDDDDDDDDDDD 1 A_CustomMissile("RS_CyanCybieSprayIce",72,-30,random(-4,4),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
+		RARD DDDDDDDDDDDD 0 A_CustomMissile("RS_CyanCybieSprayIce",72,-30,random(-4,4),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
+		RARD DDDDDDDDDDDD 1 A_CustomMissile("RS_CyanCybieSprayIce",72,-30,random(-4,4),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
+		RARD DDDDDDDDDDDD 0 A_CustomMissile("RS_CyanCybieSprayIce",72,-30,random(-4,4),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
+		RARD C 1 A_FaceTarget;
+		RARD DDDDDDDDDD 1 A_CustomMissile("RS_CyanCybieSprayIce",random(69,75),-30,random(-2,2),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
+		RARD DDDDDDDDDD 0 A_CustomMissile("RS_CyanCybieSprayIce",random(69,75),-30,random(-2,2),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
+		RARD DDDDDDDDDD 1 A_CustomMissile("RS_CyanCybieSprayIce",random(69,75),-30,random(-2,2),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
+		RARD DDDDDDDDDD 0 A_CustomMissile("RS_CyanCybieSprayIce",random(69,75),-30,random(-2,2),CMF_OFFSETPITCH|CMF_SAVEPITCH,random(-4,4));
+		RARD D 0 { bNOPAIN = false; }   // CH: A_changeflag(NOPAIN,FALSE)
 		Goto See+3;
 	MissileBarrage:
-		CARD C 3 A_FaceTarget;
-		CARD C 3 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
-		CARD D 8 A_CustomMissile("RS_CyanCybieBigIce2",72,-30,0);
-		CARD C 3 A_FaceTarget;
-		CARD C 3 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
-		CARD D 8 A_CustomMissile("RS_CyanCybieBigIce",72,-30,randompick(-5,5));
-		CARD C 3 A_FaceTarget;
-		CARD C 3 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
-		CARD D 8 A_CustomMissile("RS_CyanCybieBigIce",72,-30,randompick(-15,15,7,0,-7));
+		RARD C 3 A_FaceTarget;
+		RARD C 3 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
+		RARD D 8 A_CustomMissile("RS_CyanCybieBigIce2",72,-30,0);
+		RARD C 3 A_FaceTarget;
+		RARD C 3 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
+		RARD D 8 A_CustomMissile("RS_CyanCybieBigIce",72,-30,randompick(-5,5));
+		RARD C 3 A_FaceTarget;
+		RARD C 3 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
+		RARD D 8 A_CustomMissile("RS_CyanCybieBigIce",72,-30,randompick(-15,15,7,0,-7));
 		TNT1 A 0 A_Jump(32,"Sprayit");
-		CARD C 3 A_FaceTarget;
-		CARD C 3 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
-		CARD D 8 A_CustomMissile("RS_CyanCybieBigIce3",72,-30,randompick(-15,15,7,0,-7));
-		CARD D 0 { bNOPAIN = false; }   // CH: A_changeflag(NOPAIN,FALSE)
+		RARD C 3 A_FaceTarget;
+		RARD C 3 A_CustomMissile("RS_CyanCybieGunFlare",72,-30,0);
+		RARD D 8 A_CustomMissile("RS_CyanCybieBigIce3",72,-30,randompick(-15,15,7,0,-7));
+		RARD D 0 { bNOPAIN = false; }   // CH: A_changeflag(NOPAIN,FALSE)
 		Goto See;
 	Death:
-		CARD E 0 { bFLOATBOB = false; }   // CH: A_ChangeFlag(FLOATBOB,0)
-		CARD E 8 Bright;
-		CARD F 8 Bright A_Scream;
-		CARD G 8 Bright A_NoBlocking;
+		RARD E 0 { bFLOATBOB = false; }   // CH: A_ChangeFlag(FLOATBOB,0)
+		RARD E 8 Bright;
+		RARD F 8 Bright A_Scream;
+		RARD G 8 Bright A_NoBlocking;
 		TNT1 A 0 A_KillMaster("extreme",KILS_FOILINVUL|KILS_KILLMISSILES);
-		CARD H 8 Bright;
-		CARD I 8 Bright A_Explode;
-		CARD JK 8 Bright;
-		CARD L 8 Bright A_BossDeath;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,242);
+		RARD H 8 Bright;
+		RARD I 8 Bright A_Explode;
+		RARD JK 8 Bright;
+		RARD L 8 Bright A_BossDeath;
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,242);
 		Stop;
 	}
 }
@@ -649,7 +649,7 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		+NOPAIN
 		+NOFEAR
@@ -693,28 +693,28 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 	KillIt:
 		TNT1 A 0;
 	Idle:
-		TERM AB 10 A_Look;
+		RERM AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		TERM A 1 A_PlaySound("AbyCyb/step",0);
-		TERM A 3 A_Chase;
+		RERM A 1 A_PlaySound("AbyCyb/step",0);
+		RERM A 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssCybieDecoFlame",random(-16,16),random(-16,16),random(42,66),random(1,2),0,random(1,9),random(-359,359));
-		TERM A 4 A_Chase;
+		RERM A 4 A_Chase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(12,76),random(1,6),0,random(1,3),random(-359,359));
-		TERM B 4 A_Chase;
+		RERM B 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssCybieDecoFlame",random(-16,16),random(-16,16),random(42,66),random(1,2),0,random(1,9),random(-359,359));
-		TERM B 4 A_Chase;
+		RERM B 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(12,76),random(1,6),0,random(1,3),random(-359,359));
-		TERM C 1 A_PlaySound("AbyCyb/step",0);
-		TERM C 3 A_Chase;
+		RERM C 1 A_PlaySound("AbyCyb/step",0);
+		RERM C 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssCybieDecoFlame",random(-16,16),random(-16,16),random(42,66),random(1,2),0,random(1,9),random(-359,359));
-		TERM C 4 A_Chase;
+		RERM C 4 A_Chase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(12,76),random(1,6),0,random(1,3),random(-359,359));
-		TERM D 4 A_Chase;
+		RERM D 4 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_AbyssCybieDecoFlame",random(-16,16),random(-16,16),random(42,66),random(1,2),0,random(1,9),random(-359,359));
-		TERM D 4 A_Chase;
+		RERM D 4 A_Chase;
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss",random(-8,8),random(-8,8),random(12,76),random(1,6),0,random(1,3),random(-359,359));
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
@@ -724,87 +724,87 @@ class RS_AbyssCybie2 : Actor   // CH CYBIES.txt:1112
 		TNT1 A 0 A_Jump(64,"Missile");
 		Goto See;
 	Pain:
-		TERM L 3 A_JumpIfHealthLower(6000,"Nomore");
+		RERM L 3 A_JumpIfHealthLower(6000,"Nomore");
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TERM L 6 A_Pain;
+		RERM L 6 A_Pain;
 		Goto See;
 	Nomore:
-		TERM L 2;
+		RERM L 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		TERM L 2 { bNOPAIN = true; }            // CH: a_changeflag("NOPAIN",TRUE)
-		TERM L 2 A_SetSpeed(20);
-		TERM L 2 { bMISSILEEVENMORE = true; }   // CH: a_changeflag("Missileevenmore",TRUE)
+		RERM L 2 { bNOPAIN = true; }            // CH: a_changeflag("NOPAIN",TRUE)
+		RERM L 2 A_SetSpeed(20);
+		RERM L 2 { RS_MissileChance.SetEvenMore(self, true); }   // CH: a_changeflag("Missileevenmore",TRUE)
 		Goto See;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH9",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyssBubbleDemon",random(64,1028),random(-128,128),random(5,32),11,0,2,random(-90,90),SXF_NOCHECKPOSITION);
-		TERM E 0 A_Jump(255,"Bubble");
+		RERM E 0 A_Jump(255,"Bubble");
 		TNT1 A 0 A_JumpIfCloser(300,"Wave");
 		TNT1 A 0 A_JumpIfCloser(1500,"Choices");
 	RedDed:
-		TERM J 1 A_PlaySound("AbyCyb/Atk",0,2,false,ATTN_NONE);
-		TERM J 18 Bright A_FaceTarget;
-		TERM K 8 Bright A_CustomRailgun(random(20,80),-20,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",1);
-		TERM J 6;
-		TERM J 1 A_Jump(64,"Rocket");
+		RERM J 1 A_PlaySound("AbyCyb/Atk",0,2,false,ATTN_NONE);
+		RERM J 18 Bright A_FaceTarget;
+		RERM K 8 Bright A_CustomRailgun(random(20,80),-20,"white","white",RGF_NOPIERCING,0,0,"RS_WhiteFatRB3",0,0,0,0,0.4,1.0,"RS_WhiteFatRB4",1);
+		RERM J 6;
+		RERM J 1 A_Jump(64,"Rocket");
 		Goto See;
 	Wave:
-		TERM E 1 A_PlaySound("AbyCyb/Atk",0);
-		TERM EF 3 A_FaceTarget;
-		TERM F 1 Bright A_CustomMissile("RS_AbyCybWave",32,30,random(5,25));
-		TERM F 1 Bright A_CustomMissile("RS_AbyCybWave",44,0,random(-1,1));
-		TERM F 1 Bright A_CustomMissile("RS_AbyCybWave",30,-30,random(-25,-5));
-		TERM F 1 Bright A_CustomMissile("RS_AbyCybWave",24,0,random(-7,7));
+		RERM E 1 A_PlaySound("AbyCyb/Atk",0);
+		RERM EF 3 A_FaceTarget;
+		RERM F 1 Bright A_CustomMissile("RS_AbyCybWave",32,30,random(5,25));
+		RERM F 1 Bright A_CustomMissile("RS_AbyCybWave",44,0,random(-1,1));
+		RERM F 1 Bright A_CustomMissile("RS_AbyCybWave",30,-30,random(-25,-5));
+		RERM F 1 Bright A_CustomMissile("RS_AbyCybWave",24,0,random(-7,7));
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss2",random(12,32),random(-12,12),random(12,42),11,0,4,random(-15,15),SXF_NOCHECKPOSITION);
-		TERM EF 2;
-		TERM JK 3 A_FaceTarget;
-		TERM K 1 Bright A_CustomMissile("RS_AbyCybWave",32,-30,random(10,30));
-		TERM K 1 Bright A_CustomMissile("RS_AbyCybWave",44,0,random(-5,5));
-		TERM K 1 Bright A_CustomMissile("RS_AbyCybWave",32,30,random(-30,-10));
-		TERM K 1 Bright A_CustomMissile("RS_AbyCybWave",24,0,random(-10,10));
+		RERM EF 2;
+		RERM JK 3 A_FaceTarget;
+		RERM K 1 Bright A_CustomMissile("RS_AbyCybWave",32,-30,random(10,30));
+		RERM K 1 Bright A_CustomMissile("RS_AbyCybWave",44,0,random(-5,5));
+		RERM K 1 Bright A_CustomMissile("RS_AbyCybWave",32,30,random(-30,-10));
+		RERM K 1 Bright A_CustomMissile("RS_AbyCybWave",24,0,random(-10,10));
 		TNT1 AAA 0 A_SpawnItemEx("RS_SplashAbyss2",random(12,32),random(-12,12),random(12,42),11,0,4,random(-15,15),SXF_NOCHECKPOSITION);
-		TERM KJ 2;
-		TERM J 1 A_Jump(64,"Choices");
+		RERM KJ 2;
+		RERM J 1 A_Jump(64,"Choices");
 		Goto See;
 	Choices:
-		TERM E 0 A_Jump(255,"Bubble","Rocket","RedDed","Wave");
+		RERM E 0 A_Jump(255,"Bubble","Rocket","RedDed","Wave");
 		Goto See;
 	Rocket:
-		TERM E 8 A_FaceTarget;
-		TERM F 8 Bright A_CustomMissile("RS_AbyssCybRocket",38,15,0,0);
+		RERM E 8 A_FaceTarget;
+		RERM F 8 Bright A_CustomMissile("RS_AbyssCybRocket",38,15,0,0);
 		TNT1 AA 0 A_SpawnItemEx("RS_SplashAbyssBubbleDemon",random(32,528),random(-68,68),random(5,32),11,0,2,random(-15,15),SXF_NOCHECKPOSITION);
-		TERM E 8 A_FaceTarget;
-		TERM F 8 Bright A_CustomMissile("RS_AbyssCybRocket",38,15,random(-8,8),0);
+		RERM E 8 A_FaceTarget;
+		RERM F 8 Bright A_CustomMissile("RS_AbyssCybRocket",38,15,random(-8,8),0);
 		TNT1 AA 0 A_SpawnItemEx("RS_SplashAbyssBubbleDemon",random(64,528),random(-68,68),random(5,32),11,0,2,random(-45,45),SXF_NOCHECKPOSITION);
-		TERM E 8 A_FaceTarget;
-		TERM F 8 Bright A_CustomMissile("RS_AbyssCybRocket",38,15,random(-15,15),0);
+		RERM E 8 A_FaceTarget;
+		RERM F 8 Bright A_CustomMissile("RS_AbyssCybRocket",38,15,random(-15,15),0);
 		TNT1 AA 0 A_SpawnItemEx("RS_SplashAbyssBubbleDemon",random(128,756),random(-68,68),random(5,32),11,0,2,random(-65,65),SXF_NOCHECKPOSITION);
 		Goto See;
 	Bubble:
-		TERM G 2 A_FaceTarget;
-		TERM H 1 Bright A_CustomMissile("RS_AbyCybBubProj",38,15,random(-9,0));
-		TERM H 1 Bright A_PlaySound("AbyCyb/Atk",0);
-		TERM G 2 A_FaceTarget;
-		TERM I 1 Bright A_CustomMissile("RS_AbyCybBubProj",38,15,random(0,9));
+		RERM G 2 A_FaceTarget;
+		RERM H 1 Bright A_CustomMissile("RS_AbyCybBubProj",38,15,random(-9,0));
+		RERM H 1 Bright A_PlaySound("AbyCyb/Atk",0);
+		RERM G 2 A_FaceTarget;
+		RERM I 1 Bright A_CustomMissile("RS_AbyCybBubProj",38,15,random(0,9));
 		TNT1 AAAA 0 A_SpawnItemEx("RS_SplashAbyss2",random(12,1028),random(-12,12),random(5,32),11,0,3,random(-32,32),SXF_NOCHECKPOSITION);
-		TERM I 1 Bright A_PlaySound("AbyCyb/Atk",0);
-		TERM G 0 A_Jump(32,"Choices");
-		TERM G 1 A_SpidRefire;
+		RERM I 1 Bright A_PlaySound("AbyCyb/Atk",0);
+		RERM G 0 A_Jump(32,"Choices");
+		RERM G 1 A_SpidRefire;
 		Goto Bubble;
 	Death:
-		TERM M 6 A_Scream;
-		TERM N 4;
-		TERM OPQ 4 Bright;
-		TERM R 0 A_FaceTarget;
-		TERM R 0 A_SpawnItemEx("RS_TerminatorHead",15,0,90,10,0,0,-170,128);
-		TERM R 0 A_SpawnItemEx("RS_TerminatorShoulder",60,0,75,8,0,0,-70,128);
-		TERM R 4 Bright A_SpawnItemEx("RS_TerminatorArm",60,0,0,3,0,0,-90,128);
-		TERM STUV 4 Bright;
-		TERM W 4;
-		TERM X 6 A_Fall;
-		TERM YZ 6;
+		RERM M 6 A_Scream;
+		RERM N 4;
+		RERM OPQ 4 Bright;
+		RERM R 0 A_FaceTarget;
+		RERM R 0 A_SpawnItemEx("RS_TerminatorHead",15,0,90,10,0,0,-170,128);
+		RERM R 0 A_SpawnItemEx("RS_TerminatorShoulder",60,0,75,8,0,0,-70,128);
+		RERM R 4 Bright A_SpawnItemEx("RS_TerminatorArm",60,0,0,3,0,0,-90,128);
+		RERM STUV 4 Bright;
+		RERM W 4;
+		RERM X 6 A_Fall;
+		RERM YZ 6;
 		TNT1 A 0 A_KillMaster("extreme",KILS_FOILINVUL|KILS_KILLMISSILES);
-		TERM "[" -1 A_BossDeath;
+		RERM "[" -1 A_BossDeath;
 		Stop;
 	}
 }
@@ -850,7 +850,7 @@ class RS_GrayCybie2 : Actor   // CH CYBIES.txt:1576
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		+NOPAIN
 		+NOFEAR
@@ -859,89 +859,89 @@ class RS_GrayCybie2 : Actor   // CH CYBIES.txt:1576
 	States
 	{
 	Spawn:
-		SUPR A 0;
+		RUPR A 0;
 	KillIt:
 		TNT1 A 0;
 		Goto Idle;
 	Idle:
-		SUPR AB 10 A_Look;
+		RUPR AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SUPR A 3 A_Hoof;
+		RUPR A 3 A_Hoof;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SUPR ABBCC 3 A_Chase;
+		RUPR ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SUPR D 6 A_Hoof;
+		RUPR D 6 A_Hoof;
 		Loop;
 	Missile:
-		SUPR E 1 A_JumpIfHealthLower(3500,"BuffUP");
+		RUPR E 1 A_JumpIfHealthLower(3500,"BuffUP");
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SUPR E 1 A_Jump(64,"Missiles1");
-		SUPR E 1 A_Jump(64,"Missiles2");
-		SUPR E 6 A_FaceTarget;
-		SUPR E 8 A_PlaySound("CybLow");
-		SUPR EG 8 A_VileTarget("RS_CHBSTarget");
-		SUPR G 2 A_FaceTarget;
+		RUPR E 1 A_Jump(64,"Missiles1");
+		RUPR E 1 A_Jump(64,"Missiles2");
+		RUPR E 6 A_FaceTarget;
+		RUPR E 8 A_PlaySound("CybLow");
+		RUPR EG 8 A_VileTarget("RS_CHBSTarget");
+		RUPR G 2 A_FaceTarget;
 		TNT1 A 0 A_CheckSight("See");
-		SUPR G 12 A_VileTarget("RS_RockSlideCH1");
-		SUPR A 8;
+		RUPR G 12 A_VileTarget("RS_RockSlideCH1");
+		RUPR A 8;
 		Goto See;
 	Missiles1:
-		SUPR E 6 A_FaceTarget;
-		SUPR F 9;
-		SUPR F 0 A_CustomMissile("RS_BaronOfDirtCH3",54,-45,0);
-		SUPR F 0 A_CustomMissile("RS_BaronOfDirtCH3",54,-48,-4);
-		SUPR F 0 A_CustomMissile("RS_BaronOfDirtCH3",54,-42,4);
+		RUPR E 6 A_FaceTarget;
+		RUPR F 9;
+		RUPR F 0 A_CustomMissile("RS_BaronOfDirtCH3",54,-45,0);
+		RUPR F 0 A_CustomMissile("RS_BaronOfDirtCH3",54,-48,-4);
+		RUPR F 0 A_CustomMissile("RS_BaronOfDirtCH3",54,-42,4);
 		Goto See;
 	Missiles2:
-		SUPR F 6;
+		RUPR F 6;
 		// RS_VileGroundSpike is EXPECTED FROM THE ARCHVILES LANE
 		// (CH Archviles.txt:1926).
-		SUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,0);
-		SUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,45,CMF_ABSOLUTEANGLE);
-		SUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,90,CMF_ABSOLUTEANGLE);
-		SUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,135,CMF_ABSOLUTEANGLE);
-		SUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,215,CMF_ABSOLUTEANGLE);
-		SUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,260,CMF_ABSOLUTEANGLE);
-		SUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,305,CMF_ABSOLUTEANGLE);
+		RUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,0);
+		RUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,45,CMF_ABSOLUTEANGLE);
+		RUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,90,CMF_ABSOLUTEANGLE);
+		RUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,135,CMF_ABSOLUTEANGLE);
+		RUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,215,CMF_ABSOLUTEANGLE);
+		RUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,260,CMF_ABSOLUTEANGLE);
+		RUPR F 0 A_CustomMissile("RS_VileGroundSpike",0,0,305,CMF_ABSOLUTEANGLE);
 		// PROVEN MISSING IN CH: "CybieLow" -- CH SNDINFO only defines
 		// "CybLow" (CH SNDINFO.txt:453). Silent in CH too; kept verbatim.
-		SUPR E 8 A_PlaySound("CybieLow");
+		RUPR E 8 A_PlaySound("CybieLow");
 		Goto See;
 	BuffUP:
-		SUPR E 0 A_JumpIf(User_Doner >= 1,"Nah");
-		SUPR E 8 A_PlaySound("CybLow");
-		SUPR G 12 { A_Quake(8,90,256,528,""); RSQMN_QuakeFeel.Felt(self, 528); }   // CH: a_quake(8,90,256,528,0)
-		SUPR G 12 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenmore",TRUE)
-		SUPR B 24;
-		SUPR B 2 A_SetSpeed(19);
-		SUPR G 1 { User_Doner = User_Doner + 1; }   // CH: A_SetUserVar("User_Doner",User_Doner+1)
+		RUPR E 0 A_JumpIf(User_Doner >= 1,"Nah");
+		RUPR E 8 A_PlaySound("CybLow");
+		RUPR G 12 { A_Quake(8,90,256,528,""); RSQMN_QuakeFeel.Felt(self, 528); }   // CH: a_quake(8,90,256,528,0)
+		RUPR G 12 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileEvenmore",TRUE)
+		RUPR B 24;
+		RUPR B 2 A_SetSpeed(19);
+		RUPR G 1 { User_Doner = User_Doner + 1; }   // CH: A_SetUserVar("User_Doner",User_Doner+1)
 		Goto See;
 	Nah:
-		SUPR E 0;
+		RUPR E 0;
 		Goto Missile+2;
 	Pain:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SUPR G 10 A_Pain;
+		RUPR G 10 A_Pain;
 		Goto See;
 	Death:
-		SUPR H 6 A_PlaySound("superdemon/snarl");
-		SUPR H 0 A_CustomMissile("RS_HKRedDeath",90,-10,CMF_AIMOFFSET,2,10);
-		SUPR H 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
-		SUPR H 0 A_CustomMissile("RS_HKRedDeath",20,30,CMF_AIMOFFSET,2,10);
-		SUPR I 6 A_Scream;
-		SUPR I 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
-		SUPR I 0 A_CustomMissile("RS_HKRedDeath",70,10,CMF_AIMOFFSET,2,10);
-		SUPR J 0 A_CustomMissile("RS_HKRedDeath",20,50,CMF_AIMOFFSET,2,10);
-		SUPR KL 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
-		SUPR L 0 A_CustomMissile("RS_HKRedDeath",10,-10,CMF_AIMOFFSET,2,10);
-		SUPR M 6 A_PlaySound("superdemon/crash");
-		SUPR N 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
-		SUPR OOOOOOOOOOOOOOOOOOOOOO 1 A_CustomMissile("RS_HKRedDeath",random(1,50),random(-10,30),random(0,180),CMF_AIMOFFSET,2,10);
-		SUPR O 1 A_NoBlocking;
+		RUPR H 6 A_PlaySound("superdemon/snarl");
+		RUPR H 0 A_CustomMissile("RS_HKRedDeath",90,-10,CMF_AIMOFFSET,2,10);
+		RUPR H 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
+		RUPR H 0 A_CustomMissile("RS_HKRedDeath",20,30,CMF_AIMOFFSET,2,10);
+		RUPR I 6 A_Scream;
+		RUPR I 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
+		RUPR I 0 A_CustomMissile("RS_HKRedDeath",70,10,CMF_AIMOFFSET,2,10);
+		RUPR J 0 A_CustomMissile("RS_HKRedDeath",20,50,CMF_AIMOFFSET,2,10);
+		RUPR KL 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
+		RUPR L 0 A_CustomMissile("RS_HKRedDeath",10,-10,CMF_AIMOFFSET,2,10);
+		RUPR M 6 A_PlaySound("superdemon/crash");
+		RUPR N 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
+		RUPR OOOOOOOOOOOOOOOOOOOOOO 1 A_CustomMissile("RS_HKRedDeath",random(1,50),random(-10,30),random(0,180),CMF_AIMOFFSET,2,10);
+		RUPR O 1 A_NoBlocking;
 		TNT1 A 0 A_KillMaster("extreme",KILS_FOILINVUL|KILS_KILLMISSILES);
-		SUPR O -1 A_BossDeath;
+		RUPR O -1 A_BossDeath;
 		Stop;
 	}
 }
@@ -971,7 +971,7 @@ class RS_FireBluCybie2 : Actor   // CH CYBIES.txt:1947
 		MeleeRange 75;
 		Monster;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1101,7 +1101,7 @@ class RS_CommonCybie : Cyberdemon   // CH CYBIES.txt:2150
 		PainChance "DIMp", 0;
 		Monster;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1200,7 +1200,7 @@ class RS_GreenCybie : Cyberdemon   // CH CYBIES.txt:2213
 		MeleeRange 75;
 		Monster;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1290,7 +1290,7 @@ class RS_BlueCybie : Cyberdemon   // CH CYBIES.txt:2357
 		PainChance "DIMp", 0;
 		Monster;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1427,7 +1427,7 @@ class RS_SpecialHK : RS_PurpleHK   // CH CYBIES.txt:2670
 		Speed 11;
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		+THRUSPECIES
 		-COUNTKILL
@@ -1438,11 +1438,11 @@ class RS_SpecialHK : RS_PurpleHK   // CH CYBIES.txt:2670
 	States
 	{
 	See:
-		BOS2 AABBCCDD 3 A_Chase;
+		ROS2 AABBCCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 A 0 A_JumpIfMasterCloser(1000,"See");
-		BOS2 A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
-		BOS2 A 1;
+		ROS2 A 0 A_JumpIfMasterCloser(1000,"See");
+		ROS2 A 2 A_Warp(AAPTR_MASTER,5,1,6,0,WARPF_NOCHECKPOSITION);
+		ROS2 A 1;
 		Loop;
 	}
 }
@@ -1471,7 +1471,7 @@ class RS_PurpleCybie : Cyberdemon   // CH CYBIES.txt:2699
 		PainChance "DIMp", 0;
 		Monster;
 		+BOSS
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
@@ -1631,7 +1631,7 @@ class RS_YellowCybie : Actor   // CH CYBIES.txt:2991
 		+FLOORCLIP
 		-NORADIUSDMG
 		+DONTMORPH
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMCLASS
 		+NOPAIN
 		+NOFEAR
@@ -1647,88 +1647,88 @@ class RS_YellowCybie : Actor   // CH CYBIES.txt:2991
 	Announce:
 		// CH: SUPR A 2 ACS_NamedExecuteAlways("AnnounceCybie1") -- ACS
 		// announcer stripped per the standing order; the 2-tic frame stays.
-		SUPR A 2;
+		RUPR A 2;
 		Goto Idle;
 	Idle:
-		SUPR AB 10 A_Look;
+		RUPR AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		SUPR A 3 A_Hoof;
+		RUPR A 3 A_Hoof;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SUPR ABBCC 3 A_Chase;
+		RUPR ABBCC 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SUPR D 3 A_Hoof;
-		SUPR D 3;
+		RUPR D 3 A_Hoof;
+		RUPR D 3;
 		Loop;
 	Missile:
-		SUPR E 1 A_JumpIfHealthLower(3500,"BuffUP");
+		RUPR E 1 A_JumpIfHealthLower(3500,"BuffUP");
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SUPR E 1 A_JumpIfCloser(800,"RainOffire");
-		SUPR E 1 A_Jump(255,"Missiles1");
+		RUPR E 1 A_JumpIfCloser(800,"RainOffire");
+		RUPR E 1 A_Jump(255,"Missiles1");
 	RainOffire:
-		SUPR E 6 A_FaceTarget;
-		SUPR E 8 A_PlaySound("cyber/sight");
-		SUPR GGGGGGGGGG 1 A_CustomMissile("RS_SparkPuff1",78,-56,CMF_AIMOFFSET,random(0,360),random(0,360));
-		SUPR E 8;
-		SUPR G 12 A_CustomMissile("RS_CybieRainMaker",100,0);
-		SUPR G 0 A_CustomMissile("RS_CybieRainMaker",100,0,randompick(-30,30));
+		RUPR E 6 A_FaceTarget;
+		RUPR E 8 A_PlaySound("cyber/sight");
+		RUPR GGGGGGGGGG 1 A_CustomMissile("RS_SparkPuff1",78,-56,CMF_AIMOFFSET,random(0,360),random(0,360));
+		RUPR E 8;
+		RUPR G 12 A_CustomMissile("RS_CybieRainMaker",100,0);
+		RUPR G 0 A_CustomMissile("RS_CybieRainMaker",100,0,randompick(-30,30));
 		TNT1 AAA 0 A_SpawnItemEx("RS_CybieRain",random(64,128),random(-64,64),552,random(1,15),0,random(-12,1),random(-15,15));
-		SUPR GG 1 A_SpawnItemEx("RS_CybieRain",random(64,256),random(-64,64),552,random(1,15),0,random(-12,1),random(-33,33));
-		SUPR GG 1 A_SpawnItemEx("RS_CybieRain",random(64,176),random(-84,84),552,random(1,15),0,random(-12,1),random(-15,15));
-		SUPR GGG 1 A_SpawnItemEx("RS_CybieRain",random(128,526),random(-88,88),552,random(1,15),0,random(-12,1),random(-21,21));
-		SUPR GGG 1 A_SpawnItemEx("RS_CybieRain",random(252,728),random(-94,94),552,random(1,15),0,random(-12,1),random(-26,26));
-		SUPR GG 1 A_SpawnItemEx("RS_CybieRain",random(252,528),random(-84,84),552,random(1,15),0,random(-12,1),random(-15,15));
-		SUPR GGGG 1 A_SpawnItemEx("RS_CybieRain",randompick(252,528,725,912),random(-64,64),552,random(1,15),0,random(-12,1),random(-15,15));
-		SUPR GGG 1 A_SpawnItemEx("RS_CybieRain",randompick(528,725,912,1028),random(-64,64),552,random(1,15),0,random(-12,1),random(-15,15));
-		SUPR A 8;
+		RUPR GG 1 A_SpawnItemEx("RS_CybieRain",random(64,256),random(-64,64),552,random(1,15),0,random(-12,1),random(-33,33));
+		RUPR GG 1 A_SpawnItemEx("RS_CybieRain",random(64,176),random(-84,84),552,random(1,15),0,random(-12,1),random(-15,15));
+		RUPR GGG 1 A_SpawnItemEx("RS_CybieRain",random(128,526),random(-88,88),552,random(1,15),0,random(-12,1),random(-21,21));
+		RUPR GGG 1 A_SpawnItemEx("RS_CybieRain",random(252,728),random(-94,94),552,random(1,15),0,random(-12,1),random(-26,26));
+		RUPR GG 1 A_SpawnItemEx("RS_CybieRain",random(252,528),random(-84,84),552,random(1,15),0,random(-12,1),random(-15,15));
+		RUPR GGGG 1 A_SpawnItemEx("RS_CybieRain",randompick(252,528,725,912),random(-64,64),552,random(1,15),0,random(-12,1),random(-15,15));
+		RUPR GGG 1 A_SpawnItemEx("RS_CybieRain",randompick(528,725,912,1028),random(-64,64),552,random(1,15),0,random(-12,1),random(-15,15));
+		RUPR A 8;
 		Goto See;
 	Missiles1:
-		SUPR E 6 A_FaceTarget;
-		SUPR F 9;
-		SUPR F 0 A_CustomMissile("RS_Vollrey",54,-45,0);
-		SUPR F 0 A_CustomMissile("RS_Vollrey2",54,-48,-2);
-		SUPR F 0 A_CustomMissile("RS_Vollrey2",54,-42,2);
+		RUPR E 6 A_FaceTarget;
+		RUPR F 9;
+		RUPR F 0 A_CustomMissile("RS_Vollrey",54,-45,0);
+		RUPR F 0 A_CustomMissile("RS_Vollrey2",54,-48,-2);
+		RUPR F 0 A_CustomMissile("RS_Vollrey2",54,-42,2);
 		Goto See;
 	BuffUP:
-		SUPR E 0 A_JumpIf(User_Doner >= 1,"Nah");
-		SUPR E 8 A_PlaySound("cyber/sight");
-		SUPR G 12 A_CustomMissile("RS_CybieRainMaker",100,0);
-		SUPR G 12 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenmore",TRUE)
-		SUPR B 2 { bTHRUACTORS = true; }         // CH: A_ChangeFlag("THRUACTORS",TRUE)
-		SUPR G 1 A_SpawnItemEx("RS_YellowHK",0,-65,66,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		SUPR G 1 A_SpawnItemEx("RS_YellowHK",0,65,-66,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
-		SUPR B 24;
-		SUPR B 2 { bTHRUACTORS = false; }        // CH: A_ChangeFlag("THRUACTORS",FALSE)
-		SUPR G 1 { User_Doner = User_Doner + 1; }   // CH: A_SetUserVar("User_Doner",User_Doner+1)
+		RUPR E 0 A_JumpIf(User_Doner >= 1,"Nah");
+		RUPR E 8 A_PlaySound("cyber/sight");
+		RUPR G 12 A_CustomMissile("RS_CybieRainMaker",100,0);
+		RUPR G 12 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileEvenmore",TRUE)
+		RUPR B 2 { bTHRUACTORS = true; }         // CH: A_ChangeFlag("THRUACTORS",TRUE)
+		RUPR G 1 A_SpawnItemEx("RS_YellowHK",0,-65,66,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		RUPR G 1 A_SpawnItemEx("RS_YellowHK",0,65,-66,0,0,0,0,SXF_SETMASTER|SXF_NOCHECKPOSITION);
+		RUPR B 24;
+		RUPR B 2 { bTHRUACTORS = false; }        // CH: A_ChangeFlag("THRUACTORS",FALSE)
+		RUPR G 1 { User_Doner = User_Doner + 1; }   // CH: A_SetUserVar("User_Doner",User_Doner+1)
 		Goto See;
 	Nah:
-		SUPR E 0 A_JumpIfCloser(700,"Ormaybe");
-		SUPR E 0 A_Jump(255,"Missiles1");
+		RUPR E 0 A_JumpIfCloser(700,"Ormaybe");
+		RUPR E 0 A_Jump(255,"Missiles1");
 		Goto Missile+1;
 	Ormaybe:
-		SUPR E 0 A_Jump(255,"RainOfFire","Missiles1");
+		RUPR E 0 A_Jump(255,"RainOfFire","Missiles1");
 		Goto Missile+1;
 	Pain:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH5",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		SUPR G 10 A_Pain;
+		RUPR G 10 A_Pain;
 		Goto See;
 	Death:
-		SUPR H 6 A_PlaySound("superdemon/snarl");
-		SUPR H 0 A_CustomMissile("RS_HKRedDeath",90,-10,CMF_AIMOFFSET,2,10);
-		SUPR H 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
-		SUPR H 0 A_CustomMissile("RS_HKRedDeath",20,30,CMF_AIMOFFSET,2,10);
-		SUPR I 6 A_Scream;
-		SUPR I 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
-		SUPR I 0 A_CustomMissile("RS_HKRedDeath",70,10,CMF_AIMOFFSET,2,10);
-		SUPR J 6 A_CustomMissile("RS_SuperDemonArm",54,-50,-50);
-		SUPR J 0 A_CustomMissile("RS_HKRedDeath",20,50,CMF_AIMOFFSET,2,10);
-		SUPR KL 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
-		SUPR L 0 A_CustomMissile("RS_HKRedDeath",10,-10,CMF_AIMOFFSET,2,10);
-		SUPR M 6 A_PlaySound("superdemon/crash");
-		SUPR N 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
-		SUPR O 6 A_NoBlocking;
-		SUPR O -1 A_BossDeath;
+		RUPR H 6 A_PlaySound("superdemon/snarl");
+		RUPR H 0 A_CustomMissile("RS_HKRedDeath",90,-10,CMF_AIMOFFSET,2,10);
+		RUPR H 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
+		RUPR H 0 A_CustomMissile("RS_HKRedDeath",20,30,CMF_AIMOFFSET,2,10);
+		RUPR I 6 A_Scream;
+		RUPR I 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
+		RUPR I 0 A_CustomMissile("RS_HKRedDeath",70,10,CMF_AIMOFFSET,2,10);
+		RUPR J 6 A_CustomMissile("RS_SuperDemonArm",54,-50,-50);
+		RUPR J 0 A_CustomMissile("RS_HKRedDeath",20,50,CMF_AIMOFFSET,2,10);
+		RUPR KL 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
+		RUPR L 0 A_CustomMissile("RS_HKRedDeath",10,-10,CMF_AIMOFFSET,2,10);
+		RUPR M 6 A_PlaySound("superdemon/crash");
+		RUPR N 6 A_CustomMissile("Blood",0,0,random(-80,-100),2,random(45,80));
+		RUPR O 6 A_NoBlocking;
+		RUPR O -1 A_BossDeath;
 		Stop;
 	}
 }
@@ -1769,7 +1769,7 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 		+QUICKTORETALIATE
 		+FLOORCLIP
 		-NORADIUSDMG
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTMORPH
 		+NOICEDEATH
 		+DONTHARMCLASS
@@ -1891,7 +1891,7 @@ class RS_RedCybie : Actor   // CH CYBIES.txt:3308
 	Phase2:
 		MOLO H 1 { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",True)
 		MOLO H 10 A_PlaySound("moloch/phase2",0,4);
-		MOLO H 12 { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenMore",True)
+		MOLO H 12 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileEvenMore",True)
 		MOLO H 2 { User_PhaseIt = User_PhaseIt + 1; }   // CH: A_SetUserVar
 		MOLO HHHHHHHHH 5 A_CustomMissile("RS_VolcanoBall1",random(20,80),random(-40,40),CMF_AIMOFFSET,random(0,360),random(0,360));
 		MOLO I 12 Bright;
@@ -2001,7 +2001,7 @@ class RS_MolochWraith : Actor   // CH CYBIES.txt:3692
 		+DONTHARMCLASS
 		+NOBLOOD
 		+NOEXPLODEFLOOR
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		AttackSound "moloch/wraithattack";
 		SeeSound "moloch/wraith";
 		PainSound "skull/melee";
@@ -2078,7 +2078,7 @@ class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 		+BOSS
 		-NOTARGET
 		+DONTHARMCLASS
-		+MISSILEEVENMORE
+		MissileChanceMult 0.125;
 		+QUICKTORETALIATE
 		+NOICEDEATH
 		+DONTMORPH
@@ -2167,7 +2167,7 @@ class RS_BlackCybie2 : Actor   // CH CYBIES.txt:4082
 	Phase2:
 		BSMT A 0 A_JumpIf(User_OH1 >= 1,"PH2");
 		BSMT J 12 A_FaceTarget;
-		BSMT J 8 { bMISSILEEVENMORE = true; }   // CH: A_changeFlag("MissileEvenMore",TRUE)
+		BSMT J 8 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_changeFlag("MissileEvenMore",TRUE)
 		BSMT JJJJJJ 8 A_SpawnItemEx("RS_PortalSummons",random(-178,178),random(-178,178),random(5,64),0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 		BSMT J 2 { User_OH1 = User_OH1 + 1; }   // CH: A_SetUserVar
 		Goto See;
@@ -2417,7 +2417,7 @@ class RS_WhiteCybie2 : Actor   // CH CYBIES.txt:5235
 		+BOSS
 		-NOTARGET
 		+DONTHARMCLASS
-		+MISSILEEVENMORE
+		MissileChanceMult 0.125;
 		+QUICKTORETALIATE
 		+THRUSPECIES
 		+NOICEDEATH

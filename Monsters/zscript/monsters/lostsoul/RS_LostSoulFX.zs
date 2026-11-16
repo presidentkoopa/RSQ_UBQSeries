@@ -388,7 +388,7 @@ class RS_BSoulHellNo3 : Actor   // CH lostsouls.txt:1667
 		WASP A 1 Bright A_Jump(12,"Death");
 		Loop;
 	Death:
-		CBAL CDEFG 1 Bright;
+		QBAL CDEFG 1 Bright;
 		Stop;
 	}
 }
@@ -829,8 +829,7 @@ class RS_SkullWSoulEX1 : Actor   // CH lostsouls.txt:2838
 		+NOTARGET
 		+NOINFIGHTING
 		+DONTHARMSPECIES
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+DONTFALL
 		+THRUSPECIES
 		+NOICEDEATH
@@ -1863,8 +1862,7 @@ class RS_ArchSpawnerOrb : Actor   // CH Archviles.txt:3319 -- the shifter's summ
 		+SPAWNFLOAT
 		+NOBLOOD
 		+NOTRIGGER
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		-ACTIVATEMCROSS
 		-COUNTKILL
 		+LOOKALLAROUND
@@ -2008,14 +2006,14 @@ class RS_ReAComet : Actor   // CH Archviles.txt:3632
 		VBA3 AB 3 Bright A_SpawnItemEx("RS_ReATrail",0,2,0,0,0,0,0,128);
 		Loop;
 	Death:
-		CBAL C 0 { bISMONSTER = true; }   // CH: A_changeflag(ismonster,true)
-		CBAL C 0 A_Jump(256,"See");
+		QBAL C 0 { bISMONSTER = true; }   // CH: A_changeflag(ismonster,true)
+		QBAL C 0 A_Jump(256,"See");
 	See:
-		CBAL C 0 A_SetSpeed(1);
-		CBAL CDEFG 3 Bright A_Chase(null,null,CHF_RESURRECT);   // CH: A_Chase("","",CHF_RESURRECT)
+		QBAL C 0 A_SetSpeed(1);
+		QBAL CDEFG 3 Bright A_Chase(null,null,CHF_RESURRECT);   // CH: A_Chase("","",CHF_RESURRECT)
 		Stop;
 	Heal:
-		CBAL CDEFG 1 Bright;
+		QBAL CDEFG 1 Bright;
 		Stop;
 	}
 }
@@ -2316,7 +2314,7 @@ class RS_THEBEEHK : Actor   // CH Hellknights.txt:2131
 		VBA3 B 1 Bright A_Explode(random(1,2),42);   // per-frame explode: CH's graze DoT, deliberate
 		Loop;
 	Death:
-		CBAL CCDDEEFFGG 1 Bright A_SpawnItemEx("RS_THEBEEHK2",random(-9,9),random(-9,9),random(-5,5),0,0,0,0,SXF_NOCHECKPOSITION);
+		QBAL CCDDEEFFGG 1 Bright A_SpawnItemEx("RS_THEBEEHK2",random(-9,9),random(-9,9),random(-5,5),0,0,0,0,SXF_NOCHECKPOSITION);
 		Stop;
 	}
 }
@@ -2348,7 +2346,7 @@ class RS_THEBEEHK2 : Actor   // CH Hellknights.txt:2157
 		BAL1 A 1 Bright A_Jump(12,"Death");
 		Loop;
 	Death:
-		CBAL CDEFG 3 Bright;
+		QBAL CDEFG 3 Bright;
 		Stop;
 	}
 }

@@ -764,10 +764,9 @@ class RS_AbyssBaronSoul : Actor   // CH Barons.txt:1252 -- the siphon soul the a
 		+NOICEDEATH
 		+FLOATBOB
 		+NOTARGETSWITCH
-		+MISSILEMORE
+		MissileChanceMult 0.0625;
 		+NOPAIN
 		+THRUSPECIES
-		+MISSILEEVENMORE
 		+NOGRAVITY
 		+LOOKALLAROUND
 		+NOBLOOD
@@ -825,10 +824,10 @@ class RS_AbyssBaronHandFire : Actor   // CH Barons.txt:1342
 	States
 	{
 	Spawn:
-		FRFX ABCD 2 Bright;
+		RRFX ABCD 2 Bright;
 		Goto Death;
 	Death:
-		FRFX HIJKLMNO 1 Bright;
+		RRFX HIJKLMNO 1 Bright;
 		Stop;
 	}
 }
@@ -915,7 +914,7 @@ class RS_BoomPEBlu : Actor   // CH thepains.txt:1130 -- fireblu's exploding skul
 		Goto Death;
 	Death:
 		MISL CD 4 Bright A_Explode(random(20,40),64,0);
-		TNT1 A 0 A_SpawnItemEx("RS_FireBluLSoul2",0,0,6,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,128);
+		TNT1 A 0 A_SpawnItemEx("RS_FireBluLSoul2",0,0,6,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,128);
 		Stop;
 	}
 }
@@ -1709,7 +1708,7 @@ class RS_DFlarePE : Actor   // CH thepains.txt:2920
 		VBA3 AB 3 Bright A_SpawnItemEx("RS_MFlareFX",0,0,0,0,0,0,0,128);
 		Goto Death;
 	Death:
-		CBAL CDEFG 3 Bright;
+		QBAL CDEFG 3 Bright;
 		Stop;
 	}
 }
@@ -1740,7 +1739,7 @@ class RS_DFlarePE2 : Actor   // CH thepains.txt:2948 -- same flare, but the Spaw
 		VBA3 AB 3 Bright A_SpawnItemEx("RS_MFlareFX",0,0,0,0,0,0,0,128);
 		Loop;
 	Death:
-		CBAL CDEFG 3 Bright;
+		QBAL CDEFG 3 Bright;
 		Stop;
 	}
 }
@@ -1852,7 +1851,7 @@ class RS_MiniSentinelPE : Actor   // CH thepains.txt:3106 -- the Watcher's orbit
 		+NOBLOOD
 		+NOBLOCKMONST
 		+INCOMBAT
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+LOOKALLAROUND
 		+NEVERRESPAWN
 		SeeSound "";

@@ -254,7 +254,7 @@ class RS_BrownHK2 : Actor   // CH Hellknights.txt:40
 		PainChance "DIMp", 0;
 		Monster;
 		+FLOORCLIP
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
 		+NOFEAR
@@ -388,8 +388,7 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 		Alpha 1.0;
 		Monster;
 		+BRIGHT
-		+MISSILEMORE
-		+MISSILEEVENMORE
+		MissileChanceMult 0.0625;
 		+FLOORCLIP
 		+QUICKTORETALIATE
 		+DONTHARMSPECIES
@@ -524,7 +523,7 @@ class RS_CyanHK2 : Actor   // CH Hellknights.txt:298
 		HFRY JK 8;
 		HFRY L 8 A_NoBlocking(false);
 		HFRY MN 8;
-		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,VelX,VelY,VelZ,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,251);
+		TNT1 A 0 A_SpawnItemEx("RS_CH_Cirno",0,0,24,Vel.X,Vel.Y,Vel.Z,0,SXF_ABSOLUTEMOMENTUM|SXF_NOCHECKPOSITION,251);
 		TNT1 A 0 A_IceGuyDie;
 		HFRY O -1;
 		Stop;
@@ -549,7 +548,7 @@ class RS_AbyssHK2 : HellKnight   // CH Hellknights.txt:570
 		Speed 15;
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		-NORADIUSDMG
 		+NOFEAR
@@ -720,7 +719,7 @@ class RS_FireBluHK2 : Actor   // CH Hellknights.txt:833
 		Monster;
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		SeeSound "HK2/see";
@@ -740,35 +739,35 @@ class RS_FireBluHK2 : Actor   // CH Hellknights.txt:833
 	States
 	{
 	Spawn:
-		BOS2 AB 10 A_Look;
+		ROS2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BOS2 AABB 3 A_Chase;
+		ROS2 AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 CCDD 3 A_Chase;
+		ROS2 CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 E 0 A_Jump(255,"Bolt1","Fires5");
+		ROS2 E 0 A_Jump(255,"Bolt1","Fires5");
 		Goto See;
 	Bolt1:
-		BOS2 EF 6 A_FaceTarget;
-		BOS2 G 6 A_CustomMissile("RS_FireBluHKBall1",32,3,random(-1,1));
-		BOS2 PQ 5 A_FaceTarget;
-		BOS2 R 5 A_CustomMissile("RS_FireBluHKBall1",32,3,random(-9,9));
-		BOS2 R 0 A_Jump(76,"Bolt1");
+		ROS2 EF 6 A_FaceTarget;
+		ROS2 G 6 A_CustomMissile("RS_FireBluHKBall1",32,3,random(-1,1));
+		ROS2 PQ 5 A_FaceTarget;
+		ROS2 R 5 A_CustomMissile("RS_FireBluHKBall1",32,3,random(-9,9));
+		ROS2 R 0 A_Jump(76,"Bolt1");
 		Goto See;
 	Melee:
 	Fires5:
-		BOS2 H 12 Bright A_FaceTarget;
-		BOS2 HHHHHH 0 A_CustomMissile("RS_FireBluHKBall2",54,1,random(-25,25),0,random(-15,15));
-		BOS2 HHHH 1 Bright A_CustomMissile("RS_FireBluHKBall2",54,1,random(-25,25),0,random(-15,15));
-		BOS2 HHHHHH 0 A_CustomMissile("RS_FireBluHKBall2",54,1,random(-25,25),0,random(-15,15));
-		BOS2 HHHH 1 Bright A_CustomMissile("RS_FireBluHKBall2",54,1,random(-25,25),0,random(-15,15));
-		BOS2 H 6 Bright;
-		BOS2 H 4;
+		ROS2 H 12 Bright A_FaceTarget;
+		ROS2 HHHHHH 0 A_CustomMissile("RS_FireBluHKBall2",54,1,random(-25,25),0,random(-15,15));
+		ROS2 HHHH 1 Bright A_CustomMissile("RS_FireBluHKBall2",54,1,random(-25,25),0,random(-15,15));
+		ROS2 HHHHHH 0 A_CustomMissile("RS_FireBluHKBall2",54,1,random(-25,25),0,random(-15,15));
+		ROS2 HHHH 1 Bright A_CustomMissile("RS_FireBluHKBall2",54,1,random(-25,25),0,random(-15,15));
+		ROS2 H 6 Bright;
+		ROS2 H 4;
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }   // CH: A_changeflag("Nopain",true)
@@ -787,24 +786,24 @@ class RS_FireBluHK2 : Actor   // CH Hellknights.txt:833
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		BOS2 H 2;
+		ROS2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH7",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 H 2 A_Pain;
+		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BOS2 I 8;
-		BOS2 J 8 A_Scream;
-		BOS2 K 8;
-		BOS2 L 8 A_NoBlocking;
-		BOS2 MN 8;
-		BOS2 O -1;
+		ROS2 I 8;
+		ROS2 J 8 A_Scream;
+		ROS2 K 8;
+		ROS2 L 8 A_NoBlocking;
+		ROS2 MN 8;
+		ROS2 O -1;
 		Stop;
 	Raise:
-		BOS2 ONMLKJI 8;
+		ROS2 ONMLKJI 8;
 		Goto See;
 	}
 }
@@ -831,7 +830,7 @@ class RS_GrayHK2 : Actor   // CH Hellknights.txt:1020
 		Monster;
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		+DONTHARMCLASS
 		SeeSound "HK2/see";
@@ -848,20 +847,20 @@ class RS_GrayHK2 : Actor   // CH Hellknights.txt:1020
 	States
 	{
 	Spawn:
-		BOS2 AB 10 A_Look;
+		ROS2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BOS2 AABB 3 A_Chase;
+		ROS2 AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 CCDD 3 A_Chase;
+		ROS2 CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 E 0 A_JumpIfCloser(600,"Fire3");
-		BOS2 E 0 A_Jump(255,"Bolt3");
+		ROS2 E 0 A_JumpIfCloser(600,"Fire3");
+		ROS2 E 0 A_Jump(255,"Bolt3");
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -880,42 +879,42 @@ class RS_GrayHK2 : Actor   // CH Hellknights.txt:1020
 		TNT1 A 0 A_Die;
 		Stop;
 	Bolt3:
-		BOS2 EF 8 A_FaceTarget;
-		BOS2 G 8 A_CustomMissile("RS_MolochNail",32,3,random(-1,1));
-		BOS2 G 0 A_Jump(128,"Bolt4");
+		ROS2 EF 8 A_FaceTarget;
+		ROS2 G 8 A_CustomMissile("RS_MolochNail",32,3,random(-1,1));
+		ROS2 G 0 A_Jump(128,"Bolt4");
 		Goto See;
 	Bolt4:
-		BOS2 PQ 8 A_FaceTarget;
-		BOS2 R 8 A_CustomMissile("RS_MolochNail",32,3,random(-1,1));
-		BOS2 R 0 A_Jump(76,"Bolt3");
+		ROS2 PQ 8 A_FaceTarget;
+		ROS2 R 8 A_CustomMissile("RS_MolochNail",32,3,random(-1,1));
+		ROS2 R 0 A_Jump(76,"Bolt3");
 		Goto See;
 	Fire3:
-		BOS2 H 10 Bright A_FaceTarget;
-		BOS2 H 9 Bright A_CustomMissile("RS_MinesHK",54,1,random(-1,1));
-		BOS2 H 12 Bright A_FaceTarget;
-		BOS2 H 9 Bright A_CustomMissile("RS_MinesHK",54,1,random(-9,9));
-		BOS2 H 12 Bright A_FaceTarget;
-		BOS2 H 9 Bright A_CustomMissile("RS_MinesHK",54,1,random(-25,25));
+		ROS2 H 10 Bright A_FaceTarget;
+		ROS2 H 9 Bright A_CustomMissile("RS_MinesHK",54,1,random(-1,1));
+		ROS2 H 12 Bright A_FaceTarget;
+		ROS2 H 9 Bright A_CustomMissile("RS_MinesHK",54,1,random(-9,9));
+		ROS2 H 12 Bright A_FaceTarget;
+		ROS2 H 9 Bright A_CustomMissile("RS_MinesHK",54,1,random(-25,25));
 		Goto See;
 	Pain:
-		BOS2 H 2;
+		ROS2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH8",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 H 2 A_Pain;
+		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BOS2 I 8;
-		BOS2 J 8 A_Scream;
-		BOS2 K 8;
-		BOS2 L 8 A_NoBlocking;
-		BOS2 MN 8;
-		BOS2 O -1;
+		ROS2 I 8;
+		ROS2 J 8 A_Scream;
+		ROS2 K 8;
+		ROS2 L 8 A_NoBlocking;
+		ROS2 MN 8;
+		ROS2 O -1;
 		Stop;
 	Raise:
-		BOS2 ONMLKJI 8;
+		ROS2 ONMLKJI 8;
 		Goto See;
 	}
 }
@@ -943,37 +942,37 @@ class RS_CommonHK : HellKnight   // CH Hellknights.txt:1171
 	States
 	{
 	Spawn:
-		BOS2 AB 10 A_Look;
+		ROS2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BOS2 AABB 3 A_Chase;
+		ROS2 AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 CCDD 3 A_Chase;
+		ROS2 CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 EF 8 A_FaceTarget;
-		BOS2 G 8 A_BruisAttack;
+		ROS2 EF 8 A_FaceTarget;
+		ROS2 G 8 A_BruisAttack;
 		Goto See;
 	Pain:
-		BOS2 H 2;
+		ROS2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 H 2 A_Pain;
+		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BOS2 I 8;
-		BOS2 J 8 A_Scream;
-		BOS2 K 8;
-		BOS2 L 8 A_NoBlocking;
-		BOS2 MN 8;
-		BOS2 O -1;
+		ROS2 I 8;
+		ROS2 J 8 A_Scream;
+		ROS2 K 8;
+		ROS2 L 8 A_NoBlocking;
+		ROS2 MN 8;
+		ROS2 O -1;
 		Stop;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -992,18 +991,18 @@ class RS_CommonHK : HellKnight   // CH Hellknights.txt:1171
 		TNT1 A 0 A_Die;
 		Stop;
 	Raise:
-		BOS2 O 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		BOS2 NMLKJI 5;
+		ROS2 O 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		ROS2 NMLKJI 5;
 		Goto See;
 	Grow:
-		BOS2 NMLKJI 5;
-		BOS2 A 0 A_SpawnItemEx("RS_GreenHK",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		ROS2 NMLKJI 5;
+		ROS2 A 0 A_SpawnItemEx("RS_GreenHK",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	XDeath:
-		BOS2 I 0 A_SpawnItemEx("RS_HKSplashDed",0,2,47,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BOS2 I 0 A_Stop;
-		BOS2 I 8;
+		ROS2 I 0 A_SpawnItemEx("RS_HKSplashDed",0,2,47,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		ROS2 I 0 A_Stop;
+		ROS2 I 8;
 		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnParticle("Green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		// CH: TNT1 AAAAA 0 A_SpawnItemEx("CHRandom_GibGenerator",...) -- gore chain stripped, animation stays
 		HKGB A 0 A_ScreamAndUnblock;
@@ -1045,25 +1044,25 @@ class RS_GreenHK : HellKnight   // CH Hellknights.txt:1274
 	States
 	{
 	Spawn:
-		BOS2 AB 10 A_Look;
+		ROS2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BOS2 AABB 3 A_Chase;
+		ROS2 AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 CCDD 3 A_Chase;
+		ROS2 CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 EF 8 A_FaceTarget;
-		BOS2 G 8 A_CustomComboAttack("BaronBall",32,11 * random(1,8),"baron/melee");
-		BOS2 G 2 A_Jump(164,"Missile2");
+		ROS2 EF 8 A_FaceTarget;
+		ROS2 G 8 A_CustomComboAttack("BaronBall",32,11 * random(1,8),"baron/melee");
+		ROS2 G 2 A_Jump(164,"Missile2");
 		Goto See;
 	Missile2:
-		BOS2 PQ 8 A_FaceTarget;
-		BOS2 Q 0 A_JumpIf(RS_Zom.CV('rs_ch_intercept', 0) == 1, "Miss2");   // CH: CallACS("CH_Intercept") == true (CH default false)
+		ROS2 PQ 8 A_FaceTarget;
+		ROS2 Q 0 A_JumpIf(RS_Zom.CV('rs_ch_intercept', 0) == 1, "Miss2");   // CH: CallACS("CH_Intercept") == true (CH default false)
 		// OWNER-APPROVED DEPARTURE FROM CH (ruled 2026-08-06). Second one in the
 		// project, after GrayPE2's healed RS_GreyDemon2. DO NOT "correct" this
 		// back to match CH -- the divergence is deliberate and was chosen with
@@ -1080,12 +1079,12 @@ class RS_GreenHK : HellKnight   // CH Hellknights.txt:1274
 		// the working branch) genuinely do predict. That asymmetry is a typo,
 		// not a design choice: the author wrote a solver and called it for all
 		// three. The owner ruled to keep the intended behaviour.
-		BOS2 R 8 { RS_HKLead.FireLead(self, "BaronBall", 32); }   // CH: ACS_NamedExecuteWithResult("BaronMissile") -- CHACS.acs:54
-		BOS2 R 2 A_Jump(128,"Missile");
+		ROS2 R 8 { RS_HKLead.FireLead(self, "BaronBall", 32); }   // CH: ACS_NamedExecuteWithResult("BaronMissile") -- CHACS.acs:54
+		ROS2 R 2 A_Jump(128,"Missile");
 		Goto See;
 	Miss2:
-		BOS2 R 8 A_CustomComboAttack("BaronBall",32,11 * random(1,8),"baron/melee");
-		BOS2 R 2 A_Jump(128,"Missile");
+		ROS2 R 8 A_CustomComboAttack("BaronBall",32,11 * random(1,8),"baron/melee");
+		ROS2 R 2 A_Jump(128,"Missile");
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -1104,35 +1103,35 @@ class RS_GreenHK : HellKnight   // CH Hellknights.txt:1274
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		BOS2 H 2;
+		ROS2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH2",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 H 2 A_Pain;
+		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BOS2 I 8;
-		BOS2 J 8 A_Scream;
-		BOS2 K 8;
-		BOS2 L 8 A_NoBlocking;
-		BOS2 MN 8;
-		BOS2 O -1;
+		ROS2 I 8;
+		ROS2 J 8 A_Scream;
+		ROS2 K 8;
+		ROS2 L 8 A_NoBlocking;
+		ROS2 MN 8;
+		ROS2 O -1;
 		Stop;
 	Raise:
-		BOS2 O 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		BOS2 NMLKJI 5;
+		ROS2 O 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		ROS2 NMLKJI 5;
 		Goto See;
 	Grow:
-		BOS2 NMLKJI 5;
-		BOS2 A 0 A_SpawnItemEx("RS_BlueHK",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		ROS2 NMLKJI 5;
+		ROS2 A 0 A_SpawnItemEx("RS_BlueHK",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	XDeath:
-		BOS2 I 0 A_SpawnItemEx("RS_HKSplashDed",0,2,47,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BOS2 I 0 A_Stop;
-		BOS2 I 8;
+		ROS2 I 0 A_SpawnItemEx("RS_HKSplashDed",0,2,47,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		ROS2 I 0 A_Stop;
+		ROS2 I 8;
 		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnParticle("Green",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		// CH: CHRandom_GibGenerator spam stripped (gore chain), animation stays
 		HKGB A 0 A_ScreamAndUnblock;
@@ -1159,7 +1158,7 @@ class RS_BlueHK : HellKnight   // CH Hellknights.txt:1380
 		Speed 10;
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		SeeSound "HK2/see";
 		ActiveSound "knight/active";
@@ -1176,33 +1175,33 @@ class RS_BlueHK : HellKnight   // CH Hellknights.txt:1380
 	States
 	{
 	Spawn:
-		BOS2 AB 10 A_Look;
+		ROS2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BOS2 AABB 3 A_Chase;
+		ROS2 AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 CCDD 3 A_Chase;
+		ROS2 CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 EF 8;
-		BOS2 G 8 A_CustomMeleeAttack(random(10,70),"baron/melee");
+		ROS2 EF 8;
+		ROS2 G 8 A_CustomMeleeAttack(random(10,70),"baron/melee");
 		Goto See;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 EF 8 A_FaceTarget;
-		BOS2 G 8 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-1,1));
-		BOS2 G 0 A_CheckSight("See");
-		BOS2 PQ 6 A_FaceTarget;
-		BOS2 R 6 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-3,3));
-		BOS2 G 0 A_CheckSight("See");
-		BOS2 EF 4 A_FaceTarget;
+		ROS2 EF 8 A_FaceTarget;
+		ROS2 G 8 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-1,1));
+		ROS2 G 0 A_CheckSight("See");
+		ROS2 PQ 6 A_FaceTarget;
+		ROS2 R 6 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-3,3));
+		ROS2 G 0 A_CheckSight("See");
+		ROS2 EF 4 A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 G 4 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-5,5));
-		BOS2 PQ 3 A_FaceTarget;
-		BOS2 R 3 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-7,7));
+		ROS2 G 4 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-5,5));
+		ROS2 PQ 3 A_FaceTarget;
+		ROS2 R 3 A_CustomMissile("RS_BaronsBlueBalls",32,3,random(-7,7));
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -1221,35 +1220,35 @@ class RS_BlueHK : HellKnight   // CH Hellknights.txt:1380
 		TNT1 A 0 A_Die;
 		Stop;
 	Pain:
-		BOS2 H 2;
+		ROS2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH3",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 H 2 A_Pain;
+		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BOS2 I 8;
-		BOS2 J 8 A_Scream;
-		BOS2 K 8;
-		BOS2 L 8 A_NoBlocking;
-		BOS2 MN 8;
-		BOS2 O -1;
+		ROS2 I 8;
+		ROS2 J 8 A_Scream;
+		ROS2 K 8;
+		ROS2 L 8 A_NoBlocking;
+		ROS2 MN 8;
+		ROS2 O -1;
 		Stop;
 	Raise:
-		BOS2 O 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
-		BOS2 NMLKJI 5;
+		ROS2 O 5 A_JumpIfInventory("RS_GrowRaisin",1,"Grow");
+		ROS2 NMLKJI 5;
 		Goto See;
 	Grow:
-		BOS2 NMLKJI 5;
-		BOS2 A 0 A_SpawnItemEx("RS_PurpleHK",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
+		ROS2 NMLKJI 5;
+		ROS2 A 0 A_SpawnItemEx("RS_PurpleHK",0,0,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETTARGET);
 		TNT1 A 0 A_Die;
 		Stop;
 	XDeath:
-		BOS2 I 0 A_SpawnItemEx("RS_HKSplashDed",0,2,47,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BOS2 I 0 A_Stop;
-		BOS2 I 8;
+		ROS2 I 0 A_SpawnItemEx("RS_HKSplashDed",0,2,47,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		ROS2 I 0 A_Stop;
+		ROS2 I 8;
 		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnParticle("Blue",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		// CH: CHRandom_GibGenerator spam stripped (gore chain), animation stays
 		HKGB A 0 A_ScreamAndUnblock;
@@ -1277,7 +1276,7 @@ class RS_PurpleHK : HellKnight   // CH Hellknights.txt:1518
 		Speed 11;
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		SeeSound "HK2/see";
 		ActiveSound "knight/active";
@@ -1297,29 +1296,29 @@ class RS_PurpleHK : HellKnight   // CH Hellknights.txt:1518
 	States
 	{
 	Spawn:
-		BOS2 AB 10 A_Look;
+		ROS2 AB 10 A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BOS2 AABB 3 A_Chase;
+		ROS2 AABB 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 CCDD 3 A_Chase;
+		ROS2 CCDD 3 A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Melee:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 EF 8;
-		BOS2 G 8 A_CustomMeleeAttack(random(20,90),"baron/melee");
+		ROS2 EF 8;
+		ROS2 G 8 A_CustomMeleeAttack(random(20,90),"baron/melee");
 		Goto See;
 	Missile:
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 E 0 A_JumpIfCloser(300,"Fire3");
-		BOS2 E 0 A_Jump(255,"Bolt3");
+		ROS2 E 0 A_JumpIfCloser(300,"Fire3");
+		ROS2 E 0 A_Jump(255,"Bolt3");
 		Goto See;
 	Bolt3:
-		BOS2 EF 8 A_FaceTarget;
-		BOS2 G 8 A_CustomMissile("RS_HKBolt2",32,3,random(-1,1));
-		BOS2 G 0 A_Jump(128,"Bolt4");
+		ROS2 EF 8 A_FaceTarget;
+		ROS2 G 8 A_CustomMissile("RS_HKBolt2",32,3,random(-1,1));
+		ROS2 G 0 A_Jump(128,"Bolt4");
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -1338,47 +1337,47 @@ class RS_PurpleHK : HellKnight   // CH Hellknights.txt:1518
 		TNT1 A 0 A_Die;
 		Stop;
 	Bolt4:
-		BOS2 PQ 8 A_FaceTarget;
-		BOS2 R 8 A_CustomMissile("RS_HKBolt2",32,3,random(-1,1));
-		BOS2 R 0 A_Jump(76,"Bolt3");
+		ROS2 PQ 8 A_FaceTarget;
+		ROS2 R 8 A_CustomMissile("RS_HKBolt2",32,3,random(-1,1));
+		ROS2 R 0 A_Jump(76,"Bolt3");
 		Goto See;
 	Fire3:
-		BOS2 H 1 A_JumpIfCloser(300,"Fbreath");
-		BOS2 H 1 A_Jump(255,"See");
+		ROS2 H 1 A_JumpIfCloser(300,"Fbreath");
+		ROS2 H 1 A_Jump(255,"See");
 		Goto See;
 	Fbreath:
-		BOS2 H 4 Bright A_FaceTarget;
-		BOS2 H 2 Bright A_CustomMissile("RS_PurpFire2",54,1,random(-1,1));
-		BOS2 H 1 Bright A_FaceTarget;
-		BOS2 H 1 Bright A_CustomMissile("RS_PurpFire2",54,1,random(-3,3));
-		BOS2 H 1 Bright A_FaceTarget;
-		BOS2 H 1 Bright A_CustomMissile("RS_PurpFire2",54,1,random(-5,5));
-		BOS2 H 1 Bright A_MonsterRefire(150,"See");
+		ROS2 H 4 Bright A_FaceTarget;
+		ROS2 H 2 Bright A_CustomMissile("RS_PurpFire2",54,1,random(-1,1));
+		ROS2 H 1 Bright A_FaceTarget;
+		ROS2 H 1 Bright A_CustomMissile("RS_PurpFire2",54,1,random(-3,3));
+		ROS2 H 1 Bright A_FaceTarget;
+		ROS2 H 1 Bright A_CustomMissile("RS_PurpFire2",54,1,random(-5,5));
+		ROS2 H 1 Bright A_MonsterRefire(150,"See");
 		Goto Fire3;
 	Pain:
-		BOS2 H 2;
+		ROS2 H 2;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH4",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BOS2 H 2 A_Pain;
+		ROS2 H 2 A_Pain;
 		Goto See;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BOS2 I 8;
-		BOS2 J 8 A_Scream;
-		BOS2 K 8;
-		BOS2 L 8 A_NoBlocking;
-		BOS2 MN 8;
-		BOS2 O -1;
+		ROS2 I 8;
+		ROS2 J 8 A_Scream;
+		ROS2 K 8;
+		ROS2 L 8 A_NoBlocking;
+		ROS2 MN 8;
+		ROS2 O -1;
 		Stop;
 	Raise:
-		BOS2 ONMLKJI 8;
+		ROS2 ONMLKJI 8;
 		Goto See;
 	XDeath:
-		BOS2 I 0 A_SpawnItemEx("RS_HKSplashDed",0,2,47,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
-		BOS2 I 0 A_Stop;
-		BOS2 I 8;
+		ROS2 I 0 A_SpawnItemEx("RS_HKSplashDed",0,2,47,0,0,0,0,SXF_NOCHECKPOSITION|SXF_USEBLOODCOLOR);
+		ROS2 I 0 A_Stop;
+		ROS2 I 8;
 		TNT1 AAAAAAAAAAAAAAAA 0 A_SpawnParticle("Blue",SPF_FULLBRIGHT|SPF_RELATIVE,random(27,74),random(1,13),frandom(0,360),0,0,32,frandom(0.1,11.0),frandom(-0.15,0.25),frandom(-6.9,6.9),0,0,-0.1,0.98,-1);
 		// CH: CHRandom_GibGenerator spam stripped (gore chain), animation stays
 		HKGB A 0 A_ScreamAndUnblock;
@@ -1408,7 +1407,7 @@ class RS_YellowHK : HellKnight   // CH Hellknights.txt:1674
 		Speed 10;
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		-NORADIUSDMG
 		+NOFEAR
@@ -1532,7 +1531,7 @@ class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 		Speed 11;
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+DONTHARMSPECIES
 		-NORADIUSDMG
 		+NOFEAR
@@ -1573,20 +1572,20 @@ class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 		SKUL A 1 Bright A_SpawnItemEx("RS_SpecialImp",5,-5,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 		SKUL A 1 Bright A_SpawnItemEx("RS_SpecialImp",-5,5,6,0,0,0,0,SXF_NOCHECKPOSITION|SXF_SETMASTER);
 	Idle:
-		BRUR AB 10 Bright A_Look;
+		RRUR AB 10 Bright A_Look;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	See:
-		BRUR AABB 3 Bright A_Chase;
+		RRUR AABB 3 Bright A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BRUR CCDD 3 Bright A_Chase;
+		RRUR CCDD 3 Bright A_Chase;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
 		Loop;
 	Dodge1:
-		BRUR A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
+		RRUR A 5 ThrustThing(int(angle*256/360+64),20,0,0);   // CH: ThrustThing(angle*256/360+64,20,0,0)
 		Goto See;
 	Dodge2:
-		BRUR A 5 ThrustThing(int(angle*256/360+192),20,0,0);
+		RRUR A 5 ThrustThing(int(angle*256/360+192),20,0,0);
 		Goto See;
 	Pain.AbyssPE:
 		TNT1 A 0 { bNOPAIN = true; }
@@ -1605,78 +1604,78 @@ class RS_RedHK : HellKnight   // CH Hellknights.txt:1902
 		TNT1 A 0 A_Die;
 		Stop;
 	Melee:
-		BRUR E 6 Bright A_FaceTarget;
+		RRUR E 6 Bright A_FaceTarget;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BRUR F 6 Bright A_FaceTarget;
-		BRUR G 6 Bright A_CustomMeleeAttack(random(20,99),"baron/melee");
-		BRUR G 1 Bright A_Jump(88,"Missile");
+		RRUR F 6 Bright A_FaceTarget;
+		RRUR G 6 Bright A_CustomMeleeAttack(random(20,99),"baron/melee");
+		RRUR G 1 Bright A_Jump(88,"Missile");
 		Goto See;
 	Missile:
-		BRUR A 0 A_JumpIfHealthLower(800,"Enrage");
+		RRUR A 0 A_JumpIfHealthLower(800,"Enrage");
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BRUR A 0 A_Jump(255,"DoT","BoilBolt");
-		BRUR A 1 Bright;
+		RRUR A 0 A_Jump(255,"DoT","BoilBolt");
+		RRUR A 1 Bright;
 		Goto See;
 	DoT:
-		BRUR K 6 Bright A_FaceTarget;
-		BRUR KL 8 Bright;
-		BRUR M 1 Bright A_CustomMissile("RS_THEBEEHK",32,2);
-		BRUR M 9 Bright A_CustomMissile("RS_EffectHK",30,0);
+		RRUR K 6 Bright A_FaceTarget;
+		RRUR KL 8 Bright;
+		RRUR M 1 Bright A_CustomMissile("RS_THEBEEHK",32,2);
+		RRUR M 9 Bright A_CustomMissile("RS_EffectHK",30,0);
 		Goto See;
 	BoilBolt:
-		BRUR EF 6 Bright A_FaceTarget;
-		BRUR G 3 Bright A_CustomMissile("RS_BloodBoltHK",32,2,random(-1,1));
-		BRUR G 2 Bright A_MonsterRefire(128,"See");
-		BRUR G 1 Bright A_Jump(22,"DoT");
+		RRUR EF 6 Bright A_FaceTarget;
+		RRUR G 3 Bright A_CustomMissile("RS_BloodBoltHK",32,2,random(-1,1));
+		RRUR G 2 Bright A_MonsterRefire(128,"See");
+		RRUR G 1 Bright A_Jump(22,"DoT");
 		Goto BoilBolt2;
 	BoilBolt2:
-		BRUR HI 6 Bright A_FaceTarget;
-		BRUR J 3 Bright A_CustomMissile("RS_BloodBoltHK",32,2,random(-1,1));
-		BRUR J 2 Bright A_MonsterRefire(128,"See");
-		BRUR G 1 Bright A_Jump(22,"DoT");
+		RRUR HI 6 Bright A_FaceTarget;
+		RRUR J 3 Bright A_CustomMissile("RS_BloodBoltHK",32,2,random(-1,1));
+		RRUR J 2 Bright A_MonsterRefire(128,"See");
+		RRUR G 1 Bright A_Jump(22,"DoT");
 		Goto BoilBolt;
 	Enrage:
-		BRUR A 1 A_JumpIf(user_Rage2 >= 1,"Nah");
-		BRUR K 1 { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
-		BRUR K 12 Bright A_PlaySound("superbaron/scream");
-		BRUR KL 12 Bright A_CustomMissile("RS_EffectHK",48,0);
-		BRUR M 10 Bright { bMISSILEEVENMORE = true; }   // CH: A_ChangeFlag("MissileEvenMore",TRUE)
-		BRUR MMM 2 Bright A_CustomMissile("RS_EffectHK",24,0);
-		BRUR M 8 Bright { user_Rage2 += 1; }   // CH: A_SetUserVar("User_Rage2",User_Rage2+1)
+		RRUR A 1 A_JumpIf(user_Rage2 >= 1,"Nah");
+		RRUR K 1 { bNOPAIN = true; }   // CH: A_ChangeFlag("NOPAIN",TRUE)
+		RRUR K 12 Bright A_PlaySound("superbaron/scream");
+		RRUR KL 12 Bright A_CustomMissile("RS_EffectHK",48,0);
+		RRUR M 10 Bright { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_ChangeFlag("MissileEvenMore",TRUE)
+		RRUR MMM 2 Bright A_CustomMissile("RS_EffectHK",24,0);
+		RRUR M 8 Bright { user_Rage2 += 1; }   // CH: A_SetUserVar("User_Rage2",User_Rage2+1)
 		Goto See;
 	Nah:
-		BRUR A 1;
+		RRUR A 1;
 		Goto Missile+1;
 	Pain:
-		BRUR N 5 Bright A_Pain;
+		RRUR N 5 Bright A_Pain;
 		TNT1 A 0 A_SpawnItemEx("RS_ColorTierIconCH6",0,0,32,random(1,4),0,random(0,2),random(0,359),SXF_NOCHECKPOSITION);
-		BRUR N 1 Bright A_Jump(74,"Dodge1","Dodge2");
+		RRUR N 1 Bright A_Jump(74,"Dodge1","Dodge2");
 		Goto See;
 	Pain.Fire:
-		BRUR N 0;
+		RRUR N 0;
 		Goto Pain+1;
 	Tickles:
 		TNT1 A 0 A_SpawnItemEx("RS_ThePlanBoner",0,0,6,0,0,0,0,SXF_NOPOINTERS|SXF_NOCHECKPOSITION);
 		Goto Death+1;
 	Death:
 		TNT1 A 0 A_JumpIfInventory("RS_CHBoner",1,"Tickles");
-		BRUR N 6 Bright A_Scream;
-		BRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",100,-30,CMF_AIMOFFSET,2,-10);
-		BRUR N 2 Bright A_CustomMissile("RS_HKRedDeath",100,50,CMF_AIMOFFSET,2,10);
-		BRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",20,30,CMF_AIMOFFSET,2,10);
-		BRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",60,5,CMF_AIMOFFSET,2,-10);
-		BRUR N 4 A_CustomMissile("RS_HKRedDeath",100,50,CMF_AIMOFFSET,2,10);
-		BRUR N 5 Bright A_Fall;
-		BRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",60,5,CMF_AIMOFFSET,2,-10);
-		BRUR N 4 A_CustomMissile("RS_HKRedDeath",100,50,CMF_AIMOFFSET,2,10);
-		BRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",20,30,CMF_AIMOFFSET,2,10);
-		BRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",60,5,CMF_AIMOFFSET,2,-10);
-		BRUR N 2 A_CustomMissile("RS_HKRedDeath",100,-30,CMF_AIMOFFSET,2,-10);
+		RRUR N 6 Bright A_Scream;
+		RRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",100,-30,CMF_AIMOFFSET,2,-10);
+		RRUR N 2 Bright A_CustomMissile("RS_HKRedDeath",100,50,CMF_AIMOFFSET,2,10);
+		RRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",20,30,CMF_AIMOFFSET,2,10);
+		RRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",60,5,CMF_AIMOFFSET,2,-10);
+		RRUR N 4 A_CustomMissile("RS_HKRedDeath",100,50,CMF_AIMOFFSET,2,10);
+		RRUR N 5 Bright A_Fall;
+		RRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",60,5,CMF_AIMOFFSET,2,-10);
+		RRUR N 4 A_CustomMissile("RS_HKRedDeath",100,50,CMF_AIMOFFSET,2,10);
+		RRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",20,30,CMF_AIMOFFSET,2,10);
+		RRUR N 4 Bright A_CustomMissile("RS_HKRedDeath",60,5,CMF_AIMOFFSET,2,-10);
+		RRUR N 2 A_CustomMissile("RS_HKRedDeath",100,-30,CMF_AIMOFFSET,2,-10);
 		TROO QRST 5;
 		TROO U -1;
 		Stop;
 	Raise:
-		BRUR NNNNNNNNNNMLKJIHGFEDCBA 2;   // CH: BRUR WVUTSRQPONMLKJIHGFEDCBA -- frames W..O do not exist (BRUR ships A-N only); held BRUR N in their place. 23 states / 46 tics, unchanged. See header note. Fixed 2026-08-06 (owner: nothing invisible).
+		RRUR NNNNNNNNNNMLKJIHGFEDCBA 2;   // CH: BRUR WVUTSRQPONMLKJIHGFEDCBA -- frames W..O do not exist (BRUR ships A-N only); held BRUR N in their place. 23 states / 46 tics, unchanged. See header note. Fixed 2026-08-06 (owner: nothing invisible).
 		Goto See;
 	}
 }
@@ -1712,7 +1711,7 @@ class RS_BlackHK2 : Actor   // CH Hellknights.txt:2290
 		Species "BaronOfHell";
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BOSS
 		+DONTHARMSPECIES
 		+DONTMORPH
@@ -1890,7 +1889,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 		Species "BaronOfHell";
 		-BOSSDEATH
 		+QUICKTORETALIATE
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+BOSS
 		+DONTHARMSPECIES
 		-NORADIUSDMG
@@ -1961,7 +1960,7 @@ class RS_BlackHKEX : Actor   // CH Hellknights.txt:2639
 	Phase2:
 		TNT1 A 0 A_JumpIf(user_rage >= 1,"Nah");
 		TNT1 A 0 A_SetSpeed(18);
-		TNT1 A 0 { bMISSILEEVENMORE = true; }   // CH: A_changeflag("Missileevenmore",true)
+		TNT1 A 0 { RS_MissileChance.SetEvenMore(self, true); }   // CH: A_changeflag("Missileevenmore",true)
 		BRUC J 6 Bright { user_rage += 1; }     // CH: a_setuservar("User_rage",User_rage+1)
 		BRUC JJJJJ 2 Bright A_CustomMissile("RS_ZapDecHKex",random(12,88),random(-20,20),0);
 		Goto See2;
@@ -2199,7 +2198,7 @@ class RS_WhiteHK3 : Actor   // CH Hellknights.txt:3238
 		+FLOORCLIP
 		+FLOAT
 		+NOGRAVITY
-		+MISSILEMORE
+		MissileChanceMult 0.5;
 		+NOCLIP
 		+NOFEAR
 		DropItem "RS_CH_SoulSphere";
