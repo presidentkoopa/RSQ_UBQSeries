@@ -27,3 +27,10 @@ the heading, so links to a section still work. `###` headings stay text. Run aga
 
 The front page's own banner, its chain headers (`h_*.gif`) and the imp divider are made by `make_readme_art.py` and
 `make_readme_art_2.py`.
+
+## The front page (2026-11-16)
+
+Intro, the contents grid (each mod's monster, `mods/<key>_icon.png`, linking to its section), In short, then one
+section per mod: the mod's own animated title (a link to its page), a short introduction that hands off to the next
+section, a few pictures, and a link to the mod's full page. The mod sections are not `## ` headings, so
+`apply_readme_art.py` leaves them alone.

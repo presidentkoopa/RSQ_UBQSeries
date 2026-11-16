@@ -44,3 +44,7 @@ for folder,(title,pre,col) in M.items():
     for i,s in enumerate(ws): d.alpha_composite(s,(i*cw+(cw-s.width)//2,48-s.height-2))
     d.save(f'{OUT}/{key}_divider.png',optimize=True)
 print(len(M),'mods')
+# the front page's contents grid: each page's monster on its own, still (mods/<key>_icon.png)
+for folder,(title,pre,col) in M.items():
+    s=walk(col,pre,56)[0]; c=Image.new('RGBA',(max(s.width,64),60),(0,0,0,0)); c.alpha_composite(s,((c.width-s.width)//2,60-s.height-2))
+    c.save(f'{OUT}/{folder.lower()}_icon.png',optimize=True)

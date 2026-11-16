@@ -9,9 +9,7 @@ def spr(col,names):
 W4=lambda p:[p+'A1',p+'B1',p+'C1',p+'D1']
 W3=lambda p:[p+'A1D1',p+'B1E1',p+'C1F1',p+'B1E1']
 # headers
-HEADS=[('in_short','IN SHORT','gold'),('melee','MELEE','red'),('hands','HANDS ON THE WORLD','cyan'),('throwing','THROWING','orange'),
- ('tactical_rig','TACTICAL RIG','green'),('weapon_wheel','WEAPON WHEEL','blue'),('slowmo','SLOWMO','purple'),('visual_rewards','VISUAL REWARDS','pink'),
- ('the_mods','THE MODS','lime'),('install','INSTALL','steel'),('status','WHERE IT STANDS','gold'),('credits','CREDITS','steel')]
+HEADS=[('in_short','IN SHORT','gold'),('the_mods','THE MODS','lime'),('status','WHERE IT STANDS','gold')]
 stills=[]
 for fn,t,c in HEADS:
     stills.append(header(t,c,f'{OUT}/h_{fn}.gif',sc=3))
