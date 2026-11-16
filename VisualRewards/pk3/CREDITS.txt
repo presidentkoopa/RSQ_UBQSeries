@@ -116,6 +116,10 @@ from the owner's approved mockups, tools/beam_spec/)
   - The arrival sounds (sounds/rsqvr/RVQB1-4 and RVQHIT; RVQB1-4 are made from the owner's ONPARE2/3/8 and PL01_U, sources in tools/beam_sounds): arrival sounds supplied by the owner
     (presidentkoopa), 2026-11-09; source not stated.
 
+- BOSS INCOMING!'s siren (sounds/rsqvr/RVQSIREN.wav, 2026-11-16, the owner's pick): "Siren Alarm" by freesound_community
+  on Pixabay (freesound_community-siren-alarm-96503.mp3), under the Pixabay Content License (free use, no credit required;
+  credited anyway). Used as the file is: made mono 44.1 kHz and stopped after its second whoop (4.2 s, a 50 ms fade).
+
 - Scene music (2026-11-09): the miniboss fight's track "20 organic beat", supplied by the owner (presidentkoopa); cut to
   loop at 2:02.97 with a 0.5 s crossfade (sounds/rsqvr/RVQMUS1.ogg). From Phantasy Star IV (Sega), per the owner (2026-11-10).
 - DOWN's (Be Quick or Be Dead's) track (2026-11-09): "29 red alert", supplied by the owner; its first 22.4 s looped

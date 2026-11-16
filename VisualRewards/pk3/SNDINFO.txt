@@ -17,6 +17,10 @@ $rolloff rsqvr/beam/v2  400 1800
 $rolloff rsqvr/beam/v3  400 1800
 $rolloff rsqvr/beam/v4  400 1800
 rsqvr/beam/hit      sounds/rsqvr/RVQHIT.wav
+// BOSS INCOMING!'s siren (owner 2026-11-16 05:27, design/MELEE_SOUNDS.md): his upload, Pixabay "Siren Alarm" by
+// freesound_community (Pixabay Content License), as it is: mono 44.1 kHz, from its own start to the end of its second
+// whoop (4.2 s, a 50 ms fade at the stop), nothing re-timed or re-levelled. banners.zs plays it once, on the banner's pop.
+rsqvr/siren         sounds/rsqvr/RVQSIREN.wav
 $rolloff rsqvr/beam/hit      400 1800
 
 // Scene music (2026-11-09): the owner's Bossfight track ("20 organic beat"), cut to loop at 2:02.97 with a 0.5 s

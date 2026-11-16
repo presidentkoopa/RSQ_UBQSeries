@@ -34,6 +34,7 @@ class RSQVR_Banner play
 	Array<int> crgb;       // a tier's swatch colour
 	Array<int> cn;         // lives: how many faces
 	int lv, hand;          // LEVELGUN: the gun's new level, its hand
+	int sirens;            // BOSS INCOMING!: times its siren was played (once, on the pop)
 }
 
 class RSQVR_Banners : EventHandler
@@ -178,7 +179,27 @@ class RSQVR_Banners : EventHandler
 		if (waiting >= QUEUE) return 0;
 		b.t0 = start;
 		list.Push(b);
+		// a banner that shows on the next frame sounds now (WorldTick may have run already this tic)
+		if (b.t0 <= level.maptime + 1) Siren(b);
 		return 1;
+	}
+
+	// THE BOSS INCOMING! SIREN (owner 2026-11-16 05:27, design/MELEE_SOUNDS.md): his siren, the file as it is from its own
+	// start to the end of its second whoop (4.2 s, a 50 ms fade at the stop; sounds/rsqvr/RVQSIREN.wav), played ONCE, on the
+	// banner's pop: in the tic whose frame first draws it (that frame is level.maptime + 1). Its two whoops are in the file;
+	// nothing more at FIGHT IN. Heard on the machine of the banner's player only (a sound is no game state, so playing it
+	// for the console player alone keeps every machine in step), unattenuated, from that player's own body; not when that
+	// player has Banners off. (CHANF_LOCAL is not used: on the 17.3 rig a sound started with it never showed as playing.)
+	// Rig only, not headset-confirmed.
+	void Siren(RSQVR_Banner b)
+	{
+		if (!b || b.moment != M_BOSSINCOMING || b.sirens > 0) return;
+		b.sirens++;
+		int pn = consoleplayer;
+		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn] || !players[pn].mo || (b.pn >= 0 && b.pn != pn)) return;
+		let c = CVar.GetCVar("rsqvr_banners", players[pn]);
+		if (c && !c.GetBool()) return;
+		players[pn].mo.A_StartSound("rsqvr/siren", CHAN_AUTO, CHANF_OVERLAP, 1.0, ATTN_NONE);
 	}
 
 	// THE TOAST (RSQVR_Service "toast", PRESENTATION_GUIDE.md section 5): "<kind>|<text>", kind health / armor / invuln /
@@ -245,6 +266,9 @@ class RSQVR_Banners : EventHandler
 			if (!toasts[i] || level.maptime > toasts[i].t0 + toasts[i].endAt + 2) toasts.Delete(i);
 		for (int i = list.Size() - 1; i >= 0; i--)
 			if (!list[i] || level.maptime > list[i].t0 + list[i].endAt + 2) list.Delete(i);
+		// a queued BOSS INCOMING! sounds as it pops (its first frame is the one after this tic)
+		for (int i = 0; i < list.Size(); i++)
+			if (list[i] && list[i].moment == M_BOSSINCOMING && list[i].sirens == 0 && list[i].t0 <= level.maptime + 1) Siren(list[i]);
 	}
 
 	// THE TEST HOOK (console, sv_cheats on): netevent rsqvr_bntest <n>, n = 0 REVIVE (with invulnerability 3 s), 1 -1UP
