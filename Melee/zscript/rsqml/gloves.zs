@@ -587,6 +587,11 @@ class RSQML_Gloves : StaticEventHandler
 		if (st.approach < ARM_M) return;
 		double avg = st.approach * TICRATE / st.approachTics;
 		if (avg < minSpeed) return;
+		// THE SWING'S WHOOSH (owner's sounds, 2026-11-16): the tic the fist's swing arms -- the first it is a punch, 0.15 m
+		// in at punch speed, about two tics before a hit at arm's length -- whether it lands or not. Only a swing OUT (its
+		// travel so far forward or rising, as a jab, a hook or an uppercut is): the fist pulled back after a punch is as fast
+		// and arms the reader too, but is no punch (rig 11-16: every return stroke whooshed)
+		if (!st.swinging && SwingsOut(pmo, st.path)) Whoosh(pmo, h);
 		st.swinging = true;
 
 		// WHAT THE GLOVE WENT INTO between last tic and this one: a body's cylinder, the glove a
@@ -693,7 +698,7 @@ class RSQML_Gloves : StaticEventHandler
 		if (kickedBarrel.Size() >= 16) { kickedBarrel.Delete(0); kickedTic.Delete(0); kickedPn.Delete(0); }
 		kickedBarrel.Push(b); kickedTic.Push(level.maptime); kickedPn.Push(pmo.PlayerNumber());
 		RSQML_Spark.Dust(b.pos + (0, 0, 4));
-		pmo.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 1.0);
+		HitSound(pmo, h, PK_UPPER);
 		if (RSQML.Debug() > 0) Console.Printf("RSQML uppercut kicks %s: %s, up %.1f, forward %.1f, no damage (health %d)", b.GetClassName(),
 			locked ? "to Distance Grab's lock" : "where you punched", up, up, b.health);
 		return true;
@@ -1234,6 +1239,54 @@ class RSQML_Gloves : StaticEventHandler
 		return true;
 	}
 
+	// ---- THE OWNER'S PUNCH SOUNDS (2026-11-16, design/MELEE_SOUNDS.md; SNDINFO.txt rsqml/jab1..swing) -----------------
+	// One baked file per hit. The jab: jab1 > jab2 > jab3 in turn (per player), each at a pitch drawn from 0.95 to 1.05 as
+	// it plays. A hook: the right hand's is hookr, the left's hookl (the hand you swung, read through vr_control_scheme: a
+	// left-handed player's main hand is the left). The uppercut: the kick's sound (owner 05:20). Rig only, not
+	// headset-confirmed.
+	int jabNext[MAXPLAYERS];
+	static void HitSound(PlayerPawn pmo, int h, int kind)
+	{
+		let me = RSQML_Gloves(StaticEventHandler.Find("RSQML_Gloves"));
+		if (!pmo) return;
+		Sound snd;
+		double pt = 0;
+		String what;
+		if (kind == PK_UPPER) { snd = "rsqml/uppercut"; what = "uppercut"; }
+		else if (kind == PK_HOOK)
+		{
+			bool right = (h == 0) != LeftHanded();
+			snd = right ? "rsqml/hookr" : "rsqml/hookl";
+			what = right ? "hookr" : "hookl";
+		}
+		else
+		{
+			int pn = pmo.PlayerNumber();
+			int k = 0;
+			if (me && pn >= 0 && pn < MAXPLAYERS) { k = me.jabNext[pn] % 3; me.jabNext[pn] = (k + 1) % 3; }
+			static const String JAB[] = { "rsqml/jab1", "rsqml/jab2", "rsqml/jab3" };
+			snd = JAB[k];
+			what = JAB[k].Mid(6);
+			pt = frandom[rsqml_snd](0.95, 1.05);
+		}
+		pmo.A_StartSound(snd, CHAN_AUTO, 0, 1.0, ATTN_NORM, pt);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML sound t%d: %s%s", level.maptime, what, pt > 0 ? String.Format(" at pitch %.3f", pt) : "");
+	}
+	static void Whoosh(PlayerPawn pmo, int h)
+	{
+		if (!pmo) return;
+		pmo.A_StartSound("rsqml/swing", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+		if (RSQML.Debug() > 0) Console.Printf("RSQML sound t%d: swing (%s hand)", level.maptime, h ? "off" : "main");
+	}
+	static bool SwingsOut(PlayerPawn pmo, Vector3 path)
+	{
+		double len = path.Length();
+		if (len < 0.01) return false;
+		double fwd = path.xy dot (cos(pmo.angle), sin(pmo.angle));
+		return fwd + max(path.z, 0.0) > 0.15 * len;
+	}
+	static bool LeftHanded() { let cv = CVar.FindCVar('vr_control_scheme'); return cv && cv.GetInt() >= 10; }
+
 	// A swing that ended without touching anything breaks a One-Two.
 	void Whiff(PlayerPawn pmo, int h)
 	{
@@ -1351,7 +1404,8 @@ class RSQML_Gloves : StaticEventHandler
 			victim.DamageMobj(FistInflictor(pmo, g, h, r, at), pmo, dmg, 'Melee', DMG_THRUSTLESS);
 		}
 		if (RSQML.Debug() > 0) { String fn = g ? String.Format("%s", g.GetClassName()) : "an empty hand"; Console.Printf("RSQML punch by %s: %s", fn, bdBlow ? "BD22 VR's punching deals the damage (rsq_punch on), Melee adds the rest" : String.Format("%d damage%s", dmg, (g && RSQML.IsGloveName(g.GetClassName())) ? "" : " (through its RSQ_GloveFist, so RSQ Score reads the punch)")); }
-		pmo.A_StartSound(r.lastStar ? "rsqml/star" : "rsqml/punch", CHAN_AUTO, 0, 1.0);
+		if (r.lastStar) pmo.A_StartSound("rsqml/star", CHAN_AUTO, 0, 1.0);
+		else HitSound(pmo, h, r.lastKind);
 		RSQ_Buzz.Start(pmo, h, 0.5 + 0.5 * r.lastPower + (r.lastStar ? 0.5 : 0.0), r.lastStar ? 10 : 5);
 		// HEAVY HANDS (pick 52): the punch stops it for a beat and throws it further. With Gun Bonsai VR: once that glove
 		// has learned it, at its numbers (RSQ_Upgrade_HeavyHands.Knock / Freeze). Without: the Heavy Hands row

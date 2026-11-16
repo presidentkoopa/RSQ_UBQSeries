@@ -485,6 +485,7 @@ class RSQML_ClubHand play
 	int poseFrame, placeK, lastPoseFrame;
 	int swingTics, calmTics, whooshWait, scrapeWait;
 	bool usedLine;
+	bool voiced;            // this swing's hit sound has played (the owner's whip / butt sound: once a swing)
 	bool pulsed;			// RSQ Melee: this swing has asked RSQ SlowMo for its pulse already
 	bool inWall;
 	Array<Actor> struck;
@@ -666,6 +667,7 @@ class RSQML_ClubHand play
 		inWall = false;
 		usedLine = false;
 		pulsed = false;
+		voiced = false;
 		struck.Clear();
 	}
 
@@ -772,6 +774,7 @@ class RSQML_ClubHand play
 		else if (++calmTics > 2)
 		{
 			swingTics = 0;
+			voiced = false;
 			struck.Clear();
 			usedLine = false;
 			pulsed = false;
@@ -862,17 +865,28 @@ class RSQML_ClubHand play
 		RSQML.Touch("shove", mo, t);
 		bool zerk = mo.CountInv('PowerStrength') > 0;
 		String what;
-		if (k == PISTOL || k == REVOLVER)
+		// THE OWNER'S SOUNDS (2026-11-16, design/MELEE_SOUNDS.md): the whip is rsqml/whip (punch11 + a small clank), the butt
+		// strike rsqml/buttshove (punch3 + thud), once a swing, on the tic it lands. BD22's attack actors below would play their
+		// own hit sound on top (FistAttack's Melee/Flesh, KickAttack's Kick/flesh, on their channel 3 as they burst in the body):
+		// Launch stops it (mute), so one hit is one sound. Their damage, blood, quake and alert are untouched.
+		bool whip = k == PISTOL || k == REVOLVER;
+		if (!voiced)
+		{
+			voiced = true;
+			mo.A_StartSound(whip ? "rsqml/whip" : "rsqml/buttshove", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+			if (RSQML.Debug() >= 1) Console.Printf("RSQML sound t%d: %s", level.maptime, whip ? "whip" : "buttshove");
+		}
+		if (whip)
 		{
 			// the pistol whip: BD22's own punch (and a second at twice the swing needed)
-			Launch(mo, zerk ? 'MeleeStrike1Berserked' : 'MeleeStrikeNormal', p, dir);
+			Launch(mo, zerk ? 'MeleeStrike1Berserked' : 'MeleeStrikeNormal', p, dir, true);
 			what = zerk ? "MeleeStrike1Berserked" : "MeleeStrikeNormal";
-			if (power >= 2.0) { Launch(mo, 'MeleeStrikeNormal', p, dir); what = what .. " + MeleeStrikeNormal"; }
+			if (power >= 2.0) { Launch(mo, 'MeleeStrikeNormal', p, dir, true); what = what .. " + MeleeStrikeNormal"; }
 		}
 		else
 		{
 			// the butt strike: BD22's own kick
-			Launch(mo, zerk ? 'SuperKickAttack' : 'KickAttack', p, dir);
+			Launch(mo, zerk ? 'SuperKickAttack' : 'KickAttack', p, dir, true);
 			what = zerk ? "SuperKickAttack" : "KickAttack";
 		}
 		if (RSQML.Debug() >= 1)
@@ -888,8 +902,10 @@ class RSQML_ClubHand play
 		}
 	}
 
-	// BD22's attack actor, fired by the player from that point
-	static void Launch(PlayerPawn mo, Name cname, Vector3 p, Vector3 dir)
+	// BD22's attack actor, fired by the player from that point. mute: its own hit sound is stopped (the strike plays the
+	// owner's): it bursts inside the body as it spawns (CheckMissileSpawn), so its XDeath's A_PlaySound(..., 3) has already
+	// started, before any frame mixes it; one that bursts later is caught by RSQML_ClubMute on the tics after.
+	static void Launch(PlayerPawn mo, Name cname, Vector3 p, Vector3 dir, bool mute = false)
 	{
 		class<Actor> cls = cname;
 		if (!cls) return;
@@ -900,6 +916,7 @@ class RSQML_ClubHand play
 		a.pitch = -asin(clamp(dir.z, -1, 1));
 		a.vel = dir * a.speed;
 		a.CheckMissileSpawn(0);
+		if (mute && a && !a.bDestroyed) RSQML_ClubMute.Watch(a);
 	}
 
 	// the controller's buzz: the engine buzzes the weapon hand when the player fires a projectile (P_SpawnPlayerMissile).
@@ -1109,4 +1126,33 @@ class RSQML_ClubMove abstract
 			0.067099 * p.x + 0.978743 * p.y + -0.193804 * p.z + t.y,
 			0.058662 * p.x + 0.190036 * p.y + 0.980023 * p.z + t.z);
 	}
+}
+
+// BD22's ATTACK ACTORS, MUTED (2026-11-16, the owner's whip and butt sounds): a strike Launch()ed with mute has its own hit
+// sound (channel 3: FistAttack's Melee/Flesh, KickAttack's Kick/flesh; a wall's Melee/Wall / Kick/wall) stopped. Stopped
+// at once after it spawns (it bursts in the body inside CheckMissileSpawn), and on its next few tics in case it flew on a
+// little before bursting. Nothing else of it is touched.
+class RSQML_ClubMute : StaticEventHandler
+{
+	const WATCH_TICS = 4;
+	Array<Actor> who;
+	Array<int> upTo;
+	static void Watch(Actor a)
+	{
+		if (!a) return;
+		a.A_StopSound(CHAN_ITEM);
+		let m = RSQML_ClubMute(StaticEventHandler.Find("RSQML_ClubMute"));
+		if (!m) return;
+		m.who.Push(a);
+		m.upTo.Push(level.maptime + WATCH_TICS);
+	}
+	override void WorldTick()
+	{
+		for (int i = who.Size() - 1; i >= 0; i--)
+		{
+			if (!who[i] || level.maptime > upTo[i]) { who.Delete(i); upTo.Delete(i); continue; }
+			who[i].A_StopSound(CHAN_ITEM);
+		}
+	}
+	override void WorldUnloaded(WorldEvent e) { who.Clear(); upTo.Clear(); }
 }

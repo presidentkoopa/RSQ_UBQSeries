@@ -12,6 +12,22 @@ rsqml/star		"sounds/rsqml/STAR.wav"
 rsqml/smash		"sounds/rsqml/HITTHE.wav"
 $limit rsqml/punch 4
 $limit rsqml/smash 2
+// THE OWNER'S PUNCH SOUNDS (2026-11-16, design/MELEE_SOUNDS.md; his uploads punch1-punch11, source to be found): one baked
+// file per hit (trim, pitch, layers, gain and fades all in it; Melee/tools/meleesounds.py is the recipe). gloves.zs picks
+// by the punch: the jab rotates jab1 > jab2 > jab3 at +/-5% pitch drawn as it plays, a hook is hookr (right hand) or
+// hookl (left), the uppercut is the kick's sound. club.zs / shove.zs: the pistol whip and the gun-butt shove. swing is
+// the whoosh as a fist swing arms. The SuperPunchOut sounds above stay for the Hadouken, the swat-back, the guard.
+rsqml/jab1       "sounds/rsqml/hit/jab1.ogg"        // punch9
+rsqml/jab2       "sounds/rsqml/hit/jab2.ogg"        // punch6
+rsqml/jab3       "sounds/rsqml/hit/jab3.ogg"        // punch1
+rsqml/hookr      "sounds/rsqml/hit/hookr.ogg"       // punch11
+rsqml/hookl      "sounds/rsqml/hit/hookl.ogg"       // punch5
+rsqml/uppercut   "sounds/rsqml/hit/uppercut.ogg"    // the kick: punch7 -20% (its thump 9 ms in) + thud2 -15% x0.55
+rsqml/whip       "sounds/rsqml/hit/whip.ogg"        // punch11 + RSQ Monsters' casing tick (DSRIFLC2, first 55 ms) x0.3
+rsqml/buttshove  "sounds/rsqml/hit/buttshove.ogg"   // punch3 (14 ms cut, -15%) + thud2 x0.4
+rsqml/swing      "sounds/rsqml/hit/swing.ogg"       // punch10's lead-in (108 ms) x0.8
+$limit rsqml/swing 2
+
 // Stock Doom 2 lumps under our own names (nothing shipped): the guard taking a blow (DSTINK, the chat tick) and the
 // open palm's swat (DSSKEPCH, the revenant's slap).
 rsqml/guard		dstink

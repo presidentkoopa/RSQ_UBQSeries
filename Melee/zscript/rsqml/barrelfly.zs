@@ -90,7 +90,13 @@ class RSQML_FlyingBarrel : Actor
 		b.bSHOOTABLE = false; b.bSOLID = false;
 		b.Destroy();
 		RSQML_Spark.Dust(from - (0, 0, 8));
-		pmo.A_StartSound("rsqml/punch", CHAN_AUTO, 0, 1.0);
+		// the owner's sounds (2026-11-16): an uppercut's launch is the uppercut's, a gun-butt shove's the shove's
+		if (how == "uppercut") RSQML_Gloves.HitSound(pmo, 0, RSQML_Gloves.PK_UPPER);
+		else
+		{
+			pmo.A_StartSound("rsqml/buttshove", CHAN_AUTO, 0, 1.0);
+			if (RSQML.Debug() > 0) Console.Printf("RSQML sound t%d: buttshove (a barrel)", level.maptime);
+		}
 		if (RSQML.SVI("rsqml_barrel_slowmo", 1) != 0)
 		{
 			let sm = RSQML.Svc("RSQSM_Service");

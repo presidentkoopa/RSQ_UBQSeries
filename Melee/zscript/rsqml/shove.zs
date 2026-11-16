@@ -22,7 +22,7 @@
 //            monsters do on a Kick (their Pain.Kick: A_FaceTarget, ThrustThing(angle + 180, back), ThrustThingZ up/4).
 //            A Brutal Doom monster has that state and does it itself; a vanilla one gets the same numbers (KnockOf).
 //     sound  the swing: Brutal Doom's Melee/SwingStrong (melee.zs:661), or stock Doom's skeleton/swing without it; a
-//            hit: Brutal Doom's Kick/flesh (KickAttack's XDeath), or stock Doom's punch (*fist, DSPUNCH) without it
+//            hit: the owner's rsqml/buttshove (2026-11-16; until then Brutal Doom's Kick/flesh, or Doom's *fist)
 //     wait   12 tics before the next (melee.zs:663 whooshWait)
 //     alert  A_AlertMonsters(200) on a hit (KickAttack's XDeath)
 //   STANDS DOWN when BD22 VR Reloaded is loaded (found by class name through a String at run time). Since 2026-11-13
@@ -389,8 +389,10 @@ class RSQML_Shove : StaticEventHandler
 		if (landed == 0 && RSQML.UseLineAlong(pmo, a, d, BUTT_REACH, "butt shove")) RSQ_Buzz.Start(pmo, 0, 0.6, 4);
 		if (landed > 0)
 		{
-			if (RSQML.HasSound("Kick/flesh") && struck[0] && !struck[0].bDestroyed) struck[0].A_StartSound("Kick/flesh", CHAN_AUTO);
-			else pmo.A_StartSound("*fist", CHAN_AUTO);
+			// the owner's sound (2026-11-16, design/MELEE_SOUNDS.md): punch3 + thud, one file (was Brutal Doom's Kick/flesh,
+			// or Doom's *fist without it)
+			pmo.A_StartSound("rsqml/buttshove", CHAN_AUTO, CHANF_OVERLAP, 1.0);
+			if (Dbg() >= 1) Console.Printf("RSQML sound t%d: buttshove", level.maptime);
 			pmo.A_AlertMonsters(BUTT_ALERT);
 			RSQ_Buzz.Start(pmo, 0, 0.6, 6);
 			// SLOW-MO: from the shover's own machine only, so a netgame gets one event
