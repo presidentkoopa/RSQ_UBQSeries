@@ -5,7 +5,7 @@
 //                   greyed, the bands go cold; then the chips
 //   BOSSWIN         BOSS DEFEATED! (gold) and TIER UP + the new tier's colour
 //   BOSSLOSS        BOSS WINS! (red), TIER DOWN + the colour, NO LEGENDARY
-//   LIFEUP          +1UP: a gold flash, spinning rays, the grinning face pops in and wobbles, the 1UP squashes as it lands
+//   LIFEUP          +1UP: a gold flash (no rays: owner 11-16 05:44), the grinning face pops in and wobbles, the 1UP squashes as it lands
 //                   and bobs, a white shine sweeps down its bands, sparkles burst; then the badge shrinks and floats up
 //                   into RSQ Score's lives at the top, where the new face pops in with a second burst
 // THE MOTION (his "particularly lovely"; the mockup's frames are 2 tics): the headline punches in 0.2 -> 1.35 -> 1.0 over
@@ -1031,18 +1031,12 @@ class RSQVR_Banners : EventHandler
 	{
 		double cx = gx;
 		double bp = 10 * m * 0.9;
-		// the gold flash (none in Photosensitive Mode) and the spinning rays
+		// the gold flash (none in Photosensitive Mode). The spinning rays behind the badge were removed (owner 2026-11-16 05:44)
 		if (!photo && bt < 6)
 		{
 			// a burst of light round the badge, kept inside the HUD (its edge would show as a box in the headset)
 			double s = min(Screen.GetWidth(), Screen.GetHeight()) * 0.95;
 			TexC("RQVBGL", cx, cy, s, s, 0.8 * (1 - bt / 6), -1, 0xFFFADC, true);
-		}
-		if (bt < 28)
-		{
-			double R = (80 + bt * 0.5 * 22) * m;
-			int fr = (int(bt * 2.0 / 5.0) % 12 + 12) % 12;
-			TexC(String.Format("RQVBR%02d", fr), cx, cy, 2 * R, 2 * R, (photo ? 0.4 : 0.67) * (1 - bt / 28.0), -1, 0xFFFFFF, true);
 		}
 		int shine = 0;
 		if (!photo) { int k = (int(bt) / 4) % 7; if (k < 4) shine = k + 1; }

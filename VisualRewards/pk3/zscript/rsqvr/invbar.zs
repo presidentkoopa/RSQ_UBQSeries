@@ -9,7 +9,8 @@
 // WHEN: only while the console player holds a power of the PowerInvulnerable family (any: the sphere, a mod's own), full
 // when it appears and draining to zero over the REAL time left (its EffectTics; the bar's whole is the time left when it
 // appeared, so it always starts full), then it fades. A longer power picked up on top refills it, with a glint. A
-// banner's INVULNERABLE chip on its way up (banners.zs) holds it back; where the chip lands the bar flashes in full.
+// banner's INVULNERABLE chip (banners.zs) flies up to it as a highlight; where it lands the bar flashes in full (since
+// 11-16 05:44 the bar does not wait for the chip: it shows and drains from the tic the power is given).
 // WHERE: its own row under the slow motion row, the Boss meter's width and thickness and left edge, asked the way the
 // bars ask each other (by name, ui): under RSQ Score's bar ("hud.*"), RSQ Miniboss's meter ("meter.bottom", "meter.x" /
 // "meter.w" / "meter.h") and RSQ SlowMo's countdown row ("countdown.bottom"); without them, where their own formulas
@@ -18,7 +19,7 @@
 // Rig only, not headset-confirmed.
 extend class RSQVR_Banners
 {
-	const IFADE_IN = 5.0;
+	const IFADE_IN = 2.0;      // owner 11-16 05:44: invulnerable "immediately": the bar is there almost at once
 	const IFADE_OUT = 14.0;
 	const ISWEEP = 52.0;
 	const ISLICES = 8;
@@ -139,17 +140,17 @@ extend class RSQVR_Banners
 	{
 		if (!InvBarOn()) { invOn = false; return; }
 		int left = InvLeft();
-		bool pending = InvPending();
 		int land = LandTic();
 		bool landing = land >= 0 && t - land >= 0 && t - land < ILAND;
-		// on / off: the power, unless a chip is still on its way to the bar
-		if (left > 0 && !pending)
+		// on / off: the power itself, from the tic it is given (owner 11-16 05:44: "it needs to be invuln immediately and
+		// start counting down ... the timer for it has to start the second we revive"): a banner's INVULNERABLE chip no
+		// longer holds the bar back; it flies in as a highlight and lands on a bar already counting down
+		if (left > 0)
 		{
-			if (!invOn) { invOn = true; invTotal = left; invOnTic = (landing ? land : t); invShown = 1.0; }
+			if (!invOn) { invOn = true; invTotal = left; invOnTic = t; invShown = 1.0; }
 			else if (left > invLast + 2) { invTotal = max(left, 1); invRefill = t; }   // a longer power on top: refill
 		}
-		else if (invOn && left <= 0) { invOn = false; invOffTic = t; }
-		else if (invOn && pending) { invOn = false; invOffTic = t - IFADE_OUT; }
+		else if (invOn) { invOn = false; invOffTic = t; }
 		invLast = left;
 		double alpha, frac;
 		if (invOn)
