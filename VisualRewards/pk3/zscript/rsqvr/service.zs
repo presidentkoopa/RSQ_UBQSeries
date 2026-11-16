@@ -60,6 +60,9 @@
 //                        BOSSINCOMING (BOSS INCOMING!, the crowned skull): name:<text> (empty: the Boss's clean name, section
 //                        9; @<class>: that class's), tier:<n>, thralls:<n>[@RRGGBB,RRGGBB...] (each thrall's crosshair in its
 //                        colour; without colours the Boss bar's mockup ones), clock:<secs> (FIGHT IN, counting down)
+//                        BIGBOSSINCOMING / BIGBOSSWIN / BIGBOSSLOSS (RSQ Miniboss's Big Boss, 2026-11-16): the same as BOSSINCOMING
+//                        (its siren too) / BOSSWIN / BOSSLOSS with the same chips; the headline BIG BOSS INCOMING! / BIG BOSS
+//                        DEFEATED! / BIG BOSS WINS!
 //   GetInt "toast"       (play) stringArg "<kind>|<text>", objectArg the player's pawn: one chip, low in the view, ~1.5 s
 //                        (PRESENTATION_GUIDE.md section 5). kind health / armor / invuln / ammo / lives / up / down / info.
 //                        Returns 1 when shown (0: no text, or no VisualRewards: then print your old way)

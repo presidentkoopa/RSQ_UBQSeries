@@ -349,6 +349,21 @@ in place of its one legendary weapon, beside the 1UP crate:
 
 *Rig only, not headset-confirmed (2026-11-16, runs `kq_e2e3`, `kq_in7`: design/mockups/kiosk/rig/).*
 
+### The Big Boss (2026-11-16, design/BIG_BOSS.md)
+
+- **The Big Boss bar** sits beside the Boss meter, the same size and made the same way, in **gold** (for now) with a gold
+  skull: every Boss you beat fills it **25%**. It is kept across maps, saves and a death's reload.
+- **Full, a Big Boss comes by itself** (once the usual rules let it: not too early, after the cooldown, not near an exit
+  ...; never held by the per-map limit): **BIG BOSS INCOMING!** with the siren, an **EX monster** of RSQ Monsters with
+  thralls, its health on the Boss bar. The bar empties as the fight starts.
+- **Beat it:** **BIG BOSS DEFEATED!**, the world tier up, the 1UP crate, and **the kiosk with every offer Epic**.
+- **Lose it** (a Score life spent, or leaving the map): **BIG BOSS WINS!**, as a lost Boss fight; the bar stays empty.
+- **Options:** RSQ Boss > Big Boss (on). Test and Debug: Big Boss Bar +25% (Test) / Empty (sv_cheats or Debug Log).
+- New EX bosses join the Big Boss pool by themselves when RSQ Monsters names them `*EX` at a boss colour; any other
+  monster class joins by a line in an `RSQBIGBS` lump.
+
+*Rig only, not headset-confirmed (2026-11-16: Miniboss/docs/rig_2026-11-16_bigboss/).*
+
 **A thrall killed** (owner 2026-11-12: "no gun drop, no red bits drop. just champion bundle, armor and ammo."):
 
 - **Its Champion's drops:** Champions' own item bundle.

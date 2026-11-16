@@ -5,6 +5,9 @@
 //                   greyed, the bands go cold; then the chips
 //   BOSSWIN         BOSS DEFEATED! (gold) and TIER UP + the new tier's colour
 //   BOSSLOSS        BOSS WINS! (red), TIER DOWN + the colour, NO LEGENDARY
+//   BIGBOSSINCOMING / BIGBOSSWIN / BIGBOSSLOSS   the Big Boss's (RSQ Miniboss bigboss.zs, owner 2026-11-16 08:40): BOSSINCOMING,
+//                   BOSSWIN and BOSSLOSS exactly, the headline BIG BOSS INCOMING! (the same siren, once), BIG BOSS DEFEATED!,
+//                   BIG BOSS WINS!
 //   LIFEUP          +1UP: a gold flash (no rays: owner 11-16 05:44), the grinning face pops in and wobbles, the 1UP squashes as it lands
 //                   and bobs, a white shine sweeps down its bands, sparkles burst; then the badge shrinks and floats up
 //                   into RSQ Score's lives at the top, where the new face pops in with a second burst
@@ -35,6 +38,7 @@ class RSQVR_Banner play
 	Array<int> cn;         // lives: how many faces
 	int lv, hand;          // LEVELGUN: the gun's new level, its hand
 	int sirens;            // BOSS INCOMING!: times its siren was played (once, on the pop)
+	bool big;              // a Big Boss's moment (BIGBOSSINCOMING / BIGBOSSWIN / BIGBOSSLOSS): the headline says BIG BOSS
 }
 
 class RSQVR_Banners : EventHandler
@@ -93,9 +97,20 @@ class RSQVR_Banners : EventHandler
 		Array<String> parts;
 		spec.Split(parts, "|");
 		if (parts.Size() < 1) return 0;
-		int m = MomentOf(parts[0]);
+		// THE BIG BOSS'S MOMENTS (RSQ Miniboss bigboss.zs): BIG + a Boss moment, the same banner with BIG BOSS in its headline
+		String mn = parts[0].MakeUpper();
+		bool big = false;
+		if (mn.Left(3) == "BIG")
+		{
+			int bm = MomentOf(mn.Mid(3));
+			if (bm != M_BOSSINCOMING && bm != M_BOSSWIN && bm != M_BOSSLOSS) return 0;
+			big = true;
+			mn = mn.Mid(3);
+		}
+		int m = MomentOf(mn);
 		if (m < 0) return 0;
 		let b = new("RSQVR_Banner");
+		b.big = big;
 		b.pn = (pawn && pawn.player) ? pawn.PlayerNumber() : -1;
 		b.moment = m;
 		b.invIdx = -1;
@@ -273,7 +288,7 @@ class RSQVR_Banners : EventHandler
 
 	// THE TEST HOOK (console, sv_cheats on): netevent rsqvr_bntest <n>, n = 0 REVIVE (with invulnerability 3 s), 1 -1UP
 	// (5 s), 2 BOSS DEFEATED!, 3 BOSS WINS!, 4 +1UP (and a Score life when RSQ Score is loaded), 5 REVIVE without, 6 BOSS
-	// INCOMING! (an Imp's name), 7 three toasts; or any
+	// INCOMING! (an Imp's name), 7 three toasts, 10 / 11 / 12 BIG BOSS INCOMING! / DEFEATED! / WINS!; or any
 	// banner by its spec: netevent "rsqvr_banner:REVIVE|health:66|armor:50"
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -299,6 +314,9 @@ class RSQVR_Banners : EventHandler
 		}
 		case 5: Add("REVIVE|health:66|armor:50|mags:full", mo); break;
 		case 6: Add("BOSSINCOMING|name:@DoomImp|tier:5|thralls:4|clock:3", mo); break;
+		case 10: Add("BIGBOSSINCOMING|name:@DoomImp|tier:12|thralls:4|clock:5", mo); break;
+		case 11: Add("BIGBOSSWIN|tierup:4", mo); break;
+		case 12: Add("BIGBOSSLOSS|tierdown:2|nolegendary", mo); break;
 		case 8: Add(String.Format("LEVELUP|playerlv:%d|upgrade:+1", 7), mo); break;
 		case 9: Add("LEVELGUN|gun:PISTOL|lv:3|hand:0|upgrade:new", mo); break;
 		case 7: Toast("info|No flares left", mo); Toast("ammo|+20 shells", mo); Toast("up|Upgrade ready", mo); break;
@@ -899,6 +917,7 @@ class RSQVR_Banners : EventHandler
 		else
 		{
 			String hl = b.moment == M_REVIVE ? "REVIVE" : (b.moment == M_BOSSWIN ? "BOSS DEFEATED!" : (b.moment == M_BOSSINCOMING ? "BOSS INCOMING!" : (b.moment == M_LEVELUP ? "LEVEL UP!" : "BOSS WINS!")));
+			if (b.big) hl = "BIG " .. hl;     // BIG BOSS INCOMING! / BIG BOSS DEFEATED! / BIG BOSS WINS! (RSQ Miniboss bigboss.zs)
 			String set = b.moment == M_BOSSLOSS ? "RQVBK" : ((b.moment == M_BOSSINCOMING || b.moment == M_LEVELUP) ? "RQVBG" : "RQVBA");
 			// the skull before BOSS INCOMING! (RSQ Miniboss's crowned skull, RSQMBHD: it is the one who asks); the grin
 			// before LEVEL UP! (section 10)

@@ -202,6 +202,7 @@ checked, then `GetInt("banner", "<MOMENT>|<chip>|<chip>...", 0, 0, playerPawn)`.
 | `LIFEUP` | Score `handler.zs` RunRewardCue: a life gained (Score's target, the life crate, another mod's "givelife") | `lives:<the new count>` |
 | `BOSSWIN` | Miniboss `tierup.zs` TierUpOnKill: the miniboss killed by the player | `tierup:<the new world tier 1..13>` (left out when the tier cannot rise) |
 | `BOSSLOSS` | Miniboss `tierup.zs` FightLost: a life spent in the fight, or the map left with it on (then on the next map, ~20 tics in) | `tierdown:<the new world tier>` (left out at tier 1), `nolegendary:` |
+| `BIGBOSSINCOMING` / `BIGBOSSWIN` / `BIGBOSSLOSS` | Miniboss `bigboss.zs` (design/BIG_BOSS.md, 2026-11-16): the Big Boss's arrival, win and loss, from the same places as the three Boss moments | the same chips as BOSSINCOMING / BOSSWIN / BOSSLOSS; the headline BIG BOSS INCOMING! (BOSS INCOMING!'s siren, once) / BIG BOSS DEFEATED! / BIG BOSS WINS! |
 | `BOSSINCOMING` | Miniboss `bossfight.zs` StartArrival: once per fight, to the player who called it | `name:<the clean Boss name>` (Miniboss `bossbar.zs` BossNameOfClass, "<NAME> WARLORD", section 9), `tier:<the miniboss's tier, world + 2, at most 13>`, `thralls:<count>`, `clock:<seconds to the fight>` |
 
 | `LEVELUP` | VisualRewards `damnums/events.zs` Banner (Gun Bonsai's `bonsai-level-up` 0) | `playerlv:<n>`, `upgrade:+1` |

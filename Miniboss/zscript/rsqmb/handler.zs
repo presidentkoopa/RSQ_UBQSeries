@@ -99,11 +99,12 @@ class RSQMB_Handler : EventHandler
 	override void WorldLoaded(WorldEvent e)
 	{
 		ChampForce(false);   // an arrival cut short by a save, a load or a quit: Champions' own Override Chance back (bossfight.zs)
+		ExKeepLoad();        // the Big Boss bar kept through a death's reload (bigboss.zs)
 		// a hub level entered again: the tiers this mod gave its monsters are put back (fight.zs TierReset; owner 07:15)
 		if (e.IsReopen) TierReset();
 		if (e.IsSaveGame || e.IsReopen) return;
 		bosses.Clear(); windowEnd = 0; nextPulse = 0; rageCount = 0; raged.Clear();
-		bfScanned = false; bfCount = 0; bfLastTic = 0; bfAny = false; bfBoss = null; arrPhase = 0; arrQuiet = false; rerollAt = 0;
+		bfScanned = false; bfCount = 0; bfLastTic = 0; bfAny = false; bfBoss = null; arrPhase = 0; arrQuiet = false; rerollAt = 0; arrBig = false;
 	}
 
 	// Leaving the level: everything the greed rule changed is put back (a hub keeps its monsters).
@@ -121,6 +122,7 @@ class RSQMB_Handler : EventHandler
 		FightTick();
 		if (tuAt.Size()) TierUpTick();   // tierup.zs
 		LossTick();                      // tierup.zs: a Score life spent during a fight is a loss; the beams out; the tier-downs
+		ExKeepTick();                    // bigboss.zs: the Big Boss bar given back after a death's reload
 		if ((level.maptime % 17) == 0 && bosses.Size())
 		{
 			if (!rosterLooked) { rosterLooked = true; roster = ServiceIterator.Find("RSQMN_RosterService").Next(); }
@@ -530,10 +532,12 @@ class RSQMB_Handler : EventHandler
 	//   netevent rsqmb_state     prints every miniboss
 	//   netevent rsqmb_callin    calls a full Bossfight meter in (bossfight.zs CallIn)
 	//   netevent rsqmb_fill <permille>  sets the meter (test; 1000 = full now)
+	//   netevent rsqmb_exfill <permille>  sets the Big Boss bar (test, sv_cheats or Debug Log; -1 = +25%, 1000 = full now: bigboss.zs)
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (e.Name ~== "rsqmb_state") { PrintState(); BfState(); }
 		else if (e.Name ~== "rsqmb_callin") CallIn(e.Player, e.Args[0] == 1);
+		else if (e.Name ~== "rsqmb_exfill") ExFillTest(e.Player, e.Args[0]);
 		else if (e.Name ~== "rsqmb_fill")
 		{
 			// test door: the meter to Args[0] permille (1000: full now)

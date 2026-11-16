@@ -83,6 +83,11 @@ OptionMenu "RSQMB_Options"
 	Option "Greed Enrages Monsters", "rsqmb_greed", "OnOff"
 	Option "Score Awards", "rsqmb_score", "OnOff"
 	StaticText " "
+	StaticText "Big Boss", 1
+	// The Big Boss bar beside the Boss meter fills 25% for every Boss you beat; full, a Big Boss (an EX monster of RSQ
+	// Monsters, with thralls) comes. Its kiosk's offers are all Epic.
+	Option "Big Boss", "rsqmb_ex", "OnOff"
+	StaticText " "
 	StaticText "Boss Kiosk", 1
 	// A Boss won drops a kiosk of three legendary weapons for gold in place of its one legendary (BD22 VR Reloaded, LegenDoom
 	// and RSQ Score). Stand still near it to shop.
@@ -137,6 +142,11 @@ OptionMenu "RSQMB_Test"
 	Slider "Slow Depth", "rsqmb_slow_depth", -1, 90, 5, 0
 	Slider "Rage Speed", "rsqmb_rage_speed", 1, 4, 0.25, 2
 	Slider "Effects Range", "rsqmb_fx_range", 1000, 8000, 250, 0
+	StaticText " "
+	StaticText "Big Boss", 1
+	// test (sv_cheats on, or Debug Log on): the Big Boss bar +25%, as a Boss won; or empty it
+	Command "Big Boss Bar +25% (Test)", "netevent rsqmb_exfill -1"
+	Command "Big Boss Bar Empty (Test)", "netevent rsqmb_exfill 0"
 	StaticText " "
 	Option "Kiosk Log", "rsqmb_kiosk_log", "OnOff"
 	Option "Debug Log", "rsqmb_debug", "OnOff"

@@ -53,12 +53,13 @@ Player-facing text never shows a code name (DEMON1, PE…), never says "miniboss
 |---|---|---|
 | Score | Score's orange | (Score's own) |
 | Boss meter | red, gold when full | the crowned skull |
+| Big Boss bar (beside the Boss meter, design/BIG_BOSS.md) | gold (provisional, 2026-11-16) | the gold skull with a ruby |
 | Adrenaline | cyan | Adrenaline's hourglass |
 | World slow motion | green (or the player's choice) | the hourglass |
 | Invulnerable | magenta | the orb |
 | DOWN | blood red, pulsing | the bloodied low-health face |
 
-- **The top stack:** Score, then the Boss meter, then adrenaline and world slow motion side by side, then the reason line,
+- **The top stack:** Score, then the Boss meter (with the Big Boss bar beside it, the pair centred), then adrenaline and world slow motion side by side, then the reason line,
   then invulnerable; each bar asks the one above it where to sit, by name, and the stack closes up when one is hidden.
 - **Exceptions kept on purpose:** the Boss health bar (`bossbar.zs`) and the DOWN panel keep their own place and shape.
 - **A bar that slows time shows why:** the world slow motion bar always carries its reason word under it.

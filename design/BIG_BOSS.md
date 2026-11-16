@@ -1,0 +1,131 @@
+# The Big Boss (built 2026-11-16)
+
+Owner, 2026-11-16 08:40: "An EX Tier Boss Bar is a good idea. For now let's build it such that every Boss we kill, the EX
+bar fills by 25%, when maxxed, it calls in a Bossfight with an EX tier monster with thralls. Reward is a guarenteed
+legendary kiosk with all epic or legendary loot or whatever." The EX-tier ones are called **Big Boss** (owner 08:40).
+
+Built in RSQ Miniboss (`Miniboss/zscript/rsqmb/bigboss.zs`, with small changes to `bossfight.zs`, `tierup.zs`, `kiosk.zs`,
+`hud.zs`, `service.zs`, `boss.zs`, `handler.zs`) and RSQ VisualRewards' banners (`rsqvr/banners.zs`: three new moments).
+**Rig only, not headset-confirmed** (evidence: `Miniboss/docs/rig_2026-11-16_bigboss/`).
+
+## 1. The Big Boss bar
+
+- **Where:** beside the Boss meter in the top stack, the same size: the two rows (icon, gap, bar) side by side, 1.2 bar
+  thicknesses apart, the pair centred where the Boss meter alone stood (under Score). RSQ SlowMo's rows under it are
+  unchanged: the meter still answers `meter.x` / `meter.w` / `meter.h` as the centred slot, so they stay centred under Score.
+  Off (Big Boss off): the Boss meter alone, as before.
+- **How it is made:** exactly as the Boss meter (one shared draw, `hud.zs` BarBody / BarIcon): coldcite's well and fill
+  (`RSQMBHE` / `RSQMBHW`), 8 tinted steps, the sweeping band, the breathing edge; full, the beat, the brighter band and
+  the glint. Photosensitive Mode as the meter.
+- **Colour: gold** (the legendary colour), dark amber empty to pale gold; brighter gold when full. **Provisional: the owner
+  may change it.**
+- **Icon:** the Boss meter's crowned skull made the Big Boss's: the skull gold, a ruby in the crown, white-hot eyes
+  (`RSQMBEK0` dim / `RSQMBEK1` lit, 16 x 16, `Miniboss/tools/gen_exbar.py`); it fills from the bottom with the bar.
+- **Fills:** +25% for every Boss won (the BOSSWIN moment: a called-in fight's Boss killed by a player, `tierup.zs`
+  TierUpOnKill). A Big Boss won adds nothing. Full, it stays full until its Big Boss comes. The fill glides up over 20 tics
+  as the meter's does; on a new map or a load it shows what it holds at once.
+- **Kept** on the player (`RSQMB_Meter.exFill`, an inventory token): it rides the save and every map change, as RSQ
+  Score's gold bank does, and is kept through a death's reload the same way (the bar at death written to
+  `rsqmb_ex_keep`, noarchive, "<map>|<fill>", and given back, the larger, when that map loads again).
+- **Hidden** with the Boss meter: while any Boss or Big Boss fight runs (from its arrival until its Boss is dead or gone),
+  with Show Meter off, and with Bosses off.
+- **Empties** when the Big Boss fight starts (its bind: the monsters have landed and are bound as the set piece).
+
+## 2. The Big Boss fight
+
+- **When:** the bar full makes a Big Boss due. **It comes by itself** (not called in), as soon as the Boss fight's
+  guardrails let it: Too Early, Cooldown, Low Health, Near Exit, Too Busy, No Room (and Ignore Spawn Restrictions works on
+  it as on a Boss); **never held by the Map Limit**, and it does not count against it. While it waits the line under the
+  pair says why: `No Big Boss: Cooldown`. It goes before a full Boss meter: the Boss meter keeps filling, but its call-in
+  and its Start Fight card (grey) wait until the Big Boss fight is over.
+- **The machinery is the Boss fight's** (`bossfight.zs` PlanArrival / StartArrival / ArrivalStep, `handler.zs` Bind,
+  `fight.zs`): the same thralls (3-5, the world tier's colours), beams, landing slow motion and dark, the charge, the
+  segments and shield, the lives, greed, inherited powers, legendary thralls, music. Only the monster is different.
+- **The monster: an EX-tier monster of RSQ Monsters**, from the **Big Boss pool** (built once a map, `bigboss.zs`
+  ExPoolBuild), so a new EX boss joins without an edit to RSQ Miniboss:
+  1. **Every loaded monster class whose name ends in `EX`** (RSQ Monsters' own definition of an EX form: RS_TierLadder
+     IsEXName, its `ex` request) **that RSQ Monsters puts at a boss colour** (its roster service, by name, answers
+     `class.tier` Black 12 or White 13). Today: Colorful Hell's ten EX bosses (Black Imp, Cacodemon, Hell Knight,
+     Revenant, Mancubus, Spider, Chaingunner and Zombie EX; White Shotgunner and Lost Soul EX). The EX projectiles are not
+     monsters and the EX minions have no ladder tier: left out. **A new EX boss named `RS_<gate>EX` whose gate is on the
+     ladder joins by itself** (e.g. the Colourful Hell Plus Cyberdemon / Arch-vile / Arachnotron / Spectre EX bosses being
+     ported into `Monsters/zscript/monsters/plus/`).
+  2. **The registry:** every lump named **`RSQBIGBS`** in any loaded pack (`RSQBIGBS.txt`; all of them are read, so each
+     pack adds its own), one monster class name a line, `//` comments. An EX boss that is not named `*EX`, or not on the
+     ladder (e.g. a White Mastermind, a Fusion White Arachnotron), joins here. A name that is not a loaded monster class
+     is passed over (Debug Log says so).
+  - **The pick:** the pool's EX bosses of a family on this map come first (the map's roster types, matched by RSQ
+    Monsters' gate, `set.class` at 12 / 13 + `EX`, or by the Boss bar's clean name: IMP, CYBERDEMON ...), one at random;
+    else any of the pool at random. Empty pool (no RSQ Monsters, nothing registered): the map's strongest type.
+- **The Boss bar** (`bossbar.zs`, unchanged) carries the Big Boss's health: its clean name + WARLORD (an EX class has no
+  vanilla ancestor, so the bar's own rule names it: IMP WARLORD, CHAINGUNNER WARLORD; Benellus' tag for the White
+  Shotgunner EX), the slant, GUARD, the x count, the clock, the thralls.
+- RSQMB_Service: `bigboss` (with a monster: 1 the Big Boss or one of its thralls; without: 1 while a Big Boss fight is on
+  or landing), `ex` (the bar, 0..1000), `ex.ready` (1 full); `tier` answers 4 for a Big Boss.
+
+## 3. Banners (RSQ VisualRewards, by name, the Arcade Gold style)
+
+| Moment | Headline | Chips |
+|---|---|---|
+| `BIGBOSSINCOMING` | **BIG BOSS INCOMING!** (gold bands, the crowned skull), with BOSS INCOMING!'s siren (`RVQSIREN`, as the file is, once) | as BOSSINCOMING: the name, TIER n (the EX monster's own ladder colour: Black 12 / White 13), the thralls, FIGHT IN |
+| `BIGBOSSWIN` | **BIG BOSS DEFEATED!** | as BOSSWIN: TIER UP + the colour |
+| `BIGBOSSLOSS` | **BIG BOSS WINS!** (red) | as BOSSLOSS: TIER DOWN + the colour, NO LEGENDARY |
+
+VisualRewards reads `BIG` + a Boss moment as that moment with BIG in the headline (`banners.zs` Add); nothing else of
+the banners changed. Test: `netevent rsqvr_bntest 10 / 11 / 12`. Without the banners: BIG BOSS DEFEATED! / BIG BOSS
+WINS! over the monster, as the Boss's words.
+
+## 4. The win
+
+As a Boss win (world tier +1 with its words, RSQ Score's life crate, the "Miniboss Called" Score row), and **the Boss
+kiosk** (`kiosk.zs`, the SOTN look) in place of its one legendary weapon (no separate legendary drop), with **every offer
+Epic**: LegenDoom's top rarity (each offer is a legendary weapon already). Three offers on three different guns: BD22 VR
+Reloaded rolls six as for a Boss (`roll`) and raises each to Epic by its own `raise` (an effect LegenDoom rolls at Epic on
+that gun); a gun with no Epic effect is passed over (up to eight rolls). Epic's price (900 to start). No LUCKY button (nothing to
+raise); the note line reads BIG BOSS: EVERY OFFER EPIC (both shown on the rig). The sign's second line reads BIG BOSS -
+EPIC (in the code; above the rig frames' view, not shown).
+
+## 5. The loss (mirrors BOSSLOSS)
+
+A Score life spent during the Big Boss fight, or leaving the map with it on, is a loss exactly as for a Boss
+(`tierup.zs` FightLost): the Big Boss and its thralls leave on beams (no legendary, no drops, no kill), the world tier -1,
+BIG BOSS WINS! (on the next map, ~20 tics in, when the map was left). **The Big Boss bar stays empty** (it emptied when the
+fight started): four more Bosses bring the next Big Boss. Dying with no life reloads the map (nothing counted; the bar as
+it was at death comes back with the reload).
+
+## 6. Options
+
+- **RSQ Boss > Big Boss > Big Boss** (`rsqmb_ex`, on): off, no bar, nothing fills, no Big Boss.
+- **Test and Debug > Big Boss Bar +25% (Test)** / **Big Boss Bar Empty (Test)**: `netevent rsqmb_exfill <permille>` (-1 =
+  +25% as a Boss won, 1000 = full now, 0 = empty), with sv_cheats 1 or Debug Log on.
+
+## 7. Shown on the rig (rig only, not headset-confirmed)
+
+`Miniboss/docs/rig_2026-11-16_bigboss/` (probe `Miniboss/tools/rigtest/bigbossprobe`, `run_log.txt`):
+- **bbp_mode 1, four real Boss wins:** two Boss fights called on MAP01, each Boss killed by the player: the bar 0 -> 25 ->
+  50; MAP02 entered: 50 carried; two more: 75 -> 100, "No Big Boss: Cooldown" while it waits; the Big Boss (the pool
+  10 EX bosses, the map's families first: RS_BlackCGuyEX) with 3 thralls, BIG BOSS INCOMING!, CHAINGUNNER WARLORD on the
+  Boss bar, the bar emptied at the bind; killed: BIG BOSS DEFEATED!, TIER UP; the kiosk, every offer EPIC
+  (`bar_fill_0_25_50_75_100.png`, `m1_*`).
+- **bbp_mode 3:** the bar filled by the test door; the Big Boss (RS_BlackImpEX, 5 thralls) close up on the Boss bar; its
+  thralls and then it killed; its kiosk opened: three EPIC offers at 900 G, BIG BOSS: EVERY OFFER EPIC, no LUCKY
+  (`m3_*`).
+- **bbp_mode 2, the loss:** world tier 3, a Score life spent by a fall in the Big Boss fight: the monsters leave on beams,
+  BIGBOSSLOSS `tierdown:2|nolegendary:`, BIG BOSS WINS!, tier 3 -> 2, the bar 0 (`m2_*`).
+- Script errors in every run: only BD_VoxelPack's four voxeldef lines; no VM abort.
+- Seen on the rig: banners queue one after another, so in this compressed test (four Bosses inside two minutes, Score
+  lives and +1UPs piling up) a banner can show later than its moment; with the 20 s cooldown BIG BOSS INCOMING! showed
+  with its arrival.
+
+## 8. Choices to confirm (owner)
+
+- The bar's **gold** (provisional) and its **icon** (the gold skull with a ruby).
+- **The pair layout:** the Boss meter moves left to sit beside the Big Boss bar (the pair centred under Score).
+- **The Big Boss comes by itself** when the bar fills (no call-in), after the usual guardrails (the 90 s Cooldown after the
+  fourth Boss included), never held by the Map Limit, and goes before a full Boss meter.
+- **A Big Boss win also pays as a Boss win:** the world tier +1, Score's life crate, the same Score row.
+- **The fight is a Boss fight in full** with an EX monster: 3-5 thralls, 3 lives, legendary health when a thrall is
+  legendary. EX monsters have 5000-18000 health of their own (x LegenDoom's factor), so the fight is long.
+- **Epic is the top rarity** (LegenDoom has no rarity above Epic): every offer is an Epic legendary weapon; no LUCKY.
+- **The bar hides during every fight** (with the Boss meter).
+- **The loss** leaves the bar empty (it emptied at the fight's start).

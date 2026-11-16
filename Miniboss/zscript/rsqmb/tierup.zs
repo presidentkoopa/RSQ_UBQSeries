@@ -69,12 +69,15 @@ extend class RSQMB_Handler
 		if (!b || !killer || !killer.player) return;
 		DropLifeCrate(b);
 		DropKiosk(b, killer);
+		// THE BIG BOSS BAR (bigboss.zs): +25% for a Boss won (a Big Boss won adds nothing)
+		ExWin(b, killer);
 		let wc0 = TuWorld();
 		bool up = CI('rsqmb_tierup', 1) != 0 && wc0 && wc0.GetInt() < TOP_TIER;
 		// NO DOUBLING WITH A BANNER (design/PRESENTATION_GUIDE.md 4b, owner 2026-11-16 03:15): when RSQ VisualRewards drew
 		// the BOSSWIN banner (it answered 1), BOSS DEFEATED! and ENEMIES TIER UP! are not also written over the monster;
-		// without its banners (0) they are, as before
-		bool drawn = Banner(up ? String.Format("BOSSWIN|tierup:%d", clamp(wc0.GetInt() + 1, 1, TOP_TIER)) : "BOSSWIN", killer) > 0;
+		// without its banners (0) they are, as before. A Big Boss: BIGBOSSWIN (BIG BOSS DEFEATED!)
+		String bw = b.big ? "BIGBOSSWIN" : "BOSSWIN";
+		bool drawn = Banner(up ? String.Format("%s|tierup:%d", bw, clamp(wc0.GetInt() + 1, 1, TOP_TIER)) : bw, killer) > 0;
 		if (CI('rsqmb_tierup', 1) == 0) { if (debug) Console.Printf("RSQMB tier-up on kill: off (rsqmb_tierup 0)"); return; }
 		let wc = TuWorld();
 		if (!wc) { if (debug) Console.Printf("RSQMB tier-up on kill: no RSQ Monsters world tier (not loaded, or its ladder off): nothing"); return; }
@@ -87,7 +90,7 @@ extend class RSQMB_Handler
 			{
 				spot.life = TU_LIFE;
 				spot.Height = max(mb.Height, mb.default.Height);
-				WordHold("BOSS DEFEATED!", RGB_DEFEATED, TU_SIZE, spot);
+				WordHold(b.big ? "BIG BOSS DEFEATED!" : "BOSS DEFEATED!", RGB_DEFEATED, TU_SIZE, spot);
 			}
 		}
 		tuAt.Push(level.maptime + TU_BEAT);
@@ -163,7 +166,7 @@ extend class RSQMB_Handler
 		}
 		if (CI('rsqmb_kiosk', 1) == 0) { if (log) Console.Printf("RSQMB kiosk: off (rsqmb_kiosk 0): the Boss drops its legendary"); return; }
 		if (!mb) { if (log) Console.Printf("RSQMB kiosk: the Boss's body is gone: no spot, no kiosk"); return; }
-		let k = RSQMB_Kiosk.Drop(mb, b.tier, killer);
+		let k = RSQMB_Kiosk.Drop(mb, b.tier, killer, b.big);   // a Big Boss's: every offer Epic (bigboss.zs)
 		if (!k && log)
 			Console.Printf("RSQMB kiosk: none (%s): the Boss drops its legendary as before", !RSQMB_Kiosk.Legend() ? "no BD22 VR Reloaded kiosk service"
 				: (RSQMB_Kiosk.Legend().GetInt("ready", "", 0, 0, null) != 1 ? "BD22 VR Reloaded's LD mode is off (no LegenDoom)" : (!sc ? "no RSQ Score bank" : "no offer rolled")));
@@ -237,8 +240,9 @@ extend class RSQMB_Handler
 			let m = MeterOf(pmo);
 			if (m && m.lossTier != 0 && level.maptime >= 20)
 			{
-				Banner(m.lossTier > 0 ? String.Format("BOSSLOSS|tierdown:%d|nolegendary:", m.lossTier) : "BOSSLOSS|nolegendary:", pmo);
-				m.lossTier = 0;
+				String bl = m.lossBig ? "BIGBOSSLOSS" : "BOSSLOSS";
+				Banner(m.lossTier > 0 ? String.Format("%s|tierdown:%d|nolegendary:", bl, m.lossTier) : bl .. "|nolegendary:", pmo);
+				m.lossTier = 0; m.lossBig = false;
 			}
 		}
 		for (int i = outMon.Size() - 1; i >= 0; i--)
@@ -262,10 +266,12 @@ extend class RSQMB_Handler
 	{
 		RSQMB_WordSpot spot = null;
 		int left = 0;
+		bool big = false;             // a Big Boss's fight (bigboss.zs): BIG BOSS WINS!
 		for (int i = 0; i < bosses.Size(); i++)
 		{
 			let b = bosses[i];
 			if (!b || b.done) continue;
+			if (b.big) big = true;
 			let mb = b.mb;
 			if (!leaving && mb && !spot)
 			{
@@ -288,7 +294,7 @@ extend class RSQMB_Handler
 		let wc = TuWorld();
 		int was = wc ? wc.GetInt() : 0;
 		int now = (on && wc) ? max(1, was - 1) : was;
-		if (debug) Console.Printf("RSQMB FIGHT LOST t%d (%s)%s: %d monster(s) leave on beams, no legendary; world tier %d -> %d%s", level.maptime, why,
+		if (debug) Console.Printf("RSQMB %sFIGHT LOST t%d (%s)%s: %d monster(s) leave on beams, no legendary; world tier %d -> %d%s", big ? "BIG BOSS " : "", level.maptime, why,
 			leaving ? " by leaving the map" : "", left, was, now, !on ? " (rsqmb_tierup off: no change)" : (!wc ? " (no RSQ Monsters world tier)" : ""));
 		if (leaving)
 		{
@@ -297,14 +303,15 @@ extend class RSQMB_Handler
 			{
 				if (!playeringame[n] || !players[n].mo) continue;
 				let m = MeterOf(players[n].mo, true);
-				if (m) m.lossTier = (now != was) ? now : -1;
+				if (m) { m.lossTier = (now != was) ? now : -1; m.lossBig = big; }
 			}
 			return;
 		}
 		// (no doubling: BOSS WINS! and ENEMIES TIER DOWN! over the monster only when the BOSSLOSS banner was not drawn)
-		bool drawn = Banner(now != was ? String.Format("BOSSLOSS|tierdown:%d|nolegendary:", now) : "BOSSLOSS|nolegendary:", pmo) > 0;
+		String bl = big ? "BIGBOSSLOSS" : "BOSSLOSS";
+		bool drawn = Banner(now != was ? String.Format("%s|tierdown:%d|nolegendary:", bl, now) : bl .. "|nolegendary:", pmo) > 0;
 		if (drawn && spot) { spot.Destroy(); spot = null; }
-		if (spot) WordHold("BOSS WINS!", RGB_TIERUP, TU_SIZE, spot);
+		if (spot) WordHold(big ? "BIG BOSS WINS!" : "BOSS WINS!", RGB_TIERUP, TU_SIZE, spot);
 		if (on && wc && now != was) { tdAt.Push(level.maptime + TU_BEAT); tdSpot.Push(spot); }
 	}
 

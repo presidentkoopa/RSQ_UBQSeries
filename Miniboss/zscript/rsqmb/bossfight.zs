@@ -68,6 +68,10 @@ class RSQMB_Meter : RSQMB_Token
 	int    mapStamp;       // the level it last saw (level.levelnum + 1)
 	int    lossTier;       // a fight lost by leaving the map: the world tier it went down to (-1 unchanged), shown on the next map (tierup.zs)
 	int    goldMark;       // RSQ Score's gold earned at the last Boss win (the kiosk's log: gold between Bosses; tierup.zs DropKiosk)
+	double exFill;         // THE BIG BOSS BAR (bigboss.zs), 0..1000: +250 a Boss won
+	bool   exReady;        // ...full: a Big Boss is due (it comes by itself)
+	int    exReadyAt;      // level.maptime it filled
+	bool   lossBig;        // the fight lost by leaving the last map was a Big Boss's (the next map's banner: BIG BOSS WINS!)
 }
 
 // ON EVERY MONSTER A BOSSFIGHT BROUGHT (miniboss and thralls, dead or alive, for good): RSQMB_Service "bossfight".
@@ -345,6 +349,8 @@ extend class RSQMB_Handler
 		if (!on) { bfWhy = ""; return; }
 		if (arrPhase) { ArrivalStep(); return; }
 		if (bfBoss && bfBoss.done) bfBoss = null;
+		// A DUE BIG BOSS (bigboss.zs) comes by itself, first: the Boss meter waits for it
+		if (ExTick()) return;
 		// a due Bossfight: called, or the meter full long enough
 		bool anyDue = false;
 		for (int pn = 0; pn < MAXPLAYERS; pn++)
@@ -496,7 +502,7 @@ extend class RSQMB_Handler
 	{
 		let wc = CVar.GetCVar('rsqmb_wristcard', p.player);
 		int now = level.maptime;
-		bool gold = m.ready && !BfBusy() && !m.called;      // usable: the meter full, nothing called, running or on its way
+		bool gold = m.ready && !BfBusy() && !m.called && !ExDue(m);      // usable: the meter full, nothing called, running or on its way, no Big Boss due
 		bool want = (!wc || wc.GetBool()) && BfOn() && p.health > 0;
 		bool pose = want && InsideCheck(p);
 		if (pose) wcTill = now + WC_LINGER;
@@ -544,6 +550,7 @@ extend class RSQMB_Handler
 	{
 		if (pn < 0 || pn >= MAXPLAYERS || !playeringame[pn]) return;
 		let m = MeterOf(players[pn].mo);
+		if (ExDue(m)) { if (debug) Console.Printf("RSQMB call-in: a Big Boss is due: it comes first (by itself)"); return; }
 		if (card)
 		{
 			// the inner-wrist card: THE METER MUST BE FULL (owner 11-12 05:44; it is the meter's own button), and then no
@@ -563,13 +570,13 @@ extend class RSQMB_Handler
 	// Each reason is the line the HUD shows under the meter while a due Bossfight waits, in the owner's words (11-05: "below
 	// it we can say No Miniboss: Low Health / No Room"): No Monsters (none on the roster), Too Early (the first minute),
 	// Map Limit (the map's cap), Cooldown, Low Health, Near Exit, Too Busy (a heavy fight), No Room (no spot in view).
-	void TryArrive(PlayerPawn p, RSQMB_Meter m)
+	void TryArrive(PlayerPawn p, RSQMB_Meter m, bool big = false)
 	{
-		String why = Guard(p);
+		String why = Guard(p, big);
 		// THE FIGHT CARD DOES NOT CARE ABOUT THE RULES (owner 11-12 05:37: "it calls in the fight wherever the player presses
 		// it without restrictions"): a call from the inner-wrist card skips every guardrail (Too Early, Map Limit, Cooldown,
 		// Low Health, Near Exit, Too Busy). What cannot be skipped: no monster types on the map, and no spot to land on.
-		if (m.force && why != "" && why != "No Boss: No Monsters")
+		if (!big && m.force && why != "" && why != "No Boss: No Monsters")
 		{
 			if (debug) Console.Printf("RSQMB miniboss fight: the fight card overrides \"%s\"", why);
 			why = "";
@@ -577,9 +584,11 @@ extend class RSQMB_Handler
 		if (why == "")
 		{
 			int tier = Tier(p, m);
-			if (!PlanArrival(p, tier)) why = "No Boss: No Room";
-			else { StartArrival(p, m, tier); return; }
+			if (!PlanArrival(p, tier, big)) why = "No Boss: No Room";
+			else { StartArrival(p, m, tier, big); return; }
 		}
+		// the Big Boss's wait says so (bigboss.zs): "No Big Boss: Cooldown"
+		if (big && why.Left(8) == "No Boss:") why = "No Big Boss:" .. why.Mid(8);
 		if (arrQuiet) { arrQuiet = false; SceneMusic(false); }   // a failed landing that can't retry now: the level music comes back
 		if (debug && why != bfWhy) Console.Printf("RSQMB miniboss fight waits: %s", why);
 		bfWhy = why;
@@ -592,13 +601,13 @@ extend class RSQMB_Handler
 	// them). Left as they are: No Monsters (nothing to send), and Map Limit (rsqmb_bf_cap) and Cooldown (rsqmb_bf_cooldown):
 	// those limit HOW OFTEN one comes, not where or when it may spawn, and keep their own rows.
 	static bool IgnoreRestrictions() { return CI('rsqmb_bf_ignore', 0) != 0; }
-	String Guard(PlayerPawn p)
+	String Guard(PlayerPawn p, bool big = false)
 	{
 		int now = level.maptime;
 		if (rosterCls.Size() == 0) return "No Boss: No Monsters";
 		bool ign = IgnoreRestrictions();
 		if (!ign && now < CI('rsqmb_bf_first', 60) * TICRATE) return "No Boss: Too Early";
-		if (bfCount >= CI('rsqmb_bf_cap', 2)) return "No Boss: Map Limit";
+		if (!big && bfCount >= CI('rsqmb_bf_cap', 2)) return "No Boss: Map Limit";   // (a Big Boss is never held by it: bigboss.zs)
 		if (bfAny && now - bfLastTic < CI('rsqmb_bf_cooldown', 90) * TICRATE) return "No Boss: Cooldown";
 		if (ign)
 		{
@@ -671,7 +680,7 @@ extend class RSQMB_Handler
 	// Who: the miniboss type by tier, the thralls weaker types.
 	class<Actor> RosterAt(int i) { class<Actor> c = rosterCls[clamp(i, 0, rosterCls.Size() - 1)]; return c; }
 
-	bool PlanArrival(PlayerPawn p, int tier)
+	bool PlanArrival(PlayerPawn p, int tier, bool big = false)
 	{
 		int n = rosterCls.Size();
 		int bi = int(round((n - 1) * clamp(0.5 + 0.125 * tier, 0.0, 1.0)));
@@ -687,6 +696,15 @@ extend class RSQMB_Handler
 		for (int i = 0; i < want; i++) tc.Push(rosterCls[bi > 0 ? random[rsqmbbf](min(lo, bi - 1), bi - 1) : 0]);
 		bc = ApplyFrom(bc, tc, p);   // RSQ Monsters > Bossfight: Miniboss From / Thralls From (fight.zs)
 		if (!bc) return false;
+		// A BIG BOSS (bigboss.zs): the same thralls; the monster an EX-tier one of RSQ Monsters (without it: the map's
+		// strongest type)
+		if (big)
+		{
+			String ex = BigClass();
+			class<Actor> xc = ex;
+			if (!xc) xc = RosterAt(n - 1);
+			if (xc) bc = xc;
+		}
 
 		let pr = RSQMB_Probe(Actor.Spawn("RSQMB_Probe", p.pos));
 		if (!pr) return false;
@@ -906,10 +924,11 @@ extend class RSQMB_Handler
 	const HOLD_CAP = 210;        // the longest a beam may hold a monster hidden (6 s): past it, it is revealed anyway
 	const CHAMP_AT = 4;          // tics after its spawn: Champions has rolled on it (it dresses within 3)
 
-	void StartArrival(PlayerPawn p, RSQMB_Meter m, int tier)
+	void StartArrival(PlayerPawn p, RSQMB_Meter m, int tier, bool big = false)
 	{
 		ChampForce(true);
 		arrPhase = 1;
+		arrBig = big;
 		arrTic = level.maptime;
 		arrEnd = arrTic + ARRIVE_TOTAL;   // the fight starts here; the LED counts down to it from the bar's first tic
 		arrPn = p.PlayerNumber();
@@ -943,14 +962,18 @@ extend class RSQMB_Handler
 			smSvc.GetInt("start", "bossfight", slowMs, landDepth);
 		let gd = GdService();
 		if (!quiet && gd && CI('rsqmb_bf_dark', 1)) gd.GetInt("event.dark", "", 0, max(3.0, slowMs / 1000.0) + 0.5);
-		if (debug) Console.Printf("RSQMB MINIBOSS FIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", tier, arrCls[0], nth,
+		if (debug) Console.Printf("RSQMB %s FIGHT ARRIVING: tier %d, %s + %d thralls, beams %s, SlowMo %s, VisualRewards %s", big ? "BIG BOSS" : "MINIBOSS", tier, arrCls[0], nth,
 			"V1-V3 thralls (each at random) + V4 miniboss", smSvc ? "asked" : "absent", VrService() ? "asked" : "absent");
 		// THE BOSS INCOMING! BANNER (design/BANNERS_AND_HUD.md 9, owner 2026-11-16 03:06; the contract: "Banner service
 		// contract"): once per fight (not on a quiet retry), to the player who called it. The name: bossbar.zs BossNameOfClass
 		// (the clean name, the bar's own rule); tier = the miniboss's ladder tier (world
 		// + 2, at most 13); clock = the seconds the LED counts down to the fight
 		class<Actor> bnc = arrCls[0];
-		if (!quiet) Banner(String.Format("BOSSINCOMING|name:%s|tier:%d|thralls:%d|clock:%d", BossNameOfClass(bnc), min(TOP_TIER, WorldTierNow() + 2), nth,
+		// (a Big Boss: BIGBOSSINCOMING, BIG BOSS INCOMING!; its tier chip the EX monster's own ladder colour when RSQ Monsters
+		// knows it, else world + 2 as a Boss's)
+		int bnTier = min(TOP_TIER, WorldTierNow() + 2);
+		if (big) { let ms = MnService(); int ct = ms ? ms.GetInt("class.tier", arrCls[0]) : 0; if (ct > 0) bnTier = ct; }
+		if (!quiet) Banner(String.Format("%sBOSSINCOMING|name:%s|tier:%d|thralls:%d|clock:%d", big ? "BIG" : "", BossNameOfClass(bnc), bnTier, nth,
 			(arrEnd - level.maptime + TICRATE - 1) / TICRATE), p);
 	}
 
@@ -1048,15 +1071,22 @@ extend class RSQMB_Handler
 		let b = bosses[bosses.Size() - 1];
 		b.called = true;
 		b.tier = arrTier;
+		// A BIG BOSS (bigboss.zs): the service's "tier" at the top (4: RSQ VisualRewards' pips, BD22 VR's odds), not on the
+		// Boss's Map Limit; the Big Boss bar empties now (the fight has started), the Boss meter keeps what it holds
+		b.big = arrBig;
+		if (arrBig) b.tier = 4;
 		arrEnd = max(arrEnd, level.maptime + 35);
 		b.ChargeStart(arrEnd - level.maptime);   // to the end of the five seconds: nobody acts, nobody is hurt, the bar charges (boss.zs, bossbar.zs)
 		Graves(arrTier, mb, th.Size());
 		bfBoss = b;
-		bfCount++;
+		if (!arrBig) bfCount++;
 		bfAny = true;
 		bfLastTic = level.maptime;
 		let m = MeterOf(p);
-		if (m) { m.fill = 0; m.ready = false; m.called = false; m.force = false; }
+		if (m && arrBig) ExEmpty(m);
+		else if (m) { m.fill = 0; m.ready = false; m.called = false; m.force = false; }
+		if (debug && arrBig) Console.Printf("RSQMB BIG BOSS FIGHT bound t%d: %s; the Big Boss bar empties", level.maptime, mb.GetClassName());
+		arrBig = false;
 		// the shield is up: the room's glow goes cold grey, the words go up (fight.zs RoomGlow, WordsStep)
 		b.wordState = -9;
 		b.glowSent = -1;

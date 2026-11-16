@@ -140,7 +140,7 @@ extend class RSQMB_Handler
 		if (!hd || hd.bfWhy == "" || hd.arrPhase != 0 || (hd.bfBoss && !hd.bfBoss.done)) return "";
 		if (consoleplayer < 0 || !playeringame[consoleplayer] || !players[consoleplayer].mo) return "";
 		let m = RSQMB_Meter(players[consoleplayer].mo.FindInventory("RSQMB_Meter"));
-		return (m && m.ready) ? hd.bfWhy : "";
+		return (m && (m.ready || ExDue(m))) ? hd.bfWhy : "";
 	}
 
 	const SWEEP = 52.0;       // tics for the band to cross the fill (1.5 s), as the countdown bar and the gauges
@@ -192,75 +192,18 @@ extend class RSQMB_Handler
 
 		double x, y, w, h;
 		[x, y, w, h] = MeterRect();
+		// THE BIG BOSS BAR BESIDE IT (bigboss.zs, owner 2026-11-16 08:40): the pair, each the meter's own size, centred where
+		// the meter alone would be (so RSQ SlowMo's rows, centred under "meter.x" / "meter.w", stay centred under Score)
+		double ex = x;
+		bool exOn = ExShown();
+		if (exOn) [x, ex] = PairX(x, w, h);
 		// the colours: red while it fills, gold when full (owner's mock-up, 11-05)
 		Color lo, mid, hi;
 		if (ready) { lo = Color(255, 190, 120, 10); mid = Color(255, 255, 190, 30); hi = Color(255, 255, 228, 130); }
 		else { lo = Color(255, 90, 10, 8); mid = Color(255, 220, 40, 30); hi = Color(255, 255, 150, 120); }
-		// full: a slow beat (0..1), capped and dimmed in Photosensitive Mode
-		double beat = full ? 0.5 + 0.5 * sin(t * RSQMB_A11y.Deg(BEAT)) : 0.0;
-		double beatK = photo ? 0.5 : 1.0;
-
-		// ---- the bar: empty, the fill in steps, the beat, the band, the edge, the glint ----
-		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9);
-		double right = x + w * hudShown;
-		if (hudShown > 0.001)
-		{
-			for (int i = 0; i < SLICES; i++)
-			{
-				double s0 = x + w * double(i) / SLICES, s1 = x + w * double(i + 1) / SLICES;
-				if (s0 >= right) break;
-				double k01 = (i + 0.5) / SLICES;
-				Slab(tw, x, y, w, h, int(s0), int(ceil(min(right, s1))), ByLevel(lo, mid, hi, min(k01, max(hudShown, 0.75))), 1.0, false);
-			}
-			if (full) Slab(tw, x, y, w, h, x, right, hi, 0.28 * beat * beatK, true);
-			// the band: an eighth of the bar wide, sweeping left to right through the fill (brighter when full)
-			double ph = (t % SWEEP) / SWEEP;
-			double bw = w * 0.125;
-			double bR = x + (w * hudShown + bw) * ph;
-			double bL = bR - bw;
-			if (bL < right)
-				Slab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), hi, (photo ? 0.25 : (full ? 0.55 : 0.45)), true);
-			if (!full)
-			{
-				// the edge: a bright line where the fill ends, breathing (held still in Photosensitive Mode)
-				double glow = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
-				Screen.DrawThickLine(int(right), int(y), int(right), int(y + h), max(1.0, w / 90.0), hi, int(255 * glow));
-			}
-			else if (!photo)
-			{
-				// the glint: a narrow streak of white light running across the whole bar every few seconds
-				double ga = (level.maptime % GLINT_EVERY) + e.FracTic;
-				if (ga < GLINT_RUN)
-				{
-					double gw = w * 0.06;
-					double gR = x + (w + gw) * (ga / GLINT_RUN);
-					Slab(tw, x, y, w, h, int(gR - gw), int(gR), Color(255, 255, 255, 255), 0.85, true);
-				}
-			}
-		}
-
-		// ---- the crowned skull at its left: dim, the lit one rising from the jaw with the fill; full, it beats ----
-		TextureID k0 = TexMan.CheckForTexture("RSQMBSK0", TexMan.Type_Any);
-		TextureID k1 = TexMan.CheckForTexture("RSQMBSK1", TexMan.Type_Any);
-		if (k0.IsValid() && k1.IsValid())
-		{
-			double kx, ky, ks;
-			[kx, ky, ks] = SkullRect(x, y, h);
-			Vector2 kz = TexMan.GetScaledSize(k1);
-			if (hudShown < 0.999)
-				Screen.DrawTexture(k0, false, kx, ky, DTA_DestWidthF, ks, DTA_DestHeightF, ks, DTA_Alpha, 0.95);
-			// the lit skull from the bottom up to the fill, cropped from the source in whole texels (crisp pixel art)
-			int rows = int(round(kz.y * hudShown));
-			if (rows > 0)
-			{
-				double top = ky + ks * (1.0 - rows / kz.y);
-				Screen.DrawTexture(k1, false, kx, top, DTA_DestWidthF, ks, DTA_DestHeightF, ky + ks - top,
-					DTA_SrcY, kz.y - rows, DTA_SrcHeight, double(rows), DTA_Alpha, 0.95);
-			}
-			if (full)
-				Screen.DrawTexture(k1, false, kx, ky, DTA_DestWidthF, ks, DTA_DestHeightF, ks, DTA_Color, hi,
-					DTA_Alpha, 0.45 * beat * beatK, DTA_LegacyRenderStyle, STYLE_Add);
-		}
+		BarBody(te, tw, x, y, w, h, hudShown, full, lo, mid, hi, t, e.FracTic, photo);
+		BarIcon("RSQMBSK0", "RSQMBSK1", x, y, h, hudShown, full, hi, t, photo);
+		if (exOn) DrawExBar(e, te, tw, ex, y, w, h, t, dt, photo);
 
 		// ---- words: one small line under the meter while a due Bossfight waits ("No Miniboss: Low Health"); none on it ----
 		String why = WaitLine();
@@ -268,7 +211,7 @@ extend class RSQMB_Handler
 		{
 			double kx, ky, ks;
 			[kx, ky, ks] = SkullRect(x, y, h);
-			double gl = kx, gw = x + w - kx;     // the row: skull to the bar's right end
+			double gl = kx, gw = (exOn ? ex : x) + w - kx;     // the row: skull to the bar's right end (the pair's, with the Big Boss bar)
 			Font fnt = NewSmallFont;
 			double s = (h * WAIT_H) / max(1, fnt.GetHeight());
 			double tw2 = fnt.StringWidth(why) * s;
@@ -278,6 +221,119 @@ extend class RSQMB_Handler
 			Screen.DrawText(fnt, Font.CR_BLACK, tx + 1, ty + 1, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, 0.8);
 			Screen.DrawText(fnt, Font.CR_WHITE, tx, ty, why, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true);
 		}
+	}
+
+	// THE BAR ITSELF (the series' bars, PRESENTATION_GUIDE.md 4): coldcite's well and fill (RSQMBHE / RSQMBHW), the fill
+	// tinted in SLICES steps, a beat when full, the band sweeping through the fill, the breathing edge (filling) or the
+	// glint (full). Shared by the Boss meter and the Big Boss bar, so the two are drawn exactly alike.
+	ui void BarBody(TextureID te, TextureID tw, double x, double y, double w, double h, double shown, bool full, Color lo, Color mid, Color hi, double t, double frac, bool photo)
+	{
+		double beat = full ? 0.5 + 0.5 * sin(t * RSQMB_A11y.Deg(BEAT)) : 0.0;
+		double beatK = photo ? 0.5 : 1.0;
+		Screen.DrawTexture(te, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_Alpha, 0.9);
+		double right = x + w * shown;
+		if (shown <= 0.001) return;
+		for (int i = 0; i < SLICES; i++)
+		{
+			double s0 = x + w * double(i) / SLICES, s1 = x + w * double(i + 1) / SLICES;
+			if (s0 >= right) break;
+			double k01 = (i + 0.5) / SLICES;
+			Slab(tw, x, y, w, h, int(s0), int(ceil(min(right, s1))), ByLevel(lo, mid, hi, min(k01, max(shown, 0.75))), 1.0, false);
+		}
+		if (full) Slab(tw, x, y, w, h, x, right, hi, 0.28 * beat * beatK, true);
+		// the band: an eighth of the bar wide, sweeping left to right through the fill (brighter when full)
+		double ph = (t % SWEEP) / SWEEP;
+		double bw = w * 0.125;
+		double bR = x + (w * shown + bw) * ph;
+		double bL = bR - bw;
+		if (bL < right)
+			Slab(tw, x, y, w, h, int(max(x, bL)), int(min(right, bR)), hi, (photo ? 0.25 : (full ? 0.55 : 0.45)), true);
+		if (!full)
+		{
+			// the edge: a bright line where the fill ends, breathing (held still in Photosensitive Mode)
+			double glow = photo ? 0.8 : 0.55 + 0.45 * sin(t * 12.0);
+			Screen.DrawThickLine(int(right), int(y), int(right), int(y + h), max(1.0, w / 90.0), hi, int(255 * glow));
+		}
+		else if (!photo)
+		{
+			// the glint: a narrow streak of white light running across the whole bar every few seconds
+			double ga = (level.maptime % GLINT_EVERY) + frac;
+			if (ga < GLINT_RUN)
+			{
+				double gw = w * 0.06;
+				double gR = x + (w + gw) * (ga / GLINT_RUN);
+				Slab(tw, x, y, w, h, int(gR - gw), int(gR), Color(255, 255, 255, 255), 0.85, true);
+			}
+		}
+	}
+
+	// ---- the icon at its left: dim, the lit one rising from the bottom with the fill; full, it beats ----
+	ui void BarIcon(String dim, String lit, double x, double y, double h, double shown, bool full, Color hi, double t, bool photo)
+	{
+		TextureID k0 = TexMan.CheckForTexture(dim, TexMan.Type_Any);
+		TextureID k1 = TexMan.CheckForTexture(lit, TexMan.Type_Any);
+		if (!k0.IsValid() || !k1.IsValid()) return;
+		double beat = full ? 0.5 + 0.5 * sin(t * RSQMB_A11y.Deg(BEAT)) : 0.0;
+		double beatK = photo ? 0.5 : 1.0;
+		double kx, ky, ks;
+		[kx, ky, ks] = SkullRect(x, y, h);
+		Vector2 kz = TexMan.GetScaledSize(k1);
+		if (shown < 0.999)
+			Screen.DrawTexture(k0, false, kx, ky, DTA_DestWidthF, ks, DTA_DestHeightF, ks, DTA_Alpha, 0.95);
+		// the lit one from the bottom up to the fill, cropped from the source in whole texels (crisp pixel art)
+		int rows = int(round(kz.y * shown));
+		if (rows > 0)
+		{
+			double top = ky + ks * (1.0 - rows / kz.y);
+			Screen.DrawTexture(k1, false, kx, top, DTA_DestWidthF, ks, DTA_DestHeightF, ky + ks - top,
+				DTA_SrcY, kz.y - rows, DTA_SrcHeight, double(rows), DTA_Alpha, 0.95);
+		}
+		if (full)
+			Screen.DrawTexture(k1, false, kx, ky, DTA_DestWidthF, ks, DTA_DestHeightF, ks, DTA_Color, hi,
+				DTA_Alpha, 0.45 * beat * beatK, DTA_LegacyRenderStyle, STYLE_Add);
+	}
+
+	// ---- THE BIG BOSS BAR (bigboss.zs; owner 2026-11-16 08:40) -------------------------------------------------------------
+	// Beside the Boss meter, the same size and made the same way (BarBody, BarIcon): GOLD, the legendary colour (provisional:
+	// the owner may change it), dark amber empty to pale gold; its icon the Big Boss's skull (RSQMBEK0 dim / RSQMBEK1 lit,
+	// tools/gen_exbar.py: the crowned skull in gold with a ruby in its crown), filling with it. +25% a Boss won: the fill
+	// glides up over 20 tics as the meter's does. Full (a Big Boss due): the beat, the brighter band and the glint, as the
+	// Boss meter full. Hidden with the meter (during a fight, Show Meter off), and with Big Boss (rsqmb_ex) off.
+	ui double exHud;
+	ui double exLastT;            // a new map or a load (its time went back): the bar shows what it holds at once, no glide
+	static ui bool ExShown() { return ExOn(); }
+	// the pair's x: the Boss meter's bar and the Big Boss bar's, each row (icon, gap, bar) PGAP bar thicknesses apart, the
+	// pair centred where the meter alone is drawn, kept inside the safe area
+	const PGAP = 1.2;
+	static ui double, double PairX(double x, double w, double h)
+	{
+		double rw = h * (SKULL + KGAP) + w;
+		double off = (rw + h * PGAP) * 0.5;
+		double sw = Screen.GetWidth();
+		double f = clamp(CF('rsq_ui_inset', 0.04), 0.0, 0.3);
+		double sx = sw * f, aw = sw * (1 - 2 * f);
+		double left = x - h * (SKULL + KGAP) - off, right = x + w + off;
+		double shift = 0;
+		if (left < sx) shift = sx - left;
+		else if (right > sx + aw) shift = sx + aw - right;
+		return x - off + shift, x + off + shift;
+	}
+	ui void DrawExBar(RenderEvent e, TextureID te, TextureID tw, double x, double y, double w, double h, double t, double dt, bool photo)
+	{
+		let m = RSQMB_Meter(players[consoleplayer].mo.FindInventory("RSQMB_Meter"));
+		double fill = m ? clamp(m.exFill / 1000.0, 0.0, 1.0) : 0.0;
+		bool ready = m && m.exReady;
+		if (ready) fill = 1.0;
+		if (t < exLastT) exHud = fill;
+		exLastT = t;
+		if (fill > exHud) exHud = min(fill, exHud + dt / 20.0);
+		else exHud = fill;
+		bool full = ready && exHud >= 0.999;
+		Color lo, mid, hi;
+		if (ready) { lo = Color(255, 200, 130, 20); mid = Color(255, 255, 214, 70); hi = Color(255, 255, 246, 190); }
+		else { lo = Color(255, 110, 62, 4); mid = Color(255, 236, 170, 24); hi = Color(255, 255, 232, 130); }
+		BarBody(te, tw, x, y, w, h, exHud, full, lo, mid, hi, t, e.FracTic, photo);
+		BarIcon("RSQMBEK0", "RSQMBEK1", x, y, h, exHud, full, hi, t, photo);
 	}
 
 	// ============================================================================

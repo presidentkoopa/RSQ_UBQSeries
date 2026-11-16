@@ -110,6 +110,22 @@ class RSQMB_Service : Service
 			return (h.arrPhase || (h.bfBoss && !h.bfBoss.done)) ? 1 : 0;
 		}
 		if (request ~== "tier") return (b && b.called) ? b.tier : -1;
+		// THE BIG BOSS (bigboss.zs): "bigboss" with a monster: 1 the Big Boss or one of its thralls; without: 1 while a Big Boss
+		// fight is on (or landing); "ex" the player's Big Boss bar 0..1000 (objectArg the pawn, else the console player's),
+		// "ex.ready" 1 when it is full (a Big Boss due)
+		if (request ~== "bigboss")
+		{
+			if (a) return (b && b.big) ? 1 : 0;
+			return ((h.arrPhase && h.arrBig) || (h.bfBoss && !h.bfBoss.done && h.bfBoss.big)) ? 1 : 0;
+		}
+		if (request ~== "ex" || request ~== "ex.ready")
+		{
+			Actor p = a;
+			if (!p) p = players[consoleplayer].mo;
+			let m = p ? RSQMB_Meter(p.FindInventory("RSQMB_Meter")) : null;
+			if (request ~== "ex.ready") return (m && m.exReady) ? 1 : 0;
+			return m ? int(m.exFill) : -1;
+		}
 		if (request ~== "bossfights") return RSQMB_Handler.BfOn() ? 1 : 0;
 		// fightcard.up (intArg the hand): 1 while the START FIGHT? card has its turn on that hand's watch (the off hand only;
 		// this machine's console player). RSQ Gun Cards fades its watch card out for it (owner 11-13).

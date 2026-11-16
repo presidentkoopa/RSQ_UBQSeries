@@ -97,6 +97,7 @@ class RSQMB_Kiosk : Actor
 	bool luckyUsed;
 	bool luckyArmed;          // the LUCKY button was pulled: the next trigger on an offer is LUCKY, not a purchase
 	int tier;                 // the Boss's tier as BD22 VR counts it (1 = the first)
+	bool big;                 // a BIG BOSS's kiosk (bigboss.zs): every offer Epic, no LUCKY (nothing to raise)
 	String bossName;
 
 	// ---- the state
@@ -199,12 +200,12 @@ class RSQMB_Kiosk : Actor
 	static int RarRGB(int r) { static const int C[] = { 0x5AE65A, 0x5A96FF, 0xC86EFF, 0xFFA028 }; return C[clamp(r, 0, 3)]; }
 
 	// ================================================================ making one
-	static RSQMB_Kiosk Drop(Actor boss, int bossTier, Actor killer)
+	static RSQMB_Kiosk Drop(Actor boss, int bossTier, Actor killer, bool big = false)
 	{
 		let lg = Legend();
 		if (!lg || lg.GetInt("ready", "", 0, 0, null) != 1 || !Bank() || !boss) return null;
 		int t = bossTier + 1;
-		String all = lg.GetString("roll", "", 3, t, null);
+		String all = big ? EpicRoll(lg, t) : lg.GetString("roll", "", 3, t, null);
 		Array<String> o; all.Split(o, ";");
 		if (o.Size() == 0 || all == "") return null;
 		// beside the 1UP crate (which is on the death spot): a step to the side of the line from the killer, the side
@@ -224,6 +225,7 @@ class RSQMB_Kiosk : Actor
 		k.SetZ(k.floorz);
 		k.home = k.pos;
 		k.tier = t;
+		k.big = big;
 		k.fy = killer ? k.AngleTo(killer) : 0;
 		k.lastFy = k.fy;
 		k.cardFor = -1; k.sel = -1;
@@ -254,6 +256,42 @@ class RSQMB_Kiosk : Actor
 				boss.GetClassName(), bank, l);
 		}
 		return k;
+	}
+
+	// THE BIG BOSS'S OFFERS (bigboss.zs; owner 11-16 08:40: "a guarenteed legendary kiosk with all epic or legendary loot"):
+	// three legendaries, every one EPIC (LegenDoom's top rarity: every one is a legendary weapon already), on three different
+	// guns. BD22 VR Reloaded rolls them as for a Boss ("roll", six at a time on six guns), and each is raised a step at a
+	// time to Epic by its own "raise" (an effect LegenDoom rolls at Epic on that gun); a gun with no Epic effect is passed
+	// over. Up to eight rolls; "" when no gun has an Epic effect (then no kiosk: the Big Boss drops its legendary).
+	static String EpicRoll(Service lg, int t)
+	{
+		Array<String> got;
+		Array<int> slots;
+		for (int tries = 0; tries < 8 && got.Size() < 3; tries++)
+		{
+			String all = lg.GetString("roll", "", 6, max(t, 5), null);
+			Array<String> o; all.Split(o, ";");
+			for (int i = 0; i < o.Size() && got.Size() < 3; i++)
+			{
+				String of = o[i];
+				for (int step = 0; step < 4 && of != ""; step++)
+				{
+					Array<String> f; of.Split(f, "|");
+					if (f.Size() < 3) { of = ""; break; }
+					if (f[1].ToInt() >= 3)
+					{
+						int sl = f[0].ToInt();
+						if (slots.Find(sl) == slots.Size()) { slots.Push(sl); got.Push(of); }
+						break;
+					}
+					of = lg.GetString("raise", of, 0, 0, null);
+				}
+			}
+		}
+		String res = "";
+		for (int i = 0; i < got.Size(); i++) res = res .. (i ? ";" : "") .. got[i];
+		if (LogOn()) Console.Printf("RSQMB kiosk: a Big Boss's offers, every one Epic: %s", res != "" ? res : "none (no gun has an Epic effect)");
+		return res;
 	}
 
 	// ================================================================ the parts
@@ -382,7 +420,7 @@ class RSQMB_Kiosk : Actor
 		// the mockup's second line, "TIER 2 - UNCOMMON" in that rarity's colour: the Boss's tier and its best offer
 		int best = 0;
 		for (int i = 0; i < rarity.Size(); i++) best = max(best, rarity[i]);
-		Text(G_BASE, String.Format("BOSS TIER %d - %s", tier, RarName(best)), RarCol(best), 0, 0, LZ(37), -3.5, SMALLK * 0.8);
+		Text(G_BASE, big ? String.Format("BIG BOSS - %s", RarName(best)) : String.Format("BOSS TIER %d - %s", tier, RarName(best)), RarCol(best), 0, 0, LZ(37), -3.5, SMALLK * 0.8);
 		gCX[G_BASE] = 0; gCZ[G_BASE] = CT;
 		Note();
 		Layout(true);
@@ -397,7 +435,7 @@ class RSQMB_Kiosk : Actor
 		int gold = -1, lives = -1;
 		let bk = Bank();
 		if (bk && customer) { gold = bk.GetInt("gold", "", 0, 0, customer); lives = bk.GetInt("lives", "", 0, 0, customer); }
-		String l2 = luckyUsed ? "LUCKY USED THIS KIOSK" : (luckyArmed ? "LUCKY: NOW TRIGGER AN OFFER" : "1 LIFE = +1 RARITY, ONE PER KIOSK");
+		String l2 = big ? "BIG BOSS: EVERY OFFER EPIC" : (luckyUsed ? "LUCKY USED THIS KIOSK" : (luckyArmed ? "LUCKY: NOW TRIGGER AN OFFER" : "1 LIFE = +1 RARITY, ONE PER KIOSK"));
 		String l3 = gold >= 0 ? String.Format("GOLD %d G   LIVES %d", gold, max(0, lives)) : "";
 		int worn, rprice;
 		[worn, rprice] = RepairCost(customer);
@@ -409,7 +447,7 @@ class RSQMB_Kiosk : Actor
 		double tk = K / RSQMB_KioskFont.TEX;
 		Text(G_NOTE, l1, any ? "W" : "Y", 0, 0, CT - 5, 0.8, SMALLK * 0.7);
 		// THE LUCKY BUTTON (point at it and pull the trigger, then pull it on an offer; or alt fire straight on an offer)
-		if (open && any && !luckyUsed)
+		if (open && any && !luckyUsed && !big)
 		{
 			bool lit = luckyArmed || hover[0] == 3 || hover[1] == 3;
 			Part(G_NOTE, "KQPP", lit ? 4 : 1, 0, LZ(LUCKY_Y), 0.6, tk * 1.6, tk * 2.2);
@@ -423,7 +461,7 @@ class RSQMB_Kiosk : Actor
 			Text(G_NOTE, "REPAIR", "W", 0, REPAIR_X, LZ(LUCKY_Y) + 1.8, 1.0, SMALLK * 1.3);
 			Text(G_NOTE, String.Format("%d G", rprice), gold >= rprice ? "Y" : "R", 0, REPAIR_X, LZ(LUCKY_Y) - 2.2, 1.0, SMALLK * 1.15);
 		}
-		Text(G_NOTE, l2, luckyUsed ? "D" : "C", 0, 0, CT - 19, 0.8, SMALLK * 0.6);
+		Text(G_NOTE, l2, big ? "O" : (luckyUsed ? "D" : "C"), 0, 0, CT - 19, 0.8, SMALLK * 0.6);
 		if (l3 != "") Text(G_NOTE, l3, "Y", 0, 0, CT - 25, 0.8, SMALLK * 0.8, 0, 0, true);
 		gCX[G_NOTE] = 0; gCZ[G_NOTE] = CT - 14;
 	}
@@ -731,7 +769,7 @@ class RSQMB_Kiosk : Actor
 	// an offer's box in the kiosk's plane: from above its gun to under its effect line, 100 mockup pixels wide
 	bool InBox(int i, double lx, double lz)
 	{
-		if (i == 3) return open && !luckyUsed && abs(lx) <= 60 * K && abs(lz - LZ(LUCKY_Y)) <= 30 * K;
+		if (i == 3) return open && !luckyUsed && !big && abs(lx) <= 60 * K && abs(lz - LZ(LUCKY_Y)) <= 30 * K;
 		if (i == 4) { int w, p; [w, p] = RepairCost(customer); return open && w > 0 && abs(lx - REPAIR_X) <= 50 * K && abs(lz - LZ(LUCKY_Y)) <= 24 * K; }
 		return abs(lx - LX(XS[i])) <= 50 * K && lz <= LZ(200) && lz >= LZ(290);
 	}
