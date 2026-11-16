@@ -24,6 +24,8 @@ HORIZONTAL BARS (left lying as he drew it; the fill grows from the left), the HU
 
     RSQSMH*  ->  SlowMo/graphics/             SlowMo's Real-Time Countdown bar (Green or its colour row)
     RSQMBH*  ->  Miniboss/graphics/           Miniboss's Bossfight meter (red while filling, gold when full)
+    RQVBI*   ->  VisualRewards/pk3/graphics/rsqvrbn/   VisualRewards' invulnerability bar (hot magenta; 2026-11-16,
+                                              design/BANNERS_AND_HUD.md section 5; its orb icon: tools/gen_banners.py)
 
 THE BOSSFIGHT METER'S CROWNED SKULL (original pixel art, 16 x 16, drawn for the series 11-05; the owner kept it from the
 mock-up): RSQMBSK0 dim (bone greyed, the meter not full), RSQMBSK1 lit (the bone shows, red eyes). The HUD draws the dim
@@ -50,6 +52,7 @@ GAUGES = [
 HBARS = [
     ('RSQSMH', os.path.join(SERIES, 'SlowMo', 'graphics')),
     ('RSQMBH', os.path.join(SERIES, 'Miniboss', 'graphics')),
+    ('RQVBI', os.path.join(TOP, 'pk3', 'graphics', 'rsqvrbn')),
 ]
 SKULL_OUT = os.path.join(SERIES, 'Miniboss', 'graphics')
 HOURGLASS_OUT = os.path.join(SERIES, 'SlowMo', 'graphics')
