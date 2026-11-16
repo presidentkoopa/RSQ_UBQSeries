@@ -32,6 +32,52 @@ as one game: the whip pays Score, a miniboss fight drives SlowMo, a level-up col
 Dark. One Accessibility page serves every mod: one-handed, seated, left-handed, colour-blind and motion- or
 light-sensitive play.
 
+## New: the arcade look, the sounds and the Boss kiosk (2026-11-16)
+
+### The banners and the top HUD (Arcade Gold)
+
+Every moment that matters gets a banner: a headline that punches in, then chips that pop in one after another and say
+exactly what you got. One look for all of it, written down in [design/PRESENTATION_GUIDE.md](design/PRESENTATION_GUIDE.md)
+and [design/BANNERS_AND_HUD.md](design/BANNERS_AND_HUD.md).
+
+The approved mockups (design, drawn in the Series' own fonts over a rig frame):
+
+| REVIVE | +1UP | −1UP |
+|---|---|---|
+| <img src="design/mockups/banners/A_REVIVE.jpg" width="260"> | <img src="design/mockups/banners/A3_1UP.jpg" width="260"> | <img src="design/mockups/banners/A3_MINUS1UP.jpg" width="260"> |
+| **The top stack** (Score, Boss meter, adrenaline, world slow motion, invulnerable) | **DOWN** (the bloodied face, the blood-red bar) | **BOSS INCOMING!** |
+| <img src="design/mockups/banners/A3_TOP_STACK.jpg" width="260"> | <img src="design/mockups/banners/DOWN_proposed_settled_v2.jpg" width="260"> | <img src="design/mockups/banners/BOSS_proposed_arrival_v3.png" width="260"> |
+
+In motion: [the +1UP](design/mockups/banners/anim_1UP.gif) ·
+[REVIVE and the invulnerability bar](design/mockups/banners/anim_REVIVE_INV.gif) ·
+[−1UP](design/mockups/banners/anim_MINUS1UP_INV.gif) · [the DOWN bar](design/mockups/banners/anim_DOWN_blood_bar.gif)
+
+<img src="design/mockups/banners/anim_1UP.gif" width="300"> <img src="design/mockups/banners/anim_REVIVE_INV.gif" width="300">
+
+**Built, rig only, not headset-confirmed:** the frames from the engine are in
+[design/mockups/banners/rig/](design/mockups/banners/rig/) (REVIVE's hand-off to the bar, −1UP, BOSS DEFEATED! and BOSS
+WINS!, the +1UP float, the Doomguy life faces, the invulnerability bar draining, DOWN, BOSS INCOMING!, LEVEL UP, toasts,
+Photosensitive Mode, words over monsters).
+
+### The melee sounds and the Boss siren
+
+New hit sounds for the punches, the pistol whip, the gun-butt shove and the kick, and a siren for BOSS INCOMING!
+([design/MELEE_SOUNDS.md](design/MELEE_SOUNDS.md)). Real rig footage on the owner's load order with only the new sounds
+on it, each on the frame its hit lands; click a still for the clip (with sound).
+
+| [<img src="design/media/sounds/jab.jpg" width="200">](design/media/sounds/jab.mp4) | [<img src="design/media/sounds/hook.jpg" width="200">](design/media/sounds/hook.mp4) | [<img src="design/media/sounds/pistol_whip.jpg" width="200">](design/media/sounds/pistol_whip.mp4) |
+|---|---|---|
+| **Jab** | **Hook** | **Pistol whip** |
+| [<img src="design/media/sounds/butt_shove.jpg" width="200">](design/media/sounds/butt_shove.mp4) | [<img src="design/media/sounds/kick.jpg" width="200">](design/media/sounds/kick.mp4) | [<img src="design/media/sounds/boss_incoming.jpg" width="200">](design/media/sounds/boss_incoming.mp4) |
+| **Gun-butt shove** | **Kick** (the uppercut uses it too) | **BOSS INCOMING!** (the siren) |
+
+### The Boss kiosk (design, being built)
+
+A Boss no longer drops one legendary weapon: it drops a kiosk that offers three, priced in gold that your kills drop
+([design/KIOSK.md](design/KIOSK.md)). The look to build:
+
+<img src="design/mockups/kiosk/kiosk_TARGET.png" width="420"> <img src="design/mockups/kiosk/kiosk_lucky_anim.gif" width="420">
+
 ## Where it stands
 
 Nothing here is headset-confirmed unless the Status section says so. Most of it is **rig only, not
