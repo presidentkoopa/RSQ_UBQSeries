@@ -20,9 +20,8 @@
 //            at a quarter speed at best (Slowest Drain); clock + pool never over 9 s. At zero: you die.
 //  BAR       the reward gauge, not a second clock: three steps of 3 s (Bar Step), tall (right end, drains first), normal,
 //            thin. It drains smoothly; no step breaks off (owner 11-07 07:07). Bought time never stretches it. The step
-//            you are in when the LAST target dies is the tier. Killing one target while others remain RESETS the bar to
-//            full (owner 11-07 06:35): a fast bright refill sweep left to right (REFILL_TICS); the bar drains again once
-//            the sweep is done. The DEATH IN clock is not reset.
+//            you are in when the LAST target dies is the tier. (The 11-07 refill sweep on a kill with targets left
+//            went with "one kill owed", 11-12: there is never a target left after a kill. Its dead code went 11-16, D4a.)
 //  TARGETS   ONE kill owed, always (owner 11-12 04:17; it was 1 + the DOWNs since the last Score life spent). The DOWNs
 //            since your last Score life SPENT (only a life spent resets it, rule doc section 2, 2026-11-16; a life earned
 //            does not; RSQSM_DownWatch.downs travels with you and through a new map, as it always did; without Score nothing
@@ -86,7 +85,6 @@ class RSQSM_Down : EventHandler
 	const FIGHT_NEAR = 1024;
 	const FIGHT_FAR = 2048;
 	const SPAWN_TRIES = 70;    // tics a spawn keeps looking for a spot in view before it is dropped (logged)
-	const REFILL_TICS = 10;    // the bar's refill sweep after a kill with targets left ("fast": my number, ~0.3 s)
 	const DROP_TICS = 35;      // going down (owner 11-09 17:44: "a slow-mo moment", ~1 s real): the view's ease and the slow fall
 	const DROP_SLOW = 0.2;     // the player's own speed at the start of the fall, easing back to full (my number)
 	const ENTRY_HOLD = 35;     // Death In Entrance, Middle Then Sink: tics it holds big in the middle (~1 s, the drop)
@@ -97,7 +95,6 @@ class RSQSM_Down : EventHandler
 	bool   downOn[MAXPLAYERS];
 	int    downStart[MAXPLAYERS];                        // maptime (real time: never slowed)
 	int    barStart[MAXPLAYERS];                         // maptime the bar (re)starts draining: the DOWN, or a reset's end
-	int    refillTic[MAXPLAYERS], refillOldE[MAXPLAYERS];   // the last reset: when, and how far the bar had drained
 	double clk[MAXPLAYERS], pool[MAXPLAYERS];           // DEATH IN, and the bought time still to pour in (tics)
 	int    owed[MAXPLAYERS];
 	int    beatNext[MAXPLAYERS], beatN[MAXPLAYERS];
@@ -218,7 +215,6 @@ class RSQSM_Down : EventHandler
 	}
 	static bool On() { return Cv("rsqsm_down", 0) != 0; }
 	static clearscope double ClockTics() { return clamp(Cv("rsqsm_down_clock", 9), 2, 30) * TICRATE; }
-	static clearscope double StepTics() { return clamp(Cv("rsqsm_down_step", 3), 0.5, 10) * TICRATE; }
 	static clearscope double StartShare(int downs) { return downs <= 1 ? 1.0 : (downs == 2 ? 2.0 / 3.0 : 1.0 / 3.0); }
 	static double MinDrain() { return clamp(Cv("rsqsm_down_drain", 0.25), 0.0, 1.0); }
 	static bool LowView(int n) { return CvP("rsqsm_down_kneel", n, 0) != 0; }   // off by default from 11-13 (owner: stay on your feet)
@@ -737,7 +733,6 @@ class RSQSM_Down : EventHandler
 		DownMusic(n, true);
 		downStart[n] = level.maptime;
 		barStart[n] = level.maptime;
-		refillTic[n] = -1000; refillOldE[n] = 0;
 		// ONE TARGET, A SHORTER CLOCK (owner 2026-11-12 04:17: "instead of increasing the number of kills, let's say you start
 		// with 9 seconds, then your next down is 6 seconds, then your third down and beyond is 3 seconds. our segmented bar
 		// let's us only need to draw it 2 / 3 or 1 / 3 full"): every DOWN owes ONE kill, the monster that downed you (or its
@@ -755,7 +750,7 @@ class RSQSM_Down : EventHandler
 		bankHp[n] = 0; bankAr[n] = 0;
 		iconsUsed[n] = 0;
 		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since the last Score life spent), world to %d%%",
-			n, dmg, pre, from, pmo.health, clk[n] / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, owed[n], downs, int(DEPTH * 100 + 0.5)));
+			n, dmg, pre, from, pmo.health, clk[n] / TICRATE, ClockTics() / 3 / TICRATE, ClockTics() / 3 / TICRATE, ClockTics() / 3 / TICRATE, owed[n], downs, int(DEPTH * 100 + 0.5)));
 		if (AudioOn(n))
 		{
 			// THE DROP'S SOUND (owner 11-09 17:45): a heavy hit, then a ringing in the ears that fades (its own slot: it stops
@@ -1459,7 +1454,7 @@ class RSQSM_Down : EventHandler
 		Log(String.Format("player %d: DOWN failed (%s): the killing blow at %d HP -> health %d (%s)", n, why, hp, pmo.health,
 			lived ? "a Score life holds him" : "dead"));
 		if (!lived) return;
-		// FAILING WITH A SCORE LIFE (only one EARNED during this DOWN: DOWN never arms with a life held): the spawned
+		// FAILING WITH A SCORE LIFE (DOWN arms with or without lives, 11-16: a life held catches the blow here): the spawned
 		// targets go in teleport fog; the map's own killer loses its mark and stays
 		for (int i = 0; i < tMon.Size(); i++)
 		{

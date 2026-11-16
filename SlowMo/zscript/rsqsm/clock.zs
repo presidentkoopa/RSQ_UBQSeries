@@ -409,7 +409,8 @@ class RSQSM_Clock : EventHandler
 	//   RSQ Saber Force Speed (Gun Bonsai patch): rsm_pulse <secs x 1000> 35 -> deliberate (no switch: a power you use)
 	//   RSQ Grenade Skeet Window: rsm_pulse <tics> <rsm_depth>, then rsqgn_skeetslowmo the same tic -> deliberate
 	//   RSQ VisualRewards (damage numbers' level-up): rsm_pulse 500 30 -> other mods (automatic)
-	//   RSQ Miniboss's slow window (RSQMB_Service "window" > 0, by name), re-sent each second            -> automatic
+	//   RSQ Miniboss's slow window: while RSQMB_Service "window" > 0 (by name), re-sent each second as
+	//     min(5000, the window left) at rsqmb_slow_depth or rsm_depth (IsMinibossPulse)                  -> automatic
 	//   RSQ Score (Score handler.zs): big moment 600 35; hit-stop (115 + rsm_ramp_in x 1000) 5            -> automatic
 	//   Gun Bonsai VR patch (up_melee.zs, up_suite.zs): Adrenaline min(300+150 lv, 1500) max(60-5 lv, 30);
 	//     Showdown 450/600/750 45; Time Dilation 400/550/700 at rsm_depth                                -> automatic
@@ -458,9 +459,11 @@ class RSQSM_Clock : EventHandler
 					Trigger("parry.or.block", CAT_PARRY, ms, depth, false, who); continue;
 				}
 			}
-			if (MinibossWindow() > 0) { Trigger("miniboss", CAT_MINIBOSS, ms, depth, true, who); continue; }
+			// C10 (11-16): Score's and Gun Bonsai VR's pulses first, and a Boss window takes only a pulse with the Boss's own
+			// shape (IsMinibossPulse). Before, ANY pulse during a window was the Boss's: its label, its switch, cut at its end.
 			if (IsScorePulse(ms, dp)) { Trigger("score", CAT_SCORE, ms, depth, true, who); continue; }
 			if (IsBonsaiPulse(ms, dp)) { Trigger("gunbonsai", CAT_GBVR, ms, depth, true, who); continue; }
+			if (IsMinibossPulse(ms, dp)) { Trigger("miniboss", CAT_MINIBOSS, ms, depth, true, who); continue; }
 			Trigger("othermod", CAT_OTHER, ms, depth, true, who);
 		}
 		pendMs.Clear(); pendDepth.Clear(); pendWho.Clear();
@@ -576,6 +579,23 @@ class RSQSM_Clock : EventHandler
 		if (dp == 45 && (ms == 450 || ms == 600 || ms == 750)) return true;
 		let c = CVar.FindCVar("rsm_depth");
 		return (ms == 400 || ms == 550 || ms == 700) && dp == int(clamp(c ? c.GetFloat() : 0.25, 0.05, 0.95) * 100);
+	}
+
+	// RSQ Miniboss's window pulse (Miniboss handler.zs Tick2): re-sent each second as rsm_pulse min(5000, the window's tics
+	// left x 1000 / 35) at its depth (rsqmb_slow_depth, or rsm_depth when that is -1). It arrives a tic or two after it was
+	// sent (a network event: 2 to 5 tics on the rig), so the window now may be up to LATE tics shorter than it said.
+	const MB_LATE = 10;
+	private bool IsMinibossPulse(int ms, int dp)
+	{
+		int w = MinibossWindow();
+		if (w <= 0 || ms > 5000) return false;
+		let c = CVar.FindCVar("rsqmb_slow_depth");
+		int mdp = c ? c.GetInt() : -1;
+		if (mdp > 0) mdp = clamp(mdp, 5, 95);
+		else { let r = CVar.FindCVar("rsm_depth"); mdp = int(clamp(r ? r.GetFloat() : 0.25, 0.05, 0.95) * 100); }
+		if (dp != mdp) return false;
+		int want = min(5000, w * 1000 / TICRATE);
+		return ms >= want - 20 && ms <= want + MB_LATE * 1000 / TICRATE + 1;
 	}
 
 	private transient bool mbLooked;
@@ -968,7 +988,6 @@ class RSQSM_Clock : EventHandler
 		}
 		cdTotal = max(cdTotal, cdLeft);
 		cdEndAt = hl > 0 ? endAt : 0;
-		if (Cv("rsqsm_debug", 0) >= 2) Console.Printf("RSQ_SlowMo: countdown t%d left %.1f of %.1f tics (scale %.2f)", level.maptime, cdLeft, cdTotal, scale);
 	}
 
 	// ---- SHOOTDODGE AND "SLOW ME TOO" (owner 2026-11-03: "it should work like this" -- Xortts' Bullet Time X) --------
@@ -1070,10 +1089,12 @@ class RSQSM_Clock : EventHandler
 		bool momentum = true;
 		let mc = CVar.FindCVar("vr_momentum");
 		if (mc) momentum = mc.GetInt() != 0;
-		double ratio = clamp(Cv("rsqsm_me_ratio", 1.0), 0.0, 1.0);
 		for (int n = 0; n < MAXPLAYERS; n++)
 		{
 			if (!playeringame[n] || !players[n].mo) { meK[n] = 1; continue; }
+			// Slow Me Too Strength is a USER cvar: read it per player (C9, 11-16: Cv() asked with no player, which
+			// answers null for a user cvar, so the slider never moved anything and you were always slowed 1:1)
+			double ratio = clamp(CvWho("rsqsm_me_ratio", n, 1.0), 0.0, 1.0);
 			let p = players[n];
 			let pmo = p.mo;
 			double k = 1.0;

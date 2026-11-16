@@ -6,7 +6,7 @@
 Press a key, cross your wrists or leap sideways and the world drops to a quarter speed while your head and hands stay
 on real time. Enemy bullets become rounds you can see, lean away from and hear whiz past. The rest of the series slows
 the world too, for a parry, a shove, a chain of barrels or a heavy hit, and a bar under your score counts down the real
-time left. Turn on DOWN and a monster's killing blow leaves you on the floor in a grey world with a few seconds to take
+time left. With DOWN (on by default) a monster's killing blow leaves you on the floor in a grey world with a few seconds to take
 your revenge.
 
 *[GIF to come: the world slowing, an enemy's shots turning into glowing rounds, the player leaning out of one as it whizzes past]*
@@ -27,7 +27,7 @@ your revenge.
   boss: each can slow the world for a moment. Every one has its own on/off switch.
 - **A bar that tells you when real time is back.** A green bar under your score drains with the real seconds left and
   names what slowed the world.
-- **DOWN (optional).** A monster's killing hit holds you at 1 HP instead, whether or not you hold RSQ Score lives
+- **DOWN (on by default).** A monster's killing hit holds you at 1 HP instead, whether or not you hold RSQ Score lives
   (2026-11-16, design/DOWN_LIVES_MINIBOSS_TIERS.md). The world goes grey and nearly stops, you stay on your feet, and you
   have 9 seconds to kill the monster marked TARGET and get up (in a Boss fight: one of its remaining thralls, else the
   Boss). Run out of time and a Score life catches you if you hold one; without one you are dead. Go down again without
@@ -47,8 +47,8 @@ your revenge.
 | Lean your head sideways as a round comes at you | It passes on the side you leaned away from |
 | Open the RSQ Wheel | The world slows for as long as the wheel is open |
 
-**How long it lasts.** With Adrenaline off (the default) your held slow motion lets go by itself after **Slow Motion
-Length** (6 real seconds); pressing again ends it sooner. A crisis dive lasts until you land, 6 seconds at most.
+**How long it lasts.** With Adrenaline on (the default) your held slow motion lasts as long as your meter (below). With
+Adrenaline off it lets go by itself after **Slow Motion Length** (6 real seconds); pressing again ends it sooner. A crisis dive lasts until you land, 6 seconds at most.
 
 ### Controls
 
@@ -77,7 +77,8 @@ You hear Doom's power-up pickup as the world slows and a lift landing as it come
 
 <a name="the-adrenaline-meter"></a><img src="../design/readme_art/heads/slowmo/the-adrenaline-meter.gif" alt="The adrenaline meter" height="44">
 
-Off by default. Turn on **Adrenaline** and your own slow motion is no longer free:
+On by default (owner 2026-11-16). With **Adrenaline** on your own slow motion is not free, and a new game starts with
+an empty meter, so the key and the wrist cross do nothing until you have earned 25:
 
 - **Earn it.** A kill gives 12, a round that only just misses you gives 4, and damage you take gives half its amount.
   Other mods can add to it (RSQ Gun Bonsai VR's melee Adrenaline and Second Wind do).
@@ -176,7 +177,7 @@ It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** 
 <a name="be-quick-or-be-dead-down"></a><img src="../design/readme_art/heads/slowmo/be-quick-or-be-dead-down.gif" alt="Be Quick or Be Dead (DOWN)">
 
 Its name on the menu and the panel is **Be Quick or Be Dead** (the plate: rig only, not headset-confirmed), with the Q, the K and both D's of DEAD breathing in
-size (still in Photosensitive Mode); this page calls it DOWN for short. Off by default. Turn it on and, once you have
+size (still in Photosensitive Mode); this page calls it DOWN for short. On by default (owner 2026-11-16; it was off). With it on,
 the killing blow from a monster holds you at 1 HP instead, Score lives or not (2026-11-16; the 2026-11-15 "only with no
 life left" rule is gone). Fail the DOWN and a Score life catches you if you hold one (RSQ Score's revival, magazines
 refilled, 5 s invulnerable, 5 s of slow motion, Glow In The Dark's grey-and-white flash); without one you are dead. A
@@ -324,11 +325,11 @@ the bars and DOWN's look are yours.
 | Section | Rows |
 |---|---|
 | Top | Slow Motion Key · Crisis Dive Key · World Speed (0.25) · Slow Motion Length (6 s; greyed with Adrenaline on) |
-| Slow Motion | Dodgeable Bullets · Lean Out of Bullets · Slow Me Too · Slow My Shots · Smooth Walkers · Adrenaline (off) · Keep Adrenaline · Haptics · Yield to Other Mods |
+| Slow Motion | Dodgeable Bullets · Lean Out of Bullets · Slow Me Too · Slow My Shots · Smooth Walkers · Adrenaline (on) · Keep Adrenaline · Haptics · Yield to Other Mods |
 | Look | Colour Drain (off) · Shot Trails · Missile Wakes · Stored Slow-Mo Bar · Countdown Bar · Bar Animation · Bar Colour (Green; 17 colours or Random) |
 | Your Triggers | Slow Motion Key · Crisis Dive · Wrist Cross · Wrist Cross Bursts (off) · Burst · Wheel · Accessibility Button · Melee Gun Butt Shove · Cigarette · Saber Parry · ShieldSaw Block · Quick Grenade · Training Remote |
 | Automatic Triggers | Miniboss · Close Call (off) · Reload (off) · Reload When (Always, Low Health) · Reload Length (Fixed Time, Until the Reload Ends, Until It Ends, at Most the Fixed Time) · Reload Hands (Either Hand, Main Hand Only, Off Hand Only, Both Hands at Once) · Grenade Blast (off) · Over-Under Blast (off) · Locked Barrel · Barrel Multi-Kill · Chain Reaction · Barrel Near You · Grapple-Slam · Score · Gun Bonsai VR · Other Mods |
-| Be Quick or Be Dead | Be Quick or Be Dead (off) · Music · Clock (9 s) · Slowest Clock Drain (0.25) · Time: Small Monster (0.25 s), Lost Soul (0.25 s), Big Monster (0.5 s), Cyberdemon / Mastermind (0.5 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down (off) · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
+| Be Quick or Be Dead | Be Quick or Be Dead (on) · Music · Clock (9 s) · Slowest Clock Drain (0.25) · Time: Small Monster (0.25 s), Lost Soul (0.25 s), Big Monster (0.5 s), Cyberdemon / Mastermind (0.5 s) · Invulnerable: Top, Middle, Bottom (5, 3, 1 s) · Slow-Mo After: Top, Middle, Bottom (3, 1.5, 5 s) · No Bank: Top, Middle, Bottom (100, 66, 33%) · Bank Armour Cap (250) · Turn Marker (Triple Chevron; Framed Triangle, Framed Fat Arrow, Triangle With Afterimages) · Red Map · Lower View When Down (off) · Panel Size (1.0) · Target Lines (Icon, Name) · Death In Entrance (Middle Then Sink, Bottom Only, Slam Up) · Entrance Size (1.6) · Slow Fall · Black and White World · Fade (1 s) · Fog Tint Strength (0.6) · Fog Colour (Blood Red; Ember, Toxic Green, Deep Blue, Violet, Bone White, Random, Complementary to GITD) · Targets' Room in Colour (Small Rooms; Off, Always) · DarkDoomZ When Down (DarkDoom Black; Off, DarkDoom Classic) · Sounds |
 | Heavy Hit Slowdown | Heavy Hit Slowdown · Heavy Hit Size (75% of max health) · Arch-Vile Blast · Blasted Off Your Feet · Hit From Behind · Armour Broken · Cooldown (No Limit; Once per 20 s, Once per 60 s, Use Shared) |
 | Test and Debug | Ease In (0.15 s) · Ease Out (0.4 s) · Range (3000) · Sound Follows (1.0) · Round Speed (14) · Slow Me Too Strength (1.0) · Auto Cooldown (25 s) · Crisis Dive World Speed (0.10), Leap (12), Hang (0.5) · Wrist Gap (0.16 m) · Wrist Hold (12 tics) · Reload Time (1200 ms) · Close Call Time (700 ms) · Blast Time (3000 ms) · Low Health At (25) · Adrenaline To Start (25), Full Meter (10 s), Per Kill (12), Per Near Miss (4) · Lean Needed (0.06 m) · Lean Baseline (2 s) · Smooth Range (1024) · Smooth Walkers (12) · Colour Drain Amount (0.35) · Bar Size (1.5; only without RSQ Miniboss) · Debug Log |
 

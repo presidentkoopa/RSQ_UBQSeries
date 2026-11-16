@@ -188,7 +188,6 @@ extend class RSQSM_Down
 			if (f != cf) { s.SetFade(f); writes++; }
 			gwLastFade[i] = f;
 		}
-		if (writes > 0 && Cv("rsqsm_debug", 0) >= 2) Console.Printf("RSQ_SlowMo: DOWN t%d: grey world %.2f (step %d of 16): %d sectors written", level.maptime, e, gwQ, writes);
 	}
 
 	// every sector given back its own colour exactly, unless something else recoloured it since (then it keeps that)

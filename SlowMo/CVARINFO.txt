@@ -17,7 +17,7 @@ server bool  rsqsm_rounds       = true;  // enemy hitscans become dodgeable roun
 server float rsqsm_round_speed  = 14;    // a round's speed at the set depth, map units per tic (14 = about 14 m/s)
 server bool  rsqsm_trails       = true;  // your shots leave a fading trail
 server bool  rsqsm_wakes        = true;  // slowed missiles leave a wake
-server bool  rsqsm_adrenaline   = false; // the held slow motion costs adrenaline
+server bool  rsqsm_adrenaline   = true;  // the held slow motion costs adrenaline (on by default, owner 11-16: "Turn it on")
 server float rsqsm_adr_min      = 25;    // needed to start it
 server float rsqsm_adr_secs     = 10;    // a full meter lasts this long
 server float rsqsm_length       = 6;     // Slow Motion Length: with Adrenaline off, your held slow motion lets go after this many real seconds (1-30)
@@ -120,7 +120,7 @@ server int   rsqsm_heavy_cool    = 3;     // its cooldown: 0 Once per 20 s, 1 On
 // ---- DOWN v3 (owner-approved 2026-11-07, design/NEAR_DEATH.md; down.zs, plate.zs): the doc's numbers are the defaults -----
 server bool  rsqsm_down_reverb   = true;  // LiveReverb Only When Down (owner 11-11): with LiveReverb loaded and DOWN on, its reverb is held off until you are DOWN (reverb.zs)
 server bool  rsqsm_down_music    = true;  // DOWN Music (owner 11-09): the owner's "red alert" loop while you are DOWN (RSQ VisualRewards' scene music)
-server bool  rsqsm_down          = false; // DOWN (off by default, owner 11-07): a monster's killing hit holds you at 1 HP; kill your targets to get up
+server bool  rsqsm_down          = true;  // DOWN (on by default, owner 11-16: "Turn it on"; was off, 11-07): a monster's killing hit holds you at 1 HP; kill your targets to get up
 server float rsqsm_down_clock    = 9;     // Clock (s, real time): DEATH IN starts here and never goes above it
 server float rsqsm_down_step     = 3;     // (unused since 11-11: the bar is the clock, its steps thirds of the Clock; kept so a saved config still loads)
 server float rsqsm_down_drain    = 0.25;  // Slowest Clock Drain: bought time pours in, the clock still drains at this speed at best

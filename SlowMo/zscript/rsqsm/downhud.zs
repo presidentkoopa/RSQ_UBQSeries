@@ -23,8 +23,7 @@
 //   the bar   mockup x 120..880, foot y 575, three steps 14 / 30 / 52 px (thin, normal, tall: the tall right end drains
 //             first), each a #0b0b0d 4 px border round a #202024 track; the fill 60 slices in the mockup's moving gradient
 //             (hsl(H +- 9, 95%, 50 +- 12%)) of the first living target's colour, draining smoothly; no step breaks off
-//             (owner 07:07). THE REFILL (a kill with targets left, down.zs BarReset): a bright edge running left to right
-//             over REFILL_TICS (owner 07:50: "a bright moving edge"), the fill full behind it.
+//             (owner 07:07). (The 11-07 refill edge went with "one kill owed", 11-12; its dead code 11-16.)
 //   lines     one a target, stacked up from the bar. Target Lines (owner 11-07 11:0x) Icon, the default: "TARGET:" and the
 //             target's own crosshair icon tinted its colour, no name, no slot at the left (owner 11:1x); Name: a dark round
 //             slot (r 27) at x 150 with the target's icon (r 21), then "TARGET: <name>" (Score's monster.name: with
@@ -606,8 +605,7 @@ class RSQSM_DownHud ui
 			double fill = clamp(d.clk[pn] / total, 0.0, 1.0);
 			double lt = st - SLAM * 0.75;
 			if (lt < FILL_IN) fill = lt < 0 ? 0 : min(fill, clamp(lt / FILL_IN, 0.0, 1.0));
-			double rt = t - d.refillTic[pn];
-			double glint = (rt >= 0 && rt < RSQSM_Down.REFILL_TICS && !calm) ? 1.0 - rt / RSQSM_Down.REFILL_TICS : 0.0;
+			double glint = 0.0;   // no refill edge since "one kill owed" (11-12)
 			// one beat every 0.8 s (28 tics); Photosensitive Mode: once a second (35) and half as deep
 			double beat = calm ? 0.5 + 0.25 * sin(t * 360.0 / 35.0) : 0.5 + 0.5 * sin(t * 360.0 / 28.0);
 			Color lo = Color(255, 60, 0, 0);
