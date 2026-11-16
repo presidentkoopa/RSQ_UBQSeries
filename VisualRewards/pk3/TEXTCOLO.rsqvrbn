@@ -1,0 +1,15 @@
+// RSQ VisualRewards -- the Arcade Gold banners' colours (design/BANNERS_AND_HUD.md; the mockups' ramps, tools in
+// /design/mockups/banners: each a ramp over the letter's brightness from 35% of the way up, so a letter's darker tile reads
+// as a darker shade of its colour). Names prefixed RSQVR_Bn.
+RSQVR_BnGold   { #BB8C30 #FFE878 0 255 }
+RSQVR_BnRed    { #A72D26 #FF6E5A 0 255 }
+RSQVR_BnInk    { #0A0806 #0A0806 0 255 }
+RSQVR_BnWhite  { #A0A0A0 #FFFFFF 0 255 }
+RSQVR_BnHealth { #4F8D4F #99FF99 0 255 }
+RSQVR_BnArmor  { #5075A4 #99CAFF 0 255 }
+RSQVR_BnInv    { #A33585 #FF76DF 0 255 }
+RSQVR_BnAmmo   { #9D9D9D #FEFEFE 0 255 }
+RSQVR_BnLife   { #A35060 #FF99AE 0 255 }
+RSQVR_BnGrey   { #8B8D96 #E6E9F4 0 255 }
+RSQVR_BnUp     { #A38A3F #FFE684 0 255 }
+RSQVR_BnDown   { #A34540 #FF8B84 0 255 }

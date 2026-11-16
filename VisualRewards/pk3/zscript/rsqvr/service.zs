@@ -38,6 +38,26 @@
 //   GetInt "pop"         intArg 0xRRGGBB, doubleArg size (0 = 1), objectArg the actor: a pixel ring and star burst at its
 //                        middle in that colour. Returns 1 (0: no actor).
 // Photosensitive Mode (RSQ Accessibility rsqa_photosafe) is respected by all of them (no fast flicker, flashes dimmed).
+// THE ARCADE GOLD BANNERS AND THE INVULNERABILITY BAR (2026-11-16, design/BANNERS_AND_HUD.md; rsqvr/banners.zs, invbar.zs):
+//   GetInt "banner"      (play) stringArg "<MOMENT>|<kind:value>|...", objectArg the player's pawn (null: every player):
+//                        queues that banner on that player's HUD (after any of his still showing). Returns 1 (0: an
+//                        unknown moment, or four already waiting). MOMENT: REVIVE (headline REVIVE), LIFEUSED (-1UP),
+//                        BOSSWIN (BOSS DEFEATED!), BOSSLOSS (BOSS WINS!, red), LIFEUP (+1UP: the badge floats up into RSQ
+//                        Score's lives). Chips, in the order given, two to a row:
+//                          health:<n>      +n HEALTH (green)          armor:<n>     +n ARMOR (blue)
+//                          invuln:<secs>   nS INVULNERABLE (magenta; it blinks and flies up into the invulnerability bar)
+//                          mags:full | mags:<n>   MAGS FULL / +n MAGS (white)
+//                          lives:<n>       n Doomguy faces, "n HELD" (n LEFT, greyed, on LIFEUSED)
+//                          tierup:<t> | tierdown:<t>   TIER UP / TIER DOWN (gold / red) + the tier's swatch and name; t a
+//                                          world tier 1..13 (RSQ Monsters' colours), or a name, either with @RRGGBB
+//                          nolegendary     NO LEGENDARY (red)
+//                        Only what happened, with the real numbers: the caller leaves out what did not.
+//   GetIntUI "banner.lives"   (ui; RSQ Score's hud.zs, every frame) stringArg "<lives> <face height px>", intArg / doubleArg
+//                        the newest life face's centre x / y in screen px: tells the banners where the +1UP lands. Returns
+//                        how many faces to hold back (a +1UP still on its way).
+//   GetIntUI "invbar.bottom"  (ui) the screen pixel row under the invulnerability bar while it shows, -1 when it does not
+//                        (RSQ Score's combo rows go below it).
+//   Test (console, sv_cheats): netevent rsqvr_bntest 0..5, or netevent "rsqvr_banner:<spec>".
 // The damage numbers' own hook stays where it was: RSQTHP_DnService "crit" (damnums/events.zs).
 class RSQVR_Service : Service
 {
@@ -55,6 +75,7 @@ class RSQVR_Service : Service
 			if (!sc) return 0;
 			return request == "scene.push" ? sc.Push(stringArg, intArg, nameArg, int(doubleArg) - 1) : sc.Pop(stringArg);
 		}
+		if (request == "banner") { let bn = RSQVR_Banners.Get(); return bn ? bn.Add(stringArg, Actor(objectArg)) : 0; }
 		if (request == "beam") return RSQVR_Beam.StartBeam(stringArg, intArg, doubleArg, Actor(objectArg), nameArg);
 		if (request == "word" || request == "word.hold" || request == "word.clear" || request == "pop")
 		{
@@ -65,6 +86,22 @@ class RSQVR_Service : Service
 			if (request == "word.clear") return h.ClearWord(stringArg, Actor(objectArg));
 			return h.PopAt(intArg, doubleArg, Actor(objectArg));
 		}
+		return 0;
+	}
+
+	override int GetIntUI(String request, String stringArg, int intArg, double doubleArg, Object objectArg, Name nameArg)
+	{
+		if (request == "loaded") return 1;
+		let bn = RSQVR_Banners.Get();
+		if (request == "banner.lives")
+		{
+			if (!bn) return 0;
+			Array<String> a;
+			stringArg.Split(a, " ");
+			double fh = a.Size() > 1 ? a[1].ToDouble() : 0;
+			return bn.LivesExchange(intArg, doubleArg, fh);
+		}
+		if (request == "invbar.bottom") return bn ? bn.InvBottom() : -1;
 		return 0;
 	}
 

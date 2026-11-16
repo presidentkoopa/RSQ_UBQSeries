@@ -100,3 +100,7 @@ user   bool rsqvr_ldword = true;  // LegenDoom: LEGENDARY Word: LEGENDARY over a
 user   float rsqvr_ldword_secs = 3;  // LegenDoom: LEGENDARY Word Seconds (owner 11-12): the word fades this long after the legendary rises; 0 = held for its life
 user   bool rsqvr_lddrop = true;  // LegenDoom: Drop Words: the rarity and the power's name over a LegenDoom drop until it is picked up (rsqvr/ldword.zs; off: nothing, as LegenDoom)
 user   bool rsqvr_pops  = true;   // Pops: the small ring and star burst another mod asks for (a thrall's kill)
+// The Arcade Gold banners and the invulnerability bar (2026-11-16, design/BANNERS_AND_HUD.md). Look only: user cvars.
+user   bool  rsqvr_banners = true;       // Banners: REVIVE, -1UP, BOSS DEFEATED!, BOSS WINS!, +1UP and their chips (another mod asks)
+user   float rsqvr_banner_size = 1.0;    // Banner Size: x the mockups' size in the headset eye (RSQ Accessibility's Text Size on top)
+user   bool  rsqvr_invbar = true;        // Invulnerability Bar: the magenta bar in the top stack while you are invulnerable

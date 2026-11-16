@@ -178,6 +178,9 @@ class RS_ScoreHUD : EventHandler
 		if (s) px = s.GetIntUI("countdown.bottom", "", 0, 0, null);
 		let mb = ServiceIterator.Find("RSQMB_Service").Next();
 		if (mb) px = max(px, mb.GetIntUI("meter.bottom", "", 0, 0, null));
+		// RSQ VisualRewards' invulnerability bar (2026-11-16), its own row under SlowMo's, while it shows
+		let vr = ServiceIterator.Find("RSQVR_Service").Next();
+		if (vr) px = max(px, vr.GetIntUI("invbar.bottom", "", 0, 0, null));
 		if (px <= 0) return 0.0;
 		double need = px * vh / Screen.GetHeight() + 2;
 		return max(0.0, need - rowsTop);
@@ -311,49 +314,95 @@ class RS_ScoreHUD : EventHandler
 	//
 	// Original: four frames cycling every four tics; borderLeft = centerX - 6*(n-1),
 	// step 12, y = centerY - 12, each pip centred on its x and on y.
+	// DOOMGUY FACES (owner 2026-11-16, design/BANNERS_AND_HUD.md section 5: "an excellent idea ... yes, i like this"): each
+	// life is a small Doomguy face (STFST01, from the IWAD the player loads) in the old pip's place and step; the newest
+	// grins (STFEVL0) as it is gained, and one that is spent falls away OUCH (STFOUCH0) and grey. RSQ VisualRewards' +1UP
+	// floats up into the newest face's slot: this HUD tells it where that slot is and holds that face back until the badge
+	// lands (RSQVR_Service "banner.lives", by name; without VisualRewards nothing is held). Photosensitive Mode: the pop at 40%.
+	// Rig only, not headset-confirmed.
+	const FACE_H = 10.0;       // a face's height, virtual units (the pip was 8; the step stays 12)
+	const GRIN = 52;           // tics the newest face grins
+	const FALL = 30;           // tics a spent face takes to fall away
+	ui int shownLives, grinTic, fallTic;
+	ui double fallX, fallY;
+	ui bool livesSeen;
 
 	private ui void DrawLives(RS_ScoreTracker tr, double vw, double vh, double cx, double cy)
 	{
 		int lives = min(LIVES_MAX, tr.extraLives);
-		if (lives <= 0) { return; }
+		double y = cy - 12;
+		int slots = max(1, lives);
+		double left = cx - (6 * (slots - 1));
 
-		String pip;
-		switch ((level.maptime / 4) % 4)
+		// where the newest face is (where a +1UP lands), and how many faces VisualRewards holds back
+		int hold = 0;
+		let vr = ServiceIterator.Find("RSQVR_Service").Next();
+		if (vr)
 		{
-			default:
-			case 0: pip = "HUD_LIF1"; break;
-			case 1: pip = "HUD_LIF2"; break;
-			case 2: pip = "HUD_LIF3"; break;
-			case 3: pip = "HUD_LIF4"; break;
+			double W = Screen.GetWidth(), H = Screen.GetHeight();
+			hold = vr.GetIntUI("banner.lives", String.Format("%d %.2f", lives, FACE_H * H / vh), int((left + 12.0 * (slots - 1)) * W / vw), y * H / vh, null);
 		}
-
-		double left = cx - (6 * (lives - 1));
-		double y    = cy - 12;
-
-		// the extra-life cue (handler.zs RunRewardCue sets lifeCueTic): every pip swells up to half again and is lit
-		// (drawn again, added) as the cue fades. Photosensitive Mode: 40%.
-		double pop = RSSC_A11y.Dim(FadeAlpha(tr.lifeCueTic, 0.1, 0.65));
-
-		for (int i = 0; i < lives; i++)
+		int shown = clamp(lives - hold, 0, lives);
+		if (!livesSeen) { livesSeen = true; shownLives = shown; }
+		if (shown > shownLives) grinTic = level.maptime;
+		if (shown < shownLives)
 		{
-			if (pop > 0.0) { DrawPip(pip, left + 12.0 * i, y, vw, vh, 1.0 + 0.5 * pop, pop); }
-			else DrawCentered(pip, left + 12.0 * i, y, vw, vh, 1.0);
+			// the face that went: the last one of the row as it was
+			int was = max(1, shownLives);
+			fallX = cx - 6 * (was - 1) + 12.0 * (was - 1);
+			fallY = y;
+			fallTic = level.maptime;
+		}
+		shownLives = shown;
+
+		// the extra-life cue (handler.zs RunRewardCue sets lifeCueTic): every face swells up to half again and is lit
+		// (drawn again, added) as the cue fades; a face that lands from a +1UP pops the same way. Photosensitive Mode: 40%.
+		double pop = hold > 0 ? 0.0 : RSSC_A11y.Dim(FadeAlpha(tr.lifeCueTic, 0.1, 0.65));
+		double gpop = RSSC_A11y.Dim(FadeAlpha(grinTic, 0.1, 0.65));
+		bool grinning = grinTic > 0 && level.maptime - grinTic < GRIN;
+
+		for (int i = 0; i < shown; i++)
+		{
+			bool newest = i == shown - 1;
+			double p = max(pop, newest ? gpop : 0.0);
+			DrawFace((newest && grinning) ? "STFEVL0" : "STFST01", left + 12.0 * i, y, vw, vh, 1.0 + 0.5 * p, p, 0, 1.0, false);
+		}
+		// a spent life falls away, OUCH and grey
+		if (fallTic > 0)
+		{
+			double a = level.maptime - fallTic;
+			if (a >= 0 && a < FALL)
+				DrawFace("STFOUCH0", fallX + a * 0.25, fallY + 0.045 * a * a, vw, vh, 1.0, 0, 255, 1.0 - a / FALL, true, a * 2.0);
 		}
 	}
 
-	private ui void DrawPip(String texName, double cx, double cy, double vw, double vh, double scale, double lit)
+	// a face centred on (fx, fy), FACE_H x scale tall, lit (added) by lit; desat 255 greys it
+	private ui void DrawFace(String texName, double fx, double fy, double vw, double vh, double scale, double lit, int desat, double alpha, bool tintCold, double ang = 0)
 	{
 		TextureID tex = TexMan.CheckForTexture(texName, TexMan.Type_Any);
-		if (!tex.IsValid()) { return; }
-
-		Vector2 size = TexMan.GetScaledSize(tex) * scale;
-		Screen.DrawTexture(tex, false, cx - size.x * 0.5, cy - size.y * 0.5,
+		if (!tex.IsValid()) { tex = TexMan.CheckForTexture("HUD_LIF1", TexMan.Type_Any); if (!tex.IsValid()) return; }
+		Vector2 ts = TexMan.GetScaledSize(tex);
+		double h = FACE_H * scale, w = h * ts.x / max(1.0, ts.y);
+		Color tint = tintCold ? Color(255, 205, 212, 230) : Color(255, 255, 255, 255);
+		// a dark outline a face pixel wide, then the face
+		double o = h / max(1.0, ts.y);
+		for (int dx = -1; dx <= 1; dx++) for (int dy = -1; dy <= 1; dy++)
+		{
+			if (!dx && !dy) continue;
+			Screen.DrawTexture(tex, false, fx + dx * o, fy + dy * o,
+				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+				DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true, DTA_Rotate, ang,
+				DTA_FillColor, 0x080606, DTA_Alpha, 0.85 * alpha);
+		}
+		Screen.DrawTexture(tex, false, fx, fy,
 			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-			DTA_DestWidthF, size.x, DTA_DestHeightF, size.y);
-		Screen.DrawTexture(tex, false, cx - size.x * 0.5, cy - size.y * 0.5,
-			DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
-			DTA_DestWidthF, size.x, DTA_DestHeightF, size.y,
-			DTA_LegacyRenderStyle, STYLE_Add, DTA_Alpha, lit);
+			DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true, DTA_Rotate, ang,
+			DTA_Desaturate, desat, DTA_Color, tint, DTA_Alpha, alpha);
+		if (lit > 0.0)
+			Screen.DrawTexture(tex, false, fx, fy,
+				DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true,
+				DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_CenterOffset, true, DTA_Rotate, ang,
+				DTA_LegacyRenderStyle, STYLE_Add, DTA_Alpha, lit * alpha);
 	}
 
 	// --------------------------------------------------------- the breakdown

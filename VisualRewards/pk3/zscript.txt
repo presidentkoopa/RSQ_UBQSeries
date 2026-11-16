@@ -31,3 +31,7 @@ version "4.14"
 #include "zscript/rsqvr/ldword.zs"
 // Scenes (2026-11-09, the start of the arcade brain): RSQVR_Service "scene.push" / "scene.pop"; music for now
 #include "zscript/rsqvr/scenes.zs"
+// The Arcade Gold banners (REVIVE, -1UP, BOSS DEFEATED!, BOSS WINS!, +1UP) and the invulnerability bar (2026-11-16,
+// design/BANNERS_AND_HUD.md): RSQVR_Service "banner"; art and the fonts' copies from tools/gen_banners.py
+#include "zscript/rsqvr/banners.zs"
+#include "zscript/rsqvr/invbar.zs"

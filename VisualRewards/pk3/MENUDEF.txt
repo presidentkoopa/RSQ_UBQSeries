@@ -263,6 +263,11 @@ OptionMenu "RSQTHP_Options"
 	Slider "Scene Music Volume", "rsqvr_scene_volume", 0.1, 1.0, 0.05, 2
 	Slider "Scene Crossfade (s)", "rsqvr_scene_fade", 0.5, 5.0, 0.5, 1
 	StaticText " "
+	StaticText "Banners and Bars", 1
+	Option "Banners", "rsqvr_banners", "OnOff"
+	Slider "Banner Size", "rsqvr_banner_size", 0.5, 2.0, 0.05, 2
+	Option "Invulnerability Bar", "rsqvr_invbar", "OnOff"
+	StaticText " "
 	Submenu "Test and Debug", "RSQTHP_Test"
 	RSQTHPResetAll "Reset All", "Reset every RSQ VisualRewards setting?"
 }
