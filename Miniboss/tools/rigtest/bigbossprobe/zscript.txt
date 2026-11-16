@@ -88,6 +88,8 @@ class BBP_Probe : EventHandler
 		if (mode == 1) Mode1(p, h, t);
 		if (mode == 2) Mode2(p, h, t);
 		if (mode == 3) Mode3(p, h, t);
+		if (mode == 4) Mode4(p, h, t);
+		if (mode == 5) Mode5(p, h, t);
 	}
 
 	// one Boss fight: called in at tStart; when it is bound and its charge is over, the Boss is killed by the player
@@ -205,6 +207,16 @@ class BBP_Probe : EventHandler
 			}
 			p.vel = (0, 0, 0);
 			Console.Printf("B_STAND t%d the player stands %.0f units in front of the kiosk (free %d)", t, (p.pos.xy - k.home.xy).Length(), ok);
+			// (TEST ONLY, for a clear view: the pickups and bodies lying round the kiosk -- the Boss's drops, its thralls' bodies --
+			// taken away; nothing of the kiosk's)
+			let ci = ThinkerIterator.Create("Actor"); Actor c; Array<Actor> gone;
+			while (c = Actor(ci.Next()))
+			{
+				if (c is "RSQMB_KPart" || c is "RSQMB_Kiosk" || c.player || (c.pos.xy - k.home.xy).Length() > 200) continue;
+				if ((c is "Inventory" && !Inventory(c).Owner) || (c.bIsMonster && c.health <= 0) || c.bCorpse) gone.Push(c);
+			}
+			for (int i = 0; i < gone.Size(); i++) gone[i].Destroy();
+			Console.Printf("B_CLEARVIEW t%d test only: %d pickups and bodies round the kiosk taken away", t, gone.Size());
 			phase = 6; openT = t;
 			return;
 		}
@@ -226,11 +238,114 @@ class BBP_Probe : EventHandler
 
 	void Mode3(Actor p, RSQMB_Handler h, int t)
 	{
-		if (t == 40) EventHandler.SendNetworkEvent("rsqmb_exfill", 1000);
-		if (t <= 40) return;
+		if (t == 40) { CVar.FindCVar('rsqmb_bf_auto').SetInt(300); EventHandler.SendNetworkEvent("rsqmb_exfill", 1000); }
+		if (t == 45) { Console.Printf("B_CALL t%d the watch check + Use's call (netevent rsqmb_callin)", t); EventHandler.SendNetworkEvent("rsqmb_callin"); }
+		if (t <= 45) return;
 		if (phase == 0) phase = 2;
 		if (phase < 5) { if (FightStep(p, h, t, false, "BIG BOSS")) phase = 5; return; }
 		KioskView(p, t);
+	}
+
+	// mode 4: THE TWO BARS AND THE CARD: the Boss meter half (red) and the Big Boss bar half (black, red edge) side by side;
+	// then the Big Boss bar full; then the Boss meter full too (gold); the off hand's inside wrist turned to the eyes by
+	// the run's script (qz_lhand): the Start Fight card BIG BOSS!; Use (the script's +use): the Big Boss called by the card
+	void Mode4(Actor p, RSQMB_Handler h, int t)
+	{
+		if (t == 4) CVar.FindCVar('rsqmb_bf_auto').SetInt(300);
+		if (t == 40) { EventHandler.SendNetworkEvent("rsqmb_fill", 500); EventHandler.SendNetworkEvent("rsqmb_exfill", 500); }
+		if (t == 200) EventHandler.SendNetworkEvent("rsqmb_exfill", 1000);
+		if (t == 330) EventHandler.SendNetworkEvent("rsqmb_fill", 1000);
+		let m = RSQMB_Meter(p.FindInventory("RSQMB_Meter"));
+		if (t % 10 == 0 && m) Console.Printf("B_CARD t%d card up %d skin %s | Boss meter %d ready %d called %d | Big Boss bar %d ready %d called %d force %d | arriving %d big %d", t, h.wcUp, h.wcSkin,
+			int(m.fill), m.ready, m.called, int(m.exFill), m.exReady, m.exCalled, m.exForce, h.arrPhase, h.arrBig);
+		if (phase == 0 && h.arrPhase && h.arrBig) { Console.Printf("B_ARRIVING t%d the Big Boss called by the card is landing: %s", t, h.arrCls.Size() ? h.arrCls[0] : "?"); phase = 1; }
+	}
+
+	// mode 5: THRALL DROPS (owner 11-16 09:58, ASSEMBLY_AUDIT item 8): fights called (the meter filled, the card's call), each
+	// thrall killed by the player one at a time; every monster death and every gun or health bit born near one logged
+	Array<Actor> dA; Array<double> dX, dY; Array<int> dT; Array<int> dK; Array<String> dC;
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (mode != 5 || !e.Thing || !e.Thing.bIsMonster) return;
+		let a = e.Thing;
+		int k = a.CountInv("RSQMB_Ward") ? 2 : (a.CountInv("RSQMB_Called") ? 1 : 0);
+		dA.Push(a); dX.Push(a.pos.x); dY.Push(a.pos.y); dT.Push(level.maptime); dK.Push(k); dC.Push(a.GetClassName());
+		if (k == 1) Console.Printf("B_TDEATH t%d THRALL %s died at %.0f %.0f", level.maptime, a.GetClassName(), a.pos.x, a.pos.y);
+	}
+	static bool GunLike(Actor a)
+	{
+		if (a is "Weapon") return true;
+		for (class<Object> c = a.GetClass(); c; c = c.GetParentClass())
+		{
+			Name cn = c.GetClassName();
+			if (cn == 'BasicWeaponPickup2') return false;
+			if (cn == 'BDWeaponSpawner' || cn == 'BasicWeaponPickup') return true;
+		}
+		return false;
+	}
+	Array<Actor> spawnA; Array<int> spawnT;
+	override void WorldThingSpawned(WorldEvent e)
+	{
+		if (mode != 5 || !e.Thing) return;
+		let a = e.Thing;
+		String cn = a.GetClassName();
+		if (cn.Left(2) ~== "LD" || cn.Left(4) ~== "RSLD") return;
+		if (!(cn ~== "RSQ_KRHealthBit") && !GunLike(a)) return;
+		if (a is "Inventory" && Inventory(a).Owner) return;
+		spawnA.Push(a); spawnT.Push(level.maptime);
+	}
+	void Mode5(Actor p, RSQMB_Handler h, int t)
+	{
+		// spawns judged a tic later: where they are and the nearest death of any monster in the last 175 tics
+		for (int i = spawnA.Size() - 1; i >= 0; i--)
+		{
+			if (t - spawnT[i] < 1) continue;
+			let a = spawnA[i]; int born = spawnT[i];
+			spawnA.Delete(i); spawnT.Delete(i);
+			int best = -1; double bd = 1e9;
+			for (int j = 0; j < dT.Size(); j++)
+			{
+				if (born - dT[j] > 175 || born < dT[j]) continue;
+				double d = (a ? (a.pos.xy - (dX[j], dY[j])).Length() : 1e8);
+				if (d < bd) { bd = d; best = j; }
+			}
+			if (best < 0 || bd > 256) continue;
+			Console.Printf("B_DROP t%d %s born t%d, %s now: nearest death %s %s (%d tics before, %.0f units)", t, a ? a.GetClassName() : 'gone', born,
+				a ? "LYING" : "GONE (removed)", dK[best] == 1 ? "THRALL" : (dK[best] == 2 ? "BOSS" : "monster"), dC[best], born - dT[best], bd);
+		}
+		if (t == 4) { CVar.FindCVar('rsqgb_kr_debug').SetBool(true); }
+		RSQMB_Boss b = h.bfBoss;
+		if (phase == 0 && t >= 60) { EventHandler.SendNetworkEvent("rsqmb_fill", 1000); phase = 1; return; }
+		if (phase == 1) { EventHandler.SendNetworkEvent("rsqmb_callin", 1); phase = 2; return; }
+		if (phase == 2)
+		{
+			if (!b || !b.mb || b.done || h.arrPhase) return;
+			landT = t; phase = 3;
+			Roles("FIGHT");
+			return;
+		}
+		if (phase == 3 && b && !b.done && t > b.chargeUntil + 10 && (t - landT) % 9 == 0)
+		{
+			for (int i = 0; i < b.thr.Size(); i++)
+			{
+				let a = b.thr[i];
+				if (!a || a.health <= 0) continue;
+				a.DamageMobj(p, p, a.health + 50, 'Bullet');
+				Console.Printf("B_TKILL t%d the player shot thrall %s: hp %d", t, a.GetClassName(), a.health);
+				return;
+			}
+			// every thrall dead: the Boss too, and the next fight
+			let mb = b.mb;
+			if (mb) { b.lives = 1; mb.bBUDDHA = b.ownBuddha; b.invulUntil = 0; mb.bINVULNERABLE = false; mb.DamageMobj(p, p, mb.health + 1, 'Bullet', DMG_FORCED); }
+			kills++; killT = t; phase = 4;
+			return;
+		}
+		if (phase == 4 && t == killT + 200)
+		{
+			let hb = ThinkerIterator.Create("RSQ_KRHealthBit"); int n = 0; while (hb.Next()) n++;
+			Console.Printf("B_FIGHTDONE t%d fight %d over; health bits lying anywhere: %d", t, kills, n);
+			phase = kills < 3 ? 0 : 9;
+		}
 	}
 
 	void Mode2(Actor p, RSQMB_Handler h, int t)

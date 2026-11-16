@@ -1,0 +1,370 @@
+RSQ Miniboss: the Big Boss, the owner's answers (11-16 09:5x) and the thrall-drop faults (09:58), 2026-11-16. Rig only, not headset-confirmed.
+QuestZDoom 17.3 rig, boss/boss_full.sh: the owner's full order and saved mod settings, MAP01, -skill 6, +set rsqtr_eye_m 1.6, sv_cheats 1,
+screenblocks 11 (the rig's own ini has 12; the owner's own qzdoom.ini has 11), 1024 px frames where frames were kept; P = rig/work/gate_rel4 (hard links)
+with this RSQ_Miniboss.pk3 and RSQ_VisualRewards.pk3; BDVR = BD22_VR-Reloaded_2.0.5a.pk3. Probe: Miniboss/tools/rigtest/bigbossprobe (bbp_mode 2 .. 5).
+  bb_m4  bars beside each other; the Start Fight card (the rig's off hand posed inside-wrist by qz_lhand "-0.05 1.45 -0.40 0 0 -70", Use = +use) calls the Big Boss
+  bb_m3  the watch-check call (netevent rsqmb_callin, what the watch check + Use sends); the kiosk: five Epic offers
+  bb_m2t the timer: Arrives By Itself 8 s (+set rsqmb_bf_auto 8): the Big Boss comes by itself; then the loss
+  bb_tdA thrall drops, Colorful Hell thralls (Miniboss From 1, Thralls From 2); bb_tdB Brutal Doom thralls (Thralls From 4): thralls shot one by one
+
+===== run bb_m4
+-- script errors / VM aborts (whole log):
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+B_MAP MAP01 loaded (savegame 0)
+B_START MAP01 mode 4: Big Boss bar -1, world tier 1
+B_CARD t10 card up 0 skin  | Boss meter 0 ready 0 called 0 | Big Boss bar 0 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t40 card up 0 skin  | Boss meter 0 ready 0 called 0 | Big Boss bar 0 ready 0 called 0 force 0 | arriving 0 big 0
+RSQMB Big Boss bar (test) t43: 0% -> 50%
+B_CARD t60 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 500 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t90 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 500 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t120 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 500 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t150 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 500 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t180 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 500 ready 0 called 0 force 0 | arriving 0 big 0
+RSQMB Big Boss bar (test) t204: 50% -> 100%, FULL: a Big Boss is due
+B_CARD t230 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 1000 ready 1 called 0 force 0 | arriving 0 big 0
+B_CARD t260 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 1000 ready 1 called 0 force 0 | arriving 0 big 0
+B_CARD t290 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 1000 ready 1 called 0 force 0 | arriving 0 big 0
+B_CARD t320 card up 0 skin  | Boss meter 500 ready 0 called 0 | Big Boss bar 1000 ready 1 called 0 force 0 | arriving 0 big 0
+B_CARD t350 card up 0 skin  | Boss meter 999 ready 1 called 0 | Big Boss bar 1000 ready 1 called 0 force 0 | arriving 0 big 0
+POSE_INSIDE
+B_CARD t370 card up 1 skin RSQMBWC2 | Boss meter 999 ready 1 called 0 | Big Boss bar 1000 ready 1 called 0 force 0 | arriving 0 big 0
+RSQMB start fight card: off-hand inside check HELD, SHOWN GOLD (Use calls it in), meter READY
+B_CARD t390 card up 1 skin RSQMBWC2 | Boss meter 999 ready 1 called 0 | Big Boss bar 1000 ready 1 called 0 force 0 | arriving 0 big 0
+RSQMB start fight card: off-hand inside check HELD, SHOWN GOLD (Use calls it in), meter READY
+USE
+RSQMB start fight card: Use pressed, card gold, alpha 1.00
+RSQMB call-in: Use pressed t445, a check held -1 tics ago (grace 8)
+RSQMB BIG BOSS CALLED IN (the Start Fight card: no rules) by player 0
+RSQMB Miniboss From 1 / Thralls From 2: RS_BlueZombie
+RSQMB Big Boss pool: 10 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX]
+RSQMB Big Boss: 10 in the pool, this map's families' [RS_BlackZombieEX, RS_BlackImpEX] -> RS_BlackImpEX
+RSQMB BIG BOSS FIGHT ARRIVING: tier 0, RS_BlackImpEX + 4 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BIGBOSSINCOMING|name:IMP WARLORD|tier:12|thralls:4|clock:5" -> 1
+B_ARRIVING t452 the Big Boss called by the card is landing: RS_BlackImpEX
+RSQMB start fight card: off-hand inside check HELD, SHOWN GREY, meter READY
+B_CARD t480 card up 1 skin RSQMBWC0 | Boss meter 999 ready 1 called 0 | Big Boss bar 1000 ready 1 called 1 force 1 | arriving 1 big 1
+B_CARD t510 card up 1 skin RSQMBWC0 | Boss meter 999 ready 1 called 0 | Big Boss bar 1000 ready 1 called 1 force 1 | arriving 1 big 1
+B_CARD t540 card up 0 skin RSQMBWC0 | Boss meter 999 ready 1 called 0 | Big Boss bar 1000 ready 1 called 1 force 1 | arriving 1 big 1
+RSQMB BIG BOSS FIGHT bound t554: RS_BlackImpEX; the Big Boss bar empties
+B_CARD t560 card up 0 skin RSQMBWC0 | Boss meter 999 ready 1 called 0 | Big Boss bar 0 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t590 card up 0 skin RSQMBWC0 | Boss meter 999 ready 1 called 0 | Big Boss bar 0 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t620 card up 0 skin RSQMBWC0 | Boss meter 999 ready 1 called 0 | Big Boss bar 0 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t650 card up 0 skin RSQMBWC0 | Boss meter 999 ready 1 called 0 | Big Boss bar 0 ready 0 called 0 force 0 | arriving 0 big 0
+B_CARD t680 card up 0 skin RSQMBWC0 | Boss meter 999 ready 1 called 0 | Big Boss bar 0 ready 0 called 0 force 0 | arriving 0 big 0
+
+===== run bb_m3
+-- script errors / VM aborts (whole log):
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+B_MAP MAP01 loaded (savegame 0)
+B_START MAP01 mode 3: Big Boss bar -1, world tier 1
+RSQMB Big Boss bar (test) t45: 0% -> 100%, FULL: a Big Boss is due
+B_CALL t45 the watch check + Use's call (netevent rsqmb_callin)
+RSQMB BIG BOSS CALLED IN (watch check + Use) by player 0
+RSQMB Miniboss From 1 / Thralls From 2: RS_BlueImp
+RSQMB Big Boss pool: 10 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX]
+RSQMB Big Boss: 10 in the pool, this map's families' [RS_BlackZombieEX, RS_BlackCGuyEX, RS_BlackImpEX] -> RS_BlackZombieEX
+RSQMB BIG BOSS FIGHT ARRIVING: tier 0, RS_BlackZombieEX + 4 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BIGBOSSINCOMING|name:ZOMBIEMAN WARLORD|tier:12|thralls:4|clock:5" -> 1
+RSQMB BIG BOSS FIGHT bound t155: RS_BlackZombieEX; the Big Boss bar empties
+B_FIGHT t155 BIG BOSS bound: RS_BlackZombieEX big 1 tier 4, charge until t228
+B_CAM t155 the player steps 200 units from the Big Boss: 1
+B_ROLE BIG BOSS t155 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t155 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t155 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t155 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE BIG BOSS t155 BOSS RS_BlackZombieEX tier 12 ex 1 hp 4000
+B_THRALLS t268 the player killed the Big Boss's 4 thrall(s)
+RSQMB kiosk: a Big Boss's 5 offers, every one Epic, on 5 different guns: 6|3|NanoCircuit;2|3|NanoCircuit;7|3|Endless;3|3|Unstoppable;8|3|Impossible
+RSQMB banner "BIGBOSSWIN|tierup:2" -> 1
+B_KILL t319 the player killed the BIG BOSS RS_BlackZombieEX: hp 8000 -> -1; Big Boss bar now 0
+RSQMB thrall drop: SSGSpawnerReplacer kept (near the miniboss's death spot; the miniboss RS_BlackZombieEX died 24 tics ago, 0 units from where it died)
+RSQMB thrall drop: PlasmagunReplacer kept (near the miniboss's death spot; the miniboss RS_BlackZombieEX died 24 tics ago, 0 units from where it died)
+RSQMB thrall drop: Sniper kept (near the miniboss's death spot; the miniboss RS_BlackZombieEX died 26 tics ago, 14 units from where it died)
+RSQMB thrall drop: SMGSpawner kept (near the miniboss's death spot; the miniboss RS_BlackZombieEX died 26 tics ago, 10 units from where it died)
+RSQMB thrall drop: SMGSpawner kept (near the miniboss's death spot; the miniboss RS_BlackZombieEX died 26 tics ago, 5 units from where it died)
+RSQMB thrall drop: IncendiaryLauncher kept (near the miniboss's death spot; the miniboss RS_BlackZombieEX died 26 tics ago, 15 units from where it died)
+RSQMB thrall drop: SSGSpawner kept (near the miniboss's death spot; the miniboss RS_BlackZombieEX died 40 tics ago, 0 units from where it died)
+RSQMB thrall drop: PLasmagunSpawner kept (near the miniboss's death spot; the miniboss RS_BlackZombieEX died 40 tics ago, 0 units from where it died)
+B_LEGS t364 after the BIG BOSS: 0 legendary pickup(s) lying
+B_AFTER t364 BIG BOSS win 1: Big Boss bar 0 (0%), ready 0, world tier 1
+B_KIOSK t365 big 1 tier 5 at -188 1196 (72 from the Big Boss's death spot)
+B_OFFER 0 6|3|NanoCircuit rarity 3 (EPIC) price 900 gun Rocket_Launcher
+B_OFFER 1 2|3|NanoCircuit rarity 3 (EPIC) price 900 gun BrutalPistol
+B_OFFER 2 7|3|Endless rarity 3 (EPIC) price 900 gun Plasma_Gun
+B_OFFER 3 3|3|Unstoppable rarity 3 (EPIC) price 900 gun Shot_Gun
+B_OFFER 4 8|3|Impossible rarity 3 (EPIC) price 900 gun BIG_FUCKING_GUN
+B_LEGS t365 legendary pickups lying: 0
+B_STAND t365 the player stands 90 units in front of the kiosk (free 1)
+B_CLEARVIEW t365 test only: 2617 pickups and bodies round the kiosk taken away
+B_OPEN t436 the Big Boss kiosk opened (bank 3040)
+B_DONE t586
+
+===== run bb_m2t
+-- script errors / VM aborts (whole log):
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+B_MAP MAP01 loaded (savegame 0)
+B_START MAP01 mode 2: Big Boss bar -1, world tier 1
+B_SET t5 world tier -> 3
+RSQMB Big Boss bar (test) t41: 0% -> 100%, FULL: a Big Boss is due
+RSQMB Miniboss From 1 / Thralls From 2: RS_CyanZombie2
+RSQMB Big Boss pool: 10 EX boss(es) from RSQ Monsters' EX tier, 0 from RSQBIGBS lumps: [RS_BlackZombieEX, RS_WhiteSGEX, RS_BlackCGuyEX, RS_BlackImpEX, RS_BlackCacoEX, RS_WhiteLSoulEX, RS_BlackHKEX, RS_BlackRevenantEX, RS_BlackFatsoEX, RS_BlackSPEX]
+RSQMB Big Boss: 10 in the pool, this map's families' [RS_BlackZombieEX, RS_BlackImpEX] -> RS_BlackImpEX
+RSQMB BIG BOSS FIGHT ARRIVING: tier 1, RS_BlackImpEX + 4 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BIGBOSSINCOMING|name:IMP WARLORD|tier:12|thralls:4|clock:5" -> 1
+RSQMB BIG BOSS FIGHT bound t423: RS_BlackImpEX; the Big Boss bar empties
+B_FIGHT t423 BIG BOSS bound: RS_BlackImpEX big 1; bar 0; world tier 3
+B_ROLE BIG BOSS t423 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE BIG BOSS t423 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE BIG BOSS t423 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE BIG BOSS t423 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE BIG BOSS t423 BOSS RS_BlackImpEX tier 12 ex 1 hp 6880
+B_GIVELIFE t443 Score lives 1
+B_FALL t503 500 'Falling', no source, 1 Score life held, the Big Boss fight on
+RSQMB BIG BOSS FIGHT LOST t505 (player 0 spent a Score life (0 left)): 5 monster(s) leave on beams, no legendary; world tier 3 -> 2
+RSQMB banner "BIGBOSSLOSS|tierdown:2|nolegendary:" -> 1
+B_LOSS t506 (+3): health 100, Score lives 0, fight on 0, world tier 3, Big Boss bar 0
+B_LOSS t563 (+60): health 100, Score lives 0, fight on 0, world tier 2, Big Boss bar 0
+
+===== run bb_tdA
+-- script errors / VM aborts (whole log):
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+B_MAP MAP01 loaded (savegame 0)
+B_START MAP01 mode 5: Big Boss bar -1, world tier 1
+RSQMB Miniboss From 1 / Thralls From 2: RS_BlueImp
+RSQMB MINIBOSS FIGHT ARRIVING: tier 0, RS_BlueImp + 5 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:IMP WARLORD|tier:3|thralls:5|clock:5" -> 1
+B_ROLE FIGHT t171 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE FIGHT t171 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE FIGHT t171 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE FIGHT t171 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE FIGHT t171 thrall RS_GreenZombie tier 2 ex 0 hp 96
+B_ROLE FIGHT t171 BOSS RS_BlueImp tier 3 ex 0 hp 66
+RSQ KR t252: RS_GreenZombie (96 hp, miniboss thrall) burst into 7 bits of 10 rolled: 0 health, 4 armour, 0 ammo, 3 gold (3 health bits left out: a thrall drops none)
+B_TDEATH t252 THRALL RS_GreenZombie died at -165 1234
+B_TKILL t252 the player shot thrall RS_GreenZombie: hp -50
+RSQ KR t261: RS_GreenZombie (96 hp, miniboss thrall) burst into 8 bits of 10 rolled: 0 health, 5 armour, 1 ammo, 2 gold (2 health bits left out: a thrall drops none)
+B_TDEATH t261 THRALL RS_GreenZombie died at -269 1184
+B_TKILL t261 the player shot thrall RS_GreenZombie: hp -50
+RSQ KR t270: RS_GreenZombie (96 hp, miniboss thrall) burst into 9 bits of 10 rolled: 0 health, 5 armour, 2 ammo, 2 gold (1 health bits left out: a thrall drops none)
+B_TDEATH t270 THRALL RS_GreenZombie died at -190 1148
+B_TKILL t270 the player shot thrall RS_GreenZombie: hp -50
+RSQ KR t279: RS_GreenZombie (192 hp, miniboss thrall) burst into 17 bits of 19 rolled: 0 health, 11 armour, 3 ammo, 3 gold (2 health bits left out: a thrall drops none)
+B_TDEATH t279 THRALL RS_GreenZombie died at -191 1092
+B_TKILL t279 the player shot thrall RS_GreenZombie: hp -214
+RSQ KR t288: RS_GreenZombie (96 hp, miniboss thrall) burst into 9 bits of 10 rolled: 0 health, 7 armour, 0 ammo, 2 gold (1 health bits left out: a thrall drops none)
+B_TDEATH t288 THRALL RS_GreenZombie died at -156 1029
+B_TKILL t288 the player shot thrall RS_GreenZombie: hp -50
+RSQMB Big Boss bar t297: a Boss won: 0% -> 25%
+RSQMB banner "BOSSWIN|tierup:2" -> 1
+B_DROP t298 RSQ_KRHealthBit born t297, LYING now: nearest death BOSS RS_BlueImp (0 tics before, 5 units)
+B_DROP t298 RSQ_KRHealthBit born t297, LYING now: nearest death BOSS RS_BlueImp (0 tics before, 4 units)
+B_DROP t298 RSQ_KRHealthBit born t297, LYING now: nearest death BOSS RS_BlueImp (0 tics before, 3 units)
+B_DROP t298 RSQ_KRHealthBit born t297, LYING now: nearest death BOSS RS_BlueImp (0 tics before, 3 units)
+B_DROP t298 RSQ_KRHealthBit born t297, LYING now: nearest death BOSS RS_BlueImp (0 tics before, 4 units)
+B_DROP t298 RSQ_KRHealthBit born t297, LYING now: nearest death BOSS RS_BlueImp (0 tics before, 6 units)
+RSQMB thrall drop: BrutalAxe removed, a thrall's gun (a thrall's recent death near it (thralls first); thrall RS_GreenZombie died 99 tics ago, 100 units from where it died)
+B_FIGHTDONE t497 fight 1 over; health bits lying anywhere: 6
+RSQMB Miniboss From 1 / Thralls From 2: RS_PurpleImp
+RSQMB MINIBOSS FIGHT ARRIVING: tier 1, RS_PurpleImp + 3 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:IMP WARLORD|tier:4|thralls:3|clock:5" -> 1
+B_ROLE FIGHT t608 thrall RS_BlueZombie tier 3 ex 0 hp 144
+B_ROLE FIGHT t608 thrall RS_BlueZombie tier 3 ex 0 hp 144
+B_ROLE FIGHT t608 thrall RS_BlueZombie tier 3 ex 0 hp 144
+B_ROLE FIGHT t608 BOSS RS_PurpleImp tier 4 ex 0 hp 84
+B_TKILL t698 the player shot thrall RS_BlueZombie: hp 16
+RSQ KR t707: RS_BlueZombie (144 hp, miniboss thrall) burst into 12 bits of 14 rolled: 0 health, 7 armour, 2 ammo, 3 gold (2 health bits left out: a thrall drops none)
+B_TDEATH t707 THRALL RS_BlueZombie died at 62 1135
+B_TKILL t707 the player shot thrall RS_BlueZombie: hp -71
+RSQ KR t716: RS_BlueZombie (720 hp, miniboss thrall) burst into 62 bits of 72 rolled: 0 health, 36 armour, 10 ammo, 16 gold (10 health bits left out: a thrall drops none)
+B_TDEATH t716 THRALL RS_BlueZombie died at 43 1249
+B_TKILL t716 the player shot thrall RS_BlueZombie: hp -50
+B_TKILL t725 the player shot thrall RS_BlueZombie: hp 80
+B_TKILL t734 the player shot thrall RS_BlueZombie: hp 38
+B_TKILL t743 the player shot thrall RS_BlueZombie: hp 9
+RSQ KR t752: RS_BlueZombie (144 hp, miniboss thrall) burst into 10 bits of 14 rolled: 0 health, 9 armour, 0 ammo, 1 gold (4 health bits left out: a thrall drops none)
+B_TDEATH t752 THRALL RS_BlueZombie died at 145 1252
+B_TKILL t752 the player shot thrall RS_BlueZombie: hp -10
+RSQMB Big Boss bar t761: a Boss won: 25% -> 50%
+RSQMB banner "BOSSWIN|tierup:3" -> 1
+B_DROP t762 RSQ_KRHealthBit born t761, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 4 units)
+B_DROP t762 RSQ_KRHealthBit born t761, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 4 units)
+B_DROP t762 RSQ_KRHealthBit born t761, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 3 units)
+B_DROP t762 RSQ_KRHealthBit born t761, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 2 units)
+B_DROP t762 RSQ_KRHealthBit born t761, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 5 units)
+B_DROP t762 RSQ_KRHealthBit born t761, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 5 units)
+B_FIGHTDONE t961 fight 2 over; health bits lying anywhere: 6
+RSQMB Miniboss From 1 / Thralls From 2: RS_CyanImp2
+RSQMB MINIBOSS FIGHT ARRIVING: tier 1, RS_CyanImp2 + 3 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:IMP WARLORD|tier:5|thralls:3|clock:5" -> 1
+B_ROLE FIGHT t1074 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE FIGHT t1074 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE FIGHT t1074 thrall RS_PurpleZombie tier 4 ex 0 hp 228
+B_ROLE FIGHT t1074 BOSS RS_CyanImp2 tier 5 ex 0 hp 100
+RSQ KR t1164: RS_PurpleZombie (228 hp, miniboss thrall) burst into 18 bits of 23 rolled: 0 health, 8 armour, 4 ammo, 6 gold (5 health bits left out: a thrall drops none)
+B_TDEATH t1164 THRALL RS_PurpleZombie died at 101 1168
+B_TKILL t1164 the player shot thrall RS_PurpleZombie: hp -50
+B_TKILL t1173 the player shot thrall RS_PurpleZombie: hp 203
+B_TKILL t1182 the player shot thrall RS_PurpleZombie: hp 77
+B_TKILL t1191 the player shot thrall RS_PurpleZombie: hp 14
+RSQ KR t1200: RS_PurpleZombie (456 hp, miniboss thrall) burst into 40 bits of 46 rolled: 0 health, 21 armour, 7 ammo, 12 gold (6 health bits left out: a thrall drops none)
+B_TDEATH t1200 THRALL RS_PurpleZombie died at 42 1253
+B_TKILL t1200 the player shot thrall RS_PurpleZombie: hp -18
+RSQ KR t1209: RS_PurpleZombie (228 hp, miniboss thrall) burst into 18 bits of 23 rolled: 0 health, 12 armour, 4 ammo, 2 gold (5 health bits left out: a thrall drops none)
+B_TDEATH t1209 THRALL RS_PurpleZombie died at -54 1157
+B_TKILL t1209 the player shot thrall RS_PurpleZombie: hp -50
+RSQ KR t1218: RS_PurpleZombie (76 hp, miniboss thrall) burst into 8 bits of 8 rolled: 0 health, 5 armour, 1 ammo, 2 gold (0 health bits left out: a thrall drops none)
+B_TDEATH t1218 THRALL RS_PurpleZombie died at 123 1210
+B_TKILL t1218 the player shot thrall RS_PurpleZombie: hp -50
+RSQMB Big Boss bar t1227: a Boss won: 50% -> 75%
+RSQMB banner "BOSSWIN|tierup:4" -> 1
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 3 units)
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 2 units)
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 2 units)
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 6 units)
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 6 units)
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 1 units)
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 2 units)
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 6 units)
+B_DROP t1228 RSQ_KRHealthBit born t1227, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 4 units)
+B_FIGHTDONE t1427 fight 3 over; health bits lying anywhere: 9
+
+===== run bb_tdB
+-- script errors / VM aborts (whole log):
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 66:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 72:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 77:
+      1 Script error, "02_BD22_VoxelPack.pk3:voxeldef.txt" line 892:
+B_MAP MAP01 loaded (savegame 0)
+B_START MAP01 mode 5: Big Boss bar -1, world tier 1
+RSQMB Miniboss From 1 / Thralls From 4: RS_BlueZombie
+RSQMB MINIBOSS FIGHT ARRIVING: tier 0, RS_BlueZombie + 3 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:ZOMBIEMAN WARLORD|tier:3|thralls:3|clock:5" -> 1
+B_ROLE FIGHT t166 thrall PistolZombiePatch tier 1 ex -1 hp 96
+B_ROLE FIGHT t166 thrall PistolZombiePatch tier 1 ex -1 hp 96
+B_ROLE FIGHT t166 thrall RifleZombie tier 1 ex -1 hp 96
+B_ROLE FIGHT t166 BOSS RS_BlueZombie tier 3 ex 0 hp 48
+RSQ KR t256: PistolZombiePatch (96 hp, miniboss thrall) burst into 10 bits of 10 rolled: 0 health, 4 armour, 3 ammo, 3 gold (0 health bits left out: a thrall drops none)
+B_TDEATH t256 THRALL PistolZombiePatch died at 71 1175
+B_TKILL t256 the player shot thrall PistolZombiePatch: hp -488
+RSQ KR t265: PistolZombiePatch (96 hp, miniboss thrall) burst into 8 bits of 10 rolled: 0 health, 6 armour, 0 ammo, 2 gold (2 health bits left out: a thrall drops none)
+B_TDEATH t265 THRALL PistolZombiePatch died at 78 1214
+B_TKILL t265 the player shot thrall PistolZombiePatch: hp -196
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall gone died 16 tics ago, 13 units from where it died)
+RSQ KR t274: RifleZombie (96 hp, miniboss thrall) burst into 9 bits of 10 rolled: 0 health, 6 armour, 1 ammo, 2 gold (1 health bits left out: a thrall drops none)
+B_TDEATH t274 THRALL RifleZombie died at -43 1280
+B_TKILL t274 the player shot thrall RifleZombie: hp -50
+RSQMB Big Boss bar t283: a Boss won: 0% -> 25%
+RSQMB banner "BOSSWIN|tierup:2" -> 1
+B_DROP t284 RSQ_KRHealthBit born t283, LYING now: nearest death BOSS RS_BlueZombie (0 tics before, 2 units)
+B_DROP t284 RSQ_KRHealthBit born t283, LYING now: nearest death BOSS RS_BlueZombie (0 tics before, 1 units)
+B_DROP t284 RSQ_KRHealthBit born t283, LYING now: nearest death BOSS RS_BlueZombie (0 tics before, 3 units)
+B_DROP t284 RSQ_KRHealthBit born t283, LYING now: nearest death BOSS RS_BlueZombie (0 tics before, 5 units)
+RSQMB thrall drop: RifleSpawner removed, a thrall's gun (the nearest recent death; thrall RifleZombie died 22 tics ago, 29 units from where it died)
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall gone died 38 tics ago, 71 units from where it died)
+RSQMB thrall drop: RifleSpawner kept (the nearest recent death; another monster gone died 21 tics ago, 71 units from where it died)
+B_DROP t317 RifleSpawner born t316, LYING now: nearest death monster RifleZombie (20 tics before, 71 units)
+RSQMB thrall drop: BrutalAxe removed, a thrall's gun (a thrall's recent death near it (thralls first); thrall RifleZombie died 52 tics ago, 60 units from where it died)
+B_FIGHTDONE t483 fight 1 over; health bits lying anywhere: 4
+RSQMB Miniboss From 1 / Thralls From 4: RS_PurpleImp
+RSQMB MINIBOSS FIGHT ARRIVING: tier 1, RS_PurpleImp + 4 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:IMP WARLORD|tier:4|thralls:4|clock:5" -> 1
+B_ROLE FIGHT t590 thrall PistolZombiePatch tier 2 ex -1 hp 192
+B_ROLE FIGHT t590 thrall PistolZombiePatch tier 2 ex -1 hp 192
+B_ROLE FIGHT t590 thrall PistolZombiePatch tier 2 ex -1 hp 192
+B_ROLE FIGHT t590 thrall Imp tier 2 ex -1 hp 225
+B_ROLE FIGHT t590 BOSS RS_PurpleImp tier 4 ex 0 hp 84
+RSQ KR t680: PistolZombiePatch (96 hp, miniboss thrall) burst into 10 bits of 10 rolled: 0 health, 3 armour, 1 ammo, 6 gold (0 health bits left out: a thrall drops none)
+B_TDEATH t680 THRALL PistolZombiePatch died at 25 1139
+B_TKILL t680 the player shot thrall PistolZombiePatch: hp -292
+RSQ KR t689: PistolZombiePatch (96 hp, miniboss thrall) burst into 8 bits of 10 rolled: 0 health, 5 armour, 1 ammo, 2 gold (2 health bits left out: a thrall drops none)
+B_TDEATH t689 THRALL PistolZombiePatch died at -98 1308
+B_TKILL t689 the player shot thrall PistolZombiePatch: hp -776
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall gone died 3 tics ago, 10 units from where it died)
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall gone died 15 tics ago, 77 units from where it died)
+RSQ KR t698: PistolZombiePatch (96 hp, miniboss thrall) burst into 9 bits of 10 rolled: 0 health, 8 armour, 0 ammo, 1 gold (1 health bits left out: a thrall drops none)
+B_TDEATH t698 THRALL PistolZombiePatch died at -105 1376
+B_TKILL t698 the player shot thrall PistolZombiePatch: hp -50
+RSQ KR t707: Imp (192 hp, miniboss thrall) burst into 19 bits of 19 rolled: 0 health, 14 armour, 1 ammo, 4 gold (0 health bits left out: a thrall drops none)
+B_TDEATH t707 THRALL Imp died at -230 1118
+B_TKILL t707 the player shot thrall Imp: hp -325
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall PistolZombiePatch died 17 tics ago, 64 units from where it died)
+RSQMB Big Boss bar t716: a Boss won: 25% -> 50%
+RSQMB banner "BOSSWIN|tierup:3" -> 1
+B_DROP t717 RSQ_KRHealthBit born t716, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 1 units)
+B_DROP t717 RSQ_KRHealthBit born t716, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 2 units)
+B_DROP t717 RSQ_KRHealthBit born t716, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 6 units)
+B_DROP t717 RSQ_KRHealthBit born t716, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 6 units)
+B_DROP t717 RSQ_KRHealthBit born t716, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 4 units)
+B_DROP t717 RSQ_KRHealthBit born t716, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 1 units)
+B_DROP t717 RSQ_KRHealthBit born t716, LYING now: nearest death BOSS RS_PurpleImp (0 tics before, 6 units)
+RSQMB thrall drop: ChainsawSpawnerReplacer kept (near the miniboss's death spot; the miniboss RS_PurpleImp died 41 tics ago, 24 units from where it died)
+B_DROP t757 ChainsawSpawnerReplacer born t756, LYING now: nearest death BOSS RS_PurpleImp (40 tics before, 24 units)
+RSQMB thrall drop: ChainsawSpawner kept (near the miniboss's death spot; the miniboss RS_PurpleImp died 65 tics ago, 24 units from where it died)
+B_DROP t781 ChainsawSpawner born t780, LYING now: nearest death BOSS RS_PurpleImp (64 tics before, 24 units)
+B_FIGHTDONE t916 fight 2 over; health bits lying anywhere: 7
+RSQMB Miniboss From 1 / Thralls From 4: RS_CyanImp2
+RSQMB MINIBOSS FIGHT ARRIVING: tier 1, RS_CyanImp2 + 3 thralls, beams V1-V3 thralls (each at random) + V4 miniboss, SlowMo asked, VisualRewards asked
+RSQMB banner "BOSSINCOMING|name:IMP WARLORD|tier:5|thralls:3|clock:5" -> 1
+B_ROLE FIGHT t1021 thrall LabguyB tier 3 ex -1 hp 387
+B_ROLE FIGHT t1021 thrall PistolZombiePatch tier 3 ex -1 hp 288
+B_ROLE FIGHT t1021 thrall LabguyB tier 3 ex -1 hp 387
+B_ROLE FIGHT t1021 BOSS RS_CyanImp2 tier 5 ex 0 hp 100
+B_DROP t1041 RSQ_KRHealthBit born t1040, LYING now: nearest death monster SkullZombie (0 tics before, 4 units)
+RSQ KR t1111: LabguyB (128 hp, miniboss thrall) burst into 10 bits of 13 rolled: 0 health, 8 armour, 0 ammo, 2 gold (3 health bits left out: a thrall drops none)
+B_TDEATH t1111 THRALL LabguyB died at 60 1138
+B_TKILL t1111 the player shot thrall LabguyB: hp -50
+RSQ KR t1120: PistolZombiePatch (96 hp, miniboss thrall) burst into 9 bits of 10 rolled: 0 health, 4 armour, 2 ammo, 3 gold (1 health bits left out: a thrall drops none)
+B_TDEATH t1120 THRALL PistolZombiePatch died at -36 1206
+B_TKILL t1120 the player shot thrall PistolZombiePatch: hp -388
+RSQ KR t1129: LabguyB (128 hp, miniboss thrall) burst into 9 bits of 13 rolled: 0 health, 4 armour, 1 ammo, 4 gold (4 health bits left out: a thrall drops none)
+B_TDEATH t1129 THRALL LabguyB died at -84 848
+B_TKILL t1129 the player shot thrall LabguyB: hp -50
+RSQMB thrall drop: BrutalAxe removed, a thrall's gun (a thrall's recent death near it (thralls first); thrall gone died 19 tics ago, 72 units from where it died)
+RSQMB thrall drop: PistolSpawner removed, a thrall's gun (the nearest recent death; thrall gone died 16 tics ago, 66 units from where it died)
+RSQMB Big Boss bar t1138: a Boss won: 50% -> 75%
+RSQMB banner "BOSSWIN|tierup:4" -> 1
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 2 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 6 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 6 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 6 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 2 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 5 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 4 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 5 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 5 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 3 units)
+B_DROP t1139 RSQ_KRHealthBit born t1138, LYING now: nearest death BOSS RS_CyanImp2 (0 tics before, 1 units)
+B_DROP t1146 RSQ_KRHealthBit born t1145, LYING now: nearest death monster SkullZombie (0 tics before, 4 units)
+RSQMB thrall drop: BrutalAxe removed, a thrall's gun (the nearest recent death; thrall gone died 104 tics ago, 125 units from where it died)
+B_DROP t1281 RSQ_KRHealthBit born t1280, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 2 units)
+B_DROP t1281 RSQ_KRHealthBit born t1280, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 6 units)
+B_DROP t1281 RSQ_KRHealthBit born t1280, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 3 units)
+B_FIGHTDONE t1338 fight 3 over; health bits lying anywhere: 15
+B_DROP t1339 RSQ_KRHealthBit born t1338, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 4 units)
+B_DROP t1339 RSQ_KRHealthBit born t1338, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 5 units)
+B_DROP t1418 RSQ_KRHealthBit born t1417, LYING now: nearest death monster RS_BrownImpShieldMini (79 tics before, 5 units)
+B_DROP t1434 RSQ_KRHealthBit born t1433, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 2 units)
+B_DROP t1434 RSQ_KRHealthBit born t1433, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 1 units)
+B_DROP t1493 RSQ_KRHealthBit born t1492, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 1 units)
+B_DROP t1493 RSQ_KRHealthBit born t1492, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 6 units)
+B_DROP t1493 RSQ_KRHealthBit born t1492, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 6 units)
+B_DROP t1493 RSQ_KRHealthBit born t1492, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 4 units)
+B_DROP t1493 RSQ_KRHealthBit born t1492, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 1 units)
+B_DROP t1568 RSQ_KRHealthBit born t1567, LYING now: nearest death monster RS_BrownImpShieldMini (75 tics before, 1 units)
+B_DROP t1571 RSQ_KRHealthBit born t1570, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 4 units)
+B_DROP t1633 RSQ_KRHealthBit born t1632, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 3 units)
+B_DROP t1643 RSQ_KRHealthBit born t1642, LYING now: nearest death monster RS_BrownImpShieldMini (150 tics before, 1 units)
+B_DROP t1643 RSQ_KRHealthBit born t1642, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 1 units)
+B_DROP t1669 RSQ_KRHealthBit born t1668, LYING now: nearest death monster RS_BrownImpShieldMini (0 tics before, 5 units)
