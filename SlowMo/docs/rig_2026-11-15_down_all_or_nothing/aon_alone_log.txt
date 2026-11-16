@@ -1,0 +1,15 @@
+A_GIVELIFE t40: Score lives now -9
+A_STATE t60 before: health 100, playerstate live, Score lives -9, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 1, Score buddha 0, targets:
+A_HIT t100 lethal hit 1 (2 Score lives held): health 30, 500 from Zombieman (612 units)
+A_START MAP01 maptime 0
+A_NOCVAR rs_score_debug
+A_CVARS rsqsm_down 1
+A_NOTARGET 1 (the console's notarget, sv_cheats 1), god 0
+A_SPAWN m0: Zombieman at 612 units
+A_SPAWN m1: Zombieman at 628 units
+A_SPAWN m2: Zombieman at 650 units
+A_SPAWN m3: Zombieman at 678 units
+A_SPAWN m4: Zombieman at 710 units
+A_GIVELIFE t40: Score lives now -9
+A_STATE t60 before: health 100, playerstate live, Score lives -9, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 1, Score buddha 0, targets:
+A_HIT t100 lethal hit 1 (2 Score lives held): health 30, 500 from Zombieman (612 units)

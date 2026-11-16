@@ -1210,8 +1210,10 @@ class RS_ScoreHandler : EventHandler
 				return;
 			}
 
-			// RSQ SLOWMO'S DOWN COMES FIRST (owner 11-06): while it holds this player at 1 HP, no life is spent; a life
-			// is spent only when DOWN fails (its killing blow is held at 1 HP by the hold above, and caught here)
+			// RSQ SLOWMO'S DOWN IS ALL OR NOTHING (owner 11-15 19:41): DOWN arms only when this player holds NO life (it
+			// reads "lives" by name), so a killing hit with a life held is caught here as usual and never becomes a DOWN.
+			// This check stays as a guard: a life EARNED while DOWN holds him (its kills) is not spent under the DOWN; it
+			// is spent only if the DOWN then fails (its killing blow is held at 1 HP by the hold above, and caught here)
 			if (mo.health == 1 && DownHolds(mo))
 			{
 				if (DebugOn() && !tr.downNoted) Console.Printf("RS_Score: at 1 HP while RSQ SlowMo's DOWN holds him -- no life spent (%d held)", tr.extraLives);

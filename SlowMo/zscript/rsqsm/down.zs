@@ -1,11 +1,14 @@
 // RSQ_SlowMo -- DOWN v3 (owner-approved, design/NEAR_DEATH.md: the v2 spec at its top, then every "v3" section, which wins).
 // SlowMo owns the mode and its options (it owns time); the other mods join by name and each still loads alone.
 //
-//  TRIGGER   a hit that would kill you holds you at 1 HP (the engine's buddha flag while DOWN is armed: its row on, you
-//            alive), before any Score life is spent. A MONSTER must be to blame: the damage source (a missile's shooter; a
+//  TRIGGER   ALL OR NOTHING (owner 2026-11-15 19:41: "DOWN would be better suited to when you are out of RS Score lives, and
+//            it's all or nothing, real redline shit"): while you hold any RSQ Score life (its "lives", by name), DOWN is
+//            not armed and a killing hit is Score's as usual (a life spent, Revival Fire). Only with NO Score life left
+//            (or without Score: as before) does a hit that would kill you hold you at 1 HP (the engine's buddha flag while
+//            DOWN is armed: its row on, you alive, no Score life). Get up or you are dead. A MONSTER must be to blame: the damage source (a missile's shooter; a
 //            barrel's: whoever set it off, the engine's own credit; a monster's helper: its master). A barrel nobody set off,
 //            a crusher ('Crush'), a fall ('Falling'), your own shot, a hazard: NO DOWN, the hold lets go and the normal death
-//            follows (a Score life catches it as usual).
+//            follows (with no life to catch it).
 //  WHILE     hits cannot kill you (the hold stays on all DOWN long); only the clock ends it. THE BODY (v2, kept): the crouch
 //            (40% of standing, eased), crawl speed (a third), the world at SlowMo's deepest (DEPTH), Red Map (RSQ Glow In The
 //            Dark), the heartbeat. Your own shots fly at normal speed (clock.zs RealTime: own-rockets-slow forced off for you).
@@ -13,16 +16,15 @@
 //            its spawn health: a whole monster's worth = 1 s (humanoids, Imp, Pinky), 0.5 s (Lost Soul), 2 s (anything
 //            above), 10 s (Cyberdemon, Spider Mastermind); a modded monster counts as what it replaces (Actor.GetReplacee,
 //            then its parents). Bought time goes to a pool that pours in at most 0.75 s a second, so the clock still drains
-//            at a quarter speed at best (Slowest Drain); clock + pool never over 9 s. At zero: Score is asked for a life
-//            (its buddha catches the killing blow), else you die.
+//            at a quarter speed at best (Slowest Drain); clock + pool never over 9 s. At zero: you die.
 //  BAR       the reward gauge, not a second clock: three steps of 3 s (Bar Step), tall (right end, drains first), normal,
 //            thin. It drains smoothly; no step breaks off (owner 11-07 07:07). Bought time never stretches it. The step
 //            you are in when the LAST target dies is the tier. Killing one target while others remain RESETS the bar to
 //            full (owner 11-07 06:35): a fast bright refill sweep left to right (REFILL_TICS); the bar drains again once
 //            the sweep is done. The DEATH IN clock is not reset.
-//  TARGETS   ONE kill owed, always (owner 11-12 04:17; it was 1 + the DOWNs since the last Score life spent). Those DOWNs
-//            (RSQSM_DownWatch.downs travels with you; the count goes back when Score's life count drops) shorten the
-//            clock you start with instead: 9 s, then 6, then 3 (StartShare), so the bar starts 2/3 or 1/3 full; damage
+//  TARGETS   ONE kill owed, always (owner 11-12 04:17; it was 1 + the DOWNs since the last Score life spent). The DOWNs
+//            since your Score life count last CHANGED (a life earned or spent; RSQSM_DownWatch.downs travels with you and
+//            through a new map, as it always did; without Score nothing resets it) shorten the clock you start with instead: 9 s, then 6, then 3 (StartShare), so the bar starts 2/3 or 1/3 full; damage
 //            to any monster buys it back up. The other monsters in sight carry a small crosshair and what a whole one
 //            is worth (plate.zs BonusTick). The "extra target" lines below describe a case that no longer arises. Target 1: the monster that downed you if it is in your fight
 //            (alive, and within FIGHT_NEAR, or in sight within FIGHT_FAR), else a boosted copy of its type spawned in view at
@@ -41,8 +43,9 @@
 //            the plate), up to max health and 250 armour; no bank (VisualRewards not loaded or Kill Rewards off): the tier
 //            split 100 / 66 / 33 %. Both held guns' magazines filled for free (never from the reserve). No RAGE, no Scar, no
 //            Cooldown, no crate, no "Revive" award ("Revenge" stays: each target you kill).
-//  FAIL      the clock at zero. With a Score life: the spawned targets go in teleport fog, the map's own monster loses its
-//            mark and boost and stays. Without: dead.
+//  FAIL      the clock at zero: dead. (DOWN only arms with no life held, and RSQ Score never spends a life while DOWN holds
+//            you; the one way a life can catch the fail is a life EARNED during the DOWN, by its kills: then, as before, the
+//            spawned targets go in teleport fog and the map's own monster loses its mark and boost and stays.)
 //  PANEL     downhud.zs: the panel (Target lines, bar, DEATH IN) and the edge arrows on the HUD layer (owner 07:50), to the
 //            approved mockup (design/mockups); plate.zs: the crosshairs on the targets and the eye-level trail, in the
 //            world. Console player only.
@@ -330,6 +333,7 @@ class RSQSM_Down : EventHandler
 	{
 		if (!playeringame[n] || !players[n].mo || players[n].mo.health <= 0 || players[n].playerstate == PST_DEAD) return false;
 		if (downOn[n]) return true;                 // v3: hits cannot kill you while DOWN; only the clock ends it
+		if (livesSeen[n] > 0) return false;         // ALL OR NOTHING (owner 11-15 19:41): a Score life held -> Score's, never DOWN
 		let c = RSQSM_Clock.Get();
 		if (c && c.StoodDown()) return false;
 		return On();
@@ -406,25 +410,38 @@ class RSQSM_Down : EventHandler
 		}
 	}
 
-	// THE SCORE LIFE COUNT (by name): the kills owed go back to 1 when a life is spent (Score's count drops)
+	// THE SCORE LIFE COUNT (by name; -1 without Score), read EVERY tic before the hold is set (Armed: DOWN is armed only
+	// with no life held, owner 11-15 19:41). The DOWN count (the 9 / 6 / 3 s starting clock) goes back to 0 whenever the
+	// count CHANGES: a life earned or a life spent. (It used to go back only when a life was spent, but a life is never
+	// spent with DOWN armed now, so earning one is the reset that can happen between DOWNs.)
 	private void WatchLives(int n, PlayerPawn pmo, RSQSM_DownWatch w)
 	{
-		if ((level.maptime & 3) != 0 && livesSeen[n] >= 0) return;
-		int lv = ScoreLives(pmo);
+		int lv = LivesOf(pmo);
 		if (lv < 0) return;
-		if (livesSeen[n] >= 0 && lv < livesSeen[n] && w && w.downs > 0)
+		if (livesSeen[n] >= 0 && lv != livesSeen[n])
 		{
-			Log(String.Format("player %d spent a Score life (%d -> %d): kills owed back to 1 (was %d DOWNs)", n, livesSeen[n], lv, w.downs));
-			w.downs = 0;
+			Log(String.Format("player %d Score lives %d -> %d (a life %s): DOWN %s; the DOWN count back to 0 (was %d)", n, livesSeen[n], lv,
+				lv > livesSeen[n] ? "earned" : "spent", lv > 0 ? "not armed (a life held: a killing hit is Score's)" : "armed (no life left: all or nothing)", w ? w.downs : -1));
+			if (w) w.downs = 0;
 		}
+		else if (livesSeen[n] < 0)
+			Log(String.Format("player %d Score lives %d: DOWN %s", n, lv, lv > 0 ? "not armed (a life held: a killing hit is Score's)" : "armed (no life left: all or nothing)"));
 		livesSeen[n] = lv;
 	}
-	static int ScoreLives(Actor pmo)
+	// RSQ Score's service, found once (ServiceIterator.Find walks every class) and kept for the session (transient: a
+	// load finds it again); the lives asked of it every tic
+	private transient Service scoreSv;
+	private transient bool scoreSought;
+	int LivesOf(Actor pmo)
 	{
-		let it = ServiceIterator.Find("RS_ScoreService");
-		Service s;
-		while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') return s.GetInt("lives", "", 0, 0, pmo);
-		return -1;
+		if (!scoreSought)
+		{
+			scoreSought = true;
+			let it = ServiceIterator.Find("RS_ScoreService");
+			Service s;
+			while (s = it.Next()) if (s.GetClassName() == 'RS_ScoreService') { scoreSv = s; break; }
+		}
+		return scoreSv ? scoreSv.GetInt("lives", "", 0, 0, pmo) : -1;
 	}
 
 	// DEATH IN: one real tic a tic; the pool pours in at most (1 - Slowest Drain) a tic; never above the Clock
@@ -670,6 +687,15 @@ class RSQSM_Down : EventHandler
 		bool lethal = e.Damage >= pre && pre > 0;
 		hpSeen[n] = pmo.health;
 		if (!lethal || downOn[n]) return;           // while DOWN the hold keeps him at 1 HP: only the clock ends it
+		// ALL OR NOTHING (owner 11-15 19:41): a Score life held (asked now: one may have been earned this very tic, before
+		// the hold was let go) -> never DOWN; Score's own hold has him at 1 HP and spends the life on its tic
+		int lv = LivesOf(pmo);
+		if (lv > 0)
+		{
+			Log(String.Format("player %d: a lethal hit (%d at %d HP) with %d Score li%s held: NO DOWN (Score spends a life)", n, e.Damage, pre, lv, lv == 1 ? "fe" : "ves"));
+			if (held[n]) Hold(n, false);
+			return;
+		}
 		if (!held[n] || pmo.health != 1) return;
 		// WHO IS TO BLAME
 		Actor src = e.DamageSource;
@@ -688,7 +714,7 @@ class RSQSM_Down : EventHandler
 		}
 		if (no != "")
 		{
-			Log(String.Format("player %d: a lethal hit (%d at %d HP from %s, type %s): NO DOWN (%s): the normal death (a Score life may catch it)",
+			Log(String.Format("player %d: a lethal hit (%d at %d HP from %s, type %s): NO DOWN (%s): the normal death",
 				n, e.Damage, pre, from, dtype, no));
 			Hold(n, false);
 			pmo.DamageMobj(null, null, pmo.health * 2 + 1, 'None', DMG_NO_ARMOR | DMG_NO_PROTECT | DMG_NO_FACTOR | DMG_THRUSTLESS | DMG_NO_ENHANCE);
@@ -711,7 +737,8 @@ class RSQSM_Down : EventHandler
 		// ONE TARGET, A SHORTER CLOCK (owner 2026-11-12 04:17: "instead of increasing the number of kills, let's say you start
 		// with 9 seconds, then your next down is 6 seconds, then your third down and beyond is 3 seconds. our segmented bar
 		// let's us only need to draw it 2 / 3 or 1 / 3 full"): every DOWN owes ONE kill, the monster that downed you (or its
-		// copy). The DOWNs since the last Score life spent shorten the clock you START with instead: all of it, two thirds,
+		// copy). The DOWNs since the Score life count last changed (a life earned or spent; WatchLives) shorten the clock
+		// you START with instead: all of it, two thirds,
 		// one third (StartShare). The bar and the tier already read the clock (downhud.zs fill = clk / ClockTics, TierAt), so
 		// it starts two thirds or one third full, in the middle or bottom step, and the time your damage buys (any monster,
 		// up to the whole clock) lifts it back into a better step before the kill.
@@ -723,7 +750,7 @@ class RSQSM_Down : EventHandler
 		lastKill[n] = 0; lastKillE[n] = 0;
 		bankHp[n] = 0; bankAr[n] = 0;
 		iconsUsed[n] = 0;
-		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since a Score life), world to %d%%",
+		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since the Score lives last changed), world to %d%%",
 			n, dmg, pre, from, pmo.health, clk[n] / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, owed[n], downs, int(DEPTH * 100 + 0.5)));
 		if (AudioOn(n))
 		{
@@ -1335,7 +1362,8 @@ class RSQSM_Down : EventHandler
 		Log(String.Format("player %d: DOWN failed (%s): the killing blow at %d HP -> health %d (%s)", n, why, hp, pmo.health,
 			lived ? "a Score life holds him" : "dead"));
 		if (!lived) return;
-		// FAILING WITH A SCORE LIFE: the spawned targets go in teleport fog; the map's own killer loses its mark and stays
+		// FAILING WITH A SCORE LIFE (only one EARNED during this DOWN: DOWN never arms with a life held): the spawned
+		// targets go in teleport fog; the map's own killer loses its mark and stays
 		for (int i = 0; i < tMon.Size(); i++)
 		{
 			if (tPn[i] != n || tDead[i] != 0) continue;
@@ -1460,7 +1488,7 @@ class RSQSM_Down : EventHandler
 }
 
 // HIS HEALTH JUST BEFORE A HIT (passive), the invulnerability after getting up (passive: no damage taken), the crawl
-// (GetSpeedFactor: the engine's own speed path, as PowerSpeed), and the DOWNs since the last Score life (travels with him).
+// (GetSpeedFactor: the engine's own speed path, as PowerSpeed), and the DOWNs since the Score lives last changed (travels with him).
 class RSQSM_DownWatch : Inventory
 {
 	int preHp;

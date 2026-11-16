@@ -1,0 +1,139 @@
+version "4.14"
+// TEST ONLY. Never ships. RSQ SlowMo's DOWN, ALL OR NOTHING (owner 2026-11-15 19:41): DOWN only with no RSQ Score life left.
+// The rig, the owner's full order and settings, NO god mode (notarget from the console). Every line starts A_ for grep.
+// The lethal hits come from real monsters (DamageMobj with the monster as source), placed far enough that Score's
+// Revival blast (384 at 256 units) leaves them alone, and held invulnerable so nothing else kills them.
+// Timeline (tics from the start):
+//   t20  five monsters spawned 600-700 units ahead (t30 picked up: the order's spawners); t40 Score asked for 2 lives ("givelife", by name)
+//   t100 lethal hit by m0, 2 lives held  -> Score spends one (Revival Fire), no DOWN
+//   t250 lethal hit by m1, 1 life held   -> Score spends the last one, no DOWN; DOWN armed
+//   t400 lethal hit by m2, 0 lives       -> DOWN 1 (9 s); t460 its target killed by the player -> UP
+//   t700 lethal hit by m3 (after the top tier's 5 s)  -> DOWN 2 (6 s: the count was not reset); nothing killed: the clock
+//        runs out ~t910 -> DEAD (no life to find); t1000 the end
+class RSQSMA_Probe : EventHandler
+{
+	Array<Actor> m;
+	Array<double> spotX, spotY;   // (no Array<Vector2> in QZD 17.3)
+	Actor Near(Vector2 at)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a, best;
+		double bd = 200;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bISMONSTER || a.health <= 0 || a.player || m.Find(a) < m.Size()) continue;
+			double d = (a.pos.xy - at).Length();
+			if (d < bd) { bd = d; best = a; }
+		}
+		return best;
+	}
+	int t0;
+	bool started;
+	int killAt;
+	static void SetI(String n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); else Console.Printf("A_NOCVAR %s", n); }
+	Service Svc(String n)
+	{
+		let it = ServiceIterator.Find(n);
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == n) return s;
+		return null;
+	}
+	void Report(int t, String why)
+	{
+		let p = players[consoleplayer];
+		let pmo = p.mo;
+		let sc = Svc("RS_ScoreService");
+		let d = RSQSM_Down.Get();
+		int n = consoleplayer;
+		let w = pmo ? RSQSM_DownWatch(pmo.FindInventory("RSQSM_DownWatch")) : null;
+		String tg = "";
+		for (int i = 0; i < d.tMon.Size(); i++)
+			if (d.tPn[i] == n) tg = tg .. String.Format(" [%s %s%s]", d.tMon[i] ? String.Format("%s", d.tMon[i].GetClassName()) : "gone",
+				(d.tDead[i] != 0) ? "dead" : "alive", (d.tSpawned[i] != 0) ? " spawned" : "");
+		Console.Printf("A_STATE t%d %s: health %d, playerstate %s, Score lives %d, DOWN %d (clock %.2f s, owed %d, DOWNs counted %d), DOWN hold %d, Score buddha %d, targets:%s",
+			t, why, pmo ? pmo.health : -999, p.playerstate == PST_DEAD ? "DEAD" : (p.playerstate == PST_LIVE ? "live" : "other"),
+			(sc && pmo) ? sc.GetInt("lives", "", 0, 0, pmo) : -9, d.downOn[n], d.clk[n] / 35.0, d.owed[n], w ? w.downs : -1,
+			pmo ? pmo.bBUDDHA : 0, (p.cheats & CF_BUDDHA) ? 1 : 0, tg);
+	}
+	void Hit(int t, Actor src, String why)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo || !src) { Console.Printf("A_HIT t%d %s: no pawn or no monster", t, why); return; }
+		pmo.A_SetHealth(30);
+		Console.Printf("A_HIT t%d %s: health %d, 500 from %s (%.0f units)", t, why, pmo.health, src.GetClassName(), pmo.Distance3D(src));
+		pmo.DamageMobj(src, src, 500, 'None');
+		Console.Printf("A_AFTER t%d health %d", t, pmo.health);
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p) return;
+		let pmo = p.mo;
+		if (!started) { started = true; t0 = level.maptime; Console.Printf("A_START %s maptime %d", level.mapname, t0); }
+		int t = level.maptime - t0 + 1;
+		if (t == 5) { SetI("rsqsm_debug", 1); SetI("rs_score_debug", 1); Console.Printf("A_CVARS rsqsm_down %d", CVar.FindCVar("rsqsm_down").GetInt()); }
+		if (t == 20 && pmo)
+		{
+			Console.Printf("A_NOTARGET %d (the console's notarget, sv_cheats 1), god %d", (p.cheats & CF_NOTARGET) ? 1 : 0, (p.cheats & CF_GODMODE) ? 1 : 0);
+			Vector2 fwd = (cos(pmo.angle), sin(pmo.angle));
+			Vector2 side = (fwd.y, -fwd.x);
+			for (int i = 0; i < 5; i++)
+			{
+				Vector2 at = pmo.pos.xy + fwd * (600 + 25 * i) + side * (-120 + 60 * i);
+				spotX.Push(at.x); spotY.Push(at.y);
+				Actor.Spawn("ZombieMan", (at, pmo.floorz), ALLOW_REPLACE);
+			}
+		}
+		// the order's monster sets replace a ZombieMan with a spawner: the real monster is picked up near each spot
+		if (t == 30 && pmo)
+		{
+			for (int i = 0; i < 5; i++)
+			{
+				let a = Near((spotX[i], spotY[i]));
+				if (a) { a.bINVULNERABLE = true; a.angle = a.AngleTo(pmo); }
+				m.Push(a);
+				Console.Printf("A_SPAWN m%d: %s at %.0f units", i, a ? String.Format("%s", a.GetClassName()) : "none", a ? pmo.Distance3D(a) : -1);
+			}
+		}
+		if (t == 40 && pmo)
+		{
+			let sc = Svc("RS_ScoreService");
+			Console.Printf("A_GIVELIFE t%d: Score lives now %d", t, sc ? sc.GetInt("givelife", "", 2, 0, pmo) : -9);
+		}
+		if (t == 60 || t == 140 || t == 290 || t == 395) Report(t, "before");
+		if (m.Size() < 5) return;
+		if (t == 100) { Hit(t, m[0], "lethal hit 1 (2 Score lives held)"); Report(t, "after hit 1"); }
+		if (t == 104) Report(t, "after hit 1, Score's tic");
+		if (t == 250) { Hit(t, m[1], "lethal hit 2 (1 Score life held)"); Report(t, "after hit 2"); }
+		if (t == 254) Report(t, "after hit 2, Score's tic");
+		if (t == 400) { if (m[2]) m[2].bINVULNERABLE = false; Hit(t, m[2], "lethal hit 3 (0 Score lives)"); Report(t, "after hit 3"); }
+		if (t == 430) Report(t, "DOWN 1");
+		if (t >= 460 && t < 560 && killAt == 0)
+		{
+			let d = RSQSM_Down.Get();
+			for (int i = 0; i < d.tMon.Size(); i++)
+			{
+				if (d.tPn[i] != consoleplayer || d.tDead[i] != 0 || !d.tMon[i]) continue;
+				let a = d.tMon[i];
+				a.bINVULNERABLE = false;
+				int was = a.health;
+				a.DamageMobj(pmo, pmo, 100000, 'None');
+				Console.Printf("A_KILL t%d the DOWN target %s by the player: health %d -> %d", t, a.GetClassName(), was, a.health);
+				killAt = t;
+				break;
+			}
+		}
+		if (killAt > 0 && t == killAt + 3) Report(t, "after the target's kill");
+		if (t == 690) Report(t, "before hit 4");
+		if (t == 700) { if (m[3]) m[3].bINVULNERABLE = false; Hit(t, m[3], "lethal hit 4 (0 Score lives, DOWN 2)"); Report(t, "after hit 4"); }
+		if (t == 750 || t == 850 || t == 900) Report(t, "DOWN 2, nothing killed");
+		if (t >= 900 && t <= 960 && (t % 4) == 0) Report(t, "the end?");
+	}
+	// which tic each drawn frame shows (the rig's dumps are numbered by frame)
+	ui int frames;
+	override void RenderOverlay(RenderEvent e) { frames++; Console.Printf("A_FRAME %d maptime %d", frames, level.maptime); }
+	override void WorldThingDied(WorldEvent e)
+	{
+		if (e.Thing && e.Thing.player) Console.Printf("A_DIED t%d the player died (health %d)", level.maptime - t0 + 1, e.Thing.health);
+	}
+}

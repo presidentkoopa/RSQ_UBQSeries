@@ -25,9 +25,10 @@ your revenge.
   boss: each can slow the world for a moment. Every one has its own on/off switch.
 - **A bar that tells you when real time is back.** A green bar under your score drains with the real seconds left and
   names what slowed the world.
-- **DOWN (optional).** A monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you stay
-  on your feet, and you have 9 seconds to kill the monster marked TARGET and get up. Go down again before spending a
-  Score life and the clock starts at 6 seconds, then 3. Ten of the nearest monsters carry a small crosshair and +0.25 SEC or +0.5 SEC:
+- **DOWN (optional).** Your last stand, all or nothing: once you have no RSQ Score lives left (or without RSQ Score), a
+  monster's killing hit holds you at 1 HP instead. The world goes grey and nearly stops, you stay on your feet, and you
+  have 9 seconds to kill the monster marked TARGET and get up. Run out of time and you are dead. Go down again without
+  earning a Score life and the clock starts at 6 seconds, then 3. Ten of the nearest monsters carry a small crosshair and +0.25 SEC or +0.5 SEC:
   damage to those (and to the target) adds time, and as one dies another takes its place. The target's crosshair flies
   in from offscreen. What a whole one is worth: +0.25 SEC small, +0.5 SEC bigger (*rig only 2026-11-12: three DOWNs in a row started at 9, 6 and 3 s and each ended on the one kill; the labels were not seen in a frame*).
 
@@ -172,8 +173,11 @@ It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** 
 ## Be Quick or Be Dead (DOWN)
 
 Its name on the menu and the panel is **Be Quick or Be Dead** (the plate: rig only, not headset-confirmed), with the Q, the K and both D's of DEAD breathing in
-size (still in Photosensitive Mode); this page calls it DOWN for short. Off by default. Turn it on and the killing blow from a monster holds you at 1 HP instead. A fall, a crusher, your
-own shot, a barrel nobody set off or a hazard still kills you as normal.
+size (still in Photosensitive Mode); this page calls it DOWN for short. Off by default. Turn it on and, once you have
+no RSQ Score lives left, the killing blow from a monster holds you at 1 HP instead. While you hold a Score life, a
+killing blow spends that life as usual and you never go DOWN. So DOWN is all or nothing: get up or you are dead
+(owner, 2026-11-15). Without RSQ Score, DOWN works on every killing blow from a monster. A fall, a crusher, your own
+shot, a barrel nobody set off or a hazard still kills you as normal.
 
 ![Going down: the colour drains, the DOWN panel appears big in the middle and sinks to its place (rig frames)](docs/readme/down_going_down.jpg)
 
@@ -184,11 +188,13 @@ own shot, a barrel nobody set off or a hazard still kills you as normal.
 - **DEATH IN.** A clock of 9 real seconds. Damage you deal buys time back, as a share of a whole monster: 1 second for a
   zombie, imp or pinky, half a second for a Lost Soul, 2 for anything bigger, 10 for a Cyberdemon or Spider Mastermind.
   The bought time pours in slowly, so the clock always drains at least a quarter speed, and it never climbs above 9.
-- **Your targets.** The first time you go down you owe one kill. Each DOWN after that owes one more, until you spend an
-  RSQ Score life. The first target is the monster that downed you, if it is still in your fight; the rest are copies of
-  it that appear in front of you (or nearby, out of view, if there is no room in front). Targets glow in their own
+- **Your target.** Every DOWN owes one kill: the monster that downed you, if it is still in your fight, or else a copy
+  of it that appears in front of you (or nearby, out of view, if there is no room in front). Targets glow in their own
   colour, are full-bright and 15% bigger, with half again their health (LegenDoom sets its own). With Champions loaded they are real Champions; with LegenDoom loaded, legendaries; with neither, DOWN
   red.
+- **A shorter clock each time.** Your first DOWN starts with the full 9 seconds, the next with 6, then 3 for each one
+  after that. The count goes back to the first DOWN whenever your RSQ Score life count changes (a life earned or a life
+  spent). A new map does not reset it (it never did). Without RSQ Score nothing resets it.
 - **Find them.** Each target carries its own crosshair icon. In view, the crosshair assembles over it. Up to 75 degrees off to
   the side, a trail of chevrons at eye level leads to it. Farther round, an arrow at the edge of your view points the
   way to turn (straight behind you: at the bottom, pointing down).
@@ -206,8 +212,9 @@ own shot, a barrel nobody set off or a hazard still kills you as normal.
   the bits from your kills while DOWN are banked and paid out (health up to your maximum, armour up to 250); if nothing
   was banked you get up with the health you had. Without it you get 100%, 66% or 33% of your maximum health by tier,
   and that share of 100 armour.
-- **Run out of time** and you die, unless RSQ Score has a life for you. Then the spawned targets vanish in teleport fog
-  and the monster that downed you loses its glow and stays.
+- **Run out of time** and you die. No Score life catches it, because DOWN only comes when you have none. (The one
+  exception: a life you earn while you are DOWN, from its kills, is held and catches the failure. Then the spawned
+  targets vanish in teleport fog and the monster that downed you loses its glow and stays.)
 
 ![The grey world: only the target's small room keeps its colour; the panel and DEATH IN clock below (rig frame)](docs/readme/down_grey_world.jpg)
 
@@ -275,8 +282,10 @@ SlowMo talks to most of the series, always by name: every mod still loads and pl
   line up under its Miniboss meter.
 - **RSQ Saber and RSQ ShieldSaw:** a perfect parry or a perfect block slows the world for half a second.
 - **RSQ Score:** its big moments and hit-stop slow the world, and it reads SlowMo back for its own slow-motion bonuses
-  (a claw dodged by leaning, with Lean Dodge 2, is reported to it too). Its combo rows move down to make room for the countdown bar. With DOWN: no Score life
-  is spent while you are DOWN, spending one resets the kills you owe, a failed DOWN uses a life if you have one, each
+  (a claw dodged by leaning, with Lean Dodge 2, is reported to it too). Its combo rows move down to make room for the countdown bar. With DOWN: DOWN comes
+  only once you have no Score lives left (a killing blow with a life held spends it as usual), a Score life earned or
+  spent starts the next DOWN's clock at 9 seconds again, a life earned while you are DOWN is not spent until the DOWN
+  fails, each
   target you kill earns Revenge, the top tier fires its Revival Fire, and the target lines use Score's monster names and
   font.
 - **RSQ Tactical Rig:** the cigarette slows the world, and with the Rig's own option you move at full speed while you
@@ -329,6 +338,7 @@ Bullets is greyed until you learn Lean Dodge.
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-15, runs `aon2` (the owner's full order and settings, -skill 6, no god mode) and `aon_alone` (SlowMo alone on doom2), probe `tools/rigtest/smdown_aon`; no script error from our packs; log and frames in `docs/rig_2026-11-15_down_all_or_nothing/`) | **DOWN only with no Score lives left.** With 2 Score lives, a monster's killing hit spent one (Revival Fire, no DOWN), then the other; with 0 lives the next monster's killing hit put him DOWN (9 s); the target killed: up (top tier). The next killing hit: DOWN again with a 6 s clock; nothing killed: the clock ran out and he died, no life spent. Without RSQ Score, DOWN came on the first killing hit as before |
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2sup1` and `g2sup2` in rig/work/runs, probes rig/work/g2probe and g2probe2; owner's order with BD22 VR Reloaded 2.0.4t, no script error from our packs) | **Grapple 2.0's requests, asked by name.** `g2.slow` "Kick-Chain!" 52 tics: started, pulse to t112, the world bar on, the cause line KICK-CHAIN! (read from the HUD's own cause-line function, not seen in a frame). `g2.addtime` "DoubleJump!" +18 (t112 -> t130) and "+0.25 sec" +9 (-> t139), the bar refilling. `g2.slow` 10 tics with 24 left: no change (no piling up); 42 tics: stretched to t162. `g2.addtime` with nothing running: 0. `g2.slam` with Grapple-Slam on: 3 s (105 tics), GRAPPLE-SLAM!; off: 0. `g2.slow` with Other Mods off: 0. **Your movement:** with Slow Me Too on (the default) a velocity of 3 units a tic set by a mod whose tic runs before SlowMo's moved him 0.75 a tic at a quarter speed; set after SlowMo's tic, 3.0 (so it depends on the order the mods run in); with `g2.fullspeed` asked first, 3.0, and slowed again (0.75) once its tics ran out. The spike's blast (RSQ Grenade's `g2.neon`) 5 units from the player: no Barrel Near You; a normal barrel there: Barrel Near You. The spike's blast killing two: Barrel Multi-Kill; setting off a barrel: Chain Reaction |
 | **code only, not shown** (2026-11-11 evening; loads clean on the full order, not run) | DOWN: a target that plays dead counts as killed. Champions' Dark Red champion is buddha: at 1 HP it vanishes and leaves a shootable corpse, and gets up again 3 s later unless the corpse is destroyed; DOWN saw it alive at 1 HP and never revived you (owner: "i cannot seem to revive when i kill a champion"). Now its fake death is the kill, by your hand |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R3, `design/rigtest_2026-11-10/RESULTS_R2.md`) | The green world bar for the revive and the cigarette; a smoke lit during an automatic slow is added after it (end t314 -> t489), and an automatic slow during a smoke is added after the smoke (t347 -> t452). |

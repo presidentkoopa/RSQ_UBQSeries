@@ -1,5 +1,17 @@
 # Near-death mode v2: DOWN -> REVENGE -> REVIVE -> RAGE (owner-approved 2026-11-06 19:51)
 
+**2026-11-15 (owner, 19:41): DOWN is all or nothing, after the Score lives.** "I think DOWN would be better suited to
+when you are out of RS Score lives, and it's all or nothing, real redline shit?" This wins over every section below
+that puts DOWN before a Score life. While you hold any RSQ Score life, a killing hit is Score's as usual (a life spent,
+Revival Fire) and never a DOWN. Only with no Score life left (or without Score: as before) does a monster's killing
+hit put you DOWN, and then it is get up or dead: a failed DOWN finds no life, because you have none. Everything else
+about DOWN stays (one kill owed, the clock, the bonus monsters, the tiers). The 9 / 6 / 3 s starting clock counts the
+DOWNs since the Score life count last changed (a life earned or spent); a new map does not reset it (it never did);
+without Score nothing does. A life earned during a DOWN (its kills) is held and not spent under the DOWN; it catches
+the DOWN's failure (the old fail-with-a-life path). Score's "DOWN comes first" guard stays only for that case. Built in
+SlowMo/zscript/rsqsm/down.zs (Armed, PlayerHit, WatchLives). Rig only, not headset-confirmed (run `aon2`, evidence in
+SlowMo/docs/rig_2026-11-15_down_all_or_nothing/).
+
 Status (2026-11-07): v3 below is what is built (RSQ SlowMo's DOWN; rig only, not headset-confirmed). Later sections
 win: v3 drops v2's crate step, RAGE, Scar, Cooldown, Score's Revive award and the headline.
 

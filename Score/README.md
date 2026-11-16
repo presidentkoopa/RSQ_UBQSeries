@@ -116,7 +116,9 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
 - **More lives from other mods:** RSQ Miniboss can give one. The gold life crate is kept for the arcade systems, and nothing
   drops it yet (RSQ Miniboss stopped 11-10). The crate wears Score's gold, sends a beam of light into the sky, stays where it fell and lasts 10 seconds; in
   its last 5 it breathes faster and faster and turns ember, then red. RSQ Distance Grab can pull it to you.
-- **RSQ SlowMo's DOWN comes first.** While DOWN holds you at 1 HP no life is spent; a life is spent if DOWN fails.
+- **Your lives come before RSQ SlowMo's DOWN** (owner, 2026-11-15). While you hold a life, a killing blow spends it as
+  usual and you never go DOWN. DOWN comes only once you have no lives left, and then it is all or nothing: get up or
+  you are dead. A life you earn while you are DOWN is not spent under the DOWN; it catches you only if the DOWN fails.
 
 *[GIF to come: a life spent: the blast and the ring of fire climbing round the player]*
 
@@ -860,7 +862,7 @@ Score talks to most of the series, always by name: every mod still loads and pla
 without the mod they read.
 
 - **RSQ SlowMo:** big moments and hit-stop slow the world through SlowMo. Score reads SlowMo's clock for Stretched
-  Second, Last Grain and the combos that ask for your own slow motion. SlowMo's DOWN comes before a Score life, sends
+  Second, Last Grain and the combos that ask for your own slow motion. SlowMo's DOWN comes only once you have no Score lives left, sends
   Revenge and Revive, fires the Revival Fire for its top tier, reads how many lives you hold and Score's tier words
   for its target names ("Dark Red Champion Imp"), and tells Score when you lean out of a round (Slip and Shoot, Bob and
   Weave). SlowMo's countdown bar sits under Score's bar, and the breakdown moves below it.
@@ -936,6 +938,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-15, run `aon2`, the owner's full order and settings, -skill 6, no god mode; no script error from our packs; log and frames in `SlowMo/docs/rig_2026-11-15_down_all_or_nothing/`) | **Lives before DOWN.** With 2 lives (given through `givelife`), a monster's killing hit spent one (REVIVED, health 100, 1 left; Revival Fire in the frame) with no DOWN, then the second (0 left; buddha off). With 0 lives the next killing hit was SlowMo's DOWN |
 | **code only, not shown** (2026-11-11 evening; loads clean on the full order, not run) | Score's line is centred top middle, its middle level with the middle of Gun Bonsai VR's two hand gauges, neatly between them (owner: "centered top middle ... neatly between xp bars"). The Down row still moves it from there. Without a gauge on screen it sits at the Down row's place near the top, as before |
 | **rig only, not headset-confirmed** (2026-11-11, rig batches R2/R3, `design/rigtest_2026-11-10/RESULTS_R2.md`) | Each colour row pays on its own colour's kill: Green, Blue, Purple, Cyan, Brown, Yellow (in a chain), FireBlu, Gray, Red, Abyss; Black and White pay their Boss rows. |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R1, `design/rigtest_2026-11-10/RESULTS_R1.md`) | The line centred (a saved Across 85 moved to 50 once) with its top 1% of the screen under the gauges' bottom, Dual and single HUD, no overlap in the frame; the line and the wrist digits hidden while a menu is open (digits 2 of 2 -> 0 of 2 -> back) |

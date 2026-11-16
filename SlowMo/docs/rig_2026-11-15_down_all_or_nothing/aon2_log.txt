@@ -1,0 +1,91 @@
+RSQ_SlowMo: DOWN t0: player 0 Score lives 0: DOWN armed (no life left: all or nothing)
+A_START MAP01 maptime 0
+A_CVARS rsqsm_down 1
+A_NOTARGET 1 (the console's notarget, sv_cheats 1), god 0
+A_SPAWN m0: SniperZombie at 612 units
+A_SPAWN m1: PistolZombiePatch at 628 units
+A_SPAWN m2: PistolZombiePatch at 650 units
+A_SPAWN m3: PistolZombiePatch at 678 units
+A_SPAWN m4: PistolZombiePatch at 710 units
+A_GIVELIFE t40: Score lives now 2
+RS_Score: buddha ON (2 lives held)
+RSQ_SlowMo: DOWN t40: player 0 Score lives 0 -> 2 (a life earned): DOWN not armed (a life held: a killing hit is Score's); the DOWN count back to 0 (was 0)
+A_STATE t60 before: health 100, playerstate live, Score lives 2, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 0, Score buddha 1, targets:
+A_HIT t100 lethal hit 1 (2 Score lives held): health 30, 500 from SniperZombie (612 units)
+RSQ_SlowMo: DOWN t99: player 0: a lethal hit (650 at 30 HP) with 2 Score lives held: NO DOWN (Score spends a life)
+A_AFTER t100 health 1
+A_STATE t100 after hit 1: health 1, playerstate live, Score lives 2, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 0, Score buddha 1, targets:
+RS_Score: REVIVED at tic 100 -- health 100, 1 lives left
+RSQ_SlowMo: DOWN t100: player 0 Score lives 2 -> 1 (a life spent): DOWN not armed (a life held: a killing hit is Score's); the DOWN count back to 0 (was 0)
+A_STATE t104 after hit 1, Score's tic: health 100, playerstate live, Score lives 1, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 0, Score buddha 1, targets:
+A_STATE t140 before: health 100, playerstate live, Score lives 1, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 0, Score buddha 1, targets:
+A_HIT t250 lethal hit 2 (1 Score life held): health 30, 500 from PistolZombiePatch (660 units)
+RSQ_SlowMo: DOWN t249: player 0: a lethal hit (750 at 30 HP) with 1 Score life held: NO DOWN (Score spends a life)
+A_AFTER t250 health 1
+A_STATE t250 after hit 2: health 1, playerstate live, Score lives 1, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 0, Score buddha 1, targets:
+RS_Score: REVIVED at tic 250 -- health 100, 0 lives left
+RSQ_SlowMo: DOWN t250: player 0 Score lives 1 -> 0 (a life spent): DOWN armed (no life left: all or nothing); the DOWN count back to 0 (was 0)
+A_STATE t254 after hit 2, Score's tic: health 100, playerstate live, Score lives 0, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 1, Score buddha 0, targets:
+A_STATE t290 before: health 100, playerstate live, Score lives 0, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 1, Score buddha 0, targets:
+A_STATE t395 before: health 100, playerstate live, Score lives 0, DOWN 0 (clock 0.00 s, owed 0, DOWNs counted 0), DOWN hold 1, Score buddha 0, targets:
+A_HIT t400 lethal hit 3 (0 Score lives): health 30, 500 from PistolZombiePatch (713 units)
+RSQ_SlowMo: DOWN t399: player 0 went DOWN: a lethal hit (687 at 30 HP from PistolZombiePatch) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since the Score lives last changed), world to 5%
+RSQ_SlowMo: DOWN t399: told 3 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t399: player 0 TARGET 1/1: PistolZombiePatch "Former Pistolman" (the monster that downed him (713 units, in sight)): icon 5, colour 3868FF, LegenDoom legendary (its own guaranteed pickup) + a REAL Champions champion (Champions' own PersistentInfo and controller); light, full-bright, x1.15 size, +0 health; health 32 of 32; plate name "Former Pistolman"
+RSQ_SlowMo: DOWN t399: told 3 joined mod(s): down.target 3868FF
+A_AFTER t400 health 1
+A_STATE t400 after hit 3: health 1, playerstate live, Score lives 0, DOWN 1 (clock 9.00 s, owed 1, DOWNs counted 1), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+RSQ_SlowMo: DOWN t400: the grey world: 59 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t400: DarkDoomZ: its mode 12 kept, set to 12 (DarkDoom Black) while DOWN
+A_STATE t430 DOWN 1: health 1, playerstate live, Score lives 0, DOWN 1 (clock 8.14 s, owed 1, DOWNs counted 1), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+RSQ_SlowMo: DOWN t433: target PistolZombiePatch's plate name now "Legendary Former Pistolman" (was "Former Pistolman")
+RSQ_SlowMo: DOWN t448: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+RSQ_SlowMo: DOWN t459: player 0 hit PistolZombiePatch (small, 0.3 s a whole one): 96 of 32 health -> +0.75 s bought (0.75 asked; clock 7.29 s, pool 0.75 s)
+RSQ_SlowMo: DOWN t459: player 0 target PistolZombiePatch died by his hand at 1.71 s into the bar (top step): 1 of 1 owed
+RSQ_SlowMo: DOWN t459: told 3 joined mod(s): down.revenge 
+RSQ_SlowMo: DOWN t459: RSQ Score award "Revenge": 100
+RSQ_SlowMo: DOWN t459: player 0 UP (REVIVE), top tier (the last kill 1.71 s into the bar): invulnerable 5.0 s, slow motion 3.0 s; health 1 -> 1 (max 100), armour 1 -> 1 from the bits bank (0 health, 0 armour banked); both held guns: main Shot_Gun ShotgunAmmo 9 -> 9 (reserve AmmoShell 8 untouched); off rsq_hands: no magazine
+RSQ_SlowMo: DOWN t459: told 3 joined mod(s): down.up top
+RSQ_SlowMo: DOWN t459: told 3 joined mod(s): down.revive 
+RSQ_SlowMo: DOWN t459: RSQ Score's Revival Fire: 1
+RSQ_SlowMo: DOWN t459: player 0 revive slow motion 3.0 s: started
+A_KILL t460 the DOWN target PistolZombiePatch by the player: health 96 -> -99904
+RSQ_SlowMo: DOWN t460: DarkDoomZ: its own mode 12 back (DOWN is over)
+A_STATE t463 after the target's kill: health 1, playerstate live, Score lives 0, DOWN 0 (clock 7.29 s, owed 1, DOWNs counted 1), DOWN hold 1, Score buddha 0, targets: [gone dead]
+RSQ_SlowMo: DOWN t494: the grey world released (eased back to colour): 0 sectors given their own colour back, 0 recoloured by others kept as they are
+A_STATE t690 before hit 4: health 1, playerstate live, Score lives 0, DOWN 0 (clock 7.29 s, owed 1, DOWNs counted 1), DOWN hold 1, Score buddha 0, targets:
+A_HIT t700 lethal hit 4 (0 Score lives, DOWN 2): health 30, 500 from PistolZombiePatch (740 units)
+RSQ_SlowMo: DOWN t699: player 0 went DOWN: a lethal hit (687 at 30 HP from PistolZombiePatch) held at 1 HP; DEATH IN 6.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 2 since the Score lives last changed), world to 5%
+RSQ_SlowMo: DOWN t699: told 3 joined mod(s): down.start 
+RSQ_SlowMo: DOWN t699: player 0 TARGET 1/1: PistolZombiePatch "Former Pistolman" (the monster that downed him (740 units, in sight)): icon 3, colour F0F0F0, LegenDoom legendary (its own guaranteed pickup) + a REAL Champions champion (Champions' own PersistentInfo and controller); light, full-bright, x1.15 size, +0 health; health 32 of 32; plate name "Former Pistolman"
+RSQ_SlowMo: DOWN t699: told 3 joined mod(s): down.target F0F0F0
+A_AFTER t700 health 1
+A_STATE t700 after hit 4: health 1, playerstate live, Score lives 0, DOWN 1 (clock 6.00 s, owed 1, DOWNs counted 2), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+RSQ_SlowMo: DOWN t700: the grey world: 59 sectors' own colours kept (console player 0)
+RSQ_SlowMo: DOWN t700: DarkDoomZ: its mode 12 kept, set to 12 (DarkDoom Black) while DOWN
+RSQ_SlowMo: DOWN t733: target PistolZombiePatch's plate name now "Legendary Former Pistolman" (was "Former Pistolman")
+RSQ_SlowMo: DOWN t748: player 0: the panel landed (thump: both hands, 1.0, 7 tics)
+A_STATE t750 DOWN 2, nothing killed: health 1, playerstate live, Score lives 0, DOWN 1 (clock 4.57 s, owed 1, DOWNs counted 2), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+A_STATE t850 DOWN 2, nothing killed: health 1, playerstate live, Score lives 0, DOWN 1 (clock 1.71 s, owed 1, DOWNs counted 2), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+A_STATE t900 DOWN 2, nothing killed: health 1, playerstate live, Score lives 0, DOWN 1 (clock 0.29 s, owed 1, DOWNs counted 2), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+A_STATE t900 the end?: health 1, playerstate live, Score lives 0, DOWN 1 (clock 0.29 s, owed 1, DOWNs counted 2), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+A_STATE t904 the end?: health 1, playerstate live, Score lives 0, DOWN 1 (clock 0.17 s, owed 1, DOWNs counted 2), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+A_STATE t908 the end?: health 1, playerstate live, Score lives 0, DOWN 1 (clock 0.06 s, owed 1, DOWNs counted 2), DOWN hold 1, Score buddha 0, targets: [PistolZombiePatch alive]
+RSQ_SlowMo: DOWN t909: told 3 joined mod(s): down.fail the clock ran out (0 of 1 targets dead)
+A_DIED t910 the player died (health -3)
+RSQ_SlowMo: DOWN t909: player 0: DOWN failed (the clock ran out (0 of 1 targets dead)): the killing blow at 1 HP -> health -3 (dead)
+RSQ_SlowMo: DOWN t909: DarkDoomZ: its own mode 12 back (DOWN is over)
+A_STATE t912 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t916 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t920 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t924 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t928 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t932 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t936 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t940 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+RSQ_SlowMo: DOWN t943: the grey world released (eased back to colour (he died)): 0 sectors given their own colour back, 0 recoloured by others kept as they are
+A_STATE t944 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t948 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t952 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t956 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
+A_STATE t960 the end?: health -3, playerstate DEAD, Score lives 0, DOWN 0 (clock 0.00 s, owed 1, DOWNs counted 2), DOWN hold 0, Score buddha 0, targets:
