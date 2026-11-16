@@ -158,8 +158,9 @@ hard goes off where it lands, but if a bang is what you're after there is a bett
 
 ...Grenade. Reach for your belt, pull the pin with your other hand or with your teeth, cook it as long as you dare, and
 throw it with your own arm. It bounces off walls, floors and monsters, and you can shoot it out of the air. Nine kinds,
-from a plain frag to one that turns a monster onto your side. The barrels got the same treatment: six new explosions,
-chain reactions that grow with every link, and blasts that change with the room. Your grenade hangs at your belt
+from a plain frag to ones that do no damage at all: they freeze a room, blind it, or turn every monster in it onto
+your side. The barrels got the same treatment: five new explosions, chain reactions that grow with every link, and
+blasts that change with the room. Your grenade hangs at your belt
 buckle, which is part of the...
 
 | <img src="Grenade/docs/readme/mega.gif" width="230"> | <img src="Grenade/docs/readme/frag_skeet.gif" width="230"> | <img src="Grenade/docs/readme/ctx_water.gif" width="230"> | <img src="Grenade/docs/readme/ctx_lava.gif" width="230"> |
@@ -566,8 +567,8 @@ add features when the other one is there. Without it, nothing happens and nothin
 
 **Steps aside for another mod**, by name in the code:
 
-- RSQ Grenade lets Brutal Doom VR's own grenade be the grenade, unless you turn on Replace Brutal Doom's Grenade.
-- RSQ Melee's gun-butt shove stands down for Brutal Doom VR's own butt strike.
+- RSQ Grenade takes the place of Brutal Doom VR's own grenade (Replace Brutal Doom's Grenade, on since 2026-11-16). Turn it off and RSQ Grenade stands down for it.
+- RSQ Melee's gun-butt shove stands down with Brutal Doom VR Reloaded loaded: its pistol whip and Two-Handed Butt Strike (on since 2026-11-16), which are Melee's now, take its place.
 - RSQ SlowMo stands down for another slow-motion mod (Xortts' Bullet Time X, RS_SlowMo) while Yield to Other Mods is on.
 - RSQ Laser Sight and QuestZDoom's own laser sight (m8f's): with both loaded, Which Laser picks one.
 - RSQ VisualRewards takes over from coldcite's Top HP Bars when both are loaded.

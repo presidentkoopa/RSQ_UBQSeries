@@ -335,7 +335,9 @@ class RSQML_Club : StaticEventHandler
 		let flag = CVar.FindCVar("rsqml_club_migrated");
 		if (!flag || flag.GetInt() != 0) return;
 		String said = "";
-		said = said .. CopyI("rsq_butt", "rsqml_butt");
+		// rsq_butt IS NOT CARRIED OVER (2026-11-16, owner: the butt strike on by default). BD22 VR Reloaded's rsq_butt is 0
+		// unless the player turned it on, so copying it switched Two-Handed Butt Strike off on the first map for everyone
+		// who had never touched it. Its speed and forward share below still carry.
 		said = said .. CopyF("rsq_butt_speed", "rsqml_butt_speed");
 		said = said .. CopyF("rsvr_butt_fwd", "rsqml_butt_fwd");
 		said = said .. CopyI("rsq_pistol_whip", "rsqml_pistol_whip");

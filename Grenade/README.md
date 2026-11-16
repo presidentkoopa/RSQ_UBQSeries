@@ -3,25 +3,41 @@
 # RSQ Grenade
 ### Doom Arcade VR · a real hand grenade, nine kinds of trouble, and barrels that go off like fireworks
 
-Reach for your belt, pull the pin, cook it as long as you dare, and throw it with your own arm. The grenade flies the
-way your hand moved. It bounces off walls, floors and monsters, and goes off when the fuse runs out. You can also shoot
-it out of the air.
+<p align="right"><a href="../README.md#grenade">&larr; RSQ UBQ Series</a></p>
 
-![A frag shot out of the air](docs/readme/frag_skeet.gif)
+Reach for your belt, pull the pin, cook it as long as you dare, and throw it with your own arm.
 
-<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
+**What it does:**
 
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/grenade/what-it-feels-like.gif" alt="What it feels like" height="44">
+- **A grenade you handle, in VR:** pull the ring with your other hand, or with your teeth ([How to play](#how-to-play))
+- **Throws with your arm:** how hard and which way you swung is how it flies
+- **Cooks:** let go of the spoon without swinging and the fuse burns in your hand, 3 seconds, flashing red faster and faster
+- **Bounces** off walls, floors and monsters, and goes off when the fuse runs out
+- **Skeet:** shoot a thrown grenade, with a bullet or a projectile, and it goes off where it is; the kill goes to whoever shot it
+- **Nine kinds:** Frag, Impact, Incendiary, Freeze, Stun, Smoke, Flash, Charm, Infight; alt fire picks ([The nine kinds](#the-nine-kinds))
+- **Quick Grenade:** one key throws one, with no handling (out of VR it is the only way to throw)
+- **Grenades in the levels:** you start with 3 and carry 8, and each map has a few more lying beside its items
+- **New barrels:** a barrel blinks hot before it blows, with one of five explosions each time ([Barrels and explosions](#barrels-and-explosions))
+- **Chains that grow:** each barrel down a chain blows bigger and reaches further; every third is a mega blast, every fifth a mushroom
+- **Blasts that read the room:** fire fans along a wall, rolls under a low ceiling, bubbles under water, and three or more kills at once burst every body
+- **Explosion colours:** fire, the room's opposite colour, the colour of what it killed, or the grenade's kind
+- **Brutal Doom's rockets and launcher grenades** go off with these blasts too
 
-- **Grab one off your belt buckle.** Pull the ring with your other hand, or pull it with your teeth.
-- **Throw it with your own arm.** The swing is the throw: how hard and which way you swung is how it flies.
-- **Cook it.** Let go of the spoon without swinging and the fuse starts in your hand. It flashes red, faster and
-  faster, ticking as it goes. Hold it too long and it goes off in your hand.
-- **Shoot it mid-air.** Skeet a thrown grenade with any gun and it goes off where it is. The kill is yours, even if a
-  friend threw it.
-- **Pick your poison.** Alt fire flips through nine kinds, from a plain frag to one that turns a monster onto your side.
-- **Barrels are a show now.** Six new explosions, chain reactions that grow with every link, and blasts that change
-  with the room: fire fanning along a wall, rolling under a low ceiling, bubbling under water.
+Three things make it more than a grenade key:
+
+- **You do every step.** The ring, the spoon, the cook and the throw are yours. Hold it too long and it goes off in
+  your hand.
+- **Nine kinds change what a throw is for.** Five of them do no damage at all: one freezes a room, one blinds it,
+  one hides you in smoke, one turns every monster in it onto your side, and one sets them on each other.
+- **The explosions are a show.** Barrels, grenades and Brutal Doom's launchers share one set of hand-drawn blasts
+  that change with the room and grow down a chain.
+
+*[GIF to come: an in-game grenade throw and blast, and a barrel chain growing to the mega blast]*
+
+**Works on plain Doom II with nothing else loaded.** With Brutal Doom VR Reloaded loaded, this grenade takes the place
+of that pack's own (**Replace Brutal Doom's Grenade**, on since 2026-11-16; turn it off and Brutal Doom VR's grenade
+is the grenade again, with none of these handed out or scattered). The barrels and explosions are these either way
+(**Replace Brutal Doom's Barrels**, on).
 
 <p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
@@ -33,7 +49,7 @@ it out of the air.
 | Other hand's trigger on the ring, pull away | Pin out. Bring the ring back to the top to put it in again |
 | Or: squeeze and hold the grenade at your mouth | Pin out with your teeth |
 | Hold the trigger (or alt fire) and swing, let go mid-swing | Thrown, along your swing |
-| Let go of the squeeze while holding still | The spoon flies and it starts cooking. Squeeze again and swing to throw |
+| Let go of the squeeze while holding still | The spoon flies and it starts cooking. Squeeze again and let go to throw: once it is cooking any release throws, however slow |
 | Alt fire with the pin still in | Next grenade kind (the grenade changes colour) |
 | Shoot a grenade in flight | It goes off on the spot |
 | Press Brutal Doom's Toss Grenade key (G), or bind **Quick Grenade** | A quick throw, whatever is in your hands: the same timing, speed and arc as Brutal Doom 22's toss. With RSQ SlowMo the world slows so you can shoot it in the air. With Brutal Doom VR loaded it needs **Replace Brutal Doom's Grenade** on, or BD22 VR's own **Use RSQ Grenade Instead** (otherwise G throws Brutal Doom's own) |
@@ -48,8 +64,8 @@ or 16 with a backpack.
 - **Keys: one, Quick Grenade.** No default bind: bind it on this pack's page (**Quick Grenade Key**) or in Customize
   Controls, under "RSQ Grenade". Brutal Doom's own **Toss Grenade** key (`+user1`, G by default in Brutal Doom) does
   the same quick throw while this pack is in play. **Quick Grenade (BD22's Toss Grenade key)** on the page turns both
-  off. With BD22 VR loaded, both need **Replace Brutal Doom's Grenade** on (or BD22 VR's **Use RSQ Grenade
-  Instead**); otherwise this pack stands down and BD22's own toss is the quick throw.
+  off. With BD22 VR loaded, both need **Replace Brutal Doom's Grenade** on (the default since 2026-11-16) or BD22 VR's
+  **Use RSQ Grenade Instead**; with both off this pack stands down and BD22's own toss is the quick throw.
 - **The hand holding the grenade** (either hand):
   - **trigger or alt fire, held:** the squeeze on the spoon. Swing and let go to throw; let go with the hand still and
     it starts cooking.
@@ -66,15 +82,15 @@ or 16 with a backpack.
 
 | Kind | What it does |
 |---|---|
-| **Frag** | The classic. A big blast and a fireball |
-| **Impact** | Goes off the instant it touches anything. No fuse to wait for |
-| **Incendiary** | Leaves the ground burning; monsters standing in it keep taking damage |
-| **Freeze** | Frozen solid in an ice tint for a few seconds. With Gun Bonsai VR, the next hard hit shatters them |
-| **Stun** | Staggered, stuck in their pain frames |
-| **Smoke** | A cloud that makes monsters lose their target, inside it or looking through it |
-| **Flash** | A pure white burst: staggered, and they lose their target |
-| **Charm** | A monster fights for you for a while, then turns back |
-| **Infight** | A monster turns on its nearest neighbour |
+| **Frag** | The classic: 85 damage out to 200 units, then 75 out to 255, and a fireball. It hurts you too |
+| **Impact** | Goes off on the first thing it touches. Full damage, no fuse to wait for |
+| **Incendiary** | Full damage, then the ground burns for 4 seconds over 200 units: 5 damage a second to monsters standing in it (to you too with Brutal Doom, **Your Fire Burns You**) |
+| **Freeze** | No damage. Every monster in sight within 200 units is frozen solid in an ice tint for 3 seconds. With Gun Bonsai VR, the next hard hit shatters them |
+| **Stun** | Half damage, and they are stuck in their pain frames for 3 seconds |
+| **Smoke** | No damage. A 2 m cloud for 12 seconds: monsters inside it, or looking through it, lose their target |
+| **Flash** | No damage. A pure white burst: staggered for 3 seconds, and they lose their target |
+| **Charm** | No damage. Every monster in sight within 200 units fights for you for 15 seconds, then turns back |
+| **Infight** | No damage. Each of them turns on the monster nearest it for 15 seconds |
 
 **Every kind has its own colour,** on the grenade in your hand and in its blast. Impact and Incendiary use the big
 fireball in their colour. The others have their own effect: frost for Freeze, sparks for Stun, smoke, a white bloom,
@@ -94,12 +110,12 @@ Barrels live here too. Every barrel blinks hot, then goes off as one of **five e
 #7 Pillar, #8 Groundbreaker, #9 Slag Column), at random or the one you pick. The sixth, **#10 Neon Crescent**, is no
 longer a barrel's: it is Grapple 2.0's air spike's own explosion (a pick of it saved from an older build reads as Random).
 Chain them: each link
-blows bigger and blinks faster, and from the third link the screen kicks and the blast reaches further (160, 192,
-then 224 units against the stock 128). Every third barrel down a chain is **the mega blast**; every fifth is **the
+blows bigger and goes off sooner, and from the third link the screen kicks and the blast reaches further (a lone
+barrel reaches 192 units, against the stock 128; the third, fourth and fifth links reach 240, 288 and 336). Every third barrel down a chain is **the mega blast**; every fifth is **the
 mushroom cloud**, half again as big (both counts are options).
 
 ![#5 Snap, #6 Heavy, #7 Pillar](docs/readme/barrels_a.png)
-![More of the six](docs/readme/barrels_b.png)
+![More of the barrel explosions](docs/readme/barrels_b.png)
 
 ![The mega blast, every third barrel down a chain](docs/readme/mega.gif)
 
@@ -126,8 +142,8 @@ own damage, sounds, quake, craters and scorch stay exactly as they are.
 | **Under water:** a white flash, no fire, bubbles and a gas dome | ![Water](docs/readme/ctx_water.gif) |
 | **On lava, nukage or blood:** a crown of drops, waves, a stain, light in the liquid's colour | ![Lava](docs/readme/ctx_lava.gif) |
 
-Also: **low ceilings** hold the fire under them, **open sky** gives a taller column, and a blast that kills a **crowd**
-bursts every one of them.
+Also: **low ceilings** hold the fire under them, **open sky** gives a taller column, and a blast that kills a **crowd**,
+three or more at once, bursts every one of them.
 
 *These pictures are design renders, drawn from the same sequences the game plays. They are not captures from the
 headset.*
@@ -167,10 +183,10 @@ headset.*
 
 | Section | Rows |
 |---|---|
-| Grenades | Grenades on/off · Replace Brutal Doom's Grenade · Start With (3) · Grenades in Levels · Singles a Map (4) · Packs of Three a Map (2) |
+| Grenades | Grenades on/off · Replace Brutal Doom's Grenade (On) · Start With (3) · Grenades in Levels · Singles a Map (4) · Packs of Three a Map (2) |
 | Throwing | Quick Grenade (BD22's Toss Grenade key) (on) · Quick Grenade Key · Pin With Your Teeth · Alt Fire Changes Type · Grenade Types (All / Frag Only) · Your Fire Burns You (Auto: yes with Brutal Doom) |
 | Barrels | Barrels on/off · Explosion (Random, or #5 Snap, #6 Heavy, #7 Pillar, #8 Groundbreaker, #9 Slag Column) · Barrel Sound (Kinetic / Combat FX / Test Candidate) · Replace Brutal Doom's Barrels (on) |
-| Explosions | Grenade Explosion (New / Original) · Grenade Sound (Kinetic / Original) · Brutal Doom's Launchers · Explosion Colour (Normal, Room Complement, Kill Colour, Grenade Kind) · Explosion Lights (Off, Simple, Full) · Debris · Contexts: Wall, Low Ceiling, Open Sky, Water, Liquid Floors, Chain, Crowd · Chain Escalation · Chain Mega Every (3) · Chain Mushroom Every (5) · Screen Kick on Chains |
+| Explosions | Grenade Explosion (New / Original) · Grenade Sound (Kinetic / Original) · Brutal Doom's Launchers · Explosion Colour (Normal, Room Complement, Kill Colour, Grenade Kind) · Explosion Lights (Off, Simple, Full) · Barrel Explosion Size (2.0) · Barrel Blast Radius (1.5) · Neon Crescent: Room Colour (On) · Debris · Contexts: Wall, Low Ceiling, Open Sky, Water, Liquid Floors, Chain, Crowd · Chain Escalation · Chain Mega Every (3) · Chain Mushroom Every (5) · Screen Kick on Chains |
 | Shooting | Shoot Thrown Grenades · Only in Slow-Mo · Faster in Slow-Mo · Skeet Slow-Mo (Gun Bonsai VR) |
 | Test and Debug | Fuse (3 s) · Throw Speed · Throw Strength · Arc · Gravity · Floor and Wall Bounce · Ground Drag · Shot Reach · Slow-Mo Speed · the teeth's reach and hold · Effects Cap · Debug Log |
 

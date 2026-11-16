@@ -65,7 +65,7 @@ server bool  rsqml_fear_mist = true;
 // ---- THE GUN AS A CLUB AND BD22 VR'S VR PUNCH (club.zs) -- user settings, moved from BD22 VR Reloaded 2026-11-13 ----
 // They act only with BD22 VR Reloaded 2.0.4u or later loaded (its guns, its fists); that pack's own rows of the same
 // names act only without RSQ Melee. On the first map with both loaded, that pack's values are copied here once.
-user int     rsqml_butt = 0;            // Two-Handed Butt Strike (BD22 VR's rsq_butt): both hands on a long gun, drive the stock forward
+user int     rsqml_butt = 1;            // Two-Handed Butt Strike (BD22 VR's rsq_butt): both hands on a long gun, drive the stock forward. ON by default since 2026-11-16 (owner: "ideally it is on by default")
 user float   rsqml_butt_speed = 2.4;    // m/s at the stock a butt strike needs (BD22 VR's rsq_butt_speed)
 user float   rsqml_butt_fwd = 0.5;      // of the stock's speed that must point forward (BD22 VR's rsvr_butt_fwd)
 user bool    rsqml_pistol_whip = true;  // Pistol Whip (BD22 VR's rsq_pistol_whip): swing a pistol or revolver into something, either hand

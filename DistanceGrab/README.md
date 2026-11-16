@@ -3,32 +3,41 @@
 # RSQ Distance Grab
 ### Doom Arcade VR · turn your palm out, pull the barrel across the room, and throw it back at them
 
-Turn a hand palm-out toward anything lying in the room and it lights up. Flick your wrist and it flies to your hand in
-an arc, turning over as it comes. Catch it, carry it, club a monster with it, or throw it with your own arm: a barrel
-thrown hard goes off where it lands.
+<p align="right"><a href="../README.md#distance-grab">&larr; RSQ UBQ Series</a></p>
 
-*[GIF to come: a barrel pulled across the room, caught, and thrown into a crowd, where it goes off]*
+Turn a hand palm-out toward anything lying in the room and it lights up. Flick your wrist and it flies to your hand.
 
-<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
+**What it does:**
 
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/distancegrab/what-it-feels-like.gif" alt="What it feels like" height="44">
+- **Pulls things to your hand** from up to about 15 m: guns, ammo, health, armour, keys, powerups, barrels, flares ([Pulling things to your hand](#pulling-things-to-your-hand))
+- **No buttons:** your palm is the trigger. Turn it out and what it points at is yours at once; flick your wrist up to pull, or turn the palm back to let go
+- **Tells you what you have:** it glows green the moment it is locked, with a hum in the controller (amber means it was refused)
+- **Catches:** a pickup is used the moment it reaches your palm; a barrel stays in your hand ([Catching](#catching))
+- **Carries with weight:** heavy things hang lower, lag behind your hand and slow your walk; a second hand halves the weight ([Carrying](#carrying))
+- **Throws with your arm:** how hard you swing is how hard it flies, and a throw near a monster bends onto it ([Throwing](#throwing))
+- **Barrels are bombs:** a barrel thrown at 4 m/s or more goes off at the first thing it hits, and the kill is yours
+- **Barrel Lock-On:** with a barrel in one hand (or beside you), point your free palm at a monster and the thrown barrel is steered onto it ([Barrel Lock-On](#barrel-lock-on))
+- **Hits with what you hold:** swing a carried thing into a monster at 3 m/s or more and it lands by its weight
+- **Body Shield:** a barrel or a body held in front of you stops fireballs; it takes the damage, and a barrel goes off when it has had enough
+- **Walk-Up Grab:** squeeze the grip with your palm on a thing and it is in your hand
+- **Lifts doors by hand,** at the speed you lift, and works any switch, lift or exit with a palm ([Doors and switches](#doors-and-switches))
+- **A switch for every kind of thing** you can grab, and for every cue it shows
 
-- **No buttons.** Your hand is the trigger. Turn your palm out and a beam and a faint cone come out of it; turn it back
-  and they are gone. Even your gun hand can reach: turn the gun on its side.
-- **Things tell you they are yours.** What your hand is on glows amber. Hold it there and it locks: green, breathing
-  faster. A low hum in the controller says you have it.
-- **Flick it to you.** Tip your wrist up as you turn your palm back, and the thing leaves the floor and flies to your
-  hand in an arc, end over end, leaving a faint green trail. The controller rumbles harder as it closes in.
-- **Catch it.** Have your palm out when it gets there. A pickup is used on the spot (a gun goes into the hand that
-  caught it, a medikit heals you); a barrel is in your hand.
-- **Carry it.** It sits a little in front of your hand and tips with your wrist. Heavy things hang lower, swing slower
-  and trail behind your hand. Put your other hand on it and it is lighter.
-- **Throw it.** Swing and let go. How hard you swung is how hard it flies, and weight matters: a keycard leaves at
-  your hand's speed, a barrel at a third of it. A throw near a monster bends onto it.
-- **Barrels are bombs.** A barrel thrown hard goes off where it lands, and the kill is yours.
-- **Hit them with it.** Swing a carried barrel into an imp and it takes the blow.
-- **Hide behind it.** A barrel or a body held up in front of you stops the fireballs that would cross it.
-- **Doors and switches by hand.** Put your palm flat on a door and lift. Lay it on a switch and it flips.
+Three things make it more than a pickup magnet:
+
+- **Your hand is the trigger.** Nothing is bound. The palm points, the wrist flicks, the hand catches. Even your gun
+  hand can reach: turn the gun on its side.
+- **Things have weight.** Every object has a mass in kilograms, and one table of them drives everything after the
+  catch: how far a carry sags and lags, how fast you can walk with it, how fast it leaves your hand and how hard it
+  lands. A keycard leaves at two and a half times your hand's speed, a 60 kg barrel at a little under it.
+- **It turns the room into ammunition.** Any barrel in sight is a bomb you can call to your hand, carry as a shield
+  against fireballs, and send at the monster your other palm is pointing at.
+
+![A clip pulled to the hand with the gun already full: AMMO FULL](docs/readme/ammo_full_dropped_at_feet.jpg)
+
+*[GIF to come: a barrel lit amber then green, flicked to the hand, carried, and thrown into three imps]*
+
+**Works on plain Doom II with nothing else loaded.**
 
 <p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
@@ -36,8 +45,8 @@ thrown hard goes off where it lands.
 
 | Do this | What happens |
 |---|---|
-| Turn a hand palm-out (a quarter turn of the wrist, hand raised, not hanging at your side) | A beam and a cone from that hand. The thing it is on glows amber |
-| Keep it there | It locks: green. You can look away now; the lock stays |
+| Turn a hand palm-out (a quarter turn of the wrist, hand raised, not hanging at your side) | A beam and a cone from that hand. The thing it is on is locked at once: green |
+| Keep your palm out | It stays locked while the palm is out, even if you look away. A target that will not lock shows amber |
 | Tip your wrist up sharply as you turn your palm back | It flies to that hand |
 | Turn your palm back without the flick | You let go of the lock |
 | Have your palm out when it arrives | Caught: a pickup is used, anything else is in your hand |
@@ -101,7 +110,7 @@ left to RSQ Saber's Force pull).
 **The flight.** By default a pulled thing takes the **Arc**: placed on a hump between where it was and your hand, re-aimed
 at your hand every tic, so it lands in your palm even if you move. It flies at 22 m/s, between a sixth of a second and a
 little over a second, so near and far pulls arrive at the same pace, with a soft pick-up and a settle into your hand. The
-hump is a quarter of the distance high and comes down under a low ceiling; it ducks under door lintels. On the way it
+hump is a quarter of the distance high and is kept under the lowest ceiling on its way, fixed once as it leaves. On the way it
 turns once end over end and once about its own up. If it meets a wall it drops there.
 
 **Flight Path** has two other choices: **Steer**, where the thing is pushed toward your hand and heavy things come
@@ -157,7 +166,7 @@ so it is never in your face, and walls stop it: push it against a wall and it st
 - **Hit With What You Hold.** Swing a carried thing into a monster at 3 m/s or more and it takes a blow, by the thing's
   weight and the swing's speed, once per swing. Most of the swing stops there, and you feel it.
 - **Body Shield.** A carried barrel or corpse (20 kg or more) stops enemy fireballs that would cross it: they go off on
-  it. A barrel that takes the hit goes off.
+  it. What you hold takes the fireball's damage, so a barrel goes off once its health is gone.
 
 *[GIF to come: a barrel carried, then swung into an imp]*
 *[GIF to come: a barrel held up as a shield, an imp's fireball bursting on it]*
@@ -199,7 +208,7 @@ For when you have a barrel and want it in someone's face (on by default).
 - **The lock:** the monster wears the green "have" glow. Taking it needs the 12-degree cone; keeping it, twice that.
   Point at another monster and the lock moves. Take your palm off it and it holds 3 seconds, then half a second more in
   which a throw still goes to it (or where it last stood).
-- **The throw:** a barrel thrown with a lock is aimed onto the monster and steered after it in flight, so it lands. A
+- **The throw:** a barrel thrown with a lock is aimed onto the monster and steered after it in flight until it hits something. A
   harder swing throws it flatter and faster; the softest it goes is the lob that just reaches. It ducks under lintels and
   window tops on the way.
 - **With RSQ Melee:** a barrel your uppercut kicks goes to the lock too, if the lock is roughly ahead (within 60
@@ -235,8 +244,8 @@ So that fighting never pulls the room into the fight, a hand stands down while:
   after you let go.
   Both hands together on the grip count too (the controllers within 16 cm: a pistol held in both hands; rig run ls2h,
   not headset-confirmed).
-- **it is fighting** (**Not With Melee**): wearing RSQ Melee's boxing gloves, or moving at punch speed in the last
-  three-quarters of a second.
+- **it is fighting** (**Not With Melee**): holding a melee weapon or a lit saber, a hand in a Tactical Rig holster, RSQ Melee's gloves (with its Boxing Gloves or
+  Slappers Only on), or a hand moving at punch speed in the last three-quarters of a second.
 - **it holds a melee weapon, a lit saber or another mod's hand** (a switched-off saber hilt can still reach; a bare fist
   is an empty hand and reaches).
 - **RSQ Tactical Rig is using it** (a holster, the radial, a door, the cigarette or the Zippo).
@@ -254,7 +263,7 @@ the off hand does not reach -- a lit saber".
 | **Searching** | Blue, faint | |
 | **On something** | Amber | An amber glow in its own outline, breathing slowly |
 | **Locked** | Green | A green glow, brighter, breathing twice as fast |
-| **In the air, in your hand** | Hidden | No glow |
+| **In the air, in your hand** | Hidden | No glow (a thing drawn as a voxel is tinted green while you carry it) |
 
 The glow is a copy of the thing's own sprite drawn in light, so nothing about the thing itself changes. A thing drawn as
 a voxel flashes its own colour instead (**Voxel Flash**), because a flat glow in front of a solid voxel looks like a
@@ -342,8 +351,7 @@ Test and Debug. Defaults in brackets.
 
 The main page ends with **Reset All**, which resets both pages. **Palm Gate** off means a hand reaches whatever its pose;
 it only works with **Grab Keys** on (without the keys, your palm is the input, so the row greys out). **Rumble** off swaps the rumble for single fixed buzzes in rhythm (a tick to lock, a ping that speeds up as
-the thing closes, one tick or two on the catch). **Steering**, **Pull Speed** and **Pull Gravity** are for the Steer and
-Lob paths; **Arc Speed**, **Arc Height**, **Arc Pull-In** and **Pull Smoothness** for the Arc.
+the thing closes, one tick or two on the catch). **Steering** and **Pull Speed** are for the Steer and Lob paths, **Pull Gravity** for Steer alone (a Lob always falls); **Arc Speed**, **Arc Height**, **Arc Pull-In** and **Pull Smoothness** for the Arc.
 
 The Arc's numbers, Pull Spin, Tumble, the air (Throw Gravity, Flutter, Air Time Limit), Tip With Wrist and Heavy Sag are
 the server's settings; everything else is each player's own.

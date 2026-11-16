@@ -3,60 +3,41 @@
 # RSQ Grapple
 ### Doom Arcade VR · the off hand's hook: fly to the big ones and kick off them, drag the small ones to you
 
-**Grapple 2.0**, rebuilt from nothing (owner 2026-11-12: "all grapple code has to be thrown out"). One button fires
-a hook from your off hand, wherever it points, and the claw flies out on its chain like jpalomo's. Where it bites decides what happens: a wall or floor flings you at it, a
-small monster is dragged to your feet, a big one drags you to it and the moment you arrive you kick it, bounce off
-in slow motion and look for the next one to hook. No rope, no reeling, no swinging, no climbing: those belong to
-RSQ Whip.
+<p align="right"><a href="../README.md#grapple">&larr; RSQ UBQ Series</a></p>
+
+One button fires a hook from your off hand, wherever it points. What it bites decides what happens.
+
+**What it does:**
+
+- **Fires a claw on a chain** from your off hand, out to about 23 m, at the speed of jpalomo's original ([The hook](#the-hook))
+- **Flings you at walls and floors**, and keeps your momentum
+- **Lifts you onto ledges:** bite just under the top of a step and you are set down on top
+- **GET OVER HERE:** a small monster is yanked across the room to your feet ([Small ones](#small-ones-get-over-here))
+- **Flies you to the big ones**, and arriving is a **kick:** 30 damage, a knockback, a stun, and slow motion ([Big ones](#big-ones-the-kick))
+- **The kick-chain:** bounce off, hook the next one in the air, kick again: **KICK! x2**, x3... ([The kick-chain](#the-kick-chain))
+- **Hangs you in the air** while the claw is out, so a chain is aimed, not rushed
+- **Double jump** after a kick: more air, more slow motion, and time markers over the monsters in reach
+- **The air spike:** hold a small one up in the air and swing both hands down to drive it into the floor ([The air spike](#the-air-spike))
+- **Runs at full speed in slow motion:** the world slows, your hook does not
+- **Aim Assist** in the air, and an optional **Scorpion Pull** that waits for you to yank
+
+Three things make it more than a way to get around:
+
+- **It is a fighting move.** The hook does not swing or reel. It brings the fight to you or you to the fight, and
+  the kick on arrival starts slow motion.
+- **Small and big are different.** A zombie comes to you. A Baron takes you to it. You learn to read a room by what
+  the hook will do to each thing in it.
+- **The kick-chain.** After a kick you are in the air with time slowed. Hook another big one and you kick again,
+  and again, each link a little shorter, until you land or miss.
 
 ![GET OVER HERE on the rig: the chain from the off hand to the imp, and the imp landing in front of you](docs/readme/rig_getoverhere.png)
 
-*Rig frames (run `g2run2`): GET OVER HERE. The chain runs from the off hand to the claw in the imp, and the imp lands in front of you.*
+*[GIF to come: a hook to a Baron, the kick, a double jump, and a second hook in the air]*
 
-<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+*The pictures on this page are captures from the rig, not from the headset. [Status](#status) says which run each is from.*
 
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/grapple/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **One press, no aiming skill.** The claw flies out of your off hand on its chain at jpalomo's speed (about 41 m a
-  second) and bites what it reaches, up to about 23 m away (his reach: just over half a second). Nothing there, and it
-  comes back empty.
-- **The chain** (owner 2026-11-13: "chain_look2 it is"): jpalomo's own chain link, a third the size and three times as
-  many, dark gunmetal. While the claw flies the chain is alive: a small sideways ripple that dies away. The claw's own
-  sprite at the end is what shows where it bites (the bright running link is gone, owner 2026-11-13).
-- **Walls and floors fling you.** You get jpalomo's shove toward where it bit and keep your momentum when you land.
-- **Hook the top of a ledge and you're on it.** Bite a wall just under the top of a step with room to stand up there,
-  or the top of a floor higher than you can step up, and you are carried up and set down on top.
-- **Small ones come to you: GET OVER HERE.** The monster is yanked across the room and lands in front of you. You
-  don't catch it: shoot it, punch it, shove it, saw it.
-- **Big ones, you go to them, and arriving is the kick.** A boss, anything over 1000 mass, any Baron of Hell (whatever
-  its mass), a dormant monster, or an RSQ Miniboss miniboss with Can't Be Yanked on pulls you in. Hell Knights go by
-  their mass. Arriving kicks it: 30 damage (as RSQ Melee's Ground
-  Pound), knockback, a gold cross burst and **KICK!** over it, and slow motion starts. You hear the boot swing in as
-  you close the last few metres, then the kick's thump on contact (the owner's sounds, 2026-11-16). It is **dizzy** for that kick's
-  slow motion (1.5 s on the first kick, less on each next one), with RSQ Melee's chicks and stars circling its head
-  (without RSQ Melee: the stun alone).
-- **Then you kick off**, by itself. You bounce away from it and up about 1.5 m. Under a low ceiling the bounce is cut
-  short.
-- **Keep the chain going.** In the air, hook again: **you hang where you are from the press until the claw bites**
-  (no falling, at full speed in slow motion; owner 2026-11-13: "Hang until it bites"), then: another big one is another
-  kick (**KICK! x2**, x3 ...), a small one is pulled up to you, a wall or ledge lands you. **Chain Cancelled!** If the
-  claw reaches the end of its reach or the sky without biting, or you press Fire Hook again while you hang (the claw
-  comes back), the chain ends: "Chain Cancelled!" under the slow-motion bar, and you fall in slow motion until you land.
-  Each kick's slow motion
-  is 0.3 s shorter than the last (1.5, 1.2, 0.9, 0.6, 0.3 s), so a chain winds down by itself.
-- **Double jump.** After each kick-off you get one jump in the air: more height, **+0.5 s** of slow motion
-  (*DoubleJump!* under the slow-motion bar), and up to five monsters in reach get **+0.25 sec** (nearer) or
-  **+0.5 sec** (farther) over them. Hook one of those and you get that much more slow motion. The double jump is how
-  you pick the next target: Aim Assist snaps only to those marked monsters.
-- **The air spike.** Hook a small monster while you're in the air and it is pulled up in front of you. Swing both
-  hands down hard together and you spike it into the floor. You hang in the air until it lands, then RSQ Grenade's
-  Neon Crescent goes off where it hits, with blood, fire and a shockwave, and RSQ SlowMo slows your fall
-  (Grapple-Slam).
-- **Full speed in slow motion.** The hook fires, flings and pulls you at full speed while the world is slowed.
-
-![The kick on the rig: the gold cross on a Cyberdemon, then KICK! over its bar](docs/readme/rig_kick.png)
-
-*Rig frames (run `g2run2`): the pull to a Cyberdemon, the gold cross on contact, and **KICK!** over its health bar.*
+**Works on plain Doom II with nothing else loaded.** The slow motion is RSQ SlowMo's, and the air spike's blast is
+RSQ Grenade's: without them the hook still flies, yanks, flings and kicks.
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
@@ -84,7 +65,7 @@ RSQ Whip.
 (+0.25 / +0.5 sec): the one nearest your off hand's line, within 10 degrees, if you can see it. None of them near your
 line, or no double jump: the claw flies where you aim and may hit nothing, another monster or a barrel.
 
-**A guarded miniboss** (RSQ Miniboss: its shield is up, or it just lost a life): you still fly to it and bounce
+**A guarded Boss** (RSQ Miniboss: its shield is up, or it just lost a life): you still fly to it and bounce
 off, but the kick does no damage. Its own GUARD! shows instead, and there is no stagger, no slow motion and no chain
 link.
 
@@ -98,6 +79,91 @@ link.
 | **Jump** (the double jump) | the engine's own Jump | yours |
 
 The hook always fires from the **off hand**. The air spike needs nothing in particular in your hands.
+
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+
+<a name="the-hook"></a><img src="../design/readme_art/heads/grapple/the-hook.gif" alt="The hook" height="44">
+
+![The claw in flight on the rig: five frames as it flies out on its chain to an imp and bites](docs/readme/rig_flight.png)
+
+- **One press.** The claw leaves your off hand along the line it points and flies at about 41 m a second, out to
+  about 23 m. It bites the first wall, floor, ceiling or monster it reaches. Nothing there, or the sky: it comes back
+  empty.
+- **The chain** is alive while the claw flies: gunmetal links with a small ripple that dies away.
+- **No rope.** It does not reel, swing or climb. Those are RSQ Whip's.
+
+![The chain on the rig: the gunmetal links rippling out from the off hand to the claw flying at a Cyberdemon, no white orb](docs/readme/rig_chain.png)
+
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+
+<a name="walls-and-ledges"></a><img src="../design/readme_art/heads/grapple/walls-and-ledges.gif" alt="Walls and ledges" height="44">
+
+- **A wall or a floor:** you are flung toward where it bit, with jpalomo's own shove added to whatever speed you had.
+- **A ledge:** bite the face of a step just under its top, or the top of a floor too high to step onto, with room
+  to stand up there, and you are carried up and set down on it.
+
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+
+<a name="small-ones-get-over-here"></a><img src="../design/readme_art/heads/grapple/small-ones-get-over-here.gif" alt="Small ones: GET OVER HERE">
+
+A monster that is not heavy is yanked along the chain and lands in front of you. You do not catch it: shoot it,
+punch it, shove it, saw it. In the air it is pulled up to you and held there for a moment
+([The air spike](#the-air-spike)).
+
+**Scorpion Pull** (off): the monster stays on the chain until you yank your off hand back, then it comes.
+
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+
+<a name="big-ones-the-kick"></a><img src="../design/readme_art/heads/grapple/big-ones-the-kick.gif" alt="Big ones: the kick" height="44">
+
+![The kick on the rig: the gold cross on a Cyberdemon, then KICK! over its bar](docs/readme/rig_kick.png)
+
+**Heavy** is a boss, anything with a mass over 1,000, any Baron of Hell, or a monster that has not woken up. The hook
+cannot move it, so it moves you: straight at its face, and arriving is the kick.
+
+- **The kick:** 30 damage, the monster knocked back by its weight and stunned, a gold cross, **KICK!** over it, and
+  the kick's own sound.
+- **Slow motion on contact:** 1.5 seconds, with RSQ SlowMo.
+- **The kick-off:** you bounce away from it and about 1.5 m up, less under a low ceiling.
+- **The stun** lasts as long as that slow motion, with RSQ Melee's stars circling its head.
+
+A guarded Boss (RSQ Miniboss, its shield up): you still fly to it and bounce off, but the kick does nothing and its
+GUARD! shows.
+
+![A guarded Boss on the rig: the hook in it, then its GUARD!](docs/readme/rig_guard.png)
+
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+
+<a name="the-kick-chain"></a><img src="../design/readme_art/heads/grapple/the-kick-chain.gif" alt="The kick-chain" height="44">
+
+After a kick-off you are in the air and time is slow. Fire the hook again:
+
+| It bites | What happens |
+|---|---|
+| Another big one | Another kick, the chain one higher: **KICK! x2**, x3... Each link's slow motion is 0.3 s shorter (1.5, 1.2, 0.9, 0.6, 0.3) |
+| A small one | It comes up to you |
+| A wall or a ledge | You land there |
+| Nothing | **Chain Cancelled!** and you fall in slow motion until you land |
+
+- **You hang while the claw is out.** Press in the air and you stop where you are until it bites. Press again while
+  hanging and the claw comes back: Chain Cancelled!
+- **The double jump:** one per kick-off. Press jump in the air for more height and half a second more slow motion,
+  and up to five monsters in reach get a time marker: +0.25 s for a near one, +0.5 s for a far one, paid when you
+  hook it.
+- **Aim Assist** (on): after a double jump the hook snaps to the marked monster nearest your off hand's line, within
+  10 degrees. With none near your line it flies where you aim.
+
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
+
+<a name="the-air-spike"></a><img src="../design/readme_art/heads/grapple/the-air-spike.gif" alt="The air spike" height="44">
+
+![The air spike on the rig: an imp hanging in front, the Neon Crescent going off, blood on the floor](docs/readme/rig_airspike.png)
+
+Hook a small monster while you are in the air and it is held up in front of you for a second. Swing **both hands
+down hard together** and it is spiked straight down. You hang until it hits the floor, where RSQ Grenade's Neon
+Crescent goes off with blood, fire and a shockwave, and RSQ SlowMo slows your way down.
+
+*[GIF to come: an imp hooked in mid-air and spiked into the floor]*
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
@@ -134,7 +200,7 @@ only BD_VoxelPack's four voxeldef errors, which were already there. Logs and scr
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2run1`, `g2run2`) | **Fire Hook and the off hand:** the key (`+rsqgr_hook`) with the off hand level and forward fired along (1.00 0.00 0.00) from the hand. **Miss:** nothing within 780 units, so "miss" and the claw comes back. **GET OVER HERE:** an imp at 400 units, yanked in 12 tics, "landed: RS_CommonImp 51 units in front of you" (49 in `g2run2`). **Floor fling:** jp's thrust, f 345, vel (23.3 15.6 0). **Wall fling** (a bite 54 units below the top of the ledge, too low for a lip): vel (16.0 20.5 0.5). **Ledge lip:** a bite 14 units under the top of the 64-unit ledge: "on top at z 68 (top 64) after 22 tics", then standing at 64 (`g2run2`; in `g2run1` it overshot to z 138, fixed). **Heavy by the OG rule:** RSQ Monsters' Baron (mass 1055) and Cyberdemons (boss) pulled you in; imps (mass 66 to 130) came to you; a dormant imp was heavy |
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2run1`, `g2run2`, **with the instant bite**, before the claw flew) | **The kick-chain**, one go in the arena: hook a Cyberdemon 400 units away, pull 12 tics, **KICK 1** (health 5903 → 5873, knockback, its Pain state, RSQ Melee's MLK4 burst drawn gold, VisualRewards' word "KICK!" → 1), RSQ SlowMo "g2.slow" 53 tics → 1 ("started 1514 ms at 25%, cause line KICK!"). **Kick-off** out and up 42.5 units (1.5 m, vel.z 9.22). Four tics later, in the air, the probe aimed 5 degrees off a second Cyberdemon and **Aim Assist** snapped it ("snapped 6.3 degrees"). Pull 495 units at 41 a tic **while the world ran at 25%** (SlowMo's scale 250 each tic of the pull), **KICK 2** ("KICK! x2", slow 42 tics, the Cyberdemon set to 25 health killed it: **a kill still kicks you off**). **Double jump** (`+jump` mid-air): vel.z 9.22, "g2.addtime" +18 tics → 1 with cause line "DoubleJump!", **5 markers** of 6 monsters in reach (one +0.25 at 302 units, four +0.5 from 447 to 577; the sixth, 1293 away, none), seen over the imps in the frames. **Marker hooked:** +0.25 s, "g2.addtime" 9 tics → 1. **Air pull:** the imp pulled up in front of you (50 units), you hanging still. **Air spike:** both hands swung down 10.5 m/s ("AIR SPIKE"); the same swing during the pull, before the hold, did nothing ("not the air spike's moment"). **Impact:** "g2.neon" → 1 (the Neon Crescent in the frames), blood x4, fire x6, "g2.slam" → 1 ("Grapple-Slam!", 3000 ms). **Landed:** "the kick-chain ends at 2", markers cleared |
 | **rig only, not headset-confirmed** (2026-11-13, run `g2run1`) | **Low ceiling:** a kick under a 90-unit ceiling: "up 27.0 of 42.5 units (room 27.0) CEILING CUT at launch", then cut again on the way up ("CEILING CUT: rising 2.36 ... vel.z -> 1.27", "-> 0.00"). **Scorpion Pull** on: the bite held ("scorpion.hold"), the off hand pulled back 0.3 m over 2 tics ("yanked back at 5.28 m/s after 21 tics"), then GET OVER HERE, landed 49 units in front |
-| **rig only, not headset-confirmed** (2026-11-13, run `g2run3`) | **A guarded miniboss:** a called-in RSQ Miniboss fight (an RS_GreenImp, mass 80, with 4 thralls, "shielded 1", Can't Be Yanked 1) was heavy; you flew to it and bounced ("GUARD ... health 168 -> 168, bounce"), and Miniboss's own **GUARD!** showed on it (frame below). No chain link |
+| **rig only, not headset-confirmed** (2026-11-13, run `g2run3`) | **A guarded Boss:** a called-in RSQ Miniboss fight (an RS_GreenImp, mass 80, with 4 thralls, "shielded 1", Can't Be Yanked 1) was heavy; you flew to it and bounced ("GUARD ... health 168 -> 168, bounce"), and Miniboss's own **GUARD!** showed on it (frame below). No chain link |
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2run1`, `g2run2`, `g2run3`) | **For other mods:** a probe read every event back through `RSQGR_Service` the tic it happened (`g2.events`, `g2.event`, `g2.event.tic`, `g2.chain`, `g2.kicks`, `g2.lastkick`, `g2.air`, `g2.doublejump`, `g2.mode`, `g2.chain.best` 2, `g2.last`) and per monster (`g2.kicked`, `g2.yanked`, `g2.spiked`, `g2.by`); the old grapple's request names (`hooked`, `swinging`, `xp.bites`) answer -1 |
 | **Headset-confirmed** | Nothing yet |
 | **code only, not shown** | **A true side-on view of the chain** (`g4run2` viewed it from a camera beside it, but from a camera that is not your eye the series' hand sync puts the chain's hand end about 100 units low, under the floor: the claw half in those frames is true, the hand half is not; next run: the camera at your eye's height); a second claw arriving while a bite plays (it lets go); Without RSQ Melee (the gold particle puff instead of MLK4), without RSQ VisualRewards (no KICK!; particle markers), without RSQ Grenade (no Neon Crescent) or SlowMo; the hook in a real map's geometry (3D floors, slopes, portals); the collapsed-pose hold after a menu closes; two hooks on one tic; netplay; **the hang** ended by a wall, floor, ledge or light-monster bite, by a sky miss, with two claws out (a second press while hanging), with Scorpion Pull on, and a jump pressed while hanging (only the heavy bite and the end-of-reach miss were shown, `g5run1`) |
@@ -153,9 +219,9 @@ links, jp's claw at the end, and no bright link on it.*
 
 *Rig frames (run `g2run2`): the air spike landing, the Neon Crescent and the blood, with "+0.5 sec" markers over the other imps.*
 
-![A guarded miniboss on the rig: the hook in it, then its GUARD!](docs/readme/rig_guard.png)
+![A guarded Boss on the rig: the hook in it, then its GUARD!](docs/readme/rig_guard.png)
 
-*Rig frames (run `g2run3`): the hook in a shielded miniboss, then RSQ Miniboss's own GUARD! when you bounce off it.*
+*Rig frames (run `g2run3`): the hook in a shielded Boss, then RSQ Miniboss's own GUARD! when you bounce off it.*
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
@@ -227,7 +293,7 @@ The plan gives the design and the numbers above. Where it said nothing, the simp
 - **Slow motion** from the sixth link on: none (1.5 - 0.3 x 5 = 0).
 - **Scorpion Pull** waits 3 s for the yank (2 m/s straight back from the claw) and applies to monster bites only;
   walls fling at once. A light monster held on the chain is kept from walking.
-- **A guarded miniboss:** the kick still goes through RSQ Miniboss's guard (so its GUARD! and its greed rule work as
+- **A guarded Boss:** the kick still goes through RSQ Miniboss's guard (so its GUARD! and its greed rule work as
   for any hit); you bounce; no slow motion, no chain link; the bounce does give you a double jump.
 - **The yellow cross:** RSQ Melee's MLK4 drawn AddShaded in gold (`0xFFC83C`) at 1.5x; without Melee, a gold
   particle star.
@@ -290,7 +356,7 @@ Everything is asked by name: this mod loads and plays alone, and the parts that 
 - **RSQ Grenade:** the air spike's Neon Crescent (`g2.neon`).
 - **RSQ Melee:** the MLK4 hit burst and the thud for the kick.
 - **RSQ VisualRewards:** KICK! and the time markers.
-- **RSQ Miniboss:** Can't Be Yanked makes a miniboss heavy; a guarded miniboss is a bounce with its own GUARD!.
+- **RSQ Miniboss:** Can't Be Yanked makes a Boss heavy; a guarded Boss is a bounce with its own GUARD!.
 - **RSQ Accessibility:** the Comfort Vignette while the hook moves you.
 - **RSQ Whip:** the rope, the reel, the swing and the climb are the whip's.
 - **Brutal Doom 22 and RSQ Monsters:** works on their monsters (light or heavy by the same rule).

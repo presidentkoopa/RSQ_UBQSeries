@@ -4,7 +4,7 @@ server bool   rsqgn_on          = true;   // the whole grenade (with Brutal Doom
 // Replace Brutal Doom's Grenade (owner, BUGS_1.0 item 21, 2026-11-06): off, this pack stands down for BD22 VR Reloaded's own grenade (as
 // before). On, it does NOT stand down: RSQ Grenade runs with BD22 VR loaded. THE HANDSHAKE: BD22 VR Reloaded reads this cvar BY NAME
 // (CVar.FindCVar("rsqgn_replace_bd"): null when RSQ Grenade is not loaded) and stands its own grenade down while it is true.
-server bool   rsqgn_replace_bd  = false;
+server bool   rsqgn_replace_bd  = true;    // on by default since 2026-11-16 (owner: "Make it on"): RSQ Grenade is the grenade on a Brutal Doom VR Reloaded order too
 user   bool   rsqgn_quick       = true;   // Quick Grenade (owner 11-10): BD22's Toss Grenade key (+user1) or the Quick Grenade key throws one, as BD22 throws (hand.zs QuickThrow)
 server int    rsqgn_start       = 3;      // grenades you start with (a new game, or after dying); 0-8
 server bool   rsqgn_scatter     = true;   // grenades scattered beside each map's items (the UAC Survival Pack's way)

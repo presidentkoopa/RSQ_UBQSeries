@@ -220,7 +220,7 @@ class RSQGN_Handler : EventHandler
 		return c != null;
 	}
 
-	// REPLACE BRUTAL DOOM'S GRENADE (rsqgn_replace_bd, off; owner, BUGS_1.0 item 21): on, this pack does not stand down for
+	// REPLACE BRUTAL DOOM'S GRENADE (rsqgn_replace_bd, on by default since 2026-11-16, owner; BUGS_1.0 item 21): on, this pack does not stand down for
 	// BD22 VR Reloaded. BD22 VR reads the same cvar by name and stands ITS grenade down (CVARINFO.txt says the handshake).
 	static bool ReplacesBD()
 	{

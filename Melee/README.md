@@ -14,7 +14,7 @@ Swing your fists and you are fighting. No attack button, no canned animation: wh
 - **The uppercut lifts:** monsters leave the floor, and barrels fly at the nearest monster ([Barrels](#barrels))
 - **Any fist:** Doom's, Brutal Doom's, an empty hand, or the mod's own hands and boxing gloves
 - **The open palm:** tap the trigger to open your hand, and slap fireballs and bullets out of the air ([The open palm](#the-open-palm))
-- **The gun as a club:** the gun-butt shove, the pistol whip and the two-handed butt strike ([The gun as a club](#the-gun-as-a-club))
+- **The gun as a club:** the gun-butt shove, the pistol whip and the two-handed butt strike, all on from the start ([The gun as a club](#the-gun-as-a-club))
 - **Slow motion after a shove**, and the **F.E.A.R. Effect:** finish it with a shotgun and it bursts into a red mist
 - **The Headlock:** grab a monster with your off hand, hold it, punch it, throw it ([The Headlock](#the-headlock))
 - **Counter punches:** hit a monster in its wind-up for a red spark
@@ -52,7 +52,7 @@ butt strike are Melee's, measured on that pack's gun models ([The gun as a club]
 | Turn on **Hadouken**, then punch a fireball | It flies back at whoever fired it, faster and harder |
 | Turn on **Guard**, wear the boxing gloves and hold both fists up at your face | Blows from in front are softened |
 | A gun in your main hand, thrust it forward fast | The gun-butt shove, then a short slow-down (with RSQ SlowMo) |
-| With Brutal Doom VR: both hands on a long gun, drive the stock forward | Its butt strike, now Melee's (**Two-Handed Butt Strike**, off until you turn it on) |
+| With Brutal Doom VR: both hands on a long gun, drive the stock forward | Its butt strike, now Melee's (**Two-Handed Butt Strike**, on) |
 | With Brutal Doom VR: swing a pistol or revolver down into something, either hand | Its pistol whip, now Melee's (**Pistol Whip**, on) |
 | Off-hand grip on a monster within a hand's width of your palm | Headlock: it is held at your hand |
 | Holding one, swing your off hand forward hard | Thrown |
@@ -176,7 +176,7 @@ Which moves you have depends on what you load.
 |---|---|---|---|
 | Any guns | **Gun Butt Shove** | Thrust the gun in your main hand forward, hard (3.6 m/s) | On |
 | Brutal Doom VR Reloaded 2.0.4u or later | **Pistol Whip** | Swing a pistol or revolver down into something, either hand | On |
-| Brutal Doom VR Reloaded 2.0.4u or later | **Two-Handed Butt Strike** | Both hands on a long gun, drive the stock forward | **Off: turn it on** |
+| Brutal Doom VR Reloaded 2.0.4u or later | **Two-Handed Butt Strike** | Both hands on a long gun, drive the stock forward | On (since 2026-11-16) |
 
 With Brutal Doom VR Reloaded loaded, Melee's own shove stands down and the pistol whip and butt strike take its place:
 they are that pack's moves, now Melee's, measured on the stock and the muzzle of the gun you see. The shove does 14
@@ -291,7 +291,7 @@ the rows of Guard, Wall Splat, Ground Pound and Clear Out stay greyed until you 
 | Section | Rows |
 |---|---|
 | Hands | Start With Melee Hands (Off) · Punch With Brutal Doom's Fists (On) · VR Punching (BD22 VR's Punch) (Off) · Whip, Butt, VR Punch Open Switches (On) · Hand Model (Auto / Ermac / FBX (BD22 VR); Auto) · Boxing Gloves (Off) · Slappers Only (Off) · Open-Palm Swat (On) · Swat Bullets (On) · Uppercut Kicks Barrels (Off) · Hit Spark Size (1.0) |
-| Gun Butt Shove | Gun Butt Shove (On) · Two-Handed Butt Strike (BD22 VR) (Off) · Butt Strike: Swing Needed (2.4 m/s) · Pistol Whip (BD22 VR) (On) · Pistol Whip: Swing Needed (5.0 m/s) · Always Slow Time on Shove (On) · F.E.A.R. Blood Mist (On) |
+| Gun Butt Shove | Gun Butt Shove (On) · Two-Handed Butt Strike (BD22 VR) (On) · Butt Strike: Swing Needed (2.4 m/s) · Pistol Whip (BD22 VR) (On) · Pistol Whip: Swing Needed (5.0 m/s) · Always Slow Time on Shove (On) · F.E.A.R. Blood Mist (On) |
 | Headlock | Headlock (On) · Human Shield (Off) · Extra Blood (On) |
 | Moves | Guard (Off) · Start With Guard (Gun Bonsai VR) (Off) · Hadouken (Off) · Wall Splat (Off) · Heavy Hands (Off) · Ground Pound (Off) · Clear Out (Off) |
 | Test and Debug | Punch: Punch Damage (10), Min Speed (2.0 m/s), Full Speed (7.0 m/s), Re-Hit Wait (6 tics), Uppercut Rise (0.50), Lift Cap (3.0 m), Extra Reach (4) · Gun Butt Shove: Shove Speed (3.6 m/s), Slow Time Length (1000 ms), Gun Club Swing Strength (1.0), Butt Strike: Forward Share (0.50), Pistol Whip: Must Swing Down (0.25) · Headlock: Reach (0.30 m), Heaviest (400), Seconds (3.0), Throw At (3.0 m/s), Throw Weight % (30), Off Grip Keys (443 436) · Debug Log (Off / Each Decision / Also F.E.A.R. Hits) |
