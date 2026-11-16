@@ -33,12 +33,13 @@ class RSQVR_Banner play
 	Array<String> cword;   // its small text
 	Array<int> crgb;       // a tier's swatch colour
 	Array<int> cn;         // lives: how many faces
+	int lv, hand;          // LEVELGUN: the gun's new level, its hand
 }
 
 class RSQVR_Banners : EventHandler
 {
-	enum EMoment { M_REVIVE, M_LIFEUSED, M_BOSSWIN, M_BOSSLOSS, M_LIFEUP, M_BOSSINCOMING };
-	enum EKind { K_HEALTH, K_ARMOR, K_INVULN, K_MAGS, K_LIVES, K_TIERUP, K_TIERDOWN, K_NOLEG, K_NAME, K_TIER, K_THRALLS, K_CLOCK, K_UP, K_DOWN, K_INFO };
+	enum EMoment { M_REVIVE, M_LIFEUSED, M_BOSSWIN, M_BOSSLOSS, M_LIFEUP, M_BOSSINCOMING, M_LEVELUP, M_LEVELGUN };
+	enum EKind { K_HEALTH, K_ARMOR, K_INVULN, K_MAGS, K_LIVES, K_TIERUP, K_TIERDOWN, K_NOLEG, K_NAME, K_TIER, K_THRALLS, K_CLOCK, K_UP, K_DOWN, K_INFO, K_PLAYERLV, K_UPGRADE, K_GUN };
 
 	const POP = 8;            // tics a pop takes (4 mockup frames)
 	const STEP = 4;           // tics between one chip's pop and the next
@@ -68,6 +69,8 @@ class RSQVR_Banners : EventHandler
 		if (s == "BOSSLOSS") return M_BOSSLOSS;
 		if (s == "LIFEUP") return M_LIFEUP;
 		if (s == "BOSSINCOMING") return M_BOSSINCOMING;
+		if (s == "LEVELUP") return M_LEVELUP;
+		if (s == "LEVELGUN") return M_LEVELGUN;
 		return -1;
 	}
 	// the world tiers (RSQ Monsters RS_BDArt COLOUR, tier 1..13): name and swatch
@@ -150,6 +153,13 @@ class RSQVR_Banners : EventHandler
 				kind = K_THRALLS; n = max(0, at.Size() > 0 ? at[0].ToInt() : 0);
 				word = at.Size() > 1 ? at[1] : "";       // the colours, read by ThrallRgb (the word is THRALLS, drawn below)
 			}
+			// LEVEL UP (section 10): playerlv:<n> (PLAYER LV n), upgrade:<+n | new> (+n UPGRADE / NEW UPGRADE),
+			// LEVELGUN: gun:<name>, lv:<n> (the big gold LV n, not a chip), hand:<0 main | 1 off>
+			else if (k == "playerlv") { kind = K_PLAYERLV; word = "PLAYER LV"; num = v; }
+			else if (k == "upgrade") { kind = K_UPGRADE; if (v ~== "new" || v == "") word = "NEW UPGRADE"; else { num = v; word = "UPGRADE"; } }
+			else if (k == "gun") { kind = K_GUN; num = v; }
+			else if (k == "lv") { b.lv = v.ToInt(); continue; }
+			else if (k == "hand") { b.hand = v.ToInt(); continue; }
 			else if (k == "clock") { kind = K_CLOCK; n = int(v.ToDouble() * TICRATE); word = "FIGHT IN"; }
 			if (kind < 0) continue;
 			b.ck.Push(kind); b.cnum.Push(num.MakeUpper()); b.cword.Push(word); b.crgb.Push(rgb); b.cn.Push(n);
@@ -208,6 +218,7 @@ class RSQVR_Banners : EventHandler
 	// when each part starts, in tics after t0 (the mockups' frames x 2)
 	static clearscope int ChipStart(int moment, int i)
 	{
+		if (moment == M_LEVELGUN) return i == 0 ? 0 : 10 + STEP * i;
 		if (moment == M_LIFEUSED) return 32 + STEP * i;
 		if (moment == M_LIFEUP) return 40 + STEP * i;
 		return 10 + STEP * i;
@@ -218,6 +229,7 @@ class RSQVR_Banners : EventHandler
 		int lastDone = n > 0 ? ChipStart(b.moment, n - 1) + POP : 10;
 		b.invLand = b.invIdx >= 0 ? ChipStart(b.moment, b.invIdx) + 36 : -1;
 		if (b.moment == M_LIFEUP) { b.exitAt = FLY_AT; b.endAt = LIFEUP_END; return; }
+		if (b.moment == M_LEVELGUN) { b.exitAt = 50; b.endAt = 62; return; }
 		int base = b.moment == M_LIFEUSED ? 60 : 52;
 		b.exitAt = max(base, lastDone + 22);
 		// BOSS INCOMING!: it stays while FIGHT IN counts down (at most ~4.5 s), and leaves as it reaches zero
@@ -263,6 +275,8 @@ class RSQVR_Banners : EventHandler
 		}
 		case 5: Add("REVIVE|health:66|armor:50|mags:full", mo); break;
 		case 6: Add("BOSSINCOMING|name:@DoomImp|tier:5|thralls:4|clock:3", mo); break;
+		case 8: Add(String.Format("LEVELUP|playerlv:%d|upgrade:+1", 7), mo); break;
+		case 9: Add("LEVELGUN|gun:PISTOL|lv:3|hand:0|upgrade:new", mo); break;
 		case 7: Toast("info|No flares left", mo); Toast("ammo|+20 shells", mo); Toast("up|Upgrade ready", mo); break;
 		}
 	}
@@ -330,7 +344,7 @@ class RSQVR_Banners : EventHandler
 	// DRAWING
 	ui Font f1, f2;
 	ui double curT;
-	ui double gx, gy, m;      // the gaze on the screen, screen px a mockup px
+	ui double gx, gy, m, eptx, epty;      // the gaze on the screen, screen px a mockup px
 	ui bool photo;
 
 	static ui bool On() { let c = CVar.GetCVar("rsqvr_banners", players[consoleplayer]); return !c || c.GetBool(); }
@@ -358,6 +372,8 @@ class RSQVR_Banners : EventHandler
 			gy = shh * 0.5 - tan(hr ? hr.GetFloat() : 0.0) * pty;
 		}
 		m = MOCK_TAN * ptx * SizeK();
+		eptx = ptx;
+		epty = (!vm || vm.GetInt() == 0) ? ptx : Screen.GetHeight() * 0.5 / ((CVar.FindCVar("vr_hud_scale") ? max(0.05, CVar.FindCVar("vr_hud_scale").GetFloat()) : 0.4) * (level.pixelstretch > 0 ? level.pixelstretch : 1.2));
 	}
 
 	static ui double PopK(double t, double dur = POP)
@@ -538,6 +554,9 @@ class RSQVR_Banners : EventHandler
 		case K_TIERDOWN: case K_NOLEG: case K_DOWN: col = "RSQVR_BnDown"; icon = "RQVBID"; break;
 		case K_NAME: case K_TIER: col = "RSQVR_BnGold"; break;
 		case K_CLOCK: col = "RSQVR_BnClock"; break;
+		case K_PLAYERLV: col = "RSQVR_BnUp"; icon = "RQVBIS"; break;
+		case K_UPGRADE: col = "RSQVR_BnHealth"; icon = "RQVBIG"; break;
+		case K_GUN: col = "RSQVR_BnAmmo"; break;
 		}
 		int fc = Font.FindFontColor(col);
 		double padX = 14 * u, gap = 10 * u, ih = 28 * u;
@@ -612,17 +631,22 @@ class RSQVR_Banners : EventHandler
 			Tex("RQVBSB", cx, y - ih * 0.5, ih, ih, a);
 			cx += wSw + gap;
 		}
-		if (wNum > 0)
+		bool wordFirst = kind == K_PLAYERLV;
+		for (int pass = 0; pass < 2; pass++)
 		{
-			Txt(f2, ink, num, cx + npx * 0.5, y - fh * npx * 0.5 + npx * 0.5, npx, a * 0.8);
-			Txt(f2, fc, num, cx, y - fh * npx * 0.5, npx, a);
-			cx += wNum + gap;
-		}
-		if (wWord > 0)
-		{
-			Txt(f2, ink, word, cx + wpx * 0.5, y - fh * wpx * 0.5 + wpx * 0.5, wpx, a * 0.8);
-			Txt(f2, fc, word, cx, y - fh * wpx * 0.5, wpx, a);
-			cx += wWord + gap;
+			bool doNum = (pass == 0) != wordFirst;
+			if (doNum && wNum > 0)
+			{
+				Txt(f2, ink, num, cx + npx * 0.5, y - fh * npx * 0.5 + npx * 0.5, npx, a * 0.8);
+				Txt(f2, fc, num, cx, y - fh * npx * 0.5, npx, a);
+				cx += wNum + gap;
+			}
+			if (!doNum && wWord > 0)
+			{
+				Txt(f2, ink, word, cx + wpx * 0.5, y - fh * wpx * 0.5 + wpx * 0.5, wpx, a * 0.8);
+				Txt(f2, fc, word, cx, y - fh * wpx * 0.5, wpx, a);
+				cx += wWord + gap;
+			}
 		}
 		if (tierName)
 		{
@@ -746,8 +770,10 @@ class RSQVR_Banners : EventHandler
 	// laid out in the "1"'s texels (bp screen px each): the face 0.4 bp a face px, a 1.4 bp gap, [the minus 0.5 bp a px, a
 	// 0.8 bp gap], the "1", a 0.4 bp gap, the "UP" 0.4 bp a px, 0.4 bp down from the 1's top. Returns the face's centre.
 	ui double, double Badge(double cx, double cy, double bp, double sxk, double syk, double a, bool cold, int shine,
-		String face, bool grey, double faceAng, double minusK, double droop)
+		String face, bool grey, double faceAng, double minusK, double droop, double age = 99)
 	{
+		// the SOTN letters (section 11): the 1 and the UP smear in and snap upright (their shine is the flash between looks)
+		double sm1 = clamp(1.0 - age / SMEAR, 0.0, 1.0), sm2 = clamp(1.0 - (age - SOTN_STEP) / SMEAR, 0.0, 1.0);
 		String one = cold ? "RQVBOC" : String.Format("RQVBO%d", shine);
 		String up = cold ? "RQVBUC" : String.Format("RQVBU%d", shine);
 		Vector2 so = TexMan.GetScaledSize(T(one)), su = TexMan.GetScaledSize(T(up)), sm = TexMan.GetScaledSize(T("RQVBMC"));
@@ -771,12 +797,15 @@ class RSQVR_Banners : EventHandler
 			x += (mW + mGap) * sxk;
 		}
 		double top = cy - oneH * 0.5 * syk + droop;
-		Tex(one, x + bp, top + bp, oneW * sxk, oneH * syk, a * 0.66, 0);
-		Tex(one, x, top, oneW * sxk, oneH * syk, a);
+		SlantTex(T(one), x + bp, top + bp, oneW * sxk, oneH * syk, 1 + 0.3 * sm1, 0.45 * sm1, a * 0.66, 0);
+		SlantTex(T(one), x, top, oneW * sxk, oneH * syk, 1 + 0.3 * sm1, 0.45 * sm1, a);
 		x += (oneW + 0.4 * bp) * sxk;
 		double ut = top + 0.4 * bp * syk + droop * 0.5;
-		Tex(up, x + bp * 0.4, ut + bp * 0.4, upW * sxk, upH * syk, a * 0.66, 0);
-		Tex(up, x, ut, upW * sxk, upH * syk, a);
+		if (age >= SOTN_STEP)
+		{
+			SlantTex(T(up), x + bp * 0.4, ut + bp * 0.4, upW * sxk, upH * syk, 1 + 0.3 * sm2, 0.45 * sm2, a * 0.66, 0);
+			SlantTex(T(up), x, ut, upW * sxk, upH * syk, 1 + 0.3 * sm2, 0.45 * sm2, a);
+		}
 		return fcx, cy;
 	}
 
@@ -809,13 +838,16 @@ class RSQVR_Banners : EventHandler
 		DrawInvBar(t);
 		if (!f1) f1 = Font.GetFont("RSQVRBF1");
 		if (!f2) f2 = Font.GetFont("RSQVRBF2");
-		if (f2) DrawToasts(t);
-		if (!On()) return;
-		let b = Current();
-		if (!b) return;
-		if (!f1) f1 = Font.GetFont("RSQVRBF1");
-		if (!f2) f2 = Font.GetFont("RSQVRBF2");
 		if (!f1 || !f2) return;
+		bnBottom = -1;
+		let b = On() ? Current() : null;
+		if (b) DrawBanner(b, t);
+		DrawToasts(t);
+	}
+	ui double bnBottom;       // this frame's banner's lowest chip row (the toasts go under it), -1 none
+
+	ui void DrawBanner(RSQVR_Banner b, double t)
+	{
 		double bt = t - b.t0;
 		double ex = clamp((bt - b.exitAt) / EXIT, 0.0, 1.0);
 		double exK = 1.0 - 0.6 * ex, exA = 1.0 - ex;
@@ -827,6 +859,7 @@ class RSQVR_Banners : EventHandler
 		// comes); the chips under the headline at the mockup's distances
 		double clear = StackBottom();
 		double rowY0, rowStep = 56 * m;
+		if (b.moment == M_LEVELGUN) { DrawLevelGun(b, bt, exK, exA); return; }
 		if (b.moment == M_LIFEUP)
 		{
 			double cy = max(gy, clear + 80 * m);
@@ -841,10 +874,11 @@ class RSQVR_Banners : EventHandler
 		}
 		else
 		{
-			String hl = b.moment == M_REVIVE ? "REVIVE" : (b.moment == M_BOSSWIN ? "BOSS DEFEATED!" : (b.moment == M_BOSSINCOMING ? "BOSS INCOMING!" : "BOSS WINS!"));
-			String set = b.moment == M_BOSSLOSS ? "RQVBK" : (b.moment == M_BOSSINCOMING ? "RQVBG" : "RQVBA");
-			// the skull before BOSS INCOMING! (RSQ Miniboss's crowned skull, RSQMBHD: it is the one who asks)
-			bool skull = b.moment == M_BOSSINCOMING && T("RSQMBHD").IsValid();
+			String hl = b.moment == M_REVIVE ? "REVIVE" : (b.moment == M_BOSSWIN ? "BOSS DEFEATED!" : (b.moment == M_BOSSINCOMING ? "BOSS INCOMING!" : (b.moment == M_LEVELUP ? "LEVEL UP!" : "BOSS WINS!")));
+			String set = b.moment == M_BOSSLOSS ? "RQVBK" : ((b.moment == M_BOSSINCOMING || b.moment == M_LEVELUP) ? "RQVBG" : "RQVBA");
+			// the skull before BOSS INCOMING! (RSQ Miniboss's crowned skull, RSQMBHD: it is the one who asks); the grin
+			// before LEVEL UP! (section 10)
+			bool skull = (b.moment == M_BOSSINCOMING && T("RSQMBHD").IsValid()) || b.moment == M_LEVELUP;
 			double px = 6 * 0.9 * m;
 			double sw = SotnW(set, hl), shh = SotnH(set);
 			double skW = skull ? shh * 1.25 + 6 : 0;
@@ -856,7 +890,8 @@ class RSQVR_Banners : EventHandler
 			if (skull)
 			{
 				double ss = shh * 1.25 * px * k;
-				TexC("RSQMBHD", hx - (sw * 0.5 + 6) * px * k - ss * 0.5, cy, ss, ss, exA);
+				if (b.moment == M_LEVELUP) FaceAt("STFEVL0", hx - (sw * 0.5 + 6) * px * k - ss * 0.4, cy, ss * 1.05, exA, false, 0, 0);
+				else TexC("RSQMBHD", hx - (sw * 0.5 + 6) * px * k - ss * 0.5, cy, ss, ss, exA);
 			}
 			SotnHead(set, hl, hx, cy, px, k, exA, bt - 2);
 			rowY0 = cy + 90 * m;
@@ -864,10 +899,12 @@ class RSQVR_Banners : EventHandler
 
 		// the chips: each pops at its own start, two to a row
 		int n = b.ck.Size();
+		bnBottom = rowY0 - 40 * m;
 		if (n == 0) return;
 		double u = 0.85 * m;
 		Array<double> cxs, cys;
 		ChipPlaces(b, rowY0, rowStep, u, cxs, cys);
+		bnBottom = cys[n - 1] + 22 * u;
 		// never wider than the view
 		double widest = 0;
 		for (int i = 0; i < n; i++) widest = max(widest, abs(cxs[i] - gx) + Chip(b, i, 0, 0, u, 1, true) * 0.5);
@@ -913,9 +950,16 @@ class RSQVR_Banners : EventHandler
 		double H = Screen.GetHeight();
 		double f = clamp(SF("rsq_ui_inset", 0.04), 0.0, 0.3);
 		double u = 0.85 * m;
-		double y = min(gy + 200 * m, H * (1 - f) - 30 * u);
+		// low in the view, under a banner's chips when one shows; the oldest on top, each newer one under it
+		int count = 0;
+		for (int i = 0; i < toasts.Size(); i++)
+			if (toasts[i] && Mine(toasts[i]) && t >= toasts[i].t0 && t - toasts[i].t0 <= toasts[i].endAt) count++;
+		if (count == 0) return;
+		double y = gy + 200 * m;
+		if (bnBottom > 0) y = max(y, bnBottom + 40 * u);
+		y = min(y, H * (1 - f) - 30 * u - (count - 1) * 50 * u);
 		int row = 0;
-		for (int i = toasts.Size() - 1; i >= 0; i--)
+		for (int i = 0; i < toasts.Size(); i++)
 		{
 			let b = toasts[i];
 			if (!b || !Mine(b)) continue;
@@ -925,8 +969,60 @@ class RSQVR_Banners : EventHandler
 			double k = PopK(bt) * (1.0 - 0.6 * ex);
 			bool rest = k == 1.0;
 			double w = Chip(b, 0, 0, 0, u * k, 1, true, 0, rest);
-			Chip(b, 0, gx - w * 0.5, y - row * 50 * u, u * k, 1.0 - ex, false, 0, rest);
+			Chip(b, 0, gx - w * 0.5, y + row * 50 * u, u * k, 1.0 - ex, false, 0, rest);
 			row++;
+		}
+	}
+
+	// ---- the gun's LEVEL UP (section 10): by the gun, smaller: its name's chip, a big gold LV n, NEW UPGRADE --------
+	// "By the gun as today": the gun's place (the hand's attack position, as damnums/events.zs HandPos) carried onto the HUD
+	// through the eye's projection (EyeMap: the gaze and screen px a unit of tangent); kept inside the HUD. Rig only.
+	ui bool HandScreen(int hand, out double hx, out double hy)
+	{
+		let pmo = PlayerPawn(players[consoleplayer].mo);
+		if (!pmo || !pmo.player) return false;
+		Vector3 hp;
+		if (pmo.OverrideAttackPosDir) hp = (hand == 1) ? pmo.OffhandPos : pmo.AttackPos;
+		else
+		{
+			double side = (hand == 1) ? -1.0 : 1.0;
+			hp = pmo.Pos + (0, 0, pmo.player.viewheight) + (cos(pmo.angle), sin(pmo.angle), 0) * 22.0
+				+ (cos(pmo.angle - 90), sin(pmo.angle - 90), 0) * (side * 11.0) - (0, 0, 8.0);
+		}
+		Vector3 d = hp - (pmo.Pos + (0, 0, pmo.player.viewheight));
+		double yaw = pmo.angle, p = pmo.pitch;
+		double fwd = d.x * cos(yaw) + d.y * sin(yaw), right = d.x * sin(yaw) - d.y * cos(yaw), up = d.z;
+		double f2 = fwd * cos(p) - up * sin(p), u2 = fwd * sin(p) + up * cos(p);
+		if (f2 < 2.0) return false;
+		hx = gx + right / f2 * eptx;
+		hy = gy - u2 / f2 * epty;
+		return true;
+	}
+	ui void DrawLevelGun(RSQVR_Banner b, double bt, double exK, double exA)
+	{
+		double W = Screen.GetWidth(), H = Screen.GetHeight();
+		double s0 = 0.6;
+		double hx, hy;
+		if (!HandScreen(b.hand, hx, hy)) { hx = gx + (b.hand == 1 ? -1 : 1) * 160 * m; hy = gy + 120 * m; }
+		hy -= 70 * m * s0;                 // above the gun
+		double f = clamp(SF("rsq_ui_inset", 0.04), 0.0, 0.3);
+		hx = clamp(hx, W * f + 120 * m * s0, W * (1 - f) - 120 * m * s0);
+		hy = clamp(hy, H * f + 80 * m * s0, H * (1 - f) - 80 * m * s0);
+		double u = 0.85 * m * s0;
+		// the LV n: the gold SOTN letters
+		double px = 6 * 0.9 * m * s0 * 1.2;
+		String lv = String.Format("LV %d", b.lv);
+		SotnHead("RQVBG", lv, hx, hy, Sharp(px), min(PopK(bt - 4), 1.12) * exK, exA, bt - 4);
+		double lh = SotnH("RQVBG") * px;
+		for (int i = 0; i < b.ck.Size(); i++)
+		{
+			double ct = bt - ChipStart(b.moment, i);
+			if (ct < 0) continue;
+			double k = PopK(ct) * exK;
+			bool rest = k == 1.0;
+			double cy = b.ck[i] == K_GUN ? hy - lh * 0.5 - 30 * u : hy + lh * 0.5 + 30 * u;
+			double w = Chip(b, i, 0, 0, u * k, 1, true, 0, rest);
+			Chip(b, i, hx - w * 0.5, cy, u * k, exA, false, 0, rest);
 		}
 	}
 
@@ -958,7 +1054,7 @@ class RSQVR_Banners : EventHandler
 			double sxk = kk, syk = kk;
 			if (bt >= 10 && bt < 14) { sxk *= 1.2; syk *= 0.8; }
 			double y = cy + 6 * m * sin(bt * 12.9);
-			Badge(cx, y, bp, sxk, syk, 1.0, false, shine, "STFEVL0", false, ang, 0, 0);
+			Badge(cx, y, bp, sxk, syk, 1.0, false, shine, "STFEVL0", false, ang, 0, 0, bt - 2);
 			Burst(bt, cx, cy, 12, 18, b.seed, 3, false);
 			return;
 		}
@@ -1012,7 +1108,7 @@ class RSQVR_Banners : EventHandler
 		double mk = 0;
 		if (spent) { mk = PopK(bt - 8, 6); if (bt < 12) mk *= 1.6; }
 		double droop = bt >= 24 ? min(12.0, (bt - 24) * 0.75) * m : 0;
-		Badge(cx + shake, cy, bp, k, k, exA, spent, 0, spent ? "STFOUCH0" : "STFST01", spent, 0, mk, droop);
+		Badge(cx + shake, cy, bp, k, k, exA, spent, 0, spent ? "STFOUCH0" : "STFST01", spent, 0, mk, droop, bt);
 	}
 
 	// =================================================================================================================

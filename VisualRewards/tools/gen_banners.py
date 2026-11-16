@@ -216,6 +216,37 @@ ARROW_UP = ['................',
             '................']
 
 
+def star():
+    """a five-point gold star, symmetric: inside the polygon by pixel centre, lit from the top left, the series' outline"""
+    pts = []
+    for i in range(10):
+        r = 7.0 if i % 2 == 0 else 3.0
+        a = math.radians(-90 + i * 36)
+        pts.append((7.5 + r * math.cos(a), 7.9 + r * math.sin(a)))
+
+    def inside(x, y):
+        c = False
+        for i in range(10):
+            (x1, y1), (x2, y2) = pts[i], pts[(i + 1) % 10]
+            if (y1 > y) != (y2 > y) and x < (x2 - x1) * (y - y1) / (y2 - y1) + x1:
+                c = not c
+        return c
+    im = Image.new('RGBA', (16, 16), (0, 0, 0, 0))
+    p = im.load()
+    for y in range(16):
+        for x in range(16):
+            if inside(x + 0.5, y + 0.5):
+                l = (7.5 - x) * 0.6 + (8 - y) * 0.8
+                p[x, y] = (255, 245, 180, 255) if l > 3 else ((255, 205, 50, 255) if l > -3 else (205, 135, 20, 255))
+    q = im.copy().load()
+    for y in range(16):
+        for x in range(16):
+            if q[x, y][3] == 0 and any(0 <= x + a < 16 and 0 <= y + b < 16 and q[x + a, y + b][3] > 0
+                                       for a, b in ((1, 0), (-1, 0), (0, 1), (0, -1))):
+                p[x, y] = O
+    return im
+
+
 def fix(rows):
     # every row exactly 16, centred art kept as drawn
     return [(r + '................')[:16] for r in rows]
@@ -389,6 +420,9 @@ def main():
     save(up, 'RQVBIU')
     dn = grid(arrow_rows(), {'#': O, 'l': (255, 170, 160, 255), 'o': (255, 70, 60, 255), 'd': (150, 25, 20, 255)})
     save(dn.transpose(Image.FLIP_TOP_BOTTOM), 'RQVBID')
+    # LEVEL UP (section 10): the gold star (PLAYER LV) and the green up arrow (+1 UPGRADE, NEW UPGRADE)
+    save(star(), 'RQVBIS')
+    save(grid(arrow_rows(), {'#': O, 'l': (200, 255, 190, 255), 'o': (70, 220, 80, 255), 'd': (25, 120, 35, 255)}), 'RQVBIG')
     save(swatch(False), 'RQVBSW')
     save(swatch(True), 'RQVBSB')
     save(sparkle(), 'RQVBSP')

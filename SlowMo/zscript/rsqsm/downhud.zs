@@ -349,7 +349,7 @@ class RSQSM_DownHud ui
 	}
 	// RSSCFON's letters in red bands (RSQSRnnn), centred on (cx, cy), cap tall (the letter cell with its outline); the
 	// breathing letters of BE QUICK OR BE DEAD when breathe. Returns the width.
-	double ARed(String txt, double cx, double cy, double cap, double a, bool breathe, double secs, bool measure = false)
+	double ARed(String txt, double cx, double cy, double cap, double a, bool breathe, double secs, bool measure = false, double age = 99)
 	{
 		txt = txt.MakeUpper();
 		TextureID t0 = T("RSQSR065");
@@ -379,11 +379,35 @@ class RSQSM_DownHud ui
 			[tw2, th2] = TexMan.GetSize(t);
 			double b = (breathe && !calm) ? BreathOf(i, secs) : 1.0;
 			double w = tw2 * k, h = th2 * k;
-			// a drop shadow a letter pixel down and right, then the letter
-			Screen.DrawTexture(t, false, X(x + w * 0.5 + k), Y(cy + k), DTA_DestWidthF, w * b * sx, DTA_DestHeightF, h * b * sy, DTA_CenterOffset, true,
-				DTA_FillColor, 0, DTA_Alpha, 0.6 * a);
-			Screen.DrawTexture(t, false, X(x + w * 0.5), Y(cy), DTA_DestWidthF, w * b * sx, DTA_DestHeightF, h * b * sy, DTA_CenterOffset, true,
-				DTA_Alpha, a);
+			// THE SOTN LETTERS (design/BANNERS_AND_HUD.md section 11): each letter smears in (wide, slanted forward: four
+			// slices), snaps upright, then flashes between its red bands and their white-hot version (RSQSWnnn) a few
+			// times; Photosensitive Mode: no flash. age: tics since the word began (99: at rest)
+			double la = age - i * 1.5;
+			if (la < 0) { x += w + k; continue; }
+			double sm = clamp(1.0 - la / 7.0, 0.0, 1.0);
+			TextureID tl = t;
+			if (!calm && la >= 7 && la < 7 + 36 && (int((la - 7) / 6) & 1) == 0)
+			{
+				TextureID hotT = T(String.Format("RSQSW%03d", c));
+				if (hotT.IsValid()) tl = hotT;
+			}
+			double sw2 = w * b * sx * (1 + 0.3 * sm), sh2 = h * b * sy;
+			double lx = X(x + w * 0.5) - sw2 * 0.5, ly = Y(cy) - sh2 * 0.5;
+			for (int pass = 0; pass < 2; pass++)
+			{
+				// a drop shadow a letter pixel down and right, then the letter
+				double ox = pass == 0 ? k * sx : 0, oy = pass == 0 ? k * sy : 0;
+				for (int j = 0; j < 4; j++)
+				{
+					double shift = 0.45 * sm * sh2 * (1.0 - (j + 0.5) / 4.0);
+					if (pass == 0)
+						Screen.DrawTexture(t, false, lx + ox + shift, ly + oy + sh2 * j / 4.0, DTA_DestWidthF, sw2, DTA_DestHeightF, sh2 / 4.0, DTA_TopLeft, true,
+							DTA_SrcY, th2 * j / 4.0, DTA_SrcHeight, th2 / 4.0, DTA_FillColor, 0, DTA_Alpha, 0.6 * a);
+					else
+						Screen.DrawTexture(tl, false, lx + shift, ly + sh2 * j / 4.0, DTA_DestWidthF, sw2, DTA_DestHeightF, sh2 / 4.0, DTA_TopLeft, true,
+							DTA_SrcY, th2 * j / 4.0, DTA_SrcHeight, th2 / 4.0, DTA_Alpha, a);
+				}
+			}
 			x += w + k;
 		}
 		return tot;
@@ -531,7 +555,7 @@ class RSQSM_DownHud ui
 			double rowW = fwid + 24 + dw;
 			double x0 = MCX - rowW * 0.5;
 			AFace("STFOUCH0", x0 + fwid * 0.5, EDOWN_Y, fh * kd, label, true);
-			ARed("DOWN!", x0 + fwid + 24 + dw * 0.5, EDOWN_Y, EDOWN_CAP * min(kd, 1.12), label, false, 0);
+			ARed("DOWN!", x0 + fwid + 24 + dw * 0.5, EDOWN_Y, EDOWN_CAP * min(kd, 1.12), label, false, 0, false, st);
 			if (st >= 4) ARed(BQ_NAME, MCX, EBQ_Y, EBQ_CAP * min(APop(st - 4), 1.12), label, true, secsNow);
 			// n KILL(S) TO GET UP, nn% HEALTH (the getting-up health by the DOWN count: down.zs UpHealthShare)
 			int left = max(0, d.owed[pn] - killed);

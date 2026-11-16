@@ -50,6 +50,7 @@ class RSQVR_Word play
 	int rgb2;
 	Name tag;              // who asked (nothing for the service's words; 'legendary' for LEGENDARY, its own user row)
 	Array<RSQVR_WGlyph> gl2;
+	double barTop;         // the top of its monster's HP bar and markers, this tic (-1e9 none)
 	Vector3 lastPos;
 	double lastH;
 	double lastCeil;      // the ceiling over it (owner 11-11 23:56: the word and the bar "get clipped into ceilings")
@@ -435,14 +436,24 @@ class RSQVR_FxHandler : EventHandler
 			// and a LegenDoom drop's words theirs (rsqvr_lddrop)
 			bool on = w.tag == 'legendary' ? ldWordOn : w.tag == 'lddrop' ? ldDropOn : wordsOn;
 			if (!on || !cam) { HideWord(w); continue; }
+			// NEVER ON TOP OF EACH OTHER (owner 11-16 03:15, PRESENTATION_GUIDE.md 4b; rig: THREAT!, ENEMIES TIER UP! and
+			// MINIBOSS DEFEATED! piled up on one miniboss): every word on one monster (or on one spot, once it is gone)
+			// stands in its own line: the held ones from the bar up, then each one-off word above the ones before it
 			double heldUp = 0, stackAll = LineH(w, eye);
 			for (int j = 0; j < words.Size(); j++)
 			{
 				let o = words[j];
-				if (j == i || !o || o.who != w.who || !o.held) continue;
-				stackAll += LineH(o, eye);
-				if (j < i || !w.held) heldUp += LineH(o, eye);
+				if (j == i || !o || !SameSpot(o, w)) continue;
+				bool oOn = o.tag == 'legendary' ? ldWordOn : o.tag == 'lddrop' ? ldDropOn : wordsOn;
+				if (!oOn) continue;
+				if (o.held)
+				{
+					stackAll += LineH(o, eye);
+					if (j < i || !w.held) heldUp += LineH(o, eye);
+				}
+				else if (!w.held && j < i) { heldUp += LineH(o, eye); stackAll += LineH(o, eye); }
 			}
+			w.barTop = BarTopOf(w.who);
 			lastEye = eye; haveEye = true;
 			DrawWord(w, eye, heldUp, ps, stackAll);
 		}
@@ -496,9 +507,37 @@ class RSQVR_FxHandler : EventHandler
 	// never below the actor's middle. The HP bar asks StackOver and sits under the words (rsqthp/bar.zs).
 	const CEIL_GAP = 2.0;
 	Vector3 lastEye; bool haveEye;
+	// one monster's words, or (its actor gone) words on the same spot
+	static bool SameSpot(RSQVR_Word a, RSQVR_Word b)
+	{
+		if (a.who && b.who) return a.who == b.who;
+		return (a.lastPos.xy - b.lastPos.xy).Length() < 24 && abs(a.lastPos.z - b.lastPos.z) < 64;
+	}
+	// NEVER ON ITS HEALTH BAR (owner 11-16 03:15, PRESENTATION_GUIDE.md 4b; rig: Grapple's KICK! half under the bar): the
+	// top of this monster's HP bar and its markers (rsqthp/bar.zs: the bar stands at its sprite's top, BAR_SPAN x its scale
+	// tall with the markers), -1e9 with no bar shown
+	const BAR_SPAN = 14.0;
+	double BarTopOf(Actor who)
+	{
+		if (!who) return -1e9;
+		let h = RSQTHP_Handler(EventHandler.Find("RSQTHP_Handler"));
+		if (!h) return -1e9;
+		for (int i = 0; i < h.bars.Size(); i++)
+		{
+			let b = h.bars[i];
+			if (!b || b.who != who || b.bInvisible) continue;
+			// the bar is 11 px from its foot; a crown, chain or DOWN skull above it is drawn at twice the bar's scale
+			double span = BAR_SPAN;
+			if ((b.boss && !b.boss.bInvisible) || (b.dmark && !b.dmark.bInvisible) || (b.mark && !b.mark.bInvisible))
+				span += 36.0 * RSQTHP_A11y.Cue();
+			return b.Pos.z + span * b.Scale.Y;
+		}
+		return -1e9;
+	}
 	double StackBase(RSQVR_Word w, double stackAll)
 	{
 		double base = w.lastPos.z + w.lastH * 1.1 + 10;
+		base = max(base, w.barTop + 3);         // above the bar and its markers
 		if (w.lastCeil > w.lastPos.z) base = min(base, w.lastCeil - CEIL_GAP - stackAll);
 		return max(base, w.lastPos.z + w.lastH * 0.5);
 	}

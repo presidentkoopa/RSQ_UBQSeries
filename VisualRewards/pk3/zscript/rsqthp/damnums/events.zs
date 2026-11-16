@@ -246,6 +246,10 @@ class RSQTHP_DamNumHandler : EventHandler
 
 	void Banner(PlayerPawn pmo, int lv)
 	{
+		// ARCADE GOLD (owner 2026-11-16 03:08, design/BANNERS_AND_HUD.md section 10): the grin and LEVEL UP!, then PLAYER LV n
+		// and +1 UPGRADE, the banners' pop (rsqvr/banners.zs); no sweeping band. The band below only when banners are off.
+		let bn = RSQVR_Banners.Get();
+		if (bn && CvI('rsqvr_banners', 1) != 0 && bn.Add(String.Format("LEVELUP|playerlv:%d|upgrade:+1", lv), pmo)) { madeBanners++; return; }
 		for (int i = 0; i < nums.Size(); i++) if (nums[i] && nums[i].kind == RSQTHP_DnNum.K_BANNER) nums[i].Free(self);
 		let n = NewNum(RSQTHP_DnNum.K_BANNER, pmo, pmo.Pos);
 		n.level = lv;
@@ -275,6 +279,18 @@ class RSQTHP_DamNumHandler : EventHandler
 			if (w) nm = w.GetTag();
 		}
 		if (nm == "") nm = "WEAPON";
+		// ARCADE GOLD (section 10): by the gun, smaller: its name's chip, a big gold LV n, NEW UPGRADE (rsqvr/banners.zs
+		// LEVELGUN), in place of the small gun card while it shows (RSQ Gun Cards "levelcard", as the wrist toast did).
+		// The old tag (and its wrist toast) only when banners are off.
+		let bn = RSQVR_Banners.Get();
+		if (bn && CvI('rsqvr_banners', 1) != 0 && bn.Add(String.Format("LEVELGUN|gun:%s|lv:%d|hand:%d|upgrade:new", nm.MakeUpper(), lv, hand), pmo))
+		{
+			madeTags++;
+			let gi = ServiceIterator.Find("RSQGC_Service");
+			let gs = gi.Next();
+			if (gs) gs.GetInt("levelcard", "", hand, 62, pmo);
+			return;
+		}
 		for (int i = 0; i < nums.Size(); i++) if (nums[i] && nums[i].kind == RSQTHP_DnNum.K_TAG && nums[i].hand == hand) nums[i].Free(self);
 		let n = NewNum(RSQTHP_DnNum.K_TAG, pmo, HandPos(pmo, hand));
 		n.level = lv; n.label = nm; n.hand = hand;
