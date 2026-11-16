@@ -10,7 +10,17 @@ class RSQGR_Util
 {
 	const ARM_MAX = 96.0;
 	const PIXELSTRETCH = 1.2;
-	const OFF = 1;               // the hook is the off hand's (OffhandPos); the main hand's is never read here
+	const OFF = 1;               // the off hand's controller field (OffhandPos); 0 is the main hand's (AttackPos)
+
+	// HOOK HAND (C7, owner 2026-11-16: "Let me pick the hand"): rsqgr_hand, a USER cvar read for the pawn's own player.
+	// 0 Off Hand (the hook as it always was), 1 Main Hand. Answers the controller field the hook reads: 1 OffhandPos,
+	// 0 AttackPos. The air spike reads both hands either way.
+	static clearscope int HookCtrl(PlayerPawn pmo)
+	{
+		let c = (pmo && pmo.player) ? CVar.GetCVar("rsqgr_hand", pmo.player) : null;
+		return (c && c.GetInt() == 1) ? 0 : OFF;
+	}
+	static clearscope Vector3 HookRaw(PlayerPawn pmo) { return HookCtrl(pmo) == 0 ? pmo.AttackPos : pmo.OffhandPos; }
 
 	static clearscope double Num(String n, double d) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : d; }
 	static clearscope int Opt(String n, int d) { let c = CVar.FindCVar(n); return c ? c.GetInt() : d; }
@@ -32,13 +42,13 @@ class RSQGR_Util
 		return d.Unit();
 	}
 
-	// a real off-hand pose: VR on, the hands not collapsed to one point (a menu just closed, a level just began), and the
-	// hand within reach of the body
+	// a real pose of the hook hand: VR on, the hands not collapsed to one point (a menu just closed, a level just began),
+	// and the hook hand within reach of the body
 	static clearscope bool PoseGood(PlayerPawn pmo)
 	{
 		if (!pmo || !pmo.player || !pmo.OverrideAttackPosDir) return false;
 		if (pmo.AttackPos == pmo.OffhandPos) return false;
-		Vector3 d = pmo.OffhandPos - pmo.Pos;
+		Vector3 d = HookRaw(pmo) - pmo.Pos;
 		if (d.xy.Length() > ARM_MAX) return false;
 		if (d.z < -ARM_MAX || d.z > pmo.Height + ARM_MAX) return false;
 		return true;
@@ -51,14 +61,22 @@ class RSQGR_Util
 		return pmo.Pos + (0, 0, z);
 	}
 
-	// where the off hand is this tic (play code)
+	// where the hook hand is this tic (play code)
 	static play Vector3 HandPos(PlayerPawn pmo)
 	{
 		if (!PoseGood(pmo)) return ChestPos(pmo);
-		return RSQGR_HandSync.Fix(pmo, pmo.OffhandPos, OFF);
+		return RSQGR_HandSync.Fix(pmo, HookRaw(pmo), HookCtrl(pmo));
 	}
-	static clearscope double HandYaw(PlayerPawn pmo) { return PoseGood(pmo) ? pmo.OffhandAngle + 90 : pmo.Angle; }
-	static clearscope double HandPitch(PlayerPawn pmo) { return PoseGood(pmo) ? pmo.OffhandPitch : -pmo.Pitch; }
+	static clearscope double HandYaw(PlayerPawn pmo)
+	{
+		if (!PoseGood(pmo)) return pmo.Angle;
+		return (HookCtrl(pmo) == 0 ? pmo.AttackAngle : pmo.OffhandAngle) + 90;
+	}
+	static clearscope double HandPitch(PlayerPawn pmo)
+	{
+		if (!PoseGood(pmo)) return -pmo.Pitch;
+		return HookCtrl(pmo) == 0 ? pmo.AttackPitch : pmo.OffhandPitch;
+	}
 
 	// both hands against the body this tic, in map units (the gesture readers': the air spike, the Scorpion yank)
 	static play Vector3 HandOff(PlayerPawn pmo, int ctrl)
@@ -120,6 +138,10 @@ class RSQGR_Util
 		let sv = Svc("RSQMB_Service");
 		return sv && (sv.GetInt("shielded", "", 0, 0, v) == 1 || sv.GetInt("invulnerable", "", 0, 0, v) == 1);
 	}
+
+	// AC2 (11-16): the vignette's strength follows how fast the hook moves you: 0.35 at a crawl, full at 30 units a tic
+	// (about 31 m a second) and over -- RSQ Accessibility's page promises "stronger the faster you move"
+	static play double ComfortBySpeed(PlayerPawn pmo) { return pmo ? clamp(pmo.vel.Length() / 30.0, 0.35, 1.0) : 1.0; }
 
 	// RSQ ACCESSIBILITY's Comfort Vignette: a comfort moment this tic (its own row decides whether anything shows)
 	static play void Comfort(PlayerPawn pmo, double strength)

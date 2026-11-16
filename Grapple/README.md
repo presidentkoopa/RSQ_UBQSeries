@@ -78,7 +78,7 @@ link.
 | **Fire Hook** | Options → Customize Controls → RSQ Grapple, or the **Controls** row on this mod's page | none: bind it yourself |
 | **Jump** (the double jump) | the engine's own Jump | yours |
 
-The hook always fires from the **off hand**. The air spike needs nothing in particular in your hands.
+The hook fires from the **off hand** unless you pick the other: **Hook Hand** (Off Hand; Main Hand) on this mod's page, under Controls (2026-11-16, owner: "Let me pick the hand"). With Main Hand the claw, its aim, Aim Assist's line and Scorpion Pull's yank all follow the main hand. The air spike needs nothing in particular in your hands.
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
@@ -174,11 +174,12 @@ Crescent goes off with blood, fire and a shockwave, and RSQ SlowMo slows your wa
 | Section | Rows |
 |---|---|
 | Top | **Aim Assist** (on) · **Scorpion Pull** (off: when on, a monster you hook is held on the chain until you yank your off hand back (2 m/s); then it comes, or you go) |
-| Controls | Fire Hook |
+| Controls | Hook Hand (Off Hand; Main Hand) · Fire Hook |
 | Test and Debug | Range (780 map units) · Debug Log (off: every bite, kick, slow-motion request and event goes to the console as `T_G2` lines; the claw's flight logs its position every tic) |
 
 Comfort versions (a lower hop, a vignette) belong in RSQ Accessibility: this mod reports every tic it moves you to
-Accessibility's **Comfort Vignette** (`RSQA_Service "vignette"`), which only shows when that row is on.
+Accessibility's **Comfort Vignette** (`RSQA_Service "vignette"`), which only shows when that row is on. Its strength
+follows your speed: about a third at a crawl, full at about 31 m a second and over (2026-11-16).
 
 <p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 

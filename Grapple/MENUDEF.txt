@@ -31,6 +31,7 @@ OptionMenu "RSQGR_Options"
 	Option "Scorpion Pull", "rsqgr_scorpion", "OnOff"
 	StaticText " "
 	StaticText "Controls", 1
+	Option "Hook Hand", "rsqgr_hand", "RSQGR_HookHand"
 	Control "Fire Hook", "+rsqgr_hook"
 	StaticText " "
 	Submenu "Test and Debug", "RSQGR_Test"
@@ -43,4 +44,10 @@ OptionMenu "RSQGR_Test"
 	Title "RSQ GRAPPLE: TEST AND DEBUG"
 	Slider "Range", "rsqgr_range", 256, 2048, 32, 0
 	Option "Debug Log", "rsqgr_debug", "OnOff"
+}
+
+OptionValue "RSQGR_HookHand"
+{
+	0, "Off Hand"
+	1, "Main Hand"
 }

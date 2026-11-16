@@ -2,7 +2,7 @@
 // Quest uses all four BT_USER bits).
 //
 // TWO HOPS, ON PURPOSE. `event` is a LOCAL console event: it reaches ConsoleProcess here, in ui scope, on the machine
-// that pressed -- the only machine whose off-hand pose is real (the VR fields are written for the camera player alone).
+// that pressed -- the only machine whose hand pose is real (the VR fields are written for the camera player alone).
 // So the pose is read HERE and packed into the network event every machine acts on:
 //   rsqgr_fire  a0 = 1 | yaw decidegrees << 1     (yaw 0..3599)
 //               a1 = pitch decidegrees + 1000        (100..1900; 0 = no pose packed: fire along the live pose)
@@ -49,7 +49,7 @@ class RSQGR_Input : EventHandler
 		int a1 = 0, a2 = 0, yawd = 0;
 		if (RSQGR_Util.PoseGood(pmo))
 		{
-			Vector3 off = pmo.OffhandPos - pmo.Pos;
+			Vector3 off = RSQGR_Util.HookRaw(pmo) - pmo.Pos;   // the hook hand's (C7: Hook Hand)
 			double yaw = RSQGR_Util.HandYaw(pmo) % 360.0;
 			if (yaw < 0) yaw += 360.0;
 			double pit = RSQGR_Util.HandPitch(pmo);

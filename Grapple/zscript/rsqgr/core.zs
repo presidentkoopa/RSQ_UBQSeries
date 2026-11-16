@@ -833,7 +833,7 @@ class RSQGR_Core : EventHandler
 			return;
 		}
 		pmo.vel = d / l * pSpeed[pn];
-		RSQGR_Util.Comfort(pmo, 1.0);
+		RSQGR_Util.Comfort(pmo, RSQGR_Util.ComfortBySpeed(pmo));
 	}
 
 	// THE KICK (arriving at a heavy one): 30 damage, knocked back, staggered, the yellow cross, KICK!, slow motion on
@@ -977,7 +977,7 @@ class RSQGR_Core : EventHandler
 		if (l > 0.01) u = d / l;
 		if (pmo.Pos.z < top + 2) pmo.vel = (u.x * 2, u.y * 2, min(12.0, top + 4 - pmo.Pos.z)); // up the face
 		else pmo.vel = (u.x * min(12.0, l), u.y * min(12.0, l), 0);                  // over the lip
-		RSQGR_Util.Comfort(pmo, 1.0);
+		RSQGR_Util.Comfort(pmo, RSQGR_Util.ComfortBySpeed(pmo));
 	}
 
 	// SCORPION PULL: held on the chain until the off hand yanks back (or SCORP_HOLD runs out)
@@ -1055,7 +1055,7 @@ class RSQGR_Core : EventHandler
 		double sp = v.Length();
 		return (sp > 0.0001 && -v.z / sp >= 0.5) ? -v.z : 0.0;
 	}
-	// the off hand's speed straight back from the claw (m/s)
+	// the hook hand's speed straight back from the claw (m/s)
 	double YankBack(int pn, PlayerPawn pmo)
 	{
 		let c = claw[pn];
@@ -1063,7 +1063,7 @@ class RSQGR_Core : EventHandler
 		Vector3 away = RSQGR_Util.Metric(RSQGR_Util.HandPos(pmo) - c.Pos);
 		double l = away.Length();
 		if (l < 0.001) return 0;
-		return HandVel(pn, 1) dot (away / l);
+		return HandVel(pn, RSQGR_Util.HookCtrl(pmo)) dot (away / l);
 	}
 
 	// ---- the time markers -----------------------------------------------------------------------------------------
@@ -1192,7 +1192,7 @@ class RSQGR_Core : EventHandler
 		if (mode[pn] == M_NONE && flung[pn] && !ground)
 		{
 			FullSpeed(pmo);
-			if (pmo.vel.Length() > 4) RSQGR_Util.Comfort(pmo, 1.0);
+			if (pmo.vel.Length() > 4) RSQGR_Util.Comfort(pmo, RSQGR_Util.ComfortBySpeed(pmo));
 		}
 		if (rising[pn])
 		{
