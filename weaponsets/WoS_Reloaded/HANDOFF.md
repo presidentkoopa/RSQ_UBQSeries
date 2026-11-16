@@ -1,5 +1,55 @@
 # HANDOFF (latest first)
 
+## 2026-11-16 06:00: 0.8 (owner 03:30 "all seven", 03:33 five mechanics, 03:45 standalone first, 03:51 version 0.8)
+Rig only, not headset-confirmed. Evidence: rigtest_2026-11-16/ (RIG_LOGS.md, SUITE_REPORT.md, frames).
+Fixes (review /home/claude/suggestions/WoS_Reloaded_suggestions.md):
+- 1 Chaingun spots: RSQWS_ChaingunSpot (RandomSpawner replaces Chaingun) gives the Rotary Cannon or the Maschine Rifle,
+  half each, map pickups and Chaingunner drops alike (rig, Rotary Cannon / Maschine Rifle: WoS alone 12/8 placed and
+  11/9 dropped of 20 each; with the Series 5/5 placed, 4/6 dropped of 10 each).
+  The Rotary Cannon no longer replaces Chaingun itself. LegenDoom replaces Chaingun with its own pickup: with LegenDoom
+  loaded nothing of ours spawns there (LegenDoom's business; noted only).
+- 2 full cost: Nova Ball 5, Nova 5, Hyper Nova 40 cells, else reload (reserve) or dry click. TakeUpTo is unused now.
+  Found on the way: DryWait's `Goto Ready` resolved in the abstract RSQWS_Gun (the load's "Attempt to get invalid state
+  Ready from actor RSQWS_Gun"): after any dry click the gun hung out of its states. Now A_Jump by name; the warning is gone.
+- 3 Knuckles: trigger punches (basics' numbers 2 x 1-10, berserk x10, 64 units, WoS's FistPuff) when not in VR, or when
+  Punches is off and RSQ Melee is not loaded; otherwise free as before.
+- 4 RSQTRFIT.wos: tools/make_rsqtrfit.py runs TacticalRig/tools/measure_pickups.py --held on the set's pk3 (all guns
+  but the Knuckles, plus the dual copies). Mirror frames show the guns on the body; the old pack's holsters are empty.
+- 5 rsq_hud_noammo declared and read by the set's HUD (+ its own menu row). Gun Cards (GunCards/zscript/rsqgc/card.zs,
+  source only, its pk3 not rebuilt here): any Fist is an empty hand (status card for the Knuckles), and the basics'
+  RSQB_GN_Ammo counts as grenades. Not done: the off-hand model card for the basics' grenade (needs a bridge MODELDEF
+  like bridge_grenade, bigger than "small and safe") and the fuse count for it.
+- 6 charge: zscript/wos/charge.zs RSQWS_ChargeGlow: the round's own sprite + a point light at RSQ_Muzzle.Where, growing,
+  a self-made buzz loop (tools/make_chargehum.py) with rising pitch / volume, RSQB_GN_Buzzer pulses (Rumble Strength,
+  Rumble Backup by name). Grows only, fades after the shot; dimmer and slower with rsqa_photosafe.
+- 7 flash rows (zscript/rsq/flash.zs, patched in build.py): RailGun (Nova Rifle, its rounds' PLASMABALL blue rather than
+  the review's green), NukeLauncher (Titan orange), RSQWS_1911 (own row: bigger warmer flash, RS Ballistics' pistol_mag
+  tail already in the pack). The 1911's fire sound was already its own.
+Mechanics (owner 03:33):
+- Butt strike: BD22 VR's own (rsvr/melee.zs RIFLEBUTT / SGBUTT / SSGBUTT / MP40BUTT rows) for the Maschine Rifle, Riot
+  Gun, Coach Gun, MP40; the blow is RSQWS_ButtStrike (WoS kick 2 x 5-15, a lower WoS punch thud), 18-tic rest after a
+  strike. Needs both hands (the engine's steadying: off GRIP within 50 cm). Menu: Butt Strike (rsqws_butt, on).
+- Hold to charge (Nova Ball 13 tics, Hyper Nova 34): let go early = no shot, nothing spent, a fizzle (picked as the
+  simplest); a beep and one hard pulse when full; it waits full until let go. Dual off-hand Nova fires when full.
+- Chain Saw rev burst (alt): 35 tics revved (chain runs by itself, cuts x2: RSQWS_SawCutRev), then 70 tics before the
+  next (alt coughs). melee.zs reads RSQWS_Motorsaw.Revving.
+- Coach Gun point blank: RSQWS_PointBlank (event handler): both barrels, a kill within 72 units of the monster's edge,
+  4-tic window -> the monster's own XDeath (Death.Extreme). No damage change.
+- Rotary Cannon: off hand within 9 units of the front 55% of the hand-to-muzzle line, off trigger held (20 tics linger)
+  or a swipe >= 2.5 units/tic (35 tics) -> PreSpin (spin frames, sound, off-hand rumble); the trigger fires that tic.
+  A fast reach to the barrels counts as a swipe (only spins; harmless).
+Version: build.py NAME, VERSION = 'WoS_Reloaded', '0.8' (WoS_Reloaded_0.8.pk3), menu title, ZSCRIPT.zs header. No pk3
+committed. README.md (player-first) in the pack.
+Build note: build.py's inputs (/home/claude/src/saturn, wosvox, rs_combatfx, ...) are not on this machine, so the set
+folder's pack files were edited directly and build.py was given the same changes (patches, MELEE_0333, handlers, version)
+so a rebuild keeps them; src/ holds the hand-written files (charge.zs, SNDINFO.rsqws, RSQTRFIT.wos, README.md, sound).
+Suite: 14 of 14 on tree 87f1f959 (out/suite.json). The rig's doom2.wad is now Doom II; the Saturn V lock-on and both
+door checks depend on Freedoom 2 MAP01's layout and fail on Doom II with the old pack too, so those three ran on
+Freedoom 2 (MT_GAMEDATA to a dir with doom2.wad -> freedoom2.wad). tools/suite.py: the charged alts are held (althold).
+Series load: GunBonsai + WoS + 20 RSQ pk3s + this Gun Cards: 0 script errors. RSQ_Miniboss needs LegenDoom and
+Champions to compile (its own dependency, not ours). RSQ_GunBonsaiVR needs Gun Bonsai.
+Open: headset test of everything above; the Gun Cards pk3 rebuild; basics' grenade model card in Gun Cards.
+
 ## 2026-11-12 18:05 — building
 Done: SPEC.md (owner-agreed), CLAUDE.md (rules), ARCH.md; tools/seat_1911.py (+json): the BW 1911 seated in the FBX
 pistol hand; tools/dec2zs.py + gen_og.sh: WoS's 108 non-weapon actors -> src/zscript/wos/og_actors.gen.zs (compiles;

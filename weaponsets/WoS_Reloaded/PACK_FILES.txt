@@ -22,6 +22,7 @@ MODELDEF.rsqoff
 MODELDEF.rsqws1911
 MODELDEF.rsr
 MODELDEF.rsrpump
+README.md
 RSQTRFIT.wos
 SNDINFO.rsb
 SNDINFO.rsqbgn

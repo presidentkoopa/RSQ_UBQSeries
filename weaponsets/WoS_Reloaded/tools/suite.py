@@ -41,8 +41,8 @@ G = {
     'RSQWS_MachineRifle': dict(kind='mag', cap=30, alt='m203', hold=3, dual=True),
     'RSQWS_Minigun':      dict(kind='mag', cap=120, alt=('missile', 'RSQWS_RotaryPlasma'), hold=40),
     'RSQWS_SaturnV':      dict(kind='mag', cap=12, alt='lock', hold=3, fire=('missile', 'RSQWS_SaturnRocket')),
-    'RSQWS_NovaRifle':    dict(kind='mag', cap=60, alt=('missile', 'RSQWS_NovaBall'), hold=3, fire=('missile', 'RSQWS_Plasma')),
-    'RSQWS_TITAN':        dict(kind='mag', cap=160, alt=('missile', 'RSQWS_HyperNova'), hold=3, fire=('missile', 'RSQWS_Nova')),
+    'RSQWS_NovaRifle':    dict(kind='mag', cap=60, alt=('missile', 'RSQWS_NovaBall'), hold=3, fire=('missile', 'RSQWS_Plasma'), althold=20),	# hold to charge (13 tics), let go
+    'RSQWS_TITAN':        dict(kind='mag', cap=160, alt=('missile', 'RSQWS_HyperNova'), hold=3, fire=('missile', 'RSQWS_Nova'), althold=40),	# hold to charge (34 tics), let go
     'RSQWS_Riotgun':      dict(kind='pump', cap=9, alt='shot', hold=3),
     'RSQWS_Coachgun':     dict(kind='break', cap=2, alt='shot', hold=3),
 }
@@ -78,7 +78,7 @@ def script(cls, g):
         # gun hand is raised so the barrel is on the target, as a player aims it
         s += mark('ALT') + 'netevent probe_ammo; wait 2; qz_rhand "0.25 1.3 -0.3 26 0 0"; wait 10; +altattack; wait 50; -altattack; wait 120; netevent probe_ammo; wait 2; kill monsters; ' + RH + '; wait 5; '
     else:
-        s += mark('ALT') + 'netevent probe_ammo; wait 2; +altattack; wait %d; -altattack; wait 90; netevent probe_ammo; wait 2; ' % (40 if 'RotaryPlasma' in str(g['alt']) else 3) + pumpit
+        s += mark('ALT') + 'netevent probe_ammo; wait 2; +altattack; wait %d; -altattack; wait 90; netevent probe_ammo; wait 2; ' % (40 if 'RotaryPlasma' in str(g['alt']) else g.get('althold', 3)) + pumpit
     s += mark('KICK') + 'netevent rsqws_kick; wait 30; '
     if g['kind']:
         s += mark('STOCK') + 'give ammo; set rsr_reload 0; netevent probe_empty 0; wait 2; netevent probe_ammo; wait 2; +reload; wait 4; -reload; wait 250; netevent probe_ammo; wait 2; '
