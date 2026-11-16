@@ -257,10 +257,12 @@ could. And if you'd rather stand behind something, reach over your shoulder for 
 <a name="shieldsaw"></a>
 <p align="center"><a href="ShieldSaw/README.md"><img src="design/readme_art/mods/shieldsaw_title.gif" alt="RSQ ShieldSaw"></a></p>
 
-...ShieldSaw. The shield saw from Doom: The Dark Ages lives on your back. Hold it up and fireballs glance off it;
-bullets die at the muzzle. Push the plate into the shot and it's a perfect block. Shove it into a demon and the demon
-flies into the wall. Squeeze the trigger and the blades come out screaming. Paint a few targets, snap your arm
-forward, and the saw goes round the room cutting through them, then comes home. For everything it can't reach, there's
+...ShieldSaw. The shield saw from Doom: The Dark Ages lives on your back, and the block is the shield you see: a
+fireball that crosses the plate is turned, one that slips under the rim hits you. Turned shots go where you send them,
+off the face and along your swing. Bullets are stopped before they are fired and one goes back. Meet a hit with the
+plate and it's a perfect block. Shove it into a demon and the demon flies into the wall. Squeeze the trigger and the
+blades come out screaming. Ring up to five targets, snap your arm forward, and the saw goes round the room through
+each of them, off the walls if it has to, then comes home to your hand. For everything it can't reach, there's
 the...
 
 <p align="center"><img src="ShieldSaw/docs/readme/held_shield_rig.jpg" alt="The shield held up on the off arm" width="430"> <img src="ShieldSaw/docs/readme/ricochet_lock_marks_stay.jpg" alt="The lock marks staying on their targets" width="430"></p>
