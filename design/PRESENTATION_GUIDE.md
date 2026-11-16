@@ -63,6 +63,15 @@ Player-facing text never shows a code name (DEMON1, PE…), never says "miniboss
 - **Exceptions kept on purpose:** the Boss health bar (`bossbar.zs`) and the DOWN panel keep their own place and shape.
 - **A bar that slows time shows why:** the world slow motion bar always carries its reason word under it.
 
+## 4b. Words over monsters (owner, 2026-11-16 03:15)
+
+- RSQ VisualRewards' words (`words.zs`), in the world over the monster: RSSCFON / the SOTN look, the pop, the flicker, the drift.
+- **No doubling with a banner:** a moment that has a banner (BOSS DEFEATED!, BOSS WINS!, ENEMIES TIER UP / DOWN) is not
+  also written over the monster. THREAT! stays a world word. Without VisualRewards' banners, the old world words come back.
+- **Never on top of each other:** words that arrive together on one monster stand one above another; **never on the
+  monster's health bar** (they stand above it and its markers).
+- **TARGET! / GUARD!** one size up from today, readable at fighting distance.
+
 ## 5. Small messages
 
 Short in-play messages ("No flares left", "No grenades", a tool's confirmation) are **toasts**: one chip in the family
