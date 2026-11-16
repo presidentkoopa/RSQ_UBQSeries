@@ -52,7 +52,6 @@ class RS_ScoreTracker : Inventory
 	int   hurlKills;
 	Array<int> comboKind;    // recent melee kills, for Combo
 	Array<int> comboTic;
-	int  lastResetTic;
 	int   rallyCount;        // Rally: shots sent back that killed, one after another
 	int   rallyTic;
 
@@ -163,6 +162,15 @@ class RS_ScoreTracker : Inventory
 	bool downNoted;          // the debug line "at 1 HP while RSQ SlowMo's DOWN holds him" printed (handler.zs RunExtraLives)
 	bool lifeCueSlow;        // the life cue due is a life earned by Score's target: +1UP pays world slow motion (handler.zs RunRewardCue)
 
+	// ---- the life hold's test (handler.zs RunExtraLives; bugfix SC4, 2026-11-16) --------------------------------------
+	// Only a hit that WOULD HAVE KILLED spends a life: its damage at least the health before it, as RSQ SlowMo's DOWN
+	// judges (down.zs PlayerHit, hpSeen). 1 HP alone is not enough: a 13 hit at 14 HP left 1 HP and spent a life on the
+	// rig, and a life earned while at 1 HP was spent at once.
+	int  hpSeen;             // the health at the start of this tic (the last tic's, after its hits)
+	int  preHp;              // the health just before the hit being dealt (ModifyDamage, below), when it ran
+	bool preFresh;
+	bool lethalHit;          // a hit since the health was last above 1 would have killed him
+
 	Default
 	{
 		Inventory.MaxAmount 1;
@@ -179,6 +187,77 @@ class RS_ScoreTracker : Inventory
 	Spawn:
 		TNT1 A -1;
 		stop;
+	}
+
+	// ---------------------------------------------------------- the life hold
+	// The health just before a hit (only for hits the engine runs ModifyDamage for: not DMG_NO_FACTOR, which the
+	// tic's hpSeen covers). The damage is not changed.
+	override void ModifyDamage(int damage, Name damageType, out int newdamage, bool passive, Actor inflictor, Actor source, int flags)
+	{
+		newdamage = damage;
+		if (!passive || !owner || !owner.player) return;
+		preHp = owner.health;
+		preFresh = true;
+	}
+
+	// a hit has landed (handler.zs WorldThingDamaged): was it a killing one?
+	void NoteHit(int damage)
+	{
+		int pre = preFresh ? preHp : hpSeen;
+		preFresh = false;
+		if (pre <= 0 || damage >= pre) lethalHit = true;   // not known: as before the fix (1 HP is a caught killing hit)
+		if (owner) hpSeen = owner.health;
+	}
+
+	// ----------------------------------------------------------------- a new map
+	// EVERY TIC KEPT HERE IS A MAP TIC, and level.maptime starts again at 0 on a new map, while this token travels with
+	// the player. A tic from the last map then reads as "in the future" or "just now" (bugfix 2026-11-16, check E: SC1
+	// slow motion and hit-stop blocked, SC2 breakdown gaps, SC7 Spree carried on, NEW-SC-B chains carried on, NEW-SC-C
+	// the +1UP cue and Photosensitive flash held back), and Rainbow is "in one map" (SC3). Called by ScoreReset at every
+	// map start, whatever New Map Keeps says: what is kept (score, total, lives, regen) is not here.
+	void NewMap(bool keepLives)
+	{
+		// big moments (handler.zs BigMomentPulse)
+		slowmoReady = 0;
+		slowmoUntil = 0;
+		// Spree
+		spreeCount  = 0;
+		spreeExpire = 0;
+		// the breakdown
+		for (int r = 0; r < rowTic.Size(); r++) rowTic[r] = 0;
+		for (int r = 0; r < rowValue.Size(); r++) rowValue[r] = 0;
+		// the chains (melee.zs, hook.zs, rows.zs)
+		comboKind.Clear(); comboTic.Clear();
+		rallyCount = 0; rallyTic = 0;
+		reelCount = 0; reelTic = 0;
+		varMask = 0; varTic = 0;
+		bigComboTic = 0;
+		wmMod = ""; wmCount = 0; wmTic = 0;
+		mkInf = null; mkTool = ""; mkTic = 0; mkCount = 0;
+		for (int h = 0; h < 2; h++) { holdStart[h] = 0; holdKills[h] = 0; }
+		champTic = 0; champCount = 0;
+		legendTic = 0;
+		cgTic = 0; cgCount = 0;
+		thrownKillInf = null; thrownKillTic = 0;
+		colourMask = 0; rainbowPaid = 0;   // Rainbow: in one map
+		armWep.Clear(); armTic.Clear();
+		hkCount = 0; hkTic = 0;
+		// Switcharoo's fire record
+		for (int i = 0; i < SCOREWEPS * SCOREFIREMODES; i++) lastFired[i] = 0;
+		fireWep.Clear(); fireMode.Clear(); fireTic.Clear();
+		// the HUD's moments
+		flashTic = 0;
+		rewardTic = 0;
+		lifeCueTic = 0;
+		reviveTic = 0;
+		downNoted = false;
+		// a +1UP cue still due from the last map: now, if the life was kept; dropped with it otherwise
+		if (rewardLifeTic > 0 && keepLives) rewardLifeTic = level.maptime + 1;
+		else { rewardLifeTic = 0; pendingLives = 0; lifeCueSlow = false; }
+		// the life hold's test
+		hpSeen = owner ? owner.health : 0;
+		preFresh = false;
+		lethalHit = false;
 	}
 
 	// ------------------------------------------------------------------ score

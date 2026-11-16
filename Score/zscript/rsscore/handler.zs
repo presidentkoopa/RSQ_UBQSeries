@@ -257,12 +257,13 @@ class RS_ScoreHandler : EventHandler
 		let tr = GetTracker(mo);
 		if (!tr) { return; }
 
-		// the HUD's reward glow runs off these tics; a new map's clock starts again at 0, so an old one could light it
-		tr.rewardTic  = 0;
-		tr.lifeCueTic = 0;
-
 		int mode = CvarInt("rs_score_startmode", 0);
-		if (mode == 3) { tr.lastResetTic = level.maptime; return; }
+
+		// every tic the tracker keeps is a map tic, and a new map's clock starts again at 0: all of them start clean
+		// (tracker.zs NewMap: the HUD's glows, slow motion's cooldown, Spree, the breakdown, the chains, Rainbow)
+		tr.NewMap(mode >= 2);
+
+		if (mode == 3) { return; }
 
 		bool keepDisplay = (mode == 1 || mode == 2);
 		bool keepRewards = (mode == 2);
@@ -279,8 +280,6 @@ class RS_ScoreHandler : EventHandler
 			tr.regenSpent = 0;
 			tr.extraLives = 0;
 		}
-
-		tr.lastResetTic = level.maptime;
 	}
 
 	// ------------------------------------------------------- Switcharoo entry
@@ -485,7 +484,7 @@ class RS_ScoreHandler : EventHandler
 		if (e.Damage <= 0) { return; }
 		if (v.bNoDamage) { return; }
 		let tr = GetTracker(v);
-		if (tr) { tr.ResetUntouchable(); }
+		if (tr) { tr.ResetUntouchable(); tr.NoteHit(e.Damage); }   // NoteHit: would this hit have killed (RunExtraLives)
 	}
 
 	// The bodies paid this tic (the morph pair above). Cleared on the next tic that pays.
@@ -1161,6 +1160,11 @@ class RS_ScoreHandler : EventHandler
 			RunRewardCue(players[i].mo, tr);
 			RunAmmoRegen(players[i].mo, tr);
 			RunExtraLives(players[i].mo, tr);
+			// the life hold's test (tracker.zs NoteHit): this tic's health is the next hit's "before"; a killing hit
+			// counts until he is above 1 HP again or no life is held (a life earned at 1 HP is not spent by it)
+			tr.hpSeen = players[i].mo.health;
+			tr.preFresh = false;
+			if (players[i].mo.health > 1 || tr.extraLives <= 0) tr.lethalHit = false;
 		}
 	}
 
@@ -1173,15 +1177,16 @@ class RS_ScoreHandler : EventHandler
 		{
 			if (tr.rowTic[r] <= 0) { continue; }
 
-			// 193 is the largest display time the HUD will honour (the original's own
-			// clamp), so clearing at that point can never cut a row short on any
-			// screen -- while the HUD still hides it at whatever the local setting is.
+			// 196 is the largest display time the HUD will honour (hud.zs DrawBreakdown's
+			// clamp, the Bonus Time slider's top step), so clearing at that point can never
+			// cut a row short on any screen -- while the HUD still hides it at whatever the
+			// local setting is. (It was 193, the original's clamp: 3 tics short of the top step.)
 			//
 			// This is the one place the original is deliberately NOT followed: it read
 			// the viewer's own dakka_cl_bonustime here, in server-side code. Doing that
 			// makes a game-state value depend on one machine's setting, which is a
 			// desync. The observable behaviour is identical.
-			if (level.maptime - tr.rowTic[r] > 193)
+			if (level.maptime - tr.rowTic[r] > 196)
 			{
 				tr.rowTic[r]   = 0;
 				tr.rowValue[r] = 0;
@@ -1267,6 +1272,21 @@ class RS_ScoreHandler : EventHandler
 					Console.Printf("RS_Score: buddha ON (%d lives held)", tr.extraLives);
 				}
 			}
+			// THE HOLD IS KEPT ON EVERY TIC, not only when hasLives turns on (bugfix NEW-SC-A, 2026-11-16): the map change
+			// takes the player's buddha cheat off while hasLives travels on this token as true, so with New Map Keeps on
+			// "Total and Rewards" or "Everything" the lives carried to map 2 and later caught nothing (rig: MAP02 t2 lives
+			// 1, buddha 0, and a failed DOWN killed him). Only the player's own cheat bit (CF_BUDDHA) is Score's: RSQ
+			// SlowMo's DOWN holds with the actor's flag (bBUDDHA, down.zs Hold), which Score never touches, so neither
+			// clears the other's hold.
+			else if (mo.health > 0 && !(p.cheats & CF_BUDDHA))
+			{
+				p.cheats |= CF_BUDDHA;
+
+				if (DebugOn())
+				{
+					Console.Printf("RS_Score: buddha back ON (%d lives held; the map change or a load had it off)", tr.extraLives);
+				}
+			}
 
 			// DIED ANYWAY. Score_CheckRevival's first branch, and it matters: buddha
 			// does not stop forced damage, a telefrag, or the kill cheat. When the
@@ -1298,8 +1318,11 @@ class RS_ScoreHandler : EventHandler
 			}
 			tr.downNoted = false;
 
-			if (mo.health == 1)
+			// ONLY A HIT THAT WOULD HAVE KILLED SPENDS A LIFE (bugfix SC4, 2026-11-16): 1 HP from a hit that left 1 HP,
+			// or a life earned while at 1 HP, is not a caught death (tracker.zs NoteHit)
+			if (mo.health == 1 && tr.lethalHit)
 			{
+				tr.lethalHit = false;
 				mo.health = mo.GetMaxHealth(true);
 				p.health  = mo.health;
 

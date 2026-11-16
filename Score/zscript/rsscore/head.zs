@@ -136,7 +136,7 @@ class RS_ScoreHead : EventHandler
 
 	// ---------------------------------------------------------------- cvars (server: the same on every machine)
 	// ALWAYS ON (owner 2026-11-09 22:27: "remove it"): "Brutal Doom's Own" (rs_score_hs 0) is gone; on the rig its BD head
-	// kills did not pay Headshot. rs_score_hs is kept only so a saved 0 cannot switch the check off.
+	// kills did not pay Headshot. Its switch, rs_score_hs, is gone too (nothing read it: bugfix SC13, 2026-11-16).
 	static bool On()        { return true; }
 	static bool BonusOn()   { let c = CVar.FindCVar("rs_score_hs_bonus"); return !c || c.GetBool(); }
 	static bool HeadlessOn(){ let c = CVar.FindCVar("rs_score_hs_headless"); return !c || c.GetBool(); }
