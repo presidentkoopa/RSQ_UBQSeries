@@ -202,10 +202,17 @@ class RSQA_QoL : EventHandler
 		if (!(e.Name ~== "rsqa_measure")) return;
 		let mo = players[consoleplayer].mo;
 		double h = mo ? mo.HmdPosition.y : 0;
-		if (h <= 0.5) { Console.Printf("RSQ Accessibility: no headset height to measure"); return; }
+		// AC3 (11-16): the result in the middle of the view as well (Measure Me's way), not only a console line
+		if (h <= 0.5)
+		{
+			Console.Printf("RSQ Accessibility: no headset height to measure");
+			Console.MidPrint(null, "RSQ Accessibility:\nno headset height to measure", true);
+			return;
+		}
 		let cv = CVar.FindCVar('rsqa_stand_eye');
 		if (cv) cv.SetFloat(h);
 		Console.Printf("RSQ Accessibility: standing eye height %.2f m", h);
+		Console.MidPrint(null, String.Format("RSQ Accessibility:\nstanding eye height %.2f m", h), true);
 	}
 
 	// ---- AC5 VIGNETTE ON KNOCKBACK AND LONG FALLS ------------------------------------------------------
@@ -218,13 +225,25 @@ class RSQA_QoL : EventHandler
 	const FALL_VZ    = 10.0;
 	transient double kPrev, kStr;
 	transient int    kTic;
+	transient int    kHurt;   // AC12 (11-16): the tic you were last hit; a speed jump counts as a knockback only then
+	transient int    kHp, kAr;   // last tic's health and armour: a hit the armour took whole (no WorldThingDamaged) counts too
+
+	override void WorldThingDamaged(WorldEvent e)
+	{
+		if (e.Thing && e.Thing.player && e.Thing.PlayerNumber() == consoleplayer && e.Damage > 0) kHurt = level.maptime;
+	}
 
 	void KnockTick()
 	{
 		let pmo = players[consoleplayer].mo;
 		if (!pmo || pmo.health <= 0) { kPrev = 0; kStr = 0; return; }
 		double v = pmo.vel.Length();
-		if (v - kPrev > KNOCK_DV && v > KNOCK_MIN)
+		int ar = pmo.CountInv("BasicArmor");
+		if (pmo.health < kHp || ar < kAr) kHurt = level.maptime;   // health or armour lost since last tic: a hit
+		kHp = pmo.health; kAr = ar;
+		// your own leaps (a crisis dive, the grapple, a Force jump, a lunge) are no knockback: only a jump that comes with
+		// a hit on you (a blast, an Arch-Vile's toss, a monster's throw) counts
+		if (v - kPrev > KNOCK_DV && v > KNOCK_MIN && level.maptime - kHurt <= 2)
 		{
 			kStr = max(kStr, clamp(0.5 + (v - kPrev - KNOCK_DV) / 16.0, 0.5, 1.0));
 			kTic = level.maptime;
@@ -272,7 +291,7 @@ class RSQA_QoL : EventHandler
 		wMon.Clear(); wX.Clear(); wY.Clear(); wZ.Clear(); wAwake.Clear();
 		fogX.Clear(); fogY.Clear(); fogZ.Clear(); fogTic.Clear();
 		for (int i = 0; i < MAXPLAYERS; i++) { stInit[i] = false; autoTics[i] = 0; }
-		kPrev = 0; kStr = 0;
+		kPrev = 0; kStr = 0; kHurt = -1000;
 		let it = ThinkerIterator.Create("Actor");
 		Actor a;
 		while (a = Actor(it.Next())) if (a.bISMONSTER && a.health > 0) Track(a, false);
@@ -387,18 +406,27 @@ class OptionMenuItemRSQAResetSeries : OptionMenuItemSafeCommand
 		if (mm) for (int i = 0; i < mm.copies.Size(); i++)
 			if (mm.copies[i].menu == page) { rows.Copy(mm.copies[i].rows); copied = true; break; }
 		if (!copied) rows.Copy(desc.mItems);
+		// AC13 (11-16): a mod's Reset All row sits on its page AND on its Test page, and each was run and counted. Now
+		// a page's own Reset All runs first (it covers the pages under it), then its sub-pages are walked, and a row of
+		// a kind already run (the same row class, or the same command) is skipped: each mod is reset and counted once.
+		for (int i = 0; i < rows.Size(); i++)
+		{
+			let it = rows[i];
+			if (!it || !(it is "OptionMenuItemSafeCommand")) continue;
+			if (it is "OptionMenuItemRSQAResetSeries" || !(it.mLabel ~== "Reset All")) continue;
+			Name key = it.GetClassName() == 'OptionMenuItemSafeCommand' ? it.GetAction() : it.GetClassName();
+			bool done = false;
+			for (int k = 0; k < seen.Size(); k++) if (seen[k] == key) { done = true; break; }
+			if (done) continue;
+			seen.Push(key);
+			it.MenuEvent(Menu.MKEY_MBYes, false);   // the row's own confirmed action: its own command, run safe
+			Console.Printf("RSQ Accessibility: reset %s", page);
+			ran++;
+		}
 		for (int i = 0; i < rows.Size(); i++)
 		{
 			let it = rows[i];
 			if (!it) continue;
-			if (it is "OptionMenuItemSafeCommand")
-			{
-				if (it is "OptionMenuItemRSQAResetSeries" || !(it.mLabel ~== "Reset All")) continue;
-				it.MenuEvent(Menu.MKEY_MBYes, false);   // the row's own confirmed action: its own command, run safe
-				Console.Printf("RSQ Accessibility: reset %s", page);
-				ran++;
-				continue;
-			}
 			if (it is "OptionMenuItemSubmenu" && !(it is "OptionMenuItemCommand")) Walk(it.GetAction(), seen, depth + 1, ran);
 		}
 	}

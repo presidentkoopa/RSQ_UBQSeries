@@ -55,7 +55,7 @@ class OptionMenuItemRSQAHanded : OptionMenuItemOption
 		// the value chosen, not mCVar's: a server cvar changed in a game is applied a tic later
 		int h = int(OptionValues.GetValue(mValues, Selection));
 		RememberLeft();
-		if (h == 1 && cs.GetInt() >= 10) cs.SetInt(0);
+		if (h == 1 && cs.GetInt() >= 10) cs.SetInt(RightScheme());   // AC7: the right-handed scheme you had, not always 0
 		else if (h == 2 && cs.GetInt() < 10) cs.SetInt(LeftScheme());
 	}
 
@@ -67,6 +67,18 @@ class OptionMenuItemRSQAHanded : OptionMenuItemOption
 		if (!cs || !keep) return;
 		int v = cs.GetInt();
 		if (v >= 10 && v != keep.GetInt()) keep.SetInt(v);
+		// AC7 (11-16): the right-handed one too (QuestZDoom 17.3's menu lists only 0, "Right-Handed"; a scheme set by
+		// console or a later engine is kept the same way)
+		let keepR = CVar.FindCVar("rsqa_right_scheme");
+		if (keepR && v >= 0 && v < 10 && v != keepR.GetInt()) keepR.SetInt(v);
+	}
+
+	// the right-handed scheme to go back to: the last one in use, 0 when none was
+	static int RightScheme()
+	{
+		let keep = CVar.FindCVar("rsqa_right_scheme");
+		int v = keep ? keep.GetInt() : 0;
+		return (v >= 0 && v < 10) ? v : 0;
 	}
 
 	// the left-handed scheme to go back to: the last one in use, 10 when none was

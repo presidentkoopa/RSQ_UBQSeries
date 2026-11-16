@@ -6,6 +6,7 @@
 server int rsqa_colorblind = 0;   // 0 Off, 1 Protanopia, 2 Deuteranopia, 3 Tritanopia, 4 High Contrast
 server int rsqa_handed     = 0;   // 0 Follow QuestZDoom, 1 Right-Handed, 2 Left-Handed
 server int rsqa_left_scheme = 10;  // the Left-Handed Control Scheme to go back to: 10 (A) or 11 (B), the last one in use (rsqa_hand.zs)
+server int rsqa_right_scheme = 0;  // AC7 (11-16): the right-handed Control Scheme to go back to (0..9), the last one in use
 
 // ---- round two (README_draft.md "Seeing", "Hands", "One hand", "Comfort"). Every one is off / 1.0 by default: nothing changes
 // until it is set, and a series mod reads none of them unless this pk3 is loaded.
@@ -16,8 +17,9 @@ server int   rsqa_onehand      = 0;     // 0 Off, 1 On: the Off-Hand Modifier wo
 server float rsqa_gesture_ease = 0.0;   // 0..1: gesture tolerances wider (x1..x2), speeds and holds lower (x1..x0.5),
                                         //   in the mods that read it and in this pack's gesture reader (rsqg_*)
 server int   rsqa_vignette     = 0;     // 0 Off, 1 Light, 2 Medium, 3 Strong: darkens the edge of view
-                                        //   while a Grapple or Whip rope swings, reels, climbs or yanks you, and on the
-                                        //   Saber's Force jump (and on knockback with rsqa_vig_knock)
+                                        //   while RSQ Grapple's hook moves you (stronger the faster) or a Whip rope swings,
+                                        //   reels, climbs or yanks you, on the Saber's Force jump (and on knockback with
+                                        //   rsqa_vig_knock). Grapple 2.0's only link to this pack is this vignette.
 server float rsqa_slowmo_ramp  = 0.0;   // seconds: the slowest a slow-motion ease may be (0 = SlowMo's own)
 server float rsqa_cue_scale    = 1.0;   // dots, rings, glows and markers from the series, x0.5..x3
 server float rsqa_text_scale   = 1.0;   // the series' HUD text and the Gun Bonsai screens, x1..x3
@@ -25,7 +27,8 @@ server int   rsqa_sound_cues   = 0;     // 0 Off, 1 Visual, 2 Rumble, 3 Both: hi
                                         //   slow motion starting and stopping, and (Rumble) a "ready" tick when a mod
                                         //   asks for one: only RSQ Saber's Force Grip does, on finding a new target
 server int   rsqa_hold_toggle  = 0;     // 0 Off, 1 On: held inputs toggle: this pack's Off-Hand Modifier, Grab Reach and
-                                        //   Force Grip buttons, RSQ Grapple's Fire Hook key and RSQ Saber's Force trigger
+                                        //   Force Grip buttons and RSQ Saber's Force trigger (Grapple 2.0's Fire Hook is
+                                        //   one press, nothing to hold)
 server int   rsqa_menus        = 0;     // 0 Full, 1 Simple: the series' option pages hide their niche sub-pages
 
 // ---- 2026-10-31 sweep (owner's picks 44, 45, 47). Off by default like the rest.

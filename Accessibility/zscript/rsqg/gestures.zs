@@ -119,8 +119,11 @@ class RSQG_Handler : EventHandler
 	String sayName;
 	int sayTic;
 
-	// BODY (GE3): measuring from this gametic until measureTill; the largest seen
+	// BODY (GE3): measuring from this level.maptime until measureTill; the largest seen. AC5 (11-16): the window is
+	// armed by the first world tic after the request (measureArm), so it opens only once the menu has closed and the
+	// game runs again (gametic runs on behind a paused menu; maptime does not), and the reader stays awake until it ends.
 	int measureFrom, measureTill;
+	bool measureArm;
 	double mEye, mReach;
 	const REF_EYE = 1.60;     // the body the defaults were set for: eyes this high (metres)
 	const REF_REACH = 0.70;   // ...and a hand this far from the eyes, arm straight out
@@ -189,7 +192,7 @@ class RSQG_Handler : EventHandler
 
 	bool Running(int dbg)
 	{
-		return gametic - lastAsk <= IDLE || TwoHandWanted() || dbg == 1 || dbg == 2 || gametic < measureTill;
+		return gametic - lastAsk <= IDLE || TwoHandWanted() || dbg == 1 || dbg == 2 || measureArm || measureTill > 0;
 	}
 
 	// ---- QUIET (GE1): the rope and the Wheel, asked by name -----------------------------------------------
@@ -211,14 +214,17 @@ class RSQG_Handler : EventHandler
 			svcLook = gametic + TICRATE;
 		}
 		int why = 0;
-		// the rope in any of its held states: climbing hand over hand, swinging on it in the air (rig: the body's
-		// swing read as thrusts and pulls), reeling in
-		if (svcGrapple && (svcGrapple.GetInt("climbing", "", 0, 0, pmo) == 1 || svcGrapple.GetInt("swinging", "", 0, 0, pmo) == 1
+		// AC1 (11-16): RSQ Grapple 2.0 answers only "g2.*" (-1 to the old names): quiet while its hook is doing anything
+		// ("g2.mode" 1-7: a yank, the air pull and hold, the spike, a pull to a heavy one, a ledge, Scorpion Pull's hold)
+		// and while you are in the air after a kick-off ("g2.air"), where both hands down is its air spike. The old
+		// Grapple's held rope (climbing, swinging, reeling) is still asked for a saved older pack.
+		if (svcGrapple && (svcGrapple.GetInt("g2.mode", "", 0, 0, pmo) > 0 || svcGrapple.GetInt("g2.air", "", 0, 0, pmo) == 1
+			|| svcGrapple.GetInt("climbing", "", 0, 0, pmo) == 1 || svcGrapple.GetInt("swinging", "", 0, 0, pmo) == 1
 			|| svcGrapple.GetInt("reeling", "", 0, 0, pmo) == 1)) why = 1;
 		else if (svcWheel && svcWheel.GetInt("IsOpen", "", 0, 0, pmo) == 1) why = 2;
 		if (why)
 		{
-			if (gametic >= quietTill && SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: quiet, %s (t%d)", why == 1 ? "on the rope" : "the Wheel is open", level.maptime);
+			if (gametic >= quietTill && SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: quiet, %s (t%d)", why == 1 ? "on the grapple" : "the Wheel is open", level.maptime);
 			quietTill = gametic + RING;
 			quietWhy = why;
 		}
@@ -279,16 +285,16 @@ class RSQG_Handler : EventHandler
 	override void NetworkProcess(ConsoleEvent e)
 	{
 		if (!(e.Name ~== "rsqg_measure") || e.Player != consoleplayer) return;
-		// two seconds to close the menu and stand (the game is paused while the menu is open), then one to measure
-		measureFrom = gametic + 2 * TICRATE;
-		measureTill = measureFrom + TICRATE;
+		// two seconds to stand once the menu is closed and the game runs (armed in WorldTick: AC5), then one to measure
+		measureArm = true;
+		measureFrom = 0; measureTill = 0;
 		mEye = 0; mReach = 0;
 		Console.MidPrint(null, "RSQ Accessibility: Measure Me\nClose the menu, stand tall,\narms straight out to your sides.", true);
 	}
 
 	void Measure(PlayerPawn pmo)
 	{
-		if (gametic < measureFrom || measureTill <= 0) return;
+		if (measureTill <= 0 || level.maptime < measureFrom) return;
 		let adj = CVar.FindCVar("vr_height_adjust");
 		// RSQ_Accessibility's SEATED PLAY (RSQG_A11y.Seated / SeatDrop, by name): measured sitting down, the eyes are
 		// put back up by how far they sit below standing, so the zones are fitted to your standing body, not the chair.
@@ -297,7 +303,7 @@ class RSQG_Handler : EventHandler
 		mEye = max(mEye, pmo.HmdPosition.y + (adj ? adj.GetFloat() : 0) + seatUp);
 		for (int h = 0; h < 2; h++)
 			if (live[h]) { Vector3 bh = RSQG_Pose.Body(pmo, h); mReach = max(mReach, bh.xy.Length()); }
-		if (gametic < measureTill - 1) return;
+		if (level.maptime < measureTill - 1) return;
 		measureTill = 0;
 		if (mEye < 0.5 || mReach < 0.2)
 		{
@@ -316,6 +322,13 @@ class RSQG_Handler : EventHandler
 
 	override void WorldTick()
 	{
+		if (measureArm)
+		{
+			measureArm = false;
+			measureFrom = level.maptime + 2 * TICRATE;
+			measureTill = measureFrom + TICRATE;
+			if (SwDebug() >= 1) Console.Printf("\c[Gold]rsqg: Measure Me armed: measuring t%d to t%d", measureFrom, measureTill);
+		}
 		int dbg = SwDebug();
 		double t0 = dbg >= 3 ? MSTimeF() : 0;
 		if (!Running(dbg))
@@ -778,6 +791,8 @@ class RSQG_Handler : EventHandler
 	{
 		if (which < 0 || which >= PAIR_KINDS) return false;
 		if (repeatMs > 0 && now - saidAt[which] < repeatMs) return false;
+		// arg1: hundredths of the gesture's speed in m/s; for both palms out (kind 2, held still) hundredths of the SECONDS
+		// it was held (AC13: it has no speed)
 		EventHandler.SendNetworkEvent("rsqg_pair", which, int(round(mag * 100)), 0);
 		saidAt[which] = now;
 		static const String pairName[] = { "both hands down", "both hands apart", "both palms out", "both palms thrust" };

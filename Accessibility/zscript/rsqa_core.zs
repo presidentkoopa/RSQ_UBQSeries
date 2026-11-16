@@ -122,6 +122,20 @@ class RSQA_Handler : EventHandler
 		}
 	}
 
+	// AC6 (11-16): One-Handed switched off with a held bind latched (Hold to Toggle) lets the latch go too, and sends the
+	// release, so switching it back on does not bring the modifier (or a held Grab Reach / Force Grip) back engaged
+	override void UiTick()
+	{
+		if (RSQA_Set.OneHand()) return;
+		for (int code = 0; code < 10; code++)
+		{
+			if (!latch[code]) continue;
+			latch[code] = false;
+			if (code == 0) EventHandler.SendNetworkEvent("rsqa_mod", 0);
+			else EventHandler.SendNetworkEvent("rsqa_alt", code, 0);
+		}
+	}
+
 	clearscope bool Swapped(int pn)
 	{
 		return pn >= 0 && pn < MAXPLAYERS && swap[pn] && RSQA_Set.OneHand();
