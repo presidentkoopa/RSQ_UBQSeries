@@ -183,6 +183,12 @@ of section 2. The mockup stills and GIFs do not show this; it is part of the des
 - **Also important: sharp pixels.** Every in-game draw of these fonts and icons scales by whole numbers where it can and
   never smooths: the soft look of some mockup stills was the mockups' downscaling, not the font.
 
+**Built by the banner lane (2026-11-16), its readings:** the mockups put the top stack at the top of the eye; in the
+headset the HUD is a window round the gaze and Score's stack sits near its middle, so every banner is sized in eye units
+(SlowMo's EyeMap) and placed at the mockup's spot or lower, clear under the stack (the invulnerability row always
+counted). +1UP shows the plain 1UP (section 6: no plus). The −1UP's lives chip shows the faces greyed, "n LEFT". A
+banner waits for the one before it (four at most waiting). Rig only, not headset-confirmed, all of it.
+
 ## Banner service contract (2026-11-16, shared by the two builders)
 
 Every pack asks RSQ VisualRewards **by name**, never linked: `ServiceIterator.Find("RSQVR_Service")`, the class name
@@ -197,6 +203,12 @@ checked, then `GetInt("banner", "<MOMENT>|<chip>|<chip>...", 0, 0, playerPawn)`.
 | `BOSSWIN` | Miniboss `tierup.zs` TierUpOnKill: the miniboss killed by the player | `tierup:<the new world tier 1..13>` (left out when the tier cannot rise) |
 | `BOSSLOSS` | Miniboss `tierup.zs` FightLost: a life spent in the fight, or the map left with it on (then on the next map, ~20 tics in) | `tierdown:<the new world tier>` (left out at tier 1), `nolegendary:` |
 | `BOSSINCOMING` | Miniboss `bossfight.zs` StartArrival: once per fight, to the player who called it | `name:<the clean Boss name>` (Miniboss `bossbar.zs` BossNameOfClass, "<NAME> WARLORD", section 9), `tier:<the miniboss's tier, world + 2, at most 13>`, `thralls:<count>`, `clock:<seconds to the fight>` |
+
+| `LEVELUP` | VisualRewards `damnums/events.zs` Banner (Gun Bonsai's `bonsai-level-up` 0) | `playerlv:<n>`, `upgrade:+1` |
+| `LEVELGUN` | VisualRewards `damnums/events.zs` Tag (`bonsai-level-up` 1) | `gun:<name>`, `lv:<n>`, `hand:<0 main / 1 off>`, `upgrade:new` |
+
+Toasts (PRESENTATION_GUIDE.md 5): `GetInt("toast", "<kind>|<text>", 0, 0, playerPawn)`, kind `health` / `armor` /
+`invuln` / `ammo` / `lives` / `up` / `down` / `info`; 1 when shown, 0 (or no service): print the old way.
 
 Chip kinds: `health`, `armor`, `invuln`, `mags`, `lives`, `tierup`, `tierdown`, `nolegendary` (and `name`, `tier`,
 `thralls`, `clock` for BOSSINCOMING). A tier is sent as its number.
@@ -224,16 +236,18 @@ while DOWN). The slow motion for a life: `start.reward` "life.used" (5 s, -1UP) 
 
 | Part | State |
 |---|---|
-| Arcade Gold banners and the chip pop | Not built (mockups only) |
-| 1UP / −1UP | Not built |
-| Doomguy faces as life pips | Not built (Score's own pips today) |
-| The invulnerability bar | The bar: not built by this row's last update. The invulnerability it reads is built (rig only, not headset-confirmed): `RSQ_ScoreLifeInvul` (a life spent, 5 s) and `RSQSM_DownInvul` (REVIVE, 5 / 3 / 1 s), both PowerInvulnerable (contract below) |
+| Arcade Gold banners and the chip pop | **Built, rig only, not headset-confirmed** (VisualRewards `rsqvr/banners.zs`, art `tools/gen_banners.py`): REVIVE, BOSS DEFEATED!, BOSS WINS! and every chip kind of the contract; the pop, the 4-tic chip steps, two to a row, the shrink and fade; the INVULNERABLE chip blinks and flies into the bar. Shown in the owner's full order with no script errors (only BD_VoxelPack's 4 voxeldef lines). rig frames `mockups/banners/rig/` `rig_REVIVE_handoff.png`, `rig_BOSS_DEFEATED_WINS.png`. Test: `netevent rsqvr_bntest 0..9` (sv_cheats) |
+| 1UP / −1UP | **Built, rig only, not headset-confirmed**: the banded 1 and raised UP (pre-made from RSSCFON, `RQVBO*` / `RQVBU*`), the grin / OUCH grey faces, rays, the gold flash, wobble, squash, bob, the shine, sparkles, the float into Score's newest face (Score holds that face back until the badge lands: `banner.lives`); −1UP: hot for a beat, the minus slams in, red flash and shake, bands go cold and droop. `rig_1UP_float.png`, `rig_MINUS1UP.png` |
+| Doomguy faces as life pips | **Built, rig only, not headset-confirmed** (Score `hud.zs` DrawLives): STFST01 faces in the old pips' place and step (11 units tall), the newest grins (STFEVL0) as it is gained, a spent one falls OUCH and grey. `rig_PIPS_fall_and_land.png` |
+| The invulnerability bar | **The bar: built, rig only, not headset-confirmed** (VisualRewards `rsqvr/invbar.zs`): RQVBIE / RQVBIW (gen_gauges.py), 8 steps lo (70,8,60) / mid (255,40,190) / hi (255,205,245), the band, the breathing edge, the 16 x 16 orb RQVBII; its own row under SlowMo's (countdown.bottom, meter.*, hud.*), the Boss meter's width; full when it appears, draining over the real time left; held back while a chip flies to it, then flashes there; answers `invbar.bottom` (Score's rows go under it). `rig_INVBAR_drain.png`. The invulnerability it reads is built (rig only, not headset-confirmed): `RSQ_ScoreLifeInvul` (a life spent, 5 s) and `RSQSM_DownInvul` (REVIVE, 5 / 3 / 1 s), both PowerInvulnerable (contract below) |
 | The slow motion reason line | Built; REVIVE, -1UP (ASCII minus), 1UP and BOSS / BOSS INCOMING built (SlowMo `clock.zs` CauseWord; rig: the reasons -1UP, 1UP, REVIVE logged) |
 | "Boss" in player-facing words | Built for the reason words, the held words (BOSS DEFEATED!, BOSS WINS!) and the meter's wait line (No Boss: ...). Menus still say Miniboss (left as they are: "no system rewrite") |
 | The life crate as the Boss's 1UP (gold, stays, floats back) | Built, rig only, not headset-confirmed (Score `lifecrate.zs`, Miniboss `tierup.zs` DropLifeCrate). The floating test: more than 64 units below the floor where it appeared, or outside the level, it floats back to that spot and hovers (a Boss dying in the air over a pit gives that pit's floor: not caught). Shown: dropped on the death spot, there 150 tics later, floating up 128 to a (simulated) ledge, +1 life on touch |
 | +1UP with slow motion for a Score life | Built, rig only, not headset-confirmed (Score `handler.zs` RunRewardCue: LIFEUP for every life gained; 2.5 s world slow motion, reason 1UP, only for a life Score's own target pays) |
-| The DOWN screen in Arcade Gold (section 8) | Not built |
-| BOSS INCOMING! banner (section 9) | Not built |
-| Clean Boss names on the bar and banner (section 9) | Not built |
-| LEVEL UP: player and gun (section 10) | Not built |
-| The SOTN letter animation on every banner headline (section 11) | Not built |
+| The DOWN screen in Arcade Gold (section 8) | **Built, rig only, not headset-confirmed** (SlowMo `downhud.zs` DrawArcade; same place, size and timing): OUCH face + DOWN! (red bands, SOTN letters), BE QUICK OR BE DEAD (red letters, still breathing), the chips (n KILL(S) TO GET UP, the getting-up health read from `RSQSM_DownWatch.downs` / `RSQSM_Down.UpHealthShare`: 100 / 66 / 33 %, DEATH IN with the seven segments), TARGET chips, the blood-red pulsing bar (RSQSMHE / RSQSMHW, today's bar look) with the bloodied face STFST40-42. `rig_DOWN_entrance_settled.png` |
+| BOSS INCOMING! banner (section 9) | **Built, rig only, not headset-confirmed**: RSQMBHD + BOSS INCOMING! (gold bands), name, TIER n + swatch, the thralls' RSQMBX crosshairs, FIGHT IN counting down; the banner stays until the clock is done. `rig_BOSS_INCOMING_fullorder.png` (a test name). Reading: `name:` sent empty is filled from RSQMB_Service GetObject "boss" (0) when that answers, else BOSS; `name:@<class>` gives that class's clean name; thrall colours are the mockup's unless sent as `thralls:n@RRGGBB,...` (the arrival's colours are not readable by name) |
+| Clean Boss names on the bar and banner (section 9) | **Built, rig only, not headset-confirmed**: Miniboss `bossbar.zs` RSQMB_Handler.BossName / CleanName (vanilla ancestor or replacee, else the Species and class name by their words, else Tag, else the class name split without RS_ and colour) + WARLORD; the same rule in VisualRewards `bossname.zs` (keep in step). Only the name changed on the Boss bar. Not shown on a live Boss bar on the rig |
+| LEVEL UP: player and gun (section 10) | **Built, rig only, not headset-confirmed** (damnums `events.zs` Banner / Tag ask the banners: LEVELUP, LEVELGUN; the old band and tag only with Banners off): the grin + LEVEL UP!, ★ PLAYER LV n, ↑ +1 UPGRADE; the gun: its name chip, a big gold LV n, ↑ NEW UPGRADE, placed at the gun's spot carried onto the HUD (my reading of "by the gun as today"), the small gun card hidden meanwhile (RSQGC "levelcard"). `rig_LEVELUP_toasts_gun.png` (Gun Bonsai's own `bonsai-level-up` event) |
+| The SOTN letter animation on every banner headline (section 11) | **Built, rig only, not headset-confirmed**: every headline is RSSCFON letters as pictures (look + white-hot look: RQVBA/B, RQVBK/L, RQVBG/H; DOWN!: RSQSR/RSQSW), letter by letter 1.5 tics apart: smeared (four slices, slanted) for 7 tics, upright, then six changes of look 6 tics apart; the 1 and UP smear (their shine is the second look). Photosensitive Mode: no change of look, no white or red flash, no shake (`rig_PHOTOSENSITIVE.png`). Sharp pixels: headline letters and chip text take whole screen px a pixel at rest |
+| Toasts (PRESENTATION_GUIDE.md 5) | **Built, rig only, not headset-confirmed**: RSQVR_Service GetInt "toast" "<kind>\|<text>" (health, armor, invuln, ammo, lives, up, down, info): one chip, the pop, ~1.5 s, low in the view and under a banner's chips; three at most. `rig_LEVELUP_toasts_gun.png` (test toasts) |
+| Words over a monster never overlap, never on its bar (PRESENTATION_GUIDE.md 4b) | **Built, rig only, not headset-confirmed** (VisualRewards `words.zs`): every word on one monster (or one spot) gets its own line; they start above the HP bar and its markers (`RSQTHP_Bar` Pos + 14 px, + 36 x Cue with a crown / chain / skull). `rig_WORDS_stacked_over_bar.png` (THREAT! held, three one-off words on a zombieman with its bar) |

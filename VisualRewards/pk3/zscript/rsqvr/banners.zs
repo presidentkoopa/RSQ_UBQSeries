@@ -460,7 +460,7 @@ class RSQVR_Banners : EventHandler
 			TextureID t = T(String.Format("%s%03d", set, c));
 			int tw = 0, th = 0;
 			if (t.IsValid()) [tw, th] = TexMan.GetSize(t);
-			w += (c == 32 || !t.IsValid()) ? 5 : tw + 1;
+			w += (c == 32 || !t.IsValid()) ? 9 : tw + 1;
 		}
 		return max(0.0, w - 1);
 	}
@@ -506,7 +506,7 @@ class RSQVR_Banners : EventHandler
 		{
 			int c = txt.ByteAt(i);
 			TextureID t = T(String.Format("%s%03d", set, c));
-			if (c == 32 || !t.IsValid()) { x += 5 * u; continue; }
+			if (c == 32 || !t.IsValid()) { x += 9 * u; continue; }
 			int tw, th;
 			[tw, th] = TexMan.GetSize(t);
 			double w = tw * u, h = th * u;

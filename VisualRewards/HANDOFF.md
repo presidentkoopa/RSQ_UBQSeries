@@ -1,5 +1,18 @@
 # RSQ VisualRewards (until 2026-11-03: RSQ_TopHPBars / RSQ HP Bars) -- handoff
 
+## 2026-11-16: Arcade Gold banners, the invulnerability bar, toasts, LEVEL UP, words never overlapping -- rig only, not headset-confirmed
+
+design/BANNERS_AND_HUD.md sections 1-11 and its built table; PRESENTATION_GUIDE.md 4b and 5. Code: `rsqvr/banners.zs`
+(RSQVR_Banners: the banners, the toasts, the test hook `netevent rsqvr_bntest 0..9`), `rsqvr/invbar.zs` (the bar),
+`rsqvr/bossname.zs` (the Boss's clean name; a copy of Miniboss bossbar.zs's), `rsqvr/service.zs` ("banner", "toast",
+ui "banner.lives", "invbar.bottom"), `damnums/events.zs` (LEVEL UP asks the banners), `rsqvr/words.zs` (one line a word,
+above the HP bar). Art and the fonts' copies (RSQVRBF1 / RSQVRBF2 = Score's RSSCFON / RSSCFN2): `tools/gen_banners.py`
+(also writes SlowMo's DOWN letters, `SlowMo/graphics/rsqsmdn/`); the bar's well and fill: `tools/gen_gauges.py` RQVBI
+(that tool rewrites every bar's art in the other mods' folders too: revert what you did not mean to change). Rig frames:
+`design/mockups/banners/rig/`. Cvars: rsqvr_banners, rsqvr_banner_size, rsqvr_invbar (menu: Banners and Bars).
+Open: headset all of it; the BOSS INCOMING! thralls' own colours (sent or the mockup's); the Boss's name when Miniboss has
+no Boss listed yet at the arrival (BOSS); colour-blind play for the magenta bar.
+
 ## 2026-11-05: the owner's approved HP bar icons (11-05) -- rig only, not headset-confirmed
 
 Done (code: bar.zs, handler.zs; art: tools/gen_art.py -> TEXTURES.rsqthp + RQK5 / RQS4 / RQS5 / RQB3 / RQB4; all under

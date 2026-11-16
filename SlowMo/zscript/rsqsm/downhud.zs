@@ -364,7 +364,7 @@ class RSQSM_DownHud ui
 			TextureID t = T(String.Format("RSQSR%03d", c));
 			int tw1, th1;
 			if (t.IsValid()) [tw1, th1] = TexMan.GetSize(t);
-			tot += (c == 32 || !t.IsValid()) ? 5 * k : (tw1 + 1) * k;
+			tot += (c == 32 || !t.IsValid()) ? 8 * k : (tw1 + 1) * k;
 		}
 		tot -= k;
 		if (measure || a <= 0.003) return tot;
@@ -374,7 +374,7 @@ class RSQSM_DownHud ui
 		{
 			int c = txt.ByteAt(i);
 			TextureID t = T(String.Format("RSQSR%03d", c));
-			if (c == 32 || !t.IsValid()) { x += 5 * k; continue; }
+			if (c == 32 || !t.IsValid()) { x += 8 * k; continue; }
 			int tw2, th2;
 			[tw2, th2] = TexMan.GetSize(t);
 			double b = (breathe && !calm) ? BreathOf(i, secs) : 1.0;
