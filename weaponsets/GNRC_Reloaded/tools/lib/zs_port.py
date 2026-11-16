@@ -1,6 +1,6 @@
 """Copy the BD22 VR scripts a standalone pack needs, with the few edits that free them from Brutal Doom's class names."""
 import re, os
-BD = '/home/claude/presidentkoopa/rsq_bd_vr_reloaded/src'
+BD = os.path.join(os.environ.get('RSQGW_BD22VR', '/home/claude/rsq_bd_vr_reloaded'), 'src')	# BD22 VR Reloaded's checkout (RSQGW_BD22VR to change it)
 FILES = ['rsvr/vrhand.zs', 'rsq/handler.zs', 'rsq/handtable.zs', 'rsq/gunmoves.zs', 'rsq/hands.zs', 'rsq/handtone.zs',
          'rsq/muzzle.zs', 'rsq/fistmoves.zs', 'rsq/casemodels.zs', 'rsq/casings.zs', 'rsr/rsr_assist.zs', 'rsr/vreload.zs', 'rsr/rsr_guns.bd.zs', 'rsr/rsb_guns.zs',
          'rsr/rsr_break.zs', 'rsr/rsr_pump.zs', 'rsr/rsr_pump_guns.zs', 'rsr/rsr_m203_geo.zs', 'rsr/rsr_m203.zs', 'rsq/flick.zs',

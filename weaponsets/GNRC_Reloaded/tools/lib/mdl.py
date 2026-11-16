@@ -1,8 +1,8 @@
 """Build a pack's MODELDEF from BD22 VR's: every block of a BD22 gun is copied under the pack's class for that gun."""
 import re, os, sys
-sys.path.insert(0, '/home/claude/presidentkoopa/rsq_bd_vr_reloaded/tools')
+sys.path.insert(0, os.path.join(os.environ.get('RSQGW_BD22VR', '/home/claude/rsq_bd_vr_reloaded'), 'tools'))
 import handtone_build
-BD = '/home/claude/presidentkoopa/rsq_bd_vr_reloaded/src'
+BD = os.path.join(os.environ.get('RSQGW_BD22VR', '/home/claude/rsq_bd_vr_reloaded'), 'src')	# BD22 VR Reloaded's checkout (RSQGW_BD22VR to change it)
 SRC = ['MODELDEF.bd.txt', 'MODELDEF.rsr', 'MODELDEF.rsrpump', 'MODELDEF.rsm', 'MODELDEF.rsb', 'MODELDEF.rsq', 'MODELDEF.rsbullet', 'MODELDEF.rsqoff', 'MODELDEF.rsqdual']
 BLOCK = re.compile(r'^([ \t]*)Model[ \t]+"?(\w+)"?\s*\{(.*?)^[ \t]*\}', re.S | re.I | re.M)
 def nocomment(t): return re.sub(r'//[^\n]*', '', re.sub(r'/\*.*?\*/', '', t, flags=re.S))

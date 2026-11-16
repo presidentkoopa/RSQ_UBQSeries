@@ -19,10 +19,12 @@ sys.path.insert(0, os.path.join(HERE, 'lib'))
 import mdl, zs_port, basics
 BD = mdl.BD
 # BD22 VR scripts this pack carries beyond the earlier port's set: the contact saw (as WoS_Reloaded)
-zs_port.FILES = zs_port.FILES + ['rsq/pose.zs', 'rsvr/melee.zs', 'rsq/fists.zs']	# + the basics' punches (tools/lib/basics.py)
-GNRC = '/home/claude/src/gnrc'
-VOX = '/home/claude/src/vox'
-CFX, RSBS = '/home/claude/rs_combatfx/sounds', '/home/claude/rs_ballistics/sounds/rsb'
+zs_port.FILES = zs_port.FILES + ['rsq/pose.zs', 'rsvr/yield.zs', 'rsvr/melee.zs', 'rsq/fists.zs']	# yield.zs: BD22 VR 2.0.4u (melee.zs and fists.zs ask it)	# + the basics' punches (tools/lib/basics.py)
+# the third-party inputs; RSQGW_INPUTS=<dir> takes them from tools/inputs_from_pack.py's copy (gnrc, vox, cfx, rsbs)
+INP = os.environ.get('RSQGW_INPUTS')
+GNRC = os.path.join(INP, 'gnrc') if INP else '/home/claude/src/gnrc'
+VOX = os.path.join(INP, 'vox') if INP else '/home/claude/src/vox'
+CFX, RSBS = (os.path.join(INP, 'cfx'), os.path.join(INP, 'rsbs')) if INP else ('/home/claude/rs_combatfx/sounds', '/home/claude/rs_ballistics/sounds/rsb')
 OUT = os.path.join(ROOT, 'out'); TREE = os.path.join(OUT, 'tree')
 NAME, VERSION = 'GNRC_Reloaded', '0.1.0'
 
@@ -146,7 +148,7 @@ def main(want_pk3):
     # EMNG (GNRC's thrown empty minigun: the death animation, not carried) and MSTI (GNRC's split medikit, not a weapon):
     # no actor here shows them, and the engine refuses a voxel for a sprite no actor uses
     vd, nd = re.subn(r'(?is)^(emnga|mstia)\s*=\s*"\w+"\s*\{[^}]*\}\s*', '', vd, flags=re.M)
-    if nd != 2: raise SystemExit('voxeldef: %d of 2 unused entries dropped' % nd)
+    if nd not in (0, 2): raise SystemExit('voxeldef: %d of 2 unused entries dropped' % nd)	# 0: inputs_from_pack.py's copy (already dropped)
     vd += '\n// tools/build.py: the Beretta\'s pickup sprite is RQGP (PIST is a HUD sprite name)\nrqgpa = "pista"\n{\n\tScale = 0.5\n\tDroppedSpin = 10\n\tPlacedSpin = 10\n}\n'
     wr('voxeldef.txt', vd)
     for p in glob.glob(os.path.join(VOX, 'voxels/*')): cp(p, 'voxels/' + os.path.basename(p))
@@ -164,7 +166,7 @@ def main(want_pk3):
     # the minigun's magazine piece -- at the gun, in the off hand, dropped -- with BD22 VR's own placements, hooks and
     # hold, each block's Offset / ZOffset solved (port_gun.chain) so the box's middle is where the magazine piece's
     # middle was (Minigun_rsr.md3 surface 2, frame 4). The dropped one wears the empty skin.
-    sys.path.insert(0, '/home/claude/presidentkoopa/rsq_bd_vr_reloaded/tools/handfit/port')
+    sys.path.insert(0, os.path.join(os.path.dirname(BD), 'tools/handfit/port'))
     _argv = sys.argv; sys.argv = sys.argv[:1]
     import numpy as np, port_gun as pg
     sys.argv = _argv
@@ -275,7 +277,7 @@ def main(want_pk3):
         ("Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'MeleeStrike1Berserked' : 'MeleeStrikeNormal', p, dir);", "Launch(mo, mo.CountInv('PowerStrength') > 0 ? 'RSQB_PunchBerserk' : 'RSQB_Punch', p, dir);\t// this pack: the basics' strike", 1),
         ("Launch(mo, 'MeleeStrikeNormal', p, dir);", "Launch(mo, 'RSQB_Punch', p, dir);", 1),
         ("Launch(mo, 'SawDamageHorizontal',", "Launch(mo, 'RSQGW_SawCut',", 1),
-        ("RSQ_Alias.Exact(a) == 'BrutalAxe'", "a.GetClassName() == 'BrutalAxe'", 1)]
+        ("\t\t\t\tAxePool(mo, n);", "\t\t\t\t{}\t// (this pack has no axe: BD22 VR 2.0.4r's AxePool(mo, n) is not run)", 1)]
     patches['rsq/fists.zs'] = basics.fist_patches(FISTS)
     zs_port.port(TREE, patches)
     # the basics (owner 2026-11-13): the grenade, the door lift, the punch's parts (tools/lib/basics.py)

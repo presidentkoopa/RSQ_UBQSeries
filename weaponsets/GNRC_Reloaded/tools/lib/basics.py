@@ -13,7 +13,7 @@ the advanced suite: each basic stands down when the series mod that owns it is l
     the whip      BD22 VR's pistol whip (zscript/rsvr/melee.zs, its PISTOL kind; build.py's melee patch).
 Both weapon sets carry an identical copy of this file (they never load together)."""
 import os, re, shutil
-SERIES = '/home/claude/rsq_ubqseries'
+SERIES = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', '..'))	# the repo this file is in (its Grenade, DistanceGrab)
 GN = os.path.join(SERIES, 'Grenade')
 DG = os.path.join(SERIES, 'DistanceGrab')
 
