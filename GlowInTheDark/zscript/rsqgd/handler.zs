@@ -76,6 +76,7 @@ class RSQGD_Handler : EventHandler
 	double mbMix;  int mbColour, mbLive, mbN;   // miniboss tint (mbN: RSQ Miniboss's own count)
 	int tintUntil, tintColour;             // another mod's tint (service "event.tint")
 	int darkUntil;                         // another mod's blackest-darkness window (service "event.dark", react.zs DropDark)
+	int lfStart, lfEnd;                    // a Score life spent: the life flash (service "event.lifeflash", LifeFlash below)
 	int ddzModeSaved; bool ddzModeHeld;    // DarkDoomZ's own ddz_mode while that window holds it at DarkDoom Black
 	double smMix;                          // slow motion
 	const DOWN_RED = 0x8A0000;             // deep blood red
@@ -284,7 +285,7 @@ class RSQGD_Handler : EventHandler
 	}
 
 	// a sequence owns the glow (the Randomize Colours key stands down): miniboss tint, DOWN's red map, a timed tint
-	bool SequenceBusy() { return mbMix > 0.001 || dnMix > 0.001 || tintUntil > Level.maptime; }
+	bool SequenceBusy() { return mbMix > 0.001 || dnMix > 0.001 || tintUntil > Level.maptime || lfEnd + LF_SETTLE > Level.maptime; }
 	// THE SAME ANSWER ON EVERY MACHINE (rig/README follow-up 2026-11-09, owner: "fix color drift"): the Randomize Colours
 	// key is a network event, so whether it re-rolls must not depend on anything one machine sees alone. dnMix is the
 	// console player's own red map (RSQ SlowMo answers "down.redmap" per machine), so a re-roll could happen on some
@@ -292,7 +293,7 @@ class RSQGD_Handler : EventHandler
 	// (SlowMo's "down.any", synced play state); the miniboss tint and a timed tint are synced already.
 	bool SequenceBusySynced()
 	{
-		if (mbMix > 0.001 || tintUntil > Level.maptime) return true;
+		if (mbMix > 0.001 || tintUntil > Level.maptime || lfEnd + LF_SETTLE > Level.maptime) return true;
 		let s = FindSvc("RSQSM_Service");
 		return s && s.GetInt("down.any") == 1;
 	}
@@ -474,6 +475,7 @@ class RSQGD_Handler : EventHandler
 		}
 		if (combo > 0) { k *= 1 + combo; hh *= 1 + combo * 0.6; }
 		c = Scale(c, k);
+		int ownC = c;                      // the map's own colour here, before any reaction (the life flash's second part)
 		if (smMix > 0) c = Mix(c, Drain(c), smMix);
 		if (mbMix > 0)
 		{
@@ -489,6 +491,7 @@ class RSQGD_Handler : EventHandler
 			c = Mix(c, Scale(DOWN_RED, 0.55 + 0.6 * beat), dnMix);
 			hh += dnMix * (48 + 72 * beat);
 		}
+		if (lfEnd + LF_SETTLE > Level.maptime) LifeFlash(c, hh, ownC);
 		if (waveOn)
 		{
 			double dw = abs(wdist[i] - waveR);
@@ -512,6 +515,41 @@ class RSQGD_Handler : EventHandler
 		h = clamp(hh, 0.0, 2048.0);
 	}
 
+	// THE LIFE FLASH (design/DOWN_LIVES_MINIBOSS_TIERS.md 3, owner 2026-11-16 00:58-01:00: "real white"): RSQ Score asks it
+	// by name when a Score life is spent (service "event.lifeflash", doubleArg its length, 5 s). The first LF_GREY tics the
+	// whole map's glow is grey and white, swinging slowly between the two (once a second: well under the 3 a second
+	// Photosensitive Mode guards against) and climbing the walls; then, to the end, the map's OWN colours (the profile's,
+	// before slow motion's drain or any other reaction) shown strongly; then over LF_SETTLE it eases back to whatever the
+	// glow is doing. Every reaction before it is drawn under it (it is the last word on the colour). Synced play state.
+	const LF_GREY = 105;          // 3 s of grey and white
+	const LF_SETTLE = 35;         // the settle back, 1 s after the end
+	const LF_GREYCOL = 0x9AA0AA;
+	void StartLifeFlash(double secs)
+	{
+		lfStart = Level.maptime;
+		lfEnd = Level.maptime + int(max(secs, 3.5) * 35);
+		BuildNear();
+		dirty = true;
+		if (I("rsqgd_debug", 0) > 0) Console.Printf("[RSQGD] life flash t%d: grey and white until t%d, the map's own colours strongly until t%d, settled by t%d", lfStart, lfStart + LF_GREY, lfEnd, lfEnd + LF_SETTLE);
+	}
+	void LifeFlash(out int c, out double hh, int ownC)
+	{
+		int el = Level.maptime - lfStart;
+		if (el < 0) return;
+		if (el < LF_GREY)
+		{
+			double beat = 0.5 - 0.5 * cos(el * 360.0 / 35.0);     // 0 grey .. 1 white, once a second, from grey
+			c = Mix(c, Mix(LF_GREYCOL, 0xFFFFFF, beat), 0.95);
+			hh = max(hh, 120 + 80 * beat);
+			return;
+		}
+		// the map's own colours, strongly (brightened, the glow high), then eased away over the settle
+		double k = Level.maptime < lfEnd ? 1.0 : clamp(1.0 - (Level.maptime - lfEnd) / double(LF_SETTLE), 0.0, 1.0);
+		int strong = Scale(ownC == 0 ? 0x404040 : ownC, 1.9);
+		c = Mix(c, strong, 0.9 * k);
+		hh = hh + (max(hh, 160.0) - hh) * k;
+	}
+
 	void WriteSector(int i)
 	{
 		Sector s = Level.Sectors[i];
@@ -527,6 +565,7 @@ class RSQGD_Handler : EventHandler
 	bool Animating()
 	{
 		return (look && look.shape > 0) || mbMix > 0.001 || smMix > 0.001 || dnMix > 0.001 || combo > 0.001 || tintUntil > Level.maptime - 2
+			|| lfEnd + LF_SETTLE > Level.maptime - 2
 			|| (cSecrets && specials.Size() > 0);
 	}
 
@@ -569,7 +608,7 @@ class RSQGD_Handler : EventHandler
 		double mbT = (mbLive > 0 && B("rsqgd_mb", true)) ? 0.85 : 0.0;
 		if (mbMix != mbT) { mbMix = mbMix < mbT ? min(mbT, mbMix + 0.03) : max(mbT, mbMix - 0.02); if (mbMix < 0.001) dirty = true; }
 		if (combo > 0 && now - comboTic > 35 * 4) { combo = max(0.0, combo - 0.01); if (combo == 0) dirty = true; }
-		if (tintUntil == now) dirty = true;
+		if (tintUntil == now || lfEnd + LF_SETTLE == now) dirty = true;
 
 		bool anim = Animating();
 		// one budget per tic: two thirds to the rooms near the players (cycling), the rest to the map

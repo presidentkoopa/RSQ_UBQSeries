@@ -1,0 +1,173 @@
+version "4.10"
+// TEST ONLY (rig, never shipped). RSQ UBQ Series 2026-11-16: DOWN first, lives, the getting-up health, a failed DOWN's
+// life, the 1UP. Lines start B_. Run with notarget from the console; no god (the hits are real, from real monsters).
+//   t20 five monsters 600-700 units ahead (t30 picked up); t40 Score gives 2 lives
+//   t100 lethal hit by m0, 2 lives -> DOWN 1 (lives kept); t130 its target killed -> UP at 100 %
+//   t330 lethal hit by m1, 2 lives -> DOWN 2 (6 s); t360 killed -> UP at 66 %
+//   t560 lethal hit by m2, 2 lives -> DOWN 3 (3 s); nothing killed -> the clock runs out ~t665 -> a Score life spent:
+//        mags, 5 s invulnerable, 5 s slow motion (-1UP), the glow's flash, LIFEUSED; the DOWN count back to 0
+//   t900 a fall (DamageMobj 'Falling', no source), 1 life -> no DOWN, the life spent (the same package)
+//   t1100 lethal hit by m3, 0 lives -> DOWN (count 1: 9 s); t1140 killed -> UP at 100 %
+//   t1350 Score points (award) past the threshold -> a life earned: +1UP with slow motion (1UP)
+//   t1500 the life crate: spawned 200 ahead, its home set 128 above its floor (a ledge, simulated) -> it floats up;
+//   t1700 moved onto the player -> +1 life (LIFEUP, no slow motion)
+class RSQB_Probe : EventHandler
+{
+	Array<Actor> m;
+	Array<double> spotX, spotY;
+	int t0; bool started; int killAt[4];
+	Actor crate;
+	Actor Near(Vector2 at)
+	{
+		let it = ThinkerIterator.Create("Actor");
+		Actor a, best; double bd = 200;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bISMONSTER || a.health <= 0 || a.player || m.Find(a) < m.Size()) continue;
+			double d = (a.pos.xy - at).Length();
+			if (d < bd) { bd = d; best = a; }
+		}
+		return best;
+	}
+	static void SetI(String n, int v) { let c = CVar.FindCVar(n); if (c) c.SetInt(v); else Console.Printf("B_NOCVAR %s", n); }
+	Service Svc(String n) { let it = ServiceIterator.Find(n); Service s; while (s = it.Next()) if (s.GetClassName() == n) return s; return null; }
+	void Report(int t, String why)
+	{
+		let p = players[consoleplayer]; let pmo = p.mo;
+		let sc = Svc("RS_ScoreService"); let sm = Svc("RSQSM_Service");
+		let d = RSQSM_Down.Get(); let c = RSQSM_Clock.Get();
+		int n = consoleplayer;
+		let w = pmo ? RSQSM_DownWatch(pmo.FindInventory("RSQSM_DownWatch")) : null;
+		let pi = pmo ? Powerup(pmo.FindInventory("PowerInvulnerable", true)) : null;
+		String pw = "";
+		for (let it = pmo ? pmo.Inv : null; it; it = it.Inv) if (it is "PowerInvulnerable") pw = pw .. String.Format(" %s(%d tics)", it.GetClassName(), Powerup(it).EffectTics);
+		String tg = "";
+		for (int i = 0; i < d.tMon.Size(); i++)
+			if (d.tPn[i] == n) tg = tg .. String.Format(" [%s %s%s]", d.tMon[i] ? String.Format("%s", d.tMon[i].GetClassName()) : "gone", (d.tDead[i] != 0) ? "dead" : "alive", (d.tSpawned[i] != 0) ? " spawned" : "");
+		Console.Printf("B_STATE t%d %s: health %d/%d, %s, Score lives %d, DOWN %d (clock %.2f s, DOWN count %d; service down.count %d down.uphealth %d), invulnerable powers:%s, world speed %.2f, reason \"%s\", targets:%s",
+			t, why, pmo ? pmo.health : -999, pmo ? pmo.GetMaxHealth(true) : 0, p.playerstate == PST_DEAD ? "DEAD" : "live",
+			(sc && pmo) ? sc.GetInt("lives", "", 0, 0, pmo) : -9, d.downOn[n], d.clk[n] / 35.0, w ? w.downs : -1,
+			sm ? sm.GetInt("down.count", "", n) : -9, sm ? sm.GetInt("down.uphealth", "", n) : -9, pw == "" ? " none" : pw, c.scale, c.cdCause, tg);
+	}
+	String Mags(PlayerPawn pmo)
+	{
+		String s = "";
+		for (int h = 0; h < 2; h++)
+		{
+			let w = h == 0 ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon;
+			if (w && w.Ammo2) s = s .. String.Format(" %s %s %d/%d", w.GetClassName(), w.Ammo2.GetClassName(), w.Ammo2.Amount, w.Ammo2.MaxAmount);
+		}
+		return s == "" ? " none" : s;
+	}
+	void EmptyMags(PlayerPawn pmo)
+	{
+		for (int h = 0; h < 2; h++) { let w = h == 0 ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon; if (w && w.Ammo2 && w.Ammo1 && w.Ammo1 != w.Ammo2) w.Ammo2.Amount = 0; }
+		Console.Printf("B_MAGS emptied:%s", Mags(pmo));
+	}
+	void Hit(int t, Actor src, String why)
+	{
+		let pmo = players[consoleplayer].mo;
+		if (!pmo || !src) { Console.Printf("B_HIT t%d %s: no pawn or no monster", t, why); return; }
+		pmo.A_SetHealth(30);
+		Console.Printf("B_HIT t%d %s: health %d, 500 from %s (%.0f units)", t, why, pmo.health, src.GetClassName(), pmo.Distance3D(src));
+		pmo.DamageMobj(src, src, 500, 'None');
+		Console.Printf("B_AFTER t%d health %d", t, pmo.health);
+	}
+	void KillTarget(int t, int k)
+	{
+		let pmo = players[consoleplayer].mo;
+		let d = RSQSM_Down.Get();
+		for (int i = 0; i < d.tMon.Size(); i++)
+		{
+			if (d.tPn[i] != consoleplayer || d.tDead[i] != 0 || !d.tMon[i]) continue;
+			let a = d.tMon[i];
+			a.bINVULNERABLE = false;
+			int was = a.health;
+			a.DamageMobj(pmo, pmo, 100000, 'None');
+			Console.Printf("B_KILL t%d the DOWN target %s by the player: health %d -> %d", t, a.GetClassName(), was, a.health);
+			killAt[k] = t;
+			return;
+		}
+	}
+	override void WorldTick()
+	{
+		let p = players[consoleplayer];
+		if (!p) return;
+		let pmo = p.mo;
+		if (!started) { started = true; t0 = level.maptime; Console.Printf("B_START %s maptime %d", level.mapname, t0); }
+		int t = level.maptime - t0 + 1;
+		if (t == 5) { SetI("rsqsm_debug", 1); SetI("rs_score_debug", 1); SetI("rsqgd_debug", 1); Console.Printf("B_CVARS rsqsm_down %d rs_score_rewardtypes %d", CVar.FindCVar("rsqsm_down").GetInt(), CVar.FindCVar("rs_score_rewardtypes").GetInt()); }
+		if (t == 20 && pmo)
+		{
+			Vector2 fwd = (cos(pmo.angle), sin(pmo.angle)); Vector2 side = (fwd.y, -fwd.x);
+			for (int i = 0; i < 5; i++)
+			{
+				Vector2 at = pmo.pos.xy + fwd * (600 + 25 * i) + side * (-120 + 60 * i);
+				spotX.Push(at.x); spotY.Push(at.y);
+				Actor.Spawn("ZombieMan", (at, pmo.floorz), ALLOW_REPLACE);
+			}
+		}
+		if (t == 30 && pmo)
+			for (int i = 0; i < 5; i++)
+			{
+				let a = Near((spotX[i], spotY[i]));
+				if (a) { a.bINVULNERABLE = true; a.angle = a.AngleTo(pmo); }
+				m.Push(a);
+				Console.Printf("B_SPAWN m%d: %s at %.0f units", i, a ? String.Format("%s", a.GetClassName()) : "none", a ? pmo.Distance3D(a) : -1);
+			}
+		if (t == 40 && pmo) { let sc = Svc("RS_ScoreService"); Console.Printf("B_GIVELIFE t%d: Score lives now %d", t, sc ? sc.GetInt("givelife", "", 2, 0, pmo) : -9); }
+		if (m.Size() < 5 || !pmo) return;
+		if (t == 90) Report(t, "before hit 1");
+		if (t == 100) { Hit(t, m[0], "lethal hit 1 (2 Score lives held)"); Report(t, "after hit 1"); }
+		if (t == 104) Report(t, "after hit 1, Score's tic");
+		if (t == 129) { pmo.A_SetHealth(1); EmptyMags(pmo); }
+		if (t == 130) KillTarget(t, 0);
+		if (t == 131 || t == 140) { Report(t, "after the target's kill (UP 1)"); Console.Printf("B_MAGS t%d:%s", t, Mags(pmo)); }
+		if (t == 330) { if (m[1]) m[1].bINVULNERABLE = false; Hit(t, m[1], "lethal hit 2 (2 Score lives held)"); Report(t, "after hit 2"); }
+		if (t == 359) pmo.A_SetHealth(1);
+		if (t == 360) KillTarget(t, 1);
+		if (t == 361) Report(t, "after the target's kill (UP 2)");
+		if (t == 560) { if (m[2]) m[2].bINVULNERABLE = false; Hit(t, m[2], "lethal hit 3 (2 Score lives held)"); Report(t, "after hit 3"); }
+		if (t == 600) { Report(t, "DOWN 3, nothing killed"); EmptyMags(pmo); }
+		if (t >= 650 && t <= 690 && (t % 2) == 0) Report(t, "DOWN 3 fails?");
+		if (t == 700 || t == 760 || t == 800 || t == 845 || t == 860) { Report(t, "after the life spent"); Console.Printf("B_MAGS t%d:%s", t, Mags(pmo)); }
+		if (t >= 600 && t <= 900 && (t % 15) == 0)
+		{
+			let g = RSQGD_Handler(EventHandler.Find("RSQGD_Handler"));
+			int si = pmo.CurSector.Index();
+			if (g && si < g.last0.Size()) Console.Printf("B_GLOW t%d his sector %d: floor glow %06X h %d, ceiling glow %06X h %d (life flash %d..%d, near %d)", t, si, g.last0[si], g.lastH0[si], g.last1[si], g.lastH1[si], g.lfStart, g.lfEnd, g.nearSet.Size());
+		}
+		if (t == 900) { pmo.A_SetHealth(20); Console.Printf("B_FALL t%d: 500 'Falling' damage, no source", t); pmo.DamageMobj(null, null, 500, 'Falling'); Report(t, "after the fall"); }
+		if (t == 903 || t == 960) Report(t, "after the fall, Score's tic");
+		if (t == 1100) { if (m[3]) m[3].bINVULNERABLE = false; Hit(t, m[3], "lethal hit 4 (0 Score lives)"); Report(t, "after hit 4"); }
+		if (t == 1139) pmo.A_SetHealth(1);
+		if (t == 1140) KillTarget(t, 3);
+		if (t == 1141) Report(t, "after the target's kill (UP 4)");
+		if (t == 1350) { let sc = Svc("RS_ScoreService"); int r = sc ? sc.GetInt("award", "Probe Points", 2100, 0, pmo) : -9; Console.Printf("B_AWARD t%d 2100 points -> %d", t, r); }
+		if (t == 1352 || t == 1380 || t == 1400 || t == 1440 || t == 1480) Report(t, "after the points");
+		if (t == 1500)
+		{
+			Vector2 fwd = (cos(pmo.angle), sin(pmo.angle));
+			crate = Actor.Spawn("RSQ_ScoreLifeCrate", (pmo.pos.xy + fwd * 200, pmo.floorz), NO_REPLACE);
+			Console.Printf("B_CRATE t%d spawned at %.0f %.0f %.0f", t, crate.pos.x, crate.pos.y, crate.pos.z);
+		}
+		if (t == 1502 && crate)
+		{
+			let lc = RSQ_ScoreLifeCrate(crate);
+			lc.homeFloor = lc.floorz + 128; lc.home = (lc.pos.xy, lc.floorz + 128);
+			Console.Printf("B_CRATE t%d its home set 128 above its floor (where the miniboss died, on a ledge: SIMULATED): home z %.0f, it stands at %.0f", t, lc.home.z, lc.pos.z);
+		}
+		if (crate && t > 1500 && t <= 1600 && (t % 4) == 1) Console.Printf("B_CRATE t%d z %.0f (floor %.0f) gravity %s floating %d hovering %d", t, crate.pos.z, crate.floorz, crate.bNOGRAVITY ? "off" : "on", RSQ_ScoreLifeCrate(crate).floating, RSQ_ScoreLifeCrate(crate).hovering);
+		if (t == 1650 && crate) Console.Printf("B_CRATE t%d still there at age %d tics (no timer): z %.0f", t, level.maptime - RSQ_ScoreLifeCrate(crate).born, crate.pos.z);
+		if (t == 1700 && crate) { Report(t, "the player touches the crate"); crate.Touch(pmo); }
+		if (t == 1703 || t == 1730) Report(t, "after the crate");
+	}
+	ui int frames;
+	override void RenderOverlay(RenderEvent e)
+	{
+		frames++;
+		Console.Printf("B_FRAME %d maptime %d", frames, level.maptime);
+		Screen.DrawText(bigfont, Font.CR_GREEN, 130, 70, String.Format("t%d", level.maptime - t0 + 1), DTA_VirtualWidth, 320, DTA_VirtualHeight, 200);
+	}
+	override void WorldThingDied(WorldEvent e) { if (e.Thing && e.Thing.player) Console.Printf("B_DIED t%d the player died (health %d)", level.maptime - t0 + 1, e.Thing.health); }
+}

@@ -1,14 +1,15 @@
 // RSQ_SlowMo -- DOWN v3 (owner-approved, design/NEAR_DEATH.md: the v2 spec at its top, then every "v3" section, which wins).
 // SlowMo owns the mode and its options (it owns time); the other mods join by name and each still loads alone.
 //
-//  TRIGGER   ALL OR NOTHING (owner 2026-11-15 19:41: "DOWN would be better suited to when you are out of RS Score lives, and
-//            it's all or nothing, real redline shit"): while you hold any RSQ Score life (its "lives", by name), DOWN is
-//            not armed and a killing hit is Score's as usual (a life spent, Revival Fire). Only with NO Score life left
-//            (or without Score: as before) does a hit that would kill you hold you at 1 HP (the engine's buddha flag while
-//            DOWN is armed: its row on, you alive, no Score life). Get up or you are dead. A MONSTER must be to blame: the damage source (a missile's shooter; a
+//  TRIGGER   A MONSTER'S KILLING HIT IS A DOWN, LIVES OR NOT (design/DOWN_LIVES_MINIBOSS_TIERS.md 1, owner 2026-11-16; it
+//            replaces 11-15 19:41's "DOWN only with no Score life"): a hit that would kill you holds you at 1 HP (the
+//            engine's buddha flag while DOWN is armed: its row on, you alive) whether or not you hold RSQ Score lives, and
+//            Score spends no life while DOWN holds you (it asks "down.hold" by name). Get up or the DOWN fails: then a Score
+//            life catches the killing blow if you hold one (Score's revival, section 3), else you are dead. A MONSTER must be
+//            to blame: the damage source (a missile's shooter; a
 //            barrel's: whoever set it off, the engine's own credit; a monster's helper: its master). A barrel nobody set off,
 //            a crusher ('Crush'), a fall ('Falling'), your own shot, a hazard: NO DOWN, the hold lets go and the normal death
-//            follows (with no life to catch it).
+//            follows (a Score life catches it if you hold one).
 //  WHILE     hits cannot kill you (the hold stays on all DOWN long); only the clock ends it. THE BODY (v2, kept): the crouch
 //            (40% of standing, eased), crawl speed (a third), the world at SlowMo's deepest (DEPTH), Red Map (RSQ Glow In The
 //            Dark), the heartbeat. Your own shots fly at normal speed (clock.zs RealTime: own-rockets-slow forced off for you).
@@ -23,10 +24,14 @@
 //            full (owner 11-07 06:35): a fast bright refill sweep left to right (REFILL_TICS); the bar drains again once
 //            the sweep is done. The DEATH IN clock is not reset.
 //  TARGETS   ONE kill owed, always (owner 11-12 04:17; it was 1 + the DOWNs since the last Score life spent). The DOWNs
-//            since your Score life count last CHANGED (a life earned or spent; RSQSM_DownWatch.downs travels with you and
-//            through a new map, as it always did; without Score nothing resets it) shorten the clock you start with instead: 9 s, then 6, then 3 (StartShare), so the bar starts 2/3 or 1/3 full; damage
+//            since your last Score life SPENT (only a life spent resets it, rule doc section 2, 2026-11-16; a life earned
+//            does not; RSQSM_DownWatch.downs travels with you and through a new map, as it always did; without Score nothing
+//            resets it) shorten the clock you start with instead: 9 s, then 6, then 3 (StartShare), so the bar starts 2/3 or 1/3 full; damage
 //            to any monster buys it back up. The other monsters in sight carry a small crosshair and what a whole one
-//            is worth (plate.zs BonusTick). The "extra target" lines below describe a case that no longer arises. Target 1: the monster that downed you if it is in your fight
+//            is worth (plate.zs BonusTick). The "extra target" lines below describe a case that no longer arises.
+//            IN A MINIBOSS FIGHT (rule doc section 2, 2026-11-16): the target is a remaining thrall of the fight (the nearest
+//            living one, RSQMB_Service GetObject "fight.target", by name), only when none is left the miniboss itself; it is
+//            the fight's own monster, so it is never swapped, copied or boosted (FightTarget). Otherwise: Target 1: the monster that downed you if it is in your fight
 //            (alive, and within FIGHT_NEAR, or in sight within FIGHT_FAR), else a boosted copy of its type spawned in view at
 //            range. Every extra target: a fresh boosted copy of that type spawned in view. Boost by what is loaded:
 //            LegenDoom + Champions: a legendary (LegenDoom's own guaranteed pickup) champion; LegenDoom alone: legendary;
@@ -37,15 +42,19 @@
 //            you, in his fight: a champion already stays one; else (owner 11-07 11:1x) it vanishes in teleport fog and a
 //            REAL Champion copy of it, made the same way, appears where it stood (SwapKiller; its tid and special go with it). All of them: a light in their colour, full-bright, 15% larger, +50% health (not with
 //            LegenDoom: it sets a legendary's health). Each target gets one of ten icons (random, never twice in a DOWN).
-//  UP        the last target dead: up at once. REVIVE every time (VisualRewards, sized by tier). Tier top / middle / bottom:
-//            invulnerable 5 / 3 / 1 s, slow motion 3 / 1.5 / 5 s; top: Score's Revival Fire, +1 cigarette (Tactical Rig),
-//            +1 grenade (Grenade). Health and armour: the bits bank (VisualRewards' Kill Rewards, kills while DOWN fly into
-//            the plate), up to max health and 250 armour; no bank (VisualRewards not loaded or Kill Rewards off): the tier
-//            split 100 / 66 / 33 %. Both held guns' magazines filled for free (never from the reserve). No RAGE, no Scar, no
-//            Cooldown, no crate, no "Revive" award ("Revenge" stays: each target you kill).
-//  FAIL      the clock at zero: dead. (DOWN only arms with no life held, and RSQ Score never spends a life while DOWN holds
-//            you; the one way a life can catch the fail is a life EARNED during the DOWN, by its kills: then, as before, the
-//            spawned targets go in teleport fog and the map's own monster loses its mark and boost and stays.)
+//  UP        the last target dead: up at once. REVIVE every time (VisualRewards, sized by tier; and its Arcade Gold banner,
+//            RSQVR_Service "banner" "REVIVE|...", with the chips of what actually happened). Tier top / middle / bottom:
+//            invulnerable 5 / 3 / 1 s (RSQSM_DownInvul, a PowerInvulnerable: the HUD's invulnerability bar reads it), slow
+//            motion 3 / 1.5 / 5 s; top: Score's Revival Fire, +1 cigarette (Tactical Rig), +1 grenade (Grenade). HEALTH
+//            (rule doc section 2, 2026-11-16): by the DOWNs since the last Score life spent, 100 / 66 / 33 % of max health
+//            (1st, 2nd, 3rd and after), never less than you had; the bits bank's health is no longer paid. ARMOUR: the bits
+//            bank (VisualRewards' Kill Rewards, kills while DOWN fly into the plate), up to 250; no bank (VisualRewards not
+//            loaded or Kill Rewards off): the tier split's % of 100 ("No Bank Armour" rows). Both held guns' magazines filled
+//            for free (never from the reserve). No RAGE, no Scar, no Cooldown, no crate, no "Revive" award ("Revenge" stays:
+//            each target you kill).
+//  FAIL      the clock at zero: the killing blow. A Score life held catches it (RSQ Score spends it on its tic: its revival,
+//            magazines, 5 s invulnerable, 5 s slow motion, the Glow In The Dark flash, handler.zs RunExtraLives); the
+//            spawned targets go in teleport fog and the map's own monster loses its mark and boost and stays. No life: dead.
 //  PANEL     downhud.zs: the panel (Target lines, bar, DEATH IN) and the edge arrows on the HUD layer (owner 07:50), to the
 //            approved mockup (design/mockups); plate.zs: the crosshairs on the targets and the eye-level trail, in the
 //            world. Console player only.
@@ -333,7 +342,7 @@ class RSQSM_Down : EventHandler
 	{
 		if (!playeringame[n] || !players[n].mo || players[n].mo.health <= 0 || players[n].playerstate == PST_DEAD) return false;
 		if (downOn[n]) return true;                 // v3: hits cannot kill you while DOWN; only the clock ends it
-		if (livesSeen[n] > 0) return false;         // ALL OR NOTHING (owner 11-15 19:41): a Score life held -> Score's, never DOWN
+		// (11-15 19:41's "a Score life held -> never DOWN" is gone: rule doc section 1, 2026-11-16, DOWN first, lives or not)
 		let c = RSQSM_Clock.Get();
 		if (c && c.StoodDown()) return false;
 		return On();
@@ -410,22 +419,24 @@ class RSQSM_Down : EventHandler
 		}
 	}
 
-	// THE SCORE LIFE COUNT (by name; -1 without Score), read EVERY tic before the hold is set (Armed: DOWN is armed only
-	// with no life held, owner 11-15 19:41). The DOWN count (the 9 / 6 / 3 s starting clock) goes back to 0 whenever the
-	// count CHANGES: a life earned or a life spent. (It used to go back only when a life was spent, but a life is never
-	// spent with DOWN armed now, so earning one is the reset that can happen between DOWNs.)
+	// THE SCORE LIFE COUNT (by name; -1 without Score), read every tic. The DOWN count (the 9 / 6 / 3 s starting clock and
+	// the 100 / 66 / 33 % getting-up health) goes back to 0 ONLY when a life is SPENT (the count drops while he lives:
+	// rule doc section 2, 2026-11-16). A life earned leaves it alone; a count cleared by a death through Score's hold is
+	// no life spent (he is dead).
 	private void WatchLives(int n, PlayerPawn pmo, RSQSM_DownWatch w)
 	{
 		int lv = LivesOf(pmo);
 		if (lv < 0) return;
 		if (livesSeen[n] >= 0 && lv != livesSeen[n])
 		{
-			Log(String.Format("player %d Score lives %d -> %d (a life %s): DOWN %s; the DOWN count back to 0 (was %d)", n, livesSeen[n], lv,
-				lv > livesSeen[n] ? "earned" : "spent", lv > 0 ? "not armed (a life held: a killing hit is Score's)" : "armed (no life left: all or nothing)", w ? w.downs : -1));
-			if (w) w.downs = 0;
+			bool spent = lv < livesSeen[n] && pmo.health > 0 && players[n].playerstate != PST_DEAD;
+			Log(String.Format("player %d Score lives %d -> %d (a life %s): the DOWN count %s", n, livesSeen[n], lv,
+				lv > livesSeen[n] ? "earned" : (spent ? "spent" : "lost with his death"),
+				spent ? String.Format("back to 0 (was %d)", w ? w.downs : -1) : String.Format("kept (%d)", w ? w.downs : -1)));
+			if (spent && w) w.downs = 0;
 		}
 		else if (livesSeen[n] < 0)
-			Log(String.Format("player %d Score lives %d: DOWN %s", n, lv, lv > 0 ? "not armed (a life held: a killing hit is Score's)" : "armed (no life left: all or nothing)"));
+			Log(String.Format("player %d Score lives %d (DOWN arms whatever the count: a monster's killing hit is a DOWN)", n, lv));
 		livesSeen[n] = lv;
 	}
 	// RSQ Score's service, found once (ServiceIterator.Find walks every class) and kept for the session (transient: a
@@ -687,15 +698,8 @@ class RSQSM_Down : EventHandler
 		bool lethal = e.Damage >= pre && pre > 0;
 		hpSeen[n] = pmo.health;
 		if (!lethal || downOn[n]) return;           // while DOWN the hold keeps him at 1 HP: only the clock ends it
-		// ALL OR NOTHING (owner 11-15 19:41): a Score life held (asked now: one may have been earned this very tic, before
-		// the hold was let go) -> never DOWN; Score's own hold has him at 1 HP and spends the life on its tic
-		int lv = LivesOf(pmo);
-		if (lv > 0)
-		{
-			Log(String.Format("player %d: a lethal hit (%d at %d HP) with %d Score li%s held: NO DOWN (Score spends a life)", n, e.Damage, pre, lv, lv == 1 ? "fe" : "ves"));
-			if (held[n]) Hold(n, false);
-			return;
-		}
+		// (a Score life held no longer matters here: rule doc section 1, 2026-11-16. A monster's killing hit is a DOWN;
+		// any other killing hit lets the hold go below, and Score's own hold catches it if a life is held)
 		if (!held[n] || pmo.health != 1) return;
 		// WHO IS TO BLAME
 		Actor src = e.DamageSource;
@@ -715,7 +719,7 @@ class RSQSM_Down : EventHandler
 		if (no != "")
 		{
 			Log(String.Format("player %d: a lethal hit (%d at %d HP from %s, type %s): NO DOWN (%s): the normal death",
-				n, e.Damage, pre, from, dtype, no));
+				n, e.Damage, pre, from, dtype, no) .. String.Format(" (Score lives held: %d)", LivesOf(pmo)));
 			Hold(n, false);
 			pmo.DamageMobj(null, null, pmo.health * 2 + 1, 'None', DMG_NO_ARMOR | DMG_NO_PROTECT | DMG_NO_FACTOR | DMG_THRUSTLESS | DMG_NO_ENHANCE);
 			return;
@@ -750,7 +754,7 @@ class RSQSM_Down : EventHandler
 		lastKill[n] = 0; lastKillE[n] = 0;
 		bankHp[n] = 0; bankAr[n] = 0;
 		iconsUsed[n] = 0;
-		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since the Score lives last changed), world to %d%%",
+		Log(String.Format("player %d went DOWN: a lethal hit (%d at %d HP from %s) held at %d HP; DEATH IN %.1f s real, bar %.1f / %.1f / %.1f s, kills owed %d (DOWN %d since the last Score life spent), world to %d%%",
 			n, dmg, pre, from, pmo.health, clk[n] / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, StepTics() / TICRATE, owed[n], downs, int(DEPTH * 100 + 0.5)));
 		if (AudioOn(n))
 		{
@@ -763,6 +767,15 @@ class RSQSM_Down : EventHandler
 		RSQSM_Buzz.Start(pmo, 0, 0.8, 10);
 		RSQSM_Buzz.Start(pmo, 1, 0.8, 10);
 		Tell("down.start", n, "", pmo);
+		// IN A MINIBOSS FIGHT (rule doc section 2, 2026-11-16): a remaining thrall, else the miniboss (RSQ Miniboss, by name)
+		let ft = FightTarget(pmo);
+		if (ft)
+		{
+			AddTarget(n, ft, false, String.Format("a miniboss fight's %s (downed by %s, %.0f units)", MbAsk("thrall", ft) == 1 ? "remaining thrall" : "miniboss (no thrall left)",
+				src.GetClassName(), pmo.Distance3D(ft)), 0, true);
+			Spawns();
+			return;
+		}
 		// TARGET 1: the killer, if in his fight; else a boosted copy of its type, in view at range
 		double d = pmo.Distance3D(src);
 		bool seen = src.CheckSight(pmo, SF_IGNOREVISIBILITY);
@@ -801,13 +814,45 @@ class RSQSM_Down : EventHandler
 		iconsUsed[n] |= 1 << ic;
 		return ic;
 	}
-	private void AddTarget(int n, Actor m, bool spawned, String why, int icon = 0)
+	// THE MINIBOSS FIGHT'S TARGET (RSQ Miniboss's RSQMB_Service, by name): GetObject "fight.target" objectArg the player ->
+	// the nearest living thrall of a fight that is on, else its miniboss, else null (no fight, or Miniboss not loaded)
+	private transient Service mbSv;
+	private transient bool mbSought;
+	Service MbSvc()
+	{
+		if (!mbSought)
+		{
+			mbSought = true;
+			let it = ServiceIterator.Find("RSQMB_Service");
+			Service s;
+			while (s = it.Next()) if (s.GetClassName() == 'RSQMB_Service') { mbSv = s; break; }
+		}
+		return mbSv;
+	}
+	Actor FightTarget(Actor pmo)
+	{
+		let s = MbSvc();
+		if (!s) return null;
+		let a = Actor(s.GetObject("fight.target", "", 0, 0, pmo));
+		return (a && a.health > 0) ? a : null;
+	}
+	int MbAsk(String what, Actor a) { let s = MbSvc(); return s ? s.GetInt(what, "", 0, 0, a) : -1; }
+
+	private void AddTarget(int n, Actor m, bool spawned, String why, int icon = 0, bool fight = false)
 	{
 		if (icon <= 0) icon = DealIcon(n);
 		int col;
 		String how;
 		bool wait;
-		[col, how, wait] = Boost(m);
+		if (fight)
+		{
+			// the fight's own monster: no boost, no swap (its tier, health and powers are the fight's); its set piece's colour
+			int fc = MbAsk("colour", m);
+			col = fc >= 0 ? fc : DOWN_RED;
+			how = "a miniboss fight's own monster: not boosted";
+			wait = false;
+		}
+		else [col, how, wait] = Boost(m);
 		tMon.Push(m); tPn.Push(n); tIcon.Push(icon); tSpawned.Push(spawned ? 1 : 0); tDead.Push(0); tCol.Push(col);
 		tBorn.Push(level.maptime); tDeadTic.Push(0); tName.Push(NameOf(m)); tChWait.Push(wait ? 1 : 0); tHurt.Push(0);
 		m.target = players[n].mo;
@@ -1292,30 +1337,46 @@ class RSQSM_Down : EventHandler
 		static const double SPLD[] = { 100, 66, 33 };
 		double invS = clamp(Cv(INV[tier], INVD[tier]), 0, 30), sloS = clamp(Cv(SLO[tier], SLOD[tier]), 0, 30);
 		invulUntil[n] = level.maptime + int(invS * TICRATE);
-		// HEALTH AND ARMOUR
+		// THE INVULNERABILITY AS A POWER (2026-11-16): a PowerInvulnerable for the same time, so the HUD's invulnerability bar
+		// (BANNERS_AND_HUD.md 5: it reads the player's PowerInvulnerable-family power and its time left) shows it too
+		GiveInvul(pmo, int(invS * TICRATE));
+		// HEALTH (rule doc section 2, 2026-11-16): by the DOWNs since the last Score life spent, 100 / 66 / 33 % of max
+		let w = RSQSM_DownWatch(pmo.FindInventory("RSQSM_DownWatch"));
+		int downs = w ? max(1, w.downs) : 1;
 		int hp0 = pmo.health, mx = pmo.GetMaxHealth(true);
+		double hk = UpHealthShare(downs);
+		pmo.A_SetHealth(max(hp0, int(round(mx * hk))));
+		// ARMOUR: the bits bank, else the tier split's share of a green armour's 100 (as before)
 		let ar = BasicArmor(pmo.FindInventory("BasicArmor"));
 		int ar0 = ar ? ar.Amount : 0;
 		String src;
 		int arCap = int(clamp(Cv("rsqsm_down_bank_armor", 250), 0, 999));
 		if (BankAvailable())
 		{
-			pmo.A_SetHealth(min(mx, hp0 + int(bankHp[n])));
 			GiveArmor(pmo, min(arCap, ar0 + int(bankAr[n])));
-			src = String.Format("the bits bank (%.0f health, %.0f armour banked)", bankHp[n], bankAr[n]);
+			src = String.Format("armour from the bits bank (%.0f armour banked; its %.0f health is not paid since 11-16)", bankAr[n], bankHp[n]);
 		}
 		else
 		{
 			double k = clamp(Cv(SPL[tier], SPLD[tier]), 0, 100) / 100.0;
-			pmo.A_SetHealth(max(hp0, int(round(mx * k))));
 			// my reading: the armour share is of a green armour's 100
 			GiveArmor(pmo, max(ar0, int(round(100 * k))));
-			src = String.Format("no bank (VisualRewards' Kill Rewards not loaded or off): the tier split %d%%", int(k * 100 + 0.5));
+			src = String.Format("armour from the tier split %d%% (no bank: VisualRewards' Kill Rewards not loaded or off)", int(k * 100 + 0.5));
 		}
 		ar = BasicArmor(pmo.FindInventory("BasicArmor"));
-		String rl = ReloadHeld(pmo);
-		Log(String.Format("player %d UP (REVIVE), %s tier (the last kill %.2f s into the bar): invulnerable %.1f s, slow motion %.1f s; health %d -> %d (max %d), armour %d -> %d from %s; both held guns: %s",
-			n, tn, e / double(TICRATE), invS, sloS, hp0, pmo.health, mx, ar0, ar ? ar.Amount : 0, src, rl));
+		int ar1 = ar ? ar.Amount : 0;
+		int mags = 0;
+		String rl = ReloadHeld(pmo, mags);
+		Log(String.Format("player %d UP (REVIVE), %s tier (the last kill %.2f s into the bar): invulnerable %.1f s, slow motion %.1f s; health %d -> %d (max %d: DOWN %d since the last life spent, %d%%), armour %d -> %d, %s; both held guns: %s",
+			n, tn, e / double(TICRATE), invS, sloS, hp0, pmo.health, mx, downs, int(hk * 100 + 0.5), ar0, ar1, src, rl));
+		// THE ARCADE GOLD BANNER (BANNERS_AND_HUD.md 3, the contract in its section "Banner service contract"): only what
+		// actually happened, with the real numbers
+		String chips = "REVIVE";
+		if (pmo.health > hp0) chips = chips .. String.Format("|health:+%d", pmo.health - hp0);
+		if (ar1 > ar0) chips = chips .. String.Format("|armor:+%d", ar1 - ar0);
+		if (invS > 0) chips = chips .. "|invuln:" .. Secs(invS);
+		if (mags > 0) chips = chips .. "|mags:";
+		Banner(chips, pmo);
 		pmo.A_StartSound("rsqsm/out", CHAN_AUTO, CHANF_LOCAL, 1.0);
 		pmo.A_StartSound("misc/p_pkup", CHAN_AUTO, CHANF_LOCAL, 1.0);
 		if (AudioOn(n)) pmo.A_StartSound("rsqsm/dnrelief", CHAN_AUTO, CHANF_LOCAL, 0.9, ATTN_NONE);   // the relief (owner 11-09 17:45)
@@ -1339,6 +1400,38 @@ class RSQSM_Down : EventHandler
 			if (ok && c.smokeUntil[n] <= level.maptime) c.freeUntil[n] = min(c.freeUntil[n], level.maptime);
 			Log(String.Format("player %d revive slow motion %.1f s: %s", n, sloS, ok ? "started" : "refused (see the clock's line)"));
 		}
+	}
+	// THE GETTING-UP HEALTH by the DOWNs since the last Score life spent (rule doc section 2): 1st 100 %, 2nd 66 %, 3rd on 33 %
+	static clearscope double UpHealthShare(int downs) { return downs <= 1 ? 1.0 : (downs == 2 ? 0.66 : 0.33); }
+	// seconds for a banner chip: "5", "1.5"
+	static String Secs(double s)
+	{
+		String v = String.Format("%.1f", s);
+		if (v.Mid(v.Length() - 2, 2) == ".0") v = v.Left(v.Length() - 2);
+		return v;
+	}
+	// the invulnerability power (RSQSM_DownInvul) for this many tics; a longer one already running is kept
+	static void GiveInvul(Actor pmo, int tics)
+	{
+		if (!pmo || tics <= 0) return;
+		let pw = Powerup(pmo.FindInventory("RSQSM_DownInvul"));
+		if (!pw) { pmo.GiveInventory("RSQSM_DownInvul", 1); pw = Powerup(pmo.FindInventory("RSQSM_DownInvul")); }
+		if (pw) pw.EffectTics = max(pw.EffectTics, tics);
+	}
+	// THE BANNER (RSQ VisualRewards' Arcade Gold banners, by name: RSQVR_Service GetInt "banner", "<MOMENT>|<chip>|...",
+	// objectArg the player). No VisualRewards, or a VisualRewards without banners: nothing
+	static void Banner(String what, Actor pmo)
+	{
+		let it = ServiceIterator.Find("RSQVR_Service");
+		Service s;
+		while (s = it.Next())
+		{
+			if (s.GetClassName() != 'RSQVR_Service') continue;
+			int r = s.GetInt("banner", what, 0, 0, pmo);
+			Log(String.Format("banner \"%s\" asked of RSQ VisualRewards: %d", what, r));
+			return;
+		}
+		Log(String.Format("banner \"%s\": no RSQ VisualRewards", what));
 	}
 	static void GiveArmor(Actor pmo, int amt)
 	{
@@ -1427,8 +1520,9 @@ class RSQSM_Down : EventHandler
 			if (d.AmmoType1) { Name nm = d.AmmoType1.GetClassName(); if (reserves.Find(nm) == reserves.Size()) reserves.Push(nm); }
 		}
 	}
-	String ReloadHeld(Actor pmo)
+	String ReloadHeld(Actor pmo, out int filled)
 	{
+		filled = 0;
 		if (!reservesBuilt) BuildReserves();
 		String what = "";
 		for (int h = 0; h < 2; h++)
@@ -1444,6 +1538,7 @@ class RSQSM_Down : EventHandler
 			}
 			int was = w.Ammo2.Amount, res = w.Ammo1.Amount;
 			w.Ammo2.Amount = w.Ammo2.MaxAmount;
+			if (w.Ammo2.Amount > was) filled++;
 			what = what .. String.Format("%s%s %s %s %d -> %d (reserve %s %d untouched)", what == "" ? "" : "; ", nm, w.GetClassName(),
 				w.Ammo2.GetClassName(), was, w.Ammo2.Amount, w.Ammo1.GetClassName(), res);
 		}
@@ -1512,5 +1607,21 @@ class RSQSM_DownWatch : Inventory
 		if (!Owner || !Owner.player) return 1;
 		let d = RSQSM_Down.Get();
 		return d ? d.Crawl(Owner.PlayerNumber()) : 1;
+	}
+}
+
+// THE INVULNERABILITY AFTER GETTING UP, AS A POWER (2026-11-16): the same seconds as the DOWN's own guard (RSQSM_DownWatch,
+// invulUntil), given as a PowerInvulnerable so the HUD's invulnerability bar (RSQ VisualRewards, BANNERS_AND_HUD.md 5) can
+// read it the way it reads any: the player's PowerInvulnerable-family power and its EffectTics. No blend and no colormap
+// (given directly, not by a sphere: BlendColor 0). Its name starts RSQ: on the player it runs on real time anyway (an
+// owned inventory item, clock.zs RealTime).
+class RSQSM_DownInvul : PowerInvulnerable
+{
+	Default
+	{
+		Powerup.Duration 35;      // set to the real time on giving (GiveInvul)
+		Inventory.Icon "TNT1A0";
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
 	}
 }

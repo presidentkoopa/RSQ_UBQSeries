@@ -21,6 +21,8 @@
 //   event.tint     the whole map's glow leans to intArg's colour for doubleArg seconds (0 = 2 s)
 //   event.reroll   new colours now (as Re-roll would)
 //   event.dark     DarkDoom Black held for a moment (RSQ Miniboss's landing); ddz.original: the player's own mode meanwhile
+//   event.lifeflash  a Score life spent (RSQ Score, 2026-11-16): the whole map grey and white for 3 s, then its own colours
+//                    strongly to the end of doubleArg seconds (0 = 5 s), then it settles back (handler.zs LifeFlash)
 // ============================================================================
 
 class RSQGD_Service : Service
@@ -65,6 +67,7 @@ class RSQGD_Service : Service
 				h.BuildNear();
 				return 1;
 			}
+			if (request ~== "event.lifeflash") { h.StartLifeFlash(doubleArg > 0 ? doubleArg : 5.0); return 1; }
 			if (request ~== "event.reroll") { h.Reroll(); return 1; }
 			if (request ~== "event.dark")
 			{

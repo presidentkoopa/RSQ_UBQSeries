@@ -153,6 +153,7 @@ class RS_ScoreTracker : Inventory
 	int pendingLives;    // how many lives that cue is announcing
 	int reviveTic;
 	bool downNoted;          // the debug line "at 1 HP while RSQ SlowMo's DOWN holds him" printed (handler.zs RunExtraLives)
+	bool lifeCueSlow;        // the life cue due is a life earned by Score's target: +1UP pays world slow motion (handler.zs RunRewardCue)
 
 	Default
 	{

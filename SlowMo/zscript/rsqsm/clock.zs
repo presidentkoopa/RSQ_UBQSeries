@@ -703,7 +703,7 @@ class RSQSM_Clock : EventHandler
 		bool fresh = pulseUntil <= 0;
 		// THE CIGARETTE AND THE WORLD'S SLOW MOTION ADD UP (owner 11-11): a smoke lit during a running slow adds its time
 		// after it; a world slow (an automatic trigger, or the revive) during a smoke adds its time after the smoke's
-		bool world = isAuto || src ~== "down.up";
+		bool world = isAuto || src ~== "down.up" || src ~== "life.used" || src ~== "life.up";
 		bool smoking = false;
 		for (int i = 0; i < MAXPLAYERS; i++) if (smokeUntil[i] > level.maptime) smoking = true;
 		bool stack = !exact && pulseUntil > level.maptime && ((src ~== "smoke") || (world && smoking));
@@ -737,10 +737,16 @@ class RSQSM_Clock : EventHandler
 	{
 		static const String keys[] = { "grenade", "overunder", "reload", "closecall", "miniboss", "score", "gunbonsai", "othermod",
 			"smoke", "melee.shove", "saber.parry", "shieldsaw.block", "parry.or.block", "wristcross.burst", "bossfight", "heavyhit",
-			"key", "wristcross", "wheel", "a11y.button", "shootdodge", "barrel.lockon", "barrel.multikill", "barrel.chain", "barrel.near" };
-		static const String words[] = { "GRENADE BLAST", "OVER-UNDER BLAST", "RELOAD", "CLOSE CALL", "MINIBOSS", "SCORE", "GUN BONSAI", "OTHER MOD",
-			"CIGARETTE", "SHOVE", "PARRY", "BLOCK", "PARRY", "BURST", "MINIBOSS INCOMING", "HEAVY HIT",
-			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "CRISIS DIVE", "LOCKED BARREL", "BARREL MULTI-KILL", "CHAIN REACTION", "BARREL BLAST" };
+			"key", "wristcross", "wheel", "a11y.button", "shootdodge", "barrel.lockon", "barrel.multikill", "barrel.chain", "barrel.near",
+			"down.up", "life.used", "life.up" };
+		// PLAYER-FACING "BOSS" (BANNERS_AND_HUD.md 1, owner 2026-11-16: "player-facing it should be called Boss"): the miniboss
+		// window and its landing read BOSS / BOSS INCOMING; the keys (and every cvar and class) keep "miniboss". REVIVE, -1UP
+		// and 1UP (11-16): the slow motion getting up from DOWN, a Score life spent, a Score life earned pays ("-1UP" in
+		// ASCII: the reason line's font has no minus sign of its own)
+		static const String words[] = { "GRENADE BLAST", "OVER-UNDER BLAST", "RELOAD", "CLOSE CALL", "BOSS", "SCORE", "GUN BONSAI", "OTHER MOD",
+			"CIGARETTE", "SHOVE", "PARRY", "BLOCK", "PARRY", "BURST", "BOSS INCOMING", "HEAVY HIT",
+			"SLOW MOTION", "WRIST CROSS", "WHEEL", "SLOW MOTION", "CRISIS DIVE", "LOCKED BARREL", "BARREL MULTI-KILL", "CHAIN REACTION", "BARREL BLAST",
+			"REVIVE", "-1UP", "1UP" };
 		for (int i = 0; i < keys.Size(); i++) if (src ~== keys[i]) return words[i];
 		String w = src;
 		w.Replace(".", " ");
@@ -2402,6 +2408,23 @@ class RSQSM_Service : Service
 			c.pulseUntil = level.maptime;
 			return 1;
 		}
+		// A SCORE LIFE'S SLOW MOTION (2026-11-16, design/DOWN_LIVES_MINIBOSS_TIERS.md 3 and BANNERS_AND_HUD.md 6): RSQ Score asks
+		// by name. stringArg "life.used" (a life spent: 5 s, reason -1UP) or "life.up" (a life earned by Score's target: as
+		// long as its +1UP banner shows, reason 1UP); intArg ms (0: 5000 / 2500); objectArg the player's pawn. A GAME slow
+		// at the World Speed slider's speed: the world bar and its reason show (as the revive's), no switch of its own, no
+		// shared cooldown (it neither waits one out nor starts one). As the revive's: the player is slowed from this tic (a
+		// lit cigarette keeps its full-speed walk). 1 let in, 0 refused (held on, stood down), -1 not one of the two.
+		if (request ~== "start.reward")
+		{
+			bool used = stringArg ~== "life.used";
+			if (!used && !(stringArg ~== "life.up")) return -1;
+			let pmo = PlayerPawn(objectArg);
+			int pn = (pmo && pmo.player) ? pmo.PlayerNumber() : -1;
+			int ms = intArg > 0 ? intArg : (used ? 5000 : 2500);
+			bool ok = c.Trigger(used ? "life.used" : "life.up", RSQSM_Clock.CAT_NONE, ms, c.Depth(), false, pn);
+			if (ok && pn >= 0 && c.smokeUntil[pn] <= level.maptime) c.freeUntil[pn] = min(c.freeUntil[pn], level.maptime);
+			return ok ? 1 : 0;
+		}
 		if (request ~== "start.bossfight")
 		{
 			int ms = intArg > 0 ? intArg : RSQSM_Clock.START_MS;
@@ -2438,6 +2461,26 @@ class RSQSM_Service : Service
 			return (!cv || cv.GetBool()) ? 1 : 0;
 		}
 		if (request ~== "down.left") return d.Left(n);
+		// FOR THE DOWN PANEL'S DRAWING (2026-11-16; design/BANNERS_AND_HUD.md "Banner service contract"), intArg player:
+		//   "down.count"     the DOWNs since his last Score life spent (this DOWN included while he is DOWN; 0 none yet)
+		//   "down.uphealth"  the health he would get up with now, permille of max health (1000 / 660 / 330 by that count)
+		//   "down.owed"      kills owed in this DOWN (-1 not DOWN); "down.killed" of them killed (-1 not DOWN)
+		if (request ~== "down.count" || request ~== "down.uphealth")
+		{
+			if (n < 0 || n >= MAXPLAYERS || !playeringame[n] || !players[n].mo) return -1;
+			let w = RSQSM_DownWatch(players[n].mo.FindInventory("RSQSM_DownWatch"));
+			int k = w ? w.downs : 0;
+			if (request ~== "down.count") return k;
+			return int(RSQSM_Down.UpHealthShare(d.IsDown(n) ? k : k + 1) * 1000 + 0.5);
+		}
+		if (request ~== "down.owed") return d.IsDown(n) ? d.owed[n] : -1;
+		if (request ~== "down.killed")
+		{
+			if (!d.IsDown(n)) return -1;
+			int k = 0;
+			for (int i = 0; i < d.tPn.Size(); i++) if (d.tPn[i] == n && d.tDead[i] == 1) k++;
+			return k;
+		}
 		if (request ~== "down.mark" || request ~== "down.target") return d.IsTarget(Actor(o)) ? 1 : 0;
 		return -1;
 	}

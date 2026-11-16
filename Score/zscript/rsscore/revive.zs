@@ -240,3 +240,28 @@ class RS_ScoreReviveGuard : Powerup
 		if (passive && damage > 0) newdamage = 0;
 	}
 }
+
+// A LIFE SPENT: 5 s OF INVULNERABILITY (design/DOWN_LIVES_MINIBOSS_TIERS.md 3, owner 2026-11-16) after the revival guard's
+// own 95 tics, as a PowerInvulnerable: the HUD's invulnerability bar (RSQ VisualRewards, design/BANNERS_AND_HUD.md 5) reads
+// the player's PowerInvulnerable-family power and its EffectTics, nothing of ours by name. Given directly, not by a sphere,
+// so no blend and no inverse colormap (BlendColor 0). Its name starts RSQ: RSQ SlowMo keeps the series' own classes on real
+// time (and an item a player owns is on real time anyway), so 5 s are 5 real seconds in the slow motion that comes with it.
+class RSQ_ScoreLifeInvul : PowerInvulnerable
+{
+	Default
+	{
+		Powerup.Duration 175;
+		Inventory.Icon "TNT1A0";
+		+INVENTORY.UNDROPPABLE
+		+INVENTORY.UNTOSSABLE
+	}
+
+	// tics of it from now (a longer one already running is kept)
+	static void Grant(Actor who, int tics)
+	{
+		if (!who || tics <= 0) return;
+		let pw = Powerup(who.FindInventory("RSQ_ScoreLifeInvul"));
+		if (!pw) { who.GiveInventory("RSQ_ScoreLifeInvul", 1); pw = Powerup(who.FindInventory("RSQ_ScoreLifeInvul")); }
+		if (pw) pw.EffectTics = max(pw.EffectTics, tics);
+	}
+}

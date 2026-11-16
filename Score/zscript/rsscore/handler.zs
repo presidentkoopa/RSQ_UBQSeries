@@ -1039,6 +1039,7 @@ class RS_ScoreHandler : EventHandler
 			// and picked up in WorldTick.
 			tr.rewardLifeTic  = level.maptime + 24;
 			tr.pendingLives   = newLives;
+			tr.lifeCueSlow    = true;      // earned by Score's target: its +1UP pays world slow motion (RunRewardCue)
 		}
 	}
 
@@ -1055,8 +1056,83 @@ class RS_ScoreHandler : EventHandler
 		if (RewardFlash(mo)) mo.A_SetBlend("C0 E0 FF", RSSC_A11y.Dim(a), 26, "C0 7C FF", 0.0);
 		tr.lifeCueTic = level.maptime;   // the life pips pop and light (hud.zs DrawLives)
 
+		// +1UP (BANNERS_AND_HUD.md 3, 4 and 6, owner 2026-11-16): RSQ VisualRewards' LIFEUP banner, by name, for every life
+		// gained (Score's target, the life crate, another mod's "givelife"); a life EARNED by Score's target also gets world
+		// slow motion for as long as the +1UP shows (RSQ SlowMo "start.reward" "life.up", ~2.5 s, its reason word 1UP)
+		Banner(String.Format("LIFEUP|lives:%d", tr.extraLives), mo);
+		if (tr.lifeCueSlow) SlowMoReward(mo, "life.up", LIFEUP_SLOW_MS);
+		tr.lifeCueSlow   = false;
 		tr.rewardLifeTic = 0;
 		tr.pendingLives  = 0;
+	}
+
+	// ---- a life's moments for the other packs, all by name (each loads alone) -------------------------------------------
+	const LIFEUP_SLOW_MS   = 2500;   // the +1UP's world slow motion: as long as its banner shows (~2.5 s)
+	const LIFEUSED_SLOW_MS = 5000;   // a life spent: 5 s of slow motion (rule doc section 3)
+	const LIFE_INVUL_TICS  = 175;    // a life spent: 5 s of invulnerability (RSQ_ScoreLifeInvul, revive.zs)
+	const LIFE_FLASH_SECS  = 5.0;    // a life spent: Glow In The Dark's flash, 3 s grey and white then 2 s of the map's own colours
+
+	static Service SvcNamed(String n)
+	{
+		let it = ServiceIterator.Find(n);
+		Service s;
+		while (s = it.Next()) if (s.GetClassName() == n) return s;
+		return null;
+	}
+	// RSQ VisualRewards' Arcade Gold banners (RSQVR_Service "banner", the contract in design/BANNERS_AND_HUD.md): nothing
+	// without it
+	static void Banner(String what, Actor mo)
+	{
+		let s = SvcNamed("RSQVR_Service");
+		int r = s ? s.GetInt("banner", what, 0, 0, mo) : -9;
+		if (DebugOn()) Console.Printf("RS_Score: banner \"%s\" -> %s", what, s ? String.Format("%d", r) : "no RSQ VisualRewards");
+	}
+	// RSQ SlowMo's world slow motion for a life (RSQSM_Service "start.reward"): nothing without it
+	static void SlowMoReward(Actor mo, String what, int ms)
+	{
+		let s = SvcNamed("RSQSM_Service");
+		int r = s ? s.GetInt("start.reward", what, ms, 0, mo) : -9;
+		if (DebugOn()) Console.Printf("RS_Score: slow motion \"%s\" %d ms -> %s", what, ms, s ? String.Format("%d", r) : "no RSQ SlowMo");
+	}
+	// RSQ Glow In The Dark's life flash (RSQGD_Service "event.lifeflash"): nothing without it
+	static void GlowFlash(Actor mo)
+	{
+		let s = SvcNamed("RSQGD_Service");
+		int r = s ? s.GetInt("event.lifeflash", "", 0, LIFE_FLASH_SECS, mo) : -9;
+		if (DebugOn()) Console.Printf("RS_Score: Glow In The Dark's life flash -> %s", s ? String.Format("%d", r) : "no RSQ Glow In The Dark");
+	}
+
+	// MAGAZINES REFILLED (rule doc section 3): both held guns' magazines filled for free, never from the reserve -- RSQ SlowMo
+	// DOWN's own rule (down.zs ReloadHeld), copied so Score keeps it alone: a weapon's Ammo2 is a magazine when it is not
+	// its Ammo1 and no weapon anywhere uses it as its first ammo (BD22 VR); a gun without one has nothing to refill.
+	private transient Array<Name> magReserves;
+	private transient bool magReservesBuilt;
+	int RefillMags(Actor mo)
+	{
+		if (!mo || !mo.player) return 0;
+		if (!magReservesBuilt)
+		{
+			magReservesBuilt = true;
+			for (int i = 0; i < AllActorClasses.Size(); i++)
+			{
+				class<Weapon> wc = (class<Weapon>)(AllActorClasses[i]);
+				if (!wc) continue;
+				let d = GetDefaultByType(wc);
+				if (d.AmmoType1) { Name nm = d.AmmoType1.GetClassName(); if (magReserves.Find(nm) == magReserves.Size()) magReserves.Push(nm); }
+			}
+		}
+		int n = 0;
+		for (int h = 0; h < 2; h++)
+		{
+			let w = h == 0 ? mo.player.ReadyWeapon : mo.player.OffhandWeapon;
+			if (!w || (h == 1 && w == mo.player.ReadyWeapon)) continue;
+			if (!w.Ammo1 || !w.Ammo2 || w.Ammo1.GetClass() == w.Ammo2.GetClass() || magReserves.Find(w.Ammo2.GetClassName()) < magReserves.Size()) continue;
+			int was = w.Ammo2.Amount;
+			w.Ammo2.Amount = w.Ammo2.MaxAmount;
+			if (w.Ammo2.Amount > was) n++;
+			if (DebugOn()) Console.Printf("RS_Score: magazine %s %s %d -> %d", w.GetClassName(), w.Ammo2.GetClassName(), was, w.Ammo2.Amount);
+		}
+		return n;
 	}
 
 	// ------------------------------------------------------------------- tick
@@ -1210,10 +1286,10 @@ class RS_ScoreHandler : EventHandler
 				return;
 			}
 
-			// RSQ SLOWMO'S DOWN IS ALL OR NOTHING (owner 11-15 19:41): DOWN arms only when this player holds NO life (it
-			// reads "lives" by name), so a killing hit with a life held is caught here as usual and never becomes a DOWN.
-			// This check stays as a guard: a life EARNED while DOWN holds him (its kills) is not spent under the DOWN; it
-			// is spent only if the DOWN then fails (its killing blow is held at 1 HP by the hold above, and caught here)
+			// RSQ SLOWMO'S DOWN COMES FIRST (design/DOWN_LIVES_MINIBOSS_TIERS.md 1, 2026-11-16): a monster's killing hit is a
+			// DOWN whether or not lives are held, and no life is spent while DOWN holds him. A life is spent only if the
+			// DOWN then fails (its killing blow is held at 1 HP by the hold above, and caught here), or for a killing hit
+			// that is no monster's (a fall, a crusher, his own shot: SlowMo lets that through to this hold)
 			if (mo.health == 1 && DownHolds(mo))
 			{
 				if (DebugOn() && !tr.downNoted) Console.Printf("RS_Score: at 1 HP while RSQ SlowMo's DOWN holds him -- no life spent (%d held)", tr.extraLives);
@@ -1243,11 +1319,23 @@ class RS_ScoreHandler : EventHandler
 				RS_ScoreReviveFire.Begin(mo, ReviveFire(mo));
 				mo.GiveInventory("RS_ScoreReviveGuard", 1);
 				if (ReviveFlash(mo)) mo.A_SetBlend("FF C0 60", 0.45, 20, "FF 60 20", 0.0);
+				// TIME TO FIND YOUR FEET (design/DOWN_LIVES_MINIBOSS_TIERS.md 3, owner 2026-11-16 00:58-01:00): on top of the
+				// revival, both held guns' magazines refilled, 5 s invulnerable (a PowerInvulnerable: the HUD's bar reads
+				// it), 5 s of world slow motion (RSQ SlowMo, reason -1UP), the world's grey-and-white flash (RSQ Glow In The
+				// Dark), and the -1UP banner (RSQ VisualRewards LIFEUSED). Every life spent gets it: a failed DOWN's, and a
+				// killing hit that was no monster's (my reading of the rule's section 1 "a Score life catches it (section 3)")
+				int mags = RefillMags(mo);
+				RSQ_ScoreLifeInvul.Grant(mo, LIFE_INVUL_TICS);
+				SlowMoReward(mo, "life.used", LIFEUSED_SLOW_MS);
+				GlowFlash(mo);
+				String chips = String.Format("LIFEUSED|lives:%d|health:+%d|invuln:%d", tr.extraLives, mo.health - 1, LIFE_INVUL_TICS / TICRATE);
+				if (mags > 0) chips = chips .. "|mags:";
+				Banner(chips, mo);
 
 				if (DebugOn())
 				{
-					Console.Printf("RS_Score: REVIVED at tic %d -- health %d, %d lives left",
-						level.maptime, mo.health, tr.extraLives);
+					Console.Printf("RS_Score: REVIVED at tic %d -- health %d, %d lives left; %d magazine(s) refilled, invulnerable %d tics",
+						level.maptime, mo.health, tr.extraLives, mags, LIFE_INVUL_TICS);
 				}
 				TellGraveyard(mo);
 
