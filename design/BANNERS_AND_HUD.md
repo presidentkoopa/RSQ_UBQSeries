@@ -160,6 +160,26 @@ changes. Mockups: `mockups/banners/DOWN_now_vs_proposed.jpg`, `DOWN_proposed_set
   PAIN ELEMENTAL, LOST SOUL, BARON, HELL KNIGHT, REVENANT, MANCUBUS, ARACHNOTRON, ARCH-VILE, CYBERDEMON, SPIDER
   MASTERMIND, ZOMBIEMAN, SHOTGUN GUY, CHAINGUNNER); a class with no vanilla ancestor uses its Tag, else its class name
   split into words without the RS_ prefix and colour. Then + " WARLORD". The same name on the bar and the banner.
+## 10. LEVEL UP (owner, 2026-11-16 03:08: "good. let's move on")
+
+Mockup `mockups/banners/LEVELUP_now_vs_proposed.png`. Today: VisualRewards' gold band sweeping across with LEVEL UP /
+PLAYER LV n / +1 UPGRADE (`damnums/events.zs` Banner), and the gun's framed tag (PISTOL / LV n / NEW UPGRADE).
+- **Player level up:** the grinning face (`STFEVL0`) + **LEVEL UP!** (gold bands) punch in; chips **★ PLAYER LV n**,
+  **↑ +1 UPGRADE** (green) pop in sequence. No sweeping band.
+- **Gun level up:** smaller, by the gun as today: a **PISTOL** chip (the gun's name), a big gold **LV n**, a green
+  **↑ NEW UPGRADE** chip; the same pop.
+- Gun Bonsai's upgrade picker (the cards) is a menu, not a banner: unchanged.
+
+## 11. The SOTN letter animation on every banner (owner 03:08: "our usual SOTN style of character animations for these
+and the other designs I approved")
+
+The series' SOTN words (`design/mockups/sotn_words/mock.py`, owner 11-10; VisualRewards `words.zs`' sotn look): the
+letters **smear in, snap upright, then flash between two looks**, each look two-toned (top half / bottom half). Every
+banner headline in this doc (REVIVE, −1UP, +1UP, BOSS DEFEATED!, BOSS WINS!, BOSS INCOMING!, DOWN!, LEVEL UP!, the gun's
+LV n) comes in that way, letter by letter, inside the banner's pop; its two looks are the headline's own bands and a
+white-hot version of them. Photosensitive Mode: no flash between looks (the smear and snap stay). The chips keep the pop
+of section 2. The mockup stills and GIFs do not show this; it is part of the design all the same.
+
 - **Also important: sharp pixels.** Every in-game draw of these fonts and icons scales by whole numbers where it can and
   never smooths: the soft look of some mockup stills was the mockups' downscaling, not the font.
 
@@ -178,3 +198,5 @@ changes. Mockups: `mockups/banners/DOWN_now_vs_proposed.jpg`, `DOWN_proposed_set
 | The DOWN screen in Arcade Gold (section 8) | Not built |
 | BOSS INCOMING! banner (section 9) | Not built |
 | Clean Boss names on the bar and banner (section 9) | Not built |
+| LEVEL UP: player and gun (section 10) | Not built |
+| The SOTN letter animation on every banner headline (section 11) | Not built |
