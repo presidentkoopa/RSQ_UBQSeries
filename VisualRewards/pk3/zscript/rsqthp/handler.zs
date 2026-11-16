@@ -187,13 +187,21 @@ class RSQTHP_Handler : EventHandler
 		}
 		return -1;
 	}
+	// CHAMPIONS' OWN ICON IS HIDDEN ONLY WHERE OUR BAR SHOWS IT (C12, 2026-11-16): with Tier Gem and Champion Icons on, a
+	// champion whose bar is drawn now (HP Bars on, the bar made and not faded out) wears our icon beside the bar, and
+	// Champions' floating icon is hidden; an unhurt champion (no bar yet), or any champion with HP Bars off, keeps its own.
+	transient Array<Actor> iconBarWho;
 	private void ChampIconsTick()
 	{
+		iconBarWho.Clear();
+		if (tierIcons && on)
+			for (int i = 0; i < bars.Size(); i++) { let b = bars[i]; if (b && b.who && !b.bInvisible && b.baseAlpha > 0.05) iconBarWho.Push(b.who); }
 		for (int i = champIconsSeen.Size() - 1; i >= 0; i--)
 		{
 			let ic = champIconsSeen[i];
 			if (!ic) { champIconsSeen.Delete(i); continue; }
-			if (ic.bINVISIBLE != tierIcons) ic.bINVISIBLE = tierIcons;
+			bool hide = tierIcons && on && ic.master && iconBarWho.Find(ic.master) < iconBarWho.Size();
+			if (ic.bINVISIBLE != hide) ic.bINVISIBLE = hide;
 			let m = ic.master;
 			if (!m || ic.frame > 16) continue;
 			let k = RSQTHP_ChampKind(m.FindInventory("RSQTHP_ChampKind"));
@@ -301,7 +309,8 @@ class RSQTHP_Handler : EventHandler
 	// the same ld_dormant). Before, those bars were lifted over an icon that was not there.
 	bool WearsChampIcon(Actor a)
 	{
-		if (!champIcons || tierIcons || !a.FindInventory(champInfo)) return false;   // ours on: theirs is hidden, no lift
+		// ours on: theirs is hidden while our bar shows (ChampIconsTick, C12), so the bar needs no lift
+		if (!champIcons || tierIcons || !a.FindInventory(champInfo)) return false;
 		bool dormantMode = cChDormant && cChDormant.GetInt() && cChLD && cChLD.GetInt() && ldLoaded;
 		if (dormantMode && !(ldTransformed && a.FindInventory(ldTransformed))) return false;
 		return true;
@@ -393,7 +402,7 @@ class RSQTHP_Handler : EventHandler
 	override void WorldThingSpawned(WorldEvent e)
 	{
 		let a = e.Thing;
-		if (a && a.GetClassName() == 'champion_Icon') { champIconsSeen.Push(a); a.bINVISIBLE = tierIcons; return; }
+		if (a && a.GetClassName() == 'champion_Icon') { champIconsSeen.Push(a); return; }   // shown or hidden by ChampIconsTick (C12)
 		if (!a || a.player || !Eligible(a)) return;
 		Track(a);
 		if (!coldChecked) CheckCold();

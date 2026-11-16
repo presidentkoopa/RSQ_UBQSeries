@@ -261,13 +261,15 @@ OptionMenu "RSQTHP_Options"
 	StaticText " "
 	StaticText "Level-Up", 1
 	Option "Player Level-Up", "rsqthp_lvl", "OnOff"
-	Option "Level-Up Slow-Mo", "rsqthp_lvl_slow", "OnOff"
+	// Slow-Mo, Text Colour, Wrist Toast and Weapon Tag Colour are the old band's and tag's: greyed with Banners on, which
+	// draw the level-ups instead (C11, 2026-11-16). Band Colour stays: REVENGE / REVIVE use it either way.
+	Option "Level-Up Slow-Mo", "rsqthp_lvl_slow", "OnOff", "rsqvr_banners", 0, 1
 	Option "Band Colour", "rsqthp_lvl_bandcol", "RSQTHP_Col"
-	Option "Text Colour", "rsqthp_lvl_textcol", "RSQTHP_Col"
+	Option "Text Colour", "rsqthp_lvl_textcol", "RSQTHP_Col", "rsqvr_banners", 0, 1
 	Option "Weapon Level-Up", "rsqthp_lvl_wpn", "OnOff"
 	// On: a small tag at the hand for about a second. Off: the full tag that rises off the gun.
-	Option "Weapon Level-Up: Wrist Toast", "rsqthp_lvl_wpn_toast", "OnOff"
-	Option "Weapon Tag Colour", "rsqthp_lvl_tagcol", "RSQTHP_Col"
+	Option "Weapon Level-Up: Wrist Toast", "rsqthp_lvl_wpn_toast", "OnOff", "rsqvr_banners", 0, 1
+	Option "Weapon Tag Colour", "rsqthp_lvl_tagcol", "RSQTHP_Col", "rsqvr_banners", 0, 1
 	StaticText " "
 	StaticText "Arrivals and Words", 1
 	Option "Arrival Beams", "rsqvr_beams", "OnOff"
@@ -286,6 +288,8 @@ OptionMenu "RSQTHP_Options"
 	StaticText "Banners and Bars", 1
 	Option "Banners", "rsqvr_banners", "OnOff"
 	Slider "Banner Size", "rsqvr_banner_size", 0.5, 2.0, 0.05, 2
+	// The small messages low in the view (a backfire, a repair): on or off by themselves, Banners or not.
+	Option "Toasts", "rsqvr_toasts", "OnOff"
 	Option "Invulnerability Bar", "rsqvr_invbar", "OnOff"
 	StaticText " "
 	Submenu "Test and Debug", "RSQTHP_Test"

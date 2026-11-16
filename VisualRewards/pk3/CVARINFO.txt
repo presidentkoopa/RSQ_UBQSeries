@@ -117,4 +117,5 @@ user   bool rsqvr_pops  = true;   // Pops: the small ring and star burst another
 // The Arcade Gold banners and the invulnerability bar (2026-11-16, design/BANNERS_AND_HUD.md). Look only: user cvars.
 user   bool  rsqvr_banners = true;       // Banners: REVIVE, -1UP, BOSS DEFEATED!, BOSS WINS!, +1UP and their chips (another mod asks)
 user   float rsqvr_banner_size = 1.0;    // Banner Size: x the mockups' size in the headset eye (RSQ Accessibility's Text Size on top)
+user   bool  rsqvr_toasts = true;        // Toasts (C13, 2026-11-16): the small messages low in the view that other mods send (a backfire, a repair, no flares left), with Banners on or off
 user   bool  rsqvr_invbar = true;        // Invulnerability Bar: the magenta bar in the top stack while you are invulnerable

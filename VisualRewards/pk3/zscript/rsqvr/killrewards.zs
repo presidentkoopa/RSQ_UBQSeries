@@ -282,7 +282,10 @@ class RSQ_KRHandler : EventHandler
 		[wh, wa, wm] = Mix();
 		int sum = wh + wa + wm;
 		lastNoHealth = 0;
-		if (sum <= 0) return 0, 0, 0;
+		// WHAT DROPS all 0: no health, armour or ammo bits, but gold and steel still roll their shares (C16, 2026-11-16: the
+		// mix at 0 took them too); with neither, nothing
+		int gold0 = RSQ_KRGoldBit.Share(), steel0 = RSQ_KRSteelBit.Share();
+		if (sum <= 0 && gold0 <= 0 && steel0 <= 0) return 0, 0, 0;
 		bool thrall = !boss && (thr >= 0 ? thr > 0 : ThrallHere(a));     // a miniboss fight's thrall: no health bits (ThrallHere)
 		int chance = clamp(SVI("rsqgb_kr_chance", 50), 0, 100);
 		int nh = 0, na = 0, nm = 0;
@@ -293,15 +296,16 @@ class RSQ_KRHandler : EventHandler
 		for (int i = 0; i < num; ++i)
 		{
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
-			int r = random[RSQKR](1, sum);
+			int r = sum > 0 ? random[RSQKR](1, sum) : 0;
 			String cls;
-			if (r <= wh && thrall) { ++lastNoHealth; continue; }
+			if (sum > 0 && r <= wh && thrall) { ++lastNoHealth; continue; }
 			// GOLD (design/KIOSK.md, owner 2026-11-16): about one bit in four (Gold Share) is a gold bit instead of the health,
 			// armour or ammo bit it rolled; only while RSQ Score (the bank) is loaded and Gold Bits is on
 			if (gold > 0 && random[RSQKR](1, 100) <= gold) { cls = "RSQ_KRGoldBit"; ++lastGold; }
 			// STEEL (design/WEAPON_CONDITION.md, owner 2026-11-16): Steel Share of the rest are steel bits (they repair the guns in
 			// your hands), only while RSQ Gun Cards' Weapon Condition is on
 			else if (steel > 0 && random[RSQKR](1, 100) <= steel) { cls = "RSQ_KRSteelBit"; ++lastSteel; }
+			else if (sum <= 0) continue;
 			else if (r <= wh) { cls = "RSQ_KRHealthBit"; ++nh; }
 			else if (r <= wh + wa) { cls = "RSQ_KRArmorBit"; ++na; }
 			else { cls = "RSQ_KRAmmoBit"; ++nm; }
@@ -325,7 +329,7 @@ class RSQ_KRHandler : EventHandler
 		[wh, wa, wm] = Mix();
 		int sum = wh + wa + wm;
 		lastNoHealth = 0; lastGold = 0; lastSteel = 0; lastSpawned = 0;
-		if (sum <= 0) return 0, 0, 0;
+		if (sum <= 0 && RSQ_KRGoldBit.Share() <= 0 && RSQ_KRSteelBit.Share() <= 0) return 0, 0, 0;   // (C16: as Burst)
 		bool thrall = !boss && (thr >= 0 ? thr > 0 : ThrallHere(a));
 		int chance = clamp(SVI("rsqgb_kr_chance", 50), 0, 100);
 		int gold = RSQ_KRGoldBit.Share();
@@ -334,10 +338,11 @@ class RSQ_KRHandler : EventHandler
 		for (int i = 0; i < num; ++i)
 		{
 			if (!boss && !a.bBoss && random[RSQKR](1, 100) > chance) continue;
-			int r = random[RSQKR](1, sum);
-			if (r <= wh && thrall) { ++lastNoHealth; continue; }
+			int r = sum > 0 ? random[RSQKR](1, sum) : 0;
+			if (sum > 0 && r <= wh && thrall) { ++lastNoHealth; continue; }
 			if (gold > 0 && random[RSQKR](1, 100) <= gold) ++lastGold;
 			else if (steel > 0 && random[RSQKR](1, 100) <= steel) ++lastSteel;
+			else if (sum <= 0) continue;
 			else if (r <= wh) ++nh;
 			else if (r <= wh + wa) ++na;
 			else ++nm;
@@ -460,6 +465,7 @@ class RSQ_KRHandler : EventHandler
 		else if (bit is "RSQ_KRArmorBit") RSQ_KRArmorBit(bit).bankFor = forPn;
 		else if (bit is "RSQ_KRAmmoBit") RSQ_KRAmmoBit(bit).bankFor = forPn;
 		else if (bit is "RSQ_KRGoldBit") RSQ_KRGoldBit(bit).bankFor = forPn;
+		else if (bit is "RSQ_KRSteelBit") RSQ_KRSteelBit(bit).bankFor = forPn;   // (C17, 2026-11-16: steel was left on the floor)
 		else return;
 		bit.bSpecial = false;
 		bit.bNoGravity = true;

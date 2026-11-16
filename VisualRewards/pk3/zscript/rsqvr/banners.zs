@@ -338,6 +338,7 @@ class RSQVR_Banners : EventHandler
 	ui int LivesExchange(double x, double y, double h)
 	{
 		livesX = x; livesY = y; livesH = h; livesTic = level.maptime;
+		if (!On()) return 0;      // Banners off: no +1UP badge flies there, so Score's new life face is not held back (C14, 2026-11-16)
 		int hold = 0;
 		for (int i = 0; i < list.Size(); i++)
 		{
@@ -390,6 +391,7 @@ class RSQVR_Banners : EventHandler
 	ui bool photo;
 
 	static ui bool On() { let c = CVar.GetCVar("rsqvr_banners", players[consoleplayer]); return !c || c.GetBool(); }
+	static ui bool ToastsOn() { let c = CVar.GetCVar("rsqvr_toasts", players[consoleplayer]); return !c || c.GetBool(); }
 	static ui double SizeK()
 	{
 		let c = CVar.GetCVar("rsqvr_banner_size", players[consoleplayer]);
@@ -884,7 +886,7 @@ class RSQVR_Banners : EventHandler
 		bnBottom = -1;
 		let b = On() ? Current() : null;
 		if (b) DrawBanner(b, t);
-		DrawToasts(t);
+		if (ToastsOn()) DrawToasts(t);     // a row of their own, Toasts (C13, 2026-11-16: Banners off left them on, with no switch)
 	}
 	ui double bnBottom;       // this frame's banner's lowest chip row (the toasts go under it), -1 none
 
