@@ -3261,7 +3261,8 @@ class RSQTR_Rig : EventHandler
 		if (FlareAsk("flare.count", pmo) <= 0)
 		{
 			RefuseFeel(pmo, h);
-			if (!Toast(pmo, "ammo", "No flares left")) pmo.A_Print("No flares left", 1);
+			// obeys Messages like the other short lines (2026-11-16, owner: "Hide with Messages off"); the refusal buzz stays
+			if (Flag("rsqtr_messages", p, false) && !Toast(pmo, "ammo", "No flares left")) pmo.A_Print("No flares left", 1);
 			return;
 		}
 		EventHandler.SendNetworkEvent("rsqff_take");

@@ -54,7 +54,6 @@ OptionValue "RSQTR_Markers"
 {
 	0, "Never"
 	1, "Hand Nearby"
-	2, "Always While Moving Holsters"
 }
 
 OptionMenu "RSQTR_Options"
@@ -139,7 +138,7 @@ OptionMenu "RSQTR_Options"
 	SafeCommand "Load Seated B (Yellow)", "netevent rsqtr_prof_load 4", "Load Seated B?"
 	StaticText " "
 	Submenu "Test and Debug", "RSQTR_Test"
-	RSQTRResetAll "Reset All", "Reset all RSQ Tactical Rig settings?", "rsqtr_eye_m rsqtr_pairs"
+	RSQTRResetAll "Reset All", "Reset all RSQ Tactical Rig settings?", "rsqtr_eye_m"
 }
 
 // ---- Test and Debug: every number --------------------------------------------------------------------

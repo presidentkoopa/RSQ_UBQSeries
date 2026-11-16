@@ -3,32 +3,41 @@
 # RSQ Tactical Rig
 ### Doom Arcade VR · your guns on your body, a grenade on your belt, and Ermac's cigarette in your pocket
 
-Reach for your hip and draw. Put a gun back where it lives and it stays there. Six holsters on your hips, chest and
-shoulders hold a gun each, exactly the one you put there. Your grenade, sabers, whip, flares, ammo and keys each have a
-spot of their own on your belt.
+<p align="right"><a href="../README.md#tactical-rig">&larr; RSQ UBQ Series</a></p>
+
+Reach for your hip and draw. Put a gun back where it lives and it stays there.
+
+**What it does:**
+
+- **Six holsters** on your hips, chest and shoulders, one gun each, used with either hand ([Where everything sits](#where-everything-sits))
+- **Draw and holster with the grip** (or Use): a gun in your hand goes in, an empty hand takes it out
+- **Every gun has a home:** the first holster a gun goes into is its own; put it anywhere else and it flies home ([Stored guns and their ammo](#stored-guns-and-their-ammo))
+- **Swaps:** a gun put into another gun's full holster trades places with it
+- **Shows you no:** a refused press is a red flash, a double buzz and a picture of the gun that belongs there
+- **Stored guns are on your body,** each with an ammo light: green, yellow, red
+- **A grenade at your belt buckle,** its light counting what you have ([The grenade spot](#the-grenade-spot))
+- **Spots for the rest of the Series:** both sabers, the whip, flares, and the ammo pouch for Brutal Doom VR's hand reloads
+- **A keyring** on your belt that shows the keys you carry ([The keyring](#the-keyring))
+- **Ermac's cigarette:** a pack of three in your chest pocket; pocket, lips, Zippo, flick, and fifteen seconds of slow motion ([Cigarettes](#cigarettes))
+- **Hangs on your body, not your head:** look around and the holsters stay put; it follows snap and smooth turns
+- **A mirror** that shows you the whole rig ([The mirror](#the-mirror))
+- **A torso** the holsters sit on, blue with heavy armour, red and breathing when you are hurt ([Your body](#your-body))
+- **Works seated,** and scales to your measured height
+
+Three things make it more than a weapon bar on your chest:
+
+- **It is on a body.** The rig hangs on a torso that is tracked apart from your head. It follows a snap turn or a
+  smooth turn exactly, and both hands held to your chest for a moment turn it to face where you face.
+- **Each holster belongs to one gun.** Nothing is assigned for you. Where you first put a gun is where it lives, a gun
+  left anywhere else goes home, and a press that makes no sense is shown, not ignored.
+- **The cigarette is a ritual.** Take it from your pocket, put it to your lips, light it with the Zippo in your other
+  hand, flick it away, and the world slows for fifteen seconds. You earn them: a Boss kill, getting up from DOWN.
 
 *[picture to come: hero shot, the rig worn, seen in the mirror (front and back side by side)]*
 
-<p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
-
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/tacticalrig/what-it-feels-like.gif" alt="What it feels like" height="44">
-
-- **Draw from your body.** Reach to a holster, squeeze the grip, and the gun is in your hand. Squeeze there with a gun in
-  your hand and it goes away. Each hand holsters and draws its own gun.
-- **Holsters ride up when you are DOWN.** RSQ SlowMo's DOWN lowers your view, which put the hip holsters at the floor.
-  While you are DOWN the holsters squeeze up toward your head so the lowest clears the floor (**Holsters Ride Up When
-  Down**, on). *Code only (2026-11-12): it loads; not run on the rig, not headset-confirmed.*
-- **Everything has its place.** The first holster you put a gun in becomes that gun's. Put it anywhere else and it flies
-  home with a streak of light. A holster that belongs to another gun turns you away with a red flash, a double buzz and
-  a picture of the gun it belongs to.
-- **Look down and see your kit.** Stored guns hang on you the way they are worn: muzzle down on the hips, cross-draw on
-  the chest, slung on your back over the shoulders. A small light on each tells you how much ammo it has.
-- **Your belt does the rest.** A grenade hangs at the buckle, an ammo pouch sits beside it for Brutal Doom VR's hand
-  reloads, and every key you pick up dangles from a keyring.
-- **A mirror to set it up.** A copy of you stands in front of you while you move the holsters, so you can see your own
-  shoulders and back.
-- **Ermac's cigarette.** Pull one from your chest pocket, put it in your mouth, light it with the Zippo in your other
-  hand, and time slows when you spit it out. Off until you turn it on.
+**Works on plain Doom II with nothing else loaded:** the six holsters, the keyring, the torso, the mirror and the
+cigarette (its slow motion needs RSQ SlowMo). The grenade spot, the pouch and the saber, whip and flare spots appear
+with the mods they belong to. Gun throwing, Keys Open Doors and Seated are off until you turn them on.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
@@ -44,15 +53,15 @@ spot of their own on your belt.
 | An empty hand at the **axe's** holster while you have axes (BD22 VR Reloaded 2.0.4r: axes are a count shared by both hands) | An axe comes out, every time: throw the one you drew and another takes its place, until you run out (into the off hand it is the off-hand axe). The axe only: any other gun's empty holster gives nothing back (owner 11-12: "this was an axe problem") |
 | Your last axe thrown | The axe's holster is unassigned (a white flash shows whose it was). Assign it again in the Wheel, or put an axe into a holster |
 | An empty hand at any other empty holster | Nothing comes out: the plain refusal (double buzz), as before 11-12 |
-| An empty hand held in an empty holster for a second | That holster is freed (a white flash shows whose it was) |
+| An empty hand pressed and held for a second in an empty holster that belongs to a gun | That holster is freed (a white flash shows whose it was) |
 | Squeeze at the belt buckle | Your grenade comes to your main hand. Squeeze there again with it in hand and your gun comes back |
 | Reload a Brutal Doom VR gun with your off hand at the ammo pouch | That's where the magazines, shells and rounds come from |
 | Both hands held to your chest for a moment (or the Recenter Torso key) | The holsters turn back in front of you |
 | Turn on **Move Holsters by Hand**, squeeze a ring, carry it, let go | That holster moves there and stays |
 
 The rings show when a hand comes near, and only for holsters that hand can use right now. The first time you hold a gun, a
-faint ghost hand shows you where to put it. Miss the same ring three times in a few seconds and it lights up with a
-"Grip inside the ring" hint.
+faint ghost hand shows you where to put it. Miss the same ring three times in a few seconds and its ring fills in for
+three seconds to show you where.
 
 ### Controls
 
@@ -65,8 +74,8 @@ Controls, section **RSQ Tactical Rig**.
   under Test and Debug), not from a key you bind.
 - **Off-hand trigger** with the Zippo: light the cigarette. **Main-hand alt fire** on a card of RSQ Wheel: the holster
   screen.
-- **Gestures:** both hands held to your chest for a moment (recenter, **Recenter by Hands**); an empty hand held in an
-  empty holster for a second (free it). The cigarette goes in at your lips with **Use**.
+- **Gestures:** both hands held to your chest for a moment (recenter, **Recenter by Hands**); an empty hand pressed and held for a
+  second in an empty holster that belongs to a gun (free it). The cigarette goes in at your lips with **Use**.
 - **Menu buttons:** **Measure My Height**, and Save and Load for the four holster profiles.
 
 *[picture to come: the ghost hand showing the way to the hip holster (GIF)]*
@@ -104,8 +113,8 @@ chest holster, is 2.5 cm clear). *Code only, not shown.*
 
 **Rings tell you what is what.** A gun holster is a wire sphere: blue when idle (or your profile's colour), green, brighter
 and a size larger with a hand inside. A spot that holds one thing only is a magenta wire diamond. Only the rings your hand
-could use right now show, and only the nearest is bright. Set **Holster Rings** to **Always** to see them all while you
-move holsters around.
+could use right now show, and only the nearest is bright. With **Move Holsters by Hand** on, every ring shows whatever
+**Holster Rings** is set to.
 
 ![The right-hip holster's ring round the hand with the pistol, then the pistol holstered](docs/readme/holster_ring_hip_and_holstered.jpg)
 
@@ -145,7 +154,8 @@ the gun is assigned to that holster and goes straight in. **Clear** takes its ho
 to **Mirror** and the panel shows the rig's own mirror of you instead, with the rings on your real holster spots.
 
 Things with their own home are turned away here too. With RSQ ShieldSaw worn over the shoulder, that shoulder shows the
-ShieldSaw and takes no gun.
+ShieldSaw and takes no gun. Turn **Shoulder to ShieldSaw** off and the shoulder is a gun's again (code only, not shown,
+2026-11-16: until then the row did not free it).
 
 *[picture to come: the holster assignment screen, Marine view]*
 *[picture to come: the holster assignment screen, Mirror view]*
@@ -193,13 +203,13 @@ pack gives it), in a little fan that sways as you move. Look down and see what y
 - **Off hand:** squeeze at the ring and hold. At a locked door, pull the trigger to unlock and open it, or hold alt fire
   and raise your hand to lift it (with RSQ Distance Grab, the door follows your hand).
 
-*[picture to come: the keyring with all six keys, looking down]*
+*[picture to come: the keyring with several keys, looking down]*
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
 <a name="cigarettes"></a><img src="../design/readme_art/heads/tacticalrig/cigarettes.gif" alt="Cigarettes" height="44">
 
-Ermac's tribute, **off by default**. Turn on **Cigarettes** and a pocket of three sits on your chest.
+Ermac's tribute (**Cigarettes**, on since 2026-11-16). A pocket of three sits on your chest.
 
 | Do this | What happens |
 |---|---|
@@ -216,7 +226,7 @@ default), it doesn't use your adrenaline, and RSQ SlowMo's countdown bar shows h
 **Only death or RSQ SlowMo's DOWN (Be Quick or Be Dead) ends it.** Switching weapons or grabbing a holster while you smoke
 counts as a finished smoke: the cigarette flicks out of your mouth, the slow motion starts, and your hands get what you
 switched to. Once it runs, a switch, a holster, Use or a level change does not end it: on a new level it goes on for the
-time it had left. Another slow motion on top of it (a parry, a miniboss, your own key) runs by SlowMo's rules, and the
+time it had left. Another slow motion on top of it (a parry, a Boss, your own key) runs by SlowMo's rules, and the
 smoke's takes over again when that one ends. Getting up from DOWN does not bring it back.
 
 Switching or a holster with the cigarette still unlit puts it back in the pocket. Left unlit in your mouth for 7 seconds,
@@ -224,11 +234,14 @@ it drops. You and your shots move at full speed in the smoke's slow motion unles
 While Smoking). *(The switch, the holster and the level change: rig only, not headset-confirmed.)*
 
 **Cigarettes are precious.** You start a game with a full pocket, and it does **not** refill on a new level: what you
-have left comes with you. You earn more: RSQ Score gives you one every so many points, killing an RSQ Miniboss gives
+have left comes with you. You earn more: RSQ Score gives you one every so many points, killing a Boss (RSQ Miniboss) gives
 you one (owner 2026-11-12: "change to +1 cigarette, cigarettes are massively powerful now"; it filled the pocket before),
 and getting up from RSQ SlowMo's DOWN gives one back. (Turn on **Refill Each Level** for the old way.)
 
 *[picture to come: the whole ritual, pocket to lips to Zippo to flick (GIF)]*
+
+**The butt is bait.** A cigarette you flick away lies on the floor for 10 to 30 seconds, and every second it alerts the
+monsters within 200 units: they go for it. In co-op, a Boss kill gives a cigarette to every player who has Cigarettes on.
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>
 
@@ -266,7 +279,7 @@ profiles move the hips and belt spots up and forward onto your lap, unless you p
 **Four holster profiles.** Save and load where every holster sits: Standing A (blue), Standing B (orange), Seated A
 (purple), Seated B (yellow). The rings take the colour of the profile in use.
 
-**A torso to wear** (off by default). The Doom marine (green, blue with blue armour, red breathing over it when your health
+**A torso to wear** (**Torso**, on since 2026-11-16). The Doom marine (green, blue with blue armour, red breathing over it when your health
 is low) or Quake's Grunt (its own skin, green or blue). With the marine you also wear a helmet, seen only in mirrors. The
 torso fades to about half as you look down, so you can see your holsters.
 
@@ -298,10 +311,10 @@ torso fades to about half as you look down, so you can see your holsters.
 - **RSQ Grenade:** the buckle hands out its grenade when Brutal Doom VR's is not in play, and glows in the kind's colour.
 - **RSQ ShieldSaw:** while its shield is stowed on your off shoulder, the rig leaves that shoulder to it (**Shoulder to
   ShieldSaw**). Set to Over the Shoulder, that holster is the ShieldSaw's alone.
-- **RSQ SlowMo:** the cigarette's slow motion; getting up from DOWN gives a cigarette back; the "Grip inside the ring" hint
-  never counts while you are down.
+- **RSQ SlowMo:** the cigarette's slow motion; getting up from DOWN gives a cigarette back; a missed ring
+  never counts toward the hint while you are down.
 - **RSQ Score:** a Quick Draw bonus for a kill with a gun you just drew; cigarettes earned by score.
-- **RSQ Miniboss:** a miniboss kill gives you one cigarette, never past the pocket's size; calling a miniboss fight at the watch check never also moves your gun.
+- **RSQ Miniboss:** a Boss kill gives you one cigarette, never past the pocket's size; calling a Boss fight at the watch check never also moves your gun.
 - **RSQ Gun Bonsai VR:** Smoker (longer smoke slow motion, and nothing can hurt you in it, across a level change too,
   ending when the slow motion ends), Chain Smoker (more
   cigarettes), Gun Toss (harder gun throws), Boomerang Gun (a thrown gun flies back to its holster or your hand).
@@ -315,16 +328,16 @@ torso fades to about half as you look down, so you can see your holsters.
 <a name="options"></a><img src="../design/readme_art/heads/tacticalrig/options.gif" alt="Options" height="44">
 
 *Radiant Silvergun Options → RSQ Tactical Rig.* Everything is on one page; the raw numbers are under Test and Debug.
-**Reset All** resets both pages and keeps your measured height.
+**Reset All** resets both pages, your measured height included (it is measured again).
 
 | Section | Rows |
 |---|---|
-| Holsters | Tactical Rig (On) · Grip Holsters (On) · Use Holsters (On) · Holster Rings (Never / Hand Nearby / Always While Moving Holsters; Hand Nearby) · Holster Reach (1.0) · Quick Swap (On) · Swap at Another Gun's Holster (Into the Wheel / Takes That Holster; Into the Wheel) · Keep Between Levels (On) · Move Gun at Watch (Off) · Hang From Neck (On) |
+| Holsters | Tactical Rig (On) · Grip Holsters (On) · Use Holsters (On) · Holster Rings (Never / Hand Nearby; Hand Nearby) · Holster Reach (1.0) · Quick Swap (On) · Swap at Another Gun's Holster (Into the Wheel / Takes That Holster; Into the Wheel) · Keep Between Levels (On) · Move Gun at Watch (Off) · Hang From Neck (On) |
 | Spots | Grenade Spot (On) · Show Grenade (On) · Saber on Hip Too (Off) · Whip Holster (On) · Flare Holster (On) · Ammo Pouch (Off: Grab Anywhere) (On) · Pouch Reaches for Your Hand (On) · Show Ammo Pouch (On) · Shoulder to ShieldSaw (On) · Keyring (On) · Keys Open Doors (Off) |
 | Stored Guns | Show Stored Guns (On) · Stored Gun Size (1.0) · Ammo Light (On) · Ammo Count (Off) |
 | Gun Throwing | Throw Guns (Off) · Throw With Use (Off) · Thrown Guns Hurt (On) |
-| Body | Seated (Off) · Measure My Height · Torso (Off) · Torso Style (Doom Marine / Quake Grunt) · Helmet (On) · Torso Fades Looking Down (On) · Torso Follows Room Turns (On) · Head and Hands Turn (Off) · Torso Catches Up (Off) · Recenter by Hands (On) · Recenter Torso (a key, unbound) |
-| Cigarettes | Cigarettes (Off) · Smoke Slows Time (On) · Smoke Slow-Mo Time (15 s) · Move at Full Speed While Smoking (On) · Cigarette Every N Score (0, off) · Boss Kill Gives a Cigarette (On) · Refill Each Level (Off) · Unlit Cigarette Goes Away (On) · Show Cigarettes (On) |
+| Body | Seated (Off) · Measure My Height · Torso (On) · Torso Style (Doom Marine / Quake Grunt) · Helmet (On) · Torso Fades Looking Down (On) · Torso Follows Room Turns (On) · Head and Hands Turn (Off) · Torso Catches Up (Off) · Recenter by Hands (On) · Recenter Torso (a key, unbound) |
+| Cigarettes | Cigarettes (On) · Smoke Slows Time (On) · Smoke Slow-Mo Time (15 s) · Move at Full Speed While Smoking (On) · Cigarette Every N Score (0, off) · Boss Kill Gives a Cigarette (On) · Refill Each Level (Off) · Unlit Cigarette Goes Away (On) · Show Cigarettes (On) |
 | Setup | Move Holsters by Hand (Off) · Mirror (Off / While Moving / Always; While Moving) · Mirror Shows (Front / Back / Both; Both) · Haptics (On) · Messages (Off) |
 | Holster Profiles | Save and Load: Standing A (Blue), Standing B (Orange), Seated A (Purple), Seated B (Yellow) |
 | Test and Debug | Stored Guns: Gun Length (0.25 m), Back Gun Length (0.70 m), Gun Turn (0°), Flip These Guns · Body: Body Turn Angle (35°), Body Turn Delay (1 s), Ignore Looking Down (25°), Mirror Distance (1.0 m) · Hands: Press Delay (3 tics), Throw Speed (2.5 m/s), Thrown Gun Damage (1.0), Main Grip Keys, Off Grip Keys, Empty Hand Weapon · Torso Fit: Torso Height, Torso Forward, Torso Size, Helmet Height, Low Health Glow (35%) · Cigarette: Mouth Zone Size, In Mouth Forward (0.12 m), In Mouth Down (0.07 m), Smoke Time (2 s), Unlit Goes Away After (7 s), Slow Motion Speed (25%), Pack Size (3) · Holster Positions: Forward, Left, Up and Size for each of Left Hip, Right Hip, Grenade Spot, Left Chest, Right Chest, Keyring, Left Shoulder, Right Shoulder, Left Saber, Right Saber, Whip, Flare, Ammo Pouch · Debug: Throw Debug Log (Off) |
@@ -340,7 +353,7 @@ torso fades to about half as you look down, so you can see your holsters.
 | **code only, not shown** (2026-11-16; the toast route itself was shown on the rig with a probe, not these messages: `../Miniboss/docs/rig_2026-11-16_words_toasts/`) | **Short messages are toasts** (design/PRESENTATION_GUIDE.md 5, owner 11-16): "Grenades: none", "`<place>`: empty", "`<place>`: nothing here", "Torso recentered" and "No flares left" ask RSQ VisualRewards for a toast by name; without it they print exactly as before. On the options page, Miniboss Kill Gives a Cigarette now reads **Boss Kill Gives a Cigarette** (the setting is the same one) |
 | **rig only, not headset-confirmed** (2026-11-13, Selaco with RS_Selaco_VRWeapons) | **Another game's grenade at the grenade spot** (`RSQTR_NadeService`): the buckle live with Selaco's grenades, a grip there putting its grenade in the main hand, the throw, and the gun coming back. Doom packs untouched: no such service answers there |
 | **code only: loads with no script error on the rig, not exercised** (2026-11-12, runs `axs1` and `axs2` on the owner's full order with BD22 VR Reloaded 2.0.4s; logs and scripts in `tools/rigtest/axeswitch/evidence/`) | **The axe's holster gives only an axe you have** (with BD22 VR Reloaded 2.0.4s: the axe count includes the axes in your hands). It gives an axe only while one is left that the other hand is not holding. With one axe, held in the other hand, the holster has none (2.0.4r gave a second axe there). Neither run drew from the axe's holster: this row says only that the pack loaded with no script error from our packs (the 4 voxeldef errors of 02_BD22_VoxelPack pre-exist) |
-| **rig only, not headset-confirmed** (2026-11-12, run `mbthrall2`, the owner's full order with BD22 VR Reloaded 2.0.4q and RSQ Miniboss; Cigarettes switched on for the run, Messages on) | **A miniboss kill gives one cigarette:** the pocket set to 1 by a test probe, the called-in miniboss killed, "T_RIG cigarettes +1 (miniboss): 2 of 3" (before, run `mbdrop1`: "+3 (miniboss): 3 of 3" from an empty pocket). The menu row reads **Boss Kill Gives a Cigarette**. Not shown: a kill with the pocket already full (the cap is the same `CigGive` as Score's) |
+| **rig only, not headset-confirmed** (2026-11-12, run `mbthrall2`, the owner's full order with BD22 VR Reloaded 2.0.4q and RSQ Miniboss; Cigarettes switched on for the run, Messages on) | **A Boss kill gives one cigarette:** the pocket set to 1 by a test probe, the called-in Boss killed, "T_RIG cigarettes +1 (miniboss): 2 of 3" (before, run `mbdrop1`: "+3 (miniboss): 3 of 3" from an empty pocket). The menu row reads **Boss Kill Gives a Cigarette**. Not shown: a kill with the pocket already full (the cap is the same `CigGive` as Score's) |
 | **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2 on the owner's full order with BD22 VR Reloaded 2.0.4r; logs and scripts in `tools/rigtest/axepool/evidence/`) | **Guns' holsters as before 11-12:** the shotgun drawn from its holster and swapped for the MP40 (shotgun in the Wheel); the empty off hand pressed at the shotgun's empty holster -- refused, nothing drawn (no hand-back); held there 1 s -- freed ("freed, it was Shot_Gun's"). **The axe's holster:** after a throw (one axe left) an empty main hand at the axe's holster drew an axe (T_HOME); the last axe thrown -- "no axes left: Right hip is unassigned"; an empty hand there afterwards got the plain refusal. No script error from our packs (the 4 voxeldef errors of 02_BD22_VoxelPack pre-exist). Not run: a holstered axe left in the holster while both hands throw (Content kept), Takes That Holster with the axe |
 | **rig only, not headset-confirmed** (2026-11-12, runs ax3 and ax4 on the owner's order with BD22 VR Reloaded 2.0.4q; logs and a frame in `tools/rigtest/swapprobe/evidence/`) | **Swap at Another Gun's Holster**, Into the Wheel: an unassigned MP40 in the main hand at the shotgun's full holster -- MP40 to the Wheel, shotgun drawn; the off hand's MP40 copy at the same holster -- the shotgun to the off hand; an assigned shotgun at the SSG's holster still goes home and the SSG comes out (HOME). Takes That Holster: the MP40 at the shotgun's holster went in and the holster became the MP40's, the shotgun to the hand; an assigned SSG took the MP40's holster the same way; the off hand's Rifle copy took the SSG's holster, the SSG to the off hand. The ShieldSaw's shoulder (Mount Spot 0) still refused a gun in both modes. **The axe's holster:** the axe drawn from it into the off hand and thrown, then an empty main hand at that holster drew the off-hand axe from the Wheel as the main axe (T_HOME); with no axe carried, the press refused softly (T_EMPTY, the axe's picture over the ring: frame `ax4_f111_axe_holster_soft_refusal_picture.jpg`). No script error from our packs. Not run: the lit flare and saber refusals (their code is untouched and runs before the swap), a left-handed player, Takes That Holster with a BD22 dual pair (both copies) in the hands |
 | **rig only, not headset-confirmed** (2026-11-11, rig batch R2, `design/rigtest_2026-11-10/RESULTS_R2.md`) | While DOWN the holsters come down with the hands: both 26.4 units lower, the same gaps as standing. |
@@ -351,7 +364,7 @@ torso fades to about half as you look down, so you can see your holsters.
 | **rig only, not headset-confirmed** (2026-11-10 night, the packed batch, T1: `design/rigtest_2026-11-10/RESULTS_P4.md`) | **The rig clutter fixes, in frames:** rings only for what the hand can use, the nearest bright. The pistol at the right hip lit that ring and left the others faint; the off hand at the empty left hip got no ring; the pistol at the right chest lit the chest; holstering flashed; the empty hand at the empty right chest got no chest ring; hands away, no ring (`design/rigtest_2026-11-10/evidence/P4_T1_rings_gun_hip_chest_holster_empty.jpg`, `P4_B_log.txt`). In the first try the ghost-hand tip's ring sat on the right hip; the second run marked the tip done |
 | **rig only, not headset-confirmed** (2026-11-09, full series load order with Brutal Doom 22 VR Reloaded) | The ammo pouch on the belt, its ring, and the pouch easing toward the off hand · own-home refusals: RSQ Grenade's grenade and FnF's flare turned away with the double buzz, and a shotgun assigned to Left chest with its ring flash and ammo arc (sent as the same assignment events the Wheel's holster screen sends; the screen itself was not used) · two-handing a rifle not counting toward the "Grip inside the ring" hint, while the same reach without two-handing shows it · grenade throws through a shoulder ring not counting toward the hint, while the control run shows it · logged in the same runs: Brutal Doom VR's Dual key giving the main hand the off hand's gun, the ghost-hand holster tip looping to the right hip, the automatic height measure, the one-time recenter tip |
 | **Headset-confirmed** | Cigarettes (the owner, 2026-11-09: "Cigarette works"). This line is the only record of it in the repo (it went in with this README, commit 0146025c), and the cigarette's pocket rules changed after it (below) |
-| **code only, not shown** | Cigarettes are precious (the pocket no longer refills on a new level, what is left is kept across levels, earned from Score, minibosses and DOWN); the watch check's copy regenerated 11-10; the hint staying quiet while you are DOWN; everything else on this page |
+| **code only, not shown** | Cigarettes are precious (the pocket no longer refills on a new level, what is left is kept across levels, earned from Score, Bosses and DOWN); the watch check's copy regenerated 11-10; the hint staying quiet while you are DOWN; everything else on this page |
 | **not yet run** | Nothing from the batched rig test: T1 has run (above) |
 
 <p align="center"><img src="../design/readme_art/mods/tacticalrig_divider.png" alt=""></p>

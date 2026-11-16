@@ -1,41 +1,46 @@
 <p align="center"><img src="../design/readme_art/mods/wheel_title.gif" alt="RSQ Wheel"></p>
 
 # RSQ Wheel
-### Doom Arcade VR · every gun you carry on a ring of cards, and the place where you decide which holster each one lives in
+### Doom Arcade VR · every gun you carry on a ring of cards, and the place where you decide which holster each lives in
 
-Press and hold, and your weapon slots come out of your wrist as a ring of cards in front of you. Point either hand at a
-gun and let go, or reach in and pull it out by hand; take a slot's card and that slot's guns take the ring. And with RSQ Tactical Rig, it's where you **kit yourself out**: pick a card,
-point at a spot on your body, and that gun lives there from now on. A sheet in the middle of the ring tells you about the
-gun you are pointing at.
+<p align="right"><a href="../README.md#wheel">&larr; RSQ UBQ Series</a></p>
 
-*[picture to come: the ring opening in the headset, cards growing out of the wrist (GIF)]*
+Press and hold, and your weapon slots stand in front of you as a ring of cards. Point at one and let go.
 
-<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
+**What it does:**
 
-<a name="what-it-feels-like"></a><img src="../design/readme_art/heads/wheel/what-it-feels-like.gif" alt="What it feels like" height="44">
+- **One key does everything:** hold, point, release to pick; tap to leave the ring up; tap twice for your last gun ([How to play](#how-to-play))
+- **Either hand picks** from the same ring, and with a card under each hand, each hand takes its own
+- **Three ways to point:** a ray from your hand, the thumbstick, or reach in and touch the card
+- **Pull a card out** by hand, or **throw a gun back** at the ring to go to your fists
+- **Slots collapse:** one card for each weapon slot; take a slot with several guns and its guns take the ring ([The ring](#the-ring))
+- **Guns turn on their cards:** a gun with a voxel or a model shows it, turning slowly; the rest show their pickup picture
+- **A data sheet** in the middle for the gun you point at: ammo, reserve, kills, accuracy, damage, rate of fire, and what the gun shares ammo with ([The data sheet](#the-data-sheet))
+- **Reads your upgrades:** Gun Bonsai level and upgrades, and a LegenDoom weapon's rarity, name and effects
+- **Stops time while it is open** (Freeze Time While Open, on); turn that off and it slows the world through RSQ SlowMo instead
+- **Keeps out of walls:** it slides, steps toward you and shrinks to fit
+- **Kit yourself out:** with RSQ Tactical Rig, alt fire on a card and point at a holster, and that gun lives there ([The holster screen](#kit-yourself-out-the-holster-screen-with-rsq-tactical-rig))
+- **Owns next and previous weapon,** so the list is the guns you chose ([Next and previous weapon](#next-and-previous-weapon))
+- **Cards for the rest of the Series:** fists and gloves, sabers, the whip, the ShieldSaw, grenades
+- **A wrist card** (off until you turn it on) and **Point at a Gun:** look at a weapon on the floor to read its sheet
+- **Four fonts, two card looks** ([Fonts](#fonts), [Looks](#looks))
 
-- **A small ring, one card per slot.** It opens on your weapon slots (only the slots holding a gun you have), so with
-  every Brutal Doom gun it is ten cards, not thirty. Push the stick into a slot, or point at it and take it, and the
-  ring becomes that slot's guns, with a BACK card. A slot with one gun is that gun's own card: take it and it is in
-  your hand.
-- **It stays out of the walls.** Opened beside a wall, the ring slides away from it; in a corridor narrower than the
-  ring, it steps toward your eyes and, if it still does not fit, shrinks to the gap.
+Three things make it more than a list of guns:
 
-- **Kit yourself out from the ring.** With RSQ Tactical Rig, alt fire on a card and a picture of your body opens beside
-  the ring with your six holsters on it: shoulders, chest, hips. Pull the trigger on one and the gun flies off its card
-  into that holster, and that's its home from now on. Reach for that spot in a fight and that gun is there.
-- **One button.** Hold it, point at a card, let go: that gun is in your hand. Tap it and the ring stays up while you
-  choose. Tap twice and you are back on the gun you just had.
-- **Either hand picks.** Whichever hand points at a card, or reaches into it, gets the gun. Point each hand at a
-  different card and let go, and each hand takes its own.
-- **Cards are things.** With your hand in a card, snap it back toward you and the gun comes out with it. Snap a gun
-  toward the ring, not at any card, and it goes back in; your hand is empty again.
-- **Learn it by feel.** Every card ticks in your hand as you land on it: a light short tick on a pistol, a long heavy
-  one on a BFG.
-- **Know before you pick.** The sheet in the middle shows the gun's name, its rounds and reserve, the other guns that
-  share its ammo, which holster it lives in, and its kills and hit rate once you have used it.
-- **Time waits for you.** With RSQ SlowMo, the world slows while the ring is open. You can also have the ring stop time
-  outright.
+- **One key.** Hold, point and let go is the whole of it. A tap keeps the ring up, a double tap is your last gun, and
+  either hand can do the picking.
+- **The cards are things.** Reach into the ring and take one. Snap your hand back and the card comes out with it.
+  Throw the gun in your hand at the ring and you are on your fists.
+- **It tells you about your guns.** The sheet shows what the Wheel has watched each gun do: its damage, its hit
+  rate, its kills. And with RSQ Tactical Rig, the same ring is where you give each gun its holster.
+
+![The ring and its sheet, with a pistol that shares its ammo with the minigun](docs/readme/ring_and_sheet.png)
+
+*[picture to come: the ring opening in the headset (GIF)]*
+
+**Works on plain Doom II with nothing else loaded:** the slot cards, the sheet with ammo and the Wheel's own stats.
+**While the ring is open the world is stopped and you stand still:** no walking, turning or firing until it closes.
+Left alone it folds by itself after four seconds.
 
 <p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
@@ -109,12 +114,13 @@ order you like. (With Group by Slot on there are no fans, so no dragging; a slot
 from its middle along its own plane find the walls, floor and ceiling round it, at its biggest (its radius plus the
 picked card at full size); monsters and pickups do not count. A wall on one side: the ring slides away from it. Walls on
 both sides closer than the ring is wide: it steps toward your eyes, never past halfway to you, and if the gap is still
-too narrow there it shrinks to fit it (never below a third of its size) and stands in the middle. The same against the
+too narrow there it shrinks to fit it (never below about a third of its size, 0.35) and stands in the middle. The same against the
 floor and the ceiling. When the ring swings round to follow you it is fitted again where it lands (moved only). The
 approach is RSQ VisualRewards' (its words do the same), copied into the Wheel.
 
-**The cards.** Each card shows the gun's picture, its name, its slot number, its ammo and a bar for it. With
-BD_VoxelPack loaded, the gun's own pickup voxel turns slowly on its card instead of a flat picture. A gun you are already
+**The cards.** Each card shows the gun's picture, its name, its slot number, its ammo and a bar for it. Where the
+gun's pickup has a voxel or a model in your load order (BD_VoxelPack gives Brutal Doom's guns theirs), it turns slowly
+on its card instead of a flat picture. A gun you are already
 holding gets a corner mark. A card that is out of ammo rests in a colour that says so, and one running low pulses. The
 card you point at steps toward you, grows a little, lights the room round it, and the others fade back. When you take a
 gun, its card bursts into sparks and spins away as the ring folds.
@@ -134,8 +140,9 @@ dry click and your hand keeps what it had. A gun with an empty magazine but roun
 **Picking the gun your other hand holds.** If there is a second copy of it, that hand takes the copy and you hold one in
 each hand. If not, the two hands swap.
 
-**RSQ Grenade's kinds.** The grenade's card opens a fan of every other grenade kind you own, each in its own colour.
-Pick one and you hold that kind.
+**RSQ Grenade's kinds.** Rest on the grenade's own card (or press Use on it) and it opens a fan of every other
+grenade kind you own, each in its own colour: pick one and you hold that kind. *Code only, not shown (2026-11-16):
+until then the fan could not open on the default ring. The grenade's alt fire changes the kind too.*
 
 **The Wheel's own icons.** A few cards would say little with their own pictures, so the Wheel draws its own: the fist,
 the lightsaber, the whip, the ShieldSaw, the road flare and flashlight (RSQ FnF) and the Force hand (RSQ Saber). The
@@ -194,7 +201,7 @@ rings.
 
 - **Pull the trigger on a ring** and the gun flies into it: it is assigned to that holster and goes straight in. A gun
   that held that holster before loses it.
-- **Clear** takes the gun's holster away.
+- **Clear** takes the gun's holster away, and takes the gun off the next and previous weapon list.
 - **Alt fire on the same card again** closes the panel; on another card, it opens that card's.
 
 Set **Web View** to **Mirror** and the panel shows Tactical Rig's own mirror of you instead, with the rings on your real
@@ -283,15 +290,15 @@ now (the owner, 2026-11-09) and their options are hidden. Only Gun Bonsai and Le
 |---|---|
 | (top) | Weapon Wheel (On) · Either Hand Picks (On) · Group by Slot (On) · Keep Out of Walls (On) · Opens On (Main hand / Off hand) · Sound (On) · Controller Rumble (1.0) · Size (1.0) |
 | Controls | Open Wheel (hold, point, release; left thumbstick click) |
-| Picking | Two Hands Compare (Off) · Open on Your Gun (Off) · Wrist Card (Off) · Open at Level Start (Off) · Slow Time While Open (On) · Closing Ends SlowMo (Off) · Freeze Without SlowMo (Off) · Freeze Time While Open (Off) · Pull a Card Out (1.5) · Throw a Gun Back (2.6) · Reach In (7) · Feel Each Gun's Weight (1.0) |
-| Look | Palette (Standard, Doom, Hell, Tech) · Font (Score, Combo, JFO, Status bar numerals, Small gold numerals, Small grey numerals, DoomFont only, Ermac's digits; Score) · Ring Plates (Its own (Ermac style) / Status bar stone) · Card Look (Colour by Gun / Classic) · Web View (Marine / Mirror) · Gun Models on Cards (On) · Ammo Counts (On) · Ammo Readout (LED segments / LCD, punched out / Lozenge badge) · Rarity Colours (On) · Mark Guns You Hold (On) · Slot Numbers (On) · Cards Face You (On) · Hover Halo Breathes (Off) · Edge Sweep (Off) · Flash on Pick (On) · Spark Colour (Slot colour / White hot / Rainbow) · Hover Lights the Room (On) · Background Stars (0) |
+| Picking | Two Hands Compare (Off) · Open on Your Gun (Off) · Wrist Card (Off) · Open at Level Start (Off) · Slow Time While Open (On) · Closing Ends SlowMo (Off) · Freeze Without SlowMo (Off) · Freeze Time While Open (On) · Pull a Card Out (1.5) · Throw a Gun Back (2.6) · Reach In (7) · Feel Each Gun's Weight (1.0) |
+| Look | Palette (Standard, Doom, Hell, Tech) · Font (Score, Combo, JFO, Status bar numerals, Small gold numerals, Small grey numerals, DoomFont only, Ermac's digits; Score) · Ring Plates (Its own (Ermac style) / Status bar stone) · Card Look (Colour by Gun / Classic) · Web View (Marine / Mirror) · Gun Models on Cards (On) · Ammo Counts (On) · Ammo Readout (LED segments / Lozenge badge) · Rarity Colours (On) · Mark Guns You Hold (On) · Slot Numbers (On) · Cards Face You (On) · Hover Halo Breathes (Off) · Edge Sweep (Off) · Flash on Pick (On) · Spark Colour (Slot colour / White hot / Rainbow) · Hover Lights the Room (On) · Background Stars (0) |
 | Data Sheet | Show Data Sheet (On) · Weapon Stats (On) · Track Kills and Accuracy (On) · This Level's Kills (Off) · Gun Bonsai Rows (On) · Point at a Gun (On) · Compare With Yours (Off) |
 | Other Mods | LegenDoom Rarity (On) · LegenDoom Effects (On) |
-| Test and Debug | Picking: Hold to Pick (9 tics), Double Tap (10 tics), Ring Follows Past (45°), Folds After (140 tics), Fold Warning (25 tics) · Ring: Ring Distance Ahead (34), Ring Radius (5), Height Above Hand (2), Lean Toward You (12), Wrist Roll Spins the Ring (0), Stick Deadzone (0.2), Card Width (4.2), Card Height (3.0), Hovered Card Steps Out (1.5), Hovered Card Grows (0.06), Other Cards Fade To (0.55), Cards Grow In (6 tics), Card Shadow (0.32), Shadow Offset (0.35), Face Parallax (0.06), Idle Breathing (0.35), Breathing Speed (1.7), Low Ammo Below (0.25), Low Ammo Pulse (0.35), Model Turn Speed (1.5), Model Size (0.16), Model Stand-Off (3) · Cards: Flat Ring Up To (10 weapons), Fan Close Forgiveness (6 tics), Star Brightness (0.5), Light Size (44), Light Holds Across Gaps (3 tics), Sparks (18), Spark Speed (1.4), Volume (0.65), Idle Shimmer (0), Taken Card Spins (360°) · Data Sheet: Data Sheet Size (1.0), Pointing at a Gun: Rest For (18 tics), Wrist Card: Hold the Pose (8 tics), Wrist Card Size (0.6), Palette by Name, Font Set by Name · Debug Log (Off) |
+| Test and Debug | Picking: Hold to Pick (9 tics), Double Tap (10 tics), Ring Follows Past (45°), Folds After (140 tics), Fold Warning (25 tics) · Ring: Ring Distance Ahead (34), Ring Radius (5), Height Above Hand (2), Lean Toward You (12), Wrist Roll Spins the Ring (0), Stick Deadzone (0.2), Card Width (4.2), Card Height (3.0), Hovered Card Steps Out (1.5), Hovered Card Grows (0.06), Other Cards Fade To (0.55), Cards Grow In (6 tics), Card Shadow (0.32), Shadow Offset (0.35), Idle Breathing (0.35), Breathing Speed (1.7), Low Ammo Below (0.25), Low Ammo Pulse (0.35), Model Turn Speed (1.5), Model Size (0.16), Model Stand-Off (3) · Cards: Flat Ring Up To (99 weapons), Fan Close Forgiveness (6 tics), Star Brightness (0.5), Light Size (44), Light Holds Across Gaps (3 tics), Sparks (18), Spark Speed (1.4), Volume (0.65), Idle Shimmer (0), Taken Card Spins (360°) · Data Sheet: Data Sheet Size (1.0), Pointing at a Gun: Rest For (18 tics), Wrist Card: Hold the Pose (8 tics), Wrist Card Size (0.6), Palette by Name, Font Set by Name · Debug Log (Off) |
 
 **Weapon Wheel Off** stops the ring from opening and hands next / previous weapon back to the engine. **Freeze Without
 SlowMo** only acts when RSQ SlowMo is not loaded; **Freeze Time While Open** stops
-time whether SlowMo is loaded or not. Distances are in map units (34 to a metre).
+time whether SlowMo is loaded or not. Distances are in map units (34 to a metre; Inspect Within is in metres).
 
 **Keys:** one, *Options → Customize Controls → RSQ Wheel → Open Wheel*. A default key that is already bound to
 something else is left alone; bind it there instead. **Opens On** picks the hand the ring opens in front of (with

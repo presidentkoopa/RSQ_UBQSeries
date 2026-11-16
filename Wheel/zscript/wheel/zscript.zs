@@ -893,7 +893,7 @@ class wr_Rig : EventHandler
 			// touch-grab one; missing this check let the at-range gesture
 			// fire even after the player was already touching the card.
 			let pmo = players[consoleplayer].mo;
-			if (pmo != null && mOpen && !mTouching && mHovered != 0 && mFansEnabled
+			if (pmo != null && mOpen && !mTouching && mHovered != 0 && (mFansEnabled || nadeFan(mHovered))
 				&& !belongsToExpansion(mHovered))
 			{
 				int cardIndex = cardIndexOf(mHovered);
@@ -961,7 +961,7 @@ class wr_Rig : EventHandler
 		// to the dwell path itself (mFansEnabled, not already expanded)
 		// so this can never open something the dwell timer couldn't.
 		if (!mTouching && wr_Keybind.isKeyFor(e.KeyScan, "+use")
-			&& mFansEnabled && !belongsToExpansion(mHovered)
+			&& (mFansEnabled || nadeFan(mHovered)) && !belongsToExpansion(mHovered)
 			&& mHovered != mSheetHit)
 		{
 			EventHandler.SendNetworkEvent("wr_expand");
@@ -3440,10 +3440,9 @@ class wr_Rig : EventHandler
 		mExpanded  = -1;
 		mShapeSlot = -1;
 
-		if (!cvBool("wr_bullettime", true)) return;
-
-		let unl = CVar.FindCVar("bt_adrenaline_unlimited");
-		if (unl != null) unl.SetInt(1);
+		// (2026-11-16, owner: "Remove it") This set Bullet Time X's bt_adrenaline_unlimited to 1 on every level load while
+		// Slow Time While Open was on. The Wheel has not driven that mod since it moved to RSQ SlowMo, so it no longer
+		// touches another mod's setting. Untested on the rig.
 	}
 
 	// THE ONLY TEARDOWN HOOK THAT FIRES ON EVERY PATH.
@@ -4369,6 +4368,16 @@ class wr_Rig : EventHandler
 	//
 	// A slot holding one weapon never expands. A submenu with a single entry is
 	// a step that exists only to be dismissed.
+	// the grenade's own card (RSQ Grenade, by name), a gun's card and not a slot's: the one card that may fan its kinds on a
+	// ring built without fans (expandSlot below)
+	private bool nadeCard(int cardIndex) const
+	{
+		if (cardIndex < 0 || cardIndex >= mTypes.Size() || mTypes[cardIndex] == null) return false;
+		if (mTypes[cardIndex].GetClassName() != 'RSQGN_Grenade') return false;
+		return roleOf(cardIndex) == ROLE_GUN;   // a gun's own card: never a slot's card, never BACK
+	}
+	private bool nadeFan(int id) const { return id != 0 && id != mSheetHit && nadeCard(cardIndexOf(id)); }
+
 	private void expandSlot(PlayerPawn pmo, int cardIndex)
 	{
 		collapseSlot();
@@ -4379,6 +4388,19 @@ class wr_Rig : EventHandler
 		Array<Class<Weapon> > variants;
 		slotWeapons(pmo, mCardSlots[cardIndex], variants);
 		dropFists(variants);
+
+		// THE GRENADE'S KINDS ON A RING BUILT WITHOUT FANS (2026-11-16, owner: "try to fix it"; UNTESTED on the rig). Fans
+		// are on only with Group by Slot off and more guns than Flat Ring Up To (99), so on the default ring the grenade's
+		// fan of kinds could never open. Here the ring has no fans: only the grenade's own single-gun card may open, and
+		// only its kinds (never its slot's other guns, which are already cards or behind the slot card).
+		if (!mFansEnabled)
+		{
+			if (!nadeCard(cardIndex)) return;
+			let nadeOnly = (Class<Weapon>)(mTypes[cardIndex]);
+			if (!nadeOnly) return;
+			variants.Clear();
+			variants.Push(nadeOnly);
+		}
 
 		// THE SAME ORDER THE CARD WAS BUILT FROM. slotWeapons() answers in raw
 		// slot order; the card's face came from the PROMOTED order, and the
@@ -8811,7 +8833,7 @@ class wr_Rig : EventHandler
 			if (p.mo != null && p.playerstate == PST_LIVE)
 			{
 				mWantAutoOpen = false;
-				openRig(1);
+				openRig(opensOnHand());   // was always the off hand (1), whatever Opens On said (2026-11-16, owner: "Fix it"; untested)
 			}
 		}
 
@@ -10216,7 +10238,7 @@ class wr_Rig : EventHandler
 			// expand FROM -- every one of its siblings is already its own
 			// card on the ring, not folded behind this one.
 			if (mDwellTics == DWELL_TO_EXPAND && !belongsToExpansion(hit)
-			    && mFansEnabled && webNode(hit) < 0)   // RSQ: resting on the holster web opens no fan
+			    && (mFansEnabled || nadeFan(hit)) && webNode(hit) < 0)   // RSQ: resting on the holster web opens no fan
 			{
 				let pmo = players[consoleplayer].mo;
 				if (pmo != null)

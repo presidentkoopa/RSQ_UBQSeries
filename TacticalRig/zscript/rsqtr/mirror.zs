@@ -252,7 +252,7 @@ class RSQTR_Mirror : EventHandler
 		let p = players[consoleplayer];
 		let rig = RSQTR_Rig.Get();
 		int mode = (p && p.mo) ? RSQTR_Rig.Opt("rsqtr_mirror", p, 1) : 0;
-		bool want = rig && p.mo.health > 0 && RSQTR_Rig.Flag("rsqtr_on", p, true)
+		bool want = rig && p.mo && p.mo.health > 0 && RSQTR_Rig.Flag("rsqtr_on", p, true)
 			&& (mode == 2 || (mode == 1 && RSQTR_Rig.Flag("rsqtr_edit", p, false)));
 		int view = want ? RSQTR_Rig.Opt("rsqtr_mirror_view", p, 2) : -1;
 		let pmo = want ? p.mo : null;

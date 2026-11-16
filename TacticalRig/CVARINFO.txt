@@ -7,7 +7,7 @@ user bool   rsqtr_use         = true;    // Use draws and holsters too
 user bool   rsqtr_watch_move  = false;   // Use during RSQ Gestures' watch check moves that hand's gun to the other hand (a gun there swaps)
 user string rsqtr_keys_main   = "446";   // key codes that are the MAIN grip (446 KEY_PAD_LTRIGGER: only with vr_secondary_button_mappings 0)
 user string rsqtr_keys_off    = "443 436"; // key codes that are the OFF grip (443 KEY_PAD_RTHUMB, 436 KEY_PAD_DPAD_UP with the main grip held)
-user int    rsqtr_markers     = 1;       // region rings: 0 never, 1 when a hand is near, 2 always while Move Holsters by Hand is on (else as 1)
+user int    rsqtr_markers     = 1;       // region rings: 0 never, 1 when a hand is near, (2, "Always While Moving Holsters", left the menu 2026-11-16: it drew as 1; a saved 2 still reads as 1)
 user bool   rsqtr_icons       = true;
 user float  rsqtr_icon_scale  = 1.0;
 user float  rsqtr_icon_m      = 0.25;    // metres: every measured gun stored on the body (a pistol's length)
@@ -22,7 +22,6 @@ user float  rsqtr_eye_m       = 0;       // your eye height in metres ("Measure 
 nosave bool rsqtr_tip_recentre = false;  // the one-time recentre tip has been shown (owner 11-08; rig.zs RecentreTip): this machine only, kept
 nosave bool rsqtr_tip_holster = false;   // a gun has been holstered by hand on this machine: the ghost-hand holster tip is done (11-08; ghost.zs): this machine only, kept
 nosave bool rsqtr_tip_seated = false;    // the one-time seated note has been shown (Report rec 8, 11-08; rig.zs SeatedTip): this machine only, kept
-user int    rsqtr_pairs       = 0;       // retired 2026-11-02 (a holster draw is always one gun; Dual is its own key). Kept so old ini lines load.
 user bool   rsqtr_edit        = false;   // move the regions with your hands: grip in one, carry it, let go
 user int    rsqtr_mirror      = 1;       // a mirror in front of you: 0 off, 1 while moving the regions, 2 always
 user int    rsqtr_mirror_view = 2;       // the mirror shows 0 your front, 1 your back, 2 both side by side
@@ -75,8 +74,7 @@ nosave string rsqtr_profile1 = ""; nosave string rsqtr_profile2 = ""; nosave str
 
 
 // Ermac's cigarette (optional tribute).
-user bool  rsqtr_cig         = false;   // a pocket of cigarettes on the left chest
-user bool  rsqtr_cig_zippo   = true;    // (retired 2026-10-31: the Zippo is always in the off hand now)
+user bool  rsqtr_cig         = true;    // a pocket of cigarettes on the left chest. ON by default since 2026-11-16 (owner: "Cigarettes on")
 user float rsqtr_cig_smoke   = 2.0;     // seconds you smoke once it is lit, before it flicks out of the mouth (1-5)
 user float rsqtr_cig_secs    = 15.0;     // how long RSQ_SlowMo runs after it flicks out of the mouth
 user bool  rsqtr_cig_slowmo  = true;    // RSQ_SlowMo starts as it flicks out of the mouth (if loaded)
@@ -94,7 +92,7 @@ user float rsqtr_cig_mouth_f = 0.12;    // Mouth Cigarette Forward: metres from 
 user float rsqtr_cig_mouth_d = 0.07;    // Mouth Cigarette Down: metres under your eyes
 
 // The torso (optional).
-user bool  rsqtr_vest       = false;   // wear a torso the holsters sit on
+user bool  rsqtr_vest       = true;    // wear a torso the holsters sit on. ON by default since 2026-11-16 (owner: "Torso on")
 user int   rsqtr_vest_style = 0;       // 0 the Doom marine, 1 Quake's Grunt
 user float rsqtr_vest_u     = -0.20;   // metres from your eyes down to its collar
 user float rsqtr_vest_f     = -0.04;   // metres forward of your eyes

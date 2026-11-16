@@ -95,7 +95,6 @@ OptionValue wr_SparkColors
 OptionValue wr_Readouts
 {
 	0, "LED segments"
-	1, "LCD, punched out"
 	2, "Lozenge badge"
 }
 
@@ -245,7 +244,6 @@ OptionMenu wr_Test
 	Slider "Cards Grow In (tics)",      "wr_growtics",     0, 20, 1, 0
 	Slider "Card Shadow",               "wr_shadow",       0.0, 1.0, 0.05, 2
 	Slider "Shadow Offset",             "wr_shadow_offset", 0.0, 1.5, 0.05, 2
-	Slider "Face Parallax",             "wr_parallax",     0.0, 0.25, 0.01, 2
 	Slider "Idle Breathing",            "wr_idle",         0.0, 2.0, 0.05, 2
 	Slider "Breathing Speed",           "wr_idle_speed",   0.2, 6.0, 0.1, 1
 	Slider "Low Ammo Below (share)",    "wr_lowammo_frac", 0.0, 0.9, 0.05, 2

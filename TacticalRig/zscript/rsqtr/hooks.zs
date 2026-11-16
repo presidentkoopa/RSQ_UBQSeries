@@ -50,6 +50,9 @@ class RSQTR_Hooks play
 	static int ShieldHolster(PlayerPawn pmo)
 	{
 		if (!pmo || !pmo.player) return -1;
+		// SHOULDER TO SHIELDSAW OFF GIVES THE SHOULDER BACK TO THE GUNS (2026-11-16, owner: "Fix it"): the row only gated
+		// Claimed() below, so with it off a gun was still refused here, by hand and by RSQ Wheel's web. Untested on the rig.
+		if (!RSQTR_Rig.Flag("rsqtr_yield_shield", pmo.player, true)) return -1;
 		String cn = "SSQ_ShieldSaw";
 		class<Inventory> c = cn;
 		if (!c) return -1;
