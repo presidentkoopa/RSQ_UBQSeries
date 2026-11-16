@@ -1,0 +1,23 @@
+The REVIVE chip and the REVIVE word (owner 2026-11-16 06:10). Rig only, not headset-confirmed. The owner's full order and saved settings, MAP01, -skill 6, notarget, 2 Score lives held; three DOWNs, each target killed by the player.
+Cause of "+33": the chip was sent as the gain from the 1 HP DOWN held him at, "health:+99" (the banner builder's run ev_pic: health 1 -> 100); at the chip's size its 9s read as 3s. It now sends the health he gets up with.
+
+===== boss_rev4 (banners on): the chips, and no REVIVE word on the band (only REVENGE). Frame: revive_banner_no_word.jpg (REVENGE, then the REVIVE banner, +100 HEALTH)
+RSQ_SlowMo: DOWN t99: player 0 went DOWN: a lethal hit (650 at 30 HP from PistolZombiePatch) held at 1 HP; DEATH IN 9.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 1 since the last Score life spent), world to 5%
+RSQ VisualRewards: DOWN word REVENGE (colour 8, size x1.00, 44 tics) on the band
+RSQ_SlowMo: DOWN t129: player 0 UP (REVIVE), top tier (the last kill 0.86 s into the bar): invulnerable 5.0 s, slow motion 3.0 s; health 1 -> 100 (max 100: DOWN 1 since the last life spent, 100%), armour 0 -> 0, armour from the bits bank (0 armour banked; its 0 health is not paid since 11-16); both held guns: main Shot_Gun ShotgunAmmo 0 -> 9 (reserve AmmoShell 8 untouched); off rsq_hands: no magazine
+RSQ_SlowMo: DOWN t129: banner "REVIVE|health:+100|invuln:5|mags:" asked of RSQ VisualRewards: 1
+RSQ_SlowMo: DOWN t329: player 0 went DOWN: a lethal hit (722 at 30 HP from PistolZombiePatch) held at 1 HP; DEATH IN 6.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 2 since the last Score life spent), world to 5%
+RSQ VisualRewards: DOWN word REVENGE (colour 8, size x1.00, 44 tics) on the band
+RSQ_SlowMo: DOWN t359: player 0 UP (REVIVE), middle tier (the last kill 3.86 s into the bar): invulnerable 3.0 s, slow motion 1.5 s; health 1 -> 66 (max 100: DOWN 2 since the last life spent, 66%), armour 2 -> 2, armour from the bits bank (0 armour banked; its 0 health is not paid since 11-16); both held guns: main Shot_Gun ShotgunAmmo 9 -> 9 (reserve AmmoShell 8 untouched); off rsq_hands: no magazine
+RSQ_SlowMo: DOWN t359: banner "REVIVE|health:+66|invuln:3" asked of RSQ VisualRewards: 1
+RSQ_SlowMo: DOWN t559: player 0 went DOWN: a lethal hit (722 at 30 HP from Labguy) held at 1 HP; DEATH IN 3.0 s real, bar 3.0 / 3.0 / 3.0 s, kills owed 1 (DOWN 3 since the last Score life spent), world to 5%
+RSQ VisualRewards: DOWN word REVENGE (colour 8, size x1.00, 44 tics) on the band
+RSQ_SlowMo: DOWN t589: player 0 UP (REVIVE), bottom tier (the last kill 6.86 s into the bar): invulnerable 1.0 s, slow motion 5.0 s; health 1 -> 33 (max 100: DOWN 3 since the last life spent, 33%), armour 1 -> 1, armour from the bits bank (0 armour banked; its 0 health is not paid since 11-16); both held guns: main Shot_Gun ShotgunAmmo 9 -> 9 (reserve AmmoShell 8 untouched); off rsq_hands: no magazine
+RSQ_SlowMo: DOWN t589: banner "REVIVE|health:+33|invuln:1" asked of RSQ VisualRewards: 1
+
+===== boss_rev5 (+set rsqvr_banners 0: banners off on this machine): the REVIVE word comes back
+RSQ VisualRewards: DOWN word REVENGE (colour 8, size x1.00, 44 tics) on the band
+RSQ_SlowMo: DOWN t129: banner "REVIVE|health:+100|invuln:5|mags:" asked of RSQ VisualRewards: 1
+RSQ VisualRewards: DOWN word REVIVE (colour 13, size x1.50, 66 tics) on the band
+RSQ VisualRewards: DOWN word REVENGE (colour 8, size x1.00, 44 tics) on the band
+RSQ_SlowMo: DOWN t359: banner "REVIVE|health:+66|invuln:3" asked of RSQ VisualRewards: 1

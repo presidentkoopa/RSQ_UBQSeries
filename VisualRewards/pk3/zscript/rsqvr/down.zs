@@ -4,7 +4,7 @@
 //   "down.time"     "+0.4s" pops at the monster you hit, in the DOWN colour, on your time: the clock time that hit bought
 //   "down.revenge"  REVENGE flies past on the level-up band, JFO, its own colour (a target killed by you)
 //   "down.up"       REVIVE, every time you get up; its size, life and rise by the tier (stringArg "top" / "middle" /
-//                   "bottom": x1.5 / x1.15 / x0.85)
+//                   "bottom": x1.5 / x1.15 / x0.85); not when the REVIVE banner shows (2026-11-16, no doubling)
 //   "down.target"   a DOWN target: its HP bar is made now and kept up even if you never hit it (Aimed Only too); SlowMo
 //                   draws the target's icon over it
 // Only the console player's own DOWN shows (netplay: each player sees his). "down.revive" is now the TOP tier's extras
@@ -30,6 +30,17 @@ class RSQVR_RSQDownJoin : Service
 		if (request == "down.revenge") { h.DownWord(pmo, "REVENGE", RSQTHP_DamNumHandler.REVENGE_COL); return 1; }
 		if (request == "down.up")
 		{
+			// NO DOUBLING WITH A BANNER (design/PRESENTATION_GUIDE.md 4b, owner 2026-11-16 06:10): when the REVIVE banner is
+			// up or waiting for this player (RSQ SlowMo asks for it just before it says "down.up"), no REVIVE word on the
+			// band; banners off or absent: the word, as before
+			let bn = RSQVR_Banners.Get();
+			let bc = CVar.GetCVar("rsqvr_banners", players[consoleplayer]);     // Banners off (this machine's own row): the word
+			if (bn && (!bc || bc.GetBool()))
+				for (int i = 0; i < bn.list.Size(); i++)
+				{
+					let b = bn.list[i];
+					if (b && b.moment == RSQVR_Banners.M_REVIVE && (b.pn == consoleplayer || b.pn < 0)) return 1;
+				}
 			double k = stringArg == "top" ? 1.5 : (stringArg == "middle" ? 1.15 : 0.85);
 			h.DownWord(pmo, "REVIVE", RSQTHP_DamNumHandler.REVIVE_COL, false, k);
 			return 1;

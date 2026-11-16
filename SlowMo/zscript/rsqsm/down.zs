@@ -1371,8 +1371,12 @@ class RSQSM_Down : EventHandler
 			n, tn, e / double(TICRATE), invS, sloS, hp0, pmo.health, mx, downs, int(hk * 100 + 0.5), ar0, ar1, src, rl));
 		// THE ARCADE GOLD BANNER (BANNERS_AND_HUD.md 3, the contract in its section "Banner service contract"): only what
 		// actually happened, with the real numbers
+		// HEALTH: the health he gets up with (the 100 / 66 / 33 % rule: "+100 HEALTH" getting up at 100), not the gain over
+		// the 1 HP the hold kept him at (owner 11-16 06:10: the chip read "+33" getting up at 100. It was sent as "+99", the
+		// gain from 1 to 100 -- the banner builder's run ev_pic logged health 1 -> 100 -- and at the chip's size the 9s read
+		// as 3s). ARMOUR: what this get-up gave (the bank or the tier split)
 		String chips = "REVIVE";
-		if (pmo.health > hp0) chips = chips .. String.Format("|health:+%d", pmo.health - hp0);
+		chips = chips .. String.Format("|health:+%d", pmo.health);
 		if (ar1 > ar0) chips = chips .. String.Format("|armor:+%d", ar1 - ar0);
 		if (invS > 0) chips = chips .. "|invuln:" .. Secs(invS);
 		if (mags > 0) chips = chips .. "|mags:";
