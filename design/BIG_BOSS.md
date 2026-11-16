@@ -219,7 +219,7 @@ Personality: a blacksmith who forges earthquakes; slow, heavy, loud, every attac
   (broken in time, then missed).
 - Mockups: one EXPOSED! cycle `mockups/big_boss_tyrant/tyrant_exposed_cycle_real.gif` (slams shortened to 8; summons in EXPOSED! and GUARD); the arrival `mockups/big_boss_tyrant/tyrant_arrival_real.gif` (BIG BOSS INCOMING!, the world greys and freezes, the WEAK POINT card draws itself: the sketch, three circles, WEAK POINT, OBSIDIAN TYRANT / HELL SMITH TYPE EX-12; then it drops in: hammer slam, five pentagram lines, a quake, the Boss bar fills).
 
-## 12. Big Boss #2: the Imp Warlord (proposed 2026-11-16 12:0x; not yet approved, not built)
+## 12. Big Boss #2: the Imp Warlord (owner 2026-11-16 12:02-12:10; design LOCKED by the owner 12:10, not built)
 Smoking Black Imp EX (`RS_BlackImpEX`, 8,600 before boosts; dossier 3). Personality: a chain-smoking anime villain who
 announces his special move.
 - **Arrival:** the WEAK POINT card circles his head and both hands (the charge orbs).
@@ -237,4 +237,22 @@ announces his special move.
   comes out of the smoke as the wave.
 - **Lives:** 1 his cone of fireballs and the slow seeking orb; 2 adds the seeker rain from above; 3 FINAL FORM: a
   third orb over his head, charges back to back.
+- Smokeout in game uses his original art (owner 12:10: "we can use the og art in game"); the mockup's orange bars are
+  placeholders.
 - Mockup: `mockups/big_boss_impwarlord/impwarlord_exposed_real.gif`.
+
+## 13. Big Boss #3: the Black Knight unleashed (proposed 2026-11-16 12:1x; not yet approved, not built)
+`RS_BlackRevenantEX` (7,500 before boosts; dossier 6). Personality: Monty Python's knight, except it works; refuses to
+stay dead. His own kit gives three lives as three bodies.
+- **Arrival:** the WEAK POINT card circles his helmet, sword arm and shield arm; he walks out of the fog with his own
+  line, "None shall pass".
+- **What opens EXPOSED!:** his shield. Hurt him and he raises a reflective, invulnerable shield (his own move): your
+  shots bounce back. When it drops: SHIELD DOWN! and EXPOSED! (3 s). Weak points: SWORD ARM!, SHIELD ARM!, helmet.
+- **The challenge during EXPOSED!:** his SQUIRES! (Hell Knight thralls) charge in while his guard is down; his
+  bouncing nail mines.
+- **GUARD:** the Boss shield plus his reflecting shield (shots bounce back at you); the squires are the wave.
+- **Lives as bodies:** 1 the Knight (sword, shield, hook chain that pulls you in, dart cleave); 2 "Just a shade wound",
+  his wraith (flies through walls, fire rain, soul seekers; EXPOSED! when it solidifies to cast); 3 the Black Knight's
+  shadow with the wraith behind it (the shadow walks at you through walls; break the wraith's weak points and the
+  shadow falls with it, as in his original).
+- Mockup (life 1): `mockups/big_boss_blackknight/blackknight_exposed_real.gif`.
