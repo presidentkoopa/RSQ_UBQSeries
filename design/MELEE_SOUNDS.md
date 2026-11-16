@@ -18,9 +18,9 @@ All sounds as mono 44.1 kHz copies (stereo does not place in 3D). Each impact's 
 | Pistol whip (RSQ Melee; the weapon sets' basics where they have one) | punch11 + a small clank | clank: the first 55 ms of `Monsters/sounds/combatfx/casings/DSRIFLC2.ogg` at 0.3 gain |
 | Gun-butt shove (RSQ Melee) | punch3 + thud | punch3's first 14 ms trimmed, −15% pitch; thud: `Melee/sounds/rsqml/fx/thud2.ogg` at 0.4 |
 | Kick (RSQ Grapple's arrival kick) | punch7 + thud | punch7 −20% pitch, **its soft start trimmed so the thump (its peak, ~70 ms in) lands on contact**; thud2 −15% pitch at 0.55. The heaviest of the set |
-| BOSS INCOMING! (the banner) | **the Series' own klaxon** | **twice only**: on the banner's pop and at FIGHT IN 1.00 (~1.9 s apart; owner: three were too close together) |
+| BOSS INCOMING! (the banner) | **his siren** (Pixabay "Siren Alarm", freesound_community) | **exactly as the file is**, from its own start, played once on the banner's pop and stopped after its second whoop (4.2 s of the file); nothing cut out or re-timed (owner 05:26-05:27: "why did you cut it at all?" / "good, approved") |
 
-## The klaxon
+## The klaxon (replaced by the siren, 05:27)
 
 Made for the Series from scratch (a synthesized ship-horn "ah-OOO": a quick rising growl into a held, slightly falling
 tone, two voices beating plus a sub-octave growl, a little drive; 0.85 s). Nothing to credit or license. The Star Trek
@@ -29,7 +29,8 @@ red alert (TrekCore) is not used.
 ## Credits
 
 - punch1-punch11: the owner's; **source to be found** (owner 04:39: "i'm sure i'll find the punch source in time").
-- klaxon: original, made for the Series.
+- the siren: Pixabay "Siren Alarm" by freesound_community (Pixabay Content License: free use, no credit required; credited anyway).
+- the klaxon (original, made for the Series): not used.
 - thud2 (RSQ Melee) and DSRIFLC2 (RSQ Monsters): already credited in their mods.
 
 ## Built / not built (2026-11-16)
@@ -38,4 +39,4 @@ red alert (TrekCore) is not used.
 |---|---|
 | RSQ Melee: whoosh, jab, hook, uppercut, pistol whip, butt shove | Not built |
 | RSQ Grapple: the kick | Not built |
-| The klaxon on BOSS INCOMING! | Not built |
+| The siren on BOSS INCOMING! | Not built |
