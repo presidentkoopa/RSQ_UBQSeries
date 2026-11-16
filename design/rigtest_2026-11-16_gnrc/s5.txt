@@ -1,0 +1,76 @@
+QZSND 0 weapons/pistol/equip ch 1 vol 1.00 src RSQGW_Player
+PROBE t0 ready RSQGW_Beretta off none
+STATE t0 RSQGW_Beretta Select
+SPR t0 main sprite 905 (RIFG 875, its twin RG0U 1107) caller RSQGW_Beretta
+SPR t0 off sprite -1 (RIFG 875, its twin RG0U 1107) caller None
+SPR t2 off sprite 0 (RIFG 875, its twin RG0U 1107) caller rsq_hands
+RSQGW start t14: Start With Two Pistols: the second Beretta into the off hand
+STATE t14 RSQGW_Beretta Ready
+QZSND 15 weapons/pistol/equip ch 5 vol 1.00 src RSQGW_Player
+SPR t15 off sprite 905 (RIFG 875, its twin RG0U 1107) caller RSQ_Off_RSQGW_Beretta
+QZSND 40 weapons/rifle/up ch 1 vol 1.00 src RSQGW_Player
+RSQ switch t40: RSQGW_ARifle -> RSQGW_ARifle: 0 deselect frames, ready after 1 select frames
+PROBE t40 ready RSQGW_ARifle off RSQ_Off_RSQGW_Beretta
+SPR t40 main sprite 875 (RIFG 875, its twin RG0U 1107) caller RSQGW_ARifle
+SPR t41 main sprite 1107 (RIFG 875, its twin RG0U 1107) caller RSQGW_ARifle
+T_OFF_HIDDEN
+T_ON_SHOWN
+SPR t103 main sprite 875 (RIFG 875, its twin RG0U 1107) caller RSQGW_ARifle
+T_LAUNCH_UNSTEADIED
+QZSND 112 weapons/pistol/fire ch 5 vol 1.00 src RSQGW_Player
+RSQGW launcher t112: off trigger, no launch (option 1, steadied 0, ready 1)
+PROBE t112 round RSQ_PlayerRound
+PROBE t112 missile RSQGW_9mmCasingSpawner
+PROBE t113 missile RSQGW_9mmCasing
+PROBE t113 missile RSQGW_CasingSmokes
+PROBE t114 missile RSQGW_CasingSmokes
+PROBE t115 missile RSQGW_CasingSmokes
+PROBE t116 missile RSQGW_CasingSmokes
+PROBE t117 missile RSQGW_CasingSmokes
+PROBE t118 missile RSQGW_CasingSmokes
+PROBE t119 missile RSQGW_CasingSmokes
+PROBE t120 missile RSQGW_CasingSmokes
+PROBE t121 missile RSQGW_CasingSmokes
+PROBE t122 missile RSQGW_CasingSmokes
+PROBE t123 missile RSQGW_CasingSmokes
+PROBE t124 missile RSQGW_CasingSmokes
+QZSND 125 weapons/casing ch 2 vol 1.00 src RSQGW_9mmCasing
+PROBE t125 missile RSQGW_CasingSmokes
+PROBE t126 missile RSQGW_CasingSmokes
+PROBE t127 missile RSQGW_CasingSmokes
+PROBE t128 missile RSQGW_CasingSmokes
+PROBE t129 missile RSQGW_CasingSmokes
+T_STEADY
+ELEV t149 -7.6 ready 1 steady 1
+ELEV t150 -7.6 ready 1 steady 1
+T_LAUNCH
+RSQGW launcher t159: off trigger on the handguard: launch (rockets 10)
+QZSND 160 weapons/grenade/fire ch 1 vol 1.00 src RSQGW_Player
+QZSND 160 weapons/grenlf ch 1 vol 1.00 src RSQGW_Grenade2
+STATE t160 RSQGW_ARifle ? (sprite 875 frame A tics 4)
+PROBE t160 missile RSQGW_Grenade2
+STATE t164 RSQGW_ARifle Ready
+DMG t171 Zombieman by RSQGW_Grenade2 40
+QZSND 171 weapons/grenlx ch 2 vol 1.00 src RSQGW_Grenade2
+DMG t171 Zombieman by RSQGW_Grenade2 37
+QZSND 171 weapons/grenade/hit ch 0 vol 1.00 src RSQGW_Grenade2
+RSQGW blast t171: RSQGW_Grenade2 at 321 units: both hands buzz 0.15 for 6 tics, no quake
+RSQGW launcher t172: off trigger, no launch (option 1, steadied 1, ready 1)
+QZSND 178 rocket/distexp ch 6 vol 0.45 src RSQGW_Grenade2
+RSQGW launcher t215: off trigger on the handguard: launch (rockets 9)
+QZSND 216 weapons/grenade/fire ch 1 vol 1.00 src RSQGW_Player
+QZSND 216 weapons/grenlf ch 1 vol 1.00 src RSQGW_Grenade2
+STATE t216 RSQGW_ARifle ? (sprite 875 frame A tics 4)
+PROBE t216 missile RSQGW_Grenade2
+STATE t220 RSQGW_ARifle Ready
+DMG t228 Cyberdemon by RSQGW_Grenade2 160
+QZSND 228 weapons/grenlx ch 2 vol 1.00 src RSQGW_Grenade2
+QZSND 228 weapons/grenade/hit ch 0 vol 1.00 src RSQGW_Grenade2
+RSQGW blast t228: RSQGW_Grenade2 at 346 units: both hands buzz 0.15 for 6 tics, no quake
+QZSND 234 rocket/distexp ch 6 vol 0.45 src RSQGW_Grenade2
+T_NOROCKETS
+RSQGW launcher t280: off trigger on the handguard: launch (rockets 0)
+QZSND 281 RSQGW/dry ch 0 vol 1.00 src RSQGW_Player
+T_BACK_OFF
+SPR t334 main sprite 1107 (RIFG 875, its twin RG0U 1107) caller RSQGW_ARifle
+T_END

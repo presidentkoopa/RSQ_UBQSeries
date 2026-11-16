@@ -1,0 +1,126 @@
+QZSND 0 weapons/pistol/equip ch 1 vol 1.00 src RSQGW_Player
+PROBE t0 ready RSQGW_Beretta off none
+STATE t0 RSQGW_Beretta Select
+RSQGW start t14: Start With Two Pistols: the second Beretta into the off hand
+STATE t14 RSQGW_Beretta Ready
+QZSND 15 weapons/pistol/equip ch 5 vol 1.00 src RSQGW_Player
+T_DRY
+AMMO t72 main RSQGW_Beretta RSQGW_PistolAmmo=0 RSQGW_PistolMag=0
+AMMO t72 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=0 RSQGW_PistolMagOff=11
+QZSND 74 RSQGW/dry ch 0 vol 1.00 src RSQGW_Player
+STATE t74 RSQGW_Beretta Reload
+STATE t82 RSQGW_Beretta Ready
+QZSND 97 RSQGW/dry ch 0 vol 1.00 src RSQGW_Player
+STATE t97 RSQGW_Beretta Reload
+STATE t105 RSQGW_Beretta Ready
+T_DBSG
+RSQ switch t147: RSQGW_DoubleSG -> RSQGW_DoubleSG: 0 deselect frames, ready after 1 select frames
+PROBE t147 ready RSQGW_DoubleSG off RSQ_Off_RSQGW_Beretta
+AMMO t211 main RSQGW_DoubleSG Shell=50 RSQGW_DBSGMag=2
+AMMO t211 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMagOff=11
+QZSND 214 weapons/dbsg/sfir ch 1 vol 1.00 src RSQGW_Player
+STATE t214 RSQGW_DoubleSG Fire
+PROBE t214 round RSQ_PlayerRound
+PROBE t214 round RSQ_PlayerRound
+PROBE t214 round RSQ_PlayerRound
+PROBE t214 round RSQ_PlayerRound
+PROBE t214 round RSQ_PlayerRound
+PROBE t214 round RSQ_PlayerRound
+PROBE t214 round RSQ_PlayerRound
+PROBE t214 round RSQ_PlayerRound
+PROBE t214 round RSQ_PlayerRound
+STATE t220 RSQGW_DoubleSG Ready
+AMMO t288 main RSQGW_DoubleSG Shell=50 RSQGW_DBSGMag=1
+AMMO t288 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMagOff=11
+QZSND 290 weapons/dbsg/sfir ch 1 vol 1.00 src RSQGW_Player
+STATE t290 RSQGW_DoubleSG Fire
+PROBE t290 round RSQ_PlayerRound
+PROBE t290 round RSQ_PlayerRound
+PROBE t290 round RSQ_PlayerRound
+PROBE t290 round RSQ_PlayerRound
+PROBE t290 round RSQ_PlayerRound
+PROBE t290 round RSQ_PlayerRound
+PROBE t290 round RSQ_PlayerRound
+PROBE t290 round RSQ_PlayerRound
+PROBE t290 round RSQ_PlayerRound
+STATE t296 RSQGW_DoubleSG Ready
+AMMO t365 main RSQGW_DoubleSG Shell=50 RSQGW_DBSGMag=0
+AMMO t365 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMagOff=11
+T_DBSG_PULL
+QZSND 367 weapons/dbsg/opn ch 5 vol 1.00 src RSQGW_Player
+STATE t367 RSQGW_DoubleSG StockReload
+PROBE t373 missile RSQGW_SSGCasingSpawner
+PROBE t373 missile RSQGW_SSGCasingSpawner
+QZSND 375 weapons/dbsg/load ch 6 vol 1.00 src RSQGW_Player
+PROBE t375 missile RSQGW_ShotgunCasing
+PROBE t375 missile RSQGW_ShotgunCasing
+PROBE t375 missile RSQGW_CasingSmokes
+PROBE t375 missile RSQGW_CasingSmokes
+PROBE t376 missile RSQGW_CasingSmokes
+PROBE t376 missile RSQGW_CasingSmokes
+PROBE t377 missile RSQGW_CasingSmokes
+PROBE t377 missile RSQGW_CasingSmokes
+PROBE t378 missile RSQGW_CasingSmokes
+PROBE t378 missile RSQGW_CasingSmokes
+PROBE t379 missile RSQGW_CasingSmokes
+PROBE t379 missile RSQGW_CasingSmokes
+PROBE t380 missile RSQGW_CasingSmokes
+PROBE t380 missile RSQGW_CasingSmokes
+PROBE t381 missile RSQGW_CasingSmokes
+PROBE t381 missile RSQGW_CasingSmokes
+QZSND 382 weapons/shotgunshells ch 2 vol 1.00 src RSQGW_ShotgunCasing
+QZSND 382 weapons/shotgunshells ch 2 vol 1.00 src RSQGW_ShotgunCasing
+PROBE t382 missile RSQGW_CasingSmokes
+PROBE t382 missile RSQGW_CasingSmokes
+PROBE t383 missile RSQGW_CasingSmokes
+PROBE t383 missile RSQGW_CasingSmokes
+PROBE t384 missile RSQGW_CasingSmokes
+PROBE t384 missile RSQGW_CasingSmokes
+PROBE t385 missile RSQGW_CasingSmokes
+PROBE t385 missile RSQGW_CasingSmokes
+PROBE t386 missile RSQGW_CasingSmokes
+PROBE t386 missile RSQGW_CasingSmokes
+QZSND 387 weapons/dbsg/cls ch 1 vol 1.00 src RSQGW_Player
+STATE t396 RSQGW_DoubleSG Ready
+T_RIOT
+QZSND 400 weapons/sguns/equp ch 1 vol 1.00 src RSQGW_Player
+RSQ switch t400: RSQGW_Riotgun -> RSQGW_Riotgun: 0 deselect frames, ready after 1 select frames
+PROBE t400 ready RSQGW_Riotgun off RSQ_Off_RSQGW_Beretta
+AMMO t466 main RSQGW_Riotgun Shell=50 RSQGW_ShotgunMag=8
+AMMO t466 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMagOff=11
+QZSND 466 weapons/riotgun/fire ch 1 vol 1.00 src RSQGW_Player
+STATE t466 RSQGW_Riotgun Fire
+PROBE t466 round RSQ_PlayerRound
+PROBE t466 round RSQ_PlayerRound
+PROBE t466 round RSQ_PlayerRound
+PROBE t466 round RSQ_PlayerRound
+PROBE t466 round RSQ_PlayerRound
+PROBE t466 round RSQ_PlayerRound
+PROBE t466 round RSQ_PlayerRound
+QZSND 474 weapons/riotgun/bck ch 1 vol 1.00 src RSQGW_Player
+PROBE t477 missile RSQGW_ShotgunCasingSpawner
+PROBE t478 missile RSQGW_ShotgunCasing
+PROBE t478 missile RSQGW_CasingSmokes
+QZSND 479 weapons/riotgun/fwd ch 1 vol 1.00 src RSQGW_Player
+PROBE t479 missile RSQGW_CasingSmokes
+PROBE t480 missile RSQGW_CasingSmokes
+PROBE t481 missile RSQGW_CasingSmokes
+PROBE t482 missile RSQGW_CasingSmokes
+PROBE t483 missile RSQGW_CasingSmokes
+PROBE t484 missile RSQGW_CasingSmokes
+PROBE t485 missile RSQGW_CasingSmokes
+STATE t486 RSQGW_Riotgun Ready
+PROBE t486 missile RSQGW_CasingSmokes
+PROBE t487 missile RSQGW_CasingSmokes
+PROBE t488 missile RSQGW_CasingSmokes
+PROBE t489 missile RSQGW_CasingSmokes
+PROBE t490 missile RSQGW_CasingSmokes
+QZSND 491 weapons/shotgunshells ch 2 vol 1.00 src RSQGW_ShotgunCasing
+PROBE t491 missile RSQGW_CasingSmokes
+PROBE t492 missile RSQGW_CasingSmokes
+PROBE t493 missile RSQGW_CasingSmokes
+PROBE t494 missile RSQGW_CasingSmokes
+PROBE t495 missile RSQGW_CasingSmokes
+AMMO t591 main RSQGW_Riotgun Shell=50 RSQGW_ShotgunMag=7
+AMMO t591 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMagOff=11
+T_END

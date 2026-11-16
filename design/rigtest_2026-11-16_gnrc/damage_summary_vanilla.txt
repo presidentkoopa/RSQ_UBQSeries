@@ -1,0 +1,37 @@
+PISTOL       events   3  per-event 10 5 5  mean 6.67
+             by tic (sums): t98:10 t141:5 t184:5
+             shot tics: 97 140 183 227 269 313  (spacing 43 43 44 42 44)
+             inflictors: RSQGW_BulletPuffed
+PISTOL_HELD  events   1  per-event 15  mean 15.00
+             by tic (sums): t356:15
+             shot tics: 356 370 384 398 412  (spacing 14 14 14 14)
+             inflictors: RSQGW_BulletPuffed
+RIFLE        events  11  per-event 15 15 15 15 15 10 10 5 15 15 15  mean 13.18
+             by tic (sums): t486:1000000 t544:15 t548:15 t552:15 t556:15 t560:15 t564:10 t568:10 t572:5 t576:15 t580:15 t584:15
+             shot tics: 543 547 551 555 559 563 567 571 575 579 583  (spacing 4 4 4 4 4 4 4 4 4 4)
+             inflictors: RSQGW_BulletPuffed
+RIOT         events   7  per-event 5 15 10 10 10 15 10  mean 10.71
+             by tic (sums): t644:1000000 t701:75
+             shot tics: 701 754 807 861  (spacing 53 53 54)
+             inflictors: RSQGW_BulletPuffed
+DBSG         events  10  per-event 10 15 15 15 10 10 10 15 10 5  mean 11.50
+             by tic (sums): t944:1000000 t1000:115
+             shot tics: 1000 1043 1169  (spacing 43 126)
+             inflictors: RSQGW_BulletPuffed
+MINIGUN      events  14  per-event 10 15 5 5 10 10 10 5 5 5 10 10 10 15  mean 8.93
+             by tic (sums): t1242:1000000 t1307:10 t1311:15 t1315:5 t1319:5 t1323:10 t1327:10 t1331:10 t1335:5 t1339:5 t1343:5 t1347:10 t1351:10 t1355:10 t1359:15
+             shot tics: 1307 1311 1315 1319 1323 1327 1331 1335 1339 1343 1347 1351 1355 1359  (spacing 4 4 4 4 4 4 4 4 4 4 4 4 4)
+             inflictors: RSQGW_BulletPuffed
+ROCKET       events   3  per-event 100 140 20  mean 86.67
+             by tic (sums): t1430:1000000 t1490:100 t1510:140 t1530:20
+             shot tics: 1487 1507 1527  (spacing 20 20)
+             inflictors: RSQGW_Rocket2
+PLASMA       events  11  per-event 15 25 35 5 20 5 40 25 5 40 10  mean 20.45
+             by tic (sums): t1619:1000000 t1676:15 t1679:25 t1682:35 t1685:5 t1688:20 t1691:5 t1694:40 t1697:25 t1700:5 t1703:40 t1706:10
+             shot tics: 1675 1678 1681 1684 1687 1690 1693 1696 1699 1702 1705  (spacing 3 3 3 3 3 3 3 3 3 3)
+             inflictors: RSQGW_Plasma
+SAW          events  22  per-event 10 3 7 5 5 8 5 2 1 1 4 8 7 5 5 2 4 4 8 2 10 7  mean 5.14
+             by tic (sums): t1777:1000000 t1834:10 t1836:3 t1838:7 t1840:5 t1842:5 t1844:8 t1846:5 t1848:2 t1850:1 t1852:1 t1854:4 t1856:8 t1858:7 t1860:5 t1862:5 t1864:2 t1866:4 t1868:4 t1870:8 t1872:2 t1874:10 t1876:7
+             inflictors: RSQGW_SawCut
+END          events   0  per-event 
+             by tic (sums): 

@@ -1,0 +1,108 @@
+PROBE t0 ready RSQGW_Beretta off none
+STATE t0 RSQGW_Beretta Select
+RSQGW start t14: Start With Two Pistols: the second Beretta into the off hand
+STATE t14 RSQGW_Beretta Ready
+AMMO t60 main RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMag=10
+AMMO t60 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+T_ROCKET
+RSQ switch t62: RSQGW_Rlauncher -> RSQGW_Rlauncher: 0 deselect frames, ready after 1 select frames
+PROBE t62 ready RSQGW_Rlauncher off RSQ_Off_RSQGW_Beretta
+STATE t119 RSQGW_Rlauncher Fire
+PROBE t119 missile RSQGW_Rocket2
+DMG t121 DoomImp by RSQGW_Rocket2 80
+RSQGW blast t121: RSQGW_Rocket2 at 123 units: both hands buzz 0.48 for 8 tics, no quake
+RSQA_BACKUP t121 RSQGN right controller (main hand)
+RSQA_BACKUP t121 RSQGN left controller (off hand)
+STATE t127 RSQGW_Rlauncher Ready
+T_RIFLE
+DMG t183 DoomImp by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 DoomImp by none 1000000
+DMG t183 DoomImp by none 1000000
+DMG t183 DoomImp by none 1000000
+DMG t183 Zombieman by none 1000000
+DMG t183 DoomImp by none 1000000
+DMG t183 DoomImp by none 1000000
+DMG t183 DoomImp by none 1000000
+RSQ switch t183: RSQGW_ARifle -> RSQGW_ARifle: 0 deselect frames, ready after 1 select frames
+PROBE t183 ready RSQGW_ARifle off RSQ_Off_RSQGW_Beretta
+STATE t234 RSQGW_ARifle Fire
+PROBE t234 round RSQ_PlayerRound
+PROBE t234 missile RSQGW_RifleCasingSpawner
+PROBE t235 missile RSQGW_RifleCasing
+PROBE t235 missile RSQGW_CasingSmokes
+PROBE t236 missile RSQGW_CasingSmokes
+PROBE t237 missile RSQGW_CasingSmokes
+PROBE t238 round RSQ_PlayerRound
+PROBE t238 missile RSQGW_RifleCasingSpawner
+PROBE t238 missile RSQGW_CasingSmokes
+PROBE t239 missile RSQGW_CasingSmokes
+PROBE t239 missile RSQGW_RifleCasing
+PROBE t239 missile RSQGW_CasingSmokes
+PROBE t240 missile RSQGW_CasingSmokes
+PROBE t240 missile RSQGW_CasingSmokes
+PROBE t241 missile RSQGW_CasingSmokes
+PROBE t241 missile RSQGW_CasingSmokes
+PROBE t242 round RSQ_PlayerRound
+PROBE t242 missile RSQGW_RifleCasingSpawner
+PROBE t242 missile RSQGW_CasingSmokes
+PROBE t242 missile RSQGW_CasingSmokes
+PROBE t243 missile RSQGW_CasingSmokes
+PROBE t243 missile RSQGW_CasingSmokes
+PROBE t243 missile RSQGW_RifleCasing
+PROBE t243 missile RSQGW_CasingSmokes
+PROBE t244 missile RSQGW_CasingSmokes
+PROBE t244 missile RSQGW_CasingSmokes
+PROBE t244 missile RSQGW_CasingSmokes
+PROBE t245 missile RSQGW_CasingSmokes
+PROBE t245 missile RSQGW_CasingSmokes
+PROBE t245 missile RSQGW_CasingSmokes
+STATE t246 RSQGW_ARifle Ready
+PROBE t246 missile RSQGW_CasingSmokes
+PROBE t246 missile RSQGW_CasingSmokes
+PROBE t246 missile RSQGW_CasingSmokes
+PROBE t247 missile RSQGW_CasingSmokes
+PROBE t247 missile RSQGW_CasingSmokes
+PROBE t247 missile RSQGW_CasingSmokes
+PROBE t248 missile RSQGW_CasingSmokes
+PROBE t248 missile RSQGW_CasingSmokes
+PROBE t248 missile RSQGW_CasingSmokes
+PROBE t249 missile RSQGW_CasingSmokes
+PROBE t249 missile RSQGW_CasingSmokes
+PROBE t249 missile RSQGW_CasingSmokes
+PROBE t250 missile RSQGW_CasingSmokes
+PROBE t250 missile RSQGW_CasingSmokes
+PROBE t250 missile RSQGW_CasingSmokes
+PROBE t251 missile RSQGW_CasingSmokes
+PROBE t251 missile RSQGW_CasingSmokes
+PROBE t251 missile RSQGW_CasingSmokes
+PROBE t252 missile RSQGW_CasingSmokes
+PROBE t252 missile RSQGW_CasingSmokes
+PROBE t252 missile RSQGW_CasingSmokes
+PROBE t253 missile RSQGW_CasingSmokes
+PROBE t253 missile RSQGW_CasingSmokes
+PROBE t254 missile RSQGW_CasingSmokes
+PROBE t254 missile RSQGW_CasingSmokes
+PROBE t255 missile RSQGW_CasingSmokes
+PROBE t255 missile RSQGW_CasingSmokes
+PROBE t256 missile RSQGW_CasingSmokes
+PROBE t256 missile RSQGW_CasingSmokes
+PROBE t257 missile RSQGW_CasingSmokes
+PROBE t258 missile RSQGW_CasingSmokes
+PROBE t259 missile RSQGW_CasingSmokes
+RSQGW rifle t265: 3-round burst, its click at pitch 1.45
+STATE t265 RSQGW_ARifle AltFire
+STATE t268 RSQGW_ARifle Ready
+AMMO t287 main RSQGW_ARifle RSQGW_RifleAmmo=30 RSQGW_RifleMag=27
+AMMO t287 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+T_END

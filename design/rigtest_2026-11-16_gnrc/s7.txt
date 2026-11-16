@@ -1,0 +1,26 @@
+PROBE t0 ready RSQGW_Beretta off none
+STATE t0 RSQGW_Beretta Select
+RSQGW start t14: Start With Two Pistols: the second Beretta into the off hand
+STATE t14 RSQGW_Beretta Ready
+T_HOLSTER
+RSQ switch t40: RSQGW_Riotgun -> RSQGW_Riotgun: 0 deselect frames, ready after 1 select frames
+PROBE t40 ready RSQGW_Riotgun off RSQ_Off_RSQGW_Beretta
+RSQ switch t82: RSQGW_Knuckle -> RSQGW_Knuckle: 0 deselect frames, ready after 1 select frames
+PROBE t82 ready RSQGW_Knuckle off RSQ_Off_RSQGW_Beretta
+ICON t105 sprite 1292 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -89 784 81 player -96 784 56
+RSQ switch t122: RSQGW_ARifle -> RSQGW_ARifle: 0 deselect frames, ready after 1 select frames
+PROBE t122 ready RSQGW_ARifle off RSQ_Off_RSQGW_Beretta
+ICON t140 sprite 1292 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -89 784 81 player -96 784 56
+RSQ switch t165: RSQGW_Knuckle -> RSQGW_Knuckle: 0 deselect frames, ready after 1 select frames
+PROBE t165 ready RSQGW_Knuckle off RSQ_Off_RSQGW_Beretta
+ICON t175 sprite 1292 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -89 784 81 player -96 784 56
+ICON t175 sprite 1107 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -102 784 82 player -96 784 56
+T_LOOK
+ICON t210 sprite 1292 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -89 790 81 player -96 784 56
+ICON t210 sprite 1107 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -102 790 82 player -96 784 56
+T_NOAMMO
+ICON t245 sprite 1292 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -89 783 81 player -96 784 56
+ICON t245 sprite 1107 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -102 783 82 player -96 784 56
+ICON t280 sprite 1292 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -89 784 81 player -96 784 56
+ICON t280 sprite 1107 frame 0 (RTGN 1292, rifle twin RG0U 1107) invisible 0 at -102 784 82 player -96 784 56
+T_END

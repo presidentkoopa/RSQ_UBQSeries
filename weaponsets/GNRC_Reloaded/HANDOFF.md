@@ -1,5 +1,32 @@
 # GNRC_Reloaded handoff
 
+## 2026-11-16 0.8 (owner's list 03:44 "all of it", 03:51 answers, version 0.8). Rig only, not headset-confirmed
+Standalone first (owner 03:45): every item works on doom2 + GNRC alone; Series hooks are by name and optional.
+Evidence: design/rigtest_2026-11-16_gnrc/ (filtered logs and frames). README.md (this folder) is the player's page.
+
+| # | Item | What changed | Shown |
+|---|---|---|---|
+| 1 | Empty click | gun.zs plays RSQGW/dry. FOUND: DryWait's `Goto Ready` resolved in the abstract base (no Ready), so an empty gun with no reserve stopped dead after the pull and no switch worked after it (0.1.0 too, s1_old) | s1_new: QZSND RSQGW/dry on each pull, back to Ready |
+| 2 | VR saw | RSQGW_SawCut (3 x 1-10)/2 a cut, every 2 tics = GNRC's own saw, 144/s (GNRC's chosen, not vanilla's 96) | s3_0: cuts 1-15 (was a fixed 3) |
+| 3 | Plasma rail | two rails: damage (colour none, the player's) + damage-0 trail muzzle.zs redraws from the drawn muzzle | s2: RAIL dmg 291 by the player; trail from RSQ_MuzzleRail 75.6 cm ahead of the controller |
+| 4 | Held trigger | RSQGW_TriggerHeld (BD22 VR's RSQ_TriggerHeld, + the alt) on every player; per-hand semiHeld lock on both shotguns | s1_new: DBSG held 70 tics fires one barrel, alt held fires one, no break-open; pump held 120 tics fires once |
+| 5 | BD22 VR re-sync | build reads BD22 VR Reloaded 2.0.4x (/home/claude/rsq_bd_vr_reloaded): reload / break buzzes through Rumble Backup (2.0.4t), yield.zs, axe pool stubbed; Remove HUD Ammo honoured by the HUD | s8 (series): RSQA_BACKUP lines on a rocket blast; hud_ammo_on_then_removed.png. The reload buzz path itself not driven |
+| 6 | Tactical Rig | RSQTRFIT.gnrc (generated): rows to the rig's RSQTR_VH_* holders; the rifle its own class in its no-launcher frame | s7: icons on the hips (RTGN / RG0U); holstered_rifle_left_hip_riotgun_right_hip.png |
+| 7 | Any player class | guns load on first pickup (AttachToOwner); RSQGW_Handler swaps Doom's start guns / Clip for GNRC's and makes the kit whole | s4: RSQGWT_OtherPlayer (Pistol, Fist, Clip 50) -> Beretta loaded 10, knuckle, 9 mm 50; every gun picked up loaded |
+| B | Two pistols | FOUND: the option did nothing (BD22 VR's own-both rule gave the copy anyway; the off hand started empty). Now on: the second Beretta is in the off hand at the start; off: one pistol until a second is picked up | s4_1 / s4_0, s1_new |
+| 8 | Rifle modes | burst a high click (pitch 1.45), auto a low one (0.75); RSQGW_GunModeService; Gun Cards' MODE row (GunCards card.zs / side.zs / worldcard.zs) | s2: QZSND + GCMODE AUTO -> BURST -> AUTO from Gun Cards' own ModeOf (the watch card not posed) |
+| 9 | Rocket blast | Radius_Quake -> RSQGW_Blast.Felt (both hands, RSQB_GN_Buzzer: Rumble Strength + Backup); grenade too. gen_gnrc.py no_quakes | s2 / s8: "both hands buzz ..., no quake" |
+| 10 | Switch, recoil | switch.zs (on; FIXED for this pack: it dropped the main gun when a gun went to the OFF hand, the same code is in BD22 VR) and recoil.zs as "Gun Recoil (Visible)", OFF: BD22 VR took its handler and row out in 1.99, so off is BD22 VR's default today | s2: "0 deselect frames"; TILT up to 7.6 deg, view pitch 0 |
+| 11 | Trim | 16 BD22 mesh folders, 73 MODELDEF blocks left out (mdl.build drop); tree 121 MB -> 85 MB | suite |
+| 12 | Underbarrel | option Rifle Underbarrel Launcher (off): twin sprites without M203 (MODELDEF.rsqgl, gltwin.gen.zs) worn while off; on: off trigger with the off hand on the handguard (Steadied) fires RSQGW_Grenade2 for 1 rocket, one a second. Chosen so the rifle's own alt keeps the mode switch | s5, rifle_launcher_off_on_off.png |
+| A | Vanilla Damage | option (off = Led's): see README's table | damage_summary_led.txt / _vanilla.txt: multiples of 7 / 6 / 8 vs 5; rates 6 -> 14, 2 -> 1 round, 8 -> 20, 4 -> 3 tics |
+
+- Build on a machine without GNRC's sources: `python3 tools/inputs_from_pack.py <dir>` then `RSQGW_INPUTS=<dir> python3 tools/build.py`.
+- Not shown: anything in the headset; the sounds heard (engine sound log only); the BD22 VR reload buzz through Rumble
+  Backup driven by a hand reload; the launcher out of VR (it needs the two-hand grip, so flat-screen play cannot fire it).
+- Left: Gun Cards' off-hand small cards for GNRC's off-hand copies need a GNRC bridge pk3 (as BD22 VR's); review item 14
+  (Score's per-gun rows) and 16 (dead code) were not in the approved list.
+
 ## 2026-11-13 0.1.0 delivered
 - Ten GNRC weapons in ZScript on the WoS_Reloaded base (PLAN.md). Rig suite PASSED on tree 6b527a4ee133370f, all ten
   weapons; pk3 out/GNRC_Reloaded_0.1.0.pk3 (40 MB, not committed: out/ is ignored).

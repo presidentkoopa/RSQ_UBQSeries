@@ -1,0 +1,47 @@
+RSQGW kit: Pistol -> RSQGW_Beretta
+RSQGW kit: Fist -> RSQGW_Knuckle
+RSQGW kit: player 0 (RSQGWT_OtherPlayer): Beretta 1 (loaded 10), knuckle 1, 9 mm 50
+PROBE t0 ready RSQGW_Beretta off none
+STATE t0 RSQGW_Beretta Select
+RSQGW start t15: Start With Two Pistols: the second Beretta into the off hand
+STATE t15 RSQGW_Beretta Ready
+AMMO t61 main RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMag=10
+AMMO t61 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+T_PICKUP
+RSQ switch t62: RSQGW_ARifle -> RSQGW_ARifle: 0 deselect frames, ready after 1 select frames
+PROBE t62 ready RSQGW_ARifle off RSQ_Off_RSQGW_Beretta
+RSQ switch t65: RSQGW_Riotgun -> RSQGW_Riotgun: 0 deselect frames, ready after 1 select frames
+PROBE t65 ready RSQGW_Riotgun off RSQ_Off_RSQGW_Beretta
+RSQ switch t66: RSQGW_Minigun -> RSQGW_Minigun: 0 deselect frames, ready after 1 select frames
+PROBE t66 ready RSQGW_Minigun off RSQ_Off_RSQGW_Beretta
+RSQ switch t68: RSQGW_PlasRifle -> RSQGW_PlasRifle: 0 deselect frames, ready after 1 select frames
+PROBE t68 ready RSQGW_PlasRifle off RSQ_Off_RSQGW_Beretta
+RSQ switch t70: RSQGW_Rlauncher -> RSQGW_Rlauncher: 0 deselect frames, ready after 1 select frames
+PROBE t70 ready RSQGW_Rlauncher off RSQ_Off_RSQGW_Beretta
+RSQ switch t72: RSQGW_DoubleSG -> RSQGW_DoubleSG: 0 deselect frames, ready after 1 select frames
+PROBE t72 ready RSQGW_DoubleSG off RSQ_Off_RSQGW_Beretta
+RSQ switch t77: RSQGW_ARifle -> RSQGW_ARifle: 0 deselect frames, ready after 1 select frames
+PROBE t77 ready RSQGW_ARifle off RSQ_Off_RSQGW_Beretta
+AMMO t104 main RSQGW_ARifle RSQGW_RifleAmmo=30 RSQGW_RifleMag=30
+AMMO t104 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+RSQ switch t106: RSQGW_Riotgun -> RSQGW_Riotgun: 0 deselect frames, ready after 1 select frames
+PROBE t106 ready RSQGW_Riotgun off RSQ_Off_RSQGW_Beretta
+AMMO t136 main RSQGW_Riotgun Shell=14 RSQGW_ShotgunMag=8
+AMMO t136 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+RSQ switch t138: RSQGW_Minigun -> RSQGW_Minigun: 0 deselect frames, ready after 1 select frames
+PROBE t138 ready RSQGW_Minigun off RSQ_Off_RSQGW_Beretta
+AMMO t169 main RSQGW_Minigun RSQGW_Nato=50 RSQGW_MinigunMag=150
+AMMO t169 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+RSQ switch t170: RSQGW_PlasRifle -> RSQGW_PlasRifle: 0 deselect frames, ready after 1 select frames
+PROBE t170 ready RSQGW_PlasRifle off RSQ_Off_RSQGW_Beretta
+AMMO t200 main RSQGW_PlasRifle Cell=30 RSQGW_PlasmaMag=60
+AMMO t200 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+RSQ switch t202: RSQGW_Rlauncher -> RSQGW_Rlauncher: 0 deselect frames, ready after 1 select frames
+PROBE t202 ready RSQGW_Rlauncher off RSQ_Off_RSQGW_Beretta
+AMMO t232 main RSQGW_Rlauncher RocketAmmo=5 RSQGW_RocketMag=5
+AMMO t232 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+RSQ switch t235: RSQGW_DoubleSG -> RSQGW_DoubleSG: 0 deselect frames, ready after 1 select frames
+PROBE t235 ready RSQGW_DoubleSG off RSQ_Off_RSQGW_Beretta
+AMMO t264 main RSQGW_DoubleSG Shell=14 RSQGW_DBSGMag=2
+AMMO t264 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+T_END

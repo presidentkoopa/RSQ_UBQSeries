@@ -1,0 +1,24 @@
+Attempt to get invalid state Ready from actor RSQGW_Gun.
+QZSND 0 weapons/pistol/equip ch 1 vol 1.00 src RSQGW_Player
+PROBE t0 ready RSQGW_Beretta off none
+STATE t0 RSQGW_Beretta Select
+STATE t14 RSQGW_Beretta Ready
+T_DRY
+AMMO t72 main RSQGW_Beretta RSQGW_PistolAmmo=0 RSQGW_PistolMag=0
+AMMO t72 off rsq_hands -=-1 -=-1
+STATE t74 RSQGW_Beretta Reload
+STATE t82 RSQGW_Beretta ?
+T_DBSG
+AMMO t211 main RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMag=11
+AMMO t211 off rsq_hands -=-1 -=-1
+AMMO t288 main RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMag=11
+AMMO t288 off rsq_hands -=-1 -=-1
+AMMO t365 main RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMag=11
+AMMO t365 off rsq_hands -=-1 -=-1
+T_DBSG_PULL
+T_RIOT
+AMMO t464 main RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMag=11
+AMMO t464 off rsq_hands -=-1 -=-1
+AMMO t591 main RSQGW_Beretta RSQGW_PistolAmmo=200 RSQGW_PistolMag=11
+AMMO t591 off rsq_hands -=-1 -=-1
+T_END

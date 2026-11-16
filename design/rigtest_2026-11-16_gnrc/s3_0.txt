@@ -1,0 +1,1090 @@
+PROBE t0 ready RSQGW_Beretta off none
+STATE t0 RSQGW_Beretta Select
+RSQGW start t14: Start With Two Pistols: the second Beretta into the off hand
+STATE t14 RSQGW_Beretta Ready
+T_PISTOL
+DMG t40 DoomImp by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 DoomImp by none 1000000
+DMG t40 DoomImp by none 1000000
+DMG t40 DoomImp by none 1000000
+DMG t40 Zombieman by none 1000000
+DMG t40 DoomImp by none 1000000
+DMG t40 DoomImp by none 1000000
+DMG t40 DoomImp by none 1000000
+STATE t97 RSQGW_Beretta Fire
+PROBE t97 round RSQ_PlayerRound
+PROBE t97 missile RSQGW_9mmCasingSpawner
+DMG t98 Cyberdemon by RSQGW_BulletPuffed 21
+PROBE t98 missile RSQGW_9mmCasing
+PROBE t98 missile RSQGW_CasingSmokes
+PROBE t99 missile RSQGW_CasingSmokes
+PROBE t100 missile RSQGW_CasingSmokes
+PROBE t101 missile RSQGW_CasingSmokes
+PROBE t102 missile RSQGW_CasingSmokes
+PROBE t103 missile RSQGW_CasingSmokes
+STATE t104 RSQGW_Beretta Ready
+PROBE t104 missile RSQGW_CasingSmokes
+PROBE t105 missile RSQGW_CasingSmokes
+PROBE t106 missile RSQGW_CasingSmokes
+PROBE t107 missile RSQGW_CasingSmokes
+PROBE t108 missile RSQGW_CasingSmokes
+PROBE t109 missile RSQGW_CasingSmokes
+PROBE t110 missile RSQGW_CasingSmokes
+PROBE t111 missile RSQGW_CasingSmokes
+PROBE t112 missile RSQGW_CasingSmokes
+PROBE t113 missile RSQGW_CasingSmokes
+PROBE t114 missile RSQGW_CasingSmokes
+STATE t141 RSQGW_Beretta Fire
+PROBE t141 round RSQ_PlayerRound
+PROBE t141 missile RSQGW_9mmCasingSpawner
+DMG t142 Cyberdemon by RSQGW_BulletPuffed 14
+PROBE t142 missile RSQGW_9mmCasing
+PROBE t142 missile RSQGW_CasingSmokes
+PROBE t143 missile RSQGW_CasingSmokes
+PROBE t144 missile RSQGW_CasingSmokes
+PROBE t145 missile RSQGW_CasingSmokes
+PROBE t146 missile RSQGW_CasingSmokes
+PROBE t147 missile RSQGW_CasingSmokes
+STATE t148 RSQGW_Beretta Ready
+PROBE t148 missile RSQGW_CasingSmokes
+PROBE t149 missile RSQGW_CasingSmokes
+PROBE t150 missile RSQGW_CasingSmokes
+PROBE t151 missile RSQGW_CasingSmokes
+PROBE t152 missile RSQGW_CasingSmokes
+PROBE t153 missile RSQGW_CasingSmokes
+PROBE t154 missile RSQGW_CasingSmokes
+PROBE t155 missile RSQGW_CasingSmokes
+PROBE t156 missile RSQGW_CasingSmokes
+PROBE t157 missile RSQGW_CasingSmokes
+PROBE t158 missile RSQGW_CasingSmokes
+STATE t183 RSQGW_Beretta Fire
+PROBE t183 round RSQ_PlayerRound
+DMG t183 Cyberdemon by RSQGW_BulletPuffed 14
+PROBE t183 missile RSQGW_9mmCasingSpawner
+PROBE t184 missile RSQGW_9mmCasing
+PROBE t184 missile RSQGW_CasingSmokes
+PROBE t185 missile RSQGW_CasingSmokes
+PROBE t186 missile RSQGW_CasingSmokes
+PROBE t187 missile RSQGW_CasingSmokes
+PROBE t188 missile RSQGW_CasingSmokes
+PROBE t189 missile RSQGW_CasingSmokes
+STATE t190 RSQGW_Beretta Ready
+PROBE t190 missile RSQGW_CasingSmokes
+PROBE t191 missile RSQGW_CasingSmokes
+PROBE t192 missile RSQGW_CasingSmokes
+PROBE t193 missile RSQGW_CasingSmokes
+PROBE t194 missile RSQGW_CasingSmokes
+PROBE t195 missile RSQGW_CasingSmokes
+PROBE t196 missile RSQGW_CasingSmokes
+PROBE t197 missile RSQGW_CasingSmokes
+PROBE t198 missile RSQGW_CasingSmokes
+PROBE t199 missile RSQGW_CasingSmokes
+PROBE t200 missile RSQGW_CasingSmokes
+STATE t226 RSQGW_Beretta Fire
+PROBE t226 round RSQ_PlayerRound
+PROBE t226 missile RSQGW_9mmCasingSpawner
+DMG t227 Cyberdemon by RSQGW_BulletPuffed 7
+PROBE t227 missile RSQGW_9mmCasing
+PROBE t227 missile RSQGW_CasingSmokes
+PROBE t228 missile RSQGW_CasingSmokes
+PROBE t229 missile RSQGW_CasingSmokes
+PROBE t230 missile RSQGW_CasingSmokes
+PROBE t231 missile RSQGW_CasingSmokes
+PROBE t232 missile RSQGW_CasingSmokes
+STATE t233 RSQGW_Beretta Ready
+PROBE t233 missile RSQGW_CasingSmokes
+PROBE t234 missile RSQGW_CasingSmokes
+PROBE t235 missile RSQGW_CasingSmokes
+PROBE t236 missile RSQGW_CasingSmokes
+PROBE t237 missile RSQGW_CasingSmokes
+PROBE t238 missile RSQGW_CasingSmokes
+PROBE t239 missile RSQGW_CasingSmokes
+PROBE t240 missile RSQGW_CasingSmokes
+PROBE t241 missile RSQGW_CasingSmokes
+PROBE t242 missile RSQGW_CasingSmokes
+PROBE t243 missile RSQGW_CasingSmokes
+STATE t270 RSQGW_Beretta Fire
+PROBE t270 round RSQ_PlayerRound
+PROBE t270 missile RSQGW_9mmCasingSpawner
+PROBE t271 missile RSQGW_9mmCasing
+PROBE t271 missile RSQGW_CasingSmokes
+PROBE t272 missile RSQGW_CasingSmokes
+PROBE t273 missile RSQGW_CasingSmokes
+PROBE t274 missile RSQGW_CasingSmokes
+PROBE t275 missile RSQGW_CasingSmokes
+PROBE t276 missile RSQGW_CasingSmokes
+STATE t277 RSQGW_Beretta Ready
+PROBE t277 missile RSQGW_CasingSmokes
+PROBE t278 missile RSQGW_CasingSmokes
+PROBE t279 missile RSQGW_CasingSmokes
+PROBE t280 missile RSQGW_CasingSmokes
+PROBE t281 missile RSQGW_CasingSmokes
+PROBE t282 missile RSQGW_CasingSmokes
+PROBE t283 missile RSQGW_CasingSmokes
+PROBE t284 missile RSQGW_CasingSmokes
+PROBE t285 missile RSQGW_CasingSmokes
+STATE t312 RSQGW_Beretta Fire
+PROBE t312 round RSQ_PlayerRound
+PROBE t312 missile RSQGW_9mmCasingSpawner
+PROBE t313 missile RSQGW_9mmCasing
+PROBE t313 missile RSQGW_CasingSmokes
+PROBE t314 missile RSQGW_CasingSmokes
+PROBE t315 missile RSQGW_CasingSmokes
+PROBE t316 missile RSQGW_CasingSmokes
+PROBE t317 missile RSQGW_CasingSmokes
+PROBE t318 missile RSQGW_CasingSmokes
+STATE t319 RSQGW_Beretta Ready
+PROBE t319 missile RSQGW_CasingSmokes
+PROBE t320 missile RSQGW_CasingSmokes
+PROBE t321 missile RSQGW_CasingSmokes
+PROBE t322 missile RSQGW_CasingSmokes
+PROBE t323 missile RSQGW_CasingSmokes
+PROBE t324 missile RSQGW_CasingSmokes
+PROBE t325 missile RSQGW_CasingSmokes
+PROBE t326 missile RSQGW_CasingSmokes
+PROBE t327 missile RSQGW_CasingSmokes
+PROBE t328 missile RSQGW_CasingSmokes
+PROBE t329 missile RSQGW_CasingSmokes
+PROBE t330 missile RSQGW_CasingSmokes
+PROBE t331 missile RSQGW_CasingSmokes
+PROBE t332 missile RSQGW_CasingSmokes
+PROBE t333 missile RSQGW_CasingSmokes
+PROBE t334 missile RSQGW_CasingSmokes
+PROBE t335 missile RSQGW_CasingSmokes
+T_PISTOL_HELD
+STATE t355 RSQGW_Beretta Fire
+PROBE t355 round RSQ_PlayerRound
+PROBE t355 missile RSQGW_9mmCasingSpawner
+PROBE t356 missile RSQGW_9mmCasing
+PROBE t356 missile RSQGW_CasingSmokes
+PROBE t357 missile RSQGW_CasingSmokes
+PROBE t358 missile RSQGW_CasingSmokes
+PROBE t359 missile RSQGW_CasingSmokes
+PROBE t360 missile RSQGW_CasingSmokes
+PROBE t361 round RSQ_PlayerRound
+PROBE t361 missile RSQGW_9mmCasingSpawner
+PROBE t361 missile RSQGW_CasingSmokes
+PROBE t362 missile RSQGW_CasingSmokes
+PROBE t362 missile RSQGW_9mmCasing
+PROBE t362 missile RSQGW_CasingSmokes
+PROBE t363 missile RSQGW_CasingSmokes
+PROBE t363 missile RSQGW_CasingSmokes
+PROBE t364 missile RSQGW_CasingSmokes
+PROBE t364 missile RSQGW_CasingSmokes
+PROBE t365 missile RSQGW_CasingSmokes
+PROBE t365 missile RSQGW_CasingSmokes
+PROBE t366 missile RSQGW_CasingSmokes
+PROBE t366 missile RSQGW_CasingSmokes
+PROBE t367 round RSQ_PlayerRound
+PROBE t367 missile RSQGW_9mmCasingSpawner
+PROBE t367 missile RSQGW_CasingSmokes
+PROBE t367 missile RSQGW_CasingSmokes
+PROBE t368 missile RSQGW_CasingSmokes
+PROBE t368 missile RSQGW_CasingSmokes
+PROBE t368 missile RSQGW_9mmCasing
+PROBE t368 missile RSQGW_CasingSmokes
+PROBE t369 missile RSQGW_CasingSmokes
+PROBE t369 missile RSQGW_CasingSmokes
+PROBE t369 missile RSQGW_CasingSmokes
+PROBE t370 missile RSQGW_CasingSmokes
+PROBE t370 missile RSQGW_CasingSmokes
+PROBE t370 missile RSQGW_CasingSmokes
+PROBE t371 missile RSQGW_CasingSmokes
+PROBE t371 missile RSQGW_CasingSmokes
+PROBE t371 missile RSQGW_CasingSmokes
+PROBE t372 missile RSQGW_CasingSmokes
+PROBE t372 missile RSQGW_CasingSmokes
+PROBE t372 missile RSQGW_CasingSmokes
+PROBE t373 round RSQ_PlayerRound
+PROBE t373 missile RSQGW_9mmCasingSpawner
+PROBE t373 missile RSQGW_CasingSmokes
+PROBE t373 missile RSQGW_CasingSmokes
+PROBE t374 missile RSQGW_CasingSmokes
+PROBE t374 missile RSQGW_CasingSmokes
+PROBE t374 missile RSQGW_9mmCasing
+PROBE t374 missile RSQGW_CasingSmokes
+PROBE t375 missile RSQGW_CasingSmokes
+PROBE t375 missile RSQGW_CasingSmokes
+PROBE t375 missile RSQGW_CasingSmokes
+PROBE t376 missile RSQGW_CasingSmokes
+PROBE t376 missile RSQGW_CasingSmokes
+PROBE t376 missile RSQGW_CasingSmokes
+PROBE t377 missile RSQGW_CasingSmokes
+PROBE t377 missile RSQGW_CasingSmokes
+PROBE t377 missile RSQGW_CasingSmokes
+PROBE t378 missile RSQGW_CasingSmokes
+PROBE t378 missile RSQGW_CasingSmokes
+PROBE t378 missile RSQGW_CasingSmokes
+PROBE t379 round RSQ_PlayerRound
+PROBE t379 missile RSQGW_9mmCasingSpawner
+PROBE t379 missile RSQGW_CasingSmokes
+PROBE t379 missile RSQGW_CasingSmokes
+PROBE t379 missile RSQGW_CasingSmokes
+PROBE t380 missile RSQGW_CasingSmokes
+PROBE t380 missile RSQGW_CasingSmokes
+PROBE t380 missile RSQGW_9mmCasing
+PROBE t380 missile RSQGW_CasingSmokes
+PROBE t381 missile RSQGW_CasingSmokes
+PROBE t381 missile RSQGW_CasingSmokes
+PROBE t381 missile RSQGW_CasingSmokes
+PROBE t382 missile RSQGW_CasingSmokes
+PROBE t382 missile RSQGW_CasingSmokes
+PROBE t382 missile RSQGW_CasingSmokes
+PROBE t383 missile RSQGW_CasingSmokes
+PROBE t383 missile RSQGW_CasingSmokes
+PROBE t383 missile RSQGW_CasingSmokes
+PROBE t384 missile RSQGW_CasingSmokes
+PROBE t384 missile RSQGW_CasingSmokes
+PROBE t384 missile RSQGW_CasingSmokes
+rsr t385: reload refused (gun 2, off hand RSQ_Off_RSQGW_Beretta)
+STATE t385 RSQGW_Beretta StockReload
+PROBE t385 missile RSQGW_CasingSmokes
+PROBE t385 missile RSQGW_CasingSmokes
+PROBE t385 missile RSQGW_CasingSmokes
+PROBE t386 missile RSQGW_CasingSmokes
+PROBE t386 missile RSQGW_CasingSmokes
+PROBE t387 missile RSQGW_CasingSmokes
+PROBE t387 missile RSQGW_CasingSmokes
+PROBE t388 missile RSQGW_CasingSmokes
+PROBE t388 missile RSQGW_CasingSmokes
+PROBE t389 missile RSQGW_CasingSmokes
+PROBE t389 missile RSQGW_CasingSmokes
+PROBE t390 missile RSQGW_CasingSmokes
+PROBE t390 missile RSQGW_CasingSmokes
+PROBE t391 missile RSQGW_CasingSmokes
+PROBE t392 missile RSQGW_CasingSmokes
+PROBE t393 missile RSQGW_CasingSmokes
+PROBE t394 missile RSQGW_CasingSmokes
+PROBE t395 missile RSQGW_CasingSmokes
+PROBE t396 missile RSQGW_CasingSmokes
+STATE t414 RSQGW_Beretta Ready
+T_RIFLE
+DMG t486 Cyberdemon by none 1000000
+RSQ switch t489: RSQGW_ARifle -> RSQGW_ARifle: 0 deselect frames, ready after 1 select frames
+PROBE t489 ready RSQGW_ARifle off RSQ_Off_RSQGW_Beretta
+STATE t543 RSQGW_ARifle Fire
+PROBE t543 round RSQ_PlayerRound
+PROBE t543 missile RSQGW_RifleCasingSpawner
+DMG t544 Cyberdemon by RSQGW_BulletPuffed 21
+PROBE t544 missile RSQGW_RifleCasing
+PROBE t544 missile RSQGW_CasingSmokes
+PROBE t545 missile RSQGW_CasingSmokes
+PROBE t546 missile RSQGW_CasingSmokes
+PROBE t547 round RSQ_PlayerRound
+PROBE t547 missile RSQGW_RifleCasingSpawner
+PROBE t547 missile RSQGW_CasingSmokes
+DMG t548 Cyberdemon by RSQGW_BulletPuffed 14
+PROBE t548 missile RSQGW_CasingSmokes
+PROBE t548 missile RSQGW_RifleCasing
+PROBE t548 missile RSQGW_CasingSmokes
+PROBE t549 missile RSQGW_CasingSmokes
+PROBE t549 missile RSQGW_CasingSmokes
+PROBE t550 missile RSQGW_CasingSmokes
+PROBE t550 missile RSQGW_CasingSmokes
+PROBE t551 round RSQ_PlayerRound
+PROBE t551 missile RSQGW_RifleCasingSpawner
+PROBE t551 missile RSQGW_CasingSmokes
+PROBE t551 missile RSQGW_CasingSmokes
+DMG t552 Cyberdemon by RSQGW_BulletPuffed 21
+PROBE t552 missile RSQGW_CasingSmokes
+PROBE t552 missile RSQGW_CasingSmokes
+PROBE t552 missile RSQGW_RifleCasing
+PROBE t552 missile RSQGW_CasingSmokes
+PROBE t553 missile RSQGW_CasingSmokes
+PROBE t553 missile RSQGW_CasingSmokes
+PROBE t553 missile RSQGW_CasingSmokes
+PROBE t554 missile RSQGW_CasingSmokes
+PROBE t554 missile RSQGW_CasingSmokes
+PROBE t554 missile RSQGW_CasingSmokes
+PROBE t555 round RSQ_PlayerRound
+PROBE t555 missile RSQGW_RifleCasingSpawner
+PROBE t555 missile RSQGW_CasingSmokes
+PROBE t555 missile RSQGW_CasingSmokes
+PROBE t555 missile RSQGW_CasingSmokes
+DMG t556 Cyberdemon by RSQGW_BulletPuffed 14
+PROBE t556 missile RSQGW_CasingSmokes
+PROBE t556 missile RSQGW_CasingSmokes
+PROBE t556 missile RSQGW_CasingSmokes
+PROBE t556 missile RSQGW_RifleCasing
+PROBE t556 missile RSQGW_CasingSmokes
+PROBE t557 missile RSQGW_CasingSmokes
+PROBE t557 missile RSQGW_CasingSmokes
+PROBE t557 missile RSQGW_CasingSmokes
+PROBE t557 missile RSQGW_CasingSmokes
+PROBE t558 missile RSQGW_CasingSmokes
+PROBE t558 missile RSQGW_CasingSmokes
+PROBE t558 missile RSQGW_CasingSmokes
+PROBE t558 missile RSQGW_CasingSmokes
+PROBE t559 round RSQ_PlayerRound
+DMG t559 Cyberdemon by RSQGW_BulletPuffed 21
+PROBE t559 missile RSQGW_RifleCasingSpawner
+PROBE t559 missile RSQGW_CasingSmokes
+PROBE t559 missile RSQGW_CasingSmokes
+PROBE t559 missile RSQGW_CasingSmokes
+PROBE t559 missile RSQGW_CasingSmokes
+PROBE t560 missile RSQGW_CasingSmokes
+PROBE t560 missile RSQGW_CasingSmokes
+PROBE t560 missile RSQGW_CasingSmokes
+PROBE t560 missile RSQGW_CasingSmokes
+PROBE t560 missile RSQGW_RifleCasing
+PROBE t560 missile RSQGW_CasingSmokes
+PROBE t561 missile RSQGW_CasingSmokes
+PROBE t561 missile RSQGW_CasingSmokes
+PROBE t561 missile RSQGW_CasingSmokes
+PROBE t561 missile RSQGW_CasingSmokes
+PROBE t562 missile RSQGW_CasingSmokes
+PROBE t562 missile RSQGW_CasingSmokes
+PROBE t562 missile RSQGW_CasingSmokes
+PROBE t562 missile RSQGW_CasingSmokes
+PROBE t563 round RSQ_PlayerRound
+DMG t563 Cyberdemon by RSQGW_BulletPuffed 21
+PROBE t563 missile RSQGW_RifleCasingSpawner
+PROBE t563 missile RSQGW_CasingSmokes
+PROBE t563 missile RSQGW_CasingSmokes
+PROBE t563 missile RSQGW_CasingSmokes
+PROBE t563 missile RSQGW_CasingSmokes
+PROBE t564 missile RSQGW_CasingSmokes
+PROBE t564 missile RSQGW_CasingSmokes
+PROBE t564 missile RSQGW_CasingSmokes
+PROBE t564 missile RSQGW_CasingSmokes
+PROBE t564 missile RSQGW_RifleCasing
+PROBE t564 missile RSQGW_CasingSmokes
+PROBE t565 missile RSQGW_CasingSmokes
+PROBE t565 missile RSQGW_CasingSmokes
+PROBE t565 missile RSQGW_CasingSmokes
+PROBE t565 missile RSQGW_CasingSmokes
+PROBE t566 missile RSQGW_CasingSmokes
+PROBE t566 missile RSQGW_CasingSmokes
+PROBE t566 missile RSQGW_CasingSmokes
+PROBE t566 missile RSQGW_CasingSmokes
+PROBE t567 round RSQ_PlayerRound
+DMG t567 Cyberdemon by RSQGW_BulletPuffed 7
+PROBE t567 missile RSQGW_RifleCasingSpawner
+PROBE t567 missile RSQGW_CasingSmokes
+PROBE t567 missile RSQGW_CasingSmokes
+PROBE t567 missile RSQGW_CasingSmokes
+PROBE t567 missile RSQGW_CasingSmokes
+PROBE t568 missile RSQGW_CasingSmokes
+PROBE t568 missile RSQGW_CasingSmokes
+PROBE t568 missile RSQGW_CasingSmokes
+PROBE t568 missile RSQGW_CasingSmokes
+PROBE t568 missile RSQGW_RifleCasing
+PROBE t568 missile RSQGW_CasingSmokes
+PROBE t569 missile RSQGW_CasingSmokes
+PROBE t569 missile RSQGW_CasingSmokes
+PROBE t569 missile RSQGW_CasingSmokes
+PROBE t569 missile RSQGW_CasingSmokes
+PROBE t570 missile RSQGW_CasingSmokes
+PROBE t570 missile RSQGW_CasingSmokes
+PROBE t570 missile RSQGW_CasingSmokes
+PROBE t570 missile RSQGW_CasingSmokes
+PROBE t571 round RSQ_PlayerRound
+DMG t571 Cyberdemon by RSQGW_BulletPuffed 7
+PROBE t571 missile RSQGW_RifleCasingSpawner
+PROBE t571 missile RSQGW_CasingSmokes
+PROBE t571 missile RSQGW_CasingSmokes
+PROBE t571 missile RSQGW_CasingSmokes
+PROBE t571 missile RSQGW_CasingSmokes
+PROBE t572 missile RSQGW_CasingSmokes
+PROBE t572 missile RSQGW_CasingSmokes
+PROBE t572 missile RSQGW_CasingSmokes
+PROBE t572 missile RSQGW_CasingSmokes
+PROBE t572 missile RSQGW_RifleCasing
+PROBE t572 missile RSQGW_CasingSmokes
+PROBE t573 missile RSQGW_CasingSmokes
+PROBE t573 missile RSQGW_CasingSmokes
+PROBE t573 missile RSQGW_CasingSmokes
+PROBE t573 missile RSQGW_CasingSmokes
+PROBE t574 missile RSQGW_CasingSmokes
+PROBE t574 missile RSQGW_CasingSmokes
+PROBE t574 missile RSQGW_CasingSmokes
+PROBE t574 missile RSQGW_CasingSmokes
+PROBE t575 round RSQ_PlayerRound
+DMG t575 Cyberdemon by RSQGW_BulletPuffed 7
+PROBE t575 missile RSQGW_RifleCasingSpawner
+PROBE t575 missile RSQGW_CasingSmokes
+PROBE t575 missile RSQGW_CasingSmokes
+PROBE t575 missile RSQGW_CasingSmokes
+PROBE t575 missile RSQGW_CasingSmokes
+PROBE t576 missile RSQGW_CasingSmokes
+PROBE t576 missile RSQGW_CasingSmokes
+PROBE t576 missile RSQGW_CasingSmokes
+PROBE t576 missile RSQGW_CasingSmokes
+PROBE t576 missile RSQGW_RifleCasing
+PROBE t576 missile RSQGW_CasingSmokes
+PROBE t577 missile RSQGW_CasingSmokes
+PROBE t577 missile RSQGW_CasingSmokes
+PROBE t577 missile RSQGW_CasingSmokes
+PROBE t577 missile RSQGW_CasingSmokes
+PROBE t578 missile RSQGW_CasingSmokes
+PROBE t578 missile RSQGW_CasingSmokes
+PROBE t578 missile RSQGW_CasingSmokes
+PROBE t578 missile RSQGW_CasingSmokes
+PROBE t579 round RSQ_PlayerRound
+DMG t579 Cyberdemon by RSQGW_BulletPuffed 21
+PROBE t579 missile RSQGW_RifleCasingSpawner
+PROBE t579 missile RSQGW_CasingSmokes
+PROBE t579 missile RSQGW_CasingSmokes
+PROBE t579 missile RSQGW_CasingSmokes
+PROBE t579 missile RSQGW_CasingSmokes
+PROBE t580 missile RSQGW_CasingSmokes
+PROBE t580 missile RSQGW_CasingSmokes
+PROBE t580 missile RSQGW_CasingSmokes
+PROBE t580 missile RSQGW_CasingSmokes
+PROBE t580 missile RSQGW_RifleCasing
+PROBE t580 missile RSQGW_CasingSmokes
+PROBE t581 missile RSQGW_CasingSmokes
+PROBE t581 missile RSQGW_CasingSmokes
+PROBE t581 missile RSQGW_CasingSmokes
+PROBE t581 missile RSQGW_CasingSmokes
+PROBE t581 missile RSQGW_CasingSmokes
+PROBE t582 missile RSQGW_CasingSmokes
+PROBE t582 missile RSQGW_CasingSmokes
+PROBE t582 missile RSQGW_CasingSmokes
+PROBE t582 missile RSQGW_CasingSmokes
+PROBE t583 round RSQ_PlayerRound
+DMG t583 Cyberdemon by RSQGW_BulletPuffed 7
+PROBE t583 missile RSQGW_RifleCasingSpawner
+PROBE t583 missile RSQGW_CasingSmokes
+PROBE t583 missile RSQGW_CasingSmokes
+PROBE t583 missile RSQGW_CasingSmokes
+PROBE t583 missile RSQGW_CasingSmokes
+PROBE t584 missile RSQGW_CasingSmokes
+PROBE t584 missile RSQGW_CasingSmokes
+PROBE t584 missile RSQGW_CasingSmokes
+PROBE t584 missile RSQGW_CasingSmokes
+PROBE t584 missile RSQGW_RifleCasing
+PROBE t584 missile RSQGW_CasingSmokes
+PROBE t585 missile RSQGW_CasingSmokes
+PROBE t585 missile RSQGW_CasingSmokes
+PROBE t585 missile RSQGW_CasingSmokes
+PROBE t585 missile RSQGW_CasingSmokes
+PROBE t586 missile RSQGW_CasingSmokes
+PROBE t586 missile RSQGW_CasingSmokes
+PROBE t586 missile RSQGW_CasingSmokes
+PROBE t586 missile RSQGW_CasingSmokes
+STATE t587 RSQGW_ARifle Ready
+PROBE t587 missile RSQGW_CasingSmokes
+PROBE t587 missile RSQGW_CasingSmokes
+PROBE t587 missile RSQGW_CasingSmokes
+PROBE t587 missile RSQGW_CasingSmokes
+PROBE t588 missile RSQGW_CasingSmokes
+PROBE t588 missile RSQGW_CasingSmokes
+PROBE t588 missile RSQGW_CasingSmokes
+PROBE t588 missile RSQGW_CasingSmokes
+PROBE t589 missile RSQGW_CasingSmokes
+PROBE t589 missile RSQGW_CasingSmokes
+PROBE t589 missile RSQGW_CasingSmokes
+PROBE t590 missile RSQGW_CasingSmokes
+PROBE t590 missile RSQGW_CasingSmokes
+PROBE t590 missile RSQGW_CasingSmokes
+PROBE t591 missile RSQGW_CasingSmokes
+PROBE t591 missile RSQGW_CasingSmokes
+PROBE t591 missile RSQGW_CasingSmokes
+PROBE t592 missile RSQGW_CasingSmokes
+PROBE t592 missile RSQGW_CasingSmokes
+PROBE t592 missile RSQGW_CasingSmokes
+PROBE t593 missile RSQGW_CasingSmokes
+PROBE t593 missile RSQGW_CasingSmokes
+PROBE t593 missile RSQGW_CasingSmokes
+PROBE t594 missile RSQGW_CasingSmokes
+PROBE t594 missile RSQGW_CasingSmokes
+PROBE t595 missile RSQGW_CasingSmokes
+PROBE t595 missile RSQGW_CasingSmokes
+PROBE t596 missile RSQGW_CasingSmokes
+PROBE t596 missile RSQGW_CasingSmokes
+PROBE t597 missile RSQGW_CasingSmokes
+PROBE t598 missile RSQGW_CasingSmokes
+PROBE t599 missile RSQGW_CasingSmokes
+PROBE t600 missile RSQGW_CasingSmokes
+T_RIOT
+DMG t644 Cyberdemon by none 1000000
+RSQ switch t647: RSQGW_Riotgun -> RSQGW_Riotgun: 0 deselect frames, ready after 1 select frames
+PROBE t647 ready RSQGW_Riotgun off RSQ_Off_RSQGW_Beretta
+STATE t701 RSQGW_Riotgun Fire
+PROBE t701 round RSQ_PlayerRound
+DMG t701 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t701 round RSQ_PlayerRound
+DMG t701 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t701 round RSQ_PlayerRound
+DMG t701 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t701 round RSQ_PlayerRound
+DMG t701 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t701 round RSQ_PlayerRound
+DMG t701 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t701 round RSQ_PlayerRound
+DMG t701 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t701 round RSQ_PlayerRound
+DMG t701 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t712 missile RSQGW_ShotgunCasingSpawner
+PROBE t713 missile RSQGW_ShotgunCasing
+PROBE t713 missile RSQGW_CasingSmokes
+PROBE t714 missile RSQGW_CasingSmokes
+PROBE t715 missile RSQGW_CasingSmokes
+PROBE t716 missile RSQGW_CasingSmokes
+PROBE t717 missile RSQGW_CasingSmokes
+PROBE t718 missile RSQGW_CasingSmokes
+PROBE t719 missile RSQGW_CasingSmokes
+PROBE t720 missile RSQGW_CasingSmokes
+STATE t721 RSQGW_Riotgun Ready
+PROBE t721 missile RSQGW_CasingSmokes
+PROBE t722 missile RSQGW_CasingSmokes
+PROBE t723 missile RSQGW_CasingSmokes
+PROBE t724 missile RSQGW_CasingSmokes
+PROBE t725 missile RSQGW_CasingSmokes
+PROBE t726 missile RSQGW_CasingSmokes
+PROBE t727 missile RSQGW_CasingSmokes
+PROBE t728 missile RSQGW_CasingSmokes
+PROBE t729 missile RSQGW_CasingSmokes
+PROBE t730 missile RSQGW_CasingSmokes
+PROBE t731 missile RSQGW_CasingSmokes
+PROBE t732 missile RSQGW_CasingSmokes
+PROBE t733 missile RSQGW_CasingSmokes
+STATE t754 RSQGW_Riotgun Fire
+PROBE t754 round RSQ_PlayerRound
+DMG t754 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t754 round RSQ_PlayerRound
+DMG t754 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t754 round RSQ_PlayerRound
+DMG t754 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t754 round RSQ_PlayerRound
+DMG t754 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t754 round RSQ_PlayerRound
+DMG t754 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t754 round RSQ_PlayerRound
+DMG t754 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t754 round RSQ_PlayerRound
+DMG t754 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t765 missile RSQGW_ShotgunCasingSpawner
+PROBE t766 missile RSQGW_ShotgunCasing
+PROBE t766 missile RSQGW_CasingSmokes
+PROBE t767 missile RSQGW_CasingSmokes
+PROBE t768 missile RSQGW_CasingSmokes
+PROBE t769 missile RSQGW_CasingSmokes
+PROBE t770 missile RSQGW_CasingSmokes
+PROBE t771 missile RSQGW_CasingSmokes
+PROBE t772 missile RSQGW_CasingSmokes
+PROBE t773 missile RSQGW_CasingSmokes
+STATE t774 RSQGW_Riotgun Ready
+PROBE t774 missile RSQGW_CasingSmokes
+PROBE t775 missile RSQGW_CasingSmokes
+PROBE t776 missile RSQGW_CasingSmokes
+PROBE t777 missile RSQGW_CasingSmokes
+PROBE t778 missile RSQGW_CasingSmokes
+PROBE t779 missile RSQGW_CasingSmokes
+PROBE t780 missile RSQGW_CasingSmokes
+PROBE t781 missile RSQGW_CasingSmokes
+PROBE t782 missile RSQGW_CasingSmokes
+STATE t807 RSQGW_Riotgun Fire
+PROBE t807 round RSQ_PlayerRound
+PROBE t807 round RSQ_PlayerRound
+PROBE t807 round RSQ_PlayerRound
+PROBE t807 round RSQ_PlayerRound
+PROBE t807 round RSQ_PlayerRound
+PROBE t807 round RSQ_PlayerRound
+PROBE t807 round RSQ_PlayerRound
+PROBE t818 missile RSQGW_ShotgunCasingSpawner
+PROBE t819 missile RSQGW_ShotgunCasing
+PROBE t819 missile RSQGW_CasingSmokes
+PROBE t820 missile RSQGW_CasingSmokes
+PROBE t821 missile RSQGW_CasingSmokes
+PROBE t822 missile RSQGW_CasingSmokes
+PROBE t823 missile RSQGW_CasingSmokes
+PROBE t824 missile RSQGW_CasingSmokes
+PROBE t825 missile RSQGW_CasingSmokes
+PROBE t826 missile RSQGW_CasingSmokes
+STATE t827 RSQGW_Riotgun Ready
+PROBE t827 missile RSQGW_CasingSmokes
+PROBE t828 missile RSQGW_CasingSmokes
+PROBE t829 missile RSQGW_CasingSmokes
+PROBE t830 missile RSQGW_CasingSmokes
+PROBE t831 missile RSQGW_CasingSmokes
+PROBE t832 missile RSQGW_CasingSmokes
+PROBE t833 missile RSQGW_CasingSmokes
+PROBE t834 missile RSQGW_CasingSmokes
+PROBE t835 missile RSQGW_CasingSmokes
+PROBE t836 missile RSQGW_CasingSmokes
+PROBE t837 missile RSQGW_CasingSmokes
+PROBE t838 missile RSQGW_CasingSmokes
+PROBE t839 missile RSQGW_CasingSmokes
+STATE t861 RSQGW_Riotgun Fire
+PROBE t861 round RSQ_PlayerRound
+PROBE t861 round RSQ_PlayerRound
+PROBE t861 round RSQ_PlayerRound
+PROBE t861 round RSQ_PlayerRound
+PROBE t861 round RSQ_PlayerRound
+PROBE t861 round RSQ_PlayerRound
+PROBE t861 round RSQ_PlayerRound
+PROBE t872 missile RSQGW_ShotgunCasingSpawner
+PROBE t873 missile RSQGW_ShotgunCasing
+PROBE t873 missile RSQGW_CasingSmokes
+PROBE t874 missile RSQGW_CasingSmokes
+PROBE t875 missile RSQGW_CasingSmokes
+PROBE t876 missile RSQGW_CasingSmokes
+PROBE t877 missile RSQGW_CasingSmokes
+PROBE t878 missile RSQGW_CasingSmokes
+PROBE t879 missile RSQGW_CasingSmokes
+PROBE t880 missile RSQGW_CasingSmokes
+STATE t881 RSQGW_Riotgun Ready
+PROBE t881 missile RSQGW_CasingSmokes
+PROBE t882 missile RSQGW_CasingSmokes
+PROBE t883 missile RSQGW_CasingSmokes
+PROBE t884 missile RSQGW_CasingSmokes
+PROBE t885 missile RSQGW_CasingSmokes
+PROBE t886 missile RSQGW_CasingSmokes
+PROBE t887 missile RSQGW_CasingSmokes
+PROBE t888 missile RSQGW_CasingSmokes
+PROBE t889 missile RSQGW_CasingSmokes
+PROBE t890 missile RSQGW_CasingSmokes
+PROBE t891 missile RSQGW_CasingSmokes
+PROBE t892 missile RSQGW_CasingSmokes
+PROBE t893 missile RSQGW_CasingSmokes
+T_DBSG
+DMG t944 Cyberdemon by none 1000000
+RSQ switch t946: RSQGW_DoubleSG -> RSQGW_DoubleSG: 0 deselect frames, ready after 1 select frames
+PROBE t946 ready RSQGW_DoubleSG off RSQ_Off_RSQGW_Beretta
+STATE t1000 RSQGW_DoubleSG Fire
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1000 round RSQ_PlayerRound
+DMG t1000 Cyberdemon by RSQGW_BulletPuffed 6
+STATE t1006 RSQGW_DoubleSG Ready
+STATE t1044 RSQGW_DoubleSG Fire
+PROBE t1044 round RSQ_PlayerRound
+PROBE t1044 round RSQ_PlayerRound
+PROBE t1044 round RSQ_PlayerRound
+PROBE t1044 round RSQ_PlayerRound
+PROBE t1044 round RSQ_PlayerRound
+PROBE t1044 round RSQ_PlayerRound
+PROBE t1044 round RSQ_PlayerRound
+PROBE t1044 round RSQ_PlayerRound
+PROBE t1044 round RSQ_PlayerRound
+STATE t1050 RSQGW_DoubleSG Ready
+STATE t1106 RSQGW_DoubleSG StockReload
+PROBE t1112 missile RSQGW_SSGCasingSpawner
+PROBE t1112 missile RSQGW_SSGCasingSpawner
+PROBE t1114 missile RSQGW_ShotgunCasing
+PROBE t1114 missile RSQGW_ShotgunCasing
+PROBE t1114 missile RSQGW_CasingSmokes
+PROBE t1114 missile RSQGW_CasingSmokes
+PROBE t1115 missile RSQGW_CasingSmokes
+PROBE t1115 missile RSQGW_CasingSmokes
+PROBE t1116 missile RSQGW_CasingSmokes
+PROBE t1116 missile RSQGW_CasingSmokes
+PROBE t1117 missile RSQGW_CasingSmokes
+PROBE t1117 missile RSQGW_CasingSmokes
+PROBE t1118 missile RSQGW_CasingSmokes
+PROBE t1118 missile RSQGW_CasingSmokes
+PROBE t1119 missile RSQGW_CasingSmokes
+PROBE t1119 missile RSQGW_CasingSmokes
+PROBE t1120 missile RSQGW_CasingSmokes
+PROBE t1120 missile RSQGW_CasingSmokes
+PROBE t1121 missile RSQGW_CasingSmokes
+PROBE t1121 missile RSQGW_CasingSmokes
+PROBE t1122 missile RSQGW_CasingSmokes
+PROBE t1122 missile RSQGW_CasingSmokes
+PROBE t1123 missile RSQGW_CasingSmokes
+PROBE t1123 missile RSQGW_CasingSmokes
+PROBE t1124 missile RSQGW_CasingSmokes
+PROBE t1124 missile RSQGW_CasingSmokes
+PROBE t1125 missile RSQGW_CasingSmokes
+PROBE t1125 missile RSQGW_CasingSmokes
+PROBE t1126 missile RSQGW_CasingSmokes
+PROBE t1126 missile RSQGW_CasingSmokes
+PROBE t1127 missile RSQGW_CasingSmokes
+PROBE t1127 missile RSQGW_CasingSmokes
+PROBE t1128 missile RSQGW_CasingSmokes
+PROBE t1128 missile RSQGW_CasingSmokes
+PROBE t1129 missile RSQGW_CasingSmokes
+PROBE t1129 missile RSQGW_CasingSmokes
+STATE t1135 RSQGW_DoubleSG Ready
+STATE t1169 RSQGW_DoubleSG AltFire
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 18
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 6
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 12
+PROBE t1169 round RSQ_PlayerRound
+DMG t1169 Cyberdemon by RSQGW_BulletPuffed 12
+STATE t1177 RSQGW_DoubleSG Ready
+T_MINIGUN
+DMG t1242 Cyberdemon by none 1000000
+RSQ switch t1246: RSQGW_Minigun -> RSQGW_Minigun: 0 deselect frames, ready after 1 select frames
+PROBE t1246 ready RSQGW_Minigun off RSQ_Off_RSQGW_Beretta
+STATE t1300 RSQGW_Minigun Fire
+STATE t1308 RSQGW_Minigun Hold
+PROBE t1308 round RSQ_PlayerRound
+DMG t1308 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1308 missile RSQGW_ChaingunCasingSpawner
+PROBE t1309 missile RSQGW_ChaingunCasing
+PROBE t1309 missile RSQGW_CasingSmokes
+PROBE t1310 round RSQ_PlayerRound
+DMG t1310 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1310 missile RSQGW_ChaingunCasingSpawner
+PROBE t1310 missile RSQGW_CasingSmokes
+PROBE t1311 missile RSQGW_CasingSmokes
+PROBE t1311 missile RSQGW_ChaingunCasing
+PROBE t1311 missile RSQGW_CasingSmokes
+PROBE t1312 round RSQ_PlayerRound
+DMG t1312 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1312 missile RSQGW_ChaingunCasingSpawner
+PROBE t1312 missile RSQGW_CasingSmokes
+PROBE t1312 missile RSQGW_CasingSmokes
+PROBE t1313 missile RSQGW_CasingSmokes
+PROBE t1313 missile RSQGW_CasingSmokes
+PROBE t1313 missile RSQGW_ChaingunCasing
+PROBE t1313 missile RSQGW_CasingSmokes
+PROBE t1314 round RSQ_PlayerRound
+DMG t1314 Cyberdemon by RSQGW_BulletPuffed 10
+PROBE t1314 missile RSQGW_ChaingunCasingSpawner
+PROBE t1314 missile RSQGW_CasingSmokes
+PROBE t1314 missile RSQGW_CasingSmokes
+PROBE t1315 missile RSQGW_CasingSmokes
+PROBE t1315 missile RSQGW_CasingSmokes
+PROBE t1315 missile RSQGW_ChaingunCasing
+PROBE t1315 missile RSQGW_CasingSmokes
+PROBE t1316 round RSQ_PlayerRound
+DMG t1316 Cyberdemon by RSQGW_BulletPuffed 10
+PROBE t1316 missile RSQGW_ChaingunCasingSpawner
+PROBE t1316 missile RSQGW_CasingSmokes
+PROBE t1316 missile RSQGW_CasingSmokes
+PROBE t1317 missile RSQGW_CasingSmokes
+PROBE t1317 missile RSQGW_CasingSmokes
+PROBE t1317 missile RSQGW_ChaingunCasing
+PROBE t1317 missile RSQGW_CasingSmokes
+PROBE t1318 round RSQ_PlayerRound
+DMG t1318 Cyberdemon by RSQGW_BulletPuffed 10
+PROBE t1318 missile RSQGW_ChaingunCasingSpawner
+PROBE t1318 missile RSQGW_CasingSmokes
+PROBE t1318 missile RSQGW_CasingSmokes
+PROBE t1319 missile RSQGW_CasingSmokes
+PROBE t1319 missile RSQGW_CasingSmokes
+PROBE t1319 missile RSQGW_ChaingunCasing
+PROBE t1319 missile RSQGW_CasingSmokes
+PROBE t1320 round RSQ_PlayerRound
+DMG t1320 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1320 missile RSQGW_ChaingunCasingSpawner
+PROBE t1320 missile RSQGW_CasingSmokes
+PROBE t1320 missile RSQGW_CasingSmokes
+PROBE t1321 missile RSQGW_CasingSmokes
+PROBE t1321 missile RSQGW_CasingSmokes
+PROBE t1321 missile RSQGW_ChaingunCasing
+PROBE t1321 missile RSQGW_CasingSmokes
+PROBE t1322 round RSQ_PlayerRound
+DMG t1322 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1322 missile RSQGW_ChaingunCasingSpawner
+PROBE t1322 missile RSQGW_CasingSmokes
+PROBE t1322 missile RSQGW_CasingSmokes
+PROBE t1322 missile RSQGW_CasingSmokes
+PROBE t1323 missile RSQGW_CasingSmokes
+PROBE t1323 missile RSQGW_CasingSmokes
+PROBE t1323 missile RSQGW_ChaingunCasing
+PROBE t1323 missile RSQGW_CasingSmokes
+PROBE t1324 round RSQ_PlayerRound
+DMG t1324 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1324 missile RSQGW_ChaingunCasingSpawner
+PROBE t1324 missile RSQGW_CasingSmokes
+PROBE t1324 missile RSQGW_CasingSmokes
+PROBE t1325 missile RSQGW_CasingSmokes
+PROBE t1325 missile RSQGW_CasingSmokes
+PROBE t1325 missile RSQGW_ChaingunCasing
+PROBE t1325 missile RSQGW_CasingSmokes
+PROBE t1326 round RSQ_PlayerRound
+DMG t1326 Cyberdemon by RSQGW_BulletPuffed 10
+PROBE t1326 missile RSQGW_ChaingunCasingSpawner
+PROBE t1326 missile RSQGW_CasingSmokes
+PROBE t1326 missile RSQGW_CasingSmokes
+PROBE t1326 missile RSQGW_CasingSmokes
+PROBE t1327 missile RSQGW_CasingSmokes
+PROBE t1327 missile RSQGW_CasingSmokes
+PROBE t1327 missile RSQGW_ChaingunCasing
+PROBE t1327 missile RSQGW_CasingSmokes
+PROBE t1328 round RSQ_PlayerRound
+DMG t1328 Cyberdemon by RSQGW_BulletPuffed 10
+PROBE t1328 missile RSQGW_ChaingunCasingSpawner
+PROBE t1328 missile RSQGW_CasingSmokes
+PROBE t1328 missile RSQGW_CasingSmokes
+PROBE t1329 missile RSQGW_CasingSmokes
+PROBE t1329 missile RSQGW_CasingSmokes
+PROBE t1329 missile RSQGW_ChaingunCasing
+PROBE t1329 missile RSQGW_CasingSmokes
+PROBE t1330 round RSQ_PlayerRound
+DMG t1330 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1330 missile RSQGW_ChaingunCasingSpawner
+PROBE t1330 missile RSQGW_CasingSmokes
+PROBE t1330 missile RSQGW_CasingSmokes
+PROBE t1331 missile RSQGW_CasingSmokes
+PROBE t1331 missile RSQGW_CasingSmokes
+PROBE t1331 missile RSQGW_ChaingunCasing
+PROBE t1331 missile RSQGW_CasingSmokes
+PROBE t1332 round RSQ_PlayerRound
+DMG t1332 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1332 missile RSQGW_ChaingunCasingSpawner
+PROBE t1332 missile RSQGW_CasingSmokes
+PROBE t1332 missile RSQGW_CasingSmokes
+PROBE t1333 missile RSQGW_CasingSmokes
+PROBE t1333 missile RSQGW_CasingSmokes
+PROBE t1333 missile RSQGW_ChaingunCasing
+PROBE t1333 missile RSQGW_CasingSmokes
+PROBE t1334 round RSQ_PlayerRound
+DMG t1334 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1334 missile RSQGW_ChaingunCasingSpawner
+PROBE t1334 missile RSQGW_CasingSmokes
+PROBE t1334 missile RSQGW_CasingSmokes
+PROBE t1335 missile RSQGW_CasingSmokes
+PROBE t1335 missile RSQGW_CasingSmokes
+PROBE t1335 missile RSQGW_ChaingunCasing
+PROBE t1335 missile RSQGW_CasingSmokes
+PROBE t1336 round RSQ_PlayerRound
+DMG t1336 Cyberdemon by RSQGW_BulletPuffed 10
+PROBE t1336 missile RSQGW_ChaingunCasingSpawner
+PROBE t1336 missile RSQGW_CasingSmokes
+PROBE t1336 missile RSQGW_CasingSmokes
+PROBE t1337 missile RSQGW_CasingSmokes
+PROBE t1337 missile RSQGW_CasingSmokes
+PROBE t1337 missile RSQGW_ChaingunCasing
+PROBE t1337 missile RSQGW_CasingSmokes
+PROBE t1338 round RSQ_PlayerRound
+DMG t1338 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1338 missile RSQGW_ChaingunCasingSpawner
+PROBE t1338 missile RSQGW_CasingSmokes
+PROBE t1338 missile RSQGW_CasingSmokes
+PROBE t1338 missile RSQGW_CasingSmokes
+PROBE t1339 missile RSQGW_CasingSmokes
+PROBE t1339 missile RSQGW_CasingSmokes
+PROBE t1339 missile RSQGW_ChaingunCasing
+PROBE t1339 missile RSQGW_CasingSmokes
+PROBE t1340 round RSQ_PlayerRound
+DMG t1340 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1340 missile RSQGW_ChaingunCasingSpawner
+PROBE t1340 missile RSQGW_CasingSmokes
+PROBE t1340 missile RSQGW_CasingSmokes
+PROBE t1340 missile RSQGW_CasingSmokes
+PROBE t1341 missile RSQGW_CasingSmokes
+PROBE t1341 missile RSQGW_CasingSmokes
+PROBE t1341 missile RSQGW_ChaingunCasing
+PROBE t1341 missile RSQGW_CasingSmokes
+PROBE t1342 round RSQ_PlayerRound
+DMG t1342 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1342 missile RSQGW_ChaingunCasingSpawner
+PROBE t1342 missile RSQGW_CasingSmokes
+PROBE t1342 missile RSQGW_CasingSmokes
+PROBE t1343 missile RSQGW_CasingSmokes
+PROBE t1343 missile RSQGW_CasingSmokes
+PROBE t1343 missile RSQGW_ChaingunCasing
+PROBE t1343 missile RSQGW_CasingSmokes
+PROBE t1344 round RSQ_PlayerRound
+DMG t1344 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1344 missile RSQGW_ChaingunCasingSpawner
+PROBE t1344 missile RSQGW_CasingSmokes
+PROBE t1344 missile RSQGW_CasingSmokes
+PROBE t1345 missile RSQGW_CasingSmokes
+PROBE t1345 missile RSQGW_CasingSmokes
+PROBE t1345 missile RSQGW_ChaingunCasing
+PROBE t1345 missile RSQGW_CasingSmokes
+PROBE t1346 round RSQ_PlayerRound
+DMG t1346 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1346 missile RSQGW_ChaingunCasingSpawner
+PROBE t1346 missile RSQGW_CasingSmokes
+PROBE t1346 missile RSQGW_CasingSmokes
+PROBE t1346 missile RSQGW_CasingSmokes
+PROBE t1347 missile RSQGW_CasingSmokes
+PROBE t1347 missile RSQGW_CasingSmokes
+PROBE t1347 missile RSQGW_ChaingunCasing
+PROBE t1347 missile RSQGW_CasingSmokes
+PROBE t1348 round RSQ_PlayerRound
+DMG t1348 Cyberdemon by RSQGW_BulletPuffed 10
+PROBE t1348 missile RSQGW_ChaingunCasingSpawner
+PROBE t1348 missile RSQGW_CasingSmokes
+PROBE t1348 missile RSQGW_CasingSmokes
+PROBE t1349 missile RSQGW_CasingSmokes
+PROBE t1349 missile RSQGW_CasingSmokes
+PROBE t1349 missile RSQGW_ChaingunCasing
+PROBE t1349 missile RSQGW_CasingSmokes
+PROBE t1350 round RSQ_PlayerRound
+DMG t1350 Cyberdemon by RSQGW_BulletPuffed 10
+PROBE t1350 missile RSQGW_ChaingunCasingSpawner
+PROBE t1350 missile RSQGW_CasingSmokes
+PROBE t1350 missile RSQGW_CasingSmokes
+PROBE t1351 missile RSQGW_CasingSmokes
+PROBE t1351 missile RSQGW_CasingSmokes
+PROBE t1351 missile RSQGW_ChaingunCasing
+PROBE t1351 missile RSQGW_CasingSmokes
+PROBE t1352 round RSQ_PlayerRound
+DMG t1352 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1352 missile RSQGW_ChaingunCasingSpawner
+PROBE t1352 missile RSQGW_CasingSmokes
+PROBE t1352 missile RSQGW_CasingSmokes
+PROBE t1353 missile RSQGW_CasingSmokes
+PROBE t1353 missile RSQGW_CasingSmokes
+PROBE t1353 missile RSQGW_ChaingunCasing
+PROBE t1353 missile RSQGW_CasingSmokes
+PROBE t1354 round RSQ_PlayerRound
+DMG t1354 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1354 missile RSQGW_ChaingunCasingSpawner
+PROBE t1354 missile RSQGW_CasingSmokes
+PROBE t1354 missile RSQGW_CasingSmokes
+PROBE t1355 missile RSQGW_CasingSmokes
+PROBE t1355 missile RSQGW_CasingSmokes
+PROBE t1355 missile RSQGW_ChaingunCasing
+PROBE t1355 missile RSQGW_CasingSmokes
+PROBE t1356 round RSQ_PlayerRound
+DMG t1356 Cyberdemon by RSQGW_BulletPuffed 5
+PROBE t1356 missile RSQGW_ChaingunCasingSpawner
+PROBE t1356 missile RSQGW_CasingSmokes
+PROBE t1356 missile RSQGW_CasingSmokes
+PROBE t1357 missile RSQGW_CasingSmokes
+PROBE t1357 missile RSQGW_CasingSmokes
+PROBE t1357 missile RSQGW_ChaingunCasing
+PROBE t1357 missile RSQGW_CasingSmokes
+PROBE t1358 round RSQ_PlayerRound
+DMG t1358 Cyberdemon by RSQGW_BulletPuffed 15
+PROBE t1358 missile RSQGW_ChaingunCasingSpawner
+PROBE t1358 missile RSQGW_CasingSmokes
+PROBE t1358 missile RSQGW_CasingSmokes
+PROBE t1359 missile RSQGW_CasingSmokes
+PROBE t1359 missile RSQGW_CasingSmokes
+PROBE t1359 missile RSQGW_ChaingunCasing
+PROBE t1359 missile RSQGW_CasingSmokes
+PROBE t1360 missile RSQGW_CasingSmokes
+PROBE t1360 missile RSQGW_CasingSmokes
+PROBE t1361 missile RSQGW_CasingSmokes
+PROBE t1361 missile RSQGW_CasingSmokes
+PROBE t1362 missile RSQGW_CasingSmokes
+PROBE t1363 missile RSQGW_CasingSmokes
+STATE t1372 RSQGW_Minigun Fire
+STATE t1398 RSQGW_Minigun Ready
+T_ROCKET
+DMG t1430 Cyberdemon by none 1000000
+RSQ switch t1433: RSQGW_Rlauncher -> RSQGW_Rlauncher: 0 deselect frames, ready after 1 select frames
+PROBE t1433 ready RSQGW_Rlauncher off RSQ_Off_RSQGW_Beretta
+STATE t1487 RSQGW_Rlauncher Fire
+PROBE t1487 missile RSQGW_Rocket2
+DMG t1488 Cyberdemon by RSQGW_Rocket2 40
+RSQGW blast t1488: RSQGW_Rocket2 at 98 units: both hands buzz 0.52 for 8 tics, no quake
+PROBE t1495 missile RSQGW_Rocket2
+DMG t1496 Cyberdemon by RSQGW_Rocket2 160
+RSQGW blast t1496: RSQGW_Rocket2 at 98 units: both hands buzz 0.52 for 8 tics, no quake
+PROBE t1503 missile RSQGW_Rocket2
+DMG t1504 Cyberdemon by RSQGW_Rocket2 20
+RSQGW blast t1504: RSQGW_Rocket2 at 98 units: both hands buzz 0.52 for 8 tics, no quake
+PROBE t1511 missile RSQGW_Rocket2
+DMG t1512 Cyberdemon by RSQGW_Rocket2 80
+RSQGW blast t1512: RSQGW_Rocket2 at 98 units: both hands buzz 0.52 for 8 tics, no quake
+PROBE t1519 missile RSQGW_Rocket2
+DMG t1519 Cyberdemon by RSQGW_Rocket2 80
+RSQGW blast t1519: RSQGW_Rocket2 at 65 units: both hands buzz 0.57 for 8 tics, no quake
+rsr t1527: reload refused (gun 9, off hand RSQ_Off_RSQGW_Beretta)
+STATE t1527 RSQGW_Rlauncher StockReload
+STATE t1555 RSQGW_Rlauncher Ready
+T_PLASMA
+DMG t1619 Cyberdemon by none 1000000
+RSQ switch t1621: RSQGW_PlasRifle -> RSQGW_PlasRifle: 0 deselect frames, ready after 1 select frames
+PROBE t1621 ready RSQGW_PlasRifle off RSQ_Off_RSQGW_Beretta
+STATE t1675 RSQGW_PlasRifle Fire
+PROBE t1675 missile RSQGW_Plasma
+DMG t1676 Cyberdemon by RSQGW_Plasma 48
+PROBE t1679 missile RSQGW_Plasma
+DMG t1680 Cyberdemon by RSQGW_Plasma 24
+PROBE t1683 missile RSQGW_Plasma
+DMG t1684 Cyberdemon by RSQGW_Plasma 16
+PROBE t1687 missile RSQGW_Plasma
+DMG t1688 Cyberdemon by RSQGW_Plasma 40
+PROBE t1691 missile RSQGW_Plasma
+DMG t1692 Cyberdemon by RSQGW_Plasma 40
+PROBE t1695 missile RSQGW_Plasma
+DMG t1696 Cyberdemon by RSQGW_Plasma 40
+PROBE t1699 missile RSQGW_Plasma
+DMG t1700 Cyberdemon by RSQGW_Plasma 48
+PROBE t1703 missile RSQGW_Plasma
+DMG t1704 Cyberdemon by RSQGW_Plasma 24
+STATE t1708 RSQGW_PlasRifle ? (sprite 951 frame D tics 1)
+STATE t1724 RSQGW_PlasRifle Ready
+T_SAW
+DMG t1776 Cyberdemon by none 1000000
+RSQ switch t1779: RSQGW_ModChainsaw -> RSQGW_ModChainsaw: 0 deselect frames, ready after 1 select frames
+PROBE t1779 ready RSQGW_ModChainsaw off RSQ_Off_RSQGW_Beretta
+DMG t1833 Cyberdemon by RSQGW_SawCut 4
+STATE t1833 RSQGW_ModChainsaw RSVR_SawRun
+DMG t1835 Cyberdemon by RSQGW_SawCut 3
+DMG t1837 Cyberdemon by RSQGW_SawCut 1
+DMG t1839 Cyberdemon by RSQGW_SawCut 4
+DMG t1841 Cyberdemon by RSQGW_SawCut 15
+DMG t1843 Cyberdemon by RSQGW_SawCut 6
+DMG t1845 Cyberdemon by RSQGW_SawCut 14
+DMG t1847 Cyberdemon by RSQGW_SawCut 5
+DMG t1849 Cyberdemon by RSQGW_SawCut 3
+DMG t1851 Cyberdemon by RSQGW_SawCut 6
+DMG t1853 Cyberdemon by RSQGW_SawCut 5
+DMG t1855 Cyberdemon by RSQGW_SawCut 10
+DMG t1857 Cyberdemon by RSQGW_SawCut 9
+DMG t1859 Cyberdemon by RSQGW_SawCut 3
+DMG t1861 Cyberdemon by RSQGW_SawCut 10
+DMG t1863 Cyberdemon by RSQGW_SawCut 15
+DMG t1865 Cyberdemon by RSQGW_SawCut 13
+DMG t1867 Cyberdemon by RSQGW_SawCut 1
+DMG t1869 Cyberdemon by RSQGW_SawCut 3
+DMG t1871 Cyberdemon by RSQGW_SawCut 1
+DMG t1873 Cyberdemon by RSQGW_SawCut 2
+DMG t1875 Cyberdemon by RSQGW_SawCut 1
+DMG t1877 Cyberdemon by RSQGW_SawCut 12
+STATE t1941 RSQGW_ModChainsaw Ready
+T_END

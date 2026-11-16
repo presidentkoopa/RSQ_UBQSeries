@@ -1,0 +1,123 @@
+QZSND 0 weapons/pistol/equip ch 1 vol 1.00 src RSQGW_Player
+PROBE t0 ready RSQGW_Beretta off none
+STATE t0 RSQGW_Beretta Select
+RSQGW start t14: Start With Two Pistols: the second Beretta into the off hand
+STATE t14 RSQGW_Beretta Ready
+QZSND 15 weapons/pistol/equip ch 5 vol 1.00 src RSQGW_Player
+T_RIFLE
+QZSND 40 weapons/rifle/up ch 1 vol 1.00 src RSQGW_Player
+RSQ switch t40: RSQGW_ARifle -> RSQGW_ARifle: 0 deselect frames, ready after 1 select frames
+PROBE t40 ready RSQGW_ARifle off RSQ_Off_RSQGW_Beretta
+AMMO t92 main RSQGW_ARifle RSQGW_RifleAmmo=30 RSQGW_RifleMag=30
+AMMO t92 off RSQ_Off_RSQGW_Beretta RSQGW_PistolAmmo=50 RSQGW_PistolMagOff=11
+GCMODE t94 RSQGW_ARifle mode "AUTO" signature "8 0 RSQGW_ARifle 30 30 AUTO"
+QZSND 96 weapons/rifle/click ch 0 vol 1.00 src RSQGW_Player
+RSQGW rifle t96: 3-round burst, its click at pitch 1.45
+STATE t96 RSQGW_ARifle AltFire
+STATE t99 RSQGW_ARifle Ready
+GCMODE t119 RSQGW_ARifle mode "BURST" signature "8 0 RSQGW_ARifle 30 30 BURST"
+QZSND 121 weapons/rifle/click ch 0 vol 1.00 src RSQGW_Player
+RSQGW rifle t121: full auto, its click at pitch 0.75
+STATE t121 RSQGW_ARifle AltFire
+STATE t124 RSQGW_ARifle Ready
+GCMODE t144 RSQGW_ARifle mode "AUTO" signature "8 0 RSQGW_ARifle 30 30 AUTO"
+T_RAIL
+QZSND 147 weapons/plsweps/upsnd ch 1 vol 1.00 src RSQGW_Player
+RSQ switch t147: RSQGW_PlasRifle -> RSQGW_PlasRifle: 0 deselect frames, ready after 1 select frames
+PROBE t147 ready RSQGW_PlasRifle off RSQ_Off_RSQGW_Beretta
+QZSND 200 weapons/prifle/beep ch 0 vol 1.00 src RSQGW_Player
+STATE t200 RSQGW_PlasRifle AltFire
+QZSND 208 weapons/prifle/chrge ch 0 vol 1.00 src RSQGW_Player
+QZSND 217 weapons/prifle/altfire ch 0 vol 1.00 src RSQGW_Player
+RAIL t217 dmg 291 by RSQGW_Player colour1 000000 start 0.0 cm from the controller (0.0 cm forward along the body's facing)
+RAIL t217 dmg 0 by RSQ_MuzzleRail colour1 0f59ef start 75.6 cm from the controller (70.9 cm forward along the body's facing)
+STATE t221 RSQGW_PlasRifle ? (sprite 951 frame D tics 1)
+STATE t237 RSQGW_PlasRifle Ready
+T_ROCKET
+QZSND 263 weapons/equprock ch 1 vol 1.00 src RSQGW_Player
+RSQ switch t263: RSQGW_Rlauncher -> RSQGW_Rlauncher: 0 deselect frames, ready after 1 select frames
+PROBE t263 ready RSQGW_Rlauncher off RSQ_Off_RSQGW_Beretta
+QZSND 321 weapons/rocket/fire ch 1 vol 1.00 src RSQGW_Player
+STATE t321 RSQGW_Rlauncher Fire
+PROBE t321 missile RSQGW_Rocket2
+DMG t324 DoomImp by RSQGW_Rocket2 60
+QZSND 324 barrel/explode ch 0 vol 1.00 src RSQGW_Rocket2
+RSQGW blast t324: RSQGW_Rocket2 at 164 units: both hands buzz 0.42 for 8 tics, no quake
+QZSND 326 weapons/rocket/cycle ch 0 vol 1.00 src RSQGW_Player
+STATE t329 RSQGW_Rlauncher Ready
+QZSND 331 rocket/distexp ch 6 vol 0.75 src RSQGW_Rocket2
+DMG t383 DoomImp by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 DoomImp by none 1000000
+DMG t383 DoomImp by none 1000000
+DMG t383 DoomImp by none 1000000
+DMG t383 Zombieman by none 1000000
+DMG t383 DoomImp by none 1000000
+DMG t383 DoomImp by none 1000000
+DMG t383 DoomImp by none 1000000
+T_RECOIL
+TILT t387 psp x 0.00 y 32.00 (yaw 0.00 deg, pitch 0.00 deg) view pitch 0.00 angle 90.00
+QZSND 389 weapons/pistol/equip ch 1 vol 1.00 src RSQGW_Player
+RSQ switch t389: RSQGW_Beretta -> RSQGW_Beretta: 0 deselect frames, ready after 1 select frames
+PROBE t389 ready RSQGW_Beretta off RSQ_Off_RSQGW_Beretta
+QZSND 438 weapons/pistol/fire ch 1 vol 1.00 src RSQGW_Player
+STATE t438 RSQGW_Beretta Fire
+TILT t438 psp x 1.20 y 22.09 (yaw 0.30 deg, pitch 2.48 deg) view pitch 0.00 angle 90.00
+PROBE t438 round RSQ_PlayerRound
+PROBE t438 missile RSQGW_9mmCasingSpawner
+TILT t439 psp x 1.20 y 18.66 (yaw 0.30 deg, pitch 3.33 deg) view pitch 0.00 angle 90.00
+PROBE t439 missile RSQGW_9mmCasing
+PROBE t439 missile RSQGW_CasingSmokes
+TILT t440 psp x 1.20 y 15.23 (yaw 0.30 deg, pitch 4.19 deg) view pitch 0.00 angle 90.00
+PROBE t440 missile RSQGW_CasingSmokes
+TILT t441 psp x 1.20 y 11.81 (yaw 0.30 deg, pitch 5.05 deg) view pitch 0.00 angle 90.00
+PROBE t441 missile RSQGW_CasingSmokes
+TILT t442 psp x 1.20 y 8.38 (yaw 0.30 deg, pitch 5.91 deg) view pitch 0.00 angle 90.00
+PROBE t442 missile RSQGW_CasingSmokes
+TILT t443 psp x 1.20 y 4.95 (yaw 0.30 deg, pitch 6.76 deg) view pitch 0.00 angle 90.00
+PROBE t443 missile RSQGW_CasingSmokes
+TILT t444 psp x 1.20 y 1.52 (yaw 0.30 deg, pitch 7.62 deg) view pitch 0.00 angle 90.00
+PROBE t444 missile RSQGW_CasingSmokes
+STATE t445 RSQGW_Beretta Ready
+PROBE t445 missile RSQGW_CasingSmokes
+PROBE t446 missile RSQGW_CasingSmokes
+PROBE t447 missile RSQGW_CasingSmokes
+PROBE t448 missile RSQGW_CasingSmokes
+PROBE t449 missile RSQGW_CasingSmokes
+PROBE t450 missile RSQGW_CasingSmokes
+TILT t451 psp x 0.00 y 2.89 (yaw 0.00 deg, pitch 7.28 deg) view pitch 0.00 angle 90.00
+QZSND 451 weapons/casing ch 2 vol 1.00 src RSQGW_9mmCasing
+PROBE t451 missile RSQGW_CasingSmokes
+TILT t452 psp x 0.00 y 4.26 (yaw 0.00 deg, pitch 6.93 deg) view pitch 0.00 angle 90.00
+PROBE t452 missile RSQGW_CasingSmokes
+TILT t453 psp x 0.00 y 5.63 (yaw 0.00 deg, pitch 6.59 deg) view pitch 0.00 angle 90.00
+PROBE t453 missile RSQGW_CasingSmokes
+TILT t454 psp x 0.00 y 7.01 (yaw 0.00 deg, pitch 6.25 deg) view pitch 0.00 angle 90.00
+PROBE t454 missile RSQGW_CasingSmokes
+TILT t455 psp x 0.00 y 8.38 (yaw 0.00 deg, pitch 5.91 deg) view pitch 0.00 angle 90.00
+PROBE t455 missile RSQGW_CasingSmokes
+TILT t456 psp x 0.00 y 9.75 (yaw 0.00 deg, pitch 5.56 deg) view pitch 0.00 angle 90.00
+TILT t457 psp x 0.00 y 11.12 (yaw 0.00 deg, pitch 5.22 deg) view pitch 0.00 angle 90.00
+TILT t458 psp x 0.00 y 12.49 (yaw 0.00 deg, pitch 4.88 deg) view pitch 0.00 angle 90.00
+TILT t459 psp x 0.00 y 13.86 (yaw 0.00 deg, pitch 4.53 deg) view pitch 0.00 angle 90.00
+TILT t460 psp x 0.00 y 15.23 (yaw 0.00 deg, pitch 4.19 deg) view pitch 0.00 angle 90.00
+TILT t461 psp x 0.00 y 16.61 (yaw 0.00 deg, pitch 3.85 deg) view pitch 0.00 angle 90.00
+TILT t462 psp x 0.00 y 17.98 (yaw 0.00 deg, pitch 3.51 deg) view pitch 0.00 angle 90.00
+TILT t463 psp x 0.00 y 19.35 (yaw 0.00 deg, pitch 3.16 deg) view pitch 0.00 angle 90.00
+TILT t464 psp x 0.00 y 20.72 (yaw 0.00 deg, pitch 2.82 deg) view pitch 0.00 angle 90.00
+TILT t465 psp x 0.00 y 22.09 (yaw 0.00 deg, pitch 2.48 deg) view pitch 0.00 angle 90.00
+TILT t466 psp x 0.00 y 23.46 (yaw 0.00 deg, pitch 2.13 deg) view pitch 0.00 angle 90.00
+TILT t467 psp x 0.00 y 24.83 (yaw 0.00 deg, pitch 1.79 deg) view pitch 0.00 angle 90.00
+TILT t468 psp x 0.00 y 26.21 (yaw 0.00 deg, pitch 1.45 deg) view pitch 0.00 angle 90.00
+TILT t469 psp x 0.00 y 27.58 (yaw 0.00 deg, pitch 1.11 deg) view pitch 0.00 angle 90.00
+T_END
