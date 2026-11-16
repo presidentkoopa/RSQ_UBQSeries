@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/whip_title.gif" alt="RSQ Whip"></p>
+
 # RSQ Whip
 ### Doom Arcade VR · a real bullwhip: crack it, snag a beam and swing, rope a monster and yank it in
 
@@ -9,7 +11,7 @@ a pendulum. Close your off hand on the thong, whirl it, let go, and it ropes a m
 
 *[GIF to come: a wind-up, the crack, an imp knocked into its pain frame]*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -24,7 +26,7 @@ a pendulum. Close your off hand on the thong, whirl it, let go, and it ropes a m
 - **Your hand on the handle.** By default you see Brutal Doom VR's FBX hand gripping the handle, in your Hand Skin Tone.
 - **It hangs on your hip** while you own it and it is not in your hand.
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## How to play
 
@@ -118,7 +120,7 @@ Gone on 2026-11-10: the four binds **Whip (Main)**, **Whip (Off)**, **Grab Whip 
 whip in the FBX hand, the handle up for the wind-up, the thong out after the release, left-handed, Whip In: Off Hand,
 the full order with Gun Bonsai VR, and Hand Skin Tone 12. Simulated headset, not a capture from a real headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## The crack
 
@@ -155,7 +157,7 @@ monster that fired it. Only monsters' missiles, never yours.
 
 *[GIF to come: an imp's fireball cracked out of the air]*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Marking a target
 
@@ -175,7 +177,7 @@ Hold the whip hand's trigger and point the whip hand.
 
 *[GIF to come: the diamond on a far switch, a crack, the switch flipping]*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Wrapped: the yank and the flail
 
@@ -199,7 +201,7 @@ A marked crack (or a thrown lasso) that lands on a monster wraps round it. The t
 *[GIF to come: an imp lassoed and swung into a zombieman]*
 *[GIF to come: a yank on a baron pulling the player in]*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## The lasso
 
@@ -217,7 +219,7 @@ engine's two-hand grip.
 
 *[GIF to come: the lasso whirled over the head and thrown onto an imp]*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Swinging
 
@@ -290,7 +292,7 @@ lay a free hand on the lip with RSQ Distance Grab's grab key, and you are lifted
 *[GIF to come: the aim ray gold on a ceiling, the crack, the swing across a pit]*
 *[GIF to come: a jump start from the ground and a let-go onto a ledge]*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Whip and Gun ("Indiana Jones")
 
@@ -338,7 +340,7 @@ The old bind whip's keys (**Whip (Main)** / **Whip (Off)**) and its **Whip Style
 unused (Lock points the other hand, which holds the gun here). Their code is kept with the rest of the unused rope code
 (the thrown hook, the zip, the chain look, the bite ledger) in `design/WHIP_DEAD_FEATURES.md`.
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Your whip, your hand
 
@@ -358,7 +360,7 @@ unused (Lock points the other hand, which holds the gun here). Their code is kep
 *Rig frame, 2026-11-03, an earlier build: the coiled whip (right) hanging with the rest of RSQ Tactical Rig's holsters.
 Simulated headset, not a capture from a real headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -414,7 +416,7 @@ Simulated headset, not a capture from a real headset.*
 - **Brutal Doom VR (BD22 VR):** its FBX hand and Hand Skin Tone are Hand on the Handle. Its empty off hand counts as free
   for climbing, aiming and the grip start.
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Options
 
@@ -440,7 +442,7 @@ your own settings; every other row is a server setting.
 
 *[picture to come: the RSQ Whip options page]*
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Status
 
@@ -461,7 +463,7 @@ your own settings; every other row is a server setting.
 | **not yet run** | Nothing: the batch's Whip check, N2, has run (above) |
 | **Not in the game (from reading the code)** | The old bind whip's keys, Assist and Lock (no input since 11-10), and the unused rope code (a thrown hook, the zip, the chain look, the bite ledger), in `design/WHIP_DEAD_FEATURES.md`. The Rope perks and the bind whip (Whip and Gun) have been built since, and are in the rows above |
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Under the hood
 
@@ -501,7 +503,7 @@ your own settings; every other row is a server setting.
 - **Debug Log** prints `T_WP` (the rope) and `T_WPW` (the whip) lines: wind-up, swing, release, crack, mark, cast,
   latch, start, yank and the rest.
 
----
+<p align="center"><img src="../design/readme_art/mods/whip_divider.png" alt=""></p>
 
 ## Credits
 

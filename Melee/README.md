@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/melee_title.gif" alt="RSQ Melee"></p>
+
 # RSQ Melee
 ### Doom Arcade VR · fight with your fists, slap fireballs aside, shove with the gun butt, and grab an imp by the collar
 
@@ -7,7 +9,7 @@ time slows down for a moment. Grab a monster with your off hand, hold it, punch 
 
 *[GIF to come: a jab, a hook, then an uppercut launching an imp]*
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -27,7 +29,7 @@ time slows down for a moment. Grab a monster with your off hand, hold it, punch 
 - **Hits you can see and feel.** Every blow has its own spark, every hit gives a rumble in that hand, and
   punching a switch flips it.
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## How to play
 
@@ -51,7 +53,7 @@ time slows down for a moment. Grab a monster with your off hand, hold it, punch 
 The punches, the swat and the Headlock work with whatever is in your hands, from the first map. Melee's own hands are
 optional: turn on **Start With Melee Hands** and you get a pair in your inventory at every level start. You still start with BD22's own start weapon, and the off hand keeps BD22 VR's hands (owner 11-11).
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## Controls
 
@@ -67,7 +69,7 @@ optional: turn on **Start With Melee Hands** and you get a pair in your inventor
   of the off hand while holding a monster (the Headlock throw). With RSQ Accessibility loaded, its reader supplies the
   two-hand gestures; without it, Melee reads them with its own copy.
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## Your hands
 
@@ -100,7 +102,7 @@ weapon from you, sabers and the ShieldSaw included: the ones you carry go into a
 and one you're given later goes into the stash within a quarter of a second. Your ammo stays. It is done again at every level start. RSQ Saber's Start With Saber stands down while it is on. Turn it
 off and your guns come back, with the gun you had in your hand back in it, but no free ammo.
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## The punch
 
@@ -149,7 +151,7 @@ uppercut sound, and one into a barrel too; the pistol whip (t171, t204) and the 
 hit tic while Brutal Doom's attack actor stayed silent (an unmuted one, launched as a control, played Melee/Flesh); the
 gun-butt shove without BD22 VR played its sound at t163. No script errors from this pack.*
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## The open palm
 
@@ -161,7 +163,7 @@ gun-butt shove without BD22 VR played its sound at t163. No script errors from t
 
 *[GIF to come: an open palm slapping an imp's fireball aside]*
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## The moves
 
@@ -192,7 +194,7 @@ Seated (RSQ Accessibility's Seated Play), the guard height follows your eyes dow
 *[GIF to come: Ground Pound, a ring of monsters thrown back]*
 *[GIF to come: Clear Out, the palm thrust shoving a crowd]*
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## The gun-butt shove
 
@@ -246,7 +248,7 @@ and no window.
 
 *[GIF to come: shove, slow-down, shotgun, an imp bursting into blood mist, "F.E.A.R. Effect" low in view]*
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## The Headlock
 
@@ -268,7 +270,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 *[GIF to come: an imp held by the collar and punched three times, the blood growing]*
 *[GIF to come: a held imp thrown into a zombieman]*
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -310,7 +312,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
   Bonsai VR) punches the monster it pulls in through Melee.
 - **RSQ Miniboss:** its **Can't Be Headlocked** row (on) refuses minibosses.
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## Options
 
@@ -329,7 +331,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 
 *[picture to come: the RSQ Melee options page]*
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## Status
 
@@ -349,7 +351,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 | **code only, not shown** | Everything else on this page, among it the moves above level 1 (the batch ran without Gun Bonsai VR) and the Headlock's throw striking something |
 | **not yet run** | Nothing from the rig test: M1 to M9, N6 and the Wheel frame with the gloves in slot 1 by this pack have run (above) |
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## Under the hood
 
@@ -399,7 +401,7 @@ your hand's height, turned to you, frozen. It's still solid, so shots can hit it
 - **Rumble** goes through `A_QuakeEx` waves on one controller at a time, scaled by RSQ Accessibility's Rumble
   Strength.
 
----
+<p align="center"><img src="../design/readme_art/mods/melee_divider.png" alt=""></p>
 
 ## Credits
 

@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/visualrewards_title.gif" alt="RSQ Visual Rewards"></p>
+
 # RSQ Visual Rewards
 ### Doom Arcade VR · health bars, damage numbers that fly, kill bits, level-up banners and monsters that arrive on a beam of light
 
@@ -11,7 +13,7 @@ sound.
 *Design render: the four arrival beams playing side by side (V1, V2, V3 indoors, V4), drawn by the mockup tools the
 game's beams were built from. Not a capture from the game or the headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -31,7 +33,7 @@ game's beams were built from. Not a capture from the game or the headset.*
 - **Monsters arrive like an arcade boss stage.** Called-in monsters land on a beam of light in their own colour, hidden
   until the beam reveals them, with words over them ("GUARD!", "TARGET!") and the miniboss fight's own music.
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## How to play
 
@@ -55,7 +57,7 @@ Everything is on one options page, **RSQ VisualRewards**, and every part can be 
 
 - **Menu buttons:** only **Reset All**, at the foot of its page.
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## HP bars
 
@@ -94,7 +96,7 @@ The bars are coldcite's Top HP Bars, rebuilt for VR.
 
 *[GIF to come: a bar appearing on a hit, flashing, the chunk draining, the overheal strip on a legendary]*
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Damage numbers
 
@@ -136,7 +138,7 @@ Health, armour and ammo you pick up rise as "+N" from the pickup and fly to your
 blue to your off hand, ammo gold to the hand whose gun uses it. With RSQ Gun Cards the ammo number fades into the
 card's own "+N".
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Kill Rewards
 
@@ -169,7 +171,7 @@ Every monster you kill bursts into bits: SoM's Universal Kill Rewards, with a pl
 
 *[GIF to come: a baron bursting into a fountain of bits that fly to the player]*
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Level-ups (Gun Bonsai)
 
@@ -189,7 +191,7 @@ with RSQ Gun Cards the small gun card steps aside while it shows. *Code only: it
 - **Weapon level-up:** a small tag rises off the gun: its name types in letter by letter, "LV n" stamps in, NEW UPGRADE
   flickers green, then it fades. With RSQ Gun Bonsai VR it rises off the hand whose gun levelled.
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Arrivals: the four beams
 
@@ -245,7 +247,7 @@ strength. When it rises at half health (LegenDoom refills it and turns it red, w
 bottom half in a lighter gold, on a dark box. Minibosses and thralls never get it (their GUARD! and TARGET! are unchanged).
 Without LegenDoom nothing happens. Its own row, **LegenDoom: LEGENDARY Word**, turns it off (LegenDoom itself shows nothing there).
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Scene music
 
@@ -258,7 +260,7 @@ where it has got to.
   track, which carries on silently underneath and comes back when you get up (unless the fight ended meanwhile).
 - **Scene Music Volume** sets the scene track's loudness; **Scene Crossfade** how long the fades take (2 s).
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## RSQ SlowMo's DOWN
 
@@ -272,7 +274,7 @@ While you are DOWN in RSQ SlowMo:
 
 *[GIF to come: "+0.5s" popping off a monster while DOWN, then REVIVE on the band]*
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -307,7 +309,7 @@ While you are DOWN in RSQ SlowMo:
 - **Mods written for damnums:** their damage-type colours are read too.
 - **Voxels** (BD_VoxelPack, Voxel Doom II): bars sit on the voxel's real top.
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Options
 
@@ -328,7 +330,7 @@ The HP bars, Kill Rewards and Arrival Beams rows, and Damage Numbers, Numbers Fo
 (one setting for everyone in netplay). The rest of the damage-number rows and the level-up, words, pops and scene music
 rows are each player's own.
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Status
 
@@ -348,7 +350,7 @@ rows are each player's own.
 | **code only, not shown** (2026-11-11, RSQ Monsters' ladder renumbered by strength; owner: "no rig test, code only until i say") | The tier gems (RSYT A to M) re-ordered to the new tier numbers, so each colour still shows its own gem |
 | **not yet run** | Nothing from the batched rig test: V1 to V3 have run (above) |
 
----
+<p align="center"><img src="../design/readme_art/mods/visualrewards_divider.png" alt=""></p>
 
 ## Under the hood
 

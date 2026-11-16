@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/slowmo_title.gif" alt="RSQ SlowMo"></p>
+
 # RSQ SlowMo
 ### Doom Arcade VR · the world slows, you don't: dodgeable bullets, a crisis dive, and one last stand when you go DOWN
 
@@ -9,7 +11,7 @@ your revenge.
 
 *[GIF to come: the world slowing, an enemy's shots turning into glowing rounds, the player leaning out of one as it whizzes past]*
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -33,7 +35,7 @@ your revenge.
   damage to those (and to the target) adds time, and as one dies another takes its place. The target's crosshair flies
   in from offscreen. What a whole one is worth: +0.25 SEC small, +0.5 SEC bigger (*rig only 2026-11-12: three DOWNs in a row started at 9, 6 and 3 s and each ended on the one kill; the labels were not seen in a frame*).
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## How to play
 
@@ -71,7 +73,7 @@ default) greys the view a little while time is slowed.
 
 You hear Doom's power-up pickup as the world slows and a lift landing as it comes back, with a rumble in both hands.
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## The adrenaline meter
 
@@ -87,7 +89,7 @@ Off by default. Turn on **Adrenaline** and your own slow motion is no longer fre
 Only your held slow motion (the key, the wrist cross, the Wheel, the Accessibility button), the burst and the
 crisis dive spend it. Slow motion started any other way (a parry, the cigarette, a blast, a heavy hit) never does.
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## The bars
 
@@ -111,7 +113,7 @@ Miniboss loaded, both bars take the size of its Miniboss meter and sit centred u
 
 *[Still to come: the countdown bar with its cause line under RSQ Score's bar]*
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## When the game slows time for you
 
@@ -169,7 +171,7 @@ its thralls. Any attacker counts when one of these is true:
 It never fires on a hit that kills you, or while you are DOWN. Its **Cooldown** row: No Limit (the default), once per
 20 s, once per 60 s, or the shared Auto Cooldown. During an RSQ Miniboss fight every heavy hit fires.
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## Be Quick or Be Dead (DOWN)
 
@@ -245,7 +247,7 @@ appears big in the middle of your view with BE QUICK OR BE DEAD over it, then si
 
 *[Still to come: the edge arrows pointing to a target behind you]*
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -310,7 +312,7 @@ SlowMo talks to most of the series, always by name: every mod still loads and pl
 - **Xortts' Bullet Time X or RS_SlowMo:** two slow-motion systems would compound, so with **Yield to Other Mods** on
   (the default) SlowMo stands down and says so in the console.
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## Options
 
@@ -333,7 +335,7 @@ the bars and DOWN's look are yours.
 Rows not marked (off) are on by default. With RSQ Gun Bonsai VR loaded, a gold line at the top says so and Lean Out of
 Bullets is greyed until you learn Lean Dodge.
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## Status
 
@@ -356,7 +358,7 @@ Bullets is greyed until you learn Lean Dodge.
 | **code only, not shown** | The 11-10 changes: the Shootdodge key renamed Crisis Dive, the Quick Grenade trigger. The three fixes made after the 11-09 run: Entrance Size (the rig showed one fixed size whatever the setting), the chevrons in the target's colour while the world is grey (the rig showed them white), and Fog Colour. Everything else on this page: the keys, the wrist cross, the burst, the crisis dive, Slow Me Too, the dodgeable rounds and leaning out of them, Smooth Walkers, Colour Drain, the adrenaline meter, how the two bars look, every other trigger, Heavy Hit Slowdown, the edge arrows, the crosshairs assembling, and DOWN's sounds and music |
 | **not yet run** | Nothing from the rig test: S1 to S5 and the remote's deflect slow from the saber have run (above) |
 
----
+<p align="center"><img src="../design/readme_art/mods/slowmo_divider.png" alt=""></p>
 
 ## Under the hood
 

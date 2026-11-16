@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/questsaber_title.gif" alt="RSQ Saber"></p>
+
 # RSQ Saber
 ### Doom Arcade VR · a lightsaber in each hand, the Force in your fingers, and every shot in Hell sent back
 
@@ -13,7 +15,7 @@ view of the main hand, a swing, and the main saber thrown, its hilt and the hand
 second saber's blade is off because that build drew it dark the first time; it now lights whenever it is drawn. Not
 captures from the headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -38,7 +40,7 @@ captures from the headset.*
 - **A training remote.** Summon the little drone from *A New Hope*: it circles you and stings. Bat its bolts back into
   it for points; four hits knock it down and give you 25 health, and it comes back harder.
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## How to play
 
@@ -80,7 +82,7 @@ the **RSQ Saber** section in Customize Controls. The blade stays lit; the second
 
 *[GIF to come: a slash through two imps, the flash, sparks and smoke where the blade went in]*
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## The blade
 
@@ -177,7 +179,7 @@ saber burns a trail into whatever its blades touch.
 
 *[Still to come: a scorch trail across a wall]*
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## The throw
 
@@ -197,7 +199,7 @@ saber burns a trail into whatever its blades touch.
 
 *[GIF to come: five rings painted across a room, the throw, the saber visiting each and coming home]*
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## The Force
 
@@ -248,7 +250,7 @@ then flick. Lightning pours from your hand for a second, into it and on to the n
 
 *[GIF to come: Force Lightning chaining across three imps]*
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## Hands, holsters and the hip
 
@@ -274,7 +276,7 @@ and 12. Not captures from the headset.*
 *[Still to come: the two sabers at the hip without RSQ Tactical Rig]*
 *[Still to come: the second saber drawn from and put back in its Tactical Rig holster]*
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## Looks and sounds
 
@@ -293,7 +295,7 @@ and 12. Not captures from the headset.*
 
 *[Still to come: the eight colours and five lengths side by side]*
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## The training remote
 
@@ -322,7 +324,7 @@ back into it:
 
 *[GIF to come: the remote circling, a bolt batted back into it, the wrist panel lighting a pip, "REMOTE DOWN!"]*
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -362,7 +364,7 @@ back into it:
 - **Other saber mods:** Wardust's Lightsaber, Xim's Star Wars Doom (whose saber is Doom's chainsaw, so the chainsaw is replaced only while Xim's is loaded) and the earlier
   Quest saber are replaced by this one, on the map and in your hands.
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## Options
 
@@ -391,7 +393,7 @@ brackets. The host's settings are one setting for everyone in netplay; the rest 
   dead.
 - **Reset All**, on both pages, puts every row back to its default.
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## Status
 
@@ -415,7 +417,7 @@ A blade turning an imp fireball is recorded only as one line in the header of th
 (2026-11-03); the log itself is not in the repo, so it is listed as code only. The 2026-11-03 frames show what an
 earlier build did; the code has changed since.
 
----
+<p align="center"><img src="../design/readme_art/mods/questsaber_divider.png" alt=""></p>
 
 ## Under the hood
 

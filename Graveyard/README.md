@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/graveyard_title.gif" alt="RSQ Graveyard"></p>
+
 # RSQ Graveyard
 ### Doom Arcade VR · a gravestone where you died, waiting for you the next time you play the map
 
@@ -11,7 +13,7 @@ wake the graves.
 
 *MAP01 loaded again after five deaths: the stones pop in one after another where you fell, and their candles light (rig capture, not headset)*
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -31,7 +33,7 @@ wake the graves.
 - **The Bones (off, needs Legion of Bones).** A Brutal Doom monster you kill rises again as its Legion of Bones undead,
   and comes for you.
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## How to play
 
@@ -62,7 +64,7 @@ No keys. This pack binds nothing (owner 2026-11-10: keybinds are a precious reso
   Radiant Silvergun Options → RSQ Graveyards, Controls). Each prints a line to the console when it is done.
 - The console aliases still work: `gy_remove_map` and `gy_remove_all` do the same as the buttons.
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## The stones
 
@@ -121,7 +123,7 @@ With RSQ Accessibility's Photosensitive Mode on, the breath is held still at its
 
 *[GIF to come: Living Stones in Wave mode across a graveyard]*
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## The Bones (Legion of Bones)
 
@@ -199,7 +201,7 @@ half lean while the beats keep coming.
 *Rig frames, 2026-11-06, that day's build: the stones bright on the beat, then between beats. Simulated headset on the
 Linux rig, not a capture from a real headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -216,7 +218,7 @@ Linux rig, not a capture from a real headset.*
   a death or by a Score life spent.
 - **Every RSQ pack:** this page sits in the shared Radiant Silvergun Options menu.
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## Options
 
@@ -237,7 +239,7 @@ host's (the arbitrator's) settings, and a candle lights for the nearest player: 
 state and must come out the same on every machine. Alone, they are simply yours. The two Bones rows are the game's
 (the host's in a netgame).
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## Status
 
@@ -259,7 +261,7 @@ at once). In a netgame, a death's obituary keeps the real date and time of the m
 date line can differ by a few seconds from what another machine stored. The two remove buttons clear every
 machine's store in a netgame, not only the presser's (m8f's design).
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## Under the hood
 
@@ -305,7 +307,7 @@ machine's store in a netgame, not only the presser's (m8f's design).
 - **m8f's soulsphere add-on** (`add-ons/soulsphere`) stays in the source folder as m8f made it, but it is not part of
   the pk3 and nothing loads it.
 
----
+<p align="center"><img src="../design/readme_art/mods/graveyard_divider.png" alt=""></p>
 
 ## Credits
 

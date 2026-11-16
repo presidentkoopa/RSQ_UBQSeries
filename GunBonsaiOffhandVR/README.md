@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_title.gif" alt="RSQ Gun Bonsai VR"></p>
+
 # RSQ Gun Bonsai VR
 ### Doom Arcade VR · two hands, two guns that level, and one skill tree for every RSQ weapon and move
 
@@ -8,7 +10,7 @@ open one by one down branching trees.
 
 *[GIF to come: a punch kill, the off hand's gauge filling, the level-up cards, an Uppercut picked]*
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -25,7 +27,7 @@ open one by one down branching trees.
 - **A new look for Gun Bonsai's screens.** The status screen and the level-up cards are redrawn for the headset,
   with both guns on one screen.
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## How to play
 
@@ -55,7 +57,7 @@ This pack adds no key of its own. Its `keyconf.txt` holds console aliases only (
 `rsqgb_add_step`), with no key section and no default bind. (Gun Bonsai's own LegenDoom key, Cycle Legendoom Weapon
 Effect, is Gun Bonsai's and only matters with LegenDoom loaded.)
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Gun Bonsai, in brief
 
@@ -67,7 +69,7 @@ upgrade, which works whatever you hold. Its own options page, its upgrades and i
 This pack needs Gun Bonsai 0.10.6 loaded **before** it. It replaces ten of Gun Bonsai's files by path
 (under `ca.ancilla.bonsai/`) and adds its own code beside them. No Gun Bonsai art or sound is shipped here.
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## What the VR edition adds to Gun Bonsai
 
@@ -127,7 +129,7 @@ Share). Nothing else feeds the Force.
 - The status screen says which hand it shows ("Mainhand" / "Offhand", "press again for other hand").
 - `netevent bonsai-debug,hands` (console alias `bonsai-hands`) prints each hand's record and the credit counters.
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## How the trees work
 
@@ -149,7 +151,7 @@ Never offered any more, kept so old saves load: Star Punch, Chain Choke, Slow Mo
 Keys by Hand, and the whole Distance Grab tree (Long Arm, Iron Grip, Heavy Hitter, Air Catch, Powder Keg, Dead Eye,
 Heavy Lift, Snap Pull, Body Shield).
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## The Fists tree (RSQ Melee)
 
@@ -253,7 +255,7 @@ The shove reads the better of your two gloves.
 | **Absorb and Release** | Reflect Guard 2 | 3 | What the Guard takes charges it (up to 150 / 200 / 250); both hands thrown apart let it out within 4 / 5 / 6 m. Needs the two-hand reader |
 | **Taunt** | (root) | 3 | Needs RSQ Melee and the two-hand reader. Both hands thrown apart: what can see you within 10 m turns on you, and your next punch within 3 / 4 / 5 s does double |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Any melee weapon
 
@@ -266,7 +268,7 @@ All three done here.
 | **Executioner** | (root) | 5 | A staggered monster (no boss) with 15 / 20 / 25 / 30 / 35% of its health or less dies to the next melee hit, through any resistance it has |
 | **Adrenaline** | (root) | 5 | Each melee kill charges RSQ SlowMo's adrenaline meter 4 a level. A big moment (three melee kills in 3 s, a monster of 400 health or more, an execution) slows time for 0.45 / 0.6 / 0.75 / 0.9 / 1.05 s, deeper each level (55% down to 35% speed), at most once every 3 s |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## The Saber tree (RSQ Saber)
 
@@ -307,7 +309,7 @@ behaviour: under this pack they become unlocks, and without it the saber is exac
 
 A power not yet learned (after Force Sensitive) works at **Force Base Strength** (0, so not at all).
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## The ShieldSaw tree (RSQ ShieldSaw)
 
@@ -336,7 +338,7 @@ A power not yet learned (after Force Sensitive) works at **Force Base Strength**
 | Grind | **Buzzsaw Return** | Hungry Blades 2 | 3 | The disc coming home grinds what it passes for 65 / 80 / 95% of a grind hit |
 | Link | **Spartan** | Broadening 1, and Deflector 1 on a saber | 2 | With the lit blade resting on the shield, a shot the shield turns goes straight at its shooter; 2: a bash in that stance cuts too, paid to the saber |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## The Whip tree (RSQ Whip)
 
@@ -372,7 +374,7 @@ the staggers are shown as Gun Bonsai VR's stagger being asked, not in frames).
 | Leash | **Get Over Here** | Heavy Lash 1 | 3 | Offered only with Whip and Gun and Leash on. A leashed monster arrives staggered 35 / 50 / 65 tics |
 | Leash | **Bowling** | Get Over Here 1 | 3 | Offered only with Whip and Gun and Leash on. A leashed monster strikes what stands in its path for 10 / 15 / 20 plus half its speed, staggers it 25 / 35 / 45 tics and shoves it aside |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## The Grenade tree (RSQ Grenade)
 
@@ -410,7 +412,7 @@ Learning one turns on RSQ Grenade's All Types row.
 | **Charm Grenade** | Flash 1 | 3 | What is inside fights for you 15 / 20 / 25 s; bosses immune |
 | **Infight Grenade** | Flash 1 | 3 | What is inside turns on the nearest monster 15 / 20 / 25 s; bosses immune |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## The Grapple tree (RSQ Grapple; player nodes)
 
@@ -434,7 +436,7 @@ Learning one turns on RSQ Grenade's All Types row.
 **The hook's XP** goes to the player pool: 15 a bite, 15 a yank, 1 a metre swinging (40 a latch at most), half the
 monster's health for a kill it was in on (in the last 3 s), 40 a Double Hook slam, all times **Grapple XP** (1.0).
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Gunslinger (RSQ Tactical Rig; player nodes)
 
@@ -450,7 +452,7 @@ monster's health for a kill it was in on (in the last 3 s), 40 a Double Hook sla
 | **Target Lock** | Quick Draw 1 | 2 | Needs RSQ Laser Sight. The dot grows and pulses on a live monster; 2: it turns the target colour. Turns on those rows |
 | **Headshot Reaction** | Target Lock 1 | 2 | The top fifth of a monster turns the dot the headshot colour; 2: a gun hit there counts as a Headshot. Turns on its row |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## SlowMo (RSQ SlowMo; player nodes)
 
@@ -468,7 +470,7 @@ Your slow-motion key works from the start; these lengthen and deepen it.
 | **Lean Dodge** | Dodger 1 | 2 | Leaning out of a slowed round's path makes it miss; 2: a claw too. Turns on the lean row |
 | **Matrix** | Deeper 3 | 1 | The colour drain and the shot trails at full while slowed. Turns on both rows |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Kill Rewards (RSQ VisualRewards; player nodes)
 
@@ -481,7 +483,7 @@ Offered only while VisualRewards' Kill Rewards is loaded.
 | **Magnet** | Gastropub 1 | 3 | Bits within 2 / 3 / 4 m drift to you. Turns on its row |
 | **Lucky Kill** | Rich Bits 1 | 3 | A kill landed by a critical, a Headshot, a Backstab, a Finisher or an RSQ Score big moment drops x2 / 3 / 4, with a big burst |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Critical Hits (player nodes, always offered)
 
@@ -491,7 +493,7 @@ Offered only while VisualRewards' Kill Rewards is loaded.
 | **Headshot** | Critical Hits 1 | 3 | A hit in the top fifth of a monster: x2.5 / 3.0 / 3.5; a shotgun's later pellets count half |
 | **Backstab** | Critical Hits 1 | 3 | A melee hit from behind (within 60° of its back): x4 / 5 / 6; a kill this way is silent |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Two hands and the body (player nodes, always offered)
 
@@ -506,7 +508,7 @@ All done here.
 | **Evasion** | 4 | Moving your head at 1.2 m/s or more, you take 8% a level less |
 | **Steady Aim** | 4 | A bullet fired with your head still (under 0.2 m/s) hits +5% a level |
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## The HUD
 
@@ -525,6 +527,9 @@ All done here.
   Bonsai's own. A waiting level-up cycles whatever the switch.
 - **The bars breathe** (with GBOVR Menus and HUD on): each XP bar pulses slowly around its own colour, warms toward
   amber and quickens past 60% full, flashes toward white when XP comes in, and flares when a level is ready.
+- **The words breathe too** (2026-11-13, with GBOVR Menus and HUD on): the gauge's words and numbers (your level and
+  XP, the gun's name, its level and XP) take their bar's colour letter by letter, each letter a step on from the
+  last, like RSQ Score's Score word. Still in Photosensitive Mode. *Loads only, not shown.*
 - **No HUD over a menu** (owner 11-11): while any menu is open (the options, the status screen, the level-up cards),
   the gauges, the Berserk gauges and the Ammo and Health Row are not drawn. RSQ Score's line and RSQ Miniboss's meter
   hide the same way.
@@ -590,7 +595,7 @@ Off, Gun Bonsai's own menus come back unchanged.
   four: page with left and right.
 - The mockup's ITEMS slots and WEAPON BOND panel are not drawn: no feature fills them.
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -623,7 +628,7 @@ Off, Gun Bonsai's own menus come back unchanged.
   and the gauge row (The LegenDoom HUD, above); BD22 VR's LD mode tells this pack which of its guns carry which slot.
 - **SuperPunchOut:** its gloves are melee and can take the Fists tree.
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Options
 
@@ -645,12 +650,13 @@ level-up stores it. **Debug Log: Style XP and Learned Rows** prints the Style XP
 
 *[picture to come: the RSQ Gun Bonsai VR options page]*
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Status
 
 | | |
 |---|---|
+| **loads only, not shown** (2026-11-13, run `main1`: the owner's full order with BD22 VR Reloaded 2.0.4x, no script error from our packs) | **The HUD's words breathe letter by letter** with GBOVR Menus and HUD on (owner 11-13) |
 | **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2 with BD22 VR Reloaded 2.0.4r; `../TacticalRig/tools/rigtest/axepool/evidence/`) | **Brutal Doom VR's axe is one weapon** (owner 11-12): with the axe in both hands, both hands read the same record ("same record 1"); a level and XP put on the main hand's axe (level 2) read the same from the off hand's; the throws' hits paid into it (XP 25 -> 745, "Your Axe is ready to level up!"); with every axe thrown (0 axes, both versions gone) the record stayed ("bound nothing level 2 XP 745") instead of being pruned. Only the axe: every other weapon, including BD22 VR's off-hand gun versions, keeps one record per weapon as before (`ca.ancilla.bonsai/WeaponInfo.zsc` Holds / OneWeaponKey, `PerPlayerStats.zsc`, `rsq/zscript/service.zs`). Not shown: the record taken up again by a new axe after 0 (code: bound to it on first sight), upgrades chosen on it and used from the other hand |
 | **rig only, not headset-confirmed** (2026-11-11, rig run LDH1: the owner's order with LegenDoom 3.0 right after doom2, BD22 VR 2.0.4h's LD mode; a probe hands over an Epic Murderous chaingun-slot drop through LD mode's own pickup; `design/rigtest_2026-11-10/RESULTS_LDH.md`) | **The LegenDoom pickup card** (V3) in Epic orange, "EPIC  RIFLE", LegenDoom's description and icon, the title in its two looks on alternate frames (`evidence/LDH_3_card_look1.jpg`, `LDH_3_card_look2.jpg`). **LegenDoom's own pickup screen not on screen** while the card is up, and **back with LegenDoom: Pickup Card off** (`LDH_7_card_off_legendoom_screen.jpg`). The card folding away (`LDH_4_fold.jpg`). **The gauge row:** MURDEROUS, X3 and the drain line while the buff runs, the line shorter later (`LDH_5_row_X3_drain.jpg`, `LDH_5_row_drain_later.jpg`). No card, row or gauge over the options page, which shows the two LegenDoom rows (`LDH_6_menu_rows_no_hud.jpg`). No script error from this pack (`LDH_log.txt`) |
 | **code only, not shown** (2026-11-11, after LDH1) | **Where the row, the tick and the card sit.** In LDH1 they were drawn through the wrong virtual-to-screen mapping: the row and the rarity tick about 12 px too low at 480 px (the tick on the octagon's lower corner) and the card at 0.75 of its size. Fixed to the mapping the gauge itself is drawn with; not run since. Also not shown: the colour-blind and Photosensitive versions, the off hand's row, the row under the single HUD, LegenDoom: Gauge Row turned off |
@@ -669,7 +675,7 @@ level-up stores it. **Debug Log: Style XP and Learned Rows** prints the Style XP
 Known gaps (from reading the code): Gun Bonsai's other stock upgrades can still be offered on all the series
 weapons. Only the whip's gun picture ships for the status screen; the rest fall back to each gun's icon or pickup sprite.
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Under the hood
 
@@ -714,7 +720,7 @@ weapons. Only the whip's gun picture ships for the status screen; the rest fall 
 - **Removing the pack** while the Ammo and Health Row is on leaves Brutal Doom's `bd_sbartype` at 5: turn the row off
   first, or set it back by hand.
 
----
+<p align="center"><img src="../design/readme_art/mods/gunbonsaioffhandvr_divider.png" alt=""></p>
 
 ## Credits
 

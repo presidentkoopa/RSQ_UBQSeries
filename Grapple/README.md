@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/grapple_title.gif" alt="RSQ Grapple"></p>
+
 # RSQ Grapple
 ### Doom Arcade VR · the off hand's hook: fly to the big ones and kick off them, drag the small ones to you
 
@@ -11,7 +13,7 @@ RSQ Whip.
 
 *Rig frames (run `g2run2`): GET OVER HERE. The chain runs from the off hand to the claw in the imp, and the imp lands in front of you.*
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -56,7 +58,7 @@ RSQ Whip.
 
 *Rig frames (run `g2run2`): the pull to a Cyberdemon, the gold cross on contact, and **KICK!** over its health bar.*
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## How to play
 
@@ -86,7 +88,7 @@ line, or no double jump: the claw flies where you aim and may hit nothing, anoth
 off, but the kick does no damage. Its own GUARD! shows instead, and there is no stagger, no slow motion and no chain
 link.
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## Controls
 
@@ -97,7 +99,7 @@ link.
 
 The hook always fires from the **off hand**. The air spike needs nothing in particular in your hands.
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## Options
 
@@ -112,7 +114,7 @@ The hook always fires from the **off hand**. The air spike needs nothing in part
 Comfort versions (a lower hop, a vignette) belong in RSQ Accessibility: this mod reports every tic it moves you to
 Accessibility's **Comfort Vignette** (`RSQA_Service "vignette"`), which only shows when that row is on.
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## Status
 
@@ -155,7 +157,7 @@ links, jp's claw at the end, and no bright link on it.*
 
 *Rig frames (run `g2run3`): the hook in a shielded miniboss, then RSQ Miniboss's own GUARD! when you bounce off it.*
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## Chosen, not specified
 
@@ -230,7 +232,7 @@ The plan gives the design and the numbers above. Where it said nothing, the simp
 - **The yellow cross:** RSQ Melee's MLK4 drawn AddShaded in gold (`0xFFC83C`) at 1.5x; without Melee, a gold
   particle star.
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## Found on the rig, for the owner
 
@@ -274,7 +276,7 @@ they get "no answer", as if it were not loaded:
 - **RSQ Wheel, RSQ ShieldSaw, RSQ Tactical Rig:** comments and name prefixes only; nothing lost.
 - **tools/rsmenu/presets.py** still lists the old grapple presets (Range / Swing / Pull); no page uses them.
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -291,7 +293,7 @@ Everything is asked by name: this mod loads and plays alone, and the parts that 
 - **RSQ Whip:** the rope, the reel, the swing and the climb are the whip's.
 - **Brutal Doom 22 and RSQ Monsters:** works on their monsters (light or heavy by the same rule).
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## For other mods
 
@@ -309,7 +311,7 @@ Everything is asked by name: this mod loads and plays alone, and the parts that 
   hung: Chain Cancelled!), `scorpion.hold`, `scorpion.yank`, `scorpion.timeout`.
 - Anything else answers -1 or "".
 
----
+<p align="center"><img src="../design/readme_art/mods/grapple_divider.png" alt=""></p>
 
 ## Under the hood
 

@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/monsters_title.gif" alt="RSQ Monsters"></p>
+
 # RSQ Monsters
 ### Doom Arcade VR · Colourful Hell's thirteen-colour ladder, and monsters that flash up a tier mid-fight
 
@@ -13,7 +15,7 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 
 *[GIF to come: a monster strobing white, then standing up a tier higher in its new colour]*
 
----
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -26,7 +28,7 @@ behaviours were run on plain monsters only. Rig only, not headset-confirmed.
 - **ColorfulHell is a bestiary.** Every colour of every Doom monster is its own creature, with its own name, health and
   tricks: a Green Imp is not just a tougher imp, and "Smoking Black Imp" is a boss.
 
----
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
 ## How it plays
 
@@ -45,7 +47,7 @@ map, or when the map restarts.
 **The default set is BD22 + XMVE Tiers** (owner, 2026-11-13 19:30: "this will be our default monster set going forward
 and we will use the CH stuff for encounters and minibosses n setpieces"): Brutal Doom 22's and XMVE's own monsters on
 the colour tiers, drawn from the painted colour art (`pk3/RSQ_BDXMTiers_<Colour>.pk3`, one per colour, loaded after
-RSQ_Monsters). ColorfulHell stays selectable, and is the default for minibosses (**Miniboss From: ColorfulHell**).
+RSQ_Monsters). ColorfulHell stays selectable, and is the default for minibosses (**Boss From: ColorfulHell**).
 
 | Set | What spawns |
 |---|---|
@@ -171,14 +173,14 @@ Common (out of the box it is not; see Under the hood):
 With RSQ Miniboss loaded, a miniboss fight can take its miniboss and its thralls from ColorfulHell, whatever the map's
 monsters are:
 
-- **Miniboss From:** the map's own monsters (Same as Monster Set) or ColorfulHell.
-- **Thralls From:** the miniboss's set (Same as Miniboss), ColorfulHell, or the Map's Own Monsters. With Same as
+- **Boss From:** the map's own monsters (Same as Monster Set) or ColorfulHell.
+- **Thralls From:** the miniboss's set (Same as Boss), ColorfulHell, or the Map's Own Monsters. With Same as
   Miniboss, a Brutal Doom or Vanilla miniboss gets ColorfulHell thralls.
 - A saved MeatGrinder or Mixed pick from an older version reads as ColorfulHell.
 
 The pick keeps the Doom family: an imp in the map becomes a ColorfulHell imp, at the tier the miniboss fight asks for.
 
----
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
 ## The rosters
 
@@ -220,7 +222,7 @@ Abyss forms.
 
 </details>
 
----
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -232,7 +234,7 @@ RSQ Monsters asks the other mods by name and answers them by name: every mod sti
   map count passes to the new body, so it still pays in full once.
 - **RSQ Miniboss:** the miniboss fight is where tiers change. A missed window tiers the miniboss and its thralls up by one
   to three (the whole map with Tier-Up Hits the Whole Map), and each life it loses tiers it up once more, with the
-  flash each time; Miniboss follows a ColorfulHell monster into its new body. **Miniboss From** and **Thralls From** can pick ColorfulHell.
+  flash each time; Miniboss follows a ColorfulHell monster into its new body. **Boss From** and **Thralls From** can pick ColorfulHell.
 - **RSQ VisualRewards and RSQ Glow In The Dark** (through RSQ Miniboss): a miniboss fight takes each monster's colour from
   the ladder: its arrival beam, the light on the miniboss and its thralls, and the miniboss's colour wherever the
   miniboss fight shows it.
@@ -246,7 +248,7 @@ RSQ Monsters asks the other mods by name and answers them by name: every mod sti
 - **Brutal Doom (BD22):** **BD22** hands every spawn to Brutal Doom; **Vanilla** brings back the id monsters with
   Brutal Doom loaded. With ColorfulHell, its monsters replace Brutal Doom's; Brutal Doom's guns and the rest stay.
 
----
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
 ## Options
 
@@ -257,14 +259,14 @@ next monster that needs them.
 |---|---|
 | Top | Select Monster Set (Vanilla, **BD22 + XMVE Tiers**, ColorfulHell) · On tier change (Keep health fraction, **Full health (instant only, HF)**, Always full health) · Tier Icons Above Monsters (**Off**, On) |
 | Brutal Doom's Monsters | Colour Ladder On Brutal Doom's Monsters (Off, **On**) · World Tier (test) (**1** to 20) · Painted Colour Art (Off, **On**; on, the frames that have painted art in their colour are drawn from it, the rest keep the tint; off, the tint everywhere) |
-| Miniboss | Miniboss From (Same as Monster Set, **ColorfulHell**) · Thralls From (**Same as Miniboss**, ColorfulHell, Map's Own Monsters) |
+| Boss | Boss From (Same as Monster Set, **ColorfulHell**) · Thralls From (**Same as Boss**, ColorfulHell, Map's Own Monsters) |
 | Monster Diagnostics | A test page. Today only God Mode works: Spawn hostile, the fourteen chaingunner buttons, Spawn All Fourteen, Remove them all, DIAG and WAKE are on the page but nothing answers them |
 
 Defaults are in bold.
 
 *[Still to come: the options page]*
 
----
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
 ## Status
 
@@ -296,7 +298,7 @@ Defaults are in bold.
 **Tier Icons Above Monsters** (`rs_ch_colorblind`) is on the RSQ Monsters page since 11-10 (rig only, not headset-confirmed:
 the row and the gems in frames, N5 above).
 
----
+<p align="center"><img src="../design/readme_art/mods/monsters_divider.png" alt=""></p>
 
 ## Under the hood
 

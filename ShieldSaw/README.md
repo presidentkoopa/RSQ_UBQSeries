@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_title.gif" alt="RSQ ShieldSaw"></p>
+
 # RSQ ShieldSaw
 ### Doom Arcade VR · a buzzsaw shield on your back: block it, bash it, rev it, throw it and catch it
 
@@ -10,7 +12,7 @@ arm forward, and the saw goes round the room cutting through them, then comes ho
 
 *[GIF to come: three rings painted, a throw cutting through two imps and grinding a third, then the catch]*
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -35,7 +37,7 @@ arm forward, and the saw goes round the room cutting through them, then comes ho
 - **It always comes home.** Back along the way it went, and into your hand if your hand is there. Press the throw
   button again mid-flight to call it back early.
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## How to play
 
@@ -76,7 +78,7 @@ Shield Throw button is its own (see *Plays well with*).
 
 You start every game with it on your back. Turn on **Start in Hand** to start holding it.
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## On your back
 
@@ -116,7 +118,7 @@ weapon cycle as well.
 **Putting it away** (**On Manual Store**): your off hand gets its empty hand back (the default, so you can reload by
 hand at once), or the weapon it held before the shield came out.
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## In your hand
 
@@ -141,7 +143,7 @@ Keep Shield**). Set it to **Allow Switch** and taking the hand puts the shield o
 there, flick the main gun's barrel down (45° within four tics, ending 40° below level) and it reloads, the same flick
 Brutal Doom VR uses. Its own Flick setting is honoured.
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## The block
 
@@ -185,7 +187,7 @@ block grows 1.3 times wider while you hold the stance. The grind and the bash st
 
 *[Still to come: the saber braced across the shield]*
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## The bash
 
@@ -220,7 +222,7 @@ without (top) and with (bottom) the bash burst, then the slam and the stun. Not 
 
 *[GIF to come: a bash that slams an imp into a wall, in the current build]*
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## The rev
 
@@ -233,7 +235,7 @@ pitch climbs. Let go and it winds down.
 
 *[GIF to come: the blades deploying, then grinding a pinky with blood flying]*
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## The throw
 
@@ -303,12 +305,15 @@ After 3 seconds of trying it stops asking the level and flies straight to you. Y
 
 *[GIF to come: the disc bouncing off a wall, coming home along its path, and caught in the hand]*
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## Plays well with
 
 Every other mod is found by name while the game runs. RSQ ShieldSaw loads and plays alone.
 
+- **RSQ Wheel:** pick a weapon for your off hand from the Wheel while the shield is on your arm, and the shield goes
+  to your shoulder and the picked weapon stays, whatever Off-Hand Switch is set to (owner 11-13: "the saw is fighting
+  me"). *Loads only, not shown.*
 - **RSQ Gun Bonsai VR:** the ShieldSaw has its own upgrade tree. **Broadening** widens the block (+20% a level, to
   double). **Back Plate** lets the shield on your back block, then turn shots. **Bulwark** makes a perfect block
   easier. **Rebound** and **Reflect** make returned bullets hit harder. **Rev Shield** grinds what claws a revving
@@ -351,7 +356,7 @@ Every other mod is found by name while the game runs. RSQ ShieldSaw loads and pl
 - **Gun Bonsai:** a returned bullet counts as your damage.
 - **LegenDoom and LegenDoom Lite:** a legendary's second life counts in the tiers.
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## Options
 
@@ -381,12 +386,13 @@ spot and its numbers, Start in Hand, Show ShieldSaw, Draw With Use, Next/Prev Of
 Marker, the body rows, Block Feedback, Positional Sound, Others See Shield, the held placement and Debug Log are each
 player's own.
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## Status
 
 | | |
 |---|---|
+| **loads only, not shown** (2026-11-13, run `main1`: the owner's full order with BD22 VR Reloaded 2.0.4x, no script error from our packs) | **The shield yields the off hand to a Wheel pick** (owner 11-13): a weapon RSQ Wheel puts in the off hand while the shield is drawn sends the shield to the shoulder; the picked weapon stays |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The body's eyes and the recenter gesture's eyes use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_HUD11.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | The debug lines (ssq_debug) are not drawn while any menu is open (owner 11-11) |
 | **rig only, not headset-confirmed** (2026-11-11, the last checks, `design/rigtest_2026-11-10/RESULTS_LAST.md`) | **A far bullet blocked by the plate:** a ZombieMan 11.76 m away on flat floor (rig02), the plate held facing it. Its real hitscan (through a puff): `guard kind 1 BLOCKED`, health 100 -> 100, and with the default muzzle guard `ATE a hitscan`, health unchanged; its own attacks over 1600 tics: two BLOCKED and one ATE, no damage to you (`design/rigtest_2026-11-10/evidence/LAST_SSQ_far_zombie_blocked_log.txt`) |
@@ -404,7 +410,7 @@ player's own.
 
 All VR behaviour is rig only, not headset-confirmed.
 
----
+<p align="center"><img src="../design/readme_art/mods/shieldsaw_divider.png" alt=""></p>
 
 ## Under the hood
 

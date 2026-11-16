@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_title.gif" alt="RSQ Glow In The Dark"></p>
+
 # RSQ Glow In The Dark
 ### Doom Arcade VR · coloured light up every wall, liquids that breathe, and a darkness that makes it all shine
 
@@ -10,7 +12,7 @@ falls and signs glow alongside the liquids, and **DarkDoomZ**'s darkness, so the
 
 *Rig frames from an earlier build (2026-11-06): the same room in twelve of the profiles. Not captures from the headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -31,7 +33,7 @@ falls and signs glow alongside the liquids, and **DarkDoomZ**'s darkness, so the
   blood red.
 - **One button for new colours.** **Randomize Colours Now** on this pack's page reshuffles the map's colours.
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## How to play
 
@@ -52,7 +54,7 @@ It is a button on this pack's page, not a key (owner 11-10: keys are precious in
 
 *[GIF to come: a room's glow changing colour when Randomize Colours Now is pressed]*
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Controls
 
@@ -63,7 +65,7 @@ It is a button on this pack's page, not a key (owner 11-10: keys are precious in
 - DarkDoomZ's flashlight key is not in this pack (its flashlight was left out on 2026-11-09; RSQ FnF's is the
   series' one). The darkness has no key.
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## The glow
 
@@ -134,7 +136,7 @@ pools, in their colour) and **Lights on Items** (on the most important items fir
 and armour, then ammo and weapons). Both are 0 by default, for Quest. **Light Style: Subdued** (the default) doubles
 their reach at half the brightness.
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Profiles and colours
 
@@ -216,7 +218,7 @@ Strength**; a **Pulse** (Steady, Breathe, Heartbeat, Candle, Hue Drift, Ripple);
 Lean to the Room's, The Room's Colour). Its fine numbers (Colour Wander, Floor and Ceiling Balance, Pulse Speed, Pulse
 Depth) are under Test and Debug.
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Randomize Colours Now
 
@@ -229,7 +231,7 @@ and the console says **"Glow In The Dark: colours held during a miniboss fight o
 
 *[Still to come: the "colours held" line on screen during a miniboss fight]*
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Darkness (DarkDoomZ)
 
@@ -261,7 +263,7 @@ RSQ Miniboss) work with this one.
 **Glow and darkness are one.** Turn **Glow In The Dark** off and the darkness goes with it: every room gets the map's
 own light back. To keep the glow but light the map, set Darkness Mode to Disable.
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Big moments
 
@@ -297,6 +299,13 @@ are down (single player).
 
 *[GIF to come: going DOWN, the map turning blood red and beating, then the colour draining back on revive]*
 
+### A life spent (RSQ Score)
+
+When RSQ Score spends one of your lives (2026-11-16, design/DOWN_LIVES_MINIBOSS_TIERS.md), the whole map's glow goes
+grey and white for 3 seconds, swinging slowly between the two once a second and climbing the walls. Then the map's own
+colours show strongly until 5 seconds are up, and the glow settles back over one more second. It is drawn over every
+other reaction. RSQ Score asks for it by name (`event.lifeflash`). *Rig only, not headset-confirmed.*
+
 ### A level-up (Gun Bonsai)
 
 ![A level-up wave, a kill chain and slow motion](docs/readme/wave_combo_slowmo.jpg)
@@ -320,7 +329,7 @@ killing and it settles back.
 While time is slowed, the glow drains toward a cold grey; the slower the world, the greyer, mostly grey at half speed
 or slower.
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -341,7 +350,7 @@ or slower.
 - **Any other mod** can ask this pack for a wave, a flare, a timed tint, new colours or a few seconds of darkness, and
   ask what it is showing (see Under the hood).
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Options
 
@@ -353,7 +362,7 @@ below it. Defaults in brackets.
 | (top) | Glow In The Dark (On) · Profile (Classic (1.1)) · Shuffle Profile Now · Randomize Colours Now (a button) · Randomize Current Look · Darkness (DarkDoomZ) · Use DarkDoomZ Pairing · Re-roll Colours (Every Map; Never, On Each Death, On Each Level-Up, Every N Minutes) · Re-roll Every (5 min) · Strength (1.00) · Glow Height (64) |
 | Glow Types | Floor and Ceiling Glow (On) · Liquids Glow (On) · Liquid Colour (Profile Decides; Room Colour, Always Their Own) · Living Liquids (On) · Splash Flares (On) · Guess Liquids by Name (On) · Hurt Floors Throb Red (On) · Secret Rooms Shimmer (Off) · Stronger in the Dark (On) · One Colour Per (Profile Decides; Tag Group, Each Room) · Blend Rooms (Off) |
 | Things That Matter | Switches, Exits, Locks (On) · Ordinary Doors Too (On) · Things Strength (1.0) · Keys and Pickups (Keys and Powerups; Off, + Health and Armour, + Ammo and Weapons) |
-| Reactions | Miniboss Tint (Miniboss) (On) · Tint Colour (The Miniboss's Own; Blood Red, Custom) · Custom Tint (red) · Darken the Map (On) · Darken By (48) · Level-Up Wave (Gun Bonsai) (On) · Wave Colour (gold) · Combo Glow (RSQ Score) (On) · SlowMo Drain (RSQ SlowMo) (On) |
+| Reactions | Boss Tint (Boss) (On) · Tint Colour (The Boss's Own; Blood Red, Custom) · Custom Tint (red) · Darken the Map (On) · Darken By (48) · Level-Up Wave (Gun Bonsai) (On) · Wave Colour (gold) · Combo Glow (RSQ Score) (On) · SlowMo Drain (RSQ SlowMo) (On) |
 | Custom Profile | Floor Glow (Any Colour; Fixed (Sliders), A Profile's Colours, Off) · Ceiling Glow (Any Colour) · Colours From (Hellfire) · Floor Red, Green, Blue (135 each) · Ceiling Red, Green, Blue (135 each) · Custom Strength (1.00) · Pulse (Steady; Breathe, Heartbeat, Candle, Hue Drift, Ripple) · Custom Liquids (Own Colour; Lean to the Room's, The Room's Colour) |
 | Dynamic Lights | Light Style (Subdued; Normal) · Lights Over Pools (0, up to 8) · Lights on Items (0, up to 12) |
 | Darkness (DarkDoomZ) | Darkness Mode (Compress) · Darkness Level (Dismal). Advanced Settings: Pre-Gain (0) · Post-Gain (0) · Min. Lightlevel (0) · Sky Sectors (1.0) · Sector Light Effects (Keep; Remove). Fog Settings: Fog Mode (the engine's) · Fog Density (0) |
@@ -364,12 +373,13 @@ its default, both Profile rows included (the engine's Fog Mode stays).
 
 All the settings are the host's (one setting for everyone in netplay), except Debug Log, which is each player's own.
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Status
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-16, runs `boss_p1b`, `boss_p1c`, `../SlowMo/docs/rig_2026-11-16_down_lives/`) | **The life flash:** a Score life spent turns the glow grey and white for 3 s, then the map's own colours strongly, then it settles (RSQ Score's README has the run). On the options page the Miniboss rows now read **Boss Tint (Boss)** and **The Boss's Own** (the settings are the same ones) |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of this pack was exercised |
 | **rig only, not headset-confirmed** (2026-11-10 night, RSQ SlowMo's S3 and RSQ Miniboss's B1: `design/rigtest_2026-11-10/RESULTS_P3.md`) | **DarkDoomZ's fog goes off with Glow In The Dark:** with `ddz_fog 64`, both sectors fogged with Glow In The Dark on, none with it off, fogged again when it was back on. **The landing's darkness** dropped once for a miniboss landing that retried twice (`[RSQGD] drop darkness`). Logs only, no frames (`design/rigtest_2026-11-10/evidence/P3A_log.txt`) |
 | **rig only, not headset-confirmed** (2026-11-09; `design/rigtest_2026-11-09/logs/main_A-G_I.log`, frames `I_ddz_*`) | The built-in DarkDoomZ: MAP01 darker from the start at its defaults (58 of 59 sectors, average light 173 to 108); Darkness Mode switched live to DarkDoom Black (every sector 0), to Disable (every sector back to its own light) and back to the default (108 again) without a reload; no DarkDoomZ flashlight or spotlight in the game. Darkness (DarkDoomZ) on this pack's page, under Radiant Silvergun Options (the menu as loaded, row by row). The pack loaded with no script error of its own on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded and the rest of the series. That run was on the build of 18:49; the core, reactions and service code and CVARINFO.txt changed after it (19:40) |
@@ -381,7 +391,7 @@ All the settings are the host's (one setting for everyone in netplay), except De
 The frames on this page from 2026-11-06 are pictures of what an earlier build did. They are not proof of the current
 build.
 
----
+<p align="center"><img src="../design/readme_art/mods/glowinthedark_divider.png" alt=""></p>
 
 ## Under the hood
 

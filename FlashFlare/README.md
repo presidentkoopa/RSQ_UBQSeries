@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/flashflare_title.gif" alt="RSQ FnF"></p>
+
 # RSQ FnF
 ### Doom Arcade VR · a road flare you strike and throw by hand, and a flashlight you carry on your body
 
@@ -22,7 +24,7 @@ the flare holster's place. *Code only, not shown.*
 
 *[GIF to come: a flare struck, held up, then thrown down a dark corridor where it lights the room]*
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -41,7 +43,7 @@ the flare holster's place. *Code only, not shown.*
 - **The battery matters.** A meter on the flashlight's body counts down while it is on, and the beam dims and flickers
   when it runs low. Switch it off and it charges again. Kills inside your beam top it up.
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## How to play
 
@@ -62,7 +64,7 @@ levels, at most 2 a map. You carry up to 24. Grip an empty pocket and you are to
 A burning flare never goes back in the pocket: it leaves your hand by a throw, by burning out, or by something else
 taking your off hand (it falls there, still burning). A burning flare in your hand at a level exit is used up; an unlit one goes back in your pocket. The grip does nothing to a lit flare.
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## Controls
 
@@ -76,7 +78,7 @@ taking your off hand (it falls there, still burning). A burning flare in your ha
 - **Gestures:** a sharp flick down of the flare hand strikes it (**Light It By** Strike or Either); a swing released
   with the trigger held throws it.
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## The flare
 
@@ -104,7 +106,7 @@ When one burns out, the last one that went dark lights up again.
 
 *[GIF to come: four flares thrown one after another, the oldest fading dark as the newest lands]*
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## Throwing flares and setting things on fire
 
@@ -120,7 +122,7 @@ Champions champion only catches fire once it is below 25% of its health (you can
 
 *[GIF to come: a flare thrown into an imp, the imp burning]*
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## The flashlight
 
@@ -172,7 +174,7 @@ The cone, the dust, the hotspot and the battery work the same in both looks.
 *Rig frames, 2026-11-09: the FnF look (one light), the DarkDoomZ look with Spill Light on (two lights), and switched
 off (none). The flashlight is the one in the left hand.*
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -194,7 +196,7 @@ off (none). The flashlight is the one in the left hand.*
   flashlight is the flashlight, and its DarkDoomZ Beam Look gives you DarkDoomZ's beam.
 - **RSQ Accessibility:** its Reset Every Mod resets this pack too.
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## Options
 
@@ -216,7 +218,7 @@ them. Beam Size and Beam Colour only apply to the FnF look, and the two DarkDoom
 The light, supply, burn and flashlight rows are the server's (one setting for everyone in netplay). How your hands are
 read (Light It By, the speeds, the pocket and clip places, the grip keys) and the Show rows are each player's own.
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## Status
 
@@ -236,7 +238,7 @@ read (Light It By, the speeds, the pocket and clip places, the grip keys) and th
 The rig frames from earlier builds on this page are pictures of what the code did then. They are not proof of the
 current build.
 
----
+<p align="center"><img src="../design/readme_art/mods/flashflare_divider.png" alt=""></p>
 
 ## Under the hood
 

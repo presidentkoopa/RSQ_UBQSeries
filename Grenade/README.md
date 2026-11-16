@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/grenade_title.gif" alt="RSQ Grenade"></p>
+
 # RSQ Grenade
 ### Doom Arcade VR · a real hand grenade, nine kinds of trouble, and barrels that go off like fireworks
 
@@ -7,7 +9,7 @@ it out of the air.
 
 ![A frag shot out of the air](docs/readme/frag_skeet.gif)
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -21,7 +23,7 @@ it out of the air.
 - **Barrels are a show now.** Six new explosions, chain reactions that grow with every link, and blasts that change
   with the room: fire fanning along a wall, rolling under a low ceiling, bubbling under water.
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## How to play
 
@@ -39,7 +41,7 @@ it out of the air.
 You start each game with 3. They turn up lying in levels beside other items, singly or in packs of three. You carry 8,
 or 16 with a backpack.
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## Controls
 
@@ -58,7 +60,7 @@ or 16 with a backpack.
 - **Taking one:** pick slot 9, or with RSQ Tactical Rig reach to the front of your belt (the rig's grip).
 - No key of this pack became a menu button.
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## The nine kinds
 
@@ -84,7 +86,7 @@ fireball in its colour as well.
 Bosses can't be charmed or turned. Without RSQ Gun Bonsai VR they can't be frozen or stunned either; with it, Freeze
 slows them instead. Without Gun Bonsai VR every kind is yours from the start; with it, you learn them one by one.
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## Barrels and explosions
 
@@ -130,7 +132,7 @@ bursts every one of them.
 *These pictures are design renders, drawn from the same sequences the game plays. They are not captures from the
 headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -154,7 +156,7 @@ headset.*
   Doom's Grenade** and this one takes over. Barrels are ours by default (**Replace Brutal Doom's Barrels** on), so
   Brutal Doom's barrels grow down a chain too; turn it off to keep Brutal Doom's own barrel kick and spilled fire.
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## Options
 
@@ -169,7 +171,7 @@ headset.*
 | Shooting | Shoot Thrown Grenades · Only in Slow-Mo · Faster in Slow-Mo · Skeet Slow-Mo (Gun Bonsai VR) |
 | Test and Debug | Fuse (3 s) · Throw Speed · Throw Strength · Arc · Gravity · Floor and Wall Bounce · Ground Drag · Shot Reach · Slow-Mo Speed · the teeth's reach and hold · Effects Cap · Debug Log |
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## Status
 
@@ -187,7 +189,7 @@ headset.*
 | **code only, not shown** | Everything else on this page. Among it, the 11-10 changes: RSQ SlowMo's Quick Grenade slow, the Kinetic sounds, the rumble route to RSQ Accessibility and Rumble Strength |
 | **not yet run** | G2 has run (above). From G1, still not logged: the pin and toss sounds, the speed against BD22's own toss measured the same way, RSQ SlowMo's slow |
 
----
+<p align="center"><img src="../design/readme_art/mods/grenade_divider.png" alt=""></p>
 
 ## Under the hood
 

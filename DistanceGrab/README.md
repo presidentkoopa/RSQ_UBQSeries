@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/distancegrab_title.gif" alt="RSQ Distance Grab"></p>
+
 # RSQ Distance Grab
 ### Doom Arcade VR · turn your palm out, pull the barrel across the room, and throw it back at them
 
@@ -7,7 +9,7 @@ thrown hard goes off where it lands.
 
 *[GIF to come: a barrel pulled across the room, caught, and thrown into a crowd, where it goes off]*
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -28,7 +30,7 @@ thrown hard goes off where it lands.
 - **Hide behind it.** A barrel or a body held up in front of you stops the fireballs that would cross it.
 - **Doors and switches by hand.** Put your palm flat on a door and lift. Lay it on a switch and it flips.
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## How to play
 
@@ -48,7 +50,7 @@ thrown hard goes off where it lands.
 | Palm out against a door (or the grip, or Use), then raise your hand | The door lifts with your hand |
 | Palm out on a switch | It flips |
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Controls
 
@@ -72,7 +74,7 @@ thrown hard goes off where it lands.
   palm out; its Off-Hand Modifier moves the off hand's grab to the main controller.
 - No key of this mod became a menu button.
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Pulling things to your hand
 
@@ -107,7 +109,7 @@ slower and turn lazier, and **Lob**, a lob re-aimed at your hand every tic that 
 
 *[GIF to come: the beam idle (blue), on a shotgun (amber), locked (green), then the shotgun pulled to the hand in an arc]*
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Catching
 
@@ -138,7 +140,7 @@ A green bloom flashes at your palm on a catch, with a thud: deeper and louder th
 
 *[GIF to come: a medikit pulled and caught; then a shotgun caught in the off hand and coming up there]*
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Carrying
 
@@ -160,7 +162,7 @@ so it is never in your face, and walls stop it: push it against a wall and it st
 *[GIF to come: a barrel carried, then swung into an imp]*
 *[GIF to come: a barrel held up as a shield, an imp's fireball bursting on it]*
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Throwing
 
@@ -186,7 +188,7 @@ throw is not what leaves your hand.
 
 *[GIF to come: a thrown barrel arcing into a group of zombies and going off]*
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Barrel Lock-On
 
@@ -205,7 +207,7 @@ For when you have a barrel and want it in someone's face (on by default).
 
 *[GIF to come: a barrel in one hand, the other palm locking an imp, the barrel thrown wide and curving onto it]*
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Doors and switches
 
@@ -222,7 +224,7 @@ For when you have a barrel and want it in someone's face (on by default).
 *[GIF to come: a hand on a door, lifting it halfway and letting go; the door finishes opening]*
 *[Still to come: a palm flat on a switch]*
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## When your hand will not reach
 
@@ -243,7 +245,7 @@ A hand that is already locked, pulling or carrying keeps going: the flick, the c
 Hold your palm out for half a second on a hand that cannot reach because of what it holds, and the screen says why, for example "Distance Grab:
 the off hand does not reach -- a lit saber".
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## The colours
 
@@ -279,7 +281,7 @@ come from it instead of the model beam:
 On QuestZDoom, or with `rs_laser 0`, you get the model beam as always. The pack asks for the engine laser by service
 name and links against nothing.
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -314,7 +316,7 @@ name and links against nothing.
 - **Brutal Doom and BD22 VR Reloaded:** Brutal Doom's own barrels, floor guns and +1 bonuses are recognised for what
   they replace. BD22 VR Reloaded's axe goes to the hand that grabbed it, and its two-hand holds stand the grab down.
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Options
 
@@ -346,7 +348,7 @@ Lob paths; **Arc Speed**, **Arc Height**, **Arc Pull-In** and **Pull Smoothness*
 The Arc's numbers, Pull Spin, Tumble, the air (Throw Gravity, Flutter, Air Time Limit), Tip With Wrist and Heavy Sag are
 the server's settings; everything else is each player's own.
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Known concerns
 
@@ -359,6 +361,7 @@ the server's settings; everything else is each player's own.
 
 | | |
 |---|---|
+| **code only, not shown** (2026-11-16; the toast route itself was shown on the rig with a probe, not these messages: `../Miniboss/docs/rig_2026-11-16_words_toasts/`) | **The pull's word falls back to a toast** (design/PRESENTATION_GUIDE.md 5, owner 11-16): when RSQ VisualRewards does not put the word over the thing (AMMO FULL and the like), it is asked for a toast; without RSQ VisualRewards the word prints as before |
 | **rig only, not headset-confirmed** (2026-11-12, runs axp1 and axp2 with BD22 VR Reloaded 2.0.4r; `../TacticalRig/tools/rigtest/axepool/evidence/`) | **`pickup.first` and the axe in the hand.** Each axe pull was answered before the pickup ("given by its own pack before the pickup"): a map axe pulled by the off hand +1; the main hand, HOLDING its next axe, pulled its own thrown axe back after a hit +2 (twice: 1 -> 3, and 9 -> 10 capped); the off hand, holding its next axe, pulled back its own missed throw +1; at 10 axes a map axe: "its own pack says BrutalAxe is full (pickup.first): AMMO FULL", the word over it, dropped at the feet. In axp1 (before the reach fix) the main hand holding an axe was refused ("holding a melee weapon"); fixed for BD22 VR's axe, shown in axp2. Not shown: the walk-up grip on an axe at 10 (code: left where it is, with the word) |
 | **rig only, not headset-confirmed** (2026-11-12, runs ax1 / ax3 / ax4 on the owner's order; `tools/rigtest/evidence_full_and_axe_1112.txt`, `tools/rigtest/ax4_f249_ARMOR_FULL.jpg`, `ax4_f303_HEALTH_FULL.jpg`) | **The axe's AMMO FULL, found and fixed.** Before (ax1, BD22 VR Reloaded 2.0.4p): the off-hand axe thrown, the main axe still carried, the off hand pulled it back: "the pickup refused BrutalAxe (owned, ammo full)", AMMO FULL, dropped at the feet. After (ax3, 2.0.4q): the same pull -- "its own pack claimed it (pickup.claim)", the off hand holding its axe; a main-hand pull of the thrown off axe -- the main hand holding the axe, the other one the off hand's; with both axes carried, a third: AMMO FULL, dropped at the feet; no axe carried: the pull gave the main hand its axe, thrown and pulled back twice. **HEALTH FULL / ARMOR FULL:** at 300 health a health bonus (HEALTH FULL, before the pickup) and a stimpack (the game's refusal: HEALTH FULL), at 300+ armour an armour bonus (ARMOR FULL, at 400; at 294 armour it was used, as it should be) and the heavy armour (ARMOR FULL), each left at the feet; the word in frames (VisualRewards'). At 50 health a stimpack was caught and used (60); at 0 armour an armour bonus was used. Not shown: the walk-up grip's HEALTH / ARMOR FULL, Brutal Doom's spheres (CustomInventory: not judged), the off hand's HEALTH FULL |
 | **rig only, not headset-confirmed** (2026-11-10, the batched rig test) | Every launch loaded every RSQ pk3 with no script error from our packs, on doom2, brutal22test6, BD_VoxelPack, BD22 VR Reloaded 2.0.4f, LOB, Champions, Gun Bonsai and the series (`design/rigtest_2026-11-10/RESULTS.md`). Nothing of the grab was exercised in them (the packed batch, next row, did). Those launches came before the G / H binds were taken out (commit 09243dd8) |
@@ -371,7 +374,7 @@ the server's settings; everything else is each player's own.
 
 The 11-03 log is a picture of what the code did then. It is not proof of the current build.
 
----
+<p align="center"><img src="../design/readme_art/mods/distancegrab_divider.png" alt=""></p>
 
 ## Under the hood
 

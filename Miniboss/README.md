@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/miniboss_title.gif" alt="RSQ Miniboss"></p>
+
 # RSQ Miniboss
 ### Doom Arcade VR · fill the meter, call the fight in, break the shield one thrall at a time
 
@@ -11,7 +13,7 @@ gets stronger.
 
 *The arrival beams, from RSQ VisualRewards (its design renders; its README has each beam on its own).*
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -38,7 +40,7 @@ gets stronger.
   bits, its Champion's own drops, one cigarette (RSQ Tactical Rig), RSQ Score's Miniboss row. A thrall drops only its
   Champion's bundle, armour and ammo: no gun, no health bits.
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## How to play
 
@@ -68,7 +70,7 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 
 *[Still to come: the meter filling red under the score, then gold and beating, with a wait line under it]*
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## Controls
 
@@ -89,7 +91,7 @@ reason goes. **Ignore Spawn Restrictions** brings it regardless of Too Early, Lo
 - **The fight itself** is your guns, fists and the other mods: this mod reads no trigger, grip or gesture of its own.
 - **Menu buttons:** Reset All. The console commands listed in Under the hood are for testing.
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## The meter
 
@@ -110,7 +112,7 @@ picked is not loaded, the other one is used; with neither, kills, chains and tim
 
 While a miniboss fight runs the meter hides, and the fight's own bars take its place.
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## Who comes
 
@@ -169,7 +171,7 @@ legendary with LegenDoom (when **Legendary Thralls** is on), lit in its own colo
 a little larger, and get half their health again when they are not made legendary. The miniboss is 1.25x as big (its hitbox too), 1.25x as fast, and far
 keener to shoot. It becomes legendary when any of its thralls is.
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## The arrival
 
@@ -185,7 +187,7 @@ keener to shoot. It becomes legendary when any of its thralls is.
   teleport sound.
 - **If the miniboss cannot land,** whatever already came is taken back out, the meter stays full, and it tries again.
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## The fight
 
@@ -288,7 +290,7 @@ The tethers, bursts, flames, bars and the room's glow all wear it, and it change
 
 
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## Greed
 
@@ -300,7 +302,7 @@ are raised meanwhile are enraged too. Kill every thrall before then and nothing 
 or you leave the level, every monster is put back exactly as it was.
 
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## The rewards
 
@@ -360,7 +362,7 @@ in place of its one legendary weapon, beside the 1UP crate:
 see Status.*
 
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## Graves Rise
 
@@ -377,7 +379,7 @@ With **Graves Rise** on, Legion of Bones and RSQ Graveyard loaded, the moment a 
 Each undead is a thrall's own type, Skull Zombies when none fits. The tombstones' candles also beat with the full meter's
 heartbeat.
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -422,7 +424,7 @@ happen.
   buy are BD22 VR's, asked by name; the gold and the life LUCKY spends are Score's). RSQ VisualRewards drops the gold bits.
 - **Brutal Doom:** works on its monsters.
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## Options
 
@@ -451,7 +453,7 @@ are in map units (32 to a metre).
 
 *[Still to come: the options page]*
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## Status
 
@@ -492,7 +494,7 @@ are in map units (32 to a metre).
 | **code only, not shown** | Everything else on this page, among it: the grey Xs and the pops, the Thrall Slow Kill points of the new windows, powers lost with their thrall, the edge arrows, the landing's darkness and music beyond the log lines above, Ignore Spawn Restrictions, Tier From, the Gun Bonsai VR fill, the rage since the rework, the hub colour reset |
 | **not yet run** | Nothing from the batched rig test: B1 to B8 have run (above) |
 
----
+<p align="center"><img src="../design/readme_art/mods/miniboss_divider.png" alt=""></p>
 
 ## Under the hood
 

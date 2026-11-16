@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/wheel_title.gif" alt="RSQ Wheel"></p>
+
 # RSQ Wheel
 ### Doom Arcade VR · every gun you carry on a ring of cards, and the place where you decide which holster each one lives in
 
@@ -8,7 +10,7 @@ gun you are pointing at.
 
 *[picture to come: the ring opening in the headset, cards growing out of the wrist (GIF)]*
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -35,7 +37,7 @@ gun you are pointing at.
 - **Time waits for you.** With RSQ SlowMo, the world slows while the ring is open. You can also have the ring stop time
   outright.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## How to play
 
@@ -81,7 +83,7 @@ Gone on 2026-11-10 (owner: keys are precious in VR): **Wheel: open**, **Wheel: o
 the `]` and `[` default binds. Their console commands stay, with no key and no menu row. The two ModelSwapper keys have
 been off the controls list since 11-09, while ModelSwapper support is parked.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## The ring
 
@@ -140,7 +142,7 @@ the lightsaber, the whip, the ShieldSaw, the road flare and flashlight (RSQ FnF)
 gloves wear RSQ Melee's own icons (the main glove's and the off glove's), and the Wheel's glove only when those are not
 there.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## The data sheet
 
@@ -169,7 +171,7 @@ What it can show, each only when there is something to say:
 **Two Hands Compare** (off by default): point your other hand at a different card and the sheet turns into the two guns
 side by side, the better numbers marked.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## The wrist card
 
@@ -179,7 +181,7 @@ and it folds away. With RSQ Gun Cards loaded and its own watch card on, Gun Card
 
 *[picture to come: the wrist card over the main-hand wrist]*
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Kit yourself out: the holster screen (with RSQ Tactical Rig)
 
@@ -207,7 +209,7 @@ your profile's colour, has a holster.
 *[picture to come: the holster screen, Mirror view]*
 *[picture to come: a gun flying from its card into a holster ring (GIF)]*
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Next and previous weapon
 
@@ -215,7 +217,7 @@ Your next / previous weapon keys (each hand's) step through one shared list, in 
 every gun on it. **Off-hand alt fire on a card** takes that gun off the list or puts it back; a gun with a holster is
 never on it. With nothing on the list, the keys step through every gun, as Doom does.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Fonts
 
@@ -230,7 +232,7 @@ JFO, the status bar numerals, small gold or grey numerals, DoomFont only, and Er
 The holster screen's ring numbers are in RSQ Score's combo digits when RSQ Score is loaded, and JFO's big digits without
 it.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Looks
 
@@ -241,7 +243,7 @@ it.
 - **Ring Plates.** The Wheel's own plates (Ermac style) or the status bar's stone.
 - **Extras, off by default:** a breathing halo, a spark running round each card's edge, and a starfield behind the ring.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -270,7 +272,7 @@ it.
 MetaDoom, BorderDoom, DOOM Infinite, Combined Arms, Final Doomer, ModelSwapper and Lithium. They are switched off for
 now (the owner, 2026-11-09) and their options are hidden. Only Gun Bonsai and LegenDoom are read.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Options
 
@@ -299,7 +301,7 @@ Either Hand Picks on, both hands still pick from it).
 
 *Opens On set to Main hand: the ring opens in front of the right hand, the PISTOL card in front (left); set to Off hand: in front of the left hand, the FIST card in front (right) (rig capture, not headset).*
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Status
 
@@ -323,7 +325,7 @@ Either Hand Picks on, both hands still pick from it).
 | **code only, not shown** | The 11-10 key change (one Open Wheel key; on the rig only its command was sent, above); the 11-09 evening fixes (Reset All covers Freeze Time and Web View, the ModelSwapper keys off the controls list, Freeze Without SlowMo on its own); everything else on this page |
 | **not yet run** | Nothing from the rig test: N4 and the glove cards with the gloves in slot 1 by Melee have run (above) |
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Under the hood
 
@@ -374,7 +376,7 @@ Either Hand Picks on, both hands still pick from it).
 - **Stock QuestZDoom 17.3:** ZScript and data only. No engine changes. Built for single player: the ring follows the
   console player only.
 
----
+<p align="center"><img src="../design/readme_art/mods/wheel_divider.png" alt=""></p>
 
 ## Credits
 

@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/lasersight_title.gif" alt="RSQ Laser Sight"></p>
+
 # RSQ Laser Sight
 ### Doom Arcade VR · a laser out of every barrel, both hands, painted right where your shot will land
 
@@ -11,7 +13,7 @@ Pick up a grenade launcher and the laser bends into the arc your grenade will fl
 *Rig frame, 2026-11-09, current build: the pistol's PC VR laser (white-hot core in a soft red glow) staying on through
 a fire frame. Simulated headset on the Linux rig, not a capture from a real headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -32,7 +34,7 @@ a fire frame. Simulated headset on the Linux rig, not a capture from a real head
 - **It gets out of the way.** Point the gun at the floor, switch guns, check your watch or die and it goes out;
   punch, saw or slice and there is no laser at all.
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## How to play
 
@@ -56,7 +58,7 @@ There is nothing to hold: load it, pick up a gun.
 There are no keys to bind. Each hand's laser is switched on or off on this pack's page (**Main Hand**, **Off Hand**;
 greyed while **Laser Sight** is off).
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Controls
 
@@ -71,7 +73,7 @@ greyed while **Laser Sight** is off).
   Down**), and the watch check on either hand (RSQ Accessibility's, or RSQ Gun Cards' copy of it), which puts out both and has no row.
 - **Menu buttons:** Reset All.
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## The beam
 
@@ -131,7 +133,7 @@ rifle, plasma gun, shotgun, super shotgun, assault shotgun, railgun).
 Any other gun gets the dot without a beam: traced from your hand along the shot's own line, or from the muzzle a
 weapon pack tells this pack about.
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## The dot
 
@@ -156,7 +158,7 @@ BD22 VR Reloaded 2.0 fires each gun from its own muzzle a few degrees left of an
 line, down the drawn barrel. With **Follow Brutal Doom Shots** on (the default), the dot is traced along exactly that
 line, from that muzzle, so it lands where the bullet lands.
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Targets
 
@@ -171,7 +173,7 @@ With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you
 
 *[GIF to come: the dot locking onto an imp, swelling and pulsing, then flashing white on its head]*
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Grenade arc
 
@@ -185,7 +187,7 @@ With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you
 
 *[GIF to come: a grenade launcher's dotted arc with the bent beam, then the grenade landing on the dot]*
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Extras
 
@@ -203,7 +205,7 @@ With RSQ Gun Bonsai VR and RSQ Tactical Rig loaded, these three are upgrades you
 *[Image to come: the spread ring around the dot on a wall, shotgun]*
 ![The range readout by the gun, in map units, metres and feet (rig)](../design/rigtest_2026-11-10/evidence/LS_READOUT_by_the_gun_u_m_ft.jpg)
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Colours
 
@@ -220,7 +222,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 
 *[GIF to come: Cycle Colours on both hands]*
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## When it shows
 
@@ -237,7 +239,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 
 *[Image to come: Infrared Only, the room without goggles and with them]*
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -270,7 +272,7 @@ The laser can be any colour from a picker. In order, each one over the last:
 - **Any weapon pack** can tell this pack each gun's laser colour or muzzle point, and any mod can ask what the laser
   is doing (see Under the hood).
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Options
 
@@ -293,7 +295,7 @@ Grenade Arc; the slot colours with Colour per Slot; and so on.
 
 The page ends with **Reset All**: every setting on the page and on Test and Debug goes back to its default.
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Status
 
@@ -316,7 +318,7 @@ The page ends with **Reset All**: every setting on the page and on Test and Debu
 Earlier commit messages (2026-11-06) say Dot Only on Enemies and the bent arc beam (with a test lobber, not BD22's
 launcher) were shown on the rig; those logs and frames are not in the repo, so they are not counted here.
 
----
+<p align="center"><img src="../design/readme_art/mods/lasersight_divider.png" alt=""></p>
 
 ## Under the hood
 

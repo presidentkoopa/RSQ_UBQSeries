@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/accessibility_title.gif" alt="RSQ Accessibility"></p>
+
 # RSQ Accessibility
 ### Doom Arcade VR · one page of settings for the whole series: see it, hold it, sit down, play with one hand
 
@@ -10,7 +12,7 @@ label, the vignette, and the series' gesture reader (the watch check and the two
 
 *[GIF to come: an imp firing from behind, the red arrow at the edge of the view, then turning to face it]*
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -31,7 +33,7 @@ label, the vignette, and the series' gesture reader (the watch check and the two
   every tap and double-tap half again as long.
 - **Less sick.** The Comfort Vignette darkens the edge of your view while a rope or a Force jump throws you around.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## How to play
 
@@ -52,7 +54,7 @@ turn it on. Two rows are on from the start: **Steady Hands** (On) and **Seated P
 **No keys are bound for you.** The One-Handed buttons are on this page and in Customize Controls, under
 "RSQ Accessibility". They only do anything while **One-Handed** is on.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Controls
 
@@ -68,7 +70,7 @@ turn it on. Two rows are on from the start: **Steady Hands** (On) and **Seated P
 - **Menu buttons:** Measure Standing Height, Measure Me, Reset All and Reset Every Mod. No key of this pack became a
   menu button.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Seeing
 
@@ -103,7 +105,7 @@ the code says.
 **Text Size** (1.00, from 1.00 to 3.00): the series' HUD text and Gun Bonsai VR's screens, and this pack's
 slow-motion label and gesture names. At 1.5 and above, the series' centre-screen messages use the big font.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Hands
 
@@ -157,7 +159,7 @@ SlowMo's wrist cross, Grapple, Whip and the Saber, and in this pack's own gestur
 
 The Test and Debug sliders show the values before the ease.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## One hand
 
@@ -181,7 +183,7 @@ Turn on **One-Handed**, then bind the buttons you need. With One-Handed off, non
 
 The Force jump is already a button (Jump, held), so it has none here.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Comfort
 
@@ -231,7 +233,7 @@ What the series does with it: Tactical Rig hangs its belt and holsters from your
 pose; the Wheel lowers its eye line; ShieldSaw brings its shield mount down; Measure Me adds the drop back so the gesture zones fit your
 standing body.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Cues and rumble
 
@@ -280,7 +282,7 @@ Laser Sight, RSQ Glow In The Dark and RSQ Gun Bonsai VR have no rumble of their 
 in BD22 VR Reloaded's dual-wield fire states (the shot itself already buzzes the firing hand) and quakes from packs
 outside the series (Brutal Doom, LegenDoom).
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Two-hand brace
 
@@ -293,7 +295,7 @@ together, and while it is latched the off-hand gun goes dead: it does not fire a
 - **Brace Cue** (Off; Rumble, Sound, Both): the moment the brace latches with a gun in your off hand (one that uses
   ammo; a fist on the gun is the two-handed hold itself), a rumble on the off hand and / or Doom's switch click.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Gestures
 
@@ -347,7 +349,7 @@ trigger.
 - The reader also names punches (jab, hook, uppercut) and gun-butt shoves, but no series mod asks it for them now
   (RSQ Melee reads its own). Only the names show.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Menus
 
@@ -359,7 +361,7 @@ trigger.
 - **Reset Every Mod** (asks first): runs the Reset All row of every loaded RSQ mod's page, as that mod runs it.
   Accessibility is kept. The console says how many were reset.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -414,7 +416,7 @@ always has.
 - **RSQ Monsters:** Menus: Simple hides its "Monster Diagnostics" link.
 - **Reset Every Mod** and **Menus: Simple** reach every series page under Radiant Silvergun Options.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Options
 
@@ -437,7 +439,7 @@ always has.
 
 *[Image to come: the Accessibility page]*
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Status
 
@@ -466,7 +468,7 @@ Toggle save fix and the slow-motion label fix on 10-31), and a commit message (2
 a roll of -22.8 degrees with the new numbers. Those logs are not in the repo, so they are not counted here. The test
 scripts `Accessibility/tools/rigtest/qol.sh` and `sweep.sh` exist; their output is not in the repo either.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Under the hood
 
@@ -518,7 +520,7 @@ scripts `Accessibility/tools/rigtest/qol.sh` and `sweep.sh` exist; their output 
   across a save is let go after the load.
 - **Single player:** cues, the vignette and rumble are for the console player only. QuestZDoom has no netplay.
 
----
+<p align="center"><img src="../design/readme_art/mods/accessibility_divider.png" alt=""></p>
 
 ## Credits
 

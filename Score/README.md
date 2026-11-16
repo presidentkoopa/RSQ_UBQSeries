@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/score_title.gif" alt="RSQ Score"></p>
+
 # RSQ Score
 ### Doom Arcade VR · points for every kill, a bonus for how you made it, and lives you earn back
 
@@ -8,7 +10,7 @@ brings you back in a ring of fire.
 
 *[GIF to come: a kill, the bonus rows rolling out under the score line, the bar filling]*
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -28,7 +30,7 @@ brings you back in a ring of fire.
 - **A word that breathes.** The word "Score:" breathes from calm blue to warm, flares white-gold when points land and
   warms to gold as the next life nears.
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## How to play
 
@@ -53,7 +55,7 @@ series.
 **A new map starts from zero by default:** the score, the bar and the lives you held. **New Map Keeps** lets you keep
 the total, the total and the lives, or everything.
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## How points are scored
 
@@ -80,7 +82,7 @@ Each of the five families can have its own cap too, off by default.
 monsters a spawner makes at the start count too) pay their full base once. Anything else, an Arch-Vile's raised corpse
 or a script's spawn, pays **Raised Monster Pay**: 100% by default, so it changes nothing until you lower it.
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## The map's target and the rewards
 
@@ -101,7 +103,7 @@ target; every time you cross one, you earn its reward.
 The bar fills orange when the next reward is ammo and blue when it is a life. When a reward pays, the bar lights in its
 colour; a life also plays a second chime and makes the life pips swell and light up.
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Lives
 
@@ -127,7 +129,7 @@ You see your lives as pips above the score line (up to 10 drawn; you can hold mo
 
 *[GIF to come: a life spent: the blast and the ring of fire climbing round the player]*
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Gold (2026-11-16, design/KIOSK.md)
 
@@ -147,7 +149,7 @@ Score keeps your **gold**: what the RSQ Miniboss Boss kiosk sells legendary weap
 *Rig only, not headset-confirmed (runs `kq_bits1`, `kq_in7`, `kq_death1`: 300 gold banked, a death with no life, the
 map reloaded with the 300 back; `kq_watch5`: GOLD on the off-hand watch card).*
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Head shots
 
@@ -177,7 +179,7 @@ hit the head.
 *These pictures are frame sheets from the test rig (stock QuestZDoom 17.3, 2026-11-09), shots fired by a test probe,
 not a gun in a headset.*
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Combos
 
@@ -485,7 +487,7 @@ Doom's kick.
 
 </details>
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## The score tree
 
@@ -818,7 +820,7 @@ These rows pay when another mod says so, not on a kill of their own:
 
 </details>
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Big moments
 
@@ -833,7 +835,7 @@ Without SlowMo nothing slows; the rows still pay.
 
 *[GIF to come: a Fatality, the world dropping to 35% for a beat]*
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## The HUD
 
@@ -879,7 +881,7 @@ dims every flash to 40% and lets the score flash at most 2.5 times a second; the
 
 *[Still to come: a colour-blind breakdown with its family letters]*
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -926,7 +928,7 @@ without the mod they read.
 - **Brutal Doom and Brutal Doom VR Reloaded:** what counts as a kill, the head-shot check, Fatality, the boots, the
   Super Shotgun's Coach Gun, the hard swing's Heavy Swing, and the gun kinds the combos and rows name.
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Options
 
@@ -957,7 +959,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 
 *[Still to come: the options page]*
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Status
 
@@ -977,7 +979,7 @@ Rows not marked (off) are on by default; the default choice is Life Every Time, 
 | **code only, not shown** (2026-11-11, RSQ Monsters' ladder renumbered by strength; owner: "no rig test, code only until i say") | The roster rows read the new tier numbers: each colour row, the rarity rank behind Keep the Change, Fresh Paint, Upset and Tier Slayer, Full Spectrum's and Colour Chain's colours; pay unchanged |
 | **not yet run** | Nothing from the batched rig test: R2 and R4 have run (above) |
 
----
+<p align="center"><img src="../design/readme_art/mods/score_divider.png" alt=""></p>
 
 ## Under the hood
 

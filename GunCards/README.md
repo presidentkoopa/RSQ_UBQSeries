@@ -1,3 +1,5 @@
+<p align="center"><img src="../design/readme_art/mods/guncards_title.gif" alt="RSQ Gun Cards"></p>
+
 # RSQ Gun Cards
 ### Doom Arcade VR · your ammo on the gun, and the full card on your wrist when you check your watch
 
@@ -11,7 +13,7 @@ HUD.
 
 *[GIF to come: the small card counting down as the pistol fires, then the watch check bringing up the full card]*
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## What it feels like
 
@@ -34,7 +36,7 @@ HUD.
 - **Left-handed too.** The cards follow QuestZDoom's handedness setting and the mirrored left hand, and the R and L on
   the world card follow the hands as you hold them.
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## How to play
 
@@ -56,7 +58,7 @@ to 20 cm above, no more than 35 cm to the side, pointing no more than 60 degrees
 turned toward you at least 35 degrees, and the hand still. Held for 6 tics (about a sixth of a second), it counts.
 It lets go when the twist drops under 20 degrees.
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## Controls
 
@@ -68,7 +70,7 @@ It lets go when the twist drops under 20 degrees.
   used when it is loaded; without it, Gun Cards' own copy of the same reader.
 - **Menu buttons:** Reset This Gun's Card, Reset All Saved Spots, Reset All.
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## The small card
 
@@ -164,7 +166,7 @@ change: on the card with the word, the big count and RELOAD sit **centred betwee
 and rifle in the main hand, and their off-hand versions (the chaingun and BFG as themselves). Simulated headset, not a
 capture from a real headset. More in `docs/modelcard/`.*
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## The watch card
 
@@ -270,7 +272,7 @@ Not on any card: the saber's second blade (RSQ Saber answers only "saber.lit" by
 need a new answer from it), what the whip, the gloves or the ShieldSaw are doing (none of their services answers that
 for the hand). RSQ Distance Grab gives no weapon of its own.
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## Weapon Condition (off by default)
 
@@ -312,7 +314,7 @@ With Weapon Condition off the same run gives 20 at every condition, no wear, no 
 `"cnd.worn.guns"`, `"cnd.fix"`. The list is at the end of `zscript/rsqgc/cnd.zs`. Do not scale damage again: the layer
 does it on hit.
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## Draw in the World
 
@@ -337,7 +339,7 @@ They are not the same cards as the hand-drawn ones (from reading the code; see S
 
 *[Image to come: the world small card over the wrist, and the world watch card]*
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## The look
 
@@ -352,7 +354,7 @@ They are not the same cards as the hand-drawn ones (from reading the code; see S
 
 *[Image to come: Glass, Glow and No Background side by side in a dark room]*
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## Plays well with
 
@@ -385,7 +387,7 @@ without it, the engine stops at startup.
   magazine BD22 VR keeps for them. BD22 VR's off-hand copies go by the gun they copy in the world card's title and have
   their own small-card spot (or their gun's). BD_VoxelPack's key voxels are the key icons.
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## Options
 
@@ -416,7 +418,7 @@ spots are kept (use Reset All Saved Spots).
 
 *[Still to come: the options page]*
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## Status
 
@@ -449,7 +451,7 @@ Commit messages of 2026-11-06 say the per-gun spots, the looser watch check, the
 Background, Card Glow and the status card on melee weapons (all but the ShieldSaw; since replaced by the item card)
 were shown on the rig. Those logs and frames are not in the repo, so they are not counted here.
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## Under the hood
 
@@ -498,7 +500,7 @@ were shown on the rig. Those logs and frames are not in the repo, so they are no
   this machine and out of the userinfo, as is `rsqgc_spot_hand` (Edit Spot For).
 - **Size:** the pk3 is about 8.5 MB, 19,255 files, nearly all of them the watch card's voxels; the bridges 6 to 340 KB.
 
----
+<p align="center"><img src="../design/readme_art/mods/guncards_divider.png" alt=""></p>
 
 ## Credits
 
