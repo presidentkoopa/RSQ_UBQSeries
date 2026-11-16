@@ -41,7 +41,6 @@ class RSQLS_BDBore play
 		if (KindOf(w, a, 'SSG')) return true, 40.48, 8.12, -2.75;
 		if (KindOf(w, a, 'Unmaker')) return true, 72.53, 3.94, 17.03;
 		if (KindOf(w, a, 'HellishMissileLauncher')) return true, 77.12, 1.68, 22.32;
-		if (KindOf(w, a, 'FlameCannon')) return true, 61.92, -5.02, -14.53;
 		if (KindOf(w, a, 'MP40')) return true, 66.36, 6.54, 11.39;
 		return false, 0, 0, 0;
 	}

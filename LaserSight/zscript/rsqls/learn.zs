@@ -39,7 +39,8 @@ class RSQLS_Learn : StaticEventHandler
 	Array<int>    hits;
 	Array<double> pSpeed, pGrav, pElev, pYaw;
 	Array<bool>   pKnown;
-	Array<bool>   pStraight;   // its shot was seen flying straight (a NOGRAVITY missile): never a lob
+	Array<bool>   pStraight;   // its shot was seen flying straight (a NOGRAVITY missile): not a lob while it holds
+	Array<double> sSpeed;      // the fastest straight shot seen (a learned lob is only unlearned by one at least as fast)
 
 	private Array<Actor> pend;
 	private transient double cSp[2];
@@ -59,11 +60,33 @@ class RSQLS_Learn : StaticEventHandler
 		if (i >= 0) return i;
 		keys.Push(k); hits.Push(0);
 		for (int b = 0; b < BINS; b++) { binsH.Push(0); binsV.Push(0); }
-		pSpeed.Push(0); pGrav.Push(0); pElev.Push(0); pYaw.Push(0); pKnown.Push(false); pStraight.Push(false);
+		pSpeed.Push(0); pGrav.Push(0); pElev.Push(0); pYaw.Push(0); pKnown.Push(false); pStraight.Push(false); sSpeed.Push(0);
 		return keys.Size() - 1;
 	}
 
 	private static String KeyOf(Weapon w, bool alt) { String k = w.GetClassName(); return alt ? k .. "#alt" : k; }
+
+	// ONLY WHAT THE TRIGGER FIRED (check 11-16 LS3 / NEW-LS2, rig: Brutal Doom's kick is a KickAttack FastProjectile
+	// fired by the gun in your hand, NOGRAVITY at speed 30, and one kick with the launcher in hand marked it "straight"
+	// for the session, so the Grenade Arc was gone). A shot is learned for a hand only while that hand's trigger is held
+	// or was in the last TRIG_KEEP tics (a gun fires a few tics into its fire frames); a kick, a melee key, another mod's
+	// projectile spawned while the trigger is up teach nothing.
+	const TRIG_KEEP = 8;
+	transient int trigTic[2];
+	private void NoteTriggers()
+	{
+		let p = players[consoleplayer];
+		if (!p) return;
+		int b = p.cmd.buttons;
+		if (b & (BT_ATTACK | BT_ALTATTACK)) trigTic[0] = level.maptime + 1;   // +1: 0 means never
+		if (b & (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) trigTic[1] = level.maptime + 1;
+	}
+	private bool Triggered(int h)
+	{
+		NoteTriggers();
+		int d = level.maptime + 1 - trigTic[h];   // a static handler: a press from the last map reads negative here
+		return trigTic[h] > 0 && d >= 0 && d <= TRIG_KEEP;
+	}
 
 	private static bool AltHeld(PlayerInfo p, bool off)
 	{
@@ -114,6 +137,8 @@ class RSQLS_Learn : StaticEventHandler
 		let pmo = PlayerPawn(e.Thing);
 		if (!pmo || !pmo.player || pmo.player != players[consoleplayer]) return false;
 		bool off = (e.AttackLineFlags & LAF_ISOFFHAND) != 0;
+		// A MELEE LINE (a kick, a punch, a bash) is not the gun's shot, and nor is a hitscan fired with that hand's trigger up.
+		if ((e.AttackLineFlags & LAF_ISMELEEATTACK) || !Triggered(off ? 1 : 0)) return false;
 		Weapon w = off ? pmo.player.OffhandWeapon : pmo.player.ReadyWeapon;
 		if (!w) return false;
 		double dA = abs(Actor.DeltaAngle(pmo.angle, e.AttackAngle));
@@ -137,6 +162,7 @@ class RSQLS_Learn : StaticEventHandler
 
 	override void WorldTick()
 	{
+		NoteTriggers();
 		for (int k = pend.Size() - 1; k >= 0; k--)
 		{
 			Actor m = pend[k];
@@ -165,6 +191,11 @@ class RSQLS_Learn : StaticEventHandler
 			}
 			if (dbg) Console.Printf("[RSQLS] t%d missile %s speed %.1f grav %.2f hand %d", level.maptime, m.GetClassName(), sp, m.Gravity, h);
 			if (h < 0 || sp < 6) continue;            // not along a gun; brass and magazines are slow
+			if (!Triggered(h))
+			{
+				if (dbg) Console.Printf("[RSQLS] t%d %s ignored: hand %d's trigger is up", level.maptime, m.GetClassName(), h);
+				continue;
+			}
 			Weapon w = (h == 0) ? pmo.player.ReadyWeapon : pmo.player.OffhandWeapon;
 			if (!w) continue;
 			// THE SHOT, NOT ITS SPARKS: a launcher puts out muzzle particles and a smoke trail with its grenade, all
@@ -185,7 +216,16 @@ class RSQLS_Learn : StaticEventHandler
 			// THE SHOT FLIES STRAIGHT (plasma, rockets, BFG): the gun is not a lob, whatever sparks it also throws.
 			if (m.bNOGRAVITY || m.Gravity <= 0)
 			{
+				// A LEARNED LOB IS NOT UNLEARNED BY SOMETHING SLOWER: the shot is the fastest thing the gun fires (a
+				// plasma ball outruns its gravity sparks), so a straight missile slower than the learned lob is not it.
+				if (pKnown[i] && sp < pSpeed[i])
+				{
+					if (RSQLS_Hand.Flag("rsqls_debug", players[consoleplayer], false))
+						Console.Printf("[RSQLS] KEPT ARC %s: %s speed %.1f is slower than its lob (%.1f)", keys[i], m.GetClassName(), sp, pSpeed[i]);
+					continue;
+				}
 				pStraight[i] = true;
+				sSpeed[i] = max(sSpeed[i], sp);
 				pKnown[i] = false;
 				if (RSQLS_Hand.Flag("rsqls_debug", players[consoleplayer], false))
 					Console.Printf("[RSQLS] STRAIGHT %s: %s speed %.1f", keys[i], m.GetClassName(), sp);
@@ -193,6 +233,10 @@ class RSQLS_Learn : StaticEventHandler
 			}
 			// A known shot is not unlearned by something much slower (a smoke puff a tic later).
 			if (pKnown[i] && sp < pSpeed[i] * 0.5) continue;
+			// ...and a straight gun is not made a lob by its slower sparks; a lob at least as fast as every straight shot
+			// seen is the shot (the same rule both ways).
+			if (pStraight[i] && sp < sSpeed[i]) continue;
+			pStraight[i] = false;
 			Vector3 v = cV[h];
 			pSpeed[i] = sp;
 			pGrav[i]  = m.Gravity;

@@ -9,7 +9,7 @@ server bool  rsqls_off          = true;
 server bool  rsqls_pointer      = true;   // the dot where it lands
 server bool  rsqls_show_melee   = false;  // show on a fist, chainsaw, saber, shield or empty hand
 server bool  rsqls_ready_only   = false;  // hide while switching/reloading
-user float  rsqls_lower_deg    = 55.0;   // off while the gun points down past this many degrees, or is being switched/holstered (0 = never)
+user float  rsqls_lower_deg    = 55.0;   // off while the gun points down past this many degrees (0 = never); a switch hides it whatever this says
 server float rsqls_spot_size    = 1.0;
 server float rsqls_spot_a       = 1.0;
 server int   rsqls_glow         = 3;      // 0 off, 1 bloom, 2 real light, 3 both
@@ -71,7 +71,6 @@ server float rsqls_head_pulse_hz = 4.0;
 // ---- phase 3: learned from each gun, the pack's muzzles, the range readout ----
 server bool  rsqls_arc          = true;    // a thrown weapon (grenades) shows its arc, once it has fired once
 server bool  rsqls_arc_beam     = true;    // the beam as well as the arc's dots, bent along the arc (owner 11-06; it was straight). ON by default (owner 11-06 06:59)
-server int   rsqls_beam_type    = 0;       // Laser (owner 11-06): 0 Quest (the voxel beam), 1 PC VR (a whiter core inside a soft halo); every beam, straight and along the arc, both hands
 user   bool  rsqls_beam_sparkle = false;   // Beam Sparkle (owner 11-07, built 11-10): the Quest beam's outer shell sparkles gently; off
 server bool  rsqls_dot_enemy    = false;   // Dot Only on Enemies (owner 11-06): the dot shows only on a live hostile monster
 server float rsqls_arc_size     = 1.0;     // arc dot size

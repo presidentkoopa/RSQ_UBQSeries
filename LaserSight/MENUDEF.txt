@@ -41,12 +41,6 @@ OptionValue "RSQLS_ColorMode"
 	2, "Beam and Dot"
 }
 
-OptionValue "RSQLS_BeamType"
-{
-	0, "Quest"
-	1, "PC VR"
-}
-
 OptionValue "RSQLS_Readout"
 {
 	0, "Off"
@@ -89,7 +83,7 @@ OptionMenu "RSQLS_Options"
 	StaticText "Targets", 1
 	RSQLSGbOption "Target Lock", "rsqls_lock", "OnOff", "RSQLS_SightService", "TargetLock"
 	RSQLSGbOption "Colour on Target", "rsqls_target_recolor", "OnOff", "RSQLS_SightService", "TargetColour", "rsqls_lock"
-	ColorPicker "Target Colour", "rsqls_col_target", "rsqls_target_recolor"
+	RSQLSColorIf "Target Colour", "rsqls_col_target", "target"
 	RSQLSGbOption "Headshot Reaction", "rsqls_head", "OnOff", "RSQLS_SightService", "Headshot"
 	ColorPicker "Headshot Colour", "rsqls_col_head", "rsqls_head"
 	Option "Headshot Pulse", "rsqls_head_pulse", "OnOff", "rsqls_head"
@@ -104,9 +98,9 @@ OptionMenu "RSQLS_Options"
 	StaticText "Colours", 1
 	Option "Colour Mode", "rsqls_color_mode", "RSQLS_ColorMode"
 	ColorPicker "Main Hand Colour", "rsqls_col_main"
-	ColorPicker "Off Hand Colour", "rsqls_col_off"
-	ColorPicker "Main Hand Dot", "rsqls_col_dot_main", "rsqls_pointer"
-	ColorPicker "Off Hand Dot", "rsqls_col_dot_off", "rsqls_pointer"
+	ColorPicker "Off Hand Colour", "rsqls_col_off", "rsqls_color_mode", 0
+	RSQLSColorIf "Main Hand Dot", "rsqls_col_dot_main", "dot", "rsqls_pointer"
+	RSQLSColorIf "Off Hand Dot", "rsqls_col_dot_off", "dot", "rsqls_pointer"
 	Option "Cycle Colours", "rsqls_cycle", "OnOff"
 	Option "Dot Cycles Too", "rsqls_cycle_dot", "OnOff", "rsqls_cycle"
 	Option "Colour per Slot", "rsqls_col_per_slot", "OnOff"

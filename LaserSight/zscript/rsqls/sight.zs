@@ -136,22 +136,28 @@ class RSQLS_Sight : EventHandler
 	transient int liveMask;
 	transient int beamMask;   // the same, beam only
 	// The line each hand's beam was drawn on this tic (its muzzle and barrel, from the held model), for RSQ Wheel's
-	// card pick (owner 11-05: "use the gun's laser sight to select from the wheel"; RSQ Wheel does not read it yet).
-	// Valid while beamMask has the hand.
+	// card pick (owner 11-05: "use the gun's laser sight to select from the wheel"; RSQ Wheel reads it through
+	// RSQLS_SightService "laser.line"). Valid while beamMask has the hand; a beam bent along a grenade arc gives the
+	// line it leaves the muzzle on.
 	transient Vector3 lineAt[2], lineDir[2];
 	// A RELOAD OR A SWITCH (owner 11-10: "hide it until ready again"). The beam's kept pose (above) is for the frames
 	// between shots (11-09: "PCVR laser sight disappears between shots. not good."), so it holds for a second after
-	// any attack press, which covers the fire, recoil and pump frames of every gun; past that an unmeasured frame is a
-	// reload or a raise / lower and the beam hides until the gun is back on a measured frame. A pending switch hides
-	// the main hand's at once. (Frame labels are not read: Brutal Doom's fire jumps between labels freely.)
+	// a press of THAT HAND's trigger, which covers the fire, recoil and pump frames of every gun; past that an
+	// unmeasured frame is a reload or a raise / lower and the beam hides until the gun is back on a measured frame. A
+	// pending switch hides the main hand's at once. (Frame labels are not read: Brutal Doom's fire jumps between labels
+	// freely.) ONE CLOCK PER HAND (check 11-16 LS1 / NEW-LS1): the off hand's trigger is BT_OFFHANDATTACK, which the one
+	// shared clock never saw, so an off-hand gun's beam blinked out on every shot; and firing one hand kept the other's
+	// beam up through its reload.
 	const KEEP_AFTER_FIRE = 35;
-	transient int lastFireTic;
+	transient int lastFireTic[2];
 	bool Busy(PlayerInfo p, int h)
 	{
 		if (!p) return false;
-		if (p.cmd.buttons & (BT_ATTACK | BT_ALTATTACK)) lastFireTic = level.maptime;
+		int b = p.cmd.buttons;
+		if (b & (BT_ATTACK | BT_ALTATTACK)) lastFireTic[0] = level.maptime;
+		if (b & (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK)) lastFireTic[1] = level.maptime;
 		if (h == 0 && p.PendingWeapon != WP_NOCHANGE) return true;
-		return level.maptime - lastFireTic > KEEP_AFTER_FIRE;
+		return level.maptime - lastFireTic[h & 1] > KEEP_AFTER_FIRE;
 	}
 
 	// QUESTZDOOM'S OWN LASER (owner 11-10 23:0x: "Qzd autoloads laser sight. We want ours to always win but not
@@ -161,7 +167,42 @@ class RSQLS_Sight : EventHandler
 	// rounds (rig P4 L2: a flash and tracer every frame). The player's own M8F setting is kept in rsqls_m8f_was and put
 	// back when RSQ Laser Sight is turned off. Found by name: nothing links to M8F's mod; without it, nothing happens.
 	// (Replaces the 11-10 Which Laser row.)
+	// HELD AT 0 ONLY WHILE YOU PLAY (check 11-16 LS2): M8F's switch is saved to the ini, and a mod that has been removed
+	// can never run code to put it back, so the 0 must not be what the ini keeps. It is given back whenever the game is
+	// not being played: on every map unload (WorldUnloaded), and while any menu is open or the game is not in a level
+	// (UiTick: quitting from the menu saves the player's own value). Play resumes, and it is held at 0 again before
+	// M8F's next tic. Not covered: the app killed from the headset's system menu while in a level.
 	transient int m8fState;       // 0 not looked, 1 loaded, -1 not
+	static clearscope bool M8FLoaded()
+	{
+		String hn = "m8f_ls_EventHandler";
+		class<Object> hc = hn;
+		return hc != null;
+	}
+	// Give M8F's switch back (the player's own value), if it is being held.
+	static clearscope void M8FGiveBack(PlayerInfo p)
+	{
+		if (!p || !M8FLoaded()) return;
+		let sw = CVar.GetCVar("m8f_wm_ShowLaserSight", p);
+		let was = CVar.GetCVar("rsqls_m8f_was", p);
+		if (!sw || !was || was.GetInt() < 0) return;
+		sw.SetInt(was.GetInt());
+		was.SetInt(-1);
+	}
+	override void UiTick()
+	{
+		if (m8fState < 0) return;
+		let p = players[consoleplayer];
+		if (menuactive != Menu.Off || gamestate != GS_LEVEL) { M8FGiveBack(p); return; }
+		// back in play: hold it again now, before M8F's next WorldTick (ours may run after it)
+		let on = CVar.GetCVar("rsqls_on", p);
+		if (!on || on.GetBool())
+		{
+			let sw = CVar.GetCVar("m8f_wm_ShowLaserSight", p);
+			let was = CVar.GetCVar("rsqls_m8f_was", p);
+			if (sw && was && sw.GetInt() != 0) { was.SetInt(sw.GetInt()); sw.SetInt(0); }
+		}
+	}
 	void M8FQuiet(PlayerInfo p, bool oursOn)
 	{
 		if (m8fState == 0)
@@ -426,7 +467,9 @@ class RSQLS_Sight : EventHandler
 		// of the hand (a switch, a holster), draws no laser. 0 = always on.
 		double lower = RSQLS_Hand.Num("rsqls_lower_deg", p, 55.0);
 		if (lower > 0 && p.mo && RSQLS_Hand.Pitch(p.mo, h) < -lower) return false;
-		if (lower > 0 && h == 0 && p.PendingWeapon != WP_NOCHANGE) return false;
+		// a switch hides it whatever that row says (check 11-16 LS8: the row is "Off When Aimed Down"; at 0 the dot
+		// stayed through a switch while the beam hid)
+		if (h == 0 && p.PendingWeapon != WP_NOCHANGE) return false;
 		if (RSQLS_Hand.Flag("rsqls_ready_only", p, false))
 		{
 			int ready = (h == 0) ? (WF_WEAPONREADY | WF_WEAPONREADYALT)
@@ -554,10 +597,13 @@ class RSQLS_Sight : EventHandler
 			if (!spot[h] || !glow[h]) continue;
 			DrawHand(h, pmo, p, wantBeam, wantDot);
 			// What actually drew (review, 10-26): a dot-only laser that hits nothing is no light.
-			if (beamShown[h] || spotShown[h]) liveMask |= 1 << h;
-			if (beamShown[h]) beamMask |= 1 << h;
+			// a beam bent along a grenade arc is a beam too (check 11-16 LS10: Distance Grab and the Wheel ask "laser.beam")
+			if (beamShown[h] || segShown[h] || spotShown[h]) liveMask |= 1 << h;
+			if (beamShown[h] || segShown[h]) beamMask |= 1 << h;
 		}
 		UpdateReadout(pmo, p);
+		if (level.maptime % 35 == 0 && RSQLS_Hand.Flag("rsqls_debug", p, false))
+			Console.Printf("[RSQLS] MASK t%d live %d beam %d (straight %d %d, bent %d %d)", level.maptime, liveMask, beamMask, beamShown[0], beamShown[1], segShown[0], segShown[1]);
 	}
 
 	// 0 plain, 1 liquid, 2 metal: by the texture's name (Doom's own naming), cached per texture.
@@ -661,7 +707,11 @@ class RSQLS_Sight : EventHandler
 					RSQLS_BDBore.Active() ? "active" : "inactive");
 			}
 			if (level.maptime % 35 == 0)
-				Console.Printf("[RSQLS] DOT h%d t%d %s from %.2f %.2f %.2f dir %.5f %.5f %.5f", h, level.maptime, w.GetClassName(), muzzle.x, muzzle.y, muzzle.z, dir.x, dir.y, dir.z);
+			{
+				bool dArc; double d1, d2, d3, d4;
+				[dArc, d1, d2, d3, d4] = RSQLS_Learn.Arc(w);
+				Console.Printf("[RSQLS] DOT h%d t%d %s from %.2f %.2f %.2f dir %.5f %.5f %.5f arc %s", h, level.maptime, w.GetClassName(), muzzle.x, muzzle.y, muzzle.z, dir.x, dir.y, dir.z, dArc ? "on" : "off");
+			}
 		}
 		else if (dbgGun[h]) dbgGun[h] = null;
 
@@ -758,10 +808,12 @@ class RSQLS_Sight : EventHandler
 		// ---- what it is on ------------------------------------------------------
 		Actor onWho = (hit && t.HitType == FLineTraceData.TRACE_HitActor) ? t.HitActor : null;
 		bool hostile = onWho && onWho.bISMONSTER && onWho.Health > 0 && !onWho.bFRIENDLY;
-		// A LINED-UP HEADSHOT, approximately: the hit lands in the top fifth of
-		// the body. What counts as a head is the gameplay mod's business; this
-		// only shows it (UZDXREMA's Headshot Reaction, as near as script gets).
-		bool head = hostile && t.HitLocation.z >= onWho.Pos.z + onWho.Height * 0.8;
+		// A LINED-UP HEADSHOT: what counts as a head is the gameplay mod's business; this only shows it (UZDXREMA's
+		// Headshot Reaction, as near as script gets). The rule per monster set is head.zs's (owner 11-16): mk-crits' for
+		// another set when it is loaded, else the top fifth of the body.
+		bool head = hostile && RSQLS_Head.IsHead(onWho, t.HitLocation);
+		if (head && RSQLS_Hand.Flag("rsqls_debug", p, false) && (dotHead[h] != onWho || level.maptime - headTic[h] > 35))
+			Console.Printf("[RSQLS] HEAD h%d t%d %s rule %d at %.1f over its floor", h, level.maptime, onWho.GetClassName(), RSQLS_Head.RuleOf(onWho), t.HitLocation.z - onWho.floorz);
 		if (head) { dotHead[h] = onWho; headTic[h] = level.maptime; }
 
 		int beamRgb = ColorOf(p, h, w, false, hostile, head);
@@ -777,6 +829,12 @@ class RSQLS_Sight : EventHandler
 			double blit = bs ? clamp(bs.lightlevel / 255.0, 0.0, 1.0) : 0.5;
 			double ba = RSQLS_Hand.Num("rsqls_beam_a", p, 0.8) * (1.0 - (1.0 - RSQLS_Hand.Num("rsqls_beam_daylight", p, 0.35)) * blit);
 			LayArcBeam(h, beamRgb, clamp(ba, 0.05, 1.0), p);
+			if (segShown[h] && arcX.Size() >= 2)
+			{
+				Vector3 d0 = ArcAt(1) - ArcAt(0);
+				lineAt[h] = ArcAt(0);
+				lineDir[h] = d0.Length() > 0 ? d0.Unit() : dir;
+			}
 		}
 		else HideArcBeam(h);
 
@@ -1077,6 +1135,17 @@ class RSQLS_Sight : EventHandler
 			o.Translation = haloTint;
 		}
 		segShown[h] = true;
+		// BEAM SPARKLE ON THE BENT BEAM TOO (check 11-16 LS7): one point of the arc's path, picked by its length, sparkles
+		// as the straight beam's do (Sparkle keeps its own pace per hand).
+		if (RSQLS_Hand.Flag("rsqls_beam_sparkle", p, false))
+		{
+			double at = frandom[RSQLSSpark](0, total);
+			int k = 1;
+			while (k < n - 1 && cum[k] < at) k++;
+			Vector3 a0 = ArcAt(k - 1), a1 = ArcAt(k);
+			Vector3 sd = a1 - a0;
+			if (sd.Length() > 1) Sparkle(h, a0, sd.Unit(), sd.Length(), rgb, alpha);
+		}
 	}
 
 	// The point `dist` map units along the arc's path (cum: the path's running length at each point).
@@ -1323,6 +1392,7 @@ class RSQLS_Sight : EventHandler
 
 	override void WorldUnloaded(WorldEvent e)
 	{
+		if (m8fState > 0) M8FGiveBack(players[consoleplayer]);
 		for (int h = 0; h < 2; h++)
 		{
 			arcShown[h] = false; segShown[h] = false;
@@ -1339,7 +1409,8 @@ class RSQLS_Sight : EventHandler
 //   GetInt("laser.beam", "", hand)    -> the same for the beam alone
 //   GetDouble("laser.line", "x"|"y"|"z"|"dx"|"dy"|"dz", hand) -> the line that hand's beam was drawn on last tic
 //                                        (muzzle in map units, unit barrel direction); 0 when no beam drew there.
-//                                        Meant for RSQ Wheel's card pick (owner 11-05); Wheel does not read it yet.
+//                                        RSQ Wheel's card pick reads it (owner 11-05). A beam bent along a grenade
+//                                        arc counts: its line is the one it leaves the muzzle on.
 // RSQ_DistanceGrab asks this so its grab beam stands down on a hand the laser
 // already lights.
 class RSQLS_SightService : Service

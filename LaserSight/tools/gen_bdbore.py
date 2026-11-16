@@ -99,6 +99,8 @@ def main():
     for c in no_bore:
         out.append("\t\tif (KindOf(w, a, '%s')) return false, 0, 0, 0;   // no bore: aimed its own way" % c)
     for full, exact, iscls, f, l, u in rows:
+        if iscls in no_bore:
+            continue   # its no-bore check above returns first: a row here would never be reached (check 11-16 LS11)
         if exact:
             out.append("\t\tif (n == '%s') return true, %s, %s, %s;" % (exact, f, l, u))
         else:
