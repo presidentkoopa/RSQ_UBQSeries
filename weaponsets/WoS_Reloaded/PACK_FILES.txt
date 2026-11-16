@@ -22,9 +22,11 @@ MODELDEF.rsqoff
 MODELDEF.rsqws1911
 MODELDEF.rsr
 MODELDEF.rsrpump
+RSQTRFIT.wos
 SNDINFO.rsb
 SNDINFO.rsqbgn
 SNDINFO.rsqfx
+SNDINFO.rsqws
 SNDINFO.rsr
 SNDINFO.wos
 SOUNDS/CHAINSAW/CSAWLOOP
@@ -1344,6 +1346,7 @@ sounds/rsqgn/kinetic/QGKP4.ogg
 sounds/rsqgn/kinetic/QGKP5.ogg
 sounds/rsqgn/kinetic/QGKP6.ogg
 sounds/rsqgn/kinetic/QGKP7.ogg
+sounds/rsqws/chargehum.wav
 sounds/rsqws1911/fire.ogg
 sounds/rsqws1911/reload1.ogg
 sounds/rsqws1911/reload2.ogg
@@ -4139,6 +4142,7 @@ zscript/rsr/vreload.zs
 zscript/rsvr/melee.zs
 zscript/rsvr/vrhand.zs
 zscript/wos/case45.zs
+zscript/wos/charge.zs
 zscript/wos/dual.gen.zs
 zscript/wos/gun.zs
 zscript/wos/heavy.zs

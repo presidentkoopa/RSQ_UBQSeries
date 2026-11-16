@@ -28,7 +28,7 @@ MS1911 = '/home/claude/presidentkoopa/rs_modelswapper/cards/brutalwolf/1911'
 CFX, RSBS = '/home/claude/rs_combatfx/sounds', '/home/claude/rs_ballistics/sounds/rsb'
 GRENADE = '/home/claude/presidentkoopa/rsq_ubqseries/Grenade/models/rsqgn'
 OUT = os.path.join(ROOT, 'out'); TREE = os.path.join(OUT, 'tree')
-NAME, VERSION = 'RSQ_WeaponsOfSaturn', '0.1.0'
+NAME, VERSION = 'WoS_Reloaded', '0.8'	# owner 2026-11-16 03:51: the next release is 0.8 (WoS_Reloaded_0.8.pk3)
 
 # ------------------------------------------------------------------------------------------------ the guns (SPEC.md)
 # class -> the BD22 gun whose mesh / tables it uses (SPEC "Meshes"); the 1911 is BrutalPistol's tables with its own mesh + row 19
@@ -376,7 +376,8 @@ flickerlight RSQWS_NOVA_X5 { color 0.3 0.15 0.05 size 72 secondarySize 84 chance
         # look and sounds; Low / Max = RS Ballistics (flash, tail, crack, impacts) on True Bullets or hitscan alike.
         'rsq/ballistics.zs': [("e.Thing.player.ReadyWeapon.GetClassName()", "RSQ_Alias.BD(e.Thing.player.ReadyWeapon)", 1),
             ("tracer.player.ReadyWeapon.GetClassName()", "RSQ_Alias.BD(tracer.player.ReadyWeapon)", 1)],
-        'rsq/flash.zs': [("String n = w.GetClassName();", "String n = RSQ_Alias.BD(w);", 1)],
+        'rsq/flash.zs': [("String n = w.GetClassName();", 'String n = RSQ_Alias.BD(w);\n\t\tif (w is \'RSQWS_1911\')\t// this pack: the 1911 has its own row\n\t\t\tn = "RSQWS_1911";', 1),
+            ('\t\tcls.Push("Unmaker");', '\t\t// this pack (owner 2026-11-16 03:30): the Nova Rifle and the Titan get a muzzle light in their rounds\' own colours\n\t\t// (the Nova Rifle\'s plasma light, the Titan\'s orange), and the 1911 its own .45 flash and the heavier pistol tail\n\t\t// (RS Ballistics\' pistol_mag set, already in the pack) instead of the 9 mm pistol\'s\n\t\tcls.Push("RailGun"); rad.Push(220); col.Push(0x8080FF); len.Push(2); tin.Push(""); tex.Push(""); tvol.Push(1.00);\t// the Nova Rifle\n\t\tcls.Push("NukeLauncher"); rad.Push(420); col.Push(0xFF9940); len.Push(4); tin.Push(""); tex.Push(""); tvol.Push(1.00);\t// the Titan\n\t\tcls.Push("RSQWS_1911"); rad.Push(250); col.Push(0xFFD49A); len.Push(2); tin.Push("rsb/tail/pistol_mag/ext"); tex.Push("rsb/tail/pistol_mag/ext"); tvol.Push(0.85);\t// the 1911 (.45)\n' + '\t\tcls.Push("Unmaker");', 1)],
         # rsq/flick.zs: BD22 VR's, unchanged but for the alias (owner: "just diff your flick reload against bd as bd works"):
         # it reloads a gun in each hand, a lone SSG (the Coach Gun) and a lone rifle's underbarrel. No 'Reloading = Flick' mode.
         'rsq/casings.zs': [(re.compile(r"Name n = c\.GetClassName\(\);"), "Name n = c.GetClassName();\n\t\t// this pack: WoS's casings under the names BD22 VR's tables know\n\t\tif (n == 'RSQWS_9mmCasing' || n == 'RSQWS_45Casing') n = 'PistolCasing';\n\t\telse if (n == 'RSQWS_RifleCasing' || n == 'RSQWS_ChaingunCasing') n = 'EmptyBrass';\n\t\telse if (n == 'RSQWS_ShotgunCasing') n = 'ShotgunCasing';", 1),

@@ -2,7 +2,8 @@
 
 // ------------------------------------------------------------------------------------------------ Knuckles
 // SPEC (owner): the FBX fists; physical melee comes from the RSQ series (RSQ Melee punches with any weapon that is a
-// Fist: gloves.zs IsFist), so the Knuckles are a Fist and their trigger and alt fire are left free. The FBX fist is BD22
+// Fist: gloves.zs IsFist) or the basics' punches, so the Knuckles are a Fist and in VR their trigger and alt fire are
+// left free. With Punches off (and no RSQ Melee), or out of VR, the trigger punches (owner 2026-11-16 03:30). The FBX fist is BD22
 // VR's (rsq/hands.zs draws it on the Melee_Attacks mesh: RSQ_Alias). The quick kick works here as on every gun.
 class RSQWS_Knuckles : Fist replaces Fist
 {
@@ -40,10 +41,37 @@ class RSQWS_Knuckles : Fist replaces Fist
 			return ResolveState(null);
 		}
 		Loop;
-	Fire:	// free (SPEC): RSQ Melee reads the swing, and the trigger opens and closes the hand
+	Fire:	// in VR with the punches on, free (SPEC): RSQ Melee or the basics read the swing, and the trigger opens and closes
+			// the hand. Otherwise (Punches off, or out of VR) the trigger punches, as BD22 VR's fists do (owner 03:30)
+		PUNG A 0 { if (RSQWS_ArmPunches()) return ResolveState("FreeTrigger"); return ResolveState(null); }
+		PUNG A 0 A_StartSound("weapons/fist/swing", CHAN_WEAPON);
+		PUNG A 3;
+		PUNG A 0 RSQWS_TriggerPunch();
+		PUNG A 6;
+		PUNG A 0 A_ReFire;
+		Goto Ready;
 	AltFire:
+	FreeTrigger:
 		PUNG A 1;
 		Goto Ready;
+	}
+
+	// the arm throws the punches: in VR, and RSQ Melee is loaded (its punches, always) or the basics' Punches are on
+	action bool RSQWS_ArmPunches()
+	{
+		let mo = PlayerPawn(self);
+		if (!mo || !player || !RSVR_VRHand.InVR(mo))
+			return false;
+		if (Object.FindClass("RSQML_Gloves") != null)
+			return true;
+		return RSQ.PlayerInt(mo, 'rsqb_punch', 1) != 0;
+	}
+	// the trigger's punch: the basics' punch numbers (Doom's: 2 x 1-10, berserk x10), 64 units, WoS's own puff and sounds
+	action void RSQWS_TriggerPunch()
+	{
+		int dmg = 2 * random(1, 10);
+		if (FindInventory('PowerStrength', true)) dmg *= 10;
+		A_CustomPunch(dmg, true, CPF_NOTURN, 'RSQWS_FistPuff', 64);
 	}
 }
 

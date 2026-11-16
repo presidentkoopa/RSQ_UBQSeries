@@ -183,6 +183,9 @@ class RSQGC_GunCard : EventHandler
 		String gn = "GrenadeAmmo";
 		class<Inventory> g = gn;
 		if (!g) { gn = "RSQGN_Ammo"; g = gn; }
+		// 2026-11-16 (WoS review item 7): the weapon sets' own quick frag (the basics' RSQB_GN_Ammo; the basics stand down for
+		// RSQ Grenade, so RSQ Grenade's own count comes first)
+		if (!g) { gn = "RSQB_GN_Ammo"; g = gn; }
 		if (!g) return -1;
 		let it = pmo.FindInventory(g);
 		return it ? it.Amount : 0;
@@ -224,13 +227,13 @@ class RSQGC_GunCard : EventHandler
 	}
 
 	// GC5: a hand with nothing to count: no weapon, or fists (Brutal Doom's Melee_Attacks, Brutal Doom VR's off-hand
-	// RSQ_Hands, vanilla's Fist)
+	// RSQ_Hands, vanilla's Fist and any fists built on it, such as the weapon sets' Knuckles, 2026-11-16)
 	static bool EmptyHand(PlayerInfo p, int hand)
 	{
 		Weapon w = hand == 1 ? p.OffhandWeapon : p.ReadyWeapon;
 		if (!w) return true;
 		Name cn = w.GetClassName();
-		return cn == 'Melee_Attacks' || cn == 'RSQ_Hands' || cn == 'Fist';
+		return cn == 'Melee_Attacks' || cn == 'RSQ_Hands' || w is 'Fist';
 	}
 
 	static double cv(string n, double f) { let c = CVar.FindCVar(n); return c ? c.GetFloat() : f; }

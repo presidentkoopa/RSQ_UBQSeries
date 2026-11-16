@@ -72,6 +72,12 @@ class RSQ_FlashHandler : EventHandler
 		cls.Push("Plasma_Gun"); rad.Push(170); col.Push(0x78B4FF); len.Push(2); tin.Push(""); tex.Push(""); tvol.Push(1.00);	// plasma_rifle
 		cls.Push("Rocket_Launcher"); rad.Push(600); col.Push(0xFFC47C); len.Push(4); tin.Push("rsb/tail/rpg/int"); tex.Push("rsb/tail/rpg/ext"); tvol.Push(1.00);	// rocket_rpg
 		cls.Push("Rifle"); rad.Push(220); col.Push(0xFFDCAA); len.Push(2); tin.Push("rsb/tail/br/ext"); tex.Push("rsb/tail/br/ext"); tvol.Push(0.80);	// rifle
+		// this pack (owner 2026-11-16 03:30): the Nova Rifle and the Titan get a muzzle light in their rounds' own colours
+		// (the Nova Rifle's plasma light, the Titan's orange), and the 1911 its own .45 flash and the heavier pistol tail
+		// (RS Ballistics' pistol_mag set, already in the pack) instead of the 9 mm pistol's
+		cls.Push("RailGun"); rad.Push(220); col.Push(0x8080FF); len.Push(2); tin.Push(""); tex.Push(""); tvol.Push(1.00);	// the Nova Rifle
+		cls.Push("NukeLauncher"); rad.Push(420); col.Push(0xFF9940); len.Push(4); tin.Push(""); tex.Push(""); tvol.Push(1.00);	// the Titan
+		cls.Push("RSQWS_1911"); rad.Push(250); col.Push(0xFFD49A); len.Push(2); tin.Push("rsb/tail/pistol_mag/ext"); tex.Push("rsb/tail/pistol_mag/ext"); tvol.Push(0.85);	// the 1911 (.45)
 		cls.Push("Unmaker"); rad.Push(84); col.Push(0xFF2C1A); len.Push(1); tin.Push(""); tex.Push(""); tvol.Push(1.00);	// unmaker
 	}
 
@@ -109,6 +115,8 @@ class RSQ_FlashHandler : EventHandler
 		if (!w)
 			return;
 		String n = RSQ_Alias.BD(w);
+		if (w is 'RSQWS_1911')	// this pack: the 1911 has its own row
+			n = "RSQWS_1911";
 		for (int i = 0; i < cls.Size(); i++)
 			if (cls[i] ~== n)
 			{

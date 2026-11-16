@@ -1,6 +1,7 @@
 version "4.14"
-// RSQ_WeaponsOfSaturn 0.1.0: Weapons of Saturn rebuilt in ZScript for VR, on BD22 VR's meshes, hands and reload (RS_Brutal22WeaponsQ)
+// WoS_Reloaded 0.8: Weapons of Saturn rebuilt in ZScript for VR, on BD22 VR's meshes, hands and reload (RS_Brutal22WeaponsQ)
 #include "zscript/wos/case45.zs"
+#include "zscript/wos/charge.zs"
 #include "zscript/wos/gun.zs"
 #include "zscript/wos/heavy.zs"
 #include "zscript/wos/melee.zs"

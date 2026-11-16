@@ -132,6 +132,7 @@ class RSQ_ShotgunWasEmpty : RSVR_Token {}
 // font. Its numbers are GBOVR's (units of the safe area's height / 540, x 1.5, inset 4 %). With GBOVR loaded this stands
 // down: GBOVR draws the same row itself. Always magazine + reserve (owner: no other choices).
 // Remove HUD Health and Armor (rsq_hud_nohp, BD22 VR Reloaded's name, which GBOVR reads too): the face stays.
+// Remove HUD Ammo (rsq_hud_noammo, BD22 VR Reloaded's name, which Gun Cards' menu sets): no ammo row.
 class RSQ_AmmoHud : EventHandler
 {
 	ui double u, ox, oy, sw, sh;
@@ -208,7 +209,9 @@ class RSQ_AmmoHud : EventHandler
 		double W = sw / u, H = sh / u;
 		Font big = Font.GetFont("HUDFONT_DOOM");
 		if (!big) big = BigFont;
-		for (int s = 0; s <= 1; s++)
+		// Remove HUD Ammo (rsq_hud_noammo, BD22 VR Reloaded's name; Gun Cards' menu sets it): no ammo row
+		let noammo = CVar.GetCVar('rsq_hud_noammo', p);
+		for (int s = 0; s <= 1 && !(noammo && noammo.GetBool()); s++)
 		{
 			Weapon wpn = s == 0 ? p.ReadyWeapon : p.OffhandWeapon;
 			int mag, reserve;

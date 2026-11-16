@@ -1,0 +1,3 @@
+// RSQ_WeaponsOfSaturn own sounds (src/, hand-written)
+// the Nova Ball's and the Hyper Nova's charge buzz (tools/make_chargehum.py; zscript/wos/charge.zs raises its pitch and volume)
+rsqws/chargehum	"sounds/rsqws/chargehum.wav"

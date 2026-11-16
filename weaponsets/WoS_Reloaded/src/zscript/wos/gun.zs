@@ -237,9 +237,10 @@ class RSQWS_Gun : Weapon abstract
 			A_TakeInventory("RSR_Charge", 1);
 			return ResolveState("Ready");
 		}
-	DryWait:
+	DryWait:	// 2026-11-16: by name at run time. A Goto here is resolved in this abstract base, which has no Ready ("Attempt to
+				// get invalid state Ready from actor RSQWS_Gun"): after a dry click the gun hung, out of its states, for good.
 		"####" "#" 8;
-		Goto Ready;
+		"####" "#" 0 A_Jump(256, "Ready");
 
 	}
 }

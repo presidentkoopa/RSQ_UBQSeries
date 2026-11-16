@@ -23,6 +23,7 @@ server int rsq_pump_spread = 0;		// Pump Shotgun Spread: 0 the mod's, 1 Enhanced
 user bool rsq_casing_models = true;	// Real Casing Models: off = the mod's own casing sprites
 user float rsq_casing_size = 1.0;	// a multiplier on true size
 user bool rsq_hud_nohp = false;		// Remove HUD Health and Armor (BD22 VR Reloaded's name; GBOVR reads it too): the face stays
+user bool rsq_hud_noammo = false;	// Remove HUD Ammo (BD22 VR Reloaded's name; Gun Cards' menu sets it)
 user bool rsq_flick = true;			// the flick is read (a lone rifle's underbarrel, the double barrel, Reloading = Flick)
 user int rsq_switch_log = 0;
 server int rsq_ballistics = 1;		// Ballistics: 0 Stock = Weapons of Saturn's own sounds and effects; 1 Low, 2 Max = RS Ballistics (+ the hand reload's Combat FX sounds)

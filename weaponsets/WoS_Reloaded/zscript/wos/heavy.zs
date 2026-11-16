@@ -3,10 +3,23 @@
 // Nuker; Hyper Nova as WoS). WoS's fire numbers and projectiles; WoS's screen kick (A_SetPitch, A_ZoomFactor,
 // Offset) is not carried: in VR it moves the player's view.
 
+// ------------------------------------------------------------------------------------------------ the Chaingun's spots
+// Owner 2026-11-16 03:30 (review item 1): the Maschine Rifle comes from the Chaingun's spots. Every Chaingun in a map, and
+// every one a Chaingunner drops, is the Rotary Cannon or the Maschine Rifle, half the time each. Vanilla classes only,
+// so it works with any monsters that drop Doom's Chaingun.
+class RSQWS_ChaingunSpot : RandomSpawner replaces Chaingun
+{
+	Default
+	{
+		DropItem "RSQWS_Minigun", 255, 1;
+		DropItem "RSQWS_MachineRifle", 255, 1;
+	}
+}
+
 // ------------------------------------------------------------------------------------------------ Rotary Cannon
 // WoS: fire spins it up, held it fires its bullets (every other burst with a tracer); alt spins it up and fires
 // RotaryPlasma. Its 120-round belt is a magazine (BD22 VR reload row 17, the ammo-box magazine).
-class RSQWS_Minigun : RSQWS_Gun replaces Chaingun
+class RSQWS_Minigun : RSQWS_Gun
 {
 	bool tracerTurn;
 	Default
@@ -262,6 +275,7 @@ class RSQWS_NovaRifle : RSQWS_Gun replaces PlasmaRifle
 		RSQWS_Gun.Chambered false;
 		-WEAPON.NOAUTOFIRE
 	}
+	const NOVABALL = 5;	// the Nova Ball's cells (WoS)
 	States
 	{
 	Spawn:
@@ -295,11 +309,12 @@ class RSQWS_NovaRifle : RSQWS_Gun replaces PlasmaRifle
 		RAIL A 12;
 		RAIL A 6;
 		Goto Ready;
-	AltFire:	// WoS's charge: five cells, the NovaBall
+	AltFire:	// WoS's charge: five cells, the NovaBall. It needs all five (owner 03:30): fewer, and it reloads or clicks dry.
 		RAIL A 0
 		{
-			if (invoker.Loaded() <= 0)
+			if (invoker.Loaded() < NOVABALL)
 				return RSQWS_Empty();
+			RSQWS_ChargeGlow.Start(self, invoker, 13, 0);	// the glow, the buzz and the hand (charge.zs)
 			return ResolveState(null);
 		}
 		RAIL A 1;
@@ -308,11 +323,14 @@ class RSQWS_NovaRifle : RSQWS_Gun replaces PlasmaRifle
 		RAIL A 2;
 		RAIL A 0
 		{
-			invoker.TakeUpTo(5);
+			RSQWS_ChargeGlow.ReleaseOf(self, invoker);
+			if (!invoker.TakeRound(NOVABALL))
+				return RSQWS_Empty();
 			A_GunFlash();
 			A_StartSound("weapons/plasmagun/fire", CHAN_WEAPON);
 			A_FireProjectile('RSQWS_NovaBall', 0, false);
 			A_AlertMonsters();
+			return ResolveState(null);
 		}
 		RAIF D 1 Bright;
 		RAIF B 1;
@@ -354,6 +372,8 @@ class RSQWS_TITAN : RSQWS_Gun replaces BFG9000
 		Tag "Titan";
 		RSQWS_Gun.Chambered false;
 	}
+	const NOVA = 5;			// WoS's costs. Each shot needs all of it (owner 03:30): fewer, and it reloads or clicks dry.
+	const HYPERNOVA = 40;
 	States
 	{
 	Spawn:
@@ -371,13 +391,15 @@ class RSQWS_TITAN : RSQWS_Gun replaces BFG9000
 		NKLG A 1 RSQWS_Ready();
 		Loop;
 	Fire:
-		NKLG A 0 { if (invoker.Loaded() <= 0) return RSQWS_Empty(); A_GunFlash(); return ResolveState(null); }
+		NKLG A 0 { if (invoker.Loaded() < NOVA) return RSQWS_Empty(); A_GunFlash(); return ResolveState(null); }
 		NKLG A 6;
 		NKLF A 0
 		{
-			invoker.TakeUpTo(5);
+			if (!invoker.TakeRound(NOVA))
+				return RSQWS_Empty();
 			A_StartSound("weapons/bfg/fire", 5);
 			RSQWS_ShotFX(null);
+			return ResolveState(null);
 		}
 		NKLF E 1 Bright A_FireProjectile('RSQWS_Nova', 0, false);
 		NKLF E 2;
@@ -391,16 +413,24 @@ class RSQWS_TITAN : RSQWS_Gun replaces BFG9000
 	AltFire:
 		NKLG A 0
 		{
-			if (invoker.Loaded() <= 0)
+			if (invoker.Loaded() < HYPERNOVA)
 				return RSQWS_Empty();
 			A_StartSound("weapons/bfg/start", 5);
 			A_StartSound("weapons/bfg/classic", CHAN_WEAPON);
 			A_GunFlash();
+			RSQWS_ChargeGlow.Start(self, invoker, 34, 1);	// the glow, the buzz and the hand (charge.zs)
 			return ResolveState(null);
 		}
 		NKLG A 30;
 		NKLF A 4;
-		NKLF A 0 { invoker.TakeUpTo(40); RSQWS_ShotFX(null); }
+		NKLF A 0
+		{
+			RSQWS_ChargeGlow.ReleaseOf(self, invoker);
+			if (!invoker.TakeRound(HYPERNOVA))
+				return RSQWS_Empty();
+			RSQWS_ShotFX(null);
+			return ResolveState(null);
+		}
 		NKLF E 1 Bright A_FireProjectile('RSQWS_HyperNova', 0, false);
 		NKLF E 2 Bright;
 		NKLF K 6;
