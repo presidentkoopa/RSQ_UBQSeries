@@ -2,7 +2,9 @@
 //   - the magazine reload by hand (BD22 VR's zscript/rsr/vreload.zs, its RSR_ token protocol), and the stock reload
 //     when not in VR or with Reloading on Stock / Flick (the flick enters Reload too: zscript/rsq/flick.zs);
 //   - the quick kick (owner: "if we need a quick kick then make one"): a key, any time a gun is up;
-//   - semi auto, empty / dry fire, the ready check every gun calls.
+//   - semi auto, empty / dry fire, the ready check every gun calls;
+//   - a gun comes loaded the first time it is picked up (any player class: owner 2026-11-16 item 7);
+//   - Vanilla Damage (rsqgw_vanilla_damage, owner 2026-11-16 03:51): Doom's own numbers instead of Led's.
 // Ammo: Ammo1 = the reserve, Ammo2 = the rounds in the gun (GNRC has them the other way round; the numbers are GNRC's).
 // No ACS, none of Led's options (owner): GNRC's ACS option reads are their defaults.
 
@@ -82,6 +84,7 @@ class RSQGW_Gun : Weapon abstract
 	bool chambered;		// a round in the chamber: empty, the magazine takes one less (GNRC's 10 / 11)
 	bool racks;			// emptied, the hand reload ends with the slide / bolt / handle (RSR_Charge)
 	bool semiOption;	// "Pistol Semi Auto" (rsa_pistol_semi) applies to this gun
+	bool semiHeld;		// fired this pull: no shot from this hand until its trigger is let go (RSQGW_SemiWait)
 	property Chambered: chambered;
 	property Racks: racks;
 	property SemiOption: semiOption;
@@ -101,6 +104,43 @@ class RSQGW_Gun : Weapon abstract
 		RSQGW_Gun.Chambered true;
 		RSQGW_Gun.Racks false;
 		RSQGW_Gun.SemiOption false;
+	}
+
+	// ---------------------------------------------------------------- Vanilla Damage (owner 2026-11-16 03:51)
+	// Off (the default): Led's numbers. On: each gun deals Doom's own damage per bullet, pellet or projectile, and fires
+	// at Doom's rate where that is how Doom balances it (README "Vanilla Damage" lists every gun).
+	clearscope static bool Vanilla()
+	{
+		let c = CVar.FindCVar('rsqgw_vanilla_damage');
+		return c && c.GetBool();
+	}
+
+	// ---------------------------------------------------------------- loaded on first pickup (item 7)
+	// GNRC's player class used to load every magazine with StartItems, so a gun picked up with another mod's player
+	// class came empty. Now the gun loads itself the first time this player gets it: its magazine (Ammo2) did not exist
+	// in the inventory yet. The off-hand copies are loaded by the dual script (RSQ_Dual.GiveCopy).
+	override void AttachToOwner(Actor other)
+	{
+		bool had = other != null && AmmoType2 != null && other.FindInventory(AmmoType2) != null;
+		Super.AttachToOwner(other);
+		String cn = GetClassName();
+		if (had || !Ammo2 || bOffhandWeapon || cn.Left(8) == "RSQ_Off_")
+			return;
+		Ammo2.Amount = max(Ammo2.Amount, Cap());
+	}
+
+	// ---------------------------------------------------------------- semi auto (item 4)
+	// BD22 VR's semiauto.zs fix, per hand: QuestZDoom 17.3 drops +WEAPON.NOAUTOFIRE (RSQGW_TriggerHeld below puts the
+	// main hand right). A gun that fires once per pull marks the pull (semiHeld); its Fire / AltFire go to SemiWait while
+	// that hand's trigger is still held. Let go, the mark goes (DoEffect runs in the pawn's Tick, ahead of the weapons).
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (!semiHeld || !Owner || !Owner.player)
+			return;
+		int held = bOffhandWeapon ? (BT_OFFHANDATTACK | BT_OFFHANDALTATTACK) : (BT_ATTACK | BT_ALTATTACK);
+		if (!(Owner.player.cmd.buttons & held))
+			semiHeld = false;
 	}
 
 	// ---------------------------------------------------------------- ammo
@@ -187,7 +227,7 @@ class RSQGW_Gun : Weapon abstract
 	{
 		if (invoker.CanReload())
 			return ResolveState("Reload");
-		A_StartSound("RSQWS/dry", CHAN_AUTO);
+		A_StartSound("RSQGW/dry", CHAN_AUTO);	// GNRC's own click (SNDINFO.rsr): it was WoS_Reloaded's name, so it was silent
 		return ResolveState("DryWait");
 	}
 
@@ -254,9 +294,18 @@ class RSQGW_Gun : Weapon abstract
 			A_TakeInventory("RSR_Charge", 1);
 			return ResolveState("Ready");
 		}
-	DryWait:
+	DryWait:	// (was "Goto Ready", resolved in this abstract class, which has no Ready: the gun stopped dead after the click)
 		"####" "#" 8;
-		Goto Ready;
+		"####" "#" 0 A_Jump(256, "Ready");	// by name at run time: the gun's own Ready
+	SemiWait:	// one shot per pull: the trigger is still held from the last one
+		"####" "#" 1
+		{
+			if (!invoker.semiHeld)
+				return ResolveState("Ready");
+			A_WeaponReady(WRF_NOFIRE | WRF_NOBOB);
+			return ResolveState(null);
+		}
+		Loop;
 
 	}
 }
@@ -271,6 +320,25 @@ class RSQGW_KickKey : EventHandler
 		let mo = players[e.Player].mo;
 		if (mo && mo.health > 0 && (players[e.Player].ReadyWeapon is 'RSQGW_Gun' || players[e.Player].ReadyWeapon is 'RSQGW_Knuckle'))
 			mo.GiveInventory('RSQGW_Kicking', 1);
+	}
+}
+
+// BD22 VR's semiauto.zs RSQ_TriggerHeld for this pack (item 4): before the player thinks, attackdown is set the way
+// upstream GZDoom keeps it, down while a trigger (primary or alt) has stayed down since the last tic, so +NOAUTOFIRE
+// holds a held trigger again (QuestZDoom 17.3 player.zs stores CheckWeaponFire's result there, false whenever NOAUTOFIRE
+// just held the shot back). BD22 VR's own reads the primary only; the alt is added here (the double-barrel's both-barrels
+// alt). RSQGW_Handler gives it to every player.
+class RSQGW_TriggerHeld : Inventory
+{
+	Default { Inventory.MaxAmount 1; +INVENTORY.UNDROPPABLE; +INVENTORY.UNTOSSABLE; +INVENTORY.QUIET }
+	override void DoEffect()
+	{
+		Super.DoEffect();
+		if (Owner && Owner.player)
+		{
+			int b = BT_ATTACK | BT_ALTATTACK;
+			Owner.player.attackdown = (Owner.player.oldbuttons & b) && (Owner.player.cmd.buttons & b);
+		}
 	}
 }
 

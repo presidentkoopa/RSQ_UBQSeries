@@ -208,7 +208,9 @@ class RSQ_AmmoHud : EventHandler
 		double W = sw / u, H = sh / u;
 		Font big = Font.GetFont("HUDFONT_DOOM");
 		if (!big) big = BigFont;
-		for (int s = 0; s <= 1; s++)
+		// Remove HUD Ammo (rsq_hud_noammo, BD22 VR Reloaded 2.0.4x's option; RSQ Gun Cards shows them on the cards): no counts
+		let noammo = CVar.GetCVar('rsq_hud_noammo', p);
+		for (int s = 0; s <= 1 && !(noammo && noammo.GetBool()); s++)
 		{
 			Weapon wpn = s == 0 ? p.ReadyWeapon : p.OffhandWeapon;
 			int mag, reserve;

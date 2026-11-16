@@ -6,12 +6,14 @@ BD = os.path.join(os.environ.get('RSQGW_BD22VR', '/home/claude/rsq_bd_vr_reloade
 SRC = ['MODELDEF.bd.txt', 'MODELDEF.rsr', 'MODELDEF.rsrpump', 'MODELDEF.rsm', 'MODELDEF.rsb', 'MODELDEF.rsq', 'MODELDEF.rsbullet', 'MODELDEF.rsqoff', 'MODELDEF.rsqdual']
 BLOCK = re.compile(r'^([ \t]*)Model[ \t]+"?(\w+)"?\s*\{(.*?)^[ \t]*\}', re.S | re.I | re.M)
 def nocomment(t): return re.sub(r'//[^\n]*', '', re.sub(r'/\*.*?\*/', '', t, flags=re.S))
-def build(alias, helpers):
-    """alias: {pack class: BD class}; helpers: classes copied as they are.
-    -> {lump name: text}, files, keyed {class: set((sprite, frame))}, sprites, missing files"""
+def build(alias, helpers, drop=()):
+    """alias: {pack class: BD class}; helpers: classes copied as they are; drop: model folders (models/bd/<name>) of BD22
+    guns the pack does not have: a block naming any file in one is left out, so the file is not carried.
+    -> {lump name: text}, files, keyed {class: set((sprite, frame))}, sprites, missing files, dropped block count"""
     by_bd = {}
     for k, v in alias.items(): by_bd.setdefault(v.lower(), []).append(k)
-    lumps = {}; files = set(); keyed = {}; sprites = set(); missing = []
+    lumps = {}; files = set(); keyed = {}; sprites = set(); missing = []; dropped = 0
+    dropdirs = tuple('models/bd/%s/' % d.lower() for d in drop)
     for f in SRC:
         raw = open(os.path.join(BD, f), encoding='latin-1').read()
         out = []
@@ -23,6 +25,10 @@ def build(alias, helpers):
             code = nocomment(body)
             pm = re.search(r'^\s*Path\s+"([^"]*)"', code, re.M | re.I)
             path = pm.group(1).rstrip('/') if pm else ''
+            named = [fm.group(1) for fm in re.finditer(r'^\s*(?:Model\s+\d+|Skin\s+\d+|SurfaceSkin\s+\d+\s+\d+)\s+"([^"]+)"', code, re.M | re.I)]
+            if dropdirs and any((path + '/' + nm).lower().startswith(dropdirs) or nm.lower().startswith(dropdirs) for nm in named):
+                dropped += 1
+                continue
             for fm in re.finditer(r'^\s*(?:Model\s+\d+|Skin\s+\d+|SurfaceSkin\s+\d+\s+\d+)\s+"([^"]+)"', code, re.M | re.I):
                 name = fm.group(1)
                 for cand in (path + '/' + name, name):
@@ -38,4 +44,4 @@ def build(alias, helpers):
             head = "// from BD22 VR's %s (RS_Brutal22WeaponsQ), by tools/port/mdl.py: the gun class names are this pack's\n\n" % f
             txt, n = handtone_build.transform(head + '\n'.join(out))
             lumps['MODELDEF.' + f.split('.', 1)[1].replace('.txt', '')] = txt
-    return lumps, files, keyed, sprites, missing
+    return lumps, files, keyed, sprites, missing, dropped

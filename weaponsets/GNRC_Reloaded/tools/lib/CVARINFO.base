@@ -30,3 +30,9 @@ server int rsq_ballistics_cfg = 1;
 server bool sv_rsq_true_bullets = true;	// True Bullets: flying rounds; off = the mod's own hitscan
 server float sv_rsq_round_speed = 80.0;	// True Bullet Speed, map units a tic
 user float rsq_round_speed = 1.0;
+// owner 2026-11-16 03:44 / 03:51 (GNRC_Reloaded 0.8)
+server bool rsqgw_vanilla_damage = false;	// Vanilla Damage: Doom's own damage (and rate where Doom balances by it) instead of Led's
+server bool rsqgw_rifle_gl = false;		// Rifle Underbarrel Launcher: off = not drawn; on = drawn, the off trigger on the handguard launches a grenade (1 rocket)
+user bool rsq_instant_switch = true;		// Instant Weapon Switch (BD22 VR's switch.zs, its default: on)
+user bool rsqgw_recoil = false;			// Gun Recoil (Visible): BD22 VR's recoil.zs, the drawn gun tilts, the aim never moves (off, as BD22 VR has it today)
+user bool rsq_hud_noammo = false;		// Remove HUD Ammo (BD22 VR Reloaded's name; RSQ Gun Cards' page has the row too): no ammo counts on this pack's HUD

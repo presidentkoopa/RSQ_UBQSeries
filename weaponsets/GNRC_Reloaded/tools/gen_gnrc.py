@@ -43,6 +43,12 @@ def prep(t, D):
                lambda m: m.group(1) + ' { ' + ' '.join(x.strip() for x in m.group(2).splitlines() if x.strip()) + ' }', t, flags=re.S)
     return t
 
+# owner 2026-11-16 item 9: GNRC's blasts (the rocket, the grenade) shook the view with Radius_Quake. They are felt in the
+# hands instead (RSQGW_Blast.Felt, src/zscript/gnrc/handler.zs: both controllers through RSQ Accessibility's Rumble
+# Backup by name, as the basics' grenade); no quake, no view shake. Applied to the generated text, so a regeneration keeps it.
+def no_quakes(z):
+    return re.subn(r'Radius_Quake\((\d+), (\d+), 0, (\d+), 0\);', r'{ RSQGW_Blast.Felt(self, \1, \2, \3); }', z)
+
 def main():
     D = defaults()
     tmp = tempfile.mkdtemp()
@@ -56,8 +62,9 @@ def main():
     # dec2zs leaves GNRC's unquoted, unterminated BounceType lines as they are
     z = open(out, encoding='latin-1').read()
     z, n = re.subn(r'(?m)^(\t+)BounceType\s+"?(\w+)"?\s*$', r'\1BounceType "\2";', z)
+    z, nq = no_quakes(z)
     open(out, 'w', encoding='latin-1').write(z)
-    print('BounceType lines fixed:', n)
+    print('BounceType lines fixed:', n, '; quakes felt in the hands instead:', nq)
 
 if __name__ == '__main__':
     main()

@@ -22,7 +22,7 @@ OptionValue "RSR_Pouch"
 {
 	0, "Anywhere, 20 cm from the gun"
 	1, "Low, 40 cm below the eyes"
-	2, "Tactical Rig's pouch"
+	2, "Tactical Rig's pouch (if loaded)"
 }
 
 OptionValue "RSR_ShellCredit"
@@ -76,7 +76,7 @@ OptionValue "RSQ_HandTone"
 
 OptionMenu "RSQ_Options"
 {
-	Title "GNRC RELOADED VR"
+	Title "GNRC RELOADED VR 0.8"
 	Option "VR Hands", "rsq_hands", "OnOff"
 	Option "Hand Skin Tone", "rsq_hand_tone", "RSQ_HandTone"
 	Option "Punches (jab, hook, uppercut)", "rsqb_punch", "OnOff"
@@ -85,6 +85,10 @@ OptionMenu "RSQ_Options"
 	Option "New magazine from", "rsr_pouch", "RSR_Pouch"
 	Option "Shotgun Shells Per Insert", "rsr_shell_credit", "RSR_ShellCredit"
 	Slider "Reload assist", "rsr_assist", 0.5, 3.0, 0.1
+	Option "Vanilla Damage", "rsqgw_vanilla_damage", "OnOff"
+	Option "Rifle Underbarrel Launcher", "rsqgw_rifle_gl", "OnOff"
+	Option "Instant Weapon Switch", "rsq_instant_switch", "OnOff"
+	Option "Gun Recoil (Visible)", "rsqgw_recoil", "OnOff"
 	Option "Pistol Semi Auto", "rsa_pistol_semi", "OnOff"
 	Option "Pump Shotgun Spread", "rsq_pump_spread", "RSQ_PumpSpread"
 	Option "Shotgun Slugshot Alt Fire", "rsa_sg_slug", "OnOff"
@@ -96,6 +100,7 @@ OptionMenu "RSQ_Options"
 	Option "Two-Hand Grip (engine)", "vr_two_handed_weapons", "OnOff"
 	Submenu "Dual Options", "RSQ_DualOptions"
 	Option "Remove HUD Health and Armor", "rsq_hud_nohp", "OnOff"
+	Option "Remove HUD Ammo", "rsq_hud_noammo", "OnOff"
 	Option "Real Casing Models", "rsq_casing_models", "OnOff"
 	Slider "Casing Size", "rsq_casing_size", 0.5, 2.5, 0.1, 1
 	StaticText " "

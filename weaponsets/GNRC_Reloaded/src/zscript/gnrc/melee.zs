@@ -99,7 +99,7 @@ class RSQGW_ModChainsaw : RSQGW_Gun replaces Chainsaw
 		}
 		SAWG A 2;
 	Hold:	// out of VR: GNRC's saw
-		SAWF S 1 { A_StartSound("weapons/chainsaw/loop", CHAN_WEAPON, CHANF_LOOPING); A_Saw("", "saw/flesh", 3, "RSQGW_ChainsawPuffSpawner", 8); }
+		SAWF S 1 { A_StartSound("weapons/chainsaw/loop", CHAN_WEAPON, CHANF_LOOPING); A_Saw("", "saw/flesh", RSQGW_Gun.Vanilla() ? 2 : 3, "RSQGW_ChainsawPuffSpawner", 8); }
 		SAWF T 1;
 		SAWF S 1;
 		SAWF T 1;
@@ -122,7 +122,12 @@ class RSQGW_ModChainsaw : RSQGW_Gun replaces Chainsaw
 }
 
 // one contact cut of the running bar (rsvr/melee.zs RSVR_Hand.Strike, SAW): GNRC's saw damage at the point the bar met
-// the body, started just inside it so it hits at once (as BD22's SawDamageHorizontal is used there)
+// the body, started just inside it so it hits at once (as BD22's SawDamageHorizontal is used there).
+// THE ROLL (owner 2026-11-16 item 2): the port kept A_Saw's 3 and lost its 1-10 roll, a fixed 3 a cut (52 a second at one
+// cut every 2 tics, melee.zs SAW_EVERY), a third of GNRC's own saw. GNRC's own saw out of VR is A_Saw 3: 3 x 1-10 every
+// 4 tics, 144 a second. A cut every 2 tics carries half of that: (3 x 1-10) / 2, the odd half rounded up or down at
+// random, 8.25 on average, 144 a second, GNRC's own (not vanilla's 96: the set keeps Led's numbers by default).
+// Vanilla Damage: Doom's saw, 2 x 1-10 every 4 tics (96 a second), so 1-10 a cut.
 class RSQGW_SawCut : Actor
 {
 	Default
@@ -131,7 +136,7 @@ class RSQGW_SawCut : Actor
 		Radius 2;
 		Height 2;
 		Speed 4;
-		DamageFunction (3);
+		DamageFunction (RSQGW_Gun.Vanilla() ? random(1, 10) : (3 * random(1, 10) + random(0, 1)) / 2);
 		+EXTREMEDEATH
 		+BLOODSPLATTER
 		RenderStyle "None";
