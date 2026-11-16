@@ -1,0 +1,98 @@
+version "4.10"
+// TEST ONLY (RSQ Miniboss: Miniboss Kills Tier Up Monsters, 2026-11-15). Rig only, never shipped.
+// t40 god + notarget, fill the meter, t42 call it in; once the miniboss has landed and the arrival is over, face it, log
+// the world tier and every living monster's RSQ ladder tier, kill the miniboss AS THE PLAYER, log again after the beat;
+// then (tu_second 1) call a second fight in and log its tiers.
+class TU_Probe : EventHandler
+{
+	int landT, killT, phase, secondT;
+	Actor spot; Vector3 killAt;
+	Service mn;
+	int TierOf(Actor a) { if (!mn) mn = ServiceIterator.Find("RSQMN_RosterService").Next(); return mn ? mn.GetInt("tier", "", 0, 0, a) : -9; }
+	int WT() { let c = CVar.FindCVar('rsq_mon_worldtier'); return c ? c.GetInt() : -9; }
+	void Census(String tag)
+	{
+		int cnt[15]; for (int i = 0; i < 15; i++) cnt[i] = 0;
+		int n = 0, none = 0;
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+		{
+			if (!a.bIsMonster || a.health <= 0 || a.player || a.bFRIENDLY || !a.bCOUNTKILL) continue;
+			int t = TierOf(a); n++;
+			if (t >= 1 && t <= 13) cnt[t]++; else none++;
+		}
+		String s = ""; for (int i = 1; i <= 13; i++) if (cnt[i]) s = s .. String.Format(" t%d:%d", i, cnt[i]);
+		Console.Printf("TUP %s t%d world tier %d | living monsters %d by tier:%s (no tier %d)", tag, level.maptime, WT(), n, s, none);
+	}
+	void Roles(String tag)
+	{
+		let it = ThinkerIterator.Create("Actor"); Actor a;
+		while (a = Actor(it.Next()))
+			if (a.bIsMonster && a.health > 0 && (a.CountInv("RSQMB_Ward") || a.CountInv("RSQMB_Thrall")))
+				Console.Printf("TUP %s t%d %s %s tier %d hp %d", tag, level.maptime, a.CountInv("RSQMB_Ward") ? "MINIBOSS" : "thrall", a.GetClassName(), TierOf(a), a.health);
+	}
+	void Face(PlayerPawn p, Vector3 at, double h)
+	{
+		Vector3 d = level.Vec3Diff(p.pos + (0, 0, p.ViewHeight), at + (0, 0, h * 1.6));
+		p.A_SetAngle(VectorAngle(d.x, d.y), SPF_INTERPOLATE);
+		p.A_SetPitch(-VectorAngle(d.xy.Length(), d.z), SPF_INTERPOLATE);
+	}
+	override void WorldThingRevived(WorldEvent e) { if (e.Thing && killT != 0) Console.Printf("TUP t%d REVIVED %s (miniboss ward %d)", level.maptime, e.Thing.GetClassName(), e.Thing.CountInv("RSQMB_Ward")); }
+	Actor ws; bool wsSeen, wsDone; double viewYaw;
+	override void WorldTick()
+	{
+		let p = players[consoleplayer].mo; if (!p) return;
+		int t = level.maptime;
+		if (killT && !wsSeen && !wsDone) { String wsn = "RSQMB_WordSpot"; class<Thinker> wsc = wsn; if (!wsc) wsDone = true; let wi = wsc ? ThinkerIterator.Create(wsc) : null; if (wi) ws = Actor(wi.Next()); if (ws) { wsSeen = true; Console.Printf("TUP t%d word anchor up (height %.0f, %.0f units from you)", t, ws.height, p.Distance3D(ws)); } }
+		if (wsSeen && ws == null) { wsSeen = false; wsDone = true; Console.Printf("TUP t%d word anchor gone", t); }
+		p.player.cheats |= CF_GODMODE | CF_NOTARGET;
+		if (t == 1) viewYaw = p.angle;   // the rig's eye looks this way all run (turning the player does not turn it)
+		if (t == 38) Census("START");
+		if (t == 40) { Console.Printf("TUP t%d netevent rsqmb_fill 1000", t); EventHandler.SendNetworkEvent("rsqmb_fill", 1000); }
+		if (t == 42) { Console.Printf("TUP t%d netevent rsqmb_callin 1", t); EventHandler.SendNetworkEvent("rsqmb_callin", 1); }
+		let h = RSQMB_Handler.Get(); if (!h) return;
+		if (phase == 0)
+		{
+			RSQMB_Boss b = h.bosses.Size() ? h.bosses[h.bosses.Size() - 1] : null;
+			if (!b || !b.mb || b.done || h.arrPhase) return;
+			if (!landT) { landT = t; Console.Printf("TUP t%d fight on (arrival over)", t); Roles("FIGHT1"); }
+			if (t == landT + 105)
+			{
+				Census("BEFORE");
+				EventHandler.SendNetworkEvent("rs_bdtier_dump");
+				let mb = b.mb; let w = RSQMB_Ward(mb.FindInventory("RSQMB_Ward"));
+				killAt = mb.pos;
+				b.lives = 1; mb.bBUDDHA = b.ownBuddha; b.invulUntil = 0; mb.bINVULNERABLE = false;
+				int hp = mb.health;
+				// the rig's view does not turn with the player's angle: step sideways so the death spot is straight ahead
+				p.angle = viewYaw; Vector2 fw = (cos(viewYaw), sin(viewYaw));
+				Vector2 dd = level.Vec2Diff(p.pos.xy, mb.pos.xy);
+				Vector2 lat = dd - fw * (dd dot fw);
+				Vector3 was = p.pos;
+				double fwd = max(0.0, (dd dot fw) - 250);   // and forward, past the corridor pillars, 250 units short of it
+				p.SetOrigin((p.pos.xy + lat + fw * fwd, p.pos.z), false);
+				if (!p.TestMobjLocation()) { p.SetOrigin(was, false); Console.Printf("TUP t%d could not step sideways %.0f", t, lat.Length()); }
+				else Console.Printf("TUP t%d stepped sideways %.0f and forward %.0f units: %.0f from the miniboss", t, lat.Length(), fwd, (dd dot fw) - fwd);
+				mb.DamageMobj(p, p, hp + 1, 'Bullet', DMG_FORCED);
+				Console.Printf("TUP KILL t%d the player killed the miniboss %s hp %d -> %d (living thralls %d)", t, mb.GetClassName(), hp, mb.health, b.Living());
+				killT = t; phase = 1;
+			}
+			return;
+		}
+		if (phase == 1)
+		{
+			if (t == killT + 20 || t == killT + 34 || t == killT + 36 || t == killT + 50) Console.Printf("TUP t%d (+%d) world tier %d", t, t - killT, WT());
+			if (t == killT + 120) { Census("AFTER"); EventHandler.SendNetworkEvent("rs_bdtier_dump"); }
+			let sc = CVar.FindCVar('tu_second');
+			if (t == killT + 200 && sc && sc.GetInt()) { phase = 2; secondT = t; landT = 0; EventHandler.SendNetworkEvent("rsqmb_fill", 1000); }
+			return;
+		}
+		if (phase == 2)
+		{
+			if (t == secondT + 2) { Console.Printf("TUP t%d second fight: netevent rsqmb_callin 1 (world tier %d)", t, WT()); EventHandler.SendNetworkEvent("rsqmb_callin", 1); }
+			RSQMB_Boss b = h.bosses.Size() ? h.bosses[h.bosses.Size() - 1] : null;
+			if (!b || !b.mb || b.done || h.arrPhase || t < secondT + 5) return;
+			if (!landT) { landT = t; Roles("FIGHT2"); phase = 3; }
+		}
+	}
+}

@@ -1,0 +1,114 @@
+RSQ Miniboss: Miniboss Kills Tier Up Monsters (rsqmb_tierup), rig runs 2026-11-15. Rig only, not headset-confirmed.
+QuestZDoom 17.3 rig, the owner's full order (doom2, TUD_NoEndInSight, LegenDoom 3.0, brutal22test6, BD_VoxelPack,
+BD22 VR Reloaded 2.0.4x, XMVE x4, LOB, Champions, NoMoreHitscans, UniversalEntropy, SpawnAdjuster, the environmental and
+gameplay mods, Gun Bonsai, every RSQ pk3 of the worktree), his saved settings, MAP01, -skill 6 (Black Metal), god, notarget.
+Probe: tuprobe_zscript.txt (rig only): fills the meter and calls a fight in, kills the miniboss AS THE PLAYER
+(DamageMobj from the player, its lives set to 1), and counts every living monster by RSQ Monsters' ladder tier
+(RSQMN_RosterService "tier") before and after; RSQ Monsters' own dump (netevent rs_bdtier_dump) runs at both.
+tuA ran an earlier build of this change (the words at size 2, and its debug line read the cvar back the same tic, before
+the engine applies a server cvar, so it printed "1 -> 1"; the probe's own lines show 1, then 2); tuH, tuOff, tuMax are
+the committed build. tuBase is origin/main's RSQ_Miniboss.pk3 before this change, for the arrival tiers.
+
+===== run tuH
+TUP START t38 world tier 1 | living monsters 27 by tier: t1:27 (no tier 0)
+TUP t40 netevent rsqmb_fill 1000
+TUP t42 netevent rsqmb_callin 1
+RSQMB colour bonus t44 (ladder tiers, strength order): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 0 -> miniboss +0 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss Green(2) (RS_GreenZombie), thralls Common(1) Common(1) Common(1) Common(1) (thralls stop at Abyss(11), top White(13))
+TUP t146 fight on (arrival over)
+TUP FIGHT1 t146 MINIBOSS RS_GreenZombie tier 2 hp 32
+TUP BEFORE t251 world tier 1 | living monsters 32 by tier: t1:31 t2:1 (no tier 0)
+TUP t251 stepped sideways 130 and forward 202 units: 250 from the miniboss
+RSQMB tier-up on kill t251: miniboss RS_GreenZombie killed by a player, world tier 1 now, +1 in 35 tics
+RSQMB boss 0 died (killer player) rage 0
+TUP KILL t251 the player killed the miniboss RS_GreenZombie hp 96 -> -1 (living thralls 4)
+TUP t252 word anchor up (height 70, 251 units from you)
+TUP t271 (+20) world tier 1
+TUP t285 (+34) world tier 1
+RSQMB tier-up on kill t286: world tier 1 -> 2 (Green(2))
+TUP t287 (+36) world tier 1
+TUP t301 (+50) world tier 1
+BDTIER: world tier 2: 26 kit monsters and 3 ColorfulHell monsters follow
+TUP AFTER t371 world tier 2 | living monsters 29 by tier: t2:29 (no tier 0)
+TUP t426 word anchor gone
+===== run tuOff
+TUP START t38 world tier 1 | living monsters 27 by tier: t1:27 (no tier 0)
+TUP t40 netevent rsqmb_fill 1000
+TUP t42 netevent rsqmb_callin 1
+RSQMB colour bonus t47 (ladder tiers, strength order): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 0 -> miniboss +0 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss Green(2) (RS_GreenImp), thralls Common(1) Common(1) Common(1) Common(1) Common(1) (thralls stop at Abyss(11), top White(13))
+TUP t153 fight on (arrival over)
+TUP FIGHT1 t153 MINIBOSS RS_GreenImp tier 2 hp 56
+TUP BEFORE t258 world tier 1 | living monsters 33 by tier: t1:32 t2:1 (no tier 0)
+TUP t258 stepped sideways 128 and forward 192 units: 250 from the miniboss
+RSQMB tier-up on kill: off (rsqmb_tierup 0)
+RSQMB boss 0 died (killer player) rage 0
+TUP KILL t258 the player killed the miniboss RS_GreenImp hp 168 -> -1 (living thralls 5)
+TUP t278 (+20) world tier 1
+TUP t292 (+34) world tier 1
+TUP t294 (+36) world tier 1
+TUP t308 (+50) world tier 1
+TUP AFTER t378 world tier 1 | living monsters 30 by tier: t1:30 (no tier 0)
+===== run tuMax
+TUP START t38 world tier 13 | living monsters 27 by tier: t13:27 (no tier 0)
+TUP t40 netevent rsqmb_fill 1000
+TUP t42 netevent rsqmb_callin 1
+RSQMB colour bonus t44 (ladder tiers, strength order): start miniboss Green(2), thralls Common(1) Common(1) Common(1) Common(1) Common(1) | Gun Bonsai VR player level 0 -> miniboss +0 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss Green(2) (RS_GreenImp), thralls Common(1) Common(1) Common(1) Common(1) Common(1) (thralls stop at Abyss(11), top White(13))
+TUP t150 fight on (arrival over)
+TUP FIGHT1 t150 MINIBOSS RS_GreenImp tier 2 hp 56
+RSQMB thrall 3 of boss 0 died (killer player) living 4
+TUP BEFORE t255 world tier 13 | living monsters 32 by tier: t1:4 t2:1 t13:27 (no tier 0)
+TUP t255 could not step sideways 184
+RSQMB tier-up on kill t255: miniboss RS_GreenImp killed by a player, world tier 13 now, +1 in 35 tics
+RSQMB boss 0 died (killer player) rage 0
+TUP KILL t255 the player killed the miniboss RS_GreenImp hp 168 -> -1 (living thralls 4)
+TUP t256 word anchor up (height 70, 361 units from you)
+TUP t275 (+20) world tier 13
+TUP t289 (+34) world tier 13
+RSQMB tier-up on kill t290: world tier 13, already at the top (13): no tier-up
+TUP t291 (+36) world tier 13
+TUP t305 (+50) world tier 13
+TUP AFTER t375 world tier 13 | living monsters 31 by tier: t1:4 t13:27 (no tier 0)
+TUP t430 word anchor gone
+===== run tuA (second fight called in after the tier-up, world tier 2)
+TUP START t38 world tier 1 | living monsters 27 by tier: t1:27 (no tier 0)
+TUP t40 netevent rsqmb_fill 1000
+TUP t42 netevent rsqmb_callin 1
+TUP t150 fight on (arrival over)
+TUP FIGHT1 t150 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT1 t150 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT1 t150 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT1 t150 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT1 t150 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT1 t150 MINIBOSS RS_GreenZombie tier 2 hp 32
+TUP BEFORE t255 world tier 1 | living monsters 33 by tier: t1:32 t2:1 (no tier 0)
+RSQMB tier-up on kill t255: miniboss RS_GreenZombie killed by a player, world tier 1 now, +1 in 35 tics
+RSQMB boss 0 died (killer player) rage 0
+TUP KILL t255 the player killed the miniboss RS_GreenZombie hp 96 -> -1 (living thralls 5)
+TUP t275 (+20) world tier 1
+TUP t289 (+34) world tier 1
+RSQMB tier-up on kill t290: world tier 1 -> 1 (Common(1))
+TUP t291 (+36) world tier 1
+BDTIER: world tier 2: 27 kit monsters and 6 ColorfulHell monsters follow
+TUP t305 (+50) world tier 2
+TUP AFTER t325 world tier 2 | living monsters 33 by tier: t2:32 t3:1 (no tier 0)
+TUP t457 second fight: netevent rsqmb_callin 1 (world tier 2)
+TUP FIGHT2 t570 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT2 t570 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT2 t570 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT2 t570 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT2 t570 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT2 t570 MINIBOSS RS_GreenZombie tier 2 hp 32
+RSQMB thrall 0 of boss 1 died (killer player) living 4
+===== run tuBase (origin/main RSQ_Miniboss.pk3, before this change; world tier 13)
+TUP START t38 world tier 13 | living monsters 27 by tier: t13:27 (no tier 0)
+RSQMB colour bonus t46 (ladder tiers, strength order): start miniboss Green(2), thralls Common(1) Common(1) Common(1) | Gun Bonsai VR player level 0 -> miniboss +0 | weapon levels main 0 + off 0 = 0 -> thralls +0 (x0.25, half up) | final miniboss Green(2) (RS_GreenImp), thralls Common(1) Common(1) Common(1) (thralls stop at Abyss(11), top White(13))
+TUP FIGHT1 t148 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT1 t148 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT1 t148 thrall RS_CommonZombie tier 1 hp 48
+TUP FIGHT1 t148 MINIBOSS RS_GreenImp tier 2 hp 56
+TUP BEFORE t253 world tier 13 | living monsters 31 by tier: t1:3 t2:1 t13:27 (no tier 0)
+===== script errors per run (all four are BD_VoxelPack's voxeldef.txt lines 66, 72, 77, 892)
+tuA: 4 script errors, 0 VM aborts
+tuH: 4 script errors, 0 VM aborts
+tuOff: 4 script errors, 0 VM aborts
+tuMax: 4 script errors, 0 VM aborts
+tuBase: 4 script errors, 0 VM aborts

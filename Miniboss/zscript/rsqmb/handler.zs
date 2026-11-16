@@ -107,7 +107,7 @@ class RSQMB_Handler : EventHandler
 	}
 
 	// Leaving the level: everything the greed rule changed is put back (a hub keeps its monsters).
-	override void WorldUnloaded(WorldEvent e) { RestoreAll(); }
+	override void WorldUnloaded(WorldEvent e) { RestoreAll(); TierUpFlush(); }
 
 	transient Service roster;     // RSQ Monsters' roster service (the tier gem beside the miniboss's bar), by name
 	transient bool rosterLooked;
@@ -118,6 +118,7 @@ class RSQMB_Handler : EventHandler
 		Tick2();
 		BfTick();
 		FightTick();
+		if (tuAt.Size()) TierUpTick();   // tierup.zs
 		if ((level.maptime % 17) == 0 && bosses.Size())
 		{
 			if (!rosterLooked) { rosterLooked = true; roster = ServiceIterator.Find("RSQMN_RosterService").Next(); }
@@ -424,6 +425,7 @@ class RSQMB_Handler : EventHandler
 		// one row, "Miniboss Called": 3x the kill (owner 11-10: "one reward"). Every miniboss is a called-in one now (the
 		// classic pick, which paid "Miniboss" at 1x, was cut 2026-11-12).
 		if (killer) Award(killer, "Miniboss Called", 1500);
+		TierUpOnKill(b, killer);   // tierup.zs: Miniboss Kills Tier Up Monsters (owner 11-15 19:41)
 		if (debug) Console.Printf("RSQMB boss %d died (killer %s)%s rage %d", b.idx, killer ? "player" : "none", "", rageCount);
 	}
 
