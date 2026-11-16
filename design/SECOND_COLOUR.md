@@ -13,21 +13,18 @@ the same way BD22 and XMVE monsters already get their tier (RS_BDTier), driven b
 - **Every monster can get one:** ColorfulHell, BD22 and XMVE alike.
 - **Rare, more with World Tier:** like elites, a few percent at first, rising as World Tier goes up.
 - **Abyss uses our Abyss powers** (phase, blink, rise once), not Plus's reversed movement and dark screen (rough in VR).
+- **Never the same as its own colour** (09:36): a Cyan Imp can't roll Cyan.
+- **Rate: 2% at World Tier 1, +2% per tier** (09:36; about 1 in 4 at the top tier).
+- **Who rolls:** ordinary monsters and also LegenDoom legendaries, Champions, Bosses and Big Bosses (09:36). They roll
+  at the same rate as any monster (my reading; making Bosses always get one is a one-line change if the owner wants).
+- **How it shows: A and B together** (09:36, design/mockups/second_colour/second_colour_marks.gif): a second icon in
+  the second colour next to its tier icon (design/icons/B), and a pulsing glow around the body in the second colour.
+- **Defaults** (owner 09:36: "just pick something"): the toggle starts on **1, Power only**; each second colour brings
+  **our** ladder trick for that colour, not Plus's versions.
 - Not taken: Plus's spawn system, presets, Spawn Frequency slider and its 3,460 separate classes.
 
-## Proposed defaults (not yet confirmed by the owner)
-- The mode toggle defaults to **1, Power only**.
-- **Each second colour's power is ours:** the behaviour that colour already brings on the ladder (Green acid patches,
-  Blue faster shots with a zap, Purple one more shot, Cyan a hop off your aim and a slowing hit, Brown heals and shields
-  its allies, Yellow sets alight, FireBlu twin shots and a death blast, Gray stone skin, Red rage and death bolts, Abyss
-  phases, blinks and rises once, Black and White take less and call two of their kind, White blinks). Mode 2 adds
-  Plus's numbers (its table, per subtier) on top.
-
 ## Open (needs the owner)
-- **How the player sees the second colour.** The body's tint is its ladder colour; the second colour needs its own mark
-  (an icon, an aura, a word over the monster...). A mockup goes to the owner first.
-- Whether a monster's own colour and its second colour can be the same.
-- The exact rate curve against World Tier.
+- The exact look of the glow in the headset (the mockup is not in engine).
 
 ## When
 After Monster Assembly lands: both change RSQ Monsters, and Monster Assembly's new menu (where the mode toggle goes)
