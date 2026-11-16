@@ -37,8 +37,8 @@ class RSQVR_Banner play
 
 class RSQVR_Banners : EventHandler
 {
-	enum EMoment { M_REVIVE, M_LIFEUSED, M_BOSSWIN, M_BOSSLOSS, M_LIFEUP };
-	enum EKind { K_HEALTH, K_ARMOR, K_INVULN, K_MAGS, K_LIVES, K_TIERUP, K_TIERDOWN, K_NOLEG };
+	enum EMoment { M_REVIVE, M_LIFEUSED, M_BOSSWIN, M_BOSSLOSS, M_LIFEUP, M_BOSSINCOMING };
+	enum EKind { K_HEALTH, K_ARMOR, K_INVULN, K_MAGS, K_LIVES, K_TIERUP, K_TIERDOWN, K_NOLEG, K_NAME, K_TIER, K_THRALLS, K_CLOCK, K_UP, K_DOWN, K_INFO };
 
 	const POP = 8;            // tics a pop takes (4 mockup frames)
 	const STEP = 4;           // tics between one chip's pop and the next
@@ -51,6 +51,9 @@ class RSQVR_Banners : EventHandler
 	const MOCK_TAN = 0.0018958; // a mockup px as a tangent: its 800 px frame was a 400 px crop of the 480 px eye (2 x 0.91 x 400 / 480 / 800)
 
 	Array<RSQVR_Banner> list;
+	Array<RSQVR_Banner> toasts;   // the small messages (PRESENTATION_GUIDE.md section 5): one chip each
+	const TOAST_HOLD = 52;        // tics a toast holds after its pop (~1.5 s)
+	const TOAST_MAX = 3;          // on screen at once; a fourth pushes the oldest out
 
 	static clearscope RSQVR_Banners Get() { return RSQVR_Banners(EventHandler.Find("RSQVR_Banners")); }
 
@@ -64,6 +67,7 @@ class RSQVR_Banners : EventHandler
 		if (s == "BOSSWIN") return M_BOSSWIN;
 		if (s == "BOSSLOSS") return M_BOSSLOSS;
 		if (s == "LIFEUP") return M_LIFEUP;
+		if (s == "BOSSINCOMING") return M_BOSSINCOMING;
 		return -1;
 	}
 	// the world tiers (RSQ Monsters RS_BDArt COLOUR, tier 1..13): name and swatch
@@ -125,6 +129,28 @@ class RSQVR_Banners : EventHandler
 				word = kind == K_TIERUP ? "TIER UP" : "TIER DOWN";
 			}
 			else if (k == "nolegendary") { kind = K_NOLEG; word = "NO LEGENDARY"; }
+			// BOSS INCOMING! (section 9; the contract: name, tier, thralls, clock)
+			else if (k == "name")
+			{
+				kind = K_NAME;
+				// "@<class>": the clean name of that class (section 9); empty: the Boss's, filled in when it is drawn
+				if (v.Left(1) == "@")
+				{
+					Name cn = v.Mid(1);
+					class<Actor> cls = cn;
+					num = RSQVR_BossName.BossNameOfClass(cls);
+				}
+				else num = v;
+			}
+			else if (k == "tier") { kind = K_TIER; n = v.ToInt(); num = String.Format("TIER %d", n); rgb = TierRgb(n); }
+			else if (k == "thralls")
+			{
+				Array<String> at;
+				v.Split(at, "@");
+				kind = K_THRALLS; n = max(0, at.Size() > 0 ? at[0].ToInt() : 0);
+				word = at.Size() > 1 ? at[1] : "";       // the colours, read by ThrallRgb (the word is THRALLS, drawn below)
+			}
+			else if (k == "clock") { kind = K_CLOCK; n = int(v.ToDouble() * TICRATE); word = "FIGHT IN"; }
 			if (kind < 0) continue;
 			b.ck.Push(kind); b.cnum.Push(num.MakeUpper()); b.cword.Push(word); b.crgb.Push(rgb); b.cn.Push(n);
 			if (kind == K_INVULN && b.invIdx < 0) b.invIdx = b.ck.Size() - 1;
@@ -145,6 +171,40 @@ class RSQVR_Banners : EventHandler
 		return 1;
 	}
 
+	// THE TOAST (RSQVR_Service "toast", PRESENTATION_GUIDE.md section 5): "<kind>|<text>", kind health / armor / invuln /
+	// ammo / lives / up / down / info (white, no icon). One chip in its family colour and icon, the text in RSSCFN2, the
+	// chip pop, held ~1.5 s low in the view, then shrinks and fades. Returns 1 (0: no text).
+	int Toast(String spec, Actor pawn)
+	{
+		Array<String> parts;
+		spec.Split(parts, "|");
+		if (parts.Size() < 2 || parts[1] == "") return 0;
+		String k = parts[0].MakeLower();
+		int kind = K_INFO, n = 0;
+		if (k == "health") kind = K_HEALTH;
+		else if (k == "armor" || k == "armour") kind = K_ARMOR;
+		else if (k == "invuln") kind = K_INVULN;
+		else if (k == "ammo" || k == "mags") kind = K_MAGS;
+		else if (k == "lives") { kind = K_LIVES; n = 1; }
+		else if (k == "up") kind = K_UP;
+		else if (k == "down") kind = K_DOWN;
+		String txt = parts[1];
+		for (int i = 2; i < parts.Size(); i++) txt = txt .. "|" .. parts[i];
+		let b = new("RSQVR_Banner");
+		b.pn = (pawn && pawn.player) ? pawn.PlayerNumber() : -1;
+		b.moment = -1;
+		b.invIdx = -1;
+		b.t0 = level.maptime;
+		b.exitAt = POP + TOAST_HOLD;
+		b.endAt = b.exitAt + EXIT;
+		b.ck.Push(kind); b.cnum.Push(""); b.cword.Push(txt.MakeUpper()); b.crgb.Push(0); b.cn.Push(n);
+		int mine = 0;
+		for (int i = toasts.Size() - 1; i >= 0; i--)
+			if (toasts[i] && (toasts[i].pn == b.pn || toasts[i].pn < 0 || b.pn < 0) && ++mine >= TOAST_MAX) toasts[i].endAt = min(toasts[i].endAt, level.maptime - toasts[i].t0);
+		toasts.Push(b);
+		return 1;
+	}
+
 	// when each part starts, in tics after t0 (the mockups' frames x 2)
 	static clearscope int ChipStart(int moment, int i)
 	{
@@ -160,18 +220,24 @@ class RSQVR_Banners : EventHandler
 		if (b.moment == M_LIFEUP) { b.exitAt = FLY_AT; b.endAt = LIFEUP_END; return; }
 		int base = b.moment == M_LIFEUSED ? 60 : 52;
 		b.exitAt = max(base, lastDone + 22);
+		// BOSS INCOMING!: it stays while FIGHT IN counts down (at most ~4.5 s), and leaves as it reaches zero
+		if (b.moment == M_BOSSINCOMING)
+			for (int i = 0; i < n; i++) if (b.ck[i] == K_CLOCK) b.exitAt = clamp(b.cn[i] - EXIT, b.exitAt, 160);
 		if (b.invLand >= 0) b.exitAt = max(b.exitAt, b.invLand + 20);
 		b.endAt = b.exitAt + EXIT;
 	}
 
 	override void WorldTick()
 	{
+		for (int i = toasts.Size() - 1; i >= 0; i--)
+			if (!toasts[i] || level.maptime > toasts[i].t0 + toasts[i].endAt + 2) toasts.Delete(i);
 		for (int i = list.Size() - 1; i >= 0; i--)
 			if (!list[i] || level.maptime > list[i].t0 + list[i].endAt + 2) list.Delete(i);
 	}
 
 	// THE TEST HOOK (console, sv_cheats on): netevent rsqvr_bntest <n>, n = 0 REVIVE (with invulnerability 3 s), 1 -1UP
-	// (5 s), 2 BOSS DEFEATED!, 3 BOSS WINS!, 4 +1UP (and a Score life when RSQ Score is loaded), 5 REVIVE without; or any
+	// (5 s), 2 BOSS DEFEATED!, 3 BOSS WINS!, 4 +1UP (and a Score life when RSQ Score is loaded), 5 REVIVE without, 6 BOSS
+	// INCOMING! (an Imp's name), 7 three toasts; or any
 	// banner by its spec: netevent "rsqvr_banner:REVIVE|health:66|armor:50"
 	override void NetworkProcess(ConsoleEvent e)
 	{
@@ -196,6 +262,8 @@ class RSQVR_Banners : EventHandler
 			break;
 		}
 		case 5: Add("REVIVE|health:66|armor:50|mags:full", mo); break;
+		case 6: Add("BOSSINCOMING|name:@DoomImp|tier:5|thralls:4|clock:3", mo); break;
+		case 7: Toast("info|No flares left", mo); Toast("ammo|+20 shells", mo); Toast("up|Upgrade ready", mo); break;
 		}
 	}
 	static void GiveInv(Actor mo, int secs)
@@ -261,6 +329,7 @@ class RSQVR_Banners : EventHandler
 	// =================================================================================================================
 	// DRAWING
 	ui Font f1, f2;
+	ui double curT;
 	ui double gx, gy, m;      // the gaze on the screen, screen px a mockup px
 	ui bool photo;
 
@@ -342,22 +411,118 @@ class RSQVR_Banners : EventHandler
 		Screen.DrawText(f, col, x / px, y / px, s, DTA_VirtualWidthF, vw, DTA_VirtualHeightF, vh, DTA_KeepRatio, true, DTA_Alpha, a,
 			DTA_Color, RGBc(tint));
 	}
-	// the headline's look: a drop shadow, a dark outline all round, then the ramp
-	ui void Headline(String s, double cx, double cy, double px, double a, String colName)
+	// ---- THE HEADLINE: the SOTN letters (section 11, owner 03:08) ----------------------------------------------------
+	// Set in RSSCFON's own letters as pictures (tools/gen_banners.py), one quad a letter, so each can move on its own:
+	// set A the look (RQVBA gold ramp: REVIVE, BOSS DEFEATED!; RQVBK red ramp: BOSS WINS!; RQVBG gold bands: BOSS
+	// INCOMING!, LEVEL UP!), set B its white-hot version (RQVBB / RQVBL / RQVBH). Letter by letter (SOTN_STEP tics apart),
+	// inside the headline's pop: it SMEARS in (wide and slanted forward: four slices, the top ones further ahead, SMEAR
+	// tics), SNAPS upright, then FLASHES between the two looks (every FLASH tics, FLASHES changes) and holds the first.
+	// Photosensitive Mode: no flash between looks (the smear and the snap stay). Ramp sets get the dark outline and the
+	// drop shadow here; banded sets have their outline drawn in.
+	const SOTN_STEP = 1.5;
+	const SMEAR = 7.0;
+	const FLASH = 6.0;
+	const FLASHES = 6;
+	static ui bool Banded(String set) { return set == "RQVBG" || set == "RQVBH" || set == "RQVBE" || set == "RQVBF"; }
+	static ui String HotOf(String set)
 	{
-		double w = f1.StringWidth(s) * px, h = f1.GetHeight() * px;
-		double x = cx - w * 0.5, y = cy - h * 0.5;
-		int ink = Font.FindFontColor("RSQVR_BnInk");
-		double o = max(1.0, px * 0.5), sh = px * 0.85;
-		Txt(f1, ink, s, x + sh, y + sh, px, a * 0.75);
-		for (int dx = -1; dx <= 1; dx++) for (int dy = -1; dy <= 1; dy++)
-			if (dx || dy) Txt(f1, ink, s, x + dx * o, y + dy * o, px, a);
-		Txt(f1, Font.FindFontColor(colName), s, x, y, px, a);
+		if (set == "RQVBA") return "RQVBB";
+		if (set == "RQVBK") return "RQVBL";
+		if (set == "RQVBG") return "RQVBH";
+		if (set == "RQVBE") return "RQVBF";
+		return set;
+	}
+	// a whole number of screen px a letter pixel at rest wherever it can be (section 11: sharp pixels)
+	static ui double Sharp(double px) { return px >= 1.5 ? round(px) : px; }
+	// the width in letter pixels
+	static ui double SotnW(String set, String txt)
+	{
+		double w = 0;
+		for (int i = 0; i < int(txt.Length()); i++)
+		{
+			int c = txt.ByteAt(i);
+			TextureID t = T(String.Format("%s%03d", set, c));
+			int tw = 0, th = 0;
+			if (t.IsValid()) [tw, th] = TexMan.GetSize(t);
+			w += (c == 32 || !t.IsValid()) ? 5 : tw + 1;
+		}
+		return max(0.0, w - 1);
+	}
+	static ui double SotnH(String set) { int tw, th; [tw, th] = TexMan.GetSize(T(set .. "065")); return max(1, th); }
+	// one letter drawn as SLICES horizontal slices, each shifted forward by shear x its height above the foot; sx its
+	// width stretch. Top left (x, y), w x h on screen. fill >= 0: in that colour (the outline, the shadow)
+	static ui void SlantTex(TextureID t, double x, double y, double w, double h, double sxk, double shear, double a, int fill = -1)
+	{
+		int tw, th;
+		[tw, th] = TexMan.GetSize(t);
+		if (shear <= 0.001 && sxk <= 1.001)
+		{
+			if (fill >= 0) Screen.DrawTexture(t, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_TopLeft, true, DTA_FillColor, fill, DTA_Alpha, a);
+			else Screen.DrawTexture(t, false, x, y, DTA_DestWidthF, w, DTA_DestHeightF, h, DTA_TopLeft, true, DTA_Alpha, a);
+			return;
+		}
+		int n = 4;
+		for (int j = 0; j < n; j++)
+		{
+			double sy0 = th * j / double(n), sh = th / double(n);
+			double ox = shear * h * (1.0 - (j + 0.5) / n);
+			double dx = x - w * (sxk - 1.0) * 0.5 + ox;
+			if (fill >= 0)
+				Screen.DrawTexture(t, false, dx, y + h * j / n, DTA_DestWidthF, w * sxk, DTA_DestHeightF, h / n, DTA_TopLeft, true,
+					DTA_SrcY, sy0, DTA_SrcHeight, sh, DTA_FillColor, fill, DTA_Alpha, a);
+			else
+				Screen.DrawTexture(t, false, dx, y + h * j / n, DTA_DestWidthF, w * sxk, DTA_DestHeightF, h / n, DTA_TopLeft, true,
+					DTA_SrcY, sy0, DTA_SrcHeight, sh, DTA_Alpha, a);
+		}
+	}
+	// the headline centred on (cx, cy): px screen px a letter pixel at rest, k its pop, age tics since it began
+	ui void SotnHead(String set, String txt, double cx, double cy, double px, double k, double a, double age)
+	{
+		if (k <= 0.01 || a <= 0.003) return;
+		txt = txt.MakeUpper();
+		String hotSet = HotOf(set);
+		bool banded = Banded(set);
+		double u = px * k;
+		double totW = SotnW(set, txt) * u, hh = SotnH(set) * u;
+		double x = cx - totW * 0.5, y = cy - hh * 0.5;
+		if (k == 1.0) { x = round(x); y = round(y); }
+		for (int i = 0; i < int(txt.Length()); i++)
+		{
+			int c = txt.ByteAt(i);
+			TextureID t = T(String.Format("%s%03d", set, c));
+			if (c == 32 || !t.IsValid()) { x += 5 * u; continue; }
+			int tw, th;
+			[tw, th] = TexMan.GetSize(t);
+			double w = tw * u, h = th * u;
+			double la = age - i * SOTN_STEP;
+			if (la >= 0)
+			{
+				double sm = clamp(1.0 - la / SMEAR, 0.0, 1.0);
+				double sxk = 1.0 + 0.3 * sm, shear = 0.45 * sm;
+				TextureID tl = t;
+				if (!photo && la >= SMEAR && la < SMEAR + FLASH * FLASHES && (int((la - SMEAR) / FLASH) & 1) == 0)
+				{
+					TextureID th2 = T(String.Format("%s%03d", hotSet, c));
+					if (th2.IsValid()) tl = th2;
+				}
+				double sh = max(1.0, u * 0.85);
+				SlantTex(t, x + sh, y + sh, w, h, sxk, shear, a * 0.7, 0x050404);
+				if (!banded)
+				{
+					double o = max(1.0, u * 0.5);
+					for (int dx = -1; dx <= 1; dx++) for (int dy = -1; dy <= 1; dy++)
+						if (dx || dy) SlantTex(t, x + dx * o, y + dy * o, w, h, sxk, shear, a, 0x0A0806);
+				}
+				SlantTex(tl, x, y, w, h, sxk, shear, a);
+			}
+			x += w + u;
+		}
 	}
 
 	// ---- the chips --------------------------------------------------------------------------------------------------
-	// one chip laid out from its left edge x, its middle y, u screen px a mockup px; draws unless measure; returns its width
-	ui double Chip(RSQVR_Banner b, int i, double x, double y, double u, double a, bool measure, int glow = 0)
+	// one chip laid out from its left edge x, its middle y, u screen px a mockup px; draws unless measure; returns its width.
+	// sharp: at rest, so the letters take a whole number of screen px a pixel (section 11)
+	ui double Chip(RSQVR_Banner b, int i, double x, double y, double u, double a, bool measure, int glow = 0, bool sharp = false)
 	{
 		int kind = b.ck[i];
 		String col = "RSQVR_BnAmmo", icon = "";
@@ -369,13 +534,15 @@ class RSQVR_Banners : EventHandler
 		case K_INVULN: col = "RSQVR_BnInv"; icon = "RQVBII"; break;
 		case K_MAGS: col = "RSQVR_BnAmmo"; icon = "RQVBIM"; break;
 		case K_LIVES: grey = b.moment == M_LIFEUSED; col = grey ? "RSQVR_BnGrey" : "RSQVR_BnLife"; break;
-		case K_TIERUP: col = "RSQVR_BnUp"; icon = "RQVBIU"; break;
-		case K_TIERDOWN: col = "RSQVR_BnDown"; icon = "RQVBID"; break;
-		case K_NOLEG: col = "RSQVR_BnDown"; icon = "RQVBID"; break;
+		case K_TIERUP: case K_UP: col = "RSQVR_BnUp"; icon = "RQVBIU"; break;
+		case K_TIERDOWN: case K_NOLEG: case K_DOWN: col = "RSQVR_BnDown"; icon = "RQVBID"; break;
+		case K_NAME: case K_TIER: col = "RSQVR_BnGold"; break;
+		case K_CLOCK: col = "RSQVR_BnClock"; break;
 		}
 		int fc = Font.FindFontColor(col);
 		double padX = 14 * u, gap = 10 * u, ih = 28 * u;
 		double npx = 4 * u, wpx = 3 * u;            // the number at 4, the word at 3 mockup px a font px (RSSCFN2)
+		if (sharp) { npx = Sharp(npx); wpx = Sharp(wpx); }
 		double fh = f2.GetHeight();
 		// the parts' widths
 		double wIcon = icon != "" ? ih : 0;
@@ -385,25 +552,37 @@ class RSQVR_Banners : EventHandler
 		if (kind == K_LIVES)
 		{
 			faces = min(b.cn[i], 5);
-			if (ft.IsValid()) { Vector2 fs = TexMan.GetScaledSize(ft); faceW = faceH * fs.x / max(1.0, fs.y); }
+			if (ft.IsValid()) { int fw, fh2; [fw, fh2] = TexMan.GetSize(ft); faceW = faceH * fw / max(1, fh2); }
 		}
-		bool tier = kind == K_TIERUP || kind == K_TIERDOWN;
-		String num = tier ? "" : b.cnum[i];
+		// BOSS INCOMING!'s chips: the name (filled in here when sent empty), TIER n, the thralls' crosshairs, FIGHT IN
+		int nxh = kind == K_THRALLS ? min(b.cn[i], 6) : 0;
+		bool tierName = kind == K_TIERUP || kind == K_TIERDOWN;
+		bool swatch = tierName || kind == K_TIER;
+		String num = tierName ? "" : b.cnum[i];
 		String word = b.cword[i];
+		if (kind == K_NAME) { num = NameOf(b, i); word = ""; }
+		if (kind == K_THRALLS) { num = String.Format("%d", b.cn[i]); word = b.cn[i] == 1 ? "THRALL" : "THRALLS"; }
+		if (kind == K_CLOCK) num = "";
+		double wXh = nxh > 0 ? nxh * ih + (nxh - 1) * 6 * u : 0;
 		double wNum = num != "" ? f2.StringWidth(num) * npx : 0;
 		double wWord = word != "" ? f2.StringWidth(word) * wpx : 0;
-		double wSw = tier ? ih : 0;
-		double wTn = tier ? f2.StringWidth(b.cnum[i]) * wpx : 0;
+		double wSw = swatch ? ih : 0;
+		double wTn = tierName ? f2.StringWidth(b.cnum[i]) * wpx : 0;
+		double seg = ih * 1.15 / 3.6, wSeg = kind == K_CLOCK ? 9.6 * seg : 0;
 		double cw = 0;
 		int parts = 0;
 		if (wIcon > 0) { cw += wIcon; parts++; }
 		if (faces > 0) { cw += faces * faceW + (faces - 1) * 4 * u; parts++; }
+		if (wXh > 0) { cw += wXh; parts++; }
+		if (kind == K_TIER) { cw += wSw; parts++; }
 		if (wNum > 0) { cw += wNum; parts++; }
 		if (wWord > 0) { cw += wWord; parts++; }
-		if (tier) { cw += wSw + wTn; parts += 2; }
+		if (tierName) { cw += wSw + wTn; parts += 2; }
+		if (wSeg > 0) { cw += wSeg; parts++; }
 		cw += max(0, parts - 1) * gap;
 		double w = cw + 2 * padX, h = 44 * u;
 		if (measure) return w;
+		if (sharp) { x = round(x); y = round(y); }
 		// the pill: its ends kept, its middle stretched
 		Pill(x, y - h * 0.5, w, h, a);
 		if (glow > 0) PillGlow(x, y - h * 0.5, w, h, a * glow * 0.01);
@@ -419,6 +598,20 @@ class RSQVR_Banners : EventHandler
 			}
 			cx += faces * faceW + (faces - 1) * 4 * u + gap;
 		}
+		if (wXh > 0)
+		{
+			// each thrall's own crosshair (RSQ Miniboss's RSQMBX, the Boss bar's order), in its colour
+			static const int XH[] = { 3, 7, 5, 4, 6, 3 };
+			for (int k = 0; k < nxh; k++)
+				Tex(String.Format("RSQMBX%02d", XH[k]), cx + k * (ih + 6 * u), y - ih * 0.5, ih, ih, a, -1, ThrallRgb(b, i, k));
+			cx += wXh + gap;
+		}
+		if (kind == K_TIER)
+		{
+			Tex("RQVBSW", cx, y - ih * 0.5, ih, ih, a, -1, b.crgb[i]);
+			Tex("RQVBSB", cx, y - ih * 0.5, ih, ih, a);
+			cx += wSw + gap;
+		}
 		if (wNum > 0)
 		{
 			Txt(f2, ink, num, cx + npx * 0.5, y - fh * npx * 0.5 + npx * 0.5, npx, a * 0.8);
@@ -431,7 +624,7 @@ class RSQVR_Banners : EventHandler
 			Txt(f2, fc, word, cx, y - fh * wpx * 0.5, wpx, a);
 			cx += wWord + gap;
 		}
-		if (tier)
+		if (tierName)
 		{
 			Tex("RQVBSW", cx, y - ih * 0.5, ih, ih, a, -1, b.crgb[i]);
 			Tex("RQVBSB", cx, y - ih * 0.5, ih, ih, a);
@@ -442,7 +635,64 @@ class RSQVR_Banners : EventHandler
 			Txt(f2, ink, b.cnum[i], cx + wpx * 0.5, y - fh * wpx * 0.5 + wpx * 0.5, wpx, a * 0.8);
 			Txt(f2, Font.FindFontColor("RSQVR_BnWhite"), b.cnum[i], cx, y - fh * wpx * 0.5, wpx, a, (lr << 16) | (lg << 8) | lb);
 		}
+		if (wSeg > 0)
+		{
+			// FIGHT IN: the seven-segment digits (the Series' clock, as RSQ SlowMo's DEATH IN), counting down
+			double left = max(0.0, b.cn[i] - (curT - b.t0)) / TICRATE;
+			Seg7(left, cx + wSeg * 0.5, y, seg, a);
+		}
 		return w;
+	}
+	// a thrall's colour: sent as thralls:n@RRGGBB,RRGGBB,..., else the Boss bar mockup's blue, gold, red, green, purple
+	static ui int ThrallRgb(RSQVR_Banner b, int i, int k)
+	{
+		static const int DEF[] = { 0x3C78FF, 0xFFC830, 0xFF3A30, 0x30D050, 0xB050FF, 0x28DCE6 };
+		Array<String> c;
+		b.cword[i].Split(c, ",");
+		if (k < c.Size() && c[k].Length() == 6) return c[k].ToInt(16);
+		return DEF[k % 6];
+	}
+	// the Boss's name: as sent, or (sent empty) the clean name of RSQ Miniboss's Boss now (RSQMB_Service "boss", by name)
+	ui String bossNameCache;
+	ui int bossNameT0;
+	ui String NameOf(RSQVR_Banner b, int i)
+	{
+		if (b.cnum[i] != "") return b.cnum[i];
+		if (bossNameT0 == b.t0 && bossNameCache != "") return bossNameCache;
+		let s = ServiceIterator.Find("RSQMB_Service").Next();
+		Actor boss = s ? Actor(s.GetObjectUI("boss", "", 0, 0, null)) : null;
+		if (boss) { bossNameCache = RSQVR_BossName.BossName(boss); bossNameT0 = b.t0; return bossNameCache; }
+		return "BOSS";
+	}
+	// the seven-segment clock SS.hh (RSQ SlowMo downhud.zs's digits), centred on (cx, cy), a segment unit up px
+	static ui void Seg7(double secs, double rcx, double rcy, double up, double a)
+	{
+		int ss = min(99, int(secs)), hh = min(99, int((secs - int(secs)) * 100));
+		static const double DX[] = { 8.3, 10.6, 13.3, 15.6 };
+		static const int MASK[] = { 0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F };
+		double dw = 1.9, dh = 3.6, th = 0.38;
+		for (int di = 0; di < 4; di++)
+		{
+			int dq = di == 0 ? ss / 10 : (di == 1 ? ss % 10 : (di == 2 ? hh / 10 : hh % 10));
+			for (int s7 = 0; s7 < 7; s7++)
+			{
+				double x = DX[di], y = 0, w = th, h = th;
+				switch (s7)
+				{
+				case 0: y = dh * 0.5; w = dw; break;
+				case 1: x = DX[di] + dw * 0.5; y = dh * 0.25; h = dh * 0.5; break;
+				case 2: x = DX[di] + dw * 0.5; y = -dh * 0.25; h = dh * 0.5; break;
+				case 3: y = -dh * 0.5; w = dw; break;
+				case 4: x = DX[di] - dw * 0.5; y = -dh * 0.25; h = dh * 0.5; break;
+				case 5: x = DX[di] - dw * 0.5; y = dh * 0.25; h = dh * 0.5; break;
+				case 6: w = dw; break;
+				}
+				bool on = (MASK[dq] & (1 << s7)) != 0;
+				TexC("RQVBWH", rcx + (x - 11.95) * up, rcy - y * up, w * up, h * up, (on ? 1.0 : 0.12) * a, -1, 0xFF2A1A);
+			}
+		}
+		TexC("RQVBWH", rcx, rcy - 0.85 * up, 0.45 * up, 0.45 * up, a, -1, 0xFF2A1A);
+		TexC("RQVBWH", rcx, rcy + 0.85 * up, 0.45 * up, 0.45 * up, a, -1, 0xFF2A1A);
 	}
 	static ui void Pill(double x, double y, double w, double h, double a)
 	{
@@ -555,7 +805,11 @@ class RSQVR_Banners : EventHandler
 		photo = RSQTHP_A11y.Photo();
 		EyeMap();
 		double t = level.maptime + e.FracTic;
+		curT = t;
 		DrawInvBar(t);
+		if (!f1) f1 = Font.GetFont("RSQVRBF1");
+		if (!f2) f2 = Font.GetFont("RSQVRBF2");
+		if (f2) DrawToasts(t);
 		if (!On()) return;
 		let b = Current();
 		if (!b) return;
@@ -587,13 +841,24 @@ class RSQVR_Banners : EventHandler
 		}
 		else
 		{
-			String hl = b.moment == M_REVIVE ? "REVIVE" : (b.moment == M_BOSSWIN ? "BOSS DEFEATED!" : "BOSS WINS!");
-			String col = b.moment == M_BOSSLOSS ? "RSQVR_BnRed" : "RSQVR_BnGold";
+			String hl = b.moment == M_REVIVE ? "REVIVE" : (b.moment == M_BOSSWIN ? "BOSS DEFEATED!" : (b.moment == M_BOSSINCOMING ? "BOSS INCOMING!" : "BOSS WINS!"));
+			String set = b.moment == M_BOSSLOSS ? "RQVBK" : (b.moment == M_BOSSINCOMING ? "RQVBG" : "RQVBA");
+			// the skull before BOSS INCOMING! (RSQ Miniboss's crowned skull, RSQMBHD: it is the one who asks)
+			bool skull = b.moment == M_BOSSINCOMING && T("RSQMBHD").IsValid();
 			double px = 6 * 0.9 * m;
-			double fit = min(1.0, W * 0.92 / max(1.0, f1.StringWidth(hl) * px));
+			double sw = SotnW(set, hl), shh = SotnH(set);
+			double skW = skull ? shh * 1.25 + 6 : 0;
+			double fit = min(1.0, W * 0.92 / max(1.0, (sw + skW) * px));
+			px = Sharp(px * fit);
 			double k = min(PopK(bt - 2), 1.12) * exK;
-			double cy = max(gy - 80 * m, clear + f1.GetHeight() * px * fit * 0.62 + 8 * m);
-			Headline(hl, gx, cy, px * fit * k, exA, col);
+			double cy = max(gy - 80 * m, clear + shh * px * 0.62 + 8 * m);
+			double hx = gx + skW * px * 0.5;
+			if (skull)
+			{
+				double ss = shh * 1.25 * px * k;
+				TexC("RSQMBHD", hx - (sw * 0.5 + 6) * px * k - ss * 0.5, cy, ss, ss, exA);
+			}
+			SotnHead(set, hl, hx, cy, px, k, exA, bt - 2);
 			rowY0 = cy + 90 * m;
 		}
 
@@ -636,8 +901,32 @@ class RSQVR_Banners : EventHandler
 			}
 			if (b.moment == M_LIFEUP && bt >= FLY_AT) { k *= exK; }
 			else k *= exK;
-			double w = Chip(b, i, 0, 0, u * k, 1, true);
-			Chip(b, i, ccx - w * 0.5, ccy, u * k, exA, false);
+			bool rest = k == 1.0;
+			double w = Chip(b, i, 0, 0, u * k, 1, true, 0, rest);
+			Chip(b, i, ccx - w * 0.5, ccy, u * k, exA, false, 0, rest);
+		}
+	}
+
+	// ---- the toasts: low in the view, the newest lowest, older ones above it ----
+	ui void DrawToasts(double t)
+	{
+		double H = Screen.GetHeight();
+		double f = clamp(SF("rsq_ui_inset", 0.04), 0.0, 0.3);
+		double u = 0.85 * m;
+		double y = min(gy + 200 * m, H * (1 - f) - 30 * u);
+		int row = 0;
+		for (int i = toasts.Size() - 1; i >= 0; i--)
+		{
+			let b = toasts[i];
+			if (!b || !Mine(b)) continue;
+			double bt = t - b.t0;
+			if (bt < 0 || bt > b.endAt) continue;
+			double ex = clamp((bt - b.exitAt) / EXIT, 0.0, 1.0);
+			double k = PopK(bt) * (1.0 - 0.6 * ex);
+			bool rest = k == 1.0;
+			double w = Chip(b, 0, 0, 0, u * k, 1, true, 0, rest);
+			Chip(b, 0, gx - w * 0.5, y - row * 50 * u, u * k, 1.0 - ex, false, 0, rest);
+			row++;
 		}
 	}
 

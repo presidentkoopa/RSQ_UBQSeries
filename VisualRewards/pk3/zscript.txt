@@ -33,5 +33,6 @@ version "4.14"
 #include "zscript/rsqvr/scenes.zs"
 // The Arcade Gold banners (REVIVE, -1UP, BOSS DEFEATED!, BOSS WINS!, +1UP) and the invulnerability bar (2026-11-16,
 // design/BANNERS_AND_HUD.md): RSQVR_Service "banner"; art and the fonts' copies from tools/gen_banners.py
+#include "zscript/rsqvr/bossname.zs"
 #include "zscript/rsqvr/banners.zs"
 #include "zscript/rsqvr/invbar.zs"

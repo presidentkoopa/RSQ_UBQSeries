@@ -57,7 +57,13 @@
 //                        how many faces to hold back (a +1UP still on its way).
 //   GetIntUI "invbar.bottom"  (ui) the screen pixel row under the invulnerability bar while it shows, -1 when it does not
 //                        (RSQ Score's combo rows go below it).
-//   Test (console, sv_cheats): netevent rsqvr_bntest 0..5, or netevent "rsqvr_banner:<spec>".
+//                        BOSSINCOMING (BOSS INCOMING!, the crowned skull): name:<text> (empty: the Boss's clean name, section
+//                        9; @<class>: that class's), tier:<n>, thralls:<n>[@RRGGBB,RRGGBB...] (each thrall's crosshair in its
+//                        colour; without colours the Boss bar's mockup ones), clock:<secs> (FIGHT IN, counting down)
+//   GetInt "toast"       (play) stringArg "<kind>|<text>", objectArg the player's pawn: one chip, low in the view, ~1.5 s
+//                        (PRESENTATION_GUIDE.md section 5). kind health / armor / invuln / ammo / lives / up / down / info.
+//                        Returns 1 when shown (0: no text, or no VisualRewards: then print your old way)
+//   Test (console, sv_cheats): netevent rsqvr_bntest 0..7 (6 BOSS INCOMING!, 7 three toasts), or netevent "rsqvr_banner:<spec>".
 // The damage numbers' own hook stays where it was: RSQTHP_DnService "crit" (damnums/events.zs).
 class RSQVR_Service : Service
 {
@@ -76,6 +82,7 @@ class RSQVR_Service : Service
 			return request == "scene.push" ? sc.Push(stringArg, intArg, nameArg, int(doubleArg) - 1) : sc.Pop(stringArg);
 		}
 		if (request == "banner") { let bn = RSQVR_Banners.Get(); return bn ? bn.Add(stringArg, Actor(objectArg)) : 0; }
+		if (request == "toast") { let bn = RSQVR_Banners.Get(); return bn ? bn.Toast(stringArg, Actor(objectArg)) : 0; }
 		if (request == "beam") return RSQVR_Beam.StartBeam(stringArg, intArg, doubleArg, Actor(objectArg), nameArg);
 		if (request == "word" || request == "word.hold" || request == "word.clear" || request == "pop")
 		{

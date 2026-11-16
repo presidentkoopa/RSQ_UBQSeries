@@ -393,21 +393,38 @@ def main():
     save(swatch(True), 'RQVBSB')
     save(sparkle(), 'RQVBSP')
     save(glow(), 'RQVBGL')
+    save(Image.new('RGBA', (4, 4), (255, 255, 255, 255)), 'RQVBWH')     # a white square: the clock's segments
     for i in range(12):
         save(rays(i), 'RQVBR%02d' % i)
     # BOSS INCOMING! (section 9): RSSCFON's letters one by one in the gold bands (Score's word's), so any headline can be
     # set in them: RQVBGnnn, nnn the character code
-    for c in GLYPHS:
-        g = glyph(f1, c, GOLD_BANDS)
-        if g:
-            save(g, 'RQVBG%03d' % ord(c))
+    # Every headline is set in these letters (section 11, the SOTN letters: two looks, the bands and a white-hot version of
+    # them): RQVBG gold / RQVBH gold white-hot, RQVBE red / RQVBF red white-hot
+    for prefix, bands in (('RQVBG', GOLD_BANDS), ('RQVBH', hot(GOLD_BANDS)), ('RQVBE', RED_HEAD), ('RQVBF', hot(RED_HEAD))):
+        for c in GLYPHS:
+            g = glyph(f1, c, bands)
+            if g:
+                save(g, '%s%03d' % (prefix, ord(c)))
+    # REVIVE, BOSS DEFEATED! and BOSS WINS! keep their approved mockups' look (A_REVIVE.jpg, A2_BOSS_*.jpg: a ramp over each
+    # letter's brightness, no baked outline; the HUD adds the outline and the shadow): RQVBA gold / RQVBB gold white-hot,
+    # RQVBK red / RQVBL red white-hot
+    lum = [0.3 * p[0] + 0.59 * p[1] + 0.11 * p[2] for g in f1.values() for p in g.getdata() if p[3] > 0]
+    lmn, lmx = min(lum), max(lum)
+    for prefix, lo, hi in (('RQVBA', (150, 90, 10), (255, 232, 120)), ('RQVBK', (120, 10, 10), (255, 110, 90))):
+        hot_lo, hot_hi = hot([lo])[0], hot([hi])[0]
+        for c in GLYPHS:
+            if ord(c) in f1:
+                save(ramp_glyph(f1[ord(c)], lo, hi, lmn, lmx), '%s%03d' % (prefix, ord(c)))
+                hot_prefix = prefix[:-1] + chr(ord(prefix[-1]) + 1)       # A -> B, K -> L
+                save(ramp_glyph(f1[ord(c)], hot_lo, hot_hi, lmn, lmx), '%s%03d' % (hot_prefix, ord(c)))
     print('banner art ->', OUT)
     # RSQ SlowMo's DOWN panel in Arcade Gold (section 8): its own copies, so SlowMo needs nothing of VisualRewards
     os.makedirs(SLOWMO_OUT, exist_ok=True)
-    for c in GLYPHS:
-        g = glyph(f1, c, RED_BANDS)
-        if g:
-            g.save(os.path.join(SLOWMO_OUT, 'RSQSR%03d.png' % ord(c)), optimize=True)
+    for prefix, bands in (('RSQSR', RED_BANDS), ('RSQSW', hot(RED_BANDS))):
+        for c in GLYPHS:
+            g = glyph(f1, c, bands)
+            if g:
+                g.save(os.path.join(SLOWMO_OUT, '%s%03d.png' % (prefix, ord(c))), optimize=True)
     pill().save(os.path.join(SLOWMO_OUT, 'RSQSMPL.png'), optimize=True)
     for src, dst in (('RQVBIH', 'RSQSMIH'), ('RQVBID', 'RSQSMID')):
         shutil.copyfile(os.path.join(OUT, src + '.png'), os.path.join(SLOWMO_OUT, dst + '.png'))
@@ -418,7 +435,27 @@ def main():
 GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!-.:%'
 GOLD_BANDS = [(255, 232, 120), (255, 200, 60), (230, 140, 20), (170, 80, 10)]
 RED_BANDS = [(255, 225, 200), (255, 110, 80), (225, 35, 25), (120, 8, 8)]
+RED_HEAD = [(255, 170, 150), (255, 110, 90), (230, 50, 40), (150, 20, 16)]     # BOSS WINS! (the mockup's red ramp, banded)
 SLOWMO_OUT = os.path.join(SERIES, 'SlowMo', 'graphics', 'rsqsmdn')
+
+
+def ramp_glyph(g, lo, hi, lmn, lmx):
+    """the mockups' ramp (render.py ramp): each pixel lo..hi by its brightness over the font's range, from 35% up"""
+    o = Image.new('RGBA', g.size, (0, 0, 0, 0))
+    pg, po = g.load(), o.load()
+    for y in range(g.height):
+        for x in range(g.width):
+            p = pg[x, y]
+            if p[3] == 0:
+                continue
+            t = 0.35 + 0.65 * (0.3 * p[0] + 0.59 * p[1] + 0.11 * p[2] - lmn) / max(1e-3, lmx - lmn)
+            po[x, y] = tuple(int(lo[i] + (hi[i] - lo[i]) * t) for i in range(3)) + (p[3],)
+    return o
+
+
+def hot(bands, k=0.6):
+    """the white-hot look: each band 60% of the way to white"""
+    return [tuple(int(c + (255 - c) * k) for c in b) for b in bands]
 
 
 def glyph(font, c, bands):
