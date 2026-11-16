@@ -291,6 +291,20 @@ class RSQGN_BarrelBook : EventHandler
 
 	bool Room() { return live < RSQGN_BarrelSwap.Cap(); }
 
+	// THE WORLD'S SPEED (RSQ SlowMo, upg.zs RSQGN_Clock): asked of SlowMo once a tic, however many effects ask
+	transient int wTic;
+	transient double wNow;
+	transient Service wSvc;
+	transient bool wLooked;
+	double WorldSpeed()
+	{
+		if (wNow > 0 && wTic == level.maptime) return wNow;
+		if (!wLooked) { wLooked = true; let it = ServiceIterator.Find("RSQSM_Service"); wSvc = it.Next(); }
+		wTic = level.maptime;
+		wNow = wSvc ? RSQGN_Clock.Ask(wSvc) : 1.0;
+		return wNow;
+	}
+
 	// A KILL BY A BLAST. A_Explode's inflictor is the actor that called it: the barrel, the thrown grenade, the grenade
 	// that went off in the hand -- each blast's director keeps that actor (src). The blast is told; it decides (Kill
 	// Colour, Crowd: explosions.zs RSQGN_Boom.OnKill). A barrel's chain link is not set here (RSQGN_Barrel.Die).
@@ -328,6 +342,18 @@ class RSQGN_BarrelBit : Actor
 		Height 1;
 	}
 	void RSQCount(RSQGN_BarrelBook b) { baseTrans = Translation; if (b) { b.live++; counted = true; } }
+	// SLOW MOTION (upg.zs RSQGN_Clock): RSQ SlowMo leaves these to their own clock. The world's speed this tic, and the
+	// velocity and gravity put at it the way SlowMo slows any actor (velocity x w, gravity x w squared: a slowed fall);
+	// a change of speed mid-flight rescales what it carries. At full speed nothing changes.
+	double fw;     // the speed its velocity and gravity carry now (0: not yet looked at, i.e. full speed)
+	double g0;     // its gravity at full speed
+	double Dilate()
+	{
+		double w = RSQGN_Clock.W();
+		if (fw <= 0) { fw = 1.0; g0 = Gravity; }
+		if (w != fw) { vel *= w / fw; Gravity = g0 * w * w; fw = w; }
+		return w;
+	}
 	// THE TINT (Explosion Colour, explosions.zs RSQGN_Tint): a TRNSLATE translation by name, or its own colours back
 	void TintTo(Name t)
 	{
@@ -361,7 +387,8 @@ class RSQGN_BarrelBit : Actor
 // =====================================================================================================================
 class RSQGN_BarrelLayer : RSQGN_BarrelBit
 {
-	int idx, age, place;
+	int idx, place;
+	double age;        // tics of the WORLD's time played (RSQ SlowMo: a slowed tic adds less than 1; upg.zs RSQGN_Clock)
 	bool add, sheet;
 	double k;          // the player's scale (a chain link's x1.25, a grenade's x0.7 on a barrel overlay)
 	Vector3 base;      // the sequence's base (flats: the floor / ceiling under it; wall sprites: the wall)
@@ -402,9 +429,16 @@ class RSQGN_BarrelLayer : RSQGN_BarrelBit
 		ClearInterpolation();
 	}
 
+	// between two of the track's tics (slow motion), the scale, alpha and offset are drawn between them, so a slowed blast
+	// still moves every tic; the sprite frame is the earlier tic's
+	static double Mix(double a, double b, double f) { return f > 0 ? a + (b - a) * f : a; }
+
 	void Apply(bool moving = true)
 	{
-		int t = RSQGN_BarrelData.L_TOFS(idx) + age;
+		int ia = int(age);
+		double fr = age - ia;
+		int t = RSQGN_BarrelData.L_TOFS(idx) + ia;
+		int tn = RSQGN_BarrelData.L_TOFS(idx) + min(ia + 1, RSQGN_BarrelData.L_TLEN(idx) - 1);
 		int sp = RSQGN_BarrelData.T_SPR(t);
 		if (sp < 0) bInvisible = true;
 		else
@@ -416,10 +450,11 @@ class RSQGN_BarrelLayer : RSQGN_BarrelBit
 		}
 		// the tint: the blast's, except on a white flash frame (owner: the white flash stays white in every mode)
 		TintTo((RSQGN_BarrelData.T_W(t) != 0 || !fx) ? 'None' : fx.TintName());
-		double sx = RSQGN_BarrelData.T_SX(t) * 0.001 * k, sy = RSQGN_BarrelData.T_SY(t) * 0.001 * k;
-		double a = RSQGN_BarrelData.T_A(t) * 0.001;
-		double x = RSQGN_BarrelData.T_X(t) * 0.01 * k;
-		Vector3 p = base + (axis.x * x, axis.y * x, RSQGN_BarrelData.T_Z(t) * 0.01 * k);
+		double sx = Mix(RSQGN_BarrelData.T_SX(t), RSQGN_BarrelData.T_SX(tn), fr) * 0.001 * k;
+		double sy = Mix(RSQGN_BarrelData.T_SY(t), RSQGN_BarrelData.T_SY(tn), fr) * 0.001 * k;
+		double a = Mix(RSQGN_BarrelData.T_A(t), RSQGN_BarrelData.T_A(tn), fr) * 0.001;
+		double x = Mix(RSQGN_BarrelData.T_X(t), RSQGN_BarrelData.T_X(tn), fr) * 0.01 * k;
+		Vector3 p = base + (axis.x * x, axis.y * x, Mix(RSQGN_BarrelData.T_Z(t), RSQGN_BarrelData.T_Z(tn), fr) * 0.01 * k);
 		let boss = fx ? fx.boss : null;
 		if (boss && place == 0 && fx.bend)
 		{
@@ -465,7 +500,7 @@ class RSQGN_BarrelLayer : RSQGN_BarrelBit
 	{
 		if (IsFrozen()) return;
 		ClearInterpolation();
-		age++;
+		age += RSQGN_Clock.W();
 		if (age >= RSQGN_BarrelData.L_TLEN(idx)) { Destroy(); return; }
 		Apply();
 	}
@@ -478,7 +513,8 @@ class RSQGN_BarrelLayer : RSQGN_BarrelBit
 // =====================================================================================================================
 class RSQGN_BarrelEmber : RSQGN_BarrelBit
 {
-	int kind, age, life, ftic[4];
+	int kind, life, ftic[4];
+	double age;        // the world's tics lived (RSQGN_Clock)
 	Default
 	{
 		RenderStyle "Add";
@@ -490,14 +526,15 @@ class RSQGN_BarrelEmber : RSQGN_BarrelBit
 	override void Tick()
 	{
 		if (IsFrozen()) return;
+		double w = Dilate();
 		Super.Tick();                       // the engine's gravity and movement (walls stop it)
 		if (bDestroyed) return;
-		age++;
+		age += w;
 		if (age >= life || pos.z <= floorz) { Destroy(); return; }
-		int f;
+		int f, ia = int(age);
 		if (kind == 0)
 		{
-			f = age < 12 ? min(3, (age / 3) % 4) : 3;
+			f = ia < 12 ? min(3, (ia / 3) % 4) : 3;
 			alpha = age < life - 3 ? 1.0 : (life - age) / 4.0;
 		}
 		else
@@ -521,7 +558,8 @@ class RSQGN_BarrelEmber : RSQGN_BarrelBit
 // =====================================================================================================================
 class RSQGN_BarrelDebris : RSQGN_BarrelBit
 {
-	int age, palLen, cool, hold, cap, twinkle, tw0, ph, bounces, rest, settledAt;
+	int palLen, cool, hold, cap, twinkle, tw0, ph, bounces;
+	double age, rest, settledAt;   // the world's tics (RSQGN_Clock)
 	double bounce, fric, drag, grv;
 	bool sliding;
 	Default
@@ -540,41 +578,46 @@ class RSQGN_BarrelDebris : RSQGN_BarrelBit
 	override void Tick()
 	{
 		if (IsFrozen()) return;
+		double w = Dilate();
 		double vz0 = vel.z;
 		bool air = pos.z > floorz + 0.1;
 		Super.Tick();
 		if (bDestroyed) return;
-		age++;
+		age += w;
+		// in slow motion (w < 1) its velocity is w x the world's: the bounce rule is the design's in the world's units, and
+		// the per-tic drag and skid are taken w of a tic (x^w)
 		if (settledAt < 0)
 		{
 			bool onFloor = pos.z <= floorz + 0.1;
 			if (air && onFloor)                                   // landed this tic
 			{
-				double vz = abs(vz0) + grv;
-				if (vz * bounce > 1.3 * grv && bounces < 4) { vel.z = vz * bounce; bounces++; }
+				double vz = abs(vz0) / w + grv;
+				if (vz * bounce > 1.3 * grv && bounces < 4) { vel.z = vz * bounce * w; bounces++; }
 				else { vel.z = 0; sliding = true; }
 				vel.x *= fric; vel.y *= fric;
 			}
-			else if (!onFloor) { vel.x *= drag; vel.y *= drag; }
+			else if (!onFloor) { double d = w < 1.0 ? drag ** w : drag; vel.x *= d; vel.y *= d; }
 			else sliding = true;
 			if (sliding && onFloor)
 			{
-				vel.x *= 0.45; vel.y *= 0.45;
-				if (vel.xy.Length() < 0.5) { vel.x = 0; vel.y = 0; if (++rest > 3) settledAt = age; }
+				double s = w < 1.0 ? 0.45 ** w : 0.45;
+				vel.x *= s; vel.y *= s;
+				if (vel.xy.Length() < 0.5 * w) { vel.x = 0; vel.y = 0; rest += w; if (rest > 3) settledAt = age; }
 			}
 		}
-		int endAge = cap;
+		double endAge = cap;
 		if (settledAt >= 0) endAge = min(endAge, settledAt + hold);
 		if (age >= endAge) { Destroy(); return; }
-		int ci = min(palLen - 1, age / max(1, cool));
-		if (settledAt >= 0 && twinkle > 0 && (age + tw0) % twinkle == 0) ci = max(0, ci - 3);
+		int ia = int(age);
+		int ci = min(palLen - 1, ia / max(1, cool));
+		if (settledAt >= 0 && twinkle > 0 && (ia + tw0) % twinkle == 0) ci = max(0, ci - 3);
 		frame = ci;
-		int rem = endAge - age;
-		bInvisible = rem <= 4 && rem % 2 == 0;                    // blinks out
+		double rem = endAge - age;
+		bInvisible = rem <= 4 && int(rem) % 2 == 0;               // blinks out
 		if (settledAt < 0)                                        // tumbles while it flies
 		{
-			if (ph % 2 == 0 && (age / 2) % 2) roll = 90;
-			else if ((age / 2 + ph) % 4 >= 2) roll = 180;
+			if (ph % 2 == 0 && (ia / 2) % 2) roll = 90;
+			else if ((ia / 2 + ph) % 4 >= 2) roll = 180;
 			else roll = 0;
 		}
 		else roll = 0;
@@ -590,6 +633,7 @@ class RSQGN_BarrelDebris : RSQGN_BarrelBit
 class RSQGN_BarrelFX : Actor
 {
 	int seq, age, popAng, sheets;
+	double clk;        // the world's time not yet stepped (RSQGN_Clock): a step is one tic of the sequence
 	Vector2 axis;
 	double yaw, dbAmt, k;
 	bool onFloor, anyDebris, full, bend, tintable;
@@ -657,9 +701,15 @@ class RSQGN_BarrelFX : Actor
 	override void Tick()
 	{
 		if (IsFrozen()) return;
-		age++;
-		if (age >= RSQGN_BarrelData.Q_LEN(seq)) { Destroy(); return; }
-		Step();
+		// its layers, embers and debris start on the sequence's own tics: in slow motion a tic of it every 1/w real tics
+		clk += RSQGN_Clock.W();
+		while (clk >= 1.0)
+		{
+			clk -= 1.0;
+			age++;
+			if (age >= RSQGN_BarrelData.Q_LEN(seq)) { Destroy(); return; }
+			Step();
+		}
 	}
 
 	void Step()

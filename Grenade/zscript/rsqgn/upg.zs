@@ -71,6 +71,36 @@ class RSQGN_Slow play
 	}
 }
 
+// THE EFFECTS' CLOCK (owner 2026-11-16 05:27: "how can we slow down our explosions when there is slowdown? the barrels
+// don't really last long whereas bd22 barrels do"; approved 05:33). RSQ SlowMo slows an actor by stretching its states and
+// scaling its motion; this pack's barrel and blast players keep their own clock in script (each counts its age every tic:
+// barrel.zs RSQGN_BarrelFX / Layer / Ember / Debris, explosions.zs RSQGN_Boom, flip.zs, pops.zs, kinds.zs FireField and
+// Smoke), which SlowMo cannot stretch from outside, and engine particles are not actors at all. So each of them asks SlowMo
+// for the world's speed (RSQSM_Service "scale", by name) and runs at it: its age, life and fuse advance by it each tic,
+// its velocity and gravity are put at it (gravity at its square), and a particle is spawned with its velocity scaled down
+// and its lifetime up. SlowMo keeps these classes on real time (its SeriesRule leaves them off its list), so nothing is
+// slowed twice; its state-driven blasts (blast.zs, kinds.zs FxBase) it slows itself. Without SlowMo, or at full speed,
+// W() is exactly 1 and every effect is what it was.
+class RSQGN_Clock play
+{
+	// the world's speed now, 0.05..1 (1 without RSQ SlowMo); asked once a tic (RSQGN_BarrelBook keeps it)
+	static double W()
+	{
+		let b = RSQGN_BarrelBook.Get();
+		if (b) return b.WorldSpeed();
+		return Ask(null);
+	}
+	static double Ask(Service s)
+	{
+		if (!s) { let it = ServiceIterator.Find("RSQSM_Service"); s = it.Next(); }
+		int r = s ? s.GetInt("scale", "", 0, 0, null) : 1000;
+		return (r > 0 && r < 1000) ? clamp(r / 1000.0, 0.05, 1.0) : 1.0;
+	}
+	// a particle's lifetime, velocity and acceleration at the world's speed w (the engine moves a particle by its velocity
+	// each tic and ages it a tic each tic: slowed, it moves w as far, gains w x w as much speed, and lives 1/w as long)
+	static int Life(int ttl, double w) { return w < 1.0 ? max(1, int(ttl / w + 0.5)) : ttl; }
+}
+
 // WHAT THE GRENADE TELLS OTHER MODS, by name. "cooked", objectArg = a thrown grenade: the tics it cooked in the hand before
 // it was thrown, -1 for anything else (Gun Bonsai VR's Slow Burn). "fuse.count" / "fuse.amber", intArg = a player number:
 // while the grenade in that player's hand cooks AND they have COOK SENSE 3 (Gun Bonsai VR patch), its whole seconds left /

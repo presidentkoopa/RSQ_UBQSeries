@@ -8,6 +8,7 @@ class RSQGN_Pops : Actor
 	int t, n;
 	int at[8];
 	double vol;
+	double clk;        // the world's time not yet stepped (RSQ SlowMo, upg.zs RSQGN_Clock): the pops keep the blast's time
 
 	Default
 	{
@@ -39,13 +40,18 @@ class RSQGN_Pops : Actor
 
 	override void Tick()
 	{
-		t++;
-		bool left = false;
-		for (int i = 0; i < n; i++)
+		clk += RSQGN_Clock.W();
+		while (clk >= 1.0)
 		{
-			if (at[i] == t) A_StartSound("rsqgn/k/pop", CHAN_AUTO, CHANF_OVERLAP, vol, ATTN_NORM, frandom[RSQGN_Fx](0.9, 1.12));
-			if (at[i] > t) left = true;
+			clk -= 1.0;
+			t++;
+			bool left = false;
+			for (int i = 0; i < n; i++)
+			{
+				if (at[i] == t) A_StartSound("rsqgn/k/pop", CHAN_AUTO, CHANF_OVERLAP, vol, ATTN_NORM, frandom[RSQGN_Fx](0.9, 1.12));
+				if (at[i] > t) left = true;
+			}
+			if (!left) { Destroy(); return; }
 		}
-		if (!left) Destroy();
 	}
 }

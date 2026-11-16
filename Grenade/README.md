@@ -139,7 +139,10 @@ headset.*
   from the blast), Big Bang (a bigger fireball), Teeth (a teeth pull makes the throw hit harder), Skeet and Skeet Window
   (slow motion after a throw so you can shoot it).
 - **RSQ SlowMo:** a blast that kills a crowd slows the world. Thrown grenades can run faster than the slowed world, and
-  you can choose to make skeet shots work only in slow motion.
+  you can choose to make skeet shots work only in slow motion. **In slow motion the barrels and the blasts slow too**
+  (2026-11-16), as Brutal Doom's do: a barrel's blink, its blast, the fire, smoke, embers, debris and shrapnel, the
+  light, the pops, the fire and smoke grenades' fields, and the sparks (they are spawned slower and live longer). At full
+  speed, or without SlowMo, nothing changes.
 - **RSQ Tactical Rig:** the grenade's own spot on your belt buckle; it never takes a holster.
 - **RSQ Glow In The Dark:** explosions can take the opposite colour of the room's glow.
 - **RSQ Accessibility:** Photosensitive Mode or a comfort vignette turns off the chain-reaction screen kick.
@@ -172,6 +175,7 @@ headset.*
 
 | | |
 |---|---|
+| **rig only, not headset-confirmed** (2026-11-16, runs `slowfx_old2` / `slowfx_new2`, `slowfx_nade_old` / `slowfx_nade_new`; logs and frames in `SlowMo/docs/rig_2026-11-16_slowfx/`; the owner's full order, no script error from our packs) | **Barrels and blasts in slow motion.** At world speed 0.25 this pack's barrel used to blow 12 real tics after it was hit and be gone 100 real tics after (the same as at full speed), beside a Brutal Doom 22 barrel whose effects lasted 479. Now it blows 49 real tics after it is hit and its effects last 407 real tics (103 at full speed). A frag blast's shrapnel at 0.25: 15 real tics before, 64 now; its particles (the shrapnel streaks, the sparks, the kinds' ring) spawned slowed. Frames side by side: `barrels_before_after_world025.jpg`, `grenade_particles_before_after_world025.jpg`. Not shown: the fire and smoke grenades' fields, the mega and mushroom flipbooks, under-water blasts and the Neon Crescent in slow motion (the same clock, not run) |
 | **rig only, not headset-confirmed** (2026-11-13, runs `g2sup1` and `g2sup2` in rig/work/runs, probes rig/work/g2probe and g2probe2; owner's order with BD22 VR Reloaded 2.0.4t, no script error from our packs) | **#10 Neon Crescent out of the barrels:** 20 barrels set off one by one with the Explosion row's value at 10 (an old Neon Crescent pick) rolled only #5 to #9 (8, 3, 4, 3, 2 of them); the row's list has no #10. **`g2.neon`:** each call set off the Neon Crescent (in the room's Glow In The Dark hue, its light on) where the actor stood; the zombies there died to 128 damage credited to the player (his kill count went up), through intArg (1 + his number) or through the monster's target; two killed set off RSQ SlowMo's Barrel Multi-Kill, a barrel beside it went off as a Chain Reaction, and Barrel Near You was never seen for it. Not shown: whether the plain call hurts the player who set it off (he took no damage at 48 units with or without `"safe"`), and the Explosion row resetting a saved 10 to Random when a map loads |
 | **code only, not shown** (2026-11-11, `design/rigtest_2026-11-10/RESULTS_DOWNSHOT.md`; not run, by the owner's order "no rig test, code only until i say"; not load-checked either) | Your eyes as this pack reads them (the mouth the pin is pulled at) use the engine's fixed standing eye height (the player class's ViewHeight), not the pawn's ViewHeight. RSQ SlowMo's DOWN scales the pawn's ViewHeight to 40%, which put them about 0.9 m too high while you were down. Standing and crouching are unchanged |
 | **rig only, not headset-confirmed** (2026-11-10, G1: `design/rigtest_2026-11-10/evidence/L9_log.txt`) | The quick throw on Brutal Doom's Toss Grenade (`+user1`): out 17 tics after the press, 45.3 units a tic, one grenade spent. The **Quick Grenade** key did nothing at first (the engine marks a key's network event as typed by hand, and this pack dropped those); fixed in commit ae089395, then the key threw the same way, 17 tics out at the same speed. With BD22 VR loaded and Replace Brutal Doom's Grenade on. The pin and toss sounds and the side-by-side with BD22's own toss were not logged |
@@ -190,6 +194,11 @@ headset.*
 - **Netplay-safe.** Your hands are read on your own machine only; what they decide (pin out, cooking, the throw)
   travels as network events, and every machine runs the rest the same way. Grenade scattering is deterministic, and
   barrel effects never touch the game's sync.
+- **Slow motion (RSQ SlowMo, by name).** SlowMo slows the state-driven blasts itself. The barrel and blast players keep
+  their own clock in script, so each asks SlowMo's `scale` once a tic (`upg.zs` `RSQGN_Clock`) and runs at it: ages,
+  lives and fuses advance by it, velocity and gravity are scaled the way SlowMo scales any actor, and a layer between
+  two tics of its track is drawn between them, so a slowed blast still moves every tic. Engine particles cannot be
+  slowed after they are made, so they are spawned slowed.
 - **The throw** is the hand's own motion: the fastest two-tic window of the last seven, measured in the body's frame
   so walking and turning are never a swing.
 - **Damage** is the grenade's own (85 over 200, then 75 over 255), credited to whoever threw it, or to whoever shot it.

@@ -7,7 +7,8 @@
 // players (barrel.zs RSQGN_BarrelFX), and runs the few things that are not data: the grenade's shrapnel, the bubbles
 // under water, the blast's ONE light, the scorch decal, the chain's screen kick, and the kills (Kill Colour, Crowd).
 // NOTHING HERE TOUCHES GAMEPLAY: the damage stays each blast's own A_Explode (the barrel's, thrown.zs Blast for the
-// grenade); this file only looks. NO SLOW MOTION HERE: one home per mechanic (WHO_OWNS_WHAT.md) -- RSQ SlowMo owns the
+// grenade); this file only looks. NO SLOW MOTION IS STARTED HERE (what plays here does RUN at the world's speed while
+// SlowMo slows it: upg.zs RSQGN_Clock): one home per mechanic (WHO_OWNS_WHAT.md) -- RSQ SlowMo owns the
 // time of a barrel's blast (its Barrel Multi-Kill, Chain Reaction, Barrel Near You cues) and of a grenade's (Grenade Blast),
 // clock.zs ~1490-1600; it reads the same deaths this file reads (a barrel's A_Explode is its own inflictor), and our
 // barrel is still an ExplosiveBarrel to it.
@@ -166,7 +167,9 @@ class RSQGN_Boom : Actor
 {
 	Actor src;              // A_Explode's inflictor: the barrel, the thrown grenade, the grenade gone off in the hand
 	bool isBarrel, air, skeet;
-	int kind, depth, age, life, mainSeq;
+	int kind, depth, life, mainSeq;
+	double age;             // the world's tics since the blast (RSQ SlowMo slows it: upg.zs RSQGN_Clock)
+	double pw;              // the world's speed this tic (Step): what Pix scales a particle by (0 read as 1)
 	double yaw, k;
 	Vector2 axis;
 	Array<RSQGN_BarrelFX> fxs;      // the sequences it started (each a player, barrel.zs)
@@ -194,7 +197,7 @@ class RSQGN_Boom : Actor
 
 	// ---- THE SHRAPNEL (seqg.Shrapnel; under water ctx_g.WaterShrapnel) ----
 	Array<double> shX, shY, shZ, shVX, shVY, shVZ, shGone, shWallAt, shWNX, shWNY;
-	Array<int> shT0, shLife, shBig, shHit, shRetrace;
+	Array<int> shT0, shLife, shBig, shHit, shRetrace, shOn;
 	// ---- THE BUBBLES (ctx_a.Bubbles) ----
 	Array<double> buX, buY, buZ, buV, buS;
 	Array<int> buT;
@@ -397,21 +400,25 @@ class RSQGN_Boom : Actor
 		life = 90;
 		for (int i = 0; i < fxs.Size(); i++) if (fxs[i]) life = max(life, RSQGN_BarrelData.Q_LEN(fxs[i].seq));
 		age = 0;
-		Step();
+		Step(RSQGN_Clock.W());
 	}
 
+	// SLOW MOTION (upg.zs RSQGN_Clock): a tic of the blast is w of a real tic; the shrapnel, the bubbles and the light run
+	// on the world's time, and its particles are spawned slowed (Pix)
 	override void Tick()
 	{
 		if (IsFrozen()) return;
-		age++;
+		double w = RSQGN_Clock.W();
+		age += w;
 		if (age >= life) { Destroy(); return; }
-		Step();
+		Step(w);
 	}
 
-	void Step()
+	void Step(double w)
 	{
-		if (shT0.Size()) StepShrapnel();
-		if (buT.Size()) StepBubbles();
+		pw = w;
+		if (shT0.Size()) StepShrapnel(w);
+		if (buT.Size()) StepBubbles(w);
 		if (lit) LightStep();
 	}
 
@@ -589,7 +596,8 @@ class RSQGN_Boom : Actor
 	{
 		int col = 0, rad = lightRad;
 		double str = 0;
-		int env = age < RSQGN_BarrelData.Q_LLEN(mainSeq) ? RSQGN_BarrelData.G_LIGHT(RSQGN_BarrelData.Q_LOFS(mainSeq) + age) : 0;
+		int ia = int(age);
+		int env = ia < RSQGN_BarrelData.Q_LLEN(mainSeq) ? RSQGN_BarrelData.G_LIGHT(RSQGN_BarrelData.Q_LOFS(mainSeq) + ia) : 0;
 		if (age < 3) { col = waterOn ? 0xD8ECFF : 0xFFF4C8; str = 1.0; }
 		else if (lightMode < 2) str = 0;
 		else if (waterOn) { if (age < 5) { col = 0x78C8F0; str = 0.5; } }
@@ -636,13 +644,17 @@ class RSQGN_Boom : Actor
 	// =================================================================================================================
 	// PARTICLES: hard pixels (the player's Particle Style decides square or round: Square is the pixel-art look)
 	// =================================================================================================================
-	void Pix(Vector3 p, int rgb, double size, int ttl, Vector3 v, Vector3 acc, bool glow, double a)
+	// slowed (RSQGN_Clock, the world's speed pw this tic): its lifetime 1/pw as long, its velocity x pw, its acceleration
+	// x pw squared; a streak (stretch false) is redrawn every real tic, so it keeps its 2 tics
+	void Pix(Vector3 p, int rgb, double size, int ttl, Vector3 v, Vector3 acc, bool glow, double a, bool stretch = true)
 	{
 		FSpawnParticleParams pp;
 		pp.color1 = rgb;
 		pp.style = glow ? STYLE_Add : STYLE_Translucent;
 		pp.flags = glow ? SPF_FULLBRIGHT : 0;
-		pp.lifetime = ttl;
+		double w = pw > 0 ? pw : 1.0;
+		pp.lifetime = stretch ? RSQGN_Clock.Life(ttl, w) : ttl;
+		if (stretch && w < 1.0) { v *= w; acc *= w * w; }
 		pp.size = size;
 		pp.sizestep = 0;
 		pp.startalpha = a;
@@ -710,6 +722,7 @@ class RSQGN_Boom : Actor
 			// (for the pair-maker above, these hold the launch yaw / elevation / speed until the first trace replaces them)
 			shWNX.Push(yw); shWNY.Push(el); shGone.Push(v);
 			shWallAt.Push(-1);
+			shOn.Push(0);
 		}
 	}
 
@@ -736,7 +749,9 @@ class RSQGN_Boom : Actor
 		shWNX[i] = n.x; shWNY[i] = n.y;
 	}
 
-	void StepShrapnel()
+	// in slow motion (w < 1) each fragment's velocity stays in the world's units and moves it w of a tic's way: its pull
+	// w x 1.4, its drag 0.8^w, its life counted in the world's tics
+	void StepShrapnel(double w)
 	{
 		static const int HOT4[] = { 0xFFFFF0, 0xFFE882, 0xFFA528, 0xBE3C00 };
 		static const int HOT3[] = { 0xFFE678, 0xFF8C14, 0x962800 };
@@ -745,28 +760,28 @@ class RSQGN_Boom : Actor
 		int live = 0;
 		for (int i = 0; i < shT0.Size(); i++)
 		{
-			int dt = age - shT0[i];
+			double dt = age - shT0[i];
 			if (dt < 0) { live++; continue; }
 			if (dt >= shLife[i]) continue;
 			live++;
-			if (dt == 0) TraceAhead(i);
+			if (shOn[i] == 0) { shOn[i] = 1; TraceAhead(i); }   // its first tic out
 			Vector3 a = (shX[i], shY[i], shZ[i]);
 			Vector3 p = a;
 			Vector3 v = (shVX[i], shVY[i], shVZ[i]);
 			double fz = Level.PointInSector(p.xy).floorplane.ZAtPoint(p.xy);
 			if (waterOn)
 			{
-				p += v;
-				shGone[i] += v.Length();
-				if (shGone[i] >= shWallAt[i]) shLife[i] = dt;   // the wall stops it (no ricochet under water)
+				p += v * w;
+				shGone[i] += v.Length() * w;
+				if (shGone[i] >= shWallAt[i]) shLife[i] = int(dt);   // the wall stops it (no ricochet under water)
 				if (p.z < fz + 1) p.z = fz + 1;
-				v *= 0.5; v.z -= 0.32;
+				v *= w < 1.0 ? 0.5 ** w : 0.5; v.z -= 0.32 * w;
 			}
 			else for (int s = 0; s < 4; s++)
 			{
-				Vector3 st = v * 0.25;
+				Vector3 st = v * 0.25 * w;
 				p += st;
-				v.z -= 1.4 / 4;
+				v.z -= 1.4 / 4 * w;
 				shGone[i] += st.Length();
 				if (shGone[i] >= shWallAt[i])              // the wall: ricochet back off it
 				{
@@ -791,12 +806,12 @@ class RSQGN_Boom : Actor
 					}
 				}
 			}
-			if (!waterOn) v *= 0.8;
+			if (!waterOn) v *= w < 1.0 ? 0.8 ** w : 0.8;
 			shX[i] = p.x; shY[i] = p.y; shZ[i] = p.z; shVX[i] = v.x; shVY[i] = v.y; shVZ[i] = v.z;
 			// the streak: head at the new position, back along this tic's path, coloured in steps by speed
 			double spd = v.Length();
 			int nc = 0;
-			if (waterOn) { if ((p - a).Length() < 2) continue; nc = 3; }
+			if (waterOn) { if ((p - a).Length() < 2 * w) continue; nc = 3; }
 			else if (spd > 25) nc = 4;
 			else if (spd > 11) nc = 3;
 			else if (spd > 4) nc = 2;
@@ -808,10 +823,12 @@ class RSQGN_Boom : Actor
 				double f = j / double(np - 1);
 				int ci = min(nc - 1, int(f * nc));
 				int col = waterOn ? COLD[ci] : Tinted(nc == 4 ? HOT4[ci] : nc == 3 ? HOT3[ci] : HOT2[ci]);
-				Pix(p + (a - p) * f * 0.95, col, (j == 0 && shBig[i] != 0) ? 3.2 : 2.0, 2, (0, 0, 0), (0, 0, 0), !waterOn, 1.0);
+				Pix(p + (a - p) * f * 0.95, col, (j == 0 && shBig[i] != 0) ? 3.2 : 2.0, 2, (0, 0, 0), (0, 0, 0), !waterOn, 1.0, false);
 			}
-			// under water: a trail of bubbles off each fragment, its first four tics (ctx_g.WaterShrapnel)
-			if (waterOn && dt >= 1 && dt <= 4)
+			// under water: a trail of bubbles off each fragment, its first four tics (ctx_g.WaterShrapnel): one a tic of the
+			// world's time (in slow motion, on the real tic its world tic begins)
+			int idt = int(dt);
+			if (waterOn && idt >= 1 && idt <= 4 && dt - w < idt)
 				Pix(p, 0xA0D7F5, 1.0, 60, (0, 0, frandom[RSQGNBarrel](0.6, 1.3)), (0, 0, 0.08), false, 1.0);
 		}
 		if (!live) { shT0.Clear(); }
@@ -861,13 +878,13 @@ class RSQGN_Boom : Actor
 			}
 		}
 	}
-	void StepBubbles()
+	void StepBubbles(double w)
 	{
 		int left = 0;
 		for (int i = 0; i < buT.Size(); i++)
 		{
 			if (buT[i] > age) { left++; continue; }
-			if (buT[i] < age) continue;
+			if (buT[i] <= age - w) continue;      // born on an earlier tic (its world tic: the one age passed it on)
 			double acc = 0.07 * (1 + buS[i] * 0.45);
 			Pix((buX[i], buY[i], max(buZ[i], floorz + 1)), 0x9EDBFF, buS[i], random[RSQGNBarrel](40, 70), (0, 0, buV[i]), (0, 0, acc), false, 0.95);
 		}

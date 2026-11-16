@@ -110,18 +110,21 @@ class RSQGN_Kind play
 	}
 
 	// a ring of coloured sparks, the kind's colour (STUN's ring, FREEZE's frost, CHARM's pink, INFIGHT's red)
+	// In slow motion (RSQ SlowMo, upg.zs RSQGN_Clock: the world's speed w) the ring is spawned slowed: it flies w as fast,
+	// slows and shrinks w as fast, and lives 1/w as long (the engine's particles are not actors: SlowMo cannot slow them)
 	static void Burst(Actor at, int rgb, int n)
 	{
+		double w = RSQGN_Clock.W();
 		FSpawnParticleParams pp;
-		pp.color1 = rgb; pp.style = STYLE_None; pp.flags = SPF_FULLBRIGHT; pp.lifetime = 24;
-		pp.size = 6; pp.sizestep = -0.15; pp.startalpha = 0.9; pp.fadestep = -1;
+		pp.color1 = rgb; pp.style = STYLE_None; pp.flags = SPF_FULLBRIGHT; pp.lifetime = RSQGN_Clock.Life(24, w);
+		pp.size = 6; pp.sizestep = -0.15 * w; pp.startalpha = 0.9; pp.fadestep = -1;
 		pp.startroll = 0; pp.rollvel = 0; pp.rollacc = 0;
 		for (int i = 0; i < n; i++)
 		{
 			double a = i * 360.0 / n;
 			pp.pos = at.pos + (0, 0, 8);
-			pp.vel = (cos(a) * 6, sin(a) * 6, frandom[RSQGN_Fx](-0.5, 1.5));
-			pp.accel = -pp.vel * 0.04;
+			pp.vel = (cos(a) * 6, sin(a) * 6, frandom[RSQGN_Fx](-0.5, 1.5)) * w;
+			pp.accel = -pp.vel * 0.04 * w;
 			at.Level.SpawnParticle(pp);
 		}
 	}
@@ -293,18 +296,25 @@ class RSQGN_FireField : Actor
 {
 	double radius2;
 	int left;
+	double clk;	// the world's time not yet burnt (RSQ SlowMo, upg.zs RSQGN_Clock): a step is one tic of the fire
 	Default { +NOBLOCKMAP +NOGRAVITY +NOINTERACTION +DONTSPLASH DamageType "Fire"; Obituary "%o was burnt by %k's grenade"; }
 	override void Tick()
 	{
 		Super.Tick();
 		if (bDestroyed || IsFrozen()) return;
-		if (--left <= 0) { Destroy(); return; }
+		// in slow motion the fire burns on the world's time: its life, its flames and its hurt, one step every 1/w real tics
+		clk += RSQGN_Clock.W();
+		while (clk >= 1.0) { clk -= 1.0; if (!Burn()) return; }
+	}
+	bool Burn()
+	{
+		if (--left <= 0) { Destroy(); return false; }
 		if (left % 4 == 0)
 		{
 			double a = frandom[RSQGN_Fx](0, 360), d = sqrt(frandom[RSQGN_Fx](0, 1)) * radius2;
 			A_SpawnItemEx("RSQGN_Flame", cos(a) * d, sin(a) * d, 2, 0, 0, frandom[RSQGN_Fx](0.3, 0.8), 0, SXF_NOCHECKPOSITION | SXF_ABSOLUTEPOSITION | SXF_ABSOLUTEANGLE);
 		}
-		if (left % 7 != 0) return;
+		if (left % 7 != 0) return true;
 		bool selfToo = RSQGN_FireRule.SelfBurns();
 		let it = BlockThingsIterator.Create(self, radius2);
 		while (it.Next())
@@ -316,6 +326,7 @@ class RSQGN_FireField : Actor
 			t.DamageMobj(self, target, 1, 'Fire');
 			if (t.bIsMonster) RSQGN_Upg.Touch("fire.nade", target, t);
 		}
+		return !bDestroyed;
 	}
 	States { Spawn: TNT1 A -1; Stop; }
 }
@@ -327,14 +338,21 @@ class RSQGN_Smoke : Actor
 {
 	double cloud;		// its radius, map units
 	int left;
+	double clk;		// the world's time not yet stepped (RSQ SlowMo, upg.zs RSQGN_Clock)
 	const REACH = 1536.0;	// how far round the cloud a monster's line can cross it
 	Default { +NOBLOCKMAP +NOGRAVITY +NOINTERACTION +DONTSPLASH }
 	override void Tick()
 	{
 		Super.Tick();
 		if (bDestroyed || IsFrozen()) return;
-		if (--left <= 0) { Destroy(); return; }
-		if (left % 17 != 0) return;
+		// in slow motion the cloud lasts and works on the world's time, one step every 1/w real tics
+		clk += RSQGN_Clock.W();
+		while (clk >= 1.0) { clk -= 1.0; if (!Pass()) return; }
+	}
+	bool Pass()
+	{
+		if (--left <= 0) { Destroy(); return false; }
+		if (left % 17 != 0) return true;
 		for (int i = 0; i < 3; i++)	// three a pass, a dozen alive at most (each lives 60 tics)
 		{
 			double a = frandom[RSQGN_Fx](0, 360), d = sqrt(frandom[RSQGN_Fx](0, 1)) * cloud;
@@ -347,6 +365,7 @@ class RSQGN_Smoke : Actor
 			if (!t || !t.bIsMonster || t.health <= 0 || !t.target) continue;
 			if (Blinds(t)) { RSQGN_Kind.LoseTarget(t); RSQGN_Upg.Touch("smoke", target, t); }
 		}
+		return true;
 	}
 	// inside the cloud, or its line to its target passes through it (across the ground)
 	bool Blinds(Actor t)

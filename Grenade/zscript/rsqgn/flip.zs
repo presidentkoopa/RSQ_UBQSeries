@@ -7,7 +7,8 @@
 // =====================================================================================================================
 class RSQGN_Flip : Actor
 {
-	int seq, t, n;
+	int seq, n;
+	double t;          // the world's tics played (RSQ SlowMo, upg.zs RSQGN_Clock: a frame every 1/w real tics)
 	transient Array<SpriteID> spr;
 	bool lit;
 	int lastStep;
@@ -60,10 +61,11 @@ class RSQGN_Flip : Actor
 	{
 		if (t >= n) { if (lit) A_RemoveLight('rsqgnflip'); Destroy(); return; }
 		if (spr.Size() == 0) Names();
-		int ni = t / 26;
-		if (ni < spr.Size()) { sprite = spr[ni]; frame = t % 26; }
+		int it = int(t);
+		int ni = it / 26;
+		if (ni < spr.Size()) { sprite = spr[ni]; frame = it % 26; }
 		// the glow, in steps of a tenth (flat bands, and the light is only re-attached when its step changes: "optimized")
-		int step = int(RSQGN_FlipData.GlowAt(RSQGN_FlipData.GlowFirst(seq) + t) * 10 + 0.5);
+		int step = int(RSQGN_FlipData.GlowAt(RSQGN_FlipData.GlowFirst(seq) + it) * 10 + 0.5);
 		if (RSQGN_Fx.Lights() > 0 && step > 0)
 		{
 			if (step != lastStep)
@@ -81,7 +83,7 @@ class RSQGN_Flip : Actor
 
 	override void Tick()
 	{
-		t++;
+		t += RSQGN_Clock.W();
 		Show();
 	}
 }
