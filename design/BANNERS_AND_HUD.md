@@ -61,7 +61,7 @@ His words, in order:
 - **The look:** a big **1** with a small **UP** raised beside it (superscript, top-aligned), in RSSCFON, filled with
   hard horizontal bands (yellow, amber, orange, red from the top) and a thick black pixel outline, the Doomguy face at
   its left. A white band sweeps down through the colours. Optional: **EXTEND!** above it (the shmup word for an extra
-  life), `A3_EXTEND.jpg`: his call.
+  life), `A3_EXTEND.jpg`: **dropped** (owner 02:29).
 - **+1UP has freedom** ("a lot of life to it"): a gold flash and spinning rays on the pickup; the face pops in with
   Doom's evil grin (`STFEVL0`) and wobbles; the 1UP squashes as it lands and bobs; sparkles burst; then the whole badge
   shrinks and **floats up into the lives at the top** (the Super Mario Bros. float), where the new face pops in with a
@@ -72,7 +72,7 @@ His words, in order:
 - **The pickup:** the Boss's 1UP is a pickup, not an instant life. It is Score's existing life crate
   (`RSQ_ScoreLifeCrate`: the Berserk pack, Brutal Doom's voxel with BD_VoxelPack, in Score's gold). The Boss drop of it
   was removed earlier; bringing it back is a later decision. Open with it: its tint (he remembers it white; the code
-  tints it gold), its 10 s life, and a safety net (it can be lost over a pit).
+  tints it gold), its 10 s life, and a safety net (it can be lost over a pit). **Decided: section 6.**
 
 ## 5. The top HUD
 
@@ -102,13 +102,26 @@ His words, in order:
   starts by itself (his rule of 11-06). To add with the banners: **REVIVE**, **1UP**, **−1UP** words for the slow
   motion those moments pay; **MINIBOSS** → **BOSS** and **MINIBOSS INCOMING** → **BOSS INCOMING**.
 
-## 6. Open (his calls)
+## 6. Decided (owner, 2026-11-16 02:29-02:38)
 
-- The 1UP: plain, or with EXTEND! above it.
-- Magenta for invulnerable.
-- Whether a life earned by Score's target uses the same +1UP (the mockup assumes yes), and whether a second life at
-  once reads **2UP**.
-- The life crate as the Boss drop, its tint, its lifetime and its safety net (section 4).
+- **No EXTEND!** The 1UP is plain: the big 1, the raised UP, the face.
+- **Magenta for invulnerable.** The four bar colours: Boss red, adrenaline cyan, world slow motion green, invulnerable
+  magenta.
+- **A life earned by Score's target shows +1UP**, with world slow motion for as long as the +1UP is on screen (its
+  reason word: 1UP).
+- **The Boss's 1UP is the life crate** (`RSQ_ScoreLifeCrate`, Score; today nothing in play spawns it, only rig probes):
+  - the Boss drops it where it died (Miniboss asks Score for it by name, as before);
+  - **gold**, as now (Score's gold, the beam of light into the sky);
+  - **it stays until picked up** (no 10 s timer, no red fade);
+  - **it floats back up** to where the Boss died if it falls where the player cannot reach it (a pit, below a ledge);
+  - touching it: **+1UP** (section 4).
+- The legendary weapon still drops as it does; the banner does not name it.
+- **Fonts:** RSSCFON is the Series' font for these. Its letters are drawn light on their own darker tiles; the banded
+  look keeps the tiles and bands the colour by rows (the first mockups filled the whole tile and read as blocks: a mockup
+  error, not the font). In game the bands need pre-made graphics (the engine colours a font by brightness, not by row);
+  the 1UP is a few characters, so that is small.
+
+Still open: whether a second life at once reads **2UP**.
 
 ## 7. Built / not built (2026-11-16)
 
@@ -120,3 +133,5 @@ His words, in order:
 | The invulnerability bar | Not built (and the 5 s invulnerability itself is not built: rule doc, section 3) |
 | The slow motion reason line | Built; the new words and BOSS wording not built |
 | "Boss" in player-facing words | Not built (banners and reason words still say MINIBOSS) |
+| The life crate as the Boss's 1UP (gold, stays, floats back) | Not built (the crate exists in Score; nothing spawns it) |
+| +1UP with slow motion for a Score life | Not built |
